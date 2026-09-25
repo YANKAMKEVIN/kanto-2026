@@ -1,0 +1,24 @@
+[gd_resource type="Theme" format=3]
+
+[sub_resource type="FontVariation" id="FontVariation_mql0s"]
+resource_name = "BoldDefault"
+variation_embolden = 0.6
+
+[resource]
+default_font_size = 32
+Label/colors/font_color = Color(1, 1, 1, 1)
+ZoneTitleName/base_type = &"Label"
+ZoneTitleName/colors/font_color = Color(1, 1, 1, 1)
+ZoneTitleName/colors/font_shadow_color = Color(0, 0, 0, 0.45)
+ZoneTitleName/constants/shadow_offset_x = 0
+ZoneTitleName/constants/shadow_offset_y = 2
+ZoneTitleName/constants/shadow_outline_size = 4
+ZoneTitleName/font_sizes/font_size = 44
+ZoneTitleName/fonts/font = SubResource("FontVariation_mql0s")
+ZoneTitleRegion/base_type = &"Label"
+ZoneTitleRegion/colors/font_color = Color(0.72156864, 0.76862746, 0.8392157, 1)
+ZoneTitleRegion/colors/font_shadow_color = Color(0, 0, 0, 0.45)
+ZoneTitleRegion/constants/shadow_offset_x = 0
+ZoneTitleRegion/constants/shadow_offset_y = 2
+ZoneTitleRegion/constants/shadow_outline_size = 4
+ZoneTitleRegion/font_sizes/font_size = 24

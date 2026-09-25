@@ -1,0 +1,18 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://game/world/props/prop.tscn" id="1_base"]
+[ext_resource type="Script" path="res://game/world/props/fence.gd" id="2_fence"]
+[ext_resource type="Texture2D" path="res://assets/tiles/placeholder/props/fence_picket_h.png" id="3_h"]
+[ext_resource type="Texture2D" path="res://assets/tiles/placeholder/props/fence_picket_v.png" id="4_v"]
+
+[node name="FencePicket" instance=ExtResource("1_base")]
+script = ExtResource("2_fence")
+horizontal_texture = ExtResource("3_h")
+vertical_texture = ExtResource("4_v")
+
+[node name="Sprite" parent="." index="0"]
+texture = ExtResource("3_h")
+texture_repeat = 2
+region_enabled = true
+region_rect = Rect2(0, 0, 96, 96)
+offset = Vector2(-48, -96)

@@ -1,0 +1,40 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://game/ui/hud/exploration_hud.gd" id="1_hud"]
+[ext_resource type="PackedScene" path="res://game/ui/components/zone_title.tscn" id="2_title"]
+[ext_resource type="PackedScene" path="res://game/ui/components/virtual_joystick.tscn" id="3_joy"]
+[ext_resource type="PackedScene" path="res://game/ui/components/run_button.tscn" id="4_run"]
+
+[node name="ExplorationHud" type="CanvasLayer"]
+script = ExtResource("1_hud")
+
+[node name="Root" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="VirtualJoystick" parent="Root" instance=ExtResource("3_joy")]
+unique_name_in_owner = true
+layout_mode = 1
+
+[node name="ZoneTitle" parent="Root" instance=ExtResource("2_title")]
+unique_name_in_owner = true
+layout_mode = 0
+
+[node name="RunAnchor" type="Control" parent="Root"]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 0
+grow_vertical = 0
+mouse_filter = 2
+
+[node name="RunButton" parent="Root/RunAnchor" instance=ExtResource("4_run")]
+unique_name_in_owner = true

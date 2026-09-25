@@ -1,0 +1,40 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://game/ui/components/zone_title.gd" id="1_zone"]
+[ext_resource type="Texture2D" path="res://assets/ui/icons/poke_ball.svg" id="2_ball"]
+
+[node name="ZoneTitle" type="MarginContainer"]
+mouse_filter = 2
+script = ExtResource("1_zone")
+
+[node name="Row" type="HBoxContainer" parent="."]
+unique_name_in_owner = true
+layout_mode = 2
+mouse_filter = 2
+
+[node name="Icon" type="TextureRect" parent="Row"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 4
+mouse_filter = 2
+texture = ExtResource("2_ball")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Lines" type="VBoxContainer" parent="Row"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 4
+mouse_filter = 2
+
+[node name="NameLabel" type="Label" parent="Row/Lines"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"ZoneTitleName"
+text = "BOURG PALETTE"
+
+[node name="RegionLabel" type="Label" parent="Row/Lines"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"ZoneTitleRegion"
+text = "Kanto"

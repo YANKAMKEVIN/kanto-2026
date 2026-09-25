@@ -157,7 +157,7 @@ Taille du sprite en cases (L × H). L'**ancre** est la case sous l'origine (bas-
 | Petit arbre / buisson | 1 × 2 | 1 × 1 | jardins |
 | Clôture en piquets / barrière bois (segment de N cases) | N × 1 | N × 1 : x 0..N−1, y 0 | voir zones |
 | Lampadaire | 1 × 3 | 1 × 1 | place (17, 12), (31, 12), (17, 17), (31, 17) ; côte (14, 29), (26, 29), (38, 29) |
-| Banc | 2 × 1 | 2 × 1 : x 0..1 | (19, 16), (28, 16) |
+| Banc | 2 × 1 | 2 × 1 : x 0..1 | (19, 15), (28, 15) |
 | Panneau « BOURG PALETTE » | 1 × 1 | 1 × 1 | (21, 13) |
 | Boîte aux lettres | 1 × 1 | 1 × 1 | (13, 10), (38, 10) |
 | Vélo (maison du joueur) | 1 × 1 | 1 × 1 | (40, 10) |
@@ -173,9 +173,9 @@ Les portes font partie de l'empreinte (solides) : les intérieurs sont hors pér
 
 ### 4.4 Invariants d'accessibilité (testés)
 
-Depuis `start` (36, 10), `GridWorld.find_reachable` doit **atteindre** : (36, 11) portillon, (23, 0) et (24, 0) haut de la Route 1, (11, 10) devant la maison du rival, (24, 17) place, (24, 23) devant le labo, (24, 25) jardins, (30, 29) et (44, 29) sentier côtier, (8, 29) plage, (9, 33) bout du ponton.
+Depuis `start` (36, 10), `GridWorld.find_reachable` doit **atteindre** : (36, 11) portillon, (23, 1) et (24, 1) haut de la Route 1, (11, 10) devant la maison du rival, (24, 17) place, (24, 23) devant le labo, (24, 25) jardins, (30, 29) et (44, 29) sentier côtier, (8, 29) plage, (9, 33) bout du ponton.
 
-Il ne doit **pas atteindre** : toute case `water`, toute case d'empreinte de bâtiment, le champ (38, 1), le sentier secret (43, 26) à (46, 26), la Route 21 (46, 29) et (47, 30), les lisières (1, 10) et (45, 10).
+Il ne doit **pas atteindre** : (23, 0) et (24, 0) (bord nord, bloqués par `GameMap.blocked_cells`), toute case `water`, toute case d'empreinte de bâtiment, le champ (38, 1), le sentier secret (43, 26) à (46, 26), la Route 21 (46, 29) et (47, 30), les lisières (1, 10) et (45, 10).
 
 ---
 
@@ -216,20 +216,23 @@ Il ne doit **pas atteindre** : toute case `water`, toute case d'empreinte de bâ
 
 ---
 
-## 6. Hypothèses prises (à confirmer, voir questions)
-- Hauteur de carte : 34 au lieu de 32 (Q2).
-- Entrée du labo sur la façade sud, donnant sur les jardins (Q1).
-- Sortie de la Route 1 = bord de carte ; Route 21 = barrière.
-- Course = bouton tenu.
-- Vitesses : marche 0,22 s/case, course 0,12 s/case, à régler sur téléphone dans `Grid`.
+## 6. Décisions validées par Kevin (2026-09-25)
+
+Les six propositions de l'architecte sont **acceptées telles quelles** :
+
+1. **Labo et jardins** : porte du labo sur la façade sud, parvis pavé devant l'entrée (y 23), portillon (24, 24) vers les jardins de recherche, accès à la côte par l'ouest et l'est du labo.
+2. **Hauteur de carte** : 48 × 34 cases.
+3. **Sous-titre du nom de zone** : « Kanto » à chaque arrivée. « Le commencement de toute aventure » est réservé à la toute première sortie de la maison (jalon « ouverture », plus tard).
+4. **Courir** : bouton tenu (comme B).
+5. **Vitesses** : marche 0,22 s/case, course 0,12 s/case pour le premier essai sur le S24, ajustables ensuite dans `Grid` uniquement.
+6. **Sortie Route 1** : simple bord de carte, sans élément visible. La Route 21 reste fermée par une barrière.
+
+Plus aucune question ouverte pour ce jalon.
 
 ---
 
-## 7. Questions ouvertes pour Kevin
+## 7. Retouches après la QA sur S24 (validées par Kevin, 2026-09-25)
 
-1. **Entrée du labo et jardins « derrière ».** En vue de dessus 3/4, seule la façade sud d'un bâtiment est visible : la porte du labo doit donc être au sud, comme dans Rouge/Bleu. Avec les jardins au sud, ils se trouvent devant la porte. Proposition : un parvis devant la porte, puis un portillon qui ouvre sur les jardins, et un accès à la côte par les côtés ouest et est du labo. Est-ce que cela te convient ?
-2. **Hauteur de carte : 34 au lieu de 32.** Ces deux rangées logent les jardins sans écraser la prairie ni le littoral. Le skill `world-tiles` autorise 32 à 36. D'accord, ou faut-il rester strictement à 32 ?
-3. **Sous-titre du nom de zone.** Le brief du jalon dit « Kanto », mais le déroulé d'ouverture du dossier 01 dit « Le commencement de toute aventure ». Proposition : « Kanto » à chaque arrivée, et la phrase réservée à la toute première sortie de la maison (jalon « ouverture »).
-4. **Courir.** Bouton tenu (comme B), bouton bascule, ou joystick poussé à fond ? Par défaut : bouton tenu.
-5. **Vitesse.** À 0,22 s/case, traverser la carte du nord au sud prend environ 7,5 s en marchant, loin des 30 à 40 s indicatifs du dossier. On garde ces valeurs pour le premier essai sur le S24, puis on les ajuste dans `Grid` ?
-6. **Sortie Route 1.** Simple bord de carte (proposé), ou un élément visible qui l'explique (barrière « travaux », PNJ plus tard) ?
+1. **Transparence** : les arbres, le grand arbre de la place, les maisons, le labo et les serres passent à 50 % d'opacité (fondu de 0,15 s) quand le joueur est derrière eux. Option `WorldProp.fade_when_covering`, activée dans `tools/gen_placeholder_props.gd` ; le joueur est trouvé par le groupe `Player.GROUP`.
+2. **Bancs de la place** remontés en y 15 : le toit du labo ne les cache plus.
+3. **Haut de la Route 1** : le chemin file toujours jusqu'au bord, mais le joueur s'arrête en y 1 (`GameMap.blocked_cells`), pour que sa tête ne soit plus coupée par l'écran.
