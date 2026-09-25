@@ -10,6 +10,8 @@ Kevin est le **directeur du jeu** : il conçoit (souvent avec ChatGPT), Claude i
 - `docs/design/ui-reference.md` + `docs/design/reference/da-2026-planche-v1.webp` — référence **UI** validée.
 - `docs/design/reference/bourg-palette-aplus-v1.png` — benchmark graphique du **monde** (2D HD atmosphérique, golden hour).
 - `docs/design/dossier-*.md` — conception détaillée par zone.
+- `docs/tech/etat-projet.md` — **où en est le projet, prochaine étape, questions ouvertes.** À lire en début de session.
+- `docs/tech/jalon-*.md` — plans techniques des jalons (tâches et critères d'acceptation).
 
 ## Règles de travail
 
