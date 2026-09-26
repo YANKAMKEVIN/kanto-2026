@@ -36,6 +36,9 @@ extends RefCounted
 ##   d'étape ;
 ## - move : acteur, avec **soit** « path » (directions), **soit** « to » ([x, y], ou
 ##   { "near": acteur, "offsets": [[dx, dy], …] }), et « run », « follower » facultatifs ;
+##   « keep_facing » (true : le joueur seulement, il avance sans se tourner, pour reculer) et
+##   « optional » (true : avec « near », étape sautée sans erreur si aucune case ne convient)
+##   facultatifs ;
 ## - change_map : identifiant de carte, avec « at » (point d'apparition) et « facing »
 ##   facultatif ;
 ## - hop (jalon 4) : PNJ (pas « player ») qui saute, avec « to » obligatoire, comme pour
@@ -66,7 +69,8 @@ const _SCENE_KEYS: Array[String] = ["variants"]
 const _VARIANT_KEYS: Array[String] = ["if", "unless", "steps"]
 ## Clés permises en plus de la clé de type, par type (ordre de CutsceneStep.Kind).
 const _EXTRA_KEYS: Array[Array] = [
-	[], [], ["to"], [], [], ["path", "to", "run", "follower"], ["at", "facing"], ["to"],
+	[], [], ["to"], [], [], ["path", "to", "run", "follower", "keep_facing", "optional"],
+	["at", "facing"], ["to"],
 	["to"], [],
 ]
 
@@ -336,7 +340,7 @@ func _parse_spawn(entry: Dictionary, step: CutsceneStep, where: String) -> bool:
 	return ok
 
 
-## move : acteur, path ou to (exactement un des deux), run, follower.
+## move : acteur, path ou to (exactement un des deux), run, follower, keep_facing, optional.
 func _parse_move(entry: Dictionary, step: CutsceneStep, where: String) -> bool:
 	var ok := _read_actor(entry["move"], where + " move", func(v: StringName) -> void:
 		step.actor = v)
@@ -364,6 +368,20 @@ func _parse_move(entry: Dictionary, step: CutsceneStep, where: String) -> bool:
 			step.follower = v) and ok
 		if step.follower == step.actor:
 			ok = _fail("%s : « follower » ne peut pas être l'acteur lui-même" % where)
+	if entry.has("keep_facing"):
+		if not entry["keep_facing"] is bool:
+			ok = _fail("%s : « keep_facing » vaut true ou false" % where)
+		else:
+			step.keep_facing = entry["keep_facing"]
+		if step.keep_facing and step.actor != NpcRoster.PLAYER_ID:
+			ok = _fail("%s : « keep_facing » ne vaut que pour « player »" % where)
+	if entry.has("optional"):
+		if not entry["optional"] is bool:
+			ok = _fail("%s : « optional » vaut true ou false" % where)
+		else:
+			step.optional = entry["optional"]
+		if step.optional and step.near.is_empty():
+			ok = _fail("%s : « optional » exige une destination « near »" % where)
 	return ok
 
 

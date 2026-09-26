@@ -62,6 +62,8 @@ var _move_actor: Node2D
 var _move_path: Array[Vector2i] = []
 var _move_index: int = 0
 var _move_run: bool = false
+## Le joueur recule sans se retourner (étape « move » avec « keep_facing »).
+var _move_keep_facing: bool = false
 var _move_blocked: float = 0.0
 ## Suiveur de l'étape « move » (null sans suiveur) : ses directions et son prochain pas.
 ## Il marche au pas du meneur, jamais devant lui, jamais plus d'un pas derrière.
@@ -231,6 +233,8 @@ func _resolve_aliases(step: CutsceneStep) -> CutsceneStep:
 	copy.offsets = step.offsets
 	copy.run = step.run
 	copy.follower = _resolve_ref(step.follower)
+	copy.keep_facing = step.keep_facing
+	copy.optional = step.optional
 	copy.map_id = step.map_id
 	copy.spawn = step.spawn
 	copy.facing = step.facing
@@ -243,9 +247,11 @@ func _resolve_ref(ref: StringName) -> StringName:
 	return _aliases.get(CutsceneStep.alias_name(ref), ref)
 
 
-## Étape « hop » : le PNJ saute vers une case absolue ou la première case libre près d'un
-## acteur ([method Npc.hop_to]) ; l'étape attend la fin du saut (rebonds compris). Acteur,
-## voisin ou case manquant, ou saut refusé : push_error, étape sautée.
+## Étape « hop » : le PNJ saute vers une case absolue ou la première case d'atterrissage
+## près d'un acteur ([method CutsceneMoves.resolve_landing] : libre, sans traverser la case
+## d'un personnage, pas derrière la tête d'un grand) ([method Npc.hop_to]) ; l'étape attend
+## la fin du saut (rebonds compris). Acteur, voisin ou case manquant, ou saut refusé :
+## push_error, étape sautée.
 func _hop(step: CutsceneStep) -> void:
 	var npc := _find_actor(step.actor) as Npc
 	if npc == null:
@@ -261,9 +267,10 @@ func _hop(step: CutsceneStep) -> void:
 		if anchor == null:
 			_step_error("acteur « %s » introuvable" % step.near)
 			return
-		goal = CutsceneMoves.resolve_near(grid, _cell_of(anchor), step.offsets, npc)
+		goal = CutsceneMoves.resolve_landing(grid, npc.get_cell(), _cell_of(anchor),
+			step.offsets, npc, _tall_cells())
 	if goal == CutsceneStep.NO_CELL:
-		_step_error("aucune case libre près de « %s » pour le saut" % step.near)
+		_step_error("aucune case d'atterrissage près de « %s » pour le saut" % step.near)
 		return
 	if not npc.hop_to(goal, grid):
 		_step_error("saut de « %s » vers %s refusé" % [step.actor, goal])
@@ -369,7 +376,11 @@ func _face(actor_id: StringName, target: StringName) -> void:
 			push_error("CutsceneDirector : cible « %s » introuvable (%s, étape %d)" % [
 				target, _cutscene_id, _step_index + 1])
 			return
+		var delta := _cell_of(other) - _cell_of(actor)
 		direction = Grid.dominant_direction(_cell_of(actor), _cell_of(other))
+		if absi(delta.x) == 1 and absi(delta.y) == 1:
+			# Voisins en diagonale : côte à côte, ils se regardent de profil.
+			direction = Vector2i(delta.x, 0)
 	if direction == Vector2i.ZERO:
 		return
 	if actor is Player:
@@ -410,7 +421,8 @@ func _begin_move(step: CutsceneStep) -> bool:
 				return false
 			goal = CutsceneMoves.resolve_near(grid, _cell_of(anchor), step.offsets, actor)
 		if goal == CutsceneStep.NO_CELL:
-			_step_error("aucune case libre près de « %s »" % step.near)
+			if not step.optional:
+				_step_error("aucune case libre près de « %s »" % step.near)
 			return false
 		path = grid.find_path(from, goal, actor)
 		if path.is_empty() and goal != from:
@@ -427,6 +439,7 @@ func _begin_move(step: CutsceneStep) -> bool:
 	_move_path = path
 	_move_index = 0
 	_move_run = step.run
+	_move_keep_facing = step.keep_facing
 	_move_blocked = 0.0
 	_moving = true
 	_try_next_steps()
@@ -500,7 +513,8 @@ func _try_next_steps() -> bool:
 ## Un pas scripté de [param actor] (joueur ou PNJ) ; vrai s'il est parti.
 func _start_step(actor: Node2D, direction: Vector2i) -> bool:
 	if actor is Player:
-		return (actor as Player).script_step(direction, _move_run)
+		var keep := _move_keep_facing and actor == _move_actor
+		return (actor as Player).script_step(direction, _move_run, keep)
 	return (actor as Npc).step(direction, _move_run)
 
 
@@ -511,6 +525,7 @@ func _end_move() -> void:
 
 func _stop_move() -> void:
 	_moving = false
+	_move_keep_facing = false
 	_move_actor = null
 	_move_path = []
 	_move_index = 0
@@ -537,6 +552,22 @@ func _find_actor(actor_id: StringName) -> Node2D:
 	if not is_instance_valid(_map):
 		return null
 	return _map.get_npc(actor_id)
+
+
+## Cases qui cachent la case juste au-dessus d'elles : grands personnages de la scène
+## (joueur, PNJ humains : derrière leur tête, [method Npc.is_tall]) et meubles dont le sprite
+## dépasse ([method GameMap.get_overhang_cells]). Un Pokémon ne se pose pas au-dessus.
+func _tall_cells() -> Array[Vector2i]:
+	var cells: Array[Vector2i] = []
+	if is_instance_valid(_map):
+		cells.append_array(_map.get_overhang_cells())
+	if is_instance_valid(_player):
+		cells.append(_player.get_cell())
+	if is_instance_valid(_map):
+		for npc: Npc in _map.get_npcs():
+			if npc.is_tall():
+				cells.append(npc.get_cell())
+	return cells
 
 
 static func _cell_of(actor: Node2D) -> Vector2i:

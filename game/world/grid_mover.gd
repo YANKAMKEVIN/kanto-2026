@@ -147,12 +147,15 @@ func face(direction: Vector2i) -> void:
 ## autre. Faux, sans rien faire, pendant un pas ou pour une direction non cardinale ; faux,
 ## tourné vers [param direction] mais **sans** [signal bumped], si la case est inaccessible.
 ## Un pivot en attente (TURNING) est annulé. Un saut de rebord reste possible.
-func start_step(direction: Vector2i, run: bool = false) -> bool:
+## [param keep_facing] : pas **sans se tourner** (reculer d'un pas en regardant devant soi,
+## jalon 4, décision n° 16) ; l'orientation ne change pas, même si la case est inaccessible.
+func start_step(direction: Vector2i, run: bool = false, keep_facing: bool = false) -> bool:
 	if _state == State.MOVING or not Grid.is_cardinal(direction):
 		return false
 	_state = State.IDLE
 	_elapsed = 0.0
-	_set_facing(direction)
+	if not keep_facing:
+		_set_facing(direction)
 	# Case vérifiée ici : _try_step émettrait bumped pour une case inaccessible.
 	if _grid.get_step_target(_cell, direction, _entity) == _cell:
 		return false

@@ -384,6 +384,18 @@ func is_leaning() -> bool:
 	return _lean_tween != null and _lean_tween.is_valid() and _lean_tween.is_running()
 
 
+## Vrai pour un grand personnage (humain) : sprite affiché plus haut qu'une case. Un
+## Pokémon (64 px affichés) ne l'est pas ; une case juste au-dessus d'un grand personnage
+## est derrière sa tête (scènes : [method CutsceneMoves.resolve_landing]).
+func is_tall() -> bool:
+	if _sprite == null or _sprite.sprite_frames == null:
+		return true
+	var frame := _sprite.sprite_frames.get_frame_texture(_IDLE_ANIMS[Vector2i.DOWN], 0)
+	if frame == null:
+		return true
+	return frame.get_size().y * _base_scale.y > float(Grid.TILE_SIZE)
+
+
 ## Élévation courante (px monde) : celle de sa description, 0 après un saut.
 func get_lift() -> float:
 	return _lift

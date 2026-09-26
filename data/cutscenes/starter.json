@@ -2,8 +2,11 @@
 	"starter_chosen": {
 		"unless": ["rival_challenged"],
 		"steps": [
+			{ "move": "player", "to": { "near": "player", "offsets": [[0, 1]] },
+				"keep_facing": true, "optional": true },
 			{ "hop": "$player_starter",
-				"to": { "near": "player", "offsets": [[1, 0], [-1, 0], [1, 1], [-1, 1]] } },
+				"to": { "near": "player",
+					"offsets": [[1, 0], [-1, 0], [1, -1], [-1, -1], [1, 1], [-1, 1]] } },
 			{ "face": "$player_starter", "to": "player" },
 			{ "lean": "$player_starter", "to": "player" },
 			{ "face": "player", "to": "$player_starter" },

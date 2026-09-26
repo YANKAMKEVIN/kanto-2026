@@ -136,10 +136,11 @@ func face(direction: Vector2i) -> void:
 ## Le pas se termine dans [method _process] comme un pas normal ([signal moved]). Faux,
 ## sans avancer, hors carte, pendant un pas, pour une direction non cardinale, ou si la
 ## case est inaccessible (tourné quand même, sans [signal bumped]).
-func script_step(direction: Vector2i, run: bool = false) -> bool:
+## [param keep_facing] : il recule sans se retourner (orientation inchangée).
+func script_step(direction: Vector2i, run: bool = false, keep_facing: bool = false) -> bool:
 	if _mover == null:
 		return false
-	var started := _mover.start_step(direction, run)
+	var started := _mover.start_step(direction, run, keep_facing)
 	_bump_direction = Vector2i.ZERO
 	if is_node_ready():
 		_update_animation(Vector2i.ZERO)

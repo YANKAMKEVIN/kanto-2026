@@ -5,9 +5,9 @@ extends GutTest
 ## data/pokemon/starters.json, carte « starter_lab »), un vrai joueur, un vrai
 ## CutsceneDirector, un vrai DialogueRunner (texte instantané), la vraie DialogueBox, la vraie
 ## StarterSheet, la vraie ExplorationHud, un vrai InteractionController et un GameState neuf
-## (graine fixe). Scène du choix d'essai en mémoire : le starter descend à côté du joueur
-## (qui ne bouge pas), « réciproque », done_flag, le Pokémon du rival le rejoint,
-## rival_challenged.
+## (graine fixe). Scène du choix d'essai en mémoire : le joueur recule sans se retourner,
+## le starter descend à côté de lui, « réciproque », done_flag, le Pokémon du rival le
+## rejoint sans survoler le joueur, rival_challenged.
 ## - ouverture : rien sans open_flag ; open_flag pendant une scène → légende et MEET après
 ##   sa fin ; hors scène → tout de suite ;
 ## - RENCONTRER : joueur bloqué (starter_choice), Pokémon qui s'avance, fiche avec la vue
@@ -47,6 +47,8 @@ const DIALOGUES := {
 const SCENES := {
 	"offer": {"steps": [{"wait": 0.1}, {"set": ["starter_offered"]}, {"wait": 0.2}]},
 	"choice": {"unless": ["rival_challenged"], "steps": [
+		{"move": "player", "to": {"near": "player", "offsets": [[0, 1]]},
+			"keep_facing": true, "optional": true},
 		{"hop": "$player_starter",
 			"to": {"near": "player", "offsets": [[1, 0], [-1, 0], [1, 1], [-1, 1]]}},
 		{"face": "player", "to": "$player_starter"},
@@ -321,10 +323,10 @@ func test_choose_plays_the_scene_and_joins_the_party_after_the_reciprocal_line()
 	var pages := await _play_scene_to_end()
 	assert_eq(pages, [[RECIPROCAL, 0], ["Alors ce sera toi.", 1]],
 		"équipe vide jusqu'à « réciproque », 1 Pokémon ensuite")
-	# Alias : le Pokémon du joueur est descendu à côté du joueur (qui n'a pas bougé), celui du
-	# rival à côté du rival.
-	assert_eq(_player.get_cell(), Vector2i(11, 6))
-	assert_eq(_map.get_npc(&"charmander").get_cell(), Vector2i(12, 6))
+	# Alias : le Pokémon du joueur est descendu à côté du joueur (qui a reculé d'un pas), celui
+	# du rival à côté du rival.
+	assert_eq(_player.get_cell(), Vector2i(11, 7), "il a reculé d'un pas")
+	assert_eq(_map.get_npc(&"charmander").get_cell(), Vector2i(12, 7))
 	assert_eq(_player.get_facing(), Vector2i.RIGHT, "le joueur regarde son Pokémon")
 	assert_eq(_map.get_npc(&"charmander").get_lift(), 0.0)
 	assert_eq(_map.get_npc(&"squirtle").get_cell(), Vector2i(10, 6))

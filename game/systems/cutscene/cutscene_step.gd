@@ -14,12 +14,15 @@ extends RefCounted
 ## - [constant Kind.MOVE] : [member actor] suit **soit** [member path] (directions), **soit**
 ##   un chemin calculé vers une destination : case absolue [member cell], ou première case
 ##   libre autour de [member near] parmi [member offsets] ; [member run] ; [member follower]
-##   (second acteur, un pas derrière) ;
+##   (second acteur, un pas derrière) ; [member keep_facing] (le joueur recule sans se
+##   retourner) ; [member optional] (aucune case libre autour de [member near] : étape
+##   sautée sans erreur) ;
 ## - [constant Kind.CHANGE_MAP] : [member map_id], [member spawn], [member facing]
 ##   (ZERO = garder l'orientation) ;
 ## - [constant Kind.HOP] (jalon 4) : le PNJ [member actor] saute (d'un meuble) vers une
-##   case absolue [member cell], ou la première case libre autour de [member near] parmi
-##   [member offsets] ;
+##   case absolue [member cell], ou la première case d'atterrissage autour de [member near]
+##   parmi [member offsets] ([method CutsceneMoves.resolve_landing] : libre, trajectoire qui
+##   ne traverse la case d'aucun personnage, pas juste derrière la tête d'un grand) ;
 ## - [constant Kind.LEAN] (jalon 4) : le PNJ [member actor] s'avance légèrement vers
 ##   [member target] (comme « face ») puis revient ;
 ## - [constant Kind.DESPAWN] (jalon 4) : le PNJ [member actor] quitte la carte.
@@ -55,6 +58,8 @@ var near: StringName = &""
 var offsets: Array[Vector2i] = []
 var run: bool = false
 var follower: StringName = &""
+var keep_facing: bool = false
+var optional: bool = false
 var map_id: StringName = &""
 var spawn: StringName = &""
 var facing: Vector2i = Vector2i.ZERO

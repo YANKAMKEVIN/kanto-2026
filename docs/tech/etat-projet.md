@@ -52,16 +52,17 @@ Mis à jour : 2026-09-26 (jalon 3B validé et fusionné dans `main` ; **jalon 4A
 - Une seule session à la fois sur une même branche.
 
 ## Prochaine étape
-1. **Nouvelle vérification S24 du 4A** (agent `qa-mobile`) sur les points de la décision n° 16 : les trois choix, starter entièrement visible à côté du joueur, joueur jamais dos à lui, Pokémon du rival à côté du rival, saut du Pokémon du rival **par-dessus** le joueur (choix de Bulbizarre et de Salamèche), « Ça devrait être intéressant. », Pokémon rentrés à la fin, répliques de Chen et du rival pendant le choix, Maya (réplique du 3B après le choix), dandinement de Carapuce sans crénelage, compression à l'atterrissage.
+1. **Nouvelle vérification S24 du 4A** (agent `qa-mobile`) sur les points de la décision n° 16 : les trois choix, starter entièrement visible à côté du joueur, joueur jamais dos à lui, Pokémon du rival à côté du rival, joueur qui recule d'un pas sans se retourner (Bulbizarre, Salamèche), saut du Pokémon du rival qui ne survole personne, « Ça devrait être intéressant. », Pokémon rentrés à la fin, répliques de Chen et du rival pendant le choix, Maya (réplique du 3B après le choix), dandinement de Carapuce sans crénelage, compression à l'atterrissage.
 2. Validation du 4A par Kevin, fusion dans `main`, puis **4B** (premier combat) sur une branche `jalon-04b` : l'étape `battle` s'insère avant les deux `despawn` de la scène et lève `rival_battle_done` quelle que soit l'issue.
 3. **Plan du jalon 5** (Route 1 et premières rencontres sauvages) : éventuellement préparé dans le cloud (`plan-jalon-05`).
 
 ## Questions pour Kevin (jalon 4A)
-Q-A à Q-I : réponses de Kevin (décision n° 16, `jalon-04.md` §8) appliquées (§13.12). Restent, par défaut :
-- **Fin provisoire du 4A** (après la scène, sans combat ; disparaît au 4B) : Chen redit « On dirait que le choix est réciproque. », le rival « On ne va quand même pas partir sans savoir ce qu'ils savent faire. ». D'accord jusqu'au 4B ?
-- **Rentrée dans la Poké Ball** : fondu de 0,2 s provisoire (pas d'animation de Ball) ; le Pokémon du rival rentre aussi (même règle « pas de faux compagnon »).
-- **Saut du Pokémon du rival par-dessus le joueur** (Salamèche si tu choisis Bulbizarre, Carapuce si tu choisis Salamèche) : la seule case libre à côté du rival est de l'autre côté du joueur ; il passe au-dessus de lui pendant ≈0,4 à 0,7 s. À juger sur le S24.
+Q-A à Q-I : réponses de Kevin (décision n° 16, `jalon-04.md` §8) appliquées (§13.12). Suite aux captures de la décision n° 16 (Kevin, 2026-09-26) :
+- **Corrigé** : le Pokémon du rival ne saute plus jamais par-dessus le joueur ni à travers un personnage. Le joueur recule d'un pas sans se retourner (sauf devant le tabouret), les atterrissages sont calculés sur la grille sans survoler personne (testé pour les trois choix).
+- **Accepté provisoirement jusqu'au 4B** : fin provisoire du 4A, Chen redit « On dirait que le choix est réciproque. », le rival « On ne va quand même pas partir sans savoir ce qu'ils savent faire. ». **Le 4B doit supprimer ces répliques répétées** au profit des états narratifs définitifs (`jalon-04.md` §13.12).
+- **Rentrée dans la Poké Ball** : fondu de 0,2 s provisoire (pas d'animation de Ball) ; le Pokémon du rival rentre aussi.
 - Les regards du rival (Pokémon du joueur, puis le joueur ; son Pokémon puis celui du joueur) restent peu visibles : tous sont à sa droite.
+- Avec Bulbizarre, le starter se pose en diagonale (11, 6), un peu au-dessus du joueur (10, 7) : la case à sa droite est cachée par la paillasse, celle de gauche obligerait le saut à passer sur le rival.
 - Hors questions : « Électrique » reste écrit dans `ui-reference.md` et `dossier-06-progression.md` (documents de Kevin, non modifiés) ; `combat-capacites-v1.png.png` toujours à renommer.
 
 ## Vitesses de déplacement (Kevin, 2026-09-26)
@@ -89,6 +90,7 @@ Référence `docs/design/reference/ouverture-storyboard-v1.webp`. Escalier = tra
 - Rendu « vraie DA » des intérieurs d'après les références (lumière chaude, décor riche) : phase DA. Le bas de la douche du rival reste partiellement sous le bouton courir.
 - Laissé tel quel (décision de Kevin) : un pas en trop si on lève le doigt à la toute fin du fondu.
 
+- **Polish de l'animation des sauts** (accepté provisoirement par Kevin, 2026-09-26) : le tassement à l'atterrissage (compression verticale en nearest, quelques rangées de pixels sautées pendant 0,08 s) est à reprendre avec les vrais sprites, avec l'anticipation du saut, la trajectoire, le squash à l'atterrissage et le retour à l'idle.
 - Orientations et animations fines des cinématiques (ex. Chen sur « Un peu de patience. ») : passe de polish des cinématiques.
 
 ## Décisions de Kevin (2026-09-25)

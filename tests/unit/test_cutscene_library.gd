@@ -420,3 +420,26 @@ func test_invalid_hop_lean_and_despawn_steps() -> void:
 			"clé inconnue « style »", "clé inconnue « run »", "clé inconnue « back »",
 			"despawn : identifiant attendu"]:
 		assert_string_contains(errors, expected)
+
+
+## Jalon 4 : « keep_facing » (le joueur recule sans se retourner) et « optional » (sauté sans
+## erreur si aucune case « near » ne convient).
+func test_move_keep_facing_and_optional() -> void:
+	assert_true(_library.add_from_dict({"back": {"steps": [
+		{"move": "player", "to": {"near": "player", "offsets": [[0, 1]]},
+			"keep_facing": true, "optional": true},
+	]}}, "t"), str(_library.get_errors()))
+	var step := _library.get_cutscene(&"back").variants[0].steps[0]
+	assert_true(step.keep_facing)
+	assert_true(step.optional)
+	var bad := CutsceneLibrary.new()
+	assert_false(bad.add_from_dict({
+		"a": {"steps": [{"move": "oak", "path": ["down"], "keep_facing": true}]},
+		"b": {"steps": [{"move": "player", "path": ["down"], "optional": true}]},
+		"c": {"steps": [{"move": "player", "path": ["down"], "keep_facing": 1}]},
+	}, "t"))
+	assert_push_error_count(3)
+	var errors := "\n".join(bad.get_errors())
+	assert_string_contains(errors, "ne vaut que pour « player »")
+	assert_string_contains(errors, "exige une destination « near »")
+	assert_string_contains(errors, "« keep_facing » vaut true ou false")

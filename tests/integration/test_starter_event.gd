@@ -21,11 +21,12 @@ const DIRECTIONS: Dictionary[Vector2i, StringName] = {
 const TIMEOUT_MS := 8000
 const FADE := 0.05
 const STARTERS: Array[StringName] = [&"bulbasaur", &"charmander", &"squirtle"]
-## Espèce choisie → [colonne de rencontre, Pokémon du rival, case finale du joueur (il ne
-## bouge pas : décision n° 16), case d'atterrissage de son Pokémon (à côté de lui)].
+## Espèce choisie → [colonne de rencontre, Pokémon du rival, case finale du joueur (il
+## recule d'un pas sans se retourner s'il y a la place : décision n° 16 et correction du
+## saut du rival), case d'atterrissage de son Pokémon (à côté de lui)].
 const CASES: Dictionary[StringName, Array] = {
-	&"bulbasaur": [10, &"charmander", Vector2i(10, 6), Vector2i(11, 6)],
-	&"charmander": [11, &"squirtle", Vector2i(11, 6), Vector2i(12, 6)],
+	&"bulbasaur": [10, &"charmander", Vector2i(10, 7), Vector2i(11, 6)],
+	&"charmander": [11, &"squirtle", Vector2i(11, 7), Vector2i(10, 7)],
 	&"squirtle": [12, &"bulbasaur", Vector2i(12, 6), Vector2i(13, 6)],
 }
 ## Où le rival s'arrête en partant (data/cutscenes/starter.json) : au-dessus de la boîte de
@@ -122,7 +123,9 @@ func _choose(species: StringName) -> void:
 	var controls_seen := false
 	var was_free := false
 	var start_cell := _player.get_cell()
+	var start_facing := _player.get_facing()
 	var moved := false
+	var turned_while_moving := false
 	var turned_away := false
 	var chosen := lab.get_npc(species)
 	var theirs := lab.get_npc(rival_species)
@@ -134,7 +137,10 @@ func _choose(species: StringName) -> void:
 	var deadline := Time.get_ticks_msec() + 30000
 	while director.is_running() and Time.get_ticks_msec() < deadline:
 		was_free = was_free or _player.is_input_enabled()
-		moved = moved or _player.get_cell() != start_cell or _player.is_moving()
+		if _player.is_moving():
+			turned_while_moving = turned_while_moving or _player.get_facing() != start_facing
+		if _player.get_cell() != start_cell and _player.get_cell() != CASES[species][2]:
+			moved = true
 		# Jamais dos à son Pokémon (décision n° 16) : ni avant son saut, ni après.
 		if is_instance_valid(chosen) and chosen.is_inside_tree():
 			var to_mine := Vector2(chosen.get_cell() - _player.get_cell())
@@ -153,7 +159,8 @@ func _choose(species: StringName) -> void:
 			box.advance_requested.emit()
 	assert_false(director.is_running(), "scène terminée")
 	assert_false(was_free, "joueur jamais libre pendant la scène")
-	assert_false(moved, "le joueur ne se déplace pas")
+	assert_false(moved, "le joueur ne fait qu'un pas en arrière (ou aucun)")
+	assert_false(turned_while_moving, "il recule sans se retourner")
 	assert_false(turned_away, "le joueur ne tourne jamais le dos à son Pokémon")
 	assert_false(controls_seen, "aucun contrôle pendant la scène")
 	assert_eq(pages, SCENE_LINES, "répliques dans l'ordre")
@@ -164,10 +171,10 @@ func _choose(species: StringName) -> void:
 	# Le Pokémon du joueur, à côté de lui ; le joueur n'a pas bougé et le regarde.
 	var player_cell: Vector2i = at_challenge[0]
 	var player_facing: Vector2i = at_challenge[1]
-	assert_eq(player_cell, CASES[species][2], "le joueur n'a pas bougé")
+	assert_eq(player_cell, CASES[species][2], "case du joueur")
 	assert_eq(at_challenge[2], CASES[species][3], "à côté du joueur")
-	assert_eq(at_challenge[2], player_cell + player_facing,
-		"le Pokémon est sur la case que regarde le joueur")
+	var toward: Vector2i = (at_challenge[2] as Vector2i) - player_cell
+	assert_eq(player_facing, Vector2i(signi(toward.x), 0), "le joueur regarde son Pokémon")
 	assert_eq(at_challenge[3], -player_facing, "ils se regardent")
 	assert_eq(at_challenge[4], 0.0, "descendu de la table")
 	# Le Pokémon du rival, à côté de lui.
