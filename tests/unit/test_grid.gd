@@ -48,3 +48,35 @@ func test_is_cardinal() -> void:
 	assert_false(Grid.is_cardinal(Vector2i.ZERO))
 	assert_false(Grid.is_cardinal(Vector2i(1, 1)))
 	assert_false(Grid.is_cardinal(Vector2i(2, 0)))
+
+
+# --- Noms de direction et « se tourner vers » (jalon 3B) ---------------------------------
+
+func test_direction_names_round_trip() -> void:
+	for name: String in ["up", "down", "left", "right"]:
+		assert_true(Grid.is_direction_name(name), name)
+		assert_eq(Grid.direction_name(Grid.direction_from_name(name)), StringName(name))
+	assert_eq(Grid.direction_from_name("up"), Vector2i.UP)
+	assert_eq(Grid.direction_from_name("left"), Vector2i.LEFT)
+
+
+func test_unknown_direction_names() -> void:
+	for name: String in ["", "north", "Up", "player", "oak"]:
+		assert_false(Grid.is_direction_name(name), name)
+		assert_eq(Grid.direction_from_name(name), Vector2i.ZERO, name)
+	assert_eq(Grid.direction_name(Vector2i.ZERO), &"")
+	assert_eq(Grid.direction_name(Vector2i(1, 1)), &"")
+
+
+func test_dominant_direction() -> void:
+	var from := Vector2i(5, 5)
+	assert_eq(Grid.dominant_direction(from, Vector2i(9, 6)), Vector2i.RIGHT)
+	assert_eq(Grid.dominant_direction(from, Vector2i(1, 4)), Vector2i.LEFT)
+	assert_eq(Grid.dominant_direction(from, Vector2i(6, 1)), Vector2i.UP)
+	assert_eq(Grid.dominant_direction(from, Vector2i(4, 9)), Vector2i.DOWN)
+	assert_eq(Grid.dominant_direction(from, Vector2i(6, 6)), Vector2i.DOWN,
+		"à égalité, l'axe vertical")
+	assert_eq(Grid.dominant_direction(from, from), Vector2i.ZERO)
+	# Scène du labo (jalon 3B §3.4) : le rival (9, 6) vers Chen (8, 4), puis vers le joueur.
+	assert_eq(Grid.dominant_direction(Vector2i(9, 6), Vector2i(8, 4)), Vector2i.UP)
+	assert_eq(Grid.dominant_direction(Vector2i(9, 6), Vector2i(7, 7)), Vector2i.LEFT)

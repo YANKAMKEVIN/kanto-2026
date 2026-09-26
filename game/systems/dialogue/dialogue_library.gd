@@ -15,6 +15,7 @@ extends RefCounted
 ## },
 ## "breakfast_table": { "narration": true, "pages": ["Ton petit-déjeuner est encore chaud."] }
 ## [/codeblock]
+## Clés de page : text, speaker, pause, face_player, react, turn ({ acteur: cible }, 3B).
 ## Sans « variants », les clés d'une variante (pages, if, unless, set, auto) peuvent être
 ## écrites directement dans le dialogue. Toute clé inconnue est une erreur (faute de frappe).
 ## Une entrée invalide est écartée, l'erreur est signalée ([method get_errors], push_error).
@@ -23,7 +24,9 @@ const DATA_DIR: String = "res://data/dialogues/"
 
 const _DIALOGUE_KEYS: Array[String] = ["speaker", "narration", "draft", "variants"]
 const _VARIANT_KEYS: Array[String] = ["pages", "if", "unless", "set", "auto"]
-const _PAGE_KEYS: Array[String] = ["text", "speaker", "pause", "face_player", "react"]
+const _PAGE_KEYS: Array[String] = [
+	"text", "speaker", "pause", "face_player", "react", "turn",
+]
 
 var _dialogues: Dictionary[StringName, Dialogue] = {}
 var _errors: PackedStringArray = PackedStringArray()
@@ -219,7 +222,26 @@ func _parse_page(value: Variant, where: String) -> DialoguePage:
 			ok = _fail("%s : « react » doit être un identifiant" % where)
 		else:
 			page.react = StringName(entry["react"])
+	if entry.has("turn"):
+		ok = _read_turn(entry["turn"], page.turn, where) and ok
 	return page if ok else null
+
+
+## « turn » : objet non vide { acteur: cible }, textes non vides. Qu'une cible qui n'est ni une
+## direction ni « player » désigne bien un PNJ se vérifie avec les cartes (tests de données).
+func _read_turn(value: Variant, into: Dictionary[StringName, StringName], where: String) -> bool:
+	if not value is Dictionary or (value as Dictionary).is_empty():
+		return _fail("%s : « turn » doit être un objet { acteur: cible } non vide" % where)
+	var turn: Dictionary = value
+	for actor: Variant in turn:
+		var target: Variant = turn[actor]
+		if str(actor).is_empty() or not target is String or (target as String).is_empty():
+			return _fail("%s : « turn » : acteur et cible doivent être des textes non vides"
+				% where)
+		if Grid.is_direction_name(str(actor)):
+			return _fail("%s : « turn » : « %s » n'est pas un acteur" % [where, actor])
+		into[StringName(str(actor))] = StringName(target)
+	return true
 
 
 func _read_flags(entry: Dictionary, key: String, into: Array[StringName], where: String) -> bool:

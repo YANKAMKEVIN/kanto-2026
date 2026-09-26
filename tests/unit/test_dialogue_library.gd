@@ -191,3 +191,38 @@ func test_flags_used_and_set_are_listed() -> void:
 	assert_eq(_library.get_condition_flags(), [&"mom_greeted", &"starter_received"]
 		as Array[StringName])
 	assert_eq(_library.get_set_flags(), [&"mom_greeted"] as Array[StringName])
+
+
+# --- Clé de page « turn » (jalon 3B §2.7) ------------------------------------------------
+
+func test_turn_is_read_in_order() -> void:
+	assert_true(_library.add_from_dict({
+		"oak_warning": {
+			"speaker": "Prof. Chen",
+			"pages": [
+				{ "text": "Tu allais vraiment entrer là-dedans tout seul ?",
+					"turn": { "oak": "player", "player": "oak" } },
+				{ "text": "Les Pokémon qui vivent ici…", "turn": { "oak": "up" } },
+				"Sans Pokémon à tes côtés, tu prends un risque inutile.",
+			],
+		},
+	}, "test"))
+	var pages := _library.get_dialogue(&"oak_warning").variants[0].pages
+	assert_eq(pages[0].turn.keys(), [&"oak", &"player"], "ordre du fichier")
+	assert_eq(pages[0].turn[&"oak"], &"player")
+	assert_eq(pages[0].turn[&"player"], &"oak")
+	assert_eq(pages[1].turn, {&"oak": &"up"} as Dictionary[StringName, StringName])
+	assert_true(pages[2].turn.is_empty(), "sans « turn », personne ne se tourne")
+
+
+func test_invalid_turn_is_rejected() -> void:
+	var bad_turns: Array = [
+		{}, "oak", ["oak", "up"], { "oak": "" }, { "oak": 3 }, { "": "up" }, { "up": "oak" },
+	]
+	for i: int in bad_turns.size():
+		var id := "bad_%d" % i
+		assert_false(_library.add_from_dict({
+			id: { "pages": [{ "text": "x", "turn": bad_turns[i] }] },
+		}, "test"), str(bad_turns[i]))
+	assert_push_error_count(bad_turns.size())
+	assert_eq(_library.size(), 0)

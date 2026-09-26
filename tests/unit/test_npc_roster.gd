@@ -94,3 +94,106 @@ func test_one_invalid_entry_keeps_the_others() -> void:
 	assert_push_error_count(1)
 	assert_not_null(roster.get_spec(&"good"))
 	assert_null(roster.get_spec(&"bad"))
+
+
+# --- Présence conditionnelle et validation d'une entrée (jalon 3B §2.6) ------------------
+
+func _flags(names: Array[StringName] = []) -> StoryFlags:
+	var flags := StoryFlags.new()
+	for name: StringName in names:
+		flags.set_flag(name)
+	return flags
+
+
+func test_if_and_unless_are_read() -> void:
+	var roster := NpcRoster.new()
+	assert_true(roster.add_from_dict({
+		"oak": {"cell": [8, 4], "sprite": "oak", "if": ["oak_met"]},
+		"rival": {"cell": [13, 4], "sprite": "rival", "unless": ["oak_met", "x"]},
+		"maya": {"cell": [5, 3], "sprite": "maya"},
+	}, "test"))
+	var oak := roster.get_spec(&"oak")
+	assert_eq(oak.if_flags, [&"oak_met"] as Array[StringName])
+	assert_true(oak.unless_flags.is_empty())
+	assert_true(oak.is_conditional())
+	assert_eq(roster.get_spec(&"rival").unless_flags, [&"oak_met", &"x"] as Array[StringName])
+	assert_false(roster.get_spec(&"maya").is_conditional())
+
+
+func test_is_present() -> void:
+	var spec := NpcSpec.new()
+	assert_true(spec.is_present(null), "sans condition : toujours là")
+	assert_true(spec.is_present(_flags([&"oak_met"])))
+	spec.if_flags = [&"oak_met"] as Array[StringName]
+	assert_false(spec.is_present(null), "nouvelle partie : aucun drapeau")
+	assert_false(spec.is_present(_flags()))
+	assert_true(spec.is_present(_flags([&"oak_met"])))
+	spec.unless_flags = [&"has_starter"] as Array[StringName]
+	assert_false(spec.is_present(_flags([&"oak_met", &"has_starter"])))
+	var gone := NpcSpec.new()
+	gone.unless_flags = [&"oak_met"] as Array[StringName]
+	assert_true(gone.is_present(null))
+	assert_false(gone.is_present(_flags([&"oak_met"])))
+
+
+func test_get_present_keeps_file_order() -> void:
+	var roster := NpcRoster.new()
+	roster.add_from_dict({
+		"maya": {"cell": [5, 3], "sprite": "maya"},
+		"oak": {"cell": [8, 4], "sprite": "oak", "if": ["oak_met"]},
+		"rival_home": {"cell": [13, 4], "sprite": "rival", "unless": ["oak_met"]},
+		"rival_lab": {"cell": [9, 6], "sprite": "rival", "if": ["oak_met"]},
+	}, "test")
+	var ids := func(specs: Array[NpcSpec]) -> Array[StringName]:
+		var result: Array[StringName] = []
+		for spec: NpcSpec in specs:
+			result.append(spec.id)
+		return result
+	assert_eq(ids.call(roster.get_present(null)), [&"maya", &"rival_home"] as Array[StringName])
+	assert_eq(ids.call(roster.get_present(_flags([&"oak_met"]))),
+		[&"maya", &"oak", &"rival_lab"] as Array[StringName])
+	assert_eq(roster.size(), 4, "toutes les entrées restent connues")
+
+
+func test_invalid_conditions_are_rejected() -> void:
+	var roster := NpcRoster.new()
+	assert_false(roster.add_from_dict({
+		"a": {"cell": [1, 2], "sprite": "x", "if": "oak_met"},
+		"b": {"cell": [1, 2], "sprite": "x", "unless": []},
+		"c": {"cell": [1, 2], "sprite": "x", "if": [""]},
+		"d": {"cell": [1, 2], "sprite": "x", "unless": [3]},
+	}, "test"))
+	assert_push_error_count(4)
+	assert_eq(roster.size(), 0)
+
+
+func test_player_id_is_reserved() -> void:
+	var roster := NpcRoster.new()
+	assert_false(roster.add_from_dict({"player": {"cell": [1, 2], "sprite": "x"}}, "test"))
+	assert_push_error("réservé au joueur")
+	assert_eq(roster.size(), 0)
+
+
+func test_parse_entry_reports_errors_without_signalling_them() -> void:
+	var errors := PackedStringArray()
+	var spec := NpcRoster.parse_entry({"cell": [24, 13], "sprite": "oak", "facing": "up"},
+		errors)
+	assert_true(errors.is_empty())
+	assert_eq(spec.cell, Vector2i(24, 13))
+	assert_eq(spec.facing, Vector2i.UP)
+	assert_eq(spec.sprite, &"oak")
+	assert_eq(spec.id, &"", "l'identifiant est renseigné par l'appelant")
+	assert_null(NpcRoster.parse_entry({"cell": [1], "sprite": "", "lift": -1}, errors))
+	assert_eq(errors.size(), 3, "une erreur par problème")
+	assert_null(NpcRoster.parse_entry("oak", errors))
+	assert_eq(errors.size(), 4)
+	assert_push_error_count(0, "c'est l'appelant qui signale")
+
+
+func test_is_cell() -> void:
+	assert_true(NpcRoster.is_cell([0, 0]))
+	assert_true(NpcRoster.is_cell([24.0, 13.0]))
+	assert_false(NpcRoster.is_cell([1]))
+	assert_false(NpcRoster.is_cell([1, -1]))
+	assert_false(NpcRoster.is_cell([1.5, 2]))
+	assert_false(NpcRoster.is_cell("1, 2"))

@@ -16,7 +16,9 @@ extends RefCounted
 ##   une fois par poussée ;
 ## - verrouillé ([method set_locked]), il termine le pas en cours puis ignore toute
 ##   direction : transitions de carte, dialogues, plus tard scènes scriptées ;
-## - [method face] le fait pivoter sur place, à l'arrêt (même verrouillé).
+## - [method face] le fait pivoter sur place, à l'arrêt (même verrouillé) ;
+## - [method start_step] lance un pas **scripté** (scènes, PNJ qui marchent), même
+##   verrouillé ; [method update] le termine comme un pas normal.
 ## La scène lit [method get_world_position] et les signaux pour l'affichage.
 
 signal facing_changed(direction: Vector2i)
@@ -136,6 +138,25 @@ func face(direction: Vector2i) -> void:
 	_state = State.IDLE
 	_elapsed = 0.0
 	_set_facing(direction)
+
+
+## Pas scripté (scènes, PNJ qui marchent) : se tourne vers [param direction] et lance un pas,
+## en courant si [param run], **même verrouillé** : c'est le jeu qui déplace l'entité, pas le
+## joueur. Le pas se termine ensuite dans [method update] comme un pas normal
+## ([signal step_finished]) ; le verrou empêche seulement [method update] d'en enchaîner un
+## autre. Faux, sans rien faire, pendant un pas ou pour une direction non cardinale ; faux,
+## tourné vers [param direction] mais **sans** [signal bumped], si la case est inaccessible.
+## Un pivot en attente (TURNING) est annulé. Un saut de rebord reste possible.
+func start_step(direction: Vector2i, run: bool = false) -> bool:
+	if _state == State.MOVING or not Grid.is_cardinal(direction):
+		return false
+	_state = State.IDLE
+	_elapsed = 0.0
+	_set_facing(direction)
+	# Case vérifiée ici : _try_step émettrait bumped pour une case inaccessible.
+	if _grid.get_step_target(_cell, direction, _entity) == _cell:
+		return false
+	return _try_step(direction, run, 0.0)
 
 
 ## Case sur laquelle l'entité se tient (case de départ pendant un pas).

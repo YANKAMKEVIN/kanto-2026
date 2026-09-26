@@ -16,6 +16,11 @@ const _FLAG_WATER: int = 2
 const _LEDGE_SHIFT: int = 2
 const _LEDGE_MASK: int = 0b1100
 
+## Ordre d'exploration de [method find_path] (chemins reproductibles).
+const _PATH_DIRECTIONS: Array[Vector2i] = [
+	Vector2i.UP, Vector2i.DOWN, Vector2i.LEFT, Vector2i.RIGHT,
+]
+
 var _size: Vector2i
 var _flags: PackedByteArray = PackedByteArray()
 var _occupants: Dictionary[Vector2i, Object] = {}
@@ -181,6 +186,55 @@ func find_reachable(start: Vector2i, mover: Object = null) -> Dictionary[Vector2
 				reached[target] = true
 				queue.append(target)
 	return reached
+
+
+## Vrai si une entité peut **se tenir** sur [param cell] : dans la carte, ni solide, ni eau,
+## ni rebord, et libre (ou occupée par [param mover]). Sert à choisir une case d'arrivée
+## (scènes : « à côté du joueur »).
+func is_free(cell: Vector2i, mover: Object = null) -> bool:
+	if not is_in_bounds(cell):
+		return false
+	var flags := _flags[_index(cell)]
+	if flags & (_FLAG_SOLID | _FLAG_WATER | _LEDGE_MASK):
+		return false
+	var occupant := get_occupant(cell)
+	return occupant == null or occupant == mover
+
+
+## Plus court chemin à pied de [param from] à [param to], sous forme de **liste de
+## directions** (un élément par pas ; un saut de rebord compte pour un pas). Mêmes règles que
+## [method get_step_target] (solides, eau, rebords, occupants autres que [param mover]).
+## Parcours en largeur, directions essayées dans l'ordre haut, bas, gauche, droite : à
+## longueur égale, le chemin est toujours le même. Vide si [param from] == [param to], si
+## l'une des deux cases est hors carte ou si [param to] est inaccessible.
+## Alloue : à appeler au début d'un déplacement, jamais à chaque image.
+func find_path(from: Vector2i, to: Vector2i, mover: Object = null) -> Array[Vector2i]:
+	var path: Array[Vector2i] = []
+	if from == to or not is_in_bounds(from) or not is_in_bounds(to):
+		return path
+	# Case atteinte → case d'où l'on vient, et direction du pas qui y mène.
+	var previous: Dictionary[Vector2i, Vector2i] = {from: from}
+	var step_of: Dictionary[Vector2i, Vector2i] = {}
+	var queue: Array[Vector2i] = [from]
+	var head := 0
+	while head < queue.size():
+		var cell: Vector2i = queue[head]
+		head += 1
+		for direction: Vector2i in _PATH_DIRECTIONS:
+			var target := get_step_target(cell, direction, mover)
+			if target == cell or previous.has(target):
+				continue
+			previous[target] = cell
+			step_of[target] = direction
+			if target == to:
+				var back := to
+				while back != from:
+					path.append(step_of[back])
+					back = previous[back]
+				path.reverse()
+				return path
+			queue.append(target)
+	return path
 
 
 func _index(cell: Vector2i) -> int:

@@ -385,3 +385,81 @@ func test_face_same_or_non_cardinal_direction_emits_nothing() -> void:
 	_mover.face(Vector2i.ZERO)
 	assert_eq(_mover.get_facing(), Vector2i.DOWN)
 	assert_signal_not_emitted(_mover, "facing_changed")
+
+
+# --- Pas scripté (scènes, PNJ qui marchent, jalon 3B) -----------------------------------
+
+func test_start_step_moves_one_cell_even_when_locked() -> void:
+	_mover.set_locked(true)
+	assert_true(_mover.start_step(Vector2i.RIGHT))
+	assert_eq(_mover.get_facing(), Vector2i.RIGHT, "se tourne vers le pas")
+	assert_true(_mover.is_moving())
+	assert_false(_mover.is_running())
+	assert_eq(_mover.get_target_cell(), START + Vector2i.RIGHT)
+	assert_eq(_world.get_occupant(START + Vector2i.RIGHT), _entity, "case réservée au départ")
+	assert_false(_world.is_occupied(START), "ancienne case libérée dès le départ")
+	assert_signal_emitted_with_parameters(_mover, "step_started",
+		[START, START + Vector2i.RIGHT, false])
+	_mover.update(Grid.WALK_STEP_DURATION, Vector2i.ZERO, false)
+	assert_eq(_mover.get_cell(), START + Vector2i.RIGHT)
+	assert_false(_mover.is_moving())
+	assert_signal_emitted_with_parameters(_mover, "step_finished", [START + Vector2i.RIGHT])
+	assert_true(_mover.is_locked(), "le verrou reste posé")
+
+
+func test_start_step_run_uses_run_duration() -> void:
+	assert_true(_mover.start_step(Vector2i.UP, true))
+	assert_true(_mover.is_running())
+	_mover.update(Grid.RUN_STEP_DURATION, Vector2i.ZERO, false)
+	assert_eq(_mover.get_cell(), START + Vector2i.UP)
+
+
+func test_locked_scripted_step_does_not_chain_with_held_direction() -> void:
+	_mover.set_locked(true)
+	_mover.start_step(Vector2i.DOWN)
+	_mover.update(Grid.WALK_STEP_DURATION, Vector2i.DOWN, false)
+	assert_eq(_mover.get_cell(), START + Vector2i.DOWN)
+	assert_false(_mover.is_moving(), "le verrou ignore la direction tenue")
+
+
+func test_start_step_against_obstacle_turns_without_bump() -> void:
+	_world.set_solid(START + Vector2i.LEFT)
+	assert_false(_mover.start_step(Vector2i.LEFT))
+	assert_eq(_mover.get_facing(), Vector2i.LEFT)
+	assert_eq(_mover.get_cell(), START)
+	assert_eq(_mover.get_state(), GridMover.State.IDLE)
+	assert_signal_not_emitted(_mover, "bumped")
+	assert_signal_not_emitted(_mover, "step_started")
+
+
+func test_start_step_refused_while_moving_or_not_cardinal() -> void:
+	assert_false(_mover.start_step(Vector2i.ZERO))
+	assert_false(_mover.start_step(Vector2i(1, 1)))
+	assert_eq(_mover.get_facing(), Vector2i.DOWN)
+	assert_true(_mover.start_step(Vector2i.DOWN))
+	assert_false(_mover.start_step(Vector2i.RIGHT), "déjà en marche")
+	assert_eq(_mover.get_target_cell(), START + Vector2i.DOWN)
+	assert_eq(_mover.get_facing(), Vector2i.DOWN)
+
+
+func test_start_step_cancels_pending_turn() -> void:
+	_mover.update(FRAME, Vector2i.LEFT, false)
+	assert_eq(_mover.get_state(), GridMover.State.TURNING)
+	assert_true(_mover.start_step(Vector2i.UP))
+	assert_eq(_mover.get_target_cell(), START + Vector2i.UP)
+
+
+func test_start_step_can_jump_a_ledge() -> void:
+	_world.set_ledge(START + Vector2i.DOWN, GridWorld.Ledge.DOWN)
+	assert_true(_mover.start_step(Vector2i.DOWN))
+	assert_true(_mover.is_jumping())
+	assert_eq(_mover.get_target_cell(), START + Vector2i.DOWN * 2)
+
+
+func test_follower_can_enter_the_cell_the_leader_just_left() -> void:
+	var leader_entity := RefCounted.new()
+	var leader := GridMover.new(_world, leader_entity)
+	assert_true(leader.place(START + Vector2i.DOWN, Vector2i.DOWN))
+	assert_false(_mover.start_step(Vector2i.DOWN), "case du meneur encore prise")
+	assert_true(leader.start_step(Vector2i.DOWN))
+	assert_true(_mover.start_step(Vector2i.DOWN), "libérée dès le départ du meneur")

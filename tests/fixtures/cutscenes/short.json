@@ -1,0 +1,9 @@
+{
+	"walk_to_desk": {
+		"if": ["oak_met"],
+		"steps": [
+			{ "move": "oak", "to": [8, 4] },
+			{ "change_map": "pallet_town", "at": "lab_door" }
+		]
+	}
+}

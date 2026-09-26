@@ -13,17 +13,21 @@ extends RefCounted
 ## }
 ## [/codeblock]
 ## Clés : cell (obligatoire), sprite (obligatoire), facing (down), dialogue (aucun),
-## verb (talk | observe), turn_to_player (true), keep_facing (false), lift (0 pixel).
+## verb (talk | observe), turn_to_player (true), keep_facing (false), lift (0 pixel),
+## if et unless (listes de drapeaux : présence conditionnelle, jalon 3B §2.6).
 ## Toute autre clé est une erreur. Pas de fichier = aucun PNJ sur la carte (sans erreur).
+## L'identifiant « player » est réservé au joueur.
 
 const DATA_DIR: String = "res://data/npcs/"
 
-const _KEYS: Array[String] = [
+## Identifiant réservé au joueur (acteur des scènes et des « turn » de dialogue) : aucun PNJ
+## ne peut le porter.
+const PLAYER_ID: StringName = &"player"
+## Clés d'une entrée (aussi celles de l'étape « spawn » des scènes, sans if / unless).
+const KEYS: Array[String] = [
 	"cell", "facing", "sprite", "dialogue", "verb", "turn_to_player", "keep_facing", "lift",
+	"if", "unless",
 ]
-const _FACINGS: Dictionary[String, Vector2i] = {
-	"down": Vector2i.DOWN, "up": Vector2i.UP, "left": Vector2i.LEFT, "right": Vector2i.RIGHT,
-}
 
 var _specs: Array[NpcSpec] = []
 var _errors: PackedStringArray = PackedStringArray()
@@ -66,6 +70,9 @@ func add_from_dict(data: Dictionary, source: String = "") -> bool:
 		if id.is_empty():
 			ok = _fail("%s : identifiant vide" % source)
 			continue
+		if id == PLAYER_ID:
+			ok = _fail("%s : identifiant réservé au joueur" % where)
+			continue
 		if get_spec(id) != null:
 			ok = _fail("%s : identifiant en double" % where)
 			continue
@@ -80,6 +87,16 @@ func add_from_dict(data: Dictionary, source: String = "") -> bool:
 
 func get_all() -> Array[NpcSpec]:
 	return _specs
+
+
+## PNJ présents avec les drapeaux [param flags] (null = nouvelle partie), dans l'ordre du
+## fichier.
+func get_present(flags: StoryFlags) -> Array[NpcSpec]:
+	var present: Array[NpcSpec] = []
+	for spec: NpcSpec in _specs:
+		if spec.is_present(flags):
+			present.append(spec)
+	return present
 
 
 func get_spec(id: StringName) -> NpcSpec:
@@ -97,64 +114,93 @@ func get_errors() -> PackedStringArray:
 	return _errors
 
 
-func _parse(value: Variant, where: String) -> NpcSpec:
+## Valide une entrée de PNJ (objet JSON déjà lu) et renvoie sa description, ou null si elle
+## est invalide. Les erreurs sont **ajoutées** à [param errors], sans préfixe ni push_error :
+## l'appelant ([NpcRoster], ou CutsceneLibrary pour l'étape « spawn ») les situe et les
+## signale. L'identifiant n'est pas lu ici : l'appelant le renseigne.
+static func parse_entry(value: Variant, errors: PackedStringArray) -> NpcSpec:
 	if not value is Dictionary:
-		_fail("%s : un objet est attendu" % where)
+		errors.append("un objet est attendu")
 		return null
 	var entry: Dictionary = value
 	var spec := NpcSpec.new()
-	var ok := true
+	var count := errors.size()
 	for key: Variant in entry:
-		if not _KEYS.has(str(key)):
-			ok = _fail("%s : clé inconnue « %s »" % [where, key])
+		if not KEYS.has(str(key)):
+			errors.append("clé inconnue « %s »" % key)
 	var cell: Variant = entry.get("cell")
-	if not _is_cell(cell):
-		ok = _fail("%s : « cell » doit être [x, y] (entiers ≥ 0)" % where)
+	if not is_cell(cell):
+		errors.append("« cell » doit être [x, y] (entiers ≥ 0)")
 	else:
 		spec.cell = Vector2i(int(cell[0]), int(cell[1]))
 	if not entry.get("sprite") is String or (entry.get("sprite") as String).is_empty():
-		ok = _fail("%s : « sprite » est obligatoire" % where)
+		errors.append("« sprite » est obligatoire")
 	else:
 		spec.sprite = StringName(entry["sprite"])
 	if entry.has("facing"):
-		if not _FACINGS.has(str(entry["facing"])):
-			ok = _fail("%s : « facing » vaut down, up, left ou right" % where)
+		if not entry["facing"] is String or not Grid.is_direction_name(entry["facing"]):
+			errors.append("« facing » vaut down, up, left ou right")
 		else:
-			spec.facing = _FACINGS[str(entry["facing"])]
+			spec.facing = Grid.direction_from_name(entry["facing"])
 	if entry.has("dialogue"):
 		if not entry["dialogue"] is String or (entry["dialogue"] as String).is_empty():
-			ok = _fail("%s : « dialogue » doit être un identifiant" % where)
+			errors.append("« dialogue » doit être un identifiant")
 		else:
 			spec.dialogue = StringName(entry["dialogue"])
 	if entry.has("verb"):
 		var verb := Interaction.kind_from_name(str(entry["verb"]))
 		if verb != Interaction.Kind.TALK and verb != Interaction.Kind.OBSERVE:
-			ok = _fail("%s : « verb » vaut talk ou observe" % where)
+			errors.append("« verb » vaut talk ou observe")
 		else:
 			spec.verb = verb as Interaction.Kind
 	for key: String in ["turn_to_player", "keep_facing"]:
 		if entry.has(key):
 			if not entry[key] is bool:
-				ok = _fail("%s : « %s » vaut true ou false" % [where, key])
+				errors.append("« %s » vaut true ou false" % key)
 			else:
 				spec.set(key, entry[key])
 	if entry.has("lift"):
 		var lift: Variant = entry["lift"]
 		if not (lift is float or lift is int) or float(lift) != floorf(float(lift)) \
 				or float(lift) < 0.0:
-			ok = _fail("%s : « lift » doit être un nombre entier de pixels ≥ 0" % where)
+			errors.append("« lift » doit être un nombre entier de pixels ≥ 0")
 		else:
 			spec.lift = int(lift)
-	return spec if ok else null
+	_read_flags(entry, "if", spec.if_flags, errors)
+	_read_flags(entry, "unless", spec.unless_flags, errors)
+	return spec if errors.size() == count else null
 
 
-static func _is_cell(value: Variant) -> bool:
+## Vrai pour une case de données : [x, y], entiers ≥ 0.
+static func is_cell(value: Variant) -> bool:
 	if not value is Array or (value as Array).size() != 2:
 		return false
 	for n: Variant in value:
 		if not (n is float or n is int) or float(n) != floorf(float(n)) or float(n) < 0.0:
 			return false
 	return true
+
+
+func _parse(value: Variant, where: String) -> NpcSpec:
+	var errors := PackedStringArray()
+	var spec := parse_entry(value, errors)
+	for message: String in errors:
+		_fail("%s : %s" % [where, message])
+	return spec
+
+
+static func _read_flags(entry: Dictionary, key: String, into: Array[StringName],
+		errors: PackedStringArray) -> void:
+	if not entry.has(key):
+		return
+	if not entry[key] is Array or (entry[key] as Array).is_empty():
+		errors.append("« %s » doit être une liste non vide de drapeaux" % key)
+		return
+	for flag: Variant in entry[key]:
+		if not flag is String or (flag as String).is_empty():
+			errors.append("drapeau invalide dans « %s »" % key)
+			return
+		into.append(StringName(flag))
 
 
 func _fail(message: String) -> bool:

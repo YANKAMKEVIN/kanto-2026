@@ -273,3 +273,99 @@ func test_find_reachable_follows_one_way_ledges() -> void:
 
 func test_find_reachable_outside_map_is_empty() -> void:
 	assert_eq(_world.find_reachable(Vector2i(-1, -1)).size(), 0)
+
+
+# --- Case libre et plus court chemin (jalon 3B) ------------------------------------------
+
+func test_is_free() -> void:
+	assert_true(_world.is_free(Vector2i(4, 4)))
+	assert_false(_world.is_free(Vector2i(-1, 4)), "hors carte")
+	_world.set_solid(Vector2i(1, 1))
+	_world.set_water(Vector2i(2, 1))
+	_world.set_ledge(Vector2i(3, 1), GridWorld.Ledge.DOWN)
+	assert_false(_world.is_free(Vector2i(1, 1)), "solide")
+	assert_false(_world.is_free(Vector2i(2, 1)), "eau")
+	assert_false(_world.is_free(Vector2i(3, 1)), "rebord : on ne s'y arrête pas")
+	var npc := RefCounted.new()
+	_world.occupy(Vector2i(5, 5), npc)
+	assert_false(_world.is_free(Vector2i(5, 5)), "occupée")
+	assert_true(_world.is_free(Vector2i(5, 5), npc), "sa propre case")
+
+
+func test_find_path_straight_line() -> void:
+	assert_eq(_world.find_path(Vector2i(2, 6), Vector2i(2, 2)),
+		[Vector2i.UP, Vector2i.UP, Vector2i.UP, Vector2i.UP] as Array[Vector2i])
+	assert_eq(_world.find_path(Vector2i(2, 2), Vector2i(5, 2)),
+		[Vector2i.RIGHT, Vector2i.RIGHT, Vector2i.RIGHT] as Array[Vector2i])
+
+
+func test_find_path_same_cell_or_out_of_bounds_is_empty() -> void:
+	assert_true(_world.find_path(Vector2i(3, 3), Vector2i(3, 3)).is_empty())
+	assert_true(_world.find_path(Vector2i(3, 3), Vector2i(30, 3)).is_empty())
+	assert_true(_world.find_path(Vector2i(-1, 3), Vector2i(3, 3)).is_empty())
+
+
+func test_find_path_goes_around_a_wall_by_a_shortest_path() -> void:
+	# Mur vertical x = 4, y 1..7 : passage seulement par y = 0.
+	for y: int in range(1, 8):
+		_world.set_solid(Vector2i(4, y))
+	var from := Vector2i(2, 5)
+	var to := Vector2i(6, 5)
+	var path := _world.find_path(from, to)
+	assert_eq(path.size(), 14, "5 montées, 4 pas à droite, 5 descentes")
+	assert_eq(_follow(from, path), to)
+	for cell: Vector2i in CutsceneMoves.path_cells(from, path):
+		assert_false(_world.is_solid(cell), "%s traversée" % cell)
+
+
+func test_find_path_avoids_other_occupants_but_not_the_mover() -> void:
+	var mover := RefCounted.new()
+	var other := RefCounted.new()
+	_world.occupy(Vector2i(2, 6), mover)
+	_world.occupy(Vector2i(2, 4), other)
+	var path := _world.find_path(Vector2i(2, 6), Vector2i(2, 2), mover)
+	assert_eq(path.size(), 6, "contourne l'occupant : 4 + 2 pas de côté")
+	assert_false(CutsceneMoves.path_cells(Vector2i(2, 6), path).has(Vector2i(2, 4)))
+	assert_eq(_follow(Vector2i(2, 6), path), Vector2i(2, 2))
+	# Sans mover, sa propre case de départ ne gêne pas non plus le calcul.
+	assert_eq(_world.find_path(Vector2i(2, 6), Vector2i(2, 5)), [Vector2i.UP] as Array[Vector2i])
+
+
+func test_find_path_to_an_occupied_or_closed_cell_is_empty() -> void:
+	_world.occupy(Vector2i(7, 7), RefCounted.new())
+	assert_true(_world.find_path(Vector2i(1, 1), Vector2i(7, 7)).is_empty(), "occupée")
+	_world.set_solid(Vector2i(0, 1))
+	_world.set_solid(Vector2i(1, 0))
+	assert_true(_world.find_path(Vector2i(5, 5), Vector2i(0, 0)).is_empty(), "enclose")
+	_world.set_water(Vector2i(3, 3))
+	assert_true(_world.find_path(Vector2i(5, 5), Vector2i(3, 3)).is_empty(), "eau")
+
+
+func test_find_path_uses_ledges_one_way() -> void:
+	# Rangée de rebords y = 3 (sautables vers le bas) sur toute la largeur.
+	for x: int in 10:
+		_world.set_ledge(Vector2i(x, 3), GridWorld.Ledge.DOWN)
+	var down := _world.find_path(Vector2i(5, 1), Vector2i(5, 5))
+	assert_eq(down, [Vector2i.DOWN, Vector2i.DOWN, Vector2i.DOWN] as Array[Vector2i],
+		"un saut = un pas de deux cases")
+	assert_true(_world.find_path(Vector2i(5, 5), Vector2i(5, 1)).is_empty(),
+		"on ne remonte pas un rebord")
+
+
+func test_find_path_is_reproducible_and_prefers_up_then_down_then_left_then_right() -> void:
+	var first := _world.find_path(Vector2i(1, 6), Vector2i(4, 3))
+	for i: int in 5:
+		assert_eq(_world.find_path(Vector2i(1, 6), Vector2i(4, 3)), first)
+	assert_eq(first.size(), 6)
+	assert_eq(first[0], Vector2i.UP, "le haut est essayé en premier")
+	assert_eq(_follow(Vector2i(1, 6), first), Vector2i(4, 3))
+
+
+## Case d'arrivée en suivant [param path] depuis [param from] (sauts de rebord compris).
+func _follow(from: Vector2i, path: Array[Vector2i]) -> Vector2i:
+	var cell := from
+	for direction: Vector2i in path:
+		var next := _world.get_step_target(cell, direction, _world.get_occupant(from))
+		assert_ne(next, cell, "pas possible depuis %s vers %s" % [cell, direction])
+		cell = next
+	return cell

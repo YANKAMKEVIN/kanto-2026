@@ -9,7 +9,11 @@ extends RefCounted
 ## { "text": "...enfin, presque.", "react": "leo_rattata", "pause": 0.5 }
 ## [/codeblock]
 ## Les didascalies du dossier 02 (« il regarde le joueur », « petit silence »,
-## « Rattata réagit ») deviennent [member face_player], [member pause] et [member react].
+## « Rattata réagit », « il regarde les hautes herbes ») deviennent [member face_player],
+## [member pause], [member react] et [member turn] (jalon 3B) :
+## [codeblock]
+## { "text": "…", "turn": { "oak": "up", "player": "oak" } }
+## [/codeblock]
 
 ## Texte affiché (retours à la ligne automatiques ; « \n » force une ligne).
 var text: String = ""
@@ -22,6 +26,10 @@ var face_player: bool = false
 ## Identifiant d'un PNJ ou Pokémon de la carte qui joue sa réaction au début de la page
 ## (vide = aucun).
 var react: StringName = &""
+## Orientations appliquées au début de la page, dans l'ordre (docs/tech/jalon-03b.md §2.7) :
+## acteur → cible. Acteur = « player » ou identifiant d'un PNJ de la carte ; cible = nom de
+## direction (« up »…), « player » ou identifiant de PNJ (axe dominant). Vide = aucune.
+var turn: Dictionary[StringName, StringName] = {}
 
 
 func _init(page_text: String = "") -> void:
