@@ -1,0 +1,14 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://game/ui/components/world_caption.gd" id="1_caption"]
+
+[node name="WorldCaption" type="Label"]
+visible = false
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+grow_horizontal = 2
+mouse_filter = 2
+theme_type_variation = &"WorldCaption"
+horizontal_alignment = 1
+script = ExtResource("1_caption")

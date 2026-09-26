@@ -7,6 +7,7 @@
 [ext_resource type="Script" path="res://game/systems/dialogue/dialogue_runner.gd" id="5_runner"]
 [ext_resource type="Script" path="res://game/world/interactions/interaction_controller.gd" id="6_ctrl"]
 [ext_resource type="Script" path="res://game/systems/cutscene/cutscene_director.gd" id="7_director"]
+[ext_resource type="PackedScene" path="res://game/ui/starter/starter_sheet.tscn" id="8_sheet"]
 
 [node name="Boot" type="Node"]
 script = ExtResource("1_boot")
@@ -15,6 +16,9 @@ script = ExtResource("1_boot")
 unique_name_in_owner = true
 
 [node name="ExplorationHud" parent="." instance=ExtResource("2_hud")]
+unique_name_in_owner = true
+
+[node name="StarterSheet" parent="." instance=ExtResource("8_sheet")]
 unique_name_in_owner = true
 
 [node name="DialogueBox" parent="." instance=ExtResource("4_box")]

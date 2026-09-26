@@ -1,0 +1,77 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://game/ui/starter/starter_sheet.gd" id="1_sheet"]
+
+[node name="StarterSheet" type="CanvasLayer"]
+layer = 20
+visible = false
+script = ExtResource("1_sheet")
+
+[node name="Root" type="Control" parent="."]
+unique_name_in_owner = true
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="Card" type="PanelContainer" parent="Root"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+grow_vertical = 2
+mouse_filter = 2
+theme_type_variation = &"StarterSheet"
+
+[node name="Content" type="VBoxContainer" parent="Root/Card"]
+unique_name_in_owner = true
+layout_mode = 2
+mouse_filter = 2
+
+[node name="NameLabel" type="Label" parent="Root/Card/Content"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"StarterSheetName"
+text = "SALAMÈCHE"
+
+[node name="Types" type="HBoxContainer" parent="Root/Card/Content"]
+unique_name_in_owner = true
+layout_mode = 2
+mouse_filter = 2
+
+[node name="Phrase" type="Label" parent="Root/Card/Content"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"StarterSheetPhrase"
+text = "Fougueux et courageux."
+autowrap_mode = 3
+
+[node name="ButtonsGap" type="Control" parent="Root/Card/Content"]
+unique_name_in_owner = true
+layout_mode = 2
+mouse_filter = 2
+
+[node name="Buttons" type="HBoxContainer" parent="Root/Card/Content"]
+unique_name_in_owner = true
+layout_mode = 2
+mouse_filter = 2
+
+[node name="BackButton" type="Button" parent="Root/Card/Content/Buttons"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+focus_mode = 0
+theme_type_variation = &"PanelButton"
+text = "RETOUR"
+
+[node name="ChooseButton" type="Button" parent="Root/Card/Content/Buttons"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+focus_mode = 0
+theme_type_variation = &"AccentButton"
+text = "CHOISIR"

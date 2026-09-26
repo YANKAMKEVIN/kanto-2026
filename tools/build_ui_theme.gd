@@ -13,6 +13,14 @@ extends SceneTree
 ##   DialogContinue   Label   indicateur de suite « › », gras, ACCENT
 ##   InteractLabel    PanelContainer  pastille du verbe du bouton contextuel
 ##   InteractLabelText Label  verbe (PARLER…), gras, majuscules
+##   WorldCaption     Label   légende posée sur le monde, 44, gras, ombre portée (sans fond)
+##   StarterSheet     PanelContainer  carte sombre translucide de la fiche du starter
+##   StarterSheetName Label   nom du Pokémon, 44, gras
+##   StarterSheetPhrase Label phrase, FONT_BODY, italique
+##   TypeBadge        PanelContainer  pastille de type (fond recoloré par type à l'usage)
+##   TypeBadgeText    Label   nom du type, gras, blanc ombré
+##   AccentButton     Button  action principale (CHOISIR) : fond ACCENT, texte ACCENT_TEXT
+##   PanelButton      Button  action secondaire (RETOUR) : voile clair, ACCENT à l'appui
 ## tests/unit/test_ui_theme.gd vérifie que le fichier est à jour avec les tokens.
 
 const TOKENS_PATH: String = "res://game/ui/theme/ui_tokens.gd"
@@ -63,6 +71,10 @@ func _init() -> void:
 	theme.set_stylebox(&"panel", &"InteractLabel", pill)
 	_add_plain_label(theme, &"InteractLabelText", t.INTERACT_LABEL_FONT, t.TEXT, bold)
 
+	_add_caption(theme, t)
+	_add_starter_sheet(theme, bold, italic, t)
+	_add_buttons(theme, bold, t)
+
 	var err := ResourceSaver.save(theme, THEME_PATH)
 	print("ui_theme.tres : ", error_string(err))
 	quit(0 if err == OK else 1)
@@ -101,4 +113,85 @@ func _panel_style(bg: Color, radius: int, t: GDScript) -> StyleBoxFlat:
 	box.shadow_color = t.SHADOW
 	box.shadow_size = t.SHADOW_SIZE
 	box.anti_aliasing = true
+	return box
+
+
+## Légende sur le monde : pas de fond, ombre portée large (halo) pour rester lisible.
+func _add_caption(theme: Theme, t: GDScript) -> void:
+	var spaced := FontVariation.new()
+	spaced.resource_name = "CaptionDefault"
+	spaced.variation_embolden = t.FONT_BOLD_EMBOLDEN
+	spaced.spacing_glyph = t.CAPTION_LETTER_SPACING
+	_add_label_variation(theme, &"WorldCaption", t.FONT_TITLE, t.TEXT, t)
+	theme.set_font(&"font", &"WorldCaption", spaced)
+	theme.set_constant(&"shadow_offset_y", &"WorldCaption", t.CAPTION_SHADOW_OFFSET)
+	theme.set_constant(&"shadow_outline_size", &"WorldCaption", t.CAPTION_SHADOW_OUTLINE)
+
+
+func _add_starter_sheet(theme: Theme, bold: Font, italic: Font, t: GDScript) -> void:
+	var card := _panel_style(t.PANEL_BG, t.RADIUS, t)
+	card.set_content_margin_all(t.STARTER_SHEET_PAD)
+	theme.set_type_variation(&"StarterSheet", &"PanelContainer")
+	theme.set_stylebox(&"panel", &"StarterSheet", card)
+	_add_plain_label(theme, &"StarterSheetName", t.FONT_TITLE, t.TEXT, bold)
+	_add_plain_label(theme, &"StarterSheetPhrase", t.FONT_BODY, t.STARTER_SHEET_PHRASE, italic)
+
+	var badge := StyleBoxFlat.new()
+	badge.bg_color = t.TYPE_COLOR_UNKNOWN
+	badge.set_corner_radius_all(t.TYPE_BADGE_RADIUS)
+	badge.anti_aliasing = true
+	badge.set_content_margin(SIDE_LEFT, t.TYPE_BADGE_PAD_H - t.TYPE_BADGE_PAD_V)
+	badge.set_content_margin(SIDE_RIGHT, t.TYPE_BADGE_PAD_H)
+	badge.set_content_margin(SIDE_TOP, t.TYPE_BADGE_PAD_V)
+	badge.set_content_margin(SIDE_BOTTOM, t.TYPE_BADGE_PAD_V)
+	theme.set_type_variation(&"TypeBadge", &"PanelContainer")
+	theme.set_stylebox(&"panel", &"TypeBadge", badge)
+	_add_plain_label(theme, &"TypeBadgeText", t.TYPE_BADGE_FONT, t.TEXT, bold)
+	theme.set_color(&"font_shadow_color", &"TypeBadgeText", t.TEXT_SHADOW)
+	theme.set_constant(&"shadow_offset_x", &"TypeBadgeText", 0)
+	theme.set_constant(&"shadow_offset_y", &"TypeBadgeText", t.TEXT_SHADOW_OFFSET)
+
+
+## Boutons de panneau. Pas d'état de survol distinct : sur le téléphone, la souris émulée
+## laisserait le bouton « survolé » après le toucher. Pas de cadre de focus (tactile).
+func _add_buttons(theme: Theme, bold: Font, t: GDScript) -> void:
+	var accent := _button_style(t.ACCENT, false, t)
+	var accent_pressed := _button_style(t.ACCENT_PRESSED, false, t)
+	_add_button_variation(theme, &"AccentButton", accent, accent_pressed, bold, t)
+	for state: StringName in [&"font_color", &"font_hover_color", &"font_focus_color",
+			&"font_pressed_color", &"font_hover_pressed_color"]:
+		theme.set_color(state, &"AccentButton", t.ACCENT_TEXT)
+
+	var panel := _button_style(t.BUTTON_BG, true, t)
+	var panel_pressed := _button_style(t.ACCENT, false, t)
+	_add_button_variation(theme, &"PanelButton", panel, panel_pressed, bold, t)
+	for state: StringName in [&"font_color", &"font_hover_color", &"font_focus_color"]:
+		theme.set_color(state, &"PanelButton", t.TEXT)
+	for state: StringName in [&"font_pressed_color", &"font_hover_pressed_color"]:
+		theme.set_color(state, &"PanelButton", t.ACCENT_TEXT)
+
+
+func _add_button_variation(theme: Theme, type: StringName, normal: StyleBox,
+		pressed: StyleBox, font: Font, t: GDScript) -> void:
+	theme.set_type_variation(type, &"Button")
+	theme.set_stylebox(&"normal", type, normal)
+	theme.set_stylebox(&"hover", type, normal)
+	theme.set_stylebox(&"pressed", type, pressed)
+	theme.set_stylebox(&"hover_pressed", type, pressed)
+	theme.set_stylebox(&"disabled", type, normal)
+	theme.set_stylebox(&"focus", type, StyleBoxEmpty.new())
+	theme.set_font(&"font", type, font)
+	theme.set_font_size(&"font_size", type, t.FONT_BUTTON)
+
+
+func _button_style(bg: Color, bordered: bool, t: GDScript) -> StyleBoxFlat:
+	var box := StyleBoxFlat.new()
+	box.bg_color = bg
+	if bordered:
+		box.border_color = t.PANEL_BORDER
+		box.set_border_width_all(t.BORDER_WIDTH)
+	box.set_corner_radius_all(t.RADIUS)
+	box.anti_aliasing = true
+	box.set_content_margin(SIDE_LEFT, t.BUTTON_PAD_H)
+	box.set_content_margin(SIDE_RIGHT, t.BUTTON_PAD_H)
 	return box

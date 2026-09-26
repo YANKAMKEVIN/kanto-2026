@@ -82,6 +82,56 @@ func test_token_values_from_skill() -> void:
 	assert_eq(UiTokens.FONT_CAPTION, 24)
 
 
+func test_caption_and_starter_sheet_variations_match_tokens() -> void:
+	var theme := load(THEME_PATH) as Theme
+	assert_eq(theme.get_type_variation_base(&"WorldCaption"), &"Label")
+	assert_eq(theme.get_font_size(&"font_size", &"WorldCaption"), UiTokens.FONT_TITLE)
+	assert_eq(theme.get_color(&"font_shadow_color", &"WorldCaption"), UiTokens.TEXT_SHADOW)
+	assert_eq(theme.get_constant(&"shadow_outline_size", &"WorldCaption"),
+		UiTokens.CAPTION_SHADOW_OUTLINE)
+	assert_false(theme.has_stylebox(&"normal", &"WorldCaption"), "légende sans fond")
+	var card := theme.get_stylebox(&"panel", &"StarterSheet") as StyleBoxFlat
+	assert_not_null(card)
+	assert_eq(card.bg_color, UiTokens.PANEL_BG)
+	assert_eq(card.corner_radius_bottom_right, UiTokens.RADIUS)
+	assert_eq(card.get_content_margin(SIDE_TOP), float(UiTokens.STARTER_SHEET_PAD))
+	assert_eq(theme.get_font_size(&"font_size", &"StarterSheetName"), UiTokens.FONT_TITLE)
+	assert_eq(theme.get_font_size(&"font_size", &"StarterSheetPhrase"), UiTokens.FONT_BODY)
+	var italic := theme.get_font(&"font", &"StarterSheetPhrase") as FontVariation
+	assert_not_null(italic)
+	assert_almost_eq(italic.variation_transform.y.x, UiTokens.DIALOG_ITALIC_SLANT, 0.0001)
+	var badge := theme.get_stylebox(&"panel", &"TypeBadge") as StyleBoxFlat
+	assert_not_null(badge)
+	assert_eq(badge.corner_radius_top_left, UiTokens.TYPE_BADGE_RADIUS)
+	assert_eq(theme.get_font_size(&"font_size", &"TypeBadgeText"), UiTokens.TYPE_BADGE_FONT)
+	var accent := theme.get_stylebox(&"normal", &"AccentButton") as StyleBoxFlat
+	assert_eq(accent.bg_color, UiTokens.ACCENT)
+	assert_eq(theme.get_color(&"font_color", &"AccentButton"), UiTokens.ACCENT_TEXT)
+	assert_eq(theme.get_font_size(&"font_size", &"AccentButton"), UiTokens.FONT_BUTTON)
+	var back := theme.get_stylebox(&"normal", &"PanelButton") as StyleBoxFlat
+	assert_eq(back.bg_color, UiTokens.BUTTON_BG)
+	assert_eq((theme.get_stylebox(&"pressed", &"PanelButton") as StyleBoxFlat).bg_color,
+		UiTokens.ACCENT)
+	assert_eq(theme.get_color(&"font_color", &"PanelButton"), UiTokens.TEXT)
+
+
+func test_type_colors_cover_all_types_of_the_data() -> void:
+	var data: Dictionary = JSON.parse_string(
+		FileAccess.get_file_as_string("res://data/pokemon/types.json"))
+	var types: Dictionary = data["types"]
+	assert_eq(UiTokens.TYPE_COLORS.size(), types.size())
+	for type_id: String in types:
+		assert_true(UiTokens.TYPE_COLORS.has(StringName(type_id)), type_id)
+	assert_eq(UiTokens.TYPE_COLORS[&"fire"], Color("#EE8130"))
+	assert_eq(UiTokens.TYPE_COLORS[&"electric"], Color("#F7D02C"))
+	assert_eq(UiTokens.TYPE_COLORS[&"steel"], Color("#B7B7CE"))
+	assert_eq(UiTokens.TYPE_COLORS[&"dark"], Color("#705746"))
+	assert_eq(UiTokens.TYPE_COLORS[&"fairy"], Color("#D685AD"))
+	assert_eq(UiTokens.CAPTION_HOLD, 3.0)
+	assert_eq(UiTokens.STARTER_SHEET_WIDTH, 600)
+	assert_true(UiTokens.STARTER_SHEET_LEFT >= UiTokens.SAFE_MARGIN)
+
+
 func test_no_hardcoded_color_in_ui_files() -> void:
 	for path: String in _ui_files():
 		if path.get_file() == TOKENS_FILE:
@@ -101,9 +151,12 @@ func test_ui_does_not_know_player_map_or_router() -> void:
 		assert_false(text.contains("res://game/world"), "%s charge le monde" % path)
 		assert_false(text.contains("res://game/systems"), "%s charge un système" % path)
 		assert_false(text.contains("res://data"), "%s lit des données" % path)
+		assert_false(text.contains("res://game/pokemon"), "%s charge un Pokémon" % path)
+		assert_false(text.contains("res://game/battle"), "%s charge le combat" % path)
 		for logic_class: String in ["Interaction", "DialogueSession", "DialogueLibrary",
 				"DialogueRunner", "DialoguePage", "DialogueVariant", "StoryFlags", "GameState",
-				"NpcSpec", "NpcRoster"]:
+				"NpcSpec", "NpcRoster", "PokemonData", "PokemonFactory", "SpeciesData",
+				"StarterOffer", "StarterChoice", "TypeChart", "MoveData", "DamageCalc"]:
 			assert_false(text.contains(logic_class), "%s référence %s" % [path, logic_class])
 
 

@@ -116,6 +116,7 @@ func get_dialogue_library() -> DialogueLibrary:
 
 func _on_transition_started(_target_map: StringName) -> void:
 	_hud.hide_zone_title()
+	_hud.hide_caption()
 
 
 ## Écran noir (ou démarrage) : présence des PNJ selon les drapeaux de la partie d'abord

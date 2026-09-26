@@ -1,7 +1,7 @@
 class_name ExplorationHud
 extends CanvasLayer
-## HUD d'exploration (CanvasLayer HUD) : titre de zone, joystick flottant, bouton courir,
-## bouton contextuel.
+## HUD d'exploration (CanvasLayer HUD) : titre de zone, légende sur le monde, joystick
+## flottant, bouton courir, bouton contextuel.
 ##
 ## Il ne connaît ni le joueur ni la carte : le joystick, le bouton courir et le bouton
 ## contextuel pressent les actions de l'InputMap (move_*, run, interact) ; la scène qui
@@ -9,12 +9,15 @@ extends CanvasLayer
 ## appelle show_interact(verbe) / hide_interact().
 ## Placement (aspect expand, 1920 à 2340 de large) : titre ancré en haut à gauche,
 ## joystick sur tout l'écran (apparition dans la moitié gauche), bouton courir et bouton
-## contextuel ancrés au coin bas-droit.
+## contextuel ancrés au coin bas-droit, légende au milieu du bord haut (sous le titre).
 
 ## Le titre de zone vient de disparaître (fin de son maintien ou hide_zone_title()).
 signal title_hidden
+## La légende vient de disparaître (fin de sa tenue ou hide_caption()).
+signal caption_hidden
 
 @onready var _zone_title: ZoneTitle = %ZoneTitle
+@onready var _caption: WorldCaption = %WorldCaption
 @onready var _joystick: TouchJoystick = %VirtualJoystick
 const MOVE_ACTIONS: Array[StringName] = [&"move_up", &"move_down", &"move_left", &"move_right"]
 
@@ -32,6 +35,7 @@ func _ready() -> void:
 	_run_button.position = -UiTokens.RUN_BUTTON_CENTER_FROM_CORNER
 	_interact_button.position = -UiTokens.INTERACT_BUTTON_CENTER_FROM_CORNER
 	_zone_title.title_hidden.connect(title_hidden.emit)
+	_caption.caption_hidden.connect(caption_hidden.emit)
 
 
 ## Filet de sécurité : sans ce relâchement, l'action run resterait pressée si l'application
@@ -53,9 +57,21 @@ func hide_zone_title() -> void:
 	_zone_title.hide_now()
 
 
+## Pose [param text] sur le monde, en haut au centre (MAJUSCULES, sans rectangle) : fondu,
+## tenue CAPTION_HOLD, fondu. Jamais permanente. Indépendante des contrôles.
+func show_caption(text: String) -> void:
+	_caption.show_caption(text)
+
+
+## Efface la légende en ANIM_MICRO (changement de carte…) ; émet caption_hidden.
+func hide_caption() -> void:
+	_caption.hide_now()
+
+
 ## Fait apparaître le bouton contextuel avec [param verb] (&"talk" → PARLER, &"examine" →
-## EXAMINER, &"observe" → OBSERVER, &"take" → PRENDRE). Pendant un dialogue (contrôles
-## cachés), le verbe est retenu et le bouton n'apparaîtra qu'au retour des contrôles.
+## EXAMINER, &"observe" → OBSERVER, &"take" → PRENDRE, &"meet" → RENCONTRER). Pendant un
+## dialogue (contrôles cachés), le verbe est retenu et le bouton n'apparaîtra qu'au retour
+## des contrôles.
 func show_interact(verb: StringName) -> void:
 	_interact_verb = verb
 	if _controls_visible:
@@ -101,6 +117,10 @@ func are_controls_visible() -> bool:
 
 func get_zone_title() -> ZoneTitle:
 	return _zone_title
+
+
+func get_caption() -> WorldCaption:
+	return _caption
 
 
 func get_joystick() -> TouchJoystick:
