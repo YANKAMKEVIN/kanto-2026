@@ -27,6 +27,7 @@
 			{ "dialogue": "rival_starter_smile" },
 			{ "wait": 0.4 },
 			{ "move": "rival", "to": [7, 7], "follower": "$rival_starter" },
+			{ "face": "$rival_starter", "to": "rival" },
 			{ "wait": 0.3 },
 			{ "face": "rival", "to": "player" },
 			{ "dialogue": "rival_challenge_wait" },

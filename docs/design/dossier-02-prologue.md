@@ -190,9 +190,9 @@ Combat immédiat dans le laboratoire, comme dans Rouge/Bleu, mais très mis en s
 
 Décisions de Kevin reportées de [`docs/tech/jalon-04.md`](../tech/jalon-04.md) §8 (n° 1, 2, 6, 7, 8, 11, 16). Elles **priment** sur les §8 à §10 ci-dessus quand elles diffèrent (Poké Ball). Textes définitifs, mot pour mot.
 
-- **Le starter descend de la table** (décision n° 1) et vient devant le joueur, sans Poké Ball : Bulbizarre descend calmement puis s'approche ; Salamèche descend avec plus d'enthousiasme ; Carapuce descend rapidement, vif et joueur. Il s'arrête devant le joueur et le regarde.
+- **Le starter descend de la table** (décisions n° 1 et 16), sans Poké Ball : Bulbizarre descend calmement puis s'approche ; Salamèche descend avec plus d'enthousiasme ; Carapuce descend rapidement, vif et joueur. Il atterrit sur une **case libre à côté ou légèrement devant le joueur**, choisie d'après l'espace disponible (jamais « sur la tête » du joueur ni caché par lui) : il descend → s'approche → s'arrête → le joueur se tourne vers lui (sans jamais lui tourner le dos) → petit temps d'observation mutuelle.
   > **Prof. Chen** — « On dirait que le choix est réciproque. »
-  C'est **ensuite** que le Pokémon rejoint officiellement l'équipe.
+  C'est **ensuite** que le Pokémon rejoint officiellement l'équipe. **Pas de compagnon temporaire** : il reste près du joueur pendant la séquence du labo, puis rejoint sa Poké Ball ; il ne le suit pas dans Bourg Palette (le vrai compagnon aura son jalon).
 - **Pendant la phase de choix** (décision n° 16), dès que Chen a présenté les starters et jusqu'au choix, répliques d'attente (remplacent celles du 3B) :
   > **Prof. Chen** — « Prends ton temps. »
   > « Choisis celui avec qui tu as envie de partir. »

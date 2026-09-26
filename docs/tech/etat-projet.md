@@ -1,6 +1,6 @@
 # État du projet — note de passage
 
-Mis à jour : 2026-09-26 (jalon 3B validé et fusionné dans `main` ; **jalon 4A codé dans le cloud sur la branche `jalon-04a`**, non fusionné, en attente de la QA sur le S24).
+Mis à jour : 2026-09-26 (jalon 3B validé et fusionné dans `main` ; **jalon 4A sur la branche `jalon-04a`** : QA S24 faite, décision n° 16 de Kevin et retour QA R2 appliqués sur le Mac, non fusionné, **nouvelle vérification S24 à faire**).
 
 ## Fait
 - Outillage : Godot 4.7.2, export Android vérifié sur le S24, GUT 9.7.1, scripts `tools/`.
@@ -42,6 +42,8 @@ Mis à jour : 2026-09-26 (jalon 3B validé et fusionné dans `main` ; **jalon 4A
   - T2 : bouton **RENCONTRER** ; légende « CHOISIS TON PREMIER PARTENAIRE » sans rectangle (~3 s) ; fiche `StarterSheet` translucide à gauche (nom, pastilles de type, phrase, RETOUR / CHOISIR) ; `TYPE_COLORS` des 18 types.
   - T3 : `StarterChoice` ; scène `starter_chosen` (`data/cutscenes/starter.json`) : le starter descend et vient devant le joueur, « On dirait que le choix est réciproque. », **alors seulement** il rejoint l'équipe ; le rival prend le starter avantagé, « Alors ce sera toi. », son Pokémon saute près de lui, il commence à partir, « Attends. », il regarde son Pokémon puis celui du joueur, « On ne va quand même pas partir sans savoir ce qu'ils savent faire. » ; fin provisoire (le combat est le 4B). Sortie du labo empêchée pendant le choix (déclencheur `LabExit`, « Pas si vite. Tu n'as pas encore choisi ton partenaire. », recul d'un pas). Hautes herbes débloquées par `starter_chosen`. En revenant au labo, seul le starter restant est sur la table.
   - **949 tests verts** (832 après les fusions), 0 SCRIPT ERROR, 0 orphelin, import sans erreur ni warning. Captures headless relues (xvfb + opengl3, 2340×1080, `build/captures/jalon04a_t1..t3/`, non versionnées ; scénarios `starter_offer`, `hop_styles`, `starter_choice --starter=<espèce>`, `lab_exit` de `tools/capture_play.gd`, `starter_lab` de `tools/capture_hud.gd`).
+  - **QA S24 (T4)** faite : `build/qa/jalon04a/rapport-jalon-04a.md` (non versionné). Réserves R1 (starter caché par la tête du joueur) et R2 (crénelage du dandinement de Carapuce).
+  - **Décision n° 16 et R2 appliquées** (`jalon-04.md` §13.12) : le joueur ne bouge plus, son starter atterrit à côté de lui (case libre calculée sur la grille), le joueur se tourne vers lui ; Pokémon du rival à côté du rival, jamais derrière sa tête ; « Ça devrait être intéressant. » ; les deux Pokémon rentrent dans leur Poké Ball en fin de séquence ; répliques de Chen et du rival pendant le choix ; répliques de la décision n° 8 réservées à l'après-combat (`rival_battle_done`, 4B) et Maya accordée (`starter_female`) ; saut sans rotation (décalage horizontal, compression verticale). Captures Mac 2340×1080 des trois choix : `build/captures/jalon04a_fix/` (non versionnées).
   - **Pas fait dans le cloud** : APK (pas de SDK Android ici). `export_presets.cfg` n'exclut pas `data/` : à confirmer par `unzip -l` sur l'APK (`data/pokemon/*.json`, `data/cutscenes/starter.json`).
 
 ## Organisation cloud / Mac (depuis le 2026-09-26)
@@ -50,28 +52,16 @@ Mis à jour : 2026-09-26 (jalon 3B validé et fusionné dans `main` ; **jalon 4A
 - Une seule session à la fois sur une même branche.
 
 ## Prochaine étape
-1. **T4 — QA du 4A sur le S24 (Mac)** : récupérer `jalon-04a`, `tools/test.sh`, `tools/deploy_s24.sh`, agent `qa-mobile`, checklist du `jalon-04.md` §5 T4 (+ §13.9). À vérifier en particulier :
-   - les **trois choix** (trois lancements) : bon Pokémon du rival (Salamèche si Bulbizarre, Carapuce si Salamèche, Bulbizarre si Carapuce), répliques identiques au dossier 02 ;
-   - les **trois styles de saut** distincts à l'œil ; rotation de Carapuce en nearest (crénelage ?) ;
-   - le starter descendu **à moitié caché derrière la tête du joueur** avec Bulbizarre et Salamèche (côte à côte avec Carapuce) ;
-   - légende lisible sur le mur du labo, puis effacée ; RENCONTRER seulement face à un starter ; fiche lisible, boutons (128 px) confortables au pouce, RETOUR fiable, vibration ;
-   - sortie empêchée : tenir « bas » au joystick depuis la case au-dessus du tapis ; sortie libre après le choix ;
-   - après le choix : hautes herbes franchissables, starter restant seul sur la table en revenant ;
-   - 60 fps pendant les sauts et la marche du rival ; aucune erreur `PokemonData`, `StarterOffer`, `CutsceneLibrary`, `NpcRoster`, `StarterChoice` dans logcat ; `data/` dans l'APK.
-2. Validation du 4A par Kevin, fusion dans `main`, puis **4B** (premier combat) sur une branche `jalon-04b`.
+1. **Nouvelle vérification S24 du 4A** (agent `qa-mobile`) sur les points de la décision n° 16 : les trois choix, starter entièrement visible à côté du joueur, joueur jamais dos à lui, Pokémon du rival à côté du rival, saut du Pokémon du rival **par-dessus** le joueur (choix de Bulbizarre et de Salamèche), « Ça devrait être intéressant. », Pokémon rentrés à la fin, répliques de Chen et du rival pendant le choix, Maya (réplique du 3B après le choix), dandinement de Carapuce sans crénelage, compression à l'atterrissage.
+2. Validation du 4A par Kevin, fusion dans `main`, puis **4B** (premier combat) sur une branche `jalon-04b` : l'étape `battle` s'insère avant les deux `despawn` de la scène et lève `rival_battle_done` quelle que soit l'issue.
 3. **Plan du jalon 5** (Route 1 et premières rencontres sauvages) : éventuellement préparé dans le cloud (`plan-jalon-05`).
 
 ## Questions pour Kevin (jalon 4A)
-Détail dans `jalon-04.md` §13.10. Valeur par défaut appliquée entre parenthèses.
-- **Q-A** « Ça devrait être intéressant. » et le petit sourire du dossier 02 §9 : la décision n° 11 ne les reprend pas. (*Supprimés.*)
-- **Q-B** Le starter vient devant le joueur : le joueur fait un pas (bas, ou côté pour Carapuce à cause du tabouret) et le Pokémon descend sur la case libérée. Avec Bulbizarre et Salamèche, il est en partie caché par la tête du joueur. Autre placement (côte à côte, comme avec Carapuce) ou vrai pas en arrière ? (*Tel quel, à juger sur le S24.*)
-- **Q-C** Ordre : « Alors ce sera toi. » **puis** le saut de son Pokémon (ordre de la décision n° 11). Inverser ? (*Non.*)
-- **Q-D** « Le rival regarde le Pokémon du joueur, puis la table » ne se voit pas (les deux sont à sa droite). Faut-il un geste en plus ? (*Non.*)
-- **Q-E** Répliques d'attente de la décision n° 8 (Chen « Le monde qui vous attend… », Maya « Alors, c'est lui que tu as choisi ? ») : prévues « après le jalon 4 », elles sont posées **dès le choix** en 4A (fin provisoire). Au 4B, les réserver à l'après-combat ? Maya dit « lui » même pour une femelle : accorder ? (*Dès le choix ; « lui » tel quel.*)
-- **Q-F** Après la scène, face à son propre starter ou à celui du rival, « OBSERVER » donne la réplique de 3A (« Sa flamme s'agite… »). On garde jusqu'au 4B ? (*Oui.*)
-- **Q-G** Pendant le choix, Chen et le rival gardent leurs répliques d'attente du 3B (« Un peu de patience. J'ai quelque chose à vous montrer. » ne va plus très bien). Nouvelles répliques ? (*Inchangées.*)
-- **Q-H** La pensée des herbes n'est plus atteignable en jeu (sortie du labo empêchée jusqu'au choix) ; elle reste en place et testée. D'accord ? (*Oui.*)
-- **Q-I** Le rival s'arrête en (8, 7) au lieu de (8, 8) pour ne pas passer sous la boîte de dialogue. (*Réglable dans `data/cutscenes/starter.json`.*)
+Q-A à Q-I : réponses de Kevin (décision n° 16, `jalon-04.md` §8) appliquées (§13.12). Restent, par défaut :
+- **Fin provisoire du 4A** (après la scène, sans combat ; disparaît au 4B) : Chen redit « On dirait que le choix est réciproque. », le rival « On ne va quand même pas partir sans savoir ce qu'ils savent faire. ». D'accord jusqu'au 4B ?
+- **Rentrée dans la Poké Ball** : fondu de 0,2 s provisoire (pas d'animation de Ball) ; le Pokémon du rival rentre aussi (même règle « pas de faux compagnon »).
+- **Saut du Pokémon du rival par-dessus le joueur** (Salamèche si tu choisis Bulbizarre, Carapuce si tu choisis Salamèche) : la seule case libre à côté du rival est de l'autre côté du joueur ; il passe au-dessus de lui pendant ≈0,4 à 0,7 s. À juger sur le S24.
+- Les regards du rival (Pokémon du joueur, puis le joueur ; son Pokémon puis celui du joueur) restent peu visibles : tous sont à sa droite.
 - Hors questions : « Électrique » reste écrit dans `ui-reference.md` et `dossier-06-progression.md` (documents de Kevin, non modifiés) ; `combat-capacites-v1.png.png` toujours à renommer.
 
 ## Vitesses de déplacement (Kevin, 2026-09-26)
