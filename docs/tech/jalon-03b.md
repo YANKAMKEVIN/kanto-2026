@@ -607,6 +607,7 @@ Données d'essai : `tests/fixtures/cutscenes/*.json` (posées), compléments dan
 > 10. **Après la scène (modifie Q10)** : tant que le joueur n'a **pas de starter** (jalon 4), les hautes herbes **restent bloquées**. Pas de nouvelle cinématique : sur la case juste avant les herbes, le joueur s'arrête et une courte **pensée du joueur** s'affiche : *« Je ne devrais pas aller là sans Pokémon. »* (narration, sans nom, en italique). Condition : pas de drapeau `has_starter` (levé par le jalon 4). Un simple déclencheur répétable.
 > 11. Roucool et Rattata de la prairie : Pokémon d'ambiance, **aucun combat** pour l'instant (Q4 validée).
 > 12. Contrôle après le 3B : le joueur explore Bourg Palette, parle aux habitants, entre dans les bâtiments ; seule la sortie par les hautes herbes reste verrouillée jusqu'au starter.
+> 12 bis. **Après la scène, avant le jalon 4 (décision du 2026-09-26 après implémentation)** : Chen et le rival ont chacun une réplique d'attente — **Prof. Chen** « Un peu de patience. J'ai quelque chose à vous montrer. » ; **Rival** « Tu vois ? Je t'avais dit que j'étais prêt. » (dialogues `oak_lab_waiting` et `rival_lab_waiting`, remplacés au jalon 4). Pensée aux herbes : recul d'un pas (validé). Orientation de Chen sur « Un peu de patience. » : laissée telle quelle (polish des cinématiques). Suivi de Chen : le joueur marche (validé).
 > 13. Durées, positions fines, rendu des herbes, sauvegarde et autres paramètres : **valeurs proposées**, à ajuster après l'essai sur S24.
 
 Hypothèses techniques (pas de décision de design) :

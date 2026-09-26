@@ -56,8 +56,8 @@ const PLAN: Dictionary = {
 const PLAN_OAK_MET: Dictionary = {
 	&"rival_house": {},
 	&"oak_lab": {
-		&"oak": [Vector2i(8, 4), Vector2i.DOWN, &"oak", &"", TALK, 0],
-		&"rival": [Vector2i(9, 6), Vector2i.RIGHT, &"rival", &"", TALK, 0],
+		&"oak": [Vector2i(8, 4), Vector2i.DOWN, &"oak", &"oak_lab_waiting", TALK, 0],
+		&"rival": [Vector2i(9, 6), Vector2i.RIGHT, &"rival", &"rival_lab_waiting", TALK, 0],
 	},
 }
 ## Plan §3.2 : carte → nœud → [ancre, taille, dialogue].
@@ -319,8 +319,10 @@ func test_after_oak_met_chen_and_the_rival_are_in_the_lab() -> void:
 	var grid := lab.get_grid()
 	assert_same(grid.get_occupant(Vector2i(8, 4)), lab.get_npc(&"oak"))
 	assert_same(grid.get_occupant(Vector2i(9, 6)), lab.get_npc(&"rival"))
-	assert_null(lab.get_npc(&"oak").get_interaction(), "Chen non interactif en 3B (Q10)")
-	assert_null(lab.get_npc(&"rival").get_interaction(), "rival non interactif en 3B (Q10)")
+	assert_eq(lab.get_npc(&"oak").get_interaction().dialogue_id, &"oak_lab_waiting",
+		"Chen : réplique d'attente jusqu'au jalon 4")
+	assert_eq(lab.get_npc(&"rival").get_interaction().dialogue_id, &"rival_lab_waiting",
+		"rival : réplique d'attente jusqu'au jalon 4")
 	var with := _reachable(lab, true)
 	assert_false(grid.is_occupied(Vector2i(11, 6)))
 	assert_true(with.has(Vector2i(11, 6)), "(11, 6) atteignable")

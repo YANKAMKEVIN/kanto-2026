@@ -29,6 +29,14 @@
 			{ "speaker": "Prof. Chen", "text": "Et pourtant, tu es toujours là." }
 		]
 	},
+	"oak_lab_waiting": {
+		"speaker": "Prof. Chen",
+		"pages": ["Un peu de patience. J'ai quelque chose à vous montrer."]
+	},
+	"rival_lab_waiting": {
+		"speaker": "Rival",
+		"pages": ["Tu vois ? Je t'avais dit que j'étais prêt."]
+	},
 	"observe_bulbasaur": {
 		"speaker": "Bulbizarre",
 		"narration": true,

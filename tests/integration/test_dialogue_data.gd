@@ -22,8 +22,8 @@ const DRAFTS: Array[StringName] = [&"sign_pallet_town"]
 ## panneau ; (3B) « Hé ! Attends ! », les répliques du Prof. Chen et la pensée des herbes.
 const IDS: Array[StringName] = [
 	&"aoki", &"breakfast_table", &"haru", &"leo", &"maya", &"mom", &"oak_lab_reunion",
-	&"oak_route1_call", &"oak_route1_warning", &"observe_bulbasaur", &"observe_charmander", &"observe_squirtle", &"rival",
-	&"rival_kanto_map", &"route1_grass_thought", &"sign_pallet_town",
+	&"oak_lab_waiting", &"oak_route1_call", &"oak_route1_warning", &"observe_bulbasaur", &"observe_charmander", &"observe_squirtle", &"rival",
+	&"rival_kanto_map", &"rival_lab_waiting", &"route1_grass_thought", &"sign_pallet_town",
 ]
 ## Drapeaux lus en 3B mais levés par un jalon futur (jalon-03b.md §2.8) : starter (jalon 4).
 const FUTURE_FLAGS: Array[StringName] = [&"has_starter"]
@@ -219,6 +219,7 @@ func test_speakers_and_narration() -> void:
 		&"observe_squirtle": ["Carapuce", true], &"sign_pallet_town": ["", false],
 		&"oak_route1_call": ["???", false], &"route1_grass_thought": ["", true],
 		&"oak_route1_warning": ["Prof. Chen", false], &"oak_lab_reunion": ["", false],
+		&"oak_lab_waiting": ["Prof. Chen", false], &"rival_lab_waiting": ["Rival", false],
 	}
 	for id: StringName in expected:
 		var dialogue := _library.get_dialogue(id)

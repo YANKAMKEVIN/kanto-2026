@@ -175,9 +175,9 @@ func _talk_to_maya() -> void:
 	var texts := await _finish_dialogue()
 	assert_eq(texts, ["Ah, le professeur est revenu.",
 		"Et à voir son air, j'imagine qu'il a encore quelque chose en tête."] as Array[String])
-	# Chen et le rival restent non interactifs (Q10).
-	assert_null(_boot.get_map().get_npc(&"oak").get_interaction())
-	assert_null(_boot.get_map().get_npc(&"rival").get_interaction())
+	# Chen et le rival ont une réplique d'attente jusqu'au jalon 4 (décision de Kevin).
+	assert_eq(_boot.get_map().get_npc(&"oak").get_interaction().dialogue_id, &"oak_lab_waiting")
+	assert_eq(_boot.get_map().get_npc(&"rival").get_interaction().dialogue_id, &"rival_lab_waiting")
 
 
 func _leave_the_lab() -> void:

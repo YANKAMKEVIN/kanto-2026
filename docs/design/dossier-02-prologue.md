@@ -182,3 +182,6 @@ Combat immédiat dans le laboratoire, comme dans Rouge/Bleu, mais très mis en s
 - **Haru** est sur la **plage**, au bord de l'eau : il se tourne légèrement vers le joueur quand on lui parle, puis se retourne vers la mer.
 - **Mme Aoki et Léo** se tournent vers le joueur pendant le dialogue, puis reprennent leur orientation et leur activité.
 - Après le 3B, le joueur continue d'explorer Bourg Palette, de parler aux habitants et d'entrer dans les bâtiments ; seule la sortie par les hautes herbes reste verrouillée jusqu'au starter.
+- **Au labo, après la scène de la Route 1 et avant le jalon 4** (décision du 2026-09-26) : Chen et le rival ne sont pas muets. Répliques d'attente, remplacées dès le jalon 4 :
+  > **Prof. Chen** — « Un peu de patience. J'ai quelque chose à vous montrer. »
+  > **Rival** — « Tu vois ? Je t'avais dit que j'étais prêt. »
