@@ -333,6 +333,8 @@ func _add_battle_actions(theme: Theme, bold: Font, t: GDScript) -> void:
 	glow.draw_center = false
 	glow.border_color = t.ACCENT
 	glow.set_border_width_all(t.ACTION_GLOW_BORDER)
+	# Derrière le bouton : l'anneau d'accent dépasse du bouton, le halo au-delà.
+	glow.set_expand_margin_all(t.ACTION_GLOW_BORDER)
 	glow.set_corner_radius_all(t.RADIUS)
 	glow.shadow_color = t.ACTION_GLOW
 	glow.shadow_size = t.ACTION_GLOW_SIZE

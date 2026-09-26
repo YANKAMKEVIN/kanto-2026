@@ -1,0 +1,49 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://game/ui/battle/action_grid.gd" id="1_grid"]
+
+[node name="ActionGrid" type="Control"]
+mouse_filter = 2
+script = ExtResource("1_grid")
+
+[node name="Body" type="GridContainer" parent="."]
+unique_name_in_owner = true
+layout_mode = 0
+mouse_filter = 2
+columns = 2
+
+[node name="Attack" type="Button" parent="Body"]
+unique_name_in_owner = true
+layout_mode = 2
+focus_mode = 0
+theme_type_variation = &"ActionButtonAttack"
+
+[node name="Glow" type="Panel" parent="Body/Attack"]
+unique_name_in_owner = true
+show_behind_parent = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_type_variation = &"ActionGlow"
+
+[node name="Bag" type="Button" parent="Body"]
+unique_name_in_owner = true
+layout_mode = 2
+focus_mode = 0
+theme_type_variation = &"ActionButtonBag"
+
+[node name="Team" type="Button" parent="Body"]
+unique_name_in_owner = true
+layout_mode = 2
+focus_mode = 0
+theme_type_variation = &"ActionButtonTeam"
+
+[node name="Run" type="Button" parent="Body"]
+unique_name_in_owner = true
+layout_mode = 2
+focus_mode = 0
+theme_type_variation = &"ActionButtonRun"

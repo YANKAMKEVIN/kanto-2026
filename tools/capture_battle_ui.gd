@@ -13,6 +13,10 @@ extends SceneTree
 ## Images (préfixe jalon04b_ui_) :
 ##   cards          cartes + pastilles seules (SALAMÈCHE ♂ 19/19 contre CARAPUCE ♀)
 ##   cards_slide    cartes en train d'entrer (glissement + fondu)
+##   actions        grille d'actions (SAC, ÉQUIPE, FUITE atténués, ATTAQUER mis en avant)
+##   actions_nodim  la même sans le voile (fond clair du labo, pire cas de lisibilité)
+##   actions_all    les 4 actions disponibles (comparaison avec combat-v1)
+##   actions_pressed  ATTAQUER enfoncé (doigt posé)
 
 const BOOT_SCENE: String = "res://game/boot.tscn"
 const TOKENS_PATH: String = "res://game/ui/theme/ui_tokens.gd"
@@ -95,6 +99,7 @@ func _build_overlay() -> void:
 	_add(&"foe", "battle_info_card.tscn", slot["FOE_CARD"])
 	_add(&"own", "battle_info_card.tscn", slot["OWN_CARD"])
 	_add(&"pips", "party_pips.tscn", slot["PARTY_PIPS"])
+	_add(&"actions", "action_grid.tscn", slot["ACTIONS"])
 	(_parts[&"foe"] as Control).set(&"slide_direction", Vector2.RIGHT)
 	(_parts[&"own"] as Control).set(&"slide_direction", Vector2.LEFT)
 
@@ -120,10 +125,44 @@ func _run() -> void:
 		await _shot("cards_slide")
 		await _frames(15)
 		await _shot("cards")
+	_slide_all([foe, own, pips], 0.0)
+	var actions: Control = _parts[&"actions"]
+	if _wants("actions"):
+		actions.set(&"speed_scale", 0.0)
+		actions.call(&"show_actions", _enabled(true, false, false, false))
+		await _frames(10)
+		await _shot("actions")
+		_dim.visible = false
+		await _shot("actions_nodim")
+		_dim.visible = true
+		actions.call(&"show_actions", _enabled(true, true, true, true))
+		await _shot("actions_all")
+		actions.call(&"show_actions", _enabled(true, false, false, false))
+		var attack: Button = actions.call(&"get_button", &"attack")
+		var center := attack.get_global_rect().get_center()
+		_touch(center, true)
+		await _frames(8)
+		await _shot("actions_pressed")
+		_touch(center, false)
+		await _frames(4)
+		await actions.call(&"slide_out")
 
 
 func _card(name: String, gender: int, hp: int, max_hp: int, numbers: bool) -> RefCounted:
 	return _card_view.new(name, gender, 5, hp, max_hp, numbers)
+
+
+func _enabled(attack: bool, bag: bool, team: bool, run: bool) -> Dictionary[StringName, bool]:
+	return {&"attack": attack, &"bag": bag, &"team": team, &"run": run}
+
+
+## Toucher comme sur le téléphone (la souris émulée depuis le toucher suit).
+func _touch(position: Vector2, pressed: bool) -> void:
+	var event := InputEventScreenTouch.new()
+	event.index = 0
+	event.position = position
+	event.pressed = pressed
+	Input.parse_input_event(event)
 
 
 func _slide_all(controls: Array, scale: float) -> void:
