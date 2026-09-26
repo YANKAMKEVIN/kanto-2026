@@ -1,0 +1,7 @@
+{
+	"types": {
+		"normal": { "name": "Normal" },
+		"fire": { "name": "Feu" }
+		"water": { "name": "Eau" }
+	}
+}
