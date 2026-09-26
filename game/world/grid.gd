@@ -11,10 +11,11 @@ extends RefCounted
 const TILE_SIZE: int = 96
 const HALF_TILE: int = 48
 
-## Durée d'un pas en marchant (s/case). ≈ 4,5 cases/s.
-const WALK_STEP_DURATION: float = 0.22
-## Durée d'un pas en courant (s/case). ≈ 8,3 cases/s.
-const RUN_STEP_DURATION: float = 0.12
+## Durée d'un pas en marchant (s/case). ≈ 3,7 cases/s. Réglage « A » validé par Kevin sur S24
+## (2026-09-26). Échelle à respecter : marche < course < vélo (vélo prévu vers 0,09 s/case).
+const WALK_STEP_DURATION: float = 0.27
+## Durée d'un pas en courant (s/case). ≈ 6,2 cases/s.
+const RUN_STEP_DURATION: float = 0.16
 ## Durée d'un saut de rebord (2 cases franchies d'un coup).
 const LEDGE_JUMP_DURATION: float = 0.40
 ## Maintien minimal d'une nouvelle direction, à l'arrêt, avant de marcher.
