@@ -131,6 +131,21 @@ func face(direction: Vector2i) -> void:
 		_update_animation(Vector2i.ZERO)
 
 
+## Pas scripté (scènes, jalon 3B §2.5) : se tourne vers [param direction] et avance d'une
+## case (en courant si [param run]), **même bloqué** : c'est le jeu qui déplace le joueur.
+## Le pas se termine dans [method _process] comme un pas normal ([signal moved]). Faux,
+## sans avancer, hors carte, pendant un pas, pour une direction non cardinale, ou si la
+## case est inaccessible (tourné quand même, sans [signal bumped]).
+func script_step(direction: Vector2i, run: bool = false) -> bool:
+	if _mover == null:
+		return false
+	var started := _mover.start_step(direction, run)
+	_bump_direction = Vector2i.ZERO
+	if is_node_ready():
+		_update_animation(Vector2i.ZERO)
+	return started
+
+
 func get_cell() -> Vector2i:
 	return _mover.get_cell() if _mover != null else Grid.world_to_cell(position)
 

@@ -6,6 +6,8 @@ extends GutTest
 ## textes provisoires (draft) attendus.
 ## Jalon 3B (T2) : dialogues joués par les scènes de data/cutscenes/ (via les
 ## EventTriggerPoint des cartes), drapeaux lus et levés par dialogues, scènes et PNJ.
+## T3 : répliques du Prof. Chen, acteurs et cibles des « turn » (PNJ de la carte ou créés
+## par la scène qui joue le dialogue).
 
 const BOX_SCENE := "res://game/ui/dialogue/dialogue_box.tscn"
 const DOSSIER := "res://docs/design/dossier-02-prologue.md"
@@ -15,10 +17,10 @@ const MAPS: Array[StringName] = [
 ## Seuls textes provisoires : le panneau « BOURG PALETTE » (Q8).
 const DRAFTS: Array[StringName] = [&"sign_pallet_town"]
 ## Identifiants attendus (3A) : Maman, table, rival, carte, Maya, 3 starters, 3 habitants,
-## panneau ; (3B) « Hé ! Attends ! » et la pensée des herbes.
+## panneau ; (3B) « Hé ! Attends ! », les répliques du Prof. Chen et la pensée des herbes.
 const IDS: Array[StringName] = [
 	&"aoki", &"breakfast_table", &"haru", &"leo", &"maya", &"mom", &"oak_route1_call",
-	&"observe_bulbasaur", &"observe_charmander", &"observe_squirtle", &"rival",
+	&"oak_route1_warning", &"observe_bulbasaur", &"observe_charmander", &"observe_squirtle", &"rival",
 	&"rival_kanto_map", &"route1_grass_thought", &"sign_pallet_town",
 ]
 ## Drapeaux lus en 3B mais levés par un jalon futur (jalon-03b.md §2.8) : starter (jalon 4).
@@ -30,6 +32,8 @@ var _cutscenes: CutsceneLibrary
 var _used_on: Dictionary[StringName, Array] = {}
 ## Carte → identifiants de PNJ.
 var _npc_ids: Dictionary[StringName, Array] = {}
+## Dialogue joué par une scène → PNJ créés (« spawn ») par cette scène.
+var _spawned_for: Dictionary[StringName, Array] = {}
 
 
 func before_all() -> void:
@@ -58,9 +62,15 @@ func _use_cutscene(cutscene_id: StringName, map_id: StringName) -> void:
 	if cutscene == null:
 		return
 	for variant: CutsceneVariant in cutscene.variants:
+		var spawned: Array[StringName] = []
 		for step: CutsceneStep in variant.steps:
+			if step.kind == CutsceneStep.Kind.SPAWN:
+				spawned.append(step.spec.id)
 			if step.kind == CutsceneStep.Kind.DIALOGUE:
 				_use(step.dialogue_id, map_id)
+				if not _spawned_for.has(step.dialogue_id):
+					_spawned_for[step.dialogue_id] = []
+				(_spawned_for[step.dialogue_id] as Array).append_array(spawned)
 
 
 func _use(dialogue: StringName, map_id: StringName) -> void:
@@ -102,7 +112,8 @@ func test_every_dialogue_is_used() -> void:
 func test_every_dialogue_played_by_a_cutscene_exists() -> void:
 	assert_eq(_cutscenes.get_errors().size(), 0, str(_cutscenes.get_errors()))
 	var played := _cutscenes.get_dialogue_ids()
-	assert_eq(played, [&"oak_route1_call", &"route1_grass_thought"] as Array[StringName])
+	assert_eq(played, [&"oak_route1_call", &"oak_route1_warning", &"route1_grass_thought"]
+		as Array[StringName])
 	for id: StringName in played:
 		assert_true(_library.has_dialogue(id), "dialogue « %s » défini" % id)
 		assert_true(_used_on.has(id), "« %s » joué depuis un déclencheur de carte" % id)
@@ -118,6 +129,35 @@ func test_every_react_targets_an_npc_of_the_map_where_it_is_used() -> void:
 		for map_id: StringName in maps:
 			assert_true((_npc_ids[map_id] as Array).has(page.react),
 				"%s : « react » %s sur %s" % [row[0], page.react, map_id])
+
+
+func test_every_turn_actor_and_target_exists_where_the_dialogue_is_played() -> void:
+	var turns := 0
+	for row: Array in _pages():
+		var page: DialoguePage = row[2]
+		for actor: StringName in page.turn:
+			turns += 1
+			for who: StringName in [actor, page.turn[actor]]:
+				if who == NpcRoster.PLAYER_ID or (who != actor and Grid.is_direction_name(who)):
+					continue
+				var maps: Array = _used_on.get(row[0], [])
+				assert_false(maps.is_empty(), "%s utilisé" % row[0])
+				for map_id: StringName in maps:
+					var known: bool = (_npc_ids[map_id] as Array).has(who) or \
+						(_spawned_for.get(row[0], []) as Array).has(who)
+					assert_true(known, "%s : « turn » %s sur %s" % [row[0], who, map_id])
+	assert_gt(turns, 0, "les répliques de Chen ont des « turn »")
+
+
+func test_oak_looks_at_the_grass_on_his_second_line_and_thinks_before_the_last() -> void:
+	var pages := _library.get_dialogue(&"oak_route1_warning").variants[0].pages
+	assert_eq(pages.size(), 4)
+	assert_eq(pages[0].turn, {&"oak": &"player"} as Dictionary[StringName, StringName])
+	assert_eq(pages[1].turn, {&"oak": &"up"} as Dictionary[StringName, StringName],
+		"il regarde les hautes herbes (nord)")
+	assert_eq(pages[2].turn, {&"oak": &"player"} as Dictionary[StringName, StringName])
+	assert_eq(pages[3].pause, 1.0, "il réfléchit une seconde")
+	assert_eq(pages[3].text, "...Viens avec moi.")
 
 
 func test_every_condition_flag_is_set_somewhere() -> void:
@@ -169,6 +209,7 @@ func test_speakers_and_narration() -> void:
 		&"observe_bulbasaur": ["Bulbizarre", true], &"observe_charmander": ["Salamèche", true],
 		&"observe_squirtle": ["Carapuce", true], &"sign_pallet_town": ["", false],
 		&"oak_route1_call": ["???", false], &"route1_grass_thought": ["", true],
+		&"oak_route1_warning": ["Prof. Chen", false],
 	}
 	for id: StringName in expected:
 		var dialogue := _library.get_dialogue(id)

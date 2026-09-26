@@ -7,9 +7,13 @@ extends SceneTree
 ##   assets/sprites/characters/placeholder/<id>_sheet.png   (colonnes × 4 rangées)
 ##     colonnes : 0 repos, 1 attente (respiration, picorage, flamme), 2.. réaction
 ##     rangées  : 0 bas, 1 haut, 2 gauche, 3 droite
+##     marcheurs (WALKERS, jalon 3B) : 2 colonnes de plus après la réaction (pas gauche,
+##     pas droit)
 ##   assets/sprites/characters/placeholder/<id>_frames.tres (SpriteFrames)
 ##     idle_<dir> (bouclée, lente) et, pour les starters et le Rattata, react_<dir>
-##     (non bouclée ; la scène Npc revient à l'attente à la fin).
+##     (non bouclée ; la scène Npc revient à l'attente à la fin) ; pour les marcheurs,
+##     walk_<dir> et run_<dir> (4 images : pas gauche, repos, pas droit, repos, comme le
+##     joueur).
 ## `npc` reste le sprite générique (apparence inconnue).
 ## Repères de direction : yeux (face), cheveux / dos / carapace / bulbe (dos), œil et
 ## museau (profil). Contour sombre de 1 px (lisibilité sur l'herbe et le parquet).
@@ -38,7 +42,13 @@ const SPRITES: Dictionary = {
 	"squirtle": [32, 32, 4, 1.5, 6.0],
 	"rattata": [32, 32, 4, 2.0, 10.0],
 	"pidgey": [32, 32, 0, 1.6, 0.0],
+	"oak": [32, 64, 0, 1.5, 0.0],
 }
+## Apparences qui marchent et courent (scènes scriptées, jalon 3B §2.5).
+const WALKERS: Array[String] = ["oak"]
+## Cadence de la marche et de la course (images/s, comme le joueur) : 4 images = 2 pas.
+const WALK_FPS: float = 9.0
+const RUN_FPS: float = 16.0
 
 ## Personnes : palette et accessoires (voir _draw_person).
 const PEOPLE: Dictionary = {
@@ -66,6 +76,10 @@ const PEOPLE: Dictionary = {
 	"haru": {"skin": "#d9a878", "hair": "#4a3a2a", "hair_style": "short",
 		"top": "#2f6f8f", "inner": "#e8e2d4", "bottom": "#5a4a3a", "shoe": "#2e2a26",
 		"hat": "#e2c26a", "rod": true},
+	# Prof. Chen : blouse blanche, cheveux gris, chemise rouge, pantalon brun.
+	"oak": {"skin": "#ecc39c", "hair": "#b4b8c0", "hair_style": "short",
+		"top": "#f2f3f0", "inner": "#b0443a", "bottom": "#6a5a44", "shoe": "#3a2e26",
+		"coat": true},
 }
 
 var _w: int = 32
@@ -78,7 +92,7 @@ func _init() -> void:
 		var spec: Array = SPRITES[sprite_name]
 		_w = spec[0]
 		_h = spec[1]
-		var columns: int = 2 + int(spec[2])
+		var columns: int = _columns(sprite_name, spec)
 		var sheet := Image.create_empty(_w * columns, _h * 4, false, Image.FORMAT_RGBA8)
 		sheet.fill(Color(0, 0, 0, 0))
 		for row: int in 4:
@@ -92,13 +106,23 @@ func _init() -> void:
 	quit()
 
 
+## Colonnes de la planche : repos, attente, réaction, puis 2 pas pour les marcheurs.
+func _columns(sprite_name: String, spec: Array) -> int:
+	return 2 + int(spec[2]) + (2 if WALKERS.has(sprite_name) else 0)
+
+
 func _frame(sprite_name: String, direction: String, col: int) -> Image:
 	var img := Image.create_empty(_w, _h, false, Image.FORMAT_RGBA8)
 	img.fill(Color(0, 0, 0, 0))
-	# col 0 : repos ; col 1 : attente ; col ≥ 2 : réaction (étape col − 2).
+	# col 0 : repos ; col 1 : attente ; col ≥ 2 : réaction (étape col − 2), puis les pas.
 	var idle := col == 1
 	var react := col - 2
-	if PEOPLE.has(sprite_name):
+	var spec: Array = SPRITES[sprite_name]
+	var first_stride := 2 + int(spec[2])
+	if PEOPLE.has(sprite_name) and col >= first_stride:
+		# Pas : 1 = pied gauche levé, 2 = pied droit levé.
+		_draw_person(img, PEOPLE[sprite_name], direction, 1, col - first_stride + 1)
+	elif PEOPLE.has(sprite_name):
 		_draw_person(img, PEOPLE[sprite_name], direction, 1 if idle else 0)
 	else:
 		call("_draw_" + sprite_name, img, direction, idle, react)
@@ -149,7 +173,9 @@ func _outline(img: Image) -> void:
 # --- Personnes (32 × 64, enfant 32 × 48) -------------------------------------------
 
 ## Personnage debout. [param bob] : 1 = respiration (buste et tête 1 px plus bas).
-func _draw_person(img: Image, p: Dictionary, direction: String, bob: int) -> void:
+## [param stride] : 0 debout, 1 pied gauche levé, 2 pied droit levé (marche).
+func _draw_person(img: Image, p: Dictionary, direction: String, bob: int,
+		stride: int = 0) -> void:
 	var kid := _h < 64
 	var skin := Color(p["skin"])
 	var hair := Color(p["hair"])
@@ -167,7 +193,21 @@ func _draw_person(img: Image, p: Dictionary, direction: String, bob: int) -> voi
 	var leg_h := _h - 4 - leg_y
 	var foot_y := _h - 5
 	# Jambes (ou jupe longue) et chaussures.
-	if p.get("skirt", false):
+	var lift_left := 2 if stride == 1 else 0
+	var lift_right := 2 if stride == 2 else 0
+	if stride > 0 and not p.get("skirt", false):
+		if side:
+			var front := 1 if stride == 1 else -1
+			_r(img, 13 - front * 2, leg_y, 6, leg_h, bottom)
+			_r(img, 13 + front * 2, leg_y, 6, leg_h, bottom.darkened(0.2))
+			_r(img, 12 - front * 2, foot_y, 8, 4, shoe)
+			_r(img, 12 + front * 2, foot_y, 8, 4, shoe.darkened(0.15))
+		else:
+			_r(img, 11, leg_y, 4, leg_h - lift_left, bottom)
+			_r(img, 17, leg_y, 4, leg_h - lift_right, bottom)
+			_r(img, 10, foot_y - lift_left, 6, 4, shoe)
+			_r(img, 16, foot_y - lift_right, 6, 4, shoe)
+	elif p.get("skirt", false):
 		_r(img, 8 if not side else 9, leg_y - 2, 16 if not side else 14, leg_h + 1, bottom)
 		_r(img, 8 if not side else 9, leg_y + leg_h - 2, 16 if not side else 14, 2,
 			bottom.darkened(0.2))
@@ -176,7 +216,9 @@ func _draw_person(img: Image, p: Dictionary, direction: String, bob: int) -> voi
 	else:
 		_r(img, 11, leg_y, 4, leg_h, bottom)
 		_r(img, 17, leg_y, 4, leg_h, bottom)
-	if side:
+	if stride > 0 and not p.get("skirt", false):
+		pass
+	elif side:
 		_r(img, 12 + sd, foot_y, 8, 4, shoe)
 	else:
 		_r(img, 10, foot_y, 6, 4, shoe)
@@ -561,7 +603,7 @@ func _write_frames(sprite_name: String, spec: Array) -> void:
 	var fw: int = spec[0]
 	var fh: int = spec[1]
 	var react_count: int = spec[2]
-	var columns := 2 + react_count
+	var columns := _columns(sprite_name, spec)
 	var text := "[gd_resource type=\"SpriteFrames\" format=3]\n\n"
 	text += "[ext_resource type=\"Texture2D\" path=\"%s%s_sheet.png\" id=\"1_sheet\"]\n\n" % [
 		DIR, sprite_name]
@@ -579,6 +621,11 @@ func _write_frames(sprite_name: String, spec: Array) -> void:
 				cols.append(2 + k)
 			cols.append(0)
 			anims.append(_anim("react_" + DIRECTIONS[row], cols, row, spec[4], false))
+		if WALKERS.has(sprite_name):
+			var stride := 2 + react_count
+			var steps: Array = [stride, 0, stride + 1, 0]
+			anims.append(_anim("walk_" + DIRECTIONS[row], steps, row, WALK_FPS, true))
+			anims.append(_anim("run_" + DIRECTIONS[row], steps, row, RUN_FPS, true))
 	text += "[resource]\nanimations = [%s]\n" % ", ".join(anims)
 	var f := FileAccess.open(DIR + sprite_name + "_frames.tres", FileAccess.WRITE)
 	f.store_string(text)

@@ -2,9 +2,13 @@ extends GutTest
 ## Scène Npc (jalon 3A §2.3) : placement, apparence (générique si l'apparence n'existe pas),
 ## orientation vers une case (axe dominant), début et fin d'interaction, réaction,
 ## interaction stable (même instance).
+## Jalon 3B (T3) : GridMover (enter_grid, leave_grid), pas de marche et de course, case
+## libérée au départ, step_finished, animations walk_/run_ (ou idle_), _process coupé au
+## repos.
 
 const NPC_SCENE := "res://game/world/npc/npc.tscn"
 const CELL := Vector2i(5, 5)
+const FRAME := 1.0 / 60.0
 
 
 func _spec(overrides: Dictionary = {}) -> NpcSpec:
@@ -207,6 +211,169 @@ func test_react_prefers_the_animation_of_its_facing() -> void:
 	assert_eq(sprite.animation, &"react_right", "réaction dans son orientation")
 	await wait_seconds(0.3)
 	assert_eq(sprite.animation, &"idle_right", "retour à l'attente, même orientation")
+
+
+# --- Marche (jalon 3B, T3) --------------------------------------------------------------
+
+## PNJ inscrit sur une grille 10 × 10 ; ses images sont simulées à la main.
+func _make_on_grid(spec: NpcSpec, grid: GridWorld) -> Npc:
+	var npc := _make(spec)
+	assert_true(npc.enter_grid(grid), "enter_grid")
+	return npc
+
+
+## Simule [param frames] images du PNJ (le moteur ne le fait pas tourner en parallèle).
+func _simulate(npc: Npc, frames: int) -> void:
+	npc.set_process(false)
+	for i: int in frames:
+		if not npc.is_moving():
+			return
+		npc._process(FRAME)
+
+
+func test_enter_grid_occupies_its_cell() -> void:
+	var grid := GridWorld.new(Vector2i(10, 10))
+	var npc := _make_on_grid(_spec({"facing": Vector2i.LEFT}), grid)
+	assert_same(grid.get_occupant(CELL), npc)
+	assert_eq(npc.get_cell(), CELL)
+	assert_eq(npc.get_facing(), Vector2i.LEFT)
+	assert_false(npc.is_moving())
+	assert_false(npc.is_processing(), "_process coupé au repos")
+
+
+func test_enter_grid_on_a_taken_or_outside_cell_fails() -> void:
+	var grid := GridWorld.new(Vector2i(10, 10))
+	var blocker := RefCounted.new()
+	grid.occupy(CELL, blocker)
+	var npc := _make(_spec())
+	assert_false(npc.enter_grid(grid))
+	assert_same(grid.get_occupant(CELL), blocker)
+	assert_false(npc.step(Vector2i.RIGHT), "hors grille : pas de pas")
+	var outside := _make(_spec({"id": &"far", "cell": Vector2i(20, 20)}))
+	assert_false(outside.enter_grid(grid))
+
+
+func test_walk_step_takes_walk_duration_and_frees_the_old_cell_at_once() -> void:
+	var grid := GridWorld.new(Vector2i(10, 10))
+	var npc := _make_on_grid(_spec(), grid)
+	watch_signals(npc)
+	var target := CELL + Vector2i.RIGHT
+	assert_true(npc.step(Vector2i.RIGHT))
+	assert_true(npc.is_moving())
+	assert_true(npc.is_processing(), "_process pendant le pas")
+	assert_eq(npc.get_facing(), Vector2i.RIGHT)
+	assert_false(grid.is_occupied(CELL), "case quittée libérée dès le départ")
+	assert_same(grid.get_occupant(target), npc, "case visée réservée")
+	assert_eq(npc.get_cell(), CELL, "case de départ pendant le pas")
+	var frames := int(Grid.WALK_STEP_DURATION / FRAME)
+	_simulate(npc, frames - 1)
+	assert_true(npc.is_moving(), "encore en marche avant %.2f s" % Grid.WALK_STEP_DURATION)
+	assert_gt(npc.position.x, Grid.cell_to_world(CELL).x, "position interpolée")
+	_simulate(npc, 3)
+	assert_false(npc.is_moving())
+	assert_eq(npc.get_cell(), target)
+	assert_eq(npc.position, Grid.cell_to_world(target))
+	assert_signal_emitted_with_parameters(npc, "step_finished", [target])
+	assert_eq(npc.get_interaction().cell, target, "interaction à jour")
+	assert_false(npc.is_processing(), "_process coupé à l'arrêt")
+
+
+func test_run_step_takes_run_duration() -> void:
+	var grid := GridWorld.new(Vector2i(10, 10))
+	var npc := _make_on_grid(_spec(), grid)
+	assert_true(npc.step(Vector2i.UP, true))
+	var frames := int(Grid.RUN_STEP_DURATION / FRAME)
+	_simulate(npc, frames - 1)
+	assert_true(npc.is_moving())
+	_simulate(npc, 3)
+	assert_false(npc.is_moving())
+	assert_eq(npc.get_cell(), CELL + Vector2i.UP)
+	assert_true(Grid.RUN_STEP_DURATION < Grid.WALK_STEP_DURATION)
+
+
+func test_step_refused_against_an_obstacle_or_during_a_step() -> void:
+	var grid := GridWorld.new(Vector2i(10, 10))
+	grid.set_solid(CELL + Vector2i.LEFT)
+	var npc := _make_on_grid(_spec(), grid)
+	watch_signals(npc)
+	assert_false(npc.step(Vector2i.LEFT), "obstacle")
+	assert_eq(npc.get_facing(), Vector2i.LEFT, "tourné quand même")
+	assert_eq(npc.get_cell(), CELL)
+	assert_same(grid.get_occupant(CELL), npc)
+	assert_false(npc.is_processing())
+	assert_false(npc.step(Vector2i(1, 1)), "direction non cardinale")
+	assert_true(npc.step(Vector2i.DOWN))
+	assert_false(npc.step(Vector2i.RIGHT), "déjà en marche")
+	npc.face(Vector2i.UP)
+	assert_eq(npc.get_facing(), Vector2i.DOWN, "pas de pivot pendant un pas")
+	_simulate(npc, 30)
+	assert_eq(npc.get_cell(), CELL + Vector2i.DOWN)
+	assert_signal_emit_count(npc, "step_finished", 1)
+
+
+func test_walk_and_run_animations_when_the_appearance_has_them() -> void:
+	var grid := GridWorld.new(Vector2i(10, 10))
+	var npc := _make_on_grid(_spec({"sprite": &"oak"}), grid)
+	var sprite := _sprite(npc)
+	assert_eq(sprite.sprite_frames.resource_path, Npc.frames_path(&"oak"))
+	npc.step(Vector2i.RIGHT)
+	assert_eq(sprite.animation, &"walk_right")
+	assert_true(sprite.is_playing())
+	_simulate(npc, 30)
+	assert_eq(sprite.animation, &"idle_right", "attente à l'arrêt")
+	npc.step(Vector2i.UP, true)
+	assert_eq(sprite.animation, &"run_up")
+	_simulate(npc, 30)
+	assert_eq(sprite.animation, &"idle_up")
+
+
+func test_without_walk_animation_idle_is_played() -> void:
+	var grid := GridWorld.new(Vector2i(10, 10))
+	var npc := _make_on_grid(_spec(), grid)
+	var sprite := _sprite(npc)
+	assert_false(sprite.sprite_frames.has_animation(&"walk_right"))
+	npc.step(Vector2i.RIGHT)
+	assert_eq(sprite.animation, &"idle_right")
+	_simulate(npc, 30)
+	assert_push_error_count(0)
+
+
+func test_get_cell_follows_the_mover_and_face_toward_uses_it() -> void:
+	var grid := GridWorld.new(Vector2i(10, 10))
+	var npc := _make_on_grid(_spec(), grid)
+	npc.step(Vector2i.RIGHT)
+	_simulate(npc, 30)
+	npc.step(Vector2i.RIGHT)
+	_simulate(npc, 30)
+	assert_eq(npc.get_cell(), CELL + Vector2i(2, 0))
+	assert_eq(npc.get_spec().cell, CELL, "la description ne change pas")
+	npc.face_toward(CELL + Vector2i(2, 3))
+	assert_eq(npc.get_facing(), Vector2i.DOWN, "depuis sa case courante")
+
+
+func test_leave_grid_frees_its_cells() -> void:
+	var grid := GridWorld.new(Vector2i(10, 10))
+	var npc := _make_on_grid(_spec(), grid)
+	npc.step(Vector2i.RIGHT)
+	npc.leave_grid()
+	assert_false(grid.is_occupied(CELL))
+	assert_false(grid.is_occupied(CELL + Vector2i.RIGHT))
+	assert_false(npc.is_moving())
+	assert_false(npc.is_processing())
+	assert_eq(npc.get_cell(), CELL)
+
+
+func test_enter_a_new_grid_keeps_the_current_cell() -> void:
+	var grid := GridWorld.new(Vector2i(10, 10))
+	var npc := _make_on_grid(_spec(), grid)
+	npc.step(Vector2i.DOWN)
+	_simulate(npc, 30)
+	var rebuilt := GridWorld.new(Vector2i(10, 10))
+	assert_true(npc.enter_grid(rebuilt))
+	assert_same(rebuilt.get_occupant(CELL + Vector2i.DOWN), npc)
+	assert_eq(npc.get_facing(), Vector2i.DOWN)
+	assert_true(npc.step(Vector2i.DOWN), "marche sur la nouvelle grille")
+	assert_false(rebuilt.is_occupied(CELL + Vector2i.DOWN))
 
 
 func _dir_name(direction: Vector2i) -> String:

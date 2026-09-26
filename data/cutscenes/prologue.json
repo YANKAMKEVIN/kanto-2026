@@ -7,13 +7,22 @@
 					{ "wait": 0.4 },
 					{ "dialogue": "oak_route1_call" },
 					{ "face": "player", "to": "down" },
+					{ "wait": 0.3 },
+					{ "spawn": "oak", "sprite": "oak", "cell": [24, 13], "facing": "up" },
+					{ "move": "oak", "run": true,
+						"to": { "near": "player", "offsets": [[1, 0], [-1, 0], [0, 1]] } },
+					{ "face": "oak", "to": "player" },
+					{ "face": "player", "to": "oak" },
+					{ "wait": 0.6 },
+					{ "dialogue": "oak_route1_warning" },
 					{ "set": ["oak_met"] }
 				]
 			},
 			{
 				"unless": ["has_starter"],
 				"steps": [
-					{ "dialogue": "route1_grass_thought" }
+					{ "dialogue": "route1_grass_thought" },
+					{ "move": "player", "path": ["down"] }
 				]
 			}
 		]

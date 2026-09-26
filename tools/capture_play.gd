@@ -24,6 +24,15 @@ extends SceneTree
 ##              retourné (contrôles rendus), un pas vers le bas puis move_up à nouveau : la
 ##              pensée en narration. Captures jalon03b_t2_NN_*. ~400 images à 30 images/s :
 ##              --quit-after 900.
+##   route1_oak  jalon 3B (T3) : pour chacune des deux colonnes du chemin (23 puis 24),
+##              joueur téléporté en (x, 7) tourné vers le nord, move_up tenu : gel en (x, 3),
+##              « ??? », le joueur se retourne, Chen apparaît en (24, 13) hors de l'écran et
+##              arrive en courant (captures à l'entrée dans l'écran et en chemin), s'arrête à
+##              côté du joueur ; ses quatre répliques (étiquette « Prof. Chen », Chen tourné
+##              vers les herbes à la deuxième) ; contrôle rendu. Entre les deux colonnes : Chen
+##              retiré et drapeaux remis à zéro. Pour finir, la pensée des herbes puis le recul
+##              d'un pas. Captures jalon03b_t3_<colonne>_NN_*. Quitte seul à la fin (~2 000
+##              images à 30 images/s : --quit-after 4000).
 ##   walk_roof  entrées move_* injectées : spawn → (32, 10) → (32, 4) → (36, 4),
 ##              au nord de sa maison (le toit doit le masquer, y-sort).
 ##   doors      départ réel du jeu (chambre) puis portes, tapis et escaliers (jalon 2, T5) :
@@ -96,6 +105,7 @@ const DOORS_LAB: Array[Dictionary] = [
 const DOORS_PREFIX: String = "jalon02_doors_"
 const NPCS_PREFIX: String = "jalon03_npcs_"
 const T2_PREFIX: String = "jalon03b_t2_"
+const T3_PREFIX: String = "jalon03b_t3_"
 ## Délai maximal d'une attente du scénario « npcs » (images).
 const NPCS_TIMEOUT: int = 900
 ## Images d'attente avant la capture d'une étape (titre de zone entré : ~0,3 s).
@@ -141,7 +151,7 @@ func _start_boot() -> void:
 	elif _scenario == "npcs":
 		_setup_doors()
 		InputMap.action_erase_events(&"interact")
-	elif _scenario == "route1_freeze":
+	elif _scenario == "route1_freeze" or _scenario == "route1_oak":
 		_boot.set(&"start_map", &"pallet_town")
 		for action: StringName in MOVE_ACTIONS.values():
 			InputMap.action_erase_events(action)
@@ -162,6 +172,8 @@ func _on_frame() -> void:
 			_run_npcs()
 		elif _scenario == "route1_freeze":
 			_run_route1_freeze()
+		elif _scenario == "route1_oak":
+			_run_route1_oak()
 		return
 	match _scenario:
 		"spawn":
@@ -670,4 +682,89 @@ func _t2_shot(capture_name: String) -> void:
 	var hud: Node = _boot.call(&"get_hud")
 	print("  contrôles visibles : %s" % hud.call(&"are_controls_visible"))
 	_mark(T2_PREFIX + capture_name)
+	await _frames(2)
+
+
+# --- Scénario « route1_oak » (jalon 3B, T3) -----------------------------------------
+
+func _run_route1_oak() -> void:
+	await _frames(5)
+	await _oak_column(23, "a")
+	# Nouvelle interception sur l'autre colonne : Chen retiré, drapeaux remis à zéro.
+	_boot.call(&"get_map").call(&"remove_npc", &"oak")
+	root.get_node(^"GameState").call(&"new_game")
+	await _frames(4)
+	await _oak_column(24, "b")
+	# Remonter : la pensée des herbes, puis le recul d'un pas.
+	var director: Node = _boot.call(&"get_cutscene_director")
+	await _go(Vector2i(24, 4))
+	await _frames(6)
+	await _hold_up_until_scene(director)
+	await _page_complete()
+	await _t3_shot("b_08_thought")
+	await _finish_dialogue()
+	for i: int in NPCS_TIMEOUT:
+		if not director.call(&"is_running"):
+			break
+		await process_frame
+	await _frames(10)
+	await _t3_shot("b_09_after_recoil")
+	await _frames(5)
+	print("ROUTE1_OAK terminé (frame %d)" % _frame)
+	quit()
+
+
+## Interception complète depuis la colonne [param x] (captures préfixées [param tag]).
+func _oak_column(x: int, tag: String) -> void:
+	var map: Node = _boot.call(&"get_map")
+	_player.call(&"enter_map", map.call(&"get_grid"), Vector2i(x, 7), Vector2i.UP,
+		map.call(&"get_pixel_rect"))
+	await _frames(20)
+	var director: Node = _boot.call(&"get_cutscene_director")
+	var runner: Node = _boot.call(&"get_dialogue_runner")
+	await _hold_up_until_scene(director)
+	await _page_complete()
+	await _t3_shot(tag + "_01_call")
+	await _finish_dialogue()
+	# Chen apparaît (0,3 s), puis court : image à l'entrée dans l'écran et en chemin.
+	var oak: Node2D = null
+	for i: int in NPCS_TIMEOUT:
+		oak = _boot.call(&"get_map").call(&"get_npc", &"oak")
+		if oak != null:
+			break
+		await process_frame
+	await _t3_shot(tag + "_02_turned_oak_offscreen")
+	var shots: Dictionary[int, String] = {
+		10: tag + "_03_oak_enters", 7: tag + "_04_oak_running",
+	}
+	for i: int in NPCS_TIMEOUT:
+		if oak == null or not is_instance_valid(oak) or runner.call(&"is_running"):
+			break
+		var row: int = (oak.call(&"get_cell") as Vector2i).y
+		if shots.has(row) and oak.call(&"is_moving"):
+			await _t3_shot(shots[row])
+			shots.erase(row)
+		await process_frame
+	# Répliques du Prof. Chen : une capture par page complète.
+	var names: Array[String] = ["_05_line1", "_06_line2_grass", "_07_line3", "_07b_line4"]
+	for page: int in names.size():
+		await _page_complete()
+		await _t3_shot(tag + names[page])
+		if page < names.size() - 1:
+			await _interact()
+	await _finish_dialogue()
+	for i: int in NPCS_TIMEOUT:
+		if not director.call(&"is_running"):
+			break
+		await process_frame
+	await _frames(10)
+	await _t3_shot(tag + "_07c_control_back")
+
+
+func _t3_shot(capture_name: String) -> void:
+	var hud: Node = _boot.call(&"get_hud")
+	var oak: Node = _boot.call(&"get_map").call(&"get_npc", &"oak")
+	print("  contrôles visibles : %s ; Chen : %s" % [hud.call(&"are_controls_visible"),
+		"absent" if oak == null else "%s %s" % [oak.call(&"get_cell"), oak.call(&"get_facing")]])
+	_mark(T3_PREFIX + capture_name)
 	await _frames(2)

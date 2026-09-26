@@ -5,7 +5,8 @@ extends GutTest
 ## instance de scene_router.gd (map_factory, sans rideau). Scènes et dialogues d'essai en
 ## mémoire. Étapes wait, dialogue, face, set ; blocage dans l'image même ; déclenchement
 ## dans le moved, sans pas de plus direction tenue ; gardes (variante, transition, pas
-## scripté).
+## scripté). T3 : spawn, move (chemin écrit, case absolue, voisine d'un acteur, course,
+## blocage), variante 2 (pensée puis un pas vers le bas).
 
 const ROUTER_SCRIPT := preload("res://game/autoload/scene_router.gd")
 const PLAYER_SCENE := preload("res://game/player/player.tscn")
@@ -29,7 +30,9 @@ const SCENES := {
 			{"wait": 0.2}, {"dialogue": "call"}, {"face": "player", "to": "down"},
 			{"set": ["met"]},
 		]},
-		{"unless": ["starter"], "steps": [{"dialogue": "thought"}]},
+		{"unless": ["starter"], "steps": [
+			{"dialogue": "thought"}, {"move": "player", "path": ["down"]},
+		]},
 	]},
 	"timed": {"steps": [{"wait": 0.5}]},
 	"face_direction": {"steps": [{"face": "player", "to": "left"}]},
@@ -41,7 +44,26 @@ const SCENES := {
 	"two_dialogues": {"steps": [
 		{"dialogue": "call"}, {"wait": 0.3}, {"dialogue": "thought"},
 	]},
-	"not_yet": {"steps": [{"move": "player", "path": ["down"]}, {"set": ["after"]}]},
+	"not_yet": {"steps": [
+		{"change_map": "runner_map", "at": "start"}, {"set": ["after"]},
+	]},
+	"spawn_oak": {"steps": [
+		{"spawn": "oak", "sprite": "oak", "cell": [5, 15], "facing": "up"},
+	]},
+	"oak_runs_to_player": {"steps": [
+		{"spawn": "oak", "sprite": "oak", "cell": [5, 15], "facing": "up"},
+		{"move": "oak", "run": true,
+			"to": {"near": "player", "offsets": [[1, 0], [-1, 0], [0, 1]]}},
+		{"set": ["arrived"]},
+	]},
+	"mom_walks_to": {"steps": [{"move": "mom", "to": [9, 6]}, {"set": ["after"]}]},
+	"mom_path": {"steps": [{"move": "mom", "path": ["down", "down", "left"]}]},
+	"player_path": {"steps": [{"move": "player", "path": ["down", "right"]}]},
+	"mom_blocked": {"steps": [{"move": "mom", "path": ["down"]}, {"set": ["after"]}]},
+	"ghost_move": {"steps": [{"move": "nobody", "path": ["down"]}, {"set": ["after"]}]},
+	"spawn_taken": {"steps": [
+		{"spawn": "oak", "sprite": "oak", "cell": [7, 4]}, {"set": ["after"]},
+	]},
 	"ghost": {"steps": [{"face": "nobody", "to": "down"}, {"set": ["after"]}]},
 	"never": {"if": ["nope"], "steps": [{"wait": 0.1}]},
 }
@@ -284,6 +306,7 @@ func test_variant_depends_on_the_flags() -> void:
 	assert_eq(_runner.get_dialogue_id(), &"call", "variante 1")
 	await _finish_dialogue()
 	await _await_scene_end()
+	_player.set_process(true)
 	assert_true(_director.play(&"grass"))
 	assert_eq(_runner.get_dialogue_id(), &"thought", "variante 2 (met levé)")
 	await wait_until(func() -> bool: return _box.is_open(), TIMEOUT)
@@ -291,6 +314,7 @@ func test_variant_depends_on_the_flags() -> void:
 	assert_eq(_box.get_speaker_text(), "")
 	await _finish_dialogue()
 	await _await_scene_end()
+	assert_eq(_player.get_cell(), START + Vector2i.DOWN, "recul d'un pas")
 	_flags.set_flag(&"starter")
 	assert_false(_director.play(&"grass"), "plus aucune variante")
 	assert_push_error_count(0)
@@ -374,8 +398,131 @@ func test_no_trigger_during_a_transition() -> void:
 func test_no_trigger_on_a_scripted_step() -> void:
 	_place(TRIGGER + Vector2i.DOWN, Vector2i.UP)
 	_player.set_input_enabled(false, &"test")
-	assert_true(_player._mover.start_step(Vector2i.UP), "pas scripté, joueur bloqué")
+	assert_true(_player.script_step(Vector2i.UP), "pas scripté, joueur bloqué")
 	_simulate_until(func() -> bool: return not _player.is_moving())
 	assert_eq(_player.get_cell(), TRIGGER)
 	assert_signal_not_emitted(_director, "cutscene_started")
 	_player.set_input_enabled(true, &"test")
+
+
+# --- spawn et move (T3) -------------------------------------------------------------------
+
+## Temps de jeu d'une scène (somme des delta tant qu'elle tourne), joueur animé par le
+## moteur (aucune entrée tenue).
+func _play_timed(cutscene_id: StringName) -> float:
+	var elapsed: Array[float] = [0.0]
+	var count := func() -> void:
+		if _director.is_running():
+			elapsed[0] += get_process_delta_time()
+	get_tree().process_frame.connect(count)
+	assert_true(_director.play(cutscene_id))
+	await _await_scene_end()
+	get_tree().process_frame.disconnect(count)
+	return elapsed[0]
+
+
+func test_spawn_creates_the_npc_on_its_cell() -> void:
+	_director.play(&"spawn_oak")
+	var oak := _map.get_npc(&"oak")
+	assert_not_null(oak)
+	if oak == null:
+		return
+	assert_eq(oak.get_cell(), Vector2i(5, 15))
+	assert_eq(oak.get_facing(), Vector2i.UP)
+	assert_same(_map.get_grid().get_occupant(Vector2i(5, 15)), oak)
+	assert_eq(oak.get_parent(), _map.get_entities())
+	assert_false(_director.is_running())
+	assert_push_error_count(0)
+
+
+func test_spawn_on_a_taken_cell_is_skipped_with_error() -> void:
+	_director.play(&"spawn_taken")
+	assert_push_error("occupée")
+	assert_null(_map.get_npc(&"oak"))
+	assert_true(_flags.has_flag(&"after"), "la scène continue")
+
+
+func test_move_near_the_player_runs_along_find_path_and_waits_for_arrival() -> void:
+	# Joueur en (5, 8) : première case libre parmi (6, 8), (4, 8), (5, 9) → (6, 8).
+	var expected_goal := Vector2i(6, 8)
+	var oak_cells: Array[Vector2i] = []
+	_director.step_started.connect(func(index: int) -> void:
+		if index == 1:
+			var oak := _map.get_npc(&"oak")
+			var path := _map.get_grid().find_path(oak.get_cell(), expected_goal, oak)
+			oak_cells.append_array(CutsceneMoves.path_cells(oak.get_cell(), path))
+			oak.step_finished.connect(func(cell: Vector2i) -> void: oak_cells.append(cell)))
+	var elapsed: float = await _play_timed(&"oak_runs_to_player")
+	var oak := _map.get_npc(&"oak")
+	assert_eq(oak.get_cell(), expected_goal)
+	assert_false(oak.is_moving())
+	assert_true(_flags.has_flag(&"arrived"), "étape suivante après l'arrivée")
+	# Première moitié : le chemin attendu ; seconde : les cases réellement atteintes.
+	var half := oak_cells.size() / 2
+	assert_gt(half, 0)
+	assert_eq(oak_cells.slice(half), oak_cells.slice(0, half), "suit find_path")
+	var steps := half
+	assert_almost_eq(elapsed, steps * Grid.RUN_STEP_DURATION, 0.1 + steps * 0.02,
+		"%d pas en courant" % steps)
+	assert_eq(_player.get_cell(), START, "le joueur n'a pas bougé")
+	assert_push_error_count(0)
+
+
+func test_move_to_an_absolute_cell() -> void:
+	var mom := _map.get_npc(&"mom")
+	var path := _map.get_grid().find_path(mom.get_cell(), Vector2i(9, 6), mom)
+	var elapsed: float = await _play_timed(&"mom_walks_to")
+	assert_eq(mom.get_cell(), Vector2i(9, 6))
+	assert_true(_flags.has_flag(&"after"))
+	assert_almost_eq(elapsed, path.size() * Grid.WALK_STEP_DURATION, 0.1 + path.size() * 0.02,
+		"%d pas en marchant" % path.size())
+	assert_false(_map.get_grid().is_occupied(Vector2i(7, 4)), "case de départ libérée")
+	assert_push_error_count(0)
+
+
+func test_move_along_a_written_path() -> void:
+	var mom := _map.get_npc(&"mom")
+	await _play_timed(&"mom_path")
+	assert_eq(mom.get_cell(), Vector2i(6, 6))
+	assert_eq(mom.get_facing(), Vector2i.LEFT)
+
+
+func test_move_the_player_along_a_path_while_blocked() -> void:
+	_player.set_process(true)
+	var seen: Array = []
+	_player.moved.connect(func(cell: Vector2i) -> void:
+		seen.append([cell, _player.is_blocked_by(CutsceneDirector.REASON)]))
+	await _play_timed(&"player_path")
+	assert_eq(_player.get_cell(), START + Vector2i(1, 1))
+	assert_eq(seen, [[START + Vector2i.DOWN, true], [START + Vector2i(1, 1), true]])
+	assert_true(_player.is_input_enabled())
+	assert_signal_emit_count(_director, "cutscene_started", 1, "pas de scène relancée")
+
+
+func test_move_blocked_longer_than_the_timeout_is_abandoned_with_error() -> void:
+	var blocker := RefCounted.new()
+	_map.get_grid().occupy(Vector2i(7, 5), blocker)
+	var elapsed: float = await _play_timed(&"mom_blocked")
+	assert_push_error("bloqué")
+	assert_true(_flags.has_flag(&"after"), "la scène continue")
+	assert_almost_eq(elapsed, CutsceneDirector.MOVE_BLOCK_TIMEOUT, 0.2, "abandonné au délai")
+	assert_eq(_map.get_npc(&"mom").get_cell(), Vector2i(7, 4))
+
+
+func test_move_resumes_when_the_cell_frees_up_before_the_timeout() -> void:
+	var blocker := RefCounted.new()
+	_map.get_grid().occupy(Vector2i(7, 5), blocker)
+	_director.play(&"mom_blocked")
+	await wait_seconds(0.5)
+	assert_true(_director.is_running())
+	_map.get_grid().release(Vector2i(7, 5), blocker)
+	await _await_scene_end()
+	assert_eq(_map.get_npc(&"mom").get_cell(), Vector2i(7, 5))
+	assert_push_error_count(0)
+
+
+func test_move_with_unknown_actor_is_skipped_with_error() -> void:
+	_director.play(&"ghost_move")
+	assert_push_error("introuvable")
+	assert_true(_flags.has_flag(&"after"), "la scène continue")
+	assert_false(_director.is_running())

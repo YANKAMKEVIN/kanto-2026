@@ -213,12 +213,27 @@ func test_route1_grass_freezes_the_player_before_the_grass() -> void:
 	assert_eq(boot.get_dialogue_box().get_speaker_text(), "???")
 	assert_eq(boot.get_dialogue_box().get_text(), "Hé ! Attends !")
 	await _finish_dialogue(boot)
+	# T3 : le joueur se retourne, Chen arrive en courant et s'arrête à côté de lui.
+	var runner := boot.get_dialogue_runner()
+	await wait_until(func() -> bool: return runner.is_running(), 5.0)
+	assert_eq(runner.get_dialogue_id(), &"oak_route1_warning")
+	var oak := boot.get_map().get_npc(&"oak")
+	assert_not_null(oak, "Chen est apparu")
+	if oak == null:
+		return
+	assert_eq(oak.get_cell(), Vector2i(24, 3), "à côté du joueur, sur l'autre colonne")
+	assert_eq(oak.get_facing(), Vector2i.LEFT, "Chen regarde le joueur")
+	assert_eq(player.get_facing(), Vector2i.RIGHT, "le joueur regarde Chen")
+	assert_false(hud.are_controls_visible())
+	await wait_until(func() -> bool: return boot.get_dialogue_box().is_open(), 3.0)
+	assert_eq(boot.get_dialogue_box().get_speaker_text(), "Prof. Chen")
+	await _finish_dialogue(boot)
 	await wait_until(func() -> bool: return not director.is_running(), 3.0)
-	assert_eq(player.get_facing(), Vector2i.DOWN, "le joueur s'est retourné")
+	assert_eq(player.get_cell(), Vector2i(23, 3), "le joueur n'a pas bougé")
 	assert_true(GameState.flags.has_flag(&"oak_met"))
 	assert_true(player.is_input_enabled())
 	assert_true(hud.are_controls_visible())
-	# Remonter : la pensée, en narration sans nom.
+	# Remonter : la pensée, en narration sans nom, puis le recul d'un pas.
 	Input.action_press(&"move_down")
 	await wait_until(func() -> bool: return player.get_cell() == Vector2i(23, 4), 3.0)
 	Input.action_release(&"move_down")
@@ -233,4 +248,6 @@ func test_route1_grass_freezes_the_player_before_the_grass() -> void:
 	assert_eq(boot.get_dialogue_box().get_text(), "Je ne devrais pas aller là sans Pokémon.")
 	await _finish_dialogue(boot)
 	await wait_until(func() -> bool: return not director.is_running(), 3.0)
+	assert_eq(player.get_cell(), Vector2i(23, 4), "recul d'un pas vers le village")
+	assert_eq(player.get_facing(), Vector2i.DOWN)
 	assert_true(player.is_input_enabled())

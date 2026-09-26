@@ -25,6 +25,18 @@
 		"speaker": "???",
 		"pages": ["Hé ! Attends !"]
 	},
+	"oak_route1_warning": {
+		"speaker": "Prof. Chen",
+		"pages": [
+			{ "text": "Tu allais vraiment entrer là-dedans tout seul ?", "turn": { "oak": "player" } },
+			{
+				"text": "Les Pokémon qui vivent ici ne sont pas tous aussi tranquilles que ceux du village.",
+				"turn": { "oak": "up" }
+			},
+			{ "text": "Sans Pokémon à tes côtés, tu prends un risque inutile.", "turn": { "oak": "player" } },
+			{ "text": "...Viens avec moi.", "pause": 1.0 }
+		]
+	},
 	"route1_grass_thought": {
 		"narration": true,
 		"pages": ["Je ne devrais pas aller là sans Pokémon."]

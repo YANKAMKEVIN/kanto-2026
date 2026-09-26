@@ -335,3 +335,45 @@ func test_face_same_direction_or_invalid_emits_nothing() -> void:
 	_player.face(Vector2i.ZERO)
 	assert_eq(_player.get_facing(), Vector2i.RIGHT)
 	assert_signal_not_emitted(_player, "facing_changed")
+
+
+# --- Pas scripté (jalon 3B §2.5, T3) ------------------------------------------------------
+
+func test_script_step_moves_one_cell_while_blocked_for_a_cutscene() -> void:
+	_player.set_input_enabled(false, &"cutscene")
+	assert_true(_player.script_step(Vector2i.UP))
+	assert_true(_player.is_moving())
+	assert_eq(_player.get_facing(), Vector2i.UP)
+	assert_false(_grid.is_occupied(START), "case quittée libérée dès le départ")
+	_simulate(0.3)
+	assert_eq(_player.get_cell(), START + Vector2i.UP)
+	assert_false(_player.is_moving(), "aucun pas de plus, joueur bloqué")
+	assert_signal_emitted_with_parameters(_player, "moved", [START + Vector2i.UP])
+	assert_true(_player.is_blocked_by(&"cutscene"), "toujours bloqué")
+	_player.set_input_enabled(true, &"cutscene")
+
+
+func test_script_step_run_uses_run_animation_and_duration() -> void:
+	_player.set_input_enabled(false, &"cutscene")
+	assert_true(_player.script_step(Vector2i.RIGHT, true))
+	assert_true(_player.is_running())
+	_simulate(FRAME)
+	var sprite := _player.get_node(^"%Sprite") as AnimatedSprite2D
+	assert_eq(sprite.animation, &"run_right")
+	_simulate(Grid.RUN_STEP_DURATION + 2 * FRAME)
+	assert_eq(_player.get_cell(), START + Vector2i.RIGHT)
+	assert_false(_player.is_moving())
+	_player.set_input_enabled(true, &"cutscene")
+
+
+func test_script_step_refused_during_a_step_or_against_an_obstacle() -> void:
+	_grid.set_solid(START + Vector2i.DOWN)
+	assert_false(_player.script_step(Vector2i.DOWN), "obstacle")
+	assert_eq(_player.get_facing(), Vector2i.DOWN, "tourné quand même")
+	assert_signal_not_emitted(_player, "bumped")
+	assert_false(_player.script_step(Vector2i(1, 1)))
+	assert_true(_player.script_step(Vector2i.UP))
+	assert_false(_player.script_step(Vector2i.RIGHT), "déjà en marche")
+	_simulate(0.3)
+	assert_eq(_player.get_cell(), START + Vector2i.UP)
+	assert_signal_emit_count(_player, "moved", 1)

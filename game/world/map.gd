@@ -11,8 +11,10 @@ extends Node2D
 ## table des déclencheurs de scène (docs/tech/jalon-03b.md §2.2).
 ## Les PNJ ne sont pas dans la scène : à [method _ready], la carte lit
 ## `<npcs_dir>/<map_id>.json` ([NpcRoster]), crée un [Npc] par entrée dans `Entities` et
-## l'inscrit comme occupant de sa case (§2.3). Ils n'ont pas d'owner : les scripts de
-## construction ne les sauvent jamais dans les `.tscn`.
+## l'inscrit sur sa case ([method Npc.enter_grid], §2.3). Une scène scriptée peut en ajouter
+## ([method add_npc]) ou en retirer ([method remove_npc]) pour la durée de la carte
+## (jalon 3B §2.5). Ils n'ont pas d'owner : les scripts de construction ne les sauvent
+## jamais dans les `.tscn`.
 ## Le joueur est ajouté à `Entities` (y-sort) par [method spawn_player].
 
 const _TILE_LAYERS: Array[NodePath] = [^"Ground", ^"Detail", ^"Obstacles"]
@@ -90,6 +92,29 @@ func get_npcs() -> Array[Npc]:
 	return _npcs.duplicate()
 
 
+## Crée le PNJ [param spec] pour la durée de la carte (étape « spawn » d'une scène) :
+## ajouté à `Entities` et inscrit sur sa case. push_error et null si l'identifiant existe
+## déjà, si la case est hors carte ou prise.
+func add_npc(spec: NpcSpec) -> Npc:
+	if spec == null:
+		push_error("GameMap %s : PNJ sans description" % map_id)
+		return null
+	if get_npc(spec.id) != null:
+		push_error("GameMap %s : PNJ « %s » déjà présent" % [map_id, spec.id])
+		return null
+	return _create_npc(spec)
+
+
+## Retire le PNJ [param id] : case libérée, nœud libéré. Sans effet s'il n'existe pas.
+func remove_npc(id: StringName) -> void:
+	var npc := get_npc(id)
+	if npc == null:
+		return
+	npc.leave_grid()
+	_npcs.erase(npc)
+	npc.queue_free()
+
+
 ## PNJ d'identifiant [param id], ou null.
 func get_npc(id: StringName) -> Npc:
 	for npc: Npc in _npcs:
@@ -149,7 +174,7 @@ func _build_grid() -> void:
 			if prop != null:
 				_grid.add_solid_footprint(prop.get_anchor_cell(), prop.get_footprint())
 	for npc: Npc in _npcs:
-		if not _grid.occupy(npc.get_cell(), npc):
+		if not npc.enter_grid(_grid):
 			push_error("GameMap %s : PNJ « %s » ne peut plus occuper %s" % [
 				map_id, npc.get_id(), npc.get_cell()])
 	_build_warps()
@@ -221,19 +246,31 @@ func _spawn_npcs() -> void:
 		return
 	var roster := NpcRoster.load_for_map(map_id, npcs_dir)
 	for spec: NpcSpec in roster.get_all():
-		if not _grid.is_in_bounds(spec.cell):
-			push_error("GameMap %s : PNJ « %s » hors de la carte en %s" % [
-				map_id, spec.id, spec.cell])
-			continue
-		if _grid.is_occupied(spec.cell):
-			push_error("GameMap %s : PNJ « %s » sur une case déjà occupée %s" % [
-				map_id, spec.id, spec.cell])
-			continue
-		var npc := _NPC_SCENE.instantiate() as Npc
-		npc.setup(spec)
-		entities.add_child(npc)
-		_grid.occupy(spec.cell, npc)
-		_npcs.append(npc)
+		_create_npc(spec)
+
+
+## Crée un [Npc] dans `Entities` et l'inscrit sur sa case. Une case hors carte ou déjà
+## occupée : push_error, rien n'est créé (null).
+func _create_npc(spec: NpcSpec) -> Npc:
+	var entities := get_node_or_null(^"Entities")
+	if entities == null:
+		push_error("GameMap %s : pas de nœud Entities pour « %s »" % [map_id, spec.id])
+		return null
+	var grid := get_grid()
+	if not grid.is_in_bounds(spec.cell):
+		push_error("GameMap %s : PNJ « %s » hors de la carte en %s" % [
+			map_id, spec.id, spec.cell])
+		return null
+	if grid.is_occupied(spec.cell):
+		push_error("GameMap %s : PNJ « %s » sur une case déjà occupée %s" % [
+			map_id, spec.id, spec.cell])
+		return null
+	var npc := _NPC_SCENE.instantiate() as Npc
+	npc.setup(spec)
+	entities.add_child(npc)
+	npc.enter_grid(grid)
+	_npcs.append(npc)
+	return npc
 
 
 func _read_layer(layer: TileMapLayer) -> void:

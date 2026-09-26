@@ -277,3 +277,90 @@ func test_interact_key_advances() -> void:
 	await wait_process_frames(1)
 	Input.action_release(&"interact")
 	assert_eq(_runner.get_session().get_page_index(), 1, "E fait passer à la page suivante")
+
+
+# --- Indication « turn » (jalon 3B §2.7, T3) ----------------------------------------------
+
+## Dialogues à « turn » (en mémoire) : joueur en (13, 5) tourné vers le haut, rival en
+## (13, 4) tourné à droite, Rattata de Léo en (17, 9) tourné à droite.
+const TURNS := {
+	"turns": {"speaker": "Prof. Chen", "pages": [
+		{"text": "Un.", "turn": {"rival": "left", "player": "rival"}},
+		{"text": "Deux."},
+		{"text": "Trois.", "turn": {"rival": "player", "player": "right"}},
+	]},
+	"turn_react": {"pages": [
+		{"text": "Hop.", "turn": {"leo_rattata": "up"}, "react": "leo_rattata"},
+	]},
+	"turn_ghost": {"pages": [
+		{"text": "Personne.", "turn": {"ghost": "up", "rival": "nobody"}},
+		{"text": "Suite.", "turn": {"rival": "down"}},
+	]},
+}
+
+
+func _add_turns() -> void:
+	_library.add_from_dict(TURNS, "test")
+
+
+func test_turn_turns_the_npc_then_the_player_at_the_start_of_that_page_only() -> void:
+	_add_turns()
+	var rival := _map.get_npc(&"rival")
+	var order: Array = []
+	_player.facing_changed.connect(func(_dir: Vector2i) -> void:
+		order.append(["player", rival.get_facing()]))
+	_player.face(Vector2i.LEFT)
+	order.clear()
+	assert_true(_runner.play(&"turns", null, _map))
+	assert_eq(rival.get_facing(), Vector2i.LEFT, "page 1 : rival à gauche")
+	assert_eq(_player.get_facing(), Vector2i.UP, "page 1 : joueur vers le rival")
+	assert_eq(order, [["player", Vector2i.LEFT]], "le rival d'abord, puis le joueur")
+	rival.face(Vector2i.RIGHT)
+	await wait_process_frames(1)
+	_advance()
+	assert_eq(_runner.get_session().get_page_index(), 1)
+	assert_eq(rival.get_facing(), Vector2i.RIGHT, "page 2 : aucune orientation rejouée")
+	_advance()
+	assert_eq(_runner.get_session().get_page_index(), 2)
+	assert_eq(rival.get_facing(), Vector2i.DOWN, "page 3 : rival vers le joueur")
+	assert_eq(_player.get_facing(), Vector2i.RIGHT, "page 3 : joueur à droite")
+	_advance()
+	await _finish()
+	assert_eq(rival.get_facing(), Vector2i.DOWN, "sans npc passé à play : il garde son orientation")
+	assert_push_error_count(0)
+
+
+func test_turn_is_applied_before_react() -> void:
+	_add_turns()
+	var rattata := _map.get_npc(&"leo_rattata")
+	var facing_at_react: Array[Vector2i] = []
+	rattata.reacted.connect(func() -> void: facing_at_react.append(rattata.get_facing()))
+	_runner.play(&"turn_react", null, _map)
+	assert_eq(facing_at_react, [Vector2i.UP] as Array[Vector2i], "tourné avant la réaction")
+	await wait_process_frames(1)
+	_advance()
+	await _finish()
+
+
+func test_turn_with_unknown_actor_or_target_warns_and_continues() -> void:
+	_add_turns()
+	var rival := _map.get_npc(&"rival")
+	assert_true(_runner.play(&"turn_ghost", null, _map))
+	assert_eq(rival.get_facing(), Vector2i.RIGHT, "cible inconnue : rien")
+	assert_eq(_box.get_text(), "Personne.")
+	await wait_process_frames(1)
+	_advance()
+	assert_eq(rival.get_facing(), Vector2i.DOWN, "la page suivante est jouée")
+	_advance()
+	await _finish()
+	assert_push_error_count(0)
+
+
+func test_turn_without_map_warns_and_continues() -> void:
+	_add_turns()
+	assert_true(_runner.play(&"turn_react"))
+	assert_eq(_box.get_text(), "Hop.")
+	await wait_process_frames(1)
+	_advance()
+	await _finish()
+	assert_true(_player.is_input_enabled())

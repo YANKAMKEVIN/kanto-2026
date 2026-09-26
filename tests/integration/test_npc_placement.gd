@@ -154,7 +154,7 @@ func test_every_npc_has_its_own_frames() -> void:
 
 
 func test_sprite_sizes_and_animations() -> void:
-	var people: Array[StringName] = [&"mom", &"rival", &"maya", &"aoki", &"haru"]
+	var people: Array[StringName] = [&"mom", &"rival", &"maya", &"aoki", &"haru", &"oak"]
 	var pokemon: Array[StringName] = [
 		&"bulbasaur", &"charmander", &"squirtle", &"rattata", &"pidgey",
 	]
@@ -179,6 +179,36 @@ func test_sprite_sizes_and_animations() -> void:
 			assert_eq(frames.has_animation(react), reacting.has(id), "%s : %s" % [id, react])
 			if frames.has_animation(react):
 				assert_false(frames.get_animation_loop(react), "%s : réaction non bouclée" % id)
+
+
+## Jalon 3B (T3) : Chen, créé par l'étape « spawn » de route1_grass, a ses propres
+## SpriteFrames avec marche et course (4 images, bouclées, course plus rapide).
+func test_oak_has_its_own_frames_with_walk_and_run() -> void:
+	assert_true(Npc.has_frames(&"oak"), "oak_frames.tres")
+	var frames := load(Npc.frames_path(&"oak")) as SpriteFrames
+	assert_not_null(frames)
+	if frames == null:
+		return
+	for dir: String in ["down", "up", "left", "right"]:
+		for kind: String in ["walk_", "run_"]:
+			var anim := StringName(kind + dir)
+			assert_true(frames.has_animation(anim), "oak : %s" % anim)
+			assert_eq(frames.get_frame_count(anim), 4, "oak : %s en 4 images" % anim)
+			assert_true(frames.get_animation_loop(anim), "oak : %s bouclée" % anim)
+			assert_eq(frames.get_frame_texture(anim, 0).get_size(), Vector2(32, 64))
+		assert_gt(frames.get_animation_speed(StringName("run_" + dir)),
+			frames.get_animation_speed(StringName("walk_" + dir)), "course plus rapide")
+	var cutscenes := CutsceneLibrary.new()
+	cutscenes.load_dir()
+	var spawned: Array[StringName] = []
+	for id: StringName in cutscenes.get_ids():
+		for variant: CutsceneVariant in cutscenes.get_cutscene(id).variants:
+			for step: CutsceneStep in variant.steps:
+				if step.kind == CutsceneStep.Kind.SPAWN:
+					spawned.append(step.spec.sprite)
+	assert_true(spawned.has(&"oak"), "Chen apparaît par une étape « spawn »")
+	for sprite: StringName in spawned:
+		assert_true(Npc.has_frames(sprite), "%s_frames.tres (PNJ d'une scène)" % sprite)
 
 
 func test_npc_cells_in_map_not_on_warp_or_spawn_and_walkable() -> void:

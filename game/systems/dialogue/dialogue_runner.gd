@@ -6,7 +6,7 @@ extends Node
 ## Il relie les données ([DialogueLibrary], [StoryFlags]) au déroulé pur ([DialogueSession])
 ## et à l'affichage ([DialogueBox]). Il bloque le joueur pour la raison
 ## [constant REASON] dès [method play] (de façon synchrone), applique la mise en scène au
-## début de chaque page (face_player, react), avance au toucher de la boîte ou à
+## début de chaque page (turn, face_player, react), avance au toucher de la boîte ou à
 ## `interact`, puis, à la fin, lève les drapeaux « set » **avant** d'émettre
 ## [signal dialogue_finished].
 ## Il reçoit ses dépendances par [method setup] : il ne lit aucun autoload.
@@ -146,6 +146,8 @@ func _begin_page() -> void:
 	var page := _session.get_page()
 	if _box != null:
 		_box.show_page(_session.get_speaker(), page.text, _dialogue.narration)
+	for actor_id: StringName in page.turn:
+		_apply_turn(actor_id, page.turn[actor_id])
 	if page.face_player and is_instance_valid(_npc) and _player != null:
 		_npc.face_toward(_player.get_cell())
 	if not page.react.is_empty():
@@ -157,6 +159,46 @@ func _begin_page() -> void:
 			target.react()
 	_refresh_box()
 	page_started.emit(_session.get_page_index())
+
+
+## Indication « turn » d'une page (jalon 3B §2.7) : [param actor_id] (« player » ou PNJ de
+## la carte) se tourne vers [param target] (nom de direction, « player » ou PNJ : axe
+## dominant). Acteur ou cible introuvable : push_warning, le dialogue continue.
+func _apply_turn(actor_id: StringName, target: StringName) -> void:
+	var actor := _find_actor(actor_id)
+	if actor == null:
+		push_warning("DialogueRunner : « turn » de « %s » introuvable (%s)" % [
+			actor_id, _dialogue.id])
+		return
+	var direction := Grid.direction_from_name(target)
+	if not Grid.is_direction_name(target):
+		var other := _find_actor(target)
+		if other == null:
+			push_warning("DialogueRunner : « turn » vers « %s » introuvable (%s)" % [
+				target, _dialogue.id])
+			return
+		direction = Grid.dominant_direction(_actor_cell(actor), _actor_cell(other))
+	if direction == Vector2i.ZERO:
+		return
+	if actor is Player:
+		(actor as Player).face(direction)
+	else:
+		(actor as Npc).face(direction)
+
+
+## Joueur (« player ») ou PNJ de la carte du dialogue ; null sinon.
+func _find_actor(actor_id: StringName) -> Node2D:
+	if actor_id == NpcRoster.PLAYER_ID:
+		return _player if is_instance_valid(_player) else null
+	if not is_instance_valid(_map):
+		return null
+	return _map.get_npc(actor_id)
+
+
+static func _actor_cell(actor: Node2D) -> Vector2i:
+	if actor is Player:
+		return (actor as Player).get_cell()
+	return (actor as Npc).get_cell()
 
 
 func _refresh_box() -> void:

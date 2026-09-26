@@ -828,3 +828,87 @@ func test_map_without_triggers_node_has_empty_table() -> void:
 	add_child_autofree(map)
 	assert_not_null(map.get_triggers())
 	assert_true(map.get_triggers().is_empty())
+
+
+# --- PNJ ajoutés par une scène (jalon 3B §2.5, T3) --------------------------------------
+
+func _added_spec(id: StringName, cell: Vector2i) -> NpcSpec:
+	var spec := NpcSpec.new()
+	spec.id = id
+	spec.cell = cell
+	spec.facing = Vector2i.UP
+	spec.sprite = &"oak"
+	return spec
+
+
+func test_add_npc_on_a_free_cell() -> void:
+	var map := _make_npc_map()
+	add_child_autofree(map)
+	var npc := map.add_npc(_added_spec(&"oak", Vector2i(4, 12)))
+	assert_not_null(npc)
+	if npc == null:
+		return
+	assert_eq(npc.get_parent(), map.get_entities())
+	assert_same(map.get_npc(&"oak"), npc)
+	assert_same(map.get_grid().get_occupant(Vector2i(4, 12)), npc)
+	assert_eq(npc.get_cell(), Vector2i(4, 12))
+	assert_eq(npc.get_facing(), Vector2i.UP)
+	assert_eq(npc.position, Grid.cell_to_world(Vector2i(4, 12)))
+	assert_eq(map.get_npcs().size(), 5)
+	assert_null(npc.owner, "jamais sauvé dans la scène")
+	assert_push_error_count(0)
+
+
+func test_add_npc_on_a_taken_cell_returns_null_with_error() -> void:
+	var map := _make_npc_map()
+	add_child_autofree(map)
+	assert_null(map.add_npc(_added_spec(&"oak", Vector2i(7, 4))), "case de Maman")
+	assert_push_error("occupée")
+	assert_same(map.get_grid().get_occupant(Vector2i(7, 4)), map.get_npc(&"mom"))
+	assert_null(map.get_npc(&"oak"))
+	assert_eq(map.get_entities().get_child_count(), 4)
+
+
+func test_add_npc_outside_or_with_a_known_id_returns_null_with_error() -> void:
+	var map := _make_npc_map()
+	add_child_autofree(map)
+	assert_null(map.add_npc(_added_spec(&"oak", Vector2i(30, 3))))
+	assert_push_error("hors de la carte")
+	assert_null(map.add_npc(_added_spec(&"mom", Vector2i(4, 12))))
+	assert_push_error("déjà présent")
+	assert_false(map.get_grid().is_occupied(Vector2i(4, 12)))
+	assert_eq(map.get_npcs().size(), 4)
+
+
+func test_remove_npc_frees_its_cell() -> void:
+	var map := _make_npc_map()
+	add_child_autofree(map)
+	var npc := map.add_npc(_added_spec(&"oak", Vector2i(4, 12)))
+	map.remove_npc(&"oak")
+	assert_false(map.get_grid().is_occupied(Vector2i(4, 12)))
+	assert_null(map.get_npc(&"oak"))
+	assert_eq(map.get_npcs().size(), 4)
+	assert_true(npc.is_queued_for_deletion())
+	map.remove_npc(&"rival")
+	assert_false(map.get_grid().is_occupied(Vector2i(13, 4)), "PNJ du fichier aussi")
+	map.remove_npc(&"nobody")
+	assert_push_error_count(0)
+
+
+func test_rebuild_grid_keeps_added_and_walked_npcs() -> void:
+	var map := _make_npc_map()
+	add_child_autofree(map)
+	var npc := map.add_npc(_added_spec(&"oak", Vector2i(4, 12)))
+	assert_true(npc.step(Vector2i.UP))
+	npc.set_process(false)
+	for i: int in 30:
+		npc._process(1.0 / 60.0)
+	assert_eq(npc.get_cell(), Vector2i(4, 11))
+	var grid := map.rebuild_grid()
+	assert_same(grid.get_occupant(Vector2i(4, 11)), npc, "sur sa case courante")
+	assert_false(grid.is_occupied(Vector2i(4, 12)))
+	for other: Npc in map.get_npcs():
+		assert_same(grid.get_occupant(other.get_cell()), other)
+	assert_eq(map.get_npcs().size(), 5, "pas de doublon")
+	assert_true(npc.step(Vector2i.UP), "marche sur la grille reconstruite")
+	assert_push_error_count(0)
