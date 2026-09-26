@@ -1,6 +1,6 @@
 # État du projet — note de passage
 
-Mis à jour : 2026-09-26 (jalon 3B codé dans le cloud sur la branche `jalon-03b`, en attente de QA S24 et de validation par Kevin ; non fusionné).
+Mis à jour : 2026-09-26 (jalon 3B validé par Kevin et fusionné dans `main` ; jalon 4 planifié, fondations en cours dans le cloud).
 
 ## Fait
 - Outillage : Godot 4.7.2, export Android vérifié sur le S24, GUT 9.7.1, scripts `tools/`.
@@ -23,15 +23,18 @@ Mis à jour : 2026-09-26 (jalon 3B codé dans le cloud sur la branche `jalon-03b
   `StoryFlags` (drapeaux de session), `Dialogue` / `DialogueVariant` / `DialoguePage` / `DialogueLibrary` (dialogues JSON de `data/dialogues/`, validés), `DialogueSession` (texte progressif, silences, avance), `Interaction` / `InteractionTable` / `InteractionFinder` (cible = case devant le joueur), `NpcSpec` / `NpcRoster` (PNJ et Pokémon du décor de `data/npcs/<carte>.json`).
 
 - **Jalon 3A, T1 à T5 — PNJ, interactions, dialogues** : Maman (premier dialogue automatique, puis réplique « Tu sors ? »), rival dans sa chambre (carte de Kanto sur le lit), Maya et les trois starters observables au labo, Mme Aoki et 2 Roucool, Léo et son Rattata, Haru sur la plage ; table, carte et panneau examinables ; bouton contextuel unique Parler / Examiner / Observer (Prendre prévu) avec vibration ; boîte de dialogue sombre translucide sans portrait ; autoload `GameState` (drapeaux de session, sans sauvegarde) ; blocage des entrées par raisons. **513 tests verts.** QA sur S24 : 24 répliques identiques au dossier 02, 60 fps en dialogue, aucun plantage (rapport : `build/qa/jalon03/rapport-jalon-03.md`, non versionné). Retouches après QA : `jalon-03.md` §6 (Haru sur la plage, paillasse du labo, permission VIBRATE). **Validé par Kevin le 2026-09-26.**
-- **Jalon 3B (branche `jalon-03b`, non fusionnée) — l'événement de la Route 1** :
+- **Jalon 3B — l'événement de la Route 1 (validé par Kevin le 2026-09-26, fusionné dans `main`)** :
   - Plan [`jalon-03b.md`](jalon-03b.md) aligné sur le code réel du 3A (§8) et sur les décisions de Kevin (§7).
   - Fondations logiques : `EventTrigger`/`TriggerTable`, scènes scriptées en données (`Cutscene*`, `data/cutscenes/prologue.json`), `GridWorld.find_path`, pas scriptés, PNJ conditionnés par les drapeaux (`if`/`unless`), clé `turn` des dialogues.
   - T1 : hautes herbes sur (23..24, 0..2), Roucool et Rattata d'ambiance dans la prairie.
   - T2 : `CutsceneDirector` (blocage `cutscene`), déclencheur `Route1Grass` sur (23..24, 3), gel puis « ??? — Hé ! Attends ! ».
   - T3 : Prof. Chen arrive en courant et dit ses 4 répliques (didascalies : il regarde les herbes, silence d'1 s) ; PNJ mobiles.
   - T4 : le joueur suit Chen, fondu vers le labo, échange Rival / Prof. Chen, contrôle rendu. Chen et le rival au labo, chambre du rival vide, nouvelle réplique de Maya. Tant que `has_starter` n'est pas levé, les herbes affichent la pensée « Je ne devrais pas aller là sans Pokémon. » puis le joueur recule d'un pas.
-  - **675 tests verts**, import sans erreur ni warning. Captures headless (xvfb + opengl3, 2340×1080) relues dans le cloud (`build/captures/jalon03b/`, non versionnées ; scénarios `route1_grass`, `route1_freeze`, `route1_full` de `tools/capture_play.gd`).
-- **Conception reçue** : `dossier-05-combat.md`, `dossier-06-progression.md`, références `combat-v1.webp` et `combat-capture-v1.webp` (la sélection des capacités est décrite dans `ui-reference.md` ; fichier `combat-capacites-v1.png` attendu de Kevin).
+  - Répliques d'attente au labo (décision de Kevin) : Prof. Chen « Un peu de patience. J'ai quelque chose à vous montrer. », Rival « Tu vois ? Je t'avais dit que j'étais prêt. ».
+  - QA sur S24 (Mac) : tous les critères OK, 62 fps sur toute la scène, pensée aux herbes 10/10, aucun plantage (rapport : `build/qa/jalon03b/rapport-jalon-03b.md`, non versionné).
+  - **675 tests verts**, import sans erreur ni warning. Captures headless (xvfb + opengl3, 2340×1080) relues dans le cloud — **le cloud peut donc aussi produire des captures** (`build/captures/jalon03b/`, non versionnées ; scénarios `route1_grass`, `route1_freeze`, `route1_full` de `tools/capture_play.gd`).
+- **Correction des 3 erreurs « locked object » du fondu** (branche cloud `fix-screen-fade-tests`, fusionnée) : les tests n'affichent plus de SCRIPT ERROR.
+- **Conception reçue** : `dossier-05-combat.md`, `dossier-06-progression.md`, références `combat-v1.webp`, `combat-capacites-v1.png` et `combat-capture-v1.webp`.
 
 ## Organisation cloud / Mac (depuis le 2026-09-26)
 - Dépôt privé `YANKAMKEVIN/kanto-2026`. Les sessions **cloud** installent Godot 4.7.2 via le hook SessionStart (`tools/cloud_setup.sh`) et font tourner `tools/test.sh`. Elles **codent et testent** sur une branche dédiée, qu'elles poussent ; **aucune fusion dans `main`** sans validation de Kevin sur le S24.
@@ -39,25 +42,13 @@ Mis à jour : 2026-09-26 (jalon 3B codé dans le cloud sur la branche `jalon-03b
 - Une seule session à la fois sur une même branche.
 
 ## Prochaine étape
-1. **Mac — T5 du jalon 3B** : récupérer `jalon-03b`, `tools/deploy_s24.sh`, QA `qa-mobile`, puis validation de Kevin et fusion. À vérifier sur le S24 :
-   - rendu des hautes herbes provisoires et positions du Roucool (20, 3) et du Rattata (27, 2), déplacés par rapport au plan car cachés par le sapin et le rocher ;
-   - gel devant les herbes sur les deux colonnes (23 et 24), lisibilité de « ??? », contrôles cachés de bout en bout de la scène ;
-   - course de Chen, souffle 0,6 s, silence 1 s, suivi sur 8 cases, fondu, 2 pas dans le labo, rythme des regards du rival (durées réglables dans `data/cutscenes/prologue.json`) ;
-   - sprite provisoire de Chen (blouse, cheveux gris, chemise rouge, pantalon brun : hypothèse à remplacer par l'Art Bible) ;
-   - après la scène : Maya, chambre du rival vide, pensée et recul aux herbes ;
-   - `unzip -l` de l'APK : `data/cutscenes/prologue.json` présent (vérifié seulement via `--export-pack` dans le cloud, faute de SDK Android), et **aucun fichier `build/`** embarqué (voir ci-dessous).
-2. **Jalon 4 — starter et premier combat** : plan par `architecte-godot` (`docs/tech/jalon-04.md`, branche `plan-jalon-04`), d'après `dossier-02-prologue.md` §6–§10, `dossier-04-systeme-pokemon.md`, `dossier-05-combat.md`, `ui-ux-bible-v0.1.md` et les références de combat. Points d'accroche du 3B : `jalon-03b.md` §2.10 ; le drapeau `has_starter` déverrouille les herbes.
+1. **Jalon 4 — starter et premier combat** : plan [`jalon-04.md`](jalon-04.md) sur la branche `plan-jalon-04` ; **décisions de Kevin en tête du §8** (starter qui descend de la table, sortie empêchée par Prof. Chen, tables d'apprentissage de Rouge/Bleu, évolutions prévues dans le modèle, nom seul en combat, répliques après victoire / défaite, Chen après le combat, répliques d'attente, combat dans le vrai labo recomposé). Découpage 4A (choix du starter) puis 4B (premier combat).
+   - En cours dans le cloud : **fondations logiques** (données Pokémon, capacités, types, moteur de combat pur) sur `jalon-04-fondations`.
+   - Ensuite : scènes du 4A (branche depuis `main` + fondations), QA S24 sur le Mac, validation, puis 4B.
+2. **Plan du jalon 5** (Route 1 et premières rencontres sauvages) : éventuellement préparé dans le cloud (`plan-jalon-05`).
 
-## Questions ouvertes pour Kevin (jalon 3B, valeurs par défaut appliquées)
-- **Q19, recul après la pensée** : le joueur recule d'un pas vers le village (comme Rouge/Bleu), plutôt qu'un mur invisible.
-- **Q20 et Q21, pensée** : narration en italique sans guillemets ni nom, répétée à chaque arrivée sur la case, de n'importe quel côté.
-- **Q10, Chen et le rival au labo après la scène** : non interactifs en attendant le jalon 4. Faut-il une réplique d'attente ?
-- **« Un peu de patience. »** : Chen est déjà tourné vers le bas, son geste vers le rival ne se voit pas. Laissé tel quel ; on peut ajouter un `turn` ou déplacer le rival.
-- **Suivi** : le joueur marche à la vitesse de Chen (pas de course).
-
-## Points techniques relevés
-- `build/` n'a pas de `.gdignore` versionné et `export_presets.cfg` ne l'exclut pas : les captures de `build/captures/` peuvent finir dans l'APK. Correctif proposé : ajouter `build/*` à `exclude_filter`.
-- `tools/test.sh` affiche 3 lignes « SCRIPT ERROR: Attempted to free a locked object » (`screen_fade.gd`, déjà présentes sur `main` après le 3A, tests verts ; `jalon-03b.md` §8.15), et 4 WARNING volontaires de `test_dialogue_runner` (acteur de `turn` introuvable).
+## Décisions de Kevin (jalon 3B, 2026-09-26)
+Décisions du §7 de `jalon-03b.md` appliquées ; après implémentation : recul d'un pas après la pensée (validé), répliques d'attente de Chen et du rival, orientation de Chen sur « Un peu de patience. » laissée telle quelle (polish), suivi en marchant (validé). Le drapeau du starter s'appellera `starter_chosen` (plan du jalon 4, Q26) : le blocage des herbes, qui lit aujourd'hui `has_starter`, sera aligné au jalon 4.
 
 ## Décisions de Kevin (jalon 3A, 2026-09-26)
 Toutes les propositions de `jalon-03.md` §5 acceptées ; boîte de dialogue sombre translucide sans portrait (bible UI/UX §3, remplace la planche) ; bouton contextuel face à la cible ; panneau « BOURG PALETTE » provisoire ; « Rival » ; Haru sur la plage (se tourne vers le joueur puis vers la mer) ; nom du Pokémon observé affiché.
@@ -77,6 +68,8 @@ Référence `docs/design/reference/ouverture-storyboard-v1.webp`. Escalier = tra
 - Cinématique de première sortie (révélation de Bourg Palette, « Le commencement de toute aventure ») : jalon « ouverture ».
 - Rendu « vraie DA » des intérieurs d'après les références (lumière chaude, décor riche) : phase DA. Le bas de la douche du rival reste partiellement sous le bouton courir.
 - Laissé tel quel (décision de Kevin) : un pas en trop si on lève le doigt à la toute fin du fondu.
+- **Vitesses de déplacement à revoir (Kevin, 2026-09-26)** : la marche paraît un peu rapide et la course très rapide ; or le **vélo** devra être le plus rapide des trois. Régler l'échelle marche < course < vélo dans `Grid` (et les rythmes des scènes dans `data/cutscenes/`) lors d'une passe dédiée, avant l'arrivée du vélo.
+- Orientations et animations fines des cinématiques (ex. Chen sur « Un peu de patience. ») : passe de polish des cinématiques.
 
 ## Décisions de Kevin (2026-09-25)
 Les six propositions de l'architecte sont acceptées : porte du labo au sud avec parvis et portillon vers les jardins, carte 48×34, sous-titre « Kanto » (la phrase d'ouverture est réservée à la première sortie de la maison), course au bouton tenu, marche 0,22 s/case et course 0,12 s/case (à ajuster après l'essai sur S24), sortie Route 1 = bord de carte. Détails dans [`jalon-01.md`](jalon-01.md) §6.
