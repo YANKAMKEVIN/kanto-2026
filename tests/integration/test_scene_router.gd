@@ -188,6 +188,21 @@ func test_step_on_door_locks_same_frame_then_arrives_in_b() -> void:
 	assert_false(_router.is_transitioning())
 
 
+func test_blocked_step_ending_on_the_door_does_not_change_map() -> void:
+	_start_on_a()
+	_player.enter_map(_made[&"a"].get_grid(), A_DOOR + Vector2i.DOWN, Vector2i.UP,
+		_made[&"a"].get_pixel_rect())
+	_player.set_input_enabled(false, &"cutscene")
+	# Pas scripté (jalon 3B) : il part même bloqué.
+	assert_true(_player._mover.start_step(Vector2i.UP))
+	_simulate_until(func() -> bool: return not _player.is_moving())
+	assert_eq(_player.get_cell(), A_DOOR)
+	assert_false(_router.is_transitioning(), "joueur bloqué : pas de porte")
+	assert_signal_not_emitted(_router, "transition_started")
+	assert_eq(_router.get_current_map(), _made[&"a"])
+	_player.set_input_enabled(true, &"cutscene")
+
+
 # --- 3. tapis PUSH ------------------------------------------------------------------
 
 func test_holding_down_on_mat_returns_to_door_facing_down() -> void:

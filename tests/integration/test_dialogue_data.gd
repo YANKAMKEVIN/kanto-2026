@@ -4,6 +4,8 @@ extends GutTest
 ## Chargement sans erreur, références (dialogues, react), drapeaux, textes du dossier 02
 ## repris mot pour mot, trois lignes au plus dans la vraie DialogueBox à 1920 × 1080,
 ## textes provisoires (draft) attendus.
+## Jalon 3B (T2) : dialogues joués par les scènes de data/cutscenes/ (via les
+## EventTriggerPoint des cartes), drapeaux lus et levés par dialogues, scènes et PNJ.
 
 const BOX_SCENE := "res://game/ui/dialogue/dialogue_box.tscn"
 const DOSSIER := "res://docs/design/dossier-02-prologue.md"
@@ -13,14 +15,17 @@ const MAPS: Array[StringName] = [
 ## Seuls textes provisoires : le panneau « BOURG PALETTE » (Q8).
 const DRAFTS: Array[StringName] = [&"sign_pallet_town"]
 ## Identifiants attendus (3A) : Maman, table, rival, carte, Maya, 3 starters, 3 habitants,
-## panneau.
+## panneau ; (3B) « Hé ! Attends ! » et la pensée des herbes.
 const IDS: Array[StringName] = [
-	&"aoki", &"breakfast_table", &"haru", &"leo", &"maya", &"mom", &"observe_bulbasaur",
-	&"observe_charmander", &"observe_squirtle", &"rival", &"rival_kanto_map",
-	&"sign_pallet_town",
+	&"aoki", &"breakfast_table", &"haru", &"leo", &"maya", &"mom", &"oak_route1_call",
+	&"observe_bulbasaur", &"observe_charmander", &"observe_squirtle", &"rival",
+	&"rival_kanto_map", &"route1_grass_thought", &"sign_pallet_town",
 ]
+## Drapeaux lus en 3B mais levés par un jalon futur (jalon-03b.md §2.8) : starter (jalon 4).
+const FUTURE_FLAGS: Array[StringName] = [&"has_starter"]
 
 var _library: DialogueLibrary
+var _cutscenes: CutsceneLibrary
 ## Dialogue → cartes où il est utilisé (PNJ ou point d'examen).
 var _used_on: Dictionary[StringName, Array] = {}
 ## Carte → identifiants de PNJ.
@@ -30,6 +35,8 @@ var _npc_ids: Dictionary[StringName, Array] = {}
 func before_all() -> void:
 	_library = DialogueLibrary.new()
 	_library.load_dir()
+	_cutscenes = CutsceneLibrary.new()
+	_cutscenes.load_dir()
 	for map_id: StringName in MAPS:
 		_npc_ids[map_id] = []
 		for spec: NpcSpec in NpcRoster.load_for_map(map_id).get_all():
@@ -39,7 +46,21 @@ func before_all() -> void:
 		var map := (load(MapCatalog.scene_path(map_id)) as PackedScene).instantiate()
 		for point: Node in map.get_node(^"Interactables").get_children():
 			_use((point as InteractPoint).dialogue_id, map_id)
+		for point: Node in map.get_node(^"Triggers").get_children():
+			_use_cutscene((point as EventTriggerPoint).cutscene_id, map_id)
 		map.free()
+
+
+## Dialogues joués par les étapes de la scène [param cutscene_id], sur la carte de son
+## déclencheur (T2 : sans changement de carte).
+func _use_cutscene(cutscene_id: StringName, map_id: StringName) -> void:
+	var cutscene := _cutscenes.get_cutscene(cutscene_id)
+	if cutscene == null:
+		return
+	for variant: CutsceneVariant in cutscene.variants:
+		for step: CutsceneStep in variant.steps:
+			if step.kind == CutsceneStep.Kind.DIALOGUE:
+				_use(step.dialogue_id, map_id)
 
 
 func _use(dialogue: StringName, map_id: StringName) -> void:
@@ -72,8 +93,19 @@ func test_every_used_dialogue_exists() -> void:
 
 
 func test_every_dialogue_is_used() -> void:
+	var played := _cutscenes.get_dialogue_ids()
 	for id: StringName in _library.get_ids():
-		assert_true(_used_on.has(id), "dialogue « %s » utilisé par un PNJ ou un point" % id)
+		assert_true(_used_on.has(id) or played.has(id),
+			"dialogue « %s » utilisé par un PNJ, un point ou une scène" % id)
+
+
+func test_every_dialogue_played_by_a_cutscene_exists() -> void:
+	assert_eq(_cutscenes.get_errors().size(), 0, str(_cutscenes.get_errors()))
+	var played := _cutscenes.get_dialogue_ids()
+	assert_eq(played, [&"oak_route1_call", &"route1_grass_thought"] as Array[StringName])
+	for id: StringName in played:
+		assert_true(_library.has_dialogue(id), "dialogue « %s » défini" % id)
+		assert_true(_used_on.has(id), "« %s » joué depuis un déclencheur de carte" % id)
 
 
 func test_every_react_targets_an_npc_of_the_map_where_it_is_used() -> void:
@@ -89,10 +121,20 @@ func test_every_react_targets_an_npc_of_the_map_where_it_is_used() -> void:
 
 
 func test_every_condition_flag_is_set_somewhere() -> void:
-	var set_flags := _library.get_set_flags()
-	for flag: StringName in _library.get_condition_flags():
+	var set_flags := _library.get_set_flags() + _cutscenes.get_set_flags()
+	var read_flags := _library.get_condition_flags() + _cutscenes.get_condition_flags()
+	for map_id: StringName in MAPS:
+		for spec: NpcSpec in NpcRoster.load_for_map(map_id).get_all():
+			read_flags.append_array(spec.if_flags + spec.unless_flags)
+	for flag: StringName in read_flags:
+		if FUTURE_FLAGS.has(flag):
+			continue
 		assert_true(set_flags.has(flag), "drapeau « %s » levé par un « set »" % flag)
+	for flag: StringName in FUTURE_FLAGS:
+		assert_false(set_flags.has(flag), "« %s » : levé par un jalon futur" % flag)
+	assert_true(read_flags.has(&"has_starter"), "has_starter lu (pensée des herbes)")
 	assert_eq(_library.get_set_flags(), [&"mom_greeted", &"rival_met"] as Array[StringName])
+	assert_eq(_cutscenes.get_set_flags(), [&"oak_met"] as Array[StringName])
 
 
 func test_mom_first_variant_is_automatic_and_only_hers() -> void:
@@ -126,6 +168,7 @@ func test_speakers_and_narration() -> void:
 		&"breakfast_table": ["", true], &"rival_kanto_map": ["", true],
 		&"observe_bulbasaur": ["Bulbizarre", true], &"observe_charmander": ["Salamèche", true],
 		&"observe_squirtle": ["Carapuce", true], &"sign_pallet_town": ["", false],
+		&"oak_route1_call": ["???", false], &"route1_grass_thought": ["", true],
 	}
 	for id: StringName in expected:
 		var dialogue := _library.get_dialogue(id)

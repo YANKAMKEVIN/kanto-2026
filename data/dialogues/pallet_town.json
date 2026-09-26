@@ -20,5 +20,13 @@
 	"sign_pallet_town": {
 		"draft": true,
 		"pages": ["BOURG PALETTE"]
+	},
+	"oak_route1_call": {
+		"speaker": "???",
+		"pages": ["Hé ! Attends !"]
+	},
+	"route1_grass_thought": {
+		"narration": true,
+		"pages": ["Je ne devrais pas aller là sans Pokémon."]
 	}
 }

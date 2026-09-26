@@ -730,3 +730,101 @@ func test_map_without_interactables_node_has_empty_table() -> void:
 	add_child_autofree(map)
 	assert_not_null(map.get_interactions())
 	assert_true(map.get_interactions().is_empty())
+
+
+# --- Jalon 3B (T2) : déclencheurs de scène -------------------------------------------
+
+func _trigger_point(node_name: StringName, cell: Vector2i, point_size: Vector2i,
+		cutscene: StringName, direction: Vector2i = Vector2i.ZERO) -> EventTriggerPoint:
+	var point := EventTriggerPoint.new()
+	point.name = node_name
+	point.position = Grid.cell_to_world(cell)
+	point.size = point_size
+	point.cutscene_id = cutscene
+	point.direction = direction
+	return point
+
+
+func _add_triggers_node(map: GameMap) -> Node2D:
+	var triggers := Node2D.new()
+	triggers.name = "Triggers"
+	map.add_child(triggers)
+	return triggers
+
+
+func test_event_trigger_point_2x1_gives_two_triggers() -> void:
+	var map := _make_mini_map()
+	_add_triggers_node(map).add_child(
+		_trigger_point(&"Grass", Vector2i(5, 3), Vector2i(2, 1), &"route1_grass"))
+	add_child_autofree(map)
+	var triggers := map.get_triggers()
+	assert_eq(triggers.size(), 2)
+	for cell: Vector2i in [Vector2i(5, 3), Vector2i(6, 3)]:
+		var found := triggers.find_on_step(cell, Vector2i.UP)
+		assert_not_null(found, "case %s" % cell)
+		if found != null:
+			assert_eq(found.cutscene_id, &"route1_grass")
+		assert_not_null(triggers.find_on_step(cell, Vector2i.LEFT), "toutes directions")
+	assert_null(triggers.find_on_step(Vector2i(5, 2), Vector2i.UP))
+	assert_null(triggers.find_on_step(Vector2i(7, 3), Vector2i.UP))
+	assert_push_error_count(0)
+
+
+func test_event_trigger_point_cells() -> void:
+	var point := _trigger_point(&"P", Vector2i(2, 6), Vector2i(2, 2), &"s")
+	var cells: Array[Vector2i] = [Vector2i(2, 6), Vector2i(3, 6), Vector2i(2, 5),
+		Vector2i(3, 5)]
+	assert_eq(point.get_cell(), Vector2i(2, 6))
+	assert_eq(point.get_cells(), cells)
+	assert_eq(point.to_triggers().size(), 4)
+	point.free()
+
+
+func test_trigger_direction_is_respected() -> void:
+	var map := _make_mini_map()
+	_add_triggers_node(map).add_child(
+		_trigger_point(&"Up", Vector2i(5, 3), Vector2i.ONE, &"s", Vector2i.UP))
+	add_child_autofree(map)
+	var triggers := map.get_triggers()
+	assert_not_null(triggers.find_on_step(Vector2i(5, 3), Vector2i.UP))
+	assert_null(triggers.find_on_step(Vector2i(5, 3), Vector2i.DOWN))
+	assert_null(triggers.find_on_step(Vector2i(5, 3), Vector2i.LEFT))
+
+
+func test_conflicting_trigger_points_push_error() -> void:
+	var map := _make_mini_map()
+	var node := _add_triggers_node(map)
+	node.add_child(_trigger_point(&"Grass", Vector2i(5, 3), Vector2i(2, 1), &"a"))
+	node.add_child(_trigger_point(&"Clash", Vector2i(6, 3), Vector2i.ONE, &"b"))
+	add_child_autofree(map)
+	assert_push_error("déclencheur invalide")
+	assert_eq(map.get_triggers().size(), 2, "le déclencheur en conflit est écarté")
+	assert_eq(map.get_triggers().find_on_step(Vector2i(6, 3), Vector2i.UP).cutscene_id, &"a")
+
+
+func test_trigger_without_cutscene_push_error() -> void:
+	var map := _make_mini_map()
+	_add_triggers_node(map).add_child(_trigger_point(&"Empty", Vector2i(5, 3), Vector2i.ONE, &""))
+	add_child_autofree(map)
+	assert_push_error("déclencheur invalide")
+	assert_true(map.get_triggers().is_empty())
+
+
+func test_rebuild_grid_rebuilds_the_trigger_table() -> void:
+	var map := _make_mini_map()
+	var node := _add_triggers_node(map)
+	add_child_autofree(map)
+	assert_true(map.get_triggers().is_empty())
+	var before := map.get_triggers()
+	node.add_child(_trigger_point(&"Late", Vector2i(5, 3), Vector2i.ONE, &"s"))
+	map.rebuild_grid()
+	assert_ne(map.get_triggers(), before, "nouvelle table")
+	assert_eq(map.get_triggers().size(), 1)
+
+
+func test_map_without_triggers_node_has_empty_table() -> void:
+	var map := GameMap.new()
+	map.size = Vector2i(4, 4)
+	add_child_autofree(map)
+	assert_not_null(map.get_triggers())
+	assert_true(map.get_triggers().is_empty())

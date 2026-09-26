@@ -1,0 +1,21 @@
+{
+	"route1_grass": {
+		"variants": [
+			{
+				"unless": ["oak_met"],
+				"steps": [
+					{ "wait": 0.4 },
+					{ "dialogue": "oak_route1_call" },
+					{ "face": "player", "to": "down" },
+					{ "set": ["oak_met"] }
+				]
+			},
+			{
+				"unless": ["has_starter"],
+				"steps": [
+					{ "dialogue": "route1_grass_thought" }
+				]
+			}
+		]
+	}
+}

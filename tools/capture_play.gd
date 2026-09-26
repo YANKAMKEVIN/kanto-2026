@@ -19,6 +19,11 @@ extends SceneTree
 ##              herbes, Roucool et Rattata de la prairie), puis move_up injecté jusqu'en
 ##              (23, 2) (dans les herbes : rien ne se passe encore), puis move_down jusqu'en
 ##              (23, 5). Captures jalon03b_route1_grass_{below,inside,out}. ~200 images.
+##   route1_freeze  jalon 3B (T2) : joueur téléporté en (23, 7) tourné vers le nord, move_up
+##              tenu : gel en (23, 3) (contrôles cachés), « ??? — Hé ! Attends ! », le joueur
+##              retourné (contrôles rendus), un pas vers le bas puis move_up à nouveau : la
+##              pensée en narration. Captures jalon03b_t2_NN_*. ~400 images à 30 images/s :
+##              --quit-after 900.
 ##   walk_roof  entrées move_* injectées : spawn → (32, 10) → (32, 4) → (36, 4),
 ##              au nord de sa maison (le toit doit le masquer, y-sort).
 ##   doors      départ réel du jeu (chambre) puis portes, tapis et escaliers (jalon 2, T5) :
@@ -90,6 +95,7 @@ const DOORS_LAB: Array[Dictionary] = [
 ]
 const DOORS_PREFIX: String = "jalon02_doors_"
 const NPCS_PREFIX: String = "jalon03_npcs_"
+const T2_PREFIX: String = "jalon03b_t2_"
 ## Délai maximal d'une attente du scénario « npcs » (images).
 const NPCS_TIMEOUT: int = 900
 ## Images d'attente avant la capture d'une étape (titre de zone entré : ~0,3 s).
@@ -135,6 +141,12 @@ func _start_boot() -> void:
 	elif _scenario == "npcs":
 		_setup_doors()
 		InputMap.action_erase_events(&"interact")
+	elif _scenario == "route1_freeze":
+		_boot.set(&"start_map", &"pallet_town")
+		for action: StringName in MOVE_ACTIONS.values():
+			InputMap.action_erase_events(action)
+		InputMap.action_erase_events(&"run")
+		InputMap.action_erase_events(&"interact")
 	else:
 		_boot.set(&"start_map", &"pallet_town")
 	root.add_child(_boot)
@@ -148,6 +160,8 @@ func _on_frame() -> void:
 		_player = _boot.call(&"get_player")
 		if _scenario == "npcs":
 			_run_npcs()
+		elif _scenario == "route1_freeze":
+			_run_route1_freeze()
 		return
 	match _scenario:
 		"spawn":
@@ -610,3 +624,50 @@ func _wait_arrival() -> void:
 		await process_frame
 	_release_moves()
 	await _frames(SETTLE_FRAMES)
+
+
+# --- Scénario « route1_freeze » (jalon 3B, T2) --------------------------------------
+
+func _run_route1_freeze() -> void:
+	await _frames(5)
+	var map: Node = _boot.call(&"get_map")
+	_player.call(&"enter_map", map.call(&"get_grid"), Vector2i(23, 7), Vector2i.UP,
+		map.call(&"get_pixel_rect"))
+	await _frames(20)
+	var director: Node = _boot.call(&"get_cutscene_director")
+	await _hold_up_until_scene(director)
+	await _frames(2)
+	await _t2_shot("01_freeze")
+	await _page_complete()
+	await _t2_shot("02_call")
+	await _finish_dialogue()
+	await _frames(10)
+	await _t2_shot("03_turned")
+	await _go(Vector2i(23, 4))
+	await _frames(6)
+	await _hold_up_until_scene(director)
+	await _page_complete()
+	await _t2_shot("04_thought")
+	await _finish_dialogue()
+	await _frames(10)
+	await _t2_shot("05_after_thought")
+	await _frames(5)
+	print("ROUTE1_FREEZE terminé (frame %d)" % _frame)
+	quit()
+
+
+## Tient move_up jusqu'au début d'une scène, puis relâche.
+func _hold_up_until_scene(director: Node) -> void:
+	Input.action_press(&"move_up")
+	for i: int in NPCS_TIMEOUT:
+		if director.call(&"is_running"):
+			break
+		await process_frame
+	Input.action_release(&"move_up")
+
+
+func _t2_shot(capture_name: String) -> void:
+	var hud: Node = _boot.call(&"get_hud")
+	print("  contrôles visibles : %s" % hud.call(&"are_controls_visible"))
+	_mark(T2_PREFIX + capture_name)
+	await _frames(2)

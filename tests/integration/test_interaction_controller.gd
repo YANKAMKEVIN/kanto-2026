@@ -231,6 +231,18 @@ func test_auto_variant_on_map_entered() -> void:
 	assert_false(_runner.is_running(), "pas de relance à l'arrivée suivante")
 
 
+func test_no_auto_dialogue_on_map_entered_while_the_player_is_blocked() -> void:
+	_place(Vector2i(2, 4), Vector2i.DOWN)
+	_player.set_input_enabled(false, &"cutscene")
+	_controller.on_map_entered(_map)
+	assert_false(_runner.is_running(), "scène en cours : pas de dialogue automatique")
+	assert_signal_not_emitted(_runner, "dialogue_started")
+	assert_eq(_player.get_facing(), Vector2i.DOWN, "le joueur ne se tourne pas")
+	_player.set_input_enabled(true, &"cutscene")
+	_controller.on_map_entered(_map)
+	assert_true(_runner.is_running(), "libre : Maman parle comme en 3A")
+
+
 func test_auto_dialogue_holds_the_player_even_with_a_direction_held() -> void:
 	_place(Vector2i(2, 4), Vector2i.DOWN)
 	Input.action_press(&"move_down")

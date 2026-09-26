@@ -5,7 +5,9 @@ extends Node
 ## Ne fait que câbler : instancie le joueur, branche l'autoload SceneRouter sur `World`,
 ## le joueur et le rideau `ScreenFade`, relie les signaux du routeur au HUD, charge les
 ## dialogues de `data/dialogues/` et branche le lecteur de dialogues et le contrôleur
-## d'interactions (docs/tech/jalon-03.md §2.1), puis démarre
+## d'interactions (docs/tech/jalon-03.md §2.1), charge les scènes scriptées de
+## `data/cutscenes/` et branche le directeur de scènes (docs/tech/jalon-03b.md §2.1), puis
+## démarre
 ## sur [member start_map] / [member start_spawn]. Le titre de zone ne s'affiche qu'en
 ## arrivant dans une zone extérieure différente ([ZoneAnnouncer]) : aucun au démarrage
 ## dans la chambre. Les réglages de départ servent au développement, aux tests et aux
@@ -23,6 +25,7 @@ const PLAYER_SCENE: PackedScene = preload("res://game/player/player.tscn")
 var _player: Player
 var _announcer := ZoneAnnouncer.new()
 var _library := DialogueLibrary.new()
+var _cutscenes := CutsceneLibrary.new()
 
 @onready var _world: Node2D = %World
 @onready var _hud: ExplorationHud = %ExplorationHud
@@ -30,21 +33,27 @@ var _library := DialogueLibrary.new()
 @onready var _dialogue_box: DialogueBox = %DialogueBox
 @onready var _runner: DialogueRunner = %DialogueRunner
 @onready var _interactions: InteractionController = %InteractionController
+@onready var _cutscenes_node: CutsceneDirector = %CutsceneDirector
 
 
 func _ready() -> void:
 	GameState.new_game()
 	_player = PLAYER_SCENE.instantiate() as Player
 	_library.load_dir()
+	_cutscenes.load_dir()
 	_runner.setup(_library, GameState.flags, _dialogue_box, _player)
 	_interactions.setup(_player, _runner)
+	_cutscenes_node.setup(_cutscenes, GameState.flags, _runner, _player, SceneRouter)
 	_interactions.target_changed.connect(_on_target_changed)
 	_runner.dialogue_started.connect(_on_dialogue_started)
 	_runner.dialogue_finished.connect(_on_dialogue_finished)
+	_cutscenes_node.cutscene_started.connect(_on_cutscene_started)
+	_cutscenes_node.cutscene_finished.connect(_on_cutscene_finished)
 	SceneRouter.setup(_world, _player, _fade)
 	# Branchés avant start() : la première carte passe aussi par le contrôleur.
 	SceneRouter.transition_started.connect(_on_transition_started)
-	SceneRouter.map_changed.connect(_interactions.set_map)
+	# Via Boot (ordre garanti) : la carte passe au contrôleur puis au directeur.
+	SceneRouter.map_changed.connect(_on_map_changed)
 	SceneRouter.map_entered.connect(_on_map_entered)
 	SceneRouter.map_entered.connect(_interactions.on_map_entered)
 	SceneRouter.start(start_map, start_spawn, start_facing)
@@ -53,7 +62,7 @@ func _ready() -> void:
 func _exit_tree() -> void:
 	var links: Array[Array] = [
 		[SceneRouter.transition_started, _on_transition_started],
-		[SceneRouter.map_changed, _interactions.set_map],
+		[SceneRouter.map_changed, _on_map_changed],
 		[SceneRouter.map_entered, _on_map_entered],
 		[SceneRouter.map_entered, _interactions.on_map_entered],
 	]
@@ -91,6 +100,15 @@ func get_interaction_controller() -> InteractionController:
 	return _interactions
 
 
+func get_cutscene_director() -> CutsceneDirector:
+	return _cutscenes_node
+
+
+## Scènes scriptées chargées au démarrage (data/cutscenes/).
+func get_cutscene_library() -> CutsceneLibrary:
+	return _cutscenes
+
+
 ## Dialogues chargés au démarrage (data/dialogues/).
 func get_dialogue_library() -> DialogueLibrary:
 	return _library
@@ -98,6 +116,11 @@ func get_dialogue_library() -> DialogueLibrary:
 
 func _on_transition_started(_target_map: StringName) -> void:
 	_hud.hide_zone_title()
+
+
+func _on_map_changed(map: GameMap) -> void:
+	_interactions.set_map(map)
+	_cutscenes_node.set_map(map)
 
 
 func _on_map_entered(map: GameMap) -> void:
@@ -114,8 +137,22 @@ func _on_target_changed(kind: int) -> void:
 
 
 func _on_dialogue_started(_dialogue_id: StringName) -> void:
-	_hud.set_controls_visible(false)
+	_refresh_controls()
 
 
 func _on_dialogue_finished(_dialogue_id: StringName) -> void:
-	_hud.set_controls_visible(true)
+	_refresh_controls()
+
+
+func _on_cutscene_started(_cutscene_id: StringName) -> void:
+	_refresh_controls()
+
+
+func _on_cutscene_finished(_cutscene_id: StringName) -> void:
+	_refresh_controls()
+
+
+## Contrôles visibles seulement hors dialogue et hors scène : pendant une scène, ils restent
+## cachés entre deux dialogues.
+func _refresh_controls() -> void:
+	_hud.set_controls_visible(not _runner.is_running() and not _cutscenes_node.is_running())

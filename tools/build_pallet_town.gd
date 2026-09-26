@@ -5,8 +5,8 @@ extends SceneTree
 ##   godot --headless --path . --import
 ##
 ## Plan : docs/tech/jalon-01.md §4 ; portes (warps et spawns) : docs/tech/jalon-02.md §4.2 ;
-## points d'examen (`INTERACTABLES`) : docs/tech/jalon-03.md §3.2 ; hautes herbes :
-## docs/tech/jalon-03b.md §3.1.
+## points d'examen (`INTERACTABLES`) : docs/tech/jalon-03.md §3.2 ; hautes herbes et
+## déclencheur (`TRIGGERS`) : docs/tech/jalon-03b.md §3.1.
 ## Zones et props sont décrits en données ci-dessous (rectangles inclusifs
 ## [x0, y0, x1, y1] et ancres de cases). Variantes de tuiles et essences d'arbres tirées
 ## avec une graine fixe : la carte est reproductible.
@@ -198,6 +198,13 @@ const TREE_SCENES: Array[String] = [
 const INTERACTABLES: Array = [
 	["SignPallet", Vector2i(21, 13), Vector2i(1, 1), Vector2i.ZERO, "sign_pallet_town"],
 ]
+
+## Déclencheurs de scène : [nœud, ancre, size, direction, scène]. Ancre = case en bas à
+## gauche ; direction ZERO = pas venu de n'importe quel côté. Route1Grass : la case juste
+## avant les hautes herbes, sur les deux colonnes du chemin (jalon-03b.md §3.1, Q2).
+const TRIGGERS: Array = [
+	["Route1Grass", Vector2i(23, 3), Vector2i(2, 1), Vector2i.ZERO, "route1_grass"],
+]
 ## Interaction.Kind (valeurs).
 const EXAMINE: int = 1
 
@@ -239,6 +246,7 @@ func _init() -> void:
 	_attach(root, root.get_node(^"Spawns"), start)
 	_add_doors(root)
 	_add_interactables(root)
+	_add_triggers(root)
 
 	var kinds: Array = _paint(ground, GROUND)
 	_paint(obstacles, OBSTACLES)
@@ -286,6 +294,19 @@ func _add_interactables(root: Node) -> void:
 		point.set(&"dialogue_id", StringName(entry[4]))
 		point.set(&"kind", entry[5] if entry.size() > 5 else EXAMINE)
 		_attach(root, root.get_node(^"Interactables"), point)
+
+
+func _add_triggers(root: Node) -> void:
+	var point_script: GDScript = load("res://game/world/triggers/event_trigger_point.gd")
+	for entry: Array in TRIGGERS:
+		var point := Marker2D.new()
+		point.set_script(point_script)
+		point.name = entry[0]
+		point.position = _world(entry[1])
+		point.set(&"size", entry[2])
+		point.set(&"direction", entry[3])
+		point.set(&"cutscene_id", StringName(entry[4]))
+		_attach(root, root.get_node(^"Triggers"), point)
 
 
 func _world(cell: Vector2i) -> Vector2:

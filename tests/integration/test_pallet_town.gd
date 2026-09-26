@@ -1,7 +1,7 @@
 extends GutTest
 ## Carte pallet_town : métadonnées, spawn et invariants d'accessibilité (jalon 1 §4.4),
 ## portes ouvertes, warps et spawns des bâtiments (jalon 2 §4.2, §4.8) ; hautes herbes
-## et Pokémon de la prairie (jalon 3B §3.1, §3.6, T1).
+## et Pokémon de la prairie (jalon 3B §3.1, §3.6, T1) ; déclencheur de la Route 1 (T2).
 
 const MAP_PATH := "res://game/world/maps/pallet_town.tscn"
 const START := Vector2i(36, 10)
@@ -15,6 +15,8 @@ const DOORS: Dictionary = {
 
 ## Hautes herbes : les 3 dernières rangées du chemin de la Route 1 (jalon 3B §3.1).
 const TALL_GRASS_RECT := Rect2i(23, 0, 2, 3)
+## Déclencheur « route1_grass » : la case juste avant les herbes, sur les deux colonnes.
+const TRIGGER_CELLS: Array[Vector2i] = [Vector2i(23, 3), Vector2i(24, 3)]
 ## Pokémon d'ambiance de la prairie : id → [case, orientation, apparence].
 const PRAIRIE: Dictionary = {
 	&"prairie_pidgey": [Vector2i(20, 3), Vector2i.DOWN, &"pidgey"],
@@ -279,3 +281,48 @@ func test_prairie_pokemon_stand_on_grass_in_view_of_the_route() -> void:
 			if _reachable.has(cell + direction):
 				free_neighbours += 1
 		assert_gt(free_neighbours, 0, "%s au bord d'une case atteignable" % id)
+
+
+func test_route1_trigger_covers_the_cells_just_before_the_grass() -> void:
+	var triggers := _map.get_triggers()
+	assert_eq(triggers.size(), TRIGGER_CELLS.size())
+	var point := _map.get_node_or_null(^"Triggers/Route1Grass") as EventTriggerPoint
+	assert_not_null(point, "Triggers/Route1Grass")
+	for cell: Vector2i in TRIGGER_CELLS:
+		for direction: Vector2i in [Vector2i.UP, Vector2i.DOWN, Vector2i.LEFT, Vector2i.RIGHT]:
+			var trigger := triggers.find_on_step(cell, direction)
+			assert_not_null(trigger, "%s, pas vers %s" % [cell, direction])
+			if trigger != null:
+				assert_eq(trigger.cutscene_id, &"route1_grass")
+
+
+func test_route1_trigger_cells_are_walkable_reachable_and_clear() -> void:
+	var spawn_cells: Array[Vector2i] = []
+	for marker: Node in _map.get_node(^"Spawns").get_children():
+		spawn_cells.append(Grid.world_to_cell((marker as Node2D).position))
+	var warp_cells: Array[Vector2i] = []
+	for warp: Warp in _map.get_warps().get_all():
+		warp_cells.append(warp.cell)
+	var npc_cells: Array[Vector2i] = []
+	for spec: NpcSpec in NpcRoster.load_for_map(&"pallet_town").get_all():
+		npc_cells.append(spec.cell)
+	for cell: Vector2i in TRIGGER_CELLS:
+		assert_false(_grid.is_solid(cell), "praticable : %s" % cell)
+		assert_true(_reachable.has(cell), "atteignable : %s" % cell)
+		assert_false(warp_cells.has(cell), "pas un warp : %s" % cell)
+		assert_false(spawn_cells.has(cell), "pas un spawn : %s" % cell)
+		assert_false(npc_cells.has(cell), "pas la case d'un PNJ : %s" % cell)
+		var below := cell + Vector2i.DOWN
+		assert_true(_grid.is_free(below), "case de recul libre : %s" % below)
+		assert_false(npc_cells.has(below), "case de recul sans PNJ : %s" % below)
+
+
+func test_tall_grass_cannot_be_reached_without_the_trigger() -> void:
+	for cell: Vector2i in TRIGGER_CELLS:
+		_grid.set_solid(cell)
+	var reachable := _grid.find_reachable(START)
+	for cell: Vector2i in TRIGGER_CELLS:
+		_grid.set_solid(cell, false)
+	for y: int in range(TALL_GRASS_RECT.position.y, TALL_GRASS_RECT.end.y):
+		for x: int in range(TALL_GRASS_RECT.position.x, TALL_GRASS_RECT.end.x):
+			assert_false(reachable.has(Vector2i(x, y)), "herbes (%d, %d) hors d'atteinte" % [x, y])

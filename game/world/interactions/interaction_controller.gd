@@ -77,6 +77,8 @@ func on_map_entered(map: GameMap) -> void:
 		set_map(map)
 	if map == null or _player == null or _runner == null or _runner.is_running():
 		return
+	if not _player.is_input_enabled():
+		return  # scène en cours (arrivée au labo) : pas de dialogue automatique
 	for npc: Npc in map.get_npcs():
 		var interaction := npc.get_interaction()
 		if interaction == null or not _runner.has_auto_variant(interaction.dialogue_id):
@@ -93,14 +95,10 @@ func get_target() -> Interaction:
 
 
 ## Direction cardinale de [param from] vers [param to] selon l'axe dominant (à égalité,
-## l'axe vertical, comme [method Npc.face_toward]) ; ZERO si c'est la même case.
+## l'axe vertical) ; ZERO si c'est la même case. Délègue à [method Grid.dominant_direction]
+## (règle unique).
 static func dominant_direction(from: Vector2i, to: Vector2i) -> Vector2i:
-	var delta := to - from
-	if delta == Vector2i.ZERO:
-		return Vector2i.ZERO
-	if absi(delta.x) > absi(delta.y):
-		return Vector2i(signi(delta.x), 0)
-	return Vector2i(0, signi(delta.y))
+	return Grid.dominant_direction(from, to)
 
 
 func _can_target() -> bool:

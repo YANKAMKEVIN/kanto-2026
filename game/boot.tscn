@@ -6,6 +6,7 @@
 [ext_resource type="PackedScene" path="res://game/ui/dialogue/dialogue_box.tscn" id="4_box"]
 [ext_resource type="Script" path="res://game/systems/dialogue/dialogue_runner.gd" id="5_runner"]
 [ext_resource type="Script" path="res://game/world/interactions/interaction_controller.gd" id="6_ctrl"]
+[ext_resource type="Script" path="res://game/systems/cutscene/cutscene_director.gd" id="7_director"]
 
 [node name="Boot" type="Node"]
 script = ExtResource("1_boot")
@@ -26,6 +27,10 @@ script = ExtResource("5_runner")
 [node name="InteractionController" type="Node" parent="."]
 unique_name_in_owner = true
 script = ExtResource("6_ctrl")
+
+[node name="CutsceneDirector" type="Node" parent="."]
+unique_name_in_owner = true
+script = ExtResource("7_director")
 
 [node name="ScreenFade" parent="." instance=ExtResource("3_fade")]
 unique_name_in_owner = true

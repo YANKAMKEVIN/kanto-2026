@@ -7,7 +7,8 @@ extends Node2D
 ## `Ground`, `Detail` et `Obstacles`, puis ajoute l'empreinte de chaque [WorldProp]
 ## enfant de `Entities`. Les [WarpPoint] enfants de `Warps` forment la table des passages.
 ## Les [InteractPoint] enfants de `Interactables` forment la table des points fixes
-## (docs/tech/jalon-03.md §2.2).
+## (docs/tech/jalon-03.md §2.2). Les [EventTriggerPoint] enfants de `Triggers` forment la
+## table des déclencheurs de scène (docs/tech/jalon-03b.md §2.2).
 ## Les PNJ ne sont pas dans la scène : à [method _ready], la carte lit
 ## `<npcs_dir>/<map_id>.json` ([NpcRoster]), crée un [Npc] par entrée dans `Entities` et
 ## l'inscrit comme occupant de sa case (§2.3). Ils n'ont pas d'owner : les scripts de
@@ -34,6 +35,7 @@ const _NPC_SCENE: PackedScene = preload("res://game/world/npc/npc.tscn")
 var _grid: GridWorld
 var _warps: WarpTable
 var _interactions: InteractionTable
+var _triggers: TriggerTable
 var _npcs: Array[Npc] = []
 var _npcs_spawned: bool = false
 
@@ -52,9 +54,9 @@ func get_grid() -> GridWorld:
 	return _grid
 
 
-## Reconstruit la grille, la table des warps et celle des points d'examen (après
-## modification des tuiles, des props, des warps ou des points). Les PNJ sont réinscrits
-## sur leur case.
+## Reconstruit la grille, la table des warps, celle des points d'examen et celle des
+## déclencheurs (après modification des tuiles, des props, des warps ou des points). Les PNJ
+## sont réinscrits sur leur case.
 func rebuild_grid() -> GridWorld:
 	_build_grid()
 	return _grid
@@ -73,6 +75,14 @@ func get_interactions() -> InteractionTable:
 	if _grid == null:
 		_build_grid()
 	return _interactions
+
+
+## Déclencheurs de scène de la carte (construits avec la grille, à partir des
+## [EventTriggerPoint] de `Triggers`).
+func get_triggers() -> TriggerTable:
+	if _grid == null:
+		_build_grid()
+	return _triggers
 
 
 ## PNJ et Pokémon du décor créés au chargement, dans l'ordre du fichier de données.
@@ -144,6 +154,7 @@ func _build_grid() -> void:
 				map_id, npc.get_id(), npc.get_cell()])
 	_build_warps()
 	_build_interactions()
+	_build_triggers()
 
 
 func _build_warps() -> void:
@@ -176,6 +187,27 @@ func _build_interactions() -> void:
 				refused = interaction.cell
 		if refused != Vector2i(-1, -1):
 			push_error("GameMap %s : interaction invalide en %s" % [map_id, refused])
+
+
+func _build_triggers() -> void:
+	_triggers = TriggerTable.new()
+	var points := get_node_or_null(^"Triggers")
+	if points == null:
+		return
+	for child: Node in points.get_children():
+		var point := child as EventTriggerPoint
+		if point == null:
+			continue
+		# Une seule erreur par point (la première case refusée) ; les autres cases restent.
+		var refused := Vector2i(-1, -1)
+		var triggers := point.to_triggers()
+		if triggers.is_empty():
+			refused = point.get_cell()
+		for trigger: EventTrigger in triggers:
+			if not _triggers.add(trigger) and refused == Vector2i(-1, -1):
+				refused = trigger.cell
+		if refused != Vector2i(-1, -1):
+			push_error("GameMap %s : déclencheur invalide en %s" % [map_id, refused])
 
 
 ## Crée les PNJ de `<npcs_dir>/<map_id>.json` dans `Entities` et les inscrit sur la grille.

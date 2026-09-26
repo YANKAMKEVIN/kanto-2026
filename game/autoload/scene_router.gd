@@ -204,6 +204,8 @@ func _disconnect_player() -> void:
 func _on_player_moved(cell: Vector2i) -> void:
 	if _busy or not is_instance_valid(_current_map):
 		return
+	if not _player.is_input_enabled():
+		return  # pas scripté (scène) : jamais une porte (jalon-03b.md §2.4)
 	_follow(_current_map.get_warps().find_on_step(cell, _player.get_facing()))
 
 
