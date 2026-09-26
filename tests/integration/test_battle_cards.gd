@@ -84,6 +84,8 @@ func test_bar_clamps_values() -> void:
 func test_animate_hp_reaches_value_in_hp_tween() -> void:
 	var bar := _bar()
 	bar.set_hp(20, 20)
+	# Une image d'abord : celle du chargement compterait dans la durée de l'animation.
+	await wait_process_frames(2)
 	bar.animate_hp(4, 20)
 	await wait_seconds(UiTokens.HP_TWEEN - 3.0 * FRAME)
 	assert_gt(bar.get_shown_value(), 4.0, "pas encore arrivée juste avant HP_TWEEN")
@@ -97,6 +99,8 @@ func test_animate_hp_reaches_value_in_hp_tween() -> void:
 func test_animate_hp_big_hit_is_faster() -> void:
 	var bar := _bar()
 	bar.set_hp(20, 20)
+	# Une image d'abord : celle du chargement compterait dans la durée de l'animation.
+	await wait_process_frames(2)
 	bar.animate_hp(4, 20, true)
 	await wait_seconds(UiTokens.HP_TWEEN_FAST + 2.0 * FRAME)
 	assert_eq(bar.get_shown_hp(), 4, "arrivée en HP_TWEEN_FAST")

@@ -1,0 +1,21 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://game/ui/battle/battle_message_banner.gd" id="1_banner"]
+
+[node name="BattleMessageBanner" type="Control"]
+mouse_filter = 2
+script = ExtResource("1_banner")
+
+[node name="Body" type="PanelContainer" parent="."]
+unique_name_in_owner = true
+layout_mode = 0
+mouse_filter = 2
+theme_type_variation = &"BattleMessage"
+
+[node name="Text" type="Label" parent="Body"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"BattleMessageText"
+text = "Le Rival envoie Carapuce !"
+vertical_alignment = 1
+autowrap_mode = 3

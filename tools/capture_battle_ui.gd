@@ -23,6 +23,11 @@ extends SceneTree
 ##   moves_pp0      Griffe à 0 PP (atténuée) + Rugissement
 ##   moves_detail   pression longue réelle sur Griffe (doigt tenu) : fiche détaillée
 ##   moves_detail_status  pression longue sur Rugissement (Statut, Précision 100)
+##   message        bandeau « Le Rival envoie Carapuce ! » à la place de la grille
+##   message_2lines message sur deux lignes
+##   hp_yellow      PV jaunes des deux côtés (joueur 7/19, adversaire 9/20), grille affichée
+##   hp_falling     PV de l'adversaire en pleine descente (gros coup, 9 → 2)
+##   hp_red         PV rouges des deux côtés (joueur 3/19, adversaire 2/20), cartes qui pulsent
 ## Noms, types, puissances, précisions et descriptions lus dans data/pokemon/ (l'outil peut
 ## lire les données ; game/ui/ ne le peut pas).
 
@@ -116,6 +121,7 @@ func _build_overlay() -> void:
 	_add(&"actions", "action_grid.tscn", slot["ACTIONS"])
 	_add(&"moves", "move_grid.tscn", slot["MOVES"])
 	_add(&"back", "battle_back_button.tscn", slot["BACK"])
+	_add(&"message", "battle_message_banner.tscn", slot["MESSAGE"])
 	(_parts[&"foe"] as Control).set(&"slide_direction", Vector2.RIGHT)
 	(_parts[&"own"] as Control).set(&"slide_direction", Vector2.LEFT)
 
@@ -192,6 +198,34 @@ func _run() -> void:
 			await _frames(6)
 		await moves.call(&"slide_out")
 		await back.call(&"slide_out")
+	var banner: Control = _parts[&"message"]
+	banner.set(&"speed_scale", 0.0)
+	if _wants("message"):
+		banner.call(&"show_message", "Le Rival envoie Carapuce !")
+		await _frames(4)
+		await _shot("message")
+		banner.call(&"show_message",
+			"Carapuce utilise Mimi-Queue ! La Défense de Salamèche baisse !")
+		await _frames(4)
+		await _shot("message_2lines")
+		await banner.call(&"slide_out")
+	if _wants("hp"):
+		actions.set(&"speed_scale", 0.0)
+		actions.call(&"show_actions", _enabled(true, false, false, false))
+		own.call(&"set_hp", 7, 19)
+		foe.call(&"set_hp", 9, 20)
+		await _frames(6)
+		await _shot("hp_yellow")
+		foe.set(&"speed_scale", 1.0)
+		foe.call(&"animate_hp", 2, 20, true)
+		await _frames(4)
+		await _shot("hp_falling")
+		await _frames(15)
+		own.call(&"set_hp", 3, 19)
+		await _frames(8)
+		await _shot("hp_red")
+		own.call(&"set_hp", 19, 19)
+		foe.call(&"set_hp", 20, 20)
 
 
 func _card(name: String, gender: int, hp: int, max_hp: int, numbers: bool) -> RefCounted:
