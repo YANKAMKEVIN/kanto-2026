@@ -1,6 +1,6 @@
 # État du projet — note de passage
 
-Mis à jour : 2026-09-26 (jalon 2 validé par Kevin et commité).
+Mis à jour : 2026-09-26 (jalon 3A planifié, fondations logiques posées).
 
 ## Fait
 - Outillage : Godot 4.7.2, export Android vérifié sur le S24, GUT 9.7.1, scripts `tools/`.
@@ -18,8 +18,16 @@ Mis à jour : 2026-09-26 (jalon 2 validé par Kevin et commité).
 
 - **Jalon 2, T1 à T6 — portes et intérieurs (fin de la phase 2)** : départ dans la chambre, escalier, rez-de-chaussée, sortie avec titre à la première sortie seulement, maison du rival (un seul niveau), labo de Chen ; autoload `SceneRouter` avec fondu et préchargement des cartes voisines. 295 tests verts. QA sur S24 : tous les passages dans les deux sens, changement de carte < 100 ms, 60 fps, 20 allers-retours sans fuite, aucun plantage (rapport : `build/qa/jalon02/rapport-jalon-02.md`, non versionné). Retouches après QA : `jalon-02.md` §8.
 
+- **Prologue** : conception complète de Kevin dans [`docs/design/dossier-02-prologue.md`](../design/dossier-02-prologue.md) (textes définitifs). Découpage : **3A** PNJ, interactions, dialogues, vie de Bourg Palette · **3B** événement de la Route 1 (Chen ramène le joueur au labo) · **4** starter et premier combat.
+- **Jalon 3A, étape architecture** : plan dans [`jalon-03.md`](jalon-03.md), fondations logiques testées (356 tests verts) :
+  `StoryFlags` (drapeaux de session), `Dialogue` / `DialogueVariant` / `DialoguePage` / `DialogueLibrary` (dialogues JSON de `data/dialogues/`, validés), `DialogueSession` (texte progressif, silences, avance), `Interaction` / `InteractionTable` / `InteractionFinder` (cible = case devant le joueur), `NpcSpec` / `NpcRoster` (PNJ et Pokémon du décor de `data/npcs/<carte>.json`).
+
 ## Prochaine étape
-Jalon 3 à définir avec Kevin. Candidat naturel (phase 3, déjà amorcé par ses références) : **PNJ et dialogues** — la mère et son « Bonjour ! Tu es enfin réveillé ? », le rival dans sa chambre, Chen au labo, panneaux, bouton contextuel « parler / examiner ».
+**Jalon 3A** ([`jalon-03.md`](jalon-03.md)) : Maman qui parle d'elle-même à la première descente, le rival dans sa chambre, Maya et les trois starters au labo (Chen absent), Mme Aoki, Léo et Haru dans le village, table, carte de Kanto et panneau examinables, bouton contextuel Parler / Examiner / Observer, boîte de dialogue 2026. Tâches T1 à T5 (§4).
+
+**Décisions de Kevin (2026-09-26)** : toutes les propositions de `jalon-03.md` §5 acceptées ; boîte de dialogue sombre translucide sans portrait (bible UI/UX §3, remplace la planche sur ce point) ; bouton contextuel face à la cible ; panneau « BOURG PALETTE » provisoire ; « Rival ». T1 et T2 en cours.
+
+**Nouveaux documents de conception** : `docs/design/dossier-02-prologue.md` (textes définitifs, découpage 3A / 3B / 4), `docs/design/ui-ux-bible-v0.1.md` (ses autres contradictions avec la planche — mini-carte, titre de zone, menu — restent à trancher plus tard), `docs/design/dossier-04-systeme-pokemon.md` (jalons 4+).
 
 ## Décisions de Kevin (jalon 2, 2026-09-25)
 Les neuf propositions de l'architecte sont acceptées : on entre en marchant dans la porte, départ dans la chambre sans titre, titre de zone seulement en changeant de zone extérieure, chambre du rival à l'étage, pièces modestes centrées sur fond quasi noir, fondu d'environ 0,45 s, agencements du §4 validés (ajustables après S24), arrivée sur la case du passage en continuant à marcher, cartes géographiques chez le rival. Détails dans [`jalon-02.md`](jalon-02.md) §6.

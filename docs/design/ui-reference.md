@@ -30,6 +30,8 @@ Titre + compteur (25 / 151), champ de recherche, filtres en onglets (Tous / Kant
 **Fiche** : #025, nom, badge de type coloré, sexe, taille/poids, description, onglets Infos / Capacités / Lieux, grand sprite animé.
 
 ## Dialogue
+> **Remplacé (décision de Kevin, 2026-09-26)** par la bible UI/UX §3 : panneau sombre translucide, sans portrait, nom dans le panneau, « › ». La description ci-dessous est l'ancienne version de la planche.
+
 Portrait du personnage au-dessus de la boîte, étiquette de nom bleue (« Prof. Chen »), boîte claire arrondie, texte sombre, indicateur ▼ de suite.
 
 ## Carte du monde
