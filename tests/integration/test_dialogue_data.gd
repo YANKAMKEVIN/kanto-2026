@@ -33,7 +33,7 @@ const IDS: Array[StringName] = [
 	&"oak_starter_offer", &"oak_starter_reciprocal", &"observe_bulbasaur",
 	&"observe_charmander", &"observe_squirtle", &"rival", &"rival_challenge",
 	&"rival_challenge_wait", &"rival_kanto_map", &"rival_lab_waiting", &"rival_starter_pick",
-	&"route1_grass_thought", &"sign_pallet_town",
+	&"rival_starter_smile", &"route1_grass_thought", &"sign_pallet_town",
 ]
 ## Drapeaux lus mais levés par une tâche à venir : aucun depuis T3 (starter_chosen est levé
 ## par la scène du choix).
@@ -138,12 +138,13 @@ func test_every_dialogue_played_by_a_cutscene_exists() -> void:
 	assert_eq(played, [&"oak_lab_exit_block", &"oak_lab_reunion", &"oak_route1_call",
 		&"oak_route1_warning", &"oak_starter_offer", &"oak_starter_reciprocal",
 		&"rival_challenge", &"rival_challenge_wait", &"rival_starter_pick",
-		&"route1_grass_thought"] as Array[StringName])
+		&"rival_starter_smile", &"route1_grass_thought"] as Array[StringName])
 	for id: StringName in played:
 		assert_true(_library.has_dialogue(id), "dialogue « %s » défini" % id)
 		assert_true(_used_on.has(id), "« %s » joué depuis un déclencheur ou par le code" % id)
 	for id: StringName in [&"oak_starter_reciprocal", &"rival_starter_pick",
-			&"rival_challenge_wait", &"rival_challenge", &"oak_lab_exit_block"]:
+			&"rival_starter_smile", &"rival_challenge_wait", &"rival_challenge",
+			&"oak_lab_exit_block"]:
 		assert_eq(_used_on.get(id), [&"oak_lab"], "%s joué au labo" % id)
 
 
@@ -224,11 +225,13 @@ func test_starter_flags_are_set_and_read() -> void:
 	assert_true(read_flags.has(_offer.open_flag), "open_flag lu par oak_lab_exit")
 
 
-## Décisions de Kevin n° 1, 2 et 11 (jalon-04.md §13.5) : textes mot pour mot, une page chacun.
+## Décisions de Kevin n° 1, 2, 11 et 16 (jalon-04.md §13.5, §13.12) : textes mot pour mot,
+## une page chacun ; « Ça devrait être intéressant. » gardé (décision n° 16, Q-A).
 func test_starter_choice_lines() -> void:
 	var expected: Dictionary[StringName, Array] = {
 		&"oak_starter_reciprocal": ["Prof. Chen", "On dirait que le choix est réciproque."],
 		&"rival_starter_pick": ["Rival", "Alors ce sera toi."],
+		&"rival_starter_smile": ["Rival", "Ça devrait être intéressant."],
 		&"rival_challenge_wait": ["Rival", "Attends."],
 		&"rival_challenge": ["Rival",
 			"On ne va quand même pas partir sans savoir ce qu'ils savent faire."],
@@ -244,8 +247,6 @@ func test_starter_choice_lines() -> void:
 		var pages := dialogue.variants[0].pages
 		assert_eq(pages.size(), 1, "%s : une page" % id)
 		assert_eq(pages[0].text, expected[id][1])
-	for row: Array in _pages():
-		assert_ne(row[1], "Ça devrait être intéressant.", "décision n° 11 (%s)" % row[0])
 
 
 ## Décision n° 8 (§13.7) : après le choix, Chen et Maya ont leurs nouvelles répliques
@@ -342,6 +343,7 @@ func test_speakers_and_narration() -> void:
 		&"oak_lab_waiting": ["Prof. Chen", false], &"rival_lab_waiting": ["Rival", false],
 		&"oak_starter_offer": ["Prof. Chen", false],
 		&"oak_starter_reciprocal": ["Prof. Chen", false], &"rival_starter_pick": ["Rival", false],
+		&"rival_starter_smile": ["Rival", false],
 		&"rival_challenge_wait": ["Rival", false], &"rival_challenge": ["Rival", false],
 		&"oak_lab_exit_block": ["Prof. Chen", false],
 	}

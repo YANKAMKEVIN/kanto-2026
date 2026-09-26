@@ -60,10 +60,12 @@ extends SceneTree
 ##              oak_lab_reunion puis starter_offered (fin du discours de Chen) : légende,
 ##              marche jusqu'au starter de « --starter=bulbasaur|charmander|squirtle »
 ##              (défaut charmander), bouton RENCONTRER, fiche, CHOISIR (le vrai bouton), puis
-##              toute la scène starter_chosen : saut du starter (pendant, posé), « réciproque »,
-##              le rival qui regarde la table, « Alors ce sera toi. », saut de son Pokémon
-##              (pendant, posé), départ, « Attends. », regard vers le Pokémon du joueur,
-##              dernière réplique, contrôle rendu. Captures jalon04a_t3_<starter>_NN_*.
+##              toute la scène starter_chosen : saut du starter à côté du joueur (pendant,
+##              posé), face à face, « réciproque », le rival qui regarde la table, « Alors ce
+##              sera toi. », saut de son Pokémon (pendant, posé), « Ça devrait être
+##              intéressant. », départ, « Attends. », regard vers le Pokémon du joueur,
+##              dernière réplique, Pokémon rentrés, contrôle rendu (décision n° 16).
+##              Captures jalon04a_t3_<starter>_NN_* (--prefix=… pour un autre préfixe).
 ##              Quitte seul (~900 images : --quit-after 9000).
 ##   lab_exit   jalon 4 (T3) : départ au labo pendant le choix (oak_met, oak_lab_reunion,
 ##              starter_offered), joueur en (7, 8), « bas » tenu : il arrive sur le tapis,
@@ -171,6 +173,8 @@ var _scenario: String = "spawn"
 var _column: int = 23
 ## Starter choisi (scénario « starter_choice »).
 var _starter: StringName = &"charmander"
+## Préfixe des captures du scénario « starter_choice » (« --prefix=… »).
+var _choice_prefix: String = T3_CHOICE_PREFIX
 var _out_dir: String = ""
 var _boot: Node
 var _player: Node2D
@@ -197,6 +201,8 @@ func _init() -> void:
 			_column = int(arg.trim_prefix("--column="))
 		elif arg.begins_with("--starter="):
 			_starter = StringName(arg.trim_prefix("--starter="))
+		elif arg.begins_with("--prefix="):
+			_choice_prefix = arg.trim_prefix("--prefix=")
 		elif arg.begins_with("--out="):
 			_out_dir = arg.trim_prefix("--out=")
 	# Les autoloads (SceneRouter, utilisé par Boot) ne sont ajoutés qu'après _init.
@@ -1150,7 +1156,7 @@ func _lab_in_choice() -> Node:
 
 
 func _run_starter_choice() -> void:
-	var prefix := "%s%s_" % [T3_CHOICE_PREFIX, _starter]
+	var prefix := "%s%s_" % [_choice_prefix, _starter]
 	var lab: Node = await _lab_in_choice()
 	var director: Node = _boot.call(&"get_cutscene_director")
 	var runner: Node = _boot.call(&"get_dialogue_runner")
@@ -1176,24 +1182,29 @@ func _run_starter_choice() -> void:
 	await _offer_shot("03_sheet", prefix)
 	(sheet.call(&"get_choose_button") as BaseButton).pressed.emit()
 	await _hop_shots(mine, prefix, "04_hop_mid", "05_hop_landed")
-	await _dialogue_shots_with(runner, prefix, ["06_reciprocal"])
+	# Décision n° 16 : il s'approche, s'arrête, le joueur se tourne vers lui, ils s'observent.
+	await _wait_step(director, {"wait": 0.8})
+	await _frames(12)
+	await _offer_shot("06_face_to_face", prefix)
+	await _dialogue_shots_with(runner, prefix, ["07_reciprocal"])
 	await _wait_step(director, {"face": "rival", "to": "$rival_starter"})
 	await _frames(10)
-	await _offer_shot("07_rival_looks_table", prefix)
-	await _dialogue_shots_with(runner, prefix, ["08_pick"])
-	await _hop_shots(theirs, prefix, "09_rival_hop_mid", "10_rival_hop_landed")
+	await _offer_shot("08_rival_looks_table", prefix)
+	await _dialogue_shots_with(runner, prefix, ["09_pick"])
+	await _hop_shots(theirs, prefix, "10_rival_hop_mid", "11_rival_hop_landed")
+	await _dialogue_shots_with(runner, prefix, ["12_interesting"])
 	var rival: Node2D = lab.call(&"get_npc", &"rival")
 	for i: int in NPCS_TIMEOUT:
 		if rival.call(&"is_moving"):
 			break
 		await process_frame
 	await _frames(12)
-	await _offer_shot("11_leaving", prefix)
-	await _dialogue_shots_with(runner, prefix, ["12_wait"])
+	await _offer_shot("13_leaving", prefix)
+	await _dialogue_shots_with(runner, prefix, ["14_wait"])
 	await _wait_step(director, {"face": "rival", "to": "$player_starter"})
 	await _frames(10)
-	await _offer_shot("13_rival_looks_mine", prefix)
-	await _dialogue_shots_with(runner, prefix, ["14_challenge"])
+	await _offer_shot("15_rival_looks_mine", prefix)
+	await _dialogue_shots_with(runner, prefix, ["16_challenge"])
 	for i: int in NPCS_TIMEOUT:
 		if not director.call(&"is_running"):
 			break
@@ -1203,7 +1214,7 @@ func _run_starter_choice() -> void:
 	print("  équipe : %d, starter : %s, drapeaux : %s" % [
 		(state.get(&"party") as RefCounted).call(&"size"), state.get(&"starter_species"),
 		(state.get(&"flags") as RefCounted).call(&"to_array")])
-	await _offer_shot("15_control_back", prefix)
+	await _offer_shot("17_recalled_control_back", prefix)
 	print("STARTER_CHOICE terminé (frame %d)" % _frame)
 	quit()
 
@@ -1231,14 +1242,14 @@ func _hop_shots(npc: Node2D, prefix: String, mid: String, landed: String) -> voi
 	await _offer_shot(landed, prefix)
 
 
-## Attend le début de l'étape de la scène du choix égale à [param wanted] (lue dans
-## data/cutscenes/starter.json).
+## Attend le début de la prochaine étape de la scène du choix égale à [param wanted] (lue
+## dans data/cutscenes/starter.json), à partir de l'étape en cours.
 func _wait_step(director: Node, wanted: Dictionary) -> void:
 	var json := JSON.new()
 	json.parse(FileAccess.get_file_as_string(STARTER_PATH))
 	var steps: Array = json.data["starter_chosen"]["steps"]
 	var index := -1
-	for i: int in steps.size():
+	for i: int in range(maxi(0, int(director.call(&"get_step_index"))), steps.size()):
 		if steps[i] == wanted:
 			index = i
 			break

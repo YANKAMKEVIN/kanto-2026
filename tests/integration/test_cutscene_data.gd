@@ -171,8 +171,8 @@ func test_alias_sets_of_the_choice_cover_the_three_starters() -> void:
 
 
 ## Décision n° 1 (§13.3) : done_flag levé une seule fois, à l'étape qui suit le dialogue
-## « oak_starter_reciprocal » ; la scène finit par rival_challenged ; décision n° 11 : pas de
-## « Ça devrait être intéressant. » ; ordre des dialogues du §13.5.
+## « oak_starter_reciprocal » ; la scène finit par rival_challenged ; ordre des dialogues
+## (§13.5, décision n° 16 : « Ça devrait être intéressant. » après « Alors ce sera toi. »).
 func test_starter_chosen_sets_done_flag_right_after_the_reciprocal_line() -> void:
 	var cutscene := _cutscenes.get_cutscene(_offer.chosen_scene)
 	assert_eq(cutscene.variants.size(), 1)
@@ -194,7 +194,7 @@ func test_starter_chosen_sets_done_flag_right_after_the_reciprocal_line() -> voi
 		assert_eq(previous.dialogue_id, &"oak_starter_reciprocal")
 		assert_eq(steps[set_at[0]].flags, [_offer.done_flag] as Array[StringName])
 	assert_eq(dialogues, [&"oak_starter_reciprocal", &"rival_starter_pick",
-		&"rival_challenge_wait", &"rival_challenge"] as Array[StringName])
+		&"rival_starter_smile", &"rival_challenge_wait", &"rival_challenge"] as Array[StringName])
 	assert_eq(steps.back().kind, CutsceneStep.Kind.SET_FLAGS)
 	assert_eq(steps.back().flags, [&"rival_challenged"] as Array[StringName], "dernière étape")
 	# Le Pokémon descend (hop) et s'approche (lean) avant Chen.
@@ -203,7 +203,20 @@ func test_starter_chosen_sets_done_flag_right_after_the_reciprocal_line() -> voi
 		kinds.append(step.kind)
 	assert_true(kinds.has(CutsceneStep.Kind.HOP), "le starter descend de la table")
 	assert_true(kinds.has(CutsceneStep.Kind.LEAN), "il s'approche")
-	assert_false(_dialogues.has_dialogue(&"rival_starter_smile"), "décision n° 11")
+	# Décision n° 16 (Q-A) : après l'arrivée de son Pokémon, le rival regarde celui du joueur,
+	# puis le joueur, temps mort (petit sourire), « Ça devrait être intéressant. ».
+	var smile := -1
+	for i: int in steps.size():
+		if steps[i].kind == CutsceneStep.Kind.DIALOGUE \
+				and steps[i].dialogue_id == &"rival_starter_smile":
+			smile = i
+	assert_gt(smile, 3)
+	if smile > 3:
+		assert_eq(steps[smile - 1].kind, CutsceneStep.Kind.WAIT, "temps mort")
+		assert_eq([steps[smile - 2].actor, steps[smile - 2].target], [&"rival", &"player"])
+		assert_eq(steps[smile - 3].kind, CutsceneStep.Kind.WAIT)
+		assert_eq([steps[smile - 4].actor, steps[smile - 4].target],
+			[&"rival", &"$player_starter"])
 
 
 ## §13.6 : Chen se tourne vers le joueur, parle, le joueur recule d'un pas (vers le haut) ;

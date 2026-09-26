@@ -5,8 +5,9 @@ extends GutTest
 ## starter_offered (fin du discours de Chen) : le choix s'ouvre.
 ## Pour chacun des 3 starters : RENCONTRER (bouton, fiche, contrôles cachés), CHOISIR (le
 ## vrai bouton de la fiche), la scène starter_chosen : le Pokémon choisi finit sur la case que
-## regarde le joueur, les 4 répliques dans l'ordre avec les bons noms (aucune « Ça devrait
-## être intéressant. »), l'équipe vide jusqu'à « réciproque », le rival prend le bon Pokémon,
+## regarde le joueur, les 5 répliques dans l'ordre avec les bons noms (dont « Ça devrait
+## être intéressant. », décision n° 16), l'équipe vide jusqu'à « réciproque », le rival
+## prend le bon Pokémon,
 ## qui finit à côté de lui ; rival_challenged ; joueur libre, contrôles visibles. Puis
 ## sortie du labo, entrée dans les hautes herbes sans pensée, retour au labo : seul le starter
 ## restant est sur la table (Observer).
@@ -33,6 +34,7 @@ const RIVAL_STOP := Vector2i(7, 7)
 const SCENE_LINES: Array = [
 	["Prof. Chen", "On dirait que le choix est réciproque."],
 	["Rival", "Alors ce sera toi."],
+	["Rival", "Ça devrait être intéressant."],
 	["Rival", "Attends."],
 	["Rival", "On ne va quand même pas partir sans savoir ce qu'ils savent faire."],
 ]
@@ -155,7 +157,7 @@ func _choose(species: StringName) -> void:
 	assert_false(turned_away, "le joueur ne tourne jamais le dos à son Pokémon")
 	assert_false(controls_seen, "aucun contrôle pendant la scène")
 	assert_eq(pages, SCENE_LINES, "répliques dans l'ordre")
-	assert_eq(party_at, [0, 1, 1, 1] as Array[int], "équipe vide jusqu'à « réciproque »")
+	assert_eq(party_at, [0, 1, 1, 1, 1] as Array[int], "équipe vide jusqu'à « réciproque »")
 	assert_eq(at_challenge.size(), 9, "positions relevées à la dernière réplique")
 	if at_challenge.size() != 9:
 		return

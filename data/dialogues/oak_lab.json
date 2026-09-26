@@ -53,6 +53,10 @@
 		"speaker": "Rival",
 		"pages": ["Alors ce sera toi."]
 	},
+	"rival_starter_smile": {
+		"speaker": "Rival",
+		"pages": ["Ça devrait être intéressant."]
+	},
 	"rival_challenge_wait": {
 		"speaker": "Rival",
 		"pages": ["Attends."]

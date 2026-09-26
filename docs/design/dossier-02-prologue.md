@@ -188,16 +188,18 @@ Combat immédiat dans le laboratoire, comme dans Rouge/Bleu, mais très mis en s
 
 ### Jalon 4 (décisions du 2026-09-26)
 
-Décisions de Kevin reportées de [`docs/tech/jalon-04.md`](../tech/jalon-04.md) §8 (n° 1, 2, 6, 7, 8, 11). Elles **priment** sur les §8 à §10 ci-dessus quand elles diffèrent (Poké Ball, « Ça devrait être intéressant. », petit sourire). Textes définitifs, mot pour mot.
+Décisions de Kevin reportées de [`docs/tech/jalon-04.md`](../tech/jalon-04.md) §8 (n° 1, 2, 6, 7, 8, 11, 16). Elles **priment** sur les §8 à §10 ci-dessus quand elles diffèrent (Poké Ball). Textes définitifs, mot pour mot.
 
 - **Le starter descend de la table** (décision n° 1) et vient devant le joueur, sans Poké Ball : Bulbizarre descend calmement puis s'approche ; Salamèche descend avec plus d'enthousiasme ; Carapuce descend rapidement, vif et joueur. Il s'arrête devant le joueur et le regarde.
   > **Prof. Chen** — « On dirait que le choix est réciproque. »
   C'est **ensuite** que le Pokémon rejoint officiellement l'équipe.
 - **Sortie du labo empêchée** pendant le choix (décision n° 2), sur le tapis de sortie avant d'avoir choisi :
   > **Prof. Chen** — « Pas si vite. Tu n'as pas encore choisi ton partenaire. »
-- **Le rival choisit le starter avantagé** (décision n° 11) :
+- **Le rival choisit le starter avantagé** (décisions n° 11 et 16) :
   > **Rival** — « Alors ce sera toi. »
-  (son Pokémon vient vers lui ; quand il s'apprête à partir)
+  (son Pokémon vient vers lui et se pose à côté de lui, jamais derrière sa tête ; le rival regarde le Pokémon du joueur, puis le joueur ; temps mort, petit sourire)
+  > **Rival** — « Ça devrait être intéressant. »
+  (plus tard, quand il s'apprête à partir)
   > **Rival** — « Attends. »
   (il regarde son Pokémon, puis celui du joueur)
   > **Rival** — « On ne va quand même pas partir sans savoir ce qu'ils savent faire. »
