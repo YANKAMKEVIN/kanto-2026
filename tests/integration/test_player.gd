@@ -55,9 +55,9 @@ func test_enter_map_again_releases_previous_cell() -> void:
 	assert_eq(_player.get_facing(), Vector2i.UP)
 
 
-func test_move_right_for_quarter_second_moves_one_cell() -> void:
+func test_move_right_for_one_step_duration_moves_one_cell() -> void:
 	Input.action_press(&"move_right")
-	_simulate(0.25)
+	_simulate(Grid.WALK_STEP_DURATION + 0.03)
 	assert_eq(_player.get_cell(), START + Vector2i.RIGHT)
 	assert_signal_emitted_with_parameters(_player, "moved", [START + Vector2i.RIGHT])
 
@@ -70,20 +70,24 @@ func test_tap_right_moves_exactly_one_cell_then_stops() -> void:
 	assert_false(_player.is_moving())
 
 
-func test_holding_one_second_chains_at_least_four_cells() -> void:
+func test_holding_one_second_chains_steps_at_walk_speed() -> void:
+	# Vitesses réglées dans Grid (réglage « A » validé par Kevin sur S24, 2026-09-26).
 	Input.action_press(&"move_right")
 	_simulate(1.0)
 	var walked := _player.get_cell().x - START.x
-	assert_true(walked >= 4, "%d cases en 1 s" % walked)
+	var expected := int(1.0 / Grid.WALK_STEP_DURATION)
+	assert_true(walked >= expected, "%d cases en 1 s (attendu ≥ %d)" % [walked, expected])
 	assert_true(_player.is_moving(), "enchaînement sans pause")
 
 
-func test_running_one_second_covers_at_least_eight_cells() -> void:
+func test_running_one_second_is_faster_than_walking() -> void:
 	Input.action_press(&"run")
 	Input.action_press(&"move_right")
 	_simulate(1.0)
 	var ran := _player.get_cell().x - START.x
-	assert_true(ran >= 8, "%d cases en 1 s de course" % ran)
+	var expected := int(1.0 / Grid.RUN_STEP_DURATION)
+	assert_true(ran >= expected, "%d cases en 1 s de course (attendu ≥ %d)" % [ran, expected])
+	assert_true(ran > int(1.0 / Grid.WALK_STEP_DURATION), "la course dépasse la marche")
 	assert_true(_player.is_running())
 
 

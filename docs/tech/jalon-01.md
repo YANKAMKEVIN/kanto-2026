@@ -224,7 +224,7 @@ Les six propositions de l'architecte sont **acceptées telles quelles** :
 2. **Hauteur de carte** : 48 × 34 cases.
 3. **Sous-titre du nom de zone** : « Kanto » à chaque arrivée. « Le commencement de toute aventure » est réservé à la toute première sortie de la maison (jalon « ouverture », plus tard).
 4. **Courir** : bouton tenu (comme B).
-5. **Vitesses** : marche 0,22 s/case, course 0,12 s/case pour le premier essai sur le S24, ajustables ensuite dans `Grid` uniquement.
+5. **Vitesses** : marche 0,22 s/case, course 0,12 s/case pour le premier essai sur le S24, ajustables ensuite dans `Grid` uniquement. **Réglées le 2026-09-26 : marche 0,27 s/case, course 0,16 s/case** (voir `etat-projet.md`).
 6. **Sortie Route 1** : simple bord de carte, sans élément visible. La Route 21 reste fermée par une barrière.
 
 Plus aucune question ouverte pour ce jalon.

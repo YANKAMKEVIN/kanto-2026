@@ -74,6 +74,9 @@ Détail dans `jalon-04.md` §13.10. Valeur par défaut appliquée entre parenth�
 - **Q-I** Le rival s'arrête en (8, 7) au lieu de (8, 8) pour ne pas passer sous la boîte de dialogue. (*Réglable dans `data/cutscenes/starter.json`.*)
 - Hors questions : « Électrique » reste écrit dans `ui-reference.md` et `dossier-06-progression.md` (documents de Kevin, non modifiés) ; `combat-capacites-v1.png.png` toujours à renommer.
 
+## Vitesses de déplacement (Kevin, 2026-09-26)
+Réglage « A » essayé et validé sur S24 : **marche 0,27 s/case (≈ 3,7 cases/s)**, **course 0,16 s/case (≈ 6 cases/s)**, au lieu de 0,22 et 0,12. Le **vélo** devra rester nettement le plus rapide (≈ 0,09 s/case prévu). Constantes dans `game/world/grid.gd` ; les tests de vitesse se calent sur ces constantes. Les scènes (Chen qui court, suivi) utilisent les mêmes vitesses.
+
 ## Décisions de Kevin (jalon 3B, 2026-09-26)
 Décisions du §7 de `jalon-03b.md` appliquées ; après implémentation : recul d'un pas après la pensée (validé), répliques d'attente de Chen et du rival, orientation de Chen sur « Un peu de patience. » laissée telle quelle (polish), suivi en marchant (validé). Le drapeau du starter s'appelle `starter_chosen` (plan du jalon 4, Q26) : le blocage des herbes le lit depuis le 4A.
 
@@ -95,7 +98,7 @@ Référence `docs/design/reference/ouverture-storyboard-v1.webp`. Escalier = tra
 - Cinématique de première sortie (révélation de Bourg Palette, « Le commencement de toute aventure ») : jalon « ouverture ».
 - Rendu « vraie DA » des intérieurs d'après les références (lumière chaude, décor riche) : phase DA. Le bas de la douche du rival reste partiellement sous le bouton courir.
 - Laissé tel quel (décision de Kevin) : un pas en trop si on lève le doigt à la toute fin du fondu.
-- **Vitesses de déplacement à revoir (Kevin, 2026-09-26)** : la marche paraît un peu rapide et la course très rapide ; or le **vélo** devra être le plus rapide des trois. Régler l'échelle marche < course < vélo dans `Grid` (et les rythmes des scènes dans `data/cutscenes/`) lors d'une passe dédiée, avant l'arrivée du vélo.
+
 - Orientations et animations fines des cinématiques (ex. Chen sur « Un peu de patience. ») : passe de polish des cinématiques.
 
 ## Décisions de Kevin (2026-09-25)
