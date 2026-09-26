@@ -21,6 +21,8 @@ enum Kind {
 	CROP,
 	WATER,
 	SHALLOW,
+	## Hautes herbes (jalon 3B) : ajoutées en fin d'enum pour ne déplacer aucune rangée.
+	TALL_GRASS,
 }
 
 const TEXTURE_PATH: String = "res://assets/tiles/placeholder/overworld_atlas.png"
@@ -46,12 +48,15 @@ const VARIANTS: Dictionary[Kind, int] = {
 	Kind.CROP: 2,
 	Kind.WATER: 3,
 	Kind.SHALLOW: 2,
+	Kind.TALL_GRASS: 2,
 }
 
 ## Types infranchissables (sol de forêt, falaise, culture).
 const SOLID_KINDS: Array[Kind] = [Kind.FOREST, Kind.CLIFF, Kind.CROP]
 ## Types d'eau (infranchissables à pied, Surf plus tard).
 const WATER_KINDS: Array[Kind] = [Kind.WATER, Kind.SHALLOW]
+## Types de hautes herbes (praticables, donnée `tall_grass` ; rencontres au jalon 5).
+const TALL_GRASS_KINDS: Array[Kind] = [Kind.TALL_GRASS]
 ## Nombre de colonnes de l'atlas (variantes maximum).
 const ATLAS_COLUMNS: int = 4
 
@@ -71,3 +76,7 @@ static func is_solid_kind(kind: Kind) -> bool:
 
 static func is_water_kind(kind: Kind) -> bool:
 	return kind in WATER_KINDS
+
+
+static func is_tall_grass_kind(kind: Kind) -> bool:
+	return kind in TALL_GRASS_KINDS

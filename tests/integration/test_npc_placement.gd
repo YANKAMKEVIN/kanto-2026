@@ -44,6 +44,9 @@ const PLAN: Dictionary = {
 		&"leo": [Vector2i(18, 9), Vector2i.LEFT, &"leo", &"leo", TALK, 0],
 		&"leo_rattata": [Vector2i(17, 9), Vector2i.RIGHT, &"rattata", &"", TALK, 0],
 		&"haru": [Vector2i(3, 29), Vector2i.LEFT, &"haru", &"haru", TALK, 0],
+		# Prairie du Nord (jalon 3B §3.1) : Pokémon d'ambiance, non interactifs.
+		&"prairie_pidgey": [Vector2i(20, 3), Vector2i.DOWN, &"pidgey", &"", TALK, 0],
+		&"prairie_rattata": [Vector2i(27, 2), Vector2i.LEFT, &"rattata", &"", TALK, 0],
 	},
 }
 ## Plan §3.2 : carte → nœud → [ancre, taille, dialogue].
@@ -302,7 +305,8 @@ func test_haru_is_talked_to_from_the_beach() -> void:
 
 func test_pidgeys_and_rattata_are_not_interactive_but_block() -> void:
 	var map: GameMap = _maps[&"pallet_town"]
-	for id: StringName in [&"aoki_pidgey_1", &"aoki_pidgey_2", &"leo_rattata"]:
+	for id: StringName in [&"aoki_pidgey_1", &"aoki_pidgey_2", &"leo_rattata",
+			&"prairie_pidgey", &"prairie_rattata"]:
 		var npc := map.get_npc(id)
 		assert_null(npc.get_interaction(), "%s non interactif" % id)
 		assert_true(map.get_grid().is_occupied(npc.get_cell()), "%s bloque sa case" % id)

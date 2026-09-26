@@ -5,7 +5,8 @@ extends SceneTree
 ##   godot --headless --path . --import
 ##
 ## Plan : docs/tech/jalon-01.md §4 ; portes (warps et spawns) : docs/tech/jalon-02.md §4.2 ;
-## points d'examen (`INTERACTABLES`) : docs/tech/jalon-03.md §3.2.
+## points d'examen (`INTERACTABLES`) : docs/tech/jalon-03.md §3.2 ; hautes herbes :
+## docs/tech/jalon-03b.md §3.1.
 ## Zones et props sont décrits en données ci-dessous (rectangles inclusifs
 ## [x0, y0, x1, y1] et ancres de cases). Variantes de tuiles et essences d'arbres tirées
 ## avec une graine fixe : la carte est reproductible.
@@ -47,6 +48,9 @@ const GROUND: Array = [
 	["FOREST", [42, 5, 47, 28]],
 	# Route 1 : chemin de terre jusqu'au bord nord, puis vers la place.
 	["DIRT", [23, 0, 24, 11]],
+	# Hautes herbes du haut de la Route 1 (jalon 3B §3.1) : 3 dernières rangées du chemin,
+	# entre les clôtures. La rangée y 0 reste bloquée (BLOCKED_CELLS).
+	["TALL_GRASS", [23, 0, 24, 2]],
 	# Champ cultivé.
 	["CROP", [34, 1, 43, 2]],
 	# Chemins depuis les portillons des jardins vers la place.

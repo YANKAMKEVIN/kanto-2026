@@ -1,6 +1,14 @@
 extends GutTest
 ## TileSet overworld : taille 96, 4 couches de données, ≥ 2 variantes par type,
-## données conformes au jalon 1 §4.2 (coordonnées d'OverworldTiles).
+## données conformes au jalon 1 §4.2 (coordonnées d'OverworldTiles) ; hautes herbes du
+## jalon 3B (§2.2, T1).
+
+## Rangée d'atlas de chaque type existant avant le jalon 3B : elles ne doivent pas bouger
+## (le vrai tileset reprendra ces coordonnées).
+const ROWS_BEFORE_3B: Dictionary[StringName, int] = {
+	&"GRASS": 0, &"FLOWERS": 1, &"DIRT": 2, &"COBBLE": 3, &"SAND": 4, &"BOARDWALK": 5,
+	&"FOREST": 6, &"CLIFF": 7, &"CROP": 8, &"WATER": 9, &"SHALLOW": 10,
+}
 
 var _tileset: TileSet
 var _source: TileSetAtlasSource
@@ -57,7 +65,8 @@ func test_tile_data_matches_plan() -> void:
 				"solid %s" % coords)
 			assert_eq(data.get_custom_data(OverworldTiles.DATA_WATER), kind in water_kinds,
 				"water %s" % coords)
-			assert_false(data.get_custom_data(OverworldTiles.DATA_TALL_GRASS))
+			assert_eq(data.get_custom_data(OverworldTiles.DATA_TALL_GRASS),
+				kind == OverworldTiles.Kind.TALL_GRASS, "tall_grass %s" % coords)
 			assert_eq(data.get_custom_data(OverworldTiles.DATA_LEDGE), 0)
 
 
@@ -76,3 +85,49 @@ func test_atlas_coords_row_is_kind_column_is_variant() -> void:
 	assert_eq(OverworldTiles.atlas_coords(OverworldTiles.Kind.WATER, 1), Vector2i(1, 9))
 	# Variante hors plage : ramenée dans la plage.
 	assert_eq(OverworldTiles.atlas_coords(OverworldTiles.Kind.CLIFF, 5), Vector2i(1, 7))
+
+
+# --- Hautes herbes (jalon 3B, T1) -----------------------------------------------------
+
+func test_tall_grass_kind_is_last_with_two_variants() -> void:
+	var kind := OverworldTiles.Kind.TALL_GRASS
+	assert_eq(kind, OverworldTiles.Kind.size() - 1, "en fin d'enum")
+	assert_eq(kind, 11, "rangée 11 de l'atlas")
+	assert_true(OverworldTiles.variant_count(kind) >= 2)
+	assert_true(OverworldTiles.is_tall_grass_kind(kind))
+
+
+func test_tall_grass_tiles_are_walkable_tall_grass_not_water() -> void:
+	var kind := OverworldTiles.Kind.TALL_GRASS
+	assert_false(OverworldTiles.is_solid_kind(kind))
+	assert_false(OverworldTiles.is_water_kind(kind))
+	for variant: int in OverworldTiles.variant_count(kind):
+		var coords := OverworldTiles.atlas_coords(kind, variant)
+		assert_true(_source.has_tile(coords), "tuile %s" % coords)
+		var data := _source.get_tile_data(coords, 0)
+		assert_true(data.get_custom_data(OverworldTiles.DATA_TALL_GRASS), "tall_grass")
+		assert_false(data.get_custom_data(OverworldTiles.DATA_SOLID), "praticable")
+		assert_false(data.get_custom_data(OverworldTiles.DATA_WATER), "pas d'eau")
+		assert_eq(data.get_custom_data(OverworldTiles.DATA_LEDGE), 0)
+
+
+func test_other_kinds_are_not_tall_grass() -> void:
+	for kind: OverworldTiles.Kind in OverworldTiles.Kind.values():
+		if kind == OverworldTiles.Kind.TALL_GRASS:
+			continue
+		assert_false(OverworldTiles.is_tall_grass_kind(kind), "type %d" % kind)
+
+
+func test_atlas_rows_of_existing_kinds_did_not_move() -> void:
+	for kind_name: StringName in ROWS_BEFORE_3B:
+		var row: int = ROWS_BEFORE_3B[kind_name]
+		var kind: int = OverworldTiles.Kind[String(kind_name)]
+		assert_eq(kind, row, "rangée de %s" % kind_name)
+		assert_eq(OverworldTiles.atlas_coords(kind, 0), Vector2i(0, row))
+	assert_eq(OverworldTiles.Kind.size(), ROWS_BEFORE_3B.size() + 1, "un seul type ajouté")
+
+
+func test_atlas_texture_holds_every_row() -> void:
+	var rows := OverworldTiles.Kind.size()
+	assert_eq(_source.texture.get_size(),
+		Vector2(OverworldTiles.ATLAS_COLUMNS * 96, rows * 96))

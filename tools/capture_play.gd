@@ -15,6 +15,10 @@ extends SceneTree
 ##   spawn      joueur au spawn, rien d'autre.
 ##   corners    joueur téléporté près des 4 coins (caméra bornée, pas de gris hors carte).
 ##   fixes      joueur téléporté sous le grand arbre, derrière le labo, en haut de la Route 1.
+##   route1_grass  jalon 3B (T1) : joueur téléporté en (23, 4) tourné vers le nord (hautes
+##              herbes, Roucool et Rattata de la prairie), puis move_up injecté jusqu'en
+##              (23, 2) (dans les herbes : rien ne se passe encore), puis move_down jusqu'en
+##              (23, 5). Captures jalon03b_route1_grass_{below,inside,out}. ~200 images.
 ##   walk_roof  entrées move_* injectées : spawn → (32, 10) → (32, 4) → (36, 4),
 ##              au nord de sa maison (le toit doit le masquer, y-sort).
 ##   doors      départ réel du jeu (chambre) puis portes, tapis et escaliers (jalon 2, T5) :
@@ -47,6 +51,13 @@ const FIXES: Array = [
 	["fix_plaza_tree_fade", Vector2i(22, 13)],
 	["fix_lab_roof_benches", Vector2i(24, 17)],
 	["fix_route1_top", Vector2i(23, 1)],
+]
+## Scénario « route1_grass » (jalon 3B, T1) : case de départ, puis marches
+## [action, case d'arrivée, capture prise à l'arrêt].
+const ROUTE1_START := Vector2i(23, 4)
+const ROUTE1_WALK: Array = [
+	[&"move_up", Vector2i(23, 2), "jalon03b_route1_grass_inside"],
+	[&"move_down", Vector2i(23, 5), "jalon03b_route1_grass_out"],
 ]
 ## Étapes de marche : [action, case d'arrivée].
 const WALK: Array = [
@@ -148,6 +159,8 @@ func _on_frame() -> void:
 			_run_teleports(FIXES)
 		"walk_roof":
 			_run_walk()
+		"route1_grass":
+			_run_route1_grass()
 		"doors":
 			_run_doors()
 
@@ -214,6 +227,38 @@ func _run_walk() -> void:
 	elif not moving or cell != goal:
 		if not Input.is_action_pressed(action) and not (moving and cell + direction == goal):
 			Input.action_press(action)
+
+
+func _run_route1_grass() -> void:
+	if _frame == 5:
+		var map: Node = _boot.call(&"get_map")
+		_player.call(&"enter_map", map.call(&"get_grid"), ROUTE1_START, Vector2i.UP,
+			map.call(&"get_pixel_rect"))
+	elif _frame == 24:
+		_mark("jalon03b_route1_grass_below")
+	if _frame < 30 or _step >= ROUTE1_WALK.size():
+		if _step >= ROUTE1_WALK.size():
+			_wait += 1
+			if _wait == 20:
+				print("ROUTE1_GRASS terminé (frame %d)" % _frame)
+				quit()
+		return
+	var action: StringName = ROUTE1_WALK[_step][0]
+	var goal: Vector2i = ROUTE1_WALK[_step][1]
+	var cell: Vector2i = _player.call(&"get_cell")
+	var moving: bool = _player.call(&"is_moving")
+	if cell == goal and not moving:
+		Input.action_release(action)
+		_wait += 1
+		if _wait == 16:
+			_mark(ROUTE1_WALK[_step][2])
+			_step += 1
+			_wait = 0
+		return
+	if moving and cell + _direction_of(action) == goal:
+		Input.action_release(action)
+	elif not moving:
+		Input.action_press(action)
 
 
 func _direction_of(action: StringName) -> Vector2i:

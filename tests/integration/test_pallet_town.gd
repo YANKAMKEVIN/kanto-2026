@@ -1,6 +1,7 @@
 extends GutTest
 ## Carte pallet_town : métadonnées, spawn et invariants d'accessibilité (jalon 1 §4.4),
-## portes ouvertes, warps et spawns des bâtiments (jalon 2 §4.2, §4.8).
+## portes ouvertes, warps et spawns des bâtiments (jalon 2 §4.2, §4.8) ; hautes herbes
+## et Pokémon de la prairie (jalon 3B §3.1, §3.6, T1).
 
 const MAP_PATH := "res://game/world/maps/pallet_town.tscn"
 const START := Vector2i(36, 10)
@@ -10,6 +11,14 @@ const DOORS: Dictionary = {
 		&"player_house_door"],
 	&"RivalHouse": [Vector2i(11, 9), &"DoorRivalHouse", &"rival_house", &"rival_house_door"],
 	&"OakLab": [Vector2i(24, 22), &"DoorOakLab", &"oak_lab", &"oak_lab_door"],
+}
+
+## Hautes herbes : les 3 dernières rangées du chemin de la Route 1 (jalon 3B §3.1).
+const TALL_GRASS_RECT := Rect2i(23, 0, 2, 3)
+## Pokémon d'ambiance de la prairie : id → [case, orientation, apparence].
+const PRAIRIE: Dictionary = {
+	&"prairie_pidgey": [Vector2i(20, 3), Vector2i.DOWN, &"pidgey"],
+	&"prairie_rattata": [Vector2i(27, 2), Vector2i.LEFT, &"rattata"],
 }
 
 var _map: GameMap
@@ -199,3 +208,74 @@ func test_door_spawns() -> void:
 		assert_eq(_map.get_spawn_cell(spec[3]), spec[0], String(spec[3]))
 	assert_true(_map.has_spawn(&"start"), "start conservé")
 	assert_false(_map.interior)
+
+
+# --- Hautes herbes et prairie (jalon 3B, T1) ----------------------------------------
+
+func _ground_kind(cell: Vector2i) -> int:
+	var ground := _map.get_node(^"Ground") as TileMapLayer
+	if ground.get_cell_source_id(cell) < 0:
+		return -1
+	return ground.get_cell_atlas_coords(cell).y
+
+
+func test_tall_grass_cells_are_exactly_the_top_of_route_1() -> void:
+	var found: Array[Vector2i] = []
+	for y: int in _map.size.y:
+		for x: int in _map.size.x:
+			var cell := Vector2i(x, y)
+			if _ground_kind(cell) == OverworldTiles.Kind.TALL_GRASS:
+				found.append(cell)
+				var data := (_map.get_node(^"Ground") as TileMapLayer).get_cell_tile_data(cell)
+				assert_true(data.get_custom_data(OverworldTiles.DATA_TALL_GRASS),
+					"donnée tall_grass en %s" % cell)
+	var expected: Array[Vector2i] = []
+	for y: int in range(TALL_GRASS_RECT.position.y, TALL_GRASS_RECT.end.y):
+		for x: int in range(TALL_GRASS_RECT.position.x, TALL_GRASS_RECT.end.x):
+			expected.append(Vector2i(x, y))
+	found.sort()
+	expected.sort()
+	assert_eq(found, expected)
+
+
+func test_tall_grass_is_walkable_except_the_blocked_edge() -> void:
+	for cell: Vector2i in [Vector2i(23, 1), Vector2i(24, 1), Vector2i(23, 2), Vector2i(24, 2)]:
+		assert_false(_grid.is_solid(cell), "praticable : %s" % cell)
+		assert_true(_reachable.has(cell), "atteignable : %s" % cell)
+	for cell: Vector2i in [Vector2i(23, 0), Vector2i(24, 0)]:
+		assert_false(_reachable.has(cell), "bord nord toujours bloqué : %s" % cell)
+
+
+func test_path_below_the_tall_grass_is_still_dirt_between_fences() -> void:
+	for y: int in range(3, 12):
+		for x: int in [23, 24]:
+			assert_eq(_ground_kind(Vector2i(x, y)), OverworldTiles.Kind.DIRT,
+				"chemin en (%d, %d)" % [x, y])
+	# Clôtures intactes de part et d'autre des herbes et du haut du chemin.
+	for y: int in range(0, 4):
+		assert_true(_grid.is_solid(Vector2i(22, y)), "clôture ouest en y %d" % y)
+		assert_true(_grid.is_solid(Vector2i(25, y)), "clôture est en y %d" % y)
+
+
+func test_prairie_pokemon_stand_on_grass_in_view_of_the_route() -> void:
+	for id: StringName in PRAIRIE:
+		var row: Array = PRAIRIE[id]
+		var npc := _map.get_npc(id)
+		assert_not_null(npc, String(id))
+		if npc == null:
+			continue
+		var cell: Vector2i = row[0]
+		assert_eq(npc.get_cell(), cell, "%s case" % id)
+		assert_eq(npc.get_facing(), row[1], "%s orientation" % id)
+		assert_eq(npc.get_spec().sprite, row[2], "%s apparence" % id)
+		assert_null(npc.get_interaction(), "%s non interactif (Q4)" % id)
+		assert_eq(_grid.get_occupant(cell), npc, "%s occupe sa case" % id)
+		assert_eq(_ground_kind(cell), OverworldTiles.Kind.GRASS, "%s dans l'herbe rase" % id)
+		assert_false(TALL_GRASS_RECT.has_point(cell), "%s hors des hautes herbes" % id)
+		# Visible depuis le bas des herbes (joueur en (23, 4) : ≈ 24 × 11 cases à l'écran).
+		assert_lt(absi(cell.x - 23), 11, "%s dans le champ horizontal" % id)
+		var free_neighbours := 0
+		for direction: Vector2i in [Vector2i.UP, Vector2i.DOWN, Vector2i.LEFT, Vector2i.RIGHT]:
+			if _reachable.has(cell + direction):
+				free_neighbours += 1
+		assert_gt(free_neighbours, 0, "%s au bord d'une case atteignable" % id)

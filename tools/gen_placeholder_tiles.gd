@@ -22,6 +22,7 @@ extends SceneTree
 ##   rangée 8  CROP       culture           2  solid
 ##   rangée 9  WATER      mer               3  water
 ##   rangée 10 SHALLOW    eau peu profonde  2  water
+##   rangée 11 TALL_GRASS hautes herbes     2  tall_grass (jalon 3B)
 
 const TILES_SCRIPT: String = "res://game/world/overworld_tiles.gd"
 const T: int = 96
@@ -84,7 +85,7 @@ func _save_tileset() -> void:
 			source.create_tile(coords)
 			var data := source.get_tile_data(coords, 0)
 			data.set_custom_data(_tiles.DATA_SOLID, _tiles.is_solid_kind(kind))
-			data.set_custom_data(_tiles.DATA_TALL_GRASS, false)
+			data.set_custom_data(_tiles.DATA_TALL_GRASS, _tiles.is_tall_grass_kind(kind))
 			data.set_custom_data(_tiles.DATA_WATER, _tiles.is_water_kind(kind))
 			data.set_custom_data(_tiles.DATA_LEDGE, 0)
 	var err := ResourceSaver.save(tileset, _tiles.TILESET_PATH)
@@ -141,6 +142,8 @@ func _draw_tile(kind_name: String, variant: int) -> Image:
 		"SHALLOW":
 			_fill_noise(img, Color("#4db3c2"), Color("#3fa1b3"), Color("#6cc9d3"))
 			_waves(img, 4 + variant, Color("#a6e3e6"))
+		"TALL_GRASS":
+			_draw_tall_grass(img, variant)
 	return img
 
 
@@ -271,3 +274,42 @@ func _waves(img: Image, count: int, c: Color) -> void:
 		for k: int in length:
 			var yy := y + int(round(sin(k * 0.45) * 1.5))
 			_blend(img, x0 + k, yy, c)
+
+
+## Hautes herbes provisoires : plus sombres que l'herbe rase, touffes de brins hauts
+## (≈ 20–30 px) avec ombre au pied et pointes claires, lisibles à l'écran.
+func _draw_tall_grass(img: Image, variant: int) -> void:
+	_fill_noise(img, Color("#3f7a2e"), Color("#2f6123"), Color("#4d8a37"))
+	var dark := Color("#24501b")
+	var mid := Color("#4f9a38")
+	var light := Color("#8cc85a")
+	# Rangées de touffes décalées : le motif remplit la case sans trou.
+	var rows := 4
+	for r: int in rows:
+		var base_y := 22 + r * 24
+		var shift := (r % 2) * 12 + variant * 6
+		for k: int in range(-1, 5):
+			var x := k * 24 + shift + _rng.randi_range(-3, 3)
+			var y := base_y + _rng.randi_range(-2, 2)
+			_grass_tuft(img, Vector2i(x, y), dark, mid, light)
+	_grid_hint(img)
+
+
+## Une touffe : ombre elliptique au pied, 5 brins inclinés en éventail.
+func _grass_tuft(img: Image, foot: Vector2i, dark: Color, mid: Color, light: Color) -> void:
+	for dx: int in range(-9, 10):
+		for dy: int in range(-2, 3):
+			if (dx * dx) / 81.0 + (dy * dy) / 4.0 <= 1.0:
+				_blend(img, foot.x + dx, foot.y + dy, Color(dark, 0.55))
+	var slants: Array[float] = [-0.45, -0.2, 0.0, 0.2, 0.45]
+	for i: int in slants.size():
+		var height := _rng.randi_range(18, 28) - absi(i - 2) * 3
+		var slant: float = slants[i]
+		var x0 := foot.x + (i - 2) * 3
+		for h: int in height:
+			var t := float(h) / height
+			var x := x0 + int(round(slant * h))
+			var c := mid.lerp(light, t * t)
+			_blend(img, x, foot.y - h, c)
+			if t < 0.6:
+				_blend(img, x + 1, foot.y - h, dark.lerp(mid, t / 0.6))
