@@ -21,6 +21,23 @@ extends SceneTree
 ##   TypeBadgeText    Label   nom du type, gras, blanc ombré
 ##   AccentButton     Button  action principale (CHOISIR) : fond ACCENT, texte ACCENT_TEXT
 ##   PanelButton      Button  action secondaire (RETOUR) : voile clair, ACCENT à l'appui
+## Combat (jalon 4B, game/ui/battle/) :
+##   BattleCard       PanelContainer  carte d'information translucide (nom, niveau, PV)
+##   BattleCardName / BattleCardLevel / BattleCardLevelValue / BattleCardHp   Label
+##   HpBar            HBoxContainer   styles « background » (fond clair) et « fill »
+##   HpBarLabel       Label   « PV », gras (couleur posée par la barre)
+##   PartyPipEmpty    Panel   disque gris d'un emplacement d'équipe vide
+##   BattleBackButton Button  bouton rond « ‹ »
+##   ActionButton     Button  bouton d'action de combat (gras, blanc, icône à gauche) ;
+##     ActionButtonAttack / Bag / Team / Run : ses couleurs (ACTION_*), atténuées si inactif
+##   ActionGlow       Panel   lueur d'accent autour d'ATTAQUER (pulse)
+##   MoveBand         Panel   bandeau sombre derrière les capacités (déborde jusqu'aux bords)
+##   MoveCard / MoveCardSelected / MoveCardEmpty   PanelContainer  carte de capacité (fond
+##     recoloré par type à l'usage), sélectionnée (liseré ACCENT + halo), emplacement vide
+##   MoveCardName / MoveCardPp / MoveCardPpTag / MoveCardPower   Label
+##   MoveDetailSheet  PanelContainer  fiche de pression longue
+##   MoveDetailName / MoveDetailCaption / MoveDetailValue / MoveDetailText   Label
+##   BattleMessage    PanelContainer  bandeau des messages ; BattleMessageText   Label
 ## tests/unit/test_ui_theme.gd vérifie que le fichier est à jour avec les tokens.
 
 const TOKENS_PATH: String = "res://game/ui/theme/ui_tokens.gd"
@@ -74,6 +91,10 @@ func _init() -> void:
 	_add_caption(theme, t)
 	_add_starter_sheet(theme, bold, italic, t)
 	_add_buttons(theme, bold, t)
+	_add_battle_cards(theme, bold, t)
+	_add_battle_actions(theme, bold, t)
+	_add_battle_moves(theme, bold, t)
+	_add_battle_messages(theme, t)
 
 	var err := ResourceSaver.save(theme, THEME_PATH)
 	print("ui_theme.tres : ", error_string(err))
@@ -195,3 +216,204 @@ func _button_style(bg: Color, bordered: bool, t: GDScript) -> StyleBoxFlat:
 	box.set_content_margin(SIDE_LEFT, t.BUTTON_PAD_H)
 	box.set_content_margin(SIDE_RIGHT, t.BUTTON_PAD_H)
 	return box
+
+
+# --- Combat (jalon 4B) ------------------------------------------------------------------------
+
+
+func _add_battle_cards(theme: Theme, bold: Font, t: GDScript) -> void:
+	var card := _panel_style(t.BATTLE_CARD_BG, t.RADIUS, t)
+	card.set_content_margin(SIDE_LEFT, t.BATTLE_CARD_PAD_H)
+	card.set_content_margin(SIDE_RIGHT, t.BATTLE_CARD_PAD_H)
+	card.set_content_margin(SIDE_TOP, t.BATTLE_CARD_PAD_V)
+	card.set_content_margin(SIDE_BOTTOM, t.BATTLE_CARD_PAD_V)
+	theme.set_type_variation(&"BattleCard", &"PanelContainer")
+	theme.set_stylebox(&"panel", &"BattleCard", card)
+	_add_plain_label(theme, &"BattleCardName", t.BATTLE_CARD_NAME_FONT, t.TEXT, bold)
+	_add_plain_label(theme, &"BattleCardLevel", t.BATTLE_CARD_LEVEL_FONT, t.TEXT_MUTED, bold)
+	_add_plain_label(theme, &"BattleCardLevelValue", t.BATTLE_CARD_LEVEL_VALUE_FONT, t.TEXT,
+		bold)
+	_add_plain_label(theme, &"BattleCardHp", t.BATTLE_HP_NUMBERS_FONT, t.TEXT, bold)
+
+	var radius: int = t.HP_BAR_HEIGHT / 2
+	var track := StyleBoxFlat.new()
+	track.bg_color = t.HP_BAR_TRACK
+	track.border_color = t.HP_BAR_TRACK_BORDER
+	track.set_border_width_all(t.BORDER_WIDTH)
+	track.set_corner_radius_all(radius)
+	track.anti_aliasing = true
+	var fill := StyleBoxFlat.new()
+	fill.bg_color = t.HP_HIGH
+	fill.set_corner_radius_all(radius - t.HP_BAR_INSET)
+	fill.anti_aliasing = true
+	theme.set_type_variation(&"HpBar", &"HBoxContainer")
+	theme.set_stylebox(&"background", &"HpBar", track)
+	theme.set_stylebox(&"fill", &"HpBar", fill)
+	_add_plain_label(theme, &"HpBarLabel", t.HP_BAR_LABEL_FONT, t.HP_HIGH, bold)
+
+	var pip := StyleBoxFlat.new()
+	pip.bg_color = t.PARTY_PIP_EMPTY
+	pip.border_color = t.PARTY_PIP_EMPTY_BORDER
+	pip.set_border_width_all(t.BORDER_WIDTH)
+	pip.set_corner_radius_all(t.PARTY_PIP)
+	pip.anti_aliasing = true
+	theme.set_type_variation(&"PartyPipEmpty", &"Panel")
+	theme.set_stylebox(&"panel", &"PartyPipEmpty", pip)
+
+	var round_normal := _round_style(t.PANEL_BG, t)
+	var round_pressed := _round_style(t.ACCENT, t)
+	theme.set_type_variation(&"BattleBackButton", &"Button")
+	for state: StringName in [&"normal", &"hover", &"disabled"]:
+		theme.set_stylebox(state, &"BattleBackButton", round_normal)
+	for state: StringName in [&"pressed", &"hover_pressed"]:
+		theme.set_stylebox(state, &"BattleBackButton", round_pressed)
+	theme.set_stylebox(&"focus", &"BattleBackButton", StyleBoxEmpty.new())
+	for state: StringName in [&"icon_normal_color", &"icon_hover_color", &"icon_focus_color"]:
+		theme.set_color(state, &"BattleBackButton", t.TEXT)
+	for state: StringName in [&"icon_pressed_color", &"icon_hover_pressed_color"]:
+		theme.set_color(state, &"BattleBackButton", t.ACCENT_TEXT)
+	theme.set_constant(&"icon_max_width", &"BattleBackButton", t.BATTLE_BACK_ICON)
+
+
+func _round_style(bg: Color, t: GDScript) -> StyleBoxFlat:
+	var box := StyleBoxFlat.new()
+	box.bg_color = bg
+	box.border_color = t.ROUND_BUTTON_OUTLINE
+	box.set_border_width_all(int(t.ROUND_BUTTON_OUTLINE_WIDTH))
+	box.set_corner_radius_all(t.BATTLE_BACK_SIZE)
+	box.shadow_color = t.SHADOW
+	box.shadow_size = t.SHADOW_SIZE
+	box.anti_aliasing = true
+	return box
+
+
+## Boutons d'action colorés (combat-v1). Enfoncé : couleur assombrie ; inactif : couleur mêlée
+## à SURFACE_DARK et plus transparente, texte et icône atténués.
+func _add_battle_actions(theme: Theme, bold: Font, t: GDScript) -> void:
+	theme.set_type_variation(&"ActionButton", &"Button")
+	theme.set_font(&"font", &"ActionButton", bold)
+	theme.set_font_size(&"font_size", &"ActionButton", t.FONT_BUTTON)
+	for state: StringName in [&"font_color", &"font_hover_color", &"font_focus_color",
+			&"font_pressed_color", &"font_hover_pressed_color", &"icon_normal_color",
+			&"icon_hover_color", &"icon_focus_color", &"icon_pressed_color",
+			&"icon_hover_pressed_color"]:
+		theme.set_color(state, &"ActionButton", t.TEXT)
+	theme.set_color(&"font_disabled_color", &"ActionButton", t.TEXT_DISABLED)
+	theme.set_color(&"icon_disabled_color", &"ActionButton", t.TEXT_DISABLED)
+	theme.set_color(&"font_shadow_color", &"ActionButton", t.TEXT_SHADOW)
+	theme.set_constant(&"shadow_offset_x", &"ActionButton", 0)
+	theme.set_constant(&"shadow_offset_y", &"ActionButton", t.TEXT_SHADOW_OFFSET)
+	theme.set_constant(&"icon_max_width", &"ActionButton", t.BATTLE_ACTION_ICON)
+	theme.set_constant(&"h_separation", &"ActionButton", t.GAP)
+	theme.set_stylebox(&"focus", &"ActionButton", StyleBoxEmpty.new())
+	var colors: Dictionary[StringName, Color] = {
+		&"ActionButtonAttack": t.ACTION_ATTACK,
+		&"ActionButtonBag": t.ACTION_BAG,
+		&"ActionButtonTeam": t.ACTION_TEAM,
+		&"ActionButtonRun": t.ACTION_RUN,
+	}
+	for type: StringName in colors:
+		var color: Color = colors[type]
+		var normal := _action_style(color, t)
+		var pressed := _action_style(color.darkened(t.BATTLE_ACTION_PRESSED_DARKEN), t)
+		var dim: Color = color.lerp(t.SURFACE_DARK, t.BATTLE_ACTION_DISABLED_MIX)
+		dim.a = t.BATTLE_ACTION_DISABLED_ALPHA
+		var disabled := _action_style(dim, t)
+		disabled.border_color = t.PANEL_BORDER
+		disabled.shadow_size = 0
+		theme.set_type_variation(type, &"ActionButton")
+		theme.set_stylebox(&"normal", type, normal)
+		theme.set_stylebox(&"hover", type, normal)
+		theme.set_stylebox(&"pressed", type, pressed)
+		theme.set_stylebox(&"hover_pressed", type, pressed)
+		theme.set_stylebox(&"disabled", type, disabled)
+
+	var glow := StyleBoxFlat.new()
+	glow.bg_color = t.TRANSPARENT
+	glow.draw_center = false
+	glow.border_color = t.ACCENT
+	glow.set_border_width_all(t.ACTION_GLOW_BORDER)
+	glow.set_corner_radius_all(t.RADIUS)
+	glow.shadow_color = t.ACTION_GLOW
+	glow.shadow_size = t.ACTION_GLOW_SIZE
+	glow.anti_aliasing = true
+	theme.set_type_variation(&"ActionGlow", &"Panel")
+	theme.set_stylebox(&"panel", &"ActionGlow", glow)
+
+
+func _action_style(bg: Color, t: GDScript) -> StyleBoxFlat:
+	var box := StyleBoxFlat.new()
+	box.bg_color = bg
+	box.border_color = bg.lightened(t.BATTLE_ACTION_BORDER_LIGHTEN)
+	box.set_border_width_all(t.BORDER_WIDTH)
+	box.set_corner_radius_all(t.RADIUS)
+	box.shadow_color = t.SHADOW
+	box.shadow_size = t.SHADOW_SIZE / 2
+	box.anti_aliasing = true
+	box.set_content_margin(SIDE_LEFT, t.BATTLE_ACTION_PAD_H)
+	box.set_content_margin(SIDE_RIGHT, t.BATTLE_ACTION_PAD_H)
+	return box
+
+
+func _add_battle_moves(theme: Theme, bold: Font, t: GDScript) -> void:
+	var band := StyleBoxFlat.new()
+	band.bg_color = t.MOVE_BAND_BG
+	band.border_color = t.PANEL_BORDER
+	band.border_width_top = t.BORDER_WIDTH
+	band.border_width_left = t.BORDER_WIDTH
+	band.corner_radius_top_left = t.RADIUS
+	band.expand_margin_right = t.MOVE_BAND_BLEED
+	band.expand_margin_bottom = t.MOVE_BAND_BLEED
+	band.anti_aliasing = true
+	theme.set_type_variation(&"MoveBand", &"Panel")
+	theme.set_stylebox(&"panel", &"MoveBand", band)
+
+	var card := _move_card_style(t.PANEL_BG, t.PANEL_BORDER, t.BORDER_WIDTH, t)
+	var selected := _move_card_style(t.PANEL_BG, t.ACCENT, t.MOVE_CARD_SELECTED_BORDER, t)
+	selected.shadow_color = t.MOVE_CARD_SELECTED_GLOW
+	selected.shadow_size = t.MOVE_CARD_SELECTED_GLOW_SIZE
+	var empty := _move_card_style(t.MOVE_CARD_EMPTY_BG, t.MOVE_CARD_EMPTY_BORDER, t.BORDER_WIDTH,
+		t)
+	for pair: Array in [[&"MoveCard", card], [&"MoveCardSelected", selected],
+			[&"MoveCardEmpty", empty]]:
+		theme.set_type_variation(pair[0], &"PanelContainer")
+		theme.set_stylebox(&"panel", pair[0], pair[1])
+	_add_plain_label(theme, &"MoveCardName", t.MOVE_CARD_NAME_FONT, t.TEXT, bold)
+	_add_plain_label(theme, &"MoveCardPp", t.MOVE_CARD_PP_FONT, t.TEXT, bold)
+	_add_plain_label(theme, &"MoveCardPpTag", t.MOVE_CARD_PP_TAG_FONT, t.TEXT_MUTED, bold)
+	_add_plain_label(theme, &"MoveCardPower", t.MOVE_CARD_POWER_FONT, t.TEXT_MUTED, null)
+
+	var sheet := _panel_style(t.MOVE_DETAIL_BG, t.RADIUS, t)
+	sheet.set_content_margin_all(t.MOVE_DETAIL_PAD)
+	theme.set_type_variation(&"MoveDetailSheet", &"PanelContainer")
+	theme.set_stylebox(&"panel", &"MoveDetailSheet", sheet)
+	_add_plain_label(theme, &"MoveDetailName", t.MOVE_DETAIL_NAME_FONT, t.TEXT, bold)
+	_add_plain_label(theme, &"MoveDetailCaption", t.FONT_CAPTION, t.TEXT_MUTED, null)
+	_add_plain_label(theme, &"MoveDetailValue", t.MOVE_DETAIL_VALUE_FONT, t.TEXT, bold)
+	_add_plain_label(theme, &"MoveDetailText", t.MOVE_DETAIL_TEXT_FONT, t.DIALOG_NARRATION, null)
+
+
+func _move_card_style(bg: Color, border: Color, width: int, t: GDScript) -> StyleBoxFlat:
+	var box := StyleBoxFlat.new()
+	box.bg_color = bg
+	box.border_color = border
+	box.set_border_width_all(width)
+	box.set_corner_radius_all(t.RADIUS)
+	box.anti_aliasing = true
+	box.set_content_margin(SIDE_LEFT, t.MOVE_CARD_PAD_H)
+	box.set_content_margin(SIDE_RIGHT, t.MOVE_CARD_PAD_H)
+	box.set_content_margin(SIDE_TOP, t.MOVE_CARD_PAD_V)
+	box.set_content_margin(SIDE_BOTTOM, t.MOVE_CARD_PAD_V)
+	return box
+
+
+func _add_battle_messages(theme: Theme, t: GDScript) -> void:
+	var banner := _panel_style(t.BATTLE_MESSAGE_BG, t.DIALOG_RADIUS, t)
+	banner.set_content_margin(SIDE_LEFT, t.BATTLE_MESSAGE_PAD_H)
+	banner.set_content_margin(SIDE_RIGHT, t.BATTLE_MESSAGE_PAD_H)
+	banner.set_content_margin(SIDE_TOP, t.BATTLE_MESSAGE_PAD_V)
+	banner.set_content_margin(SIDE_BOTTOM, t.BATTLE_MESSAGE_PAD_V)
+	theme.set_type_variation(&"BattleMessage", &"PanelContainer")
+	theme.set_stylebox(&"panel", &"BattleMessage", banner)
+	_add_plain_label(theme, &"BattleMessageText", t.FONT_BODY, t.TEXT, null)
+	theme.set_constant(&"line_spacing", &"BattleMessageText", t.DIALOG_LINE_SPACING)
