@@ -33,6 +33,15 @@ extends SceneTree
 ##              retiré et drapeaux remis à zéro. Pour finir, la pensée des herbes puis le recul
 ##              d'un pas. Captures jalon03b_t3_<colonne>_NN_*. Quitte seul à la fin (~2 000
 ##              images à 30 images/s : --quit-after 4000).
+##   route1_full  jalon 3B (T4) : l'événement complet depuis la colonne 23 (ou 24 avec
+##              « --column=24 ») : gel, « ??? », Chen qui entre dans l'écran, ses quatre
+##              répliques, le suivi (deux images), le fondu, l'arrivée au labo, le rival vers
+##              Chen puis vers le joueur, les quatre répliques du labo, le contrôle rendu,
+##              Maya (deux pages), la chambre du rival vide, puis la pensée des herbes et le
+##              recul. Captures jalon03b_t4_<colonne>_NN_*. Quitte seul à la fin (~2 500
+##              images à 30 images/s : --quit-after 6000).
+##              (« route1_oak » s'arrêtait aux répliques de Chen : depuis T4, la scène
+##              continue jusqu'au labo, utiliser route1_full.)
 ##   walk_roof  entrées move_* injectées : spawn → (32, 10) → (32, 4) → (36, 4),
 ##              au nord de sa maison (le toit doit le masquer, y-sort).
 ##   doors      départ réel du jeu (chambre) puis portes, tapis et escaliers (jalon 2, T5) :
@@ -106,6 +115,7 @@ const DOORS_PREFIX: String = "jalon02_doors_"
 const NPCS_PREFIX: String = "jalon03_npcs_"
 const T2_PREFIX: String = "jalon03b_t2_"
 const T3_PREFIX: String = "jalon03b_t3_"
+const T4_PREFIX: String = "jalon03b_t4_"
 ## Délai maximal d'une attente du scénario « npcs » (images).
 const NPCS_TIMEOUT: int = 900
 ## Images d'attente avant la capture d'une étape (titre de zone entré : ~0,3 s).
@@ -116,6 +126,8 @@ const MOVE_ACTIONS: Dictionary = {
 }
 
 var _scenario: String = "spawn"
+## Colonne du chemin de la Route 1 (scénario « route1_full »).
+var _column: int = 23
 var _out_dir: String = ""
 var _boot: Node
 var _player: Node2D
@@ -138,6 +150,8 @@ func _init() -> void:
 	for arg: String in OS.get_cmdline_user_args():
 		if arg.begins_with("--scenario="):
 			_scenario = arg.trim_prefix("--scenario=")
+		elif arg.begins_with("--column="):
+			_column = int(arg.trim_prefix("--column="))
 		elif arg.begins_with("--out="):
 			_out_dir = arg.trim_prefix("--out=")
 	# Les autoloads (SceneRouter, utilisé par Boot) ne sont ajoutés qu'après _init.
@@ -151,7 +165,7 @@ func _start_boot() -> void:
 	elif _scenario == "npcs":
 		_setup_doors()
 		InputMap.action_erase_events(&"interact")
-	elif _scenario == "route1_freeze" or _scenario == "route1_oak":
+	elif _scenario in ["route1_freeze", "route1_oak", "route1_full"]:
 		_boot.set(&"start_map", &"pallet_town")
 		for action: StringName in MOVE_ACTIONS.values():
 			InputMap.action_erase_events(action)
@@ -174,6 +188,9 @@ func _on_frame() -> void:
 			_run_route1_freeze()
 		elif _scenario == "route1_oak":
 			_run_route1_oak()
+		elif _scenario == "route1_full":
+			_router = root.get_node(^"SceneRouter")
+			_run_route1_full()
 		return
 	match _scenario:
 		"spawn":
@@ -767,4 +784,142 @@ func _t3_shot(capture_name: String) -> void:
 	print("  contrôles visibles : %s ; Chen : %s" % [hud.call(&"are_controls_visible"),
 		"absent" if oak == null else "%s %s" % [oak.call(&"get_cell"), oak.call(&"get_facing")]])
 	_mark(T3_PREFIX + capture_name)
+	await _frames(2)
+
+
+# --- Scénario « route1_full » (jalon 3B, T4) ----------------------------------------
+
+func _run_route1_full() -> void:
+	var tag := "%d_" % _column
+	var director: Node = _boot.call(&"get_cutscene_director")
+	var runner: Node = _boot.call(&"get_dialogue_runner")
+	await _frames(5)
+	var map: Node = _boot.call(&"get_map")
+	_player.call(&"enter_map", map.call(&"get_grid"), Vector2i(_column, 7), Vector2i.UP,
+		map.call(&"get_pixel_rect"))
+	await _frames(20)
+	await _hold_up_until_scene(director)
+	await _frames(2)
+	await _t4_shot(tag + "01_freeze")
+	await _page_complete()
+	await _t4_shot(tag + "02_call")
+	await _finish_dialogue()
+	# Chen apparaît hors de l'écran, puis entre en courant.
+	var oak: Node2D = null
+	for i: int in NPCS_TIMEOUT:
+		oak = _boot.call(&"get_map").call(&"get_npc", &"oak")
+		if oak != null and (oak.call(&"get_cell") as Vector2i).y <= 10:
+			break
+		await process_frame
+	await _t4_shot(tag + "03_oak_enters")
+	var lines: Array[String] = ["04_oak_line1", "05_oak_line2_grass", "06_oak_line3",
+		"07_oak_line4"]
+	await _dialogue_shots(runner, tag, lines)
+	# Suivi : deux images en chemin.
+	var follow: Dictionary[int, String] = {5: "08_follow_start", 8: "09_follow_middle"}
+	for i: int in NPCS_TIMEOUT:
+		if follow.is_empty() or _router.call(&"is_transitioning"):
+			break
+		var row: int = (_player.call(&"get_cell") as Vector2i).y
+		if follow.has(row) and _player.call(&"is_moving"):
+			await _t4_shot(tag + follow[row])
+			follow.erase(row)
+		await process_frame
+	# Fondu, puis arrivée au labo.
+	for i: int in NPCS_TIMEOUT:
+		if _router.call(&"is_transitioning"):
+			break
+		await process_frame
+	await _frames(6)
+	await _t4_shot(tag + "10_fade")
+	for i: int in NPCS_TIMEOUT:
+		if not _router.call(&"is_transitioning"):
+			break
+		await process_frame
+	await _t4_shot(tag + "11_lab_arrival")
+	# Le rival regarde Chen (haut), puis le joueur (gauche).
+	var lab: Node = _boot.call(&"get_map")
+	var rival: Node = lab.call(&"get_npc", &"rival")
+	var looks: Dictionary[Vector2i, String] = {
+		Vector2i.UP: "12_rival_looks_oak", Vector2i.LEFT: "13_rival_looks_player",
+	}
+	for i: int in NPCS_TIMEOUT:
+		if looks.is_empty() or runner.call(&"is_running") or rival == null:
+			break
+		var facing: Vector2i = rival.call(&"get_facing")
+		if looks.has(facing):
+			await _frames(4)
+			await _t4_shot(tag + looks[facing])
+			looks.erase(facing)
+		await process_frame
+	await _dialogue_shots(runner, tag, ["14_enfin", "15_patience", "16_une_heure",
+		"17_toujours_la"])
+	for i: int in NPCS_TIMEOUT:
+		if not director.call(&"is_running"):
+			break
+		await process_frame
+	await _frames(10)
+	await _t4_shot(tag + "18_control_back")
+	# Maya : la nouvelle réplique.
+	await _go(Vector2i(5, 4))
+	_player.call(&"face", Vector2i.UP)
+	await _frames(6)
+	await _interact()
+	await _dialogue_shots(runner, tag, ["19_maya_1", "20_maya_2"])
+	# Sortie, puis la maison du rival : personne.
+	await _go(Vector2i(7, 9))
+	await _push_through(Vector2i.DOWN)
+	await _go_through(Vector2i(11, 9), true)
+	await _t4_shot(tag + "21_rival_house_empty")
+	await _go(Vector2i(14, 4))
+	await _frames(6)
+	await _t4_shot(tag + "22_rival_room_empty")
+	await _go(Vector2i(9, 9))
+	await _push_through(Vector2i.DOWN)
+	# Les herbes restent fermées : la pensée, puis le recul.
+	await _go(Vector2i(_column, 5), true)
+	await _frames(6)
+	await _hold_up_until_scene(director)
+	await _page_complete()
+	await _t4_shot(tag + "23_thought")
+	await _finish_dialogue()
+	for i: int in NPCS_TIMEOUT:
+		if not director.call(&"is_running"):
+			break
+		await process_frame
+	await _frames(10)
+	await _t4_shot(tag + "24_after_recoil")
+	await _frames(5)
+	print("ROUTE1_FULL terminé (frame %d)" % _frame)
+	quit()
+
+
+## Une capture par page complète du dialogue en cours ([param names] : une par page),
+## avance entre les pages, puis termine le dialogue.
+func _dialogue_shots(runner: Node, tag: String, names: Array[String]) -> void:
+	for i: int in NPCS_TIMEOUT:
+		if runner.call(&"is_running"):
+			break
+		await process_frame
+	for page: int in names.size():
+		await _page_complete()
+		await _t4_shot(tag + names[page])
+		if page < names.size() - 1:
+			await _interact()
+	await _finish_dialogue()
+
+
+func _t4_shot(capture_name: String) -> void:
+	var hud: Node = _boot.call(&"get_hud")
+	var map: Node = _boot.call(&"get_map")
+	var box: Node = _boot.call(&"get_dialogue_box")
+	var who: Array[String] = []
+	for id: StringName in [&"oak", &"rival"]:
+		var npc: Node = map.call(&"get_npc", id)
+		if npc != null:
+			who.append("%s %s %s" % [id, npc.call(&"get_cell"), npc.call(&"get_facing")])
+	print("  contrôles visibles : %s ; boîte : %s « %s » ; %s" % [
+		hud.call(&"are_controls_visible"), box.call(&"is_open"),
+		box.call(&"get_speaker_text"), ", ".join(who)])
+	_mark(T4_PREFIX + capture_name)
 	await _frames(2)

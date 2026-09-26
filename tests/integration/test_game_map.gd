@@ -912,3 +912,78 @@ func test_rebuild_grid_keeps_added_and_walked_npcs() -> void:
 	assert_eq(map.get_npcs().size(), 5, "pas de doublon")
 	assert_true(npc.step(Vector2i.UP), "marche sur la grille reconstruite")
 	assert_push_error_count(0)
+
+
+# --- Présence conditionnelle des PNJ (jalon 3B §2.6, T4) ---------------------------------
+
+## Carte 20 × 18 sans tuiles, PNJ de tests/fixtures/npcs/lab_map.json : Chen (8, 4)
+## toujours, « helper » (3, 3) si met, « sleeper » (12, 3) sauf si met.
+func _make_flag_map() -> GameMap:
+	var map := _make_npc_map()
+	map.map_id = &"lab_map"
+	return map
+
+
+func _ids(map: GameMap) -> Array[StringName]:
+	var ids: Array[StringName] = []
+	for npc: Npc in map.get_npcs():
+		ids.append(npc.get_id())
+	return ids
+
+
+func _met() -> StoryFlags:
+	var flags := StoryFlags.new()
+	flags.set_flag(&"met")
+	return flags
+
+
+func test_ready_creates_the_npcs_present_without_flags() -> void:
+	var map := _make_flag_map()
+	add_child_autofree(map)
+	assert_eq(_ids(map), [&"oak", &"sleeper"] as Array[StringName])
+	assert_false(map.get_grid().is_occupied(Vector2i(3, 3)), "« helper » absent")
+	assert_true(map.get_grid().is_occupied(Vector2i(12, 3)))
+	assert_push_error_count(0)
+
+
+func test_refresh_npcs_adds_if_and_removes_unless() -> void:
+	var map := _make_flag_map()
+	add_child_autofree(map)
+	var sleeper := map.get_npc(&"sleeper")
+	map.refresh_npcs(_met())
+	assert_eq(_ids(map), [&"oak", &"helper"] as Array[StringName])
+	var helper := map.get_npc(&"helper")
+	assert_same(map.get_grid().get_occupant(Vector2i(3, 3)), helper)
+	assert_eq(helper.get_parent(), map.get_entities())
+	assert_false(map.get_grid().is_occupied(Vector2i(12, 3)), "case libérée")
+	assert_true(sleeper.is_queued_for_deletion())
+	assert_push_error_count(0)
+
+
+func test_refresh_npcs_twice_creates_no_duplicate() -> void:
+	var map := _make_flag_map()
+	add_child_autofree(map)
+	map.refresh_npcs(_met())
+	var helper := map.get_npc(&"helper")
+	map.refresh_npcs(_met())
+	assert_eq(_ids(map), [&"oak", &"helper"] as Array[StringName])
+	assert_same(map.get_npc(&"helper"), helper, "le même PNJ")
+	assert_eq(map.get_entities().get_child_count(), 3, "un nœud retiré (en attente de libération)")
+	assert_push_error_count(0)
+
+
+func test_refresh_npcs_back_to_no_flags_and_added_npcs_stay() -> void:
+	var map := _make_flag_map()
+	add_child_autofree(map)
+	map.refresh_npcs(_met())
+	var guest := map.add_npc(_added_spec(&"guest", Vector2i(4, 12)))
+	var helper_like := _added_spec(&"extra", Vector2i(5, 12))
+	map.add_npc(helper_like)
+	map.refresh_npcs(null)
+	assert_eq(_ids(map), [&"oak", &"guest", &"extra", &"sleeper"] as Array[StringName])
+	assert_same(map.get_npc(&"guest"), guest, "PNJ ajouté par une scène : jamais retiré")
+	assert_false(map.get_grid().is_occupied(Vector2i(3, 3)))
+	map.refresh_npcs(_met())
+	assert_not_null(map.get_npc(&"guest"))
+	assert_not_null(map.get_npc(&"extra"))
+	assert_push_error_count(0)

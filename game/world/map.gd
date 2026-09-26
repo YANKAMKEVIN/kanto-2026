@@ -10,8 +10,11 @@ extends Node2D
 ## (docs/tech/jalon-03.md §2.2). Les [EventTriggerPoint] enfants de `Triggers` forment la
 ## table des déclencheurs de scène (docs/tech/jalon-03b.md §2.2).
 ## Les PNJ ne sont pas dans la scène : à [method _ready], la carte lit
-## `<npcs_dir>/<map_id>.json` ([NpcRoster]), crée un [Npc] par entrée dans `Entities` et
-## l'inscrit sur sa case ([method Npc.enter_grid], §2.3). Une scène scriptée peut en ajouter
+## `<npcs_dir>/<map_id>.json` ([NpcRoster]), crée un [Npc] par entrée **présente en
+## nouvelle partie** ([method NpcRoster.get_present] sans drapeaux) dans `Entities` et
+## l'inscrit sur sa case ([method Npc.enter_grid], §2.3). [method refresh_npcs] ajuste
+## ensuite la présence aux drapeaux de la partie (jalon 3B §2.6 : Boot l'appelle à chaque
+## changement de carte, écran noir). Une scène scriptée peut en ajouter
 ## ([method add_npc]) ou en retirer ([method remove_npc]) pour la durée de la carte
 ## (jalon 3B §2.5). Ils n'ont pas d'owner : les scripts de construction ne les sauvent
 ## jamais dans les `.tscn`.
@@ -40,6 +43,10 @@ var _interactions: InteractionTable
 var _triggers: TriggerTable
 var _npcs: Array[Npc] = []
 var _npcs_spawned: bool = false
+## Fichier de PNJ de la carte (présence conditionnelle, refresh_npcs).
+var _roster: NpcRoster
+## PNJ créés depuis le fichier (les seuls que refresh_npcs peut retirer).
+var _roster_npcs: Array[Npc] = []
 
 
 func _ready() -> void:
@@ -112,7 +119,27 @@ func remove_npc(id: StringName) -> void:
 		return
 	npc.leave_grid()
 	_npcs.erase(npc)
+	_roster_npcs.erase(npc)
 	npc.queue_free()
+
+
+## Ajuste les PNJ du fichier de la carte aux drapeaux [param flags] : crée ceux qui sont
+## présents et manquent, retire ceux qui ne le sont plus (case libérée tout de suite). Les
+## PNJ ajoutés par [method add_npc] ne sont jamais retirés (ils restent jusqu'au départ de
+## la carte). Sans doublon si on l'appelle plusieurs fois.
+func refresh_npcs(flags: StoryFlags) -> void:
+	if not _npcs_spawned:
+		_spawn_npcs()
+	if _roster == null:
+		return
+	for npc: Npc in _roster_npcs.duplicate():
+		if not npc.get_spec().is_present(flags):
+			remove_npc(npc.get_id())
+	for spec: NpcSpec in _roster.get_present(flags):
+		if get_npc(spec.id) == null:
+			var npc := _create_npc(spec)
+			if npc != null:
+				_roster_npcs.append(npc)
 
 
 ## PNJ d'identifiant [param id], ou null.
@@ -235,8 +262,9 @@ func _build_triggers() -> void:
 			push_error("GameMap %s : déclencheur invalide en %s" % [map_id, refused])
 
 
-## Crée les PNJ de `<npcs_dir>/<map_id>.json` dans `Entities` et les inscrit sur la grille.
-## Une case hors carte ou déjà occupée : push_error, le PNJ n'est pas créé.
+## Crée les PNJ de `<npcs_dir>/<map_id>.json` présents en nouvelle partie (sans drapeaux)
+## dans `Entities` et les inscrit sur la grille. Une case hors carte ou déjà occupée :
+## push_error, le PNJ n'est pas créé.
 func _spawn_npcs() -> void:
 	_npcs_spawned = true
 	if map_id.is_empty():
@@ -244,9 +272,11 @@ func _spawn_npcs() -> void:
 	var entities := get_node_or_null(^"Entities")
 	if entities == null:
 		return
-	var roster := NpcRoster.load_for_map(map_id, npcs_dir)
-	for spec: NpcSpec in roster.get_all():
-		_create_npc(spec)
+	_roster = NpcRoster.load_for_map(map_id, npcs_dir)
+	for spec: NpcSpec in _roster.get_present(null):
+		var npc := _create_npc(spec)
+		if npc != null:
+			_roster_npcs.append(npc)
 
 
 ## Crée un [Npc] dans `Entities` et l'inscrit sur sa case. Une case hors carte ou déjà

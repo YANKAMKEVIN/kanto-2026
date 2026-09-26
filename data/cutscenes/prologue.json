@@ -15,7 +15,18 @@
 					{ "face": "player", "to": "oak" },
 					{ "wait": 0.6 },
 					{ "dialogue": "oak_route1_warning" },
-					{ "set": ["oak_met"] }
+					{ "set": ["oak_met"] },
+					{ "move": "oak", "follower": "player",
+						"path": ["down", "down", "down", "down", "down", "down", "down", "down"] },
+					{ "change_map": "oak_lab", "at": "entrance", "facing": "up" },
+					{ "move": "player", "path": ["up", "up"] },
+					{ "wait": 0.3 },
+					{ "face": "rival", "to": "oak" },
+					{ "wait": 0.5 },
+					{ "face": "rival", "to": "player" },
+					{ "wait": 0.3 },
+					{ "dialogue": "oak_lab_reunion" },
+					{ "set": ["oak_lab_reunion"] }
 				]
 			},
 			{

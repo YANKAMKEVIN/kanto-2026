@@ -6,7 +6,8 @@ extends GutTest
 ## mémoire. Étapes wait, dialogue, face, set ; blocage dans l'image même ; déclenchement
 ## dans le moved, sans pas de plus direction tenue ; gardes (variante, transition, pas
 ## scripté). T3 : spawn, move (chemin écrit, case absolue, voisine d'un acteur, course,
-## blocage), variante 2 (pensée puis un pas vers le bas).
+## blocage), variante 2 (pensée puis un pas vers le bas). T4 : suiveur d'une étape move,
+## change_map (PNJ de la nouvelle carte, échec du routeur).
 
 const ROUTER_SCRIPT := preload("res://game/autoload/scene_router.gd")
 const PLAYER_SCENE := preload("res://game/player/player.tscn")
@@ -44,8 +45,20 @@ const SCENES := {
 	"two_dialogues": {"steps": [
 		{"dialogue": "call"}, {"wait": 0.3}, {"dialogue": "thought"},
 	]},
-	"not_yet": {"steps": [
-		{"change_map": "runner_map", "at": "start"}, {"set": ["after"]},
+	"to_lab": {"steps": [
+		{"change_map": "lab_map", "at": "start", "facing": "left"},
+		{"face": "oak", "to": "player"}, {"set": ["after"]},
+	]},
+	"to_lab_then_mom": {"steps": [
+		{"change_map": "lab_map", "at": "start"}, {"face": "mom", "to": "down"},
+		{"set": ["after"]},
+	]},
+	"to_missing": {"steps": [
+		{"change_map": "missing_map", "at": "start"}, {"set": ["after"]},
+	]},
+	"mom_leads": {"steps": [
+		{"move": "mom", "follower": "player", "path": ["down", "down", "down", "left"]},
+		{"set": ["after"]},
 	]},
 	"spawn_oak": {"steps": [
 		{"spawn": "oak", "sprite": "oak", "cell": [5, 15], "facing": "up"},
@@ -86,7 +99,8 @@ func before_each() -> void:
 	_flags = StoryFlags.new()
 	_router = ROUTER_SCRIPT.new()
 	add_child_autofree(_router)
-	_router.map_factory = _make_map
+	_router.map_factory = func(map_id: StringName) -> GameMap:
+		return null if map_id == &"missing_map" else _make_map(map_id)
 	_world = Node2D.new()
 	add_child_autofree(_world)
 	_player = PLAYER_SCENE.instantiate() as Player
@@ -320,12 +334,110 @@ func test_variant_depends_on_the_flags() -> void:
 	assert_push_error_count(0)
 
 
-func test_step_not_played_yet_is_skipped_with_error() -> void:
-	_director.play(&"not_yet")
-	assert_push_error("pas encore jouée")
+# --- change_map (T4) -----------------------------------------------------------------
+
+func test_change_map_then_the_next_steps_target_the_npcs_of_the_new_map() -> void:
+	var old_map := _map
+	assert_true(_director.play(&"to_lab"))
+	await _await_scene_end()
+	var lab := _router.get_current_map() as GameMap
+	assert_eq(lab.map_id, &"lab_map")
+	assert_ne(lab, old_map)
+	assert_eq(_player.get_parent(), lab.get_entities())
+	assert_eq(_player.get_cell(), START, "au point d'apparition")
+	assert_eq(_player.get_facing(), Vector2i.LEFT, "orientation demandée")
+	# Chen (8, 4) → joueur (5, 8) : axe vertical dominant, vers le bas.
+	assert_eq(lab.get_npc(&"oak").get_facing(), Vector2i.DOWN, "PNJ de la nouvelle carte")
+	assert_true(_flags.has_flag(&"after"))
+	assert_true(_player.is_input_enabled(), "transition et scène terminées")
+	assert_false(_player.is_blocked_by(Player.REASON_TRANSITION))
+	assert_push_error_count(0)
+
+
+func test_change_map_keeps_the_player_blocked_during_the_transition() -> void:
+	var seen: Array = []
+	_router.map_changed.connect(func(_m: GameMap) -> void:
+		seen.append([_player.is_blocked_by(CutsceneDirector.REASON),
+			_player.is_blocked_by(Player.REASON_TRANSITION)]))
+	_director.play(&"to_lab")
+	await _await_scene_end()
+	assert_eq(seen, [[true, true]], "scène et transition tiennent le joueur")
+
+
+func test_after_change_map_the_npcs_of_the_old_map_are_gone() -> void:
+	_director.play(&"to_lab_then_mom")
+	await _await_scene_end()
+	assert_push_error("introuvable")
 	assert_true(_flags.has_flag(&"after"), "la scène continue")
-	assert_eq(_player.get_cell(), START)
+
+
+func test_change_map_failure_stops_the_scene_and_frees_the_player() -> void:
+	var old_map := _map
+	_director.play(&"to_missing")
+	await _await_scene_end()
+	assert_push_error("carte inconnue")
+	assert_push_error("manqué")
+	assert_false(_flags.has_flag(&"after"), "scène arrêtée")
+	assert_false(_director.is_running())
+	assert_same(_router.get_current_map(), old_map, "toujours sur la carte de départ")
+	assert_true(_player.is_input_enabled(), "joueur libéré")
+	assert_signal_emit_count(_director, "cutscene_finished", 1)
+
+
+# --- Suiveur (T4) ----------------------------------------------------------------------
+
+func test_follower_stays_one_step_behind_and_ends_on_the_leader_second_to_last_cell() -> void:
+	# Maman (7, 4) mène ; le joueur, à sa gauche en (6, 4), suit.
+	_place(Vector2i(6, 4), Vector2i.RIGHT)
+	_player.set_process(true)
+	var mom := _map.get_npc(&"mom")
+	var leader_cells: Array[Vector2i] = [mom.get_cell()]
+	var follower_cells: Array[Vector2i] = []
+	var gaps: Array[int] = []
+	mom.step_finished.connect(func(cell: Vector2i) -> void: leader_cells.append(cell))
+	_player.moved.connect(func(cell: Vector2i) -> void: follower_cells.append(cell))
+	var watch := func() -> void:
+		# Cases de départ pendant un pas (GridMover.get_cell), cases d'arrêt sinon.
+		if _director.is_running():
+			var gap := mom.get_cell() - _player.get_cell()
+			gaps.append(absi(gap.x) + absi(gap.y))
+	get_tree().process_frame.connect(watch)
+	await _play_timed(&"mom_leads")
+	get_tree().process_frame.disconnect(watch)
+	assert_eq(leader_cells, [Vector2i(7, 4), Vector2i(7, 5), Vector2i(7, 6), Vector2i(7, 7),
+		Vector2i(6, 7)] as Array[Vector2i])
+	assert_eq(follower_cells, leader_cells.slice(0, 4), "chaque case que le meneur quitte")
+	assert_eq(_player.get_cell(), Vector2i(7, 7), "avant-dernière case du meneur")
+	assert_eq(mom.get_cell(), Vector2i(6, 7))
+	assert_false(gaps.is_empty())
+	for gap: int in gaps:
+		assert_eq(gap, 1, "toujours un pas derrière")
+	assert_true(_flags.has_flag(&"after"), "l'étape attend les deux")
 	assert_true(_player.is_input_enabled())
+	assert_push_error_count(0)
+
+
+func test_follower_steps_in_the_same_frame_as_the_leader() -> void:
+	_place(Vector2i(6, 4), Vector2i.RIGHT)
+	_player.set_process(true)
+	var mom := _map.get_npc(&"mom")
+	var starts: Array = []
+	var watch := func() -> void:
+		starts.append([mom.is_moving(), _player.is_moving()])
+	get_tree().process_frame.connect(watch)
+	await _play_timed(&"mom_leads")
+	get_tree().process_frame.disconnect(watch)
+	for pair: Array in starts:
+		assert_eq(pair[0], pair[1], "meneur et suiveur partent et s'arrêtent ensemble")
+
+
+func test_follower_not_next_to_the_leader_is_ignored_with_error() -> void:
+	var mom := _map.get_npc(&"mom")
+	await _play_timed(&"mom_leads")
+	assert_push_error("pas à côté")
+	assert_eq(mom.get_cell(), Vector2i(6, 7), "le meneur marche seul")
+	assert_eq(_player.get_cell(), START)
+	assert_true(_flags.has_flag(&"after"))
 
 
 func test_unknown_actor_is_skipped_with_error() -> void:

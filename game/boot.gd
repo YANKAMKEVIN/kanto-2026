@@ -52,7 +52,7 @@ func _ready() -> void:
 	SceneRouter.setup(_world, _player, _fade)
 	# Branchés avant start() : la première carte passe aussi par le contrôleur.
 	SceneRouter.transition_started.connect(_on_transition_started)
-	# Via Boot (ordre garanti) : la carte passe au contrôleur puis au directeur.
+	# Via Boot (ordre garanti) : présence des PNJ, puis le contrôleur, puis le directeur.
 	SceneRouter.map_changed.connect(_on_map_changed)
 	SceneRouter.map_entered.connect(_on_map_entered)
 	SceneRouter.map_entered.connect(_interactions.on_map_entered)
@@ -118,7 +118,10 @@ func _on_transition_started(_target_map: StringName) -> void:
 	_hud.hide_zone_title()
 
 
+## Écran noir (ou démarrage) : présence des PNJ selon les drapeaux de la partie d'abord
+## (jalon 3B §2.6), puis la carte passe aux contrôleurs.
 func _on_map_changed(map: GameMap) -> void:
+	map.refresh_npcs(GameState.flags)
 	_interactions.set_map(map)
 	_cutscenes_node.set_map(map)
 

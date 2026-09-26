@@ -11,5 +11,7 @@
 	"squirtle": {
 		"cell": [12, 5], "facing": "down", "sprite": "squirtle",
 		"dialogue": "observe_squirtle", "verb": "observe", "lift": 56
-	}
+	},
+	"oak": { "cell": [8, 4], "facing": "down", "sprite": "oak", "if": ["oak_met"] },
+	"rival": { "cell": [9, 6], "facing": "right", "sprite": "rival", "if": ["oak_met"] }
 }

@@ -1,7 +1,8 @@
 extends GutTest
 ## Carte pallet_town : métadonnées, spawn et invariants d'accessibilité (jalon 1 §4.4),
 ## portes ouvertes, warps et spawns des bâtiments (jalon 2 §4.2, §4.8) ; hautes herbes
-## et Pokémon de la prairie (jalon 3B §3.1, §3.6, T1) ; déclencheur de la Route 1 (T2).
+## et Pokémon de la prairie (jalon 3B §3.1, §3.6, T1) ; déclencheur de la Route 1 (T2) ;
+## arrivée de Chen, retour vers le village et chemin du suiveur (T4).
 
 const MAP_PATH := "res://game/world/maps/pallet_town.tscn"
 const START := Vector2i(36, 10)
@@ -326,3 +327,64 @@ func test_tall_grass_cannot_be_reached_without_the_trigger() -> void:
 	for y: int in range(TALL_GRASS_RECT.position.y, TALL_GRASS_RECT.end.y):
 		for x: int in range(TALL_GRASS_RECT.position.x, TALL_GRASS_RECT.end.x):
 			assert_false(reachable.has(Vector2i(x, y)), "herbes (%d, %d) hors d'atteinte" % [x, y])
+
+
+# --- Arrivée de Chen et retour (jalon 3B §3.6, T4) ---------------------------------------
+
+## Case d'apparition de Chen (étape « spawn » de route1_grass).
+const OAK_SPAWN := Vector2i(24, 13)
+## Décalages de l'étape « move » de Chen vers le joueur.
+const OAK_OFFSETS: Array[Vector2i] = [Vector2i(1, 0), Vector2i(-1, 0), Vector2i(0, 1)]
+const DOWN_8: Array[Vector2i] = [
+	Vector2i.DOWN, Vector2i.DOWN, Vector2i.DOWN, Vector2i.DOWN,
+	Vector2i.DOWN, Vector2i.DOWN, Vector2i.DOWN, Vector2i.DOWN,
+]
+
+
+## Cases interdites à un pas scripté : warps, déclencheurs, PNJ du fichier.
+func _forbidden_cells() -> Array[Vector2i]:
+	var cells: Array[Vector2i] = []
+	for warp: Warp in _map.get_warps().get_all():
+		cells.append(warp.cell)
+	for trigger: EventTrigger in _map.get_triggers().get_all():
+		cells.append(trigger.cell)
+	for spec: NpcSpec in NpcRoster.load_for_map(&"pallet_town").get_all():
+		cells.append(spec.cell)
+	return cells
+
+
+func test_oak_spawn_cell_is_walkable_and_free() -> void:
+	assert_true(_grid.is_free(OAK_SPAWN), "praticable et libre")
+	assert_false(_forbidden_cells().has(OAK_SPAWN))
+	assert_true(_reachable.has(OAK_SPAWN))
+
+
+func test_oak_reaches_the_cell_next_to_the_player_on_both_columns() -> void:
+	var expected: Dictionary[Vector2i, Vector2i] = {
+		Vector2i(23, 3): Vector2i(24, 3), Vector2i(24, 3): Vector2i(23, 3),
+	}
+	var player := RefCounted.new()
+	for player_cell: Vector2i in expected:
+		_grid.occupy(player_cell, player)
+		var goal := CutsceneMoves.resolve_near(_grid, player_cell, OAK_OFFSETS)
+		assert_eq(goal, expected[player_cell], "joueur en %s" % player_cell)
+		var path := _grid.find_path(OAK_SPAWN, goal)
+		assert_false(path.is_empty(), "chemin de %s à %s" % [OAK_SPAWN, goal])
+		assert_eq(CutsceneMoves.path_cells(OAK_SPAWN, path).back(), goal)
+		_grid.release(player_cell, player)
+
+
+func test_the_walk_back_and_the_follower_path_are_clear() -> void:
+	var forbidden := _forbidden_cells()
+	for player_cell: Vector2i in TRIGGER_CELLS:
+		var oak_cell := Vector2i(47 - player_cell.x, player_cell.y)  # autre colonne
+		var leader := CutsceneMoves.path_cells(oak_cell, DOWN_8)
+		var follow := CutsceneMoves.follow_path(player_cell, oak_cell, DOWN_8)
+		assert_eq(follow.size(), DOWN_8.size())
+		var follower := CutsceneMoves.path_cells(player_cell, follow)
+		assert_eq(follower.back(), leader[leader.size() - 2], "avant-dernière case de Chen")
+		for cell: Vector2i in leader + follower:
+			if cell == oak_cell:
+				continue  # la case que Chen vient de quitter
+			assert_true(_grid.is_free(cell), "libre : %s" % cell)
+			assert_false(forbidden.has(cell), "ni warp, ni déclencheur, ni PNJ : %s" % cell)

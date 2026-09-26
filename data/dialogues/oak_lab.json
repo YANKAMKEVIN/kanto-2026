@@ -1,13 +1,32 @@
 {
 	"maya": {
 		"speaker": "Maya",
-		"pages": [
-			"Bonjour ! Tu cherches le professeur Chen ?",
-			"Il est sorti tôt ce matin. Encore.",
+		"variants": [
 			{
-				"text": "Quand il commence à observer des Pokémon, il oublie complètement l'heure.",
-				"pause": 0.6
+				"if": ["oak_met"],
+				"pages": [
+					"Ah, le professeur est revenu.",
+					"Et à voir son air, j'imagine qu'il a encore quelque chose en tête."
+				]
+			},
+			{
+				"pages": [
+					"Bonjour ! Tu cherches le professeur Chen ?",
+					"Il est sorti tôt ce matin. Encore.",
+					{
+						"text": "Quand il commence à observer des Pokémon, il oublie complètement l'heure.",
+						"pause": 0.6
+					}
+				]
 			}
+		]
+	},
+	"oak_lab_reunion": {
+		"pages": [
+			{ "speaker": "Rival", "text": "Enfin." },
+			{ "speaker": "Prof. Chen", "text": "Un peu de patience.", "turn": { "oak": "rival" } },
+			{ "speaker": "Rival", "text": "Ça fait une heure que tu dis ça.", "turn": { "rival": "oak" } },
+			{ "speaker": "Prof. Chen", "text": "Et pourtant, tu es toujours là." }
 		]
 	},
 	"observe_bulbasaur": {

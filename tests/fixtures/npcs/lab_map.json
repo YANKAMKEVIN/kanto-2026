@@ -1,0 +1,5 @@
+{
+	"oak": { "cell": [8, 4], "facing": "down", "sprite": "oak" },
+	"helper": { "cell": [3, 3], "facing": "down", "sprite": "maya", "if": ["met"] },
+	"sleeper": { "cell": [12, 3], "facing": "down", "sprite": "rival", "unless": ["met"] }
+}

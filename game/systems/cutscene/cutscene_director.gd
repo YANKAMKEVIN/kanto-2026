@@ -11,9 +11,8 @@ extends Node
 ## Il reçoit ses dépendances par [method setup] : il ne lit aucun autoload.
 ##
 ## Étapes jouées : wait, dialogue, face, set (T2), spawn et move (T3 : chemin écrit, case
-## absolue ou case voisine d'un acteur, marche ou course). Le suiveur d'une étape move et
-## l'étape change_map (T4) sont validés par la bibliothèque mais pas encore joués :
-## push_error, suiveur ignoré ou étape sautée.
+## absolue ou case voisine d'un acteur, marche ou course), suiveur d'une étape move et
+## change_map (T4).
 
 signal cutscene_started(cutscene_id: StringName)
 ## Début d'une étape (tests, outils de capture).
@@ -53,6 +52,11 @@ var _move_path: Array[Vector2i] = []
 var _move_index: int = 0
 var _move_run: bool = false
 var _move_blocked: float = 0.0
+## Suiveur de l'étape « move » (null sans suiveur) : ses directions et son prochain pas.
+## Il marche au pas du meneur, jamais devant lui, jamais plus d'un pas derrière.
+var _follow_actor: Node2D
+var _follow_path: Array[Vector2i] = []
+var _follow_index: int = 0
 
 
 func _ready() -> void:
@@ -175,9 +179,27 @@ func _play_step(step: CutsceneStep) -> bool:
 		CutsceneStep.Kind.MOVE:
 			if _begin_move(step):
 				await _move_done
+		CutsceneStep.Kind.CHANGE_MAP:
+			return await _change_map(step)
 		_:
-			push_error("CutsceneDirector : étape « %s » pas encore jouée (%s, étape %d)" % [
-				CutsceneStep.kind_name(step.kind), _cutscene_id, _step_index + 1])
+			_step_error("étape « %s » inconnue" % CutsceneStep.kind_name(step.kind))
+	return true
+
+
+## Étape « change_map » : fondu et changement de carte par le routeur (la scène garde son
+## blocage pendant la transition). Faux (la scène s'arrête, push_error) si le routeur
+## manque ou si la carte courante n'est pas la carte demandée après la transition.
+func _change_map(step: CutsceneStep) -> bool:
+	if _router == null:
+		_step_error("pas de routeur pour aller sur « %s »" % step.map_id)
+		return false
+	await _router.change_map(step.map_id, step.spawn, step.facing)
+	var map := _router.get_current_map()
+	if not is_instance_valid(map) or map.map_id != step.map_id:
+		_step_error("changement de carte vers « %s » (%s) manqué" % [step.map_id, step.spawn])
+		return false
+	# Normalement déjà fait par le relais de map_changed ; sans relais, la carte suit quand même.
+	_map = map
 	return true
 
 
@@ -231,8 +253,6 @@ func _begin_move(step: CutsceneStep) -> bool:
 	if actor == null:
 		_step_error("acteur « %s » introuvable" % step.actor)
 		return false
-	if not step.follower.is_empty():
-		_step_error("suiveur « %s » pas encore joué" % step.follower)
 	var path: Array[Vector2i] = step.path
 	if step.has_destination():
 		if not is_instance_valid(_map):
@@ -256,48 +276,90 @@ func _begin_move(step: CutsceneStep) -> bool:
 			return false
 	if path.is_empty():
 		return false
+	_follow_actor = null
+	_follow_path = []
+	_follow_index = 0
+	if not step.follower.is_empty():
+		_begin_follower(step.follower, actor, path)
 	_move_actor = actor
 	_move_path = path
 	_move_index = 0
 	_move_run = step.run
 	_move_blocked = 0.0
 	_moving = true
-	_try_next_step()
+	_try_next_steps()
 	return true
 
 
-## Pilote l'étape « move » : quand l'acteur est à l'arrêt, pas suivant ; un pas refusé est
-## retenté à chaque image, abandonné au-delà de MOVE_BLOCK_TIMEOUT.
+## Prépare le suiveur [param follower_id] du meneur [param leader] : un pas vers la case de
+## départ du meneur, puis ses pas sauf le dernier ([method CutsceneMoves.follow_path]).
+## Introuvable ou pas voisin du meneur : push_error, le meneur marche seul.
+func _begin_follower(follower_id: StringName, leader: Node2D, path: Array[Vector2i]) -> void:
+	var follower := _find_actor(follower_id)
+	if follower == null:
+		_step_error("suiveur « %s » introuvable" % follower_id)
+		return
+	if follower == leader:
+		_step_error("« %s » ne peut pas se suivre lui-même" % follower_id)
+		return
+	var follow := CutsceneMoves.follow_path(_cell_of(follower), _cell_of(leader), path)
+	if follow.is_empty():
+		_step_error("suiveur « %s » pas à côté de « %s »" % [follower_id, leader.name])
+		return
+	_follow_actor = follower
+	_follow_path = follow
+
+
+## Pilote l'étape « move » : quand le meneur (et son suiveur) sont à l'arrêt, pas suivant ;
+## un pas refusé est retenté à chaque image, abandonné au-delà de MOVE_BLOCK_TIMEOUT.
 func _update_move(delta: float) -> void:
-	if not is_instance_valid(_move_actor):
+	if not is_instance_valid(_move_actor) or (_follow_actor != null
+			and not is_instance_valid(_follow_actor)):
 		_step_error("acteur disparu pendant son déplacement")
 		_end_move()
 		return
 	if _is_actor_moving(_move_actor):
 		return
-	if _move_index >= _move_path.size():
+	if _follow_actor != null and _is_actor_moving(_follow_actor):
+		return
+	if _move_index >= _move_path.size() and _follow_index >= _follow_path.size():
 		_end_move()
 		return
-	if _try_next_step():
+	if _try_next_steps():
 		return
 	_move_blocked += delta
 	if _move_blocked > MOVE_BLOCK_TIMEOUT:
-		_step_error("« %s » bloqué en %s" % [_move_actor.name, _cell_of(_move_actor)])
+		var stuck := _move_actor if _move_index < _move_path.size() else _follow_actor
+		_step_error("« %s » bloqué en %s" % [stuck.name, _cell_of(stuck)])
 		_end_move()
 
 
-## Lance le pas suivant du chemin ; vrai s'il est parti.
-func _try_next_step() -> bool:
-	var direction := _move_path[_move_index]
+## Lance le pas suivant du meneur, puis celui du suiveur dans la même image (la case que le
+## meneur quitte est libérée dès son départ). Le meneur n'a jamais plus d'un pas d'avance ;
+## le suiveur ne le dépasse jamais. Vrai si au moins un pas est parti.
+func _try_next_steps() -> bool:
 	var started := false
-	if _move_actor is Player:
-		started = (_move_actor as Player).script_step(direction, _move_run)
-	else:
-		started = (_move_actor as Npc).step(direction, _move_run)
+	var leader_may_go := _follow_actor == null or _move_index == _follow_index \
+			or _follow_index >= _follow_path.size()
+	if leader_may_go and _move_index < _move_path.size():
+		if _start_step(_move_actor, _move_path[_move_index]):
+			_move_index += 1
+			started = true
+	var follower_may_go := _follow_index < _move_index or _move_index >= _move_path.size()
+	if _follow_actor != null and follower_may_go and _follow_index < _follow_path.size():
+		if _start_step(_follow_actor, _follow_path[_follow_index]):
+			_follow_index += 1
+			started = true
 	if started:
-		_move_index += 1
 		_move_blocked = 0.0
 	return started
+
+
+## Un pas scripté de [param actor] (joueur ou PNJ) ; vrai s'il est parti.
+func _start_step(actor: Node2D, direction: Vector2i) -> bool:
+	if actor is Player:
+		return (actor as Player).script_step(direction, _move_run)
+	return (actor as Npc).step(direction, _move_run)
 
 
 func _end_move() -> void:
@@ -310,6 +372,9 @@ func _stop_move() -> void:
 	_move_actor = null
 	_move_path = []
 	_move_index = 0
+	_follow_actor = null
+	_follow_path = []
+	_follow_index = 0
 
 
 static func _is_actor_moving(actor: Node2D) -> bool:

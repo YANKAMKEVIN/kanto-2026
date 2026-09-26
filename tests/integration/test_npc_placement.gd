@@ -7,6 +7,9 @@ extends GutTest
 ## - chaque cible (PNJ interactif, point d'examen) est utilisable depuis une case voisine
 ##   atteignable, avec le vrai InteractionFinder, le bon dialogue et le bon verbe ;
 ## - chaque apparence a ses propres SpriteFrames (pas le générique).
+## Jalon 3B (T4) : ces invariants valent pour deux états de drapeaux, nouvelle partie (état
+## de 3A) et { oak_met } (Chen et le rival au labo, chambre du rival vide), cartes chargées
+## puis GameMap.refresh_npcs comme le fait Boot.
 
 const TALK := Interaction.Kind.TALK
 const EXAMINE := Interaction.Kind.EXAMINE
@@ -49,6 +52,14 @@ const PLAN: Dictionary = {
 		&"prairie_rattata": [Vector2i(27, 2), Vector2i.LEFT, &"rattata", &"", TALK, 0],
 	},
 }
+## Plan après l'événement de la Route 1 (jalon 3B §3.2) : seules différences avec PLAN.
+const PLAN_OAK_MET: Dictionary = {
+	&"rival_house": {},
+	&"oak_lab": {
+		&"oak": [Vector2i(8, 4), Vector2i.DOWN, &"oak", &"", TALK, 0],
+		&"rival": [Vector2i(9, 6), Vector2i.RIGHT, &"rival", &"", TALK, 0],
+	},
+}
 ## Plan §3.2 : carte → nœud → [ancre, taille, dialogue].
 const POINTS: Dictionary = {
 	&"player_house_1f": {
@@ -65,20 +76,44 @@ const DIRECTIONS: Array[Vector2i] = [
 	Vector2i.UP, Vector2i.DOWN, Vector2i.LEFT, Vector2i.RIGHT,
 ]
 
+## Cartes en nouvelle partie (état de 3A).
 var _maps: Dictionary = {}
+## Mêmes cartes après refresh_npcs({ oak_met }).
+var _maps_met: Dictionary = {}
+## [nom de l'état, cartes, plan] : chaque invariant est vérifié dans les deux états.
+var _states: Array[Array] = []
 
 
 func before_all() -> void:
+	var met := StoryFlags.new()
+	met.set_flag(&"oak_met")
 	for map_id: StringName in FROM:
-		var map := (load(MapCatalog.scene_path(map_id)) as PackedScene).instantiate() as GameMap
-		add_child(map)
-		_maps[map_id] = map
+		_maps[map_id] = _load_map(map_id)
+		var after := _load_map(map_id)
+		after.refresh_npcs(met)
+		_maps_met[map_id] = after
+	var plan_met: Dictionary = PLAN.duplicate()
+	for map_id: StringName in PLAN_OAK_MET:
+		var rows: Dictionary = {}
+		if not (PLAN_OAK_MET[map_id] as Dictionary).is_empty():
+			rows = (PLAN[map_id] as Dictionary).duplicate()
+		rows.merge(PLAN_OAK_MET[map_id], true)
+		plan_met[map_id] = rows
+	_states = [["nouvelle partie", _maps, PLAN], ["oak_met", _maps_met, plan_met]]
 
 
 func after_all() -> void:
-	for map: GameMap in _maps.values():
+	for map: GameMap in _maps.values() + _maps_met.values():
 		map.free()
 	_maps.clear()
+	_maps_met.clear()
+	_states.clear()
+
+
+func _load_map(map_id: StringName) -> GameMap:
+	var map := (load(MapCatalog.scene_path(map_id)) as PackedScene).instantiate() as GameMap
+	add_child(map)
+	return map
 
 
 func _warp_cells(map: GameMap) -> Array[Vector2i]:
@@ -113,28 +148,34 @@ func test_rosters_load_without_error_and_match_the_plan() -> void:
 	for map_id: StringName in PLAN:
 		var roster := NpcRoster.load_for_map(map_id)
 		assert_eq(roster.get_errors().size(), 0, "%s : %s" % [map_id, roster.get_errors()])
-		var plan: Dictionary = PLAN[map_id]
-		assert_eq(FileAccess.file_exists(NpcRoster.path_for_map(map_id)), not plan.is_empty(),
-			"%s : fichier de PNJ" % map_id)
-		var map: GameMap = _maps[map_id]
-		assert_eq(map.get_npcs().size(), plan.size(), "%s : tous les PNJ créés" % map_id)
-		for id: StringName in plan:
-			var spec := roster.get_spec(id)
-			var npc := map.get_npc(id)
-			assert_not_null(spec, "%s/%s dans le fichier" % [map_id, id])
-			assert_not_null(npc, "%s/%s créé" % [map_id, id])
-			if spec == null or npc == null:
-				continue
-			var row: Array = plan[id]
-			var label := "%s/%s" % [map_id, id]
-			assert_eq(spec.cell, row[0], label + " case")
-			assert_eq(spec.facing, row[1], label + " orientation")
-			assert_eq(spec.sprite, row[2], label + " apparence")
-			assert_eq(spec.dialogue, row[3], label + " dialogue")
-			if spec.is_interactive():
-				assert_eq(spec.verb, row[4], label + " verbe")
-			assert_eq(spec.lift, row[5], label + " élévation")
-			assert_eq(map.get_grid().get_occupant(spec.cell), npc, label + " occupe sa case")
+		assert_eq(FileAccess.file_exists(NpcRoster.path_for_map(map_id)),
+			not (PLAN[map_id] as Dictionary).is_empty(), "%s : fichier de PNJ" % map_id)
+	for state: Array in _states:
+		for map_id: StringName in PLAN:
+			_check_plan(state[0], state[1][map_id], state[2][map_id])
+
+
+func _check_plan(state: String, map: GameMap, plan: Dictionary) -> void:
+	var map_id := map.map_id
+	var roster := NpcRoster.load_for_map(map_id)
+	assert_eq(map.get_npcs().size(), plan.size(), "%s, %s : PNJ présents" % [state, map_id])
+	for id: StringName in plan:
+		var spec := roster.get_spec(id)
+		var npc := map.get_npc(id)
+		assert_not_null(spec, "%s/%s dans le fichier" % [map_id, id])
+		assert_not_null(npc, "%s, %s/%s créé" % [state, map_id, id])
+		if spec == null or npc == null:
+			continue
+		var row: Array = plan[id]
+		var label := "%s, %s/%s" % [state, map_id, id]
+		assert_eq(spec.cell, row[0], label + " case")
+		assert_eq(spec.facing, row[1], label + " orientation")
+		assert_eq(spec.sprite, row[2], label + " apparence")
+		assert_eq(spec.dialogue, row[3], label + " dialogue")
+		if spec.is_interactive():
+			assert_eq(spec.verb, row[4], label + " verbe")
+		assert_eq(spec.lift, row[5], label + " élévation")
+		assert_eq(map.get_grid().get_occupant(spec.cell), npc, label + " occupe sa case")
 
 
 func test_rival_does_not_turn_until_face_player() -> void:
@@ -143,14 +184,15 @@ func test_rival_does_not_turn_until_face_player() -> void:
 
 
 func test_every_npc_has_its_own_frames() -> void:
-	for map_id: StringName in PLAN:
-		for npc: Npc in (_maps[map_id] as GameMap).get_npcs():
-			var sprite := npc.get_spec().sprite
-			assert_true(Npc.has_frames(sprite), "%s : %s_frames.tres" % [npc.get_id(), sprite])
-			var anim := npc.get_node(^"%Sprite") as AnimatedSprite2D
-			assert_eq(anim.sprite_frames.resource_path, Npc.frames_path(sprite))
-			assert_eq(anim.texture_filter, CanvasItem.TEXTURE_FILTER_NEAREST)
-			assert_eq(anim.scale, Vector2(2, 2))
+	for state: Array in _states:
+		for map_id: StringName in PLAN:
+			for npc: Npc in (state[1][map_id] as GameMap).get_npcs():
+				var sprite := npc.get_spec().sprite
+				assert_true(Npc.has_frames(sprite), "%s : %s_frames.tres" % [npc.get_id(), sprite])
+				var anim := npc.get_node(^"%Sprite") as AnimatedSprite2D
+				assert_eq(anim.sprite_frames.resource_path, Npc.frames_path(sprite))
+				assert_eq(anim.texture_filter, CanvasItem.TEXTURE_FILTER_NEAREST)
+				assert_eq(anim.scale, Vector2(2, 2))
 
 
 func test_sprite_sizes_and_animations() -> void:
@@ -212,49 +254,54 @@ func test_oak_has_its_own_frames_with_walk_and_run() -> void:
 
 
 func test_npc_cells_in_map_not_on_warp_or_spawn_and_walkable() -> void:
-	for map_id: StringName in PLAN:
-		var map: GameMap = _maps[map_id]
-		var grid := map.get_grid()
-		var warps := _warp_cells(map)
-		var spawns := _spawn_cells(map)
-		for npc: Npc in map.get_npcs():
-			var cell := npc.get_cell()
-			var label := "%s/%s en %s" % [map_id, npc.get_id(), cell]
-			assert_true(grid.is_in_bounds(cell), label + " dans la carte")
-			assert_false(warps.has(cell), label + " hors warp")
-			assert_false(spawns.has(cell), label + " hors spawn")
-			assert_false(grid.is_water(cell), label + " hors de l'eau")
-			if npc.get_spec().lift > 0:
-				assert_true(grid.is_solid(cell), label + " posé sur un meuble")
-			else:
-				assert_false(grid.is_solid(cell), label + " praticable")
+	for state: Array in _states:
+		for map_id: StringName in PLAN:
+			var map: GameMap = state[1][map_id]
+			var grid := map.get_grid()
+			var warps := _warp_cells(map)
+			var spawns := _spawn_cells(map)
+			for npc: Npc in map.get_npcs():
+				var cell := npc.get_cell()
+				var label := "%s, %s/%s en %s" % [state[0], map_id, npc.get_id(), cell]
+				assert_true(grid.is_in_bounds(cell), label + " dans la carte")
+				assert_false(warps.has(cell), label + " hors warp")
+				assert_false(spawns.has(cell), label + " hors spawn")
+				assert_false(grid.is_water(cell), label + " hors de l'eau")
+				if npc.get_spec().lift > 0:
+					assert_true(grid.is_solid(cell), label + " posé sur un meuble")
+				else:
+					assert_false(grid.is_solid(cell), label + " praticable")
 
 
 func test_npcs_close_no_pocket() -> void:
-	for map_id: StringName in PLAN:
-		var map: GameMap = _maps[map_id]
-		var grid := map.get_grid()
-		var without := _reachable(map, false)
-		var with := _reachable(map, true)
-		for cell: Vector2i in without:
-			if grid.is_occupied(cell) and grid.get_occupant(cell) is Npc:
-				continue
-			assert_true(with.has(cell), "%s : poche en %s à cause d'un PNJ" % [map_id, cell])
+	for state: Array in _states:
+		for map_id: StringName in PLAN:
+			var map: GameMap = state[1][map_id]
+			var grid := map.get_grid()
+			var without := _reachable(map, false)
+			var with := _reachable(map, true)
+			for cell: Vector2i in without:
+				if grid.is_occupied(cell) and grid.get_occupant(cell) is Npc:
+					continue
+				assert_true(with.has(cell), "%s, %s : poche en %s à cause d'un PNJ" % [state[0],
+					map_id, cell])
 
 
 func test_interior_walkable_free_cells_all_reachable() -> void:
-	for map_id: StringName in [&"player_house_1f", &"rival_house", &"oak_lab"]:
-		var map: GameMap = _maps[map_id]
-		var grid := map.get_grid()
-		var with := _reachable(map, true)
-		for y: int in map.size.y:
-			for x: int in map.size.x:
-				var cell := Vector2i(x, y)
-				if grid.is_solid(cell) or grid.is_water(cell) or grid.is_occupied(cell):
-					continue
-				assert_true(with.has(cell), "%s : poche en %s" % [map_id, cell])
+	for state: Array in _states:
+		for map_id: StringName in [&"player_house_1f", &"rival_house", &"oak_lab"]:
+			var map: GameMap = state[1][map_id]
+			var grid := map.get_grid()
+			var with := _reachable(map, true)
+			for y: int in map.size.y:
+				for x: int in map.size.x:
+					var cell := Vector2i(x, y)
+					if grid.is_solid(cell) or grid.is_water(cell) or grid.is_occupied(cell):
+						continue
+					assert_true(with.has(cell), "%s, %s : poche en %s" % [state[0], map_id, cell])
 
 
+## Nouvelle partie seulement : avec oak_met, Chen occupe (8, 4) (test suivant).
 func test_chen_cells_stay_free_and_reachable_in_the_lab() -> void:
 	var map: GameMap = _maps[&"oak_lab"]
 	var with := _reachable(map, true)
@@ -262,6 +309,46 @@ func test_chen_cells_stay_free_and_reachable_in_the_lab() -> void:
 		assert_false(map.get_grid().is_occupied(cell), "(%s) libre" % cell)
 		assert_false(map.get_grid().is_solid(cell))
 		assert_true(with.has(cell), "(%s) atteignable" % cell)
+
+
+## Jalon 3B §3.6 : avec oak_met, Chen en (8, 4) et le rival en (9, 6) ; (11, 6) reste libre
+## et atteignable (Salamèche s'observe) ; les deux pas vers le haut depuis l'entrée sont
+## libres ; la chambre du rival est vide.
+func test_after_oak_met_chen_and_the_rival_are_in_the_lab() -> void:
+	var lab: GameMap = _maps_met[&"oak_lab"]
+	var grid := lab.get_grid()
+	assert_same(grid.get_occupant(Vector2i(8, 4)), lab.get_npc(&"oak"))
+	assert_same(grid.get_occupant(Vector2i(9, 6)), lab.get_npc(&"rival"))
+	assert_null(lab.get_npc(&"oak").get_interaction(), "Chen non interactif en 3B (Q10)")
+	assert_null(lab.get_npc(&"rival").get_interaction(), "rival non interactif en 3B (Q10)")
+	var with := _reachable(lab, true)
+	assert_false(grid.is_occupied(Vector2i(11, 6)))
+	assert_true(with.has(Vector2i(11, 6)), "(11, 6) atteignable")
+	var entrance := lab.get_spawn_cell(&"entrance")
+	assert_eq(entrance, Vector2i(7, 9))
+	var up: Array[Vector2i] = [Vector2i.UP, Vector2i.UP]
+	for cell: Vector2i in CutsceneMoves.path_cells(entrance, up):
+		assert_true(grid.is_free(cell), "pas de la scène libre en %s" % cell)
+		assert_false(_warp_cells(lab).has(cell), "pas un warp : %s" % cell)
+	var rival_home: GameMap = _maps_met[&"rival_house"]
+	assert_true(rival_home.get_npcs().is_empty(), "chambre du rival vide")
+	assert_false(rival_home.get_grid().is_occupied(Vector2i(13, 4)))
+	assert_null(_maps[&"oak_lab"].get_npc(&"oak"), "nouvelle partie : pas de Chen au labo")
+	assert_null(_maps[&"oak_lab"].get_npc(&"rival"))
+	assert_not_null(_maps[&"rival_house"].get_npc(&"rival"), "nouvelle partie : rival chez lui")
+
+
+## Deux entrées d'une même case ne sont jamais présentes ensemble, pour chaque état.
+func test_no_two_present_entries_share_a_cell() -> void:
+	var met := StoryFlags.new()
+	met.set_flag(&"oak_met")
+	for flags: StoryFlags in [null, met]:
+		for map_id: StringName in PLAN:
+			var seen: Dictionary[Vector2i, StringName] = {}
+			for spec: NpcSpec in NpcRoster.load_for_map(map_id).get_present(flags):
+				assert_false(seen.has(spec.cell), "%s : %s et %s en %s" % [map_id,
+					seen.get(spec.cell, &""), spec.id, spec.cell])
+				seen[spec.cell] = spec.id
 
 
 func test_interact_points_match_the_plan() -> void:
@@ -306,20 +393,21 @@ func _usable(map: GameMap, cells: Array[Vector2i], dialogue: StringName, kind: i
 
 
 func test_every_target_is_usable_from_a_reachable_cell() -> void:
-	for map_id: StringName in FROM:
-		var map: GameMap = _maps[map_id]
-		var reachable := _reachable(map, true)
-		for npc: Npc in map.get_npcs():
-			var interaction := npc.get_interaction()
-			if interaction == null:
-				continue
-			var cells: Array[Vector2i] = [npc.get_cell()]
-			assert_true(_usable(map, cells, interaction.dialogue_id, interaction.kind,
-				reachable), "%s/%s utilisable" % [map_id, npc.get_id()])
-		for point: Node in map.get_node(^"Interactables").get_children():
-			var ip := point as InteractPoint
-			assert_true(_usable(map, ip.get_cells(), ip.dialogue_id, ip.kind, reachable),
-				"%s/%s utilisable" % [map_id, ip.name])
+	for state: Array in _states:
+		for map_id: StringName in FROM:
+			var map: GameMap = state[1][map_id]
+			var reachable := _reachable(map, true)
+			for npc: Npc in map.get_npcs():
+				var interaction := npc.get_interaction()
+				if interaction == null:
+					continue
+				var cells: Array[Vector2i] = [npc.get_cell()]
+				assert_true(_usable(map, cells, interaction.dialogue_id, interaction.kind,
+					reachable), "%s, %s/%s utilisable" % [state[0], map_id, npc.get_id()])
+			for point: Node in map.get_node(^"Interactables").get_children():
+				var ip := point as InteractPoint
+				assert_true(_usable(map, ip.get_cells(), ip.dialogue_id, ip.kind, reachable),
+					"%s/%s utilisable" % [map_id, ip.name])
 
 
 func test_haru_is_talked_to_from_the_beach() -> void:

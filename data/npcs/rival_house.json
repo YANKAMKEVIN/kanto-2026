@@ -1,6 +1,6 @@
 {
 	"rival": {
 		"cell": [13, 4], "facing": "right", "sprite": "rival", "dialogue": "rival",
-		"turn_to_player": false
+		"turn_to_player": false, "unless": ["oak_met"]
 	}
 }
