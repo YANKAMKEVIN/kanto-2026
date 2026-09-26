@@ -1,0 +1,78 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://game/ui/battle/move_card.gd" id="1_card"]
+[ext_resource type="PackedScene" path="res://game/ui/components/type_badge.tscn" id="2_badge"]
+
+[node name="MoveCard" type="PanelContainer"]
+theme_type_variation = &"MoveCardEmpty"
+script = ExtResource("1_card")
+
+[node name="Row" type="HBoxContainer" parent="."]
+unique_name_in_owner = true
+layout_mode = 2
+mouse_filter = 2
+
+[node name="IconSlot" type="CenterContainer" parent="Row"]
+unique_name_in_owner = true
+layout_mode = 2
+mouse_filter = 2
+
+[node name="Icon" type="TextureRect" parent="Row/IconSlot"]
+unique_name_in_owner = true
+layout_mode = 2
+mouse_filter = 2
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Main" type="VBoxContainer" parent="Row"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+mouse_filter = 2
+
+[node name="Top" type="HBoxContainer" parent="Row/Main"]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="NameLabel" type="Label" parent="Row/Main/Top"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_type_variation = &"MoveCardName"
+text = "GRIFFE"
+text_overrun_behavior = 3
+
+[node name="PpTag" type="Label" parent="Row/Main/Top"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 4
+theme_type_variation = &"MoveCardPpTag"
+text = "PP"
+
+[node name="PpValue" type="Label" parent="Row/Main/Top"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 4
+theme_type_variation = &"MoveCardPp"
+text = "35/35"
+
+[node name="Bottom" type="HBoxContainer" parent="Row/Main"]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="Badge" parent="Row/Main/Bottom" instance=ExtResource("2_badge")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 4
+
+[node name="Spacer" type="Control" parent="Row/Main/Bottom"]
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 2
+
+[node name="Power" type="Label" parent="Row/Main/Bottom"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 4
+theme_type_variation = &"MoveCardPower"
+text = "Puissance 40"

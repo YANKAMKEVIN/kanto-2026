@@ -349,7 +349,7 @@ const MOVE_GAP_V := 20
 ## flèche de la colonne de gauche) et débord jusqu'aux bords droit et bas de l'écran.
 const MOVE_BAND_PAD := 24
 const MOVE_BAND_BLEED := 96
-const MOVE_BAND_BG := Color(0.06, 0.09, 0.13, 0.55)
+const MOVE_BAND_BG := Color(0.06, 0.09, 0.13, 0.66)
 ## Part de la couleur du type dans le fond de la carte (mêlée à PANEL_BG), et opacité du
 ## liseré à la couleur du type.
 const MOVE_CARD_TINT := 0.32
@@ -366,8 +366,10 @@ const MOVE_CARD_POWER_FONT := FONT_CAPTION
 const MOVE_CARD_SELECTED_BORDER := 4
 const MOVE_CARD_SELECTED_GLOW := Color(0.96, 0.77, 0.26, 0.45)
 const MOVE_CARD_SELECTED_GLOW_SIZE := 14
-## Carte sans PP : atténuée (modulate), PP en HP_LOW.
-const MOVE_CARD_DISABLED := Color(1, 1, 1, 0.45)
+## Carte sans PP : atténuée (assombrie et un peu transparente, modulate), PP en HP_LOW ;
+## MODULATE_FULL = pas d'atténuation.
+const MOVE_CARD_DISABLED := Color(0.55, 0.58, 0.62, 0.85)
+const MODULATE_FULL := Color(1, 1, 1, 1)
 const MOVE_PP_EMPTY := HP_LOW
 ## Emplacement vide (moins de 4 capacités).
 const MOVE_CARD_EMPTY_BG := Color(1, 1, 1, 0.04)

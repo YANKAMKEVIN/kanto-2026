@@ -17,6 +17,14 @@ extends SceneTree
 ##   actions_nodim  la même sans le voile (fond clair du labo, pire cas de lisibilité)
 ##   actions_all    les 4 actions disponibles (comparaison avec combat-v1)
 ##   actions_pressed  ATTAQUER enfoncé (doigt posé)
+##   moves          Griffe + Rugissement (capacités de Salamèche), Griffe sélectionnée, « ‹ »
+##   moves_4        Griffe, Flammèche, Rugissement, Morsure (Ténèbres : icône neutre),
+##                  Flammèche sélectionnée (comparaison avec combat-capacites-v1)
+##   moves_pp0      Griffe à 0 PP (atténuée) + Rugissement
+##   moves_detail   pression longue réelle sur Griffe (doigt tenu) : fiche détaillée
+##   moves_detail_status  pression longue sur Rugissement (Statut, Précision 100)
+## Noms, types, puissances, précisions et descriptions lus dans data/pokemon/ (l'outil peut
+## lire les données ; game/ui/ ne le peut pas).
 
 const BOOT_SCENE: String = "res://game/boot.tscn"
 const TOKENS_PATH: String = "res://game/ui/theme/ui_tokens.gd"
@@ -24,6 +32,8 @@ const UI_DIR: String = "res://game/ui/battle/"
 ## Case du joueur (devant la table des starters, rival à sa gauche), tournée vers le haut.
 const PLAYER_CELL := Vector2i(10, 7)
 const PREFIX: String = "jalon04b_ui_"
+const MOVES_PATH: String = "res://data/pokemon/moves/moves.json"
+const TYPES_PATH: String = "res://data/pokemon/types.json"
 
 var _boot: Node
 var _tokens: GDScript
@@ -36,6 +46,8 @@ var _move_view: GDScript
 var _dim: ColorRect
 var _screen: Control
 var _parts: Dictionary[StringName, Control] = {}
+var _moves: Dictionary = {}
+var _types: Dictionary = {}
 
 
 func _init() -> void:
@@ -49,6 +61,8 @@ func _init() -> void:
 		elif arg.begins_with("--only="):
 			_only = arg.trim_prefix("--only=").split(",")
 	_tokens = load(TOKENS_PATH) as GDScript
+	_moves = JSON.parse_string(FileAccess.get_file_as_string(MOVES_PATH))
+	_types = JSON.parse_string(FileAccess.get_file_as_string(TYPES_PATH))["types"]
 	_layout = load(UI_DIR + "battle_hud_layout.gd") as GDScript
 	_card_view = load(UI_DIR + "battle_card_view.gd") as GDScript
 	_move_view = load(UI_DIR + "battle_move_view.gd") as GDScript
@@ -100,6 +114,8 @@ func _build_overlay() -> void:
 	_add(&"own", "battle_info_card.tscn", slot["OWN_CARD"])
 	_add(&"pips", "party_pips.tscn", slot["PARTY_PIPS"])
 	_add(&"actions", "action_grid.tscn", slot["ACTIONS"])
+	_add(&"moves", "move_grid.tscn", slot["MOVES"])
+	_add(&"back", "battle_back_button.tscn", slot["BACK"])
 	(_parts[&"foe"] as Control).set(&"slide_direction", Vector2.RIGHT)
 	(_parts[&"own"] as Control).set(&"slide_direction", Vector2.LEFT)
 
@@ -146,10 +162,60 @@ func _run() -> void:
 		_touch(center, false)
 		await _frames(4)
 		await actions.call(&"slide_out")
+	var moves: Control = _parts[&"moves"]
+	var back: Control = _parts[&"back"]
+	moves.set(&"speed_scale", 0.0)
+	back.set(&"speed_scale", 0.0)
+	if _wants("moves"):
+		back.call(&"slide_in")
+		moves.call(&"show_moves", _move_views([&"scratch", &"growl"], [35, 40]))
+		moves.call(&"select", 0)
+		await _frames(6)
+		await _shot("moves")
+		moves.call(&"show_moves", _move_views(
+			[&"scratch", &"ember", &"growl", &"bite"], [35, 25, 40, 25]))
+		moves.call(&"select", 1)
+		await _frames(6)
+		await _shot("moves_4")
+		moves.call(&"show_moves", _move_views([&"scratch", &"growl"], [0, 40]))
+		await _frames(6)
+		await _shot("moves_pp0")
+		for pair: Array in [[0, "moves_detail"], [1, "moves_detail_status"]]:
+			moves.call(&"show_moves", _move_views([&"scratch", &"growl"], [35, 40]))
+			await _frames(3)
+			var card: Control = moves.call(&"get_card", pair[0])
+			var center := card.get_global_rect().get_center()
+			_touch(center, true)
+			await _frames(int(ceil(_tokens.LONG_PRESS * 30.0)) + 8)
+			await _shot(pair[1])
+			_touch(center, false)
+			await _frames(6)
+		await moves.call(&"slide_out")
+		await back.call(&"slide_out")
 
 
 func _card(name: String, gender: int, hp: int, max_hp: int, numbers: bool) -> RefCounted:
 	return _card_view.new(name, gender, 5, hp, max_hp, numbers)
+
+
+## Vues des capacités [param ids] (données réelles) avec les PP [param pp].
+func _move_views(ids: Array, pp: Array) -> Array:
+	var categories: Dictionary = {"physical": 0, "special": 1, "status": 2}
+	var views: Array = []
+	for i: int in ids.size():
+		var move: Dictionary = _moves[String(ids[i])]
+		views.append(_move_view.new(move["name"], StringName(move["type"]),
+			_types[move["type"]]["name"], categories[move["category"]], pp[i],
+			int(move["pp"]), int(move.get("power", 0)), int(move.get("accuracy", 0)),
+			move.get("description", "")))
+	return _typed_moves(views)
+
+
+## Array[BattleMoveView] attendu par show_moves (la classe n'est pas connue de l'outil).
+func _typed_moves(views: Array) -> Array:
+	var typed := Array([], TYPE_OBJECT, &"RefCounted", _move_view)
+	typed.assign(views)
+	return typed
 
 
 func _enabled(attack: bool, bag: bool, team: bool, run: bool) -> Dictionary[StringName, bool]:
