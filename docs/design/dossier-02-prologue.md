@@ -166,3 +166,19 @@ Combat immédiat dans le laboratoire, comme dans Rouge/Bleu, mais très mis en s
 > (petit sourire) « On ne va quand même pas partir sans savoir ce qu'ils savent faire. »
 
 **Premier combat** : première découverte de l'interface de combat 2026.
+
+---
+
+## Ajouts de Kevin (2026-09-26, textes définitifs)
+
+- **Nom affiché de Chen** : « **Prof. Chen** » dans l'étiquette des dialogues. Les autres personnages peuvent l'appeler « le professeur Chen » ou « Chen » selon leur relation avec lui.
+- **Maya après le retour de Chen** (elle ne devient pas muette) :
+  > **Maya** — « Ah, le professeur est revenu. »
+  > « Et à voir son air, j'imagine qu'il a encore quelque chose en tête. »
+  (Elle évoluera encore après le choix du starter.)
+- **Hautes herbes avant le starter** : tant que le joueur n'a pas de Pokémon, il ne peut pas y entrer. Après l'événement de Chen, pas de nouvelle cinématique : le joueur s'arrête et pense
+  > *« Je ne devrais pas aller là sans Pokémon. »*
+  La restriction disparaît une fois le starter obtenu (jalon 4).
+- **Haru** est sur la **plage**, au bord de l'eau : il se tourne légèrement vers le joueur quand on lui parle, puis se retourne vers la mer.
+- **Mme Aoki et Léo** se tournent vers le joueur pendant le dialogue, puis reprennent leur orientation et leur activité.
+- Après le 3B, le joueur continue d'explorer Bourg Palette, de parler aux habitants et d'entrer dans les bâtiments ; seule la sortie par les hautes herbes reste verrouillée jusqu'au starter.

@@ -3,6 +3,9 @@
 [ext_resource type="Script" path="res://game/boot.gd" id="1_boot"]
 [ext_resource type="PackedScene" path="res://game/ui/hud/exploration_hud.tscn" id="2_hud"]
 [ext_resource type="PackedScene" path="res://game/ui/components/screen_fade.tscn" id="3_fade"]
+[ext_resource type="PackedScene" path="res://game/ui/dialogue/dialogue_box.tscn" id="4_box"]
+[ext_resource type="Script" path="res://game/systems/dialogue/dialogue_runner.gd" id="5_runner"]
+[ext_resource type="Script" path="res://game/world/interactions/interaction_controller.gd" id="6_ctrl"]
 
 [node name="Boot" type="Node"]
 script = ExtResource("1_boot")
@@ -12,6 +15,17 @@ unique_name_in_owner = true
 
 [node name="ExplorationHud" parent="." instance=ExtResource("2_hud")]
 unique_name_in_owner = true
+
+[node name="DialogueBox" parent="." instance=ExtResource("4_box")]
+unique_name_in_owner = true
+
+[node name="DialogueRunner" type="Node" parent="."]
+unique_name_in_owner = true
+script = ExtResource("5_runner")
+
+[node name="InteractionController" type="Node" parent="."]
+unique_name_in_owner = true
+script = ExtResource("6_ctrl")
 
 [node name="ScreenFade" parent="." instance=ExtResource("3_fade")]
 unique_name_in_owner = true

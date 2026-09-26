@@ -82,3 +82,48 @@ func test_start_settings_choose_map_and_spawn() -> void:
 func test_no_title_screen() -> void:
 	for child: Node in _boot.get_children():
 		assert_false(child is Control, "pas d'écran titre : %s" % child.name)
+
+
+# --- Jalon 3A (T3) : dialogues et interactions ------------------------------------------
+
+func test_game_state_is_empty_at_start() -> void:
+	assert_eq(GameState.flags.size(), 0, "nouvelle partie : aucun drapeau")
+
+
+func test_game_state_is_reset_by_a_new_boot() -> void:
+	GameState.flags.set_flag(&"mom_greeted")
+	var boot := (load("res://game/boot.tscn") as PackedScene).instantiate() as Boot
+	add_child_autofree(boot)
+	assert_false(GameState.flags.has_flag(&"mom_greeted"))
+
+
+func test_dialogue_library_loaded_without_error() -> void:
+	var library := _boot.get_dialogue_library()
+	assert_gt(library.size(), 0, "dialogues de data/dialogues/ chargés")
+	assert_eq(library.get_errors().size(), 0)
+	assert_true(library.has_dialogue(&"mom"))
+
+
+func test_dialogue_nodes_are_wired() -> void:
+	assert_eq(_boot.get_dialogue_box().layer, UiTokens.LAYER_DIALOG)
+	assert_not_null(_boot.get_dialogue_runner())
+	assert_not_null(_boot.get_interaction_controller())
+	assert_true(SceneRouter.map_changed.is_connected(_boot.get_interaction_controller().set_map))
+	assert_true(SceneRouter.map_entered.is_connected(
+		_boot.get_interaction_controller().on_map_entered))
+
+
+func test_no_dialogue_in_the_bedroom() -> void:
+	await wait_seconds(0.5)
+	assert_false(_boot.get_dialogue_runner().is_running())
+	assert_false(_boot.get_dialogue_box().is_open())
+	assert_true(_boot.get_player().is_input_enabled())
+	assert_true(_boot.get_hud().are_controls_visible())
+
+
+func test_router_signals_disconnected_when_boot_leaves() -> void:
+	var controller := _boot.get_interaction_controller()
+	remove_child(_boot)
+	assert_false(SceneRouter.map_changed.is_connected(controller.set_map))
+	assert_false(SceneRouter.map_entered.is_connected(controller.on_map_entered))
+	add_child(_boot)

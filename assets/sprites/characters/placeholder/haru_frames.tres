@@ -1,0 +1,82 @@
+[gd_resource type="SpriteFrames" format=3]
+
+[ext_resource type="Texture2D" path="res://assets/sprites/characters/placeholder/haru_sheet.png" id="1_sheet"]
+
+[sub_resource type="AtlasTexture" id="f_0_0"]
+atlas = ExtResource("1_sheet")
+region = Rect2(0, 0, 32, 64)
+
+[sub_resource type="AtlasTexture" id="f_0_1"]
+atlas = ExtResource("1_sheet")
+region = Rect2(32, 0, 32, 64)
+
+[sub_resource type="AtlasTexture" id="f_1_0"]
+atlas = ExtResource("1_sheet")
+region = Rect2(0, 64, 32, 64)
+
+[sub_resource type="AtlasTexture" id="f_1_1"]
+atlas = ExtResource("1_sheet")
+region = Rect2(32, 64, 32, 64)
+
+[sub_resource type="AtlasTexture" id="f_2_0"]
+atlas = ExtResource("1_sheet")
+region = Rect2(0, 128, 32, 64)
+
+[sub_resource type="AtlasTexture" id="f_2_1"]
+atlas = ExtResource("1_sheet")
+region = Rect2(32, 128, 32, 64)
+
+[sub_resource type="AtlasTexture" id="f_3_0"]
+atlas = ExtResource("1_sheet")
+region = Rect2(0, 192, 32, 64)
+
+[sub_resource type="AtlasTexture" id="f_3_1"]
+atlas = ExtResource("1_sheet")
+region = Rect2(32, 192, 32, 64)
+
+[resource]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("f_0_0")
+}, {
+"duration": 1.0,
+"texture": SubResource("f_0_1")
+}],
+"loop": true,
+"name": &"idle_down",
+"speed": 1.2
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("f_1_0")
+}, {
+"duration": 1.0,
+"texture": SubResource("f_1_1")
+}],
+"loop": true,
+"name": &"idle_up",
+"speed": 1.2
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("f_2_0")
+}, {
+"duration": 1.0,
+"texture": SubResource("f_2_1")
+}],
+"loop": true,
+"name": &"idle_left",
+"speed": 1.2
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("f_3_0")
+}, {
+"duration": 1.0,
+"texture": SubResource("f_3_1")
+}],
+"loop": true,
+"name": &"idle_right",
+"speed": 1.2
+}]

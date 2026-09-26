@@ -1,0 +1,29 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://game/ui/components/interact_button.gd" id="1_interact"]
+[ext_resource type="Script" path="res://game/ui/components/round_button_visual.gd" id="2_visual"]
+[ext_resource type="Texture2D" path="res://assets/ui/icons/talk.svg" id="3_talk"]
+
+[node name="InteractButton" type="TouchScreenButton"]
+visible = false
+action = "interact"
+visibility_mode = 0
+script = ExtResource("1_interact")
+
+[node name="Visual" type="Node2D" parent="."]
+unique_name_in_owner = true
+script = ExtResource("2_visual")
+icon = ExtResource("3_talk")
+
+[node name="Tag" type="PanelContainer" parent="."]
+unique_name_in_owner = true
+offset_right = 40.0
+offset_bottom = 40.0
+mouse_filter = 2
+theme_type_variation = &"InteractLabel"
+
+[node name="TagLabel" type="Label" parent="Tag"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"InteractLabelText"
+text = "PARLER"

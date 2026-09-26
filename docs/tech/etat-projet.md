@@ -1,6 +1,6 @@
 # État du projet — note de passage
 
-Mis à jour : 2026-09-26 (jalon 3A planifié, fondations logiques posées).
+Mis à jour : 2026-09-26 (jalon 3A validé par Kevin et commité ; 3B et jalon 4 confiés au cloud).
 
 ## Fait
 - Outillage : Godot 4.7.2, export Android vérifié sur le S24, GUT 9.7.1, scripts `tools/`.
@@ -22,12 +22,20 @@ Mis à jour : 2026-09-26 (jalon 3A planifié, fondations logiques posées).
 - **Jalon 3A, étape architecture** : plan dans [`jalon-03.md`](jalon-03.md), fondations logiques testées (356 tests verts) :
   `StoryFlags` (drapeaux de session), `Dialogue` / `DialogueVariant` / `DialoguePage` / `DialogueLibrary` (dialogues JSON de `data/dialogues/`, validés), `DialogueSession` (texte progressif, silences, avance), `Interaction` / `InteractionTable` / `InteractionFinder` (cible = case devant le joueur), `NpcSpec` / `NpcRoster` (PNJ et Pokémon du décor de `data/npcs/<carte>.json`).
 
-## Prochaine étape
-**Jalon 3A** ([`jalon-03.md`](jalon-03.md)) : Maman qui parle d'elle-même à la première descente, le rival dans sa chambre, Maya et les trois starters au labo (Chen absent), Mme Aoki, Léo et Haru dans le village, table, carte de Kanto et panneau examinables, bouton contextuel Parler / Examiner / Observer, boîte de dialogue 2026. Tâches T1 à T5 (§4).
+- **Jalon 3A, T1 à T5 — PNJ, interactions, dialogues** : Maman (premier dialogue automatique, puis réplique « Tu sors ? »), rival dans sa chambre (carte de Kanto sur le lit), Maya et les trois starters observables au labo, Mme Aoki et 2 Roucool, Léo et son Rattata, Haru sur la plage ; table, carte et panneau examinables ; bouton contextuel unique Parler / Examiner / Observer (Prendre prévu) avec vibration ; boîte de dialogue sombre translucide sans portrait ; autoload `GameState` (drapeaux de session, sans sauvegarde) ; blocage des entrées par raisons. **513 tests verts.** QA sur S24 : 24 répliques identiques au dossier 02, 60 fps en dialogue, aucun plantage (rapport : `build/qa/jalon03/rapport-jalon-03.md`, non versionné). Retouches après QA : `jalon-03.md` §6 (Haru sur la plage, paillasse du labo, permission VIBRATE). **Validé par Kevin le 2026-09-26.**
+- **Conception reçue** : `dossier-05-combat.md`, `dossier-06-progression.md`, références `combat-v1.webp` et `combat-capture-v1.webp` (la sélection des capacités est décrite dans `ui-reference.md` ; fichier `combat-capacites-v1.png` attendu de Kevin).
 
-**Décisions de Kevin (2026-09-26)** : toutes les propositions de `jalon-03.md` §5 acceptées ; boîte de dialogue sombre translucide sans portrait (bible UI/UX §3, remplace la planche sur ce point) ; bouton contextuel face à la cible ; panneau « BOURG PALETTE » provisoire ; « Rival ». T1 et T2 en cours.
+## Organisation cloud / Mac (depuis le 2026-09-26)
+- Dépôt privé `YANKAMKEVIN/kanto-2026`. Les sessions **cloud** installent Godot 4.7.2 via le hook SessionStart (`tools/cloud_setup.sh`) et font tourner `tools/test.sh`. Elles **codent et testent** sur une branche dédiée, qu'elles poussent ; **aucune fusion dans `main`** sans validation de Kevin sur le S24.
+- Le **Mac** (S24 en USB) récupère la branche, fait les captures (Movie Maker a besoin d'un écran), `tools/deploy_s24.sh` et la QA (`qa-mobile`), puis fusionne après validation de Kevin.
+- Une seule session à la fois sur une même branche.
 
-**Nouveaux documents de conception** : `docs/design/dossier-02-prologue.md` (textes définitifs, découpage 3A / 3B / 4), `docs/design/ui-ux-bible-v0.1.md` (ses autres contradictions avec la planche — mini-carte, titre de zone, menu — restent à trancher plus tard), `docs/design/dossier-04-systeme-pokemon.md` (jalons 4+).
+## Prochaine étape (cloud)
+1. **Jalon 3B** — plan : [`jalon-03b.md`](jalon-03b.md) ; **les décisions de Kevin en tête du §7 priment** (« Prof. Chen », nouvelles répliques de Maya, herbes bloquées avec la pensée « Je ne devrais pas aller là sans Pokémon. » tant qu'il n'y a pas de starter). Avant de coder : **aligner le plan sur le code réel du 3A** (§8 du plan : noms, API de `DialogueRunner`, `Npc`, `GameMap`, `InteractionController`). Tâches T1 à T4 par `constructeur-monde`, sur la branche `jalon-03b`. T5 (QA S24) se fera sur le Mac.
+2. **Jalon 4 — starter et premier combat** : plan par `architecte-godot` (`docs/tech/jalon-04.md`, branche `plan-jalon-04`), d'après `dossier-02-prologue.md` §6–§10, `dossier-04-systeme-pokemon.md`, `dossier-05-combat.md`, `ui-ux-bible-v0.1.md` et les références de combat. Documents seulement.
+
+## Décisions de Kevin (jalon 3A, 2026-09-26)
+Toutes les propositions de `jalon-03.md` §5 acceptées ; boîte de dialogue sombre translucide sans portrait (bible UI/UX §3, remplace la planche) ; bouton contextuel face à la cible ; panneau « BOURG PALETTE » provisoire ; « Rival » ; Haru sur la plage (se tourne vers le joueur puis vers la mer) ; nom du Pokémon observé affiché.
 
 ## Décisions de Kevin (jalon 2, 2026-09-25)
 Les neuf propositions de l'architecte sont acceptées : on entre en marchant dans la porte, départ dans la chambre sans titre, titre de zone seulement en changeant de zone extérieure, chambre du rival à l'étage, pièces modestes centrées sur fond quasi noir, fondu d'environ 0,45 s, agencements du §4 validés (ajustables après S24), arrivée sur la case du passage en continuant à marcher, cartes géographiques chez le rival. Détails dans [`jalon-02.md`](jalon-02.md) §6.

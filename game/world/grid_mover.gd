@@ -15,7 +15,8 @@ extends RefCounted
 ## - contre un obstacle, le personnage reste sur place et [signal bumped] est émis
 ##   une fois par poussée ;
 ## - verrouillé ([method set_locked]), il termine le pas en cours puis ignore toute
-##   direction : transitions de carte, plus tard dialogues et scènes scriptées.
+##   direction : transitions de carte, dialogues, plus tard scènes scriptées ;
+## - [method face] le fait pivoter sur place, à l'arrêt (même verrouillé).
 ## La scène lit [method get_world_position] et les signaux pour l'affichage.
 
 signal facing_changed(direction: Vector2i)
@@ -122,6 +123,19 @@ func set_locked(locked: bool) -> void:
 
 func is_locked() -> bool:
 	return _locked
+
+
+## Pivote sur place vers [param direction] (dialogue automatique, scènes), sans pas ni
+## [signal bumped] ; [signal facing_changed] si l'orientation change. Ignoré pendant un pas
+## ou pour une direction non cardinale. Fonctionne aussi verrouillé ([method set_locked]) :
+## c'est le jeu qui tourne le personnage, pas le joueur. Un pivot en attente (TURNING) est
+## annulé.
+func face(direction: Vector2i) -> void:
+	if _state == State.MOVING or not Grid.is_cardinal(direction):
+		return
+	_state = State.IDLE
+	_elapsed = 0.0
+	_set_facing(direction)
 
 
 ## Case sur laquelle l'entité se tient (case de départ pendant un pas).

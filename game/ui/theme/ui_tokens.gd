@@ -15,9 +15,21 @@ const ACCENT := Color("#F5C542")
 const ACCENT_TEXT := Color("#1C1C1C")
 const TEXT := Color("#FFFFFF")
 const TEXT_MUTED := Color("#B8C4D6")
+## Étiquette de nom et boîte claire de la planche v1 : remplacées pour les dialogues par la
+## boîte sombre de la bible UI/UX §3 (DIALOG_PANEL_BG), gardées pour d'autres écrans clairs.
 const NAME_TAG := Color("#3E7BD6")
 const DIALOG_BG := Color(0.97, 0.97, 0.99, 0.96)
 const DIALOG_TEXT := Color("#1E2530")
+## Surface sombre des panneaux « cinéma » (boîte de dialogue), opaque ; ses variantes
+## translucides en dérivent.
+const SURFACE_DARK := Color(0.06, 0.09, 0.13)
+## Fond de la boîte de dialogue : SURFACE_DARK à ~88 % (le décor transparaît à peine, le
+## texte reste lisible sur un intérieur clair comme sur l'herbe du village).
+const DIALOG_PANEL_BG := Color(0.06, 0.09, 0.13, 0.88)
+## Nom du locuteur (au-dessus du texte, dans le panneau).
+const DIALOG_SPEAKER := Color("#F5C542")
+## Narration (Examiner, Observer) : italique, blanc légèrement adouci.
+const DIALOG_NARRATION := Color("#DDE5F0")
 const HP_HIGH := Color("#4CD964")
 const HP_MID := Color("#F5C542")
 const HP_LOW := Color("#FF5A4F")
@@ -90,8 +102,48 @@ const ROUND_BUTTON_OUTLINE := Color(1, 1, 1, 0.75)
 const ROUND_BUTTON_OUTLINE_WIDTH := 3.0
 const ROUND_BUTTON_ICON := 64
 ## Centre du bouton courir mesuré depuis le coin bas-droit de l'écran (position de la
-## planche ; le coin reste libre pour le futur bouton contextuel « parler »).
+## planche ; le coin est laissé au bouton contextuel).
 const RUN_BUTTON_CENTER_FROM_CORNER := Vector2(440, 220)
+
+## Contextuel : un seul bouton en bas à droite, au-dessus et à droite du bouton courir
+## (planche DA 2026 ; bible UI/UX §1). Centre mesuré depuis le coin bas-droit.
+const INTERACT_BUTTON_CENTER_FROM_CORNER := Vector2(190, 360)
+## Étiquette du verbe (PARLER, EXAMINER…) : pastille à gauche du bouton contextuel.
+const INTERACT_LABEL_FONT := 26
+const INTERACT_LABEL_PAD_H := 20
+const INTERACT_LABEL_PAD_V := 8
+## Vibration courte à l'appui du bouton contextuel (millisecondes).
+const HAPTIC_TAP_MS := 15
+
+# --- Boîte de dialogue (bible UI/UX §3) --------------------------------------------------------
+
+const DIALOG_BOX_WIDTH := 1400
+const DIALOG_BOX_MIN_HEIGHT := 200
+## Une page tient en 3 lignes au plus.
+const DIALOG_MAX_LINES := 3
+## Écriture rapide du texte (le déroulé est piloté de l'extérieur par set_visible_characters).
+const DIALOG_CHARS_PER_SECOND := 45.0
+## Demi-période du clignotement de l'indicateur de suite « › ».
+const DIALOG_CONTINUE_BLINK := 0.5
+## Opacité basse du clignotement (l'indicateur ne disparaît jamais complètement).
+const DIALOG_CONTINUE_DIM := 0.3
+const DIALOG_BOTTOM_MARGIN := SAFE_MARGIN
+## Montée depuis le bas (pas de « pop ») : durée, puis distance parcourue.
+const DIALOG_OPEN := 0.18
+const DIALOG_CLOSE := 0.14
+const DIALOG_SLIDE := 36.0
+const DIALOG_RADIUS := 22
+const DIALOG_PAD_H := 44
+const DIALOG_PAD_V := 26
+## Écart entre le nom du locuteur et le texte.
+const DIALOG_SPEAKER_GAP := 6
+const DIALOG_SPEAKER_FONT := 28
+const DIALOG_LINE_SPACING := 6
+const DIALOG_CONTINUE_FONT := 48
+## Largeur réservée à « › » à droite du texte (le texte ne passe jamais dessous).
+const DIALOG_CONTINUE_WIDTH := 40
+## Pente de l'italique de synthèse de la narration (police par défaut sans italique).
+const DIALOG_ITALIC_SLANT := 0.2
 
 # --- Joystick ---------------------------------------------------------------------------------
 

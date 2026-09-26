@@ -24,6 +24,52 @@ func test_theme_matches_tokens() -> void:
 	assert_almost_eq(bold.variation_embolden, UiTokens.FONT_BOLD_EMBOLDEN, 0.0001)
 
 
+func test_dialog_variations_match_tokens() -> void:
+	var theme := load(THEME_PATH) as Theme
+	assert_eq(theme.get_type_variation_base(&"DialogBox"), &"PanelContainer")
+	var box := theme.get_stylebox(&"panel", &"DialogBox") as StyleBoxFlat
+	assert_not_null(box)
+	assert_eq(box.bg_color, UiTokens.DIALOG_PANEL_BG)
+	assert_eq(box.corner_radius_top_left, UiTokens.DIALOG_RADIUS)
+	assert_eq(box.get_content_margin(SIDE_LEFT), float(UiTokens.DIALOG_PAD_H))
+	assert_eq(box.get_content_margin(SIDE_TOP), float(UiTokens.DIALOG_PAD_V))
+	assert_eq(theme.get_font_size(&"font_size", &"DialogSpeaker"), UiTokens.DIALOG_SPEAKER_FONT)
+	assert_eq(theme.get_color(&"font_color", &"DialogSpeaker"), UiTokens.DIALOG_SPEAKER)
+	assert_eq(theme.get_font_size(&"font_size", &"DialogText"), UiTokens.FONT_BODY)
+	assert_eq(theme.get_color(&"font_color", &"DialogText"), UiTokens.TEXT)
+	assert_eq(theme.get_constant(&"line_spacing", &"DialogText"), UiTokens.DIALOG_LINE_SPACING)
+	assert_eq(theme.get_color(&"font_color", &"DialogNarration"), UiTokens.DIALOG_NARRATION)
+	var italic := theme.get_font(&"font", &"DialogNarration") as FontVariation
+	assert_not_null(italic)
+	assert_almost_eq(italic.variation_transform.y.x, UiTokens.DIALOG_ITALIC_SLANT, 0.0001)
+	assert_eq(theme.get_color(&"font_color", &"DialogContinue"), UiTokens.ACCENT)
+	assert_eq(theme.get_font_size(&"font_size", &"DialogContinue"), UiTokens.DIALOG_CONTINUE_FONT)
+
+
+func test_interact_label_variations_match_tokens() -> void:
+	var theme := load(THEME_PATH) as Theme
+	var pill := theme.get_stylebox(&"panel", &"InteractLabel") as StyleBoxFlat
+	assert_not_null(pill)
+	assert_eq(pill.bg_color, UiTokens.PANEL_BG)
+	assert_eq(pill.get_content_margin(SIDE_LEFT), float(UiTokens.INTERACT_LABEL_PAD_H))
+	assert_eq(theme.get_font_size(&"font_size", &"InteractLabelText"),
+		UiTokens.INTERACT_LABEL_FONT)
+	assert_eq(theme.get_color(&"font_color", &"InteractLabelText"), UiTokens.TEXT)
+	assert_not_null(theme.get_font(&"font", &"InteractLabelText") as FontVariation, "gras")
+
+
+func test_dialog_tokens_from_plan() -> void:
+	assert_eq(UiTokens.DIALOG_BOX_WIDTH, 1400)
+	assert_eq(UiTokens.DIALOG_BOX_MIN_HEIGHT, 200)
+	assert_eq(UiTokens.DIALOG_MAX_LINES, 3)
+	assert_eq(UiTokens.DIALOG_CHARS_PER_SECOND, 45.0)
+	assert_eq(UiTokens.DIALOG_CONTINUE_BLINK, 0.5)
+	assert_eq(UiTokens.DIALOG_BOTTOM_MARGIN, UiTokens.SAFE_MARGIN)
+	assert_eq(UiTokens.DIALOG_OPEN, 0.18)
+	assert_eq(UiTokens.INTERACT_BUTTON_CENTER_FROM_CORNER, Vector2(190, 360))
+	assert_eq(UiTokens.LAYER_DIALOG, 30)
+
+
 func test_token_values_from_skill() -> void:
 	assert_eq(UiTokens.ACCENT, Color("#F5C542"))
 	assert_eq(UiTokens.TEXT_MUTED, Color("#B8C4D6"))
@@ -53,6 +99,12 @@ func test_ui_does_not_know_player_map_or_router() -> void:
 		assert_false(text.contains("SceneRouter"), "%s référence SceneRouter" % path)
 		assert_false(text.contains("GameMap"), "%s référence la carte" % path)
 		assert_false(text.contains("res://game/world"), "%s charge le monde" % path)
+		assert_false(text.contains("res://game/systems"), "%s charge un système" % path)
+		assert_false(text.contains("res://data"), "%s lit des données" % path)
+		for logic_class: String in ["Interaction", "DialogueSession", "DialogueLibrary",
+				"DialogueRunner", "DialoguePage", "DialogueVariant", "StoryFlags", "GameState",
+				"NpcSpec", "NpcRoster"]:
+			assert_false(text.contains(logic_class), "%s référence %s" % [path, logic_class])
 
 
 func _ui_files(dir: String = UI_DIR) -> Array[String]:

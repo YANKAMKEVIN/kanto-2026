@@ -5,7 +5,8 @@ extends SceneTree
 ##   godot --headless --path . -s res://tools/build_interiors.gd
 ##   godot --headless --path . --import
 ##
-## Chaque pièce est décrite en tables : sol, murs, tapis (Detail), props, spawns, warps.
+## Chaque pièce est décrite en tables : sol, murs, tapis (Detail), props, spawns, warps,
+## points d'examen (`interactables`, facultatif ; jalon-03.md §3.2).
 ## Coordonnées en cases (x vers l'est, y vers le sud), rectangles inclusifs
 ## [x0, y0, x1, y1]. Props : ancre = case en bas à gauche (voir §4.1).
 ## Les tapis (rug_*) sont enfants du calque `Detail` : dessinés sur le sol, sous le joueur.
@@ -21,6 +22,8 @@ const SEED: int = 2026
 ## Warp.Trigger (les scripts d'outil lisent les enums par valeur).
 const STEP_ON: int = 0
 const PUSH: int = 1
+## Interaction.Kind (valeurs) : verbe des points d'examen.
+const EXAMINE: int = 1
 const BACK: String = "back"
 const BOX: String = "box"
 
@@ -103,6 +106,8 @@ func _player_house_1f() -> Dictionary:
 			["kitchen_counter", [4, 2], "Kitchen"],
 			["rug_plaid", [2, 6], "RugPlaid"],
 			["dining_table", [3, 5], "DiningTable"],
+			# Jalon 3A : petit-déjeuner posé sur la table (après elle : dessiné dessus).
+			["breakfast", [3, 5], "Breakfast"],
 			["sofa", [9, 4], "Sofa"],
 			["rug_living", [9, 7], "RugLiving"],
 			["coffee_table", [9, 6], "CoffeeTable"],
@@ -115,6 +120,11 @@ func _player_house_1f() -> Dictionary:
 			["front_door", [7, 9], "FrontDoor"],
 		],
 		"spawns": {"entrance": Vector2i(7, 8), "stairs": Vector2i(2, 4)},
+		# Jalon 3A (§3.2) : la table à manger (3..5, 4..5) s'examine de tous côtés.
+		"interactables": [
+			["BreakfastTable", Vector2i(3, 5), Vector2i(3, 2), Vector2i.ZERO,
+				"breakfast_table"],
+		],
 		"warps": [
 			["StairsUpW", Vector2i(1, 3), STEP_ON, Vector2i.UP, &"player_house_2f", &"stairs"],
 			["StairsUpE", Vector2i(2, 3), STEP_ON, Vector2i.UP, &"player_house_2f", &"stairs"],
@@ -152,6 +162,8 @@ func _rival_house() -> Dictionary:
 		["dresser", [13, 2], "Dresser"],
 		["rug_bedroom_grey", [12, 5], "RugBedroom"],
 		["bed_pokeball", [15, 4], "Bed"],
+		# Jalon 3A (Q3) : carte de Kanto dépliée, sac ouvert et affaires sur le lit.
+		["bed_items", [15, 4], "BedItems"],
 		["nightstand_bag", [16, 5], "Nightstand"],
 		["coat_rack", [12, 7], "CoatRack"],
 		["shoe_rack", [11, 9], "ShoeRack"],
@@ -183,6 +195,10 @@ func _rival_house() -> Dictionary:
 		"spawns": {"entrance": Vector2i(9, 9)},
 		"warps": [
 			["Exit", Vector2i(9, 9), PUSH, Vector2i.DOWN, &"pallet_town", &"rival_house_door"],
+		],
+		# Jalon 3A (§3.2, Q3) : la carte de Kanto sur le lit (15..16, 2..4), de tous côtés.
+		"interactables": [
+			["KantoMap", Vector2i(15, 4), Vector2i(2, 3), Vector2i.ZERO, "rival_kanto_map"],
 		],
 	}
 
@@ -220,13 +236,13 @@ func _oak_lab() -> Dictionary:
 			["starter_table", [10, 5], "StarterTable"],
 			["sofa_side", [1, 7], "Sofa"],
 			["coffee_table", [3, 7], "CoffeeTable"],
-			["lab_bench", [11, 7], "Bench"],
+			["lab_bench", [11, 8], "Bench"],
 			["wall_screen_side", [14, 7], "WallScreen"],
 			["stairs_deco", [1, 9], "Stairs"],
 			["plant", [6, 8], "PlantRug"],
-			["stool", [12, 8], "Stool"],
+			["stool", [12, 7], "Stool"],
 			["plant", [4, 9], "PlantStairs"],
-			["plant", [10, 9], "PlantEntrance"],
+			["plant", [9, 9], "PlantEntrance"],
 			["plant", [14, 8], "PlantCorner"],  # hors du bouton courir (coin bas-droit)
 			["lab_doorway", [7, 10], "Doorway"],
 		],
@@ -264,7 +280,7 @@ func _build(room: Dictionary) -> void:
 	entities.unique_name_in_owner = true
 	var overhead := _add_layer(root, "Overhead", tileset)
 	overhead.z_index = 10
-	for group: String in ["Warps", "Spawns", "Triggers"]:
+	for group: String in ["Warps", "Interactables", "Spawns", "Triggers"]:
 		var node := Node2D.new()
 		node.name = group
 		_attach(root, root, node)
@@ -297,6 +313,7 @@ func _build(room: Dictionary) -> void:
 		point.set(&"target_map", warp[4])
 		point.set(&"target_spawn", warp[5])
 		_attach(root, root.get_node(^"Warps"), point)
+	_add_interactables(root, room.get("interactables", []))
 
 	var path := MAPS_DIR + String(room["id"]) + ".tscn"
 	var packed := PackedScene.new()
@@ -306,6 +323,22 @@ func _build(room: Dictionary) -> void:
 	print("%s : %s (%d entités, %d warps)" % [room["id"], error_string(err),
 		entities.get_child_count(), (room["warps"] as Array).size()])
 	root.free()
+
+
+## Points d'examen : [nœud, ancre, size, facing, dialogue, verbe]. Ancre = case en bas à
+## gauche ; size en cases ; facing ZERO = de tous côtés ; verbe = Interaction.Kind (valeur).
+func _add_interactables(root: Node, entries: Array) -> void:
+	var point_script: GDScript = load("res://game/world/interactions/interact_point.gd")
+	for entry: Array in entries:
+		var point := Marker2D.new()
+		point.set_script(point_script)
+		point.name = entry[0]
+		point.position = _world(entry[1])
+		point.set(&"size", entry[2])
+		point.set(&"facing", entry[3])
+		point.set(&"dialogue_id", StringName(entry[4]))
+		point.set(&"kind", entry[5] if entry.size() > 5 else EXAMINE)
+		_attach(root, root.get_node(^"Interactables"), point)
 
 
 ## Cases de mur selon le gabarit (dictionnaire case → vrai).

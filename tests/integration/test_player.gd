@@ -235,3 +235,103 @@ func test_unlocked_player_moves_again() -> void:
 	_simulate(0.3)
 	assert_eq(_player.get_cell(), Vector2i(5, 4))
 	assert_signal_emitted_with_parameters(_player, "moved", [Vector2i(5, 4)])
+
+
+# --- Blocage par raisons (jalon 3A §2.8) -------------------------------------------
+
+func test_two_reasons_block_until_both_released() -> void:
+	_player.set_input_enabled(false, &"transition")
+	_player.set_input_enabled(false, &"dialogue")
+	assert_false(_player.is_input_enabled())
+	_player.set_input_enabled(true, &"dialogue")
+	assert_false(_player.is_input_enabled(), "la transition bloque encore")
+	assert_true(_player.is_blocked_by(&"transition"))
+	assert_false(_player.is_blocked_by(&"dialogue"))
+	Input.action_press(&"move_right")
+	_simulate(0.5)
+	assert_eq(_player.get_cell(), START, "toujours bloqué")
+	_player.set_input_enabled(true, &"transition")
+	assert_true(_player.is_input_enabled())
+	_simulate(0.3)
+	assert_eq(_player.get_cell(), START + Vector2i.RIGHT, "libre : il avance")
+
+
+func test_dialogue_released_first_or_last_gives_same_result() -> void:
+	_player.set_input_enabled(false, &"dialogue")
+	_player.set_input_enabled(false)
+	_player.set_input_enabled(true)
+	assert_false(_player.is_input_enabled(), "le dialogue bloque encore")
+	_player.set_input_enabled(true, &"dialogue")
+	assert_true(_player.is_input_enabled())
+
+
+func test_same_reason_does_not_stack() -> void:
+	_player.set_input_enabled(false, &"dialogue")
+	_player.set_input_enabled(false, &"dialogue")
+	_player.set_input_enabled(true, &"dialogue")
+	assert_true(_player.is_input_enabled())
+
+
+func test_default_reason_is_transition() -> void:
+	_player.set_input_enabled(false)
+	assert_true(_player.is_blocked_by(&"transition"))
+	_player.set_input_enabled(true, &"transition")
+	assert_true(_player.is_input_enabled())
+
+
+func test_releasing_unknown_reason_keeps_block() -> void:
+	_player.set_input_enabled(false, &"dialogue")
+	_player.set_input_enabled(true, &"cutscene")
+	assert_false(_player.is_input_enabled())
+
+
+func test_reasons_survive_enter_map() -> void:
+	_player.set_input_enabled(false, &"dialogue")
+	_player.enter_map(_grid, Vector2i(5, 5), Vector2i.UP, Grid.map_pixel_rect(Vector2i(16, 8)))
+	Input.action_press(&"move_up")
+	_simulate(0.5)
+	assert_eq(_player.get_cell(), Vector2i(5, 5))
+	_player.set_input_enabled(true, &"dialogue")
+	_simulate(0.3)
+	assert_eq(_player.get_cell(), Vector2i(5, 4))
+
+
+# --- Pivot scripté (jalon 3A §2.8) --------------------------------------------------
+
+func test_face_at_rest_turns_without_step() -> void:
+	_player.face(Vector2i.LEFT)
+	assert_eq(_player.get_facing(), Vector2i.LEFT)
+	assert_eq(_player.get_cell(), START)
+	assert_false(_player.is_moving())
+	assert_signal_emitted_with_parameters(_player, "facing_changed", [Vector2i.LEFT])
+	assert_signal_not_emitted(_player, "moved")
+	var sprite := _player.get_node(^"%Sprite") as AnimatedSprite2D
+	assert_eq(sprite.animation, &"idle_left")
+	_simulate(0.5)
+	assert_eq(_player.get_cell(), START, "aucun pas ensuite")
+
+
+func test_face_works_while_blocked() -> void:
+	_player.set_input_enabled(false, &"dialogue")
+	_player.face(Vector2i.UP)
+	assert_eq(_player.get_facing(), Vector2i.UP)
+	assert_signal_emitted_with_parameters(_player, "facing_changed", [Vector2i.UP])
+
+
+func test_face_during_step_does_nothing() -> void:
+	Input.action_press(&"move_right")
+	_simulate(0.1)
+	assert_true(_player.is_moving())
+	_player.face(Vector2i.LEFT)
+	assert_eq(_player.get_facing(), Vector2i.RIGHT)
+	assert_signal_not_emitted(_player, "facing_changed")
+	_simulate(0.2)
+	assert_eq(_player.get_cell(), START + Vector2i.RIGHT, "le pas continue")
+
+
+func test_face_same_direction_or_invalid_emits_nothing() -> void:
+	_player.face(Vector2i.RIGHT)
+	_player.face(Vector2i(1, 1))
+	_player.face(Vector2i.ZERO)
+	assert_eq(_player.get_facing(), Vector2i.RIGHT)
+	assert_signal_not_emitted(_player, "facing_changed")

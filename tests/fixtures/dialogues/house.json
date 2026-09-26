@@ -1,0 +1,20 @@
+{
+	"mom": {
+		"speaker": "Maman",
+		"variants": [
+			{
+				"unless": ["mom_greeted"],
+				"set": ["mom_greeted"],
+				"auto": true,
+				"pages": ["Bonjour ! Tu es enfin réveillé ?", "J'ai laissé quelque chose à manger sur la table."]
+			},
+			{
+				"pages": ["Tu sors ? Profite de cette belle journée.", "Et évite les hautes herbes, d'accord ?"]
+			}
+		]
+	},
+	"breakfast_table": {
+		"narration": true,
+		"pages": ["Ton petit-déjeuner est encore chaud."]
+	}
+}

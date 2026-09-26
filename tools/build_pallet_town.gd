@@ -4,7 +4,8 @@ extends SceneTree
 ##   godot --headless --path . -s res://tools/build_pallet_town.gd
 ##   godot --headless --path . --import
 ##
-## Plan : docs/tech/jalon-01.md §4 ; portes (warps et spawns) : docs/tech/jalon-02.md §4.2.
+## Plan : docs/tech/jalon-01.md §4 ; portes (warps et spawns) : docs/tech/jalon-02.md §4.2 ;
+## points d'examen (`INTERACTABLES`) : docs/tech/jalon-03.md §3.2.
 ## Zones et props sont décrits en données ci-dessous (rectangles inclusifs
 ## [x0, y0, x1, y1] et ancres de cases). Variantes de tuiles et essences d'arbres tirées
 ## avec une graine fixe : la carte est reproductible.
@@ -187,6 +188,15 @@ const TREE_SCENES: Array[String] = [
 	"tree_oak_a", "tree_oak_b", "tree_pine", "tree_birch", "tree_maple",
 ]
 
+## Points d'examen : [nœud, ancre, size, facing, dialogue, verbe]. Ancre = case en bas à
+## gauche ; facing ZERO = de tous côtés ; verbe = Interaction.Kind (valeur).
+## Texte du panneau provisoire (`draft`, jalon-03.md Q8).
+const INTERACTABLES: Array = [
+	["SignPallet", Vector2i(21, 13), Vector2i(1, 1), Vector2i.ZERO, "sign_pallet_town"],
+]
+## Interaction.Kind (valeurs).
+const EXAMINE: int = 1
+
 var _tiles: GDScript
 var _rng := RandomNumberGenerator.new()
 var _scenes: Dictionary = {}
@@ -215,7 +225,7 @@ func _init() -> void:
 	entities.unique_name_in_owner = true
 	var overhead := _add_layer(root, "Overhead", tileset)
 	overhead.z_index = 10
-	for group: String in ["Warps", "Spawns", "Triggers"]:
+	for group: String in ["Warps", "Interactables", "Spawns", "Triggers"]:
 		var node := Node2D.new()
 		node.name = group
 		_attach(root, root, node)
@@ -224,6 +234,7 @@ func _init() -> void:
 	start.position = _world(START_CELL)
 	_attach(root, root.get_node(^"Spawns"), start)
 	_add_doors(root)
+	_add_interactables(root)
 
 	var kinds: Array = _paint(ground, GROUND)
 	_paint(obstacles, OBSTACLES)
@@ -257,6 +268,20 @@ func _add_doors(root: Node) -> void:
 		point.set(&"target_map", door[2])
 		point.set(&"target_spawn", door[3])
 		_attach(root, root.get_node(^"Warps"), point)
+
+
+func _add_interactables(root: Node) -> void:
+	var point_script: GDScript = load("res://game/world/interactions/interact_point.gd")
+	for entry: Array in INTERACTABLES:
+		var point := Marker2D.new()
+		point.set_script(point_script)
+		point.name = entry[0]
+		point.position = _world(entry[1])
+		point.set(&"size", entry[2])
+		point.set(&"facing", entry[3])
+		point.set(&"dialogue_id", StringName(entry[4]))
+		point.set(&"kind", entry[5] if entry.size() > 5 else EXAMINE)
+		_attach(root, root.get_node(^"Interactables"), point)
 
 
 func _world(cell: Vector2i) -> Vector2:

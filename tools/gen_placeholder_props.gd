@@ -129,6 +129,13 @@ var _interior: Dictionary = {
 	"pokemon_poster": [1, 1, []],
 	"lab_doorway": [2, 1, []],
 	"rug_red": [4, 3, []],
+	# Jalon 3A (jalon-03.md §3.2) : décor posé sur un meuble, sans empreinte (le meuble
+	# dessous est déjà solide), placé juste après lui dans `Entities` (même ligne de tri).
+	# Petit-déjeuner sur la table à manger (même taille que la table, 3 × 2).
+	"breakfast": [3, 2, []],
+	# Sur le lit du rival (2 cases du bas du lit) : carte de Kanto dépliée, sac ouvert,
+	# affaires.
+	"bed_items": [2, 2, []],
 }
 
 ## Tapis (rug_*) : posés par les constructeurs de cartes sous le calque `Detail` (au-dessus
@@ -1458,3 +1465,75 @@ func _draw_lab_bench(img: Image) -> void:
 		_rect(img, Rect2i(x, 64, 12, 28), Color(0.6, 0.85, 0.95, 0.8))
 		_rect(img, Rect2i(x, 80, 12, 12), [Color("#6fe0b0"), Color("#e07a5f"),
 			Color("#8fb6f2")][k])
+
+
+func _draw_breakfast(img: Image) -> void:
+	# Même cadre que dining_table : plateau de la table entre y 36 et y 124 environ.
+	var cx := img.get_width() / 2.0
+	# Set de table et assiette : pain grillé et œuf.
+	_rect(img, Rect2i(int(cx) - 58, 58, 116, 50), Color("#e8d7b0"))
+	_ellipse(img, Vector2(cx - 20, 83), Vector2(24, 15), Color("#f4f4f4"))
+	_ellipse(img, Vector2(cx - 20, 83), Vector2(18, 11), Color("#e6e6e6"))
+	_rect(img, Rect2i(int(cx) - 34, 74, 16, 14), Color("#d9a35a"))
+	_rect(img, Rect2i(int(cx) - 32, 76, 12, 10), Color("#e8bf78"))
+	_ellipse(img, Vector2(cx - 12, 84), Vector2(7, 6), Color("#fbfbf2"))
+	_ellipse(img, Vector2(cx - 12, 84), Vector2(3, 3), Color("#f2b632"))
+	# Bol de céréales.
+	_ellipse(img, Vector2(cx + 20, 80), Vector2(13, 9), Color("#5a8fc0"))
+	_ellipse(img, Vector2(cx + 20, 78), Vector2(10, 6), Color("#f2e6c8"))
+	for k: int in 5:
+		_rect(img, Rect2i(int(cx) + 13 + k * 3, 76 + (k % 2) * 2, 2, 2), Color("#c98a3a"))
+	# Tasse fumante et verre de jus.
+	_rect(img, Rect2i(int(cx) + 38, 70, 12, 14), Color("#f4f4f4"))
+	_rect(img, Rect2i(int(cx) + 50, 73, 4, 7), Color("#f4f4f4"))
+	_rect(img, Rect2i(int(cx) + 40, 71, 8, 3), Color("#6b4a2a"))
+	for k: int in 3:
+		_rect(img, Rect2i(int(cx) + 40 + k * 3, 58 - (k % 2) * 3, 2, 8), Color(1, 1, 1, 0.55))
+	_rect(img, Rect2i(int(cx) - 54, 66, 9, 18), Color(0.95, 0.65, 0.2, 0.9))
+	_rect(img, Rect2i(int(cx) - 54, 66, 9, 3), Color(1, 1, 1, 0.6))
+
+
+func _draw_bed_items(img: Image) -> void:
+	# Cadre : les deux cases du bas du lit (couette Poké Ball à partir de y 20).
+	var w := img.get_width()
+	# Carte de Kanto dépliée, plis visibles, villes entourées au crayon.
+	var map := Rect2i(14, 34, 104, 76)
+	_rect(img, Rect2i(map.position.x + 3, map.position.y + 4, map.size.x, map.size.y),
+		Color(0, 0, 0, 0.25))
+	_rect(img, map, Color("#efe4c4"))
+	_rect(img, Rect2i(map.position.x + 4, map.position.y + 4, map.size.x - 8,
+		map.size.y - 8), Color("#8fc3de"))
+	_ellipse(img, Vector2(54, 70), Vector2(34, 22), Color("#9cc97a"))
+	_ellipse(img, Vector2(86, 58), Vector2(20, 14), Color("#b5d38a"))
+	_ellipse(img, Vector2(40, 90), Vector2(14, 8), Color("#9cc97a"))
+	for x: int in [48, 83]:
+		_rect(img, Rect2i(x, map.position.y, 1, map.size.y), Color("#c9b98f"))
+	_rect(img, Rect2i(map.position.x, 72, map.size.x, 1), Color("#c9b98f"))
+	for p: Vector2 in [Vector2(40, 86), Vector2(58, 64), Vector2(90, 54)]:
+		_ellipse(img, p, Vector2(4, 4), Color("#5a4636"))
+		_ellipse(img, p, Vector2(3, 3), Color("#9cc97a"))
+		_ellipse(img, p, Vector2(1.5, 1.5), Color("#c0392b"))
+	# Crayon posé sur la carte.
+	_rect(img, Rect2i(62, 98, 30, 4), Color("#e0a93b"))
+	_rect(img, Rect2i(92, 98, 5, 4), Color("#3a2a1e"))
+	# Sac à dos ouvert, rabat relevé, affaires qui dépassent.
+	var bag := Rect2i(124, 66, 52, 58)
+	_ellipse(img, Vector2(152, 128), Vector2(30, 6), Color(0, 0, 0, 0.25))
+	_rect(img, bag, Color("#2e7d4f"))
+	_rect(img, Rect2i(bag.position.x + 6, bag.position.y + 28, bag.size.x - 12, 22),
+		Color("#256842"))
+	_rect(img, Rect2i(bag.position.x + 4, bag.position.y - 22, bag.size.x - 8, 20),
+		Color("#3b9a63"))
+	_rect(img, Rect2i(bag.position.x + 4, bag.position.y, bag.size.x - 8, 6),
+		Color("#1c3f2a"))
+	_rect(img, Rect2i(136, 58, 10, 14), Color("#f4f4f4"))
+	_rect(img, Rect2i(150, 56, 14, 12), Color("#c0392b"))
+	_pokeball(img, Vector2(162, 64), 6)
+	# Affaires posées à côté : gourde, jumelles.
+	_rect(img, Rect2i(w - 30, 130, 10, 26), Color("#8fb6f2"))
+	_rect(img, Rect2i(w - 29, 126, 8, 5), Color("#3a3f47"))
+	_ellipse(img, Vector2(40, 140), Vector2(8, 8), Color("#2b2f36"))
+	_ellipse(img, Vector2(58, 140), Vector2(8, 8), Color("#2b2f36"))
+	_rect(img, Rect2i(40, 136, 18, 6), Color("#3a3f47"))
+	_ellipse(img, Vector2(40, 140), Vector2(4, 4), Color("#6fa6c9"))
+	_ellipse(img, Vector2(58, 140), Vector2(4, 4), Color("#6fa6c9"))

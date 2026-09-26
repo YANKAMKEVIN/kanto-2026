@@ -480,3 +480,11 @@ Rappel des questions (proposition retenue entre parenthèses) :
 12. **Routines** : aucune en 3A. Les PNJ restent sur leur case avec une animation d'attente ; les routines selon l'heure viendront avec `GameClock` (phase 10). (*Oui*.)
 13. **Nom du rival** dans l'étiquette : « Rival » en attendant son prénom (et celui du joueur), à décider pour le jalon « ouverture » ? (*« Rival » pour 3A*.)
 14. **Répliques répétées** : Maya, Mme Aoki, Léo et Haru redisent la même chose à chaque fois (le dossier ne donne qu'une version). (*Oui*.)
+
+---
+
+## 6. Retouches décidées par Kevin avant validation (2026-09-26)
+
+1. **Haru** : déplacé du bout du ponton vers la **plage, au bord de l'eau, quelques cases plus haut**, pour que lui et le joueur ne passent plus sous la boîte de dialogue (la boîte reste toujours en bas, règle de la bible UI). Il se tourne vers le joueur quand on lui parle, puis se retourne vers la mer.
+2. **Paillasse du labo** : décalée d'une case vers le bas, pour que le joueur devant Carapuce (12, 6) ne soit plus masqué, sans casser la circulation ni la composition du labo.
+3. Mme Aoki et Léo se tournent vers le joueur puis reprennent leur orientation (confirmé). Le nom du Pokémon observé reste affiché en haut de la boîte (confirmé).

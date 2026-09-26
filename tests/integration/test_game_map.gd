@@ -3,6 +3,7 @@ extends GutTest
 ## prop 3×2, spawn, rectangle pixel, warps (jalon 2 §2.3). Empreintes de toutes les
 ## scènes de props (§4.3 ; portes ouvertes, jalon 2 §4.2) et du mobilier d'intérieur
 ## (jalon 2 §4.1, §4.3, §4.4). Cadrage caméra d'une pièce 10×8 (jalon 2 §2.7).
+## PNJ créés depuis les données et points d'examen (jalon 3A §2.2, §2.3).
 
 const MAP_SIZE := Vector2i(8, 6)
 const PROPS_DIR := "res://game/world/props/"
@@ -274,6 +275,9 @@ func _expected_interior() -> Dictionary:
 		"pokemon_poster": [1, 1, none],
 		"lab_doorway": [2, 1, none],
 		"rug_red": [4, 3, none],
+		# Jalon 3A (§3.2) : décor posé sur un meuble, sans empreinte.
+		"breakfast": [3, 2, none],
+		"bed_items": [2, 2, none],
 	}
 
 
@@ -501,3 +505,228 @@ func test_camera_limits_recomputed_on_viewport_size_changed() -> void:
 	var expected := CameraFraming.limits_for(
 		room.get_pixel_rect(), player.get_viewport_rect().size)
 	assert_eq(_camera_limits(camera), expected)
+
+
+# --- PNJ et points d'examen (jalon 3A §2.2, §2.3) ----------------------------------
+
+const NPC_FIXTURES := "res://tests/fixtures/npcs/"
+## Case de la table sous le Pokémon posé (fixture : charmander, lift 56).
+const TABLE_CELL := Vector2i(11, 5)
+
+
+## Carte 20 × 18 sans tuiles, avec les PNJ de tests/fixtures/npcs/sample_map.json.
+func _make_npc_map(map_size: Vector2i = Vector2i(20, 18)) -> GameMap:
+	var map := GameMap.new()
+	map.name = "SampleMap"
+	map.map_id = &"sample_map"
+	map.npcs_dir = NPC_FIXTURES
+	map.size = map_size
+	map.blocked_cells = [TABLE_CELL]
+	for group: String in ["Entities", "Warps", "Interactables", "Spawns"]:
+		var node := Node2D.new()
+		node.name = group
+		map.add_child(node)
+	(map.get_node(^"Entities") as Node2D).y_sort_enabled = true
+	var marker := Marker2D.new()
+	marker.name = "start"
+	marker.position = Grid.cell_to_world(Vector2i(2, 2))
+	map.get_node(^"Spawns").add_child(marker)
+	return map
+
+
+func _interact_point(anchor: Vector2i, point_size: Vector2i, dialogue: StringName) -> InteractPoint:
+	var point := InteractPoint.new()
+	point.name = "Point_" + String(dialogue)
+	point.position = Grid.cell_to_world(anchor)
+	point.size = point_size
+	point.dialogue_id = dialogue
+	return point
+
+
+func test_npcs_default_dir_is_data_npcs() -> void:
+	var map := GameMap.new()
+	assert_eq(map.npcs_dir, NpcRoster.DATA_DIR)
+	map.free()
+	assert_eq(NpcRoster.DATA_DIR, "res://data/npcs/")
+
+
+func test_npcs_created_in_entities_on_their_cells_and_occupying() -> void:
+	var map := _make_npc_map()
+	add_child_autofree(map)
+	var npcs := map.get_npcs()
+	assert_eq(npcs.size(), 4)
+	var expected: Dictionary[StringName, Vector2i] = {
+		&"mom": Vector2i(7, 4), &"charmander": TABLE_CELL,
+		&"rival": Vector2i(13, 4), &"pidgey_1": Vector2i(19, 16),
+	}
+	var order: Array[StringName] = [&"mom", &"charmander", &"rival", &"pidgey_1"]
+	for i: int in npcs.size():
+		var npc := npcs[i]
+		assert_eq(npc.get_id(), order[i], "ordre du fichier")
+		assert_eq(npc.get_parent(), map.get_entities())
+		assert_eq(npc.get_cell(), expected[npc.get_id()])
+		assert_eq(npc.position, Grid.cell_to_world(npc.get_cell()))
+		assert_same(map.get_grid().get_occupant(npc.get_cell()), npc)
+		assert_null(npc.owner, "jamais sauvé dans la scène")
+	assert_push_error_count(0)
+
+
+func test_get_npc_by_id() -> void:
+	var map := _make_npc_map()
+	add_child_autofree(map)
+	var rival := map.get_npc(&"rival")
+	assert_not_null(rival)
+	if rival != null:
+		assert_eq(rival.get_cell(), Vector2i(13, 4))
+		assert_eq(rival.get_facing(), Vector2i.RIGHT)
+		assert_false(rival.get_spec().turn_to_player)
+	assert_null(map.get_npc(&"nobody"))
+
+
+func test_get_npcs_returns_copy() -> void:
+	var map := _make_npc_map()
+	add_child_autofree(map)
+	map.get_npcs().clear()
+	assert_eq(map.get_npcs().size(), 4)
+
+
+func test_lifted_pokemon_sprite_raised_on_solid_table_cell() -> void:
+	var map := _make_npc_map()
+	add_child_autofree(map)
+	var charmander := map.get_npc(&"charmander")
+	assert_true(map.get_grid().is_solid(TABLE_CELL), "case de table solide")
+	assert_same(map.get_grid().get_occupant(TABLE_CELL), charmander, "occupe quand même")
+	assert_eq(charmander.get_cell(), TABLE_CELL, "la case ne change pas")
+	assert_eq(charmander.position, Grid.cell_to_world(TABLE_CELL))
+	var sprite := charmander.get_node(^"%Sprite") as Node2D
+	assert_eq(sprite.global_position.y, charmander.global_position.y - 56.0)
+	assert_eq(charmander.get_interaction().kind, Interaction.Kind.OBSERVE)
+
+
+func test_non_interactive_pidgey_has_null_interaction() -> void:
+	var map := _make_npc_map()
+	add_child_autofree(map)
+	assert_null(map.get_npc(&"pidgey_1").get_interaction())
+
+
+func test_finder_finds_npc_in_front_of_player() -> void:
+	var map := _make_npc_map()
+	add_child_autofree(map)
+	var found := InteractionFinder.find(map.get_grid(), map.get_interactions(),
+		Vector2i(7, 5), Vector2i.UP)
+	assert_not_null(found)
+	if found != null:
+		assert_same(found.source, map.get_npc(&"mom"))
+		assert_eq(found.dialogue_id, &"mom")
+
+
+func test_rebuild_grid_keeps_npcs_on_their_cells() -> void:
+	var map := _make_npc_map()
+	add_child_autofree(map)
+	var grid := map.rebuild_grid()
+	for npc: Npc in map.get_npcs():
+		assert_same(grid.get_occupant(npc.get_cell()), npc)
+	assert_eq(map.get_npcs().size(), 4, "pas de doublon")
+	assert_eq(map.get_entities().get_child_count(), 4)
+
+
+func test_npc_out_of_map_is_not_created() -> void:
+	var map := _make_npc_map(Vector2i(15, 15))
+	add_child_autofree(map)
+	assert_push_error("pidgey_1")
+	assert_eq(map.get_npcs().size(), 3)
+	assert_null(map.get_npc(&"pidgey_1"))
+
+
+func test_npc_on_occupied_cell_is_not_created() -> void:
+	var map := _make_npc_map()
+	var blocker := RefCounted.new()
+	map.get_grid().occupy(Vector2i(13, 4), blocker)
+	add_child_autofree(map)
+	assert_push_error("occupée")
+	assert_null(map.get_npc(&"rival"))
+	assert_same(map.get_grid().get_occupant(Vector2i(13, 4)), blocker)
+	assert_eq(map.get_npcs().size(), 3)
+
+
+func test_map_without_npc_file_has_no_npc_and_no_error() -> void:
+	var map := _make_npc_map()
+	map.map_id = &"no_such_map"
+	add_child_autofree(map)
+	assert_eq(map.get_npcs().size(), 0)
+	assert_eq(map.get_entities().get_child_count(), 0)
+	assert_push_error_count(0)
+
+
+func test_interact_point_3x2_gives_six_interactions() -> void:
+	var map := _make_npc_map()
+	var table := _interact_point(Vector2i(3, 10), Vector2i(3, 2), &"breakfast_table")
+	map.get_node(^"Interactables").add_child(table)
+	add_child_autofree(map)
+	var interactions := map.get_interactions()
+	assert_eq(interactions.size(), 6)
+	for y: int in [9, 10]:
+		for x: int in [3, 4, 5]:
+			var found := interactions.find(Vector2i(x, y), Vector2i.UP)
+			assert_not_null(found, "case (%d, %d)" % [x, y])
+			if found != null:
+				assert_eq(found.dialogue_id, &"breakfast_table")
+				assert_eq(found.kind, Interaction.Kind.EXAMINE)
+				assert_null(found.source)
+	assert_null(interactions.find(Vector2i(3, 8), Vector2i.UP))
+	assert_null(interactions.find(Vector2i(6, 10), Vector2i.UP))
+	assert_push_error_count(0)
+
+
+func test_interact_point_found_from_neighbour_cell() -> void:
+	var map := _make_npc_map()
+	map.get_node(^"Interactables").add_child(
+		_interact_point(Vector2i(3, 10), Vector2i(3, 2), &"breakfast_table"))
+	add_child_autofree(map)
+	var found := InteractionFinder.find(map.get_grid(), map.get_interactions(),
+		Vector2i(4, 11), Vector2i.UP)
+	assert_not_null(found)
+	assert_null(InteractionFinder.find(map.get_grid(), map.get_interactions(),
+		Vector2i(4, 11), Vector2i.DOWN), "rien derrière")
+
+
+func test_interact_point_cells_and_facing() -> void:
+	var point := _interact_point(Vector2i(2, 6), Vector2i(2, 3), &"kanto_map")
+	point.facing = Vector2i.UP
+	var cells: Array[Vector2i] = [Vector2i(2, 6), Vector2i(3, 6), Vector2i(2, 5),
+		Vector2i(3, 5), Vector2i(2, 4), Vector2i(3, 4)]
+	assert_eq(point.get_cell(), Vector2i(2, 6))
+	assert_eq(point.get_cells(), cells)
+	for interaction: Interaction in point.to_interactions():
+		assert_eq(interaction.facing, Vector2i.UP)
+		assert_true(interaction.accepts(Vector2i.UP))
+		assert_false(interaction.accepts(Vector2i.LEFT))
+	point.free()
+
+
+func test_conflicting_interact_points_push_error() -> void:
+	var map := _make_npc_map()
+	var interactables := map.get_node(^"Interactables")
+	interactables.add_child(_interact_point(Vector2i(3, 10), Vector2i(3, 2), &"breakfast_table"))
+	interactables.add_child(_interact_point(Vector2i(5, 10), Vector2i(1, 1), &"other"))
+	add_child_autofree(map)
+	assert_push_error("interaction invalide")
+	assert_eq(map.get_interactions().size(), 6, "le point en conflit est écarté")
+	assert_eq(map.get_interactions().find(Vector2i(5, 10), Vector2i.UP).dialogue_id,
+		&"breakfast_table")
+
+
+func test_interact_point_without_dialogue_push_error() -> void:
+	var map := _make_npc_map()
+	map.get_node(^"Interactables").add_child(_interact_point(Vector2i(3, 10), Vector2i.ONE, &""))
+	add_child_autofree(map)
+	assert_push_error("interaction invalide")
+	assert_true(map.get_interactions().is_empty())
+
+
+func test_map_without_interactables_node_has_empty_table() -> void:
+	var map := GameMap.new()
+	map.size = Vector2i(4, 4)
+	add_child_autofree(map)
+	assert_not_null(map.get_interactions())
+	assert_true(map.get_interactions().is_empty())

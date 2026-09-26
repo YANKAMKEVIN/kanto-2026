@@ -1,0 +1,9 @@
+{
+	"mom": { "cell": [7, 4], "facing": "down", "sprite": "mom", "dialogue": "mom" },
+	"rival": {
+		"cell": [13, 4], "facing": "right", "sprite": "rival", "dialogue": "rival",
+		"turn_to_player": false
+	},
+	"leo": { "cell": [18, 9], "facing": "left", "sprite": "leo", "dialogue": "leo" },
+	"leo_rattata": { "cell": [17, 9], "facing": "right", "sprite": "rattata" }
+}

@@ -11,7 +11,9 @@ const PUSH := Warp.Trigger.PUSH
 
 ## Plans : carte → spécification.
 ##   walls : gabarit (BACK : fond y 0–1 ; BOX : quatre côtés), openings : trous du mur bas.
-##   from : spawn de départ du test d'accessibilité ; reserved : cases libres (PNJ futurs).
+##   from : spawn de départ du test d'accessibilité ; reserved : cases libres (PNJ futurs,
+##   Chen au labo en 3B) ; npcs : cases réservées au jalon 2, occupées au jalon 3A par le
+##   bon PNJ (data/npcs/<carte>.json).
 ##   warps : nœud → [case, déclenchement, direction, carte cible, spawn cible].
 const PLANS: Dictionary = {
 	&"player_house_2f": {
@@ -25,7 +27,8 @@ const PLANS: Dictionary = {
 	},
 	&"player_house_1f": {
 		"size": Vector2i(14, 10), "walls": BOX, "openings": [],
-		"from": &"entrance", "mat": Vector2i(7, 8), "reserved": [Vector2i(7, 4)],
+		"from": &"entrance", "mat": Vector2i(7, 8), "reserved": [],
+		"npcs": {Vector2i(7, 4): &"mom"},
 		"spawns": {&"entrance": Vector2i(7, 8), &"stairs": Vector2i(2, 4)},
 		"warps": {
 			&"StairsUpW": [Vector2i(1, 3), STEP_ON, Vector2i.UP, &"player_house_2f", &"stairs"],
@@ -36,7 +39,8 @@ const PLANS: Dictionary = {
 	&"rival_house": {
 		"size": Vector2i(18, 11), "walls": BOX, "openings": [],
 		# Rival (sur le tapis de sa chambre).
-		"from": &"entrance", "mat": Vector2i(9, 9), "reserved": [Vector2i(13, 4)],
+		"from": &"entrance", "mat": Vector2i(9, 9), "reserved": [],
+		"npcs": {Vector2i(13, 4): &"rival"},
 		"spawns": {&"entrance": Vector2i(9, 9)},
 		"warps": {
 			&"Exit": [Vector2i(9, 9), PUSH, Vector2i.DOWN, &"pallet_town", &"rival_house_door"],
@@ -45,8 +49,9 @@ const PLANS: Dictionary = {
 	&"oak_lab": {
 		"size": Vector2i(16, 11), "walls": BOX, "openings": [],
 		"from": &"entrance", "mat": Vector2i(7, 9),
-		# Chen (au-dessus du grand tapis) ; devant la table des starters.
+		# Chen (au-dessus du grand tapis) ; devant la table des starters : libres en 3A.
 		"reserved": [Vector2i(8, 4), Vector2i(11, 6)],
+		"npcs": {Vector2i(5, 3): &"maya"},
 		"spawns": {&"entrance": Vector2i(7, 9)},
 		"warps": {
 			&"Exit": [Vector2i(7, 9), PUSH, Vector2i.DOWN, &"pallet_town", &"oak_lab_door"],
@@ -149,7 +154,9 @@ func test_every_walkable_cell_is_reachable() -> void:
 		for y: int in map.size.y:
 			for x: int in map.size.x:
 				var cell := Vector2i(x, y)
-				if not grid.is_solid(cell) and not grid.is_water(cell):
+				# Cases occupées par un PNJ (jalon 3A) : praticables mais pas atteignables.
+				if not grid.is_solid(cell) and not grid.is_water(cell) \
+						and not grid.is_occupied(cell):
 					walkable += 1
 					assert_true(reachable.has(cell), "%s : poche en %s" % [map_id, cell])
 		assert_eq(reachable.size(), walkable, "%s : cases atteignables" % map_id)
@@ -189,6 +196,18 @@ func test_reserved_cells_are_free_and_reachable() -> void:
 			assert_false(grid.is_solid(cell), "%s : réservée %s libre" % [map_id, cell])
 			assert_false(grid.is_occupied(cell), "%s : réservée %s inoccupée" % [map_id, cell])
 			assert_true(reachable.has(cell), "%s : réservée %s atteignable" % [map_id, cell])
+
+
+func test_reserved_cells_now_hold_the_right_npc() -> void:
+	for map_id: StringName in _maps:
+		var map: GameMap = _maps[map_id]
+		var npcs: Dictionary = PLANS[map_id].get("npcs", {})
+		for cell: Vector2i in npcs:
+			var npc := map.get_grid().get_occupant(cell) as Npc
+			assert_not_null(npc, "%s : PNJ en %s" % [map_id, cell])
+			if npc != null:
+				assert_eq(npc.get_id(), npcs[cell], "%s : PNJ en %s" % [map_id, cell])
+				assert_false(map.get_grid().is_solid(cell), "%s : %s praticable" % [map_id, cell])
 
 
 func test_warp_cells_are_walkable() -> void:
@@ -332,8 +351,8 @@ func test_lab_follows_reference_layout() -> void:
 		&"FileCabinet": Vector2i(10, 2), &"Bookshelf": Vector2i(11, 3),
 		&"Fridge": Vector2i(13, 2), &"DisplayCase": Vector2i(14, 4),
 		&"LongCounter": Vector2i(1, 5), &"StarterTable": Vector2i(11, 5),
-		&"Sofa": Vector2i(2, 7), &"CoffeeTable": Vector2i(3, 7), &"Bench": Vector2i(11, 7),
-		&"WallScreen": Vector2i(14, 7), &"Stairs": Vector2i(1, 9), &"Stool": Vector2i(12, 8),
+		&"Sofa": Vector2i(2, 7), &"CoffeeTable": Vector2i(3, 7), &"Bench": Vector2i(11, 8),
+		&"WallScreen": Vector2i(14, 7), &"Stairs": Vector2i(1, 9), &"Stool": Vector2i(12, 7),
 	})
 
 

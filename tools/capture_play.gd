@@ -25,6 +25,15 @@ extends SceneTree
 ##              Marche en plus court chemin (BFS sur la GridWorld de la carte courante),
 ##              entrées injectées par Input.action_press. Quitte seul à la fin.
 ##              Environ 1 000 images à 30 images/s : --quit-after 1500.
+##   npcs       jalon 3A (T4) : départ réel du jeu, puis tous les PNJ et points d'examen :
+##              Maman qui parle d'elle-même, table, rival (page 1, puis page 2 tourné vers
+##              le joueur), carte de Kanto, Maya, les trois starters (Salamèche en
+##              réaction), Mme Aoki et ses Roucool, Léo (Rattata en réaction), panneau,
+##              Haru. Captures jalon03_npcs_NN_* (bouton contextuel avant certaines
+##              interactions, puis boîte de dialogue page complète). Déroulé écrit en
+##              coroutine (await process_frame) ; marche en plus court chemin, course
+##              tenue dehors, entrées injectées. Quitte seul à la fin (~3 000 images :
+##              --quit-after 6000 ; préférer --write-movie <dossier>/x.avi, plus léger).
 
 const BOOT_SCENE: String = "res://game/boot.tscn"
 const CORNERS: Array = [
@@ -69,6 +78,9 @@ const DOORS_LAB: Array[Dictionary] = [
 		"capture": "08_outside_after_lab"},
 ]
 const DOORS_PREFIX: String = "jalon02_doors_"
+const NPCS_PREFIX: String = "jalon03_npcs_"
+## Délai maximal d'une attente du scénario « npcs » (images).
+const NPCS_TIMEOUT: int = 900
 ## Images d'attente avant la capture d'une étape (titre de zone entré : ~0,3 s).
 const SETTLE_FRAMES: int = 24
 const MOVE_ACTIONS: Dictionary = {
@@ -107,10 +119,13 @@ func _init() -> void:
 
 func _start_boot() -> void:
 	_boot = (load(BOOT_SCENE) as PackedScene).instantiate()
-	if _scenario != "doors":
-		_boot.set(&"start_map", &"pallet_town")
-	else:
+	if _scenario == "doors":
 		_setup_doors()
+	elif _scenario == "npcs":
+		_setup_doors()
+		InputMap.action_erase_events(&"interact")
+	else:
+		_boot.set(&"start_map", &"pallet_town")
 	root.add_child(_boot)
 	process_frame.connect(_on_frame)
 
@@ -120,6 +135,8 @@ func _on_frame() -> void:
 	_save_pending_shot()
 	if _player == null:
 		_player = _boot.call(&"get_player")
+		if _scenario == "npcs":
+			_run_npcs()
 		return
 	match _scenario:
 		"spawn":
@@ -230,7 +247,7 @@ func _on_doors_transition_started(target: StringName) -> void:
 
 
 func _on_doors_map_changed(_map: Node) -> void:
-	if not _router.call(&"is_transitioning"):
+	if _scenario != "doors" or not _router.call(&"is_transitioning"):
 		return  # start() : pas de fondu
 	_map_changes += 1
 	if _map_changes == 1:
@@ -364,3 +381,187 @@ func _find_path(start: Vector2i, goal: Vector2i) -> Array[Vector2i]:
 		cursor = previous[cursor]
 	path.push_front(start)
 	return path
+
+
+# --- Scénario « npcs » (jalon 3A, T4) ----------------------------------------------
+
+func _run_npcs() -> void:
+	await _frames(20)
+	# Chambre → escalier : Maman parle d'elle-même à l'arrivée.
+	await _go_through(Vector2i(6, 9))
+	await _page_complete()
+	await _shot("01_mom_auto")
+	await _finish_dialogue()
+	# Table du petit-déjeuner.
+	await _go(Vector2i(4, 6))
+	await _face_and_shot(Vector2i.UP, "02_table_button")
+	await _talk("03_table")
+	# Dehors, puis chez le rival.
+	await _go(Vector2i(7, 8))
+	await _push_through(Vector2i.DOWN)
+	await _go_through(Vector2i(11, 9), true)
+	await _go(Vector2i(12, 4))
+	await _face_and_shot(Vector2i.RIGHT, "04_rival_button")
+	await _interact()
+	await _page_complete()
+	await _shot("05_rival_page1")
+	await _interact()
+	await _page_complete()
+	await _shot("06_rival_page2_turned")
+	await _finish_dialogue()
+	await _go(Vector2i(14, 4))
+	_player.call(&"face", Vector2i.RIGHT)
+	await _talk("07_kanto_map")
+	# Labo : Maya et les trois starters.
+	await _go(Vector2i(9, 9))
+	await _push_through(Vector2i.DOWN)
+	await _go_through(Vector2i(24, 22), true)
+	await _go(Vector2i(5, 4))
+	_player.call(&"face", Vector2i.UP)
+	await _talk("08_maya")
+	await _go(Vector2i(10, 6))
+	_player.call(&"face", Vector2i.UP)
+	await _talk("09_bulbasaur")
+	await _go(Vector2i(11, 6))
+	await _face_and_shot(Vector2i.UP, "10_charmander_button")
+	await _interact()
+	await _frames(4)
+	await _shot("11_charmander_react")
+	await _page_complete()
+	await _shot("12_charmander")
+	await _finish_dialogue()
+	await _go(Vector2i(12, 6))
+	_player.call(&"face", Vector2i.UP)
+	await _talk("13_squirtle")
+	# Village : Mme Aoki, Léo, panneau, Haru.
+	await _go(Vector2i(7, 9))
+	await _push_through(Vector2i.DOWN)
+	await _go(Vector2i(30, 13), true)
+	_player.call(&"face", Vector2i.LEFT)
+	await _talk("14_aoki")
+	await _go(Vector2i(19, 9), true)
+	_player.call(&"face", Vector2i.LEFT)
+	await _interact()
+	await _page_complete()
+	await _interact()
+	await _frames(5)
+	await _shot("15_leo_rattata_react")
+	await _page_complete()
+	await _shot("16_leo_page2")
+	await _finish_dialogue()
+	await _go(Vector2i(21, 14), true)
+	await _face_and_shot(Vector2i.UP, "17_sign_button")
+	await _talk("18_sign")
+	await _go(Vector2i(9, 32), true)
+	await _face_and_shot(Vector2i.DOWN, "19_haru_button")
+	await _talk("20_haru")
+	await _frames(5)
+	print("NPCS terminé (frame %d)" % _frame)
+	quit()
+
+
+func _frames(count: int) -> void:
+	for i: int in count:
+		await process_frame
+
+
+func _shot(capture_name: String) -> void:
+	_mark(NPCS_PREFIX + capture_name)
+	await _frames(2)
+
+
+## Pivote vers [param direction], laisse le bouton contextuel apparaître, capture.
+func _face_and_shot(direction: Vector2i, capture_name: String) -> void:
+	_player.call(&"face", direction)
+	await _frames(12)
+	await _shot(capture_name)
+
+
+func _interact() -> void:
+	Input.action_press(&"interact")
+	await process_frame
+	Input.action_release(&"interact")
+	await process_frame
+
+
+## Attend que la page courante soit entièrement écrite (« › » ou dernière page).
+func _page_complete() -> void:
+	var runner: Node = _boot.call(&"get_dialogue_runner")
+	for i: int in NPCS_TIMEOUT:
+		var session: RefCounted = runner.call(&"get_session")
+		if session != null and session.call(&"is_page_complete"):
+			break
+		await process_frame
+	await _frames(8)
+
+
+func _finish_dialogue() -> void:
+	var runner: Node = _boot.call(&"get_dialogue_runner")
+	for i: int in NPCS_TIMEOUT:
+		if not runner.call(&"is_running"):
+			break
+		await _interact()
+	await _frames(6)
+
+
+## Lance le dialogue de la cible, capture sa première page complète, le termine.
+func _talk(capture_name: String) -> void:
+	await _frames(6)
+	await _interact()
+	await _page_complete()
+	await _shot(capture_name)
+	await _finish_dialogue()
+
+
+## Marche (plus court chemin) jusqu'à [param goal] et s'y arrête.
+func _go(goal: Vector2i, run: bool = false) -> void:
+	_path = _find_path(_player.call(&"get_cell"), goal)
+	if _path.is_empty():
+		push_error("npcs : aucun chemin vers %s" % goal)
+		quit(1)
+		return
+	if run:
+		Input.action_press(&"run")
+	for i: int in NPCS_TIMEOUT * 2:
+		await process_frame
+		var cell: Vector2i = _player.call(&"get_cell")
+		var moving: bool = _player.call(&"is_moving")
+		if not moving and cell == goal:
+			break
+		var from := cell + (_player.call(&"get_facing") as Vector2i) if moving else cell
+		var index := _path.find(from)
+		if index < 0 or index == _path.size() - 1:
+			_release_moves()
+			continue
+		_hold(_path[index + 1] - from)
+	_release_moves()
+	Input.action_release(&"run")
+	await _frames(2)
+
+
+## Marche jusqu'à une case de passage (porte, escalier) et attend la nouvelle carte.
+func _go_through(goal: Vector2i, run: bool = false) -> void:
+	_arrived = false
+	await _go(goal, run)
+	await _wait_arrival()
+
+
+## Pousse vers [param direction] sur un tapis de sortie jusqu'à la nouvelle carte.
+func _push_through(direction: Vector2i) -> void:
+	_arrived = false
+	for i: int in NPCS_TIMEOUT:
+		if _router.call(&"is_transitioning"):
+			break
+		_hold(direction)
+		await process_frame
+	_release_moves()
+	await _wait_arrival()
+
+
+func _wait_arrival() -> void:
+	for i: int in NPCS_TIMEOUT:
+		if _arrived:
+			break
+		await process_frame
+	_release_moves()
+	await _frames(SETTLE_FRAMES)

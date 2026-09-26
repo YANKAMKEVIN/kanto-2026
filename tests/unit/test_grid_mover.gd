@@ -337,3 +337,51 @@ func test_unlock_moves_again_and_lock_survives_place() -> void:
 	_mover.update(FRAME, Vector2i.RIGHT, false)
 	assert_true(_mover.is_moving())
 	assert_eq(_mover.get_target_cell(), Vector2i(2, 1))
+
+
+# --- Pivot scripté (jalon 3A §2.8) --------------------------------------------------
+
+func test_face_at_rest_turns_without_step_nor_bump() -> void:
+	_world.set_solid(START + Vector2i.LEFT)
+	_mover.face(Vector2i.LEFT)
+	assert_eq(_mover.get_facing(), Vector2i.LEFT)
+	assert_eq(_mover.get_state(), GridMover.State.IDLE)
+	assert_eq(_mover.get_cell(), START)
+	assert_signal_emitted_with_parameters(_mover, "facing_changed", [Vector2i.LEFT])
+	assert_signal_not_emitted(_mover, "bumped")
+	assert_signal_not_emitted(_mover, "step_started")
+	_mover.update(1.0, Vector2i.ZERO, false)
+	assert_eq(_mover.get_cell(), START)
+
+
+func test_face_ignored_while_moving() -> void:
+	_mover.update(FRAME, Vector2i.DOWN, false)
+	assert_true(_mover.is_moving())
+	_mover.face(Vector2i.UP)
+	assert_eq(_mover.get_facing(), Vector2i.DOWN)
+	assert_true(_mover.is_moving())
+	assert_eq(_mover.get_target_cell(), START + Vector2i.DOWN)
+	assert_signal_not_emitted(_mover, "facing_changed")
+
+
+func test_face_cancels_pending_turn() -> void:
+	_mover.update(0.05, Vector2i.RIGHT, false)
+	assert_eq(_mover.get_state(), GridMover.State.TURNING)
+	_mover.face(Vector2i.UP)
+	assert_eq(_mover.get_state(), GridMover.State.IDLE)
+	assert_eq(_mover.get_facing(), Vector2i.UP)
+
+
+func test_face_works_when_locked() -> void:
+	_mover.set_locked(true)
+	_mover.face(Vector2i.RIGHT)
+	assert_eq(_mover.get_facing(), Vector2i.RIGHT)
+	assert_signal_emit_count(_mover, "facing_changed", 1)
+
+
+func test_face_same_or_non_cardinal_direction_emits_nothing() -> void:
+	_mover.face(Vector2i.DOWN)
+	_mover.face(Vector2i(1, 1))
+	_mover.face(Vector2i.ZERO)
+	assert_eq(_mover.get_facing(), Vector2i.DOWN)
+	assert_signal_not_emitted(_mover, "facing_changed")

@@ -1,0 +1,23 @@
+{
+	"rival": {
+		"speaker": "Rival",
+		"variants": [
+			{
+				"unless": ["rival_met"],
+				"set": ["rival_met"],
+				"pages": [
+					"Ah. Enfin réveillé.",
+					{ "text": "T'as choisi ton jour pour faire la grasse matinée.", "face_player": true },
+					{ "text": "Moi, je suis prêt.", "pause": 0.8 }
+				]
+			},
+			{
+				"pages": ["Quoi ?", "Va faire un tour. Tu comprendras."]
+			}
+		]
+	},
+	"rival_kanto_map": {
+		"narration": true,
+		"pages": ["Une carte de Kanto.", "Plusieurs villes ont été entourées au crayon."]
+	}
+}

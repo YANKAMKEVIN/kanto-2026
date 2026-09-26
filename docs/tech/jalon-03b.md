@@ -519,6 +519,22 @@ Données d'essai : `tests/fixtures/cutscenes/*.json`, compléments dans `tests/f
 
 ## 7. Hypothèses et questions pour Kevin
 
+> **Décisions de Kevin (2026-09-26)** — elles **priment** sur les propositions par défaut ci-dessous et sur le reste du plan :
+> 1. Herbes : les 3 dernières rangées du chemin nord (Q1 validée).
+> 2. Déclencheur : la case **juste avant** les herbes ; le joueur n'entre jamais dans les herbes sans Pokémon (Q2 validée).
+> 3. Gel ≈ 0,4 s → « ??? — Hé ! Attends ! » → le joueur se retourne → Chen arrive **en courant** depuis le village (Q5, Q6 validées).
+> 4. Retour : le joueur **suit Chen automatiquement** quelques cases, puis fondu vers le labo (Q8 : option A).
+> 5. Réplique finale définitive : « ...Viens avec moi. » (Q17).
+> 6. **Étiquette : « Prof. Chen »** (et non « Chen ») partout où il parle ; les autres personnages peuvent dire « le professeur Chen » ou « Chen » dans leurs répliques (**modifie Q13 et tous les `"speaker": "Chen"` du §3.3**).
+> 7. **Maya après le retour de Chen** : elle ne devient **pas** muette (modifie Q11 et le PNJ `maya_working` du §3.2, qui devient interactif). Nouvelle variante, conditionnée par `oak_met` : **Maya** — « Ah, le professeur est revenu. » / « Et à voir son air, j'imagine qu'il a encore quelque chose en tête. » (textes définitifs ; elle évoluera encore après le starter, jalon 4).
+> 8. Le rival quitte sa chambre après l'événement et se trouve au labo ; sa chambre est vide (Q12 validée).
+> 9. Scène du labo : Rival « Enfin. » / **Prof. Chen** « Un peu de patience. » / Rival « Ça fait une heure que tu dis ça. » / **Prof. Chen** « Et pourtant, tu es toujours là. », puis le joueur reprend la main.
+> 10. **Après la scène (modifie Q10)** : tant que le joueur n'a **pas de starter** (jalon 4), les hautes herbes **restent bloquées**. Pas de nouvelle cinématique : sur la case juste avant les herbes, le joueur s'arrête et une courte **pensée du joueur** s'affiche : *« Je ne devrais pas aller là sans Pokémon. »* (narration, sans nom, en italique). Cette restriction disparaîtra quand le starter sera obtenu (drapeau du jalon 4, par ex. `has_starter`).
+> 11. Roucool et Rattata de la prairie : Pokémon d'ambiance, **aucun combat** pour l'instant (Q4 validée).
+> 12. Contrôle après le 3B : le joueur explore Bourg Palette, parle aux habitants, entre dans les bâtiments ; seule la sortie par les hautes herbes reste verrouillée jusqu'au starter.
+> 13. Durées, positions fines, rendu des herbes, sauvegarde et autres paramètres : **valeurs proposées**, à ajuster après l'essai sur S24.
+
+
 Hypothèses techniques (pas de décision de design) :
 - Scènes scriptées en **données** (`data/cutscenes/*.json`), 7 types d'étapes, sans embranchement ni parallélisme.
 - Un déclencheur est une donnée de carte (comme un warp) ; ses conditions sont dans la scène.

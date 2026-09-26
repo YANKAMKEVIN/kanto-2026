@@ -1,133 +1,146 @@
 [gd_scene format=4]
 
-[ext_resource type="Script" path="res://game/world/map.gd" id="1_arlr8"]
-[ext_resource type="TileSet" path="res://assets/tiles/interior.tres" id="2_ree40"]
-[ext_resource type="PackedScene" path="res://game/world/props/interior/rug_plaid.tscn" id="3_1yuyn"]
-[ext_resource type="PackedScene" path="res://game/world/props/interior/rug_living.tscn" id="4_cqj3l"]
-[ext_resource type="PackedScene" path="res://game/world/props/interior/window.tscn" id="5_cq435"]
-[ext_resource type="PackedScene" path="res://game/world/props/interior/stairs_up_side.tscn" id="6_frwfd"]
-[ext_resource type="PackedScene" path="res://game/world/props/interior/fridge.tscn" id="7_4325m"]
-[ext_resource type="PackedScene" path="res://game/world/props/interior/kitchen_counter.tscn" id="8_aisr8"]
-[ext_resource type="PackedScene" path="res://game/world/props/interior/dining_table.tscn" id="9_c3vcq"]
-[ext_resource type="PackedScene" path="res://game/world/props/interior/sofa.tscn" id="10_w45k8"]
-[ext_resource type="PackedScene" path="res://game/world/props/interior/coffee_table.tscn" id="11_hyl1t"]
-[ext_resource type="PackedScene" path="res://game/world/props/interior/tv_console_side.tscn" id="12_0si72"]
-[ext_resource type="PackedScene" path="res://game/world/props/interior/plant.tscn" id="13_ayrjc"]
-[ext_resource type="PackedScene" path="res://game/world/props/interior/low_cabinet.tscn" id="14_mssrq"]
-[ext_resource type="PackedScene" path="res://game/world/props/interior/coat_rack.tscn" id="15_7aogi"]
-[ext_resource type="PackedScene" path="res://game/world/props/interior/dresser_pokeball.tscn" id="16_amj5l"]
-[ext_resource type="PackedScene" path="res://game/world/props/interior/front_door.tscn" id="17_3jmq8"]
-[ext_resource type="Script" path="res://game/world/warp_point.gd" id="18_gtigt"]
+[ext_resource type="Script" path="res://game/world/map.gd" id="1_1yuyn"]
+[ext_resource type="TileSet" path="res://assets/tiles/interior.tres" id="2_cqj3l"]
+[ext_resource type="PackedScene" path="res://game/world/props/interior/rug_plaid.tscn" id="3_cq435"]
+[ext_resource type="PackedScene" path="res://game/world/props/interior/rug_living.tscn" id="4_frwfd"]
+[ext_resource type="PackedScene" path="res://game/world/props/interior/window.tscn" id="5_4325m"]
+[ext_resource type="PackedScene" path="res://game/world/props/interior/stairs_up_side.tscn" id="6_aisr8"]
+[ext_resource type="PackedScene" path="res://game/world/props/interior/fridge.tscn" id="7_c3vcq"]
+[ext_resource type="PackedScene" path="res://game/world/props/interior/kitchen_counter.tscn" id="8_w45k8"]
+[ext_resource type="PackedScene" path="res://game/world/props/interior/dining_table.tscn" id="9_hyl1t"]
+[ext_resource type="PackedScene" path="res://game/world/props/interior/breakfast.tscn" id="10_0si72"]
+[ext_resource type="PackedScene" path="res://game/world/props/interior/sofa.tscn" id="11_ayrjc"]
+[ext_resource type="PackedScene" path="res://game/world/props/interior/coffee_table.tscn" id="12_mssrq"]
+[ext_resource type="PackedScene" path="res://game/world/props/interior/tv_console_side.tscn" id="13_7aogi"]
+[ext_resource type="PackedScene" path="res://game/world/props/interior/plant.tscn" id="14_amj5l"]
+[ext_resource type="PackedScene" path="res://game/world/props/interior/low_cabinet.tscn" id="15_3jmq8"]
+[ext_resource type="PackedScene" path="res://game/world/props/interior/coat_rack.tscn" id="16_gtigt"]
+[ext_resource type="PackedScene" path="res://game/world/props/interior/dresser_pokeball.tscn" id="17_12qfx"]
+[ext_resource type="PackedScene" path="res://game/world/props/interior/front_door.tscn" id="18_ovxue"]
+[ext_resource type="Script" path="res://game/world/warp_point.gd" id="19_2jbh7"]
+[ext_resource type="Script" path="res://game/world/interactions/interact_point.gd" id="20_pvgtb"]
 
-[node name="PlayerHouse1F" type="Node2D" unique_id=630419699]
-script = ExtResource("1_arlr8")
+[node name="PlayerHouse1F" type="Node2D" unique_id=324742587]
+script = ExtResource("1_1yuyn")
 map_id = &"player_house_1f"
 display_name = "Bourg Palette"
 region = "Kanto"
 size = Vector2i(14, 10)
 interior = true
 
-[node name="Ground" type="TileMapLayer" parent="." unique_id=2049421521]
+[node name="Ground" type="TileMapLayer" parent="." unique_id=2108412914]
 tile_map_data = PackedByteArray("AAABAAIAAAAAAAQAAAACAAIAAAAAAAQAAAADAAIAAAAAAAAAAAAEAAIAAAABAAAAAAAFAAIAAAACAAAAAAAGAAIAAAAAAAAAAAAHAAIAAAACAAAAAAAIAAIAAAACAAAAAAAJAAIAAAAAAAAAAAAKAAIAAAACAAAAAAALAAIAAAACAAAAAAAMAAIAAAAAAAAAAAABAAMAAAAAAAQAAAACAAMAAAAAAAQAAAADAAMAAAAAAAAAAAAEAAMAAAAAAAAAAAAFAAMAAAACAAAAAAAGAAMAAAAAAAAAAAAHAAMAAAAAAAAAAAAIAAMAAAABAAAAAAAJAAMAAAACAAAAAAAKAAMAAAACAAAAAAALAAMAAAABAAAAAAAMAAMAAAACAAAAAAABAAQAAAACAAAAAAACAAQAAAACAAAAAAADAAQAAAAAAAAAAAAEAAQAAAACAAAAAAAFAAQAAAAAAAAAAAAGAAQAAAAAAAAAAAAHAAQAAAABAAAAAAAIAAQAAAACAAAAAAAJAAQAAAACAAAAAAAKAAQAAAAAAAAAAAALAAQAAAABAAAAAAAMAAQAAAACAAAAAAABAAUAAAABAAAAAAACAAUAAAAAAAAAAAADAAUAAAABAAAAAAAEAAUAAAABAAAAAAAFAAUAAAAAAAAAAAAGAAUAAAACAAAAAAAHAAUAAAACAAAAAAAIAAUAAAACAAAAAAAJAAUAAAACAAAAAAAKAAUAAAABAAAAAAALAAUAAAABAAAAAAAMAAUAAAAAAAAAAAABAAYAAAAAAAAAAAACAAYAAAABAAAAAAADAAYAAAAAAAAAAAAEAAYAAAABAAAAAAAFAAYAAAACAAAAAAAGAAYAAAABAAAAAAAHAAYAAAABAAAAAAAIAAYAAAAAAAAAAAAJAAYAAAACAAAAAAAKAAYAAAACAAAAAAALAAYAAAAAAAAAAAAMAAYAAAABAAAAAAABAAcAAAAAAAAAAAACAAcAAAABAAAAAAADAAcAAAAAAAAAAAAEAAcAAAABAAAAAAAFAAcAAAACAAAAAAAGAAcAAAABAAAAAAAHAAcAAAAAAAAAAAAIAAcAAAAAAAAAAAAJAAcAAAACAAAAAAAKAAcAAAABAAAAAAALAAcAAAABAAAAAAAMAAcAAAAAAAAAAAABAAgAAAACAAAAAAACAAgAAAACAAAAAAADAAgAAAACAAAAAAAEAAgAAAABAAAAAAAFAAgAAAACAAAAAAAGAAgAAAACAAAAAAAHAAgAAAABAAAAAAAIAAgAAAABAAAAAAAJAAgAAAABAAAAAAAKAAgAAAAAAAAAAAALAAgAAAABAAAAAAAMAAgAAAAAAAAAAAA=")
-tile_set = ExtResource("2_ree40")
+tile_set = ExtResource("2_cqj3l")
 
-[node name="Detail" type="TileMapLayer" parent="." unique_id=361551658]
+[node name="Detail" type="TileMapLayer" parent="." unique_id=1688047848]
 tile_map_data = PackedByteArray("AAAHAAgAAAAAAAYAAAA=")
-tile_set = ExtResource("2_ree40")
+tile_set = ExtResource("2_cqj3l")
 
-[node name="RugPlaid" parent="Detail" unique_id=455291469 instance=ExtResource("3_1yuyn")]
+[node name="RugPlaid" parent="Detail" unique_id=1996929672 instance=ExtResource("3_cq435")]
 position = Vector2(240, 672)
 
-[node name="RugLiving" parent="Detail" unique_id=258955628 instance=ExtResource("4_cqj3l")]
+[node name="RugLiving" parent="Detail" unique_id=2052214621 instance=ExtResource("4_frwfd")]
 position = Vector2(912, 768)
 
-[node name="Obstacles" type="TileMapLayer" parent="." unique_id=555232911]
+[node name="Obstacles" type="TileMapLayer" parent="." unique_id=2008233508]
 tile_map_data = PackedByteArray("AAAAAAAAAAAAAAIAAAABAAAAAAAAAAIAAAACAAAAAAAAAAIAAAADAAAAAAAAAAIAAAAEAAAAAAAAAAIAAAAFAAAAAAAAAAIAAAAGAAAAAAAAAAIAAAAHAAAAAAAAAAIAAAAIAAAAAAAAAAIAAAAJAAAAAAAAAAIAAAAKAAAAAAAAAAIAAAALAAAAAAAAAAIAAAAMAAAAAAAAAAIAAAANAAAAAAAAAAIAAAAAAAEAAAABAAIAAAABAAEAAAABAAIAAAACAAEAAAABAAIAAAADAAEAAAABAAIAAAAEAAEAAAABAAIAAAAFAAEAAAABAAIAAAAGAAEAAAABAAIAAAAHAAEAAAABAAIAAAAIAAEAAAABAAIAAAAJAAEAAAABAAIAAAAKAAEAAAABAAIAAAALAAEAAAABAAIAAAAMAAEAAAABAAIAAAANAAEAAAABAAIAAAAAAAIAAAAAAAIAAAANAAIAAAAAAAIAAAAAAAMAAAAAAAIAAAANAAMAAAAAAAIAAAAAAAQAAAAAAAIAAAANAAQAAAAAAAIAAAAAAAUAAAAAAAIAAAANAAUAAAAAAAIAAAAAAAYAAAAAAAIAAAANAAYAAAAAAAIAAAAAAAcAAAAAAAIAAAANAAcAAAAAAAIAAAAAAAgAAAAAAAIAAAANAAgAAAAAAAIAAAAAAAkAAAAAAAIAAAABAAkAAAAAAAIAAAACAAkAAAAAAAIAAAADAAkAAAAAAAIAAAAEAAkAAAAAAAIAAAAFAAkAAAAAAAIAAAAGAAkAAAAAAAIAAAAHAAkAAAAAAAIAAAAIAAkAAAAAAAIAAAAJAAkAAAAAAAIAAAAKAAkAAAAAAAIAAAALAAkAAAAAAAIAAAAMAAkAAAAAAAIAAAANAAkAAAAAAAIAAAA=")
-tile_set = ExtResource("2_ree40")
+tile_set = ExtResource("2_cqj3l")
 
-[node name="Entities" type="Node2D" parent="." unique_id=612067524]
+[node name="Entities" type="Node2D" parent="." unique_id=53011672]
 unique_name_in_owner = true
 y_sort_enabled = true
 
-[node name="WindowKitchen" parent="Entities" unique_id=1523469886 instance=ExtResource("5_cq435")]
+[node name="WindowKitchen" parent="Entities" unique_id=898168226 instance=ExtResource("5_4325m")]
 position = Vector2(528, 192)
 
-[node name="WindowLiving" parent="Entities" unique_id=1504038799 instance=ExtResource("5_cq435")]
+[node name="WindowLiving" parent="Entities" unique_id=947088990 instance=ExtResource("5_4325m")]
 position = Vector2(1104, 192)
 
-[node name="Stairs" parent="Entities" unique_id=1354837628 instance=ExtResource("6_frwfd")]
+[node name="Stairs" parent="Entities" unique_id=1516126782 instance=ExtResource("6_aisr8")]
 position = Vector2(144, 384)
 
-[node name="Fridge" parent="Entities" unique_id=745542144 instance=ExtResource("7_4325m")]
+[node name="Fridge" parent="Entities" unique_id=570746126 instance=ExtResource("7_c3vcq")]
 position = Vector2(336, 288)
 
-[node name="Kitchen" parent="Entities" unique_id=2121858604 instance=ExtResource("8_aisr8")]
+[node name="Kitchen" parent="Entities" unique_id=2076696854 instance=ExtResource("8_w45k8")]
 position = Vector2(432, 288)
 
-[node name="DiningTable" parent="Entities" unique_id=1236953341 instance=ExtResource("9_c3vcq")]
+[node name="DiningTable" parent="Entities" unique_id=1848674777 instance=ExtResource("9_hyl1t")]
 position = Vector2(336, 576)
 
-[node name="Sofa" parent="Entities" unique_id=1736096125 instance=ExtResource("10_w45k8")]
+[node name="Breakfast" parent="Entities" unique_id=565813547 instance=ExtResource("10_0si72")]
+position = Vector2(336, 576)
+
+[node name="Sofa" parent="Entities" unique_id=2010429788 instance=ExtResource("11_ayrjc")]
 position = Vector2(912, 480)
 
-[node name="CoffeeTable" parent="Entities" unique_id=1820839324 instance=ExtResource("11_hyl1t")]
+[node name="CoffeeTable" parent="Entities" unique_id=1116526959 instance=ExtResource("12_mssrq")]
 position = Vector2(912, 672)
 
-[node name="TvConsole" parent="Entities" unique_id=1104159247 instance=ExtResource("12_0si72")]
+[node name="TvConsole" parent="Entities" unique_id=759876708 instance=ExtResource("13_7aogi")]
 position = Vector2(1200, 672)
 
-[node name="PlantWest" parent="Entities" unique_id=684478095 instance=ExtResource("13_ayrjc")]
+[node name="PlantWest" parent="Entities" unique_id=1717030329 instance=ExtResource("14_amj5l")]
 position = Vector2(144, 768)
 
-[node name="PlantEast" parent="Entities" unique_id=1550264606 instance=ExtResource("13_ayrjc")]
+[node name="PlantEast" parent="Entities" unique_id=1327679549 instance=ExtResource("14_amj5l")]
 position = Vector2(1200, 768)
 
-[node name="LowCabinet" parent="Entities" unique_id=74405228 instance=ExtResource("14_mssrq")]
+[node name="LowCabinet" parent="Entities" unique_id=916223873 instance=ExtResource("15_3jmq8")]
 position = Vector2(144, 864)
 
-[node name="CoatRack" parent="Entities" unique_id=1377618762 instance=ExtResource("15_7aogi")]
+[node name="CoatRack" parent="Entities" unique_id=1338443969 instance=ExtResource("16_gtigt")]
 position = Vector2(624, 864)
 
-[node name="Dresser" parent="Entities" unique_id=933550593 instance=ExtResource("16_amj5l")]
+[node name="Dresser" parent="Entities" unique_id=1346870766 instance=ExtResource("17_12qfx")]
 position = Vector2(912, 864)
 
-[node name="FrontDoor" parent="Entities" unique_id=1040067832 instance=ExtResource("17_3jmq8")]
+[node name="FrontDoor" parent="Entities" unique_id=821180510 instance=ExtResource("18_ovxue")]
 position = Vector2(720, 960)
 
-[node name="Overhead" type="TileMapLayer" parent="." unique_id=1233652786]
+[node name="Overhead" type="TileMapLayer" parent="." unique_id=1876804720]
 z_index = 10
-tile_set = ExtResource("2_ree40")
+tile_set = ExtResource("2_cqj3l")
 
-[node name="Warps" type="Node2D" parent="." unique_id=1945268421]
+[node name="Warps" type="Node2D" parent="." unique_id=1726661757]
 
-[node name="StairsUpW" type="Marker2D" parent="Warps" unique_id=427826149]
+[node name="StairsUpW" type="Marker2D" parent="Warps" unique_id=916957221]
 position = Vector2(144, 384)
-script = ExtResource("18_gtigt")
+script = ExtResource("19_2jbh7")
 direction = Vector2i(0, -1)
 target_map = &"player_house_2f"
 target_spawn = &"stairs"
 
-[node name="StairsUpE" type="Marker2D" parent="Warps" unique_id=184754728]
+[node name="StairsUpE" type="Marker2D" parent="Warps" unique_id=1795529456]
 position = Vector2(240, 384)
-script = ExtResource("18_gtigt")
+script = ExtResource("19_2jbh7")
 direction = Vector2i(0, -1)
 target_map = &"player_house_2f"
 target_spawn = &"stairs"
 
-[node name="Exit" type="Marker2D" parent="Warps" unique_id=686218257]
+[node name="Exit" type="Marker2D" parent="Warps" unique_id=2126691292]
 position = Vector2(720, 864)
-script = ExtResource("18_gtigt")
+script = ExtResource("19_2jbh7")
 trigger = 1
 direction = Vector2i(0, 1)
 target_map = &"pallet_town"
 target_spawn = &"player_house_door"
 
-[node name="Spawns" type="Node2D" parent="." unique_id=54505901]
+[node name="Interactables" type="Node2D" parent="." unique_id=137195177]
 
-[node name="entrance" type="Marker2D" parent="Spawns" unique_id=2057273160]
+[node name="BreakfastTable" type="Marker2D" parent="Interactables" unique_id=1770273433]
+position = Vector2(336, 576)
+script = ExtResource("20_pvgtb")
+dialogue_id = &"breakfast_table"
+size = Vector2i(3, 2)
+
+[node name="Spawns" type="Node2D" parent="." unique_id=1503717859]
+
+[node name="entrance" type="Marker2D" parent="Spawns" unique_id=1776148361]
 position = Vector2(720, 864)
 
-[node name="stairs" type="Marker2D" parent="Spawns" unique_id=1284904689]
+[node name="stairs" type="Marker2D" parent="Spawns" unique_id=743265671]
 position = Vector2(240, 480)
 
-[node name="Triggers" type="Node2D" parent="." unique_id=340802694]
+[node name="Triggers" type="Node2D" parent="." unique_id=1394250632]

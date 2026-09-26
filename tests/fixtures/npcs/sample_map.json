@@ -1,0 +1,6 @@
+{
+	"mom": { "cell": [7, 4], "facing": "down", "sprite": "mom", "dialogue": "mom" },
+	"charmander": { "cell": [11, 5], "sprite": "charmander", "dialogue": "observe_charmander", "verb": "observe", "lift": 56 },
+	"rival": { "cell": [13, 4], "facing": "right", "sprite": "rival", "dialogue": "rival", "turn_to_player": false },
+	"pidgey_1": { "cell": [19, 16], "facing": "left", "sprite": "pidgey" }
+}

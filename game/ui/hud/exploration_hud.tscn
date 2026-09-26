@@ -4,6 +4,7 @@
 [ext_resource type="PackedScene" path="res://game/ui/components/zone_title.tscn" id="2_title"]
 [ext_resource type="PackedScene" path="res://game/ui/components/virtual_joystick.tscn" id="3_joy"]
 [ext_resource type="PackedScene" path="res://game/ui/components/run_button.tscn" id="4_run"]
+[ext_resource type="PackedScene" path="res://game/ui/components/interact_button.tscn" id="5_interact"]
 
 [node name="ExplorationHud" type="CanvasLayer"]
 script = ExtResource("1_hud")
@@ -25,7 +26,7 @@ layout_mode = 1
 unique_name_in_owner = true
 layout_mode = 0
 
-[node name="RunAnchor" type="Control" parent="Root"]
+[node name="CornerAnchor" type="Control" parent="Root"]
 layout_mode = 1
 anchors_preset = 3
 anchor_left = 1.0
@@ -36,5 +37,8 @@ grow_horizontal = 0
 grow_vertical = 0
 mouse_filter = 2
 
-[node name="RunButton" parent="Root/RunAnchor" instance=ExtResource("4_run")]
+[node name="RunButton" parent="Root/CornerAnchor" instance=ExtResource("4_run")]
+unique_name_in_owner = true
+
+[node name="InteractButton" parent="Root/CornerAnchor" instance=ExtResource("5_interact")]
 unique_name_in_owner = true

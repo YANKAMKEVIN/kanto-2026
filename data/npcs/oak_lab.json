@@ -1,0 +1,15 @@
+{
+	"maya": { "cell": [5, 3], "facing": "up", "sprite": "maya", "dialogue": "maya" },
+	"bulbasaur": {
+		"cell": [10, 5], "facing": "down", "sprite": "bulbasaur",
+		"dialogue": "observe_bulbasaur", "verb": "observe", "lift": 56
+	},
+	"charmander": {
+		"cell": [11, 5], "facing": "down", "sprite": "charmander",
+		"dialogue": "observe_charmander", "verb": "observe", "lift": 56
+	},
+	"squirtle": {
+		"cell": [12, 5], "facing": "down", "sprite": "squirtle",
+		"dialogue": "observe_squirtle", "verb": "observe", "lift": 56
+	}
+}

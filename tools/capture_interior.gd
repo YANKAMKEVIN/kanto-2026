@@ -4,10 +4,13 @@ extends SceneTree
 ##   godot --path . --write-movie build/cap/f.png --fixed-fps 30 --quit-after 20 \
 ##     -s res://tools/capture_interior.gd -- --size=2340x1080 --map=player_house_2f \
 ##     [--spawn=start | --cell=6,5] [--facing=down|up|left|right] [--walk=up:3]
+##     [--npcs=res://tests/fixtures/npcs/:sample_map]
 ##
 ## Instancie game/world/maps/<map>.tscn et game/player/player.tscn, place le joueur au
 ## spawn (ou sur la case) et laisse la caméra du joueur cadrer la pièce (CameraFraming).
 ## `--walk=<direction>:<cases>` tient la direction jusqu'à parcourir ce nombre de cases.
+## `--npcs=<dossier>:<fichier>` : PNJ lus dans `<dossier><fichier>.json` au lieu de
+## `data/npcs/<map>.json` (vérification de la scène Npc avec des données d'essai).
 ## Affiche « CAPTURE frame=<n> cell=… » quand l'image est stable : garder la dernière image.
 
 const PLAYER_SCENE: String = "res://game/player/player.tscn"
@@ -37,6 +40,11 @@ func _init() -> void:
 func _setup() -> void:
 	var map_id: String = _args.get("map", "player_house_2f")
 	var map := (load(MAPS_DIR + map_id + ".tscn") as PackedScene).instantiate()
+	if _args.has("npcs"):
+		var spec := String(_args["npcs"])
+		var cut := spec.rfind(":")
+		map.set(&"npcs_dir", spec.substr(0, cut))
+		map.set(&"map_id", StringName(spec.substr(cut + 1)))
 	root.add_child(map)
 	_player = (load(PLAYER_SCENE) as PackedScene).instantiate()
 	var facing: Vector2i = DIRECTIONS.get(_args.get("facing", "down"), Vector2i.DOWN)

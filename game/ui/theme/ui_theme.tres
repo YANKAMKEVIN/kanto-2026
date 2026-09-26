@@ -1,11 +1,75 @@
 [gd_resource type="Theme" format=3]
 
-[sub_resource type="FontVariation" id="FontVariation_mql0s"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_mql0s"]
+content_margin_left = 44.0
+content_margin_top = 26.0
+content_margin_right = 44.0
+content_margin_bottom = 26.0
+bg_color = Color(0.06, 0.09, 0.13, 0.88)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(1, 1, 1, 0.14)
+corner_radius_top_left = 22
+corner_radius_top_right = 22
+corner_radius_bottom_right = 22
+corner_radius_bottom_left = 22
+shadow_color = Color(0, 0, 0, 0.35)
+shadow_size = 12
+
+[sub_resource type="FontVariation" id="FontVariation_17vax"]
 resource_name = "BoldDefault"
 variation_embolden = 0.6
 
+[sub_resource type="FontVariation" id="FontVariation_vcmj4"]
+resource_name = "ItalicDefault"
+variation_transform = Transform2D(1, 0, 0.2, 1, 0, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_m63c3"]
+content_margin_left = 20.0
+content_margin_top = 8.0
+content_margin_right = 20.0
+content_margin_bottom = 8.0
+bg_color = Color(0.1, 0.14, 0.2, 0.82)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(1, 1, 1, 0.14)
+corner_radius_top_left = 128
+corner_radius_top_right = 128
+corner_radius_bottom_right = 128
+corner_radius_bottom_left = 128
+shadow_color = Color(0, 0, 0, 0.35)
+
 [resource]
 default_font_size = 32
+DialogBox/base_type = &"PanelContainer"
+DialogBox/styles/panel = SubResource("StyleBoxFlat_mql0s")
+DialogContinue/base_type = &"Label"
+DialogContinue/colors/font_color = Color(0.9607843, 0.77254903, 0.25882354, 1)
+DialogContinue/font_sizes/font_size = 48
+DialogContinue/fonts/font = SubResource("FontVariation_17vax")
+DialogNarration/base_type = &"Label"
+DialogNarration/colors/font_color = Color(0.8666667, 0.8980392, 0.9411765, 1)
+DialogNarration/constants/line_spacing = 6
+DialogNarration/font_sizes/font_size = 32
+DialogNarration/fonts/font = SubResource("FontVariation_vcmj4")
+DialogSpeaker/base_type = &"Label"
+DialogSpeaker/colors/font_color = Color(0.9607843, 0.77254903, 0.25882354, 1)
+DialogSpeaker/font_sizes/font_size = 28
+DialogSpeaker/fonts/font = SubResource("FontVariation_17vax")
+DialogText/base_type = &"Label"
+DialogText/colors/font_color = Color(1, 1, 1, 1)
+DialogText/constants/line_spacing = 6
+DialogText/font_sizes/font_size = 32
+InteractLabel/base_type = &"PanelContainer"
+InteractLabel/styles/panel = SubResource("StyleBoxFlat_m63c3")
+InteractLabelText/base_type = &"Label"
+InteractLabelText/colors/font_color = Color(1, 1, 1, 1)
+InteractLabelText/font_sizes/font_size = 26
+InteractLabelText/fonts/font = SubResource("FontVariation_17vax")
 Label/colors/font_color = Color(1, 1, 1, 1)
 ZoneTitleName/base_type = &"Label"
 ZoneTitleName/colors/font_color = Color(1, 1, 1, 1)
@@ -14,7 +78,7 @@ ZoneTitleName/constants/shadow_offset_x = 0
 ZoneTitleName/constants/shadow_offset_y = 2
 ZoneTitleName/constants/shadow_outline_size = 4
 ZoneTitleName/font_sizes/font_size = 44
-ZoneTitleName/fonts/font = SubResource("FontVariation_mql0s")
+ZoneTitleName/fonts/font = SubResource("FontVariation_17vax")
 ZoneTitleRegion/base_type = &"Label"
 ZoneTitleRegion/colors/font_color = Color(0.72156864, 0.76862746, 0.8392157, 1)
 ZoneTitleRegion/colors/font_shadow_color = Color(0, 0, 0, 0.45)

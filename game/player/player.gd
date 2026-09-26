@@ -6,8 +6,9 @@ extends Node2D
 ## clavier, joystick tactile (Input.action_press) et tests passent par le même chemin.
 ## Origine aux pieds ; la caméra enfant suit, zoom 1, bornée à la carte ; une carte plus
 ## petite que l'écran est centrée ([CameraFraming]).
-## [method set_input_enabled] bloque les entrées (transition de carte) : le pas en cours se
-## termine, aucun autre ne part.
+## [method set_input_enabled] bloque les entrées pour une raison (transition de carte,
+## dialogue, plus tard scène scriptée) : le pas en cours se termine, aucun autre ne part. Le
+## joueur est libre quand plus aucune raison n'est active (docs/tech/jalon-03.md §2.8).
 
 signal moved(cell: Vector2i)
 signal facing_changed(direction: Vector2i)
@@ -19,6 +20,8 @@ const GROUP: StringName = &"player"
 const BODY_SIZE := Vector2(64, 128)
 ## Vitesse de l'animation de marche sur place contre un obstacle.
 const BUMP_ANIM_SPEED: float = 0.5
+## Raison de blocage par défaut : celle du routeur de scènes (changement de carte).
+const REASON_TRANSITION: StringName = &"transition"
 ## Animations par direction : [immobile, marche, course].
 const _ANIMS: Dictionary[Vector2i, Array] = {
 	Vector2i.DOWN: [&"idle_down", &"walk_down", &"run_down"],
@@ -31,7 +34,8 @@ var _grid: GridWorld
 var _mover: GridMover
 var _input := DirectionInput.new()
 var _bump_direction: Vector2i = Vector2i.ZERO
-var _input_enabled: bool = true
+## Raisons de blocage actives (raison → vrai) ; vide = entrées libres.
+var _block_reasons: Dictionary[StringName, bool] = {}
 ## Rectangle monde de la carte courante (recalcul des limites si la vue change).
 var _map_bounds: Rect2i = Rect2i()
 
@@ -73,7 +77,7 @@ func enter_map(grid: GridWorld, cell: Vector2i, facing: Vector2i, bounds: Rect2i
 		_grid.release(_mover.get_target_cell(), self)
 	_grid = grid
 	_mover = GridMover.new(grid, self)
-	_mover.set_locked(not _input_enabled)
+	_mover.set_locked(not is_input_enabled())
 	_mover.facing_changed.connect(_on_facing_changed)
 	_mover.step_finished.connect(_on_step_finished)
 	_mover.bumped.connect(_on_bumped)
@@ -91,16 +95,40 @@ func enter_map(grid: GridWorld, cell: Vector2i, facing: Vector2i, bounds: Rect2i
 	facing_changed.emit(_mover.get_facing())
 
 
-## Active ou bloque les entrées. Bloqué, le joueur termine le pas en cours puis ignore
-## directions et course (ni pivot, ni [signal bumped]). Le réglage survit à [method enter_map].
-func set_input_enabled(enabled: bool) -> void:
-	_input_enabled = enabled
+## Bloque ([param enabled] faux) ou débloque les entrées pour [param reason]. Le joueur est
+## libre quand plus aucune raison n'est active : un dialogue qui finit pendant un fondu ne le
+## libère pas. Une même raison ne s'empile pas (deux blocages, un seul déblocage suffit).
+## Bloqué, il termine le pas en cours puis ignore directions et course (ni pivot, ni
+## [signal bumped]). Le réglage survit à [method enter_map].
+func set_input_enabled(enabled: bool, reason: StringName = REASON_TRANSITION) -> void:
+	if enabled:
+		_block_reasons.erase(reason)
+	else:
+		_block_reasons[reason] = true
 	if _mover != null:
-		_mover.set_locked(not enabled)
+		_mover.set_locked(not is_input_enabled())
 
 
+## Vrai si aucune raison de blocage n'est active.
 func is_input_enabled() -> bool:
-	return _input_enabled
+	return _block_reasons.is_empty()
+
+
+## Vrai si [param reason] bloque actuellement le joueur.
+func is_blocked_by(reason: StringName) -> bool:
+	return _block_reasons.has(reason)
+
+
+## Pivote sur place vers [param direction], sans pas (dialogue automatique, scènes), même
+## bloqué. Ignoré pendant un pas, pour une direction non cardinale ou hors carte. Émet
+## [signal facing_changed] si l'orientation change.
+func face(direction: Vector2i) -> void:
+	if _mover == null or _mover.is_moving():
+		return
+	_mover.face(direction)
+	_bump_direction = Vector2i.ZERO
+	if is_node_ready():
+		_update_animation(Vector2i.ZERO)
 
 
 func get_cell() -> Vector2i:

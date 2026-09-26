@@ -22,7 +22,7 @@
 [ext_resource type="PackedScene" path="res://game/world/props/interior/pokeball_crate.tscn" id="20_orjud"]
 [ext_resource type="Script" path="res://game/world/warp_point.gd" id="21_qs4q6"]
 
-[node name="PlayerHouse2F" type="Node2D" unique_id=143774647]
+[node name="PlayerHouse2F" type="Node2D" unique_id=1103120616]
 script = ExtResource("1_uejue")
 map_id = &"player_house_2f"
 display_name = "Bourg Palette"
@@ -31,107 +31,109 @@ size = Vector2i(14, 10)
 blocked_cells = Array[Vector2i]([Vector2i(1, 2), Vector2i(2, 2)])
 interior = true
 
-[node name="Ground" type="TileMapLayer" parent="." unique_id=189655964]
+[node name="Ground" type="TileMapLayer" parent="." unique_id=35967443]
 tile_map_data = PackedByteArray("AAABAAIAAAACAAAAAAACAAIAAAACAAAAAAADAAIAAAAAAAAAAAAEAAIAAAABAAAAAAAFAAIAAAABAAAAAAAGAAIAAAABAAAAAAAHAAIAAAACAAAAAAAIAAIAAAACAAAAAAAJAAIAAAABAAAAAAAKAAIAAAACAAAAAAALAAIAAAAAAAAAAAAMAAIAAAABAAAAAAABAAMAAAACAAAAAAACAAMAAAAAAAAAAAADAAMAAAABAAAAAAAEAAMAAAACAAAAAAAFAAMAAAAAAAAAAAAGAAMAAAACAAAAAAAHAAMAAAAAAAAAAAAIAAMAAAAAAAAAAAAJAAMAAAACAAAAAAAKAAMAAAACAAAAAAALAAMAAAAAAAAAAAAMAAMAAAABAAAAAAABAAQAAAAAAAAAAAACAAQAAAABAAAAAAADAAQAAAACAAAAAAAEAAQAAAACAAAAAAAFAAQAAAAAAAAAAAAGAAQAAAAAAAAAAAAHAAQAAAACAAAAAAAIAAQAAAACAAAAAAAJAAQAAAABAAAAAAAKAAQAAAAAAAAAAAALAAQAAAABAAAAAAAMAAQAAAAAAAAAAAABAAUAAAACAAAAAAACAAUAAAACAAAAAAADAAUAAAACAAAAAAAEAAUAAAABAAAAAAAFAAUAAAAAAAAAAAAGAAUAAAAAAAAAAAAHAAUAAAACAAAAAAAIAAUAAAAAAAAAAAAJAAUAAAACAAAAAAAKAAUAAAACAAAAAAALAAUAAAAAAAAAAAAMAAUAAAAAAAAAAAABAAYAAAAAAAAAAAACAAYAAAAAAAAAAAADAAYAAAABAAAAAAAEAAYAAAACAAAAAAAFAAYAAAABAAAAAAAGAAYAAAAAAAAAAAAHAAYAAAACAAAAAAAIAAYAAAAAAAAAAAAJAAYAAAABAAAAAAAKAAYAAAACAAAAAAALAAYAAAACAAAAAAAMAAYAAAAAAAAAAAABAAcAAAAAAAAAAAACAAcAAAACAAAAAAADAAcAAAAAAAAAAAAEAAcAAAACAAAAAAAFAAcAAAAAAAAAAAAGAAcAAAABAAAAAAAHAAcAAAAAAAAAAAAIAAcAAAAAAAAAAAAJAAcAAAABAAAAAAAKAAcAAAABAAAAAAALAAcAAAABAAAAAAAMAAcAAAAAAAAAAAABAAgAAAABAAAAAAACAAgAAAABAAAAAAADAAgAAAABAAAAAAAEAAgAAAABAAAAAAAFAAgAAAACAAAAAAAGAAgAAAAAAAAAAAAHAAgAAAABAAAAAAAIAAgAAAAAAAAAAAAJAAgAAAABAAAAAAAKAAgAAAABAAAAAAALAAgAAAACAAAAAAAMAAgAAAAAAAAAAAAGAAkAAAAAAAUAAAAHAAkAAAAAAAUAAAA=")
 tile_set = ExtResource("2_s23yp")
 
-[node name="Detail" type="TileMapLayer" parent="." unique_id=1675451863]
+[node name="Detail" type="TileMapLayer" parent="." unique_id=264946659]
 tile_set = ExtResource("2_s23yp")
 
-[node name="RugPokeball" parent="Detail" unique_id=1569866596 instance=ExtResource("3_elsby")]
+[node name="RugPokeball" parent="Detail" unique_id=1162255561 instance=ExtResource("3_elsby")]
 position = Vector2(528, 672)
 
-[node name="RugStairs" parent="Detail" unique_id=768078468 instance=ExtResource("4_515vp")]
+[node name="RugStairs" parent="Detail" unique_id=1931291381 instance=ExtResource("4_515vp")]
 position = Vector2(624, 864)
 
-[node name="Obstacles" type="TileMapLayer" parent="." unique_id=902421648]
+[node name="Obstacles" type="TileMapLayer" parent="." unique_id=1827881522]
 tile_map_data = PackedByteArray("AAAAAAAAAAAAAAIAAAABAAAAAAAAAAIAAAACAAAAAAAAAAIAAAADAAAAAAAAAAIAAAAEAAAAAAAAAAIAAAAFAAAAAAAAAAIAAAAGAAAAAAAAAAIAAAAHAAAAAAAAAAIAAAAIAAAAAAAAAAIAAAAJAAAAAAAAAAIAAAAKAAAAAAAAAAIAAAALAAAAAAAAAAIAAAAMAAAAAAAAAAIAAAANAAAAAAAAAAIAAAAAAAEAAAABAAIAAAABAAEAAAABAAIAAAACAAEAAAABAAIAAAADAAEAAAABAAIAAAAEAAEAAAABAAIAAAAFAAEAAAABAAIAAAAGAAEAAAABAAIAAAAHAAEAAAABAAIAAAAIAAEAAAABAAIAAAAJAAEAAAABAAIAAAAKAAEAAAABAAIAAAALAAEAAAABAAIAAAAMAAEAAAABAAIAAAANAAEAAAABAAIAAAAAAAIAAAAAAAIAAAANAAIAAAAAAAIAAAAAAAMAAAAAAAIAAAANAAMAAAAAAAIAAAAAAAQAAAAAAAIAAAANAAQAAAAAAAIAAAAAAAUAAAAAAAIAAAANAAUAAAAAAAIAAAAAAAYAAAAAAAIAAAANAAYAAAAAAAIAAAAAAAcAAAAAAAIAAAANAAcAAAAAAAIAAAAAAAgAAAAAAAIAAAANAAgAAAAAAAIAAAAAAAkAAAAAAAIAAAABAAkAAAAAAAIAAAACAAkAAAAAAAIAAAADAAkAAAAAAAIAAAAEAAkAAAAAAAIAAAAFAAkAAAAAAAIAAAAIAAkAAAAAAAIAAAAJAAkAAAAAAAIAAAAKAAkAAAAAAAIAAAALAAkAAAAAAAIAAAAMAAkAAAAAAAIAAAANAAkAAAAAAAIAAAA=")
 tile_set = ExtResource("2_s23yp")
 
-[node name="Entities" type="Node2D" parent="." unique_id=193289973]
+[node name="Entities" type="Node2D" parent="." unique_id=1037774653]
 unique_name_in_owner = true
 y_sort_enabled = true
 
-[node name="PosterMountain" parent="Entities" unique_id=1895195584 instance=ExtResource("5_7h1xr")]
+[node name="PosterMountain" parent="Entities" unique_id=956765607 instance=ExtResource("5_7h1xr")]
 position = Vector2(240, 192)
 
-[node name="PosterPokeball" parent="Entities" unique_id=1152775222 instance=ExtResource("5_7h1xr")]
+[node name="PosterPokeball" parent="Entities" unique_id=1347146174 instance=ExtResource("5_7h1xr")]
 position = Vector2(336, 192)
 
-[node name="Window" parent="Entities" unique_id=389758282 instance=ExtResource("6_7gyky")]
+[node name="Window" parent="Entities" unique_id=512733598 instance=ExtResource("6_7gyky")]
 position = Vector2(624, 192)
 
-[node name="KantoMap" parent="Entities" unique_id=658083754 instance=ExtResource("7_ln1c2")]
+[node name="KantoMap" parent="Entities" unique_id=1426628476 instance=ExtResource("7_ln1c2")]
 position = Vector2(1104, 192)
 
-[node name="Bed" parent="Entities" unique_id=521428195 instance=ExtResource("8_fyw6r")]
+[node name="Bed" parent="Entities" unique_id=1581250512 instance=ExtResource("8_fyw6r")]
 position = Vector2(144, 480)
 
-[node name="Nightstand" parent="Entities" unique_id=1640303566 instance=ExtResource("9_f3i2c")]
+[node name="Nightstand" parent="Entities" unique_id=1278358072 instance=ExtResource("9_f3i2c")]
 position = Vector2(336, 288)
 
-[node name="SmallShelf" parent="Entities" unique_id=1229520422 instance=ExtResource("10_aq75j")]
+[node name="SmallShelf" parent="Entities" unique_id=1823062640 instance=ExtResource("10_aq75j")]
 position = Vector2(432, 288)
 
-[node name="Desk" parent="Entities" unique_id=2063702088 instance=ExtResource("11_wju4f")]
+[node name="Desk" parent="Entities" unique_id=372484797 instance=ExtResource("11_wju4f")]
 position = Vector2(624, 288)
 
-[node name="DeskChair" parent="Entities" unique_id=650855630 instance=ExtResource("12_l2kbo")]
+[node name="DeskChair" parent="Entities" unique_id=1409166331 instance=ExtResource("12_l2kbo")]
 position = Vector2(720, 384)
 
-[node name="Bookshelf" parent="Entities" unique_id=620809284 instance=ExtResource("13_b74aj")]
+[node name="Bookshelf" parent="Entities" unique_id=242115634 instance=ExtResource("13_b74aj")]
 position = Vector2(912, 384)
 
-[node name="TravelBag" parent="Entities" unique_id=1051700635 instance=ExtResource("14_eagdq")]
+[node name="TravelBag" parent="Entities" unique_id=83169503 instance=ExtResource("14_eagdq")]
 position = Vector2(144, 576)
 
-[node name="TvConsole" parent="Entities" unique_id=1447893964 instance=ExtResource("15_skcjo")]
+[node name="TvConsole" parent="Entities" unique_id=376690150 instance=ExtResource("15_skcjo")]
 position = Vector2(1200, 576)
 
-[node name="PlantWest" parent="Entities" unique_id=2111255648 instance=ExtResource("16_eoc1u")]
+[node name="PlantWest" parent="Entities" unique_id=12945737 instance=ExtResource("16_eoc1u")]
 position = Vector2(144, 768)
 
-[node name="PlantEast" parent="Entities" unique_id=1849475069 instance=ExtResource("16_eoc1u")]
+[node name="PlantEast" parent="Entities" unique_id=817951180 instance=ExtResource("16_eoc1u")]
 position = Vector2(1200, 672)
 
-[node name="SideDoor" parent="Entities" unique_id=244790021 instance=ExtResource("17_akj5f")]
+[node name="SideDoor" parent="Entities" unique_id=984286617 instance=ExtResource("17_akj5f")]
 position = Vector2(1296, 768)
 
-[node name="LowCabinet" parent="Entities" unique_id=2103979666 instance=ExtResource("18_m8rj7")]
+[node name="LowCabinet" parent="Entities" unique_id=979613332 instance=ExtResource("18_m8rj7")]
 position = Vector2(144, 864)
 
-[node name="CapCabinet" parent="Entities" unique_id=1909487483 instance=ExtResource("19_05p2g")]
+[node name="CapCabinet" parent="Entities" unique_id=1501145020 instance=ExtResource("19_05p2g")]
 position = Vector2(912, 864)
 
-[node name="PokeballCrate" parent="Entities" unique_id=603465180 instance=ExtResource("20_orjud")]
+[node name="PokeballCrate" parent="Entities" unique_id=1197047553 instance=ExtResource("20_orjud")]
 position = Vector2(1008, 864)
 
-[node name="Overhead" type="TileMapLayer" parent="." unique_id=1584909120]
+[node name="Overhead" type="TileMapLayer" parent="." unique_id=169671548]
 z_index = 10
 tile_set = ExtResource("2_s23yp")
 
-[node name="Warps" type="Node2D" parent="." unique_id=843301759]
+[node name="Warps" type="Node2D" parent="." unique_id=501667769]
 
-[node name="StairsDownW" type="Marker2D" parent="Warps" unique_id=1426053561]
+[node name="StairsDownW" type="Marker2D" parent="Warps" unique_id=621662981]
 position = Vector2(624, 960)
 script = ExtResource("21_qs4q6")
 direction = Vector2i(0, 1)
 target_map = &"player_house_1f"
 target_spawn = &"stairs"
 
-[node name="StairsDownE" type="Marker2D" parent="Warps" unique_id=846856830]
+[node name="StairsDownE" type="Marker2D" parent="Warps" unique_id=2144763734]
 position = Vector2(720, 960)
 script = ExtResource("21_qs4q6")
 direction = Vector2i(0, 1)
 target_map = &"player_house_1f"
 target_spawn = &"stairs"
 
-[node name="Spawns" type="Node2D" parent="." unique_id=655249842]
+[node name="Interactables" type="Node2D" parent="." unique_id=1734193887]
 
-[node name="start" type="Marker2D" parent="Spawns" unique_id=2137600431]
+[node name="Spawns" type="Node2D" parent="." unique_id=1341974511]
+
+[node name="start" type="Marker2D" parent="Spawns" unique_id=1570212264]
 position = Vector2(336, 480)
 
-[node name="stairs" type="Marker2D" parent="Spawns" unique_id=1477415199]
+[node name="stairs" type="Marker2D" parent="Spawns" unique_id=1204574315]
 position = Vector2(624, 864)
 
-[node name="Triggers" type="Node2D" parent="." unique_id=516697632]
+[node name="Triggers" type="Node2D" parent="." unique_id=804865827]

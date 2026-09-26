@@ -1,0 +1,28 @@
+{
+	"maya": {
+		"speaker": "Maya",
+		"pages": [
+			"Bonjour ! Tu cherches le professeur Chen ?",
+			"Il est sorti tôt ce matin. Encore.",
+			{
+				"text": "Quand il commence à observer des Pokémon, il oublie complètement l'heure.",
+				"pause": 0.6
+			}
+		]
+	},
+	"observe_bulbasaur": {
+		"speaker": "Bulbizarre",
+		"narration": true,
+		"pages": [{ "text": "Il t'observe calmement.", "react": "bulbasaur" }]
+	},
+	"observe_charmander": {
+		"speaker": "Salamèche",
+		"narration": true,
+		"pages": [{ "text": "Sa flamme s'agite lorsqu'il te voit.", "react": "charmander" }]
+	},
+	"observe_squirtle": {
+		"speaker": "Carapuce",
+		"narration": true,
+		"pages": [{ "text": "Il te regarde avec curiosité.", "react": "squirtle" }]
+	}
+}

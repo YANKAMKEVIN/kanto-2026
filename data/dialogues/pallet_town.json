@@ -1,0 +1,24 @@
+{
+	"aoki": {
+		"speaker": "Mme Aoki",
+		"pages": [
+			"Ils reviennent tous les matins.",
+			"Je crois qu'ils savent exactement à quelle heure je sors."
+		]
+	},
+	"leo": {
+		"speaker": "Léo",
+		"pages": [
+			"Regarde ! Il commence à comprendre quand je l'appelle !",
+			{ "text": "...enfin, presque.", "react": "leo_rattata", "pause": 0.6 }
+		]
+	},
+	"haru": {
+		"speaker": "Haru",
+		"pages": ["La mer est calme aujourd'hui.", "Les Pokémon le sentent avant nous."]
+	},
+	"sign_pallet_town": {
+		"draft": true,
+		"pages": ["BOURG PALETTE"]
+	}
+}

@@ -1,0 +1,8 @@
+{
+	"aoki": { "cell": [29, 13], "facing": "left", "sprite": "aoki", "dialogue": "aoki" },
+	"aoki_pidgey_1": { "cell": [27, 13], "facing": "right", "sprite": "pidgey" },
+	"aoki_pidgey_2": { "cell": [28, 14], "facing": "up", "sprite": "pidgey" },
+	"leo": { "cell": [18, 9], "facing": "left", "sprite": "leo", "dialogue": "leo" },
+	"leo_rattata": { "cell": [17, 9], "facing": "right", "sprite": "rattata" },
+	"haru": { "cell": [3, 29], "facing": "left", "sprite": "haru", "dialogue": "haru" }
+}

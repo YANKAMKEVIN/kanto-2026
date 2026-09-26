@@ -61,10 +61,22 @@ func test_reaches_required_places() -> void:
 		Vector2i(24, 25),  # jardins de recherche
 		Vector2i(30, 29), Vector2i(44, 29),  # sentier côtier
 		Vector2i(8, 29),  # plage
-		Vector2i(9, 33),  # bout du ponton
+		Vector2i(9, 33),  # bout du ponton (Haru est désormais sur la plage)
+		Vector2i(4, 29),  # plage, devant Haru
 	]
 	for cell: Vector2i in required:
 		assert_true(_reachable.has(cell), "atteignable : %s" % cell)
+
+
+func test_haru_stands_on_the_beach_facing_the_sea() -> void:
+	# Retouche de Kevin (jalon 3A §6) : sur la plage, au bord de l'eau, assez haut pour
+	# que la boîte de dialogue ne le cache pas.
+	var haru := _grid.get_occupant(Vector2i(3, 29)) as Npc
+	assert_not_null(haru, "Haru sur la plage")
+	if haru != null:
+		assert_eq(haru.get_id(), &"haru")
+		assert_eq(haru.get_facing(), Vector2i.LEFT, "tourné vers la mer")
+	assert_true(_grid.is_water(Vector2i(2, 29)), "la mer juste à l'ouest")
 
 
 func test_does_not_reach_forbidden_places() -> void:

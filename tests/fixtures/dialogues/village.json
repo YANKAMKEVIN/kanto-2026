@@ -1,0 +1,13 @@
+{
+	"leo": {
+		"speaker": "Léo",
+		"pages": [
+			"Regarde ! Il commence à comprendre quand je l'appelle !",
+			{ "text": "...enfin, presque.", "react": "leo_rattata", "pause": 0.5 }
+		]
+	},
+	"sign_test": {
+		"draft": true,
+		"pages": ["BOURG PALETTE"]
+	}
+}
