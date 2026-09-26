@@ -13,6 +13,11 @@ extends Node
 ## Étapes jouées : wait, dialogue, face, set (T2), spawn et move (T3 : chemin écrit, case
 ## absolue ou case voisine d'un acteur, marche ou course), suiveur d'une étape move et
 ## change_map (T4).
+## Jalon 4 (jalon-04.md §3.6, §13.9) : alias d'acteurs ([method play] avec un dictionnaire
+## « nom → identifiant de PNJ »), résolus au début de **chaque** étape (acteur, cible,
+## voisin, suiveur) ; étapes hop (attend la fin du saut), lean (s'avance puis revient) et
+## despawn (fondu de [constant DESPAWN_FADE] s, case libérée). Alias absent, acteur
+## introuvable ou saut refusé : push_error, étape sautée.
 
 signal cutscene_started(cutscene_id: StringName)
 ## Début d'une étape (tests, outils de capture).
@@ -28,6 +33,10 @@ const REASON: StringName = &"cutscene"
 ## Un pas bloqué (case occupée) est retenté à chaque image ; au-delà, l'étape est abandonnée
 ## (étape « move »).
 const MOVE_BLOCK_TIMEOUT: float = 2.0
+## Étape « lean » : temps passé penché vers la cible avant de revenir (s).
+const LEAN_HOLD: float = 0.3
+## Étape « despawn » : fondu du PNJ avant son retrait (s) ; sa case est libérée dès le début.
+const DESPAWN_FADE: float = 0.2
 const _ROUTER_SCRIPT := preload("res://game/autoload/scene_router.gd")
 
 var _library: CutsceneLibrary
@@ -39,6 +48,8 @@ var _map: GameMap
 var _running: bool = false
 var _cutscene_id: StringName = &""
 var _step_index: int = -1
+## Alias de la scène en cours (nom sans « $ » → identifiant de PNJ).
+var _aliases: Dictionary[StringName, StringName] = {}
 ## Incrémenté à chaque setup() : une scène lancée avant est abandonnée à sa reprise.
 var _session: int = 0
 var _waiting: bool = false
@@ -109,8 +120,9 @@ func set_map(map: GameMap) -> void:
 
 ## Joue [param cutscene_id]. Faux (et rien ne se passe) si une scène tourne, si
 ## l'identifiant est inconnu (push_error) ou si aucune variante ne s'applique (sans erreur :
-## déclencheur désarmé).
-func play(cutscene_id: StringName) -> bool:
+## déclencheur désarmé). [param aliases] : « nom sans $ » → identifiant de PNJ de la carte
+## (ex. { &"player_starter": &"charmander" }), résolus au début de chaque étape.
+func play(cutscene_id: StringName, aliases: Dictionary[StringName, StringName] = {}) -> bool:
 	if _running:
 		return false
 	var cutscene := _library.get_cutscene(cutscene_id) if _library != null else null
@@ -123,6 +135,7 @@ func play(cutscene_id: StringName) -> bool:
 	_running = true
 	_cutscene_id = cutscene_id
 	_step_index = -1
+	_aliases = aliases.duplicate()
 	if is_instance_valid(_player):
 		_player.set_input_enabled(false, REASON)
 	cutscene_started.emit(cutscene_id)
@@ -158,14 +171,14 @@ func _run(variant: CutsceneVariant, session: int) -> void:
 
 
 ## Joue une étape. Faux : la scène s'arrête (réservé au changement de carte manqué, T4).
-func _play_step(step: CutsceneStep) -> bool:
+## Les alias sont résolus d'abord ; un alias absent saute l'étape (push_error).
+func _play_step(source_step: CutsceneStep) -> bool:
+	var step := _resolve_aliases(source_step)
+	if step == null:
+		return true
 	match step.kind:
 		CutsceneStep.Kind.WAIT:
-			if step.seconds > 0.0:
-				_wait_left = step.seconds
-				_wait_frame = Engine.get_process_frames()
-				_waiting = true
-				await _wait_elapsed
+			await _wait(step.seconds)
 		CutsceneStep.Kind.DIALOGUE:
 			await _play_dialogue(step.dialogue_id)
 		CutsceneStep.Kind.FACE:
@@ -181,9 +194,138 @@ func _play_step(step: CutsceneStep) -> bool:
 				await _move_done
 		CutsceneStep.Kind.CHANGE_MAP:
 			return await _change_map(step)
+		CutsceneStep.Kind.HOP:
+			await _hop(step)
+		CutsceneStep.Kind.LEAN:
+			await _lean(step)
+		CutsceneStep.Kind.DESPAWN:
+			await _despawn(step)
 		_:
 			_step_error("étape « %s » inconnue" % CutsceneStep.kind_name(step.kind))
 	return true
+
+
+## Copie de [param step] dont les alias (acteur, cible, suiveur, voisin) sont remplacés
+## par les identifiants de PNJ de la scène en cours ; [param step] lui-même s'il n'en a
+## aucun (les étapes de la bibliothèque ne sont jamais modifiées). null (push_error) si un
+## alias n'a pas été fourni à [method play].
+func _resolve_aliases(step: CutsceneStep) -> CutsceneStep:
+	if step.get_aliases().is_empty():
+		return step
+	for alias: StringName in step.get_aliases():
+		if not _aliases.has(alias):
+			_step_error("alias « $%s » absent, étape « %s » sautée" % [
+				alias, CutsceneStep.kind_name(step.kind)])
+			return null
+	var copy := CutsceneStep.new()
+	copy.kind = step.kind
+	copy.seconds = step.seconds
+	copy.dialogue_id = step.dialogue_id
+	copy.actor = _resolve_ref(step.actor)
+	copy.target = _resolve_ref(step.target)
+	copy.flags = step.flags
+	copy.spec = step.spec
+	copy.path = step.path
+	copy.cell = step.cell
+	copy.near = _resolve_ref(step.near)
+	copy.offsets = step.offsets
+	copy.run = step.run
+	copy.follower = _resolve_ref(step.follower)
+	copy.map_id = step.map_id
+	copy.spawn = step.spawn
+	copy.facing = step.facing
+	return copy
+
+
+func _resolve_ref(ref: StringName) -> StringName:
+	if not CutsceneStep.is_alias(ref):
+		return ref
+	return _aliases.get(CutsceneStep.alias_name(ref), ref)
+
+
+## Étape « hop » : le PNJ saute vers une case absolue ou la première case libre près d'un
+## acteur ([method Npc.hop_to]) ; l'étape attend la fin du saut (rebonds compris). Acteur,
+## voisin ou case manquant, ou saut refusé : push_error, étape sautée.
+func _hop(step: CutsceneStep) -> void:
+	var npc := _find_actor(step.actor) as Npc
+	if npc == null:
+		_step_error("PNJ « %s » introuvable" % step.actor)
+		return
+	if not is_instance_valid(_map):
+		_step_error("pas de carte pour le saut de « %s »" % step.actor)
+		return
+	var grid := _map.get_grid()
+	var goal := step.cell
+	if not step.near.is_empty():
+		var anchor := _find_actor(step.near)
+		if anchor == null:
+			_step_error("acteur « %s » introuvable" % step.near)
+			return
+		goal = CutsceneMoves.resolve_near(grid, _cell_of(anchor), step.offsets, npc)
+	if goal == CutsceneStep.NO_CELL:
+		_step_error("aucune case libre près de « %s » pour le saut" % step.near)
+		return
+	if not npc.hop_to(goal, grid):
+		_step_error("saut de « %s » vers %s refusé" % [step.actor, goal])
+		return
+	while is_instance_valid(npc) and npc.is_hopping():
+		await get_tree().process_frame
+
+
+## Étape « lean » : le PNJ s'avance légèrement vers la cible (direction, « player » ou
+## PNJ), reste [constant LEAN_HOLD] s, puis revient ; l'étape attend son retour.
+func _lean(step: CutsceneStep) -> void:
+	var npc := _find_actor(step.actor) as Npc
+	if npc == null:
+		_step_error("PNJ « %s » introuvable" % step.actor)
+		return
+	var cell := npc.get_cell() + Grid.direction_from_name(step.target)
+	if not Grid.is_direction_name(step.target):
+		var other := _find_actor(step.target)
+		if other == null:
+			_step_error("cible « %s » introuvable" % step.target)
+			return
+		cell = _cell_of(other)
+	npc.lean_toward(cell)
+	await _await_npc_lean(npc)
+	await _wait(LEAN_HOLD)
+	if not is_instance_valid(npc):
+		return
+	npc.settle()
+	await _await_npc_lean(npc)
+
+
+func _await_npc_lean(npc: Npc) -> void:
+	while is_instance_valid(npc) and npc.is_leaning():
+		await get_tree().process_frame
+
+
+## Étape « despawn » : le PNJ quitte la grille tout de suite (case libérée), s'efface en
+## [constant DESPAWN_FADE] s, puis [method GameMap.remove_npc] le retire.
+func _despawn(step: CutsceneStep) -> void:
+	var npc := _find_actor(step.actor) as Npc
+	if npc == null:
+		_step_error("PNJ « %s » introuvable" % step.actor)
+		return
+	var map := _map
+	var id := npc.get_id()
+	npc.leave_grid()
+	if npc.is_inside_tree() and DESPAWN_FADE > 0.0:
+		var fade := npc.create_tween()
+		fade.tween_property(npc, ^"modulate:a", 0.0, DESPAWN_FADE)
+		await _wait(DESPAWN_FADE)
+	if is_instance_valid(map):
+		map.remove_npc(id)
+
+
+## Attente de [param seconds] s par le mécanisme de l'étape « wait » (_process).
+func _wait(seconds: float) -> void:
+	if seconds <= 0.0:
+		return
+	_wait_left = seconds
+	_wait_frame = Engine.get_process_frames()
+	_waiting = true
+	await _wait_elapsed
 
 
 ## Étape « change_map » : fondu et changement de carte par le routeur (la scène garde son
@@ -410,6 +552,7 @@ func _finish() -> void:
 	_stop_move()
 	_cutscene_id = &""
 	_step_index = -1
+	_aliases = {}
 	if is_instance_valid(_player):
 		_player.set_input_enabled(true, REASON)
 	set_process(false)

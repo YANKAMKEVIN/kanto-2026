@@ -5,6 +5,8 @@ extends GutTest
 ## Jalon 3B (T3) : GridMover (enter_grid, leave_grid), pas de marche et de course, case
 ## libérée au départ, step_finished, animations walk_/run_ (ou idle_), _process coupé au
 ## repos.
+## Jalon 4 (T1) : surcharge d'interaction, élan (lean_toward / settle) et saut depuis un
+## meuble (hop_to) dans les styles de NpcSpec.HOP_STYLES.
 
 const NPC_SCENE := "res://game/world/npc/npc.tscn"
 const CELL := Vector2i(5, 5)
@@ -385,3 +387,222 @@ func _dir_name(direction: Vector2i) -> String:
 		Vector2i.RIGHT:
 			return "right"
 	return "down"
+
+
+# --- Jalon 4 (T1) : surcharge, élan, saut ----------------------------------------------
+
+func test_interaction_override_is_returned_then_cleared() -> void:
+	var npc := _make(_spec({"verb": Interaction.Kind.OBSERVE}))
+	var own := npc.get_interaction()
+	var meet := Interaction.new(Interaction.Kind.MEET, CELL, &"", Vector2i.ZERO, npc)
+	npc.set_interaction_override(meet)
+	assert_true(npc.has_interaction_override())
+	assert_same(npc.get_interaction(), meet, "surcharge renvoyée")
+	assert_same(npc.get_interaction(), meet, "même instance à chaque appel")
+	assert_true(npc.get_interaction().is_valid())
+	npc.clear_interaction_override()
+	assert_false(npc.has_interaction_override())
+	assert_same(npc.get_interaction(), own, "interaction de la description retrouvée")
+
+
+func test_interaction_override_follows_the_cell() -> void:
+	var grid := GridWorld.new(Vector2i(10, 10))
+	var npc := _make_on_grid(_spec(), grid)
+	var meet := Interaction.new(Interaction.Kind.MEET, Vector2i.ZERO, &"", Vector2i.ZERO, npc)
+	npc.set_interaction_override(meet)
+	assert_eq(meet.cell, CELL, "case du PNJ à la pose")
+	npc.step(Vector2i.RIGHT)
+	_simulate(npc, 30)
+	assert_eq(meet.cell, CELL + Vector2i.RIGHT, "suit le pas")
+
+
+func test_every_hop_style_has_parameters() -> void:
+	var styles: Array[StringName] = [&""]
+	styles.append_array(NpcSpec.HOP_STYLES)
+	for style: StringName in styles:
+		assert_true(Npc.HOP_STYLE_PARAMS.has(style), "paramètres du style « %s »" % style)
+		var params: Dictionary = Npc.HOP_STYLE_PARAMS.get(style, {})
+		for key: String in ["hesitate", "hesitate_px", "windup", "windup_px", "duration",
+				"height", "trans", "bounces", "wiggle"]:
+			assert_true(params.has(key), "« %s » : clé %s" % [style, key])
+		assert_gt(float(params.get("duration", 0.0)), 0.0)
+		assert_gt(float(params.get("height", 0.0)), 0.0)
+	assert_eq(Npc.HOP_STYLE_PARAMS.size(), styles.size(), "aucun style en trop")
+	assert_eq(Npc.hop_params(&"unknown"), Npc.HOP_STYLE_PARAMS[&""], "inconnu : défaut")
+
+
+func test_hop_durations_calm_then_eager_then_playful() -> void:
+	assert_gt(Npc.hop_flight_duration(&"calm"), Npc.hop_flight_duration(&"eager"))
+	assert_gt(Npc.hop_flight_duration(&"eager"), Npc.hop_flight_duration(&"playful"))
+	assert_gt(Npc.hop_total_duration(&"calm"), Npc.hop_total_duration(&"eager"))
+	assert_gt(Npc.hop_total_duration(&"eager"), Npc.hop_total_duration(&"playful"))
+	assert_almost_eq(Npc.hop_flight_duration(&"", 2), 0.35 * 1.25, 0.001,
+		"+25 % par case supplémentaire")
+
+
+func test_hop_styles_look_different() -> void:
+	# Hauteur d'arc : l'enthousiaste saute le plus haut ; hésitation seulement pour le calme,
+	# rebonds pour l'enthousiaste et le joueur, rotation seulement pour le joueur.
+	var calm := Npc.hop_params(&"calm")
+	var eager := Npc.hop_params(&"eager")
+	var playful := Npc.hop_params(&"playful")
+	assert_gt(float(eager["height"]), float(playful["height"]))
+	assert_gt(float(eager["height"]), float(calm["height"]))
+	assert_gt(float(calm["hesitate"]), 0.0)
+	assert_eq(float(eager["hesitate"]), 0.0)
+	assert_gt(float(eager["windup"]), 0.0)
+	assert_eq((calm["bounces"] as Array).size(), 0)
+	assert_eq((eager["bounces"] as Array).size(), 1)
+	assert_eq((playful["bounces"] as Array).size(), 2)
+	assert_gt(float(playful["wiggle"]), 0.0)
+	assert_eq(float(eager["wiggle"]), 0.0)
+
+
+## Saute de la table (lift 56) d'une case vers le bas dans le style [param style] ;
+## vérifie la grille au départ et l'état à l'arrivée.
+func _check_hop(style: StringName) -> void:
+	var grid := GridWorld.new(Vector2i(10, 10))
+	var npc := _make_on_grid(_spec({"id": StringName("hop_" + String(style)), "lift": 56,
+		"hop_style": style}), grid)
+	var meet := Interaction.new(Interaction.Kind.MEET, CELL, &"", Vector2i.ZERO, npc)
+	npc.set_interaction_override(meet)
+	var target := CELL + Vector2i.DOWN
+	watch_signals(npc)
+	# Temps de jeu (somme des delta, comme le Tween) et image la plus longue ; point le
+	# plus haut du sprite ; rotation vue. Relevés image par image dans le test lui-même.
+	var elapsed := 0.0
+	var longest := 0.0
+	var peak := 0.0
+	var rotated := false
+	var sprite := _sprite(npc)
+	assert_true(npc.hop_to(target, grid), "« %s » : saut accepté" % style)
+	assert_true(npc.is_hopping())
+	assert_false(grid.is_occupied(CELL), "« %s » : case quittée libérée au départ" % style)
+	assert_same(grid.get_occupant(target), npc, "« %s » : arrivée réservée" % style)
+	assert_eq(npc.get_cell(), CELL, "case de départ pendant le saut")
+	assert_eq(npc.get_facing(), Vector2i.DOWN, "tourné vers l'arrivée")
+	assert_false(npc.step(Vector2i.RIGHT), "pas de pas pendant un saut")
+	assert_false(npc.hop_to(target + Vector2i.DOWN, grid), "pas de second saut")
+	var deadline := Time.get_ticks_msec() + 3000
+	while npc.is_hopping() and Time.get_ticks_msec() < deadline:
+		await get_tree().process_frame
+		var delta := get_process_delta_time()
+		elapsed += delta
+		longest = maxf(longest, delta)
+		peak = minf(peak, sprite.position.y)
+		rotated = rotated or not is_zero_approx(sprite.rotation)
+	assert_signal_emitted_with_parameters(npc, "hopped", [target])
+	assert_false(npc.is_hopping())
+	assert_eq(npc.get_cell(), target, "« %s » : case changée" % style)
+	assert_same(grid.get_occupant(target), npc)
+	assert_eq(npc.position, Grid.cell_to_world(target))
+	assert_eq(npc.get_lift(), 0.0, "« %s » : élévation à 0" % style)
+	assert_eq(sprite.position, Vector2.ZERO, "« %s » : sprite au sol" % style)
+	assert_eq(sprite.rotation, 0.0)
+	var shadow := npc.get_node(^"%Shadow") as Sprite2D
+	assert_eq(shadow.position, Vector2(0.0, -6.0), "« %s » : ombre au sol" % style)
+	assert_eq(shadow.scale, Vector2.ONE)
+	assert_eq(meet.cell, target, "la surcharge suit la case")
+	assert_lt(peak, -56.0, "« %s » : l'arc monte au-dessus de la table" % style)
+	assert_eq(rotated, float(Npc.hop_params(style)["wiggle"]) > 0.0,
+		"« %s » : rotation seulement pour le style joueur" % style)
+	var expected := Npc.hop_total_duration(style)
+	assert_almost_eq(elapsed, expected, longest * 2.0 + 0.02,
+		"« %s » : %.2f s" % [style, expected])
+	# Il marche normalement ensuite.
+	assert_true(npc.step(Vector2i.DOWN))
+
+
+func test_hop_default_style() -> void:
+	await _check_hop(&"")
+
+
+func test_hop_calm_style() -> void:
+	await _check_hop(&"calm")
+
+
+func test_hop_eager_style() -> void:
+	await _check_hop(&"eager")
+
+
+func test_hop_playful_style() -> void:
+	await _check_hop(&"playful")
+
+
+func test_hop_refused_on_taken_solid_or_own_cell() -> void:
+	var grid := GridWorld.new(Vector2i(10, 10))
+	var npc := _make_on_grid(_spec({"lift": 56}), grid)
+	var blocker := RefCounted.new()
+	grid.occupy(CELL + Vector2i.DOWN, blocker)
+	grid.set_solid(CELL + Vector2i.LEFT)
+	watch_signals(npc)
+	assert_false(npc.hop_to(CELL + Vector2i.DOWN, grid), "case prise")
+	assert_false(npc.hop_to(CELL + Vector2i.LEFT, grid), "case solide")
+	assert_false(npc.hop_to(CELL, grid), "sa propre case")
+	assert_false(npc.hop_to(Vector2i(20, 20), grid), "hors carte")
+	assert_false(npc.is_hopping())
+	assert_same(grid.get_occupant(CELL), npc, "il garde sa case")
+	assert_same(grid.get_occupant(CELL + Vector2i.DOWN), blocker)
+	assert_eq(npc.get_lift(), 56.0, "toujours sur la table")
+	var loose := _make(_spec({"id": &"loose"}))
+	assert_false(loose.hop_to(CELL + Vector2i.RIGHT), "sans grille")
+	assert_signal_not_emitted(npc, "hopped")
+
+
+func test_hop_uses_its_own_grid_by_default() -> void:
+	var grid := GridWorld.new(Vector2i(10, 10))
+	var npc := _make_on_grid(_spec(), grid)
+	assert_true(npc.hop_to(CELL + Vector2i(2, 0)))
+	await wait_for_signal(npc.hopped, 3.0)
+	assert_eq(npc.get_cell(), CELL + Vector2i(2, 0))
+	assert_same(grid.get_occupant(CELL + Vector2i(2, 0)), npc)
+
+
+func test_leave_grid_during_a_hop_cancels_it() -> void:
+	var grid := GridWorld.new(Vector2i(10, 10))
+	var npc := _make_on_grid(_spec({"lift": 56, "hop_style": &"calm"}), grid)
+	watch_signals(npc)
+	npc.hop_to(CELL + Vector2i.DOWN, grid)
+	npc.leave_grid()
+	assert_false(npc.is_hopping())
+	assert_false(grid.is_occupied(CELL))
+	assert_false(grid.is_occupied(CELL + Vector2i.DOWN))
+	await wait_seconds(Npc.hop_total_duration(&"calm") + 0.1)
+	assert_signal_not_emitted(npc, "hopped")
+	assert_eq(npc.get_cell(), CELL)
+
+
+func test_lean_toward_then_settle_without_changing_cell() -> void:
+	var grid := GridWorld.new(Vector2i(10, 10))
+	var npc := _make_on_grid(_spec({"lift": 56}), grid)
+	var sprite := _sprite(npc)
+	var shadow := npc.get_node(^"%Shadow") as Sprite2D
+	watch_signals(npc)
+	npc.lean_toward(CELL + Vector2i(0, 3))
+	assert_true(npc.is_leaning())
+	await wait_for_signal(npc.lean_finished, 1.0)
+	assert_false(npc.is_leaning())
+	assert_eq(npc.get_lean_offset(), Vector2(0.0, Npc.LEAN_DISTANCE), "élan vers le bas")
+	assert_eq(sprite.position, Vector2(0.0, -56.0 + Npc.LEAN_DISTANCE))
+	assert_eq(shadow.position, Vector2(0.0, -6.0 - 56.0 + Npc.LEAN_DISTANCE))
+	assert_eq(npc.get_cell(), CELL, "même case")
+	assert_eq(npc.position, Grid.cell_to_world(CELL))
+	assert_same(grid.get_occupant(CELL), npc)
+	npc.settle()
+	await wait_for_signal(npc.lean_finished, 1.0)
+	assert_eq(npc.get_lean_offset(), Vector2.ZERO)
+	assert_eq(sprite.position, Vector2(0.0, -56.0), "revenu à sa hauteur")
+	assert_eq(npc.get_cell(), CELL)
+	assert_signal_emit_count(npc, "lean_finished", 2)
+
+
+func test_lean_sideways_and_toward_own_cell() -> void:
+	var npc := _make(_spec())
+	npc.lean_toward(CELL + Vector2i(-4, 1))
+	await wait_for_signal(npc.lean_finished, 1.0)
+	assert_eq(npc.get_lean_offset(), Vector2(-Npc.LEAN_DISTANCE, 0.0), "axe dominant")
+	npc.settle()
+	await wait_for_signal(npc.lean_finished, 1.0)
+	npc.lean_toward(CELL)
+	assert_false(npc.is_leaning(), "sa propre case : rien")
+	assert_eq(npc.get_lean_offset(), Vector2.ZERO)

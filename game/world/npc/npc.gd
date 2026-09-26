@@ -11,11 +11,19 @@ extends Node2D
 ## courante vit dans son [GridMover] ; [member NpcSpec.cell] reste sa case de départ.
 ## Au repos, [method _process] est coupé ; seule l'[AnimatedSprite2D] tourne (idle_<dir>).
 ## Il ne tourne que pendant un pas (walk_<dir> ou run_<dir> si l'apparence les a).
+## Jalon 4 (docs/tech/jalon-04.md §3.5, §13.4) : surcharge d'interaction (« Rencontrer »),
+## léger élan vers une case ([method lean_toward] / [method settle]) et saut en arc depuis
+## un meuble ([method hop_to]), dans le style de [member NpcSpec.hop_style]. Tout est en
+## [Tween] sur le sprite et l'ombre, sans nouvelle image.
 
 ## Réaction jouée ([method react]) : tests, futurs sons.
 signal reacted
 ## Pas terminé sur [param cell] ([method step]).
 signal step_finished(cell: Vector2i)
+## Saut terminé ([method hop_to]) : posé sur [param cell], rebonds compris.
+signal hopped(cell: Vector2i)
+## Élan terminé ([method lean_toward]) ou retour terminé ([method settle]).
+signal lean_finished
 
 ## SpriteFrames des apparences : `<FRAMES_DIR><sprite>_frames.tres`.
 const FRAMES_DIR: String = "res://assets/sprites/characters/placeholder/"
@@ -27,6 +35,51 @@ const REACT_ANIM: StringName = &"react"
 ## Petit bond de [method react] : hauteur (pixels monde) et durée totale (s).
 const HOP_HEIGHT: float = 12.0
 const HOP_DURATION: float = 0.25
+## Saut depuis un meuble ([method hop_to], décision de Kevin n° 1, jalon-04.md §13.4) : une
+## entrée par valeur de [constant NpcSpec.HOP_STYLES], plus le défaut &"". Valeurs de
+## départ, à régler sur le S24. Clés :
+## - « hesitate » : hésitation avant le saut (s) ; il se penche de « hesitate_px » vers la
+##   case d'arrivée puis revient (calme : il regarde avant de descendre) ;
+## - « windup » : petit appel avant le saut (s), le sprite s'accroupit de « windup_px » ;
+## - « duration » : durée du vol pour une case (s) ; « height » : hauteur de l'arc (px monde,
+##   au-dessus de la ligne qui va de l'élévation de départ au sol) ; « trans » : courbe du
+##   vol ([enum Tween.TransitionType], en entrée-sortie ; SINE = amorti) ;
+## - « bounces » : rebonds à l'arrivée, [hauteur px, durée s] chacun ;
+## - « wiggle » : petite rotation alternée pendant les rebonds (degrés, 0 = aucune).
+const HOP_STYLE_PARAMS: Dictionary[StringName, Dictionary] = {
+	&"": {
+		"hesitate": 0.0, "hesitate_px": 0.0, "windup": 0.0, "windup_px": 0.0,
+		"duration": 0.35, "height": 32.0, "trans": Tween.TRANS_LINEAR,
+		"bounces": [], "wiggle": 0.0,
+	},
+	# Bulbizarre, « calmement » : il regarde et se penche, descend lentement, sans rebond.
+	&"calm": {
+		"hesitate": 0.35, "hesitate_px": 8.0, "windup": 0.0, "windup_px": 0.0,
+		"duration": 0.55, "height": 24.0, "trans": Tween.TRANS_SINE,
+		"bounces": [], "wiggle": 0.0,
+	},
+	# Salamèche, « avec enthousiasme » : petit appel, grand arc, un rebond.
+	&"eager": {
+		"hesitate": 0.0, "hesitate_px": 0.0, "windup": 0.08, "windup_px": 6.0,
+		"duration": 0.38, "height": 48.0, "trans": Tween.TRANS_LINEAR,
+		"bounces": [[10.0, 0.16]], "wiggle": 0.0,
+	},
+	# Carapuce, « rapidement, vif et joueur » : saut court et vif, deux petits rebonds en
+	# se dandinant.
+	&"playful": {
+		"hesitate": 0.0, "hesitate_px": 0.0, "windup": 0.0, "windup_px": 0.0,
+		"duration": 0.26, "height": 28.0, "trans": Tween.TRANS_LINEAR,
+		"bounces": [[8.0, 0.12], [5.0, 0.12]], "wiggle": 10.0,
+	},
+}
+## Allongement du vol par case supplémentaire (distance de Manhattan au-delà de 1).
+const HOP_EXTRA_CELL_FACTOR: float = 0.25
+## Réduction de l'ombre au sommet de l'arc (0 = aucune).
+const HOP_SHADOW_SHRINK: float = 0.3
+## Léger élan vers une case ([method lean_toward]) : distance (px monde) et durée (s) de
+## l'aller comme du retour ([method settle]).
+const LEAN_DISTANCE: float = 20.0
+const LEAN_DURATION: float = 0.18
 const _IDLE_ANIMS: Dictionary[Vector2i, StringName] = {
 	Vector2i.DOWN: &"idle_down",
 	Vector2i.UP: &"idle_up",
@@ -54,6 +107,8 @@ const _REACT_ANIMS: Dictionary[Vector2i, StringName] = {
 
 var _spec: NpcSpec = NpcSpec.new()
 var _interaction: Interaction
+## Interaction posée par le code (« Rencontrer » un starter), prioritaire ; null sinon.
+var _override: Interaction
 var _facing: Vector2i = Vector2i.DOWN
 var _hop: Tween
 ## Déplacement sur la grille de la carte ([method enter_grid]) ; null hors grille.
@@ -61,6 +116,20 @@ var _mover: GridMover
 var _grid: GridWorld
 ## Case hors grille (avant [method enter_grid], après [method leave_grid]).
 var _cell: Vector2i = Vector2i.ZERO
+## Élévation courante (px monde) : celle de la description, 0 après un saut.
+var _lift: float = 0.0
+## Décalage de l'élan ([method lean_toward]) appliqué au sprite et à l'ombre.
+var _lean: Vector2 = Vector2.ZERO
+var _lean_tween: Tween
+## Saut en cours ([method hop_to]) : tween, cases, positions monde, élévation de départ.
+var _hop_tween: Tween
+var _hopping: bool = false
+var _hop_from_cell: Vector2i = Vector2i.ZERO
+var _hop_cell: Vector2i = Vector2i.ZERO
+var _hop_from: Vector2 = Vector2.ZERO
+var _hop_to: Vector2 = Vector2.ZERO
+var _hop_start_lift: float = 0.0
+var _hop_height: float = 0.0
 
 @onready var _sprite: AnimatedSprite2D = %Sprite
 @onready var _shadow: Sprite2D = %Shadow
@@ -89,10 +158,13 @@ func _process(delta: float) -> void:
 func setup(spec: NpcSpec) -> void:
 	_spec = spec if spec != null else NpcSpec.new()
 	name = String(_spec.id) if not _spec.id.is_empty() else "Npc"
+	_abort_hop()
 	_cell = _spec.cell
 	position = Grid.cell_to_world(_spec.cell)
 	_facing = _spec.facing if Grid.is_cardinal(_spec.facing) else Vector2i.DOWN
 	_interaction = _spec.make_interaction(_spec.cell, self)
+	_lift = float(_spec.lift)
+	_lean = Vector2.ZERO
 	if is_node_ready():
 		_apply_spec()
 
@@ -119,6 +191,7 @@ func get_facing() -> Vector2i:
 ## premier appel, sur sa case courante ensuite (grille reconstruite). Un pas en cours est
 ## annulé. Faux si la case est hors carte ou prise (le PNJ reste alors hors grille).
 func enter_grid(grid: GridWorld) -> bool:
+	_abort_hop()
 	var cell := get_cell()
 	if _mover != null:
 		_mover.step_finished.disconnect(_on_step_finished)
@@ -139,6 +212,7 @@ func enter_grid(grid: GridWorld) -> bool:
 
 ## Libère sa case (et la case visée par un pas en cours) ; le PNJ reste où il est.
 func leave_grid() -> void:
+	_abort_hop()
 	if _mover == null:
 		return
 	var cell := _mover.get_cell()
@@ -157,7 +231,7 @@ func leave_grid() -> void:
 ## même si la case est prise (alors tourné, faux). Faux aussi hors grille, pendant un pas
 ## ou pour une direction non cardinale.
 func step(direction: Vector2i, run: bool = false) -> bool:
-	if _mover == null or not Grid.is_cardinal(direction):
+	if _mover == null or _hopping or not Grid.is_cardinal(direction):
 		return false
 	var started := _mover.start_step(direction, run)
 	_facing = _mover.get_facing()
@@ -173,10 +247,29 @@ func is_moving() -> bool:
 	return _mover != null and _mover.is_moving()
 
 
-## Interaction du PNJ (toujours la même instance : aucune allocation), null s'il n'est pas
-## interactif (Roucool de Mme Aoki).
+## Interaction du PNJ (toujours la même instance : aucune allocation) : la surcharge si
+## elle existe ([method set_interaction_override]), sinon celle de sa description ; null
+## s'il n'est pas interactif (Roucool de Mme Aoki).
 func get_interaction() -> Interaction:
-	return _interaction
+	return _override if _override != null else _interaction
+
+
+## Remplace son interaction par [param interaction] (« Rencontrer » un starter, posé par le
+## code du choix) jusqu'à [method clear_interaction_override] ; sa case suit celle du PNJ.
+## null revient à retirer la surcharge.
+func set_interaction_override(interaction: Interaction) -> void:
+	_override = interaction
+	if _override != null:
+		_override.cell = get_cell()
+
+
+## Retire la surcharge : il retrouve l'interaction de sa description.
+func clear_interaction_override() -> void:
+	_override = null
+
+
+func has_interaction_override() -> bool:
+	return _override != null
 
 
 ## Chemin des SpriteFrames d'une apparence.
@@ -192,7 +285,7 @@ static func has_frames(sprite: StringName) -> bool:
 ## Se tourne vers [param direction] (animation idle_<dir>). Non cardinale ou pendant un
 ## pas : ignorée.
 func face(direction: Vector2i) -> void:
-	if not Grid.is_cardinal(direction) or is_moving():
+	if not Grid.is_cardinal(direction) or is_moving() or _hopping:
 		return
 	_facing = direction
 	if _mover != null:
@@ -240,7 +333,7 @@ func react() -> void:
 			if frames.has_animation(anim):
 				_sprite.play(anim)
 				return
-	if not is_inside_tree():
+	if not is_inside_tree() or _hopping:
 		return
 	if _hop != null and _hop.is_valid():
 		_hop.kill()
@@ -251,6 +344,243 @@ func react() -> void:
 			.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
 	_hop.tween_property(_sprite, ^"position:y", rest, HOP_DURATION / 2.0) \
 			.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN)
+
+
+## S'avance légèrement vers [param cell] ([constant LEAN_DISTANCE] px selon l'axe dominant,
+## en [constant LEAN_DURATION] s) : « il s'approche légèrement ». La case ne change pas ;
+## il reste penché jusqu'à [method settle]. Rien si c'est sa propre case.
+func lean_toward(cell: Vector2i) -> void:
+	var direction := Grid.dominant_direction(get_cell(), cell)
+	if direction == Vector2i.ZERO:
+		return
+	_tween_lean(Vector2(direction) * LEAN_DISTANCE)
+
+
+## Revient à sa place après [method lean_toward] (sans effet s'il n'est pas penché).
+func settle() -> void:
+	_tween_lean(Vector2.ZERO)
+
+
+## Décalage courant de l'élan (px monde), ZERO au repos.
+func get_lean_offset() -> Vector2:
+	return _lean
+
+
+## Vrai pendant l'aller ou le retour d'un élan.
+func is_leaning() -> bool:
+	return _lean_tween != null and _lean_tween.is_valid() and _lean_tween.is_running()
+
+
+## Élévation courante (px monde) : celle de sa description, 0 après un saut.
+func get_lift() -> float:
+	return _lift
+
+
+## Saute en arc vers [param cell] (descendre de la table, jalon 4 §13.4), dans le style de
+## [member NpcSpec.hop_style] ([constant HOP_STYLE_PARAMS]) : hésitation ou appel, vol de
+## l'élévation courante jusqu'au sol, rebonds. Il se tourne vers la case d'arrivée. Sur la
+## grille, la case quittée est libérée et la case d'arrivée réservée dès le départ ; sa case
+## ([method get_cell]) devient [param cell] à l'atterrissage. [signal hopped] à la toute fin.
+## [param grid] : sa grille par défaut (celle de [method enter_grid]) ; une autre grille le
+## fait passer dessus. Faux (rien ne bouge) si aucune grille, pendant un pas ou un saut, si
+## [param cell] est sa case, hors carte, solide, de l'eau, un rebord ou prise.
+func hop_to(cell: Vector2i, grid: GridWorld = null) -> bool:
+	var target_grid := grid if grid != null else _grid
+	if target_grid == null or is_moving() or _hopping:
+		return false
+	var from := get_cell()
+	if cell == from or not target_grid.is_free(cell, self):
+		return false
+	if _mover != null and target_grid != _grid:
+		leave_grid()
+	if _mover == null:
+		var mover := GridMover.new(target_grid, self)
+		if not mover.place(from, _facing):
+			# Sa case de départ est prise sur la nouvelle grille : il ne réserve que l'arrivée.
+			mover = null
+		if mover != null:
+			_mover = mover
+			_grid = target_grid
+			_mover.step_finished.connect(_on_step_finished)
+	_grid = target_grid
+	_grid.occupy(cell, self)
+	_grid.release(from, self)
+	var direction := Grid.dominant_direction(from, cell)
+	if direction != Vector2i.ZERO:
+		_facing = direction
+		if _mover != null:
+			_mover.face(direction)
+		_play_idle()
+	_hopping = true
+	_hop_from_cell = from
+	_hop_cell = cell
+	_hop_from = Grid.cell_to_world(from)
+	_hop_to = Grid.cell_to_world(cell)
+	_hop_start_lift = _lift
+	if _lean_tween != null and _lean_tween.is_valid():
+		_lean_tween.kill()
+	_lean = Vector2.ZERO
+	if _hop != null and _hop.is_valid():
+		_hop.kill()
+	if not is_inside_tree() or _sprite == null:
+		_land_hop()
+		return true
+	_apply_offsets()
+	_start_hop_tween(hop_params(_spec.hop_style), hop_distance(from, cell), direction)
+	return true
+
+
+## Vrai pendant un saut ([method hop_to]), rebonds compris.
+func is_hopping() -> bool:
+	return _hopping
+
+
+## Paramètres du style [param style] ([constant HOP_STYLE_PARAMS]) ; ceux du défaut pour un
+## style inconnu.
+static func hop_params(style: StringName) -> Dictionary:
+	return HOP_STYLE_PARAMS.get(style, HOP_STYLE_PARAMS[&""])
+
+
+## Distance d'un saut en cases (Manhattan, au moins 1).
+static func hop_distance(from: Vector2i, to: Vector2i) -> int:
+	return maxi(1, absi(to.x - from.x) + absi(to.y - from.y))
+
+
+## Durée du vol seul (s) pour [param style] sur [param distance] cases.
+static func hop_flight_duration(style: StringName, distance: int = 1) -> float:
+	var params := hop_params(style)
+	return float(params["duration"]) * (1.0 + HOP_EXTRA_CELL_FACTOR * float(maxi(distance, 1) - 1))
+
+
+## Durée totale du saut (s) : hésitation, appel, vol et rebonds.
+static func hop_total_duration(style: StringName, distance: int = 1) -> float:
+	var params := hop_params(style)
+	var total := float(params["hesitate"]) + float(params["windup"])
+	total += hop_flight_duration(style, distance)
+	for bounce: Array in params["bounces"]:
+		total += float(bounce[1])
+	return total
+
+
+func _start_hop_tween(params: Dictionary, distance: int, direction: Vector2i) -> void:
+	_hop_tween = create_tween()
+	var rest := Vector2(0.0, -_hop_start_lift)
+	var hesitate := float(params["hesitate"])
+	if hesitate > 0.0:
+		# Il se penche vers la case d'arrivée, regarde, puis se redresse.
+		var peek := rest + Vector2(direction) * float(params["hesitate_px"])
+		_hop_tween.tween_property(_sprite, ^"position", peek, hesitate * 0.5) \
+				.set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
+		_hop_tween.tween_property(_sprite, ^"position", rest, hesitate * 0.5) \
+				.set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
+	var windup := float(params["windup"])
+	if windup > 0.0:
+		# Petit appel : il s'accroupit (le vol repart de sa hauteur de départ).
+		_hop_tween.tween_property(_sprite, ^"position:y", rest.y + float(params["windup_px"]),
+				windup).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+	_hop_height = float(params["height"])
+	var trans: Tween.TransitionType = params["trans"]
+	_hop_tween.tween_method(_set_hop_progress, 0.0, 1.0,
+			hop_flight_duration(_spec.hop_style, distance)) \
+			.set_trans(trans).set_ease(Tween.EASE_IN_OUT)
+	_hop_tween.tween_callback(_on_hop_landed)
+	var wiggle := deg_to_rad(float(params["wiggle"]))
+	var side := 1.0
+	for bounce: Array in params["bounces"]:
+		var half := float(bounce[1]) * 0.5
+		_hop_tween.tween_property(_sprite, ^"position:y", -float(bounce[0]), half) \
+				.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+		if wiggle != 0.0:
+			_hop_tween.parallel().tween_property(_sprite, ^"rotation", wiggle * side, half)
+		_hop_tween.tween_property(_sprite, ^"position:y", 0.0, half) \
+				.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN)
+		if wiggle != 0.0:
+			_hop_tween.parallel().tween_property(_sprite, ^"rotation", 0.0, half)
+		side = -side
+	_hop_tween.tween_callback(_finish_hop)
+
+
+## Vol : [param t] de 0 à 1 (courbe du style). Position au sol interpolée, élévation de
+## départ → 0, arc par-dessus ; l'ombre suit l'élévation et rétrécit au sommet.
+func _set_hop_progress(t: float) -> void:
+	position = _hop_from.lerp(_hop_to, t).round()
+	var ground := lerpf(_hop_start_lift, 0.0, t)
+	var arc := 4.0 * _hop_height * t * (1.0 - t)
+	_sprite.position = Vector2(0.0, -(ground + arc))
+	_shadow.position = Vector2(0.0, _shadow_rest_y() - ground)
+	var shrink := 1.0 - HOP_SHADOW_SHRINK * (arc / _hop_height if _hop_height > 0.0 else 0.0)
+	_shadow.scale = Vector2(shrink, shrink)
+
+
+## Atterrissage (avant les rebonds) : élévation nulle, case changée.
+func _on_hop_landed() -> void:
+	_lift = 0.0
+	position = _hop_to
+	if _mover != null:
+		_mover.place(_hop_cell, _facing)
+	else:
+		_cell = _hop_cell
+	_sync_interaction_cells(_hop_cell)
+	_sprite.position = Vector2(0.0, _rest_y())
+	_shadow.position = Vector2(0.0, _shadow_rest_y())
+	_shadow.scale = Vector2.ONE
+
+
+func _finish_hop() -> void:
+	_hopping = false
+	_apply_offsets()
+	_play_idle()
+	hopped.emit(_hop_cell)
+
+
+## Saut sans animation (hors arbre) : posé tout de suite.
+func _land_hop() -> void:
+	_lift = 0.0
+	position = _hop_to
+	if _mover != null:
+		_mover.place(_hop_cell, _facing)
+	else:
+		_cell = _hop_cell
+	_sync_interaction_cells(_hop_cell)
+	_hopping = false
+	_apply_offsets()
+	hopped.emit(_hop_cell)
+
+
+## Saut interrompu (nouvelle grille, départ de la grille, nouvelle description) : il reste
+## sur sa case de départ, la réservation de l'arrivée est rendue ; pas de [signal hopped].
+func _abort_hop() -> void:
+	if not _hopping:
+		return
+	_hopping = false
+	if _hop_tween != null and _hop_tween.is_valid():
+		_hop_tween.kill()
+	if _grid != null:
+		_grid.release(_hop_cell, self)
+		_grid.occupy(_hop_from_cell, self)
+	position = _hop_from
+	_lift = _hop_start_lift
+	_apply_offsets()
+
+
+func _tween_lean(offset: Vector2) -> void:
+	if _lean_tween != null and _lean_tween.is_valid():
+		_lean_tween.kill()
+	if _hopping:
+		return
+	if not is_inside_tree() or _sprite == null:
+		_set_lean(offset)
+		lean_finished.emit()
+		return
+	_lean_tween = create_tween()
+	_lean_tween.tween_method(_set_lean, _lean, offset, LEAN_DURATION) \
+			.set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
+	_lean_tween.tween_callback(lean_finished.emit)
+
+
+func _set_lean(offset: Vector2) -> void:
+	_lean = offset
+	_apply_offsets()
 
 
 func _apply_spec() -> void:
@@ -265,13 +595,23 @@ func _apply_spec() -> void:
 	# Élévation (Pokémon sur une table) en pixels monde : sprite et ombre montent ensemble.
 	if _hop != null and _hop.is_valid():
 		_hop.kill()
-	_sprite.position.y = _rest_y()
-	_shadow.position.y = _shadow_rest_y() - float(_spec.lift)
+	_apply_offsets()
 	_play_idle()
 
 
+## Hauteur du sprite au repos : élévation et élan.
 func _rest_y() -> float:
-	return -float(_spec.lift)
+	return -_lift + _lean.y
+
+
+## Sprite et ombre à leur place de repos (élévation, élan), sans rotation.
+func _apply_offsets() -> void:
+	if _sprite == null:
+		return
+	_sprite.position = Vector2(_lean.x, _rest_y())
+	_sprite.rotation = 0.0
+	_shadow.position = Vector2(_lean.x, _shadow_rest_y() - _lift + _lean.y)
+	_shadow.scale = Vector2.ONE
 
 
 ## Position de l'ombre sans élévation (celle de la scène, comme le joueur).
@@ -306,9 +646,15 @@ func _play_move() -> void:
 ## Fin d'un pas (dans [method GridMover.update]) : l'interaction suit la case (aucune
 ## allocation), puis le signal. Un gestionnaire peut lancer le pas suivant.
 func _on_step_finished(cell: Vector2i) -> void:
+	_sync_interaction_cells(cell)
+	step_finished.emit(cell)
+
+
+func _sync_interaction_cells(cell: Vector2i) -> void:
 	if _interaction != null:
 		_interaction.cell = cell
-	step_finished.emit(cell)
+	if _override != null:
+		_override.cell = cell
 
 
 func _on_animation_finished() -> void:

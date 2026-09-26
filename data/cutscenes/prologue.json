@@ -26,7 +26,10 @@
 					{ "face": "rival", "to": "player" },
 					{ "wait": 0.3 },
 					{ "dialogue": "oak_lab_reunion" },
-					{ "set": ["oak_lab_reunion"] }
+					{ "set": ["oak_lab_reunion"] },
+					{ "wait": 0.5 },
+					{ "dialogue": "oak_starter_offer" },
+					{ "set": ["starter_offered"] }
 				]
 			},
 			{

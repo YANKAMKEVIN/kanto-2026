@@ -42,6 +42,20 @@ extends SceneTree
 ##              images à 30 images/s : --quit-after 6000).
 ##              (« route1_oak » s'arrêtait aux répliques de Chen : depuis T4, la scène
 ##              continue jusqu'au labo, utiliser route1_full.)
+##              Jalon 4 (T1) : après les quatre répliques du labo, les quatre répliques de la
+##              proposition de Chen (17b à 17e).
+##   starter_offer  jalon 4 (T1) : départ au labo sur le tapis d'entrée, drapeau oak_met
+##              levé (Chen et le rival présents), puis la fin réelle de la variante 1 de
+##              route1_grass (toutes les étapes après son change_map, lues dans
+##              data/cutscenes/prologue.json) : deux pas, regards du rival, les quatre
+##              répliques du labo, la proposition de Chen (4 pages ; il regarde la table à la
+##              3e), contrôle rendu, puis un starter observé (bouton, puis boîte). Captures
+##              jalon04a_t1_offer_NN_*. Quitte seul (~700 images : --quit-after 2000).
+##   hop_styles  jalon 4 (T1) : départ au labo (oak_met), puis chacun des trois starters
+##              saute de la table sur la case sous lui (Npc.hop_to, styles calm / eager /
+##              playful) : captures à l'élan, au sommet de l'arc, à l'arrivée (rebond) et
+##              posé ; puis les trois au sol. Captures jalon04a_t1_hop_<style>_*. Quitte seul
+##              (~400 images : --quit-after 1500).
 ##   walk_roof  entrées move_* injectées : spawn → (32, 10) → (32, 4) → (36, 4),
 ##              au nord de sa maison (le toit doit le masquer, y-sort).
 ##   doors      départ réel du jeu (chambre) puis portes, tapis et escaliers (jalon 2, T5) :
@@ -116,6 +130,18 @@ const NPCS_PREFIX: String = "jalon03_npcs_"
 const T2_PREFIX: String = "jalon03b_t2_"
 const T3_PREFIX: String = "jalon03b_t3_"
 const T4_PREFIX: String = "jalon03b_t4_"
+const OFFER_PREFIX: String = "jalon04a_t1_offer_"
+const HOP_PREFIX: String = "jalon04a_t1_hop_"
+## Scène du scénario « starter_offer » : fin de la variante 1 de route1_grass (après son
+## change_map), ajoutée à la bibliothèque de Boot sous ce nom.
+const OFFER_SCENE: StringName = &"capture_starter_offer"
+const PROLOGUE_PATH: String = "res://data/cutscenes/prologue.json"
+## Scénario « hop_styles » : [PNJ, case d'arrivée] dans l'ordre des sauts.
+const HOPS: Array = [
+	[&"bulbasaur", Vector2i(10, 6)],
+	[&"charmander", Vector2i(11, 6)],
+	[&"squirtle", Vector2i(12, 6)],
+]
 ## Délai maximal d'une attente du scénario « npcs » (images).
 const NPCS_TIMEOUT: int = 900
 ## Images d'attente avant la capture d'une étape (titre de zone entré : ~0,3 s).
@@ -165,6 +191,14 @@ func _start_boot() -> void:
 	elif _scenario == "npcs":
 		_setup_doors()
 		InputMap.action_erase_events(&"interact")
+	elif _scenario in ["starter_offer", "hop_styles"]:
+		_boot.set(&"start_map", &"oak_lab")
+		_boot.set(&"start_spawn", &"entrance")
+		_boot.set(&"start_facing", Vector2i.UP)
+		for action: StringName in MOVE_ACTIONS.values():
+			InputMap.action_erase_events(action)
+		InputMap.action_erase_events(&"run")
+		InputMap.action_erase_events(&"interact")
 	elif _scenario in ["route1_freeze", "route1_oak", "route1_full"]:
 		_boot.set(&"start_map", &"pallet_town")
 		for action: StringName in MOVE_ACTIONS.values():
@@ -191,6 +225,12 @@ func _on_frame() -> void:
 		elif _scenario == "route1_full":
 			_router = root.get_node(^"SceneRouter")
 			_run_route1_full()
+		elif _scenario == "starter_offer":
+			_router = root.get_node(^"SceneRouter")
+			_run_starter_offer()
+		elif _scenario == "hop_styles":
+			_router = root.get_node(^"SceneRouter")
+			_run_hop_styles()
 		return
 	match _scenario:
 		"spawn":
@@ -854,6 +894,9 @@ func _run_route1_full() -> void:
 		await process_frame
 	await _dialogue_shots(runner, tag, ["14_enfin", "15_patience", "16_une_heure",
 		"17_toujours_la"])
+	# Jalon 4 (T1) : la proposition de Chen.
+	await _dialogue_shots(runner, tag, ["17b_offer_1", "17c_offer_2", "17d_offer_3_table",
+		"17e_offer_4"])
 	for i: int in NPCS_TIMEOUT:
 		if not director.call(&"is_running"):
 			break
@@ -922,4 +965,149 @@ func _t4_shot(capture_name: String) -> void:
 		hud.call(&"are_controls_visible"), box.call(&"is_open"),
 		box.call(&"get_speaker_text"), ", ".join(who)])
 	_mark(T4_PREFIX + capture_name)
+	await _frames(2)
+
+
+# --- Scénarios « starter_offer » et « hop_styles » (jalon 4, T1) --------------------
+
+## Au labo : drapeau oak_met levé, PNJ ajustés (Chen et le rival apparaissent).
+func _lab_with_oak() -> Node:
+	await _frames(5)
+	var state: Node = root.get_node(^"GameState")
+	(state.get(&"flags") as RefCounted).call(&"set_flag", &"oak_met")
+	var lab: Node = _boot.call(&"get_map")
+	lab.call(&"refresh_npcs", state.get(&"flags"))
+	await _frames(10)
+	return lab
+
+
+func _run_starter_offer() -> void:
+	var lab: Node = await _lab_with_oak()
+	var director: Node = _boot.call(&"get_cutscene_director")
+	var runner: Node = _boot.call(&"get_dialogue_runner")
+	if not _add_offer_scene():
+		quit(1)
+		return
+	await _offer_shot("01_lab_entrance")
+	if not director.call(&"play", OFFER_SCENE):
+		push_error("starter_offer : scène refusée")
+		quit(1)
+		return
+	await _dialogue_shots_with(runner, OFFER_PREFIX, ["02_enfin", "03_patience",
+		"04_une_heure", "05_toujours_la"])
+	await _dialogue_shots_with(runner, OFFER_PREFIX, ["06_offer_1", "07_offer_2",
+		"08_offer_3_table", "09_offer_4"])
+	for i: int in NPCS_TIMEOUT:
+		if not director.call(&"is_running"):
+			break
+		await process_frame
+	await _frames(10)
+	var flags: RefCounted = root.get_node(^"GameState").get(&"flags")
+	print("  starter_offered : %s" % flags.call(&"has_flag", &"starter_offered"))
+	await _offer_shot("10_control_back")
+	# Un starter s'observe encore : Salamèche, depuis (11, 6).
+	await _go(Vector2i(11, 6))
+	_player.call(&"face", Vector2i.UP)
+	await _frames(12)
+	await _offer_shot("11_observe_button")
+	await _interact()
+	await _page_complete()
+	await _offer_shot("12_observe_charmander")
+	await _finish_dialogue()
+	await _frames(5)
+	print("STARTER_OFFER terminé (frame %d)" % _frame)
+	quit()
+
+
+## Ajoute à la bibliothèque de Boot la fin réelle de la variante 1 de route1_grass.
+func _add_offer_scene() -> bool:
+	var json := JSON.new()
+	if json.parse(FileAccess.get_file_as_string(PROLOGUE_PATH)) != OK:
+		push_error("starter_offer : %s illisible" % PROLOGUE_PATH)
+		return false
+	var steps: Array = json.data["route1_grass"]["variants"][0]["steps"]
+	var tail: Array = []
+	var after_change := false
+	for step: Dictionary in steps:
+		if after_change:
+			tail.append(step)
+		elif step.has("change_map"):
+			after_change = true
+	var library: RefCounted = _boot.call(&"get_cutscene_library")
+	return library.call(&"add_from_dict", {String(OFFER_SCENE): {"steps": tail}}, "capture")
+
+
+## Comme _dialogue_shots, avec un préfixe de capture.
+func _dialogue_shots_with(runner: Node, prefix: String, names: Array[String]) -> void:
+	for i: int in NPCS_TIMEOUT:
+		if runner.call(&"is_running"):
+			break
+		await process_frame
+	for page: int in names.size():
+		await _page_complete()
+		await _offer_shot(names[page], prefix)
+		if page < names.size() - 1:
+			await _interact()
+	await _finish_dialogue()
+
+
+func _offer_shot(capture_name: String, prefix: String = OFFER_PREFIX) -> void:
+	var hud: Node = _boot.call(&"get_hud")
+	var map: Node = _boot.call(&"get_map")
+	var box: Node = _boot.call(&"get_dialogue_box")
+	var who: Array[String] = []
+	for id: StringName in [&"oak", &"rival", &"bulbasaur", &"charmander", &"squirtle"]:
+		var npc: Node = map.call(&"get_npc", id)
+		if npc != null:
+			who.append("%s %s %s" % [id, npc.call(&"get_cell"), npc.call(&"get_facing")])
+	print("  contrôles visibles : %s ; boîte : %s « %s » « %s » ; %s" % [
+		hud.call(&"are_controls_visible"), box.call(&"is_open"),
+		box.call(&"get_speaker_text"), box.call(&"get_text"), ", ".join(who)])
+	_mark(prefix + capture_name)
+	await _frames(2)
+
+
+func _run_hop_styles() -> void:
+	var lab: Node = await _lab_with_oak()
+	var npc_script: Script = load("res://game/world/npc/npc.gd")
+	await _offer_shot("00_on_table", HOP_PREFIX)
+	for hop: Array in HOPS:
+		var npc: Node2D = lab.call(&"get_npc", hop[0])
+		var style: StringName = (npc.call(&"get_spec") as RefCounted).get(&"hop_style")
+		var params: Dictionary = npc_script.call(&"hop_params", style)
+		var before := float(params["hesitate"]) + float(params["windup"])
+		var flight := float(params["duration"])
+		# Images (30 images/s) : élan (fin de l'hésitation), sommet, rebond, posé.
+		var shots: Dictionary[int, String] = {
+			maxi(1, roundi(before * 0.5 * 30.0)): "a_before",
+			roundi((before + flight * 0.5) * 30.0): "b_peak",
+			roundi((before + flight + 0.05) * 30.0): "c_landing",
+		}
+		var tag := "%s_" % style
+		if not npc.call(&"hop_to", hop[1], lab.call(&"get_grid")):
+			push_error("hop_styles : saut de %s refusé" % hop[0])
+			quit(1)
+			return
+		var frame := 0
+		while npc.call(&"is_hopping") and frame < NPCS_TIMEOUT:
+			await process_frame
+			frame += 1
+			if shots.has(frame):
+				await _hop_shot(npc, tag + shots[frame])
+				frame += 2
+		await _frames(10)
+		print("  %s posé en %s, lift %s" % [hop[0], npc.call(&"get_cell"),
+			npc.call(&"get_lift")])
+		await _hop_shot(npc, tag + "d_after")
+	await _frames(10)
+	await _offer_shot("zz_all_three", HOP_PREFIX)
+	print("HOP_STYLES terminé (frame %d)" % _frame)
+	quit()
+
+
+func _hop_shot(npc: Node2D, capture_name: String) -> void:
+	var sprite := npc.get_node(^"%Sprite") as Node2D
+	print("  %s : pos %s sprite %s rot %.1f°" % [npc.name, npc.position, sprite.position,
+		rad_to_deg(sprite.rotation)])
+	_mark(HOP_PREFIX + capture_name)
 	await _frames(2)

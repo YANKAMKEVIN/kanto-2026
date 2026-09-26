@@ -8,6 +8,9 @@ extends GutTest
 ## scripté). T3 : spawn, move (chemin écrit, case absolue, voisine d'un acteur, course,
 ## blocage), variante 2 (pensée puis un pas vers le bas). T4 : suiveur d'une étape move,
 ## change_map (PNJ de la nouvelle carte, échec du routeur).
+## Jalon 4 (T1) : alias résolus à chaque étape (face, move, near, follower, hop, lean,
+## despawn), alias absent (étape sautée), hop (attend la fin du saut, refus), lean (aller et
+## retour sans changer de case), despawn (case libérée, PNJ retiré).
 
 const ROUTER_SCRIPT := preload("res://game/autoload/scene_router.gd")
 const PLAYER_SCENE := preload("res://game/player/player.tscn")
@@ -79,6 +82,27 @@ const SCENES := {
 	]},
 	"ghost": {"steps": [{"face": "nobody", "to": "down"}, {"set": ["after"]}]},
 	"never": {"if": ["nope"], "steps": [{"wait": 0.1}]},
+	"alias_each_step": {"steps": [
+		{"face": "player", "to": "down"},
+		{"face": "$buddy", "to": "player"},
+		{"face": "player", "to": "$buddy"},
+		{"move": "$buddy", "path": ["down", "down", "down", "down", "right", "right", "right"]},
+		{"face": "player", "to": "$buddy"},
+		{"face": "$buddy", "to": "player"},
+		{"set": ["after"]},
+	]},
+	"alias_near_and_follower": {"steps": [
+		{"move": "rival", "to": {"near": "$buddy", "offsets": [[0, 1]]}},
+		{"move": "$leader", "follower": "$pal", "path": ["left", "left"]},
+		{"set": ["after"]},
+	]},
+	"alias_missing": {"steps": [{"face": "$ghost", "to": "down"}, {"set": ["after"]}]},
+	"hop_buddy": {"steps": [
+		{"hop": "$buddy", "to": {"near": "$buddy", "offsets": [[0, 1]]}}, {"set": ["after"]},
+	]},
+	"hop_taken": {"steps": [{"hop": "mom", "to": [13, 4]}, {"set": ["after"]}]},
+	"lean_buddy": {"steps": [{"lean": "$buddy", "to": "player"}, {"set": ["after"]}]},
+	"despawn_buddy": {"steps": [{"despawn": "$buddy"}, {"set": ["after"]}]},
 }
 
 var _router: Node
@@ -638,3 +662,119 @@ func test_move_with_unknown_actor_is_skipped_with_error() -> void:
 	assert_push_error("introuvable")
 	assert_true(_flags.has_flag(&"after"), "la scène continue")
 	assert_false(_director.is_running())
+
+
+# --- alias, hop, lean, despawn (jalon 4, T1) ---------------------------------------------
+
+func test_alias_is_resolved_at_each_step() -> void:
+	var mom := _map.get_npc(&"mom")
+	var facings: Array[Vector2i] = []
+	_director.step_started.connect(func(index: int) -> void:
+		if index == 3 or index == 6:
+			facings.append(_player.get_facing()))
+	assert_true(_director.play(&"alias_each_step", {&"buddy": &"mom"}))
+	# Maman (7, 4) → joueur (5, 8) : bas ; joueur → Maman (2, -4) : haut.
+	assert_eq(mom.get_facing(), Vector2i.DOWN, "alias dans l'acteur de face")
+	await _await_scene_end()
+	assert_eq(facings[0], Vector2i.UP, "alias dans la cible de face")
+	assert_eq(mom.get_cell(), Vector2i(10, 8), "alias dans l'acteur de move")
+	# Maman a bougé : l'alias désigne sa nouvelle case (10, 8) → joueur regarde à droite.
+	assert_eq(_player.get_facing(), Vector2i.RIGHT, "cible résolue sur la case actuelle")
+	assert_eq(mom.get_facing(), Vector2i.LEFT)
+	assert_true(_flags.has_flag(&"after"))
+	assert_push_error_count(0)
+
+
+func test_alias_in_near_and_follower() -> void:
+	var rival := _map.get_npc(&"rival")
+	var leo := _map.get_npc(&"leo")
+	var rattata := _map.get_npc(&"leo_rattata")
+	_director.play(&"alias_near_and_follower",
+		{&"buddy": &"mom", &"leader": &"leo_rattata", &"pal": &"leo"})
+	await _await_scene_end()
+	assert_eq(rival.get_cell(), Vector2i(7, 5), "voisin résolu : sous Maman")
+	assert_eq(rattata.get_cell(), Vector2i(15, 9), "meneur résolu")
+	assert_eq(leo.get_cell(), Vector2i(16, 9), "suiveur résolu, un pas derrière")
+	assert_true(_flags.has_flag(&"after"))
+	assert_push_error_count(0)
+
+
+func test_missing_alias_skips_the_step_with_error() -> void:
+	assert_true(_director.play(&"alias_missing", {&"buddy": &"mom"}))
+	assert_push_error("alias « $ghost » absent")
+	assert_true(_flags.has_flag(&"after"), "la scène continue")
+	assert_false(_director.is_running())
+	assert_true(_player.is_input_enabled())
+
+
+func test_aliases_are_forgotten_after_the_scene() -> void:
+	_director.play(&"lean_buddy", {&"buddy": &"mom"})
+	await _await_scene_end()
+	_flags.clear()
+	_director.play(&"lean_buddy")
+	assert_push_error("alias « $buddy » absent")
+	assert_true(_flags.has_flag(&"after"))
+
+
+func test_hop_waits_for_the_end_of_the_jump() -> void:
+	var mom := _map.get_npc(&"mom")
+	var elapsed: Array[float] = [0.0]
+	var count := func() -> void:
+		if _director.is_running():
+			elapsed[0] += get_process_delta_time()
+	get_tree().process_frame.connect(count)
+	assert_true(_director.play(&"hop_buddy", {&"buddy": &"mom"}))
+	assert_true(mom.is_hopping(), "saut lancé dans l'appel même")
+	assert_false(_map.get_grid().is_occupied(Vector2i(7, 4)), "case quittée libérée")
+	assert_same(_map.get_grid().get_occupant(Vector2i(7, 5)), mom, "arrivée réservée")
+	await wait_process_frames(3)
+	assert_true(_director.is_running(), "la scène attend le saut")
+	assert_false(_flags.has_flag(&"after"))
+	await _await_scene_end()
+	get_tree().process_frame.disconnect(count)
+	assert_false(mom.is_hopping())
+	assert_eq(mom.get_cell(), Vector2i(7, 5))
+	assert_true(_flags.has_flag(&"after"))
+	var expected := Npc.hop_total_duration(mom.get_spec().hop_style)
+	assert_almost_eq(elapsed[0], expected, 0.1, "durée du saut (%.2f s)" % expected)
+	assert_push_error_count(0)
+
+
+func test_hop_refused_is_skipped_with_error() -> void:
+	var mom := _map.get_npc(&"mom")
+	_director.play(&"hop_taken")
+	assert_push_error("refusé")
+	assert_eq(mom.get_cell(), Vector2i(7, 4))
+	assert_false(mom.is_hopping())
+	assert_true(_flags.has_flag(&"after"), "la scène continue")
+	assert_false(_director.is_running())
+
+
+func test_lean_goes_toward_the_target_then_comes_back() -> void:
+	var mom := _map.get_npc(&"mom")
+	var max_offset := 0.0
+	_director.play(&"lean_buddy", {&"buddy": &"mom"})
+	var deadline := Time.get_ticks_msec() + int(TIMEOUT * 1000)
+	while _director.is_running() and Time.get_ticks_msec() < deadline:
+		await get_tree().process_frame
+		max_offset = maxf(max_offset, mom.get_lean_offset().y)
+		assert_eq(mom.get_cell(), Vector2i(7, 4), "même case pendant l'élan")
+	# Joueur (5, 8) sous Maman (7, 4) : élan vers le bas.
+	assert_almost_eq(max_offset, Npc.LEAN_DISTANCE, 1.0, "élan vers le joueur")
+	assert_eq(mom.get_lean_offset(), Vector2.ZERO, "revenu")
+	assert_eq(mom.get_cell(), Vector2i(7, 4), "même case")
+	assert_same(_map.get_grid().get_occupant(Vector2i(7, 4)), mom)
+	assert_true(_flags.has_flag(&"after"))
+	assert_push_error_count(0)
+
+
+func test_despawn_frees_the_cell_and_removes_the_npc() -> void:
+	var mom := _map.get_npc(&"mom")
+	_director.play(&"despawn_buddy", {&"buddy": &"mom"})
+	assert_false(_map.get_grid().is_occupied(Vector2i(7, 4)), "case libérée dès le début")
+	assert_true(_director.is_running(), "fondu en cours")
+	await _await_scene_end()
+	assert_null(_map.get_npc(&"mom"), "PNJ retiré de la carte")
+	assert_true(not is_instance_valid(mom) or mom.is_queued_for_deletion())
+	assert_true(_flags.has_flag(&"after"))
+	assert_push_error_count(0)

@@ -7,6 +7,9 @@ extends GutTest
 ## scène, le joueur ne fait que les pas scriptés et les contrôles restent cachés. Ensuite :
 ## Maya et sa nouvelle réplique, sortie du labo, pensée et recul aux herbes, chambre du
 ## rival vide. Même scénario sur les deux colonnes du chemin.
+## Jalon 4 (T1) : après « Et pourtant, tu es toujours là. », les 4 répliques du Prof. Chen
+## (il regarde la table à la 3e, revient vers le joueur à la 4e), starter_offered levé,
+## contrôle rendu ; les starters s'observent encore (le choix n'est pas encore branché).
 
 const DIRECTIONS: Dictionary[Vector2i, StringName] = {
 	Vector2i.UP: &"move_up", Vector2i.DOWN: &"move_down",
@@ -20,6 +23,12 @@ const REUNION: Array = [
 	["Prof. Chen", "Un peu de patience."],
 	["Rival", "Ça fait une heure que tu dis ça."],
 	["Prof. Chen", "Et pourtant, tu es toujours là."],
+]
+const OFFER: Array = [
+	["Prof. Chen", "Vous voulez tous les deux découvrir Kanto."],
+	["Prof. Chen", "Mais découvrir ce monde seul serait une mauvaise idée."],
+	["Prof. Chen", "Eux aussi ont encore beaucoup à découvrir."],
+	["Prof. Chen", "Alors... pourquoi ne pas commencer ensemble ?"],
 ]
 
 var _boot: Boot
@@ -122,6 +131,7 @@ func _play_event(column: int) -> void:
 		["Prof. Chen", "Sans Pokémon à tes côtés, tu prends un risque inutile."],
 		["Prof. Chen", "...Viens avec moi."]]
 	expected.append_array(REUNION)
+	expected.append_array(OFFER)
 	assert_eq(_pages, expected)
 	# Seulement les pas scriptés, après le pas qui a déclenché la scène : suivi (8 pas, le
 	# premier sur la case de Chen), puis deux pas dans le labo.
@@ -149,9 +159,19 @@ func _play_event(column: int) -> void:
 		["Un peu de patience.", Vector2i.LEFT, Vector2i.DOWN],
 		["Ça fait une heure que tu dis ça.", Vector2i.UP, Vector2i.DOWN],
 		["Et pourtant, tu es toujours là.", Vector2i.UP, Vector2i.DOWN],
+		# Proposition : Chen regarde les trois Pokémon (table à sa droite) à la 3e, puis
+		# revient vers le joueur (7, 7), sous lui.
+		["Vous voulez tous les deux découvrir Kanto.", Vector2i.UP, Vector2i.DOWN],
+		["Mais découvrir ce monde seul serait une mauvaise idée.", Vector2i.UP,
+			Vector2i.DOWN],
+		["Eux aussi ont encore beaucoup à découvrir.", Vector2i.UP, Vector2i.RIGHT],
+		["Alors... pourquoi ne pas commencer ensemble ?", Vector2i.UP, Vector2i.DOWN],
 	])
 	assert_true(GameState.flags.has_flag(&"oak_met"))
 	assert_true(GameState.flags.has_flag(&"oak_lab_reunion"))
+	assert_true(GameState.flags.has_flag(&"starter_offered"), "Chen a proposé")
+	assert_false(GameState.flags.has_flag(&"starter_chosen"))
+	_starters_still_observed(lab)
 	assert_true(_player.is_input_enabled(), "contrôle rendu")
 	assert_true(hud.are_controls_visible(), "contrôles visibles")
 	await _talk_to_maya()
@@ -159,6 +179,18 @@ func _play_event(column: int) -> void:
 	await _grass_thought(column)
 	await _rival_room_is_empty()
 	assert_push_error_count(0)
+
+
+## Le choix n'est pas branché (T3) : les trois starters sont sur la table, « Observer ».
+func _starters_still_observed(lab: GameMap) -> void:
+	for id: StringName in [&"bulbasaur", &"charmander", &"squirtle"]:
+		var npc := lab.get_npc(id)
+		assert_not_null(npc, "%s sur la table" % id)
+		if npc == null:
+			continue
+		assert_false(npc.has_interaction_override(), "%s : pas de surcharge" % id)
+		assert_eq(npc.get_interaction().kind, Interaction.Kind.OBSERVE, "%s : Observer" % id)
+		assert_eq(npc.get_lift(), 56.0, "%s : toujours sur la table" % id)
 
 
 ## Maya (5, 3), parlée depuis (5, 4) : « Ah, le professeur est revenu. »

@@ -9,6 +9,8 @@ extends GutTest
 ##   change_map, PNJ **présents** de la carte cible pour les drapeaux du moment. Chaque
 ##   acteur (face, move, follower, near), chaque cible de face qui n'est pas une direction,
 ##   et chaque acteur ou cible de « turn » des dialogues joués existe à ce moment-là.
+## Jalon 4 (T1) : la variante 1 de route1_grass finit par la proposition de Chen
+## (wait 0,5 s, oak_starter_offer, set starter_offered).
 
 const MAPS: Array[StringName] = [
 	&"player_house_2f", &"player_house_1f", &"rival_house", &"oak_lab", &"pallet_town",
@@ -52,6 +54,20 @@ func test_library_loads_without_error() -> void:
 	assert_true(library.load_dir(), "data/cutscenes/ se charge")
 	assert_eq(library.get_errors().size(), 0, str(library.get_errors()))
 	assert_eq(library.get_ids(), [&"route1_grass"] as Array[StringName])
+
+
+func test_route1_grass_ends_with_the_starter_offer() -> void:
+	var steps := _cutscenes.get_cutscene(&"route1_grass").variants[0].steps
+	assert_gt(steps.size(), 4)
+	var tail := steps.slice(steps.size() - 4)
+	assert_eq(tail[0].kind, CutsceneStep.Kind.SET_FLAGS)
+	assert_eq(tail[0].flags, [&"oak_lab_reunion"] as Array[StringName], "après la réunion")
+	assert_eq(tail[1].kind, CutsceneStep.Kind.WAIT)
+	assert_eq(tail[1].seconds, 0.5)
+	assert_eq(tail[2].kind, CutsceneStep.Kind.DIALOGUE)
+	assert_eq(tail[2].dialogue_id, &"oak_starter_offer")
+	assert_eq(tail[3].kind, CutsceneStep.Kind.SET_FLAGS)
+	assert_eq(tail[3].flags, [&"starter_offered"] as Array[StringName], "dernière étape")
 
 
 func test_every_trigger_targets_a_scene_and_every_scene_is_triggered() -> void:
