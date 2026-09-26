@@ -173,8 +173,12 @@ func _run(variant: CutsceneVariant, session: int) -> void:
 
 
 ## Joue une étape. Faux : la scène s'arrête (réservé au changement de carte manqué, T4).
-## Les alias sont résolus d'abord ; un alias absent saute l'étape (push_error).
+## Une étape dont les conditions (« if » / « unless », jalon 4B) ne sont pas remplies est
+## sautée sans erreur. Les alias sont résolus d'abord ; un alias absent saute l'étape
+## (push_error).
 func _play_step(source_step: CutsceneStep) -> bool:
+	if not source_step.applies(_flags):
+		return true
 	var step := _resolve_aliases(source_step)
 	if step == null:
 		return true
@@ -207,10 +211,10 @@ func _play_step(source_step: CutsceneStep) -> bool:
 	return true
 
 
-## Copie de [param step] dont les alias (acteur, cible, suiveur, voisin) sont remplacés
-## par les identifiants de PNJ de la scène en cours ; [param step] lui-même s'il n'en a
-## aucun (les étapes de la bibliothèque ne sont jamais modifiées). null (push_error) si un
-## alias n'a pas été fourni à [method play].
+## Copie de [param step] dont les alias (acteur, cible, suiveur, voisin, Pokémon d'un
+## combat) sont remplacés par les identifiants de PNJ de la scène en cours ; [param step]
+## lui-même s'il n'en a aucun (les étapes de la bibliothèque ne sont jamais modifiées).
+## null (push_error) si un alias n'a pas été fourni à [method play].
 func _resolve_aliases(step: CutsceneStep) -> CutsceneStep:
 	if step.get_aliases().is_empty():
 		return step
@@ -219,25 +223,13 @@ func _resolve_aliases(step: CutsceneStep) -> CutsceneStep:
 			_step_error("alias « $%s » absent, étape « %s » sautée" % [
 				alias, CutsceneStep.kind_name(step.kind)])
 			return null
-	var copy := CutsceneStep.new()
-	copy.kind = step.kind
-	copy.seconds = step.seconds
-	copy.dialogue_id = step.dialogue_id
+	var copy := step.copy()
 	copy.actor = _resolve_ref(step.actor)
 	copy.target = _resolve_ref(step.target)
-	copy.flags = step.flags
-	copy.spec = step.spec
-	copy.path = step.path
-	copy.cell = step.cell
 	copy.near = _resolve_ref(step.near)
-	copy.offsets = step.offsets
-	copy.run = step.run
 	copy.follower = _resolve_ref(step.follower)
-	copy.keep_facing = step.keep_facing
-	copy.optional = step.optional
-	copy.map_id = step.map_id
-	copy.spawn = step.spawn
-	copy.facing = step.facing
+	copy.player_pokemon = _resolve_ref(step.player_pokemon)
+	copy.foe_pokemon = _resolve_ref(step.foe_pokemon)
 	return copy
 
 

@@ -13,7 +13,8 @@ const LOGIC_CLASSES: Array[String] = [
 	"BattleDirector", "BattleStage", "BattleLayout", "DamageCalc", "DamageResult", "TrainerData",
 	"TrainerLibrary", "TrainerSlot", "Pokemon", "Party", "MoveData", "MoveSlot", "MoveEffect",
 	"SpeciesData", "PokemonData", "PokemonFactory", "TypeChart", "GameState", "GameRng",
-	"Player", "GameMap", "SceneRouter",
+	"Player", "GameMap", "SceneRouter", "BattleBeat", "BattlePlayback", "BattleViews",
+	"BattleConclusion", "ItemData", "ItemLibrary",
 ]
 
 

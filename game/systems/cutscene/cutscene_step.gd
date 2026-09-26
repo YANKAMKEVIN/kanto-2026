@@ -25,19 +25,30 @@ extends RefCounted
 ##   ne traverse la case d'aucun personnage, pas juste derrière la tête d'un grand) ;
 ## - [constant Kind.LEAN] (jalon 4) : le PNJ [member actor] s'avance légèrement vers
 ##   [member target] (comme « face ») puis revient ;
-## - [constant Kind.DESPAWN] (jalon 4) : le PNJ [member actor] quitte la carte.
+## - [constant Kind.DESPAWN] (jalon 4) : le PNJ [member actor] quitte la carte ;
+## - [constant Kind.BATTLE] (jalon 4B, jalon-04.md §14) : combat contre le dresseur
+##   [member trainer_id] ; [member player_pokemon] et [member foe_pokemon] : PNJ Pokémon de
+##   la carte qui combattent (cachés pendant le combat, facultatifs) ; [member win_flags] ou
+##   [member lose_flags] levés selon l'issue ([method outcome_flags]) ;
+## - [constant Kind.GIVE] (jalon 4B) : [member count] objets [member item_id] ajoutés au Sac.
+## Conditions d'étape (jalon 4B) : [member if_flags] / [member unless_flags] ; une étape dont
+## les conditions ne sont pas remplies au moment de la jouer est sautée ([method applies]).
+## Elles servent aux suites qui dépendent de l'issue d'un combat (victoire / défaite), qu'une
+## variante de scène, choisie au lancement, ne peut pas connaître.
 ## Alias (jalon 4 §3.6) : partout où un acteur ou une cible d'acteur est attendu,
 ## « $nom » ([method is_alias]) désigne un PNJ choisi au lancement de la scène
 ## (CutsceneDirector.play(id, alias)). La bibliothèque valide sa forme ; il est résolu
 ## par le directeur au début de chaque étape.
 
 ## Nouvelles valeurs en fin d'enum (ordre de [constant TYPE_KEYS]).
-enum Kind { WAIT, DIALOGUE, FACE, SET_FLAGS, SPAWN, MOVE, CHANGE_MAP, HOP, LEAN, DESPAWN }
+enum Kind {
+	WAIT, DIALOGUE, FACE, SET_FLAGS, SPAWN, MOVE, CHANGE_MAP, HOP, LEAN, DESPAWN, BATTLE, GIVE,
+}
 
 ## Clé de type de chaque étape dans les fichiers, dans l'ordre de [enum Kind].
 const TYPE_KEYS: Array[String] = [
 	"wait", "dialogue", "face", "set", "spawn", "move", "change_map", "hop", "lean",
-	"despawn",
+	"despawn", "battle", "give",
 ]
 ## Préfixe d'un alias d'acteur (« $player_starter »).
 const ALIAS_PREFIX: String = "$"
@@ -63,6 +74,18 @@ var optional: bool = false
 var map_id: StringName = &""
 var spawn: StringName = &""
 var facing: Vector2i = Vector2i.ZERO
+## Étape « battle » : dresseur, PNJ Pokémon qui combattent, drapeaux selon l'issue.
+var trainer_id: StringName = &""
+var player_pokemon: StringName = &""
+var foe_pokemon: StringName = &""
+var win_flags: Array[StringName] = []
+var lose_flags: Array[StringName] = []
+## Étape « give » : objet et quantité.
+var item_id: StringName = &""
+var count: int = 1
+## Conditions de l'étape (toutes levées / aucune levée), vides = toujours jouée.
+var if_flags: Array[StringName] = []
+var unless_flags: Array[StringName] = []
 
 
 ## Nom du type dans les fichiers (« wait », « dialogue »…).
@@ -94,10 +117,64 @@ static func alias_name(ref: StringName) -> StringName:
 	return StringName(String(ref).substr(1)) if is_alias(ref) else &""
 
 
-## Alias utilisés par l'étape (acteur, cible, suiveur, voisin), sans « $ », dans cet ordre.
+## Vrai si l'étape doit être jouée avec les drapeaux [param flags] (null = aucun drapeau) :
+## toutes ses conditions « if » levées et aucune de ses conditions « unless ».
+func applies(flags: StoryFlags) -> bool:
+	if flags == null:
+		return if_flags.is_empty()
+	return flags.has_all(if_flags) and flags.has_none(unless_flags)
+
+
+## Drapeaux à lever pour l'issue [param outcome] d'un combat ([enum Battle.Outcome]) :
+## [member win_flags] pour WIN, [member lose_flags] pour LOSS, rien sinon.
+func outcome_flags(outcome: int) -> Array[StringName]:
+	match outcome:
+		Battle.Outcome.WIN:
+			return win_flags.duplicate()
+		Battle.Outcome.LOSS:
+			return lose_flags.duplicate()
+	return []
+
+
+## Copie indépendante de l'étape (le directeur y remplace les alias ; les étapes de la
+## bibliothèque ne sont jamais modifiées). La [member spec] d'un « spawn » est partagée.
+func copy() -> CutsceneStep:
+	var other := CutsceneStep.new()
+	other.kind = kind
+	other.seconds = seconds
+	other.dialogue_id = dialogue_id
+	other.actor = actor
+	other.target = target
+	other.flags = flags.duplicate()
+	other.spec = spec
+	other.path = path.duplicate()
+	other.cell = cell
+	other.near = near
+	other.offsets = offsets.duplicate()
+	other.run = run
+	other.follower = follower
+	other.keep_facing = keep_facing
+	other.optional = optional
+	other.map_id = map_id
+	other.spawn = spawn
+	other.facing = facing
+	other.trainer_id = trainer_id
+	other.player_pokemon = player_pokemon
+	other.foe_pokemon = foe_pokemon
+	other.win_flags = win_flags.duplicate()
+	other.lose_flags = lose_flags.duplicate()
+	other.item_id = item_id
+	other.count = count
+	other.if_flags = if_flags.duplicate()
+	other.unless_flags = unless_flags.duplicate()
+	return other
+
+
+## Alias utilisés par l'étape (acteur, cible, suiveur, voisin, Pokémon d'un combat), sans
+## « $ », dans cet ordre.
 func get_aliases() -> Array[StringName]:
 	var found: Array[StringName] = []
-	for ref: StringName in [actor, target, follower, near]:
+	for ref: StringName in [actor, target, follower, near, player_pokemon, foe_pokemon]:
 		var alias := alias_name(ref)
 		if not alias.is_empty() and not found.has(alias):
 			found.append(alias)

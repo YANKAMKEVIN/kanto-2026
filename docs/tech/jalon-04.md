@@ -73,6 +73,8 @@ Tests : `tests/unit/test_game_rng.gd` (graine reproductible, bornes, `chance`), 
 
 ### 2.2 Avant le 4B (T5)
 
+> **Obsolète pour le 4B là où le §14 diffère** (alignement sur le code réel, 2026-09-26) : T5 fait (§12) ; restes (`BattleLayout`, étape `battle`) et fondations ajoutées : §14.3, §14.4, §14.12.
+
 | Fichier | `class_name` | Rôle |
 |---|---|---|
 | `game/battle/battler.gd` | `Battler` | Le Pokémon **en jeu** d'un camp : référence au `Pokemon`, **niveaux de stats** (`atk def spa spd spe`, −6..+6, plus `acc eva` réservés à 0), `effective_stat(stat, ignore_drops := false, ignore_boosts := false)`, multiplicateur moderne max(2, 2+s)/max(2, 2−s), `change_stage(stat, delta) -> int` (variation réellement appliquée, 0 si déjà au bout). |
@@ -290,6 +292,8 @@ Rien n'est changé dans les 7 étapes du 3B. Ajouts (validés par `CutsceneLibra
 
 ### 3.7 Le combat dans le décor actuel (4B)
 
+> **Obsolète pour le 4B là où le §14 diffère** (alignement sur le code réel, 2026-09-26) : composition recomposée (décision n° 10), `BattleStage` et `BattleDirector` réels : §14.2 et §14.4.
+
 **Décision** : le combat **ne change pas de scène**. Il se joue **par-dessus la carte courante**, qui reste chargée, éclairée et animée derrière (dossier 05 §2, décision préférée de Kevin, « continuité totale »). Pas de `SceneRouter.change_map`, pas de fondu au noir. Le même mécanisme servira sur la Route 1 (jalon 5).
 
 **Composition** (défaut, Q23) : le monde est vu du dessus, alors que `combat-v1.webp` montre une vue de face avec horizon. En 2D, on ne tourne pas la caméra : la carte reste **le fond réel du combat** (même pièce, même lumière), et les deux Pokémon passent en **sprites de combat** (dos pour le joueur, face pour l'adversaire), composés **en espace écran** comme sur la référence :
@@ -330,6 +334,8 @@ Déroulé : `player.set_input_enabled(false, REASON)` (synchrone) → `battle_st
 - **Fiche du starter** : `StarterSheet` (`game/ui/starter/starter_sheet.tscn`, `CanvasLayer` `LAYER_MENU`) : carte sombre translucide (`PANEL_BG`, coins `RADIUS`), **à gauche de l'écran**, centrée verticalement, pour laisser voir la table et le joueur ; NOM (`FONT_TITLE`), pastilles de type (icône + nom, couleur du type), phrase en italique (`FONT_BODY`), deux boutons ≥ `TOUCH_MIN` : **CHOISIR** (accent) et **RETOUR**. Entrée en glissement 40 px + fondu (`ANIM_PANEL`). Pas de statistiques (dossier 02 §3 : « jamais de fiche technique »). Sur Mac : clic souris ; `interact` = CHOISIR n'est **pas** branché (évite un choix par un appui de trop).
 - **Icônes de type** SVG : `assets/ui/icons/types/normal.svg`, `grass.svg`, `poison.svg`, `fire.svg`, `water.svg` (les autres avec leurs premiers Pokémon).
 
+> **Obsolète pour le 4B là où le §14 diffère** : composants livrés par `jalon-04b-ui` et API réelle de `BattleHud` : §14.1 et §14.11 (T7).
+
 **4B** — `BattleHud` (`game/ui/battle/battle_hud.tscn`, `CanvasLayer` `LAYER_BATTLE_HUD = 12`), d'après `combat-v1.webp` et `combat-capacites-v1.png.png` :
 - **Carte adversaire** (haut droite) : NOM, ♂/♀, « Nv. 5 », barre de PV **sans chiffres**. **Carte joueur** (bas gauche) : même structure **avec** « 19 / 19 », et au-dessus **6 pastilles d'équipe** (Poké Ball = Pokémon présent, gris = vide). Cartes **translucides** (`PANEL_BG`, comme la boîte de dialogue : réponse proposée au « point à trancher » du dossier 05, Q17).
 - **Barre de PV** (`HpBar`) : vert > 50 %, jaune > 20 %, rouge ≤ 20 % ; descente animée (`HP_TWEEN` 0,4 s), plus rapide sur un gros coup (> 25 % des PV max, `HP_TWEEN_FAST`) avec vibration ; légère pulsation de la carte sous 20 % (dossier 05 §12).
@@ -344,6 +350,7 @@ Déroulé : `player.set_input_enabled(false, REASON)` (synchrone) → `battle_st
 ### 3.9 `GameState` et drapeaux
 
 > **Obsolète pour le 4A là où le §13 diffère** (alignement sur le code réel, 2026-09-26) : drapeaux du 4A (qui lève `starter_chosen`, `oak_lab_exit`) : §13.3.
+> **Obsolète pour le 4B là où le §14 diffère** : drapeaux du 4B (`rival_battle_done`, `rival_lab_won` / `_lost`, `rival_left_lab`) et `GameState.bag` : §14.5 et §14.6.
 
 `GameState` (autoload, sans `class_name`) garde son rôle — l'état de la partie — et gagne trois champs :
 ```gdscript
@@ -367,6 +374,8 @@ Il ne connaît toujours aucun autre autoload. `Boot` le passe par `setup` à ceu
 Les noms `taken_<espèce>` sont formés par le code à partir des identifiants de `starters.json` : c'est une convention de nommage, pas une règle sur une espèce. Le test de 3A « chaque drapeau lu est levé quelque part » (étendu en 3B aux scènes et aux PNJ) s'étend aux drapeaux levés par code : `StarterChoice.get_set_flags(offer)` les énumère.
 
 ### 3.10 Signaux et flux
+
+> **Obsolète pour le 4B là où le §14 diffère** (alignement sur le code réel, 2026-09-26) : flux du 4B : §14.10.
 
 ```
 4A
@@ -448,6 +457,8 @@ Textes : **exactement** ceux du dossier 02 (§7 à §10), une réplique « … �
 Aucune autre réplique n'est écrite : **Maya après le starter**, Chen et le rival après le combat, une éventuelle indication de Chen pendant le combat et la sortie du labo avant le choix sont des **questions** (Q3, Q14, Q19, Q22). Rien n'est marqué `draft` dans les dialogues.
 
 ### 4.2 Scènes
+
+> **Obsolète pour le 4B là où le §14 diffère** (alignement sur le code réel, 2026-09-26) : suite de la scène après le combat : §14.7 ; dialogues : §14.8.
 
 > **Obsolète pour le 4A là où le §13 diffère** (alignement sur le code réel, 2026-09-26) : `oak_intercept` = variante 1 de `route1_grass` ; scène `starter_chosen` et sortie empêchée : §13.5 et §13.6.
 
@@ -585,6 +596,8 @@ Chaque tâche finit par un essai sur le S24 (capture et retour de Kevin) avant l
 - **CA à vérifier et rapporter** : les répliques du §4.1 **identiques** au dossier 02 ; légende lisible puis effacée ; RENCONTRER seulement face à un starter ; fiche lisible, boutons confortables au pouce, RETOUR fiable ; pour les **trois** choix, le bon Pokémon du rival ; pendant toute la scène, joystick et boutons cachés, le joueur ne bouge pas seul ; sortie du labo avant le choix puis retour (légende, RENCONTRER) ; après le choix, hautes herbes franchissables, starter restant sur la table ; 60 fps pendant les sauts et la marche du rival ; aucune erreur `PokemonData`, `StarterOffer`, `CutsceneLibrary`, `NpcRoster` dans logcat.
 
 ### 4B — le premier combat
+
+> **Obsolète pour le 4B là où le §14 diffère** (alignement sur le code réel, 2026-09-26) : T6 à T9 : §14.11.
 
 #### T5 — architecte-godot : fondations du 4B
 - §2.2 : moteur de combat, IA, dresseurs, textes, placement, étape `battle` ; données `data/trainers/rival.json` et `data/battle/messages.json`.
@@ -1075,3 +1088,326 @@ Remplace, là où ils diffèrent, §13.4 (pas du joueur, atterrissage, arrêt du
 - **Tassement à l'atterrissage** en nearest : accepté provisoirement par Kevin (polish d'animation reporté, voir `etat-projet.md`, « Reportés »).
 - **QA R2** : plus aucune rotation de sprite pixel art. `Npc.HOP_STYLE_PARAMS` : `wiggle` remplacé par `sway` (décalage horizontal alterné pendant les rebonds, Carapuce 6 px) et `squash` (compression verticale de l'atterrissage, par paliers, 0,08 s : calme 4 %, enthousiaste 10 %, joueur 6 %). En vol, le Pokémon est dessiné au-dessus des personnages (`z_index` 1) ; aucun saut ne survole plus un personnage (voir ci-dessus).
 
+
+---
+
+## 14. Alignement du 4B sur le code réel (2026-09-26)
+
+Fait sur la branche `jalon-04b` (`main` avec le 4A validé + fusion de `jalon-04b-ui`, **1033 tests verts** au départ), **avant T6**. Cette section **remplace, pour le 4B**, ce qui diffère dans §2.2 (reportés), §3.1, §3.6 (étape `battle`), §3.7, §3.8 (4B), §3.9 (drapeaux du 4B), §3.10 (flux 4B), §4.2 (suite de la scène), §5 (T6 à T9) et §7. Les **décisions de Kevin du §8** priment toujours ; ce qui suit les applique (n° 5, 6, 7, 8, 9, 10, 12, 13, 15, 16 et Q32 du jalon 5 : les 5 Poké Balls).
+
+### 14.1 État réel au départ du 4B
+
+| Sujet | Dans le code |
+|---|---|
+| Moteur | `Battle` (`start`, `submit`, `get_usable_moves`, `is_legal`, `get_state`, `get_outcome`, `get_player_side`, `get_foe_side`), `BattleSide.new(party, is_player, trainer_name, ai)`, `BattleAction.move(index)` / `STRUGGLE`, `BattleEvent` (`SideId` ; chaque événement porte l'état d'après), `BattleText.lines(event, data, trainer)`, `TrainerLibrary.new(data)` → `get_trainer`, `build_team(trainer_id, starter, rng)`, `TrainerData` (`heal_after`, `can_lose`, `gives_exp` faux, `prize_money` 0, `end_message` faux pour `rival_lab`, `make_ai()`). Aucune règle ne manque pour le premier combat. |
+| Interface (`game/ui/battle/`, branche `jalon-04b-ui`) | Composants **autonomes, non assemblés** : `BattleWidget` (base : `slide_in` / `slide_out`, `speed_scale`, `haptic_played`), `BattleInfoCard` (`set_view`, `animate_hp`, `play_hit(critical)`), `HpBar`, `PartyPips` (`set_party`), `ActionGrid` (`show_actions(enabled)`, `action_selected`, constantes `ATTACK BAG TEAM RUN`), `MoveGrid` + `MoveCard` + `MoveDetailSheet` (`show_moves(views)`, `move_selected`, pression longue), `BattleBackButton` (`back_requested`), `BattleMessageBanner` (`show_message` coroutine, avance au toucher), `BattleHudLayout` (emplacements), vues `BattleCardView`, `BattleMoveView`. **Pas** de `BattleHud` qui les assemble ; `test_ui_theme.gd` interdit à `game/ui/` toute classe du combat ou des données. |
+| Scène | `data/cutscenes/starter.json` finit par `rival_challenge`, `despawn $player_starter`, `despawn $rival_starter`, `set rival_challenged`. Le rival est alors en (7, 7), son Pokémon en (8, 7) ; le joueur et son starter : (10, 7) + (11, 6) (Bulbizarre), (11, 7) + (10, 7) (Salamèche), (12, 6) + (13, 6) (Carapuce) ; Chen en (8, 4), Maya en (5, 3). |
+| Dialogues | Fin provisoire du 4A : `oak_lab_waiting` `if: [starter_chosen]` (« On dirait que le choix est réciproque. ») et `rival_lab_waiting` `if: [rival_challenged]` (« On ne va quand même pas… »). Chen et Maya ont déjà leurs variantes `if: [rival_battle_done]` (décision n° 8, Maya accordée). `rival_battle_done` est dans `FUTURE_FLAGS` de `test_dialogue_data.gd`. |
+| Absents | `BattleStage`, `BattleLayout`, `BattleHud`, `BattleDirector`, sprites de combat, étapes `battle` / `give`, Sac, objets, toast. |
+
+Écarts de nom avec le plan (plan → code) : `BattleHud.set_card(side, view)` reçoit un **`BattleHud.Side`** (enum propre à l'UI : l'UI ne connaît pas `BattleEvent.SideId`) ; `TrainerLibrary.load_dir()` puis `build_team(id, starter, rng)` (§13.1) ; `BattleText.lines` renvoie **plusieurs** phrases.
+
+### 14.2 Rejouer le journal : `BattlePlayback`, `BattleViews` (faits) et `BattleDirector` (T8)
+
+**Fait sur cette branche** (classes pures, `game/battle/`, testées) :
+- `BattleBeat` : un temps de mise en scène — `MESSAGE` (texte), `SEND_OUT`, `MOVE` (`category` de la capacité), `DAMAGE` (coup **et** barre de PV ensemble ; aussi le contrecoup), `STAT`, `FAINT` ; `event` (l'événement d'origine, qui porte les PV d'après) ; `is_big_hit(threshold)`.
+- `BattlePlayback.beats(event, texts, data, trainer) -> Array[BattleBeat]` : l'ordre de jeu, sans rien écrire (phrases de `BattleText`) :
+
+| Événement | Temps, dans l'ordre |
+|---|---|
+| `BATTLE_STARTED` | message (« Le Rival veut se battre ! », `draft`, Q-K) |
+| `SENT_OUT` | message (« Le Rival envoie Carapuce ! », « En avant, Salamèche ! »), puis `SEND_OUT` |
+| `TURN_STARTED` | rien |
+| `MOVE_USED` | message (« Salamèche utilise Griffe ! »), puis `MOVE` |
+| `MOVE_MISSED`, `NO_EFFECT`, `STAT_UNCHANGED` | message |
+| `DAMAGE`, `RECOIL` | `DAMAGE`, puis « Coup critique ! », « C'est super efficace ! » / « Ce n'est pas très efficace... », ou la phrase du contrecoup |
+| `STAT_CHANGED` | `STAT`, puis le message |
+| `FAINTED` | `FAINT`, puis « Carapuce est K.O. ! » |
+| `BATTLE_ENDED` | **rien contre le rival** (`end_message` faux, décision n° 15) ; « Tu as battu… » pour les autres dresseurs |
+
+- `BattleViews` : `card(event)` (SENT_OUT → `BattleCardView`, PV chiffrés du côté du joueur seulement), `card_gender`, `moves(pokemon, data)` (→ `BattleMoveView` : nom, type et son nom, catégorie, PP, puissance, précision, description), `move_category`, `TRAINER_BATTLE_ACTIONS = { attack: true }` (décision n° 12 : SAC, ÉQUIPE, FUITE visibles et atténués).
+
+**`BattleDirector`** (`game/battle/battle_director.gd`, `Node`, enfant de `Boot`, **T8**) — le seul à jouer un combat :
+```gdscript
+class_name BattleDirector
+extends Node
+signal battle_started(trainer_id: StringName)
+signal event_played(event: BattleEvent)            # après les temps de l'événement (tests, sons futurs)
+signal battle_finished(trainer_id: StringName, outcome: int)
+const REASON: StringName = &"battle"
+var speed_scale: float = 1.0                       # 0 = instantané (tests) ; relayé à la scène et à la HUD
+func setup(data: PokemonData, trainers: TrainerLibrary, texts: BattleText, stage: BattleStage,
+		hud: BattleHud, player: Player, state: Node) -> void   # state : GameState ou instance neuve
+## Coroutine : joue le combat, renvoie Battle.Outcome (NONE si refusé). world_actors :
+## &"player" / &"foe" → identifiant du PNJ Pokémon de map qui combat (facultatifs).
+func run(trainer_id: StringName, map: GameMap,
+		world_actors: Dictionary[StringName, StringName]) -> int
+func is_running() -> bool
+func get_battle() -> Battle                        # tests (null hors combat)
+```
+Déroulé de `run` :
+1. Refus (`push_error`, `NONE`) si un combat tourne, si le dresseur est inconnu, si l'équipe du joueur n'a aucun Pokémon valide. Sinon, **dans l'appel** : `player.set_input_enabled(false, REASON)`, `battle_started`.
+2. Camps : `BattleSide.new(state.party, true)` ; `BattleSide.new(trainers.build_team(id, state.starter_species, state.rng), false, trainer.name, trainer.make_ai())` ; `Battle.new(…, data, state.rng)`.
+3. `await stage.enter(camera, player_npc, foe_npc, player_species, foe_species)` (§14.4) ; `hud.set_party(state.party.size())`.
+4. Joue `battle.start()`, puis **boucle** tant que `CHOOSING` : `hud.show_actions(BattleViews.TRAINER_BATTLE_ACTIONS)` ; ATTAQUER → si `get_usable_moves()` est vide, `BattleAction.move(STRUGGLE)` directement (règle des jeux : Lutte sans choix) ; sinon `hud.show_moves(BattleViews.moves(active, data))` ; « ‹ » revient à la grille ; `move_selected(i)` → `battle.submit(BattleAction.move(i))` ; joue le journal.
+5. Jouer un événement = jouer ses temps, dans l'ordre, chacun attendu :
+
+| Temps | Appels |
+|---|---|
+| `MESSAGE` | `await hud.show_message(text)` |
+| `SEND_OUT` | `stage.show_pokemon(side, species)` (sans effet s'il est déjà là : labo) ; `hud.set_card(side, BattleViews.card(event))` |
+| `MOVE` | `await stage.play_move(side, category)` |
+| `DAMAGE` | `stage.play_hit(cible, critical)` **et** `await hud.animate_hp(cible, hp, max_hp, beat.is_big_hit(UiTokens.HP_BIG_HIT))` en même temps (la HUD vibre : `HAPTIC_HIT_MS`, `HAPTIC_CRIT_MS` sur un critique) |
+| `STAT` | `await stage.play_stat(side, event.stages > 0)` |
+| `FAINT` | `await stage.play_faint(side)` ; `hud.hide_card(side)` |
+puis `event_played.emit(event)`.
+6. Fin : `conclusion := BattleConclusion.resolve(trainer, outcome)` ; `await hud.hide_all()` ; `await stage.exit()` (les PNJ Pokémon reviennent à leur place, caméra rendue) ; `if conclusion.heal_party: state.party.heal_all()` (« Prof. Chen soigne les deux Pokémon » : l'équipe du rival n'est pas gardée) ; `player.set_input_enabled(true, REASON)` ; `battle_finished` ; renvoie l'issue. Ni XP (`gives_exp` faux) ni argent (`prize_money` 0).
+
+Le directeur ne lit **aucun** autoload (`GameState` par `setup`), n'appelle jamais `SceneRouter`, ne touche pas au monde hors des deux PNJ Pokémon qu'il cache (par `BattleStage`). Pas d'indication de Chen pendant le combat (décision n° 9) : rien n'est prévu pour.
+
+### 14.3 Étapes de scène `battle` et `give`, conditions d'étape (validation faite, lecture en T8)
+
+**Fait** (`CutsceneStep`, `CutsceneLibrary`, testés) :
+
+| Ajout | Forme | Effet (lu par le `CutsceneDirector` en **T8**) |
+|---|---|---|
+| `battle` | `"battle": dresseur`, `"player_pokemon"`, `"foe_pokemon"` (PNJ ou alias, pas « player », facultatifs), `"win"`, `"lose"` (listes non vides, facultatives) | `var outcome := await _battle_runner.run(step.trainer_id, _map, { &"player": …, &"foe": … })` (alias résolus) ; lève `step.outcome_flags(outcome)`. Sans runner (`set_battle_runner` jamais appelé) ou issue `NONE` : `push_error`, étape sautée. Le verrou `cutscene` reste posé pendant le combat. |
+| `give` | `"give": objet`, `"count"` (entier ≥ 1, 1 par défaut) | `bag.add(item_id, count)` puis `item_given(item_id, count)` (signal) ; objet inconnu de l'`ItemLibrary` ou pas de Sac : `push_error`, étape sautée. |
+| `if` / `unless` sur **toute étape sauf `spawn`** | listes de drapeaux | L'étape n'est jouée que si ses conditions sont remplies **au moment de la jouer** (`CutsceneStep.applies`, déjà lu par le directeur : fait). C'est ce qui permet une suite **selon l'issue du combat** (mise en scène différente après une victoire et une défaite), qu'une variante de scène — choisie au lancement — ne peut pas connaître. |
+
+Aussi : `CutsceneStep.copy()` (le directeur l'utilise pour résoudre les alias, dont `player_pokemon` / `foe_pokemon`) ; `CutsceneLibrary.get_set_flags()` compte les drapeaux `win` / `lose` ; `get_condition_flags()` compte les conditions d'étape ; `get_trainer_ids()` et `get_item_ids()` pour les tests de données. Enum `CutsceneStep.Kind` : `BATTLE`, `GIVE` en fin (les valeurs du 3B et du 4A ne bougent pas).
+
+À ajouter en T8 au directeur : `set_battle_runner(runner: BattleDirector)`, `set_inventory(bag: Bag, items: ItemLibrary)`, `signal item_given(item_id: StringName, count: int)`, lecture des deux étapes.
+
+### 14.4 La vue de combat dans le vrai labo (décision n° 10) — `BattleStage`, `BattleLayout` (T6)
+
+Le combat se joue **dans le labo, recomposé** : ni écran noir, ni décor générique, ni simple zoom brut. Le labo réel reste chargé et vivant derrière ; on le **recadre**, l'**assombrit**, on le **floute légèrement** (profondeur de champ), et les deux Pokémon deviennent de **grands sprites de combat** composés en espace écran comme sur `combat-v1.webp` (le tien de dos au premier plan à gauche, l'adversaire de face au centre droit). Le tapis central du labo (sol dégagé, `labo-chen-v1.png`) est l'arène naturelle : c'est lui que le recadrage met sous les Pokémon.
+
+**`BattleLayout`** (`game/battle/battle_layout.gd`, pur, T6, testé) :
+```gdscript
+static func anchors(view_size: Vector2) -> Dictionary
+	# { player_feet: Vector2, foe_feet: Vector2, player_scale: int, foe_scale: int } en pixels écran
+static func focus(cells: Array[Vector2i]) -> Vector2
+	# centre monde du cadrage : milieu des cases des combattants et de leurs dresseurs,
+	# décalé vers le haut d'une demi-case (le sol occupe le bas de l'image)
+static func sprite_rect(feet: Vector2, scale: int, native: Vector2i) -> Rect2
+```
+Valeurs de départ (à régler sur capture, en fractions de l'écran) : pieds du Pokémon du joueur (0,30 ; 0,76), ×4 (256 px) ; adversaire (0,66 ; 0,52), ×3 (192 px) (Q24). Contrainte testée à 1920 × 1080 et 2340 × 1080 : les rectangles des deux sprites sont **dans l'écran** et ne chevauchent **ni** la carte adverse, **ni** la carte joueur et ses pastilles, **ni** la grille d'actions, **ni** le bandeau des capacités (`BattleHudLayout.rect`).
+
+**`BattleStage`** (`game/battle/battle_stage.tscn` + `.gd`, `CanvasLayer` `UiTokens.LAYER_BATTLE_STAGE`, T6) :
+```gdscript
+class_name BattleStage
+extends CanvasLayer
+var speed_scale: float = 1.0
+func enter(camera: Camera2D, player_pokemon: Node2D, foe_pokemon: Node2D,
+		player_species: StringName, foe_species: StringName) -> void   # coroutine, ~1 s
+func show_pokemon(side: BattleEvent.SideId, species: StringName) -> void  # sans effet s'il est affiché
+func play_move(side: BattleEvent.SideId, category: MoveData.Category) -> void   # coroutine
+func play_hit(side: BattleEvent.SideId, critical: bool) -> void                  # coroutine
+func play_stat(side: BattleEvent.SideId, rising: bool) -> void                   # coroutine
+func play_faint(side: BattleEvent.SideId) -> void                                # coroutine
+func exit() -> void                                                              # coroutine, ~0,6 s
+func reset() -> void            # remise à l'état initial immédiate (tests, abandon)
+func is_active() -> bool
+```
+Composition (arbre) : `Backdrop` (`ColorRect` plein écran, shader : voile `BATTLE_DIM` + vignettage + flou léger de l'arrière-plan via `BackBufferCopy` ; le flou se désactive par une constante si le S24 perd des images) ; `PlayerShadow`, `PlayerSprite`, `FoeShadow`, `FoeSprite` (`Sprite2D`, `TEXTURE_FILTER_NEAREST`, ombres ovales au sol) ; `Flash` (éclair blanc). Les PNJ humains (joueur, rival, Chen, Maya) restent **dans le labo**, derrière le voile : on reconnaît la pièce et les personnages.
+
+Transition d'entrée (~1 s, dossier 05 §3) : 0–0,4 s voile, vignettage et **recadrage** de la caméra du joueur (zoom `UiTokens.BATTLE_ZOOM` porté à ~1,35 à régler, centre `BattleLayout.focus`, limites de caméra levées puis rendues à la sortie) ; 0,2–0,7 s chaque PNJ Pokémon du monde est caché et son sprite de combat **part de sa position à l'écran** (`get_global_transform_with_canvas`) et de sa taille dans le monde pour **glisser et grandir** jusqu'à son ancre, avec l'éclair au moment où la vue de face / de dos remplace le sprite du monde ; 0,7–1,0 s léger rebond d'arrivée. **Aucun écran noir** : le labo est visible à chaque image. Sortie : l'inverse (sprites ramenés à leur place, PNJ réaffichés, caméra et limites rendues), puis rien ne reste de la scène.
+
+Animations provisoires (dossier 05 §4, §9) : attaque physique = élan de ~60 px vers l'adversaire et retour ; spéciale = pulsation lumineuse ; statut = pulsation de teinte sur la cible (vers le haut / le bas) ; coup = clignotement + tremblement du sprite (et, très peu, de la scène), retour immédiat au cadrage ; K.O. = chute de ~40 px + fondu. Tween uniquement, rien dans `_process`.
+
+Sprites : `tools/gen_placeholder_battlers.gd` → `assets/sprites/pokemon/placeholder/<espèce>_front.png` et `_back.png`, 64 × 64 natif, pour les 3 starters (silhouettes et couleurs de leurs sprites du monde ; flamme de Salamèche lisible de dos). `BattleStage.sprite_path(species, back)` est la seule convention de chemin.
+
+La lumière dynamique de la phase 10 : le `BattleStage` prendra la teinte ambiante de la carte (`modulate`) ; rien au 4B.
+
+### 14.5 Issue du combat et drapeaux
+
+**Fait** : `BattleConclusion.resolve(trainer, outcome)` (`heal_party`, `prize_money`, `blackout`), testé sur le vrai `rival_lab` : soin quelle que soit l'issue, 0 argent, pas de retour au point de soin (et `gives_exp` faux).
+
+| Drapeau | Levé par | Lu par |
+|---|---|---|
+| `rival_lab_won` / `rival_lab_lost` | étape `battle` (`win` / `lose`) | conditions d'étape de la suite de la scène (§14.7) |
+| `rival_battle_done` | étape `set` **juste après** l'étape `battle` : levé **quelle que soit l'issue** | variantes d'après-combat de Chen et Maya (déjà dans les données) ; il **sort de `FUTURE_FLAGS`** en T8 |
+| `rival_left_lab` | étape `set` après la sortie du rival | présence du PNJ `rival` au labo (`unless`) |
+| `rival_challenged` | dernière étape de la scène (inchangé) | la scène elle-même (`unless`) : un seul passage |
+
+Pas de drapeau pour les Poké Balls : la scène ne se joue qu'une fois.
+
+### 14.6 Le Sac et les 5 Poké Balls (dossier 07 §8)
+
+**Fait** : `game/items/` — `ItemData` (nom, pluriel, genre, catégorie `ball`, `catch_bonus`, description `draft` ; `quantity_text(count)` → « Poké Balls ×5 », `added_text(count)` → « Ajoutées au Sac », accord au genre et au nombre), `ItemLibrary` (`data/items/*.json`, validation stricte), `Bag` (`add`, `remove`, `count_of`, `has`, `get_ids`, `clear`, `to_dict` / `load_dict`) ; `data/items/items.json` (la Poké Ball) ; **`GameState.bag`**, vidé par `new_game()`. Conforme au §2.4 du plan du jalon 5 (qui l'avait prévu pour le 5D) : le 5D n'aura plus qu'à brancher la capture.
+
+Remise (T8) : étape `give` → `bag.add(&"poke_ball", 5)` → `item_given` → `Boot` → **toast** « Poké Balls ×5 » / « Ajoutées au Sac » (bible §6, en haut, ~2 s, jamais bloquant) et vibration « tic » (bible §12). Pas de tutoriel de capture. Le SAC reste atténué pendant le combat du rival (il a lieu avant la remise, et une Ball ne s'utilise jamais contre un dresseur).
+
+### 14.7 La suite de la scène `starter_chosen` (`data/cutscenes/starter.json`, T8)
+
+Les étapes du 4A jusqu'à `{ "dialogue": "rival_challenge" }` sont **inchangées**. Tout ce qui suit remplace les trois dernières étapes (`despawn`, `despawn`, `set`) :
+```json
+{ "battle": "rival_lab", "player_pokemon": "$player_starter", "foe_pokemon": "$rival_starter",
+	"win": ["rival_lab_won"], "lose": ["rival_lab_lost"] },
+{ "set": ["rival_battle_done"] },
+{ "face": "rival", "to": "$rival_starter" },
+{ "despawn": "$rival_starter" },
+{ "wait": 0.8, "if": ["rival_lab_won"] },
+{ "dialogue": "rival_lab_won", "if": ["rival_lab_won"] },
+{ "move": "rival", "path": ["down"], "if": ["rival_lab_won"] },
+{ "dialogue": "rival_lab_won_leaving", "if": ["rival_lab_won"] },
+{ "face": "rival", "to": "player", "if": ["rival_lab_lost"] },
+{ "dialogue": "rival_lab_lost", "if": ["rival_lab_lost"] },
+{ "move": "rival", "to": [7, 9] },
+{ "despawn": "rival" },
+{ "set": ["rival_left_lab"] },
+{ "wait": 0.6 },
+{ "face": "oak", "to": "player" },
+{ "face": "player", "to": "oak" },
+{ "dialogue": "oak_after_battle" },
+{ "wait": 0.4 },
+{ "dialogue": "oak_poke_balls_intro" },
+{ "lean": "oak", "to": "player" },
+{ "give": "poke_ball", "count": 5 },
+{ "wait": 1.2 },
+{ "dialogue": "oak_poke_balls" },
+{ "face": "player", "to": "$player_starter" },
+{ "wait": 0.4 },
+{ "despawn": "$player_starter" },
+{ "set": ["rival_challenged"] }
+```
+Ce que cela donne : « On ne va quand même pas partir sans savoir ce qu'ils savent faire. » → le labo se recompose et le combat commence (≈ 1 s) → fin du combat, le labo revient, les deux Pokémon à leur place, soignés → le rival se tourne vers son Pokémon et **le rappelle** (fondu de 0,2 s provisoire, pas encore d'animation de Ball).
+- **Victoire** : petit silence (0,8 s) ; « ...Pas mal. » ; il regarde sa Poké Ball (`turn` vers le bas) : « On a encore du travail. » ; il regarde le joueur : « La prochaine fois, ce sera différent. » ; il fait un pas vers la sortie, puis « Essaie de ne pas trop prendre de retard. ».
+- **Défaite** : « Pas mal pour un premier combat. » ; petit sourire (pause 0,8 s) ; « Mais je t'avais prévenu : j'étais prêt. » ; « Rattrape-moi quand tu le seras aussi. ».
+- Il **sort** par le tapis (7, 9) et disparaît (`despawn`, fondu) ; `rival_left_lab`.
+- Chen se tourne vers le joueur (le joueur vers lui) : ses 3 répliques ; « Une dernière chose. » ; il s'avance légèrement vers le joueur (`lean` : « il remet quelque chose ») ; **toast « Poké Balls ×5 — Ajoutées au Sac »** ; ses 2 répliques ; le joueur regarde son Pokémon, qui **rentre dans sa Poké Ball** (fondu provisoire) ; `rival_challenged` ; le joueur reprend la main. **Fin du prologue.**
+
+Chemin du rival : (7, 7) → (7, 8) → (7, 9), libres pour les trois choix (aucun personnage n'y est) ; en défaite, il part directement de (7, 7). Les cases de la scène ne sont ni des warps STEP_ON ni des déclencheurs joués par un PNJ (le tapis porte `LabExit`, que seul le joueur déclenche).
+
+### 14.8 Dialogues (`data/dialogues/oak_lab.json`, T8) — textes mot pour mot
+
+Reportés au dossier 02 (« Ajouts de Kevin », « Jalon 4 »), vérifiés par `test_dialogue_data.gd` (chaque page existe mot pour mot dans le dossier ; ≤ `DIALOG_MAX_LINES`).
+
+| id | Locuteur | Pages |
+|---|---|---|
+| `rival_lab_won` | Rival | « ...Pas mal. » · `{ "text": "On a encore du travail.", "turn": { "rival": "down" } }` · `{ "text": "La prochaine fois, ce sera différent.", "turn": { "rival": "player" } }` |
+| `rival_lab_won_leaving` | Rival | « Essaie de ne pas trop prendre de retard. » |
+| `rival_lab_lost` | Rival | « Pas mal pour un premier combat. » · `{ "text": "Mais je t'avais prévenu : j'étais prêt.", "pause": 0.8 }` · « Rattrape-moi quand tu le seras aussi. » |
+| `oak_after_battle` | Prof. Chen | « Pour un premier combat, vous vous êtes bien débrouillés. » · « Mais gagner n'est qu'une partie de ce qu'un Dresseur doit apprendre. » · « Apprends à connaître ton Pokémon. Il fera de même avec toi. » |
+| `oak_poke_balls_intro` | Prof. Chen | « Une dernière chose. » |
+| `oak_poke_balls` | Prof. Chen | « Observer les Pokémon t'apprendra beaucoup. Mais parfois, le meilleur moyen de les comprendre est encore de voyager avec eux. » · « Utilise-les avec discernement. » |
+
+Si la 1re page de `oak_poke_balls` dépasse `DIALOG_MAX_LINES` dans la vraie boîte à 1920 × 1080, elle est coupée **au point** en deux pages (mêmes mots ; le test du dossier vérifie alors chaque moitié) — Q-P.
+
+**Supprimées** (répliques répétées de la fin provisoire du 4A, §13.12) : la variante `if: [starter_chosen]` de `oak_lab_waiting` et la variante `if: [rival_challenged]` de `rival_lab_waiting`. Restent : Chen `rival_battle_done` (décision n° 8) · `starter_offered` (« Prends ton temps. »…) · défaut (3B) ; rival `starter_offered` (« Tu comptes les regarder… ») · défaut (3B). Maya : inchangée (`rival_battle_done` + `starter_female` « elle », `rival_battle_done` « lui », `oak_met`, défaut). L'état « starter choisi, combat pas encore fini » n'est plus jamais atteint par le joueur (la scène s'enchaîne jusqu'au bout), d'où plus de réplique pour lui.
+
+`test_dialogue_data.gd` (T8) : `IDS` + les 6 nouveaux ; `FUTURE_FLAGS` **vide** ; `test_waiting_lines_during_and_after_the_choice` réécrit (Chen 3 variantes, rival 2) ; la liste des dialogues joués par les scènes + les 6.
+
+### 14.9 PNJ du labo (`data/npcs/oak_lab.json`, T8)
+
+`rival` : `"if": ["oak_met"], "unless": ["rival_left_lab"]` (il n'est plus au labo en revenant). Les autres inchangés : le starter restant reste sur la table, observable.
+
+### 14.10 Câblage (`Boot`, T8)
+
+Arbre : §3.1, avec `BattleStage` (instance, `%BattleStage`), `BattleHud` (instance, `%BattleHud`), `BattleDirector` (`%BattleDirector`) ; la **toast** est un enfant de l'`ExplorationHud` (T7). `Boot._ready`, avant `SceneRouter.start` :
+```gdscript
+_trainers = TrainerLibrary.new(_pokemon); _trainers.load_dir()
+_texts.load_file()                                  # BattleText
+_items.load_dir()                                   # ItemLibrary
+%BattleDirector.setup(_pokemon, _trainers, _texts, %BattleStage, %BattleHud, _player, GameState)
+_cutscenes_node.set_battle_runner(%BattleDirector)
+_cutscenes_node.set_inventory(GameState.bag, _items)
+_cutscenes_node.item_given.connect(_on_item_given)  # → _hud.show_toast(item.quantity_text(n), item.added_text(n))
+%BattleDirector.battle_started / battle_finished → _refresh_controls()
+```
+`_refresh_controls()` : contrôles visibles seulement si aucun dialogue, aucune scène, aucune fiche **et aucun combat**. Pendant le combat : `InteractionController` ne vise rien (joueur bloqué), la `DialogueBox` n'est pas utilisée (messages dans la `BattleHud`), le joueur est bloqué pour `cutscene` **et** `battle`. Accesseurs `get_battle_director()`, `get_item_library()` (tests, captures).
+
+Flux :
+```
+scène starter_chosen … dialogue rival_challenge
+ ─► étape battle ─► BattleDirector.run(rival_lab, map, {player: $player_starter, foe: $rival_starter})
+      ─► verrou battle ─► battle_started ─► Boot._refresh_controls
+      ─► BattleStage.enter (labo recomposé, ~1 s) ─► Battle.start
+      ─► [BattleEvent] ─► BattlePlayback.beats ─► BattleHud (messages, cartes, PV) / BattleStage (animations)
+      ─► BattleHud.action_selected / move_selected ─► Battle.submit ─► … ─► BATTLE_ENDED
+      ─► BattleConclusion ─► hud.hide_all ─► stage.exit ─► party.heal_all ─► verrou rendu ─► battle_finished
+ ─► set rival_lab_won | rival_lab_lost ─► set rival_battle_done ─► répliques selon l'issue (conditions d'étape)
+ ─► départ du rival ─► Chen ─► give poke_ball ×5 ─► item_given ─► toast ─► … ─► despawn $player_starter
+```
+
+### 14.11 Découpage du 4B (remplace §5 T6 à T9)
+
+#### T6 — constructeur-monde : la vue de combat dans le labo (sans interface)
+- `tools/gen_placeholder_battlers.gd` ; `BattleLayout` ; `BattleStage` (§14.4) ; scénario de capture `battle_stage` (dans `tools/capture_play.gd`) qui monte le labo après le choix (3 couples), puis joue avec le `BattleStage` seul un journal **réel** du moteur (graine fixe) découpé par `BattlePlayback` — sans `BattleHud` ni `BattleDirector`.
+- **CA** :
+  - `tests/unit/test_battle_layout.gd` : ancres et échelles à 1920 × 1080 et 2340 × 1080 ; sprites dans l'écran, sans chevauchement avec les emplacements de `BattleHudLayout` (cartes, pastilles, grille, capacités, « ‹ ») ; `focus` = milieu attendu pour les 3 placements réels du §14.1.
+  - `tests/integration/test_battle_stage.gd` (mini-carte, deux PNJ Pokémon, `speed_scale = 0`) : `enter` cache les deux PNJ et affiche les deux sprites aux ancres, NEAREST, ×4 de dos / ×3 de face, bonnes textures ; `play_move` / `play_hit` / `play_stat` / `play_faint` se terminent ; `exit` réaffiche les PNJ **sur leur case**, rend zoom, position et limites de caméra à l'identique ; `reset` remet tout à l'état initial ; aucun nœud orphelin ; `enter` pendant un combat actif refusé.
+  - Capture Movie Maker 2340 × 1080 des 3 couples : image pendant l'entrée (labo visible, jamais noir), vue de combat, coup, K.O., sortie. Lues avec Read : **le labo est reconnaissable** (tapis, table, personnages, lumière), Pokémon du joueur de dos en bas à gauche, adversaire de face au centre droit, ombres au sol, rien de coupé, rien là où la HUD viendra.
+  - Import sans erreur ni warning ; `tools/test.sh` vert.
+  - **S24** : Kevin juge la composition (décision n° 10, Q24) **avant** T7.
+
+#### T7 — ui-mobile : `BattleHud` (assemblage des composants) et toast
+- `BattleHud` (`game/ui/battle/battle_hud.tscn/.gd`, `CanvasLayer` `LAYER_BATTLE_HUD`) : place les composants existants avec `BattleHudLayout` et expose :
+```gdscript
+enum Side { PLAYER, FOE }
+signal action_selected(action: StringName)
+signal move_selected(index: int)
+signal back_requested
+var speed_scale: float = 1.0                     # relayé aux composants
+func set_card(side: Side, view: BattleCardView) -> void          # la carte glisse en place
+func hide_card(side: Side) -> void
+func animate_hp(side: Side, hp: int, max_hp: int, big: bool) -> void   # coroutine
+func play_hit(side: Side, critical: bool) -> void                 # carte + vibration
+func set_party(count: int) -> void
+func show_actions(enabled: Dictionary[StringName, bool]) -> void
+func show_moves(views: Array[BattleMoveView]) -> void             # « ‹ » visible, retour géré ici
+func show_message(text: String) -> void                           # coroutine
+func hide_all() -> void                                           # coroutine
+func is_shown() -> bool
+```
+  Une seule zone visible à la fois en bas à droite : grille d'actions, **ou** capacités, **ou** message. « ‹ » : des capacités à la grille (et `back_requested`).
+- **Toast** (`game/ui/components/toast.tscn/.gd`, bible §6) : en haut, titre + détail, icône Poké Ball (`assets/ui/icons/poke_ball.svg`), ~2 s (`TOAST_HOLD`), fondu, **n'intercepte aucun toucher**, vibration « tic » ; `ExplorationHud.show_toast(title, detail)` ; visible **aussi pendant une scène** (les contrôles, eux, restent cachés).
+- **CA** :
+  - `tests/integration/test_battle_hud.gd` : les deux cartes (nom, ♂/♀, « Nv. 5 », PV chiffrés du joueur seulement) ; 6 pastilles dont 1 pleine ; `show_actions(BattleViews…)` n'est pas appelable ici (UI isolée) : on passe `{ &"attack": true }` → ATTAQUER mis en avant, SAC, ÉQUIPE, FUITE atténués et **muets** ; ATTAQUER → **un** `action_selected(&"attack")` ; `show_moves` → cartes, « ‹ » ; un toucher → **un** `move_selected` ; pression longue → fiche **sans** `move_selected` ; « ‹ » → grille ; `show_message` se termine après `BATTLE_MESSAGE_HOLD` ou au toucher ; message et grille jamais visibles ensemble ; `animate_hp` atteint la valeur (plus vite si `big`) ; `hide_all` cache tout ; zones ≥ `TOUCH_MIN` et dans `SAFE_MARGIN` à 1920 et 2340.
+  - `tests/integration/test_toast.gd` : texte et détail affichés, caché après `TOAST_HOLD` + fondus (± 1 image), aucun toucher intercepté, une vibration.
+  - `test_ui_theme.gd` : toujours vert (aucune classe de logique dans `game/ui/`).
+  - Capture (`tools/capture_battle_ui.gd`, sur une capture du labo **recomposé** de T6) : grille, capacités (une sélectionnée), fiche, message, PV bas ; toast « Poké Balls ×5 — Ajoutées au Sac » sur le labo. Comparées à `combat-v1.webp` et `combat-capacites-v1.png`, lues avec Read.
+  - Couleurs, tailles et durées via `UiTokens` uniquement.
+
+#### T8 — constructeur-monde : le premier combat jouable, la fin du prologue
+- `BattleDirector` (§14.2) ; lecture de `battle` et `give` par le `CutsceneDirector` (§14.3) ; câblage de `Boot` (§14.10) ; `data/cutscenes/starter.json` (§14.7) ; `data/dialogues/oak_lab.json` (§14.8, dont les **deux suppressions**) ; `data/npcs/oak_lab.json` (§14.9).
+- **CA** :
+  - `tests/integration/test_battle_director.gd` (mini-carte avec deux PNJ Pokémon, vrais `BattleStage` et `BattleHud`, `GameState` neuf, graine fixe, `speed_scale = 0`, choix simulés par les signaux de la HUD) : `run` bloque le joueur **dans l'appel** (`battle`) ; `event_played` une fois par événement, dans l'ordre du journal ; à chaque `DAMAGE`, PV de la carte = `event.hp` ; la capacité touchée arrive au moteur ; ATTAQUER sans PP → Lutte ; SAC, ÉQUIPE, FUITE sans effet ; victoire → `WIN`, défaite → `LOSS` (graines choisies) ; **aucun** message « Tu as battu… » ni « …a gagné cette fois... » ; équipe soignée (PV et PP) après, quelle que soit l'issue ; aucun argent, aucune XP (`experience` inchangée) ; PNJ Pokémon réaffichés sur leur case, caméra rendue, HUD cachée ; joueur libre s'il n'a pas d'autre raison de blocage ; `run` pendant un combat → `NONE` + erreur ; dresseur inconnu → `NONE` + erreur, joueur libre.
+  - `test_cutscene_director.gd` : `battle` attend la fin, lève `win` **ou** `lose` selon l'issue, alias résolus ; sans runner → erreur, étape sautée ; `give` → Sac +5, `item_given(&"poke_ball", 5)` ; objet inconnu → erreur, Sac inchangé.
+  - `test_cutscene_data.gd` : `get_trainer_ids()` ⊂ dresseurs chargés ; `get_item_ids()` ⊂ objets chargés ; simulation statique de `starter_chosen` **deux fois** (issue gagnée, issue perdue) pour les 3 jeux d'alias : chaque acteur existe à chaque étape jouée ; chemin du rival (7, 7) → (7, 9) libre ; `rival_battle_done` levé dans les deux cas.
+  - `test_dialogue_data.gd` : §14.8 (textes mot pour mot, dans le dossier 02, `FUTURE_FLAGS` vide, deux variantes supprimées).
+  - `tests/integration/test_rival_battle.gd` (vrai `Boot` au labo avec `{ oak_met, oak_lab_reunion, starter_offered }`, texte et animations instantanés, graines pour gagner **et** pour perdre ; le joueur choisit toujours sa 1re capacité), pour **chacun des 3 starters** : choix, scène, combat, fin ; `rival_lab_won` **ou** `_lost`, `rival_battle_done`, `rival_left_lab`, `rival_challenged` ; répliques du rival **de l'issue seulement**, puis les 3 de Chen, « Une dernière chose. », toast « Poké Balls ×5 » / « Ajoutées au Sac », les 2 dernières ; `GameState.bag.count_of(&"poke_ball") == 5` ; rival et starter du joueur absents de la carte ; équipe : 1 Pokémon, PV pleins ; joueur libre, contrôles visibles. Parler à Chen → « Le monde qui vous attend… » ; à Maya → « Alors, c'est lui / elle que tu as choisi ? » selon le sexe ; ressortir puis revenir : rival absent, starter restant sur la table, **aucune** réplique répétée du 4A.
+  - Tous les tests des jalons 1 à 4A restent verts ; import sans erreur ni warning ; 0 SCRIPT ERROR, 0 orphelin.
+  - **Export** : `data/trainers/`, `data/battle/`, `data/items/` dans l'APK (`unzip -l`).
+  - Capture Movie Maker (scénario `rival_battle --starter=<espèce> --outcome=win|lose`) : une image par temps du combat et de la suite. Lues avec Read.
+  - **S24** : le combat complet trois fois, dont une défaite.
+
+#### T9 — qa-mobile : validation du 4B sur le S24
+- **CA à vérifier et rapporter** : transition labo → combat **sans écran noir**, ~1 s, labo reconnaissable ; composition conforme aux réponses de Kevin (décision n° 10) ; ATTAQUER mis en avant, SAC / ÉQUIPE / FUITE atténués et sans effet ; aucune indication de Chen ; capacités lisibles, pression longue fiable sans lancer l'attaque ; PV fluides, couleurs aux seuils, vibration sur un coup, plus forte sur un critique ; messages lisibles, **aucun** message générique de fin ; durée d'un combat chronométrée pour les 3 couples (visé < 1 min) ; victoire **et** défaite (forcer une défaite) : répliques du rival mot pour mot selon l'issue, départ du rival, Chen, toast des Poké Balls, starter rentré dans sa Ball, contrôle rendu ; revenir au labo : aucune réplique répétée du 4A ; **60 fps** pendant l'entrée, les attaques et les barres de PV (le flou d'arrière-plan en particulier) ; aucune erreur `Battle*`, `TrainerLibrary`, `ItemLibrary`, `CutsceneLibrary` dans logcat.
+
+### 14.12 Fondations posées sur cette branche (architecte)
+
+| Fichier | `class_name` | Tests |
+|---|---|---|
+| `game/battle/battle_beat.gd`, `battle_playback.gd` | `BattleBeat`, `BattlePlayback` | `tests/unit/test_battle_playback.gd` (ordre par sorte d'événement ; fin muette contre le rival ; le vrai premier combat rejoué pour les 3 starters : chaque événement joué, PV du moteur) |
+| `game/battle/battle_views.gd` | `BattleViews` | `tests/unit/test_battle_views.gd` |
+| `game/battle/battle_conclusion.gd` | `BattleConclusion` | `tests/unit/test_battle_conclusion.gd` |
+| `game/items/item_data.gd`, `item_library.gd`, `bag.gd` ; `data/items/items.json` | `ItemData`, `ItemLibrary`, `Bag` | `tests/unit/test_item_library.gd`, `test_bag.gd` |
+| `game/autoload/game_state.gd` | — (`bag`) | `test_game_state.gd` (étendu) |
+| `game/systems/cutscene/cutscene_step.gd`, `cutscene_library.gd` | `battle`, `give`, conditions d'étape, `copy()` | `test_cutscene_library.gd` (étendu) |
+| `game/systems/cutscene/cutscene_director.gd` | conditions d'étape lues ; résolution des alias par `copy()` (dont `player_pokemon` / `foe_pokemon`) | `test_cutscene_director.gd` (étendu) |
+| `tests/unit/test_ui_theme.gd` | nouvelles classes de logique interdites dans `game/ui/` | — |
+
+**1076 tests verts** (1033 au départ), import sans erreur ni warning, 0 SCRIPT ERROR, 0 orphelin. Rien n'est encore joué : aucune donnée n'utilise `battle`, `give` ni de condition d'étape avant T8 (le directeur les signalerait « inconnues »). `BattleLayout` reste à T6 : ses valeurs se règlent sur capture.
+
+### 14.13 Questions pour Kevin (propositions par défaut appliquées si rien n'est dit)
+
+- **Q-J — Composition du combat dans le labo** (décision n° 10) : labo recadré sur l'arène du tapis central, zoom ~1,35, voile 20 %, vignettage, **flou léger** de l'arrière-plan, personnages humains visibles derrière le voile, sprites de combat ×4 / ×3 qui **glissent et grandissent depuis leur place dans le labo**. *Par défaut : ainsi, à juger sur capture en T6.* Autre choix : sans flou (plus net, moins « cinéma »), ou personnages humains estompés.
+- **Q-K — « Le Rival veut se battre ! »** : ta décision n° 5 cite l'introduction « Le Rival envoie Carapuce ! ». Après « On ne va quand même pas partir… », la phrase « veut se battre » est redondante. *Par défaut : gardée (message `draft` actuel).* Veux-tu la supprimer pour le rival (même mécanique que `end_message`) ?
+- **Q-L — Quand Chen soigne-t-il ?** *Par défaut : en silence, à la sortie du combat, avant les répliques du rival* (aucun texte ni animation). Veux-tu un geste ou une réplique ?
+- **Q-M — « Il regarde son Pokémon / sa Poké Ball »** (victoire) : son Pokémon vient d'être rappelé. *Par défaut : il baisse les yeux vers sa Ball (`turn` vers le bas) sur « On a encore du travail. ».*
+- **Q-N — Le starter rentre dans sa Ball** : *par défaut à la toute fin, après « Utilise-les avec discernement. »* (il reste près du joueur pendant les paroles de Chen « Apprends à connaître ton Pokémon… »). Autre choix : juste après le combat, en même temps que celui du rival.
+- **Q-O — La remise des Poké Balls** : *par défaut, Chen reste à sa place et s'avance légèrement (« il remet quelque chose »), toast « Poké Balls ×5 — Ajoutées au Sac » en haut de l'écran pendant ~2 s, vibration « tic ».* Autre choix : Chen marche jusqu'au joueur.
+- **Q-P — Longueur de « Observer les Pokémon t'apprendra beaucoup. Mais parfois… voyager avec eux. »** : *par défaut une seule page* ; si elle dépasse 3 lignes dans la boîte, coupée au point en deux pages (mêmes mots).
+- **Q-Q — Fondu de 0,2 s au lieu d'une animation de Poké Ball** (rappel du Pokémon du rival, starter du joueur) : *provisoire, comme au 4A* ; la vraie animation de Ball viendra avec la capture (5D).

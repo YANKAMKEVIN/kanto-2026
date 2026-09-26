@@ -11,6 +11,8 @@ extends GutTest
 ## Jalon 4 (T1) : alias résolus à chaque étape (face, move, near, follower, hop, lean,
 ## despawn), alias absent (étape sautée), hop (attend la fin du saut, refus), lean (aller et
 ## retour sans changer de case), despawn (case libérée, PNJ retiré).
+## Jalon 4B (jalon-04.md §14.3) : conditions d'étape « if » / « unless », évaluées au moment
+## de jouer l'étape (drapeaux levés plus tôt dans la même scène compris).
 
 const ROUTER_SCRIPT := preload("res://game/autoload/scene_router.gd")
 const PLAYER_SCENE := preload("res://game/player/player.tscn")
@@ -103,6 +105,14 @@ const SCENES := {
 	"hop_taken": {"steps": [{"hop": "mom", "to": [13, 4]}, {"set": ["after"]}]},
 	"lean_buddy": {"steps": [{"lean": "$buddy", "to": "player"}, {"set": ["after"]}]},
 	"despawn_buddy": {"steps": [{"despawn": "$buddy"}, {"set": ["after"]}]},
+	"after_battle": {"steps": [
+		{"set": ["won"]},
+		{"set": ["won_line"], "if": ["won"]},
+		{"set": ["lost_line"], "if": ["lost"]},
+		{"set": ["not_won_line"], "unless": ["won"]},
+		{"face": "player", "to": "left", "if": ["lost"]},
+		{"set": ["after"]},
+	]},
 }
 
 var _router: Node
@@ -777,4 +787,19 @@ func test_despawn_frees_the_cell_and_removes_the_npc() -> void:
 	assert_null(_map.get_npc(&"mom"), "PNJ retiré de la carte")
 	assert_true(not is_instance_valid(mom) or mom.is_queued_for_deletion())
 	assert_true(_flags.has_flag(&"after"))
+	assert_push_error_count(0)
+
+
+# --- Jalon 4B : conditions d'étape ----------------------------------------------------
+
+func test_step_conditions_are_read_when_the_step_is_played() -> void:
+	var facing := _player.get_facing()
+	assert_ne(facing, Vector2i.LEFT)
+	assert_true(_director.play(&"after_battle"))
+	await _await_scene_end()
+	assert_true(_flags.has_flag(&"won_line"), "« if » : drapeau levé plus tôt dans la scène")
+	assert_false(_flags.has_flag(&"lost_line"), "« if » non rempli : étape sautée")
+	assert_false(_flags.has_flag(&"not_won_line"), "« unless » : étape sautée")
+	assert_eq(_player.get_facing(), facing, "étape face sautée")
+	assert_true(_flags.has_flag(&"after"), "la scène continue")
 	assert_push_error_count(0)

@@ -46,7 +46,17 @@ extends RefCounted
 ##   (clé « hop_style » de `data/npcs/`), pas de l'étape ;
 ## - lean (jalon 4) : PNJ (pas « player ») qui s'avance légèrement vers « to » (cible de
 ##   « face ») puis revient ;
-## - despawn (jalon 4) : PNJ (pas « player ») qui quitte la carte.
+## - despawn (jalon 4) : PNJ (pas « player ») qui quitte la carte ;
+## - battle (jalon 4B) : identifiant de dresseur (data/trainers/), avec « player_pokemon » et
+##   « foe_pokemon » facultatifs (PNJ ou alias, pas « player » : les Pokémon de la carte qui
+##   combattent) et « win » / « lose » facultatifs (listes non vides de drapeaux levés selon
+##   l'issue) ;
+## - give (jalon 4B) : identifiant d'objet (data/items/), avec « count » facultatif (entier
+##   ≥ 1, 1 par défaut).
+## Toute étape sauf spawn accepte « if » et « unless » (listes de drapeaux) : elle n'est jouée
+## que si ses conditions sont remplies **au moment de la jouer** (suite d'un combat selon son
+## issue). Les références aux dresseurs et aux objets ne sont pas vérifiées ici (tests de
+## données : [method get_trainer_ids], [method get_item_ids]).
 ## [codeblock]
 ## "starter_chosen": { "unless": ["rival_challenged"], "steps": [
 ##     { "hop": "$player_starter", "to": { "near": "$player_starter", "offsets": [[0, 1]] } },
@@ -71,8 +81,10 @@ const _VARIANT_KEYS: Array[String] = ["if", "unless", "steps"]
 const _EXTRA_KEYS: Array[Array] = [
 	[], [], ["to"], [], [], ["path", "to", "run", "follower", "keep_facing", "optional"],
 	["at", "facing"], ["to"],
-	["to"], [],
+	["to"], [], ["player_pokemon", "foe_pokemon", "win", "lose"], ["count"],
 ]
+## Conditions permises sur toute étape sauf spawn.
+const _CONDITION_KEYS: Array[String] = ["if", "unless"]
 
 var _cutscenes: Dictionary[StringName, Cutscene] = {}
 var _errors: PackedStringArray = PackedStringArray()
@@ -152,23 +164,49 @@ func get_errors() -> PackedStringArray:
 	return _errors
 
 
-## Drapeaux lus par les conditions des variantes (« if », « unless »).
+## Drapeaux lus par les conditions des variantes et des étapes (« if », « unless »).
 func get_condition_flags() -> Array[StringName]:
 	var found: Dictionary[StringName, bool] = {}
 	for cutscene: Cutscene in _cutscenes.values():
 		for variant: CutsceneVariant in cutscene.variants:
 			for flag: StringName in variant.if_flags + variant.unless_flags:
 				found[flag] = true
+			for step: CutsceneStep in variant.steps:
+				for flag: StringName in step.if_flags + step.unless_flags:
+					found[flag] = true
 	return _sorted_keys(found)
 
 
-## Drapeaux levés par au moins une étape « set ».
+## Drapeaux levés par au moins une étape « set », ou par l'issue d'une étape « battle »
+## (« win », « lose »).
 func get_set_flags() -> Array[StringName]:
 	var found: Dictionary[StringName, bool] = {}
 	for step: CutsceneStep in _all_steps():
+		var raised: Array[StringName] = []
 		if step.kind == CutsceneStep.Kind.SET_FLAGS:
-			for flag: StringName in step.flags:
-				found[flag] = true
+			raised = step.flags
+		elif step.kind == CutsceneStep.Kind.BATTLE:
+			raised = step.win_flags + step.lose_flags
+		for flag: StringName in raised:
+			found[flag] = true
+	return _sorted_keys(found)
+
+
+## Dresseurs combattus par au moins une étape « battle » (tests de données).
+func get_trainer_ids() -> Array[StringName]:
+	var found: Dictionary[StringName, bool] = {}
+	for step: CutsceneStep in _all_steps():
+		if step.kind == CutsceneStep.Kind.BATTLE:
+			found[step.trainer_id] = true
+	return _sorted_keys(found)
+
+
+## Objets donnés par au moins une étape « give » (tests de données).
+func get_item_ids() -> Array[StringName]:
+	var found: Dictionary[StringName, bool] = {}
+	for step: CutsceneStep in _all_steps():
+		if step.kind == CutsceneStep.Kind.GIVE:
+			found[step.item_id] = true
 	return _sorted_keys(found)
 
 
@@ -268,7 +306,10 @@ func _parse_step(value: Variant, where: String) -> CutsceneStep:
 	if step.kind != CutsceneStep.Kind.SPAWN:
 		var allowed: Array[String] = [type_key]
 		allowed.append_array(_EXTRA_KEYS[step.kind])
+		allowed.append_array(_CONDITION_KEYS)
 		ok = _check_keys(entry, allowed, where)
+		ok = _read_flags(entry, "if", step.if_flags, where) and ok
+		ok = _read_flags(entry, "unless", step.unless_flags, where) and ok
 	var main: Variant = entry[type_key]
 	match step.kind:
 		CutsceneStep.Kind.WAIT:
@@ -313,7 +354,45 @@ func _parse_step(value: Variant, where: String) -> CutsceneStep:
 				step.target = v) and ok
 		CutsceneStep.Kind.DESPAWN:
 			ok = _read_npc_actor(main, where + " despawn", step) and ok
+		CutsceneStep.Kind.BATTLE:
+			ok = _parse_battle(entry, step, where) and ok
+		CutsceneStep.Kind.GIVE:
+			ok = _read_id(main, where + " give", func(v: StringName) -> void:
+				step.item_id = v) and ok
+			if entry.has("count"):
+				var amount: Variant = entry["count"]
+				if not (amount is float or amount is int) \
+						or float(amount) != floorf(float(amount)) or int(amount) < 1:
+					ok = _fail("%s : « count » doit être un entier ≥ 1" % where)
+				else:
+					step.count = int(amount)
 	return step if ok else null
+
+
+## battle : dresseur, Pokémon de la carte qui combattent (facultatifs), drapeaux de l'issue.
+func _parse_battle(entry: Dictionary, step: CutsceneStep, where: String) -> bool:
+	var ok := _read_id(entry["battle"], where + " battle", func(v: StringName) -> void:
+		step.trainer_id = v)
+	if entry.has("player_pokemon"):
+		ok = _read_actor(entry["player_pokemon"], where + " player_pokemon",
+			func(v: StringName) -> void: step.player_pokemon = v) and ok
+	if entry.has("foe_pokemon"):
+		ok = _read_actor(entry["foe_pokemon"], where + " foe_pokemon",
+			func(v: StringName) -> void: step.foe_pokemon = v) and ok
+	for ref: StringName in [step.player_pokemon, step.foe_pokemon]:
+		if ref == NpcRoster.PLAYER_ID:
+			ok = _fail("%s : les Pokémon du combat sont des PNJ (pas « player »)" % where)
+	if not step.player_pokemon.is_empty() and step.player_pokemon == step.foe_pokemon:
+		ok = _fail("%s : « player_pokemon » et « foe_pokemon » sont le même PNJ" % where)
+	for key: String in ["win", "lose"]:
+		if not entry.has(key):
+			continue
+		if not entry[key] is Array or (entry[key] as Array).is_empty():
+			ok = _fail("%s : « %s » doit être une liste non vide de drapeaux" % [where, key])
+		else:
+			ok = _read_flags(entry, key, step.win_flags if key == "win" else step.lose_flags,
+				where) and ok
+	return ok
 
 
 ## spawn : identifiant, puis les clés d'une entrée de data/npcs/ (sans condition).

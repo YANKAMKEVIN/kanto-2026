@@ -1,6 +1,6 @@
 # État du projet — note de passage
 
-Mis à jour : 2026-09-26 (**jalon 4A validé par Kevin et fusionné dans `main`** ; interface de combat du 4B prête sur `jalon-04b-ui` ; plan du jalon 5 et dossier Route 1 sur `plan-jalon-05`).
+Mis à jour : 2026-09-26 (**jalon 4A validé par Kevin et fusionné dans `main`** ; branche `jalon-04b` : interface de combat fusionnée, **plan du 4B aligné et fondations posées** (`jalon-04.md` §14) ; plan du jalon 5 et dossier Route 1 sur `plan-jalon-05`).
 
 ## Fait
 - Outillage : Godot 4.7.2, export Android vérifié sur le S24, GUT 9.7.1, scripts `tools/`.
@@ -48,13 +48,15 @@ Mis à jour : 2026-09-26 (**jalon 4A validé par Kevin et fusionné dans `main`*
 
 - **Jalon 4B, composants d'interface du combat** (branche cloud `jalon-04b-ui`, depuis `jalon-04a`, non fusionnée) : `game/ui/battle/` — barre de PV animée (vert → jaune → rouge), cartes d'information (nom seul, ♂/♀, Nv., PV chiffrés côté joueur seulement, pulsation sous 20 %), 6 pastilles d'équipe, grille des 4 actions (ATTAQUER dominant, actions indisponibles atténuées), 4 cartes de capacités (type, PP, Puissance / Statut, sélection ▶), bouton « ‹ », fiche en pression longue, bandeau des messages ; placement `BattleHudLayout`. Composants autonomes, **non câblés** (ni `BattleHud`, ni `BattleDirector`). Tokens et thème dans `UiTokens` / `build_ui_theme.gd` ; isolation vérifiée par `test_ui_theme.gd`. **1023 tests verts**, import propre. Captures headless 2340×1080 et 1920×1080 sur le labo : `tools/capture_battle_ui.gd` (`build/captures/jalon04b_ui/`, non versionnées). Questions pour Kevin : voir le rapport de la session (fiche fermée au relâchement, « PP » affiché, tailles tactiles 128 px, etc.).
 
+- **Jalon 4B, alignement et fondations** (branche `jalon-04b`, 2026-09-26) : plan aligné sur le code réel dans `jalon-04.md` **§14** (interfaces du `BattleDirector`, de la vue de combat recomposée dans le labo — décision n° 10 —, de la `BattleHud` ; suite de la scène `starter_chosen` après le combat en données ; textes d'après-combat et des 5 Poké Balls mot pour mot, reportés au dossier 02 ; suppression des répliques répétées du 4A ; tâches T6 à T9). Fondations pures testées : `BattlePlayback` / `BattleBeat` (rejeu du journal en temps de mise en scène), `BattleViews` (vues de la HUD), `BattleConclusion` (soin, ni argent ni XP), `ItemData` / `ItemLibrary` / `Bag` + `data/items/items.json` + `GameState.bag`, étapes de scène `battle` et `give` (validation) et **conditions d'étape** `if` / `unless` (suite selon l'issue ; lues par le directeur). **1076 tests verts** (1033 au départ), import sans erreur ni warning, 0 SCRIPT ERROR. Questions Q-J à Q-Q (§14.13).
+
 ## Organisation cloud / Mac (depuis le 2026-09-26)
 - Dépôt privé `YANKAMKEVIN/kanto-2026`. Les sessions **cloud** installent Godot 4.7.2 via le hook SessionStart (`tools/cloud_setup.sh`) et font tourner `tools/test.sh`. Elles **codent et testent** sur une branche dédiée, qu'elles poussent ; **aucune fusion dans `main`** sans validation de Kevin sur le S24.
 - Le **Mac** (S24 en USB) récupère la branche, fait les captures (Movie Maker a besoin d'un écran), `tools/deploy_s24.sh` et la QA (`qa-mobile`), puis fusionne après validation de Kevin.
 - Une seule session à la fois sur une même branche.
 
 ## Prochaine étape
-1. **Jalon 4B — le premier combat**, sur une branche `jalon-04b` créée depuis `main` puis fusion de `origin/jalon-04b-ui` (composants d'interface du combat, 1023 tests, captures relues ; réponses aux 9 questions de l'UI : valeurs appliquées acceptées). À faire : vue de combat dans le vrai labo recomposé (T6), câblage `BattleDirector` (T8), étape `battle` avant les deux `despawn` de la scène, drapeau `rival_battle_done` levé quelle que soit l'issue, répliques après victoire / défaite (décision n° 6), Chen après le combat (n° 7), **5 Poké Balls données par Chen** (dossier 07 §8), répliques d'après-combat de Chen et Maya (n° 8, accord lui/elle), **suppression des répliques répétées de fin de 4A**. QA S24 (T9) sur le Mac.
+1. **Jalon 4B — le premier combat**, branche `jalon-04b` (plan : `jalon-04.md` §14.11) : **T6** vue de combat dans le labo recomposé (constructeur-monde, S24 avant l'UI) → **T7** `BattleHud` et toast (ui-mobile) → **T8** `BattleDirector`, étapes `battle` / `give`, suite de la scène, dialogues, câblage (constructeur-monde) → **T9** QA S24 (Mac).
 2. **Jalon 5** — plan `docs/tech/jalon-05.md` et `docs/design/dossier-07-route-1.md` sur `plan-jalon-05` ; ordre : 5A carte → 5B rencontre → 5C XP → **sauvegarde** → 5D capture.
 
 ## Décisions de Kevin sur le 4A (après correction, 2026-09-26)
