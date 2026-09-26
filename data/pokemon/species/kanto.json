@@ -24,7 +24,7 @@
 	"venusaur": {
 		"dex": 3, "name": "Florizarre", "types": ["grass", "poison"],
 		"base_stats": { "hp": 80, "atk": 82, "def": 83, "spa": 100, "spd": 100, "spe": 80 },
-		"male_ratio": 0.875, "growth_rate": "medium_slow", "base_exp": 236,
+		"male_ratio": 0.875, "growth_rate": "medium_slow", "base_exp": 263,
 		"learnset": [
 			[1, "tackle"], [1, "growl"], [1, "leech_seed"], [1, "vine_whip"],
 			[7, "leech_seed"], [13, "vine_whip"], [22, "poison_powder"], [30, "razor_leaf"],
@@ -54,7 +54,7 @@
 	"charizard": {
 		"dex": 6, "name": "Dracaufeu", "types": ["fire", "flying"],
 		"base_stats": { "hp": 78, "atk": 84, "def": 78, "spa": 109, "spd": 85, "spe": 100 },
-		"male_ratio": 0.875, "growth_rate": "medium_slow", "base_exp": 240,
+		"male_ratio": 0.875, "growth_rate": "medium_slow", "base_exp": 267,
 		"learnset": [
 			[1, "scratch"], [1, "growl"], [1, "ember"], [1, "leer"], [9, "ember"],
 			[15, "leer"], [24, "rage"], [36, "slash"], [46, "flamethrower"], [55, "fire_spin"]
@@ -83,7 +83,7 @@
 	"blastoise": {
 		"dex": 9, "name": "Tortank", "types": ["water"],
 		"base_stats": { "hp": 79, "atk": 83, "def": 100, "spa": 85, "spd": 105, "spe": 78 },
-		"male_ratio": 0.875, "growth_rate": "medium_slow", "base_exp": 239,
+		"male_ratio": 0.875, "growth_rate": "medium_slow", "base_exp": 265,
 		"learnset": [
 			[1, "tackle"], [1, "tail_whip"], [1, "bubble"], [1, "water_gun"], [8, "bubble"],
 			[15, "water_gun"], [24, "bite"], [31, "withdraw"], [42, "skull_bash"],

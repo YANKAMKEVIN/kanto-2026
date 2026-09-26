@@ -8,7 +8,7 @@
 >
 > Pas de tutoriel, pas d'« OBJECTIF MIS À JOUR », pas de marqueur. C'est la fin du prologue (dossier 02 §6 suite à §10), le premier contact avec le système Pokémon (dossier 04) et avec l'interface de combat 2026 (dossier 05).
 
-**Pré-requis** : le **jalon 3B est codé, fusionné et validé sur le S24**. Le 4A s'accroche à la fin de sa scène `oak_intercept`, à son `CutsceneDirector`, à ses PNJ qui marchent et à sa présence conditionnelle (§9, **à relire avant l'étape d'architecture du 4A**). Au moment de ce plan, le 3B n'existe qu'en plan ([`jalon-03b.md`](jalon-03b.md)) : ce document s'appuie sur le **code réel du 3A** (`main`, 513 tests verts) et sur les **points d'accroche promis** par le 3B (§2.10 de son plan, décisions de Kevin en tête de son §7).
+**Pré-requis** : le **jalon 3B est codé, fusionné et validé sur le S24** (fait ; alignement du 4A sur son code réel : **§13**). Le 4A s'accroche à la fin de sa scène `oak_intercept` (en réalité la variante 1 de `route1_grass`, §13.1), à son `CutsceneDirector`, à ses PNJ qui marchent et à sa présence conditionnelle (§9, **à relire avant l'étape d'architecture du 4A**). Au moment de ce plan, le 3B n'existe qu'en plan ([`jalon-03b.md`](jalon-03b.md)) : ce document s'appuie sur le **code réel du 3A** (`main`, 513 tests verts) et sur les **points d'accroche promis** par le 3B (§2.10 de son plan, décisions de Kevin en tête de son §7).
 
 **Hors périmètre** (d'après les dossiers 02, 04, 05 et la règle « une couche à la fois ») :
 - **Capture**, Poké Balls, Sac et objets en combat (dossier 05 §15–17) : phase 6. SAC reste visible mais inactif (Q18).
@@ -238,6 +238,8 @@ Battle.submit(MOVE 0)         ─► [TURN_STARTED(1),
 
 ### 3.5 Choix du starter (4A)
 
+> **Obsolète pour le 4A là où le §13 diffère** (alignement sur le code réel, 2026-09-26) : le starter rejoint l'équipe **après** « On dirait que le choix est réciproque. » (§13.3), pas à CHOISIR.
+
 **Déroulé :**
 1. **Discours de Chen** : la scène `oak_intercept` du 3B **reçoit des étapes à la fin** (3B §2.10, première option : une seule scène ininterrompue du gel de la Route 1 jusqu'au choix). Après `set: [oak_lab_reunion]` : `wait`, `dialogue: oak_starter_offer` (§4.1), `set: [starter_offered]`. Fin de la scène, le joueur reprend la main.
 2. **Ouverture du choix** : `StarterChoice` apprend l'ouverture par `GameState.flags.flag_changed(open_flag)` et **attend la fin de la scène** (`CutsceneDirector.cutscene_finished`) pour afficher la légende « CHOISIS TON PREMIER PARTENAIRE » (`ExplorationHud.show_caption`, §3.8). Il pose sur les trois PNJ starters une **interaction « Rencontrer »** : `npc.set_interaction_override(Interaction.new(Kind.MEET, cell, &"", ZERO, npc))`. Elle remplace « Observer » tant que le choix est ouvert, **y compris** si le joueur sort et revient (`set_map` la repose ; la légende se réaffiche en revenant, Q2).
@@ -271,6 +273,8 @@ func is_sheet_open() -> bool
 **Nouveaux besoins sur `Npc`** (en plus du 3B) : `set_interaction_override(interaction)` / `clear_interaction_override()` (`get_interaction()` renvoie la surcharge si elle existe, sans allocation) ; `lean_toward(cell)` / `settle()` ; `hop_to(cell, grid) -> bool` (saut en arc ~0,35 s depuis la table : l'élévation `lift` descend à 0, la case change, la grille est mise à jour ; faux si la case d'arrivée est prise ou solide). `hop_to` sert aussi au Pokémon du rival.
 
 ### 3.6 Scènes scriptées : ce que le 4 ajoute au format du 3B
+
+> **Obsolète pour le 4A là où le §13 diffère** (alignement sur le code réel, 2026-09-26) : alias, `hop`, `lean`, `despawn` validés en T0 ; le style de saut vient du PNJ (`hop_style`, §13.4).
 
 Rien n'est changé dans les 7 étapes du 3B. Ajouts (validés par `CutsceneLibrary`, format en tête du fichier) :
 
@@ -338,6 +342,8 @@ Déroulé : `player.set_input_enabled(false, REASON)` (synchrone) → `battle_st
 **Tokens à ajouter** (`UiTokens`, T2 et T6) : `LAYER_BATTLE_STAGE = 5`, `LAYER_BATTLE_HUD = 12`, `CAPTION_HOLD`, `STARTER_SHEET_WIDTH`, `TYPE_COLORS` (les 15 de la skill **+ Acier, Ténèbres, Fée**, absentes de la skill alors que la table est moderne : couleurs usuelles `#B7B7CE`, `#705746`, `#D685AD`, Q10), `ACTION_ATTACK`, `ACTION_BAG`, `ACTION_TEAM`, `ACTION_RUN`, `BATTLE_CARD_WIDTH`, `HP_BAR_HEIGHT = 14`, `HP_TWEEN = 0.4`, `HP_TWEEN_FAST`, `HP_LOW_PULSE`, `BATTLE_MESSAGE_HOLD`, `LONG_PRESS`, `HAPTIC_HIT_MS`, `HAPTIC_CRIT_MS`, `BATTLE_DIM`, `BATTLE_ZOOM`. Variations de thème `BattleCard`, `ActionButton`, `MoveCard`, `TypeBadge`, `StarterSheet` dans `tools/build_ui_theme.gd`.
 
 ### 3.9 `GameState` et drapeaux
+
+> **Obsolète pour le 4A là où le §13 diffère** (alignement sur le code réel, 2026-09-26) : drapeaux du 4A (qui lève `starter_chosen`, `oak_lab_exit`) : §13.3.
 
 `GameState` (autoload, sans `class_name`) garde son rôle — l'état de la partie — et gagne trois champs :
 ```gdscript
@@ -429,6 +435,8 @@ Textes : **exactement** ceux du dossier 02 (§7 à §10), une réplique « … �
 
 ### 4.1 Dialogues (`data/dialogues/oak_lab.json`, ajouts)
 
+> **Obsolète pour le 4A là où le §13 diffère** (alignement sur le code réel, 2026-09-26) : voir §13.5 (pas de `rival_starter_smile` ; « Attends. » est un dialogue à part ; `oak_lab_exit_block`).
+
 | id | Locuteur | Pages (dossier 02) | Mise en scène |
 |---|---|---|---|
 | `oak_starter_offer` | Prof. Chen | §7, les **4** répliques, de « Vous voulez tous les deux découvrir Kanto. » à « Alors... pourquoi ne pas commencer ensemble ? » | page 3 : `turn { "oak": "right" }` (« il regarde les trois Pokémon », table à sa droite) ; page 4 : `turn { "oak": "player" }` (Q5) |
@@ -440,6 +448,8 @@ Textes : **exactement** ceux du dossier 02 (§7 à §10), une réplique « … �
 Aucune autre réplique n'est écrite : **Maya après le starter**, Chen et le rival après le combat, une éventuelle indication de Chen pendant le combat et la sortie du labo avant le choix sont des **questions** (Q3, Q14, Q19, Q22). Rien n'est marqué `draft` dans les dialogues.
 
 ### 4.2 Scènes
+
+> **Obsolète pour le 4A là où le §13 diffère** (alignement sur le code réel, 2026-09-26) : `oak_intercept` = variante 1 de `route1_grass` ; scène `starter_chosen` et sortie empêchée : §13.5 et §13.6.
 
 **`oak_intercept`** (`data/cutscenes/prologue.json`, 3B) — étapes ajoutées à la fin :
 ```json
@@ -513,6 +523,8 @@ Rappel : la présence n'est réévaluée **qu'au chargement de la carte** (3B §
 
 ### 4.4 Invariants (testés)
 
+> **Obsolète pour le 4A là où le §13 diffère** (alignement sur le code réel, 2026-09-26) : les placements ci-dessous ferment une poche du labo réel ; invariants remplacés par le §13.4.
+
 **Labo, pour chacun des 3 choix** (`tests/integration/test_starter_placement.gd`, nouveau, grille réelle du labo, PNJ présents pour `{ oak_met, oak_lab_reunion, starter_offered }`) :
 - chaque starter a une case **libre et atteignable** face à lui (10..12, 6) d'où `InteractionFinder.find` renvoie l'interaction MEET une fois la surcharge posée ;
 - le joueur étant sous son starter, `resolve_cell` trouve une case d'atterrissage (première des `offsets`) ; ensuite le chemin du rival depuis (9, 6) jusqu'à la case sous son starter existe (`find_path`) ; l'atterrissage du Pokémon du rival existe ; le chemin vers (8, 8) avec suiveur est libre ; en 4B, le chemin du rival jusqu'à la porte (7, 9) aussi ;
@@ -534,6 +546,9 @@ Chaque tâche finit par un essai sur le S24 (capture et retour de Kevin) avant l
 ### 4A — le choix du starter
 
 #### T0 — architecte-godot : fondations du 4A
+
+> **Obsolète pour le 4A là où le §13 diffère** (alignement sur le code réel, 2026-09-26) : T0 fait, T1 et T3 précisés : §13.9.
+
 - §2.1 : classes pures, données `data/pokemon/*` et leurs tests ; extensions `Interaction` et `CutsceneLibrary`. **Avant de commencer : aligner ce plan sur le code réel du 3B** (§9).
 - **CA** : tous les tests du §2.1 verts ; `PokemonData.load_dir()` sur les vraies données : 0 erreur ; import sans erreur ; `tools/test.sh` vert.
 
@@ -711,6 +726,8 @@ Questions (**proposition par défaut** entre parenthèses ; c'est ce que le plan
 
 ## 9. Dépendances au 3B, et que faire s'il livre autrement
 
+> **Obsolète pour le 4A là où le §13 diffère** (alignement sur le code réel, 2026-09-26) : ce que le 3B a réellement livré : §13.1 et §13.11.
+
 Le 4A s'appuie sur ce que le plan 3B **promet** (pas encore dans le dépôt au moment de ce plan). À vérifier **au début de T0**, dans le code fusionné du 3B :
 
 | Dépendance | Promis par le 3B | Si le 3B livre autrement |
@@ -744,6 +761,8 @@ Si le 3B est fusionné avec des noms différents, on **aligne ce plan avant T0**
 
 ## 11. Écarts constatés (2026-09-26)
 
+> **Obsolète pour le 4A là où le §13 diffère** (alignement sur le code réel, 2026-09-26) : état à jour au §13.10.
+
 Constat fait sur `main`, base de ce plan :
 1. **Code** : 3A présent, **513 tests verts** (confirmé par `tools/test.sh`), import sans erreur. **3B absent** (plan seulement). Aucune donnée Pokémon, aucun code dans `game/battle/` ni `game/pokemon/` (dossiers vides avec `.gitkeep`).
 2. **Format des PNJ** : le plan 3B écrit ses exemples de `data/npcs/*.json` sous forme de **liste** d'objets avec `id` ; le format réel de 3A est un **objet** « identifiant → PNJ ». Les exemples de ce plan suivent le format réel.
@@ -754,6 +773,8 @@ Constat fait sur `main`, base de ce plan :
 ---
 
 ## 12. Fondations posées (écarts avec le plan)
+
+> **Obsolète pour le 4A là où le §13 diffère** (alignement sur le code réel, 2026-09-26) : n° 2 et n° 7 remplacés par la décision n° 15 (§13.8) ; « Reportés » à jour au §13.10.
 
 Branche `jalon-04-fondations` (issue de `plan-jalon-04`), 2026-09-26 : §2.1 et §2.2, classes pures, données et tests. **670 tests verts** (513 au départ), import sans erreur, chaque script vérifié aussi avec `--check-only` et les avertissements GDScript traités en erreurs. Les décisions de Kevin du §8 (et ses précisions de la session) priment sur le §3.2 ; écarts :
 
@@ -790,3 +811,244 @@ Branche `jalon-04-fondations` (issue de `plan-jalon-04`), 2026-09-26 : §2.1 et 
 - `Interaction.Kind.MEET` : T1.
 - `CutsceneStep` / `CutsceneLibrary` (alias, `hop`, `lean`, `despawn`, `battle`) : le 3B n'existe pas sur cette branche.
 - `GameState` (équipe, starter, `rng`) : T1. `test_interaction.gd` et `test_cutscene_library.gd` ne sont donc pas étendus.
+
+---
+
+## 13. Alignement du 4A sur le code réel du 3B et des fondations (2026-09-26)
+
+Fait sur la branche `jalon-04a` (`main` avec le 3B validé + `plan-jalon-04` + `jalon-04-fondations`), **avant T1**. Cette section **remplace, pour le 4A**, ce qui est obsolète dans §3.5, §3.6, §3.9, §4.1 à §4.4, §5 (T0 à T3), §9, §11 et §12. Les **décisions de Kevin du §8** priment toujours ; ce qui suit les applique. Le 4B (§2.2, §3.7, T5 à T9) n'est pas réaligné ici, sauf les points de la décision n° 15.
+
+### 13.1 Noms réels (plan → code)
+
+| Dans le plan | Dans le code |
+|---|---|
+| scène `oak_intercept` | **1re variante** (`unless: [oak_met]`) de la scène **`route1_grass`** (`data/cutscenes/prologue.json`), qui se termine par `{ "set": ["oak_lab_reunion"] }`. La 2e variante (pensée des herbes) lit **`unless: ["starter_chosen"]`**. |
+| `has_starter` | **`starter_chosen`** partout (données, fixtures, tests, commentaires ; fait en T0). `jalon-03b.md` garde l'ancien nom (historique). |
+| `GameRng.range(a, b)` | `GameRng.range_int(a, b)` (§12 n° 11) |
+| `TrainerLibrary.load_dir()` puis `build_team(id, starter, data, rng)` | `TrainerLibrary.new(pokemon_data)`, `load_dir()`, `build_team(trainer_id, player_starter, rng)` (§12 n° 14) |
+| `BattleText` : une chaîne par événement | `BattleText.lines(event, data, trainer: TrainerData = null) -> PackedStringArray` (§12 n° 13 ; `trainer` : §13.8) |
+| `BattleEvent.Side` | `BattleEvent.SideId` (§12 n° 12) |
+| `CutsceneDirector.play(id, aliases)` | `play(cutscene_id)` **sans alias** aujourd'hui : T1 ajoute `aliases: Dictionary[StringName, StringName] = {}` (clé = nom sans « $ », valeur = identifiant du PNJ). |
+| conversion des directions (§11 n° 3) | `Grid.direction_from_name`, `Grid.direction_name`, `Grid.dominant_direction` (livrées par le 3B) |
+| `InteractionController.set_enabled` (3B §2.4) | **n'existe pas** : le contrôleur ne vise rien quand le joueur est bloqué (`_can_target()`), ce qui suffit. MEET passe par `_interact(target)` (T1). |
+| `Npc` : `hop_to`, `lean_toward`, `settle`, surcharge d'interaction | à faire en T1. **Attention** : `Npc.HOP_HEIGHT` / `HOP_DURATION` existent déjà et servent au petit bond de `react()` ; les constantes du saut depuis la table prennent un autre nom (`JUMP_…` ou `HOP_STYLE_PARAMS`, §13.4), ou celles de `react` sont renommées `REACT_HOP_…`. |
+| Chen et le rival « non interactifs » au labo | ils parlent : `oak_lab_waiting` et `rival_lab_waiting` (décision de Kevin au 3B). |
+| `StarterChoice` ajoute le starter à l'équipe **à CHOISIR** (§3.5 point 5) | **après** « On dirait que le choix est réciproque. » (décision n° 1, §13.3). |
+| `starter_chosen` : `if: [starter_chosen]` sur la scène du même nom | la scène lève elle-même `starter_chosen` ; sa condition est **`unless: [rival_challenged]`** seulement. |
+| `rival_starter_smile` (« Ça devrait être intéressant. ») | **supprimé** (décision n° 11, §13.5 ; question Q-A du §13.10). |
+
+### 13.2 Le labo réel (grille vérifiée)
+
+Grille de `oak_lab` (16 × 11) chargée par `GameMap`, PNJ de la nouvelle partie (`#` solide, `N` occupé, `.` praticable) :
+```
+    0 1 2 3 4 5 6 7 8 9101112131415
+ 2  # # # # # # . # # # # # # # # #
+ 3  # . # # . N . . # . . # # . # #      N (5, 3) Maya
+ 4  # . . . . . . . . . # # # . # #      table (10..12, 4..5) ; Chen en (8, 4) si oak_met
+ 5  # # # # # # . . . . N N N . . #      starters (10..12, 5), lift 56
+ 6  # # . . . . . . . . . . . . # #      rival en (9, 6) si oak_met ; cases de rencontre (10..12, 6)
+ 7  # # . # # . . . . . . . # . # #      tabouret (12, 7)
+ 8  # # # # . . # . . . . # # # # #      paillasse (11..13, 8) ; plante (6, 8)
+ 9  # # # # # . . . . # . . . . . #      tapis de sortie (7, 9) : warp PUSH vers le bas ; plante (9, 9)
+```
+Conséquence décisive : les cases à l'est de la colonne 10 (`(11..13, 6)`, `(11, 7)`, `(13, 3..7)`, `(14, 5)`) ne communiquent avec le reste de la pièce **que par (10, 6) et (10, 7)**, et `(12, 6)` ne communique avec `(13, *)` que par elle-même. Deux PNJ mal placés ferment une poche : les placements du §4.2 (starter « sous le joueur », rival « sous son Pokémon ») sont **impossibles** pour deux des trois choix. §13.4 les remplace.
+
+### 13.3 Déroulé du 4A (remplace §3.5 et le flux 4A du §3.10)
+
+1. **Discours de Chen** : la 1re variante de `route1_grass` reçoit à la fin (après `set: [oak_lab_reunion]`) : `{ "wait": 0.5 }`, `{ "dialogue": "oak_starter_offer" }`, `{ "set": ["starter_offered"] }`. Fin de la scène, le joueur reprend la main.
+2. **Ouverture** (inchangé, §3.5 point 2) : `StarterChoice` écoute `flags.flag_changed(open_flag)`, attend `cutscene_finished`, affiche la légende, pose les surcharges MEET (`Interaction.new(Kind.MEET, cell, &"", Vector2i.ZERO, npc)`, valide seulement avec une source et sans dialogue).
+3. **Rencontrer / RETOUR** : inchangés (§3.5 points 3 et 4).
+4. **CHOISIR** — `StarterChoice`, de façon synchrone :
+   - fiche fermée, `npc.settle()` ;
+   - `rival = offer.rival_pick(player, data)` ;
+   - drapeaux `taken_<joueur>` et `taken_<rival>` (ils ne jouent qu'au prochain chargement du labo) ;
+   - surcharges MEET retirées ;
+   - **espèce en attente** `_pending = player` et écoute de `flags.flag_changed(offer.done_flag)` ;
+   - `cutscenes.play(offer.chosen_scene, { &"player_starter": <npc joueur>, &"rival_starter": <npc rival> })` ;
+   - puis seulement, blocage `&"starter_choice"` rendu (la scène tient déjà `&"cutscene"`).
+   - Si `play` renvoie faux (scène absente ou invalide) : `push_error`, et `StarterChoice` lève lui-même `done_flag` (le Pokémon n'est jamais perdu).
+5. **Scène `starter_chosen`** (§13.5) : le Pokémon descend, vient devant le joueur, le regarde, s'approche ; « On dirait que le choix est réciproque. » ; **étape `set: [starter_chosen]` juste après ce dialogue**.
+6. **Entrée dans l'équipe** : sur `flag_changed(done_flag, true)` avec une espèce en attente, `StarterChoice` fait `state.party.add(PokemonFactory.create(data, _pending, offer.level, state.rng))`, `state.starter_species = _pending`, émet `starter_chosen(player, rival)`, oublie `_pending`. C'est la **décision n° 1** : le Pokémon rejoint officiellement l'équipe **après** la réplique de Chen, pas au toucher de CHOISIR.
+7. Suite de la scène : le choix du rival, « Attends. », les regards, « On ne va quand même pas partir… », `set: [rival_challenged]`. **Fin provisoire du 4A** : joueur libre ; les herbes sont ouvertes (`starter_chosen`) ; la sortie aussi (§13.6).
+
+Drapeaux (remplace le tableau du §3.9 pour le 4A) :
+
+| Drapeau | Levé par | Lu par |
+|---|---|---|
+| `starter_offered` | `route1_grass` variante 1, dernière étape | `StarterChoice` (`open_flag`) ; scène `oak_lab_exit` (`if`) |
+| `starter_chosen` | scène `starter_chosen`, étape `set` juste après `oak_starter_reciprocal` | `StarterChoice` (`done_flag` : ajout à l'équipe) ; `route1_grass` variante 2 (`unless`) ; `oak_lab_exit` (`unless`) ; variantes des répliques d'attente (§13.7) |
+| `taken_bulbasaur` / `taken_charmander` / `taken_squirtle` | `StarterChoice`, à CHOISIR (`get_set_flags(offer)` les énumère) | présence des starters (`unless`) |
+| `rival_challenged` | scène `starter_chosen`, dernière étape (4A) | la scène elle-même (`unless`) |
+
+Tests de données (T3) : `FUTURE_FLAGS` de `test_dialogue_data.gd` vaut aujourd'hui `[starter_chosen]` (lu par la pensée des herbes, levé par personne tant que `starter.json` n'existe pas) ; il redevient **vide** en T3, et les drapeaux levés par code s'ajoutent par `StarterChoice.get_set_flags(offer)` (seulement les `taken_*`). Un test vérifie que la scène `starter_chosen` lève `done_flag` **une seule fois**, à l'étape qui suit le dialogue `oak_starter_reciprocal`, et que l'équipe est **vide** jusqu'à cette étape, puis compte 1 Pokémon (`test_starter_choice.gd`).
+
+### 13.4 « Devant le joueur » : la mise en scène (décision n° 1)
+
+Le joueur est en `(x, 6)`, tourné vers le haut ; la case devant lui est celle du starter, sur la table (solide). Pour que le Pokémon soit **réellement devant** lui :
+1. **Le joueur fait un pas pour lui laisser la place** : `{ "move": "player", "to": { "near": "player", "offsets": [[0, 1], [-1, 0], [1, 0]] } }` → Bulbizarre : `(10, 7)` ; Salamèche : `(11, 7)` ; Carapuce : `(12, 7)` est le tabouret, donc `(11, 6)`. (Ordre choisi pour ne jamais s'enfermer : vers `(13, 6)`, le joueur serait pris dans la poche est dès que Carapuce se pose en `(12, 6)`.)
+2. **Le Pokémon descend sur la case libérée**, entre le joueur et la table : `{ "hop": "$player_starter", "to": { "near": "$player_starter", "offsets": [[0, 1]] } }` → toujours `(x, 6)`, saut de 1 case vers le bas.
+3. **Ils se regardent** : `face player → $player_starter`, `face $player_starter → player` ; le Pokémon est sur la case que le joueur regarde (Bulbizarre et Salamèche : le joueur regarde en haut ; Carapuce : à droite).
+4. `wait 0.4`, puis `lean $player_starter → player` (« il s'approche légèrement »).
+
+Le pas du joueur se fait **en se retournant** (mécanique existante : `script_step` oriente le joueur) ; un vrai pas en arrière, sans se retourner, serait un ajout à `Player`/`GridMover` : question Q-B.
+
+**Styles de saut** (décision n° 1) : clé facultative de PNJ **`"hop_style": "calm" | "eager" | "playful"`** (`NpcSpec.hop_style`, `NpcSpec.HOP_STYLES`, validée par `NpcRoster` ; posée en T0 dans `data/npcs/oak_lab.json` : Bulbizarre `calm`, Salamèche `eager`, Carapuce `playful`). L'étape `hop` reste **générique** : le style vient du PNJ, le même pour le Pokémon du rival. Les paramètres sont des **constantes documentées de `Npc`** (présentation, T1), une entrée par valeur de `NpcSpec.HOP_STYLES` plus le défaut `&""` (un test vérifie qu'aucun style ne manque). Valeurs de départ, à régler sur le S24 :
+
+| Style | Hésitation avant | Durée du saut | Hauteur d'arc | Après l'atterrissage |
+|---|---|---|---|---|
+| défaut `""` | 0 | 0,35 s | 32 px | — |
+| `calm` (Bulbizarre, « calmement ») | 0,35 s (il regarde, se penche) | 0,55 s, amorti | 24 px | — |
+| `eager` (Salamèche, « avec enthousiasme ») | 0 ; petit appel 0,08 s | 0,38 s | 48 px | 1 rebond de 10 px (0,16 s) |
+| `playful` (Carapuce, « rapidement, vif et joueur ») | 0 | 0,26 s | 28 px | 2 petits rebonds de 8 puis 5 px (0,12 s chacun) |
+
+Le saut part de l'élévation courante (`lift` 56 sur la table) et finit à 0 ; la case est libérée au départ et occupée à l'arrivée ; `hop_to(cell) -> bool` refuse une case prise ou solide ; une distance de plus d'une case allonge la durée (≈ +25 % par case supplémentaire). Aucune nouvelle image (Tween sur le sprite et l'ombre).
+
+**Le Pokémon du rival vient vers lui** (décision n° 11) : le rival reste en `(9, 6)` et son Pokémon **saute vers lui** : `{ "hop": "$rival_starter", "to": { "near": "rival", "offsets": [[1, 0], [0, -1], [0, 1], [-1, 0]] } }` → Bulbizarre choisi (rival : Salamèche) : `(11, 5) → (9, 5)`, 2 cases le long du bord de la table ; Salamèche choisi (rival : Carapuce) : `(12, 5) → (10, 6)` ; Carapuce choisi (rival : Bulbizarre) : `(10, 5) → (10, 6)`. Le rival ne marche jamais dans la poche est (elle est fermée par le joueur et son Pokémon dans deux cas sur trois). Puis il part vers `(8, 8)`, son Pokémon en suiveur (toujours voisin de lui : l'étape `move` + `follower` du 3B marche telle quelle).
+
+**Invariants** (remplacent §4.4, `tests/integration/test_starter_placement.gd`, grille réelle, PNJ présents pour `{ oak_met, oak_lab_reunion, starter_offered }`, pour **chacun des 3 choix**, en rejouant les résolutions de la scène avec `CutsceneMoves.resolve_near` et `GridWorld.find_path` et en déplaçant les occupants comme le ferait le directeur) :
+- chaque starter est rencontrable depuis `(x, 6)` (libre, atteignable depuis l'entrée ; `InteractionFinder.find` renvoie la surcharge MEET) ;
+- pas du joueur : `(10, 7)`, `(11, 7)`, `(11, 6)` ; case d'atterrissage du starter du joueur = case quittée par le joueur ; ensuite **joueur + orientation = case du starter** (il est devant lui) ;
+- atterrissage du Pokémon du rival : `(9, 5)`, `(10, 6)`, `(10, 6)`, voisin du rival ; aucun saut de plus de 2 cases sur un axe ;
+- chemin du rival de `(9, 6)` à `(8, 8)` avec suiveur : existe, ne passe ni par un warp ni par un déclencheur ;
+- après la scène : le joueur n'est **pas enfermé** (l'entrée `(7, 9)` est atteignable) ; toute cible encore interactive (Maya, Chen, rival, starter restant) est utilisable depuis une case atteignable ; une case devenue inaccessible derrière un Pokémon (poche est) est admise tant qu'elle ne contient ni cible ni sortie — au prochain chargement, les starters pris ont disparu (`taken_*`) ;
+- les cases de la scène ne sont ni des warps ni des déclencheurs, sauf le tapis `(7, 9)` (§13.6), jamais emprunté par la scène en 4A.
+
+### 13.5 Scène `starter_chosen` (remplace §4.2 pour le 4A ; `data/cutscenes/starter.json`, T3)
+
+```json
+{
+	"starter_chosen": {
+		"unless": ["rival_challenged"],
+		"steps": [
+			{ "move": "player", "to": { "near": "player", "offsets": [[0, 1], [-1, 0], [1, 0]] } },
+			{ "hop": "$player_starter", "to": { "near": "$player_starter", "offsets": [[0, 1]] } },
+			{ "face": "player", "to": "$player_starter" },
+			{ "face": "$player_starter", "to": "player" },
+			{ "wait": 0.4 },
+			{ "lean": "$player_starter", "to": "player" },
+			{ "face": "oak", "to": "player" },
+			{ "dialogue": "oak_starter_reciprocal" },
+			{ "set": ["starter_chosen"] },
+			{ "face": "rival", "to": "$player_starter" },
+			{ "wait": 0.6 },
+			{ "face": "rival", "to": "$rival_starter" },
+			{ "wait": 0.6 },
+			{ "dialogue": "rival_starter_pick" },
+			{ "hop": "$rival_starter",
+				"to": { "near": "rival", "offsets": [[1, 0], [0, -1], [0, 1], [-1, 0]] } },
+			{ "face": "rival", "to": "$rival_starter" },
+			{ "face": "$rival_starter", "to": "rival" },
+			{ "wait": 0.5 },
+			{ "move": "rival", "to": [8, 8], "follower": "$rival_starter" },
+			{ "wait": 0.3 },
+			{ "face": "rival", "to": "player" },
+			{ "dialogue": "rival_challenge_wait" },
+			{ "face": "rival", "to": "$rival_starter" },
+			{ "wait": 0.6 },
+			{ "face": "rival", "to": "$player_starter" },
+			{ "wait": 0.6 },
+			{ "face": "rival", "to": "player" },
+			{ "dialogue": "rival_challenge" },
+			{ "set": ["rival_challenged"] }
+		]
+	}
+}
+```
+Décision n° 11 : « Alors ce sera toi. » ; son Pokémon vient vers lui ; quand il s'apprête à partir : « Attends. » ; il regarde son Pokémon, puis celui du joueur ; « On ne va quand même pas partir sans savoir ce qu'ils savent faire. ». Les regards se glissent **entre deux dialogues** : `turn` (clé de page) ne connaît que des identifiants de PNJ, pas les alias, et le Pokémon regardé change selon le choix. « Attends. » est donc un dialogue à part (comme « Hé ! Attends ! » au 3B).
+
+Dialogues (remplace §4.1 ; `data/dialogues/oak_lab.json`, textes mot pour mot, reportés au dossier 02, « Ajouts de Kevin », « Jalon 4 ») :
+
+| id | Locuteur | Pages |
+|---|---|---|
+| `oak_starter_offer` | Prof. Chen | les 4 répliques du §7 du dossier 02 ; page 3 `turn { "oak": "right" }`, page 4 `turn { "oak": "player" }` |
+| `oak_starter_reciprocal` | Prof. Chen | « On dirait que le choix est réciproque. » |
+| `rival_starter_pick` | Rival | « Alors ce sera toi. » |
+| `rival_challenge_wait` | Rival | « Attends. » |
+| `rival_challenge` | Rival | « On ne va quand même pas partir sans savoir ce qu'ils savent faire. » |
+| `oak_lab_exit_block` | Prof. Chen | « Pas si vite. Tu n'as pas encore choisi ton partenaire. » |
+
+Pas de `rival_starter_smile` ni de silence « petit sourire » (la décision n° 11 ne les reprend pas).
+
+### 13.6 Sortie du labo empêchée (décision n° 2)
+
+Comment sort-on aujourd'hui : le tapis `(7, 9)` porte un warp **PUSH** vers le bas. On y **arrive** par un pas (depuis `(7, 8)`, `(6, 9)` ou `(8, 9)`), puis on **pousse** vers le bas contre le mur ; le changement de carte vient de `Player.bumped`. En tenant « bas » depuis `(7, 8)`, l'arrivée et la poussée ont lieu dans le même `GridMover.update` : fin du pas (`step_finished` → `moved`), puis nouvelle tentative de pas vers le bas → `bumped` → warp.
+
+Mécanique retenue (celle de la pensée des herbes) :
+- un **`EventTriggerPoint`** `LabExit` sur **`(7, 9)`**, `size (1, 1)`, `direction` ZERO (on arrive sur le tapis de trois côtés), `cutscene_id` `oak_lab_exit`, ajouté par `tools/build_interiors.gd` (table `triggers` de la pièce, à créer sur le modèle de `build_pallet_town.gd`) ;
+- scène `oak_lab_exit` (dans `data/cutscenes/starter.json`) :
+```json
+"oak_lab_exit": {
+	"if": ["starter_offered"], "unless": ["starter_chosen"],
+	"steps": [
+		{ "face": "oak", "to": "player" },
+		{ "dialogue": "oak_lab_exit_block" },
+		{ "move": "player", "path": ["up"] }
+	]
+}
+```
+**Pourquoi le dialogue passe avant tout changement de carte** : le directeur écoute `moved` et pose `&"cutscene"` **dans l'appel** ; `GridMover.update` vérifie le verrou après `step_finished` (« un gestionnaire a pu verrouiller ») : aucune tentative de pas, donc aucun `bumped`, donc aucun warp. Le warp PUSH n'est pas trouvé par `find_on_step` (`matches_step` exige `STEP_ON`) : le routeur ne fait rien à l'arrivée. Après le recul, le joueur est en `(7, 8)`, libre ; le passage suivant rejoue la scène (comme les herbes).
+
+**La scène de retour du 3B ne la déclenche pas**, pour trois raisons indépendantes : l'arrivée par `change_map` est une **apparition** (aucun `moved`) ; les pas `move player up` qui suivent sont **scriptés** (joueur bloqué, directeur déjà en cours : ignorés) ; et la variante exige `starter_offered`, levé seulement à la fin de cette même scène. Hors du choix (avant `starter_offered`, ou après `starter_chosen`), le déclencheur ne fait rien et l'on sort comme avant.
+
+À modifier en T3 : l'invariant du 3B « une case ne porte jamais un warp et un déclencheur » devient « jamais un déclencheur sur un warp **STEP_ON** » (un déclencheur peut partager la case d'un warp PUSH : l'arrivée précède la poussée) ; `test_interiors.gd` (nœud `Triggers` du labo non vide) ; `test_cutscene_data.gd` : `VARIANT_FLAGS` pour `oak_lab_exit` et une liste des scènes **jouées par le code** (`starter_chosen`), exemptées de « chaque scène est visée par un déclencheur » et simulées avec les 3 jeux d'alias ; `(7, 8)` libre et praticable pendant tout le choix (`test_starter_placement.gd`) ; test d'intégration : tenir « bas » depuis `(7, 8)` pendant le choix → réplique, recul, **toujours au labo**.
+
+### 13.7 PNJ et répliques d'attente du labo (4A)
+
+- `bulbasaur`, `charmander`, `squirtle` : `unless: [taken_<id>]` (inchangé, §4.3) et `hop_style` (posé en T0).
+- `oak` : `oak_lab_waiting` reçoit une variante `if: [starter_chosen]` placée en premier, avec les deux répliques de la décision n° 8 (« Le monde qui vous attend… » / « Prends le temps de l'observer… »). Pendant le choix (`starter_offered` sans `starter_chosen`), il garde la réplique du 3B (Q-C).
+- `maya` : variante `if: [starter_chosen]` en premier, avec « Alors, c'est lui que tu as choisi ? » / « Vous avez l'air de déjà bien vous entendre. » ; « elle regarde le starter » : `turn` ne connaît pas les alias ; par défaut elle se tourne vers le joueur (Q-D).
+- `rival` : `rival_lab_waiting` inchangé jusqu'au 4B (il quitte le labo après le combat).
+
+### 13.8 Décision n° 15 (faite en T0)
+
+- (a) Type électrique : **« Électrik »** dans `data/pokemon/types.json` (testé dans `test_type_chart.gd`). Aucun « Électrique » dans `game/`. Restent dans les documents de conception de Kevin (`ui-reference.md`, `dossier-06-progression.md`), non modifiés.
+- (b) **Accord au féminin** : clé facultative **`"text_f"`** d'un modèle de `data/battle/messages.json`, choisie par `BattleText` quand `BattleEvent.gender` vaut `FEMALE` (sinon `"text"`) ; validée comme `"text"` (texte non vide, marques connues). Seul modèle concerné aujourd'hui : `recoil` (« {pokemon} est blessée par le contrecoup ! », `draft`). `BattleText.get_template(id, feminine)`, `has_feminine(id)`.
+- (c) **Pas de message générique de fin** : clé facultative de dresseur **`"end_message"`** (vrai par défaut), `false` pour `rival_lab` ; `TrainerData.end_message` ; `BattleText.lines(event, data, trainer)` ne renvoie rien pour `BATTLE_ENDED` quand elle est fausse. Le `BattleDirector` (T8) passe le `TrainerData` du combat. Les autres dresseurs gardent « Tu as battu… ».
+- (d) `base_exp` modernes : Florizarre **263**, Dracaufeu **267**, Tortank **265** (`data/pokemon/species/kanto.json`, testés avec les 6 autres dans `test_pokemon_data.gd`). §12 n° 2 est remplacé.
+
+### 13.9 Découpage du 4A (remplace §5 T0 à T3 là où ils diffèrent)
+
+**T0 — fait** (architecte, cette branche) : `Interaction.Kind.MEET` (fin d'enum, `&"meet"`, `is_valid` : source exigée, pas de dialogue ; `NpcRoster` refuse toujours `meet`) ; `CutsceneStep` / `CutsceneLibrary` : alias `$[a-z_]+` validés partout où un acteur ou une cible d'acteur est attendu (face, move, near, follower, hop, lean, despawn ; refusé pour `spawn`), étapes `hop` (`to` obligatoire : case ou `near`), `lean` (`to` : cible de `face`), `despawn` (pas « player ») — **validation seulement** ; `Cutscene.get_aliases()`, `CutsceneLibrary.get_aliases(id)`, `CutsceneStep.is_alias` / `alias_name` ; `NpcSpec.hop_style` ; renommage `starter_chosen` ; décision n° 15. Tant que T1 n'est pas fait, le directeur signale une étape `hop` / `lean` / `despawn` comme « inconnue » (aucune donnée n'en contient). **849 tests verts** (832 au départ).
+
+**T1 — constructeur-monde** (ajouts au §5 T1) :
+- `GameState` (§3.9, inchangé) ; `Npc.hop_to(cell) -> bool` avec les styles du §13.4 (coroutine ou signal `hopped`), `lean_toward` / `settle`, surcharge d'interaction ; `CutsceneDirector.play(id, aliases := {})`, résolution des alias au début de chaque étape (acteur, cible, `near`, `follower`), lecture de `hop` (attend la fin du saut), `lean`, `despawn` (`GameMap.remove_npc`, fondu 0,2 s) ; alias absent ou acteur introuvable : `push_error`, étape sautée ; `hop` refusé (case prise) : `push_error`, étape sautée.
+- `InteractionController` : cible MEET → signal `meet_requested(npc)` au lieu d'un dialogue.
+- `oak_starter_offer` et les 3 étapes ajoutées à la **variante 1 de `route1_grass`**.
+- **CA** en plus du §5 T1 : `test_npc.gd` : un paramétrage par valeur de `NpcSpec.HOP_STYLES` (+ défaut) ; durée du saut `calm` > `eager` > `playful` ; `lift` et ombre à 0 à l'arrivée. `test_cutscene_director.gd` : l'alias est résolu **à chaque étape** (le PNJ qu'il désigne peut avoir bougé).
+
+**T2 — ui-mobile** : inchangé (§5 T2).
+
+**T3 — constructeur-monde** (remplace le §5 T3 là où il diffère) :
+- `StarterChoice` selon §13.3 (espèce en attente, ajout sur `done_flag`, repli si `play` échoue) ; `data/cutscenes/starter.json` (§13.5 et §13.6) ; dialogues du §13.5 ; variantes du §13.7 ; déclencheur `LabExit` (§13.6) ; `taken_*` dans `data/npcs/oak_lab.json`.
+- **CA** : ceux du §5 T3, avec ces changements : **l'équipe est vide jusqu'à « On dirait que le choix est réciproque. »** et compte 1 Pokémon juste après (bonne espèce, niveau 5, PV pleins, 2 capacités) ; pour chaque starter, le Pokémon choisi finit **sur la case que regarde le joueur** ; 4 répliques du rival et de Chen dans l'ordre du §13.5, **aucune** « Ça devrait être intéressant. » ; le rival prend le bon Pokémon et celui-ci finit à côté de lui ; sortie empêchée pendant le choix (§13.6), libre avant `starter_offered` et après `starter_chosen` ; invariants du §13.4.
+- Capture et S24 : les trois styles de saut sont **distincts à l'œil** (Kevin juge).
+
+### 13.10 Ce qui reste ouvert après ce travail (remplace §11 et complète §12)
+
+Réglé : §11 n° 1 (3B présent et validé), n° 2 (format des PNJ), n° 3 (directions dans `Grid`), n° 5 (grille du labo : §13.2). §12 n° 7 (Électrik) et n° 2 (`base_exp`) : décision n° 15. §12 « Reportés » : `Interaction.Kind.MEET` et la validation des alias et des étapes `hop` / `lean` / `despawn` sont faits ; restent `BattleLayout` (Q23, « recomposé »), l'étape `battle` (T5), `GameState` (T1), la lecture des nouvelles étapes par le directeur (T1).
+
+Toujours ouvert : §11 n° 4 (renommer `combat-capacites-v1.png.png`, commit de documentation).
+
+Questions pour Kevin (propositions par défaut appliquées si rien n'est dit) :
+- **Q-A — « Ça devrait être intéressant. » et le « petit sourire »** (dossier 02 §9 et §10) : la décision n° 11 ne les reprend pas. *Par défaut : supprimés (scène du §13.5).* Faut-il garder la réplique après « Alors ce sera toi. » ?
+- **Q-B — le pas du joueur pour laisser descendre son Pokémon** : aujourd'hui il se retourne, fait un pas, puis se retourne vers le Pokémon (et, avec Carapuce, il s'écarte vers la gauche, le tabouret bloquant l'arrière). *Par défaut : ainsi.* Un vrai pas en arrière sans se retourner est possible (petit ajout à `Player`) si le rendu S24 ne convient pas.
+- **Q-C — ce que disent Chen et le rival pendant le choix** : leurs répliques d'attente du 3B (« Un peu de patience. J'ai quelque chose à vous montrer. ») ne vont plus une fois l'offre faite. *Par défaut : inchangées jusqu'à ta réponse*, ou une réplique à écrire.
+- **Q-D — Maya « regarde le starter »** : au 4A, le starter du joueur reste près de la table jusqu'à ce qu'on quitte le labo ; au 4B, il rentre dans sa Ball (Q21). *Par défaut : Maya se tourne vers le joueur.* Veux-tu que le starter reste visible à côté du joueur au labo (ce qui touche au compagnon du dossier 04 §4) ?
+- **Q-E — les trois styles de saut** (tableau du §13.4) : valeurs de départ, à régler sur le S24.
+
+### 13.11 Dépendances au 3B : ce qui a été livré (remplace le tableau du §9)
+
+| Dépendance | Livré par le 3B (code réel) | Conséquence pour le 4A |
+|---|---|---|
+| Scène en données, dernière étape `set: [oak_lab_reunion]` | Oui, mais c'est la **variante 1 de `route1_grass`**, pas une scène `oak_intercept` | On ajoute 3 étapes à la fin de cette variante (T1). |
+| `CutsceneDirector` | `play(cutscene_id)`, `is_running`, `get_step_index`, `get_cutscene_id`, signaux `cutscene_started` / `step_started` / `cutscene_finished` ; 7 étapes ; `near`, `follower`, `run` ; `MOVE_BLOCK_TIMEOUT` | Alias, `hop`, `lean`, `despawn` : validation faite (T0), lecture en T1. `follower` existe : le rival part avec son Pokémon. |
+| `Npc` qui marche | `GridMover`, `enter_grid`, `leave_grid`, `step`, `is_moving`, `step_finished`, `face`, `face_toward`, `react` (petit bond, constantes `HOP_HEIGHT` / `HOP_DURATION`) | `hop_to` s'y ajoute (T1) ; attention au nom des constantes (§13.1). |
+| `GameMap.add_npc`, `remove_npc`, `refresh_npcs(flags)`, `get_npc` | Oui | `despawn` et `taken_*` s'appuient dessus. |
+| `NpcSpec` `if` / `unless`, `NpcRoster.parse_entry` | Oui | `taken_*` (T3) ; `hop_style` ajouté en T0. |
+| Clé de page `turn` | Oui, identifiants de PNJ ou « player » (pas d'alias) | Regards du rival entre deux dialogues (§13.5). |
+| `Player.script_step` ; blocage par raisons ; `Boot._refresh_controls` | Oui | Inchangé. |
+| `InteractionController.set_enabled` | **Non** (le blocage du joueur suffit) | MEET passe par `_interact` (T1). |
+| PNJ `oak` (8, 4) et `rival` (9, 6), `if: [oak_met]` | Oui, **avec** leurs répliques d'attente | Variantes du §13.7. |
+| Blocage des hautes herbes | Variante 2 de `route1_grass`, `unless` sur le drapeau du starter (renommé `starter_chosen` en T0) | Se lève tout seul quand la scène `starter_chosen` lève le drapeau. |
+| Étiquette « Prof. Chen » | Oui | Tous les nouveaux dialogues de Chen. |
+| `EventTriggerPoint` / `TriggerTable` | Oui (Route 1) ; aucun dans les intérieurs | Déclencheur `LabExit` en T3 (§13.6). |

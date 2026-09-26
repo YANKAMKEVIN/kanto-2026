@@ -17,7 +17,10 @@
 		"stat_fell_3": { "text": "{stat} {de_pokemon} baisse énormément !", "draft": true },
 		"stat_no_higher": { "text": "{stat} {de_pokemon} ne peut plus augmenter !", "draft": true },
 		"stat_no_lower": { "text": "{stat} {de_pokemon} ne peut plus baisser !", "draft": true },
-		"recoil": { "text": "{pokemon} est blessé par le contrecoup !", "draft": true },
+		"recoil": {
+			"text": "{pokemon} est blessé par le contrecoup !",
+			"text_f": "{pokemon} est blessée par le contrecoup !", "draft": true
+		},
 		"fainted": { "text": "{pokemon} est K.O. !", "draft": true },
 		"battle_won": { "text": "Tu as battu {trainer} !", "draft": true },
 		"battle_lost": { "text": "{trainer} a gagné cette fois...", "draft": true }

@@ -25,8 +25,10 @@ const IDS: Array[StringName] = [
 	&"oak_lab_waiting", &"oak_route1_call", &"oak_route1_warning", &"observe_bulbasaur", &"observe_charmander", &"observe_squirtle", &"rival",
 	&"rival_kanto_map", &"rival_lab_waiting", &"route1_grass_thought", &"sign_pallet_town",
 ]
-## Drapeaux lus en 3B mais levés par un jalon futur (jalon-03b.md §2.8) : starter (jalon 4).
-const FUTURE_FLAGS: Array[StringName] = [&"has_starter"]
+## Drapeaux lus mais levés par une tâche à venir : starter_chosen (lu par la pensée des
+## herbes, variante 2 de route1_grass ; levé par la scène « starter_chosen », jalon 4 T3,
+## jalon-04.md §13).
+const FUTURE_FLAGS: Array[StringName] = [&"starter_chosen"]
 
 var _library: DialogueLibrary
 var _cutscenes: CutsceneLibrary
@@ -179,7 +181,7 @@ func test_every_condition_flag_is_set_somewhere() -> void:
 		assert_true(set_flags.has(flag), "drapeau « %s » levé par un « set »" % flag)
 	for flag: StringName in FUTURE_FLAGS:
 		assert_false(set_flags.has(flag), "« %s » : levé par un jalon futur" % flag)
-	assert_true(read_flags.has(&"has_starter"), "has_starter lu (pensée des herbes)")
+	assert_true(read_flags.has(&"starter_chosen"), "starter_chosen lu (pensée des herbes)")
 	assert_eq(_library.get_set_flags(), [&"mom_greeted", &"rival_met"] as Array[StringName])
 	assert_eq(_cutscenes.get_set_flags(), [&"oak_lab_reunion", &"oak_met"]
 		as Array[StringName])

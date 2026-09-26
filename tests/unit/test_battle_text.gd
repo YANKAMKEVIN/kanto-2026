@@ -1,6 +1,8 @@
 extends GutTest
 ## BattleText : messages de combat de data/battle/messages.json pour chaque sorte
-## d'événement (jalon 4 §2.2 ; décisions de Kevin du §8 point 5).
+## d'événement (jalon 4 §2.2 ; décisions de Kevin du §8 point 5). Décision n° 15 :
+## accord au féminin (« text_f ») et pas de message générique de fin pour le premier
+## combat du rival (TrainerData.end_message).
 
 const K := BattleEvent.Kind
 
@@ -124,6 +126,48 @@ func test_recoil_faint_and_end() -> void:
 	assert_eq(_lines(won), ["Le Rival a gagné cette fois..."])
 
 
+func test_feminine_agreement() -> void:
+	var recoil := _event(K.RECOIL, false, "Salamèche")
+	recoil.gender = Pokemon.Gender.FEMALE
+	assert_eq(_lines(recoil), ["Salamèche est blessée par le contrecoup !"])
+	recoil.gender = Pokemon.Gender.MALE
+	assert_eq(_lines(recoil), ["Salamèche est blessé par le contrecoup !"])
+	recoil.gender = Pokemon.Gender.NONE
+	assert_eq(_lines(recoil), ["Salamèche est blessé par le contrecoup !"], "asexué")
+	assert_true(_text.has_feminine(&"recoil"))
+	assert_eq(_text.get_template(&"recoil", true), "{pokemon} est blessée par le contrecoup !")
+	# Sans variante au féminin, le modèle commun sert à tous.
+	var fainted := _event(K.FAINTED, true)
+	fainted.gender = Pokemon.Gender.FEMALE
+	assert_false(_text.has_feminine(&"fainted"))
+	assert_eq(_lines(fainted), ["Carapuce est K.O. !"])
+
+
+func test_every_feminine_variant_differs_from_the_common_text() -> void:
+	for id: StringName in BattleText.TEMPLATE_IDS:
+		if _text.has_feminine(id):
+			assert_ne(_text.get_template(id, true), _text.get_template(id), String(id))
+
+
+func test_no_generic_end_message_for_the_first_rival_battle() -> void:
+	var trainers := TrainerLibrary.new(_data)
+	trainers.load_dir()
+	var rival := trainers.get_trainer(&"rival_lab")
+	assert_false(rival.end_message, "ses répliques d'après-combat en tiennent lieu")
+	var ended := _event(K.BATTLE_ENDED)
+	for outcome: int in [Battle.Outcome.WIN, Battle.Outcome.LOSS]:
+		ended.outcome = outcome
+		assert_eq(Array(_text.lines(ended, _data, rival)), [], "issue %d" % outcome)
+	# Les autres dresseurs gardent « Tu as battu… ».
+	var other := TrainerData.new()
+	ended.outcome = Battle.Outcome.WIN
+	assert_true(other.end_message, "par défaut")
+	assert_eq(Array(_text.lines(ended, _data, other)), ["Tu as battu Le Rival !"])
+	# Le dresseur ne change que la fin.
+	assert_eq(Array(_text.lines(_event(K.SENT_OUT, true), _data, rival)),
+		["Le Rival envoie Carapuce !"])
+
+
 func test_elision() -> void:
 	assert_eq(BattleText.de_name("Salamèche"), "de Salamèche")
 	assert_eq(BattleText.de_name("Évoli"), "d'Évoli")
@@ -164,6 +208,12 @@ func _valid_dict() -> Dictionary:
 
 func test_valid_dict_is_accepted() -> void:
 	assert_true(BattleText.new().add_from_dict(_valid_dict(), "t"))
+	var dict := _valid_dict()
+	dict["templates"]["fainted"] = { "text": "{pokemon} tombe !", "text_f": "{pokemon} chute !" }
+	var text := BattleText.new()
+	assert_true(text.add_from_dict(dict, "t"), "text_f facultatif")
+	assert_true(text.has_feminine(&"fainted"))
+	assert_false(text.has_feminine(&"recoil"))
 
 
 func test_missing_unknown_and_malformed_templates_are_rejected() -> void:
@@ -173,16 +223,20 @@ func test_missing_unknown_and_malformed_templates_are_rejected() -> void:
 	dict["templates"]["victory_dance"] = { "text": "Youpi !" }
 	dict["templates"]["recoil"] = { "text": "{pokemon} et {ennemi}", "draft": "oui" }
 	dict["templates"]["critical"] = { "text": "" }
+	dict["templates"]["move_used"] = { "text": "{pokemon} !", "text_f": "" }
+	dict["templates"]["move_missed"] = { "text": "{pokemon} !", "text_f": "{pokemone} !" }
 	dict["stats"].erase("spe")
 	dict["stats"]["luck"] = "Chance"
 	dict["extra"] = 1
 	assert_false(text.add_from_dict(dict, "t"))
-	assert_push_error_count(8)
+	assert_push_error_count(10)
 	var errors := "\n".join(text.get_errors())
 	for expected: String in ["clé inconnue « extra »", "modèle « victory_dance » : modèle inconnu",
 			"marque inconnue « {ennemi} »", "« draft » vaut true ou false",
 			"« text » doit être un texte non vide", "modèle « fainted » manquant",
-			"statistique inconnue « luck »", "stats : « spe » manquant"]:
+			"statistique inconnue « luck »", "stats : « spe » manquant",
+			"« text_f » doit être un texte non vide",
+			"text_f : marque inconnue « {pokemone} »"]:
 		assert_string_contains(errors, expected)
 	assert_eq(text.get_template(&"move_used"), "", "tout ou rien")
 

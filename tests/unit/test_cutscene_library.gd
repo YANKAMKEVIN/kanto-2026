@@ -1,6 +1,7 @@
 extends GutTest
 ## CutsceneLibrary, Cutscene, CutsceneVariant, CutsceneStep : format des fichiers de
 ## data/cutscenes/, validation, choix de la variante selon les drapeaux (jalon 3B §2.3).
+## Jalon 4 (§3.6, §13) : alias d'acteurs « $nom », étapes hop, lean et despawn.
 
 const FIXTURES := "res://tests/fixtures/cutscenes/"
 
@@ -136,7 +137,11 @@ func test_kind_names() -> void:
 	assert_eq(CutsceneStep.kind_name(CutsceneStep.Kind.WAIT), &"wait")
 	assert_eq(CutsceneStep.kind_name(CutsceneStep.Kind.SET_FLAGS), &"set")
 	assert_eq(CutsceneStep.kind_name(CutsceneStep.Kind.CHANGE_MAP), &"change_map")
+	assert_eq(CutsceneStep.kind_name(CutsceneStep.Kind.HOP), &"hop")
+	assert_eq(CutsceneStep.kind_name(CutsceneStep.Kind.LEAN), &"lean")
+	assert_eq(CutsceneStep.kind_name(CutsceneStep.Kind.DESPAWN), &"despawn")
 	assert_eq(CutsceneStep.TYPE_KEYS.size(), CutsceneStep.Kind.size())
+	assert_eq(CutsceneStep.Kind.CHANGE_MAP, 6, "les étapes du 3B gardent leur valeur")
 
 
 # --- Variantes et drapeaux --------------------------------------------------------------
@@ -147,8 +152,8 @@ func test_first_matching_variant_wins() -> void:
 	assert_eq(grass.pick(_flags()), grass.variants[0], "d'abord l'interception de Chen")
 	assert_eq(grass.pick(null), grass.variants[0])
 	assert_eq(grass.pick(_flags([&"oak_met"])), grass.variants[1], "puis la pensée")
-	assert_null(grass.pick(_flags([&"oak_met", &"has_starter"])), "désarmé avec un starter")
-	assert_false(grass.matches(_flags([&"oak_met", &"has_starter"])))
+	assert_null(grass.pick(_flags([&"oak_met", &"starter_chosen"])), "désarmé avec un starter")
+	assert_false(grass.matches(_flags([&"oak_met", &"starter_chosen"])))
 	assert_true(grass.matches(_flags([&"oak_met"])))
 
 
@@ -162,7 +167,7 @@ func test_if_condition_requires_all_flags() -> void:
 
 func test_flags_and_dialogues_are_listed() -> void:
 	_library.load_dir(FIXTURES)
-	assert_eq(_library.get_condition_flags(), [&"has_starter", &"oak_met"]
+	assert_eq(_library.get_condition_flags(), [&"oak_met", &"starter_chosen"]
 		as Array[StringName])
 	assert_eq(_library.get_set_flags(), [&"oak_lab_reunion", &"oak_met"] as Array[StringName])
 	assert_eq(_library.get_dialogue_ids(), [&"oak_lab_reunion", &"oak_route1_call",
@@ -288,3 +293,130 @@ func test_one_invalid_scene_does_not_discard_the_others() -> void:
 	assert_true(_library.has_cutscene(&"good"))
 	assert_false(_library.has_cutscene(&"bad"), "écartée entière, pas seulement l'étape")
 	assert_eq(_library.get_errors().size(), 1)
+
+
+# --- Jalon 4 : alias, hop, lean, despawn ---------------------------------------------
+
+func test_alias_form() -> void:
+	for ref: StringName in [&"$player_starter", &"$a", &"$rival_starter", &"$_"]:
+		assert_true(CutsceneStep.is_alias(ref), String(ref))
+	for ref: StringName in [&"$", &"player", &"$Player", &"$player-starter", &"$starter1",
+			&"$ a", &"player_starter", &"", &"$é"]:
+		assert_false(CutsceneStep.is_alias(ref), String(ref))
+	assert_eq(CutsceneStep.alias_name(&"$player_starter"), &"player_starter")
+	assert_eq(CutsceneStep.alias_name(&"rival"), &"")
+	assert_eq(CutsceneStep.alias_name(&"$Bad"), &"")
+
+
+func test_aliases_are_accepted_wherever_an_actor_is_expected() -> void:
+	assert_true(_library.add_from_dict({"choice": {"unless": ["rival_challenged"], "steps": [
+		{"hop": "$mine", "to": {"near": "$mine", "offsets": [[0, 1]]}},
+		{"face": "player", "to": "$mine"},
+		{"face": "$mine", "to": "player"},
+		{"lean": "$mine", "to": "player"},
+		{"move": "rival", "to": {"near": "$theirs", "offsets": [[0, 1]]}},
+		{"move": "$theirs", "path": ["down"]},
+		{"move": "rival", "to": [8, 8], "follower": "$theirs"},
+		{"face": "rival", "to": "$mine"},
+		{"despawn": "$theirs"},
+	]}}, "test"), str(_library.get_errors()))
+	assert_eq(_library.get_errors().size(), 0)
+	assert_eq(_library.get_aliases(&"choice"), [&"mine", &"theirs"] as Array[StringName])
+	assert_eq(_library.get_cutscene(&"choice").get_aliases(),
+		[&"mine", &"theirs"] as Array[StringName])
+	var steps := _library.get_cutscene(&"choice").variants[0].steps
+	assert_eq(steps[1].target, &"$mine", "le directeur résout l'alias au début de l'étape")
+	assert_eq(steps[4].near, &"$theirs")
+	assert_eq(steps[6].follower, &"$theirs")
+	assert_eq(steps[6].get_aliases(), [&"theirs"] as Array[StringName])
+	assert_eq(_library.get_aliases(&"nothing"), [] as Array[StringName])
+
+
+func test_scenes_without_alias_list_none() -> void:
+	_library.load_dir(FIXTURES)
+	assert_eq(_library.get_aliases(&"route1_grass"), [] as Array[StringName])
+
+
+func test_malformed_aliases_are_rejected_everywhere() -> void:
+	var bad: Array[Dictionary] = [
+		{"face": "$", "to": "player"},
+		{"face": "player", "to": "$Starter"},
+		{"move": "$a-b", "path": ["down"]},
+		{"move": "rival", "to": {"near": "$1", "offsets": [[0, 1]]}},
+		{"move": "rival", "path": ["down"], "follower": "$ x"},
+		{"hop": "$", "to": [1, 1]},
+		{"hop": "$a", "to": {"near": "$B", "offsets": [[0, 1]]}},
+		{"lean": "$a", "to": "$b c"},
+		{"despawn": "$9"},
+	]
+	for i: int in bad.size():
+		assert_null(_one_step(bad[i], "alias_%d" % i), str(bad[i]))
+	assert_eq(_library.size(), 0)
+	assert_push_error_count(bad.size(), "une erreur par étape")
+	for message: String in _library.get_errors():
+		assert_string_contains(message, "alias mal formé")
+
+
+func test_spawn_cannot_create_an_alias() -> void:
+	assert_null(_one_step({"spawn": "$starter", "sprite": "bulbasaur", "cell": [10, 5]}))
+	assert_push_error("pas un alias")
+
+
+func test_hop_step() -> void:
+	var near := _one_step({"hop": "$mine", "to": {"near": "player",
+		"offsets": [[0, 1], [-1, 0]]}}, "a")
+	assert_eq(near.kind, CutsceneStep.Kind.HOP)
+	assert_eq(near.actor, &"$mine")
+	assert_true(near.has_destination())
+	assert_eq(near.near, &"player")
+	assert_eq(near.offsets, [Vector2i(0, 1), Vector2i(-1, 0)] as Array[Vector2i])
+	assert_eq(near.cell, CutsceneStep.NO_CELL)
+	var cell := _one_step({"hop": "charmander", "to": [11, 6]}, "b")
+	assert_eq(cell.actor, &"charmander")
+	assert_eq(cell.cell, Vector2i(11, 6))
+	assert_eq(cell.near, &"")
+	assert_true(cell.path.is_empty())
+
+
+func test_lean_and_despawn_steps() -> void:
+	var lean := _one_step({"lean": "charmander", "to": "player"}, "a")
+	assert_eq(lean.kind, CutsceneStep.Kind.LEAN)
+	assert_eq(lean.actor, &"charmander")
+	assert_eq(lean.target, &"player")
+	var toward := _one_step({"lean": "$mine", "to": "down"}, "b")
+	assert_eq(toward.target, &"down", "une direction, comme « face »")
+	var despawn := _one_step({"despawn": "$theirs"}, "c")
+	assert_eq(despawn.kind, CutsceneStep.Kind.DESPAWN)
+	assert_eq(despawn.actor, &"$theirs")
+
+
+func test_invalid_hop_lean_and_despawn_steps() -> void:
+	var bad: Array[Dictionary] = [
+		{"hop": "charmander"},
+		{"hop": "player", "to": [1, 1]},
+		{"hop": "", "to": [1, 1]},
+		{"hop": "charmander", "to": [1]},
+		{"hop": "charmander", "to": "player"},
+		{"hop": "charmander", "to": {"near": "player"}},
+		{"hop": "charmander", "path": ["down"]},
+		{"hop": "charmander", "to": [1, 1], "run": true},
+		{"hop": "charmander", "to": [1, 1], "style": "calm"},
+		{"lean": "charmander"},
+		{"lean": "player", "to": "charmander"},
+		{"lean": "charmander", "to": ""},
+		{"lean": "charmander", "to": "player", "back": false},
+		{"despawn": "player"},
+		{"despawn": ""},
+		{"despawn": 3},
+		{"despawn": "rival", "to": [7, 9]},
+	]
+	for i: int in bad.size():
+		assert_null(_one_step(bad[i], "bad_%d" % i), str(bad[i]))
+	assert_eq(_library.size(), 0)
+	# « hop » avec « path » : clé inconnue et « to » manquant (deux erreurs).
+	assert_push_error_count(bad.size() + 1, "une erreur par étape, deux pour « path »")
+	var errors := "\n".join(_library.get_errors())
+	for expected: String in ["« to » est obligatoire", "réservé aux PNJ",
+			"clé inconnue « style »", "clé inconnue « run »", "clé inconnue « back »",
+			"despawn : identifiant attendu"]:
+		assert_string_contains(errors, expected)

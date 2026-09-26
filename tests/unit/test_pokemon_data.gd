@@ -39,6 +39,14 @@ func test_real_species_values() -> void:
 	assert_eq(charmander.male_ratio, 0.875)
 	assert_eq(charmander.growth_rate, ExpCurve.Rate.MEDIUM_SLOW)
 	assert_eq(charmander.base_exp, 62)
+	# Rendement d'XP moderne des formes finales (décision de Kevin n° 15, jalon 4 §8).
+	var base_exp: Dictionary[StringName, int] = {
+		&"bulbasaur": 64, &"ivysaur": 142, &"venusaur": 263,
+		&"charmander": 62, &"charmeleon": 142, &"charizard": 267,
+		&"squirtle": 63, &"wartortle": 142, &"blastoise": 265,
+	}
+	for id: StringName in base_exp:
+		assert_eq(_data.get_species(id).base_exp, base_exp[id], String(id))
 	assert_eq(_data.get_species(&"charizard").types, [&"fire", &"flying"] as Array[StringName])
 	assert_eq(_data.get_species(&"bulbasaur").types, [&"grass", &"poison"] as Array[StringName])
 	for id: StringName in _data.get_species_ids():

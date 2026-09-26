@@ -8,6 +8,7 @@ extends RefCounted
 ## "rival_lab": {
 ##   "name": "Le Rival", "ai": "random",
 ##   "can_lose": true, "heal_after": true, "gives_exp": false, "prize_money": 0,
+##   "end_message": false,
 ##   "team_by_starter": {
 ##     "bulbasaur": [{ "species": "charmander", "level": 5 }], ...
 ##   }
@@ -15,13 +16,15 @@ extends RefCounted
 ## [/codeblock]
 ## Clés obligatoires : name, ai, can_lose, heal_after, gives_exp, prize_money, et
 ## [b]une[/b] des deux : team (équipe fixe) ou team_by_starter (starter du joueur → équipe).
+## Facultative : end_message (true par défaut ; false = pas de message générique de fin,
+## [member TrainerData.end_message]).
 ## Une équipe compte 1 à 6 Pokémon { species, level }. Les espèces (et les starters de
 ## team_by_starter) sont vérifiées contre [PokemonData].
 
 const DATA_DIR: String = "res://data/trainers/"
 
 const _KEYS: Array[String] = [
-	"name", "ai", "can_lose", "heal_after", "gives_exp", "prize_money", "team",
+	"name", "ai", "can_lose", "heal_after", "gives_exp", "prize_money", "end_message", "team",
 	"team_by_starter",
 ]
 const _REQUIRED: Array[String] = [
@@ -155,7 +158,7 @@ func _parse(value: Variant, where: String) -> TrainerData:
 				", ".join(PackedStringArray(BattleAI.KINDS))])
 		else:
 			trainer.ai = StringName(entry["ai"])
-	for key: String in ["can_lose", "heal_after", "gives_exp"]:
+	for key: String in ["can_lose", "heal_after", "gives_exp", "end_message"]:
 		if entry.has(key):
 			if entry[key] is bool:
 				trainer.set(key, entry[key])

@@ -44,6 +44,7 @@ func test_real_rival_lab_loads() -> void:
 	assert_true(rival.heal_after)
 	assert_false(rival.gives_exp, "premier combat : pas d'XP")
 	assert_eq(rival.prize_money, 0, "premier combat : pas d'argent")
+	assert_false(rival.end_message, "pas de « Tu as battu… » (décision de Kevin n° 15)")
 
 
 func test_rival_team_matches_the_rival_pick_for_each_starter() -> void:
@@ -129,6 +130,14 @@ func test_duplicate_id_is_rejected() -> void:
 	assert_eq(_library.get_trainer(&"youngster").name, "Gamin Joey")
 
 
+func test_end_message_is_optional_and_true_by_default() -> void:
+	var quiet := _valid_entry()
+	quiet["end_message"] = false
+	assert_true(_library.add_from_dict({"usual": _valid_entry(), "quiet": quiet}, "t"))
+	assert_true(_library.get_trainer(&"usual").end_message)
+	assert_false(_library.get_trainer(&"quiet").end_message)
+
+
 func test_invalid_fields_are_rejected() -> void:
 	var entry := _valid_entry()
 	entry.erase("gives_exp")
@@ -136,8 +145,10 @@ func test_invalid_fields_are_rejected() -> void:
 	entry["can_lose"] = "yes"
 	entry["prize_money"] = -5
 	entry["reward"] = 3
+	entry["end_message"] = "no"
 	assert_false(_library.add_from_dict({"bad": entry}, "t"))
-	assert_push_error_count(5)
+	assert_push_error_count(6)
+	assert_string_contains(_errors(), "« end_message » vaut true ou false")
 	var errors := _errors()
 	assert_string_contains(errors, "clé inconnue « reward »")
 	assert_string_contains(errors, "« gives_exp » est obligatoire")

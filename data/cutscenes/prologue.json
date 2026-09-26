@@ -30,7 +30,7 @@
 				]
 			},
 			{
-				"unless": ["has_starter"],
+				"unless": ["starter_chosen"],
 				"steps": [
 					{ "dialogue": "route1_grass_thought" },
 					{ "move": "player", "path": ["down"] }

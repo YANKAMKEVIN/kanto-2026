@@ -19,6 +19,10 @@ var heal_after: bool = false
 var gives_exp: bool = true
 ## Argent gagné en cas de victoire.
 var prize_money: int = 0
+## Message générique de fin (« Tu as battu… », « … a gagné cette fois... »). Faux pour le
+## premier combat du rival : ses répliques d'après-combat en tiennent lieu (décision de
+## Kevin n° 15, jalon 4 §8).
+var end_message: bool = true
 ## Équipe fixe (vide si l'équipe dépend du starter du joueur).
 var team: Array[TrainerSlot] = []
 ## Équipe selon le starter du joueur (combats du rival, comme Rouge/Bleu).

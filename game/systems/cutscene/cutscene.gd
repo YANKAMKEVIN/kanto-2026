@@ -24,3 +24,16 @@ func pick(flags: StoryFlags) -> CutsceneVariant:
 ## Vrai si une variante s'applique à [param flags].
 func matches(flags: StoryFlags) -> bool:
 	return pick(flags) != null
+
+
+## Alias d'acteurs utilisés par toutes les variantes (sans « $ », triés) : ceux que le code
+## qui lance la scène doit fournir (jalon 4 §3.6).
+func get_aliases() -> Array[StringName]:
+	var found: Array[StringName] = []
+	for variant: CutsceneVariant in variants:
+		for step: CutsceneStep in variant.steps:
+			for alias: StringName in step.get_aliases():
+				if not found.has(alias):
+					found.append(alias)
+	found.sort_custom(func(a: StringName, b: StringName) -> bool: return String(a) < String(b))
+	return found

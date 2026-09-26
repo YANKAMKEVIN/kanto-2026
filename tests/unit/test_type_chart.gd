@@ -22,6 +22,8 @@ func test_real_table_loads_without_error_with_18_types() -> void:
 		assert_true(_chart.has_type(id), String(id))
 	assert_eq(_chart.get_type_name(&"fire"), "Feu")
 	assert_eq(_chart.get_type_name(&"dark"), "Ténèbres")
+	assert_eq(_chart.get_type_name(&"electric"), "Électrik",
+		"nom officiel (décision de Kevin n° 15, jalon 4 §8)")
 	assert_eq(_chart.get_type_name(&"nothing"), "")
 
 
