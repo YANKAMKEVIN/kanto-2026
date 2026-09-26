@@ -1,0 +1,10 @@
+{
+	"tackle": {
+		"name": "Charge", "type": "normal", "category": "physical",
+		"power": 40, "accuracy": 100, "pp": 35, "description": "Percute la cible."
+	},
+	"thunder_shock": {
+		"name": "Éclair", "type": "electric", "category": "special",
+		"power": 40, "accuracy": 100, "pp": 30, "description": "Type absent de la table."
+	}
+}

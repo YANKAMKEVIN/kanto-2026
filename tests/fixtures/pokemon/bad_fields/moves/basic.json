@@ -1,0 +1,18 @@
+{
+	"tackle": {
+		"name": "Charge", "type": "normal", "category": "physical",
+		"power": 40, "accuracy": 100, "pp": 35, "description": "Percute la cible."
+	},
+	"growl": {
+		"name": "Rugissement", "type": "normal", "category": "status",
+		"accuracy": 100, "pp": 40,
+		"effects": [{ "kind": "stat_stage", "stat": "atk", "stages": -1, "target": "foe" }],
+		"description": "Baisse l'Attaque.", "draft": true
+	},
+	"struggle": {
+		"name": "Lutte", "type": "normal", "category": "physical",
+		"power": 50, "accuracy": 0, "pp": 1, "typeless": true,
+		"effects": [{ "kind": "recoil", "fraction": 0.25 }],
+		"description": "Dernier recours."
+	}
+}

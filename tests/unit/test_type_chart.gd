@@ -59,7 +59,7 @@ func test_table_totals_match_the_modern_chart() -> void:
 
 
 func test_broken_json_reports_the_line() -> void:
-	assert_false(_chart.load_file("res://tests/fixtures/pokemon/bad_json/types.json"))
+	assert_false(_chart.load_file("res://tests/fixtures/pokemon/bad_json/types_broken.json"))
 	assert_push_error("ligne 5")
 
 

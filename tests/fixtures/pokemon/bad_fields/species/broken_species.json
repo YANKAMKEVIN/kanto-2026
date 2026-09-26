@@ -1,0 +1,49 @@
+{
+	"good": {
+		"dex": 1, "name": "Correct", "types": ["normal"],
+		"base_stats": { "hp": 45, "atk": 49, "def": 49, "spa": 65, "spd": 65, "spe": 45 },
+		"male_ratio": 0.5, "growth_rate": "fast", "base_exp": 64,
+		"learnset": [[1, "tackle"]],
+		"evolutions": [{ "into": "no_learnset", "method": "level", "level": 20 }]
+	},
+	"no_learnset": {
+		"dex": 2, "name": "Sans capacités", "types": ["normal"],
+		"base_stats": { "hp": 45, "atk": 49, "def": 49, "spa": 65, "spd": 65, "spe": 45 },
+		"male_ratio": 0.5, "growth_rate": "fast", "base_exp": 64
+	},
+	"three_types": {
+		"dex": 3, "name": "Trois types", "types": ["normal", "fire", "water"],
+		"base_stats": { "hp": 45, "atk": 49, "def": 49, "spa": 65, "spd": 65, "spe": 45 },
+		"male_ratio": 0.5, "growth_rate": "fast", "base_exp": 64,
+		"learnset": [[1, "tackle"]]
+	},
+	"bad_stats": {
+		"dex": 4, "name": "Stats", "types": ["normal"],
+		"base_stats": { "hp": 0, "atk": 49, "def": 49, "spa": 65, "spd": 65, "speed": 45 },
+		"male_ratio": 0.5, "growth_rate": "fast", "base_exp": 64,
+		"learnset": [[1, "tackle"]]
+	},
+	"bad_ratio_and_curve": {
+		"dex": 5, "name": "Ratio", "types": ["normal"],
+		"base_stats": { "hp": 45, "atk": 49, "def": 49, "spa": 65, "spd": 65, "spe": 45 },
+		"male_ratio": 1.5, "growth_rate": "very_slow", "base_exp": 64,
+		"learnset": [[1, "tackle"]]
+	},
+	"unsorted": {
+		"dex": 6, "name": "Désordre", "types": ["normal"],
+		"base_stats": { "hp": 45, "atk": 49, "def": 49, "spa": 65, "spd": 65, "spe": 45 },
+		"male_ratio": 0.5, "growth_rate": "fast", "base_exp": 64,
+		"learnset": [[5, "tackle"], [1, "growl"]]
+	},
+	"bad_evolutions": {
+		"dex": 7, "name": "Évolutions", "types": ["normal"],
+		"base_stats": { "hp": 45, "atk": 49, "def": 49, "spa": 65, "spd": 65, "spe": 45 },
+		"male_ratio": 0.5, "growth_rate": "fast", "base_exp": 64,
+		"learnset": [[1, "tackle"]],
+		"evolutions": [
+			{ "into": "good", "method": "level" },
+			{ "into": "good", "method": "item", "item": "fire_stone", "level": 3 },
+			{ "into": "good", "method": "friendship" }
+		]
+	}
+}
