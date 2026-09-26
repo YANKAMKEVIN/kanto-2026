@@ -1,0 +1,10 @@
+{
+	"test_rival": {
+		"name": "Le Rival", "ai": "random",
+		"can_lose": true, "heal_after": true, "gives_exp": false, "prize_money": 0,
+		"team_by_starter": {
+			"sprout": [{ "species": "wisp", "level": 5 }],
+			"wisp": [{ "species": "tree", "level": 6 }, { "species": "flower", "level": 4 }]
+		}
+	}
+}
