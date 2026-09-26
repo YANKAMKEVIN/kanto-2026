@@ -423,10 +423,13 @@ func test_every_hop_style_has_parameters() -> void:
 		assert_true(Npc.HOP_STYLE_PARAMS.has(style), "paramètres du style « %s »" % style)
 		var params: Dictionary = Npc.HOP_STYLE_PARAMS.get(style, {})
 		for key: String in ["hesitate", "hesitate_px", "windup", "windup_px", "duration",
-				"height", "trans", "bounces", "wiggle"]:
+				"height", "trans", "bounces", "sway", "squash"]:
 			assert_true(params.has(key), "« %s » : clé %s" % [style, key])
 		assert_gt(float(params.get("duration", 0.0)), 0.0)
 		assert_gt(float(params.get("height", 0.0)), 0.0)
+		assert_false(params.has("wiggle"), "« %s » : plus de rotation (QA R2)" % style)
+		assert_between(float(params.get("squash", 0.0)), 0.0, 0.15,
+			"« %s » : compression légère" % style)
 	assert_eq(Npc.HOP_STYLE_PARAMS.size(), styles.size(), "aucun style en trop")
 	assert_eq(Npc.hop_params(&"unknown"), Npc.HOP_STYLE_PARAMS[&""], "inconnu : défaut")
 
@@ -442,7 +445,8 @@ func test_hop_durations_calm_then_eager_then_playful() -> void:
 
 func test_hop_styles_look_different() -> void:
 	# Hauteur d'arc : l'enthousiaste saute le plus haut ; hésitation seulement pour le calme,
-	# rebonds pour l'enthousiaste et le joueur, rotation seulement pour le joueur.
+	# rebonds pour l'enthousiaste et le joueur, dandinement (décalage horizontal) seulement
+	# pour le joueur ; l'enthousiaste atterrit le plus lourdement.
 	var calm := Npc.hop_params(&"calm")
 	var eager := Npc.hop_params(&"eager")
 	var playful := Npc.hop_params(&"playful")
@@ -454,8 +458,11 @@ func test_hop_styles_look_different() -> void:
 	assert_eq((calm["bounces"] as Array).size(), 0)
 	assert_eq((eager["bounces"] as Array).size(), 1)
 	assert_eq((playful["bounces"] as Array).size(), 2)
-	assert_gt(float(playful["wiggle"]), 0.0)
-	assert_eq(float(eager["wiggle"]), 0.0)
+	assert_gt(float(playful["sway"]), 0.0)
+	assert_eq(float(eager["sway"]), 0.0)
+	assert_eq(float(calm["sway"]), 0.0)
+	assert_gt(float(eager["squash"]), float(playful["squash"]))
+	assert_gt(float(playful["squash"]), float(calm["squash"]))
 
 
 ## Saute de la table (lift 56) d'une case vers le bas dans le style [param style] ;
@@ -469,11 +476,15 @@ func _check_hop(style: StringName) -> void:
 	var target := CELL + Vector2i.DOWN
 	watch_signals(npc)
 	# Temps de jeu (somme des delta, comme le Tween) et image la plus longue ; point le
-	# plus haut du sprite ; rotation vue. Relevés image par image dans le test lui-même.
+	# plus haut du sprite ; rotation, décalage horizontal, compression et plan de dessin vus.
+	# Relevés image par image dans le test lui-même.
 	var elapsed := 0.0
 	var longest := 0.0
 	var peak := 0.0
 	var rotated := false
+	var swayed := false
+	var squashed := false
+	var raised := false
 	var sprite := _sprite(npc)
 	assert_true(npc.hop_to(target, grid), "« %s » : saut accepté" % style)
 	assert_true(npc.is_hopping())
@@ -491,6 +502,10 @@ func _check_hop(style: StringName) -> void:
 		longest = maxf(longest, delta)
 		peak = minf(peak, sprite.position.y)
 		rotated = rotated or not is_zero_approx(sprite.rotation)
+		swayed = swayed or not is_zero_approx(sprite.position.x)
+		squashed = squashed or sprite.scale.y < 2.0
+		assert_eq(sprite.scale.x, 2.0, "« %s » : largeur inchangée" % style)
+		raised = raised or npc.z_index > 0
 	assert_signal_emitted_with_parameters(npc, "hopped", [target])
 	assert_false(npc.is_hopping())
 	assert_eq(npc.get_cell(), target, "« %s » : case changée" % style)
@@ -504,8 +519,13 @@ func _check_hop(style: StringName) -> void:
 	assert_eq(shadow.scale, Vector2.ONE)
 	assert_eq(meet.cell, target, "la surcharge suit la case")
 	assert_lt(peak, -56.0, "« %s » : l'arc monte au-dessus de la table" % style)
-	assert_eq(rotated, float(Npc.hop_params(style)["wiggle"]) > 0.0,
-		"« %s » : rotation seulement pour le style joueur" % style)
+	var params := Npc.hop_params(style)
+	assert_false(rotated, "« %s » : jamais de rotation du pixel art" % style)
+	assert_eq(swayed, float(params["sway"]) > 0.0, "« %s » : dandinement" % style)
+	assert_eq(squashed, float(params["squash"]) > 0.0, "« %s » : compression" % style)
+	assert_eq(sprite.scale, Vector2(2, 2), "« %s » : échelle rétablie" % style)
+	assert_true(raised, "« %s » : dessiné au-dessus des personnages en vol" % style)
+	assert_eq(npc.z_index, 0, "« %s » : de nouveau trié au sol" % style)
 	var expected := Npc.hop_total_duration(style)
 	assert_almost_eq(elapsed, expected, longest * 2.0 + 0.02,
 		"« %s » : %.2f s" % [style, expected])

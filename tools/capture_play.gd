@@ -1132,8 +1132,8 @@ func _run_hop_styles() -> void:
 
 func _hop_shot(npc: Node2D, capture_name: String) -> void:
 	var sprite := npc.get_node(^"%Sprite") as Node2D
-	print("  %s : pos %s sprite %s rot %.1f°" % [npc.name, npc.position, sprite.position,
-		rad_to_deg(sprite.rotation)])
+	print("  %s : pos %s sprite %s échelle %s rot %.1f° z %d" % [npc.name, npc.position,
+		sprite.position, sprite.scale, rad_to_deg(sprite.rotation), npc.z_index])
 	_mark(HOP_PREFIX + capture_name)
 	await _frames(2)
 

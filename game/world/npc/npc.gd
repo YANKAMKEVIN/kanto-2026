@@ -45,35 +45,45 @@ const HOP_DURATION: float = 0.25
 ##   au-dessus de la ligne qui va de l'élévation de départ au sol) ; « trans » : courbe du
 ##   vol ([enum Tween.TransitionType], en entrée-sortie ; SINE = amorti) ;
 ## - « bounces » : rebonds à l'arrivée, [hauteur px, durée s] chacun ;
-## - « wiggle » : petite rotation alternée pendant les rebonds (degrés, 0 = aucune).
+## - « sway » : petit décalage horizontal alterné pendant les rebonds (px monde, 0 = aucun) ;
+## - « squash » : légère compression verticale à l'atterrissage (fraction de la hauteur,
+##   0 = aucune), tenue [constant HOP_SQUASH_DURATION] s, pieds au sol.
+## Jamais de rotation : un sprite pixel art en NEAREST tourné a des contours en escalier
+## (QA du 4A, R2). Seuls des décalages et une compression verticale brève animent le saut.
 const HOP_STYLE_PARAMS: Dictionary[StringName, Dictionary] = {
 	&"": {
 		"hesitate": 0.0, "hesitate_px": 0.0, "windup": 0.0, "windup_px": 0.0,
 		"duration": 0.35, "height": 32.0, "trans": Tween.TRANS_LINEAR,
-		"bounces": [], "wiggle": 0.0,
+		"bounces": [], "sway": 0.0, "squash": 0.0,
 	},
-	# Bulbizarre, « calmement » : il regarde et se penche, descend lentement, sans rebond.
+	# Bulbizarre, « calmement » : il regarde et se penche, descend lentement, sans rebond ;
+	# atterrissage à peine marqué.
 	&"calm": {
 		"hesitate": 0.35, "hesitate_px": 8.0, "windup": 0.0, "windup_px": 0.0,
 		"duration": 0.55, "height": 24.0, "trans": Tween.TRANS_SINE,
-		"bounces": [], "wiggle": 0.0,
+		"bounces": [], "sway": 0.0, "squash": 0.04,
 	},
-	# Salamèche, « avec enthousiasme » : petit appel, grand arc, un rebond.
+	# Salamèche, « avec enthousiasme » : petit appel, grand arc, atterrissage appuyé, un rebond.
 	&"eager": {
 		"hesitate": 0.0, "hesitate_px": 0.0, "windup": 0.08, "windup_px": 6.0,
 		"duration": 0.38, "height": 48.0, "trans": Tween.TRANS_LINEAR,
-		"bounces": [[10.0, 0.16]], "wiggle": 0.0,
+		"bounces": [[10.0, 0.16]], "sway": 0.0, "squash": 0.1,
 	},
 	# Carapuce, « rapidement, vif et joueur » : saut court et vif, deux petits rebonds en
-	# se dandinant.
+	# se dandinant (décalé d'un côté puis de l'autre, sans rotation).
 	&"playful": {
 		"hesitate": 0.0, "hesitate_px": 0.0, "windup": 0.0, "windup_px": 0.0,
 		"duration": 0.26, "height": 28.0, "trans": Tween.TRANS_LINEAR,
-		"bounces": [[8.0, 0.12], [5.0, 0.12]], "wiggle": 10.0,
+		"bounces": [[8.0, 0.12], [5.0, 0.12]], "sway": 6.0, "squash": 0.06,
 	},
 }
 ## Allongement du vol par case supplémentaire (distance de Manhattan au-delà de 1).
 const HOP_EXTRA_CELL_FACTOR: float = 0.25
+## Durée de la compression à l'atterrissage (s), quand le style en a une (« squash »).
+const HOP_SQUASH_DURATION: float = 0.08
+## Pendant le vol, le Pokémon est dessiné au-dessus des personnages du y-sort (il est en
+## l'air : un saut qui passe au-dessus d'un personnage ne disparaît pas derrière sa tête).
+const HOP_FLIGHT_Z: int = 1
 ## Réduction de l'ombre au sommet de l'arc (0 = aucune).
 const HOP_SHADOW_SHRINK: float = 0.3
 ## Léger élan vers une case ([method lean_toward]) : distance (px monde) et durée (s) de
@@ -130,12 +140,15 @@ var _hop_from: Vector2 = Vector2.ZERO
 var _hop_to: Vector2 = Vector2.ZERO
 var _hop_start_lift: float = 0.0
 var _hop_height: float = 0.0
+## Échelle du sprite au repos (celle de la scène : ×2), rétablie après une compression.
+var _base_scale: Vector2 = Vector2(2.0, 2.0)
 
 @onready var _sprite: AnimatedSprite2D = %Sprite
 @onready var _shadow: Sprite2D = %Shadow
 
 
 func _ready() -> void:
+	_base_scale = _sprite.scale
 	set_process(is_moving())
 	_sprite.animation_finished.connect(_on_animation_finished)
 	_apply_spec()
@@ -452,11 +465,13 @@ static func hop_flight_duration(style: StringName, distance: int = 1) -> float:
 	return float(params["duration"]) * (1.0 + HOP_EXTRA_CELL_FACTOR * float(maxi(distance, 1) - 1))
 
 
-## Durée totale du saut (s) : hésitation, appel, vol et rebonds.
+## Durée totale du saut (s) : hésitation, appel, vol, compression et rebonds.
 static func hop_total_duration(style: StringName, distance: int = 1) -> float:
 	var params := hop_params(style)
 	var total := float(params["hesitate"]) + float(params["windup"])
 	total += hop_flight_duration(style, distance)
+	if float(params["squash"]) > 0.0:
+		total += HOP_SQUASH_DURATION
 	for bounce: Array in params["bounces"]:
 		total += float(bounce[1])
 	return total
@@ -480,22 +495,32 @@ func _start_hop_tween(params: Dictionary, distance: int, direction: Vector2i) ->
 				windup).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
 	_hop_height = float(params["height"])
 	var trans: Tween.TransitionType = params["trans"]
+	_hop_tween.tween_callback(set_z_index.bind(HOP_FLIGHT_Z))
 	_hop_tween.tween_method(_set_hop_progress, 0.0, 1.0,
 			hop_flight_duration(_spec.hop_style, distance)) \
 			.set_trans(trans).set_ease(Tween.EASE_IN_OUT)
 	_hop_tween.tween_callback(_on_hop_landed)
-	var wiggle := deg_to_rad(float(params["wiggle"]))
+	var squash := float(params["squash"])
+	if squash > 0.0:
+		# Compression brève, par paliers (pas d'interpolation d'échelle image par image) :
+		# pieds au sol (origine aux pieds), largeur inchangée.
+		var squashed := Vector2(_base_scale.x, _base_scale.y * (1.0 - squash))
+		_hop_tween.tween_callback(_sprite.set_scale.bind(squashed))
+		_hop_tween.tween_interval(HOP_SQUASH_DURATION)
+		_hop_tween.tween_callback(_sprite.set_scale.bind(_base_scale))
+	var sway := float(params["sway"])
 	var side := 1.0
 	for bounce: Array in params["bounces"]:
 		var half := float(bounce[1]) * 0.5
 		_hop_tween.tween_property(_sprite, ^"position:y", -float(bounce[0]), half) \
 				.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
-		if wiggle != 0.0:
-			_hop_tween.parallel().tween_property(_sprite, ^"rotation", wiggle * side, half)
+		if sway != 0.0:
+			# Dandinement : un pas de côté en l'air, retour au centre à l'atterrissage.
+			_hop_tween.parallel().tween_property(_sprite, ^"position:x", sway * side, half)
 		_hop_tween.tween_property(_sprite, ^"position:y", 0.0, half) \
 				.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN)
-		if wiggle != 0.0:
-			_hop_tween.parallel().tween_property(_sprite, ^"rotation", 0.0, half)
+		if sway != 0.0:
+			_hop_tween.parallel().tween_property(_sprite, ^"position:x", 0.0, half)
 		side = -side
 	_hop_tween.tween_callback(_finish_hop)
 
@@ -512,8 +537,10 @@ func _set_hop_progress(t: float) -> void:
 	_shadow.scale = Vector2(shrink, shrink)
 
 
-## Atterrissage (avant les rebonds) : élévation nulle, case changée.
+## Atterrissage (avant la compression et les rebonds) : élévation nulle, case changée, de
+## nouveau trié avec les autres personnages.
 func _on_hop_landed() -> void:
+	z_index = 0
 	_lift = 0.0
 	position = _hop_to
 	if _mover != null:
@@ -553,6 +580,7 @@ func _abort_hop() -> void:
 	if not _hopping:
 		return
 	_hopping = false
+	z_index = 0
 	if _hop_tween != null and _hop_tween.is_valid():
 		_hop_tween.kill()
 	if _grid != null:
@@ -604,12 +632,13 @@ func _rest_y() -> float:
 	return -_lift + _lean.y
 
 
-## Sprite et ombre à leur place de repos (élévation, élan), sans rotation.
+## Sprite et ombre à leur place de repos (élévation, élan), sans rotation ni compression.
 func _apply_offsets() -> void:
 	if _sprite == null:
 		return
 	_sprite.position = Vector2(_lean.x, _rest_y())
 	_sprite.rotation = 0.0
+	_sprite.scale = _base_scale
 	_shadow.position = Vector2(_lean.x, _shadow_rest_y() - _lift + _lean.y)
 	_shadow.scale = Vector2.ONE
 
