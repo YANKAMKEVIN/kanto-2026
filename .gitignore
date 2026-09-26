@@ -5,3 +5,5 @@ build/
 *.tmp
 .DS_Store
 /android/
+# Fichier temporaire des outils de capture (taille de fenêtre 2340×1080)
+override.cfg
