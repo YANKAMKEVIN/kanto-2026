@@ -10,6 +10,10 @@ extends GutTest
 ## Jalon 4 (T1) : après « Et pourtant, tu es toujours là. », les 4 répliques du Prof. Chen
 ## (il regarde la table à la 3e, revient vers le joueur à la 4e), starter_offered levé,
 ## contrôle rendu ; les starters s'observent encore (le choix n'est pas encore branché).
+## Jalon 4 (T3) : après le discours, le choix est ouvert (légende, « Rencontrer » sur les
+## trois starters) et la sortie du labo est empêchée (« Pas si vite. … », recul d'un pas) :
+## la pensée des herbes, devenue inaccessible en jeu, est vérifiée en ramenant le joueur
+## dans Bourg Palette par le routeur.
 
 const DIRECTIONS: Dictionary[Vector2i, StringName] = {
 	Vector2i.UP: &"move_up", Vector2i.DOWN: &"move_down",
@@ -171,26 +175,49 @@ func _play_event(column: int) -> void:
 	assert_true(GameState.flags.has_flag(&"oak_lab_reunion"))
 	assert_true(GameState.flags.has_flag(&"starter_offered"), "Chen a proposé")
 	assert_false(GameState.flags.has_flag(&"starter_chosen"))
-	_starters_still_observed(lab)
+	await wait_process_frames(1)
+	_starters_ready_to_meet(lab)
+	assert_true(hud.get_caption().visible, "légende « CHOISIS TON PREMIER PARTENAIRE »")
 	assert_true(_player.is_input_enabled(), "contrôle rendu")
 	assert_true(hud.are_controls_visible(), "contrôles visibles")
 	await _talk_to_maya()
-	await _leave_the_lab()
+	await _exit_is_blocked()
+	await SceneRouter.change_map(&"pallet_town", &"oak_lab_door", Vector2i.DOWN)
+	await wait_process_frames(2)
 	await _grass_thought(column)
 	await _rival_room_is_empty()
 	assert_push_error_count(0)
 
 
-## Le choix n'est pas branché (T3) : les trois starters sont sur la table, « Observer ».
-func _starters_still_observed(lab: GameMap) -> void:
+## Choix ouvert (T3) : les trois starters sont sur la table, « Rencontrer ».
+func _starters_ready_to_meet(lab: GameMap) -> void:
+	assert_true(_boot.get_starter_choice().is_open(), "choix ouvert")
 	for id: StringName in [&"bulbasaur", &"charmander", &"squirtle"]:
 		var npc := lab.get_npc(id)
 		assert_not_null(npc, "%s sur la table" % id)
 		if npc == null:
 			continue
-		assert_false(npc.has_interaction_override(), "%s : pas de surcharge" % id)
-		assert_eq(npc.get_interaction().kind, Interaction.Kind.OBSERVE, "%s : Observer" % id)
+		assert_true(npc.has_interaction_override(), "%s : surcharge" % id)
+		assert_eq(npc.get_interaction().kind, Interaction.Kind.MEET, "%s : Rencontrer" % id)
 		assert_eq(npc.get_lift(), 56.0, "%s : toujours sur la table" % id)
+
+
+## Sortie empêchée pendant le choix (jalon-04.md §13.6) : Chen parle, recul, toujours au labo.
+func _exit_is_blocked() -> void:
+	await _walk_path(Vector2i(7, 8))
+	var director := _boot.get_cutscene_director()
+	Input.action_press(&"move_down")
+	await wait_until(func() -> bool: return director.is_running(), 5.0)
+	await wait_until(func() -> bool: return _boot.get_dialogue_box().is_open(), 3.0)
+	Input.action_release(&"move_down")
+	assert_eq(_boot.get_dialogue_box().get_speaker_text(), "Prof. Chen")
+	assert_eq(_boot.get_dialogue_box().get_text(),
+		"Pas si vite. Tu n'as pas encore choisi ton partenaire.")
+	await _finish_dialogue()
+	await wait_until(func() -> bool: return not director.is_running(), 3.0)
+	assert_eq(_boot.get_map().map_id, &"oak_lab", "toujours au labo")
+	assert_eq(_player.get_cell(), Vector2i(7, 8), "recul d'un pas")
+	assert_true(_player.is_input_enabled())
 
 
 ## Maya (5, 3), parlée depuis (5, 4) : « Ah, le professeur est revenu. »
@@ -210,18 +237,6 @@ func _talk_to_maya() -> void:
 	# Chen et le rival ont une réplique d'attente jusqu'au jalon 4 (décision de Kevin).
 	assert_eq(_boot.get_map().get_npc(&"oak").get_interaction().dialogue_id, &"oak_lab_waiting")
 	assert_eq(_boot.get_map().get_npc(&"rival").get_interaction().dialogue_id, &"rival_lab_waiting")
-
-
-func _leave_the_lab() -> void:
-	await _walk_path(Vector2i(7, 9))
-	var action := DIRECTIONS[Vector2i.DOWN]
-	Input.action_press(action)
-	await wait_until(func() -> bool: return (_boot.get_map().map_id == &"pallet_town"
-		and not SceneRouter.is_transitioning()), 5.0)
-	Input.action_release(action)
-	await wait_until(func() -> bool: return not _player.is_moving(), 2.0)
-	assert_eq(_boot.get_map().map_id, &"pallet_town", "sorti du labo")
-	assert_null(_boot.get_map().get_npc(&"oak"), "Chen n'est plus près des herbes")
 
 
 ## Après l'événement : la pensée, puis un pas en arrière ; jamais dans les herbes.

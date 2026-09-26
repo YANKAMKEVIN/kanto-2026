@@ -56,6 +56,19 @@ extends SceneTree
 ##              playful) : captures à l'élan, au sommet de l'arc, à l'arrivée (rebond) et
 ##              posé ; puis les trois au sol. Captures jalon04a_t1_hop_<style>_*. Quitte seul
 ##              (~400 images : --quit-after 1500).
+##   starter_choice  jalon 4 (T3) : départ au labo sur le tapis d'entrée, drapeaux oak_met,
+##              oak_lab_reunion puis starter_offered (fin du discours de Chen) : légende,
+##              marche jusqu'au starter de « --starter=bulbasaur|charmander|squirtle »
+##              (défaut charmander), bouton RENCONTRER, fiche, CHOISIR (le vrai bouton), puis
+##              toute la scène starter_chosen : saut du starter (pendant, posé), « réciproque »,
+##              le rival qui regarde la table, « Alors ce sera toi. », saut de son Pokémon
+##              (pendant, posé), départ, « Attends. », regard vers le Pokémon du joueur,
+##              dernière réplique, contrôle rendu. Captures jalon04a_t3_<starter>_NN_*.
+##              Quitte seul (~900 images : --quit-after 9000).
+##   lab_exit   jalon 4 (T3) : départ au labo pendant le choix (oak_met, oak_lab_reunion,
+##              starter_offered), joueur en (7, 8), « bas » tenu : il arrive sur le tapis,
+##              « Pas si vite. … » (Prof. Chen), recul d'un pas, toujours au labo. Captures
+##              jalon04a_t3_exit_NN_*. Quitte seul (~300 images : --quit-after 3000).
 ##   walk_roof  entrées move_* injectées : spawn → (32, 10) → (32, 4) → (36, 4),
 ##              au nord de sa maison (le toit doit le masquer, y-sort).
 ##   doors      départ réel du jeu (chambre) puis portes, tapis et escaliers (jalon 2, T5) :
@@ -132,6 +145,8 @@ const T3_PREFIX: String = "jalon03b_t3_"
 const T4_PREFIX: String = "jalon03b_t4_"
 const OFFER_PREFIX: String = "jalon04a_t1_offer_"
 const HOP_PREFIX: String = "jalon04a_t1_hop_"
+const T3_CHOICE_PREFIX: String = "jalon04a_t3_"
+const STARTER_PATH: String = "res://data/cutscenes/starter.json"
 ## Scène du scénario « starter_offer » : fin de la variante 1 de route1_grass (après son
 ## change_map), ajoutée à la bibliothèque de Boot sous ce nom.
 const OFFER_SCENE: StringName = &"capture_starter_offer"
@@ -154,6 +169,8 @@ const MOVE_ACTIONS: Dictionary = {
 var _scenario: String = "spawn"
 ## Colonne du chemin de la Route 1 (scénario « route1_full »).
 var _column: int = 23
+## Starter choisi (scénario « starter_choice »).
+var _starter: StringName = &"charmander"
 var _out_dir: String = ""
 var _boot: Node
 var _player: Node2D
@@ -178,6 +195,8 @@ func _init() -> void:
 			_scenario = arg.trim_prefix("--scenario=")
 		elif arg.begins_with("--column="):
 			_column = int(arg.trim_prefix("--column="))
+		elif arg.begins_with("--starter="):
+			_starter = StringName(arg.trim_prefix("--starter="))
 		elif arg.begins_with("--out="):
 			_out_dir = arg.trim_prefix("--out=")
 	# Les autoloads (SceneRouter, utilisé par Boot) ne sont ajoutés qu'après _init.
@@ -191,7 +210,7 @@ func _start_boot() -> void:
 	elif _scenario == "npcs":
 		_setup_doors()
 		InputMap.action_erase_events(&"interact")
-	elif _scenario in ["starter_offer", "hop_styles"]:
+	elif _scenario in ["starter_offer", "hop_styles", "starter_choice", "lab_exit"]:
 		_boot.set(&"start_map", &"oak_lab")
 		_boot.set(&"start_spawn", &"entrance")
 		_boot.set(&"start_facing", Vector2i.UP)
@@ -231,6 +250,12 @@ func _on_frame() -> void:
 		elif _scenario == "hop_styles":
 			_router = root.get_node(^"SceneRouter")
 			_run_hop_styles()
+		elif _scenario == "starter_choice":
+			_router = root.get_node(^"SceneRouter")
+			_run_starter_choice()
+		elif _scenario == "lab_exit":
+			_router = root.get_node(^"SceneRouter")
+			_run_lab_exit()
 		return
 	match _scenario:
 		"spawn":
@@ -1111,3 +1136,139 @@ func _hop_shot(npc: Node2D, capture_name: String) -> void:
 		rad_to_deg(sprite.rotation)])
 	_mark(HOP_PREFIX + capture_name)
 	await _frames(2)
+
+
+# --- Scénarios « starter_choice » et « lab_exit » (jalon 4, T3) ---------------------------
+
+## Au labo pendant le choix : oak_met, oak_lab_reunion, puis starter_offered (légende).
+func _lab_in_choice() -> Node:
+	var lab: Node = await _lab_with_oak()
+	var flags: RefCounted = root.get_node(^"GameState").get(&"flags")
+	flags.call(&"set_flag", &"oak_lab_reunion")
+	flags.call(&"set_flag", &"starter_offered")
+	return lab
+
+
+func _run_starter_choice() -> void:
+	var prefix := "%s%s_" % [T3_CHOICE_PREFIX, _starter]
+	var lab: Node = await _lab_in_choice()
+	var director: Node = _boot.call(&"get_cutscene_director")
+	var runner: Node = _boot.call(&"get_dialogue_runner")
+	var sheet: Node = _boot.call(&"get_starter_sheet")
+	var offer: RefCounted = _boot.call(&"get_starter_offer")
+	var data: RefCounted = _boot.call(&"get_pokemon_data")
+	var mine: Node2D = lab.call(&"get_npc", _starter)
+	var rival_species: StringName = offer.call(&"rival_pick", _starter, data)
+	var theirs: Node2D = lab.call(&"get_npc", rival_species)
+	if mine == null or theirs == null:
+		push_error("starter_choice : starter inconnu « %s »" % _starter)
+		quit(1)
+		return
+	await _frames(20)
+	await _offer_shot("01_caption", prefix)
+	var meet: Vector2i = (mine.call(&"get_cell") as Vector2i) + Vector2i.DOWN
+	await _go(meet)
+	_player.call(&"face", Vector2i.UP)
+	await _frames(14)
+	await _offer_shot("02_meet_button", prefix)
+	await _interact()
+	await _frames(18)
+	await _offer_shot("03_sheet", prefix)
+	(sheet.call(&"get_choose_button") as BaseButton).pressed.emit()
+	await _hop_shots(mine, prefix, "04_hop_mid", "05_hop_landed")
+	await _dialogue_shots_with(runner, prefix, ["06_reciprocal"])
+	await _wait_step(director, {"face": "rival", "to": "$rival_starter"})
+	await _frames(10)
+	await _offer_shot("07_rival_looks_table", prefix)
+	await _dialogue_shots_with(runner, prefix, ["08_pick"])
+	await _hop_shots(theirs, prefix, "09_rival_hop_mid", "10_rival_hop_landed")
+	var rival: Node2D = lab.call(&"get_npc", &"rival")
+	for i: int in NPCS_TIMEOUT:
+		if rival.call(&"is_moving"):
+			break
+		await process_frame
+	await _frames(12)
+	await _offer_shot("11_leaving", prefix)
+	await _dialogue_shots_with(runner, prefix, ["12_wait"])
+	await _wait_step(director, {"face": "rival", "to": "$player_starter"})
+	await _frames(10)
+	await _offer_shot("13_rival_looks_mine", prefix)
+	await _dialogue_shots_with(runner, prefix, ["14_challenge"])
+	for i: int in NPCS_TIMEOUT:
+		if not director.call(&"is_running"):
+			break
+		await process_frame
+	await _frames(15)
+	var state: Node = root.get_node(^"GameState")
+	print("  équipe : %d, starter : %s, drapeaux : %s" % [
+		(state.get(&"party") as RefCounted).call(&"size"), state.get(&"starter_species"),
+		(state.get(&"flags") as RefCounted).call(&"to_array")])
+	await _offer_shot("15_control_back", prefix)
+	print("STARTER_CHOICE terminé (frame %d)" % _frame)
+	quit()
+
+
+## Capture au sommet du saut de [param npc], puis une fois posé (rebonds compris).
+func _hop_shots(npc: Node2D, prefix: String, mid: String, landed: String) -> void:
+	for i: int in NPCS_TIMEOUT:
+		if npc.call(&"is_hopping"):
+			break
+		await process_frame
+	var npc_script: Script = load("res://game/world/npc/npc.gd")
+	var style: StringName = (npc.call(&"get_spec") as RefCounted).get(&"hop_style")
+	var params: Dictionary = npc_script.call(&"hop_params", style)
+	var peak := float(params["hesitate"]) + float(params["windup"]) \
+		+ float(params["duration"]) * 0.5
+	await _frames(maxi(1, roundi(peak * 30.0) - 1))
+	var sprite := npc.get_node(^"%Sprite") as Node2D
+	print("  %s en vol : pos %s sprite %s" % [npc.name, npc.position, sprite.position])
+	await _offer_shot(mid, prefix)
+	for i: int in NPCS_TIMEOUT:
+		if not npc.call(&"is_hopping"):
+			break
+		await process_frame
+	await _frames(6)
+	await _offer_shot(landed, prefix)
+
+
+## Attend le début de l'étape de la scène du choix égale à [param wanted] (lue dans
+## data/cutscenes/starter.json).
+func _wait_step(director: Node, wanted: Dictionary) -> void:
+	var json := JSON.new()
+	json.parse(FileAccess.get_file_as_string(STARTER_PATH))
+	var steps: Array = json.data["starter_chosen"]["steps"]
+	var index := -1
+	for i: int in steps.size():
+		if steps[i] == wanted:
+			index = i
+			break
+	for i: int in NPCS_TIMEOUT:
+		if int(director.call(&"get_step_index")) >= index:
+			return
+		await process_frame
+
+
+func _run_lab_exit() -> void:
+	var prefix := T3_CHOICE_PREFIX + "exit_"
+	await _lab_in_choice()
+	var runner: Node = _boot.call(&"get_dialogue_runner")
+	var director: Node = _boot.call(&"get_cutscene_director")
+	await _go(Vector2i(7, 8))
+	await _frames(40)
+	await _offer_shot("01_above_mat", prefix)
+	_hold(Vector2i.DOWN)
+	for i: int in NPCS_TIMEOUT:
+		if runner.call(&"is_running"):
+			break
+		await process_frame
+	_release_moves()
+	await _dialogue_shots_with(runner, prefix, ["02_pas_si_vite"])
+	for i: int in NPCS_TIMEOUT:
+		if not director.call(&"is_running"):
+			break
+		await process_frame
+	await _frames(15)
+	print("  carte : %s" % (_boot.call(&"get_map") as Node).get(&"map_id"))
+	await _offer_shot("03_recoil", prefix)
+	print("LAB_EXIT terminé (frame %d)" % _frame)
+	quit()

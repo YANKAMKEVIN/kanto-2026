@@ -11,6 +11,10 @@ extends GutTest
 ##   et chaque acteur ou cible de « turn » des dialogues joués existe à ce moment-là.
 ## Jalon 4 (T1) : la variante 1 de route1_grass finit par la proposition de Chen
 ## (wait 0,5 s, oak_starter_offer, set starter_offered).
+## T3 (jalon-04.md §13.5, §13.6) : scène oak_lab_exit (déclencheur LabExit du labo, choix en
+## cours seulement) ; scène starter_chosen **jouée par le code** (StarterChoice, pas de
+## déclencheur), simulée sur le labo avec les 3 jeux d'alias de l'offre ; elle lève
+## starter_chosen une seule fois, juste après « On dirait que le choix est réciproque. ».
 
 const MAPS: Array[StringName] = [
 	&"player_house_2f", &"player_house_1f", &"rival_house", &"oak_lab", &"pallet_town",
@@ -18,10 +22,16 @@ const MAPS: Array[StringName] = [
 ## Scène → drapeaux qui choisissent chaque variante, dans l'ordre (§3.6).
 const VARIANT_FLAGS: Dictionary = {
 	&"route1_grass": [[], [&"oak_met"]],
+	&"oak_lab_exit": [[&"oak_met", &"oak_lab_reunion", &"starter_offered"]],
+	&"starter_chosen": [[&"oak_met", &"oak_lab_reunion", &"starter_offered"]],
 }
+## Scènes jouées par le code (pas de déclencheur) → carte où elles sont jouées.
+const CODE_PLAYED: Dictionary[StringName, StringName] = {&"starter_chosen": &"oak_lab"}
 
 var _cutscenes: CutsceneLibrary
 var _dialogues: DialogueLibrary
+var _offer: StarterOffer
+var _pokemon: PokemonData
 ## Scène → cartes de ses déclencheurs.
 var _triggered_on: Dictionary[StringName, Array] = {}
 
@@ -31,6 +41,10 @@ func before_all() -> void:
 	_cutscenes.load_dir()
 	_dialogues = DialogueLibrary.new()
 	_dialogues.load_dir()
+	_pokemon = PokemonData.new()
+	_pokemon.load_dir()
+	_offer = StarterOffer.new()
+	_offer.load_file()
 	for map_id: StringName in MAPS:
 		var map := (load(MapCatalog.scene_path(map_id)) as PackedScene).instantiate()
 		for point: Node in map.get_node(^"Triggers").get_children():
@@ -53,7 +67,8 @@ func test_library_loads_without_error() -> void:
 	var library := CutsceneLibrary.new()
 	assert_true(library.load_dir(), "data/cutscenes/ se charge")
 	assert_eq(library.get_errors().size(), 0, str(library.get_errors()))
-	assert_eq(library.get_ids(), [&"route1_grass"] as Array[StringName])
+	assert_eq(library.get_ids(), [&"oak_lab_exit", &"route1_grass", &"starter_chosen"]
+		as Array[StringName])
 
 
 func test_route1_grass_ends_with_the_starter_offer() -> void:
@@ -75,8 +90,14 @@ func test_every_trigger_targets_a_scene_and_every_scene_is_triggered() -> void:
 	for id: StringName in _triggered_on:
 		assert_true(_cutscenes.has_cutscene(id), "scène « %s » définie" % id)
 	for id: StringName in _cutscenes.get_ids():
+		if CODE_PLAYED.has(id):
+			assert_false(_triggered_on.has(id), "« %s » jouée par le code seulement" % id)
+			continue
 		assert_true(_triggered_on.has(id), "scène « %s » visée par un déclencheur" % id)
 	assert_eq(_triggered_on.get(&"route1_grass"), [&"pallet_town"])
+	assert_eq(_triggered_on.get(&"oak_lab_exit"), [&"oak_lab"])
+	assert_eq(_offer.chosen_scene, &"starter_chosen", "scène du choix = CODE_PLAYED")
+	assert_eq(CODE_PLAYED[_offer.chosen_scene], _offer.map_id)
 
 
 func test_every_dialogue_step_exists() -> void:
@@ -116,20 +137,102 @@ func test_static_simulation_of_every_variant() -> void:
 	for id: StringName in _cutscenes.get_ids():
 		var cutscene := _cutscenes.get_cutscene(id)
 		var rows: Array = VARIANT_FLAGS.get(id, [])
+		var maps: Array = _triggered_on.get(id, [])
+		if CODE_PLAYED.has(id):
+			maps = [CODE_PLAYED[id]]
 		for i: int in mini(rows.size(), cutscene.variants.size()):
-			for map_id: StringName in _triggered_on.get(id, []):
-				checked += _simulate("%s/%d" % [id, i + 1], cutscene.variants[i], map_id,
-					_flags(rows[i]))
-	assert_gt(checked, 20, "acteurs vérifiés")
+			for map_id: StringName in maps:
+				for aliases: Dictionary in _alias_sets(id):
+					checked += _simulate("%s/%d %s" % [id, i + 1, aliases], cutscene.variants[i],
+						map_id, _flags(rows[i]), aliases)
+	assert_gt(checked, 60, "acteurs vérifiés")
 
 
-## Joue [param variant] « à blanc » : renvoie le nombre d'acteurs vérifiés.
+## Jeux d'alias d'une scène : ceux de l'offre pour la scène du choix (un par starter), un
+## jeu vide sinon.
+func _alias_sets(cutscene_id: StringName) -> Array[Dictionary]:
+	if cutscene_id != _offer.chosen_scene:
+		return [{}]
+	var sets: Array[Dictionary] = []
+	for option: StarterOption in _offer.get_choices():
+		var rival := _offer.get_choice(_offer.rival_pick(option.species, _pokemon))
+		sets.append({
+			StarterChoice.PLAYER_ALIAS: option.npc, StarterChoice.RIVAL_ALIAS: rival.npc,
+		})
+	return sets
+
+
+func test_alias_sets_of_the_choice_cover_the_three_starters() -> void:
+	var sets := _alias_sets(&"starter_chosen")
+	assert_eq(sets.size(), 3)
+	assert_eq(_cutscenes.get_aliases(&"starter_chosen"),
+		[StarterChoice.PLAYER_ALIAS, StarterChoice.RIVAL_ALIAS] as Array[StringName])
+	assert_true(_cutscenes.get_aliases(&"oak_lab_exit").is_empty())
+
+
+## Décision n° 1 (§13.3) : done_flag levé une seule fois, à l'étape qui suit le dialogue
+## « oak_starter_reciprocal » ; la scène finit par rival_challenged ; décision n° 11 : pas de
+## « Ça devrait être intéressant. » ; ordre des dialogues du §13.5.
+func test_starter_chosen_sets_done_flag_right_after_the_reciprocal_line() -> void:
+	var cutscene := _cutscenes.get_cutscene(_offer.chosen_scene)
+	assert_eq(cutscene.variants.size(), 1)
+	var variant := cutscene.variants[0]
+	assert_true(variant.if_flags.is_empty())
+	assert_eq(variant.unless_flags, [&"rival_challenged"] as Array[StringName])
+	var steps := variant.steps
+	var set_at: Array[int] = []
+	var dialogues: Array[StringName] = []
+	for i: int in steps.size():
+		if steps[i].kind == CutsceneStep.Kind.SET_FLAGS and steps[i].flags.has(_offer.done_flag):
+			set_at.append(i)
+		if steps[i].kind == CutsceneStep.Kind.DIALOGUE:
+			dialogues.append(steps[i].dialogue_id)
+	assert_eq(set_at.size(), 1, "done_flag levé une seule fois")
+	if set_at.size() == 1:
+		var previous := steps[set_at[0] - 1]
+		assert_eq(previous.kind, CutsceneStep.Kind.DIALOGUE)
+		assert_eq(previous.dialogue_id, &"oak_starter_reciprocal")
+		assert_eq(steps[set_at[0]].flags, [_offer.done_flag] as Array[StringName])
+	assert_eq(dialogues, [&"oak_starter_reciprocal", &"rival_starter_pick",
+		&"rival_challenge_wait", &"rival_challenge"] as Array[StringName])
+	assert_eq(steps.back().kind, CutsceneStep.Kind.SET_FLAGS)
+	assert_eq(steps.back().flags, [&"rival_challenged"] as Array[StringName], "dernière étape")
+	# Le Pokémon descend (hop) et s'approche (lean) avant Chen.
+	var kinds: Array[int] = []
+	for step: CutsceneStep in steps.slice(0, set_at[0] if set_at.size() == 1 else 0):
+		kinds.append(step.kind)
+	assert_true(kinds.has(CutsceneStep.Kind.HOP), "le starter descend de la table")
+	assert_true(kinds.has(CutsceneStep.Kind.LEAN), "il s'approche")
+	assert_false(_dialogues.has_dialogue(&"rival_starter_smile"), "décision n° 11")
+
+
+## §13.6 : Chen se tourne vers le joueur, parle, le joueur recule d'un pas (vers le haut) ;
+## seulement pendant le choix.
+func test_oak_lab_exit_only_during_the_choice() -> void:
+	var cutscene := _cutscenes.get_cutscene(&"oak_lab_exit")
+	assert_eq(cutscene.variants.size(), 1)
+	var steps := cutscene.variants[0].steps
+	assert_eq(steps.size(), 3)
+	assert_eq(steps[0].kind, CutsceneStep.Kind.FACE)
+	assert_eq([steps[0].actor, steps[0].target], [&"oak", &"player"])
+	assert_eq(steps[1].dialogue_id, &"oak_lab_exit_block")
+	assert_eq(steps[2].kind, CutsceneStep.Kind.MOVE)
+	assert_eq(steps[2].actor, &"player")
+	assert_eq(steps[2].path, [Vector2i.UP] as Array[Vector2i])
+	assert_null(cutscene.pick(_flags([&"oak_met", &"oak_lab_reunion"])), "avant l'offre")
+	assert_not_null(cutscene.pick(_flags([&"oak_met", &"starter_offered"])), "pendant")
+	assert_null(cutscene.pick(_flags([&"starter_offered", &"starter_chosen"])), "après")
+
+
+## Joue [param variant] « à blanc » : renvoie le nombre d'acteurs vérifiés. [param aliases] :
+## « nom sans $ » → PNJ, remplacés comme le fait le directeur.
 func _simulate(label: String, variant: CutsceneVariant, start_map: StringName,
-		flags: StoryFlags) -> int:
+		flags: StoryFlags, aliases: Dictionary = {}) -> int:
 	var map_id := start_map
 	var actors := _present(map_id, flags)
 	var checked := 0
-	for step: CutsceneStep in variant.steps:
+	for source: CutsceneStep in variant.steps:
+		var step := _resolved(source, aliases)
 		var where := "%s sur %s (%s)" % [label, map_id, CutsceneStep.kind_name(step.kind)]
 		var needed: Array[StringName] = []
 		match step.kind:
@@ -147,11 +250,17 @@ func _simulate(label: String, variant: CutsceneVariant, start_map: StringName,
 				needed.append(step.actor)
 				if not Grid.is_direction_name(step.target):
 					needed.append(step.target)
-			CutsceneStep.Kind.MOVE:
+			CutsceneStep.Kind.MOVE, CutsceneStep.Kind.HOP:
 				needed.append(step.actor)
 				for other: StringName in [step.follower, step.near]:
 					if not other.is_empty():
 						needed.append(other)
+			CutsceneStep.Kind.LEAN:
+				needed.append(step.actor)
+				if not Grid.is_direction_name(step.target):
+					needed.append(step.target)
+			CutsceneStep.Kind.DESPAWN:
+				needed.append(step.actor)
 			CutsceneStep.Kind.DIALOGUE:
 				var dialogue := _dialogues.get_dialogue(step.dialogue_id)
 				var picked: DialogueVariant = dialogue.pick(flags) if dialogue != null else null
@@ -165,8 +274,34 @@ func _simulate(label: String, variant: CutsceneVariant, start_map: StringName,
 								needed.append(page.turn[actor])
 		for who: StringName in needed:
 			checked += 1
+			assert_false(CutsceneStep.is_alias(who), "%s : alias « %s » résolu" % [where, who])
 			assert_true(actors.has(who), "%s : « %s » présent" % [where, who])
+		if step.kind == CutsceneStep.Kind.DESPAWN:
+			actors.erase(step.actor)
 	return checked
+
+
+## Copie de [param step] avec ses alias remplacés (acteur, cible, voisin, suiveur).
+func _resolved(step: CutsceneStep, aliases: Dictionary) -> CutsceneStep:
+	if step.get_aliases().is_empty():
+		return step
+	var copy := CutsceneStep.new()
+	copy.kind = step.kind
+	copy.dialogue_id = step.dialogue_id
+	copy.flags = step.flags
+	copy.spec = step.spec
+	copy.map_id = step.map_id
+	copy.actor = _alias(step.actor, aliases)
+	copy.target = _alias(step.target, aliases)
+	copy.near = _alias(step.near, aliases)
+	copy.follower = _alias(step.follower, aliases)
+	return copy
+
+
+func _alias(ref: StringName, aliases: Dictionary) -> StringName:
+	if not CutsceneStep.is_alias(ref):
+		return ref
+	return aliases.get(CutsceneStep.alias_name(ref), ref)
 
 
 ## Joueur et PNJ présents sur [param map_id] pour [param flags].

@@ -151,3 +151,22 @@ func test_single_level_rival_house_and_lab_link_to_the_village() -> void:
 			assert_eq(village.get_spawn_cell(spec[2]), spec[0])
 	for gone: StringName in [&"rival_house_1f", &"rival_house_2f"]:
 		assert_false(MapCatalog.has_map(gone), "%s supprimée" % gone)
+
+
+## Invariant du 3B adapté au jalon 4 (jalon-04.md §13.6) : jamais un déclencheur de scène sur
+## un warp STEP_ON (le changement de carte partirait avec la scène). Un déclencheur peut
+## partager la case d'un warp PUSH : l'arrivée sur la case (scène, blocage) précède la
+## poussée. Tables des déclencheurs construites sans erreur.
+func test_no_trigger_on_a_step_on_warp() -> void:
+	var shared := 0
+	for map_id: StringName in _maps:
+		var map: GameMap = _maps[map_id]
+		map.rebuild_grid()
+		for trigger: EventTrigger in map.get_triggers().get_all():
+			for warp: Warp in map.get_warps().get_at(trigger.cell):
+				assert_ne(warp.trigger, Warp.Trigger.STEP_ON,
+					"%s : déclencheur « %s » sur un warp STEP_ON en %s" % [map_id,
+					trigger.cutscene_id, trigger.cell])
+				shared += 1
+	assert_eq(shared, 1, "seul partage : le tapis de sortie du labo (warp PUSH)")
+	assert_push_error_count(0)

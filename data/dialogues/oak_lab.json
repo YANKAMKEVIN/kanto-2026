@@ -3,6 +3,13 @@
 		"speaker": "Maya",
 		"variants": [
 			{
+				"if": ["starter_chosen"],
+				"pages": [
+					"Alors, c'est lui que tu as choisi ?",
+					"Vous avez l'air de déjà bien vous entendre."
+				]
+			},
+			{
 				"if": ["oak_met"],
 				"pages": [
 					"Ah, le professeur est revenu.",
@@ -38,9 +45,40 @@
 			{ "text": "Alors... pourquoi ne pas commencer ensemble ?", "turn": { "oak": "player" } }
 		]
 	},
+	"oak_starter_reciprocal": {
+		"speaker": "Prof. Chen",
+		"pages": ["On dirait que le choix est réciproque."]
+	},
+	"rival_starter_pick": {
+		"speaker": "Rival",
+		"pages": ["Alors ce sera toi."]
+	},
+	"rival_challenge_wait": {
+		"speaker": "Rival",
+		"pages": ["Attends."]
+	},
+	"rival_challenge": {
+		"speaker": "Rival",
+		"pages": ["On ne va quand même pas partir sans savoir ce qu'ils savent faire."]
+	},
+	"oak_lab_exit_block": {
+		"speaker": "Prof. Chen",
+		"pages": ["Pas si vite. Tu n'as pas encore choisi ton partenaire."]
+	},
 	"oak_lab_waiting": {
 		"speaker": "Prof. Chen",
-		"pages": ["Un peu de patience. J'ai quelque chose à vous montrer."]
+		"variants": [
+			{
+				"if": ["starter_chosen"],
+				"pages": [
+					"Le monde qui vous attend est bien plus vaste que Bourg Palette.",
+					"Prends le temps de l'observer. Les Pokémon ont beaucoup à nous apprendre."
+				]
+			},
+			{
+				"pages": ["Un peu de patience. J'ai quelque chose à vous montrer."]
+			}
+		]
 	},
 	"rival_lab_waiting": {
 		"speaker": "Rival",

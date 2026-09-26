@@ -8,6 +8,7 @@
 [ext_resource type="Script" path="res://game/world/interactions/interaction_controller.gd" id="6_ctrl"]
 [ext_resource type="Script" path="res://game/systems/cutscene/cutscene_director.gd" id="7_director"]
 [ext_resource type="PackedScene" path="res://game/ui/starter/starter_sheet.tscn" id="8_sheet"]
+[ext_resource type="Script" path="res://game/systems/starter/starter_choice_controller.gd" id="9_choice"]
 
 [node name="Boot" type="Node"]
 script = ExtResource("1_boot")
@@ -35,6 +36,10 @@ script = ExtResource("6_ctrl")
 [node name="CutsceneDirector" type="Node" parent="."]
 unique_name_in_owner = true
 script = ExtResource("7_director")
+
+[node name="StarterChoice" type="Node" parent="."]
+unique_name_in_owner = true
+script = ExtResource("9_choice")
 
 [node name="ScreenFade" parent="." instance=ExtResource("3_fade")]
 unique_name_in_owner = true
