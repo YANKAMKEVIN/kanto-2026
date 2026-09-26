@@ -23,8 +23,8 @@
 		"male_ratio": 0.5, "growth_rate": "fast", "base_exp": 64,
 		"learnset": [[1, "tackel"]]
 	},
-	"orphan": {
-		"dex": 5, "name": "Orphelin", "types": ["normal"],
+	"stray": {
+		"dex": 5, "name": "Égaré", "types": ["normal"],
 		"base_stats": { "hp": 45, "atk": 49, "def": 49, "spa": 65, "spd": 65, "spe": 45 },
 		"male_ratio": 0.5, "growth_rate": "fast", "base_exp": 64,
 		"learnset": [[1, "tackle"]],
@@ -35,6 +35,6 @@
 		"base_stats": { "hp": 45, "atk": 49, "def": 49, "spa": 65, "spd": 65, "spe": 45 },
 		"male_ratio": 0.5, "growth_rate": "fast", "base_exp": 64,
 		"learnset": [[1, "tackle"]],
-		"evolutions": [{ "into": "orphan", "method": "level", "level": 10 }]
+		"evolutions": [{ "into": "stray", "method": "level", "level": 10 }]
 	}
 }

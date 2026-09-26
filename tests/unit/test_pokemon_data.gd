@@ -195,8 +195,8 @@ func test_broken_cross_references_are_rejected() -> void:
 	assert_string_contains(errors, "espèce « mouse » : type inconnu « electric »")
 	assert_string_contains(errors, "« sparky » : capacité inconnue « thunder_shock »")
 	assert_string_contains(errors, "« typo » : capacité inconnue « tackel »")
-	assert_string_contains(errors, "« orphan » : évolution vers une espèce inconnue « nobody »")
-	assert_string_contains(errors, "« chain » : évolution vers une espèce inconnue « orphan »")
+	assert_string_contains(errors, "« stray » : évolution vers une espèce inconnue « nobody »")
+	assert_string_contains(errors, "« chain » : évolution vers une espèce inconnue « stray »")
 	assert_eq(_data.get_species_ids(), [&"good"] as Array[StringName])
 
 
