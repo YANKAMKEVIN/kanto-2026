@@ -1,0 +1,93 @@
+{
+	"bulbasaur": {
+		"dex": 1, "name": "Bulbizarre", "types": ["grass", "poison"],
+		"base_stats": { "hp": 45, "atk": 49, "def": 49, "spa": 65, "spd": 65, "spe": 45 },
+		"male_ratio": 0.875, "growth_rate": "medium_slow", "base_exp": 64,
+		"learnset": [
+			[1, "tackle"], [1, "growl"], [7, "leech_seed"], [13, "vine_whip"],
+			[20, "poison_powder"], [27, "razor_leaf"], [34, "growth"], [41, "sleep_powder"],
+			[48, "solar_beam"]
+		],
+		"evolutions": [{ "into": "ivysaur", "method": "level", "level": 16 }]
+	},
+	"ivysaur": {
+		"dex": 2, "name": "Herbizarre", "types": ["grass", "poison"],
+		"base_stats": { "hp": 60, "atk": 62, "def": 63, "spa": 80, "spd": 80, "spe": 60 },
+		"male_ratio": 0.875, "growth_rate": "medium_slow", "base_exp": 142,
+		"learnset": [
+			[1, "tackle"], [1, "growl"], [1, "leech_seed"], [7, "leech_seed"],
+			[13, "vine_whip"], [22, "poison_powder"], [30, "razor_leaf"], [38, "growth"],
+			[46, "sleep_powder"], [54, "solar_beam"]
+		],
+		"evolutions": [{ "into": "venusaur", "method": "level", "level": 32 }]
+	},
+	"venusaur": {
+		"dex": 3, "name": "Florizarre", "types": ["grass", "poison"],
+		"base_stats": { "hp": 80, "atk": 82, "def": 83, "spa": 100, "spd": 100, "spe": 80 },
+		"male_ratio": 0.875, "growth_rate": "medium_slow", "base_exp": 236,
+		"learnset": [
+			[1, "tackle"], [1, "growl"], [1, "leech_seed"], [1, "vine_whip"],
+			[7, "leech_seed"], [13, "vine_whip"], [22, "poison_powder"], [30, "razor_leaf"],
+			[43, "growth"], [55, "sleep_powder"], [65, "solar_beam"]
+		]
+	},
+	"charmander": {
+		"dex": 4, "name": "Salamèche", "types": ["fire"],
+		"base_stats": { "hp": 39, "atk": 52, "def": 43, "spa": 60, "spd": 50, "spe": 65 },
+		"male_ratio": 0.875, "growth_rate": "medium_slow", "base_exp": 62,
+		"learnset": [
+			[1, "scratch"], [1, "growl"], [9, "ember"], [15, "leer"], [22, "rage"],
+			[30, "slash"], [38, "flamethrower"], [46, "fire_spin"]
+		],
+		"evolutions": [{ "into": "charmeleon", "method": "level", "level": 16 }]
+	},
+	"charmeleon": {
+		"dex": 5, "name": "Reptincel", "types": ["fire"],
+		"base_stats": { "hp": 58, "atk": 64, "def": 58, "spa": 80, "spd": 65, "spe": 80 },
+		"male_ratio": 0.875, "growth_rate": "medium_slow", "base_exp": 142,
+		"learnset": [
+			[1, "scratch"], [1, "growl"], [1, "ember"], [9, "ember"], [15, "leer"],
+			[24, "rage"], [33, "slash"], [42, "flamethrower"], [56, "fire_spin"]
+		],
+		"evolutions": [{ "into": "charizard", "method": "level", "level": 36 }]
+	},
+	"charizard": {
+		"dex": 6, "name": "Dracaufeu", "types": ["fire", "flying"],
+		"base_stats": { "hp": 78, "atk": 84, "def": 78, "spa": 109, "spd": 85, "spe": 100 },
+		"male_ratio": 0.875, "growth_rate": "medium_slow", "base_exp": 240,
+		"learnset": [
+			[1, "scratch"], [1, "growl"], [1, "ember"], [1, "leer"], [9, "ember"],
+			[15, "leer"], [24, "rage"], [36, "slash"], [46, "flamethrower"], [55, "fire_spin"]
+		]
+	},
+	"squirtle": {
+		"dex": 7, "name": "Carapuce", "types": ["water"],
+		"base_stats": { "hp": 44, "atk": 48, "def": 65, "spa": 50, "spd": 64, "spe": 43 },
+		"male_ratio": 0.875, "growth_rate": "medium_slow", "base_exp": 63,
+		"learnset": [
+			[1, "tackle"], [1, "tail_whip"], [8, "bubble"], [15, "water_gun"], [22, "bite"],
+			[28, "withdraw"], [35, "skull_bash"], [42, "hydro_pump"]
+		],
+		"evolutions": [{ "into": "wartortle", "method": "level", "level": 16 }]
+	},
+	"wartortle": {
+		"dex": 8, "name": "Carabaffe", "types": ["water"],
+		"base_stats": { "hp": 59, "atk": 63, "def": 80, "spa": 65, "spd": 80, "spe": 58 },
+		"male_ratio": 0.875, "growth_rate": "medium_slow", "base_exp": 142,
+		"learnset": [
+			[1, "tackle"], [1, "tail_whip"], [1, "bubble"], [8, "bubble"], [15, "water_gun"],
+			[24, "bite"], [31, "withdraw"], [39, "skull_bash"], [47, "hydro_pump"]
+		],
+		"evolutions": [{ "into": "blastoise", "method": "level", "level": 36 }]
+	},
+	"blastoise": {
+		"dex": 9, "name": "Tortank", "types": ["water"],
+		"base_stats": { "hp": 79, "atk": 83, "def": 100, "spa": 85, "spd": 105, "spe": 78 },
+		"male_ratio": 0.875, "growth_rate": "medium_slow", "base_exp": 239,
+		"learnset": [
+			[1, "tackle"], [1, "tail_whip"], [1, "bubble"], [1, "water_gun"], [8, "bubble"],
+			[15, "water_gun"], [24, "bite"], [31, "withdraw"], [42, "skull_bash"],
+			[52, "hydro_pump"]
+		]
+	}
+}

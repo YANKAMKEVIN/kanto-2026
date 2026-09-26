@@ -1,0 +1,168 @@
+{
+	"tackle": {
+		"name": "Charge", "type": "normal", "category": "physical",
+		"power": 40, "accuracy": 100, "pp": 35,
+		"description": "Le lanceur charge la cible et la percute de tout son corps.",
+		"draft": true
+	},
+	"scratch": {
+		"name": "Griffe", "type": "normal", "category": "physical",
+		"power": 40, "accuracy": 100, "pp": 35,
+		"description": "Lacère la cible avec des griffes acérées.",
+		"draft": true
+	},
+	"growl": {
+		"name": "Rugissement", "type": "normal", "category": "status",
+		"accuracy": 100, "pp": 40,
+		"effects": [{ "kind": "stat_stage", "stat": "atk", "stages": -1, "target": "foe" }],
+		"description": "Un cri mignon qui fait baisser l'Attaque de la cible.",
+		"draft": true
+	},
+	"tail_whip": {
+		"name": "Mimi-Queue", "type": "normal", "category": "status",
+		"accuracy": 100, "pp": 30,
+		"effects": [{ "kind": "stat_stage", "stat": "def", "stages": -1, "target": "foe" }],
+		"description": "Le lanceur remue la queue pour détourner l'attention. Baisse la Défense de la cible.",
+		"draft": true
+	},
+	"leer": {
+		"name": "Groz'Yeux", "type": "normal", "category": "status",
+		"accuracy": 100, "pp": 30,
+		"effects": [{ "kind": "stat_stage", "stat": "def", "stages": -1, "target": "foe" }],
+		"description": "Un regard intimidant qui fait baisser la Défense de la cible.",
+		"draft": true
+	},
+	"growth": {
+		"name": "Croissance", "type": "normal", "category": "status",
+		"accuracy": 0, "pp": 20,
+		"effects": [
+			{ "kind": "stat_stage", "stat": "atk", "stages": 1, "target": "self" },
+			{ "kind": "stat_stage", "stat": "spa", "stages": 1, "target": "self" }
+		],
+		"description": "Le lanceur grandit d'un coup. Augmente son Attaque et son Attaque Spéciale.",
+		"draft": true
+	},
+	"withdraw": {
+		"name": "Repli", "type": "water", "category": "status",
+		"accuracy": 0, "pp": 40,
+		"effects": [{ "kind": "stat_stage", "stat": "def", "stages": 1, "target": "self" }],
+		"description": "Le lanceur se cache dans sa carapace. Augmente sa Défense.",
+		"draft": true
+	},
+	"leech_seed": {
+		"name": "Vampigraine", "type": "grass", "category": "status",
+		"accuracy": 90, "pp": 10,
+		"pending_effects": ["leech_seed"],
+		"description": "Plante une graine sur la cible, qui perd des PV à chaque tour au profit du lanceur.",
+		"draft": true
+	},
+	"poison_powder": {
+		"name": "Poudre Toxik", "type": "poison", "category": "status",
+		"accuracy": 75, "pp": 35,
+		"pending_effects": ["poison"],
+		"description": "Une poudre toxique qui empoisonne la cible.",
+		"draft": true
+	},
+	"sleep_powder": {
+		"name": "Poudre Dodo", "type": "grass", "category": "status",
+		"accuracy": 75, "pp": 15,
+		"pending_effects": ["sleep"],
+		"description": "Une poudre soporifique qui endort la cible.",
+		"draft": true
+	},
+	"vine_whip": {
+		"name": "Fouet Lianes", "type": "grass", "category": "physical",
+		"power": 45, "accuracy": 100, "pp": 25,
+		"description": "Fouette la cible avec de fines lianes.",
+		"draft": true
+	},
+	"razor_leaf": {
+		"name": "Tranch'Herbe", "type": "grass", "category": "physical",
+		"power": 55, "accuracy": 95, "pp": 25, "crit_stage": 1,
+		"description": "Des feuilles tranchantes frappent la cible. Taux de critique élevé.",
+		"draft": true
+	},
+	"solar_beam": {
+		"name": "Lance-Soleil", "type": "grass", "category": "special",
+		"power": 120, "accuracy": 100, "pp": 10,
+		"pending_effects": ["two_turn"],
+		"description": "Absorbe la lumière au premier tour, puis projette un rayon puissant au second.",
+		"draft": true
+	},
+	"ember": {
+		"name": "Flammèche", "type": "fire", "category": "special",
+		"power": 40, "accuracy": 100, "pp": 25,
+		"pending_effects": ["burn_10"],
+		"description": "De petites flammes frappent la cible. Peut la brûler.",
+		"draft": true
+	},
+	"flamethrower": {
+		"name": "Lance-Flammes", "type": "fire", "category": "special",
+		"power": 90, "accuracy": 100, "pp": 15,
+		"pending_effects": ["burn_10"],
+		"description": "Un torrent de flammes s'abat sur la cible. Peut la brûler.",
+		"draft": true
+	},
+	"fire_spin": {
+		"name": "Danse Flamme", "type": "fire", "category": "special",
+		"power": 35, "accuracy": 85, "pp": 15,
+		"pending_effects": ["trap"],
+		"description": "Enferme la cible dans un tourbillon de feu pendant quelques tours.",
+		"draft": true
+	},
+	"rage": {
+		"name": "Frénésie", "type": "normal", "category": "physical",
+		"power": 20, "accuracy": 100, "pp": 20,
+		"pending_effects": ["rage"],
+		"description": "Le lanceur s'emporte. Son Attaque augmente à chaque coup reçu.",
+		"draft": true
+	},
+	"slash": {
+		"name": "Tranche", "type": "normal", "category": "physical",
+		"power": 70, "accuracy": 100, "pp": 20, "crit_stage": 1,
+		"description": "Tranche la cible avec des griffes ou des lames. Taux de critique élevé.",
+		"draft": true
+	},
+	"bubble": {
+		"name": "Écume", "type": "water", "category": "special",
+		"power": 40, "accuracy": 100, "pp": 30,
+		"effects": [
+			{ "kind": "stat_stage", "stat": "spe", "stages": -1, "target": "foe", "chance": 10 }
+		],
+		"description": "Une nuée de bulles frappe la cible. Peut baisser sa Vitesse.",
+		"draft": true
+	},
+	"water_gun": {
+		"name": "Pistolet à O", "type": "water", "category": "special",
+		"power": 40, "accuracy": 100, "pp": 25,
+		"description": "Un jet d'eau puissant frappe la cible.",
+		"draft": true
+	},
+	"bite": {
+		"name": "Morsure", "type": "dark", "category": "physical",
+		"power": 60, "accuracy": 100, "pp": 25,
+		"pending_effects": ["flinch_30"],
+		"description": "Mord la cible de ses crocs acérés. Peut l'apeurer.",
+		"draft": true
+	},
+	"skull_bash": {
+		"name": "Coud'Krâne", "type": "normal", "category": "physical",
+		"power": 130, "accuracy": 100, "pp": 10,
+		"pending_effects": ["two_turn", "charge_def_up"],
+		"description": "Rentre la tête au premier tour, ce qui augmente sa Défense, puis charge au second.",
+		"draft": true
+	},
+	"hydro_pump": {
+		"name": "Hydrocanon", "type": "water", "category": "special",
+		"power": 110, "accuracy": 80, "pp": 5,
+		"description": "Un puissant jet d'eau sous pression frappe la cible.",
+		"draft": true
+	},
+	"struggle": {
+		"name": "Lutte", "type": "normal", "category": "physical",
+		"power": 50, "accuracy": 0, "pp": 1, "typeless": true,
+		"effects": [{ "kind": "recoil", "fraction": 0.25 }],
+		"description": "Utilisée quand il ne reste plus aucun PP. Blesse aussi le lanceur.",
+		"draft": true
+	}
+}

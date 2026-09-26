@@ -1,0 +1,7 @@
+{
+	"youngster": {
+		"name": "Gamin Joey", "ai": "random",
+		"can_lose": false, "heal_after": false, "gives_exp": true, "prize_money": 64,
+		"team": [{ "species": "vine", "level": 4 }]
+	}
+}

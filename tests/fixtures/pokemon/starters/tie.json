@@ -1,0 +1,11 @@
+{
+	"map": "test_lab", "level": 7,
+	"prompt": "CHOISIS",
+	"choices": [
+		{ "species": "wisp", "npc": "wisp_npc", "blurb": "Discret." },
+		{ "species": "flower", "npc": "flower_npc", "blurb": "Douce." },
+		{ "species": "tree", "npc": "tree_npc", "blurb": "Solide." }
+	],
+	"open_flag": "offer_open", "done_flag": "offer_done",
+	"chosen_scene": "offer_scene"
+}

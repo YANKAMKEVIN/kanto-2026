@@ -1,0 +1,40 @@
+{
+	"typo_key": {
+		"name": "Faute", "type": "normal", "category": "physical",
+		"power": 40, "accuracy": 100, "pp": 35, "description": "…", "powr": 40
+	},
+	"no_pp": {
+		"name": "Sans PP", "type": "normal", "category": "physical",
+		"power": 40, "accuracy": 100, "description": "…"
+	},
+	"bad_category": {
+		"name": "Catégorie", "type": "normal", "category": "magic",
+		"power": 40, "accuracy": 100, "pp": 10, "description": "…"
+	},
+	"too_accurate": {
+		"name": "Précision", "type": "normal", "category": "physical",
+		"power": 40, "accuracy": 101, "pp": 10, "description": "…"
+	},
+	"weak_attack": {
+		"name": "Sans puissance", "type": "normal", "category": "physical",
+		"accuracy": 100, "pp": 10, "description": "…"
+	},
+	"strong_status": {
+		"name": "Statut puissant", "type": "normal", "category": "status",
+		"power": 40, "accuracy": 100, "pp": 10, "description": "…"
+	},
+	"bad_effect": {
+		"name": "Effet", "type": "normal", "category": "status",
+		"accuracy": 100, "pp": 10, "description": "…",
+		"effects": [{ "kind": "stat_stage", "stat": "hp", "stages": 0, "target": "ally" }]
+	},
+	"bad_recoil": {
+		"name": "Recul", "type": "normal", "category": "physical",
+		"power": 40, "accuracy": 100, "pp": 10, "description": "…",
+		"effects": [{ "kind": "recoil", "fraction": 2, "stat": "atk" }]
+	},
+	"bad_pending": {
+		"name": "En attente", "type": "normal", "category": "status",
+		"accuracy": 100, "pp": 10, "description": "…", "pending_effects": ["", 3]
+	}
+}

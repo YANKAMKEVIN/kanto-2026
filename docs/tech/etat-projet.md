@@ -1,6 +1,6 @@
 # État du projet — note de passage
 
-Mis à jour : 2026-09-26 (jalon 3B validé par Kevin et fusionné dans `main` ; jalon 4 planifié, fondations en cours dans le cloud).
+Mis à jour : 2026-09-26 (jalon 3B validé par Kevin et fusionné dans `main` ; jalon 4 planifié ; fondations logiques du jalon 4 posées sur `jalon-04-fondations`, fusionnées avec le plan dans la branche `jalon-04a`).
 
 ## Fait
 - Outillage : Godot 4.7.2, export Android vérifié sur le S24, GUT 9.7.1, scripts `tools/`.
@@ -35,6 +35,7 @@ Mis à jour : 2026-09-26 (jalon 3B validé par Kevin et fusionné dans `main` ; 
   - **675 tests verts**, import sans erreur ni warning. Captures headless (xvfb + opengl3, 2340×1080) relues dans le cloud — **le cloud peut donc aussi produire des captures** (`build/captures/jalon03b/`, non versionnées ; scénarios `route1_grass`, `route1_freeze`, `route1_full` de `tools/capture_play.gd`).
 - **Correction des 3 erreurs « locked object » du fondu** (branche cloud `fix-screen-fade-tests`, fusionnée) : les tests n'affichent plus de SCRIPT ERROR.
 - **Conception reçue** : `dossier-05-combat.md`, `dossier-06-progression.md`, références `combat-v1.webp`, `combat-capacites-v1.png` et `combat-capture-v1.webp`.
+- **Jalon 4, fondations logiques** (branche `jalon-04-fondations`, issue de `plan-jalon-04`, fusionnée dans `jalon-04a` — pas dans `main`) : §2.1 et §2.2 du plan, sans scène ni UI, **670 tests verts** (513 au départ). Aléatoire injectable `GameRng` ; table des 18 types (`data/pokemon/types.json`) ; 9 espèces des trois lignées avec les **tables d'apprentissage de Rouge/Bleu**, évolutions, courbes d'XP (`data/pokemon/species/kanto.json`) ; 24 capacités modernes (`data/pokemon/moves/moves.json`) ; `PokemonData`, `Pokemon` (apprentissage à 4 capacités avec choix de l'oubli, XP et niveaux, évolution, sauvegarde préparée), `PokemonFactory`, `Party`, `Evolution` ; offre du labo et choix du rival (`data/pokemon/starters.json`, `StarterOffer`) ; moteur de combat pur (`Battle`, `DamageCalc`, `BattleAI`…), dresseurs (`data/trainers/rival.json`) et messages de combat (`data/battle/messages.json`, `BattleText`). Écarts avec le plan : `jalon-04.md` §12. Simulation du premier combat : `tools/simulate_first_battle.gd`. **Pas faits** (dépendent du 3B, de T1 ou d'une décision) : `BattleLayout`, `Interaction.Kind.MEET`, alias et étapes de scène.
 
 ## Organisation cloud / Mac (depuis le 2026-09-26)
 - Dépôt privé `YANKAMKEVIN/kanto-2026`. Les sessions **cloud** installent Godot 4.7.2 via le hook SessionStart (`tools/cloud_setup.sh`) et font tourner `tools/test.sh`. Elles **codent et testent** sur une branche dédiée, qu'elles poussent ; **aucune fusion dans `main`** sans validation de Kevin sur le S24.

@@ -1,0 +1,30 @@
+{
+	"templates": {
+		"battle_started": { "text": "{trainer} veut se battre !", "draft": true },
+		"sent_out_foe": { "text": "{trainer} envoie {pokemon} !" },
+		"sent_out_player": { "text": "En avant, {pokemon} !", "draft": true },
+		"move_used": { "text": "{pokemon} utilise {move} !", "draft": true },
+		"move_missed": { "text": "{pokemon} rate son attaque !", "draft": true },
+		"critical": { "text": "Coup critique !" },
+		"super_effective": { "text": "C'est super efficace !" },
+		"not_very_effective": { "text": "Ce n'est pas très efficace..." },
+		"no_effect": { "text": "Ça n'affecte pas {pokemon}...", "draft": true },
+		"stat_rose": { "text": "{stat} {de_pokemon} augmente !", "draft": true },
+		"stat_rose_2": { "text": "{stat} {de_pokemon} augmente beaucoup !", "draft": true },
+		"stat_rose_3": { "text": "{stat} {de_pokemon} augmente énormément !", "draft": true },
+		"stat_fell": { "text": "{stat} {de_pokemon} baisse !", "draft": true },
+		"stat_fell_2": { "text": "{stat} {de_pokemon} baisse beaucoup !", "draft": true },
+		"stat_fell_3": { "text": "{stat} {de_pokemon} baisse énormément !", "draft": true },
+		"stat_no_higher": { "text": "{stat} {de_pokemon} ne peut plus augmenter !", "draft": true },
+		"stat_no_lower": { "text": "{stat} {de_pokemon} ne peut plus baisser !", "draft": true },
+		"recoil": { "text": "{pokemon} est blessé par le contrecoup !", "draft": true },
+		"fainted": { "text": "{pokemon} est K.O. !", "draft": true },
+		"battle_won": { "text": "Tu as battu {trainer} !", "draft": true },
+		"battle_lost": { "text": "{trainer} a gagné cette fois...", "draft": true }
+	},
+	"stats": {
+		"atk": "L'Attaque", "def": "La Défense", "spa": "L'Attaque Spéciale",
+		"spd": "La Défense Spéciale", "spe": "La Vitesse", "acc": "La Précision",
+		"eva": "L'Esquive"
+	}
+}

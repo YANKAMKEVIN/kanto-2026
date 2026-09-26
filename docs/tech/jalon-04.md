@@ -750,3 +750,43 @@ Constat fait sur `main`, base de ce plan :
 3. **Conversion des directions** : en 3A, elle est dans `NpcRoster._FACINGS` (privée) et `InteractionController.dominant_direction` (statique) ; le 3B prévoit de la déplacer dans `Grid`. Les ajouts du 4 utilisent celle que le 3B aura livrée.
 4. **Référence de sélection des capacités** : le fichier est `docs/design/reference/combat-capacites-v1.png.png` (double extension), attendu `combat-capacites-v1.png` par `etat-projet.md` et `ui-reference.md`. À renommer lors du prochain commit de documentation (ce plan cite le nom réel).
 5. **Labo réel** (`tools/build_interiors.gd`) : table des starters (10..12, 4..5), starters en (10..12, 5) avec `lift` 56, tabouret (12, 7), paillasse (11..13, 8) après la retouche de Kevin, plantes (6, 8) et (9, 9), entrée (7, 9) avec warp PUSH vers le bas. Les chemins du §4.2 en tiennent compte ; les invariants du §4.4 les vérifient.
+
+---
+
+## 12. Fondations posées (écarts avec le plan)
+
+Branche `jalon-04-fondations` (issue de `plan-jalon-04`), 2026-09-26 : §2.1 et §2.2, classes pures, données et tests. **670 tests verts** (513 au départ), import sans erreur, chaque script vérifié aussi avec `--check-only` et les avertissements GDScript traités en erreurs. Les décisions de Kevin du §8 (et ses précisions de la session) priment sur le §3.2 ; écarts :
+
+**Données Pokémon**
+1. **Learnsets complets de Rouge/Bleu** pour les **9 espèces** des trois lignées (le §3.2 limitait le learnset aux capacités de départ) ; au niveau 5 : Bulbizarre Charge + Rugissement, Salamèche Griffe + Rugissement, Carapuce Charge + Mimi-Queue (testé). Une capacité peut figurer plusieurs fois (niveau 1 puis 7 chez Herbizarre) ; `moves_at` la compte à son **dernier** niveau.
+2. Clés d'espèce acceptées dès maintenant : `growth_rate` (`medium_slow` pour les 9), `base_exp` (valeurs des 5e à 7e générations : 64/142/236, 62/142/240, 63/142/239), `evolutions` (seule clé facultative). Numéros de Pokédex uniques, vérifiés.
+3. **24 capacités** (toutes celles des learnsets + Lutte), valeurs modernes, catégorie par capacité, Morsure Ténèbres ; chaque `description` est `draft`.
+4. `MoveEffect` : `kind` écrit dans les données (`stat_stage` | `recoil`), `chance` en % (Écume : 10), `target` `self` | `foe` ; `RECOIL` = fraction des **PV max** du lanceur (Lutte ¼).
+5. `MoveData.crit_stage` (0 → 1/24, 1 → 1/8, 2 → 1/2, 3 → toujours) : Tranch'Herbe et Tranche à 1.
+6. `MoveData.pending_effects` : liste de chaînes libres documentée en tête de `move_data.gd` (`burn_10`, `poison`, `sleep`, `leech_seed`, `trap`, `two_turn`, `charge_def_up`, `flinch_30`, `rage`), **ignorée par le moteur**. Un test vérifie que les capacités connues au niveau 5 par les trois starters n'en ont aucune.
+7. Types : « **Électrique** » (proposition Q10, en attente de Kevin).
+
+**Progression (décisions de Kevin, §8 points 3 et 4)**
+8. `EvolutionRule` et `Evolution` (`game/pokemon/evolution/`, qui ne reste donc pas vide) : méthodes `level`, `item`, `trade`, champs requis selon la méthode, cible vérifiée. `Evolution.level_up_target` / `item_target` ; l'échange n'est jamais déclenché. `Pokemon.evolve_into` garde capacités, IV, EV, XP, niveau, PV perdus. Les identifiants d'objets ne sont pas vérifiés (aucun objet n'existe encore).
+9. `ExpCurve` : les **6 courbes** modernes. `Pokemon.experience` (et non `exp`, qui masque la fonction globale `exp()` ; la clé de sauvegarde reste `"exp"`). `Pokemon.gain_exp(amount, data) -> Array[LevelUp]` (niveau, capacités à proposer, gains de stats), plafond au niveau 100, **rien n'est appris d'office**. La formule d'XP gagnée en combat n'est **pas** faite (jalon 5).
+10. Apprentissage : `learn_move` → `LearnResult { LEARNED, ALREADY_KNOWN, NEEDS_FORGET, INVALID }` (rien ne change hors `LEARNED`), `replace_move(slot, move, data)`, `SpeciesData.moves_learned_at(level)`.
+
+**Noms et signatures**
+11. `GameRng.range_int(a, b)` au lieu de `range` (fonction globale de GDScript). Toutes les méthodes passent par `roll(n)`, seule méthode remplacée par `ScriptedRng` (`tests/helpers/scripted_rng.gd`, chargé par `preload`, sans `class_name` : `tests/` n'est pas exporté).
+12. `BattleEvent.SideId` au lieu de `Side` : `Side` est un enum global de Godot (l'import ne le signale pas, `--check-only` si). Champs ajoutés pour que la présentation n'interroge jamais le moteur : `pokemon_name`, `species_id`, `level`, `gender`, `trainer_name`, `turn`, `pp` (restants, −1 pour Lutte), `stage` (niveau d'après) ; `to_dict()`.
+13. `BattleText.lines(event, data) -> PackedStringArray` (0, 1 ou 2 phrases : « Coup critique ! » puis « C'est super efficace ! ») au lieu d'une chaîne ; marque `{de_pokemon}` (« de Salamèche », « d'Évoli »). Un Pokémon sauvage (dresseur vide) n'a pas encore de phrase (jalon 5).
+14. `TrainerLibrary.new(pokemon_data)` puis `build_team(trainer_id, starter, rng)`. Clés obligatoires `gives_exp` et `prize_money` (`rival_lab` : `false`, `0`), `name` « **Le Rival** » (message « Le Rival envoie Carapuce ! ») ; `team` (équipe fixe) **ou** `team_by_starter`.
+15. Classes de données ajoutées : `StarterOption`, `TrainerSlot`, `DamageResult`, `LevelUp` ; `StarterOffer.check_species(data)` ; `SpeciesData.STATS` (ordre canonique des stats).
+
+**Règles du moteur précisées**
+16. Immunité de type vérifiée **avant** la précision (aucun tirage). La précision tient compte des niveaux `acc` / `eva` (multiplicateur moderne en 3), tous à 0 au jalon 4.
+17. Un camp qui a encore un Pokémon valide l'envoie **automatiquement en fin de tour** (premier valide) ; le choix du joueur viendra avec `SWITCH`. Si les deux derniers Pokémon tombent pendant la même action (recul de Lutte), le camp du lanceur gagne.
+18. Ordre des tirages documenté en tête de `battle.gd` et `damage_calc.gd` (tests écrits avec `ScriptedRng`).
+
+**Simulation** (`tests/unit/test_battle_simulation.gd` et `tools/simulate_first_battle.gd`, graines 0..999, niveau 5, IV tirés) : tous les combats se terminent, 42 tours au plus. Victoires du joueur qui choisit **au hasard** : Bulbizarre contre Salamèche 45,6 %, Salamèche contre Carapuce 33,4 %, Carapuce contre Bulbizarre 71,4 %. En attaquant toujours : 61,2 %, 60,9 %, 84,8 %.
+
+**Reportés** (hors de ce périmètre ou dépendants d'un autre travail)
+- `BattleLayout` : composition du combat à trancher par Kevin (Q23, « recomposé »).
+- `Interaction.Kind.MEET` : T1.
+- `CutsceneStep` / `CutsceneLibrary` (alias, `hop`, `lean`, `despawn`, `battle`) : le 3B n'existe pas sur cette branche.
+- `GameState` (équipe, starter, `rng`) : T1. `test_interaction.gd` et `test_cutscene_library.gd` ne sont donc pas étendus.

@@ -1,0 +1,8 @@
+{
+	"sprout": {
+		"dex": 1,
+		"name": "Pousse",
+		"types": ["grass"]
+		"learnset": []
+	}
+}
