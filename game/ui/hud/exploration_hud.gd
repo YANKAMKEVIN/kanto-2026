@@ -9,6 +9,9 @@ extends CanvasLayer
 ## joystick sur tout l'écran (apparition dans la moitié gauche), bouton courir ancré
 ## au coin bas-droit.
 
+## Le titre de zone vient de disparaître (fin de son maintien ou hide_zone_title()).
+signal title_hidden
+
 @onready var _zone_title: ZoneTitle = %ZoneTitle
 @onready var _joystick: TouchJoystick = %VirtualJoystick
 @onready var _run_button: TouchScreenButton = %RunButton
@@ -17,6 +20,7 @@ extends CanvasLayer
 func _ready() -> void:
 	layer = UiTokens.LAYER_HUD
 	_run_button.position = -UiTokens.RUN_BUTTON_CENTER_FROM_CORNER
+	_zone_title.title_hidden.connect(title_hidden.emit)
 
 
 ## Filet de sécurité : sans ce relâchement, l'action run resterait pressée si l'application
@@ -30,6 +34,11 @@ func _notification(what: int) -> void:
 ## Affiche « NOM / région » en haut à gauche (glissement, maintien, disparition).
 func show_zone_title(zone_name: String, region: String) -> void:
 	_zone_title.show_title(zone_name, region)
+
+
+## Masque le titre de zone en ANIM_MICRO (début d'une transition) ; émet title_hidden.
+func hide_zone_title() -> void:
+	_zone_title.hide_now()
 
 
 func get_zone_title() -> ZoneTitle:

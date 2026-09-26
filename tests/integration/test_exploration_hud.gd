@@ -62,14 +62,100 @@ func test_zone_title_animation_cycle() -> void:
 	title.hold_duration = 0.1
 	add_child_autofree(title)
 	watch_signals(title)
+	# État relevé à l'émission même de title_shown : une image longue (chargement d'une
+	# autre scène) peut faire parcourir tout le Tween en une seule étape.
+	var at_shown := {}
+	title.title_shown.connect(func() -> void:
+		at_shown["position"] = title.position
+		at_shown["alpha"] = title.modulate.a)
 	title.show_title("Route 1", "Kanto")
 	assert_eq(title.position.x, UiTokens.SAFE_MARGIN - UiTokens.PANEL_SLIDE, "part décalé")
-	await wait_for_signal(title.title_shown, 1.0)
-	assert_eq(title.position, title.get_rest_position())
-	assert_almost_eq(title.modulate.a, 1.0, 0.01)
 	await wait_for_signal(title.title_hidden, 1.0)
+	assert_signal_emitted(title, "title_shown")
+	assert_eq(at_shown.get("position"), title.get_rest_position())
+	assert_almost_eq(at_shown.get("alpha", 0.0) as float, 1.0, 0.01)
 	assert_signal_emitted(title, "title_hidden")
 	assert_false(title.is_showing())
+
+
+func test_hide_zone_title_during_display() -> void:
+	watch_signals(_hud)
+	_hud.show_zone_title("Bourg Palette", "Kanto")
+	await wait_process_frames(2)
+	var title := _hud.get_zone_title()
+	assert_true(title.is_showing())
+	_hud.hide_zone_title()
+	# Temps de jeu écoulé (somme des delta, comme le Tween) avant l'image où le titre est
+	# vu caché : au plus ANIM_MICRO + une image.
+	var elapsed := 0.0
+	var last_delta := 0.0
+	while title.is_showing() and elapsed < 1.0:
+		await get_tree().process_frame
+		last_delta = get_process_delta_time()
+		elapsed += last_delta
+	assert_false(title.is_showing())
+	assert_true(elapsed - last_delta <= UiTokens.ANIM_MICRO + last_delta + 0.001,
+		"caché en %f s (≤ ANIM_MICRO + 1 image)" % elapsed)
+	await wait_process_frames(1)
+	assert_signal_emit_count(_hud, "title_hidden", 1)
+
+
+func test_hide_zone_title_while_holding() -> void:
+	var title := (load(TITLE_SCENE) as PackedScene).instantiate() as ZoneTitle
+	title.slide_duration = 0.05
+	title.hold_duration = 5.0
+	add_child_autofree(title)
+	watch_signals(title)
+	title.show_title("Route 1", "Kanto")
+	await wait_for_signal(title.title_shown, 1.0)
+	title.hide_now()
+	assert_true(await wait_for_signal(title.title_hidden, 1.0), "caché sans attendre le maintien")
+	assert_false(title.is_showing())
+	assert_signal_emit_count(title, "title_hidden", 1)
+	assert_eq(title.modulate.a, 0.0)
+
+
+func test_hide_now_is_a_fade_not_a_cut() -> void:
+	var title := _hud.get_zone_title()
+	_hud.show_zone_title("Bourg Palette", "Kanto")
+	await wait_process_frames(1)
+	var alpha_before := title.modulate.a
+	_hud.hide_zone_title()
+	assert_true(title.is_showing(), "pas de disparition sèche")
+	assert_eq(title.modulate.a, alpha_before, "le fondu part de l'opacité courante")
+	await wait_for_signal(_hud.title_hidden, 1.0)
+	assert_false(title.is_showing())
+
+
+func test_hide_zone_title_when_hidden_does_nothing() -> void:
+	watch_signals(_hud)
+	_hud.hide_zone_title()
+	await wait_process_frames(2)
+	assert_false(_hud.get_zone_title().is_showing())
+	assert_signal_not_emitted(_hud, "title_hidden")
+
+
+func test_show_after_hide_restarts_title() -> void:
+	_hud.show_zone_title("Bourg Palette", "Kanto")
+	_hud.hide_zone_title()
+	await wait_for_signal(_hud.title_hidden, 1.0)
+	var title := _hud.get_zone_title()
+	watch_signals(title)
+	_hud.show_zone_title("Route 1", "Kanto")
+	assert_true(title.is_showing())
+	assert_eq(title.get_zone_name_text(), "ROUTE 1")
+	assert_true(await wait_for_signal(title.title_shown, 1.0), "le nouveau titre s'affiche")
+	assert_signal_not_emitted(title, "title_hidden")
+
+
+func test_title_hidden_relayed_at_natural_end() -> void:
+	var title := _hud.get_zone_title()
+	title.slide_duration = 0.02
+	title.hold_duration = 0.02
+	watch_signals(_hud)
+	_hud.show_zone_title("Bourg Palette", "Kanto")
+	await wait_for_signal(_hud.title_hidden, 1.0)
+	assert_signal_emit_count(_hud, "title_hidden", 1)
 
 
 func test_zone_title_default_timing_from_tokens() -> void:
@@ -116,11 +202,10 @@ func test_joystick_covers_screen() -> void:
 	assert_false(joystick.is_active())
 
 
-func test_boot_shows_zone_title_at_start() -> void:
+func test_boot_shows_no_zone_title_in_bedroom() -> void:
+	# Jalon 2 : départ dans la chambre, sans titre (il vient à la première sortie).
 	var boot := (load("res://game/boot.tscn") as PackedScene).instantiate() as Boot
 	add_child_autofree(boot)
 	var hud := boot.get_node(^"%ExplorationHud") as ExplorationHud
 	assert_not_null(hud)
-	assert_true(hud.get_zone_title().is_showing())
-	assert_eq(hud.get_zone_title().get_zone_name_text(), "BOURG PALETTE")
-	assert_eq(hud.get_zone_title().get_region_text(), "Kanto")
+	assert_false(hud.get_zone_title().is_showing())

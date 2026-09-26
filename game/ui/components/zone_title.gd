@@ -82,6 +82,19 @@ func show_title(zone_name: String, region: String) -> void:
 	_tween.tween_callback(_on_hidden)
 
 
+## Masque tout de suite le titre (fondu court), par exemple au début d'une transition :
+## sinon un titre encore visible réapparaîtrait par-dessus la carte suivante. Émet
+## title_hidden à la fin ; sans effet si le titre n'est pas affiché.
+func hide_now(duration: float = UiTokens.ANIM_MICRO) -> void:
+	if not visible:
+		return
+	if _tween != null:
+		_tween.kill()
+	_tween = create_tween().set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN)
+	_tween.tween_property(self, ^"modulate:a", 0.0, duration)
+	_tween.tween_callback(_on_hidden)
+
+
 func is_showing() -> bool:
 	return visible
 

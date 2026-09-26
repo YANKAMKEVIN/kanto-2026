@@ -1,8 +1,16 @@
 extends GutTest
-## Carte pallet_town : métadonnées, spawn et invariants d'accessibilité (jalon 1 §4.4).
+## Carte pallet_town : métadonnées, spawn et invariants d'accessibilité (jalon 1 §4.4),
+## portes ouvertes, warps et spawns des bâtiments (jalon 2 §4.2, §4.8).
 
 const MAP_PATH := "res://game/world/maps/pallet_town.tscn"
 const START := Vector2i(36, 10)
+## Portes : nœud du bâtiment → [case de porte, warp, carte cible, spawn de sortie].
+const DOORS: Dictionary = {
+	&"PlayerHouse": [Vector2i(36, 9), &"DoorPlayerHouse", &"player_house_1f",
+		&"player_house_door"],
+	&"RivalHouse": [Vector2i(11, 9), &"DoorRivalHouse", &"rival_house", &"rival_house_door"],
+	&"OakLab": [Vector2i(24, 22), &"DoorOakLab", &"oak_lab", &"oak_lab_door"],
+}
 
 var _map: GameMap
 var _grid: GridWorld
@@ -124,3 +132,58 @@ func test_gates_are_open() -> void:
 		assert_true(_reachable.has(gate), "portillon %s" % gate)
 		assert_true(_grid.is_solid(gate + Vector2i.LEFT), "clôture à l'ouest de %s" % gate)
 		assert_true(_grid.is_solid(gate + Vector2i.RIGHT), "clôture à l'est de %s" % gate)
+
+
+# --- Portes (jalon 2 §4.2) ---------------------------------------------------------
+
+func test_door_cells_are_reachable_and_enclosed() -> void:
+	for building: StringName in DOORS:
+		var door: Vector2i = DOORS[building][0]
+		assert_true(_reachable.has(door), "porte atteignable : %s" % door)
+		assert_false(_grid.is_solid(door), "porte praticable : %s" % door)
+		for direction: Vector2i in [Vector2i.UP, Vector2i.LEFT, Vector2i.RIGHT]:
+			assert_eq(_grid.get_step_target(door, direction), door,
+				"depuis la porte %s, %s bloqué" % [door, direction])
+		assert_ne(_grid.get_step_target(door, Vector2i.DOWN), door, "on ressort vers le bas")
+
+
+func test_door_is_the_only_reachable_cell_of_a_building() -> void:
+	for building: StringName in DOORS:
+		var prop := _map.get_entities().get_node(NodePath(building)) as WorldProp
+		var door: Vector2i = DOORS[building][0]
+		assert_eq(prop.get_anchor_cell(), door, "ancre = porte de %s" % building)
+		var rect := Rect2i(door, Vector2i.ONE)
+		for cell: Vector2i in prop.get_solid_cells():
+			rect = rect.expand(cell).expand(cell + Vector2i.ONE)
+		for y: int in range(rect.position.y, rect.end.y):
+			for x: int in range(rect.position.x, rect.end.x):
+				var cell := Vector2i(x, y)
+				assert_eq(_reachable.has(cell), cell == door, "%s en %s" % [building, cell])
+
+
+func test_door_warps() -> void:
+	var warps := _map.get_warps()
+	assert_eq(warps.size(), DOORS.size())
+	for building: StringName in DOORS:
+		var spec: Array = DOORS[building]
+		var point := _map.get_node(NodePath("Warps/" + String(spec[1]))) as WarpPoint
+		assert_not_null(point, String(spec[1]))
+		if point == null:
+			continue
+		assert_eq(point.get_cell(), spec[0])
+		assert_eq(point.trigger, Warp.Trigger.STEP_ON)
+		assert_eq(point.direction, Vector2i.UP)
+		assert_eq(point.target_map, spec[2])
+		assert_eq(point.target_spawn, &"entrance")
+		var warp := warps.find_on_step(spec[0], Vector2i.UP)
+		assert_not_null(warp, "porte déclenchée en montant : %s" % spec[0])
+		assert_null(warps.find_on_step(spec[0], Vector2i.DOWN), "pas en sortant")
+
+
+func test_door_spawns() -> void:
+	for building: StringName in DOORS:
+		var spec: Array = DOORS[building]
+		assert_true(_map.has_spawn(spec[3]), String(spec[3]))
+		assert_eq(_map.get_spawn_cell(spec[3]), spec[0], String(spec[3]))
+	assert_true(_map.has_spawn(&"start"), "start conservé")
+	assert_false(_map.interior)

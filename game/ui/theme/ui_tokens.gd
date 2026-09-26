@@ -28,6 +28,9 @@ const TEXT_SHADOW := Color(0, 0, 0, 0.45)
 const TRANSPARENT := Color(0, 0, 0, 0)
 ## PANEL_BG entièrement transparent : fin des dégradés de panneau (sans virer au gris).
 const PANEL_BG_CLEAR := Color(0.10, 0.14, 0.20, 0.0)
+## Rideau des transitions (quasi noir bleuté) ; même valeur que le fond des petites pièces
+## (rendering/environment/defaults/default_clear_color).
+const FADE_COLOR := Color(0.02, 0.03, 0.05)
 
 # --- Formes -----------------------------------------------------------------------------
 
@@ -56,6 +59,9 @@ const TEXT_SHADOW_OFFSET := 2
 
 const ANIM_MICRO := 0.12
 const ANIM_PANEL := 0.3
+## Fondu au noir d'un changement de carte : descente du rideau, puis levée (≈ 0,45 s au total).
+const ANIM_FADE_OUT := 0.2
+const ANIM_FADE_IN := 0.25
 ## Glissement des panneaux à l'apparition.
 const PANEL_SLIDE := 40.0
 ## Échelle d'un bouton enfoncé.

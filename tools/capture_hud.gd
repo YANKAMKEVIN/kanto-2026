@@ -41,7 +41,14 @@ func _init() -> void:
 		if arg.begins_with("--out="):
 			_out_dir = arg.trim_prefix("--out=")
 	_run_from_corner = (load(TOKENS_PATH) as GDScript).RUN_BUTTON_CENTER_FROM_CORNER
+	# Les autoloads (SceneRouter, utilisé par Boot) ne sont ajoutés qu'après _init.
+	process_frame.connect(_start_boot, CONNECT_ONE_SHOT)
+
+
+func _start_boot() -> void:
 	_boot = (load(BOOT_SCENE) as PackedScene).instantiate()
+	# Depuis le jalon 2, le jeu démarre dans la chambre (sans titre) : on part du village.
+	_boot.set(&"start_map", &"pallet_town")
 	root.add_child(_boot)
 	process_frame.connect(_on_frame)
 

@@ -13,7 +13,9 @@ extends RefCounted
 ##   restant d'un pas est reporté sur le suivant) ; changer de direction en marche
 ##   fait tourner et repartir sans délai ;
 ## - contre un obstacle, le personnage reste sur place et [signal bumped] est émis
-##   une fois par poussée.
+##   une fois par poussée ;
+## - verrouillé ([method set_locked]), il termine le pas en cours puis ignore toute
+##   direction : transitions de carte, plus tard dialogues et scènes scriptées.
 ## La scène lit [method get_world_position] et les signaux pour l'affichage.
 
 signal facing_changed(direction: Vector2i)
@@ -40,6 +42,7 @@ var _duration: float = 0.0
 var _running: bool = false
 var _jumping: bool = false
 var _bumped_direction: Vector2i = Vector2i.ZERO
+var _locked: bool = false
 
 
 ## [param entity] : objet inscrit dans l'occupation de [param grid] (null = aucune).
@@ -76,7 +79,7 @@ func place(cell: Vector2i, facing: Vector2i = Vector2i.DOWN) -> bool:
 ## Avance la simulation. [param direction] : direction tenue (ZERO si aucune ;
 ## une valeur non cardinale est ignorée). [param run] : bouton de course tenu.
 func update(delta: float, direction: Vector2i, run: bool) -> void:
-	if not Grid.is_cardinal(direction):
+	if _locked or not Grid.is_cardinal(direction):
 		direction = Vector2i.ZERO
 	if direction != _bumped_direction:
 		_bumped_direction = Vector2i.ZERO
@@ -87,7 +90,8 @@ func update(delta: float, direction: Vector2i, run: bool) -> void:
 				return
 			var leftover := _elapsed - _duration
 			_finish_step()
-			if direction != Vector2i.ZERO:
+			# Un gestionnaire de step_finished (porte, escalier) a pu verrouiller.
+			if direction != Vector2i.ZERO and not _locked:
 				_set_facing(direction)
 				_try_step(direction, run, leftover)
 		State.TURNING:
@@ -106,6 +110,18 @@ func update(delta: float, direction: Vector2i, run: bool) -> void:
 				_begin_turn(direction)
 			else:
 				_try_step(direction, run, 0.0)
+
+
+## Verrouille ou déverrouille le déplacement. Verrouillée, l'entité termine le pas en
+## cours, n'en enchaîne aucun autre et ignore les directions (ni pivot, ni [signal bumped]).
+## Appelé depuis un gestionnaire de [signal step_finished], le verrou empêche aussi le pas
+## qui s'enchaînerait dans le même [method update]. Le verrou survit à [method place].
+func set_locked(locked: bool) -> void:
+	_locked = locked
+
+
+func is_locked() -> bool:
+	return _locked
 
 
 ## Case sur laquelle l'entité se tient (case de départ pendant un pas).

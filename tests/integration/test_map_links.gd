@@ -1,0 +1,153 @@
+extends GutTest
+## Cohérence globale des passages (jalon 2 §4.8), sur les 5 cartes :
+## - chaque warp vise une carte existante et un spawn existant, case d'arrivée praticable ;
+## - retour sur place : la case d'arrivée porte un warp qui ramène à la carte d'origine,
+##   ou (escaliers des pièces à murs sur 4 côtés) le retour est à un pas, dans une case
+##   voisine atteinte en marchant vers elle ;
+## - table des warps de chaque carte construite sans erreur.
+
+const MAP_IDS: Array[StringName] = [
+	&"pallet_town", &"player_house_2f", &"player_house_1f", &"rival_house", &"oak_lab",
+]
+const DIRECTIONS: Array[Vector2i] = [Vector2i.UP, Vector2i.DOWN, Vector2i.LEFT, Vector2i.RIGHT]
+
+var _maps: Dictionary = {}
+
+
+func before_all() -> void:
+	for map_id: StringName in MAP_IDS:
+		var scene := load(MapCatalog.scene_path(map_id)) as PackedScene
+		if scene != null:
+			var map := scene.instantiate() as GameMap
+			add_child(map)
+			_maps[map_id] = map
+
+
+func after_all() -> void:
+	for map: GameMap in _maps.values():
+		map.free()
+	_maps.clear()
+
+
+func _warp_count_in_scene(map: GameMap) -> int:
+	var count := 0
+	for child: Node in map.get_node(^"Warps").get_children():
+		if child is WarpPoint:
+			count += 1
+	return count
+
+
+func test_all_maps_load_and_warp_tables_build_without_error() -> void:
+	for map_id: StringName in MAP_IDS:
+		assert_true(MapCatalog.has_map(map_id), String(map_id))
+		assert_true(_maps.has(map_id), "%s se charge" % map_id)
+	for map_id: StringName in _maps:
+		var map: GameMap = _maps[map_id]
+		map.rebuild_grid()
+		# Un warp invalide ou ambigu serait écarté de la table (avec push_error).
+		assert_eq(map.get_warps().size(), _warp_count_in_scene(map), String(map_id))
+		assert_gt(map.get_warps().size(), 0, "%s a au moins un passage" % map_id)
+	assert_push_error_count(0)
+
+
+func test_every_warp_targets_existing_map_and_walkable_spawn() -> void:
+	for map_id: StringName in _maps:
+		for warp: Warp in (_maps[map_id] as GameMap).get_warps().get_all():
+			var label := "%s %s → %s/%s" % [map_id, warp.cell, warp.target_map, warp.target_spawn]
+			assert_true(MapCatalog.has_map(warp.target_map), label)
+			var target := _maps.get(warp.target_map) as GameMap
+			if target == null:
+				continue
+			assert_true(target.has_spawn(warp.target_spawn), label)
+			var arrival := target.get_spawn_cell(warp.target_spawn)
+			var grid := target.get_grid()
+			assert_true(grid.is_in_bounds(arrival), label)
+			assert_false(grid.is_solid(arrival) or grid.is_water(arrival),
+				"%s : arrivée praticable" % label)
+
+
+## Warp de [param map] qui ramène à [param origin] depuis [param arrival] : sur la case
+## même, ou dans une case voisine atteinte en un pas vers elle (STEP_ON).
+func _return_warp(map: GameMap, arrival: Vector2i, origin: StringName) -> Warp:
+	for warp: Warp in map.get_warps().get_at(arrival):
+		if warp.target_map == origin:
+			return warp
+	for direction: Vector2i in DIRECTIONS:
+		var next := arrival + direction
+		var warp := map.get_warps().find_on_step(next, direction)
+		if warp != null and warp.target_map == origin \
+				and map.get_grid().get_step_target(arrival, direction) == next:
+			return warp
+	return null
+
+
+func test_every_warp_is_reversible_on_the_spot() -> void:
+	for map_id: StringName in _maps:
+		for warp: Warp in (_maps[map_id] as GameMap).get_warps().get_all():
+			var target := _maps.get(warp.target_map) as GameMap
+			if target == null:
+				continue
+			var arrival := target.get_spawn_cell(warp.target_spawn)
+			var back := _return_warp(target, arrival, map_id)
+			assert_not_null(back, "retour de %s/%s vers %s" % [warp.target_map, arrival, map_id])
+			if back == null:
+				continue
+			# Le retour ramène au passage d'origine : sur sa case, ou à un pas d'un passage
+			# vers la même carte (escalier de 2 cases, un seul spawn).
+			var origin: GameMap = _maps[map_id]
+			var home := origin.get_spawn_cell(back.target_spawn)
+			assert_true(_is_at_or_next_to_warp_to(origin, home, warp.target_map),
+				"%s : retour en %s pour un départ en %s" % [map_id, home, warp.cell])
+
+
+func _is_at_or_next_to_warp_to(map: GameMap, cell: Vector2i, target: StringName) -> bool:
+	for warp: Warp in map.get_warps().get_all():
+		if warp.target_map != target:
+			continue
+		if warp.cell == cell or Grid.is_cardinal(warp.cell - cell):
+			return true
+	return false
+
+
+func test_player_house_stairs_link_both_floors() -> void:
+	var bedroom: GameMap = _maps[&"player_house_2f"]
+	var ground: GameMap = _maps[&"player_house_1f"]
+	assert_eq(bedroom.get_spawn_cell(&"stairs"), Vector2i(6, 8))
+	assert_eq(ground.get_spawn_cell(&"stairs"), Vector2i(2, 4))
+	for cell: Vector2i in [Vector2i(1, 3), Vector2i(2, 3)]:
+		var up := ground.get_warps().find_on_step(cell, Vector2i.UP)
+		assert_not_null(up, "escalier ↑ en %s" % cell)
+		if up != null:
+			assert_eq(up.target_map, &"player_house_2f")
+			assert_eq(up.target_spawn, &"stairs")
+	for cell: Vector2i in [Vector2i(6, 9), Vector2i(7, 9)]:
+		var down := bedroom.get_warps().find_on_step(cell, Vector2i.DOWN)
+		assert_not_null(down, "escalier ↓ en %s" % cell)
+		if down != null:
+			assert_eq(down.target_map, &"player_house_1f")
+			assert_eq(down.target_spawn, &"stairs")
+		assert_null(bedroom.get_warps().find_on_step(cell, Vector2i.LEFT), "pas de côté")
+
+
+func test_single_level_rival_house_and_lab_link_to_the_village() -> void:
+	# Maison du rival (un seul niveau, §4.5) et labo (§4.7) : la porte mène au tapis,
+	# le tapis ramène sur la case de porte.
+	var village: GameMap = _maps[&"pallet_town"]
+	for spec: Array in [[Vector2i(11, 9), &"rival_house", &"rival_house_door"],
+			[Vector2i(24, 22), &"oak_lab", &"oak_lab_door"]]:
+		var door := village.get_warps().find_on_step(spec[0], Vector2i.UP)
+		assert_not_null(door, "porte en %s" % spec[0])
+		if door == null:
+			continue
+		assert_eq(door.target_map, spec[1])
+		assert_eq(door.target_spawn, &"entrance")
+		var inside: GameMap = _maps[spec[1]]
+		var mat := inside.get_spawn_cell(&"entrance")
+		var exit := inside.get_warps().find_on_push(mat, Vector2i.DOWN)
+		assert_not_null(exit, "%s : sortie sur le tapis" % spec[1])
+		if exit != null:
+			assert_eq(exit.target_map, &"pallet_town")
+			assert_eq(exit.target_spawn, spec[2])
+			assert_eq(village.get_spawn_cell(spec[2]), spec[0])
+	for gone: StringName in [&"rival_house_1f", &"rival_house_2f"]:
+		assert_false(MapCatalog.has_map(gone), "%s supprimée" % gone)

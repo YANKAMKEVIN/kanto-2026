@@ -45,11 +45,14 @@ func test_no_hardcoded_color_in_ui_files() -> void:
 			assert_false(text.contains(pattern), "%s contient %s" % [path, pattern])
 
 
-func test_ui_does_not_know_player() -> void:
+func test_ui_does_not_know_player_map_or_router() -> void:
 	for path: String in _ui_files():
 		var text := FileAccess.get_file_as_string(path)
 		assert_false(text.contains("Player"), "%s référence Player" % path)
 		assert_false(text.contains("res://game/player"), "%s charge le joueur" % path)
+		assert_false(text.contains("SceneRouter"), "%s référence SceneRouter" % path)
+		assert_false(text.contains("GameMap"), "%s référence la carte" % path)
+		assert_false(text.contains("res://game/world"), "%s charge le monde" % path)
 
 
 func _ui_files(dir: String = UI_DIR) -> Array[String]:

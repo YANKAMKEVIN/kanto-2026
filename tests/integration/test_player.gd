@@ -1,6 +1,7 @@
 extends GutTest
 ## Player sur une petite GridWorld : entrées par actions (Input.action_press, comme le
-## joystick), marche, course, obstacle, pivot, position à l'arrêt, caméra.
+## joystick), marche, course, obstacle, pivot, position à l'arrêt, caméra, blocage des
+## entrées pendant une transition (jalon 2 §2.4).
 
 const PLAYER_SCENE := "res://game/player/player.tscn"
 const FRAME := 1.0 / 60.0
@@ -163,3 +164,74 @@ func test_camera_zoom_one_and_limits_from_bounds() -> void:
 	assert_eq(camera.limit_right, 4608)
 	assert_eq(camera.limit_bottom, 3264)
 	assert_false(camera.position_smoothing_enabled)
+
+
+# --- Blocage des entrées (jalon 2 §2.4) -----------------------------------------
+
+func test_input_enabled_by_default() -> void:
+	assert_true(_player.is_input_enabled())
+
+
+func test_lock_during_step_finishes_it_and_starts_no_other() -> void:
+	Input.action_press(&"move_right")
+	_simulate(0.1)
+	assert_true(_player.is_moving(), "pas en cours")
+	_player.set_input_enabled(false)
+	assert_false(_player.is_input_enabled())
+	_simulate(1.0)
+	assert_eq(_player.get_cell(), START + Vector2i.RIGHT, "le pas en cours se termine")
+	assert_false(_player.is_moving())
+	assert_signal_emit_count(_player, "moved", 1)
+	assert_signal_not_emitted(_player, "bumped")
+	assert_eq(_player.position, Grid.cell_to_world(START + Vector2i.RIGHT))
+	var sprite := _player.get_node(^"%Sprite") as AnimatedSprite2D
+	assert_eq(sprite.animation, &"idle_right")
+
+
+func test_locked_player_ignores_obstacle_turn_and_run() -> void:
+	_grid.set_solid(START + Vector2i.RIGHT)
+	_player.set_input_enabled(false)
+	Input.action_press(&"run")
+	Input.action_press(&"move_right")
+	_simulate(0.5)
+	Input.action_release(&"move_right")
+	Input.action_press(&"move_up")
+	_simulate(0.5)
+	assert_eq(_player.get_cell(), START)
+	assert_eq(_player.get_facing(), Vector2i.RIGHT, "ni pivot")
+	assert_signal_not_emitted(_player, "bumped")
+	assert_signal_not_emitted(_player, "facing_changed")
+	assert_false(_player.is_running())
+
+
+func test_lock_from_moved_handler_prevents_chained_step() -> void:
+	# Comme le routeur de scènes sur une porte : verrou posé dans le signal moved.
+	_player.moved.connect(func(_cell: Vector2i) -> void: _player.set_input_enabled(false))
+	Input.action_press(&"move_right")
+	_simulate(1.0)
+	assert_eq(_player.get_cell(), START + Vector2i.RIGHT)
+	assert_false(_player.is_moving())
+	assert_false(_grid.is_occupied(START + Vector2i.RIGHT * 2), "case au-delà libre")
+
+
+func test_lock_survives_enter_map() -> void:
+	_player.set_input_enabled(false)
+	_player.enter_map(_grid, Vector2i(5, 5), Vector2i.UP, Grid.map_pixel_rect(Vector2i(16, 8)))
+	assert_false(_player.is_input_enabled())
+	Input.action_press(&"move_up")
+	_simulate(0.5)
+	assert_eq(_player.get_cell(), Vector2i(5, 5))
+	assert_signal_not_emitted(_player, "moved")
+
+
+func test_unlocked_player_moves_again() -> void:
+	_player.set_input_enabled(false)
+	_player.enter_map(_grid, Vector2i(5, 5), Vector2i.UP, Grid.map_pixel_rect(Vector2i(16, 8)))
+	Input.action_press(&"move_up")
+	_simulate(0.3)
+	assert_eq(_player.get_cell(), Vector2i(5, 5))
+	_player.set_input_enabled(true)
+	assert_true(_player.is_input_enabled())
+	_simulate(0.3)
+	assert_eq(_player.get_cell(), Vector2i(5, 4))
+	assert_signal_emitted_with_parameters(_player, "moved", [Vector2i(5, 4)])

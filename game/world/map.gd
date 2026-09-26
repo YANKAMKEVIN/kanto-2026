@@ -1,10 +1,12 @@
 class_name GameMap
 extends Node2D
-## Carte du monde : couches de tuiles, props, spawns. Construit sa [GridWorld].
+## Carte du monde : couches de tuiles, props, spawns, warps. Construit sa [GridWorld]
+## et sa [WarpTable].
 ##
 ## Au chargement, lit les données `solid`, `water` et `ledge` des tuiles de
 ## `Ground`, `Detail` et `Obstacles`, puis ajoute l'empreinte de chaque [WorldProp]
-## enfant de `Entities`. Le joueur est ajouté à `Entities` (y-sort) par [method spawn_player].
+## enfant de `Entities`. Les [WarpPoint] enfants de `Warps` forment la table des passages.
+## Le joueur est ajouté à `Entities` (y-sort) par [method spawn_player].
 
 const _TILE_LAYERS: Array[NodePath] = [^"Ground", ^"Detail", ^"Obstacles"]
 
@@ -17,8 +19,11 @@ const _TILE_LAYERS: Array[NodePath] = [^"Ground", ^"Detail", ^"Obstacles"]
 ## Cases infranchissables sans rien de visible (ex. chemin qui file hors de la carte :
 ## le joueur s'arrête une case avant le bord, la tête reste à l'écran).
 @export var blocked_cells: Array[Vector2i] = []
+## Intérieur (maison, labo) : pas de titre de zone à l'entrée (voir ZoneAnnouncer).
+@export var interior: bool = false
 
 var _grid: GridWorld
+var _warps: WarpTable
 
 
 func _ready() -> void:
@@ -33,10 +38,18 @@ func get_grid() -> GridWorld:
 	return _grid
 
 
-## Reconstruit la grille (après modification des tuiles ou des props).
+## Reconstruit la grille et la table des warps (après modification des tuiles,
+## des props ou des warps).
 func rebuild_grid() -> GridWorld:
 	_build_grid()
 	return _grid
+
+
+## Passages de la carte (construits avec la grille, à partir des [WarpPoint] de `Warps`).
+func get_warps() -> WarpTable:
+	if _grid == null:
+		_build_grid()
+	return _warps
 
 
 ## Rectangle monde de la carte, en pixels de référence (limites de caméra).
@@ -51,6 +64,13 @@ func get_spawn_cell(spawn_name: StringName) -> Vector2i:
 		push_error("GameMap %s : spawn inconnu « %s »" % [map_id, spawn_name])
 		return Vector2i(-1, -1)
 	return Grid.world_to_cell(marker.position)
+
+
+## Vrai si le point d'apparition existe (sans erreur, contrairement à get_spawn_cell).
+func has_spawn(spawn_name: StringName) -> bool:
+	if spawn_name.is_empty():
+		return false
+	return get_node_or_null(NodePath("Spawns/" + String(spawn_name))) is Node2D
 
 
 ## Nœud y-trié qui contient props, PNJ et joueur.
@@ -77,12 +97,23 @@ func _build_grid() -> void:
 	for cell: Vector2i in blocked_cells:
 		_grid.set_solid(cell)
 	var entities := get_node_or_null(^"Entities")
-	if entities == null:
+	if entities != null:
+		for child: Node in entities.get_children():
+			var prop := child as WorldProp
+			if prop != null:
+				_grid.add_solid_footprint(prop.get_anchor_cell(), prop.get_footprint())
+	_build_warps()
+
+
+func _build_warps() -> void:
+	_warps = WarpTable.new()
+	var warps := get_node_or_null(^"Warps")
+	if warps == null:
 		return
-	for child: Node in entities.get_children():
-		var prop := child as WorldProp
-		if prop != null:
-			_grid.add_solid_footprint(prop.get_anchor_cell(), prop.get_footprint())
+	for child: Node in warps.get_children():
+		var point := child as WarpPoint
+		if point != null and not _warps.add(point.to_warp()):
+			push_error("GameMap %s : warp invalide en %s" % [map_id, point.get_cell()])
 
 
 func _read_layer(layer: TileMapLayer) -> void:

@@ -60,3 +60,13 @@ func test_fences_do_not_fade() -> void:
 	add_child_autofree(fence)
 	assert_false(fence.fade_when_covering)
 	assert_false(fence.is_processing())
+
+
+func test_interior_plant_fades_when_player_behind() -> void:
+	var plant := (load("res://game/world/props/interior/plant.tscn") as PackedScene).instantiate() as WorldProp
+	plant.position = Grid.cell_to_world(Vector2i(4, 9))
+	add_child_autofree(plant)
+	assert_true(plant.fade_when_covering)
+	_player.position = Grid.cell_to_world(Vector2i(4, 8))
+	_run(plant, 0.5)
+	assert_almost_eq(_sprite_alpha(plant), WorldProp.COVERED_ALPHA, 0.001)

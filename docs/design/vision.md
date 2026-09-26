@@ -60,6 +60,8 @@ Trois critères pour toute décision visuelle : **beau immédiatement, crédible
 Références visuelles :
 - [`reference/da-2026-planche-v1.webp`](reference/da-2026-planche-v1.webp) : **UI validée** (voir [ui-reference.md](ui-reference.md)). Son rendu du monde, plus pixelisé, correspond à l'ancienne DA.
 - [`reference/bourg-palette-aplus-v1.png`](reference/bourg-palette-aplus-v1.png) : **benchmark graphique du monde**, Bourg Palette A+ en golden hour. Si une zone paraît moins aboutie, elle n'est pas encore au niveau de Kanto 2026.
+- [`reference/chambre-joueur-v1.webp`](reference/chambre-joueur-v1.webp) : **référence de la chambre du joueur** (fournie par Kevin, 2026-09-25) : agencement de la pièce et rendu cible des intérieurs (lumière chaude du soir par la fenêtre, parquet, décor riche, murs visibles).
+- [`reference/ouverture-storyboard-v1.webp`](reference/ouverture-storyboard-v1.webp), [`reference/maison-rival-v1.webp`](reference/maison-rival-v1.webp), [`reference/labo-chen-v1.png`](reference/labo-chen-v1.png) : **références des intérieurs** et de l'ouverture (Kevin, 2026-09-25/26). L'Évoli de la maison du rival est une erreur, à ignorer.
 
 Historique : d'abord « C : Pokémon 2D 2026 » en pixel art HD, puis évolution validée vers la 2D HD atmosphérique hybride.
 

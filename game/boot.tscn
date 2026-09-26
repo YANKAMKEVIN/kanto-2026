@@ -1,16 +1,17 @@
 [gd_scene format=3]
 
 [ext_resource type="Script" path="res://game/boot.gd" id="1_boot"]
-[ext_resource type="PackedScene" path="res://game/world/maps/pallet_town.tscn" id="2_pallet"]
-[ext_resource type="PackedScene" path="res://game/ui/hud/exploration_hud.tscn" id="3_hud"]
+[ext_resource type="PackedScene" path="res://game/ui/hud/exploration_hud.tscn" id="2_hud"]
+[ext_resource type="PackedScene" path="res://game/ui/components/screen_fade.tscn" id="3_fade"]
 
 [node name="Boot" type="Node"]
 script = ExtResource("1_boot")
 
 [node name="World" type="Node2D" parent="."]
-
-[node name="PalletTown" parent="World" instance=ExtResource("2_pallet")]
 unique_name_in_owner = true
 
-[node name="ExplorationHud" parent="." instance=ExtResource("3_hud")]
+[node name="ExplorationHud" parent="." instance=ExtResource("2_hud")]
+unique_name_in_owner = true
+
+[node name="ScreenFade" parent="." instance=ExtResource("3_fade")]
 unique_name_in_owner = true

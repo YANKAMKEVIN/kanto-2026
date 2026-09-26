@@ -4,9 +4,10 @@ extends SceneTree
 ##   godot --headless --path . -s res://tools/build_pallet_town.gd
 ##   godot --headless --path . --import
 ##
-## Plan : docs/tech/jalon-01.md §4. Zones et props sont décrits en données ci-dessous
-## (rectangles inclusifs [x0, y0, x1, y1] et ancres de cases). Variantes de tuiles et
-## essences d'arbres tirées avec une graine fixe : la carte est reproductible.
+## Plan : docs/tech/jalon-01.md §4 ; portes (warps et spawns) : docs/tech/jalon-02.md §4.2.
+## Zones et props sont décrits en données ci-dessous (rectangles inclusifs
+## [x0, y0, x1, y1] et ancres de cases). Variantes de tuiles et essences d'arbres tirées
+## avec une graine fixe : la carte est reproductible.
 
 const OUT_PATH: String = "res://game/world/maps/pallet_town.tscn"
 const PROPS: String = "res://game/world/props/"
@@ -15,6 +16,24 @@ const SIZE := Vector2i(48, 34)
 const START_CELL := Vector2i(36, 10)
 ## Haut de la Route 1 : le chemin file jusqu'au bord, le joueur s'arrête en y 1.
 const BLOCKED_CELLS: Array[Vector2i] = [Vector2i(23, 0), Vector2i(24, 0)]
+
+## Points d'apparition (en plus de `start`, gardé pour les tests et les outils) :
+## case de porte de chaque bâtiment (arrivée en sortant).
+const SPAWNS: Dictionary = {
+	"player_house_door": Vector2i(36, 9),
+	"rival_house_door": Vector2i(11, 9),
+	"oak_lab_door": Vector2i(24, 22),
+}
+
+## Portes : [nœud, case, carte cible, spawn cible]. On entre en marchant vers le haut
+## sur la case de porte (STEP_ON, UP), l'orientation est conservée.
+const DOORS: Array = [
+	["DoorPlayerHouse", Vector2i(36, 9), &"player_house_1f", &"entrance"],
+	["DoorRivalHouse", Vector2i(11, 9), &"rival_house", &"entrance"],
+	["DoorOakLab", Vector2i(24, 22), &"oak_lab", &"entrance"],
+]
+## Warp.Trigger.STEP_ON (les scripts d'outil lisent les enums par valeur).
+const STEP_ON: int = 0
 
 ## Sol, peint dans l'ordre (le suivant écrase le précédent). [type, [x0, y0, x1, y1]]
 const GROUND: Array = [
@@ -204,6 +223,7 @@ func _init() -> void:
 	start.name = "start"
 	start.position = _world(START_CELL)
 	_attach(root, root.get_node(^"Spawns"), start)
+	_add_doors(root)
 
 	var kinds: Array = _paint(ground, GROUND)
 	_paint(obstacles, OBSTACLES)
@@ -218,6 +238,25 @@ func _init() -> void:
 	print("pallet_town : %s (%d entités)" % [error_string(err), entities.get_child_count()])
 	root.free()
 	quit()
+
+
+func _add_doors(root: Node) -> void:
+	for spawn_name: String in SPAWNS:
+		var marker := Marker2D.new()
+		marker.name = spawn_name
+		marker.position = _world(SPAWNS[spawn_name])
+		_attach(root, root.get_node(^"Spawns"), marker)
+	var warp_script: GDScript = load("res://game/world/warp_point.gd")
+	for door: Array in DOORS:
+		var point := Marker2D.new()
+		point.set_script(warp_script)
+		point.name = door[0]
+		point.position = _world(door[1])
+		point.set(&"trigger", STEP_ON)
+		point.set(&"direction", Vector2i.UP)
+		point.set(&"target_map", door[2])
+		point.set(&"target_spawn", door[3])
+		_attach(root, root.get_node(^"Warps"), point)
 
 
 func _world(cell: Vector2i) -> Vector2:

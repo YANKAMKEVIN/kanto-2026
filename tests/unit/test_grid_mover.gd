@@ -282,3 +282,58 @@ func test_ledge_jump() -> void:
 	_mover.update(Grid.LEDGE_JUMP_DURATION, Vector2i.ZERO, false)
 	assert_eq(_mover.get_cell(), START + Vector2i.DOWN * 2)
 	assert_false(_mover.is_jumping())
+
+
+# --- Verrou (transitions de carte, jalon 2) ------------------------------------
+
+func test_locked_idle_ignores_directions() -> void:
+	_mover.set_locked(true)
+	assert_true(_mover.is_locked())
+	_mover.update(0.5, Vector2i.RIGHT, false)
+	_mover.update(0.5, Vector2i.DOWN, true)
+	assert_eq(_mover.get_cell(), START)
+	assert_eq(_mover.get_facing(), Vector2i.DOWN, "ni pivot")
+	assert_eq(_mover.get_state(), GridMover.State.IDLE)
+	assert_signal_not_emitted(_mover, "step_started")
+
+
+func test_locked_during_step_finishes_it_without_chaining() -> void:
+	_mover.update(FRAME, Vector2i.DOWN, false)
+	_mover.set_locked(true)
+	_mover.update(Grid.WALK_STEP_DURATION, Vector2i.DOWN, false)
+	assert_eq(_mover.get_cell(), START + Vector2i.DOWN, "le pas en cours se termine")
+	assert_false(_mover.is_moving())
+	assert_signal_emit_count(_mover, "step_started", 1)
+
+
+func test_lock_from_step_finished_handler_stops_the_chained_step() -> void:
+	# Une porte verrouille le joueur dans step_finished : le pas suivant, qui
+	# s'enchaînerait dans le même update, ne doit pas partir.
+	var lock := func(_cell: Vector2i) -> void: _mover.set_locked(true)
+	_mover.step_finished.connect(lock)
+	_mover.update(FRAME, Vector2i.DOWN, false)
+	_mover.update(Grid.WALK_STEP_DURATION + 0.05, Vector2i.DOWN, false)
+	assert_eq(_mover.get_cell(), START + Vector2i.DOWN)
+	assert_eq(_mover.get_target_cell(), _mover.get_cell())
+	assert_false(_mover.is_moving())
+	assert_false(_world.is_occupied(START + Vector2i.DOWN * 2), "aucune case réservée")
+	assert_signal_emit_count(_mover, "step_started", 1)
+
+
+func test_locked_pushing_against_obstacle_does_not_bump() -> void:
+	_world.set_solid(START + Vector2i.DOWN)
+	_mover.set_locked(true)
+	_mover.update(0.5, Vector2i.DOWN, false)
+	assert_signal_not_emitted(_mover, "bumped")
+
+
+func test_unlock_moves_again_and_lock_survives_place() -> void:
+	_mover.set_locked(true)
+	assert_true(_mover.place(Vector2i(1, 1), Vector2i.RIGHT))
+	assert_true(_mover.is_locked(), "le verrou survit au placement")
+	_mover.update(FRAME, Vector2i.RIGHT, false)
+	assert_false(_mover.is_moving())
+	_mover.set_locked(false)
+	_mover.update(FRAME, Vector2i.RIGHT, false)
+	assert_true(_mover.is_moving())
+	assert_eq(_mover.get_target_cell(), Vector2i(2, 1))

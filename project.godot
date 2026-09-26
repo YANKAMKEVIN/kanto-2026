@@ -10,6 +10,10 @@ run/main_scene="res://game/boot.tscn"
 config/icon="res://assets/ui/icon.png"
 config/features=PackedStringArray("4.7", "Mobile")
 
+[autoload]
+
+SceneRouter="*res://game/autoload/scene_router.gd"
+
 [display]
 
 window/size/viewport_width=1920
@@ -73,3 +77,4 @@ renderer/rendering_method="mobile"
 textures/canvas_textures/default_texture_filter=1
 2d/snap/snap_2d_transforms_to_pixel=true
 textures/vram_compression/import_etc2_astc=true
+environment/defaults/default_clear_color=Color(0.02, 0.03, 0.05, 1)
