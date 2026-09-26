@@ -20,15 +20,16 @@ const DIRECTIONS: Dictionary[Vector2i, StringName] = {
 const TIMEOUT_MS := 8000
 const FADE := 0.05
 const STARTERS: Array[StringName] = [&"bulbasaur", &"charmander", &"squirtle"]
-## Espèce choisie → [colonne de rencontre, Pokémon du rival, case finale du joueur].
+## Espèce choisie → [colonne de rencontre, Pokémon du rival, case finale du joueur (il ne
+## bouge pas : décision n° 16), case d'atterrissage de son Pokémon (à côté de lui)].
 const CASES: Dictionary[StringName, Array] = {
-	&"bulbasaur": [10, &"charmander", Vector2i(10, 7)],
-	&"charmander": [11, &"squirtle", Vector2i(11, 7)],
-	&"squirtle": [12, &"bulbasaur", Vector2i(11, 6)],
+	&"bulbasaur": [10, &"charmander", Vector2i(10, 6), Vector2i(11, 6)],
+	&"charmander": [11, &"squirtle", Vector2i(11, 6), Vector2i(12, 6)],
+	&"squirtle": [12, &"bulbasaur", Vector2i(12, 6), Vector2i(13, 6)],
 }
 ## Où le rival s'arrête en partant (data/cutscenes/starter.json) : au-dessus de la boîte de
 ## dialogue, pas derrière la plante de l'entrée.
-const RIVAL_STOP := Vector2i(8, 7)
+const RIVAL_STOP := Vector2i(7, 7)
 const SCENE_LINES: Array = [
 	["Prof. Chen", "On dirait que le choix est réciproque."],
 	["Rival", "Alors ce sera toi."],
@@ -118,9 +119,24 @@ func _choose(species: StringName) -> void:
 	var party_at: Array[int] = []
 	var controls_seen := false
 	var was_free := false
+	var start_cell := _player.get_cell()
+	var moved := false
+	var turned_away := false
+	var chosen := lab.get_npc(species)
+	var theirs := lab.get_npc(rival_species)
+	var rival := lab.get_npc(&"rival")
+	# Positions relevées pendant la dernière réplique (ensuite, les Pokémon rentrent dans leur
+	# Poké Ball) : [joueur, orientation, son Pokémon, orientation, lift, rival, orientation,
+	# Pokémon du rival, lift].
+	var at_challenge: Array = []
 	var deadline := Time.get_ticks_msec() + 30000
 	while director.is_running() and Time.get_ticks_msec() < deadline:
 		was_free = was_free or _player.is_input_enabled()
+		moved = moved or _player.get_cell() != start_cell or _player.is_moving()
+		# Jamais dos à son Pokémon (décision n° 16) : ni avant son saut, ni après.
+		if is_instance_valid(chosen) and chosen.is_inside_tree():
+			var to_mine := Vector2(chosen.get_cell() - _player.get_cell())
+			turned_away = turned_away or to_mine.dot(Vector2(_player.get_facing())) < 0.0
 		controls_seen = controls_seen or hud.are_controls_visible()
 		await wait_process_frames(1)
 		if box.is_open():
@@ -128,27 +144,47 @@ func _choose(species: StringName) -> void:
 			if pages.is_empty() or pages.back() != page:
 				pages.append(page)
 				party_at.append(GameState.party.size())
+				if page == SCENE_LINES.back():
+					at_challenge = [_player.get_cell(), _player.get_facing(), chosen.get_cell(),
+						chosen.get_facing(), chosen.get_lift(), rival.get_cell(),
+						rival.get_facing(), theirs.get_cell(), theirs.get_lift()]
 			box.advance_requested.emit()
 	assert_false(director.is_running(), "scène terminée")
 	assert_false(was_free, "joueur jamais libre pendant la scène")
+	assert_false(moved, "le joueur ne se déplace pas")
+	assert_false(turned_away, "le joueur ne tourne jamais le dos à son Pokémon")
 	assert_false(controls_seen, "aucun contrôle pendant la scène")
 	assert_eq(pages, SCENE_LINES, "répliques dans l'ordre")
 	assert_eq(party_at, [0, 1, 1, 1] as Array[int], "équipe vide jusqu'à « réciproque »")
-	# Le Pokémon du joueur, devant lui.
-	var mine := lab.get_npc(species)
-	assert_eq(_player.get_cell(), CASES[species][2], "pas du joueur")
-	assert_eq(mine.get_cell(), _player.get_cell() + _player.get_facing(),
+	assert_eq(at_challenge.size(), 9, "positions relevées à la dernière réplique")
+	if at_challenge.size() != 9:
+		return
+	# Le Pokémon du joueur, à côté de lui ; le joueur n'a pas bougé et le regarde.
+	var player_cell: Vector2i = at_challenge[0]
+	var player_facing: Vector2i = at_challenge[1]
+	assert_eq(player_cell, CASES[species][2], "le joueur n'a pas bougé")
+	assert_eq(at_challenge[2], CASES[species][3], "à côté du joueur")
+	assert_eq(at_challenge[2], player_cell + player_facing,
 		"le Pokémon est sur la case que regarde le joueur")
-	assert_eq(mine.get_lift(), 0.0, "descendu de la table")
+	assert_eq(at_challenge[3], -player_facing, "ils se regardent")
+	assert_eq(at_challenge[4], 0.0, "descendu de la table")
 	# Le Pokémon du rival, à côté de lui.
-	var rival := lab.get_npc(&"rival")
-	var theirs := lab.get_npc(rival_species)
-	assert_eq(rival.get_cell(), RIVAL_STOP, "le rival est parti vers la sortie")
-	var gap := theirs.get_cell() - rival.get_cell()
+	var rival_cell: Vector2i = at_challenge[5]
+	assert_eq(rival_cell, RIVAL_STOP, "le rival est parti vers la sortie")
+	var gap: Vector2i = (at_challenge[7] as Vector2i) - rival_cell
 	assert_eq(absi(gap.x) + absi(gap.y), 1, "son Pokémon à côté de lui")
-	assert_eq(theirs.get_lift(), 0.0)
-	assert_eq(rival.get_facing(), Grid.dominant_direction(rival.get_cell(),
-		_player.get_cell()), "il regarde le joueur")
+	assert_eq(gap.y, 0, "côte à côte, pas derrière sa tête")
+	assert_eq(at_challenge[8], 0.0)
+	assert_eq(at_challenge[6], Grid.dominant_direction(rival_cell, player_cell),
+		"il regarde le joueur")
+	# Fin de la séquence : les deux Pokémon ont rejoint leur Poké Ball (pas de faux
+	# compagnon), leurs cases sont libres ; le rival reste.
+	assert_null(lab.get_npc(species), "son Pokémon est rentré dans sa Poké Ball")
+	assert_null(lab.get_npc(rival_species), "celui du rival aussi")
+	assert_false(lab.get_grid().is_occupied(CASES[species][3]), "case libérée")
+	assert_false(lab.get_grid().is_occupied(at_challenge[7]), "case libérée")
+	assert_eq(lab.get_npc(&"rival").get_cell(), RIVAL_STOP)
+	assert_eq(_player.get_cell(), player_cell)
 	# État de partie.
 	assert_eq(GameState.party.size(), 1)
 	assert_eq(GameState.party.get_lead().species_id, species)
@@ -160,6 +196,7 @@ func _choose(species: StringName) -> void:
 	assert_true(_player.is_input_enabled(), "joueur libre")
 	assert_true(hud.are_controls_visible(), "contrôles visibles")
 	await _leave_the_lab()
+	assert_null(_boot.get_map().get_npc(species), "son Pokémon ne le suit pas dehors")
 	await _enter_the_grass()
 	await _back_in_the_lab(species, rival_species)
 	assert_push_error_count(0)
