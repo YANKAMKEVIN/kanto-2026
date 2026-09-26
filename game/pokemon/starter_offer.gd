@@ -10,11 +10,13 @@ extends RefCounted
 ##     { "species": "bulbasaur", "npc": "bulbasaur", "blurb": "Calme et tenace." }, ...
 ##   ],
 ##   "open_flag": "starter_offered", "done_flag": "starter_chosen",
-##   "chosen_scene": "starter_chosen"
+##   "chosen_scene": "starter_chosen", "female_flag": "starter_female"
 ## }
 ## [/codeblock]
-## Toutes les clés sont obligatoires ; au moins 2 choix, espèces et PNJ distincts. Les
-## drapeaux et la scène sont des données : aucun nom n'est écrit dans le code.
+## Toutes les clés sont obligatoires sauf « female_flag » ; au moins 2 choix, espèces et PNJ
+## distincts. Les drapeaux et la scène sont des données : aucun nom n'est écrit dans le code.
+## « female_flag » (décision de Kevin n° 16) : drapeau levé quand le starter du joueur est
+## une femelle ; les dialogues s'accordent avec (« c'est lui / elle que tu as choisi ? »).
 ## [method rival_pick] applique la règle du dossier 02 §9 (« il choisit le Pokémon avantagé
 ## contre celui du joueur ») sans aucun nom d'espèce.
 
@@ -23,6 +25,7 @@ const DATA_PATH: String = "res://data/pokemon/starters.json"
 const _KEYS: Array[String] = [
 	"map", "level", "prompt", "choices", "open_flag", "done_flag", "chosen_scene",
 ]
+const _OPTIONAL_KEYS: Array[String] = ["female_flag"]
 const _CHOICE_KEYS: Array[String] = ["species", "npc", "blurb"]
 
 ## Carte du labo.
@@ -37,6 +40,8 @@ var open_flag: StringName = &""
 var done_flag: StringName = &""
 ## Scène jouée juste après le choix.
 var chosen_scene: StringName = &""
+## Drapeau levé quand le starter du joueur est une femelle (&"" : aucun).
+var female_flag: StringName = &""
 
 var _choices: Array[StarterOption] = []
 var _errors: PackedStringArray = PackedStringArray()
@@ -60,7 +65,7 @@ func load_file(path: String = DATA_PATH) -> bool:
 func add_from_dict(data: Dictionary, source: String = "") -> bool:
 	var ok := true
 	for key: Variant in data:
-		if not _KEYS.has(str(key)):
+		if not _KEYS.has(str(key)) and not _OPTIONAL_KEYS.has(str(key)):
 			ok = _fail("%s : clé inconnue « %s »" % [source, key])
 	for key: String in _KEYS:
 		if not data.has(key):
@@ -70,6 +75,9 @@ func add_from_dict(data: Dictionary, source: String = "") -> bool:
 	for key: String in ["map", "open_flag", "done_flag", "chosen_scene", "prompt"]:
 		if not data[key] is String or (data[key] as String).strip_edges().is_empty():
 			ok = _fail("%s : « %s » doit être un texte non vide" % [source, key])
+	if data.has("female_flag") and (not data["female_flag"] is String
+			or (data["female_flag"] as String).strip_edges().is_empty()):
+		ok = _fail("%s : « female_flag » doit être un texte non vide" % source)
 	var level_value: Variant = data["level"]
 	if not (level_value is int or level_value is float) \
 			or float(level_value) != floorf(float(level_value)) \
@@ -84,6 +92,7 @@ func add_from_dict(data: Dictionary, source: String = "") -> bool:
 	open_flag = StringName(data["open_flag"])
 	done_flag = StringName(data["done_flag"])
 	chosen_scene = StringName(data["chosen_scene"])
+	female_flag = StringName(data.get("female_flag", ""))
 	_choices = choices
 	return true
 

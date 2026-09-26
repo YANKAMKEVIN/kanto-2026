@@ -7,5 +7,5 @@
 		{ "species": "squirtle", "npc": "squirtle", "blurb": "Vif et malicieux." }
 	],
 	"open_flag": "starter_offered", "done_flag": "starter_chosen",
-	"chosen_scene": "starter_chosen"
+	"chosen_scene": "starter_chosen", "female_flag": "starter_female"
 }

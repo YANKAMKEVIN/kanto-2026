@@ -226,9 +226,11 @@ Décisions de Kevin reportées de [`docs/tech/jalon-04.md`](../tech/jalon-04.md)
   > **Prof. Chen** — « Pour un premier combat, vous vous êtes bien débrouillés. »
   > « Mais gagner n'est qu'une partie de ce qu'un Dresseur doit apprendre. »
   > « Apprends à connaître ton Pokémon. Il fera de même avec toi. »
-- **Répliques d'attente après le jalon 4** (décision n° 8, remplacent celles du 3B) :
+- **Répliques d'attente après le jalon 4** (décision n° 8, remplacent celles du 3B), **réservées à l'après-combat** (décision n° 16) : ni Chen ni Maya ne les disent avant le premier combat ; avant, Maya garde « Ah, le professeur est revenu. »… :
   > **Prof. Chen** — « Le monde qui vous attend est bien plus vaste que Bourg Palette. »
   > « Prends le temps de l'observer. Les Pokémon ont beaucoup à nous apprendre. »
 
   > **Maya** — (elle regarde le starter) « Alors, c'est lui que tu as choisi ? »
   > « Vous avez l'air de déjà bien vous entendre. »
+
+  Accord selon le sexe du starter (décision n° 16) : pour une femelle, « Alors, c'est elle que tu as choisi ? ».

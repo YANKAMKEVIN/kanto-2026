@@ -43,6 +43,7 @@ func test_real_offer_loads_with_the_final_texts() -> void:
 	assert_eq(_offer.open_flag, &"starter_offered")
 	assert_eq(_offer.done_flag, &"starter_chosen")
 	assert_eq(_offer.chosen_scene, &"starter_chosen")
+	assert_eq(_offer.female_flag, &"starter_female", "accord lui / elle (décision n° 16)")
 	assert_eq(_offer.get_species_ids(), [&"bulbasaur", &"charmander", &"squirtle"]
 		as Array[StringName])
 	assert_eq(_offer.get_npc_ids(), [&"bulbasaur", &"charmander", &"squirtle"]
@@ -116,6 +117,24 @@ func test_unknown_and_missing_keys_are_rejected() -> void:
 	assert_string_contains("\n".join(_offer.get_errors()), "clé inconnue « extra »")
 	assert_string_contains("\n".join(_offer.get_errors()), "« prompt » est obligatoire")
 	assert_eq(_offer.get_choices().size(), 0, "offre vide")
+
+
+func test_female_flag_is_optional() -> void:
+	assert_true(_offer.add_from_dict(_valid_dict(), "t"))
+	assert_eq(_offer.female_flag, &"", "aucun drapeau sans la clé")
+	var other := StarterOffer.new()
+	var dict := _valid_dict()
+	dict["female_flag"] = "starter_female"
+	assert_true(other.add_from_dict(dict, "t"))
+	assert_eq(other.female_flag, &"starter_female")
+
+
+func test_empty_female_flag_is_rejected() -> void:
+	var dict := _valid_dict()
+	dict["female_flag"] = " "
+	assert_false(_offer.add_from_dict(dict, "t"))
+	assert_push_error_count(1)
+	assert_string_contains("\n".join(_offer.get_errors()), "female_flag")
 
 
 func test_invalid_values_are_rejected() -> void:

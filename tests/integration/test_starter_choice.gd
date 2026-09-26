@@ -37,7 +37,7 @@ const OFFER := {
 		{"species": "squirtle", "npc": "squirtle", "blurb": "Vif et malicieux."},
 	],
 	"open_flag": "starter_offered", "done_flag": "starter_chosen",
-	"chosen_scene": "choice",
+	"chosen_scene": "choice", "female_flag": "starter_female",
 }
 const DIALOGUES := {
 	"observe": {"narration": true, "pages": ["Il t'observe."]},
@@ -359,7 +359,44 @@ func test_rival_takes_the_advantaged_starter() -> void:
 	for species: StringName in expected:
 		assert_eq(_offer.rival_pick(species, _data), expected[species])
 	assert_eq(StarterChoice.get_set_flags(_offer), [&"taken_bulbasaur", &"taken_charmander",
-		&"taken_squirtle"] as Array[StringName])
+		&"taken_squirtle", &"starter_female"] as Array[StringName])
+
+
+## Première graine (0..999) dont le Salamèche de niveau 5 est du sexe [param gender].
+func _seed_for(gender: Pokemon.Gender) -> int:
+	for candidate: int in 1000:
+		if PokemonFactory.create(_data, &"charmander", 5, GameRng.new(candidate)).gender \
+				== gender:
+			return candidate
+	return -1
+
+
+## Décision n° 16 : l'accord « lui / elle » des dialogues suit le sexe du starter (modèle
+## Pokémon) : female_flag levé en même temps que l'entrée dans l'équipe, seulement pour une
+## femelle.
+func test_female_starter_raises_the_female_flag() -> void:
+	var seed_value := _seed_for(Pokemon.Gender.FEMALE)
+	assert_gte(seed_value, 0, "une graine donne une femelle")
+	_state.call(&"new_game", seed_value)
+	_open()
+	_meet(&"charmander")
+	_sheet.choose_pressed.emit()
+	assert_false(_flags().has_flag(&"starter_female"), "pas avant l'entrée dans l'équipe")
+	await _play_scene_to_end()
+	assert_eq(_party().get_lead().gender, Pokemon.Gender.FEMALE)
+	assert_true(_flags().has_flag(&"starter_female"))
+
+
+func test_male_starter_leaves_the_female_flag_down() -> void:
+	var seed_value := _seed_for(Pokemon.Gender.MALE)
+	assert_gte(seed_value, 0, "une graine donne un mâle")
+	_state.call(&"new_game", seed_value)
+	_open()
+	_meet(&"charmander")
+	_sheet.choose_pressed.emit()
+	await _play_scene_to_end()
+	assert_eq(_party().get_lead().gender, Pokemon.Gender.MALE)
+	assert_false(_flags().has_flag(&"starter_female"))
 
 
 func test_refused_scene_still_gives_the_pokemon() -> void:

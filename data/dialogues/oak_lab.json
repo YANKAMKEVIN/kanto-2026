@@ -3,7 +3,14 @@
 		"speaker": "Maya",
 		"variants": [
 			{
-				"if": ["starter_chosen"],
+				"if": ["rival_battle_done", "starter_female"],
+				"pages": [
+					"Alors, c'est elle que tu as choisi ?",
+					"Vous avez l'air de déjà bien vous entendre."
+				]
+			},
+			{
+				"if": ["rival_battle_done"],
 				"pages": [
 					"Alors, c'est lui que tu as choisi ?",
 					"Vous avez l'air de déjà bien vous entendre."
@@ -73,11 +80,15 @@
 		"speaker": "Prof. Chen",
 		"variants": [
 			{
-				"if": ["starter_chosen"],
+				"if": ["rival_battle_done"],
 				"pages": [
 					"Le monde qui vous attend est bien plus vaste que Bourg Palette.",
 					"Prends le temps de l'observer. Les Pokémon ont beaucoup à nous apprendre."
 				]
+			},
+			{
+				"if": ["starter_chosen"],
+				"pages": ["On dirait que le choix est réciproque."]
 			},
 			{
 				"if": ["starter_offered"],

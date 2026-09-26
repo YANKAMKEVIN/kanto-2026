@@ -22,8 +22,9 @@ extends Node
 ## - **Entrée dans l'équipe** (décision de Kevin n° 1) : seulement quand
 ##   [member StarterOffer.done_flag] est levé (par la scène, juste après « On dirait que le
 ##   choix est réciproque. ») : [method PokemonFactory.create] au niveau de l'offre avec
-##   l'aléatoire de la partie, ajout à l'équipe, [member starter_species], puis
-##   [signal starter_chosen].
+##   l'aléatoire de la partie, ajout à l'équipe, [member starter_species], drapeau
+##   [member StarterOffer.female_flag] si c'est une femelle (accord « lui / elle » des
+##   dialogues, décision n° 16), puis [signal starter_chosen].
 ## Il reçoit tout par [method setup], y compris l'état de partie (l'autoload GameState en
 ## jeu, une instance neuve de game_state.gd en test) : il ne lit aucun autoload. Aucun nom
 ## d'espèce, de drapeau ni de scène n'est écrit ici : tout vient de l'offre.
@@ -136,12 +137,15 @@ static func taken_flag(species: StringName) -> StringName:
 
 
 ## Drapeaux levés par ce code pour [param offer] (tests de données : chaque drapeau lu est
-## levé quelque part) : un `taken_<espèce>` par choix. [member StarterOffer.done_flag] est
-## levé par la scène.
+## levé quelque part) : un `taken_<espèce>` par choix, puis
+## [member StarterOffer.female_flag] s'il existe. [member StarterOffer.done_flag] est levé
+## par la scène.
 static func get_set_flags(offer: StarterOffer) -> Array[StringName]:
 	var flags: Array[StringName] = []
 	for species: StringName in offer.get_species_ids():
 		flags.append(taken_flag(species))
+	if not offer.female_flag.is_empty():
+		flags.append(offer.female_flag)
 	return flags
 
 
@@ -291,6 +295,8 @@ func _join_party() -> void:
 		return
 	(_state.get(&"party") as Party).add(pokemon)
 	_state.set(&"starter_species", species)
+	if pokemon.gender == Pokemon.Gender.FEMALE and not _offer.female_flag.is_empty():
+		_flags.set_flag(_offer.female_flag)
 	starter_chosen.emit(species, rival)
 
 
