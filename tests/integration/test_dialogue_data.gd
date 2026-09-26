@@ -249,29 +249,46 @@ func test_starter_choice_lines() -> void:
 		assert_eq(pages[0].text, expected[id][1])
 
 
-## Décision n° 8 (§13.7) : après le choix, Chen et Maya ont leurs nouvelles répliques
-## (variante starter_chosen en premier) ; avant, celles du 3B.
-func test_waiting_lines_after_the_choice() -> void:
+## Décision n° 16 (Q-G) : pendant la phase de choix (starter_offered, pas encore choisi),
+## Chen et le rival ont leurs nouvelles répliques ; avant l'offre, celles du 3B. Décision
+## n° 8 : après le choix, les répliques de Chen et de Maya.
+func test_waiting_lines_during_and_after_the_choice() -> void:
 	var oak := _library.get_dialogue(&"oak_lab_waiting")
-	assert_eq(oak.variants.size(), 2)
+	assert_eq(oak.variants.size(), 3)
 	assert_eq(oak.variants[0].if_flags, [&"starter_chosen"] as Array[StringName])
 	assert_eq(_texts(oak.variants[0]), [
 		"Le monde qui vous attend est bien plus vaste que Bourg Palette.",
 		"Prends le temps de l'observer. Les Pokémon ont beaucoup à nous apprendre.",
 	] as Array[String])
-	assert_eq(_texts(oak.variants[1]),
+	assert_eq(oak.variants[1].if_flags, [&"starter_offered"] as Array[StringName])
+	assert_eq(_texts(oak.variants[1]), ["Prends ton temps.",
+		"Choisis celui avec qui tu as envie de partir."] as Array[String])
+	assert_eq(_texts(oak.variants[2]),
 		["Un peu de patience. J'ai quelque chose à vous montrer."] as Array[String])
+	var rival := _library.get_dialogue(&"rival_lab_waiting")
+	assert_eq(rival.speaker, "Rival")
+	assert_eq(rival.variants.size(), 3)
+	assert_eq(rival.variants[1].if_flags, [&"starter_offered"] as Array[StringName])
+	assert_eq(_texts(rival.variants[1]), ["Tu comptes les regarder encore longtemps ?",
+		"Dépêche-toi de choisir."] as Array[String])
+	assert_eq(_texts(rival.variants[2]),
+		["Tu vois ? Je t'avais dit que j'étais prêt."] as Array[String])
 	var maya := _library.get_dialogue(&"maya")
 	assert_eq(maya.variants[0].if_flags, [&"starter_chosen"] as Array[StringName])
 	assert_eq(_texts(maya.variants[0]), ["Alors, c'est lui que tu as choisi ?",
 		"Vous avez l'air de déjà bien vous entendre."] as Array[String])
 	var flags := StoryFlags.new()
 	flags.set_flag(&"oak_met")
+	assert_eq(oak.pick(flags), oak.variants[2], "avant l'offre : réplique du 3B")
+	assert_eq(rival.pick(flags), rival.variants[2], "avant l'offre : réplique du 3B")
 	flags.set_flag(&"starter_offered")
-	assert_eq(oak.pick(flags), oak.variants[1], "pendant le choix : réplique du 3B (Q-C)")
+	assert_eq(oak.pick(flags), oak.variants[1], "pendant le choix")
+	assert_eq(rival.pick(flags), rival.variants[1], "pendant le choix")
 	assert_eq(maya.pick(flags), maya.variants[1])
 	flags.set_flag(&"starter_chosen")
+	flags.set_flag(&"rival_challenged")
 	assert_eq(oak.pick(flags), oak.variants[0])
+	assert_eq(rival.pick(flags), rival.variants[0], "après le choix : plus « Dépêche-toi »")
 	assert_eq(maya.pick(flags), maya.variants[0])
 
 

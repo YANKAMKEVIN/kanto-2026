@@ -80,13 +80,29 @@
 				]
 			},
 			{
+				"if": ["starter_offered"],
+				"pages": ["Prends ton temps.", "Choisis celui avec qui tu as envie de partir."]
+			},
+			{
 				"pages": ["Un peu de patience. J'ai quelque chose à vous montrer."]
 			}
 		]
 	},
 	"rival_lab_waiting": {
 		"speaker": "Rival",
-		"pages": ["Tu vois ? Je t'avais dit que j'étais prêt."]
+		"variants": [
+			{
+				"if": ["rival_challenged"],
+				"pages": ["On ne va quand même pas partir sans savoir ce qu'ils savent faire."]
+			},
+			{
+				"if": ["starter_offered"],
+				"pages": ["Tu comptes les regarder encore longtemps ?", "Dépêche-toi de choisir."]
+			},
+			{
+				"pages": ["Tu vois ? Je t'avais dit que j'étais prêt."]
+			}
+		]
 	},
 	"observe_bulbasaur": {
 		"speaker": "Bulbizarre",

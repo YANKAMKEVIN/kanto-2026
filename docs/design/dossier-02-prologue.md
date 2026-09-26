@@ -193,6 +193,12 @@ Décisions de Kevin reportées de [`docs/tech/jalon-04.md`](../tech/jalon-04.md)
 - **Le starter descend de la table** (décision n° 1) et vient devant le joueur, sans Poké Ball : Bulbizarre descend calmement puis s'approche ; Salamèche descend avec plus d'enthousiasme ; Carapuce descend rapidement, vif et joueur. Il s'arrête devant le joueur et le regarde.
   > **Prof. Chen** — « On dirait que le choix est réciproque. »
   C'est **ensuite** que le Pokémon rejoint officiellement l'équipe.
+- **Pendant la phase de choix** (décision n° 16), dès que Chen a présenté les starters et jusqu'au choix, répliques d'attente (remplacent celles du 3B) :
+  > **Prof. Chen** — « Prends ton temps. »
+  > « Choisis celui avec qui tu as envie de partir. »
+
+  > **Rival** — « Tu comptes les regarder encore longtemps ? »
+  > « Dépêche-toi de choisir. »
 - **Sortie du labo empêchée** pendant le choix (décision n° 2), sur le tapis de sortie avant d'avoir choisi :
   > **Prof. Chen** — « Pas si vite. Tu n'as pas encore choisi ton partenaire. »
 - **Le rival choisit le starter avantagé** (décisions n° 11 et 16) :
