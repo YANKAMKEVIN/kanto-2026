@@ -19,7 +19,7 @@ extends RefCounted
 ##         { "set": ["oak_met"] },
 ##         { "move": "oak", "follower": "player", "path": ["down", "down"] },
 ##         { "change_map": "oak_lab", "at": "entrance", "facing": "up" } ] },
-##     { "unless": ["has_starter"], "steps": [
+##     { "unless": ["starter_chosen"], "steps": [
 ##         { "dialogue": "route1_grass_thought" },
 ##         { "move": "player", "path": ["down"] } ] }
 ##   ]
@@ -28,18 +28,40 @@ extends RefCounted
 ## Chaque étape a **exactement une** clé de type ([constant CutsceneStep.TYPE_KEYS]) :
 ## - wait : secondes ≥ 0 ;
 ## - dialogue : identifiant de dialogue ;
-## - face : acteur, avec « to » = direction, « player » ou identifiant de PNJ ;
+## - face : acteur, avec « to » = direction, « player », identifiant de PNJ ou alias ;
 ## - set : liste non vide de drapeaux ;
-## - spawn : identifiant du PNJ créé, avec les clés d'une entrée de `data/npcs/` (sauf if et
-##   unless), validées par [method NpcRoster.parse_entry] ; sa clé « dialogue » est celle du
-##   PNJ (dialogue quand on lui parle), pas un second type d'étape ;
+## - spawn : identifiant du PNJ créé (ni « player », ni alias), avec les clés d'une entrée
+##   de `data/npcs/` (sauf if et unless), validées par [method NpcRoster.parse_entry] ; sa
+##   clé « dialogue » est celle du PNJ (dialogue quand on lui parle), pas un second type
+##   d'étape ;
 ## - move : acteur, avec **soit** « path » (directions), **soit** « to » ([x, y], ou
 ##   { "near": acteur, "offsets": [[dx, dy], …] }), et « run », « follower » facultatifs ;
+##   « keep_facing » (true : le joueur seulement, il avance sans se tourner, pour reculer) et
+##   « optional » (true : avec « near », étape sautée sans erreur si aucune case ne convient)
+##   facultatifs ;
 ## - change_map : identifiant de carte, avec « at » (point d'apparition) et « facing »
-##   facultatif.
-## Acteur = « player » ou identifiant d'un PNJ de la carte courante. Toute clé inconnue est
-## une erreur (faute de frappe). Une scène invalide est écartée **entière**, l'erreur est
-## signalée ([method get_errors], push_error).
+##   facultatif ;
+## - hop (jalon 4) : PNJ (pas « player ») qui saute, avec « to » obligatoire, comme pour
+##   move : [x, y] ou { "near": acteur, "offsets": … } ; le style du saut vient du PNJ
+##   (clé « hop_style » de `data/npcs/`), pas de l'étape ;
+## - lean (jalon 4) : PNJ (pas « player ») qui s'avance légèrement vers « to » (cible de
+##   « face ») puis revient ;
+## - despawn (jalon 4) : PNJ (pas « player ») qui quitte la carte.
+## [codeblock]
+## "starter_chosen": { "unless": ["rival_challenged"], "steps": [
+##     { "hop": "$player_starter", "to": { "near": "$player_starter", "offsets": [[0, 1]] } },
+##     { "face": "player", "to": "$player_starter" },
+##     { "lean": "$player_starter", "to": "player" },
+##     { "despawn": "$rival_starter" } ] }
+## [/codeblock]
+## Acteur = « player », identifiant d'un PNJ de la carte courante, ou **alias** « $nom »
+## (forme $[a-z_]+, [method CutsceneStep.is_alias]) : PNJ choisi par le code qui lance la
+## scène (CutsceneDirector.play(id, alias)), résolu au début de chaque étape. Les alias
+## valent partout où un acteur ou une cible d'acteur est attendu : face (acteur et cible),
+## move (acteur, near, follower), hop (acteur, near), lean (acteur et cible), despawn. La
+## bibliothèque ne vérifie que leur forme ([method Cutscene.get_aliases] les énumère).
+## Toute clé inconnue est une erreur (faute de frappe). Une scène invalide est écartée
+## **entière**, l'erreur est signalée ([method get_errors], push_error).
 
 const DATA_DIR: String = "res://data/cutscenes/"
 
@@ -47,7 +69,9 @@ const _SCENE_KEYS: Array[String] = ["variants"]
 const _VARIANT_KEYS: Array[String] = ["if", "unless", "steps"]
 ## Clés permises en plus de la clé de type, par type (ordre de CutsceneStep.Kind).
 const _EXTRA_KEYS: Array[Array] = [
-	[], [], ["to"], [], [], ["path", "to", "run", "follower"], ["at", "facing"],
+	[], [], ["to"], [], [], ["path", "to", "run", "follower", "keep_facing", "optional"],
+	["at", "facing"], ["to"],
+	["to"], [],
 ]
 
 var _cutscenes: Dictionary[StringName, Cutscene] = {}
@@ -146,6 +170,14 @@ func get_set_flags() -> Array[StringName]:
 			for flag: StringName in step.flags:
 				found[flag] = true
 	return _sorted_keys(found)
+
+
+## Alias utilisés par la scène [param id] (sans « $ »), triés ; vide si elle n'existe pas.
+func get_aliases(id: StringName) -> Array[StringName]:
+	var cutscene := get_cutscene(id)
+	if cutscene == null:
+		return []
+	return cutscene.get_aliases()
 
 
 ## Dialogues joués par au moins une étape « dialogue » (tests de données).
@@ -248,9 +280,9 @@ func _parse_step(value: Variant, where: String) -> CutsceneStep:
 			ok = _read_id(main, where + " dialogue", func(v: StringName) -> void:
 				step.dialogue_id = v) and ok
 		CutsceneStep.Kind.FACE:
-			ok = _read_id(main, where + " face", func(v: StringName) -> void:
+			ok = _read_actor(main, where + " face", func(v: StringName) -> void:
 				step.actor = v) and ok
-			ok = _read_id(entry.get("to"), where + " to", func(v: StringName) -> void:
+			ok = _read_actor(entry.get("to"), where + " to", func(v: StringName) -> void:
 				step.target = v) and ok
 		CutsceneStep.Kind.SET_FLAGS:
 			if not main is Array or (main as Array).is_empty():
@@ -269,6 +301,18 @@ func _parse_step(value: Variant, where: String) -> CutsceneStep:
 			if entry.has("facing"):
 				ok = _read_direction(entry["facing"], where + " facing",
 					func(v: Vector2i) -> void: step.facing = v) and ok
+		CutsceneStep.Kind.HOP:
+			ok = _read_npc_actor(main, where + " hop", step) and ok
+			if not entry.has("to"):
+				ok = _fail("%s : « to » est obligatoire ([x, y] ou { near, offsets })" % where)
+			else:
+				ok = _parse_destination(entry["to"], step, where) and ok
+		CutsceneStep.Kind.LEAN:
+			ok = _read_npc_actor(main, where + " lean", step) and ok
+			ok = _read_actor(entry.get("to"), where + " to", func(v: StringName) -> void:
+				step.target = v) and ok
+		CutsceneStep.Kind.DESPAWN:
+			ok = _read_npc_actor(main, where + " despawn", step) and ok
 	return step if ok else null
 
 
@@ -278,6 +322,8 @@ func _parse_spawn(entry: Dictionary, step: CutsceneStep, where: String) -> bool:
 		step.actor = v)
 	if step.actor == NpcRoster.PLAYER_ID:
 		ok = _fail("%s : identifiant réservé au joueur" % where)
+	if String(step.actor).begins_with(CutsceneStep.ALIAS_PREFIX):
+		ok = _fail("%s : un PNJ créé a un vrai identifiant, pas un alias" % where)
 	var npc_entry := entry.duplicate()
 	npc_entry.erase("spawn")
 	for key: String in ["if", "unless"]:
@@ -294,9 +340,9 @@ func _parse_spawn(entry: Dictionary, step: CutsceneStep, where: String) -> bool:
 	return ok
 
 
-## move : acteur, path ou to (exactement un des deux), run, follower.
+## move : acteur, path ou to (exactement un des deux), run, follower, keep_facing, optional.
 func _parse_move(entry: Dictionary, step: CutsceneStep, where: String) -> bool:
-	var ok := _read_id(entry["move"], where + " move", func(v: StringName) -> void:
+	var ok := _read_actor(entry["move"], where + " move", func(v: StringName) -> void:
 		step.actor = v)
 	if entry.has("path") == entry.has("to"):
 		ok = _fail("%s : « path » ou « to », exactement l'un des deux" % where)
@@ -318,10 +364,24 @@ func _parse_move(entry: Dictionary, step: CutsceneStep, where: String) -> bool:
 		else:
 			step.run = entry["run"]
 	if entry.has("follower"):
-		ok = _read_id(entry["follower"], where + " follower", func(v: StringName) -> void:
+		ok = _read_actor(entry["follower"], where + " follower", func(v: StringName) -> void:
 			step.follower = v) and ok
 		if step.follower == step.actor:
 			ok = _fail("%s : « follower » ne peut pas être l'acteur lui-même" % where)
+	if entry.has("keep_facing"):
+		if not entry["keep_facing"] is bool:
+			ok = _fail("%s : « keep_facing » vaut true ou false" % where)
+		else:
+			step.keep_facing = entry["keep_facing"]
+		if step.keep_facing and step.actor != NpcRoster.PLAYER_ID:
+			ok = _fail("%s : « keep_facing » ne vaut que pour « player »" % where)
+	if entry.has("optional"):
+		if not entry["optional"] is bool:
+			ok = _fail("%s : « optional » vaut true ou false" % where)
+		else:
+			step.optional = entry["optional"]
+		if step.optional and step.near.is_empty():
+			ok = _fail("%s : « optional » exige une destination « near »" % where)
 	return ok
 
 
@@ -336,7 +396,7 @@ func _parse_destination(value: Variant, step: CutsceneStep, where: String) -> bo
 		return _fail("%s : « to » doit être [x, y] ou { near, offsets }" % where)
 	var near: Dictionary = value
 	var ok := _check_keys(near, ["near", "offsets"], where + " to")
-	ok = _read_id(near.get("near"), where + " to near", func(v: StringName) -> void:
+	ok = _read_actor(near.get("near"), where + " to near", func(v: StringName) -> void:
 		step.near = v) and ok
 	var offsets: Variant = near.get("offsets")
 	if not offsets is Array or (offsets as Array).is_empty():
@@ -361,6 +421,26 @@ func _read_id(value: Variant, where: String, assign: Callable) -> bool:
 	if not value is String or (value as String).is_empty():
 		return _fail("%s : identifiant attendu" % where)
 	assign.call(StringName(value))
+	return true
+
+
+## Acteur ou cible d'acteur : identifiant non vide ; commençant par « $ », un alias bien
+## formé ($[a-z_]+).
+func _read_actor(value: Variant, where: String, assign: Callable) -> bool:
+	if not _read_id(value, where, assign):
+		return false
+	var ref := StringName(value)
+	if String(ref).begins_with(CutsceneStep.ALIAS_PREFIX) and not CutsceneStep.is_alias(ref):
+		return _fail("%s : alias mal formé « %s » ($ puis a-z ou _)" % [where, ref])
+	return true
+
+
+## Acteur d'une étape hop, lean ou despawn : un PNJ ou un alias, jamais le joueur.
+func _read_npc_actor(value: Variant, where: String, step: CutsceneStep) -> bool:
+	if not _read_actor(value, where, func(v: StringName) -> void: step.actor = v):
+		return false
+	if step.actor == NpcRoster.PLAYER_ID:
+		return _fail("%s : réservé aux PNJ (pas « player »)" % where)
 	return true
 
 

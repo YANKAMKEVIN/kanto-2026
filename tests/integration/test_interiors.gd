@@ -369,6 +369,25 @@ func test_lab_starter_table_and_blocked_stairs() -> void:
 	assert_eq(map.get_warps().size(), 1, "seule sortie : le tapis")
 
 
+## Jalon 4 (§13.6) : déclencheur LabExit sur le tapis de sortie, de tous côtés, scène
+## oak_lab_exit ; seul déclencheur des intérieurs.
+func test_lab_exit_trigger_on_the_mat() -> void:
+	var map: GameMap = _maps[&"oak_lab"]
+	var point := map.get_node_or_null(^"Triggers/LabExit") as EventTriggerPoint
+	assert_not_null(point, "Triggers/LabExit")
+	assert_eq(map.get_node(^"Triggers").get_child_count(), 1)
+	assert_eq(map.get_triggers().size(), 1)
+	for direction: Vector2i in [Vector2i.UP, Vector2i.DOWN, Vector2i.LEFT, Vector2i.RIGHT]:
+		var trigger := map.get_triggers().find_on_step(Vector2i(7, 9), direction)
+		assert_not_null(trigger, "pas vers %s" % direction)
+		if trigger != null:
+			assert_eq(trigger.cutscene_id, &"oak_lab_exit")
+	assert_not_null(map.get_warps().find_on_push(Vector2i(7, 9), Vector2i.DOWN), "warp PUSH")
+	for map_id: StringName in _maps:
+		if map_id != &"oak_lab":
+			assert_true((_maps[map_id] as GameMap).get_triggers().is_empty(), String(map_id))
+
+
 func test_lab_fits_the_screen() -> void:
 	# 16 × 11 = 1536 × 1056 : la pièce tient dans la vue du S24 et de la référence.
 	var rect := (_maps[&"oak_lab"] as GameMap).get_pixel_rect()

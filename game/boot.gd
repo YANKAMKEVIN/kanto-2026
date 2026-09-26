@@ -6,9 +6,9 @@ extends Node
 ## le joueur et le rideau `ScreenFade`, relie les signaux du routeur au HUD, charge les
 ## dialogues de `data/dialogues/` et branche le lecteur de dialogues et le contrôleur
 ## d'interactions (docs/tech/jalon-03.md §2.1), charge les scènes scriptées de
-## `data/cutscenes/` et branche le directeur de scènes (docs/tech/jalon-03b.md §2.1), puis
-## démarre
-## sur [member start_map] / [member start_spawn]. Le titre de zone ne s'affiche qu'en
+## `data/cutscenes/` et branche le directeur de scènes (docs/tech/jalon-03b.md §2.1), charge
+## les données Pokémon et l'offre du labo et branche le choix du starter (jalon-04.md §3.1,
+## §13.3), puis démarre sur [member start_map] / [member start_spawn]. Le titre de zone ne s'affiche qu'en
 ## arrivant dans une zone extérieure différente ([ZoneAnnouncer]) : aucun au démarrage
 ## dans la chambre. Les réglages de départ servent au développement, aux tests et aux
 ## outils de capture : les régler avant add_child.
@@ -26,6 +26,8 @@ var _player: Player
 var _announcer := ZoneAnnouncer.new()
 var _library := DialogueLibrary.new()
 var _cutscenes := CutsceneLibrary.new()
+var _pokemon := PokemonData.new()
+var _offer := StarterOffer.new()
 
 @onready var _world: Node2D = %World
 @onready var _hud: ExplorationHud = %ExplorationHud
@@ -34,6 +36,8 @@ var _cutscenes := CutsceneLibrary.new()
 @onready var _runner: DialogueRunner = %DialogueRunner
 @onready var _interactions: InteractionController = %InteractionController
 @onready var _cutscenes_node: CutsceneDirector = %CutsceneDirector
+@onready var _sheet: StarterSheet = %StarterSheet
+@onready var _starter_choice: StarterChoice = %StarterChoice
 
 
 func _ready() -> void:
@@ -44,6 +48,13 @@ func _ready() -> void:
 	_runner.setup(_library, GameState.flags, _dialogue_box, _player)
 	_interactions.setup(_player, _runner)
 	_cutscenes_node.setup(_cutscenes, GameState.flags, _runner, _player, SceneRouter)
+	_pokemon.load_dir()
+	if _offer.load_file():
+		_offer.check_species(_pokemon)
+	_starter_choice.setup(_offer, _pokemon, GameState, _player, _sheet, _hud, _cutscenes_node,
+		_interactions)
+	_starter_choice.sheet_opened.connect(_refresh_controls)
+	_starter_choice.sheet_closed.connect(_refresh_controls)
 	_interactions.target_changed.connect(_on_target_changed)
 	_runner.dialogue_started.connect(_on_dialogue_started)
 	_runner.dialogue_finished.connect(_on_dialogue_finished)
@@ -56,6 +67,7 @@ func _ready() -> void:
 	SceneRouter.map_changed.connect(_on_map_changed)
 	SceneRouter.map_entered.connect(_on_map_entered)
 	SceneRouter.map_entered.connect(_interactions.on_map_entered)
+	SceneRouter.map_entered.connect(_starter_choice.on_map_entered)
 	SceneRouter.start(start_map, start_spawn, start_facing)
 
 
@@ -65,6 +77,7 @@ func _exit_tree() -> void:
 		[SceneRouter.map_changed, _on_map_changed],
 		[SceneRouter.map_entered, _on_map_entered],
 		[SceneRouter.map_entered, _interactions.on_map_entered],
+		[SceneRouter.map_entered, _starter_choice.on_map_entered],
 	]
 	for link: Array in links:
 		var sig: Signal = link[0]
@@ -109,6 +122,24 @@ func get_cutscene_library() -> CutsceneLibrary:
 	return _cutscenes
 
 
+func get_starter_choice() -> StarterChoice:
+	return _starter_choice
+
+
+func get_starter_sheet() -> StarterSheet:
+	return _sheet
+
+
+## Données Pokémon chargées au démarrage (data/pokemon/).
+func get_pokemon_data() -> PokemonData:
+	return _pokemon
+
+
+## Offre du labo chargée au démarrage (data/pokemon/starters.json).
+func get_starter_offer() -> StarterOffer:
+	return _offer
+
+
 ## Dialogues chargés au démarrage (data/dialogues/).
 func get_dialogue_library() -> DialogueLibrary:
 	return _library
@@ -116,6 +147,7 @@ func get_dialogue_library() -> DialogueLibrary:
 
 func _on_transition_started(_target_map: StringName) -> void:
 	_hud.hide_zone_title()
+	_hud.hide_caption()
 
 
 ## Écran noir (ou démarrage) : présence des PNJ selon les drapeaux de la partie d'abord
@@ -124,6 +156,7 @@ func _on_map_changed(map: GameMap) -> void:
 	map.refresh_npcs(GameState.flags)
 	_interactions.set_map(map)
 	_cutscenes_node.set_map(map)
+	_starter_choice.set_map(map)
 
 
 func _on_map_entered(map: GameMap) -> void:
@@ -155,7 +188,8 @@ func _on_cutscene_finished(_cutscene_id: StringName) -> void:
 	_refresh_controls()
 
 
-## Contrôles visibles seulement hors dialogue et hors scène : pendant une scène, ils restent
-## cachés entre deux dialogues.
+## Contrôles visibles seulement hors dialogue, hors scène et hors fiche du starter : pendant
+## une scène, ils restent cachés entre deux dialogues.
 func _refresh_controls() -> void:
-	_hud.set_controls_visible(not _runner.is_running() and not _cutscenes_node.is_running())
+	_hud.set_controls_visible(not _runner.is_running() and not _cutscenes_node.is_running()
+		and not _starter_choice.is_sheet_open())

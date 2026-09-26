@@ -14,7 +14,9 @@ extends RefCounted
 ## [/codeblock]
 ## Clés : cell (obligatoire), sprite (obligatoire), facing (down), dialogue (aucun),
 ## verb (talk | observe), turn_to_player (true), keep_facing (false), lift (0 pixel),
+## hop_style (calm | eager | playful : style de saut, jalon 4 ; aucun par défaut),
 ## if et unless (listes de drapeaux : présence conditionnelle, jalon 3B §2.6).
+## Le verbe « meet » (Rencontrer) est refusé : il est posé par le code (jalon 4 §3.5).
 ## Toute autre clé est une erreur. Pas de fichier = aucun PNJ sur la carte (sans erreur).
 ## L'identifiant « player » est réservé au joueur.
 
@@ -26,7 +28,7 @@ const PLAYER_ID: StringName = &"player"
 ## Clés d'une entrée (aussi celles de l'étape « spawn » des scènes, sans if / unless).
 const KEYS: Array[String] = [
 	"cell", "facing", "sprite", "dialogue", "verb", "turn_to_player", "keep_facing", "lift",
-	"if", "unless",
+	"hop_style", "if", "unless",
 ]
 
 var _specs: Array[NpcSpec] = []
@@ -166,6 +168,13 @@ static func parse_entry(value: Variant, errors: PackedStringArray) -> NpcSpec:
 			errors.append("« lift » doit être un nombre entier de pixels ≥ 0")
 		else:
 			spec.lift = int(lift)
+	if entry.has("hop_style"):
+		var style: Variant = entry["hop_style"]
+		if not style is String or not NpcSpec.HOP_STYLES.has(StringName(style)):
+			errors.append("« hop_style » vaut %s" % ", ".join(PackedStringArray(
+				NpcSpec.HOP_STYLES)))
+		else:
+			spec.hop_style = StringName(style)
 	_read_flags(entry, "if", spec.if_flags, errors)
 	_read_flags(entry, "unless", spec.unless_flags, errors)
 	return spec if errors.size() == count else null

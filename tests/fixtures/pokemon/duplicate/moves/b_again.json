@@ -1,0 +1,6 @@
+{
+	"tackle": {
+		"name": "Charge bis", "type": "normal", "category": "physical",
+		"power": 50, "accuracy": 100, "pp": 35, "description": "Doublon."
+	}
+}

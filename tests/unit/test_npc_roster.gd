@@ -1,6 +1,6 @@
 extends GutTest
 ## NpcRoster et NpcSpec : format de data/npcs/<map_id>.json, valeurs par défaut,
-## validation (jalon 3 §2.3).
+## validation (jalon 3 §2.3). Jalon 4 : style de saut (hop_style), verbe « meet » refusé.
 
 const FIXTURES := "res://tests/fixtures/npcs/"
 
@@ -78,11 +78,41 @@ func test_invalid_entries_are_rejected() -> void:
 		"typo": {"cell": [1, 2], "sprite": "x", "dialog": "mom"},
 		"bad_bool": {"cell": [1, 2], "sprite": "x", "turn_to_player": "no"},
 		"bad_lift": {"cell": [1, 2], "sprite": "x", "lift": -4},
+		"meet_verb": {"cell": [1, 2], "sprite": "x", "dialogue": "x", "verb": "meet"},
+		"bad_hop_style": {"cell": [1, 2], "sprite": "x", "hop_style": "fast"},
+		"hop_style_not_text": {"cell": [1, 2], "sprite": "x", "hop_style": 2},
 		"not_object": "mom",
 	}, "test"))
-	assert_push_error_count(10)
+	assert_push_error_count(13)
 	assert_eq(roster.size(), 0)
-	assert_eq(roster.get_errors().size(), 10)
+	assert_eq(roster.get_errors().size(), 13)
+	var errors := "\n".join(roster.get_errors())
+	assert_string_contains(errors, "« meet_verb » : « verb » vaut talk ou observe")
+	assert_string_contains(errors, "« hop_style » vaut calm, eager, playful")
+
+
+func test_hop_style() -> void:
+	var roster := NpcRoster.new()
+	assert_true(roster.add_from_dict({
+		"calm": {"cell": [1, 2], "sprite": "x", "hop_style": "calm"},
+		"eager": {"cell": [2, 2], "sprite": "x", "hop_style": "eager"},
+		"playful": {"cell": [3, 2], "sprite": "x", "hop_style": "playful"},
+		"none": {"cell": [4, 2], "sprite": "x"},
+	}, "test"))
+	for id: StringName in [&"calm", &"eager", &"playful"]:
+		assert_eq(roster.get_spec(id).hop_style, id)
+	assert_eq(roster.get_spec(&"none").hop_style, &"", "saut par défaut")
+
+
+## Décision de Kevin n° 1 (jalon 4 §8) : chaque starter du labo a son style de saut.
+func test_real_lab_starters_have_their_hop_style() -> void:
+	var roster := NpcRoster.load_for_map(&"oak_lab")
+	assert_eq(roster.get_errors().size(), 0)
+	var expected: Dictionary[StringName, StringName] = {
+		&"bulbasaur": &"calm", &"charmander": &"eager", &"squirtle": &"playful",
+	}
+	for id: StringName in expected:
+		assert_eq(roster.get_spec(id).hop_style, expected[id], String(id))
 
 
 func test_one_invalid_entry_keeps_the_others() -> void:
@@ -128,8 +158,8 @@ func test_is_present() -> void:
 	assert_false(spec.is_present(null), "nouvelle partie : aucun drapeau")
 	assert_false(spec.is_present(_flags()))
 	assert_true(spec.is_present(_flags([&"oak_met"])))
-	spec.unless_flags = [&"has_starter"] as Array[StringName]
-	assert_false(spec.is_present(_flags([&"oak_met", &"has_starter"])))
+	spec.unless_flags = [&"starter_chosen"] as Array[StringName]
+	assert_false(spec.is_present(_flags([&"oak_met", &"starter_chosen"])))
 	var gone := NpcSpec.new()
 	gone.unless_flags = [&"oak_met"] as Array[StringName]
 	assert_true(gone.is_present(null))

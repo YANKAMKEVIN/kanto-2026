@@ -6,7 +6,8 @@ extends SceneTree
 ##   godot --headless --path . --import
 ##
 ## Chaque pièce est décrite en tables : sol, murs, tapis (Detail), props, spawns, warps,
-## points d'examen (`interactables`, facultatif ; jalon-03.md §3.2).
+## points d'examen (`interactables`, facultatif ; jalon-03.md §3.2), déclencheurs de scène
+## (`triggers`, facultatif ; jalon-04.md §13.6 : tapis de sortie du labo).
 ## Coordonnées en cases (x vers l'est, y vers le sud), rectangles inclusifs
 ## [x0, y0, x1, y1]. Props : ancre = case en bas à gauche (voir §4.1).
 ## Les tapis (rug_*) sont enfants du calque `Detail` : dessinés sur le sol, sous le joueur.
@@ -250,6 +251,11 @@ func _oak_lab() -> Dictionary:
 		"warps": [
 			["Exit", Vector2i(7, 9), PUSH, Vector2i.DOWN, &"pallet_town", &"oak_lab_door"],
 		],
+		# Sortie empêchée pendant le choix du starter (jalon-04.md §13.6) : on arrive sur le
+		# tapis de trois côtés, la scène (oak_lab_exit) passe avant la poussée du warp PUSH.
+		"triggers": [
+			["LabExit", Vector2i(7, 9), Vector2i.ONE, Vector2i.ZERO, &"oak_lab_exit"],
+		],
 	}
 
 
@@ -314,6 +320,7 @@ func _build(room: Dictionary) -> void:
 		point.set(&"target_spawn", warp[5])
 		_attach(root, root.get_node(^"Warps"), point)
 	_add_interactables(root, room.get("interactables", []))
+	_add_triggers(root, room.get("triggers", []))
 
 	var path := MAPS_DIR + String(room["id"]) + ".tscn"
 	var packed := PackedScene.new()
@@ -339,6 +346,21 @@ func _add_interactables(root: Node, entries: Array) -> void:
 		point.set(&"dialogue_id", StringName(entry[4]))
 		point.set(&"kind", entry[5] if entry.size() > 5 else EXAMINE)
 		_attach(root, root.get_node(^"Interactables"), point)
+
+
+## Déclencheurs de scène : [nœud, ancre, size, direction, scène]. Ancre = case en bas à
+## gauche ; direction ZERO = pas venu de n'importe quel côté.
+func _add_triggers(root: Node, entries: Array) -> void:
+	var point_script: GDScript = load("res://game/world/triggers/event_trigger_point.gd")
+	for entry: Array in entries:
+		var point := Marker2D.new()
+		point.set_script(point_script)
+		point.name = entry[0]
+		point.position = _world(entry[1])
+		point.set(&"size", entry[2])
+		point.set(&"direction", entry[3])
+		point.set(&"cutscene_id", StringName(entry[4]))
+		_attach(root, root.get_node(^"Triggers"), point)
 
 
 ## Cases de mur selon le gabarit (dictionnaire case → vrai).

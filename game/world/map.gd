@@ -99,6 +99,20 @@ func get_npcs() -> Array[Npc]:
 	return _npcs.duplicate()
 
 
+## Cases de meubles dont le sprite dépasse sur la case du dessus ([method
+## WorldProp.get_overhang_cells]) : une case juste au-dessus est en partie cachée.
+func get_overhang_cells() -> Array[Vector2i]:
+	var cells: Array[Vector2i] = []
+	var entities := get_node_or_null(^"Entities")
+	if entities == null:
+		return cells
+	for child: Node in entities.get_children():
+		var prop := child as WorldProp
+		if prop != null:
+			cells.append_array(prop.get_overhang_cells())
+	return cells
+
+
 ## Crée le PNJ [param spec] pour la durée de la carte (étape « spawn » d'une scène) :
 ## ajouté à `Entities` et inscrit sur sa case. push_error et null si l'identifiant existe
 ## déjà, si la case est hors carte ou prise.

@@ -33,6 +33,19 @@ extends SceneTree
 ##   interact_lab   labo (intérieur clair) :
 ##                    jalon03_interact_observe   bouton OBSERVER + courir
 ##                    jalon03_interact_take      bouton PRENDRE (prévu, sans données en 3A)
+##
+## Jalon 4A (T2) : RENCONTRER, légende et fiche du starter, sur le vrai labo. Chen et le rival
+## sont présents (oak_met), le joueur est placé sous chaque starter, face à lui, avec la
+## surcharge « Rencontrer » que posera StarterChoice (T3) : le bouton passe par le vrai
+## câblage (InteractionController → Boot → HUD). Textes lus dans data/pokemon/ (noms,
+## types, phrases, légende) ; la fiche est pilotée comme le fera StarterChoice (contrôles
+## cachés, Pokémon qui s'avance, open(view)). --quit-after 700 suffit ; le script quitte seul.
+##   starter_lab   labo :
+##                   jalon04a_t2_caption_meet     légende pendant sa tenue + RENCONTRER
+##                   jalon04a_t2_meet_button      RENCONTRER seul, légende effacée
+##                   jalon04a_t2_sheet_<espèce>   fiche ouverte (×3)
+##                   jalon04a_t2_sheet_slide      fiche de Salamèche en cours d'entrée
+##                   jalon04a_t2_sheet_pressed    CHOISIR enfoncé (doigt posé)
 
 const BOOT_SCENE: String = "res://game/boot.tscn"
 const BOX_SCENE: String = "res://game/ui/dialogue/dialogue_box.tscn"
@@ -42,7 +55,16 @@ const SCENARIO_MAPS: Dictionary = {
 	"dialog_house": [&"player_house_1f", &"stairs"],
 	"dialog_town": [&"pallet_town", &"start"],
 	"interact_lab": [&"oak_lab", &"entrance"],
+	"starter_lab": [&"oak_lab", &"entrance"],
 }
+## Données lues par le scénario starter_lab (l'outil peut lire les données, pas game/ui/).
+const STARTERS_PATH: String = "res://data/pokemon/starters.json"
+const SPECIES_PATH: String = "res://data/pokemon/species/kanto.json"
+const TYPES_PATH: String = "res://data/pokemon/types.json"
+const INTERACTION_SCRIPT: String = "res://game/world/interactions/interaction.gd"
+const VIEW_SCRIPT: String = "res://game/ui/starter/starter_sheet_view.gd"
+## Rangée du joueur devant la table (jalon-04.md §13.2).
+const TABLE_FRONT_ROW: int = 6
 const THUMB_START := Vector2(430, 790)
 const THUMB_SWIPE := Vector2(95, 6)
 ## tools/ n'est pas importé : les tokens sont chargés explicitement.
@@ -112,6 +134,9 @@ func _on_frame() -> void:
 			_run_dialog_town()
 		"interact_lab":
 			_run_interact_lab()
+		"starter_lab":
+			if _frame == 1:
+				_run_starter_lab()
 
 
 func _run_dialog_house() -> void:
@@ -162,6 +187,106 @@ func _run_interact_lab() -> void:
 			_mark("jalon03_interact_take")
 		70:
 			quit()
+
+
+func _run_starter_lab() -> void:
+	await _frames(5)
+	var state: Node = root.get_node(^"GameState")
+	var flags: RefCounted = state.get(&"flags")
+	flags.call(&"set_flag", &"oak_met")
+	var lab: Node = _boot.call(&"get_map")
+	lab.call(&"refresh_npcs", flags)
+	var starters: Dictionary = _read_json(STARTERS_PATH)
+	var species: Dictionary = _read_json(SPECIES_PATH)
+	var types: Dictionary = _read_json(TYPES_PATH)["types"]
+	var interaction_script: GDScript = load(INTERACTION_SCRIPT)
+	var meet: int = interaction_script.get(&"Kind")["MEET"]
+	var npcs: Array[Node] = []
+	for choice: Dictionary in starters["choices"]:
+		var npc: Node = lab.call(&"get_npc", StringName(choice["npc"]))
+		npc.call(&"set_interaction_override", interaction_script.new(
+			meet, npc.call(&"get_cell"), &"", Vector2i.ZERO, npc))
+		npcs.append(npc)
+	var sheet: CanvasLayer = _boot.get_node(^"%StarterSheet")
+	var choices: Array = starters["choices"]
+	# Légende + RENCONTRER devant Salamèche.
+	await _stand_below(lab, npcs[1])
+	_hud.call(&"show_caption", starters["prompt"])
+	await _frames(30)
+	_mark("jalon04a_t2_caption_meet")
+	await _frames(2)
+	await _wait_until(func() -> bool: return not _hud.get_caption().visible, 200)
+	await _frames(5)
+	_mark("jalon04a_t2_meet_button")
+	await _frames(2)
+	for i: int in choices.size():
+		var choice: Dictionary = choices[i]
+		var npc: Node = npcs[i]
+		await _stand_below(lab, npc)
+		var entry: Dictionary = species[choice["species"]]
+		var ids: Array[StringName] = []
+		var names: Array[String] = []
+		for type_id: String in entry["types"]:
+			ids.append(StringName(type_id))
+			names.append(types[type_id]["name"])
+		var view: RefCounted = (load(VIEW_SCRIPT) as GDScript).new(
+			entry["name"], ids, names, choice["blurb"])
+		_hud.call(&"set_controls_visible", false)
+		npc.call(&"lean_toward", _player_cell())
+		await _frames(6)
+		sheet.call(&"open", view)
+		if i == 1:
+			await _frames(4)
+			_mark("jalon04a_t2_sheet_slide")
+			await _frames(2)
+		await _frames(20)
+		_mark("jalon04a_t2_sheet_" + String(choice["species"]))
+		await _frames(2)
+		if i == 1:
+			var choose: Button = sheet.call(&"get_choose_button")
+			var center := choose.get_global_rect().get_center()
+			_touch(0, center, true)
+			await _frames(8)
+			_mark("jalon04a_t2_sheet_pressed")
+			await _frames(2)
+			_touch(0, center, false)
+			await _frames(2)
+		sheet.call(&"close")
+		npc.call(&"settle")
+		await _frames(12)
+		_hud.call(&"set_controls_visible", true)
+	await _frames(3)
+	print("STARTER_LAB terminé (frame %d)" % _frame)
+	quit()
+
+
+## Place le joueur sous [param npc] (rangée devant la table), tourné vers lui.
+func _stand_below(lab: Node, npc: Node) -> void:
+	var cell: Vector2i = npc.call(&"get_cell")
+	var player: Node = _boot.call(&"get_player")
+	player.call(&"enter_map", lab.call(&"get_grid"), Vector2i(cell.x, TABLE_FRONT_ROW),
+		Vector2i.UP, lab.call(&"get_pixel_rect"))
+	await _frames(15)
+
+
+func _player_cell() -> Vector2i:
+	return (_boot.call(&"get_player") as Node).call(&"get_cell")
+
+
+func _frames(count: int) -> void:
+	for i: int in count:
+		await process_frame
+
+
+func _wait_until(done: Callable, limit: int) -> void:
+	for i: int in limit:
+		if done.call():
+			return
+		await process_frame
+
+
+func _read_json(path: String) -> Dictionary:
+	return JSON.parse_string(FileAccess.get_file_as_string(path)) as Dictionary
 
 
 ## Comme en jeu (T3) : contrôles cachés, boîte ouverte, première page qui s'écrit.

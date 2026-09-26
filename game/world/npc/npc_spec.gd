@@ -7,6 +7,12 @@ extends RefCounted
 ## En lecture seule une fois construite : un PNJ qui marche (jalon 3B) garde sa case courante
 ## dans son GridMover, [member cell] reste sa case de départ.
 
+## Styles de saut d'un Pokémon qui descend d'un meuble ([member hop_style], jalon 4,
+## décision de Kevin n° 1) : calme (Bulbizarre), enthousiaste (Salamèche), vif et joueur
+## (Carapuce). Les paramètres de chaque style (durée, hauteur, rebonds, hésitation) sont
+## des constantes de la scène `Npc` (présentation), pas des données.
+const HOP_STYLES: Array[StringName] = [&"calm", &"eager", &"playful"]
+
 ## Identifiant unique sur la carte (cible des indications « react » des dialogues).
 var id: StringName = &""
 var cell: Vector2i = Vector2i.ZERO
@@ -25,6 +31,9 @@ var keep_facing: bool = false
 ## Élévation du sprite en pixels (Pokémon posé sur une table) ; la case et le tri en
 ## profondeur ne changent pas.
 var lift: int = 0
+## Style de saut ([constant HOP_STYLES]) quand une scène le fait sauter (étape « hop ») ;
+## vide = saut par défaut.
+var hop_style: StringName = &""
 ## Présence conditionnelle (docs/tech/jalon-03b.md §2.6) : présent si tous les drapeaux de
 ## [member if_flags] sont levés et aucun de [member unless_flags], comme une variante de
 ## dialogue. Sans condition, toujours présent.

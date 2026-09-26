@@ -11,9 +11,14 @@ extends Node
 ## À l'arrivée sur une carte ([method on_map_entered]), le premier PNJ dont la variante
 ## courante est « auto » parle de lui-même (premier dialogue de Maman) : règle de données,
 ## aucun PNJ n'est nommé ici.
+## Jalon 4 (jalon-04.md §3.5, §13.3) : une cible « Rencontrer » ([constant Interaction.Kind.MEET],
+## surcharge posée par le choix du starter) ne joue aucun dialogue : l'appui émet
+## [signal meet_requested] et le code du choix s'en charge. Même anti-rebond qu'un dialogue.
 
 ## Cible devant le joueur : kind = [enum Interaction.Kind], ou [constant NO_TARGET].
 signal target_changed(kind: int)
+## Appui sur une cible « Rencontrer » : [param npc] est le PNJ rencontré (source de la cible).
+signal meet_requested(npc: Npc)
 
 const NO_TARGET: int = -1
 ## Délai entre l'arrivée sur la carte et l'ouverture de la boîte d'un dialogue automatique.
@@ -25,7 +30,8 @@ var _runner: DialogueRunner
 var _map: GameMap
 var _target: Interaction
 var _target_kind: int = NO_TARGET
-## Anti-rebond : après un dialogue, `interact` est ignoré jusqu'à son relâchement.
+## Anti-rebond : après un dialogue ou une rencontre, `interact` est ignoré jusqu'à son
+## relâchement.
 var _wait_release: bool = false
 
 
@@ -111,6 +117,12 @@ func _can_target() -> bool:
 
 func _interact(target: Interaction) -> void:
 	var npc := target.source as Npc
+	if target.kind == Interaction.Kind.MEET:
+		# Pas de dialogue : le code du choix répond. L'appui tenu ne relance rien.
+		_wait_release = true
+		if npc != null:
+			meet_requested.emit(npc)
+		return
 	if npc != null:
 		npc.begin_interaction(_player.get_cell())
 	if _runner != null:

@@ -185,3 +185,52 @@ Combat immédiat dans le laboratoire, comme dans Rouge/Bleu, mais très mis en s
 - **Au labo, après la scène de la Route 1 et avant le jalon 4** (décision du 2026-09-26) : Chen et le rival ne sont pas muets. Répliques d'attente, remplacées dès le jalon 4 :
   > **Prof. Chen** — « Un peu de patience. J'ai quelque chose à vous montrer. »
   > **Rival** — « Tu vois ? Je t'avais dit que j'étais prêt. »
+
+### Jalon 4 (décisions du 2026-09-26)
+
+Décisions de Kevin reportées de [`docs/tech/jalon-04.md`](../tech/jalon-04.md) §8 (n° 1, 2, 6, 7, 8, 11, 16). Elles **priment** sur les §8 à §10 ci-dessus quand elles diffèrent (Poké Ball). Textes définitifs, mot pour mot.
+
+- **Le starter descend de la table** (décisions n° 1 et 16), sans Poké Ball : Bulbizarre descend calmement puis s'approche ; Salamèche descend avec plus d'enthousiasme ; Carapuce descend rapidement, vif et joueur. Il atterrit sur une **case libre à côté ou légèrement devant le joueur**, choisie d'après l'espace disponible (jamais « sur la tête » du joueur ni caché par lui) : il descend → s'approche → s'arrête → le joueur se tourne vers lui (sans jamais lui tourner le dos) → petit temps d'observation mutuelle.
+  > **Prof. Chen** — « On dirait que le choix est réciproque. »
+  C'est **ensuite** que le Pokémon rejoint officiellement l'équipe. **Pas de compagnon temporaire** : il reste près du joueur pendant la séquence du labo, puis rejoint sa Poké Ball ; il ne le suit pas dans Bourg Palette (le vrai compagnon aura son jalon).
+- **Pendant la phase de choix** (décision n° 16), dès que Chen a présenté les starters et jusqu'au choix, répliques d'attente (remplacent celles du 3B) :
+  > **Prof. Chen** — « Prends ton temps. »
+  > « Choisis celui avec qui tu as envie de partir. »
+
+  > **Rival** — « Tu comptes les regarder encore longtemps ? »
+  > « Dépêche-toi de choisir. »
+- **Sortie du labo empêchée** pendant le choix (décision n° 2), sur le tapis de sortie avant d'avoir choisi :
+  > **Prof. Chen** — « Pas si vite. Tu n'as pas encore choisi ton partenaire. »
+- **Le rival choisit le starter avantagé** (décisions n° 11 et 16) :
+  > **Rival** — « Alors ce sera toi. »
+  (son Pokémon vient vers lui et se pose à côté de lui, jamais derrière sa tête ; le rival regarde le Pokémon du joueur, puis le joueur ; temps mort, petit sourire)
+  > **Rival** — « Ça devrait être intéressant. »
+  (plus tard, quand il s'apprête à partir)
+  > **Rival** — « Attends. »
+  (il regarde son Pokémon, puis celui du joueur)
+  > **Rival** — « On ne va quand même pas partir sans savoir ce qu'ils savent faire. »
+  Le combat commence.
+- **Après le combat** (décision n° 6) : aucune sanction ; Prof. Chen soigne les deux Pokémon quelle que soit l'issue.
+  - Victoire du joueur : le rival rappelle son Pokémon ; petit silence.
+    > **Rival** — « ...Pas mal. »
+    > (il regarde son Pokémon / sa Poké Ball) « On a encore du travail. »
+    > (il regarde le joueur) « La prochaine fois, ce sera différent. »
+    > (il commence à partir) « Essaie de ne pas trop prendre de retard. »
+    Il sort.
+  - Défaite du joueur : le rival rappelle son Pokémon.
+    > **Rival** — « Pas mal pour un premier combat. »
+    > (petit sourire) « Mais je t'avais prévenu : j'étais prêt. »
+    > « Rattrape-moi quand tu le seras aussi. »
+    Il sort.
+- **Chen après le départ du rival** (décision n° 7) :
+  > **Prof. Chen** — « Pour un premier combat, vous vous êtes bien débrouillés. »
+  > « Mais gagner n'est qu'une partie de ce qu'un Dresseur doit apprendre. »
+  > « Apprends à connaître ton Pokémon. Il fera de même avec toi. »
+- **Répliques d'attente après le jalon 4** (décision n° 8, remplacent celles du 3B), **réservées à l'après-combat** (décision n° 16) : ni Chen ni Maya ne les disent avant le premier combat ; avant, Maya garde « Ah, le professeur est revenu. »… :
+  > **Prof. Chen** — « Le monde qui vous attend est bien plus vaste que Bourg Palette. »
+  > « Prends le temps de l'observer. Les Pokémon ont beaucoup à nous apprendre. »
+
+  > **Maya** — (elle regarde le starter) « Alors, c'est lui que tu as choisi ? »
+  > « Vous avez l'air de déjà bien vous entendre. »
+
+  Accord selon le sexe du starter (décision n° 16) : pour une femelle, « Alors, c'est elle que tu as choisi ? ».

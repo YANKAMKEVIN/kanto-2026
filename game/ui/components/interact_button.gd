@@ -1,7 +1,7 @@
 class_name InteractButton
 extends TouchScreenButton
 ## Bouton contextuel unique (bible UI/UX §1) : rond, icône du verbe, et le verbe en toutes
-## lettres dans une pastille à sa gauche (PARLER, EXAMINER, OBSERVER, PRENDRE).
+## lettres dans une pastille à sa gauche (PARLER, EXAMINER, OBSERVER, PRENDRE, RENCONTRER).
 ##
 ## Invisible tant qu'on ne lui demande rien : show_verb le fait apparaître en fondu
 ## (ANIM_MICRO), hide_verb le fait disparaître de même. Invisible, il ne reçoit pas le
@@ -9,12 +9,14 @@ extends TouchScreenButton
 ## à quoi elle sert. Vibration courte à l'appui.
 
 ## Verbe → libellé (texte d'interface) et icône. « take » (Prendre) est prévu pour les
-## objets ramassables, sans usage au jalon 3A.
+## objets ramassables, sans usage au jalon 3A. « meet » (Rencontrer) : un starter du labo
+## (jalon 4A), icône Poké Ball au trait.
 const VERBS: Dictionary[StringName, Dictionary] = {
 	&"talk": {"label": "PARLER", "icon": preload("res://assets/ui/icons/talk.svg")},
 	&"examine": {"label": "EXAMINER", "icon": preload("res://assets/ui/icons/examine.svg")},
 	&"observe": {"label": "OBSERVER", "icon": preload("res://assets/ui/icons/observe.svg")},
 	&"take": {"label": "PRENDRE", "icon": preload("res://assets/ui/icons/take.svg")},
+	&"meet": {"label": "RENCONTRER", "icon": preload("res://assets/ui/icons/meet.svg")},
 }
 
 var _verb: StringName = &""
@@ -34,7 +36,8 @@ func _ready() -> void:
 	modulate.a = 0.0
 
 
-## Affiche le bouton avec le verbe [param verb] (&"talk", &"examine", &"observe", &"take").
+## Affiche le bouton avec le verbe [param verb] (&"talk", &"examine", &"observe", &"take",
+## &"meet").
 ## Un verbe inconnu cache le bouton (avertissement).
 func show_verb(verb: StringName) -> void:
 	if not VERBS.has(verb):

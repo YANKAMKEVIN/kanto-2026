@@ -1,0 +1,16 @@
+{
+	"bulbasaur": {
+		"cell": [10, 5], "facing": "down", "sprite": "bulbasaur",
+		"dialogue": "observe", "verb": "observe", "lift": 56, "unless": ["taken_bulbasaur"]
+	},
+	"charmander": {
+		"cell": [11, 5], "facing": "down", "sprite": "charmander",
+		"dialogue": "observe", "verb": "observe", "lift": 56, "unless": ["taken_charmander"]
+	},
+	"squirtle": {
+		"cell": [12, 5], "facing": "down", "sprite": "squirtle",
+		"dialogue": "observe", "verb": "observe", "lift": 56, "unless": ["taken_squirtle"]
+	},
+	"oak": { "cell": [8, 4], "facing": "down", "sprite": "oak" },
+	"rival": { "cell": [9, 6], "facing": "right", "sprite": "rival" }
+}

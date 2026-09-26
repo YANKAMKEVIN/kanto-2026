@@ -163,3 +163,74 @@ const JOYSTICK_ARROW_SIZE := 14.0
 const JOYSTICK_ARROW_INSET := 26.0
 const JOYSTICK_FADE_IN := 0.08
 const JOYSTICK_FADE_OUT := 0.2
+
+# --- Légende sur le monde (jalon 4A ; bible UI/UX §5 et §11) ---------------------------------
+
+## Tenue de la légende entre ses deux fondus (jamais permanente).
+const CAPTION_HOLD := 3.0
+## Fondu d'apparition et de disparition de la légende.
+const CAPTION_FADE := ANIM_PANEL
+## Haut de la légende : sous la bande du titre de zone (en haut à gauche), pour que les deux
+## ne se chevauchent jamais, même affichés ensemble à 1920 de large.
+const CAPTION_TOP := 176
+## Halo de l'ombre portée (texte sans rectangle, lisible sur un sol clair comme sur l'herbe).
+const CAPTION_SHADOW_OUTLINE := 12
+const CAPTION_SHADOW_OFFSET := 3
+## Espacement des lettres de la légende (titre aéré).
+const CAPTION_LETTER_SPACING := 3
+
+# --- Boutons de panneau (fiche du starter, menus) --------------------------------------------
+
+## Fond du bouton secondaire (RETOUR) : voile clair sur le panneau.
+const BUTTON_BG := Color(1, 1, 1, 0.08)
+## Bouton d'accent enfoncé : ACCENT assombri.
+const ACCENT_PRESSED := Color("#D9A92A")
+const BUTTON_PAD_H := 28
+
+# --- Fiche du starter (jalon 4A) -------------------------------------------------------------
+
+const STARTER_SHEET_WIDTH := 600
+## Bord gauche de la fiche (≥ SAFE_MARGIN) : elle laisse voir la table et le joueur.
+const STARTER_SHEET_LEFT := 96
+const STARTER_SHEET_PAD := 36
+## Écart entre le nom et les pastilles, les pastilles et la phrase…
+const STARTER_SHEET_GAP := 20
+## …et plus d'air avant les boutons.
+const STARTER_SHEET_BUTTONS_GAP := 36
+## Fermeture (plus courte que l'ouverture ANIM_PANEL).
+const STARTER_SHEET_CLOSE := 0.2
+## Phrase de la fiche : blanc légèrement adouci, comme la narration.
+const STARTER_SHEET_PHRASE := DIALOG_NARRATION
+
+# --- Pastilles de type -----------------------------------------------------------------------
+
+const TYPE_BADGE_ICON := 30
+const TYPE_BADGE_FONT := 24
+const TYPE_BADGE_PAD_H := 16
+const TYPE_BADGE_PAD_V := 6
+const TYPE_BADGE_GAP := 8
+const TYPE_BADGE_RADIUS := 22
+## Couleur d'une pastille dont le type n'est pas dans TYPE_COLORS.
+const TYPE_COLOR_UNKNOWN := TEXT_MUTED
+## Couleur de chaque type (skill ui-theme-2026, + Acier, Ténèbres, Fée : jalon 4 Q10).
+## Clés : identifiants de data/pokemon/types.json.
+const TYPE_COLORS: Dictionary[StringName, Color] = {
+	&"normal": Color("#A8A77A"),
+	&"fire": Color("#EE8130"),
+	&"water": Color("#6390F0"),
+	&"electric": Color("#F7D02C"),
+	&"grass": Color("#7AC74C"),
+	&"ice": Color("#96D9D6"),
+	&"fighting": Color("#C22E28"),
+	&"poison": Color("#A33EA1"),
+	&"ground": Color("#E2BF65"),
+	&"flying": Color("#A98FF3"),
+	&"psychic": Color("#F95587"),
+	&"bug": Color("#A6B91A"),
+	&"rock": Color("#B6A136"),
+	&"ghost": Color("#735797"),
+	&"dragon": Color("#6F35FC"),
+	&"dark": Color("#705746"),
+	&"steel": Color("#B7B7CE"),
+	&"fairy": Color("#D685AD"),
+}

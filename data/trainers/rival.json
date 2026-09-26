@@ -1,0 +1,12 @@
+{
+	"rival_lab": {
+		"name": "Le Rival", "ai": "random",
+		"can_lose": true, "heal_after": true, "gives_exp": false, "prize_money": 0,
+		"end_message": false,
+		"team_by_starter": {
+			"bulbasaur": [{ "species": "charmander", "level": 5 }],
+			"charmander": [{ "species": "squirtle", "level": 5 }],
+			"squirtle": [{ "species": "bulbasaur", "level": 5 }]
+		}
+	}
+}

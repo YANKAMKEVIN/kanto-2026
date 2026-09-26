@@ -1,5 +1,6 @@
 extends GutTest
-## CutsceneMoves : case d'arrivée « à côté de » et chemin du suiveur (jalon 3B §2.3).
+## CutsceneMoves : case d'arrivée « à côté de » et chemin du suiveur (jalon 3B §2.3) ;
+## cases survolées par un saut et case d'atterrissage sans survoler personne (jalon 4).
 
 const NEAR_PLAYER: Array[Vector2i] = [Vector2i(1, 0), Vector2i(-1, 0), Vector2i(0, 1)]
 
@@ -69,3 +70,46 @@ func test_path_cells() -> void:
 	assert_eq(CutsceneMoves.path_cells(Vector2i(7, 9), [Vector2i.UP, Vector2i.UP]
 		as Array[Vector2i]), [Vector2i(7, 8), Vector2i(7, 7)] as Array[Vector2i])
 	assert_true(CutsceneMoves.path_cells(Vector2i(7, 9), []).is_empty())
+
+
+func test_hop_crossed_cells_straight_and_diagonal() -> void:
+	assert_eq(CutsceneMoves.hop_crossed_cells(Vector2i(10, 5), Vector2i(10, 6)),
+		[] as Array[Vector2i], "une case : rien de survolé")
+	assert_eq(CutsceneMoves.hop_crossed_cells(Vector2i(10, 5), Vector2i(11, 6)),
+		[] as Array[Vector2i], "diagonale d'une case : seulement un coin")
+	assert_eq(CutsceneMoves.hop_crossed_cells(Vector2i(11, 5), Vector2i(11, 7)),
+		[Vector2i(11, 6)] as Array[Vector2i])
+	assert_eq(CutsceneMoves.hop_crossed_cells(Vector2i(11, 5), Vector2i(9, 7)),
+		[Vector2i(10, 6)] as Array[Vector2i], "diagonale de deux cases : le centre")
+	# Le saut qui passait au-dessus du joueur à la QA : (11, 5) → (9, 7) survole (10, 6).
+	assert_eq(CutsceneMoves.hop_crossed_cells(Vector2i(12, 5), Vector2i(10, 6)),
+		[Vector2i(11, 5), Vector2i(11, 6)] as Array[Vector2i], "dans l'ordre du saut")
+
+
+func test_resolve_landing_skips_hops_over_someone() -> void:
+	var mover := RefCounted.new()
+	var player := RefCounted.new()
+	_world.occupy(Vector2i(12, 5), mover)
+	_world.occupy(Vector2i(11, 6), player)
+	var offsets: Array[Vector2i] = [Vector2i(1, 0), Vector2i(0, 1), Vector2i(-1, 0)]
+	# Autour de (9, 6) : (10, 6) survole (11, 6), le joueur → écarté ; (9, 7) aussi ;
+	# (8, 6) : libre, et le saut ne survole que des cases vides.
+	assert_eq(CutsceneMoves.resolve_landing(_world, Vector2i(12, 5), Vector2i(9, 6), offsets,
+		mover), Vector2i(8, 6))
+	_world.release(Vector2i(11, 6), player)
+	assert_eq(CutsceneMoves.resolve_landing(_world, Vector2i(12, 5), Vector2i(9, 6), offsets,
+		mover), Vector2i(10, 6), "personne sur le trajet")
+
+
+func test_resolve_landing_avoids_the_cell_behind_a_tall_head() -> void:
+	var mover := RefCounted.new()
+	_world.occupy(Vector2i(11, 5), mover)
+	var offsets: Array[Vector2i] = [Vector2i(1, 0), Vector2i(0, 1)]
+	var tall: Array[Vector2i] = [Vector2i(10, 7)]
+	assert_eq(CutsceneMoves.resolve_landing(_world, Vector2i(11, 5), Vector2i(9, 6), offsets,
+		mover, tall), Vector2i(9, 7), "(10, 6) est juste au-dessus d'un grand personnage")
+	assert_eq(CutsceneMoves.resolve_landing(_world, Vector2i(11, 5), Vector2i(9, 6), offsets,
+		mover), Vector2i(10, 6))
+	_world.set_solid(Vector2i(9, 7))
+	assert_eq(CutsceneMoves.resolve_landing(_world, Vector2i(11, 5), Vector2i(9, 6), offsets,
+		mover, tall), CutsceneStep.NO_CELL)

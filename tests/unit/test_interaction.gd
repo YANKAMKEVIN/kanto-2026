@@ -1,6 +1,7 @@
 extends GutTest
 ## Interaction, InteractionTable, InteractionFinder : cible devant le joueur, PNJ avant
-## points fixes, orientation exigée, conflits (jalon 3 §2.2).
+## points fixes, orientation exigée, conflits (jalon 3 §2.2). Jalon 4 (§2.1) : verbe MEET
+## (« Rencontrer »), sans dialogue mais avec une source.
 
 
 ## PNJ minimal : occupe une case et expose get_interaction(), comme la scène Npc.
@@ -69,9 +70,43 @@ func test_accepts_required_facing() -> void:
 
 func test_kind_names_round_trip() -> void:
 	for kind: Interaction.Kind in [Interaction.Kind.TALK, Interaction.Kind.EXAMINE,
-			Interaction.Kind.OBSERVE]:
+			Interaction.Kind.OBSERVE, Interaction.Kind.MEET]:
 		assert_eq(Interaction.kind_from_name(Interaction.kind_name(kind)), kind)
+	assert_eq(Interaction.kind_name(Interaction.Kind.MEET), &"meet")
 	assert_eq(Interaction.kind_from_name("jump"), -1)
+
+
+func test_meet_is_the_last_kind() -> void:
+	# Les scripts d'outil écrivent les valeurs de l'enum dans les cartes (EXAMINE = 1).
+	assert_eq(Interaction.Kind.TALK, 0)
+	assert_eq(Interaction.Kind.EXAMINE, 1)
+	assert_eq(Interaction.Kind.OBSERVE, 2)
+	assert_eq(Interaction.Kind.MEET, Interaction.Kind.size() - 1)
+
+
+func test_meet_needs_a_source_and_no_dialogue() -> void:
+	var npc := FakeNpc.new()
+	_npcs.append(npc)
+	var meet := Interaction.new(Interaction.Kind.MEET, PLAYER, &"", Vector2i.ZERO, npc)
+	assert_true(meet.is_valid())
+	assert_false(Interaction.new(Interaction.Kind.MEET, PLAYER).is_valid(), "sans source")
+	assert_false(Interaction.new(Interaction.Kind.MEET, PLAYER, &"observe_charmander",
+		Vector2i.ZERO, npc).is_valid(), "une rencontre ne joue pas de dialogue")
+	assert_false(Interaction.new(Interaction.Kind.MEET, PLAYER, &"", Vector2i(1, 1), npc)
+		.is_valid(), "diagonale")
+	assert_false(Interaction.new(Interaction.Kind.TALK, PLAYER, &"", Vector2i.ZERO, npc)
+		.is_valid(), "les autres verbes exigent toujours un dialogue")
+
+
+func test_meet_target_is_found_like_any_npc() -> void:
+	var cell := PLAYER + Vector2i.UP
+	_grid.set_solid(cell)
+	var npc := _npc_at(cell, &"observe_charmander", Interaction.Kind.OBSERVE)
+	npc.interaction = Interaction.new(Interaction.Kind.MEET, cell, &"", Vector2i.ZERO, npc)
+	var target := InteractionFinder.find(_grid, _table, PLAYER, Vector2i.UP)
+	assert_not_null(target)
+	assert_eq(target.kind, Interaction.Kind.MEET)
+	assert_eq(target.source, npc)
 
 
 # --- InteractionTable -------------------------------------------------------------------

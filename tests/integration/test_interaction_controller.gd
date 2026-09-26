@@ -5,6 +5,8 @@ extends GutTest
 ## Cible devant le joueur (une émission par changement), pas de cible pendant un pas ou un
 ## dialogue, `interact` lance le bon dialogue et tourne le PNJ, anti-rebond, dialogue
 ## automatique à l'arrivée sur la carte.
+## Jalon 4 (T1) : une surcharge « Rencontrer » (MEET) sur un PNJ → target_changed(MEET), et
+## l'appui émet meet_requested(npc) sans jouer de dialogue, avec le même anti-rebond.
 
 const BOX_SCENE := "res://game/ui/dialogue/dialogue_box.tscn"
 const PLAYER_SCENE := "res://game/player/player.tscn"
@@ -250,6 +252,54 @@ func test_auto_dialogue_holds_the_player_even_with_a_direction_held() -> void:
 	await wait_seconds(0.6)
 	assert_eq(_player.get_cell(), Vector2i(2, 4), "aucun pas pendant le dialogue")
 	Input.action_release(&"move_down")
+
+
+# --- Rencontrer (jalon 4, T1) ------------------------------------------------------------
+
+## Maman (7, 4) reçoit une surcharge MEET ; joueur en (7, 5) tourné vers elle.
+func _meet_mom() -> Npc:
+	var mom := _map.get_npc(&"mom")
+	mom.set_interaction_override(
+		Interaction.new(Interaction.Kind.MEET, mom.get_cell(), &"", Vector2i.ZERO, mom))
+	_place(Vector2i(7, 5), Vector2i.UP)
+	return mom
+
+
+func test_meet_override_is_the_target() -> void:
+	var mom := _meet_mom()
+	await wait_process_frames(2)
+	assert_eq(_kinds.back(), Interaction.Kind.MEET, "cible Rencontrer")
+	assert_eq(_controller.get_target().kind, Interaction.Kind.MEET)
+	assert_same(_controller.get_target().source, mom)
+	mom.clear_interaction_override()
+	await wait_process_frames(2)
+	assert_eq(_kinds.back(), Interaction.Kind.TALK, "surcharge retirée : Parler")
+
+
+func test_meet_emits_meet_requested_without_dialogue() -> void:
+	var mom := _meet_mom()
+	watch_signals(_controller)
+	await wait_process_frames(2)
+	await _press_interact()
+	assert_signal_emit_count(_controller, "meet_requested", 1)
+	assert_signal_emitted_with_parameters(_controller, "meet_requested", [mom])
+	assert_false(_runner.is_running(), "aucun dialogue")
+	assert_signal_not_emitted(_runner, "dialogue_started")
+	assert_eq(mom.get_facing(), Vector2i.DOWN, "le PNJ ne se tourne pas (le choix s'en charge)")
+
+
+func test_meet_held_does_not_repeat_until_released() -> void:
+	_meet_mom()
+	watch_signals(_controller)
+	await wait_process_frames(2)
+	Input.action_press(&"interact")
+	await wait_process_frames(10)
+	assert_signal_emit_count(_controller, "meet_requested", 1, "interact tenu : un seul appel")
+	Input.action_release(&"interact")
+	await wait_process_frames(2)
+	await _press_interact()
+	assert_signal_emit_count(_controller, "meet_requested", 2, "relâcher puis réappuyer")
+	assert_signal_not_emitted(_runner, "dialogue_started")
 
 
 func test_dominant_direction() -> void:

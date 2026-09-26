@@ -14,16 +14,34 @@ extends RefCounted
 ## - [constant Kind.MOVE] : [member actor] suit **soit** [member path] (directions), **soit**
 ##   un chemin calculé vers une destination : case absolue [member cell], ou première case
 ##   libre autour de [member near] parmi [member offsets] ; [member run] ; [member follower]
-##   (second acteur, un pas derrière) ;
+##   (second acteur, un pas derrière) ; [member keep_facing] (le joueur recule sans se
+##   retourner) ; [member optional] (aucune case libre autour de [member near] : étape
+##   sautée sans erreur) ;
 ## - [constant Kind.CHANGE_MAP] : [member map_id], [member spawn], [member facing]
-##   (ZERO = garder l'orientation).
+##   (ZERO = garder l'orientation) ;
+## - [constant Kind.HOP] (jalon 4) : le PNJ [member actor] saute (d'un meuble) vers une
+##   case absolue [member cell], ou la première case d'atterrissage autour de [member near]
+##   parmi [member offsets] ([method CutsceneMoves.resolve_landing] : libre, trajectoire qui
+##   ne traverse la case d'aucun personnage, pas juste derrière la tête d'un grand) ;
+## - [constant Kind.LEAN] (jalon 4) : le PNJ [member actor] s'avance légèrement vers
+##   [member target] (comme « face ») puis revient ;
+## - [constant Kind.DESPAWN] (jalon 4) : le PNJ [member actor] quitte la carte.
+## Alias (jalon 4 §3.6) : partout où un acteur ou une cible d'acteur est attendu,
+## « $nom » ([method is_alias]) désigne un PNJ choisi au lancement de la scène
+## (CutsceneDirector.play(id, alias)). La bibliothèque valide sa forme ; il est résolu
+## par le directeur au début de chaque étape.
 
-enum Kind { WAIT, DIALOGUE, FACE, SET_FLAGS, SPAWN, MOVE, CHANGE_MAP }
+## Nouvelles valeurs en fin d'enum (ordre de [constant TYPE_KEYS]).
+enum Kind { WAIT, DIALOGUE, FACE, SET_FLAGS, SPAWN, MOVE, CHANGE_MAP, HOP, LEAN, DESPAWN }
 
 ## Clé de type de chaque étape dans les fichiers, dans l'ordre de [enum Kind].
 const TYPE_KEYS: Array[String] = [
-	"wait", "dialogue", "face", "set", "spawn", "move", "change_map",
+	"wait", "dialogue", "face", "set", "spawn", "move", "change_map", "hop", "lean",
+	"despawn",
 ]
+## Préfixe d'un alias d'acteur (« $player_starter »).
+const ALIAS_PREFIX: String = "$"
+const _ALIAS_CHARS: String = "abcdefghijklmnopqrstuvwxyz_"
 ## Pas de case (destination relative, ou étape sans case).
 const NO_CELL: Vector2i = Vector2i(-1, -1)
 
@@ -40,6 +58,8 @@ var near: StringName = &""
 var offsets: Array[Vector2i] = []
 var run: bool = false
 var follower: StringName = &""
+var keep_facing: bool = false
+var optional: bool = false
 var map_id: StringName = &""
 var spawn: StringName = &""
 var facing: Vector2i = Vector2i.ZERO
@@ -50,6 +70,35 @@ static func kind_name(value: Kind) -> StringName:
 	return StringName(TYPE_KEYS[value])
 
 
-## Étape MOVE vers une destination (chemin calculé) plutôt qu'un chemin écrit.
+## Étape MOVE ou HOP vers une destination (case absolue ou voisine d'un acteur) plutôt
+## qu'un chemin écrit.
 func has_destination() -> bool:
 	return cell != NO_CELL or not near.is_empty()
+
+
+## Vrai pour une référence d'alias bien formée : « $ » puis au moins une lettre minuscule
+## ou « _ » (forme $[a-z_]+).
+static func is_alias(ref: StringName) -> bool:
+	var text := String(ref)
+	if text.length() < 2 or not text.begins_with(ALIAS_PREFIX):
+		return false
+	for i: int in range(1, text.length()):
+		if not _ALIAS_CHARS.contains(text[i]):
+			return false
+	return true
+
+
+## Nom de l'alias sans « $ » (« $player_starter » → player_starter), &"" si [param ref]
+## n'est pas un alias bien formé.
+static func alias_name(ref: StringName) -> StringName:
+	return StringName(String(ref).substr(1)) if is_alias(ref) else &""
+
+
+## Alias utilisés par l'étape (acteur, cible, suiveur, voisin), sans « $ », dans cet ordre.
+func get_aliases() -> Array[StringName]:
+	var found: Array[StringName] = []
+	for ref: StringName in [actor, target, follower, near]:
+		var alias := alias_name(ref)
+		if not alias.is_empty() and not found.has(alias):
+			found.append(alias)
+	return found

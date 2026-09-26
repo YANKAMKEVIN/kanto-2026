@@ -1,6 +1,30 @@
 [gd_resource type="Theme" format=3]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_mql0s"]
+[sub_resource type="FontVariation" id="FontVariation_mql0s"]
+resource_name = "BoldDefault"
+variation_embolden = 0.6
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_17vax"]
+content_margin_left = 28.0
+content_margin_right = 28.0
+bg_color = Color(0.9607843, 0.77254903, 0.25882354, 1)
+corner_radius_top_left = 16
+corner_radius_top_right = 16
+corner_radius_bottom_right = 16
+corner_radius_bottom_left = 16
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_vcmj4"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_m63c3"]
+content_margin_left = 28.0
+content_margin_right = 28.0
+bg_color = Color(0.8509804, 0.6627451, 0.16470589, 1)
+corner_radius_top_left = 16
+corner_radius_top_right = 16
+corner_radius_bottom_right = 16
+corner_radius_bottom_left = 16
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_wr7xk"]
 content_margin_left = 44.0
 content_margin_top = 26.0
 content_margin_right = 44.0
@@ -18,15 +42,11 @@ corner_radius_bottom_left = 22
 shadow_color = Color(0, 0, 0, 0.35)
 shadow_size = 12
 
-[sub_resource type="FontVariation" id="FontVariation_17vax"]
-resource_name = "BoldDefault"
-variation_embolden = 0.6
-
-[sub_resource type="FontVariation" id="FontVariation_vcmj4"]
+[sub_resource type="FontVariation" id="FontVariation_h6x7e"]
 resource_name = "ItalicDefault"
 variation_transform = Transform2D(1, 0, 0.2, 1, 0, 0)
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_m63c3"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vafdm"]
 content_margin_left = 20.0
 content_margin_top = 8.0
 content_margin_right = 20.0
@@ -43,34 +63,148 @@ corner_radius_bottom_right = 128
 corner_radius_bottom_left = 128
 shadow_color = Color(0, 0, 0, 0.35)
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_l2lwl"]
+content_margin_left = 28.0
+content_margin_right = 28.0
+bg_color = Color(1, 1, 1, 0.08)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(1, 1, 1, 0.14)
+corner_radius_top_left = 16
+corner_radius_top_right = 16
+corner_radius_bottom_right = 16
+corner_radius_bottom_left = 16
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_m5fyw"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_u43wd"]
+content_margin_left = 28.0
+content_margin_right = 28.0
+bg_color = Color(0.9607843, 0.77254903, 0.25882354, 1)
+corner_radius_top_left = 16
+corner_radius_top_right = 16
+corner_radius_bottom_right = 16
+corner_radius_bottom_left = 16
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_l3qf4"]
+content_margin_left = 36.0
+content_margin_top = 36.0
+content_margin_right = 36.0
+content_margin_bottom = 36.0
+bg_color = Color(0.1, 0.14, 0.2, 0.82)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(1, 1, 1, 0.14)
+corner_radius_top_left = 16
+corner_radius_top_right = 16
+corner_radius_bottom_right = 16
+corner_radius_bottom_left = 16
+shadow_color = Color(0, 0, 0, 0.35)
+shadow_size = 12
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_4uvh1"]
+content_margin_left = 10.0
+content_margin_top = 6.0
+content_margin_right = 16.0
+content_margin_bottom = 6.0
+bg_color = Color(0.72156864, 0.76862746, 0.8392157, 1)
+corner_radius_top_left = 22
+corner_radius_top_right = 22
+corner_radius_bottom_right = 22
+corner_radius_bottom_left = 22
+
+[sub_resource type="FontVariation" id="FontVariation_ypf1s"]
+resource_name = "CaptionDefault"
+variation_embolden = 0.6
+spacing_glyph = 3
+
 [resource]
 default_font_size = 32
+AccentButton/base_type = &"Button"
+AccentButton/colors/font_color = Color(0.10980392, 0.10980392, 0.10980392, 1)
+AccentButton/colors/font_focus_color = Color(0.10980392, 0.10980392, 0.10980392, 1)
+AccentButton/colors/font_hover_color = Color(0.10980392, 0.10980392, 0.10980392, 1)
+AccentButton/colors/font_hover_pressed_color = Color(0.10980392, 0.10980392, 0.10980392, 1)
+AccentButton/colors/font_pressed_color = Color(0.10980392, 0.10980392, 0.10980392, 1)
+AccentButton/font_sizes/font_size = 36
+AccentButton/fonts/font = SubResource("FontVariation_mql0s")
+AccentButton/styles/disabled = SubResource("StyleBoxFlat_17vax")
+AccentButton/styles/focus = SubResource("StyleBoxEmpty_vcmj4")
+AccentButton/styles/hover = SubResource("StyleBoxFlat_17vax")
+AccentButton/styles/hover_pressed = SubResource("StyleBoxFlat_m63c3")
+AccentButton/styles/normal = SubResource("StyleBoxFlat_17vax")
+AccentButton/styles/pressed = SubResource("StyleBoxFlat_m63c3")
 DialogBox/base_type = &"PanelContainer"
-DialogBox/styles/panel = SubResource("StyleBoxFlat_mql0s")
+DialogBox/styles/panel = SubResource("StyleBoxFlat_wr7xk")
 DialogContinue/base_type = &"Label"
 DialogContinue/colors/font_color = Color(0.9607843, 0.77254903, 0.25882354, 1)
 DialogContinue/font_sizes/font_size = 48
-DialogContinue/fonts/font = SubResource("FontVariation_17vax")
+DialogContinue/fonts/font = SubResource("FontVariation_mql0s")
 DialogNarration/base_type = &"Label"
 DialogNarration/colors/font_color = Color(0.8666667, 0.8980392, 0.9411765, 1)
 DialogNarration/constants/line_spacing = 6
 DialogNarration/font_sizes/font_size = 32
-DialogNarration/fonts/font = SubResource("FontVariation_vcmj4")
+DialogNarration/fonts/font = SubResource("FontVariation_h6x7e")
 DialogSpeaker/base_type = &"Label"
 DialogSpeaker/colors/font_color = Color(0.9607843, 0.77254903, 0.25882354, 1)
 DialogSpeaker/font_sizes/font_size = 28
-DialogSpeaker/fonts/font = SubResource("FontVariation_17vax")
+DialogSpeaker/fonts/font = SubResource("FontVariation_mql0s")
 DialogText/base_type = &"Label"
 DialogText/colors/font_color = Color(1, 1, 1, 1)
 DialogText/constants/line_spacing = 6
 DialogText/font_sizes/font_size = 32
 InteractLabel/base_type = &"PanelContainer"
-InteractLabel/styles/panel = SubResource("StyleBoxFlat_m63c3")
+InteractLabel/styles/panel = SubResource("StyleBoxFlat_vafdm")
 InteractLabelText/base_type = &"Label"
 InteractLabelText/colors/font_color = Color(1, 1, 1, 1)
 InteractLabelText/font_sizes/font_size = 26
-InteractLabelText/fonts/font = SubResource("FontVariation_17vax")
+InteractLabelText/fonts/font = SubResource("FontVariation_mql0s")
 Label/colors/font_color = Color(1, 1, 1, 1)
+PanelButton/base_type = &"Button"
+PanelButton/colors/font_color = Color(1, 1, 1, 1)
+PanelButton/colors/font_focus_color = Color(1, 1, 1, 1)
+PanelButton/colors/font_hover_color = Color(1, 1, 1, 1)
+PanelButton/colors/font_hover_pressed_color = Color(0.10980392, 0.10980392, 0.10980392, 1)
+PanelButton/colors/font_pressed_color = Color(0.10980392, 0.10980392, 0.10980392, 1)
+PanelButton/font_sizes/font_size = 36
+PanelButton/fonts/font = SubResource("FontVariation_mql0s")
+PanelButton/styles/disabled = SubResource("StyleBoxFlat_l2lwl")
+PanelButton/styles/focus = SubResource("StyleBoxEmpty_m5fyw")
+PanelButton/styles/hover = SubResource("StyleBoxFlat_l2lwl")
+PanelButton/styles/hover_pressed = SubResource("StyleBoxFlat_u43wd")
+PanelButton/styles/normal = SubResource("StyleBoxFlat_l2lwl")
+PanelButton/styles/pressed = SubResource("StyleBoxFlat_u43wd")
+StarterSheet/base_type = &"PanelContainer"
+StarterSheet/styles/panel = SubResource("StyleBoxFlat_l3qf4")
+StarterSheetName/base_type = &"Label"
+StarterSheetName/colors/font_color = Color(1, 1, 1, 1)
+StarterSheetName/font_sizes/font_size = 44
+StarterSheetName/fonts/font = SubResource("FontVariation_mql0s")
+StarterSheetPhrase/base_type = &"Label"
+StarterSheetPhrase/colors/font_color = Color(0.8666667, 0.8980392, 0.9411765, 1)
+StarterSheetPhrase/font_sizes/font_size = 32
+StarterSheetPhrase/fonts/font = SubResource("FontVariation_h6x7e")
+TypeBadge/base_type = &"PanelContainer"
+TypeBadge/styles/panel = SubResource("StyleBoxFlat_4uvh1")
+TypeBadgeText/base_type = &"Label"
+TypeBadgeText/colors/font_color = Color(1, 1, 1, 1)
+TypeBadgeText/colors/font_shadow_color = Color(0, 0, 0, 0.45)
+TypeBadgeText/constants/shadow_offset_x = 0
+TypeBadgeText/constants/shadow_offset_y = 2
+TypeBadgeText/font_sizes/font_size = 24
+TypeBadgeText/fonts/font = SubResource("FontVariation_mql0s")
+WorldCaption/base_type = &"Label"
+WorldCaption/colors/font_color = Color(1, 1, 1, 1)
+WorldCaption/colors/font_shadow_color = Color(0, 0, 0, 0.45)
+WorldCaption/constants/shadow_offset_x = 0
+WorldCaption/constants/shadow_offset_y = 3
+WorldCaption/constants/shadow_outline_size = 12
+WorldCaption/font_sizes/font_size = 44
+WorldCaption/fonts/font = SubResource("FontVariation_ypf1s")
 ZoneTitleName/base_type = &"Label"
 ZoneTitleName/colors/font_color = Color(1, 1, 1, 1)
 ZoneTitleName/colors/font_shadow_color = Color(0, 0, 0, 0.45)
@@ -78,7 +212,7 @@ ZoneTitleName/constants/shadow_offset_x = 0
 ZoneTitleName/constants/shadow_offset_y = 2
 ZoneTitleName/constants/shadow_outline_size = 4
 ZoneTitleName/font_sizes/font_size = 44
-ZoneTitleName/fonts/font = SubResource("FontVariation_17vax")
+ZoneTitleName/fonts/font = SubResource("FontVariation_mql0s")
 ZoneTitleRegion/base_type = &"Label"
 ZoneTitleRegion/colors/font_color = Color(0.72156864, 0.76862746, 0.8392157, 1)
 ZoneTitleRegion/colors/font_shadow_color = Color(0, 0, 0, 0.45)

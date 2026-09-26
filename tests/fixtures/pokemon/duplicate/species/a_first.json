@@ -1,0 +1,8 @@
+{
+	"sprout": {
+		"dex": 1, "name": "Pousse", "types": ["grass"],
+		"base_stats": { "hp": 45, "atk": 49, "def": 49, "spa": 65, "spd": 65, "spe": 45 },
+		"male_ratio": 0.875, "growth_rate": "medium_slow", "base_exp": 64,
+		"learnset": [[1, "tackle"]]
+	}
+}

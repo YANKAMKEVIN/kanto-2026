@@ -3,6 +3,20 @@
 		"speaker": "Maya",
 		"variants": [
 			{
+				"if": ["rival_battle_done", "starter_female"],
+				"pages": [
+					"Alors, c'est elle que tu as choisi ?",
+					"Vous avez l'air de déjà bien vous entendre."
+				]
+			},
+			{
+				"if": ["rival_battle_done"],
+				"pages": [
+					"Alors, c'est lui que tu as choisi ?",
+					"Vous avez l'air de déjà bien vous entendre."
+				]
+			},
+			{
 				"if": ["oak_met"],
 				"pages": [
 					"Ah, le professeur est revenu.",
@@ -29,13 +43,77 @@
 			{ "speaker": "Prof. Chen", "text": "Et pourtant, tu es toujours là." }
 		]
 	},
+	"oak_starter_offer": {
+		"speaker": "Prof. Chen",
+		"pages": [
+			"Vous voulez tous les deux découvrir Kanto.",
+			"Mais découvrir ce monde seul serait une mauvaise idée.",
+			{ "text": "Eux aussi ont encore beaucoup à découvrir.", "turn": { "oak": "right" } },
+			{ "text": "Alors... pourquoi ne pas commencer ensemble ?", "turn": { "oak": "player" } }
+		]
+	},
+	"oak_starter_reciprocal": {
+		"speaker": "Prof. Chen",
+		"pages": ["On dirait que le choix est réciproque."]
+	},
+	"rival_starter_pick": {
+		"speaker": "Rival",
+		"pages": ["Alors ce sera toi."]
+	},
+	"rival_starter_smile": {
+		"speaker": "Rival",
+		"pages": ["Ça devrait être intéressant."]
+	},
+	"rival_challenge_wait": {
+		"speaker": "Rival",
+		"pages": ["Attends."]
+	},
+	"rival_challenge": {
+		"speaker": "Rival",
+		"pages": ["On ne va quand même pas partir sans savoir ce qu'ils savent faire."]
+	},
+	"oak_lab_exit_block": {
+		"speaker": "Prof. Chen",
+		"pages": ["Pas si vite. Tu n'as pas encore choisi ton partenaire."]
+	},
 	"oak_lab_waiting": {
 		"speaker": "Prof. Chen",
-		"pages": ["Un peu de patience. J'ai quelque chose à vous montrer."]
+		"variants": [
+			{
+				"if": ["rival_battle_done"],
+				"pages": [
+					"Le monde qui vous attend est bien plus vaste que Bourg Palette.",
+					"Prends le temps de l'observer. Les Pokémon ont beaucoup à nous apprendre."
+				]
+			},
+			{
+				"if": ["starter_chosen"],
+				"pages": ["On dirait que le choix est réciproque."]
+			},
+			{
+				"if": ["starter_offered"],
+				"pages": ["Prends ton temps.", "Choisis celui avec qui tu as envie de partir."]
+			},
+			{
+				"pages": ["Un peu de patience. J'ai quelque chose à vous montrer."]
+			}
+		]
 	},
 	"rival_lab_waiting": {
 		"speaker": "Rival",
-		"pages": ["Tu vois ? Je t'avais dit que j'étais prêt."]
+		"variants": [
+			{
+				"if": ["rival_challenged"],
+				"pages": ["On ne va quand même pas partir sans savoir ce qu'ils savent faire."]
+			},
+			{
+				"if": ["starter_offered"],
+				"pages": ["Tu comptes les regarder encore longtemps ?", "Dépêche-toi de choisir."]
+			},
+			{
+				"pages": ["Tu vois ? Je t'avais dit que j'étais prêt."]
+			}
+		]
 	},
 	"observe_bulbasaur": {
 		"speaker": "Bulbizarre",

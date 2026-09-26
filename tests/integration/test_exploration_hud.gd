@@ -215,6 +215,7 @@ func test_boot_shows_no_zone_title_in_bedroom() -> void:
 
 const VERB_LABELS: Dictionary[StringName, String] = {
 	&"talk": "PARLER", &"examine": "EXAMINER", &"observe": "OBSERVER", &"take": "PRENDRE",
+	&"meet": "RENCONTRER",
 }
 const MOVE_ACTIONS: Array[StringName] = [&"move_up", &"move_down", &"move_left", &"move_right"]
 
@@ -424,3 +425,128 @@ func test_boot_has_no_interact_button_in_bedroom() -> void:
 	add_child_autofree(boot)
 	var hud := boot.get_node(^"%ExplorationHud") as ExplorationHud
 	assert_false(hud.get_interact_button().visible, "aucun bouton sans cible")
+
+
+# --- RENCONTRER et légende sur le monde (jalon 4A, T2) -----------------------------------------
+
+const CAPTION_TEXT := "Choisis ton premier partenaire"
+
+
+func test_show_interact_meet_shows_rencontrer_with_meet_icon() -> void:
+	_hud.show_interact(&"meet")
+	var button := _hud.get_interact_button()
+	assert_true(button.visible)
+	assert_eq(button.get_verb(), &"meet")
+	assert_eq(button.get_label_text(), "RENCONTRER")
+	assert_eq(button.get_icon().resource_path, "res://assets/ui/icons/meet.svg")
+
+
+func test_meet_tag_inside_safe_margin_at_1920_and_2340() -> void:
+	for verb: StringName in VERB_LABELS:
+		_hud.show_interact(verb)
+		await wait_process_frames(1)
+		var button := _hud.get_interact_button()
+		var tag := button.get_tag()
+		# Pastille relative au centre du bouton, lui-même relatif au coin bas-droit.
+		var local := Rect2(tag.position, tag.size)
+		for width: float in SCREEN_WIDTHS:
+			var corner := Vector2(width, SCREEN_HEIGHT)
+			var center := corner - UiTokens.INTERACT_BUTTON_CENTER_FROM_CORNER
+			var rect := Rect2(center + local.position, local.size)
+			var inside := Rect2(Vector2.ONE * UiTokens.SAFE_MARGIN,
+				Vector2(width, SCREEN_HEIGHT) - Vector2.ONE * UiTokens.SAFE_MARGIN * 2.0)
+			assert_true(inside.encloses(rect),
+				"%s dans SAFE_MARGIN à %d (%s)" % [verb, width, rect])
+			assert_true(rect.position.x >= width * 0.5, "%s dans la moitié droite" % verb)
+
+
+func test_caption_hidden_at_start() -> void:
+	assert_false(_hud.get_caption().is_showing())
+
+
+func test_show_caption_uppercase_top_center_without_panel() -> void:
+	_hud.show_caption(CAPTION_TEXT)
+	var caption := _hud.get_caption()
+	assert_true(caption.is_showing())
+	assert_eq(caption.text, "CHOISIS TON PREMIER PARTENAIRE")
+	assert_true(caption.modulate.a < 1.0, "apparaît en fondu")
+	assert_eq(caption.mouse_filter, Control.MOUSE_FILTER_IGNORE)
+	# Sans rectangle : aucun fond de panneau (Label, stylebox normal vide ou transparent).
+	assert_true(caption is Label)
+	var box := caption.get_theme_stylebox(&"normal")
+	assert_true(box == null or box is StyleBoxEmpty
+		or (box is StyleBoxFlat and (box as StyleBoxFlat).bg_color.a == 0.0), "sans fond")
+	assert_eq(caption.get_child_count(), 0, "aucun panneau enfant")
+	assert_eq(caption.get_theme_font_size(&"font_size"), UiTokens.FONT_TITLE)
+	assert_eq(caption.get_theme_color(&"font_shadow_color"), UiTokens.TEXT_SHADOW)
+	assert_eq(Vector2(caption.anchor_left, caption.anchor_right), Vector2(0.5, 0.5))
+	await wait_process_frames(1)
+	var rect := caption.get_global_rect()
+	var width := (_hud.get_node(^"Root") as Control).size.x
+	assert_almost_eq(rect.get_center().x, width * 0.5, 1.0, "centrée")
+	assert_true(rect.position.y >= UiTokens.SAFE_MARGIN, "sous la marge haute")
+	assert_true(rect.end.y < SCREEN_HEIGHT * 0.3, "en haut")
+
+
+func test_caption_clear_of_zone_title_at_1920_and_2340() -> void:
+	_hud.show_zone_title("Bourg Palette", "Kanto")
+	_hud.show_caption(CAPTION_TEXT)
+	await wait_process_frames(1)
+	var title := _hud.get_zone_title()
+	var title_rect := Rect2(title.get_rest_position(), title.size)
+	var caption := _hud.get_caption()
+	for width: float in SCREEN_WIDTHS:
+		var caption_rect := Rect2(Vector2(width * 0.5 - caption.size.x * 0.5,
+			caption.offset_top), caption.size)
+		assert_false(caption_rect.intersects(title_rect), "pas de chevauchement (%d)" % width)
+		assert_true(caption_rect.position.x >= UiTokens.SAFE_MARGIN, "dans l'écran (%d)" % width)
+
+
+func test_caption_fades_holds_and_fades_out() -> void:
+	var caption := _hud.get_caption()
+	watch_signals(_hud)
+	var shown_alpha := {}
+	caption.caption_shown.connect(func() -> void: shown_alpha["a"] = caption.modulate.a)
+	_hud.show_caption(CAPTION_TEXT)
+	var elapsed := 0.0
+	var last_delta := 0.0
+	var seen_full := false
+	while caption.is_showing() and elapsed < 10.0:
+		await get_tree().process_frame
+		last_delta = get_process_delta_time()
+		elapsed += last_delta
+		if caption.modulate.a >= 0.999:
+			seen_full = true
+	assert_false(caption.is_showing(), "jamais permanente")
+	assert_true(seen_full, "pleinement visible pendant la tenue")
+	assert_almost_eq(shown_alpha.get("a", 0.0) as float, 1.0, 0.01)
+	var expected := UiTokens.CAPTION_FADE * 2.0 + UiTokens.CAPTION_HOLD
+	assert_almost_eq(elapsed, expected, last_delta * 1.5 + 0.001,
+		"caché après fondu + CAPTION_HOLD + fondu (%f s)" % elapsed)
+	assert_signal_emit_count(_hud, "caption_hidden", 1)
+
+
+func test_caption_timing_from_tokens() -> void:
+	var caption := _hud.get_caption()
+	assert_eq(caption.fade_duration, UiTokens.ANIM_PANEL)
+	assert_eq(caption.hold_duration, UiTokens.CAPTION_HOLD)
+	assert_almost_eq(UiTokens.CAPTION_HOLD, 3.0, 0.5, "≈ 3 s")
+
+
+func test_hide_caption_fades_quickly() -> void:
+	_hud.show_caption(CAPTION_TEXT)
+	await wait_process_frames(2)
+	watch_signals(_hud)
+	_hud.hide_caption()
+	assert_true(_hud.get_caption().is_showing(), "pas de disparition sèche")
+	var timing := await _time_until_hidden(_hud.get_caption())
+	assert_false(_hud.get_caption().is_showing())
+	assert_true(timing[0] - timing[1] <= UiTokens.ANIM_MICRO + timing[1] + 0.001)
+	await wait_process_frames(1)
+	assert_signal_emit_count(_hud, "caption_hidden", 1)
+
+
+func test_caption_independent_of_controls() -> void:
+	_hud.set_controls_visible(false)
+	_hud.show_caption(CAPTION_TEXT)
+	assert_true(_hud.get_caption().is_showing())
