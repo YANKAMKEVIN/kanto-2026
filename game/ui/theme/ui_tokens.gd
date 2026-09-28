@@ -406,3 +406,28 @@ const BATTLE_MESSAGE_HOLD := 0.9
 # Bouton rond « ‹ » (retour à la grille d'actions), sous la carte joueur.
 const BATTLE_BACK_SIZE := TOUCH_MIN
 const BATTLE_BACK_ICON := 56
+
+# --- Toast (bible UI/UX §6 : « Poké Balls ×5 — Ajoutées au Sac ») ---------------------------
+
+## Haut du toast (en haut au centre de l'écran, sous l'encoche ; non interactif).
+const TOAST_TOP := SAFE_MARGIN
+## Tenue entre l'apparition et la disparition (~2 s, jamais bloquant).
+const TOAST_HOLD := 2.0
+const TOAST_FADE_IN := 0.24
+const TOAST_FADE_OUT := 0.3
+## Glissement depuis le haut pendant l'apparition (et vers le haut à la disparition).
+const TOAST_SLIDE := 24.0
+## Capsule sombre translucide, comme la boîte de dialogue.
+const TOAST_BG := DIALOG_PANEL_BG
+const TOAST_RADIUS := 40
+const TOAST_PAD_LEFT := 20
+const TOAST_PAD_RIGHT := 40
+const TOAST_PAD_V := 12
+const TOAST_ICON := 56
+const TOAST_GAP := GAP
+## Écart vertical entre le titre et le détail.
+const TOAST_LINE_GAP := -4
+const TOAST_TITLE_FONT := FONT_BODY
+const TOAST_DETAIL_FONT := FONT_CAPTION
+## Vibration « tic » à l'apparition (ramasser un objet, bible §12) : plus légère qu'un appui.
+const HAPTIC_TICK_MS := 10

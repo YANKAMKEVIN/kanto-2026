@@ -1,6 +1,6 @@
 class_name ExplorationHud
 extends CanvasLayer
-## HUD d'exploration (CanvasLayer HUD) : titre de zone, légende sur le monde, joystick
+## HUD d'exploration (CanvasLayer HUD) : titre de zone, légende sur le monde, toast, joystick
 ## flottant, bouton courir, bouton contextuel.
 ##
 ## Il ne connaît ni le joueur ni la carte : le joystick, le bouton courir et le bouton
@@ -9,7 +9,8 @@ extends CanvasLayer
 ## appelle show_interact(verbe) / hide_interact().
 ## Placement (aspect expand, 1920 à 2340 de large) : titre ancré en haut à gauche,
 ## joystick sur tout l'écran (apparition dans la moitié gauche), bouton courir et bouton
-## contextuel ancrés au coin bas-droit, légende au milieu du bord haut (sous le titre).
+## contextuel ancrés au coin bas-droit, légende au milieu du bord haut (sous le titre),
+## toast en haut au centre (au-dessus de la légende).
 
 ## Le titre de zone vient de disparaître (fin de son maintien ou hide_zone_title()).
 signal title_hidden
@@ -18,6 +19,7 @@ signal caption_hidden
 
 @onready var _zone_title: ZoneTitle = %ZoneTitle
 @onready var _caption: WorldCaption = %WorldCaption
+@onready var _toast: Toast = %Toast
 @onready var _joystick: TouchJoystick = %VirtualJoystick
 const MOVE_ACTIONS: Array[StringName] = [&"move_up", &"move_down", &"move_left", &"move_right"]
 
@@ -66,6 +68,13 @@ func show_caption(text: String) -> void:
 ## Efface la légende en ANIM_MICRO (changement de carte…) ; émet caption_hidden.
 func hide_caption() -> void:
 	_caption.hide_now()
+
+
+## Toast « [param title] — [param detail] » (« Poké Balls ×5 » / « Ajoutées au Sac ») en haut
+## au centre, ~2 s, vibration « tic » ; il n'interrompt rien et n'intercepte aucun toucher.
+## Indépendant des contrôles : il s'affiche aussi pendant une scène (contrôles cachés).
+func show_toast(title: String, detail: String) -> void:
+	_toast.show_toast(title, detail)
 
 
 ## Fait apparaître le bouton contextuel avec [param verb] (&"talk" → PARLER, &"examine" →
@@ -121,6 +130,10 @@ func get_zone_title() -> ZoneTitle:
 
 func get_caption() -> WorldCaption:
 	return _caption
+
+
+func get_toast() -> Toast:
+	return _toast
 
 
 func get_joystick() -> TouchJoystick:

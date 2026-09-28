@@ -280,6 +280,20 @@ func test_battle_move_and_message_variations_match_tokens() -> void:
 	assert_eq(theme.get_font_size(&"font_size", &"BattleMessageText"), UiTokens.FONT_BODY)
 
 
+func test_toast_variations_match_tokens() -> void:
+	var theme := load(THEME_PATH) as Theme
+	assert_eq(theme.get_type_variation_base(&"Toast"), &"PanelContainer")
+	var capsule := theme.get_stylebox(&"panel", &"Toast") as StyleBoxFlat
+	assert_eq(capsule.bg_color, UiTokens.TOAST_BG)
+	assert_eq(capsule.corner_radius_top_left, UiTokens.TOAST_RADIUS)
+	assert_eq(capsule.get_content_margin(SIDE_LEFT), float(UiTokens.TOAST_PAD_LEFT))
+	assert_eq(theme.get_font_size(&"font_size", &"ToastTitle"), UiTokens.TOAST_TITLE_FONT)
+	assert_not_null(theme.get_font(&"font", &"ToastTitle") as FontVariation, "titre gras")
+	assert_eq(theme.get_color(&"font_color", &"ToastDetail"), UiTokens.TEXT_MUTED)
+	assert_almost_eq(UiTokens.TOAST_HOLD, 2.0, 0.001, "~2 s (bible §6)")
+	assert_true(UiTokens.TOAST_TOP >= UiTokens.SAFE_MARGIN)
+
+
 func _ui_files(dir: String = UI_DIR) -> Array[String]:
 	var files: Array[String] = []
 	for file: String in DirAccess.get_files_at(dir):

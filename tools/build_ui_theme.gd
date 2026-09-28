@@ -38,6 +38,9 @@ extends SceneTree
 ##   MoveDetailSheet  PanelContainer  fiche de pression longue
 ##   MoveDetailName / MoveDetailCaption / MoveDetailValue / MoveDetailText   Label
 ##   BattleMessage    PanelContainer  bandeau des messages ; BattleMessageText   Label
+## Notifications :
+##   Toast            PanelContainer  capsule du toast (bible UI/UX §6)
+##   ToastTitle / ToastDetail   Label  « Poké Balls ×5 » (gras) / « Ajoutées au Sac » (discret)
 ## tests/unit/test_ui_theme.gd vérifie que le fichier est à jour avec les tokens.
 
 const TOKENS_PATH: String = "res://game/ui/theme/ui_tokens.gd"
@@ -95,6 +98,7 @@ func _init() -> void:
 	_add_battle_actions(theme, bold, t)
 	_add_battle_moves(theme, bold, t)
 	_add_battle_messages(theme, t)
+	_add_toast(theme, bold, t)
 
 	var err := ResourceSaver.save(theme, THEME_PATH)
 	print("ui_theme.tres : ", error_string(err))
@@ -419,3 +423,16 @@ func _add_battle_messages(theme: Theme, t: GDScript) -> void:
 	theme.set_stylebox(&"panel", &"BattleMessage", banner)
 	_add_plain_label(theme, &"BattleMessageText", t.FONT_BODY, t.TEXT, null)
 	theme.set_constant(&"line_spacing", &"BattleMessageText", t.DIALOG_LINE_SPACING)
+
+
+## Toast (bible UI/UX §6) : capsule sombre translucide, titre gras, détail discret.
+func _add_toast(theme: Theme, bold: Font, t: GDScript) -> void:
+	var capsule := _panel_style(t.TOAST_BG, t.TOAST_RADIUS, t)
+	capsule.set_content_margin(SIDE_LEFT, t.TOAST_PAD_LEFT)
+	capsule.set_content_margin(SIDE_RIGHT, t.TOAST_PAD_RIGHT)
+	capsule.set_content_margin(SIDE_TOP, t.TOAST_PAD_V)
+	capsule.set_content_margin(SIDE_BOTTOM, t.TOAST_PAD_V)
+	theme.set_type_variation(&"Toast", &"PanelContainer")
+	theme.set_stylebox(&"panel", &"Toast", capsule)
+	_add_plain_label(theme, &"ToastTitle", t.TOAST_TITLE_FONT, t.TEXT, bold)
+	_add_plain_label(theme, &"ToastDetail", t.TOAST_DETAIL_FONT, t.TEXT_MUTED, null)

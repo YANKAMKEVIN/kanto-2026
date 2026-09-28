@@ -490,6 +490,24 @@ shadow_color = Color(0, 0, 0, 0.35)
 shadow_size = 12
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_8fm2f"]
+content_margin_left = 20.0
+content_margin_top = 12.0
+content_margin_right = 40.0
+content_margin_bottom = 12.0
+bg_color = Color(0.06, 0.09, 0.13, 0.88)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(1, 1, 1, 0.14)
+corner_radius_top_left = 40
+corner_radius_top_right = 40
+corner_radius_bottom_right = 40
+corner_radius_bottom_left = 40
+shadow_color = Color(0, 0, 0, 0.35)
+shadow_size = 12
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0us4p"]
 content_margin_left = 10.0
 content_margin_top = 6.0
 content_margin_right = 16.0
@@ -500,7 +518,7 @@ corner_radius_top_right = 22
 corner_radius_bottom_right = 22
 corner_radius_bottom_left = 22
 
-[sub_resource type="FontVariation" id="FontVariation_0us4p"]
+[sub_resource type="FontVariation" id="FontVariation_sfovc"]
 resource_name = "CaptionDefault"
 variation_embolden = 0.6
 spacing_glyph = 3
@@ -703,8 +721,17 @@ StarterSheetPhrase/base_type = &"Label"
 StarterSheetPhrase/colors/font_color = Color(0.8666667, 0.8980392, 0.9411765, 1)
 StarterSheetPhrase/font_sizes/font_size = 32
 StarterSheetPhrase/fonts/font = SubResource("FontVariation_fp6ug")
+Toast/base_type = &"PanelContainer"
+Toast/styles/panel = SubResource("StyleBoxFlat_8fm2f")
+ToastDetail/base_type = &"Label"
+ToastDetail/colors/font_color = Color(0.72156864, 0.76862746, 0.8392157, 1)
+ToastDetail/font_sizes/font_size = 24
+ToastTitle/base_type = &"Label"
+ToastTitle/colors/font_color = Color(1, 1, 1, 1)
+ToastTitle/font_sizes/font_size = 32
+ToastTitle/fonts/font = SubResource("FontVariation_mql0s")
 TypeBadge/base_type = &"PanelContainer"
-TypeBadge/styles/panel = SubResource("StyleBoxFlat_8fm2f")
+TypeBadge/styles/panel = SubResource("StyleBoxFlat_0us4p")
 TypeBadgeText/base_type = &"Label"
 TypeBadgeText/colors/font_color = Color(1, 1, 1, 1)
 TypeBadgeText/colors/font_shadow_color = Color(0, 0, 0, 0.45)
@@ -719,7 +746,7 @@ WorldCaption/constants/shadow_offset_x = 0
 WorldCaption/constants/shadow_offset_y = 3
 WorldCaption/constants/shadow_outline_size = 12
 WorldCaption/font_sizes/font_size = 44
-WorldCaption/fonts/font = SubResource("FontVariation_0us4p")
+WorldCaption/fonts/font = SubResource("FontVariation_sfovc")
 ZoneTitleName/base_type = &"Label"
 ZoneTitleName/colors/font_color = Color(1, 1, 1, 1)
 ZoneTitleName/colors/font_shadow_color = Color(0, 0, 0, 0.45)

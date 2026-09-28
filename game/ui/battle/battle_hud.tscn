@@ -1,0 +1,50 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://game/ui/battle/battle_hud.gd" id="1_hud"]
+[ext_resource type="PackedScene" path="res://game/ui/battle/battle_info_card.tscn" id="2_card"]
+[ext_resource type="PackedScene" path="res://game/ui/battle/party_pips.tscn" id="3_pips"]
+[ext_resource type="PackedScene" path="res://game/ui/battle/battle_message_banner.tscn" id="4_banner"]
+[ext_resource type="PackedScene" path="res://game/ui/battle/action_grid.tscn" id="5_actions"]
+[ext_resource type="PackedScene" path="res://game/ui/battle/move_grid.tscn" id="6_moves"]
+[ext_resource type="PackedScene" path="res://game/ui/battle/battle_back_button.tscn" id="7_back"]
+
+[node name="BattleHud" type="CanvasLayer"]
+script = ExtResource("1_hud")
+
+[node name="Screen" type="Control" parent="."]
+unique_name_in_owner = true
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="FoeCard" parent="Screen" instance=ExtResource("2_card")]
+unique_name_in_owner = true
+layout_mode = 1
+
+[node name="OwnCard" parent="Screen" instance=ExtResource("2_card")]
+unique_name_in_owner = true
+layout_mode = 1
+
+[node name="PartyPips" parent="Screen" instance=ExtResource("3_pips")]
+unique_name_in_owner = true
+layout_mode = 1
+
+[node name="MessageBanner" parent="Screen" instance=ExtResource("4_banner")]
+unique_name_in_owner = true
+layout_mode = 1
+
+[node name="ActionGrid" parent="Screen" instance=ExtResource("5_actions")]
+unique_name_in_owner = true
+layout_mode = 1
+
+[node name="MoveGrid" parent="Screen" instance=ExtResource("6_moves")]
+unique_name_in_owner = true
+layout_mode = 1
+
+[node name="BackButton" parent="Screen" instance=ExtResource("7_back")]
+unique_name_in_owner = true
+layout_mode = 1
