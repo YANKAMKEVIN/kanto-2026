@@ -1,6 +1,6 @@
 # État du projet — note de passage
 
-Mis à jour : 2026-09-26 (**jalon 4A validé par Kevin et fusionné dans `main`** ; branche `jalon-04b` : interface de combat fusionnée, **plan du 4B aligné et fondations posées** (`jalon-04.md` §14) ; plan du jalon 5 et dossier Route 1 sur `plan-jalon-05`).
+Mis à jour : 2026-09-28 (**jalon 4B en cours sur la branche `jalon-04b`** : alignement, T6 et T7 faits ; **reste T8 puis T9**).
 
 ## Fait
 - Outillage : Godot 4.7.2, export Android vérifié sur le S24, GUT 9.7.1, scripts `tools/`.
@@ -55,9 +55,21 @@ Mis à jour : 2026-09-26 (**jalon 4A validé par Kevin et fusionné dans `main`*
 - Le **Mac** (S24 en USB) récupère la branche, fait les captures (Movie Maker a besoin d'un écran), `tools/deploy_s24.sh` et la QA (`qa-mobile`), puis fusionne après validation de Kevin.
 - Une seule session à la fois sur une même branche.
 
-## Prochaine étape
-1. **Jalon 4B — le premier combat**, branche `jalon-04b` (plan : `jalon-04.md` §14.11) : **T6** vue de combat dans le labo recomposé (constructeur-monde, S24 avant l'UI) → **T7** `BattleHud` et toast (ui-mobile) → **T8** `BattleDirector`, étapes `battle` / `give`, suite de la scène, dialogues, câblage (constructeur-monde) → **T9** QA S24 (Mac).
-2. **Jalon 5** — plan `docs/tech/jalon-05.md` et `docs/design/dossier-07-route-1.md` sur `plan-jalon-05` ; ordre : 5A carte → 5B rencontre → 5C XP → **sauvegarde** → 5D capture.
+## Point de reprise (2026-09-28) — à lire en premier
+**Branche de travail : `jalon-04b`** (poussée sur GitHub ; partie de `main` avec le 4A validé, plus `jalon-04b-ui`). **1135 tests verts**, import propre.
+Fait sur `jalon-04b` :
+- Alignement du plan et fondations logiques du 4B : `docs/tech/jalon-04.md` **§14** (interfaces exactes `BattleDirector`, `BattleStage`, `BattleLayout`, étapes `battle` / `give`, drapeaux, JSON complet de la suite de `starter.json`, dialogues mot pour mot, tâches T6–T9) ; `BattlePlayback`, `BattleViews`, `BattleConclusion`, sac et objets (`data/items/items.json`), `GameState.bag`.
+- **T6** : vue de combat dans le vrai labo (`game/battle/battle_stage.*`, `battle_layout.gd`, shader de voile/flou, sprites de combat provisoires, scénario de capture `battle_stage`). Captures : `build/captures/jalon04b_t6/` (non versionnées). **Composition à faire valider par Kevin** (décision n° 17 : effet caméra, labo reconnaissable).
+- **T7** : `BattleHud` (`game/ui/battle/battle_hud.gd`, enum `BattleHud.Side`) et toast (`game/ui/components/toast.*`, `ExplorationHud.show_toast`). Captures : `build/captures/jalon04b_t7/`.
+Reste :
+1. **T8 (constructeur-monde)** : `BattleDirector` qui rejoue le journal du moteur avec `BattleStage` + `BattleHud` ; lecture des étapes `battle` et `give` par le `CutsceneDirector` ; mise à jour de `data/cutscenes/starter.json`, `data/dialogues/oak_lab.json`, `data/npcs/oak_lab.json` selon `jalon-04.md` §14.7–§14.9 ; câblage de `Boot`. Décisions de Kevin à appliquer : **§8 n° 1 à 17** (en particulier n° 17 : **pas de « Le Rival veut se battre ! »** au premier combat, Chen soigne en silence, le rival regarde brièvement son Pokémon / sa Ball sur « On a encore du travail. », starter dans sa Ball tout à la fin) ; **5 Poké Balls** de Chen (dossier 07 §8) avec toast ; **suppression des répliques répétées de fin de 4A**.
+2. **T9 (qa-mobile, sur le Mac avec le S24)** : QA complète du 4B, victoire **et** défaite forcée, aucune réplique du 4A qui revient.
+3. Validation de Kevin → fusion de `jalon-04b` dans `main`.
+4. Puis **jalon 5** : plan `docs/tech/jalon-05.md` et `docs/design/dossier-07-route-1.md` sur la branche `plan-jalon-05` ; ordre 5A carte → 5B rencontre → 5C XP → **sauvegarde** → 5D capture.
+
+Questions ouvertes du T7 (valeurs appliquées si Kevin ne dit rien) : temps vide de ~0,2 s entre deux zones du bas de la HUD (ou fondu enchaîné) ; toast en haut au centre, capsule sombre, 2 s ; pastilles d'équipe qui sortent avec la carte au K.O.
+
+Organisation des sessions : pour économiser le contexte, **une session courte par jalon ou par tâche** ; les agents tournent un à la fois si la limite d'utilisation est atteinte (limites de session et hebdomadaire rencontrées le 2026-09-27/28).
 
 ## Décisions de Kevin sur le 4A (après correction, 2026-09-26)
 Validé tel quel : recul d'un pas du joueur sans se retourner (effet « moonwalk » accepté en provisoire), starter de Bulbizarre en diagonale, léger chevauchement de la paillasse avec Salamèche.
