@@ -394,3 +394,20 @@ func test_lab_fits_the_screen() -> void:
 	assert_eq(rect, Rect2i(0, 0, 1536, 1056))
 	assert_true(CameraFraming.is_static(rect, Vector2(2340, 1080)))
 	assert_true(CameraFraming.is_static(rect, Vector2(1920, 1080)))
+
+
+## Arène du combat du labo (jalon-04.md §14.4) : le tapis Poké Ball, 4 × 3 cases en (6, 5),
+## sol dégagé ; les autres pièces n'en ont pas.
+func test_lab_battle_arena_is_the_pokeball_rug() -> void:
+	var lab: GameMap = _maps[&"oak_lab"]
+	assert_eq(lab.battle_arena, Rect2i(6, 5, 4, 3))
+	assert_eq(lab.get_battle_arena_rect(), Rect2(576, 480, 384, 288))
+	var rug := lab.get_node(^"Detail/RugPokeball") as WorldProp
+	assert_true(lab.battle_arena.has_point(rug.get_anchor_cell()), "le tapis est dans l'arène")
+	for y: int in range(5, 8):
+		for x: int in range(6, 10):
+			assert_false(lab.get_grid().is_solid(Vector2i(x, y)), "arène dégagée %s" % [
+				Vector2i(x, y)])
+	for map_id: StringName in _maps:
+		if map_id != &"oak_lab":
+			assert_false((_maps[map_id] as GameMap).get_battle_arena_rect().has_area(), map_id)
