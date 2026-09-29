@@ -1,0 +1,70 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://game/ui/battle/battle_info_card.gd" id="1_card"]
+[ext_resource type="PackedScene" path="res://game/ui/battle/hp_bar.tscn" id="2_bar"]
+
+[node name="BattleInfoCard" type="Control"]
+mouse_filter = 2
+script = ExtResource("1_card")
+
+[node name="Body" type="PanelContainer" parent="."]
+unique_name_in_owner = true
+layout_mode = 0
+mouse_filter = 2
+theme_type_variation = &"BattleCard"
+
+[node name="Rows" type="VBoxContainer" parent="Body"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 4
+mouse_filter = 2
+
+[node name="Header" type="HBoxContainer" parent="Body/Rows"]
+unique_name_in_owner = true
+layout_mode = 2
+mouse_filter = 2
+
+[node name="NameLabel" type="Label" parent="Body/Rows/Header"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 4
+theme_type_variation = &"BattleCardName"
+text = "SALAMÈCHE"
+
+[node name="Gender" type="TextureRect" parent="Body/Rows/Header"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 4
+mouse_filter = 2
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Spacer" type="Control" parent="Body/Rows/Header"]
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 2
+
+[node name="LevelTag" type="Label" parent="Body/Rows/Header"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 4
+theme_type_variation = &"BattleCardLevel"
+text = "Nv."
+
+[node name="LevelValue" type="Label" parent="Body/Rows/Header"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 4
+theme_type_variation = &"BattleCardLevelValue"
+text = "5"
+
+[node name="HpBar" parent="Body/Rows" instance=ExtResource("2_bar")]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="HpNumbers" type="Label" parent="Body/Rows"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"BattleCardHp"
+text = "19 / 19"
+horizontal_alignment = 2

@@ -34,6 +34,9 @@ const _NPC_SCENE: PackedScene = preload("res://game/world/npc/npc.tscn")
 @export var blocked_cells: Array[Vector2i] = []
 ## Intérieur (maison, labo) : pas de titre de zone à l'entrée (voir ZoneAnnouncer).
 @export var interior: bool = false
+## Arène de combat, en cases (jalon-04.md §14.4) : sol dégagé que la vue de combat met entre
+## les deux Pokémon (le tapis central du labo). Vide : cadrage sur les combattants.
+@export var battle_arena: Rect2i = Rect2i()
 ## Dossier des fichiers de PNJ (`<map_id>.json`) ; les tests pointent sur leurs données.
 @export var npcs_dir: String = NpcRoster.DATA_DIR
 
@@ -167,6 +170,14 @@ func get_npc(id: StringName) -> Npc:
 ## Rectangle monde de la carte, en pixels de référence (limites de caméra).
 func get_pixel_rect() -> Rect2i:
 	return Grid.map_pixel_rect(size)
+
+
+## Arène de combat en pixels monde (vide si la carte n'en a pas).
+func get_battle_arena_rect() -> Rect2:
+	if not battle_arena.has_area():
+		return Rect2()
+	return Rect2(Vector2(battle_arena.position * Grid.TILE_SIZE),
+		Vector2(battle_arena.size * Grid.TILE_SIZE))
 
 
 ## Case d'un point d'apparition (Marker2D enfant de `Spawns`), ou (-1, -1) s'il manque.

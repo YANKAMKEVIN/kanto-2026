@@ -3,7 +3,8 @@ extends Node
 ##
 ## 3A (docs/tech/jalon-03.md §2.6) : drapeaux d'histoire (« Maman a déjà parlé »).
 ## Jalon 4 (docs/tech/jalon-04.md §3.9) : équipe du joueur, espèce de son starter et
-## aléatoire à graine de la partie. Pas de sauvegarde : quitter l'application recommence la
+## aléatoire à graine de la partie. Jalon 4B (jalon-04.md §14.6) : le Sac (les 5 Poké Balls
+## données par le Prof. Chen). Pas de sauvegarde : quitter l'application recommence la
 ## partie.
 ## Il ne connaît aucun autre autoload. Les systèmes qui lisent l'état (dialogues, scènes,
 ## choix du starter) le reçoivent par injection et restent testables avec des instances
@@ -18,12 +19,15 @@ var party: Party = Party.new()
 var starter_species: StringName = &""
 ## Aléatoire de la partie (remplacé par [method new_game] : nouvelle graine).
 var rng: GameRng = GameRng.new()
+## Sac du joueur (même instance pendant toute la session : vidé par [method new_game]).
+var bag: Bag = Bag.new()
 
 
-## Nouvelle partie (appelé par Boot au démarrage) : drapeaux baissés, équipe vide, pas de
-## starter, aléatoire neuf de graine [param rng_seed] (−1 = graine tirée au hasard).
+## Nouvelle partie (appelé par Boot au démarrage) : drapeaux baissés, équipe et Sac vides,
+## pas de starter, aléatoire neuf de graine [param rng_seed] (−1 = graine tirée au hasard).
 func new_game(rng_seed: int = -1) -> void:
 	flags.clear()
 	party.clear()
+	bag.clear()
 	starter_species = &""
 	rng = GameRng.new(rng_seed)

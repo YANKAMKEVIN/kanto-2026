@@ -1,6 +1,7 @@
 extends GutTest
 ## Autoload GameState (jalon 3A §2.6) : drapeaux de la session, nouvelle partie, aucune
 ## dépendance à un autre autoload. Jalon 4 (§3.9, T1) : équipe, starter, aléatoire à graine.
+## Jalon 4B (§14.6) : le Sac.
 
 const SCRIPT_PATH := "res://game/autoload/game_state.gd"
 
@@ -69,6 +70,17 @@ func test_new_game_clears_party_and_starter() -> void:
 	assert_eq(state.party.size(), 0, "équipe vide")
 	assert_same(state.party, party, "même instance d'équipe (injectée)")
 	assert_eq(state.starter_species, &"", "pas de starter")
+
+
+func test_starts_with_an_empty_bag_and_new_game_empties_it() -> void:
+	var state := _make()
+	assert_true(state.bag is Bag)
+	assert_true(state.bag.is_empty())
+	var bag: Bag = state.bag
+	state.bag.add(&"poke_ball", 5)
+	state.new_game()
+	assert_true(state.bag.is_empty(), "Sac vide")
+	assert_same(state.bag, bag, "même instance de Sac (injectée)")
 
 
 func test_new_game_changes_the_seed() -> void:

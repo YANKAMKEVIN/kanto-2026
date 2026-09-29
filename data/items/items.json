@@ -1,0 +1,7 @@
+{
+	"poke_ball": {
+		"name": "Poké Ball", "plural": "Poké Balls", "feminine": true,
+		"category": "ball", "catch_bonus": 1,
+		"description": "Permet de capturer un Pokémon sauvage.", "draft": true
+	}
+}

@@ -1,0 +1,45 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://game/ui/components/toast.gd" id="1_toast"]
+
+[node name="Toast" type="Control"]
+layout_mode = 3
+mouse_filter = 2
+script = ExtResource("1_toast")
+
+[node name="Body" type="PanelContainer" parent="."]
+unique_name_in_owner = true
+layout_mode = 0
+mouse_filter = 2
+theme_type_variation = &"Toast"
+
+[node name="Row" type="HBoxContainer" parent="Body"]
+unique_name_in_owner = true
+layout_mode = 2
+mouse_filter = 2
+
+[node name="Icon" type="TextureRect" parent="Body/Row"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 4
+mouse_filter = 2
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Lines" type="VBoxContainer" parent="Body/Row"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 4
+mouse_filter = 2
+
+[node name="Title" type="Label" parent="Body/Row/Lines"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"ToastTitle"
+text = "Poké Balls ×5"
+
+[node name="Detail" type="Label" parent="Body/Row/Lines"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"ToastDetail"
+text = "Ajoutées au Sac"

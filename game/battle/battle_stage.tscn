@@ -1,0 +1,57 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://game/battle/battle_stage.gd" id="1_stage"]
+[ext_resource type="Shader" path="res://game/battle/battle_backdrop.gdshader" id="2_backdrop"]
+[ext_resource type="Texture2D" path="res://assets/sprites/pokemon/placeholder/battle_shadow.png" id="3_shadow"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_backdrop"]
+shader = ExtResource("2_backdrop")
+
+[node name="BattleStage" type="CanvasLayer"]
+layer = 5
+script = ExtResource("1_stage")
+
+[node name="Backdrop" type="ColorRect" parent="."]
+unique_name_in_owner = true
+visible = false
+material = SubResource("ShaderMaterial_backdrop")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="FoeShadow" type="Sprite2D" parent="."]
+unique_name_in_owner = true
+visible = false
+texture_filter = 1
+texture = ExtResource("3_shadow")
+
+[node name="FoeSprite" type="Sprite2D" parent="."]
+unique_name_in_owner = true
+visible = false
+texture_filter = 1
+offset = Vector2(0, -32)
+
+[node name="PlayerShadow" type="Sprite2D" parent="."]
+unique_name_in_owner = true
+visible = false
+texture_filter = 1
+texture = ExtResource("3_shadow")
+
+[node name="PlayerSprite" type="Sprite2D" parent="."]
+unique_name_in_owner = true
+visible = false
+texture_filter = 1
+offset = Vector2(0, -32)
+
+[node name="Flash" type="ColorRect" parent="."]
+unique_name_in_owner = true
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(1, 1, 1, 0)

@@ -16,5 +16,5 @@
 		"hop_style": "playful", "unless": ["taken_squirtle"]
 	},
 	"oak": { "cell": [8, 4], "facing": "down", "sprite": "oak", "dialogue": "oak_lab_waiting", "if": ["oak_met"] },
-	"rival": { "cell": [9, 6], "facing": "right", "sprite": "rival", "dialogue": "rival_lab_waiting", "if": ["oak_met"] }
+	"rival": { "cell": [9, 6], "facing": "right", "sprite": "rival", "dialogue": "rival_lab_waiting", "if": ["oak_met"], "unless": ["rival_left_lab"] }
 }

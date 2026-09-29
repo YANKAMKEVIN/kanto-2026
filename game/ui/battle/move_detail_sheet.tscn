@@ -1,0 +1,94 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://game/ui/battle/move_detail_sheet.gd" id="1_sheet"]
+[ext_resource type="PackedScene" path="res://game/ui/components/type_badge.tscn" id="2_badge"]
+
+[node name="MoveDetailSheet" type="Control"]
+mouse_filter = 2
+script = ExtResource("1_sheet")
+
+[node name="Body" type="PanelContainer" parent="."]
+unique_name_in_owner = true
+layout_mode = 0
+mouse_filter = 2
+theme_type_variation = &"MoveDetailSheet"
+
+[node name="Content" type="VBoxContainer" parent="Body"]
+unique_name_in_owner = true
+layout_mode = 2
+mouse_filter = 2
+
+[node name="Header" type="HBoxContainer" parent="Body/Content"]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="NameLabel" type="Label" parent="Body/Content/Header"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_type_variation = &"MoveDetailName"
+text = "GRIFFE"
+
+[node name="Badge" parent="Body/Content/Header" instance=ExtResource("2_badge")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 4
+
+[node name="Category" type="Label" parent="Body/Content"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"MoveDetailCaption"
+text = "Physique"
+
+[node name="Stats" type="HBoxContainer" parent="Body/Content"]
+unique_name_in_owner = true
+layout_mode = 2
+mouse_filter = 2
+
+[node name="Power" type="VBoxContainer" parent="Body/Content/Stats"]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="PowerCaption" type="Label" parent="Body/Content/Stats/Power"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"MoveDetailCaption"
+
+[node name="PowerValue" type="Label" parent="Body/Content/Stats/Power"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"MoveDetailValue"
+
+[node name="Accuracy" type="VBoxContainer" parent="Body/Content/Stats"]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="AccuracyCaption" type="Label" parent="Body/Content/Stats/Accuracy"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"MoveDetailCaption"
+
+[node name="AccuracyValue" type="Label" parent="Body/Content/Stats/Accuracy"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"MoveDetailValue"
+
+[node name="Pp" type="VBoxContainer" parent="Body/Content/Stats"]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="PpCaption" type="Label" parent="Body/Content/Stats/Pp"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"MoveDetailCaption"
+
+[node name="PpValue" type="Label" parent="Body/Content/Stats/Pp"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"MoveDetailValue"
+
+[node name="Description" type="Label" parent="Body/Content"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"MoveDetailText"
+autowrap_mode = 3

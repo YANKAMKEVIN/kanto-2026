@@ -30,17 +30,17 @@ const DRAFTS: Array[StringName] = [&"sign_pallet_town"]
 ## panneau ; (3B) « Hé ! Attends ! », les répliques du Prof. Chen et la pensée des herbes ;
 ## (4A, T1) la proposition du Prof. Chen ; (4A, T3) le choix et la sortie empêchée.
 const IDS: Array[StringName] = [
-	&"aoki", &"breakfast_table", &"haru", &"leo", &"maya", &"mom", &"oak_lab_exit_block",
-	&"oak_lab_reunion", &"oak_lab_waiting", &"oak_route1_call", &"oak_route1_warning",
-	&"oak_starter_offer", &"oak_starter_reciprocal", &"observe_bulbasaur",
-	&"observe_charmander", &"observe_squirtle", &"rival", &"rival_challenge",
-	&"rival_challenge_wait", &"rival_kanto_map", &"rival_lab_waiting", &"rival_starter_pick",
-	&"rival_starter_smile", &"route1_grass_thought", &"sign_pallet_town",
+	&"aoki", &"breakfast_table", &"haru", &"leo", &"maya", &"mom", &"oak_after_battle",
+	&"oak_lab_exit_block", &"oak_lab_reunion", &"oak_lab_waiting", &"oak_poke_balls",
+	&"oak_poke_balls_intro", &"oak_route1_call", &"oak_route1_warning", &"oak_starter_offer",
+	&"oak_starter_reciprocal", &"observe_bulbasaur", &"observe_charmander", &"observe_squirtle",
+	&"rival", &"rival_challenge", &"rival_challenge_wait", &"rival_kanto_map",
+	&"rival_lab_lost", &"rival_lab_waiting", &"rival_lab_won", &"rival_lab_won_leaving",
+	&"rival_starter_pick", &"rival_starter_smile", &"route1_grass_thought", &"sign_pallet_town",
 ]
-## Drapeaux lus mais levés par une tâche à venir : rival_battle_done, levé par le combat du
-## 4B quelle que soit l'issue (décision n° 16 : les répliques de la décision n° 8 sont
-## réservées à l'après-combat).
-const FUTURE_FLAGS: Array[StringName] = [&"rival_battle_done"]
+## Plus aucun drapeau futur au 4B : rival_battle_done est levé par la scène du combat
+## (jalon-04.md §14.5, §14.8), quelle que soit l'issue.
+const FUTURE_FLAGS: Array[StringName] = []
 
 var _library: DialogueLibrary
 var _cutscenes: CutsceneLibrary
@@ -138,16 +138,19 @@ func test_every_dialogue_is_used() -> void:
 func test_every_dialogue_played_by_a_cutscene_exists() -> void:
 	assert_eq(_cutscenes.get_errors().size(), 0, str(_cutscenes.get_errors()))
 	var played := _cutscenes.get_dialogue_ids()
-	assert_eq(played, [&"oak_lab_exit_block", &"oak_lab_reunion", &"oak_route1_call",
+	assert_eq(played, [&"oak_after_battle", &"oak_lab_exit_block", &"oak_lab_reunion",
+		&"oak_poke_balls", &"oak_poke_balls_intro", &"oak_route1_call",
 		&"oak_route1_warning", &"oak_starter_offer", &"oak_starter_reciprocal",
-		&"rival_challenge", &"rival_challenge_wait", &"rival_starter_pick",
-		&"rival_starter_smile", &"route1_grass_thought"] as Array[StringName])
+		&"rival_challenge", &"rival_challenge_wait", &"rival_lab_lost", &"rival_lab_won",
+		&"rival_lab_won_leaving", &"rival_starter_pick", &"rival_starter_smile",
+		&"route1_grass_thought"] as Array[StringName])
 	for id: StringName in played:
 		assert_true(_library.has_dialogue(id), "dialogue « %s » défini" % id)
 		assert_true(_used_on.has(id), "« %s » joué depuis un déclencheur ou par le code" % id)
 	for id: StringName in [&"oak_starter_reciprocal", &"rival_starter_pick",
 			&"rival_starter_smile", &"rival_challenge_wait", &"rival_challenge",
-			&"oak_lab_exit_block"]:
+			&"oak_lab_exit_block", &"rival_lab_won", &"rival_lab_won_leaving", &"rival_lab_lost",
+			&"oak_after_battle", &"oak_poke_balls_intro", &"oak_poke_balls"]:
 		assert_eq(_used_on.get(id), [&"oak_lab"], "%s joué au labo" % id)
 
 
@@ -207,7 +210,8 @@ func test_every_condition_flag_is_set_somewhere() -> void:
 		assert_false(set_flags.has(flag), "« %s » : levé par un jalon futur" % flag)
 	assert_true(read_flags.has(&"starter_chosen"), "starter_chosen lu (pensée des herbes)")
 	assert_eq(_library.get_set_flags(), [&"mom_greeted", &"rival_met"] as Array[StringName])
-	assert_eq(_cutscenes.get_set_flags(), [&"oak_lab_reunion", &"oak_met", &"rival_challenged",
+	assert_eq(_cutscenes.get_set_flags(), [&"oak_lab_reunion", &"oak_met", &"rival_battle_done",
+		&"rival_challenged", &"rival_lab_lost", &"rival_lab_won", &"rival_left_lab",
 		&"starter_chosen", &"starter_offered"] as Array[StringName])
 	assert_eq(_used_on.get(&"oak_lab_reunion"), [&"oak_lab"], "joué au labo, après le fondu")
 	assert_eq(_used_on.get(&"oak_starter_offer"), [&"oak_lab"], "joué au labo")
@@ -262,27 +266,26 @@ func test_starter_choice_lines() -> void:
 ## (rival_battle_done) ; avant, Maya garde celle du 3B ; Maya s'accorde au sexe du starter.
 func test_waiting_lines_during_and_after_the_choice() -> void:
 	var oak := _library.get_dialogue(&"oak_lab_waiting")
-	assert_eq(oak.variants.size(), 4)
+	# 4B : la variante répétée « starter_chosen » du 4A est supprimée (3 variantes).
+	assert_eq(oak.variants.size(), 3)
 	assert_eq(oak.variants[0].if_flags, [&"rival_battle_done"] as Array[StringName])
 	assert_eq(_texts(oak.variants[0]), [
 		"Le monde qui vous attend est bien plus vaste que Bourg Palette.",
 		"Prends le temps de l'observer. Les Pokémon ont beaucoup à nous apprendre.",
 	] as Array[String])
-	assert_eq(oak.variants[1].if_flags, [&"starter_chosen"] as Array[StringName])
-	assert_eq(_texts(oak.variants[1]),
-		["On dirait que le choix est réciproque."] as Array[String], "fin provisoire du 4A")
-	assert_eq(oak.variants[2].if_flags, [&"starter_offered"] as Array[StringName])
-	assert_eq(_texts(oak.variants[2]), ["Prends ton temps.",
+	assert_eq(oak.variants[1].if_flags, [&"starter_offered"] as Array[StringName])
+	assert_eq(_texts(oak.variants[1]), ["Prends ton temps.",
 		"Choisis celui avec qui tu as envie de partir."] as Array[String])
-	assert_eq(_texts(oak.variants[3]),
+	assert_eq(_texts(oak.variants[2]),
 		["Un peu de patience. J'ai quelque chose à vous montrer."] as Array[String])
 	var rival := _library.get_dialogue(&"rival_lab_waiting")
 	assert_eq(rival.speaker, "Rival")
-	assert_eq(rival.variants.size(), 3)
-	assert_eq(rival.variants[1].if_flags, [&"starter_offered"] as Array[StringName])
-	assert_eq(_texts(rival.variants[1]), ["Tu comptes les regarder encore longtemps ?",
+	# 4B : la variante répétée « rival_challenged » du 4A est supprimée (2 variantes).
+	assert_eq(rival.variants.size(), 2)
+	assert_eq(rival.variants[0].if_flags, [&"starter_offered"] as Array[StringName])
+	assert_eq(_texts(rival.variants[0]), ["Tu comptes les regarder encore longtemps ?",
 		"Dépêche-toi de choisir."] as Array[String])
-	assert_eq(_texts(rival.variants[2]),
+	assert_eq(_texts(rival.variants[1]),
 		["Tu vois ? Je t'avais dit que j'étais prêt."] as Array[String])
 	var maya := _library.get_dialogue(&"maya")
 	assert_eq(maya.variants.size(), 4)
@@ -295,23 +298,21 @@ func test_waiting_lines_during_and_after_the_choice() -> void:
 		"Vous avez l'air de déjà bien vous entendre."] as Array[String])
 	var flags := StoryFlags.new()
 	flags.set_flag(&"oak_met")
-	assert_eq(oak.pick(flags), oak.variants[3], "avant l'offre : réplique du 3B")
-	assert_eq(rival.pick(flags), rival.variants[2], "avant l'offre : réplique du 3B")
+	assert_eq(oak.pick(flags), oak.variants[2], "avant l'offre : réplique du 3B")
+	assert_eq(rival.pick(flags), rival.variants[1], "avant l'offre : réplique du 3B")
 	assert_eq(maya.pick(flags), maya.variants[2], "réplique du 3B")
 	flags.set_flag(&"starter_offered")
-	assert_eq(oak.pick(flags), oak.variants[2], "pendant le choix")
-	assert_eq(rival.pick(flags), rival.variants[1], "pendant le choix")
+	assert_eq(oak.pick(flags), oak.variants[1], "pendant le choix")
+	assert_eq(rival.pick(flags), rival.variants[0], "pendant le choix")
 	assert_eq(maya.pick(flags), maya.variants[2])
-	# Après le choix, avant le combat : ni « Le monde qui vous attend… » ni « c'est lui… ».
+	# L'état « starter choisi, combat pas encore fini » n'est plus atteint par le joueur : la
+	# scène s'enchaîne du choix jusqu'à la fin du combat (jalon-04.md §14.8). Après le combat :
 	flags.set_flag(&"starter_chosen")
 	flags.set_flag(&"rival_challenged")
-	flags.set_flag(&"starter_female")
-	assert_eq(oak.pick(flags), oak.variants[1], "avant le combat")
-	assert_eq(rival.pick(flags), rival.variants[0], "après le choix : plus « Dépêche-toi »")
-	assert_eq(maya.pick(flags), maya.variants[2], "avant le combat : réplique du 3B")
-	# Après le combat du 4B.
+	flags.set_flag(&"rival_left_lab")
 	flags.set_flag(&"rival_battle_done")
-	assert_eq(oak.pick(flags), oak.variants[0], "après le combat")
+	flags.set_flag(&"starter_female")
+	assert_eq(oak.pick(flags), oak.variants[0], "après le combat : « Le monde qui vous attend… »")
 	assert_eq(maya.pick(flags), maya.variants[0], "starter femelle : « elle »")
 	flags.set_flag(&"starter_female", false)
 	assert_eq(maya.pick(flags), maya.variants[1], "starter mâle ou sans sexe : « lui »")
@@ -388,6 +389,9 @@ func test_speakers_and_narration() -> void:
 		&"rival_starter_smile": ["Rival", false],
 		&"rival_challenge_wait": ["Rival", false], &"rival_challenge": ["Rival", false],
 		&"oak_lab_exit_block": ["Prof. Chen", false],
+		&"rival_lab_won": ["Rival", false], &"rival_lab_won_leaving": ["Rival", false],
+		&"rival_lab_lost": ["Rival", false], &"oak_after_battle": ["Prof. Chen", false],
+		&"oak_poke_balls_intro": ["Prof. Chen", false], &"oak_poke_balls": ["Prof. Chen", false],
 	}
 	for id: StringName in expected:
 		var dialogue := _library.get_dialogue(id)

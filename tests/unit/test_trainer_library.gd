@@ -138,6 +138,18 @@ func test_end_message_is_optional_and_true_by_default() -> void:
 	assert_false(_library.get_trainer(&"quiet").end_message)
 
 
+func test_start_message_is_optional_and_true_by_default() -> void:
+	var quiet := _valid_entry()
+	quiet["start_message"] = false
+	assert_true(_library.add_from_dict({"usual": _valid_entry(), "quiet": quiet}, "t"))
+	assert_true(_library.get_trainer(&"usual").start_message)
+	assert_false(_library.get_trainer(&"quiet").start_message)
+	# rival_lab l'a à faux (décision n° 17).
+	var real := TrainerLibrary.new(_data)
+	real.load_dir()
+	assert_false(real.get_trainer(&"rival_lab").start_message)
+
+
 func test_invalid_fields_are_rejected() -> void:
 	var entry := _valid_entry()
 	entry.erase("gives_exp")

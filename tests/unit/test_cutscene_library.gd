@@ -2,6 +2,7 @@ extends GutTest
 ## CutsceneLibrary, Cutscene, CutsceneVariant, CutsceneStep : format des fichiers de
 ## data/cutscenes/, validation, choix de la variante selon les drapeaux (jalon 3B §2.3).
 ## Jalon 4 (§3.6, §13) : alias d'acteurs « $nom », étapes hop, lean et despawn.
+## Jalon 4B (§14.3) : étapes battle et give, conditions d'étape, copie d'une étape.
 
 const FIXTURES := "res://tests/fixtures/cutscenes/"
 
@@ -140,7 +141,10 @@ func test_kind_names() -> void:
 	assert_eq(CutsceneStep.kind_name(CutsceneStep.Kind.HOP), &"hop")
 	assert_eq(CutsceneStep.kind_name(CutsceneStep.Kind.LEAN), &"lean")
 	assert_eq(CutsceneStep.kind_name(CutsceneStep.Kind.DESPAWN), &"despawn")
+	assert_eq(CutsceneStep.kind_name(CutsceneStep.Kind.BATTLE), &"battle")
+	assert_eq(CutsceneStep.kind_name(CutsceneStep.Kind.GIVE), &"give")
 	assert_eq(CutsceneStep.TYPE_KEYS.size(), CutsceneStep.Kind.size())
+	assert_eq(CutsceneStep.Kind.DESPAWN, 9, "les étapes du 4A gardent leur valeur")
 	assert_eq(CutsceneStep.Kind.CHANGE_MAP, 6, "les étapes du 3B gardent leur valeur")
 
 
@@ -443,3 +447,126 @@ func test_move_keep_facing_and_optional() -> void:
 	assert_string_contains(errors, "ne vaut que pour « player »")
 	assert_string_contains(errors, "exige une destination « near »")
 	assert_string_contains(errors, "« keep_facing » vaut true ou false")
+
+
+# --- Jalon 4B : battle, give, conditions d'étape (jalon-04.md §14.3) --------------------
+
+func test_battle_step() -> void:
+	var step := _one_step({"battle": "rival_lab", "player_pokemon": "$player_starter",
+		"foe_pokemon": "$rival_starter", "win": ["rival_lab_won"],
+		"lose": ["rival_lab_lost"]})
+	assert_not_null(step, str(_library.get_errors()))
+	assert_eq(step.kind, CutsceneStep.Kind.BATTLE)
+	assert_eq(CutsceneStep.kind_name(step.kind), &"battle")
+	assert_eq(step.trainer_id, &"rival_lab")
+	assert_eq(step.player_pokemon, &"$player_starter")
+	assert_eq(step.foe_pokemon, &"$rival_starter")
+	assert_eq(step.win_flags, [&"rival_lab_won"] as Array[StringName])
+	assert_eq(step.lose_flags, [&"rival_lab_lost"] as Array[StringName])
+	assert_eq(step.get_aliases(), [&"player_starter", &"rival_starter"] as Array[StringName])
+	assert_eq(_library.get_trainer_ids(), [&"rival_lab"] as Array[StringName])
+	assert_eq(_library.get_set_flags(), [&"rival_lab_lost", &"rival_lab_won"]
+		as Array[StringName], "les drapeaux de l'issue sont levés par l'étape")
+
+
+func test_battle_step_minimal_form() -> void:
+	var step := _one_step({"battle": "youngster"})
+	assert_not_null(step)
+	assert_eq(step.player_pokemon, &"")
+	assert_eq(step.foe_pokemon, &"")
+	assert_true(step.win_flags.is_empty())
+	assert_true(step.get_aliases().is_empty())
+
+
+func test_outcome_flags() -> void:
+	var step := _one_step({"battle": "rival_lab", "win": ["won", "done_a"],
+		"lose": ["lost"]})
+	assert_eq(step.outcome_flags(Battle.Outcome.WIN), [&"won", &"done_a"]
+		as Array[StringName])
+	assert_eq(step.outcome_flags(Battle.Outcome.LOSS), [&"lost"] as Array[StringName])
+	assert_true(step.outcome_flags(Battle.Outcome.NONE).is_empty())
+	step.outcome_flags(Battle.Outcome.WIN).append(&"extra")
+	assert_eq(step.win_flags.size(), 2, "copie : l'étape n'est pas modifiée")
+
+
+func test_give_step() -> void:
+	var five := _one_step({"give": "poke_ball", "count": 5}, "a")
+	assert_eq(five.kind, CutsceneStep.Kind.GIVE)
+	assert_eq(CutsceneStep.kind_name(five.kind), &"give")
+	assert_eq(five.item_id, &"poke_ball")
+	assert_eq(five.count, 5)
+	assert_eq(_one_step({"give": "potion"}, "b").count, 1, "1 par défaut")
+	assert_eq(_library.get_item_ids(), [&"poke_ball", &"potion"] as Array[StringName])
+
+
+func test_invalid_battle_and_give_steps() -> void:
+	var bad: Array[Dictionary] = [
+		{"battle": ""},
+		{"battle": "rival_lab", "player_pokemon": "player"},
+		{"battle": "rival_lab", "foe_pokemon": "$Bad"},
+		{"battle": "rival_lab", "player_pokemon": "a", "foe_pokemon": "a"},
+		{"battle": "rival_lab", "win": []},
+		{"battle": "rival_lab", "lose": "lost"},
+		{"battle": "rival_lab", "to": [1, 1]},
+		{"give": ""},
+		{"give": "poke_ball", "count": 0},
+		{"give": "poke_ball", "count": 1.5},
+		{"give": "poke_ball", "count": "5"},
+		{"give": "poke_ball", "to": "player"},
+	]
+	for i: int in bad.size():
+		assert_null(_one_step(bad[i], "bad_%d" % i), str(bad[i]))
+	assert_eq(_library.size(), 0)
+	assert_push_error_count(bad.size(), "une erreur par étape")
+	var errors := "\n".join(_library.get_errors())
+	for expected: String in ["battle : identifiant attendu", "pas « player »",
+			"alias mal formé", "le même PNJ", "« win » doit être une liste non vide",
+			"« lose » doit être une liste non vide", "clé inconnue « to »",
+			"give : identifiant attendu", "« count » doit être un entier ≥ 1"]:
+		assert_string_contains(errors, expected)
+
+
+func test_step_conditions() -> void:
+	var step := _one_step({"dialogue": "rival_lab_won_1", "if": ["rival_lab_won"],
+		"unless": ["skip"]}, "a")
+	assert_not_null(step, str(_library.get_errors()))
+	assert_eq(step.if_flags, [&"rival_lab_won"] as Array[StringName])
+	assert_eq(step.unless_flags, [&"skip"] as Array[StringName])
+	assert_false(step.applies(_flags()))
+	assert_false(step.applies(null))
+	assert_true(step.applies(_flags([&"rival_lab_won"])))
+	assert_false(step.applies(_flags([&"rival_lab_won", &"skip"])))
+	var plain := _one_step({"wait": 0.2}, "b")
+	assert_true(plain.applies(null), "sans condition : toujours jouée")
+	assert_true(plain.applies(_flags([&"skip"])))
+	assert_eq(_library.get_condition_flags(), [&"rival_lab_won", &"skip"]
+		as Array[StringName], "conditions d'étape lues")
+
+
+func test_invalid_step_conditions_and_spawn_keeps_refusing_them() -> void:
+	var bad: Array[Dictionary] = [
+		{"wait": 0.2, "if": "won"},
+		{"wait": 0.2, "unless": [""]},
+		{"spawn": "oak", "sprite": "oak", "cell": [1, 1], "unless": ["x"]},
+	]
+	for i: int in bad.size():
+		assert_null(_one_step(bad[i], "bad_%d" % i), str(bad[i]))
+	assert_push_error_count(bad.size())
+	var errors := "\n".join(_library.get_errors())
+	assert_string_contains(errors, "« if » doit être une liste de drapeaux")
+	assert_string_contains(errors, "drapeau invalide dans « unless »")
+	assert_string_contains(errors, "conditions : variante")
+
+
+func test_copy_is_independent() -> void:
+	var step := _one_step({"battle": "rival_lab", "player_pokemon": "$mine",
+		"win": ["won"], "if": ["ready"]})
+	var other := step.copy()
+	assert_eq(other.kind, step.kind)
+	assert_eq(other.trainer_id, &"rival_lab")
+	assert_eq(other.player_pokemon, &"$mine")
+	assert_eq(other.if_flags, [&"ready"] as Array[StringName])
+	other.win_flags.append(&"more")
+	other.if_flags.clear()
+	assert_eq(step.win_flags, [&"won"] as Array[StringName])
+	assert_eq(step.if_flags, [&"ready"] as Array[StringName])

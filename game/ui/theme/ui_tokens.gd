@@ -234,3 +234,200 @@ const TYPE_COLORS: Dictionary[StringName, Color] = {
 	&"steel": Color("#B7B7CE"),
 	&"fairy": Color("#D685AD"),
 }
+
+# --- Combat (jalon 4B ; dossier 05, références combat-v1 et combat-capacites-v1) --------------
+# Positions mesurées sur les références (1536 × 1024, ramenées à 1080 de haut), puis arrondies
+# pour respecter TOUCH_MIN et SAFE_MARGIN. Les composants sont ancrés aux coins de l'écran :
+# ils restent en place de 1920 à 2340 de large (aspect expand).
+
+## Calque des sprites de combat (entre le monde et l'UI) et calque de l'interface de combat.
+const LAYER_BATTLE_STAGE := 5
+const LAYER_BATTLE_HUD := 12
+## Voile sombre posé sur le décor pendant le combat (opacité de FADE_COLOR) et zoom de caméra.
+const BATTLE_DIM := 0.2
+const BATTLE_ZOOM := 1.06
+
+## Distance des composants aux bords de l'écran.
+const BATTLE_EDGE := SAFE_MARGIN
+## Haut de la carte adversaire (non interactive : un peu plus haut que SAFE_MARGIN serait
+## possible, on garde l'air de la référence).
+const BATTLE_FOE_CARD_TOP := 56
+## Bas de la carte joueur depuis le bas de l'écran : laisse la place du bouton « ‹ » dessous.
+const BATTLE_OWN_CARD_BOTTOM := SAFE_MARGIN + TOUCH_MIN + GAP
+## Bas de la grille d'actions et du bandeau des messages depuis le bas de l'écran.
+const BATTLE_GRID_BOTTOM := 80
+## Bas des cartes de capacités depuis le bas de l'écran.
+const BATTLE_MOVES_BOTTOM := 56
+## Fermeture d'un composant (plus courte que l'ouverture ANIM_PANEL).
+const BATTLE_PANEL_CLOSE := 0.2
+
+# Cartes d'information (nom, sexe, niveau, PV).
+const BATTLE_CARD_WIDTH := 480
+## Hauteur fixe des cartes : sans chiffres (adversaire), avec « 19 / 19 » (joueur).
+const BATTLE_CARD_HEIGHT := 112
+const BATTLE_CARD_HEIGHT_NUMBERS := 156
+## Translucides comme la boîte de dialogue (dossier 05, point à trancher ; jalon 4 Q17).
+const BATTLE_CARD_BG := PANEL_BG
+const BATTLE_CARD_PAD_H := 26
+const BATTLE_CARD_PAD_V := 12
+const BATTLE_CARD_ROW_GAP := 4
+## Écart entre le nom et le symbole du sexe, et entre « Nv. » et le niveau.
+const BATTLE_CARD_NAME_GAP := 10
+const BATTLE_CARD_NAME_FONT := FONT_BODY
+const BATTLE_CARD_LEVEL_FONT := FONT_CAPTION
+const BATTLE_CARD_LEVEL_VALUE_FONT := FONT_BODY
+const BATTLE_HP_NUMBERS_FONT := 28
+## Symboles ♂ / ♀ (dessinés en SVG : la police par défaut n'a pas ces caractères).
+const GENDER_ICON := 30
+const GENDER_MALE := Color("#4A9BF0")
+const GENDER_FEMALE := Color("#F2679A")
+
+# Barre de PV.
+const HP_BAR_HEIGHT := 14
+## Retrait du remplissage à l'intérieur du fond (le fond forme un liseré autour).
+const HP_BAR_INSET := 2
+const HP_BAR_TRACK := Color(1, 1, 1, 0.15)
+const HP_BAR_TRACK_BORDER := Color(1, 1, 1, 0.3)
+const HP_BAR_LABEL_FONT := FONT_CAPTION
+const HP_BAR_LABEL_GAP := 12
+## Seuils de couleur : vert au-dessus de 50 %, jaune au-dessus de 20 %, rouge sinon.
+const HP_HIGH_THRESHOLD := 0.5
+const HP_LOW_THRESHOLD := 0.2
+## Descente des PV : normale, puis rapide sur un gros coup (> HP_BIG_HIT des PV max, décidé
+## par celui qui pilote la barre).
+const HP_TWEEN := 0.4
+const HP_TWEEN_FAST := 0.25
+const HP_BIG_HIT := 0.25
+## Pulsation de la carte sous HP_LOW_THRESHOLD (dossier 05 §12) : demi-période et échelle.
+const HP_LOW_PULSE := 0.55
+const HP_LOW_PULSE_SCALE := 1.025
+## Vibrations sur un coup reçu, plus marquée sur un coup critique (bible §12).
+const HAPTIC_HIT_MS := 30
+const HAPTIC_CRIT_MS := 70
+
+# Pastilles d'équipe (au-dessus de la carte joueur).
+const PARTY_SIZE := 6
+const PARTY_PIP := 28
+const PARTY_PIP_GAP := 10
+## Retrait depuis le bord gauche de la carte, et écart au-dessus de la carte.
+const PARTY_PIPS_INSET := 20
+const PARTY_PIPS_GAP := 12
+const PARTY_PIP_EMPTY := Color(0.62, 0.67, 0.74, 0.9)
+const PARTY_PIP_EMPTY_BORDER := Color(0.06, 0.09, 0.13, 0.55)
+
+# Grille des 4 actions (combat-v1 : boutons colorés).
+const ACTION_ATTACK := Color("#E04A3C")
+const ACTION_BAG := Color("#D49A2E")
+const ACTION_TEAM := Color("#2D6DB5")
+const ACTION_RUN := Color(0.16, 0.2, 0.25, 0.92)
+const BATTLE_ACTION_SIZE := Vector2(360, 136)
+const BATTLE_ACTION_GAP := 22
+const BATTLE_ACTION_ICON := 64
+const BATTLE_ACTION_PAD_H := 30
+## Liseré plus clair du bouton, fond enfoncé plus sombre (taux appliqués à la couleur).
+const BATTLE_ACTION_BORDER_LIGHTEN := 0.3
+const BATTLE_ACTION_PRESSED_DARKEN := 0.2
+## Action indisponible : couleur mêlée à SURFACE_DARK, rendue plus transparente ; texte et
+## icône atténués.
+const BATTLE_ACTION_DISABLED_MIX := 0.6
+const BATTLE_ACTION_DISABLED_ALPHA := 0.72
+const TEXT_DISABLED := Color(1, 1, 1, 0.42)
+## Lueur d'accent autour d'ATTAQUER, qui pulse doucement (dossier 05 §18) : couleur, taille,
+## demi-période, opacité basse.
+const ACTION_GLOW := Color(0.96, 0.77, 0.26, 0.7)
+const ACTION_GLOW_SIZE := 16
+const ACTION_GLOW_BORDER := 3
+const ACTION_GLOW_PULSE := 0.9
+const ACTION_GLOW_MIN := 0.35
+
+# Cartes de capacités (combat-capacites-v1).
+const MOVE_CARD_SIZE := Vector2(560, 136)
+## Écart horizontal : il loge la flèche ▶ de sélection de la colonne de droite.
+const MOVE_GAP_H := 48
+const MOVE_GAP_V := 20
+## Bandeau sombre derrière les cartes : marge intérieure (à gauche : MOVE_GAP_H, pour la
+## flèche de la colonne de gauche) et débord jusqu'aux bords droit et bas de l'écran.
+const MOVE_BAND_PAD := 24
+const MOVE_BAND_BLEED := 96
+const MOVE_BAND_BG := Color(0.06, 0.09, 0.13, 0.66)
+## Part de la couleur du type dans le fond de la carte (mêlée à PANEL_BG), et opacité du
+## liseré à la couleur du type.
+const MOVE_CARD_TINT := 0.32
+const MOVE_CARD_BORDER_ALPHA := 0.55
+const MOVE_CARD_PAD_H := 20
+const MOVE_CARD_PAD_V := 12
+const MOVE_CARD_ICON := 56
+const MOVE_CARD_ICON_COLUMN := 72
+const MOVE_CARD_NAME_FONT := FONT_BODY
+const MOVE_CARD_PP_FONT := 28
+const MOVE_CARD_PP_TAG_FONT := 20
+const MOVE_CARD_POWER_FONT := FONT_CAPTION
+## Sélection : liseré ACCENT épais et halo.
+const MOVE_CARD_SELECTED_BORDER := 4
+const MOVE_CARD_SELECTED_GLOW := Color(0.96, 0.77, 0.26, 0.45)
+const MOVE_CARD_SELECTED_GLOW_SIZE := 14
+## Carte sans PP : atténuée (assombrie et un peu transparente, modulate), PP en HP_LOW ;
+## MODULATE_FULL = pas d'atténuation.
+const MOVE_CARD_DISABLED := Color(0.55, 0.58, 0.62, 0.85)
+const MODULATE_FULL := Color(1, 1, 1, 1)
+const MOVE_PP_EMPTY := HP_LOW
+## Emplacement vide (moins de 4 capacités).
+const MOVE_CARD_EMPTY_BG := Color(1, 1, 1, 0.04)
+const MOVE_CARD_EMPTY_BORDER := Color(1, 1, 1, 0.12)
+## Flèche ▶ de sélection (à gauche de la carte).
+const MOVE_SELECT_ARROW := Vector2(26, 34)
+## Pression longue sur une carte : fiche détaillée (dossier 05 §7).
+const LONG_PRESS := 0.45
+
+# Fiche détaillée d'une capacité (pression longue).
+const MOVE_DETAIL_WIDTH := 600
+const MOVE_DETAIL_BG := DIALOG_PANEL_BG
+const MOVE_DETAIL_PAD := 28
+const MOVE_DETAIL_GAP := 12
+## Colonnes Puissance / Précision / PP.
+const MOVE_DETAIL_STAT_GAP := 40
+const MOVE_DETAIL_NAME_FONT := FONT_BUTTON
+const MOVE_DETAIL_VALUE_FONT := FONT_BODY
+const MOVE_DETAIL_TEXT_FONT := 28
+const MOVE_DETAIL_OPEN := 0.18
+const MOVE_DETAIL_CLOSE := 0.12
+const MOVE_DETAIL_SLIDE := 24.0
+
+# Bandeau des messages (à la place de la grille).
+const BATTLE_MESSAGE_WIDTH := 1164
+const BATTLE_MESSAGE_HEIGHT := 176
+const BATTLE_MESSAGE_BG := DIALOG_PANEL_BG
+const BATTLE_MESSAGE_PAD_H := 44
+const BATTLE_MESSAGE_PAD_V := 26
+const BATTLE_MESSAGE_MAX_LINES := 2
+## Tenue d'un message avant que le combat avance seul (ou au toucher).
+const BATTLE_MESSAGE_HOLD := 0.9
+
+# Bouton rond « ‹ » (retour à la grille d'actions), sous la carte joueur.
+const BATTLE_BACK_SIZE := TOUCH_MIN
+const BATTLE_BACK_ICON := 56
+
+# --- Toast (bible UI/UX §6 : « Poké Balls ×5 — Ajoutées au Sac ») ---------------------------
+
+## Haut du toast (en haut au centre de l'écran, sous l'encoche ; non interactif).
+const TOAST_TOP := SAFE_MARGIN
+## Tenue entre l'apparition et la disparition (~2 s, jamais bloquant).
+const TOAST_HOLD := 2.0
+const TOAST_FADE_IN := 0.24
+const TOAST_FADE_OUT := 0.3
+## Glissement depuis le haut pendant l'apparition (et vers le haut à la disparition).
+const TOAST_SLIDE := 24.0
+## Capsule sombre translucide, comme la boîte de dialogue.
+const TOAST_BG := DIALOG_PANEL_BG
+const TOAST_RADIUS := 40
+const TOAST_PAD_LEFT := 20
+const TOAST_PAD_RIGHT := 40
+const TOAST_PAD_V := 12
+const TOAST_ICON := 56
+const TOAST_GAP := GAP
+## Écart vertical entre le titre et le détail.
+const TOAST_LINE_GAP := -4
+const TOAST_TITLE_FONT := FONT_BODY
+const TOAST_DETAIL_FONT := FONT_CAPTION
+## Vibration « tic » à l'apparition (ramasser un objet, bible §12) : plus légère qu'un appui.
+const HAPTIC_TICK_MS := 10

@@ -28,6 +28,9 @@ var _library := DialogueLibrary.new()
 var _cutscenes := CutsceneLibrary.new()
 var _pokemon := PokemonData.new()
 var _offer := StarterOffer.new()
+var _trainers: TrainerLibrary
+var _texts := BattleText.new()
+var _items := ItemLibrary.new()
 
 @onready var _world: Node2D = %World
 @onready var _hud: ExplorationHud = %ExplorationHud
@@ -38,6 +41,9 @@ var _offer := StarterOffer.new()
 @onready var _cutscenes_node: CutsceneDirector = %CutsceneDirector
 @onready var _sheet: StarterSheet = %StarterSheet
 @onready var _starter_choice: StarterChoice = %StarterChoice
+@onready var _battle_stage: BattleStage = %BattleStage
+@onready var _battle_hud: BattleHud = %BattleHud
+@onready var _battle_director: BattleDirector = %BattleDirector
 
 
 func _ready() -> void:
@@ -55,6 +61,18 @@ func _ready() -> void:
 		_interactions)
 	_starter_choice.sheet_opened.connect(_refresh_controls)
 	_starter_choice.sheet_closed.connect(_refresh_controls)
+	# Jalon 4B : combat, dresseurs, messages, objets et Sac.
+	_trainers = TrainerLibrary.new(_pokemon)
+	_trainers.load_dir()
+	_texts.load_file()
+	_items.load_dir()
+	_battle_director.setup(_pokemon, _trainers, _texts, _battle_stage, _battle_hud, _player,
+		GameState)
+	_cutscenes_node.set_battle_runner(_battle_director)
+	_cutscenes_node.set_inventory(GameState.bag, _items)
+	_cutscenes_node.item_given.connect(_on_item_given)
+	_battle_director.battle_started.connect(_on_battle_state_changed.unbind(1))
+	_battle_director.battle_finished.connect(_on_battle_state_changed.unbind(2))
 	_interactions.target_changed.connect(_on_target_changed)
 	_runner.dialogue_started.connect(_on_dialogue_started)
 	_runner.dialogue_finished.connect(_on_dialogue_finished)
@@ -140,6 +158,28 @@ func get_starter_offer() -> StarterOffer:
 	return _offer
 
 
+func get_battle_director() -> BattleDirector:
+	return _battle_director
+
+
+func get_battle_stage() -> BattleStage:
+	return _battle_stage
+
+
+func get_battle_hud() -> BattleHud:
+	return _battle_hud
+
+
+## Dresseurs chargés au démarrage (data/trainers/).
+func get_trainer_library() -> TrainerLibrary:
+	return _trainers
+
+
+## Objets chargés au démarrage (data/items/).
+func get_item_library() -> ItemLibrary:
+	return _items
+
+
 ## Dialogues chargés au démarrage (data/dialogues/).
 func get_dialogue_library() -> DialogueLibrary:
 	return _library
@@ -188,8 +228,21 @@ func _on_cutscene_finished(_cutscene_id: StringName) -> void:
 	_refresh_controls()
 
 
-## Contrôles visibles seulement hors dialogue, hors scène et hors fiche du starter : pendant
-## une scène, ils restent cachés entre deux dialogues.
+func _on_battle_state_changed() -> void:
+	_refresh_controls()
+
+
+## Objet donné par une scène (étape « give ») : toast en haut de l'écran, sans rien bloquer
+## (jalon-04.md §14.6). L'accord (« Poké Balls ×5 » / « Ajoutées au Sac ») vient de l'objet.
+func _on_item_given(item_id: StringName, count: int) -> void:
+	var item := _items.get_item(item_id)
+	if item == null:
+		return
+	_hud.show_toast(item.quantity_text(count), item.added_text(count))
+
+
+## Contrôles visibles seulement hors dialogue, hors scène, hors fiche du starter et hors
+## combat : pendant une scène ou un combat, ils restent cachés entre deux dialogues.
 func _refresh_controls() -> void:
 	_hud.set_controls_visible(not _runner.is_running() and not _cutscenes_node.is_running()
-		and not _starter_choice.is_sheet_open())
+		and not _starter_choice.is_sheet_open() and not _battle_director.is_running())

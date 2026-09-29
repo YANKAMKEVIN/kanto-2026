@@ -17,6 +17,7 @@ const ICONS: Dictionary[StringName, Texture2D] = {
 
 var _type_id: StringName = &""
 var _type_name: String = ""
+var _show_icon: bool = true
 var _style: StyleBoxFlat
 
 @onready var _row: HBoxContainer = %Row
@@ -42,6 +43,13 @@ func set_type(type_id: StringName, type_name: String) -> void:
 		_apply()
 
 
+## Montre ou cache l'icône (la carte de capacité a déjà l'icône du type à sa gauche).
+func set_show_icon(shown: bool) -> void:
+	_show_icon = shown
+	if is_node_ready():
+		_apply()
+
+
 func get_type_id() -> StringName:
 	return _type_id
 
@@ -62,4 +70,4 @@ func _apply() -> void:
 	_label.text = _type_name
 	_style.bg_color = UiTokens.TYPE_COLORS.get(_type_id, UiTokens.TYPE_COLOR_UNKNOWN)
 	_icon.texture = ICONS.get(_type_id, null)
-	_icon.visible = _icon.texture != null
+	_icon.visible = _show_icon and _icon.texture != null

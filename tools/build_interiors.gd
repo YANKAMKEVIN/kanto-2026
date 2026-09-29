@@ -213,6 +213,8 @@ func _rival_house() -> Dictionary:
 func _oak_lab() -> Dictionary:
 	return {
 		"id": &"oak_lab", "node": "OakLab", "size": Vector2i(16, 11),
+		# Tapis Poké Ball (rug_pokeball en (6, 7), 4 × 3 cases) : arène du combat (§14.4).
+		"battle_arena": Rect2i(6, 5, 4, 3),
 		"floor": "FLOOR_LAB", "wall": "WALL_LAB", "walls": BOX,
 		"openings": [],
 		"ground": [],
@@ -271,6 +273,8 @@ func _build(room: Dictionary) -> void:
 	root.set(&"display_name", "Bourg Palette")
 	root.set(&"region", "Kanto")
 	root.set(&"size", size)
+	if room.has("battle_arena"):
+		root.set(&"battle_arena", room["battle_arena"])
 	root.set(&"interior", true)
 	var blocked: Array[Vector2i] = []
 	blocked.assign(room["blocked"])

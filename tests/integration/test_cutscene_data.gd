@@ -32,6 +32,8 @@ var _cutscenes: CutsceneLibrary
 var _dialogues: DialogueLibrary
 var _offer: StarterOffer
 var _pokemon: PokemonData
+var _trainers: TrainerLibrary
+var _items: ItemLibrary
 ## Scène → cartes de ses déclencheurs.
 var _triggered_on: Dictionary[StringName, Array] = {}
 
@@ -45,6 +47,10 @@ func before_all() -> void:
 	_pokemon.load_dir()
 	_offer = StarterOffer.new()
 	_offer.load_file()
+	_trainers = TrainerLibrary.new(_pokemon)
+	_trainers.load_dir()
+	_items = ItemLibrary.new()
+	_items.load_dir()
 	for map_id: StringName in MAPS:
 		var map := (load(MapCatalog.scene_path(map_id)) as PackedScene).instantiate()
 		for point: Node in map.get_node(^"Triggers").get_children():
@@ -105,6 +111,19 @@ func test_every_dialogue_step_exists() -> void:
 		assert_true(_dialogues.has_dialogue(id), "dialogue « %s » défini" % id)
 
 
+## Jalon 4B : chaque étape « battle » vise un dresseur chargé, chaque étape « give » un objet
+## chargé.
+func test_every_trainer_and_item_step_exists() -> void:
+	var trainer_ids := _cutscenes.get_trainer_ids()
+	assert_false(trainer_ids.is_empty(), "au moins le combat du rival")
+	for id: StringName in trainer_ids:
+		assert_true(_trainers.has_trainer(id), "dresseur « %s » chargé" % id)
+	var item_ids := _cutscenes.get_item_ids()
+	assert_false(item_ids.is_empty(), "au moins les Poké Balls")
+	for id: StringName in item_ids:
+		assert_true(_items.has_item(id), "objet « %s » chargé" % id)
+
+
 func test_every_change_map_targets_an_existing_map_and_spawn() -> void:
 	var count := 0
 	for step: CutsceneStep in _all_steps():
@@ -140,11 +159,16 @@ func test_static_simulation_of_every_variant() -> void:
 		var maps: Array = _triggered_on.get(id, [])
 		if CODE_PLAYED.has(id):
 			maps = [CODE_PLAYED[id]]
-		for i: int in mini(rows.size(), cutscene.variants.size()):
-			for map_id: StringName in maps:
-				for aliases: Dictionary in _alias_sets(id):
-					checked += _simulate("%s/%d %s" % [id, i + 1, aliases], cutscene.variants[i],
-						map_id, _flags(rows[i]), aliases)
+			# La scène du choix contient un combat : on la joue « à blanc » pour les deux issues
+			# (jalon-04.md §14.11 T8) ; les autres n'ont pas d'étape « battle ».
+			var outcomes: Array[int] = [Battle.Outcome.WIN, Battle.Outcome.LOSS] \
+				if id == _offer.chosen_scene else ([Battle.Outcome.WIN] as Array[int])
+			for i: int in mini(rows.size(), cutscene.variants.size()):
+				for map_id: StringName in maps:
+					for aliases: Dictionary in _alias_sets(id):
+						for outcome: int in outcomes:
+							checked += _simulate("%s/%d %s %d" % [id, i + 1, aliases, outcome],
+								cutscene.variants[i], map_id, _flags(rows[i]), aliases, outcome)
 	assert_gt(checked, 60, "acteurs vérifiés")
 
 
@@ -194,7 +218,9 @@ func test_starter_chosen_sets_done_flag_right_after_the_reciprocal_line() -> voi
 		assert_eq(previous.dialogue_id, &"oak_starter_reciprocal")
 		assert_eq(steps[set_at[0]].flags, [_offer.done_flag] as Array[StringName])
 	assert_eq(dialogues, [&"oak_starter_reciprocal", &"rival_starter_pick",
-		&"rival_starter_smile", &"rival_challenge_wait", &"rival_challenge"] as Array[StringName])
+		&"rival_starter_smile", &"rival_challenge_wait", &"rival_challenge", &"rival_lab_won",
+		&"rival_lab_won_leaving", &"rival_lab_lost", &"oak_after_battle",
+		&"oak_poke_balls_intro", &"oak_poke_balls"] as Array[StringName])
 	assert_eq(steps.back().kind, CutsceneStep.Kind.SET_FLAGS)
 	assert_eq(steps.back().flags, [&"rival_challenged"] as Array[StringName], "dernière étape")
 	# Le Pokémon descend (hop) et s'approche (lean) avant Chen.
@@ -219,6 +245,41 @@ func test_starter_chosen_sets_done_flag_right_after_the_reciprocal_line() -> voi
 			[&"rival", &"$player_starter"])
 
 
+## Jalon 4B (§14.7) : le combat, puis rival_battle_done (quelle que soit l'issue), les
+## répliques selon l'issue (conditions d'étape), le départ du rival, Chen, les 5 Poké Balls.
+func test_starter_chosen_battle_and_aftermath() -> void:
+	var steps := _cutscenes.get_cutscene(_offer.chosen_scene).variants[0].steps
+	var battle := -1
+	for i: int in steps.size():
+		if steps[i].kind == CutsceneStep.Kind.BATTLE:
+			battle = i
+	assert_gt(battle, 0, "une étape de combat")
+	var step: CutsceneStep = steps[battle]
+	assert_eq(step.trainer_id, &"rival_lab")
+	assert_eq(CutsceneStep.alias_name(step.player_pokemon), StarterChoice.PLAYER_ALIAS)
+	assert_eq(CutsceneStep.alias_name(step.foe_pokemon), StarterChoice.RIVAL_ALIAS)
+	assert_eq(step.win_flags, [&"rival_lab_won"] as Array[StringName])
+	assert_eq(step.lose_flags, [&"rival_lab_lost"] as Array[StringName])
+	# Juste après le combat : rival_battle_done, sans condition (les deux issues).
+	assert_eq(steps[battle + 1].kind, CutsceneStep.Kind.SET_FLAGS)
+	assert_eq(steps[battle + 1].flags, [&"rival_battle_done"] as Array[StringName])
+	assert_true(steps[battle + 1].if_flags.is_empty() and steps[battle + 1].unless_flags.is_empty(),
+		"levé quelle que soit l'issue")
+	# La remise des 5 Poké Balls et le départ du rival.
+	var give := -1
+	var left := -1
+	for i: int in steps.size():
+		if steps[i].kind == CutsceneStep.Kind.GIVE:
+			give = i
+		if steps[i].kind == CutsceneStep.Kind.SET_FLAGS \
+				and steps[i].flags == [&"rival_left_lab"] as Array[StringName]:
+			left = i
+	assert_gt(give, battle, "give après le combat")
+	assert_eq(steps[give].item_id, &"poke_ball")
+	assert_eq(steps[give].count, 5)
+	assert_gt(left, battle, "rival_left_lab après le combat")
+
+
 ## §13.6 : Chen se tourne vers le joueur, parle, le joueur recule d'un pas (vers le haut) ;
 ## seulement pendant le choix.
 func test_oak_lab_exit_only_during_the_choice() -> void:
@@ -240,11 +301,15 @@ func test_oak_lab_exit_only_during_the_choice() -> void:
 ## Joue [param variant] « à blanc » : renvoie le nombre d'acteurs vérifiés. [param aliases] :
 ## « nom sans $ » → PNJ, remplacés comme le fait le directeur.
 func _simulate(label: String, variant: CutsceneVariant, start_map: StringName,
-		flags: StoryFlags, aliases: Dictionary = {}) -> int:
+		flags: StoryFlags, aliases: Dictionary = {}, outcome: int = Battle.Outcome.WIN) -> int:
 	var map_id := start_map
 	var actors := _present(map_id, flags)
 	var checked := 0
 	for source: CutsceneStep in variant.steps:
+		# Conditions d'étape (« if » / « unless ») évaluées au moment de la jouer : une étape
+		# sautée ne vérifie aucun acteur (jalon-04.md §14.3).
+		if not source.applies(flags):
+			continue
 		var step := _resolved(source, aliases)
 		var where := "%s sur %s (%s)" % [label, map_id, CutsceneStep.kind_name(step.kind)]
 		var needed: Array[StringName] = []
@@ -252,6 +317,17 @@ func _simulate(label: String, variant: CutsceneVariant, start_map: StringName,
 			CutsceneStep.Kind.SET_FLAGS:
 				for flag: StringName in step.flags:
 					flags.set_flag(flag)
+			CutsceneStep.Kind.BATTLE:
+				assert_true(_trainers.has_trainer(step.trainer_id),
+					"%s : dresseur « %s »" % [where, step.trainer_id])
+				for who: StringName in [step.player_pokemon, step.foe_pokemon]:
+					if not who.is_empty():
+						needed.append(who)
+				for flag: StringName in step.outcome_flags(outcome):
+					flags.set_flag(flag)
+			CutsceneStep.Kind.GIVE:
+				assert_true(_items.has_item(step.item_id), "%s : objet « %s »" % [where,
+					step.item_id])
 			CutsceneStep.Kind.SPAWN:
 				assert_false(actors.has(step.spec.id), "%s : « %s » déjà là" % [where,
 					step.spec.id])
@@ -308,6 +384,13 @@ func _resolved(step: CutsceneStep, aliases: Dictionary) -> CutsceneStep:
 	copy.target = _alias(step.target, aliases)
 	copy.near = _alias(step.near, aliases)
 	copy.follower = _alias(step.follower, aliases)
+	copy.trainer_id = step.trainer_id
+	copy.item_id = step.item_id
+	copy.count = step.count
+	copy.win_flags = step.win_flags
+	copy.lose_flags = step.lose_flags
+	copy.player_pokemon = _alias(step.player_pokemon, aliases)
+	copy.foe_pokemon = _alias(step.foe_pokemon, aliases)
 	return copy
 
 

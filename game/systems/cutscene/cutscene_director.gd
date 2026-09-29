@@ -18,11 +18,17 @@ extends Node
 ## voisin, suiveur) ; étapes hop (attend la fin du saut), lean (s'avance puis revient) et
 ## despawn (fondu de [constant DESPAWN_FADE] s, case libérée). Alias absent, acteur
 ## introuvable ou saut refusé : push_error, étape sautée.
+## Jalon 4B (jalon-04.md §14.3) : étape battle (combat contre un dresseur, verrou gardé, issue
+## → drapeaux), étape give (objets au Sac + [signal item_given]) ; conditions d'étape
+## « if » / « unless » ([method CutsceneStep.applies]) pour les suites selon l'issue.
 
 signal cutscene_started(cutscene_id: StringName)
 ## Début d'une étape (tests, outils de capture).
 signal step_started(index: int)
 signal cutscene_finished(cutscene_id: StringName)
+## [param count] objets [param item_id] viennent d'être ajoutés au Sac (étape « give ») :
+## Boot en fait une toast (jalon-04.md §14.6).
+signal item_given(item_id: StringName, count: int)
 ## Fin d'une étape « wait » (interne).
 signal _wait_elapsed
 ## Fin d'une étape « move » (interne).
@@ -70,6 +76,10 @@ var _move_blocked: float = 0.0
 var _follow_actor: Node2D
 var _follow_path: Array[Vector2i] = []
 var _follow_index: int = 0
+## Combat et Sac (jalon 4B) : branchés par Boot après setup.
+var _battle_runner: BattleDirector
+var _bag: Bag
+var _items: ItemLibrary
 
 
 func _ready() -> void:
@@ -118,6 +128,19 @@ func setup(library: CutsceneLibrary, flags: StoryFlags, runner: DialogueRunner,
 ## Carte courante (relais de Boot sur SceneRouter.map_changed).
 func set_map(map: GameMap) -> void:
 	_map = map
+
+
+## Branche le directeur de combat (jalon 4B) : l'étape « battle » l'appelle. Sans lui, une
+## étape « battle » est sautée (push_error).
+func set_battle_runner(runner: BattleDirector) -> void:
+	_battle_runner = runner
+
+
+## Branche le Sac et les objets (jalon 4B) : l'étape « give » y ajoute des objets. Sans eux,
+## une étape « give » est sautée (push_error).
+func set_inventory(bag: Bag, items: ItemLibrary) -> void:
+	_bag = bag
+	_items = items
 
 
 ## Joue [param cutscene_id]. Faux (et rien ne se passe) si une scène tourne, si
@@ -173,8 +196,12 @@ func _run(variant: CutsceneVariant, session: int) -> void:
 
 
 ## Joue une étape. Faux : la scène s'arrête (réservé au changement de carte manqué, T4).
-## Les alias sont résolus d'abord ; un alias absent saute l'étape (push_error).
+## Une étape dont les conditions (« if » / « unless », jalon 4B) ne sont pas remplies est
+## sautée sans erreur. Les alias sont résolus d'abord ; un alias absent saute l'étape
+## (push_error).
 func _play_step(source_step: CutsceneStep) -> bool:
+	if not source_step.applies(_flags):
+		return true
 	var step := _resolve_aliases(source_step)
 	if step == null:
 		return true
@@ -202,15 +229,19 @@ func _play_step(source_step: CutsceneStep) -> bool:
 			await _lean(step)
 		CutsceneStep.Kind.DESPAWN:
 			await _despawn(step)
+		CutsceneStep.Kind.BATTLE:
+			await _battle(step)
+		CutsceneStep.Kind.GIVE:
+			_give(step)
 		_:
 			_step_error("étape « %s » inconnue" % CutsceneStep.kind_name(step.kind))
 	return true
 
 
-## Copie de [param step] dont les alias (acteur, cible, suiveur, voisin) sont remplacés
-## par les identifiants de PNJ de la scène en cours ; [param step] lui-même s'il n'en a
-## aucun (les étapes de la bibliothèque ne sont jamais modifiées). null (push_error) si un
-## alias n'a pas été fourni à [method play].
+## Copie de [param step] dont les alias (acteur, cible, suiveur, voisin, Pokémon d'un
+## combat) sont remplacés par les identifiants de PNJ de la scène en cours ; [param step]
+## lui-même s'il n'en a aucun (les étapes de la bibliothèque ne sont jamais modifiées).
+## null (push_error) si un alias n'a pas été fourni à [method play].
 func _resolve_aliases(step: CutsceneStep) -> CutsceneStep:
 	if step.get_aliases().is_empty():
 		return step
@@ -219,25 +250,13 @@ func _resolve_aliases(step: CutsceneStep) -> CutsceneStep:
 			_step_error("alias « $%s » absent, étape « %s » sautée" % [
 				alias, CutsceneStep.kind_name(step.kind)])
 			return null
-	var copy := CutsceneStep.new()
-	copy.kind = step.kind
-	copy.seconds = step.seconds
-	copy.dialogue_id = step.dialogue_id
+	var copy := step.copy()
 	copy.actor = _resolve_ref(step.actor)
 	copy.target = _resolve_ref(step.target)
-	copy.flags = step.flags
-	copy.spec = step.spec
-	copy.path = step.path
-	copy.cell = step.cell
 	copy.near = _resolve_ref(step.near)
-	copy.offsets = step.offsets
-	copy.run = step.run
 	copy.follower = _resolve_ref(step.follower)
-	copy.keep_facing = step.keep_facing
-	copy.optional = step.optional
-	copy.map_id = step.map_id
-	copy.spawn = step.spawn
-	copy.facing = step.facing
+	copy.player_pokemon = _resolve_ref(step.player_pokemon)
+	copy.foe_pokemon = _resolve_ref(step.foe_pokemon)
 	return copy
 
 
@@ -323,6 +342,43 @@ func _despawn(step: CutsceneStep) -> void:
 		await _wait(DESPAWN_FADE)
 	if is_instance_valid(map):
 		map.remove_npc(id)
+
+
+## Étape « battle » (jalon 4B, jalon-04.md §14.3) : joue le combat contre le dresseur, en
+## gardant le verrou « cutscene » pendant toute sa durée, puis lève les drapeaux de l'issue
+## ([method CutsceneStep.outcome_flags]). Sans runner branché, ou issue NONE (combat refusé) :
+## push_error, étape sautée (aucun drapeau levé). Les PNJ Pokémon (player_pokemon, foe_pokemon,
+## déjà résolus) sont cachés par le [BattleStage].
+func _battle(step: CutsceneStep) -> void:
+	if _battle_runner == null:
+		_step_error("pas de directeur de combat pour « %s »" % step.trainer_id)
+		return
+	var world_actors: Dictionary[StringName, StringName] = {}
+	if not step.player_pokemon.is_empty():
+		world_actors[&"player"] = step.player_pokemon
+	if not step.foe_pokemon.is_empty():
+		world_actors[&"foe"] = step.foe_pokemon
+	var outcome: int = await _battle_runner.run(step.trainer_id, _map, world_actors)
+	if outcome == Battle.Outcome.NONE:
+		_step_error("combat « %s » refusé" % step.trainer_id)
+		return
+	if _flags != null:
+		for flag: StringName in step.outcome_flags(outcome):
+			_flags.set_flag(flag)
+
+
+## Étape « give » (jalon 4B) : ajoute [member CutsceneStep.count] objets au Sac et émet
+## [signal item_given] (Boot en fait une toast). Sans Sac branché, ou objet inconnu de
+## l'[ItemLibrary] : push_error, étape sautée (Sac inchangé).
+func _give(step: CutsceneStep) -> void:
+	if _bag == null or _items == null:
+		_step_error("pas de Sac pour donner « %s »" % step.item_id)
+		return
+	if not _items.has_item(step.item_id):
+		_step_error("objet inconnu « %s »" % step.item_id)
+		return
+	if _bag.add(step.item_id, step.count):
+		item_given.emit(step.item_id, step.count)
 
 
 ## Attente de [param seconds] s par le mécanisme de l'étape « wait » (_process).

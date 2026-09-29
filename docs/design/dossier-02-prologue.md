@@ -188,7 +188,7 @@ Combat immédiat dans le laboratoire, comme dans Rouge/Bleu, mais très mis en s
 
 ### Jalon 4 (décisions du 2026-09-26)
 
-Décisions de Kevin reportées de [`docs/tech/jalon-04.md`](../tech/jalon-04.md) §8 (n° 1, 2, 6, 7, 8, 11, 16). Elles **priment** sur les §8 à §10 ci-dessus quand elles diffèrent (Poké Ball). Textes définitifs, mot pour mot.
+Décisions de Kevin reportées de [`docs/tech/jalon-04.md`](../tech/jalon-04.md) §8 (n° 1, 2, 6, 7, 8, 9, 11, 12, 15, 16) et du dossier 07 §8 (Poké Balls). Elles **priment** sur les §8 à §10 ci-dessus quand elles diffèrent (Poké Ball). Textes définitifs, mot pour mot.
 
 - **Le starter descend de la table** (décisions n° 1 et 16), sans Poké Ball : Bulbizarre descend calmement puis s'approche ; Salamèche descend avec plus d'enthousiasme ; Carapuce descend rapidement, vif et joueur. Il atterrit sur une **case libre à côté ou légèrement devant le joueur**, choisie d'après l'espace disponible (jamais « sur la tête » du joueur ni caché par lui) : il descend → s'approche → s'arrête → le joueur se tourne vers lui (sans jamais lui tourner le dos) → petit temps d'observation mutuelle.
   > **Prof. Chen** — « On dirait que le choix est réciproque. »
@@ -226,6 +226,14 @@ Décisions de Kevin reportées de [`docs/tech/jalon-04.md`](../tech/jalon-04.md)
   > **Prof. Chen** — « Pour un premier combat, vous vous êtes bien débrouillés. »
   > « Mais gagner n'est qu'une partie de ce qu'un Dresseur doit apprendre. »
   > « Apprends à connaître ton Pokémon. Il fera de même avec toi. »
+- **Les premières Poké Balls** (dossier 07 §8, fin du jalon 4) : après les dernières paroles de Chen, avant que le joueur parte :
+  > **Prof. Chen** — « Une dernière chose. »
+  > (il remet quelque chose au joueur) **Poké Balls ×5**
+  > « Observer les Pokémon t'apprendra beaucoup. Mais parfois, le meilleur moyen de les comprendre est encore de voyager avec eux. »
+  > « Utilise-les avec discernement. »
+  Pas de tutoriel de capture. Les Poké Balls vont dans le Sac (toast, bible UI §6).
+- **Premier combat volontairement simple** (décisions n° 9, 12 et 15) : ATTAQUER mis en avant ; SAC, ÉQUIPE et FUITE visibles mais atténués ; **aucune indication de Chen** pendant le combat (il observe) ; **pas de message générique de fin** (« Tu as battu… ») : les répliques du rival en tiennent lieu. Le starter du joueur rentre dans sa Poké Ball à la fin de la séquence du labo.
+- Les répliques répétées de la fin provisoire du 4A (Chen « On dirait que le choix est réciproque. », rival « On ne va quand même pas partir… » quand on leur reparle) disparaissent au 4B : le combat s'enchaîne, puis le rival quitte le labo.
 - **Répliques d'attente après le jalon 4** (décision n° 8, remplacent celles du 3B), **réservées à l'après-combat** (décision n° 16) : ni Chen ni Maya ne les disent avant le premier combat ; avant, Maya garde « Ah, le professeur est revenu. »… :
   > **Prof. Chen** — « Le monde qui vous attend est bien plus vaste que Bourg Palette. »
   > « Prends le temps de l'observer. Les Pokémon ont beaucoup à nous apprendre. »
