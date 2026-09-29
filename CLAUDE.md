@@ -7,6 +7,7 @@ Kevin est le **directeur du jeu** : il conçoit (souvent avec ChatGPT), Claude i
 ## À lire avant de travailler
 
 - `docs/design/vision.md` — constitution, DA, contrôles, plan en 13 phases. **Source de vérité du design.**
+- `docs/design/roadmap.md` — **vue macro** du projet (phases J0→Ligue et post-game, ordre des jalons). Où va le jeu à long terme.
 - `docs/design/ui-reference.md` + `docs/design/reference/da-2026-planche-v1.webp` — référence **UI** validée.
 - `docs/design/ui-ux-bible-v0.1.md` — philosophie UI/UX (« le monde est la star ») ; ses contradictions avec la planche sont listées en fin de fichier.
 - `docs/design/dossier-04-systeme-pokemon.md` — système Pokémon (jalons 4+) ; `dossier-05-combat.md` — combat ; `dossier-06-progression.md` — progression, arènes, rival, Ligue.
