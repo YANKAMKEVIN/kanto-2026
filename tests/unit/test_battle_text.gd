@@ -168,6 +168,19 @@ func test_no_generic_end_message_for_the_first_rival_battle() -> void:
 		["Le Rival envoie Carapuce !"])
 
 
+func test_no_generic_start_message_for_the_first_rival_battle() -> void:
+	var trainers := TrainerLibrary.new(_data)
+	trainers.load_dir()
+	var rival := trainers.get_trainer(&"rival_lab")
+	assert_false(rival.start_message, "décision n° 17 : « On ne va quand même pas… » suffit")
+	var started := _event(K.BATTLE_STARTED, true)
+	assert_eq(Array(_text.lines(started, _data, rival)), [], "pas de « veut se battre »")
+	# Les autres dresseurs gardent « … veut se battre ! ».
+	var other := TrainerData.new()
+	assert_true(other.start_message, "par défaut")
+	assert_eq(Array(_text.lines(started, _data, other)), ["Le Rival veut se battre !"])
+
+
 func test_elision() -> void:
 	assert_eq(BattleText.de_name("Salamèche"), "de Salamèche")
 	assert_eq(BattleText.de_name("Évoli"), "d'Évoli")

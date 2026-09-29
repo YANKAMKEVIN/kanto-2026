@@ -60,6 +60,9 @@ func before_each() -> void:
 	_boot.get_dialogue_runner().chars_per_second = 0.0
 	_player = _boot.get_player()
 	await wait_process_frames(2)
+	# Combat instantané (le déroulé du combat a ses propres tests) : le choix reste à vitesse
+	# réelle pour les sauts et regards.
+	_boot.get_battle_director().speed_scale = 0.0
 	GameState.flags.set_flag(&"oak_met")
 	GameState.flags.set_flag(&"oak_lab_reunion")
 	_boot.get_map().refresh_npcs(GameState.flags)
@@ -134,18 +137,35 @@ func _choose(species: StringName) -> void:
 	# Poké Ball) : [joueur, orientation, son Pokémon, orientation, lift, rival, orientation,
 	# Pokémon du rival, lift].
 	var at_challenge: Array = []
-	var deadline := Time.get_ticks_msec() + 30000
+	# Jalon 4B : après « On ne va quand même pas… », le combat s'enchaîne dans la même scène ;
+	# on le pilote (ATTAQUER puis la 1re capacité) et on gate les vérifications de la phase de
+	# choix (le joueur peut ensuite se tourner vers Chen, sans tourner le dos à son Pokémon
+	# rentré dans sa Ball).
+	var battle_director := _boot.get_battle_director()
+	var battle_hud := _boot.get_battle_hud()
+	var seen_battle := false
+	var deadline := Time.get_ticks_msec() + 60000
 	while director.is_running() and Time.get_ticks_msec() < deadline:
 		was_free = was_free or _player.is_input_enabled()
-		if _player.is_moving():
-			turned_while_moving = turned_while_moving or _player.get_facing() != start_facing
-		if _player.get_cell() != start_cell and _player.get_cell() != CASES[species][2]:
-			moved = true
-		# Jamais dos à son Pokémon (décision n° 16) : ni avant son saut, ni après.
-		if is_instance_valid(chosen) and chosen.is_inside_tree():
-			var to_mine := Vector2(chosen.get_cell() - _player.get_cell())
-			turned_away = turned_away or to_mine.dot(Vector2(_player.get_facing())) < 0.0
+		if battle_director.is_running():
+			seen_battle = true
+		if not seen_battle:
+			if _player.is_moving():
+				turned_while_moving = turned_while_moving or _player.get_facing() != start_facing
+			if _player.get_cell() != start_cell and _player.get_cell() != CASES[species][2]:
+				moved = true
+			# Jamais dos à son Pokémon (décision n° 16), pendant la phase de choix.
+			if is_instance_valid(chosen) and chosen.is_inside_tree():
+				var to_mine := Vector2(chosen.get_cell() - _player.get_cell())
+				turned_away = turned_away or to_mine.dot(Vector2(_player.get_facing())) < 0.0
 		controls_seen = controls_seen or hud.are_controls_visible()
+		var battle := battle_director.get_battle()
+		if battle != null and battle.get_state() == Battle.State.CHOOSING:
+			match battle_hud.get_zone():
+				BattleHud.Zone.ACTIONS:
+					battle_hud.action_selected.emit(ActionGrid.ATTACK)
+				BattleHud.Zone.MOVES:
+					battle_hud.move_selected.emit(0)
 		await wait_process_frames(1)
 		if box.is_open():
 			var page := [box.get_speaker_text(), box.get_text()]
@@ -158,13 +178,15 @@ func _choose(species: StringName) -> void:
 						rival.get_facing(), theirs.get_cell(), theirs.get_lift()]
 			box.advance_requested.emit()
 	assert_false(director.is_running(), "scène terminée")
+	assert_true(seen_battle, "le combat a eu lieu")
 	assert_false(was_free, "joueur jamais libre pendant la scène")
 	assert_false(moved, "le joueur ne fait qu'un pas en arrière (ou aucun)")
 	assert_false(turned_while_moving, "il recule sans se retourner")
 	assert_false(turned_away, "le joueur ne tourne jamais le dos à son Pokémon")
 	assert_false(controls_seen, "aucun contrôle pendant la scène")
-	assert_eq(pages, SCENE_LINES, "répliques dans l'ordre")
-	assert_eq(party_at, [0, 1, 1, 1, 1] as Array[int], "équipe vide jusqu'à « réciproque »")
+	assert_eq(pages.slice(0, 5), SCENE_LINES, "répliques du choix dans l'ordre")
+	assert_eq(party_at.slice(0, 5), [0, 1, 1, 1, 1] as Array[int],
+		"équipe vide jusqu'à « réciproque »")
 	assert_eq(at_challenge.size(), 9, "positions relevées à la dernière réplique")
 	if at_challenge.size() != 9:
 		return
@@ -186,21 +208,24 @@ func _choose(species: StringName) -> void:
 	assert_eq(at_challenge[8], 0.0)
 	assert_eq(at_challenge[6], Grid.dominant_direction(rival_cell, player_cell),
 		"il regarde le joueur")
-	# Fin de la séquence : les deux Pokémon ont rejoint leur Poké Ball (pas de faux
-	# compagnon), leurs cases sont libres ; le rival reste.
+	# Fin de la séquence (4B) : les deux Pokémon ont rejoint leur Poké Ball (le starter du
+	# joueur tout à la fin, décision n° 17), leurs cases sont libres ; le rival a quitté le labo.
 	assert_null(lab.get_npc(species), "son Pokémon est rentré dans sa Poké Ball")
 	assert_null(lab.get_npc(rival_species), "celui du rival aussi")
 	assert_false(lab.get_grid().is_occupied(CASES[species][3]), "case libérée")
 	assert_false(lab.get_grid().is_occupied(at_challenge[7]), "case libérée")
-	assert_eq(lab.get_npc(&"rival").get_cell(), RIVAL_STOP)
+	assert_null(lab.get_npc(&"rival"), "le rival a quitté le labo (rival_left_lab)")
 	assert_eq(_player.get_cell(), player_cell)
-	# État de partie.
+	# État de partie et Sac : équipe soignée, 5 Poké Balls.
 	assert_eq(GameState.party.size(), 1)
 	assert_eq(GameState.party.get_lead().species_id, species)
 	assert_eq(GameState.party.get_lead().level, 5)
+	assert_eq(GameState.party.get_lead().hp, GameState.party.get_lead().max_hp(), "soigné")
 	assert_eq(GameState.starter_species, species)
-	for flag: StringName in [&"starter_chosen", &"rival_challenged",
-			StarterChoice.taken_flag(species), StarterChoice.taken_flag(rival_species)]:
+	assert_eq(GameState.bag.count_of(&"poke_ball"), 5, "5 Poké Balls dans le Sac")
+	for flag: StringName in [&"starter_chosen", &"rival_challenged", &"rival_battle_done",
+			&"rival_left_lab", StarterChoice.taken_flag(species),
+			StarterChoice.taken_flag(rival_species)]:
 		assert_true(GameState.flags.has_flag(flag), String(flag))
 	assert_true(_player.is_input_enabled(), "joueur libre")
 	assert_true(hud.are_controls_visible(), "contrôles visibles")

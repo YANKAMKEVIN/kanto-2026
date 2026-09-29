@@ -113,7 +113,35 @@ const SCENES := {
 		{"face": "player", "to": "left", "if": ["lost"]},
 		{"set": ["after"]},
 	]},
+	"battle_scene": {"steps": [
+		{"battle": "rival_lab", "player_pokemon": "$mine", "foe_pokemon": "$foe",
+			"win": ["won_flag"], "lose": ["lost_flag"]},
+		{"set": ["after"]},
+	]},
+	"give_scene": {"steps": [
+		{"give": "poke_ball", "count": 5}, {"set": ["after"]},
+	]},
+	"give_unknown": {"steps": [
+		{"give": "mystery", "count": 2}, {"set": ["after"]},
+	]},
 }
+
+
+## Faux directeur de combat : renvoie une issue imposée, enregistre l'appel, laisse passer
+## une image (coroutine) pour vérifier que l'étape « battle » attend la fin.
+class StubRunner extends BattleDirector:
+	var outcome_to_return: int = Battle.Outcome.WIN
+	var calls: Array = []
+	var finished: bool = false
+
+	func run(trainer_id: StringName, map: GameMap,
+			world_actors: Dictionary[StringName, StringName]) -> int:
+		calls.append([trainer_id, world_actors.duplicate(), map])
+		finished = false
+		await get_tree().process_frame
+		await get_tree().process_frame
+		finished = true
+		return outcome_to_return
 
 var _router: Node
 var _world: Node2D
@@ -803,3 +831,95 @@ func test_step_conditions_are_read_when_the_step_is_played() -> void:
 	assert_eq(_player.get_facing(), facing, "étape face sautée")
 	assert_true(_flags.has_flag(&"after"), "la scène continue")
 	assert_push_error_count(0)
+
+
+# --- Jalon 4B : étapes battle et give (jalon-04.md §14.3) ------------------------------
+
+func test_battle_waits_for_the_end_and_raises_the_win_flags() -> void:
+	var stub := StubRunner.new()
+	stub.outcome_to_return = Battle.Outcome.WIN
+	add_child_autofree(stub)
+	_director.set_battle_runner(stub)
+	assert_true(_director.play(&"battle_scene", {&"mine": &"charmander", &"foe": &"squirtle"}))
+	assert_true(_director.is_running(), "la scène tourne pendant le combat")
+	assert_false(_flags.has_flag(&"after"), "l'étape battle n'est pas finie")
+	await _await_scene_end()
+	assert_true(stub.finished, "le combat est allé au bout")
+	assert_eq(stub.calls.size(), 1)
+	assert_eq(stub.calls[0][0], &"rival_lab", "dresseur")
+	assert_eq(stub.calls[0][1], {&"player": &"charmander", &"foe": &"squirtle"}
+		as Dictionary[StringName, StringName], "alias résolus")
+	assert_same(stub.calls[0][2], _map, "carte courante")
+	assert_true(_flags.has_flag(&"won_flag"), "drapeau de victoire levé")
+	assert_false(_flags.has_flag(&"lost_flag"))
+	assert_true(_flags.has_flag(&"after"), "la scène continue")
+	assert_push_error_count(0)
+
+
+func test_battle_raises_the_lose_flags_on_a_loss() -> void:
+	var stub := StubRunner.new()
+	stub.outcome_to_return = Battle.Outcome.LOSS
+	add_child_autofree(stub)
+	_director.set_battle_runner(stub)
+	_director.play(&"battle_scene", {&"mine": &"charmander", &"foe": &"squirtle"})
+	await _await_scene_end()
+	assert_true(_flags.has_flag(&"lost_flag"))
+	assert_false(_flags.has_flag(&"won_flag"))
+	assert_true(_flags.has_flag(&"after"))
+
+
+func test_battle_without_a_runner_is_skipped_with_error() -> void:
+	_director.play(&"battle_scene", {&"mine": &"charmander", &"foe": &"squirtle"})
+	await _await_scene_end()
+	assert_push_error("pas de directeur de combat")
+	assert_false(_flags.has_flag(&"won_flag"))
+	assert_false(_flags.has_flag(&"lost_flag"))
+	assert_true(_flags.has_flag(&"after"), "la scène continue")
+
+
+func test_battle_refused_outcome_none_is_skipped_with_error() -> void:
+	var stub := StubRunner.new()
+	stub.outcome_to_return = Battle.Outcome.NONE
+	add_child_autofree(stub)
+	_director.set_battle_runner(stub)
+	_director.play(&"battle_scene", {&"mine": &"charmander", &"foe": &"squirtle"})
+	await _await_scene_end()
+	assert_push_error("refusé")
+	assert_false(_flags.has_flag(&"won_flag"))
+	assert_false(_flags.has_flag(&"lost_flag"))
+	assert_true(_flags.has_flag(&"after"))
+
+
+func test_give_adds_to_the_bag_and_emits_item_given() -> void:
+	var bag := Bag.new()
+	var items := ItemLibrary.new()
+	items.load_dir()
+	_director.set_inventory(bag, items)
+	watch_signals(_director)
+	_director.play(&"give_scene")
+	await _await_scene_end()
+	assert_eq(bag.count_of(&"poke_ball"), 5)
+	assert_signal_emitted_with_parameters(_director, "item_given", [&"poke_ball", 5])
+	assert_true(_flags.has_flag(&"after"))
+	assert_push_error_count(0)
+
+
+func test_give_unknown_item_is_skipped_with_error() -> void:
+	var bag := Bag.new()
+	var items := ItemLibrary.new()
+	items.load_dir()
+	_director.set_inventory(bag, items)
+	watch_signals(_director)
+	_director.play(&"give_unknown")
+	await _await_scene_end()
+	assert_push_error("objet inconnu")
+	assert_true(bag.is_empty(), "Sac inchangé")
+	assert_signal_not_emitted(_director, "item_given")
+	assert_true(_flags.has_flag(&"after"))
+
+
+func test_give_without_a_bag_is_skipped_with_error() -> void:
+	_director.play(&"give_scene")
+	await _await_scene_end()
+	assert_push_error("pas de Sac")
+	assert_true(_flags.has_flag(&"after"))

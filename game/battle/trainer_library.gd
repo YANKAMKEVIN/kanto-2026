@@ -24,8 +24,8 @@ extends RefCounted
 const DATA_DIR: String = "res://data/trainers/"
 
 const _KEYS: Array[String] = [
-	"name", "ai", "can_lose", "heal_after", "gives_exp", "prize_money", "end_message", "team",
-	"team_by_starter",
+	"name", "ai", "can_lose", "heal_after", "gives_exp", "prize_money", "end_message",
+	"start_message", "team", "team_by_starter",
 ]
 const _REQUIRED: Array[String] = [
 	"name", "ai", "can_lose", "heal_after", "gives_exp", "prize_money",
@@ -158,7 +158,7 @@ func _parse(value: Variant, where: String) -> TrainerData:
 				", ".join(PackedStringArray(BattleAI.KINDS))])
 		else:
 			trainer.ai = StringName(entry["ai"])
-	for key: String in ["can_lose", "heal_after", "gives_exp", "end_message"]:
+	for key: String in ["can_lose", "heal_after", "gives_exp", "end_message", "start_message"]:
 		if entry.has(key):
 			if entry[key] is bool:
 				trainer.set(key, entry[key])

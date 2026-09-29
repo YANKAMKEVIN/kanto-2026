@@ -161,6 +161,7 @@ const HOP_PREFIX: String = "jalon04a_t1_hop_"
 const T3_CHOICE_PREFIX: String = "jalon04a_t3_"
 const STARTER_PATH: String = "res://data/cutscenes/starter.json"
 const T6_PREFIX: String = "jalon04b_t6_"
+const T8_PREFIX: String = "jalon04b_t8_"
 const STAGE_SCENE: String = "res://game/battle/battle_stage.tscn"
 ## Scénario « battle_stage » : placement réel de la fin de starter_chosen (§14.1) par starter
 ## du joueur : [case du joueur, orientation, case de son starter]. Rival (7, 7), son
@@ -204,6 +205,8 @@ var _choice_prefix: String = T3_CHOICE_PREFIX
 var _out_dir: String = ""
 ## Graine du combat (scénario « battle_stage »).
 var _seed: int = 7
+## Issue forcée (scénario « rival_battle ») : « win » ou « lose ».
+var _outcome: String = "win"
 var _boot: Node
 var _player: Node2D
 var _frame: int = 0
@@ -233,6 +236,8 @@ func _init() -> void:
 			_choice_prefix = arg.trim_prefix("--prefix=")
 		elif arg.begins_with("--seed="):
 			_seed = int(arg.trim_prefix("--seed="))
+		elif arg.begins_with("--outcome="):
+			_outcome = arg.trim_prefix("--outcome=")
 		elif arg.begins_with("--out="):
 			_out_dir = arg.trim_prefix("--out=")
 	# Les autoloads (SceneRouter, utilisé par Boot) ne sont ajoutés qu'après _init.
@@ -247,7 +252,7 @@ func _start_boot() -> void:
 		_setup_doors()
 		InputMap.action_erase_events(&"interact")
 	elif _scenario in ["starter_offer", "hop_styles", "starter_choice", "lab_exit",
-			"battle_stage"]:
+			"battle_stage", "rival_battle"]:
 		_boot.set(&"start_map", &"oak_lab")
 		_boot.set(&"start_spawn", &"entrance")
 		_boot.set(&"start_facing", Vector2i.UP)
@@ -295,6 +300,8 @@ func _on_frame() -> void:
 			_run_lab_exit()
 		elif _scenario == "battle_stage":
 			_run_battle_stage()
+		elif _scenario == "rival_battle":
+			_run_rival_battle()
 		return
 	match _scenario:
 		"spawn":
@@ -1488,3 +1495,142 @@ func _cardinal(v: Vector2i) -> Vector2i:
 	if absi(v.x) >= absi(v.y):
 		return Vector2i(signi(v.x), 0)
 	return Vector2i(0, signi(v.y))
+
+
+# --- Scénario « rival_battle » (jalon 4B, T8) ---------------------------------------------
+
+## Combat jouable complet dans le labo, via le vrai BattleDirector + BattleHud, avec la fin
+## de la scène (répliques du rival selon l'issue, Chen, toast des Poké Balls). Issue forcée
+## par « --outcome=win|lose », starter par « --starter=… ». Captures jalon04b_t8_<starter>_<issue>_*.
+func _run_rival_battle() -> void:
+	var prefix := "%s%s_%s_" % [T8_PREFIX, _starter, _outcome]
+	var lab: Node = await _lab_with_oak()
+	var state: Node = root.get_node(^"GameState")
+	var flags: RefCounted = state.get(&"flags")
+	for flag: StringName in [&"oak_lab_reunion", &"starter_offered", &"starter_chosen"]:
+		flags.call(&"set_flag", flag)
+	var hud: Node = _boot.call(&"get_hud")
+	hud.call(&"hide_caption")
+	hud.call(&"set_controls_visible", false)
+	var data: RefCounted = _boot.call(&"get_pokemon_data")
+	var offer: RefCounted = _boot.call(&"get_starter_offer")
+	var rival_species: StringName = offer.call(&"rival_pick", _starter, data)
+	if not BATTLE_PLACEMENTS.has(_starter):
+		push_error("rival_battle : starter inconnu « %s »" % _starter)
+		quit(1)
+		return
+	var placement: Array = BATTLE_PLACEMENTS[_starter]
+	var grid: RefCounted = lab.call(&"get_grid")
+	var mine: Node2D = lab.call(&"get_npc", _starter)
+	var theirs: Node2D = lab.call(&"get_npc", rival_species)
+	var rival: Node2D = lab.call(&"get_npc", &"rival")
+	_player.call(&"enter_map", grid, placement[0], placement[1], lab.call(&"get_pixel_rect"))
+	_place_npc(rival, RIVAL_BATTLE_CELL, Vector2i.RIGHT, grid)
+	_place_npc(theirs, RIVAL_POKEMON_CELL, Vector2i.LEFT, grid)
+	_place_npc(mine, placement[2], _cardinal((placement[0] as Vector2i) - (placement[2] as Vector2i)),
+		grid)
+	# Équipe du joueur, starter et graine pour l'issue demandée (même consommation que le jeu).
+	var want: int = 1 if _outcome == "win" else 2  # Battle.Outcome WIN / LOSS
+	var seed := _rival_battle_seed(want, data)
+	var factory: GDScript = load("res://game/pokemon/pokemon_factory.gd")
+	var party: RefCounted = (load("res://game/pokemon/party.gd") as GDScript).new()
+	party.call(&"add", factory.call(&"create", data, _starter, 5, GameRng.new(999)))
+	state.set(&"party", party)
+	state.set(&"starter_species", _starter)
+	state.set(&"rng", GameRng.new(seed))
+	print("  rival_battle : starter %s, adversaire %s, issue %s, graine %d" % [_starter,
+		rival_species, _outcome, seed])
+	await _frames(20)
+	await _offer_shot("00_exploration", prefix)
+	var director: Node = _boot.call(&"get_battle_director")
+	director.set(&"speed_scale", 1.0)
+	var battle_hud: Node = _boot.call(&"get_battle_hud")
+	var box: Node = _boot.call(&"get_dialogue_box")
+	var toast: Node = hud.call(&"get_toast")
+	var world_actors: Dictionary[StringName, StringName] = {&"player": _starter,
+		&"foe": rival_species}
+	director.call(&"run", &"rival_lab", lab, world_actors)
+	await _frames(9)
+	await _offer_shot("01_transition", prefix)
+	# Pilote le combat : ATTAQUER puis la 1re capacité ; captures aux moments clés.
+	var shots: Dictionary[String, bool] = {}
+	var battle_frames := 0
+	var deadline := _frame + 5400
+	while bool(director.call(&"is_running")) and _frame < deadline:
+		var battle: RefCounted = director.call(&"get_battle")
+		if battle != null and int(battle.call(&"get_state")) == 1:  # CHOOSING
+			var zone: int = int(battle_hud.call(&"get_zone"))
+			if zone == 1:  # ACTIONS
+				if not shots.has("02_actions"):
+					shots["02_actions"] = true
+					await _offer_shot("02_actions", prefix)
+				battle_hud.get(&"action_selected").emit(&"attack")
+			elif zone == 2:  # MOVES
+				if not shots.has("03_moves"):
+					shots["03_moves"] = true
+					await _offer_shot("03_moves", prefix)
+				battle_hud.get(&"move_selected").emit(0)
+		battle_frames += 1
+		if battle_frames == 40 and not shots.has("04_battle"):
+			shots["04_battle"] = true
+			await _offer_shot("04_battle", prefix)
+		if battle_frames == 120 and not shots.has("05_battle"):
+			shots["05_battle"] = true
+			await _offer_shot("05_battle", prefix)
+		await process_frame
+		_frame += 1
+	await _frames(6)
+	# Après le combat : répliques du rival, de Chen, toast des Poké Balls, fin.
+	var rival_shot := false
+	var oak_shot := false
+	var toast_shot := false
+	var end_deadline := _frame + 6000
+	while bool((_boot.call(&"get_cutscene_director") as Node).call(&"is_running")) \
+			and _frame < end_deadline:
+		if bool(box.call(&"is_open")):
+			var speaker: String = box.call(&"get_speaker_text")
+			if speaker == "Rival" and not rival_shot:
+				rival_shot = true
+				await _offer_shot("06_rival_aftermath", prefix)
+			elif speaker == "Prof. Chen" and not oak_shot:
+				oak_shot = true
+				await _offer_shot("07_oak", prefix)
+			(box.get(&"advance_requested") as Signal).emit()
+		if bool(toast.call(&"is_showing")) and not toast_shot:
+			toast_shot = true
+			await _offer_shot("08_toast_poke_balls", prefix)
+		await process_frame
+		_frame += 1
+	await _frames(20)
+	await _offer_shot("09_back_to_exploration", prefix)
+	print("  Sac : %d Poké Balls ; rival présent : %s" % [
+		(state.get(&"bag") as RefCounted).call(&"count_of", &"poke_ball"),
+		lab.call(&"get_npc", &"rival") != null])
+	print("RIVAL_BATTLE terminé (frame %d)" % _frame)
+	quit()
+
+
+## Graine (comme _seed_for des tests) qui donne l'issue [param want] contre le rival avec le
+## starter courant ; le Pokémon du joueur est créé avec GameRng.new(999) (reproductible).
+func _rival_battle_seed(want: int, data: RefCounted) -> int:
+	var trainers: RefCounted = (load("res://game/battle/trainer_library.gd") as GDScript).new(data)
+	trainers.call(&"load_dir")
+	var trainer: RefCounted = trainers.call(&"get_trainer", &"rival_lab")
+	var factory: GDScript = load("res://game/pokemon/pokemon_factory.gd")
+	var party_script: GDScript = load("res://game/pokemon/party.gd")
+	var side_script: GDScript = load("res://game/battle/battle_side.gd")
+	var battle_script: GDScript = load("res://game/battle/battle.gd")
+	var action: GDScript = load("res://game/battle/battle_action.gd")
+	for seed: int in range(0, 1500):
+		var rng: RefCounted = GameRng.new(seed)
+		var party: RefCounted = party_script.new()
+		party.call(&"add", factory.call(&"create", data, _starter, 5, GameRng.new(999)))
+		var foes: RefCounted = trainers.call(&"build_team", &"rival_lab", _starter, rng)
+		var battle: RefCounted = battle_script.new(side_script.new(party, true),
+			side_script.new(foes, false, trainer.get(&"name"), trainer.call(&"make_ai")), data, rng)
+		battle.call(&"start")
+		while int(battle.call(&"get_state")) == 1:
+			battle.call(&"submit", action.call(&"move", 0))
+		if int(battle.call(&"get_outcome")) == want:
+			return seed
+	return 0

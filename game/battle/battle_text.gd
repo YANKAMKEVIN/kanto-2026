@@ -23,7 +23,9 @@ extends RefCounted
 ## n° 15, jalon 4 §8) ; sans elle, « text » sert pour tous. [method lines] traduit un
 ## [BattleEvent] en 0, 1 ou plusieurs phrases (un coup critique super efficace en donne
 ## deux). Un dresseur sans message de fin ([member TrainerData.end_message] faux : premier
-## combat du rival, dont les répliques en tiennent lieu) n'a pas de phrase à la fin.
+## combat du rival, dont les répliques en tiennent lieu) n'a pas de phrase à la fin ; de
+## même, sans message de début ([member TrainerData.start_message] faux, décision n° 17 :
+## « On ne va quand même pas partir… » lance le combat), pas de « … veut se battre ! ».
 
 const DATA_PATH: String = "res://data/battle/messages.json"
 const TEMPLATE_IDS: Array[StringName] = [
@@ -132,7 +134,8 @@ func lines(event: BattleEvent, data: PokemonData, trainer: TrainerData = null) \
 	var foe := event.side == BattleEvent.SideId.FOE
 	match event.kind:
 		BattleEvent.Kind.BATTLE_STARTED:
-			if not event.trainer_name.is_empty():
+			var wanted_start := trainer == null or trainer.start_message
+			if wanted_start and not event.trainer_name.is_empty():
 				result.append(_fill(&"battle_started", event, data))
 		BattleEvent.Kind.SENT_OUT:
 			if not foe:

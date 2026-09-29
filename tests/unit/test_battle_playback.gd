@@ -132,6 +132,17 @@ func test_battle_ended_depends_on_the_trainer_end_message() -> void:
 		["Tu as battu Le Rival !"] as Array[String], "autres dresseurs")
 
 
+func test_battle_started_depends_on_the_trainer_start_message() -> void:
+	var rival := _trainers.get_trainer(&"rival_lab")
+	assert_false(rival.start_message, "décision n° 17 : pas de « veut se battre »")
+	var event := _event(BattleEvent.Kind.BATTLE_STARTED, BattleEvent.SideId.FOE, "")
+	event.trainer_name = "Le Rival"
+	assert_eq(BattlePlayback.beats(event, _texts, _data, rival).size(), 0,
+		"premier combat du rival : pas de message de début")
+	assert_eq(_messages(BattlePlayback.beats(event, _texts, _data)),
+		["Le Rival veut se battre !"] as Array[String], "autres dresseurs")
+
+
 func test_big_hit() -> void:
 	var event := _event(BattleEvent.Kind.DAMAGE, BattleEvent.SideId.FOE, "Carapuce")
 	event.max_hp = 20
@@ -160,11 +171,12 @@ func test_whole_rival_battle_for_each_starter() -> void:
 			events.append_array(battle.submit(BattleAction.move(0)))
 		var beats := BattlePlayback.beats_for_log(events, _texts, _data, rival)
 		var kinds := _kinds(beats)
-		assert_eq(kinds.slice(0, 5), [BattleBeat.Kind.MESSAGE, BattleBeat.Kind.MESSAGE,
+		# Décision n° 17 (Q-K) : pas de « Le Rival veut se battre ! » (start_message faux).
+		assert_eq(kinds.slice(0, 4), [BattleBeat.Kind.MESSAGE,
 			BattleBeat.Kind.SEND_OUT, BattleBeat.Kind.MESSAGE, BattleBeat.Kind.SEND_OUT]
 			as Array[BattleBeat.Kind], "%s : ouverture" % starter)
-		assert_string_contains(beats[1].text, "Le Rival envoie ")
-		assert_string_starts_with(beats[3].text, "En avant, ")
+		assert_string_contains(beats[0].text, "Le Rival envoie ")
+		assert_string_starts_with(beats[2].text, "En avant, ")
 		var seen: Dictionary[BattleEvent, bool] = {}
 		for beat: BattleBeat in beats:
 			seen[beat.event] = true
@@ -172,8 +184,9 @@ func test_whole_rival_battle_for_each_starter() -> void:
 				assert_true(beat.event.kind in [BattleEvent.Kind.DAMAGE,
 					BattleEvent.Kind.RECOIL])
 		for event: BattleEvent in events:
+			# BATTLE_STARTED muet aussi contre le rival (start_message faux, décision n° 17).
 			var silent := event.kind in [BattleEvent.Kind.TURN_STARTED,
-				BattleEvent.Kind.BATTLE_ENDED]
+				BattleEvent.Kind.BATTLE_ENDED, BattleEvent.Kind.BATTLE_STARTED]
 			assert_eq(seen.has(event), not silent,
 				"%s : %s joué" % [starter, BattleEvent.Kind.find_key(event.kind)])
 		assert_eq(beats[-1].kind, BattleBeat.Kind.MESSAGE)

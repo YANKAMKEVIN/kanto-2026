@@ -9,6 +9,9 @@
 [ext_resource type="Script" path="res://game/systems/cutscene/cutscene_director.gd" id="7_director"]
 [ext_resource type="PackedScene" path="res://game/ui/starter/starter_sheet.tscn" id="8_sheet"]
 [ext_resource type="Script" path="res://game/systems/starter/starter_choice_controller.gd" id="9_choice"]
+[ext_resource type="PackedScene" path="res://game/battle/battle_stage.tscn" id="10_stage"]
+[ext_resource type="PackedScene" path="res://game/ui/battle/battle_hud.tscn" id="11_hud"]
+[ext_resource type="Script" path="res://game/battle/battle_director.gd" id="12_director"]
 
 [node name="Boot" type="Node"]
 script = ExtResource("1_boot")
@@ -16,7 +19,13 @@ script = ExtResource("1_boot")
 [node name="World" type="Node2D" parent="."]
 unique_name_in_owner = true
 
+[node name="BattleStage" parent="." instance=ExtResource("10_stage")]
+unique_name_in_owner = true
+
 [node name="ExplorationHud" parent="." instance=ExtResource("2_hud")]
+unique_name_in_owner = true
+
+[node name="BattleHud" parent="." instance=ExtResource("11_hud")]
 unique_name_in_owner = true
 
 [node name="StarterSheet" parent="." instance=ExtResource("8_sheet")]
@@ -40,6 +49,10 @@ script = ExtResource("7_director")
 [node name="StarterChoice" type="Node" parent="."]
 unique_name_in_owner = true
 script = ExtResource("9_choice")
+
+[node name="BattleDirector" type="Node" parent="."]
+unique_name_in_owner = true
+script = ExtResource("12_director")
 
 [node name="ScreenFade" parent="." instance=ExtResource("3_fade")]
 unique_name_in_owner = true

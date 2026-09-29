@@ -1,6 +1,6 @@
 # État du projet — note de passage
 
-Mis à jour : 2026-09-28 (**jalon 4B en cours sur la branche `jalon-04b`** : alignement, T6 et T7 faits ; **reste T8 puis T9**).
+Mis à jour : 2026-09-29 (**jalon 4B terminé sur la branche `jalon-04b`** : T6, T7, T8 faits, **QA T9 passée et validée par Kevin sur S24** ; reste la fusion dans `main`).
 
 ## Fait
 - Outillage : Godot 4.7.2, export Android vérifié sur le S24, GUT 9.7.1, scripts `tools/`.
@@ -55,19 +55,20 @@ Mis à jour : 2026-09-28 (**jalon 4B en cours sur la branche `jalon-04b`** : ali
 - Le **Mac** (S24 en USB) récupère la branche, fait les captures (Movie Maker a besoin d'un écran), `tools/deploy_s24.sh` et la QA (`qa-mobile`), puis fusionne après validation de Kevin.
 - Une seule session à la fois sur une même branche.
 
-## Point de reprise (2026-09-28) — à lire en premier
-**Branche de travail : `jalon-04b`** (poussée sur GitHub ; partie de `main` avec le 4A validé, plus `jalon-04b-ui`). **1135 tests verts**, import propre.
+## Point de reprise (2026-09-29) — à lire en premier
+**Branche de travail : `jalon-04b`** (partie de `main` avec le 4A validé, plus `jalon-04b-ui`). **1147 tests verts**, import propre. **Jalon 4B terminé et validé par Kevin sur S24 le 2026-09-29.**
 Fait sur `jalon-04b` :
-- Alignement du plan et fondations logiques du 4B : `docs/tech/jalon-04.md` **§14** (interfaces exactes `BattleDirector`, `BattleStage`, `BattleLayout`, étapes `battle` / `give`, drapeaux, JSON complet de la suite de `starter.json`, dialogues mot pour mot, tâches T6–T9) ; `BattlePlayback`, `BattleViews`, `BattleConclusion`, sac et objets (`data/items/items.json`), `GameState.bag`.
-- **T6** : vue de combat dans le vrai labo (`game/battle/battle_stage.*`, `battle_layout.gd`, shader de voile/flou, sprites de combat provisoires, scénario de capture `battle_stage`). Captures : `build/captures/jalon04b_t6/` (non versionnées). **Composition à faire valider par Kevin** (décision n° 17 : effet caméra, labo reconnaissable).
-- **T7** : `BattleHud` (`game/ui/battle/battle_hud.gd`, enum `BattleHud.Side`) et toast (`game/ui/components/toast.*`, `ExplorationHud.show_toast`). Captures : `build/captures/jalon04b_t7/`.
-Reste :
-1. **T8 (constructeur-monde)** : `BattleDirector` qui rejoue le journal du moteur avec `BattleStage` + `BattleHud` ; lecture des étapes `battle` et `give` par le `CutsceneDirector` ; mise à jour de `data/cutscenes/starter.json`, `data/dialogues/oak_lab.json`, `data/npcs/oak_lab.json` selon `jalon-04.md` §14.7–§14.9 ; câblage de `Boot`. Décisions de Kevin à appliquer : **§8 n° 1 à 17** (en particulier n° 17 : **pas de « Le Rival veut se battre ! »** au premier combat, Chen soigne en silence, le rival regarde brièvement son Pokémon / sa Ball sur « On a encore du travail. », starter dans sa Ball tout à la fin) ; **5 Poké Balls** de Chen (dossier 07 §8) avec toast ; **suppression des répliques répétées de fin de 4A**.
-2. **T9 (qa-mobile, sur le Mac avec le S24)** : QA complète du 4B, victoire **et** défaite forcée, aucune réplique du 4A qui revient.
-3. Validation de Kevin → fusion de `jalon-04b` dans `main`.
-4. Puis **jalon 5** : plan `docs/tech/jalon-05.md` et `docs/design/dossier-07-route-1.md` sur la branche `plan-jalon-05` ; ordre 5A carte → 5B rencontre → 5C XP → **sauvegarde** → 5D capture.
+- Alignement du plan et fondations logiques du 4B : `docs/tech/jalon-04.md` **§14** ; `BattlePlayback`, `BattleViews`, `BattleConclusion`, sac et objets (`data/items/items.json`), `GameState.bag`.
+- **T6** : vue de combat dans le vrai labo (`game/battle/battle_stage.*`, `battle_layout.gd`, shader de voile/flou, sprites de combat provisoires).
+- **T7** : `BattleHud` (`game/ui/battle/battle_hud.gd`, enum `BattleHud.Side`) et toast (`game/ui/components/toast.*`, `ExplorationHud.show_toast`).
+- **T8** : `BattleDirector` (`game/battle/battle_director.gd`) qui rejoue le journal du moteur avec `BattleStage` + `BattleHud` ; lecture des étapes `battle` / `give` par le `CutsceneDirector` (`set_battle_runner`, `set_inventory`, signal `item_given`) ; suite de la scène `starter_chosen`, dialogues d'après-combat (§14.7–§14.9), câblage de `Boot`. Décision n° 17 appliquée : **pas de « Le Rival veut se battre ! »** (drapeau `TrainerData.start_message`, faux pour `rival_lab`), Chen soigne en silence, starter dans sa Ball tout à la fin ; **5 Poké Balls** de Chen avec toast ; **répliques répétées de fin de 4A supprimées** (`oak_lab_waiting if:[starter_chosen]`, `rival_lab_waiting if:[rival_challenged]`). Captures : `build/captures/jalon04b_t8/` (non versionnées).
+- **T9 (QA S24)** : deux prologues complets (victoire + défaite forcée), transition sans écran noir, composition conforme, toast Poké Balls, **62 fps** en combat, logcat propre. Rapport : `build/qa/jalon04b_t9/rapport-jalon-04b.md` (non versionné). Réserves à revérifier au doigt : haptique du coup/critique, messages d'envoi (~1 s), répliques de défaite du rival, re-entrée du labo (couvertes par `test_rival_battle.gd`), chronométrage des 2 autres couples.
 
-Questions ouvertes du T7 (valeurs appliquées si Kevin ne dit rien) : temps vide de ~0,2 s entre deux zones du bas de la HUD (ou fondu enchaîné) ; toast en haut au centre, capsule sombre, 2 s ; pastilles d'équipe qui sortent avec la carte au K.O.
+Reste :
+1. Fusion de `jalon-04b` dans `main` (validée).
+2. Puis **jalon 5** : plan `docs/tech/jalon-05.md` et `docs/design/dossier-07-route-1.md` sur la branche `plan-jalon-05` ; ordre 5A carte → 5B rencontre → 5C XP → **sauvegarde** → 5D capture.
+
+Écarts T8 à garder en tête (§14) : `oak_poke_balls` découpé en **3 pages** au lieu de 2 (Q-P, mots identiques) ; drapeau `TrainerData.start_message` introduit (symétrique de `end_message`) ; scénarios de capture `starter_choice` / `battle_stage` obsolètes depuis l'ajout du combat dans `starter_chosen` (supplantés par `rival_battle`).
 
 Organisation des sessions : pour économiser le contexte, **une session courte par jalon ou par tâche** ; les agents tournent un à la fois si la limite d'utilisation est atteinte (limites de session et hebdomadaire rencontrées le 2026-09-27/28).
 

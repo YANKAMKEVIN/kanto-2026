@@ -72,6 +72,46 @@
 		"speaker": "Rival",
 		"pages": ["On ne va quand même pas partir sans savoir ce qu'ils savent faire."]
 	},
+	"rival_lab_won": {
+		"speaker": "Rival",
+		"pages": [
+			"...Pas mal.",
+			{ "text": "On a encore du travail.", "turn": { "rival": "down" } },
+			{ "text": "La prochaine fois, ce sera différent.", "turn": { "rival": "player" } }
+		]
+	},
+	"rival_lab_won_leaving": {
+		"speaker": "Rival",
+		"pages": ["Essaie de ne pas trop prendre de retard."]
+	},
+	"rival_lab_lost": {
+		"speaker": "Rival",
+		"pages": [
+			"Pas mal pour un premier combat.",
+			{ "text": "Mais je t'avais prévenu : j'étais prêt.", "pause": 0.8 },
+			"Rattrape-moi quand tu le seras aussi."
+		]
+	},
+	"oak_after_battle": {
+		"speaker": "Prof. Chen",
+		"pages": [
+			"Pour un premier combat, vous vous êtes bien débrouillés.",
+			"Mais gagner n'est qu'une partie de ce qu'un Dresseur doit apprendre.",
+			"Apprends à connaître ton Pokémon. Il fera de même avec toi."
+		]
+	},
+	"oak_poke_balls_intro": {
+		"speaker": "Prof. Chen",
+		"pages": ["Une dernière chose."]
+	},
+	"oak_poke_balls": {
+		"speaker": "Prof. Chen",
+		"pages": [
+			"Observer les Pokémon t'apprendra beaucoup.",
+			"Mais parfois, le meilleur moyen de les comprendre est encore de voyager avec eux.",
+			"Utilise-les avec discernement."
+		]
+	},
 	"oak_lab_exit_block": {
 		"speaker": "Prof. Chen",
 		"pages": ["Pas si vite. Tu n'as pas encore choisi ton partenaire."]
@@ -87,10 +127,6 @@
 				]
 			},
 			{
-				"if": ["starter_chosen"],
-				"pages": ["On dirait que le choix est réciproque."]
-			},
-			{
 				"if": ["starter_offered"],
 				"pages": ["Prends ton temps.", "Choisis celui avec qui tu as envie de partir."]
 			},
@@ -102,10 +138,6 @@
 	"rival_lab_waiting": {
 		"speaker": "Rival",
 		"variants": [
-			{
-				"if": ["rival_challenged"],
-				"pages": ["On ne va quand même pas partir sans savoir ce qu'ils savent faire."]
-			},
 			{
 				"if": ["starter_offered"],
 				"pages": ["Tu comptes les regarder encore longtemps ?", "Dépêche-toi de choisir."]

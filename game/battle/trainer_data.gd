@@ -23,6 +23,11 @@ var prize_money: int = 0
 ## premier combat du rival : ses répliques d'après-combat en tiennent lieu (décision de
 ## Kevin n° 15, jalon 4 §8).
 var end_message: bool = true
+## Message générique de début (« Le Rival veut se battre ! »). Faux pour le premier combat
+## du rival : la réplique « On ne va quand même pas partir… » qui lance le combat en tient
+## lieu (décision de Kevin n° 17, Q-K, jalon-04.md §8). Vrai par défaut pour les autres
+## Dresseurs (même mécanique que [member end_message]).
+var start_message: bool = true
 ## Équipe fixe (vide si l'équipe dépend du starter du joueur).
 var team: Array[TrainerSlot] = []
 ## Équipe selon le starter du joueur (combats du rival, comme Rouge/Bleu).

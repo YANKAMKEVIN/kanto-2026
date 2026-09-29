@@ -225,23 +225,32 @@ func _check_choice(species: StringName) -> void:
 	for cell: Vector2i in scene_cells:
 		assert_false(_forbidden.has(cell), "ni warp ni déclencheur : %s" % cell)
 	_assert_above_mat_free("fin de la scène")
-	# 5. Fin de la séquence : les deux Pokémon rejoignent leur Poké Ball (despawn), aucun ne
-	# reste au labo comme un faux compagnon.
+	# 5. Fin de la séquence (4B) : les deux Pokémon rejoignent leur Poké Ball (despawn) et le
+	# rival quitte le labo (despawn) ; aucun Pokémon ne reste comme un faux compagnon.
 	var gone: Array[Npc] = []
+	var rival_gone := false
 	for step: CutsceneStep in _steps:
-		if step.kind == CutsceneStep.Kind.DESPAWN:
-			var npc: Npc = mine if step.actor == &"$player_starter" else theirs
-			assert_true(step.actor in [&"$player_starter", &"$rival_starter"], str(step.actor))
-			var cell: Vector2i = _moved.get(npc, npc.get_cell())
-			assert_same(_grid.get_occupant(cell), npc, "%s en %s" % [step.actor, cell])
-			_grid.release(cell, npc)
-			gone.append(npc)
+		if step.kind != CutsceneStep.Kind.DESPAWN:
+			continue
+		if step.actor == &"rival":
+			var rcell: Vector2i = _moved.get(rival, rival.get_cell())
+			if _grid.get_occupant(rcell) == rival:
+				_grid.release(rcell, rival)
+			rival_gone = true
+			continue
+		var npc: Npc = mine if step.actor == &"$player_starter" else theirs
+		assert_true(step.actor in [&"$player_starter", &"$rival_starter"], str(step.actor))
+		var cell: Vector2i = _moved.get(npc, npc.get_cell())
+		assert_same(_grid.get_occupant(cell), npc, "%s en %s" % [step.actor, cell])
+		_grid.release(cell, npc)
+		gone.append(npc)
 	assert_eq(gone.size(), 2, "les deux Pokémon rentrent dans leur Poké Ball")
-	# Après : le joueur n'est pas enfermé, chaque cible est utilisable.
+	assert_true(rival_gone, "le rival quitte le labo après le combat (rival_left_lab)")
+	# Après : le joueur n'est pas enfermé, chaque cible restante est utilisable.
 	var reachable := _grid.find_reachable(player_cell, _player)
 	assert_true(reachable.has(ENTRANCE), "le tapis de sortie reste atteignable")
 	for npc: Npc in _map.get_npcs():
-		if npc.get_interaction() == null or gone.has(npc):
+		if npc.get_interaction() == null or gone.has(npc) or npc == rival:
 			continue
 		var cell: Vector2i = _moved.get(npc, npc.get_cell())
 		assert_eq(_grid.get_occupant(cell), npc, "%s en %s" % [npc.get_id(), cell])
