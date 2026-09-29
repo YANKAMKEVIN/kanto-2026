@@ -220,6 +220,52 @@ func test_parse_entry_reports_errors_without_signalling_them() -> void:
 	assert_push_error_count(0, "c'est l'appelant qui signale")
 
 
+## Réactions d'ambiance « shy » (jalon 5 §3.5).
+func test_shy_defaults_and_values() -> void:
+	var errors := PackedStringArray()
+	var none := NpcRoster.parse_entry({"cell": [1, 2], "sprite": "pidgey"}, errors)
+	assert_eq(none.shy_action, &"", "aucune réaction par défaut")
+	assert_false(none.is_shy())
+	var fly := NpcRoster.parse_entry(
+		{"cell": [1, 2], "sprite": "pidgey", "shy": {"action": "fly"}}, errors)
+	assert_eq(fly.shy_action, &"fly")
+	assert_eq(fly.shy_radius, NpcSpec.SHY_RADIUS_DEFAULT, "rayon 2 par défaut")
+	assert_true(fly.is_shy())
+	var flee := NpcRoster.parse_entry(
+		{"cell": [1, 2], "sprite": "rattata", "shy": {"action": "flee", "radius": 4}}, errors)
+	assert_eq(flee.shy_action, &"flee")
+	assert_eq(flee.shy_radius, 4)
+	assert_true(errors.is_empty(), "\n".join(errors))
+
+
+func test_shy_invalid_values_are_rejected() -> void:
+	var errors := PackedStringArray()
+	assert_null(NpcRoster.parse_entry(
+		{"cell": [1, 2], "sprite": "x", "shy": "fly"}, errors), "shy doit être un objet")
+	assert_null(NpcRoster.parse_entry(
+		{"cell": [1, 2], "sprite": "x", "shy": {"action": "jump"}}, errors), "action inconnue")
+	assert_null(NpcRoster.parse_entry(
+		{"cell": [1, 2], "sprite": "x", "shy": {"action": "fly", "radius": 0}}, errors),
+		"rayon < 1")
+	assert_null(NpcRoster.parse_entry(
+		{"cell": [1, 2], "sprite": "x", "shy": {"action": "fly", "radius": 5}}, errors),
+		"rayon > 4")
+	assert_null(NpcRoster.parse_entry(
+		{"cell": [1, 2], "sprite": "x", "shy": {"action": "fly", "who": 1}}, errors),
+		"clé inconnue dans shy")
+	assert_eq(errors.size(), 5, "une erreur par problème")
+	assert_push_error_count(0, "parse_entry ne signale pas")
+
+
+func test_shy_is_refused_on_an_interactive_npc() -> void:
+	var errors := PackedStringArray()
+	var spec := NpcRoster.parse_entry(
+		{"cell": [1, 2], "sprite": "pidgey", "dialogue": "hello", "shy": {"action": "fly"}},
+		errors)
+	assert_null(spec, "un Pokémon qui fuit ne se parle pas")
+	assert_string_contains("\n".join(errors), "interdit sur un PNJ interactif")
+
+
 func test_is_cell() -> void:
 	assert_true(NpcRoster.is_cell([0, 0]))
 	assert_true(NpcRoster.is_cell([24.0, 13.0]))

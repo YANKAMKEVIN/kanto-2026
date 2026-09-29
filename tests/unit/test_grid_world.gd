@@ -369,3 +369,36 @@ func _follow(from: Vector2i, path: Array[Vector2i]) -> Vector2i:
 		assert_ne(next, cell, "pas possible depuis %s vers %s" % [cell, direction])
 		cell = next
 	return cell
+
+
+# --- Hautes herbes (jalon 5) : drapeau informatif, sans effet sur le déplacement -----
+
+func test_tall_grass_flag_is_set_and_read() -> void:
+	var cell := Vector2i(3, 3)
+	assert_false(_world.is_tall_grass(cell))
+	assert_true(_world.set_tall_grass(cell))
+	assert_true(_world.is_tall_grass(cell))
+	assert_true(_world.set_tall_grass(cell, false))
+	assert_false(_world.is_tall_grass(cell))
+
+
+func test_tall_grass_out_of_bounds_is_false() -> void:
+	assert_false(_world.set_tall_grass(Vector2i(-1, 0)))
+	assert_false(_world.is_tall_grass(Vector2i(10, 0)))
+
+
+func test_tall_grass_is_independent_of_solid_water_and_ledge() -> void:
+	var cell := Vector2i(4, 4)
+	_world.set_tall_grass(cell)
+	# On peut y entrer et s'y tenir : l'herbe ne change aucune règle de déplacement.
+	assert_true(_world.can_enter(cell, Vector2i.DOWN))
+	assert_true(_world.is_free(cell))
+	# Une case solide peut aussi être en herbe (bord nord de Bourg Palette) : les deux
+	# drapeaux coexistent sans s'écraser.
+	_world.set_solid(cell)
+	assert_true(_world.is_tall_grass(cell), "l'herbe survit au solide")
+	assert_true(_world.is_solid(cell), "le solide survit à l'herbe")
+	_world.set_water(cell)
+	_world.set_ledge(cell, GridWorld.Ledge.DOWN)
+	assert_true(_world.is_tall_grass(cell), "l'herbe survit à l'eau et au rebord")
+	assert_eq(_world.get_ledge(cell), GridWorld.Ledge.DOWN, "le rebord n'est pas écrasé")

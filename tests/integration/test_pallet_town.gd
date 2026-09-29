@@ -241,6 +241,19 @@ func test_tall_grass_cells_are_exactly_the_top_of_route_1() -> void:
 	assert_eq(found, expected)
 
 
+func test_grid_tall_grass_matches_the_top_of_route_1() -> void:
+	# Jalon 5 : GameMap lit enfin la donnée tall_grass des tuiles dans la grille. Vrai
+	# exactement sur (23..24, 0..2), y compris les deux cases bloquées du bord nord.
+	for y: int in _map.size.y:
+		for x: int in _map.size.x:
+			var cell := Vector2i(x, y)
+			assert_eq(_grid.is_tall_grass(cell), TALL_GRASS_RECT.has_point(cell),
+				"is_tall_grass en %s" % cell)
+	# Les cases bloquées du bord nord sont à la fois solides et en herbe.
+	assert_true(_grid.is_tall_grass(Vector2i(23, 0)) and _grid.is_solid(Vector2i(23, 0)))
+	assert_true(_grid.is_tall_grass(Vector2i(24, 0)) and _grid.is_solid(Vector2i(24, 0)))
+
+
 func test_tall_grass_is_walkable_except_the_blocked_edge() -> void:
 	for cell: Vector2i in [Vector2i(23, 1), Vector2i(24, 1), Vector2i(23, 2), Vector2i(24, 2)]:
 		assert_false(_grid.is_solid(cell), "praticable : %s" % cell)

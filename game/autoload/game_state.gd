@@ -21,13 +21,19 @@ var starter_species: StringName = &""
 var rng: GameRng = GameRng.new()
 ## Sac du joueur (même instance pendant toute la session : vidé par [method new_game]).
 var bag: Bag = Bag.new()
+## Pokédex : espèces vues et capturées (jalon 5, décision de Kevin 2026-09-29). L'écran
+## arrive au jalon 6 ; les données sont collectées et sauvegardées dès le jalon 5. Même
+## instance pendant toute la session (vidée par [method new_game]).
+var pokedex: Pokedex = Pokedex.new()
 
 
-## Nouvelle partie (appelé par Boot au démarrage) : drapeaux baissés, équipe et Sac vides,
-## pas de starter, aléatoire neuf de graine [param rng_seed] (−1 = graine tirée au hasard).
+## Nouvelle partie (appelé par Boot au démarrage) : drapeaux baissés, équipe, Sac et Pokédex
+## vides, pas de starter, aléatoire neuf de graine [param rng_seed] (−1 = graine tirée au
+## hasard).
 func new_game(rng_seed: int = -1) -> void:
 	flags.clear()
 	party.clear()
 	bag.clear()
+	pokedex.clear()
 	starter_species = &""
 	rng = GameRng.new(rng_seed)

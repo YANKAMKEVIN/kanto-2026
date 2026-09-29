@@ -746,3 +746,212 @@ Constat fait sur le code réel : **949 tests verts** (`tools/test.sh`, 65 script
 11. **Export** : `export_presets.cfg` a `include_filter=""` ; `data/` part dans l'APK aujourd'hui, à reconfirmer pour `data/encounters/` et `data/items/`.
 12. **Toujours ouverts** : titre de zone en bandeau (bible §5 : sans rectangle) ; `docs/design/reference/combat-capacites-v1.png.png` à renommer.
 13. **Risque de rythme** : 25/256 par pas donne en moyenne une rencontre tous les ~10 pas, soit ~3 s de marche dans l'herbe : fidèle à Rouge/Bleu mais dense sur des herbes A+ plus grandes. À juger en T8 (Q8, Q11).
+
+---
+
+## 15. Alignement du jalon 5 sur le code réel du 4B et le dossier-07 (2026-09-29)
+
+Fait sur la branche `jalon-05` (`main` avec le **4B fusionné et validé**, `08fe0ac`), **au début
+de T0**. Comme les §13/§14 du jalon 4, cette section **remplace, pour le jalon 5**, ce qui
+diffère dans §2, §3.3, §3.4, §3.8, §3.10 et §9 du présent plan. Deux sources priment sur les
+« propositions par défaut » écrites avant la fusion :
+
+- **`docs/design/dossier-07-route-1.md`** (conception de Kevin, 2026-09-26) : il **prime** sur
+  l'esquisse par défaut du §3.4 (carte, herbes, rebords, PNJ, secret, sorties) et sur les Q1–Q5,
+  Q8, Q21, Q32, Q39. Les répliques y sont **définitives**.
+- **Décision de Kevin du 2026-09-29** : les **données** `seen` / `caught` du **Pokédex** commencent
+  à être collectées **dès le jalon 5** et doivent entrer dans la **sauvegarde** du jalon 5, pour
+  que le jalon 6 ne soit qu'une interface sur des données déjà présentes (jamais rétro-greffées).
+  → `Pokedex` posé **en fondation pure dès T0** (§15.7), pas au 5D comme le §2.4 le prévoyait.
+
+Départ mesuré : **1147 tests verts** (le §11 en annonçait 949 depuis `jalon-04a` ; le 4B a
+ajouté ses tests).
+
+### 15.1 État réel du 4B (ce que le §9 « promettait » est livré, souvent plus complet)
+
+| Sujet | Dans le code fusionné | Conséquence pour le jalon 5 |
+|---|---|---|
+| Directeur de combat | `BattleDirector` (`Node`, enfant de `Boot`) : `setup(data, trainers, texts, stage, hud, player, state)`, **`run(trainer_id, map, world_actors) -> int`** (coroutine), `is_running()`, `get_battle()`, `speed_scale`, `REASON = &"battle"` ; signaux `battle_started` / `event_played(event)` / `battle_finished(trainer_id, outcome)`. Construit ses camps **en dur** dans `run` (§14.2). | **`run_request` n'existe pas encore** : T4 l'extrait et déplace la construction des camps dans `BattleRequest` (§15.6). Les signaux sont par dresseur (`trainer_id`) : à généraliser pour un sauvage. |
+| Rejeu du journal | `BattlePlayback.beats(event, texts, data, trainer) -> Array[BattleBeat]`, `BattleBeat` (`MESSAGE`/`SEND_OUT`/`MOVE`/`DAMAGE`/`STAT`/`FAINT`), `BattleViews.card/moves/…`, `BattleViews.TRAINER_BATTLE_ACTIONS = { attack: true }`. | Les temps sauvages (`FLED`, `FLEE_FAILED`, XP, capture) s'ajoutent à `BattlePlayback` **en fin** ; une table d'actions « sauvage » (FUITE active, SAC/ÉQUIPE atténués) s'ajoute à `BattleViews`. |
+| Vue de combat | `BattleStage` (`CanvasLayer`) : `enter(camera, player_pkmn, foe_pkmn, player_species, foe_species)`, `set_frame(arena, map_rect)`, `show_pokemon(side, species)`, `play_move/play_hit/play_stat/play_faint`, `exit()`, `reset()`, `is_active()` ; **décor recomposé, pas d'écran noir** (décision n° 10). | L'intro sauvage (§3.7) et l'entrée du partenaire s'ajoutent au `BattleStage` réel. **Décision n° 10 confirmée** (fond = la carte recadrée) : la Route 1 sert de fond, **pas besoin d'un fond de combat dédié** (le risque « composition recomposée » du §9 est levé). |
+| HUD | `BattleHud` (assemble les composants `game/ui/battle/`), `BattleHud.Side` (enum propre à l'UI). | FUITE/XP/oubli/SAC s'ajoutent aux composants réels (T6, T10, T14). |
+| Fin de combat | `BattleConclusion.resolve(trainer, outcome) -> { heal_party, prize_money, blackout }`. | Un combat sauvage n'a pas de dresseur : la défaite et le soin passent par l'`EncounterDirector` et `GameState.heal_map` (§3.11), pas par `BattleConclusion`. |
+| **Sac et objets (le §2.4 les croyait à faire au 5D)** | **Déjà livrés** : `Bag` (`add/remove/count_of/has/get_ids/clear/to_dict/load_dict`), `ItemData` (`Category { BALL }`, `catch_bonus`, `name_for/quantity_text/added_text`), `ItemLibrary`, `data/items/items.json` (Poké Ball), **`GameState.bag`** vidé par `new_game`. | Le 5D **n'a plus à créer** Sac ni objets : seuls `CaptureCalc`/`CaptureResult`, `PokemonStorage`, `catch_rate`, `BattleAction.ITEM` et la présentation restent (§15.6). |
+| Étape de scène `give` | **Livrée** : `CutsceneStep` `GIVE`, `CutsceneDirector.set_inventory(bag, items)`, `_give`, `signal item_given(item_id, count)` ; **les 5 Poké Balls de Chen sont déjà dans `data/cutscenes/starter.json`** (`{ "give": "poke_ball", "count": 5 }`) avec les répliques **définitives** du dossier-07 §8 (`oak_poke_balls_intro`, `oak_poke_balls`). | **Q32 est tranchée et faite** : le 5D n'a rien à ajouter côté remise ; il branche seulement le **toast** sur `item_given` (Boot). |
+| Étape de scène `battle` | **Livrée** : `{ "battle", "player_pokemon", "foe_pokemon", "win", "lose" }`, `if`/`unless` sur toute étape, `CutsceneDirector.set_battle_runner(runner)`. | Modèle réutilisable ; une rencontre sauvage n'est **pas** une scène : l'`EncounterDirector` appelle le directeur directement (§3.6). |
+| Moteur | `Battle` (`start`, `submit`, `get_usable_moves`, `get_state`, `get_outcome`, `get_player_side`/`get_foe_side`), `State { READY, CHOOSING, OVER }`, `Outcome { NONE, WIN, LOSS }`, `BattleAction.Kind { MOVE }` + `STRUGGLE = -1`, `_check_end` insère `BATTLE_ENDED` **juste après** `FAINTED`. `BattleText.lines(event, data, trainer)`. | Conforme au §11.5. Tous les ajouts (RUN, FLED, ITEM, CAUGHT, XP) se font **en fin d'enum** ; l'XP s'insère entre `FAINTED` et `BATTLE_ENDED` (§2.3). |
+| Grille / monde | `GridWorld.Ledge { NONE, DOWN, LEFT, RIGHT }`, `set_ledge`/`get_ledge`, `can_enter`/`get_step_target` gèrent le saut de rebord (2 cases) ; `Grid.LEDGE_JUMP_DURATION` ; `GridMover.is_jumping()`. `OverworldTiles.DATA_TALL_GRASS` posée sur les tuiles (3B) mais **jamais lue** par la grille avant T0. | T0 lit enfin l'herbe et ajoute la **tuile** de rebord (§15.3). L'**arc de saut du joueur** (T1) reste à faire (`GridMover.is_jumping()` non affiché). |
+
+### 15.2 Écarts plan → code (liste explicite)
+
+1. **`BattleDirector.run_request` n'existe pas** ; il y a `run(trainer_id, map, world_actors)`.
+   → T4 : extraire `run_request(request: BattleRequest, map) -> int` et faire de `run` une
+   enveloppe (§15.6). Les signaux `battle_started(trainer_id)` / `battle_finished(trainer_id,
+   outcome)` prennent une clé (dresseur ou `&""` pour un sauvage) ou gagnent une variante.
+2. **Sac, objets, étape `give`, `GameState.bag` : déjà là** (§2.4 les plaçait au 5D). Le 5D est
+   allégé d'autant ; **Q32 est faite** (Chen donne 5 Balls, textes définitifs intégrés).
+3. **`Pokedex` avancé du 5D à T0** (décision du 2026-09-29). `PokemonStorage`, `CaptureCalc`,
+   `catch_rate` restent au 5D. `GameState.pokedex` est ajouté maintenant (§15.7).
+4. **`GameMap._read_layer` ne lisait pas `tall_grass`** → corrigé en T0 (§15.3).
+5. **`OverworldTiles` n'avait aucun type de rebord** → `Kind.LEDGE_DOWN` ajouté en T0 (le §3.4 et
+   le §5 le plaçaient en T1) : c'est une **donnée pure testable**, prérequis de la carte.
+6. **La carte par défaut du §3.4 (48 × 72, esquisse) est remplacée** par le dossier-07 (§15.4) :
+   « **A+ compacte** » (trajet direct 2–3 min, exploration 8–12 min), chemin **qui serpente**,
+   **3 zones d'herbes** dont **une bande courte obligatoire**, un **secret** (Potion) dans la
+   zone d'exploration, **un seul PNJ** (le Voyageur, avec routine de marche), rebords vers le sud,
+   **connexion Jadielle qui fonctionne** (placeholder « JADIELLE — À venir » en build de dev).
+7. **La Potion cachée du dossier-07 §6 demande la catégorie d'objet `heal`** : `ItemData.Category`
+   ne connaît que `BALL`. → à ajouter (donnée + un objet `potion`) quand la Potion est posée (5A/5B
+   selon l'ordre), avec un **toast** ; l'usage de la Potion (soin) n'est **pas** requis au jalon 5
+   (hors périmètre, §Hors périmètre) : elle est seulement **ramassée et rangée**. **Question Q-A.**
+8. **La défaite** (§3.11) est confirmée par le dossier-07 §11 avec **textes définitifs** : Maman
+   soigne, première fois « Tu m'as fait une de ces peurs… » / « Tes Pokémon vont bien. Repose-toi
+   un peu avant de repartir. » ; ensuite « Tes Pokémon vont bien maintenant. » / « Fais attention
+   à toi, d'accord ? ». → à mettre dans `data/dialogues/` et à câbler en T7 ; plus de « sans
+   réplique par défaut ».
+9. **Sauvegarde (Q39) tranchée** : le dossier-07 §13 la rend **obligatoire avant la validation du
+   jalon 5**, idéalement **avant la capture finale**. Le §Hors périmètre disait « phase 11 ». →
+   une tâche **sauvegarde** s'insère **entre le 5C et le 5D** (autosave : événement, capture,
+   changement de zone, soin). Contenu minimal : dossier-07 §13. **Question Q-B** (mécanisme).
+
+### 15.3 T0 — fondations réellement posées (cette tâche)
+
+Classes pures et données de tuiles, aucune dépendance à l'arbre de scènes ni à un autoload,
+toutes testées. Cela **remplace/complète le §2.1** :
+
+- `GridWorld` : drapeau **hautes herbes** — `set_tall_grass(cell, tall := true)`,
+  `is_tall_grass(cell)`, bit `_FLAG_TALL_GRASS = 16` (au-dessus du rebord, bits 2–3). N'entre dans
+  **aucune** règle de déplacement (`can_enter`, `get_step_target`, `is_free` l'ignorent) : une case
+  peut être **à la fois solide et en herbe** (le bord nord bloqué de Bourg Palette).
+- `GameMap._read_layer` lit enfin `OverworldTiles.DATA_TALL_GRASS` → `_grid.set_tall_grass`.
+- `NpcSpec` / `NpcRoster` : clé facultative **`shy`** = `{ "action": "fly" | "flee",
+  "radius": 1..4 }` → `NpcSpec.shy_action: StringName` (`&""` = aucune, `SHY_ACTIONS = [&"fly",
+  &"flee"]`), `shy_radius: int` (défaut 2, `SHY_RADIUS_DEFAULT`), `is_shy()`. **Refusée sur un PNJ
+  interactif** (dialogue renseigné). Validation stricte (clé inconnue dans `shy`, action hors liste,
+  rayon hors 1..4).
+- `AmbientRules` (`game/world/npc/ambient_rules.gd`, statique) : `is_within(npc, player, radius)`
+  (Manhattan) ; `flee_path(grid, from, away_from, max_steps, mover) -> Array[Vector2i]` (directions
+  qui **augmentent** la distance, cases `is_free`, ordre haut-bas-gauche-droite, reproductible ;
+  vide si acculé, jamais à travers le joueur).
+- `OverworldTiles.Kind.LEDGE_DOWN` (**fin d'enum**, rangée 12) + `VARIANTS = 2`, `LEDGE_KINDS`,
+  `ledge_of(kind)`, `is_ledge_kind`. Praticable (non solide), donnée `ledge = DOWN`. Atlas et
+  `overworld.tres` **régénérés** (`gen_placeholder_tiles.gd`, tuile provisoire « talus + chevrons »)
+  sans déplacer les rangées existantes. L'**arc de saut** du joueur reste à T1.
+- `Pokedex` + `GameState.pokedex` (§15.7).
+
+Tests : `test_grid_world` (herbes indépendantes du solide/eau/rebord, hors carte),
+`test_pallet_town` (grille : `is_tall_grass` vrai exactement sur (23..24, 0..2), y compris les deux
+cases bloquées), `test_npc_roster` (shy : défauts, valeurs, bornes, clé inconnue, refus sur PNJ
+interactif), `test_ambient_rules` (rayon, fuite, coin, blocage, rebord, reproductibilité, grille
+nulle), `test_overworld_tileset` (LEDGE_DOWN en fin, données ledge=bas, non solide ; autres types
+sans ledge), `test_pokedex`, `test_game_state` (Pokédex vidé par `new_game`).
+
+**Non fait volontairement** (5A et suivants, avec `constructeur-monde` / `ui-mobile` / `qa-mobile`) :
+la carte `route_1.tscn` et son tracé, l'arc de saut, le sprite « jambes dans l'herbe »,
+`AmbientWatcher`, les rencontres, l'XP visible, la capture.
+
+### 15.4 La carte de la Route 1 (5A) — le dossier-07 remplace l'esquisse du §3.4
+
+**L'esquisse « 48 × 72 » du §3.4 n'est plus la référence.** Le tracé et les cases restent le
+**5A avec `constructeur-monde`**, sur la base du dossier-07 (Kevin), pas de l'architecte. Ce que le
+dossier **verrouille** (à respecter par T1) :
+
+- **Taille A+ compacte** : trajet direct **2–3 min**, exploration attentive **8–12 min**. Chemin
+  **qui serpente** (pas de ligne droite verticale). Transition sud (entretenu, clôtures, fleurs) →
+  centre (nature, petit relief, arbres) → nord (traces humaines vers Jadielle).
+- **Trois zones de hautes herbes** : **Zone 1** initiation, **petite et contournable** ; **Zone 2**
+  exploration, plusieurs passages, **un recoin qui cache la Potion** ; **Zone 3** vers la moitié /
+  deuxième moitié, **bande courte impossible à contourner** (quelques cases).
+- **Rebords franchissables uniquement vers le sud** (`LEDGE_DOWN`), saut animé + ombre +
+  atterrissage + retour haptique ; le level design doit faire lire « je descends par là, pas
+  l'inverse ».
+- **Un seul PNJ, le Voyageur** (répliques **définitives**, dossier-07 §5), qui **marche** dans une
+  petite zone près du chemin (**jamais** dans les herbes, **ne bloque jamais** le passage, **ne sort
+  pas** de sa zone ; s'arrête et se tourne vers le joueur quand on lui parle, puis reprend). C'est la
+  **première application** de la règle « un PNJ a une petite activité/routine locale » (pas
+  d'horaires). → demande un **PNJ à routine de marche** : `Npc` sait déjà marcher (3B) ; il manque
+  une petite routine « aller-retour dans une zone » à concevoir en T2. **Question Q-C** (portée de la
+  routine : liste de cases ? rectangle ? pauses ?).
+- **Premier secret** : objet caché **sans scintillement** près d'un arbre/souche → **Potion ×1** +
+  toast (§15.2 point 7). Examen : « *Quelque chose est coincé entre les racines.* » (définitif).
+- **Aucun Dresseur** (dossier-07 §7).
+- **Jadielle** : l'entrée doit **déjà fonctionner** ; si la ville n'existe pas au premier build,
+  placeholder **« JADIELLE — À venir » uniquement en build de développement** (dossier-07 §12). Ceci
+  **tranche Q5** (l'ancien défaut « bord bloqué, rien de visible » ne s'applique plus).
+- Assets **provisoires** aux dimensions finales ; ne pas surcharger graphiquement (dossier-07,
+  consigne de production).
+
+`data/npcs/route_1.json` : le Voyageur (une entrée interactive, avec routine) + les Pokémon
+d'ambiance `shy` (Roucool `fly`, Rattata `flee`, dossier-07 §4).
+
+### 15.5 Raccord Bourg Palette ↔ Route 1 sur la géométrie réelle (5A, §3.3)
+
+Géométrie **réelle** de `tools/build_pallet_town.gd` (vérifiée) :
+- chemin `DIRT [23, 0 → 24, 11]` qui file vers le bord **nord** ; **hautes herbes**
+  `TALL_GRASS [23, 0 → 24, 2]` (les 3 dernières rangées du chemin) ;
+- **(23, 0) et (24, 0) bloquées** (`BLOCKED_CELLS`) : le joueur s'arrête en y 1, tête à l'écran ;
+- **aucun warp** au nord aujourd'hui ; déclencheur `Route1Grass` en **(23, 3) / (24, 3)** (cutscene
+  `route1_grass`, sans effet après `starter_chosen`).
+
+Donc **la sortie Route 1 est bien le bord nord, chemin en x 23–24** : le §3.3 s'applique tel quel
+(warps `PUSH` vers le haut en (23, 1)/(24, 1), spawns `from_route_1_*`, y 0 restant bloquée). Les
+deux cases d'arrivée sont des **hautes herbes**, donc T1 doit garantir l'invariant du §4 : « jamais
+une case d'herbe **à rencontres** sous un warp `STEP_ON` ni sous un déclencheur » (ici c'est un warp
+`PUSH`, autorisé ; une apparition ne fait aucun tirage). La largeur d'alignement (x 23–24) est
+imposée par Bourg Palette ; la **largeur totale de la Route 1** est libre (dossier-07, à T1).
+
+### 15.6 Le combat sauvage réutilise le `BattleDirector` réel (T4 → T7 ; 5D)
+
+- **T4** extrait **`run_request(request: BattleRequest, map) -> int`** du `run` actuel et fait de
+  `run(trainer_id, map, world_actors)` une **enveloppe** (construit un `BattleRequest` dresseur puis
+  appelle `run_request`) : le combat du rival **ne change pas**. La construction des camps (§14.2 :
+  `BattleSide`, `trainers.build_team`, `Battle.new(..., rng)`) se déplace dans `BattleRequest`
+  (dresseur) / `BattleRequest.wild(...)` (sauvage, `PokemonFactory.create`).
+- **`Battle`** reçoit `rules: BattleRules` optionnel (null = comportement du 4B) ; `BattleAction`
+  gagne `RUN` puis `ITEM` (fin d'enum) ; `BattleEvent.Kind` gagne `FLED`, `FLEE_FAILED`, puis les
+  temps XP et capture (fin d'enum) ; `Outcome` gagne `FLED` puis `CAUGHT` (fin d'enum).
+- **Défaite sauvage** : pas de `BattleConclusion` (pas de dresseur) ; l'`EncounterDirector` fait
+  `state.party.heal_all()` puis `router.change_map(GameState.heal_map, heal_spawn, UP)` (§3.11), avec
+  la réplique de Maman (dossier-07 §11).
+- **5D** : `Bag`/`ItemData`/`ItemLibrary`/`give` **existent** ; il reste `CaptureCalc`,
+  `CaptureResult`, `PokemonStorage`, la clé `catch_rate` (14 espèces), `BattleAction.ITEM` + les
+  temps `BALL_THROWN`/`BALL_SHAKE`/`CAUGHT`/`BROKE_FREE`, le **toast** sur `item_given`, et la
+  présentation (§3.10, §3.12).
+
+### 15.7 Le Pokédex dès le jalon 5 (décision du 2026-09-29)
+
+`Pokedex` (`game/pokemon/pokedex.gd`, `RefCounted`, pur) : `mark_seen(species) -> bool`,
+`mark_caught(species) -> bool` (**implique** `mark_seen` ; `caught ⊆ seen` invariant), `is_seen`,
+`is_caught`, `seen_count`/`caught_count`, `seen_ids`/`caught_ids` (triés), `clear`, `to_dict` /
+`from_dict`. `GameState.pokedex`, vidé par `new_game()`. **Aucune interface** (l'écran est au
+jalon 6).
+
+**Points de marquage** (implémentés dans leurs tâches, pas en T0) :
+- **`seen`** quand un Pokémon **adverse** entre en combat — temps `SENT_OUT` côté `FOE` — donc **dès
+  le 5B** (le §3.8 disait « dès le 5D » : à avancer au 5B puisque les données existent maintenant).
+- **`caught`** à la capture réussie (**5D**), avant `Party.add` / `PokemonStorage.add`.
+- **Sauvegarde** : `pokedex.to_dict()` **doit** être sérialisé par la tâche sauvegarde (entre 5C et
+  5D, §15.2 point 9).
+
+**Non tranché — question Q-D pour Kevin** : faut-il marquer **rétroactivement** le **starter** du
+joueur et le **Pokémon du rival** du 4B ? *Proposition* : starter du joueur = **`caught`** dès son
+entrée dans l'équipe (au choix du starter, 4A) ; Pokémon du rival = **rien** (combat narratif, on ne
+« voit » pas encore le système Pokédex, et Rouge/Bleu ne l'inscrit pas). À confirmer.
+
+### 15.8 Questions ouvertes pour Kevin (nouvelles, issues de cet alignement)
+
+- **Q-A** — La **Potion** cachée (dossier-07 §6) : au jalon 5 elle est seulement **ramassée +
+  rangée + toast** (la catégorie `heal` et un objet `potion` s'ajoutent aux données) ; **l'usage**
+  (soigner hors/en combat) reste hors périmètre. OK, ou veux-tu la Potion utilisable dès le jalon 5 ?
+- **Q-B** — **Sauvegarde** (dossier-07 §13, obligatoire avant validation du jalon 5, avant la
+  capture finale) : mécanisme (autoload `SaveSystem` sérialisant `GameState`, un seul emplacement,
+  autosave sur événement/capture/zone/soin) ? Contenu minimal = dossier-07 §13.
+- **Q-C** — **Routine de marche** du Voyageur (première application de la règle « PNJ avec une
+  petite activité ») : forme des données (liste de cases à parcourir en boucle ? rectangle + marche
+  aléatoire ? durée des pauses ?). Contraintes déjà fixées : jamais dans les herbes, ne bloque jamais
+  le passage, ne sort pas de sa zone.
+- **Q-D** — Marquage **rétroactif** du starter (proposé `caught`) et du Pokémon du rival (proposé
+  rien) au Pokédex (§15.7).
+- **La carte elle-même** (tracé exact, cases des 3 zones d'herbes, position de la bande obligatoire,
+  du secret, de la zone du Voyageur, largeur totale) reste à produire en **5A avec
+  `constructeur-monde`** d'après le dossier-07 ; ce n'est **pas** à l'architecte de la dessiner.

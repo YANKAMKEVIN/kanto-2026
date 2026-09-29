@@ -83,6 +83,18 @@ func test_starts_with_an_empty_bag_and_new_game_empties_it() -> void:
 	assert_same(state.bag, bag, "même instance de Sac (injectée)")
 
 
+func test_starts_with_an_empty_pokedex_and_new_game_empties_it() -> void:
+	var state := _make()
+	assert_true(state.pokedex is Pokedex)
+	assert_eq(state.pokedex.seen_count(), 0)
+	var dex: Pokedex = state.pokedex
+	state.pokedex.mark_caught(&"pidgey")
+	state.new_game()
+	assert_eq(state.pokedex.seen_count(), 0, "Pokédex vidé")
+	assert_eq(state.pokedex.caught_count(), 0)
+	assert_same(state.pokedex, dex, "même instance de Pokédex (injectée)")
+
+
 func test_new_game_changes_the_seed() -> void:
 	var state := _make()
 	var seeds := {}

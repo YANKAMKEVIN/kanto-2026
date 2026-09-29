@@ -3,7 +3,7 @@ extends Node2D
 ## Carte du monde : couches de tuiles, props, spawns, warps, points d'examen, PNJ. Construit
 ## sa [GridWorld], sa [WarpTable] et son [InteractionTable].
 ##
-## Au chargement, lit les données `solid`, `water` et `ledge` des tuiles de
+## Au chargement, lit les données `solid`, `water`, `tall_grass` et `ledge` des tuiles de
 ## `Ground`, `Detail` et `Obstacles`, puis ajoute l'empreinte de chaque [WorldProp]
 ## enfant de `Entities`. Les [WarpPoint] enfants de `Warps` forment la table des passages.
 ## Les [InteractPoint] enfants de `Interactables` forment la table des points fixes
@@ -337,6 +337,8 @@ func _read_layer(layer: TileMapLayer) -> void:
 			_grid.set_solid(cell)
 		if _get_bool(data, OverworldTiles.DATA_WATER):
 			_grid.set_water(cell)
+		if _get_bool(data, OverworldTiles.DATA_TALL_GRASS):
+			_grid.set_tall_grass(cell)
 		if data.has_custom_data(OverworldTiles.DATA_LEDGE):
 			var ledge: int = data.get_custom_data(OverworldTiles.DATA_LEDGE)
 			if ledge != GridWorld.Ledge.NONE:
