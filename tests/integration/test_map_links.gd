@@ -8,6 +8,7 @@ extends GutTest
 
 const MAP_IDS: Array[StringName] = [
 	&"pallet_town", &"player_house_2f", &"player_house_1f", &"rival_house", &"oak_lab",
+	&"route_1",
 ]
 const DIRECTIONS: Array[Vector2i] = [Vector2i.UP, Vector2i.DOWN, Vector2i.LEFT, Vector2i.RIGHT]
 

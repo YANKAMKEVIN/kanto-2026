@@ -17,7 +17,8 @@ func before_each() -> void:
 func test_real_data_loads_without_error() -> void:
 	assert_true(_library.load_dir(), "data/items/ se charge")
 	assert_eq(_library.get_errors().size(), 0, str(_library.get_errors()))
-	assert_eq(_library.get_ids(), [&"poke_ball"] as Array[StringName])
+	# Jalon 5 : la Potion cachée de la Route 1 (catégorie « heal », ramassée seulement).
+	assert_eq(_library.get_ids(), [&"poke_ball", &"potion"] as Array[StringName])
 	var ball := _library.get_item(&"poke_ball")
 	assert_eq(ball.name, "Poké Ball")
 	assert_eq(ball.plural, "Poké Balls")
@@ -26,6 +27,10 @@ func test_real_data_loads_without_error() -> void:
 	assert_eq(ball.catch_bonus, 1.0)
 	assert_true(ball.draft, "description à relire par Kevin")
 	assert_eq(ball.source, "res://data/items/items.json")
+	var potion := _library.get_item(&"potion")
+	assert_eq(potion.name, "Potion")
+	assert_eq(potion.category, ItemData.Category.HEAL)
+	assert_eq(potion.catch_bonus, 1.0, "pas de catch_bonus hors Ball (valeur par défaut)")
 
 
 ## Dossier 07 §8 (« Poké Balls ×5 ») et bible UI §6 (« Potion ×1 — Ajoutée au Sac »).

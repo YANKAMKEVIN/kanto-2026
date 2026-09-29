@@ -44,6 +44,7 @@ var _items := ItemLibrary.new()
 @onready var _battle_stage: BattleStage = %BattleStage
 @onready var _battle_hud: BattleHud = %BattleHud
 @onready var _battle_director: BattleDirector = %BattleDirector
+@onready var _ambient: AmbientWatcher = %AmbientWatcher
 
 
 func _ready() -> void:
@@ -73,6 +74,12 @@ func _ready() -> void:
 	_cutscenes_node.item_given.connect(_on_item_given)
 	_battle_director.battle_started.connect(_on_battle_state_changed.unbind(1))
 	_battle_director.battle_finished.connect(_on_battle_state_changed.unbind(2))
+	# Pokédex (jalon 5, décision Kevin 2026-09-29) : le starter est « capturé » à son entrée
+	# dans l'équipe ; tout Pokémon adverse envoyé au combat est « vu » (le Pokémon du rival au
+	# labo, puis les sauvages en 5B).
+	_starter_choice.starter_chosen.connect(_on_starter_chosen)
+	_battle_director.event_played.connect(_on_battle_event)
+	_ambient.setup(_player)
 	_interactions.target_changed.connect(_on_target_changed)
 	_runner.dialogue_started.connect(_on_dialogue_started)
 	_runner.dialogue_finished.connect(_on_dialogue_finished)
@@ -197,6 +204,7 @@ func _on_map_changed(map: GameMap) -> void:
 	_interactions.set_map(map)
 	_cutscenes_node.set_map(map)
 	_starter_choice.set_map(map)
+	_ambient.set_map(map)
 
 
 func _on_map_entered(map: GameMap) -> void:
@@ -230,6 +238,18 @@ func _on_cutscene_finished(_cutscene_id: StringName) -> void:
 
 func _on_battle_state_changed() -> void:
 	_refresh_controls()
+
+
+## Le starter choisi (jalon 4A) est enregistré « capturé » au Pokédex (décision Q-D).
+func _on_starter_chosen(player_species: StringName, _rival_species: StringName) -> void:
+	GameState.pokedex.mark_caught(player_species)
+
+
+## Tout Pokémon adverse envoyé au combat est enregistré « vu » (le rival au labo, décision
+## Q-D ; les sauvages en 5B).
+func _on_battle_event(event: BattleEvent) -> void:
+	if event.kind == BattleEvent.Kind.SENT_OUT and event.side == BattleEvent.SideId.FOE:
+		GameState.pokedex.mark_seen(event.species_id)
 
 
 ## Objet donné par une scène (étape « give ») : toast en haut de l'écran, sans rien bloquer

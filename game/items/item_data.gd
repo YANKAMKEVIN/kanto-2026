@@ -7,10 +7,12 @@ extends RefCounted
 ## « Ajoutées au Sac » (toast, bible UI §6) sont formés ici, jamais recopiés dans le code
 ## qui donne l'objet.
 
-enum Category { BALL }
+## Catégories d'objets. `heal` (jalon 5) : la Potion cachée de la Route 1 est seulement
+## ramassée et rangée au jalon 5 ; son usage (soin) viendra avec le Sac au jalon 6.
+enum Category { BALL, HEAL }
 
 ## Nom de chaque catégorie dans les fichiers, dans l'ordre de [enum Category].
-const CATEGORY_NAMES: Array[String] = ["ball"]
+const CATEGORY_NAMES: Array[String] = ["ball", "heal"]
 ## Texte du toast après l'ajout au Sac (bible UI §6 : « Potion ×1 — Ajoutée au Sac »).
 const ADDED_BASE := "Ajouté"
 const ADDED_SUFFIX := " au Sac"

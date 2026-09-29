@@ -19,6 +19,8 @@ const HOP_STYLES: Array[StringName] = [&"calm", &"eager", &"playful"]
 const SHY_ACTIONS: Array[StringName] = [&"fly", &"flee"]
 ## Rayon par défaut (cases) d'une réaction « shy » quand la donnée l'omet.
 const SHY_RADIUS_DEFAULT: int = 2
+## Pause par défaut (secondes) à chaque case d'une routine de marche quand la donnée l'omet.
+const ROUTE_PAUSE_DEFAULT: float = 1.2
 
 ## Identifiant unique sur la carte (cible des indications « react » des dialogues).
 var id: StringName = &""
@@ -46,6 +48,13 @@ var hop_style: StringName = &""
 var shy_action: StringName = &""
 ## Rayon de déclenchement de [member shy_action], en cases (distance de Manhattan).
 var shy_radius: int = SHY_RADIUS_DEFAULT
+## Routine de marche (jalon 5, dossier 07 §5 : le Voyageur) : liste de cases **voisines**
+## parcourues en boucle (aller-retour = inclure le retour), pause à chaque case. Vide =
+## PNJ immobile. Le PNJ ne quitte jamais ces cases ; à définir hors des hautes herbes et
+## du passage principal.
+var route_cells: Array[Vector2i] = []
+## Pause (secondes) à chaque case de la routine.
+var route_pause: float = ROUTE_PAUSE_DEFAULT
 ## Présence conditionnelle (docs/tech/jalon-03b.md §2.6) : présent si tous les drapeaux de
 ## [member if_flags] sont levés et aucun de [member unless_flags], comme une variante de
 ## dialogue. Sans condition, toujours présent.
@@ -61,6 +70,11 @@ func is_interactive() -> bool:
 ## Vrai si c'est un Pokémon d'ambiance qui réagit à l'approche du joueur (jalon 5 §3.5).
 func is_shy() -> bool:
 	return not shy_action.is_empty()
+
+
+## Vrai si le PNJ a une routine de marche (jalon 5, le Voyageur).
+func has_route() -> bool:
+	return not route_cells.is_empty()
 
 
 ## Vrai si le PNJ est sur la carte avec les drapeaux [param flags] (null = nouvelle partie,

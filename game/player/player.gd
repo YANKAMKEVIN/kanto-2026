@@ -20,6 +20,10 @@ const GROUP: StringName = &"player"
 const BODY_SIZE := Vector2(64, 128)
 ## Vitesse de l'animation de marche sur place contre un obstacle.
 const BUMP_ANIM_SPEED: float = 0.5
+## Hauteur de l'arc du saut de rebord (px monde) : le sprite s'élève, l'ombre reste au sol.
+const JUMP_ARC_HEIGHT: float = 48.0
+## Repos de l'ombre (px monde), comme dans la scène.
+const SHADOW_REST_Y: float = -6.0
 ## Raison de blocage par défaut : celle du routeur de scènes (changement de carte).
 const REASON_TRANSITION: StringName = &"transition"
 ## Animations par direction : [immobile, marche, course].
@@ -41,6 +45,8 @@ var _map_bounds: Rect2i = Rect2i()
 
 @onready var _sprite: AnimatedSprite2D = %Sprite
 @onready var _camera: Camera2D = %Camera
+@onready var _shadow: Sprite2D = %Shadow
+@onready var _grass_front: Sprite2D = %GrassFront
 
 
 func _ready() -> void:
@@ -65,6 +71,7 @@ func _process(delta: float) -> void:
 	_mover.update(delta, direction, Input.is_action_pressed(&"run"))
 	position = _mover.get_world_position().round()
 	_update_animation(direction)
+	_update_jump_and_grass()
 
 
 ## Place le joueur sur une carte : case, orientation, limites de la caméra (pixels).
@@ -91,6 +98,7 @@ func enter_map(grid: GridWorld, cell: Vector2i, facing: Vector2i, bounds: Rect2i
 	set_process(true)
 	if is_node_ready():
 		_update_animation(Vector2i.ZERO)
+		_update_jump_and_grass()
 		_camera.reset_smoothing()
 	facing_changed.emit(_mover.get_facing())
 
@@ -184,6 +192,35 @@ func _set_camera_limits(bounds: Rect2i) -> void:
 	camera.limit_top = limits.position.y
 	camera.limit_right = limits.end.x
 	camera.limit_bottom = limits.end.y
+
+
+## Vrai pendant un saut de rebord (arc affiché).
+func is_jumping() -> bool:
+	return _mover != null and _mover.is_jumping()
+
+
+## Vrai si la bande d'herbe est dessinée devant les jambes (case d'arrivée en hautes herbes).
+func is_grass_front_visible() -> bool:
+	return _grass_front != null and _grass_front.visible
+
+
+## Arc du saut de rebord (sprite en l'air, ombre au sol) et bande d'herbe devant les jambes
+## (visible quand la case d'arrivée du pas est en hautes herbes, cachée pendant un saut).
+func _update_jump_and_grass() -> void:
+	if _mover == null:
+		return
+	var jumping := _mover.is_jumping()
+	var arc := 0.0
+	if jumping:
+		var t := _mover.get_progress()
+		arc = 4.0 * JUMP_ARC_HEIGHT * t * (1.0 - t)
+	if _sprite != null:
+		_sprite.position.y = -arc
+	if _shadow != null:
+		_shadow.position.y = SHADOW_REST_Y
+	if _grass_front != null:
+		_grass_front.visible = not jumping and _grid != null \
+			and _grid.is_tall_grass(_mover.get_target_cell())
 
 
 func _update_animation(direction: Vector2i) -> void:

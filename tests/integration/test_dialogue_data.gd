@@ -21,8 +21,11 @@ extends GutTest
 
 const BOX_SCENE := "res://game/ui/dialogue/dialogue_box.tscn"
 const DOSSIER := "res://docs/design/dossier-02-prologue.md"
+## Route 1 (jalon 5) : ses textes définitifs viennent du dossier-07, pas du dossier-02.
+const DOSSIER_07 := "res://docs/design/dossier-07-route-1.md"
 const MAPS: Array[StringName] = [
 	&"player_house_2f", &"player_house_1f", &"rival_house", &"oak_lab", &"pallet_town",
+	&"route_1",
 ]
 ## Seuls textes provisoires : le panneau « BOURG PALETTE » (Q8).
 const DRAFTS: Array[StringName] = [&"sign_pallet_town"]
@@ -36,7 +39,8 @@ const IDS: Array[StringName] = [
 	&"oak_starter_reciprocal", &"observe_bulbasaur", &"observe_charmander", &"observe_squirtle",
 	&"rival", &"rival_challenge", &"rival_challenge_wait", &"rival_kanto_map",
 	&"rival_lab_lost", &"rival_lab_waiting", &"rival_lab_won", &"rival_lab_won_leaving",
-	&"rival_starter_pick", &"rival_starter_smile", &"route1_grass_thought", &"sign_pallet_town",
+	&"rival_starter_pick", &"rival_starter_smile", &"route1_grass_thought",
+	&"route_1_potion_found", &"route_1_traveler", &"sign_pallet_town",
 ]
 ## Plus aucun drapeau futur au 4B : rival_battle_done est levé par la scène du combat
 ## (jalon-04.md §14.5, §14.8), quelle que soit l'issue.
@@ -143,7 +147,7 @@ func test_every_dialogue_played_by_a_cutscene_exists() -> void:
 		&"oak_route1_warning", &"oak_starter_offer", &"oak_starter_reciprocal",
 		&"rival_challenge", &"rival_challenge_wait", &"rival_lab_lost", &"rival_lab_won",
 		&"rival_lab_won_leaving", &"rival_starter_pick", &"rival_starter_smile",
-		&"route1_grass_thought"] as Array[StringName])
+		&"route1_grass_thought", &"route_1_potion_found"] as Array[StringName])
 	for id: StringName in played:
 		assert_true(_library.has_dialogue(id), "dialogue « %s » défini" % id)
 		assert_true(_used_on.has(id), "« %s » joué depuis un déclencheur ou par le code" % id)
@@ -210,9 +214,9 @@ func test_every_condition_flag_is_set_somewhere() -> void:
 		assert_false(set_flags.has(flag), "« %s » : levé par un jalon futur" % flag)
 	assert_true(read_flags.has(&"starter_chosen"), "starter_chosen lu (pensée des herbes)")
 	assert_eq(_library.get_set_flags(), [&"mom_greeted", &"rival_met"] as Array[StringName])
-	assert_eq(_cutscenes.get_set_flags(), [&"oak_lab_reunion", &"oak_met", &"rival_battle_done",
-		&"rival_challenged", &"rival_lab_lost", &"rival_lab_won", &"rival_left_lab",
-		&"starter_chosen", &"starter_offered"] as Array[StringName])
+	assert_eq(_cutscenes.get_set_flags(), [&"got_potion_route_1", &"oak_lab_reunion", &"oak_met",
+		&"rival_battle_done", &"rival_challenged", &"rival_lab_lost", &"rival_lab_won",
+		&"rival_left_lab", &"starter_chosen", &"starter_offered"] as Array[StringName])
 	assert_eq(_used_on.get(&"oak_lab_reunion"), [&"oak_lab"], "joué au labo, après le fondu")
 	assert_eq(_used_on.get(&"oak_starter_offer"), [&"oak_lab"], "joué au labo")
 
@@ -367,11 +371,15 @@ func test_drafts_are_exactly_the_expected_ones() -> void:
 
 func test_texts_are_the_dossier_02_texts_word_for_word() -> void:
 	assert_true(FileAccess.file_exists(DOSSIER), DOSSIER)
+	assert_true(FileAccess.file_exists(DOSSIER_07), DOSSIER_07)
 	var dossier := FileAccess.get_file_as_string(DOSSIER)
+	var dossier_07 := FileAccess.get_file_as_string(DOSSIER_07)
 	for row: Array in _pages():
 		if _library.get_dialogue(row[0]).draft:
 			continue
-		assert_true(dossier.contains(row[1]), "%s : « %s » dans le dossier 02" % [row[0], row[1]])
+		# Prologue : dossier 02 ; Route 1 (jalon 5) : dossier 07 (textes définitifs).
+		assert_true(dossier.contains(row[1]) or dossier_07.contains(row[1]),
+			"%s : « %s » dans un dossier de conception" % [row[0], row[1]])
 
 
 func test_speakers_and_narration() -> void:
