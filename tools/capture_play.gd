@@ -115,6 +115,17 @@ const FIXES: Array = [
 	["fix_lab_roof_benches", Vector2i(24, 17)],
 	["fix_route1_top", Vector2i(23, 1)],
 ]
+## Scénario « route_1 » (jalon 5A) : téléportation du joueur sur les zones clés de la
+## Route 1 pour juger le tracé sur capture. [nom de capture, case (praticable)].
+const ROUTE1_SHOTS: Array = [
+	["jalon05a_route1_entrance", Vector2i(23, 40)],   # entrée sud depuis Bourg Palette
+	["jalon05a_route1_grass_south", Vector2i(28, 33)], # zone d'herbes sud (raccourci/rebord)
+	["jalon05a_route1_ledge", Vector2i(27, 29)],      # au-dessus du rebord franchissable
+	["jalon05a_route1_west_grass", Vector2i(9, 22)],  # zone d'herbes ouest
+	["jalon05a_route1_potion", Vector2i(9, 21)],      # sous la Potion cachée (9, 20)
+	["jalon05a_route1_mandatory", Vector2i(23, 9)],   # bande d'herbes obligatoire
+	["jalon05a_route1_north", Vector2i(23, 2)],       # prairie nord, sortie vers Jadielle
+]
 ## Scénario « route1_grass » (jalon 3B, T1) : case de départ, puis marches
 ## [action, case d'arrivée, capture prise à l'arrêt].
 const ROUTE1_START := Vector2i(23, 4)
@@ -266,6 +277,14 @@ func _start_boot() -> void:
 			InputMap.action_erase_events(action)
 		InputMap.action_erase_events(&"run")
 		InputMap.action_erase_events(&"interact")
+	elif _scenario == "route_1":
+		_boot.set(&"start_map", &"route_1")
+		_boot.set(&"start_spawn", &"from_pallet_w")
+		_boot.set(&"start_facing", Vector2i.UP)
+		for action: StringName in MOVE_ACTIONS.values():
+			InputMap.action_erase_events(action)
+		InputMap.action_erase_events(&"run")
+		InputMap.action_erase_events(&"interact")
 	else:
 		_boot.set(&"start_map", &"pallet_town")
 	root.add_child(_boot)
@@ -311,6 +330,8 @@ func _on_frame() -> void:
 			_run_teleports(CORNERS)
 		"fixes":
 			_run_teleports(FIXES)
+		"route_1":
+			_run_teleports(ROUTE1_SHOTS)
 		"walk_roof":
 			_run_walk()
 		"route1_grass":
