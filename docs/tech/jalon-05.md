@@ -943,6 +943,7 @@ entrée dans l'équipe (au choix du starter, 4A) ; Pokémon du rival = **rien** 
 - **Q-A** — La **Potion** cachée (dossier-07 §6) : au jalon 5 elle est seulement **ramassée +
   rangée + toast** (la catégorie `heal` et un objet `potion` s'ajoutent aux données) ; **l'usage**
   (soigner hors/en combat) reste hors périmètre. OK, ou veux-tu la Potion utilisable dès le jalon 5 ?
+  → **Décision Kevin (2026-09-29)** : ramassée seulement (défaut) ; l'usage viendra avec le Sac au J6.
 - **Q-B** — **Sauvegarde** (dossier-07 §13, obligatoire avant validation du jalon 5, avant la
   capture finale) : mécanisme (autoload `SaveSystem` sérialisant `GameState`, un seul emplacement,
   autosave sur événement/capture/zone/soin) ? Contenu minimal = dossier-07 §13.
@@ -952,6 +953,11 @@ entrée dans l'équipe (au choix du starter, 4A) ; Pokémon du rival = **rien** 
   le passage, ne sort pas de sa zone.
 - **Q-D** — Marquage **rétroactif** du starter (proposé `caught`) et du Pokémon du rival (proposé
   rien) au Pokédex (§15.7).
+  → **Décision Kevin (2026-09-29)** : starter du joueur = **`caught`** (à l'entrée dans l'équipe, 4A) ;
+  Pokémon du rival = **`seen`** (il est affronté au labo). Câblage dans la tâche Pokédex du J5.
 - **La carte elle-même** (tracé exact, cases des 3 zones d'herbes, position de la bande obligatoire,
   du secret, de la zone du Voyageur, largeur totale) reste à produire en **5A avec
   `constructeur-monde`** d'après le dossier-07 ; ce n'est **pas** à l'architecte de la dessiner.
+  → **Décision Kevin (2026-09-29)** : le 5A construit la carte **directement d'après le dossier-07**,
+  jugement au doigt sur S24 ensuite. Q-B (sauvegarde) et Q-C (routine du Voyageur) : valeurs par
+  défaut appliquées, ajustables ; à confirmer sur S24.
