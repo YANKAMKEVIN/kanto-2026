@@ -1,6 +1,16 @@
 # État du projet — note de passage
 
-Mis à jour : 2026-09-29 (**jalon 4B terminé sur la branche `jalon-04b`** : T6, T7, T8 faits, **QA T9 passée et validée par Kevin sur S24** ; reste la fusion dans `main`).
+Mis à jour : 2026-09-30 (**jalon 4B fusionné dans `main`** ; **jalon 5 en cours sur `jalon-05`** : T0 aligné + fondations, **5A Route 1 construite et validée par Kevin sur S24 le 2026-09-30** ; prochaine étape 5B T4).
+
+## Jalon 5 (branche `jalon-05`, depuis `main`) — Route 1 et boucle Pokémon
+- **Vue macro** : `docs/design/roadmap.md` (9 phases, ordre des jalons ; règle « données avant interface », ex. Pokédex `seen`/`caught` dès le J5).
+- **T0 (fait, commité)** : plan aligné sur le 4B et le dossier-07 (jalon-05.md §15) ; fondations pures + tests : `Pokedex` (`seen`/`caught`) + `GameState.pokedex`, `AmbientRules`, tuile de rebord `OverworldTiles.Kind.LEDGE_DOWN` (grille lit herbes + rebord). Décisions Kevin : Potion ramassée seulement ; starter=`caught` / Pokémon du rival du 4B=`seen` ; carte construite d'après le dossier-07.
+- **5A (fait, commité, validé S24)** : `route_1.tscn` (48×44) via `tools/build_route_1.gd` d'après le dossier-07 ; chemin serpentant, 3 zones d'herbes dont une bande obligatoire, rebord sud, Potion cachée, Roucool/Rattata d'ambiance, Voyageur mobile, raccord Bourg Palette↔Route 1, arc de saut du joueur, `AmbientWatcher`. Scénario de capture `route_1` (`tools/capture_play.gd`). **1210 tests verts**, import propre.
+- **Reste 5B** (T4 archi → T5 rencontre/transition → T6 UI FUITE → T7 combat jouable + défaite/soin chez Maman → T8 QA), puis **5C XP**, **5C.5 sauvegarde**, **5D capture**, **5E défaite/retour Maman**, **5F QA**. Détail : `jalon-05.md` §5 et §15.
+- Non fusionné dans `main` (attend la validation complète du jalon 5).
+
+---
+
 
 ## Fait
 - Outillage : Godot 4.7.2, export Android vérifié sur le S24, GUT 9.7.1, scripts `tools/`.
