@@ -293,3 +293,62 @@ func test_same_seed_same_actions_same_log() -> void:
 	assert_eq(first, _full_log(42))
 	assert_eq(first[-1]["kind"], "BATTLE_ENDED")
 	assert_ne(first, _full_log(43))
+
+
+# --- Fuite (jalon 5 §2.2) ---------------------------------------------------------------
+
+## Combat sauvage : camp adverse sans dresseur, règles [method BattleRules.for_wild].
+func _wild(player: StringName, foe: StringName, draws: Array[int]) -> Battle:
+	_rng = ScriptedRng.new(draws)
+	var battle := Battle.new(BattleSide.new(_party([player]), true),
+		BattleSide.new(_party([foe]), false, ""), _data, _rng, BattleRules.for_wild())
+	battle.start()
+	return battle
+
+
+func test_run_is_illegal_without_rules() -> void:
+	# Combat du rival (règles nulles = comportement du 4) : la fuite est refusée.
+	var battle := _battle(&"charmander", &"squirtle", [])
+	assert_false(battle.can_flee())
+	assert_false(battle.is_legal(BattleAction.run()))
+	assert_eq(battle.submit(BattleAction.run()).size(), 0)
+	assert_eq(battle.get_state(), Battle.State.CHOOSING, "le combat continue")
+	assert_push_error("action refusée")
+
+
+func test_run_is_illegal_against_a_trainer() -> void:
+	_rng = ScriptedRng.new([])
+	var battle := Battle.new(BattleSide.new(_party([&"charmander"]), true),
+		BattleSide.new(_party([&"squirtle"]), false, "Le Rival"), _data, _rng,
+		BattleRules.for_trainer())
+	battle.start()
+	assert_false(battle.is_legal(BattleAction.run()))
+	assert_eq(battle.submit(BattleAction.run()).size(), 0)
+	assert_push_error("action refusée")
+
+
+func test_run_succeeds_when_faster() -> void:
+	# Salamèche (Vit 11) fuit un Carapuce sauvage (Vit 9) : réussite assurée, sans tirage,
+	# avant toute capacité de l'adversaire.
+	var battle := _wild(&"charmander", &"squirtle", [])
+	assert_true(battle.can_flee())
+	var events := battle.submit(BattleAction.run())
+	assert_eq(_kinds(events), [["TURN_STARTED", "PLAYER"], ["FLED", "PLAYER"],
+		["BATTLE_ENDED", "PLAYER"]])
+	assert_eq(events[-1].outcome, Battle.Outcome.FLED)
+	assert_eq(battle.get_state(), Battle.State.OVER)
+	assert_eq(battle.get_outcome(), Battle.Outcome.FLED)
+	assert_eq(_rng.remaining(), 0, "aucun tirage quand la fuite est assurée")
+
+
+func test_run_fails_then_foe_acts() -> void:
+	# Carapuce (Vit 9) contre un Salamèche sauvage (Vit 11) : A=9,B=11,F=104. roll(256)=200
+	# → échec ; l'adversaire choisit (pick_index roll(2)=1 → Griffe) et joue.
+	var battle := _wild(&"squirtle", &"charmander", [200, 1, 50, 2, 1])
+	var events := battle.submit(BattleAction.run())
+	var kinds := _kinds(events)
+	assert_eq(kinds[0], ["TURN_STARTED", "PLAYER"])
+	assert_eq(kinds[1], ["FLEE_FAILED", "PLAYER"])
+	assert_true(kinds.has(["MOVE_USED", "FOE"]), "l'adversaire joue son tour")
+	assert_eq(battle.get_state(), Battle.State.CHOOSING, "le combat continue")
+	assert_eq(battle.get_outcome(), Battle.Outcome.NONE)

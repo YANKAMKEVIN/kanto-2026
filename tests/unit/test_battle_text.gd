@@ -65,7 +65,7 @@ func test_start_and_sending_out() -> void:
 	assert_eq(_lines(_event(K.SENT_OUT, false, "Salamèche")), ["En avant, Salamèche !"])
 	var wild := _event(K.SENT_OUT, true)
 	wild.trainer_name = ""
-	assert_eq(_lines(wild), [], "Pokémon sauvage : jalon 5")
+	assert_eq(_lines(wild), ["Un Carapuce sauvage apparaît !"], "Pokémon sauvage : jalon 5")
 
 
 func test_turn_start_has_no_message() -> void:
@@ -260,3 +260,41 @@ func test_broken_or_missing_file() -> void:
 	assert_push_error("ligne 6")
 	assert_false(text.load_file("res://nothing.json"))
 	assert_push_error_count(2)
+
+
+# --- Combat sauvage (jalon 5 §2.2) ------------------------------------------------------
+
+func _wild_event(kind: BattleEvent.Kind, side: BattleEvent.SideId,
+		pokemon: String = "Rattata") -> BattleEvent:
+	var event := BattleEvent.new(kind, side)
+	event.pokemon_name = pokemon
+	event.trainer_name = ""
+	return event
+
+
+func test_wild_sent_out_uses_wild_appeared() -> void:
+	var event := _wild_event(K.SENT_OUT, BattleEvent.SideId.FOE)
+	assert_eq(_lines(event), ["Un Rattata sauvage apparaît !"] as Array[String])
+
+
+func test_wild_appeared_agrees_in_feminine() -> void:
+	var event := _wild_event(K.SENT_OUT, BattleEvent.SideId.FOE, "Nidoran")
+	event.gender = Pokemon.Gender.FEMALE
+	assert_eq(_lines(event), ["Une Nidoran sauvage apparaît !"] as Array[String])
+
+
+func test_fled_and_flee_failed() -> void:
+	assert_eq(_lines(_wild_event(K.FLED, BattleEvent.SideId.PLAYER)),
+		["Tu prends la fuite !"] as Array[String])
+	assert_eq(_lines(_wild_event(K.FLEE_FAILED, BattleEvent.SideId.PLAYER)),
+		["Impossible de fuir !"] as Array[String])
+
+
+func test_wild_battle_ended_has_no_line() -> void:
+	# Sortie d'un combat sauvage : ni « Tu as battu… » (pas de dresseur) ni message pour FLED.
+	var fled := _wild_event(K.BATTLE_ENDED, BattleEvent.SideId.PLAYER)
+	fled.outcome = Battle.Outcome.FLED
+	assert_eq(_lines(fled).size(), 0)
+	var won := _wild_event(K.BATTLE_ENDED, BattleEvent.SideId.PLAYER)
+	won.outcome = Battle.Outcome.WIN
+	assert_eq(_lines(won).size(), 0, "un sauvage n'a pas de « Tu as battu »")

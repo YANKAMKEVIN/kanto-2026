@@ -2,10 +2,10 @@ class_name BattleAction
 extends RefCounted
 ## Le choix d'un camp pour un tour (jalon 4 §2.2). Donnée pure.
 ##
-## Une seule sorte au jalon 4 ; SWITCH (équipe), ITEM (sac, capture) et RUN (fuite)
-## viendront avec leurs jalons.
+## MOVE au jalon 4 ; RUN (fuite) s'ajoute au jalon 5 (combat sauvage) ; SWITCH (équipe) et
+## ITEM (sac, capture) viendront avec leurs jalons. RUN est en fin d'enum pour ne rien décaler.
 
-enum Kind { MOVE }
+enum Kind { MOVE, RUN }
 
 ## [member move_index] de Lutte (quand plus aucune capacité n'a de PP).
 const STRUGGLE: int = -1
@@ -20,4 +20,11 @@ static func move(index: int) -> BattleAction:
 	var action := BattleAction.new()
 	action.kind = Kind.MOVE
 	action.move_index = index
+	return action
+
+
+## Action « prendre la fuite » (combat sauvage, légale seulement si les règles l'autorisent).
+static func run() -> BattleAction:
+	var action := BattleAction.new()
+	action.kind = Kind.RUN
 	return action

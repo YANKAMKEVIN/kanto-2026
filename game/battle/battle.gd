@@ -19,7 +19,7 @@ extends RefCounted
 ## Les conséquences (soin, argent, XP) sont décidées hors du moteur (TrainerData).
 
 enum State { READY, CHOOSING, OVER }
-enum Outcome { NONE, WIN, LOSS }
+enum Outcome { NONE, WIN, LOSS, FLED }
 
 const STRUGGLE_ID: StringName = &"struggle"
 
@@ -27,19 +27,30 @@ var _player: BattleSide
 var _foe: BattleSide
 var _data: PokemonData
 var _rng: GameRng
+var _rules: BattleRules
 var _state: State = State.READY
 var _outcome: Outcome = Outcome.NONE
 var _turn: int = 0
+## Tentatives de fuite déjà ratées de ce combat (C de la formule, [FleeCalc]).
+var _flee_attempts: int = 0
 
 
+## [param rules] : les règles du combat ([BattleRules]) ; null = comportement du 4B (combat
+## du rival : pas de fuite, pas de Sac). L'aléatoire vient de [param rng].
 func _init(player_side: BattleSide, foe_side: BattleSide, data: PokemonData,
-		rng: GameRng) -> void:
+		rng: GameRng, rules: BattleRules = null) -> void:
 	_player = player_side
 	_foe = foe_side
 	_data = data
 	_rng = rng
+	_rules = rules
 	if _foe.ai == null:
 		_foe.ai = BattleAI.new()
+
+
+## Règles du combat (null = comportement du 4B).
+func get_rules() -> BattleRules:
+	return _rules
 
 
 func get_state() -> State:
@@ -89,12 +100,21 @@ func get_usable_moves() -> Array[int]:
 
 ## Vrai si [param action] est permise au joueur maintenant.
 func is_legal(action: BattleAction) -> bool:
-	if _state != State.CHOOSING or action == null or action.kind != BattleAction.Kind.MOVE:
+	if _state != State.CHOOSING or action == null:
+		return false
+	if action.kind == BattleAction.Kind.RUN:
+		return _rules != null and _rules.can_flee
+	if action.kind != BattleAction.Kind.MOVE:
 		return false
 	var usable := get_usable_moves()
 	if action.move_index == BattleAction.STRUGGLE:
 		return usable.is_empty()
 	return usable.has(action.move_index)
+
+
+## Vrai si le joueur peut tenter de fuir maintenant (règles du combat sauvage).
+func can_flee() -> bool:
+	return _state == State.CHOOSING and _rules != null and _rules.can_flee
 
 
 ## Joue un tour entier avec l'action du joueur. Tableau vide (push_error) si l'action est
@@ -109,6 +129,9 @@ func submit(action: BattleAction) -> Array[BattleEvent]:
 	var started := BattleEvent.new(BattleEvent.Kind.TURN_STARTED, BattleEvent.SideId.PLAYER)
 	started.turn = _turn
 	events.append(started)
+	if action.kind == BattleAction.Kind.RUN:
+		_attempt_flee(events)
+		return events
 	var foe_action := _foe.ai.choose(_foe, _player, _rng)
 	var order: Array[BattleSide] = [_player, _foe]
 	if _player_goes_second(action, foe_action):
@@ -125,6 +148,35 @@ func submit(action: BattleAction) -> Array[BattleEvent]:
 		if side.active.pokemon.is_fainted():
 			_send_out(side, events)
 	return events
+
+
+## Tentative de fuite (jouée avant les capacités, §2.2). Réussite → FLED puis BATTLE_ENDED
+## (FLED), le combat s'arrête. Échec → FLEE_FAILED puis l'adversaire joue son tour. Ordre des
+## tirages : FleeCalc (roll(256), seulement si la fuite n'est pas assurée), puis, en cas
+## d'échec, l'IA adverse et l'exécution de son action.
+func _attempt_flee(events: Array[BattleEvent]) -> void:
+	var player_speed: int = _player.active.pokemon.stats.get(&"spe", 0)
+	var foe_speed: int = _foe.active.pokemon.stats.get(&"spe", 0)
+	if FleeCalc.can_flee(player_speed, foe_speed, _flee_attempts, _rng):
+		events.append(_event(BattleEvent.Kind.FLED, _player))
+		_outcome = Outcome.FLED
+		_state = State.OVER
+		var ended := BattleEvent.new(BattleEvent.Kind.BATTLE_ENDED, BattleEvent.SideId.PLAYER)
+		ended.outcome = _outcome
+		ended.trainer_name = _foe.trainer_name
+		events.append(ended)
+		return
+	_flee_attempts += 1
+	events.append(_event(BattleEvent.Kind.FLEE_FAILED, _player))
+	var foe_action := _foe.ai.choose(_foe, _player, _rng)
+	if _foe.active.pokemon.is_fainted():
+		return
+	_execute(_foe, foe_action, events)
+	if _state == State.OVER:
+		return
+	for side: BattleSide in [_foe, _player]:
+		if side.active.pokemon.is_fainted():
+			_send_out(side, events)
 
 
 func _player_goes_second(player_action: BattleAction, foe_action: BattleAction) -> bool:

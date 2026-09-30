@@ -22,9 +22,10 @@ func test_real_data_loads_without_error() -> void:
 	assert_eq(_data.get_errors().size(), 0, _errors())
 	assert_eq(_data.get_type_chart().get_type_ids().size(), 18)
 	assert_eq(_data.get_species_ids(), [&"bulbasaur", &"ivysaur", &"venusaur", &"charmander",
-		&"charmeleon", &"charizard", &"squirtle", &"wartortle", &"blastoise"]
+		&"charmeleon", &"charizard", &"squirtle", &"wartortle", &"blastoise",
+		&"pidgey", &"pidgeotto", &"pidgeot", &"rattata", &"raticate"]
 		as Array[StringName])
-	assert_eq(_data.get_move_ids().size(), 24)
+	assert_eq(_data.get_move_ids().size(), 34)
 	assert_true(_data.has_move(&"struggle"))
 
 
@@ -49,7 +50,9 @@ func test_real_species_values() -> void:
 		assert_eq(_data.get_species(id).base_exp, base_exp[id], String(id))
 	assert_eq(_data.get_species(&"charizard").types, [&"fire", &"flying"] as Array[StringName])
 	assert_eq(_data.get_species(&"bulbasaur").types, [&"grass", &"poison"] as Array[StringName])
-	for id: StringName in _data.get_species_ids():
+	# Les neuf starters : croissance lente, 7/8 mâles, dex 1..9 contigus (les espèces de la
+	# Route 1, ajoutées au jalon 5, ont d'autres valeurs — voir test_route_1_species_and_lines).
+	for id: StringName in base_exp:
 		var species := _data.get_species(id)
 		assert_eq(species.growth_rate, ExpCurve.Rate.MEDIUM_SLOW, String(id))
 		assert_eq(species.male_ratio, 0.875, String(id))
@@ -62,6 +65,8 @@ func test_real_evolution_chains() -> void:
 		&"bulbasaur": [&"ivysaur", 16], &"ivysaur": [&"venusaur", 32],
 		&"charmander": [&"charmeleon", 16], &"charmeleon": [&"charizard", 36],
 		&"squirtle": [&"wartortle", 16], &"wartortle": [&"blastoise", 36],
+		&"pidgey": [&"pidgeotto", 18], &"pidgeotto": [&"pidgeot", 36],
+		&"rattata": [&"raticate", 20],
 	}
 	for id: StringName in _data.get_species_ids():
 		var rules := _data.get_species(id).evolutions
@@ -260,3 +265,53 @@ func test_non_object_entries_and_empty_ids_are_rejected() -> void:
 	assert_string_contains(_errors(), "s : identifiant vide")
 	assert_string_contains(_errors(), "s espèce « x » : un objet est attendu")
 	assert_string_contains(_errors(), "m capacité « y » : un objet est attendu")
+
+
+# --- Espèces et capacités du jalon 5 (Route 1) ------------------------------------------
+
+func test_route_1_species_and_lines() -> void:
+	_data.load_dir()
+	assert_eq(_data.get_errors().size(), 0, _errors())
+	var pidgey := _data.get_species(&"pidgey")
+	assert_eq(pidgey.dex, 16)
+	assert_eq(pidgey.name, "Roucool")
+	assert_eq(pidgey.types, [&"normal", &"flying"] as Array[StringName])
+	assert_eq(pidgey.base_stats, {&"hp": 40, &"atk": 45, &"def": 40, &"spa": 35, &"spd": 35,
+		&"spe": 56} as Dictionary[StringName, int])
+	assert_eq(pidgey.base_exp, 50)
+	assert_eq(pidgey.male_ratio, 0.5)
+	var rattata := _data.get_species(&"rattata")
+	assert_eq(rattata.dex, 19)
+	assert_eq(rattata.name, "Rattata")
+	assert_eq(rattata.base_exp, 51)
+	# Lignées complètes présentes (les évolutions résolvent).
+	for id: StringName in [&"pidgeotto", &"pidgeot", &"raticate"]:
+		assert_true(_data.has_species(id), String(id))
+	assert_eq(pidgey.evolutions[0].into, &"pidgeotto")
+	assert_eq(rattata.evolutions[0].into, &"raticate")
+
+
+func test_route_1_moves_exist_and_are_typed() -> void:
+	_data.load_dir()
+	var gust := _data.get_move(&"gust")
+	assert_eq(gust.type, &"flying")
+	assert_eq(gust.power, 40)
+	assert_true(gust.is_damaging())
+	var sand := _data.get_move(&"sand_attack")
+	assert_eq(sand.type, &"ground")
+	assert_false(sand.is_damaging(), "Jet de Sable est une capacité de statut")
+	assert_eq(sand.effects.size(), 1, "baisse de Précision codée (sans pending_effects)")
+	assert_eq(sand.pending_effects.size(), 0)
+	assert_eq(_data.get_move(&"quick_attack").priority, 1)
+
+
+func test_low_level_wild_moves_have_no_pending_effects() -> void:
+	# Invariant de jouabilité (§3.2) : aux niveaux des rencontres (Roucool 2..5, Rattata
+	# 2..4), toute capacité connue est pleinement codée.
+	_data.load_dir()
+	for pair: Array in [[&"pidgey", 5], [&"rattata", 4]]:
+		var species := _data.get_species(pair[0])
+		for move_id: StringName in species.moves_at(pair[1]):
+			var move := _data.get_move(move_id)
+			assert_eq(move.pending_effects.size(), 0,
+				"%s à Nv.%d connaît %s (effet non codé)" % [pair[0], pair[1], move_id])

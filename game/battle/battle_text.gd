@@ -33,7 +33,7 @@ const TEMPLATE_IDS: Array[StringName] = [
 	&"critical", &"super_effective", &"not_very_effective", &"no_effect",
 	&"stat_rose", &"stat_rose_2", &"stat_rose_3", &"stat_fell", &"stat_fell_2",
 	&"stat_fell_3", &"stat_no_higher", &"stat_no_lower", &"recoil", &"fainted",
-	&"battle_won", &"battle_lost",
+	&"battle_won", &"battle_lost", &"wild_appeared", &"fled", &"flee_failed",
 ]
 const PLACEHOLDERS: Array[String] = ["pokemon", "de_pokemon", "move", "trainer", "stat"]
 
@@ -142,6 +142,8 @@ func lines(event: BattleEvent, data: PokemonData, trainer: TrainerData = null) \
 				result.append(_fill(&"sent_out_player", event, data))
 			elif not event.trainer_name.is_empty():
 				result.append(_fill(&"sent_out_foe", event, data))
+			else:
+				result.append(_fill(&"wild_appeared", event, data))
 		BattleEvent.Kind.MOVE_USED:
 			result.append(_fill(&"move_used", event, data))
 		BattleEvent.Kind.MOVE_MISSED:
@@ -167,10 +169,16 @@ func lines(event: BattleEvent, data: PokemonData, trainer: TrainerData = null) \
 			result.append(_fill(&"recoil", event, data))
 		BattleEvent.Kind.FAINTED:
 			result.append(_fill(&"fainted", event, data))
+		BattleEvent.Kind.FLED:
+			result.append(_fill(&"fled", event, data))
+		BattleEvent.Kind.FLEE_FAILED:
+			result.append(_fill(&"flee_failed", event, data))
 		BattleEvent.Kind.BATTLE_ENDED:
+			# FLED ne porte pas de message ici (il est sur l'événement FLED). Un sauvage n'a
+			# pas de dresseur (trainer_name vide) : « Tu as battu… » ne s'affiche pas.
 			var wanted := trainer == null or trainer.end_message
 			if wanted and not event.trainer_name.is_empty() \
-					and event.outcome != Battle.Outcome.NONE:
+					and event.outcome in [Battle.Outcome.WIN, Battle.Outcome.LOSS]:
 				result.append(_fill(&"battle_won" if event.outcome == Battle.Outcome.WIN
 					else &"battle_lost", event, data))
 	return result

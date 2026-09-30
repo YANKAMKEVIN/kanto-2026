@@ -52,3 +52,62 @@ func test_every_first_battle_ends() -> void:
 		assert_lte(longest, MAX_TURNS)
 		gut.p("%s contre %s : %d victoires sur %d (%.1f %%), %d tours au plus" % [starter,
 			_offer.rival_pick(starter, _data), wins, SEEDS, 100.0 * wins / SEEDS, longest])
+
+
+# --- Combats sauvages de la Route 1 (jalon 5 §4, T4) ------------------------------------
+
+const WILD_SEEDS: int = 100
+const WILD_MAX_TURNS: int = 50
+
+
+## Combat sauvage : un starter Nv.5 (choix au hasard) contre un sauvage donné.
+func _simulate_wild(starter: StringName, foe_species: StringName, foe_level: int,
+		seed_value: int) -> Array[int]:
+	var rng := GameRng.new(seed_value)
+	var player_party := Party.new()
+	player_party.add(PokemonFactory.create(_data, starter, 5, rng))
+	var foe_party := Party.new()
+	foe_party.add(PokemonFactory.create(_data, foe_species, foe_level, rng))
+	var player := BattleSide.new(player_party, true)
+	var battle := Battle.new(player, BattleSide.new(foe_party, false, ""), _data, rng,
+		BattleRules.for_wild())
+	battle.start()
+	var chooser := BattleAI.new()
+	# On ne fuit jamais dans la simulation : on veut mesurer la durée d'un combat mené à terme.
+	while battle.get_state() == Battle.State.CHOOSING and battle.get_turn() < WILD_MAX_TURNS:
+		if battle.submit(chooser.choose(player, null, rng)).is_empty():
+			break
+	return [battle.get_outcome(), battle.get_turn()]
+
+
+func test_every_wild_battle_of_route_1_ends() -> void:
+	var library := EncounterLibrary.new(_data)
+	library.load_dir()
+	assert_eq(library.get_errors().size(), 0)
+	var table := library.get_table(&"route_1", &"grass")
+	assert_not_null(table, "la table route_1 existe")
+	# Emplacements distincts (espèce, niveau max) de la table.
+	var cases: Array = []
+	for slot: EncounterSlot in table.slots:
+		var key := [slot.species, slot.max_level]
+		if not cases.has(key):
+			cases.append(key)
+	for starter: StringName in _offer.get_species_ids():
+		var wins := 0
+		var total_turns := 0
+		var runs := 0
+		var longest := 0
+		for case: Array in cases:
+			for seed_value: int in WILD_SEEDS:
+				var result := _simulate_wild(starter, case[0], case[1], seed_value)
+				assert_ne(result[0], Battle.Outcome.NONE,
+					"%s vs %s Nv.%d graine %d : le combat se termine"
+					% [starter, case[0], case[1], seed_value])
+				runs += 1
+				total_turns += result[1]
+				longest = maxi(longest, result[1])
+				if result[0] == Battle.Outcome.WIN:
+					wins += 1
+		gut.p("%s : %d victoires sur %d (%.1f %%), %.1f tours en moyenne, %d au plus"
+			% [starter, wins, runs, 100.0 * wins / runs, float(total_turns) / runs, longest])
+		assert_lte(longest, WILD_MAX_TURNS)

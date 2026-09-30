@@ -23,7 +23,13 @@
 		},
 		"fainted": { "text": "{pokemon} est K.O. !", "draft": true },
 		"battle_won": { "text": "Tu as battu {trainer} !", "draft": true },
-		"battle_lost": { "text": "{trainer} a gagné cette fois...", "draft": true }
+		"battle_lost": { "text": "{trainer} a gagné cette fois...", "draft": true },
+		"wild_appeared": {
+			"text": "Un {pokemon} sauvage apparaît !",
+			"text_f": "Une {pokemon} sauvage apparaît !", "draft": true
+		},
+		"fled": { "text": "Tu prends la fuite !", "draft": true },
+		"flee_failed": { "text": "Impossible de fuir !", "draft": true }
 	},
 	"stats": {
 		"atk": "L'Attaque", "def": "La Défense", "spa": "L'Attaque Spéciale",

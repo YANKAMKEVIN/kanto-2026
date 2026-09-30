@@ -158,6 +158,68 @@
 		"description": "Un puissant jet d'eau sous pression frappe la cible.",
 		"draft": true
 	},
+	"gust": {
+		"name": "Tornade", "type": "flying", "category": "special",
+		"power": 40, "accuracy": 100, "pp": 35,
+		"description": "Frappe la cible d'une rafale de vent soulevée par les ailes.",
+		"draft": true
+	},
+	"sand_attack": {
+		"name": "Jet de Sable", "type": "ground", "category": "status",
+		"accuracy": 100, "pp": 15,
+		"effects": [{ "kind": "stat_stage", "stat": "acc", "stages": -1, "target": "foe" }],
+		"description": "Lance du sable au visage de la cible. Baisse sa Précision.",
+		"draft": true
+	},
+	"quick_attack": {
+		"name": "Vive-Attaque", "type": "normal", "category": "physical",
+		"power": 40, "accuracy": 100, "pp": 30, "priority": 1,
+		"description": "Le lanceur fonce sur la cible si vite qu'on le voit à peine. Frappe en premier.",
+		"draft": true
+	},
+	"whirlwind": {
+		"name": "Cyclone", "type": "normal", "category": "status",
+		"accuracy": 100, "pp": 20, "pending_effects": ["force_switch"],
+		"description": "Un coup de vent renvoie la cible. Sans effet dans le moteur actuel.",
+		"draft": true
+	},
+	"wing_attack": {
+		"name": "Cru-Ailes", "type": "flying", "category": "physical",
+		"power": 60, "accuracy": 100, "pp": 35,
+		"description": "Déploie ses grandes ailes pour frapper la cible.",
+		"draft": true
+	},
+	"agility": {
+		"name": "Hâte", "type": "psychic", "category": "status",
+		"accuracy": 0, "pp": 30,
+		"effects": [{ "kind": "stat_stage", "stat": "spe", "stages": 2, "target": "self" }],
+		"description": "Détend le corps pour gagner en légèreté. Augmente beaucoup la Vitesse.",
+		"draft": true
+	},
+	"mirror_move": {
+		"name": "Mimique", "type": "flying", "category": "status",
+		"accuracy": 0, "pp": 20, "pending_effects": ["mirror"],
+		"description": "Riposte avec la dernière capacité de la cible. Sans effet dans le moteur actuel.",
+		"draft": true
+	},
+	"hyper_fang": {
+		"name": "Croc de Mort", "type": "normal", "category": "physical",
+		"power": 80, "accuracy": 90, "pp": 15, "pending_effects": ["flinch_10"],
+		"description": "Mord violemment la cible de ses incisives. Peut l'apeurer.",
+		"draft": true
+	},
+	"focus_energy": {
+		"name": "Puissance", "type": "normal", "category": "status",
+		"accuracy": 0, "pp": 30, "pending_effects": ["crit_up"],
+		"description": "Le lanceur prend une profonde inspiration. Sans effet dans le moteur actuel.",
+		"draft": true
+	},
+	"super_fang": {
+		"name": "Croc Fatal", "type": "normal", "category": "status",
+		"accuracy": 90, "pp": 10, "pending_effects": ["half_hp"],
+		"description": "Mord la cible pour lui retirer la moitié de ses PV. Sans effet dans le moteur actuel.",
+		"draft": true
+	},
 	"struggle": {
 		"name": "Lutte", "type": "normal", "category": "physical",
 		"power": 50, "accuracy": 0, "pp": 1, "typeless": true,

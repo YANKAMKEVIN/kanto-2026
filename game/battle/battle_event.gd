@@ -21,11 +21,13 @@ extends RefCounted
 ##   [member stage] (déjà au bout) ;
 ## - RECOIL : lanceur, [member amount], [member hp], [member max_hp] ;
 ## - FAINTED : Pokémon K.O. ;
-## - BATTLE_ENDED : [member outcome] ([enum Battle.Outcome], du point de vue du joueur).
+## - BATTLE_ENDED : [member outcome] ([enum Battle.Outcome], du point de vue du joueur) ;
+## - FLED : le joueur a réussi à fuir (combat sauvage) ;
+## - FLEE_FAILED : la fuite a échoué, l'adversaire va jouer.
 
 enum Kind {
 	BATTLE_STARTED, SENT_OUT, TURN_STARTED, MOVE_USED, MOVE_MISSED, DAMAGE, NO_EFFECT,
-	STAT_CHANGED, STAT_UNCHANGED, RECOIL, FAINTED, BATTLE_ENDED,
+	STAT_CHANGED, STAT_UNCHANGED, RECOIL, FAINTED, BATTLE_ENDED, FLED, FLEE_FAILED,
 }
 enum SideId { PLAYER, FOE }
 

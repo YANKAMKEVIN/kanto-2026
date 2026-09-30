@@ -961,3 +961,70 @@ entrée dans l'équipe (au choix du starter, 4A) ; Pokémon du rival = **rien** 
   → **Décision Kevin (2026-09-29)** : le 5A construit la carte **directement d'après le dossier-07**,
   jugement au doigt sur S24 ensuite. Q-B (sauvegarde) et Q-C (routine du Voyageur) : valeurs par
   défaut appliquées, ajustables ; à confirmer sur S24.
+
+### 15.9 T4 — fondations pures du 5B réellement posées (2026-09-30)
+
+Fait sur la branche `jalon-05`, **au début de T4** (départ mesuré : 1210 tests verts). Cette
+sous-section précise, sur le code réel du 4B, comment un combat **sauvage** réutilise le moteur du
+rival **sans le casser**, et liste les extensions faites. Elle complète §15.6 (qui décrivait le
+plan) : ici, ce qui est **réellement posé** en fondation pure (`RefCounted` + tests ; aucun nœud,
+aucun autoload). Ce qui reste (nœud `EncounterDirector`, `run_request`, transition, UI, capture)
+est **hors T4** (T5→T7, 5D).
+
+**Comment un combat sauvage réutilise `Battle`/`BattleDirector`.** Un sauvage est un `BattleSide`
+**sans dresseur** : `BattleSide.new(foe_party, false, "")` (nom vide = sauvage, déjà géré par
+`BattleSide` et par `BattleText`). Le camp adverse a une seule équipe d'un Pokémon (le tiré),
+l'IA `random` posée d'office par `Battle._init`, et le combat reçoit des **règles**
+(`BattleRules.for_wild()`). La conclusion ne passe **pas** par `BattleConclusion` (pas de
+dresseur) : pas de soin en victoire sauvage (les PV/PP restent) ; la défaite (retour au point de
+soin) est le rôle de l'`EncounterDirector` en T7 (`GameState.heal_map`). Le `run_request(request,
+map)` qui enveloppe `run(trainer_id, …)` est **conçu ici** (`BattleRequest`) mais **implémenté en
+T7** ; `run` du 4B reste inchangé.
+
+**Extensions exactes du moteur (toutes en fin d'enum, le combat du rival ne bouge pas)** :
+- `BattleAction.Kind` : `{ MOVE, RUN }` (RUN ajouté) ; `BattleAction.run()`. RUN n'est légal que
+  si `rules.can_flee` ; sinon `submit` refuse (comportement du 4 : règles nulles → pas de fuite).
+- `BattleEvent.Kind` : `… , BATTLE_ENDED, FLED, FLEE_FAILED` (deux ajoutés en fin).
+- `Battle.Outcome` : `{ NONE, WIN, LOSS, FLED }` (FLED ajouté en fin).
+- `Battle._init(player, foe, data, rng, rules: BattleRules = null)` : `rules` **optionnel**, null =
+  comportement du 4B. `get_rules()`, `can_flee()`. La fuite est **jouée avant les capacités** : sur
+  `submit(run())`, réussite → `FLED` puis `BATTLE_ENDED(FLED)` (l'adversaire ne joue pas) ; échec →
+  `FLEE_FAILED` puis l'adversaire joue son tour. Ordre des tirages documenté : `FleeCalc` (un
+  `roll(256)`, seulement si la fuite n'est pas déjà assurée), puis, en cas d'échec, l'IA adverse et
+  l'exécution de son action.
+- `BattleText` : trois modèles obligatoires ajoutés à `TEMPLATE_IDS` **dans le même commit** que
+  `messages.json` — `wild_appeared` (`SENT_OUT` côté FOE **sans dresseur**, avec `text_f`), `fled`,
+  `flee_failed`. `BATTLE_ENDED` n'émet plus de phrase que pour `WIN`/`LOSS` (jamais `FLED` ; un
+  sauvage, sans dresseur, n'a de toute façon pas de « Tu as battu… »).
+
+**Classes de données neuves** : `BattleRules` (`for_wild` : fuite oui, XP ×1, Balls oui ;
+`for_trainer` : fuite non, XP ×1,5, Balls non) ; `BattleRequest` (`Intro { TRAINER, WILD }`,
+`wild(encounter, data, rng, cell)` **implémenté** — le sauvage est créé par `PokemonFactory.create` ;
+`trainer_battle(trainer, foe_party, actors)` pour T7) ; `FleeCalc` (formule des 3e/4e générations,
+Vitesses **sans** niveaux de stats). Rencontres : `EncounterSlot`, `WildEncounter`, `EncounterTable`
+(`roll`/`pick`/`total_weight`/`chance_of`, ordre des tirages `roll(256)≤rate`, `roll(poids)`,
+`range_int`), `EncounterLibrary` (validation stricte comme `ItemLibrary` : espèces contre
+`PokemonData`, poids > 0, niveaux 1..100 `min ≤ max`, `rate` 1..255, au plus une table par couple
+(carte, terrain), JSON illisible avec la ligne).
+
+**Données** : `data/encounters/route_1.json` (table `route_1_grass` : `maps` `["route_1",
+"pallet_town"]`, `rate` 25/256, 10 emplacements → Roucool 50 % Nv.2–5, Rattata 50 % Nv.2–4) ; cinq
+espèces ajoutées à `data/pokemon/species/kanto.json` (Roucool 16, Roucoups 17, Roucarnage 18,
+Rattata 19, Rattatac 20 ; **lignées complètes**, valeurs modernes, learnsets Rouge/Bleu) et dix
+capacités à `moves.json` (Tornade `flying`/40, Jet de Sable `ground` acc −1 **codée**, Vive-Attaque
+priorité +1 **codée** ; Cyclone, Cru-Ailes, Hâte, Mimique, Croc de Mort, Puissance, Croc Fatal —
+celles non codées portent `pending_effects`). **Invariant vérifié** (`test_pokemon_data`,
+`test_battle_simulation`) : aux niveaux des rencontres (Roucool 2–5, Rattata 2–4), toute capacité
+connue est **sans** `pending_effects`.
+
+**Marquage Pokédex (item 5, logique pure ; câblage T5/T7)** : `Pokedex` existe depuis T0. Le point de
+marquage « vu » est l'événement **`SENT_OUT` côté FOE** d'un sauvage — c'est justement celui qui
+produit maintenant `wild_appeared`. En T5/T7, l'`EncounterDirector` (ou le `BattleDirector`) appelle
+`state.pokedex.mark_seen(species)` sur cet événement ; aucun marquage n'est fait par le **moteur**
+(il reste pur et reproductible). Voir §15.7 pour `seen`/`caught` et la sauvegarde.
+
+**Non fait en T4 (T5→T7, 5D)** : `EncounterDirector` (nœud), `run_request`, transition ~1 s
+(`BattleStage.play_wild_intro`/`play_partner_enter`), UI (FUITE active, carte sans pastilles), défaite
+et soin (clé `heal` de dialogue, variante de Maman), et tout le 5D (capture). La clé de dialogue
+`"heal"` (§2.2) et le câblage `GameState`/`Boot` restent à T7 : ce ne sont pas des fondations du
+moteur de combat.
