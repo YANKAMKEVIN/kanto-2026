@@ -58,6 +58,13 @@ const SHADOW_LIFT: float = 1.5
 ## Apparition d'un Pokémon sans PNJ dans le monde ([method show_pokemon]).
 const APPEAR_DURATION: float = 0.3
 const APPEAR_DROP: float = 24.0
+## Rencontre sauvage (jalon 5 §3.7) : recadrage caméra + voile, apparition du sauvage
+## (bond + fondu), puis entrée du partenaire en courant depuis le bord gauche. Aucun écran
+## noir : la Route 1 reste le fond. Durées (s) à speed_scale = 1, réglables sur le S24.
+const WILD_CAMERA_DURATION: float = 0.30
+const WILD_APPEAR_DURATION: float = 0.30
+const WILD_APPEAR_DROP: float = 40.0
+const PARTNER_ENTER_DURATION: float = 0.32
 ## Animations des temps (dossier 05 §4, §9) : élan physique, pulsation spéciale, bond de
 ## statut, coup (clignotement + tremblement), K.O. (chute + fondu).
 const LUNGE_DISTANCE: float = 60.0
@@ -225,6 +232,72 @@ func show_pokemon(side: BattleEvent.SideId, species: StringName) -> void:
 	tween.tween_property(sprite, ^"modulate", Color.WHITE, APPEAR_DURATION)
 	tween.tween_property(_shadows[side], ^"modulate", Color.WHITE, APPEAR_DURATION)
 	_play(tween)
+
+
+## Coroutine (~0,6 s avec l'apparition) : entrée d'une rencontre sauvage (jalon 5 §3.7). Le
+## décor de [param camera] est recadré et voilé (comme l'entrée du 4B, mais sans PNJ du monde),
+## puis le sauvage [param foe_species] apparaît à sa place de combat (bond depuis le bas +
+## fondu). Le cadrage vise [param origin_world] (l'herbe qui bouge) et le joueur. Le partenaire
+## entre ensuite par [method play_partner_enter]. Refusé (erreur) si un combat est déjà affiché.
+func play_wild_intro(camera: Camera2D, foe_species: StringName, origin_world: Vector2) -> void:
+	if _active:
+		push_error("BattleStage : un combat est déjà affiché")
+		return
+	if camera == null:
+		push_error("BattleStage : caméra absente")
+		return
+	_active = true
+	_camera = camera
+	_save_camera()
+	_anchors = BattleLayout.anchors(_view_size())
+	_species = {BattleEvent.SideId.FOE: foe_species}
+	_world = {}
+	var cells: Array[Vector2i] = [Grid.world_to_cell(origin_world)]
+	var owner_node := camera.get_parent()
+	if owner_node != null and owner_node.has_method(&"get_cell"):
+		cells.append(owner_node.call(&"get_cell"))
+	if _arena.has_area():
+		_focus = BattleLayout.arena_focus(_arena, _bounds, _view_size(), ZOOM)
+	else:
+		_focus = BattleLayout.focus(cells)
+	_prepare_sprite(BattleEvent.SideId.FOE)
+	_free_camera()
+	# Recadrage + voile (pas de PNJ à faire voyager : c'est un sauvage).
+	var tween := _new_tween()
+	tween.tween_method(_set_recompose, 0.0, 1.0, WILD_CAMERA_DURATION)
+	await _play(tween)
+	if _active:
+		await _appear(BattleEvent.SideId.FOE, WILD_APPEAR_DROP, WILD_APPEAR_DURATION)
+
+
+## Coroutine (~0,3 s) : le partenaire [param player_species] entre en courant depuis le bord
+## gauche jusqu'à sa place de combat (jalon 5 §3.7, Q15 : pas de lancer de Ball). À appeler
+## après [method play_wild_intro].
+func play_partner_enter(player_species: StringName) -> void:
+	if not _active:
+		return
+	var side := BattleEvent.SideId.PLAYER
+	_species[side] = player_species
+	_fainted.erase(side)
+	_set_texture(side)
+	var feet := _anchor(side)
+	var scale := float(_anchor_scale(side))
+	var start := Vector2(-float(BattleLayout.NATIVE.x) * scale, feet.y)
+	var sprite := _sprites[side]
+	sprite.visible = true
+	sprite.modulate = Color.WHITE
+	_shadows[side].visible = true
+	_shadows[side].modulate = Color.WHITE
+	_place(side, start, scale)
+	var tween := _new_tween()
+	tween.set_parallel(true)
+	tween.tween_property(sprite, ^"position", feet, PARTNER_ENTER_DURATION) \
+		.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+	tween.tween_property(_shadows[side], ^"position",
+		feet + Vector2(0.0, -SHADOW_LIFT * scale), PARTNER_ENTER_DURATION) \
+		.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+	await _play(tween)
+	_rest(side)
 
 
 ## Coroutine : le Pokémon de [param side] utilise une capacité de [param category].
@@ -397,6 +470,35 @@ func _set_camera(k: float) -> void:
 func _set_backdrop(k: float) -> void:
 	(_backdrop.material as ShaderMaterial).set_shader_parameter(&"amount", k)
 	_backdrop.visible = k > 0.0
+
+
+## Recadrage + voile de l'entrée sauvage à [param k] (0 : exploration, 1 : combat), sans faire
+## voyager de sprite (les combattants n'ont pas de PNJ dans le monde).
+func _set_recompose(k: float) -> void:
+	_set_camera(k)
+	_set_backdrop(k)
+
+
+## Coroutine : le Pokémon de [param side] apparaît à son ancre (bond depuis [param drop] px
+## au-dessus + fondu, ombre comprise). Sert au sauvage de l'entrée (§3.7).
+func _appear(side: BattleEvent.SideId, drop: float, duration: float) -> void:
+	var sprite := _sprites[side]
+	_fainted.erase(side)
+	_set_texture(side)
+	var feet := _anchor(side)
+	var scale := float(_anchor_scale(side))
+	sprite.visible = true
+	_shadows[side].visible = true
+	_place(side, feet + Vector2(0.0, -drop), scale)
+	sprite.modulate = Color(1, 1, 1, 0)
+	_shadows[side].modulate = Color(1, 1, 1, 0)
+	var tween := _new_tween()
+	tween.set_parallel(true)
+	tween.tween_property(sprite, ^"position", feet, duration) \
+		.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN)
+	tween.tween_property(sprite, ^"modulate", Color.WHITE, duration)
+	tween.tween_property(_shadows[side], ^"modulate", Color.WHITE, duration)
+	await _play(tween)
 
 
 ## Sprite de [param side] sur son trajet : [param k] (0 : place du PNJ projetée par la

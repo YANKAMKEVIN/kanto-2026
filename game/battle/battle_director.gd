@@ -20,6 +20,9 @@ signal battle_finished(trainer_id: StringName, outcome: int)
 
 ## Raison de blocage du joueur pendant un combat ([method Player.set_input_enabled]).
 const REASON: StringName = &"battle"
+## Rencontre sauvage — temps d'arrêt sur la vue de combat avant le retour, tant que le combat
+## jouable (T7) n'est pas branché (jalon 5 §3.7). En secondes à speed_scale = 1.
+const WILD_HOLD: float = 0.35
 
 ## Durées multipliées (0 = instantané, tests) ; relayé à la scène et à la HUD.
 var speed_scale: float = 1.0
@@ -118,6 +121,49 @@ func run(trainer_id: StringName, map: GameMap,
 		_player.set_input_enabled(true, REASON)
 	battle_finished.emit(trainer_id, outcome)
 	return outcome
+
+
+## Coroutine : joue le combat décrit par [param request] sur [param map] et renvoie une
+## [enum Battle.Outcome]. Jalon 5 (T5) — [b]transition seulement[/b] pour une rencontre
+## sauvage : recadrage et voile ([BattleStage]), apparition du sauvage, entrée du partenaire,
+## court arrêt, puis sortie ; ni interface ni moteur ([Battle]). Renvoie [constant
+## Battle.Outcome.WIN]. Le combat jouable et la généralisation aux dresseurs sont branchés en
+## T7 : cette signature ne changera pas (l'[EncounterDirector] appelle déjà `run_request`).
+func run_request(request: BattleRequest, map: GameMap) -> int:
+	if _running:
+		push_error("BattleDirector : un combat tourne déjà")
+		return Battle.Outcome.NONE
+	if request == null or not request.is_wild():
+		# T7 branchera ici le combat complet (dresseur compris) ; T5 ne gère que le sauvage.
+		push_error("BattleDirector.run_request : requête non gérée en T5 (sauvage seulement)")
+		return Battle.Outcome.NONE
+	var foe: Pokemon = request.foe_party.get_lead() if request.foe_party != null else null
+	if foe == null:
+		push_error("BattleDirector.run_request : équipe adverse vide")
+		return Battle.Outcome.NONE
+	_running = true
+	_trainer_id = &""
+	if is_instance_valid(_player):
+		_player.set_input_enabled(false, REASON)
+	battle_started.emit(&"")
+	_relay_speed()
+	var foe_species := foe.species_id
+	var player: Pokemon = (_state.party as Party).get_lead()
+	var player_species: StringName = player.species_id if player != null else &""
+	# Transition dans le décor courant (~1 s, pas d'écran noir) : la Route 1 reste le fond.
+	var camera := _player.get_camera() if is_instance_valid(_player) else null
+	if is_instance_valid(_stage) and camera != null:
+		_stage.set_frame(map.get_battle_arena_rect(), Rect2(map.get_pixel_rect()))
+		var origin_world := Grid.cell_to_world(request.origin_cell)
+		await _stage.play_wild_intro(camera, foe_species, origin_world)
+		await _stage.play_partner_enter(player_species)
+		await _hold(WILD_HOLD)
+		await _stage.exit()
+	_running = false
+	if is_instance_valid(_player):
+		_player.set_input_enabled(true, REASON)
+	battle_finished.emit(&"", Battle.Outcome.WIN)
+	return Battle.Outcome.WIN
 
 
 func is_running() -> bool:
@@ -227,6 +273,13 @@ func _npc(map: GameMap, id: StringName) -> Node2D:
 	if id.is_empty() or not is_instance_valid(map):
 		return null
 	return map.get_npc(id)
+
+
+## Coroutine : attend [param seconds] (à speed_scale = 1). Instantané si speed_scale = 0.
+func _hold(seconds: float) -> void:
+	if speed_scale <= 0.0 or seconds <= 0.0:
+		return
+	await get_tree().create_timer(seconds / speed_scale).timeout
 
 
 func _relay_speed() -> void:

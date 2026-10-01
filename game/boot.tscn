@@ -13,6 +13,7 @@
 [ext_resource type="PackedScene" path="res://game/ui/battle/battle_hud.tscn" id="11_hud"]
 [ext_resource type="Script" path="res://game/battle/battle_director.gd" id="12_director"]
 [ext_resource type="Script" path="res://game/world/npc/ambient_watcher.gd" id="13_ambient"]
+[ext_resource type="Script" path="res://game/pokemon/encounters/encounter_director.gd" id="14_encounters"]
 
 [node name="Boot" type="Node"]
 script = ExtResource("1_boot")
@@ -58,6 +59,10 @@ script = ExtResource("12_director")
 [node name="AmbientWatcher" type="Node" parent="."]
 unique_name_in_owner = true
 script = ExtResource("13_ambient")
+
+[node name="EncounterDirector" type="Node" parent="."]
+unique_name_in_owner = true
+script = ExtResource("14_encounters")
 
 [node name="ScreenFade" parent="." instance=ExtResource("3_fade")]
 unique_name_in_owner = true

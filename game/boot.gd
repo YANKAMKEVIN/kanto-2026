@@ -31,6 +31,7 @@ var _offer := StarterOffer.new()
 var _trainers: TrainerLibrary
 var _texts := BattleText.new()
 var _items := ItemLibrary.new()
+var _encounter_library: EncounterLibrary
 
 @onready var _world: Node2D = %World
 @onready var _hud: ExplorationHud = %ExplorationHud
@@ -45,6 +46,7 @@ var _items := ItemLibrary.new()
 @onready var _battle_hud: BattleHud = %BattleHud
 @onready var _battle_director: BattleDirector = %BattleDirector
 @onready var _ambient: AmbientWatcher = %AmbientWatcher
+@onready var _encounters: EncounterDirector = %EncounterDirector
 
 
 func _ready() -> void:
@@ -80,6 +82,15 @@ func _ready() -> void:
 	_starter_choice.starter_chosen.connect(_on_starter_chosen)
 	_battle_director.event_played.connect(_on_battle_event)
 	_ambient.setup(_player)
+	# Rencontres sauvages (jalon 5, 5B) : tables lues dans data/encounters/, l'EncounterDirector
+	# tire une rencontre à chaque pas dans les hautes herbes. En T5, il ne joue que la transition
+	# (BattleDirector.run_request court-circuité) ; le combat jouable est branché en T7.
+	_encounter_library = EncounterLibrary.new(_pokemon)
+	_encounter_library.load_dir()
+	_encounters.setup(_encounter_library, _pokemon, GameState, _player, _battle_director,
+		SceneRouter, _cutscenes_node)
+	_encounters.encounter_started.connect(_on_encounter_state_changed.unbind(2))
+	_encounters.encounter_finished.connect(_on_encounter_state_changed.unbind(1))
 	_interactions.target_changed.connect(_on_target_changed)
 	_runner.dialogue_started.connect(_on_dialogue_started)
 	_runner.dialogue_finished.connect(_on_dialogue_finished)
@@ -187,6 +198,15 @@ func get_item_library() -> ItemLibrary:
 	return _items
 
 
+func get_encounter_director() -> EncounterDirector:
+	return _encounters
+
+
+## Tables de rencontre chargées au démarrage (data/encounters/).
+func get_encounter_library() -> EncounterLibrary:
+	return _encounter_library
+
+
 ## Dialogues chargés au démarrage (data/dialogues/).
 func get_dialogue_library() -> DialogueLibrary:
 	return _library
@@ -205,6 +225,7 @@ func _on_map_changed(map: GameMap) -> void:
 	_cutscenes_node.set_map(map)
 	_starter_choice.set_map(map)
 	_ambient.set_map(map)
+	_encounters.set_map(map)
 
 
 func _on_map_entered(map: GameMap) -> void:
@@ -240,6 +261,10 @@ func _on_battle_state_changed() -> void:
 	_refresh_controls()
 
 
+func _on_encounter_state_changed() -> void:
+	_refresh_controls()
+
+
 ## Le starter choisi (jalon 4A) est enregistré « capturé » au Pokédex (décision Q-D).
 func _on_starter_chosen(player_species: StringName, _rival_species: StringName) -> void:
 	GameState.pokedex.mark_caught(player_species)
@@ -265,4 +290,5 @@ func _on_item_given(item_id: StringName, count: int) -> void:
 ## combat : pendant une scène ou un combat, ils restent cachés entre deux dialogues.
 func _refresh_controls() -> void:
 	_hud.set_controls_visible(not _runner.is_running() and not _cutscenes_node.is_running()
-		and not _starter_choice.is_sheet_open() and not _battle_director.is_running())
+		and not _starter_choice.is_sheet_open() and not _battle_director.is_running()
+		and not _encounters.is_running())

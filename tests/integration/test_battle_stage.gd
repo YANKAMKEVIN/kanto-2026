@@ -236,3 +236,62 @@ func test_set_frame_frames_the_arena() -> void:
 	await _enter()
 	var cells: Array[Vector2i] = [RIVAL_CELL, MINE_CELL, FOE_CELL]
 	assert_eq(_stage.get_focus(), BattleLayout.focus(cells), "cadrage oublié après la sortie")
+
+
+# --- Rencontre sauvage (jalon 5 §3.7) ------------------------------------------------
+
+## Intro sauvage : recadrage + voile, le sauvage apparaît à son ancre (pas de PNJ du monde),
+## puis le partenaire entre depuis la gauche jusqu'à sa place. Sortie : tout rendu.
+func test_wild_intro_and_partner_enter_end_at_the_anchors() -> void:
+	var origin := Grid.cell_to_world(FOE_CELL)
+	await _stage.play_wild_intro(_camera, &"pidgey", origin)
+	var a := _anchors()
+	var foe := _stage.get_sprite(FOE_SIDE)
+	assert_true(_stage.is_active())
+	assert_true(foe.visible, "le sauvage apparaît")
+	assert_eq(foe.position, a["foe_feet"], "à l'ancre adverse")
+	assert_eq(foe.scale, Vector2.ONE * 3, "de face ×3")
+	assert_eq(foe.modulate, Color.WHITE)
+	assert_string_ends_with(foe.texture.resource_path, "pidgey_front.png")
+	assert_false(_stage.get_sprite(PLAYER_SIDE).visible, "partenaire pas encore entré")
+	assert_eq(_camera.zoom, Vector2.ONE * BattleStage.ZOOM, "caméra recadrée")
+	assert_true((_stage.get_node(^"%Backdrop") as CanvasItem).visible,
+		"voile posé, pas d'écran noir")
+	await _stage.play_partner_enter(&"charmander")
+	var mine := _stage.get_sprite(PLAYER_SIDE)
+	assert_true(mine.visible)
+	assert_eq(mine.position, a["player_feet"], "à l'ancre du joueur")
+	assert_eq(mine.scale, Vector2.ONE * 4, "de dos ×4")
+	assert_string_ends_with(mine.texture.resource_path, "charmander_back.png")
+	await _stage.exit()
+	assert_false(_stage.is_active())
+	assert_eq(_camera.zoom, Vector2.ONE, "caméra rendue")
+	assert_false(foe.visible)
+	assert_false(mine.visible)
+	assert_false((_stage.get_node(^"%Backdrop") as CanvasItem).visible)
+
+
+func test_wild_intro_during_a_battle_is_refused() -> void:
+	await _enter()
+	await _stage.play_wild_intro(_camera, &"rattata", Grid.cell_to_world(FOE_CELL))
+	assert_push_error("déjà affiché")
+	assert_string_ends_with(_stage.get_sprite(FOE_SIDE).texture.resource_path,
+		"squirtle_front.png", "le combat affiché ne change pas")
+
+
+func test_reset_after_a_wild_intro_puts_everything_back() -> void:
+	await _stage.play_wild_intro(_camera, &"rattata", Grid.cell_to_world(FOE_CELL))
+	await _stage.play_partner_enter(&"squirtle")
+	_stage.reset()
+	assert_false(_stage.is_active())
+	assert_eq(_camera.zoom, Vector2.ONE)
+	assert_eq(_camera.limit_right, LIMITS[2])
+	assert_false(_stage.get_sprite(FOE_SIDE).visible)
+	assert_false(_stage.get_sprite(PLAYER_SIDE).visible)
+
+
+func test_no_orphans_after_a_wild_intro() -> void:
+	await _stage.play_wild_intro(_camera, &"pidgey", Grid.cell_to_world(FOE_CELL))
+	await _stage.play_partner_enter(&"charmander")
+	await _stage.exit()
+	assert_no_new_orphans()

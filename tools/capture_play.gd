@@ -173,6 +173,8 @@ const T3_CHOICE_PREFIX: String = "jalon04a_t3_"
 const STARTER_PATH: String = "res://data/cutscenes/starter.json"
 const T6_PREFIX: String = "jalon04b_t6_"
 const T8_PREFIX: String = "jalon04b_t8_"
+## Scénario « wild_encounter » (jalon 5B, T5) : la transition de rencontre sauvage seule.
+const T5B_PREFIX: String = "jalon05b_t5_"
 const STAGE_SCENE: String = "res://game/battle/battle_stage.tscn"
 ## Scénario « battle_stage » : placement réel de la fin de starter_chosen (§14.1) par starter
 ## du joueur : [case du joueur, orientation, case de son starter]. Rival (7, 7), son
@@ -277,7 +279,7 @@ func _start_boot() -> void:
 			InputMap.action_erase_events(action)
 		InputMap.action_erase_events(&"run")
 		InputMap.action_erase_events(&"interact")
-	elif _scenario == "route_1":
+	elif _scenario in ["route_1", "wild_encounter"]:
 		_boot.set(&"start_map", &"route_1")
 		_boot.set(&"start_spawn", &"from_pallet_w")
 		_boot.set(&"start_facing", Vector2i.UP)
@@ -321,6 +323,8 @@ func _on_frame() -> void:
 			_run_battle_stage()
 		elif _scenario == "rival_battle":
 			_run_rival_battle()
+		elif _scenario == "wild_encounter":
+			_run_wild_encounter()
 		return
 	match _scenario:
 		"spawn":
@@ -1655,3 +1659,90 @@ func _rival_battle_seed(want: int, data: RefCounted) -> int:
 		if int(battle.call(&"get_outcome")) == want:
 			return seed
 	return 0
+
+
+# --- Scénario « wild_encounter » (jalon 5B, T5) --------------------------------------------
+
+## La transition de rencontre sauvage seule (§3.7), sans interface ni moteur : équipe de départ
+## (Salamèche N5), joueur placé dans les hautes herbes de la Route 1, puis rencontre forcée
+## (EncounterDirector.start_encounter) d'un Rattata. Captures image par image sur ~1,3 s :
+## herbe qui bouge, zoom, apparition du sauvage, entrée du partenaire, vue de combat, retour.
+## Captures jalon05b_t5_*. Quitte seul (~150 images : --quit-after 3000).
+func _run_wild_encounter() -> void:
+	var prefix := T5B_PREFIX
+	await _frames(5)
+	# Équipe de départ et drapeau starter_chosen (exploration normale, pas la scène des herbes).
+	var state: Node = root.get_node(^"GameState")
+	var data: RefCounted = _boot.call(&"get_pokemon_data")
+	var factory: GDScript = load("res://game/pokemon/pokemon_factory.gd")
+	var party: RefCounted = (load("res://game/pokemon/party.gd") as GDScript).new()
+	party.call(&"add", factory.call(&"create", data, &"charmander", 5, GameRng.new(7)))
+	state.set(&"party", party)
+	state.set(&"starter_species", &"charmander")
+	(state.get(&"flags") as RefCounted).call(&"set_flag", &"starter_chosen")
+	# Place le joueur sur une case de hautes herbes de la Route 1 (avec de l'herbe au-dessus).
+	var map: Node = _boot.call(&"get_map")
+	var grid: RefCounted = map.call(&"get_grid")
+	var cell := _find_grass_cell(grid, map.get(&"size"))
+	if cell == Vector2i(-1, -1):
+		push_error("wild_encounter : aucune case de hautes herbes trouvée")
+		quit(1)
+		return
+	_player.call(&"enter_map", grid, cell, Vector2i.UP, map.call(&"get_pixel_rect"))
+	await _frames(12)
+	await _wild_shot(prefix + "00_exploration")
+	# Rencontre forcée, transition à vitesse réelle.
+	_boot.call(&"get_battle_director").set(&"speed_scale", 1.0)
+	var director: Node = _boot.call(&"get_encounter_director")
+	var enc: RefCounted = (load("res://game/pokemon/encounters/wild_encounter.gd") as GDScript) \
+		.new(&"rattata", 3, &"route_1_grass")
+	if not bool(director.call(&"start_encounter", enc)):
+		push_error("wild_encounter : start_encounter refusé")
+		quit(1)
+		return
+	# Images le long de la transition (~1,3 s + sortie).
+	var shots: Array = [
+		[3, "01_grass_rustle"], [6, "02_zoom_veil"], [9, "03_foe_appears"],
+		[9, "04_partner_enters"], [8, "05_battle_view"],
+	]
+	for shot: Array in shots:
+		await _frames(shot[0])
+		await _wild_shot(prefix + shot[1])
+	for i: int in NPCS_TIMEOUT:
+		if not bool(director.call(&"is_running")):
+			break
+		await process_frame
+	await _frames(8)
+	await _wild_shot(prefix + "06_back_to_exploration")
+	print("  Pokédex : rattata vu = %s ; contrôle rendu = %s" % [
+		(state.get(&"pokedex") as RefCounted).call(&"is_seen", &"rattata"),
+		_player.call(&"is_input_enabled")])
+	print("WILD_ENCOUNTER terminé (frame %d)" % _frame)
+	quit()
+
+
+## Première case de hautes herbes praticable qui a de l'herbe juste au-dessus (l'origine de la
+## rencontre sera « devant » le joueur). (-1, -1) si aucune.
+func _find_grass_cell(grid: RefCounted, size: Vector2i) -> Vector2i:
+	var fallback := Vector2i(-1, -1)
+	for y: int in range(1, size.y):
+		for x: int in size.x:
+			var cell := Vector2i(x, y)
+			if not bool(grid.call(&"is_tall_grass", cell)):
+				continue
+			if bool(grid.call(&"is_occupied", cell)) or bool(grid.call(&"is_solid", cell)):
+				continue
+			if fallback == Vector2i(-1, -1):
+				fallback = cell
+			if bool(grid.call(&"is_tall_grass", cell + Vector2i.UP)):
+				return cell
+	return fallback
+
+
+func _wild_shot(capture_name: String) -> void:
+	var map: Node = _boot.call(&"get_map")
+	var stage: Node = _boot.call(&"get_battle_stage")
+	print("  %s : carte %s, combat actif %s" % [capture_name,
+		map.get(&"map_id") if map != null else &"", stage.call(&"is_active")])
+	_mark(capture_name)
+	await _frames(2)
