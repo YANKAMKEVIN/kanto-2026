@@ -16,6 +16,32 @@ Application directe : le Pokédex (§6). Ses données sont enregistrées depuis 
 
 La première vraie ville après Bourg Palette et la Route 1 : **dense et vivante plutôt que grande pour être grande** (échelle A+). Verdoyante, plus urbaine que Bourg Palette sans être une métropole ; ville de passage, commerces et voyageurs ; humains et Pokémon visibles dans la vie quotidienne (`vision.md` : « première vraie ville, commerces, voyageurs »). Les lieux importants se reconnaissent par l'architecture et le level design, **sans marqueur d'interface permanent**.
 
+## Références visuelles (Kevin, 2026-10-02)
+
+> **Les images définissent la direction artistique, l'ambiance et les intentions de mise en scène ; elles ne constituent pas des plans à reproduire au pixel près.** Si une image contredit ce dossier, le dossier gagne (`CLAUDE.md` règle 10).
+
+| Fichier (`reference/`) | Contenu |
+|---|---|
+| `jadielle-vue-generale-v1.webp` | Jadielle vue de haut : place centrale et son arbre, Centre à l'ouest, Boutique à l'est, Arène au nord-ouest, pont vers l'ouest, sortie nord, arrivée de la Route 1 au sud |
+| `jadielle-planche-v1.webp` | Planche : vue d'ensemble, Centre, Boutique, rue avec l'enfant, son Rattata et le Roucool qui s'envole (§2), entrée de la Route 22 |
+| `centre-pokemon-v1.webp` | Centre Pokémon : extérieur, salle, comptoir, terminal de stockage, coin repos |
+| `boutique-jadielle-v1.webp` | Boutique : extérieur, salle, comptoir, rayons |
+| `route-22-rival-02-v1.webp` | Route 22 (entrée, herbes, relief, vue vers le Plateau Indigo) et storyboard du rival n°2 en 5 cases |
+
+**Ce qui est retenu** : l'organisation de la ville (conforme au §1), sa densité verdoyante, les lieux reconnaissables à leur architecture (toit rouge du Centre, toit bleu de la Boutique) ; un Centre et une Boutique compacts, chaleureux et vivants ; la micro-scène d'arrivée (§2) ; la Route 22 en relief avec le Plateau Indigo au loin (§12) ; le storyboard du rival (§13 : jeune Dresseur battu, rappel du Pokémon, le rival remarque le joueur, échange, combat), dont la réplique de la case 4 est celle du §19.
+
+**Ce que les images ne changent pas** (le dossier gagne) :
+- **Pokémon des PNJ** : Évoli et Pikachu (Centre, Boutique) ne sont pas repris ; seuls Roucool et Rattata habillent Jadielle (décisions verrouillées).
+- **Rayons de la Boutique** : décor sans étiquettes lisibles. Super Potion, Hyper Potion, Rappel, Super Rappel, Total Soin, Super Ball et Hyper Ball n'existent pas au J7 (§9 : stock Poké Ball + Potion, rien pour une mécanique absente). Les panneaux de catégories restent du décor ; l'achat passe par l'interface (§9).
+- **Orientation de la Route 22** : elle part **vers l'ouest** depuis Jadielle (§1, §19). Les flèches de la planche (« Vers Jadielle » à gauche, « Vers l'est » à droite) sont inversées et ne sont pas reprises, pas plus que ces libellés d'interface.
+- **Dresseurs sur la Route 22** : seuls le voyageur, le jeune Dresseur de la scène et le rival sont prévus (§13, §19), pas les autres silhouettes de la planche.
+- « Le rival veut se battre ! » : c'est le message générique du moteur de combat (`data/battle/messages.json`), pas une nouvelle réplique.
+
+**Questions ouvertes (à trancher par Kevin)** :
+1. **Mer et falaises autour de Jadielle** : la vue générale borde la ville de falaises et d'eau, à l'ouest et au sud. Le dossier n'en parle pas (et Jadielle est dans les terres dans Rouge/Bleu). Garder ce cadre côtier, ou une ville entourée de forêt ?
+2. **Leveinard au comptoir du Centre** : c'est une espèce nouvelle, alors que les décisions verrouillées disent « aucune espèce nouvelle pour habiller Jadielle ». Faut-il une exception pour l'assistant de l'infirmière, ou l'infirmière reste-t-elle seule ?
+3. **Escalier dans le Centre** : rien n'est prévu à l'étage. Le retirer, ou le garder comme décor (inaccessible ou fermé) ?
+
 ## Règles Kanto 2026 renforcées par le J7
 
 - **A. Le monde existe indépendamment du joueur** : les personnages ont de petites activités et changent avec les événements.

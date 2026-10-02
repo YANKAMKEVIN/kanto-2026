@@ -14,6 +14,7 @@ Kevin est le **directeur du jeu** : il conçoit (souvent avec ChatGPT), Claude i
 - `docs/design/reference/bourg-palette-aplus-v1.png` — benchmark graphique du **monde** (2D HD atmosphérique, golden hour).
 - `docs/design/reference/chambre-joueur-v1.webp` — référence de la **chambre du joueur** (agencement + rendu cible des intérieurs) ; autres intérieurs : `ouverture-storyboard-v1.webp`, `maison-rival-v1.webp`, `labo-chen-v1.png` ; combat : `combat-v1.webp`, `combat-capture-v1.webp`.
 - `docs/design/dossier-08-menu-dresseur.md` — Menu Dresseur du **jalon 6** (tableau de bord, Équipe, Sac, Pokédex, Carte, Dresseur, Paramètres) ; maquettes `reference/menu-*-v1.jpg`.
+- Jadielle (J7) : `reference/jadielle-vue-generale-v1.webp`, `jadielle-planche-v1.webp`, `centre-pokemon-v1.webp`, `boutique-jadielle-v1.webp`, `route-22-rival-02-v1.webp` (écarts avec le dossier 09 listés dans sa section « Références visuelles »).
 - `docs/design/dossier-09-jadielle.md` — **jalon 7** (J7A : Jadielle, Centre, Boutique, économie, colis, activation du Pokédex, stockage ; J7B : Route 22, rival n°2) ; textes à valider au §19. Pas d'implémentation avant validation.
 - `docs/design/dossier-*.md` — conception détaillée par zone (`dossier-02-prologue.md` : textes définitifs du prologue, découpage 3A / 3B / 4).
 - `docs/tech/etat-projet.md` — **où en est le projet, prochaine étape, questions ouvertes.** À lire en début de session.
