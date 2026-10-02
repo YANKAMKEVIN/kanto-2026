@@ -11,9 +11,10 @@ extends RefCounted
 ##   ACTIONS     grille des 4 actions, en bas à droite
 ##   MOVES       bandeau des capacités, en bas à droite (il déborde jusqu'aux bords)
 ##   MESSAGE     bandeau des messages, à la place de la grille (à droite de la carte joueur)
+##   FORGET      panneau d'oubli d'une capacité (jalon 5C), bas droite, plus haut que MOVES
 ## Rien d'interactif à moins de SAFE_MARGIN des bords (vérifié par les tests).
 
-enum Slot { FOE_CARD, OWN_CARD, PARTY_PIPS, BACK, ACTIONS, MOVES, MESSAGE }
+enum Slot { FOE_CARD, OWN_CARD, PARTY_PIPS, BACK, ACTIONS, MOVES, MESSAGE, FORGET }
 
 
 ## Ancre [param control] (enfant direct d'un Control plein écran) à l'emplacement [param slot].
@@ -80,6 +81,10 @@ static func frame(slot: Slot) -> Array[Vector2]:
 			var pad := float(UiTokens.MOVE_BAND_PAD)
 			return [Vector2(1, 1), Vector2(edge - pad, UiTokens.BATTLE_MOVES_BOTTOM - pad),
 				moves_size()]
+		Slot.FORGET:
+			var pad := float(UiTokens.MOVE_BAND_PAD)
+			return [Vector2(1, 1), Vector2(edge - pad, UiTokens.BATTLE_MOVES_BOTTOM - pad),
+				forget_size()]
 		Slot.MESSAGE:
 			return [Vector2(1, 1), Vector2(edge, UiTokens.BATTLE_GRID_BOTTOM),
 				Vector2(UiTokens.BATTLE_MESSAGE_WIDTH, UiTokens.BATTLE_MESSAGE_HEIGHT)]
@@ -98,3 +103,14 @@ static func moves_size() -> Vector2:
 		+ Vector2(UiTokens.MOVE_GAP_H, UiTokens.MOVE_GAP_V)
 	return cards + Vector2(UiTokens.MOVE_GAP_H + UiTokens.MOVE_BAND_PAD,
 		UiTokens.MOVE_BAND_PAD * 2)
+
+
+## Taille du panneau d'oubli : marge, légende, nouvelle capacité, légende, 2 × 2 cartes,
+## boutons, marge (MOVE_BAND_PAD autour ; FORGET_ROW_GAP entre les cinq blocs).
+static func forget_size() -> Vector2:
+	var width := UiTokens.MOVE_CARD_SIZE.x * 2.0 + UiTokens.FORGET_GAP_H \
+		+ UiTokens.MOVE_BAND_PAD * 2
+	var height := UiTokens.MOVE_BAND_PAD * 2 + UiTokens.FORGET_CAPTION_HEIGHT * 2 \
+		+ UiTokens.MOVE_CARD_SIZE.y * 3 + UiTokens.MOVE_GAP_V + UiTokens.FORGET_BUTTON_SIZE.y \
+		+ UiTokens.FORGET_ROW_GAP * 4
+	return Vector2(width, height)

@@ -105,6 +105,21 @@ func animate_hp(side: BattleHud.Side, hp: int, max_hp: int, big: bool) -> void:
 	await get_card(side).animate_hp(hp, max_hp, big)
 
 
+## Coroutine (carte du joueur, jalon 5C) : la barre d'XP glisse de [param from] à [param to]
+## (fractions 0..1 d'une tranche de niveau) en EXP_TWEEN et « +[param gained] XP » monte en
+## s'effaçant (rien si [param gained] vaut 0 : tranches suivantes d'une montée de plusieurs
+## niveaux). Se termine à la fin des deux ; la barre disparaît ensuite d'elle-même, sauf si
+## la tranche suivante la reprend aussitôt.
+func animate_exp(from: float, to: float, gained: int = 0) -> void:
+	await _own_card.animate_exp(from, to, gained)
+
+
+## Coroutine : « Nv. » de la carte de [param side] prend [param level] et pulse un instant
+## (ANIM_MICRO). Aucune fenêtre ; les nouveaux PV max passent par animate_hp.
+func pulse_level(side: BattleHud.Side, level: int) -> void:
+	await get_card(side).pulse_level(level)
+
+
 ## Coup reçu par [param side] : vibration HAPTIC_HIT_MS, HAPTIC_CRIT_MS si [param critical].
 func play_hit(side: BattleHud.Side, critical: bool) -> void:
 	get_card(side).play_hit(critical)

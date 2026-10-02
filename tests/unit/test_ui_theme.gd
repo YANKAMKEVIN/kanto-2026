@@ -294,6 +294,29 @@ func test_toast_variations_match_tokens() -> void:
 	assert_true(UiTokens.TOAST_TOP >= UiTokens.SAFE_MARGIN)
 
 
+func test_exp_and_forget_variations_match_tokens() -> void:
+	var theme := load(THEME_PATH) as Theme
+	assert_eq(theme.get_type_variation_base(&"ExpBar"), &"Control")
+	assert_eq((theme.get_stylebox(&"fill", &"ExpBar") as StyleBoxFlat).bg_color,
+		UiTokens.EXP_BAR_FILL)
+	assert_eq((theme.get_stylebox(&"background", &"ExpBar") as StyleBoxFlat).bg_color,
+		UiTokens.EXP_BAR_TRACK)
+	assert_eq(theme.get_font_size(&"font_size", &"ExpGain"), UiTokens.EXP_GAIN_FONT)
+	assert_eq(theme.get_color(&"font_color", &"ExpGain"), UiTokens.ACCENT)
+	assert_eq((theme.get_stylebox(&"panel", &"ForgetBand") as StyleBoxFlat).bg_color,
+		UiTokens.FORGET_BAND_BG)
+	assert_eq(theme.get_color(&"font_color", &"ForgetCaption"), UiTokens.TEXT_MUTED)
+	assert_eq(theme.get_type_variation_base(&"ForgetConfirm"), &"Button")
+	assert_eq((theme.get_stylebox(&"normal", &"ForgetConfirm") as StyleBoxFlat).bg_color,
+		UiTokens.ACCENT)
+	assert_eq((theme.get_stylebox(&"disabled", &"ForgetConfirm") as StyleBoxFlat).bg_color,
+		UiTokens.FORGET_CONFIRM_DISABLED_BG)
+	assert_eq(theme.get_color(&"font_disabled_color", &"ForgetConfirm"), UiTokens.TEXT_DISABLED)
+	assert_almost_eq(UiTokens.EXP_TWEEN, 0.6, 0.001, "jalon-05 §3.9 : 0,6 s")
+	assert_almost_eq(UiTokens.EXP_GAIN_HOLD, 0.8, 0.001, "jalon-05 §3.9 : 0,8 s")
+	assert_true(UiTokens.FORGET_BUTTON_SIZE.y >= UiTokens.TOUCH_MIN)
+
+
 func _ui_files(dir: String = UI_DIR) -> Array[String]:
 	var files: Array[String] = []
 	for file: String in DirAccess.get_files_at(dir):
