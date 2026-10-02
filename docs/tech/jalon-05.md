@@ -661,9 +661,11 @@ Questions (**proposition par défaut** entre parenthèses ; c'est ce que le plan
 20. **ÉQUIPE en combat sauvage** : (*inactif tout le jalon, même après une capture ; un Pokémon K.O. est remplacé automatiquement.*)
 21. **Défaite** : dossier 05 §23, « dernier Centre visité », mais il n'y en a aucun. (*Écran très bref, retour à la maison à côté de Maman, équipe soignée, sans réplique ; comme Rouge/Bleu avant le premier Centre.*) Veux-tu une réplique de Maman ?
 22. **Se soigner sans Centre** : entre deux combats, les PV ne remontent pas. (*Parler à Maman soigne l'équipe ; il faut sa réplique : à écrire. Sans texte, seul le soin après défaite existe.* Autre choix : Prof. Chen ou Maya au labo.)
+    → **Décision Kevin (2026-10-02)** : **parler à Maman soigne l'équipe**, et cette possibilité **reste même quand les Centres Pokémon existeront**. Après avoir utilisé un Centre, c'est le **dernier Centre utilisé** qui devient le point de retour après une défaite, à la place de la maison. Réplique de Maman : provisoire, relue à la validation 5C. Câblage en T11 (clé de dialogue `heal` existante).
 
 **L'XP (5C)**
 23. **Formule** : (*b × N / 7 pour un sauvage, × 1,5 contre un dresseur — celle de Rouge/Bleu et de la 6e génération — avec les `base_exp` modernes déjà en données : Roucool N3 → 21 XP ; ≈ 5 combats pour passer du N5 au N7.*)
+    → **Décision Kevin (2026-10-02)** : rythme gardé (arrivée à Jadielle vers N7–N8, simulation du T9) ; **courbe d'XP inchangée** ; à rejuger au doigt sur S24 une fois T10 et T11 intégrés.
 24. **Partage** entre plusieurs Pokémon : (*parts égales entre ceux qui ont combattu ce Pokémon et sont encore debout ; pas de Multi Exp. ; le gain d'un Pokémon qui n'est pas en jeu n'est pas montré.*)
 25. **Présentation** : (*« +21 XP » sur la carte, barre d'XP visible seulement pendant le gain, « Nv. 6 » qui s'illumine ; pas de message de niveau, pas de statistiques ; un message pour une capacité apprise.*)
 26. **XP à la capture** (jeux récents : oui ; Rouge/Bleu : non). (*Non.*)
