@@ -17,7 +17,8 @@ extends RefCounted
 ## - FAINTED : FAINT, puis le message.
 ## Jalon 5C (Q25 : ni fenêtre de niveau, ni statistiques) :
 ## - EXP_GAINED : EXP seulement (« +21 XP » et la barre sont sur la carte, aucune phrase) ;
-## - LEVEL_UP : LEVEL seulement (aucune phrase par défaut) ;
+## - LEVEL_UP : LEVEL (« Nv. » qui pulse, PV max), puis le message « … monte au niveau … ! »
+##   (décision de Kevin du 2026-10-02) ;
 ## - MOVE_LEARNED : le message ;
 ## - MOVE_FORGET_OFFERED : le message, puis FORGET (le choix et sa phrase sont à la charge du
 ##   BattleDirector : la lecture est suspendue) ;
@@ -59,6 +60,7 @@ static func beats(event: BattleEvent, texts: BattleText, data: PokemonData,
 			result.append(BattleBeat.new(BattleBeat.Kind.EXP, event))
 		BattleEvent.Kind.LEVEL_UP:
 			result.append(BattleBeat.new(BattleBeat.Kind.LEVEL, event))
+			result.append_array(messages)
 		BattleEvent.Kind.MOVE_FORGET_OFFERED:
 			result.append_array(messages)
 			result.append(BattleBeat.new(BattleBeat.Kind.FORGET, event))

@@ -26,11 +26,11 @@ extends RefCounted
 ## (dossier 05 §17) demande à [method line_for], avec l'événement CAUGHT (accord au féminin) :
 ## « caught_title » (« Roucool CAPTURÉ ! » ; la carte l'affiche en capitales), « pokedex_new »
 ## (seulement pour une nouvelle entrée), puis « joined_party » ou « sent_to_storage ».
-## XP (jalon 5C, Q25) : EXP_GAINED et LEVEL_UP n'ont pas de phrase (« +21 XP » et « Nv. 6 »
-## sont sur la carte) ; MOVE_LEARNED → « move_learned » ; MOVE_FORGET_OFFERED →
+## XP (jalon 5C) : EXP_GAINED n'a pas de phrase (« +21 XP » est sur la carte) ; LEVEL_UP →
+## « level_up » (décision de Kevin du 2026-10-02 après le S24 : la seule pulsation de « Nv. »
+## passait inaperçue) ; MOVE_LEARNED → « move_learned » ; MOVE_FORGET_OFFERED →
 ## « move_forget_prompt ». La suite de l'oubli (« move_forgot », « move_not_learned ») ne
-## vient pas d'un événement : la présentation la demande à [method line_for]. « level_up »
-## est disponible par [method line_for] (aucune phrase par défaut, Q25).
+## vient pas d'un événement : la présentation la demande à [method line_for].
 ## « draft » : texte à relire par Kevin. « text_f » (facultatif) : la phrase accordée au
 ## féminin, employée quand le Pokémon de l'événement est une femelle (décision de Kevin
 ## n° 15, jalon 4 §8) ; sans elle, « text » sert pour tous. [method lines] traduit un
@@ -192,6 +192,8 @@ func lines(event: BattleEvent, data: PokemonData, trainer: TrainerData = null) \
 			result.append(_fill(&"fled", event, data))
 		BattleEvent.Kind.FLEE_FAILED:
 			result.append(_fill(&"flee_failed", event, data))
+		BattleEvent.Kind.LEVEL_UP:
+			result.append(_fill(&"level_up", event, data))
 		BattleEvent.Kind.MOVE_LEARNED:
 			result.append(_fill(&"move_learned", event, data))
 		BattleEvent.Kind.MOVE_FORGET_OFFERED:

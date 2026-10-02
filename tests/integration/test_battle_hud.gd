@@ -642,7 +642,8 @@ func test_several_slices_chain_without_hiding_the_bar() -> void:
 			state["hidden_between"] = true
 	get_tree().process_frame.connect(watch)
 	run.call()
-	await wait_seconds(UiTokens.EXP_GAIN_HOLD + 2.0 * UiTokens.EXP_TWEEN + 0.7)
+	await wait_seconds(UiTokens.EXP_GAIN_HOLD + 2.0 * UiTokens.EXP_TWEEN
+		+ 2.0 * (UiTokens.LEVEL_PULSE_UP + UiTokens.LEVEL_PULSE_DOWN) + 0.5)
 	get_tree().process_frame.disconnect(watch)
 	assert_true(state["done"], "les trois tranches sont jouées")
 	assert_false(state["hidden_between"], "la barre reste entre deux tranches")

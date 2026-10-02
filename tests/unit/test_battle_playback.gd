@@ -195,14 +195,15 @@ func test_whole_rival_battle_for_each_starter() -> void:
 
 # --- Jalon 5C : XP, niveaux, apprentissage, Vampigraine ----------------------------------
 
-func test_exp_and_level_up_have_a_beat_and_no_message() -> void:
+func test_exp_has_a_beat_only_and_level_up_a_beat_then_its_message() -> void:
 	var exp_event := _event(BattleEvent.Kind.EXP_GAINED, BattleEvent.SideId.PLAYER, "Salamèche")
 	exp_event.amount = 21
 	assert_eq(_kinds(BattlePlayback.beats(exp_event, _texts, _data)),
 		[BattleBeat.Kind.EXP] as Array[BattleBeat.Kind], "« +21 XP » sur la carte, aucune phrase")
 	var level_event := _event(BattleEvent.Kind.LEVEL_UP, BattleEvent.SideId.PLAYER, "Salamèche")
 	assert_eq(_kinds(BattlePlayback.beats(level_event, _texts, _data)),
-		[BattleBeat.Kind.LEVEL] as Array[BattleBeat.Kind], "aucune fenêtre de niveau (Q25)")
+		[BattleBeat.Kind.LEVEL, BattleBeat.Kind.MESSAGE] as Array[BattleBeat.Kind],
+		"« Nv. » pulse, puis « monte au niveau » (option A, pas de fenêtre)")
 
 
 func test_move_learned_is_a_message_and_forget_offer_is_a_message_then_a_choice() -> void:

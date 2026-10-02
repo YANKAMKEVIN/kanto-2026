@@ -190,7 +190,7 @@ func test_exp_and_learning_lines() -> void:
 	assert_eq(_lines(gained), [], "« +21 XP » est sur la carte")
 	var level_up := _event(K.LEVEL_UP, false, "Salamèche")
 	level_up.level = 6
-	assert_eq(_lines(level_up), [], "« Nv. 6 » s'illumine, sans message")
+	assert_eq(_lines(level_up), ["Salamèche monte au niveau 6 !"], "message de niveau (option A)")
 	assert_eq(_text.line_for(&"level_up", level_up, _data), "Salamèche monte au niveau 6 !")
 	var learned := _event(K.MOVE_LEARNED, false, "Salamèche")
 	learned.move_id = &"ember"

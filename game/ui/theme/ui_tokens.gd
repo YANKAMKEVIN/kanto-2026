@@ -461,8 +461,8 @@ const EXP_GAIN_OUTLINE := 8
 ## « Nv. 6 » : grossit un instant (LEVEL_PULSE_UP) en ACCENT, puis revient
 ## (LEVEL_PULSE_DOWN). Vibration courte au passage de niveau.
 const LEVEL_PULSE_SCALE := 1.45
-const LEVEL_PULSE_UP := ANIM_MICRO
-const LEVEL_PULSE_DOWN := 0.18
+const LEVEL_PULSE_UP := 0.2
+const LEVEL_PULSE_DOWN := 0.4
 const HAPTIC_LEVEL_UP_MS := 25
 
 # Panneau d'oubli : bandeau opaque (il recouvre le bandeau des messages), nouvelle capacité
