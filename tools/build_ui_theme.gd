@@ -59,6 +59,16 @@ extends SceneTree
 ## Notifications :
 ##   Toast            PanelContainer  capsule du toast (bible UI/UX §6)
 ##   ToastTitle / ToastDetail   Label  « Poké Balls ×5 » (gras) / « Ajoutées au Sac » (discret)
+## Menu Dresseur (jalon 6, T3) :
+##   MenuPanel        PanelContainer  panneau translucide (carte du Dresseur)
+##   MenuZonePill     PanelContainer  pastille du nom de zone (en-tête) ; MenuZoneName   Label
+##   MenuCloseButton  Button  × rond de l'en-tête (TOUCH_MIN)
+##   MenuCard         Button  grande carte (la teinte est posée par carte à l'usage)
+##   MenuCardTitle / MenuCardCaption   Label ; MenuCardChevron   Panel  pastille « › »
+##   MenuLeadCard     Button  carte du Pokémon de tête ; MenuLeadThumb   Panel
+##   MenuLeadName / MenuLeadLevel / MenuLeadHp   Label
+##   MenuName / MenuSubtitle / MenuStat   Label  carte du Dresseur ; MenuIdBar   Panel
+##   MenuObjective    Label  ligne d'objectif, discrète
 ## tests/unit/test_ui_theme.gd vérifie que le fichier est à jour avec les tokens.
 
 const TOKENS_PATH: String = "res://game/ui/theme/ui_tokens.gd"
@@ -119,6 +129,7 @@ func _init() -> void:
 	_add_exp_and_forget(theme, bold, t)
 	_add_bag_and_capture(theme, bold, t)
 	_add_toast(theme, bold, t)
+	_add_menu(theme, bold, t)
 
 	var err := ResourceSaver.save(theme, THEME_PATH)
 	print("ui_theme.tres : ", error_string(err))
@@ -570,4 +581,98 @@ func _bag_box(bg: Color, border: Color, width: int, pad_h: int, pad_v: int,
 	box.set_content_margin(SIDE_RIGHT, pad_h)
 	box.set_content_margin(SIDE_TOP, pad_v)
 	box.set_content_margin(SIDE_BOTTOM, pad_v)
+	return box
+
+
+# --- Menu Dresseur (jalon 6, T3) ----------------------------------------------------------------
+
+
+func _add_menu(theme: Theme, bold: Font, t: GDScript) -> void:
+	var panel := _panel_style(t.MENU_PANEL_BG, t.RADIUS, t)
+	panel.set_content_margin_all(t.MENU_PANEL_PAD)
+	theme.set_type_variation(&"MenuPanel", &"PanelContainer")
+	theme.set_stylebox(&"panel", &"MenuPanel", panel)
+
+	var pill := _panel_style(t.PANEL_BG, t.ROUND_BUTTON, t)
+	pill.shadow_size = 0
+	pill.set_content_margin(SIDE_LEFT, t.MENU_ZONE_PAD_H)
+	pill.set_content_margin(SIDE_RIGHT, t.MENU_ZONE_PAD_H)
+	pill.set_content_margin(SIDE_TOP, t.MENU_ZONE_PAD_V)
+	pill.set_content_margin(SIDE_BOTTOM, t.MENU_ZONE_PAD_V)
+	theme.set_type_variation(&"MenuZonePill", &"PanelContainer")
+	theme.set_stylebox(&"panel", &"MenuZonePill", pill)
+	_add_plain_label(theme, &"MenuZoneName", t.FONT_BUTTON, t.TEXT, bold)
+
+	var close_normal := _round_style(t.PANEL_BG, t)
+	var close_pressed := _round_style(t.ACCENT, t)
+	theme.set_type_variation(&"MenuCloseButton", &"Button")
+	for state: StringName in [&"normal", &"hover", &"disabled"]:
+		theme.set_stylebox(state, &"MenuCloseButton", close_normal)
+	for state: StringName in [&"pressed", &"hover_pressed"]:
+		theme.set_stylebox(state, &"MenuCloseButton", close_pressed)
+	theme.set_stylebox(&"focus", &"MenuCloseButton", StyleBoxEmpty.new())
+	for state: StringName in [&"icon_normal_color", &"icon_hover_color", &"icon_focus_color"]:
+		theme.set_color(state, &"MenuCloseButton", t.TEXT)
+	for state: StringName in [&"icon_pressed_color", &"icon_hover_pressed_color"]:
+		theme.set_color(state, &"MenuCloseButton", t.ACCENT_TEXT)
+	theme.set_constant(&"icon_max_width", &"MenuCloseButton", t.BATTLE_BACK_ICON)
+
+	var card_normal := _menu_card_box(t.menu_card_bg(t.MENU_CARD_TINT_DEFAULT),
+		t.menu_card_border(t.MENU_CARD_TINT_DEFAULT), t.RADIUS, t)
+	var card_pressed := _menu_card_box(t.menu_card_bg_pressed(t.MENU_CARD_TINT_DEFAULT),
+		t.ACCENT, t.RADIUS, t)
+	_add_flat_button(theme, &"MenuCard", card_normal, card_pressed)
+	var lead_normal := _menu_card_box(t.PANEL_BG, t.PANEL_BORDER, t.MENU_LEAD_HEIGHT, t)
+	var lead_pressed := _menu_card_box(t.PANEL_BG_STRONG, t.ACCENT, t.MENU_LEAD_HEIGHT, t)
+	_add_flat_button(theme, &"MenuLeadCard", lead_normal, lead_pressed)
+
+	var chevron := StyleBoxFlat.new()
+	chevron.bg_color = t.tinted(t.TEXT, 0.18)
+	chevron.set_corner_radius_all(t.MENU_CARD_CHEVRON)
+	chevron.anti_aliasing = true
+	theme.set_type_variation(&"MenuCardChevron", &"Panel")
+	theme.set_stylebox(&"panel", &"MenuCardChevron", chevron)
+	var thumb := StyleBoxFlat.new()
+	thumb.bg_color = t.CAPTURE_THUMB_BG
+	thumb.border_color = t.CAPTURE_THUMB_BORDER
+	thumb.set_border_width_all(t.BORDER_WIDTH)
+	thumb.set_corner_radius_all(t.MENU_LEAD_THUMB)
+	thumb.anti_aliasing = true
+	theme.set_type_variation(&"MenuLeadThumb", &"Panel")
+	theme.set_stylebox(&"panel", &"MenuLeadThumb", thumb)
+	var bar := StyleBoxFlat.new()
+	bar.bg_color = t.NAME_TAG
+	bar.set_corner_radius_all(3)
+	theme.set_type_variation(&"MenuIdBar", &"Panel")
+	theme.set_stylebox(&"panel", &"MenuIdBar", bar)
+
+	_add_plain_label(theme, &"MenuCardTitle", t.MENU_CARD_TITLE_FONT, t.TEXT, bold)
+	_add_plain_label(theme, &"MenuCardCaption", t.MENU_CARD_CAPTION_FONT, t.TEXT_MUTED, null)
+	_add_plain_label(theme, &"MenuLeadName", t.MENU_LEAD_NAME_FONT, t.TEXT, bold)
+	_add_plain_label(theme, &"MenuLeadLevel", t.MENU_LEAD_LEVEL_FONT, t.TEXT_MUTED, null)
+	_add_plain_label(theme, &"MenuLeadHp", t.MENU_LEAD_HP_FONT, t.TEXT, null)
+	_add_plain_label(theme, &"MenuName", t.MENU_NAME_FONT, t.TEXT, bold)
+	_add_plain_label(theme, &"MenuSubtitle", t.MENU_SUBTITLE_FONT, t.TEXT_MUTED, null)
+	_add_plain_label(theme, &"MenuStat", t.MENU_STAT_FONT, t.TEXT, null)
+	_add_label_variation(theme, &"MenuObjective", t.MENU_OBJECTIVE_FONT, t.TEXT_MUTED, t)
+
+
+func _add_flat_button(theme: Theme, type: StringName, normal: StyleBox, pressed: StyleBox) -> void:
+	theme.set_type_variation(type, &"Button")
+	for state: StringName in [&"normal", &"hover", &"disabled"]:
+		theme.set_stylebox(state, type, normal)
+	for state: StringName in [&"pressed", &"hover_pressed"]:
+		theme.set_stylebox(state, type, pressed)
+	theme.set_stylebox(&"focus", type, StyleBoxEmpty.new())
+
+
+func _menu_card_box(bg: Color, border: Color, radius: int, t: GDScript) -> StyleBoxFlat:
+	var box := StyleBoxFlat.new()
+	box.bg_color = bg
+	box.border_color = border
+	box.set_border_width_all(t.BORDER_WIDTH)
+	box.set_corner_radius_all(radius)
+	box.shadow_color = t.SHADOW
+	box.shadow_size = t.SHADOW_SIZE
+	box.anti_aliasing = true
 	return box

@@ -561,3 +561,88 @@ const CAPTURE_LINE_DELAY := 0.28
 const CAPTURE_LINE_FADE := 0.2
 ## Un toucher n'est pris qu'après ce délai : celui qui a lancé la Ball ne ferme pas la carte.
 const CAPTURE_TOUCH_LOCK := 0.6
+
+# --- Menu Dresseur (jalon 6, T3 : tableau de bord) -------------------------------------------------
+
+## Ouverture (fond puis panneaux) et fermeture du menu ; vibration légère à l'ouverture.
+const MENU_OPEN := 0.25
+const MENU_CLOSE := 0.2
+const HAPTIC_MENU_MS := HAPTIC_TAP_MS
+## Monde flouté et assombri derrière le menu (jalon-06.md §6.2) : rayon du flou en pixels de
+## référence, niveau de mipmap de base, voile SURFACE_DARK (opacité).
+const MENU_BLUR_RADIUS := 5.0
+const MENU_BLUR_LOD := 1.5
+const MENU_DIM := 0.5
+## En-tête : × (zone tactile TOUCH_MIN) et nom de la zone ; le corps commence dessous.
+const MENU_CLOSE_SIZE := TOUCH_MIN
+const MENU_BODY_TOP := SAFE_MARGIN + TOUCH_MIN + GAP
+const MENU_ZONE_ICON := 40
+const MENU_ZONE_PAD_H := 28
+const MENU_ZONE_PAD_V := 14
+## Panneaux du menu : plus translucides que PANEL_BG pour laisser deviner le monde.
+const MENU_PANEL_BG := Color(0.07, 0.10, 0.15, 0.72)
+const MENU_PANEL_PAD := 28
+## Carte du Dresseur (à gauche) : largeur, portrait en pixel art à l'échelle entière (NEAREST).
+const MENU_LEFT_WIDTH := 680
+const MENU_PORTRAIT_SOURCE := Vector2i(32, 64)
+const MENU_PORTRAIT_SCALE := 6
+const MENU_NAME_FONT := FONT_TITLE
+const MENU_SUBTITLE_FONT := 28
+const MENU_STAT_FONT := 28
+const MENU_STAT_ICON := 40
+const MENU_STAT_GAP := 14
+const MENU_ID_BAR := Vector2(96, 6)
+## Pokémon de tête : carte tactile (≥ TOUCH_MIN), vignette en pixel art à l'échelle entière.
+const MENU_LEAD_HEIGHT := 160
+const MENU_LEAD_THUMB := 128
+const MENU_LEAD_SPRITE_SCALE := 2
+const MENU_LEAD_NAME_FONT := FONT_BUTTON
+const MENU_LEAD_LEVEL_FONT := 26
+const MENU_LEAD_HP_FONT := 26
+## Grandes cartes : écart, icône, pastille « › », barre de teinte, textes.
+const MENU_CARD_GAP := GAP
+const MENU_CARD_PAD := 24
+const MENU_CARD_ICON := 112
+const MENU_CARD_CHEVRON := 64
+const MENU_CARD_CHEVRON_ICON := 36
+const MENU_CARD_BAR := Vector2(56, 6)
+const MENU_CARD_TITLE_FONT := FONT_BUTTON
+const MENU_CARD_CAPTION_FONT := FONT_CAPTION
+## Teinte de chaque carte (planche : bleu, rouge, or, vert, violet, gris).
+const MENU_CARD_TINTS: Dictionary[StringName, Color] = {
+	&"team": Color("#3E7BD6"),
+	&"pokedex": Color("#E8473C"),
+	&"bag": Color("#D9A93A"),
+	&"map": Color("#2FB88A"),
+	&"trainer": Color("#7B5BD6"),
+	&"settings": Color("#8A94A6"),
+}
+const MENU_CARD_TINT_DEFAULT := Color("#8A94A6")
+## Ligne d'objectif : discrète, en bas du tableau de bord.
+const MENU_OBJECTIVE_HEIGHT := 48
+const MENU_OBJECTIVE_FONT := FONT_CAPTION
+## Bouton Menu de l'exploration (Q-1) : rond, translucide, coin haut-droit ; centre mesuré depuis
+## le coin haut-droit de l'écran.
+const MENU_BUTTON_ALPHA := 0.7
+const MENU_BUTTON_CENTER_FROM_CORNER := Vector2(SAFE_MARGIN + ROUND_BUTTON * 0.5,
+	SAFE_MARGIN + ROUND_BUTTON * 0.5)
+
+
+## [param tint] avec l'opacité [param alpha] (les écrans ne construisent jamais de couleur).
+static func tinted(tint: Color, alpha: float) -> Color:
+	return Color(tint, alpha)
+
+
+## Fond d'une grande carte : SURFACE_DARK teinté, translucide.
+static func menu_card_bg(tint: Color) -> Color:
+	return tinted(SURFACE_DARK.lerp(tint, 0.38), 0.86)
+
+
+## Fond d'une grande carte enfoncée.
+static func menu_card_bg_pressed(tint: Color) -> Color:
+	return tinted(SURFACE_DARK.lerp(tint, 0.62), 0.94)
+
+
+## Liseré d'une grande carte.
+static func menu_card_border(tint: Color) -> Color:
+	return tinted(tint, 0.6)

@@ -550,3 +550,33 @@ func test_caption_independent_of_controls() -> void:
 	_hud.set_controls_visible(false)
 	_hud.show_caption(CAPTION_TEXT)
 	assert_true(_hud.get_caption().is_showing())
+
+
+func test_menu_button_top_right_inside_safe_margin() -> void:
+	var button := _hud.get_menu_button()
+	var radius := UiTokens.ROUND_BUTTON * 0.5
+	for width: float in SCREEN_WIDTHS:
+		var center := Vector2(width + button.position.x, button.position.y)
+		assert_gte(center.x + radius, 0.0)
+		assert_lte(center.x + radius, width - UiTokens.SAFE_MARGIN + 0.01, "marge droite")
+		assert_gte(center.y - radius, UiTokens.SAFE_MARGIN - 0.01, "marge haute")
+		assert_gt(center.x, width * 0.5, "moitié droite")
+	assert_eq(UiTokens.ROUND_BUTTON, 128, "zone tactile 128 px")
+	var shape := button.shape as CircleShape2D
+	assert_not_null(shape)
+	assert_eq(shape.radius * 2.0, float(UiTokens.TOUCH_MIN))
+
+
+func test_menu_button_emits_menu_requested_once() -> void:
+	watch_signals(_hud)
+	_hud.get_menu_button().pressed.emit()
+	assert_signal_emit_count(_hud, "menu_requested", 1)
+
+
+func test_menu_button_is_translucent_and_follows_controls() -> void:
+	var visual := _hud.get_menu_button().get_node(^"Visual") as Node2D
+	assert_almost_eq(visual.modulate.a, UiTokens.MENU_BUTTON_ALPHA, 0.001)
+	_hud.set_controls_visible(false)
+	assert_false(_hud.get_menu_button().visible)
+	_hud.set_controls_visible(true)
+	assert_true(_hud.get_menu_button().visible)
