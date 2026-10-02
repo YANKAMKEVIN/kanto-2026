@@ -102,6 +102,14 @@ extends SceneTree
 ##              tenue dehors, entrées injectées. Quitte seul à la fin (~3 000 images :
 ##              --quit-after 6000 ; préférer --write-movie <dossier>/x.avi, plus léger).
 
+##   exp_gain   jalon 5C (T11) : Bulbizarre N6 à 5 XP du N7 bat un Rattata sur la Route 1, vrai
+##              jeu à vitesse réelle : « +21 XP » et barre d'XP, « Nv. 7 » qui pulse, phrase
+##              « apprend Vampigraine ». Captures jalon05c_t11_exp_*. ~600 images à 30 images/s :
+##              --quit-after 1500.
+##   move_forget  jalon 5C (T11) : Bulbizarre N19 (4 capacités) à 1 XP du N20 : offre de
+##              Poudre Toxik (bandeau, panneau d'oubli, sélection, OUBLIER, phrase). Captures
+##              jalon05c_t11_forget_*. --quit-after 1500.
+
 const BOOT_SCENE: String = "res://game/boot.tscn"
 const CORNERS: Array = [
 	["camera_corners_nw", Vector2i(3, 1)],
@@ -177,6 +185,9 @@ const T8_PREFIX: String = "jalon04b_t8_"
 const T5B_PREFIX: String = "jalon05b_t5_"
 ## Scénario « wild_battle » (jalon 5B, T7) : le combat sauvage jouable et la défaite.
 const T7B_PREFIX: String = "jalon05b_t7_"
+## Scénarios « exp_gain » et « move_forget » (jalon 5C, T11).
+const T11_EXP_PREFIX: String = "jalon05c_t11_exp_"
+const T11_FORGET_PREFIX: String = "jalon05c_t11_forget_"
 const STAGE_SCENE: String = "res://game/battle/battle_stage.tscn"
 ## Scénario « battle_stage » : placement réel de la fin de starter_chosen (§14.1) par starter
 ## du joueur : [case du joueur, orientation, case de son starter]. Rival (7, 7), son
@@ -281,7 +292,7 @@ func _start_boot() -> void:
 			InputMap.action_erase_events(action)
 		InputMap.action_erase_events(&"run")
 		InputMap.action_erase_events(&"interact")
-	elif _scenario in ["route_1", "wild_encounter", "wild_battle"]:
+	elif _scenario in ["route_1", "wild_encounter", "wild_battle", "exp_gain", "move_forget"]:
 		_boot.set(&"start_map", &"route_1")
 		_boot.set(&"start_spawn", &"from_pallet_w")
 		_boot.set(&"start_facing", Vector2i.UP)
@@ -329,6 +340,10 @@ func _on_frame() -> void:
 			_run_wild_encounter()
 		elif _scenario == "wild_battle":
 			_run_wild_battle()
+		elif _scenario == "exp_gain":
+			_run_xp_scenario(false)
+		elif _scenario == "move_forget":
+			_run_xp_scenario(true)
 		return
 	match _scenario:
 		"spawn":
@@ -1862,3 +1877,146 @@ func _wild_shot(capture_name: String) -> void:
 		map.get(&"map_id") if map != null else &"", stage.call(&"is_active")])
 	_mark(capture_name)
 	await _frames(2)
+
+
+# --- Scénarios « exp_gain » et « move_forget » (jalon 5C, T11) -----------------------------
+
+## Combat sauvage gagné à vitesse réelle, avec les captures aux moments clés. [param forget] :
+## faux = Bulbizarre N6 à 5 XP du N7 (XP, niveau, Vampigraine apprise) ; vrai = Bulbizarre N19
+## avec quatre capacités, à 1 XP du N20 (offre de Poudre Toxik, panneau d'oubli).
+func _run_xp_scenario(forget: bool) -> void:
+	var prefix := T11_FORGET_PREFIX if forget else T11_EXP_PREFIX
+	await _frames(5)
+	var state: Node = root.get_node(^"GameState")
+	var data: RefCounted = _boot.call(&"get_pokemon_data")
+	var hud: Node = _boot.call(&"get_hud")
+	var director: Node = _boot.call(&"get_encounter_director")
+	var battle_director: Node = _boot.call(&"get_battle_director")
+	var battle_hud: Node = _boot.call(&"get_battle_hud")
+	battle_director.set(&"speed_scale", 1.0)
+	var level := 19 if forget else 6
+	var to_next := 1 if forget else 5
+	var moves: Array[StringName] = [&"tackle", &"growl", &"leech_seed", &"vine_whip"]
+	var party_script: GDScript = load("res://game/pokemon/party.gd")
+	var factory: GDScript = load("res://game/pokemon/pokemon_factory.gd")
+	var make_party := func() -> RefCounted:
+		var party: RefCounted = party_script.new()
+		var pokemon: RefCounted = factory.call(&"create", data, &"bulbasaur", level,
+			GameRng.new(999))
+		if forget:
+			pokemon.get(&"moves").clear()
+			for move_id: StringName in moves:
+				pokemon.call(&"learn_move", move_id, data)
+		var rate: Variant = data.call(&"get_species", &"bulbasaur").get(&"growth_rate")
+		pokemon.set(&"experience", int(ExpCurve.exp_for_level(rate, level + 1)) - to_next)
+		party.call(&"add", pokemon)
+		return party
+	state.set(&"party", make_party.call())
+	state.set(&"starter_species", &"bulbasaur")
+	(state.get(&"flags") as RefCounted).call(&"set_flag", &"starter_chosen")
+	# Une graine de victoire (1re capacité à chaque tour) : simulée avec le même aléatoire.
+	var seed := -1
+	for candidate: int in range(0, 400):
+		var rng := GameRng.new(candidate)
+		var foe_party: RefCounted = party_script.new()
+		foe_party.call(&"add", factory.call(&"create", data, &"rattata", 3, rng))
+		var sim_player: RefCounted = (load("res://game/battle/battle_side.gd") as GDScript) \
+			.new(make_party.call(), true)
+		var sim_foe: RefCounted = (load("res://game/battle/battle_side.gd") as GDScript) \
+			.new(foe_party, false, "", null)
+		var sim: RefCounted = (load("res://game/battle/battle.gd") as GDScript).new(
+			sim_player, sim_foe, data, rng, (load("res://game/battle/battle_rules.gd") \
+			as GDScript).call(&"for_wild"))
+		sim.call(&"start")
+		while int(sim.call(&"get_state")) == Battle.State.CHOOSING:
+			sim.call(&"submit", (load("res://game/battle/battle_action.gd") as GDScript) \
+				.call(&"move", 0))
+		if int(sim.call(&"get_outcome")) == Battle.Outcome.WIN:
+			seed = candidate
+			break
+	if seed < 0:
+		push_error("%s : aucune graine de victoire" % _scenario)
+		quit(1)
+		return
+	state.set(&"rng", GameRng.new(seed))
+	var map: Node = _boot.call(&"get_map")
+	var grid: RefCounted = map.call(&"get_grid")
+	var cell := _find_grass_cell(grid, map.get(&"size"))
+	_player.call(&"enter_map", grid, cell, Vector2i.UP, map.call(&"get_pixel_rect"))
+	hud.call(&"set_controls_visible", false)
+	await _frames(12)
+	var enc: RefCounted = (load("res://game/pokemon/encounters/wild_encounter.gd") as GDScript) \
+		.new(&"rattata", 3, &"route_1_grass")
+	director.call(&"start_encounter", enc)
+	var own_card: Node = battle_hud.call(&"get_card", 0)
+	var banner: Node = battle_hud.call(&"get_message_banner")
+	var pending: Dictionary[String, int] = {}
+	var taken: Dictionary[String, bool] = {}
+	var last_level: String = ""
+	var phase := 0
+	var phase_at := 0
+	var deadline := _frame + 4500
+	while bool(director.call(&"is_running")) and _frame < deadline:
+		var shot_due: Array[String] = []
+		for name: String in pending:
+			if _frame >= pending[name]:
+				shot_due.append(name)
+		for name: String in shot_due:
+			pending.erase(name)
+			await _wild_shot(prefix + name)
+		var battle: RefCounted = battle_director.call(&"get_battle")
+		var panel: Control = battle_director.call(&"get_forget_panel")
+		if battle != null and int(battle.call(&"get_state")) == 1:  # CHOOSING
+			var zone: int = int(battle_hud.call(&"get_zone"))
+			if zone == 1:
+				battle_hud.get(&"action_selected").emit(&"attack")
+			elif zone == 2:
+				battle_hud.get(&"move_selected").emit(0)
+		var text: String = banner.call(&"get_text")
+		if bool(own_card.call(&"is_exp_gain_visible")) and not taken.has("01_exp_gain"):
+			taken["01_exp_gain"] = true
+			pending["01_exp_gain"] = _frame + 8
+		var level_text: String = own_card.call(&"get_level_text")
+		if not taken.has("01_exp_gain"):
+			last_level = level_text
+		elif level_text != last_level:
+			last_level = level_text
+			if not taken.has("02_level_up"):
+				taken["02_level_up"] = true
+				pending["02_level_up"] = _frame + 3
+		if not forget and text.contains("apprend") and not taken.has("03_move_learned"):
+			taken["03_move_learned"] = true
+			pending["03_move_learned"] = _frame + 6
+		if forget and text.contains("veut apprendre") and not taken.has("01_offer_message"):
+			taken["01_offer_message"] = true
+			pending["01_offer_message"] = _frame + 6
+		if forget and panel != null and bool(panel.call(&"is_shown")) \
+				and not bool(panel.call(&"is_sliding")) and not bool(panel.call(&"is_answered")):
+			if phase == 0:
+				phase = 1
+				phase_at = _frame + 8
+				pending["02_panel"] = _frame + 6
+			elif phase == 1 and _frame >= phase_at:
+				phase = 2
+				phase_at = _frame + 10
+				panel.call(&"select", 2)
+				pending["03_panel_pick"] = _frame + 6
+			elif phase == 2 and _frame >= phase_at:
+				phase = 3
+				(panel.call(&"get_confirm_button") as Button).pressed.emit()
+		if forget and phase == 3 and text.contains("oublie") and not taken.has("04_forgot"):
+			taken["04_forgot"] = true
+			pending["04_forgot"] = _frame + 6
+		await process_frame
+		_frame += 1
+	await _frames(14)
+	await _wild_shot(prefix + "99_back_to_exploration")
+	var lead: RefCounted = (state.get(&"party") as RefCounted).call(&"get_lead")
+	var known: Array[String] = []
+	for slot: RefCounted in lead.get(&"moves"):
+		known.append(str(slot.get(&"move_id")))
+	print("  %s : graine %d, niveau %d, XP %d, capacités %s, joueur libre %s" % [
+		_scenario, seed, lead.get(&"level"), lead.get(&"experience"), known,
+		_player.call(&"is_input_enabled")])
+	print("%s terminé (frame %d)" % [_scenario.to_upper(), _frame])
+	quit()

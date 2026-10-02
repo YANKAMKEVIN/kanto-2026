@@ -429,3 +429,312 @@ func test_empty_party_is_refused() -> void:
 	var outcome: int = await _director.run(&"rival_lab", _map, actors)
 	assert_eq(outcome, Battle.Outcome.NONE)
 	assert_push_error("aucun Pokémon valide")
+
+
+# --- XP, niveaux, apprentissage et oubli (jalon 5C, T11) --------------------------------
+
+## Équipe d'un seul Pokémon : [param species] au niveau [param level] ; [param to_next] XP avant
+## le niveau suivant (0 = XP du niveau) ; [param moves] remplace ses capacités si non vide.
+func _xp_party(species: StringName, level: int, to_next: int,
+		moves: Array[StringName] = []) -> Party:
+	var pokemon := PokemonFactory.create(_data, species, level, GameRng.new(PLAYER_SEED))
+	if not moves.is_empty():
+		pokemon.moves.clear()
+		for move_id: StringName in moves:
+			pokemon.learn_move(move_id, _data)
+	if to_next > 0:
+		var rate := _data.get_species(species).growth_rate
+		pokemon.experience = ExpCurve.exp_for_level(rate, level + 1) - to_next
+	var party := Party.new()
+	party.add(pokemon)
+	return party
+
+
+## Graine d'une victoire sauvage (le joueur joue les capacités de [param order] dans l'ordre, la
+## dernière ensuite) avec une équipe neuve de [param party_fn] ; [param wanted] : prédicat sur
+## le journal (Array d'événements) à satisfaire. −1 si aucune sous la limite.
+func _xp_seed(party_fn: Callable, species: StringName, level: int, order: Array[int],
+		wanted: Callable) -> int:
+	for seed: int in range(0, 600):
+		var rng := GameRng.new(seed)
+		var foes := Party.new()
+		foes.add(PokemonFactory.create(_data, species, level, rng))
+		var battle := Battle.new(BattleSide.new(party_fn.call(), true),
+			BattleSide.new(foes, false, "", null), _data, rng, BattleRules.for_wild())
+		var events: Array[BattleEvent] = []
+		events.append_array(battle.start())
+		var turn := 0
+		while battle.get_state() == Battle.State.CHOOSING and turn < 60:
+			var index := order[mini(turn, order.size() - 1)]
+			events.append_array(battle.submit(BattleAction.move(index)))
+			turn += 1
+		if battle.get_outcome() == Battle.Outcome.WIN and bool(wanted.call(events)):
+			return seed
+	return -1
+
+
+## Prépare GameState pour un combat sauvage contre [param species] N[param level] avec
+## [param party] ; la graine [param seed] est celle de la simulation d'_xp_seed.
+func _xp_request(party: Party, species: StringName, level: int, seed: int) -> BattleRequest:
+	_state.party = party
+	_state.starter_species = party.get_lead().species_id
+	_state.rng = GameRng.new(seed)
+	var encounter := WildEncounter.new(species, level, &"route_1_grass")
+	return BattleRequest.wild(encounter, _data, _state.rng as GameRng, Vector2i(5, 4))
+
+
+## Joue [param request] ; les capacités jouées suivent [param order] (la dernière ensuite).
+## À chaque offre d'oubli, [param on_offer] (reçoit le panneau ouvert et le journal joué) est
+## appelé une fois, en coroutine : c'est lui qui répond. Renvoie [issue, événements joués].
+func _play_with_offers(request: BattleRequest, order: Array[int],
+		on_offer: Callable = Callable()) -> Array:
+	var events: Array[BattleEvent] = []
+	_director.event_played.connect(func(e: BattleEvent) -> void: events.append(e))
+	var result: Array = [Battle.Outcome.NONE]
+	var done: Array[bool] = [false]
+	var runner := func() -> void:
+		result[0] = await _director.run_request(request, _map)
+		done[0] = true
+	runner.call()
+	var turn := 0
+	var deadline := Time.get_ticks_msec() + 20000
+	while not done[0] and Time.get_ticks_msec() < deadline:
+		var panel := _director.get_forget_panel()
+		if panel != null and panel.is_shown() and not panel.is_answered() \
+				and on_offer.is_valid():
+			await on_offer.call(panel, events)
+		var battle := _director.get_battle()
+		if battle != null and battle.get_state() == Battle.State.CHOOSING:
+			match _hud.get_zone():
+				BattleHud.Zone.ACTIONS:
+					_hud.action_selected.emit(ActionGrid.ATTACK)
+				BattleHud.Zone.MOVES:
+					_hud.move_selected.emit(order[mini(turn, order.size() - 1)])
+					turn += 1
+		await wait_process_frames(1)
+	assert_true(done[0], "le combat s'est terminé")
+	return [result[0], events]
+
+
+## La carte du joueur porte le niveau et les PV de [param e] (LEVEL_UP rejoué).
+func _check_card_level(e: BattleEvent) -> void:
+	var card := _hud.get_card(BattleHud.Side.PLAYER)
+	assert_eq(card.get_level_text(), "Nv. %d" % e.level, "Nv. de la carte à jour")
+	assert_eq(card.get_hp_bar().get_target_hp(), e.hp, "PV de la carte à jour")
+	assert_eq(card.get_hp_bar().get_max_hp(), e.max_hp, "PV max de la carte")
+
+
+## Ponction de Vampigraine rejouée : la cible a perdu, celui d'en face a gagné.
+func _check_drain_bars(e: BattleEvent) -> void:
+	var victim := BattleHud.Side.PLAYER if e.side == BattleEvent.SideId.PLAYER \
+		else BattleHud.Side.FOE
+	var other := BattleHud.Side.FOE if victim == BattleHud.Side.PLAYER \
+		else BattleHud.Side.PLAYER
+	assert_eq(_hud.get_card(victim).get_hp_bar().get_target_hp(), e.hp, "la cible perd")
+	assert_eq(_hud.get_card(other).get_hp_bar().get_target_hp(), e.healed_hp, "le lanceur gagne")
+
+
+func _has_kind(events: Array, kind: BattleEvent.Kind) -> bool:
+	return events.any(func(e: BattleEvent) -> bool: return e.kind == kind)
+
+
+## L'XP du Pokémon augmente exactement de la somme des « +N XP » joués : chaque EXP_GAINED est
+## rejoué sur la carte du joueur (elle montre « +N XP » avec le total du gain), l'ordre du
+## journal est respecté et un niveau gagné met la carte à jour (Nv., PV max).
+func test_xp_gained_equals_the_sum_shown_and_the_card_follows_the_level() -> void:
+	var party_fn := func() -> Party: return _xp_party(&"charmander", 5, 1)
+	var seed := _xp_seed(party_fn, &"rattata", 3, [0] as Array[int],
+		func(events: Array) -> bool: return _has_kind(events, BattleEvent.Kind.LEVEL_UP))
+	assert_gt(seed, -1, "une victoire avec montée de niveau")
+	if seed < 0:
+		return
+	var party: Party = party_fn.call()
+	var lead := party.get_lead()
+	var before := lead.experience
+	var request := _xp_request(party, &"rattata", 3, seed)
+	var texts: Array[String] = []
+	var levels: Array[int] = []
+	_director.event_played.connect(func(e: BattleEvent) -> void:
+		if e.kind == BattleEvent.Kind.EXP_GAINED and e.amount > 0:
+			texts.append(_hud.get_card(BattleHud.Side.PLAYER).get_exp_gain_text())
+		elif e.kind == BattleEvent.Kind.LEVEL_UP:
+			levels.append(e.level)
+			_check_card_level(e))
+	var played := await _play_with_offers(request, [0] as Array[int])
+	assert_eq(played[0], Battle.Outcome.WIN)
+	var events: Array[BattleEvent] = played[1]
+	var total := 0
+	var kinds: Array[BattleEvent.Kind] = []
+	for event: BattleEvent in events:
+		kinds.append(event.kind)
+		if event.kind == BattleEvent.Kind.EXP_GAINED:
+			total += event.amount
+	assert_gt(total, 0, "de l'XP a été gagnée")
+	assert_eq(lead.experience - before, total, "XP du Pokémon = somme des gains joués")
+	assert_eq(texts, ["+%d XP" % total] as Array[String], "la carte a montré le total gagné")
+	assert_eq(levels, [6] as Array[int], "montée au niveau 6")
+	assert_eq(lead.level, 6)
+	# Ordre du journal : K.O. adverse, puis XP, puis niveau, puis la fin du combat.
+	assert_lt(kinds.rfind(BattleEvent.Kind.FAINTED), kinds.find(BattleEvent.Kind.EXP_GAINED),
+		"XP après le K.O.")
+	assert_lt(kinds.find(BattleEvent.Kind.EXP_GAINED), kinds.find(BattleEvent.Kind.LEVEL_UP))
+	assert_lt(kinds.find(BattleEvent.Kind.LEVEL_UP), kinds.find(BattleEvent.Kind.BATTLE_ENDED))
+	assert_false(_hud.is_shown(), "HUD cachée à la fin")
+	assert_push_error_count(0)
+
+
+## Capacité apprise dans un emplacement libre : la phrase « apprend » est jouée (bandeau) et le
+## panneau d'oubli ne s'ouvre pas.
+func test_a_learned_move_is_announced_without_the_forget_panel() -> void:
+	var party_fn := func() -> Party: return _xp_party(&"bulbasaur", 6, 5)
+	var seed := _xp_seed(party_fn, &"rattata", 3, [0] as Array[int],
+		func(events: Array) -> bool: return _has_kind(events, BattleEvent.Kind.MOVE_LEARNED))
+	assert_gt(seed, -1, "une victoire qui apprend une capacité")
+	if seed < 0:
+		return
+	var party: Party = party_fn.call()
+	var request := _xp_request(party, &"rattata", 3, seed)
+	var lines: Array[String] = []
+	_director.event_played.connect(func(e: BattleEvent) -> void:
+		if e.kind == BattleEvent.Kind.MOVE_LEARNED:
+			lines.append(_hud.get_message_banner().get_text()))
+	var played := await _play_with_offers(request, [0] as Array[int])
+	assert_eq(played[0], Battle.Outcome.WIN)
+	assert_true(party.get_lead().knows_move(&"leech_seed"), "Vampigraine apprise au N7")
+	assert_eq(lines, ["Bulbizarre apprend Vampigraine !"] as Array[String],
+		"phrase d'apprentissage")
+	assert_null(_director.get_forget_panel(), "aucun panneau d'oubli")
+	assert_push_error_count(0)
+
+
+## 4 capacités connues : la lecture du journal est suspendue, le bandeau est sorti, le panneau
+## montre la nouvelle capacité et les quatre connues ; rien ne se décide sans le geste du
+## joueur (une sélection seule ne ferme rien) ; OUBLIER remplace la capacité (PP pleins).
+func test_forget_offer_suspends_the_journal_and_forgetting_replaces_the_move() -> void:
+	var moves: Array[StringName] = [&"tackle", &"growl", &"leech_seed", &"vine_whip"]
+	var party_fn := func() -> Party: return _xp_party(&"bulbasaur", 19, 1, moves)
+	var seed := _xp_seed(party_fn, &"rattata", 3, [0] as Array[int],
+		func(events: Array) -> bool:
+			return _has_kind(events, BattleEvent.Kind.MOVE_FORGET_OFFERED))
+	assert_gt(seed, -1, "une victoire qui propose une cinquième capacité")
+	if seed < 0:
+		return
+	var party: Party = party_fn.call()
+	var lead := party.get_lead()
+	var request := _xp_request(party, &"rattata", 3, seed)
+	var seen: Dictionary = {}
+	var offers: Array[int] = []
+	var line: Array[String] = []
+	_director.event_played.connect(func(e: BattleEvent) -> void:
+		if e.kind == BattleEvent.Kind.MOVE_FORGET_OFFERED:
+			line.append(_hud.get_message_banner().get_text()))
+	var on_offer := func(panel: MoveForgetPanel, events: Array) -> void:
+		offers.append(1)
+		var played_before := events.size()
+		await wait_process_frames(6)
+		seen["suspended"] = events.size() == played_before and _director.is_running() \
+			and panel.is_shown() and panel.is_visible_in_tree()
+		seen["banner_out"] = not _hud.get_message_banner().is_shown()
+		seen["new_card"] = panel.get_new_card().get_view().display_name
+		var known: Array[String] = []
+		for slot: int in MoveForgetPanel.SLOTS:
+			known.append(panel.get_card(slot).get_view().display_name)
+		seen["known"] = known
+		# Une sélection seule ne décide rien : le panneau attend toujours.
+		panel.select(2)
+		await wait_process_frames(6)
+		seen["waits_after_select"] = not panel.is_answered() \
+			and events.size() == played_before and not lead.knows_move(&"poison_powder")
+		panel.get_confirm_button().pressed.emit()
+	var played := await _play_with_offers(request, [0] as Array[int], on_offer)
+	assert_eq(played[0], Battle.Outcome.WIN)
+	assert_eq(offers.size(), 1, "une seule offre")
+	assert_true(seen["suspended"], "journal suspendu, panneau ouvert")
+	assert_true(seen["banner_out"], "le bandeau est sorti avant le panneau")
+	assert_eq(seen["new_card"], _data.get_move(&"poison_powder").name,
+		"nouvelle capacité")
+	assert_eq(seen["known"].size(), 4, "les quatre capacités connues")
+	assert_true(seen["waits_after_select"], "une sélection ne ferme pas l'offre")
+	assert_eq(lead.moves[2].move_id, &"poison_powder", "la capacité sélectionnée est remplacée")
+	assert_eq(lead.moves[2].pp, lead.moves[2].max_pp, "PP pleins")
+	assert_eq(lead.moves[2].max_pp, _data.get_move(&"poison_powder").pp)
+	for slot: int in [0, 1, 3]:
+		assert_eq(lead.moves[slot].move_id, moves[slot], "emplacement %d inchangé" % slot)
+	assert_eq(line, ["Bulbizarre oublie Vampigraine et apprend Poudre Toxik !"] as Array[String],
+		"phrase de l'oubli")
+	assert_null(_director.get_forget_panel(), "panneau libéré à la fin du combat")
+	assert_push_error_count(0)
+
+
+## NE PAS APPRENDRE : les capacités ne changent pas, la phrase « n'apprend pas » est jouée.
+func test_forget_offer_refused_keeps_the_moves() -> void:
+	var moves: Array[StringName] = [&"tackle", &"growl", &"leech_seed", &"vine_whip"]
+	var party_fn := func() -> Party: return _xp_party(&"bulbasaur", 19, 1, moves)
+	var seed := _xp_seed(party_fn, &"rattata", 3, [0] as Array[int],
+		func(events: Array) -> bool:
+			return _has_kind(events, BattleEvent.Kind.MOVE_FORGET_OFFERED))
+	assert_gt(seed, -1, "une victoire qui propose une cinquième capacité")
+	if seed < 0:
+		return
+	var party: Party = party_fn.call()
+	var lead := party.get_lead()
+	var request := _xp_request(party, &"rattata", 3, seed)
+	var after: Array[String] = []
+	_director.event_played.connect(func(e: BattleEvent) -> void:
+		if e.kind == BattleEvent.Kind.MOVE_FORGET_OFFERED:
+			after.append(_hud.get_message_banner().get_text()))
+	var on_offer := func(panel: MoveForgetPanel, _events: Array) -> void:
+		await wait_process_frames(2)
+		panel.get_skip_button().pressed.emit()
+	var played := await _play_with_offers(request, [0] as Array[int], on_offer)
+	assert_eq(played[0], Battle.Outcome.WIN)
+	var known: Array[StringName] = []
+	for slot: MoveSlot in lead.moves:
+		known.append(slot.move_id)
+	assert_eq(known, moves, "capacités inchangées")
+	assert_false(lead.knows_move(&"poison_powder"))
+	assert_eq(after, ["Bulbizarre n'apprend pas Poudre Toxik."] as Array[String],
+		"phrase du refus")
+	assert_push_error_count(0)
+
+
+## Vampigraine : le Pokémon drainé perd des PV et celui d'en face en regagne, les deux barres
+## suivent l'événement (la cible perd, le lanceur gagne).
+func test_leech_seed_drives_both_hp_bars() -> void:
+	var moves: Array[StringName] = [&"leech_seed", &"tackle"]
+	var party_fn := func() -> Party: return _xp_party(&"bulbasaur", 8, 0, moves)
+	var seed := _xp_seed(party_fn, &"rattata", 4, [0, 1] as Array[int],
+		func(events: Array) -> bool:
+			return events.any(func(e: BattleEvent) -> bool:
+				return e.kind == BattleEvent.Kind.DRAINED and e.healed > 0))
+	assert_gt(seed, -1, "un combat où Vampigraine rend des PV")
+	if seed < 0:
+		return
+	var request := _xp_request(party_fn.call(), &"rattata", 4, seed)
+	var checked: Array[int] = []
+	var seeded: Array[String] = []
+	_director.event_played.connect(func(e: BattleEvent) -> void:
+		if e.kind == BattleEvent.Kind.SEEDED:
+			seeded.append(_hud.get_message_banner().get_text())
+		elif e.kind == BattleEvent.Kind.DRAINED:
+			_check_drain_bars(e)
+			checked.append(1))
+	var played := await _play_with_offers(request, [0, 1] as Array[int])
+	assert_eq(played[0], Battle.Outcome.WIN)
+	assert_gt(checked.size(), 0, "au moins une ponction jouée sur les deux barres")
+	assert_gt(seeded.size(), 0, "la graine est annoncée")
+	assert_eq(seeded[0], "Une graine est plantée sur Rattata !")
+	assert_push_error_count(0)
+
+
+## Combat de dresseur sans XP (rival du 4B) : aucun événement d'XP, XP intacte.
+func test_the_rival_battle_still_gives_no_xp() -> void:
+	var battle_seed := _seed_for(&"charmander", Battle.Outcome.WIN)
+	_prepare(&"charmander", battle_seed)
+	var kinds: Array[BattleEvent.Kind] = []
+	_director.event_played.connect(func(e: BattleEvent) -> void: kinds.append(e.kind))
+	var before := (_state.party as Party).get_lead().experience
+	await _play()
+	assert_false(kinds.has(BattleEvent.Kind.EXP_GAINED), "aucune XP")
+	assert_false(kinds.has(BattleEvent.Kind.LEVEL_UP))
+	assert_eq((_state.party as Party).get_lead().experience, before)

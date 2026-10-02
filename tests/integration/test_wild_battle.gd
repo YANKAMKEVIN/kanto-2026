@@ -283,3 +283,102 @@ func _drive_wakeup_dialogue() -> String:
 		await wait_process_frames(1)
 	assert_false(runner.is_running(), "le mot de Maman s'est terminé")
 	return first_text
+
+
+# --- Titre de zone pendant un combat (jalon 5C T11) -------------------------------------
+
+## Une rencontre juste après l'arrivée sur la Route 1 (le titre « ROUTE 1 » est encore là) : le
+## titre se masque au début de la rencontre, reste caché pendant le combat, et ne réapparaît
+## pas à la sortie.
+func test_the_zone_title_is_hidden_during_a_battle_and_does_not_come_back() -> void:
+	_new_route_game(1)
+	var title := _boot.get_hud().get_zone_title()
+	await wait_until(func() -> bool: return title.is_showing(), 3.0)
+	assert_true(title.is_showing(), "le titre de la Route 1 est affiché à l'arrivée")
+	var shown: Array[String] = []
+	_boot.zone_announced.connect(func(name: String, _region: String) -> void:
+		shown.append(name))
+	var enc := _boot.get_encounter_director()
+	_stand_below_grass()
+	assert_true(enc.start_encounter(WildEncounter.new(&"rattata", 3, &"route_1_grass")))
+	await wait_until(func() -> bool: return not title.is_showing(), 2.0)
+	assert_false(title.is_showing(), "titre masqué dès la rencontre")
+	assert_true(enc.is_running(), "la rencontre est toujours en cours")
+	await _drive_battle(false)
+	await wait_process_frames(10)
+	assert_false(title.is_showing(), "le titre ne revient pas à la sortie du combat")
+	assert_eq(shown.size(), 0, "aucun nouveau titre annoncé")
+	assert_push_error_count(0)
+
+
+# --- Cinq victoires : niveau et capacités de Rouge/Bleu ----------------------------------
+
+## Clone de l'équipe (même Pokémon, mêmes PV, mêmes PP) pour simuler un combat sans le jouer.
+func _clone_party(party: Party) -> Party:
+	var copy := Party.new()
+	assert_true(copy.load_array(party.to_array(), _boot.get_pokemon_data()), "équipe clonée")
+	return copy
+
+
+## Graine d'une victoire sur [param species] N[param level] avec l'équipe actuelle de GameState
+## (1re capacité à chaque tour) ; −1 si aucune. Même aléatoire que le jeu : BattleRequest.wild
+## crée le sauvage, puis le moteur.
+func _win_seed(species: StringName, level: int) -> int:
+	var data := _boot.get_pokemon_data()
+	for seed: int in range(0, 400):
+		var rng := GameRng.new(seed)
+		var request := BattleRequest.wild(WildEncounter.new(species, level, &"route_1_grass"),
+			data, rng, Vector2i.ZERO)
+		var battle := Battle.new(BattleSide.new(_clone_party(GameState.party), true),
+			BattleSide.new(request.foe_party, false, "", null), data, rng, request.rules)
+		battle.start()
+		while battle.get_state() == Battle.State.CHOOSING:
+			battle.submit(BattleAction.move(0 if not battle.get_usable_moves().is_empty() \
+				else BattleAction.STRUGGLE))
+		if battle.get_outcome() == Battle.Outcome.WIN:
+			return seed
+	return -1
+
+
+## Un starter N5 gagne cinq combats sauvages à la suite (Roucool N5, équipe soignée entre les
+## combats, 35 XP chacun : 135 + 175 = 310 XP) : N7 d'après la courbe, et les capacités de
+## Rouge/Bleu à ce niveau (Vampigraine au N7 pour Bulbizarre ; rien de nouveau avant le N8 de
+## Carapuce ni le N9 de Salamèche). Tout passe par le vrai jeu (Boot, rencontre, directeur).
+func test_five_wins_give_the_rouge_bleu_level_and_moves_for_each_starter() -> void:
+	var expected: Dictionary[StringName, Array] = {
+		&"bulbasaur": [&"tackle", &"growl", &"leech_seed"],
+		&"charmander": [&"scratch", &"growl"],
+		&"squirtle": [&"tackle", &"tail_whip"],
+	}
+	var data := _boot.get_pokemon_data()
+	var gain := ExpCalc.amount(PokemonFactory.create(data, &"pidgey", 5, GameRng.new(1)), data)
+	assert_eq(gain, 35, "Roucool N5 rapporte 35 XP")
+	for starter: StringName in expected:
+		GameState.new_game(1)
+		GameState.flags.set_flag(&"starter_chosen")
+		GameState.starter_species = starter
+		var party := Party.new()
+		party.add(PokemonFactory.create(data, starter, LEVEL, GameRng.new(PARTY_SEED)))
+		GameState.party = party
+		var lead := party.get_lead()
+		var start_exp := lead.experience
+		_stand_below_grass()
+		var enc := _boot.get_encounter_director()
+		for fight: int in 5:
+			party.heal_all()
+			var seed := _win_seed(&"pidgey", 5)
+			assert_gt(seed, -1, "%s combat %d : une graine de victoire" % [starter, fight + 1])
+			if seed < 0:
+				return
+			GameState.rng = GameRng.new(seed)
+			assert_true(enc.start_encounter(WildEncounter.new(&"pidgey", 5, &"route_1_grass")))
+			var outcome := await _drive_battle(false)
+			assert_eq(outcome, Battle.Outcome.WIN, "%s combat %d gagné" % [starter, fight + 1])
+		assert_eq(lead.experience - start_exp, 5 * gain, "%s : 5 × 35 XP" % starter)
+		assert_eq(lead.level, 7, "%s : niveau 7" % starter)
+		var known: Array[StringName] = []
+		for slot: MoveSlot in lead.moves:
+			known.append(slot.move_id)
+		assert_eq(known, expected[starter], "%s : capacités de Rouge/Bleu au N7" % starter)
+		assert_true(_player.is_input_enabled(), "joueur libre")
+	assert_push_error_count(0)

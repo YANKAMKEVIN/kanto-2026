@@ -17,6 +17,9 @@ var auto: bool = false
 ## Soigne l'équipe du joueur à la fin du dialogue (jalon 5 §3.11) : le lecteur émet alors
 ## [signal DialogueRunner.heal_requested]. Point de soin volontaire (parler à Maman).
 var heal: bool = false
+## Texte provisoire de cette variante, à relire par Kevin (clé « draft » de la variante ;
+## « draft » du dialogue entier : [member Dialogue.draft]).
+var draft: bool = false
 
 
 ## Vrai si la variante s'applique avec les drapeaux [param flags] (null = aucun drapeau).

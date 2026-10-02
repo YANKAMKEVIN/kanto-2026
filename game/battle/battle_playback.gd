@@ -15,6 +15,13 @@ extends RefCounted
 ##   (« Coup critique ! », « C'est super efficace ! », contrecoup) ;
 ## - STAT_CHANGED : STAT, puis le message ;
 ## - FAINTED : FAINT, puis le message.
+## Jalon 5C (Q25 : ni fenêtre de niveau, ni statistiques) :
+## - EXP_GAINED : EXP seulement (« +21 XP » et la barre sont sur la carte, aucune phrase) ;
+## - LEVEL_UP : LEVEL seulement (aucune phrase par défaut) ;
+## - MOVE_LEARNED : le message ;
+## - MOVE_FORGET_OFFERED : le message, puis FORGET (le choix et sa phrase sont à la charge du
+##   BattleDirector : la lecture est suspendue) ;
+## - SEEDED : le message ; DRAINED : DRAIN (les deux barres), puis le message.
 ## Les phrases viennent de [BattleText] : rien n'est écrit ici.
 
 
@@ -47,6 +54,16 @@ static func beats(event: BattleEvent, texts: BattleText, data: PokemonData,
 			result.append_array(messages)
 		BattleEvent.Kind.FAINTED:
 			result.append(BattleBeat.new(BattleBeat.Kind.FAINT, event))
+			result.append_array(messages)
+		BattleEvent.Kind.EXP_GAINED:
+			result.append(BattleBeat.new(BattleBeat.Kind.EXP, event))
+		BattleEvent.Kind.LEVEL_UP:
+			result.append(BattleBeat.new(BattleBeat.Kind.LEVEL, event))
+		BattleEvent.Kind.MOVE_FORGET_OFFERED:
+			result.append_array(messages)
+			result.append(BattleBeat.new(BattleBeat.Kind.FORGET, event))
+		BattleEvent.Kind.DRAINED:
+			result.append(BattleBeat.new(BattleBeat.Kind.DRAIN, event))
 			result.append_array(messages)
 		_:
 			result.append_array(messages)
