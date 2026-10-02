@@ -53,6 +53,17 @@ func test_lead_and_first_able() -> void:
 	assert_eq(second.hp, second.max_hp())
 
 
+func test_index_of_uses_identity_not_species() -> void:
+	var first := _make(&"bulbasaur")
+	var twin := _make(&"bulbasaur")
+	_party.add(first)
+	_party.add(twin)
+	assert_eq(_party.index_of(first), 0)
+	assert_eq(_party.index_of(twin), 1, "même espèce : la place, pas l'espèce")
+	assert_eq(_party.index_of(_make(&"bulbasaur")), -1, "absent")
+	assert_eq(_party.index_of(null), -1)
+
+
 func test_get_all_is_a_copy() -> void:
 	_party.add(_make())
 	_party.get_all().clear()

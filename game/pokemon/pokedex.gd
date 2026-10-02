@@ -26,8 +26,9 @@ func mark_seen(species: StringName, map: StringName = &"", date: String = "") ->
 	return _entry_for(species).see(map, date)
 
 
-## Marque [param species] comme capturée (et vue). Vrai si c'est la première capture de
-## l'espèce (« Nouvelle entrée Pokédex », dossier 05 §17).
+## Marque [param species] comme capturée (et vue : une espèce jamais vue compte sa capture comme
+## sa première observation, [code]times_seen[/code] = 1 ; une espèce déjà vue n'est pas
+## recomptée). Vrai si c'est la première capture de l'espèce (« Nouvelle entrée Pokédex », dossier 05 §17).
 func mark_caught(species: StringName, map: StringName = &"", date: String = "") -> bool:
 	if species.is_empty():
 		return false
@@ -123,7 +124,11 @@ func from_dict(dict: Dictionary) -> bool:
 			push_error("Pokedex : entrée écartée « %s »" % key)
 			ok = false
 			continue
-		_entries[StringName(key)] = PokedexEntry.from_dict(StringName(key), value)
+		var entry := PokedexEntry.from_dict(StringName(key), value)
+		# Une entrée existe parce que l'espèce a été vue : jamais « vue 0 fois » (anciennes
+		# sauvegardes du jalon 5, avant la règle « une capture vaut une première observation »).
+		entry.ensure_seen()
+		_entries[StringName(key)] = entry
 	return ok
 
 

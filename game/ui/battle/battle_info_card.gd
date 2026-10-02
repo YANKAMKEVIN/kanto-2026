@@ -210,6 +210,16 @@ func get_exp_gain_label() -> Label:
 	return _exp_gain_label
 
 
+## Les deux tweens de « +N XP » (fondus, montée), null hors animation. Les tests les mettent
+## en pause et les font avancer à la main ([method Tween.custom_step]) : aucune durée réelle.
+func get_exp_gain_tweens() -> Array[Tween]:
+	var tweens: Array[Tween] = []
+	for tween: Tween in [_exp_gain, _exp_rise]:
+		if tween != null and tween.is_valid():
+			tweens.append(tween)
+	return tweens
+
+
 func get_hp_numbers_label() -> Label:
 	return _numbers
 

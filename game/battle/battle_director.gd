@@ -160,8 +160,11 @@ func run_request(request: BattleRequest, map: GameMap) -> int:
 	var foe_side := BattleSide.new(request.foe_party, false, request.foe_name, foe_ai)
 	var player_side := BattleSide.new(party, true)
 	_battle = Battle.new(player_side, foe_side, _data, rng, request.rules)
-	var player_species := party.get_lead().species_id
-	var foe_species := foe.species_id
+	# Le moteur choisit qui entre (premier Pokémon non K.O., pas forcément le premier de
+	# l'équipe) : l'entrée en scène suit ses événements SENT_OUT, jamais une supposition.
+	var opening := _battle.start()
+	var player_species := _sent_out_species(opening, BattleEvent.SideId.PLAYER)
+	var foe_species := _sent_out_species(opening, BattleEvent.SideId.FOE)
 	# Entrée (~1 s, jamais d'écran noir) : intro sauvage dans le décor (herbe, partenaire qui
 	# entre en courant) ou entrée du dresseur (PNJ Pokémon du monde cachés, sprites de combat).
 	var camera := _player.get_camera() if is_instance_valid(_player) else null
@@ -178,7 +181,7 @@ func run_request(request: BattleRequest, map: GameMap) -> int:
 	if is_instance_valid(_hud):
 		_hud.set_party(party.size())
 	# Déroulé du moteur : présentation des camps, puis la boucle de tours.
-	await _play_events(_battle.start(), trainer)
+	await _play_events(opening, trainer)
 	var actions := BattleViews.WILD_BATTLE_ACTIONS if wild else BattleViews.TRAINER_BATTLE_ACTIONS
 	var can_flee := request.rules != null and request.rules.can_flee
 	while _battle.get_state() == Battle.State.CHOOSING:
@@ -521,29 +524,29 @@ func _play_drain(event: BattleEvent) -> void:
 		await get_tree().process_frame
 
 
-## Pokémon du joueur décrit par [param event] (espèce, nom, sexe) ; l'équipe en entier est
-## cherchée, celui en jeu d'abord. Null s'il n'y est pas.
+## Espèce du Pokémon envoyé par [param side] d'après le SENT_OUT de [param events] (&"" si le
+## moteur n'en a pas émis).
+func _sent_out_species(events: Array[BattleEvent], side: BattleEvent.SideId) -> StringName:
+	for event: BattleEvent in events:
+		if event.kind == BattleEvent.Kind.SENT_OUT and event.side == side:
+			return event.species_id
+	return &""
+
+
+## Pokémon du joueur décrit par [param event], retrouvé par sa place dans l'équipe
+## ([member BattleEvent.party_index], remplie par le moteur) : jamais par espèce et nom, qui se
+## confondent avec deux Pokémon identiques. Null si la place n'existe pas.
 func _find_player_pokemon(event: BattleEvent) -> Pokemon:
 	var party := _state.party as Party
-	if party == null:
-		return null
-	var in_play := _battle.get_player_side().active.pokemon if _battle != null else null
-	var candidates: Array[Pokemon] = []
-	if in_play != null:
-		candidates.append(in_play)
-	candidates.append_array(party.get_all())
-	for pokemon: Pokemon in candidates:
-		if pokemon.species_id == event.species_id \
-				and pokemon.display_name(_data) == event.pokemon_name:
-			return pokemon
-	return null
+	return party.get_at(event.party_index) if party != null else null
 
 
 ## Le Pokémon de [param event] est celui qui a sa carte (le Pokémon du joueur en jeu).
 func _is_in_play(event: BattleEvent) -> bool:
 	if _battle == null or _battle.get_player_side().active == null:
 		return false
-	return _find_player_pokemon(event) == _battle.get_player_side().active.pokemon
+	var pokemon := _find_player_pokemon(event)
+	return pokemon != null and pokemon == _battle.get_player_side().active.pokemon
 
 
 ## Coroutine : un Pokémon du joueur veut apprendre [member BattleEvent.move_id] mais connaît
