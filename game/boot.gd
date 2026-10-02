@@ -24,6 +24,11 @@ extends Node
 ## départ de débogage, ni quand la sauvegarde vient d'une version plus récente du jeu (elle
 ## n'est jamais écrasée). Boot enregistre aussi les faits du §16.3 (Pokédex daté, starter,
 ## combat du rival, objets trouvés, zones découvertes, temps de jeu).
+##
+## Menu Dresseur (jalon 6, T4) : Boot est en mode ALWAYS (le temps de jeu et l'autosave
+## continuent menu ouvert, Q-21) et tous ses enfants sont PAUSABLE sauf [MenuDirector] : le
+## directeur met l'arbre en pause à l'ouverture. Ouverture par l'action `menu` ou le retour
+## Android (en exploration : sauvegarde puis ouverture, **jamais** de sortie du jeu, Q-3).
 
 ## Une zone vient d'être annoncée (titre de zone affiché).
 signal zone_announced(zone_name: String, region: String)
@@ -46,6 +51,11 @@ var force_debug_start: bool = false
 ## est la scène principale lancée par le moteur** ; sous GUT et dans les outils de capture
 ## (qui instancient Boot eux-mêmes), aucune sauvegarde n'est lue ni écrite.
 var save_system: SaveSystem = null
+## Fichier des déblocages de débogage ([DebugUnlocks]) ; mêmes règles que [member
+## debug_start_path].
+var debug_unlocks_path: String = DebugUnlocks.USER_PATH
+## Tests seulement : appliquer les déblocages de débogage même sous GUT (jamais en jeu).
+var force_debug_unlocks: bool = false
 
 var _player: Player
 var _announcer := ZoneAnnouncer.new()
@@ -57,6 +67,9 @@ var _trainers: TrainerLibrary
 var _texts := BattleText.new()
 var _items := ItemLibrary.new()
 var _encounter_library: EncounterLibrary
+var _zones := ZoneLibrary.new()
+var _objectives := ObjectiveLibrary.new()
+var _unlocks: MenuUnlocks
 ## Faux : aucune écriture de toute la session (pas de sauvegarde, départ de débogage, ou
 ## sauvegarde d'une version plus récente à ne jamais écraser).
 var _autosave_enabled: bool = false
@@ -83,6 +96,7 @@ var _in_foreground: bool = true
 @onready var _battle_director: BattleDirector = %BattleDirector
 @onready var _ambient: AmbientWatcher = %AmbientWatcher
 @onready var _encounters: EncounterDirector = %EncounterDirector
+@onready var _menu: MenuDirector = %MenuDirector
 
 
 func _ready() -> void:
@@ -148,6 +162,15 @@ func _ready() -> void:
 	_runner.heal_requested.connect(_on_heal_requested)
 	_cutscenes_node.cutscene_started.connect(_on_cutscene_started)
 	_cutscenes_node.cutscene_finished.connect(_on_cutscene_finished)
+	# Menu Dresseur (jalon 6, T4) : le directeur pilote la pile et la pause ; l'écran
+	# (TrainerMenu) est relié après la fusion du T3 (jalon-06.md §6.6).
+	_zones.load_file()
+	_objectives.load_file()
+	_unlocks = MenuUnlocks.new(GameState.flags, GameState.party)
+	_apply_debug_unlocks()
+	_menu.setup(GameState, _pokemon, _zones, _objectives, _unlocks, _can_open_menu)
+	_menu.menu_opened.connect(_on_menu_opened)
+	_menu.menu_closed.connect(_on_menu_closed)
 	SceneRouter.setup(_world, _player, _fade)
 	# Destinations « à venir » (dossier-07 §12, build de développement) : l'écran provisoire.
 	SceneRouter.coming_soon_presenter = _coming_soon.present
@@ -172,16 +195,27 @@ func _process(delta: float) -> void:
 ## si la partie est stable (jalon 5C.5 §16.1) ; sinon la dernière sauvegarde stable reste.
 func _notification(what: int) -> void:
 	match what:
-		NOTIFICATION_APPLICATION_PAUSED, NOTIFICATION_WM_CLOSE_REQUEST, \
-				NOTIFICATION_WM_GO_BACK_REQUEST:
+		NOTIFICATION_APPLICATION_PAUSED, NOTIFICATION_WM_CLOSE_REQUEST:
 			if what == NOTIFICATION_APPLICATION_PAUSED:
 				_in_foreground = false
 			if _can_write() and is_stable():
 				_write_save("arrière-plan")
+		NOTIFICATION_WM_GO_BACK_REQUEST:
+			_on_go_back()
 		NOTIFICATION_APPLICATION_RESUMED, NOTIFICATION_APPLICATION_FOCUS_IN:
 			_in_foreground = true
 		NOTIFICATION_APPLICATION_FOCUS_OUT:
 			_in_foreground = false
+
+
+## Action `menu` (Échap, M) : ouvre le menu en exploration, le ferme s'il est ouvert.
+func _unhandled_input(event: InputEvent) -> void:
+	if event.is_action_pressed(&"menu") and not event.is_echo():
+		if _menu.is_open():
+			_menu.close()
+		else:
+			_menu.open()
+		get_viewport().set_input_as_handled()
 
 
 func _exit_tree() -> void:
@@ -204,6 +238,11 @@ func get_player() -> Player:
 
 func get_map() -> GameMap:
 	return SceneRouter.get_current_map()
+
+
+## Directeur du Menu Dresseur (jalon 6).
+func get_menu_director() -> MenuDirector:
+	return _menu
 
 
 func get_hud() -> ExplorationHud:
@@ -313,6 +352,54 @@ func is_stable() -> bool:
 		and not SceneRouter.is_transitioning() and not _runner.is_running() \
 		and not _cutscenes_node.is_running() and not _starter_choice.is_sheet_open() \
 		and not _battle_director.is_running() and not _encounters.is_running()
+
+
+## Garde d'ouverture du Menu Dresseur : partie stable (ce qui exclut dialogue, scène, rencontre,
+## combat et transition), sans écran « À venir ». [method is_stable] reste vrai menu ouvert :
+## chaque action du menu est appliquée d'un bloc à l'état (jalon-06.md §5.4).
+func _can_open_menu() -> bool:
+	return is_stable() and not _coming_soon.is_showing()
+
+
+## Retour Android (jalon-06.md §6.2, Q-3 : le jeu ne quitte **jamais** sur le retour) : menu
+## ouvert, un niveau en arrière (la fermeture a son autosave) ; en exploration, sauvegarde
+## immédiate puis ouverture du menu ; pendant un dialogue, une scène, un combat ou une
+## transition, ignoré.
+func _on_go_back() -> void:
+	if _menu.handle_back():
+		return
+	if _hud.are_controls_visible() and _can_open_menu():
+		if _can_write():
+			_write_save("retour")
+		_menu.open()
+
+
+## Le menu s'ouvre (pause posée) : contrôles cachés (relâche joystick et boutons), titre de
+## zone retiré.
+func _on_menu_opened() -> void:
+	_hud.hide_zone_title()
+	_refresh_controls()
+
+
+## Le menu se ferme (pause levée) : le monde reprend, les contrôles reviennent ; autosave
+## seulement si l'état a changé.
+func _on_menu_closed(changed: bool) -> void:
+	_refresh_controls()
+	if changed:
+		request_autosave("menu")
+
+
+## Déblocages de débogage ([DebugUnlocks]) : même garde que le départ de débogage, sans effet
+## sur la sauvegarde ni sur les drapeaux d'histoire.
+func _apply_debug_unlocks() -> void:
+	var allowed := force_debug_unlocks \
+		or DebugUnlocks.is_allowed(OS.is_debug_build(), get_tree().current_scene == self)
+	if not allowed or not FileAccess.file_exists(debug_unlocks_path):
+		return
+	var unlocks := DebugUnlocks.new()
+	if unlocks.load_file(debug_unlocks_path):
+		unlocks.apply(_unlocks)
+		print("Déblocages de débogage : %s" % unlocks.describe())
 
 
 ## Demande un autosave (jalon 5C.5 §16.1) : écrit à la première image où la partie est
@@ -581,6 +668,6 @@ func _on_item_given(item_id: StringName, count: int) -> void:
 ## Contrôles visibles seulement hors dialogue, hors scène, hors fiche du starter et hors
 ## combat : pendant une scène ou un combat, ils restent cachés entre deux dialogues.
 func _refresh_controls() -> void:
-	_hud.set_controls_visible(not _runner.is_running() and not _cutscenes_node.is_running()
+	_hud.set_controls_visible(not _menu.is_open() and not _runner.is_running() and not _cutscenes_node.is_running()
 		and not _starter_choice.is_sheet_open() and not _battle_director.is_running()
 		and not _encounters.is_running())

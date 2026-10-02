@@ -18,3 +18,21 @@ func test_default_path_is_the_user_file() -> void:
 	var boot := (load("res://game/boot.tscn") as PackedScene).instantiate() as Boot
 	assert_eq(boot.debug_start_path, DebugStart.USER_PATH)
 	boot.free()
+
+
+## Déblocages de débogage (jalon 6 T4, [DebugUnlocks]) : même garde que le départ de débogage.
+func test_boot_ignores_an_existing_debug_unlock_under_gut() -> void:
+	var boot := (load("res://game/boot.tscn") as PackedScene).instantiate() as Boot
+	boot.debug_unlocks_path = "res://tests/fixtures/debug_unlocks/pokedex.json"
+	assert_true(FileAccess.file_exists(boot.debug_unlocks_path), "le fichier existe bien")
+	add_child_autofree(boot)
+	var menu := boot.get_menu_director()
+	assert_false((menu.build_dashboard() as DashboardView).cards.any(
+		func(card: MenuCardView) -> bool: return card.screen == MenuRoute.POKEDEX),
+		"pas de carte Pokédex : le fichier n'est pas lu sous GUT")
+
+
+func test_default_unlock_path_is_the_user_file() -> void:
+	var boot := (load("res://game/boot.tscn") as PackedScene).instantiate() as Boot
+	assert_eq(boot.debug_unlocks_path, DebugUnlocks.USER_PATH)
+	boot.free()
