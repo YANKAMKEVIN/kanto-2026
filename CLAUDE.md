@@ -19,11 +19,15 @@ Kevin est le **directeur du jeu** : il conçoit (souvent avec ChatGPT), Claude i
 
 ## Règles de travail
 
-1. **Une fonctionnalité → testée sur le S24 → validée par Kevin → suivante.** Jamais trois systèmes à la fois.
-2. Une tâche n'est finie que si : `tools/test.sh` passe, le projet s'importe sans erreur, et (si c'est visible) une capture S24 a été vérifiée.
-3. Données (Pokémon, attaques, objets, rencontres, dialogues) = fichiers de données, jamais codées en dur dans la logique.
-4. Logique de jeu séparée de la présentation (testable sans scène).
-5. Monde en **2D HD atmosphérique** (décors HD, personnages et Pokémon en pixel art fin, lumière dynamique) ; UI **non** pixel art (skill `ui-theme-2026`).
+1. **Validation S24 par sous-jalon** (5B, 5C…) : les tâches liées s'enchaînent, puis une seule session S24 + validation de Kevin à la fin du sous-jalon. Exception : un système risqué (sauvegarde, tout ce qui peut perdre des données) est validé seul. Jamais trois systèmes à la fois.
+2. Une tâche n'est finie que si : `tools/test.sh` passe, le projet s'importe sans erreur, et (si c'est visible) une capture a été relue (headless ou Mac) ; la capture S24 vient à la validation du sous-jalon.
+3. **Sur S24, on valide le fonctionnel** (ça marche, c'est lisible, c'est bien placé), pas le rendu final : les visuels sont provisoires jusqu'à la phase DA. Une remarque de rendu se note dans `docs/tech/etat-projet.md` (« Reportés »), sans la corriger tout de suite.
+4. **Petites questions → valeur par défaut** : durées, positions, tailles, couleurs… reçoivent une valeur par défaut, notée dans le commit et dans `etat-projet.md`, et le travail continue. Seules les vraies décisions de game design bloquent et vont à Kevin.
+5. **`docs/tech/etat-projet.md` est mis à jour dans le même commit que chaque tâche terminée** : chaque session repart de ce fichier.
+6. Kevin prépare le dossier de conception du jalon suivant **pendant** le jalon en cours, pour que le code n'attende pas les décisions.
+7. Données (Pokémon, attaques, objets, rencontres, dialogues) = fichiers de données, jamais codées en dur dans la logique.
+8. Logique de jeu séparée de la présentation (testable sans scène).
+9. Monde en **2D HD atmosphérique** (décors HD, personnages et Pokémon en pixel art fin, lumière dynamique) ; UI **non** pixel art (skill `ui-theme-2026`).
 
 ## Décisions techniques
 
@@ -55,7 +59,8 @@ docs/design/   conception (ignoré par Godot)
 ```bash
 tools/test.sh                  # tests GUT headless
 tools/build_android.sh         # APK debug → build/kanto2026-debug.apk
-tools/deploy_s24.sh            # build + install + lancement + capture build/screenshot.png + logs
+tools/deploy_s24.sh            # build + install + lancement + capture build/screenshot.png + logs (USB ou Wi-Fi)
+tools/s24_serial.sh            # série adb du S24 (USB ou débogage sans fil)
 godot --headless --path . --import   # réimport / détection d'erreurs de scripts
 ```
 
@@ -65,4 +70,4 @@ godot --headless --path . --import   # réimport / détection d'erreurs de scrip
 
 ## Agents (`.claude/agents/`)
 
-`architecte-godot` · `constructeur-monde` · `ui-mobile` · `qa-mobile`
+`architecte-godot` (Opus) · `constructeur-monde` (Sonnet) · `ui-mobile` (Sonnet) · `qa-mobile` (Sonnet) — pour une tâche difficile, on peut forcer Opus à l'appel.

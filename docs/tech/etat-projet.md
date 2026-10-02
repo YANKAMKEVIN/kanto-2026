@@ -1,16 +1,22 @@
 # État du projet — note de passage
 
-Mis à jour : 2026-09-30 (**jalon 4B fusionné dans `main`** ; **jalon 5 en cours sur `jalon-05`** : T0 aligné + fondations, **5A Route 1 construite et validée par Kevin sur S24 le 2026-09-30** ; prochaine étape 5B T4).
+Mis à jour : 2026-10-02 (**jalon 4B fusionné dans `main`** ; **jalon 5 en cours sur `jalon-05`** : 5A validé S24 le 2026-09-30 ; **5B T4 à T7 faits** — combat sauvage jouable, défaite → réveil chez Maman ; **prochaine étape : 5B T8, validation S24 du 5B entier**, puis 5C).
 
 ## Jalon 5 (branche `jalon-05`, depuis `main`) — Route 1 et boucle Pokémon
 - **Vue macro** : `docs/design/roadmap.md` (9 phases, ordre des jalons ; règle « données avant interface », ex. Pokédex `seen`/`caught` dès le J5).
 - **T0 (fait, commité)** : plan aligné sur le 4B et le dossier-07 (jalon-05.md §15) ; fondations pures + tests : `Pokedex` (`seen`/`caught`) + `GameState.pokedex`, `AmbientRules`, tuile de rebord `OverworldTiles.Kind.LEDGE_DOWN` (grille lit herbes + rebord). Décisions Kevin : Potion ramassée seulement ; starter=`caught` / Pokémon du rival du 4B=`seen` ; carte construite d'après le dossier-07.
 - **5A (fait, commité, validé S24)** : `route_1.tscn` (48×44) via `tools/build_route_1.gd` d'après le dossier-07 ; chemin serpentant, 3 zones d'herbes dont une bande obligatoire, rebord sud, Potion cachée, Roucool/Rattata d'ambiance, Voyageur mobile, raccord Bourg Palette↔Route 1, arc de saut du joueur, `AmbientWatcher`. Scénario de capture `route_1` (`tools/capture_play.gd`). **1210 tests verts**, import propre.
 - **5B T4 (fait, commité)** : fondations pures des rencontres sauvages. Le combat sauvage réutilise le moteur du 4B (RUN/fuite, `FLED`, `BattleRules` facultatives, `FleeCalc`). `data/encounters/route_1.json` (Roucool/Rattata), `EncounterLibrary`, `BattleRequest` ; 5 espèces (lignées Roucool/Rattata) + 10 capacités. Alignement `jalon-05.md` §15.9. Défauts à juger S24 : taux 25/256, formule de fuite 3e/4e gén.
-- **5B T5 (fait, commité, PAS encore validé S24)** : `EncounterDirector` (pas dans l'herbe → tirage → transition), `BattleStage.play_wild_intro`/`play_partner_enter` (recadrage caméra, pas d'écran noir, Route 1 derrière), `GrassRustle`, placeholders pidgey/rattata, marquage Pokédex « vu ». En T5 le combat passe par un `BattleDirector` court-circuité (pas de combat jouable). Scénario capture `wild_encounter`. **1263 tests verts**, import propre. Captures : `build/captures/jalon05b_t5/`. **APK construite et prête** (`build/kanto2026-debug.apk`) ; déploiement S24 à faire (téléphone déconnecté la nuit du 2026-10-02).
-- **Reste 5B** : T6 UI (FUITE active, carte sans pastilles) → T7 combat jouable + défaite/soin chez Maman → T8 QA. Puis **5C XP**, **5C.5 sauvegarde**, **5D capture**, **5E défaite/retour Maman**, **5F QA**. Détail : `jalon-05.md` §5 et §15.
-- **Limite hebdomadaire atteinte le 2026-10-02 (reset dim. 5 oct. 3h, Paris)** : plus d'agents lançables jusque-là ; seules les tâches locales (build, tests, captures, commits) restent possibles.
+- **5B T5 (fait, commité, PAS encore validé S24)** : `EncounterDirector` (pas dans l'herbe → tirage → transition), `BattleStage.play_wild_intro`/`play_partner_enter` (recadrage caméra, pas d'écran noir, Route 1 derrière), `GrassRustle`, placeholders pidgey/rattata, marquage Pokédex « vu ». En T5 le combat passe par un `BattleDirector` court-circuité (pas de combat jouable). Scénario capture `wild_encounter`. **1263 tests verts**, import propre. Captures : `build/captures/jalon05b_t5/`. Validation S24 regroupée avec le reste du 5B (T8).
+- **5B T6 (fait, commité)** : UI du combat sauvage, FUITE active (`BattleViews.WILD_BATTLE_ACTIONS`, sans toucher à `game/ui/`) ; carte adverse sans pastilles ; le combat de dresseur garde FUITE muette. **1269 tests verts.** Captures : `build/captures/jalon05b_t6/`. Défauts appliqués : SAC / ÉQUIPE atténués jusqu'à leur activation (SAC au 5D) ; FUITE sans lueur d'accent (seul ATTAQUER pulse).
+- **5B T7 (fait, commité)** : combat sauvage **jouable** (`BattleDirector.run_request` commun au sauvage et au dresseur, rival du 4B inchangé) ; fuite `FLED` / `FLEE_FAILED` ; pas de soin après une victoire ; sauvage marqué « vu » au Pokédex. Défaite de l'équipe → fondu → réveil chez Maman (`player_house_1f`), équipe soignée, sans titre de zone. Puis dialogue automatique `mom_wakeup` (dossier-07 §11 : 1re défaite / suivantes, drapeau `blacked_out_before` déjà sérialisable pour le 5C.5). **1278 tests verts**, import propre. La défaite → Maman prévue au 5E est donc déjà livrée.
+- **Question pour Kevin** : soigner son équipe **en parlant à Maman** (sans avoir perdu) ? Non branché pour l'instant.
+- **Debug local non commité** : `game/boot.gd` démarre sur la Route 1 avec Salamèche niv. 5 (`DEBUG_START_ROUTE1 = true`). **Ne jamais le commiter tel quel** (remettre à `false` avant tout commit de `boot.gd`).
+- **Reste** : **5B T8** — QA S24 du 5B entier (rencontre, FUITE, victoire, défaite → Maman) + validation de Kevin. Puis **5C XP**, **5C.5 sauvegarde** (validée seule : système à risque), **5D capture**, **5E** (ce qui reste après le T7), **5F QA**. Détail : `jalon-05.md` §5 et §15.
+- **À préparer par Kevin pendant le J5** : le dossier de conception du **J6** (menu : Équipe, Sac, Pokédex, Carte, Profil, Paramètres — `roadmap.md` phase 3).
 - Non fusionné dans `main` (attend la validation complète du jalon 5).
+
+**Façon de travailler (2026-10-02, Kevin d'accord)** : validation S24 par sous-jalon, validation du fonctionnel seulement, valeurs par défaut pour les petites questions, `etat-projet.md` à jour à chaque commit (règles 1 à 6 de `CLAUDE.md`). Agents : architecte en Opus, les trois autres en Sonnet. Déploiement possible **sans câble** : `tools/deploy_s24.sh` trouve le S24 en USB ou en débogage sans fil (`tools/s24_serial.sh`, appairage une seule fois).
 
 ---
 
@@ -68,7 +74,7 @@ Mis à jour : 2026-09-30 (**jalon 4B fusionné dans `main`** ; **jalon 5 en cour
 - Le **Mac** (S24 en USB) récupère la branche, fait les captures (Movie Maker a besoin d'un écran), `tools/deploy_s24.sh` et la QA (`qa-mobile`), puis fusionne après validation de Kevin.
 - Une seule session à la fois sur une même branche.
 
-## Point de reprise (2026-09-29) — à lire en premier
+## Jalon 4B — point de reprise du 2026-09-29 (archivé : voir « Jalon 5 » en haut)
 **Branche de travail : `jalon-04b`** (partie de `main` avec le 4A validé, plus `jalon-04b-ui`). **1147 tests verts**, import propre. **Jalon 4B terminé et validé par Kevin sur S24 le 2026-09-29.**
 Fait sur `jalon-04b` :
 - Alignement du plan et fondations logiques du 4B : `docs/tech/jalon-04.md` **§14** ; `BattlePlayback`, `BattleViews`, `BattleConclusion`, sac et objets (`data/items/items.json`), `GameState.bag`.
