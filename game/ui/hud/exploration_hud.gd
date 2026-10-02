@@ -7,6 +7,8 @@ extends CanvasLayer
 ## contextuel pressent les actions de l'InputMap (move_*, run, interact) ; la scène qui
 ## charge la carte appelle show_zone_title, et celle qui connaît la cible devant le joueur
 ## appelle show_interact(verbe) / hide_interact().
+## Le bouton Menu (rond, translucide, MENU_BUTTON_ALPHA) est ancré en haut à droite, à
+## SAFE_MARGIN des bords ; il suit les contrôles (caché pendant un dialogue).
 ## Placement (aspect expand, 1920 à 2340 de large) : titre ancré en haut à gauche,
 ## joystick sur tout l'écran (apparition dans la moitié gauche), bouton courir et bouton
 ## contextuel ancrés au coin bas-droit, légende au milieu du bord haut (sous le titre),
@@ -16,6 +18,8 @@ extends CanvasLayer
 signal title_hidden
 ## La légende vient de disparaître (fin de sa tenue ou hide_caption()).
 signal caption_hidden
+## Le bouton Menu rond (coin haut-droit) est touché : on demande le Menu Dresseur.
+signal menu_requested
 
 @onready var _zone_title: ZoneTitle = %ZoneTitle
 @onready var _caption: WorldCaption = %WorldCaption
@@ -30,12 +34,17 @@ var _run_tween: Tween
 
 @onready var _run_button: TouchScreenButton = %RunButton
 @onready var _interact_button: InteractButton = %InteractButton
+@onready var _menu_button: TouchScreenButton = %MenuButton
 
 
 func _ready() -> void:
 	layer = UiTokens.LAYER_HUD
 	_run_button.position = -UiTokens.RUN_BUTTON_CENTER_FROM_CORNER
 	_interact_button.position = -UiTokens.INTERACT_BUTTON_CENTER_FROM_CORNER
+	_menu_button.position = Vector2(-UiTokens.MENU_BUTTON_CENTER_FROM_CORNER.x,
+		UiTokens.MENU_BUTTON_CENTER_FROM_CORNER.y)
+	(_menu_button.get_node(^"Visual") as Node2D).modulate.a = UiTokens.MENU_BUTTON_ALPHA
+	_menu_button.pressed.connect(_on_menu_pressed)
 	_zone_title.title_hidden.connect(title_hidden.emit)
 	_caption.caption_hidden.connect(caption_hidden.emit)
 
@@ -101,6 +110,7 @@ func set_controls_visible(shown: bool) -> void:
 		return
 	_controls_visible = shown
 	_joystick.visible = shown
+	_menu_button.visible = shown
 	if _run_tween != null:
 		_run_tween.kill()
 	if shown:
@@ -146,3 +156,12 @@ func get_run_button() -> TouchScreenButton:
 
 func get_interact_button() -> InteractButton:
 	return _interact_button
+
+
+func get_menu_button() -> TouchScreenButton:
+	return _menu_button
+
+
+func _on_menu_pressed() -> void:
+	Input.vibrate_handheld(UiTokens.HAPTIC_TAP_MS)
+	menu_requested.emit()

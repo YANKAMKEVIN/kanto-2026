@@ -368,3 +368,28 @@ func test_bag_and_capture_tokens_respect_touch_rules() -> void:
 		+ (UiTokens.BAG_COLUMNS - 1) * UiTokens.BAG_CARD_GAP + 2 * UiTokens.BAG_SCROLL_PAD
 	assert_lte(grid, float(inner), "quatre cartes tiennent dans le cadre")
 	assert_lt(UiTokens.CAPTURE_TOUCH_LOCK, 1.0)
+
+
+func test_menu_variations_match_tokens() -> void:
+	var theme := load(THEME_PATH) as Theme
+	var panel := theme.get_stylebox(&"panel", &"MenuPanel") as StyleBoxFlat
+	assert_eq(panel.bg_color, UiTokens.MENU_PANEL_BG)
+	assert_eq(panel.get_content_margin(SIDE_LEFT), float(UiTokens.MENU_PANEL_PAD))
+	assert_eq(theme.get_type_variation_base(&"MenuCard"), &"Button")
+	var card := theme.get_stylebox(&"normal", &"MenuCard") as StyleBoxFlat
+	assert_eq(card.corner_radius_top_left, UiTokens.RADIUS)
+	var pressed := theme.get_stylebox(&"pressed", &"MenuCard") as StyleBoxFlat
+	assert_eq(pressed.border_color, UiTokens.ACCENT)
+	assert_eq(theme.get_font_size(&"font_size", &"MenuName"), UiTokens.MENU_NAME_FONT)
+	assert_eq(theme.get_font_size(&"font_size", &"MenuCardCaption"), UiTokens.FONT_CAPTION)
+	assert_eq(theme.get_color(&"font_color", &"MenuCardCaption"), UiTokens.TEXT_MUTED)
+	assert_eq(theme.get_font_size(&"font_size", &"MenuObjective"), UiTokens.MENU_OBJECTIVE_FONT)
+
+
+func test_menu_tokens_respect_touch_rules() -> void:
+	assert_gte(UiTokens.MENU_CLOSE_SIZE, UiTokens.TOUCH_MIN)
+	assert_gte(UiTokens.MENU_LEAD_HEIGHT, UiTokens.TOUCH_MIN)
+	assert_gte(UiTokens.MENU_BODY_TOP, UiTokens.SAFE_MARGIN + UiTokens.MENU_CLOSE_SIZE)
+	assert_eq(UiTokens.LAYER_MENU, 20)
+	for screen: StringName in MenuRoute.DASHBOARD_ORDER:
+		assert_true(UiTokens.MENU_CARD_TINTS.has(screen), "teinte de %s" % screen)
