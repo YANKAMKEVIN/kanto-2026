@@ -1,0 +1,28 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://game/ui/battle/bag_category_tab.gd" id="1_tab"]
+
+[node name="BagCategoryTab" type="PanelContainer"]
+theme_type_variation = &"BagTab"
+script = ExtResource("1_tab")
+
+[node name="Row" type="HBoxContainer" parent="."]
+unique_name_in_owner = true
+layout_mode = 2
+mouse_filter = 2
+alignment = 1
+
+[node name="Icon" type="TextureRect" parent="Row"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 4
+mouse_filter = 2
+expand_mode = 1
+stretch_mode = 5
+
+[node name="NameLabel" type="Label" parent="Row"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 4
+theme_type_variation = &"BagTabName"
+text = "CAPTURE"

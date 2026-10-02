@@ -1,0 +1,93 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://game/ui/battle/capture_card.gd" id="1_card"]
+[ext_resource type="Texture2D" path="res://assets/ui/icons/pokedex.svg" id="2_pokedex"]
+[ext_resource type="Texture2D" path="res://assets/ui/icons/battle/continue_arrow.svg" id="3_arrow"]
+
+[node name="CaptureCard" type="Control"]
+mouse_filter = 2
+script = ExtResource("1_card")
+
+[node name="Body" type="Control" parent="."]
+unique_name_in_owner = true
+layout_mode = 3
+anchors_preset = 0
+mouse_filter = 2
+
+[node name="Frame" type="PanelContainer" parent="Body"]
+unique_name_in_owner = true
+layout_mode = 0
+mouse_filter = 2
+theme_type_variation = &"CaptureCard"
+
+[node name="Column" type="VBoxContainer" parent="Body/Frame"]
+unique_name_in_owner = true
+layout_mode = 2
+mouse_filter = 2
+
+[node name="Title" type="Label" parent="Body/Frame/Column"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"CaptureTitle"
+text = "ROUCOOL CAPTURÉ !"
+horizontal_alignment = 1
+autowrap_mode = 3
+
+[node name="ThumbBox" type="CenterContainer" parent="Body/Frame/Column"]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="Thumb" type="PanelContainer" parent="Body/Frame/Column/ThumbBox"]
+unique_name_in_owner = true
+layout_mode = 2
+mouse_filter = 2
+theme_type_variation = &"CaptureThumb"
+
+[node name="Portrait" type="TextureRect" parent="Body/Frame/Column/ThumbBox/Thumb"]
+unique_name_in_owner = true
+layout_mode = 2
+mouse_filter = 2
+expand_mode = 1
+stretch_mode = 5
+
+[node name="PokedexRow" type="HBoxContainer" parent="Body/Frame/Column"]
+unique_name_in_owner = true
+layout_mode = 2
+mouse_filter = 2
+alignment = 1
+
+[node name="PokedexIcon" type="TextureRect" parent="Body/Frame/Column/PokedexRow"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 4
+mouse_filter = 2
+texture = ExtResource("2_pokedex")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="PokedexLabel" type="Label" parent="Body/Frame/Column/PokedexRow"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 4
+theme_type_variation = &"CapturePokedex"
+text = "Nouvelle entrée Pokédex"
+
+[node name="Result" type="Label" parent="Body/Frame/Column"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"CaptureResult"
+text = "Roucool rejoint ton équipe."
+horizontal_alignment = 1
+autowrap_mode = 3
+
+[node name="ContinueBox" type="CenterContainer" parent="Body/Frame/Column"]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="Continue" type="TextureRect" parent="Body/Frame/Column/ContinueBox"]
+unique_name_in_owner = true
+layout_mode = 2
+mouse_filter = 2
+texture = ExtResource("3_arrow")
+expand_mode = 1
+stretch_mode = 5
