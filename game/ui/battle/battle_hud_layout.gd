@@ -12,9 +12,16 @@ extends RefCounted
 ##   MOVES       bandeau des capacités, en bas à droite (il déborde jusqu'aux bords)
 ##   MESSAGE     bandeau des messages, à la place de la grille (à droite de la carte joueur)
 ##   FORGET      panneau d'oubli d'une capacité (jalon 5C), bas droite, plus haut que MOVES
+##   BAG         Sac de combat (jalon 5D), colonne gauche : cadre au-dessus du bouton « ‹ »
+##   CAPTURE     carte de capture (jalon 5D), centrée sur l'écran
 ## Rien d'interactif à moins de SAFE_MARGIN des bords (vérifié par les tests).
 
-enum Slot { FOE_CARD, OWN_CARD, PARTY_PIPS, BACK, ACTIONS, MOVES, MESSAGE, FORGET }
+enum Slot {
+	FOE_CARD, OWN_CARD, PARTY_PIPS, BACK, ACTIONS, MOVES, MESSAGE, FORGET, BAG, CAPTURE,
+}
+
+## Valeur de « coin » d'un axe pour un emplacement centré (la distance au bord est ignorée).
+const CENTERED := 0.5
 
 
 ## Ancre [param control] (enfant direct d'un Control plein écran) à l'emplacement [param slot].
@@ -23,26 +30,18 @@ static func place(control: Control, slot: Slot) -> void:
 	var corner: Vector2 = box[0]
 	var margin: Vector2 = box[1]
 	var size: Vector2 = box[2]
-	control.anchor_left = corner.x
-	control.anchor_right = corner.x
-	control.anchor_top = corner.y
-	control.anchor_bottom = corner.y
-	if corner.x > 0.0:
-		control.offset_left = -margin.x - size.x
-		control.offset_right = -margin.x
-		control.grow_horizontal = Control.GROW_DIRECTION_BEGIN
-	else:
-		control.offset_left = margin.x
-		control.offset_right = margin.x + size.x
-		control.grow_horizontal = Control.GROW_DIRECTION_END
-	if corner.y > 0.0:
-		control.offset_top = -margin.y - size.y
-		control.offset_bottom = -margin.y
-		control.grow_vertical = Control.GROW_DIRECTION_BEGIN
-	else:
-		control.offset_top = margin.y
-		control.offset_bottom = margin.y + size.y
-		control.grow_vertical = Control.GROW_DIRECTION_END
+	var horizontal := _place_axis(corner.x, margin.x, size.x)
+	control.anchor_left = horizontal[0]
+	control.anchor_right = horizontal[0]
+	control.offset_left = horizontal[1]
+	control.offset_right = horizontal[2]
+	control.grow_horizontal = int(horizontal[3]) as Control.GrowDirection
+	var vertical := _place_axis(corner.y, margin.y, size.y)
+	control.anchor_top = vertical[0]
+	control.anchor_bottom = vertical[0]
+	control.offset_top = vertical[1]
+	control.offset_bottom = vertical[2]
+	control.grow_vertical = int(vertical[3]) as Control.GrowDirection
 
 
 ## Rectangle de [param slot] sur un écran de [param view_size].
@@ -51,9 +50,8 @@ static func rect(slot: Slot, view_size: Vector2) -> Rect2:
 	var corner: Vector2 = box[0]
 	var margin: Vector2 = box[1]
 	var size: Vector2 = box[2]
-	var x := view_size.x - margin.x - size.x if corner.x > 0.0 else margin.x
-	var y := view_size.y - margin.y - size.y if corner.y > 0.0 else margin.y
-	return Rect2(Vector2(x, y), size)
+	return Rect2(Vector2(_axis_start(corner.x, margin.x, size.x, view_size.x),
+		_axis_start(corner.y, margin.y, size.y, view_size.y)), size)
 
 
 ## [coin (0 ou 1 par axe), distance des bords proches à ce coin, taille] de [param slot].
@@ -88,6 +86,10 @@ static func frame(slot: Slot) -> Array[Vector2]:
 		Slot.MESSAGE:
 			return [Vector2(1, 1), Vector2(edge, UiTokens.BATTLE_GRID_BOTTOM),
 				Vector2(UiTokens.BATTLE_MESSAGE_WIDTH, UiTokens.BATTLE_MESSAGE_HEIGHT)]
+		Slot.BAG:
+			return [Vector2(0, 1), Vector2(edge, edge), bag_size()]
+		Slot.CAPTURE:
+			return [Vector2(CENTERED, CENTERED), Vector2.ZERO, capture_size()]
 	return [Vector2.ZERO, Vector2.ZERO, Vector2.ZERO]
 
 
@@ -114,3 +116,33 @@ static func forget_size() -> Vector2:
 		+ UiTokens.MOVE_CARD_SIZE.y * 3 + UiTokens.MOVE_GAP_V + UiTokens.FORGET_BUTTON_SIZE.y \
 		+ UiTokens.FORGET_ROW_GAP * 4
 	return Vector2(width, height)
+
+
+## Taille de l'emplacement du Sac : cadre (au plus BAG_FRAME_MAX_HEIGHT), écart, puis « ‹ ».
+static func bag_size() -> Vector2:
+	return Vector2(UiTokens.BAG_PANEL_WIDTH, UiTokens.BAG_FRAME_MAX_HEIGHT + UiTokens.GAP
+		+ UiTokens.BATTLE_BACK_SIZE)
+
+
+## Taille de l'emplacement de la carte de capture (elle épouse son contenu, au centre).
+static func capture_size() -> Vector2:
+	return Vector2(UiTokens.CAPTURE_CARD_WIDTH, UiTokens.CAPTURE_CARD_MAX_HEIGHT)
+
+
+## [ancre, décalage du bord proche, décalage du bord lointain, sens de croissance] d'un axe.
+## [param corner] : 0 (bords haut ou gauche), 1 (bas ou droite) ou CENTERED.
+static func _place_axis(corner: float, margin: float, length: float) -> Array[float]:
+	if corner == CENTERED:
+		return [CENTERED, -length * 0.5, length * 0.5, float(Control.GROW_DIRECTION_BOTH)]
+	if corner > 0.0:
+		return [corner, -margin - length, -margin, float(Control.GROW_DIRECTION_BEGIN)]
+	return [corner, margin, margin + length, float(Control.GROW_DIRECTION_END)]
+
+
+## Début (bord haut ou gauche) d'un emplacement sur un axe de longueur [param extent].
+static func _axis_start(corner: float, margin: float, length: float, extent: float) -> float:
+	if corner == CENTERED:
+		return (extent - length) * 0.5
+	if corner > 0.0:
+		return extent - margin - length
+	return margin

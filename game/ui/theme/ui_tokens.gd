@@ -476,3 +476,88 @@ const FORGET_BUTTON_SIZE := Vector2(560, TOUCH_MIN)
 const FORGET_SHEET_TOP := 80
 ## OUBLIER inactif (rien de choisi) : fond et texte atténués.
 const FORGET_CONFIRM_DISABLED_BG := Color(1, 1, 1, 0.08)
+
+# --- Sac de combat et carte de capture (jalon 5D T14) ------------------------------------------
+# Le Sac suit le langage visuel du Sac du jalon 6 (dossier 08 §3) : catégories, objets en cartes
+# (illustration, nom, quantité), un toucher = un aperçu, une action claire. En combat il est un
+# panneau en bas à gauche, au-dessus du bouton « ‹ » : l'adversaire (centre droit) reste visible.
+# La carte de capture suit la case 9 de combat-capture-v1 : titre en capitales, vignette, une
+# ligne Pokédex discrète, la ligne d'équipe, ▼.
+
+## Vibrations (bible UI/UX §12) : « toc » d'une secousse de la Ball ; motif de la capture
+## réussie, en alternance vibration / pause (millisecondes) : tic, tic, puis un long « clic ».
+const HAPTIC_BALL_SHAKE_MS := 40
+const HAPTIC_CAPTURE: Array[int] = [30, 70, 30, 70, 120]
+
+# Panneau du Sac.
+const BAG_PANEL_WIDTH := 1020
+## Hauteur maximale du cadre (le cadre épouse son contenu, ancré au-dessus de « ‹ ») : 1080
+## moins deux marges de bord, le bouton « ‹ » et l'écart qui le sépare du cadre.
+const BAG_FRAME_MAX_HEIGHT := 840
+const BAG_PANEL_BG := DIALOG_PANEL_BG
+const BAG_PANEL_PAD := 28
+const BAG_ROW_GAP := 16
+const BAG_TITLE_ICON := 64
+## Onglet de catégorie (≥ TOUCH_MIN de haut) : icône, nom ; sélectionné = fond teinté d'ACCENT
+## et liseré ACCENT (jamais la couleur seule : le contenu change dessous).
+const BAG_TAB_HEIGHT := TOUCH_MIN
+const BAG_TAB_ICON := 56
+const BAG_TAB_FONT := FONT_CAPTION
+const BAG_TAB_PAD_H := 24
+const BAG_TAB_GAP := 12
+const BAG_TAB_SELECTED_BG := Color(ACCENT, 0.18)
+const BAG_TAB_SELECTED_BORDER := 3
+## Carte d'objet : illustration, nom, quantité « ×5 » au coin de l'illustration. Sélectionnée :
+## liseré ACCENT épais, halo et léger grossissement (la forme change aussi).
+const BAG_CARD_SIZE := Vector2(222, 232)
+const BAG_CARD_GAP := 16
+const BAG_COLUMNS := 4
+const BAG_CARD_ICON := 112
+const BAG_CARD_PAD_H := 12
+const BAG_CARD_PAD_V := 12
+const BAG_CARD_NAME_FONT := 28
+const BAG_CARD_QTY_FONT := 28
+const BAG_CARD_SELECTED_SCALE := 1.03
+## Marge autour des cartes dans la liste défilante : elle loge le halo et le grossissement de la
+## carte sélectionnée (la liste coupe ce qui dépasse).
+const BAG_SCROLL_PAD := 14
+## Au-delà de cette hauteur, la liste des cartes défile (une ligne et demie : on devine la suite).
+const BAG_GRID_MAX_HEIGHT := 360
+## Aperçu de l'objet touché : illustration, nom, quantité, description, action.
+const BAG_DETAIL_PAD := 20
+const BAG_DETAIL_ICON := 112
+const BAG_DETAIL_GAP := 20
+const BAG_DETAIL_NAME_FONT := FONT_BUTTON
+const BAG_DETAIL_QTY_FONT := FONT_BODY
+const BAG_DETAIL_TEXT_FONT := 28
+const BAG_ACTION_SIZE := Vector2(300, TOUCH_MIN)
+## Opacité de départ de l'aperçu quand l'objet change (fondu court jusqu'à 1).
+const BAG_DETAIL_FADE_FROM := 0.4
+## Texte posé quand rien n'est utilisable (pas un bouton).
+const BAG_EMPTY_HEIGHT := 160
+## Le doigt qui s'éloigne de plus que cela entre l'appui et le relâchement fait défiler : ce
+## n'est pas un toucher.
+const BAG_TAP_SLOP := 24.0
+
+# Carte de capture.
+const CAPTURE_CARD_WIDTH := 760
+const CAPTURE_CARD_MAX_HEIGHT := 640
+const CAPTURE_CARD_BG := DIALOG_PANEL_BG
+const CAPTURE_CARD_PAD_H := 44
+const CAPTURE_CARD_PAD_V := 32
+const CAPTURE_ROW_GAP := 22
+const CAPTURE_TITLE_FONT := FONT_TITLE
+## Vignette du Pokémon : cadre arrondi, sprite pixel art à l'échelle entière (NEAREST).
+const CAPTURE_THUMB := 192
+const CAPTURE_THUMB_PAD := 12
+const CAPTURE_THUMB_BG := Color(1, 1, 1, 0.10)
+const CAPTURE_THUMB_BORDER := Color(1, 1, 1, 0.22)
+const CAPTURE_LINE_FONT := FONT_BODY
+const CAPTURE_LINE_ICON := 40
+const CAPTURE_LINE_GAP := 12
+const CAPTURE_CONTINUE_SIZE := Vector2(40, 28)
+## Les lignes se révèlent l'une après l'autre (« discrètement ») : délai puis fondu.
+const CAPTURE_LINE_DELAY := 0.28
+const CAPTURE_LINE_FADE := 0.2
+## Un toucher n'est pris qu'après ce délai : celui qui a lancé la Ball ne ferme pas la carte.
+const CAPTURE_TOUCH_LOCK := 0.6

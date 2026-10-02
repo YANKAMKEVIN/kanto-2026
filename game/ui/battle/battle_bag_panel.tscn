@@ -1,0 +1,154 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://game/ui/battle/battle_bag_panel.gd" id="1_panel"]
+[ext_resource type="PackedScene" path="res://game/ui/battle/battle_back_button.tscn" id="2_back"]
+
+[node name="BattleBagPanel" type="Control"]
+mouse_filter = 2
+script = ExtResource("1_panel")
+
+[node name="Body" type="Control" parent="."]
+unique_name_in_owner = true
+layout_mode = 3
+anchors_preset = 0
+mouse_filter = 2
+
+[node name="Frame" type="PanelContainer" parent="Body"]
+unique_name_in_owner = true
+layout_mode = 0
+theme_type_variation = &"BagPanel"
+
+[node name="Content" type="VBoxContainer" parent="Body/Frame"]
+unique_name_in_owner = true
+layout_mode = 2
+mouse_filter = 2
+
+[node name="Header" type="HBoxContainer" parent="Body/Frame/Content"]
+unique_name_in_owner = true
+layout_mode = 2
+mouse_filter = 2
+
+[node name="TitleIcon" type="TextureRect" parent="Body/Frame/Content/Header"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 4
+mouse_filter = 2
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Title" type="Label" parent="Body/Frame/Content/Header"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 4
+theme_type_variation = &"BagTitle"
+text = "SAC"
+
+[node name="Spacer" type="Control" parent="Body/Frame/Content/Header"]
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 2
+
+[node name="Tabs" type="HBoxContainer" parent="Body/Frame/Content/Header"]
+unique_name_in_owner = true
+layout_mode = 2
+mouse_filter = 2
+
+[node name="Divider" type="Panel" parent="Body/Frame/Content"]
+unique_name_in_owner = true
+layout_mode = 2
+mouse_filter = 2
+theme_type_variation = &"BagDivider"
+
+[node name="Scroll" type="ScrollContainer" parent="Body/Frame/Content"]
+unique_name_in_owner = true
+layout_mode = 2
+horizontal_scroll_mode = 0
+vertical_scroll_mode = 3
+
+[node name="Pad" type="MarginContainer" parent="Body/Frame/Content/Scroll"]
+unique_name_in_owner = true
+layout_mode = 2
+mouse_filter = 2
+
+[node name="Grid" type="GridContainer" parent="Body/Frame/Content/Scroll/Pad"]
+unique_name_in_owner = true
+layout_mode = 2
+mouse_filter = 2
+columns = 4
+
+[node name="Empty" type="Label" parent="Body/Frame/Content"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"BagEmpty"
+text = "Aucun objet utilisable pour l'instant."
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3
+
+[node name="Detail" type="PanelContainer" parent="Body/Frame/Content"]
+unique_name_in_owner = true
+layout_mode = 2
+mouse_filter = 2
+theme_type_variation = &"BagDetail"
+
+[node name="DetailRow" type="HBoxContainer" parent="Body/Frame/Content/Detail"]
+unique_name_in_owner = true
+layout_mode = 2
+mouse_filter = 2
+
+[node name="DetailIcon" type="TextureRect" parent="Body/Frame/Content/Detail/DetailRow"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 4
+mouse_filter = 2
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Info" type="VBoxContainer" parent="Body/Frame/Content/Detail/DetailRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+mouse_filter = 2
+
+[node name="NameRow" type="HBoxContainer" parent="Body/Frame/Content/Detail/DetailRow/Info"]
+unique_name_in_owner = true
+layout_mode = 2
+mouse_filter = 2
+
+[node name="DetailName" type="Label" parent="Body/Frame/Content/Detail/DetailRow/Info/NameRow"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"BagDetailName"
+text = "Poké Ball"
+
+[node name="DetailQuantity" type="Label" parent="Body/Frame/Content/Detail/DetailRow/Info/NameRow"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 8
+theme_type_variation = &"BagDetailQuantity"
+text = "×5"
+
+[node name="DetailText" type="Label" parent="Body/Frame/Content/Detail/DetailRow/Info"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"BagDetailText"
+text = "Permet de capturer un Pokémon sauvage."
+autowrap_mode = 3
+
+[node name="ActionButton" type="Button" parent="Body/Frame/Content/Detail/DetailRow"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 4
+focus_mode = 0
+theme_type_variation = &"AccentButton"
+text = "LANCER"
+
+[node name="BackButton" parent="Body" instance=ExtResource("2_back")]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_top = -128.0
+offset_right = 128.0
+grow_vertical = 0
