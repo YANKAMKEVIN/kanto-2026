@@ -1,8 +1,13 @@
 # État du projet — note de passage
 
-Mis à jour : 2026-10-02 nuit (**jalon 6, T0 fait** : sauvegarde v2 codée et testée, plan aligné sur `d8e8f2b` ; prochain : **T1, migration validée seule sur le S24** ; jalon 5 terminé et fusionné dans `main`).
+Mis à jour : 2026-10-03 (**jalon 6 en cours sur `jalon-06`** : T0 sauvegarde v2 **validée seule par Kevin sur S24 (T1)** ; T19 carte de Kanto fusionnée ; prochain : **T2** navigation, puis T3 ∥ T4, validation du 6.0 au T5 ; jalon 5 terminé et fusionné dans `main`).
 
-## Point de reprise (2026-10-02 soir) — à lire en premier
+## Point de reprise (2026-10-03) — J6
+- **T1 (QA S24 de la sauvegarde v2, seule) — validée par Kevin (2026-10-03)**, sur sa vraie partie de la 5F (Route 1 (24, 2), Salamèche N6 / Roucool N3 / Rattata N3, 2 Balls + 1 Potion, ~56 min) : copie de secours v1 ; build T0 installé (`install -r`) → reprise exacte ; arrière-plan → `save.json` en **version 2**, Sac `{items, favorites, acquired}`, `favorite` et `notes` ajoutés, **tout le reste identique** (diff `jq` vide), starter déjà « vu 1 fois » ; tuée et relancée → reprise identique ; **APK du J5** (`build/kanto2026-j5-debug.apk`, construit hors dépôt dans `~/dev/kanto-2026-j5` depuis `d8e8f2b`) → avertissement « version plus récente (2 > 1) », partie neuve sans écriture, `save.json` **identique octet pour octet** (`cmp`) ; retour au J6 → partie de Kevin intacte. Aucune erreur. Preuves : `build/qa/jalon06_t1/` (non versionné ; journal des étapes 3–4 vide, coupure de la liaison sans fil).
+- **T19 fusionné** (`edf1107`) : illustration de Kanto = image fournie par Kevin (`docs/design/reference/kanto-carte-v1.webp`, 1586×992, sans texte) copiée en `assets/ui/map/kanto_placeholder.webp` ; rectangles des zones dans `assets/ui/map/kanto_placeholder_areas.json` (à recopier dans `zones.json` au T18) ; portrait du joueur `assets/ui/map/player_portrait.png`. **Décisions de Kevin** : axe Bourg Palette → Route 1 → Jadielle (centre) → Route 2 / Forêt de Jade → Argenta validé ; **Route 22 = chemin à l'ouest de Jadielle**, Route 16 retirée ; le reste de Kanto est approximatif et sera refait en phase DA (carte définitive ≥ 2048×1280). **1626 tests verts.**
+- **Ensuite** : T2 (architecte : navigation, déblocage, objectif, zones), puis T3 (ui-mobile, tableau de bord) ∥ T4 (constructeur-monde, ouvrir/pause/fermer), puis T5 (validation du 6.0 sur S24).
+
+## Archive : point de reprise (2026-10-02 soir)
 - **Branche `jalon-05`** à jour sur GitHub (`a7b429c` poussé par Kevin).
 - **T16 (QA S24 de la capture) — 5D validé par Kevin (2026-10-02 soir)** :
   - passage 1 (vraie partie) : rythme des rencontres 15→20 « c'est mieux », pas de double lancer, séquence de capture (vibrations, carte sans ligne Pokédex), échec, sauvegarde après capture (`first_capture` = Roucool) ;
