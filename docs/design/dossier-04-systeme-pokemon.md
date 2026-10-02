@@ -20,6 +20,8 @@ Herbe immobile → probabilité normale · herbe qui bouge → quelque chose est
 Pas seulement l'emplacement n° 1. Un **Pokémon compagnon visible, contextuel** : le jeu décide quand c'est pertinent (Pikachu court autour de toi, Bulbizarre marche tranquillement, Carapuce s'approche de l'eau ; Dracaufeu ne se promène pas dans ta cuisine).
 
 ## 5. Équipe de 6 : conservée
+> **Précisé le 2026-10-02 (dossier 09 §8)** : nom d'interface « Stockage Pokémon » ; accès **seulement depuis un Centre Pokémon** (pas de PC accessible partout) ; V1 sans recherche ni filtres (reportés).
+
 Les autres sont stockés, mais **stockage moderne** : « MES POKÉMON — Équipe 6/6 · Collection 38 · 🔎 Rechercher · filtres Type / Niveau / Espèce », au lieu des boîtes façon ordinateur de 1996. Narrativement lié aux recherches de Chen.
 
 ## 6. Niveaux 1 → 100 : conservés

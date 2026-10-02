@@ -1093,3 +1093,11 @@ l'argent (J7) ; les badges (J10) ; les statistiques détaillées.
 - **S3 — qa-mobile** : validation seule sur le S24 : fermer l'application ou la tuer à différents
   moments (exploration, juste après une capture, pendant un combat, pendant une écriture), relancer,
   vérifier que rien n'est perdu ni corrompu.
+
+## 17. Décisions du J7 qui s'appliquent dès le J5 (Kevin, 2026-10-02)
+
+Source : `docs/design/dossier-09-jadielle.md` §6 et §16, et la **règle de déblocage** de `vision.md` : une fonctionnalité visible n'existe pas pour le joueur avant son déblocage narratif, mais ses données peuvent être collectées silencieusement.
+
+- **Aucun élément visible du Pokédex au J5** : le Pokédex n'est activé par Chen qu'au J7A. Au **T15**, la carte de capture **n'affiche pas** « Nouvelle entrée Pokédex » (le `CaptureCard` du T14 ne montre cette ligne que si on la demande : ne pas la demander tant que le drapeau d'activation n'est pas posé). Pas de toast Pokédex, pas de compteur.
+- **Les données continuent d'être enregistrées** comme prévu au §16 (vu, capturé, lieux, dates, compteurs) : à l'activation, tout ce que le joueur a découvert apparaîtra.
+- **Pokémon envoyé au stockage** (équipe pleine) : le texte reste « {Pokémon} a été confié au système de recherche de Chen. » (déjà en données au T13) ; le nom d'interface « Stockage Pokémon » n'arrive qu'avec l'écran du J7A.

@@ -54,6 +54,8 @@ Seulement ce qui est pertinent : **Poké Balls, Soins, Combat**, éventuellement
 🎒 → Poké Balls → Poké Ball. Le dresseur apparaît davantage dans le cadrage, lancer, Pokémon absorbé, la Ball tombe **dans le décor actuel**, puis toc + vibration ×3… ✨ clic. **Ces trois secondes doivent être presque sacrées.** (Storyboard : `combat-capture-v1.webp`.)
 
 ## 17. Capture réussie
+> **Précisé le 2026-10-02 (dossier 09 §6)** : « Nouvelle entrée Pokédex » ne s'affiche **qu'après l'activation du Pokédex** par Chen (J7A). Avant, la ligne est absente ; la capture est tout de même enregistrée.
+
 Pas 8 fenêtres : « **ROUCOOL CAPTURÉ** », puis discrètement « Nouvelle entrée Pokédex ». Si l'équipe < 6 : « Roucool rejoint ton équipe. » Sinon : « Roucool a été confié au système de recherche de Chen. » Et on continue.
 
 ## 18. Premier combat contre le rival

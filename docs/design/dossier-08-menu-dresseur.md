@@ -5,6 +5,8 @@
 > Les 7 maquettes (§10) donnent **la direction artistique et la composition uniquement**, jamais la vérité fonctionnelle. Si une maquette contredit ce dossier, `vision.md`, la bible UI/UX ou une décision validée, **l'écrit gagne**.
 >
 > **Pas d'implémentation avant la fin du jalon 5.** Ce dossier sert à supprimer les décisions bloquantes avant d'arriver au J6.
+>
+> **Corrigé le 2026-10-02 après la conception du J7** (`dossier-09-jadielle.md`) : le Pokédex n'existe pour le joueur qu'après son activation par Chen au J7A (§4) ; favoris Pokémon adoptés (§2).
 
 ## Philosophie
 
@@ -30,8 +32,8 @@ Pour chaque écran, la question n'est pas « comment Pokémon faisait ça ? » m
 ## 1. Le tableau de bord
 
 - Le bouton Menu ouvre un **tableau de bord plein écran, semi-transparent**, au-dessus du monde flouté et assombri ; le monde est en pause.
-- **À gauche, la carte du Dresseur** : nom, « Dresseur Pokémon », portrait, temps de jeu, vus · capturés, badges. En bas, le **Pokémon de tête** (nom, Nv., PV), qui ouvre sa fiche.
-- **Six grandes cartes tactiles** : ÉQUIPE · POKÉDEX · SAC · CARTE · DRESSEUR · PARAMÈTRES. Pas davantage au départ.
+- **À gauche, la carte du Dresseur** : nom, « Dresseur Pokémon », portrait, temps de jeu, vus · capturés (seulement après l'activation du Pokédex, §4), badges. En bas, le **Pokémon de tête** (nom, Nv., PV), qui ouvre sa fiche.
+- **Six grandes cartes tactiles** : ÉQUIPE · POKÉDEX · SAC · CARTE · DRESSEUR · PARAMÈTRES. Pas davantage au départ. **Avant l'activation du Pokédex (J7A), la carte POKÉDEX est absente, pas grisée** (règle 8) : le tableau de bord en compte alors cinq.
 - **Objectif** : une ligne très discrète (ex. « Objectif : rejoindre Jadielle »). C'est un **rappel narratif** pour le joueur qui reprend sa partie après plusieurs jours, **jamais** un GPS, une flèche permanente ou une checklist. Textes en données, un par étape de l'histoire.
 - **Pas de « Sauvegarder »** dans le menu principal : la sauvegarde est automatique et permanente (§7).
 - En-tête : fermer (×) et le nom de la zone actuelle. Le retour système Android ferme aussi le menu.
@@ -51,7 +53,7 @@ Ce tableau de bord remplace la §7 de la bible UI/UX (cinq entrées et ⚙ dans 
   - **Capacités** : 4 au maximum. Nom, type, catégorie (Physique / Spéciale / Statut), PP x/y, puissance. Toucher une capacité ouvre une courte fiche de son effet. « Réorganiser les capacités » viendra plus tard ; l'apprentissage reste lié aux niveaux et aux CT.
   - **Histoire** : rencontré à (lieu), niveau de rencontre, dresseur d'origine, date. Plus tard : premier combat, etc. Données enregistrées dès le jalon 5 (`jalon-05.md` §16).
 - **Évolution, sans spoiler** : tant que l'évolution n'est pas découverte, « Évolution : ??? » ; la chaîne se révèle avec le Pokédex (§4). **Jamais la condition** (« évolue au niveau 16 »), contrairement à la maquette.
-- **Actions** : UTILISER UN OBJET (ouvre le Sac filtré sur les objets compatibles) · DÉPLACER. Pas de FAIRE SORTIR avant le jalon du compagnon.
+- **Actions** : UTILISER UN OBJET (ouvre le Sac filtré sur les objets compatibles) · DÉPLACER · **FAVORI** (marque ou retire le favori ; un favori ne peut pas être libéré du Stockage, dossier 09 §8). Pas de FAIRE SORTIR avant le jalon du compagnon.
 
 ## 3. 6B — Sac
 
@@ -68,6 +70,8 @@ Ce tableau de bord remplace la §7 de la bible UI/UX (cinq entrées et ⚙ dans 
 ## 4. 6C — Pokédex
 
 > **Le Pokédex ne te dit pas où trouver les Pokémon. Il se souvient de ce que toi tu as découvert.** C'est ton carnet de terrain, pas Poképédia.
+
+- **Activation (dossier 09 §6)** : l'écran Pokédex n'existe pour le joueur qu'après son activation par Chen, au retour du colis (J7A). Avant, les données sont collectées silencieusement par le système de recherche de Chen (depuis le J5) ; à l'activation, tout ce que le joueur a déjà découvert apparaît d'un coup. Avant l'activation : pas de carte Pokédex au tableau de bord, pas de compteur vus / capturés, pas de toast « Pokédex mis à jour », pas de Pokémon observés sur la Carte. Un **drapeau de débogage** débloque l'écran pour développer et tester le J6.
 
 - **Écran principal** : « POKÉDEX — KANTO », « X vus · Y capturés · 151 espèces », filtres TOUS · VUS · CAPTURÉS · HABITATS, grille numérotée.
 - **Trois états** :
@@ -91,7 +95,7 @@ Ce tableau de bord remplace la §7 de la bible UI/UX (cinq entrées et ⚙ dans 
 
 - **Géographie** : le vrai Kanto du projet (colonne vertébrale du dossier 06, Bourg Palette du dossier 01, Route 1 du dossier 07). **La Route 1 relie Bourg Palette et Jadielle.** Pas d'Îles Sevii tant que la roadmap ne les prévoit pas. La géographie de la maquette `menu-carte-v1.jpg` est fausse (§10) : seule sa DA compte.
 - **Vue régionale** : grande carte illustrée et vivante (villes, routes, forêts, grottes, eau, reliefs). La géographie générale est visible, les informations se révèlent avec l'exploration ; pas de brouillard noir. Très peu d'icônes : la carte respire. Position du joueur : un petit portrait discret, pas une flèche GPS.
-- **Toucher une zone** → panneau latéral, sans changer d'écran : nom, connexions (« Bourg Palette ↔ Jadielle »), courte description du paysage, **Pokémon observés** (seulement ceux vus, sans total ni `???`), **objets découverts** (seulement ceux trouvés, sans total), services (Centre, Boutique, Arène) **seulement après les avoir découverts**.
+- **Toucher une zone** → panneau latéral, sans changer d'écran : nom, connexions (« Bourg Palette ↔ Jadielle »), courte description du paysage, **Pokémon observés** (seulement ceux vus, sans total ni `???` ; seulement après l'activation du Pokédex), **objets découverts** (seulement ceux trouvés, sans total), services (Centre, Boutique, Arène) **seulement après les avoir découverts**.
 - **Liens** : un Pokémon observé ouvre sa fiche Pokédex ; l'onglet Habitat du Pokédex ouvre la Carte.
 - **Bouton** : « Voir sur la carte » / informations. **Aucune téléportation.** Quand Vol sera débloqué, la même carte passera en mode VOLER VERS pour les destinations éligibles.
 - **Pas de GPS** (aucune ligne à suivre), **pas de mini-carte permanente** en exploration.
@@ -101,7 +105,7 @@ Ce tableau de bord remplace la §7 de la bible UI/UX (cinq entrées et ⚙ dans 
 
 > Le résumé vivant de ton aventure : presque vide à Bourg Palette, de plus en plus riche jusqu'à la Ligue.
 
-- **Identité** : nom, « Dresseur Pokémon », portrait (sprite du joueur agrandi en V1) avec une animation très discrète. À côté, l'essentiel : temps de jeu, argent, vus · capturés, badges.
+- **Identité** : nom, « Dresseur Pokémon », portrait (sprite du joueur agrandi en V1) avec une animation très discrète. À côté, l'essentiel : temps de jeu, argent (dès qu'il existe, J7A), vus · capturés (après l'activation du Pokédex), badges.
 - **Badges, pièce maîtresse** : 8 emplacements. Un badge inconnu ne montre **ni son nom ni son apparence**. Toucher un badge obtenu : nom, ville, arène, champion (« Badge Roche — Argenta — Pierre »). Plus tard, en polish : l'équipe au moment de la victoire.
 - **Grands moments** : un journal automatique, avec date et lieu (départ de Bourg Palette, premier Pokémon, première capture, arrivée à Jadielle, badges…). Aucun texte à rédiger par le joueur. Données enregistrées dès le jalon 5.
 - **Statistiques** : une section secondaire, pour ceux qui aiment ça. En V1, seulement ce que le jeu enregistre déjà.
@@ -143,6 +147,8 @@ Règle « données avant interface » (`roadmap.md`) : les faits dont le J6 a be
 | 6C Pokédex | vu / capturé, premières observation et capture (lieu, date), lieux vus, compteurs | J5 (vu / capturé : 5B ; le reste : 5C.5) |
 | 6C Évolution | se déduit des espèces vues et des évolutions du joueur | rien à stocker en plus |
 | 6C Observations | notes débloquées | à ajouter au J6 (le format de sauvegarde le permet) |
+| 6C Pokédex | activation par Chen (drapeau) | J7A (dossier 09) |
+| 6A Équipe | Pokémon favori | J6 (le format de sauvegarde le permet) |
 | 6D Carte | zones découvertes (date), objets trouvés par zone | J5 (5C.5) |
 | 6E Dresseur | temps de jeu, date de départ, grands moments | J5 (5C.5) |
 | 6E Dresseur | argent | J7 (économie) |
@@ -173,7 +179,7 @@ Fondations et navigation → tableau de bord → 6A → 6B → 6C → 6D → 6E 
 2. **Textes à produire par Kevin** : les objectifs par étape de l'histoire, les descriptions courtes des zones pour la Carte, les notes d'Observations par espèce. *Défaut* : textes provisoires marqués comme tels.
 3. **Nom du joueur** : le jeu n'a pas encore d'écran de nom. *Défaut* : « Kevin », modifiable plus tard.
 4. **Argent sur le tableau de bord** : *défaut* : non (Dresseur, Sac et Boutique seulement).
-5. **Marquer un Pokémon favori** (maquette Équipe) : *défaut* : absent.
+5. ~~**Marquer un Pokémon favori**~~ : **tranché par Kevin le 2026-10-02 : favoris adoptés** (§2, dossier 09 §8).
 
 ## Décisions verrouillées
 
