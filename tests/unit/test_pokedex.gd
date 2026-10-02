@@ -64,15 +64,26 @@ func test_to_dict_and_from_dict_round_trip() -> void:
 	_dex.mark_seen(&"rattata")
 	_dex.mark_caught(&"rattata")
 	var dict := _dex.to_dict()
-	assert_eq(dict["seen"], ["pidgey", "rattata"])
-	assert_eq(dict["caught"], ["rattata"])
+	assert_eq(dict["entries"].keys(), ["pidgey", "rattata"], "entrées triées")
+	assert_false(dict["entries"]["pidgey"]["caught"])
+	assert_true(dict["entries"]["rattata"]["caught"])
 	var loaded := Pokedex.new()
-	assert_true(loaded.from_dict(dict))
+	assert_true(loaded.from_dict(JSON.parse_string(JSON.stringify(dict))))
 	assert_true(loaded.is_seen(&"pidgey"))
 	assert_true(loaded.is_caught(&"rattata"))
 	assert_true(loaded.is_seen(&"rattata"))
 	assert_eq(loaded.seen_count(), 2)
 	assert_eq(loaded.caught_count(), 1)
+	assert_eq(loaded.to_dict(), dict)
+
+
+func test_from_dict_reads_the_old_lists_shape() -> void:
+	# Forme du jalon 5 T0 ({ seen, caught }), avant les faits du §16.3.
+	var loaded := Pokedex.new()
+	assert_true(loaded.from_dict({"seen": ["pidgey", "rattata"], "caught": ["rattata"]}))
+	assert_eq(loaded.seen_ids(), [&"pidgey", &"rattata"] as Array[StringName])
+	assert_eq(loaded.caught_ids(), [&"rattata"] as Array[StringName])
+	assert_eq(loaded.times_seen(&"pidgey"), 1)
 
 
 func test_from_dict_marks_caught_as_seen_even_when_seen_omits_it() -> void:
@@ -86,5 +97,76 @@ func test_from_dict_discards_invalid_entries() -> void:
 	var loaded := Pokedex.new()
 	assert_false(loaded.from_dict({"seen": [42, ""], "caught": "pas une liste"}))
 	assert_eq(loaded.seen_count(), 0)
-	# 42 écarté, "" écarté, « caught » n'est pas une liste : trois push_error attendus.
-	assert_push_error_count(3)
+	assert_false(loaded.from_dict({"entries": {"pidgey": "x", "": {}, "rattata": {}}}))
+	assert_eq(loaded.seen_ids(), [&"rattata"] as Array[StringName], "l'entrée valide reste")
+	assert_false(loaded.from_dict({"entries": []}))
+	assert_eq(loaded.seen_count(), 0)
+	# 42 écarté, "" écarté, « caught » pas une liste (3) ; « x » et « » écartés (2) ;
+	# « entries » pas un dictionnaire (1) : six push_error attendus.
+	assert_push_error_count(6)
+
+
+# --- Faits par espèce (jalon 5 §16.3) -------------------------------------------------------
+
+func test_mark_seen_without_map_or_date_keeps_the_old_api() -> void:
+	assert_true(_dex.mark_seen(&"pidgey"))
+	var entry := _dex.get_entry(&"pidgey")
+	assert_not_null(entry)
+	assert_eq(entry.times_seen, 1)
+	assert_eq(entry.first_seen_map, &"")
+	assert_eq(entry.first_seen_date, "")
+	assert_eq(entry.seen_maps.size(), 0, "pas de carte inconnue dans la liste")
+	assert_null(_dex.get_entry(&"rattata"), "jamais vue → pas d'entrée")
+
+
+func test_first_sighting_is_kept_and_sightings_are_counted() -> void:
+	assert_true(_dex.mark_seen(&"pidgey", &"route_1", "2026-10-02T10:00:00"))
+	assert_false(_dex.mark_seen(&"pidgey", &"route_1", "2026-10-02T10:05:00"))
+	assert_false(_dex.mark_seen(&"pidgey", &"viridian_forest", "2026-10-03T09:00:00"))
+	var entry := _dex.get_entry(&"pidgey")
+	assert_eq(entry.first_seen_map, &"route_1")
+	assert_eq(entry.first_seen_date, "2026-10-02T10:00:00", "la première date reste")
+	assert_eq(entry.seen_maps, [&"route_1", &"viridian_forest"] as Array[StringName])
+	assert_eq(_dex.times_seen(&"pidgey"), 3)
+	assert_eq(_dex.times_caught(&"pidgey"), 0)
+	assert_eq(_dex.times_seen(&"mew"), 0)
+
+
+func test_capture_after_sighting_dates_the_first_capture_only() -> void:
+	_dex.mark_seen(&"rattata", &"route_1", "d1")
+	assert_true(_dex.mark_caught(&"rattata", &"route_1", "d2"))
+	assert_false(_dex.mark_caught(&"rattata", &"route_22", "d3"))
+	var entry := _dex.get_entry(&"rattata")
+	assert_eq(entry.first_seen_date, "d1")
+	assert_eq(entry.first_caught_map, &"route_1")
+	assert_eq(entry.first_caught_date, "d2")
+	assert_eq(entry.times_caught, 2)
+	assert_eq(entry.times_seen, 1, "une capture ne compte pas une observation de plus")
+	assert_eq(_dex.caught_count(), 1)
+
+
+func test_capture_of_an_unseen_species_counts_as_its_first_sighting() -> void:
+	# Le starter : « capturé » à son entrée dans l'équipe sans avoir été « vu » en combat.
+	assert_true(_dex.mark_caught(&"charmander", &"oak_lab", "d1"))
+	var entry := _dex.get_entry(&"charmander")
+	assert_true(_dex.is_seen(&"charmander"), "caught ⊆ seen")
+	assert_eq(entry.first_seen_map, &"oak_lab")
+	assert_eq(entry.first_seen_date, "d1")
+	assert_eq(entry.seen_maps, [&"oak_lab"] as Array[StringName])
+	assert_eq(entry.times_seen, 0)
+	assert_eq(entry.times_caught, 1)
+
+
+func test_entry_round_trip_and_tolerant_reading() -> void:
+	_dex.mark_seen(&"pidgey", &"route_1", "d1")
+	_dex.mark_caught(&"pidgey", &"route_1", "d2")
+	var dict := _dex.get_entry(&"pidgey").to_dict()
+	var copy := PokedexEntry.from_dict(&"pidgey", JSON.parse_string(JSON.stringify(dict)))
+	assert_eq(copy.to_dict(), dict)
+	assert_eq(copy.species, &"pidgey")
+	var sparse := PokedexEntry.from_dict(&"pidgey", {"caught": "oui", "times_seen": -2,
+		"seen_maps": "route_1"})
+	assert_false(sparse.caught)
+	assert_eq(sparse.times_seen, 0)
+	assert_eq(sparse.seen_maps.size(), 0)
+	assert_eq(sparse.first_seen_map, &"")

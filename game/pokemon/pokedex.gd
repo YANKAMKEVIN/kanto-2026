@@ -1,100 +1,151 @@
 class_name Pokedex
 extends RefCounted
-## Enregistrement des espèces vues et capturées (jalon 5 ; décision de Kevin, 2026-09-29).
+## Enregistrement des espèces vues et capturées (jalon 5 ; décision de Kevin, 2026-09-29) et,
+## par espèce, des faits que le Pokédex du J6 affichera (jalon 5 §16.3 : premières observation
+## et capture, cartes, compteurs — voir [PokedexEntry]).
 ##
 ## Classe pure, sans nœud ni autoload. **L'écran** Pokédex arrive au jalon 6 ; les **données**
-## commencent à être collectées dès le jalon 5 et sont sérialisées dans la sauvegarde du
-## jalon 5, pour que le jalon 6 ne soit qu'une interface sur des données déjà présentes,
-## jamais un système rétro-greffé.
+## sont collectées dès le jalon 5 et sérialisées dans la sauvegarde, pour que le jalon 6 ne
+## soit qu'une interface sur des données déjà présentes, jamais un système rétro-greffé.
 ##
 ## Points de marquage (implémentés dans leurs tâches, pas ici) :
 ##  - « vu » quand un Pokémon adverse entre en combat (événement SENT_OUT côté FOE, 5B) ;
 ##  - « capturé » à la capture réussie (5D) ; capturer implique voir.
-## Une espèce capturée est toujours aussi vue ([method mark_caught] appelle [method mark_seen]).
-## `caught ⊆ seen` est un invariant.
+## Une espèce capturée est toujours aussi vue. `caught ⊆ seen` est un invariant.
+## La carte et la date sont facultatives ([method mark_seen] / [method mark_caught] restent
+## appelables avec la seule espèce) ; `GameState.record_seen` / `record_caught` les fournissent.
 
-var _seen: Dictionary[StringName, bool] = {}
-var _caught: Dictionary[StringName, bool] = {}
+var _entries: Dictionary[StringName, PokedexEntry] = {}
 
 
-## Marque [param species] comme vue. Vrai si c'est la première fois (nouvelle entrée « vu »).
-func mark_seen(species: StringName) -> bool:
-	if species.is_empty() or _seen.has(species):
+## Marque [param species] comme vue (une observation de plus, sur [param map] à [param date]).
+## Vrai si c'est la première fois (nouvelle entrée « vu »).
+func mark_seen(species: StringName, map: StringName = &"", date: String = "") -> bool:
+	if species.is_empty():
 		return false
-	_seen[species] = true
-	return true
+	return _entry_for(species).see(map, date)
 
 
 ## Marque [param species] comme capturée (et vue). Vrai si c'est la première capture de
 ## l'espèce (« Nouvelle entrée Pokédex », dossier 05 §17).
-func mark_caught(species: StringName) -> bool:
+func mark_caught(species: StringName, map: StringName = &"", date: String = "") -> bool:
 	if species.is_empty():
 		return false
-	mark_seen(species)
-	if _caught.has(species):
-		return false
-	_caught[species] = true
-	return true
+	return _entry_for(species).capture(map, date)
 
 
 func is_seen(species: StringName) -> bool:
-	return _seen.has(species)
+	return _entries.has(species)
 
 
 func is_caught(species: StringName) -> bool:
-	return _caught.has(species)
+	var entry: PokedexEntry = _entries.get(species)
+	return entry != null and entry.caught
 
 
+## Entrée de [param species], ou null si elle n'a jamais été vue.
+func get_entry(species: StringName) -> PokedexEntry:
+	return _entries.get(species)
+
+
+## Nombre d'observations de [param species] (0 si jamais vue).
+func times_seen(species: StringName) -> int:
+	var entry: PokedexEntry = _entries.get(species)
+	return entry.times_seen if entry != null else 0
+
+
+## Nombre de captures de [param species] (0 si jamais capturée).
+func times_caught(species: StringName) -> int:
+	var entry: PokedexEntry = _entries.get(species)
+	return entry.times_caught if entry != null else 0
+
+
+## Nombre d'espèces vues.
 func seen_count() -> int:
-	return _seen.size()
+	return _entries.size()
 
 
+## Nombre d'espèces capturées.
 func caught_count() -> int:
-	return _caught.size()
+	var count := 0
+	for entry: PokedexEntry in _entries.values():
+		if entry.caught:
+			count += 1
+	return count
 
 
 ## Espèces vues, triées (ordre stable pour les tests et la future interface).
 func seen_ids() -> Array[StringName]:
-	return _sorted(_seen)
+	var ids: Array[StringName] = []
+	ids.assign(_entries.keys())
+	return _sorted(ids)
 
 
 ## Espèces capturées, triées.
 func caught_ids() -> Array[StringName]:
-	return _sorted(_caught)
+	var ids: Array[StringName] = []
+	for species: StringName in _entries:
+		if _entries[species].caught:
+			ids.append(species)
+	return _sorted(ids)
 
 
 ## Vide le Pokédex (nouvelle partie).
 func clear() -> void:
-	_seen.clear()
-	_caught.clear()
+	_entries.clear()
 
 
-## Pokédex prêt pour le JSON (sauvegarde) : { "seen": [...], "caught": [...] }, triés.
+## Pokédex prêt pour le JSON (sauvegarde) : { "entries": { "pidgey": PokedexEntry.to_dict } },
+## espèces triées.
 func to_dict() -> Dictionary:
-	return {
-		"seen": _to_strings(seen_ids()),
-		"caught": _to_strings(caught_ids()),
-	}
+	var entries: Dictionary = {}
+	for species: StringName in seen_ids():
+		entries[String(species)] = _entries[species].to_dict()
+	return {"entries": entries}
 
 
 ## Remplace le contenu par [param dict] ([method to_dict]). Faux si une entrée est invalide
-## (elle est écartée) ; capturer une espèce implique la voir, même si « seen » l'omet.
+## (elle est écartée). Accepte aussi l'ancienne forme { "seen": [...], "caught": [...] }
+## (jalon 5 T0, avant les faits du §16.3) : capturer une espèce implique la voir, même si
+## « seen » l'omet.
 func from_dict(dict: Dictionary) -> bool:
 	clear()
+	if not dict.has("entries"):
+		return _from_lists(dict)
+	var entries: Variant = dict.get("entries")
+	if not entries is Dictionary:
+		push_error("Pokedex : dictionnaire d'entrées attendu")
+		return false
 	var ok := true
+	for key: Variant in entries:
+		var value: Variant = entries[key]
+		if not key is String or (key as String).is_empty() or not value is Dictionary:
+			push_error("Pokedex : entrée écartée « %s »" % key)
+			ok = false
+			continue
+		_entries[StringName(key)] = PokedexEntry.from_dict(StringName(key), value)
+	return ok
+
+
+func _entry_for(species: StringName) -> PokedexEntry:
+	var entry: PokedexEntry = _entries.get(species)
+	if entry == null:
+		entry = PokedexEntry.new(species)
+		_entries[species] = entry
+	return entry
+
+
+func _from_lists(dict: Dictionary) -> bool:
 	var seen := _read_list(dict.get("seen", []))
 	var caught := _read_list(dict.get("caught", []))
-	ok = seen[1] and caught[1]
 	for species: StringName in seen[0]:
 		mark_seen(species)
 	for species: StringName in caught[0]:
 		mark_caught(species)
-	return ok
+	return seen[1] and caught[1]
 
 
-func _sorted(dict: Dictionary[StringName, bool]) -> Array[StringName]:
-	var ids: Array[StringName] = []
-	ids.assign(dict.keys())
+func _sorted(ids: Array[StringName]) -> Array[StringName]:
 	ids.sort_custom(func(a: StringName, b: StringName) -> bool: return String(a) < String(b))
 	return ids
 
@@ -114,10 +165,3 @@ func _read_list(value: Variant) -> Array:
 			push_error("Pokedex : espèce écartée « %s »" % entry)
 			ok = false
 	return [ids, ok]
-
-
-func _to_strings(ids: Array[StringName]) -> Array:
-	var result: Array = []
-	for id: StringName in ids:
-		result.append(String(id))
-	return result

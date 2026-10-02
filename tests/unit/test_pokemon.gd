@@ -206,6 +206,39 @@ func test_to_dict_round_trip() -> void:
 	assert_eq(copy.moves[1].pp, 29)
 
 
+func test_meeting_data_round_trip() -> void:
+	var charmander := _create(&"charmander", 5)
+	assert_eq(charmander.origin, Pokemon.Origin.UNKNOWN)
+	assert_eq(charmander.met_level, 0)
+	charmander.record_meeting(Pokemon.Origin.STARTER, &"oak_lab", "2026-10-02T14:03:05", "Kevin")
+	charmander.gain_exp(500, _data)
+	assert_eq(charmander.met_level, 5, "le niveau de la rencontre ne bouge plus")
+	var dict := charmander.to_dict()
+	assert_eq(dict["met"], {"origin": "starter", "map": "oak_lab", "level": 5,
+		"date": "2026-10-02T14:03:05", "trainer": "Kevin"})
+	var copy := Pokemon.from_dict(JSON.parse_string(JSON.stringify(dict)), _data)
+	assert_eq(copy.origin, Pokemon.Origin.STARTER)
+	assert_eq(copy.met_map, &"oak_lab")
+	assert_eq(copy.met_level, 5)
+	assert_eq(copy.met_date, "2026-10-02T14:03:05")
+	assert_eq(copy.original_trainer, "Kevin")
+	assert_eq(copy.to_dict(), dict)
+
+
+func test_missing_or_unknown_meeting_data_falls_back_to_defaults() -> void:
+	var dict := _create(&"squirtle", 5).to_dict()
+	dict.erase("met")
+	var copy := Pokemon.from_dict(dict, _data)
+	assert_not_null(copy, "une sauvegarde d'avant le 5C.5 se charge")
+	assert_eq(copy.origin, Pokemon.Origin.UNKNOWN)
+	assert_eq(copy.met_map, &"")
+	dict["met"] = {"origin": "trade", "level": 999, "map": 3}
+	copy = Pokemon.from_dict(dict, _data)
+	assert_eq(copy.origin, Pokemon.Origin.UNKNOWN, "manière inconnue → inconnue")
+	assert_eq(copy.met_level, 100, "niveau borné")
+	assert_eq(copy.met_map, &"")
+
+
 func test_from_dict_rejects_invalid_content() -> void:
 	var dict := _create(&"squirtle", 5).to_dict()
 	var bad := dict.duplicate(true)
