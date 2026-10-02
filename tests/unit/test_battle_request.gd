@@ -30,6 +30,16 @@ func test_trainer_rules() -> void:
 	assert_false(rules.allow_balls)
 
 
+func test_trainer_rules_follow_the_trainer_exp() -> void:
+	# Jalon 5 T9 : le premier combat du rival (rival_lab, gives_exp faux) ne donne pas d'XP.
+	var trainers := TrainerLibrary.new(_data)
+	trainers.load_dir()
+	var rival := trainers.get_trainer(&"rival_lab")
+	assert_false(BattleRules.for_trainer(rival).gives_exp)
+	assert_false(BattleRequest.trainer_battle(rival, Party.new()).rules.gives_exp)
+	assert_true(BattleRules.for_trainer(TrainerData.new()).gives_exp, "dresseur ordinaire")
+
+
 func test_wild_request_builds_the_foe() -> void:
 	var encounter := WildEncounter.new(&"rattata", 3, &"route_1_grass")
 	var request := BattleRequest.wild(encounter, _data, ScriptedRng.new(IV_0), Vector2i(23, 2))

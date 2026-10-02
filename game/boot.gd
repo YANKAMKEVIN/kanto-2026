@@ -21,6 +21,9 @@ const PLAYER_SCENE: PackedScene = preload("res://game/player/player.tscn")
 @export var start_map: StringName = &"player_house_2f"
 @export var start_spawn: StringName = &"start"
 @export var start_facing: Vector2i = Vector2i.DOWN
+## Fichier du départ de débogage ([DebugStart]) ; lu seulement en build debug, quand Boot est
+## la scène principale lancée par le moteur, et si le fichier existe (jamais sous GUT).
+var debug_start_path: String = DebugStart.USER_PATH
 
 var _player: Player
 var _announcer := ZoneAnnouncer.new()
@@ -107,6 +110,7 @@ func _ready() -> void:
 	SceneRouter.map_entered.connect(_on_map_entered)
 	SceneRouter.map_entered.connect(_interactions.on_map_entered)
 	SceneRouter.map_entered.connect(_starter_choice.on_map_entered)
+	_apply_debug_start()
 	SceneRouter.start(start_map, start_spawn, start_facing)
 
 
@@ -213,6 +217,23 @@ func get_encounter_library() -> EncounterLibrary:
 ## Dialogues chargés au démarrage (data/dialogues/).
 func get_dialogue_library() -> DialogueLibrary:
 	return _library
+
+
+## Départ de débogage (jalon 5 T9, [DebugStart]) : remplace la nouvelle partie par celle du
+## fichier [member debug_start_path], s'il est permis et présent. Sans effet sinon.
+func _apply_debug_start() -> void:
+	if not DebugStart.is_allowed(OS.is_debug_build(), get_tree().current_scene == self) \
+			or not FileAccess.file_exists(debug_start_path):
+		return
+	var start := DebugStart.new()
+	if not start.load_file(debug_start_path, _pokemon, _items):
+		return
+	start.apply(GameState, _pokemon)
+	if not start.map.is_empty():
+		start_map = start.map
+		start_spawn = start.spawn
+		start_facing = start.facing
+	print("Départ de débogage (%s) : %s" % [debug_start_path, start.describe()])
 
 
 func _on_transition_started(_target_map: StringName) -> void:

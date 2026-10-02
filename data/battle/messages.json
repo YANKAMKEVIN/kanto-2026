@@ -29,7 +29,17 @@
 			"text_f": "Une {pokemon} sauvage apparaît !", "draft": true
 		},
 		"fled": { "text": "Tu prends la fuite !", "draft": true },
-		"flee_failed": { "text": "Impossible de fuir !", "draft": true }
+		"flee_failed": { "text": "Impossible de fuir !", "draft": true },
+		"level_up": { "text": "{pokemon} monte au niveau {level} !", "draft": true },
+		"move_learned": { "text": "{pokemon} apprend {move} !", "draft": true },
+		"move_forget_prompt": {
+			"text": "{pokemon} veut apprendre {move}, mais connaît déjà quatre capacités.",
+			"draft": true
+		},
+		"move_forgot": { "text": "{pokemon} oublie {old_move} et apprend {move} !", "draft": true },
+		"move_not_learned": { "text": "{pokemon} n'apprend pas {move}.", "draft": true },
+		"seeded": { "text": "Une graine est plantée sur {pokemon} !", "draft": true },
+		"drained": { "text": "Vampigraine draine l'énergie {de_pokemon} !", "draft": true }
 	},
 	"stats": {
 		"atk": "L'Attaque", "def": "La Défense", "spa": "L'Attaque Spéciale",

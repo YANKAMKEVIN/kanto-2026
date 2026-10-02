@@ -305,6 +305,54 @@ func test_route_1_moves_exist_and_are_typed() -> void:
 	assert_eq(_data.get_move(&"quick_attack").priority, 1)
 
 
+func test_leech_seed_is_coded() -> void:
+	# Jalon 5 Q28 : Vampigraine a un effet « seed » (⅛, Plante immunisé), plus en attente.
+	_data.load_dir()
+	var seed := _data.get_move(&"leech_seed")
+	assert_eq(seed.pending_effects.size(), 0)
+	assert_eq(seed.effects.size(), 1)
+	assert_eq(seed.effects[0].kind, MoveEffect.Kind.SEED)
+	assert_almost_eq(seed.effects[0].fraction, 0.125, 0.0001)
+	assert_eq(seed.effects[0].immune_types, [&"grass"] as Array[StringName])
+
+
+## Capacité « seedy » de statut avec le seul effet [param effect].
+func _seed_move(effect: Dictionary) -> Dictionary:
+	return { "seedy": { "name": "Graine", "type": "grass", "category": "status",
+		"accuracy": 90, "pp": 10, "description": "…", "effects": [effect] } }
+
+
+func test_invalid_seed_effects_are_rejected() -> void:
+	assert_true(PokemonData.new().add_moves_from_dict(_seed_move({ "kind": "seed",
+		"fraction": 0.125 }), "ok"), "immune_types facultatif")
+	var cases: Dictionary = {
+		"a": [{ "kind": "seed" }, "« fraction » est obligatoire"],
+		"b": [{ "kind": "seed", "fraction": 0, "immune_types": ["grass"] },
+			"« fraction » doit être un nombre de 0 (exclu) à 1"],
+		"c": [{ "kind": "seed", "fraction": 0.125, "immune_types": "grass" },
+			"immune_types : une liste d'identifiants de types est attendue"],
+		"d": [{ "kind": "seed", "fraction": 0.125, "stat": "atk" }, "clé inconnue « stat »"],
+		"e": [{ "kind": "leech" }, "« kind » vaut stat_stage, recoil, seed"],
+	}
+	for source: String in cases:
+		var data := PokemonData.new()
+		assert_false(data.add_moves_from_dict(_seed_move(cases[source][0]), source), source)
+		assert_string_contains("\n".join(data.get_errors()),
+			"%s capacité « seedy » effet 1" % source)
+		assert_string_contains("\n".join(data.get_errors()), cases[source][1])
+	assert_push_error_count(5)
+
+
+func test_unknown_immune_type_is_a_broken_reference() -> void:
+	_data.add_types_from_dict({"types": {"grass": {"name": "Plante"}}}, "t")
+	_data.add_moves_from_dict(_seed_move({ "kind": "seed", "fraction": 0.125,
+		"immune_types": ["wood"] }), "m")
+	assert_false(_data.check_references())
+	assert_string_contains(_errors(), "capacité « seedy » : type immunisé inconnu « wood »")
+	assert_false(_data.has_move(&"seedy"))
+	assert_push_error_count(1)
+
+
 func test_low_level_wild_moves_have_no_pending_effects() -> void:
 	# Invariant de jouabilité (§3.2) : aux niveaux des rencontres (Roucool 2..5, Rattata
 	# 2..4), toute capacité connue est pleinement codée.

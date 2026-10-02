@@ -24,10 +24,28 @@ extends RefCounted
 ## - BATTLE_ENDED : [member outcome] ([enum Battle.Outcome], du point de vue du joueur) ;
 ## - FLED : le joueur a réussi à fuir (combat sauvage) ;
 ## - FLEE_FAILED : la fuite a échoué, l'adversaire va jouer.
+## Jalon 5C (§2.3), toujours entre le FAINTED adverse et la suite (BATTLE_ENDED ou envoi
+## suivant) ; le Pokémon concerné est un participant du joueur, pas forcément celui en jeu :
+## - EXP_GAINED : une tranche de barre d'XP, dans le [member level] où elle se remplit, de
+##   [member exp_from] à [member exp_to] (fractions 0..1 de la barre) ; [member amount] =
+##   XP gagnée en tout sur la première tranche, 0 sur les suivantes (un niveau gagné ouvre
+##   une nouvelle tranche) ; [member hp], [member max_hp] avant le niveau suivant ;
+## - LEVEL_UP : nouveau [member level], [member hp] et [member max_hp] recalculés ;
+## - MOVE_LEARNED : [member move_id] appris dans un emplacement libre (déjà fait par le
+##   moteur) ;
+## - MOVE_FORGET_OFFERED : [member move_id] à apprendre alors que les 4 emplacements sont
+##   pris. Rien n'a changé : la présentation fait choisir le joueur
+##   ([method Pokemon.replace_move] ou rien).
+## Vampigraine (Q28) :
+## - SEEDED : Pokémon sur lequel la graine est plantée ;
+## - DRAINED : Pokémon drainé en fin de tour ([member amount] PV perdus, [member hp],
+##   [member max_hp]) ; [member healed] PV rendus au Pokémon d'en face, qui en a ensuite
+##   [member healed_hp].
 
 enum Kind {
 	BATTLE_STARTED, SENT_OUT, TURN_STARTED, MOVE_USED, MOVE_MISSED, DAMAGE, NO_EFFECT,
 	STAT_CHANGED, STAT_UNCHANGED, RECOIL, FAINTED, BATTLE_ENDED, FLED, FLEE_FAILED,
+	EXP_GAINED, LEVEL_UP, MOVE_LEARNED, MOVE_FORGET_OFFERED, SEEDED, DRAINED,
 }
 enum SideId { PLAYER, FOE }
 
@@ -52,6 +70,12 @@ var stat: StringName = &""
 var stages: int = 0
 var stage: int = 0
 var outcome: int = 0
+## EXP_GAINED : remplissage de la barre d'XP au début et à la fin de la tranche (0..1).
+var exp_from: float = 0.0
+var exp_to: float = 0.0
+## DRAINED : PV rendus au Pokémon d'en face, et ses PV ensuite.
+var healed: int = 0
+var healed_hp: int = 0
 
 
 func _init(event_kind: Kind = Kind.BATTLE_STARTED, event_side: SideId = SideId.PLAYER) -> void:
@@ -67,4 +91,5 @@ func to_dict() -> Dictionary:
 		"turn": turn, "move": move_id, "pp": pp, "amount": amount, "hp": hp,
 		"max_hp": max_hp, "effectiveness": effectiveness, "critical": critical,
 		"stat": stat, "stages": stages, "stage": stage, "outcome": outcome,
+		"exp_from": exp_from, "exp_to": exp_to, "healed": healed, "healed_hp": healed_hp,
 	}
