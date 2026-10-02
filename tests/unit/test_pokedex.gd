@@ -201,6 +201,25 @@ func test_old_lists_load_with_one_sighting_for_captured_species() -> void:
 	assert_eq(loaded.times_seen(&"pidgey"), 1)
 
 
+func test_notes_round_trip_and_default() -> void:
+	# Jalon 6, T0 (jalon-06.md §5.1) : notes d'Observations posées dans la sauvegarde v2.
+	_dex.mark_seen(&"pidgey", &"route_1", "d1")
+	var entry := _dex.get_entry(&"pidgey")
+	assert_eq(entry.notes, [] as Array[StringName], "aucune note au départ")
+	assert_eq(entry.to_dict()["notes"], [])
+	entry.notes.append(&"pidgey_paths")
+	var copy := PokedexEntry.from_dict(&"pidgey",
+		JSON.parse_string(JSON.stringify(entry.to_dict())))
+	assert_eq(copy.notes, [&"pidgey_paths"] as Array[StringName])
+	var dict := entry.to_dict()
+	dict.erase("notes")
+	assert_eq(PokedexEntry.from_dict(&"pidgey", dict).notes, [] as Array[StringName],
+		"sauvegarde v1 : aucune note")
+	dict["notes"] = ["a", "", 3, "a", "b"]
+	assert_eq(PokedexEntry.from_dict(&"pidgey", dict).notes, [&"a", &"b"] as Array[StringName],
+		"entrées invalides et doublons écartés, sans erreur")
+
+
 func test_entry_round_trip_and_tolerant_reading() -> void:
 	_dex.mark_seen(&"pidgey", &"route_1", "d1")
 	_dex.mark_caught(&"pidgey", &"route_1", "d2")

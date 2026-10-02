@@ -17,6 +17,9 @@ var first_caught_date: String = ""
 var seen_maps: Array[StringName] = []
 var times_seen: int = 0
 var times_caught: int = 0
+## Notes d'Observations débloquées (identifiants de `data/pokedex/kanto.json`, jalon-06.md
+## §3.5), dans l'ordre de déblocage. Champ posé au T0 du J6 ; débloquées à partir du T14.
+var notes: Array[StringName] = []
 
 
 func _init(species_id: StringName = &"") -> void:
@@ -72,6 +75,7 @@ func to_dict() -> Dictionary:
 		"first_caught_map": String(first_caught_map), "first_caught_date": first_caught_date,
 		"seen_maps": JsonFields.ids_to_array(seen_maps),
 		"times_seen": times_seen, "times_caught": times_caught,
+		"notes": JsonFields.ids_to_array(notes),
 	}
 
 
@@ -87,6 +91,10 @@ static func from_dict(species_id: StringName, dict: Dictionary) -> PokedexEntry:
 	entry.seen_maps = JsonFields.get_ids(dict, "seen_maps")
 	entry.times_seen = maxi(JsonFields.get_int(dict, "times_seen"), 0)
 	entry.times_caught = maxi(JsonFields.get_int(dict, "times_caught"), 0)
+	# Notes (J6) : absentes d'une sauvegarde v1 → aucune ; doublons écartés.
+	for note: StringName in JsonFields.get_ids(dict, "notes"):
+		if not entry.notes.has(note):
+			entry.notes.append(note)
 	if entry.caught or entry.times_caught > 0:
 		entry.ensure_seen()
 	return entry

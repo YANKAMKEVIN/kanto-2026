@@ -51,6 +51,9 @@ var met_map: StringName = &""
 var met_level: int = 0
 var met_date: String = ""
 var original_trainer: String = ""
+## Marqué favori par le joueur (Menu Dresseur, jalon 6A ; champ posé au T0 du J6). Aucun rôle
+## dans les règles.
+var favorite: bool = false
 
 
 ## Nom affiché : le surnom, sinon le nom de l'espèce.
@@ -197,6 +200,7 @@ func to_dict() -> Dictionary:
 			"origin": ORIGIN_NAMES.find_key(origin), "map": String(met_map),
 			"level": met_level, "date": met_date, "trainer": original_trainer,
 		},
+		"favorite": favorite,
 	}
 
 
@@ -242,6 +246,8 @@ static func from_dict(dict: Dictionary, data: PokemonData) -> Pokemon:
 	pokemon.met_level = clampi(JsonFields.get_int(met, "level"), 0, ExpCurve.MAX_LEVEL)
 	pokemon.met_date = JsonFields.get_string(met, "date")
 	pokemon.original_trainer = JsonFields.get_string(met, "trainer")
+	# Favori (J6) : absent d'une sauvegarde v1 ou mal formé → faux.
+	pokemon.favorite = JsonFields.get_bool(dict, "favorite")
 	return pokemon
 
 

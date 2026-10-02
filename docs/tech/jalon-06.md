@@ -16,7 +16,7 @@
 >
 > **6F — Paramètres.** Vitesse du texte, joystick, mode gaucher, haptique, réduction des animations et des flashs, taille du texte, contraste, « Sauvegarder maintenant ».
 
-**Pré-requis** : le **jalon 5 validé par Kevin et fusionné** (T16, 5F). Au moment de ce plan, il reste le T16 (QA de la capture) et le 5F. **Rien du J6 n'est codé avant** (décision de Kevin). Ce plan s'appuie sur le code réel de `jalon-05` au commit `c1842e5` ; la tâche d'architecture de chaque sous-jalon commence par **aligner ce plan sur le code du moment** (comme les §15 du jalon 5 et §13–14 du jalon 4). Départ mesuré sur `c1842e5` : **1582 tests verts** (104 scripts), import sans erreur.
+**Pré-requis** : le **jalon 5 validé par Kevin et fusionné** (T16, 5F). Au moment de ce plan, il reste le T16 (QA de la capture) et le 5F. **Rien du J6 n'est codé avant** (décision de Kevin). Ce plan s'appuie sur le code réel de `jalon-05` au commit `c1842e5` ; la tâche d'architecture de chaque sous-jalon commence par **aligner ce plan sur le code du moment** (comme les §15 du jalon 5 et §13–14 du jalon 4). Départ mesuré sur `c1842e5` : **1582 tests verts** (104 scripts), import sans erreur. **Aligné au T0 sur le code fusionné `d8e8f2b`** (jalon 5 complet + lot de dettes) : écarts au §15 ; 1600 tests au départ du J6, 1619 après le T0.
 
 **Hors périmètre** (dossiers 08 et 09, règle de déblocage, règle « une couche à la fois ») :
 - **Argent** (J7A), **badges obtenus** (J10), **Stockage Pokémon** et son écran (J7A), **Boutique** (J7A), **colis** (premier objet clé, J7A), **activation narrative du Pokédex** par Chen (J7A).
@@ -58,7 +58,7 @@ Chaque sous-jalon ne commence qu'une fois le précédent **validé par Kevin**. 
 | Équipe, ordre, PV, PP, XP, capacités | `GameState.party` (`Party`, `Pokemon.to_dict`) | 6A |
 | Rencontre de chaque Pokémon : manière, carte, niveau, date, dresseur | `Pokemon.origin`, `met_map`, `met_level`, `met_date`, `original_trainer` | 6A Histoire |
 | Pokédex par espèce : vu, capturé, premières observation et capture (carte, date), cartes vues, compteurs | `Pokedex` + `PokedexEntry` | 6C, 6D, 6E |
-| Sac (quantités) | `Bag` (`{ "poke_ball": 5, "potion": 1 }`) | 6B |
+| Sac (quantités ; depuis le T0 : favoris et ordre d'obtention) | `Bag` (v1 : `{ "poke_ball": 5 }` ; v2 : `{ "items", "favorites", "acquired" }`, §5.1) | 6B |
 | Temps de jeu, début de l'aventure, nom du joueur | `GameState.play_time`, `started_at`, `player_name` | tableau de bord, 6E |
 | Zones découvertes (carte → date) | `GameState.discovered_maps` | 6D, 6E |
 | Objets trouvés (objet, carte, date) | `GameState.found_items` | 6D |
@@ -91,7 +91,7 @@ Toutes en `RefCounted` (ou statiques), sans nœud ni autoload, testées avec GUT
 
 ### 3.1 Sauvegarde v2 (T0)
 
-Voir §5. Fichiers : `save_system.gd` (`VERSION = 2`, cas 1 → 2 dans `upgrade`), `bag.gd` (favoris, ordre d'obtention, nouvelle forme), `pokemon.gd` (`favorite`), `pokedex_entry.gd` / `pokedex.gd` (notes, capture comptée comme observation si Q-8 = défaut).
+**Fait au T0.** Voir §5.1. Fichiers : `save_system.gd` (`VERSION = 2`, cas 1 → 2 dans `upgrade`, membre `version` pour simuler une build plus ancienne dans les tests), `bag.gd` (favoris, ordre d'obtention, forme v2, `Bag.upgrade_flat`), `pokemon.gd` (`favorite`), `pokedex_entry.gd` (`notes`). La capture comptée comme observation (Q-8) était **déjà codée** par le lot de dettes du J5 (§15) : rien à refaire.
 
 ### 3.2 Navigation et déblocage (T2)
 
@@ -201,8 +201,8 @@ Tests : `test_menu_route`, `test_menu_navigator` (ouvrir, fermer, retour depuis 
 
 ### 3.3 Équipe (T6)
 
-- `Party.move(from: int, to: int) -> bool` (insère à la place, décale les autres), `Party.swap(a: int, b: int) -> bool`, `Party.index_of(pokemon) -> int`. Le premier reste le Pokémon de tête.
-- `Pokemon.favorite: bool` (posé au T0), `Pokemon.set_favorite(value: bool)`.
+- `Party.move(from: int, to: int) -> bool` (insère à la place, décale les autres), `Party.swap(a: int, b: int) -> bool`. Le premier reste le Pokémon de tête. (`Party.index_of(pokemon) -> int` **existe déjà**, lot de dettes du J5.)
+- `Pokemon.favorite: bool` : **posé au T0** (champ public, sauvegardé ; pas de setter nécessaire).
 - `ExpCalc.level_span(pokemon, data) -> Vector2i` : XP gagnée dans le niveau et XP du niveau (« 320 / 560 », reste « 240 XP avant le niveau suivant ») ; au niveau 100, `Vector2i.ZERO` (la barre est pleine, pas de texte).
 - `EvolutionReveal.chain(species, data, pokedex, visible: bool) -> Array[EvolutionStageView]` : la chaîne de la lignée ; un stade est révélé s'il est **vu** et si le Pokédex est **visible** ; sinon « ??? ». **Jamais de condition** (niveau, objet). Une espèce sans évolution n'a pas de section (Q-9).
 - `TeamViews.build(party, data, zones, pokedex, unlocks) -> TeamView` : membres (`TeamMemberView` : nom, sexe, Nv., PV, statut en texte — seulement « K.O. » au J6 —, favori, sprite) et fiche du sélectionné (`PokemonSheetView` : types, sexe, statistiques en `StatView` (nom, valeur, part de la jauge), capacités en `BattleMoveView` existants, histoire en `HistoryView` (lieu = nom de **zone**, niveau, dresseur, date « 2 octobre 2026 »), XP, évolution).
@@ -235,14 +235,14 @@ static func check(bag: Bag, item: ItemData, pokemon: Pokemon, context: StringNam
 static func apply(bag: Bag, item: ItemData, pokemon: Pokemon, context: StringName) -> ItemUseResult
 ```
   `ItemUseResult` : `check`, `item_id`, `hp_before`, `hp_after`, `max_hp`, `remaining`. Les raisons affichées (« PV déjà au maximum », « Ce Pokémon est K.O. ») sont des textes d'interface choisis par la vue d'après `Check` (Q-11).
-- `Bag` (forme posée au T0) : `toggle_favorite(id) -> bool`, `is_favorite(id)`, `favorite_ids()`, `acquired_rank(id) -> int` (ordre d'obtention, pour « récents ») ; un objet retiré à 0 garde son favori (il réapparaîtra favori).
+- `Bag` : **posés au T0** : `is_favorite(id)`, `set_favorite(id, value) -> bool`, `favorite_ids()` (ordre de marquage), `acquired_rank(id) -> int` (rang de la **dernière** obtention : chaque `add` rend l'objet le plus récent, Q-12) ; un objet retiré à 0 garde son favori et son rang (il réapparaîtra favori). Le T10 n'ajoute qu'un éventuel `toggle_favorite(id)` (enveloppe de `set_favorite`).
 - `BagQuery` (statique) : `CONTEXT_FIELD`, `CONTEXT_TEAM`, `CONTEXT_WILD_BATTLE`, `CONTEXT_TRAINER_BATTLE` ; `enum Sort { RELEVANCE, NAME, QUANTITY, RECENT }` ; `entries(bag, items, context, sort, target: Pokemon = null) -> Array[BagEntryView]` (catégorie, favori, utilisable ici, mention « Utilisable en combat ») ; `categories(entries) -> Array[StringName]` ; `start_category(context, last) -> StringName` (combat sauvage : CAPTURE ; depuis l'Équipe : SOINS, filtrés sur les objets **compatibles** avec ce Pokémon ; exploration : le dernier onglet ouvert pendant la session). « Pertinence » : en combat sauvage, Balls puis soins ; ailleurs, l'ordre des données.
 - `PartyPickerView` : pour chaque membre, nom, PV, et soit « utilisable », soit la **raison** (jamais un bouton désactivé sans explication).
 
 **Moteur de combat** (le seul changement de moteur du J6, T10) :
 - `BattleAction.heal(item_id: StringName, party_index: int) -> BattleAction` (`Kind.ITEM` existant, champ `target` ajouté ; −1 pour une Ball).
 - `BattleRules.allow_heal_items` (vrai pour `for_wild` et `for_trainer`) ; légal si `ItemUse.check(..., CONTEXT_*_BATTLE) == OK` ; joué **avant les capacités** comme une Ball ; l'adversaire joue ensuite (Q-10). Le moteur applique le soin au `Pokemon` de l'équipe ; **il ne touche pas au Sac** (le directeur retire l'objet une fois, comme la Ball au 5D).
-- `BattleEvent.Kind.ITEM_USED` (**fin d'enum**) : `side`, `pokemon_name`, `species_id`, `hp`, `max_hp`, `amount`, `item_id`, `party_index`.
+- `BattleEvent.Kind.ITEM_USED` (**fin d'enum**) : `side`, `pokemon_name`, `species_id`, `hp`, `max_hp`, `amount`, `item_id`, `party_index`. (`BattleEvent.party_index` **existe déjà** sur tout événement de Pokémon, rempli par `Battle._pokemon_event` ; le directeur retrouve le Pokémon par `_find_player_pokemon` : le soin d'un membre hors combat s'appuie dessus.)
 - `BattleText` + `data/battle/messages.json` : modèles `item_used` (« Tu utilises une Potion sur {pokemon}. ») et `hp_restored` (« {pokemon} récupère {amount} PV. »), **proposés, `draft`**, ajoutés à `TEMPLATE_IDS` dans le même commit.
 - `BattlePlayback` : temps `HEAL` (fin d'enum) qui remonte la barre de PV du Pokémon en jeu.
 
@@ -251,7 +251,7 @@ Tests : `test_item_library` (catégories, `heal_amount`), `test_item_use` (PV pl
 ### 3.5 Pokédex (T14)
 
 - **Données** `data/pokedex/kanto.json` (nouveau, `PokedexLibrary`) : `{ "size": 151, "species": { "pidgey": { "height": 0.3, "weight": 1.8, "description": "…", "draft": true, "notes": [ { "id": "pidgey_paths", "text": "…", "unlock": { "seen": 1 }, "draft": true } ] } } }`. Le numéro vient de `SpeciesData.dex` (pas de doublon) ; l'espèce doit exister dans `PokemonData`. Conditions de note : `seen` (n observations), `caught` (n captures), `map` (vue sur cette carte), `flag` (drapeau d'histoire). Textes **provisoires** (Q-5, Q-6).
-- `PokedexEntry.notes: Array[StringName]` (posé au T0), `Pokedex.unlock_note(species, note_id) -> bool`, `Pokedex.has_seen_at(species, map) -> bool`.
+- `PokedexEntry.notes: Array[StringName]` (**posé au T0** : sauvegardé, doublons écartés à la lecture), `Pokedex.unlock_note(species, note_id) -> bool`, `Pokedex.has_seen_at(species, map) -> bool`.
 - `PokedexNotes.refresh(pokedex, library, flags) -> Array[Array]` : débloque les notes dont la condition tient, renvoie les `[espèce, note]` nouvelles. Appelé après chaque observation, capture ou changement de drapeau. **Les notes se débloquent silencieusement avant l'activation** (règle de déblocage) ; elles apparaîtront d'un coup.
 - `PokedexQuery` (statique) : `enum State { UNKNOWN, SEEN, CAUGHT }`, `enum Filter { ALL, SEEN, CAUGHT, HABITAT }` ; `slots(pokedex, data, library, filter, zone, type, text) -> Array[PokedexSlotView]` (numéros 1 à `size` ; inconnu = numéro et « ??? », **sans silhouette** ; la recherche ne porte que sur les espèces connues) ; `counts_text(pokedex, library) -> String` (« 3 vus · 2 capturés · 151 espèces ») ; `sheet(species, pokedex, data, library, zones) -> PokedexSheetView` (Aperçu ; à la capture seulement : types, taille, poids, description ; « vu N fois · capturé N fois » ; **pas de statistiques de base ni de talents** ; Habitat = zones observées, jamais une zone non découverte ; Évolution par `EvolutionReveal` ; Observations = notes débloquées).
 - `PokedexUpdates.message(kind, species_name) -> Array[String]` : `NEW_SPECIES` → « Pokédex mis à jour » / « Roucool » ; `NEW_HABITAT` → « Nouvel habitat observé » / « Roucool » ; `NEW_NOTE` → « Pokédex mis à jour » / « Roucool » ; `EVOLUTION_DISCOVERED` → « Évolution découverte » / « Roucoups ». Une **capture** n'a pas de toast : la carte de capture dit déjà « Nouvelle entrée Pokédex » (après l'activation). Aucun message si le Pokédex n'est pas visible.
@@ -354,18 +354,44 @@ Tests : `test_game_settings` (défauts, bornes, aller-retour, champ inconnu igno
 
 | Champ | Forme v2 | Valeur pour une partie v1 | Arrive dans l'écran |
 |---|---|---|---|
-| `bag` | `{ "items": { "poke_ball": 4 }, "favorites": ["potion"], "acquired": { "poke_ball": 1, "potion": 2 } }` | **migration** : `{ "items": <ancien dict>, "favorites": [], "acquired": <ordre alphabétique> }` | 6B |
-| `party[i].favorite`, `storage[i].favorite` | booléen | `false` | 6A (et Stockage au J7A) |
-| `pokedex.entries[s].notes` | liste d'identifiants de notes débloquées | `[]` | 6C |
-| `pokedex.entries[s].times_seen` | entier | **migration (Q-8)** : une espèce capturée avec `times_seen = 0` (le starter) passe à 1 | 6C |
+| `bag` | `{ "items": { "poke_ball": 4 }, "favorites": ["potion"], "acquired": { "poke_ball": 1, "potion": 2 } }` | **migration** : `{ "items": <ancien dict>, "favorites": [], "acquired": <ordre alphabétique des quantités valides> }` (`Bag.upgrade_flat`) | 6B |
+| `party[i].favorite`, `storage[i].favorite` | booléen | `false` (posé par la migration) | 6A (et Stockage au J7A) |
+| `pokedex.entries[s].notes` | liste d'identifiants de notes débloquées | `[]` (posé par la migration) | 6C |
+| `pokedex.entries[s].times_seen` | entier (inchangé) | **pas de migration** : la Q-8 est déjà corrigée **au chargement**, pour toute version (voir ci-dessous) | 6C |
 
-`SaveSystem.upgrade`, cas `1:` : réécrit `bag` et corrige `times_seen` (si Q-8 = défaut). Les chargeurs restent **tolérants** : `Bag.load_dict` accepte aussi l'ancienne forme plate, `Pokemon.from_dict` lit `favorite` avec `false` par défaut (même principe que `Pokedex._from_lists`).
+**Fait au T0.** `SaveSystem.upgrade(content, target = VERSION)`, cas `1:` (`_upgrade_1_to_2`) : Sac plat → forme v2 par `Bag.upgrade_flat` (une seule règle, partagée avec le chargeur) ; `favorite: false` sur chaque Pokémon de `party` et `storage` ; `notes: []` sur chaque entrée du Pokédex ; un champ absent ou mal formé est laissé aux chargeurs tolérants (rien n'est inventé, rien ne plante). Les chargeurs restent **tolérants** : `Bag.load_dict` accepte aussi l'ancienne forme plate (même `upgrade_flat`), `Pokemon.from_dict` lit `favorite` (faux par défaut ou si mal formé), `PokedexEntry.from_dict` lit `notes` (vide par défaut, doublons écartés).
+
+**Q-8 et migration — une seule règle** : le lot de dettes du J5 (`a6d9254`, fusionné `3ed11f8`) a déjà rendu la capture « première observation » (`PokedexEntry.capture` → `see` si `times_seen < 1`) et corrige les anciennes entrées **au chargement** : `PokedexEntry.from_dict` et `Pokedex.from_dict` appellent `ensure_seen()` (au moins 1 observation ; sans première observation datée, reprend la carte et la date de la première capture ; ajoute la carte à `seen_maps`). Cette correction vaut pour une v1 comme pour une v2. La migration v1 → v2 **ne touche donc pas** `times_seen` : le dictionnaire migré garde `0`, `GameState.load_dict` le lit à 1, et la première réécriture l'écrit à 1 (test `test_the_real_v1_save_is_migrated_to_v2_on_read`). Deux corrections parallèles auraient pu diverger (date, carte).
+
+**Simuler une ancienne build** : `SaveSystem.version` (membre, `VERSION` par défaut) est la version écrite et acceptée ; les tests la mettent à 1 pour reproduire ce que fait un APK du J5 (même code de refus : `ERR_INVALID_DATA`, fichier intact, `Boot` sans autosave pour la session).
 
 **Pas dans la sauvegarde** : l'onglet ouvert du Sac et le tri (mémoire de session) ; le drapeau de débogage ; l'objectif (déduit des drapeaux et des données) ; les zones et services (déduits des cartes découvertes) ; les évolutions découvertes (déduites des espèces vues) ; **les réglages** (fichier à part, §5.3).
 
-**Tests (T0)** : `test_save_system` (une v1 réelle, recopiée du S3 du jalon 5 en fixture `tests/fixtures/save/v1_after_capture.json`, migrée en v2 : Sac, Pokédex, équipe identiques ; v2 aller-retour ; v3 refusée ; forme plate du Sac acceptée par le chargeur), `test_game_state` (`to_dict` / `load_dict` avec les nouveaux champs ; défauts), `test_bag`, `test_pokemon` (`favorite`), `test_pokedex` (notes, `times_seen` après capture), `test_save_boot` (vrai `Boot` : une v1 chargée puis réécrite en v2 ; une v2 lue par un `SaveSystem` dont `VERSION` vaut 1 → refusée, fichier intact).
+**Fixture v1 réelle** : `tests/fixtures/save/v1_after_capture.json` = copie **telle quelle** de `build/qa/jalon05d_t16/save_passage1.json` (sauvegarde du S24 de Kevin, QA T16 passage 1, après les captures de Roucool à Bourg Palette et de Rattata sur la Route 1 ; 3 Pokémon, Sac `poke_ball: 3, potion: 1`, 4 espèces au Pokédex dont le starter « vu 0 fois », 3 grands moments, stockage vide). Les sauvegardes du S3 (`build/qa/jalon05_s3/`) précèdent la capture : non retenues.
 
-**T1 — QA S24 de la migration (seule)** : partir de la **vraie sauvegarde de Kevin** (J5) ; installer le build du T0 ; reprise exacte (carte, case, équipe, PV, XP, Sac, Pokédex, temps de jeu) ; quitter, relancer : `save.json` en version 2 (`run-as`) ; réinstaller l'APK du J5 : il démarre une partie neuve **sans écrire** (journal « version plus récente ») ; réinstaller le J6 : la partie est intacte.
+**Tests (T0, faits, 19 nouveaux)** : `test_save_system` (v1 réelle migrée à la lecture : Sac v2, `favorite`, `notes`, `times_seen` non touché ; chargée : équipe, PV, XP, Sac, Pokédex, moments, temps de jeu, et **tous les autres champs réécrits à l'identique** ; réécrite en v2 et relue identique ; aller-retour v2 avec favoris (Sac, équipe, stockage) et notes ; v3 refusée, fichier intact ; une v2 lue par un `SaveSystem` en version 1 → refusée, intacte, pas mise de côté ; `upgrade` 1 → 2 laisse une forme v2 et les champs mal formés tranquilles), `test_bag` (forme v2, forme plate lue, `upgrade_flat`, rang de dernière obtention, favoris gardés à 0, champs informatifs mal formés ignorés, `items` non objet = erreur), `test_pokemon` (`favorite` : aller-retour, défaut, évolution), `test_pokedex` (`notes`), `test_save_boot` (vrai `Boot` : la v1 réelle reprend à l'identique — carte, case, orientation, équipe, Sac, Pokédex, temps de jeu — puis est réécrite en v2 ; une v2 avec un `SaveSystem` en version 1 → nouvelle partie, aucune écriture de la session, fichier intact). `test_game_state` n'avait rien à changer (mêmes clés de premier niveau).
+
+#### 5.1.1 Protocole S24 du T1 (migration validée seule)
+
+But : la **vraie partie de Kevin** (celle de la 5F, sur le S24, format v1) passe en v2 sans rien perdre, et un APK du J5 ne l'écrase jamais. Tout se fait depuis le Mac, S24 branché (ou débogage sans fil), APK **debug** (sinon `run-as` est refusé). Dossier des preuves : `build/qa/jalon06_t1/`. Variables : `ADB=~/Library/Android/sdk/platform-tools/adb`, `S=$(tools/s24_serial.sh)`, `PKG=dev.kevin.kanto2026`.
+
+**Règles de sécurité** : jamais `adb uninstall`, jamais « Effacer les données » (la partie disparaîtrait) ; toujours `install -r` (et `-r -d` pour revenir à l'APK du J5) ; les deux APK sont signés par la même clé debug du Mac (même machine), sinon `install -r` échoue **sans** toucher aux données : s'arrêter et prévenir.
+
+0. **APK du J5, à part, sans toucher au dépôt principal** (une fois, avant tout) :
+   ```bash
+   mkdir -p ~/dev/kanto-2026-j5 && git -C ~/dev/kanto-2026 archive d8e8f2b | tar -x -C ~/dev/kanto-2026-j5
+   cd ~/dev/kanto-2026-j5 && godot --headless --path . --import >/dev/null 2>&1; \
+     godot --headless --path . --export-debug "Android" ~/dev/kanto-2026/build/kanto2026-j5-debug.apk
+   ```
+   (`git archive` ne fait que lire les objets : ni branche, ni copie de travail, ni métadonnée de worktree ; `export_presets.cfg` est versionné, pas de build Gradle.) Dossier **hors** du projet (un `project.godot` imbriqué sous `build/` n'a rien à y faire). Vérifier que `SaveSystem.VERSION` y vaut 1 : `grep "VERSION: int" ~/dev/kanto-2026-j5/game/systems/save/save_system.gd`.
+1. **Sauvegarde de départ** (APK du J5 encore installé, application arrêtée) : `$ADB -s $S shell am force-stop $PKG` puis `$ADB -s $S exec-out run-as $PKG cat files/save.json > build/qa/jalon06_t1/save_v1_kevin.json`. Contrôler : `"version": 1`, la carte, la case, l'équipe (Kevin la lit à voix haute : espèces, Nv., PV), le Sac, le temps de jeu. **Cette copie est la sauvegarde de secours** (restauration : application arrêtée, `$ADB -s $S shell "run-as $PKG sh -c 'cat > files/save.json'" < build/qa/jalon06_t1/save_v1_kevin.json`). Capture d'écran de l'écran actuel du jeu si possible (référence visuelle de la reprise).
+2. **Installer le build du T0** : `tools/deploy_s24.sh` (construit, `install -r`, lance, capture, journal). Ne pas bouger avant la vérification.
+3. **Reprise exacte** : même carte, même case, même orientation ; ouvrir rien d'autre que le jeu ; comparer à l'étape 1 : équipe (ordre, Nv., PV, PP via un combat si besoin), Sac (quantités, en combat sauvage : Poké Balls), temps de jeu qui reprend (pas remis à 0). Journal : « Sauvegarde chargée : … », **aucune** ligne `SaveSystem` ni `Boot : sauvegarde chargée en partie seulement`, aucun `ERROR`.
+4. **Écrite en v2** : Accueil (la sauvegarde est écrite au passage en arrière-plan), puis `$ADB -s $S exec-out run-as $PKG cat files/save.json > build/qa/jalon06_t1/save_v2_apres_t0.json`. Attendu : `"version": 2` ; `bag` = `{ "items": <mêmes quantités>, "favorites": [], "acquired": {…} }` ; `"favorite": false` sur chaque Pokémon ; `"notes": []` sur chaque entrée du Pokédex ; le starter à `times_seen` ≥ 1 (si la partie de la 5F datait d'avant le lot de dettes, il passe de 0 à 1 : attendu) ; **tout le reste identique** à l'étape 1, sauf `play_time` (plus grand) et la position si Kevin a bougé. Comparaison au Mac : `diff <(jq -S 'del(.version,.bag,.play_time)|.party|=map(del(.favorite))|.pokedex.entries|=map_values(del(.notes,.times_seen))' build/qa/jalon06_t1/save_v1_kevin.json) <(jq -S '…même filtre…' build/qa/jalon06_t1/save_v2_apres_t0.json)` → vide. Aucun fichier `save.json.rejected` ni `.corrupt` (`$ADB -s $S shell run-as $PKG ls files`).
+5. **Quitter et relancer** (application tuée depuis les applications récentes) : reprise identique à l'étape 3, journal propre.
+6. **Retour à l'APK du J5** : `$ADB -s $S install -r -d build/kanto2026-j5-debug.apk`, `logcat -c`, lancer. Attendu : **partie neuve** (chambre), journal `SaveSystem : sauvegarde d'une version plus récente (2 > 1)` puis `Boot : … Nouvelle partie SANS sauvegarde automatique`. Jouer 1 à 2 minutes (sortir de la chambre, changer de carte, passer en arrière-plan) : rien ne doit être écrit. Puis `run-as … cat files/save.json` → **identique octet pour octet** à `save_v2_apres_t0.json` (`cmp`) ; `ls files` : ni `.rejected`, ni `.corrupt`.
+7. **Retour au J6** : `tools/deploy_s24.sh --no-build` (réinstalle le build du T0 avec `install -r`). Attendu : la partie de Kevin reprend exactement comme à l'étape 5.
+8. **Rapport** : chaque étape conforme ou non, les 3 fichiers JSON et les journaux (`logcat_etape_N.txt`) dans `build/qa/jalon06_t1/`, captures, nombre de sauvegardes automatiques vues, et la validation de Kevin (« sa partie est là »). En cas d'écart à l'étape 3 ou 4 : **ne plus lancer le J6**, restaurer la copie de l'étape 1, rapporter.
 
 ### 5.2 Données nouvelles (`data/`)
 
@@ -568,9 +594,10 @@ Chaque tâche finit par `tools/test.sh` vert (nombre de tests rapporté), un imp
 #### T0 — architecte-godot : alignement et sauvegarde v2
 - Aligner ce plan sur le code fusionné du J5 (ce qui a bougé depuis `c1842e5`) et sur les réponses de Kevin ; §5.1.
 - **CA** : tests du §5.1 verts ; fixture v1 réelle ; `etat-projet.md` à jour ; aucune interface.
+- **Fait (2026-10-02)** : §5.1 et §15 ; 1619 tests verts (+19), import propre.
 
 #### T1 — qa-mobile : la migration sur le S24 (validée seule)
-- Protocole du §5.1. **CA à rapporter** : chaque étape conforme ; `save.json` en version 2 ; l'APK du J5 ne l'écrase pas ; journal sans erreur `SaveSystem`.
+- Protocole du §5.1.1. **CA à rapporter** : chaque étape conforme ; `save.json` en version 2 ; l'APK du J5 ne l'écrase pas (fichier identique octet pour octet) ; journal sans erreur ; validation de Kevin.
 
 #### T2 — architecte-godot : navigation, déblocage, objectif, zones
 - §3.2 ; `data/story/objectives.json` (Q-4), `data/world/zones.json` (noms et cartes) ; `DebugUnlocks` ; option `--debug-unlock` de `tools/deploy_s24.sh`.
@@ -601,7 +628,7 @@ Chaque tâche finit par `tools/test.sh` vert (nombre de tests rapporté), un imp
 - **CA** : `test_team_screen.gd` : glisser A sur B → **un** `member_moved(a, b)` ; mode DÉPLACER → le même signal, sans glisser ; un emplacement vide n'émet rien ; FAVORI → `favorite_toggled` et l'étoile change **avec un texte** (« Favori »), pas seulement une couleur ; aucune condition d'évolution affichée ; statut « K.O. » en texte. Captures `team`, `team_sheet_moves`, `team_history`, `team_move_mode`.
 
 #### T8 — constructeur-monde : l'Équipe jouable
-- Câblage `MenuDirector` ↔ `TeamScreen` ; lien du Pokémon de tête ; correction du sprite d'entrée en combat (§10, écart 1) si le J5 ne l'a pas faite.
+- Câblage `MenuDirector` ↔ `TeamScreen` ; lien du Pokémon de tête. (Le sprite d'entrée en combat suit déjà le Pokémon envoyé : §10, écart 1, corrigé au J5.)
 - **CA** : `test_menu_team.gd` (vrai `Boot`) : réordonner puis fermer → `GameState.party` dans le nouvel ordre, autosave demandé, **le combat suivant envoie le nouveau premier Pokémon valide** et l'animation d'entrée montre ce Pokémon ; favori sauvegardé et relu. Captures.
 
 #### T9 — qa-mobile : validation du 6A
@@ -729,10 +756,10 @@ Chaque tâche finit par `tools/test.sh` vert (nombre de tests rapporté), un imp
 
 ## 10. Écarts entre le dossier 08 et le code réel, contradictions relevées
 
-1. **Bug du J5 rendu fréquent par le 6A** : `BattleDirector.run_request` choisit le sprite du partenaire qui entre en courant avec `party.get_lead()` (`battle_director.gd`, ligne 163), alors que le moteur envoie `party.first_able()`. Si le premier de l'équipe est K.O. (déjà possible au J5 après une capture), le mauvais Pokémon entre dans le cadre, puis l'image change à l'envoi. Avec la réorganisation de l'équipe, ce cas devient courant. Correction d'une ligne (`first_able()`), avec un test ; à faire dans les dettes du J5 si possible, sinon au T8.
+1. ~~**Bug du J5 rendu fréquent par le 6A** : sprite du partenaire choisi par `party.get_lead()`~~ **Corrigé au J5** (`24901cb`, lot de dettes) : `run_request` lance `Battle.start()` d'abord et prend l'espèce des `SENT_OUT` du moteur ; `_find_player_pokemon` retrouve le Pokémon par `BattleEvent.party_index`. Plus rien au T8.
 2. **Statuts** : le dossier 08 §2 demande « statut toujours en texte (K.O., PSN, PAR, SOM, BRÛ, GEL) ». `Pokemon` n'a aucun statut (statuts au J11) : au J6, seul « K.O. » (déduit des PV) existe.
 3. **Retour Android** : aujourd'hui il ferme l'application (`quit_on_go_back` par défaut). Le dossier 08 §1 veut qu'il ferme le menu : réglage à changer ; en exploration, il ouvre le menu et ne quitte plus le jeu (Q-3, décision de Kevin).
-4. **Starter « vu 0 fois »** (remarque de la QA S3) : `PokedexEntry.capture` ne compte pas d'observation. La fiche afficherait « vu 0 fois · capturé 1 fois » (Q-8).
+4. ~~**Starter « vu 0 fois »**~~ **Corrigé au J5** (`a6d9254`, Q-8 au défaut) : la capture d'une espèce jamais vue compte une observation ; les anciennes entrées sont corrigées au chargement (`ensure_seen`). La migration v2 ne la refait pas (§5.1).
 5. **Taille, poids, description, notes** : absents des données (`SpeciesData`) ; nouveau fichier `data/pokedex/kanto.json` plutôt que d'alourdir `kanto.json` et sa validation stricte.
 6. **Grands moments** : le dossier 08 §6 cite « départ de Bourg Palette, arrivée à Jadielle » ; seuls `starter`, `rival_battle`, `first_capture` sont enregistrés. Les arrivées se déduisent de `discovered_maps` (Q-14) ; rien à rétro-greffer.
 7. **Combats gagnés** et autres statistiques : non enregistrés ; l'écran Dresseur V1 ne montre que ce qui l'est (dossier 08 §6 l'autorise).
@@ -743,7 +770,7 @@ Chaque tâche finit par `tools/test.sh` vert (nombre de tests rapporté), un imp
 12. **Vibrations dispersées** (7 appels directs) : centralisées au T27 avant de pouvoir les couper.
 13. **Icônes** : seule `poke_ball.svg` existe pour les objets ; il faut au moins `potion.svg` et les icônes des six cartes du tableau de bord (provisoires).
 14. **Sprites** : il n'existe de sprites de combat que pour les 3 starters, Roucool et Rattata (pas pour leurs évolutions) ; suffisant au J6, puisqu'une espèce non vue n'a pas d'image.
-15. **`SaveSystem`** dit qu'ajouter un champ n'exige pas de nouvelle version : vrai pour la lecture, faux pour la protection contre un ancien APK (§5.1). Le commentaire est à préciser au T0.
+15. **`SaveSystem`** disait qu'ajouter un champ n'exige pas de nouvelle version : vrai pour la lecture, faux pour la protection contre un ancien APK (§5.1). **Commentaire précisé au T0** (avec l'historique des versions).
 
 ---
 
@@ -784,7 +811,7 @@ Seules les vraies questions de game design sont ici ; les petites (durées, tail
 - **Q-4 — Textes des objectifs** (dossier 08 §12 Q2) : *Défaut* : une seule ligne provisoire, « Objectif : rejoindre Jadielle », après le combat contre le rival ; aucune ligne avant (le prologue guide déjà le joueur). Le colis (J7A) ajoutera la sienne.
 
 **Équipe et Sac**
-- **Q-8 — Le starter « vu 0 fois »** : *Défaut* : capturer (ou recevoir) une espèce jamais vue compte **une observation** ; les parties existantes sont corrigées par la migration v2.
+- **Q-8 — Le starter « vu 0 fois »** : *Défaut* : capturer (ou recevoir) une espèce jamais vue compte **une observation** ; les parties existantes sont corrigées ~~par la migration v2~~ **au chargement** (déjà codé au J5, `a6d9254` ; §5.1).
 - **Q-9 — Évolution dans la fiche Équipe avant l'activation du Pokédex** : *Défaut* : « Évolution : ??? » pour les stades suivants, rien n'est révélé avant l'activation ; ensuite, les stades vus se révèlent. Une espèce sans évolution n'a pas de section.
 - **Q-10 — Potion en combat** : *Défaut* : sur **n'importe quel Pokémon de l'équipe** (PV visibles), l'action prend le tour et l'adversaire joue ensuite (Rouge/Bleu). Le SAC reste muet contre le rival du labo (décision n° 12).
 - **Q-11 — Potion sur un Pokémon K.O.** : *Défaut* : impossible (Rouge/Bleu), raison affichée « Ce Pokémon est K.O. » ; aucun objet n'est annoncé pour le ranimer.
@@ -844,3 +871,24 @@ Seules les vraies questions de game design sont ici ; les petites (durées, tail
 | T22 | La Carte. **Validation du 6D.** |
 | T26 | L'écran Dresseur. **Validation du 6E.** |
 | T30 | Les réglages, puis le parcours complet. **Validation du jalon 6.** |
+
+---
+
+## 15. Alignement du T0 (2026-10-02, code fusionné `d8e8f2b`)
+
+Ce qui a bougé entre `c1842e5` (base du plan) et `d8e8f2b` (`main` = `jalon-06` au départ), et ce que le plan en retient :
+
+1. **Capture T15 et rencontres 15 → 20** : déjà dans `c1842e5` (`1b07245`, `cb3da7b` en sont des ancêtres) ; le plan les prenait déjà en compte. Rien à changer.
+2. **Départs de débogage `capture_qa` et `team_full`** (`d509854`) : utiles aux QA du J6 (équipe pleine pour 6A, 30 Balls). Leur `bag` garde **sa propre forme plate** (`DebugStart`, appliquée par `Bag.add`) : ce n'est pas le format de sauvegarde, rien à migrer.
+3. **Q-8 déjà codée** (`a6d9254`) : capture = première observation ; anciennes entrées corrigées au chargement par `ensure_seen`. Le §5.1 ne la refait pas (une seule règle) ; la migration v1 → v2 laisse `times_seen` tel quel et reste cohérente avec ce correctif (testé sur la vraie sauvegarde, starter à 0 → lu 1).
+4. **Entrée en scène et place dans l'équipe** (`24901cb`) : `BattleEvent.party_index` sur tout événement de Pokémon, `Party.index_of`, entrée en scène d'après les `SENT_OUT`. Écart 1 du §10 **corrigé** ; `Party.index_of` retiré du T6 ; `ITEM_USED` (T10) réutilise `party_index`.
+5. **Compteur `[perf]`** (`ac13a69`, `PerfCounter`, build debug, `Boot` scène principale) : ligne de fps toutes les 2 s dans le journal ; à utiliser pour les mesures de 60 fps des QA du J6 (T5, T13, T17, T22, T30) au lieu d'estimations.
+6. **Test d'XP déterministe** (`230a58e`) : rien pour le J6.
+7. **Toujours vrai sur `d8e8f2b`** (vérifié) : 7 appels à `Input.vibrate_handheld` (6 fichiers : `battle_director`, `battle_widget`, `toast`, `interact_button`, `haptic_pattern`, `starter_sheet`) ; `USABLE_IN_WILD_BATTLE = [BALL]` et `BattleViews.bag_entries` ; composants du Sac encore sous `game/ui/battle/` ; `quit_on_go_back` absent de `project.godot` (vrai par défaut) et `Boot` qui sauvegarde sur `NOTIFICATION_WM_GO_BACK_REQUEST`.
+8. **Décisions verrouillées de Kevin (§12)** : Q-3, Q-7, Q-9, Q-17 déjà reportées dans §6.2, §3.5, §3.3, T28 ; rien ne touche la sauvegarde v2 (aucun réglage n'y entre, Q-17 compris : GRAPHISMES vit dans `settings.json`, §5.3).
+
+**Choix faits au T0 (petites questions, règle 4)** :
+- `acquired` = rang de la **dernière** obtention (chaque `add` rend l'objet le plus récent ; racheter des Potions les remonte) : lecture du défaut de Q-12 « obtenus le plus récemment ». Pour une v1, ordre alphabétique (coïncide avec la vraie partie : Poké Balls de Chen, puis Potion).
+- `favorites` dans l'ordre de marquage ; un objet favori absent du Sac le reste (dossier 08 §3).
+- Favoris et rangs sont **informatifs** : mal formés, ils sont ignorés sans erreur ; seule une quantité invalide compte comme entrée écartée (copie `.rejected` par `Boot`, comme au J5).
+- `SaveSystem.version` (membre) plutôt qu'une copie du code du J5 pour simuler l'ancienne build : la logique de refus est la même (`upgrade` et `Boot._load_save` inchangés depuis le J5).
