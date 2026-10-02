@@ -82,3 +82,15 @@ func test_wild_battle_actions_attack_and_run() -> void:
 	assert_true(BattleViews.WILD_BATTLE_ACTIONS.get(ActionGrid.RUN, false), "FUITE active")
 	for action: StringName in [ActionGrid.BAG, ActionGrid.TEAM]:
 		assert_false(BattleViews.WILD_BATTLE_ACTIONS.get(action, false), str(action))
+
+
+func test_offered_move_has_full_pp_and_unknown_move_is_refused() -> void:
+	var view := BattleViews.offered_move(&"leech_seed", _data)
+	assert_not_null(view)
+	assert_true(view.is_valid())
+	assert_eq(view.display_name, "Vampigraine")
+	assert_eq(view.pp, view.max_pp, "PP pleins : jamais servie")
+	assert_eq(view.max_pp, _data.get_move(&"leech_seed").pp)
+	assert_eq(view.category, BattleMoveView.Category.STATUS)
+	assert_null(BattleViews.offered_move(&"nope", _data))
+	assert_push_error("capacité inconnue")

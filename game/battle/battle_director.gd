@@ -5,6 +5,11 @@ extends Node
 ## ([BattlePlayback] → [BattleBeat]) et les joue sur le [BattleStage] (le décor recomposé et
 ## les Pokémon) et la [BattleHud] (cartes, barres de PV, messages). La boucle de choix passe
 ## par les signaux de la HUD ; la fin par [BattleConclusion] (soin, ni XP ni argent).
+## XP (jalon 5C) : le directeur rejoue EXP_GAINED (barre d'XP de la carte du joueur), LEVEL_UP
+## (« Nv. » qui pulse, PV max) et les phrases de capacité apprise, dans l'ordre du journal ;
+## pour un Pokémon du joueur qui n'est pas en jeu, le gain est appliqué sans être montré
+## (Q24). MOVE_FORGET_OFFERED suspend la lecture : le bandeau sort, le [MoveForgetPanel] fait
+## choisir la capacité à oublier (ou aucune), puis la phrase suit et la lecture reprend.
 ##
 ## Il ne lit aucun autoload : il reçoit [GameState] par [method setup] et la carte par
 ## [method run] (appelée par l'étape « battle » du [CutsceneDirector]). Il n'appelle jamais
@@ -20,6 +25,7 @@ signal battle_finished(trainer_id: StringName, outcome: int)
 
 ## Raison de blocage du joueur pendant un combat ([method Player.set_input_enabled]).
 const REASON: StringName = &"battle"
+const FORGET_PANEL_SCENE: PackedScene = preload("res://game/ui/battle/move_forget_panel.tscn")
 ## Durées multipliées (0 = instantané, tests) ; relayé à la scène et à la HUD.
 var speed_scale: float = 1.0
 
@@ -30,6 +36,7 @@ var _stage: BattleStage
 var _hud: BattleHud
 var _player: Player
 var _state: Node
+var _forget_panel: MoveForgetPanel
 var _running: bool = false
 var _battle: Battle
 var _trainer_id: StringName = &""
@@ -148,6 +155,7 @@ func run_request(request: BattleRequest, map: GameMap) -> int:
 		await _hud.hide_all()
 	if is_instance_valid(_stage) and _stage.is_active():
 		await _stage.exit()
+	_free_forget_panel()
 	if trainer != null:
 		var conclusion := BattleConclusion.resolve(trainer, outcome)
 		if conclusion.heal_party:
@@ -167,6 +175,11 @@ func is_running() -> bool:
 ## Combat en cours (null hors combat), pour les tests.
 func get_battle() -> Battle:
 	return _battle
+
+
+## Le panneau d'oubli, tant qu'il existe (ouvert pendant une offre, tests) ; null sinon.
+func get_forget_panel() -> MoveForgetPanel:
+	return _forget_panel if is_instance_valid(_forget_panel) else null
 
 
 # --- Boucle de choix ------------------------------------------------------------------
@@ -264,6 +277,112 @@ func _play_beat(beat: BattleBeat) -> void:
 				await _stage.play_faint(beat.side)
 			if is_instance_valid(_hud):
 				_hud.hide_card(side)
+		BattleBeat.Kind.EXP:
+			# Un seul Pokémon a une carte : le gain des autres est appliqué sans être montré.
+			if is_instance_valid(_hud) and _is_in_play(beat.event):
+				await _hud.animate_exp(beat.event.exp_from, beat.event.exp_to, beat.event.amount)
+		BattleBeat.Kind.LEVEL:
+			if is_instance_valid(_hud) and _is_in_play(beat.event):
+				await _hud.pulse_level(side, beat.event.level)
+				await _hud.animate_hp(side, beat.event.hp, beat.event.max_hp, false)
+		BattleBeat.Kind.DRAIN:
+			if is_instance_valid(_hud):
+				await _play_drain(beat.event)
+		BattleBeat.Kind.FORGET:
+			await _offer_forget(beat.event)
+
+
+## Coroutine : Vampigraine, les deux barres de PV en même temps : le Pokémon drainé perd
+## ([member BattleEvent.hp]), celui d'en face gagne ([member BattleEvent.healed_hp]).
+func _play_drain(event: BattleEvent) -> void:
+	var victim: BattleHud.Side = _HUD_SIDE[event.side]
+	var other: BattleHud.Side = BattleHud.Side.FOE if victim == BattleHud.Side.PLAYER \
+		else BattleHud.Side.PLAYER
+	var other_bar := _hud.get_card(other).get_hp_bar()
+	# Lancée sans attendre : la barre qui gagne et la barre qui perd bougent ensemble.
+	_hud.animate_hp(other, event.healed_hp, other_bar.get_max_hp(), false)
+	await _hud.animate_hp(victim, event.hp, event.max_hp, false)
+	while other_bar.is_animating():
+		await get_tree().process_frame
+
+
+## Pokémon du joueur décrit par [param event] (espèce, nom, sexe) ; l'équipe en entier est
+## cherchée, celui en jeu d'abord. Null s'il n'y est pas.
+func _find_player_pokemon(event: BattleEvent) -> Pokemon:
+	var party := _state.party as Party
+	if party == null:
+		return null
+	var in_play := _battle.get_player_side().active.pokemon if _battle != null else null
+	var candidates: Array[Pokemon] = []
+	if in_play != null:
+		candidates.append(in_play)
+	candidates.append_array(party.get_all())
+	for pokemon: Pokemon in candidates:
+		if pokemon.species_id == event.species_id \
+				and pokemon.display_name(_data) == event.pokemon_name:
+			return pokemon
+	return null
+
+
+## Le Pokémon de [param event] est celui qui a sa carte (le Pokémon du joueur en jeu).
+func _is_in_play(event: BattleEvent) -> bool:
+	if _battle == null or _battle.get_player_side().active == null:
+		return false
+	return _find_player_pokemon(event) == _battle.get_player_side().active.pokemon
+
+
+## Coroutine : un Pokémon du joueur veut apprendre [member BattleEvent.move_id] mais connaît
+## déjà quatre capacités. Le bandeau sort, le panneau fait choisir ; seul OUBLIER (après
+## sélection d'une carte) ou NE PAS APPRENDRE ferme l'offre. Oubli : [method
+## Pokemon.replace_move] (PP pleins) et « oublie… et apprend… » ; refus : rien ne change et
+## « n'apprend pas… ». Rend la main une fois le panneau refermé.
+func _offer_forget(event: BattleEvent) -> void:
+	var pokemon := _find_player_pokemon(event)
+	var offered := BattleViews.offered_move(event.move_id, _data)
+	if pokemon == null or offered == null or not is_instance_valid(_hud):
+		push_error("BattleDirector : offre d'oubli impossible (« %s » pour « %s »)"
+			% [event.move_id, event.pokemon_name])
+		return
+	var known := BattleViews.moves(pokemon, _data)
+	# Le panneau recouvre le bandeau : le bandeau sort d'abord, jamais les deux ensemble.
+	var banner := _hud.get_message_banner()
+	banner.skip()
+	banner.slide_out()
+	while banner.is_sliding():
+		await get_tree().process_frame
+	var panel := _ensure_forget_panel()
+	panel.show_offer(offered, known)
+	var answer: Array = await _first_of(panel.forget_chosen, panel.skip_chosen)
+	while panel.is_sliding():
+		await get_tree().process_frame
+	var line := ""
+	if answer[0] == 0:
+		var slot := int(answer[1])
+		var old_move: StringName = pokemon.moves[slot].move_id \
+			if slot >= 0 and slot < pokemon.moves.size() else &""
+		if pokemon.replace_move(slot, event.move_id, _data):
+			line = _texts.line_for(&"move_forgot", event, _data, old_move)
+	if line.is_empty():
+		line = _texts.line_for(&"move_not_learned", event, _data)
+	await _hud.show_message(line)
+
+
+## Le panneau d'oubli (créé au premier besoin, dans l'écran de la HUD, à son emplacement).
+func _ensure_forget_panel() -> MoveForgetPanel:
+	if is_instance_valid(_forget_panel):
+		return _forget_panel
+	_forget_panel = FORGET_PANEL_SCENE.instantiate() as MoveForgetPanel
+	_hud.get_screen().add_child(_forget_panel)
+	BattleHudLayout.place(_forget_panel, BattleHudLayout.Slot.FORGET)
+	_forget_panel.speed_scale = _hud.speed_scale
+	_forget_panel.haptics_enabled = _hud.haptics_enabled
+	return _forget_panel
+
+
+func _free_forget_panel() -> void:
+	if is_instance_valid(_forget_panel):
+		_forget_panel.queue_free()
+	_forget_panel = null
 
 
 func _npc(map: GameMap, id: StringName) -> Node2D:

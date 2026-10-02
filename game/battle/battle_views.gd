@@ -50,6 +50,18 @@ static func moves(pokemon: Pokemon, data: PokemonData) -> Array[BattleMoveView]:
 	return views
 
 
+## Carte de la capacité [param move_id] proposée à l'apprentissage (panneau d'oubli, jalon
+## 5C) : PP pleins (elle n'a jamais servi). Null si la capacité est inconnue des données.
+static func offered_move(move_id: StringName, data: PokemonData) -> BattleMoveView:
+	var move := data.get_move(move_id)
+	if move == null:
+		push_error("BattleViews : capacité inconnue « %s »" % move_id)
+		return null
+	return BattleMoveView.new(move.name, move.type,
+		data.get_type_chart().get_type_name(move.type), move_category(move.category),
+		move.pp, move.pp, move.power, move.accuracy, move.description)
+
+
 ## Catégorie du modèle → catégorie affichée par la fiche.
 static func move_category(category: MoveData.Category) -> BattleMoveView.Category:
 	match category:

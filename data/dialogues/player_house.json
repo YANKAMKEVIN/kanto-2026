@@ -12,6 +12,15 @@
 				]
 			},
 			{
+				"if": ["starter_chosen"],
+				"heal": true,
+				"draft": true,
+				"pages": [
+					"Laisse-moi m'occuper de tes Pokémon.",
+					"Voilà, ils sont en pleine forme. Reviens quand tu veux."
+				]
+			},
+			{
 				"pages": [
 					"Tu sors ? Profite de cette belle journée.",
 					"Et évite les hautes herbes, d'accord ?"

@@ -119,7 +119,7 @@ func _pages() -> Array[Array]:
 	for id: StringName in _library.get_ids():
 		for variant: DialogueVariant in _library.get_dialogue(id).variants:
 			for page: DialoguePage in variant.pages:
-				pages.append([id, page.text, page])
+				pages.append([id, page.text, page, variant])
 	return pages
 
 
@@ -374,13 +374,36 @@ func test_drafts_are_exactly_the_expected_ones() -> void:
 	assert_eq(drafts, DRAFTS)
 
 
+## Seules variantes provisoires (clé « draft » d'une variante) : le soin de Maman (Q22, jalon 5C),
+## à relire par Kevin à la validation 5C. Elle soigne l'équipe, seulement après le starter.
+func test_draft_variants_are_exactly_the_expected_ones() -> void:
+	var drafts: Array[String] = []
+	for id: StringName in _library.get_ids():
+		var dialogue := _library.get_dialogue(id)
+		if dialogue.draft:
+			continue  # tout le dialogue est provisoire (DRAFTS)
+		for i: int in dialogue.variants.size():
+			if dialogue.variants[i].draft:
+				drafts.append("%s:%d" % [id, i])
+	assert_eq(drafts, ["mom:1"] as Array[String])
+	var heal: DialogueVariant = _library.get_dialogue(&"mom").variants[1]
+	assert_true(heal.heal, "soigne l'équipe")
+	assert_eq(heal.if_flags, [&"starter_chosen"] as Array[StringName], "après le starter")
+	assert_false(heal.auto, "jamais automatique")
+	assert_eq(heal.pages.size(), 2, "courte")
+	# Seule cette variante soigne (le réveil après défaite soigne par la défaite, pas par le texte).
+	for id: StringName in _library.get_ids():
+		for variant: DialogueVariant in _library.get_dialogue(id).variants:
+			assert_eq(variant.heal, variant == heal, "%s : « heal »" % id)
+
+
 func test_texts_are_the_dossier_02_texts_word_for_word() -> void:
 	assert_true(FileAccess.file_exists(DOSSIER), DOSSIER)
 	assert_true(FileAccess.file_exists(DOSSIER_07), DOSSIER_07)
 	var dossier := FileAccess.get_file_as_string(DOSSIER)
 	var dossier_07 := FileAccess.get_file_as_string(DOSSIER_07)
 	for row: Array in _pages():
-		if _library.get_dialogue(row[0]).draft:
+		if _library.get_dialogue(row[0]).draft or (row[3] as DialogueVariant).draft:
 			continue
 		# Prologue : dossier 02 ; Route 1 (jalon 5) : dossier 07 (textes définitifs).
 		assert_true(dossier.contains(row[1]) or dossier_07.contains(row[1]),

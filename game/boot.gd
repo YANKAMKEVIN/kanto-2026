@@ -78,6 +78,9 @@ func _ready() -> void:
 	_cutscenes_node.set_inventory(GameState.bag, _items)
 	_cutscenes_node.item_given.connect(_on_item_given)
 	_battle_director.battle_started.connect(_on_battle_state_changed.unbind(1))
+	# Le titre de zone ne reste pas affiché pendant un combat (jalon 5C T11) : une rencontre
+	# peut survenir dans les secondes qui suivent l'arrivée dans la zone.
+	_battle_director.battle_started.connect(_hud.hide_zone_title.unbind(1))
 	_battle_director.battle_finished.connect(_on_battle_state_changed.unbind(2))
 	# Pokédex (jalon 5, décision Kevin 2026-09-29) : le starter est « capturé » à son entrée
 	# dans l'équipe ; tout Pokémon adverse envoyé au combat est « vu » (le Pokémon du rival au
@@ -93,6 +96,7 @@ func _ready() -> void:
 	_encounters.setup(_encounter_library, _pokemon, GameState, _player, _battle_director,
 		SceneRouter, _cutscenes_node, _runner)
 	_encounters.encounter_started.connect(_on_encounter_state_changed.unbind(2))
+	_encounters.encounter_started.connect(_hud.hide_zone_title.unbind(2))
 	_encounters.encounter_finished.connect(_on_encounter_state_changed.unbind(1))
 	_interactions.target_changed.connect(_on_target_changed)
 	_runner.dialogue_started.connect(_on_dialogue_started)

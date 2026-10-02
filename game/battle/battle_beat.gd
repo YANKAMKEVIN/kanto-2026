@@ -18,8 +18,17 @@ extends RefCounted
 ## - STAT : effet de statistique sur le Pokémon de [member side] (monte si
 ##   [member BattleEvent.stages] > 0, baisse sinon) ;
 ## - FAINT : le Pokémon de [member side] tombe K.O., sa carte s'en va.
+## Jalon 5C :
+## - EXP : une tranche de la barre d'XP du Pokémon du joueur ([member BattleEvent.exp_from] →
+##   [member BattleEvent.exp_to], « +[member BattleEvent.amount] XP » sur la première) ;
+## - LEVEL : « Nv. » du Pokémon du joueur prend [member BattleEvent.level], ses PV max
+##   [member BattleEvent.max_hp] ;
+## - DRAIN : Vampigraine en fin de tour : la barre du Pokémon drainé ([member side]) descend à
+##   [member BattleEvent.hp], celle du Pokémon d'en face monte à [member BattleEvent.healed_hp] ;
+## - FORGET : le joueur choisit la capacité à oublier ([member BattleEvent.move_id] est la
+##   nouvelle) ; la lecture du journal est suspendue jusqu'à son choix.
 
-enum Kind { MESSAGE, SEND_OUT, MOVE, DAMAGE, STAT, FAINT }
+enum Kind { MESSAGE, SEND_OUT, MOVE, DAMAGE, STAT, FAINT, EXP, LEVEL, DRAIN, FORGET }
 
 var kind: Kind = Kind.MESSAGE
 var side: BattleEvent.SideId = BattleEvent.SideId.PLAYER
