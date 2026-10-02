@@ -38,6 +38,12 @@ extends SceneTree
 ##   MoveDetailSheet  PanelContainer  fiche de pression longue
 ##   MoveDetailName / MoveDetailCaption / MoveDetailValue / MoveDetailText   Label
 ##   BattleMessage    PanelContainer  bandeau des messages ; BattleMessageText   Label
+## XP et oubli (jalon 5C, T10) :
+##   ExpBar           Control  styles « background » (fond clair) et « fill » (bleu) de la barre d'XP
+##   ExpGain          Label    « +21 XP » : FONT_BUTTON, gras, ACCENT, ombre portée
+##   ForgetBand       Panel    bandeau opaque du panneau d'oubli (déborde jusqu'aux bords)
+##   ForgetCaption    Label    « Nouvelle capacité » / « Capacité à oublier », discret
+##   ForgetConfirm    Button   OUBLIER : fond ACCENT, atténué et muet tant que rien n'est choisi
 ## Notifications :
 ##   Toast            PanelContainer  capsule du toast (bible UI/UX §6)
 ##   ToastTitle / ToastDetail   Label  « Poké Balls ×5 » (gras) / « Ajoutées au Sac » (discret)
@@ -98,6 +104,7 @@ func _init() -> void:
 	_add_battle_actions(theme, bold, t)
 	_add_battle_moves(theme, bold, t)
 	_add_battle_messages(theme, t)
+	_add_exp_and_forget(theme, bold, t)
 	_add_toast(theme, bold, t)
 
 	var err := ResourceSaver.save(theme, THEME_PATH)
@@ -411,6 +418,51 @@ func _move_card_style(bg: Color, border: Color, width: int, t: GDScript) -> Styl
 	box.set_content_margin(SIDE_TOP, t.MOVE_CARD_PAD_V)
 	box.set_content_margin(SIDE_BOTTOM, t.MOVE_CARD_PAD_V)
 	return box
+
+
+## Barre d'XP, « +N XP » et panneau d'oubli d'une capacité (jalon 5C, T10).
+func _add_exp_and_forget(theme: Theme, bold: Font, t: GDScript) -> void:
+	var radius: int = t.EXP_BAR_HEIGHT / 2
+	var track := StyleBoxFlat.new()
+	track.bg_color = t.EXP_BAR_TRACK
+	track.border_color = t.HP_BAR_TRACK_BORDER
+	track.set_border_width_all(t.BORDER_WIDTH)
+	track.set_corner_radius_all(radius)
+	track.anti_aliasing = true
+	var fill := StyleBoxFlat.new()
+	fill.bg_color = t.EXP_BAR_FILL
+	fill.set_corner_radius_all(radius - t.BORDER_WIDTH)
+	fill.anti_aliasing = true
+	theme.set_type_variation(&"ExpBar", &"Control")
+	theme.set_stylebox(&"background", &"ExpBar", track)
+	theme.set_stylebox(&"fill", &"ExpBar", fill)
+	_add_label_variation(theme, &"ExpGain", t.EXP_GAIN_FONT, t.ACCENT, t)
+	theme.set_font(&"font", &"ExpGain", bold)
+	theme.set_constant(&"outline_size", &"ExpGain", t.EXP_GAIN_OUTLINE)
+	theme.set_color(&"font_outline_color", &"ExpGain", t.SURFACE_DARK)
+
+	var band := StyleBoxFlat.new()
+	band.bg_color = t.FORGET_BAND_BG
+	band.border_color = t.PANEL_BORDER
+	band.border_width_top = t.BORDER_WIDTH
+	band.border_width_left = t.BORDER_WIDTH
+	band.corner_radius_top_left = t.RADIUS
+	band.expand_margin_right = t.MOVE_BAND_BLEED
+	band.expand_margin_bottom = t.MOVE_BAND_BLEED
+	band.anti_aliasing = true
+	theme.set_type_variation(&"ForgetBand", &"Panel")
+	theme.set_stylebox(&"panel", &"ForgetBand", band)
+	_add_plain_label(theme, &"ForgetCaption", t.FONT_CAPTION, t.TEXT_MUTED, bold)
+
+	var accent := _button_style(t.ACCENT, false, t)
+	var accent_pressed := _button_style(t.ACCENT_PRESSED, false, t)
+	var disabled := _button_style(t.FORGET_CONFIRM_DISABLED_BG, true, t)
+	_add_button_variation(theme, &"ForgetConfirm", accent, accent_pressed, bold, t)
+	theme.set_stylebox(&"disabled", &"ForgetConfirm", disabled)
+	for state: StringName in [&"font_color", &"font_hover_color", &"font_focus_color",
+			&"font_pressed_color", &"font_hover_pressed_color"]:
+		theme.set_color(state, &"ForgetConfirm", t.ACCENT_TEXT)
+	theme.set_color(&"font_disabled_color", &"ForgetConfirm", t.TEXT_DISABLED)
 
 
 func _add_battle_messages(theme: Theme, t: GDScript) -> void:

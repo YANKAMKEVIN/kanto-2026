@@ -431,3 +431,48 @@ const TOAST_TITLE_FONT := FONT_BODY
 const TOAST_DETAIL_FONT := FONT_CAPTION
 ## Vibration « tic » à l'apparition (ramasser un objet, bible §12) : plus légère qu'un appui.
 const HAPTIC_TICK_MS := 10
+
+# --- XP, niveau et oubli d'une capacité (jalon 5C T10, jalon-05.md §3.9 et §3.12) -----------
+# Présentation du dossier 04 §6 : « +21 XP » qui monte et s'efface, une fine barre d'XP sous
+# la carte du joueur (jamais permanente, bible §11), « Nv. 6 » qui pulse. Aucune fenêtre.
+
+## Fine barre d'XP posée au bas de la carte du joueur : hauteur, remplissage, fond.
+const EXP_BAR_HEIGHT := 8
+## Descente de la barre sous le bord bas de la zone de contenu (dans la marge de la carte).
+const EXP_BAR_DROP := 6
+const EXP_BAR_FILL := Color("#4FB3FF")
+const EXP_BAR_TRACK := HP_BAR_TRACK
+## Remplissage d'une tranche de barre (une tranche par niveau gagné).
+const EXP_TWEEN := 0.6
+## Entre deux tranches la barre reste ; sinon elle disparaît après EXP_BAR_LINGER, en
+## EXP_BAR_FADE.
+const EXP_BAR_LINGER := 0.4
+const EXP_BAR_FADE := ANIM_FADE_OUT
+## « +21 XP » : durée totale (il monte de EXP_GAIN_RISE en s'effaçant), entrée et sortie en
+## fondu, écart au bord haut de la carte.
+const EXP_GAIN_HOLD := 0.8
+const EXP_GAIN_RISE := 36.0
+const EXP_GAIN_FADE_IN := ANIM_MICRO
+const EXP_GAIN_FADE_OUT := 0.25
+const EXP_GAIN_GAP := 10
+const EXP_GAIN_FONT := FONT_BUTTON
+## Contour sombre qui garde « +21 XP » lisible sur un Pokémon orange ou un décor clair.
+const EXP_GAIN_OUTLINE := 8
+## « Nv. 6 » : grossit un instant (LEVEL_PULSE_UP) en ACCENT, puis revient
+## (LEVEL_PULSE_DOWN). Vibration courte au passage de niveau.
+const LEVEL_PULSE_SCALE := 1.45
+const LEVEL_PULSE_UP := ANIM_MICRO
+const LEVEL_PULSE_DOWN := 0.18
+const HAPTIC_LEVEL_UP_MS := 25
+
+# Panneau d'oubli : bandeau opaque (il recouvre le bandeau des messages), nouvelle capacité
+# en haut, les quatre connues en 2 × 2 dessous, NE PAS APPRENDRE et OUBLIER tout en bas.
+const FORGET_BAND_BG := PANEL_BG_STRONG
+const FORGET_GAP_H := 24
+const FORGET_ROW_GAP := 12
+const FORGET_CAPTION_HEIGHT := 32
+const FORGET_BUTTON_SIZE := Vector2(560, TOUCH_MIN)
+## Haut de la fiche d'une capacité (pression longue) depuis le haut du panneau.
+const FORGET_SHEET_TOP := 80
+## OUBLIER inactif (rien de choisi) : fond et texte atténués.
+const FORGET_CONFIRM_DISABLED_BG := Color(1, 1, 1, 0.08)

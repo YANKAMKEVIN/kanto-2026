@@ -1,0 +1,79 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://game/ui/battle/move_forget_panel.gd" id="1_panel"]
+[ext_resource type="PackedScene" path="res://game/ui/battle/move_card.tscn" id="2_card"]
+[ext_resource type="PackedScene" path="res://game/ui/battle/move_detail_sheet.tscn" id="3_sheet"]
+
+[node name="MoveForgetPanel" type="Control"]
+mouse_filter = 2
+script = ExtResource("1_panel")
+
+[node name="Body" type="Control" parent="."]
+unique_name_in_owner = true
+layout_mode = 3
+anchors_preset = 0
+mouse_filter = 2
+
+[node name="Band" type="Panel" parent="Body"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_type_variation = &"ForgetBand"
+
+[node name="Content" type="VBoxContainer" parent="Body"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="NewCaption" type="Label" parent="Body/Content"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"ForgetCaption"
+text = "Nouvelle capacité"
+
+[node name="NewCard" parent="Body/Content" instance=ExtResource("2_card")]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="KnownCaption" type="Label" parent="Body/Content"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"ForgetCaption"
+text = "Choisis la capacité à oublier"
+
+[node name="Cards" type="GridContainer" parent="Body/Content"]
+unique_name_in_owner = true
+layout_mode = 2
+mouse_filter = 2
+columns = 2
+
+[node name="Buttons" type="HBoxContainer" parent="Body/Content"]
+unique_name_in_owner = true
+layout_mode = 2
+mouse_filter = 2
+
+[node name="SkipButton" type="Button" parent="Body/Content/Buttons"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"PanelButton"
+text = "NE PAS APPRENDRE"
+
+[node name="ConfirmButton" type="Button" parent="Body/Content/Buttons"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"ForgetConfirm"
+disabled = true
+text = "OUBLIER"
+
+[node name="DetailSheet" parent="Body" instance=ExtResource("3_sheet")]
+unique_name_in_owner = true
+layout_mode = 1
