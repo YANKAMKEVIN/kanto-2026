@@ -152,7 +152,7 @@ LUMIÈRE NE (neutre) : lumière de milieu de journée, diffuse et blanche, venan
 | | |
 |---|---|
 | Ordre de production | 3. |
-| Production | PNG carré 1024 × 1024, fond transparent. |
+| Production | PNG portrait 1024 × 1536, fond transparent (corrigé après la r1 : le carré pousse ChatGPT à élargir). |
 | En jeu | 5 × 6 cases (480 × 576 px). Collision : 1 case (tronc) ; le massif circulaire qui l'entoure est un autre asset (`WORLD_PROP_PLANTER_01`, série 02) qui porte sa propre collision. |
 | Cadrage de production | Arbre de 940 px de haut (sommet y ≈ 42, pied y = 982), centré, 783 px de large au plus. Marge ≥ 40 px. |
 | Point d'ancrage (pivot) | Centre du pied du tronc : (512, 982). |
@@ -250,7 +250,7 @@ ADN VISUEL KANTO 2026 — v1 (à respecter strictement)
 LUMIÈRE NE (neutre) : lumière de milieu de journée, diffuse et blanche, venant légèrement du haut à gauche ; volumes conservés par un ombrage doux ; aucune teinte dorée ou orangée, aucun liseré chaud ; ombres propres neutres, légèrement bleutées.
 
 ASSET : WORLD_GROUND_HERBE_A_01 — herbe rase raccordable (pelouse entretenue de la ville)
-Format : PNG carré 1024 × 1024, image opaque (pas de transparence).
+Format : PNG carré 1024 × 1024, image opaque, sans transparence : exception à la règle « Isolement » de l'ADN, c'est une texture de sol vue de dessus qui remplit toute l'image.
 Cadrage : texture continue qui remplit toute l'image, raccordable sans couture sur ses 4 côtés (le bord gauche continue le bord droit, le bord haut continue le bord bas).
 Échelle : l'image représente 4 × 4 cases de jeu ; 1 case = 256 px. Les pavés font en moyenne un tiers de case (60 à 110 px dans cette image).
 Description : pelouse rase et entretenue, vue parfaitement de dessus, faite de petites touffes courtes et denses ; légères variations de teinte en larges taches douces.
@@ -284,7 +284,7 @@ ADN VISUEL KANTO 2026 — v1 (à respecter strictement)
 LUMIÈRE NE (neutre) : lumière de milieu de journée, diffuse et blanche, venant légèrement du haut à gauche ; volumes conservés par un ombrage doux ; aucune teinte dorée ou orangée, aucun liseré chaud ; ombres propres neutres, légèrement bleutées.
 
 ASSET : WORLD_GROUND_PAVE_A_01_CENTRE — pavés de la place (centre, raccordable)
-Format : PNG carré 1024 × 1024, image opaque (pas de transparence).
+Format : PNG carré 1024 × 1024, image opaque, sans transparence : exception à la règle « Isolement » de l'ADN, c'est une texture de sol vue de dessus qui remplit toute l'image.
 Cadrage : texture continue qui remplit toute l'image, raccordable sans couture sur ses 4 côtés.
 Échelle : l'image représente 4 × 4 cases de jeu ; 1 case = 256 px. Les pavés font en moyenne un tiers de case (60 à 110 px dans cette image).
 Description : pavage de pierre claire vu parfaitement de dessus : pavés irréguliers aux angles arrondis, de tailles variées, posés en appareil libre ; joints fins et sombres avec un peu de terre ; chaque pavé a un léger bombé (lumière douce en haut à gauche, ombre propre en bas à droite).
@@ -318,7 +318,7 @@ ADN VISUEL KANTO 2026 — v1 (à respecter strictement)
 LUMIÈRE NE (neutre) : lumière de milieu de journée, diffuse et blanche, venant légèrement du haut à gauche ; volumes conservés par un ombrage doux ; aucune teinte dorée ou orangée, aucun liseré chaud ; ombres propres neutres, légèrement bleutées.
 
 ASSET : WORLD_GROUND_PAVE_A_01_BORD — transition pavés / herbe (bord droit)
-Format : PNG carré 1024 × 1024, image opaque (pas de transparence).
+Format : PNG carré 1024 × 1024, image opaque, sans transparence : exception à la règle « Isolement » de l'ADN, c'est une texture de sol vue de dessus qui remplit toute l'image.
 Cadrage : texture qui remplit toute l'image, raccordable sans couture de gauche à droite ; le bord bas doit pouvoir se poser contre WORLD_GROUND_PAVE_A_01_CENTRE et le bord haut contre WORLD_GROUND_HERBE_A_01.
 Échelle : l'image représente 4 × 4 cases de jeu ; 1 case = 256 px. Les pavés font en moyenne un tiers de case (60 à 110 px dans cette image).
 Description : moitié basse de l'image : les pavés de WORLD_GROUND_PAVE_A_01_CENTRE ; moitié haute : l'herbe de WORLD_GROUND_HERBE_A_01 ; la frontière suit la ligne horizontale du milieu (y = 512, à ± 40 px près) avec un tracé doux et irrégulier : quelques touffes d'herbe débordent sur les premiers pavés, quelques pavés de bordure sont légèrement déchaussés et laissent voir un peu de terre. Pavé et herbe sont au même niveau (aucune marche).
@@ -352,7 +352,7 @@ ADN VISUEL KANTO 2026 — v1 (à respecter strictement)
 LUMIÈRE NE (neutre) : lumière de milieu de journée, diffuse et blanche, venant légèrement du haut à gauche ; volumes conservés par un ombrage doux ; aucune teinte dorée ou orangée, aucun liseré chaud ; ombres propres neutres, légèrement bleutées.
 
 ASSET : WORLD_GROUND_PAVE_A_01_COIN_EXT — transition pavés / herbe (coin extérieur)
-Format : PNG carré 1024 × 1024, image opaque (pas de transparence).
+Format : PNG carré 1024 × 1024, image opaque, sans transparence : exception à la règle « Isolement » de l'ADN, c'est une texture de sol vue de dessus qui remplit toute l'image.
 Cadrage : la frontière touche le bord bas de l'image exactement à x = 512 et le bord droit exactement à y = 512 ; ailleurs, les bords de l'image sont de l'herbe pure (bords haut et gauche) ou des pavés purs (coin bas-droit).
 Échelle : l'image représente 4 × 4 cases de jeu ; 1 case = 256 px. Les pavés font en moyenne un tiers de case (60 à 110 px dans cette image).
 Description : les pavés n'occupent que le quart bas-droit de l'image ; l'herbe occupe tout le reste. La frontière est la même que dans WORLD_GROUND_PAVE_A_01_BORD (touffes qui débordent, pavés de bordure légèrement déchaussés) et tourne à angle droit avec un arrondi d'environ 77 px de rayon.
@@ -386,7 +386,7 @@ ADN VISUEL KANTO 2026 — v1 (à respecter strictement)
 LUMIÈRE NE (neutre) : lumière de milieu de journée, diffuse et blanche, venant légèrement du haut à gauche ; volumes conservés par un ombrage doux ; aucune teinte dorée ou orangée, aucun liseré chaud ; ombres propres neutres, légèrement bleutées.
 
 ASSET : WORLD_GROUND_PAVE_A_01_COIN_INT — transition pavés / herbe (coin intérieur)
-Format : PNG carré 1024 × 1024, image opaque (pas de transparence).
+Format : PNG carré 1024 × 1024, image opaque, sans transparence : exception à la règle « Isolement » de l'ADN, c'est une texture de sol vue de dessus qui remplit toute l'image.
 Cadrage : la frontière touche le bord haut de l'image exactement à x = 512 et le bord gauche exactement à y = 512 ; ailleurs, les bords de l'image sont des pavés purs (bords bas et droit) ou de l'herbe pure (coin haut-gauche).
 Échelle : l'image représente 4 × 4 cases de jeu ; 1 case = 256 px. Les pavés font en moyenne un tiers de case (60 à 110 px dans cette image).
 Description : l'herbe n'occupe que le quart haut-gauche de l'image ; les pavés occupent tout le reste. La frontière est la même que dans WORLD_GROUND_PAVE_A_01_BORD (touffes qui débordent, pavés de bordure légèrement déchaussés) et tourne à angle droit avec un arrondi d'environ 77 px de rayon.
@@ -541,3 +541,9 @@ LUMIÈRE NE (neutre) : lumière de milieu de journée, diffuse et blanche, venan
 | Révision | Résultat | Décision |
 |---|---|---|
 | GH_r1 | du premier coup avec l'ancre et la référence recadrée : étages nets, contour coloré, cohérent avec l'arbre A en rangée ; un peu plus trapu que la fiche (0,60 au lieu de 0,48, soit 2,9 cases de large au lieu de 2,4) | **validé** (étalonné) ; un sapin plus élancé viendra en variante `WORLD_TREE_B_02` pour les lisières de forêt (série 02) |
+
+### WORLD_TREE_CENTRAL_01 (2026-10-03)
+
+| Révision | Résultat | Décision |
+|---|---|---|
+| GH_r1 | du premier coup : majestueux, même main que l'arbre A et le sapin, rapport 0,77 (fiche : 0,83), feuillage qui frôle les bords de l'image sans être coupé | **validé** (étalonné) ; format de la fiche corrigé en portrait 1024 × 1536 (1 case = 183 px) |
