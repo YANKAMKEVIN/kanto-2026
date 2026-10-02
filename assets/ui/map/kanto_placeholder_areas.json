@@ -1,0 +1,30 @@
+{
+	"_comment": "Rectangles [x, y, w, h] des zones sur assets/ui/map/kanto_placeholder.webp (1586x992, illustration fournie par Kevin, kanto-carte-v1). Attribution PROPOSEE, a valider par Kevin ; a recopier dans data/world/zones.json (champ area) au T18. Source de verite unique : ce fichier.",
+	"image": "res://assets/ui/map/kanto_placeholder.webp",
+	"image_size": [1586, 992],
+	"zones": {
+		"pallet_town": {"kind": "town", "area": [715, 595, 200, 110]},
+		"route_1": {"kind": "route", "area": [775, 445, 50, 150]},
+		"viridian_city": {"kind": "town", "area": [715, 330, 160, 90]},
+		"route_2": {"kind": "route", "area": [790, 120, 40, 210]},
+		"viridian_forest": {"kind": "place", "area": [620, 170, 165, 160]},
+		"pewter_city": {"kind": "town", "area": [715, 35, 140, 85]},
+		"route_3": {"kind": "route", "area": [860, 125, 180, 40]},
+		"route_4": {"kind": "route", "area": [1040, 130, 40, 80]},
+		"mt_moon": {"kind": "place", "area": [945, 210, 190, 130]},
+		"cerulean_city": {"kind": "town", "area": [1080, 170, 125, 38]},
+		"route_7": {"kind": "route", "area": [875, 380, 100, 30]},
+		"saffron_city": {"kind": "town", "area": [975, 340, 110, 55]},
+		"route_8": {"kind": "route", "area": [1090, 385, 105, 30]},
+		"lavender_town": {"kind": "town", "area": [1195, 360, 80, 60]},
+		"vermilion_city": {"kind": "town", "area": [1380, 435, 125, 100]},
+		"fuchsia_city": {"kind": "town", "area": [1290, 600, 110, 55]},
+		"celadon_city": {"kind": "town", "area": [80, 340, 140, 85]},
+		"route_16": {"kind": "route", "area": [225, 380, 200, 40]},
+		"route_22": {"kind": "route", "area": [310, 540, 110, 50]},
+		"route_23": {"kind": "route", "area": [455, 85, 45, 290]},
+		"indigo_plateau": {"kind": "place", "area": [300, 25, 160, 55]},
+		"route_21": {"kind": "sea_route", "area": [790, 705, 60, 55]},
+		"cinnabar_island": {"kind": "town", "area": [690, 760, 300, 190]}
+	}
+}
