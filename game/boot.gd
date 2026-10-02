@@ -71,6 +71,7 @@ var _in_foreground: bool = true
 @onready var _world: Node2D = %World
 @onready var _hud: ExplorationHud = %ExplorationHud
 @onready var _fade: ScreenFade = %ScreenFade
+@onready var _coming_soon: ComingSoonScreen = %ComingSoonScreen
 @onready var _dialogue_box: DialogueBox = %DialogueBox
 @onready var _runner: DialogueRunner = %DialogueRunner
 @onready var _interactions: InteractionController = %InteractionController
@@ -142,6 +143,8 @@ func _ready() -> void:
 	_cutscenes_node.cutscene_started.connect(_on_cutscene_started)
 	_cutscenes_node.cutscene_finished.connect(_on_cutscene_finished)
 	SceneRouter.setup(_world, _player, _fade)
+	# Destinations « à venir » (dossier-07 §12, build de développement) : l'écran provisoire.
+	SceneRouter.coming_soon_presenter = _coming_soon.present
 	# Branchés avant start() : la première carte passe aussi par le contrôleur.
 	SceneRouter.transition_started.connect(_on_transition_started)
 	# Via Boot (ordre garanti) : présence des PNJ, puis le contrôleur, puis le directeur.
@@ -203,6 +206,11 @@ func get_hud() -> ExplorationHud:
 
 func get_fade() -> ScreenFade:
 	return _fade
+
+
+## Écran provisoire « <destination> — À venir » (build de développement).
+func get_coming_soon_screen() -> ComingSoonScreen:
+	return _coming_soon
 
 
 func get_dialogue_box() -> DialogueBox:

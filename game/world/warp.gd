@@ -11,6 +11,13 @@ extends RefCounted
 ##   [member direction] sans pouvoir avancer (tapis de sortie : pousser vers le bas).
 ## À l'arrivée, [member target_spawn] désigne un Marker2D de la carte cible ;
 ## [member facing] fixe l'orientation (ZERO = garder celle du joueur).
+##
+## Destination « à venir » (docs/design/dossier-07-route-1.md §12) : si [member coming_soon]
+## est renseigné (« JADIELLE », « ROUTE 2 »), le passage ne mène nulle part : le routeur
+## montre l'écran « <libellé> — À venir » (build de développement seulement), puis remet le
+## joueur sur [member target_spawn], un point d'apparition de la **carte courante**
+## ([member target_map] est alors ignoré). En release, le passage est inerte : le bord reste
+## simplement bloqué.
 
 enum Trigger { STEP_ON, PUSH }
 
@@ -20,6 +27,8 @@ var direction: Vector2i
 var target_map: StringName
 var target_spawn: StringName
 var facing: Vector2i
+## Libellé de la destination « à venir » (vide : passage ordinaire).
+var coming_soon: String
 
 
 func _init(
@@ -28,7 +37,8 @@ func _init(
 	warp_direction: Vector2i,
 	to_map: StringName,
 	to_spawn: StringName,
-	arrival_facing: Vector2i = Vector2i.ZERO
+	arrival_facing: Vector2i = Vector2i.ZERO,
+	soon_label: String = ""
 ) -> void:
 	cell = warp_cell
 	trigger = warp_trigger
@@ -36,16 +46,23 @@ func _init(
 	target_map = to_map
 	target_spawn = to_spawn
 	facing = arrival_facing
+	coming_soon = soon_label
 
 
-## Cohérence de la donnée : cible renseignée, directions nulles ou cardinales,
-## direction cardinale obligatoire pour [constant PUSH].
+## Cohérence de la donnée : cible renseignée (carte et spawn ; pour une destination « à
+## venir », le spawn de retour seulement), directions nulles ou cardinales, direction
+## cardinale obligatoire pour [constant PUSH].
 func is_valid() -> bool:
-	if target_map.is_empty() or target_spawn.is_empty():
+	if target_spawn.is_empty() or (target_map.is_empty() and not is_coming_soon()):
 		return false
 	if not _is_zero_or_cardinal(direction) or not _is_zero_or_cardinal(facing):
 		return false
 	return trigger != Trigger.PUSH or Grid.is_cardinal(direction)
+
+
+## Vrai si le passage mène à une destination « à venir » (écran provisoire, pas de carte).
+func is_coming_soon() -> bool:
+	return not coming_soon.is_empty()
 
 
 ## Vrai si un pas terminé sur [param at_cell], fait vers [param step_direction], déclenche.

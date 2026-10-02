@@ -54,6 +54,8 @@ func test_all_maps_load_and_warp_tables_build_without_error() -> void:
 func test_every_warp_targets_existing_map_and_walkable_spawn() -> void:
 	for map_id: StringName in _maps:
 		for warp: Warp in (_maps[map_id] as GameMap).get_warps().get_all():
+			if warp.is_coming_soon():
+				continue  # destination « à venir » : voir le test dédié
 			var label := "%s %s → %s/%s" % [map_id, warp.cell, warp.target_map, warp.target_spawn]
 			assert_true(MapCatalog.has_map(warp.target_map), label)
 			var target := _maps.get(warp.target_map) as GameMap
@@ -65,6 +67,24 @@ func test_every_warp_targets_existing_map_and_walkable_spawn() -> void:
 			assert_true(grid.is_in_bounds(arrival), label)
 			assert_false(grid.is_solid(arrival) or grid.is_water(arrival),
 				"%s : arrivée praticable" % label)
+
+
+func test_every_coming_soon_warp_returns_to_a_walkable_spawn_of_its_own_map() -> void:
+	# Destination « à venir » (dossier-07 §12) : pas de carte cible, le retour se fait sur un
+	# point d'apparition de la carte courante, praticable, avec un libellé et une orientation.
+	var found := 0
+	for map_id: StringName in _maps:
+		var map: GameMap = _maps[map_id]
+		for warp: Warp in map.get_warps().get_all():
+			if not warp.is_coming_soon():
+				continue
+			found += 1
+			var label := "%s %s « %s »" % [map_id, warp.cell, warp.coming_soon]
+			assert_true(map.has_spawn(warp.target_spawn), "%s : spawn de retour" % label)
+			var back := map.get_spawn_cell(warp.target_spawn)
+			assert_false(map.get_grid().is_solid(back), "%s : retour praticable" % label)
+			assert_ne(warp.facing, Vector2i.ZERO, "%s : orientation au retour" % label)
+	assert_gt(found, 0, "au moins la sortie nord de la Route 1")
 
 
 ## Warp de [param map] qui ramène à [param origin] depuis [param arrival] : sur la case
@@ -86,7 +106,7 @@ func test_every_warp_is_reversible_on_the_spot() -> void:
 	for map_id: StringName in _maps:
 		for warp: Warp in (_maps[map_id] as GameMap).get_warps().get_all():
 			var target := _maps.get(warp.target_map) as GameMap
-			if target == null:
+			if target == null or warp.is_coming_soon():
 				continue
 			var arrival := target.get_spawn_cell(warp.target_spawn)
 			var back := _return_warp(target, arrival, map_id)

@@ -108,3 +108,39 @@ func test_table_refuses_invalid_and_conflicting_warps() -> void:
 		"autre déclenchement : pas de conflit")
 	assert_false(table.add(Warp.new(DOOR, Warp.Trigger.PUSH, Vector2i.UP, &"n", &"t")))
 	assert_eq(table.size(), 3)
+
+
+# --- Destination « à venir » (dossier-07 §12) -----------------------------------------
+
+func _soon() -> Warp:
+	return Warp.new(Vector2i(23, 1), Warp.Trigger.PUSH, Vector2i.UP, &"", &"soon_return",
+		Vector2i.DOWN, "Jadielle")
+
+
+func test_ordinary_warp_is_not_coming_soon() -> void:
+	assert_false(_door().is_coming_soon())
+	assert_eq(_door().coming_soon, "")
+
+
+func test_coming_soon_warp_needs_only_a_return_spawn() -> void:
+	var soon := _soon()
+	assert_true(soon.is_coming_soon())
+	assert_true(soon.is_valid(), "pas de carte cible : le retour se fait sur la carte courante")
+	assert_true(soon.matches_push(Vector2i(23, 1), Vector2i.UP))
+	assert_eq(soon.get_arrival_facing(Vector2i.UP), Vector2i.DOWN)
+
+
+func test_coming_soon_warp_without_return_spawn_is_invalid() -> void:
+	var soon := Warp.new(Vector2i(23, 1), Warp.Trigger.PUSH, Vector2i.UP, &"", &"",
+		Vector2i.DOWN, "Jadielle")
+	assert_false(soon.is_valid())
+
+
+func test_ordinary_warp_without_target_map_stays_invalid() -> void:
+	assert_false(Warp.new(MAT, Warp.Trigger.PUSH, Vector2i.DOWN, &"", &"spawn").is_valid())
+
+
+func test_coming_soon_warp_goes_into_a_table_like_any_other() -> void:
+	var table := WarpTable.new()
+	assert_true(table.add(_soon()))
+	assert_eq(table.find_on_push(Vector2i(23, 1), Vector2i.UP).coming_soon, "Jadielle")
