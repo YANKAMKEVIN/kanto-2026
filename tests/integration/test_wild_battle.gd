@@ -489,6 +489,8 @@ func test_a_ball_thrown_in_the_grass_captures_the_wild_pokemon() -> void:
 	assert_true(pokemon.species_id in [&"pidgey", &"rattata"], "espèce de la table")
 	assert_eq(pokemon.hp, pokemon.max_hp(), "PV pleins : aucun dégât avant la capture")
 	assert_true(GameState.pokedex.is_caught(pokemon.species_id), "capturé au Pokédex")
+	assert_eq(GameState.pokedex.times_seen(pokemon.species_id), 1,
+		"vu au combat puis capturé : une seule observation, pas deux")
 	assert_eq(pokemon.origin, Pokemon.Origin.CAPTURE)
 	assert_eq(pokemon.met_map, &"route_1")
 	assert_eq(GameState.moments.size(), 1, "un grand moment")

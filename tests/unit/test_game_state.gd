@@ -216,6 +216,35 @@ func test_record_seen_and_caught_date_the_pokedex() -> void:
 	assert_eq(entry.times_seen, 2)
 
 
+func test_a_captured_starter_is_seen_once_not_zero_times() -> void:
+	# Le starter n'est jamais « vu » en combat : sa capture est sa première observation.
+	var state := _dated()
+	assert_true(state.record_caught(&"charmander", &"oak_lab"))
+	var entry: PokedexEntry = state.pokedex.get_entry(&"charmander")
+	assert_eq(entry.times_seen, 1)
+	assert_eq(entry.times_caught, 1)
+	assert_eq(entry.first_seen_map, &"oak_lab")
+	# Le Pokémon du rival, lui, est seulement vu.
+	state.record_seen(&"squirtle", &"oak_lab")
+	assert_eq(state.pokedex.times_seen(&"squirtle"), 1)
+	assert_false(state.pokedex.is_caught(&"squirtle"))
+
+
+func test_load_dict_fixes_a_captured_species_saved_as_seen_zero_times() -> void:
+	var state := _dated()
+	state.record_caught(&"charmander", &"oak_lab")
+	var saved: Dictionary = state.to_dict()
+	# Sauvegarde du jalon 5 avant la règle : le compteur d'observations est à 0.
+	saved["pokedex"]["entries"]["charmander"]["times_seen"] = 0
+	var data := PokemonData.new()
+	assert_true(data.load_dir())
+	var loaded := _make()
+	assert_true(loaded.load_dict(saved, data))
+	assert_eq(loaded.pokedex.times_seen(&"charmander"), 1, "corrigé au chargement")
+	assert_true(loaded.pokedex.is_caught(&"charmander"))
+	assert_eq(loaded.pokedex.times_caught(&"charmander"), 1)
+
+
 func test_stamp_meeting_uses_the_player_name_the_date_and_the_level() -> void:
 	var state := _dated()
 	var data := PokemonData.new()

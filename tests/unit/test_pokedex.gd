@@ -153,8 +153,52 @@ func test_capture_of_an_unseen_species_counts_as_its_first_sighting() -> void:
 	assert_eq(entry.first_seen_map, &"oak_lab")
 	assert_eq(entry.first_seen_date, "d1")
 	assert_eq(entry.seen_maps, [&"oak_lab"] as Array[StringName])
-	assert_eq(entry.times_seen, 0)
+	assert_eq(entry.times_seen, 1, "la capture vaut sa première observation")
 	assert_eq(entry.times_caught, 1)
+	assert_eq(_dex.times_seen(&"charmander"), 1)
+	# Une seconde capture ne rajoute pas d'observation.
+	_dex.mark_caught(&"charmander", &"route_1", "d2")
+	assert_eq(_dex.times_seen(&"charmander"), 1)
+	assert_eq(_dex.times_caught(&"charmander"), 2)
+
+
+func test_a_wild_pokemon_seen_then_caught_is_seen_exactly_once() -> void:
+	# Combat sauvage : « vu » à l'entrée du Pokémon, « capturé » à la capture.
+	_dex.mark_seen(&"pidgey", &"route_1", "d1")
+	_dex.mark_caught(&"pidgey", &"route_1", "d2")
+	assert_eq(_dex.times_seen(&"pidgey"), 1, "pas de double compte")
+	assert_eq(_dex.times_caught(&"pidgey"), 1)
+	assert_eq(_dex.get_entry(&"pidgey").first_seen_date, "d1")
+
+
+func test_an_old_save_with_a_captured_species_seen_zero_times_is_fixed_on_load() -> void:
+	# Sauvegarde du jalon 5 avant la règle : starter capturé, times_seen à 0.
+	var old := {"entries": {
+		"charmander": {"caught": true, "first_seen_map": "oak_lab", "first_seen_date": "d1",
+			"first_caught_map": "oak_lab", "first_caught_date": "d1",
+			"seen_maps": ["oak_lab"], "times_seen": 0, "times_caught": 1},
+		"rattata": {"caught": true, "first_caught_map": "route_1", "first_caught_date": "d2",
+			"times_seen": 0, "times_caught": 1},
+		"pidgey": {"caught": false, "times_seen": 3, "times_caught": 0},
+		"zubat": {"caught": false, "times_seen": 0},
+	}}
+	var loaded := Pokedex.new()
+	assert_true(loaded.from_dict(old))
+	assert_eq(loaded.times_seen(&"charmander"), 1, "au moins 1")
+	assert_eq(loaded.get_entry(&"charmander").first_seen_date, "d1", "date gardée")
+	assert_eq(loaded.times_seen(&"rattata"), 1)
+	assert_eq(loaded.get_entry(&"rattata").first_seen_map, &"route_1", "reprend la capture")
+	assert_eq(loaded.get_entry(&"rattata").seen_maps, [&"route_1"] as Array[StringName])
+	assert_eq(loaded.times_seen(&"pidgey"), 3, "un compte valide n'est pas touché")
+	assert_eq(loaded.times_seen(&"zubat"), 1, "une entrée existe = vue au moins une fois")
+	assert_eq(PokedexEntry.from_dict(&"x", {"caught": true}).times_seen, 1)
+
+
+func test_old_lists_load_with_one_sighting_for_captured_species() -> void:
+	var loaded := Pokedex.new()
+	assert_true(loaded.from_dict({"seen": ["pidgey"], "caught": ["charmander"]}))
+	assert_eq(loaded.times_seen(&"charmander"), 1)
+	assert_eq(loaded.times_seen(&"pidgey"), 1)
 
 
 func test_entry_round_trip_and_tolerant_reading() -> void:

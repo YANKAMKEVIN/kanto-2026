@@ -4,7 +4,8 @@ extends RefCounted
 ##
 ## Classe pure, tenue par [Pokedex]. Une entrée existe dès que l'espèce est vue ; `caught`
 ## s'ajoute à la capture. Les lieux sont des identifiants de carte, les dates la date réelle
-## de l'appareil en ISO ([DeviceClock]) ; une carte ou une date inconnue reste vide.
+## de l'appareil en ISO ([DeviceClock]) ; une carte ou une date inconnue reste vide. Une espèce
+## capturée a toujours été vue au moins une fois ([method ensure_seen]).
 
 var species: StringName = &""
 var caught: bool = false
@@ -34,14 +35,12 @@ func see(map: StringName, date: String) -> bool:
 	return first
 
 
-## Une capture de plus (l'espèce est forcément vue : si elle ne l'était pas, la capture tient
-## lieu de première observation, sans compter une observation). Vrai si c'est la première.
+## Une capture de plus (l'espèce est forcément vue : si elle ne l'était pas, la capture compte
+## aussi comme sa première observation, [member times_seen] valant alors 1 ; une espèce déjà
+## vue n'est jamais comptée une seconde fois). Vrai si c'est la première capture.
 func capture(map: StringName, date: String) -> bool:
-	if times_seen == 0 and first_seen_date.is_empty():
-		first_seen_map = map
-		first_seen_date = date
-		if not map.is_empty() and not seen_maps.has(map):
-			seen_maps.append(map)
+	if times_seen < 1:
+		see(map, date)
 	var first := not caught
 	caught = true
 	times_caught += 1
@@ -49,6 +48,20 @@ func capture(map: StringName, date: String) -> bool:
 		first_caught_map = map
 		first_caught_date = date
 	return first
+
+
+## Une espèce de l'entrée est forcément vue : au moins une observation. Corrige une entrée
+## sauvegardée avant cette règle (starter « capturé » mais « vu 0 fois », jalon 5) ; sans
+## première observation datée, celle-ci reprend le lieu et la date de la première capture.
+func ensure_seen() -> void:
+	if times_seen >= 1:
+		return
+	times_seen = 1
+	if first_seen_date.is_empty() and first_seen_map.is_empty():
+		first_seen_map = first_caught_map
+		first_seen_date = first_caught_date
+	if not first_seen_map.is_empty() and not seen_maps.has(first_seen_map):
+		seen_maps.append(first_seen_map)
 
 
 ## Entrée prête pour le JSON.
@@ -74,4 +87,6 @@ static func from_dict(species_id: StringName, dict: Dictionary) -> PokedexEntry:
 	entry.seen_maps = JsonFields.get_ids(dict, "seen_maps")
 	entry.times_seen = maxi(JsonFields.get_int(dict, "times_seen"), 0)
 	entry.times_caught = maxi(JsonFields.get_int(dict, "times_caught"), 0)
+	if entry.caught or entry.times_caught > 0:
+		entry.ensure_seen()
 	return entry
