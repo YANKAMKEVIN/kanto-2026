@@ -1,0 +1,150 @@
+extends GutTest
+## ZoneLibrary : zones du Kanto du projet (data/world/zones.json, jalon-06.md §3.2).
+
+const AREAS_PATH := "res://assets/ui/map/kanto_placeholder_areas.json"
+
+var _zones: ZoneLibrary
+
+
+func before_each() -> void:
+	_zones = ZoneLibrary.new()
+
+
+## Identifiants des cartes existantes (une scène par carte, MapCatalog).
+func _map_ids() -> Array[StringName]:
+	var ids: Array[StringName] = []
+	for file: String in DirAccess.get_files_at(MapCatalog.MAPS_DIR):
+		var name := file.trim_suffix(".remap")
+		if name.get_extension() == "tscn":
+			ids.append(StringName(name.get_basename()))
+	return ids
+
+
+## Propriété [param property] du nœud racine de la scène de la carte, sans l'instancier.
+func _root_property(map_id: StringName, property: StringName) -> Variant:
+	var state := (load(MapCatalog.scene_path(map_id)) as PackedScene).get_state()
+	for i: int in state.get_node_property_count(0):
+		if state.get_node_property_name(0, i) == property:
+			return state.get_node_property_value(0, i)
+	return null
+
+
+# --- Données réelles -----------------------------------------------------------------------
+
+func test_real_data_loads_without_error() -> void:
+	assert_true(_zones.load_file(), "\n".join(_zones.get_errors()))
+	assert_eq(_zones.get_errors().size(), 0)
+	assert_eq(_zones.size(), 22)
+
+
+func test_every_map_belongs_to_exactly_one_zone() -> void:
+	_zones.load_file()
+	var maps := _map_ids()
+	assert_gt(maps.size(), 5)
+	for map_id: StringName in maps:
+		assert_ne(_zones.zone_of(map_id), &"", "carte « %s » rangée dans une zone" % map_id)
+	for map_id: StringName in _zones.get_maps():
+		assert_true(MapCatalog.has_map(map_id), "carte « %s » existante" % map_id)
+
+
+func test_interiors_belong_to_their_town() -> void:
+	_zones.load_file()
+	for map_id: StringName in [&"pallet_town", &"player_house_1f", &"player_house_2f",
+			&"rival_house", &"oak_lab"]:
+		assert_eq(_zones.zone_of(map_id), &"pallet_town", map_id)
+		assert_eq(_zones.zone_name_of(map_id), "Bourg Palette")
+	assert_eq(_zones.zone_of(&"route_1"), &"route_1")
+	assert_eq(_zones.zone_name_of(&"route_1"), "Route 1")
+	assert_eq(_zones.zone_of(&"nowhere"), &"")
+	assert_eq(_zones.zone_name_of(&"nowhere"), "")
+
+
+func test_zone_names_match_the_map_titles() -> void:
+	_zones.load_file()
+	for map_id: StringName in _map_ids():
+		assert_eq(_root_property(map_id, &"display_name"), _zones.zone_name_of(map_id),
+			"titre de « %s » = nom de sa zone" % map_id)
+
+
+func test_first_zones_of_the_journey() -> void:
+	_zones.load_file()
+	var expected := {
+		&"pallet_town": ["Bourg Palette", ZoneData.KIND_TOWN],
+		&"route_1": ["Route 1", ZoneData.KIND_ROUTE],
+		&"viridian_city": ["Jadielle", ZoneData.KIND_TOWN],
+		&"route_22": ["Route 22", ZoneData.KIND_ROUTE],
+		&"route_2": ["Route 2", ZoneData.KIND_ROUTE],
+		&"viridian_forest": ["Forêt de Jade", ZoneData.KIND_PLACE],
+		&"pewter_city": ["Argenta", ZoneData.KIND_TOWN],
+	}
+	for id: StringName in expected:
+		var zone := _zones.get_zone(id)
+		assert_not_null(zone, id)
+		assert_eq(zone.id, id)
+		assert_eq(zone.name, expected[id][0])
+		assert_eq(zone.kind, expected[id][1])
+	assert_eq(_zones.get_ids().slice(0, 4), [&"pallet_town", &"route_1", &"viridian_city",
+		&"route_22"] as Array[StringName], "ordre du fichier")
+	assert_true(_zones.get_zone(&"viridian_city").maps.is_empty(), "pas encore construite")
+	assert_false(_zones.has_zone(&"route_16"), "Route 16 retirée (décision de Kevin)")
+
+
+## Une seule source de vérité par fait : l'identité des zones dans zones.json, leur
+## rectangle dans le fichier de l'illustration ; mêmes identifiants des deux côtés.
+func test_same_zones_as_the_kanto_illustration() -> void:
+	_zones.load_file()
+	var doc: Dictionary = JSON.parse_string(FileAccess.get_file_as_string(AREAS_PATH))
+	var area_ids: Array[StringName] = []
+	for key: String in doc["zones"]:
+		area_ids.append(StringName(key))
+		var entry: Dictionary = doc["zones"][key]
+		assert_eq(entry.keys(), ["area"], "%s : seulement la géométrie" % key)
+	var ids := _zones.get_ids()
+	ids.sort_custom(func(a: StringName, b: StringName) -> bool: return a < b)
+	area_ids.sort_custom(func(a: StringName, b: StringName) -> bool: return a < b)
+	assert_eq(ids, area_ids)
+
+
+# --- Règles --------------------------------------------------------------------------------
+
+func test_maps_default_to_empty() -> void:
+	assert_true(_zones.add_from_dict({"zones": {"z": {"name": "Z", "kind": "place"}}}, "t"))
+	assert_eq(_zones.get_zone(&"z").maps, [] as Array[StringName])
+	assert_eq(_zones.get_zone(&"z").source, "t")
+	assert_null(_zones.get_zone(&"missing"))
+
+
+func test_invalid_zones_are_rejected() -> void:
+	assert_false(_zones.add_from_dict({"zones": {
+		"ok": {"name": "Bon", "kind": "town", "maps": ["a"]},
+		"typo": {"name": "X", "kind": "town", "map": ["b"]},
+		"no_name": {"kind": "town"},
+		"bad_kind": {"name": "X", "kind": "city"},
+		"bad_maps": {"name": "X", "kind": "route", "maps": "c"},
+		"twice": {"name": "X", "kind": "route", "maps": ["d", "d"]},
+		"stolen": {"name": "X", "kind": "route", "maps": ["a"]},
+		"not_object": 3,
+	}}, "t"))
+	assert_eq(_zones.get_ids(), [&"ok"] as Array[StringName])
+	assert_eq(_zones.zone_of(&"a"), &"ok", "une carte n'appartient qu'à une zone")
+	assert_eq(_zones.zone_of(&"d"), &"", "zone écartée : ses cartes aussi")
+	var errors := "\n".join(_zones.get_errors())
+	assert_string_contains(errors, "clé inconnue « map »")
+	assert_string_contains(errors, "carte « a » déjà rangée dans « ok »")
+	assert_string_contains(errors, "carte « d » en double")
+	assert_push_error_count(7)
+
+
+func test_duplicate_zone_across_files_and_root_keys() -> void:
+	_zones.add_from_dict({"zones": {"z": {"name": "Z", "kind": "town"}}}, "a.json")
+	assert_false(_zones.add_from_dict({"zones": {"z": {"name": "Z2", "kind": "town"}}},
+		"b.json"))
+	assert_eq(_zones.get_zone(&"z").name, "Z")
+	assert_false(_zones.add_from_dict({"zone": {}}, "c.json"))
+	assert_false(_zones.add_from_dict({"zones": [], "extra": 1}, "d.json"))
+	assert_push_error_count(5)
+
+
+func test_missing_file() -> void:
+	assert_false(_zones.load_file("res://tests/fixtures/absent_zones.json"))
+	assert_push_error("fichier introuvable")

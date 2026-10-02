@@ -11,6 +11,8 @@ var _frames := 0
 
 class Overlay extends Control:
 	var zones: Dictionary
+	## Genre de chaque zone (data/world/zones.json : l'identité des zones vit là).
+	var kinds: Dictionary
 
 	func _draw() -> void:
 		var colors := {"town": Color.RED, "route": Color.YELLOW, "place": Color.MAGENTA,
@@ -18,7 +20,7 @@ class Overlay extends Control:
 		var font := ThemeDB.fallback_font
 		for id: String in zones:
 			var a: Array = zones[id]["area"]
-			var c: Color = colors[zones[id]["kind"]]
+			var c: Color = colors.get(kinds.get(id, ""), Color.WHITE)
 			var r := Rect2(a[0], a[1], a[2], a[3])
 			draw_rect(r, Color(c, 0.18), true)
 			draw_rect(r, c, false, 3.0)
@@ -39,6 +41,10 @@ func _init() -> void:
 	_vp.add_child(tex)
 	var ov := Overlay.new()
 	ov.zones = doc["zones"]
+	var zones_doc: Dictionary = JSON.parse_string(FileAccess.get_file_as_string(
+			"res://data/world/zones.json"))
+	for id: String in zones_doc["zones"]:
+		ov.kinds[id] = zones_doc["zones"][id]["kind"]
 	_vp.add_child(ov)
 	process_frame.connect(_on_frame)
 
