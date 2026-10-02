@@ -162,7 +162,7 @@ Fichiers dans `reference/`. Ce qu'on garde : la composition, la lumière, les pa
 | Fichier | On garde | Ne fait pas foi |
 |---|---|---|
 | `menu-tableau-de-bord-v1.jpg` | carte du Dresseur à gauche, Pokémon de tête, 6 grandes cartes | argent et heure dans l'en-tête ; il manque la ligne d'objectif (§1) |
-| `menu-equipe-v1.jpg` | liste à gauche, Pokémon vedette au centre, fiche à droite, onglets, barre d'XP | « Salamèche N. 16 » dans l'évolution (spoiler) ; « Ajouter un Pokémon » ; « Marquer favori » ; taille, poids et description (relèvent du Pokédex) ; heure et argent |
+| `menu-equipe-v1.jpg` | liste à gauche, Pokémon vedette au centre, fiche à droite, onglets, barre d'XP, action favori (adoptée le 2026-10-02, §2) | « Salamèche N. 16 » dans l'évolution (spoiler) ; « Ajouter un Pokémon » ; taille, poids et description (relèvent du Pokédex) ; heure et argent |
 | `menu-sac-v1.jpg` | catégories, grille de cartes, panneau de détail, « Utiliser sur… » avec PV, Favoris | l'heure ; les objets et quantités montrés sont illustratifs |
 | `menu-pokedex-v1.jpg` | grande présentation du Pokémon, onglets, habitat en carte, filtres | statistiques de base, talents, chaîne d'évolution complète avec niveaux, silhouettes d'espèces inconnues, « 27/151 » en tête, heure et argent ; faute « Salaméche » |
 | `menu-carte-v1.jpg` | grande carte illustrée, panneau de zone, miniatures des lieux découverts | **géographie fausse** (Route 1 « relie Jadielle à Carmin-sur-Mer », Bourg Palette absent, volcan « Reboutefeu », « Mont Sélénium ») ; onglet Îles Sevii ; « 4 / 6 » et `???` ; « 8 / 12 zones » ; « Se rendre ici » ; heure et argent |
