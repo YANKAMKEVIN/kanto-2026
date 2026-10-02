@@ -20,10 +20,6 @@ signal battle_finished(trainer_id: StringName, outcome: int)
 
 ## Raison de blocage du joueur pendant un combat ([method Player.set_input_enabled]).
 const REASON: StringName = &"battle"
-## Rencontre sauvage — temps d'arrêt sur la vue de combat avant le retour, tant que le combat
-## jouable (T7) n'est pas branché (jalon 5 §3.7). En secondes à speed_scale = 1.
-const WILD_HOLD: float = 0.35
-
 ## Durées multipliées (0 = instantané, tests) ; relayé à la scène et à la HUD.
 var speed_scale: float = 1.0
 
@@ -60,7 +56,9 @@ func setup(data: PokemonData, trainers: TrainerLibrary, texts: BattleText, stage
 ## Coroutine : joue le combat contre [param trainer_id] sur [param map], renvoie une
 ## [enum Battle.Outcome] (NONE si refusé). [param world_actors] : &"player" / &"foe" →
 ## identifiant du PNJ Pokémon de [param map] qui combat (cachés pendant le combat,
-## facultatifs).
+## facultatifs). Enveloppe (jalon 5 §3.8) : construit la [BattleRequest] d'un dresseur (camps
+## bâtis depuis la [TrainerLibrary]) puis joue [method run_request] ; le combat du rival (4B)
+## ne change pas.
 func run(trainer_id: StringName, map: GameMap,
 		world_actors: Dictionary[StringName, StringName]) -> int:
 	if _running:
@@ -74,96 +72,92 @@ func run(trainer_id: StringName, map: GameMap,
 	if party == null or party.first_able() == null:
 		push_error("BattleDirector : aucun Pokémon valide dans l'équipe du joueur")
 		return Battle.Outcome.NONE
-	_running = true
-	_trainer_id = trainer_id
-	if is_instance_valid(_player):
-		_player.set_input_enabled(false, REASON)
-	battle_started.emit(trainer_id)
-	_relay_speed()
-	# Camps : le joueur avec son équipe, le dresseur avec l'équipe issue de son starter.
-	var starter: StringName = _state.starter_species
+	# Camps du dresseur : l'équipe issue de son starter (consomme l'aléatoire avant le combat,
+	# comme au 4B). La requête porte ensuite ces camps et les règles « dresseur ».
 	var rng := _state.rng as GameRng
-	var foes := _trainers.build_team(trainer_id, starter, rng)
-	var foe_side := BattleSide.new(foes, false, trainer.name, trainer.make_ai())
-	var player_side := BattleSide.new(party, true)
-	_battle = Battle.new(player_side, foe_side, _data, rng)
-	var player_species := party.get_lead().species_id
-	var foe_species: StringName = foes.get_lead().species_id if foes != null \
-		and foes.get_lead() != null else &""
-	# Vue de combat dans le labo recomposé (~1 s) : PNJ Pokémon cachés, sprites de combat.
-	var camera := _player.get_camera() if is_instance_valid(_player) else null
-	var player_npc := _npc(map, world_actors.get(&"player", &""))
-	var foe_npc := _npc(map, world_actors.get(&"foe", &""))
-	if is_instance_valid(_stage) and camera != null:
-		_stage.set_frame(map.get_battle_arena_rect(), Rect2(map.get_pixel_rect()))
-		await _stage.enter(camera, player_npc, foe_npc, player_species, foe_species)
-	if is_instance_valid(_hud):
-		_hud.set_party(party.size())
-	# Déroulé du moteur : présentation des camps, puis la boucle de tours.
-	await _play_events(_battle.start(), trainer)
-	while _battle.get_state() == Battle.State.CHOOSING:
-		var action := await _choose_action()
-		if _battle.get_state() != Battle.State.CHOOSING:
-			break
-		await _play_events(_battle.submit(action), trainer)
-	# Fin : soin (les deux Pokémon, l'équipe du rival n'est pas gardée), ni XP ni argent.
-	var outcome := _battle.get_outcome()
-	var conclusion := BattleConclusion.resolve(trainer, outcome)
-	if is_instance_valid(_hud):
-		await _hud.hide_all()
-	if is_instance_valid(_stage) and _stage.is_active():
-		await _stage.exit()
-	if conclusion.heal_party:
-		party.heal_all()
-	_running = false
-	_battle = null
-	if is_instance_valid(_player):
-		_player.set_input_enabled(true, REASON)
-	battle_finished.emit(trainer_id, outcome)
-	return outcome
+	var foes := _trainers.build_team(trainer_id, _state.starter_species, rng)
+	var request := BattleRequest.trainer_battle(trainer, foes, world_actors)
+	return await run_request(request, map)
 
 
-## Coroutine : joue le combat décrit par [param request] sur [param map] et renvoie une
-## [enum Battle.Outcome]. Jalon 5 (T5) — [b]transition seulement[/b] pour une rencontre
-## sauvage : recadrage et voile ([BattleStage]), apparition du sauvage, entrée du partenaire,
-## court arrêt, puis sortie ; ni interface ni moteur ([Battle]). Renvoie [constant
-## Battle.Outcome.WIN]. Le combat jouable et la généralisation aux dresseurs sont branchés en
-## T7 : cette signature ne changera pas (l'[EncounterDirector] appelle déjà `run_request`).
+## Coroutine : joue le combat décrit par [param request] sur [param map] (jalon 5 §3.8) et
+## renvoie une [enum Battle.Outcome] (NONE si refusé). Sauvage ([method BattleRequest.wild]) ou
+## dresseur ([method BattleRequest.trainer_battle]) : même déroulé (entrée, moteur, boucle de
+## tours, sortie), seules changent l'entrée en scène (intro sauvage dans le décor / entrée du
+## dresseur avec ses PNJ), les actions proposées (FUITE active en sauvage) et la conclusion (le
+## soin du dresseur ; un sauvage n'est jamais soigné ici — la défaite et le soin passent par
+## l'[EncounterDirector], §3.11).
 func run_request(request: BattleRequest, map: GameMap) -> int:
 	if _running:
 		push_error("BattleDirector : un combat tourne déjà")
 		return Battle.Outcome.NONE
-	if request == null or not request.is_wild():
-		# T7 branchera ici le combat complet (dresseur compris) ; T5 ne gère que le sauvage.
-		push_error("BattleDirector.run_request : requête non gérée en T5 (sauvage seulement)")
-		return Battle.Outcome.NONE
-	var foe: Pokemon = request.foe_party.get_lead() if request.foe_party != null else null
+	var foe: Pokemon = request.foe_party.get_lead() if request != null \
+		and request.foe_party != null else null
 	if foe == null:
 		push_error("BattleDirector.run_request : équipe adverse vide")
 		return Battle.Outcome.NONE
+	var party := _state.party as Party
+	if party == null or party.first_able() == null:
+		push_error("BattleDirector.run_request : aucun Pokémon valide dans l'équipe du joueur")
+		return Battle.Outcome.NONE
+	var wild := request.is_wild()
+	var trainer := request.trainer
 	_running = true
-	_trainer_id = &""
+	_trainer_id = trainer.id if trainer != null else &""
 	if is_instance_valid(_player):
 		_player.set_input_enabled(false, REASON)
-	battle_started.emit(&"")
+	battle_started.emit(_trainer_id)
 	_relay_speed()
+	# Camps : le joueur avec son équipe, l'adversaire avec l'équipe de la requête (le sauvage
+	# tiré, ou l'équipe du dresseur). Le moteur reçoit les règles (fuite en sauvage).
+	var rng := _state.rng as GameRng
+	var foe_ai := trainer.make_ai() if trainer != null else null
+	var foe_side := BattleSide.new(request.foe_party, false, request.foe_name, foe_ai)
+	var player_side := BattleSide.new(party, true)
+	_battle = Battle.new(player_side, foe_side, _data, rng, request.rules)
+	var player_species := party.get_lead().species_id
 	var foe_species := foe.species_id
-	var player: Pokemon = (_state.party as Party).get_lead()
-	var player_species: StringName = player.species_id if player != null else &""
-	# Transition dans le décor courant (~1 s, pas d'écran noir) : la Route 1 reste le fond.
+	# Entrée (~1 s, jamais d'écran noir) : intro sauvage dans le décor (herbe, partenaire qui
+	# entre en courant) ou entrée du dresseur (PNJ Pokémon du monde cachés, sprites de combat).
 	var camera := _player.get_camera() if is_instance_valid(_player) else null
 	if is_instance_valid(_stage) and camera != null:
 		_stage.set_frame(map.get_battle_arena_rect(), Rect2(map.get_pixel_rect()))
-		var origin_world := Grid.cell_to_world(request.origin_cell)
-		await _stage.play_wild_intro(camera, foe_species, origin_world)
-		await _stage.play_partner_enter(player_species)
-		await _hold(WILD_HOLD)
+		if wild:
+			var origin_world := Grid.cell_to_world(request.origin_cell)
+			await _stage.play_wild_intro(camera, foe_species, origin_world)
+			await _stage.play_partner_enter(player_species)
+		else:
+			var player_npc := _npc(map, request.world_actors.get(&"player", &""))
+			var foe_npc := _npc(map, request.world_actors.get(&"foe", &""))
+			await _stage.enter(camera, player_npc, foe_npc, player_species, foe_species)
+	if is_instance_valid(_hud):
+		_hud.set_party(party.size())
+	# Déroulé du moteur : présentation des camps, puis la boucle de tours.
+	await _play_events(_battle.start(), trainer)
+	var actions := BattleViews.WILD_BATTLE_ACTIONS if wild else BattleViews.TRAINER_BATTLE_ACTIONS
+	var can_flee := request.rules != null and request.rules.can_flee
+	while _battle.get_state() == Battle.State.CHOOSING:
+		var action := await _choose_action(actions, can_flee)
+		if _battle.get_state() != Battle.State.CHOOSING:
+			break
+		await _play_events(_battle.submit(action), trainer)
+	# Fin : sortie de la vue, puis conclusion. Dresseur : soin éventuel (les deux Pokémon,
+	# l'équipe du rival n'est pas gardée), ni XP ni argent (5C). Sauvage : aucun soin.
+	var outcome := _battle.get_outcome()
+	if is_instance_valid(_hud):
+		await _hud.hide_all()
+	if is_instance_valid(_stage) and _stage.is_active():
 		await _stage.exit()
+	if trainer != null:
+		var conclusion := BattleConclusion.resolve(trainer, outcome)
+		if conclusion.heal_party:
+			party.heal_all()
 	_running = false
+	_battle = null
 	if is_instance_valid(_player):
 		_player.set_input_enabled(true, REASON)
-	battle_finished.emit(&"", Battle.Outcome.WIN)
-	return Battle.Outcome.WIN
+	battle_finished.emit(_trainer_id, outcome)
+	return outcome
 
 
 func is_running() -> bool:
@@ -177,15 +171,18 @@ func get_battle() -> Battle:
 
 # --- Boucle de choix ------------------------------------------------------------------
 
-## Coroutine : propose les actions, attend le choix du joueur, renvoie l'action à soumettre.
-## ATTAQUER sans PP → Lutte directement (règle des jeux) ; sinon les capacités, « ‹ » revient.
-func _choose_action() -> BattleAction:
+## Coroutine : propose [param actions] (grille), attend le choix du joueur, renvoie l'action à
+## soumettre. ATTAQUER sans PP → Lutte directement (règle des jeux) ; sinon les capacités,
+## « ‹ » revient. FUITE (si [param can_flee], sauvage) → une action de fuite ([BattleAction.run]).
+func _choose_action(actions: Dictionary[StringName, bool], can_flee: bool) -> BattleAction:
 	while true:
-		_hud.show_actions(BattleViews.TRAINER_BATTLE_ACTIONS)
+		_hud.show_actions(actions)
 		var action: StringName = await _hud.action_selected
+		if action == ActionGrid.RUN and can_flee:
+			return BattleAction.run()
 		if action != ActionGrid.ATTACK:
-			# SAC, ÉQUIPE, FUITE : sans effet au premier combat (ils sont atténués et muets,
-			# mais on ne bloque pas si un signal arrive).
+			# SAC, ÉQUIPE (et FUITE contre un dresseur) : atténués et muets, mais on ne bloque
+			# pas si un signal arrive.
 			continue
 		var usable := _battle.get_usable_moves()
 		if usable.is_empty():
@@ -273,13 +270,6 @@ func _npc(map: GameMap, id: StringName) -> Node2D:
 	if id.is_empty() or not is_instance_valid(map):
 		return null
 	return map.get_npc(id)
-
-
-## Coroutine : attend [param seconds] (à speed_scale = 1). Instantané si speed_scale = 0.
-func _hold(seconds: float) -> void:
-	if speed_scale <= 0.0 or seconds <= 0.0:
-		return
-	await get_tree().create_timer(seconds / speed_scale).timeout
 
 
 func _relay_speed() -> void:

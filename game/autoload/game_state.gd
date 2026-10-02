@@ -25,11 +25,16 @@ var bag: Bag = Bag.new()
 ## arrive au jalon 6 ; les données sont collectées et sauvegardées dès le jalon 5. Même
 ## instance pendant toute la session (vidée par [method new_game]).
 var pokedex: Pokedex = Pokedex.new()
+## Dernier point de soin (jalon 5 §3.11, 5B) : carte et spawn où le joueur se réveille, équipe
+## soignée, après une défaite sauvage. Tant qu'aucun Centre Pokémon n'existe (avant Jadielle),
+## c'est la maison familiale, face à Maman (dossier 07 §11). Un futur Centre le remplacera.
+var heal_map: StringName = &"player_house_1f"
+var heal_spawn: StringName = &"heal"
 
 
 ## Nouvelle partie (appelé par Boot au démarrage) : drapeaux baissés, équipe, Sac et Pokédex
 ## vides, pas de starter, aléatoire neuf de graine [param rng_seed] (−1 = graine tirée au
-## hasard).
+## hasard), point de soin remis à la maison familiale.
 func new_game(rng_seed: int = -1) -> void:
 	flags.clear()
 	party.clear()
@@ -37,3 +42,5 @@ func new_game(rng_seed: int = -1) -> void:
 	pokedex.clear()
 	starter_species = &""
 	rng = GameRng.new(rng_seed)
+	heal_map = &"player_house_1f"
+	heal_spawn = &"heal"

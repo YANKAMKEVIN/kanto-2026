@@ -5,11 +5,10 @@ extends Node
 ## ([EncounterTable] + [member GameState.rng]) ; si une rencontre a lieu, il bloque le joueur
 ## [b]dans le `moved`[/b] (le pas suivant ne part pas, doigt maintenu ou en courant), marque
 ## le sauvage « vu » au Pokédex, joue le froissement d'herbe, puis lance la séquence de combat
-## par le [BattleDirector] (`run_request`) et rend le contrôle à la fin.
-##
-## En T5, `run_request` ne joue que la [b]transition[/b] (pas de combat jouable ni d'interface) ;
-## l'interface prévue est respectée pour que T7 n'ait qu'à brancher le vrai combat. Le directeur
-## ne lit aucun autoload : il reçoit [GameState] et le routeur par [method setup].
+## par le [BattleDirector] (`run_request`) et rend le contrôle à la fin. Sur une défaite
+## ([constant Battle.Outcome.LOSS]), il soigne l'équipe et renvoie le joueur au point de soin
+## (§3.11) avant de rendre le contrôle. Le directeur ne lit aucun autoload : il reçoit
+## [GameState] et le routeur par [method setup].
 
 ## Une rencontre commence (joueur bloqué, transition lancée).
 signal encounter_started(species_id: StringName, level: int)
@@ -136,10 +135,26 @@ func _run(encounter: WildEncounter, origin: Vector2i) -> void:
 	var outcome := Battle.Outcome.NONE
 	if _battles != null:
 		outcome = await _battles.run_request(request, _map)
+	if outcome == Battle.Outcome.LOSS:
+		await _handle_defeat()
 	if is_instance_valid(_player):
 		_player.set_input_enabled(true, REASON)
 	_running = false
 	encounter_finished.emit(outcome)
+
+
+## Défaite sauvage (jalon 5 §3.11) : l'équipe est soignée, puis le joueur se réveille au point
+## de soin ([member GameState.heal_map] / [member GameState.heal_spawn], tourné vers le haut —
+## vers Maman). Le fondu du routeur tient lieu de l'« écran très bref » (dossier 05 §23) ; le
+## verrou du joueur est tenu tout du long (REASON) et rendu par l'appelant.
+func _handle_defeat() -> void:
+	if _state == null:
+		return
+	var party := _state.party as Party
+	if party != null:
+		party.heal_all()
+	if _router != null and _router.has_method(&"change_map"):
+		await _router.change_map(_state.heal_map, _state.heal_spawn, Vector2i.UP)
 
 
 ## Le joueur se tourne vers l'herbe qui bouge, elle s'agite, le cri s'accroche (sans son).

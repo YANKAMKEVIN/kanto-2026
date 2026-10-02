@@ -23,7 +23,7 @@ extends RefCounted
 const DATA_DIR: String = "res://data/dialogues/"
 
 const _DIALOGUE_KEYS: Array[String] = ["speaker", "narration", "draft", "variants"]
-const _VARIANT_KEYS: Array[String] = ["pages", "if", "unless", "set", "auto"]
+const _VARIANT_KEYS: Array[String] = ["pages", "if", "unless", "set", "auto", "heal"]
 const _PAGE_KEYS: Array[String] = [
 	"text", "speaker", "pause", "face_player", "react", "turn",
 ]
@@ -190,6 +190,9 @@ func _parse_variant(value: Variant, where: String) -> DialogueVariant:
 	if entry.has("auto"):
 		ok = _read_bool(entry["auto"], where + " auto") and ok
 		variant.auto = entry["auto"] is bool and entry["auto"]
+	if entry.has("heal"):
+		ok = _read_bool(entry["heal"], where + " heal") and ok
+		variant.heal = entry["heal"] is bool and entry["heal"]
 	return variant if ok else null
 
 

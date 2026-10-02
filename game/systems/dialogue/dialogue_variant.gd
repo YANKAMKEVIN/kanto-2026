@@ -14,6 +14,9 @@ var unless_flags: Array[StringName] = []
 var set_flags: Array[StringName] = []
 ## Se déclenche à l'arrivée du joueur sur la carte du PNJ, si la variante s'applique.
 var auto: bool = false
+## Soigne l'équipe du joueur à la fin du dialogue (jalon 5 §3.11) : le lecteur émet alors
+## [signal DialogueRunner.heal_requested]. Point de soin volontaire (parler à Maman).
+var heal: bool = false
 
 
 ## Vrai si la variante s'applique avec les drapeaux [param flags] (null = aucun drapeau).

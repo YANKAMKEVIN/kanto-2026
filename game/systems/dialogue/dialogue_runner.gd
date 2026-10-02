@@ -16,6 +16,9 @@ signal dialogue_started(dialogue_id: StringName)
 signal page_started(index: int)
 ## Fin du dialogue : boîte fermée, drapeaux levés, PNJ revenu à ses affaires, joueur libre.
 signal dialogue_finished(dialogue_id: StringName)
+## La variante jouée demande un soin de l'équipe (clé « heal », jalon 5 §3.11) : émis une
+## seule fois, à la fin du dialogue, avant [signal dialogue_finished]. Câblé par [Boot].
+signal heal_requested
 
 ## Raison de blocage du joueur pendant un dialogue ([method Player.set_input_enabled]).
 const REASON: StringName = &"dialogue"
@@ -228,6 +231,7 @@ func _finish() -> void:
 	if _box != null:
 		await _box.close()
 	var dialogue := _dialogue
+	var wants_heal := _variant != null and _variant.heal
 	if _flags != null:
 		for flag: StringName in _variant.set_flags:
 			_flags.set_flag(flag)
@@ -243,6 +247,8 @@ func _finish() -> void:
 	_npc = null
 	_map = null
 	set_process(false)
+	if wants_heal:
+		heal_requested.emit()
 	dialogue_finished.emit(dialogue.id)
 
 

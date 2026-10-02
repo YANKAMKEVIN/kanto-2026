@@ -83,8 +83,8 @@ func _ready() -> void:
 	_battle_director.event_played.connect(_on_battle_event)
 	_ambient.setup(_player)
 	# Rencontres sauvages (jalon 5, 5B) : tables lues dans data/encounters/, l'EncounterDirector
-	# tire une rencontre à chaque pas dans les hautes herbes. En T5, il ne joue que la transition
-	# (BattleDirector.run_request court-circuité) ; le combat jouable est branché en T7.
+	# tire une rencontre à chaque pas dans les hautes herbes et joue le vrai combat sauvage
+	# (BattleDirector.run_request). Une défaite renvoie au point de soin (§3.11).
 	_encounter_library = EncounterLibrary.new(_pokemon)
 	_encounter_library.load_dir()
 	_encounters.setup(_encounter_library, _pokemon, GameState, _player, _battle_director,
@@ -94,6 +94,9 @@ func _ready() -> void:
 	_interactions.target_changed.connect(_on_target_changed)
 	_runner.dialogue_started.connect(_on_dialogue_started)
 	_runner.dialogue_finished.connect(_on_dialogue_finished)
+	# Soin volontaire (jalon 5 §3.11) : une variante de dialogue « heal » (parler à Maman)
+	# soigne l'équipe à la fin du dialogue.
+	_runner.heal_requested.connect(_on_heal_requested)
 	_cutscenes_node.cutscene_started.connect(_on_cutscene_started)
 	_cutscenes_node.cutscene_finished.connect(_on_cutscene_finished)
 	SceneRouter.setup(_world, _player, _fade)
@@ -247,6 +250,11 @@ func _on_dialogue_started(_dialogue_id: StringName) -> void:
 
 func _on_dialogue_finished(_dialogue_id: StringName) -> void:
 	_refresh_controls()
+
+
+## Soin demandé par un dialogue « heal » (jalon 5 §3.11) : l'équipe est soignée (PV et PP).
+func _on_heal_requested() -> void:
+	GameState.party.heal_all()
 
 
 func _on_cutscene_started(_cutscene_id: StringName) -> void:

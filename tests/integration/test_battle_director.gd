@@ -221,6 +221,173 @@ func test_damage_updates_the_hp_card_to_the_event_value() -> void:
 	assert_true(seen_damage[0], "au moins un coup encaissé")
 
 
+# --- Combat sauvage (jalon 5 §3.8) ----------------------------------------------------
+
+## Simule un combat sauvage pur (charmander N5 contre [param species] N[param level]) avec la
+## graine [param seed], le joueur jouant sa 1re capacité (ou la fuite si [param flee]) : même
+## consommation d'aléatoire que le directeur (BattleRequest.wild crée le sauvage, puis le moteur).
+func _simulate_wild(species: StringName, level: int, seed: int, flee: bool) -> Dictionary:
+	var rng := GameRng.new(seed)
+	var wild_party := Party.new()
+	wild_party.add(PokemonFactory.create(_data, species, level, rng))
+	var player_party := _player_party(&"charmander")
+	var battle := Battle.new(BattleSide.new(player_party, true),
+		BattleSide.new(wild_party, false, "", null), _data, rng, BattleRules.for_wild())
+	var events: Array[BattleEvent] = []
+	events.append_array(battle.start())
+	while battle.get_state() == Battle.State.CHOOSING:
+		var action := BattleAction.run() if flee \
+			else BattleAction.move(0 if not battle.get_usable_moves().is_empty() \
+				else BattleAction.STRUGGLE)
+		events.append_array(battle.submit(action))
+	var lead := player_party.get_lead()
+	return {"outcome": battle.get_outcome(), "events": events, "hp": lead.hp,
+		"max": lead.max_hp()}
+
+
+## Graine d'une victoire sauvage où le starter a [b]encaissé des dégâts[/b] (pour prouver
+## l'absence de soin). −1 si aucune sous la limite.
+func _wild_win_seed(species: StringName, level: int) -> int:
+	for seed: int in range(0, 2000):
+		var sim := _simulate_wild(species, level, seed, false)
+		if sim["outcome"] == Battle.Outcome.WIN and int(sim["hp"]) < int(sim["max"]):
+			return seed
+	return -1
+
+
+## Espèce/niveau/graine d'une fuite finalement réussie (FLED) après au moins un échec
+## (FLEE_FAILED) : le sauvage est plus rapide (niveau élevé). Vide si rien trouvé.
+func _wild_flee_fail_case() -> Dictionary:
+	for level: int in [10, 12, 15, 20]:
+		for seed: int in range(0, 1500):
+			var sim := _simulate_wild(&"rattata", level, seed, true)
+			if sim["outcome"] != Battle.Outcome.FLED:
+				continue
+			var failed := false
+			for event: BattleEvent in sim["events"]:
+				if event.kind == BattleEvent.Kind.FLEE_FAILED:
+					failed = true
+					break
+			if failed:
+				return {"level": level, "seed": seed}
+	return {}
+
+
+## Prépare GameState pour un combat sauvage (charmander N5) et renvoie la requête ; la création
+## du sauvage consomme l'aléatoire de la graine [param seed], le moteur poursuit le même flux.
+func _wild_request(species: StringName, level: int, seed: int) -> BattleRequest:
+	_state.party = _player_party(&"charmander")
+	_state.starter_species = &"charmander"
+	_state.rng = GameRng.new(seed)
+	var encounter := WildEncounter.new(species, level, &"route_1_grass")
+	return BattleRequest.wild(encounter, _data, _state.rng as GameRng, Vector2i(5, 4))
+
+
+## Joue la requête [param request] par le directeur, en pilotant la HUD (FUITE si [param flee],
+## sinon ATTAQUER puis 1re capacité). Renvoie [issue, événements joués].
+func _play_request(request: BattleRequest, flee: bool) -> Array:
+	var events: Array[BattleEvent] = []
+	_director.event_played.connect(func(e: BattleEvent) -> void: events.append(e))
+	var result: Array = [Battle.Outcome.NONE]
+	var done: Array[bool] = [false]
+	var runner := func() -> void:
+		result[0] = await _director.run_request(request, _map)
+		done[0] = true
+	runner.call()
+	assert_true(_player.is_blocked_by(BattleDirector.REASON), "bloqué dans l'appel même")
+	var deadline := Time.get_ticks_msec() + 20000
+	while not done[0] and Time.get_ticks_msec() < deadline:
+		var battle := _director.get_battle()
+		if battle != null and battle.get_state() == Battle.State.CHOOSING:
+			match _hud.get_zone():
+				BattleHud.Zone.ACTIONS:
+					_hud.action_selected.emit(ActionGrid.RUN if flee else ActionGrid.ATTACK)
+				BattleHud.Zone.MOVES:
+					_hud.move_selected.emit(0)
+		await wait_process_frames(1)
+	assert_true(done[0], "le combat s'est terminé")
+	return [result[0], events]
+
+
+func test_wild_victory_plays_every_event_and_never_heals() -> void:
+	var seed := _wild_win_seed(&"rattata", 3)
+	assert_gt(seed, -1, "une graine de victoire sauvage avec dégâts")
+	if seed < 0:
+		return
+	var sim := _simulate_wild(&"rattata", 3, seed, false)
+	var request := _wild_request(&"rattata", 3, seed)
+	var played: Array = await _play_request(request, false)
+	assert_eq(played[0], Battle.Outcome.WIN, "victoire sauvage")
+	var events: Array[BattleEvent] = played[1]
+	# Chaque événement du journal joué une fois, dans l'ordre (même nombre qu'à la simulation).
+	assert_eq(events.size(), (sim["events"] as Array).size(), "un event_played par événement")
+	assert_eq(events[0].kind, BattleEvent.Kind.BATTLE_STARTED)
+	assert_eq(events.back().kind, BattleEvent.Kind.BATTLE_ENDED)
+	assert_eq(events.back().outcome, Battle.Outcome.WIN)
+	# Le sauvage « apparaît » : SENT_OUT côté FOE sans dresseur → « Un Rattata sauvage apparaît ! ».
+	var saw_wild_appear := false
+	for event: BattleEvent in events:
+		if event.kind == BattleEvent.Kind.SENT_OUT and event.side == BattleEvent.SideId.FOE:
+			saw_wild_appear = _texts.lines(event, _data, null).size() == 1
+	assert_true(saw_wild_appear, "une phrase d'apparition du sauvage")
+	# PV non soignés : l'état du starter est exactement celui de la fin du combat.
+	var lead: Pokemon = (_state.party as Party).get_lead()
+	assert_eq(lead.hp, int(sim["hp"]), "PV = fin du combat (aucun soin sauvage)")
+	assert_lt(lead.hp, lead.max_hp(), "le starter a gardé ses dégâts")
+	assert_false(_director.is_running())
+	assert_null(_director.get_battle())
+	assert_false(_hud.is_shown(), "HUD cachée")
+	assert_false(_stage.is_active(), "scène de combat rendue")
+	assert_true(_player.is_input_enabled(), "joueur libre")
+
+
+func test_wild_flee_fails_then_succeeds_and_the_foe_acts() -> void:
+	var found := _wild_flee_fail_case()
+	assert_false(found.is_empty(), "une graine : fuite ratée puis réussie")
+	if found.is_empty():
+		return
+	var request := _wild_request(&"rattata", found["level"], found["seed"])
+	var played: Array = await _play_request(request, true)
+	assert_eq(played[0], Battle.Outcome.FLED, "fuite finalement réussie")
+	var events: Array[BattleEvent] = played[1]
+	var saw_failed := false
+	var saw_fled := false
+	var foe_acted_after_fail := false
+	for i: int in events.size():
+		match events[i].kind:
+			BattleEvent.Kind.FLEE_FAILED:
+				saw_failed = true
+				for j: int in range(i + 1, events.size()):
+					if events[j].kind == BattleEvent.Kind.FLED:
+						break
+					if events[j].kind == BattleEvent.Kind.MOVE_USED \
+							and events[j].side == BattleEvent.SideId.FOE:
+						foe_acted_after_fail = true
+						break
+			BattleEvent.Kind.FLED:
+				saw_fled = true
+	assert_true(saw_failed, "au moins une fuite ratée")
+	assert_true(saw_fled, "la fuite finit par réussir")
+	assert_true(foe_acted_after_fail, "l'adversaire joue après un échec de fuite")
+	assert_false(_director.is_running())
+	assert_true(_player.is_input_enabled(), "joueur libre après la fuite")
+
+
+func test_run_request_with_an_empty_foe_party_is_refused() -> void:
+	_state.party = _player_party(&"charmander")
+	_state.starter_species = &"charmander"
+	_state.rng = GameRng.new(1)
+	var request := BattleRequest.new()
+	request.intro = BattleRequest.Intro.WILD
+	request.foe_party = Party.new()
+	request.rules = BattleRules.for_wild()
+	var outcome: int = await _director.run_request(request, _map)
+	assert_eq(outcome, Battle.Outcome.NONE)
+	assert_push_error("équipe adverse vide")
+	assert_false(_director.is_running())
+	assert_true(_player.is_input_enabled())
+
+
 # --- Refus ----------------------------------------------------------------------------
 
 func test_run_while_a_battle_is_running_is_refused() -> void:
