@@ -15,6 +15,7 @@ const FixedClock := preload("res://tests/helpers/fixed_clock.gd")
 const GameStateScript := preload("res://game/autoload/game_state.gd")
 const BOOT_SCENE := preload("res://game/boot.tscn")
 const SAVE_PATH := "user://test_s2_save.json"
+const FIXTURE_V1 := "res://tests/fixtures/save/v1_after_capture.json"
 const DATE := "2026-10-02T14:03:05"
 const FADE := 0.05
 const TIMEOUT := 12.0
@@ -79,6 +80,11 @@ func _saved() -> Dictionary:
 		return {}
 	var parsed: Variant = JSON.parse_string(_fs.files[SAVE_PATH])
 	return parsed if parsed is Dictionary else {}
+
+
+## Quantités du Sac écrit (forme v2 : { "items", "favorites", "acquired" }).
+func _bag_items(saved: Dictionary) -> Dictionary:
+	return JsonFields.get_dict(JsonFields.get_dict(saved, "bag"), "items")
 
 
 ## Partie sauvegardée type (construite sur une instance neuve de GameState, jamais l'autoload),
@@ -223,6 +229,54 @@ func test_a_newer_save_is_never_written_during_the_whole_session() -> void:
 	assert_push_error_count(0)
 
 
+## Jalon 6, T0 (jalon-06.md §5.1) : la vraie sauvegarde v1 de Kevin (QA T16) reprend à
+## l'identique, puis est réécrite en v2.
+func test_the_real_v1_save_resumes_then_is_rewritten_in_v2() -> void:
+	var v1_text := FileAccess.get_file_as_string(FIXTURE_V1)
+	_fs.files[SAVE_PATH] = v1_text
+	await _start_boot()
+	assert_true(_boot.has_resumed(), "partie reprise")
+	assert_true(_boot.is_autosave_enabled())
+	assert_eq(_boot.get_map().map_id, &"route_1", "même carte")
+	assert_eq(_player.get_cell(), Vector2i(30, 32), "même case")
+	assert_eq(_player.get_facing(), Vector2i.RIGHT, "même orientation")
+	assert_eq(GameState.party.size(), 3)
+	assert_eq(GameState.party.get_lead().hp, 4, "PV gardés")
+	assert_eq(GameState.party.get_at(2).experience, 64, "XP gardée")
+	assert_eq(GameState.bag.count_of(&"poke_ball"), 3, "Sac")
+	assert_eq(GameState.pokedex.caught_count(), 3, "Pokédex")
+	assert_eq(GameState.pokedex.times_seen(&"charmander"), 1, "starter vu une fois")
+	assert_gte(GameState.play_time, 1616.0, "temps de jeu repris")
+	_boot.notification(Node.NOTIFICATION_APPLICATION_PAUSED)
+	var saved := _saved()
+	assert_eq(int(saved.get("version", 0)), 2, "réécrite en version 2")
+	assert_eq(_bag_items(saved), {"poke_ball": 3.0, "potion": 1.0}, "Sac v2")
+	assert_eq(saved.get("map"), "route_1")
+	assert_eq(JsonFields.get_vector2i(saved, "cell"), Vector2i(30, 32))
+	assert_false(_fs.files.has(SAVE_PATH + ".rejected"), "rien d'écarté")
+	assert_push_error_count(0)
+
+
+## Ce que fait un APK du jalon 5 (VERSION = 1) devant une sauvegarde v2 : la vraie Boot avec un
+## SaveSystem qui n'accepte que la v1 → nouvelle partie sans autosave, fichier intact.
+func test_a_v2_save_is_never_written_by_a_build_that_only_knows_v1() -> void:
+	_write_saved_game(&"route_1", _free_route_cell(), Vector2i.LEFT)
+	var v2_text: String = _fs.files[SAVE_PATH]
+	assert_eq(int((JSON.parse_string(v2_text) as Dictionary)["version"]), 2)
+	_save.version = 1
+	await _start_boot(&"player_house_1f", &"stairs", Vector2i.DOWN)
+	assert_false(_boot.has_resumed(), "nouvelle partie")
+	assert_false(_boot.is_autosave_enabled(), "autosave coupé pour la session")
+	assert_eq(GameState.party.size(), 0)
+	await _finish_dialogue()
+	_boot.request_autosave("test")
+	await wait_process_frames(3)
+	_boot.notification(Node.NOTIFICATION_APPLICATION_PAUSED)
+	assert_eq(_fs.journal.size(), 0, "aucune écriture")
+	assert_eq(_fs.files[SAVE_PATH], v2_text, "la sauvegarde v2 est intacte")
+	assert_push_error_count(0)
+
+
 func test_a_corrupt_save_is_set_aside_then_the_new_game_is_saved_normally() -> void:
 	_fs.files[SAVE_PATH] = "{ pas du json"
 	await _start_boot()
@@ -308,7 +362,7 @@ func test_no_save_during_a_scene_then_saved_at_its_end_with_the_found_potion() -
 	var saved := _saved()
 	assert_eq((saved.get("found_items", []) as Array).size(), 1)
 	assert_true((saved.get("flags", []) as Array).has("got_potion_route_1"))
-	assert_eq(int((saved.get("bag", {}) as Dictionary).get("potion", 0)), 1)
+	assert_eq(int(_bag_items(saved).get("potion", 0)), 1)
 	assert_push_error_count(0)
 
 
@@ -550,7 +604,7 @@ func test_a_capture_saves_the_new_pokemon_once_the_game_is_stable() -> void:
 	var met: Dictionary = ((saved["party"] as Array)[1] as Dictionary).get("met", {})
 	assert_eq(met.get("origin"), "capture", "rencontre : capture")
 	assert_eq(met.get("map"), "route_1")
-	assert_eq(int((saved.get("bag", {}) as Dictionary).get("poke_ball", 0)), 4, "une Ball de moins")
+	assert_eq(int(_bag_items(saved).get("poke_ball", 0)), 4, "une Ball de moins")
 	var entries: Dictionary = (saved.get("pokedex", {}) as Dictionary).get("entries", {})
 	var entry: Dictionary = entries.get("rattata", {})
 	assert_true(entry.get("caught", false), "Pokédex : capturé")

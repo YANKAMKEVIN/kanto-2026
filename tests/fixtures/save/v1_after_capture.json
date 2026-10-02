@@ -1,0 +1,264 @@
+{
+	"bag": {
+		"poke_ball": 3,
+		"potion": 1
+	},
+	"cell": [
+		30,
+		32
+	],
+	"discovered_maps": {
+		"oak_lab": "2026-10-02T19:06:56",
+		"pallet_town": "2026-10-02T19:05:36",
+		"player_house_1f": "2026-10-02T19:05:27",
+		"player_house_2f": "2026-10-02T19:05:17",
+		"rival_house": "2026-10-02T19:23:00",
+		"route_1": "2026-10-02T19:10:04"
+	},
+	"facing": [
+		1,
+		0
+	],
+	"flags": [
+		"blacked_out_before",
+		"got_potion_route_1",
+		"mom_greeted",
+		"oak_lab_reunion",
+		"oak_met",
+		"rival_battle_done",
+		"rival_challenged",
+		"rival_lab_lost",
+		"rival_left_lab",
+		"starter_chosen",
+		"starter_offered",
+		"taken_charmander",
+		"taken_squirtle"
+	],
+	"found_items": [
+		{
+			"date": "2026-10-02T19:12:56",
+			"item": "potion",
+			"map": "route_1"
+		}
+	],
+	"heal_map": "player_house_1f",
+	"heal_spawn": "heal",
+	"map": "route_1",
+	"moments": [
+		{
+			"date": "2026-10-02T19:07:52",
+			"details": {
+				"species": "charmander"
+			},
+			"map": "oak_lab",
+			"type": "starter"
+		},
+		{
+			"date": "2026-10-02T19:08:37",
+			"details": {
+				"outcome": "loss",
+				"trainer": "rival_lab"
+			},
+			"map": "oak_lab",
+			"type": "rival_battle"
+		},
+		{
+			"date": "2026-10-02T19:45:26",
+			"details": {
+				"species": "pidgey",
+				"stored": false
+			},
+			"map": "pallet_town",
+			"type": "first_capture"
+		}
+	],
+	"party": [
+		{
+			"evs": {
+				"atk": 0,
+				"def": 0,
+				"hp": 0,
+				"spa": 0,
+				"spd": 0,
+				"spe": 0
+			},
+			"exp": 163,
+			"gender": "male",
+			"hp": 4,
+			"ivs": {
+				"atk": 1,
+				"def": 29,
+				"hp": 8,
+				"spa": 2,
+				"spd": 22,
+				"spe": 28
+			},
+			"level": 5,
+			"met": {
+				"date": "2026-10-02T19:07:52",
+				"level": 5,
+				"map": "oak_lab",
+				"origin": "starter",
+				"trainer": "Kevin"
+			},
+			"moves": [
+				{
+					"id": "scratch",
+					"max_pp": 35,
+					"pp": 31
+				},
+				{
+					"id": "growl",
+					"max_pp": 40,
+					"pp": 40
+				}
+			],
+			"nickname": "",
+			"species": "charmander"
+		},
+		{
+			"evs": {
+				"atk": 0,
+				"def": 0,
+				"hp": 0,
+				"spa": 0,
+				"spd": 0,
+				"spe": 0
+			},
+			"exp": 96,
+			"gender": "female",
+			"hp": 1,
+			"ivs": {
+				"atk": 31,
+				"def": 20,
+				"hp": 12,
+				"spa": 9,
+				"spd": 8,
+				"spe": 29
+			},
+			"level": 4,
+			"met": {
+				"date": "2026-10-02T19:45:26",
+				"level": 4,
+				"map": "pallet_town",
+				"origin": "capture",
+				"trainer": "Kevin"
+			},
+			"moves": [
+				{
+					"id": "gust",
+					"max_pp": 35,
+					"pp": 31
+				}
+			],
+			"nickname": "",
+			"species": "pidgey"
+		},
+		{
+			"evs": {
+				"atk": 0,
+				"def": 0,
+				"hp": 0,
+				"spa": 0,
+				"spd": 0,
+				"spe": 0
+			},
+			"exp": 64,
+			"gender": "male",
+			"hp": 17,
+			"ivs": {
+				"atk": 16,
+				"def": 12,
+				"hp": 29,
+				"spa": 28,
+				"spd": 28,
+				"spe": 24
+			},
+			"level": 4,
+			"met": {
+				"date": "2026-10-02T19:46:40",
+				"level": 4,
+				"map": "route_1",
+				"origin": "capture",
+				"trainer": "Kevin"
+			},
+			"moves": [
+				{
+					"id": "tackle",
+					"max_pp": 35,
+					"pp": 35
+				},
+				{
+					"id": "tail_whip",
+					"max_pp": 30,
+					"pp": 30
+				}
+			],
+			"nickname": "",
+			"species": "rattata"
+		}
+	],
+	"play_time": 1616.63664866551,
+	"player_name": "Kevin",
+	"pokedex": {
+		"entries": {
+			"charmander": {
+				"caught": true,
+				"first_caught_date": "2026-10-02T19:07:52",
+				"first_caught_map": "oak_lab",
+				"first_seen_date": "2026-10-02T19:07:52",
+				"first_seen_map": "oak_lab",
+				"seen_maps": [
+					"oak_lab"
+				],
+				"times_caught": 1,
+				"times_seen": 0
+			},
+			"pidgey": {
+				"caught": true,
+				"first_caught_date": "2026-10-02T19:45:26",
+				"first_caught_map": "pallet_town",
+				"first_seen_date": "2026-10-02T19:10:43",
+				"first_seen_map": "route_1",
+				"seen_maps": [
+					"route_1",
+					"pallet_town"
+				],
+				"times_caught": 1,
+				"times_seen": 2
+			},
+			"rattata": {
+				"caught": true,
+				"first_caught_date": "2026-10-02T19:46:40",
+				"first_caught_map": "route_1",
+				"first_seen_date": "2026-10-02T19:12:47",
+				"first_seen_map": "route_1",
+				"seen_maps": [
+					"route_1"
+				],
+				"times_caught": 1,
+				"times_seen": 4
+			},
+			"squirtle": {
+				"caught": false,
+				"first_caught_date": "",
+				"first_caught_map": "",
+				"first_seen_date": "2026-10-02T19:08:06",
+				"first_seen_map": "oak_lab",
+				"seen_maps": [
+					"oak_lab"
+				],
+				"times_caught": 0,
+				"times_seen": 1
+			}
+		}
+	},
+	"rng": {
+		"seed": "318136290",
+		"state": "-4763983274634527514"
+	},
+	"started_at": "2026-10-02T19:05:17",
+	"starter": "charmander",
+	"storage": [],
+	"version": 1
+}

@@ -239,6 +239,24 @@ func test_missing_or_unknown_meeting_data_falls_back_to_defaults() -> void:
 	assert_eq(copy.met_map, &"")
 
 
+func test_favorite_round_trip_and_default() -> void:
+	# Jalon 6, T0 (jalon-06.md §5.1) : favori posé dans la sauvegarde v2.
+	var squirtle := _create(&"squirtle", 5)
+	assert_false(squirtle.favorite, "pas favori à la création")
+	assert_eq(squirtle.to_dict()["favorite"], false)
+	squirtle.favorite = true
+	var copy := Pokemon.from_dict(JSON.parse_string(JSON.stringify(squirtle.to_dict())), _data)
+	assert_true(copy.favorite)
+	assert_eq(copy.to_dict(), squirtle.to_dict())
+	assert_true(squirtle.evolve_into(&"wartortle", _data))
+	assert_true(squirtle.favorite, "l'évolution garde le favori")
+	var dict := squirtle.to_dict()
+	dict.erase("favorite")
+	assert_false(Pokemon.from_dict(dict, _data).favorite, "sauvegarde v1 : faux")
+	dict["favorite"] = "oui"
+	assert_false(Pokemon.from_dict(dict, _data).favorite, "mal formé : faux, sans erreur")
+
+
 func test_from_dict_rejects_invalid_content() -> void:
 	var dict := _create(&"squirtle", 5).to_dict()
 	var bad := dict.duplicate(true)
