@@ -41,11 +41,19 @@ extends RefCounted
 ## - DRAINED : Pokémon drainé en fin de tour ([member amount] PV perdus, [member hp],
 ##   [member max_hp]) ; [member healed] PV rendus au Pokémon d'en face, qui en a ensuite
 ##   [member healed_hp].
+## Capture (jalon 5D, §2.4), juste après TURN_STARTED, toutes sur le Pokémon sauvage (camp
+## FOE, son état au moment du lancer) :
+## - BALL_THROWN : la Ball [member item_id] ([member item_name] : son nom) est lancée ;
+## - BALL_SHAKE : une secousse, numéro [member shake] (1 à 3) ; 0 à 3 de suite ;
+## - CAUGHT : capturé (après 3 secousses), puis BATTLE_ENDED (CAUGHT) ; l'adversaire ne joue
+##   pas, aucune XP n'est donnée ;
+## - BROKE_FREE : il s'est libéré, puis l'adversaire joue son tour.
 
 enum Kind {
 	BATTLE_STARTED, SENT_OUT, TURN_STARTED, MOVE_USED, MOVE_MISSED, DAMAGE, NO_EFFECT,
 	STAT_CHANGED, STAT_UNCHANGED, RECOIL, FAINTED, BATTLE_ENDED, FLED, FLEE_FAILED,
 	EXP_GAINED, LEVEL_UP, MOVE_LEARNED, MOVE_FORGET_OFFERED, SEEDED, DRAINED,
+	BALL_THROWN, BALL_SHAKE, CAUGHT, BROKE_FREE,
 }
 enum SideId { PLAYER, FOE }
 
@@ -76,6 +84,11 @@ var exp_to: float = 0.0
 ## DRAINED : PV rendus au Pokémon d'en face, et ses PV ensuite.
 var healed: int = 0
 var healed_hp: int = 0
+## BALL_THROWN : la Ball lancée (identifiant et nom affiché, « Poké Ball »).
+var item_id: StringName = &""
+var item_name: String = ""
+## BALL_SHAKE : numéro de la secousse (1 à 3).
+var shake: int = 0
 
 
 func _init(event_kind: Kind = Kind.BATTLE_STARTED, event_side: SideId = SideId.PLAYER) -> void:
@@ -92,4 +105,5 @@ func to_dict() -> Dictionary:
 		"max_hp": max_hp, "effectiveness": effectiveness, "critical": critical,
 		"stat": stat, "stages": stages, "stage": stage, "outcome": outcome,
 		"exp_from": exp_from, "exp_to": exp_to, "healed": healed, "healed_hp": healed_hp,
+		"item": item_id, "item_name": item_name, "shake": shake,
 	}

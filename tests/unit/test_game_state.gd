@@ -237,7 +237,21 @@ func test_to_dict_lists_every_saved_field_and_nothing_else() -> void:
 	keys.sort()
 	assert_eq(keys, ["bag", "cell", "discovered_maps", "facing", "flags", "found_items",
 		"heal_map", "heal_spawn", "map", "moments", "party", "play_time", "player_name",
-		"pokedex", "rng", "started_at", "starter"])
+		"pokedex", "rng", "started_at", "starter", "storage"])
+
+
+func test_starts_with_an_empty_storage_and_new_game_empties_it() -> void:
+	# Jalon 5D : le « système de recherche de Chen » (équipe pleine).
+	var state := _make()
+	assert_true(state.storage is PokemonStorage)
+	assert_true(state.storage.is_empty())
+	var storage: PokemonStorage = state.storage
+	var data := PokemonData.new()
+	assert_true(data.load_dir(), "données Pokémon")
+	state.storage.add(PokemonFactory.create(data, &"pidgey", 3, GameRng.new(1)))
+	state.new_game()
+	assert_true(state.storage.is_empty(), "stockage vidé")
+	assert_same(state.storage, storage, "même instance (injectée)")
 
 
 func test_registered_as_autoload() -> void:

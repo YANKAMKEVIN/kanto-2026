@@ -19,11 +19,12 @@ const SPECIES_DIR: String = "species"
 const MOVES_DIR: String = "moves"
 
 const _SPECIES_KEYS: Array[String] = [
-	"dex", "name", "types", "base_stats", "male_ratio", "growth_rate", "base_exp", "learnset",
-	"evolutions",
+	"dex", "name", "types", "base_stats", "male_ratio", "growth_rate", "base_exp", "catch_rate",
+	"learnset", "evolutions",
 ]
 const _SPECIES_REQUIRED: Array[String] = [
-	"dex", "name", "types", "base_stats", "male_ratio", "growth_rate", "base_exp", "learnset",
+	"dex", "name", "types", "base_stats", "male_ratio", "growth_rate", "base_exp", "catch_rate",
+	"learnset",
 ]
 const _MOVE_KEYS: Array[String] = [
 	"name", "type", "category", "power", "accuracy", "pp", "priority", "crit_stage", "effects",
@@ -271,6 +272,9 @@ func _parse_species(value: Variant, where: String) -> SpeciesData:
 	if entry.has("base_exp"):
 		ok = _read_int(entry["base_exp"], 1, 1000, where + " base_exp") and ok
 		species.base_exp = int(entry["base_exp"]) if _is_int(entry["base_exp"]) else 0
+	if entry.has("catch_rate"):
+		ok = _read_int(entry["catch_rate"], 1, 255, where + " catch_rate") and ok
+		species.catch_rate = int(entry["catch_rate"]) if _is_int(entry["catch_rate"]) else 0
 	if entry.has("learnset"):
 		ok = _read_learnset(entry["learnset"], species.learnset, where) and ok
 	if entry.has("evolutions"):

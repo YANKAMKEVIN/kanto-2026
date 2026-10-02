@@ -28,9 +28,10 @@ var origin_cell: Vector2i = Vector2i.ZERO
 
 
 ## Requête d'un combat sauvage : le sauvage est créé par [method PokemonFactory.create] à
-## partir de [param encounter], sur [param cell] (l'herbe qui bouge).
+## partir de [param encounter], sur [param cell] (l'herbe qui bouge). [param items] : les objets
+## connus, où le moteur lit le bonus des Balls (5D ; null = aucune Ball utilisable).
 static func wild(encounter: WildEncounter, data: PokemonData, rng: GameRng,
-		cell: Vector2i) -> BattleRequest:
+		cell: Vector2i, items: ItemLibrary = null) -> BattleRequest:
 	var request := BattleRequest.new()
 	request.intro = Intro.WILD
 	request.trainer = null
@@ -38,7 +39,7 @@ static func wild(encounter: WildEncounter, data: PokemonData, rng: GameRng,
 	var party := Party.new()
 	party.add(PokemonFactory.create(data, encounter.species, encounter.level, rng))
 	request.foe_party = party
-	request.rules = BattleRules.for_wild()
+	request.rules = BattleRules.for_wild(items)
 	request.origin_cell = cell
 	return request
 

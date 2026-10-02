@@ -19,7 +19,13 @@ extends RefCounted
 ## Marques admises : {pokemon} (nom seul, jamais « ennemi » ni « du Rival »), {de_pokemon}
 ## (« de Salamèche », « d'Évoli »), {move}, {trainer}, {stat} (nom de « stats »), {level}
 ## (niveau de l'événement), {exp} (son [member BattleEvent.amount]), {old_move} (capacité
-## oubliée, seulement par [method line_for]).
+## oubliée, seulement par [method line_for]), {item} (nom de la Ball,
+## [member BattleEvent.item_name]).
+## Capture (jalon 5D) : BALL_THROWN → « ball_thrown » ; BROKE_FREE → « broke_free » ;
+## BALL_SHAKE, CAUGHT et BATTLE_ENDED (CAUGHT) n'ont pas de phrase. La carte de capture
+## (dossier 05 §17) demande à [method line_for], avec l'événement CAUGHT (accord au féminin) :
+## « caught_title » (« Roucool CAPTURÉ ! » ; la carte l'affiche en capitales), « pokedex_new »
+## (seulement pour une nouvelle entrée), puis « joined_party » ou « sent_to_storage ».
 ## XP (jalon 5C, Q25) : EXP_GAINED et LEVEL_UP n'ont pas de phrase (« +21 XP » et « Nv. 6 »
 ## sont sur la carte) ; MOVE_LEARNED → « move_learned » ; MOVE_FORGET_OFFERED →
 ## « move_forget_prompt ». La suite de l'oubli (« move_forgot », « move_not_learned ») ne
@@ -43,9 +49,11 @@ const TEMPLATE_IDS: Array[StringName] = [
 	&"battle_won", &"battle_lost", &"wild_appeared", &"fled", &"flee_failed",
 	&"level_up", &"move_learned", &"move_forget_prompt", &"move_forgot", &"move_not_learned",
 	&"seeded", &"drained",
+	&"ball_thrown", &"broke_free", &"caught_title", &"pokedex_new", &"joined_party",
+	&"sent_to_storage",
 ]
 const PLACEHOLDERS: Array[String] = [
-	"pokemon", "de_pokemon", "move", "trainer", "stat", "level", "exp", "old_move",
+	"pokemon", "de_pokemon", "move", "trainer", "stat", "level", "exp", "old_move", "item",
 ]
 
 const _TEMPLATE_KEYS: Array[String] = ["text", "text_f", "draft"]
@@ -192,6 +200,10 @@ func lines(event: BattleEvent, data: PokemonData, trainer: TrainerData = null) \
 			result.append(_fill(&"seeded", event, data))
 		BattleEvent.Kind.DRAINED:
 			result.append(_fill(&"drained", event, data))
+		BattleEvent.Kind.BALL_THROWN:
+			result.append(_fill(&"ball_thrown", event, data))
+		BattleEvent.Kind.BROKE_FREE:
+			result.append(_fill(&"broke_free", event, data))
 		BattleEvent.Kind.BATTLE_ENDED:
 			# FLED ne porte pas de message ici (il est sur l'événement FLED). Un sauvage n'a
 			# pas de dresseur (trainer_name vide) : « Tu as battu… » ne s'affiche pas.
@@ -239,6 +251,7 @@ func _fill(id: StringName, event: BattleEvent, data: PokemonData,
 		"level": event.level,
 		"exp": event.amount,
 		"old_move": forgotten.name if forgotten != null else String(old_move),
+		"item": event.item_name,
 	})
 
 

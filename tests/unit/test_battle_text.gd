@@ -44,8 +44,10 @@ func test_real_messages_load_without_error() -> void:
 
 
 func test_messages_fixed_by_kevin_are_final_and_the_others_draft() -> void:
+	# Jalon 5D : les textes de la carte de capture viennent du dossier 05 §17 (Q36).
 	var fixed: Array[StringName] = [&"sent_out_foe", &"critical", &"super_effective",
-		&"not_very_effective"]
+		&"not_very_effective", &"caught_title", &"pokedex_new", &"joined_party",
+		&"sent_to_storage"]
 	for id: StringName in BattleText.TEMPLATE_IDS:
 		assert_eq(_text.is_draft(id), not fixed.has(id), String(id))
 
@@ -330,3 +332,47 @@ func test_wild_battle_ended_has_no_line() -> void:
 	var won := _wild_event(K.BATTLE_ENDED, BattleEvent.SideId.PLAYER)
 	won.outcome = Battle.Outcome.WIN
 	assert_eq(_lines(won).size(), 0, "un sauvage n'a pas de « Tu as battu »")
+
+
+# --- Capture (jalon 5D §2.4, dossier 05 §17, Q36) -------------------------------------------
+
+func test_ball_thrown_names_the_ball() -> void:
+	var event := _wild_event(K.BALL_THROWN, BattleEvent.SideId.FOE, "Roucool")
+	event.item_id = &"poke_ball"
+	event.item_name = "Poké Ball"
+	assert_eq(_lines(event), ["Tu lances une Poké Ball !"] as Array[String])
+
+
+func test_broke_free_agrees_in_feminine() -> void:
+	var event := _wild_event(K.BROKE_FREE, BattleEvent.SideId.FOE, "Roucool")
+	event.gender = Pokemon.Gender.MALE
+	assert_eq(_lines(event), ["Oh non ! Il s'est libéré !"] as Array[String])
+	event.gender = Pokemon.Gender.FEMALE
+	assert_eq(_lines(event), ["Oh non ! Elle s'est libérée !"] as Array[String])
+
+
+func test_shakes_caught_and_caught_end_have_no_line() -> void:
+	# La carte de capture tient lieu de message (dossier 05 §17 : « pas 8 fenêtres »).
+	assert_eq(_lines(_wild_event(K.BALL_SHAKE, BattleEvent.SideId.FOE)).size(), 0)
+	assert_eq(_lines(_wild_event(K.CAUGHT, BattleEvent.SideId.FOE)).size(), 0)
+	var ended := _wild_event(K.BATTLE_ENDED, BattleEvent.SideId.PLAYER)
+	ended.outcome = Battle.Outcome.CAUGHT
+	assert_eq(_lines(ended).size(), 0)
+
+
+func test_capture_card_texts_are_those_of_dossier_05() -> void:
+	var caught := _wild_event(K.CAUGHT, BattleEvent.SideId.FOE, "Roucool")
+	caught.gender = Pokemon.Gender.MALE
+	assert_eq(_text.line_for(&"caught_title", caught, _data).to_upper(), "ROUCOOL CAPTURÉ !",
+		"titre en capitales sur la carte")
+	assert_eq(_text.line_for(&"pokedex_new", caught, _data), "Nouvelle entrée Pokédex")
+	assert_eq(_text.line_for(&"joined_party", caught, _data), "Roucool rejoint ton équipe.")
+	assert_eq(_text.line_for(&"sent_to_storage", caught, _data),
+		"Roucool a été confié au système de recherche de Chen.")
+	caught.gender = Pokemon.Gender.FEMALE
+	assert_eq(_text.line_for(&"caught_title", caught, _data).to_upper(), "ROUCOOL CAPTURÉE !")
+	assert_eq(_text.line_for(&"sent_to_storage", caught, _data),
+		"Roucool a été confiée au système de recherche de Chen.")
+	assert_eq(_text.line_for(&"joined_party", caught, _data), "Roucool rejoint ton équipe.")
+	caught.pokemon_name = "Salamèche"
+	assert_eq(_text.line_for(&"caught_title", caught, _data).to_upper(), "SALAMÈCHE CAPTURÉE !")

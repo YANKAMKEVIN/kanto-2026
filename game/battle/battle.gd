@@ -32,9 +32,18 @@ extends RefCounted
 ## moteur apprend la capacité, un emplacement est libre) ou MOVE_FORGET_OFFERED (4 capacités :
 ## rien ne change, la présentation fera choisir). Aucune évolution (Q27).
 ## Les autres conséquences (soin, argent) sont décidées hors du moteur (TrainerData).
+##
+## Capture (jalon 5D §2.4, Q33) : [code]BattleAction.ball(id)[/code] n'est légale que si
+## [member BattleRules.allow_balls] (sauvage) et que [param id] est une Ball de
+## [member BattleRules.items]. Elle est jouée avant les capacités : BALL_THROWN, 0 à 3
+## BALL_SHAKE, puis CAUGHT et BATTLE_ENDED (CAUGHT) — l'adversaire ne joue pas, pas d'XP (Q26,
+## comme Rouge/Bleu) — ou BROKE_FREE, puis l'adversaire joue son tour. Ordre des tirages :
+## ceux de [CaptureCalc] (0 à 4 roll(65536)), puis, en cas d'échec, l'IA adverse et son
+## action. Le moteur ne touche pas au Sac : le directeur retire la Ball, range le Pokémon
+## capturé (équipe ou [PokemonStorage]) et marque le Pokédex.
 
 enum State { READY, CHOOSING, OVER }
-enum Outcome { NONE, WIN, LOSS, FLED }
+enum Outcome { NONE, WIN, LOSS, FLED, CAUGHT }
 
 const STRUGGLE_ID: StringName = &"struggle"
 
@@ -126,6 +135,11 @@ func is_legal(action: BattleAction) -> bool:
 		return false
 	if action.kind == BattleAction.Kind.RUN:
 		return _rules != null and _rules.can_flee
+	if action.kind == BattleAction.Kind.ITEM:
+		if not can_use_balls():
+			return false
+		var item := _rules.items.get_item(action.item_id)
+		return item != null and item.category == ItemData.Category.BALL
 	if action.kind != BattleAction.Kind.MOVE:
 		return false
 	var usable := get_usable_moves()
@@ -137,6 +151,13 @@ func is_legal(action: BattleAction) -> bool:
 ## Vrai si le joueur peut tenter de fuir maintenant (règles du combat sauvage).
 func can_flee() -> bool:
 	return _state == State.CHOOSING and _rules != null and _rules.can_flee
+
+
+## Vrai si le joueur peut lancer une Ball maintenant (combat sauvage, objets connus). Le Sac
+## n'est pas consulté : avoir une Ball est l'affaire du directeur.
+func can_use_balls() -> bool:
+	return _state == State.CHOOSING and _rules != null and _rules.allow_balls \
+		and _rules.items != null
 
 
 ## Joue un tour entier avec l'action du joueur. Tableau vide (push_error) si l'action est
@@ -153,6 +174,9 @@ func submit(action: BattleAction) -> Array[BattleEvent]:
 	events.append(started)
 	if action.kind == BattleAction.Kind.RUN:
 		_attempt_flee(events)
+		return events
+	if action.kind == BattleAction.Kind.ITEM:
+		_throw_ball(action.item_id, events)
 		return events
 	var foe_action := _foe.ai.choose(_foe, _player, _rng)
 	var order: Array[BattleSide] = [_player, _foe]
@@ -179,15 +203,42 @@ func _attempt_flee(events: Array[BattleEvent]) -> void:
 	var foe_speed: int = _foe.active.pokemon.stats.get(&"spe", 0)
 	if FleeCalc.can_flee(player_speed, foe_speed, _flee_attempts, _rng):
 		events.append(_event(BattleEvent.Kind.FLED, _player))
-		_outcome = Outcome.FLED
-		_state = State.OVER
-		var ended := BattleEvent.new(BattleEvent.Kind.BATTLE_ENDED, BattleEvent.SideId.PLAYER)
-		ended.outcome = _outcome
-		ended.trainer_name = _foe.trainer_name
-		events.append(ended)
+		_finish(Outcome.FLED, events)
 		return
 	_flee_attempts += 1
 	events.append(_event(BattleEvent.Kind.FLEE_FAILED, _player))
+	_foe_turn_alone(events)
+
+
+## Lancer de la Ball [param item_id] sur le Pokémon sauvage (joué avant les capacités, §2.4).
+## Capturé → BALL_THROWN, 3 BALL_SHAKE, CAUGHT puis BATTLE_ENDED (CAUGHT) : l'adversaire ne
+## joue pas, aucune XP. Libéré → BALL_THROWN, 0 à 3 BALL_SHAKE, BROKE_FREE, puis l'adversaire
+## joue son tour.
+func _throw_ball(item_id: StringName, events: Array[BattleEvent]) -> void:
+	var item := _rules.items.get_item(item_id)
+	var target := _foe.active.pokemon
+	var species := _data.get_species(target.species_id)
+	var thrown := _event(BattleEvent.Kind.BALL_THROWN, _foe)
+	thrown.item_id = item_id
+	thrown.item_name = item.name
+	events.append(thrown)
+	var result := CaptureCalc.throw_ball(target.max_hp(), target.hp,
+		species.catch_rate if species != null else 1, item.catch_bonus, _rng)
+	for i: int in result.shakes:
+		var shake := _event(BattleEvent.Kind.BALL_SHAKE, _foe)
+		shake.shake = i + 1
+		events.append(shake)
+	if result.caught:
+		events.append(_event(BattleEvent.Kind.CAUGHT, _foe))
+		_finish(Outcome.CAUGHT, events)
+		return
+	events.append(_event(BattleEvent.Kind.BROKE_FREE, _foe))
+	_foe_turn_alone(events)
+
+
+## Tour où seul l'adversaire agit (fuite ratée, Pokémon libéré) : son IA choisit, il joue,
+## puis la fin de tour.
+func _foe_turn_alone(events: Array[BattleEvent]) -> void:
 	var foe_action := _foe.ai.choose(_foe, _player, _rng)
 	if _foe.active.pokemon.is_fainted():
 		return
@@ -195,6 +246,16 @@ func _attempt_flee(events: Array[BattleEvent]) -> void:
 	if _state == State.OVER:
 		return
 	_end_turn(events)
+
+
+## Fin du combat sur [param outcome] : BATTLE_ENDED, plus aucun choix.
+func _finish(outcome: Outcome, events: Array[BattleEvent]) -> void:
+	_outcome = outcome
+	_state = State.OVER
+	var ended := BattleEvent.new(BattleEvent.Kind.BATTLE_ENDED, BattleEvent.SideId.PLAYER)
+	ended.outcome = _outcome
+	ended.trainer_name = _foe.trainer_name
+	events.append(ended)
 
 
 ## Fin du tour (le combat continue) : drain de Vampigraine, puis envoi des remplaçants.
@@ -355,14 +416,9 @@ func _check_end(acting: BattleSide, events: Array[BattleEvent]) -> void:
 	if not player_out and not foe_out:
 		return
 	if player_out and foe_out:
-		_outcome = Outcome.WIN if acting == _player else Outcome.LOSS
+		_finish(Outcome.WIN if acting == _player else Outcome.LOSS, events)
 	else:
-		_outcome = Outcome.WIN if foe_out else Outcome.LOSS
-	_state = State.OVER
-	var ended := BattleEvent.new(BattleEvent.Kind.BATTLE_ENDED, BattleEvent.SideId.PLAYER)
-	ended.outcome = _outcome
-	ended.trainer_name = _foe.trainer_name
-	events.append(ended)
+		_finish(Outcome.WIN if foe_out else Outcome.LOSS, events)
 
 
 func _send_out(side: BattleSide, events: Array[BattleEvent]) -> void:

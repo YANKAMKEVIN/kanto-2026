@@ -2,38 +2,38 @@
 	"good": {
 		"dex": 1, "name": "Correct", "types": ["normal"],
 		"base_stats": { "hp": 45, "atk": 49, "def": 49, "spa": 65, "spd": 65, "spe": 45 },
-		"male_ratio": 0.5, "growth_rate": "fast", "base_exp": 64,
+		"male_ratio": 0.5, "growth_rate": "fast", "base_exp": 64, "catch_rate": 45,
 		"learnset": [[1, "tackle"]]
 	},
 	"mouse": {
 		"dex": 2, "name": "Souris", "types": ["electric"],
 		"base_stats": { "hp": 45, "atk": 49, "def": 49, "spa": 65, "spd": 65, "spe": 45 },
-		"male_ratio": 0.5, "growth_rate": "fast", "base_exp": 64,
+		"male_ratio": 0.5, "growth_rate": "fast", "base_exp": 64, "catch_rate": 45,
 		"learnset": [[1, "tackle"]]
 	},
 	"sparky": {
 		"dex": 3, "name": "Étincelle", "types": ["normal"],
 		"base_stats": { "hp": 45, "atk": 49, "def": 49, "spa": 65, "spd": 65, "spe": 45 },
-		"male_ratio": 0.5, "growth_rate": "fast", "base_exp": 64,
+		"male_ratio": 0.5, "growth_rate": "fast", "base_exp": 64, "catch_rate": 45,
 		"learnset": [[1, "tackle"], [5, "thunder_shock"]]
 	},
 	"typo": {
 		"dex": 4, "name": "Faute", "types": ["normal"],
 		"base_stats": { "hp": 45, "atk": 49, "def": 49, "spa": 65, "spd": 65, "spe": 45 },
-		"male_ratio": 0.5, "growth_rate": "fast", "base_exp": 64,
+		"male_ratio": 0.5, "growth_rate": "fast", "base_exp": 64, "catch_rate": 45,
 		"learnset": [[1, "tackel"]]
 	},
 	"stray": {
 		"dex": 5, "name": "Égaré", "types": ["normal"],
 		"base_stats": { "hp": 45, "atk": 49, "def": 49, "spa": 65, "spd": 65, "spe": 45 },
-		"male_ratio": 0.5, "growth_rate": "fast", "base_exp": 64,
+		"male_ratio": 0.5, "growth_rate": "fast", "base_exp": 64, "catch_rate": 45,
 		"learnset": [[1, "tackle"]],
 		"evolutions": [{ "into": "nobody", "method": "level", "level": 10 }]
 	},
 	"chain": {
 		"dex": 6, "name": "Chaîne", "types": ["normal"],
 		"base_stats": { "hp": 45, "atk": 49, "def": 49, "spa": 65, "spd": 65, "spe": 45 },
-		"male_ratio": 0.5, "growth_rate": "fast", "base_exp": 64,
+		"male_ratio": 0.5, "growth_rate": "fast", "base_exp": 64, "catch_rate": 45,
 		"learnset": [[1, "tackle"]],
 		"evolutions": [{ "into": "stray", "method": "level", "level": 10 }]
 	}

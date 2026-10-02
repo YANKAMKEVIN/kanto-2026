@@ -97,6 +97,25 @@ func test_invalid_entries_are_rejected() -> void:
 		assert_string_contains(errors, expected)
 
 
+## Jalon 5D : le multiplicateur de capture est une donnée de la Ball, lu par le moteur.
+func test_catch_bonus_belongs_to_balls_only() -> void:
+	var better := BALL.duplicate()
+	better["catch_bonus"] = 1.5
+	assert_true(_library.add_from_dict({"great_ball": better}, "test"))
+	assert_eq(_library.get_item(&"great_ball").catch_bonus, 1.5, "nombre décimal accepté")
+	var healing := BALL.duplicate()
+	healing["category"] = "heal"
+	assert_false(_library.add_from_dict({"potion": healing}, "test"))
+	assert_push_error("« catch_bonus » est réservé aux Balls")
+	var negative := BALL.duplicate()
+	negative["catch_bonus"] = -1
+	var text := BALL.duplicate()
+	text["catch_bonus"] = "1"
+	assert_false(_library.add_from_dict({"a": negative, "b": text}, "test"))
+	assert_push_error_count(3)
+	assert_eq(_library.get_ids(), [&"great_ball"] as Array[StringName])
+
+
 func test_duplicate_id_is_rejected() -> void:
 	assert_true(_library.add_from_dict({"poke_ball": BALL}, "a.json"))
 	assert_false(_library.add_from_dict({"poke_ball": BALL}, "b.json"))

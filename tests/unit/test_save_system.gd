@@ -302,6 +302,43 @@ func test_invalid_entries_are_discarded_and_reported() -> void:
 	assert_push_error_count(3)
 
 
+func test_storage_round_trip_through_the_save_file() -> void:
+	# Jalon 5D : les Pokémon confiés au système de recherche de Chen sont sauvegardés.
+	var original := _full_state()
+	var rattata := PokemonFactory.create(_data, &"rattata", 3, GameRng.new(5))
+	rattata.take_damage(2)
+	original.stamp_meeting(rattata, Pokemon.Origin.CAPTURE, &"route_1")
+	original.storage.add(rattata)
+	assert_eq(_save.write(original.to_dict()), OK)
+	var loaded := _state()
+	assert_true(loaded.load_dict(_save.read(), _data))
+	assert_eq(loaded.storage.size(), 1)
+	var stored: Pokemon = loaded.storage.get_all()[0]
+	assert_eq([stored.species_id, stored.level, stored.hp], [&"rattata", 3, rattata.hp])
+	assert_eq(stored.origin, Pokemon.Origin.CAPTURE)
+	assert_eq(loaded.to_dict(), original.to_dict(), "même état après rechargement")
+
+
+func test_old_save_without_storage_loads_an_empty_storage() -> void:
+	var state := _state()
+	state.storage.add(PokemonFactory.create(_data, &"pidgey", 3, GameRng.new(1)))
+	var dict: Dictionary = _full_state().to_dict()
+	dict.erase("storage")
+	assert_true(state.load_dict(dict, _data), "rien d'écarté")
+	assert_true(state.storage.is_empty(), "stockage vide par défaut")
+	assert_eq(state.party.size(), 2)
+
+
+func test_invalid_storage_entries_are_discarded() -> void:
+	var state := _state()
+	var dict: Dictionary = _full_state().to_dict()
+	dict["storage"] = [PokemonFactory.create(_data, &"pidgey", 3, GameRng.new(1)).to_dict(),
+		{"species": "missingno"}]
+	assert_false(state.load_dict(dict, _data), "une entrée écartée → faux")
+	assert_eq(state.storage.size(), 1, "le Pokémon valide est gardé")
+	assert_push_error_count(2, "espèce inconnue (Pokemon), entrée écartée (PokemonStorage)")
+
+
 # --- Système de fichiers réel ---------------------------------------------------------------
 
 func test_real_file_system_in_user_dir() -> void:

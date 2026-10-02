@@ -215,7 +215,7 @@ func test_broken_cross_references_are_rejected() -> void:
 
 func test_invalid_move_fields_are_rejected() -> void:
 	assert_false(_data.load_dir(FIXTURES + "bad_fields/"))
-	assert_push_error_count(24, "12 capacités + 12 espèces")
+	assert_push_error_count(25, "12 capacités + 13 espèces")
 	var errors := _errors()
 	for expected: String in [
 		"« typo_key » : clé inconnue « powr »",
@@ -237,9 +237,10 @@ func test_invalid_move_fields_are_rejected() -> void:
 
 func test_invalid_species_fields_are_rejected() -> void:
 	_data.load_dir(FIXTURES + "bad_fields/")
-	assert_push_error_count(24, "12 capacités + 12 espèces")
+	assert_push_error_count(25, "12 capacités + 13 espèces")
 	var errors := _errors()
 	for expected: String in [
+		"« bad_catch_rate » catch_rate : entier de 1 à 255 attendu",
 		"« no_learnset » : « learnset » est obligatoire",
 		"« three_types » : « types » doit être une liste de 1 ou 2 types",
 		"« bad_stats » base_stats : clé inconnue « speed »",
@@ -289,6 +290,50 @@ func test_route_1_species_and_lines() -> void:
 		assert_true(_data.has_species(id), String(id))
 	assert_eq(pidgey.evolutions[0].into, &"pidgeotto")
 	assert_eq(rattata.evolutions[0].into, &"raticate")
+
+
+# --- Taux de capture (jalon 5D §2.4) ----------------------------------------------------
+
+func test_real_catch_rates_are_the_official_ones() -> void:
+	_data.load_dir()
+	var expected: Dictionary[StringName, int] = {
+		&"bulbasaur": 45, &"ivysaur": 45, &"venusaur": 45,
+		&"charmander": 45, &"charmeleon": 45, &"charizard": 45,
+		&"squirtle": 45, &"wartortle": 45, &"blastoise": 45,
+		&"pidgey": 255, &"pidgeotto": 120, &"pidgeot": 45,
+		&"rattata": 255, &"raticate": 127,
+	}
+	assert_eq(_data.get_species_ids().size(), expected.size(), "toutes les espèces")
+	for id: StringName in _data.get_species_ids():
+		assert_eq(_data.get_species(id).catch_rate, expected.get(id, -1), String(id))
+
+
+func test_valid_fixture_reads_the_catch_rate() -> void:
+	_data.load_dir(FIXTURES + "valid/")
+	assert_eq(_data.get_species(&"wisp").catch_rate, 190)
+	assert_eq(_data.get_species(&"sprout").catch_rate, 45)
+
+
+func test_catch_rate_is_required_and_bounded() -> void:
+	var species := {
+		"dex": 1, "name": "Test", "types": ["normal"],
+		"base_stats": { "hp": 45, "atk": 49, "def": 49, "spa": 65, "spd": 65, "spe": 45 },
+		"male_ratio": 0.5, "growth_rate": "fast", "base_exp": 64, "learnset": [[1, "tackle"]],
+	}
+	assert_false(_data.add_species_from_dict({"missing": species}, "a"))
+	assert_string_contains(_errors(), "a espèce « missing » : « catch_rate » est obligatoire")
+	for value: Variant in [0, 256, 12.5, "255"]:
+		var entry := species.duplicate()
+		entry["catch_rate"] = value
+		var data := PokemonData.new()
+		assert_false(data.add_species_from_dict({"bad": entry}, "b"), str(value))
+		assert_string_contains("\n".join(data.get_errors()), "catch_rate : entier de 1 à 255")
+	var good := species.duplicate()
+	good["catch_rate"] = 3
+	var data := PokemonData.new()
+	assert_true(data.add_species_from_dict({"good": good}, "c"))
+	assert_eq(data.get_species(&"good").catch_rate, 3)
+	assert_push_error_count(5)
 
 
 func test_route_1_moves_exist_and_are_typed() -> void:
