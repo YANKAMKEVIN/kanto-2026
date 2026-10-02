@@ -22,6 +22,8 @@ Le style est implémenté dans le skill `ui-theme-2026` (tokens, Theme Godot).
 - Grille 2×2 en bas à droite : ATTAQUER (accent jaune, sélection) · SAC · POKÉMON · FUITE, avec icônes.
 - ATTAQUER → 4 cartes de capacités (nom, type, PP).
 
+> **Menus (Menu principal, Équipe, Pokédex, Carte du monde, Sac) : remplacés pour le jalon 6 par `dossier-08-menu-dresseur.md` (2026-10-02)** et ses maquettes `reference/menu-*-v1.jpg` (direction artistique uniquement, le dossier fait foi). Les descriptions ci-dessous sont l'ancienne version de la planche. Les lieux non découverts ne s'affichent plus en « ??? » sur la carte.
+
 ## Menu principal
 - Carte dresseur à gauche : portrait, nom (KEVIN), ID, lieu actuel, 8 emplacements de badges, fond paysage.
 - Liste à droite : ÉQUIPE (sélection jaune) · SAC · POKÉDEX · CARTE · QUÊTES · OPTIONS, avec icônes.

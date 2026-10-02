@@ -1028,3 +1028,66 @@ produit maintenant `wild_appeared`. En T5/T7, l'`EncounterDirector` (ou le `Batt
 et soin (clé `heal` de dialogue, variante de Maman), et tout le 5D (capture). La clé de dialogue
 `"heal"` (§2.2) et le câblage `GameState`/`Boot` restent à T7 : ce ne sont pas des fondations du
 moteur de combat.
+
+## 16. Sauvegarde (5C.5) — exigences (décision de Kevin du 2026-10-02)
+
+La sauvegarde s'insère **entre le 5C et le 5D** (§15.2 point 9, Q-B). Son contenu minimal reste celui
+du **dossier-07 §13**. Kevin y ajoute les **faits dont le J6 aura besoin**
+(`docs/design/dossier-08-menu-dresseur.md` §9), selon la règle « données avant interface » de la
+roadmap. **On stocke les faits nécessaires ; on ne construit aucun écran ni système d'interface du
+J6, et on évite le sur-engineering** : pas de champ « au cas où » au-delà de cette liste.
+
+### 16.1 Principes
+
+- **Un seul emplacement**, **autosave permanent**, impossible à désactiver. Pas de bouton
+  « Sauvegarder » au J5 (« Sauvegarder maintenant » arrive avec les Paramètres du J6).
+- **Moments d'autosave** : fin d'un événement narratif, capture, changement de carte, soin, fin de
+  combat, et **passage de l'application en arrière-plan** (Android). Jamais pendant une scène, une
+  rencontre ou un combat : on sauvegarde l'état stable d'avant ou d'après. Le joueur ne doit jamais
+  avoir peur de fermer l'application.
+- **Écriture atomique** : fichier temporaire, puis remplacement. Une coupure en pleine écriture ne doit
+  jamais corrompre la sauvegarde existante.
+- **Format versionné** : un numéro de version à la racine. Charger une version plus ancienne remplit
+  les champs absents avec leur valeur par défaut (et migre si un champ change de forme) ; un champ
+  manquant ou inconnu ne fait jamais planter le chargement.
+- **Validée seule sur le S24** (système à risque, `CLAUDE.md` règle 1).
+
+### 16.2 Contenu de base (dossier-07 §13)
+
+Position et carte du joueur, orientation ; starter ; équipe (`Pokemon.to_dict`, PV, statuts, XP,
+capacités) ; Sac (`Bag.to_dict`) ; Pokédex ; drapeaux d'histoire (`StoryFlags` : événements terminés,
+dialogues importants, objets ramassés comme `got_potion_route_1`) ; point de soin
+(`GameState.heal_map`) ; état de l'aléatoire (`GameRng`) si nécessaire à la reproductibilité.
+
+### 16.3 Faits supplémentaires pour le J6
+
+Les lieux sont enregistrés par **identifiant de carte** (le J6 en déduit la zone : un intérieur
+appartient à sa ville). Les dates sont la **date réelle de l'appareil** (format ISO), pas une heure de
+jeu.
+
+| Fait | Contenu | Enregistré quand |
+|---|---|---|
+| **Pokédex, par espèce** | vu, capturé ; première observation (carte, date) ; première capture (carte, date) ; cartes où l'espèce a été vue ; nombre de fois vue ; nombre de fois capturée | à chaque `mark_seen` / `mark_caught` |
+| **Rencontre de chaque Pokémon** | carte, niveau, date, dresseur d'origine, manière (starter, capture) | à l'entrée dans l'équipe ; **le starter aussi** (labo de Chen, niveau du choix, date du choix) |
+| **Temps de jeu** | secondes, comptées seulement quand le jeu est au premier plan | en continu |
+| **Début de l'aventure** | date | nouvelle partie |
+| **Zones découvertes** | carte, date de première visite | première arrivée sur une carte |
+| **Objets trouvés dans le monde** | objet, carte, date | ramassage (ex. la Potion de la Route 1) |
+| **Grands moments** | liste chronologique, ajout seulement : type, date, carte, détails | au J5 : premier Pokémon (starter), combat contre le rival (issue), première capture |
+| **Nom du joueur** | « Kevin » par défaut (pas encore d'écran de nom) | nouvelle partie |
+
+**Pas stocké** : les évolutions découvertes (elles se déduisent des espèces vues et des évolutions du
+joueur) ; les notes d'Observations du Pokédex (ajoutées au J6, le format versionné le permet) ;
+l'argent (J7) ; les badges (J10) ; les statistiques détaillées.
+
+### 16.4 Tâches (entre T12 et T13)
+
+- **S1 — architecte-godot** : format versionné et système de sauvegarde en logique pure (lecture,
+  écriture atomique, migration), nouveaux faits dans `GameState` / `Pokedex` / `Pokemon`. Tests :
+  aller-retour complet, chargement d'une version plus ancienne, champ manquant, fichier corrompu.
+- **S2 — constructeur-monde** : autosave branché sur les moments du §16.1 (dont l'arrière-plan
+  Android), enregistrement des faits au bon endroit, chargement au démarrage (`Boot`), starter
+  rétroactif.
+- **S3 — qa-mobile** : validation seule sur le S24 : fermer l'application ou la tuer à différents
+  moments (exploration, juste après une capture, pendant un combat, pendant une écriture), relancer,
+  vérifier que rien n'est perdu ni corrompu.
