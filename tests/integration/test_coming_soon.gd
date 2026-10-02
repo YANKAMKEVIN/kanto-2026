@@ -115,7 +115,9 @@ func test_nothing_is_saved_during_the_screen_then_the_normal_autosave_applies() 
 	while screen.is_showing() or SceneRouter.is_transitioning():
 		assert_eq(_writes(), 1, "aucune écriture pendant la transition")
 		await wait_process_frames(1)
-	_boot.notification(NOTIFICATION_APPLICATION_PAUSED)
+	# L'autosave en attente s'écrit à la première image stable (sans simuler d'arrière-plan :
+	# une notification envoyée à cet instant écrivait parfois une seconde fois, selon l'image).
+	await wait_until(func() -> bool: return _writes() >= 2, TIMEOUT)
 	await wait_process_frames(3)
 	assert_eq(_writes(), 2, "écrit une fois la partie stable")
 	var saved: Variant = JSON.parse_string(_fs.files[SAVE_PATH])
