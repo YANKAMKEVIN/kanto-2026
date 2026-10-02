@@ -79,3 +79,25 @@ func test_scripted_rng_empty_or_out_of_range_is_an_error() -> void:
 	assert_push_error("hors de 1..6")
 	rng.roll(6)
 	assert_push_error("file vide")
+
+
+func test_to_dict_and_from_dict_resume_the_exact_sequence() -> void:
+	var rng := GameRng.new(42)
+	_draws(rng, 10)
+	var dict: Dictionary = JSON.parse_string(JSON.stringify(rng.to_dict()))
+	assert_eq(dict["seed"], "42", "en chaînes : JSON ne garde pas les entiers 64 bits")
+	assert_true((dict["state"] as String).is_valid_int())
+	var resumed := GameRng.from_dict(dict)
+	assert_not_null(resumed)
+	assert_eq(resumed.get_seed(), 42)
+	assert_eq(_draws(resumed, 20), _draws(rng, 20), "reprend exactement où il en était")
+	assert_ne(_draws(GameRng.from_dict(rng.to_dict()), 5), _draws(GameRng.new(42), 5),
+		"pas un simple redémarrage de la graine")
+
+
+func test_from_dict_rejects_invalid_content() -> void:
+	assert_null(GameRng.from_dict({}))
+	assert_null(GameRng.from_dict({"seed": "-1", "state": "3"}))
+	assert_null(GameRng.from_dict({"seed": 42, "state": "3"}), "nombres bruts refusés")
+	assert_null(GameRng.from_dict({"seed": "42", "state": "abc"}))
+	assert_push_error_count(4)
