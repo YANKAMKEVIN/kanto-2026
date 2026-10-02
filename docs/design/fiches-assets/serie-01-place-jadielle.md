@@ -532,4 +532,12 @@ LUMIÈRE NE (neutre) : lumière de milieu de journée, diffuse et blanche, venan
 1. Pour corriger le style ou la forme, demander une **nouvelle image** (« ne retouche pas l'image précédente ») ; la retouche ne sert qu'au **rééclairage NE**, où l'on veut garder la même forme.
 2. Formule qui marche le mieux : dessiner l'asset « **comme s'il avait été extrait de l'image jointe, puis agrandi** », avec un recadrage de la référence J7 au plus près de l'objet (`build/art/REF_*.png`).
 3. **Format de production proche des proportions de l'asset** : ChatGPT remplit le cadre. Un asset plus haut que large se produit en portrait 1024 × 1536 (la fiche WORLD_TREE_A_01 indiquait un carré : corrigé par la r3).
-4. **Étalonnage commun** (cran A, traitement automatique) : les jaunes et les verts-jaunes sont ramenés vers le vert, et les ombres turquoise vers le vert-bleu, pour coller aux verts émeraude des références. Script à écrire dans `tools/art/` pour la scène prototype ; réglage de départ : teintes 25–70 (sur 255) tirées de 45 % vers 70, teintes 95–125 tirées de 35 % vers 95, saturation × 0,95.
+4. **Étalonnage commun** (cran A, traitement automatique) : les jaunes et les verts-jaunes sont ramenés vers le vert, et les ombres turquoise vers le vert-bleu, pour coller aux verts émeraude des références. Script : `tools/art/etalonner.py` ; réglage : teintes 25–70 (sur 255) tirées de 45 % vers 70, teintes 95–125 tirées de 35 % vers 95, saturation × 0,95.
+
+**Statut** : GH_r3 étalonnée = **ancre de style validée par Kevin** pour continuer la série (verdict final au cadrage du jeu, dans la scène prototype). NE : à produire (le premier envoi était la r3 elle-même).
+
+### WORLD_TREE_B_01 (2026-10-03)
+
+| Révision | Résultat | Décision |
+|---|---|---|
+| GH_r1 | du premier coup avec l'ancre et la référence recadrée : étages nets, contour coloré, cohérent avec l'arbre A en rangée ; un peu plus trapu que la fiche (0,60 au lieu de 0,48, soit 2,9 cases de large au lieu de 2,4) | **validé** (étalonné) ; un sapin plus élancé viendra en variante `WORLD_TREE_B_02` pour les lisières de forêt (série 02) |
