@@ -14,6 +14,7 @@ extends SceneTree
 ##                  la deuxième aperçue après un toucher
 ##   bag_tabs       deux catégories (démo : CAPTURE et SOINS), onglet SOINS ouvert
 ##   bag_empty      aucun objet utilisable : une phrase et « ‹ »
+##   capture_opening  carte en cours d'ouverture (fondu), avant la révélation des lignes
 ##   capture_new    carte de capture avec « Nouvelle entrée Pokédex »
 ##   capture_known  carte de capture sans cette ligne
 ##   capture_storage  carte de capture, ligne « confié au système de recherche de Chen »
@@ -137,20 +138,43 @@ func _capture_shots() -> void:
 	var joined := String(_messages["joined_party"]["text"]).format({"pokemon": "Roucool"})
 	var stored := String(_messages["sent_to_storage"]["text"]).format({"pokemon": "Roucool"})
 	_card.call(&"show_capture", _capture_view.new(title, portrait, true, pokedex, joined))
-	await _frames(36)
+	await _frames(4)
+	await _shot("capture_opening")
+	await _wait_revealed()
 	await _shot("capture_new")
-	_card.call(&"skip")
-	await _frames(12)
+	await _dismiss()
 	_card.call(&"show_capture", _capture_view.new(title, portrait, false, "", joined))
-	await _frames(36)
+	await _wait_revealed()
 	await _shot("capture_known")
-	_card.call(&"skip")
-	await _frames(12)
+	await _dismiss()
 	_card.call(&"show_capture", _capture_view.new(title, portrait, true, pokedex, stored))
-	await _frames(36)
+	await _wait_revealed()
 	await _shot("capture_storage")
+	await _dismiss()
+
+
+## Attend la fin de la révélation : carte pleinement opaque, toutes les lignes et le ▼ visibles
+## (et non un nombre d'images fixe) ; échoue bruyamment si cela n'arrive pas.
+func _wait_revealed() -> void:
+	var continue_arrow: Control = _card.call(&"get_continue")
+	var result: Control = _card.call(&"get_result_label")
+	for i: int in 300:
+		await process_frame
+		if _card.modulate.a >= 0.999 and result.modulate.a >= 0.999 \
+				and continue_arrow.modulate.a >= 0.999 and _card.call(&"is_waiting"):
+			print("révélée après %d images" % (i + 1))
+			await _frames(3)
+			return
+	push_error("la carte de capture n'est jamais entièrement révélée")
+
+
+## Termine la carte et attend sa sortie complète.
+func _dismiss() -> void:
 	_card.call(&"skip")
-	await _frames(12)
+	for i: int in 120:
+		await process_frame
+		if not _card.visible:
+			return
 
 
 ## Objet des vraies données (nom accordé, description).
