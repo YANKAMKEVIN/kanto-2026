@@ -41,6 +41,11 @@ var _cutscenes: CutsceneDirector
 var _runner: DialogueRunner
 var _map: GameMap
 var _running: bool = false
+## Pas d'herbe consécutifs sans rencontre (tirés, donc hors gardes), remis à zéro à chaque
+## rencontre. Alimente la montée du taux ([method EncounterTable.effective_rate]). Non
+## sauvegardé : une partie chargée repart d'une série neuve (la table n'a que de la chance à
+## offrir, aucune longue attente ne se perd). Gardé d'une carte à l'autre.
+var _quiet_steps: int = 0
 
 
 ## Branche le directeur. [param state] : l'autoload GameState en jeu, une instance neuve de
@@ -69,6 +74,11 @@ func is_running() -> bool:
 	return _running
 
 
+## Pas d'herbe sans rencontre depuis la dernière rencontre (ou le démarrage).
+func get_quiet_steps() -> int:
+	return _quiet_steps
+
+
 ## Lance la rencontre [param encounter] sans tirage (scénario de capture, départ de débogage,
 ## tests). Faux si une rencontre ou un combat tourne déjà, ou sans carte.
 func start_encounter(encounter: WildEncounter) -> bool:
@@ -87,8 +97,10 @@ func _on_player_moved(cell: Vector2i) -> void:
 	if not _can_encounter(cell):
 		return
 	var table := _library.get_table(_map.map_id, _GRASS_TERRAIN)
-	var encounter := table.roll(_state.rng as GameRng)
+	# Un seul tirage de taux par pas, au taux effectif de la série (§3.6, montée du taux).
+	var encounter := table.roll(_state.rng as GameRng, _quiet_steps)
 	if encounter == null:
+		_quiet_steps += 1
 		return
 	# Verrou synchrone, dans le `moved` : le pas suivant ne part pas (comme les déclencheurs
 	# du 3B). Le reste de la séquence est une coroutine lancée sans l'attendre.
@@ -136,6 +148,7 @@ func _origin_cell(cell: Vector2i) -> Vector2i:
 ## verrou est posé [b]avant tout `await`[/b] (synchrone dans le `moved`).
 func _run(encounter: WildEncounter, origin: Vector2i) -> void:
 	_running = true
+	_quiet_steps = 0
 	if is_instance_valid(_player):
 		_player.set_input_enabled(false, REASON)
 	if _state != null and _state.pokedex != null:

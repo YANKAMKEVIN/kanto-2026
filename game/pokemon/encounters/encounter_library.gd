@@ -15,12 +15,17 @@ extends RefCounted
 ## Clés obligatoires : maps (liste non vide), terrain ([constant EncounterTable.TERRAINS]),
 ## rate (1..255), slots (liste non vide). Un emplacement : species (espèce connue de
 ## [PokemonData]), levels ([min, max], 1..100, min ≤ max), weight (> 0). Les cartes ne sont
-## pas vérifiées ici (tests de données, §4). Une entrée invalide est écartée
+## pas vérifiées ici (tests de données, §4). Clé facultative « ramp » (montée du taux avec les
+## pas d'herbe sans rencontre, voir [method EncounterTable.effective_rate]) :
+## [code]"ramp": { "from_step": 15, "max_steps": 20 }[/code] avec 1 ≤ from_step < max_steps ≤ 255.
+## Sans « ramp », le taux reste fixe. Une entrée invalide est écartée
 ## ([method get_errors], push_error).
 
 const DATA_DIR: String = "res://data/encounters/"
 
 const _KEYS: Array[String] = ["maps", "terrain", "rate", "slots"]
+const _OPTIONAL_KEYS: Array[String] = ["ramp"]
+const _RAMP_KEYS: Array[String] = ["from_step", "max_steps"]
 const _SLOT_KEYS: Array[String] = ["species", "levels", "weight"]
 
 var _data: PokemonData
@@ -122,7 +127,7 @@ func _parse_table(value: Variant, where: String) -> EncounterTable:
 	if not value is Dictionary:
 		return _null_fail("%s : un objet est attendu" % where)
 	var entry: Dictionary = value
-	var ok := _check_keys(entry, _KEYS, _KEYS, where)
+	var ok := _check_keys(entry, _KEYS + _OPTIONAL_KEYS, _KEYS, where)
 	var table := EncounterTable.new()
 	if entry.has("terrain"):
 		if not entry["terrain"] is String \
@@ -136,11 +141,28 @@ func _parse_table(value: Variant, where: String) -> EncounterTable:
 			ok = _fail("%s : « rate » est un entier de 1 à 255" % where)
 		else:
 			table.rate = int(entry["rate"])
+	if entry.has("ramp"):
+		ok = _read_ramp(entry["ramp"], table, where) and ok
 	if entry.has("maps"):
 		ok = _read_maps(entry["maps"], table.maps, where) and ok
 	if entry.has("slots"):
 		ok = _read_slots(entry["slots"], table.slots, where) and ok
 	return table if ok else null
+
+
+func _read_ramp(value: Variant, table: EncounterTable, where: String) -> bool:
+	if not value is Dictionary:
+		return _fail("%s : « ramp » doit être un objet { from_step, max_steps }" % where)
+	var entry: Dictionary = value
+	if not _check_keys(entry, _RAMP_KEYS, _RAMP_KEYS, where + " « ramp »"):
+		return false
+	if not _is_int(entry["from_step"]) or not _is_int(entry["max_steps"]) \
+			or int(entry["from_step"]) < 1 or int(entry["max_steps"]) > 255 \
+			or int(entry["from_step"]) >= int(entry["max_steps"]):
+		return _fail("%s : « ramp » demande des entiers 1 ≤ from_step < max_steps ≤ 255" % where)
+	table.ramp_from = int(entry["from_step"])
+	table.ramp_max = int(entry["max_steps"])
+	return true
 
 
 func _read_maps(value: Variant, into: Array[StringName], where: String) -> bool:

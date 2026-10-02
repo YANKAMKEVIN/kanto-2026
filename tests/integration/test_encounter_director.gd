@@ -239,6 +239,68 @@ func test_no_orphans_after_an_encounter() -> void:
 	assert_no_new_orphans("le froissement d'herbe est libéré")
 
 
+# --- Montée du taux avec la série de pas d'herbe sans rencontre -------------------------
+
+## Remplace la bibliothèque par une table qui monte : taux de base 25 jusqu'au pas 1, puis
+## +116 par pas, rencontre certaine au pas 3 (les trois cases d'herbe de la colonne).
+func _use_ramp_library() -> void:
+	var library := EncounterLibrary.new(_data)
+	library.add_from_dict({
+		"ramp_table": {
+			"maps": [String(MAP_ID)], "terrain": "grass", "rate": 25,
+			"ramp": { "from_step": 1, "max_steps": 3 },
+			"slots": [{"species": "pidgey", "levels": [3, 3], "weight": 20}],
+		},
+	}, "test")
+	_director.setup(library, _data, _state, _player, _fake, _router, null)
+
+
+func test_quiet_steps_count_grass_steps_without_encounter() -> void:
+	_use_ramp_library()
+	_state.rng = ScriptedRng.new([256, 256])
+	assert_eq(_director.get_quiet_steps(), 0)
+	await _one_step(Vector2i.UP, GRASS_CELLS[0])
+	assert_eq(_director.get_quiet_steps(), 1)
+	await _one_step(Vector2i.UP, GRASS_CELLS[1])
+	assert_eq(_director.get_quiet_steps(), 2)
+	assert_false(_director.is_running())
+
+
+func test_no_quiet_step_outside_the_grass() -> void:
+	_use_ramp_library()
+	_state.rng = ScriptedRng.new(WIN_ROLLS.duplicate())
+	await _one_step(Vector2i.DOWN, Vector2i(5, 7))
+	assert_eq(_director.get_quiet_steps(), 0, "un pas hors herbe ne compte pas")
+
+
+func test_the_ramp_forces_an_encounter_by_the_last_step_then_resets_the_counter() -> void:
+	_use_ramp_library()
+	# Pas 1 : taux 25, 256 le manque. Pas 2 : taux 141, 256 le manque. Pas 3 : taux 256, le
+	# tirage 256 passe, puis les tirages de la rencontre (poids, niveau, Pokémon).
+	var rolls: Array[int] = [256, 256, 256, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+	_state.rng = ScriptedRng.new(rolls)
+	await _one_step(Vector2i.UP, GRASS_CELLS[0])
+	await _one_step(Vector2i.UP, GRASS_CELLS[1])
+	assert_eq(_fake.runs, 0, "deux pas sans rencontre")
+	assert_eq(_director.get_quiet_steps(), 2)
+	await _one_step(Vector2i.UP, GRASS_CELLS[2])
+	assert_eq(_fake.runs, 1, "rencontre certaine au troisième pas")
+	assert_eq(_started, [[&"pidgey", 3]] as Array[Array])
+	assert_eq(_director.get_quiet_steps(), 0, "compteur remis à zéro par la rencontre")
+	await wait_until(func() -> bool: return not _director.is_running(), 3.0)
+	assert_eq(_director.get_quiet_steps(), 0, "toujours à zéro à la fin du combat")
+
+
+func test_a_forced_encounter_also_resets_the_counter() -> void:
+	_use_ramp_library()
+	_state.rng = ScriptedRng.new([256, 1, 1, 1, 1, 1, 1, 1])
+	await _one_step(Vector2i.UP, GRASS_CELLS[0])
+	assert_eq(_director.get_quiet_steps(), 1)
+	assert_true(_director.start_encounter(WildEncounter.new(&"rattata", 4, &"ramp_table")))
+	assert_eq(_director.get_quiet_steps(), 0)
+	await wait_until(func() -> bool: return not _director.is_running(), 3.0)
+
+
 # --- Outils --------------------------------------------------------------------------
 
 ## Un seul pas (scripté, entrées libres) dans la première case d'herbe (5, 5), pour éprouver

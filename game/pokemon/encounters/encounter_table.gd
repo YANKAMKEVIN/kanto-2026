@@ -8,6 +8,17 @@ extends RefCounted
 ## poids) et le niveau (uniforme dans la fourchette de l'emplacement). Ordre des tirages, pour
 ## la reproductibilité : roll(256) ≤ rate, roll(poids total), range_int(min, max).
 ## [method pick] fait le tirage sans le test de taux (tests, départ de débogage).
+##
+## [b]Taux effectif.[/b] Un tirage indépendant à chaque pas laisse parfois attendre 30 pas
+## (décision de Kevin du 2026-10-02). Une table peut donc porter une [i]montée[/i] (clé
+## « ramp » du JSON : [member ramp_from], [member ramp_max]) : le pas numéro k de la série
+## (k = 1 pour le premier pas d'herbe depuis la dernière rencontre) garde le taux de base
+## jusqu'à k = [member ramp_from], puis le taux gagne [method ramp_increment] par pas et vaut
+## [constant RATE_DEN] (rencontre certaine) au plus tard à k = [member ramp_max]. Le compteur de
+## la série (« pas d'herbe sans rencontre ») appartient à l'appelant ([EncounterDirector]) : la
+## table reste sans état et [method roll] reçoit le nombre de pas déjà faits sans rencontre.
+## Le tirage de taux est [b]toujours[/b] fait, même quand le taux effectif vaut déjà 256
+## (un seul roll(256) par pas : le flux de hasard garde le même rythme).
 
 ## Terrains connus (eau et grotte plus tard).
 const TERRAINS: Array[StringName] = [&"grass"]
@@ -21,6 +32,11 @@ var maps: Array[StringName] = []
 ## Taux de rencontre par pas terminé sur le terrain, sur [constant RATE_DEN] (1..255).
 var rate: int = 0
 var slots: Array[EncounterSlot] = []
+## Montée du taux : dernier pas de la série encore au taux de base (0 : pas de montée, taux
+## fixe). Voir [method effective_rate].
+var ramp_from: int = 0
+## Montée du taux : pas de la série où la rencontre est certaine (> [member ramp_from]).
+var ramp_max: int = 0
 ## Fichier d'origine (messages d'erreur).
 var source: String = ""
 
@@ -33,10 +49,40 @@ func total_weight() -> int:
 	return total
 
 
+## Vrai si le taux monte avec la série de pas sans rencontre.
+func has_ramp() -> bool:
+	return ramp_from > 0 and ramp_max > ramp_from
+
+
+## Gain de taux par pas au-delà de [member ramp_from] : le plus petit entier qui amène le
+## taux de [member rate] à [constant RATE_DEN] en [code]ramp_max - ramp_from[/code] pas
+## (0 sans montée).
+func ramp_increment() -> int:
+	if not has_ramp():
+		return 0
+	var span := ramp_max - ramp_from
+	return ceili(float(RATE_DEN - rate) / float(span))
+
+
+## Taux (sur [constant RATE_DEN]) du pas qui suit [param quiet_steps] pas d'herbe consécutifs
+## sans rencontre (0 : premier pas de la série). Égal à [member rate] sans montée ou tant que
+## le pas ne dépasse pas [member ramp_from], puis monte régulièrement ; plafonné à
+## [constant RATE_DEN] (certain).
+func effective_rate(quiet_steps: int = 0) -> int:
+	if rate <= 0:
+		return 0
+	var step := quiet_steps + 1
+	if not has_ramp() or step <= ramp_from:
+		return rate
+	return mini(RATE_DEN, rate + (step - ramp_from) * ramp_increment())
+
+
 ## Tirage complet d'un pas : null si aucune rencontre (le taux n'a pas été atteint) ou si la
-## table est vide.
-func roll(rng: GameRng) -> WildEncounter:
-	if rate <= 0 or rng.roll(RATE_DEN) > rate:
+## table est vide. [param quiet_steps] : pas d'herbe consécutifs déjà faits sans rencontre
+## (voir [method effective_rate]).
+func roll(rng: GameRng, quiet_steps: int = 0) -> WildEncounter:
+	var effective := effective_rate(quiet_steps)
+	if effective <= 0 or rng.roll(RATE_DEN) > effective:
 		return null
 	return pick(rng)
 
