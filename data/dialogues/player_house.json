@@ -19,6 +19,25 @@
 			}
 		]
 	},
+	"mom_wakeup": {
+		"speaker": "Maman",
+		"variants": [
+			{
+				"unless": ["blacked_out_before"],
+				"set": ["blacked_out_before"],
+				"pages": [
+					"Tu m'as fait une de ces peurs...",
+					"Tes Pokémon vont bien. Repose-toi un peu avant de repartir."
+				]
+			},
+			{
+				"pages": [
+					"Tes Pokémon vont bien maintenant.",
+					"Fais attention à toi, d'accord ?"
+				]
+			}
+		]
+	},
 	"breakfast_table": {
 		"narration": true,
 		"pages": ["Ton petit-déjeuner est encore chaud."]

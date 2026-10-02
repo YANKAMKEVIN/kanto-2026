@@ -33,7 +33,8 @@ const DRAFTS: Array[StringName] = [&"sign_pallet_town"]
 ## panneau ; (3B) « Hé ! Attends ! », les répliques du Prof. Chen et la pensée des herbes ;
 ## (4A, T1) la proposition du Prof. Chen ; (4A, T3) le choix et la sortie empêchée.
 const IDS: Array[StringName] = [
-	&"aoki", &"breakfast_table", &"haru", &"leo", &"maya", &"mom", &"oak_after_battle",
+	&"aoki", &"breakfast_table", &"haru", &"leo", &"maya", &"mom", &"mom_wakeup",
+	&"oak_after_battle",
 	&"oak_lab_exit_block", &"oak_lab_reunion", &"oak_lab_waiting", &"oak_poke_balls",
 	&"oak_poke_balls_intro", &"oak_route1_call", &"oak_route1_warning", &"oak_starter_offer",
 	&"oak_starter_reciprocal", &"observe_bulbasaur", &"observe_charmander", &"observe_squirtle",
@@ -66,6 +67,9 @@ func before_all() -> void:
 	_offer.load_file()
 	# Scène du choix : jouée par le code (StarterChoice) sur la carte de l'offre.
 	_use_cutscene(_offer.chosen_scene, _offer.map_id)
+	# Mot de Maman au réveil après une défaite sauvage (dossier 07 §11) : joué par le code
+	# (EncounterDirector) sur la carte du point de soin, pas par un PNJ ni une scène.
+	_use(&"mom_wakeup", &"player_house_1f")
 	for map_id: StringName in MAPS:
 		_npc_ids[map_id] = []
 		for spec: NpcSpec in NpcRoster.load_for_map(map_id).get_all():
@@ -213,7 +217,8 @@ func test_every_condition_flag_is_set_somewhere() -> void:
 	for flag: StringName in FUTURE_FLAGS:
 		assert_false(set_flags.has(flag), "« %s » : levé par un jalon futur" % flag)
 	assert_true(read_flags.has(&"starter_chosen"), "starter_chosen lu (pensée des herbes)")
-	assert_eq(_library.get_set_flags(), [&"mom_greeted", &"rival_met"] as Array[StringName])
+	assert_eq(_library.get_set_flags(),
+		[&"blacked_out_before", &"mom_greeted", &"rival_met"] as Array[StringName])
 	assert_eq(_cutscenes.get_set_flags(), [&"got_potion_route_1", &"oak_lab_reunion", &"oak_met",
 		&"rival_battle_done", &"rival_challenged", &"rival_lab_lost", &"rival_lab_won",
 		&"rival_left_lab", &"starter_chosen", &"starter_offered"] as Array[StringName])
@@ -384,7 +389,8 @@ func test_texts_are_the_dossier_02_texts_word_for_word() -> void:
 
 func test_speakers_and_narration() -> void:
 	var expected: Dictionary[StringName, Array] = {
-		&"mom": ["Maman", false], &"rival": ["Rival", false], &"maya": ["Maya", false],
+		&"mom": ["Maman", false], &"mom_wakeup": ["Maman", false],
+		&"rival": ["Rival", false], &"maya": ["Maya", false],
 		&"aoki": ["Mme Aoki", false], &"leo": ["Léo", false], &"haru": ["Haru", false],
 		&"breakfast_table": ["", true], &"rival_kanto_map": ["", true],
 		&"observe_bulbasaur": ["Bulbizarre", true], &"observe_charmander": ["Salamèche", true],

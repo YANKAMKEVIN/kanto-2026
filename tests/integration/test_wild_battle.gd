@@ -233,6 +233,53 @@ func test_a_defeat_wakes_at_mom_with_a_healed_team_and_no_zone_title() -> void:
 	assert_eq(lead.hp, lead.max_hp(), "équipe soignée")
 	assert_eq(_player.get_cell(), _boot.get_map().get_spawn_cell(&"heal"), "sur le point de soin")
 	assert_eq(titles.size(), 0, "aucun titre de zone (intérieur)")
-	await wait_until(func() -> bool: return _player.is_input_enabled(), TIMEOUT)
-	assert_true(_player.is_input_enabled(), "joueur libre chez Maman")
+	# Première défaite : Maman parle automatiquement, variante 1 ; le joueur est bloqué par le
+	# dialogue tant qu'il n'est pas fini, puis libre ; le drapeau est levé à la fin.
+	assert_false(GameState.flags.has_flag(&"blacked_out_before"), "drapeau pas encore levé")
+	var first := await _drive_wakeup_dialogue()
+	assert_eq(first, "Tu m'as fait une de ces peurs...", "variante de première défaite")
+	assert_true(GameState.flags.has_flag(&"blacked_out_before"), "drapeau levé à la fin")
+	assert_true(_player.is_input_enabled(), "joueur libre après le mot de Maman")
 	assert_push_error_count(0)
+
+
+# --- Mot de Maman : défaites suivantes --------------------------------------------------
+
+func test_a_second_defeat_plays_the_reassuring_line() -> void:
+	var seed := _defeat_seed()
+	assert_gt(seed, -1, "une graine de défaite sauvage")
+	if seed < 0:
+		return
+	_new_route_game(seed)
+	# Le drapeau est déjà levé : une défaite précédente a eu lieu (état persistant).
+	GameState.flags.set_flag(&"blacked_out_before")
+	GameState.party.get_lead().hp = 1
+	_stand_below_grass()
+	var enc := _boot.get_encounter_director()
+	assert_true(enc.start_encounter(WildEncounter.new(&"rattata", 10, &"route_1_grass")))
+	await wait_until(func() -> bool: return enc.is_running(), 5.0)
+	var outcome := await _drive_battle(false)
+	assert_eq(outcome, Battle.Outcome.LOSS, "défaite sauvage")
+	await wait_until(func() -> bool:
+		return _boot.get_map() != null and _boot.get_map().map_id == &"player_house_1f", TIMEOUT)
+	var first := await _drive_wakeup_dialogue()
+	assert_eq(first, "Tes Pokémon vont bien maintenant.", "variante des défaites suivantes")
+	assert_true(GameState.flags.has_flag(&"blacked_out_before"), "drapeau toujours levé")
+	assert_true(_player.is_input_enabled(), "joueur libre après le mot de Maman")
+	assert_push_error_count(0)
+
+
+## Fait défiler le mot automatique de Maman jusqu'à sa fin ; renvoie le texte de sa 1re page.
+func _drive_wakeup_dialogue() -> String:
+	var runner := _boot.get_dialogue_runner()
+	var box := _boot.get_dialogue_box()
+	await wait_until(func() -> bool:
+		return runner.is_running() and runner.get_dialogue_id() == &"mom_wakeup" \
+			and runner.get_session() != null, TIMEOUT)
+	var first_text := (box.get_node(^"%Text") as Label).text
+	var deadline := Time.get_ticks_msec() + int(TIMEOUT * 1000)
+	while runner.is_running() and Time.get_ticks_msec() < deadline:
+		box.advance_requested.emit()
+		await wait_process_frames(1)
+	assert_false(runner.is_running(), "le mot de Maman s'est terminé")
+	return first_text

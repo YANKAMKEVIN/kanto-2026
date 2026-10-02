@@ -88,7 +88,7 @@ func _ready() -> void:
 	_encounter_library = EncounterLibrary.new(_pokemon)
 	_encounter_library.load_dir()
 	_encounters.setup(_encounter_library, _pokemon, GameState, _player, _battle_director,
-		SceneRouter, _cutscenes_node)
+		SceneRouter, _cutscenes_node, _runner)
 	_encounters.encounter_started.connect(_on_encounter_state_changed.unbind(2))
 	_encounters.encounter_finished.connect(_on_encounter_state_changed.unbind(1))
 	_interactions.target_changed.connect(_on_target_changed)

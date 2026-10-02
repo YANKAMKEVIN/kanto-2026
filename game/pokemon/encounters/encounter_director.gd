@@ -20,6 +20,9 @@ signal cry_requested(species_id: StringName)
 ## Raison de blocage du joueur, de la rencontre jusqu'à la sortie du combat.
 const REASON: StringName = &"encounter"
 const _GRASS_TERRAIN: StringName = &"grass"
+## Dialogue automatique de Maman au réveil après une défaite (dossier 07 §11). Deux variantes
+## selon le drapeau [constant _BLACKED_OUT_FLAG] (première défaite / suivantes).
+const _WAKEUP_DIALOGUE: StringName = &"mom_wakeup"
 
 ## Faux : aucun tirage (outils de capture, tests d'autres systèmes).
 var enabled: bool = true
@@ -31,14 +34,17 @@ var _player: Player
 var _battles: BattleDirector
 var _router: Node
 var _cutscenes: CutsceneDirector
+var _runner: DialogueRunner
 var _map: GameMap
 var _running: bool = false
 
 
 ## Branche le directeur. [param state] : l'autoload GameState en jeu, une instance neuve de
 ## game_state.gd en test. [param router] : SceneRouter en jeu, une instance en test.
+## [param runner] : lecteur de dialogues, pour le mot de Maman après une défaite (§3.11).
 func setup(library: EncounterLibrary, data: PokemonData, state: Node, player: Player,
-		battles: BattleDirector, router: Node, cutscenes: CutsceneDirector) -> void:
+		battles: BattleDirector, router: Node, cutscenes: CutsceneDirector,
+		runner: DialogueRunner = null) -> void:
 	_library = library
 	_data = data
 	_state = state
@@ -46,6 +52,7 @@ func setup(library: EncounterLibrary, data: PokemonData, state: Node, player: Pl
 	_battles = battles
 	_router = router
 	_cutscenes = cutscenes
+	_runner = runner
 	if is_instance_valid(_player) and not _player.moved.is_connected(_on_player_moved):
 		_player.moved.connect(_on_player_moved)
 
@@ -146,7 +153,9 @@ func _run(encounter: WildEncounter, origin: Vector2i) -> void:
 ## Défaite sauvage (jalon 5 §3.11) : l'équipe est soignée, puis le joueur se réveille au point
 ## de soin ([member GameState.heal_map] / [member GameState.heal_spawn], tourné vers le haut —
 ## vers Maman). Le fondu du routeur tient lieu de l'« écran très bref » (dossier 05 §23) ; le
-## verrou du joueur est tenu tout du long (REASON) et rendu par l'appelant.
+## verrou du joueur est tenu tout du long (REASON) et rendu par l'appelant. Une fois sur place
+## (équipe soignée), Maman dit son mot automatiquement (dossier 07 §11) : la variante dépend du
+## drapeau « a déjà fait un K.O. général », levé par le dialogue lui-même la première fois.
 func _handle_defeat() -> void:
 	if _state == null:
 		return
@@ -155,6 +164,16 @@ func _handle_defeat() -> void:
 		party.heal_all()
 	if _router != null and _router.has_method(&"change_map"):
 		await _router.change_map(_state.heal_map, _state.heal_spawn, Vector2i.UP)
+	_play_wakeup_dialogue()
+
+
+## Mot de Maman au réveil : joué par le [DialogueRunner] sur la carte du point de soin. On ne
+## l'attend pas : la rencontre se termine, mais le dialogue pose son propre verrou sur le joueur
+## (DialogueRunner.REASON) et ne le rendra qu'à sa dernière page (le joueur reprend alors la
+## main). Sans lecteur (tests purs), rien n'est joué. Sa variante dépend du drapeau déjà lu.
+func _play_wakeup_dialogue() -> void:
+	if _runner != null:
+		_runner.play(_WAKEUP_DIALOGUE, null, _map)
 
 
 ## Le joueur se tourne vers l'herbe qui bouge, elle s'agite, le cri s'accroche (sans son).
