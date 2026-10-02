@@ -333,7 +333,7 @@ func _defeat_seed(data: PokemonData) -> int:
 	return -1
 
 
-func test_no_save_during_a_wild_battle_then_saved_at_mom_after_a_defeat() -> void:
+func test_no_save_during_a_wild_battle_then_saved_on_waking_at_mom_after_a_defeat() -> void:
 	await _start_boot(&"route_1", &"from_pallet_w", Vector2i.UP)
 	var data := _boot.get_pokemon_data()
 	var seed := _defeat_seed(data)
@@ -356,7 +356,8 @@ func test_no_save_during_a_wild_battle_then_saved_at_mom_after_a_defeat() -> voi
 	while enc.is_running() and Time.get_ticks_msec() < deadline:
 		_boot.request_autosave("test")
 		_boot.notification(Node.NOTIFICATION_APPLICATION_PAUSED)
-		assert_eq(_writes(), writes, "rien pendant la rencontre ni le combat")
+		if _boot.get_map().map_id != &"player_house_1f":
+			assert_eq(_writes(), writes, "rien pendant la rencontre ni le combat")
 		if battle_director.is_running():
 			var battle := battle_director.get_battle()
 			if battle != null and battle.get_state() == Battle.State.CHOOSING:
@@ -369,15 +370,20 @@ func test_no_save_during_a_wild_battle_then_saved_at_mom_after_a_defeat() -> voi
 	assert_false(enc.is_running(), "rencontre terminée")
 	assert_eq(GameState.pokedex.times_seen(&"rattata"), 1, "une seule observation par rencontre")
 	assert_eq(_boot.get_map().map_id, &"player_house_1f", "réveil chez Maman")
-	# Le mot de Maman bloque la sauvegarde jusqu'à sa fin.
+	# La défaite est un fait accompli : sauvegardé au réveil, avant le mot de Maman (QA S3).
 	await wait_process_frames(2)
-	assert_eq(_writes(), writes, "rien pendant le mot de Maman")
+	assert_eq(_writes(), writes + 1, "sauvegardé au réveil, avant le mot de Maman")
+	var heal := _boot.get_map().get_spawn_cell(&"heal")
+	var woke := _saved()
+	assert_eq(woke.get("map"), "player_house_1f")
+	assert_eq(JsonFields.get_vector2i(woke, "cell"), heal, "au point de soin")
+	var lead: Dictionary = (woke.get("party", []) as Array)[0]
+	assert_eq(int(lead.get("hp", 0)), GameState.party.get_lead().max_hp(), "équipe soignée")
 	await _finish_dialogue()
 	await wait_process_frames(2)
-	assert_eq(_writes(), writes + 1, "sauvegardé après la défaite, chez Maman")
+	assert_eq(_writes(), writes + 2, "puis sauvegardé à la fin du mot de Maman")
 	var saved := _saved()
 	assert_eq(saved.get("map"), "player_house_1f")
-	var heal := _boot.get_map().get_spawn_cell(&"heal")
 	assert_eq(JsonFields.get_vector2i(saved, "cell"), heal, "au point de soin")
 	assert_true((saved.get("flags", []) as Array).has("blacked_out_before"))
 	assert_push_error_count(0)

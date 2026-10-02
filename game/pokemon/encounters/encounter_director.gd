@@ -14,6 +14,10 @@ extends Node
 signal encounter_started(species_id: StringName, level: int)
 ## Une rencontre se termine (contrôle rendu). [param outcome] : [enum Battle.Outcome].
 signal encounter_finished(outcome: int)
+## Défaite : le joueur vient de se réveiller au point de soin, équipe soignée, juste avant le
+## mot de Maman (décision de Kevin du 2026-10-02 : la défaite est un fait accompli, Boot écrit
+## la sauvegarde à cet instant).
+signal woke_up_after_defeat
 ## Point d'accroche du cri du sauvage (sans son au jalon 5, Q14) : émis à l'apparition.
 signal cry_requested(species_id: StringName)
 
@@ -167,6 +171,7 @@ func _handle_defeat() -> void:
 		party.heal_all()
 	if _router != null and _router.has_method(&"change_map"):
 		await _router.change_map(_state.heal_map, _state.heal_spawn, Vector2i.UP)
+	woke_up_after_defeat.emit()
 	_play_wakeup_dialogue()
 
 

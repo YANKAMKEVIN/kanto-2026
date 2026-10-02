@@ -136,6 +136,7 @@ func _ready() -> void:
 	_encounters.encounter_started.connect(_hud.hide_zone_title.unbind(2))
 	_encounters.encounter_finished.connect(_on_encounter_state_changed.unbind(1))
 	_encounters.encounter_finished.connect(_on_encounter_finished)
+	_encounters.woke_up_after_defeat.connect(_on_woke_up_after_defeat)
 	_interactions.target_changed.connect(_on_target_changed)
 	_runner.dialogue_started.connect(_on_dialogue_started)
 	_runner.dialogue_finished.connect(_on_dialogue_finished)
@@ -539,6 +540,17 @@ func _on_battle_finished(trainer_id: StringName, outcome: int) -> void:
 ## écrit dès que la partie est stable (après le mot de Maman en cas de défaite).
 func _on_encounter_finished(_outcome: int) -> void:
 	request_autosave("fin de rencontre")
+
+
+## Réveil chez Maman après une défaite (décision de Kevin du 2026-10-02, QA S3) : la défaite
+## est un fait accompli. L'équipe est soignée et le joueur est au point de soin : on écrit tout
+## de suite, avant le mot de Maman ; sinon, quitter pendant son mot effaçait la défaite (retour
+## à la dernière case stable d'avant le combat). Une scène interrompue, elle, se rejoue.
+func _on_woke_up_after_defeat() -> void:
+	if _can_write() and not SceneRouter.is_transitioning():
+		_write_save("réveil")
+	else:
+		request_autosave("réveil")
 
 
 ## Pokémon sauvage capturé et rangé (équipe ou stockage, jalon 5D) : autosave demandé, écrit à
