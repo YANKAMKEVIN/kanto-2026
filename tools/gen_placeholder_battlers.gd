@@ -14,7 +14,7 @@ extends SceneTree
 
 const DIR: String = "res://assets/sprites/pokemon/placeholder/"
 const SIZE: int = 64
-const SPECIES: Array[String] = ["bulbasaur", "charmander", "squirtle"]
+const SPECIES: Array[String] = ["bulbasaur", "charmander", "squirtle", "pidgey", "rattata"]
 const OUTLINE := Color("#1c1c28")
 const EYE := Color("#1c1c28")
 const WHITE := Color("#f4f4f4")
@@ -226,6 +226,80 @@ func _draw_squirtle(img: Image, back: bool) -> void:
 	_eye(img, 22, 15, Color("#7a3a20"))
 	_eye(img, 37, 15, Color("#7a3a20"))
 	_r(img, 27, 27, 10, 2, skin.darkened(0.4))
+
+
+# --- Roucool ----------------------------------------------------------------------
+
+func _draw_pidgey(img: Image, back: bool) -> void:
+	var feather := Color("#b08050")
+	var cream := Color("#f0dca8")
+	var beak := Color("#e0a040")
+	var crest := Color("#8a5a30")
+	if back:
+		# Vu de dos : corps, ailes repliées, queue en éventail, tête et crête.
+		_e(img, 32, 46, 20, 16, feather, true)
+		_r(img, 22, 55, 6, 7, crest)
+		_r(img, 30, 56, 5, 6, feather.darkened(0.15))
+		_r(img, 37, 55, 6, 7, crest)
+		_e(img, 15, 44, 6, 12, feather.darkened(0.14))
+		_e(img, 49, 44, 6, 12, feather.darkened(0.14))
+		_e(img, 32, 24, 15, 13, feather, true)
+		_r(img, 27, 9, 3, 7, crest)
+		_r(img, 34, 9, 3, 7, crest)
+		return
+	# De face : corps rond, ventre crème, ailes, pattes, grands yeux, bec, crête.
+	_e(img, 32, 46, 20, 16, feather, true)
+	_e(img, 32, 50, 12, 11, cream)
+	_e(img, 14, 44, 6, 12, feather.darkened(0.12))
+	_e(img, 50, 44, 6, 12, feather.darkened(0.12))
+	_r(img, 25, 59, 3, 3, beak)
+	_r(img, 36, 59, 3, 3, beak)
+	_e(img, 32, 24, 15, 14, feather, true)
+	_e(img, 32, 28, 9, 7, cream)
+	_r(img, 27, 9, 3, 7, crest)
+	_r(img, 34, 9, 3, 7, crest)
+	_eye(img, 21, 19, Color("#2a2a2a"))
+	_eye(img, 38, 19, Color("#2a2a2a"))
+	_r(img, 29, 27, 6, 3, beak)
+	_r(img, 30, 30, 4, 2, beak.darkened(0.2))
+
+
+# --- Rattata ----------------------------------------------------------------------
+
+func _draw_rattata(img: Image, back: bool) -> void:
+	var fur := Color("#9a6ab8")
+	var belly := Color("#f0e0c0")
+	var ear := Color("#e0a0b0")
+	var tail := Color("#c89ad8")
+	if back:
+		# Vu de dos : queue enroulée, corps, pattes, tête, grandes oreilles.
+		_line(img, Vector2(46, 54), Vector2(60, 40), tail, 3)
+		_e(img, 32, 46, 20, 15, fur, true)
+		_r(img, 18, 54, 8, 8, fur.darkened(0.15))
+		_r(img, 38, 54, 8, 8, fur.darkened(0.15))
+		_e(img, 32, 24, 16, 13, fur, true)
+		_e(img, 18, 12, 7, 8, fur)
+		_e(img, 46, 12, 7, 8, fur)
+		return
+	# De face : queue à droite, corps, ventre crème, pattes, oreilles, yeux rouges, crocs.
+	_line(img, Vector2(46, 56), Vector2(60, 46), tail, 3)
+	_e(img, 32, 47, 20, 15, fur, true)
+	_e(img, 32, 50, 12, 11, belly)
+	_r(img, 20, 56, 8, 6, fur.darkened(0.12))
+	_r(img, 36, 56, 8, 6, fur.darkened(0.12))
+	_e(img, 32, 24, 17, 15, fur, true)
+	_e(img, 32, 30, 10, 8, belly)
+	_e(img, 16, 12, 8, 9, fur)
+	_e(img, 48, 12, 8, 9, fur)
+	_e(img, 16, 12, 4, 5, ear)
+	_e(img, 48, 12, 4, 5, ear)
+	_eye(img, 21, 19, Color("#c0392b"))
+	_eye(img, 38, 19, Color("#c0392b"))
+	_r(img, 30, 30, 4, 2, Color("#7a3a20"))
+	_r(img, 29, 33, 2, 3, WHITE)
+	_r(img, 33, 33, 2, 3, WHITE)
+	_line(img, Vector2(24, 31), Vector2(11, 29), fur.darkened(0.25))
+	_line(img, Vector2(40, 31), Vector2(53, 29), fur.darkened(0.25))
 
 
 # --- Ombre ------------------------------------------------------------------------

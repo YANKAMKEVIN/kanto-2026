@@ -23,6 +23,7 @@ extends SceneTree
 ##   rangée 9  WATER      mer               3  water
 ##   rangée 10 SHALLOW    eau peu profonde  2  water
 ##   rangée 11 TALL_GRASS hautes herbes     2  tall_grass (jalon 3B)
+##   rangée 12 LEDGE_DOWN rebord vers le sud 2  ledge=1 (jalon 5)
 
 const TILES_SCRIPT: String = "res://game/world/overworld_tiles.gd"
 const T: int = 96
@@ -87,7 +88,7 @@ func _save_tileset() -> void:
 			data.set_custom_data(_tiles.DATA_SOLID, _tiles.is_solid_kind(kind))
 			data.set_custom_data(_tiles.DATA_TALL_GRASS, _tiles.is_tall_grass_kind(kind))
 			data.set_custom_data(_tiles.DATA_WATER, _tiles.is_water_kind(kind))
-			data.set_custom_data(_tiles.DATA_LEDGE, 0)
+			data.set_custom_data(_tiles.DATA_LEDGE, _tiles.ledge_of(kind))
 	var err := ResourceSaver.save(tileset, _tiles.TILESET_PATH)
 	print("tileset : ", _tiles.TILESET_PATH, " (", error_string(err), ")")
 
@@ -144,7 +145,33 @@ func _draw_tile(kind_name: String, variant: int) -> Image:
 			_waves(img, 4 + variant, Color("#a6e3e6"))
 		"TALL_GRASS":
 			_draw_tall_grass(img, variant)
+		"LEDGE_DOWN":
+			_draw_ledge_down(img, variant)
 	return img
+
+
+## Rebord provisoire : herbe rase en haut, petit talus de terre sur la moitié basse avec une
+## lèvre d'ombre marquée, pour lire « je peux descendre par là, mais pas remonter ».
+func _draw_ledge_down(img: Image, variant: int) -> void:
+	_fill_noise(img, Color("#6fa84a"), Color("#5c9440"), Color("#86bd5c"))
+	_scatter_strokes(img, 14 + variant * 4, Color("#4e8236"), 4)
+	var lip := 54
+	for y: int in range(lip, T):
+		var t := float(y - lip) / float(T - lip)
+		var earth := Color("#b58f59").lerp(Color("#6c5b49"), t)
+		for x: int in T:
+			var n := _noise.get_noise_2d(x, y)
+			img.set_pixel(x, y, earth.lerp(Color("#8e6841"), (n + 1.0) * 0.25))
+	for x: int in T:
+		_blend(img, x, lip, Color(0, 0, 0, 0.35))
+		_blend(img, x, lip + 1, Color(0, 0, 0, 0.22))
+		_blend(img, x, T - 1, Color(0, 0, 0, 0.30))
+	# Chevrons discrets vers le bas (sens de la descente).
+	for cx: int in [24, 72]:
+		for k: int in 7:
+			_blend(img, cx - 6 + k, lip + 8 + k, Color("#d9c39a"))
+			_blend(img, cx + 6 - k, lip + 8 + k, Color("#d9c39a"))
+	_grid_hint(img)
 
 
 func _fill_noise(img: Image, base: Color, dark: Color, light: Color) -> void:

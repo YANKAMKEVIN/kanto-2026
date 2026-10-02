@@ -3,7 +3,7 @@ extends Node2D
 ## Carte du monde : couches de tuiles, props, spawns, warps, points d'examen, PNJ. Construit
 ## sa [GridWorld], sa [WarpTable] et son [InteractionTable].
 ##
-## Au chargement, lit les données `solid`, `water` et `ledge` des tuiles de
+## Au chargement, lit les données `solid`, `water`, `tall_grass` et `ledge` des tuiles de
 ## `Ground`, `Detail` et `Obstacles`, puis ajoute l'empreinte de chaque [WorldProp]
 ## enfant de `Entities`. Les [WarpPoint] enfants de `Warps` forment la table des passages.
 ## Les [InteractPoint] enfants de `Interactables` forment la table des points fixes
@@ -211,6 +211,49 @@ func spawn_player(player: Player, spawn_name: StringName, facing: Vector2i) -> v
 	player.enter_map(get_grid(), get_spawn_cell(spawn_name), facing, get_pixel_rect())
 
 
+## Ajoute le joueur à `Entities` et le place sur la case [param cell] (reprise d'une
+## sauvegarde, jalon 5C.5). La case doit venir de [method find_standing_cell].
+func spawn_player_at(player: Player, cell: Vector2i, facing: Vector2i) -> void:
+	var entities := get_entities()
+	if player.get_parent() != entities:
+		if player.get_parent() != null:
+			player.get_parent().remove_child(player)
+		entities.add_child(player)
+	player.enter_map(get_grid(), cell, facing, get_pixel_rect())
+
+
+## Case où reprendre la partie à partir de la case sauvegardée [param cell] (jalon 5C.5) :
+## elle-même si le joueur peut s'y tenir, sinon la plus proche en marchant (parcours en
+## largeur à travers les cases ni solides ni d'eau). « Pouvoir s'y tenir » : libre pour
+## [param mover] ([method GridWorld.is_free]) et pas la case de départ d'un PNJ du fichier de
+## la carte, présent ou non (un PNJ qui marchait peut y revenir, un PNJ conditionné par les
+## drapeaux y est créé après le placement). Case hors carte ramenée au bord. (-1, -1) si
+## aucune case ne convient.
+func find_standing_cell(cell: Vector2i, mover: Object = null) -> Vector2i:
+	var grid := get_grid()
+	var start := cell.clamp(Vector2i.ZERO, size - Vector2i.ONE)
+	var homes: Dictionary[Vector2i, bool] = {}
+	if _roster != null:
+		for spec: NpcSpec in _roster.get_all():
+			homes[spec.cell] = true
+	var seen: Dictionary[Vector2i, bool] = {start: true}
+	var queue: Array[Vector2i] = [start]
+	var head := 0
+	while head < queue.size():
+		var current: Vector2i = queue[head]
+		head += 1
+		if grid.is_free(current, mover) and not homes.has(current):
+			return current
+		for direction: Vector2i in [Vector2i.UP, Vector2i.DOWN, Vector2i.LEFT, Vector2i.RIGHT]:
+			var next: Vector2i = current + direction
+			if seen.has(next) or not grid.is_in_bounds(next) or grid.is_solid(next) \
+					or grid.is_water(next):
+				continue
+			seen[next] = true
+			queue.append(next)
+	return Vector2i(-1, -1)
+
+
 func _build_grid() -> void:
 	_grid = GridWorld.new(size)
 	for path: NodePath in _TILE_LAYERS:
@@ -337,6 +380,8 @@ func _read_layer(layer: TileMapLayer) -> void:
 			_grid.set_solid(cell)
 		if _get_bool(data, OverworldTiles.DATA_WATER):
 			_grid.set_water(cell)
+		if _get_bool(data, OverworldTiles.DATA_TALL_GRASS):
+			_grid.set_tall_grass(cell)
 		if data.has_custom_data(OverworldTiles.DATA_LEDGE):
 			var ledge: int = data.get_custom_data(OverworldTiles.DATA_LEDGE)
 			if ledge != GridWorld.Ledge.NONE:

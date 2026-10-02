@@ -381,3 +381,38 @@ func test_script_step_refused_during_a_step_or_against_an_obstacle() -> void:
 	_simulate(0.3)
 	assert_eq(_player.get_cell(), START + Vector2i.UP)
 	assert_signal_emit_count(_player, "moved", 1)
+
+
+# --- Hautes herbes et saut de rebord (jalon 5 §3.5) ---------------------------------
+
+func test_grass_front_visible_only_when_target_cell_is_tall_grass() -> void:
+	_grid.set_tall_grass(Vector2i(2, 4))
+	_player._process(FRAME)
+	assert_false(_player.is_grass_front_visible(), "caché à l'arrêt hors herbe")
+	Input.action_press(&"move_right")
+	_player._process(FRAME)
+	assert_true(_player.is_grass_front_visible(), "visible dès le pas qui entre dans l'herbe")
+	_settle()
+	assert_eq(_player.get_cell(), Vector2i(2, 4))
+	assert_true(_player.is_grass_front_visible(), "visible à l'arrêt dans l'herbe")
+	Input.action_press(&"move_right")
+	_player._process(FRAME)
+	assert_false(_player.is_grass_front_visible(), "caché dès le pas qui sort de l'herbe")
+	_settle()
+
+
+func test_ledge_jump_lifts_sprite_over_two_cells_shadow_grounded() -> void:
+	_grid.set_ledge(Vector2i(1, 5), GridWorld.Ledge.DOWN)
+	_player.face(Vector2i.DOWN)
+	Input.action_press(&"move_down")
+	_player._process(FRAME)
+	assert_true(_player.is_jumping(), "saute le rebord")
+	var sprite := _player.get_node(^"%Sprite") as Node2D
+	var shadow := _player.get_node(^"%Shadow") as Node2D
+	_simulate(Grid.LEDGE_JUMP_DURATION / 2.0)
+	assert_lt(sprite.position.y, 0.0, "le sprite est en l'air au milieu du saut")
+	assert_almost_eq(shadow.position.y, Player.SHADOW_REST_Y, 0.1, "l'ombre reste au sol")
+	_settle()
+	assert_eq(_player.get_cell(), Vector2i(1, 6), "atterrit deux cases plus bas")
+	assert_false(_player.is_jumping())
+	assert_almost_eq(sprite.position.y, 0.0, 0.1, "sprite reposé après l'atterrissage")

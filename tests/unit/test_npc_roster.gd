@@ -220,6 +220,52 @@ func test_parse_entry_reports_errors_without_signalling_them() -> void:
 	assert_push_error_count(0, "c'est l'appelant qui signale")
 
 
+## Réactions d'ambiance « shy » (jalon 5 §3.5).
+func test_shy_defaults_and_values() -> void:
+	var errors := PackedStringArray()
+	var none := NpcRoster.parse_entry({"cell": [1, 2], "sprite": "pidgey"}, errors)
+	assert_eq(none.shy_action, &"", "aucune réaction par défaut")
+	assert_false(none.is_shy())
+	var fly := NpcRoster.parse_entry(
+		{"cell": [1, 2], "sprite": "pidgey", "shy": {"action": "fly"}}, errors)
+	assert_eq(fly.shy_action, &"fly")
+	assert_eq(fly.shy_radius, NpcSpec.SHY_RADIUS_DEFAULT, "rayon 2 par défaut")
+	assert_true(fly.is_shy())
+	var flee := NpcRoster.parse_entry(
+		{"cell": [1, 2], "sprite": "rattata", "shy": {"action": "flee", "radius": 4}}, errors)
+	assert_eq(flee.shy_action, &"flee")
+	assert_eq(flee.shy_radius, 4)
+	assert_true(errors.is_empty(), "\n".join(errors))
+
+
+func test_shy_invalid_values_are_rejected() -> void:
+	var errors := PackedStringArray()
+	assert_null(NpcRoster.parse_entry(
+		{"cell": [1, 2], "sprite": "x", "shy": "fly"}, errors), "shy doit être un objet")
+	assert_null(NpcRoster.parse_entry(
+		{"cell": [1, 2], "sprite": "x", "shy": {"action": "jump"}}, errors), "action inconnue")
+	assert_null(NpcRoster.parse_entry(
+		{"cell": [1, 2], "sprite": "x", "shy": {"action": "fly", "radius": 0}}, errors),
+		"rayon < 1")
+	assert_null(NpcRoster.parse_entry(
+		{"cell": [1, 2], "sprite": "x", "shy": {"action": "fly", "radius": 5}}, errors),
+		"rayon > 4")
+	assert_null(NpcRoster.parse_entry(
+		{"cell": [1, 2], "sprite": "x", "shy": {"action": "fly", "who": 1}}, errors),
+		"clé inconnue dans shy")
+	assert_eq(errors.size(), 5, "une erreur par problème")
+	assert_push_error_count(0, "parse_entry ne signale pas")
+
+
+func test_shy_is_refused_on_an_interactive_npc() -> void:
+	var errors := PackedStringArray()
+	var spec := NpcRoster.parse_entry(
+		{"cell": [1, 2], "sprite": "pidgey", "dialogue": "hello", "shy": {"action": "fly"}},
+		errors)
+	assert_null(spec, "un Pokémon qui fuit ne se parle pas")
+	assert_string_contains("\n".join(errors), "interdit sur un PNJ interactif")
+
+
 func test_is_cell() -> void:
 	assert_true(NpcRoster.is_cell([0, 0]))
 	assert_true(NpcRoster.is_cell([24.0, 13.0]))
@@ -227,3 +273,61 @@ func test_is_cell() -> void:
 	assert_false(NpcRoster.is_cell([1, -1]))
 	assert_false(NpcRoster.is_cell([1.5, 2]))
 	assert_false(NpcRoster.is_cell("1, 2"))
+
+
+# --- Routine de marche (jalon 5, le Voyageur, dossier-07 §5) -------------------------
+
+func test_route_defaults_and_values() -> void:
+	var errors := PackedStringArray()
+	var none := NpcRoster.parse_entry({"cell": [1, 2], "sprite": "npc"}, errors)
+	assert_false(none.has_route(), "aucune routine par défaut")
+	assert_eq(none.route_pause, NpcSpec.ROUTE_PAUSE_DEFAULT)
+	var walker := NpcRoster.parse_entry({
+		"cell": [5, 5], "sprite": "npc", "dialogue": "x",
+		"route": {"cells": [[5, 5], [5, 6], [5, 7], [5, 6]], "pause": 0.8}}, errors)
+	assert_eq(errors.size(), 0, str(errors))
+	assert_true(walker.has_route())
+	assert_eq(walker.route_cells.size(), 4)
+	assert_eq(walker.route_cells[1], Vector2i(5, 6))
+	assert_eq(walker.route_pause, 0.8)
+
+
+func test_route_default_pause_when_omitted() -> void:
+	var errors := PackedStringArray()
+	var walker := NpcRoster.parse_entry({
+		"cell": [5, 5], "sprite": "npc", "route": {"cells": [[5, 5], [5, 6]]}}, errors)
+	assert_eq(errors.size(), 0, str(errors))
+	assert_eq(walker.route_pause, NpcSpec.ROUTE_PAUSE_DEFAULT)
+
+
+func test_route_invalid_entries_are_rejected() -> void:
+	var errors := PackedStringArray()
+	assert_null(NpcRoster.parse_entry(
+		{"cell": [1, 1], "sprite": "x", "route": [[1, 1], [1, 2]]}, errors),
+		"route doit être un objet")
+	assert_null(NpcRoster.parse_entry(
+		{"cell": [1, 1], "sprite": "x", "route": {"cells": [[1, 1]]}}, errors),
+		"au moins deux cases")
+	assert_null(NpcRoster.parse_entry(
+		{"cell": [1, 1], "sprite": "x", "route": {"cells": [[1, 1], [3, 3]]}}, errors),
+		"cases non voisines")
+	assert_null(NpcRoster.parse_entry(
+		{"cell": [1, 1], "sprite": "x", "route": {"cells": [[1, 1], [1, 2]], "pause": -1}},
+		errors), "pause négative")
+
+
+func test_route_refused_on_shy_pokemon() -> void:
+	var errors := PackedStringArray()
+	assert_null(NpcRoster.parse_entry({
+		"cell": [1, 1], "sprite": "pidgey", "shy": {"action": "fly"},
+		"route": {"cells": [[1, 1], [1, 2]]}}, errors), "shy + route interdit")
+
+
+func test_real_route_1_traveler_has_a_route() -> void:
+	var roster := NpcRoster.load_for_map(&"route_1")
+	assert_eq(roster.get_errors().size(), 0, str(roster.get_errors()))
+	var traveler := roster.get_spec(&"traveler")
+	assert_not_null(traveler)
+	if traveler != null:
+		assert_true(traveler.has_route(), "le Voyageur marche")
+		assert_true(traveler.is_interactive(), "on peut lui parler")

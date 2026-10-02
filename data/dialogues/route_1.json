@@ -1,0 +1,14 @@
+{
+	"route_1_traveler": {
+		"speaker": "Voyageur",
+		"pages": [
+			"Tu viens de Bourg Palette ?",
+			"Alors Jadielle est juste devant toi.",
+			"Fais attention dans les hautes herbes. Elles sont plus agitées aujourd'hui."
+		]
+	},
+	"route_1_potion_found": {
+		"narration": true,
+		"pages": ["Quelque chose est coincé entre les racines."]
+	}
+}

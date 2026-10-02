@@ -19,11 +19,12 @@ const SPECIES_DIR: String = "species"
 const MOVES_DIR: String = "moves"
 
 const _SPECIES_KEYS: Array[String] = [
-	"dex", "name", "types", "base_stats", "male_ratio", "growth_rate", "base_exp", "learnset",
-	"evolutions",
+	"dex", "name", "types", "base_stats", "male_ratio", "growth_rate", "base_exp", "catch_rate",
+	"learnset", "evolutions",
 ]
 const _SPECIES_REQUIRED: Array[String] = [
-	"dex", "name", "types", "base_stats", "male_ratio", "growth_rate", "base_exp", "learnset",
+	"dex", "name", "types", "base_stats", "male_ratio", "growth_rate", "base_exp", "catch_rate",
+	"learnset",
 ]
 const _MOVE_KEYS: Array[String] = [
 	"name", "type", "category", "power", "accuracy", "pp", "priority", "crit_stage", "effects",
@@ -40,7 +41,10 @@ const _EVOLUTION_KEYS: Dictionary[EvolutionRule.Method, Array] = {
 const _EFFECT_KEYS: Dictionary[MoveEffect.Kind, Array] = {
 	MoveEffect.Kind.STAT_STAGE: ["kind", "stat", "stages", "target", "chance"],
 	MoveEffect.Kind.RECOIL: ["kind", "fraction"],
+	MoveEffect.Kind.SEED: ["kind", "fraction", "immune_types"],
 }
+## Clés d'effet facultatives (toutes les autres de [constant _EFFECT_KEYS] sont obligatoires).
+const _EFFECT_OPTIONAL: Array[String] = ["chance", "immune_types"]
 
 var _chart: TypeChart = TypeChart.new()
 var _species: Dictionary[StringName, SpeciesData] = {}
@@ -143,6 +147,13 @@ func check_references() -> bool:
 			ok = _fail("%s capacité « %s » : type inconnu « %s »" % [move.source, move.id,
 				move.type])
 			_moves.erase(move.id)
+			continue
+		for effect: MoveEffect in move.effects:
+			for type: StringName in effect.immune_types:
+				if not _chart.has_type(type) and _moves.has(move.id):
+					ok = _fail("%s capacité « %s » : type immunisé inconnu « %s »" % [
+						move.source, move.id, type])
+					_moves.erase(move.id)
 	var changed := true
 	while changed:
 		changed = false
@@ -261,6 +272,9 @@ func _parse_species(value: Variant, where: String) -> SpeciesData:
 	if entry.has("base_exp"):
 		ok = _read_int(entry["base_exp"], 1, 1000, where + " base_exp") and ok
 		species.base_exp = int(entry["base_exp"]) if _is_int(entry["base_exp"]) else 0
+	if entry.has("catch_rate"):
+		ok = _read_int(entry["catch_rate"], 1, 255, where + " catch_rate") and ok
+		species.catch_rate = int(entry["catch_rate"]) if _is_int(entry["catch_rate"]) else 0
 	if entry.has("learnset"):
 		ok = _read_learnset(entry["learnset"], species.learnset, where) and ok
 	if entry.has("evolutions"):
@@ -433,21 +447,26 @@ func _parse_effect(value: Variant, where: String) -> MoveEffect:
 		return _null_fail("%s : un objet est attendu" % where)
 	var entry: Dictionary = value
 	if not entry.get("kind") is String or not MoveEffect.KIND_NAMES.has(entry.get("kind")):
-		return _null_fail("%s : « kind » vaut stat_stage ou recoil" % where)
+		return _null_fail("%s : « kind » vaut %s" % [where,
+			", ".join(PackedStringArray(MoveEffect.KIND_NAMES.keys()))])
 	var effect := MoveEffect.new()
 	effect.kind = MoveEffect.KIND_NAMES[entry["kind"]]
 	var allowed: Array[String] = []
 	allowed.assign(_EFFECT_KEYS[effect.kind])
 	var required: Array[String] = allowed.duplicate()
-	required.erase("chance")
+	for key: String in _EFFECT_OPTIONAL:
+		required.erase(key)
 	var ok := _check_keys(entry, allowed, required, where)
-	if effect.kind == MoveEffect.Kind.RECOIL:
+	if effect.kind == MoveEffect.Kind.RECOIL or effect.kind == MoveEffect.Kind.SEED:
 		if entry.has("fraction"):
 			var fraction: Variant = entry["fraction"]
 			if not _is_number(fraction) or float(fraction) <= 0.0 or float(fraction) > 1.0:
 				ok = _fail("%s : « fraction » doit être un nombre de 0 (exclu) à 1" % where)
 			else:
 				effect.fraction = float(fraction)
+		if entry.has("immune_types"):
+			ok = _read_type_list(entry["immune_types"], effect.immune_types,
+				where + " immune_types") and ok
 		return effect if ok else null
 	if entry.has("stat"):
 		if not MoveEffect.STAGE_STATS.has(StringName(str(entry["stat"]))) \
@@ -516,6 +535,17 @@ func _check_keys(entry: Dictionary, allowed: Array[String], required: Array[Stri
 func _read_int(value: Variant, low: int, high: int, where: String) -> bool:
 	if not _is_int(value) or int(value) < low or int(value) > high:
 		return _fail("%s : entier de %d à %d attendu" % [where, low, high])
+	return true
+
+
+## Liste d'identifiants de types (non vides), vérifiés plus tard par [method check_references].
+func _read_type_list(value: Variant, into: Array[StringName], where: String) -> bool:
+	if not value is Array:
+		return _fail("%s : une liste d'identifiants de types est attendue" % where)
+	for type: Variant in value:
+		if not type is String or (type as String).is_empty():
+			return _fail("%s : une liste d'identifiants de types est attendue" % where)
+		into.append(StringName(type))
 	return true
 
 

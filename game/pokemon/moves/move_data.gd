@@ -23,8 +23,6 @@ extends RefCounted
 ## - `burn_10` : 10 % de chances de brûler la cible ;
 ## - `poison` : empoisonne la cible ;
 ## - `sleep` : endort la cible ;
-## - `leech_seed` : Vampigraine, la cible perd 1/8 de ses PV max à chaque tour au profit
-##   du lanceur ;
 ## - `trap` : piège la cible 4 à 5 tours et lui retire 1/8 de ses PV max à chaque tour ;
 ## - `two_turn` : se charge au premier tour, frappe au second ;
 ## - `charge_def_up` : la Défense du lanceur monte d'un niveau pendant la charge ;

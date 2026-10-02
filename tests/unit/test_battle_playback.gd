@@ -191,3 +191,73 @@ func test_whole_rival_battle_for_each_starter() -> void:
 				"%s : %s joué" % [starter, BattleEvent.Kind.find_key(event.kind)])
 		assert_eq(beats[-1].kind, BattleBeat.Kind.MESSAGE)
 		assert_string_ends_with(beats[-1].text, " est K.O. !", "%s : fin muette" % starter)
+
+
+# --- Jalon 5C : XP, niveaux, apprentissage, Vampigraine ----------------------------------
+
+func test_exp_has_a_beat_only_and_level_up_a_beat_then_its_message() -> void:
+	var exp_event := _event(BattleEvent.Kind.EXP_GAINED, BattleEvent.SideId.PLAYER, "Salamèche")
+	exp_event.amount = 21
+	assert_eq(_kinds(BattlePlayback.beats(exp_event, _texts, _data)),
+		[BattleBeat.Kind.EXP] as Array[BattleBeat.Kind], "« +21 XP » sur la carte, aucune phrase")
+	var level_event := _event(BattleEvent.Kind.LEVEL_UP, BattleEvent.SideId.PLAYER, "Salamèche")
+	assert_eq(_kinds(BattlePlayback.beats(level_event, _texts, _data)),
+		[BattleBeat.Kind.LEVEL, BattleBeat.Kind.MESSAGE] as Array[BattleBeat.Kind],
+		"« Nv. » pulse, puis « monte au niveau » (option A, pas de fenêtre)")
+
+
+func test_move_learned_is_a_message_and_forget_offer_is_a_message_then_a_choice() -> void:
+	var learned := _event(BattleEvent.Kind.MOVE_LEARNED, BattleEvent.SideId.PLAYER, "Bulbizarre")
+	learned.move_id = &"leech_seed"
+	assert_eq(_messages(BattlePlayback.beats(learned, _texts, _data)),
+		["Bulbizarre apprend Vampigraine !"] as Array[String])
+	assert_eq(_kinds(BattlePlayback.beats(learned, _texts, _data)),
+		[BattleBeat.Kind.MESSAGE] as Array[BattleBeat.Kind])
+	var offered := _event(BattleEvent.Kind.MOVE_FORGET_OFFERED, BattleEvent.SideId.PLAYER,
+		"Bulbizarre")
+	offered.move_id = &"poison_powder"
+	var beats := BattlePlayback.beats(offered, _texts, _data)
+	assert_eq(_kinds(beats), [BattleBeat.Kind.MESSAGE, BattleBeat.Kind.FORGET]
+		as Array[BattleBeat.Kind], "le message, puis le choix (lecture suspendue)")
+	assert_eq(beats[0].text,
+		"Bulbizarre veut apprendre Poudre Toxik, mais connaît déjà quatre capacités.")
+
+
+func test_seeded_is_a_message_and_drained_is_both_bars_then_a_message() -> void:
+	var seeded := _event(BattleEvent.Kind.SEEDED, BattleEvent.SideId.FOE, "Rattata")
+	assert_eq(_messages(BattlePlayback.beats(seeded, _texts, _data)),
+		["Une graine est plantée sur Rattata !"] as Array[String])
+	var drained := _event(BattleEvent.Kind.DRAINED, BattleEvent.SideId.FOE, "Rattata")
+	drained.healed = 2
+	drained.healed_hp = 12
+	var beats := BattlePlayback.beats(drained, _texts, _data)
+	assert_eq(_kinds(beats), [BattleBeat.Kind.DRAIN, BattleBeat.Kind.MESSAGE]
+		as Array[BattleBeat.Kind])
+	assert_eq(beats[0].side, BattleEvent.SideId.FOE, "le Pokémon drainé")
+
+
+func test_capture_events_become_throw_shakes_catch_and_release() -> void:
+	var thrown := _event(BattleEvent.Kind.BALL_THROWN, BattleEvent.SideId.FOE, "Rattata")
+	thrown.item_name = "Poké Ball"
+	var beats := BattlePlayback.beats(thrown, _texts, _data)
+	assert_eq(_kinds(beats), [BattleBeat.Kind.MESSAGE, BattleBeat.Kind.THROW]
+		as Array[BattleBeat.Kind], "le message, puis le lancer")
+	assert_eq(beats[0].text, "Tu lances une Poké Ball !")
+	var shake := _event(BattleEvent.Kind.BALL_SHAKE, BattleEvent.SideId.FOE, "Rattata")
+	shake.shake = 2
+	assert_eq(_kinds(BattlePlayback.beats(shake, _texts, _data)),
+		[BattleBeat.Kind.SHAKE] as Array[BattleBeat.Kind], "une secousse, sans phrase")
+	var caught := _event(BattleEvent.Kind.CAUGHT, BattleEvent.SideId.FOE, "Rattata")
+	assert_eq(_kinds(BattlePlayback.beats(caught, _texts, _data)),
+		[BattleBeat.Kind.CATCH] as Array[BattleBeat.Kind], "l'éclat ; le texte est sur la carte")
+	var freed := _event(BattleEvent.Kind.BROKE_FREE, BattleEvent.SideId.FOE, "Rattata")
+	beats = BattlePlayback.beats(freed, _texts, _data)
+	assert_eq(_kinds(beats), [BattleBeat.Kind.RELEASE, BattleBeat.Kind.MESSAGE]
+		as Array[BattleBeat.Kind], "il ressort, puis le message")
+	assert_eq(beats[1].text, "Oh non ! Il s'est libéré !")
+
+
+func test_a_caught_battle_end_has_no_message() -> void:
+	var ended := BattleEvent.new(BattleEvent.Kind.BATTLE_ENDED, BattleEvent.SideId.PLAYER)
+	ended.outcome = Battle.Outcome.CAUGHT
+	assert_eq(BattlePlayback.beats(ended, _texts, _data).size(), 0)

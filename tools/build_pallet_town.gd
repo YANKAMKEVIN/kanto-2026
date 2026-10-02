@@ -25,7 +25,19 @@ const SPAWNS: Dictionary = {
 	"player_house_door": Vector2i(36, 9),
 	"rival_house_door": Vector2i(11, 9),
 	"oak_lab_door": Vector2i(24, 22),
+	# Retour depuis la Route 1 (jalon 5 §15.5) : sur la colonne du chemin, tourné vers le bas.
+	"from_route_1_w": Vector2i(23, 1),
+	"from_route_1_e": Vector2i(24, 1),
 }
+
+## Sortie nord vers la Route 1 (jalon 5 §15.5) : warps PUSH « haut » au bord (le changement
+## de carte vient de Player.bumped contre la rangée bloquée y 0). [nœud, case, spawn cible].
+const PUSH_WARPS: Array = [
+	["Route1NorthW", Vector2i(23, 1), &"from_pallet_w"],
+	["Route1NorthE", Vector2i(24, 1), &"from_pallet_e"],
+]
+## Warp.Trigger.PUSH.
+const PUSH: int = 1
 
 ## Portes : [nœud, case, carte cible, spawn cible]. On entre en marchant vers le haut
 ## sur la case de porte (STEP_ON, UP), l'orientation est conservée.
@@ -280,6 +292,18 @@ func _add_doors(root: Node) -> void:
 		point.set(&"target_map", door[2])
 		point.set(&"target_spawn", door[3])
 		_attach(root, root.get_node(^"Warps"), point)
+	# Sortie nord vers la Route 1 (jalon 5 §15.5) : warps PUSH « haut » au bord.
+	for warp: Array in PUSH_WARPS:
+		var push := Marker2D.new()
+		push.set_script(warp_script)
+		push.name = warp[0]
+		push.position = _world(warp[1])
+		push.set(&"trigger", PUSH)
+		push.set(&"direction", Vector2i.UP)
+		push.set(&"target_map", &"route_1")
+		push.set(&"target_spawn", warp[2])
+		push.set(&"arrival_facing", Vector2i.UP)
+		_attach(root, root.get_node(^"Warps"), push)
 
 
 func _add_interactables(root: Node) -> void:

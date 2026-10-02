@@ -49,3 +49,22 @@ func chance(num: int, den: int) -> bool:
 ## Index uniforme dans un tableau de [param size] éléments (0 .. size − 1).
 func pick_index(size: int) -> int:
 	return roll(size) - 1
+
+
+## Graine et position courante, prêtes pour le JSON (sauvegarde, jalon 5 §16.2). En chaînes :
+## l'état est un entier 64 bits que les flottants de JSON ne gardent pas intact.
+func to_dict() -> Dictionary:
+	return {"seed": str(_seed), "state": str(_rng.state)}
+
+
+## Aléatoire repris exactement où [method to_dict] l'a laissé, ou null (push_error) si le
+## contenu est invalide : la partie rechargée ne rejoue pas les mêmes tirages qu'avant.
+static func from_dict(dict: Dictionary) -> GameRng:
+	var seed_text := JsonFields.get_string(dict, "seed")
+	var state_text := JsonFields.get_string(dict, "state")
+	if not seed_text.is_valid_int() or not state_text.is_valid_int() or seed_text.to_int() < 0:
+		push_error("GameRng.from_dict : graine ou état invalide")
+		return null
+	var rng := GameRng.new(seed_text.to_int())
+	rng._rng.state = state_text.to_int()
+	return rng

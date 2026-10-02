@@ -1,0 +1,16 @@
+{
+	"map": "route_1", "spawn": "from_pallet_w", "facing": "up",
+	"flags": [
+		"mom_greeted", "rival_met", "oak_met", "oak_lab_reunion", "starter_offered",
+		"starter_chosen", "rival_challenged", "rival_battle_done", "rival_left_lab"
+	],
+	"party": [
+		{ "species": "charmander", "level": 7 },
+		{ "species": "pidgey", "level": 4 },
+		{ "species": "rattata", "level": 4 },
+		{ "species": "pidgey", "level": 3 },
+		{ "species": "rattata", "level": 3 },
+		{ "species": "bulbasaur", "level": 5 }
+	],
+	"bag": { "poke_ball": 10 }
+}

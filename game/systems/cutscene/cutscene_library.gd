@@ -52,7 +52,8 @@ extends RefCounted
 ##   combattent) et « win » / « lose » facultatifs (listes non vides de drapeaux levés selon
 ##   l'issue) ;
 ## - give (jalon 4B) : identifiant d'objet (data/items/), avec « count » facultatif (entier
-##   ≥ 1, 1 par défaut).
+##   ≥ 1, 1 par défaut) et « found » facultatif (booléen, faux par défaut : vrai pour un objet
+##   trouvé dans le monde, comme la Potion de la Route 1, plutôt que reçu d'un personnage).
 ## Toute étape sauf spawn accepte « if » et « unless » (listes de drapeaux) : elle n'est jouée
 ## que si ses conditions sont remplies **au moment de la jouer** (suite d'un combat selon son
 ## issue). Les références aux dresseurs et aux objets ne sont pas vérifiées ici (tests de
@@ -81,7 +82,7 @@ const _VARIANT_KEYS: Array[String] = ["if", "unless", "steps"]
 const _EXTRA_KEYS: Array[Array] = [
 	[], [], ["to"], [], [], ["path", "to", "run", "follower", "keep_facing", "optional"],
 	["at", "facing"], ["to"],
-	["to"], [], ["player_pokemon", "foe_pokemon", "win", "lose"], ["count"],
+	["to"], [], ["player_pokemon", "foe_pokemon", "win", "lose"], ["count", "found"],
 ]
 ## Conditions permises sur toute étape sauf spawn.
 const _CONDITION_KEYS: Array[String] = ["if", "unless"]
@@ -366,6 +367,11 @@ func _parse_step(value: Variant, where: String) -> CutsceneStep:
 					ok = _fail("%s : « count » doit être un entier ≥ 1" % where)
 				else:
 					step.count = int(amount)
+			if entry.has("found"):
+				if entry["found"] is bool:
+					step.found = entry["found"]
+				else:
+					ok = _fail("%s : « found » doit être un booléen" % where)
 	return step if ok else null
 
 

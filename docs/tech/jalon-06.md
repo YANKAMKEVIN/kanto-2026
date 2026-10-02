@@ -1,0 +1,846 @@
+# Jalon 6 — Le Menu Dresseur
+
+> Objectif jouable sur le S24, écran par écran, dans l'ordre du dossier 08 §11.
+>
+> **6.0 — Ouvrir et fermer.** En exploration, un petit bouton rond ouvre en ~250 ms un **tableau de bord plein écran** posé sur le monde flouté et assombri ; le monde est **en pause** derrière. À gauche, la carte du Dresseur (« Kevin », « Dresseur Pokémon », portrait, temps de jeu) et le **Pokémon de tête** (nom, Nv., PV) ; à droite, **cinq grandes cartes** (ÉQUIPE · SAC · CARTE · DRESSEUR · PARAMÈTRES : la carte POKÉDEX est **absente** avant son activation au J7A) ; en bas, une ligne discrète « Objectif : rejoindre Jadielle ». Le × ou le retour Android referme : on retrouve exactement l'exploration. En exploration, le retour Android **ouvre** le menu ; il ne quitte jamais le jeu (Q-3).
+>
+> **6A — Équipe.** La liste à gauche, le Pokémon sélectionné en grand au centre, sa fiche à droite (Aperçu · Capacités · Histoire), barre d'XP « 320 / 560 XP — 240 XP avant le niveau suivant ». On réordonne l'équipe au doigt (appui long puis glisser) **ou** par DÉPLACER ; on marque un **FAVORI**.
+>
+> **6B — Sac.** Catégories à gauche, objets en cartes au centre, aperçu à droite. UTILISER une Potion → l'équipe avec ses PV → « +20 PV — Salamèche 33/51 » → UTILISER À NOUVEAU. **Le même Sac en combat** : la Potion se donne aussi pendant un combat sauvage.
+>
+> **6C — Pokédex** (débloqué par un **drapeau de débogage** : en partie normale, il n'existe qu'au J7A). Grille 1 à 151, inconnu / vu / capturé, fiche en quatre onglets, aucune silhouette, aucun spoiler.
+>
+> **6D — Carte.** Le Kanto du projet, Bourg Palette et la Route 1 racontées ; toucher une zone → panneau latéral.
+>
+> **6E — Dresseur.** Le résumé vivant de l'aventure : identité, 8 emplacements de badges vides et muets, grands moments datés.
+>
+> **6F — Paramètres.** Vitesse du texte, joystick, mode gaucher, haptique, réduction des animations et des flashs, taille du texte, contraste, « Sauvegarder maintenant ».
+
+**Pré-requis** : le **jalon 5 validé par Kevin et fusionné** (T16, 5F). Au moment de ce plan, il reste le T16 (QA de la capture) et le 5F. **Rien du J6 n'est codé avant** (décision de Kevin). Ce plan s'appuie sur le code réel de `jalon-05` au commit `c1842e5` ; la tâche d'architecture de chaque sous-jalon commence par **aligner ce plan sur le code du moment** (comme les §15 du jalon 5 et §13–14 du jalon 4). Départ mesuré sur `c1842e5` : **1582 tests verts** (104 scripts), import sans erreur.
+
+**Hors périmètre** (dossiers 08 et 09, règle de déblocage, règle « une couche à la fois ») :
+- **Argent** (J7A), **badges obtenus** (J10), **Stockage Pokémon** et son écran (J7A), **Boutique** (J7A), **colis** (premier objet clé, J7A), **activation narrative du Pokédex** par Chen (J7A).
+- **Évolutions jouables**, **CT**, **statuts** (J11) : la fiche n'affiche que l'état K.O. ; PSN, PAR, SOM, BRÛ, GEL viendront avec les statuts.
+- **Changement de Pokémon en combat** (ÉQUIPE en combat, J11).
+- **Son** (phase 10) : pas de catégorie AUDIO. **Réglages graphiques** : une seule catégorie GRAPHISMES minimale, Auto / Élevée / Économie (Q-17).
+- **Vol** sur la Carte, recherche et filtres de la Carte, cartes locales, souvenirs de découverte (plus tard, dossier 08 §5).
+- Personnalisation du Dresseur, niveau ou XP de Dresseur, titres, tenues, pourcentage d'histoire (exclus par le dossier 08 §6).
+- Rendu « vraie DA » des écrans, illustrations HD des Pokémon, illustration finale de la carte de Kanto : provisoires aux dimensions finales (`CLAUDE.md` règle 3).
+
+Références : `CLAUDE.md` (règles 1 à 10), `docs/design/vision.md` (philosophie officielle, **règle de déblocage**), `roadmap.md` (phase 3), **`dossier-08-menu-dresseur.md`** (source de vérité, corrections du 2026-10-02 comprises), `dossier-09-jadielle.md` §6, §8, §16, §17, `dossier-04-systeme-pokemon.md`, `dossier-05-combat.md` §21, `ui-ux-bible-v0.1.md` (§1, §6, §11, §12 ; §7 remplacé par le dossier 08), `ui-reference.md`, maquettes `reference/menu-*-v1.jpg` (**DA uniquement**, `CLAUDE.md` règle 10), [`jalon-05.md`](jalon-05.md) §16 et §17, skills `godot-conventions`, `ui-theme-2026`.
+
+---
+
+## 1. Découpage
+
+| | 6.0 Fondations + tableau de bord | 6A Équipe | 6B Sac | 6C Pokédex | 6D Carte | 6E Dresseur | 6F Paramètres |
+|---|---|---|---|---|---|---|---|
+| Couche nouvelle | sauvegarde v2, pause, navigation, bouton Menu, retour Android, objectif | réordonner, favori, fiche | objets utilisables, catégories, favoris, tri, soin en combat | fiches, filtres, notes, observation, toasts | zones, journal de la carte | résumé, moments, badges muets | réglages, fichier de réglages, haptique centralisée |
+| Visible sur le S24 | ouvrir, fermer, cinq cartes | l'équipe et ses fiches | utiliser une Potion (menu et combat) | le Pokédex (drapeau de débogage) | la carte et ses panneaux | l'écran Dresseur | les réglages agissent pour de vrai |
+| Validation S24 | **la sauvegarde v2 seule** (T1), puis le tableau de bord (T5) | T9 | T13 | T17 | T22 | T26 | T30 + QA finale du J6 |
+
+Pourquoi ce découpage :
+- **Une fonctionnalité → testée sur S24 → validée → suivante** (règle 1). Les fondations ne se jugent qu'avec un écran : elles sont validées avec le tableau de bord.
+- **La sauvegarde v2 est validée seule** (règle 1, exception « système à risque ») : elle se fait **une seule fois pour tout le J6**, au T0, avec tous les champs du J6 et leurs valeurs par défaut, avant tout écran. Les sous-jalons suivants n'y touchent plus.
+- **6B porte le seul changement du moteur de combat** du J6 (la Potion en combat). Il est validé avec le Sac, pas avec un autre écran.
+- **6C avant 6D** (ordre du dossier) : la Carte affiche les Pokémon observés et le Pokédex ouvre la Carte ; le lien Pokédex → Carte est posé en 6C vers un écran provisoire, et branché en 6D.
+
+Chaque sous-jalon ne commence qu'une fois le précédent **validé par Kevin**. Pendant la QA d'un sous-jalon, l'architecte peut préparer les fondations pures du suivant sur sa branche (§8).
+
+---
+
+## 2. Ce qui existe déjà (code réel, `c1842e5`) et ce que le J6 réutilise
+
+### 2.1 Données déjà enregistrées depuis le J5 (jalon 5 §16)
+
+| Fait | Où, dans le code | Écran du J6 |
+|---|---|---|
+| Équipe, ordre, PV, PP, XP, capacités | `GameState.party` (`Party`, `Pokemon.to_dict`) | 6A |
+| Rencontre de chaque Pokémon : manière, carte, niveau, date, dresseur | `Pokemon.origin`, `met_map`, `met_level`, `met_date`, `original_trainer` | 6A Histoire |
+| Pokédex par espèce : vu, capturé, premières observation et capture (carte, date), cartes vues, compteurs | `Pokedex` + `PokedexEntry` | 6C, 6D, 6E |
+| Sac (quantités) | `Bag` (`{ "poke_ball": 5, "potion": 1 }`) | 6B |
+| Temps de jeu, début de l'aventure, nom du joueur | `GameState.play_time`, `started_at`, `player_name` | tableau de bord, 6E |
+| Zones découvertes (carte → date) | `GameState.discovered_maps` | 6D, 6E |
+| Objets trouvés (objet, carte, date) | `GameState.found_items` | 6D |
+| Grands moments (`starter`, `rival_battle`, `first_capture`) | `GameState.moments` | 6E |
+| Drapeaux d'histoire, dont `pokedex_activated` (jamais posé avant le J7A) | `StoryFlags`, `StoryFlags.POKEDEX_ACTIVATED` | règle de déblocage |
+| Stockage (« système de recherche de Chen ») | `GameState.storage` | rien au J6 (écran au J7A) |
+
+### 2.2 Composants réutilisés tels quels
+
+- **Fond flouté et assombri** : `game/battle/battle_backdrop.gdshader` (flou par les mipmaps de la copie d'écran, voile, vignettage), validé à 62 fps en combat. Le menu en pose une instance avec un flou plus fort et un voile plus sombre.
+- **Toast** (`game/ui/components/toast.tscn`), **`HapticPattern`**, **`TypeBadge`**, **`HpBar`**, **`ExpBar`**, **`MoveCard`** et **`MoveDetailSheet`** (fiche d'une capacité), **`ComingSoonScreen`** (écran provisoire des écrans pas encore construits, en build de développement seulement).
+- **Composants du Sac** déjà dessinés d'après le dossier 08 §3 : `BagCategoryTab`, `BagItemCard`, `BagTile`, `BagEntryView`. Ils sont **déplacés** de `game/ui/battle/` vers `game/ui/bag/` au T11 (avec leurs `.uid` ; aucun nom de classe ne change).
+- **`UiTokens`** et `tools/build_ui_theme.gd` (nouvelles constantes et variations de thème `Menu*`), **`MapCatalog`**, **`DebugStart`**, **`SaveSystem`** / **`SaveFileSystem`** / **`JsonFields`**.
+
+### 2.3 Ce qui doit être généralisé
+
+| Aujourd'hui | Au J6 |
+|---|---|
+| `BattleViews.bag_entries(bag, items)` et `USABLE_IN_WILD_BATTLE = [BALL]` : le Sac du combat ne montre que les Balls | **`BagQuery`** (pur) fournit les entrées du Sac pour **tous** les contextes (exploration, fiche Équipe, combat sauvage). `BattleViews.bag_entries` devient une enveloppe de `BagQuery`. **Un seul Sac** : même `GameState.bag`, mêmes règles (`ItemUse`), mêmes composants ; deux mises en page (plein écran en exploration, panneau en bas à gauche en combat). |
+| La Potion est rangée mais inutilisable (décision Q-A du J5) | `ItemData.heal_amount`, règle `ItemUse`, et action de combat `BattleAction.heal(item_id, index)` |
+| `Input.vibrate_handheld` appelé à 7 endroits | une porte unique `Haptics.vibrate(ms)`, coupée par le réglage (6F) |
+| Tailles de police et couleurs constantes (`UiTokens`) | `UiPrefs` (taille du texte, contraste) lu par les écrans du J6, la boîte de dialogue, le toast et le titre de zone (6F, Q-19) |
+| `DialogueRunner.chars_per_second`, `BattleDirector.speed_scale` : prêts, jamais réglés | branchés sur les réglages (6F) |
+
+---
+
+## 3. Fondations logiques (architecte, classes pures et tests)
+
+Toutes en `RefCounted` (ou statiques), sans nœud ni autoload, testées avec GUT ; données JSON validées strictement comme les bibliothèques existantes (clé inconnue, type, bornes, doublon, ligne du JSON illisible, références croisées vérifiées). Les vues (`*View`) ne contiennent que des chaînes, des nombres et des textures, comme `BattleCardView` : les écrans ne connaissent ni `GameState`, ni `Pokemon`, ni les données.
+
+### 3.1 Sauvegarde v2 (T0)
+
+Voir §5. Fichiers : `save_system.gd` (`VERSION = 2`, cas 1 → 2 dans `upgrade`), `bag.gd` (favoris, ordre d'obtention, nouvelle forme), `pokemon.gd` (`favorite`), `pokedex_entry.gd` / `pokedex.gd` (notes, capture comptée comme observation si Q-8 = défaut).
+
+### 3.2 Navigation et déblocage (T2)
+
+```gdscript
+class_name MenuRoute
+extends RefCounted
+## Un écran du Menu Dresseur et ses paramètres (dossier 08 §8). Donnée pure.
+const DASHBOARD: StringName = &"dashboard"
+const TEAM: StringName = &"team"
+const BAG: StringName = &"bag"
+const POKEDEX: StringName = &"pokedex"
+const MAP: StringName = &"map"
+const TRAINER: StringName = &"trainer"
+const SETTINGS: StringName = &"settings"
+## Ordre des cartes du tableau de bord (dossier 08 §1).
+const DASHBOARD_ORDER: Array[StringName] = [TEAM, POKEDEX, BAG, MAP, TRAINER, SETTINGS]
+var screen: StringName
+var params: Dictionary          # clés documentées par écran, ci-dessous
+static func dashboard() -> MenuRoute
+static func team(index: int = 0) -> MenuRoute                          # { "index" }
+static func bag(context: StringName = BagQuery.CONTEXT_FIELD, target: int = -1) -> MenuRoute
+static func pokedex(filter: int = PokedexQuery.Filter.ALL, species: StringName = &"") -> MenuRoute
+static func map(zone: StringName = &"") -> MenuRoute
+static func trainer() -> MenuRoute
+static func settings() -> MenuRoute
+```
+
+```gdscript
+class_name MenuUnlocks
+extends RefCounted
+## Ce qui existe pour le joueur (règle de déblocage, vision.md ; dossier 08 §1 et §4).
+## Lit l'état, ne le modifie jamais : le drapeau de débogage n'est PAS un drapeau d'histoire.
+var debug_pokedex: bool = false
+func _init(flags: StoryFlags, party: Party) -> void
+## Vrai si `pokedex_activated` est posé, ou si le drapeau de débogage l'est.
+func pokedex_visible() -> bool
+## Vrai dès que l'équipe compte un Pokémon (Q-2).
+func team_visible() -> bool
+## Cartes du tableau de bord, dans l'ordre : absentes (jamais grisées) si indisponibles.
+func dashboard_cards() -> Array[StringName]
+func is_available(screen: StringName) -> bool
+```
+
+```gdscript
+class_name MenuNavigator
+extends RefCounted
+## Pile d'écrans du menu : ouverture, fermeture, liens croisés, retour (dossier 08 §1, §8).
+signal opened(route: MenuRoute)
+signal route_changed(route: MenuRoute)
+signal closed
+func _init(unlocks: MenuUnlocks) -> void
+## Ouvre sur [param route] (tableau de bord par défaut). Faux si déjà ouvert. Une route
+## indisponible ouvre le tableau de bord.
+func open(route: MenuRoute = null) -> bool
+func close() -> void
+func is_open() -> bool
+func current() -> MenuRoute
+func depth() -> int
+## Va vers [param route] (carte du tableau de bord ou lien croisé). Faux, et rien ne change,
+## si l'écran est indisponible (Pokédex non activé, Équipe vide). Si l'écran est déjà dans la
+## pile, on y revient en coupant la pile au-dessus (jamais de boucle Pokédex ↔ Carte qui
+## s'empile) et ses paramètres sont remplacés.
+func go(route: MenuRoute) -> bool
+## Retour : écran précédent ; depuis le tableau de bord, ferme. Vrai si quelque chose a changé.
+func back() -> bool
+```
+
+```gdscript
+class_name DebugUnlocks
+extends RefCounted
+## Drapeau de débogage du dossier 08 §4 et du dossier 09 §6 : débloque l'écran Pokédex pour
+## développer et tester le J6, **sans** poser `pokedex_activated` (rien n'est sauvegardé).
+## Lu par Boot seulement en build debug, quand Boot est la scène principale (même garde que
+## DebugStart.is_allowed), si `user://debug_unlocks.json` existe : { "pokedex": true }.
+const USER_PATH: String = "user://debug_unlocks.json"
+var pokedex: bool = false
+func load_file(path: String) -> bool          # validation stricte (clé inconnue = erreur)
+```
+`tools/deploy_s24.sh --debug-unlock pokedex` dépose le fichier ; sans l'option, il est retiré (même mécanique que `--debug-start`). Il fonctionne **avec la vraie sauvegarde de Kevin** (le Pokédex se teste sur les vraies données du J5) ou avec un départ de débogage.
+
+```gdscript
+class_name ObjectiveLibrary
+extends RefCounted
+## « Objectif : … » du tableau de bord (dossier 08 §1) : rappel narratif, jamais un GPS.
+## data/story/objectives.json : liste ordonnée [{ "text", "if", "unless", "draft" }] ;
+## la première entrée dont les conditions tiennent l'emporte ; aucune → pas de ligne.
+func load_file(path: String = "res://data/story/objectives.json") -> bool
+func current(flags: StoryFlags) -> String
+func get_errors() -> PackedStringArray
+```
+
+```gdscript
+class_name ZoneLibrary
+extends RefCounted
+## Zones du Kanto du projet (data/world/zones.json) : une zone regroupe des cartes (un
+## intérieur appartient à sa ville). T2 : noms et cartes ; T18 : le reste (Carte, 6D).
+func load_file(path: String = "res://data/world/zones.json") -> bool
+func zone_of(map_id: StringName) -> StringName        # &"" si la carte n'est rangée nulle part
+func get_zone(id: StringName) -> ZoneData             # id, name, kind, maps, subtitle, …
+func get_ids() -> Array[StringName]
+func get_errors() -> PackedStringArray
+```
+
+Vue du tableau de bord : `DashboardViews.build(state, data, zones, objectives, unlocks) -> DashboardView` (nom, « Dresseur Pokémon », temps de jeu « 12 h 43 », ligne « vus · capturés » **vide** tant que le Pokédex n'est pas visible, ligne des badges vide avant le premier badge (Q-13), Pokémon de tête (`TeamMemberView` ou null), cartes, objectif, nom de la zone actuelle).
+
+Tests : `test_menu_route`, `test_menu_navigator` (ouvrir, fermer, retour depuis le tableau de bord = fermer, lien croisé indisponible refusé sans changement, boucle Pokédex → Carte → Pokédex coupée, profondeur bornée), `test_menu_unlocks` (§4), `test_debug_unlocks`, `test_objective_library` (données réelles : 0 erreur ; ordre ; conditions ; clé inconnue), `test_zone_library` (données réelles : **chaque carte de `MapCatalog` appartient à exactement une zone**), `test_dashboard_views`.
+
+### 3.3 Équipe (T6)
+
+- `Party.move(from: int, to: int) -> bool` (insère à la place, décale les autres), `Party.swap(a: int, b: int) -> bool`, `Party.index_of(pokemon) -> int`. Le premier reste le Pokémon de tête.
+- `Pokemon.favorite: bool` (posé au T0), `Pokemon.set_favorite(value: bool)`.
+- `ExpCalc.level_span(pokemon, data) -> Vector2i` : XP gagnée dans le niveau et XP du niveau (« 320 / 560 », reste « 240 XP avant le niveau suivant ») ; au niveau 100, `Vector2i.ZERO` (la barre est pleine, pas de texte).
+- `EvolutionReveal.chain(species, data, pokedex, visible: bool) -> Array[EvolutionStageView]` : la chaîne de la lignée ; un stade est révélé s'il est **vu** et si le Pokédex est **visible** ; sinon « ??? ». **Jamais de condition** (niveau, objet). Une espèce sans évolution n'a pas de section (Q-9).
+- `TeamViews.build(party, data, zones, pokedex, unlocks) -> TeamView` : membres (`TeamMemberView` : nom, sexe, Nv., PV, statut en texte — seulement « K.O. » au J6 —, favori, sprite) et fiche du sélectionné (`PokemonSheetView` : types, sexe, statistiques en `StatView` (nom, valeur, part de la jauge), capacités en `BattleMoveView` existants, histoire en `HistoryView` (lieu = nom de **zone**, niveau, dresseur, date « 2 octobre 2026 »), XP, évolution).
+
+Tests : `test_party` (étendu : déplacer, échanger, bornes, tête), `test_exp_calc` (étendu), `test_evolution_reveal` (Salamèche → ??? → ??? ; Reptincel vu mais Pokédex non visible → ??? ; visible → révélé ; aucune condition dans les textes), `test_team_views` (statut K.O., histoire avec la zone d'un intérieur → nom de la ville, starter « Labo du Prof. Chen » → « Bourg Palette »).
+
+### 3.4 Sac (T10)
+
+**Catégories en données** (dossier 08 §3) : `ItemData.Category` gagne, **en fin d'enum**, `BATTLE`, `FIELD`, `KEY` ; `CATEGORY_NAMES = ["ball", "heal", "battle", "field", "key"]`. Les identifiants des fichiers ne changent pas (`ball`, `heal`) : **aucune migration des données ni de la sauvegarde** (le Sac stocke des identifiants d'objets, pas de catégories).
+
+| Donnée (`category`) | Onglet | Utilisable | Au J6 |
+|---|---|---|---|
+| `heal` | SOINS | exploration et combat | Potion (`heal_amount: 20`) |
+| `ball` | CAPTURE | combat sauvage | Poké Ball |
+| `battle` | COMBAT | combat (« Utilisable en combat » hors combat) | aucun objet |
+| `field` | AVENTURE | exploration | aucun objet |
+| `key` | OBJETS CLÉS | jamais « utilisé », jamais vendu ni jeté | aucun objet (le colis au J7A) |
+| (favoris) | FAVORIS | selon l'objet | rangée en tête, seulement si non vide |
+
+Ordre des onglets : FAVORIS (si non vide), SOINS, CAPTURE, COMBAT, AVENTURE, OBJETS CLÉS. **Un onglet vide n'apparaît pas** (aucune catégorie artificielle, rien d'annoncé d'avance).
+
+- `ItemData.heal_amount: int` (clé `heal_amount`, obligatoire pour `heal`, refusée ailleurs) ; `ItemData.contexts() -> Array[StringName]` déduits de la catégorie (tableau ci-dessus).
+- `ItemUse` (statique, **une seule règle pour le menu et le moteur de combat**) :
+```gdscript
+class_name ItemUse
+extends RefCounted
+enum Check { OK, NOT_IN_BAG, WRONG_CONTEXT, FULL_HP, FAINTED, NOT_USABLE }
+static func check(bag: Bag, item: ItemData, pokemon: Pokemon, context: StringName) -> Check
+## Applique l'objet sur [param pokemon] et retire un exemplaire du Sac, seulement si check = OK.
+static func apply(bag: Bag, item: ItemData, pokemon: Pokemon, context: StringName) -> ItemUseResult
+```
+  `ItemUseResult` : `check`, `item_id`, `hp_before`, `hp_after`, `max_hp`, `remaining`. Les raisons affichées (« PV déjà au maximum », « Ce Pokémon est K.O. ») sont des textes d'interface choisis par la vue d'après `Check` (Q-11).
+- `Bag` (forme posée au T0) : `toggle_favorite(id) -> bool`, `is_favorite(id)`, `favorite_ids()`, `acquired_rank(id) -> int` (ordre d'obtention, pour « récents ») ; un objet retiré à 0 garde son favori (il réapparaîtra favori).
+- `BagQuery` (statique) : `CONTEXT_FIELD`, `CONTEXT_TEAM`, `CONTEXT_WILD_BATTLE`, `CONTEXT_TRAINER_BATTLE` ; `enum Sort { RELEVANCE, NAME, QUANTITY, RECENT }` ; `entries(bag, items, context, sort, target: Pokemon = null) -> Array[BagEntryView]` (catégorie, favori, utilisable ici, mention « Utilisable en combat ») ; `categories(entries) -> Array[StringName]` ; `start_category(context, last) -> StringName` (combat sauvage : CAPTURE ; depuis l'Équipe : SOINS, filtrés sur les objets **compatibles** avec ce Pokémon ; exploration : le dernier onglet ouvert pendant la session). « Pertinence » : en combat sauvage, Balls puis soins ; ailleurs, l'ordre des données.
+- `PartyPickerView` : pour chaque membre, nom, PV, et soit « utilisable », soit la **raison** (jamais un bouton désactivé sans explication).
+
+**Moteur de combat** (le seul changement de moteur du J6, T10) :
+- `BattleAction.heal(item_id: StringName, party_index: int) -> BattleAction` (`Kind.ITEM` existant, champ `target` ajouté ; −1 pour une Ball).
+- `BattleRules.allow_heal_items` (vrai pour `for_wild` et `for_trainer`) ; légal si `ItemUse.check(..., CONTEXT_*_BATTLE) == OK` ; joué **avant les capacités** comme une Ball ; l'adversaire joue ensuite (Q-10). Le moteur applique le soin au `Pokemon` de l'équipe ; **il ne touche pas au Sac** (le directeur retire l'objet une fois, comme la Ball au 5D).
+- `BattleEvent.Kind.ITEM_USED` (**fin d'enum**) : `side`, `pokemon_name`, `species_id`, `hp`, `max_hp`, `amount`, `item_id`, `party_index`.
+- `BattleText` + `data/battle/messages.json` : modèles `item_used` (« Tu utilises une Potion sur {pokemon}. ») et `hp_restored` (« {pokemon} récupère {amount} PV. »), **proposés, `draft`**, ajoutés à `TEMPLATE_IDS` dans le même commit.
+- `BattlePlayback` : temps `HEAL` (fin d'enum) qui remonte la barre de PV du Pokémon en jeu.
+
+Tests : `test_item_library` (catégories, `heal_amount`), `test_item_use` (PV pleins, K.O., contexte, retrait unique, Sac vide), `test_bag` (favoris, ordre d'obtention), `test_bag_query` (ordre des onglets, onglets vides absents, favoris en tête, filtres de contexte, tri), `test_battle` (étendu : soin légal en sauvage, objet retiré une seule fois par le directeur, PV bornés, l'adversaire joue ensuite, soin d'un membre hors combat), `test_battle_text`, `test_battle_playback`, `test_battle_simulation` (inchangée sans objet).
+
+### 3.5 Pokédex (T14)
+
+- **Données** `data/pokedex/kanto.json` (nouveau, `PokedexLibrary`) : `{ "size": 151, "species": { "pidgey": { "height": 0.3, "weight": 1.8, "description": "…", "draft": true, "notes": [ { "id": "pidgey_paths", "text": "…", "unlock": { "seen": 1 }, "draft": true } ] } } }`. Le numéro vient de `SpeciesData.dex` (pas de doublon) ; l'espèce doit exister dans `PokemonData`. Conditions de note : `seen` (n observations), `caught` (n captures), `map` (vue sur cette carte), `flag` (drapeau d'histoire). Textes **provisoires** (Q-5, Q-6).
+- `PokedexEntry.notes: Array[StringName]` (posé au T0), `Pokedex.unlock_note(species, note_id) -> bool`, `Pokedex.has_seen_at(species, map) -> bool`.
+- `PokedexNotes.refresh(pokedex, library, flags) -> Array[Array]` : débloque les notes dont la condition tient, renvoie les `[espèce, note]` nouvelles. Appelé après chaque observation, capture ou changement de drapeau. **Les notes se débloquent silencieusement avant l'activation** (règle de déblocage) ; elles apparaîtront d'un coup.
+- `PokedexQuery` (statique) : `enum State { UNKNOWN, SEEN, CAUGHT }`, `enum Filter { ALL, SEEN, CAUGHT, HABITAT }` ; `slots(pokedex, data, library, filter, zone, type, text) -> Array[PokedexSlotView]` (numéros 1 à `size` ; inconnu = numéro et « ??? », **sans silhouette** ; la recherche ne porte que sur les espèces connues) ; `counts_text(pokedex, library) -> String` (« 3 vus · 2 capturés · 151 espèces ») ; `sheet(species, pokedex, data, library, zones) -> PokedexSheetView` (Aperçu ; à la capture seulement : types, taille, poids, description ; « vu N fois · capturé N fois » ; **pas de statistiques de base ni de talents** ; Habitat = zones observées, jamais une zone non découverte ; Évolution par `EvolutionReveal` ; Observations = notes débloquées).
+- `PokedexUpdates.message(kind, species_name) -> Array[String]` : `NEW_SPECIES` → « Pokédex mis à jour » / « Roucool » ; `NEW_HABITAT` → « Nouvel habitat observé » / « Roucool » ; `NEW_NOTE` → « Pokédex mis à jour » / « Roucool » ; `EVOLUTION_DISCOVERED` → « Évolution découverte » / « Roucoups ». Une **capture** n'a pas de toast : la carte de capture dit déjà « Nouvelle entrée Pokédex » (après l'activation). Aucun message si le Pokédex n'est pas visible.
+- **Observer dans le décor** (dossier 08 §4 et §12 Q1, défaut « oui ») : clé facultative **`"species"`** d'un Pokémon du décor (`NpcSpec.species`), validée contre `PokemonData` ; le geste **OBSERVER** l'enregistre « vu » sur la carte (Q-7).
+
+Tests : `test_pokedex_library` (données réelles : 0 erreur, espèces connues, numéros), `test_pokedex_notes`, `test_pokedex_query` (trois états ; inconnu sans nom ni sprite ; filtres ; recherche limitée aux espèces vues ; **aucun texte « ??? » dans une liste d'habitats** ; compteur sans « / »), `test_pokedex_updates`, `test_npc_roster` (étendu : `species`).
+
+### 3.6 Carte (T18)
+
+- `data/world/zones.json` complété : par zone, `name`, `kind` (`town`, `route`), `maps`, `subtitle` (connexions, « Bourg Palette — Jadielle »), `description` (`draft`), `area` (rectangle de la zone sur l'illustration, en pixels de l'image), `services` (au J6 : aucun ; format `{ "id": "pokemon_center", "found_on": "<carte>" }` prêt pour le J7A).
+- `MapJournal` (statique) : `discovered_zones(discovered_maps, zones) -> Dictionary[StringName, String]` (zone → date de première visite) ; `player_zone(current_map, zones)` ; `panel(zone, state, data, zones, pokedex_visible) -> ZonePanelView` (nom, sous-titre, description, **Pokémon observés** seulement si le Pokédex est visible et seulement ceux vus, **objets trouvés** seulement ceux ramassés, services seulement ceux découverts ; **aucun total, aucun « ??? »**).
+
+Tests : `test_zone_library` (étendu : rectangles dans l'image, sous-titres), `test_map_journal` (zone non découverte : pas de panneau ; intérieur → sa ville ; Pokémon observés vides tant que le Pokédex n'est pas visible ; objets trouvés de la zone seulement).
+
+### 3.7 Dresseur (T23)
+
+- `data/trainer/moments.json` (`MomentLibrary`) : par type de moment (`starter`, `rival_battle`, `first_capture`, `zone_arrival`), un titre et un détail (`{species}`, `{zone}`, `{outcome}`), textes `draft`.
+- `TrainerSummary.build(state, data, zones, moments, unlocks) -> TrainerView` : identité, temps de jeu, date de départ, vus · capturés (seulement si le Pokédex est visible), **8 emplacements de badges** sans nom ni apparence, grands moments (les moments enregistrés **et** la première arrivée dans chaque zone extérieure, dates et lieux, ordre chronologique, Q-14), statistiques de ce qui est déjà enregistré (temps de jeu, zones découvertes, Pokémon capturés, objets trouvés ; pas de combats gagnés : non enregistrés). `play_time_text(seconds) -> String` (« 0 h 07 », « 12 h 43 »).
+
+Tests : `test_trainer_summary` (badges muets, pas de « 0/8 », pas de vus/capturés avant l'activation, moments dans l'ordre, lieux en noms de zone).
+
+### 3.8 Paramètres (T27)
+
+```gdscript
+class_name GameSettings
+extends RefCounted
+## Réglages de l'appareil (dossier 08 §7) : valeurs par défaut, bornes, aller-retour JSON.
+## Ils ne font PAS partie de la partie : fichier séparé, jamais remis à zéro par une partie.
+enum TextSpeed { SLOW, NORMAL, FAST, INSTANT }
+enum TextSize { NORMAL, LARGE }
+var text_speed: TextSpeed = TextSpeed.NORMAL
+var confirm_actions: bool = false          # Q-18
+var joystick_scale: float = 1.0            # 0,8 à 1,3
+var joystick_opacity: float = 1.0          # 0,3 à 1,0 (multiplie l'opacité actuelle)
+var button_scale: float = 1.0              # 1,0 ou 1,2 (boutons ronds d'exploration)
+var left_handed: bool = false
+var haptics: bool = true
+var text_size: TextSize = TextSize.NORMAL
+var high_contrast: bool = false
+var reduce_motion: bool = false
+var reduce_flashes: bool = false
+func to_dict() -> Dictionary
+static func from_dict(dict: Dictionary) -> GameSettings   # valeurs hors bornes → défaut, jamais d'échec
+func chars_per_second() -> float          # 25 / 45 (actuel) / 90 / INF (page entière)
+func battle_speed_scale() -> float        # 1,0 ; 0,6 si reduce_motion
+func menu_speed_scale() -> float          # 1,0 ; 0,5 si reduce_motion
+```
+```gdscript
+class_name SettingsStore
+extends RefCounted
+## user://settings.json, écriture atomique (temporaire, relecture, renommage) avec le
+## SaveFileSystem existant ; version propre (1) ; fichier illisible → défauts (mis de côté).
+const DEFAULT_PATH: String = "user://settings.json"
+func _init(file_system: SaveFileSystem = null, path: String = DEFAULT_PATH) -> void
+func load_settings() -> GameSettings
+func save_settings(settings: GameSettings) -> Error
+```
+```gdscript
+class_name Haptics
+extends RefCounted
+## Porte unique des vibrations (bible §12, dossier 08 règle 11) : coupée par le réglage.
+static var enabled: bool = true
+static var sink: Callable = Callable()      # tests : espion
+static func vibrate(duration_ms: int) -> void
+```
+`UiPrefs` (statique) : `text_scale`, `high_contrast`, `font(size) -> int`, `panel_bg() -> Color`, `text_muted() -> Color` ; lu par les composants du J6 et par la boîte de dialogue, le toast et le titre de zone (Q-19).
+
+Tests : `test_game_settings` (défauts, bornes, aller-retour, champ inconnu ignoré, valeurs mal formées), `test_settings_store` (système de fichiers en mémoire : atomicité, fichier corrompu mis de côté), `test_haptics`.
+
+---
+
+## 4. La règle de déblocage appliquée au J6
+
+> « Une fonctionnalité visible n'existe pas pour le joueur avant son déblocage narratif, mais les données nécessaires peuvent déjà être collectées silencieusement » (vision.md ; dossier 09 §6).
+
+**En partie normale, avant `pokedex_activated` (posé au J7A)** :
+- pas de carte POKÉDEX au tableau de bord : **cinq** cartes, pas six, et pas d'emplacement vide à sa place ;
+- pas de ligne « vus · capturés » sur la carte du Dresseur ni sur l'écran Dresseur ; pas de lien « vus » / « capturés » ;
+- pas de Pokémon observés dans le panneau d'une zone de la Carte ;
+- pas d'onglet Habitat ni de chaîne d'évolution révélée par le Pokédex dans la fiche Équipe (« ??? ») ;
+- pas de toast « Pokédex mis à jour », « Nouvel habitat observé », « Évolution découverte » ;
+- `MenuNavigator.go(MenuRoute.pokedex())` est refusé (aucun lien croisé ne peut y mener) ;
+- **les données continuent** : vus, capturés, lieux, dates, compteurs, notes d'Observations.
+
+**Drapeau de débogage** : `DebugUnlocks.pokedex` (§3.2). Il agit sur `MenuUnlocks.debug_pokedex`, **jamais** sur `StoryFlags` : la sauvegarde écrite pendant une session débloquée **ne contient pas** `pokedex_activated`. Jamais lu en release ni sous GUT.
+
+**Comment on le teste** :
+- `test_menu_unlocks` : sans drapeau, `pokedex_visible()` faux et `dashboard_cards()` sans `pokedex` (5 cartes) ; avec `pokedex_activated`, 6 cartes ; avec `debug_pokedex` seul, 6 cartes **et** `flags.has_flag(POKEDEX_ACTIVATED)` reste faux.
+- `test_menu_navigator` : lien vers le Pokédex refusé sans déblocage, accepté avec.
+- `tests/integration/test_menu_unlock_rule.gd` (vrai `Boot`, équipe et Pokédex remplis à la main) : sans drapeau, ouvrir le menu et **parcourir tous les écrans** ; un utilitaire relève le texte de **tous les `Label` visibles** et vérifie qu'aucun ne contient « Pokédex », « vus », « capturés », « habitat » ; aucun toast Pokédex après une observation. Avec `debug_pokedex` : la carte existe, l'écran s'ouvre, et `GameState.to_dict()["flags"]` ne contient pas `pokedex_activated`.
+- `test_debug_unlocks` + `test_boot` : le fichier n'est pas lu sous GUT ni en release (`DebugStart.is_allowed`).
+
+---
+
+## 5. Données et sauvegarde
+
+### 5.1 Version 2 du format (T0, validée seule sur le S24 au T1)
+
+**Pourquoi une version 2**, alors qu'ajouter un champ « n'exige pas de nouvelle version » (`save_system.gd`) : (1) la forme du Sac change ; (2) surtout, **un ancien APK du J5 qui lirait une sauvegarde du J6 ignorerait les nouveaux champs puis les effacerait au premier autosave** (favoris, notes). Avec `VERSION = 2`, un build du J5 refuse le fichier et ne l'écrase jamais (décision de Kevin du 2026-10-02, déjà codée : nouvelle partie **sans autosave**, fichier intact). **Une seule version pour tout le J6** : tous les champs sont posés au T0 avec leurs valeurs par défaut, même si leur écran arrive plus tard.
+
+| Champ | Forme v2 | Valeur pour une partie v1 | Arrive dans l'écran |
+|---|---|---|---|
+| `bag` | `{ "items": { "poke_ball": 4 }, "favorites": ["potion"], "acquired": { "poke_ball": 1, "potion": 2 } }` | **migration** : `{ "items": <ancien dict>, "favorites": [], "acquired": <ordre alphabétique> }` | 6B |
+| `party[i].favorite`, `storage[i].favorite` | booléen | `false` | 6A (et Stockage au J7A) |
+| `pokedex.entries[s].notes` | liste d'identifiants de notes débloquées | `[]` | 6C |
+| `pokedex.entries[s].times_seen` | entier | **migration (Q-8)** : une espèce capturée avec `times_seen = 0` (le starter) passe à 1 | 6C |
+
+`SaveSystem.upgrade`, cas `1:` : réécrit `bag` et corrige `times_seen` (si Q-8 = défaut). Les chargeurs restent **tolérants** : `Bag.load_dict` accepte aussi l'ancienne forme plate, `Pokemon.from_dict` lit `favorite` avec `false` par défaut (même principe que `Pokedex._from_lists`).
+
+**Pas dans la sauvegarde** : l'onglet ouvert du Sac et le tri (mémoire de session) ; le drapeau de débogage ; l'objectif (déduit des drapeaux et des données) ; les zones et services (déduits des cartes découvertes) ; les évolutions découvertes (déduites des espèces vues) ; **les réglages** (fichier à part, §5.3).
+
+**Tests (T0)** : `test_save_system` (une v1 réelle, recopiée du S3 du jalon 5 en fixture `tests/fixtures/save/v1_after_capture.json`, migrée en v2 : Sac, Pokédex, équipe identiques ; v2 aller-retour ; v3 refusée ; forme plate du Sac acceptée par le chargeur), `test_game_state` (`to_dict` / `load_dict` avec les nouveaux champs ; défauts), `test_bag`, `test_pokemon` (`favorite`), `test_pokedex` (notes, `times_seen` après capture), `test_save_boot` (vrai `Boot` : une v1 chargée puis réécrite en v2 ; une v2 lue par un `SaveSystem` dont `VERSION` vaut 1 → refusée, fichier intact).
+
+**T1 — QA S24 de la migration (seule)** : partir de la **vraie sauvegarde de Kevin** (J5) ; installer le build du T0 ; reprise exacte (carte, case, équipe, PV, XP, Sac, Pokédex, temps de jeu) ; quitter, relancer : `save.json` en version 2 (`run-as`) ; réinstaller l'APK du J5 : il démarre une partie neuve **sans écrire** (journal « version plus récente ») ; réinstaller le J6 : la partie est intacte.
+
+### 5.2 Données nouvelles (`data/`)
+
+```
+data/story/objectives.json      objectifs du tableau de bord (T2), textes draft (Q-4)
+data/world/zones.json           zones : noms et cartes (T2) ; Carte (T18)
+data/items/items.json           + "heal_amount": 20 sur la Potion (T10)
+data/battle/messages.json       + item_used, hp_restored (T10, draft)
+data/pokedex/kanto.json         taille, poids, description, notes (T14, draft, Q-5, Q-6)
+data/npcs/pallet_town.json      + "species" sur les Pokémon observables (T16, Q-7)
+data/trainer/moments.json       titres des grands moments (T23, draft)
+```
+Vérifier dans l'APK (`unzip -l`) : `data/story/`, `data/world/`, `data/pokedex/`, `data/trainer/` (règle des jalons précédents).
+
+### 5.3 Réglages : un fichier à part
+
+`user://settings.json` (`SettingsStore`, §3.8), version 1, écriture atomique. **Séparé de la partie** : un réglage de l'appareil ne doit pas être perdu si la sauvegarde est mise de côté, ni être restauré avec une vieille partie. Écrit à chaque changement de réglage (pas d'autosave à attendre). Lu au démarrage par `Boot` ; sous GUT et dans les outils, rien n'est lu ni écrit (même garde que la sauvegarde). Un départ de débogage n'empêche pas les réglages.
+
+### 5.4 Moments d'autosave ajoutés
+
+- **Fermeture du menu** si l'état de la partie a changé (équipe réordonnée, favori, objet utilisé) : `request_autosave("menu")`.
+- **« Sauvegarder maintenant »** : écriture immédiate (le menu ouvert est un état stable), toast « Partie sauvegardée » + heure (`ui-reference.md`, Sauvegarde).
+- **Passage en arrière-plan menu ouvert** : écriture immédiate comme aujourd'hui. Pour cela, **`Boot.is_stable()` reste vrai menu ouvert** : chaque action du menu est appliquée d'un bloc à `GameState`, il n'y a jamais d'état intermédiaire.
+
+---
+
+## 6. Architecture
+
+### 6.1 Arbre des scènes
+
+```
+game/boot.tscn
+Boot (Node, process_mode ALWAYS)             temps de jeu et autosave continuent menu ouvert (Q-21)
+├─ World (Node2D, PAUSABLE)                  la carte et le joueur gèlent menu ouvert
+├─ BattleStage, ExplorationHud, BattleHud, StarterSheet, DialogueBox      PAUSABLE
+├─ DialogueRunner, InteractionController, CutsceneDirector, StarterChoice PAUSABLE
+├─ BattleDirector, AmbientWatcher, EncounterDirector                     PAUSABLE
+├─ MenuDirector (Node, ALWAYS)    game/systems/menu/menu_director.gd     6.0
+├─ TrainerMenu (instance, ALWAYS) game/ui/menu/trainer_menu.tscn          6.0, calque LAYER_MENU (20)
+├─ ScreenFade, ComingSoonScreen                                           PAUSABLE
+ExplorationHud : + MenuButton (bouton rond, en haut à droite)            6.0
+Autoloads : SceneRouter, GameState (inchangés ; aucun nouvel autoload)
+```
+**Aucun nouvel autoload** : `Boot` reste la racine de composition et tient `SaveSystem`, `SettingsStore`, `ZoneLibrary`, `ObjectiveLibrary`, `PokedexLibrary`, `MomentLibrary`, comme il tient déjà les bibliothèques de données. `Boot` passe en `ALWAYS` ; **tous ses enfants actuels sont posés `PAUSABLE` explicitement** dans `boot.tscn` (sinon ils hériteraient d'`ALWAYS`) : un test d'invariant le vérifie.
+
+```
+game/ui/menu/
+  trainer_menu.tscn/.gd        TrainerMenu : fond (battle_backdrop.gdshader), en-tête (×, nom de zone),
+                               hôte des écrans (instanciés à la première visite), Toast propre au menu
+  menu_screen.gd               MenuScreen (base) : glissement + fondu, signaux route_requested, back_requested
+  dashboard/                   DashboardScreen, TrainerCardPanel, LeadPokemonCard, MenuCard
+  team/                        TeamScreen, TeamSlotCard, PokemonShowcase, PokemonSheet, StatGauge
+  bag/ (+ composants déplacés) BagScreen, PartyPicker, UseResultBar, BagCategoryTab, BagItemCard, BagEntryView
+  pokedex/                     PokedexScreen, PokedexSlot, PokedexSheet
+  map/                         MapScreen, ZonePanel
+  trainer/                     TrainerScreen, BadgeSlot, MomentRow
+  settings/                    SettingsScreen, SettingToggle, SettingSlider, SettingChoice, ChoiceCards (Q-18)
+game/systems/menu/             MenuRoute, MenuNavigator, MenuUnlocks, MenuDirector, ObjectiveLibrary,
+                               DashboardViews, TeamViews, BagQuery, PokedexQuery, MapJournal, TrainerSummary
+game/systems/settings/         GameSettings, SettingsStore, Haptics, UiPrefs
+game/world/zones/              ZoneLibrary, ZoneData
+game/pokemon/                  + EvolutionReveal, PokedexLibrary, PokedexNotes, PokedexUpdates
+game/items/                    + ItemUse, ItemUseResult
+```
+
+### 6.2 Ouverture, pause, fermeture (dossier 08 règle 6)
+
+```gdscript
+class_name MenuDirector
+extends Node
+## Ouvre et ferme le Menu Dresseur, met le monde en pause, nourrit les écrans de vues et
+## applique leurs actions à l'état de la partie (comme BattleDirector pour le combat).
+signal menu_opened
+## [param changed] : l'état de la partie a changé pendant l'ouverture (autosave).
+signal menu_closed(changed: bool)
+signal save_requested                        # « Sauvegarder maintenant » (6F)
+signal settings_changed(settings: GameSettings)   # 6F
+var speed_scale: float = 1.0                 # 0 en test
+func setup(state: Node, data: PokemonData, items: ItemLibrary, zones: ZoneLibrary,
+		objectives: ObjectiveLibrary, menu: TrainerMenu, unlocks: MenuUnlocks,
+		can_open: Callable) -> void
+func open(route: MenuRoute = null) -> bool   # faux si can_open() est faux ou déjà ouvert
+func close() -> void
+## Retour Android, Échap : un niveau en arrière ; depuis le tableau de bord, ferme. Vrai si
+## le menu était ouvert (l'événement est alors consommé).
+func handle_back() -> bool
+func is_open() -> bool
+func get_navigator() -> MenuNavigator
+```
+
+- **Ouvrir** : `MenuButton` (signal `menu_requested` de l'`ExplorationHud`) ou l'action `menu` (Échap, M sur Mac). Garde `can_open` fournie par `Boot` : `is_stable()` **et** ni écran « À venir », ni titre de zone en train d'entrer (il est caché à l'ouverture). Puis : contrôles cachés (`set_controls_visible(false)` relâche déjà joystick et boutons), `get_tree().paused = true`, fond de 0 à 1 et tableau de bord en `MENU_OPEN` (0,25 s), vibration « presque imperceptible » (`HAPTIC_MENU_MS`, bible §12).
+- **Le monde gèle tel quel**, même au milieu d'un pas (il reprend à la fermeture). Aucun nœud du monde n'utilise de Tween non lié ni de minuteur `process_always` hors combat (vérifié : seul `HapticPattern` en crée un, en combat).
+- **Fermer** : ×, retour depuis le tableau de bord, action `menu`. Fondu inverse `MENU_CLOSE` (0,2 s), `paused = false`, contrôles rendus, autosave si `changed`.
+- **Retour Android** : aujourd'hui, `application/config/quit_on_go_back` vaut vrai par défaut et `Boot` sauvegarde sur `NOTIFICATION_WM_GO_BACK_REQUEST` avant que l'application ne quitte. Le J6 passe ce réglage à **faux** ; `Boot` reçoit le retour : menu ouvert → `MenuDirector.handle_back()` ; en exploration (contrôles visibles) → sauvegarde immédiate puis **ouverture du Menu Dresseur** ; pendant un dialogue, une scène, un combat ou une transition → ignoré. **Le jeu ne quitte jamais sur le retour** (décision de Kevin, Q-3) : la fermeture reste celle du système (accueil, applications récentes), déjà couverte par la sauvegarde au passage en arrière-plan. **À vérifier tôt sur le S24** (geste retour d'Android 14).
+
+### 6.3 Liens croisés (dossier 08 §8)
+
+| Depuis | Toucher | `MenuNavigator.go(...)` | Sous-jalon |
+|---|---|---|---|
+| Tableau de bord | Pokémon de tête | `MenuRoute.team(0)` | 6A (6.0 : écran provisoire) |
+| 6A Équipe | UTILISER UN OBJET | `MenuRoute.bag(CONTEXT_TEAM, index)` : SOINS, objets compatibles | 6B |
+| 6B Sac | UTILISER | choix du Pokémon **dans l'écran du Sac** (pas un autre écran) | 6B |
+| 6C Pokédex | une zone de l'onglet Habitat | `MenuRoute.map(zone)` | 6D (6C : écran provisoire) |
+| 6D Carte | un Pokémon observé | `MenuRoute.pokedex(ALL, species)` | 6D |
+| 6E Dresseur | « vus » / « capturés » | `MenuRoute.pokedex(SEEN / CAUGHT)` | 6E |
+| 6E Dresseur | un badge obtenu | détail dans l'écran (aucun badge au J6) | 6E |
+| 6E Dresseur | « premier Pokémon » | `team(index)` s'il est dans l'équipe, sinon `pokedex(ALL, species)` si visible, sinon rien | 6E |
+
+Un écran pas encore construit, dans les builds de développement du J6, ouvre l'écran provisoire « ÉQUIPE — À venir » (`ComingSoonScreen`) : jamais dans une version fusionnée (tous les écrans existent à la fin du J6).
+
+### 6.4 Signaux et flux
+
+```
+6.0
+ExplorationHud.menu_requested | action « menu » ─► MenuDirector.open ─► can_open (Boot.is_stable)
+   ─► tree.paused ─► TrainerMenu.open_animated ─► DashboardScreen.show_dashboard(DashboardViews.build)
+DashboardScreen.card_chosen(screen) ─► MenuNavigator.go ─► TrainerMenu.show_screen
+× | retour | « menu » ─► MenuNavigator.back / close ─► menu_closed(changed) ─► Boot : autosave, contrôles
+NOTIFICATION_WM_GO_BACK_REQUEST ─► Boot ─► MenuDirector.handle_back | sauvegarde + quit
+6A
+TeamScreen.member_moved(from, to) ─► Party.move ─► TeamScreen.show_team(TeamViews.build) · changed
+TeamScreen.favorite_toggled(i) ─► Pokemon.set_favorite · changed
+6B
+BagScreen.use_requested(id) ─► BagScreen.show_targets(PartyPickerView)
+BagScreen.target_chosen(id, i) ─► ItemUse.apply ─► BagScreen.show_result(texte, peut_recommencer) · changed
+Combat : BattleBagPanel.item_chosen(potion) ─► PartyPicker ─► Bag.remove ─► Battle.submit(heal) ─► ITEM_USED
+6C
+Player OBSERVER (species) ─► GameState.record_seen ─► PokedexNotes.refresh ─► PokedexUpdates (si visible) ─► toast
+EncounterDirector (vu) ─► idem, toast différé à la fin de la rencontre
+6F
+SettingsScreen.setting_changed ─► GameSettings ─► SettingsStore.save ─► Boot._apply_settings :
+   DialogueRunner.chars_per_second · BattleDirector.speed_scale · BattleStage.reduce_flashes ·
+   ExplorationHud (joystick, boutons, gaucher) · Haptics.enabled · UiPrefs
+```
+`MenuNavigator`, `ItemUse`, `BagQuery`, `PokedexQuery`, `MapJournal`, `TrainerSummary`, `GameSettings` ne connaissent aucun nœud. Les écrans de `game/ui/menu/` ne connaissent ni `GameState`, ni `Pokemon`, ni les données : ils reçoivent des vues et émettent des signaux. `MenuDirector` reçoit tout par `setup`.
+
+### 6.5 Interfaces des écrans (contrat entre ui-mobile et constructeur-monde)
+
+```gdscript
+class_name MenuScreen extends Control
+signal route_requested(route: MenuRoute)     # lien croisé
+signal back_requested
+var speed_scale: float = 1.0
+func enter() -> void                          # coroutine : glissement + fondu (ANIM_PANEL)
+func leave() -> void
+
+class_name DashboardScreen extends MenuScreen
+signal card_chosen(screen: StringName)
+signal lead_chosen
+func show_dashboard(view: DashboardView) -> void
+
+class_name TeamScreen extends MenuScreen
+signal member_selected(index: int)
+signal member_moved(from: int, to: int)       # glisser-déposer OU mode DÉPLACER
+signal favorite_toggled(index: int)
+signal use_item_requested(index: int)
+func show_team(view: TeamView, selected: int) -> void
+
+class_name BagScreen extends MenuScreen
+signal category_opened(category: StringName)
+signal item_previewed(item_id: StringName)
+signal favorite_toggled(item_id: StringName)  # appui long sur une carte
+signal sort_changed(sort: int)
+signal use_requested(item_id: StringName)
+signal target_chosen(item_id: StringName, index: int)
+signal repeat_requested                        # UTILISER À NOUVEAU
+func show_bag(view: BagView) -> void
+func show_targets(view: PartyPickerView) -> void
+func show_result(text: String, can_repeat: bool) -> void
+
+class_name PokedexScreen extends MenuScreen
+signal filter_changed(filter: int, zone: StringName, type: StringName, text: String)
+signal species_opened(species: StringName)
+func show_grid(view: PokedexGridView) -> void
+func show_sheet(view: PokedexSheetView) -> void
+
+class_name MapScreen extends MenuScreen
+signal zone_touched(zone: StringName)
+func show_map(view: MapView) -> void          # illustration, zones découvertes, portrait du joueur
+func show_zone(view: ZonePanelView) -> void   # panneau latéral, sans changer d'écran
+
+class_name TrainerScreen extends MenuScreen
+func show_trainer(view: TrainerView) -> void
+
+class_name SettingsScreen extends MenuScreen
+signal setting_changed(key: StringName, value: Variant)
+signal save_now_requested
+func show_settings(view: SettingsView) -> void
+func show_save_result(text: String) -> void
+```
+
+---
+
+## 7. Découpage des tâches (dans l'ordre)
+
+Chaque tâche finit par `tools/test.sh` vert (nombre de tests rapporté), un import sans `ERROR` ni `SCRIPT ERROR`, et, si elle est visible, des **captures relues** (Movie Maker, `tools/capture_menu.gd`, scénarios nommés ci-dessous, à **2340 × 1080 et 1920 × 1080**). La capture S24 vient à la validation du sous-jalon (règle 2). `docs/tech/etat-projet.md` est mis à jour dans le même commit (règle 5). Les durées, tailles et couleurs passent par `UiTokens` (nouvelles constantes `MENU_*`, `TEAM_*`, `DEX_*`, `MAP_*`, `SETTINGS_*`) et les variations de thème par `tools/build_ui_theme.gd`.
+
+### 6.0 — Fondations, sauvegarde v2, tableau de bord
+
+#### T0 — architecte-godot : alignement et sauvegarde v2
+- Aligner ce plan sur le code fusionné du J5 (ce qui a bougé depuis `c1842e5`) et sur les réponses de Kevin ; §5.1.
+- **CA** : tests du §5.1 verts ; fixture v1 réelle ; `etat-projet.md` à jour ; aucune interface.
+
+#### T1 — qa-mobile : la migration sur le S24 (validée seule)
+- Protocole du §5.1. **CA à rapporter** : chaque étape conforme ; `save.json` en version 2 ; l'APK du J5 ne l'écrase pas ; journal sans erreur `SaveSystem`.
+
+#### T2 — architecte-godot : navigation, déblocage, objectif, zones
+- §3.2 ; `data/story/objectives.json` (Q-4), `data/world/zones.json` (noms et cartes) ; `DebugUnlocks` ; option `--debug-unlock` de `tools/deploy_s24.sh`.
+- **CA** : tests du §3.2 et du §4 (unitaires) verts ; données réelles sans erreur.
+
+#### T3 — ui-mobile : le menu et le tableau de bord (avec des vues fabriquées)
+- `TrainerMenu` (fond flouté, en-tête ×, nom de zone), `MenuScreen`, `DashboardScreen` (carte du Dresseur, Pokémon de tête, cartes `MenuCard` avec icône, nom et une ligne de description, objectif), `MenuButton` dans l'`ExplorationHud`. Composition d'après `menu-tableau-de-bord-v1.jpg` **sans** argent ni heure, **avec** la ligne d'objectif.
+- **CA** : `test_trainer_menu.gd`, `test_dashboard_screen.gd` : 5 cartes ou 6 selon la vue, jamais d'emplacement vide ; carte touchée → **un** `card_chosen` ; × → **un** `back_requested` ; ligne vus · capturés absente si la vue la laisse vide ; zones ≥ `TOUCH_MIN`, rien d'interactif dans `SAFE_MARGIN`, à 1920 et 2340 ; animation complète à `speed_scale = 0`. Captures `dashboard_5`, `dashboard_6`, `dashboard_no_team`, lues avec Read : le monde transparaît, rien n'est coupé, texte lisible.
+
+#### T4 — constructeur-monde : ouvrir, mettre en pause, fermer
+- `MenuDirector`, câblage dans `Boot` (process modes, garde, autosave à la fermeture, `menu`, retour Android, `quit_on_go_back = false`), `DashboardViews` branché, écrans provisoires pour les autres cartes.
+- **CA** :
+  - `tests/integration/test_menu_open.gd` (vrai `Boot`) : ouverture refusée pendant un dialogue, une scène, une rencontre, un combat, une transition ; ouverte → `get_tree().paused`, le joueur ne bouge plus (`move_up` tenu), le Voyageur ne marche plus, le temps de jeu continue ; fermée → tout reprend, contrôles visibles ; retour (notification simulée) menu ouvert → fermé, **l'application ne quitte pas** ; autosave demandé seulement si l'état a changé ; passage en arrière-plan menu ouvert → sauvegarde écrite.
+  - `test_boot.gd` : tous les enfants de `Boot` sauf `MenuDirector` et `TrainerMenu` sont `PAUSABLE`.
+  - `test_menu_unlock_rule.gd` (§4).
+  - Capture `menu_open` image par image (~8 images sur 0,3 s) : pas d'image noire, fond qui se floute.
+
+#### T5 — qa-mobile : validation du 6.0
+- **CA** : ouverture et fermeture < 300 ms ressenties, 20 fois de suite ; jamais ouvert pendant un dialogue ou un combat ; le monde est figé derrière ; retour Android dans les deux cas (menu ouvert : un niveau en arrière puis fermeture ; exploration : ouvre le menu, ne quitte jamais) ; 60 fps menu ouvert (le fond flouté) ; pas de joystick « collé » après la fermeture ; cinq cartes ; objectif lisible ; journal propre.
+
+### 6A — Équipe
+
+#### T6 — architecte-godot : fondations de l'Équipe
+- §3.3. **CA** : tests du §3.3 verts.
+
+#### T7 — ui-mobile : l'écran Équipe
+- `TeamScreen` d'après `menu-equipe-v1.jpg` : liste (6 emplacements, vides neutres et **sans action**, sans « Ajouter un Pokémon »), grand sprite (×6 entier, NEAREST, respiration par un léger décalage vertical et non par une échelle non entière), en-tête de fiche (nom, sexe, Nv., types, PV, XP), onglets Aperçu · Capacités · Histoire (une capacité touchée ouvre `MoveDetailSheet`), actions UTILISER UN OBJET · DÉPLACER · FAVORI. Réordonner : appui long (`LONG_PRESS`) puis glisser **et** DÉPLACER (choisir A, puis l'emplacement B), courte animation d'échange.
+- **CA** : `test_team_screen.gd` : glisser A sur B → **un** `member_moved(a, b)` ; mode DÉPLACER → le même signal, sans glisser ; un emplacement vide n'émet rien ; FAVORI → `favorite_toggled` et l'étoile change **avec un texte** (« Favori »), pas seulement une couleur ; aucune condition d'évolution affichée ; statut « K.O. » en texte. Captures `team`, `team_sheet_moves`, `team_history`, `team_move_mode`.
+
+#### T8 — constructeur-monde : l'Équipe jouable
+- Câblage `MenuDirector` ↔ `TeamScreen` ; lien du Pokémon de tête ; correction du sprite d'entrée en combat (§10, écart 1) si le J5 ne l'a pas faite.
+- **CA** : `test_menu_team.gd` (vrai `Boot`) : réordonner puis fermer → `GameState.party` dans le nouvel ordre, autosave demandé, **le combat suivant envoie le nouveau premier Pokémon valide** et l'animation d'entrée montre ce Pokémon ; favori sauvegardé et relu. Captures.
+
+#### T9 — qa-mobile : validation du 6A
+- **CA** : les quatre questions « qui, quel niveau, combien de PV, quel état » en moins de 2 s ; glisser-déposer au pouce sans erreur sur 10 essais ; DÉPLACER sans glisser ; favori ; le premier de la liste part au combat ; sauvegarde et reprise.
+
+### 6B — Sac
+
+#### T10 — architecte-godot : fondations du Sac et soin en combat
+- §3.4 (dont le moteur de combat) ; `heal_amount` ; messages `draft`.
+- **CA** : tests du §3.4 verts ; simulation du jalon 5 inchangée.
+
+#### T11 — ui-mobile : l'écran Sac et le choix du Pokémon
+- Déplacement des composants du Sac vers `game/ui/bag/` (imports vérifiés, `test_battle_bag_panel` inchangé et vert) ; `BagScreen` d'après `menu-sac-v1.jpg` (catégories à gauche, cartes au centre, aperçu à droite ; un toucher = un aperçu) ; rangée FAVORIS, appui long = favori ; tri ; `PartyPicker` (équipe, PV, raison pour un Pokémon incompatible) ; `UseResultBar` (« +20 PV — Salamèche 33/51 », UTILISER À NOUVEAU) ; icône `potion.svg`.
+- **CA** : `test_bag_screen.gd` : un toucher n'utilise rien ; UTILISER → choix ; Pokémon incompatible visible avec sa raison et **sans** `target_chosen` ; résultat et UTILISER À NOUVEAU → **un** `repeat_requested` ; onglet vide absent ; objet de combat hors combat : mention « Utilisable en combat », pas de bouton. `test_party_picker.gd`. Captures `bag`, `bag_use`, `bag_result`, `bag_from_team`.
+
+#### T12 — constructeur-monde : le Sac jouable, en exploration et en combat
+- Câblage exploration et lien depuis l'Équipe ; en combat sauvage : SOINS dans `BattleBagPanel`, `PartyPicker` en combat (nouvel emplacement de `BattleHudLayout`), `BattleDirector` (`_spend_item`, action `heal`, temps `HEAL`).
+- **CA** : `test_menu_bag.gd` : Potion sur Salamèche 13/20 → 20/20, Sac −1, autosave à la fermeture ; UTILISER À NOUVEAU sur PV pleins → raison, rien consommé. `test_battle_director.gd` (étendu) : Potion en combat → PV remontés, objet retiré **une** fois, l'adversaire joue, rien en combat contre le rival du labo (SAC muet, décision n° 12). `test_wild_battle.gd` : un combat avec une Potion. **Export** : rien de nouveau. Captures `bag_battle`, `bag_battle_target`.
+
+#### T13 — qa-mobile : validation du 6B
+- **CA** : une Potion en trois gestes au plus ; raison lisible ; UTILISER À NOUVEAU ; même Sac en combat (la quantité suit) ; favoris ; aucune confirmation en cascade ; 60 fps.
+
+### 6C — Pokédex (débloqué par le drapeau de débogage)
+
+#### T14 — architecte-godot : fondations du Pokédex
+- §3.5 ; `data/pokedex/kanto.json` (14 espèces, textes provisoires) ; `NpcSpec.species`.
+- **CA** : tests du §3.5 verts.
+
+#### T15 — ui-mobile : l'écran Pokédex
+- `PokedexScreen` d'après `menu-pokedex-v1.jpg` **sans** statistiques de base, talents, silhouettes, chaîne complète ni « 27/151 » : en-tête « POKÉDEX — KANTO » et « X vus · Y capturés · 151 espèces », filtres TOUS · VUS · CAPTURÉS · HABITATS, recherche par nom, grille numérotée (151 cases légères : seules les espèces vues chargent un sprite) ; `PokedexSheet` en quatre onglets (Aperçu, Habitat en petite carte des seules zones observées, Évolution, Observations).
+- **CA** : `test_pokedex_screen.gd` : inconnu = numéro et « ??? » sans image ; vu = sprite et nom, pas de types ; capturé = fiche complète ; zone de l'Habitat touchée → **un** `route_requested(map)`. Défilement fluide de la grille. Captures `dex_grid`, `dex_sheet_seen`, `dex_sheet_caught`, `dex_habitat`.
+
+#### T16 — constructeur-monde : le Pokédex jouable
+- Câblage ; observation par OBSERVER (`"species"` dans `data/npcs/pallet_town.json`, Q-7) ; toasts Pokédex (différés à la fin d'une rencontre) ; notes rafraîchies ; lien vers la Carte (écran provisoire jusqu'au T21).
+- **CA** : `test_menu_pokedex.gd` (vrai `Boot`, `debug_pokedex`) : Roucool vu sur la Route 1 → case « vu », fiche, Habitat « Route 1 » ; sans drapeau : **rien** de tout cela visible (`test_menu_unlock_rule`) mais les données sont là ; toast affiché après la rencontre, jamais pendant ; observer le Roucool de Mme Aoki → vu à Bourg Palette. Captures.
+
+#### T17 — qa-mobile : validation du 6C (avec `--debug-unlock pokedex`, sur la vraie partie)
+- **CA** : ce que Kevin a déjà rencontré apparaît ; aucune silhouette, aucun « ??? » dans un habitat, aucune condition d'évolution ; toasts discrets ; sans l'option, rien du Pokédex nulle part ; 60 fps en faisant défiler la grille.
+
+### 6D — Carte
+
+#### T18 — architecte-godot : fondations de la Carte
+- §3.6 ; `zones.json` complet pour Bourg Palette et la Route 1 (descriptions provisoires) et l'emplacement des autres zones sur l'illustration (Q-15).
+- **CA** : tests du §3.6 verts.
+
+#### T19 — constructeur-monde : l'illustration provisoire de Kanto
+- `tools/gen_kanto_map.gd` → `assets/ui/map/kanto_placeholder.png` (géographie de Rouge/Bleu stylisée, villes, routes, eau, reliefs, **sans aucun nom**), portrait du joueur (sprite agrandi). **Peut avancer en parallèle** dès le 6A (§8).
+- **CA** : image générée, rectangles de `zones.json` alignés (test), relue avec Read.
+
+#### T20 — ui-mobile : l'écran Carte
+- `MapScreen` (illustration entière, portrait discret du joueur, zones découvertes touchables ≥ `TOUCH_MIN`, aucune icône superflue), `ZonePanel` latéral (nom, sous-titre, description, Pokémon observés, objets trouvés, services). Aucun bouton de déplacement, aucun « Se rendre ici ».
+- **CA** : `test_map_screen.gd` : zone non découverte ni nommée ni touchable ; zone touchée → **un** `zone_touched` et le panneau, sans changer d'écran ; Pokémon observé touché → **un** `route_requested(pokedex)`. Captures `map`, `map_panel`.
+
+#### T21 — constructeur-monde : la Carte jouable et ses liens
+- Câblage ; liens Pokédex ↔ Carte.
+- **CA** : `test_menu_map.gd` : position du joueur (y compris dans un intérieur : sa ville) ; Potion de la Route 1 trouvée → listée ; Pokémon observés seulement avec le Pokédex visible ; aller-retour Pokédex → Carte → Pokédex sans empiler.
+
+#### T22 — qa-mobile : validation du 6D
+- **CA** : la carte se lit d'un coup d'œil ; rien n'annonce ce qui reste à découvrir ; panneaux lisibles ; liens ; 60 fps.
+
+### 6E — Dresseur
+
+#### T23 — architecte-godot : fondations du Dresseur
+- §3.7 ; `data/trainer/moments.json`. **CA** : tests verts.
+
+#### T24 — ui-mobile : l'écran Dresseur (recomposé en paysage)
+- `TrainerScreen` d'après la DA de `menu-dresseur-v1.jpg` **recomposée en paysage** : identité et portrait à gauche, badges au centre (8 emplacements muets), frise des grands moments à droite, statistiques en section secondaire. Sans niveau, XP, tenues, titres, pourcentage, biographie.
+- **CA** : `test_trainer_screen.gd` : badge inconnu sans nom ni image ; « vus » / « capturés » absents si la vue les laisse vides, sinon **un** `route_requested` chacun. Captures `trainer`, `trainer_dex`.
+
+#### T25 — constructeur-monde : le Dresseur jouable
+- Câblage, liens (vus, capturés, premier Pokémon). **CA** : `test_menu_trainer.gd` (moments réels d'une partie de test, temps de jeu, liens selon le déblocage).
+
+#### T26 — qa-mobile : validation du 6E
+- **CA** : l'écran raconte la partie de Kevin ; aucun compteur « / 8 » ; liens.
+
+### 6F — Paramètres
+
+#### T27 — architecte-godot : fondations des Paramètres
+- §3.8 ; remplacement des 7 appels à `Input.vibrate_handheld` par `Haptics.vibrate` (comportement inchangé, tests existants verts).
+- **CA** : tests du §3.8 verts.
+
+#### T28 — ui-mobile : l'écran Paramètres et les commandes réglables
+- `SettingsScreen` d'après la DA de `menu-parametres-v1.jpg` recomposée en paysage : catégories à gauche (JEU, COMMANDES, GRAPHISMES, ACCESSIBILITÉ ; **pas** d'AUDIO, Q-17). GRAPHISMES : un seul choix **Auto** (défaut) / **Élevée** / **Économie** ; Économie = 30 images/s (`Engine.max_fps`) et flou du fond du menu coupé, autres effets coûteux réduits ; Auto choisit le profil selon l'appareil (S24 → Élevée) ; aucune autre option technique, interrupteurs, curseurs, choix ; « Sauvegarder maintenant » ; **aucune** option « sauvegarde automatique ». `TouchJoystick.size_scale` et `opacity`, échelle des boutons ronds, `ExplorationHud.set_left_handed(bool)` (joystick dans la moitié droite, boutons courir et contextuel en bas à gauche, bouton Menu en haut à droite inchangé ; exploration seulement, Q-16) ; `UiPrefs` dans la boîte de dialogue, le toast, le titre de zone et les écrans du menu ; `ChoiceCards` (Q-18).
+- **CA** : `test_settings_screen.gd` (chaque contrôle → **un** `setting_changed` ; valeur affichée en texte, pas seulement par la position) ; `test_exploration_hud.gd` (gaucher : zones du joystick et des boutons miroir, toujours dans `SAFE_MARGIN`) ; `test_virtual_joystick.gd` (taille, opacité). Captures `settings`, `left_handed`, `text_large`, `contrast`.
+
+#### T29 — constructeur-monde : les réglages agissent
+- `Boot._apply_settings` (§6.4) ; `SettingsStore` lu au démarrage ; « Sauvegarder maintenant » ; `BattleStage.reduce_flashes` (clignotement du coup remplacé par un léger assombrissement, flash du critique et de la capture adoucis) ; la réduction des animations ne raccourcit **pas** la tenue des messages de combat (`BattleHud.message_hold_scale` séparé de `speed_scale`).
+- **CA** : `test_settings_apply.gd` (vrai `Boot`) : vitesse du texte → `DialogueRunner.chars_per_second` ; animations réduites → `BattleDirector.speed_scale = 0,6` et durée d'un combat de test plus courte, messages tenus pareil ; haptique coupée → aucune vibration (espion `Haptics.sink`) ; réglages relus après redémarrage ; « Sauvegarder maintenant » → fichier écrit, toast ; départ de débogage → « sauvegarde désactivée pour cette session », rien d'écrit.
+
+#### T30 — qa-mobile : validation du 6F et QA finale du J6
+- **CA** : chaque réglage a un effet visible ou sensible sur le S24 ; mode gaucher jouable ; fichier de réglages survivant à une réinstallation par-dessus ; puis **parcours complet** : partie réelle, chaque écran, chaque lien du §6.3, combat avec Potion, sauvegarde et reprise, 60 fps partout, journal propre, aucun élément du Pokédex sans le drapeau de débogage.
+
+---
+
+## 8. Parallélisme (deux agents au plus, chacun dans sa copie)
+
+**Peut avancer en parallèle** :
+- l'architecte prépare les **fondations pures** du sous-jalon suivant (T6, T10, T14, T18, T23, T27) pendant la QA du précédent (fichiers nouveaux et tests seulement) ;
+- **T19** (illustration provisoire de Kanto, outil et image) à tout moment après T2 : aucun fichier partagé ;
+- **T3** (écran du tableau de bord) pendant T4 (câblage), **si** les vues de T2 sont figées : T3 travaille avec des vues fabriquées, T4 avec un écran factice ; la fusion se fait au T4.
+
+**Ne peut pas avancer en parallèle** :
+- deux tâches qui touchent `game/boot.gd` / `boot.tscn`, `game_state.gd`, le format de sauvegarde, `battle_director.gd` / `battle.gd`, `project.godot` ou `ui_tokens.gd` + `build_ui_theme.gd` (conflits garantis) ;
+- **deux écrans** du menu (dossier 08 §11 : jamais les six à la fois ; Kevin les valide un par un) ;
+- **T0 et quoi que ce soit d'autre** : la sauvegarde v2 est seule jusqu'à sa validation (T1) ;
+- **T27** (remplacement des appels de vibration, 6 fichiers) et une tâche de combat.
+
+---
+
+## 9. Critères d'acceptation par sous-jalon (récapitulatif)
+
+| | 6.0 | 6A | 6B | 6C | 6D | 6E | 6F |
+|---|---|---|---|---|---|---|---|
+| Tests | §5.1, §3.2, §4, T3–T4 | §3.3, T7–T8 | §3.4, T11–T12 | §3.5, T15–T16 | §3.6, T20–T21 | §3.7, T24–T25 | §3.8, T28–T29 |
+| Toujours | `tools/test.sh` vert (tout ce qui précède compris), import sans `ERROR` ni `SCRIPT ERROR`, nombre de tests rapporté, `etat-projet.md` à jour | | | | | | |
+| Déblocage | 5 cartes sans le drapeau | « ??? » d'évolution | — | rien sans le drapeau | pas de Pokémon observés sans le drapeau | pas de vus · capturés sans le drapeau | — |
+| Sauvegarde | v2 validée seule (T1) | ordre, favori | Sac, favoris | notes | — | — | réglages à part, « Sauvegarder maintenant » |
+| Captures | T3, T4 | T7, T8 | T11, T12 | T15, T16 | T19, T20 | T24 | T28 |
+| S24 | T1, T5 | T9 | T13 | T17 | T22 | T26 | T30 |
+| Export | `data/story`, `data/world` | — | — | `data/pokedex` | — | `data/trainer` | — |
+
+**Tests GUT prévus** — unitaires nouveaux : `test_menu_route`, `test_menu_navigator`, `test_menu_unlocks`, `test_debug_unlocks`, `test_objective_library`, `test_zone_library`, `test_dashboard_views`, `test_evolution_reveal`, `test_team_views`, `test_item_use`, `test_bag_query`, `test_pokedex_library`, `test_pokedex_notes`, `test_pokedex_query`, `test_pokedex_updates`, `test_map_journal`, `test_trainer_summary`, `test_game_settings`, `test_settings_store`, `test_haptics` ; étendus : `test_save_system`, `test_game_state`, `test_bag`, `test_pokemon`, `test_pokedex`, `test_party`, `test_exp_calc`, `test_item_library`, `test_battle`, `test_battle_text`, `test_battle_playback`, `test_npc_roster`. Intégration nouveaux : `test_trainer_menu`, `test_dashboard_screen`, `test_menu_open`, `test_menu_unlock_rule`, `test_team_screen`, `test_menu_team`, `test_bag_screen`, `test_party_picker`, `test_menu_bag`, `test_pokedex_screen`, `test_menu_pokedex`, `test_map_screen`, `test_menu_map`, `test_trainer_screen`, `test_menu_trainer`, `test_settings_screen`, `test_settings_apply` ; étendus : `test_boot`, `test_save_boot`, `test_battle_director`, `test_battle_bag_panel`, `test_wild_battle`, `test_exploration_hud`, `test_virtual_joystick`. Fixtures : `tests/fixtures/save/`, `tests/fixtures/pokedex/`, `tests/fixtures/zones/`, `tests/fixtures/settings/`.
+
+---
+
+## 10. Écarts entre le dossier 08 et le code réel, contradictions relevées
+
+1. **Bug du J5 rendu fréquent par le 6A** : `BattleDirector.run_request` choisit le sprite du partenaire qui entre en courant avec `party.get_lead()` (`battle_director.gd`, ligne 163), alors que le moteur envoie `party.first_able()`. Si le premier de l'équipe est K.O. (déjà possible au J5 après une capture), le mauvais Pokémon entre dans le cadre, puis l'image change à l'envoi. Avec la réorganisation de l'équipe, ce cas devient courant. Correction d'une ligne (`first_able()`), avec un test ; à faire dans les dettes du J5 si possible, sinon au T8.
+2. **Statuts** : le dossier 08 §2 demande « statut toujours en texte (K.O., PSN, PAR, SOM, BRÛ, GEL) ». `Pokemon` n'a aucun statut (statuts au J11) : au J6, seul « K.O. » (déduit des PV) existe.
+3. **Retour Android** : aujourd'hui il ferme l'application (`quit_on_go_back` par défaut). Le dossier 08 §1 veut qu'il ferme le menu : réglage à changer ; en exploration, il ouvre le menu et ne quitte plus le jeu (Q-3, décision de Kevin).
+4. **Starter « vu 0 fois »** (remarque de la QA S3) : `PokedexEntry.capture` ne compte pas d'observation. La fiche afficherait « vu 0 fois · capturé 1 fois » (Q-8).
+5. **Taille, poids, description, notes** : absents des données (`SpeciesData`) ; nouveau fichier `data/pokedex/kanto.json` plutôt que d'alourdir `kanto.json` et sa validation stricte.
+6. **Grands moments** : le dossier 08 §6 cite « départ de Bourg Palette, arrivée à Jadielle » ; seuls `starter`, `rival_battle`, `first_capture` sont enregistrés. Les arrivées se déduisent de `discovered_maps` (Q-14) ; rien à rétro-greffer.
+7. **Combats gagnés** et autres statistiques : non enregistrés ; l'écran Dresseur V1 ne montre que ce qui l'est (dossier 08 §6 l'autorise).
+8. **Tableau du dossier 08 §10, ligne `menu-equipe-v1.jpg`** : « Marquer favori » figure dans « ne fait pas foi », alors que le §2 (corrigé le 2026-10-02) adopte FAVORI. Le plan suit le §2 ; le tableau n'a pas été mis à jour.
+9. **Roadmap, phase 3** : catégories « objets, soins, Poké Balls, CT, objets clés » et « argent » au profil ; « audio, musique » aux Paramètres. Le dossier 08 (SOINS, CAPTURE, COMBAT, AVENTURE, OBJETS CLÉS + FAVORIS ; argent au J7A ; pas de son) prime.
+10. **Bouton Menu** : la planche le met en haut à droite (☰), la bible parle d'« un geste ou un petit bouton », la contradiction n'est pas tranchée (Q-1).
+11. **Tailles de texte et couleurs constantes** : tout passe par des constantes `UiTokens` et un thème généré ; la taille du texte et le contraste demandent des valeurs lues à l'exécution (`UiPrefs`). Le HUD de combat a des hauteurs fixes (`BATTLE_CARD_HEIGHT`) : il n'est pas couvert au J6 (Q-19).
+12. **Vibrations dispersées** (7 appels directs) : centralisées au T27 avant de pouvoir les couper.
+13. **Icônes** : seule `poke_ball.svg` existe pour les objets ; il faut au moins `potion.svg` et les icônes des six cartes du tableau de bord (provisoires).
+14. **Sprites** : il n'existe de sprites de combat que pour les 3 starters, Roucool et Rattata (pas pour leurs évolutions) ; suffisant au J6, puisqu'une espèce non vue n'a pas d'image.
+15. **`SaveSystem`** dit qu'ajouter un champ n'exige pas de nouvelle version : vrai pour la lecture, faux pour la protection contre un ancien APK (§5.1). Le commentaire est à préciser au T0.
+
+---
+
+## 11. Risques et coûts cachés
+
+| Risque | Effet | Parade |
+|---|---|---|
+| **Pause de l'arbre** | `Boot` doit continuer (temps de jeu, autosave) alors que ses enfants gèlent ; un nœud oublié en `INHERIT` hériterait d'`ALWAYS` | enfants posés `PAUSABLE` explicitement, test d'invariant (T4) |
+| **Retour Android** (`quit_on_go_back`, geste retour d'Android 14) | quitter l'application au lieu de fermer le menu, ou ne plus pouvoir quitter | essai S24 dès le T4 ; test de la notification simulée |
+| **Sauvegarde v2** | perte de données, ancien APK qui écrase | une seule migration, fixture réelle, QA S24 seule (T1) |
+| **Moteur de combat** (soin) | régression des combats validés au J5 | ajouts en fin d'enum, règle partagée `ItemUse`, simulation et tests du J5 inchangés |
+| **Coût du fond flouté** sur S24 | sous 60 fps menu ouvert | même shader que le combat (62 fps mesurés) ; flou par mipmaps ; mesure au T5 |
+| **Instanciation des écrans** (gros arbres de `Control`) | à-coup à la première ouverture d'un écran | scènes préchargées, instanciées à la première visite puis gardées ; mesure au T5 et au T17 (grille de 151 cases légères) |
+| **Glisser-déposer tactile** dans une liste | conflit avec le défilement, déclenchements par erreur | appui long (`LONG_PRESS`) avant de saisir, seuil de déplacement (`BAG_TAP_SLOP`) ; mode DÉPLACER toujours disponible |
+| **Sprites pixel art agrandis** | scintillement avec une échelle non entière | échelles entières (NEAREST), respiration par décalage vertical |
+| **Taille du texte, contraste** | coût réparti sur tous les composants | couverture limitée et listée (Q-19) ; le reste en polish |
+| **Textes à écrire** (objectifs, descriptions de zones, Pokédex, notes, moments, messages du soin en combat) | attente de Kevin | textes provisoires `draft`, un seul lot à relire (Q-4 à Q-6) |
+| **Illustration de Kanto** | asset lourd de DA | placeholder généré par un outil, rectangles des zones en données ; la vraie illustration en phase DA |
+| **Toasts pendant un combat** | un toast « Pokédex mis à jour » sous l'interface de combat | toasts du Pokédex différés à la fin de la rencontre |
+| **Agents en parallèle** sur `boot.gd` | conflits | règle du §8 |
+
+---
+
+## 12. Questions pour Kevin (valeur par défaut appliquée si tu ne dis rien)
+
+> **Décisions de Kevin (2026-10-02) — verrouillées.** Défauts acceptés pour Q-1, Q-2, Q-4 à Q-6, Q-8, Q-10 à Q-16, Q-18 à Q-21. Modifiés ou précisés :
+> - **Q-3** : le retour Android **ne ferme jamais le jeu**. En exploration, il ouvre le Menu Dresseur ; menu ouvert, il remonte d'un niveau ; à la racine, il ferme le menu et rend le jeu. La fermeture de l'application reste celle d'Android (pas une interaction de gameplay).
+> - **Q-7** : Pokémon visible dans le monde → seul OBSERVER l'enregistre ; Pokémon rencontré en combat sauvage → la rencontre compte comme observation ; Pokémon reçu ou capturé → observé aussi. Les Pokémon des habitants peuvent être observés avant l'activation du Pokédex, mais rien n'est visible avant l'activation (J7). **Chen (J7A)** cite la **première espèce sauvage rencontrée en combat**, jamais un Pokémon d'habitant ni un Pokémon observé dans le décor.
+> - **Q-9** : anti-spoiler jusqu'au bout. Avant activation : « Évolution : ??? ». Après : seulement ce que le joueur a réellement découvert ; **ni niveau d'évolution, ni silhouette, ni nom** d'une évolution inconnue.
+> - **Q-17** : **GRAPHISMES dès le J6, minimal** : Auto (défaut, profil choisi selon l'appareil) / Élevée / Économie (30 images/s, flou coupé et effets coûteux réduits). Aucune autre option technique. **AUDIO absent** tant qu'il n'y a pas de système audio.
+
+Seules les vraies questions de game design sont ici ; les petites (durées, tailles, positions) ont reçu une valeur par défaut au §13.
+
+**Ouvrir le menu**
+- **Q-1 — Le bouton Menu** : où et quand ? *Défaut* : un petit bouton rond translucide **en haut à droite** (planche), visible quand les contrôles le sont (caché pendant un dialogue, une scène, un combat) ; Échap ou M sur Mac.
+- **Q-2 — Avant le starter** (chambre, prologue) : *Défaut* : le menu s'ouvre dès la chambre ; la carte **ÉQUIPE** et le Pokémon de tête sont **absents** tant que l'équipe est vide (comme la carte Pokédex : absents, pas grisés) ; le Sac vide dit « Ton Sac est vide. ».
+- **Q-3 — Retour Android en exploration** : *Défaut* : comme aujourd'hui (sauvegarde, puis l'application se ferme). Menu ouvert : retour d'un niveau, puis fermeture.
+- **Q-4 — Textes des objectifs** (dossier 08 §12 Q2) : *Défaut* : une seule ligne provisoire, « Objectif : rejoindre Jadielle », après le combat contre le rival ; aucune ligne avant (le prologue guide déjà le joueur). Le colis (J7A) ajoutera la sienne.
+
+**Équipe et Sac**
+- **Q-8 — Le starter « vu 0 fois »** : *Défaut* : capturer (ou recevoir) une espèce jamais vue compte **une observation** ; les parties existantes sont corrigées par la migration v2.
+- **Q-9 — Évolution dans la fiche Équipe avant l'activation du Pokédex** : *Défaut* : « Évolution : ??? » pour les stades suivants, rien n'est révélé avant l'activation ; ensuite, les stades vus se révèlent. Une espèce sans évolution n'a pas de section.
+- **Q-10 — Potion en combat** : *Défaut* : sur **n'importe quel Pokémon de l'équipe** (PV visibles), l'action prend le tour et l'adversaire joue ensuite (Rouge/Bleu). Le SAC reste muet contre le rival du labo (décision n° 12).
+- **Q-11 — Potion sur un Pokémon K.O.** : *Défaut* : impossible (Rouge/Bleu), raison affichée « Ce Pokémon est K.O. » ; aucun objet n'est annoncé pour le ranimer.
+- **Q-12 — Tri « récents »** : *Défaut* : les objets **obtenus** le plus récemment d'abord ; le bouton de tri est toujours là.
+
+**Pokédex**
+- **Q-5 — Taille, poids, description** : *Défaut* : tailles et poids officiels ; descriptions **provisoires écrites pour le projet** (pas recopiées des jeux), marquées `draft`, à remplacer par tes textes.
+- **Q-6 — Observations** : *Défaut* : une note provisoire par espèce rencontrable au J6 (Roucool, Rattata, les 3 starters), débloquée à la première observation ; les textes et les déclencheurs (rencontres, PNJ, événements) sont à toi.
+- **Q-7 — Observer dans le décor** (dossier 08 §12 Q1, défaut « oui ») : précisions. *Défaut* : seul le geste **OBSERVER** compte (pas un Pokémon qui s'envole à 2 cases) ; les Pokémon des habitants comptent aussi (le Roucool de Mme Aoki est un Roucool) ; cela vaut dès le prologue. Conséquence pour le J7A : la réplique de Chen qui cite « la première espèce sauvage observée » devra choisir entre la première vue (par OBSERVER) et la première **rencontrée en combat**. *Défaut* : la première rencontrée en combat.
+
+**Carte et Dresseur**
+- **Q-13 — Badges avant le premier** : *Défaut* : l'écran Dresseur montre les **8 emplacements muets** dès le départ (pièce maîtresse) ; le tableau de bord n'a **pas** de ligne de badges avant le premier badge (pas de « 0 badge »).
+- **Q-14 — Grands moments** : *Défaut* : les trois moments enregistrés (premier Pokémon, combat contre le rival, première capture) **et** la première arrivée dans chaque zone extérieure (« Départ de Bourg Palette » = première arrivée sur la Route 1) ; titres provisoires.
+- **Q-15 — Zones non découvertes sur la Carte** : *Défaut* : la géographie est dessinée (placeholder d'après Rouge/Bleu) mais une zone non découverte n'a **ni nom ni toucher** ; les connexions d'une zone découverte sont son sous-titre en données (« Bourg Palette — Jadielle », déjà annoncé par le titre de la Route 1).
+
+**Paramètres**
+- **Q-16 — Mode gaucher en combat** : *Défaut* : il ne concerne que l'exploration au J6 (joystick à droite, boutons à gauche) ; l'interface de combat garde sa disposition validée.
+- **Q-17 — AUDIO et GRAPHISMES** : *Défaut* : **absents** au J6 (règle 8 : rien à régler, pas de son). Autre choix : GRAPHISMES « Économie » = 30 images/s et flou coupé, pour la batterie.
+- **Q-18 — « Confirmation de certaines actions »** : seule l'oubli d'une capacité est concerné aujourd'hui, validé sans confirmation au 5C. *Défaut* : réglage présent, **désactivé** par défaut ; le composant à deux cartes (bible §4) est construit au 6F et resservira au J7A (SOIGNER / PAS MAINTENANT, libérer, vendre un favori).
+- **Q-19 — Taille du texte et contraste** : *Défaut* : deux tailles (Normale, Grande ≈ ×1,15) et un contraste renforcé (panneaux plus opaques, texte secondaire plus clair), appliqués aux **dialogues, toasts, titres de zone et écrans du menu** ; le HUD de combat suivra en polish.
+- **Q-20 — Vitesse du texte en combat** : *Défaut* : elle règle les dialogues ; les messages de combat gardent leur tenue (un toucher avance déjà).
+- **Q-21 — Temps de jeu menu ouvert** : *Défaut* : il continue (le temps passé dans les menus est du temps de jeu).
+
+---
+
+## 13. Valeurs par défaut (petites questions, règle 4)
+
+| Sujet | Valeur |
+|---|---|
+| Ouverture / fermeture du menu | `MENU_OPEN` 0,25 s, `MENU_CLOSE` 0,2 s ; fond : flou `blur_lod` 2,0, voile 0,45 |
+| Vibration à l'ouverture | `HAPTIC_MENU_MS` 8 ms |
+| Jauges de statistiques (6A) | part de la plus haute statistique du Pokémon (on lit son profil) ; valeur écrite à côté |
+| XP au niveau 100 | barre pleine, pas de texte « avant le niveau suivant » |
+| Dates affichées | « 2 octobre 2026 » (date de l'appareil) |
+| Temps de jeu | « 0 h 07 », « 12 h 43 » |
+| Dernier état du Sac | onglet et tri gardés pendant la session, pas dans la sauvegarde |
+| UTILISER À NOUVEAU | même objet, même Pokémon ; le choix du Pokémon reste ouvert pour en changer |
+| Vitesses du texte | 25 / 45 / 90 caractères par seconde / page entière |
+| Réduction des animations | combat ×0,6, menu ×0,5 ; tenue des messages inchangée |
+| Joystick | taille 0,8 / 1,0 / 1,2 ; opacité 30 à 100 % de l'actuelle |
+| Boutons ronds | ×1,0 ou ×1,2 |
+| Pile du menu | 4 niveaux au plus (tableau de bord compris) |
+| Grand sprite (6A) | 64 px natif ×6 = 384 px (≈ 36 % de la hauteur) |
+| Écrans pas encore construits (builds de développement du J6) | `ComingSoonScreen` « <ÉCRAN> — À venir » |
+
+---
+
+## 14. Validation S24 (résumé)
+
+| Après | Ce que Kevin essaie sur le S24 |
+|---|---|
+| T1 | Sa vraie partie reprise après la migration v2 ; l'ancien APK n'écrase rien. **Validation de la sauvegarde v2.** |
+| T5 | Ouvrir, fermer, retour Android, monde figé, cinq cartes, objectif. **Validation du 6.0.** |
+| T9 | L'Équipe : lire, réordonner, favori. **Validation du 6A.** |
+| T13 | Le Sac : une Potion dans le menu et en combat. **Validation du 6B.** |
+| T17 | Le Pokédex avec `--debug-unlock pokedex`, sur sa vraie partie ; puis sans l'option : rien. **Validation du 6C.** |
+| T22 | La Carte. **Validation du 6D.** |
+| T26 | L'écran Dresseur. **Validation du 6E.** |
+| T30 | Les réglages, puis le parcours complet. **Validation du jalon 6.** |

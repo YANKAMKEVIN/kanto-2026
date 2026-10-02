@@ -15,6 +15,10 @@ const _FLAG_SOLID: int = 1
 const _FLAG_WATER: int = 2
 const _LEDGE_SHIFT: int = 2
 const _LEDGE_MASK: int = 0b1100
+## Hautes herbes (jalon 5) : bit 4, au-dessus du rebord (bits 2–3). Drapeau purement
+## informatif (rencontres, sprite « jambes dans l'herbe ») : il n'entre dans aucune règle
+## de déplacement (can_enter, get_step_target, is_free l'ignorent).
+const _FLAG_TALL_GRASS: int = 16
 
 ## Ordre d'exploration de [method find_path] (chemins reproductibles).
 const _PATH_DIRECTIONS: Array[Vector2i] = [
@@ -68,6 +72,17 @@ func set_water(cell: Vector2i, water: bool = true) -> bool:
 
 func is_water(cell: Vector2i) -> bool:
 	return _has_flag(cell, _FLAG_WATER)
+
+
+## Marque une case en hautes herbes (ou la libère). Renvoie false si hors carte. N'influe
+## sur aucune règle de déplacement : une case peut être à la fois solide et en herbe (les
+## deux cases bloquées du bord nord de Bourg Palette, jalon 5 §3.3).
+func set_tall_grass(cell: Vector2i, tall: bool = true) -> bool:
+	return _set_flag(cell, _FLAG_TALL_GRASS, tall)
+
+
+func is_tall_grass(cell: Vector2i) -> bool:
+	return _has_flag(cell, _FLAG_TALL_GRASS)
 
 
 ## Pose un rebord sur une case. Renvoie false si hors carte.

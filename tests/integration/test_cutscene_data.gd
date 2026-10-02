@@ -18,10 +18,12 @@ extends GutTest
 
 const MAPS: Array[StringName] = [
 	&"player_house_2f", &"player_house_1f", &"rival_house", &"oak_lab", &"pallet_town",
+	&"route_1",
 ]
 ## Scène → drapeaux qui choisissent chaque variante, dans l'ordre (§3.6).
 const VARIANT_FLAGS: Dictionary = {
 	&"route1_grass": [[], [&"oak_met"]],
+	&"route_1_potion": [[]],
 	&"oak_lab_exit": [[&"oak_met", &"oak_lab_reunion", &"starter_offered"]],
 	&"starter_chosen": [[&"oak_met", &"oak_lab_reunion", &"starter_offered"]],
 }
@@ -73,8 +75,8 @@ func test_library_loads_without_error() -> void:
 	var library := CutsceneLibrary.new()
 	assert_true(library.load_dir(), "data/cutscenes/ se charge")
 	assert_eq(library.get_errors().size(), 0, str(library.get_errors()))
-	assert_eq(library.get_ids(), [&"oak_lab_exit", &"route1_grass", &"starter_chosen"]
-		as Array[StringName])
+	assert_eq(library.get_ids(), [&"oak_lab_exit", &"route1_grass", &"route_1_potion",
+		&"starter_chosen"] as Array[StringName])
 
 
 func test_route1_grass_ends_with_the_starter_offer() -> void:
@@ -101,6 +103,7 @@ func test_every_trigger_targets_a_scene_and_every_scene_is_triggered() -> void:
 			continue
 		assert_true(_triggered_on.has(id), "scène « %s » visée par un déclencheur" % id)
 	assert_eq(_triggered_on.get(&"route1_grass"), [&"pallet_town"])
+	assert_eq(_triggered_on.get(&"route_1_potion"), [&"route_1"])
 	assert_eq(_triggered_on.get(&"oak_lab_exit"), [&"oak_lab"])
 	assert_eq(_offer.chosen_scene, &"starter_chosen", "scène du choix = CODE_PLAYED")
 	assert_eq(CODE_PLAYED[_offer.chosen_scene], _offer.map_id)
@@ -122,6 +125,18 @@ func test_every_trainer_and_item_step_exists() -> void:
 	assert_false(item_ids.is_empty(), "au moins les Poké Balls")
 	for id: StringName in item_ids:
 		assert_true(_items.has_item(id), "objet « %s » chargé" % id)
+
+
+## Jalon 5C.5 (décision de Kevin) : seule la Potion de la Route 1 est un objet **trouvé** dans
+## le monde ; les 5 Poké Balls de Chen sont **reçues** (pas au journal des objets trouvés).
+func test_only_the_route_1_potion_is_a_found_item() -> void:
+	var found: Array[String] = []
+	for id: StringName in _cutscenes.get_ids():
+		for variant: CutsceneVariant in _cutscenes.get_cutscene(id).variants:
+			for step: CutsceneStep in variant.steps:
+				if step.kind == CutsceneStep.Kind.GIVE and step.found:
+					found.append("%s:%s" % [id, step.item_id])
+	assert_eq(found, ["route_1_potion:potion"] as Array[String])
 
 
 func test_every_change_map_targets_an_existing_map_and_spawn() -> void:
@@ -161,7 +176,7 @@ func test_static_simulation_of_every_variant() -> void:
 			maps = [CODE_PLAYED[id]]
 			# La scène du choix contient un combat : on la joue « à blanc » pour les deux issues
 			# (jalon-04.md §14.11 T8) ; les autres n'ont pas d'étape « battle ».
-			var outcomes: Array[int] = [Battle.Outcome.WIN, Battle.Outcome.LOSS] \
+			var outcomes: Array[int] = ([Battle.Outcome.WIN, Battle.Outcome.LOSS] as Array[int]) \
 				if id == _offer.chosen_scene else ([Battle.Outcome.WIN] as Array[int])
 			for i: int in mini(rows.size(), cutscene.variants.size()):
 				for map_id: StringName in maps:
@@ -272,7 +287,7 @@ func test_starter_chosen_battle_and_aftermath() -> void:
 		if steps[i].kind == CutsceneStep.Kind.GIVE:
 			give = i
 		if steps[i].kind == CutsceneStep.Kind.SET_FLAGS \
-				and steps[i].flags == [&"rival_left_lab"] as Array[StringName]:
+				and steps[i].flags == ([&"rival_left_lab"] as Array[StringName]):
 			left = i
 	assert_gt(give, battle, "give après le combat")
 	assert_eq(steps[give].item_id, &"poke_ball")

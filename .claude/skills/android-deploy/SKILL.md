@@ -9,7 +9,7 @@ description: Exporter Kanto 2026 en APK et le tester sur le Galaxy S24 de Kevin 
 
 - Godot 4.7.2 + templates d'export installés ; editor settings pointent le SDK `~/Library/Android/sdk` et Java = JBR 21 d'Android Studio ; keystore debug dans `~/Library/Application Support/Godot/keystores/`.
 - adb : `~/Library/Android/sdk/platform-tools/adb` (**pas dans le PATH**).
-- S24 : série `RFCX80Y0FVX`, écran **2340×1080** en paysage. Toujours passer `-s RFCX80Y0FVX`.
+- S24 : série matérielle `RFCX80Y0FVX`, écran **2340×1080** en paysage. Il peut être branché en **USB ou en débogage sans fil** (série `ip:port` ou `adb-RFCX80Y0FVX-…`) : toujours résoudre la série avec `S24=$(tools/s24_serial.sh)` et passer `-s "$S24"`, jamais une série codée en dur.
 - Preset « Android » dans `export_presets.cfg` : arm64 seul, sans gradle build, package `dev.kevin.kanto2026`, immersif.
 - Kevin teste sur le **téléphone physique**, pas sur l'émulateur (lent et instable sur ce Mac).
 
@@ -22,30 +22,33 @@ tools/deploy_s24.sh --no-build --wait 8 --shot build/s24_bourg.png
 ```
 Puis **lire la capture** (`Read build/screenshot.png`) et vérifier : rendu, lisibilité, marges de l'encoche (caméra perforée à gauche en paysage), zones tactiles.
 
-Si le téléphone n'est pas détecté (`get-state` échoue) : demander à Kevin de brancher/déverrouiller le S24 et d'accepter le débogage USB. Ne pas basculer sur l'émulateur.
+Si le téléphone n'est pas détecté (`tools/s24_serial.sh` échoue) : demander à Kevin de brancher et déverrouiller le S24, ou d'activer le **débogage sans fil** (même Wi-Fi que le Mac). Ne pas basculer sur l'émulateur.
 
 ## Logs
 
 ```bash
 ADB=~/Library/Android/sdk/platform-tools/adb
-$ADB -s RFCX80Y0FVX logcat -d -s godot:V | tail -80        # print() et erreurs Godot
-$ADB -s RFCX80Y0FVX logcat -d | grep -E "AndroidRuntime|FATAL" # crash natif
+S24=$(tools/s24_serial.sh)
+$ADB -s "$S24" logcat -d -s godot:V | tail -80        # print() et erreurs Godot
+$ADB -s "$S24" logcat -d | grep -E "AndroidRuntime|FATAL" # crash natif
 ```
 
 ## Simuler des gestes (coordonnées écran physiques 2340×1080)
 
 ```bash
-$ADB -s RFCX80Y0FVX shell input tap 2100 850                     # toucher (bouton droit)
-$ADB -s RFCX80Y0FVX shell input swipe 400 800 400 800 1500       # appui long 1,5 s
-$ADB -s RFCX80Y0FVX shell input swipe 400 800 600 800 2000       # glisser vers la droite (joystick)
+$ADB -s "$S24" shell input tap 2100 850                     # toucher (bouton droit)
+$ADB -s "$S24" shell input swipe 400 800 400 800 1500       # appui long 1,5 s
+$ADB -s "$S24" shell input swipe 400 800 600 800 2000       # glisser vers la droite (joystick)
 ```
 Conversion depuis la résolution de référence 1920×1080 (aspect expand) : la hauteur est identique (y réf = y écran) ; en largeur l'espace est élargi à ~2340, donc x écran ≈ x réf + (2340−1920)/2 pour des éléments centrés, x réf pour des éléments ancrés à gauche, x réf + 420 pour des éléments ancrés à droite.
 
 ## FPS
 
-Méthode recommandée : en build debug, un nœud de debug imprime toutes les 2 s
-`print("[perf] fps=%d draw=%d" % [Engine.get_frames_per_second(), Performance.get_monitor(Performance.RENDER_TOTAL_DRAW_CALLS_IN_FRAME)])`
-puis lire `logcat -s godot:V | grep perf`. Objectif : **60 fps stables** en exploration et en combat.
+Le jeu l'écrit déjà : en build debug seulement (`PerfCounter`, `game/systems/debug/perf_counter.gd`, ajouté par Boot quand il est la scène principale ; jamais sous GUT ni dans un outil), une ligne toutes les 2 s :
+
+`[perf] fps=60 min=54 draw=87` (`fps` = moyenne sur la fenêtre de 2 s, `min` = cadence de l'image la plus lente de la fenêtre, pour repérer une saccade pendant une transition ou un lancer, `draw` = appels de dessin de la dernière image).
+
+Lecture : `adb logcat -s godot:V | grep perf`. Objectif : **60 fps stables** en exploration et en combat.
 
 ## Checklist de validation d'une fonctionnalité
 

@@ -17,7 +17,20 @@ extends RefCounted
 ## [/codeblock]
 ## Tous les modèles de [constant TEMPLATE_IDS] sont obligatoires, aucun autre n'est admis.
 ## Marques admises : {pokemon} (nom seul, jamais « ennemi » ni « du Rival »), {de_pokemon}
-## (« de Salamèche », « d'Évoli »), {move}, {trainer}, {stat} (nom de « stats »).
+## (« de Salamèche », « d'Évoli »), {move}, {trainer}, {stat} (nom de « stats »), {level}
+## (niveau de l'événement), {exp} (son [member BattleEvent.amount]), {old_move} (capacité
+## oubliée, seulement par [method line_for]), {item} (nom de la Ball,
+## [member BattleEvent.item_name]).
+## Capture (jalon 5D) : BALL_THROWN → « ball_thrown » ; BROKE_FREE → « broke_free » ;
+## BALL_SHAKE, CAUGHT et BATTLE_ENDED (CAUGHT) n'ont pas de phrase. La carte de capture
+## (dossier 05 §17) demande à [method line_for], avec l'événement CAUGHT (accord au féminin) :
+## « caught_title » (« Roucool CAPTURÉ ! » ; la carte l'affiche en capitales), « pokedex_new »
+## (seulement pour une nouvelle entrée), puis « joined_party » ou « sent_to_storage ».
+## XP (jalon 5C) : EXP_GAINED n'a pas de phrase (« +21 XP » est sur la carte) ; LEVEL_UP →
+## « level_up » (décision de Kevin du 2026-10-02 après le S24 : la seule pulsation de « Nv. »
+## passait inaperçue) ; MOVE_LEARNED → « move_learned » ; MOVE_FORGET_OFFERED →
+## « move_forget_prompt ». La suite de l'oubli (« move_forgot », « move_not_learned ») ne
+## vient pas d'un événement : la présentation la demande à [method line_for].
 ## « draft » : texte à relire par Kevin. « text_f » (facultatif) : la phrase accordée au
 ## féminin, employée quand le Pokémon de l'événement est une femelle (décision de Kevin
 ## n° 15, jalon 4 §8) ; sans elle, « text » sert pour tous. [method lines] traduit un
@@ -33,9 +46,15 @@ const TEMPLATE_IDS: Array[StringName] = [
 	&"critical", &"super_effective", &"not_very_effective", &"no_effect",
 	&"stat_rose", &"stat_rose_2", &"stat_rose_3", &"stat_fell", &"stat_fell_2",
 	&"stat_fell_3", &"stat_no_higher", &"stat_no_lower", &"recoil", &"fainted",
-	&"battle_won", &"battle_lost",
+	&"battle_won", &"battle_lost", &"wild_appeared", &"fled", &"flee_failed",
+	&"level_up", &"move_learned", &"move_forget_prompt", &"move_forgot", &"move_not_learned",
+	&"seeded", &"drained",
+	&"ball_thrown", &"broke_free", &"caught_title", &"pokedex_new", &"joined_party",
+	&"sent_to_storage",
 ]
-const PLACEHOLDERS: Array[String] = ["pokemon", "de_pokemon", "move", "trainer", "stat"]
+const PLACEHOLDERS: Array[String] = [
+	"pokemon", "de_pokemon", "move", "trainer", "stat", "level", "exp", "old_move", "item",
+]
 
 const _TEMPLATE_KEYS: Array[String] = ["text", "text_f", "draft"]
 const _VOWELS: String = "AEIOUYÀÂÄÉÈÊËÎÏÔÖÙÛÜaeiouyàâäéèêëîïôöùûü"
@@ -142,6 +161,8 @@ func lines(event: BattleEvent, data: PokemonData, trainer: TrainerData = null) \
 				result.append(_fill(&"sent_out_player", event, data))
 			elif not event.trainer_name.is_empty():
 				result.append(_fill(&"sent_out_foe", event, data))
+			else:
+				result.append(_fill(&"wild_appeared", event, data))
 		BattleEvent.Kind.MOVE_USED:
 			result.append(_fill(&"move_used", event, data))
 		BattleEvent.Kind.MOVE_MISSED:
@@ -167,13 +188,44 @@ func lines(event: BattleEvent, data: PokemonData, trainer: TrainerData = null) \
 			result.append(_fill(&"recoil", event, data))
 		BattleEvent.Kind.FAINTED:
 			result.append(_fill(&"fainted", event, data))
+		BattleEvent.Kind.FLED:
+			result.append(_fill(&"fled", event, data))
+		BattleEvent.Kind.FLEE_FAILED:
+			result.append(_fill(&"flee_failed", event, data))
+		BattleEvent.Kind.LEVEL_UP:
+			result.append(_fill(&"level_up", event, data))
+		BattleEvent.Kind.MOVE_LEARNED:
+			result.append(_fill(&"move_learned", event, data))
+		BattleEvent.Kind.MOVE_FORGET_OFFERED:
+			result.append(_fill(&"move_forget_prompt", event, data))
+		BattleEvent.Kind.SEEDED:
+			result.append(_fill(&"seeded", event, data))
+		BattleEvent.Kind.DRAINED:
+			result.append(_fill(&"drained", event, data))
+		BattleEvent.Kind.BALL_THROWN:
+			result.append(_fill(&"ball_thrown", event, data))
+		BattleEvent.Kind.BROKE_FREE:
+			result.append(_fill(&"broke_free", event, data))
 		BattleEvent.Kind.BATTLE_ENDED:
+			# FLED ne porte pas de message ici (il est sur l'événement FLED). Un sauvage n'a
+			# pas de dresseur (trainer_name vide) : « Tu as battu… » ne s'affiche pas.
 			var wanted := trainer == null or trainer.end_message
 			if wanted and not event.trainer_name.is_empty() \
-					and event.outcome != Battle.Outcome.NONE:
+					and event.outcome in [Battle.Outcome.WIN, Battle.Outcome.LOSS]:
 				result.append(_fill(&"battle_won" if event.outcome == Battle.Outcome.WIN
 					else &"battle_lost", event, data))
 	return result
+
+
+## Phrase du modèle [param id] remplie avec [param event] (chaîne vide si le modèle n'existe
+## pas). [param old_move] : la capacité oubliée ({old_move}). Sert à ce qui ne vient pas d'un
+## événement du moteur : « Salamèche oublie Griffe et apprend Frénésie ! »
+## ([code]line_for(&"move_forgot", offered, data, &"scratch")[/code]), « … n'apprend pas … ».
+func line_for(id: StringName, event: BattleEvent, data: PokemonData,
+		old_move: StringName = &"") -> String:
+	if not _texts.has(id):
+		return ""
+	return _fill(id, event, data, old_move)
 
 
 ## « de Salamèche », « d'Évoli » : élision devant une voyelle.
@@ -188,14 +240,20 @@ func get_errors() -> PackedStringArray:
 	return _errors
 
 
-func _fill(id: StringName, event: BattleEvent, data: PokemonData) -> String:
+func _fill(id: StringName, event: BattleEvent, data: PokemonData,
+		old_move: StringName = &"") -> String:
 	var move := data.get_move(event.move_id)
+	var forgotten := data.get_move(old_move)
 	return get_template(id, event.gender == Pokemon.Gender.FEMALE).format({
 		"pokemon": event.pokemon_name,
 		"de_pokemon": de_name(event.pokemon_name),
 		"move": move.name if move != null else String(event.move_id),
 		"trainer": event.trainer_name,
 		"stat": _stats.get(event.stat, String(event.stat)),
+		"level": event.level,
+		"exp": event.amount,
+		"old_move": forgotten.name if forgotten != null else String(old_move),
+		"item": event.item_name,
 	})
 
 

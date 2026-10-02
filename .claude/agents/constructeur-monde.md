@@ -2,7 +2,7 @@
 name: constructeur-monde
 description: Constructeur du monde de Kanto 2026 (Godot 4.7). À utiliser pour tout ce qui vit dans l'espace de jeu - TileSet et cartes en TileMapLayer, tuiles provisoires, joueur et déplacement case par case, caméra, collisions, portes et changements de zone, herbes hautes, PNJ et leurs routines, Pokémon visibles dans le décor, jour/nuit et éclairage 2D.
 tools: Read, Write, Edit, Bash, Grep, Glob
-model: inherit
+model: sonnet
 skills:
   - godot-conventions
   - godot-cli

@@ -24,6 +24,9 @@ signal step_finished(cell: Vector2i)
 signal hopped(cell: Vector2i)
 ## Élan terminé ([method lean_toward]) ou retour terminé ([method settle]).
 signal lean_finished
+## Pokémon d'ambiance qui quitte la scène ([method fly_away] / [method flee], jalon 5 §3.5) :
+## le watcher fait alors [method GameMap.remove_npc].
+signal left_scene(npc_id: StringName)
 
 ## SpriteFrames des apparences : `<FRAMES_DIR><sprite>_frames.tres`.
 const FRAMES_DIR: String = "res://assets/sprites/characters/placeholder/"
@@ -90,6 +93,15 @@ const HOP_SHADOW_SHRINK: float = 0.3
 ## l'aller comme du retour ([method settle]).
 const LEAN_DISTANCE: float = 20.0
 const LEAN_DURATION: float = 0.18
+## Sortie de scène d'un Pokémon d'ambiance (jalon 5 §3.5). Envol (Roucool) : montée en arc
+## et fondu ; fuite (Rattata) : petits pas puis fondu.
+const FLY_RISE: float = 96.0
+const FLY_DRIFT: float = 48.0
+const FLY_DURATION: float = 0.6
+const FLEE_FADE_DURATION: float = 0.25
+## Délai (s) avant que le PNJ à routine reprenne sa marche après un dialogue (dossier 07 §5 :
+## « après le dialogue, il attend un court instant puis reprend »).
+const ROUTE_RESUME_DELAY: float = 0.6
 const _IDLE_ANIMS: Dictionary[Vector2i, StringName] = {
 	Vector2i.DOWN: &"idle_down",
 	Vector2i.UP: &"idle_up",
@@ -142,6 +154,17 @@ var _hop_start_lift: float = 0.0
 var _hop_height: float = 0.0
 ## Échelle du sprite au repos (celle de la scène : ×2), rétablie après une compression.
 var _base_scale: Vector2 = Vector2(2.0, 2.0)
+## Routine de marche (jalon 5, le Voyageur) : cases voisines parcourues en boucle.
+var _route: Array[Vector2i] = []
+var _route_pause: float = NpcSpec.ROUTE_PAUSE_DEFAULT
+var _route_index: int = 0
+var _route_wait: float = 0.0
+var _route_active: bool = false
+## Suspendue pendant un dialogue (il s'arrête et se tourne vers le joueur, dossier 07 §5).
+var _route_suspended: bool = false
+## Sortie de scène en cours ([method fly_away] / [method flee]) : plus d'interaction.
+var _leaving: bool = false
+var _leave_tween: Tween
 
 @onready var _sprite: AnimatedSprite2D = %Sprite
 @onready var _shadow: Sprite2D = %Shadow
@@ -154,16 +177,31 @@ func _ready() -> void:
 	_apply_spec()
 
 
-## Ne tourne que pendant un pas : le [GridMover] avance, le nœud suit (position arrondie).
+## Ne tourne que pendant un pas ou pour piloter la routine de marche (jalon 5) : le
+## [GridMover] avance, le nœud suit (position arrondie).
 func _process(delta: float) -> void:
 	if _mover == null:
 		set_process(false)
 		return
-	_mover.update(delta, Vector2i.ZERO, false)
-	position = _mover.get_world_position().round()
-	if not _mover.is_moving():
-		set_process(false)
-		_play_idle()
+	if _mover.is_moving():
+		_mover.update(delta, Vector2i.ZERO, false)
+		# step_finished est émis pendant update() : la fin d'une fuite fait alors quitter la
+		# grille au PNJ (leave_grid remet _mover à null, position et _process déjà réglés).
+		if _mover == null:
+			return
+		position = _mover.get_world_position().round()
+		if not _mover.is_moving():
+			_play_idle()
+			if _route_active:
+				_route_wait = _route_pause
+		return
+	if _route_active and not _route_suspended and not _hopping and not _leaving:
+		_route_wait -= delta
+		if _route_wait <= 0.0:
+			_advance_route()
+		return
+	set_process(false)
+	_play_idle()
 
 
 ## Décrit le PNJ (à appeler avant l'ajout à l'arbre ; rappelable ensuite). Position = pieds
@@ -178,6 +216,11 @@ func setup(spec: NpcSpec) -> void:
 	_interaction = _spec.make_interaction(_spec.cell, self)
 	_lift = float(_spec.lift)
 	_lean = Vector2.ZERO
+	_route = _spec.route_cells.duplicate()
+	_route_pause = _spec.route_pause
+	_route_index = 0
+	_route_active = false
+	_route_suspended = false
 	if is_node_ready():
 		_apply_spec()
 
@@ -218,14 +261,18 @@ func enter_grid(grid: GridWorld) -> bool:
 	_grid = grid
 	_mover.step_finished.connect(_on_step_finished)
 	position = Grid.cell_to_world(cell)
-	set_process(false)
 	_play_idle()
+	if not _route.is_empty():
+		_start_route(cell)
+	else:
+		set_process(false)
 	return true
 
 
 ## Libère sa case (et la case visée par un pas en cours) ; le PNJ reste où il est.
 func leave_grid() -> void:
 	_abort_hop()
+	_route_active = false
 	if _mover == null:
 		return
 	var cell := _mover.get_cell()
@@ -318,18 +365,24 @@ func face_toward(cell: Vector2i) -> void:
 		face(Vector2i(0, signi(delta.y)))
 
 
-## Début d'une interaction avec le joueur en [param player_cell] : il se tourne vers lui si
-## [member NpcSpec.turn_to_player].
+## Début d'une interaction avec le joueur en [param player_cell] : il s'arrête (routine
+## suspendue) et se tourne vers lui si [member NpcSpec.turn_to_player].
 func begin_interaction(player_cell: Vector2i) -> void:
+	_route_suspended = true
 	if _spec.turn_to_player:
 		face_toward(player_cell)
 
 
 ## Fin d'une interaction : il reprend son orientation au repos (« retourne à ses
-## affaires »), sauf [member NpcSpec.keep_facing].
+## affaires »), sauf [member NpcSpec.keep_facing], puis reprend sa routine après un court
+## instant (dossier 07 §5).
 func end_interaction() -> void:
 	if not _spec.keep_facing:
 		face(_spec.facing)
+	if _route_active:
+		_route_suspended = false
+		_route_wait = ROUTE_RESUME_DELAY
+		set_process(true)
 
 
 ## Petite réaction (indication « react » d'une page de dialogue) : animation
@@ -696,6 +749,103 @@ func _sync_interaction_cells(cell: Vector2i) -> void:
 		_interaction.cell = cell
 	if _override != null:
 		_override.cell = cell
+
+
+## Démarre la routine de marche depuis [param cell] (une case de [member _route]) : il attend
+## une pause avant le premier pas.
+func _start_route(cell: Vector2i) -> void:
+	_route_active = true
+	_route_suspended = false
+	_route_index = maxi(_route.find(cell), 0)
+	_route_wait = _route_pause
+	set_process(true)
+
+
+## Un pas vers la case suivante de la routine (boucle). Si elle est prise (le joueur y est),
+## il patiente et réessaiera : il ne bloque jamais le passage, ne force jamais un pas.
+func _advance_route() -> void:
+	if _route.size() < 2:
+		_route_active = false
+		return
+	var target_index := (_route_index + 1) % _route.size()
+	var next := _route[target_index]
+	var direction := Grid.dominant_direction(get_cell(), next)
+	if direction == Vector2i.ZERO:
+		_route_index = target_index
+		_route_wait = _route_pause
+		return
+	if step(direction):
+		_route_index = target_index
+	else:
+		# Case prise (joueur) : il se tourne vers elle et attend, sans avancer.
+		_route_wait = _route_pause
+
+
+## Envol d'un Pokémon d'ambiance (Roucool, jalon 5 §3.5) : montée en arc vers le haut et le
+## bord, fondu, puis [signal left_scene]. Libère sa case tout de suite.
+func fly_away() -> void:
+	if _leaving:
+		return
+	_leaving = true
+	_route_active = false
+	_abort_hop()
+	if _mover != null:
+		leave_grid()
+	if not is_inside_tree() or _sprite == null:
+		left_scene.emit(get_id())
+		return
+	if _leave_tween != null and _leave_tween.is_valid():
+		_leave_tween.kill()
+	_leave_tween = create_tween()
+	_leave_tween.set_parallel(true)
+	var drift := FLY_DRIFT if _facing != Vector2i.LEFT else -FLY_DRIFT
+	_leave_tween.tween_property(_sprite, ^"position",
+		Vector2(_sprite.position.x + drift, _sprite.position.y - FLY_RISE), FLY_DURATION) \
+		.set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN)
+	_leave_tween.tween_property(_sprite, ^"modulate:a", 0.0, FLY_DURATION)
+	_leave_tween.tween_property(_shadow, ^"modulate:a", 0.0, FLY_DURATION)
+	_leave_tween.chain().tween_callback(func() -> void: left_scene.emit(get_id()))
+
+
+## Fuite d'un Pokémon d'ambiance (Rattata, jalon 5 §3.5) : il détale en courant le long de
+## [param path] (directions), puis fondu et [signal left_scene]. Chemin vide : il se retourne
+## et [method react] (il reste ; le watcher ne le retire pas).
+func flee(path: Array[Vector2i]) -> void:
+	if _leaving:
+		return
+	_route_active = false
+	if path.is_empty():
+		react()
+		return
+	_leaving = true
+	_abort_hop()
+	_flee_steps(path.duplicate())
+
+
+func _flee_steps(remaining: Array[Vector2i]) -> void:
+	if remaining.is_empty():
+		_flee_fade()
+		return
+	var direction: Vector2i = remaining.pop_front()
+	if not step(direction, true):
+		_flee_fade()
+		return
+	await step_finished
+	_flee_steps(remaining)
+
+
+func _flee_fade() -> void:
+	if _mover != null:
+		leave_grid()
+	if not is_inside_tree() or _sprite == null:
+		left_scene.emit(get_id())
+		return
+	if _leave_tween != null and _leave_tween.is_valid():
+		_leave_tween.kill()
+	_leave_tween = create_tween()
+	_leave_tween.tween_property(_sprite, ^"modulate:a", 0.0, FLEE_FADE_DURATION)
+	_leave_tween.parallel().tween_property(_shadow, ^"modulate:a", 0.0, FLEE_FADE_DURATION)
+	_leave_tween.tween_callback(func() -> void: left_scene.emit(get_id()))
 
 
 func _on_animation_finished() -> void:

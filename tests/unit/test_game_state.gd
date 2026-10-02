@@ -1,9 +1,11 @@
 extends GutTest
 ## Autoload GameState (jalon 3A §2.6) : drapeaux de la session, nouvelle partie, aucune
 ## dépendance à un autre autoload. Jalon 4 (§3.9, T1) : équipe, starter, aléatoire à graine.
-## Jalon 4B (§14.6) : le Sac.
+## Jalon 4B (§14.6) : le Sac. Jalon 5 (§16) : faits pour le J6 ; l'aller-retour complet de la
+## sauvegarde est dans test_save_system.gd.
 
 const SCRIPT_PATH := "res://game/autoload/game_state.gd"
+const FixedClock := preload("res://tests/helpers/fixed_clock.gd")
 
 
 func _make() -> Node:
@@ -83,6 +85,18 @@ func test_starts_with_an_empty_bag_and_new_game_empties_it() -> void:
 	assert_same(state.bag, bag, "même instance de Sac (injectée)")
 
 
+func test_starts_with_an_empty_pokedex_and_new_game_empties_it() -> void:
+	var state := _make()
+	assert_true(state.pokedex is Pokedex)
+	assert_eq(state.pokedex.seen_count(), 0)
+	var dex: Pokedex = state.pokedex
+	state.pokedex.mark_caught(&"pidgey")
+	state.new_game()
+	assert_eq(state.pokedex.seen_count(), 0, "Pokédex vidé")
+	assert_eq(state.pokedex.caught_count(), 0)
+	assert_same(state.pokedex, dex, "même instance de Pokédex (injectée)")
+
+
 func test_new_game_changes_the_seed() -> void:
 	var state := _make()
 	var seeds := {}
@@ -109,6 +123,176 @@ func test_new_game_with_a_seed_is_reproducible() -> void:
 	assert_eq(second, first, "mêmes tirages")
 
 
+# --- Faits pour le J6 (jalon 5 §16.3) --------------------------------------------------------
+
+func _dated() -> Node:
+	var state := _make()
+	state.clock = FixedClock.new("2026-10-02T14:03:05")
+	state.new_game(1)
+	return state
+
+
+func test_new_game_starts_the_adventure_now_with_default_name_and_no_facts() -> void:
+	var state := _dated()
+	assert_eq(state.player_name, "Kevin")
+	assert_eq(state.started_at, "2026-10-02T14:03:05")
+	assert_eq(state.play_time, 0.0)
+	assert_eq(state.current_map, &"")
+	assert_eq(state.player_facing, Vector2i.DOWN)
+	assert_eq(state.discovered_maps.size(), 0)
+	assert_eq(state.found_items.size(), 0)
+	assert_eq(state.moments.size(), 0)
+
+
+func test_new_game_resets_every_fact() -> void:
+	var state := _dated()
+	state.player_name = "Rouge"
+	state.add_play_time(10.0)
+	state.set_player_location(&"route_1", Vector2i(3, 4), Vector2i.LEFT)
+	state.heal_map = &"viridian_center"
+	state.discover_map(&"route_1")
+	state.record_item_found(&"potion", &"route_1")
+	state.record_moment(state.MOMENT_STARTER, &"oak_lab")
+	state.clock.iso = "2027-01-01T00:00:00"
+	state.new_game()
+	assert_eq(state.player_name, "Kevin")
+	assert_eq(state.play_time, 0.0)
+	assert_eq(state.started_at, "2027-01-01T00:00:00", "nouvelle aventure, nouvelle date")
+	assert_eq(state.current_map, &"")
+	assert_eq(state.player_cell, Vector2i.ZERO)
+	assert_eq(state.player_facing, Vector2i.DOWN)
+	assert_eq(state.heal_map, &"player_house_1f")
+	assert_eq(state.discovered_maps.size(), 0)
+	assert_eq(state.found_items.size(), 0)
+	assert_eq(state.moments.size(), 0)
+
+
+func test_play_time_only_grows() -> void:
+	var state := _dated()
+	state.add_play_time(1.5)
+	state.add_play_time(-3.0)
+	state.add_play_time(0.0)
+	state.add_play_time(2.0)
+	assert_eq(state.play_time, 3.5)
+
+
+func test_discover_map_dates_the_first_visit_only() -> void:
+	var state := _dated()
+	assert_true(state.discover_map(&"pallet_town"))
+	state.clock.iso = "2026-10-03T09:00:00"
+	assert_false(state.discover_map(&"pallet_town"), "déjà découverte")
+	assert_false(state.discover_map(&""))
+	assert_eq(state.discovered_maps[&"pallet_town"], "2026-10-02T14:03:05")
+	assert_eq(state.discovered_maps.size(), 1)
+
+
+func test_record_item_found_and_moments_are_append_only_and_dated() -> void:
+	var state := _dated()
+	state.record_item_found(&"potion", &"route_1")
+	state.record_item_found(&"", &"route_1")
+	assert_eq(state.found_items, [{"item": "potion", "map": "route_1",
+		"date": "2026-10-02T14:03:05"}] as Array[Dictionary])
+	var details := {"species": "charmander"}
+	state.record_moment(state.MOMENT_STARTER, &"oak_lab", details)
+	details["species"] = "modifié après"
+	state.clock.iso = "2026-10-02T15:00:00"
+	state.record_moment(state.MOMENT_RIVAL_BATTLE, &"oak_lab", {"outcome": "win"})
+	state.record_moment(&"", &"oak_lab")
+	assert_eq(state.moments.size(), 2)
+	assert_eq(state.moments[0], {"type": "starter", "date": "2026-10-02T14:03:05",
+		"map": "oak_lab", "details": {"species": "charmander"}})
+	assert_eq(state.moments[1]["type"], "rival_battle")
+	assert_eq(state.moments[1]["date"], "2026-10-02T15:00:00")
+
+
+func test_record_seen_and_caught_date_the_pokedex() -> void:
+	var state := _dated()
+	assert_true(state.record_seen(&"pidgey", &"route_1"))
+	assert_false(state.record_seen(&"pidgey", &"route_1"))
+	assert_true(state.record_caught(&"pidgey", &"route_1"))
+	var entry: PokedexEntry = state.pokedex.get_entry(&"pidgey")
+	assert_eq(entry.first_seen_date, "2026-10-02T14:03:05")
+	assert_eq(entry.first_caught_map, &"route_1")
+	assert_eq(entry.times_seen, 2)
+
+
+func test_a_captured_starter_is_seen_once_not_zero_times() -> void:
+	# Le starter n'est jamais « vu » en combat : sa capture est sa première observation.
+	var state := _dated()
+	assert_true(state.record_caught(&"charmander", &"oak_lab"))
+	var entry: PokedexEntry = state.pokedex.get_entry(&"charmander")
+	assert_eq(entry.times_seen, 1)
+	assert_eq(entry.times_caught, 1)
+	assert_eq(entry.first_seen_map, &"oak_lab")
+	# Le Pokémon du rival, lui, est seulement vu.
+	state.record_seen(&"squirtle", &"oak_lab")
+	assert_eq(state.pokedex.times_seen(&"squirtle"), 1)
+	assert_false(state.pokedex.is_caught(&"squirtle"))
+
+
+func test_load_dict_fixes_a_captured_species_saved_as_seen_zero_times() -> void:
+	var state := _dated()
+	state.record_caught(&"charmander", &"oak_lab")
+	var saved: Dictionary = state.to_dict()
+	# Sauvegarde du jalon 5 avant la règle : le compteur d'observations est à 0.
+	saved["pokedex"]["entries"]["charmander"]["times_seen"] = 0
+	var data := PokemonData.new()
+	assert_true(data.load_dir())
+	var loaded := _make()
+	assert_true(loaded.load_dict(saved, data))
+	assert_eq(loaded.pokedex.times_seen(&"charmander"), 1, "corrigé au chargement")
+	assert_true(loaded.pokedex.is_caught(&"charmander"))
+	assert_eq(loaded.pokedex.times_caught(&"charmander"), 1)
+
+
+func test_stamp_meeting_uses_the_player_name_the_date_and_the_level() -> void:
+	var state := _dated()
+	var data := PokemonData.new()
+	assert_true(data.load_dir())
+	var charmander := PokemonFactory.create(data, &"charmander", 5, GameRng.new(1))
+	state.stamp_meeting(charmander, Pokemon.Origin.STARTER, &"oak_lab")
+	assert_eq(charmander.origin, Pokemon.Origin.STARTER)
+	assert_eq(charmander.met_map, &"oak_lab")
+	assert_eq(charmander.met_level, 5)
+	assert_eq(charmander.met_date, "2026-10-02T14:03:05")
+	assert_eq(charmander.original_trainer, "Kevin")
+	state.stamp_meeting(null, Pokemon.Origin.CAPTURE, &"route_1")
+	pass_test("un Pokémon null est ignoré")
+
+
+func test_to_dict_lists_every_saved_field_and_nothing_else() -> void:
+	# §16.2 + §16.3 ; pas d'argent, de badges ni de statistiques (§16.3 « pas stocké »).
+	var keys: Array = _dated().to_dict().keys()
+	keys.sort()
+	assert_eq(keys, ["bag", "cell", "discovered_maps", "facing", "flags", "found_items",
+		"heal_map", "heal_spawn", "map", "moments", "party", "play_time", "player_name",
+		"pokedex", "rng", "started_at", "starter", "storage"])
+
+
+func test_starts_with_an_empty_storage_and_new_game_empties_it() -> void:
+	# Jalon 5D : le « système de recherche de Chen » (équipe pleine).
+	var state := _make()
+	assert_true(state.storage is PokemonStorage)
+	assert_true(state.storage.is_empty())
+	var storage: PokemonStorage = state.storage
+	var data := PokemonData.new()
+	assert_true(data.load_dir(), "données Pokémon")
+	state.storage.add(PokemonFactory.create(data, &"pidgey", 3, GameRng.new(1)))
+	state.new_game()
+	assert_true(state.storage.is_empty(), "stockage vidé")
+	assert_same(state.storage, storage, "même instance (injectée)")
+
+
 func test_registered_as_autoload() -> void:
 	assert_eq(ProjectSettings.get_setting("autoload/GameState"), "*" + SCRIPT_PATH)
 	assert_not_null(get_tree().root.get_node_or_null(^"GameState"))
+
+
+func test_has_moment_tells_whether_a_moment_type_is_recorded() -> void:
+	var state := _dated()
+	assert_false(state.has_moment(state.MOMENT_FIRST_CAPTURE))
+	state.record_moment(state.MOMENT_STARTER, &"oak_lab")
+	assert_false(state.has_moment(state.MOMENT_FIRST_CAPTURE), "le starter n'est pas une capture")
+	state.record_moment(state.MOMENT_FIRST_CAPTURE, &"route_1", {"species": "pidgey"})
+	assert_true(state.has_moment(state.MOMENT_FIRST_CAPTURE))
+	assert_true(state.has_moment(state.MOMENT_STARTER))

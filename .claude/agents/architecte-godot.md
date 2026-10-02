@@ -2,7 +2,7 @@
 name: architecte-godot
 description: Architecte technique de Kanto 2026 (Godot 4.7). À utiliser au début de chaque phase ou fonctionnalité pour concevoir la structure (scènes, autoloads, classes logiques, formats de données, signaux) et découper le travail, puis pour relire le code produit par les autres agents et vérifier la cohérence d'ensemble. Ne produit pas de contenu graphique.
 tools: Read, Write, Edit, Bash, Grep, Glob
-model: inherit
+model: opus
 skills:
   - godot-conventions
   - godot-cli

@@ -58,6 +58,13 @@ const SHADOW_LIFT: float = 1.5
 ## Apparition d'un Pokémon sans PNJ dans le monde ([method show_pokemon]).
 const APPEAR_DURATION: float = 0.3
 const APPEAR_DROP: float = 24.0
+## Rencontre sauvage (jalon 5 §3.7) : recadrage caméra + voile, apparition du sauvage
+## (bond + fondu), puis entrée du partenaire en courant depuis le bord gauche. Aucun écran
+## noir : la Route 1 reste le fond. Durées (s) à speed_scale = 1, réglables sur le S24.
+const WILD_CAMERA_DURATION: float = 0.30
+const WILD_APPEAR_DURATION: float = 0.30
+const WILD_APPEAR_DROP: float = 40.0
+const PARTNER_ENTER_DURATION: float = 0.32
 ## Animations des temps (dossier 05 §4, §9) : élan physique, pulsation spéciale, bond de
 ## statut, coup (clignotement + tremblement), K.O. (chute + fondu).
 const LUNGE_DISTANCE: float = 60.0
@@ -81,6 +88,57 @@ const STAT_PULSE: float = 0.16
 const STAT_NUDGE: float = 8.0
 const FAINT_DROP: float = 40.0
 const FAINT_DURATION: float = 0.45
+## Capture (jalon 5D, jalon-05.md §3.10, storyboard combat-capture-v1) : le dresseur de dos
+## entre en bas à gauche, la Ball part de sa main en arc, le Pokémon sauvage est absorbé dans un
+## éclat rouge, la Ball tombe dans l'herbe (ombre au sol), tremble 0 à 3 fois, puis éclat doré
+## (capturé) ou éclat blanc (libéré : le Pokémon ressort). Sprites provisoires (pixel art,
+## NEAREST), tout en Tween ; durées (s) à speed_scale = 1, réglables sur le S24.
+const BALL_TEXTURE: Texture2D = preload("res://assets/sprites/pokemon/placeholder/poke_ball.png")
+const THROWER_TEXTURE: Texture2D = preload(
+	"res://assets/sprites/pokemon/placeholder/trainer_back.png")
+const SHADOW_TEXTURE: Texture2D = preload(
+	"res://assets/sprites/pokemon/placeholder/battle_shadow.png")
+## Échelles d'affichage : dresseur (64 px natifs), Ball en vol (loin) puis au sol (près).
+const THROWER_SCALE: int = 6
+const BALL_FLIGHT_SCALE: float = 4.0
+const BALL_REST_SCALE: float = 6.0
+## Rayon de la Ball dans son image (px natifs) : sa hauteur au-dessus du sol une fois posée.
+const BALL_RADIUS: float = 15.0
+## Dresseur : pieds à cette distance du centre d'écran (en hauteurs d'écran, vers la gauche) et
+## à cette hauteur (en hauteurs d'écran depuis le haut, > 1 : les jambes sortent du cadre) ;
+## glissement d'entrée (px).
+const THROWER_OFFSET_X: float = 0.60
+const THROWER_FEET_Y: float = 1.04
+const THROWER_SLIDE: float = 220.0
+const THROWER_ENTER_DURATION: float = 0.30
+## Main du dresseur dans son image (px natifs depuis le bas-centre) : départ de la Ball.
+const THROWER_HAND := Vector2(28.0, -54.0)
+## Vol de la Ball : durée, hauteur de l'arc (hauteurs d'écran), tours sur elle-même.
+const THROW_DURATION: float = 0.42
+const THROW_ARC: float = 0.16
+const THROW_SPINS: float = 2.0
+## Absorption du Pokémon sauvage, chute de la Ball (rebonds) et éclat rouge.
+const ABSORB_DURATION: float = 0.45
+const ABSORB_SHRINK: float = 0.15
+const ABSORB_TINT := Color(3.0, 0.7, 0.6, 1.0)
+const BALL_DROP_DURATION: float = 0.55
+const BALL_DROP_HEIGHT: float = 40.0
+## Secousse : durée, angle (degrés), traits de mouvement (distance au bord de la Ball, px).
+const SHAKE_DURATION: float = 0.6
+const SHAKE_ANGLE: float = 24.0
+const SHAKE_LINE_GAP: float = 40.0
+## Éclat : durée, taille finale (échelle de la lueur), étincelles, voile de l'écran.
+const BURST_DURATION: float = 0.55
+const BURST_SCALE: float = 6.0
+const BURST_GOLD := Color(1.0, 0.82, 0.30, 1.0)
+const BURST_WHITE := Color(1.0, 1.0, 1.0, 1.0)
+const BURST_RED := Color(1.0, 0.25, 0.20, 1.0)
+const SPARK_COUNT: int = 10
+const SPARK_DISTANCE: float = 260.0
+const CATCH_FLASH: float = 0.30
+const CATCH_HOP: float = 36.0
+## Le Pokémon libéré ressort de la Ball.
+const RELEASE_DURATION: float = 0.40
 ## Pas « instantané » (speed_scale = 0) : avance d'un tween jusqu'à sa fin.
 const INSTANT_STEP: float = 1000.0
 ## Hauteur affichée d'un Pokémon du monde sans AnimatedSprite2D lisible (32 px ×2).
@@ -113,6 +171,16 @@ var _species: Dictionary[BattleEvent.SideId, StringName] = {}
 var _fainted: Dictionary[BattleEvent.SideId, bool] = {}
 var _anchors: Dictionary = {}
 var _tweens: Array[Tween] = []
+## Capture (5D) : accessoires créés au premier besoin (aucun dans la scène .tscn).
+var _ball: Sprite2D
+var _ball_shadow: Sprite2D
+var _thrower: Sprite2D
+var _glow: Sprite2D
+var _sparks: Array[Sprite2D] = []
+var _shake_lines: Array[Line2D] = []
+## Centre de la Ball au sol, et point d'où le Pokémon est absorbé / ressort (écran).
+var _ball_rest: Vector2 = Vector2.ZERO
+var _absorb_point: Vector2 = Vector2.ZERO
 
 @onready var _backdrop: ColorRect = %Backdrop
 @onready var _flash: ColorRect = %Flash
@@ -227,6 +295,72 @@ func show_pokemon(side: BattleEvent.SideId, species: StringName) -> void:
 	_play(tween)
 
 
+## Coroutine (~0,6 s avec l'apparition) : entrée d'une rencontre sauvage (jalon 5 §3.7). Le
+## décor de [param camera] est recadré et voilé (comme l'entrée du 4B, mais sans PNJ du monde),
+## puis le sauvage [param foe_species] apparaît à sa place de combat (bond depuis le bas +
+## fondu). Le cadrage vise [param origin_world] (l'herbe qui bouge) et le joueur. Le partenaire
+## entre ensuite par [method play_partner_enter]. Refusé (erreur) si un combat est déjà affiché.
+func play_wild_intro(camera: Camera2D, foe_species: StringName, origin_world: Vector2) -> void:
+	if _active:
+		push_error("BattleStage : un combat est déjà affiché")
+		return
+	if camera == null:
+		push_error("BattleStage : caméra absente")
+		return
+	_active = true
+	_camera = camera
+	_save_camera()
+	_anchors = BattleLayout.anchors(_view_size())
+	_species = {BattleEvent.SideId.FOE: foe_species}
+	_world = {}
+	var cells: Array[Vector2i] = [Grid.world_to_cell(origin_world)]
+	var owner_node := camera.get_parent()
+	if owner_node != null and owner_node.has_method(&"get_cell"):
+		cells.append(owner_node.call(&"get_cell"))
+	if _arena.has_area():
+		_focus = BattleLayout.arena_focus(_arena, _bounds, _view_size(), ZOOM)
+	else:
+		_focus = BattleLayout.focus(cells)
+	_prepare_sprite(BattleEvent.SideId.FOE)
+	_free_camera()
+	# Recadrage + voile (pas de PNJ à faire voyager : c'est un sauvage).
+	var tween := _new_tween()
+	tween.tween_method(_set_recompose, 0.0, 1.0, WILD_CAMERA_DURATION)
+	await _play(tween)
+	if _active:
+		await _appear(BattleEvent.SideId.FOE, WILD_APPEAR_DROP, WILD_APPEAR_DURATION)
+
+
+## Coroutine (~0,3 s) : le partenaire [param player_species] entre en courant depuis le bord
+## gauche jusqu'à sa place de combat (jalon 5 §3.7, Q15 : pas de lancer de Ball). À appeler
+## après [method play_wild_intro].
+func play_partner_enter(player_species: StringName) -> void:
+	if not _active:
+		return
+	var side := BattleEvent.SideId.PLAYER
+	_species[side] = player_species
+	_fainted.erase(side)
+	_set_texture(side)
+	var feet := _anchor(side)
+	var scale := float(_anchor_scale(side))
+	var start := Vector2(-float(BattleLayout.NATIVE.x) * scale, feet.y)
+	var sprite := _sprites[side]
+	sprite.visible = true
+	sprite.modulate = Color.WHITE
+	_shadows[side].visible = true
+	_shadows[side].modulate = Color.WHITE
+	_place(side, start, scale)
+	var tween := _new_tween()
+	tween.set_parallel(true)
+	tween.tween_property(sprite, ^"position", feet, PARTNER_ENTER_DURATION) \
+		.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+	tween.tween_property(_shadows[side], ^"position",
+		feet + Vector2(0.0, -SHADOW_LIFT * scale), PARTNER_ENTER_DURATION) \
+		.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+	await _play(tween)
+	_rest(side)
+
+
 ## Coroutine : le Pokémon de [param side] utilise une capacité de [param category].
 func play_move(side: BattleEvent.SideId, category: MoveData.Category) -> void:
 	if not _active:
@@ -328,6 +462,177 @@ func play_faint(side: BattleEvent.SideId) -> void:
 	_shadows[side].visible = false
 
 
+## Coroutine (~1,5 s) : le dresseur lance la Ball sur le Pokémon sauvage (jalon 5D). Il entre
+## dans le cadrage (de dos, en bas à gauche), la Ball part de sa main en arc, le Pokémon est
+## absorbé dans un éclat rouge, puis la Ball tombe dans l'herbe, où elle reste (ombre au sol)
+## jusqu'à [method play_catch_burst], [method play_break_free] ou [method exit]. Sans effet hors
+## combat.
+func play_throw() -> void:
+	if not _active:
+		return
+	_build_capture_props()
+	var view := _view_size()
+	var foe := BattleEvent.SideId.FOE
+	var scale := float(THROWER_SCALE)
+	var feet := Vector2(view.x * 0.5 - THROWER_OFFSET_X * view.y, THROWER_FEET_Y * view.y)
+	var target := _foe_center()
+	_ball_rest = _anchor(foe) + Vector2(0.0, -BALL_RADIUS * BALL_REST_SCALE + 6.0)
+	_absorb_point = target
+	# Le dresseur entre en glissant depuis la gauche.
+	_thrower.texture = THROWER_TEXTURE
+	_thrower.scale = Vector2.ONE * scale
+	_thrower.position = feet + Vector2(-THROWER_SLIDE, 0.0)
+	_thrower.modulate = Color(1, 1, 1, 0)
+	_thrower.visible = true
+	var enter := _new_tween()
+	enter.set_parallel(true)
+	enter.tween_property(_thrower, ^"position", feet, THROWER_ENTER_DURATION) \
+		.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+	enter.tween_property(_thrower, ^"modulate:a", 1.0, THROWER_ENTER_DURATION)
+	await _play(enter)
+	if not _active:
+		return
+	# La Ball part de sa main, en arc, et tourne sur elle-même.
+	var hand := feet + THROWER_HAND * scale
+	_ball.visible = true
+	_ball.modulate = Color.WHITE
+	_ball.rotation = 0.0
+	_ball.position = hand
+	_ball.scale = Vector2.ONE * BALL_FLIGHT_SCALE * 1.4
+	var flight := _new_tween()
+	flight.set_parallel(true)
+	flight.tween_method(_set_ball_flight.bind(hand, target, view.y * THROW_ARC),
+		0.0, 1.0, THROW_DURATION)
+	flight.tween_property(_thrower, ^"position", feet + Vector2(24.0, 0.0), 0.12)
+	flight.tween_property(_thrower, ^"modulate:a", 0.0, 0.25).set_delay(0.15)
+	await _play(flight)
+	if not _active:
+		return
+	_thrower.visible = false
+	# Impact : éclat rouge, le Pokémon est absorbé dans la Ball.
+	_glow.modulate = BURST_RED
+	_glow.position = target
+	_glow.visible = true
+	var absorb := _new_tween()
+	absorb.tween_method(_set_absorb_flash, 0.0, 1.0, ABSORB_DURATION)
+	await _play(absorb)
+	if not _active:
+		return
+	_glow.visible = false
+	_fainted[foe] = true
+	_sprites[foe].visible = false
+	_shadows[foe].visible = false
+	# La Ball tombe dans l'herbe : chute à rebonds, l'ombre se pose sous elle.
+	_ball_shadow.position = _anchor(foe) + Vector2(0.0, -SHADOW_LIFT * BALL_REST_SCALE)
+	_ball_shadow.scale = Vector2.ONE * BALL_REST_SCALE
+	_ball_shadow.modulate = Color(1, 1, 1, 0)
+	_ball_shadow.visible = true
+	var drop := _new_tween()
+	drop.set_parallel(true)
+	drop.tween_property(_ball, ^"position", _ball_rest, BALL_DROP_DURATION) \
+		.set_trans(Tween.TRANS_BOUNCE).set_ease(Tween.EASE_OUT)
+	drop.tween_property(_ball, ^"scale", Vector2.ONE * BALL_REST_SCALE, BALL_DROP_DURATION)
+	drop.tween_property(_ball, ^"rotation", 0.0, BALL_DROP_DURATION)
+	drop.tween_property(_ball_shadow, ^"modulate:a", 1.0, BALL_DROP_DURATION * 0.5)
+	await _play(drop)
+
+
+## Coroutine (~0,6 s) : une secousse de la Ball posée dans l'herbe (jalon 5D) : elle penche à
+## droite, à gauche, puis se redresse ; des traits de mouvement apparaissent de chaque côté.
+## Sans effet hors combat ou sans Ball posée.
+func play_ball_shake() -> void:
+	if not _active or _ball == null or not _ball.visible:
+		return
+	var tilt := deg_to_rad(SHAKE_ANGLE)
+	var quarter := SHAKE_DURATION / 4.0
+	var reach := BALL_RADIUS * BALL_REST_SCALE + SHAKE_LINE_GAP
+	for i: int in _shake_lines.size():
+		var side := -1.0 if i % 2 == 0 else 1.0
+		_shake_lines[i].position = _ball_rest + Vector2(side * reach, 0.0)
+		_shake_lines[i].modulate.a = 0.0
+		_shake_lines[i].visible = true
+	var tween := _new_tween()
+	tween.set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
+	tween.tween_property(_ball, ^"rotation", tilt, quarter)
+	tween.tween_property(_ball, ^"rotation", -tilt, quarter * 1.5)
+	tween.tween_property(_ball, ^"rotation", tilt * 0.4, quarter * 1.0)
+	tween.tween_property(_ball, ^"rotation", 0.0, quarter * 0.5)
+	for line: Line2D in _shake_lines:
+		var fade := _new_tween()
+		fade.tween_property(line, ^"modulate:a", 0.9, quarter * 0.5)
+		fade.tween_property(line, ^"modulate:a", 0.0, SHAKE_DURATION - quarter * 0.5)
+		_play(fade)
+	await _play(tween)
+	if _ball != null:
+		_ball.rotation = 0.0
+	for line: Line2D in _shake_lines:
+		line.visible = false
+
+
+## Coroutine (~0,55 s) : la capture réussit (jalon 5D) : la Ball fait un petit bond, éclat doré
+## avec étincelles et lueur dorée sur tout l'écran. La Ball reste posée jusqu'à [method exit].
+func play_catch_burst() -> void:
+	if not _active or _ball == null or not _ball.visible:
+		return
+	var origin := _ball_rest + Vector2(0.0, -BALL_RADIUS * BALL_REST_SCALE * 0.4)
+	_flash.color = Color(BURST_GOLD, CATCH_FLASH)
+	var tween := _new_tween()
+	tween.set_parallel(true)
+	tween.tween_property(_ball, ^"position", _ball_rest + Vector2(0.0, -CATCH_HOP), 0.14) \
+		.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+	tween.tween_property(_ball, ^"position", _ball_rest, 0.18) \
+		.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN).set_delay(0.14)
+	tween.tween_method(_set_burst.bind(origin, BURST_GOLD), 0.0, 1.0, BURST_DURATION)
+	tween.tween_property(_flash, ^"color:a", 0.0, BURST_DURATION)
+	await _play(tween)
+	_glow.visible = false
+	for spark: Sprite2D in _sparks:
+		spark.visible = false
+	_flash.color = Color(1, 1, 1, 0)
+
+
+## Coroutine (~0,4 s) : le Pokémon sauvage se libère (jalon 5D) : la Ball s'ouvre dans un éclat
+## blanc et le Pokémon ressort à sa place. Sans effet hors combat ou sans Ball posée.
+func play_break_free() -> void:
+	if not _active or _ball == null or not _ball.visible:
+		return
+	var foe := BattleEvent.SideId.FOE
+	_absorb_point = _ball_rest
+	_fainted.erase(foe)
+	_set_texture(foe)
+	_sprites[foe].visible = true
+	_shadows[foe].visible = true
+	_set_absorbed(1.0)
+	_ball.visible = false
+	_ball_shadow.visible = false
+	var tween := _new_tween()
+	tween.set_parallel(true)
+	tween.tween_method(_set_release, 0.0, 1.0, RELEASE_DURATION)
+	tween.tween_method(_set_burst.bind(_ball_rest, BURST_WHITE), 0.0, 1.0, BURST_DURATION * 0.7)
+	await _play(tween)
+	_glow.visible = false
+	for spark: Sprite2D in _sparks:
+		spark.visible = false
+	_rest(foe)
+	_sprites[foe].modulate = Color.WHITE
+	_shadows[foe].modulate = Color.WHITE
+
+
+## Les accessoires de la capture (Ball, ombre, dresseur) sont affichés.
+func is_capture_shown() -> bool:
+	return _ball != null and (_ball.visible or _thrower.visible)
+
+
+## Ball posée dans l'herbe, visible (tests, captures) ; null avant le premier lancer.
+func get_ball() -> Sprite2D:
+	return _ball
+
+
+## Dresseur de dos du lancer (tests, captures) ; null avant le premier lancer.
+func get_thrower() -> Sprite2D:
+	return _thrower
+
+
 ## Coroutine (~0,6 s) : retour à l'exploration. Les sprites repartent vers la place de
 ## leur PNJ, qui réapparaît sur sa case ; caméra rendue à l'identique ; rien ne reste.
 func exit() -> void:
@@ -335,6 +640,7 @@ func exit() -> void:
 		return
 	for side: BattleEvent.SideId in _sprites:
 		_rest(side)
+	_fade_capture_props(EXIT_DURATION * 0.5)
 	var tween := _new_tween()
 	tween.tween_method(_set_exit_progress, 0.0, 1.0, EXIT_DURATION)
 	await _play(tween)
@@ -397,6 +703,35 @@ func _set_camera(k: float) -> void:
 func _set_backdrop(k: float) -> void:
 	(_backdrop.material as ShaderMaterial).set_shader_parameter(&"amount", k)
 	_backdrop.visible = k > 0.0
+
+
+## Recadrage + voile de l'entrée sauvage à [param k] (0 : exploration, 1 : combat), sans faire
+## voyager de sprite (les combattants n'ont pas de PNJ dans le monde).
+func _set_recompose(k: float) -> void:
+	_set_camera(k)
+	_set_backdrop(k)
+
+
+## Coroutine : le Pokémon de [param side] apparaît à son ancre (bond depuis [param drop] px
+## au-dessus + fondu, ombre comprise). Sert au sauvage de l'entrée (§3.7).
+func _appear(side: BattleEvent.SideId, drop: float, duration: float) -> void:
+	var sprite := _sprites[side]
+	_fainted.erase(side)
+	_set_texture(side)
+	var feet := _anchor(side)
+	var scale := float(_anchor_scale(side))
+	sprite.visible = true
+	_shadows[side].visible = true
+	_place(side, feet + Vector2(0.0, -drop), scale)
+	sprite.modulate = Color(1, 1, 1, 0)
+	_shadows[side].modulate = Color(1, 1, 1, 0)
+	var tween := _new_tween()
+	tween.set_parallel(true)
+	tween.tween_property(sprite, ^"position", feet, duration) \
+		.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN)
+	tween.tween_property(sprite, ^"modulate", Color.WHITE, duration)
+	tween.tween_property(_shadows[side], ^"modulate", Color.WHITE, duration)
+	await _play(tween)
 
 
 ## Sprite de [param side] sur son trajet : [param k] (0 : place du PNJ projetée par la
@@ -506,6 +841,7 @@ func _apply_reset() -> void:
 		return
 	_set_backdrop(0.0)
 	_flash.color = Color(1, 1, 1, 0)
+	_hide_capture_props()
 	for side: BattleEvent.SideId in _sprites:
 		_sprites[side].visible = false
 		_sprites[side].texture = null
@@ -595,3 +931,141 @@ func _play(tween: Tween) -> void:
 	if tween.is_valid() and tween.is_running():
 		await tween.finished
 	_tweens.erase(tween)
+
+
+# --- Capture (jalon 5D) --------------------------------------------------------------
+
+## Centre écran du sprite de combat adverse à son ancre.
+func _foe_center() -> Vector2:
+	var foe := BattleEvent.SideId.FOE
+	return _anchor(foe) + Vector2(0.0, -32.0 * float(_anchor_scale(foe)))
+
+
+## Crée les accessoires de la capture au premier lancer (Ball, ombre, dresseur, lueur,
+## étincelles, traits de secousse), sous le voile [member _flash].
+func _build_capture_props() -> void:
+	if _ball != null:
+		return
+	_ball_shadow = _make_prop(SHADOW_TEXTURE)
+	_ball = _make_prop(BALL_TEXTURE)
+	_thrower = _make_prop(THROWER_TEXTURE)
+	_thrower.offset = Vector2(0.0, -32.0)
+	var gradient := Gradient.new()
+	gradient.set_color(0, Color(1, 1, 1, 1))
+	gradient.set_color(1, Color(1, 1, 1, 0))
+	var halo := GradientTexture2D.new()
+	halo.gradient = gradient
+	halo.fill = GradientTexture2D.FILL_RADIAL
+	halo.fill_from = Vector2(0.5, 0.5)
+	halo.fill_to = Vector2(1.0, 0.5)
+	halo.width = 128
+	halo.height = 128
+	var additive := CanvasItemMaterial.new()
+	additive.blend_mode = CanvasItemMaterial.BLEND_MODE_ADD
+	_glow = _make_prop(halo)
+	_glow.texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR
+	_glow.material = additive
+	for i: int in SPARK_COUNT:
+		var spark := _make_prop(halo)
+		spark.texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR
+		spark.material = additive
+		_sparks.append(spark)
+	# Traits de mouvement : deux arcs de chaque côté de la Ball (pair : gauche, impair : droite).
+	for i: int in 4:
+		var side := -1.0 if i % 2 == 0 else 1.0
+		var line := Line2D.new()
+		line.width = 7.0
+		line.default_color = Color(1, 1, 1, 1)
+		line.begin_cap_mode = Line2D.LINE_CAP_ROUND
+		line.end_cap_mode = Line2D.LINE_CAP_ROUND
+		line.visible = false
+		for step: int in 7:
+			var u := float(step) / 3.0 - 1.0
+			line.add_point(Vector2(side * (float(i / 2) * 28.0 + 22.0 * (1.0 - u * u)), u * 70.0))
+		add_child(line)
+		_shake_lines.append(line)
+	move_child(_flash, -1)
+
+
+func _make_prop(texture: Texture2D) -> Sprite2D:
+	var sprite := Sprite2D.new()
+	sprite.texture = texture
+	sprite.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
+	sprite.visible = false
+	add_child(sprite)
+	return sprite
+
+
+## Cache et remet à zéro les accessoires de la capture (fin du combat, abandon).
+func _hide_capture_props() -> void:
+	if _ball == null:
+		return
+	for sprite: Sprite2D in [_ball, _ball_shadow, _thrower, _glow] + _sparks:
+		sprite.visible = false
+		sprite.modulate = Color.WHITE
+	_ball.rotation = 0.0
+	for line: Line2D in _shake_lines:
+		line.visible = false
+
+
+## Fait disparaître en fondu la Ball et son ombre pendant [param duration] (sortie du combat).
+func _fade_capture_props(duration: float) -> void:
+	if _ball == null or not _ball.visible:
+		return
+	var tween := _new_tween()
+	tween.set_parallel(true)
+	tween.tween_property(_ball, ^"modulate:a", 0.0, duration)
+	tween.tween_property(_ball_shadow, ^"modulate:a", 0.0, duration)
+	_play(tween)
+
+
+## Vol de la Ball à [param t] (0 : main, 1 : cible) : arc de hauteur [param arc] px, tours sur
+## elle-même, elle rapetisse en s'éloignant.
+func _set_ball_flight(t: float, from: Vector2, to: Vector2, arc: float) -> void:
+	_ball.position = from.lerp(to, t) + Vector2(0.0, -arc * 4.0 * t * (1.0 - t))
+	_ball.rotation = t * TAU * THROW_SPINS
+	_ball.scale = Vector2.ONE * lerpf(BALL_FLIGHT_SCALE * 1.4, BALL_FLIGHT_SCALE, t)
+
+
+## Impact à [param t] (0 → 1) : le Pokémon sauvage est absorbé dans l'éclat rouge, la Ball tourne.
+func _set_absorb_flash(t: float) -> void:
+	_set_absorbed(_ease(t))
+	_ball.rotation = t * TAU
+	_glow.scale = Vector2.ONE * lerpf(1.0, 4.0, t)
+	_glow.modulate = Color(BURST_RED, sin(PI * t))
+
+
+## Le Pokémon sauvage à [param k] de l'absorption (0 : à son ancre, taille normale ; 1 :
+## rapetissé au point [member _absorb_point], teinté puis effacé). Sert à l'absorption et, à
+## l'envers, à la libération.
+func _set_absorbed(k: float) -> void:
+	var foe := BattleEvent.SideId.FOE
+	var full := float(_anchor_scale(foe))
+	var scale := lerpf(full, ABSORB_SHRINK, k)
+	var center := _foe_center().lerp(_absorb_point, k)
+	_place(foe, center + Vector2(0.0, 32.0 * scale), scale)
+	var tint := Color.WHITE.lerp(ABSORB_TINT, minf(k * 2.0, 1.0))
+	_sprites[foe].modulate = Color(tint.r, tint.g, tint.b, 1.0 - maxf(k - 0.7, 0.0) / 0.3)
+	_shadows[foe].modulate = Color(1, 1, 1, 1.0 - k)
+
+
+## Libération à [param t] (0 → 1) : le Pokémon ressort de la Ball.
+func _set_release(t: float) -> void:
+	_set_absorbed(1.0 - _ease(t))
+
+
+## Éclat de [param color] à [param t] (0 → 1) centré sur [param origin] : lueur qui grandit en
+## s'éteignant, étincelles qui partent en étoile.
+func _set_burst(t: float, origin: Vector2, color: Color) -> void:
+	var out := 1.0 - pow(1.0 - t, 3.0)
+	_glow.visible = true
+	_glow.position = origin
+	_glow.scale = Vector2.ONE * lerpf(0.5, BURST_SCALE, out)
+	_glow.modulate = Color(color, (1.0 - t) * 0.9)
+	for i: int in _sparks.size():
+		var angle := TAU * float(i) / float(_sparks.size()) + 0.3
+		var spark := _sparks[i]
+		spark.visible = true
+		spark.position = origin + Vector2.from_angle(angle) * SPARK_DISTANCE * out
+		spark.scale = Vector2.ONE * lerpf(0.18, 0.05, t)
+		spark.modulate = Color(color, 1.0 - t)

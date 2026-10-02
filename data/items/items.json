@@ -3,5 +3,10 @@
 		"name": "Poké Ball", "plural": "Poké Balls", "feminine": true,
 		"category": "ball", "catch_bonus": 1,
 		"description": "Permet de capturer un Pokémon sauvage.", "draft": true
+	},
+	"potion": {
+		"name": "Potion", "plural": "Potions", "feminine": true,
+		"category": "heal",
+		"description": "Restaure les PV d'un Pokémon.", "draft": true
 	}
 }

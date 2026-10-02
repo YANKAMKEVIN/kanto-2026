@@ -12,9 +12,37 @@
 				]
 			},
 			{
+				"if": ["starter_chosen"],
+				"heal": true,
+				"draft": true,
+				"pages": [
+					"Laisse-moi m'occuper de tes Pokémon.",
+					"Voilà, ils sont en pleine forme. Reviens quand tu veux."
+				]
+			},
+			{
 				"pages": [
 					"Tu sors ? Profite de cette belle journée.",
 					"Et évite les hautes herbes, d'accord ?"
+				]
+			}
+		]
+	},
+	"mom_wakeup": {
+		"speaker": "Maman",
+		"variants": [
+			{
+				"unless": ["blacked_out_before"],
+				"set": ["blacked_out_before"],
+				"pages": [
+					"Tu m'as fait une de ces peurs...",
+					"Tes Pokémon vont bien. Repose-toi un peu avant de repartir."
+				]
+			},
+			{
+				"pages": [
+					"Tes Pokémon vont bien maintenant.",
+					"Fais attention à toi, d'accord ?"
 				]
 			}
 		]

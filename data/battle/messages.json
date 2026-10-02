@@ -23,7 +23,35 @@
 		},
 		"fainted": { "text": "{pokemon} est K.O. !", "draft": true },
 		"battle_won": { "text": "Tu as battu {trainer} !", "draft": true },
-		"battle_lost": { "text": "{trainer} a gagné cette fois...", "draft": true }
+		"battle_lost": { "text": "{trainer} a gagné cette fois...", "draft": true },
+		"wild_appeared": {
+			"text": "Un {pokemon} sauvage apparaît !",
+			"text_f": "Une {pokemon} sauvage apparaît !", "draft": true
+		},
+		"fled": { "text": "Tu prends la fuite !", "draft": true },
+		"flee_failed": { "text": "Impossible de fuir !", "draft": true },
+		"level_up": { "text": "{pokemon} monte au niveau {level} !", "draft": true },
+		"move_learned": { "text": "{pokemon} apprend {move} !", "draft": true },
+		"move_forget_prompt": {
+			"text": "{pokemon} veut apprendre {move}, mais connaît déjà quatre capacités.",
+			"draft": true
+		},
+		"move_forgot": { "text": "{pokemon} oublie {old_move} et apprend {move} !", "draft": true },
+		"move_not_learned": { "text": "{pokemon} n'apprend pas {move}.", "draft": true },
+		"seeded": { "text": "Une graine est plantée sur {pokemon} !", "draft": true },
+		"drained": { "text": "Vampigraine draine l'énergie {de_pokemon} !", "draft": true },
+		"ball_thrown": { "text": "Tu lances une {item} !", "draft": true },
+		"broke_free": {
+			"text": "Oh non ! Il s'est libéré !",
+			"text_f": "Oh non ! Elle s'est libérée !", "draft": true
+		},
+		"caught_title": { "text": "{pokemon} CAPTURÉ !", "text_f": "{pokemon} CAPTURÉE !" },
+		"pokedex_new": { "text": "Nouvelle entrée Pokédex" },
+		"joined_party": { "text": "{pokemon} rejoint ton équipe." },
+		"sent_to_storage": {
+			"text": "{pokemon} a été confié au système de recherche de Chen.",
+			"text_f": "{pokemon} a été confiée au système de recherche de Chen."
+		}
 	},
 	"stats": {
 		"atk": "L'Attaque", "def": "La Défense", "spa": "L'Attaque Spéciale",

@@ -12,15 +12,40 @@ extends Node
 ## arrivant dans une zone extérieure différente ([ZoneAnnouncer]) : aucun au démarrage
 ## dans la chambre. Les réglages de départ servent au développement, aux tests et aux
 ## outils de capture : les régler avant add_child.
+##
+## Sauvegarde (jalon 5C.5, jalon-05.md §16) : Boot tient le [SaveSystem] (pas d'autoload).
+## Au démarrage, il reprend la partie sauvegardée (carte, case, orientation) ou en commence
+## une nouvelle. L'autosave est **demandé** aux moments du §16.1 (arrivée sur une carte, fin de
+## scène, fin de combat ou de rencontre, soin chez Maman ; [method request_autosave] pour la
+## capture du T15) et **écrit** à la première image où la partie est stable
+## ([method is_stable] : ni dialogue, ni scène, ni fiche du starter, ni rencontre, ni combat,
+## ni transition, joueur libre) ; au passage en arrière-plan il est écrit tout de suite, si la
+## partie est stable (sinon la dernière sauvegarde stable reste). Jamais d'autosave après un
+## départ de débogage, ni quand la sauvegarde vient d'une version plus récente du jeu (elle
+## n'est jamais écrasée). Boot enregistre aussi les faits du §16.3 (Pokédex daté, starter,
+## combat du rival, objets trouvés, zones découvertes, temps de jeu).
 
 ## Une zone vient d'être annoncée (titre de zone affiché).
 signal zone_announced(zone_name: String, region: String)
 
 const PLAYER_SCENE: PackedScene = preload("res://game/player/player.tscn")
+## Temps de jeu : une image ne compte jamais plus que ceci (le retour de l'arrière-plan peut
+## livrer un très grand delta, qui n'est pas du temps de jeu).
+const MAX_PLAY_TIME_STEP: float = 0.5
 
 @export var start_map: StringName = &"player_house_2f"
 @export var start_spawn: StringName = &"start"
 @export var start_facing: Vector2i = Vector2i.DOWN
+## Fichier du départ de débogage ([DebugStart]) ; lu seulement en build debug, quand Boot est
+## la scène principale lancée par le moteur, et si le fichier existe (jamais sous GUT).
+var debug_start_path: String = DebugStart.USER_PATH
+## Tests seulement : appliquer le départ de débogage même sous GUT (jamais en jeu).
+var force_debug_start: bool = false
+## Sauvegarde de la partie (jalon 5C.5). Les tests en injectent une (système de fichiers en
+## mémoire) avant add_child. Null : Boot ouvre la vraie (`user://save.json`) **seulement s'il
+## est la scène principale lancée par le moteur** ; sous GUT et dans les outils de capture
+## (qui instancient Boot eux-mêmes), aucune sauvegarde n'est lue ni écrite.
+var save_system: SaveSystem = null
 
 var _player: Player
 var _announcer := ZoneAnnouncer.new()
@@ -31,10 +56,22 @@ var _offer := StarterOffer.new()
 var _trainers: TrainerLibrary
 var _texts := BattleText.new()
 var _items := ItemLibrary.new()
+var _encounter_library: EncounterLibrary
+## Faux : aucune écriture de toute la session (pas de sauvegarde, départ de débogage, ou
+## sauvegarde d'une version plus récente à ne jamais écraser).
+var _autosave_enabled: bool = false
+## Vrai si la partie a repris une sauvegarde au démarrage.
+var _resumed: bool = false
+## Autosave demandé, en attente d'un état stable, et sa raison (journal).
+var _save_pending: bool = false
+var _save_reason: String = ""
+## Faux quand l'application est en arrière-plan ou a perdu le focus (temps de jeu arrêté).
+var _in_foreground: bool = true
 
 @onready var _world: Node2D = %World
 @onready var _hud: ExplorationHud = %ExplorationHud
 @onready var _fade: ScreenFade = %ScreenFade
+@onready var _coming_soon: ComingSoonScreen = %ComingSoonScreen
 @onready var _dialogue_box: DialogueBox = %DialogueBox
 @onready var _runner: DialogueRunner = %DialogueRunner
 @onready var _interactions: InteractionController = %InteractionController
@@ -44,10 +81,15 @@ var _items := ItemLibrary.new()
 @onready var _battle_stage: BattleStage = %BattleStage
 @onready var _battle_hud: BattleHud = %BattleHud
 @onready var _battle_director: BattleDirector = %BattleDirector
+@onready var _ambient: AmbientWatcher = %AmbientWatcher
+@onready var _encounters: EncounterDirector = %EncounterDirector
 
 
 func _ready() -> void:
 	GameState.new_game()
+	# Compteur de fps de QA (journal « [perf] »), seulement en build debug, Boot scène principale.
+	if PerfCounter.is_allowed(OS.is_debug_build(), get_tree().current_scene == self):
+		add_child(PerfCounter.new())
 	_player = PLAYER_SCENE.instantiate() as Player
 	_library.load_dir()
 	_cutscenes.load_dir()
@@ -67,18 +109,48 @@ func _ready() -> void:
 	_texts.load_file()
 	_items.load_dir()
 	_battle_director.setup(_pokemon, _trainers, _texts, _battle_stage, _battle_hud, _player,
-		GameState)
+		GameState, _items)
 	_cutscenes_node.set_battle_runner(_battle_director)
 	_cutscenes_node.set_inventory(GameState.bag, _items)
 	_cutscenes_node.item_given.connect(_on_item_given)
+	_cutscenes_node.item_found.connect(_on_item_found)
 	_battle_director.battle_started.connect(_on_battle_state_changed.unbind(1))
+	# Le titre de zone ne reste pas affiché pendant un combat (jalon 5C T11) : une rencontre
+	# peut survenir dans les secondes qui suivent l'arrivée dans la zone.
+	_battle_director.battle_started.connect(_hud.hide_zone_title.unbind(1))
 	_battle_director.battle_finished.connect(_on_battle_state_changed.unbind(2))
+	_battle_director.battle_finished.connect(_on_battle_finished)
+	# Pokédex (jalon 5, décision Kevin 2026-09-29) : le starter est « capturé » à son entrée
+	# dans l'équipe ; tout Pokémon adverse envoyé au combat est « vu » (le Pokémon du rival au
+	# labo, puis les sauvages en 5B).
+	_starter_choice.starter_chosen.connect(_on_starter_chosen)
+	_battle_director.event_played.connect(_on_battle_event)
+	# Capture (jalon 5D) : le Pokémon rangé, l'autosave est demandé (écrit une fois stable).
+	_battle_director.pokemon_caught.connect(_on_pokemon_caught.unbind(2))
+	_ambient.setup(_player)
+	# Rencontres sauvages (jalon 5, 5B) : tables lues dans data/encounters/, l'EncounterDirector
+	# tire une rencontre à chaque pas dans les hautes herbes et joue le vrai combat sauvage
+	# (BattleDirector.run_request). Une défaite renvoie au point de soin (§3.11).
+	_encounter_library = EncounterLibrary.new(_pokemon)
+	_encounter_library.load_dir()
+	_encounters.setup(_encounter_library, _pokemon, GameState, _player, _battle_director,
+		SceneRouter, _cutscenes_node, _runner)
+	_encounters.encounter_started.connect(_on_encounter_state_changed.unbind(2))
+	_encounters.encounter_started.connect(_hud.hide_zone_title.unbind(2))
+	_encounters.encounter_finished.connect(_on_encounter_state_changed.unbind(1))
+	_encounters.encounter_finished.connect(_on_encounter_finished)
+	_encounters.woke_up_after_defeat.connect(_on_woke_up_after_defeat)
 	_interactions.target_changed.connect(_on_target_changed)
 	_runner.dialogue_started.connect(_on_dialogue_started)
 	_runner.dialogue_finished.connect(_on_dialogue_finished)
+	# Soin volontaire (jalon 5 §3.11) : une variante de dialogue « heal » (parler à Maman)
+	# soigne l'équipe à la fin du dialogue.
+	_runner.heal_requested.connect(_on_heal_requested)
 	_cutscenes_node.cutscene_started.connect(_on_cutscene_started)
 	_cutscenes_node.cutscene_finished.connect(_on_cutscene_finished)
 	SceneRouter.setup(_world, _player, _fade)
+	# Destinations « à venir » (dossier-07 §12, build de développement) : l'écran provisoire.
+	SceneRouter.coming_soon_presenter = _coming_soon.present
 	# Branchés avant start() : la première carte passe aussi par le contrôleur.
 	SceneRouter.transition_started.connect(_on_transition_started)
 	# Via Boot (ordre garanti) : présence des PNJ, puis le contrôleur, puis le directeur.
@@ -86,7 +158,30 @@ func _ready() -> void:
 	SceneRouter.map_entered.connect(_on_map_entered)
 	SceneRouter.map_entered.connect(_interactions.on_map_entered)
 	SceneRouter.map_entered.connect(_starter_choice.on_map_entered)
-	SceneRouter.start(start_map, start_spawn, start_facing)
+	_start_game()
+
+
+func _process(delta: float) -> void:
+	if _in_foreground:
+		GameState.add_play_time(minf(delta, MAX_PLAY_TIME_STEP))
+	if _save_pending and is_stable():
+		_write_save(_save_reason)
+
+
+## Passage en arrière-plan (Android) ou fermeture de la fenêtre (Mac) : sauvegarde immédiate
+## si la partie est stable (jalon 5C.5 §16.1) ; sinon la dernière sauvegarde stable reste.
+func _notification(what: int) -> void:
+	match what:
+		NOTIFICATION_APPLICATION_PAUSED, NOTIFICATION_WM_CLOSE_REQUEST, \
+				NOTIFICATION_WM_GO_BACK_REQUEST:
+			if what == NOTIFICATION_APPLICATION_PAUSED:
+				_in_foreground = false
+			if _can_write() and is_stable():
+				_write_save("arrière-plan")
+		NOTIFICATION_APPLICATION_RESUMED, NOTIFICATION_APPLICATION_FOCUS_IN:
+			_in_foreground = true
+		NOTIFICATION_APPLICATION_FOCUS_OUT:
+			_in_foreground = false
 
 
 func _exit_tree() -> void:
@@ -117,6 +212,11 @@ func get_hud() -> ExplorationHud:
 
 func get_fade() -> ScreenFade:
 	return _fade
+
+
+## Écran provisoire « <destination> — À venir » (build de développement).
+func get_coming_soon_screen() -> ComingSoonScreen:
+	return _coming_soon
 
 
 func get_dialogue_box() -> DialogueBox:
@@ -180,9 +280,159 @@ func get_item_library() -> ItemLibrary:
 	return _items
 
 
+func get_encounter_director() -> EncounterDirector:
+	return _encounters
+
+
+## Tables de rencontre chargées au démarrage (data/encounters/).
+func get_encounter_library() -> EncounterLibrary:
+	return _encounter_library
+
+
 ## Dialogues chargés au démarrage (data/dialogues/).
 func get_dialogue_library() -> DialogueLibrary:
 	return _library
+
+
+## Vrai si la partie a repris une sauvegarde au démarrage (sinon : nouvelle partie).
+func has_resumed() -> bool:
+	return _resumed
+
+
+## Faux si rien ne sera écrit de toute la session (pas de sauvegarde ouverte, départ de
+## débogage, sauvegarde d'une version plus récente).
+func is_autosave_enabled() -> bool:
+	return _autosave_enabled
+
+
+## Vrai si la partie est dans un état stable, bon à sauvegarder : joueur libre, ni dialogue,
+## ni scène, ni fiche du starter, ni rencontre, ni combat, ni transition de carte.
+func is_stable() -> bool:
+	return is_instance_valid(_player) and _player.is_input_enabled() \
+		and is_instance_valid(SceneRouter.get_current_map()) \
+		and not SceneRouter.is_transitioning() and not _runner.is_running() \
+		and not _cutscenes_node.is_running() and not _starter_choice.is_sheet_open() \
+		and not _battle_director.is_running() and not _encounters.is_running()
+
+
+## Demande un autosave (jalon 5C.5 §16.1) : écrit à la première image où la partie est
+## stable ([method is_stable]). Sans effet si l'autosave est coupé pour la session. Point
+## d'appel de la capture (T15).
+func request_autosave(reason: String) -> void:
+	if not _can_write():
+		return
+	_save_pending = true
+	_save_reason = reason
+
+
+## Démarrage (jalon 5C.5) : départ de débogage s'il est appliqué (ni lecture ni écriture de
+## la sauvegarde), sinon reprise de la sauvegarde si elle se charge, sinon nouvelle partie sur
+## [member start_map] / [member start_spawn].
+func _start_game() -> void:
+	if _apply_debug_start():
+		print("Départ de débogage : la sauvegarde n'est ni lue ni écrite.")
+	else:
+		if save_system == null and get_tree().current_scene == self:
+			save_system = SaveSystem.new()
+		if save_system != null and _load_save() and _resume():
+			return
+	SceneRouter.start(start_map, start_spawn, start_facing)
+
+
+## Lit la sauvegarde et la charge dans GameState (décisions de Kevin du 2026-10-02). Vrai si
+## une partie a été chargée. Sans sauvegarde ou fichier corrompu (déjà mis de côté par le
+## [SaveSystem]) : nouvelle partie, autosave normal. Version plus récente (ou erreur
+## imprévue) : nouvelle partie **sans autosave de toute la session**, le fichier n'est jamais
+## écrasé.
+func _load_save() -> bool:
+	if not save_system.has_save():
+		_autosave_enabled = true  # première partie : rien à lire (sans avertissement)
+		return false
+	var content := save_system.read()
+	match save_system.last_status:
+		OK:
+			_autosave_enabled = true
+			if not GameState.load_dict(content, _pokemon):
+				_keep_rejected_save()
+			_resumed = true
+			print("Sauvegarde chargée : %s %s (temps de jeu %d s)" % [GameState.current_map,
+				GameState.player_cell, int(GameState.play_time)])
+			return true
+		ERR_FILE_NOT_FOUND:
+			_autosave_enabled = true
+		ERR_FILE_CORRUPT:
+			_autosave_enabled = true
+			push_warning("Boot : sauvegarde illisible, mise de côté ; nouvelle partie.")
+		_:
+			_autosave_enabled = false
+			push_warning(("Boot : %s. Nouvelle partie SANS sauvegarde automatique : la "
+				+ "sauvegarde existante n'est pas touchée.") % save_system.last_error)
+	return false
+
+
+## Une entrée de la sauvegarde a été écartée au chargement (Pokémon, objet ou espèce inconnus
+## de cette build) : la partie reprend sans elle, mais le fichier d'origine est copié à côté
+## (`save.json.rejected`) avant que l'autosave ne le remplace.
+func _keep_rejected_save() -> void:
+	var copy := save_system.path + ".rejected"
+	var error := save_system.fs.write_text(copy, save_system.fs.read_text(save_system.path))
+	push_warning("Boot : sauvegarde chargée en partie seulement ; original copié dans %s (%s)"
+		% [copy, error_string(error)])
+
+
+## Reprise sur la carte, la case et l'orientation sauvegardées ; si la carte n'existe plus,
+## au point de soin. Faux si aucun des deux n'a marché (Boot part alors du départ par défaut,
+## avec la partie chargée).
+func _resume() -> bool:
+	if SceneRouter.start_at(GameState.current_map, GameState.player_cell,
+			GameState.player_facing) != null:
+		return true
+	push_warning("Boot : reprise sur « %s » impossible, retour au point de soin."
+		% GameState.current_map)
+	return SceneRouter.start(GameState.heal_map, GameState.heal_spawn, Vector2i.UP) != null
+
+
+## Départ de débogage (jalon 5 T9, [DebugStart]) : remplace la nouvelle partie par celle du
+## fichier [member debug_start_path], s'il est permis et présent. Vrai s'il a été appliqué.
+func _apply_debug_start() -> bool:
+	var allowed := force_debug_start \
+		or DebugStart.is_allowed(OS.is_debug_build(), get_tree().current_scene == self)
+	if not allowed or not FileAccess.file_exists(debug_start_path):
+		return false
+	var start := DebugStart.new()
+	if not start.load_file(debug_start_path, _pokemon, _items):
+		return false
+	start.apply(GameState, _pokemon)
+	if not start.map.is_empty():
+		start_map = start.map
+		start_spawn = start.spawn
+		start_facing = start.facing
+	print("Départ de débogage (%s) : %s" % [debug_start_path, start.describe()])
+	return true
+
+
+func _can_write() -> bool:
+	return _autosave_enabled and save_system != null
+
+
+## Écrit la sauvegarde : position du joueur poussée dans GameState, puis écriture atomique.
+func _write_save(reason: String) -> Error:
+	_save_pending = false
+	var map := SceneRouter.get_current_map()
+	if not is_instance_valid(map) or not is_instance_valid(_player):
+		return ERR_UNAVAILABLE
+	GameState.set_player_location(map.map_id, _player.get_cell(), _player.get_facing())
+	var error := save_system.write(GameState.to_dict())
+	if OS.is_debug_build():
+		print("Sauvegarde automatique (%s) : %s %s, %s" % [reason, map.map_id,
+			_player.get_cell(), error_string(error)])
+	return error
+
+
+## Identifiant de la carte courante (&"" sans carte).
+func _current_map_id() -> StringName:
+	var map := SceneRouter.get_current_map()
+	return map.map_id if is_instance_valid(map) else &""
 
 
 func _on_transition_started(_target_map: StringName) -> void:
@@ -197,9 +447,14 @@ func _on_map_changed(map: GameMap) -> void:
 	_interactions.set_map(map)
 	_cutscenes_node.set_map(map)
 	_starter_choice.set_map(map)
+	_ambient.set_map(map)
+	_encounters.set_map(map)
 
 
+## Arrivée sur une carte (écran visible) : zone découverte, autosave demandé, titre de zone.
 func _on_map_entered(map: GameMap) -> void:
+	GameState.discover_map(map.map_id)
+	request_autosave("changement de carte")
 	if _announcer.should_announce(map.display_name, map.interior):
 		_hud.show_zone_title(map.display_name, map.region)
 		zone_announced.emit(map.display_name, map.region)
@@ -220,16 +475,98 @@ func _on_dialogue_finished(_dialogue_id: StringName) -> void:
 	_refresh_controls()
 
 
+## Soin demandé par un dialogue « heal » (jalon 5 §3.11) : l'équipe est soignée (PV et PP).
+func _on_heal_requested() -> void:
+	GameState.party.heal_all()
+	request_autosave("soin")
+
+
 func _on_cutscene_started(_cutscene_id: StringName) -> void:
 	_refresh_controls()
 
 
 func _on_cutscene_finished(_cutscene_id: StringName) -> void:
 	_refresh_controls()
+	request_autosave("fin de scène")
 
 
 func _on_battle_state_changed() -> void:
 	_refresh_controls()
+
+
+func _on_encounter_state_changed() -> void:
+	_refresh_controls()
+
+
+## Le starter choisi (jalon 4A) est enregistré « capturé » au Pokédex (décision Q-D), avec
+## sa rencontre (labo, niveau et date du choix) et le grand moment « premier Pokémon »
+## (jalon 5 §16.3 ; décision de Kevin : premier Pokémon, pas première capture).
+func _on_starter_chosen(player_species: StringName, _rival_species: StringName) -> void:
+	var map_id := _current_map_id()
+	GameState.record_caught(player_species, map_id)
+	var members := GameState.party.get_all()
+	for i: int in range(members.size() - 1, -1, -1):
+		if members[i].species_id == player_species:
+			GameState.stamp_meeting(members[i], Pokemon.Origin.STARTER, map_id)
+			break
+	GameState.record_moment(GameState.MOMENT_STARTER, map_id,
+		{"species": String(player_species)})
+
+
+## Pokémon adverse d'un combat de dresseur envoyé au combat : « vu » au Pokédex, avec la carte
+## (le rival au labo, décision Q-D). Les sauvages sont enregistrés par l'[EncounterDirector]
+## au début de la rencontre (une seule observation par rencontre).
+func _on_battle_event(event: BattleEvent) -> void:
+	if event.kind == BattleEvent.Kind.SENT_OUT and event.side == BattleEvent.SideId.FOE \
+			and not _encounters.is_running():
+		GameState.record_seen(event.species_id, _current_map_id())
+
+
+## Fin d'un combat de dresseur : grand moment « combat contre le rival » (le rival est le
+## dresseur dont l'équipe dépend du starter du joueur, comme dans Rouge/Bleu), puis autosave
+## (écrit à la fin de la scène qui contient le combat). Les sauvages passent par
+## [method _on_encounter_finished].
+func _on_battle_finished(trainer_id: StringName, outcome: int) -> void:
+	if trainer_id.is_empty():
+		return
+	var trainer := _trainers.get_trainer(trainer_id) if _trainers != null else null
+	if trainer != null and not trainer.team_by_starter.is_empty():
+		var outcome_name: Variant = Battle.Outcome.find_key(outcome)
+		GameState.record_moment(GameState.MOMENT_RIVAL_BATTLE, _current_map_id(), {
+			"trainer": String(trainer_id),
+			"outcome": String(outcome_name).to_lower() if outcome_name != null else "",
+		})
+	request_autosave("fin de combat")
+
+
+## Fin d'une rencontre sauvage (victoire, fuite ou défaite → réveil chez Maman) : autosave,
+## écrit dès que la partie est stable (après le mot de Maman en cas de défaite).
+func _on_encounter_finished(_outcome: int) -> void:
+	request_autosave("fin de rencontre")
+
+
+## Réveil chez Maman après une défaite (décision de Kevin du 2026-10-02, QA S3) : la défaite
+## est un fait accompli. L'équipe est soignée et le joueur est au point de soin : on écrit tout
+## de suite, avant le mot de Maman ; sinon, quitter pendant son mot effaçait la défaite (retour
+## à la dernière case stable d'avant le combat). Une scène interrompue, elle, se rejoue.
+func _on_woke_up_after_defeat() -> void:
+	if _can_write() and not SceneRouter.is_transitioning():
+		_write_save("réveil")
+	else:
+		request_autosave("réveil")
+
+
+## Pokémon sauvage capturé et rangé (équipe ou stockage, jalon 5D) : autosave demandé, écrit à
+## la première image stable (après la carte de capture et la fin de la rencontre).
+func _on_pokemon_caught() -> void:
+	request_autosave("capture")
+
+
+## Objet trouvé dans le monde (étape « give » marquée « found », la Potion de la Route 1) :
+## inscrit au journal des objets trouvés avec la carte (§16.3). Les objets reçus d'un
+## personnage (les Poké Balls de Chen) n'y entrent pas.
+func _on_item_found(item_id: StringName, _count: int) -> void:
+	GameState.record_item_found(item_id, _current_map_id())
 
 
 ## Objet donné par une scène (étape « give ») : toast en haut de l'écran, sans rien bloquer
@@ -245,4 +582,5 @@ func _on_item_given(item_id: StringName, count: int) -> void:
 ## combat : pendant une scène ou un combat, ils restent cachés entre deux dialogues.
 func _refresh_controls() -> void:
 	_hud.set_controls_visible(not _runner.is_running() and not _cutscenes_node.is_running()
-		and not _starter_choice.is_sheet_open() and not _battle_director.is_running())
+		and not _starter_choice.is_sheet_open() and not _battle_director.is_running()
+		and not _encounters.is_running())

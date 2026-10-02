@@ -236,3 +236,179 @@ func test_set_frame_frames_the_arena() -> void:
 	await _enter()
 	var cells: Array[Vector2i] = [RIVAL_CELL, MINE_CELL, FOE_CELL]
 	assert_eq(_stage.get_focus(), BattleLayout.focus(cells), "cadrage oublié après la sortie")
+
+
+# --- Rencontre sauvage (jalon 5 §3.7) ------------------------------------------------
+
+## Intro sauvage : recadrage + voile, le sauvage apparaît à son ancre (pas de PNJ du monde),
+## puis le partenaire entre depuis la gauche jusqu'à sa place. Sortie : tout rendu.
+func test_wild_intro_and_partner_enter_end_at_the_anchors() -> void:
+	var origin := Grid.cell_to_world(FOE_CELL)
+	await _stage.play_wild_intro(_camera, &"pidgey", origin)
+	var a := _anchors()
+	var foe := _stage.get_sprite(FOE_SIDE)
+	assert_true(_stage.is_active())
+	assert_true(foe.visible, "le sauvage apparaît")
+	assert_eq(foe.position, a["foe_feet"], "à l'ancre adverse")
+	assert_eq(foe.scale, Vector2.ONE * 3, "de face ×3")
+	assert_eq(foe.modulate, Color.WHITE)
+	assert_string_ends_with(foe.texture.resource_path, "pidgey_front.png")
+	assert_false(_stage.get_sprite(PLAYER_SIDE).visible, "partenaire pas encore entré")
+	assert_eq(_camera.zoom, Vector2.ONE * BattleStage.ZOOM, "caméra recadrée")
+	assert_true((_stage.get_node(^"%Backdrop") as CanvasItem).visible,
+		"voile posé, pas d'écran noir")
+	await _stage.play_partner_enter(&"charmander")
+	var mine := _stage.get_sprite(PLAYER_SIDE)
+	assert_true(mine.visible)
+	assert_eq(mine.position, a["player_feet"], "à l'ancre du joueur")
+	assert_eq(mine.scale, Vector2.ONE * 4, "de dos ×4")
+	assert_string_ends_with(mine.texture.resource_path, "charmander_back.png")
+	await _stage.exit()
+	assert_false(_stage.is_active())
+	assert_eq(_camera.zoom, Vector2.ONE, "caméra rendue")
+	assert_false(foe.visible)
+	assert_false(mine.visible)
+	assert_false((_stage.get_node(^"%Backdrop") as CanvasItem).visible)
+
+
+func test_wild_intro_during_a_battle_is_refused() -> void:
+	await _enter()
+	await _stage.play_wild_intro(_camera, &"rattata", Grid.cell_to_world(FOE_CELL))
+	assert_push_error("déjà affiché")
+	assert_string_ends_with(_stage.get_sprite(FOE_SIDE).texture.resource_path,
+		"squirtle_front.png", "le combat affiché ne change pas")
+
+
+func test_reset_after_a_wild_intro_puts_everything_back() -> void:
+	await _stage.play_wild_intro(_camera, &"rattata", Grid.cell_to_world(FOE_CELL))
+	await _stage.play_partner_enter(&"squirtle")
+	_stage.reset()
+	assert_false(_stage.is_active())
+	assert_eq(_camera.zoom, Vector2.ONE)
+	assert_eq(_camera.limit_right, LIMITS[2])
+	assert_false(_stage.get_sprite(FOE_SIDE).visible)
+	assert_false(_stage.get_sprite(PLAYER_SIDE).visible)
+
+
+func test_no_orphans_after_a_wild_intro() -> void:
+	await _stage.play_wild_intro(_camera, &"pidgey", Grid.cell_to_world(FOE_CELL))
+	await _stage.play_partner_enter(&"charmander")
+	await _stage.exit()
+	assert_no_new_orphans()
+
+
+# --- Capture (jalon 5D, T15) ------------------------------------------------------------
+
+func _wild() -> void:
+	await _stage.play_wild_intro(_camera, &"rattata", Grid.cell_to_world(FOE_CELL))
+	await _stage.play_partner_enter(&"charmander")
+
+
+## Après le lancer : le dresseur est reparti, le Pokémon sauvage est absorbé (sprite et ombre
+## cachés) et la Ball est posée aux pieds de l'adversaire, nette (NEAREST), à sa taille de repos.
+func test_throw_absorbs_the_foe_and_leaves_the_ball_on_the_ground() -> void:
+	await _wild()
+	await _stage.play_throw()
+	var a := _anchors()
+	var foe := _stage.get_sprite(FOE_SIDE)
+	assert_false(foe.visible, "le sauvage est absorbé")
+	var ball := _stage.get_ball()
+	assert_not_null(ball)
+	assert_true(ball.visible, "la Ball est au sol")
+	assert_eq(ball.texture_filter, CanvasItem.TEXTURE_FILTER_NEAREST, "pixel art net")
+	assert_eq(ball.scale, Vector2.ONE * BattleStage.BALL_REST_SCALE)
+	var feet: Vector2 = a["foe_feet"]
+	assert_eq(ball.position.x, feet.x, "sous le sauvage")
+	assert_between(ball.position.y, feet.y - 200.0, feet.y, "posée sur le sol")
+	assert_eq(ball.rotation, 0.0)
+	assert_false(_stage.get_thrower().visible, "le dresseur est reparti")
+	assert_true(_stage.is_capture_shown())
+	assert_true(_stage.get_sprite(PLAYER_SIDE).visible, "le partenaire reste")
+
+
+func test_throw_before_a_battle_is_ignored() -> void:
+	await _stage.play_throw()
+	assert_false(_stage.is_capture_shown())
+	assert_null(_stage.get_ball())
+
+
+func test_shake_rocks_the_ball_and_ends_upright() -> void:
+	await _wild()
+	await _stage.play_throw()
+	var ball := _stage.get_ball()
+	var rest := ball.position
+	await _stage.play_ball_shake()
+	assert_eq(ball.rotation, 0.0, "redressée")
+	assert_eq(ball.position, rest, "elle n'a pas bougé")
+	assert_true(ball.visible)
+
+
+func test_shake_without_a_ball_is_ignored() -> void:
+	await _wild()
+	await _stage.play_ball_shake()
+	assert_null(_stage.get_ball())
+
+
+func test_catch_burst_leaves_the_ball_and_clears_the_effects() -> void:
+	await _wild()
+	await _stage.play_throw()
+	await _stage.play_catch_burst()
+	assert_true(_stage.get_ball().visible, "la Ball reste jusqu'à la sortie")
+	assert_eq((_stage.get_node(^"%Flash") as ColorRect).color.a, 0.0, "voile doré retombé")
+	assert_false(_stage.get_sprite(FOE_SIDE).visible, "le sauvage ne revient pas")
+
+
+func test_break_free_brings_the_foe_back_and_removes_the_ball() -> void:
+	await _wild()
+	await _stage.play_throw()
+	await _stage.play_ball_shake()
+	await _stage.play_break_free()
+	var a := _anchors()
+	var foe := _stage.get_sprite(FOE_SIDE)
+	assert_true(foe.visible, "le Pokémon est ressorti")
+	assert_eq(foe.position, a["foe_feet"], "à sa place de combat")
+	assert_eq(foe.scale, Vector2.ONE * float(BattleLayout.FOE_SCALE), "à sa taille")
+	assert_eq(foe.modulate, Color.WHITE)
+	assert_false(_stage.get_ball().visible, "la Ball s'est ouverte")
+	assert_false(_stage.is_capture_shown())
+
+
+func test_exit_after_a_capture_hides_the_ball_and_never_brings_the_foe_back() -> void:
+	await _wild()
+	await _stage.play_throw()
+	await _stage.play_catch_burst()
+	await _stage.exit()
+	assert_false(_stage.is_active())
+	assert_false(_stage.is_capture_shown())
+	assert_false(_stage.get_sprite(FOE_SIDE).visible)
+	assert_eq(_camera.zoom, Vector2.ONE, "caméra rendue")
+	assert_no_new_orphans()
+
+
+func test_reset_during_a_capture_puts_everything_back() -> void:
+	await _wild()
+	await _stage.play_throw()
+	_stage.reset()
+	assert_false(_stage.is_capture_shown())
+	assert_false(_stage.get_sprite(FOE_SIDE).visible)
+	assert_eq(_camera.zoom, Vector2.ONE)
+
+
+## À vitesse réelle, le lancer dure de l'ordre d'une seconde et demie (jalon-05.md §3.10), la
+## secousse 0,6 s : le dresseur est visible à mi-course.
+func test_throw_takes_a_second_or_so_at_real_speed_and_shows_the_thrower() -> void:
+	_stage.speed_scale = 1.0
+	await _stage.play_wild_intro(_camera, &"rattata", Grid.cell_to_world(FOE_CELL))
+	await _stage.play_partner_enter(&"charmander")
+	var started := Time.get_ticks_msec()
+	var runner := func() -> void: await _stage.play_throw()
+	runner.call()
+	await wait_seconds(0.4)
+	assert_true(_stage.get_thrower().visible, "le dresseur est dans le cadrage")
+	assert_true(_stage.get_ball().visible, "la Ball vole")
+	await wait_until(func() -> bool:
+		return _stage.get_ball().position.y > 0.0 and not _stage.get_thrower().visible \
+			and not _stage.get_sprite(FOE_SIDE).visible, 4.0)
+	var elapsed := (Time.get_ticks_msec() - started) / 1000.0
+	assert_between(elapsed, 1.0, 3.0, "le lancer dure ~1,5 s")
+	_stage.reset()

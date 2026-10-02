@@ -6,9 +6,14 @@ extends RefCounted
 ## [PokemonData], passé en paramètre. Création : [PokemonFactory]. Progression :
 ## [method gain_exp] (niveaux), [method learn_move] / [method replace_move] (4 capacités au
 ## maximum, le joueur choisit laquelle oublier), [method evolve_into] (évolution, voir
-## [Evolution]). [method to_dict] / [method from_dict] préparent la sauvegarde.
+## [Evolution]). [method to_dict] / [method from_dict] préparent la sauvegarde. Les données de
+## rencontre ([method record_meeting] : carte, niveau, date, dresseur d'origine, manière) sont
+## les faits que l'onglet Histoire du J6 affichera (jalon 5 §16.3) ; elles ne jouent aucun
+## rôle dans les règles.
 
 enum Gender { NONE, MALE, FEMALE }
+## Manière dont le Pokémon est arrivé dans l'équipe (jalon 5 §16.3).
+enum Origin { UNKNOWN, STARTER, CAPTURE }
 ## Résultat de [method learn_move].
 enum LearnResult {
 	LEARNED, ## Appris dans un emplacement libre.
@@ -19,6 +24,9 @@ enum LearnResult {
 
 const GENDER_NAMES: Dictionary[String, Gender] = {
 	"none": Gender.NONE, "male": Gender.MALE, "female": Gender.FEMALE,
+}
+const ORIGIN_NAMES: Dictionary[String, Origin] = {
+	"unknown": Origin.UNKNOWN, "starter": Origin.STARTER, "capture": Origin.CAPTURE,
 }
 
 var species_id: StringName = &""
@@ -36,6 +44,13 @@ var hp: int = 0
 var experience: int = 0
 ## 1 à 4 capacités.
 var moves: Array[MoveSlot] = []
+## Rencontre (jalon 5 §16.3, [method record_meeting]) : manière, carte, niveau d'alors, date
+## réelle ISO, dresseur d'origine. Vides tant que rien n'est enregistré (UNKNOWN, &"", 0, "").
+var origin: Origin = Origin.UNKNOWN
+var met_map: StringName = &""
+var met_level: int = 0
+var met_date: String = ""
+var original_trainer: String = ""
 
 
 ## Nom affiché : le surnom, sinon le nom de l'espèce.
@@ -158,7 +173,18 @@ func evolve_into(into: StringName, data: PokemonData) -> bool:
 	return true
 
 
-## État complet, prêt pour le JSON (future sauvegarde).
+## Enregistre la rencontre (à l'entrée dans l'équipe : starter au labo, capture) : [param kind],
+## [param map] (identifiant de carte), le niveau courant, [param date] (ISO, appareil) et le
+## nom du dresseur. `GameState.stamp_meeting` fournit la date et le nom.
+func record_meeting(kind: Origin, map: StringName, date: String, trainer: String) -> void:
+	origin = kind
+	met_map = map
+	met_level = level
+	met_date = date
+	original_trainer = trainer
+
+
+## État complet, prêt pour le JSON (sauvegarde).
 func to_dict() -> Dictionary:
 	var move_list: Array[Dictionary] = []
 	for slot: MoveSlot in moves:
@@ -167,6 +193,10 @@ func to_dict() -> Dictionary:
 		"species": String(species_id), "nickname": nickname, "level": level,
 		"gender": GENDER_NAMES.find_key(gender), "exp": experience, "hp": hp,
 		"ivs": _stats_to_dict(ivs), "evs": _stats_to_dict(evs), "moves": move_list,
+		"met": {
+			"origin": ORIGIN_NAMES.find_key(origin), "map": String(met_map),
+			"level": met_level, "date": met_date, "trainer": original_trainer,
+		},
 	}
 
 
@@ -204,6 +234,14 @@ static func from_dict(dict: Dictionary, data: PokemonData) -> Pokemon:
 		pokemon.moves.append(slot)
 	pokemon.recalc(data)
 	pokemon.hp = clampi(int(dict["hp"]), 0, pokemon.max_hp())
+	# Rencontre (§16.3) : informatif, donc tolérant — absent ou mal formé → valeurs par défaut
+	# (une sauvegarde d'avant le 5C.5 ne l'a pas).
+	var met := JsonFields.get_dict(dict, "met")
+	pokemon.origin = ORIGIN_NAMES.get(JsonFields.get_string(met, "origin"), Origin.UNKNOWN)
+	pokemon.met_map = JsonFields.get_id(met, "map")
+	pokemon.met_level = clampi(JsonFields.get_int(met, "level"), 0, ExpCurve.MAX_LEVEL)
+	pokemon.met_date = JsonFields.get_string(met, "date")
+	pokemon.original_trainer = JsonFields.get_string(met, "trainer")
 	return pokemon
 
 

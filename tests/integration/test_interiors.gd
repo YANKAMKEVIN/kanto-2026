@@ -29,7 +29,7 @@ const PLANS: Dictionary = {
 		"size": Vector2i(14, 10), "walls": BOX, "openings": [],
 		"from": &"entrance", "mat": Vector2i(7, 8), "reserved": [],
 		"npcs": {Vector2i(7, 4): &"mom"},
-		"spawns": {&"entrance": Vector2i(7, 8), &"stairs": Vector2i(2, 4)},
+		"spawns": {&"entrance": Vector2i(7, 8), &"stairs": Vector2i(2, 4), &"heal": Vector2i(7, 5)},
 		"warps": {
 			&"StairsUpW": [Vector2i(1, 3), STEP_ON, Vector2i.UP, &"player_house_2f", &"stairs"],
 			&"StairsUpE": [Vector2i(2, 3), STEP_ON, Vector2i.UP, &"player_house_2f", &"stairs"],

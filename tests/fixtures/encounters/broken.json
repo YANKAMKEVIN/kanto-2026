@@ -1,0 +1,8 @@
+{
+	"broken_table": {
+		"maps": ["route_1"],
+		"terrain": "grass",
+		"rate": 25
+		"slots": []
+	}
+}

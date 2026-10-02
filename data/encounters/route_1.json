@@ -1,0 +1,20 @@
+{
+	"route_1_grass": {
+		"maps": ["route_1", "pallet_town"],
+		"terrain": "grass",
+		"rate": 25,
+		"ramp": { "from_step": 15, "max_steps": 20 },
+		"slots": [
+			{ "species": "pidgey", "levels": [3, 3], "weight": 20 },
+			{ "species": "rattata", "levels": [3, 3], "weight": 20 },
+			{ "species": "rattata", "levels": [3, 3], "weight": 15 },
+			{ "species": "rattata", "levels": [2, 2], "weight": 10 },
+			{ "species": "pidgey", "levels": [2, 2], "weight": 10 },
+			{ "species": "pidgey", "levels": [3, 3], "weight": 10 },
+			{ "species": "pidgey", "levels": [3, 3], "weight": 5 },
+			{ "species": "rattata", "levels": [4, 4], "weight": 5 },
+			{ "species": "pidgey", "levels": [4, 4], "weight": 4 },
+			{ "species": "pidgey", "levels": [5, 5], "weight": 1 }
+		]
+	}
+}

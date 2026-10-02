@@ -23,6 +23,9 @@ enum Kind {
 	SHALLOW,
 	## Hautes herbes (jalon 3B) : ajoutées en fin d'enum pour ne déplacer aucune rangée.
 	TALL_GRASS,
+	## Rebord sautable vers le sud (jalon 5, raccourci de retour). Praticable (non solide),
+	## donnée `ledge` = bas ([constant GridWorld.Ledge.DOWN]) ; en fin d'enum.
+	LEDGE_DOWN,
 }
 
 const TEXTURE_PATH: String = "res://assets/tiles/placeholder/overworld_atlas.png"
@@ -49,6 +52,7 @@ const VARIANTS: Dictionary[Kind, int] = {
 	Kind.WATER: 3,
 	Kind.SHALLOW: 2,
 	Kind.TALL_GRASS: 2,
+	Kind.LEDGE_DOWN: 2,
 }
 
 ## Types infranchissables (sol de forêt, falaise, culture).
@@ -57,6 +61,11 @@ const SOLID_KINDS: Array[Kind] = [Kind.FOREST, Kind.CLIFF, Kind.CROP]
 const WATER_KINDS: Array[Kind] = [Kind.WATER, Kind.SHALLOW]
 ## Types de hautes herbes (praticables, donnée `tall_grass` ; rencontres au jalon 5).
 const TALL_GRASS_KINDS: Array[Kind] = [Kind.TALL_GRASS]
+## Direction de rebord par type (donnée `ledge`, valeurs de [enum GridWorld.Ledge] : 1 = bas).
+## Les autres types valent 0 (aucun rebord).
+const LEDGE_KINDS: Dictionary[Kind, int] = {
+	Kind.LEDGE_DOWN: GridWorld.Ledge.DOWN,
+}
 ## Nombre de colonnes de l'atlas (variantes maximum).
 const ATLAS_COLUMNS: int = 4
 
@@ -80,3 +89,13 @@ static func is_water_kind(kind: Kind) -> bool:
 
 static func is_tall_grass_kind(kind: Kind) -> bool:
 	return kind in TALL_GRASS_KINDS
+
+
+## Donnée `ledge` d'un type (valeur de [enum GridWorld.Ledge] : 0 aucun, 1 bas, 2 gauche,
+## 3 droite).
+static func ledge_of(kind: Kind) -> int:
+	return LEDGE_KINDS.get(kind, GridWorld.Ledge.NONE)
+
+
+static func is_ledge_kind(kind: Kind) -> bool:
+	return LEDGE_KINDS.has(kind)

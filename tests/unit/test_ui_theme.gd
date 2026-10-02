@@ -294,6 +294,29 @@ func test_toast_variations_match_tokens() -> void:
 	assert_true(UiTokens.TOAST_TOP >= UiTokens.SAFE_MARGIN)
 
 
+func test_exp_and_forget_variations_match_tokens() -> void:
+	var theme := load(THEME_PATH) as Theme
+	assert_eq(theme.get_type_variation_base(&"ExpBar"), &"Control")
+	assert_eq((theme.get_stylebox(&"fill", &"ExpBar") as StyleBoxFlat).bg_color,
+		UiTokens.EXP_BAR_FILL)
+	assert_eq((theme.get_stylebox(&"background", &"ExpBar") as StyleBoxFlat).bg_color,
+		UiTokens.EXP_BAR_TRACK)
+	assert_eq(theme.get_font_size(&"font_size", &"ExpGain"), UiTokens.EXP_GAIN_FONT)
+	assert_eq(theme.get_color(&"font_color", &"ExpGain"), UiTokens.ACCENT)
+	assert_eq((theme.get_stylebox(&"panel", &"ForgetBand") as StyleBoxFlat).bg_color,
+		UiTokens.FORGET_BAND_BG)
+	assert_eq(theme.get_color(&"font_color", &"ForgetCaption"), UiTokens.TEXT_MUTED)
+	assert_eq(theme.get_type_variation_base(&"ForgetConfirm"), &"Button")
+	assert_eq((theme.get_stylebox(&"normal", &"ForgetConfirm") as StyleBoxFlat).bg_color,
+		UiTokens.ACCENT)
+	assert_eq((theme.get_stylebox(&"disabled", &"ForgetConfirm") as StyleBoxFlat).bg_color,
+		UiTokens.FORGET_CONFIRM_DISABLED_BG)
+	assert_eq(theme.get_color(&"font_disabled_color", &"ForgetConfirm"), UiTokens.TEXT_DISABLED)
+	assert_almost_eq(UiTokens.EXP_TWEEN, 0.6, 0.001, "jalon-05 §3.9 : 0,6 s")
+	assert_almost_eq(UiTokens.EXP_GAIN_HOLD, 0.8, 0.001, "jalon-05 §3.9 : 0,8 s")
+	assert_true(UiTokens.FORGET_BUTTON_SIZE.y >= UiTokens.TOUCH_MIN)
+
+
 func _ui_files(dir: String = UI_DIR) -> Array[String]:
 	var files: Array[String] = []
 	for file: String in DirAccess.get_files_at(dir):
@@ -302,3 +325,46 @@ func _ui_files(dir: String = UI_DIR) -> Array[String]:
 	for sub: String in DirAccess.get_directories_at(dir):
 		files.append_array(_ui_files(dir.path_join(sub)))
 	return files
+
+
+func test_bag_and_capture_variations_match_tokens() -> void:
+	var theme := load(THEME_PATH) as Theme
+	var panel := theme.get_stylebox(&"panel", &"BagPanel") as StyleBoxFlat
+	assert_eq(panel.bg_color, UiTokens.BAG_PANEL_BG)
+	assert_lt(panel.bg_color.a, 1.0, "Sac translucide : le combat reste visible")
+	assert_eq(panel.get_content_margin(SIDE_LEFT), float(UiTokens.BAG_PANEL_PAD))
+	var selected := theme.get_stylebox(&"panel", &"BagCardSelected") as StyleBoxFlat
+	assert_eq(selected.border_color, UiTokens.ACCENT)
+	assert_eq(selected.border_width_top, UiTokens.MOVE_CARD_SELECTED_BORDER)
+	assert_eq(selected.shadow_size, UiTokens.MOVE_CARD_SELECTED_GLOW_SIZE)
+	assert_eq((theme.get_stylebox(&"panel", &"BagCard") as StyleBoxFlat).border_color,
+		UiTokens.PANEL_BORDER)
+	var tab_selected := theme.get_stylebox(&"panel", &"BagTabSelected") as StyleBoxFlat
+	assert_eq(tab_selected.bg_color, UiTokens.BAG_TAB_SELECTED_BG)
+	assert_eq(tab_selected.border_color, UiTokens.ACCENT)
+	assert_eq(theme.get_font_size(&"font_size", &"BagTitle"), UiTokens.FONT_TITLE)
+	assert_eq(theme.get_font_size(&"font_size", &"BagCardName"), UiTokens.BAG_CARD_NAME_FONT)
+	assert_eq(theme.get_font_size(&"font_size", &"BagDetailName"), UiTokens.BAG_DETAIL_NAME_FONT)
+	assert_eq(theme.get_color(&"font_color", &"BagDetailText"), UiTokens.DIALOG_NARRATION)
+	var card := theme.get_stylebox(&"panel", &"CaptureCard") as StyleBoxFlat
+	assert_eq(card.bg_color, UiTokens.CAPTURE_CARD_BG)
+	assert_eq(card.get_content_margin(SIDE_LEFT), float(UiTokens.CAPTURE_CARD_PAD_H))
+	assert_eq(theme.get_font_size(&"font_size", &"CaptureTitle"), UiTokens.CAPTURE_TITLE_FONT)
+	assert_eq(theme.get_color(&"font_color", &"CapturePokedex"), UiTokens.TEXT_MUTED)
+	assert_eq((theme.get_stylebox(&"panel", &"CaptureThumb") as StyleBoxFlat).bg_color,
+		UiTokens.CAPTURE_THUMB_BG)
+
+
+func test_bag_and_capture_tokens_respect_touch_rules() -> void:
+	assert_gte(UiTokens.BAG_TAB_HEIGHT, UiTokens.TOUCH_MIN)
+	assert_gte(UiTokens.BAG_CARD_SIZE.x, float(UiTokens.TOUCH_MIN))
+	assert_gte(UiTokens.BAG_CARD_SIZE.y, float(UiTokens.TOUCH_MIN))
+	assert_gte(UiTokens.BAG_ACTION_SIZE.x, float(UiTokens.TOUCH_MIN))
+	assert_gte(UiTokens.BAG_ACTION_SIZE.y, float(UiTokens.TOUCH_MIN))
+	assert_eq(UiTokens.BAG_FRAME_MAX_HEIGHT + UiTokens.GAP + UiTokens.BATTLE_BACK_SIZE
+		+ 2 * UiTokens.SAFE_MARGIN, 1080, "cadre, écart, « ‹ » et marges = 1080")
+	var inner := UiTokens.BAG_PANEL_WIDTH - 2 * UiTokens.BAG_PANEL_PAD
+	var grid := UiTokens.BAG_COLUMNS * UiTokens.BAG_CARD_SIZE.x \
+		+ (UiTokens.BAG_COLUMNS - 1) * UiTokens.BAG_CARD_GAP + 2 * UiTokens.BAG_SCROLL_PAD
+	assert_lte(grid, float(inner), "quatre cartes tiennent dans le cadre")
+	assert_lt(UiTokens.CAPTURE_TOUCH_LOCK, 1.0)

@@ -44,8 +44,10 @@ func test_real_messages_load_without_error() -> void:
 
 
 func test_messages_fixed_by_kevin_are_final_and_the_others_draft() -> void:
+	# Jalon 5D : les textes de la carte de capture viennent du dossier 05 §17 (Q36).
 	var fixed: Array[StringName] = [&"sent_out_foe", &"critical", &"super_effective",
-		&"not_very_effective"]
+		&"not_very_effective", &"caught_title", &"pokedex_new", &"joined_party",
+		&"sent_to_storage"]
 	for id: StringName in BattleText.TEMPLATE_IDS:
 		assert_eq(_text.is_draft(id), not fixed.has(id), String(id))
 
@@ -65,7 +67,7 @@ func test_start_and_sending_out() -> void:
 	assert_eq(_lines(_event(K.SENT_OUT, false, "Salamèche")), ["En avant, Salamèche !"])
 	var wild := _event(K.SENT_OUT, true)
 	wild.trainer_name = ""
-	assert_eq(_lines(wild), [], "Pokémon sauvage : jalon 5")
+	assert_eq(_lines(wild), ["Un Carapuce sauvage apparaît !"], "Pokémon sauvage : jalon 5")
 
 
 func test_turn_start_has_no_message() -> void:
@@ -181,6 +183,38 @@ func test_no_generic_start_message_for_the_first_rival_battle() -> void:
 	assert_eq(Array(_text.lines(started, _data, other)), ["Le Rival veut se battre !"])
 
 
+func test_exp_and_learning_lines() -> void:
+	# Jalon 5C (Q25, Q30) : pas de phrase pour l'XP ni le niveau ; une pour la capacité.
+	var gained := _event(K.EXP_GAINED, false, "Salamèche")
+	gained.amount = 21
+	assert_eq(_lines(gained), [], "« +21 XP » est sur la carte")
+	var level_up := _event(K.LEVEL_UP, false, "Salamèche")
+	level_up.level = 6
+	assert_eq(_lines(level_up), ["Salamèche monte au niveau 6 !"], "message de niveau (option A)")
+	assert_eq(_text.line_for(&"level_up", level_up, _data), "Salamèche monte au niveau 6 !")
+	var learned := _event(K.MOVE_LEARNED, false, "Salamèche")
+	learned.move_id = &"ember"
+	assert_eq(_lines(learned), ["Salamèche apprend Flammèche !"])
+	var offered := _event(K.MOVE_FORGET_OFFERED, false, "Salamèche")
+	offered.move_id = &"rage"
+	assert_eq(_lines(offered),
+		["Salamèche veut apprendre Frénésie, mais connaît déjà quatre capacités."])
+	assert_eq(_text.line_for(&"move_forgot", offered, _data, &"scratch"),
+		"Salamèche oublie Griffe et apprend Frénésie !")
+	assert_eq(_text.line_for(&"move_not_learned", offered, _data),
+		"Salamèche n'apprend pas Frénésie.")
+	assert_eq(_text.line_for(&"unknown_template", offered, _data), "")
+
+
+func test_leech_seed_lines() -> void:
+	var seeded := _event(K.SEEDED, true, "Roucool")
+	assert_eq(_lines(seeded), ["Une graine est plantée sur Roucool !"])
+	var drained := _event(K.DRAINED, true, "Roucool")
+	assert_eq(_lines(drained), ["Vampigraine draine l'énergie de Roucool !"])
+	drained.pokemon_name = "Évoli"
+	assert_eq(_lines(drained), ["Vampigraine draine l'énergie d'Évoli !"])
+
+
 func test_elision() -> void:
 	assert_eq(BattleText.de_name("Salamèche"), "de Salamèche")
 	assert_eq(BattleText.de_name("Évoli"), "d'Évoli")
@@ -260,3 +294,85 @@ func test_broken_or_missing_file() -> void:
 	assert_push_error("ligne 6")
 	assert_false(text.load_file("res://nothing.json"))
 	assert_push_error_count(2)
+
+
+# --- Combat sauvage (jalon 5 §2.2) ------------------------------------------------------
+
+func _wild_event(kind: BattleEvent.Kind, side: BattleEvent.SideId,
+		pokemon: String = "Rattata") -> BattleEvent:
+	var event := BattleEvent.new(kind, side)
+	event.pokemon_name = pokemon
+	event.trainer_name = ""
+	return event
+
+
+func test_wild_sent_out_uses_wild_appeared() -> void:
+	var event := _wild_event(K.SENT_OUT, BattleEvent.SideId.FOE)
+	assert_eq(_lines(event), ["Un Rattata sauvage apparaît !"] as Array[String])
+
+
+func test_wild_appeared_agrees_in_feminine() -> void:
+	var event := _wild_event(K.SENT_OUT, BattleEvent.SideId.FOE, "Nidoran")
+	event.gender = Pokemon.Gender.FEMALE
+	assert_eq(_lines(event), ["Une Nidoran sauvage apparaît !"] as Array[String])
+
+
+func test_fled_and_flee_failed() -> void:
+	assert_eq(_lines(_wild_event(K.FLED, BattleEvent.SideId.PLAYER)),
+		["Tu prends la fuite !"] as Array[String])
+	assert_eq(_lines(_wild_event(K.FLEE_FAILED, BattleEvent.SideId.PLAYER)),
+		["Impossible de fuir !"] as Array[String])
+
+
+func test_wild_battle_ended_has_no_line() -> void:
+	# Sortie d'un combat sauvage : ni « Tu as battu… » (pas de dresseur) ni message pour FLED.
+	var fled := _wild_event(K.BATTLE_ENDED, BattleEvent.SideId.PLAYER)
+	fled.outcome = Battle.Outcome.FLED
+	assert_eq(_lines(fled).size(), 0)
+	var won := _wild_event(K.BATTLE_ENDED, BattleEvent.SideId.PLAYER)
+	won.outcome = Battle.Outcome.WIN
+	assert_eq(_lines(won).size(), 0, "un sauvage n'a pas de « Tu as battu »")
+
+
+# --- Capture (jalon 5D §2.4, dossier 05 §17, Q36) -------------------------------------------
+
+func test_ball_thrown_names_the_ball() -> void:
+	var event := _wild_event(K.BALL_THROWN, BattleEvent.SideId.FOE, "Roucool")
+	event.item_id = &"poke_ball"
+	event.item_name = "Poké Ball"
+	assert_eq(_lines(event), ["Tu lances une Poké Ball !"] as Array[String])
+
+
+func test_broke_free_agrees_in_feminine() -> void:
+	var event := _wild_event(K.BROKE_FREE, BattleEvent.SideId.FOE, "Roucool")
+	event.gender = Pokemon.Gender.MALE
+	assert_eq(_lines(event), ["Oh non ! Il s'est libéré !"] as Array[String])
+	event.gender = Pokemon.Gender.FEMALE
+	assert_eq(_lines(event), ["Oh non ! Elle s'est libérée !"] as Array[String])
+
+
+func test_shakes_caught_and_caught_end_have_no_line() -> void:
+	# La carte de capture tient lieu de message (dossier 05 §17 : « pas 8 fenêtres »).
+	assert_eq(_lines(_wild_event(K.BALL_SHAKE, BattleEvent.SideId.FOE)).size(), 0)
+	assert_eq(_lines(_wild_event(K.CAUGHT, BattleEvent.SideId.FOE)).size(), 0)
+	var ended := _wild_event(K.BATTLE_ENDED, BattleEvent.SideId.PLAYER)
+	ended.outcome = Battle.Outcome.CAUGHT
+	assert_eq(_lines(ended).size(), 0)
+
+
+func test_capture_card_texts_are_those_of_dossier_05() -> void:
+	var caught := _wild_event(K.CAUGHT, BattleEvent.SideId.FOE, "Roucool")
+	caught.gender = Pokemon.Gender.MALE
+	assert_eq(_text.line_for(&"caught_title", caught, _data).to_upper(), "ROUCOOL CAPTURÉ !",
+		"titre en capitales sur la carte")
+	assert_eq(_text.line_for(&"pokedex_new", caught, _data), "Nouvelle entrée Pokédex")
+	assert_eq(_text.line_for(&"joined_party", caught, _data), "Roucool rejoint ton équipe.")
+	assert_eq(_text.line_for(&"sent_to_storage", caught, _data),
+		"Roucool a été confié au système de recherche de Chen.")
+	caught.gender = Pokemon.Gender.FEMALE
+	assert_eq(_text.line_for(&"caught_title", caught, _data).to_upper(), "ROUCOOL CAPTURÉE !")
+	assert_eq(_text.line_for(&"sent_to_storage", caught, _data),
+		"Roucool a été confiée au système de recherche de Chen.")
+	assert_eq(_text.line_for(&"joined_party", caught, _data), "Roucool rejoint ton équipe.")
+	caught.pokemon_name = "Salamèche"
+	assert_eq(_text.line_for(&"caught_title", caught, _data).to_upper(), "SALAMÈCHE CAPTURÉE !")

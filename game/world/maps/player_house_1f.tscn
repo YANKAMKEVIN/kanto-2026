@@ -143,4 +143,7 @@ position = Vector2(720, 864)
 [node name="stairs" type="Marker2D" parent="Spawns" unique_id=743265671]
 position = Vector2(240, 480)
 
+[node name="heal" type="Marker2D" parent="Spawns" unique_id=743265672]
+position = Vector2(720, 576)
+
 [node name="Triggers" type="Node2D" parent="." unique_id=1394250632]

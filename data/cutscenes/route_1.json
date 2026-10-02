@@ -1,0 +1,14 @@
+{
+	"route_1_potion": {
+		"variants": [
+			{
+				"unless": ["got_potion_route_1"],
+				"steps": [
+					{ "dialogue": "route_1_potion_found" },
+					{ "give": "potion", "count": 1, "found": true },
+					{ "set": ["got_potion_route_1"] }
+				]
+			}
+		]
+	}
+}

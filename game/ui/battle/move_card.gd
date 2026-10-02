@@ -28,6 +28,14 @@ const NO_VALUE := "—"
 ## Icône neutre (anneau, comme NORMAL sur la référence) pour un type sans icône.
 const GENERIC_ICON: Texture2D = preload("res://assets/ui/icons/types/normal.svg")
 
+## Vrai : la carte réagit même à 0 PP et n'est jamais atténuée (panneau d'oubli : on peut
+## oublier une capacité sans PP). Les PP à 0 restent en rouge.
+var ignore_pp: bool = false:
+	set(value):
+		ignore_pp = value
+		if is_node_ready():
+			_apply()
+
 var _view: BattleMoveView
 var _selected: bool = false
 var _held: bool = false
@@ -117,9 +125,9 @@ func is_empty() -> bool:
 	return _view == null
 
 
-## Une capacité avec des PP : elle réagit au toucher.
+## Une capacité avec des PP (ou ignore_pp) : elle réagit au toucher.
 func is_usable() -> bool:
-	return _view != null and _view.is_usable()
+	return _view != null and (ignore_pp or _view.is_usable())
 
 
 ## Le doigt est posé sur la carte.

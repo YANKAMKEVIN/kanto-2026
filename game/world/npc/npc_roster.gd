@@ -15,6 +15,8 @@ extends RefCounted
 ## Clés : cell (obligatoire), sprite (obligatoire), facing (down), dialogue (aucun),
 ## verb (talk | observe), turn_to_player (true), keep_facing (false), lift (0 pixel),
 ## hop_style (calm | eager | playful : style de saut, jalon 4 ; aucun par défaut),
+## shy ({ action: fly | flee, radius: 1..4 } : réaction d'ambiance, jalon 5 ; interdit sur
+## un PNJ interactif),
 ## if et unless (listes de drapeaux : présence conditionnelle, jalon 3B §2.6).
 ## Le verbe « meet » (Rencontrer) est refusé : il est posé par le code (jalon 4 §3.5).
 ## Toute autre clé est une erreur. Pas de fichier = aucun PNJ sur la carte (sans erreur).
@@ -28,7 +30,7 @@ const PLAYER_ID: StringName = &"player"
 ## Clés d'une entrée (aussi celles de l'étape « spawn » des scènes, sans if / unless).
 const KEYS: Array[String] = [
 	"cell", "facing", "sprite", "dialogue", "verb", "turn_to_player", "keep_facing", "lift",
-	"hop_style", "if", "unless",
+	"hop_style", "shy", "route", "if", "unless",
 ]
 
 var _specs: Array[NpcSpec] = []
@@ -175,9 +177,85 @@ static func parse_entry(value: Variant, errors: PackedStringArray) -> NpcSpec:
 				NpcSpec.HOP_STYLES)))
 		else:
 			spec.hop_style = StringName(style)
+	if entry.has("shy"):
+		_read_shy(entry["shy"], spec, errors)
+	if entry.has("route"):
+		_read_route(entry["route"], spec, errors)
 	_read_flags(entry, "if", spec.if_flags, errors)
 	_read_flags(entry, "unless", spec.unless_flags, errors)
 	return spec if errors.size() == count else null
+
+
+## Lit la réaction d'ambiance « shy » : { "action": "fly" | "flee", "radius": 1..4 }.
+## Refusée sur un PNJ interactif (un Pokémon qui fuit ne se parle pas). « radius » facultatif
+## ([constant NpcSpec.SHY_RADIUS_DEFAULT] par défaut).
+static func _read_shy(value: Variant, spec: NpcSpec, errors: PackedStringArray) -> void:
+	if not value is Dictionary:
+		errors.append("« shy » doit être un objet { action, radius }")
+		return
+	var shy: Dictionary = value
+	for key: Variant in shy:
+		if str(key) != "action" and str(key) != "radius":
+			errors.append("clé inconnue dans « shy » : « %s »" % key)
+	var action: Variant = shy.get("action")
+	if not action is String or not NpcSpec.SHY_ACTIONS.has(StringName(action)):
+		errors.append("« shy.action » vaut %s" % ", ".join(PackedStringArray(
+			NpcSpec.SHY_ACTIONS)))
+	else:
+		spec.shy_action = StringName(action)
+	if shy.has("radius"):
+		var radius: Variant = shy["radius"]
+		if not (radius is float or radius is int) or float(radius) != floorf(float(radius)) \
+				or int(radius) < 1 or int(radius) > 4:
+			errors.append("« shy.radius » doit être un entier de 1 à 4")
+		else:
+			spec.shy_radius = int(radius)
+	if not spec.shy_action.is_empty() and spec.is_interactive():
+		errors.append("« shy » interdit sur un PNJ interactif (dialogue)")
+
+
+## Lit une routine de marche (jalon 5, le Voyageur) :
+## { "cells": [[x, y], …], "pause": secondes }. Deux cases consécutives (et la boucle de la
+## dernière à la première) doivent être voisines (un pas cardinal). « pause » facultatif
+## ([constant NpcSpec.ROUTE_PAUSE_DEFAULT] par défaut). Interdit sur un Pokémon « shy ».
+static func _read_route(value: Variant, spec: NpcSpec, errors: PackedStringArray) -> void:
+	if not value is Dictionary:
+		errors.append("« route » doit être un objet { cells, pause }")
+		return
+	var route: Dictionary = value
+	for key: Variant in route:
+		if str(key) != "cells" and str(key) != "pause":
+			errors.append("clé inconnue dans « route » : « %s »" % key)
+	var cells: Variant = route.get("cells")
+	if not cells is Array or (cells as Array).size() < 2:
+		errors.append("« route.cells » doit lister au moins 2 cases")
+	else:
+		var parsed: Array[Vector2i] = []
+		var ok := true
+		for c: Variant in cells:
+			if not is_cell(c):
+				errors.append("« route.cells » : chaque case est [x, y] (entiers ≥ 0)")
+				ok = false
+				break
+			parsed.append(Vector2i(int(c[0]), int(c[1])))
+		if ok:
+			for i: int in parsed.size():
+				var a := parsed[i]
+				var b := parsed[(i + 1) % parsed.size()]
+				if not Grid.is_cardinal(b - a):
+					errors.append("« route.cells » : %s et %s ne sont pas voisines" % [a, b])
+					ok = false
+					break
+		if ok:
+			spec.route_cells = parsed
+	if route.has("pause"):
+		var pause: Variant = route["pause"]
+		if not (pause is float or pause is int) or float(pause) < 0.0:
+			errors.append("« route.pause » doit être un nombre ≥ 0")
+		else:
+			spec.route_pause = float(pause)
+	if spec.has_route() and spec.is_shy():
+		errors.append("« route » interdit sur un Pokémon « shy »")
 
 
 ## Vrai pour une case de données : [x, y], entiers ≥ 0.

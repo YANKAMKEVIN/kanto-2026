@@ -5,11 +5,28 @@ extends Node
 ## ([BattlePlayback] → [BattleBeat]) et les joue sur le [BattleStage] (le décor recomposé et
 ## les Pokémon) et la [BattleHud] (cartes, barres de PV, messages). La boucle de choix passe
 ## par les signaux de la HUD ; la fin par [BattleConclusion] (soin, ni XP ni argent).
+## XP (jalon 5C) : le directeur rejoue EXP_GAINED (barre d'XP de la carte du joueur), LEVEL_UP
+## (« Nv. » qui pulse, PV max) et les phrases de capacité apprise, dans l'ordre du journal ;
+## pour un Pokémon du joueur qui n'est pas en jeu, le gain est appliqué sans être montré
+## (Q24). MOVE_FORGET_OFFERED suspend la lecture : le bandeau sort, le [MoveForgetPanel] fait
+## choisir la capacité à oublier (ou aucune), puis la phrase suit et la lecture reprend.
 ##
 ## Il ne lit aucun autoload : il reçoit [GameState] par [method setup] et la carte par
 ## [method run] (appelée par l'étape « battle » du [CutsceneDirector]). Il n'appelle jamais
 ## [SceneRouter] et ne touche au monde que par le [BattleStage] (les deux PNJ Pokémon qu'il
 ## cache). Aucune indication du Prof. Chen pendant le combat (décision de Kevin n° 9).
+##
+## Capture (jalon 5D, jalon-05.md §3.10) : en combat sauvage, SAC ouvre le [BattleBagPanel]
+## (construit depuis le Sac et l'[ItemLibrary], jamais la Potion : son usage arrive au jalon 6) ;
+## « ‹ » revient aux actions sans rien consommer ; une Ball choisie est retirée du Sac [b]une
+## seule fois[/b], puis le moteur joue le lancer ([BattleEvent.Kind.BALL_THROWN], secousses,
+## CAUGHT ou BROKE_FREE). Sur CAUGHT, le [i]même[/i] Pokémon (PV gardés) rejoint l'équipe, ou le
+## [PokemonStorage] si elle est pleine ; Pokédex daté ([method GameState.record_caught]),
+## rencontre « capture » ([method GameState.stamp_meeting]), grand moment « première capture »
+## (une seule fois : le starter compte comme premier Pokémon, pas comme première capture) ;
+## puis la [CaptureCard] (« Nouvelle entrée Pokédex » seulement si le Pokédex est activé par
+## Chen : [constant StoryFlags.POKEDEX_ACTIVATED], jalon 7) et le signal [signal pokemon_caught]
+## (autosave demandé par Boot). Aucune XP, aucun soin.
 
 ## Le combat commence (verrou posé, monde figé).
 signal battle_started(trainer_id: StringName)
@@ -17,12 +34,25 @@ signal battle_started(trainer_id: StringName)
 signal event_played(event: BattleEvent)
 ## Le combat est terminé (verrou rendu). [param outcome] : [enum Battle.Outcome].
 signal battle_finished(trainer_id: StringName, outcome: int)
+## Un Pokémon sauvage vient d'être capturé et rangé (équipe, ou stockage si [param stored]) ;
+## la carte de capture est sur le point de s'afficher. Boot y demande l'autosave.
+signal pokemon_caught(pokemon: Pokemon, stored: bool)
+## Vibration jouée ou demandée (millisecondes) : une par secousse de la Ball, puis les
+## vibrations du motif de capture. Émise même sans vibration réelle (tests).
+signal haptic_requested(duration_ms: int)
 
 ## Raison de blocage du joueur pendant un combat ([method Player.set_input_enabled]).
 const REASON: StringName = &"battle"
-
+const FORGET_PANEL_SCENE: PackedScene = preload("res://game/ui/battle/move_forget_panel.tscn")
+const BAG_PANEL_SCENE: PackedScene = preload("res://game/ui/battle/battle_bag_panel.tscn")
+const CAPTURE_CARD_SCENE: PackedScene = preload("res://game/ui/battle/capture_card.tscn")
+## Catégorie du Sac ouverte d'emblée en combat (les Balls).
+const BAG_START_CATEGORY: StringName = &"ball"
 ## Durées multipliées (0 = instantané, tests) ; relayé à la scène et à la HUD.
 var speed_scale: float = 1.0
+## Faux : pas de vibration réelle (haptic_requested est quand même émis) ; la HUD coupée
+## (tests) coupe aussi celles de la capture.
+var haptics_enabled: bool = true
 
 var _data: PokemonData
 var _trainers: TrainerLibrary
@@ -31,9 +61,17 @@ var _stage: BattleStage
 var _hud: BattleHud
 var _player: Player
 var _state: Node
+var _forget_panel: MoveForgetPanel
 var _running: bool = false
 var _battle: Battle
 var _trainer_id: StringName = &""
+var _items: ItemLibrary
+var _bag_panel: BattleBagPanel
+var _capture_card: CaptureCard
+## Pokémon sauvage du combat en cours (null contre un dresseur) et carte où il se joue.
+var _wild_foe: Pokemon
+var _map_id: StringName = &""
+var _haptic_busy: bool = false
 ## Vue vers camp de la HUD (l'UI a son propre enum, sans lien avec BattleEvent.SideId).
 const _HUD_SIDE: Dictionary[BattleEvent.SideId, BattleHud.Side] = {
 	BattleEvent.SideId.PLAYER: BattleHud.Side.PLAYER,
@@ -42,9 +80,13 @@ const _HUD_SIDE: Dictionary[BattleEvent.SideId, BattleHud.Side] = {
 
 
 ## Branche le directeur. [param state] : l'autoload GameState en jeu, une instance neuve de
-## game_state.gd en test (équipe, starter du joueur, aléatoire).
+## game_state.gd en test (équipe, starter du joueur, aléatoire, Sac, Pokédex, stockage).
+## [param items] : les objets connus (Sac de combat, bonus des Balls) ; null = aucune Ball ne
+## peut être lancée. Les requêtes sauvages doivent porter la même bibliothèque
+## ([method get_item_library]).
 func setup(data: PokemonData, trainers: TrainerLibrary, texts: BattleText, stage: BattleStage,
-		hud: BattleHud, player: Player, state: Node) -> void:
+		hud: BattleHud, player: Player, state: Node, items: ItemLibrary = null) -> void:
+	_items = items
 	_data = data
 	_trainers = trainers
 	_texts = texts
@@ -57,7 +99,9 @@ func setup(data: PokemonData, trainers: TrainerLibrary, texts: BattleText, stage
 ## Coroutine : joue le combat contre [param trainer_id] sur [param map], renvoie une
 ## [enum Battle.Outcome] (NONE si refusé). [param world_actors] : &"player" / &"foe" →
 ## identifiant du PNJ Pokémon de [param map] qui combat (cachés pendant le combat,
-## facultatifs).
+## facultatifs). Enveloppe (jalon 5 §3.8) : construit la [BattleRequest] d'un dresseur (camps
+## bâtis depuis la [TrainerLibrary]) puis joue [method run_request] ; le combat du rival (4B)
+## ne change pas.
 func run(trainer_id: StringName, map: GameMap,
 		world_actors: Dictionary[StringName, StringName]) -> int:
 	if _running:
@@ -71,52 +115,101 @@ func run(trainer_id: StringName, map: GameMap,
 	if party == null or party.first_able() == null:
 		push_error("BattleDirector : aucun Pokémon valide dans l'équipe du joueur")
 		return Battle.Outcome.NONE
+	# Camps du dresseur : l'équipe issue de son starter (consomme l'aléatoire avant le combat,
+	# comme au 4B). La requête porte ensuite ces camps et les règles « dresseur ».
+	var rng := _state.rng as GameRng
+	var foes := _trainers.build_team(trainer_id, _state.starter_species, rng)
+	var request := BattleRequest.trainer_battle(trainer, foes, world_actors)
+	return await run_request(request, map)
+
+
+## Coroutine : joue le combat décrit par [param request] sur [param map] (jalon 5 §3.8) et
+## renvoie une [enum Battle.Outcome] (NONE si refusé). Sauvage ([method BattleRequest.wild]) ou
+## dresseur ([method BattleRequest.trainer_battle]) : même déroulé (entrée, moteur, boucle de
+## tours, sortie), seules changent l'entrée en scène (intro sauvage dans le décor / entrée du
+## dresseur avec ses PNJ), les actions proposées (FUITE active en sauvage) et la conclusion (le
+## soin du dresseur ; un sauvage n'est jamais soigné ici — la défaite et le soin passent par
+## l'[EncounterDirector], §3.11).
+func run_request(request: BattleRequest, map: GameMap) -> int:
+	if _running:
+		push_error("BattleDirector : un combat tourne déjà")
+		return Battle.Outcome.NONE
+	var foe: Pokemon = request.foe_party.get_lead() if request != null \
+		and request.foe_party != null else null
+	if foe == null:
+		push_error("BattleDirector.run_request : équipe adverse vide")
+		return Battle.Outcome.NONE
+	var party := _state.party as Party
+	if party == null or party.first_able() == null:
+		push_error("BattleDirector.run_request : aucun Pokémon valide dans l'équipe du joueur")
+		return Battle.Outcome.NONE
+	var wild := request.is_wild()
+	var trainer := request.trainer
 	_running = true
-	_trainer_id = trainer_id
+	_wild_foe = foe if wild else null
+	_map_id = map.map_id if is_instance_valid(map) else &""
+	_trainer_id = trainer.id if trainer != null else &""
 	if is_instance_valid(_player):
 		_player.set_input_enabled(false, REASON)
-	battle_started.emit(trainer_id)
+	battle_started.emit(_trainer_id)
 	_relay_speed()
-	# Camps : le joueur avec son équipe, le dresseur avec l'équipe issue de son starter.
-	var starter: StringName = _state.starter_species
+	# Camps : le joueur avec son équipe, l'adversaire avec l'équipe de la requête (le sauvage
+	# tiré, ou l'équipe du dresseur). Le moteur reçoit les règles (fuite en sauvage).
 	var rng := _state.rng as GameRng
-	var foes := _trainers.build_team(trainer_id, starter, rng)
-	var foe_side := BattleSide.new(foes, false, trainer.name, trainer.make_ai())
+	var foe_ai := trainer.make_ai() if trainer != null else null
+	var foe_side := BattleSide.new(request.foe_party, false, request.foe_name, foe_ai)
 	var player_side := BattleSide.new(party, true)
-	_battle = Battle.new(player_side, foe_side, _data, rng)
-	var player_species := party.get_lead().species_id
-	var foe_species: StringName = foes.get_lead().species_id if foes != null \
-		and foes.get_lead() != null else &""
-	# Vue de combat dans le labo recomposé (~1 s) : PNJ Pokémon cachés, sprites de combat.
+	_battle = Battle.new(player_side, foe_side, _data, rng, request.rules)
+	# Le moteur choisit qui entre (premier Pokémon non K.O., pas forcément le premier de
+	# l'équipe) : l'entrée en scène suit ses événements SENT_OUT, jamais une supposition.
+	var opening := _battle.start()
+	var player_species := _sent_out_species(opening, BattleEvent.SideId.PLAYER)
+	var foe_species := _sent_out_species(opening, BattleEvent.SideId.FOE)
+	# Entrée (~1 s, jamais d'écran noir) : intro sauvage dans le décor (herbe, partenaire qui
+	# entre en courant) ou entrée du dresseur (PNJ Pokémon du monde cachés, sprites de combat).
 	var camera := _player.get_camera() if is_instance_valid(_player) else null
-	var player_npc := _npc(map, world_actors.get(&"player", &""))
-	var foe_npc := _npc(map, world_actors.get(&"foe", &""))
 	if is_instance_valid(_stage) and camera != null:
 		_stage.set_frame(map.get_battle_arena_rect(), Rect2(map.get_pixel_rect()))
-		await _stage.enter(camera, player_npc, foe_npc, player_species, foe_species)
+		if wild:
+			var origin_world := Grid.cell_to_world(request.origin_cell)
+			await _stage.play_wild_intro(camera, foe_species, origin_world)
+			await _stage.play_partner_enter(player_species)
+		else:
+			var player_npc := _npc(map, request.world_actors.get(&"player", &""))
+			var foe_npc := _npc(map, request.world_actors.get(&"foe", &""))
+			await _stage.enter(camera, player_npc, foe_npc, player_species, foe_species)
 	if is_instance_valid(_hud):
 		_hud.set_party(party.size())
 	# Déroulé du moteur : présentation des camps, puis la boucle de tours.
-	await _play_events(_battle.start(), trainer)
+	await _play_events(opening, trainer)
+	var actions := BattleViews.WILD_BATTLE_ACTIONS if wild else BattleViews.TRAINER_BATTLE_ACTIONS
+	var can_flee := request.rules != null and request.rules.can_flee
 	while _battle.get_state() == Battle.State.CHOOSING:
-		var action := await _choose_action()
+		var action := await _choose_action(actions, can_flee)
 		if _battle.get_state() != Battle.State.CHOOSING:
 			break
+		# Une Ball lancée quitte le Sac une seule fois, avant le lancer (réussi ou non).
+		if action.kind == BattleAction.Kind.ITEM and not _spend_ball(action):
+			continue
 		await _play_events(_battle.submit(action), trainer)
-	# Fin : soin (les deux Pokémon, l'équipe du rival n'est pas gardée), ni XP ni argent.
+	# Fin : sortie de la vue, puis conclusion. Dresseur : soin éventuel (les deux Pokémon,
+	# l'équipe du rival n'est pas gardée), ni XP ni argent (5C). Sauvage : aucun soin.
 	var outcome := _battle.get_outcome()
-	var conclusion := BattleConclusion.resolve(trainer, outcome)
 	if is_instance_valid(_hud):
 		await _hud.hide_all()
 	if is_instance_valid(_stage) and _stage.is_active():
 		await _stage.exit()
-	if conclusion.heal_party:
-		party.heal_all()
+	_free_panels()
+	if trainer != null:
+		var conclusion := BattleConclusion.resolve(trainer, outcome)
+		if conclusion.heal_party:
+			party.heal_all()
 	_running = false
 	_battle = null
+	_wild_foe = null
 	if is_instance_valid(_player):
 		_player.set_input_enabled(true, REASON)
-	battle_finished.emit(trainer_id, outcome)
+	battle_finished.emit(_trainer_id, outcome)
 	return outcome
 
 
@@ -129,17 +222,49 @@ func get_battle() -> Battle:
 	return _battle
 
 
+## Objets connus du combat (null = aucune Ball ne peut être lancée) : la bibliothèque que les
+## requêtes sauvages passent à [method BattleRequest.wild].
+func get_item_library() -> ItemLibrary:
+	return _items
+
+
+## Le Sac de combat, tant qu'il existe (ouvert pendant un choix, tests) ; null sinon.
+func get_bag_panel() -> BattleBagPanel:
+	return _bag_panel if is_instance_valid(_bag_panel) else null
+
+
+## La carte de capture, tant qu'elle existe (tests) ; null sinon.
+func get_capture_card() -> CaptureCard:
+	return _capture_card if is_instance_valid(_capture_card) else null
+
+
+## Le panneau d'oubli, tant qu'il existe (ouvert pendant une offre, tests) ; null sinon.
+func get_forget_panel() -> MoveForgetPanel:
+	return _forget_panel if is_instance_valid(_forget_panel) else null
+
+
 # --- Boucle de choix ------------------------------------------------------------------
 
-## Coroutine : propose les actions, attend le choix du joueur, renvoie l'action à soumettre.
-## ATTAQUER sans PP → Lutte directement (règle des jeux) ; sinon les capacités, « ‹ » revient.
-func _choose_action() -> BattleAction:
+## Coroutine : propose [param actions] (grille), attend le choix du joueur, renvoie l'action à
+## soumettre. ATTAQUER sans PP → Lutte directement (règle des jeux) ; sinon les capacités,
+## « ‹ » revient. FUITE (si [param can_flee], sauvage) → une action de fuite ([BattleAction.run]).
+## SAC (si les Balls sont permises) → le Sac de combat : une Ball choisie → [BattleAction.ball],
+## « ‹ » revient ici sans rien consommer.
+func _choose_action(actions: Dictionary[StringName, bool], can_flee: bool) -> BattleAction:
 	while true:
-		_hud.show_actions(BattleViews.TRAINER_BATTLE_ACTIONS)
+		_hud.show_actions(actions)
 		var action: StringName = await _hud.action_selected
+		if action == ActionGrid.RUN and can_flee:
+			return BattleAction.run()
+		if action == ActionGrid.BAG and actions.get(ActionGrid.BAG, false) \
+				and _battle.can_use_balls():
+			var ball := await _choose_ball()
+			if ball.is_empty():
+				continue
+			return BattleAction.ball(ball)
 		if action != ActionGrid.ATTACK:
-			# SAC, ÉQUIPE, FUITE : sans effet au premier combat (ils sont atténués et muets,
-			# mais on ne bloque pas si un signal arrive).
+			# ÉQUIPE (et SAC / FUITE contre un dresseur) : atténués et muets, mais on ne bloque
+			# pas si un signal arrive.
 			continue
 		var usable := _battle.get_usable_moves()
 		if usable.is_empty():
@@ -151,6 +276,40 @@ func _choose_action() -> BattleAction:
 			continue
 		return BattleAction.move(index)
 	return BattleAction.move(BattleAction.STRUGGLE)
+
+
+## Coroutine : ouvre le Sac de combat et attend une Ball (son identifiant) ou « ‹ » (vide). La
+## carte du joueur et ses pastilles cèdent la place au panneau, la grille d'actions sort ; au
+## retour (« ‹ »), la carte revient. Rien n'est consommé ici.
+func _choose_ball() -> StringName:
+	var panel := _ensure_bag_panel()
+	_hud.hide_card(BattleHud.Side.PLAYER)
+	await _hud.hide_zone()
+	panel.show_bag(BattleViews.bag_entries(_state.bag, _items), BAG_START_CATEGORY)
+	var answer: Array = await _first_of(panel.item_chosen, panel.back_requested)
+	while panel.is_sliding():
+		await get_tree().process_frame
+	if answer[0] == 1:
+		_show_own_card()
+		return &""
+	return StringName(answer[1])
+
+
+## Retire une Ball du Sac pour [param action] (une seule fois par lancer) ; faux, et rien ne
+## change, si l'action n'est pas permise ou si le Sac n'en a plus.
+func _spend_ball(action: BattleAction) -> bool:
+	if not _battle.is_legal(action) or not _state.bag.remove(action.item_id):
+		push_error("BattleDirector : Ball « %s » refusée" % action.item_id)
+		return false
+	return true
+
+
+## La carte du joueur et ses pastilles reviennent (après le Sac ou le lancer).
+func _show_own_card() -> void:
+	if not is_instance_valid(_hud):
+		return
+	_hud.get_card(BattleHud.Side.PLAYER).slide_in()
+	_hud.get_party_pips().slide_in()
 
 
 ## Coroutine : attend une capacité choisie (index) ou un retour à la grille (−1).
@@ -221,6 +380,237 @@ func _play_beat(beat: BattleBeat) -> void:
 				await _stage.play_faint(beat.side)
 			if is_instance_valid(_hud):
 				_hud.hide_card(side)
+		BattleBeat.Kind.EXP:
+			# Un seul Pokémon a une carte : le gain des autres est appliqué sans être montré.
+			if is_instance_valid(_hud) and _is_in_play(beat.event):
+				await _hud.animate_exp(beat.event.exp_from, beat.event.exp_to, beat.event.amount)
+		BattleBeat.Kind.LEVEL:
+			if is_instance_valid(_hud) and _is_in_play(beat.event):
+				await _hud.pulse_level(side, beat.event.level)
+				await _hud.animate_hp(side, beat.event.hp, beat.event.max_hp, false)
+		BattleBeat.Kind.DRAIN:
+			if is_instance_valid(_hud):
+				await _play_drain(beat.event)
+		BattleBeat.Kind.FORGET:
+			await _offer_forget(beat.event)
+		BattleBeat.Kind.THROW:
+			await _play_throw()
+		BattleBeat.Kind.SHAKE:
+			_vibrate()
+			if is_instance_valid(_stage):
+				await _stage.play_ball_shake()
+		BattleBeat.Kind.CATCH:
+			await _play_catch(beat.event)
+		BattleBeat.Kind.RELEASE:
+			if is_instance_valid(_stage):
+				await _stage.play_break_free()
+			if is_instance_valid(_hud):
+				_hud.set_card(BattleHud.Side.FOE, BattleViews.card(beat.event))
+				_show_own_card()
+
+
+# --- Capture (jalon 5D) ---------------------------------------------------------------
+
+## Coroutine : le lancer. Les cartes et le bandeau sortent, le dresseur lance la Ball sur le
+## Pokémon sauvage, qui est absorbé ; la Ball tombe dans l'herbe.
+func _play_throw() -> void:
+	if is_instance_valid(_hud):
+		_hud.hide_card(BattleHud.Side.FOE)
+		_hud.hide_card(BattleHud.Side.PLAYER)
+		await _hud.hide_zone()
+	if is_instance_valid(_stage):
+		await _stage.play_throw()
+
+
+## Coroutine : la capture réussit. Éclat doré avec le motif de vibration, puis le Pokémon est
+## rangé et la carte de capture attend un toucher.
+func _play_catch(event: BattleEvent) -> void:
+	_haptic_busy = true
+	_run_capture_haptics()
+	if is_instance_valid(_stage):
+		await _stage.play_catch_burst()
+	while _haptic_busy:
+		await get_tree().process_frame
+	await _finish_capture(event)
+
+
+## Coroutine : motif de vibration de la capture (lancée sans attendre, en parallèle de l'éclat).
+func _run_capture_haptics() -> void:
+	await HapticPattern.capture(get_tree(), _on_haptic, speed_scale)
+	_haptic_busy = false
+
+
+## Coroutine : range le Pokémon capturé et montre la carte de capture ([param event] : CAUGHT).
+## Le même Pokémon (PV, PP, niveau) rejoint l'équipe, ou le stockage si elle est pleine.
+func _finish_capture(event: BattleEvent) -> void:
+	var pokemon := _wild_foe
+	if pokemon == null:
+		push_error("BattleDirector : capture sans Pokémon sauvage")
+		return
+	var party := _state.party as Party
+	var joined := party != null and party.add(pokemon)
+	if not joined:
+		(_state.storage as PokemonStorage).add(pokemon)
+	var species := pokemon.species_id
+	var is_new: bool = _state.record_caught(species, _map_id)
+	_state.stamp_meeting(pokemon, Pokemon.Origin.CAPTURE, _map_id)
+	var first_capture: StringName = _state.MOMENT_FIRST_CAPTURE
+	if not _state.has_moment(first_capture):
+		_state.record_moment(first_capture, _map_id,
+			{"species": String(species), "stored": not joined})
+	pokemon_caught.emit(pokemon, not joined)
+	if not is_instance_valid(_hud):
+		return
+	await _hud.hide_zone()
+	# Rien du Pokédex n'est visible tant que Chen ne l'a pas activé (jalon 7, règle de
+	# déblocage) : les données sont enregistrées, la ligne n'est pas montrée.
+	var show_entry: bool = is_new and _state.flags.has_flag(StoryFlags.POKEDEX_ACTIVATED)
+	var portrait_path := BattleStage.sprite_path(species, false)
+	var portrait: Texture2D = null
+	if ResourceLoader.exists(portrait_path):
+		portrait = load(portrait_path) as Texture2D
+	var view := CaptureCardView.new(_texts.line_for(&"caught_title", event, _data), portrait,
+		show_entry, _texts.line_for(&"pokedex_new", event, _data),
+		_texts.line_for(&"joined_party" if joined else &"sent_to_storage", event, _data))
+	await _ensure_capture_card().show_capture(view)
+
+
+## Vibration d'une secousse de la Ball : signal toujours, vibration réelle si permise.
+func _vibrate() -> void:
+	HapticPattern.ball_shake(_on_haptic)
+
+
+func _on_haptic(duration_ms: int) -> void:
+	haptic_requested.emit(duration_ms)
+	if haptics_enabled and (not is_instance_valid(_hud) or _hud.haptics_enabled):
+		Input.vibrate_handheld(duration_ms)
+
+
+## Le Sac de combat (créé au premier besoin, dans l'écran de la HUD, à son emplacement).
+func _ensure_bag_panel() -> BattleBagPanel:
+	if is_instance_valid(_bag_panel):
+		return _bag_panel
+	_bag_panel = BAG_PANEL_SCENE.instantiate() as BattleBagPanel
+	_hud.get_screen().add_child(_bag_panel)
+	BattleHudLayout.place(_bag_panel, BattleHudLayout.Slot.BAG)
+	_bag_panel.speed_scale = _hud.speed_scale
+	_bag_panel.haptics_enabled = _hud.haptics_enabled
+	return _bag_panel
+
+
+## La carte de capture (créée au premier besoin, centrée dans l'écran de la HUD).
+func _ensure_capture_card() -> CaptureCard:
+	if is_instance_valid(_capture_card):
+		return _capture_card
+	_capture_card = CAPTURE_CARD_SCENE.instantiate() as CaptureCard
+	_hud.get_screen().add_child(_capture_card)
+	BattleHudLayout.place(_capture_card, BattleHudLayout.Slot.CAPTURE)
+	_capture_card.speed_scale = _hud.speed_scale
+	_capture_card.haptics_enabled = _hud.haptics_enabled
+	return _capture_card
+
+
+## Coroutine : Vampigraine, les deux barres de PV en même temps : le Pokémon drainé perd
+## ([member BattleEvent.hp]), celui d'en face gagne ([member BattleEvent.healed_hp]).
+func _play_drain(event: BattleEvent) -> void:
+	var victim: BattleHud.Side = _HUD_SIDE[event.side]
+	var other: BattleHud.Side = BattleHud.Side.FOE if victim == BattleHud.Side.PLAYER \
+		else BattleHud.Side.PLAYER
+	var other_bar := _hud.get_card(other).get_hp_bar()
+	# Lancée sans attendre : la barre qui gagne et la barre qui perd bougent ensemble.
+	_hud.animate_hp(other, event.healed_hp, other_bar.get_max_hp(), false)
+	await _hud.animate_hp(victim, event.hp, event.max_hp, false)
+	while other_bar.is_animating():
+		await get_tree().process_frame
+
+
+## Espèce du Pokémon envoyé par [param side] d'après le SENT_OUT de [param events] (&"" si le
+## moteur n'en a pas émis).
+func _sent_out_species(events: Array[BattleEvent], side: BattleEvent.SideId) -> StringName:
+	for event: BattleEvent in events:
+		if event.kind == BattleEvent.Kind.SENT_OUT and event.side == side:
+			return event.species_id
+	return &""
+
+
+## Pokémon du joueur décrit par [param event], retrouvé par sa place dans l'équipe
+## ([member BattleEvent.party_index], remplie par le moteur) : jamais par espèce et nom, qui se
+## confondent avec deux Pokémon identiques. Null si la place n'existe pas.
+func _find_player_pokemon(event: BattleEvent) -> Pokemon:
+	var party := _state.party as Party
+	return party.get_at(event.party_index) if party != null else null
+
+
+## Le Pokémon de [param event] est celui qui a sa carte (le Pokémon du joueur en jeu).
+func _is_in_play(event: BattleEvent) -> bool:
+	if _battle == null or _battle.get_player_side().active == null:
+		return false
+	var pokemon := _find_player_pokemon(event)
+	return pokemon != null and pokemon == _battle.get_player_side().active.pokemon
+
+
+## Coroutine : un Pokémon du joueur veut apprendre [member BattleEvent.move_id] mais connaît
+## déjà quatre capacités. Le bandeau sort, le panneau fait choisir ; seul OUBLIER (après
+## sélection d'une carte) ou NE PAS APPRENDRE ferme l'offre. Oubli : [method
+## Pokemon.replace_move] (PP pleins) et « oublie… et apprend… » ; refus : rien ne change et
+## « n'apprend pas… ». Rend la main une fois le panneau refermé.
+func _offer_forget(event: BattleEvent) -> void:
+	var pokemon := _find_player_pokemon(event)
+	var offered := BattleViews.offered_move(event.move_id, _data)
+	if pokemon == null or offered == null or not is_instance_valid(_hud):
+		push_error("BattleDirector : offre d'oubli impossible (« %s » pour « %s »)"
+			% [event.move_id, event.pokemon_name])
+		return
+	var known := BattleViews.moves(pokemon, _data)
+	# Le panneau recouvre le bandeau : le bandeau sort d'abord, jamais les deux ensemble.
+	var banner := _hud.get_message_banner()
+	banner.skip()
+	banner.slide_out()
+	while banner.is_sliding():
+		await get_tree().process_frame
+	var panel := _ensure_forget_panel()
+	panel.show_offer(offered, known)
+	var answer: Array = await _first_of(panel.forget_chosen, panel.skip_chosen)
+	while panel.is_sliding():
+		await get_tree().process_frame
+	var line := ""
+	if answer[0] == 0:
+		var slot := int(answer[1])
+		var old_move: StringName = pokemon.moves[slot].move_id \
+			if slot >= 0 and slot < pokemon.moves.size() else &""
+		if pokemon.replace_move(slot, event.move_id, _data):
+			line = _texts.line_for(&"move_forgot", event, _data, old_move)
+	if line.is_empty():
+		line = _texts.line_for(&"move_not_learned", event, _data)
+	await _hud.show_message(line)
+
+
+## Le panneau d'oubli (créé au premier besoin, dans l'écran de la HUD, à son emplacement).
+func _ensure_forget_panel() -> MoveForgetPanel:
+	if is_instance_valid(_forget_panel):
+		return _forget_panel
+	_forget_panel = FORGET_PANEL_SCENE.instantiate() as MoveForgetPanel
+	_hud.get_screen().add_child(_forget_panel)
+	BattleHudLayout.place(_forget_panel, BattleHudLayout.Slot.FORGET)
+	_forget_panel.speed_scale = _hud.speed_scale
+	_forget_panel.haptics_enabled = _hud.haptics_enabled
+	return _forget_panel
+
+
+func _free_forget_panel() -> void:
+	if is_instance_valid(_forget_panel):
+		_forget_panel.queue_free()
+	_forget_panel = null
+
+
+## Libère les panneaux ouverts pendant le combat (oubli, Sac, carte de capture).
+func _free_panels() -> void:
+	_free_forget_panel()
+	for panel: Control in [_bag_panel, _capture_card]:
+		if is_instance_valid(panel):
+			panel.queue_free()
+	_bag_panel = null
+	_capture_card = null
 
 
 func _npc(map: GameMap, id: StringName) -> Node2D:

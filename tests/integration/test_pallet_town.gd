@@ -187,7 +187,8 @@ func test_door_is_the_only_reachable_cell_of_a_building() -> void:
 
 func test_door_warps() -> void:
 	var warps := _map.get_warps()
-	assert_eq(warps.size(), DOORS.size())
+	# 3 portes STEP_ON + 2 sorties PUSH vers la Route 1 (jalon 5 §15.5).
+	assert_eq(warps.size(), DOORS.size() + 2)
 	for building: StringName in DOORS:
 		var spec: Array = DOORS[building]
 		var point := _map.get_node(NodePath("Warps/" + String(spec[1]))) as WarpPoint
@@ -211,6 +212,24 @@ func test_door_spawns() -> void:
 		assert_eq(_map.get_spawn_cell(spec[3]), spec[0], String(spec[3]))
 	assert_true(_map.has_spawn(&"start"), "start conservé")
 	assert_false(_map.interior)
+
+
+# --- Raccord vers la Route 1 (jalon 5 §15.5) -----------------------------------------
+
+func test_route_1_exit_warps_and_spawns() -> void:
+	var warps := _map.get_warps()
+	# Sorties PUSH « haut » au bord nord, sur les deux colonnes du chemin.
+	for spec: Array in [[Vector2i(23, 1), &"from_pallet_w"], [Vector2i(24, 1), &"from_pallet_e"]]:
+		var push := warps.find_on_push(spec[0], Vector2i.UP)
+		assert_not_null(push, "sortie PUSH en %s" % spec[0])
+		if push != null:
+			assert_eq(push.target_map, &"route_1")
+			assert_eq(push.target_spawn, spec[1])
+		# Le bord nord y 0 reste bloqué (la poussée déclenche le warp).
+		assert_true(_grid.is_solid(spec[0] + Vector2i.UP), "y 0 bloqué au-dessus de %s" % spec[0])
+	# Arrivées depuis la Route 1, sur leur colonne.
+	assert_eq(_map.get_spawn_cell(&"from_route_1_w"), Vector2i(23, 1))
+	assert_eq(_map.get_spawn_cell(&"from_route_1_e"), Vector2i(24, 1))
 
 
 # --- Hautes herbes et prairie (jalon 3B, T1) ----------------------------------------
@@ -239,6 +258,19 @@ func test_tall_grass_cells_are_exactly_the_top_of_route_1() -> void:
 	found.sort()
 	expected.sort()
 	assert_eq(found, expected)
+
+
+func test_grid_tall_grass_matches_the_top_of_route_1() -> void:
+	# Jalon 5 : GameMap lit enfin la donnée tall_grass des tuiles dans la grille. Vrai
+	# exactement sur (23..24, 0..2), y compris les deux cases bloquées du bord nord.
+	for y: int in _map.size.y:
+		for x: int in _map.size.x:
+			var cell := Vector2i(x, y)
+			assert_eq(_grid.is_tall_grass(cell), TALL_GRASS_RECT.has_point(cell),
+				"is_tall_grass en %s" % cell)
+	# Les cases bloquées du bord nord sont à la fois solides et en herbe.
+	assert_true(_grid.is_tall_grass(Vector2i(23, 0)) and _grid.is_solid(Vector2i(23, 0)))
+	assert_true(_grid.is_tall_grass(Vector2i(24, 0)) and _grid.is_solid(Vector2i(24, 0)))
 
 
 func test_tall_grass_is_walkable_except_the_blocked_edge() -> void:

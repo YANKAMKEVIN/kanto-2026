@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" path="res://game/ui/battle/battle_info_card.gd" id="1_card"]
 [ext_resource type="PackedScene" path="res://game/ui/battle/hp_bar.tscn" id="2_bar"]
+[ext_resource type="Script" path="res://game/ui/battle/exp_bar.gd" id="3_exp"]
 
 [node name="BattleInfoCard" type="Control"]
 mouse_filter = 2
@@ -68,3 +69,30 @@ layout_mode = 2
 theme_type_variation = &"BattleCardHp"
 text = "19 / 19"
 horizontal_alignment = 2
+
+[node name="Overlay" type="Control" parent="Body"]
+unique_name_in_owner = true
+layout_mode = 2
+mouse_filter = 2
+
+[node name="ExpBar" type="Control" parent="Body/Overlay"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 0
+mouse_filter = 2
+theme_type_variation = &"ExpBar"
+script = ExtResource("3_exp")
+
+[node name="ExpGain" type="Label" parent="Body/Overlay"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 0
+mouse_filter = 2
+theme_type_variation = &"ExpGain"
+text = "+21 XP"

@@ -3,11 +3,13 @@
 [ext_resource type="Script" path="res://game/player/player.gd" id="1_player"]
 [ext_resource type="Texture2D" path="res://assets/sprites/characters/placeholder/shadow.png" id="2_shadow"]
 [ext_resource type="SpriteFrames" path="res://assets/sprites/characters/placeholder/player_frames.tres" id="3_frames"]
+[ext_resource type="Texture2D" path="res://assets/sprites/characters/placeholder/grass_front.png" id="4_grass"]
 
 [node name="Player" type="Node2D"]
 script = ExtResource("1_player")
 
 [node name="Shadow" type="Sprite2D" parent="."]
+unique_name_in_owner = true
 position = Vector2(0, -6)
 texture = ExtResource("2_shadow")
 
@@ -18,6 +20,13 @@ scale = Vector2(2, 2)
 sprite_frames = ExtResource("3_frames")
 animation = &"idle_down"
 offset = Vector2(0, -32)
+
+[node name="GrassFront" type="Sprite2D" parent="."]
+unique_name_in_owner = true
+visible = false
+texture_filter = 1
+position = Vector2(0, -18)
+texture = ExtResource("4_grass")
 
 [node name="Camera" type="Camera2D" parent="."]
 unique_name_in_owner = true

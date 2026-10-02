@@ -270,6 +270,35 @@ func test_delay_blocks_now_and_opens_the_box_later() -> void:
 	assert_eq(_box.get_text(), MOM_1)
 
 
+## Clé « heal » (jalon 5 §3.11) : à la fin du dialogue, heal_requested est émis une seule fois,
+## après la levée des drapeaux et avant dialogue_finished.
+func test_heal_variant_emits_heal_requested_once_at_the_end() -> void:
+	_library.add_from_dict({"nurse": {"speaker": "Maman",
+		"pages": ["Tes Pokémon vont bien."], "heal": true}}, "test")
+	var order: Array[String] = []
+	_runner.heal_requested.connect(func() -> void: order.append("heal"))
+	_runner.dialogue_finished.connect(func(_id: StringName) -> void: order.append("finished"))
+	assert_true(_runner.play(&"nurse"))
+	await wait_process_frames(1)
+	_advance()  # page complétée
+	_advance()  # fin
+	await _finish()
+	assert_eq(order, ["heal", "finished"] as Array[String],
+		"heal_requested une fois, avant dialogue_finished")
+
+
+## Un dialogue sans clé « heal » n'émet jamais heal_requested.
+func test_a_plain_dialogue_never_heals() -> void:
+	var healed: Array[bool] = []
+	_runner.heal_requested.connect(func() -> void: healed.append(true))
+	_runner.play(&"mom")
+	await wait_process_frames(1)
+	_advance()
+	_advance()
+	await _finish()
+	assert_eq(healed.size(), 0, "aucun soin sans clé « heal »")
+
+
 func test_interact_key_advances() -> void:
 	_runner.play(&"leo", null, _map)
 	await wait_process_frames(1)

@@ -102,6 +102,21 @@ extends SceneTree
 ##              tenue dehors, entrées injectées. Quitte seul à la fin (~3 000 images :
 ##              --quit-after 6000 ; préférer --write-movie <dossier>/x.avi, plus léger).
 
+##   exp_gain   jalon 5C (T11) : Bulbizarre N6 à 5 XP du N7 bat un Rattata sur la Route 1, vrai
+##              jeu à vitesse réelle : « +21 XP » et barre d'XP, « Nv. 7 » qui pulse, phrase
+##              « apprend Vampigraine ». Captures jalon05c_t11_exp_*. ~600 images à 30 images/s :
+##              --quit-after 1500.
+##   capture    jalon 5D (T15) : Salamèche N5 et 5 Poké Balls (comme le départ de débogage
+##              route_1) face à un Roucool N3 sur la Route 1, vrai jeu à vitesse réelle : grille
+##              d'actions, SAC ouvert, LANCER, puis une image toutes les 3 images (dresseur,
+##              vol, absorption, chute, secousses, éclat), la carte de capture (attendue
+##              jusqu'au bout de sa révélation), le retour à l'exploration. « --outcome=fail » :
+##              lancer raté (graine à 2 secousses au moins) puis le Pokémon qui ressort.
+##              Captures jalon05d_t15_<outcome>_*. ~400 images : --quit-after 900.
+##   move_forget  jalon 5C (T11) : Bulbizarre N19 (4 capacités) à 1 XP du N20 : offre de
+##              Poudre Toxik (bandeau, panneau d'oubli, sélection, OUBLIER, phrase). Captures
+##              jalon05c_t11_forget_*. --quit-after 1500.
+
 const BOOT_SCENE: String = "res://game/boot.tscn"
 const CORNERS: Array = [
 	["camera_corners_nw", Vector2i(3, 1)],
@@ -114,6 +129,17 @@ const FIXES: Array = [
 	["fix_plaza_tree_fade", Vector2i(22, 13)],
 	["fix_lab_roof_benches", Vector2i(24, 17)],
 	["fix_route1_top", Vector2i(23, 1)],
+]
+## Scénario « route_1 » (jalon 5A) : téléportation du joueur sur les zones clés de la
+## Route 1 pour juger le tracé sur capture. [nom de capture, case (praticable)].
+const ROUTE1_SHOTS: Array = [
+	["jalon05a_route1_entrance", Vector2i(23, 40)],   # entrée sud depuis Bourg Palette
+	["jalon05a_route1_grass_south", Vector2i(28, 33)], # zone d'herbes sud (raccourci/rebord)
+	["jalon05a_route1_ledge", Vector2i(27, 29)],      # au-dessus du rebord franchissable
+	["jalon05a_route1_west_grass", Vector2i(9, 22)],  # zone d'herbes ouest
+	["jalon05a_route1_potion", Vector2i(9, 21)],      # sous la Potion cachée (9, 20)
+	["jalon05a_route1_mandatory", Vector2i(23, 9)],   # bande d'herbes obligatoire
+	["jalon05a_route1_north", Vector2i(23, 2)],       # prairie nord, sortie vers Jadielle
 ]
 ## Scénario « route1_grass » (jalon 3B, T1) : case de départ, puis marches
 ## [action, case d'arrivée, capture prise à l'arrêt].
@@ -162,6 +188,17 @@ const T3_CHOICE_PREFIX: String = "jalon04a_t3_"
 const STARTER_PATH: String = "res://data/cutscenes/starter.json"
 const T6_PREFIX: String = "jalon04b_t6_"
 const T8_PREFIX: String = "jalon04b_t8_"
+## Scénario « wild_encounter » (jalon 5B, T5) : la transition de rencontre sauvage seule.
+const T5B_PREFIX: String = "jalon05b_t5_"
+## Scénario « wild_battle » (jalon 5B, T7) : le combat sauvage jouable et la défaite.
+const T7B_PREFIX: String = "jalon05b_t7_"
+## Scénarios « exp_gain » et « move_forget » (jalon 5C, T11).
+const T11_EXP_PREFIX: String = "jalon05c_t11_exp_"
+const T11_FORGET_PREFIX: String = "jalon05c_t11_forget_"
+## Scénario « capture » (jalon 5D, T15) : la capture jouable, image par image.
+const T15_PREFIX: String = "jalon05d_t15_"
+## Images entre deux prises pendant les « trois secondes sacrées » (30 images/s).
+const FILM_STEP: int = 3
 const STAGE_SCENE: String = "res://game/battle/battle_stage.tscn"
 ## Scénario « battle_stage » : placement réel de la fin de starter_chosen (§14.1) par starter
 ## du joueur : [case du joueur, orientation, case de son starter]. Rival (7, 7), son
@@ -266,6 +303,15 @@ func _start_boot() -> void:
 			InputMap.action_erase_events(action)
 		InputMap.action_erase_events(&"run")
 		InputMap.action_erase_events(&"interact")
+	elif _scenario in ["route_1", "wild_encounter", "wild_battle", "exp_gain", "move_forget",
+			"capture"]:
+		_boot.set(&"start_map", &"route_1")
+		_boot.set(&"start_spawn", &"from_pallet_w")
+		_boot.set(&"start_facing", Vector2i.UP)
+		for action: StringName in MOVE_ACTIONS.values():
+			InputMap.action_erase_events(action)
+		InputMap.action_erase_events(&"run")
+		InputMap.action_erase_events(&"interact")
 	else:
 		_boot.set(&"start_map", &"pallet_town")
 	root.add_child(_boot)
@@ -302,6 +348,16 @@ func _on_frame() -> void:
 			_run_battle_stage()
 		elif _scenario == "rival_battle":
 			_run_rival_battle()
+		elif _scenario == "wild_encounter":
+			_run_wild_encounter()
+		elif _scenario == "wild_battle":
+			_run_wild_battle()
+		elif _scenario == "exp_gain":
+			_run_xp_scenario(false)
+		elif _scenario == "move_forget":
+			_run_xp_scenario(true)
+		elif _scenario == "capture":
+			_run_capture_scenario()
 		return
 	match _scenario:
 		"spawn":
@@ -311,6 +367,8 @@ func _on_frame() -> void:
 			_run_teleports(CORNERS)
 		"fixes":
 			_run_teleports(FIXES)
+		"route_1":
+			_run_teleports(ROUTE1_SHOTS)
 		"walk_roof":
 			_run_walk()
 		"route1_grass":
@@ -1634,3 +1692,458 @@ func _rival_battle_seed(want: int, data: RefCounted) -> int:
 		if int(battle.call(&"get_outcome")) == want:
 			return seed
 	return 0
+
+
+# --- Scénario « wild_encounter » (jalon 5B, T5) --------------------------------------------
+
+## La transition de rencontre sauvage seule (§3.7), sans interface ni moteur : équipe de départ
+## (Salamèche N5), joueur placé dans les hautes herbes de la Route 1, puis rencontre forcée
+## (EncounterDirector.start_encounter) d'un Rattata. Captures image par image sur ~1,3 s :
+## herbe qui bouge, zoom, apparition du sauvage, entrée du partenaire, vue de combat, retour.
+## Captures jalon05b_t5_*. Quitte seul (~150 images : --quit-after 3000).
+func _run_wild_encounter() -> void:
+	var prefix := T5B_PREFIX
+	await _frames(5)
+	# Équipe de départ et drapeau starter_chosen (exploration normale, pas la scène des herbes).
+	var state: Node = root.get_node(^"GameState")
+	var data: RefCounted = _boot.call(&"get_pokemon_data")
+	var factory: GDScript = load("res://game/pokemon/pokemon_factory.gd")
+	var party: RefCounted = (load("res://game/pokemon/party.gd") as GDScript).new()
+	party.call(&"add", factory.call(&"create", data, &"charmander", 5, GameRng.new(7)))
+	state.set(&"party", party)
+	state.set(&"starter_species", &"charmander")
+	(state.get(&"flags") as RefCounted).call(&"set_flag", &"starter_chosen")
+	# Place le joueur sur une case de hautes herbes de la Route 1 (avec de l'herbe au-dessus).
+	var map: Node = _boot.call(&"get_map")
+	var grid: RefCounted = map.call(&"get_grid")
+	var cell := _find_grass_cell(grid, map.get(&"size"))
+	if cell == Vector2i(-1, -1):
+		push_error("wild_encounter : aucune case de hautes herbes trouvée")
+		quit(1)
+		return
+	_player.call(&"enter_map", grid, cell, Vector2i.UP, map.call(&"get_pixel_rect"))
+	await _frames(12)
+	await _wild_shot(prefix + "00_exploration")
+	# Rencontre forcée, transition à vitesse réelle.
+	_boot.call(&"get_battle_director").set(&"speed_scale", 1.0)
+	var director: Node = _boot.call(&"get_encounter_director")
+	var enc: RefCounted = (load("res://game/pokemon/encounters/wild_encounter.gd") as GDScript) \
+		.new(&"rattata", 3, &"route_1_grass")
+	if not bool(director.call(&"start_encounter", enc)):
+		push_error("wild_encounter : start_encounter refusé")
+		quit(1)
+		return
+	# Images le long de la transition (~1,3 s + sortie).
+	var shots: Array = [
+		[3, "01_grass_rustle"], [6, "02_zoom_veil"], [9, "03_foe_appears"],
+		[9, "04_partner_enters"], [8, "05_battle_view"],
+	]
+	for shot: Array in shots:
+		await _frames(shot[0])
+		await _wild_shot(prefix + shot[1])
+	for i: int in NPCS_TIMEOUT:
+		if not bool(director.call(&"is_running")):
+			break
+		await process_frame
+	await _frames(8)
+	await _wild_shot(prefix + "06_back_to_exploration")
+	print("  Pokédex : rattata vu = %s ; contrôle rendu = %s" % [
+		(state.get(&"pokedex") as RefCounted).call(&"is_seen", &"rattata"),
+		_player.call(&"is_input_enabled")])
+	print("WILD_ENCOUNTER terminé (frame %d)" % _frame)
+	quit()
+
+
+# --- Scénario « wild_battle » (jalon 5B, T7) -----------------------------------------------
+
+## Le combat sauvage jouable (§3.8) et la défaite (§3.11). D'abord une rencontre gagnée : grille
+## d'actions avec FUITE active, choix d'une capacité, barre de PV du sauvage qui descend, retour
+## sur l'herbe. Ensuite une défaite (équipe réduite à 1 PV contre un sauvage rapide) : réveil chez
+## Maman, équipe soignée. Captures jalon05b_t7_*. Quitte seul (~500 images : --quit-after 9000).
+func _run_wild_battle() -> void:
+	var prefix := T7B_PREFIX
+	await _frames(5)
+	var state: Node = root.get_node(^"GameState")
+	var data: RefCounted = _boot.call(&"get_pokemon_data")
+	var hud: Node = _boot.call(&"get_hud")
+	var director: Node = _boot.call(&"get_encounter_director")
+	var battle_director: Node = _boot.call(&"get_battle_director")
+	var battle_hud: Node = _boot.call(&"get_battle_hud")
+	battle_director.set(&"speed_scale", 1.0)
+	_wild_party(state, data)
+	var map: Node = _boot.call(&"get_map")
+	var grid: RefCounted = map.call(&"get_grid")
+	var cell := _find_grass_cell(grid, map.get(&"size"))
+	if cell == Vector2i(-1, -1):
+		push_error("wild_battle : aucune case de hautes herbes")
+		quit(1)
+		return
+	_player.call(&"enter_map", grid, cell, Vector2i.UP, map.call(&"get_pixel_rect"))
+	hud.call(&"set_controls_visible", false)
+	await _frames(12)
+	await _wild_shot(prefix + "00_exploration")
+	# --- Victoire : rencontre réelle, grille avec FUITE, un coup, barre de PV ---
+	state.set(&"rng", GameRng.new(7))
+	var enc: RefCounted = (load("res://game/pokemon/encounters/wild_encounter.gd") as GDScript) \
+		.new(&"rattata", 3, &"route_1_grass")
+	director.call(&"start_encounter", enc)
+	var shots: Dictionary[String, bool] = {}
+	var move_frame := -1
+	var deadline := _frame + 6000
+	while bool(director.call(&"is_running")) and _frame < deadline:
+		if bool(battle_director.call(&"is_running")):
+			if not shots.has("01_battle_view"):
+				shots["01_battle_view"] = true
+				await _wild_shot(prefix + "01_battle_view")
+			var battle: RefCounted = battle_director.call(&"get_battle")
+			if battle != null and int(battle.call(&"get_state")) == 1:  # CHOOSING
+				var zone: int = int(battle_hud.call(&"get_zone"))
+				if zone == 1:  # ACTIONS : la grille montre FUITE active
+					if not shots.has("02_actions_flee"):
+						shots["02_actions_flee"] = true
+						await _wild_shot(prefix + "02_actions_flee")
+					battle_hud.get(&"action_selected").emit(&"attack")
+				elif zone == 2:  # MOVES
+					if not shots.has("03_moves"):
+						shots["03_moves"] = true
+						await _wild_shot(prefix + "03_moves")
+					battle_hud.get(&"move_selected").emit(0)
+					move_frame = _frame
+		if move_frame > 0 and _frame - move_frame == 12 and not shots.has("04_damage"):
+			shots["04_damage"] = true
+			await _wild_shot(prefix + "04_damage_hp_bar")
+		await process_frame
+		_frame += 1
+	await _frames(12)
+	await _wild_shot(prefix + "05_victory_back_to_grass")
+	print("  victoire : carte %s, joueur libre %s" % [
+		(_boot.call(&"get_map") as Node).get(&"map_id"), _player.call(&"is_input_enabled")])
+	# --- Défaite : équipe à 1 PV, sauvage rapide, réveil chez Maman ---
+	_wild_party(state, data)
+	(state.get(&"party") as RefCounted).call(&"get_lead").set(&"hp", 1)
+	state.set(&"rng", GameRng.new(1))
+	await _frames(6)
+	var ko: RefCounted = (load("res://game/pokemon/encounters/wild_encounter.gd") as GDScript) \
+		.new(&"rattata", 10, &"route_1_grass")
+	director.call(&"start_encounter", ko)
+	var ddl := _frame + 6000
+	while bool(director.call(&"is_running")) and _frame < ddl:
+		if bool(battle_director.call(&"is_running")):
+			var battle: RefCounted = battle_director.call(&"get_battle")
+			if battle != null and int(battle.call(&"get_state")) == 1:
+				var zone: int = int(battle_hud.call(&"get_zone"))
+				if zone == 1:
+					battle_hud.get(&"action_selected").emit(&"attack")
+				elif zone == 2:
+					battle_hud.get(&"move_selected").emit(0)
+		await process_frame
+		_frame += 1
+	# Réveil chez Maman (le routeur a changé de carte).
+	var wdl := _frame + 6000
+	while _frame < wdl:
+		var m: Node = _boot.call(&"get_map")
+		if m != null and m.get(&"map_id") == &"player_house_1f":
+			break
+		await process_frame
+		_frame += 1
+	await _frames(18)
+	await _wild_shot(prefix + "06_mom_house_healed")
+	var lead: RefCounted = (state.get(&"party") as RefCounted).call(&"get_lead")
+	print("  défaite : carte %s, PV %d/%d, joueur libre %s" % [
+		(_boot.call(&"get_map") as Node).get(&"map_id"),
+		lead.get(&"hp"), lead.call(&"max_hp"), _player.call(&"is_input_enabled")])
+	print("WILD_BATTLE terminé (frame %d)" % _frame)
+	quit()
+
+
+## Équipe de départ pour le combat sauvage : Salamèche N5, starter choisi.
+func _wild_party(state: Node, data: RefCounted) -> void:
+	var factory: GDScript = load("res://game/pokemon/pokemon_factory.gd")
+	var party: RefCounted = (load("res://game/pokemon/party.gd") as GDScript).new()
+	party.call(&"add", factory.call(&"create", data, &"charmander", 5, GameRng.new(999)))
+	state.set(&"party", party)
+	state.set(&"starter_species", &"charmander")
+	(state.get(&"flags") as RefCounted).call(&"set_flag", &"starter_chosen")
+
+
+## Première case de hautes herbes praticable qui a de l'herbe juste au-dessus (l'origine de la
+## rencontre sera « devant » le joueur). (-1, -1) si aucune.
+func _find_grass_cell(grid: RefCounted, size: Vector2i) -> Vector2i:
+	var fallback := Vector2i(-1, -1)
+	for y: int in range(1, size.y):
+		for x: int in size.x:
+			var cell := Vector2i(x, y)
+			if not bool(grid.call(&"is_tall_grass", cell)):
+				continue
+			if bool(grid.call(&"is_occupied", cell)) or bool(grid.call(&"is_solid", cell)):
+				continue
+			if fallback == Vector2i(-1, -1):
+				fallback = cell
+			if bool(grid.call(&"is_tall_grass", cell + Vector2i.UP)):
+				return cell
+	return fallback
+
+
+func _wild_shot(capture_name: String) -> void:
+	var map: Node = _boot.call(&"get_map")
+	var stage: Node = _boot.call(&"get_battle_stage")
+	print("  %s : carte %s, combat actif %s" % [capture_name,
+		map.get(&"map_id") if map != null else &"", stage.call(&"is_active")])
+	_mark(capture_name)
+	await _frames(2)
+
+
+# --- Scénarios « exp_gain » et « move_forget » (jalon 5C, T11) -----------------------------
+
+## Combat sauvage gagné à vitesse réelle, avec les captures aux moments clés. [param forget] :
+## faux = Bulbizarre N6 à 5 XP du N7 (XP, niveau, Vampigraine apprise) ; vrai = Bulbizarre N19
+## avec quatre capacités, à 1 XP du N20 (offre de Poudre Toxik, panneau d'oubli).
+func _run_xp_scenario(forget: bool) -> void:
+	var prefix := T11_FORGET_PREFIX if forget else T11_EXP_PREFIX
+	await _frames(5)
+	var state: Node = root.get_node(^"GameState")
+	var data: RefCounted = _boot.call(&"get_pokemon_data")
+	var hud: Node = _boot.call(&"get_hud")
+	var director: Node = _boot.call(&"get_encounter_director")
+	var battle_director: Node = _boot.call(&"get_battle_director")
+	var battle_hud: Node = _boot.call(&"get_battle_hud")
+	battle_director.set(&"speed_scale", 1.0)
+	var level := 19 if forget else 6
+	var to_next := 1 if forget else 5
+	var moves: Array[StringName] = [&"tackle", &"growl", &"leech_seed", &"vine_whip"]
+	var party_script: GDScript = load("res://game/pokemon/party.gd")
+	var factory: GDScript = load("res://game/pokemon/pokemon_factory.gd")
+	var make_party := func() -> RefCounted:
+		var party: RefCounted = party_script.new()
+		var pokemon: RefCounted = factory.call(&"create", data, &"bulbasaur", level,
+			GameRng.new(999))
+		if forget:
+			pokemon.get(&"moves").clear()
+			for move_id: StringName in moves:
+				pokemon.call(&"learn_move", move_id, data)
+		var rate: Variant = data.call(&"get_species", &"bulbasaur").get(&"growth_rate")
+		pokemon.set(&"experience", int(ExpCurve.exp_for_level(rate, level + 1)) - to_next)
+		party.call(&"add", pokemon)
+		return party
+	state.set(&"party", make_party.call())
+	state.set(&"starter_species", &"bulbasaur")
+	(state.get(&"flags") as RefCounted).call(&"set_flag", &"starter_chosen")
+	# Une graine de victoire (1re capacité à chaque tour) : simulée avec le même aléatoire.
+	var seed := -1
+	for candidate: int in range(0, 400):
+		var rng := GameRng.new(candidate)
+		var foe_party: RefCounted = party_script.new()
+		foe_party.call(&"add", factory.call(&"create", data, &"rattata", 3, rng))
+		var sim_player: RefCounted = (load("res://game/battle/battle_side.gd") as GDScript) \
+			.new(make_party.call(), true)
+		var sim_foe: RefCounted = (load("res://game/battle/battle_side.gd") as GDScript) \
+			.new(foe_party, false, "", null)
+		var sim: RefCounted = (load("res://game/battle/battle.gd") as GDScript).new(
+			sim_player, sim_foe, data, rng, (load("res://game/battle/battle_rules.gd") \
+			as GDScript).call(&"for_wild"))
+		sim.call(&"start")
+		while int(sim.call(&"get_state")) == Battle.State.CHOOSING:
+			sim.call(&"submit", (load("res://game/battle/battle_action.gd") as GDScript) \
+				.call(&"move", 0))
+		if int(sim.call(&"get_outcome")) == Battle.Outcome.WIN:
+			seed = candidate
+			break
+	if seed < 0:
+		push_error("%s : aucune graine de victoire" % _scenario)
+		quit(1)
+		return
+	state.set(&"rng", GameRng.new(seed))
+	var map: Node = _boot.call(&"get_map")
+	var grid: RefCounted = map.call(&"get_grid")
+	var cell := _find_grass_cell(grid, map.get(&"size"))
+	_player.call(&"enter_map", grid, cell, Vector2i.UP, map.call(&"get_pixel_rect"))
+	hud.call(&"set_controls_visible", false)
+	await _frames(12)
+	var enc: RefCounted = (load("res://game/pokemon/encounters/wild_encounter.gd") as GDScript) \
+		.new(&"rattata", 3, &"route_1_grass")
+	director.call(&"start_encounter", enc)
+	var own_card: Node = battle_hud.call(&"get_card", 0)
+	var banner: Node = battle_hud.call(&"get_message_banner")
+	var pending: Dictionary[String, int] = {}
+	var taken: Dictionary[String, bool] = {}
+	var last_level: String = ""
+	var phase := 0
+	var phase_at := 0
+	var deadline := _frame + 4500
+	while bool(director.call(&"is_running")) and _frame < deadline:
+		var shot_due: Array[String] = []
+		for name: String in pending:
+			if _frame >= pending[name]:
+				shot_due.append(name)
+		for name: String in shot_due:
+			pending.erase(name)
+			await _wild_shot(prefix + name)
+		var battle: RefCounted = battle_director.call(&"get_battle")
+		var panel: Control = battle_director.call(&"get_forget_panel")
+		if battle != null and int(battle.call(&"get_state")) == 1:  # CHOOSING
+			var zone: int = int(battle_hud.call(&"get_zone"))
+			if zone == 1:
+				battle_hud.get(&"action_selected").emit(&"attack")
+			elif zone == 2:
+				battle_hud.get(&"move_selected").emit(0)
+		var text: String = banner.call(&"get_text")
+		if bool(own_card.call(&"is_exp_gain_visible")) and not taken.has("01_exp_gain"):
+			taken["01_exp_gain"] = true
+			pending["01_exp_gain"] = _frame + 8
+		var level_text: String = own_card.call(&"get_level_text")
+		if not taken.has("01_exp_gain"):
+			last_level = level_text
+		elif level_text != last_level:
+			last_level = level_text
+			if not taken.has("02_level_up"):
+				taken["02_level_up"] = true
+				pending["02_level_up"] = _frame + 3
+		if not forget and text.contains("apprend") and not taken.has("03_move_learned"):
+			taken["03_move_learned"] = true
+			pending["03_move_learned"] = _frame + 6
+		if forget and text.contains("veut apprendre") and not taken.has("01_offer_message"):
+			taken["01_offer_message"] = true
+			pending["01_offer_message"] = _frame + 6
+		if forget and panel != null and bool(panel.call(&"is_shown")) \
+				and not bool(panel.call(&"is_sliding")) and not bool(panel.call(&"is_answered")):
+			if phase == 0:
+				phase = 1
+				phase_at = _frame + 8
+				pending["02_panel"] = _frame + 6
+			elif phase == 1 and _frame >= phase_at:
+				phase = 2
+				phase_at = _frame + 10
+				panel.call(&"select", 2)
+				pending["03_panel_pick"] = _frame + 6
+			elif phase == 2 and _frame >= phase_at:
+				phase = 3
+				(panel.call(&"get_confirm_button") as Button).pressed.emit()
+		if forget and phase == 3 and text.contains("oublie") and not taken.has("04_forgot"):
+			taken["04_forgot"] = true
+			pending["04_forgot"] = _frame + 6
+		await process_frame
+		_frame += 1
+	await _frames(14)
+	await _wild_shot(prefix + "99_back_to_exploration")
+	var lead: RefCounted = (state.get(&"party") as RefCounted).call(&"get_lead")
+	var known: Array[String] = []
+	for slot: RefCounted in lead.get(&"moves"):
+		known.append(str(slot.get(&"move_id")))
+	print("  %s : graine %d, niveau %d, XP %d, capacités %s, joueur libre %s" % [
+		_scenario, seed, lead.get(&"level"), lead.get(&"experience"), known,
+		_player.call(&"is_input_enabled")])
+	print("%s terminé (frame %d)" % [_scenario.to_upper(), _frame])
+	quit()
+
+
+# --- Scénario « capture » (jalon 5D, T15) --------------------------------------------------
+
+## Première graine dont le premier lancer d'une Poké Ball sur un Roucool N3 capture ([param
+## caught]) ou, sinon, échoue après au moins deux secousses (la Ball a le temps de trembler).
+## Même consommation d'aléatoire que le jeu. −1 si aucune.
+func _capture_seed(data: PokemonData, items: ItemLibrary, caught: bool) -> int:
+	for seed: int in range(0, 5000):
+		var rng := GameRng.new(seed)
+		var wild := Party.new()
+		wild.add(PokemonFactory.create(data, &"pidgey", 3, rng))
+		var mine := Party.new()
+		mine.add(PokemonFactory.create(data, &"charmander", 5, GameRng.new(999)))
+		var battle := Battle.new(BattleSide.new(mine, true),
+			BattleSide.new(wild, false, "", null), data, rng, BattleRules.for_wild(items))
+		battle.start()
+		var shakes := 0
+		var done := false
+		for event: BattleEvent in battle.submit(BattleAction.ball(&"poke_ball")):
+			shakes += int(event.kind == BattleEvent.Kind.BALL_SHAKE)
+			done = done or event.kind == BattleEvent.Kind.CAUGHT
+		if done == caught and (caught or shakes >= 2):
+			return seed
+	return -1
+
+
+## Capture jouable à vitesse réelle : grille, SAC, LANCER, film des « trois secondes sacrées »
+## (une image toutes les FILM_STEP images), carte de capture, retour à l'exploration.
+func _run_capture_scenario() -> void:
+	var caught := _outcome != "fail"
+	var prefix := T15_PREFIX + ("catch_" if caught else "fail_")
+	await _frames(5)
+	var state: Node = root.get_node(^"GameState")
+	var data: PokemonData = _boot.call(&"get_pokemon_data")
+	var items: ItemLibrary = _boot.call(&"get_item_library")
+	var hud: Node = _boot.call(&"get_hud")
+	var director: Node = _boot.call(&"get_encounter_director")
+	var battle_director: Node = _boot.call(&"get_battle_director")
+	var battle_hud: Node = _boot.call(&"get_battle_hud")
+	var battle_stage: Node = _boot.call(&"get_battle_stage")
+	battle_director.set(&"speed_scale", 1.0)
+	_wild_party(state, data)
+	(state.get(&"bag") as Bag).add(&"poke_ball", 5)
+	var seed := _capture_seed(data, items, caught)
+	if seed < 0:
+		push_error("capture : aucune graine")
+		quit(1)
+		return
+	state.set(&"rng", GameRng.new(seed))
+	var map: Node = _boot.call(&"get_map")
+	var grid: RefCounted = map.call(&"get_grid")
+	_player.call(&"enter_map", grid, _find_grass_cell(grid, map.get(&"size")), Vector2i.UP,
+		map.call(&"get_pixel_rect"))
+	hud.call(&"set_controls_visible", false)
+	await _frames(12)
+	var encounter := WildEncounter.new(&"pidgey", 3, &"route_1_grass")
+	director.call(&"start_encounter", encounter)
+	var film := 0
+	var filming := false
+	var pending := false
+	var opened_at := -1
+	var thrown_at := -1
+	var shots: Dictionary[String, bool] = {}
+	var card_shot := false
+	var deadline := _frame + 4000
+	while bool(director.call(&"is_running")) and _frame < deadline:
+		var battle: RefCounted = battle_director.call(&"get_battle")
+		var panel: Control = battle_director.call(&"get_bag_panel")
+		var card: Control = battle_director.call(&"get_capture_card")
+		var zone: int = int(battle_hud.call(&"get_zone"))
+		if card != null and bool(card.call(&"is_waiting")):
+			filming = false
+			if bool(card.call(&"is_revealed")) and not card_shot:
+				card_shot = true
+				await _frames(6)
+				await _wild_shot(prefix + "90_card")
+				card.call(&"skip")
+		elif filming and (_frame - thrown_at) % FILM_STEP == 0:
+			film += 1
+			await _wild_shot(prefix + "f%02d" % film)
+		if battle != null and int(battle.call(&"get_state")) == 1 and card == null:
+			if zone == 1 and not pending and not (panel != null and bool(panel.call(&"is_shown"))):
+				if not shots.has("01_actions"):
+					shots["01_actions"] = true
+					await _frames(24)
+					await _wild_shot(prefix + "01_actions_bag")
+					battle_hud.get(&"action_selected").emit(&"bag")
+					pending = true
+					opened_at = _frame
+				else:
+					battle_hud.get(&"action_selected").emit(&"run")
+		if pending and panel != null and bool(panel.call(&"is_shown")) \
+				and not bool(panel.call(&"is_sliding")) and not bool(panel.call(&"is_answered")):
+			if _frame - opened_at > 14 and not shots.has("02_bag"):
+				shots["02_bag"] = true
+				await _wild_shot(prefix + "02_bag_open")
+				await _frames(6)
+				(panel.call(&"get_action_button") as Button).pressed.emit()
+				pending = false
+				filming = true
+				thrown_at = _frame
+		await process_frame
+		_frame += 1
+	await _frames(14)
+	await _wild_shot(prefix + "99_back_to_exploration")
+	var party: Party = state.get(&"party")
+	var bag: Bag = state.get(&"bag")
+	print("  capture (%s) : graine %d, équipe %d, Balls %d, %d images, joueur libre %s" % [
+		_outcome, seed, party.size(), bag.count_of(&"poke_ball"), film,
+		_player.call(&"is_input_enabled")])
+	print("CAPTURE terminé (frame %d)" % _frame)
+	quit()

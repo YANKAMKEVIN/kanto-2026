@@ -49,6 +49,8 @@ Jamais d'interruption (« VOUS AVEZ TROUVÉ UNE POTION ! APPUYEZ SUR OK »). À 
 
 ## 7. Menu principal
 
+> **Remplacé pour le jalon 6 par `dossier-08-menu-dresseur.md` (2026-10-02)** : six cartes (Équipe · Pokédex · Sac · Carte · Dresseur · Paramètres), Paramètres n'est plus dans un coin ; la ligne d'objectif discrète est conservée. Les §8 à §10 ci-dessous sont précisés par le même dossier, qui prime.
+
 Un geste ou un petit bouton ouvre une interface **superposée au monde**, dont l'arrière-plan se floute légèrement. En-tête : nom du dresseur (KEVIN), « Dresseur », ⚙ dans un coin. Cinq entrées seulement : **Équipe · Pokédex · Sac · Carte · Profil**. En bas : **Objectif** (ex. « Rejoins Jadielle »). Paramètres dans un petit coin.
 
 ## 8. Équipe

@@ -38,6 +38,24 @@ extends SceneTree
 ##   MoveDetailSheet  PanelContainer  fiche de pression longue
 ##   MoveDetailName / MoveDetailCaption / MoveDetailValue / MoveDetailText   Label
 ##   BattleMessage    PanelContainer  bandeau des messages ; BattleMessageText   Label
+## XP et oubli (jalon 5C, T10) :
+##   ExpBar           Control  styles « background » (fond clair) et « fill » (bleu) de la barre d'XP
+##   ExpGain          Label    « +21 XP » : FONT_BUTTON, gras, ACCENT, ombre portée
+##   ForgetBand       Panel    bandeau opaque du panneau d'oubli (déborde jusqu'aux bords)
+##   ForgetCaption    Label    « Nouvelle capacité » / « Capacité à oublier », discret
+##   ForgetConfirm    Button   OUBLIER : fond ACCENT, atténué et muet tant que rien n'est choisi
+## Sac de combat et carte de capture (jalon 5D, T14) :
+##   BagPanel         PanelContainer  cadre sombre translucide du Sac
+##   BagTitle         Label    « SAC », FONT_TITLE, gras
+##   BagDivider       Panel    filet sous l'en-tête
+##   BagTab / BagTabSelected   PanelContainer  onglet de catégorie, sélectionné (fond teinté et
+##     liseré ACCENT) ; BagTabName   Label
+##   BagCard / BagCardSelected   PanelContainer  carte d'objet, sélectionnée (liseré ACCENT et halo) ;
+##     BagCardName / BagCardQuantity   Label
+##   BagDetail        PanelContainer  aperçu de l'objet touché ; BagDetailName / BagDetailQuantity /
+##     BagDetailText   Label ; l'action est un AccentButton ; BagEmpty   Label
+##   CaptureCard      PanelContainer  carte de capture ; CaptureTitle / CapturePokedex /
+##     CaptureResult   Label ; CaptureThumb   PanelContainer  cadre de la vignette
 ## Notifications :
 ##   Toast            PanelContainer  capsule du toast (bible UI/UX §6)
 ##   ToastTitle / ToastDetail   Label  « Poké Balls ×5 » (gras) / « Ajoutées au Sac » (discret)
@@ -98,6 +116,8 @@ func _init() -> void:
 	_add_battle_actions(theme, bold, t)
 	_add_battle_moves(theme, bold, t)
 	_add_battle_messages(theme, t)
+	_add_exp_and_forget(theme, bold, t)
+	_add_bag_and_capture(theme, bold, t)
 	_add_toast(theme, bold, t)
 
 	var err := ResourceSaver.save(theme, THEME_PATH)
@@ -413,6 +433,51 @@ func _move_card_style(bg: Color, border: Color, width: int, t: GDScript) -> Styl
 	return box
 
 
+## Barre d'XP, « +N XP » et panneau d'oubli d'une capacité (jalon 5C, T10).
+func _add_exp_and_forget(theme: Theme, bold: Font, t: GDScript) -> void:
+	var radius: int = t.EXP_BAR_HEIGHT / 2
+	var track := StyleBoxFlat.new()
+	track.bg_color = t.EXP_BAR_TRACK
+	track.border_color = t.HP_BAR_TRACK_BORDER
+	track.set_border_width_all(t.BORDER_WIDTH)
+	track.set_corner_radius_all(radius)
+	track.anti_aliasing = true
+	var fill := StyleBoxFlat.new()
+	fill.bg_color = t.EXP_BAR_FILL
+	fill.set_corner_radius_all(radius - t.BORDER_WIDTH)
+	fill.anti_aliasing = true
+	theme.set_type_variation(&"ExpBar", &"Control")
+	theme.set_stylebox(&"background", &"ExpBar", track)
+	theme.set_stylebox(&"fill", &"ExpBar", fill)
+	_add_label_variation(theme, &"ExpGain", t.EXP_GAIN_FONT, t.ACCENT, t)
+	theme.set_font(&"font", &"ExpGain", bold)
+	theme.set_constant(&"outline_size", &"ExpGain", t.EXP_GAIN_OUTLINE)
+	theme.set_color(&"font_outline_color", &"ExpGain", t.SURFACE_DARK)
+
+	var band := StyleBoxFlat.new()
+	band.bg_color = t.FORGET_BAND_BG
+	band.border_color = t.PANEL_BORDER
+	band.border_width_top = t.BORDER_WIDTH
+	band.border_width_left = t.BORDER_WIDTH
+	band.corner_radius_top_left = t.RADIUS
+	band.expand_margin_right = t.MOVE_BAND_BLEED
+	band.expand_margin_bottom = t.MOVE_BAND_BLEED
+	band.anti_aliasing = true
+	theme.set_type_variation(&"ForgetBand", &"Panel")
+	theme.set_stylebox(&"panel", &"ForgetBand", band)
+	_add_plain_label(theme, &"ForgetCaption", t.FONT_CAPTION, t.TEXT_MUTED, bold)
+
+	var accent := _button_style(t.ACCENT, false, t)
+	var accent_pressed := _button_style(t.ACCENT_PRESSED, false, t)
+	var disabled := _button_style(t.FORGET_CONFIRM_DISABLED_BG, true, t)
+	_add_button_variation(theme, &"ForgetConfirm", accent, accent_pressed, bold, t)
+	theme.set_stylebox(&"disabled", &"ForgetConfirm", disabled)
+	for state: StringName in [&"font_color", &"font_hover_color", &"font_focus_color",
+			&"font_pressed_color", &"font_hover_pressed_color"]:
+		theme.set_color(state, &"ForgetConfirm", t.ACCENT_TEXT)
+	theme.set_color(&"font_disabled_color", &"ForgetConfirm", t.TEXT_DISABLED)
+
+
 func _add_battle_messages(theme: Theme, t: GDScript) -> void:
 	var banner := _panel_style(t.BATTLE_MESSAGE_BG, t.DIALOG_RADIUS, t)
 	banner.set_content_margin(SIDE_LEFT, t.BATTLE_MESSAGE_PAD_H)
@@ -436,3 +501,73 @@ func _add_toast(theme: Theme, bold: Font, t: GDScript) -> void:
 	theme.set_stylebox(&"panel", &"Toast", capsule)
 	_add_plain_label(theme, &"ToastTitle", t.TOAST_TITLE_FONT, t.TEXT, bold)
 	_add_plain_label(theme, &"ToastDetail", t.TOAST_DETAIL_FONT, t.TEXT_MUTED, null)
+
+
+## Sac de combat et carte de capture (jalon 5D, T14).
+func _add_bag_and_capture(theme: Theme, bold: Font, t: GDScript) -> void:
+	var frame := _panel_style(t.BAG_PANEL_BG, t.RADIUS, t)
+	frame.set_content_margin_all(t.BAG_PANEL_PAD)
+	theme.set_type_variation(&"BagPanel", &"PanelContainer")
+	theme.set_stylebox(&"panel", &"BagPanel", frame)
+	_add_plain_label(theme, &"BagTitle", t.FONT_TITLE, t.TEXT, bold)
+	var divider := StyleBoxFlat.new()
+	divider.bg_color = t.PANEL_BORDER
+	theme.set_type_variation(&"BagDivider", &"Panel")
+	theme.set_stylebox(&"panel", &"BagDivider", divider)
+	_add_plain_label(theme, &"BagEmpty", t.FONT_BODY, t.TEXT_MUTED, null)
+
+	var tab := _bag_box(t.BUTTON_BG, t.PANEL_BORDER, t.BORDER_WIDTH, t.BAG_TAB_PAD_H, 8, t)
+	var tab_selected := _bag_box(t.BAG_TAB_SELECTED_BG, t.ACCENT, t.BAG_TAB_SELECTED_BORDER,
+		t.BAG_TAB_PAD_H, 8, t)
+	var card := _bag_box(t.PANEL_BG, t.PANEL_BORDER, t.BORDER_WIDTH, t.BAG_CARD_PAD_H,
+		t.BAG_CARD_PAD_V, t)
+	var card_selected := _bag_box(t.PANEL_BG, t.ACCENT, t.MOVE_CARD_SELECTED_BORDER,
+		t.BAG_CARD_PAD_H, t.BAG_CARD_PAD_V, t)
+	card_selected.shadow_color = t.MOVE_CARD_SELECTED_GLOW
+	card_selected.shadow_size = t.MOVE_CARD_SELECTED_GLOW_SIZE
+	var detail := _bag_box(t.BUTTON_BG, t.PANEL_BORDER, t.BORDER_WIDTH, t.BAG_DETAIL_PAD,
+		t.BAG_DETAIL_PAD, t)
+	for pair: Array in [[&"BagTab", tab], [&"BagTabSelected", tab_selected],
+			[&"BagCard", card], [&"BagCardSelected", card_selected], [&"BagDetail", detail]]:
+		theme.set_type_variation(pair[0], &"PanelContainer")
+		theme.set_stylebox(&"panel", pair[0], pair[1])
+	_add_plain_label(theme, &"BagTabName", t.BAG_TAB_FONT, t.TEXT, bold)
+	_add_plain_label(theme, &"BagCardName", t.BAG_CARD_NAME_FONT, t.TEXT, bold)
+	_add_plain_label(theme, &"BagCardQuantity", t.BAG_CARD_QTY_FONT, t.TEXT, bold)
+	theme.set_constant(&"outline_size", &"BagCardQuantity", t.EXP_GAIN_OUTLINE)
+	theme.set_color(&"font_outline_color", &"BagCardQuantity", t.SURFACE_DARK)
+	_add_plain_label(theme, &"BagDetailName", t.BAG_DETAIL_NAME_FONT, t.TEXT, bold)
+	_add_plain_label(theme, &"BagDetailQuantity", t.BAG_DETAIL_QTY_FONT, t.TEXT_MUTED, bold)
+	_add_plain_label(theme, &"BagDetailText", t.BAG_DETAIL_TEXT_FONT, t.DIALOG_NARRATION, null)
+
+	var capture := _panel_style(t.CAPTURE_CARD_BG, t.DIALOG_RADIUS, t)
+	capture.set_content_margin(SIDE_LEFT, t.CAPTURE_CARD_PAD_H)
+	capture.set_content_margin(SIDE_RIGHT, t.CAPTURE_CARD_PAD_H)
+	capture.set_content_margin(SIDE_TOP, t.CAPTURE_CARD_PAD_V)
+	capture.set_content_margin(SIDE_BOTTOM, t.CAPTURE_CARD_PAD_V)
+	theme.set_type_variation(&"CaptureCard", &"PanelContainer")
+	theme.set_stylebox(&"panel", &"CaptureCard", capture)
+	var thumb := _bag_box(t.CAPTURE_THUMB_BG, t.CAPTURE_THUMB_BORDER, t.BORDER_WIDTH,
+		t.CAPTURE_THUMB_PAD, t.CAPTURE_THUMB_PAD, t)
+	theme.set_type_variation(&"CaptureThumb", &"PanelContainer")
+	theme.set_stylebox(&"panel", &"CaptureThumb", thumb)
+	_add_plain_label(theme, &"CaptureTitle", t.CAPTURE_TITLE_FONT, t.TEXT, bold)
+	_add_plain_label(theme, &"CapturePokedex", t.CAPTURE_LINE_FONT, t.TEXT_MUTED, null)
+	_add_plain_label(theme, &"CaptureResult", t.CAPTURE_LINE_FONT, t.TEXT, null)
+
+
+## Case arrondie du Sac et de la carte de capture : fond, liseré, marges [param pad_h] et
+## [param pad_v] ; pas d'ombre (celle des cartes sélectionnées est posée à part).
+func _bag_box(bg: Color, border: Color, width: int, pad_h: int, pad_v: int,
+		t: GDScript) -> StyleBoxFlat:
+	var box := StyleBoxFlat.new()
+	box.bg_color = bg
+	box.border_color = border
+	box.set_border_width_all(width)
+	box.set_corner_radius_all(t.RADIUS)
+	box.anti_aliasing = true
+	box.set_content_margin(SIDE_LEFT, pad_h)
+	box.set_content_margin(SIDE_RIGHT, pad_h)
+	box.set_content_margin(SIDE_TOP, pad_v)
+	box.set_content_margin(SIDE_BOTTOM, pad_v)
+	return box

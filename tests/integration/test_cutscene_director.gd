@@ -124,6 +124,9 @@ const SCENES := {
 	"give_unknown": {"steps": [
 		{"give": "mystery", "count": 2}, {"set": ["after"]},
 	]},
+	"give_found": {"steps": [
+		{"give": "potion", "count": 1, "found": true}, {"set": ["after"]},
+	]},
 }
 
 
@@ -900,7 +903,27 @@ func test_give_adds_to_the_bag_and_emits_item_given() -> void:
 	await _await_scene_end()
 	assert_eq(bag.count_of(&"poke_ball"), 5)
 	assert_signal_emitted_with_parameters(_director, "item_given", [&"poke_ball", 5])
+	assert_signal_not_emitted(_director, "item_found", "objet reçu, pas trouvé")
 	assert_true(_flags.has_flag(&"after"))
+	assert_push_error_count(0)
+
+
+## Jalon 5C.5 : un objet trouvé dans le monde (clé « found ») est aussi signalé par item_found,
+## après item_given ; un objet reçu (les Poké Balls de Chen) ne l'est pas (test précédent).
+func test_give_found_emits_item_found_after_item_given() -> void:
+	var bag := Bag.new()
+	var items := ItemLibrary.new()
+	items.load_dir()
+	_director.set_inventory(bag, items)
+	var order: Array[String] = []
+	_director.item_given.connect(func(_id: StringName, _n: int) -> void: order.append("given"))
+	_director.item_found.connect(func(_id: StringName, _n: int) -> void: order.append("found"))
+	watch_signals(_director)
+	_director.play(&"give_found")
+	await _await_scene_end()
+	assert_eq(bag.count_of(&"potion"), 1)
+	assert_signal_emitted_with_parameters(_director, "item_found", [&"potion", 1])
+	assert_eq(order, ["given", "found"] as Array[String])
 	assert_push_error_count(0)
 
 

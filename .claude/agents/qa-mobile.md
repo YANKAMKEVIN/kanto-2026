@@ -2,7 +2,7 @@
 name: qa-mobile
 description: Testeur QA mobile de Kanto 2026. À utiliser après chaque fonctionnalité pour la valider de bout en bout - tests GUT, import, export APK, installation et lancement sur le Galaxy S24, captures d'écran, gestes simulés via adb, logs, FPS. Produit un rapport de validation factuel ; ne corrige pas le code du jeu.
 tools: Read, Bash, Grep, Glob, Write
-model: inherit
+model: sonnet
 skills:
   - godot-cli
   - android-deploy

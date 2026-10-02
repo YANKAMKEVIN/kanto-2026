@@ -22,9 +22,10 @@ func test_real_data_loads_without_error() -> void:
 	assert_eq(_data.get_errors().size(), 0, _errors())
 	assert_eq(_data.get_type_chart().get_type_ids().size(), 18)
 	assert_eq(_data.get_species_ids(), [&"bulbasaur", &"ivysaur", &"venusaur", &"charmander",
-		&"charmeleon", &"charizard", &"squirtle", &"wartortle", &"blastoise"]
+		&"charmeleon", &"charizard", &"squirtle", &"wartortle", &"blastoise",
+		&"pidgey", &"pidgeotto", &"pidgeot", &"rattata", &"raticate"]
 		as Array[StringName])
-	assert_eq(_data.get_move_ids().size(), 24)
+	assert_eq(_data.get_move_ids().size(), 34)
 	assert_true(_data.has_move(&"struggle"))
 
 
@@ -49,7 +50,9 @@ func test_real_species_values() -> void:
 		assert_eq(_data.get_species(id).base_exp, base_exp[id], String(id))
 	assert_eq(_data.get_species(&"charizard").types, [&"fire", &"flying"] as Array[StringName])
 	assert_eq(_data.get_species(&"bulbasaur").types, [&"grass", &"poison"] as Array[StringName])
-	for id: StringName in _data.get_species_ids():
+	# Les neuf starters : croissance lente, 7/8 mâles, dex 1..9 contigus (les espèces de la
+	# Route 1, ajoutées au jalon 5, ont d'autres valeurs — voir test_route_1_species_and_lines).
+	for id: StringName in base_exp:
 		var species := _data.get_species(id)
 		assert_eq(species.growth_rate, ExpCurve.Rate.MEDIUM_SLOW, String(id))
 		assert_eq(species.male_ratio, 0.875, String(id))
@@ -62,6 +65,8 @@ func test_real_evolution_chains() -> void:
 		&"bulbasaur": [&"ivysaur", 16], &"ivysaur": [&"venusaur", 32],
 		&"charmander": [&"charmeleon", 16], &"charmeleon": [&"charizard", 36],
 		&"squirtle": [&"wartortle", 16], &"wartortle": [&"blastoise", 36],
+		&"pidgey": [&"pidgeotto", 18], &"pidgeotto": [&"pidgeot", 36],
+		&"rattata": [&"raticate", 20],
 	}
 	for id: StringName in _data.get_species_ids():
 		var rules := _data.get_species(id).evolutions
@@ -210,7 +215,7 @@ func test_broken_cross_references_are_rejected() -> void:
 
 func test_invalid_move_fields_are_rejected() -> void:
 	assert_false(_data.load_dir(FIXTURES + "bad_fields/"))
-	assert_push_error_count(24, "12 capacités + 12 espèces")
+	assert_push_error_count(25, "12 capacités + 13 espèces")
 	var errors := _errors()
 	for expected: String in [
 		"« typo_key » : clé inconnue « powr »",
@@ -232,9 +237,10 @@ func test_invalid_move_fields_are_rejected() -> void:
 
 func test_invalid_species_fields_are_rejected() -> void:
 	_data.load_dir(FIXTURES + "bad_fields/")
-	assert_push_error_count(24, "12 capacités + 12 espèces")
+	assert_push_error_count(25, "12 capacités + 13 espèces")
 	var errors := _errors()
 	for expected: String in [
+		"« bad_catch_rate » catch_rate : entier de 1 à 255 attendu",
 		"« no_learnset » : « learnset » est obligatoire",
 		"« three_types » : « types » doit être une liste de 1 ou 2 types",
 		"« bad_stats » base_stats : clé inconnue « speed »",
@@ -260,3 +266,145 @@ func test_non_object_entries_and_empty_ids_are_rejected() -> void:
 	assert_string_contains(_errors(), "s : identifiant vide")
 	assert_string_contains(_errors(), "s espèce « x » : un objet est attendu")
 	assert_string_contains(_errors(), "m capacité « y » : un objet est attendu")
+
+
+# --- Espèces et capacités du jalon 5 (Route 1) ------------------------------------------
+
+func test_route_1_species_and_lines() -> void:
+	_data.load_dir()
+	assert_eq(_data.get_errors().size(), 0, _errors())
+	var pidgey := _data.get_species(&"pidgey")
+	assert_eq(pidgey.dex, 16)
+	assert_eq(pidgey.name, "Roucool")
+	assert_eq(pidgey.types, [&"normal", &"flying"] as Array[StringName])
+	assert_eq(pidgey.base_stats, {&"hp": 40, &"atk": 45, &"def": 40, &"spa": 35, &"spd": 35,
+		&"spe": 56} as Dictionary[StringName, int])
+	assert_eq(pidgey.base_exp, 50)
+	assert_eq(pidgey.male_ratio, 0.5)
+	var rattata := _data.get_species(&"rattata")
+	assert_eq(rattata.dex, 19)
+	assert_eq(rattata.name, "Rattata")
+	assert_eq(rattata.base_exp, 51)
+	# Lignées complètes présentes (les évolutions résolvent).
+	for id: StringName in [&"pidgeotto", &"pidgeot", &"raticate"]:
+		assert_true(_data.has_species(id), String(id))
+	assert_eq(pidgey.evolutions[0].into, &"pidgeotto")
+	assert_eq(rattata.evolutions[0].into, &"raticate")
+
+
+# --- Taux de capture (jalon 5D §2.4) ----------------------------------------------------
+
+func test_real_catch_rates_are_the_official_ones() -> void:
+	_data.load_dir()
+	var expected: Dictionary[StringName, int] = {
+		&"bulbasaur": 45, &"ivysaur": 45, &"venusaur": 45,
+		&"charmander": 45, &"charmeleon": 45, &"charizard": 45,
+		&"squirtle": 45, &"wartortle": 45, &"blastoise": 45,
+		&"pidgey": 255, &"pidgeotto": 120, &"pidgeot": 45,
+		&"rattata": 255, &"raticate": 127,
+	}
+	assert_eq(_data.get_species_ids().size(), expected.size(), "toutes les espèces")
+	for id: StringName in _data.get_species_ids():
+		assert_eq(_data.get_species(id).catch_rate, expected.get(id, -1), String(id))
+
+
+func test_valid_fixture_reads_the_catch_rate() -> void:
+	_data.load_dir(FIXTURES + "valid/")
+	assert_eq(_data.get_species(&"wisp").catch_rate, 190)
+	assert_eq(_data.get_species(&"sprout").catch_rate, 45)
+
+
+func test_catch_rate_is_required_and_bounded() -> void:
+	var species := {
+		"dex": 1, "name": "Test", "types": ["normal"],
+		"base_stats": { "hp": 45, "atk": 49, "def": 49, "spa": 65, "spd": 65, "spe": 45 },
+		"male_ratio": 0.5, "growth_rate": "fast", "base_exp": 64, "learnset": [[1, "tackle"]],
+	}
+	assert_false(_data.add_species_from_dict({"missing": species}, "a"))
+	assert_string_contains(_errors(), "a espèce « missing » : « catch_rate » est obligatoire")
+	for value: Variant in [0, 256, 12.5, "255"]:
+		var entry := species.duplicate()
+		entry["catch_rate"] = value
+		var data := PokemonData.new()
+		assert_false(data.add_species_from_dict({"bad": entry}, "b"), str(value))
+		assert_string_contains("\n".join(data.get_errors()), "catch_rate : entier de 1 à 255")
+	var good := species.duplicate()
+	good["catch_rate"] = 3
+	var data := PokemonData.new()
+	assert_true(data.add_species_from_dict({"good": good}, "c"))
+	assert_eq(data.get_species(&"good").catch_rate, 3)
+	assert_push_error_count(5)
+
+
+func test_route_1_moves_exist_and_are_typed() -> void:
+	_data.load_dir()
+	var gust := _data.get_move(&"gust")
+	assert_eq(gust.type, &"flying")
+	assert_eq(gust.power, 40)
+	assert_true(gust.is_damaging())
+	var sand := _data.get_move(&"sand_attack")
+	assert_eq(sand.type, &"ground")
+	assert_false(sand.is_damaging(), "Jet de Sable est une capacité de statut")
+	assert_eq(sand.effects.size(), 1, "baisse de Précision codée (sans pending_effects)")
+	assert_eq(sand.pending_effects.size(), 0)
+	assert_eq(_data.get_move(&"quick_attack").priority, 1)
+
+
+func test_leech_seed_is_coded() -> void:
+	# Jalon 5 Q28 : Vampigraine a un effet « seed » (⅛, Plante immunisé), plus en attente.
+	_data.load_dir()
+	var seed := _data.get_move(&"leech_seed")
+	assert_eq(seed.pending_effects.size(), 0)
+	assert_eq(seed.effects.size(), 1)
+	assert_eq(seed.effects[0].kind, MoveEffect.Kind.SEED)
+	assert_almost_eq(seed.effects[0].fraction, 0.125, 0.0001)
+	assert_eq(seed.effects[0].immune_types, [&"grass"] as Array[StringName])
+
+
+## Capacité « seedy » de statut avec le seul effet [param effect].
+func _seed_move(effect: Dictionary) -> Dictionary:
+	return { "seedy": { "name": "Graine", "type": "grass", "category": "status",
+		"accuracy": 90, "pp": 10, "description": "…", "effects": [effect] } }
+
+
+func test_invalid_seed_effects_are_rejected() -> void:
+	assert_true(PokemonData.new().add_moves_from_dict(_seed_move({ "kind": "seed",
+		"fraction": 0.125 }), "ok"), "immune_types facultatif")
+	var cases: Dictionary = {
+		"a": [{ "kind": "seed" }, "« fraction » est obligatoire"],
+		"b": [{ "kind": "seed", "fraction": 0, "immune_types": ["grass"] },
+			"« fraction » doit être un nombre de 0 (exclu) à 1"],
+		"c": [{ "kind": "seed", "fraction": 0.125, "immune_types": "grass" },
+			"immune_types : une liste d'identifiants de types est attendue"],
+		"d": [{ "kind": "seed", "fraction": 0.125, "stat": "atk" }, "clé inconnue « stat »"],
+		"e": [{ "kind": "leech" }, "« kind » vaut stat_stage, recoil, seed"],
+	}
+	for source: String in cases:
+		var data := PokemonData.new()
+		assert_false(data.add_moves_from_dict(_seed_move(cases[source][0]), source), source)
+		assert_string_contains("\n".join(data.get_errors()),
+			"%s capacité « seedy » effet 1" % source)
+		assert_string_contains("\n".join(data.get_errors()), cases[source][1])
+	assert_push_error_count(5)
+
+
+func test_unknown_immune_type_is_a_broken_reference() -> void:
+	_data.add_types_from_dict({"types": {"grass": {"name": "Plante"}}}, "t")
+	_data.add_moves_from_dict(_seed_move({ "kind": "seed", "fraction": 0.125,
+		"immune_types": ["wood"] }), "m")
+	assert_false(_data.check_references())
+	assert_string_contains(_errors(), "capacité « seedy » : type immunisé inconnu « wood »")
+	assert_false(_data.has_move(&"seedy"))
+	assert_push_error_count(1)
+
+
+func test_low_level_wild_moves_have_no_pending_effects() -> void:
+	# Invariant de jouabilité (§3.2) : aux niveaux des rencontres (Roucool 2..5, Rattata
+	# 2..4), toute capacité connue est pleinement codée.
+	_data.load_dir()
+	for pair: Array in [[&"pidgey", 5], [&"rattata", 4]]:
+		var species := _data.get_species(pair[0])
+		for move_id: StringName in species.moves_at(pair[1]):
+			var move := _data.get_move(move_id)
+			assert_eq(move.pending_effects.size(), 0,
+				"%s à Nv.%d connaît %s (effet non codé)" % [pair[0], pair[1], move_id])

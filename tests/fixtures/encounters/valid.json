@@ -1,0 +1,6 @@
+{
+	"valid_grass": {
+		"maps": ["route_x"], "terrain": "grass", "rate": 10,
+		"slots": [ { "species": "pidgey", "levels": [2, 5], "weight": 20 } ]
+	}
+}

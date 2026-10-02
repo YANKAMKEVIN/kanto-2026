@@ -626,3 +626,20 @@ func test_lean_sideways_and_toward_own_cell() -> void:
 	npc.lean_toward(CELL)
 	assert_false(npc.is_leaning(), "sa propre case : rien")
 	assert_eq(npc.get_lean_offset(), Vector2.ZERO)
+
+
+## Jalon 5 (QA S24 du 5B) : le dernier pas d'une fuite se termine pendant GridMover.update() ;
+## la fuite fait alors quitter la grille au PNJ, et _process ne doit plus lire son GridMover.
+func test_flee_leaves_the_grid_at_the_end_of_its_last_step_without_error() -> void:
+	var grid := GridWorld.new(Vector2i(10, 10))
+	var npc := _make_on_grid(_spec(), grid)
+	watch_signals(npc)
+	var last := CELL + Vector2i(2, 0)
+	npc.flee([Vector2i.RIGHT, Vector2i.RIGHT])
+	assert_true(npc.is_moving(), "premier pas de fuite")
+	_simulate(npc, int(2.0 * Grid.RUN_STEP_DURATION / FRAME) + 6)
+	assert_false(npc.is_moving())
+	assert_false(grid.is_occupied(last), "case libérée en quittant la grille")
+	assert_eq(npc.position, Grid.cell_to_world(last))
+	await wait_seconds(Npc.FLEE_FADE_DURATION + 0.1)
+	assert_signal_emitted(npc, "left_scene")

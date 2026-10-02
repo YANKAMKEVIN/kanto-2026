@@ -2,7 +2,7 @@
 name: ui-mobile
 description: Développeur UI mobile de Kanto 2026 (Godot 4.7). À utiliser pour tout écran et contrôle - thème 2026 (tokens, Theme Godot), HUD d'exploration (titre de zone, mini-carte, boutons ronds), joystick tactile, bouton contextuel, boîtes de dialogue, menus (principal, équipe, sac, Pokédex, carte), UI de combat, notifications, transitions, retours haptiques.
 tools: Read, Write, Edit, Bash, Grep, Glob
-model: inherit
+model: sonnet
 skills:
   - godot-conventions
   - godot-cli

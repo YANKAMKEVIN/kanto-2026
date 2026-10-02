@@ -7,22 +7,30 @@ Kevin est le **directeur du jeu** : il conçoit (souvent avec ChatGPT), Claude i
 ## À lire avant de travailler
 
 - `docs/design/vision.md` — constitution, DA, contrôles, plan en 13 phases. **Source de vérité du design.**
+- `docs/design/roadmap.md` — **vue macro** du projet (phases J0→Ligue et post-game, ordre des jalons). Où va le jeu à long terme.
 - `docs/design/ui-reference.md` + `docs/design/reference/da-2026-planche-v1.webp` — référence **UI** validée.
 - `docs/design/ui-ux-bible-v0.1.md` — philosophie UI/UX (« le monde est la star ») ; ses contradictions avec la planche sont listées en fin de fichier.
 - `docs/design/dossier-04-systeme-pokemon.md` — système Pokémon (jalons 4+) ; `dossier-05-combat.md` — combat ; `dossier-06-progression.md` — progression, arènes, rival, Ligue.
 - `docs/design/reference/bourg-palette-aplus-v1.png` — benchmark graphique du **monde** (2D HD atmosphérique, golden hour).
 - `docs/design/reference/chambre-joueur-v1.webp` — référence de la **chambre du joueur** (agencement + rendu cible des intérieurs) ; autres intérieurs : `ouverture-storyboard-v1.webp`, `maison-rival-v1.webp`, `labo-chen-v1.png` ; combat : `combat-v1.webp`, `combat-capture-v1.webp`.
+- `docs/design/dossier-08-menu-dresseur.md` — Menu Dresseur du **jalon 6** (tableau de bord, Équipe, Sac, Pokédex, Carte, Dresseur, Paramètres) ; maquettes `reference/menu-*-v1.jpg`.
+- `docs/design/dossier-09-jadielle.md` — **jalon 7** (J7A : Jadielle, Centre, Boutique, économie, colis, activation du Pokédex, stockage ; J7B : Route 22, rival n°2) ; textes à valider au §19. Pas d'implémentation avant validation.
 - `docs/design/dossier-*.md` — conception détaillée par zone (`dossier-02-prologue.md` : textes définitifs du prologue, découpage 3A / 3B / 4).
 - `docs/tech/etat-projet.md` — **où en est le projet, prochaine étape, questions ouvertes.** À lire en début de session.
 - `docs/tech/jalon-*.md` — plans techniques des jalons (tâches et critères d'acceptation).
 
 ## Règles de travail
 
-1. **Une fonctionnalité → testée sur le S24 → validée par Kevin → suivante.** Jamais trois systèmes à la fois.
-2. Une tâche n'est finie que si : `tools/test.sh` passe, le projet s'importe sans erreur, et (si c'est visible) une capture S24 a été vérifiée.
-3. Données (Pokémon, attaques, objets, rencontres, dialogues) = fichiers de données, jamais codées en dur dans la logique.
-4. Logique de jeu séparée de la présentation (testable sans scène).
-5. Monde en **2D HD atmosphérique** (décors HD, personnages et Pokémon en pixel art fin, lumière dynamique) ; UI **non** pixel art (skill `ui-theme-2026`).
+1. **Validation S24 par sous-jalon** (5B, 5C…) : les tâches liées s'enchaînent, puis une seule session S24 + validation de Kevin à la fin du sous-jalon. Exception : un système risqué (sauvegarde, tout ce qui peut perdre des données) est validé seul. Jamais trois systèmes à la fois.
+2. Une tâche n'est finie que si : `tools/test.sh` passe, le projet s'importe sans erreur, et (si c'est visible) une capture a été relue (headless ou Mac) ; la capture S24 vient à la validation du sous-jalon.
+3. **Sur S24, on valide le fonctionnel** (ça marche, c'est lisible, c'est bien placé), pas le rendu final : les visuels sont provisoires jusqu'à la phase DA. Une remarque de rendu se note dans `docs/tech/etat-projet.md` (« Reportés »), sans la corriger tout de suite.
+4. **Petites questions → valeur par défaut** : durées, positions, tailles, couleurs… reçoivent une valeur par défaut, notée dans le commit et dans `etat-projet.md`, et le travail continue. Seules les vraies décisions de game design bloquent et vont à Kevin.
+5. **`docs/tech/etat-projet.md` est mis à jour dans le même commit que chaque tâche terminée** : chaque session repart de ce fichier.
+6. Kevin prépare le dossier de conception du jalon suivant **pendant** le jalon en cours, pour que le code n'attende pas les décisions.
+7. Données (Pokémon, attaques, objets, rencontres, dialogues) = fichiers de données, jamais codées en dur dans la logique.
+8. Logique de jeu séparée de la présentation (testable sans scène).
+9. Monde en **2D HD atmosphérique** (décors HD, personnages et Pokémon en pixel art fin, lumière dynamique) ; UI **non** pixel art (skill `ui-theme-2026`).
+10. **Les maquettes et images de référence donnent la DA et la composition, jamais la vérité fonctionnelle.** Si une image contredit un dossier, `vision.md`, la bible UI/UX ou une décision validée, l'écrit gagne. On n'implémente jamais un élément simplement parce qu'il apparaît sur une maquette.
 
 ## Décisions techniques
 
@@ -54,7 +62,8 @@ docs/design/   conception (ignoré par Godot)
 ```bash
 tools/test.sh                  # tests GUT headless
 tools/build_android.sh         # APK debug → build/kanto2026-debug.apk
-tools/deploy_s24.sh            # build + install + lancement + capture build/screenshot.png + logs
+tools/deploy_s24.sh            # build + install + lancement + capture build/screenshot.png + logs (USB ou Wi-Fi)
+tools/s24_serial.sh            # série adb du S24 (USB ou débogage sans fil)
 godot --headless --path . --import   # réimport / détection d'erreurs de scripts
 ```
 
@@ -64,4 +73,8 @@ godot --headless --path . --import   # réimport / détection d'erreurs de scrip
 
 ## Agents (`.claude/agents/`)
 
-`architecte-godot` · `constructeur-monde` · `ui-mobile` · `qa-mobile`
+`architecte-godot` (Opus) · `constructeur-monde` (Sonnet) · `ui-mobile` (Sonnet) · `qa-mobile` (Sonnet) — pour une tâche difficile, on peut forcer Opus à l'appel.
+
+**Agents en parallèle** : chacun travaille dans sa propre copie (worktree) ; **jamais de `pkill` / `killall` sur Godot ou GUT** (d'autres agents font tourner leurs tests sur le même Mac) : arrêter seulement ses propres processus, par PID.
+
+**Fable, ponctuellement et sur demande** (≈ 2,5 × le coût d'Opus, jamais par défaut) : seulement quand une erreur coûterait cher — conception de la **sauvegarde** (5C.5), **compagnon Pokémon** (J11), bug sur lequel Opus a déjà échoué. Haiku n'est pas utilisé pour le code, les données ni la QA (au mieux, des recherches dans le code).

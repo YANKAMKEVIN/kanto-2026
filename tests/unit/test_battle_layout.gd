@@ -122,3 +122,27 @@ func test_arena_focus_puts_the_arena_between_the_anchors() -> void:
 	assert_between(wide.y, half_h, 1056 - half_h, "reste dans le labo en hauteur")
 	var tall := BattleLayout.arena_focus(Rect2(0, 900, 96, 96), lab, Vector2(1920, 1080), 1.4)
 	assert_almost_eq(tall.y, 1056 - half_h, 1.0, "bornée en bas")
+
+
+func test_bag_slot_is_left_column_above_back_button() -> void:
+	for view: Vector2 in VIEWS:
+		var bag := BattleHudLayout.rect(BattleHudLayout.Slot.BAG, view)
+		var back := BattleHudLayout.rect(BattleHudLayout.Slot.BACK, view)
+		assert_eq(bag.position.x, float(UiTokens.SAFE_MARGIN), "%s : colonne gauche" % view)
+		assert_eq(bag.end.y, view.y - UiTokens.SAFE_MARGIN, "%s : bas dans la marge" % view)
+		assert_gte(bag.position.y, float(UiTokens.SAFE_MARGIN), "%s : haut dans la marge" % view)
+		assert_eq(bag.end.y - back.size.y, back.position.y, "« ‹ » au pied de l'emplacement")
+
+
+func test_capture_slot_is_centered_and_place_matches_rect() -> void:
+	for view: Vector2 in VIEWS:
+		var rect := BattleHudLayout.rect(BattleHudLayout.Slot.CAPTURE, view)
+		assert_eq(rect.get_center(), view * 0.5, "%s : centrée" % view)
+		var control := Control.new()
+		add_child_autofree(control)
+		control.size = view
+		BattleHudLayout.place(control, BattleHudLayout.Slot.CAPTURE)
+		assert_eq(control.anchor_left, 0.5)
+		assert_eq(control.offset_left, -rect.size.x * 0.5)
+		assert_eq(control.offset_right, rect.size.x * 0.5)
+		assert_eq(control.grow_vertical, Control.GROW_DIRECTION_BOTH)
