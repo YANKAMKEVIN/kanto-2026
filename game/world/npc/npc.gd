@@ -185,6 +185,10 @@ func _process(delta: float) -> void:
 		return
 	if _mover.is_moving():
 		_mover.update(delta, Vector2i.ZERO, false)
+		# step_finished est émis pendant update() : la fin d'une fuite fait alors quitter la
+		# grille au PNJ (leave_grid remet _mover à null, position et _process déjà réglés).
+		if _mover == null:
+			return
 		position = _mover.get_world_position().round()
 		if not _mover.is_moving():
 			_play_idle()
