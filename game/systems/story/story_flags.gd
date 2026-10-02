@@ -7,6 +7,12 @@ extends RefCounted
 ## et la modifient à leur fin. Un drapeau absent vaut faux. [method to_array] et
 ## [method load_array] préparent la sauvegarde (pas encore branchée).
 
+## Drapeau posé par le Prof. Chen quand il active le Pokédex du joueur (jalon 7A, dossier-09 §6).
+## Jamais posé au jalon 5 : rien du Pokédex n'est visible avant (règle de déblocage de
+## vision.md : « Nouvelle entrée Pokédex » sur la carte de capture, etc.), mais les données
+## sont collectées dès le premier Pokémon.
+const POKEDEX_ACTIVATED: StringName = &"pokedex_activated"
+
 ## Un drapeau vient de changer de valeur (rien n'est émis si la valeur ne change pas).
 signal flag_changed(flag: StringName, value: bool)
 

@@ -257,3 +257,13 @@ func test_starts_with_an_empty_storage_and_new_game_empties_it() -> void:
 func test_registered_as_autoload() -> void:
 	assert_eq(ProjectSettings.get_setting("autoload/GameState"), "*" + SCRIPT_PATH)
 	assert_not_null(get_tree().root.get_node_or_null(^"GameState"))
+
+
+func test_has_moment_tells_whether_a_moment_type_is_recorded() -> void:
+	var state := _dated()
+	assert_false(state.has_moment(state.MOMENT_FIRST_CAPTURE))
+	state.record_moment(state.MOMENT_STARTER, &"oak_lab")
+	assert_false(state.has_moment(state.MOMENT_FIRST_CAPTURE), "le starter n'est pas une capture")
+	state.record_moment(state.MOMENT_FIRST_CAPTURE, &"route_1", {"species": "pidgey"})
+	assert_true(state.has_moment(state.MOMENT_FIRST_CAPTURE))
+	assert_true(state.has_moment(state.MOMENT_STARTER))

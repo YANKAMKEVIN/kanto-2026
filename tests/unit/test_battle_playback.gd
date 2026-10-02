@@ -234,3 +234,30 @@ func test_seeded_is_a_message_and_drained_is_both_bars_then_a_message() -> void:
 	assert_eq(_kinds(beats), [BattleBeat.Kind.DRAIN, BattleBeat.Kind.MESSAGE]
 		as Array[BattleBeat.Kind])
 	assert_eq(beats[0].side, BattleEvent.SideId.FOE, "le Pokémon drainé")
+
+
+func test_capture_events_become_throw_shakes_catch_and_release() -> void:
+	var thrown := _event(BattleEvent.Kind.BALL_THROWN, BattleEvent.SideId.FOE, "Rattata")
+	thrown.item_name = "Poké Ball"
+	var beats := BattlePlayback.beats(thrown, _texts, _data)
+	assert_eq(_kinds(beats), [BattleBeat.Kind.MESSAGE, BattleBeat.Kind.THROW]
+		as Array[BattleBeat.Kind], "le message, puis le lancer")
+	assert_eq(beats[0].text, "Tu lances une Poké Ball !")
+	var shake := _event(BattleEvent.Kind.BALL_SHAKE, BattleEvent.SideId.FOE, "Rattata")
+	shake.shake = 2
+	assert_eq(_kinds(BattlePlayback.beats(shake, _texts, _data)),
+		[BattleBeat.Kind.SHAKE] as Array[BattleBeat.Kind], "une secousse, sans phrase")
+	var caught := _event(BattleEvent.Kind.CAUGHT, BattleEvent.SideId.FOE, "Rattata")
+	assert_eq(_kinds(BattlePlayback.beats(caught, _texts, _data)),
+		[BattleBeat.Kind.CATCH] as Array[BattleBeat.Kind], "l'éclat ; le texte est sur la carte")
+	var freed := _event(BattleEvent.Kind.BROKE_FREE, BattleEvent.SideId.FOE, "Rattata")
+	beats = BattlePlayback.beats(freed, _texts, _data)
+	assert_eq(_kinds(beats), [BattleBeat.Kind.RELEASE, BattleBeat.Kind.MESSAGE]
+		as Array[BattleBeat.Kind], "il ressort, puis le message")
+	assert_eq(beats[1].text, "Oh non ! Il s'est libéré !")
+
+
+func test_a_caught_battle_end_has_no_message() -> void:
+	var ended := BattleEvent.new(BattleEvent.Kind.BATTLE_ENDED, BattleEvent.SideId.PLAYER)
+	ended.outcome = Battle.Outcome.CAUGHT
+	assert_eq(BattlePlayback.beats(ended, _texts, _data).size(), 0)

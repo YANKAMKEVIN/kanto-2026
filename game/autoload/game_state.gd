@@ -140,6 +140,14 @@ func record_moment(type: StringName, map: StringName, details: Dictionary = {}) 
 	})
 
 
+## Un grand moment de ce [param type] est déjà enregistré (ex. la première capture).
+func has_moment(type: StringName) -> bool:
+	for moment: Dictionary in moments:
+		if moment.get("type", "") == String(type):
+			return true
+	return false
+
+
 ## Espèce vue sur [param map] (Pokédex daté). Vrai si c'est la première observation.
 func record_seen(species: StringName, map: StringName) -> bool:
 	return pokedex.mark_seen(species, map, now())
