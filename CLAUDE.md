@@ -71,3 +71,5 @@ godot --headless --path . --import   # réimport / détection d'erreurs de scrip
 ## Agents (`.claude/agents/`)
 
 `architecte-godot` (Opus) · `constructeur-monde` (Sonnet) · `ui-mobile` (Sonnet) · `qa-mobile` (Sonnet) — pour une tâche difficile, on peut forcer Opus à l'appel.
+
+**Fable, ponctuellement et sur demande** (≈ 2,5 × le coût d'Opus, jamais par défaut) : seulement quand une erreur coûterait cher — conception de la **sauvegarde** (5C.5), **compagnon Pokémon** (J11), bug sur lequel Opus a déjà échoué. Haiku n'est pas utilisé pour le code, les données ni la QA (au mieux, des recherches dans le code).
