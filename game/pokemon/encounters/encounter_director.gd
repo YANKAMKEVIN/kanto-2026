@@ -135,7 +135,8 @@ func _run(encounter: WildEncounter, origin: Vector2i) -> void:
 	if is_instance_valid(_player):
 		_player.set_input_enabled(false, REASON)
 	if _state != null and _state.pokedex != null:
-		(_state.pokedex as Pokedex).mark_seen(encounter.species)
+		# Pokédex daté (jalon 5 §16.3) : espèce vue sur cette carte, une observation de plus.
+		_state.record_seen(encounter.species, _map.map_id)
 	encounter_started.emit(encounter.species, encounter.level)
 	await _play_grass_beat(origin, encounter.species)
 	var request := BattleRequest.wild(encounter, _data, _state.rng as GameRng, origin)

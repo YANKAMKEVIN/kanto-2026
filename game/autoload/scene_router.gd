@@ -75,16 +75,32 @@ func start(map_id: StringName, spawn: StringName, facing: Vector2i) -> GameMap:
 	var old: GameMap = _current_map if is_instance_valid(_current_map) else null
 	_world.add_child(map)
 	map.spawn_player(_player, spawn, facing)
-	if old != null:
-		old.queue_free()
-	_current_map = map
-	_busy = false
-	_player.set_input_enabled(true)
-	if _fade != null:
-		_fade.set_opaque(false)
-	map_changed.emit(map)
-	map_entered.emit(map)
-	_prefetch_neighbors(map)
+	_finish_start(map, old)
+	return map
+
+
+## Premier placement sur une **case** plutôt qu'un point d'apparition (reprise d'une
+## sauvegarde, jalon 5C.5) : comme [method start], mais le joueur est posé sur [param cell],
+## ou sur la case libre la plus proche ([method GameMap.find_standing_cell]) si un PNJ ou un
+## décor l'occupe désormais. Null (rien n'est changé, avertissement) si la carte est inconnue
+## ou n'a aucune case libre : l'appelant choisit alors un autre départ.
+func start_at(map_id: StringName, cell: Vector2i, facing: Vector2i) -> GameMap:
+	var map := _instantiate(map_id)
+	if map == null:
+		push_warning("SceneRouter : reprise impossible, carte inconnue « %s »" % map_id)
+		return null
+	var old: GameMap = _current_map if is_instance_valid(_current_map) else null
+	_world.add_child(map)
+	var target := map.find_standing_cell(cell, _player)
+	if target == Vector2i(-1, -1):
+		push_warning("SceneRouter : reprise impossible, aucune case libre sur %s" % map_id)
+		_world.remove_child(map)
+		map.free()
+		return null
+	if target != cell:
+		print("SceneRouter : case %s prise sur %s, reprise en %s" % [cell, map_id, target])
+	map.spawn_player_at(_player, target, facing if facing != Vector2i.ZERO else Vector2i.DOWN)
+	_finish_start(map, old)
 	return map
 
 
@@ -128,6 +144,21 @@ func get_current_map() -> GameMap:
 
 func get_player() -> Player:
 	return _player
+
+
+## Fin commune de [method start] et [method start_at] : ancienne carte libérée, joueur
+## libre, rideau levé, signaux, préchargement des voisines.
+func _finish_start(map: GameMap, old: GameMap) -> void:
+	if old != null:
+		old.queue_free()
+	_current_map = map
+	_busy = false
+	_player.set_input_enabled(true)
+	if _fade != null:
+		_fade.set_opaque(false)
+	map_changed.emit(map)
+	map_entered.emit(map)
+	_prefetch_neighbors(map)
 
 
 ## Étapes 4 à 6 : instanciation, contrôle du spawn, placement, libération de l'ancienne

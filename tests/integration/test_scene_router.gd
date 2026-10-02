@@ -351,3 +351,47 @@ func test_real_maps_neighbors_prefetched_then_used() -> void:
 	assert_eq(_player.get_cell(), Vector2i(36, 9))
 	assert_false(_router._prefetching.has(town), "chargement récupéré")
 	assert_true(_router._scenes.has(town), "scène gardée en cache")
+
+
+# --- Reprise sur une case (jalon 5C.5) -------------------------------------------------
+
+func test_start_at_places_the_player_on_the_cell_and_emits_like_start() -> void:
+	var map: GameMap = _router.start_at(&"a", Vector2i(5, 2), Vector2i.LEFT)
+	assert_not_null(map)
+	assert_eq(_router.get_current_map(), map)
+	assert_eq(_player.get_cell(), Vector2i(5, 2), "sur la case sauvegardée")
+	assert_eq(_player.get_facing(), Vector2i.LEFT, "orientation sauvegardée")
+	assert_true(_player.is_input_enabled())
+	assert_false(_router.is_transitioning())
+	assert_eq(_events, ["map_changed:a", "map_entered:a"] as Array[String])
+	assert_push_error_count(0)
+
+
+func test_start_at_moves_to_the_nearest_free_cell_when_the_cell_is_taken() -> void:
+	# Case (5, 2) devenue solide (décor ajouté depuis la sauvegarde) : case voisine praticable.
+	_router.map_factory = func(map_id: StringName) -> GameMap:
+		var made := _make_map(map_id)
+		if made != null:
+			made.blocked_cells = [Vector2i(5, 2)] as Array[Vector2i]
+		return made
+	var map: GameMap = _router.start_at(&"a", Vector2i(5, 2), Vector2i.UP)
+	assert_not_null(map)
+	var cell := _player.get_cell()
+	assert_ne(cell, Vector2i(5, 2))
+	assert_eq(absi(cell.x - 5) + absi(cell.y - 2), 1, "case voisine")
+	assert_true(map.get_grid().get_occupant(cell) == _player)
+	# Hors carte : ramenée au bord.
+	_router.setup(_world, _player, null)
+	_router.start_at(&"a", Vector2i(40, -3), Vector2i.DOWN)
+	assert_eq(_player.get_cell(), Vector2i(7, 0), "case ramenée dans la carte")
+	assert_push_error_count(0)
+
+
+func test_start_at_an_unknown_map_changes_nothing() -> void:
+	_router.start(&"a", &"start", Vector2i.UP)
+	_events.clear()
+	assert_null(_router.start_at(&"nowhere", Vector2i(1, 1), Vector2i.UP))
+	assert_eq(_router.get_current_map().map_id, &"a", "carte courante gardée")
+	assert_eq(_player.get_cell(), A_START)
+	assert_true(_events.is_empty(), "aucun signal")
+	assert_push_error_count(0)

@@ -496,6 +496,10 @@ func test_give_step() -> void:
 	assert_eq(five.item_id, &"poke_ball")
 	assert_eq(five.count, 5)
 	assert_eq(_one_step({"give": "potion"}, "b").count, 1, "1 par défaut")
+	assert_false(five.found, "reçu par défaut, pas trouvé")
+	var found := _one_step({"give": "potion", "found": true}, "c")
+	assert_true(found.found, "objet trouvé dans le monde (jalon 5C.5)")
+	assert_true(found.copy().found, "copié")
 	assert_eq(_library.get_item_ids(), [&"poke_ball", &"potion"] as Array[StringName])
 
 
@@ -513,6 +517,7 @@ func test_invalid_battle_and_give_steps() -> void:
 		{"give": "poke_ball", "count": 1.5},
 		{"give": "poke_ball", "count": "5"},
 		{"give": "poke_ball", "to": "player"},
+		{"give": "potion", "found": "yes"},
 	]
 	for i: int in bad.size():
 		assert_null(_one_step(bad[i], "bad_%d" % i), str(bad[i]))
@@ -522,7 +527,8 @@ func test_invalid_battle_and_give_steps() -> void:
 	for expected: String in ["battle : identifiant attendu", "pas « player »",
 			"alias mal formé", "le même PNJ", "« win » doit être une liste non vide",
 			"« lose » doit être une liste non vide", "clé inconnue « to »",
-			"give : identifiant attendu", "« count » doit être un entier ≥ 1"]:
+			"give : identifiant attendu", "« count » doit être un entier ≥ 1",
+			"« found » doit être un booléen"]:
 		assert_string_contains(errors, expected)
 
 
