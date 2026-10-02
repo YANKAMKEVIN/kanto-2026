@@ -1,6 +1,18 @@
 # État du projet — note de passage
 
-Mis à jour : 2026-10-02 (**jalon 4B fusionné dans `main`** ; **jalon 5 en cours sur `jalon-05`** : 5A validé S24 le 2026-09-30 ; **5B validé par Kevin sur S24 le 2026-10-02** ; **5C validé par Kevin sur S24 le 2026-10-02** (option A pour la montée de niveau) ; 5C.5 S1, **S2** et 5D T13 fusionnés — **sauvegarde validée par Kevin sur S24 (S3) le 2026-10-02** ; 5D T13, T14, **T15 (capture jouable)** et l'entrée vers Jadielle fusionnés ; **reste : T16 (QA S24 de la capture) puis 5F** ; en cours : rencontres sans longue attente (décision B de Kevin)).
+Mis à jour : 2026-10-02 soir (**jalon 5 : tout le code est fait** ; 5A, 5B, 5C et la sauvegarde validés sur S24 ; **QA de la capture (T16) en cours** ; puis 5F et validation du J5).
+
+## Point de reprise (2026-10-02 soir) — à lire en premier
+- **Branche `jalon-05`**, poussée jusqu'à `c1842e5` ; en local au-delà (départs de débogage `capture_qa` / `team_full`, plan du J6, corrections de docs) : **pousser** au début de la session suivante si Kevin l'accepte. 1582 tests verts au dernier passage complet.
+- **T16 (QA S24 de la capture) en cours avec Kevin** :
+  - passage 1 (vraie partie) **validé** : rythme des rencontres 15→20 « c'est mieux », pas de double lancer, séquence de capture (vibrations, carte sans ligne Pokédex), échec, sauvegarde après capture (équipe : Salamèche, Roucool, Rattata ; `first_capture` = Roucool) ;
+  - passage 2 (`tools/deploy_s24.sh --no-build --debug-start capture_qa`, 30 Balls, **installé sur le S24**) : série de 10 lancers à PV pleins **en cours, 4 réussites sur 5** (attendu ≈ 3,3 sur 10 ; moteur vérifié conforme : taux 255, Ball ×1, 33,4 % simulés). Si la série finit à 7/10 ou plus, proposer de baisser le taux des Pokémon de la Route 1 ;
+  - passage 3 à faire : `--debug-start team_full` → capture envoyée au stockage (« confié au système de recherche de Chen ») ;
+  - questions ouvertes du T15 : zoom sur la Ball au sol ou cadrage large ; durée du lancer (~1,5 s) et des secousses (0,6 s).
+- **Lot de dettes du J5 en cours** (agent constructeur-monde, branche `worktree-agent-ab29bc36318cc8604`, copie `.claude/worktrees/agent-ab29bc36318cc8604`) : compteur `[perf]` de fps en build debug (nécessaire à la 5F), test d'XP déterministe, emplacement du Pokémon dans l'offre d'oubli, starter « vu une fois », **sprite du partenaire = Pokémon réellement envoyé** (bug du J5). À la fin : vérifier les fichiers en commun, fusionner dans `jalon-05`, relancer `tools/test.sh`, puis retirer la copie de travail.
+- **Ensuite** : fin du T16 → **5F** (QA complète « joueur » sur une partie neuve, avec le compteur de fps) → validation de Kevin → fusion de `jalon-05` dans `main`.
+- **À présenter à Kevin en un lot** : les 21 questions du plan du J6 (`jalon-06.md`, Q-1 à Q-21) ; les textes du dossier 09 §19.
+- Organisation : agents dans des copies isolées (worktrees), deux à la fois au plus, jamais de `pkill` ; l'orchestrateur fusionne, relance les tests et met à jour ce fichier.
 
 ## Jalon 5 (branche `jalon-05`, depuis `main`) — Route 1 et boucle Pokémon
 - **Vue macro** : `docs/design/roadmap.md` (9 phases, ordre des jalons ; règle « données avant interface », ex. Pokédex `seen`/`caught` dès le J5).
