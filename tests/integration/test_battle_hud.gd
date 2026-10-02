@@ -586,25 +586,36 @@ func test_animate_exp_ends_after_exp_tween() -> void:
 	assert_almost_eq(card.get_exp_bar().get_fraction(), 0.5, 0.0001)
 
 
+## Fait avancer les tweens de « +N XP » de [param seconds] (temps de jeu, pas de temps réel).
+func _step_gain(tweens: Array[Tween], seconds: float) -> void:
+	for tween: Tween in tweens:
+		if tween.is_valid():
+			tween.custom_step(seconds)
+
+
+## Déterministe : les tweens de « +N XP » sont mis en pause puis avancés à la main, donc le
+## résultat ne dépend ni de la charge de la machine ni de l'horloge.
 func test_gain_text_shown_then_erased() -> void:
 	var card := _real_time_card()
 	await wait_process_frames(2)
 	assert_false(card.is_exp_gain_visible())
 	var gain := card.get_exp_gain_label()
-	var start := Time.get_ticks_msec()
 	_hud.animate_exp(0.1, 0.5, 21)
-	await wait_process_frames(2)
+	var tweens := card.get_exp_gain_tweens()
+	assert_eq(tweens.size(), 2, "fondus et montée")
+	for tween: Tween in tweens:
+		tween.pause()
 	assert_true(card.is_exp_gain_visible(), "« +N XP » affiché")
 	assert_eq(card.get_exp_gain_text(), "+21 XP")
+	assert_almost_eq(gain.modulate.a, 0.0, 0.001, "il part de la transparence")
 	var first_y := gain.position.y
-	await wait_seconds(UiTokens.EXP_GAIN_HOLD * 0.6)
+	_step_gain(tweens, UiTokens.EXP_GAIN_HOLD * 0.6)
 	assert_true(card.is_exp_gain_visible(), "il reste pendant EXP_GAIN_HOLD")
+	assert_almost_eq(gain.modulate.a, 1.0, 0.001, "pleinement visible au milieu")
 	assert_lt(gain.position.y, first_y, "il monte")
-	await wait_seconds(UiTokens.EXP_GAIN_HOLD * 0.4 + 0.1)
-	var elapsed := (Time.get_ticks_msec() - start) / 1000.0
-	assert_gt(elapsed, UiTokens.EXP_GAIN_HOLD)
+	_step_gain(tweens, UiTokens.EXP_GAIN_HOLD * 0.4 + 0.1)
 	assert_false(card.is_exp_gain_visible(), "puis il est effacé")
-	assert_almost_eq(first_y - gain.position.y, UiTokens.EXP_GAIN_RISE, 4.0,
+	assert_almost_eq(first_y - gain.position.y, UiTokens.EXP_GAIN_RISE, 0.001,
 		"montée de EXP_GAIN_RISE")
 
 
