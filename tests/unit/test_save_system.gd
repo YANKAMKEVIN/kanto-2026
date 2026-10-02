@@ -80,7 +80,7 @@ func test_write_then_read_round_trip_and_stamps_the_version() -> void:
 	var content := _save.read()
 	assert_eq(_save.last_status, OK)
 	assert_eq(_save.last_error, "")
-	assert_eq(content["version"], float(SaveSystem.VERSION), "version à la racine")
+	assert_eq(int(content["version"]), SaveSystem.VERSION, "version à la racine")
 	assert_eq(content["player_name"], "Kevin")
 	assert_eq(content["cell"], [3.0, 4.0])
 
