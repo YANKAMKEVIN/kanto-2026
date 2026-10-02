@@ -37,10 +37,10 @@ La première vraie ville après Bourg Palette et la Route 1 : **dense et vivante
 - **Dresseurs sur la Route 22** : seuls le voyageur, le jeune Dresseur de la scène et le rival sont prévus (§13, §19), pas les autres silhouettes de la planche.
 - « Le rival veut se battre ! » : c'est le message générique du moteur de combat (`data/battle/messages.json`), pas une nouvelle réplique.
 
-**Questions ouvertes (à trancher par Kevin)** :
-1. **Mer et falaises autour de Jadielle** : la vue générale borde la ville de falaises et d'eau, à l'ouest et au sud. Le dossier n'en parle pas (et Jadielle est dans les terres dans Rouge/Bleu). Garder ce cadre côtier, ou une ville entourée de forêt ?
-2. **Leveinard au comptoir du Centre** : c'est une espèce nouvelle, alors que les décisions verrouillées disent « aucune espèce nouvelle pour habiller Jadielle ». Faut-il une exception pour l'assistant de l'infirmière, ou l'infirmière reste-t-elle seule ?
-3. **Escalier dans le Centre** : rien n'est prévu à l'étage. Le retirer, ou le garder comme décor (inaccessible ou fermé) ?
+**Arbitrages (Kevin, 2026-10-02 nuit, recommandations de Claude suivies)** :
+1. **Pas de mer autour de Jadielle** : la ville est dans les terres, comme dans Rouge/Bleu. Elle est bordée de forêt et de relief ; les falaises et les dénivelés sont gardés, la côte et l'eau ne le sont pas.
+2. **Pas de Leveinard** : l'infirmière est seule au comptoir, conformément à la règle « aucune espèce nouvelle pour habiller Jadielle ». Cela évite aussi un sprite de plus au J7.
+3. **Pas d'escalier dans le Centre** : rien n'existe à l'étage, et un lieu ne montre pas de fonction absente (règle D). L'espace libéré revient au coin repos.
 
 ## Règles Kanto 2026 renforcées par le J7
 
