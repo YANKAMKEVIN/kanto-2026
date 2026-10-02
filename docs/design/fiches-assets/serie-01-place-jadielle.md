@@ -547,3 +547,12 @@ LUMIÈRE NE (neutre) : lumière de milieu de journée, diffuse et blanche, venan
 | Révision | Résultat | Décision |
 |---|---|---|
 | GH_r1 | du premier coup : majestueux, même main que l'arbre A et le sapin, rapport 0,77 (fiche : 0,83), feuillage qui frôle les bords de l'image sans être coupé | **validé** (étalonné) ; format de la fiche corrigé en portrait 1024 × 1536 (1 case = 183 px) |
+
+### WORLD_GROUND_PAVE_A_01_CENTRE et WORLD_GROUND_HERBE_A_01 (2026-10-03)
+
+Premier essai à l'échelle du jeu : sol en mosaïque 4 × 4 cases + les trois arbres (`build/art/scene_sol_r1.png`, sans ombres ni transitions).
+
+| Révision | Résultat | Décision |
+|---|---|---|
+| PAVE_CENTRE_NE_r1 | raccords quasi invisibles (écart de bord 6–8 pour 3 entre pixels voisins), matière juste, répétition invisible ; **trop contrasté** à l'écran (le sol concurrence les objets) | **validé** avec un traitement : contraste × 0,7 (réglage final dans Godot, avec la lumière et les ombres) |
+| HERBE_NE_r1 | raccords bons, mais **motif en diagonale** qui se répète visiblement en mosaïque, et vert citron (corrigé par l'étalonnage) | refusé → r2 sans orientation dominante |
