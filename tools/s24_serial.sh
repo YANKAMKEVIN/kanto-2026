@@ -21,18 +21,23 @@ find_s24() {
   return 1
 }
 
-if "$ADB" devices | awk -v s="$USB_SERIAL" '$1 == s && $2 == "device" {found = 1} END {exit !found}'; then
-  echo "$USB_SERIAL"; exit 0
-fi
-find_s24 && exit 0
-
-addr=$("$ADB" mdns services 2>/dev/null \
-  | awk -v s="adb-$USB_SERIAL" 'index($1, s) == 1 && $2 ~ /_adb-tls-connect/ {print $3; exit}')
-addr="${addr:-${S24_ADDR:-}}"
-if [[ -n "$addr" ]]; then
-  "$ADB" connect "$addr" >/dev/null 2>&1 || true
+# Juste après le (re)démarrage du serveur adb, la découverte Wi-Fi (mDNS) prend quelques
+# secondes : on réessaie avant de conclure que le S24 est absent.
+for _attempt in 1 2 3 4 5 6; do
+  if "$ADB" devices | awk -v s="$USB_SERIAL" '$1 == s && $2 == "device" {found = 1} END {exit !found}'; then
+    echo "$USB_SERIAL"; exit 0
+  fi
   find_s24 && exit 0
-fi
+
+  addr=$("$ADB" mdns services 2>/dev/null \
+    | awk -v s="adb-$USB_SERIAL" 'index($1, s) == 1 && $2 ~ /_adb-tls-connect/ {print $3; exit}')
+  addr="${addr:-${S24_ADDR:-}}"
+  if [[ -n "$addr" ]]; then
+    "$ADB" connect "$addr" >/dev/null 2>&1 || true
+    find_s24 && exit 0
+  fi
+  sleep 1
+done
 
 echo "S24 introuvable : ni câble USB, ni débogage sans fil." >&2
 echo "Sans fil : activer « Débogage sans fil » sur le S24 (même Wi-Fi que le Mac) ; s'il n'a jamais été appairé, voir l'en-tête de tools/s24_serial.sh." >&2
