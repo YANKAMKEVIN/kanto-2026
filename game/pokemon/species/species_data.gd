@@ -8,7 +8,7 @@ extends RefCounted
 ## "charmander": {
 ##   "dex": 4, "name": "Salamèche", "types": ["fire"],
 ##   "base_stats": { "hp": 39, "atk": 52, "def": 43, "spa": 60, "spd": 50, "spe": 65 },
-##   "male_ratio": 0.875, "growth_rate": "medium_slow", "base_exp": 62,
+##   "male_ratio": 0.875, "growth_rate": "medium_slow", "base_exp": 62, "catch_rate": 45,
 ##   "learnset": [[1, "scratch"], [1, "growl"], [9, "ember"], ...],
 ##   "evolutions": [{ "into": "charmeleon", "method": "level", "level": 16 }]
 ## }
@@ -37,6 +37,8 @@ var male_ratio: float = -1.0
 var growth_rate: ExpCurve.Rate = ExpCurve.Rate.MEDIUM_FAST
 ## Rendement d'XP de base (formule d'XP gagnée : jalon 5).
 var base_exp: int = 0
+## Taux de capture officiel, 1..255 (255 = le plus facile ; [CaptureCalc], jalon 5D).
+var catch_rate: int = 0
 ## Paires [niveau: int, capacité: StringName], niveaux croissants.
 var learnset: Array[Array] = []
 var evolutions: Array[EvolutionRule] = []

@@ -19,6 +19,19 @@ func test_wild_rules() -> void:
 	assert_true(rules.gives_exp)
 	assert_almost_eq(rules.exp_multiplier, 1.0, 0.0001)
 	assert_true(rules.allow_balls)
+	assert_null(rules.items, "sans objets : aucune Ball utilisable")
+
+
+func test_wild_rules_and_request_carry_the_items() -> void:
+	# Jalon 5D : le moteur lit le bonus des Balls dans les objets des règles.
+	var items := ItemLibrary.new()
+	assert_true(items.load_dir())
+	assert_same(BattleRules.for_wild(items).items, items)
+	var encounter := WildEncounter.new(&"pidgey", 3, &"route_1_grass")
+	var request := BattleRequest.wild(encounter, _data, ScriptedRng.new(IV_0), Vector2i.ZERO,
+		items)
+	assert_same(request.rules.items, items)
+	assert_null(BattleRules.for_trainer().items, "pas de Balls contre un dresseur")
 
 
 func test_trainer_rules() -> void:

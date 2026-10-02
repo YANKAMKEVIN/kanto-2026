@@ -2,7 +2,7 @@
 	"sprout": {
 		"dex": 1, "name": "Pousse", "types": ["grass", "poison"],
 		"base_stats": { "hp": 45, "atk": 49, "def": 49, "spa": 65, "spd": 65, "spe": 45 },
-		"male_ratio": 0.875, "growth_rate": "medium_slow", "base_exp": 64,
+		"male_ratio": 0.875, "growth_rate": "medium_slow", "base_exp": 64, "catch_rate": 45,
 		"learnset": [
 			[1, "tackle"], [1, "growl"], [3, "growth"], [5, "razor_leaf"], [7, "growth"],
 			[9, "bubble"], [9, "ember"]
@@ -16,19 +16,19 @@
 	"tree": {
 		"dex": 2, "name": "Arbre", "types": ["grass"],
 		"base_stats": { "hp": 60, "atk": 62, "def": 63, "spa": 80, "spd": 80, "spe": 60 },
-		"male_ratio": 0.875, "growth_rate": "medium_slow", "base_exp": 142,
+		"male_ratio": 0.875, "growth_rate": "medium_slow", "base_exp": 142, "catch_rate": 45,
 		"learnset": [[1, "tackle"], [1, "growl"], [20, "razor_leaf"]]
 	},
 	"flower": {
 		"dex": 3, "name": "Fleur", "types": ["grass"],
 		"base_stats": { "hp": 60, "atk": 62, "def": 63, "spa": 80, "spd": 80, "spe": 60 },
-		"male_ratio": 0, "growth_rate": "fast", "base_exp": 142,
+		"male_ratio": 0, "growth_rate": "fast", "base_exp": 142, "catch_rate": 45,
 		"learnset": [[1, "tackle"]]
 	},
 	"vine": {
 		"dex": 4, "name": "Liane", "types": ["grass"],
 		"base_stats": { "hp": 60, "atk": 62, "def": 63, "spa": 80, "spd": 80, "spe": 60 },
-		"male_ratio": 1, "growth_rate": "slow", "base_exp": 142,
+		"male_ratio": 1, "growth_rate": "slow", "base_exp": 142, "catch_rate": 45,
 		"learnset": [[1, "tackle"]]
 	}
 }

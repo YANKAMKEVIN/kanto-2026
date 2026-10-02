@@ -42,6 +42,9 @@ var bag: Bag = Bag.new()
 ## arrive au jalon 6 ; les données sont collectées et sauvegardées dès le jalon 5. Même
 ## instance pendant toute la session (vidée par [method new_game]).
 var pokedex: Pokedex = Pokedex.new()
+## Pokémon capturés quand l'équipe est pleine, « système de recherche de Chen » (jalon 5D).
+## Même instance pendant toute la session (vidée par [method new_game]).
+var storage: PokemonStorage = PokemonStorage.new()
 ## Dernier point de soin (jalon 5 §3.11, 5B) : carte et spawn où le joueur se réveille, équipe
 ## soignée, après une défaite sauvage. Tant qu'aucun Centre Pokémon n'existe (avant Jadielle),
 ## c'est la maison familiale, face à Maman (dossier 07 §11). Un futur Centre le remplacera.
@@ -76,6 +79,7 @@ func new_game(rng_seed: int = -1) -> void:
 	party.clear()
 	bag.clear()
 	pokedex.clear()
+	storage.clear()
 	starter_species = &""
 	rng = GameRng.new(rng_seed)
 	heal_map = DEFAULT_HEAL_MAP
@@ -175,6 +179,7 @@ func to_dict() -> Dictionary:
 		"heal_spawn": String(heal_spawn),
 		"starter": String(starter_species),
 		"party": party.to_array(),
+		"storage": storage.to_array(),
 		"bag": bag.to_dict(),
 		"pokedex": pokedex.to_dict(),
 		"flags": JsonFields.ids_to_array(flags.to_array()),
@@ -188,8 +193,8 @@ func to_dict() -> Dictionary:
 ## Remplace tout l'état par [param dict] ([method to_dict], déjà migré par [SaveSystem]).
 ## Un champ absent ou mal formé prend sa valeur par défaut ; un champ inconnu est ignoré ;
 ## rien ne plante. Faux si une entrée a dû être écartée (Pokémon, objet, espèce invalides :
-## signalés par push_error), vrai sinon. Les instances injectées (flags, party, bag, pokedex)
-## sont conservées ; l'aléatoire reprend où il en était (ou repart d'une graine neuve).
+## signalés par push_error), vrai sinon. Les instances injectées (flags, party, storage, bag,
+## pokedex) sont conservées ; l'aléatoire reprend où il en était (ou repart d'une graine neuve).
 func load_dict(dict: Dictionary, data: PokemonData) -> bool:
 	new_game()
 	var ok := true
@@ -210,6 +215,7 @@ func load_dict(dict: Dictionary, data: PokemonData) -> bool:
 		heal_spawn = DEFAULT_HEAL_SPAWN
 	starter_species = JsonFields.get_id(dict, "starter")
 	ok = party.load_array(JsonFields.get_array(dict, "party"), data) and ok
+	ok = storage.load_array(JsonFields.get_array(dict, "storage"), data) and ok
 	ok = bag.load_dict(JsonFields.get_dict(dict, "bag")) and ok
 	ok = pokedex.from_dict(JsonFields.get_dict(dict, "pokedex")) and ok
 	flags.load_array(JsonFields.get_array(dict, "flags"))

@@ -670,3 +670,151 @@ func test_drain_knock_out_gives_exp_and_ends_the_battle() -> void:
 		["FAINTED", "FOE"], ["EXP_GAINED", "PLAYER"], ["BATTLE_ENDED", "PLAYER"]])
 	assert_eq(battle.get_outcome(), Battle.Outcome.WIN)
 	assert_eq(bulbasaur.experience, 236 + 21)
+
+
+# --- Capture (jalon 5D §2.4) ------------------------------------------------------------
+# Roucool N3 (IV 0) : 15 PV ; Poké Ball ×1, taux 255. À PV pleins b = 49 795 : un test de
+# secousse réussit si roll(65536) ≤ 49 795. Après un échec, l'IA de Roucool tire roll(1)
+# (Tornade seule), puis précision, critique (2 = non), aléatoire (16).
+
+## Objets réels (Poké Ball) : les règles sauvages y lisent le bonus de la Ball.
+func _items() -> ItemLibrary:
+	var items := ItemLibrary.new()
+	items.load_dir()
+	return items
+
+
+## Combat sauvage de capture : Salamèche N5 contre Roucool N3, Balls permises.
+func _capture_battle(draws: Array[int], items: ItemLibrary = null) -> Battle:
+	return _xp_battle([_mon(&"charmander", 5)], _mon(&"pidgey", 3), draws,
+		BattleRules.for_wild(items if items != null else _items()))
+
+
+func test_ball_is_illegal_against_a_trainer_or_without_rules() -> void:
+	_rng = ScriptedRng.new([])
+	var trainer := Battle.new(BattleSide.new(_party([&"charmander"]), true),
+		BattleSide.new(_party([&"squirtle"]), false, "Le Rival"), _data, _rng,
+		BattleRules.for_trainer())
+	trainer.get_rules().items = _items()
+	trainer.start()
+	assert_false(trainer.can_use_balls())
+	assert_false(trainer.is_legal(BattleAction.ball(&"poke_ball")))
+	assert_eq(trainer.submit(BattleAction.ball(&"poke_ball")).size(), 0)
+	var rival := _battle(&"charmander", &"squirtle", [])
+	assert_false(rival.can_use_balls(), "règles nulles (rival du 4B)")
+	assert_eq(rival.submit(BattleAction.ball(&"poke_ball")).size(), 0)
+	assert_push_error_count(2)
+	assert_eq(trainer.get_state(), Battle.State.CHOOSING, "le combat continue")
+	assert_eq(trainer.get_turn(), 0)
+
+
+func test_ball_needs_a_known_ball() -> void:
+	var no_items := _xp_battle([_mon(&"charmander", 5)], _mon(&"pidgey", 3), [],
+		BattleRules.for_wild())
+	assert_false(no_items.can_use_balls(), "sans objets connus")
+	assert_false(no_items.is_legal(BattleAction.ball(&"poke_ball")))
+	var battle := _capture_battle([])
+	assert_true(battle.can_use_balls())
+	assert_true(battle.is_legal(BattleAction.ball(&"poke_ball")))
+	assert_false(battle.is_legal(BattleAction.ball(&"master_ball")), "objet inconnu")
+	assert_false(battle.is_legal(BattleAction.ball(&"potion")), "pas une Ball")
+	assert_eq(battle.submit(BattleAction.ball(&"potion")).size(), 0)
+	assert_push_error("action refusée")
+
+
+func test_capture_ends_the_battle_without_foe_action_nor_exp() -> void:
+	var battle := _capture_battle([1, 2, 3, 49795])
+	var charmander := battle.get_player_side().active.pokemon
+	var exp_before := charmander.experience
+	var events := battle.submit(BattleAction.ball(&"poke_ball"))
+	assert_eq(_rng.remaining(), 0, "4 tests, aucun tirage de l'IA")
+	assert_eq(_kinds(events), [["TURN_STARTED", "PLAYER"], ["BALL_THROWN", "FOE"],
+		["BALL_SHAKE", "FOE"], ["BALL_SHAKE", "FOE"], ["BALL_SHAKE", "FOE"], ["CAUGHT", "FOE"],
+		["BATTLE_ENDED", "PLAYER"]])
+	var thrown := events[1]
+	assert_eq([thrown.item_id, thrown.item_name], [&"poke_ball", "Poké Ball"])
+	assert_eq([thrown.species_id, thrown.level, thrown.hp, thrown.max_hp],
+		[&"pidgey", 3, 15, 15])
+	assert_eq([events[2].shake, events[3].shake, events[4].shake], [1, 2, 3])
+	assert_eq(events[5].pokemon_name, "Roucool")
+	assert_eq(events[6].outcome, Battle.Outcome.CAUGHT)
+	assert_eq(battle.get_outcome(), Battle.Outcome.CAUGHT)
+	assert_eq(battle.get_state(), Battle.State.OVER)
+	assert_false(battle.can_use_balls(), "plus rien à lancer")
+	assert_null(_find(events, K.EXP_GAINED), "pas d'XP à la capture (Q26, Rouge/Bleu)")
+	assert_eq(charmander.experience, exp_before)
+	assert_eq(battle.get_foe_side().active.pokemon.hp, 15, "le Pokémon capturé garde ses PV")
+
+
+func test_broken_free_then_the_foe_plays_its_turn() -> void:
+	var battle := _capture_battle([1, 49796, 1, 50, 2, 16])
+	var events := battle.submit(BattleAction.ball(&"poke_ball"))
+	assert_eq(_rng.remaining(), 0)
+	assert_eq(_kinds(events), [["TURN_STARTED", "PLAYER"], ["BALL_THROWN", "FOE"],
+		["BALL_SHAKE", "FOE"], ["BROKE_FREE", "FOE"], ["MOVE_USED", "FOE"],
+		["DAMAGE", "PLAYER"]])
+	assert_eq(events[2].shake, 1)
+	assert_eq(battle.get_state(), Battle.State.CHOOSING, "le combat continue")
+	assert_eq(battle.get_outcome(), Battle.Outcome.NONE)
+	assert_eq(battle.get_turn(), 1)
+
+
+func test_broken_free_without_any_shake() -> void:
+	var battle := _capture_battle([60000, 1, 50, 2, 16])
+	var events := battle.submit(BattleAction.ball(&"poke_ball"))
+	assert_eq(_rng.remaining(), 0)
+	assert_eq(_kinds(events).slice(1, 4), [["BALL_THROWN", "FOE"], ["BROKE_FREE", "FOE"],
+		["MOVE_USED", "FOE"]])
+	assert_null(_find(events, K.BALL_SHAKE))
+
+
+func test_capture_reads_the_current_hp() -> void:
+	# À 1 PV, b = 64 750 : les tirages de 60 000, qui échouent à PV pleins, passent.
+	var battle := _capture_battle([60000, 60000, 60000, 60000])
+	battle.get_foe_side().active.pokemon.hp = 1
+	var events := battle.submit(BattleAction.ball(&"poke_ball"))
+	assert_eq(battle.get_outcome(), Battle.Outcome.CAUGHT)
+	assert_eq(events[1].hp, 1)
+
+
+func test_capture_reads_the_ball_bonus_from_the_rules() -> void:
+	# Une Ball ×3 : a = ⌊15·255·3/45⌋ = 255 → capturé sans tirage.
+	var items := ItemLibrary.new()
+	items.add_from_dict({"strong_ball": {"name": "Forte Ball", "plural": "Fortes Balls",
+		"feminine": true, "category": "ball", "catch_bonus": 3, "description": "…"}})
+	var battle := _capture_battle([], items)
+	var events := battle.submit(BattleAction.ball(&"strong_ball"))
+	assert_eq(_rng.calls, 0, "a ≥ 255 : aucun tirage")
+	assert_eq(events[1].item_name, "Forte Ball")
+	assert_eq(_of_kind(events, K.BALL_SHAKE).size(), 3)
+	assert_eq(battle.get_outcome(), Battle.Outcome.CAUGHT)
+
+
+func test_failed_ball_then_knock_out_still_gives_exp() -> void:
+	var battle := _capture_battle([60000, 1, 50, 2, 16, 1, 50, 2, 16])
+	battle.submit(BattleAction.ball(&"poke_ball"))
+	var events := _knock_out(battle)
+	assert_eq(_rng.remaining(), 0)
+	assert_not_null(_find(events, K.EXP_GAINED), "la Ball ratée ne change rien à l'XP")
+	assert_eq(battle.get_outcome(), Battle.Outcome.WIN)
+
+
+func test_capture_log_is_reproducible() -> void:
+	var logs: Array = []
+	for i: int in 2:
+		var rng := GameRng.new(2026)
+		var party := Party.new()
+		party.add(_mon(&"charmander", 5))
+		var foes := Party.new()
+		foes.add(_mon(&"pidgey", 3))
+		var battle := Battle.new(BattleSide.new(party, true), BattleSide.new(foes, false, ""),
+			_data, rng, BattleRules.for_wild(_items()))
+		var journal: Array = []
+		battle.start()
+		while battle.get_state() == Battle.State.CHOOSING and battle.get_turn() < 50:
+			for event: BattleEvent in battle.submit(BattleAction.ball(&"poke_ball")):
+				journal.append(event.to_dict())
+		logs.append(journal)
+	assert_eq(logs[0], logs[1])
+	assert_eq(logs[0][1]["kind"], "BALL_THROWN")
+	assert_eq(logs[0][-1]["kind"], "BATTLE_ENDED")
