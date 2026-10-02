@@ -556,3 +556,6 @@ Premier essai à l'échelle du jeu : sol en mosaïque 4 × 4 cases + les trois a
 |---|---|---|
 | PAVE_CENTRE_NE_r1 | raccords quasi invisibles (écart de bord 6–8 pour 3 entre pixels voisins), matière juste, répétition invisible ; **trop contrasté** à l'écran (le sol concurrence les objets) | **validé** avec un traitement : contraste × 0,7 (réglage final dans Godot, avec la lumière et les ombres) |
 | HERBE_NE_r1 | raccords bons, mais **motif en diagonale** qui se répète visiblement en mosaïque, et vert citron (corrigé par l'étalonnage) | refusé → r2 sans orientation dominante |
+| HERBE_NE_r2 | plus de bandes visibles en mosaïque, raccords bons (écart de bord 4–10), vert citron corrigé par l'étalonnage | **validé** (étalonné) |
+
+**Comparaison ChatGPT / Weave (2026-10-03, herbe)** : même prompt et même ancre, passés par Kevin dans ChatGPT et par Claude dans Weave (GPT Image 2.5, canevas « KANTO-2026 », 8 crédits gratuits). Weave dessine des touffes plus lisibles et un vert plus naturel, mais sa texture **ne se raccorde pas** (coutures visibles en mosaïque). Le téléchargement depuis Chrome piloté est bloqué : le résultat n'a pu être récupéré que par capture d'écran. **ChatGPT reste le producteur du cran A** ; Weave est gardé en réserve (pistes : touffes isolées en décalcomanies, ou si ChatGPT plafonne sur une famille).
