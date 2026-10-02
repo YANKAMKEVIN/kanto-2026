@@ -159,7 +159,7 @@ func test_same_fixture_same_party() -> void:
 
 func test_shipped_debug_starts_are_valid() -> void:
 	# Les fichiers prêts à déposer sur le S24 (tools/debug_start/).
-	var names: Array[String] = ["route_1", "learn_move", "forget_move"]
+	var names: Array[String] = ["route_1", "learn_move", "forget_move", "capture_qa", "team_full"]
 	for name: String in names:
 		var start := DebugStart.new()
 		assert_true(start.load_file(TOOL_STARTS + name + ".json", _data, _items),
