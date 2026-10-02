@@ -87,8 +87,8 @@ Grotte Azurée / Mewtwo, puis le mystère Mew.
 ## Ordre immédiat
 
 ```
-J5  Route 1 + boucle Pokémon        ← ICI
-J6  Menu / Équipe / Sac / Pokédex / Carte / Profil
+J5  Route 1 + boucle Pokémon
+J6  Menu / Équipe / Sac / Pokédex / Carte / Profil   ← ICI
 J7  Jadielle + Centre + Boutique + économie
 J8  Route 2
 J9  Forêt de Jade
