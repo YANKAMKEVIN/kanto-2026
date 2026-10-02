@@ -199,6 +199,15 @@ Vue du tableau de bord : `DashboardViews.build(state, data, zones, objectives, u
 
 Tests : `test_menu_route`, `test_menu_navigator` (ouvrir, fermer, retour depuis le tableau de bord = fermer, lien croisé indisponible refusé sans changement, boucle Pokédex → Carte → Pokédex coupée, profondeur bornée), `test_menu_unlocks` (§4), `test_debug_unlocks`, `test_objective_library` (données réelles : 0 erreur ; ordre ; conditions ; clé inconnue), `test_zone_library` (données réelles : **chaque carte de `MapCatalog` appartient à exactement une zone**), `test_dashboard_views`.
 
+**Fait au T2 (2026-10-03)** — ce qui diffère du croquis ci-dessus :
+- Fichiers : `game/systems/menu/` (`menu_route.gd`, `menu_navigator.gd`, `menu_unlocks.gd`, `objective_library.gd`, `dashboard_views.gd`, `views/dashboard_view.gd`, `views/menu_card_view.gd`, `views/team_member_view.gd`), `game/world/zones/` (`zone_data.gd`, `zone_library.gd`), `game/systems/debug/debug_unlocks.gd`, `data/story/objectives.json`, `data/world/zones.json`, option `--debug-unlock` de `tools/deploy_s24.sh`.
+- `MenuRoute` ne dépend ni de `BagQuery` ni de `PokedexQuery` (pas encore écrits) : il porte `BAG_CONTEXT_FIELD` / `BAG_CONTEXT_TEAM` et `DEX_FILTER_ALL..HABITAT` (0 à 3) ; **T10 et T14 reprennent ces valeurs** (même ordre pour `PokedexQuery.Filter`). `MenuRoute.for_screen(screen)` donne la route d'une carte du tableau de bord.
+- `MenuNavigator.open(route)` pose toujours le tableau de bord au fond (un retour depuis l'écran ouvert y revient). `go` sur la route déjà affichée : accepté, `route_changed` non émis. Au-delà de `MAX_DEPTH` (4), **le nouvel écran remplace celui du dessus** (défaut, règle 4).
+- `ObjectiveLibrary` : chaque entrée a un **`id`** (unique) en plus de `text`, `if`, `unless`, `draft` ; `text` est la fin de la ligne, `DashboardViews.OBJECTIVE_PREFIX` (« Objectif : ») la complète. Fichier = liste JSON (l'ordre fait foi). Q-4 : `reach_viridian` « rejoindre Jadielle », `if: [rival_battle_done]` (drapeau levé par la scène du labo), `draft`.
+- **Zones : une seule source par fait.** `data/world/zones.json` porte **l'identité** des 22 zones (identifiant, nom, genre `town` / `route` / `place` / `sea_route`, cartes) ; `assets/ui/map/kanto_placeholder_areas.json` ne porte plus **que la géométrie** de l'illustration (le `kind` en a été retiré ; `tools/kanto_zones_overlay.gd` lit le genre dans `zones.json`). Mêmes identifiants des deux côtés (test). **Le rectangle ne sera pas recopié dans `zones.json` au T18** (§3.6) : il appartient à l'illustration, qui sera refaite en phase DA à une autre taille, pas à la zone. Noms : ceux du dossier 06 (Carmin-sur-Mer, Cramois'Île…) ; seules Bourg Palette et la Route 1 ont des cartes. Test croisé : le `display_name` de chaque carte = le nom de sa zone (deux sources aujourd'hui, à unifier quand `GameMap` lira `ZoneLibrary`).
+- `DebugUnlocks.is_allowed` = `DebugStart.is_allowed` ; `apply(unlocks)` ne touche que `MenuUnlocks.debug_pokedex`. Fichier `user://debug_unlocks.json`, clés `DebugUnlocks.KEYS` (`pokedex`). Lu par `Boot` au T4.
+- Textes des cartes (titre + une ligne, tutoiement, sans « audio ») : constantes d'interface `DashboardViews.CARD_TEXTS` (défaut, règle 4).
+
 ### 3.3 Équipe (T6)
 
 - `Party.move(from: int, to: int) -> bool` (insère à la place, décale les autres), `Party.swap(a: int, b: int) -> bool`. Le premier reste le Pokémon de tête. (`Party.index_of(pokemon) -> int` **existe déjà**, lot de dettes du J5.)
@@ -261,7 +270,7 @@ Tests : `test_pokedex_library` (données réelles : 0 erreur, espèces connues, 
 
 ### 3.6 Carte (T18)
 
-- `data/world/zones.json` complété : par zone, `name`, `kind` (`town`, `route`), `maps`, `subtitle` (connexions, « Bourg Palette — Jadielle »), `description` (`draft`), `area` (rectangle de la zone sur l'illustration, en pixels de l'image), `services` (au J6 : aucun ; format `{ "id": "pokemon_center", "found_on": "<carte>" }` prêt pour le J7A).
+- `data/world/zones.json` complété : par zone, `name`, `kind` (`town`, `route`, `place`, `sea_route` : posés au T2), `maps`, `subtitle` (connexions, « Bourg Palette — Jadielle »), `description` (`draft`), `services` ; **le rectangle (`area`) reste dans `assets/ui/map/kanto_placeholder_areas.json`** (géométrie de l'illustration, décision du T2, §3.2) (au J6 : aucun ; format `{ "id": "pokemon_center", "found_on": "<carte>" }` prêt pour le J7A).
 - `MapJournal` (statique) : `discovered_zones(discovered_maps, zones) -> Dictionary[StringName, String]` (zone → date de première visite) ; `player_zone(current_map, zones)` ; `panel(zone, state, data, zones, pokedex_visible) -> ZonePanelView` (nom, sous-titre, description, **Pokémon observés** seulement si le Pokédex est visible et seulement ceux vus, **objets trouvés** seulement ceux ramassés, services seulement ceux découverts ; **aucun total, aucun « ??? »**).
 
 Tests : `test_zone_library` (étendu : rectangles dans l'image, sous-titres), `test_map_journal` (zone non découverte : pas de panneau ; intérieur → sa ville ; Pokémon observés vides tant que le Pokédex n'est pas visible ; objets trouvés de la zone seulement).
@@ -469,22 +478,25 @@ signal menu_opened
 signal menu_closed(changed: bool)
 signal save_requested                        # « Sauvegarder maintenant » (6F)
 signal settings_changed(settings: GameSettings)   # 6F
-var speed_scale: float = 1.0                 # 0 en test
-func setup(state: Node, data: PokemonData, items: ItemLibrary, zones: ZoneLibrary,
-		objectives: ObjectiveLibrary, menu: TrainerMenu, unlocks: MenuUnlocks,
-		can_open: Callable) -> void
+## Figé au T2 (§6.6) : MenuDirector ne connaît PAS TrainerMenu ; Boot relie les deux.
+signal dashboard_shown(view: DashboardView)  # Boot → TrainerMenu.show_dashboard
+signal placeholder_shown(screen: StringName) # Boot → TrainerMenu.show_placeholder (écran pas construit)
+func setup(state: Node, data: PokemonData, zones: ZoneLibrary, objectives: ObjectiveLibrary,
+		unlocks: MenuUnlocks, can_open: Callable) -> void
 func open(route: MenuRoute = null) -> bool   # faux si can_open() est faux ou déjà ouvert
 func close() -> void
+func go(route: MenuRoute) -> bool            # TrainerMenu.route_requested
 ## Retour Android, Échap : un niveau en arrière ; depuis le tableau de bord, ferme. Vrai si
 ## le menu était ouvert (l'événement est alors consommé).
 func handle_back() -> bool
 func is_open() -> bool
 func get_navigator() -> MenuNavigator
 ```
+(Au T2, `menu: TrainerMenu` et `items` sont retirés de `setup` : le directeur pilote la pile, la pause et l'état, l'écran est relié par `Boot` ; ainsi T4 se teste sans l'interface de T3, §6.6. `items` reviendra au T12 avec le Sac.)
 
 - **Ouvrir** : `MenuButton` (signal `menu_requested` de l'`ExplorationHud`) ou l'action `menu` (Échap, M sur Mac). Garde `can_open` fournie par `Boot` : `is_stable()` **et** ni écran « À venir », ni titre de zone en train d'entrer (il est caché à l'ouverture). Puis : contrôles cachés (`set_controls_visible(false)` relâche déjà joystick et boutons), `get_tree().paused = true`, fond de 0 à 1 et tableau de bord en `MENU_OPEN` (0,25 s), vibration « presque imperceptible » (`HAPTIC_MENU_MS`, bible §12).
 - **Le monde gèle tel quel**, même au milieu d'un pas (il reprend à la fermeture). Aucun nœud du monde n'utilise de Tween non lié ni de minuteur `process_always` hors combat (vérifié : seul `HapticPattern` en crée un, en combat).
-- **Fermer** : ×, retour depuis le tableau de bord, action `menu`. Fondu inverse `MENU_CLOSE` (0,2 s), `paused = false`, contrôles rendus, autosave si `changed`.
+- **Fermer** : ×, retour depuis le tableau de bord, action `menu`. `paused = false` et contrôles rendus **tout de suite** ; le menu (en `ALWAYS`) joue son fondu inverse `MENU_CLOSE` (0,2 s) par-dessus le monde qui reprend (défaut du T2 : rien n'attend l'animation, le directeur ne connaît pas l'écran) ; autosave si `changed`. Une réouverture pendant le fondu le coupe (`TrainerMenu.open_animated`).
 - **Retour Android** : aujourd'hui, `application/config/quit_on_go_back` vaut vrai par défaut et `Boot` sauvegarde sur `NOTIFICATION_WM_GO_BACK_REQUEST` avant que l'application ne quitte. Le J6 passe ce réglage à **faux** ; `Boot` reçoit le retour : menu ouvert → `MenuDirector.handle_back()` ; en exploration (contrôles visibles) → sauvegarde immédiate puis **ouverture du Menu Dresseur** ; pendant un dialogue, une scène, un combat ou une transition → ignoré. **Le jeu ne quitte jamais sur le retour** (décision de Kevin, Q-3) : la fermeture reste celle du système (accueil, applications récentes), déjà couverte par la sauvegarde au passage en arrière-plan. **À vérifier tôt sur le S24** (geste retour d'Android 14).
 
 ### 6.3 Liens croisés (dossier 08 §8)
@@ -510,7 +522,7 @@ ExplorationHud.menu_requested | action « menu » ─► MenuDirector.open ─�
    ─► tree.paused ─► TrainerMenu.open_animated ─► DashboardScreen.show_dashboard(DashboardViews.build)
 DashboardScreen.card_chosen(screen) ─► MenuNavigator.go ─► TrainerMenu.show_screen
 × | retour | « menu » ─► MenuNavigator.back / close ─► menu_closed(changed) ─► Boot : autosave, contrôles
-NOTIFICATION_WM_GO_BACK_REQUEST ─► Boot ─► MenuDirector.handle_back | sauvegarde + quit
+NOTIFICATION_WM_GO_BACK_REQUEST ─► Boot ─► MenuDirector.handle_back | sauvegarde + MenuDirector.open (Q-3 : jamais quit)
 6A
 TeamScreen.member_moved(from, to) ─► Party.move ─► TeamScreen.show_team(TeamViews.build) · changed
 TeamScreen.favorite_toggled(i) ─► Pokemon.set_favorite · changed
@@ -583,6 +595,44 @@ func show_settings(view: SettingsView) -> void
 func show_save_result(text: String) -> void
 ```
 
+### 6.6 Contrat du 6.0 et partage T3 ∥ T4 (figé au T2)
+
+**Vues figées** (T2, `game/systems/menu/`, ne changent plus de nom ni de sens ; on peut seulement y **ajouter** des champs, par l'architecte) : `MenuRoute` (écrans, paramètres, `for_screen`), `DashboardView` (`zone_name`, `player_name`, `player_title`, `play_time_text`, `dex_text`, `badges_text`, `lead`, `cards`, `objective_text` ; **texte vide = élément absent**, `lead` null = pas de carte), `MenuCardView` (`screen`, `title`, `caption`), `TeamMemberView` (`party_index`, `species_id`, `display_name`, `gender` en `BattleCardView.Gender`, `level`, `hp`, `max_hp`, `status_text`, `favorite`), `DashboardViews.build(state, data, zones, objectives, unlocks)`. T3 fabrique ces vues à la main ; T4 les construit pour de vrai.
+
+**`TrainerMenu`** (T3, `game/ui/menu/trainer_menu.tscn/.gd`) — interface publique figée :
+```gdscript
+class_name TrainerMenu extends CanvasLayer     # layer = UiTokens.LAYER_MENU (20), process_mode ALWAYS
+signal route_requested(route: MenuRoute)       # carte touchée : MenuRoute.for_screen(card.screen) ;
+                                               # Pokémon de tête : MenuRoute.team(0) ; liens croisés (6A+)
+signal back_requested                          # retour depuis un écran (pas depuis le tableau de bord)
+signal close_requested                         # × (un seul signal par toucher)
+var speed_scale: float = 1.0                   # 0 : animations instantanées (tests)
+func open_animated() -> void                   # coroutine : fond 0 → 1 puis tableau de bord (MENU_OPEN),
+                                               # vibration HAPTIC_MENU_MS ; coupe un fondu de fermeture en cours
+func close_animated() -> void                  # coroutine : MENU_CLOSE, invisible à la fin
+func show_dashboard(view: DashboardView) -> void   # en-tête (× + zone_name) compris
+func show_placeholder(screen: StringName) -> void  # « ÉQUIPE — À venir » dans l'hôte d'écrans
+func is_open() -> bool                         # vrai d'open_animated au début de close_animated
+```
+**`ExplorationHud`** (T3) : `signal menu_requested` (bouton Menu rond en haut à droite, Q-1, visible avec les contrôles).
+
+**Câblage** (T4, dans `Boot`, une fois T3 fusionné) : `ExplorationHud.menu_requested` et l'action `menu` → `MenuDirector.open` ; `TrainerMenu.route_requested` → `MenuDirector.go` ; `back_requested` → `handle_back` ; `close_requested` → `close` ; `MenuDirector.menu_opened` → `TrainerMenu.open_animated` ; `menu_closed` → `close_animated` ; `dashboard_shown` → `show_dashboard` ; `placeholder_shown` → `show_placeholder`. Avant la fusion, T4 teste `MenuDirector` directement (sans écran) ; T3 teste `TrainerMenu` avec des vues fabriquées.
+
+| Fichiers | T3 (ui-mobile) | T4 (constructeur-monde) |
+|---|---|---|
+| `game/ui/menu/**` (TrainerMenu, MenuScreen, `dashboard/` : DashboardScreen, TrainerCardPanel, LeadPokemonCard, MenuCard) | **oui** | lecture |
+| `game/ui/hud/exploration_hud.gd/.tscn` (MenuButton, `menu_requested`) | **oui** | lecture |
+| `game/ui/theme/ui_tokens.gd`, `ui_theme.tres`, `tools/build_ui_theme.gd` (`MENU_*`, `LAYER_MENU`, `HAPTIC_MENU_MS`) | **oui** | lecture |
+| `assets/ui/icons/menu/**` (icônes des cartes), `tools/capture_menu.gd` | **oui** | — |
+| `tests/integration/test_trainer_menu.gd`, `test_dashboard_screen.gd`, `test_exploration_hud.gd`, `test_ui_theme.gd` | **oui** | — |
+| `game/boot.gd`, `game/boot.tscn`, `project.godot` (`quit_on_go_back`), `game/autoload/**`, `game/systems/save/**` | — | **oui** |
+| `game/systems/menu/menu_director.gd` (nouveau) | — | **oui** |
+| `tests/integration/test_menu_open.gd`, `test_menu_unlock_rule.gd`, `test_boot.gd`, `test_save_boot.gd`, `test_debug_start_boot.gd` | — | **oui** |
+| Fondations du T2 (`game/systems/menu/` hors `menu_director.gd`, `views/`, `game/world/zones/`, `debug_unlocks.gd`, `data/story/`, `data/world/`) | lecture | lecture (un manque → l'architecte) |
+| `docs/tech/etat-projet.md` | sa ligne dans « Point de reprise » | sa ligne ; l'orchestrateur fusionne |
+
+`test_menu_unlock_rule.gd` (§4) parcourt de vrais écrans : il se termine **après** la fusion de T3, dans T4.
+
 ---
 
 ## 7. Découpage des tâches (dans l'ordre)
@@ -602,13 +652,14 @@ Chaque tâche finit par `tools/test.sh` vert (nombre de tests rapporté), un imp
 #### T2 — architecte-godot : navigation, déblocage, objectif, zones
 - §3.2 ; `data/story/objectives.json` (Q-4), `data/world/zones.json` (noms et cartes) ; `DebugUnlocks` ; option `--debug-unlock` de `tools/deploy_s24.sh`.
 - **CA** : tests du §3.2 et du §4 (unitaires) verts ; données réelles sans erreur.
+- **Fait (2026-10-03)** : §3.2 (« Fait au T2 »), contrat et partage T3 ∥ T4 au §6.6 ; 7 scripts de tests nouveaux (+67 tests, 1693 verts).
 
 #### T3 — ui-mobile : le menu et le tableau de bord (avec des vues fabriquées)
 - `TrainerMenu` (fond flouté, en-tête ×, nom de zone), `MenuScreen`, `DashboardScreen` (carte du Dresseur, Pokémon de tête, cartes `MenuCard` avec icône, nom et une ligne de description, objectif), `MenuButton` dans l'`ExplorationHud`. Composition d'après `menu-tableau-de-bord-v1.jpg` **sans** argent ni heure, **avec** la ligne d'objectif.
 - **CA** : `test_trainer_menu.gd`, `test_dashboard_screen.gd` : 5 cartes ou 6 selon la vue, jamais d'emplacement vide ; carte touchée → **un** `card_chosen` ; × → **un** `back_requested` ; ligne vus · capturés absente si la vue la laisse vide ; zones ≥ `TOUCH_MIN`, rien d'interactif dans `SAFE_MARGIN`, à 1920 et 2340 ; animation complète à `speed_scale = 0`. Captures `dashboard_5`, `dashboard_6`, `dashboard_no_team`, lues avec Read : le monde transparaît, rien n'est coupé, texte lisible.
 
 #### T4 — constructeur-monde : ouvrir, mettre en pause, fermer
-- `MenuDirector`, câblage dans `Boot` (process modes, garde, autosave à la fermeture, `menu`, retour Android, `quit_on_go_back = false`), `DashboardViews` branché, écrans provisoires pour les autres cartes.
+- `MenuDirector`, câblage dans `Boot` (process modes, garde, autosave à la fermeture, `menu`, retour Android, `quit_on_go_back = false`), `DashboardViews` branché, `DebugUnlocks` lu (même garde que `DebugStart`), écrans provisoires pour les autres cartes (`placeholder_shown` → `TrainerMenu.show_placeholder`, §6.6). Les liaisons avec `TrainerMenu` et `ExplorationHud.menu_requested` se font après la fusion de T3 (§6.6).
 - **CA** :
   - `tests/integration/test_menu_open.gd` (vrai `Boot`) : ouverture refusée pendant un dialogue, une scène, une rencontre, un combat, une transition ; ouverte → `get_tree().paused`, le joueur ne bouge plus (`move_up` tenu), le Voyageur ne marche plus, le temps de jeu continue ; fermée → tout reprend, contrôles visibles ; retour (notification simulée) menu ouvert → fermé, **l'application ne quitte pas** ; autosave demandé seulement si l'état a changé ; passage en arrière-plan menu ouvert → sauvegarde écrite.
   - `test_boot.gd` : tous les enfants de `Boot` sauf `MenuDirector` et `TrainerMenu` sont `PAUSABLE`.

@@ -1,0 +1,8 @@
+[
+	{
+		"id": "reach_viridian",
+		"text": "rejoindre Jadielle",
+		"if": ["rival_battle_done"],
+		"draft": true
+	}
+]
