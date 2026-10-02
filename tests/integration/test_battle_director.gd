@@ -702,6 +702,109 @@ func test_forget_offer_refused_keeps_the_moves() -> void:
 	assert_push_error_count(0)
 
 
+## Équipe de deux Bulbizarre identiques (même espèce, même nom) : le premier est K.O. avec
+## [param first_moves], le second tient debout, à 1 XP du N20, avec [param second_moves].
+func _twin_party(first_moves: Array[StringName], second_moves: Array[StringName]) -> Party:
+	var party := _xp_party(&"bulbasaur", 19, 0, first_moves)
+	var second := _xp_party(&"bulbasaur", 19, 1, second_moves).get_lead()
+	party.get_lead().hp = 0
+	party.add(second)
+	return party
+
+
+func _move_ids(pokemon: Pokemon) -> Array[StringName]:
+	var ids: Array[StringName] = []
+	for slot: MoveSlot in pokemon.moves:
+		ids.append(slot.move_id)
+	return ids
+
+
+## Deux Pokémon de la même espèce dans l'équipe : l'offre d'oubli concerne celui qui apprend
+## (retrouvé par sa place dans l'équipe, jamais par espèce et nom).
+func test_forget_offer_targets_the_right_pokemon_among_identical_ones() -> void:
+	var first_moves: Array[StringName] = [&"tackle", &"growl", &"vine_whip", &"leech_seed"]
+	var second_moves: Array[StringName] = [&"tackle", &"growl", &"leech_seed", &"vine_whip"]
+	var party_fn := func() -> Party: return _twin_party(first_moves, second_moves)
+	var seed := _xp_seed(party_fn, &"rattata", 3, [0] as Array[int],
+		func(events: Array) -> bool:
+			return _has_kind(events, BattleEvent.Kind.MOVE_FORGET_OFFERED))
+	assert_gt(seed, -1, "une victoire qui propose une cinquième capacité")
+	if seed < 0:
+		return
+	var party: Party = party_fn.call()
+	var request := _xp_request(party, &"rattata", 3, seed)
+	var seen: Dictionary = {}
+	var on_offer := func(panel: MoveForgetPanel, _events: Array) -> void:
+		var known: Array[String] = []
+		for slot: int in MoveForgetPanel.SLOTS:
+			known.append(panel.get_card(slot).get_view().display_name)
+		seen["known"] = known
+		await wait_process_frames(2)
+		panel.select(2)
+		await wait_process_frames(2)
+		panel.get_confirm_button().pressed.emit()
+	var played := await _play_with_offers(request, [0] as Array[int], on_offer)
+	assert_eq(played[0], Battle.Outcome.WIN)
+	var offers: Array = played[1].filter(func(e: BattleEvent) -> bool:
+		return e.kind == BattleEvent.Kind.MOVE_FORGET_OFFERED)
+	assert_eq(offers.size(), 1)
+	assert_eq(offers[0].party_index, 1, "l'offre porte la place du second Bulbizarre")
+	var second_names: Array[String] = []
+	for move_id: StringName in second_moves:
+		second_names.append(_data.get_move(move_id).name)
+	assert_eq(seen.get("known"), second_names, "le panneau montre les capacités du second")
+	assert_eq(party.get_at(1).moves[2].move_id, &"poison_powder", "le second oublie et apprend")
+	assert_eq(_move_ids(party.get_at(0)), first_moves, "le premier n'a pas changé")
+	assert_push_error_count(0)
+
+
+## La recherche du Pokémon d'un événement se fait par la place dans l'équipe : deux Pokémon
+## identiques ne se confondent jamais, quelle que soit leur position.
+func test_the_event_party_index_finds_the_exact_pokemon() -> void:
+	var moves: Array[StringName] = [&"tackle", &"growl", &"leech_seed", &"vine_whip"]
+	_state.party = _twin_party(moves, moves)
+	var first: Pokemon = (_state.party as Party).get_at(0)
+	var second: Pokemon = (_state.party as Party).get_at(1)
+	var event := BattleEvent.new(BattleEvent.Kind.MOVE_FORGET_OFFERED, BattleEvent.SideId.PLAYER)
+	event.species_id = &"bulbasaur"
+	event.pokemon_name = second.display_name(_data)
+	event.party_index = 1
+	assert_same(_director._find_player_pokemon(event), second)
+	event.party_index = 0
+	assert_same(_director._find_player_pokemon(event), first)
+	event.party_index = 5
+	assert_null(_director._find_player_pokemon(event), "place absente : rien")
+	event.party_index = -1
+	assert_null(_director._find_player_pokemon(event))
+
+
+## Premier Pokémon de l'équipe K.O. : l'entrée en scène, le sprite et la carte du joueur sont
+## ceux du Pokémon que le moteur envoie (le premier debout), pas ceux de la tête d'équipe.
+func test_a_fainted_lead_is_not_the_pokemon_shown() -> void:
+	var party := _xp_party(&"charmander", 5, 0)
+	party.get_lead().hp = 0
+	party.add(PokemonFactory.create(_data, &"bulbasaur", 12, GameRng.new(PLAYER_SEED)))
+	var request := _xp_request(party, &"rattata", 3, 5)
+	var at_start: Array[String] = []
+	var cards: Array[String] = []
+	_director.event_played.connect(func(e: BattleEvent) -> void:
+		if e.kind == BattleEvent.Kind.BATTLE_STARTED:
+			# Après l'entrée en scène, avant les SENT_OUT : le sprite est déjà le bon.
+			var texture := _stage.get_sprite(BattleEvent.SideId.PLAYER).texture
+			at_start.append(texture.resource_path if texture != null else "")
+		elif e.kind == BattleEvent.Kind.SENT_OUT and e.side == BattleEvent.SideId.PLAYER:
+			var card := _hud.get_card(BattleHud.Side.PLAYER)
+			cards.append("%s|%s|%s" % [card.get_name_text(), card.get_level_text(),
+				card.get_hp_text()])
+			assert_eq(e.party_index, 1, "SENT_OUT : le moteur envoie le second"))
+	await _play_with_offers(request, [0] as Array[int])
+	assert_eq(at_start, [BattleStage.sprite_path(&"bulbasaur", true)] as Array[String],
+		"entrée en scène : le sprite de Bulbizarre, pas celui de Salamèche K.O.")
+	assert_eq(cards.size(), 1, "un seul envoi du joueur")
+	assert_true(cards[0].begins_with("BULBIZARRE|Nv. 12|"), "carte : %s" % cards[0])
+	assert_push_error_count(0)
+
+
 ## Vampigraine : le Pokémon drainé perd des PV et celui d'en face en regagne, les deux barres
 ## suivent l'événement (la cible perd, le lanceur gagne).
 func test_leech_seed_drives_both_hp_bars() -> void:

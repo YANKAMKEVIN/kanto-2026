@@ -27,6 +27,12 @@ func get_at(index: int) -> Pokemon:
 	return _members[index] if index >= 0 and index < _members.size() else null
 
 
+## Place de [param pokemon] dans l'équipe (0 = en tête), −1 s'il n'y est pas. Comparaison par
+## identité : deux Pokémon de la même espèce ne se confondent jamais.
+func index_of(pokemon: Pokemon) -> int:
+	return _members.find(pokemon)
+
+
 ## Les membres, dans l'ordre (copie de la liste).
 func get_all() -> Array[Pokemon]:
 	return _members.duplicate()

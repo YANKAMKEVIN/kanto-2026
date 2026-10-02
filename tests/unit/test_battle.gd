@@ -505,6 +505,58 @@ func test_four_moves_offer_to_forget_and_change_nothing() -> void:
 	assert_eq(_kinds(events)[-1], ["BATTLE_ENDED", "PLAYER"])
 
 
+## Combat démarré avec les événements de départ conservés : [param team] contre [param foe].
+func _start_with_events(team: Array[Pokemon], foe: Pokemon, draws: Array[int]) -> Array:
+	_rng = ScriptedRng.new(draws)
+	var party := Party.new()
+	for pokemon: Pokemon in team:
+		party.add(pokemon)
+	var foes := Party.new()
+	foes.add(foe)
+	var battle := Battle.new(BattleSide.new(party, true), BattleSide.new(foes, false),
+		_data, _rng, BattleRules.for_wild())
+	return [battle, battle.start()]
+
+
+func test_events_carry_the_party_index_of_the_pokemon() -> void:
+	# Deux Bulbizarre N19 identiques : le second tient debout et apprend, le premier est K.O.
+	var fainted := _mon(&"bulbasaur", 19)
+	fainted.hp = 0
+	var learner := _mon(&"bulbasaur", 19)
+	learner.experience = 5459
+	var started := _start_with_events([fainted, learner] as Array[Pokemon],
+		_mon(&"pidgey", 3), [1, 50, 2, 16])
+	var battle: Battle = started[0]
+	var opening: Array[BattleEvent] = started[1]
+	var sent: Array[BattleEvent] = _of_kind(opening, K.SENT_OUT)
+	assert_eq(sent.size(), 2)
+	assert_eq([sent[0].side, sent[0].party_index], [F, 0], "adversaire : en tête")
+	assert_eq([sent[1].side, sent[1].party_index], [P, 1],
+		"le moteur envoie le premier Pokémon non K.O., pas le premier de l'équipe")
+	var events := _knock_out(battle)
+	var offered := _find(events, K.MOVE_FORGET_OFFERED)
+	assert_not_null(offered)
+	assert_eq(offered.party_index, 1, "l'offre d'oubli porte la place de celui qui apprend")
+	for kind: K in [K.EXP_GAINED, K.LEVEL_UP]:
+		assert_eq(_find(events, kind).party_index, 1, "même place sur %s" % K.find_key(kind))
+	assert_eq(_find(events, K.FAINTED).party_index, 0, "le Roucool adverse")
+
+
+func test_the_party_index_tells_two_identical_pokemon_apart() -> void:
+	# Même espèce, même nom, même niveau : seule la place les distingue. Ici le premier apprend.
+	var first := _mon(&"bulbasaur", 19)
+	first.experience = 5459
+	var second := _mon(&"bulbasaur", 19)
+	var started := _start_with_events([first, second] as Array[Pokemon],
+		_mon(&"pidgey", 3), [1, 50, 2, 16])
+	var events := _knock_out(started[0])
+	var offered := _find(events, K.MOVE_FORGET_OFFERED)
+	assert_not_null(offered)
+	assert_eq(offered.party_index, 0)
+	assert_eq(offered.pokemon_name, second.display_name(_data), "le nom seul est ambigu")
+	assert_eq(offered.to_dict()["party_index"], 0, "visible dans le journal")
+
+
 func test_no_exp_without_rules_or_against_the_first_rival() -> void:
 	# Règles nulles (comportement du 4B) : pas d'XP.
 	var battle := _battle(&"charmander", &"squirtle", [1, 50, 2, 16])

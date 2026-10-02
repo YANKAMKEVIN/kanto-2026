@@ -518,6 +518,8 @@ func _pokemon_event(kind: BattleEvent.Kind, side_id: BattleEvent.SideId,
 	var event := BattleEvent.new(kind, side_id)
 	event.pokemon_name = pokemon.display_name(_data)
 	event.species_id = pokemon.species_id
+	event.party_index = (_player if side_id == BattleEvent.SideId.PLAYER else _foe) \
+		.party.index_of(pokemon)
 	event.level = pokemon.level
 	event.gender = pokemon.gender
 	event.hp = pokemon.hp

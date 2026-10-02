@@ -41,6 +41,10 @@ extends RefCounted
 ## - DRAINED : Pokémon drainé en fin de tour ([member amount] PV perdus, [member hp],
 ##   [member max_hp]) ; [member healed] PV rendus au Pokémon d'en face, qui en a ensuite
 ##   [member healed_hp].
+## Tout événement sur un Pokémon porte aussi [member party_index] : sa place dans l'équipe de
+## son camp (0 = en tête). La présentation retrouve ainsi le Pokémon exact (SENT_OUT : celui
+## que le moteur envoie, pas forcément le premier de l'équipe ; MOVE_FORGET_OFFERED : celui qui
+## apprend), sans le chercher par espèce et nom, ambigus avec deux Pokémon identiques.
 ## Capture (jalon 5D, §2.4), juste après TURN_STARTED, toutes sur le Pokémon sauvage (camp
 ## FOE, son état au moment du lancer) :
 ## - BALL_THROWN : la Ball [member item_id] ([member item_name] : son nom) est lancée ;
@@ -65,6 +69,8 @@ var pokemon_name: String = ""
 var species_id: StringName = &""
 var level: int = 0
 var gender: Pokemon.Gender = Pokemon.Gender.NONE
+## Place du Pokémon concerné dans l'équipe de son camp (−1 : événement sans Pokémon).
+var party_index: int = -1
 var trainer_name: String = ""
 var turn: int = 0
 var move_id: StringName = &""
@@ -100,8 +106,8 @@ func _init(event_kind: Kind = Kind.BATTLE_STARTED, event_side: SideId = SideId.P
 func to_dict() -> Dictionary:
 	return {
 		"kind": Kind.find_key(kind), "side": SideId.find_key(side), "pokemon": pokemon_name,
-		"species": species_id, "level": level, "gender": gender, "trainer": trainer_name,
-		"turn": turn, "move": move_id, "pp": pp, "amount": amount, "hp": hp,
+		"species": species_id, "party_index": party_index, "level": level, "gender": gender,
+		"trainer": trainer_name, "turn": turn, "move": move_id, "pp": pp, "amount": amount, "hp": hp,
 		"max_hp": max_hp, "effectiveness": effectiveness, "critical": critical,
 		"stat": stat, "stages": stages, "stage": stage, "outcome": outcome,
 		"exp_from": exp_from, "exp_to": exp_to, "healed": healed, "healed_hp": healed_hp,
