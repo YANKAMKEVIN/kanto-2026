@@ -17,6 +17,8 @@ const A_START := Vector2i(3, 4)
 const A_DOOR := Vector2i(3, 1)
 ## Carte B (6 × 5) : tapis de sortie (2, 4) sur la dernière rangée.
 const B_MAT := Vector2i(2, 4)
+## Carte C (8 × 6) : deux destinations « à venir » au nord (cases (2, 1) et (5, 1)).
+const C_START := Vector2i(2, 3)
 
 var _router: Node
 var _world: Node2D
@@ -70,6 +72,15 @@ func _make_map(map_id: StringName) -> GameMap:
 			map = _base_map(map_id, Vector2i(6, 5))
 			_spawn(map, &"entrance", B_MAT)
 			_warp(map, B_MAT, Warp.Trigger.PUSH, Vector2i.DOWN, &"a", &"door")
+		&"c":
+			# Fixture « à venir » : deux destinations, déclarées par données seulement.
+			map = _base_map(map_id, Vector2i(8, 6))
+			map.blocked_cells = [Vector2i(2, 0), Vector2i(5, 0)] as Array[Vector2i]
+			_spawn(map, &"start", C_START)
+			_spawn(map, &"soon_a", Vector2i(2, 2))
+			_spawn(map, &"soon_b", Vector2i(5, 2))
+			_soon(map, Vector2i(2, 1), "Route 2", &"soon_a")
+			_soon(map, Vector2i(5, 1), "Jadielle", &"soon_b")
 		_:
 			return null
 	_made[map_id] = map
@@ -107,6 +118,18 @@ func _warp(
 	point.direction = direction
 	point.target_map = to_map
 	point.target_spawn = to_spawn
+	map.get_node(^"Warps").add_child(point)
+
+
+func _soon(map: GameMap, cell: Vector2i, label: String, return_spawn: StringName) -> void:
+	var point := WarpPoint.new()
+	point.name = "Soon%d_%d" % [cell.x, cell.y]
+	point.position = Grid.cell_to_world(cell)
+	point.trigger = Warp.Trigger.PUSH
+	point.direction = Vector2i.UP
+	point.coming_soon = label
+	point.target_spawn = return_spawn
+	point.arrival_facing = Vector2i.DOWN
 	map.get_node(^"Warps").add_child(point)
 
 
@@ -395,3 +418,99 @@ func test_start_at_an_unknown_map_changes_nothing() -> void:
 	assert_eq(_player.get_cell(), A_START)
 	assert_true(_events.is_empty(), "aucun signal")
 	assert_push_error_count(0)
+
+
+# --- Destinations « à venir » (jalon 5, dossier-07 §12) ----------------------------------
+
+## Présentateur de test : enregistre le libellé et rend la main après un court délai.
+func _install_presenter(shown: Array[String]) -> void:
+	_router.coming_soon_presenter = func(label: String) -> void:
+		shown.append(label)
+		await get_tree().create_timer(0.05).timeout
+
+
+func _start_on_c(spawn: StringName = &"start") -> void:
+	_router.start(&"c", spawn, Vector2i.UP)
+	_player.set_process(false)
+
+
+func _push_up_until_transition() -> void:
+	Input.action_press(&"move_up")
+	_simulate_until(func() -> bool: return _router.is_transitioning(), 3.0)
+	Input.action_release(&"move_up")
+
+
+func test_coming_soon_shows_the_screen_then_returns_without_changing_map() -> void:
+	var shown: Array[String] = []
+	_install_presenter(shown)
+	_start_on_c()
+	var map_c := _made[&"c"]
+	_events.clear()
+	_push_up_until_transition()
+	assert_true(_router.is_transitioning(), "pousser vers le haut sur la case déclenche")
+	assert_false(_player.is_input_enabled(), "entrées bloquées dans la même image")
+	assert_eq(_player.get_cell(), Vector2i(2, 1))
+	await wait_for_signal(_router.coming_soon_shown, TIMEOUT)
+	assert_true(_fade.is_opaque(), "écran montré sous le rideau opaque")
+	await _await_idle()
+	assert_eq(shown, ["Route 2"] as Array[String])
+	assert_eq(_router.get_current_map(), map_c, "aucune carte chargée")
+	assert_eq(_player.get_cell(), Vector2i(2, 2), "retour sur le spawn de la carte")
+	assert_eq(_player.get_facing(), Vector2i.DOWN, "tourné vers le sud")
+	assert_true(_player.is_input_enabled())
+	assert_false(_fade.is_opaque())
+	assert_eq(_events, ["transition_started:"] as Array[String],
+		"ni map_changed ni map_entered : pas de titre de zone, pas de zone découverte")
+	assert_push_error_count(0)
+
+
+func test_a_second_destination_is_declared_by_data_only() -> void:
+	var shown: Array[String] = []
+	_install_presenter(shown)
+	_start_on_c()
+	_player.enter_map(_made[&"c"].get_grid(), Vector2i(5, 3), Vector2i.UP,
+		_made[&"c"].get_pixel_rect())
+	_push_up_until_transition()
+	await _await_idle()
+	assert_eq(shown, ["Jadielle"] as Array[String])
+	assert_eq(_player.get_cell(), Vector2i(5, 2))
+	assert_eq(_player.get_facing(), Vector2i.DOWN)
+
+
+func test_coming_soon_is_inert_when_disabled_as_in_a_release_build() -> void:
+	var shown: Array[String] = []
+	_install_presenter(shown)
+	_router.coming_soon_enabled = false
+	_start_on_c()
+	Input.action_press(&"move_up")
+	_simulate(1.0)
+	Input.action_release(&"move_up")
+	assert_false(_router.is_transitioning())
+	assert_true(shown.is_empty())
+	assert_eq(_player.get_cell(), Vector2i(2, 1), "le bord reste simplement bloqué")
+	assert_true(_player.is_input_enabled())
+	assert_signal_not_emitted(_router, "transition_started")
+
+
+func test_coming_soon_without_presenter_returns_at_once() -> void:
+	_start_on_c()
+	_push_up_until_transition()
+	await _await_idle()
+	assert_eq(_player.get_cell(), Vector2i(2, 2))
+	assert_true(_player.is_input_enabled())
+
+
+func test_coming_soon_with_an_unknown_return_spawn_keeps_the_player_in_place() -> void:
+	_start_on_c()
+	_router.show_coming_soon("Route 2", &"nowhere")
+	await _await_idle()
+	assert_push_error("spawn de retour inconnu")
+	assert_eq(_player.get_cell(), C_START)
+	assert_true(_player.is_input_enabled())
+	assert_false(_fade.is_opaque())
+
+
+func test_setup_clears_the_coming_soon_presenter() -> void:
+	_install_presenter([] as Array[String])
+	_router.setup(_world, _player, _fade)
+	assert_false(_router.coming_soon_presenter.is_valid())

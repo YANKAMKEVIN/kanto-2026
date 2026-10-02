@@ -14,6 +14,10 @@ extends Marker2D
 @export var target_spawn: StringName = &""
 ## Orientation à l'arrivée (ZERO = garder celle du joueur).
 @export var arrival_facing: Vector2i = Vector2i.ZERO
+## Destination « à venir » (build de développement) : libellé affiché (« JADIELLE »). Vide :
+## passage ordinaire. Sinon `target_map` est ignoré et `target_spawn` désigne le point de
+## retour sur la carte courante (voir [Warp]).
+@export var coming_soon: String = ""
 
 
 ## Case du passage, déduite de la position.
@@ -23,4 +27,5 @@ func get_cell() -> Vector2i:
 
 ## Donnée pure équivalente.
 func to_warp() -> Warp:
-	return Warp.new(get_cell(), trigger, direction, target_map, target_spawn, arrival_facing)
+	return Warp.new(get_cell(), trigger, direction, target_map, target_spawn, arrival_facing,
+		coming_soon)

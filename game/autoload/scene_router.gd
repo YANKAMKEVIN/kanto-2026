@@ -14,6 +14,10 @@ signal transition_started(target_map: StringName)
 signal map_changed(map: GameMap)
 ## Écran visible, joueur libre (émis aussi par start()). Titre de zone.
 signal map_entered(map: GameMap)
+## Écran provisoire « <libellé> — À venir » sur le point d'être montré (rideau baissé) : le
+## joueur est encore sur le bord de la carte. Ni [signal map_changed] ni [signal map_entered]
+## ne suivent : aucune carte ne change.
+signal coming_soon_shown(label: String)
 
 ## Dossier des cartes (MapCatalog.MAPS_DIR) ; les tests peuvent le changer.
 var maps_dir: String = MapCatalog.MAPS_DIR
@@ -22,6 +26,13 @@ var map_factory: Callable = Callable()
 ## Durées du fondu (secondes) ; les tests les raccourcissent.
 var fade_out_duration: float = UiTokens.ANIM_FADE_OUT
 var fade_in_duration: float = UiTokens.ANIM_FADE_IN
+## Destinations « à venir » ([member Warp.coming_soon]) actives : build de développement
+## seulement (dossier-07 §12). En release, ces passages sont inertes (le bord reste bloqué).
+var coming_soon_enabled: bool = OS.is_debug_build()
+## Coroutine func(label: String) -> void qui montre l'écran « à venir » et rend la main quand
+## il est fini ([ComingSoonScreen.present], branchée par Boot). Vide : aucun écran n'est montré
+## (tests, outils) et le retour est immédiat. Remise à vide par [method setup].
+var coming_soon_presenter: Callable = Callable()
 ## Durée du dernier changement de carte (instanciation + placement), en millisecondes.
 var last_change_ms: float = 0.0
 
@@ -56,6 +67,7 @@ func setup(world: Node2D, player: Player, fade: ScreenFade = null) -> void:
 	_fade = fade
 	_current_map = null
 	_busy = false
+	coming_soon_presenter = Callable()
 	if _player != null:
 		_player.moved.connect(_on_player_moved)
 		_player.bumped.connect(_on_player_bumped)
@@ -132,6 +144,46 @@ func change_map(map_id: StringName, spawn: StringName, facing: Vector2i = Vector
 	if arrived:
 		map_entered.emit(_current_map)
 		_prefetch_neighbors(_current_map)
+
+
+## Destination « à venir » (jalon 5, dossier-07 §12) : rideau, écran « <libellé> — À venir »
+## ([member coming_soon_presenter]), puis le joueur reprend sur [param return_spawn], un point
+## d'apparition **de la carte courante** (orientation [param facing], ZERO = inchangée), rideau
+## levé. Aucune carte n'est chargée ni signalée ([signal map_entered] n'est pas émis : pas de
+## titre de zone, pas de zone découverte, pas d'autosave demandé) ; pendant toute la durée,
+## [method is_transitioning] est vrai, donc rien n'est sauvegardé « dans » l'écran provisoire.
+## Sans effet si [member coming_soon_enabled] est faux, pendant une transition, ou sans
+## joueur ni carte.
+func show_coming_soon(label: String, return_spawn: StringName,
+		facing: Vector2i = Vector2i.ZERO) -> void:
+	if _busy or _player == null or not coming_soon_enabled \
+			or not is_instance_valid(_current_map):
+		return
+	var session := _session
+	_busy = true
+	_player.set_input_enabled(false)
+	transition_started.emit(&"")
+	if _fade != null:
+		await _fade.fade_out(fade_out_duration)
+		if session != _session:
+			return
+	coming_soon_shown.emit(label)
+	if coming_soon_presenter.is_valid():
+		await coming_soon_presenter.call(label)
+		if session != _session:
+			return
+	if _current_map.has_spawn(return_spawn):
+		_current_map.spawn_player(_player, return_spawn,
+			facing if facing != Vector2i.ZERO else _player.get_facing())
+	else:
+		push_error("SceneRouter : spawn de retour inconnu « %s » sur %s" % [return_spawn,
+			_current_map.map_id])
+	if _fade != null:
+		await _fade.fade_in(fade_in_duration)
+		if session != _session:
+			return
+	_player.set_input_enabled(true)
+	_busy = false
 
 
 func is_transitioning() -> bool:
@@ -216,6 +268,8 @@ func _prefetch_neighbors(map: GameMap) -> void:
 	if map_factory.is_valid() or not is_instance_valid(map):
 		return
 	for warp: Warp in map.get_warps().get_all():
+		if warp.is_coming_soon():
+			continue
 		var path := MapCatalog.scene_path(warp.target_map, maps_dir)
 		if _scenes.has(path) or _prefetching.has(path) or not ResourceLoader.exists(path):
 			continue
@@ -247,6 +301,11 @@ func _on_player_bumped(direction: Vector2i) -> void:
 
 
 func _follow(warp: Warp) -> void:
-	if warp != null:
+	if warp == null:
+		return
+	if warp.is_coming_soon():
+		show_coming_soon(warp.coming_soon, warp.target_spawn,
+			warp.get_arrival_facing(_player.get_facing()))
+	else:
 		change_map(warp.target_map, warp.target_spawn,
 			warp.get_arrival_facing(_player.get_facing()))
