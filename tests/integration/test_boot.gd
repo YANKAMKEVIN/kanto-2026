@@ -240,3 +240,26 @@ func test_route1_grass_freezes_the_player_before_the_grass() -> void:
 	assert_true(GameState.flags.has_flag(&"oak_lab_reunion"))
 	assert_true(player.is_input_enabled())
 	assert_true(hud.are_controls_visible())
+
+
+## Jalon 6 T4 (jalon-06.md §6.1) : Boot est ALWAYS (temps de jeu et autosave continuent menu
+## ouvert) ; tous ses enfants sont PAUSABLE (sinon ils hériteraient d'ALWAYS et le monde ne
+## gèlerait pas) sauf le directeur du menu (et, plus tard, l'écran du menu).
+func test_boot_is_always_and_its_children_are_pausable_except_the_menu() -> void:
+	assert_eq(_boot.process_mode, Node.PROCESS_MODE_ALWAYS)
+	var exceptions: Array[StringName] = [&"MenuDirector", &"TrainerMenu"]
+	var checked := 0
+	for child: Node in _boot.get_children():
+		if exceptions.has(child.name):
+			assert_eq(child.process_mode, Node.PROCESS_MODE_ALWAYS, "%s" % child.name)
+			continue
+		if child is PerfCounter:
+			continue
+		assert_eq(child.process_mode, Node.PROCESS_MODE_PAUSABLE, "%s" % child.name)
+		checked += 1
+	assert_gt(checked, 10, "les enfants de Boot ont été parcourus")
+	assert_not_null(_boot.get_menu_director())
+
+
+func test_quit_on_go_back_is_off() -> void:
+	assert_false(ProjectSettings.get_setting("application/config/quit_on_go_back", true))
