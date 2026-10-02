@@ -87,6 +87,9 @@ var _in_foreground: bool = true
 
 func _ready() -> void:
 	GameState.new_game()
+	# Compteur de fps de QA (journal « [perf] »), seulement en build debug, Boot scène principale.
+	if PerfCounter.is_allowed(OS.is_debug_build(), get_tree().current_scene == self):
+		add_child(PerfCounter.new())
 	_player = PLAYER_SCENE.instantiate() as Player
 	_library.load_dir()
 	_cutscenes.load_dir()

@@ -44,9 +44,11 @@ Conversion depuis la résolution de référence 1920×1080 (aspect expand) : la 
 
 ## FPS
 
-Méthode recommandée : en build debug, un nœud de debug imprime toutes les 2 s
-`print("[perf] fps=%d draw=%d" % [Engine.get_frames_per_second(), Performance.get_monitor(Performance.RENDER_TOTAL_DRAW_CALLS_IN_FRAME)])`
-puis lire `logcat -s godot:V | grep perf`. Objectif : **60 fps stables** en exploration et en combat.
+Le jeu l'écrit déjà : en build debug seulement (`PerfCounter`, `game/systems/debug/perf_counter.gd`, ajouté par Boot quand il est la scène principale ; jamais sous GUT ni dans un outil), une ligne toutes les 2 s :
+
+`[perf] fps=60 min=54 draw=87` (`fps` = moyenne sur la fenêtre de 2 s, `min` = cadence de l'image la plus lente de la fenêtre, pour repérer une saccade pendant une transition ou un lancer, `draw` = appels de dessin de la dernière image).
+
+Lecture : `adb logcat -s godot:V | grep perf`. Objectif : **60 fps stables** en exploration et en combat.
 
 ## Checklist de validation d'une fonctionnalité
 
