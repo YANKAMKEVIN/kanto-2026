@@ -2,7 +2,7 @@
 
 > Objectif jouable sur le S24, écran par écran, dans l'ordre du dossier 08 §11.
 >
-> **6.0 — Ouvrir et fermer.** En exploration, un petit bouton rond ouvre en ~250 ms un **tableau de bord plein écran** posé sur le monde flouté et assombri ; le monde est **en pause** derrière. À gauche, la carte du Dresseur (« Kevin », « Dresseur Pokémon », portrait, temps de jeu) et le **Pokémon de tête** (nom, Nv., PV) ; à droite, **cinq grandes cartes** (ÉQUIPE · SAC · CARTE · DRESSEUR · PARAMÈTRES : la carte POKÉDEX est **absente** avant son activation au J7A) ; en bas, une ligne discrète « Objectif : rejoindre Jadielle ». Le × ou le retour Android referme : on retrouve exactement l'exploration.
+> **6.0 — Ouvrir et fermer.** En exploration, un petit bouton rond ouvre en ~250 ms un **tableau de bord plein écran** posé sur le monde flouté et assombri ; le monde est **en pause** derrière. À gauche, la carte du Dresseur (« Kevin », « Dresseur Pokémon », portrait, temps de jeu) et le **Pokémon de tête** (nom, Nv., PV) ; à droite, **cinq grandes cartes** (ÉQUIPE · SAC · CARTE · DRESSEUR · PARAMÈTRES : la carte POKÉDEX est **absente** avant son activation au J7A) ; en bas, une ligne discrète « Objectif : rejoindre Jadielle ». Le × ou le retour Android referme : on retrouve exactement l'exploration. En exploration, le retour Android **ouvre** le menu ; il ne quitte jamais le jeu (Q-3).
 >
 > **6A — Équipe.** La liste à gauche, le Pokémon sélectionné en grand au centre, sa fiche à droite (Aperçu · Capacités · Histoire), barre d'XP « 320 / 560 XP — 240 XP avant le niveau suivant ». On réordonne l'équipe au doigt (appui long puis glisser) **ou** par DÉPLACER ; on marque un **FAVORI**.
 >
@@ -22,7 +22,7 @@
 - **Argent** (J7A), **badges obtenus** (J10), **Stockage Pokémon** et son écran (J7A), **Boutique** (J7A), **colis** (premier objet clé, J7A), **activation narrative du Pokédex** par Chen (J7A).
 - **Évolutions jouables**, **CT**, **statuts** (J11) : la fiche n'affiche que l'état K.O. ; PSN, PAR, SOM, BRÛ, GEL viendront avec les statuts.
 - **Changement de Pokémon en combat** (ÉQUIPE en combat, J11).
-- **Son** (phase 10) : pas de catégorie AUDIO. **Réglages graphiques** : rien à régler aujourd'hui (Q-17).
+- **Son** (phase 10) : pas de catégorie AUDIO. **Réglages graphiques** : une seule catégorie GRAPHISMES minimale, Auto / Élevée / Économie (Q-17).
 - **Vol** sur la Carte, recherche et filtres de la Carte, cartes locales, souvenirs de découverte (plus tard, dossier 08 §5).
 - Personnalisation du Dresseur, niveau ou XP de Dresseur, titres, tenues, pourcentage d'histoire (exclus par le dossier 08 §6).
 - Rendu « vraie DA » des écrans, illustrations HD des Pokémon, illustration finale de la carte de Kanto : provisoires aux dimensions finales (`CLAUDE.md` règle 3).
@@ -459,7 +459,7 @@ func get_navigator() -> MenuNavigator
 - **Ouvrir** : `MenuButton` (signal `menu_requested` de l'`ExplorationHud`) ou l'action `menu` (Échap, M sur Mac). Garde `can_open` fournie par `Boot` : `is_stable()` **et** ni écran « À venir », ni titre de zone en train d'entrer (il est caché à l'ouverture). Puis : contrôles cachés (`set_controls_visible(false)` relâche déjà joystick et boutons), `get_tree().paused = true`, fond de 0 à 1 et tableau de bord en `MENU_OPEN` (0,25 s), vibration « presque imperceptible » (`HAPTIC_MENU_MS`, bible §12).
 - **Le monde gèle tel quel**, même au milieu d'un pas (il reprend à la fermeture). Aucun nœud du monde n'utilise de Tween non lié ni de minuteur `process_always` hors combat (vérifié : seul `HapticPattern` en crée un, en combat).
 - **Fermer** : ×, retour depuis le tableau de bord, action `menu`. Fondu inverse `MENU_CLOSE` (0,2 s), `paused = false`, contrôles rendus, autosave si `changed`.
-- **Retour Android** : aujourd'hui, `application/config/quit_on_go_back` vaut vrai par défaut et `Boot` sauvegarde sur `NOTIFICATION_WM_GO_BACK_REQUEST` avant que l'application ne quitte. Le J6 passe ce réglage à **faux** ; `Boot` reçoit le retour : menu ouvert → `MenuDirector.handle_back()` ; sinon, comportement d'aujourd'hui (sauvegarde puis `get_tree().quit()`, Q-3). **À vérifier tôt sur le S24** (geste retour d'Android 14).
+- **Retour Android** : aujourd'hui, `application/config/quit_on_go_back` vaut vrai par défaut et `Boot` sauvegarde sur `NOTIFICATION_WM_GO_BACK_REQUEST` avant que l'application ne quitte. Le J6 passe ce réglage à **faux** ; `Boot` reçoit le retour : menu ouvert → `MenuDirector.handle_back()` ; en exploration (contrôles visibles) → sauvegarde immédiate puis **ouverture du Menu Dresseur** ; pendant un dialogue, une scène, un combat ou une transition → ignoré. **Le jeu ne quitte jamais sur le retour** (décision de Kevin, Q-3) : la fermeture reste celle du système (accueil, applications récentes), déjà couverte par la sauvegarde au passage en arrière-plan. **À vérifier tôt sur le S24** (geste retour d'Android 14).
 
 ### 6.3 Liens croisés (dossier 08 §8)
 
@@ -589,7 +589,7 @@ Chaque tâche finit par `tools/test.sh` vert (nombre de tests rapporté), un imp
   - Capture `menu_open` image par image (~8 images sur 0,3 s) : pas d'image noire, fond qui se floute.
 
 #### T5 — qa-mobile : validation du 6.0
-- **CA** : ouverture et fermeture < 300 ms ressenties, 20 fois de suite ; jamais ouvert pendant un dialogue ou un combat ; le monde est figé derrière ; retour Android dans les deux cas (menu ouvert, exploration) ; 60 fps menu ouvert (le fond flouté) ; pas de joystick « collé » après la fermeture ; cinq cartes ; objectif lisible ; journal propre.
+- **CA** : ouverture et fermeture < 300 ms ressenties, 20 fois de suite ; jamais ouvert pendant un dialogue ou un combat ; le monde est figé derrière ; retour Android dans les deux cas (menu ouvert : un niveau en arrière puis fermeture ; exploration : ouvre le menu, ne quitte jamais) ; 60 fps menu ouvert (le fond flouté) ; pas de joystick « collé » après la fermeture ; cinq cartes ; objectif lisible ; journal propre.
 
 ### 6A — Équipe
 
@@ -684,7 +684,7 @@ Chaque tâche finit par `tools/test.sh` vert (nombre de tests rapporté), un imp
 - **CA** : tests du §3.8 verts.
 
 #### T28 — ui-mobile : l'écran Paramètres et les commandes réglables
-- `SettingsScreen` d'après la DA de `menu-parametres-v1.jpg` recomposée en paysage : catégories à gauche (JEU, COMMANDES, ACCESSIBILITÉ ; **pas** d'AUDIO ni de GRAPHISMES, Q-17), interrupteurs, curseurs, choix ; « Sauvegarder maintenant » ; **aucune** option « sauvegarde automatique ». `TouchJoystick.size_scale` et `opacity`, échelle des boutons ronds, `ExplorationHud.set_left_handed(bool)` (joystick dans la moitié droite, boutons courir et contextuel en bas à gauche, bouton Menu en haut à droite inchangé ; exploration seulement, Q-16) ; `UiPrefs` dans la boîte de dialogue, le toast, le titre de zone et les écrans du menu ; `ChoiceCards` (Q-18).
+- `SettingsScreen` d'après la DA de `menu-parametres-v1.jpg` recomposée en paysage : catégories à gauche (JEU, COMMANDES, GRAPHISMES, ACCESSIBILITÉ ; **pas** d'AUDIO, Q-17). GRAPHISMES : un seul choix **Auto** (défaut) / **Élevée** / **Économie** ; Économie = 30 images/s (`Engine.max_fps`) et flou du fond du menu coupé, autres effets coûteux réduits ; Auto choisit le profil selon l'appareil (S24 → Élevée) ; aucune autre option technique, interrupteurs, curseurs, choix ; « Sauvegarder maintenant » ; **aucune** option « sauvegarde automatique ». `TouchJoystick.size_scale` et `opacity`, échelle des boutons ronds, `ExplorationHud.set_left_handed(bool)` (joystick dans la moitié droite, boutons courir et contextuel en bas à gauche, bouton Menu en haut à droite inchangé ; exploration seulement, Q-16) ; `UiPrefs` dans la boîte de dialogue, le toast, le titre de zone et les écrans du menu ; `ChoiceCards` (Q-18).
 - **CA** : `test_settings_screen.gd` (chaque contrôle → **un** `setting_changed` ; valeur affichée en texte, pas seulement par la position) ; `test_exploration_hud.gd` (gaucher : zones du joystick et des boutons miroir, toujours dans `SAFE_MARGIN`) ; `test_virtual_joystick.gd` (taille, opacité). Captures `settings`, `left_handed`, `text_large`, `contrast`.
 
 #### T29 — constructeur-monde : les réglages agissent
@@ -731,7 +731,7 @@ Chaque tâche finit par `tools/test.sh` vert (nombre de tests rapporté), un imp
 
 1. **Bug du J5 rendu fréquent par le 6A** : `BattleDirector.run_request` choisit le sprite du partenaire qui entre en courant avec `party.get_lead()` (`battle_director.gd`, ligne 163), alors que le moteur envoie `party.first_able()`. Si le premier de l'équipe est K.O. (déjà possible au J5 après une capture), le mauvais Pokémon entre dans le cadre, puis l'image change à l'envoi. Avec la réorganisation de l'équipe, ce cas devient courant. Correction d'une ligne (`first_able()`), avec un test ; à faire dans les dettes du J5 si possible, sinon au T8.
 2. **Statuts** : le dossier 08 §2 demande « statut toujours en texte (K.O., PSN, PAR, SOM, BRÛ, GEL) ». `Pokemon` n'a aucun statut (statuts au J11) : au J6, seul « K.O. » (déduit des PV) existe.
-3. **Retour Android** : aujourd'hui il ferme l'application (`quit_on_go_back` par défaut). Le dossier 08 §1 veut qu'il ferme le menu : réglage à changer et comportement en exploration à garder (Q-3).
+3. **Retour Android** : aujourd'hui il ferme l'application (`quit_on_go_back` par défaut). Le dossier 08 §1 veut qu'il ferme le menu : réglage à changer ; en exploration, il ouvre le menu et ne quitte plus le jeu (Q-3, décision de Kevin).
 4. **Starter « vu 0 fois »** (remarque de la QA S3) : `PokedexEntry.capture` ne compte pas d'observation. La fiche afficherait « vu 0 fois · capturé 1 fois » (Q-8).
 5. **Taille, poids, description, notes** : absents des données (`SpeciesData`) ; nouveau fichier `data/pokedex/kanto.json` plutôt que d'alourdir `kanto.json` et sa validation stricte.
 6. **Grands moments** : le dossier 08 §6 cite « départ de Bourg Palette, arrivée à Jadielle » ; seuls `starter`, `rival_battle`, `first_capture` sont enregistrés. Les arrivées se déduisent de `discovered_maps` (Q-14) ; rien à rétro-greffer.
@@ -768,6 +768,12 @@ Chaque tâche finit par `tools/test.sh` vert (nombre de tests rapporté), un imp
 ---
 
 ## 12. Questions pour Kevin (valeur par défaut appliquée si tu ne dis rien)
+
+> **Décisions de Kevin (2026-10-02) — verrouillées.** Défauts acceptés pour Q-1, Q-2, Q-4 à Q-6, Q-8, Q-10 à Q-16, Q-18 à Q-21. Modifiés ou précisés :
+> - **Q-3** : le retour Android **ne ferme jamais le jeu**. En exploration, il ouvre le Menu Dresseur ; menu ouvert, il remonte d'un niveau ; à la racine, il ferme le menu et rend le jeu. La fermeture de l'application reste celle d'Android (pas une interaction de gameplay).
+> - **Q-7** : Pokémon visible dans le monde → seul OBSERVER l'enregistre ; Pokémon rencontré en combat sauvage → la rencontre compte comme observation ; Pokémon reçu ou capturé → observé aussi. Les Pokémon des habitants peuvent être observés avant l'activation du Pokédex, mais rien n'est visible avant l'activation (J7). **Chen (J7A)** cite la **première espèce sauvage rencontrée en combat**, jamais un Pokémon d'habitant ni un Pokémon observé dans le décor.
+> - **Q-9** : anti-spoiler jusqu'au bout. Avant activation : « Évolution : ??? ». Après : seulement ce que le joueur a réellement découvert ; **ni niveau d'évolution, ni silhouette, ni nom** d'une évolution inconnue.
+> - **Q-17** : **GRAPHISMES dès le J6, minimal** : Auto (défaut, profil choisi selon l'appareil) / Élevée / Économie (30 images/s, flou coupé et effets coûteux réduits). Aucune autre option technique. **AUDIO absent** tant qu'il n'y a pas de système audio.
 
 Seules les vraies questions de game design sont ici ; les petites (durées, tailles, positions) ont reçu une valeur par défaut au §13.
 
