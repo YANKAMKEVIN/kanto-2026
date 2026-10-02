@@ -17,7 +17,14 @@ extends RefCounted
 ## [/codeblock]
 ## Tous les modèles de [constant TEMPLATE_IDS] sont obligatoires, aucun autre n'est admis.
 ## Marques admises : {pokemon} (nom seul, jamais « ennemi » ni « du Rival »), {de_pokemon}
-## (« de Salamèche », « d'Évoli »), {move}, {trainer}, {stat} (nom de « stats »).
+## (« de Salamèche », « d'Évoli »), {move}, {trainer}, {stat} (nom de « stats »), {level}
+## (niveau de l'événement), {exp} (son [member BattleEvent.amount]), {old_move} (capacité
+## oubliée, seulement par [method line_for]).
+## XP (jalon 5C, Q25) : EXP_GAINED et LEVEL_UP n'ont pas de phrase (« +21 XP » et « Nv. 6 »
+## sont sur la carte) ; MOVE_LEARNED → « move_learned » ; MOVE_FORGET_OFFERED →
+## « move_forget_prompt ». La suite de l'oubli (« move_forgot », « move_not_learned ») ne
+## vient pas d'un événement : la présentation la demande à [method line_for]. « level_up »
+## est disponible par [method line_for] (aucune phrase par défaut, Q25).
 ## « draft » : texte à relire par Kevin. « text_f » (facultatif) : la phrase accordée au
 ## féminin, employée quand le Pokémon de l'événement est une femelle (décision de Kevin
 ## n° 15, jalon 4 §8) ; sans elle, « text » sert pour tous. [method lines] traduit un
@@ -34,8 +41,12 @@ const TEMPLATE_IDS: Array[StringName] = [
 	&"stat_rose", &"stat_rose_2", &"stat_rose_3", &"stat_fell", &"stat_fell_2",
 	&"stat_fell_3", &"stat_no_higher", &"stat_no_lower", &"recoil", &"fainted",
 	&"battle_won", &"battle_lost", &"wild_appeared", &"fled", &"flee_failed",
+	&"level_up", &"move_learned", &"move_forget_prompt", &"move_forgot", &"move_not_learned",
+	&"seeded", &"drained",
 ]
-const PLACEHOLDERS: Array[String] = ["pokemon", "de_pokemon", "move", "trainer", "stat"]
+const PLACEHOLDERS: Array[String] = [
+	"pokemon", "de_pokemon", "move", "trainer", "stat", "level", "exp", "old_move",
+]
 
 const _TEMPLATE_KEYS: Array[String] = ["text", "text_f", "draft"]
 const _VOWELS: String = "AEIOUYÀÂÄÉÈÊËÎÏÔÖÙÛÜaeiouyàâäéèêëîïôöùûü"
@@ -173,6 +184,14 @@ func lines(event: BattleEvent, data: PokemonData, trainer: TrainerData = null) \
 			result.append(_fill(&"fled", event, data))
 		BattleEvent.Kind.FLEE_FAILED:
 			result.append(_fill(&"flee_failed", event, data))
+		BattleEvent.Kind.MOVE_LEARNED:
+			result.append(_fill(&"move_learned", event, data))
+		BattleEvent.Kind.MOVE_FORGET_OFFERED:
+			result.append(_fill(&"move_forget_prompt", event, data))
+		BattleEvent.Kind.SEEDED:
+			result.append(_fill(&"seeded", event, data))
+		BattleEvent.Kind.DRAINED:
+			result.append(_fill(&"drained", event, data))
 		BattleEvent.Kind.BATTLE_ENDED:
 			# FLED ne porte pas de message ici (il est sur l'événement FLED). Un sauvage n'a
 			# pas de dresseur (trainer_name vide) : « Tu as battu… » ne s'affiche pas.
@@ -182,6 +201,17 @@ func lines(event: BattleEvent, data: PokemonData, trainer: TrainerData = null) \
 				result.append(_fill(&"battle_won" if event.outcome == Battle.Outcome.WIN
 					else &"battle_lost", event, data))
 	return result
+
+
+## Phrase du modèle [param id] remplie avec [param event] (chaîne vide si le modèle n'existe
+## pas). [param old_move] : la capacité oubliée ({old_move}). Sert à ce qui ne vient pas d'un
+## événement du moteur : « Salamèche oublie Griffe et apprend Frénésie ! »
+## ([code]line_for(&"move_forgot", offered, data, &"scratch")[/code]), « … n'apprend pas … ».
+func line_for(id: StringName, event: BattleEvent, data: PokemonData,
+		old_move: StringName = &"") -> String:
+	if not _texts.has(id):
+		return ""
+	return _fill(id, event, data, old_move)
 
 
 ## « de Salamèche », « d'Évoli » : élision devant une voyelle.
@@ -196,14 +226,19 @@ func get_errors() -> PackedStringArray:
 	return _errors
 
 
-func _fill(id: StringName, event: BattleEvent, data: PokemonData) -> String:
+func _fill(id: StringName, event: BattleEvent, data: PokemonData,
+		old_move: StringName = &"") -> String:
 	var move := data.get_move(event.move_id)
+	var forgotten := data.get_move(old_move)
 	return get_template(id, event.gender == Pokemon.Gender.FEMALE).format({
 		"pokemon": event.pokemon_name,
 		"de_pokemon": de_name(event.pokemon_name),
 		"move": move.name if move != null else String(event.move_id),
 		"trainer": event.trainer_name,
 		"stat": _stats.get(event.stat, String(event.stat)),
+		"level": event.level,
+		"exp": event.amount,
+		"old_move": forgotten.name if forgotten != null else String(old_move),
 	})
 
 

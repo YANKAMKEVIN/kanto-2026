@@ -52,7 +52,7 @@
 	"leech_seed": {
 		"name": "Vampigraine", "type": "grass", "category": "status",
 		"accuracy": 90, "pp": 10,
-		"pending_effects": ["leech_seed"],
+		"effects": [{ "kind": "seed", "fraction": 0.125, "immune_types": ["grass"] }],
 		"description": "Plante une graine sur la cible, qui perd des PV à chaque tour au profit du lanceur.",
 		"draft": true
 	},

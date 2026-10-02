@@ -13,6 +13,10 @@ const STAGE_MAX: int = 6
 var pokemon: Pokemon
 ## Types de l'espèce (copiés à l'envoi : bonus de type, efficacité).
 var types: Array[StringName] = []
+## Vampigraine (jalon 5 Q28) : fraction des PV max drainée à chaque fin de tour, 0 = pas de
+## graine. Statut volatil : il disparaît quand le Pokémon quitte le terrain (un nouveau
+## Battler est créé à chaque envoi).
+var seed_fraction: float = 0.0
 var _stages: Dictionary[StringName, int] = {}
 
 @warning_ignore_start("integer_division")
@@ -53,6 +57,19 @@ func effective_stat(stat: StringName, ignore_drops: bool = false,
 	if (ignore_drops and stage < 0) or (ignore_boosts and stage > 0):
 		stage = 0
 	return pokemon.stats.get(stat, 0) * maxi(2, 2 + stage) / maxi(2, 2 - stage)
+
+
+## Vrai si une graine de Vampigraine est plantée sur ce Pokémon.
+func is_seeded() -> bool:
+	return seed_fraction > 0.0
+
+
+## Vrai si le Pokémon a l'un des types de [param type_ids].
+func has_any_type(type_ids: Array[StringName]) -> bool:
+	for type: StringName in type_ids:
+		if types.has(type):
+			return true
+	return false
 
 
 ## Indices des capacités qui ont encore des PP (vide = Lutte).

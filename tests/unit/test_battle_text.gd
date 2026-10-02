@@ -181,6 +181,38 @@ func test_no_generic_start_message_for_the_first_rival_battle() -> void:
 	assert_eq(Array(_text.lines(started, _data, other)), ["Le Rival veut se battre !"])
 
 
+func test_exp_and_learning_lines() -> void:
+	# Jalon 5C (Q25, Q30) : pas de phrase pour l'XP ni le niveau ; une pour la capacité.
+	var gained := _event(K.EXP_GAINED, false, "Salamèche")
+	gained.amount = 21
+	assert_eq(_lines(gained), [], "« +21 XP » est sur la carte")
+	var level_up := _event(K.LEVEL_UP, false, "Salamèche")
+	level_up.level = 6
+	assert_eq(_lines(level_up), [], "« Nv. 6 » s'illumine, sans message")
+	assert_eq(_text.line_for(&"level_up", level_up, _data), "Salamèche monte au niveau 6 !")
+	var learned := _event(K.MOVE_LEARNED, false, "Salamèche")
+	learned.move_id = &"ember"
+	assert_eq(_lines(learned), ["Salamèche apprend Flammèche !"])
+	var offered := _event(K.MOVE_FORGET_OFFERED, false, "Salamèche")
+	offered.move_id = &"rage"
+	assert_eq(_lines(offered),
+		["Salamèche veut apprendre Frénésie, mais connaît déjà quatre capacités."])
+	assert_eq(_text.line_for(&"move_forgot", offered, _data, &"scratch"),
+		"Salamèche oublie Griffe et apprend Frénésie !")
+	assert_eq(_text.line_for(&"move_not_learned", offered, _data),
+		"Salamèche n'apprend pas Frénésie.")
+	assert_eq(_text.line_for(&"unknown_template", offered, _data), "")
+
+
+func test_leech_seed_lines() -> void:
+	var seeded := _event(K.SEEDED, true, "Roucool")
+	assert_eq(_lines(seeded), ["Une graine est plantée sur Roucool !"])
+	var drained := _event(K.DRAINED, true, "Roucool")
+	assert_eq(_lines(drained), ["Vampigraine draine l'énergie de Roucool !"])
+	drained.pokemon_name = "Évoli"
+	assert_eq(_lines(drained), ["Vampigraine draine l'énergie d'Évoli !"])
+
+
 func test_elision() -> void:
 	assert_eq(BattleText.de_name("Salamèche"), "de Salamèche")
 	assert_eq(BattleText.de_name("Évoli"), "d'Évoli")

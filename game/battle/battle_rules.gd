@@ -30,13 +30,14 @@ static func for_wild() -> BattleRules:
 	return rules
 
 
-## Règles d'un combat de dresseur : pas de fuite, XP ×1,5, pas de Balls (Q23). [param trainer]
-## est reçu pour d'éventuelles règles propres au dresseur (aucune au jalon 5).
-static func for_trainer(_trainer: TrainerData = null) -> BattleRules:
+## Règles d'un combat de dresseur : pas de fuite, XP ×1,5, pas de Balls (Q23). L'XP suit
+## [member TrainerData.gives_exp] de [param trainer] (faux pour le premier combat du rival,
+## `rival_lab` : ni XP ni argent, décisions n° 6 et 15) ; sans dresseur, elle est donnée.
+static func for_trainer(trainer: TrainerData = null) -> BattleRules:
 	var rules := BattleRules.new()
 	rules.wild = false
 	rules.can_flee = false
-	rules.gives_exp = true
+	rules.gives_exp = trainer.gives_exp if trainer != null else true
 	rules.exp_multiplier = 1.5
 	rules.allow_balls = false
 	return rules

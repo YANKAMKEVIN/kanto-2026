@@ -1,0 +1,12 @@
+{
+	"map": "route_1", "spawn": "from_pallet_w", "facing": "up",
+	"flags": [
+		"mom_greeted", "rival_met", "oak_met", "oak_lab_reunion", "starter_offered",
+		"starter_chosen", "rival_challenged", "rival_battle_done", "rival_left_lab"
+	],
+	"party": [{
+		"species": "bulbasaur", "level": 19, "exp_to_next": 1,
+		"moves": ["tackle", "growl", "leech_seed", "vine_whip"]
+	}],
+	"bag": { "poke_ball": 5 }
+}
