@@ -515,3 +515,21 @@ Reprends exactement l'image précédente : même objet, même silhouette, même 
 
 LUMIÈRE NE (neutre) : lumière de milieu de journée, diffuse et blanche, venant légèrement du haut à gauche ; volumes conservés par un ombrage doux ; aucune teinte dorée ou orangée, aucun liseré chaud ; ombres propres neutres, légèrement bleutées.
 ```
+
+---
+
+## Journal de production
+
+### WORLD_TREE_A_01 (2026-10-03)
+
+| Révision | Résultat | Décision |
+|---|---|---|
+| GH_r1 | beau, mais vu de profil, moitié gauche jaune citron, rendu doux façon aérographe, 1:1 au lieu de 3:4, silhouette d'arbre centenaire | refusé ; gardé comme **piste pour WORLD_TREE_CENTRAL_01** |
+| GH_r2 | plus vert, tronc plus court, mais plus large que haut (1,09:1) et toujours doux : ChatGPT a **retouché** la r1 au lieu de redessiner | refusé |
+| GH_r3 | **nouvelle image** « comme extraite de la référence », format portrait : proportions justes (0,70), contour coloré, rendu graphique proche des références ; verts encore un peu trop jaunes | **candidat ancre**, avec l'étalonnage automatique ci-dessous |
+
+**Leçons, appliquées aux fiches suivantes :**
+1. Pour corriger le style ou la forme, demander une **nouvelle image** (« ne retouche pas l'image précédente ») ; la retouche ne sert qu'au **rééclairage NE**, où l'on veut garder la même forme.
+2. Formule qui marche le mieux : dessiner l'asset « **comme s'il avait été extrait de l'image jointe, puis agrandi** », avec un recadrage de la référence J7 au plus près de l'objet (`build/art/REF_*.png`).
+3. **Format de production proche des proportions de l'asset** : ChatGPT remplit le cadre. Un asset plus haut que large se produit en portrait 1024 × 1536 (la fiche WORLD_TREE_A_01 indiquait un carré : corrigé par la r3).
+4. **Étalonnage commun** (cran A, traitement automatique) : les jaunes et les verts-jaunes sont ramenés vers le vert, et les ombres turquoise vers le vert-bleu, pour coller aux verts émeraude des références. Script à écrire dans `tools/art/` pour la scène prototype ; réglage de départ : teintes 25–70 (sur 255) tirées de 45 % vers 70, teintes 95–125 tirées de 35 % vers 95, saturation × 0,95.
