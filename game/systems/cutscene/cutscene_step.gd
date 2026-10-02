@@ -30,7 +30,9 @@ extends RefCounted
 ##   [member trainer_id] ; [member player_pokemon] et [member foe_pokemon] : PNJ Pokémon de
 ##   la carte qui combattent (cachés pendant le combat, facultatifs) ; [member win_flags] ou
 ##   [member lose_flags] levés selon l'issue ([method outcome_flags]) ;
-## - [constant Kind.GIVE] (jalon 4B) : [member count] objets [member item_id] ajoutés au Sac.
+## - [constant Kind.GIVE] (jalon 4B) : [member count] objets [member item_id] ajoutés au Sac ;
+##   [member found] (jalon 5C.5) : objet **trouvé dans le monde** (la Potion de la Route 1),
+##   pas reçu d'un personnage (les Poké Balls de Chen) : il entre au journal des objets trouvés.
 ## Conditions d'étape (jalon 4B) : [member if_flags] / [member unless_flags] ; une étape dont
 ## les conditions ne sont pas remplies au moment de la jouer est sautée ([method applies]).
 ## Elles servent aux suites qui dépendent de l'issue d'un combat (victoire / défaite), qu'une
@@ -80,9 +82,10 @@ var player_pokemon: StringName = &""
 var foe_pokemon: StringName = &""
 var win_flags: Array[StringName] = []
 var lose_flags: Array[StringName] = []
-## Étape « give » : objet et quantité.
+## Étape « give » : objet, quantité, et objet trouvé dans le monde (vrai) ou reçu (faux).
 var item_id: StringName = &""
 var count: int = 1
+var found: bool = false
 ## Conditions de l'étape (toutes levées / aucune levée), vides = toujours jouée.
 var if_flags: Array[StringName] = []
 var unless_flags: Array[StringName] = []
@@ -165,6 +168,7 @@ func copy() -> CutsceneStep:
 	other.lose_flags = lose_flags.duplicate()
 	other.item_id = item_id
 	other.count = count
+	other.found = found
 	other.if_flags = if_flags.duplicate()
 	other.unless_flags = unless_flags.duplicate()
 	return other

@@ -127,6 +127,18 @@ func test_every_trainer_and_item_step_exists() -> void:
 		assert_true(_items.has_item(id), "objet « %s » chargé" % id)
 
 
+## Jalon 5C.5 (décision de Kevin) : seule la Potion de la Route 1 est un objet **trouvé** dans
+## le monde ; les 5 Poké Balls de Chen sont **reçues** (pas au journal des objets trouvés).
+func test_only_the_route_1_potion_is_a_found_item() -> void:
+	var found: Array[String] = []
+	for id: StringName in _cutscenes.get_ids():
+		for variant: CutsceneVariant in _cutscenes.get_cutscene(id).variants:
+			for step: CutsceneStep in variant.steps:
+				if step.kind == CutsceneStep.Kind.GIVE and step.found:
+					found.append("%s:%s" % [id, step.item_id])
+	assert_eq(found, ["route_1_potion:potion"] as Array[String])
+
+
 func test_every_change_map_targets_an_existing_map_and_spawn() -> void:
 	var count := 0
 	for step: CutsceneStep in _all_steps():

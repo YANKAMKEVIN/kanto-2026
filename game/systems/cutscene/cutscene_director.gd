@@ -29,6 +29,10 @@ signal cutscene_finished(cutscene_id: StringName)
 ## [param count] objets [param item_id] viennent d'être ajoutés au Sac (étape « give ») :
 ## Boot en fait une toast (jalon-04.md §14.6).
 signal item_given(item_id: StringName, count: int)
+## L'objet que l'étape « give » vient de donner a été **trouvé dans le monde** (clé « found »
+## de l'étape, jalon 5C.5) : Boot l'inscrit au journal des objets trouvés. Émis après
+## [signal item_given].
+signal item_found(item_id: StringName, count: int)
 ## Fin d'une étape « wait » (interne).
 signal _wait_elapsed
 ## Fin d'une étape « move » (interne).
@@ -379,6 +383,8 @@ func _give(step: CutsceneStep) -> void:
 		return
 	if _bag.add(step.item_id, step.count):
 		item_given.emit(step.item_id, step.count)
+		if step.found:
+			item_found.emit(step.item_id, step.count)
 
 
 ## Attente de [param seconds] s par le mécanisme de l'étape « wait » (_process).
