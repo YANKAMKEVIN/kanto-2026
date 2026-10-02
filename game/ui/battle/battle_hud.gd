@@ -154,6 +154,13 @@ func show_message(text: String) -> void:
 	await _banner.show_message(text)
 
 
+## Coroutine : fait sortir la zone du bas (grille, capacités, « ‹ », bandeau) et attend sa
+## sortie ; les cartes et les pastilles restent. Sert au Sac de combat (jalon 5D), qui prend la
+## place des actions, et au lancer de la Ball, qui se joue sans bandeau.
+func hide_zone() -> void:
+	await _switch(Zone.NONE)
+
+
 ## Coroutine : fait sortir tout ce qui est affiché (cartes, pastilles, zone du bas) et attend
 ## la fin des animations.
 func hide_all() -> void:

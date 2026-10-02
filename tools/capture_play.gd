@@ -106,6 +106,13 @@ extends SceneTree
 ##              jeu à vitesse réelle : « +21 XP » et barre d'XP, « Nv. 7 » qui pulse, phrase
 ##              « apprend Vampigraine ». Captures jalon05c_t11_exp_*. ~600 images à 30 images/s :
 ##              --quit-after 1500.
+##   capture    jalon 5D (T15) : Salamèche N5 et 5 Poké Balls (comme le départ de débogage
+##              route_1) face à un Roucool N3 sur la Route 1, vrai jeu à vitesse réelle : grille
+##              d'actions, SAC ouvert, LANCER, puis une image toutes les 3 images (dresseur,
+##              vol, absorption, chute, secousses, éclat), la carte de capture (attendue
+##              jusqu'au bout de sa révélation), le retour à l'exploration. « --outcome=fail » :
+##              lancer raté (graine à 2 secousses au moins) puis le Pokémon qui ressort.
+##              Captures jalon05d_t15_<outcome>_*. ~400 images : --quit-after 900.
 ##   move_forget  jalon 5C (T11) : Bulbizarre N19 (4 capacités) à 1 XP du N20 : offre de
 ##              Poudre Toxik (bandeau, panneau d'oubli, sélection, OUBLIER, phrase). Captures
 ##              jalon05c_t11_forget_*. --quit-after 1500.
@@ -188,6 +195,10 @@ const T7B_PREFIX: String = "jalon05b_t7_"
 ## Scénarios « exp_gain » et « move_forget » (jalon 5C, T11).
 const T11_EXP_PREFIX: String = "jalon05c_t11_exp_"
 const T11_FORGET_PREFIX: String = "jalon05c_t11_forget_"
+## Scénario « capture » (jalon 5D, T15) : la capture jouable, image par image.
+const T15_PREFIX: String = "jalon05d_t15_"
+## Images entre deux prises pendant les « trois secondes sacrées » (30 images/s).
+const FILM_STEP: int = 3
 const STAGE_SCENE: String = "res://game/battle/battle_stage.tscn"
 ## Scénario « battle_stage » : placement réel de la fin de starter_chosen (§14.1) par starter
 ## du joueur : [case du joueur, orientation, case de son starter]. Rival (7, 7), son
@@ -292,7 +303,8 @@ func _start_boot() -> void:
 			InputMap.action_erase_events(action)
 		InputMap.action_erase_events(&"run")
 		InputMap.action_erase_events(&"interact")
-	elif _scenario in ["route_1", "wild_encounter", "wild_battle", "exp_gain", "move_forget"]:
+	elif _scenario in ["route_1", "wild_encounter", "wild_battle", "exp_gain", "move_forget",
+			"capture"]:
 		_boot.set(&"start_map", &"route_1")
 		_boot.set(&"start_spawn", &"from_pallet_w")
 		_boot.set(&"start_facing", Vector2i.UP)
@@ -344,6 +356,8 @@ func _on_frame() -> void:
 			_run_xp_scenario(false)
 		elif _scenario == "move_forget":
 			_run_xp_scenario(true)
+		elif _scenario == "capture":
+			_run_capture_scenario()
 		return
 	match _scenario:
 		"spawn":
@@ -2019,4 +2033,117 @@ func _run_xp_scenario(forget: bool) -> void:
 		_scenario, seed, lead.get(&"level"), lead.get(&"experience"), known,
 		_player.call(&"is_input_enabled")])
 	print("%s terminé (frame %d)" % [_scenario.to_upper(), _frame])
+	quit()
+
+
+# --- Scénario « capture » (jalon 5D, T15) --------------------------------------------------
+
+## Première graine dont le premier lancer d'une Poké Ball sur un Roucool N3 capture ([param
+## caught]) ou, sinon, échoue après au moins deux secousses (la Ball a le temps de trembler).
+## Même consommation d'aléatoire que le jeu. −1 si aucune.
+func _capture_seed(data: PokemonData, items: ItemLibrary, caught: bool) -> int:
+	for seed: int in range(0, 5000):
+		var rng := GameRng.new(seed)
+		var wild := Party.new()
+		wild.add(PokemonFactory.create(data, &"pidgey", 3, rng))
+		var mine := Party.new()
+		mine.add(PokemonFactory.create(data, &"charmander", 5, GameRng.new(999)))
+		var battle := Battle.new(BattleSide.new(mine, true),
+			BattleSide.new(wild, false, "", null), data, rng, BattleRules.for_wild(items))
+		battle.start()
+		var shakes := 0
+		var done := false
+		for event: BattleEvent in battle.submit(BattleAction.ball(&"poke_ball")):
+			shakes += int(event.kind == BattleEvent.Kind.BALL_SHAKE)
+			done = done or event.kind == BattleEvent.Kind.CAUGHT
+		if done == caught and (caught or shakes >= 2):
+			return seed
+	return -1
+
+
+## Capture jouable à vitesse réelle : grille, SAC, LANCER, film des « trois secondes sacrées »
+## (une image toutes les FILM_STEP images), carte de capture, retour à l'exploration.
+func _run_capture_scenario() -> void:
+	var caught := _outcome != "fail"
+	var prefix := T15_PREFIX + ("catch_" if caught else "fail_")
+	await _frames(5)
+	var state: Node = root.get_node(^"GameState")
+	var data: PokemonData = _boot.call(&"get_pokemon_data")
+	var items: ItemLibrary = _boot.call(&"get_item_library")
+	var hud: Node = _boot.call(&"get_hud")
+	var director: Node = _boot.call(&"get_encounter_director")
+	var battle_director: Node = _boot.call(&"get_battle_director")
+	var battle_hud: Node = _boot.call(&"get_battle_hud")
+	var battle_stage: Node = _boot.call(&"get_battle_stage")
+	battle_director.set(&"speed_scale", 1.0)
+	_wild_party(state, data)
+	(state.get(&"bag") as Bag).add(&"poke_ball", 5)
+	var seed := _capture_seed(data, items, caught)
+	if seed < 0:
+		push_error("capture : aucune graine")
+		quit(1)
+		return
+	state.set(&"rng", GameRng.new(seed))
+	var map: Node = _boot.call(&"get_map")
+	var grid: RefCounted = map.call(&"get_grid")
+	_player.call(&"enter_map", grid, _find_grass_cell(grid, map.get(&"size")), Vector2i.UP,
+		map.call(&"get_pixel_rect"))
+	hud.call(&"set_controls_visible", false)
+	await _frames(12)
+	var encounter := WildEncounter.new(&"pidgey", 3, &"route_1_grass")
+	director.call(&"start_encounter", encounter)
+	var film := 0
+	var filming := false
+	var pending := false
+	var opened_at := -1
+	var thrown_at := -1
+	var shots: Dictionary[String, bool] = {}
+	var card_shot := false
+	var deadline := _frame + 4000
+	while bool(director.call(&"is_running")) and _frame < deadline:
+		var battle: RefCounted = battle_director.call(&"get_battle")
+		var panel: Control = battle_director.call(&"get_bag_panel")
+		var card: Control = battle_director.call(&"get_capture_card")
+		var zone: int = int(battle_hud.call(&"get_zone"))
+		if card != null and bool(card.call(&"is_waiting")):
+			filming = false
+			if bool(card.call(&"is_revealed")) and not card_shot:
+				card_shot = true
+				await _frames(6)
+				await _wild_shot(prefix + "90_card")
+				card.call(&"skip")
+		elif filming and (_frame - thrown_at) % FILM_STEP == 0:
+			film += 1
+			await _wild_shot(prefix + "f%02d" % film)
+		if battle != null and int(battle.call(&"get_state")) == 1 and card == null:
+			if zone == 1 and not pending and not (panel != null and bool(panel.call(&"is_shown"))):
+				if not shots.has("01_actions"):
+					shots["01_actions"] = true
+					await _frames(24)
+					await _wild_shot(prefix + "01_actions_bag")
+					battle_hud.get(&"action_selected").emit(&"bag")
+					pending = true
+					opened_at = _frame
+				else:
+					battle_hud.get(&"action_selected").emit(&"run")
+		if pending and panel != null and bool(panel.call(&"is_shown")) \
+				and not bool(panel.call(&"is_sliding")) and not bool(panel.call(&"is_answered")):
+			if _frame - opened_at > 14 and not shots.has("02_bag"):
+				shots["02_bag"] = true
+				await _wild_shot(prefix + "02_bag_open")
+				await _frames(6)
+				(panel.call(&"get_action_button") as Button).pressed.emit()
+				pending = false
+				filming = true
+				thrown_at = _frame
+		await process_frame
+		_frame += 1
+	await _frames(14)
+	await _wild_shot(prefix + "99_back_to_exploration")
+	var party: Party = state.get(&"party")
+	var bag: Bag = state.get(&"bag")
+	print("  capture (%s) : graine %d, équipe %d, Balls %d, %d images, joueur libre %s" % [
+		_outcome, seed, party.size(), bag.count_of(&"poke_ball"), film,
+		_player.call(&"is_input_enabled")])
+	print("CAPTURE terminé (frame %d)" % _frame)
 	quit()

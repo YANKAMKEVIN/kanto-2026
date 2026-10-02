@@ -106,7 +106,7 @@ func _ready() -> void:
 	_texts.load_file()
 	_items.load_dir()
 	_battle_director.setup(_pokemon, _trainers, _texts, _battle_stage, _battle_hud, _player,
-		GameState)
+		GameState, _items)
 	_cutscenes_node.set_battle_runner(_battle_director)
 	_cutscenes_node.set_inventory(GameState.bag, _items)
 	_cutscenes_node.item_given.connect(_on_item_given)
@@ -122,6 +122,8 @@ func _ready() -> void:
 	# labo, puis les sauvages en 5B).
 	_starter_choice.starter_chosen.connect(_on_starter_chosen)
 	_battle_director.event_played.connect(_on_battle_event)
+	# Capture (jalon 5D) : le Pokémon rangé, l'autosave est demandé (écrit une fois stable).
+	_battle_director.pokemon_caught.connect(_on_pokemon_caught.unbind(2))
 	_ambient.setup(_player)
 	# Rencontres sauvages (jalon 5, 5B) : tables lues dans data/encounters/, l'EncounterDirector
 	# tire une rencontre à chaque pas dans les hautes herbes et joue le vrai combat sauvage
@@ -537,6 +539,12 @@ func _on_battle_finished(trainer_id: StringName, outcome: int) -> void:
 ## écrit dès que la partie est stable (après le mot de Maman en cas de défaite).
 func _on_encounter_finished(_outcome: int) -> void:
 	request_autosave("fin de rencontre")
+
+
+## Pokémon sauvage capturé et rangé (équipe ou stockage, jalon 5D) : autosave demandé, écrit à
+## la première image stable (après la carte de capture et la fin de la rencontre).
+func _on_pokemon_caught() -> void:
+	request_autosave("capture")
 
 
 ## Objet trouvé dans le monde (étape « give » marquée « found », la Potion de la Route 1) :

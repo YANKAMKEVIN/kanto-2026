@@ -27,8 +27,18 @@ extends RefCounted
 ##   [member BattleEvent.hp], celle du Pokémon d'en face monte à [member BattleEvent.healed_hp] ;
 ## - FORGET : le joueur choisit la capacité à oublier ([member BattleEvent.move_id] est la
 ##   nouvelle) ; la lecture du journal est suspendue jusqu'à son choix.
+## Jalon 5D (capture) :
+## - THROW : le dresseur lance la Ball ([member BattleEvent.item_id]), le Pokémon sauvage est
+##   absorbé, la Ball tombe dans l'herbe ;
+## - SHAKE : une secousse de la Ball ([member BattleEvent.shake], 1 à 3), avec vibration ;
+## - CATCH : éclat doré et motif de vibration ; le directeur range ensuite le Pokémon et
+##   montre la carte de capture (la lecture est suspendue jusqu'au toucher) ;
+## - RELEASE : la Ball s'ouvre, le Pokémon sauvage ressort et sa carte revient.
 
-enum Kind { MESSAGE, SEND_OUT, MOVE, DAMAGE, STAT, FAINT, EXP, LEVEL, DRAIN, FORGET }
+enum Kind {
+	MESSAGE, SEND_OUT, MOVE, DAMAGE, STAT, FAINT, EXP, LEVEL, DRAIN, FORGET,
+	THROW, SHAKE, CATCH, RELEASE,
+}
 
 var kind: Kind = Kind.MESSAGE
 var side: BattleEvent.SideId = BattleEvent.SideId.PLAYER

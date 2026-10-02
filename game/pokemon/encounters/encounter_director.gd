@@ -139,7 +139,9 @@ func _run(encounter: WildEncounter, origin: Vector2i) -> void:
 		_state.record_seen(encounter.species, _map.map_id)
 	encounter_started.emit(encounter.species, encounter.level)
 	await _play_grass_beat(origin, encounter.species)
-	var request := BattleRequest.wild(encounter, _data, _state.rng as GameRng, origin)
+	# Les objets connus du combat : sans eux, aucune Ball n'est légale (jalon 5D).
+	var items := _battles.get_item_library() if _battles != null else null
+	var request := BattleRequest.wild(encounter, _data, _state.rng as GameRng, origin, items)
 	var outcome := Battle.Outcome.NONE
 	if _battles != null:
 		outcome = await _battles.run_request(request, _map)

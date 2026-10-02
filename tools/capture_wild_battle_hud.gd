@@ -22,7 +22,7 @@ const PREFIX: String = "jalon05b_t6_"
 const PLAYER := 0
 const FOE := 1
 ## Actions d'un combat sauvage (miroir de BattleViews.WILD_BATTLE_ACTIONS).
-const WILD_ACTIONS: Dictionary[StringName, bool] = {&"attack": true, &"run": true}
+const WILD_ACTIONS: Dictionary[StringName, bool] = {&"attack": true, &"bag": true, &"run": true}
 
 var _boot: Node
 var _tokens: GDScript

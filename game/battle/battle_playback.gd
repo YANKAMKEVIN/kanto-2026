@@ -23,6 +23,12 @@ extends RefCounted
 ## - MOVE_FORGET_OFFERED : le message, puis FORGET (le choix et sa phrase sont à la charge du
 ##   BattleDirector : la lecture est suspendue) ;
 ## - SEEDED : le message ; DRAINED : DRAIN (les deux barres), puis le message.
+## Jalon 5D (capture) :
+## - BALL_THROWN : le message (« Tu lances une Poké Ball ! »), puis THROW ;
+## - BALL_SHAKE : SHAKE seulement (une secousse, sans phrase) ;
+## - CAUGHT : CATCH seulement (l'éclat, puis le directeur range le Pokémon et montre la carte
+##   de capture, qui porte tout le texte) ;
+## - BROKE_FREE : RELEASE (le Pokémon ressort), puis le message.
 ## Les phrases viennent de [BattleText] : rien n'est écrit ici.
 
 
@@ -66,6 +72,16 @@ static func beats(event: BattleEvent, texts: BattleText, data: PokemonData,
 			result.append(BattleBeat.new(BattleBeat.Kind.FORGET, event))
 		BattleEvent.Kind.DRAINED:
 			result.append(BattleBeat.new(BattleBeat.Kind.DRAIN, event))
+			result.append_array(messages)
+		BattleEvent.Kind.BALL_THROWN:
+			result.append_array(messages)
+			result.append(BattleBeat.new(BattleBeat.Kind.THROW, event))
+		BattleEvent.Kind.BALL_SHAKE:
+			result.append(BattleBeat.new(BattleBeat.Kind.SHAKE, event))
+		BattleEvent.Kind.CAUGHT:
+			result.append(BattleBeat.new(BattleBeat.Kind.CATCH, event))
+		BattleEvent.Kind.BROKE_FREE:
+			result.append(BattleBeat.new(BattleBeat.Kind.RELEASE, event))
 			result.append_array(messages)
 		_:
 			result.append_array(messages)

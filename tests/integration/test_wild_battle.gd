@@ -382,3 +382,155 @@ func test_five_wins_give_the_rouge_bleu_level_and_moves_for_each_starter() -> vo
 		assert_eq(known, expected[starter], "%s : capacités de Rouge/Bleu au N7" % starter)
 		assert_true(_player.is_input_enabled(), "joueur libre")
 	assert_push_error_count(0)
+
+
+# --- Capture (jalon 5D, T15) ------------------------------------------------------------
+# Une Poké Ball lancée sur un sauvage de la Route 1, par le vrai jeu (Boot, rencontre dans
+# l'herbe, SAC, LANCER, carte de capture). Graines choisies par simulation du même flux.
+
+const BALL := &"poke_ball"
+
+
+## Simule le premier lancer d'une Poké Ball sur [param species] N[param level] avec la graine
+## [param seed] : vrai s'il capture. [param rolled] : la rencontre est tirée dans la table de la
+## Route 1 d'abord (marche dans l'herbe), sinon le sauvage est créé directement.
+func _throw_catches(seed: int, species: StringName, level: int, rolled: bool) -> bool:
+	var data := _boot.get_pokemon_data()
+	var rng := GameRng.new(seed)
+	var encounter := WildEncounter.new(species, level, &"route_1_grass")
+	if rolled:
+		var table := _boot.get_encounter_library().get_table(&"route_1", &"grass")
+		encounter = table.roll(rng)
+		if encounter == null:
+			return false
+	var wild := Party.new()
+	wild.add(PokemonFactory.create(data, encounter.species, encounter.level, rng))
+	var battle := Battle.new(BattleSide.new(_starter_party(data), true),
+		BattleSide.new(wild, false, "", null), data, rng,
+		BattleRules.for_wild(_boot.get_item_library()))
+	battle.start()
+	for event: BattleEvent in battle.submit(BattleAction.ball(BALL)):
+		if event.kind == BattleEvent.Kind.CAUGHT:
+			return true
+	return false
+
+
+## Première graine (à partir de [param from]) dont le premier lancer capture ; −1 si aucune.
+func _catch_seed(species: StringName, level: int, rolled: bool, from: int = 0) -> int:
+	for seed: int in range(from, from + 3000):
+		if _throw_catches(seed, species, level, rolled):
+			return seed
+	return -1
+
+
+## Pilote une rencontre jusqu'au bout : SAC puis LANCER à chaque choix (jusqu'à [param throws]
+## lancers, puis FUITE) ; la carte de capture est lue puis fermée. Renvoie { outcome, card }.
+func _drive_capture(throws: int = 1) -> Dictionary:
+	var enc := _boot.get_encounter_director()
+	var battle_director := _boot.get_battle_director()
+	var battle_hud := _boot.get_battle_hud()
+	var report := {"outcome": Battle.Outcome.NONE, "card": {}}
+	enc.encounter_finished.connect(func(o: int) -> void: report["outcome"] = o)
+	var thrown := 0
+	var pending := false
+	var deadline := Time.get_ticks_msec() + int(TIMEOUT * 1000)
+	while enc.is_running() and Time.get_ticks_msec() < deadline:
+		var card := battle_director.get_capture_card()
+		var panel := battle_director.get_bag_panel()
+		var battle := battle_director.get_battle()
+		if card != null and card.is_waiting():
+			report["card"] = {
+				"title": card.get_title_text(), "result": card.get_result_text(),
+				"pokedex_shown": card.is_pokedex_line_shown(),
+			}
+			card.skip()
+		elif pending and panel != null and panel.is_shown() and not panel.is_answered():
+			pending = false
+			panel.get_action_button().pressed.emit()
+		elif battle != null and battle.get_state() == Battle.State.CHOOSING \
+				and battle_hud.get_zone() == BattleHud.Zone.ACTIONS and not pending:
+			if thrown < throws:
+				thrown += 1
+				pending = true
+				battle_hud.action_selected.emit(ActionGrid.BAG)
+			else:
+				battle_hud.action_selected.emit(ActionGrid.RUN)
+		await wait_process_frames(1)
+	assert_false(enc.is_running(), "la rencontre s'est terminée")
+	return report
+
+
+func test_a_ball_thrown_in_the_grass_captures_the_wild_pokemon() -> void:
+	var seed := _catch_seed(&"pidgey", 3, true)
+	assert_gt(seed, -1, "une graine : rencontre au 1er pas puis capture au 1er lancer")
+	if seed < 0:
+		return
+	_new_route_game(seed)
+	GameState.bag.add(BALL, 5)
+	var step := _stand_below_grass()
+	var enc := _boot.get_encounter_director()
+	var battle_director := _boot.get_battle_director()
+	var haptics: Array[int] = []
+	battle_director.haptic_requested.connect(func(ms: int) -> void: haptics.append(ms))
+	var caught: Array[Pokemon] = []
+	battle_director.pokemon_caught.connect(func(p: Pokemon, _stored: bool) -> void:
+		caught.append(p))
+	Input.action_press(&"move_up")
+	await wait_until(func() -> bool: return enc.is_running(), 5.0)
+	Input.action_release(&"move_up")
+	assert_eq(_player.get_cell(), step[1], "arrêté dans l'herbe")
+	var report := await _drive_capture()
+	assert_eq(report["outcome"], Battle.Outcome.CAUGHT, "capture")
+	assert_eq(GameState.bag.count_of(BALL), 4, "une Ball retirée")
+	assert_eq(GameState.party.size(), 2, "équipe de 2")
+	assert_eq(caught.size(), 1, "pokemon_caught une fois")
+	assert_same(GameState.party.get_at(1), caught[0], "le Pokémon capturé est dans l'équipe")
+	var pokemon := GameState.party.get_at(1)
+	assert_true(pokemon.species_id in [&"pidgey", &"rattata"], "espèce de la table")
+	assert_eq(pokemon.hp, pokemon.max_hp(), "PV pleins : aucun dégât avant la capture")
+	assert_true(GameState.pokedex.is_caught(pokemon.species_id), "capturé au Pokédex")
+	assert_eq(pokemon.origin, Pokemon.Origin.CAPTURE)
+	assert_eq(pokemon.met_map, &"route_1")
+	assert_eq(GameState.moments.size(), 1, "un grand moment")
+	assert_eq(GameState.moments[0]["type"], "first_capture")
+	assert_eq(GameState.moments[0]["map"], "route_1")
+	var card: Dictionary = report["card"]
+	assert_true((card["title"] as String).ends_with("!"), "carte de capture affichée")
+	assert_false(card["pokedex_shown"], "pas de ligne Pokédex avant Chen")
+	assert_eq(haptics.slice(0, 3), [40, 40, 40] as Array[int], "trois secousses vibrent")
+	assert_eq(haptics.slice(3), [30, 30, 120] as Array[int], "puis le motif de capture")
+	# Retour à l'exploration comme après une victoire : sans soin, joueur libre sur sa case.
+	assert_eq(_boot.get_map().map_id, &"route_1")
+	assert_eq(_player.get_cell(), step[1], "resté sur sa case d'herbe")
+	assert_true(_player.is_input_enabled(), "joueur libre")
+	assert_true(_boot.get_hud().are_controls_visible(), "contrôles revenus")
+	assert_false(_boot.get_battle_hud().is_shown(), "HUD de combat cachée")
+	assert_false(_boot.get_battle_stage().is_active(), "scène de combat rendue")
+	assert_push_error_count(0)
+
+
+func test_a_second_capture_keeps_a_single_first_capture_moment() -> void:
+	var first := _catch_seed(&"pidgey", 3, false)
+	var second := _catch_seed(&"rattata", 3, false, 6000)
+	assert_gt(first, -1)
+	assert_gt(second, -1)
+	if first < 0 or second < 0:
+		return
+	_new_route_game(first)
+	GameState.bag.add(BALL, 5)
+	_stand_below_grass()
+	var enc := _boot.get_encounter_director()
+	assert_true(enc.start_encounter(WildEncounter.new(&"pidgey", 3, &"route_1_grass")))
+	assert_eq((await _drive_capture())["outcome"], Battle.Outcome.CAUGHT, "première capture")
+	GameState.rng = GameRng.new(second)
+	assert_true(enc.start_encounter(WildEncounter.new(&"rattata", 3, &"route_1_grass")))
+	assert_eq((await _drive_capture())["outcome"], Battle.Outcome.CAUGHT, "seconde capture")
+	assert_eq(GameState.party.size(), 3, "équipe de 3")
+	assert_eq(GameState.bag.count_of(BALL), 3, "deux Balls retirées")
+	var firsts := 0
+	for moment: Dictionary in GameState.moments:
+		firsts += int(moment["type"] == "first_capture")
+	assert_eq(firsts, 1, "« première capture » une seule fois")
+	assert_true(GameState.pokedex.is_caught(&"pidgey"))
+	assert_true(GameState.pokedex.is_caught(&"rattata"))
+	assert_push_error_count(0)

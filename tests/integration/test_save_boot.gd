@@ -477,3 +477,81 @@ func test_the_rival_battle_records_seen_and_its_outcome() -> void:
 	assert_eq(GameState.moments[0], {"type": "rival_battle", "date": DATE, "map": "oak_lab",
 		"details": {"trainer": "rival_lab", "outcome": "loss"}})
 	assert_push_error_count(0)
+
+
+# --- Capture (jalon 5D, T15) ------------------------------------------------------------
+
+## Graine dont le premier lancer d'une Poké Ball capture un Rattata N3 (même flux d'aléatoire
+## que le jeu : création du sauvage, puis le moteur) ; −1 si aucune.
+func _catch_seed(data: PokemonData) -> int:
+	var items := _boot.get_item_library()
+	for seed: int in range(0, 3000):
+		var rng := GameRng.new(seed)
+		var wild := Party.new()
+		wild.add(PokemonFactory.create(data, &"rattata", 3, rng))
+		var party := Party.new()
+		party.add(PokemonFactory.create(data, &"charmander", 5, GameRng.new(999)))
+		var battle := Battle.new(BattleSide.new(party, true),
+			BattleSide.new(wild, false, "", null), data, rng, BattleRules.for_wild(items))
+		battle.start()
+		for event: BattleEvent in battle.submit(BattleAction.ball(&"poke_ball")):
+			if event.kind == BattleEvent.Kind.CAUGHT:
+				return seed
+	return -1
+
+
+## Une capture demande l'autosave : écrit une seule fois, après la carte de capture et la fin de
+## la rencontre, avec le Pokémon dans l'équipe, le Pokédex, la Ball en moins et le grand moment.
+func test_a_capture_saves_the_new_pokemon_once_the_game_is_stable() -> void:
+	await _start_boot(&"route_1", &"from_pallet_w", Vector2i.UP)
+	var data := _boot.get_pokemon_data()
+	var seed := _catch_seed(data)
+	assert_gt(seed, -1, "une graine de capture")
+	if seed < 0:
+		return
+	GameState.new_game(seed)
+	GameState.flags.set_flag(&"starter_chosen")
+	GameState.starter_species = &"charmander"
+	GameState.party.add(PokemonFactory.create(data, &"charmander", 5, GameRng.new(999)))
+	GameState.bag.add(&"poke_ball", 5)
+	var writes := _writes()
+	var enc := _boot.get_encounter_director()
+	assert_true(enc.start_encounter(WildEncounter.new(&"rattata", 3, &"route_1_grass")))
+	var battle_director := _boot.get_battle_director()
+	var battle_hud := _boot.get_battle_hud()
+	var pending := false
+	var deadline := Time.get_ticks_msec() + int(TIMEOUT * 1000)
+	while enc.is_running() and Time.get_ticks_msec() < deadline:
+		assert_eq(_writes(), writes, "rien pendant la rencontre, la carte de capture comprise")
+		var card := battle_director.get_capture_card()
+		var panel := battle_director.get_bag_panel()
+		var battle := battle_director.get_battle()
+		if card != null and card.is_waiting():
+			card.skip()
+		elif pending and panel != null and panel.is_shown() and not panel.is_answered():
+			pending = false
+			panel.get_action_button().pressed.emit()
+		elif battle != null and battle.get_state() == Battle.State.CHOOSING \
+				and battle_hud.get_zone() == BattleHud.Zone.ACTIONS and not pending:
+			pending = true
+			battle_hud.action_selected.emit(ActionGrid.BAG)
+		await wait_process_frames(1)
+	assert_false(enc.is_running(), "rencontre terminée")
+	await wait_process_frames(2)
+	assert_eq(_writes(), writes + 1, "sauvegardé une fois, partie stable")
+	var saved := _saved()
+	assert_eq((saved.get("party", []) as Array).size(), 2, "le Pokémon capturé est sauvegardé")
+	var met: Dictionary = ((saved["party"] as Array)[1] as Dictionary).get("met", {})
+	assert_eq(met.get("origin"), "capture", "rencontre : capture")
+	assert_eq(met.get("map"), "route_1")
+	assert_eq(int((saved.get("bag", {}) as Dictionary).get("poke_ball", 0)), 4, "une Ball de moins")
+	var entries: Dictionary = (saved.get("pokedex", {}) as Dictionary).get("entries", {})
+	var entry: Dictionary = entries.get("rattata", {})
+	assert_true(entry.get("caught", false), "Pokédex : capturé")
+	assert_eq(entry.get("first_caught_map"), "route_1", "Pokédex : carte de la capture")
+	assert_eq(int(entry.get("times_seen", 0)), 1, "une seule observation")
+	var types: Array[String] = []
+	for moment: Variant in saved.get("moments", []):
+		types.append((moment as Dictionary).get("type", ""))
+	assert_eq(types, ["first_capture"] as Array[String], "grand moment « première capture »")
+	assert_push_error_count(0)
