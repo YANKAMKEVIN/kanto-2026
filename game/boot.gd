@@ -97,6 +97,7 @@ var _in_foreground: bool = true
 @onready var _ambient: AmbientWatcher = %AmbientWatcher
 @onready var _encounters: EncounterDirector = %EncounterDirector
 @onready var _menu: MenuDirector = %MenuDirector
+@onready var _menu_screen: TrainerMenu = %TrainerMenu
 
 
 func _ready() -> void:
@@ -171,6 +172,16 @@ func _ready() -> void:
 	_menu.setup(GameState, _pokemon, _zones, _objectives, _unlocks, _can_open_menu)
 	_menu.menu_opened.connect(_on_menu_opened)
 	_menu.menu_closed.connect(_on_menu_closed)
+	# L'écran (jalon-06.md §6.6) : ouverture et vue dans la même frame, sans await (un fondu
+	# coupé laisse une coroutine non reprise).
+	_menu.menu_opened.connect(_menu_screen.open_animated)
+	_menu.menu_closed.connect(_menu_screen.close_animated.unbind(1))
+	_menu.dashboard_shown.connect(_menu_screen.show_dashboard)
+	_menu.placeholder_shown.connect(_menu_screen.show_placeholder)
+	_menu_screen.route_requested.connect(_menu.go)
+	_menu_screen.back_requested.connect(_menu.handle_back)
+	_menu_screen.close_requested.connect(_menu.close)
+	_hud.menu_requested.connect(_menu.open)
 	SceneRouter.setup(_world, _player, _fade)
 	# Destinations « à venir » (dossier-07 §12, build de développement) : l'écran provisoire.
 	SceneRouter.coming_soon_presenter = _coming_soon.present
@@ -238,6 +249,11 @@ func get_player() -> Player:
 
 func get_map() -> GameMap:
 	return SceneRouter.get_current_map()
+
+
+## Écran du Menu Dresseur (jalon 6).
+func get_trainer_menu() -> TrainerMenu:
+	return _menu_screen
 
 
 ## Directeur du Menu Dresseur (jalon 6).
@@ -378,6 +394,9 @@ func _on_go_back() -> void:
 ## zone retiré.
 func _on_menu_opened() -> void:
 	_hud.hide_zone_title()
+	# Le fondu du titre est un Tween du HUD, gelé par la pause : masqué net (la fin du fondu,
+	# reprise à la fermeture, ne change plus rien).
+	_hud.get_zone_title().visible = false
 	_refresh_controls()
 
 
