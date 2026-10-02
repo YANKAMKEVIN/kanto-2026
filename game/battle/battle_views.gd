@@ -10,6 +10,11 @@ extends RefCounted
 ## Clés : ActionGrid.ACTIONS.
 const TRAINER_BATTLE_ACTIONS: Dictionary[StringName, bool] = {&"attack": true}
 
+## Actions de la grille disponibles contre un Pokémon sauvage (jalon 5B) : ATTAQUER et
+## FUITE ; SAC reste atténué jusqu'au 5D (aucun objet utilisable avant), ÉQUIPE atténué
+## (pas de changement de Pokémon au jalon 5). Clés : ActionGrid.ACTIONS.
+const WILD_BATTLE_ACTIONS: Dictionary[StringName, bool] = {&"attack": true, &"run": true}
+
 
 ## Carte d'information du Pokémon envoyé par [param event] (SENT_OUT) : nom, sexe, niveau,
 ## PV ; PV chiffrés du côté du joueur seulement (dossier 05 §5).

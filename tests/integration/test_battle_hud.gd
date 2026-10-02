@@ -9,6 +9,8 @@ const HUD_SCENE := "res://game/ui/battle/battle_hud.tscn"
 const SCREEN_WIDTHS: Array[float] = [1920.0, 2340.0]
 const SCREEN_HEIGHT := 1080.0
 const FIRST_BATTLE: Dictionary[StringName, bool] = {&"attack": true}
+## Combat sauvage (jalon 5B) : ATTAQUER et FUITE actifs, SAC et ÉQUIPE atténués.
+const WILD_BATTLE: Dictionary[StringName, bool] = {&"attack": true, &"run": true}
 const INTRO := "Le Rival envoie Carapuce !"
 ## Abscisse jusqu'où un toucher de test atteint l'interface (voir _reach).
 const REACHABLE_X := 800.0
@@ -47,6 +49,11 @@ func _own() -> BattleCardView:
 
 func _foe() -> BattleCardView:
 	return BattleCardView.new("Carapuce", BattleCardView.Gender.FEMALE, 5, 20, 20, false)
+
+
+## Un sauvage : nom, sexe, « Nv. 3 », PV sans chiffres, aucune équipe.
+func _wild_foe() -> BattleCardView:
+	return BattleCardView.new("Rattata", BattleCardView.Gender.MALE, 3, 14, 14, false)
 
 
 func _moves() -> Array[BattleMoveView]:
@@ -222,6 +229,69 @@ func test_attack_tap_emits_once() -> void:
 	assert_signal_emit_count(_hud, "action_selected", 1)
 	assert_signal_emitted_with_parameters(_hud, "action_selected", [&"attack"])
 	assert_signal_emitted_with_parameters(_hud, "haptic_played", [UiTokens.HAPTIC_TAP_MS])
+
+
+func test_wild_actions_attack_dominant_run_active() -> void:
+	_hud.show_actions(WILD_BATTLE)
+	var grid := _hud.get_action_grid()
+	assert_true(grid.visible)
+	assert_eq(_hud.get_zone(), BattleHud.Zone.ACTIONS)
+	assert_true(grid.is_action_enabled(&"attack"))
+	assert_true(grid.is_attack_glowing(), "ATTAQUER reste mis en avant en sauvage")
+	assert_true(grid.is_action_enabled(&"run"), "FUITE active en sauvage")
+	for action: StringName in [&"bag", &"team"]:
+		assert_false(grid.is_action_enabled(action), "%s atténué" % action)
+		assert_true(grid.get_button(action).disabled)
+
+
+func test_wild_run_tap_emits_once() -> void:
+	_hud.show_actions(WILD_BATTLE)
+	await wait_process_frames(2)
+	await _tap(_action_center(&"run"))
+	await _tap(_action_center(&"run"))
+	assert_signal_emit_count(_hud, "action_selected", 1)
+	assert_signal_emitted_with_parameters(_hud, "action_selected", [&"run"])
+	assert_signal_emitted_with_parameters(_hud, "haptic_played", [UiTokens.HAPTIC_TAP_MS])
+
+
+func test_wild_bag_and_team_stay_mute() -> void:
+	_hud.show_actions(WILD_BATTLE)
+	await wait_process_frames(2)
+	for action: StringName in [&"bag", &"team"]:
+		await _tap(_action_center(action))
+	assert_signal_not_emitted(_hud, "action_selected")
+	assert_signal_not_emitted(_hud, "haptic_played", "ni vibration")
+
+
+## Un Pokémon sauvage n'a pas d'équipe visible : la carte adverse ne porte aucune pastille,
+## la carte joueur garde ses 6 (une seule PartyPips dans la HUD, rattachée au joueur).
+func test_wild_foe_card_has_no_party_pips() -> void:
+	_hud.set_party(6)
+	_hud.set_card(BattleHud.Side.PLAYER, _own())
+	_hud.set_card(BattleHud.Side.FOE, _wild_foe())
+	var pips := _hud.get_party_pips()
+	assert_true(pips.visible, "les pastilles accompagnent la carte joueur")
+	assert_eq(pips.get_party_count(), 6)
+	var foe := _hud.get_card(BattleHud.Side.FOE)
+	assert_eq(foe.find_children("*", "PartyPips", true, false).size(), 0,
+		"aucune pastille sous la carte adverse")
+	assert_false(foe.is_hp_numbers_visible(), "pas de PV chiffrés non plus (adversaire)")
+
+
+func test_wild_touch_zones_min_size_inside_safe_margin() -> void:
+	for width: float in SCREEN_WIDTHS:
+		var size := Vector2(width, SCREEN_HEIGHT)
+		_set_screen(width)
+		_hud.show_actions(WILD_BATTLE)
+		await wait_process_frames(2)
+		var safe := Rect2(Vector2.ONE * UiTokens.SAFE_MARGIN,
+			size - Vector2.ONE * UiTokens.SAFE_MARGIN * 2.0)
+		for action: StringName in ActionGrid.ACTIONS:
+			var rect := _hud.get_action_grid().get_button(action).get_global_rect()
+			assert_true(rect.size.x >= UiTokens.TOUCH_MIN and rect.size.y >= UiTokens.TOUCH_MIN,
+				"%s ≥ TOUCH_MIN à %d (%s)" % [action, width, rect.size])
+			assert_true(safe.encloses(rect), "%s dans SAFE_MARGIN à %d" % [action, width])
+		await _hud.hide_all()
 
 
 func test_show_moves_replaces_grid_and_shows_back() -> void:

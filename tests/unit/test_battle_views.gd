@@ -72,3 +72,13 @@ func test_first_battle_actions_attack_only() -> void:
 	assert_true(BattleViews.TRAINER_BATTLE_ACTIONS.get(ActionGrid.ATTACK, false))
 	for action: StringName in [ActionGrid.BAG, ActionGrid.TEAM, ActionGrid.RUN]:
 		assert_false(BattleViews.TRAINER_BATTLE_ACTIONS.get(action, false), str(action))
+
+
+## Jalon 5B : contre un sauvage, ATTAQUER et FUITE actifs ; SAC et ÉQUIPE atténués.
+func test_wild_battle_actions_attack_and_run() -> void:
+	for action: StringName in BattleViews.WILD_BATTLE_ACTIONS:
+		assert_true(ActionGrid.ACTIONS.has(action), "clé de la grille : %s" % action)
+	assert_true(BattleViews.WILD_BATTLE_ACTIONS.get(ActionGrid.ATTACK, false), "ATTAQUER actif")
+	assert_true(BattleViews.WILD_BATTLE_ACTIONS.get(ActionGrid.RUN, false), "FUITE active")
+	for action: StringName in [ActionGrid.BAG, ActionGrid.TEAM]:
+		assert_false(BattleViews.WILD_BATTLE_ACTIONS.get(action, false), str(action))
