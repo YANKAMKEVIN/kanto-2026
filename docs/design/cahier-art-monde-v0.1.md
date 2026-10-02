@@ -40,7 +40,37 @@ Les références J7 : `jadielle-vue-generale-v1`, `jadielle-planche-v1`, `centre
 | **Personnages** | silhouette lisible, proportions chibi (environ 3 têtes), détails (casquette, sac, chaussures), ombre au sol, animations riches |
 | **Cohérence** | tous les assets semblent peints par la même main : angle, échelle, lumière, saturation et finesse du trait identiques |
 
-### 1.3 Ce que la cible n'impose pas
+### 1.3 ADN visuel Kanto 2026 (invariant, v1)
+
+Ce bloc est **recopié mot pour mot** dans chaque prompt de production (`fiches-assets/`). On ne le modifie jamais dans un prompt isolé : une évolution donne une **v2** de l'ADN, et la série concernée est réévaluée. Il est aussi la base de la grille §1.2.
+
+```text
+ADN VISUEL KANTO 2026 — v1 (à respecter strictement)
+- Rendu : illustration 2D peinte numériquement, dans l'esprit d'un RPG Pokémon moderne au rendu « HD-2D peint » : formes simples, lisibles et arrondies, détails fins mais ordonnés. Ni pixel art, ni 3D, ni photo, ni aquarelle, ni cartoon en aplats.
+- Perspective : vue de dessus de trois quarts, en projection oblique frontale, sans aucun point de fuite. Les verticales restent strictement verticales et les horizontales strictement horizontales. On voit le dessus des objets et leur face avant (côté sud), jamais leurs côtés. Pas de vue isométrique, pas de rotation. Le sol est vu à plat, comme sur un plan.
+- Proportions : légèrement stylisées, trapues et rassurantes. Échelle commune : 1 case de jeu = 1 mètre environ ; un adulte mesure 1,33 case ; une porte simple mesure 1 case de large et 1,5 case de haut.
+- Contours : aucun trait noir. Contour fin et doux, d'une teinte plus sombre et plus saturée que la couleur locale, qui s'efface presque du côté éclairé.
+- Volumes : trois valeurs nettes par matériau (lumière, ombre propre, reflet ambiant), transitions douces, petits accents de lumière sur les arêtes.
+- Matériaux : reconnaissables (bois, pierre, tuile, feuillage, verre) à leur forme et à quelques touches de texture, jamais à une texture photographique.
+- Couleurs : chaudes, lumineuses et saturées sans être fluo. Verts allant du vert-jaune ensoleillé au vert sapin. Ombres colorées tirant vers le bleu-vert ou le violet froid, jamais grises ni noires. Couleurs franches pour les toits.
+- Texture : pinceau net et propre, légère granularité picturale ; pas de bruit, pas de flou, pas de netteté artificielle.
+- Lumière : une seule source, le soleil, en haut à gauche de l'image (la fiche précise la variante).
+- Ombres : aucune ombre portée au sol (le jeu l'ajoute lui-même). Les ombres propres et internes (sous le feuillage, sous un avant-toit) sont peintes.
+- Isolement : un seul objet, entier, centré, sur fond transparent ; rien autour : ni sol, ni herbe, ni décor, ni personnage.
+- Interdits partout : texte, lettres, chiffres, logo (sauf l'emblème demandé), signature, filigrane, cadre, personnage, Pokémon, ombre portée, sol sous l'objet, flou de profondeur, vignettage.
+```
+
+**Variantes de lumière** (bloc recopié mot pour mot selon la variante, §5.3) :
+
+```text
+LUMIÈRE GH (golden hour) : lumière de fin d'après-midi ; soleil chaud, doré et bas, en haut à gauche ; les faces tournées vers le haut et la gauche sont éclairées en jaune-orangé ; ombres propres bleu-violet ; fin liseré lumineux chaud sur les contours éclairés.
+```
+
+```text
+LUMIÈRE NE (neutre) : lumière de milieu de journée, diffuse et blanche, venant légèrement du haut à gauche ; volumes conservés par un ombrage doux ; aucune teinte dorée ou orangée, aucun liseré chaud ; ombres propres neutres, légèrement bleutées.
+```
+
+### 1.4 Ce que la cible n'impose pas
 
 La **géométrie exacte** des images (le jeu décide où passe le joueur ; grille de 96 px, collisions case par case) et les écarts déjà corrigés par le dossier 09 (pas de mer, Pokémon des PNJ, rayons de la Boutique, etc.).
 
@@ -65,7 +95,7 @@ La **géométrie exacte** des images (le jeu décide où passe le joueur ; grill
 
 ## 3. Pipeline de production
 
-Les briques sont classées de la plus rapide à la plus exigeante. **On monte d'un cran dès qu'une famille (§1.2) n'atteint pas la cible**, et pas seulement pour cette famille.
+Les briques sont classées de la plus rapide à la plus exigeante. **On monte d'un cran, pour cette famille, dès qu'elle (§1.2) n'atteint pas la cible.** Le cran A est une **méthode de production**, pas un niveau de qualité : un asset qui n'atteint pas les références J7 n'est **jamais** validé « parce que c'est assez bien pour un jeu ». On le corrige, ou on passe au cran B.
 
 ### 3.1 Règle de base : un asset = une image dédiée
 
@@ -74,7 +104,10 @@ On ne découpe jamais une planche de concept. Chaque asset est produit **sépar�
 - **échelle** : taille finale en cases et en pixels, empreinte au sol ;
 - **lumière** : direction unique (par exemple soleil en haut à gauche) ; ombres portées **non peintes** (Godot les ajoute, pour qu'elles restent cohérentes) ;
 - **fond** : uni, pour le détourage ;
-- **style** : une image de référence imposée, la même pour toute la série.
+- **style** : l'**ADN visuel** (§1.3) recopié mot pour mot, une référence J7 jointe, puis l'**ancre de style** : dès qu'un asset de la série est validé, il est joint à tous les prompts suivants (« respecte exactement le style de l'image jointe »). On ne génère jamais deux assets avec des prompts indépendants et sans référence commune ;
+- **identifiant stable** (`WORLD_TREE_A_01`…) et fichiers nommés `ID_VARIANTE_rN.png` (`WORLD_TREE_A_01_GH_r2.png`) pour demander une correction sans ambiguïté.
+
+Fiches de production : `docs/design/fiches-assets/` (série 01 : place centrale de Jadielle).
 
 ### 3.2 Les briques
 
