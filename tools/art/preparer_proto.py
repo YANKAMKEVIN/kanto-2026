@@ -33,10 +33,37 @@ OBJETS = [
     ("WORLD_TREE_CENTRAL_01_NE_r1.png", "tree_central_ne.png", ("h", 6)),
     ("WORLD_BLDG_CENTRE_01_NE_r1.png", "centre_ne.png", ("w", 8)),
     ("WORLD_BLDG_BOUTIQUE_01_NE_r1.png", "boutique_ne.png", ("w", 8)),
+    # Intérieurs du Centre et de la Boutique (série 03, lumière neutre).
+    ("INT_CENTRE_COMPTOIR_NE_r1.png", "int_comptoir.png", ("w", 5)),
+    ("INT_CENTRE_TERMINAL_NE_r1.png", "int_terminal.png", ("h", 2.2)),
+    ("INT_CENTRE_BANQUETTE_NE_r1.png", "int_banquette.png", ("w", 2.3)),
+    ("INT_PLANTE_NE_r1.png", "int_plante.png", ("h", 2.4)),
+    ("INT_BOUTIQUE_CAISSE_NE_r1.png", "int_caisse.png", ("w", 5)),
+    ("INT_BOUTIQUE_RAYON_MURAL_NE_r1.png", "int_rayon.png", ("w", 2.7)),
+    ("INT_BOUTIQUE_PRESENTOIR_NE_r1.png", "int_presentoir.png", ("w", 3)),
+    # Reste de Jadielle (série 04, lumière neutre).
+    ("WORLD_BLDG_MAISON_A_01_NE_r1.png", "maison_a.png", ("w", 6)),
+    ("WORLD_BLDG_MAISON_B_01_NE_r1.png", "maison_b.png", ("w", 5.5)),
+    ("WORLD_BLDG_ARENE_01_NE_r1.png", "arene.png", ("w", 10)),
+    ("WORLD_PROP_HAIE_01_NE_r1.png", "haie.png", ("w", 4)),
+    ("WORLD_PROP_CLOTURE_01_NE_r1.png", "cloture.png", ("w", 4)),
+    ("WORLD_PROP_PANNEAU_01_NE_r1.png", "panneau.png", ("h", 2)),
+    ("WORLD_PROP_PORTE_NORD_01_NE_r1.png", "porte_nord.png", ("w", 5)),
+    # Route 22 (série 05, lumière neutre).
+    ("WORLD_RELIEF_FALAISE_01_NE_r1.png", "falaise.png", ("w", 4)),
+    ("WORLD_RELIEF_ESCALIER_01_NE_r1.png", "escalier.png", ("w", 2.2)),
+    ("WORLD_PROP_ROCHER_01_NE_r1.png", "rocher.png", ("w", 2)),
+    ("WORLD_GROUND_HAUTES_HERBES_01_NE_r1.png", "hautes_herbes.png", ("w", 1.15)),
+]
+# Enveloppes des pièces (15 × 10 cases), opaques.
+PIECES = [
+    ("INT_CENTRE_COQUE_NE_r1.png", "int_centre_coque.png"),
+    ("INT_BOUTIQUE_COQUE_NE_r2.png", "int_boutique_coque.png"),
 ]
 SOLS = [
     ("VALIDE_HERBE.png", "herbe.png", 1.0),
     ("VALIDE_PAVE_CENTRE.png", "paves.png", 0.7),  # contraste réduit (fiche)
+    ("WORLD_GROUND_CHEMIN_01_NE_r1.png", "chemin.png", 0.55),
 ]
 TEXTURE_SOL = 384  # 4 × 4 cases
 PLANCHE_BORDURE = "VALIDE_DECAL_BORD.png"
@@ -58,12 +85,29 @@ def _objets() -> None:
         print(f"{sortie} : {taille[0]} × {taille[1]}")
 
 
+def _pieces() -> None:
+    for source, sortie in PIECES:
+        image = Image.open(SOURCE / source).convert("RGB").resize((15 * CASE, 10 * CASE),
+                                                                   Image.LANCZOS)
+        image.save(SORTIE / sortie)
+        print(f"{sortie} : {image.width} × {image.height}")
+
+
+def _decor() -> None:
+    image = Image.open(SOURCE / "WORLD_DECOR_PLATEAU_INDIGO_01_NE_r1.png").convert("RGB")
+    image.save(SORTIE / "plateau_indigo.png")
+    print("plateau_indigo.png : 1536 × 1024")
+
+
 def _sols() -> None:
     for source, sortie, contraste in SOLS:
         image = Image.open(SOURCE / source).convert("RGB")
         image = image.resize((TEXTURE_SOL, TEXTURE_SOL), Image.LANCZOS)
         if contraste != 1.0:
             image = ImageEnhance.Contrast(image).enhance(contraste)
+        if sortie == "chemin.png":
+            # Terre trop orangée à la génération : ramenée vers l'ocre clair.
+            image = ImageEnhance.Color(image).enhance(0.55)
         image.save(SORTIE / sortie)
         print(f"{sortie} : {TEXTURE_SOL} × {TEXTURE_SOL}")
 
@@ -88,5 +132,7 @@ def _bordure() -> None:
 if __name__ == "__main__":
     SORTIE.mkdir(parents=True, exist_ok=True)
     _objets()
+    _pieces()
+    _decor()
     _sols()
     _bordure()
