@@ -30,7 +30,7 @@ extends RefCounted
 ##   de capture, qui porte tout le texte) ;
 ## - BROKE_FREE : RELEASE (le Pokémon ressort), puis le message.
 ## Jalon 6 (soin) :
-## - ITEM_USED : « Tu utilises une Potion sur … », HEAL (la barre remonte), puis « … récupère
+## - ITEM_USED : « Tu utilises Potion sur … », HEAL (la barre remonte), puis « … récupère
 ##   20 PV. ».
 ## Les phrases viennent de [BattleText] : rien n'est écrit ici.
 

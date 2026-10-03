@@ -31,7 +31,7 @@ extends RefCounted
 ## passait inaperçue) ; MOVE_LEARNED → « move_learned » ; MOVE_FORGET_OFFERED →
 ## « move_forget_prompt ». La suite de l'oubli (« move_forgot », « move_not_learned ») ne
 ## vient pas d'un événement : la présentation la demande à [method line_for].
-## Soin (jalon 6) : ITEM_USED → « item_used » (« Tu utilises une Potion sur Salamèche. »), puis
+## Soin (jalon 6) : ITEM_USED → « item_used » (« Tu utilises Potion sur Salamèche. »), puis
 ## « hp_restored » ({amount} : PV rendus, [member BattleEvent.amount]).
 ## « draft » : texte à relire par Kevin. « text_f » (facultatif) : la phrase accordée au
 ## féminin, employée quand le Pokémon de l'événement est une femelle (décision de Kevin

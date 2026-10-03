@@ -20,7 +20,7 @@ const PLACE_LABELS: Dictionary[Pokemon.Origin, String] = {
 ## Phrase d'attachement du starter (onglet Histoire).
 const STARTER_NOTE: String = "Ton premier Pokémon"
 ## Onglet Histoire d'un Pokémon sans rencontre enregistrée (sauvegarde d'avant le 5C.5).
-const HISTORY_UNKNOWN: String = "Son histoire commence avec toi."
+const HISTORY_UNKNOWN: String = "Son histoire reste à écrire."
 ## « 320 / 560 XP » et « 240 XP avant le niveau suivant ».
 const EXP_FORMAT: String = "%s / %s XP"
 const EXP_REMAINING_FORMAT: String = "%s XP avant le niveau suivant"

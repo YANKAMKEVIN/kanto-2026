@@ -275,7 +275,7 @@ func test_item_used_is_a_message_the_heal_then_a_message() -> void:
 	var beats := BattlePlayback.beats(used, _texts, _data)
 	assert_eq(_kinds(beats), [BattleBeat.Kind.MESSAGE, BattleBeat.Kind.HEAL,
 		BattleBeat.Kind.MESSAGE] as Array[BattleBeat.Kind])
-	assert_eq(_messages(beats), ["Tu utilises une Potion sur Salamèche.",
+	assert_eq(_messages(beats), ["Tu utilises Potion sur Salamèche.",
 		"Salamèche récupère 13 PV."] as Array[String])
 	assert_eq(beats[1].event.party_index, 1, "le directeur sait quel Pokémon remonte")
 	assert_eq(beats[1].side, BattleEvent.SideId.PLAYER)

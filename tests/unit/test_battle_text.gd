@@ -383,7 +383,7 @@ func test_item_used_then_hp_restored() -> void:
 	var used := _event(K.ITEM_USED, false, "Salamèche")
 	used.item_name = "Potion"
 	used.amount = 20
-	assert_eq(_lines(used), ["Tu utilises une Potion sur Salamèche.",
+	assert_eq(_lines(used), ["Tu utilises Potion sur Salamèche.",
 		"Salamèche récupère 20 PV."] as Array[String])
 	assert_true(_text.is_draft(&"item_used"))
 	assert_true(_text.is_draft(&"hp_restored"))

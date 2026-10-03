@@ -11,7 +11,7 @@ const PLAYER_TITLE: String = "Dresseur Pokémon"
 ## Pas d'AUDIO aux Paramètres (Q-17).
 const CARD_TEXTS: Dictionary[StringName, Array] = {
 	MenuRoute.TEAM: ["Équipe", "Tes Pokémon et leurs capacités."],
-	MenuRoute.POKEDEX: ["Pokédex", "Tes découvertes dans la région de Kanto."],
+	MenuRoute.POKEDEX: ["Pokédex", "Les Pokémon que tu as observés."],
 	MenuRoute.BAG: ["Sac", "Utilise et range tes objets."],
 	MenuRoute.MAP: ["Carte", "Kanto et tes découvertes."],
 	MenuRoute.TRAINER: ["Dresseur", "Ton profil et ton parcours."],
