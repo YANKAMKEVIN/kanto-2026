@@ -31,6 +31,8 @@ extends RefCounted
 ## passait inaperçue) ; MOVE_LEARNED → « move_learned » ; MOVE_FORGET_OFFERED →
 ## « move_forget_prompt ». La suite de l'oubli (« move_forgot », « move_not_learned ») ne
 ## vient pas d'un événement : la présentation la demande à [method line_for].
+## Soin (jalon 6) : ITEM_USED → « item_used » (« Tu utilises une Potion sur Salamèche. »), puis
+## « hp_restored » ({amount} : PV rendus, [member BattleEvent.amount]).
 ## « draft » : texte à relire par Kevin. « text_f » (facultatif) : la phrase accordée au
 ## féminin, employée quand le Pokémon de l'événement est une femelle (décision de Kevin
 ## n° 15, jalon 4 §8) ; sans elle, « text » sert pour tous. [method lines] traduit un
@@ -51,9 +53,11 @@ const TEMPLATE_IDS: Array[StringName] = [
 	&"seeded", &"drained",
 	&"ball_thrown", &"broke_free", &"caught_title", &"pokedex_new", &"joined_party",
 	&"sent_to_storage",
+	&"item_used", &"hp_restored",
 ]
 const PLACEHOLDERS: Array[String] = [
 	"pokemon", "de_pokemon", "move", "trainer", "stat", "level", "exp", "old_move", "item",
+	"amount",
 ]
 
 const _TEMPLATE_KEYS: Array[String] = ["text", "text_f", "draft"]
@@ -206,6 +210,9 @@ func lines(event: BattleEvent, data: PokemonData, trainer: TrainerData = null) \
 			result.append(_fill(&"ball_thrown", event, data))
 		BattleEvent.Kind.BROKE_FREE:
 			result.append(_fill(&"broke_free", event, data))
+		BattleEvent.Kind.ITEM_USED:
+			result.append(_fill(&"item_used", event, data))
+			result.append(_fill(&"hp_restored", event, data))
 		BattleEvent.Kind.BATTLE_ENDED:
 			# FLED ne porte pas de message ici (il est sur l'événement FLED). Un sauvage n'a
 			# pas de dresseur (trainer_name vide) : « Tu as battu… » ne s'affiche pas.
@@ -254,6 +261,7 @@ func _fill(id: StringName, event: BattleEvent, data: PokemonData,
 		"exp": event.amount,
 		"old_move": forgotten.name if forgotten != null else String(old_move),
 		"item": event.item_name,
+		"amount": event.amount,
 	})
 
 

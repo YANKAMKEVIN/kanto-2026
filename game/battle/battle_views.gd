@@ -17,9 +17,9 @@ const WILD_BATTLE_ACTIONS: Dictionary[StringName, bool] = {
 	&"attack": true, &"bag": true, &"run": true,
 }
 
-## Catégories d'objets utilisables dans le Sac de combat sauvage (jalon 5) : les Balls. La
-## Potion est rangée mais son usage arrive au jalon 6 (décision de Kevin) : elle n'est jamais
-## affichée au combat.
+## Catégories d'objets proposées dans le Sac de combat sauvage tant que le soin en combat n'est
+## pas câblé : les Balls. Le moteur sait soigner depuis le T10 (jalon-06.md §3.4) ; le T12
+## retire ce filtre en câblant le choix du Pokémon et l'action [method BattleAction.heal].
 const USABLE_IN_WILD_BATTLE: Array[ItemData.Category] = [ItemData.Category.BALL]
 
 
@@ -79,20 +79,14 @@ static func move_category(category: MoveData.Category) -> BattleMoveView.Categor
 	return BattleMoveView.Category.PHYSICAL
 
 
-## Objets du Sac de combat ([BagEntryView]), dans l'ordre des identifiants de [param bag] : un
-## objet inconnu de [param items] est omis (push_error). Nom au singulier, catégorie en
-## identifiant des données ; [member BagEntryView.usable] vrai pour les catégories de
-## [constant USABLE_IN_WILD_BATTLE] seulement (jamais la Potion au jalon 5).
+## Objets du Sac de combat sauvage ([BagEntryView]) : enveloppe de [method BagQuery.entries]
+## (contexte combat sauvage, pertinence : Balls puis soins). Un objet inconnu de [param items]
+## est omis (push_error). Nom au singulier, catégorie en identifiant des données ;
+## [member BagEntryView.usable] vrai seulement pour les catégories de
+## [constant USABLE_IN_WILD_BATTLE] (jusqu'au câblage du soin en combat, T12).
 static func bag_entries(bag: Bag, items: ItemLibrary) -> Array[BagEntryView]:
-	var views: Array[BagEntryView] = []
-	if bag == null or items == null:
-		return views
-	for id: StringName in bag.get_ids():
-		var item := items.get_item(id)
-		if item == null:
-			push_error("BattleViews : objet inconnu « %s »" % id)
-			continue
-		views.append(BagEntryView.new(id, item.name, bag.count_of(id), item.description,
-			StringName(ItemData.CATEGORY_NAMES[item.category]),
-			USABLE_IN_WILD_BATTLE.has(item.category)))
+	var views := BagQuery.entries(bag, items, BagQuery.CONTEXT_WILD_BATTLE)
+	for view: BagEntryView in views:
+		var item := items.get_item(view.item_id)
+		view.usable = view.usable and USABLE_IN_WILD_BATTLE.has(item.category)
 	return views

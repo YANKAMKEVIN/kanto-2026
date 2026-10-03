@@ -271,6 +271,19 @@ static func apply(bag: Bag, item: ItemData, pokemon: Pokemon, context: StringNam
 
 Tests : `test_item_library` (catégories, `heal_amount`), `test_item_use` (PV pleins, K.O., contexte, retrait unique, Sac vide), `test_bag` (favoris, ordre d'obtention), `test_bag_query` (ordre des onglets, onglets vides absents, favoris en tête, filtres de contexte, tri), `test_battle` (étendu : soin légal en sauvage, objet retiré une seule fois par le directeur, PV bornés, l'adversaire joue ensuite, soin d'un membre hors combat), `test_battle_text`, `test_battle_playback`, `test_battle_simulation` (inchangée sans objet).
 
+**Fait au T10 (2026-10-03)** — ce qui diffère du croquis ci-dessus :
+- Fichiers : `game/items/item_data.gd` (catégories `BATTLE`, `FIELD`, `KEY` en fin d'enum ; `heal_amount`, `order`, `category_id()`, `contexts()`, `usable_in()`, `targets_pokemon()` ; constantes `CONTEXT_FIELD`, `CONTEXT_WILD_BATTLE`, `CONTEXT_TRAINER_BATTLE`), `item_library.gd` (`heal_amount` strict, `get_ids_in_data_order`), `bag.gd` (`toggle_favorite`), **nouveaux** `game/items/item_use.gd`, `item_use_result.gd`, `game/systems/menu/bag_query.gd`, `views/bag_view.gd`, `views/party_picker_view.gd`, `views/party_target_view.gd` ; `game/ui/battle/bag_entry_view.gd` (champs ajoutés, toujours à cet endroit : T11 le déplace) ; moteur : `battle_action.gd`, `battle_rules.gd`, `battle_event.gd`, `battle.gd`, `battle_beat.gd`, `battle_playback.gd`, `battle_text.gd`, `battle_views.gd` ; données : `data/items/items.json` (`"heal_amount": 20`), `data/battle/messages.json` (`item_used`, `hp_restored`, `draft`). Tests : `test_item_use`, `test_bag_query` (nouveaux) ; `test_item_library`, `test_bag`, `test_battle`, `test_battle_text`, `test_battle_playback` étendus.
+- **Contextes** : les valeurs vivent dans `ItemData` (la règle d'un objet) ; `BagQuery.CONTEXT_*` les reprennent, `CONTEXT_TEAM` (= `ItemUse.CONTEXT_TEAM` = `MenuRoute.BAG_CONTEXT_TEAM`) se lit comme l'exploration pour les règles (`ItemUse.rule_context`).
+- **`ItemUse`** : en plus de `check` / `apply` (menu), `check_target(item, pokemon, context)` et `restore(item, pokemon) -> int` **sans le Sac**, pour le moteur (une seule règle, le moteur ne connaît pas le Sac). Ordre des refus : `NOT_USABLE` (objet qui ne se donne pas à un Pokémon : Ball, objet clé… ; objet ou Pokémon absent), `WRONG_CONTEXT`, `NOT_IN_BAG`, `FAINTED`, `FULL_HP`. Seuls les soins (`HEAL`, `heal_amount` > 0) se donnent à un Pokémon au J6.
+- **`BagQuery`** vit dans `game/systems/menu/` (§6.1) ; `BattleViews.bag_entries` en est une enveloppe (contexte combat sauvage). **Le Sac du combat ne propose encore que les Balls** (`USABLE_IN_WILD_BATTLE` gardé) : sinon UTILISER sur la Potion enverrait une Ball au moteur avant le câblage. **T12 retire ce filtre** en câblant le soin.
+- **FAVORIS** : un onglet (le premier, s'il y a un favori **présent** dans le Sac), pas une catégorie : `BagView.favorites` porte les mêmes vues que `entries` ; en « pertinence », dans l'ordre de marquage ; sinon dans l'ordre du tri. Un objet favori reste aussi dans sa catégorie.
+- **Tris** : nom (sans casse, naturel), quantité (la plus grande d'abord), récents (`acquired_rank`, Q-12) ; égalités dans l'ordre de la pertinence. Pertinence : combat sauvage, Balls puis soins puis le reste ; ailleurs l'**ordre des données** (`ItemData.order`, ordre de lecture des fichiers).
+- **Depuis la fiche Équipe** (`CONTEXT_TEAM`) : seuls les objets qui se donnent à un Pokémon en exploration (« compatibles » = un soin, même si ce Pokémon a ses PV pleins : la raison s'affiche alors sur la carte, l'écran ne se vide pas) ; chaque vue dit si l'objet sert **sur ce Pokémon**, sinon `note` = la raison. Onglet d'ouverture : SOINS.
+- **Mentions** : hors combat, un objet de combat (Ball comprise) porte « Utilisable en combat » et n'a pas d'action ; un objet clé n'a ni action ni mention.
+- **Moteur** : `BattleAction.heal(id, index)` (`Kind.ITEM`, `target` ≥ 0 ; `is_heal()`), `BattleRules.allow_heal_items` (vrai pour `for_wild` **et** `for_trainer`, Q-10) ; `for_trainer(trainer, item_library = null)` : sans objets, aucun soin n'est légal. `BattleRequest.trainer_battle` ne passe **aucun** objet : contre le rival du labo, le moteur refuse le soin **et** la grille garde le SAC muet (décision n° 12). `Battle.can_use_heal_items()`, `Battle.item_context()`. Soin : aucun tirage propre ; ITEM_USED puis le tour adverse (`_foe_turn_alone`). `BattleEvent` n'a **aucun champ nouveau** (ITEM_USED réutilise `amount`, `item_id`, `item_name`, `party_index`) : `to_dict` et les journaux du J5 sont inchangés. Simulation du J5, combats et captures : inchangés (tests verts sans modification).
+- **Messages** (`draft`) : `item_used` « Tu utilises une {item} sur {pokemon}. » (l'article « une » suit la convention de `ball_thrown` ; à revoir avec le premier objet masculin), `hp_restored` « {pokemon} récupère {amount} PV. » ; nouvelle marque `{amount}` (= `BattleEvent.amount`). Lecture : message, `HEAL`, message.
+- **Textes d'interface provisoires** (`BagQuery`) : raisons « PV déjà au maximum », « Ce Pokémon est K.O. » (Q-11), « Il n'en reste plus », « Pas maintenant », « Sans effet » ; « Utilisable en combat » ; résultat « +20 PV — Salamèche 33/51 » ; « Ton Sac est vide. » (Q-2), depuis l'Équipe « Aucun soin dans ton Sac. » ; tris « Pertinence », « Nom », « Quantité », « Récents ».
+
 ### 3.5 Pokédex (T14)
 
 - **Données** `data/pokedex/kanto.json` (nouveau, `PokedexLibrary`) : `{ "size": 151, "species": { "pidgey": { "height": 0.3, "weight": 1.8, "description": "…", "draft": true, "notes": [ { "id": "pidgey_paths", "text": "…", "unlock": { "seen": 1 }, "draft": true } ] } } }`. Le numéro vient de `SpeciesData.dex` (pas de doublon) ; l'espèce doit exister dans `PokemonData`. Conditions de note : `seen` (n observations), `caught` (n captures), `map` (vue sur cette carte), `flag` (drapeau d'histoire). Textes **provisoires** (Q-5, Q-6).
@@ -707,6 +720,93 @@ func select_member(index: int) -> void        # garde la sélection (params « i
 
 Ordre : T7 ∥ T8 ; **T7 fusionné d'abord**, puis T8 relie l'écran dans `Boot` et finit `test_menu_team.gd` (vrai `Boot`) et ses captures ; puis T9.
 
+### 6.8 Contrat du 6B et partage T11 ∥ T12 (figé au T10)
+
+**Fondations figées** (T10 ; même règle qu'au §6.6 : on peut seulement **ajouter** des champs, par l'architecte ; **texte vide = élément absent**) :
+- `BagEntryView` (`game/ui/battle/` → `game/ui/bag/` au T11, nom de classe inchangé) : `item_id`, `display_name` (singulier), `quantity`, `quantity_text()` (« ×3 »), `description`, `category_id`, `usable` (sert **ici**), `favorite`, `note` (« Utilisable en combat », ou la raison depuis l'Équipe), `targets_pokemon` (UTILISER ouvre le choix du Pokémon), `action_label` (« LANCER », « UTILISER »), `get_icon()` / `icon_for(id)` (`assets/ui/icons/items/<id>.svg`, sinon le sac), `category_label(id)` (FAVORIS, SOINS, CAPTURE, COMBAT, AVENTURE, OBJETS CLÉS), `is_displayable()` (Sac du combat : listé **et** utilisable), `is_listed()` (Sac du menu).
+- `BagView` : `context`, `entries` (triés, chacun une fois), `favorites`, `categories` (onglets, dans l'ordre), `start_category`, `sort` (`BagQuery.Sort`), `sort_labels`, `empty_text`, `target_index` / `target_name` (depuis l'Équipe), `entries_in(category)` (`BagQuery.FAVORITES` compris), `entry(id)`, `category_label(id)`, `is_empty()`.
+- `PartyPickerView` : `item_id`, `item_name`, `quantity`, `targets: Array[PartyTargetView]` (toute l'équipe, dans l'ordre), `selected` (−1 ou le Pokémon d'UTILISER À NOUVEAU), `target_at(i)`, `has_usable()`. `PartyTargetView` : `member` (`TeamMemberView` : nom, Nv., PV, « K.O. »…), `usable`, `reason`.
+- `BagQuery` (statique) : `entries(bag, items, context, sort, target)`, `categories`, `start_category(context, last, available)`, `view(bag, items, context, sort, last_category, party, target_index, data) -> BagView`, `targets(party, bag, item, context, data, selected) -> PartyPickerView`, `reason_text(check)`, `result_text(result, pokemon_name)` (« +20 PV — Salamèche 33/51 » ou la raison), `can_repeat(result)` (il reste un exemplaire).
+- `ItemUse.check / apply / check_target / restore`, `ItemUseResult` ; moteur : `BattleAction.heal`, `Battle.can_use_heal_items()`, `Battle.item_context()`, `BattleEvent.Kind.ITEM_USED`, `BattleBeat.Kind.HEAL`.
+
+**`BagScreen`** (T11, `game/ui/bag/bag_screen.gd/.tscn`, d'après `menu-sac-v1.jpg`) : interface du §6.5, précisée :
+```gdscript
+class_name BagScreen extends MenuScreen
+signal category_opened(category: StringName)   # onglet touché (le directeur s'en souvient)
+signal item_previewed(item_id: StringName)     # informatif : un toucher = un aperçu, rien d'utilisé
+signal favorite_toggled(item_id: StringName)   # appui long (LONG_PRESS) sur une carte
+signal sort_changed(sort: int)                 # BagQuery.Sort choisi (bouton de tri toujours là)
+signal use_requested(item_id: StringName)      # UTILISER / action de l'aperçu, objet usable seulement
+signal target_chosen(item_id: StringName, index: int)  # une cible usable du PartyPicker, jamais une autre
+signal repeat_requested                        # UTILISER À NOUVEAU (un seul par toucher)
+func show_bag(view: BagView) -> void
+func show_targets(view: PartyPickerView) -> void     # PartyPicker dans l'écran (pas un autre écran)
+func show_result(text: String, can_repeat: bool) -> void   # UseResultBar
+```
+- `show_bag` rappelé **pendant** que le Sac est affiché (après un usage, un favori, un tri) met la vue à jour **sans** rejouer l'entrée, en gardant l'onglet ouvert et l'objet aperçu s'ils existent encore (sinon `start_category` et la première carte).
+- Un objet non `usable` : aperçu avec sa `note`, **aucun bouton**. `targets_pokemon` faux et `usable` vrai (Ball en combat, objet AVENTURE) : le bouton porte `action_label` et émet `use_requested` (aucun cas en exploration au J6).
+- **Depuis l'Équipe** (`view.target_index` ≥ 0) : UTILISER émet `use_requested` ; **pas de PartyPicker** (le Pokémon est déjà choisi) ; l'écran peut écrire « Pour Salamèche » (`target_name`). Défaut (règle 4).
+- PartyPicker : retour (« ‹ » ou retour Android) referme le choix **dans l'écran**, sans signal ; il reste ouvert après un usage (§13 : « le choix du Pokémon reste ouvert pour en changer »), avec `selected` mis en avant.
+- `show_result` : `UseResultBar` (texte, et UTILISER À NOUVEAU si `can_repeat`) ; elle reste jusqu'au prochain geste. Aucune confirmation.
+
+**`PartyPicker`** (T11, `game/ui/bag/party_picker.gd/.tscn`), réutilisé tel quel en combat par T12 :
+```gdscript
+class_name PartyPicker extends BattleWidget     # glissement, speed_scale, haptics_enabled, haptic_played
+signal target_chosen(index: int)               # seulement une cible usable
+signal back_requested
+func show_targets(view: PartyPickerView) -> void   # toute l'équipe : PV, « K.O. », raison en texte
+```
+**`UseResultBar`** (T11, `game/ui/bag/use_result_bar.gd/.tscn`) : `signal repeat_requested` ; `func show_result(text: String, can_repeat: bool)`.
+
+**`TrainerMenu`** (T11 ajoute ; le reste est inchangé) :
+```gdscript
+signal bag_category_opened(category: StringName)
+signal bag_favorite_toggled(item_id: StringName)
+signal bag_sort_changed(sort: int)
+signal bag_use_requested(item_id: StringName)
+signal bag_target_chosen(item_id: StringName, index: int)
+signal bag_repeat_requested
+func show_bag(view: BagView) -> void                # BagScreen dans l'hôte (instancié à la première visite)
+func show_bag_targets(view: PartyPickerView) -> void
+func show_bag_result(text: String, can_repeat: bool) -> void
+```
+
+**`MenuDirector`** (T12 ajoute) : `setup(..., items: ItemLibrary = null)` (paramètre en fin, facultatif : les appels existants ne changent pas) ;
+```gdscript
+signal bag_shown(view: BagView)                     # Boot → TrainerMenu.show_bag
+signal bag_targets_shown(view: PartyPickerView)     # Boot → show_bag_targets
+signal bag_result_shown(text: String, can_repeat: bool)   # Boot → show_bag_result
+func open_bag_category(category: StringName) -> void   # mémorise le dernier onglet (session, §13)
+func toggle_item_favorite(item_id: StringName) -> bool # Bag.toggle_favorite ; mark_changed ; bag_shown
+func set_bag_sort(sort: int) -> void                   # session seulement ; bag_shown
+func request_item_use(item_id: StringName) -> void     # Équipe : apply sur target_index ;
+                                                       # sinon bag_targets_shown(BagQuery.targets)
+func use_item_on(item_id: StringName, index: int) -> bool   # ItemUse.apply ; OK → mark_changed ;
+                                                       # bag_result_shown, bag_targets_shown, bag_shown
+func repeat_item_use() -> bool                         # même objet, même Pokémon (§13)
+```
+`_on_route_shown` : `MenuRoute.BAG` → `bag_shown(BagQuery.view(state.bag, items, context, sort, last, state.party, params.target, data))` au lieu de l'écran provisoire. Onglet et tri gardés pendant la session, **jamais sauvegardés** (§13). Autosave à la fermeture si `changed` (inchangé).
+
+**Combat** (T12) : `BattleViews.bag_entries` sans le filtre `USABLE_IN_WILD_BATTLE` (constante retirée, `test_battle_views` mis à jour : la Potion est proposée) ; `BattleBagPanel.item_chosen(id)` → si la vue a `targets_pokemon` : `PartyPicker` (nouvel emplacement `BattleHudLayout.Slot.PARTY_PICKER`, en fin d'enum) avec `BagQuery.targets(party, bag, item, battle.item_context(), data)` ; `target_chosen(i)` → `_spend_item` (`ItemUse.check` = OK, puis `Bag.remove` **une fois**) → `Battle.submit(BattleAction.heal(id, i))` ; « ‹ » → retour au Sac, rien consommé. `_spend_ball` devient `_spend_item` (Ball : comme au 5D). Temps `HEAL` : la barre du Pokémon en jeu remonte si `event.party_index` est le sien, sinon rien ne bouge (les messages suffisent). Grille : `WILD_BATTLE_ACTIONS` et `TRAINER_BATTLE_ACTIONS` **inchangées** (SAC muet contre le rival du labo) ; `BattleRequest.trainer_battle` continue de ne passer aucun objet.
+
+**Câblage** (T12, `Boot`, après la fusion de T11) : `TrainerMenu.bag_*` → méthodes ci-dessus ; `MenuDirector.bag_*_shown` → `TrainerMenu.show_bag*` ; `Boot` passe `_items` à `MenuDirector.setup`. Avant la fusion, T12 teste avec `tests/helpers/fake_trainer_menu.gd` étendu (mêmes signaux et méthodes `show_bag*`) ; T11 teste `BagScreen`, `PartyPicker`, `UseResultBar` avec des vues fabriquées **ou** construites par `BagQuery` sur un Sac de test.
+
+| Fichiers | T11 (ui-mobile) | T12 (constructeur-monde) |
+|---|---|---|
+| `game/ui/bag/**` (BagScreen, PartyPicker, UseResultBar ; **déplacés** depuis `game/ui/battle/` avec leurs `.uid` : `bag_category_tab`, `bag_item_card`, `bag_tile`, `bag_entry_view`) | **oui** | lecture |
+| `game/ui/battle/battle_bag_panel.gd/.tscn` (chemins des scènes déplacées seulement) | **oui** | lecture |
+| `game/ui/menu/trainer_menu.gd/.tscn` (`show_bag*`, signaux `bag_*`) | **oui** | lecture |
+| `game/ui/theme/ui_tokens.gd`, `ui_theme.tres`, `tools/build_ui_theme.gd` (`BAG_*` nouveaux, `PICKER_*`, `RESULT_*`) | **oui** | lecture |
+| `assets/ui/icons/items/potion.svg` (+ icônes d'onglets), `tools/capture_menu.gd` (scénarios `bag`, `bag_use`, `bag_result`, `bag_from_team`) | **oui** | lecture (captures du T12 : `bag_battle`, `bag_battle_target`, son propre outil ou `tools/capture_wild_battle_hud.gd`) |
+| `tests/integration/test_bag_screen.gd`, `test_party_picker.gd`, `test_trainer_menu.gd` (étendu), `test_battle_bag_panel.gd` (inchangé, vert après le déplacement) | **oui** | — |
+| `game/systems/menu/menu_director.gd`, `game/boot.gd`, `game/boot.tscn` | — | **oui** |
+| `game/battle/battle_director.gd`, `game/battle/battle_views.gd` (filtre retiré), `game/ui/battle/battle_hud_layout.gd` (`Slot.PARTY_PICKER`) | — | **oui** |
+| `tests/helpers/fake_trainer_menu.gd` (étendu), `tests/integration/test_menu_bag.gd`, `test_battle_director.gd`, `test_wild_battle.gd`, `test_menu_open.gd`, `test_boot.gd`, `tests/unit/test_battle_views.gd` | — | **oui** |
+| Fondations du T10 (`game/items/**`, `game/systems/menu/bag_query.gd`, `views/`, moteur `game/battle/` hors `battle_director.gd` / `battle_views.gd`, `data/items/`, `data/battle/`) | lecture | lecture (un manque → l'architecte) |
+| `docs/tech/etat-projet.md` | sa ligne dans « Point de reprise » | sa ligne ; l'orchestrateur fusionne |
+
+`battle_bag_panel.gd` est touché par **T11 seulement** (chemins `preload` des scènes déplacées) ; T12 ne le modifie pas (il le pilote depuis `battle_director.gd`). Ordre : T11 ∥ T12 ; **T11 fusionné d'abord** (déplacements de fichiers), puis T12 relie l'écran dans `Boot`, place le `PartyPicker` en combat et finit `test_menu_bag.gd` (vrai `Boot`) et ses captures ; puis T13.
+
 ---
 
 ## 7. Découpage des tâches (dans l'ordre)
@@ -765,6 +865,7 @@ Chaque tâche finit par `tools/test.sh` vert (nombre de tests rapporté), un imp
 #### T10 — architecte-godot : fondations du Sac et soin en combat
 - §3.4 (dont le moteur de combat) ; `heal_amount` ; messages `draft`.
 - **CA** : tests du §3.4 verts ; simulation du jalon 5 inchangée.
+- **Fait (2026-10-03)** : §3.4 (« Fait au T10 »), contrat et partage T11 ∥ T12 au §6.8 ; 2 scripts de tests nouveaux et 5 étendus ; simulation et tests du J5 inchangés.
 
 #### T11 — ui-mobile : l'écran Sac et le choix du Pokémon
 - Déplacement des composants du Sac vers `game/ui/bag/` (imports vérifiés, `test_battle_bag_panel` inchangé et vert) ; `BagScreen` d'après `menu-sac-v1.jpg` (catégories à gauche, cartes au centre, aperçu à droite ; un toucher = un aperçu) ; rangée FAVORIS, appui long = favori ; tri ; `PartyPicker` (équipe, PV, raison pour un Pokémon incompatible) ; `UseResultBar` (« +20 PV — Salamèche 33/51 », UTILISER À NOUVEAU) ; icône `potion.svg`.

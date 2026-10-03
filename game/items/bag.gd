@@ -80,6 +80,12 @@ func set_favorite(item_id: StringName, value: bool) -> bool:
 	return true
 
 
+## Inverse le favori de [param item_id] (appui long sur une carte du Sac). Faux si
+## l'identifiant est vide (rien ne change).
+func toggle_favorite(item_id: StringName) -> bool:
+	return set_favorite(item_id, not is_favorite(item_id))
+
+
 ## Favoris, dans l'ordre où ils ont été marqués (copie).
 func favorite_ids() -> Array[StringName]:
 	return _favorites.duplicate()
