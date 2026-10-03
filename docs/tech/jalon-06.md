@@ -218,6 +218,20 @@ Tests : `test_menu_route`, `test_menu_navigator` (ouvrir, fermer, retour depuis 
 
 Tests : `test_party` (étendu : déplacer, échanger, bornes, tête), `test_exp_calc` (étendu), `test_evolution_reveal` (Salamèche → ??? → ??? ; Reptincel vu mais Pokédex non visible → ??? ; visible → révélé ; aucune condition dans les textes), `test_team_views` (statut K.O., histoire avec la zone d'un intérieur → nom de la ville, starter « Labo du Prof. Chen » → « Bourg Palette »).
 
+**Fait au T6 (2026-10-03)** — ce qui diffère du croquis ci-dessus :
+- Fichiers : `game/pokemon/party.gd` (`swap`, `move`), `game/pokemon/exp_calc.gd` (`level_span`), `game/systems/menu/` (`team_views.gd`, `evolution_reveal.gd`, `menu_format.gd`, `views/team_view.gd`, `views/pokemon_sheet_view.gd`, `views/stat_view.gd`, `views/history_view.gd`, `views/evolution_stage_view.gd`). Tests : `test_party` et `test_exp_calc` étendus, `test_evolution_reveal`, `test_team_views`, `test_menu_format` (+37, 1779 verts).
+- **Réordonner = échanger** : `member_moved(from, to)` est appliqué par **`Party.swap`** (dossier 08 §2 : « courte animation d'échange » ; DÉPLACER = « choisir A, puis l'emplacement B » ; Rouge/Bleu). `Party.move` (insertion) existe et est testé, pour un futur Stockage. Défaut (règle 4). Sélection après l'échange : elle **suit le Pokémon sélectionné** (`TeamViews.selection_after_swap`).
+- **`EvolutionReveal` vit dans `game/systems/menu/`** (pas `game/pokemon/`) : il fabrique des vues du menu ; le Pokédex (6C) le réutilise. Règle Q-9 appliquée (lecture stricte de « seulement ce que le joueur a réellement découvert ») :
+  - lignée d'une seule espèce → `[]`, pas de section ;
+  - Pokédex non visible → **un seul** « ??? » (même si un stade a déjà été vu, même pour un dernier stade) ;
+  - Pokédex visible → l'espèce de la fiche et les espèces **vues** de la lignée, à leur colonne ; une colonne sans espèce vue **entre** deux colonnes connues → « ??? » ; après la dernière colonne connue, **un seul** « ??? » s'il reste des stades, **jamais leur nombre** (le croquis « Salamèche → ??? → ??? » révélait trois stades : écarté) ; dans une colonne qui a une espèce vue, les branches inconnues sont tues (« Évoli → Voltali »). Exemples : « Salamèche → ??? », « Salamèche → Reptincel → ??? », « Salamèche → ??? → Dracaufeu », « ??? → Reptincel → ??? ».
+  - Un stade inconnu n'a ni nom, ni espèce (&""), ni image ; aucun champ ne porte de condition.
+- **Fiches de tous les membres** dans `TeamView` (pas seulement du sélectionné) : l'écran change de Pokémon sans aller-retour (`member_selected` est informatif) ; `show_team(view, selected)` du §6.5 inchangé.
+- **Histoire** d'après `met` seulement : libellé selon la manière (« Reçu à » starter, « Capturé à », « Rencontré à » inconnue), lieu = **nom de zone** (`ZoneLibrary.zone_name_of` ; carte hors zone → ligne absente, jamais un identifiant), niveau, dresseur d'origine, date « 2 octobre 2026 » / « 1er novembre 2026 » (`MenuFormat.long_date`), phrase « Ton premier Pokémon » pour le starter. Aucun moment n'est lié à un Pokémon précis (`moments` porte l'espèce, pas l'individu) : « premier combat » etc. restent « plus tard » (dossier 08 §2). Pokémon sans rencontre (avant le 5C.5) : `HistoryView.is_empty()`, l'écran écrit `TeamViews.HISTORY_UNKNOWN` (« Son histoire commence avec toi. », provisoire).
+- XP : « 30 / 44 XP » et « 14 XP avant le niveau suivant » en deux champs ; milliers séparés par une espace insécable (`MenuFormat.number` : « 1 250 ») ; niveau 100 → deux textes vides, barre pleine.
+- Statistiques : `StatView` (identifiant, « PV », « Attaque », « Défense », « Atq. Spé. », « Déf. Spé. », « Vitesse », valeur, part de la plus haute statistique du Pokémon) ; PV = PV max.
+- Favori : pas de méthode (champ public `Pokemon.favorite`, posé au T0) ; MenuDirector l'inverse (§6.7).
+
 ### 3.4 Sac (T10)
 
 **Catégories en données** (dossier 08 §3) : `ItemData.Category` gagne, **en fin d'enum**, `BATTLE`, `FIELD`, `KEY` ; `CATEGORY_NAMES = ["ball", "heal", "battle", "field", "key"]`. Les identifiants des fichiers ne changent pas (`ball`, `heal`) : **aucune migration des données ni de la sauvegarde** (le Sac stocke des identifiants d'objets, pas de catégories).
@@ -524,8 +538,8 @@ DashboardScreen.card_chosen(screen) ─► MenuNavigator.go ─► TrainerMenu.s
 × | retour | « menu » ─► MenuNavigator.back / close ─► menu_closed(changed) ─► Boot : autosave, contrôles
 NOTIFICATION_WM_GO_BACK_REQUEST ─► Boot ─► MenuDirector.handle_back | sauvegarde + MenuDirector.open (Q-3 : jamais quit)
 6A
-TeamScreen.member_moved(from, to) ─► Party.move ─► TeamScreen.show_team(TeamViews.build) · changed
-TeamScreen.favorite_toggled(i) ─► Pokemon.set_favorite · changed
+TeamScreen.member_moved(from, to) ─► Party.swap ─► TeamScreen.show_team(TeamViews.build) · changed
+TeamScreen.favorite_toggled(i) ─► Pokemon.favorite = not favorite ─► show_team · changed
 6B
 BagScreen.use_requested(id) ─► BagScreen.show_targets(PartyPickerView)
 BagScreen.target_chosen(id, i) ─► ItemUse.apply ─► BagScreen.show_result(texte, peut_recommencer) · changed
@@ -633,6 +647,66 @@ func is_open() -> bool                         # vrai d'open_animated au début 
 
 `test_menu_unlock_rule.gd` (§4) parcourt de vrais écrans : il se termine **après** la fusion de T3, dans T4.
 
+### 6.7 Contrat du 6A et partage T7 ∥ T8 (figé au T6)
+
+**Vues figées** (T6, `game/systems/menu/views/`, même règle qu'au §6.6 : on peut seulement **ajouter** des champs, par l'architecte ; **texte vide = élément absent**) :
+- `TeamView` : `members: Array[TeamMemberView]`, `sheets: Array[PokemonSheetView]` (même ordre, **une fiche par membre**), `size()`, `sheet_at(i)`, `SLOT_COUNT` (6).
+- `TeamMemberView` (inchangée depuis le T2) : `party_index`, `species_id` (sprite : `BattleStage.sprite_path(species_id, false)`), `display_name`, `gender`, `level`, `hp`, `max_hp`, `status_text` (« K.O. » ou ""), `favorite`.
+- `PokemonSheetView` : `member`, `species_name`, `type_ids` / `type_names` (TypeBadge), `exp_fraction` (ExpBar), `exp_text` (« 320 / 560 XP »), `exp_remaining_text` (« 240 XP avant le niveau suivant ») — les deux vides au niveau 100 —, `stats: Array[StatView]`, `moves: Array[BattleMoveView]` (MoveCard, MoveDetailSheet), `history: HistoryView`, `evolution: Array[EvolutionStageView]` et `evolution_text` (l'écran écrit « Évolution : » devant ; vide = pas de section).
+- `StatView` : `stat_id`, `name`, `value`, `ratio` (0..1, jauge).
+- `HistoryView` : `note`, `place_label`, `place`, `met_level` (0 = absent), `trainer`, `date_text`, `is_empty()` (alors afficher `TeamViews.HISTORY_UNKNOWN`). Libellés de l'écran (« Niveau », « Dresseur d'origine »…) : à T7 (règle 4).
+- `EvolutionStageView` : `step` (colonne : « → » entre colonnes, « / » entre branches), `species_id` (&"" si inconnu), `name` (« ??? » si inconnu), `known`, `current`. **Jamais de niveau, de silhouette ni d'image d'un stade inconnu** (Q-9).
+- `TeamViews.build(party, data, zones, pokedex, unlocks) -> TeamView`, `TeamViews.selection_after_swap(selected, a, b)`, `TeamViews.clamp_selection(selected, size)`.
+
+**`TeamScreen`** (T7, `game/ui/menu/team/team_screen.gd/.tscn`) : interface du §6.5, précisée :
+```gdscript
+class_name TeamScreen extends MenuScreen
+signal member_selected(index: int)            # informatif : l'écran change de fiche seul
+signal member_moved(from: int, to: int)       # glisser A sur B, ou DÉPLACER A puis B ; jamais
+                                              # vers un emplacement vide, jamais from == to
+signal favorite_toggled(index: int)
+signal use_item_requested(index: int)
+func show_team(view: TeamView, selected: int) -> void
+```
+`show_team` rappelé **pendant** que l'Équipe est affichée (après un échange ou un favori) met la vue à jour **sans** rejouer l'entrée, en gardant l'onglet ouvert ; `selected` est déjà corrigé par le directeur. L'animation d'échange est jouée par l'écran au moment du geste (il n'attend pas la vue).
+
+**`TrainerMenu`** (T7 ajoute ; le reste du §6.6 est inchangé) :
+```gdscript
+signal team_member_selected(index: int)       # relais de TeamScreen
+signal team_member_moved(from: int, to: int)
+signal team_favorite_toggled(index: int)
+func show_team(view: TeamView, selected: int) -> void   # TeamScreen dans l'hôte d'écrans
+                                              # (instancié à la première visite, puis gardé)
+```
+UTILISER UN OBJET → `route_requested(MenuRoute.bag(MenuRoute.BAG_CONTEXT_TEAM, index))` émis par `TrainerMenu` lui-même (lien croisé ; « SAC — À venir » jusqu'au 6B). Retour depuis l'Équipe → `back_requested` (comme les autres écrans).
+
+**`MenuDirector`** (T8 ajoute) :
+```gdscript
+signal team_shown(view: TeamView, selected: int)   # Boot → TrainerMenu.show_team
+func move_member(from: int, to: int) -> bool  # Party.swap ; vrai → mark_changed, sélection
+                                              # = selection_after_swap, team_shown réémis
+func toggle_favorite(index: int) -> bool      # inverse Pokemon.favorite ; mark_changed ; team_shown
+func select_member(index: int) -> void        # garde la sélection (params « index » de la route)
+```
+`_on_route_shown` : `MenuRoute.TEAM` → `team_shown(TeamViews.build(state.party, data, zones, state.pokedex, unlocks), clamp_selection(params.index))` au lieu de l'écran provisoire. Rien d'autre ne change (pile, pause, autosave à la fermeture si `changed`).
+
+**Câblage** (T8, `Boot`, après la fusion de T7) : `TrainerMenu.team_member_moved` → `move_member` ; `team_favorite_toggled` → `toggle_favorite` ; `team_member_selected` → `select_member` ; `MenuDirector.team_shown` → `TrainerMenu.show_team`. Avant la fusion, T8 teste `MenuDirector` avec `tests/helpers/fake_trainer_menu.gd` étendu (mêmes signaux et `show_team`) ; T7 teste `TeamScreen` et `TrainerMenu` avec des vues fabriquées à la main **ou** construites par `TeamViews.build` sur une équipe de test (les deux sont permis : `TeamViews` est pur).
+
+| Fichiers | T7 (ui-mobile) | T8 (constructeur-monde) |
+|---|---|---|
+| `game/ui/menu/team/**` (TeamScreen, TeamSlotCard, PokemonShowcase, PokemonSheet, StatGauge) | **oui** | lecture |
+| `game/ui/menu/trainer_menu.gd/.tscn` (`show_team`, signaux `team_*`, relais UTILISER UN OBJET) | **oui** | lecture |
+| `game/ui/theme/ui_tokens.gd`, `ui_theme.tres`, `tools/build_ui_theme.gd` (`TEAM_*`) | **oui** | lecture |
+| `game/ui/battle/**`, `game/ui/components/**` (MoveCard, MoveDetailSheet, TypeBadge, HpBar, ExpBar réutilisés ; un ajout éventuel) | **oui** | — |
+| `tools/capture_menu.gd` (scénarios `team`, `team_sheet_moves`, `team_history`, `team_move_mode`) | **oui** | lecture (captures du T8 : son propre scénario ou `tools/capture_play.gd`) |
+| `tests/integration/test_team_screen.gd`, `test_trainer_menu.gd` (étendu) | **oui** | — |
+| `game/systems/menu/menu_director.gd`, `game/boot.gd`, `game/boot.tscn` | — | **oui** |
+| `tests/helpers/fake_trainer_menu.gd` (étendu), `tests/integration/test_menu_team.gd`, `test_menu_open.gd`, `test_menu_unlock_rule.gd`, `test_boot.gd` | — | **oui** |
+| Fondations du T6 (`game/pokemon/party.gd`, `exp_calc.gd`, `game/systems/menu/` hors `menu_director.gd`, `views/`) | lecture | lecture (un manque → l'architecte) |
+| `docs/tech/etat-projet.md` | sa ligne dans « Point de reprise » | sa ligne ; l'orchestrateur fusionne |
+
+Ordre : T7 ∥ T8 ; **T7 fusionné d'abord**, puis T8 relie l'écran dans `Boot` et finit `test_menu_team.gd` (vrai `Boot`) et ses captures ; puis T9.
+
 ---
 
 ## 7. Découpage des tâches (dans l'ordre)
@@ -673,6 +747,7 @@ Chaque tâche finit par `tools/test.sh` vert (nombre de tests rapporté), un imp
 
 #### T6 — architecte-godot : fondations de l'Équipe
 - §3.3. **CA** : tests du §3.3 verts.
+- **Fait (2026-10-03)** : §3.3 (« Fait au T6 »), contrat et partage T7 ∥ T8 au §6.7 ; 3 scripts de tests nouveaux et 2 étendus (+37 tests, 1779 verts).
 
 #### T7 — ui-mobile : l'écran Équipe
 - `TeamScreen` d'après `menu-equipe-v1.jpg` : liste (6 emplacements, vides neutres et **sans action**, sans « Ajouter un Pokémon »), grand sprite (×6 entier, NEAREST, respiration par un léger décalage vertical et non par une échelle non entière), en-tête de fiche (nom, sexe, Nv., types, PV, XP), onglets Aperçu · Capacités · Histoire (une capacité touchée ouvre `MoveDetailSheet`), actions UTILISER UN OBJET · DÉPLACER · FAVORI. Réordonner : appui long (`LONG_PRESS`) puis glisser **et** DÉPLACER (choisir A, puis l'emplacement B), courte animation d'échange.
