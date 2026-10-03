@@ -79,3 +79,20 @@ func test_progress_in_the_current_level() -> void:
 func test_progress_is_full_at_level_100() -> void:
 	var top := _mon(&"rattata", 100)
 	assert_eq(ExpCalc.progress(top, _data), 1.0)
+
+
+func test_level_span_in_the_current_level() -> void:
+	var charmander := _mon(&"charmander", 5)
+	assert_eq(ExpCalc.level_span(charmander, _data), Vector2i(0, 44), "N5 = 135, N6 = 179")
+	charmander.experience = 135 + 30
+	assert_eq(ExpCalc.level_span(charmander, _data), Vector2i(30, 44))
+	charmander.experience = 10
+	assert_eq(ExpCalc.level_span(charmander, _data), Vector2i(0, 44), "jamais négatif")
+
+
+func test_level_span_is_zero_at_level_100_or_unknown_species() -> void:
+	assert_eq(ExpCalc.level_span(_mon(&"rattata", 100), _data), Vector2i.ZERO)
+	var unknown := _mon(&"rattata", 5)
+	unknown.species_id = &"missingno"
+	assert_eq(ExpCalc.level_span(unknown, _data), Vector2i.ZERO)
+	assert_eq(ExpCalc.level_span(null, _data), Vector2i.ZERO)

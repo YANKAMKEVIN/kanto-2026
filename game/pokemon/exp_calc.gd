@@ -33,6 +33,21 @@ static func split(total: int, count: int) -> Array[int]:
 	return shares
 
 
+## XP de [param pokemon] dans son niveau actuel : x = XP déjà gagnée dans le niveau, y = XP
+## qu'il faut pour le niveau suivant (« 320 / 560 XP », reste y − x ; jalon-06.md §3.3).
+## [constant Vector2i.ZERO] au niveau 100 (barre pleine, pas de texte) ou si l'espèce est
+## inconnue. 0 ≤ x ≤ y.
+static func level_span(pokemon: Pokemon, data: PokemonData) -> Vector2i:
+	var species := data.get_species(pokemon.species_id) if pokemon != null else null
+	if species == null or pokemon.level >= ExpCurve.MAX_LEVEL:
+		return Vector2i.ZERO
+	var low := ExpCurve.exp_for_level(species.growth_rate, pokemon.level)
+	var high := ExpCurve.exp_for_level(species.growth_rate, pokemon.level + 1)
+	if high <= low:
+		return Vector2i.ZERO
+	return Vector2i(clampi(pokemon.experience - low, 0, high - low), high - low)
+
+
 ## Remplissage de la barre d'XP de [param pokemon] dans son niveau actuel, de 0 à 1 (1 au
 ## niveau 100 ; 0 si son espèce est inconnue).
 static func progress(pokemon: Pokemon, data: PokemonData) -> float:
