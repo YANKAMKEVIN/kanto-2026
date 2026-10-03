@@ -178,3 +178,25 @@ func test_exploration_hud_shows_toast_even_with_controls_hidden() -> void:
 	assert_eq(toast.get_detail_text(), DETAIL)
 	assert_false(hud.are_controls_visible(), "les contrôles restent cachés")
 	assert_false(hud.get_run_button().visible)
+
+
+# --- Taille du texte et contraste (UiPrefs, T28) -----------------------------------------------
+
+
+func test_large_text_and_contrast_apply_at_each_display() -> void:
+	var title := _toast.get_node(^"%Title") as Label
+	var base := title.get_theme_font_size(&"font_size")
+	var settings := GameSettings.new()
+	settings.text_size = GameSettings.TextSize.LARGE
+	settings.high_contrast = true
+	UiPrefs.apply(settings)
+	_toast.show_toast(TITLE, DETAIL)
+	assert_eq(title.get_theme_font_size(&"font_size"), roundi(base * UiTokens.TEXT_SCALE_LARGE))
+	var box := _toast.get_body().get_theme_stylebox(&"panel") as StyleBoxFlat
+	assert_gte(box.bg_color.a, UiTokens.CONTRAST_PANEL_ALPHA - 0.001)
+	var detail := _toast.get_node(^"%Detail") as Label
+	assert_eq(detail.get_theme_color(&"font_color"), UiTokens.TEXT_MUTED_CONTRAST)
+	UiPrefs.reset()
+	_toast.show_toast(TITLE, DETAIL)
+	assert_eq(title.get_theme_font_size(&"font_size"), base, "retour à la normale")
+	assert_eq(detail.get_theme_color(&"font_color"), UiTokens.TEXT_MUTED)

@@ -309,3 +309,55 @@ func test_no_portrait_in_box() -> void:
 	for node: Node in _box.find_children("*", "TextureRect", true, false):
 		fail_test("portrait inattendu : %s" % node.name)
 	pass_test("aucun portrait")
+
+
+# --- Taille du texte et contraste (UiPrefs, T28) ----------------------------------------------
+
+
+func _prefs(large: bool, contrast: bool) -> void:
+	var settings := GameSettings.new()
+	settings.text_size = GameSettings.TextSize.LARGE if large else GameSettings.TextSize.NORMAL
+	settings.high_contrast = contrast
+	UiPrefs.apply(settings)
+
+
+func test_large_text_scales_speaker_and_text_on_every_page() -> void:
+	_prefs(true, false)
+	_box.open()
+	_box.show_page("Maman", MOM_LINE, false)
+	assert_eq(_text().get_theme_font_size(&"font_size"),
+		roundi(UiTokens.FONT_BODY * UiTokens.TEXT_SCALE_LARGE))
+	assert_eq(_speaker().get_theme_font_size(&"font_size"),
+		roundi(UiTokens.DIALOG_SPEAKER_FONT * UiTokens.TEXT_SCALE_LARGE))
+	_box.show_page("", MOM_LINE, true)
+	assert_eq(_text().get_theme_font_size(&"font_size"),
+		roundi(UiTokens.FONT_BODY * UiTokens.TEXT_SCALE_LARGE), "narration aussi, sans cumul")
+	_prefs(false, false)
+	_box.show_page("Maman", MOM_LINE, false)
+	assert_eq(_text().get_theme_font_size(&"font_size"), UiTokens.FONT_BODY, "retour à la normale")
+	UiPrefs.reset()
+
+
+func test_high_contrast_keeps_the_panel_at_least_as_opaque() -> void:
+	var panel := _box.get_node(^"%Panel") as PanelContainer
+	var before := (panel.get_theme_stylebox(&"panel") as StyleBoxFlat).bg_color.a
+	_prefs(false, true)
+	_box.open()
+	var after := (panel.get_theme_stylebox(&"panel") as StyleBoxFlat).bg_color.a
+	assert_gte(after, UiTokens.CONTRAST_PANEL_ALPHA - 0.001)
+	assert_gte(after, before)
+	UiPrefs.reset()
+
+
+func test_large_text_box_stays_inside_the_screen() -> void:
+	_prefs(true, true)
+	_box.open()
+	_box.show_page("Maman", MOM_LINE + " " + MOM_LINE + " " + MOM_LINE, false)
+	_box.set_visible_characters(-1)
+	await wait_process_frames(3)
+	var rect := (_box.get_node(^"%Panel") as Control).get_global_rect()
+	var screen := (_box.get_node(^"%Panel") as Control).get_viewport_rect()
+	assert_lte(rect.end.y, screen.end.y - UiTokens.SAFE_MARGIN + 0.5, "bas dans SAFE_MARGIN")
+	assert_gte(rect.position.y, 0.0, "reste dans l'écran")
+	assert_lt(rect.size.y, UiTokens.DIALOG_BOX_MIN_HEIGHT + 80.0, "la boîte reste compacte")
+	UiPrefs.reset()

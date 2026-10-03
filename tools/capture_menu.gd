@@ -31,6 +31,16 @@ extends SceneTree
 ##   trainer              la vraie partie de Kevin (fixture v1), Pokédex pas visible : ni vus ni capturés
 ##   trainer_dex          idem, Pokédex activé : « vus » et « capturés » (liens)
 ##   trainer_empty        partie neuve : frise vide (« Ton aventure ne fait que commencer. »)
+## Paramètres et commandes (T28, avec --only=settings,settings_controls,settings_access,
+## settings_graphics,settings_save,settings_no_save,choice_cards,left_handed,text_large_dialogue,
+## text_large_settings,contrast_dialogue,contrast_settings) : vraies vues de SettingsViews
+##   settings             catégorie JEU (vitesse du texte, confirmations, Sauvegarder maintenant)
+##   settings_controls    COMMANDES (taille, opacité, boutons, vibrations, mode gaucher)
+##   settings_access      ACCESSIBILITÉ ; settings_graphics   GRAPHISMES (Auto (Élevée))
+##   settings_save        après « Sauvegarder maintenant » (résultat) ; settings_no_save   inactif
+##   choice_cards         ChoiceCards « Oublier Charge ? » sur le menu
+##   left_handed          exploration en mode gaucher (joystick à droite, boutons à gauche)
+##   text_large_* / contrast_*   dialogue (monde) et écran Paramètres en texte Grande / contraste
 ##
 ## Sur le Mac, en 2340×1080 :
 ##   godot --path . --resolution 2340x1080 --fixed-fps 30 --quit-after 900 \
@@ -95,6 +105,7 @@ func _on_frame() -> void:
 	if _wait == _save_wait:
 		_save(_current)
 		_current = ""
+		_cleanup()
 		if _menu.is_open():
 			_menu.close_animated()
 
@@ -103,6 +114,10 @@ func _begin(scenario: String) -> void:
 	match scenario:
 		"hud_button":
 			return
+		"settings", "settings_controls", "settings_access", "settings_graphics", \
+		"settings_save", "settings_no_save", "choice_cards", "left_handed", \
+		"text_large_dialogue", "text_large_settings", "contrast_dialogue", "contrast_settings":
+			_settings_scenario(scenario)
 		"dashboard_5":
 			_open(_view(5, true, false, ""))
 		"dashboard_6":
@@ -123,6 +138,100 @@ func _begin(scenario: String) -> void:
 			_trainer_scenario(scenario)
 		"bag", "bag_use", "bag_result", "bag_from_team", "bag_refuse", "bag_heal_mid", "bag_heal_end":
 			_bag_scenario(scenario)
+
+
+## Paramètres, ChoiceCards, mode gaucher, texte Grande et contraste (T28).
+func _settings_scenario(scenario: String) -> void:
+	var settings := GameSettings.new()
+	if scenario.begins_with("text_large"):
+		settings.text_size = GameSettings.TextSize.LARGE
+	if scenario.begins_with("contrast"):
+		settings.high_contrast = true
+	UiPrefs.apply(settings)
+	var hud: ExplorationHud = _boot.get_hud()
+	match scenario:
+		"left_handed":
+			settings.left_handed = true
+			settings.joystick_opacity = 0.7
+			hud.set_left_handed(true)
+			hud.set_joystick_style(settings.joystick_scale, settings.joystick_opacity)
+			hud.show_interact(&"talk")
+			_touch_joystick(Vector2(1750.0, 700.0))
+			return
+		"text_large_dialogue", "contrast_dialogue":
+			var box: DialogueBox = _boot.get_dialogue_box()
+			box.open()
+			box.show_page("Maman", "Bonjour ! Tu es enfin réveillé ? Le Prof. Chen t'attend "
+				+ "dans son laboratoire, ne le fais pas patienter.", false)
+			box.set_visible_characters(-1)
+			box.set_continue_visible(true)
+			hud.show_toast("Potion ×1", "Ajoutée au Sac")
+			hud.show_zone_title("Route 1", "Bourg Palette — Jadielle")
+			_save_wait = 20
+			return
+		"choice_cards":
+			_menu.open_animated()
+			_menu.show_settings(SettingsViews.build(settings, GameSettings.Graphics.HIGH, true))
+			var layer := CanvasLayer.new()
+			layer.layer = UiTokens.LAYER_DIALOG
+			layer.name = "ChoiceLayer"
+			root.add_child(layer)
+			var cards := ChoiceCards.new()
+			cards.speed_scale = 0.0
+			layer.add_child(cards)
+			var view := ChoiceView.new("Oublier Charge ?", "OUBLIER", "GARDER")
+			view.detail = "Salamèche ne pourra plus l'utiliser."
+			view.confirm_detail = "La capacité est perdue."
+			view.cancel_detail = "Il la garde."
+			cards.show_choice(view)
+			return
+	var view := SettingsViews.build(settings, GameSettings.Graphics.HIGH,
+		scenario != "settings_no_save")
+	_menu.open_animated()
+	_menu.show_settings(view)
+	var screen := _menu.get_settings()
+	match scenario:
+		"settings_controls":
+			screen.select_category(SettingsViews.CATEGORY_CONTROLS)
+		"settings_access", "text_large_settings", "contrast_settings":
+			screen.select_category(SettingsViews.CATEGORY_ACCESSIBILITY)
+		"settings_graphics":
+			screen.select_category(SettingsViews.CATEGORY_GRAPHICS)
+		"settings_save":
+			screen.show_save_result("Partie sauvegardée — 14 h 32")
+
+
+## Un doigt posé (et tiré un peu) dans le viewport : le joystick apparaît, pour la capture.
+func _touch_joystick(point: Vector2) -> void:
+	var touch := InputEventScreenTouch.new()
+	touch.index = 0
+	touch.position = point
+	touch.pressed = true
+	root.push_input(touch, true)
+	var drag := InputEventScreenDrag.new()
+	drag.index = 0
+	drag.position = point + Vector2(0.0, -60.0)
+	root.push_input(drag, true)
+
+
+## Remet les réglages de capture à zéro entre deux scénarios.
+func _cleanup() -> void:
+	UiPrefs.reset()
+	if _menu.get_settings() != null:
+		_menu.get_settings().show_save_result("")
+	var hud: ExplorationHud = _boot.get_hud()
+	hud.set_left_handed(false)
+	hud.set_joystick_style(1.0, 1.0)
+	hud.hide_interact()
+	hud.get_toast().hide_now()
+	hud.hide_zone_title()
+	hud.get_joystick().release()
+	var box: DialogueBox = _boot.get_dialogue_box()
+	if box.is_open():
+		box.close()
+	var layer := root.get_node_or_null("ChoiceLayer")
+	if layer != null:
+		layer.queue_free()
 
 
 ## Pokédex du menu : vraies vues de PokedexQuery sur un Pokédex de test (la partie de Kevin à la

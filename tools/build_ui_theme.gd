@@ -88,6 +88,11 @@ extends SceneTree
 ##     DexSearch (LineEdit), DexTitle / DexName / DexNumber (Label), DexSpriteFrame (Panel)
 ##   TeamPill / TeamPillAccent  PanelContainer  « Favori » et consigne du mode DÉPLACER ;
 ##   TeamPillText / TeamPillAccentText  Label ; TeamEvoCircle  Panel
+##   Paramètres (T28) : SettingsCategory / SettingsRow / SettingsOption / SettingsAction (Button),
+##     SettingsRowBox (PanelContainer), SettingsPanelTitle / SettingsLabel / SettingsDetail /
+##     SettingsValue (Label) ; ChoiceConfirm / ChoiceCancel (Button, carte de ChoiceCards),
+##     ChoiceTitle / ChoiceDetail / ChoiceConfirmLabel / ChoiceConfirmDetail / ChoiceCancelLabel /
+##     ChoiceCancelDetail (Label)
 ## tests/unit/test_ui_theme.gd vérifie que le fichier est à jour avec les tokens.
 
 const TOKENS_PATH: String = "res://game/ui/theme/ui_tokens.gd"
@@ -154,6 +159,7 @@ func _init() -> void:
 	_add_pokedex_screen(theme, bold, t)
 	_add_map_screen(theme, bold, t)
 	_add_trainer_screen(theme, bold, t)
+	_add_settings_screen(theme, bold, t)
 
 	var err := ResourceSaver.save(theme, THEME_PATH)
 	print("ui_theme.tres : ", error_string(err))
@@ -963,3 +969,83 @@ func _add_trainer_screen(theme: Theme, bold: Font, t: GDScript) -> void:
 	_add_plain_label(theme, &"TrainerStatValue", t.TRAINER_STAT_VALUE_FONT, t.TEXT, bold)
 	_add_plain_label(theme, &"TrainerRow", t.TRAINER_ROW_FONT, t.TEXT, null)
 	_add_plain_label(theme, &"TrainerEmpty", t.TRAINER_EMPTY_FONT, t.TEXT_MUTED, null)
+
+
+# --- Écran Paramètres et ChoiceCards (jalon 6, T28) ---------------------------------------------
+
+
+func _row_box(bg: Color, border: Color, width: int, pad_h: int, pad_v: int,
+		t: GDScript) -> StyleBoxFlat:
+	var box := _bag_box(bg, border, width, pad_h, pad_v, t)
+	box.set_corner_radius_all(t.RADIUS_SMALL)
+	return box
+
+
+func _add_settings_screen(theme: Theme, bold: Font, t: GDScript) -> void:
+	# Catégories : ligne translucide, sélectionnée = ACCENT (bouton à bascule).
+	var category := _row_box(t.SETTINGS_ROW_BG, Color(0, 0, 0, 0), 0, t.SETTINGS_ROW_PAD_H, 0, t)
+	var category_on := _row_box(t.ACCENT, Color(0, 0, 0, 0), 0, t.SETTINGS_ROW_PAD_H, 0, t)
+	_add_flat_button(theme, &"SettingsCategory", category, category_on)
+	theme.set_font(&"font", &"SettingsCategory", bold)
+	theme.set_font_size(&"font_size", &"SettingsCategory", t.FONT_BUTTON)
+	theme.set_constant(&"h_separation", &"SettingsCategory", t.GAP)
+	theme.set_constant(&"icon_max_width", &"SettingsCategory", t.SETTINGS_CATEGORY_ICON)
+	for state: StringName in [&"font_color", &"font_hover_color", &"font_focus_color",
+			&"icon_normal_color", &"icon_hover_color", &"icon_focus_color"]:
+		theme.set_color(state, &"SettingsCategory", t.TEXT)
+	for state: StringName in [&"font_pressed_color", &"font_hover_pressed_color",
+			&"icon_pressed_color", &"icon_hover_pressed_color"]:
+		theme.set_color(state, &"SettingsCategory", t.ACCENT_TEXT)
+
+	# Ligne d'interrupteur (touchable en entier) et ligne de texte d'un choix / curseur.
+	var row := _row_box(t.SETTINGS_ROW_BG, Color(0, 0, 0, 0), 0, t.SETTINGS_ROW_PAD_H,
+		t.SETTINGS_ROW_PAD_V, t)
+	var row_pressed := _row_box(t.tinted(t.ACCENT, 0.25), t.ACCENT, t.BORDER_WIDTH,
+		t.SETTINGS_ROW_PAD_H, t.SETTINGS_ROW_PAD_V, t)
+	_add_flat_button(theme, &"SettingsRow", row, row_pressed)
+	theme.set_type_variation(&"SettingsRowBox", &"PanelContainer")
+	theme.set_stylebox(&"panel", &"SettingsRowBox", row)
+
+	# Options d'un choix : bouton à bascule, choisie = ACCENT.
+	var option := _button_style(t.BUTTON_BG, true, t)
+	var option_on := _button_style(t.ACCENT, false, t)
+	for box: StyleBoxFlat in [option, option_on]:
+		box.set_content_margin(SIDE_LEFT, t.GAP)
+		box.set_content_margin(SIDE_RIGHT, t.GAP)
+	_add_button_variation(theme, &"SettingsOption", option, option_on, bold, t)
+	theme.set_font_size(&"font_size", &"SettingsOption", t.SETTINGS_OPTION_FONT)
+	for state: StringName in [&"font_color", &"font_hover_color", &"font_focus_color"]:
+		theme.set_color(state, &"SettingsOption", t.TEXT)
+	for state: StringName in [&"font_pressed_color", &"font_hover_pressed_color"]:
+		theme.set_color(state, &"SettingsOption", t.ACCENT_TEXT)
+
+	# Action : bouton d'accent ; inactif = grisé (la raison est écrite dans la ligne).
+	var action := _button_style(t.ACCENT, false, t)
+	var action_pressed := _button_style(t.ACCENT_PRESSED, false, t)
+	var action_off := _button_style(t.SETTINGS_ACTION_OFF_BG, true, t)
+	_add_button_variation(theme, &"SettingsAction", action, action_pressed, bold, t)
+	theme.set_stylebox(&"disabled", &"SettingsAction", action_off)
+	theme.set_font_size(&"font_size", &"SettingsAction", t.SETTINGS_OPTION_FONT)
+	for state: StringName in [&"font_color", &"font_hover_color", &"font_focus_color",
+			&"font_pressed_color", &"font_hover_pressed_color"]:
+		theme.set_color(state, &"SettingsAction", t.ACCENT_TEXT)
+	theme.set_color(&"font_disabled_color", &"SettingsAction", t.TEXT_MUTED)
+
+	_add_plain_label(theme, &"SettingsPanelTitle", t.SETTINGS_PANEL_TITLE_FONT, t.TEXT, bold)
+	_add_plain_label(theme, &"SettingsLabel", t.SETTINGS_LABEL_FONT, t.TEXT, bold)
+	_add_plain_label(theme, &"SettingsDetail", t.SETTINGS_DETAIL_FONT, t.TEXT_MUTED, null)
+	_add_plain_label(theme, &"SettingsValue", t.SETTINGS_VALUE_FONT, t.TEXT, bold)
+
+	# ChoiceCards : la carte de l'action (ACCENT) et celle du renoncement (panneau).
+	var confirm := _menu_card_box(t.ACCENT, t.ACCENT, t.RADIUS, t)
+	var confirm_pressed := _menu_card_box(t.ACCENT_PRESSED, t.ACCENT_PRESSED, t.RADIUS, t)
+	_add_flat_button(theme, &"ChoiceConfirm", confirm, confirm_pressed)
+	var cancel := _menu_card_box(t.PANEL_BG_STRONG, t.PANEL_BORDER, t.RADIUS, t)
+	var cancel_pressed := _menu_card_box(t.tinted(t.ACCENT, 0.25), t.ACCENT, t.RADIUS, t)
+	_add_flat_button(theme, &"ChoiceCancel", cancel, cancel_pressed)
+	_add_plain_label(theme, &"ChoiceTitle", t.CHOICE_TITLE_FONT, t.TEXT, bold)
+	_add_plain_label(theme, &"ChoiceDetail", t.CHOICE_DETAIL_FONT, t.TEXT_MUTED, null)
+	_add_plain_label(theme, &"ChoiceConfirmLabel", t.CHOICE_LABEL_FONT, t.ACCENT_TEXT, bold)
+	_add_plain_label(theme, &"ChoiceConfirmDetail", t.CHOICE_CARD_DETAIL_FONT, t.ACCENT_TEXT, null)
+	_add_plain_label(theme, &"ChoiceCancelLabel", t.CHOICE_LABEL_FONT, t.TEXT, bold)
+	_add_plain_label(theme, &"ChoiceCancelDetail", t.CHOICE_CARD_DETAIL_FONT, t.TEXT_MUTED, null)

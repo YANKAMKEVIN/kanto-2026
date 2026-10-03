@@ -13,6 +13,10 @@ extends CanvasLayer
 ## joystick sur tout l'écran (apparition dans la moitié gauche), bouton courir et bouton
 ## contextuel ancrés au coin bas-droit, légende au milieu du bord haut (sous le titre),
 ## toast en haut au centre (au-dessus de la légende).
+## Réglages (Paramètres, T28) : [method set_left_handed] (joystick dans la moitié droite, courir
+## et contextuel au coin bas-gauche, bouton Menu inchangé en haut à droite),
+## [method set_joystick_style] (taille, opacité), [method set_button_scale] (courir et
+## contextuel ; le bouton Menu garde sa taille). Tout reste dans SAFE_MARGIN.
 
 ## Le titre de zone vient de disparaître (fin de son maintien ou hide_zone_title()).
 signal title_hidden
@@ -30,17 +34,19 @@ const MOVE_ACTIONS: Array[StringName] = [&"move_up", &"move_down", &"move_left",
 ## Verbe demandé pour le bouton contextuel (&"" = aucun) ; affiché si les contrôles le sont.
 var _interact_verb: StringName = &""
 var _controls_visible: bool = true
+var _left_handed: bool = false
+var _button_scale: float = 1.0
 var _run_tween: Tween
 
 @onready var _run_button: TouchScreenButton = %RunButton
 @onready var _interact_button: InteractButton = %InteractButton
 @onready var _menu_button: TouchScreenButton = %MenuButton
+@onready var _corner: Control = %CornerAnchor
 
 
 func _ready() -> void:
 	layer = UiTokens.LAYER_HUD
-	_run_button.position = -UiTokens.RUN_BUTTON_CENTER_FROM_CORNER
-	_interact_button.position = -UiTokens.INTERACT_BUTTON_CENTER_FROM_CORNER
+	_place_corner_buttons()
 	_menu_button.position = Vector2(-UiTokens.MENU_BUTTON_CENTER_FROM_CORNER.x,
 		UiTokens.MENU_BUTTON_CENTER_FROM_CORNER.y)
 	(_menu_button.get_node(^"Visual") as Node2D).modulate.a = UiTokens.MENU_BUTTON_ALPHA
@@ -160,6 +166,67 @@ func get_interact_button() -> InteractButton:
 
 func get_menu_button() -> TouchScreenButton:
 	return _menu_button
+
+
+## Mode gaucher (Q-16, exploration seulement) : joystick dans la moitié droite, courir et
+## contextuel en bas à gauche (positions miroir) ; le bouton Menu reste en haut à droite.
+func set_left_handed(enabled: bool) -> void:
+	if enabled == _left_handed:
+		return
+	_left_handed = enabled
+	_joystick.release()
+	_place_corner_buttons()
+
+
+func is_left_handed() -> bool:
+	return _left_handed
+
+
+## Taille ([param size_scale] : 0,8 / 1,0 / 1,2) et opacité (0,3 à 1,0) du joystick.
+func set_joystick_style(size_scale: float, opacity: float) -> void:
+	_joystick.size_scale = size_scale
+	_joystick.opacity = opacity
+
+
+## Échelle des boutons courir et contextuel (1,0 / 1,2) ; le centre de chaque bouton ne bouge
+## pas, le bouton Menu garde sa taille.
+func set_button_scale(button_scale: float) -> void:
+	_button_scale = clampf(button_scale, 0.5, 2.0)
+	_run_button.scale = Vector2.ONE * _button_scale
+	_interact_button.scale = Vector2.ONE * _button_scale
+
+
+func get_button_scale() -> float:
+	return _button_scale
+
+
+## Rectangles (coordonnées de l'écran) des zones touchables fixes : courir, contextuel (même
+## caché : son emplacement) et Menu. Pour vérifier la symétrie et les marges.
+func get_button_rects() -> Dictionary[StringName, Rect2]:
+	var rects: Dictionary[StringName, Rect2] = {}
+	for entry: Array in [[&"run", _run_button], [&"interact", _interact_button],
+			[&"menu", _menu_button]]:
+		var button: TouchScreenButton = entry[1]
+		var radius := UiTokens.ROUND_BUTTON * 0.5 * button.scale.x
+		var center := button.get_global_transform_with_canvas().origin
+		rects[entry[0]] = Rect2(center - Vector2.ONE * radius, Vector2.ONE * radius * 2.0)
+	return rects
+
+
+## Courir et contextuel dans le coin bas-droit, ou bas-gauche en mode gaucher.
+func _place_corner_buttons() -> void:
+	_joystick.zone_on_right = _left_handed
+	_interact_button.set_mirrored(_left_handed)
+	if _left_handed:
+		_corner.set_anchors_and_offsets_preset(Control.PRESET_BOTTOM_LEFT)
+		_run_button.position = Vector2(UiTokens.RUN_BUTTON_CENTER_FROM_CORNER.x,
+			-UiTokens.RUN_BUTTON_CENTER_FROM_CORNER.y)
+		_interact_button.position = Vector2(UiTokens.INTERACT_BUTTON_CENTER_FROM_CORNER.x,
+			-UiTokens.INTERACT_BUTTON_CENTER_FROM_CORNER.y)
+	else:
+		_corner.set_anchors_and_offsets_preset(Control.PRESET_BOTTOM_RIGHT)
+		_run_button.position = -UiTokens.RUN_BUTTON_CENTER_FROM_CORNER
+		_interact_button.position = -UiTokens.INTERACT_BUTTON_CENTER_FROM_CORNER
 
 
 func _on_menu_pressed() -> void:

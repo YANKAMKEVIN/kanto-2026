@@ -21,6 +21,8 @@ const VERBS: Dictionary[StringName, Dictionary] = {
 
 var _verb: StringName = &""
 var _tween: Tween
+## Vrai (mode gaucher) : le bouton est au bord gauche, la pastille du verbe passe à sa droite.
+var _mirrored: bool = false
 
 @onready var _visual: RoundButtonVisual = %Visual
 @onready var _tag: PanelContainer = %Tag
@@ -50,10 +52,15 @@ func show_verb(verb: StringName) -> void:
 	_visual.queue_redraw()
 	_tag_label.text = entry["label"]
 	_tag.reset_size()
-	_tag.position = Vector2(
-		-UiTokens.ROUND_BUTTON * 0.5 - UiTokens.GAP - _tag.size.x, -_tag.size.y * 0.5)
+	_place_tag()
 	visible = true
 	_fade_to(1.0)
+
+
+## Mode gaucher : la pastille du verbe se place à droite du bouton (il est au bord gauche).
+func set_mirrored(mirrored: bool) -> void:
+	_mirrored = mirrored
+	_place_tag()
 
 
 ## Cache le bouton en fondu ANIM_MICRO (et relâche « interact » s'il était tenu).
@@ -90,6 +97,12 @@ func get_icon() -> Texture2D:
 ## Pastille du verbe (à gauche du bouton), pour les tests de placement.
 func get_tag() -> PanelContainer:
 	return _tag
+
+
+func _place_tag() -> void:
+	var x := UiTokens.ROUND_BUTTON * 0.5 + UiTokens.GAP if _mirrored \
+		else -UiTokens.ROUND_BUTTON * 0.5 - UiTokens.GAP - _tag.size.x
+	_tag.position = Vector2(x, -_tag.size.y * 0.5)
 
 
 func _fade_to(alpha: float) -> void:

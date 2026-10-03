@@ -31,7 +31,7 @@ func _ready() -> void:
 	_row.add_theme_constant_override(&"separation", UiTokens.GAP)
 	_lines.add_theme_constant_override(&"separation", UiTokens.ZONE_TITLE_LINE_GAP)
 	_icon.custom_minimum_size = Vector2.ONE * UiTokens.ZONE_TITLE_ICON
-	_box.bg_color = UiTokens.PANEL_BG
+	_box.bg_color = UiPrefs.panel_bg()
 	_box.corner_radius_top_left = UiTokens.RADIUS
 	_box.corner_radius_bottom_left = UiTokens.RADIUS
 	_box.anti_aliasing = true
@@ -49,12 +49,13 @@ func _draw() -> void:
 	var fade_start := maxf(size.x - UiTokens.ZONE_TITLE_FADE, 0.0)
 	draw_style_box(_box, Rect2(0.0, 0.0, fade_start, size.y))
 	var clear := UiTokens.PANEL_BG_CLEAR
+	var edge := _box.bg_color
 	draw_polygon(
 		PackedVector2Array([
 			Vector2(fade_start, 0.0), Vector2(size.x, 0.0),
 			Vector2(size.x, size.y), Vector2(fade_start, size.y),
 		]),
-		PackedColorArray([UiTokens.PANEL_BG, clear, clear, UiTokens.PANEL_BG])
+		PackedColorArray([edge, clear, clear, edge])
 	)
 
 
@@ -63,7 +64,11 @@ func show_title(zone_name: String, region: String) -> void:
 	_name_label.text = zone_name.to_upper()
 	_region_label.text = region
 	_region_label.visible = not region.is_empty()
+	# Taille du texte et contraste (UiPrefs), lus à chaque affichage.
+	_box.bg_color = UiPrefs.panel_bg()
+	UiPrefsApplier.apply(self)
 	reset_size()
+	queue_redraw()
 	if _tween != null:
 		_tween.kill()
 	var rest := get_rest_position()

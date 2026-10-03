@@ -272,3 +272,55 @@ func test_run_button_and_joystick_together() -> void:
 	_touch(1, button.position, false)
 	assert_false(Input.is_action_pressed(&"run"))
 	assert_eq(_pressed_moves(), [&"move_right"] as Array[StringName])
+
+
+# --- Réglages (Paramètres, T28) ---------------------------------------------------------------
+
+
+func test_defaults_are_normal_size_and_full_opacity() -> void:
+	assert_eq(_joystick.size_scale, 1.0)
+	assert_eq(_joystick.opacity, 1.0)
+	assert_false(_joystick.zone_on_right)
+	assert_eq(_joystick.ring_size(), float(UiTokens.JOYSTICK_RING))
+
+
+func test_size_scale_changes_ring_and_travel() -> void:
+	_joystick.size_scale = 1.2
+	assert_almost_eq(_joystick.ring_size(), UiTokens.JOYSTICK_RING * 1.2, 0.001)
+	assert_almost_eq(_joystick.travel(), UiTokens.JOYSTICK_TRAVEL * 1.2, 0.001)
+	# Le pouce doit aller plus loin pour la même direction maximale : 0,5 course = ni haut, ni bas.
+	_touch(0, _origin, true)
+	_drag(0, _origin + Vector2(UiTokens.JOYSTICK_TRAVEL, 0.0))
+	assert_eq(_joystick.get_direction(), Vector2i.RIGHT, "100 px suffisent encore à 1,0 × 0,83")
+	_touch(0, _origin + Vector2(UiTokens.JOYSTICK_TRAVEL, 0.0), false)
+
+
+func test_small_size_needs_a_shorter_travel() -> void:
+	_joystick.size_scale = 0.8
+	assert_almost_eq(_joystick.travel(), UiTokens.JOYSTICK_TRAVEL * 0.8, 0.001)
+	_swipe(Vector2(UiTokens.JOYSTICK_TRAVEL * 0.8, 0.0))
+	assert_eq(_joystick.get_direction(), Vector2i.RIGHT)
+
+
+func test_opacity_is_the_visible_alpha_and_rest_stays_invisible() -> void:
+	_joystick.opacity = 0.5
+	assert_eq(_joystick.modulate.a, 0.0, "invisible au repos, quelle que soit l'opacité")
+	_touch(0, _origin, true)
+	await wait_seconds(UiTokens.JOYSTICK_FADE_IN + 0.1)
+	assert_almost_eq(_joystick.modulate.a, 0.5, 0.01)
+	_joystick.opacity = 0.3
+	assert_almost_eq(_joystick.modulate.a, 0.3, 0.001, "suit le réglage pendant l'usage")
+	_touch(0, _origin, false)
+	await wait_seconds(UiTokens.JOYSTICK_FADE_OUT + 0.1)
+	assert_almost_eq(_joystick.modulate.a, 0.0, 0.001)
+
+
+func test_zone_on_right_ignores_the_left_half() -> void:
+	_joystick.zone_on_right = true
+	_touch(0, _origin, true)
+	assert_false(_joystick.is_active(), "moitié gauche : rien")
+	_touch(0, _origin, false)
+	_touch(0, _right_half_point(), true)
+	assert_true(_joystick.is_active())
+	assert_eq(_joystick.get_center(), _right_half_point())
+	_touch(0, _right_half_point(), false)

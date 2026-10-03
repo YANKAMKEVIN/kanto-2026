@@ -74,6 +74,8 @@ func show_toast(title: String, detail: String, icon: Texture2D = null) -> void:
 	_detail.text = detail
 	_detail.visible = not detail.is_empty()
 	_icon.texture = icon if icon != null else DEFAULT_ICON
+	# Taille du texte et contraste (UiPrefs), lus à chaque affichage ; le toast grandit avec.
+	UiPrefsApplier.apply(_body)
 	_kill()
 	if not _showing:
 		_body.position = Vector2.UP * UiTokens.TOAST_SLIDE

@@ -920,3 +920,52 @@ const TEXT_SCALE_LARGE := 1.15
 ## Contraste renforcé (Q-19) : opacité minimale des panneaux et texte secondaire plus clair.
 const CONTRAST_PANEL_ALPHA := 0.95
 const TEXT_MUTED_CONTRAST := Color("#E2E8F2")
+
+# --- Écran Paramètres et choix à deux cartes (jalon 6, T28) -------------------------------------
+# Paysage : catégories à gauche, contrôles de la catégorie ouverte à droite. Chaque contrôle fait
+# au moins SETTINGS_ROW_HEIGHT de haut (zone tactile ≥ TOUCH_MIN) ; la valeur est toujours écrite.
+const SETTINGS_CATEGORY_WIDTH := 460
+const SETTINGS_CATEGORY_ICON := 48
+const SETTINGS_CATEGORY_GAP := 12
+const SETTINGS_ROW_HEIGHT := TOUCH_MIN + 16
+const SETTINGS_ROW_GAP := 12
+const SETTINGS_ROW_PAD_H := 24
+const SETTINGS_ROW_PAD_V := 8
+const SETTINGS_ROW_BG := Color(1, 1, 1, 0.06)
+const SETTINGS_PANEL_TITLE_FONT := FONT_BUTTON
+const SETTINGS_LABEL_FONT := FONT_BODY
+const SETTINGS_DETAIL_FONT := FONT_CAPTION
+const SETTINGS_VALUE_FONT := 28
+const SETTINGS_OPTION_FONT := 28
+const SETTINGS_OPTION_MIN_WIDTH := 180
+const SETTINGS_OPTION_GAP := 12
+const SETTINGS_TEXT_MIN_WIDTH := 300
+## Interrupteur : piste arrondie (vert SUCCESS activé, grisé sinon) et pastille blanche.
+const SETTINGS_SWITCH_SIZE := Vector2(112, 64)
+const SETTINGS_SWITCH_KNOB := 48
+const SETTINGS_SWITCH_OFF := Color(1, 1, 1, 0.22)
+const SETTINGS_SWITCH_KNOB_COLOR := Color(1, 1, 1, 1)
+## Curseur : piste, pastille, largeur de la zone tactile et du pourcentage.
+const SETTINGS_SLIDER_WIDTH := 460
+const SETTINGS_SLIDER_TRACK := 12
+const SETTINGS_SLIDER_KNOB := 56
+const SETTINGS_SLIDER_VALUE_WIDTH := 110
+const SETTINGS_SLIDER_TRACK_BG := Color(1, 1, 1, 0.18)
+## Action « Sauvegarder maintenant ».
+const SETTINGS_ACTION_WIDTH := 480
+const SETTINGS_ACTION_OFF_BG := Color(1, 1, 1, 0.10)
+## Résultat de la sauvegarde : barre sous les contrôles, tenue avant de s'effacer.
+const SETTINGS_RESULT_HEIGHT := 88
+const SETTINGS_RESULT_HOLD := 3.5
+const SETTINGS_FADE := ANIM_PANEL
+## ChoiceCards : voile sur le jeu, deux grandes cartes côte à côte.
+const CHOICE_SCRIM := Color(0.02, 0.03, 0.05, 0.82)
+const CHOICE_CARD_SIZE := Vector2(560, 240)
+const CHOICE_CARD_GAP := 32
+const CHOICE_CARD_PAD := 28
+const CHOICE_TITLE_FONT := FONT_TITLE
+const CHOICE_DETAIL_FONT := FONT_BODY
+const CHOICE_LABEL_FONT := FONT_TITLE
+const CHOICE_CARD_DETAIL_FONT := 28
+const CHOICE_SLIDE := 40.0
+const CHOICE_FADE := ANIM_PANEL

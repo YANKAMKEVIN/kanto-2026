@@ -580,3 +580,168 @@ func test_menu_button_is_translucent_and_follows_controls() -> void:
 	assert_false(_hud.get_menu_button().visible)
 	_hud.set_controls_visible(true)
 	assert_true(_hud.get_menu_button().visible)
+
+
+# --- Réglages des commandes (Paramètres, T28) ---------------------------------------------------
+
+
+func _hud_in(width: int) -> ExplorationHud:
+	var viewport := SubViewport.new()
+	viewport.size = Vector2i(width, int(SCREEN_HEIGHT))
+	viewport.render_target_update_mode = SubViewport.UPDATE_DISABLED
+	add_child_autofree(viewport)
+	var hud := (load(HUD_SCENE) as PackedScene).instantiate() as ExplorationHud
+	viewport.add_child(hud)
+	await wait_process_frames(2)
+	return hud
+
+
+func _inside_safe(rect: Rect2, width: float) -> bool:
+	var inside := Rect2(Vector2.ONE * UiTokens.SAFE_MARGIN,
+		Vector2(width, SCREEN_HEIGHT) - Vector2.ONE * UiTokens.SAFE_MARGIN * 2.0)
+	return inside.encloses(rect)
+
+
+func test_left_handed_mirrors_run_and_interact_and_keeps_the_menu_button() -> void:
+	for width: float in SCREEN_WIDTHS:
+		var hud := await _hud_in(int(width))
+		var before := hud.get_button_rects()
+		hud.set_left_handed(true)
+		await wait_process_frames(2)
+		assert_true(hud.is_left_handed())
+		var rects := hud.get_button_rects()
+		for name_id: StringName in [&"run", &"interact"]:
+			var rect: Rect2 = rects[name_id]
+			var old: Rect2 = before[name_id]
+			var from_corner := UiTokens.RUN_BUTTON_CENTER_FROM_CORNER if name_id == &"run" \
+				else UiTokens.INTERACT_BUTTON_CENTER_FROM_CORNER
+			assert_almost_eq(rect.get_center().x, from_corner.x, 0.5, "miroir x %s" % name_id)
+			assert_almost_eq(rect.get_center().y, old.get_center().y, 0.5, "même hauteur")
+			assert_true(rect.end.x <= width * 0.5, "moitié gauche (%s, %d)" % [name_id, width])
+			assert_gte(rect.size.x, float(UiTokens.TOUCH_MIN))
+			assert_true(_inside_safe(rect, width), "dans SAFE_MARGIN (%s, %d)" % [name_id, width])
+		assert_eq((rects[&"menu"] as Rect2).position, (before[&"menu"] as Rect2).position,
+			"bouton Menu inchangé")
+		assert_true((rects[&"menu"] as Rect2).position.x >= width * 0.5, "Menu reste à droite")
+		assert_eq(hud.get_run_button().get_parent().anchor_left, 0.0, "ancré en bas à gauche")
+
+
+func test_left_handed_off_restores_the_right_corner() -> void:
+	var hud := await _hud_in(2340)
+	var before := hud.get_button_rects()
+	hud.set_left_handed(true)
+	hud.set_left_handed(false)
+	await wait_process_frames(2)
+	var after := hud.get_button_rects()
+	for key: StringName in before:
+		assert_eq((after[key] as Rect2).position, (before[key] as Rect2).position, key)
+	assert_false(hud.get_joystick().zone_on_right)
+
+
+func test_left_handed_moves_the_joystick_to_the_right_half() -> void:
+	var hud := await _hud_in(2340)
+	hud.set_left_handed(true)
+	assert_true(hud.get_joystick().zone_on_right)
+	hud.set_left_handed(false)
+	assert_false(hud.get_joystick().zone_on_right)
+
+
+func test_left_handed_interact_tag_goes_to_the_right_inside_safe_margin() -> void:
+	for width: float in SCREEN_WIDTHS:
+		var hud := await _hud_in(int(width))
+		hud.set_left_handed(true)
+		for verb: StringName in VERB_LABELS:
+			hud.show_interact(verb)
+			await wait_process_frames(1)
+			var button := hud.get_interact_button()
+			var tag_rect := button.get_tag().get_global_rect()
+			var center := button.get_global_transform_with_canvas().origin
+			assert_gte(tag_rect.position.x, center.x + UiTokens.ROUND_BUTTON * 0.5 - 0.5,
+				"pastille à droite (%s)" % verb)
+			assert_true(_inside_safe(tag_rect, width), "pastille dans SAFE_MARGIN (%s)" % verb)
+			var run: Rect2 = hud.get_button_rects()[&"run"]
+			assert_false(tag_rect.intersects(run), "hors du bouton courir (%s)" % verb)
+		hud.hide_interact()
+
+
+func test_button_scale_grows_run_and_interact_not_the_menu_button() -> void:
+	for width: float in SCREEN_WIDTHS:
+		for left: bool in [false, true]:
+			var hud := await _hud_in(int(width))
+			hud.set_left_handed(left)
+			var before := hud.get_button_rects()
+			hud.set_button_scale(1.2)
+			await wait_process_frames(2)
+			var rects := hud.get_button_rects()
+			for key: StringName in [&"run", &"interact"]:
+				var rect: Rect2 = rects[key]
+				assert_almost_eq(rect.size.x, UiTokens.ROUND_BUTTON * 1.2, 0.5)
+				assert_almost_eq(rect.get_center().x, (before[key] as Rect2).get_center().x, 0.5)
+				assert_true(_inside_safe(rect, width), "%s ×1,2 dans SAFE_MARGIN (%d)" % [key, width])
+			assert_false((rects[&"run"] as Rect2).intersects(rects[&"interact"] as Rect2),
+				"courir et contextuel ne se touchent pas")
+			assert_eq((rects[&"menu"] as Rect2).size, (before[&"menu"] as Rect2).size,
+				"le bouton Menu garde sa taille")
+
+
+func _touch_in(hud: ExplorationHud, index: int, position: Vector2, pressed: bool) -> void:
+	var event := InputEventScreenTouch.new()
+	event.index = index
+	event.position = position
+	event.pressed = pressed
+	hud.get_viewport().push_input(event, true)
+
+
+func test_scaled_interact_button_still_presses_interact() -> void:
+	var hud := await _hud_in(2340)
+	hud.set_button_scale(1.2)
+	hud.show_interact(&"talk")
+	await wait_process_frames(2)
+	var center := hud.get_interact_button().get_global_transform_with_canvas().origin
+	var radius := UiTokens.ROUND_BUTTON * 0.5 * 1.2
+	_touch_in(hud, 1, center + Vector2(radius * 0.9, 0.0), true)
+	assert_true(Input.is_action_pressed(&"interact"), "le bord agrandi se touche")
+	_touch_in(hud, 1, center + Vector2(radius * 0.9, 0.0), false)
+
+
+func test_joystick_does_not_start_on_the_buttons_in_left_handed_mode() -> void:
+	var hud := await _hud_in(2340)
+	hud.set_left_handed(true)
+	await wait_process_frames(2)
+	var run_center := (hud.get_button_rects()[&"run"] as Rect2).get_center()
+	_touch_in(hud, 2, run_center, true)
+	assert_true(Input.is_action_pressed(&"run"), "le bouton courir répond")
+	assert_false(hud.get_joystick().is_active(), "le joystick ne démarre pas dessous")
+	_touch_in(hud, 2, run_center, false)
+	var menu_center := (hud.get_button_rects()[&"menu"] as Rect2).get_center()
+	watch_signals(hud)
+	_touch_in(hud, 3, menu_center, true)
+	_touch_in(hud, 3, menu_center, false)
+	assert_false(hud.get_joystick().is_active(), "ni sous le bouton Menu")
+	assert_signal_emit_count(hud, "menu_requested", 1)
+
+
+func test_joystick_style_reaches_the_joystick() -> void:
+	var hud := await _hud_in(1920)
+	hud.set_joystick_style(1.2, 0.6)
+	assert_eq(hud.get_joystick().size_scale, 1.2)
+	assert_eq(hud.get_joystick().opacity, 0.6)
+
+
+func test_zone_title_follows_large_text_and_contrast() -> void:
+	var title := _hud.get_zone_title()
+	var name_label := title.get_node(^"%NameLabel") as Label
+	var settings := GameSettings.new()
+	settings.text_size = GameSettings.TextSize.LARGE
+	settings.high_contrast = true
+	UiPrefs.apply(settings)
+	_hud.show_zone_title("Bourg Palette", "Kanto")
+	assert_eq(name_label.get_theme_font_size(&"font_size"),
+		roundi(UiTokens.FONT_TITLE * UiTokens.TEXT_SCALE_LARGE))
+	var region := title.get_node(^"%RegionLabel") as Label
+	assert_eq(region.get_theme_color(&"font_color"), UiTokens.TEXT_MUTED_CONTRAST)
+	var rest := title.get_rest_position()
+	assert_true(rest.x >= UiTokens.SAFE_MARGIN and rest.y >= UiTokens.SAFE_MARGIN)
+	UiPrefs.reset()
+	_hud.show_zone_title("Bourg Palette", "Kanto")
+	assert_eq(name_label.get_theme_font_size(&"font_size"), UiTokens.FONT_TITLE)

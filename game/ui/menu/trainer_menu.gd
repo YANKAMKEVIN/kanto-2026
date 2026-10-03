@@ -40,6 +40,10 @@ signal pokedex_species_opened(species: StringName)
 ## Relais de l'écran Carte (6D) : zone découverte touchée. Le lien Pokémon observé → Pokédex
 ## passe par [signal route_requested].
 signal map_zone_touched(zone: StringName)
+## Relais de l'écran Paramètres (6F) : un réglage change (valeur du réglage, jamais un rang) ;
+## « Sauvegarder maintenant » touché.
+signal setting_changed(key: StringName, value: Variant)
+signal save_now_requested
 
 ## Titre des écrans provisoires (carte → « Équipe »…), texte d'interface.
 const PLACEHOLDER_TITLES: Dictionary[StringName, String] = {
@@ -76,6 +80,11 @@ var _pokedex: PokedexScreen
 var _map: MapScreen
 ## Dresseur (6E) : instancié à la première visite, puis gardé.
 var _trainer: TrainerScreen
+## Paramètres (6F) : instancié à la première visite, puis gardé.
+var _settings: SettingsScreen
+## Dernière révision de [UiPrefs] appliquée à chaque écran (taille du texte, contraste).
+var _prefs_fitted: Dictionary[MenuScreen, int] = {}
+var _blur_enabled: bool = true
 
 @onready var _root: Control = %Root
 @onready var _backdrop: ColorRect = %Backdrop
@@ -105,6 +114,7 @@ func _ready() -> void:
 	var material := _backdrop.material as ShaderMaterial
 	material.set_shader_parameter(&"blur_radius", UiTokens.MENU_BLUR_RADIUS)
 	material.set_shader_parameter(&"blur_lod", UiTokens.MENU_BLUR_LOD)
+	material.set_shader_parameter(&"blur_on", _blur_enabled)
 	material.set_shader_parameter(&"dim", UiTokens.MENU_DIM)
 	material.set_shader_parameter(&"dim_color", UiTokens.SURFACE_DARK)
 
@@ -170,6 +180,7 @@ func show_dashboard(view: DashboardView) -> void:
 	set_zone_name(view.zone_name)
 	_dashboard.show_dashboard(view)
 	_select(_dashboard)
+	_fit_prefs(_dashboard)
 
 
 ## Nom de la zone dans l'en-tête commun à tous les écrans (« Route 1 ») ; vide : pastille cachée.
@@ -195,6 +206,7 @@ func show_team(view: TeamView, selected: int) -> void:
 		_team.hide_now()
 	_team.show_team(view, selected)
 	_select(_team)
+	_fit_prefs(_team)
 
 
 ## Écran Sac (6B) : [param view] (onglets, cartes, aperçu). Rappelé pendant que le Sac est
@@ -215,6 +227,7 @@ func show_bag(view: BagView) -> void:
 		_bag.hide_now()
 	_bag.show_bag(view)
 	_select(_bag)
+	_fit_prefs(_bag)
 
 
 ## Écran Pokédex (6C) : [param view] (en-tête, filtres, grille). Rappelé pendant que le Pokédex
@@ -231,12 +244,14 @@ func show_pokedex(view: PokedexGridView) -> void:
 		_pokedex.hide_now()
 	_pokedex.show_grid(view)
 	_select(_pokedex)
+	_fit_prefs(_pokedex)
 
 
 ## La fiche d'une espèce, à droite de la grille du Pokédex.
 func show_pokedex_sheet(view: PokedexSheetView) -> void:
 	if _pokedex != null:
 		_pokedex.show_sheet(view)
+		_fit_prefs(_pokedex)
 
 
 ## Retour (retour Android, Échap) : referme la fiche du Pokédex si elle est ouverte. Vrai si
@@ -258,6 +273,7 @@ func show_map(view: MapView) -> void:
 		_map.hide_now()
 	_map.show_map(view)
 	_select(_map)
+	_fit_prefs(_map)
 
 
 ## Écran Dresseur (6E) : [param view] (identité, badges, grands moments, statistiques). Rappelé
@@ -273,24 +289,62 @@ func show_trainer(view: TrainerView) -> void:
 		_trainer.hide_now()
 	_trainer.show_trainer(view)
 	_select(_trainer)
+	_fit_prefs(_trainer)
+
+
+## Écran Paramètres (6F) : [param view] (catégories et contrôles). Rappelé pendant que l'écran
+## est affiché (le directeur renvoie la vue neuve après chaque changement), il met à jour sans
+## rejouer l'entrée : la catégorie ouverte et le défilement restent.
+func show_settings(view: SettingsView) -> void:
+	if _settings == null:
+		_settings = SettingsScreen.new()
+		_settings.speed_scale = speed_scale
+		_settings.back_requested.connect(back_requested.emit)
+		_settings.setting_changed.connect(setting_changed.emit)
+		_settings.save_now_requested.connect(save_now_requested.emit)
+		_host.add_child(_settings)
+		_settings.hide_now()
+	_settings.show_settings(view)
+	_select(_settings)
+	_fit_prefs(_settings)
+
+
+## Message bref de l'écran Paramètres (« Partie sauvegardée ») : le toast du monde serait sous
+## le menu.
+func show_save_result(text: String) -> void:
+	if _settings != null:
+		_settings.show_save_result(text)
+
+
+## Flou du fond du menu (graphismes « Économie » : faux, le voile est gardé).
+func set_backdrop_blur(enabled: bool) -> void:
+	_blur_enabled = enabled
+	(_backdrop.material as ShaderMaterial).set_shader_parameter(&"blur_on", enabled)
+
+
+func is_backdrop_blur_enabled() -> bool:
+	return _blur_enabled
 
 
 ## Le panneau d'une zone découverte, à droite de l'illustration (sans changer d'écran).
 func show_map_zone(view: ZonePanelView) -> void:
 	if _map != null:
 		_map.show_zone(view)
+		_fit_prefs(_map)
 
 
 ## Le choix du Pokémon dans le Sac (UTILISER), dans l'écran Sac.
 func show_bag_targets(view: PartyPickerView) -> void:
 	if _bag != null:
 		_bag.show_targets(view)
+		_fit_prefs(_bag)
 
 
 ## Le résultat d'un usage (UseResultBar) dans l'écran Sac.
 func show_bag_result(text: String, can_repeat: bool) -> void:
 	if _bag != null:
 		_bag.show_result(text, can_repeat)
+		_fit_prefs(_bag)
 
 
 ## Retour (retour Android, Échap) : referme le choix du Pokémon du Sac s'il est ouvert. Vrai si
@@ -343,6 +397,11 @@ func get_trainer() -> TrainerScreen:
 	return _trainer
 
 
+## L'écran Paramètres (null avant la première visite).
+func get_settings() -> SettingsScreen:
+	return _settings
+
+
 func get_close_button() -> Button:
 	return _close_button
 
@@ -389,6 +448,8 @@ func _screens() -> Array[MenuScreen]:
 		screens.append(_map)
 	if _trainer != null:
 		screens.append(_trainer)
+	if _settings != null:
+		screens.append(_settings)
 	return screens
 
 
@@ -407,6 +468,16 @@ func _select(screen: MenuScreen) -> void:
 	else:
 		_entered = false
 		screen.hide_now()
+
+
+## Remet en forme [param screen] selon [UiPrefs] (taille du texte, contraste) : à chaque
+## affichage tant que les préférences ne sont pas celles par défaut, et une fois par écran quand
+## elles y reviennent (les surcharges posées sont retirées).
+func _fit_prefs(screen: MenuScreen) -> void:
+	if UiPrefsApplier.is_neutral() and _prefs_fitted.get(screen, -1) == UiPrefs.revision:
+		return
+	UiPrefsApplier.apply(screen)
+	_prefs_fitted[screen] = UiPrefs.revision
 
 
 func _set_amount(value: float) -> void:
