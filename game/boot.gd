@@ -236,11 +236,14 @@ func _notification(what: int) -> void:
 			_in_foreground = false
 
 
-## Action `menu` (Échap, M) : ouvre le menu en exploration, le ferme s'il est ouvert.
+## Action `menu` (Échap, M) : ouvre le menu en exploration, le ferme s'il est ouvert (après avoir
+## refermé le choix du Pokémon du Sac s'il est ouvert).
 func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed(&"menu") and not event.is_echo():
 		if _menu.is_open():
-			_menu.close()
+			# Le choix du Pokémon du Sac se referme d'abord (retour d'un niveau).
+			if not _menu_screen.bag_back():
+				_menu.close()
 		else:
 			_menu.open()
 		get_viewport().set_input_as_handled()
@@ -399,6 +402,8 @@ func _can_open_menu() -> bool:
 ## immédiate puis ouverture du menu ; pendant un dialogue, une scène, un combat ou une
 ## transition, ignoré.
 func _on_go_back() -> void:
+	if _menu.is_open() and _menu_screen.bag_back():
+		return
 	if _menu.handle_back():
 		return
 	if _hud.are_controls_visible() and _can_open_menu():

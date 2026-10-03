@@ -146,3 +146,15 @@ func test_capture_slot_is_centered_and_place_matches_rect() -> void:
 		assert_eq(control.offset_left, -rect.size.x * 0.5)
 		assert_eq(control.offset_right, rect.size.x * 0.5)
 		assert_eq(control.grow_vertical, Control.GROW_DIRECTION_BOTH)
+
+
+func test_party_picker_slot_fits_the_picker_and_stays_in_the_safe_area() -> void:
+	var min_width := UiTokens.PICKER_COLUMNS * UiTokens.PICKER_COLUMN_WIDTH \
+		+ (UiTokens.PICKER_COLUMNS - 1) * UiTokens.PICKER_GAP + UiTokens.MENU_PANEL_PAD * 2
+	for view: Vector2 in VIEWS:
+		var rect := BattleHudLayout.rect(BattleHudLayout.Slot.PARTY_PICKER, view)
+		assert_gte(rect.size.x, float(min_width), "%s : la largeur minimale du choix" % view)
+		assert_eq(rect.position.x, float(UiTokens.SAFE_MARGIN))
+		assert_eq(rect.end.y, view.y - UiTokens.SAFE_MARGIN)
+		assert_gte(rect.position.y, float(UiTokens.SAFE_MARGIN))
+		assert_lt(rect.end.x, view.x * 0.7, "ne recouvre pas l'adversaire à droite")

@@ -8,7 +8,6 @@ extends GutTest
 ## - défaite : l'équipe (affaiblie, face à un sauvage rapide) tombe K.O., le joueur se réveille
 ##   chez Maman (player_house_1f), équipe soignée, sans titre de zone (intérieur).
 
-const FakePicker := preload("res://tests/helpers/fake_party_picker.gd")
 const STARTER := &"charmander"
 const LEVEL := 5
 ## Graine de l'équipe du joueur (indépendante de l'aléatoire de la partie).
@@ -548,15 +547,16 @@ func _drive_potion(target: int) -> int:
 	var battle_director := _boot.get_battle_director()
 	var battle_hud := _boot.get_battle_hud()
 	var opened := 0
+	var answered := false
 	var stage := 0
 	var deadline := Time.get_ticks_msec() + int(TIMEOUT * 1000)
 	while enc.is_running() and Time.get_ticks_msec() < deadline:
 		var picker := battle_director.get_party_picker()
 		var panel := battle_director.get_bag_panel()
 		var battle := battle_director.get_battle()
-		if picker != null and picker.shown:
+		if picker != null and picker.is_shown() and not answered:
 			opened += 1
-			picker.shown = false
+			answered = true
 			picker.target_chosen.emit(target)
 		elif panel != null and panel.is_shown() and not panel.is_answered():
 			panel.open_category(&"heal")
@@ -581,7 +581,6 @@ func test_a_potion_in_a_wild_battle_heals_another_member_once() -> void:
 	hurt.hp = 4
 	GameState.party.add(hurt)
 	GameState.bag.add(&"potion", 3)
-	_boot.get_battle_director().party_picker_scene = FakePicker.make_scene()
 	_stand_below_grass()
 	var enc := _boot.get_encounter_director()
 	Input.action_press(&"move_up")
