@@ -93,7 +93,12 @@ func open(route: MenuRoute = null) -> bool:
 	get_tree().paused = true
 	_navigator.open(route)
 	menu_opened.emit()
-	_on_route_shown(_navigator.current())
+	var shown := _navigator.current()
+	if shown != null and shown.screen != MenuRoute.DASHBOARD:
+		# Ouvert directement sur un sous-écran : l'en-tête (nom de la zone) vient de la vue du
+		# tableau de bord, qui n'aurait sinon jamais été construite.
+		dashboard_shown.emit(build_dashboard())
+	_on_route_shown(shown)
 	return true
 
 

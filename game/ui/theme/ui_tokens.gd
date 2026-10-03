@@ -718,6 +718,16 @@ const PICKER_TITLE_FONT := FONT_BUTTON
 const PICKER_CHEVRON := 48
 const PICKER_UNUSABLE_ALPHA := 0.6
 const PICKER_SELECTED_BORDER := 4
+## Refus d'une cible inutilisable : la carte tremble (amplitude horizontale, allers-retours
+## en PICKER_SHAKE_TIME), vibration courte.
+const PICKER_SHAKE_AMPLITUDE := 12.0
+const PICKER_SHAKE_TIME := 0.25
+const PICKER_SHAKE_STEPS := 4
+const HAPTIC_REFUSE_MS := 20
+## Soin réussi : éclat vert de la carte (opacité au départ), qui s'estompe après la barre.
+const PICKER_HEAL_FLASH_ALPHA := 0.4
+const PICKER_HEAL_FLASH_COLOR := Color(0.298, 0.851, 0.392, PICKER_HEAL_FLASH_ALPHA)
+const PICKER_HEAL_FLASH_FADE := ANIM_PANEL
 const RESULT_HEIGHT := TOUCH_MIN
 const RESULT_FONT := FONT_BODY
 const RESULT_PAD_H := 28

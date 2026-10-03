@@ -81,6 +81,8 @@ func _ready() -> void:
 	_header.offset_top = UiTokens.SAFE_MARGIN
 	_header.offset_bottom = UiTokens.SAFE_MARGIN + UiTokens.MENU_CLOSE_SIZE
 	_header.add_theme_constant_override(&"separation", UiTokens.GAP)
+	# Jamais une pastille sans nom (l'icône seule) : elle apparaît avec le nom de la zone.
+	set_zone_name("")
 	_close_button.custom_minimum_size = Vector2.ONE * UiTokens.MENU_CLOSE_SIZE
 	_close_button.pressed.connect(_on_close_pressed)
 	_host.offset_left = UiTokens.SAFE_MARGIN
@@ -152,10 +154,16 @@ func close_animated() -> void:
 
 ## Pose [param view] sur le tableau de bord (en-tête compris : le nom de la zone) et l'affiche.
 func show_dashboard(view: DashboardView) -> void:
-	_zone_name.text = view.zone_name
-	_zone_pill.visible = not view.zone_name.is_empty()
+	set_zone_name(view.zone_name)
 	_dashboard.show_dashboard(view)
 	_select(_dashboard)
+
+
+## Nom de la zone dans l'en-tête commun à tous les écrans (« Route 1 ») ; vide : pastille cachée.
+## Gardé tant qu'un autre nom n'est pas donné (Équipe, Sac… ne le touchent pas).
+func set_zone_name(zone_name: String) -> void:
+	_zone_name.text = zone_name
+	_zone_pill.visible = not zone_name.is_empty()
 
 
 ## Écran Équipe (6A) : [param view] et le Pokémon [param selected] sélectionné. Rappelé pendant

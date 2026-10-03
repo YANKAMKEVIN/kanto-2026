@@ -15,6 +15,11 @@ extends BattleWidget
 
 ## Une cible utilisable est touchée (jamais une autre).
 signal target_chosen(index: int)
+## Une carte inutilisable est touchée : elle tremble, [param text] est la raison complète
+## (« Roucool a déjà tous ses PV. »). Rien n'est choisi.
+signal target_refused(index: int, text: String)
+## Tous les soins animés sont finis (après un show_targets qui en a lancé).
+signal heal_finished
 ## ANNULER touché : l'hôte referme le choix, rien n'est utilisé.
 signal back_requested
 
@@ -23,7 +28,12 @@ const CANCEL_TEXT := "ANNULER"
 const TITLE_FORMAT := "%s  %s  —  sur quel Pokémon ?"
 const BACK_ICON: Texture2D = preload("res://assets/ui/icons/battle/back.svg")
 
+## Le refus s'écrit dans le titre du choix (combat). Faux : l'hôte l'affiche (UseResultBar du Sac).
+var refusal_in_title: bool = true
+
 var _view: PartyPickerView
+var _healing: int = 0
+var _heal_generation: int = 0
 var _cards: Array[PartyTargetCard] = []
 var _frame: PanelContainer
 var _title: Label
@@ -40,8 +50,12 @@ func _ready() -> void:
 
 ## Montre le choix pour [param view] : s'ouvre (glisse) s'il ne l'est pas, sinon se met à jour.
 func show_targets(view: PartyPickerView) -> void:
+	var previous := _view if _shown else null
 	_view = view
+	_heal_generation += 1
+	_healing = 0
 	_title.text = TITLE_FORMAT % [view.item_name, "×%d" % view.quantity]
+	_title.remove_theme_color_override(&"font_color")
 	for card: PartyTargetCard in _cards:
 		_grid.remove_child(card)
 		# Différé : show_targets est rappelé depuis le toucher de cette carte (tapped).
@@ -50,10 +64,19 @@ func show_targets(view: PartyPickerView) -> void:
 	for i: int in view.size():
 		var card := PartyTargetCard.new()
 		_grid.add_child(card)
+		card.speed_scale = speed_scale
 		card.set_target(view.targets[i])
 		card.set_selected(i == view.selected)
 		card.tapped.connect(_on_card_tapped.bind(i))
 		_cards.append(card)
+		var old := previous.target_at(i) if previous != null else null
+		var now := view.targets[i]
+		if old != null and old.member != null and now.member != null \
+				and old.member.species_id == now.member.species_id \
+				and now.member.hp > old.member.hp:
+			_healing += 1
+			card.heal_finished.connect(_on_card_healed.bind(_heal_generation), CONNECT_ONE_SHOT)
+			card.play_heal(old.member.hp)
 	slide_in()
 
 
@@ -63,6 +86,11 @@ func cancel() -> void:
 		return
 	_haptic(UiTokens.HAPTIC_TICK_MS)
 	back_requested.emit()
+
+
+## Un soin animé est en cours (barres qui remontent).
+func is_healing() -> bool:
+	return _healing > 0
 
 
 func get_view() -> PartyPickerView:
@@ -145,7 +173,28 @@ func _on_card_tapped(index: int) -> void:
 	if not _shown or _view == null:
 		return
 	var target := _view.target_at(index)
-	if target == null or not target.usable:
+	if target == null:
+		return
+	if not target.usable:
+		_refuse(index, target)
 		return
 	_haptic(UiTokens.HAPTIC_TAP_MS)
 	target_chosen.emit(index)
+
+
+func _refuse(index: int, target: PartyTargetView) -> void:
+	var text := target.refusal if not target.refusal.is_empty() else target.reason
+	_cards[index].shake()
+	_haptic(UiTokens.HAPTIC_REFUSE_MS)
+	if refusal_in_title and not text.is_empty():
+		_title.text = text
+		_title.add_theme_color_override(&"font_color", UiTokens.HP_LOW)
+	target_refused.emit(index, text)
+
+
+func _on_card_healed(generation: int) -> void:
+	if generation != _heal_generation:
+		return
+	_healing = maxi(_healing - 1, 0)
+	if _healing == 0:
+		heal_finished.emit()

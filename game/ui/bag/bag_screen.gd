@@ -63,6 +63,7 @@ var _selected: StringName = &""
 var _tabs: Dictionary[StringName, BagCategoryTab] = {}
 var _cards: Array[BagItemCard] = []
 var _picker_item: StringName = &""
+var _pending_result: Array = []
 var _detail_tween: Tween
 
 var _back: Button
@@ -118,7 +119,9 @@ func _ready() -> void:
 	_picker = PICKER_SCENE.instantiate() as PartyPicker
 	_picker.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	_picker.speed_scale = speed_scale
+	_picker.refusal_in_title = false
 	_picker.target_chosen.connect(_on_target_chosen)
+	_picker.target_refused.connect(_on_target_refused)
 	_picker.back_requested.connect(_close_picker)
 	stack.add_child(_picker)
 	_result = UseResultBar.new()
@@ -160,8 +163,14 @@ func show_targets(view: PartyPickerView) -> void:
 
 
 ## Montre le résultat d'un usage ; UTILISER À NOUVEAU si [param can_repeat].
+## Pendant que le choix du Pokémon est ouvert, le résultat attend la fin de l'animation du soin
+## (barre qui remonte) : il est posé en fin d'image, une fois les cartes mises à jour.
 func show_result(text: String, can_repeat: bool) -> void:
 	_result.speed_scale = speed_scale
+	if is_picker_open():
+		_pending_result = [text, can_repeat]
+		_flush_result.call_deferred()
+		return
 	_result.show_result(text, can_repeat)
 
 
@@ -633,7 +642,30 @@ func _on_action() -> void:
 	use_requested.emit(entry.item_id)
 
 
+func _flush_result() -> void:
+	if _pending_result.is_empty():
+		return
+	if _picker != null and _picker.is_healing():
+		if not _picker.heal_finished.is_connected(_flush_result):
+			_picker.heal_finished.connect(_flush_result, CONNECT_ONE_SHOT)
+		return
+	var pending := _pending_result
+	_pending_result = []
+	_result.show_result(pending[0] as String, pending[1] as bool)
+
+
+## Cible refusée : la carte a tremblé ; la raison s'affiche en style refus dans la barre de
+## résultat (rien n'est consommé, aucun target_chosen).
+func _on_target_refused(_index: int, text: String) -> void:
+	_pending_result = []
+	if text.is_empty():
+		return
+	_result.speed_scale = speed_scale
+	_result.show_result(text, false)
+
+
 func _on_target_chosen(index: int) -> void:
+	_pending_result = []
 	_result.clear()
 	target_chosen.emit(_picker_item, index)
 

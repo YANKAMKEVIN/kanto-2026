@@ -14,7 +14,18 @@ const SPRITE_PATH := "res://assets/sprites/pokemon/placeholder/%s_front.png"
 const CHEVRON_ICON: Texture2D = preload("res://assets/ui/icons/menu/chevron.svg")
 const HP_BAR_SCENE: PackedScene = preload("res://game/ui/battle/hp_bar.tscn")
 
+## Le soin de la carte est fini (barre arrivée, éclat dissipé).
+signal heal_finished
+
+## Durées multipliées (0 = instantané, pour les tests).
+var speed_scale: float = 1.0
+
 var _target: PartyTargetView
+var _flash: Panel
+var _shake_tween: Tween
+var _shake_base: float = 0.0
+var _heal_tween: Tween
+var _healing: bool = false
 var _thumb_box: Panel
 var _thumb: TextureRect
 var _name: Label
@@ -58,6 +69,79 @@ func set_target(target: PartyTargetView) -> void:
 	normal_variation = theme_type_variation
 	for control: Control in _dimmed:
 		control.modulate.a = 1.0 if target.usable else UiTokens.PICKER_UNUSABLE_ALPHA
+
+
+## Refus : la carte tremble brièvement (PICKER_SHAKE_TIME), puis revient à sa place.
+func shake() -> void:
+	if _shake_tween != null and _shake_tween.is_valid():
+		_shake_tween.kill()
+		position.x = _shake_base
+	else:
+		_shake_base = position.x
+	var time := UiTokens.PICKER_SHAKE_TIME * speed_scale
+	if time <= 0.0 or not is_inside_tree():
+		_shake_tween = null
+		return
+	var step := time / float(UiTokens.PICKER_SHAKE_STEPS * 2 + 1)
+	_shake_tween = create_tween().set_trans(Tween.TRANS_SINE)
+	for i: int in UiTokens.PICKER_SHAKE_STEPS:
+		var dir := 1.0 if i % 2 == 0 else -1.0
+		var decay := 1.0 - float(i) / float(UiTokens.PICKER_SHAKE_STEPS)
+		_shake_tween.tween_property(self, ^"position:x",
+			_shake_base + dir * UiTokens.PICKER_SHAKE_AMPLITUDE * decay, step)
+		_shake_tween.tween_property(self, ^"position:x", _shake_base, step)
+	_shake_tween.tween_callback(func() -> void: position.x = _shake_base)
+
+
+## La carte tremble en ce moment.
+func is_shaking() -> bool:
+	return _shake_tween != null and _shake_tween.is_valid() and _shake_tween.is_running()
+
+
+## Soin : la barre remonte de [param from_hp] à la valeur de la cible (courbe et durée de la barre
+## de combat), le chiffre compte, la carte a un éclat vert ; [signal heal_finished] à la fin.
+## [method set_target] doit avoir été appelé avec la vue **après** soin.
+func play_heal(from_hp: int) -> void:
+	if _target == null or _target.member == null:
+		heal_finished.emit()
+		return
+	var member := _target.member
+	_healing = true
+	_hp_bar.speed_scale = speed_scale
+	_hp_bar.set_hp(from_hp, member.max_hp)
+	_hp_text.text = BattleInfoCard.HP_FORMAT % [from_hp, member.max_hp]
+	_hp_bar.animate_hp(member.hp, member.max_hp)
+	var time := (UiTokens.HP_TWEEN + UiTokens.PICKER_HEAL_FLASH_FADE) * speed_scale
+	if _heal_tween != null:
+		_heal_tween.kill()
+	if time <= 0.0 or not is_inside_tree():
+		_end_heal()
+		return
+	_flash.modulate.a = 1.0
+	_heal_tween = create_tween().set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
+	_heal_tween.tween_property(_flash, ^"modulate:a", 0.0, time)
+	_heal_tween.tween_callback(_end_heal)
+
+
+func is_healing() -> bool:
+	return _healing
+
+
+func get_flash() -> Panel:
+	return _flash
+
+
+func _end_heal() -> void:
+	_healing = false
+	_flash.modulate.a = 0.0
+	if _target != null and _target.member != null:
+		_hp_text.text = BattleInfoCard.HP_FORMAT % [_target.member.hp, _target.member.max_hp]
+	heal_finished.emit()
+
+
+func _on_hp_display(hp: int, max_hp: int) -> void:
+	if _healing:
+		_hp_text.text = BattleInfoCard.HP_FORMAT % [hp, max_hp]
 
 
 func get_target() -> PartyTargetView:
@@ -172,6 +256,16 @@ func _build() -> void:
 	_chevron.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
 	_chevron.size_flags_vertical = Control.SIZE_SHRINK_CENTER
 	row.add_child(_chevron)
+
+	_flash = Panel.new()
+	_flash.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	var glow := StyleBoxFlat.new()
+	glow.bg_color = UiTokens.PICKER_HEAL_FLASH_COLOR
+	glow.set_corner_radius_all(int(UiTokens.RADIUS))
+	_flash.add_theme_stylebox_override(&"panel", glow)
+	_flash.modulate.a = 0.0
+	add_child(_flash)
+	_hp_bar.display_changed.connect(_on_hp_display)
 
 
 func _label(variation: StringName) -> Label:

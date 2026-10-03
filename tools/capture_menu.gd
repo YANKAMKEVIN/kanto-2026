@@ -33,6 +33,8 @@ var _step: int = 0
 var _scenarios: Array[String] = ["hud_button", "dashboard_5", "dashboard_6", "dashboard_no_team"]
 var _current: String = ""
 var _wait: int = 0
+## Image (à 30 i/s) de la capture du scénario courant (12 par défaut ; plus tôt pour les animations).
+var _save_wait: int = 12
 
 
 func _init() -> void:
@@ -69,10 +71,12 @@ func _on_frame() -> void:
 			return
 		_current = _scenarios.pop_front()
 		_wait = 0
+		_save_wait = 12
+		_menu.speed_scale = 0.0
 		_begin(_current)
 		return
 	_wait += 1
-	if _wait == 12:
+	if _wait == _save_wait:
 		_save(_current)
 		_current = ""
 		if _menu.is_open():
@@ -89,9 +93,12 @@ func _begin(scenario: String) -> void:
 			_open(_view(6, true, true, "27 vus · 14 capturés"))
 		"dashboard_no_team":
 			_open(_view(5, false, false, ""))
+		"header_team":
+			_open(_view(5, true, false, ""))
+			_menu.show_team(_team_view(), 0)
 		"team", "team_sheet_moves", "team_history", "team_move_mode":
 			_team_scenario(scenario)
-		"bag", "bag_use", "bag_result", "bag_from_team":
+		"bag", "bag_use", "bag_result", "bag_from_team", "bag_refuse", "bag_heal_mid", "bag_heal_end":
 			_bag_scenario(scenario)
 
 
@@ -160,6 +167,22 @@ func _bag_scenario(scenario: String) -> void:
 				data, 0))
 			_menu.show_bag_result(BagQuery.result_text(result, mon.display_name(data)),
 				BagQuery.can_repeat(result))
+	if scenario == "bag_refuse":
+		_menu.show_bag_targets(BagQuery.targets(state.party, state.bag, potion, context, data))
+		_menu.speed_scale = 1.0
+		_menu.get_bag().get_picker().get_card(1).tapped.emit()
+		_save_wait = 3
+	elif scenario == "bag_heal_mid" or scenario == "bag_heal_end":
+		_menu.show_bag_targets(BagQuery.targets(state.party, state.bag, potion, context, data))
+		_menu.speed_scale = 1.0
+		var healed: Pokemon = state.party.get_at(0)
+		var done := ItemUse.apply(state.bag, potion, healed, context)
+		_menu.show_bag(BagQuery.view(state.bag, items, context, BagQuery.Sort.RELEVANCE,
+			&"heal", state.party, -1, data))
+		_menu.show_bag_result(BagQuery.result_text(done, healed.display_name(data)),
+			BagQuery.can_repeat(done))
+		_menu.show_bag_targets(BagQuery.targets(state.party, state.bag, potion, context, data, 0))
+		_save_wait = 6 if scenario == "bag_heal_mid" else 30
 	state.free()
 
 
