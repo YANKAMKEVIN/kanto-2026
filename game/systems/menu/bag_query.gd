@@ -41,6 +41,14 @@ const REASONS: Dictionary[ItemUse.Check, String] = {
 	ItemUse.Check.WRONG_CONTEXT: "Pas maintenant",
 	ItemUse.Check.NOT_USABLE: "Sans effet",
 }
+## Phrase de refus quand on touche un Pokémon qui ne peut pas recevoir l'objet (texte draft).
+const REFUSAL_FORMATS: Dictionary[ItemUse.Check, String] = {
+	ItemUse.Check.FULL_HP: "%s a déjà tous ses PV.",
+	ItemUse.Check.FAINTED: "%s est K.O.",
+	ItemUse.Check.NOT_IN_BAG: "Il n'en reste plus.",
+	ItemUse.Check.WRONG_CONTEXT: "Pas maintenant.",
+	ItemUse.Check.NOT_USABLE: "Cela n'aurait aucun effet sur %s.",
+}
 ## Résultat d'un soin : « +20 PV — Salamèche 33/51 ».
 const RESULT_FORMAT: String = "+%d PV — %s %d/%d"
 ## Sac sans objet (Q-2) ; depuis la fiche Équipe, aucun objet à donner.
@@ -146,9 +154,16 @@ static func targets(party: Party, bag: Bag, item: ItemData, context: StringName,
 	var members := party.get_all()
 	for i: int in members.size():
 		var check := ItemUse.check(bag, item, members[i], context)
+		var mon_name := members[i].display_name(data)
 		picker.targets.append(PartyTargetView.new(DashboardViews.member(members[i], i, data),
-			check == ItemUse.Check.OK, reason_text(check)))
+			check == ItemUse.Check.OK, reason_text(check), refusal_text(check, mon_name)))
 	return picker
+
+
+## Phrase de refus pour [param check] sur [param pokemon_name] ; vide pour OK.
+static func refusal_text(check: ItemUse.Check, pokemon_name: String) -> String:
+	var format: String = REFUSAL_FORMATS.get(check, "")
+	return format % pokemon_name if format.contains("%s") else format
 
 
 ## Raison affichée pour [param check] ; vide pour OK.
