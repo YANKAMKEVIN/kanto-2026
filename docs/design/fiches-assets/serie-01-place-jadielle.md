@@ -590,3 +590,12 @@ Premier essai à l'échelle du jeu : sol en mosaïque 4 × 4 cases + les trois a
 | NE_r2 | **vraie transparence** (canal alpha), touffes fines du même vert que l'herbe validée, pavés et terre justes ; voile presque invisible (alpha < 30) supprimé par script → `VALIDE_DECAL_BORD.png` | **validé** |
 
 Le sol de la place est complet : herbe, pavés, bord (référence de rendu), décalcomanies de bordure.
+
+### WORLD_BLDG_CENTRE_01 (2026-10-03)
+
+| Révision | Résultat | Décision |
+|---|---|---|
+| GH_r1 | vraie transparence ; forme fidèle à la référence vue de haut (toit à pans coupés, lanterneau, emblème, portail, brique) ; à 6 cases de large la porte (1,1 case de haut) est plus basse qu'un personnage (1,33) et le Centre paraît à peine plus haut qu'un arbre ; rendu plus lisse et « vectoriel » que les arbres, lumière dorée à peine visible | **forme et échelle retenues** ; style à rapprocher des arbres → r2 par **retouche** (la forme est bonne) |
+
+**Défaut d'échelle (règle 4)** : le Centre est affiché sur **8 cases de large** (environ 8 × 6,9 cases ; porte ≈ 1,8 × 1,5 case) au lieu de 6 × 6. Emprise de collision à recalculer dans la scène prototype (8 de large). Même règle pour la Boutique, qui doit rester sœur du Centre.
+**À noter pour le sol** : à côté des bâtiments, les pavés paraissent gros ; essai à × 0,7 dans la scène prototype.
