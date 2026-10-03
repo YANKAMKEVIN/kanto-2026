@@ -15,6 +15,14 @@ extends SceneTree
 ##   bag_use              le choix du Pokémon après UTILISER (un membre à PV pleins, un K.O.)
 ##   bag_result           après un usage : « +20 PV — … » et UTILISER À NOUVEAU
 ##   bag_from_team        ouvert depuis la fiche Équipe de Salamèche (« Pour Salamèche »)
+## Pokédex (T15, avec --only=dex_grid,dex_sheet_caught,dex_sheet_seen,dex_habitat,dex_search_empty
+## ,dex_evolution,dex_notes) : vraies vues de PokedexQuery sur un Pokédex de test
+##   dex_grid             grille seule (fiche fermée), 151 cases dont 6 connues
+##   dex_sheet_caught     fiche de Salamèche (capturé) : Aperçu complet
+##   dex_sheet_seen       fiche de Carapuce (seulement vu) : ni types, ni taille, ni poids
+##   dex_habitat          filtre HABITATS (Route 1), fiche de Roucool, onglet Habitat
+##   dex_search_empty     recherche sans résultat
+##   dex_evolution / dex_notes   onglets Évolution et Observations de Salamèche / Roucool
 ##
 ## Sur le Mac, en 2340×1080 :
 ##   godot --path . --resolution 2340x1080 --fixed-fps 30 --quit-after 900 \
@@ -98,8 +106,63 @@ func _begin(scenario: String) -> void:
 			_menu.show_team(_team_view(), 0)
 		"team", "team_sheet_moves", "team_history", "team_move_mode":
 			_team_scenario(scenario)
+		"dex_grid", "dex_sheet_caught", "dex_sheet_seen", "dex_habitat", "dex_search_empty", \
+		"dex_evolution", "dex_notes":
+			_dex_scenario(scenario)
 		"bag", "bag_use", "bag_result", "bag_from_team", "bag_refuse", "bag_heal_mid", "bag_heal_end":
 			_bag_scenario(scenario)
+
+
+## Pokédex du menu : vraies vues de PokedexQuery sur un Pokédex de test (la partie de Kevin à la
+## fin du J5, plus Bulbizarre capturé et Reptincel vu).
+func _dex_scenario(scenario: String) -> void:
+	var data := PokemonData.new()
+	data.load_dir()
+	var library := PokedexLibrary.new()
+	library.load_file()
+	library.check_references(data)
+	var zones := ZoneLibrary.new()
+	zones.load_file()
+	var dex := Pokedex.new()
+	dex.mark_caught(&"charmander", &"oak_lab", "2026-09-30T10:00:00")
+	dex.mark_caught(&"bulbasaur", &"oak_lab", "2026-09-30T10:01:00")
+	dex.mark_seen(&"squirtle", &"oak_lab", "2026-09-30T10:05:00")
+	dex.mark_seen(&"pidgey", &"pallet_town", "2026-10-01T09:00:00")
+	dex.mark_caught(&"pidgey", &"pallet_town", "2026-10-01T09:01:00")
+	dex.mark_seen(&"rattata", &"route_1", "2026-10-02T18:00:00")
+	dex.mark_caught(&"rattata", &"route_1", "2026-10-02T18:02:00")
+	dex.mark_seen(&"pidgey", &"route_1", "2026-10-02T18:10:00")
+	dex.mark_seen(&"charmeleon", &"route_1", "2026-10-02T18:20:00")
+	PokedexNotes.refresh(dex, library, null)
+	var filter := PokedexQuery.Filter.ALL
+	var zone := &""
+	var text := ""
+	var species := &"charmander"
+	match scenario:
+		"dex_sheet_seen":
+			species = &"squirtle"
+		"dex_habitat":
+			filter = PokedexQuery.Filter.HABITAT
+			zone = &"route_1"
+			species = &"pidgey"
+		"dex_search_empty":
+			text = "zzz"
+		"dex_notes":
+			species = &"pidgey"
+	var grid := PokedexQuery.grid(dex, data, library, zones, filter, zone, &"", text)
+	_menu.open_animated()
+	_menu.show_pokedex(grid)
+	if scenario == "dex_grid" or scenario == "dex_search_empty":
+		return
+	_menu.show_pokedex_sheet(PokedexQuery.sheet(species, dex, data, library, zones))
+	var sheet := _menu.get_pokedex().get_sheet()
+	match scenario:
+		"dex_habitat":
+			sheet.select_tab(PokedexSheet.Tab.HABITAT)
+		"dex_evolution":
+			sheet.select_tab(PokedexSheet.Tab.EVOLUTION)
+		"dex_notes":
+			sheet.select_tab(PokedexSheet.Tab.NOTES)
 
 
 func _team_scenario(scenario: String) -> void:

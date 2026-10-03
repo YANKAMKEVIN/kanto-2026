@@ -77,6 +77,9 @@ extends SceneTree
 ##   Sac du menu (T11) : BagTabCount / BagNote / BagHint / PickerTitle / PickerName / PickerMeta /
 ##     PickerReason / ResultText  Label ; PickerRow / PickerRowSelected / PickerRowOff /
 ##     ResultBar / ResultBarRefused  PanelContainer
+##   Pokédex (T15) : DexPanel (PanelContainer), DexCell / DexCellSelected / DexCellUnknown
+##     (PanelContainer, case de la grille), DexTab (Button à bascule : onglets et filtres),
+##     DexSearch (LineEdit), DexTitle / DexName / DexNumber (Label), DexSpriteFrame (Panel)
 ##   TeamPill / TeamPillAccent  PanelContainer  « Favori » et consigne du mode DÉPLACER ;
 ##   TeamPillText / TeamPillAccentText  Label ; TeamEvoCircle  Panel
 ## tests/unit/test_ui_theme.gd vérifie que le fichier est à jour avec les tokens.
@@ -142,6 +145,7 @@ func _init() -> void:
 	_add_menu(theme, bold, t)
 	_add_team(theme, bold, t)
 	_add_bag_screen(theme, bold, t)
+	_add_pokedex_screen(theme, bold, t)
 
 	var err := ResourceSaver.save(theme, THEME_PATH)
 	print("ui_theme.tres : ", error_string(err))
@@ -810,3 +814,53 @@ func _add_bag_screen(theme: Theme, bold: Font, t: GDScript) -> void:
 	_add_plain_label(theme, &"PickerMeta", t.PICKER_META_FONT, t.TEXT_MUTED, null)
 	_add_plain_label(theme, &"PickerReason", t.PICKER_META_FONT, t.TEXT, bold)
 	_add_plain_label(theme, &"ResultText", t.RESULT_FONT, t.TEXT, bold)
+
+
+# --- Écran Pokédex du menu (jalon 6, T15) -------------------------------------------------------
+
+
+func _add_pokedex_screen(theme: Theme, bold: Font, t: GDScript) -> void:
+	var panel := _panel_style(t.MENU_PANEL_BG, t.RADIUS, t)
+	panel.set_content_margin_all(t.DEX_PANEL_PAD)
+	theme.set_type_variation(&"DexPanel", &"PanelContainer")
+	theme.set_stylebox(&"panel", &"DexPanel", panel)
+
+	var cell := _bag_box(t.PANEL_BG, t.PANEL_BORDER, t.BORDER_WIDTH, 0, 0, t)
+	var cell_selected := _bag_box(t.PANEL_BG, t.ACCENT, t.MOVE_CARD_SELECTED_BORDER, 0, 0, t)
+	cell_selected.shadow_color = t.MOVE_CARD_SELECTED_GLOW
+	cell_selected.shadow_size = t.MOVE_CARD_SELECTED_GLOW_SIZE
+	var cell_unknown := _bag_box(t.MOVE_CARD_EMPTY_BG, t.MOVE_CARD_EMPTY_BORDER, t.BORDER_WIDTH,
+		0, 0, t)
+	for pair: Array in [[&"DexCell", cell], [&"DexCellSelected", cell_selected],
+			[&"DexCellUnknown", cell_unknown]]:
+		theme.set_type_variation(pair[0], &"PanelContainer")
+		theme.set_stylebox(&"panel", pair[0], pair[1])
+
+	var frame := _bag_box(t.CAPTURE_THUMB_BG, t.CAPTURE_THUMB_BORDER, t.BORDER_WIDTH, 0, 0, t)
+	theme.set_type_variation(&"DexSpriteFrame", &"Panel")
+	theme.set_stylebox(&"panel", &"DexSpriteFrame", frame)
+
+	var tab := _button_style(t.BUTTON_BG, true, t)
+	var tab_on := _button_style(t.ACCENT, false, t)
+	_add_button_variation(theme, &"DexTab", tab, tab_on, bold, t)
+	theme.set_font_size(&"font_size", &"DexTab", t.DEX_TAB_FONT)
+	for state: StringName in [&"font_color", &"font_hover_color", &"font_focus_color"]:
+		theme.set_color(state, &"DexTab", t.TEXT)
+	for state: StringName in [&"font_pressed_color", &"font_hover_pressed_color"]:
+		theme.set_color(state, &"DexTab", t.ACCENT_TEXT)
+
+	var field := _bag_box(t.BUTTON_BG, t.PANEL_BORDER, t.BORDER_WIDTH, t.DEX_SEARCH_PAD_H, 0, t)
+	var field_focus := _bag_box(t.BUTTON_BG, t.ACCENT, t.BORDER_WIDTH, t.DEX_SEARCH_PAD_H, 0, t)
+	theme.set_type_variation(&"DexSearch", &"LineEdit")
+	theme.set_stylebox(&"normal", &"DexSearch", field)
+	theme.set_stylebox(&"read_only", &"DexSearch", field)
+	theme.set_stylebox(&"focus", &"DexSearch", field_focus)
+	theme.set_font_size(&"font_size", &"DexSearch", t.DEX_SEARCH_FONT)
+	theme.set_color(&"font_color", &"DexSearch", t.TEXT)
+	theme.set_color(&"font_placeholder_color", &"DexSearch", t.TEXT_MUTED)
+	theme.set_color(&"caret_color", &"DexSearch", t.ACCENT)
+	theme.set_color(&"selection_color", &"DexSearch", t.tinted(t.ACCENT, 0.35))
+
+	_add_plain_label(theme, &"DexTitle", t.DEX_TITLE_FONT, t.TEXT, bold)
+	_add_plain_label(theme, &"DexName", t.DEX_SHEET_NAME_FONT, t.TEXT, bold)
+	_add_plain_label(theme, &"DexNumber", t.DEX_SHEET_NUMBER_FONT, t.TEXT_MUTED, bold)

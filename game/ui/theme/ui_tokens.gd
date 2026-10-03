@@ -755,3 +755,65 @@ static func menu_card_bg_pressed(tint: Color) -> Color:
 ## Liseré d'une grande carte.
 static func menu_card_border(tint: Color) -> Color:
 	return tinted(tint, 0.6)
+
+# Écran Pokédex du Menu Dresseur (jalon 6, T15). Aucune statistique, aucun talent, aucune
+# silhouette : seulement ce que le joueur a découvert.
+## En-tête : RETOUR, titre + compteur, filtres (TOUS · VUS · CAPTURÉS · HABITATS).
+const DEX_HEADER_HEIGHT := TOUCH_MIN
+const DEX_BACK_WIDTH := MENU_CARD_ICON * 2
+const DEX_TITLE_FONT := FONT_TITLE
+const DEX_COUNTS_FONT := FONT_CAPTION
+const DEX_FILTER_MIN_WIDTH := 168
+const DEX_FILTER_FONT := 26
+const DEX_GAP := GAP
+const DEX_SECTION_GAP := 12
+## Colonne de la grille quand la fiche est ouverte ; sans fiche, la grille prend tout.
+const DEX_LIST_WIDTH := 828
+const DEX_PANEL_PAD := 20
+const DEX_SCROLL_PAD := 6
+## Ligne de recherche : champ, bouton Type, bouton Zone (filtre HABITATS seulement).
+const DEX_SEARCH_MIN_WIDTH := 260
+const DEX_SEARCH_FONT := 28
+const DEX_SEARCH_ICON := 40
+const DEX_SEARCH_PAD_H := 20
+const DEX_REFINE_WIDTH := 220
+## Case de la grille : légère (un seul dessin), sprite de 64 px affiché à l'échelle entière.
+const DEX_CELL_SIZE := Vector2(180, 208)
+const DEX_CELL_GAP := 12
+const DEX_CELL_PAD := 10
+const DEX_CELL_SPRITE_SOURCE := 64
+const DEX_CELL_SPRITE_SCALE := 2
+const DEX_CELL_SPRITE_TOP := 6
+const DEX_CELL_NUMBER_FONT := 22
+const DEX_CELL_NAME_FONT := 26
+const DEX_CELL_STATUS_FONT := 22
+const DEX_CELL_BALL := 22
+const DEX_CELL_SELECTED_SCALE := 1.03
+## Une case inconnue : numéro et « ??? » seulement, estompés.
+const DEX_UNKNOWN_ALPHA := 0.55
+## Fiche : identité (vignette, numéro, nom, types), onglets, pages.
+const DEX_SHEET_MIN_WIDTH := 960
+const DEX_SPRITE_FRAME := 160
+const DEX_SHEET_SPRITE_SCALE := 2
+const DEX_SHEET_NAME_FONT := FONT_TITLE
+const DEX_SHEET_NUMBER_FONT := 26
+const DEX_TAB_HEIGHT := TOUCH_MIN
+const DEX_TAB_FONT := 26
+const DEX_SHEET_GAP := 12
+const DEX_SHEET_FADE := ANIM_PANEL
+const DEX_SEEN_ALPHA := 0.7
+const DEX_INFO_FONT := 30
+const DEX_DESCRIPTION_FONT := 28
+## Évolution : un stade = un rond et un nom ; un stade inconnu = un rond vide et « ??? ».
+const DEX_EVO_CIRCLE := 152
+const DEX_EVO_SPRITE_SCALE := 2
+## Habitat : petite carte (seulement les zones observées, le reste est voilé) et pastilles.
+const DEX_MAP_SIZE := Vector2(460, 288)
+const DEX_MAP_PIN := 9
+const DEX_MAP_PIN_BORDER := 3
+## Marge autour de chaque zone (px de l'illustration) et autour de l'ensemble montré.
+const DEX_MAP_PATCH_MARGIN := 14.0
+const DEX_MAP_FRAME_MARGIN := 40.0
+const DEX_MAP_PATCH_BORDER := 2
+const DEX_CHIP_HEIGHT := TOUCH_MIN
+const DEX_CHIP_ICON := 40
