@@ -31,7 +31,7 @@ Kevin est le **directeur du jeu** : il conçoit (souvent avec ChatGPT), Claude i
 6. Kevin prépare le dossier de conception du jalon suivant **pendant** le jalon en cours, pour que le code n'attende pas les décisions.
 7. Données (Pokémon, attaques, objets, rencontres, dialogues) = fichiers de données, jamais codées en dur dans la logique.
 8. Logique de jeu séparée de la présentation (testable sans scène).
-9. Monde en **2D HD atmosphérique** (décors HD, personnages et Pokémon en pixel art fin, lumière dynamique) ; UI **non** pixel art (skill `ui-theme-2026`).
+9. Monde en **2D HD atmosphérique** (décors HD peints, personnages et Pokémon **peints simplifiés** dans la même main, lumière dynamique) ; UI **non** pixel art (skill `ui-theme-2026`). Production de l'art : `docs/design/cahier-art-monde-v0.1.md`.
 10. **Les maquettes et images de référence donnent la DA et la composition, jamais la vérité fonctionnelle.** Si une image contredit un dossier, `vision.md`, la bible UI/UX ou une décision validée, l'écrit gagne. On n'implémente jamais un élément simplement parce qu'il apparaît sur une maquette.
 
 ## Décisions techniques
@@ -39,9 +39,9 @@ Kevin est le **directeur du jeu** : il conçoit (souvent avec ChatGPT), Claude i
 | Sujet | Valeur |
 |---|---|
 | Résolution de référence | 1920×1080, stretch `canvas_items`, aspect `expand` (le S24 affiche ~2340×1080) |
-| Rendu | `mobile`, filtre par défaut `linear` (décors HD), `nearest` sur les sprites pixel art (personnages, Pokémon), snap 2D au pixel |
+| Rendu | `mobile`, filtre `linear` partout (décors, personnages et Pokémon peints), snap 2D au pixel |
 | Grille | **case = 96 px** en unités monde = pixels de référence, caméra zoom 1 (≈ 11 cases de haut) ; décors HD dessinés à 1:1 |
-| Personnages | pixel art 64 px de haut en natif, affichés ×2 (128 px ≈ 1,33 case), origine aux pieds |
+| Personnages | **peints simplifiés** (décision de Kevin, 2026-10-03, après test en mouvement sur S24), 128 px de haut affichés à 1:1 (≈ 1,33 case), origine aux pieds ; enfant ≈ 108 px, petit Pokémon (Rattata) ≈ 56 px |
 | Déplacement | Case par case (grille 96 px), marche/course |
 | Couches physiques | 1 monde · 2 joueur · 3 pnj · 4 interactifs · 5 déclencheurs |
 | Actions d'entrée | `move_up/down/left/right`, `interact`, `run`, `menu` (clavier pour tests desktop, tactile sur mobile) |
