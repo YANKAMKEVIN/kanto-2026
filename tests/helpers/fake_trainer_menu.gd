@@ -35,6 +35,7 @@ var bag_results: Array[String] = []
 var bag_repeats: Array[bool] = []
 var pokedex_grids: Array[PokedexGridView] = []
 var pokedex_sheets: Array[PokedexSheetView] = []
+var trainers: Array[TrainerView] = []
 var maps: Array[MapView] = []
 var map_zones: Array[ZonePanelView] = []
 var pokedex_back_count: int = 0
@@ -85,6 +86,10 @@ func show_pokedex_sheet(view: PokedexSheetView) -> void:
 	pokedex_sheets.append(view)
 
 
+func show_trainer(view: TrainerView) -> void:
+	trainers.append(view)
+
+
 func show_map(view: MapView) -> void:
 	maps.append(view)
 
@@ -128,6 +133,7 @@ func wire(director: MenuDirector) -> void:
 	director.map_shown.connect(show_map)
 	director.map_zone_shown.connect(show_map_zone)
 	map_zone_touched.connect(director.open_zone)
+	director.trainer_shown.connect(show_trainer)
 	route_requested.connect(director.go)
 	back_requested.connect(director.handle_back)
 	close_requested.connect(director.close)

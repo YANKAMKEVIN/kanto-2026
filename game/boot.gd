@@ -70,6 +70,7 @@ var _encounter_library: EncounterLibrary
 var _zones := ZoneLibrary.new()
 var _dex := PokedexLibrary.new()
 var _map_illustration := MapIllustration.new()
+var _moments := MomentLibrary.new()
 ## Toasts du Pokédex en attente (au plus un par espèce) : des paires [espèce, [titre, détail]].
 var _dex_toasts: Array[Array] = []
 ## Individus observés pendant la visite de la carte (OBSERVER, une fois par individu).
@@ -183,8 +184,12 @@ func _ready() -> void:
 		_map_illustration.check_references(_zones)
 	for error: String in _map_illustration.get_errors():
 		push_error(error)
+	if _moments.load_file():
+		_moments.check_references(_zones)
+	for error: String in _moments.get_errors():
+		push_error(error)
 	_menu.setup(GameState, _pokemon, _zones, _objectives, _unlocks, _can_open_menu, _items, _dex,
-		_map_illustration)
+		_map_illustration, _moments)
 	_menu.menu_opened.connect(_on_menu_opened)
 	_menu.menu_closed.connect(_on_menu_closed)
 	# L'écran (jalon-06.md §6.6) : ouverture et vue dans la même frame, sans await (un fondu
@@ -224,6 +229,12 @@ func _ready() -> void:
 		_menu.map_shown.connect(_menu_screen.show_map)
 		_menu.map_zone_shown.connect(_menu_screen.show_map_zone)
 		_menu_screen.map_zone_touched.connect(_menu.open_zone)
+	# Dresseur (T25) : sans show_trainer (écran pas encore fusionné), l'écran provisoire.
+	if _menu_screen.has_method(&"show_trainer"):
+		_menu.trainer_shown.connect(_menu_screen.show_trainer)
+	else:
+		_menu.trainer_shown.connect(
+			func(_view: TrainerView) -> void: _menu_screen.show_placeholder(MenuRoute.TRAINER))
 	# Une seule écoute de tout ce qui s'enregistre au Pokédex (jalon-06.md §6.9).
 	GameState.pokedex.recorded.connect(_on_pokedex_recorded)
 	GameState.flags.flag_changed.connect(_on_flag_changed)
@@ -447,6 +458,11 @@ func _on_go_back() -> void:
 ## Le menu s'ouvre (pause posée) : contrôles cachés (relâche joystick et boutons), titre de
 ## zone retiré.
 func _on_menu_opened() -> void:
+	# La position vit dans GameState seulement après une sauvegarde : la pousser à l'ouverture,
+	# pour que la Carte et le Dresseur sachent où est le joueur dès une partie neuve.
+	var here := SceneRouter.get_current_map()
+	if is_instance_valid(here) and is_instance_valid(_player):
+		GameState.set_player_location(here.map_id, _player.get_cell(), _player.get_facing())
 	_hud.hide_zone_title()
 	# Le fondu du titre est un Tween du HUD, gelé par la pause : masqué net (la fin du fondu,
 	# reprise à la fermeture, ne change plus rien).

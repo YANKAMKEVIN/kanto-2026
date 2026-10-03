@@ -52,7 +52,7 @@ func _entry_ids(entries: Array[ZoneEntryView]) -> Array[StringName]:
 
 func test_player_in_the_house_gets_pallet_town_portrait_and_panel() -> void:
 	await _start()
-	assert_eq(GameState.current_map, &"player_house_2f", "départ dans la chambre")
+	assert_eq(_boot.get_map().map_id, &"player_house_2f", "départ dans la chambre")
 	assert_true(_menu.open(MenuRoute.map()))
 	assert_eq(_screen.maps.size(), 1)
 	var view: MapView = _screen.maps[0]

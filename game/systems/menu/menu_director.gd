@@ -44,6 +44,9 @@ signal pokedex_sheet_shown(view: PokedexSheetView)
 signal map_shown(view: MapView)
 ## Le panneau d'une zone découverte est à afficher (toucher, ou zone choisie à l'arrivée).
 signal map_zone_shown(view: ZonePanelView)
+## L'écran Dresseur est à afficher : vue construite à l'entrée (et au retour d'un autre
+## écran), le temps de jeu n'est pas rafraîchi en direct (jalon-06.md §6.11).
+signal trainer_shown(view: TrainerView)
 ## Un écran pas encore construit est à afficher (écran provisoire « À venir »).
 signal placeholder_shown(screen: StringName)
 
@@ -65,6 +68,7 @@ var _repeat_item: StringName = &""
 var _repeat_index: int = -1
 var _dex: PokedexLibrary
 var _illustration: MapIllustration
+var _moments: MomentLibrary
 var _dex_filter: int = PokedexQuery.Filter.ALL
 var _dex_zone: StringName = &""
 var _dex_type: StringName = &""
@@ -79,8 +83,9 @@ func _init() -> void:
 ## [param can_open] : [code]func() -> bool[/code], la garde d'ouverture.
 func setup(state: Object, data: PokemonData, zones: ZoneLibrary, objectives: ObjectiveLibrary,
 		unlocks: MenuUnlocks, can_open: Callable, items: ItemLibrary = null,
-		dex: PokedexLibrary = null, illustration: MapIllustration = null) -> void:
+		dex: PokedexLibrary = null, illustration: MapIllustration = null, moments: MomentLibrary = null) -> void:
 	_illustration = illustration
+	_moments = moments
 	_items = items
 	_dex = dex
 	_state = state
@@ -341,6 +346,8 @@ func _on_route_shown(route: MenuRoute) -> void:
 		map_shown.emit(map_view)
 		if not map_view.selected.is_empty():
 			open_zone(map_view.selected)
+	elif route.screen == MenuRoute.TRAINER:
+		trainer_shown.emit(TrainerSummary.build(_state, _data, _zones, _moments, _unlocks))
 	else:
 		placeholder_shown.emit(route.screen)
 
