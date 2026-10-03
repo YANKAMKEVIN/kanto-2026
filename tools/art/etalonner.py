@@ -9,9 +9,12 @@ import sys
 from PIL import Image
 
 # Teintes sur 0–255 (échelle HSV de Pillow).
-JAUNES = (25, 70, 0.45)   # [début, fin[, force : tirées vers la fin
+JAUNES = (34, 70, 0.45)   # [début, fin[, force : tirées vers la fin (en dessous de 34 : pierre beige, bois)
 TURQUOISES = (95, 125, 0.35)  # ]début, fin], force : tirées vers le début
 SATURATION = 0.95
+# Seuls les pixels assez saturés (la végétation) sont corrigés : la pierre
+# beige a une teinte proche des jaunes mais une saturation faible.
+SEUIL_SATURATION = 90
 
 
 def _teinte(x: int) -> int:
@@ -27,10 +30,13 @@ def _teinte(x: int) -> int:
 def etalonner(image: Image.Image) -> Image.Image:
     image = image.convert("RGBA")
     alpha = image.getchannel("A")
-    h, s, v = image.convert("RGB").convert("HSV").split()
+    rgb = image.convert("RGB")
+    h, s, v = rgb.convert("HSV").split()
+    masque = s.point(lambda x: 255 if x >= SEUIL_SATURATION else 0)
     h = h.point(_teinte)
     s = s.point(lambda x: int(x * SATURATION))
-    sortie = Image.merge("HSV", (h, s, v)).convert("RGB")
+    corrige = Image.merge("HSV", (h, s, v)).convert("RGB")
+    sortie = Image.composite(corrige, rgb, masque)
     sortie.putalpha(alpha)
     return sortie
 

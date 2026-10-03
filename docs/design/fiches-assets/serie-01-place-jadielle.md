@@ -559,3 +559,11 @@ Premier essai à l'échelle du jeu : sol en mosaïque 4 × 4 cases + les trois a
 | HERBE_NE_r2 | plus de bandes visibles en mosaïque, raccords bons (écart de bord 4–10), vert citron corrigé par l'étalonnage | **validé** (étalonné) |
 
 **Comparaison ChatGPT / Weave (2026-10-03, herbe)** : même prompt et même ancre, passés par Kevin dans ChatGPT et par Claude dans Weave (GPT Image 2.5, canevas « KANTO-2026 », 8 crédits gratuits). Weave dessine des touffes plus lisibles et un vert plus naturel, mais sa texture **ne se raccorde pas** (coutures visibles en mosaïque). Le téléchargement depuis Chrome piloté est bloqué : le résultat n'a pu être récupéré que par capture d'écran. **ChatGPT reste le producteur du cran A** ; Weave est gardé en réserve (pistes : touffes isolées en décalcomanies, ou si ChatGPT plafonne sur une famille).
+
+### WORLD_GROUND_PAVE_A_01_BORD (2026-10-03)
+
+| Révision | Résultat | Décision |
+|---|---|---|
+| NE_r1 | frontière réussie (touffes qui débordent, terre, pavés déchaussés), même matière que les deux sols ; raccord gauche-droite bon (7–10) ; raccords haut et bas imparfaits (14 et 21–28), invisibles après un fondu de 24 px | **validé** ; fondu des raccords et coupe le long des joints à faire dans Godot |
+
+**Correction de l'étalonnage** : la première version verdissait la pierre beige (teinte voisine des jaunes). Le script ne corrige plus que les pixels saturés (≥ 90/255) de teinte 34 à 70 ; la végétation déjà validée est inchangée (écart moyen < 0,2/255).
