@@ -41,6 +41,13 @@ extends RefCounted
 ## ceux de [CaptureCalc] (0 à 4 roll(65536)), puis, en cas d'échec, l'IA adverse et son
 ## action. Le moteur ne touche pas au Sac : le directeur retire la Ball, range le Pokémon
 ## capturé (équipe ou [PokemonStorage]) et marque le Pokédex.
+##
+## Soin (jalon 6 §3.4, Q-10, Q-11) : [code]BattleAction.heal(id, index)[/code] n'est légale que
+## si [member BattleRules.allow_heal_items], que [param id] est un objet de
+## [member BattleRules.items] et que [method ItemUse.check_target] l'accepte sur le Pokémon
+## [param index] de l'équipe (n'importe lequel, pas un K.O., pas à PV pleins). Jouée avant les
+## capacités : ITEM_USED (PV rendus, bornés), puis l'adversaire joue son tour. Aucun tirage
+## propre. Le moteur ne touche pas au Sac (le directeur retire l'objet une fois).
 
 enum State { READY, CHOOSING, OVER }
 enum Outcome { NONE, WIN, LOSS, FLED, CAUGHT }
@@ -135,6 +142,8 @@ func is_legal(action: BattleAction) -> bool:
 		return false
 	if action.kind == BattleAction.Kind.RUN:
 		return _rules != null and _rules.can_flee
+	if action.is_heal():
+		return _is_legal_heal(action)
 	if action.kind == BattleAction.Kind.ITEM:
 		if not can_use_balls():
 			return false
@@ -160,6 +169,21 @@ func can_use_balls() -> bool:
 		and _rules.items != null
 
 
+## Vrai si le joueur peut donner un soin maintenant (règles, objets connus). Ni le Sac ni la
+## cible ne sont consultés ici ([method is_legal] vérifie la cible).
+func can_use_heal_items() -> bool:
+	return _state == State.CHOOSING and _rules != null and _rules.allow_heal_items \
+		and _rules.items != null
+
+
+## Contexte d'usage des objets de ce combat ([constant ItemData.CONTEXT_WILD_BATTLE] ou
+## [constant ItemData.CONTEXT_TRAINER_BATTLE]).
+func item_context() -> StringName:
+	if _rules != null and _rules.wild:
+		return ItemData.CONTEXT_WILD_BATTLE
+	return ItemData.CONTEXT_TRAINER_BATTLE
+
+
 ## Joue un tour entier avec l'action du joueur. Tableau vide (push_error) si l'action est
 ## illégale ou si le combat n'attend pas de choix.
 func submit(action: BattleAction) -> Array[BattleEvent]:
@@ -174,6 +198,9 @@ func submit(action: BattleAction) -> Array[BattleEvent]:
 	events.append(started)
 	if action.kind == BattleAction.Kind.RUN:
 		_attempt_flee(events)
+		return events
+	if action.is_heal():
+		_use_heal(action, events)
 		return events
 	if action.kind == BattleAction.Kind.ITEM:
 		_throw_ball(action.item_id, events)
@@ -236,7 +263,30 @@ func _throw_ball(item_id: StringName, events: Array[BattleEvent]) -> void:
 	_foe_turn_alone(events)
 
 
-## Tour où seul l'adversaire agit (fuite ratée, Pokémon libéré) : son IA choisit, il joue,
+## Soin [member BattleAction.item_id] donné au Pokémon [member BattleAction.target] de
+## l'équipe (joué avant les capacités, §3.4) : ITEM_USED, puis l'adversaire joue son tour.
+func _use_heal(action: BattleAction, events: Array[BattleEvent]) -> void:
+	var item := _rules.items.get_item(action.item_id)
+	var pokemon := _player.party.get_at(action.target)
+	var amount := ItemUse.restore(item, pokemon)
+	var used := _pokemon_event(BattleEvent.Kind.ITEM_USED, BattleEvent.SideId.PLAYER, pokemon)
+	used.item_id = action.item_id
+	used.item_name = item.name
+	used.amount = amount
+	events.append(used)
+	_foe_turn_alone(events)
+
+
+func _is_legal_heal(action: BattleAction) -> bool:
+	if not can_use_heal_items():
+		return false
+	var item := _rules.items.get_item(action.item_id)
+	var pokemon := _player.party.get_at(action.target)
+	return item != null and pokemon != null \
+		and ItemUse.check_target(item, pokemon, item_context()) == ItemUse.Check.OK
+
+
+## Tour où seul l'adversaire agit (fuite ratée, Pokémon libéré, soin) : son IA choisit, il joue,
 ## puis la fin de tour.
 func _foe_turn_alone(events: Array[BattleEvent]) -> void:
 	var foe_action := _foe.ai.choose(_foe, _player, _rng)

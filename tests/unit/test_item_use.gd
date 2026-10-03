@@ -1,0 +1,107 @@
+extends GutTest
+## ItemUse (jalon-06.md §3.4, Q-10, Q-11) : une seule règle pour le menu et le moteur de
+## combat. PV pleins, K.O., contexte, objet qui ne se donne pas, Sac vide, retrait unique.
+## Salamèche N5, IV 0 : 18 PV max.
+
+const ScriptedRng := preload("res://tests/helpers/scripted_rng.gd")
+const IV_0: Array[int] = [1, 1, 1, 1, 1, 1, 1]
+const C := ItemUse.Check
+
+var _data: PokemonData
+var _items: ItemLibrary
+var _potion: ItemData
+var _ball: ItemData
+var _bag: Bag
+var _mon: Pokemon
+
+
+func before_all() -> void:
+	_data = PokemonData.new()
+	_data.load_dir()
+	_items = ItemLibrary.new()
+	_items.load_dir()
+	_potion = _items.get_item(&"potion")
+	_ball = _items.get_item(&"poke_ball")
+
+
+func before_each() -> void:
+	_bag = Bag.new()
+	_bag.add(&"potion", 2)
+	_bag.add(&"poke_ball", 5)
+	_mon = PokemonFactory.create(_data, &"charmander", 5, ScriptedRng.new(IV_0))
+	_mon.hp = 5
+
+
+func test_a_potion_heals_20_hp_and_leaves_the_bag_once() -> void:
+	assert_eq(_mon.max_hp(), 18)
+	assert_eq(ItemUse.check(_bag, _potion, _mon, ItemData.CONTEXT_FIELD), C.OK)
+	var result := ItemUse.apply(_bag, _potion, _mon, ItemData.CONTEXT_FIELD)
+	assert_true(result.is_ok())
+	assert_eq([result.item_id, result.hp_before, result.hp_after, result.max_hp,
+		result.remaining], [&"potion", 5, 18, 18, 1], "PV bornés au maximum")
+	assert_eq(result.amount(), 13)
+	assert_eq(_mon.hp, 18)
+	assert_eq(_bag.count_of(&"potion"), 1, "un seul exemplaire retiré")
+
+
+func test_full_hp_is_refused_and_nothing_is_spent() -> void:
+	_mon.hp = 18
+	var result := ItemUse.apply(_bag, _potion, _mon, ItemData.CONTEXT_FIELD)
+	assert_eq(result.check, C.FULL_HP)
+	assert_eq([result.hp_before, result.hp_after, result.remaining], [18, 18, 2])
+	assert_eq(result.amount(), 0)
+	assert_eq(_bag.count_of(&"potion"), 2)
+
+
+func test_a_fainted_pokemon_cannot_be_healed() -> void:
+	_mon.hp = 0
+	assert_eq(ItemUse.check(_bag, _potion, _mon, ItemData.CONTEXT_FIELD), C.FAINTED,
+		"Q-11 : aucun objet ne ranime")
+	ItemUse.apply(_bag, _potion, _mon, ItemData.CONTEXT_FIELD)
+	assert_eq(_mon.hp, 0)
+	assert_eq(_bag.count_of(&"potion"), 2)
+
+
+func test_empty_bag() -> void:
+	_bag.remove(&"potion", 2)
+	var result := ItemUse.apply(_bag, _potion, _mon, ItemData.CONTEXT_FIELD)
+	assert_eq(result.check, C.NOT_IN_BAG)
+	assert_eq(result.remaining, 0)
+	assert_eq(_mon.hp, 5)
+	assert_eq(ItemUse.check(null, _potion, _mon, ItemData.CONTEXT_FIELD), C.NOT_IN_BAG)
+
+
+func test_contexts() -> void:
+	for context: StringName in [ItemData.CONTEXT_FIELD, ItemUse.CONTEXT_TEAM,
+			ItemData.CONTEXT_WILD_BATTLE, ItemData.CONTEXT_TRAINER_BATTLE]:
+		assert_eq(ItemUse.check(_bag, _potion, _mon, context), C.OK, String(context))
+	assert_eq(ItemUse.check(_bag, _potion, _mon, &"elsewhere"), C.WRONG_CONTEXT)
+	assert_eq(ItemUse.rule_context(ItemUse.CONTEXT_TEAM), ItemData.CONTEXT_FIELD)
+	assert_eq(ItemUse.CONTEXT_TEAM, MenuRoute.BAG_CONTEXT_TEAM)
+
+
+func test_a_ball_or_nothing_is_not_given_to_a_pokemon() -> void:
+	assert_eq(ItemUse.check(_bag, _ball, _mon, ItemData.CONTEXT_WILD_BATTLE), C.NOT_USABLE)
+	assert_eq(ItemUse.check(_bag, null, _mon, ItemData.CONTEXT_FIELD), C.NOT_USABLE)
+	assert_eq(ItemUse.check(_bag, _potion, null, ItemData.CONTEXT_FIELD), C.NOT_USABLE)
+	var result := ItemUse.apply(_bag, _ball, _mon, ItemData.CONTEXT_WILD_BATTLE)
+	assert_eq(result.check, C.NOT_USABLE)
+	assert_eq(_bag.count_of(&"poke_ball"), 5)
+	assert_eq(ItemUse.restore(_ball, _mon), 0)
+
+
+func test_check_target_and_restore_never_touch_the_bag() -> void:
+	# Le moteur de combat : il vérifie et soigne, le directeur retire l'objet.
+	var empty := Bag.new()
+	assert_eq(ItemUse.check_target(_potion, _mon, ItemData.CONTEXT_WILD_BATTLE), C.OK)
+	assert_eq(ItemUse.check(empty, _potion, _mon, ItemData.CONTEXT_WILD_BATTLE), C.NOT_IN_BAG)
+	assert_eq(ItemUse.restore(_potion, _mon), 13)
+	assert_eq(_mon.hp, 18)
+	assert_eq(_bag.count_of(&"potion"), 2)
+	assert_eq(ItemUse.check_target(_potion, _mon, ItemData.CONTEXT_WILD_BATTLE), C.FULL_HP)
+
+
+func test_a_small_heal_is_exact() -> void:
+	_mon.hp = 17
+	var result := ItemUse.apply(_bag, _potion, _mon, ItemData.CONTEXT_FIELD)
+	assert_eq(result.amount(), 1, "+1 PV, jamais au-delà du maximum")

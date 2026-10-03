@@ -1,12 +1,17 @@
 class_name BagEntryView
 extends RefCounted
-## Ce qu'affiche le panneau du Sac (BattleBagPanel) pour un objet : des chaînes, des entiers et
-## une texture, rien d'autre. Celui qui pilote l'interface la remplit à partir du Sac et des
-## données ; le panneau ne connaît ni les objets ni les règles du combat.
+## Ce qu'affiche le Sac pour un objet (Sac du combat, BattleBagPanel ; Sac du menu, BagScreen) :
+## des chaînes, des entiers et une texture, rien d'autre. [BagQuery] la remplit à partir du Sac
+## et des données ; les écrans ne connaissent ni les objets ni les règles.
 ##
-## [member usable] : l'objet peut servir maintenant. Un objet inutilisable (la Potion au
-## jalon 5 : son usage arrive au jalon 6) n'est jamais affiché : pas de bouton grisé pour une
-## fonction absente (dossier 08, règle 8).
+## [member usable] : l'objet peut servir ici et maintenant. Le Sac du combat n'affiche que les
+## objets utilisables ([method is_displayable]) ; le Sac du menu les liste tous
+## ([method is_listed]) : un objet inutilisable y est consultable, **sans bouton**, avec sa
+## [member note] (« Utilisable en combat », ou la raison depuis la fiche Équipe : « PV déjà au
+## maximum »). Jamais de bouton grisé sans explication (dossier 08 §3, règle 8).
+##
+## Contrat figé au T10 (jalon-06.md §6.8) : les champs ne changent ni de nom ni de sens ; on
+## peut en ajouter.
 
 ## Dossier des illustrations : une par identifiant d'objet (« poke_ball.svg »).
 const ICON_DIR := "res://assets/ui/icons/items/"
@@ -14,9 +19,14 @@ const ICON_DIR := "res://assets/ui/icons/items/"
 ## prend le sac.
 const GENERIC_ICON: Texture2D = preload("res://assets/ui/icons/battle/bag.svg")
 ## Nom affiché de chaque catégorie (onglets du Sac) ; les identifiants sont ceux des données.
+## &"favorites" : la rangée des favoris ([constant BagQuery.FAVORITES]).
 const CATEGORY_LABELS: Dictionary[StringName, String] = {
-	&"ball": "CAPTURE",
+	&"favorites": "FAVORIS",
 	&"heal": "SOINS",
+	&"ball": "CAPTURE",
+	&"battle": "COMBAT",
+	&"field": "AVENTURE",
+	&"key": "OBJETS CLÉS",
 }
 ## Verbe de l'action selon la catégorie ; UTILISER pour le reste.
 const ACTION_LABELS: Dictionary[StringName, String] = {
@@ -32,6 +42,14 @@ var description: String = ""
 ## Identifiant de catégorie (&"ball", &"heal"…) : onglet sous lequel l'objet se range.
 var category_id: StringName = &""
 var usable: bool = true
+## Marqué favori (appui long) : étoile **et** texte, jamais la couleur seule.
+var favorite: bool = false
+## Mention sous un objet sans action ici (« Utilisable en combat », « PV déjà au maximum »).
+## Vide = aucune mention.
+var note: String = ""
+## Vrai si l'objet se donne à un Pokémon (UTILISER ouvre le choix du Pokémon, PartyPicker) ;
+## faux pour une Ball (LANCER, sans choix) ou un objet sans action.
+var targets_pokemon: bool = false
 ## Verbe du bouton d'action (« LANCER ») ; la catégorie en donne un par défaut.
 var action_label: String = ""
 ## Illustration ; null = celle de [method icon_for].
@@ -51,10 +69,17 @@ func _init(
 	action_label = action_label_for(category)
 
 
-## Une vue affichable : identifiant, nom, catégorie, au moins un exemplaire, utilisable.
+## Une vue affichable au combat : identifiant, nom, catégorie, au moins un exemplaire,
+## utilisable.
 func is_displayable() -> bool:
+	return is_listed() and usable
+
+
+## Une vue listée dans le Sac du menu : identifiant, nom, catégorie, au moins un exemplaire
+## (utilisable ou non).
+func is_listed() -> bool:
 	return item_id != &"" and not display_name.is_empty() and category_id != &"" \
-		and quantity >= 1 and usable
+		and quantity >= 1
 
 
 ## « ×12 ».

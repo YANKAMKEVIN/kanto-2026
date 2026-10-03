@@ -52,12 +52,17 @@ extends RefCounted
 ## - CAUGHT : capturé (après 3 secousses), puis BATTLE_ENDED (CAUGHT) ; l'adversaire ne joue
 ##   pas, aucune XP n'est donnée ;
 ## - BROKE_FREE : il s'est libéré, puis l'adversaire joue son tour.
+## Soin (jalon 6, §3.4), juste après TURN_STARTED, puis l'adversaire joue son tour :
+## - ITEM_USED : le soin [member item_id] ([member item_name]) est donné au Pokémon du joueur
+##   [member party_index] (pas forcément celui en jeu) ; [member amount] PV rendus,
+##   [member hp] et [member max_hp] d'après.
 
 enum Kind {
 	BATTLE_STARTED, SENT_OUT, TURN_STARTED, MOVE_USED, MOVE_MISSED, DAMAGE, NO_EFFECT,
 	STAT_CHANGED, STAT_UNCHANGED, RECOIL, FAINTED, BATTLE_ENDED, FLED, FLEE_FAILED,
 	EXP_GAINED, LEVEL_UP, MOVE_LEARNED, MOVE_FORGET_OFFERED, SEEDED, DRAINED,
 	BALL_THROWN, BALL_SHAKE, CAUGHT, BROKE_FREE,
+	ITEM_USED,
 }
 enum SideId { PLAYER, FOE }
 
@@ -90,7 +95,7 @@ var exp_to: float = 0.0
 ## DRAINED : PV rendus au Pokémon d'en face, et ses PV ensuite.
 var healed: int = 0
 var healed_hp: int = 0
-## BALL_THROWN : la Ball lancée (identifiant et nom affiché, « Poké Ball »).
+## BALL_THROWN, ITEM_USED : l'objet (identifiant et nom affiché, « Poké Ball », « Potion »).
 var item_id: StringName = &""
 var item_name: String = ""
 ## BALL_SHAKE : numéro de la secousse (1 à 3).

@@ -31,6 +31,10 @@ func test_real_data_loads_without_error() -> void:
 	assert_eq(potion.name, "Potion")
 	assert_eq(potion.category, ItemData.Category.HEAL)
 	assert_eq(potion.catch_bonus, 1.0, "pas de catch_bonus hors Ball (valeur par défaut)")
+	assert_eq(potion.heal_amount, 20, "jalon 6 : la Potion rend 20 PV")
+	assert_eq(ball.heal_amount, 0)
+	assert_eq(_library.get_ids_in_data_order(), [&"poke_ball", &"potion"] as Array[StringName])
+	assert_eq([ball.order, potion.order], [0, 1])
 
 
 ## Dossier 07 §8 (« Poké Balls ×5 ») et bible UI §6 (« Potion ×1 — Ajoutée au Sac »).
@@ -105,6 +109,7 @@ func test_catch_bonus_belongs_to_balls_only() -> void:
 	assert_eq(_library.get_item(&"great_ball").catch_bonus, 1.5, "nombre décimal accepté")
 	var healing := BALL.duplicate()
 	healing["category"] = "heal"
+	healing["heal_amount"] = 20
 	assert_false(_library.add_from_dict({"potion": healing}, "test"))
 	assert_push_error("« catch_bonus » est réservé aux Balls")
 	var negative := BALL.duplicate()
@@ -126,3 +131,85 @@ func test_missing_dir_and_file() -> void:
 	assert_false(_library.load_dir("res://tests/fixtures/items/missing/"))
 	assert_false(_library.load_file("res://tests/fixtures/items/missing.json"))
 	assert_push_error_count(2)
+
+
+# --- Jalon 6 (§3.4) : catégories, soins, contextes ---------------------------------------
+
+const POTION := {
+	"name": "Potion", "plural": "Potions", "feminine": true,
+	"category": "heal", "heal_amount": 20, "description": "Soigne.",
+}
+
+
+func _with(base: Dictionary, changes: Dictionary) -> Dictionary:
+	var entry := base.duplicate()
+	for key: Variant in changes:
+		if changes[key] == null:
+			entry.erase(key)
+		else:
+			entry[key] = changes[key]
+	return entry
+
+
+func test_new_categories_are_read_at_the_end_of_the_enum() -> void:
+	assert_eq(ItemData.CATEGORY_NAMES, ["ball", "heal", "battle", "field", "key"]
+		as Array[String])
+	var plain := _with(BALL, {"catch_bonus": null})
+	assert_true(_library.add_from_dict({
+		"x_attack": _with(plain, {"category": "battle"}),
+		"repel": _with(plain, {"category": "field"}),
+		"parcel": _with(plain, {"category": "key"}),
+	}, "test"), str(_library.get_errors()))
+	assert_eq(_library.get_item(&"x_attack").category, ItemData.Category.BATTLE)
+	assert_eq(_library.get_item(&"repel").category, ItemData.Category.FIELD)
+	assert_eq(_library.get_item(&"parcel").category, ItemData.Category.KEY)
+	assert_eq(_library.get_item(&"parcel").category_id(), &"key")
+	assert_eq(_library.get_ids_in_data_order(), [&"x_attack", &"repel", &"parcel"]
+		as Array[StringName], "ordre des données, pas l'ordre alphabétique")
+
+
+func test_heal_amount_is_required_for_a_heal_and_refused_elsewhere() -> void:
+	assert_true(_library.add_from_dict({"potion": POTION}, "test"))
+	assert_eq(_library.get_item(&"potion").heal_amount, 20)
+	var bad: Array[Dictionary] = [
+		_with(POTION, {"heal_amount": null}),
+		_with(POTION, {"heal_amount": 0}),
+		_with(POTION, {"heal_amount": -5}),
+		_with(POTION, {"heal_amount": 2.5}),
+		_with(POTION, {"heal_amount": "20"}),
+		_with(BALL, {"heal_amount": 20}),
+	]
+	for i: int in bad.size():
+		assert_false(_library.add_from_dict({"bad_%d" % i: bad[i]}, "test"), str(bad[i]))
+	assert_push_error_count(bad.size())
+	var errors := "\n".join(_library.get_errors())
+	assert_string_contains(errors, "« heal_amount » doit être un entier > 0 pour un soin")
+	assert_string_contains(errors, "« heal_amount » est réservé aux soins")
+	assert_eq(_library.size(), 1)
+
+
+func test_contexts_follow_the_category() -> void:
+	var item := ItemData.new()
+	var expected := {
+		ItemData.Category.BALL: [&"wild_battle"],
+		ItemData.Category.HEAL: [&"field", &"wild_battle", &"trainer_battle"],
+		ItemData.Category.BATTLE: [&"wild_battle", &"trainer_battle"],
+		ItemData.Category.FIELD: [&"field"],
+		ItemData.Category.KEY: [],
+	}
+	for category: ItemData.Category in expected:
+		item.category = category
+		var contexts: Array = []
+		contexts.assign(item.contexts())
+		assert_eq(contexts, expected[category], ItemData.CATEGORY_NAMES[category])
+	item.category = ItemData.Category.BALL
+	assert_true(item.usable_in(ItemData.CONTEXT_WILD_BATTLE))
+	assert_false(item.usable_in(ItemData.CONTEXT_TRAINER_BATTLE), "pas de Ball contre un dresseur")
+	assert_false(item.usable_in(ItemData.CONTEXT_FIELD))
+	assert_eq(ItemData.CONTEXT_FIELD, MenuRoute.BAG_CONTEXT_FIELD, "mêmes valeurs que le menu")
+
+
+func test_only_heals_are_given_to_a_pokemon() -> void:
+	assert_true(_library.load_dir())
+	assert_true(_library.get_item(&"potion").targets_pokemon())
+	assert_false(_library.get_item(&"poke_ball").targets_pokemon())

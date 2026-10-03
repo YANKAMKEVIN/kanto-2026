@@ -174,3 +174,15 @@ func test_items_that_are_not_an_object_are_an_error() -> void:
 	assert_false(bag.load_dict({"items": [1, 2]}))
 	assert_push_error_count(1)
 	assert_true(bag.is_empty())
+
+
+## Jalon 6 T10 : l'appui long sur une carte inverse le favori.
+func test_toggle_favorite() -> void:
+	var bag := Bag.new()
+	bag.add(&"potion")
+	assert_true(bag.toggle_favorite(&"potion"))
+	assert_true(bag.is_favorite(&"potion"))
+	assert_true(bag.toggle_favorite(&"potion"))
+	assert_false(bag.is_favorite(&"potion"))
+	assert_false(bag.toggle_favorite(&""), "identifiant vide : rien ne change")
+	assert_eq(bag.favorite_ids(), [] as Array[StringName])
