@@ -612,3 +612,8 @@ Le sol de la place est complet : herbe, pavés, bord (référence de rendu), dé
 Validés en lumière GH : `WORLD_TREE_A_01` (r3), `WORLD_TREE_B_01`, `WORLD_TREE_CENTRAL_01`, `WORLD_BLDG_CENTRE_01` (r2), `WORLD_BLDG_BOUTIQUE_01`. Sol (NE) : herbe, pavés, bord (référence), planche de bordure.
 **Reste** : les variantes **NE** des cinq objets (pour la comparaison de lumière du prototype, §5.3 du cahier) ; elles se font par retouche de l'image GH validée.
 Ce qui a le mieux marché : nouvelle image « comme extraite de la référence » avec un recadrage au plus près de l'objet ; une ancre validée jointe à chaque prompt ; la retouche réservée aux changements de rendu ou de lumière sur une forme déjà juste ; une vraie transparence exigée explicitement.
+
+## Scène prototype v1 (2026-10-03, branche `proto/da-jadielle`)
+
+`proto/da_jadielle/` (scène construite en code, jetable, scène principale de l'APK **sur cette branche seulement**). Textures préparées par `tools/art/preparer_proto.py` depuis `build/art/`. Sol : herbe et pavés (× 0,7) mélangés par un masque de cases à bord bruité + bande de terre (shader), décalcomanies de bordure le long de la frontière ; objets triés par les pieds ; ombres portées = silhouette retournée, écrasée, inclinée vers le bas à droite ; vent par shader sur les arbres ; sol teinté chaud (GH). Joueur = sprite provisoire 64 px ×2, comme repère d'échelle.
+**S24** : 59 fps stables, 18 Mo de textures, aucune erreur. Capture : `build/art/proto_s24_v1.png`.
