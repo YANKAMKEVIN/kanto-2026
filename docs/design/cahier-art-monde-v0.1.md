@@ -70,6 +70,8 @@ LUMIÈRE GH (golden hour) : lumière de fin d'après-midi ; soleil chaud, doré 
 LUMIÈRE NE (neutre) : lumière de milieu de journée, diffuse et blanche, venant légèrement du haut à gauche ; volumes conservés par un ombrage doux ; aucune teinte dorée ou orangée, aucun liseré chaud ; ombres propres neutres, légèrement bleutées.
 ```
 
+**Décision de Kevin (2026-10-03, comparaison sur S24) : méthode C.** **Les assets du monde sont produits en lumière NEUTRE (bloc « LUMIÈRE NE ») ; Godot porte l'ambiance lumineuse** (heure, météo, intérieur/extérieur, événements). Les assets GH de la série 01 restent la **référence visuelle (« golden reference »)** pour calibrer Godot ; on n'en produit plus. Cible : C avec 80–90 % de la sensation de A, **sans filtre jaune global, sans brume ni vignettage**. Le soir ne sera pas « C assombri » : ciel plus froid, ombres bleu-violet, vitrines et lampadaires allumés (cartes d'émission, plus tard).
+
 ### 1.4 Ce que la cible n'impose pas
 
 La **géométrie exacte** des images (le jeu décide où passe le joueur ; grille de 96 px, collisions case par case) et les écarts déjà corrigés par le dossier 09 (pas de mer, Pokémon des PNJ, rayons de la Boutique, etc.).
