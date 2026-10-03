@@ -133,19 +133,12 @@ Fiches de production : `docs/design/fiches-assets/` (série 01 : place centrale 
 
 ## 4. Personnages
 
-**La taille et la technique des personnages ne sont pas fixées** avant le test (décision de Kevin du 2026-10-03). Aujourd'hui : pixel art de 64 px natifs, affiché ×2. Le `CLAUDE.md` et `vision.md` ne seront modifiés qu'**après** la décision.
+**Verdict de Kevin (2026-10-03) : personnages et Pokémon PEINTS SIMPLIFIÉS.** Test en mouvement sur S24, côte à côte : héros (marche et course), enfant de Jadielle et son Rattata, en pixel art 64 px ×2 et en peint 128 px. Le peint se fond dans le décor et garde les petits Pokémon lisibles ; les deux pistes étaient industrialisables (planches 4 directions × 4 images générées du premier coup par Codex, découpées par `tools/art/decouper_perso.py`).
 
-Le test compare des personnages **au niveau de la cible**, jamais un personnage volontairement appauvri :
-
-| Variante | Description |
-|---|---|
-| P1 | pixel art **détaillé**, plus grand en natif (autour de 96 à 128 px), animations plus riches |
-| P2 | personnage **peint en HD** comme sur les références |
-| Repère | le personnage actuel de 64 px, seulement pour mesurer l'écart |
-
-**Le vrai défi de P2** : garder un personnage **identique d'une image à l'autre** (4 directions × marche, course, etc.). Les générateurs d'images y sont faibles. Pistes : pose de référence fixe, découpage en parties animées (*cut-out*), retouche, ou artiste. Le prototype mesure ce coût : un seul cycle de marche vers le bas suffit pour juger.
-
----
+Règles de production :
+- une planche 4 × 4 par animation (lignes bas, gauche, droite, haut ; colonnes passage, pas gauche, passage, pas droit), même personnage, pieds sur une même ligne ;
+- héros 128 px de haut affichés à 1:1, filtre `linear` ; enfant ≈ 108 px ; petit Pokémon ≈ 56 px ;
+- l'identité est tenue par une planche de référence jointe (la marche validée sert d'ancre à la course, etc.).
 
 ## 5. Prototype de faisabilité : Jadielle
 

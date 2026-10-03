@@ -25,7 +25,7 @@ Pour chaque écran, la question n'est pas « comment Pokémon faisait ça ? » m
 7. **Au pouce.** Le glisser-déposer n'est jamais la seule façon de faire une action ; la couleur n'est jamais la seule information (toujours un texte ou un symbole).
 8. **Pas de fonctionnalité annoncée d'avance** : aucun bouton grisé pour un système qui n'existe pas encore (ex. FAIRE SORTIR avant le compagnon).
 9. **Rien n'existe « parce que Pokémon l'avait » ni « parce qu'une maquette le montre »** : pas de talents ni de natures chiffrées tant que le jeu ne les utilise pas (dossier 04 §8).
-10. **Visuels des Pokémon (V1)** : sprites pixel art fins, agrandis et intégrés proprement à la DA HD. Pas d'illustrations HD des 151 au J6 (à réévaluer pendant la phase DA). Même règle pour le portrait du joueur.
+10. **Visuels des Pokémon (V1)** : sprites **peints simplifiés**, dans la même main que le monde (décision de Kevin du 2026-10-03, une seule main pour le monde, le combat et les menus ; remplace « pixel art fins »), intégrés proprement à la DA HD. Pas d'illustrations HD des 151 au J6 (à réévaluer pendant la phase DA). Même règle pour le portrait du joueur.
 11. **Retours haptiques légers**, jamais agressifs, désactivables (§7).
 12. **Format paysage** (2340×1080 sur le S24, référence 1920×1080). Les maquettes en portrait (Dresseur, Paramètres) sont à recomposer.
 
