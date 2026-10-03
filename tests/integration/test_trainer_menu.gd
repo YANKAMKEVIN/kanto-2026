@@ -212,3 +212,32 @@ func test_show_pokedex_relays_signals_and_back_closes_sheet_first() -> void:
 	assert_eq(backs[0], 0)
 	_menu.show_pokedex(view)
 	assert_eq(_menu.get_pokedex(), dex, "gardé, pas ré-instancié")
+
+
+func test_show_map_relays_signals_and_keeps_screen() -> void:
+	var touched: Array[StringName] = []
+	var routes: Array[MenuRoute] = []
+	var backs := [0]
+	_menu.map_zone_touched.connect(func(z: StringName) -> void: touched.append(z))
+	_menu.route_requested.connect(func(r: MenuRoute) -> void: routes.append(r))
+	_menu.back_requested.connect(func() -> void: backs[0] += 1)
+	var view := MapView.new()
+	view.title = "CARTE — KANTO"
+	_menu.show_map(view)
+	await _menu.open_animated()
+	var map := _menu.get_map()
+	assert_not_null(map)
+	assert_eq(_menu.get_current_screen(), map)
+	map.zone_touched.emit(&"route_1")
+	assert_eq(touched, [&"route_1"])
+	map.route_requested.emit(MenuRoute.pokedex(MenuRoute.DEX_FILTER_ALL, &"pidgey"))
+	assert_eq(routes.size(), 1, "le lien Pokémon observé → Pokédex est relayé")
+	map.get_back_button().pressed.emit()
+	assert_eq(backs[0], 1)
+	var panel := ZonePanelView.new()
+	panel.zone_id = &"route_1"
+	panel.name = "Route 1"
+	_menu.show_map_zone(panel)
+	assert_eq(_menu.get_current_screen(), map, "le panneau ne change pas d'écran")
+	_menu.show_map(view)
+	assert_eq(_menu.get_map(), map, "gardé, pas ré-instancié")

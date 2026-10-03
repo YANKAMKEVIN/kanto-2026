@@ -817,3 +817,47 @@ const DEX_MAP_FRAME_MARGIN := 40.0
 const DEX_MAP_PATCH_BORDER := 2
 const DEX_CHIP_HEIGHT := TOUCH_MIN
 const DEX_CHIP_ICON := 40
+
+# Écran Carte du Menu Dresseur (jalon 6, T20). Un journal : l'illustration entière, les noms
+# des seules zones découvertes, un panneau latéral ; aucun total, aucun « ??? ».
+## En-tête : RETOUR et titre.
+const MAP_HEADER_HEIGHT := TOUCH_MIN
+const MAP_BACK_WIDTH := MENU_CARD_ICON * 2
+const MAP_TITLE_FONT := FONT_TITLE
+const MAP_GAP := GAP
+## Cadre de l'illustration (coins arrondis, l'image est rognée aux coins seulement).
+const MAP_FRAME_BORDER := BORDER_WIDTH
+## Étiquette d'une zone découverte : pastille sombre translucide, nom discret.
+const MAP_LABEL_FONT := FONT_CAPTION
+const MAP_LABEL_PAD_H := 14
+const MAP_LABEL_PAD_V := 6
+const MAP_LABEL_GAP := 8
+const MAP_LABEL_BG := Color(0.07, 0.10, 0.15, 0.8)
+const MAP_LABEL_ALPHA := 0.9
+## Zone du panneau : halo sur l'illustration (au moins MAP_HIGHLIGHT_MIN de côté pour qu'une
+## route fine reste visible), remplissage léger et liseré d'ACCENT.
+const MAP_HIGHLIGHT_MIN := 56.0
+const MAP_HIGHLIGHT_FILL := 0.22
+const MAP_HIGHLIGHT_BORDER := 4.0
+const MAP_HIGHLIGHT_RADIUS := 12.0
+## Portrait du joueur (hauteur ; la largeur suit le rapport 1 : 2 de l'image).
+const MAP_PORTRAIT_HEIGHT := 80.0
+## Panneau latéral.
+const MAP_PANEL_WIDTH := 700
+const MAP_PANEL_PAD := 24
+const MAP_PANEL_GAP := 16
+const MAP_NAME_FONT := FONT_TITLE
+const MAP_SUBTITLE_FONT := 28
+const MAP_TEXT_FONT := 28
+const MAP_SECTION_FONT := 30
+const MAP_ENTRY_FONT := FONT_CAPTION
+## Pokémon observé : cellule tactile (≥ TOUCH_MIN), sprite de 64 px à l'échelle entière.
+const MAP_ENTRY_SIZE := Vector2(172, 190)
+const MAP_ENTRY_SPRITE_SOURCE := 64
+const MAP_ENTRY_SPRITE_SCALE := 2
+const MAP_ENTRY_GAP := 12
+## Objet trouvé et service : pastille (icône, nom, « ×2 »).
+const MAP_CHIP_ICON := 56
+const MAP_CHIP_PAD_H := 18
+const MAP_CHIP_PAD_V := 10
+const MAP_FADE := ANIM_PANEL
