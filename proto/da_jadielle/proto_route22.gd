@@ -107,7 +107,10 @@ void fragment() {
 	add_child(tries)
 	_bordures(cases, bordures)
 	for objet: Array in OBJETS:
-		_objet(objet, tries, ombres)
+		# L'escalier fait partie du sol : on marche dessus, il ne passe jamais devant
+		# un personnage (sinon le tri par les pieds le cache pendant la montée).
+		var calque := bordures if (objet[0] as String).begins_with("escalier") else tries
+		_objet(objet, calque, ombres)
 	_herbes_hautes(tries)
 	_foret(cases, tries, ombres)
 	# Les personnages immobiles sont aussi des obstacles pour ceux qui marchent.
