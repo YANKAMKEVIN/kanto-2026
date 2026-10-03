@@ -33,6 +33,19 @@ OBJETS = [
     ("WORLD_TREE_CENTRAL_01_NE_r1.png", "tree_central_ne.png", ("h", 6)),
     ("WORLD_BLDG_CENTRE_01_NE_r1.png", "centre_ne.png", ("w", 8)),
     ("WORLD_BLDG_BOUTIQUE_01_NE_r1.png", "boutique_ne.png", ("w", 8)),
+    # Intérieurs du Centre et de la Boutique (série 03, lumière neutre).
+    ("INT_CENTRE_COMPTOIR_NE_r1.png", "int_comptoir.png", ("w", 5)),
+    ("INT_CENTRE_TERMINAL_NE_r1.png", "int_terminal.png", ("h", 2.2)),
+    ("INT_CENTRE_BANQUETTE_NE_r1.png", "int_banquette.png", ("w", 2.3)),
+    ("INT_PLANTE_NE_r1.png", "int_plante.png", ("h", 2.4)),
+    ("INT_BOUTIQUE_CAISSE_NE_r1.png", "int_caisse.png", ("w", 5)),
+    ("INT_BOUTIQUE_RAYON_MURAL_NE_r1.png", "int_rayon.png", ("w", 2.7)),
+    ("INT_BOUTIQUE_PRESENTOIR_NE_r1.png", "int_presentoir.png", ("w", 3)),
+]
+# Enveloppes des pièces (15 × 10 cases), opaques.
+PIECES = [
+    ("INT_CENTRE_COQUE_NE_r1.png", "int_centre_coque.png"),
+    ("INT_BOUTIQUE_COQUE_NE_r1.png", "int_boutique_coque.png"),
 ]
 SOLS = [
     ("VALIDE_HERBE.png", "herbe.png", 1.0),
@@ -56,6 +69,14 @@ def _objets() -> None:
         taille = (round(largeur * echelle), round(hauteur * echelle))
         image.resize(taille, Image.LANCZOS).save(SORTIE / sortie)
         print(f"{sortie} : {taille[0]} × {taille[1]}")
+
+
+def _pieces() -> None:
+    for source, sortie in PIECES:
+        image = Image.open(SOURCE / source).convert("RGB").resize((15 * CASE, 10 * CASE),
+                                                                   Image.LANCZOS)
+        image.save(SORTIE / sortie)
+        print(f"{sortie} : {image.width} × {image.height}")
 
 
 def _sols() -> None:
@@ -88,5 +109,6 @@ def _bordure() -> None:
 if __name__ == "__main__":
     SORTIE.mkdir(parents=True, exist_ok=True)
     _objets()
+    _pieces()
     _sols()
     _bordure()

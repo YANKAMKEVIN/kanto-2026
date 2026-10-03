@@ -60,6 +60,8 @@ const MODES_LUMIERE: Array = [
 	["D — assets neutres + fin de journée par Godot", true, Color.WHITE, Color(0.82, 0.66, 0.66)],
 ]
 
+## Faux quand la place est montrée par la visite (le toucher change alors de lieu).
+var bascule_lumiere := true
 ## Mode par défaut : C2, la méthode retenue par Kevin.
 var _mode := 3
 var _materiau_sol: ShaderMaterial
@@ -110,7 +112,7 @@ func _ready() -> void:
 
 func _input(event: InputEvent) -> void:
 	# Seulement le toucher (Android émet aussi un clic simulé).
-	if event is InputEventScreenTouch and event.pressed:
+	if bascule_lumiere and event is InputEventScreenTouch and event.pressed:
 		_mode = (_mode + 1) % MODES_LUMIERE.size()
 		_appliquer_lumiere()
 
