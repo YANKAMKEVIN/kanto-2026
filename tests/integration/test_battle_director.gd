@@ -738,6 +738,48 @@ func test_forget_confirmation_asks_before_forgetting() -> void:
 	assert_push_error_count(0)
 
 
+## Même question avec le vrai composant `ChoiceCards` : texte à l'écran, GARDER puis OUBLIER.
+func test_forget_confirmation_with_the_real_choice_cards() -> void:
+	var moves: Array[StringName] = [&"tackle", &"growl", &"leech_seed", &"vine_whip"]
+	var party_fn := func() -> Party: return _xp_party(&"bulbasaur", 19, 1, moves)
+	var seed := _xp_seed(party_fn, &"rattata", 3, [0] as Array[int],
+		func(events: Array) -> bool:
+			return _has_kind(events, BattleEvent.Kind.MOVE_FORGET_OFFERED))
+	if seed < 0:
+		fail_test("aucune graine avec offre d'oubli")
+		return
+	var party: Party = party_fn.call()
+	var lead := party.get_lead()
+	var request := _xp_request(party, &"rattata", 3, seed)
+	_director.confirm_forget = true
+	var asked: Array[String] = []
+	var on_offer := func(panel: MoveForgetPanel, _events: Array) -> void:
+		await wait_process_frames(2)
+		panel.select(2)
+		panel.get_confirm_button().pressed.emit()
+		var cards: ChoiceCards = null
+		for i: int in 120:
+			await wait_process_frames(1)
+			for child: Node in _hud.get_screen().get_children():
+				if child is ChoiceCards and (child as ChoiceCards).is_showing():
+					cards = child
+			if cards != null:
+				break
+		assert_not_null(cards, "la question est affichée")
+		if cards == null:
+			return
+		asked.append(cards.get_title_label().text)
+		if asked.size() == 1:
+			cards.get_cancel_button().pressed.emit()
+		else:
+			cards.get_confirm_button().pressed.emit()
+	var played := await _play_with_offers(request, [0] as Array[int], on_offer)
+	assert_eq(played[0], Battle.Outcome.WIN)
+	assert_eq(asked.size(), 2)
+	assert_eq(asked[0], "Oublier Vampigraine ?")
+	assert_eq(lead.moves[2].move_id, &"poison_powder", "OUBLIER a remplacé la capacité")
+
+
 ## Équipe de deux Bulbizarre identiques (même espèce, même nom) : le premier est K.O. avec
 ## [param first_moves], le second tient debout, à 1 XP du N20, avec [param second_moves].
 func _twin_party(first_moves: Array[StringName], second_moves: Array[StringName]) -> Party:
