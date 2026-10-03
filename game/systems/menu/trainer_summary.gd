@@ -109,19 +109,11 @@ static func stat_views(state: Object, zones: ZoneLibrary) -> Array[TrainerStatVi
 
 
 ## Première arrivée dans chaque zone : zone → date ISO la plus ancienne parmi ses cartes
-## découvertes. Une carte rangée dans aucune zone est ignorée. Ordre : celui des dates.
+## découvertes. Une seule règle, celle de [method MapJournal.discovered_zones] ; ici seul
+## l'ordre change : celui des dates (à date égale, l'identifiant ; une date vide à la fin).
 static func first_arrivals(discovered_maps: Dictionary, zones: ZoneLibrary) \
 		-> Dictionary[StringName, String]:
-	var dates: Dictionary[StringName, String] = {}
-	if zones == null:
-		return dates
-	for map: Variant in discovered_maps:
-		var zone := zones.zone_of(StringName(str(map)))
-		var date := str(discovered_maps[map])
-		if zone.is_empty():
-			continue
-		if not dates.has(zone) or _sort_date(date) < _sort_date(dates[zone]):
-			dates[zone] = date
+	var dates := MapJournal.discovered_zones(discovered_maps, zones)
 	var ids: Array[StringName] = []
 	ids.assign(dates.keys())
 	ids.sort_custom(func(a: StringName, b: StringName) -> bool:
