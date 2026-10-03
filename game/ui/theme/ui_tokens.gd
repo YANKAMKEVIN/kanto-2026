@@ -866,8 +866,8 @@ const MAP_FADE := ANIM_PANEL
 # --- Écran Dresseur du Menu Dresseur (jalon 6, T24) ----------------------------------------------
 # Paysage : identité et portrait à gauche, badges et statistiques au centre, grands moments à
 # droite. Aucun niveau, XP, titre, tenue ni compteur de badges.
-const TRAINER_LEFT_WIDTH := 560
-const TRAINER_RIGHT_WIDTH := 640
+const TRAINER_LEFT_WIDTH := 520
+const TRAINER_RIGHT_WIDTH := 600
 const TRAINER_GAP := GAP
 const TRAINER_HEADER_HEIGHT := TOUCH_MIN
 const TRAINER_BACK_WIDTH := MENU_CARD_ICON * 2

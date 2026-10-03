@@ -342,7 +342,7 @@ func _stat_cell(line: TrainerStatView) -> Control:
 	var label := Label.new()
 	label.theme_type_variation = &"TrainerStatLabel"
 	label.text = line.label
-	label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	label.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
 	label.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	texts.add_child(label)
 	var value := Label.new()
