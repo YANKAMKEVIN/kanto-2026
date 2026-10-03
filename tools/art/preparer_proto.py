@@ -49,6 +49,11 @@ OBJETS = [
     ("WORLD_PROP_CLOTURE_01_NE_r1.png", "cloture.png", ("w", 4)),
     ("WORLD_PROP_PANNEAU_01_NE_r1.png", "panneau.png", ("h", 2)),
     ("WORLD_PROP_PORTE_NORD_01_NE_r1.png", "porte_nord.png", ("w", 5)),
+    # Route 22 (série 05, lumière neutre).
+    ("WORLD_RELIEF_FALAISE_01_NE_r1.png", "falaise.png", ("w", 4)),
+    ("WORLD_RELIEF_ESCALIER_01_NE_r1.png", "escalier.png", ("w", 2.2)),
+    ("WORLD_PROP_ROCHER_01_NE_r1.png", "rocher.png", ("w", 2)),
+    ("WORLD_GROUND_HAUTES_HERBES_01_NE_r1.png", "hautes_herbes.png", ("w", 1.15)),
 ]
 # Enveloppes des pièces (15 × 10 cases), opaques.
 PIECES = [
@@ -58,6 +63,7 @@ PIECES = [
 SOLS = [
     ("VALIDE_HERBE.png", "herbe.png", 1.0),
     ("VALIDE_PAVE_CENTRE.png", "paves.png", 0.7),  # contraste réduit (fiche)
+    ("WORLD_GROUND_CHEMIN_01_NE_r1.png", "chemin.png", 0.55),
 ]
 TEXTURE_SOL = 384  # 4 × 4 cases
 PLANCHE_BORDURE = "VALIDE_DECAL_BORD.png"
@@ -87,12 +93,21 @@ def _pieces() -> None:
         print(f"{sortie} : {image.width} × {image.height}")
 
 
+def _decor() -> None:
+    image = Image.open(SOURCE / "WORLD_DECOR_PLATEAU_INDIGO_01_NE_r1.png").convert("RGB")
+    image.save(SORTIE / "plateau_indigo.png")
+    print("plateau_indigo.png : 1536 × 1024")
+
+
 def _sols() -> None:
     for source, sortie, contraste in SOLS:
         image = Image.open(SOURCE / source).convert("RGB")
         image = image.resize((TEXTURE_SOL, TEXTURE_SOL), Image.LANCZOS)
         if contraste != 1.0:
             image = ImageEnhance.Contrast(image).enhance(contraste)
+        if sortie == "chemin.png":
+            # Terre trop orangée à la génération : ramenée vers l'ocre clair.
+            image = ImageEnhance.Color(image).enhance(0.55)
         image.save(SORTIE / sortie)
         print(f"{sortie} : {TEXTURE_SOL} × {TEXTURE_SOL}")
 
@@ -118,5 +133,6 @@ if __name__ == "__main__":
     SORTIE.mkdir(parents=True, exist_ok=True)
     _objets()
     _pieces()
+    _decor()
     _sols()
     _bordure()

@@ -2,8 +2,8 @@ extends Node
 ## Visite du prototype sur le S24 : toucher l'écran passe de la place (lumière C2) à
 ## l'intérieur du Centre, puis de la Boutique.
 
-const LIEUX := ["ville", "place", "centre", "boutique"]
-const NOMS := {"ville": "Jadielle entière (la caméra fait le tour)", "place": "Place de Jadielle (lumière C2)", "centre": "Centre Pokémon — intérieur",
+const LIEUX := ["ville", "route22", "place", "centre", "boutique"]
+const NOMS := {"route22": "Route 22 (la caméra fait le tour)", "ville": "Jadielle entière (la caméra fait le tour)", "place": "Place de Jadielle (lumière C2)", "centre": "Centre Pokémon — intérieur",
 	"boutique": "Boutique — intérieur"}
 
 var _index := 0
@@ -38,6 +38,8 @@ func _montrer() -> void:
 	var nom: String = LIEUX[_index]
 	if nom == "ville":
 		_lieu = preload("res://proto/da_jadielle/proto_ville.gd").new()
+	elif nom == "route22":
+		_lieu = preload("res://proto/da_jadielle/proto_route22.gd").new()
 	elif nom == "place":
 		_lieu = preload("res://proto/da_jadielle/proto_da_jadielle.tscn").instantiate()
 		_lieu.bascule_lumiere = false
