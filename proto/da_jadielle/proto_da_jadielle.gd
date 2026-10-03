@@ -71,7 +71,8 @@ func _ready() -> void:
 	_poser_massif(ombres)
 	for objet: Array in OBJETS:
 		_poser_objet(objet[0], Vector2(objet[1], objet[2]) * CASE, objet[3], tries, ombres)
-	_poser_joueur(Vector2(8.5, 9.0) * CASE, tries, ombres)
+	var marcheur: Node2D = preload("res://proto/da_jadielle/marcheur.gd").new()
+	tries.add_child(marcheur)
 	add_child(_camera())
 	_journal_fps()
 

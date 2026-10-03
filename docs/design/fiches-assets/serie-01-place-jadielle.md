@@ -631,3 +631,15 @@ Ce qui a le mieux marché : nouvelle image « comme extraite de la référence �
 
 L'app ChatGPT de Kevin embarque **Codex** (`/Applications/ChatGPT.app/Contents/Resources/codex-cli/bin/codex`), qui a un outil de génération d'images **compris dans l'abonnement ChatGPT** : aucune clé API, aucune dépense en plus. Script : `tools/art/generer.sh ID prompt.txt [références...]` → `build/art/ID.png` (vraie transparence). Claude génère, analyse et relance seul ; Kevin valide sur les montages.
 Premiers essais : `WORLD_TREE_A_01_NE_r1` et `WORLD_TREE_B_01_NE_r1` (rééclairage NE) : même forme, lumière neutre, fond transparent.
+
+## J7.1 — lot généré par Codex (2026-10-03)
+
+| Identifiant | Résultat |
+|---|---|
+| `WORLD_TREE_CENTRAL_01_NE_r1`, `WORLD_BLDG_CENTRE_01_NE_r1`, `WORLD_BLDG_BOUTIQUE_01_NE_r1` | rééclairages NE fidèles (forme conservée, vraie transparence) |
+| `WORLD_PROP_MASSIF_01_GH_r1` | massif circulaire à bordure de pierre, fleurs rouges/jaunes/blanches/violettes, trou central pour le tronc ; posé sous l'arbre central (non étalonné : les fleurs jaunes verdiraient) |
+| `WORLD_PROP_BANC_01_GH_r1`, `WORLD_PROP_LAMPADAIRE_01_GH_r1` | banc bois et fonte verte, lampadaire à lanterne ; même rendu que la série |
+| `PERSO_P1_PIXEL_r1`, `PERSO_P2_PEINT_r1` | planches de marche 4 directions × 4 images, même personnage (tenue de la référence `ouverture-storyboard-v1` : casquette rouge, t-shirt blanc, sac jaune, jean, baskets rouges ; **défaut pour le test**, règle 4) |
+
+Prompts conservés dans `build/art/prompts/` (non versionné). Découpage des planches : `tools/art/decouper_perso.py` (recalage tête/pieds, réduction commune ; piste 1 : 64 px, palette de 28 couleurs, alpha net ; piste 2 : 128 px lissé).
+**Scène** : le personnage d'essai (`marcheur.gd`) fait le tour de la place case par case à la vitesse de marche du jeu (0,27 s par case) ; **toucher l'écran** passe de la piste 1 à la piste 2 puis au repère provisoire. Lumière neutre : `-- --lumiere=ne`.
