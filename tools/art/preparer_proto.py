@@ -23,6 +23,16 @@ OBJETS = [
     # Bâtiments sur 8 cases de large (défaut d'échelle noté dans la fiche).
     ("VALIDE_CENTRE.png", "centre.png", ("w", 8)),
     ("VALIDE_BOUTIQUE.png", "boutique.png", ("w", 8)),
+    # J7.1 (générés par Codex). Le massif n'est pas étalonné : ses fleurs jaunes verdiraient.
+    ("WORLD_PROP_MASSIF_01_GH_r1.png", "massif.png", ("w", 4)),
+    ("WORLD_PROP_BANC_01_GH_r1.png", "banc.png", ("w", 2)),
+    ("WORLD_PROP_LAMPADAIRE_01_GH_r1.png", "lampadaire.png", ("h", 2.6)),
+    # Variantes de lumière neutre (comparaison GH / NE du cahier §5.3).
+    ("WORLD_TREE_A_01_NE_r1.png", "tree_a_ne.png", ("h", 4)),
+    ("WORLD_TREE_B_01_NE_r1.png", "tree_b_ne.png", ("h", 5)),
+    ("WORLD_TREE_CENTRAL_01_NE_r1.png", "tree_central_ne.png", ("h", 6)),
+    ("WORLD_BLDG_CENTRE_01_NE_r1.png", "centre_ne.png", ("w", 8)),
+    ("WORLD_BLDG_BOUTIQUE_01_NE_r1.png", "boutique_ne.png", ("w", 8)),
 ]
 SOLS = [
     ("VALIDE_HERBE.png", "herbe.png", 1.0),

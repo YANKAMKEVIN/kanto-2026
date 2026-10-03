@@ -18,25 +18,40 @@ const PAVES: Array[Rect2i] = [
 	Rect2i(2, 5, 22, 8),  # la place, sous et devant les bâtiments
 	Rect2i(12, 13, 2, 1),  # départ du chemin vers la Route 1
 ]
-## Îlot d'herbe autour de l'arbre central (le massif viendra en série 02).
-const ILOT := Rect2i(12, 9, 2, 2)
+## Massif fleuri au pied de l'arbre central (J7.1) : centre de son trou de terre, en pixels
+## de la texture, posé sur le pied de l'arbre.
+const MASSIF_TROU := Vector2(182, 109)
+const PIED_ARBRE_CENTRAL := Vector2(13.0, 9.8)
 ## Objets : [texture, x en cases (milieu du pied), y en cases (ligne du pied), vent].
 const OBJETS: Array = [
 	["centre.png", 7.0, 7.0, false],
 	["boutique.png", 19.0, 7.0, false],
-	["tree_central.png", 13.0, 10.9, true],
+	["tree_central.png", 13.0, 9.8, true],
 	["tree_b.png", 1.0, 5.0, true],
 	["tree_a.png", 1.0, 9.0, true],
 	["tree_b.png", 1.2, 13.6, true],
 	["tree_a.png", 25.0, 5.5, true],
 	["tree_b.png", 24.8, 9.6, true],
 	["tree_a.png", 25.0, 13.8, true],
-	["tree_a.png", 10.0, 14.2, true],
-	["tree_b.png", 16.0, 14.4, true],
+	["tree_a.png", 7.6, 14.2, true],
+	["tree_b.png", 18.6, 14.4, true],
+	# J7.1 : bancs face au sud de part et d'autre du massif, lampadaires.
+	["banc.png", 9.4, 10.7, false],
+	["banc.png", 16.6, 10.7, false],
+	["lampadaire.png", 10.4, 8.6, false],
+	["lampadaire.png", 15.6, 8.6, false],
+	["lampadaire.png", 3.2, 7.6, false],
+	["lampadaire.png", 22.8, 7.6, false],
 ]
 const BATIMENTS: Array[String] = ["centre.png", "boutique.png"]
+## Objets qui existent aussi en lumière neutre (« _ne »).
+const VARIANTES_NE: Array[String] = ["centre.png", "boutique.png", "tree_a.png", "tree_b.png",
+	"tree_central.png"]
 ## Lumière GH : teinte chaude du sol (les objets sont déjà peints en GH).
 const TEINTE_SOL := Color(1.0, 0.95, 0.86)
+
+## Lumière neutre (`-- --lumiere=ne`) : variantes NE, sol non teinté (comparaison §5.3).
+var _neutre := "--lumiere=ne" in OS.get_cmdline_user_args()
 
 var _hasard := RandomNumberGenerator.new()
 
@@ -53,6 +68,7 @@ func _ready() -> void:
 	tries.y_sort_enabled = true
 	add_child(tries)
 	_poser_bordures(cases, ombres)
+	_poser_massif(ombres)
 	for objet: Array in OBJETS:
 		_poser_objet(objet[0], Vector2(objet[1], objet[2]) * CASE, objet[3], tries, ombres)
 	_poser_joueur(Vector2(8.5, 9.0) * CASE, tries, ombres)
@@ -92,9 +108,6 @@ func _cases_pavees() -> Dictionary:
 		for x in range(zone.position.x, zone.end.x):
 			for y in range(zone.position.y, zone.end.y):
 				cases[Vector2i(x, y)] = true
-	for x in range(ILOT.position.x, ILOT.end.x):
-		for y in range(ILOT.position.y, ILOT.end.y):
-			cases.erase(Vector2i(x, y))
 	return cases
 
 
@@ -107,7 +120,7 @@ func _construire_sol(cases: Dictionary) -> void:
 	materiau.set_shader_parameter(&"herbe", load(TEX + "herbe.png"))
 	materiau.set_shader_parameter(&"paves", load(TEX + "paves.png"))
 	materiau.set_shader_parameter(&"masque", ImageTexture.create_from_image(image))
-	materiau.set_shader_parameter(&"teinte", TEINTE_SOL)
+	materiau.set_shader_parameter(&"teinte", Color.WHITE if _neutre else TEINTE_SOL)
 	var sol := ColorRect.new()
 	sol.name = "Sol"
 	sol.size = Vector2(LARGEUR, HAUTEUR) * CASE
@@ -150,7 +163,21 @@ func _decal(parent: Node2D, nom: String, point: Vector2, echelle: float) -> void
 	parent.add_child(sprite)
 
 
+## Massif fleuri : au sol (non trié), sous l'arbre central dont le tronc sort de son trou.
+func _poser_massif(ombres: Node2D) -> void:
+	var texture: Texture2D = load(TEX + "massif.png")
+	var sprite := Sprite2D.new()
+	sprite.texture = texture
+	sprite.centered = false
+	sprite.position = PIED_ARBRE_CENTRAL * CASE - MASSIF_TROU
+	ombres.add_sibling(sprite)
+	var pied := sprite.position + Vector2(texture.get_width() / 2.0, texture.get_height())
+	_contact(texture, pied, 0.25, ombres)
+
+
 func _poser_objet(nom: String, pied: Vector2, vent: bool, tries: Node2D, ombres: Node2D) -> void:
+	if _neutre and nom in VARIANTES_NE:
+		nom = nom.replace(".png", "_ne.png")
 	var texture: Texture2D = load(TEX + nom)
 	var sprite := _sprite_au_pied(texture)
 	sprite.position = pied
@@ -161,7 +188,8 @@ func _poser_objet(nom: String, pied: Vector2, vent: bool, tries: Node2D, ombres:
 	tries.add_child(sprite)
 	_ombre(texture, pied, ombres, Rect2())
 	# Ombre de contact : ce qui « pose » l'objet au sol (les bâtiments sur toute leur base).
-	_contact(texture, pied, 0.12 if nom in BATIMENTS else 0.05, ombres)
+	_contact(texture, pied, 0.12 if nom.begins_with("centre") or nom.begins_with("boutique") \
+		else 0.05, ombres)
 
 
 func _poser_joueur(pied: Vector2, tries: Node2D, ombres: Node2D) -> void:
