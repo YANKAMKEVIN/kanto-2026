@@ -31,7 +31,7 @@ Kevin est le **directeur du jeu** : il conçoit (souvent avec ChatGPT), Claude i
 6. Kevin prépare le dossier de conception du jalon suivant **pendant** le jalon en cours, pour que le code n'attende pas les décisions.
 7. Données (Pokémon, attaques, objets, rencontres, dialogues) = fichiers de données, jamais codées en dur dans la logique.
 8. Logique de jeu séparée de la présentation (testable sans scène).
-9. Monde en **2D HD atmosphérique** (décors HD peints, personnages et Pokémon **peints simplifiés** dans la même main, lumière dynamique) ; UI **non** pixel art (skill `ui-theme-2026`). Production de l'art : `docs/design/cahier-art-monde-v0.1.md`.
+9. Monde en **2D HD atmosphérique** (décors HD peints, personnages et Pokémon **peints simplifiés** dans la même main, y compris en combat et dans les menus, lumière dynamique) ; UI **non** pixel art (skill `ui-theme-2026`). Production de l'art : `docs/design/cahier-art-monde-v0.1.md`.
 10. **Les maquettes et images de référence donnent la DA et la composition, jamais la vérité fonctionnelle.** Si une image contredit un dossier, `vision.md`, la bible UI/UX ou une décision validée, l'écrit gagne. On n'implémente jamais un élément simplement parce qu'il apparaît sur une maquette.
 
 ## Décisions techniques
