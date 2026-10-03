@@ -8,7 +8,7 @@ const LARGEUR := 26
 const HAUTEUR := 14
 const TEX := "res://proto/da_jadielle/tex/"
 const SOL_SHADER := preload("res://proto/da_jadielle/sol.gdshader")
-const VENT_SHADER := preload("res://proto/da_jadielle/vent.gdshader")
+const OBJET_SHADER := preload("res://proto/da_jadielle/objet.gdshader")
 const OMBRE_SHADER := preload("res://proto/da_jadielle/ombre.gdshader")
 const CONTACT_SHADER := preload("res://proto/da_jadielle/contact.gdshader")
 const JOUEUR := preload("res://assets/sprites/characters/placeholder/player_sheet.png")
@@ -53,13 +53,18 @@ const TEINTE_SOL := Color(1.0, 0.95, 0.86)
 const MODES_LUMIERE: Array = [
 	["A — golden hour PEINTE dans les assets", false, Color(1.0, 0.95, 0.86), Color.WHITE],
 	["B — assets NEUTRES, sans traitement", true, Color.WHITE, Color.WHITE],
-	["C — assets neutres + golden hour par Godot", true, Color.WHITE, Color(1.0, 0.9, 0.76)],
+	["C — assets neutres + golden hour par Godot (v1 : teinte globale)", true, Color.WHITE,
+		Color(1.0, 0.9, 0.76)],
+	["C2 — assets neutres + golden hour par Godot (v2 : étalonnage par zones + lisere de soleil)", true,
+		Color.WHITE, Color.WHITE],
 	["D — assets neutres + fin de journée par Godot", true, Color.WHITE, Color(0.82, 0.66, 0.66)],
 ]
 
 var _mode := 0
 var _materiau_sol: ShaderMaterial
 var _teinte := CanvasModulate.new()
+var _etalonnage := ColorRect.new()
+var _materiaux_objets: Array[ShaderMaterial] = []
 var _etiquette := Label.new()
 ## Objets qui ont une variante NE : [sprite, nom de la texture GH].
 var _variables: Array = []
@@ -86,6 +91,16 @@ func _ready() -> void:
 	add_child(_camera())
 	_journal_fps()
 	add_child(_teinte)
+	# Étalonnage d'écran (mode C2), sous l'étiquette.
+	var calque := CanvasLayer.new()
+	calque.layer = 0
+	var materiau := ShaderMaterial.new()
+	materiau.shader = preload("res://proto/da_jadielle/etalonnage.gdshader")
+	_etalonnage.material = materiau
+	_etalonnage.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_etalonnage.set_anchors_preset(Control.PRESET_FULL_RECT)
+	calque.add_child(_etalonnage)
+	add_child(calque)
 	for argument in OS.get_cmdline_user_args():
 		if argument.begins_with("--lumiere="):
 			_mode = clampi(argument.trim_prefix("--lumiere=").to_int(), 0, MODES_LUMIERE.size() - 1)
@@ -107,6 +122,10 @@ func _appliquer_lumiere() -> void:
 			else nom))
 	_materiau_sol.set_shader_parameter(&"teinte", mode[2])
 	_teinte.color = mode[3]
+	var c2 := (mode[0] as String).begins_with("C2")
+	_etalonnage.visible = c2
+	for materiau in _materiaux_objets:
+		materiau.set_shader_parameter(&"force_lisere", 1.0 if c2 else 0.0)
 	_etiquette.text = "%s   ·   toucher l'écran pour changer" % mode[0]
 
 
@@ -215,10 +234,11 @@ func _poser_objet(nom: String, pied: Vector2, vent: bool, tries: Node2D, ombres:
 	var texture: Texture2D = load(TEX + nom)
 	var sprite := _sprite_au_pied(texture)
 	sprite.position = pied
-	if vent:
-		var materiau := ShaderMaterial.new()
-		materiau.shader = VENT_SHADER
-		sprite.material = materiau
+	var materiau := ShaderMaterial.new()
+	materiau.shader = OBJET_SHADER
+	materiau.set_shader_parameter(&"force_vent", 5.0 if vent else 0.0)
+	sprite.material = materiau
+	_materiaux_objets.append(materiau)
 	tries.add_child(sprite)
 	if nom in VARIANTES_NE:
 		_variables.append([sprite, nom])

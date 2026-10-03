@@ -652,3 +652,8 @@ Scène : à gauche la piste 1 (pixel art ×2 ; héros 64 px, enfant 54 px, Ratta
 ## Comparaison de lumière sur S24 (cahier §5.3, 2026-10-03)
 
 Toucher l'écran fait défiler 4 modes : **A** golden hour peinte dans les assets ; **B** assets neutres bruts ; **C** assets neutres + golden hour par Godot (`CanvasModulate` chaud) ; **D** assets neutres + fin de journée par Godot (aperçu de ce que permettrait le jour/nuit). Le massif, les bancs et les lampadaires n'existent qu'en GH (petits objets, effet négligeable). Personnages peints des deux côtés. Capture : `build/art/comparaison_lumieres.png`.
+
+**Verdict (Kevin) : méthode C retenue**, A = référence. Calibration v2 (mode « C2 » du prototype) :
+1. `etalonnage.gdshader` : gains par zone de luminance mesurés sur les paires GH/NE de la série 01 (ombres ×1,16/1,07/0,97, tons moyens ×1,06/1,01/0,91, hautes lumières ×1,01/0,97/0,85 en RVB), contours sombres laissés neutres ; pas de teinte uniforme ;
+2. `objet.gdshader` : **liseré de soleil** doré sur les bords des objets tournés vers le haut-gauche (ce que la teinte d'écran ne crée pas).
+Écart moyen à A (somme RVB, capture plein écran) : C v1 42,8 → C2 ≈ 30. Reste à rapprocher : les hautes lumières internes des feuillages (A plus jaune-vert au sommet des masses) ; piste : légère carte de lumière par asset, plus tard.
