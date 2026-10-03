@@ -68,6 +68,11 @@ var _texts := BattleText.new()
 var _items := ItemLibrary.new()
 var _encounter_library: EncounterLibrary
 var _zones := ZoneLibrary.new()
+var _dex := PokedexLibrary.new()
+## Toasts du Pokédex en attente (au plus un par espèce) : des paires [espèce, [titre, détail]].
+var _dex_toasts: Array[Array] = []
+## Individus observés pendant la visite de la carte (OBSERVER, une fois par individu).
+var _observed: Dictionary[StringName, bool] = {}
 var _objectives := ObjectiveLibrary.new()
 var _unlocks: MenuUnlocks
 ## Faux : aucune écriture de toute la session (pas de sauvegarde, départ de débogage, ou
@@ -169,7 +174,11 @@ func _ready() -> void:
 	_objectives.load_file()
 	_unlocks = MenuUnlocks.new(GameState.flags, GameState.party)
 	_apply_debug_unlocks()
-	_menu.setup(GameState, _pokemon, _zones, _objectives, _unlocks, _can_open_menu, _items)
+	if _dex.load_file():
+		_dex.check_references(_pokemon)
+	for error: String in _dex.get_errors():
+		push_error("Pokédex : %s" % error)
+	_menu.setup(GameState, _pokemon, _zones, _objectives, _unlocks, _can_open_menu, _items, _dex)
 	_menu.menu_opened.connect(_on_menu_opened)
 	_menu.menu_closed.connect(_on_menu_closed)
 	# L'écran (jalon-06.md §6.6) : ouverture et vue dans la même frame, sans await (un fondu
@@ -198,6 +207,16 @@ func _ready() -> void:
 		_menu_screen.bag_use_requested.connect(_menu.request_item_use)
 		_menu_screen.bag_target_chosen.connect(_menu.use_item_on)
 		_menu_screen.bag_repeat_requested.connect(_menu.repeat_item_use)
+	# Pokédex (T16) : relié dès que l'écran porte l'interface du §6.9 (PokedexScreen du T15).
+	if _menu_screen.has_signal(&"pokedex_species_opened"):
+		_menu.pokedex_shown.connect(_menu_screen.show_pokedex)
+		_menu.pokedex_sheet_shown.connect(_menu_screen.show_pokedex_sheet)
+		_menu_screen.pokedex_filter_changed.connect(_menu.set_pokedex_filter)
+		_menu_screen.pokedex_species_opened.connect(_menu.open_species)
+	# Une seule écoute de tout ce qui s'enregistre au Pokédex (jalon-06.md §6.9).
+	GameState.pokedex.recorded.connect(_on_pokedex_recorded)
+	GameState.flags.flag_changed.connect(_on_flag_changed)
+	_interactions.observed.connect(_on_observed)
 	_hud.menu_requested.connect(_menu.open)
 	SceneRouter.setup(_world, _player, _fade)
 	# Destinations « à venir » (dossier-07 §12, build de développement) : l'écran provisoire.
@@ -217,6 +236,8 @@ func _process(delta: float) -> void:
 		GameState.add_play_time(minf(delta, MAX_PLAY_TIME_STEP))
 	if _save_pending and is_stable():
 		_write_save(_save_reason)
+	if not _dex_toasts.is_empty():
+		_show_next_dex_toast()
 
 
 ## Passage en arrière-plan (Android) ou fermeture de la fenêtre (Mac) : sauvegarde immédiate
@@ -242,7 +263,7 @@ func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed(&"menu") and not event.is_echo():
 		if _menu.is_open():
 			# Le choix du Pokémon du Sac se referme d'abord (retour d'un niveau).
-			if not _menu_screen.bag_back():
+			if not _screen_back():
 				_menu.close()
 		else:
 			_menu.open()
@@ -402,7 +423,7 @@ func _can_open_menu() -> bool:
 ## immédiate puis ouverture du menu ; pendant un dialogue, une scène, un combat ou une
 ## transition, ignoré.
 func _on_go_back() -> void:
-	if _menu.is_open() and _menu_screen.bag_back():
+	if _menu.is_open() and _screen_back():
 		return
 	if _menu.handle_back():
 		return
@@ -457,6 +478,13 @@ func request_autosave(reason: String) -> void:
 ## la sauvegarde), sinon reprise de la sauvegarde si elle se charge, sinon nouvelle partie sur
 ## [member start_map] / [member start_spawn].
 func _start_game() -> void:
+	_start_game_state()
+	# Parties existantes : notes débloquées sans bruit (jalon-06.md §6.9, point 4).
+	PokedexNotes.refresh(GameState.pokedex, _dex, GameState.flags)
+	_dex_toasts.clear()
+
+
+func _start_game_state() -> void:
 	if _apply_debug_start():
 		print("Départ de débogage : la sauvegarde n'est ni lue ni écrite.")
 	else:
@@ -571,6 +599,7 @@ func _on_transition_started(_target_map: StringName) -> void:
 ## Écran noir (ou démarrage) : présence des PNJ selon les drapeaux de la partie d'abord
 ## (jalon 3B §2.6), puis la carte passe aux contrôleurs.
 func _on_map_changed(map: GameMap) -> void:
+	_observed.clear()
 	map.refresh_npcs(GameState.flags)
 	_interactions.set_map(map)
 	_cutscenes_node.set_map(map)
@@ -704,6 +733,60 @@ func _on_item_given(item_id: StringName, count: int) -> void:
 	if item == null:
 		return
 	_hud.show_toast(item.quantity_text(count), item.added_text(count))
+
+
+## Retour de l'écran : la fiche du Pokédex d'abord, puis le choix du Pokémon du Sac.
+func _screen_back() -> bool:
+	if _menu_screen.has_method(&"pokedex_back") and _menu_screen.call(&"pokedex_back"):
+		return true
+	return _menu_screen.bag_back()
+
+
+## OBSERVER (Q-7, jalon-06.md §6.9) : l'espèce est « vue » ici, une fois par individu et par
+## visite de la carte. Le toast éventuel vient plus tard (file différée).
+func _on_observed(npc: Npc, species: StringName) -> void:
+	if _observed.has(npc.get_id()):
+		return
+	_observed[npc.get_id()] = true
+	GameState.record_seen(species, _current_map_id())
+
+
+## Une espèce vient d'être vue ou capturée : notes rafraîchies, puis toast en attente.
+func _on_pokedex_recorded(species: StringName, map: StringName, first_seen: bool,
+		new_map: bool, caught: bool) -> void:
+	var fresh := PokedexNotes.refresh(GameState.pokedex, _dex, GameState.flags, species)
+	var kind := PokedexUpdates.classify(GameState.pokedex, _pokemon, _zones, species, map,
+		first_seen, new_map, caught, not fresh.is_empty())
+	_queue_dex_toast(species, kind)
+
+
+## Un drapeau d'histoire a changé : notes de toutes les espèces ; un toast par espèce
+## concernée, sauf à l'activation du Pokédex (tout apparaît d'un coup, sans rafale).
+func _on_flag_changed(flag: StringName, _value: bool) -> void:
+	var fresh := PokedexNotes.refresh(GameState.pokedex, _dex, GameState.flags)
+	if flag == StoryFlags.POKEDEX_ACTIVATED:
+		return
+	for species: StringName in PokedexNotes.species_of(fresh):
+		_queue_dex_toast(species, PokedexUpdates.Kind.NEW_NOTE)
+
+
+func _queue_dex_toast(species: StringName, kind: PokedexUpdates.Kind) -> void:
+	for pending: Array in _dex_toasts:
+		if pending[0] == species:
+			return
+	var data := _pokemon.get_species(species)
+	var message := PokedexUpdates.message(kind, data.name if data != null else "",
+		_unlocks.pokedex_visible())
+	if not message.is_empty():
+		_dex_toasts.append([species, message])
+
+
+## Un toast à la fois, seulement partie stable, menu fermé, aucun toast à l'écran.
+func _show_next_dex_toast() -> void:
+	if _menu.is_open() or not is_stable() or _hud.get_toast().is_showing():
+		return
+	var message: PackedStringArray = _dex_toasts.pop_front()[1]
+	_hud.show_toast(message[0], message[1])
 
 
 ## Contrôles visibles seulement hors dialogue, hors scène, hors fiche du starter et hors
