@@ -80,6 +80,9 @@ extends SceneTree
 ##   Carte (T20) : MapPanel / MapFrame / MapLabel / MapLabelOn / MapChip (PanelContainer),
 ##     MapEntry (Button), MapName / MapSubtitle / MapText / MapSection / MapEntryText /
 ##     MapLabelText / MapLabelTextOn (Label)
+##   Dresseur (T24) : TrainerBadge / TrainerBadgeOn (PanelContainer), TrainerMoment / TrainerLink
+##     (Button), TrainerMomentBox (PanelContainer), TrainerSection / TrainerBadgeName / TrainerMomentTitle / TrainerMomentDetail /
+##     TrainerMomentMeta / TrainerStatLabel / TrainerStatValue / TrainerRow / TrainerEmpty (Label)
 ##   Pokédex (T15) : DexPanel (PanelContainer), DexCell / DexCellSelected / DexCellUnknown
 ##     (PanelContainer, case de la grille), DexTab (Button à bascule : onglets et filtres),
 ##     DexSearch (LineEdit), DexTitle / DexName / DexNumber (Label), DexSpriteFrame (Panel)
@@ -150,6 +153,7 @@ func _init() -> void:
 	_add_bag_screen(theme, bold, t)
 	_add_pokedex_screen(theme, bold, t)
 	_add_map_screen(theme, bold, t)
+	_add_trainer_screen(theme, bold, t)
 
 	var err := ResourceSaver.save(theme, THEME_PATH)
 	print("ui_theme.tres : ", error_string(err))
@@ -914,3 +918,48 @@ func _add_map_screen(theme: Theme, bold: Font, t: GDScript) -> void:
 	_add_plain_label(theme, &"MapText", t.MAP_TEXT_FONT, t.TEXT, null)
 	_add_plain_label(theme, &"MapSection", t.MAP_SECTION_FONT, t.TEXT, bold)
 	_add_plain_label(theme, &"MapEntryText", t.MAP_ENTRY_FONT, t.TEXT, bold)
+
+
+# --- Écran Dresseur du menu (jalon 6, T24) ------------------------------------------------------
+
+
+func _add_trainer_screen(theme: Theme, bold: Font, t: GDScript) -> void:
+	var mute := StyleBoxFlat.new()
+	mute.bg_color = t.TRAINER_BADGE_MUTE_BG
+	mute.border_color = t.TRAINER_BADGE_MUTE_BORDER
+	mute.set_border_width_all(t.BORDER_WIDTH)
+	mute.set_corner_radius_all(t.RADIUS)
+	mute.anti_aliasing = true
+	theme.set_type_variation(&"TrainerBadge", &"PanelContainer")
+	theme.set_stylebox(&"panel", &"TrainerBadge", mute)
+	var on := mute.duplicate() as StyleBoxFlat
+	on.bg_color = t.tinted(t.ACCENT, 0.18)
+	on.border_color = t.ACCENT
+	on.set_content_margin_all(t.GAP)
+	theme.set_type_variation(&"TrainerBadgeOn", &"PanelContainer")
+	theme.set_stylebox(&"panel", &"TrainerBadgeOn", on)
+
+	var row := _bag_box(t.TRAINER_MOMENT_BG, Color(0, 0, 0, 0), 0, t.TRAINER_MOMENT_PAD_H,
+		t.TRAINER_MOMENT_PAD_V, t)
+	row.set_corner_radius_all(t.RADIUS_SMALL)
+	var row_pressed := _bag_box(t.tinted(t.ACCENT, 0.25), t.ACCENT, t.BORDER_WIDTH,
+		t.TRAINER_MOMENT_PAD_H, t.TRAINER_MOMENT_PAD_V, t)
+	row_pressed.set_corner_radius_all(t.RADIUS_SMALL)
+	_add_flat_button(theme, &"TrainerMoment", row, row_pressed)
+	theme.set_type_variation(&"TrainerMomentBox", &"PanelContainer")
+	theme.set_stylebox(&"panel", &"TrainerMomentBox", StyleBoxEmpty.new())
+
+	var link := _button_style(t.BUTTON_BG, true, t)
+	var link_pressed := _button_style(t.ACCENT, false, t)
+	_add_button_variation(theme, &"TrainerLink", link, link_pressed, bold, t)
+	theme.set_font_size(&"font_size", &"TrainerLink", t.TRAINER_LINK_FONT)
+
+	_add_plain_label(theme, &"TrainerSection", t.TRAINER_SECTION_FONT, t.TEXT, bold)
+	_add_plain_label(theme, &"TrainerBadgeName", t.TRAINER_BADGE_NAME_FONT, t.TEXT, bold)
+	_add_plain_label(theme, &"TrainerMomentTitle", t.TRAINER_MOMENT_TITLE_FONT, t.TEXT, bold)
+	_add_plain_label(theme, &"TrainerMomentDetail", t.TRAINER_MOMENT_DETAIL_FONT, t.TEXT, null)
+	_add_plain_label(theme, &"TrainerMomentMeta", t.TRAINER_MOMENT_META_FONT, t.TEXT_MUTED, null)
+	_add_plain_label(theme, &"TrainerStatLabel", t.TRAINER_STAT_LABEL_FONT, t.TEXT_MUTED, null)
+	_add_plain_label(theme, &"TrainerStatValue", t.TRAINER_STAT_VALUE_FONT, t.TEXT, bold)
+	_add_plain_label(theme, &"TrainerRow", t.TRAINER_ROW_FONT, t.TEXT, null)
+	_add_plain_label(theme, &"TrainerEmpty", t.TRAINER_EMPTY_FONT, t.TEXT_MUTED, null)

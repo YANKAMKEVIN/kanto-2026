@@ -241,3 +241,17 @@ func test_show_map_relays_signals_and_keeps_screen() -> void:
 	assert_eq(_menu.get_current_screen(), map, "le panneau ne change pas d'écran")
 	_menu.show_map(view)
 	assert_eq(_menu.get_map(), map, "gardé, pas ré-instancié")
+
+
+func test_show_trainer_builds_the_screen_once_and_selects_it() -> void:
+	assert_null(_menu.get_trainer())
+	var view := TrainerView.new()
+	view.player_name = "Kevin"
+	for i: int in TrainerView.BADGE_COUNT:
+		view.badges.append(BadgeSlotView.new(i))
+	_menu.show_trainer(view)
+	var screen := _menu.get_trainer()
+	assert_not_null(screen)
+	assert_eq(_menu.get_current_screen(), screen)
+	_menu.show_trainer(view)
+	assert_eq(_menu.get_trainer(), screen, "gardé, pas recréé")

@@ -861,3 +861,54 @@ const MAP_CHIP_ICON := 56
 const MAP_CHIP_PAD_H := 18
 const MAP_CHIP_PAD_V := 10
 const MAP_FADE := ANIM_PANEL
+
+
+# --- Écran Dresseur du Menu Dresseur (jalon 6, T24) ----------------------------------------------
+# Paysage : identité et portrait à gauche, badges et statistiques au centre, grands moments à
+# droite. Aucun niveau, XP, titre, tenue ni compteur de badges.
+const TRAINER_LEFT_WIDTH := 520
+const TRAINER_RIGHT_WIDTH := 600
+const TRAINER_GAP := GAP
+const TRAINER_HEADER_HEIGHT := TOUCH_MIN
+const TRAINER_BACK_WIDTH := MENU_CARD_ICON * 2
+const TRAINER_TITLE_FONT := FONT_TITLE
+const TRAINER_SECTION_FONT := 30
+const TRAINER_SECTION_GAP := 12
+## Portrait (sprite du joueur de face, pixel art à l'échelle entière, provisoire jusqu'à la DA).
+const TRAINER_PORTRAIT_SCALE := 4
+const TRAINER_ROW_ICON := 40
+const TRAINER_ROW_FONT := 28
+## « vus » / « capturés » : boutons de lien (≥ TOUCH_MIN de haut).
+const TRAINER_LINK_HEIGHT := TOUCH_MIN
+const TRAINER_LINK_FONT := 28
+const TRAINER_LINK_GAP := 12
+## Emplacements de badges : 4 par ligne, toujours 8 ; muets tant que non obtenus (Q-13).
+const TRAINER_BADGE_COLUMNS := 4
+const TRAINER_BADGE_HEIGHT := 150
+const TRAINER_BADGE_GAP := 16
+const TRAINER_BADGE_MUTE_BG := Color(1, 1, 1, 0.05)
+const TRAINER_BADGE_MUTE_BORDER := Color(1, 1, 1, 0.10)
+const TRAINER_BADGE_NAME_FONT := FONT_CAPTION
+## Statistiques : deux colonnes, icône, libellé discret et valeur.
+const TRAINER_STAT_COLUMNS := 2
+const TRAINER_STAT_ICON := 44
+const TRAINER_STAT_LABEL_FONT := FONT_CAPTION
+const TRAINER_STAT_VALUE_FONT := FONT_BUTTON
+const TRAINER_STAT_GAP := 14
+## Frise des grands moments : rail (ligne et pastille), ligne tactile si lien (≥ TOUCH_MIN).
+const TRAINER_MOMENT_HEIGHT := TOUCH_MIN
+const TRAINER_MOMENT_GAP := 12
+const TRAINER_MOMENT_PAD_H := 16
+const TRAINER_MOMENT_PAD_V := 12
+const TRAINER_MOMENT_BG := Color(1, 1, 1, 0.06)
+const TRAINER_RAIL_WIDTH := 36
+const TRAINER_RAIL_LINE := 3.0
+const TRAINER_RAIL_DOT := 9.0
+const TRAINER_RAIL_COLOR := Color(1, 1, 1, 0.3)
+const TRAINER_MOMENT_ICON := 48
+const TRAINER_MOMENT_SPRITE := 64
+const TRAINER_MOMENT_TITLE_FONT := 30
+const TRAINER_MOMENT_DETAIL_FONT := 26
+const TRAINER_MOMENT_META_FONT := FONT_CAPTION
+const TRAINER_EMPTY_FONT := FONT_BODY
+const TRAINER_FADE := ANIM_PANEL
