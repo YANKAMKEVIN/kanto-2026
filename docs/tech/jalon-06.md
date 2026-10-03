@@ -295,6 +295,20 @@ Tests : `test_item_library` (catégories, `heal_amount`), `test_item_use` (PV pl
 
 Tests : `test_pokedex_library` (données réelles : 0 erreur, espèces connues, numéros), `test_pokedex_notes`, `test_pokedex_query` (trois états ; inconnu sans nom ni sprite ; filtres ; recherche limitée aux espèces vues ; **aucun texte « ??? » dans une liste d'habitats** ; compteur sans « / »), `test_pokedex_updates`, `test_npc_roster` (étendu : `species`).
 
+**Fait au T14 (2026-10-03)** — ce qui diffère du croquis ci-dessus :
+- Fichiers : `data/pokedex/kanto.json` ; `game/pokemon/` : `pokedex_library.gd`, `pokedex_species_data.gd`, `pokedex_note_data.gd`, `pokedex_notes.gd`, `pokedex.gd` (signal `recorded`, `unlock_note`, `has_note`, `has_seen_at`) ; `game/systems/menu/` : `pokedex_query.gd`, **`pokedex_updates.gd`** (fabrique des textes d'interface : rangé avec les vues, pas dans `game/pokemon/`), `views/pokedex_grid_view.gd`, `pokedex_slot_view.gd`, `pokedex_sheet_view.gd`, `pokedex_habitat_view.gd` ; `game/world/npc/npc_spec.gd` + `npc_roster.gd` (`species`). Tests : `test_pokedex_library`, `test_pokedex_notes`, `test_pokedex_query`, `test_pokedex_updates` (nouveaux), `test_pokedex`, `test_npc_roster` (étendus) : +56, **1948 verts**. Aucune interface, `Boot`, `MenuDirector`, `GameState` et `data/npcs/` intacts.
+- **Données** : les **14 espèces** de `PokemonData` ont leur fiche (test : l'une sans l'autre est une erreur) ; tailles et poids **officiels** (Q-5) ; descriptions écrites pour le projet, toutes `draft` ; **5 notes** (Bulbizarre, Salamèche, Carapuce, Roucool, Rattata), `unlock: { "seen": 1 }`, `draft` (Q-6) ; la note de Roucool reprend l'exemple du dossier 08 §4. Conditions d'une note : **toutes** doivent tenir (ET) et l'espèce doit être vue (une note d'une espèce jamais vue ne se débloque jamais, même par drapeau). Identifiants de notes **uniques dans tout le fichier** (ils sont sauvegardés). `check_references(data)` écarte une espèce inconnue ou dont le numéro dépasse `size`.
+- **Un seul point d'écoute pour tout ce qui s'enregistre** : `Pokedex.recorded(species, map, first_seen, new_map, caught)` est émis par `mark_seen` / `mark_caught`, donc par **tous** les appelants actuels (rencontre sauvage, combat de dresseur, starter, capture, départs de débogage) et par OBSERVER (T16) sans les modifier. Le chargement (`from_dict`, y compris l'ancienne forme en listes) n'émet rien. T16 s'y branche **une fois** dans `Boot` (§6.9).
+- **`PokedexUpdates`** : `enum Kind { NONE, NEW_SPECIES, NEW_HABITAT, NEW_NOTE, EVOLUTION_DISCOVERED }` ; `classify(pokedex, data, zones, species, map, first_seen, new_map, caught, new_note)` : **un seul toast par enregistrement**, le plus parlant — capture → aucun (la carte de capture le dit) ; première observation → ÉVOLUTION DÉCOUVERTE si une autre espèce de la lignée était déjà vue, sinon nouvelle espèce ; nouvelle carte dans une **zone** encore jamais notée pour l'espèce → nouvel habitat (le labo après Bourg Palette : rien) ; sinon nouvelle note. `message(kind, nom, visible)` → `[titre, détail]`, **vide si le Pokédex n'est pas visible** (§4).
+- **`PokedexNotes.refresh(pokedex, library, flags, only = &"")`** → paires `[espèce, note]` nouvelles ; silencieux par nature (c'est l'appelant qui décide d'un toast).
+- **`PokedexQuery`** (statique) : `State`, `Filter` (= `MenuRoute.DEX_FILTER_*`, test), `grid(pokedex, data, library, zones, filter, zone, type, text, selected) -> PokedexGridView`, `slots(...)`, `sheet(species, …) -> PokedexSheetView` (**null** pour une espèce inconnue), `counts_text`, `habitat_zones`, `zone_choices`, `type_choices`, `matches`, `fold`, `height_text` (« 0,6 m »), `weight_text` (« 8,5 kg »). Règles :
+  - TOUS sans type ni recherche : les 151 cases ; dès qu'un type ou une recherche est posé, ou pour VUS / CAPTURÉS / HABITATS : **seulement les espèces connues** qui correspondent (une case inconnue ne « répond » jamais à rien) ;
+  - **type** : seulement les espèces **capturées** (le type d'une espèce seulement vue n'est pas affiché, donc pas filtrable) ; types proposés = ceux des capturées, ordre de `types.json` ;
+  - **HABITATS** : zones proposées = celles où au moins une espèce a été observée, dans l'ordre de `zones.json` ; zone absente ou jamais observée → la première proposée ; aucune → grille vide ;
+  - **recherche** : partie du nom sans casse ni accents (« salameche »), ou numéro exact (« 16 », « 016 ») d'une espèce connue ;
+  - fiche : vu → numéro, nom, « Vu N fois », habitats, évolution (`EvolutionReveal`, visible = vrai : l'écran n'existe que débloqué), notes ; capturé → en plus types, taille, poids, description, « Vu N fois · capturé N fois ». Habitats et notes vides → une phrase (`habitat_empty_text`, `notes_empty_text`). Une note d'une autre espèce ou disparue des données n'est jamais affichée.
+- **`NpcSpec.species`** : clé `"species"` de `data/npcs/*.json` (et de l'étape `spawn` des scènes, qui partage les clés), **seulement avec `"verb": "observe"` et un dialogue** (sinon erreur : le geste OBSERVER est la seule porte, Q-7) ; existence dans `PokemonData` vérifiée par `test_npc_roster` sur les données réelles. **Aucune donnée de PNJ n'est encore marquée** : c'est T16.
+
 ### 3.6 Carte (T18)
 
 - `data/world/zones.json` complété : par zone, `name`, `kind` (`town`, `route`, `place`, `sea_route` : posés au T2), `maps`, `subtitle` (connexions, « Bourg Palette — Jadielle »), `description` (`draft`), `services` ; **le rectangle (`area`) reste dans `assets/ui/map/kanto_placeholder_areas.json`** (géométrie de l'illustration, décision du T2, §3.2) (au J6 : aucun ; format `{ "id": "pokemon_center", "found_on": "<carte>" }` prêt pour le J7A).
@@ -807,6 +821,78 @@ func repeat_item_use() -> bool                         # même objet, même Pok�
 
 `battle_bag_panel.gd` est touché par **T11 seulement** (chemins `preload` des scènes déplacées) ; T12 ne le modifie pas (il le pilote depuis `battle_director.gd`). Ordre : T11 ∥ T12 ; **T11 fusionné d'abord** (déplacements de fichiers), puis T12 relie l'écran dans `Boot`, place le `PartyPicker` en combat et finit `test_menu_bag.gd` (vrai `Boot`) et ses captures ; puis T13.
 
+### 6.9 Contrat du 6C et partage T15 ∥ T16 (figé au T14)
+
+**Fondations figées** (T14 ; même règle qu'au §6.6 : on peut seulement **ajouter** des champs, par l'architecte ; **texte vide = élément absent**) :
+- `PokedexGridView` : `title` (« POKÉDEX — KANTO »), `counts_text` (« 3 vus · 2 capturés · 151 espèces »), `filter` + `filter_labels` (TOUS, VUS, CAPTURÉS, HABITATS), `zone` + `zone_ids` / `zone_names` (choix du filtre HABITATS), `type` + `type_ids` / `type_names` (types des capturées), `text`, `slots`, `selected` (fiche à montrer à l'arrivée, &"" = aucune), `empty_text`, `is_empty()`, `slot(id)`.
+- `PokedexSlotView` : `number`, `number_text` (« 004 »), `species_id` (**&"" si inconnue**), `name` (« ??? » si inconnue), `state` (`PokedexQuery.State`), `caught`, `is_unknown()`. **Une case inconnue n'a ni image, ni silhouette, ni toucher.**
+- `PokedexSheetView` : `species_id`, `number`, `number_text` (« N° 004 »), `name`, `state`, `caught`, `type_ids` / `type_names`, `height_text`, `weight_text`, `description` (ces cinq **vides** pour une espèce seulement vue), `counts_text`, `habitats: Array[PokedexHabitatView]` + `habitat_empty_text`, `evolution: Array[EvolutionStageView]` + `evolution_text` (vide = pas de section), `notes: PackedStringArray` + `notes_empty_text`, `TAB_LABELS` (Aperçu, Habitat, Évolution, Observations : toujours les quatre).
+- `PokedexHabitatView` : `zone_id`, `name` — seulement des zones observées.
+- `PokedexQuery`, `PokedexUpdates`, `PokedexNotes`, `PokedexLibrary`, `Pokedex.recorded` (§3.5, « Fait au T14 »).
+
+**`PokedexScreen`** (T15, `game/ui/menu/pokedex/pokedex_screen.gd`, construit en code comme Équipe et Sac, d'après la DA de `menu-pokedex-v1.jpg` **sans** statistiques, talents, silhouettes, étoile de favori, « 27/151 », heure, argent) :
+```gdscript
+class_name PokedexScreen extends MenuScreen
+signal filter_changed(filter: int, zone: StringName, type: StringName, text: String)
+                                              # filtre, zone d'HABITATS, type ou recherche changé ;
+                                              # un seul signal par geste ; recherche : à la saisie
+signal species_opened(species: StringName)    # case CONNUE touchée ; jamais une case inconnue
+func show_grid(view: PokedexGridView) -> void
+func show_sheet(view: PokedexSheetView) -> void
+## Retour Android : referme la fiche si elle recouvre la grille (mise en page étroite) ; faux
+## si rien n'est à refermer (le retour remonte alors d'un écran).
+func close_sheet() -> bool
+```
+- Zone de l'onglet Habitat touchée → **un** `route_requested(MenuRoute.map(zone_id))` (signal de `MenuScreen`). Petite carte : l'illustration `assets/ui/map/kanto_placeholder.webp` et sa géométrie `kanto_placeholder_areas.json` (présentation de l'illustration, lecture seule), **seulement** les zones de `habitats` ; ou, à défaut, des pastilles de noms (défaut laissé à T15). Jamais une autre zone, jamais « ??? ».
+- Grille : 151 cases **légères** ; seules les cases connues chargent un sprite (`BattleStage.sprite_path(species_id, false)`, NEAREST, échelle entière) ; **sprite absent** (aujourd'hui seuls les 3 starters, Roucool et Rattata en ont) → la case garde son nom sans image, jamais une silhouette. Capturé = symbole **et** texte (pas une couleur seule). Défilement fluide (pas d'instanciation au défilement : cases créées une fois, mises à jour par `show_grid`).
+- `show_grid` / `show_sheet` rappelés écran affiché : mise à jour **sans** rejouer l'entrée, onglet de fiche gardé si possible. Fiche d'une espèce vue : onglet Aperçu sans types ni taille ni poids ni description (pas de cases vides « ??? » à leur place : absents).
+- Recherche : champ texte ; sur mobile, le clavier virtuel Android s'ouvre au toucher (à vérifier au T17) ; « Aucune espèce ne correspond. » si `empty_text`.
+
+**`TrainerMenu`** (T15 ajoute ; le reste est inchangé) :
+```gdscript
+signal pokedex_filter_changed(filter: int, zone: StringName, type: StringName, text: String)
+signal pokedex_species_opened(species: StringName)
+func show_pokedex(view: PokedexGridView) -> void        # PokedexScreen dans l'hôte (1re visite, puis gardé)
+func show_pokedex_sheet(view: PokedexSheetView) -> void
+func pokedex_back() -> bool                             # relais de close_sheet (comme bag_back)
+```
+Le lien Habitat → Carte est émis par `TrainerMenu.route_requested` (relais, comme UTILISER UN OBJET).
+
+**`MenuDirector`** (T16 ajoute) : `setup(..., items: ItemLibrary = null, dex: PokedexLibrary = null)` (paramètre en fin, facultatif) ;
+```gdscript
+signal pokedex_shown(view: PokedexGridView)             # Boot → TrainerMenu.show_pokedex
+signal pokedex_sheet_shown(view: PokedexSheetView)      # Boot → show_pokedex_sheet
+func set_pokedex_filter(filter: int, zone: StringName, type: StringName, text: String) -> void
+                                                        # mémoire de la visite ; pokedex_shown
+func open_species(species: StringName) -> void          # PokedexQuery.sheet ; null (inconnue) → rien
+```
+`_on_route_shown` : `MenuRoute.POKEDEX` → filtre de la route (`params.filter`), zone, type et recherche remis à zéro, `pokedex_shown(PokedexQuery.grid(state.pokedex, data, dex, zones, filter, &"", &"", "", params.species))`, puis, si `grid.selected` n'est pas vide, `pokedex_sheet_shown(PokedexQuery.sheet(grid.selected, …))`. Rien n'est sauvegardé (le Pokédex ne change pas l'état : pas de `mark_changed`).
+
+**`Boot`** (T16) — l'ordre des branchements :
+1. `PokedexLibrary.load_file()` + `check_references(data)` au démarrage (erreurs au journal), passée à `MenuDirector.setup`.
+2. **Une seule écoute** : `GameState.pokedex.recorded` → `_on_pokedex_recorded(species, map, first_seen, new_map, caught)` : `var new := PokedexNotes.refresh(GameState.pokedex, dex, GameState.flags, species)` ; `var kind := PokedexUpdates.classify(GameState.pokedex, data, zones, species, map, first_seen, new_map, caught, not new.is_empty())` ; `var msg := PokedexUpdates.message(kind, <nom de l'espèce>, unlocks.pokedex_visible())` ; non vide → file d'attente. (Vérifier que l'instance `GameState.pokedex` survit à `new_game` et `load_dict` : c'est le cas aujourd'hui, `clear()` / `from_dict` sur la même instance.)
+3. `GameState.flags.flag_changed` → `PokedexNotes.refresh(...)` sur toutes les espèces ; un toast NEW_NOTE par espèce concernée si visible, **sauf** pour `pokedex_activated` (l'activation montre tout d'un coup, sans rafale de toasts).
+4. Après un chargement de sauvegarde, une nouvelle partie ou un départ de débogage : `PokedexNotes.refresh` **silencieux** (la vraie partie de Kevin a des espèces vues et `notes: []`).
+5. **Toasts différés** : la file se vide seulement quand `is_stable()` est vrai et que le menu est fermé (jamais pendant une rencontre, un combat, un dialogue — dont celui d'OBSERVER —, une scène ou une transition), **un toast à la fois** ; au plus un toast par espèce en attente (le premier gardé).
+6. **OBSERVER** (Q-7) : l'interaction OBSERVER d'un PNJ dont `NpcSpec.species` n'est pas vide appelle `GameState.record_seen(species, map)` **au début** du geste ; **une fois par individu et par visite de la carte** (identifiants observés oubliés au changement de carte), pour que « vu N fois » ne se gonfle pas en répétant le geste. Le toast vient après le dialogue (point 5).
+7. Données (T16) : `data/npcs/pallet_town.json` — Roucool de Mme Aoki (`aoki_pidgey_1`, `aoki_pidgey_2`) et Rattata de Léo (`leo_rattata`) deviennent observables (`"dialogue"`, `"verb": "observe"`, `"species"`), avec leurs textes d'observation **`draft`** dans `data/dialogues/pallet_town.json` ; starters du labo (`data/npcs/oak_lab.json`, déjà OBSERVER) : `"species"` ajouté. `prairie_pidgey` et `prairie_rattata` (Bourg Palette) restent du décor au 6C (défaut : pas de texte à écrire ; question posée à Kevin). Les Pokémon « shy » (Route 1) ne sont pas interactifs : non observables (règle du `NpcRoster`).
+8. Carte de capture « Nouvelle entrée Pokédex » : inchangée (`BattleDirector` lit le drapeau d'histoire seul ; le drapeau de débogage ne l'allume pas). Défaut, pour ne pas toucher au combat au 6C.
+
+| Fichiers | T15 (ui-mobile) | T16 (constructeur-monde) |
+|---|---|---|
+| `game/ui/menu/pokedex/**` (PokedexScreen, PokedexSlot, PokedexSheet, petite carte d'habitat) | **oui** | lecture |
+| `game/ui/menu/trainer_menu.gd/.tscn` (`show_pokedex*`, signaux `pokedex_*`, `pokedex_back`, relais Habitat → Carte) | **oui** | lecture |
+| `game/ui/theme/ui_tokens.gd`, `ui_theme.tres`, `tools/build_ui_theme.gd` (`DEX_*`) | **oui** | lecture |
+| `assets/ui/icons/pokedex/**`, `tools/capture_menu.gd` (scénarios `dex_grid`, `dex_sheet_seen`, `dex_sheet_caught`, `dex_habitat`) | **oui** | lecture (captures du T16 : son propre outil) |
+| `tests/integration/test_pokedex_screen.gd`, `test_trainer_menu.gd` (étendu) | **oui** | — |
+| `game/systems/menu/menu_director.gd`, `game/boot.gd`, `game/boot.tscn` | — | **oui** |
+| interaction OBSERVER (`game/systems/input/**` ou `game/world/**` selon le point d'entrée), `data/npcs/*.json`, `data/dialogues/*.json` (textes d'observation, `draft`) | — | **oui** |
+| `tests/helpers/fake_trainer_menu.gd` (étendu), `tests/integration/test_menu_pokedex.gd`, `test_menu_unlock_rule.gd` (étendu : toasts), `test_menu_open.gd`, `test_boot.gd`, `test_npc_placement.gd` (`test_pidgeys_and_rattata_are_not_interactive_but_block` : les Pokémon de Mme Aoki et de Léo deviennent interactifs), `tests/unit/test_npc_roster.gd` (données réelles) | — | **oui** |
+| Fondations du T14 (`game/pokemon/pokedex*.gd`, `game/systems/menu/pokedex_*.gd`, `views/pokedex_*`, `data/pokedex/`, `npc_spec.gd`, `npc_roster.gd`) | lecture | lecture (un manque → l'architecte) |
+| `docs/tech/etat-projet.md` | sa ligne dans « Point de reprise » | sa ligne ; l'orchestrateur fusionne |
+
+Ordre : T15 ∥ T16 ; **T15 fusionné d'abord**, puis T16 relie l'écran dans `Boot` (garde `has_signal(&"pokedex_species_opened")`, comme au 6A et au 6B ; `pokedex_back()` avant `bag_back()` / `handle_back` au retour Android) et finit `test_menu_pokedex.gd` (vrai `Boot`, `debug_pokedex`) et ses captures ; puis T17. Avant la fusion, T16 teste avec `fake_trainer_menu.gd` étendu ; T15 teste avec des vues fabriquées **ou** construites par `PokedexQuery` sur un Pokédex de test.
+
 ---
 
 ## 7. Découpage des tâches (dans l'ordre)
@@ -883,6 +969,7 @@ Chaque tâche finit par `tools/test.sh` vert (nombre de tests rapporté), un imp
 #### T14 — architecte-godot : fondations du Pokédex
 - §3.5 ; `data/pokedex/kanto.json` (14 espèces, textes provisoires) ; `NpcSpec.species`.
 - **CA** : tests du §3.5 verts.
+- **Fait (2026-10-03)** : §3.5 (« Fait au T14 »), contrat et partage T15 ∥ T16 au §6.9 ; 4 scripts de tests nouveaux et 2 étendus (+56 tests, 1948 verts).
 
 #### T15 — ui-mobile : l'écran Pokédex
 - `PokedexScreen` d'après `menu-pokedex-v1.jpg` **sans** statistiques de base, talents, silhouettes, chaîne complète ni « 27/151 » : en-tête « POKÉDEX — KANTO » et « X vus · Y capturés · 151 espèces », filtres TOUS · VUS · CAPTURÉS · HABITATS, recherche par nom, grille numérotée (151 cases légères : seules les espèces vues chargent un sprite) ; `PokedexSheet` en quatre onglets (Aperçu, Habitat en petite carte des seules zones observées, Évolution, Observations).

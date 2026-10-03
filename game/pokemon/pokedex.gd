@@ -14,6 +14,18 @@ extends RefCounted
 ## Une espèce capturée est toujours aussi vue. `caught ⊆ seen` est un invariant.
 ## La carte et la date sont facultatives ([method mark_seen] / [method mark_caught] restent
 ## appelables avec la seule espèce) ; `GameState.record_seen` / `record_caught` les fournissent.
+##
+## J6 (jalon-06.md §3.5) : chaque observation ou capture émet [signal recorded] ; `Boot` (T16)
+## s'y branche une seule fois pour débloquer les notes ([PokedexNotes]) et décider du toast
+## ([PokedexUpdates]), quel que soit l'appelant (rencontre, combat de dresseur, starter,
+## OBSERVER). Le chargement d'une sauvegarde n'émet rien.
+
+## Une observation ([param caught] faux) ou une capture ([param caught] vrai) vient d'être
+## enregistrée. [param first_seen] : c'était la première observation de l'espèce (une capture
+## d'une espèce jamais vue l'est aussi). [param new_map] : [param map] vient d'entrer dans
+## [member PokedexEntry.seen_maps] (première observation de l'espèce sur cette carte).
+signal recorded(species: StringName, map: StringName, first_seen: bool, new_map: bool,
+		caught: bool)
 
 var _entries: Dictionary[StringName, PokedexEntry] = {}
 
@@ -23,7 +35,11 @@ var _entries: Dictionary[StringName, PokedexEntry] = {}
 func mark_seen(species: StringName, map: StringName = &"", date: String = "") -> bool:
 	if species.is_empty():
 		return false
-	return _entry_for(species).see(map, date)
+	var entry := _entry_for(species)
+	var maps_before := entry.seen_maps.size()
+	var first := entry.see(map, date)
+	recorded.emit(species, map, first, entry.seen_maps.size() > maps_before, false)
+	return first
 
 
 ## Marque [param species] comme capturée (et vue : une espèce jamais vue compte sa capture comme
@@ -32,7 +48,12 @@ func mark_seen(species: StringName, map: StringName = &"", date: String = "") ->
 func mark_caught(species: StringName, map: StringName = &"", date: String = "") -> bool:
 	if species.is_empty():
 		return false
-	return _entry_for(species).capture(map, date)
+	var entry := _entry_for(species)
+	var maps_before := entry.seen_maps.size()
+	var first_seen := entry.times_seen < 1
+	var first := entry.capture(map, date)
+	recorded.emit(species, map, first_seen, entry.seen_maps.size() > maps_before, true)
+	return first
 
 
 func is_seen(species: StringName) -> bool:
@@ -59,6 +80,29 @@ func times_seen(species: StringName) -> int:
 func times_caught(species: StringName) -> int:
 	var entry: PokedexEntry = _entries.get(species)
 	return entry.times_caught if entry != null else 0
+
+
+## Vrai si [param species] a été vue sur la carte [param map].
+func has_seen_at(species: StringName, map: StringName) -> bool:
+	var entry: PokedexEntry = _entries.get(species)
+	return entry != null and not map.is_empty() and entry.seen_maps.has(map)
+
+
+## Débloque la note d'Observations [param note_id] de [param species] (jalon-06.md §3.5).
+## Faux si l'espèce n'a jamais été vue ou si la note l'est déjà. N'émet rien : c'est
+## [PokedexNotes] qui dit ce qui est nouveau.
+func unlock_note(species: StringName, note_id: StringName) -> bool:
+	var entry: PokedexEntry = _entries.get(species)
+	if entry == null or note_id.is_empty() or entry.notes.has(note_id):
+		return false
+	entry.notes.append(note_id)
+	return true
+
+
+## Vrai si la note [param note_id] de [param species] est débloquée.
+func has_note(species: StringName, note_id: StringName) -> bool:
+	var entry: PokedexEntry = _entries.get(species)
+	return entry != null and entry.notes.has(note_id)
 
 
 ## Nombre d'espèces vues.
@@ -143,10 +187,11 @@ func _entry_for(species: StringName) -> PokedexEntry:
 func _from_lists(dict: Dictionary) -> bool:
 	var seen := _read_list(dict.get("seen", []))
 	var caught := _read_list(dict.get("caught", []))
+	# Chargement : directement sur les entrées, sans émettre [signal recorded].
 	for species: StringName in seen[0]:
-		mark_seen(species)
+		_entry_for(species).see(&"", "")
 	for species: StringName in caught[0]:
-		mark_caught(species)
+		_entry_for(species).capture(&"", "")
 	return seen[1] and caught[1]
 
 
