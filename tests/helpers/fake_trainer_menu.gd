@@ -17,6 +17,9 @@ signal bag_use_requested(item_id: StringName)
 signal bag_target_chosen(item_id: StringName, index: int)
 signal bag_repeat_requested
 
+signal pokedex_filter_changed(filter: int, zone: StringName, type: StringName, text: String)
+signal pokedex_species_opened(species: StringName)
+
 var speed_scale: float = 1.0
 var opened_count: int = 0
 var closed_count: int = 0
@@ -28,6 +31,9 @@ var bags: Array[BagView] = []
 var bag_targets: Array[PartyPickerView] = []
 var bag_results: Array[String] = []
 var bag_repeats: Array[bool] = []
+var pokedex_grids: Array[PokedexGridView] = []
+var pokedex_sheets: Array[PokedexSheetView] = []
+var pokedex_back_count: int = 0
 var _open: bool = false
 
 
@@ -67,6 +73,19 @@ func show_bag_result(text: String, can_repeat: bool) -> void:
 	bag_repeats.append(can_repeat)
 
 
+func show_pokedex(view: PokedexGridView) -> void:
+	pokedex_grids.append(view)
+
+
+func show_pokedex_sheet(view: PokedexSheetView) -> void:
+	pokedex_sheets.append(view)
+
+
+func pokedex_back() -> bool:
+	pokedex_back_count += 1
+	return false
+
+
 func is_open() -> bool:
 	return _open
 
@@ -90,6 +109,10 @@ func wire(director: MenuDirector) -> void:
 	bag_use_requested.connect(director.request_item_use)
 	bag_target_chosen.connect(director.use_item_on)
 	bag_repeat_requested.connect(director.repeat_item_use)
+	director.pokedex_shown.connect(show_pokedex)
+	director.pokedex_sheet_shown.connect(show_pokedex_sheet)
+	pokedex_filter_changed.connect(director.set_pokedex_filter)
+	pokedex_species_opened.connect(director.open_species)
 	route_requested.connect(director.go)
 	back_requested.connect(director.handle_back)
 	close_requested.connect(director.close)

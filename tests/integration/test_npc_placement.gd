@@ -42,10 +42,13 @@ const PLAN: Dictionary = {
 	},
 	&"pallet_town": {
 		&"aoki": [Vector2i(29, 13), Vector2i.LEFT, &"aoki", &"aoki", TALK, 0],
-		&"aoki_pidgey_1": [Vector2i(27, 13), Vector2i.RIGHT, &"pidgey", &"", TALK, 0],
-		&"aoki_pidgey_2": [Vector2i(28, 14), Vector2i.UP, &"pidgey", &"", TALK, 0],
+		&"aoki_pidgey_1": [Vector2i(27, 13), Vector2i.RIGHT, &"pidgey", &"observe_aoki_pidgey",
+			OBSERVE, 0],
+		&"aoki_pidgey_2": [Vector2i(28, 14), Vector2i.UP, &"pidgey", &"observe_aoki_pidgey",
+			OBSERVE, 0],
 		&"leo": [Vector2i(18, 9), Vector2i.LEFT, &"leo", &"leo", TALK, 0],
-		&"leo_rattata": [Vector2i(17, 9), Vector2i.RIGHT, &"rattata", &"", TALK, 0],
+		&"leo_rattata": [Vector2i(17, 9), Vector2i.RIGHT, &"rattata",
+			&"observe_leo_rattata", OBSERVE, 0],
 		&"haru": [Vector2i(3, 29), Vector2i.LEFT, &"haru", &"haru", TALK, 0],
 		# Prairie du Nord (jalon 3B §3.1) : Pokémon d'ambiance, non interactifs.
 		&"prairie_pidgey": [Vector2i(20, 3), Vector2i.DOWN, &"pidgey", &"", TALK, 0],
@@ -423,10 +426,19 @@ func test_haru_is_talked_to_from_the_beach() -> void:
 	assert_true(_reachable(map, true).has(Vector2i(4, 29)))
 
 
-func test_pidgeys_and_rattata_are_not_interactive_but_block() -> void:
+func test_pidgeys_and_rattata_block_and_are_observable_except_the_meadow_ones() -> void:
 	var map: GameMap = _maps[&"pallet_town"]
-	for id: StringName in [&"aoki_pidgey_1", &"aoki_pidgey_2", &"leo_rattata",
-			&"prairie_pidgey", &"prairie_rattata"]:
+	# Jalon 6 §6.9 : les Pokémon de Mme Aoki et de Léo s'OBSERVENT (Pokédex, Q-7) ;
+	# ceux des prés restent du décor au 6C.
+	var observable: Dictionary[StringName, StringName] = {
+		&"aoki_pidgey_1": &"pidgey", &"aoki_pidgey_2": &"pidgey", &"leo_rattata": &"rattata"}
+	for id: StringName in observable:
+		var observed := map.get_npc(id)
+		assert_not_null(observed.get_interaction(), "%s interactif" % id)
+		assert_eq(observed.get_interaction().kind, Interaction.Kind.OBSERVE, id)
+		assert_eq(observed.get_spec().species, observable[id], id)
+		assert_true(map.get_grid().is_occupied(observed.get_cell()), "%s bloque sa case" % id)
+	for id: StringName in [&"prairie_pidgey", &"prairie_rattata"]:
 		var npc := map.get_npc(id)
 		assert_null(npc.get_interaction(), "%s non interactif" % id)
 		assert_true(map.get_grid().is_occupied(npc.get_cell()), "%s bloque sa case" % id)

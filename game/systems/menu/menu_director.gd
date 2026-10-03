@@ -35,6 +35,10 @@ signal bag_shown(view: BagView)
 signal bag_targets_shown(view: PartyPickerView)
 ## Résultat d'un usage (texte, UTILISER À NOUVEAU possible) : « +20 PV — … » ou la raison.
 signal bag_result_shown(text: String, can_repeat: bool)
+## Le Pokédex est à afficher ou à rafraîchir (ouverture, filtre ou recherche changé).
+signal pokedex_shown(view: PokedexGridView)
+## Une fiche du Pokédex est à afficher (espèce touchée, ou demandée par la route).
+signal pokedex_sheet_shown(view: PokedexSheetView)
 ## Un écran pas encore construit est à afficher (écran provisoire « À venir »).
 signal placeholder_shown(screen: StringName)
 
@@ -54,6 +58,11 @@ var _bag_last: StringName = &""
 var _bag_sort: int = BagQuery.Sort.RELEVANCE
 var _repeat_item: StringName = &""
 var _repeat_index: int = -1
+var _dex: PokedexLibrary
+var _dex_filter: int = PokedexQuery.Filter.ALL
+var _dex_zone: StringName = &""
+var _dex_type: StringName = &""
+var _dex_text: String = ""
 
 
 func _init() -> void:
@@ -63,8 +72,10 @@ func _init() -> void:
 ## [param state] : l'autoload GameState (ou une instance de game_state.gd en test).
 ## [param can_open] : [code]func() -> bool[/code], la garde d'ouverture.
 func setup(state: Object, data: PokemonData, zones: ZoneLibrary, objectives: ObjectiveLibrary,
-		unlocks: MenuUnlocks, can_open: Callable, items: ItemLibrary = null) -> void:
+		unlocks: MenuUnlocks, can_open: Callable, items: ItemLibrary = null,
+		dex: PokedexLibrary = null) -> void:
 	_items = items
+	_dex = dex
 	_state = state
 	_data = data
 	_zones = zones
@@ -240,6 +251,37 @@ func repeat_item_use() -> bool:
 	return use_item_on(_repeat_item, _repeat_index)
 
 
+## Filtre, zone d'HABITATS, type ou recherche changés (mémoire de la visite seulement, jamais
+## sauvegardée) : la grille est réémise.
+func set_pokedex_filter(filter: int, zone: StringName, type: StringName, text: String) -> void:
+	_dex_filter = filter
+	_dex_zone = zone
+	_dex_type = type
+	_dex_text = text
+	_emit_pokedex(&"", false)
+
+
+## Fiche de [param species] (case touchée). Une espèce inconnue n'ouvre rien.
+func open_species(species: StringName) -> void:
+	if _state == null or _dex == null:
+		return
+	var view := PokedexQuery.sheet(species, _state.pokedex, _data, _dex, _zones)
+	if view != null:
+		pokedex_sheet_shown.emit(view)
+
+
+## [param with_sheet] : la fiche proposée par la grille (celle demandée par la route, sinon la
+## première espèce connue) est émise aussi ; faux au changement de filtre.
+func _emit_pokedex(selected: StringName, with_sheet: bool) -> void:
+	if _state == null or _dex == null:
+		return
+	var view := PokedexQuery.grid(_state.pokedex, _data, _dex, _zones, _dex_filter, _dex_zone,
+		_dex_type, _dex_text, selected)
+	pokedex_shown.emit(view)
+	if with_sheet and not view.selected.is_empty():
+		open_species(view.selected)
+
+
 func _emit_bag() -> void:
 	if _state == null:
 		return
@@ -269,6 +311,12 @@ func _on_route_shown(route: MenuRoute) -> void:
 		_bag_target = int(route.params.get("target", -1))
 		_repeat_item = &""
 		_emit_bag()
+	elif route.screen == MenuRoute.POKEDEX and _dex != null:
+		_dex_filter = int(route.params.get("filter", PokedexQuery.Filter.ALL))
+		_dex_zone = &""
+		_dex_type = &""
+		_dex_text = ""
+		_emit_pokedex(StringName(route.params.get("species", &"")), true)
 	else:
 		placeholder_shown.emit(route.screen)
 

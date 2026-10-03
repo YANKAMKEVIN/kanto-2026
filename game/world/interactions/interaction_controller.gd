@@ -20,6 +20,10 @@ signal target_changed(kind: int)
 ## Appui sur une cible « Rencontrer » : [param npc] est le PNJ rencontré (source de la cible).
 signal meet_requested(npc: Npc)
 
+## Geste OBSERVER sur un Pokémon du décor dont l'espèce est renseignée (jalon 6 §6.9, Q-7) :
+## émis **au début** du geste, avant le dialogue. [param npc] porte l'identifiant de l'individu.
+signal observed(npc: Npc, species: StringName)
+
 const NO_TARGET: int = -1
 ## Délai entre l'arrivée sur la carte et l'ouverture de la boîte d'un dialogue automatique.
 const AUTO_DIALOGUE_DELAY: float = 0.35
@@ -123,6 +127,9 @@ func _interact(target: Interaction) -> void:
 		if npc != null:
 			meet_requested.emit(npc)
 		return
+	if npc != null and target.kind == Interaction.Kind.OBSERVE \
+			and npc.get_spec().is_observable_species():
+		observed.emit(npc, npc.get_spec().species)
 	if npc != null:
 		npc.begin_interaction(_player.get_cell())
 	if _runner != null:
