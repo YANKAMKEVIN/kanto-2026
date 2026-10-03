@@ -11,6 +11,7 @@ extends CanvasLayer
 ##   signal : seul l'appui d'un InputEventScreenTouch compte ; la souris émulée depuis le
 ##   toucher, ou le toucher émulé depuis la souris sur Mac, n'est donc pas compté deux fois).
 ## - Fermée, elle est invisible, ignore la souris et n'émet rien.
+## - Taille du texte Grande et contraste renforcé ([UiPrefs]) lus à chaque ouverture et page.
 ## - Elle monte légèrement depuis le bas en fondu (DIALOG_OPEN), sans « pop ».
 ## Placement (aspect expand, 1920 à 2340 de large) : centrée en bas, largeur
 ## DIALOG_BOX_WIDTH, à DIALOG_BOTTOM_MARGIN du bas.
@@ -75,6 +76,7 @@ func open() -> void:
 	_text.text = ""
 	set_continue_visible(false)
 	_root.mouse_filter = Control.MOUSE_FILTER_STOP
+	UiPrefsApplier.apply(_panel)
 	# Rouverte pendant sa fermeture : elle remonte depuis sa position courante.
 	if not visible:
 		offset = Vector2(0.0, UiTokens.DIALOG_SLIDE)
@@ -93,6 +95,8 @@ func show_page(speaker: String, text: String, narration: bool) -> void:
 	_text.theme_type_variation = &"DialogNarration" if narration else &"DialogText"
 	_text.text = text
 	_text.visible_characters = 0
+	# Taille du texte et contraste (UiPrefs) : le thème du texte change selon la page.
+	UiPrefsApplier.apply(_panel)
 	set_continue_visible(false)
 
 

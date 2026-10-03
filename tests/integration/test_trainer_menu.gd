@@ -255,3 +255,96 @@ func test_show_trainer_builds_the_screen_once_and_selects_it() -> void:
 	assert_eq(_menu.get_current_screen(), screen)
 	_menu.show_trainer(view)
 	assert_eq(_menu.get_trainer(), screen, "gardé, pas recréé")
+
+
+
+# --- Paramètres (6F, T28) ---------------------------------------------------------------------
+
+
+func after_each() -> void:
+	UiPrefs.reset()
+	Haptics.reset()
+
+
+func _settings_view() -> SettingsView:
+	return SettingsViews.build(GameSettings.new(), GameSettings.Graphics.HIGH, true)
+
+
+func test_show_settings_builds_the_screen_once_selects_it_and_relays() -> void:
+	assert_null(_menu.get_settings())
+	var changes: Array = []
+	var saves: Array[int] = [0]
+	var backs: Array[int] = [0]
+	_menu.setting_changed.connect(func(key: StringName, value: Variant) -> void:
+		changes.append([key, value]))
+	_menu.save_now_requested.connect(func() -> void: saves[0] += 1)
+	_menu.back_requested.connect(func() -> void: backs[0] += 1)
+	_menu.show_settings(_settings_view())
+	var screen := _menu.get_settings()
+	assert_not_null(screen)
+	assert_eq(_menu.get_current_screen(), screen)
+	_menu.show_settings(_settings_view())
+	assert_eq(_menu.get_settings(), screen, "gardé, pas recréé")
+	screen.setting_changed.emit(GameSettings.HAPTICS, false)
+	screen.save_now_requested.emit()
+	screen.back_requested.emit()
+	assert_eq(changes, [[GameSettings.HAPTICS, false]])
+	assert_eq(saves[0], 1)
+	assert_eq(backs[0], 1)
+
+
+func test_save_result_goes_to_the_settings_screen() -> void:
+	_menu.show_save_result("ignoré : pas encore d'écran")
+	_menu.show_settings(_settings_view())
+	_menu.show_save_result("Partie sauvegardée")
+	assert_eq(_menu.get_settings().get_result_label().text, "Partie sauvegardée")
+
+
+func test_backdrop_blur_can_be_turned_off_and_keeps_the_dim() -> void:
+	var material := _menu.get_backdrop().material as ShaderMaterial
+	assert_true(_menu.is_backdrop_blur_enabled())
+	assert_true(bool(material.get_shader_parameter(&"blur_on")))
+	_menu.set_backdrop_blur(false)
+	assert_false(_menu.is_backdrop_blur_enabled())
+	assert_false(bool(material.get_shader_parameter(&"blur_on")))
+	assert_eq(material.get_shader_parameter(&"dim"), UiTokens.MENU_DIM, "le voile est gardé")
+	_menu.set_backdrop_blur(true)
+	assert_true(bool(material.get_shader_parameter(&"blur_on")))
+
+
+func test_speed_scale_reaches_the_settings_screen() -> void:
+	_menu.show_settings(_settings_view())
+	_menu.speed_scale = 0.5
+	assert_eq(_menu.get_settings().speed_scale, 0.5)
+
+
+func test_large_text_is_applied_to_the_current_screen_and_restored() -> void:
+	_menu.show_dashboard(_view())
+	var label := _menu.get_dashboard().find_children("*", "Label", true, false)[0] as Label
+	var base := label.get_theme_font_size(&"font_size")
+	var settings := GameSettings.new()
+	settings.text_size = GameSettings.TextSize.LARGE
+	UiPrefs.apply(settings)
+	_menu.show_dashboard(_view())
+	assert_eq(label.get_theme_font_size(&"font_size"), roundi(base * UiTokens.TEXT_SCALE_LARGE))
+	UiPrefs.reset()
+	_menu.show_dashboard(_view())
+	assert_eq(label.get_theme_font_size(&"font_size"), base)
+
+
+func test_other_screens_are_refitted_when_next_shown() -> void:
+	var view := TrainerView.new()
+	view.player_name = "Kevin"
+	for i: int in TrainerView.BADGE_COUNT:
+		view.badges.append(BadgeSlotView.new(i))
+	var settings := GameSettings.new()
+	settings.text_size = GameSettings.TextSize.LARGE
+	UiPrefs.apply(settings)
+	_menu.show_trainer(view)
+	var name_label := _menu.get_trainer().get_name_label()
+	var large := name_label.get_theme_font_size(&"font_size")
+	UiPrefs.reset()
+	_menu.show_settings(_settings_view())
+	_menu.show_trainer(view)
+	assert_lt(name_label.get_theme_font_size(&"font_size"), large, "retour à la taille normale")
+	assert_eq(name_label.get_theme_font_size(&"font_size"), UiTokens.MENU_NAME_FONT)
