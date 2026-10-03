@@ -155,7 +155,7 @@ func _on_button(sig: Signal) -> void:
 	if not _open or _answered:
 		return
 	_answered = true
-	Input.vibrate_handheld(UiTokens.HAPTIC_TAP_MS)
+	Haptics.vibrate(UiTokens.HAPTIC_TAP_MS)
 	sig.emit()
 
 

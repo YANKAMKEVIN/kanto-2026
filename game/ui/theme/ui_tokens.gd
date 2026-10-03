@@ -912,3 +912,11 @@ const TRAINER_MOMENT_DETAIL_FONT := 26
 const TRAINER_MOMENT_META_FONT := FONT_CAPTION
 const TRAINER_EMPTY_FONT := FONT_BODY
 const TRAINER_FADE := ANIM_PANEL
+
+# --- Paramètres (jalon 6, T27 : préférences lues à l'exécution par UiPrefs) ----------------
+
+## Taille du texte « Grande » (Q-19) : facteur des tailles de police (UiPrefs.font).
+const TEXT_SCALE_LARGE := 1.15
+## Contraste renforcé (Q-19) : opacité minimale des panneaux et texte secondaire plus clair.
+const CONTRAST_PANEL_ALPHA := 0.95
+const TEXT_MUTED_CONTRAST := Color("#E2E8F2")

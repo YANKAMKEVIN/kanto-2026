@@ -210,5 +210,5 @@ func _kill_tween() -> void:
 
 
 func _on_pokemon_pressed(species: StringName) -> void:
-	Input.vibrate_handheld(UiTokens.HAPTIC_TICK_MS)
+	Haptics.vibrate(UiTokens.HAPTIC_TICK_MS)
 	route_requested.emit(MenuRoute.pokedex(MenuRoute.DEX_FILTER_ALL, species))

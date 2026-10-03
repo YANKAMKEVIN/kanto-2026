@@ -410,7 +410,7 @@ func _on_filter_pressed(filter: int) -> void:
 	if filter == _filter:
 		_filters[filter].set_pressed_no_signal(true)
 		return
-	Input.vibrate_handheld(UiTokens.HAPTIC_TICK_MS)
+	Haptics.vibrate(UiTokens.HAPTIC_TICK_MS)
 	_emit_filter(filter, _zone, _type, _text)
 
 
@@ -425,7 +425,7 @@ func _on_search_submitted(_text: String) -> void:
 func _on_type_pressed() -> void:
 	if _view == null or _view.type_ids.is_empty():
 		return
-	Input.vibrate_handheld(UiTokens.HAPTIC_TICK_MS)
+	Haptics.vibrate(UiTokens.HAPTIC_TICK_MS)
 	var choices: Array[StringName] = [&""]
 	choices.append_array(_view.type_ids)
 	var next := choices[(choices.find(_type) + 1) % choices.size()]
@@ -435,7 +435,7 @@ func _on_type_pressed() -> void:
 func _on_zone_pressed() -> void:
 	if _view == null or _view.zone_ids.is_empty():
 		return
-	Input.vibrate_handheld(UiTokens.HAPTIC_TICK_MS)
+	Haptics.vibrate(UiTokens.HAPTIC_TICK_MS)
 	var rank := maxi(_view.zone_ids.find(_zone), 0)
 	_emit_filter(_filter, _view.zone_ids[(rank + 1) % _view.zone_ids.size()], _type, _text)
 
@@ -444,7 +444,7 @@ func _on_slot_tapped(slot: PokedexSlot) -> void:
 	var slot_view := slot.get_view()
 	if slot_view == null or slot_view.is_unknown():
 		return
-	Input.vibrate_handheld(UiTokens.HAPTIC_TICK_MS)
+	Haptics.vibrate(UiTokens.HAPTIC_TICK_MS)
 	species_opened.emit(slot_view.species_id)
 
 

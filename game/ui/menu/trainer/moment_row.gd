@@ -124,7 +124,7 @@ func _add_text(parent: Control, text: String, variation: StringName) -> void:
 func _on_pressed() -> void:
 	if _view.route == null:
 		return
-	Input.vibrate_handheld(UiTokens.HAPTIC_TICK_MS)
+	Haptics.vibrate(UiTokens.HAPTIC_TICK_MS)
 	touched.emit(_view.route)
 
 

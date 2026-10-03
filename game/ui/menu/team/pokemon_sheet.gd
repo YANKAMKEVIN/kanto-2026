@@ -136,7 +136,7 @@ func _show_tab(tab: Tab) -> void:
 func _on_tab_pressed(tab: Tab) -> void:
 	if tab == _tab:
 		return
-	Input.vibrate_handheld(UiTokens.HAPTIC_TICK_MS)
+	Haptics.vibrate(UiTokens.HAPTIC_TICK_MS)
 	_show_tab(tab)
 	tab_changed.emit(tab)
 
@@ -261,7 +261,7 @@ func _fill_moves(sheet: PokemonSheetView) -> void:
 
 
 func _on_move_tapped(index: int) -> void:
-	Input.vibrate_handheld(UiTokens.HAPTIC_TAP_MS)
+	Haptics.vibrate(UiTokens.HAPTIC_TAP_MS)
 	move_tapped.emit(index)
 
 

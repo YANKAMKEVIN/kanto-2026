@@ -129,7 +129,7 @@ func open_animated() -> void:
 	_kill_tween()
 	_root.visible = true
 	_root.mouse_filter = Control.MOUSE_FILTER_STOP
-	Input.vibrate_handheld(UiTokens.HAPTIC_MENU_MS)
+	Haptics.vibrate(UiTokens.HAPTIC_MENU_MS)
 	var time := UiTokens.MENU_OPEN * speed_scale
 	if time > 0.0 and _amount < 1.0:
 		_tween = create_tween().set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
@@ -424,7 +424,7 @@ func _kill_tween() -> void:
 func _on_close_pressed() -> void:
 	if not _open:
 		return
-	Input.vibrate_handheld(UiTokens.HAPTIC_TAP_MS)
+	Haptics.vibrate(UiTokens.HAPTIC_TAP_MS)
 	close_requested.emit()
 
 

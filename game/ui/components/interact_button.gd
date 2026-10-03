@@ -107,4 +107,4 @@ func _hide() -> void:
 
 
 func _on_pressed() -> void:
-	Input.vibrate_handheld(UiTokens.HAPTIC_TAP_MS)
+	Haptics.vibrate(UiTokens.HAPTIC_TAP_MS)

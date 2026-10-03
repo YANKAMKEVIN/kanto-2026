@@ -68,7 +68,7 @@ func _process(delta: float) -> void:
 	_held_time += delta
 	if not _dragging and _held_time >= UiTokens.LONG_PRESS:
 		_dragging = true
-		Input.vibrate_handheld(UiTokens.HAPTIC_TEAM_DRAG_MS)
+		Haptics.vibrate(UiTokens.HAPTIC_TEAM_DRAG_MS)
 		drag_started.emit(party_index)
 
 
