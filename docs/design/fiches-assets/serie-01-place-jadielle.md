@@ -587,3 +587,6 @@ Premier essai à l'échelle du jeu : sol en mosaïque 4 × 4 cases + les trois a
 | NE_r1 | **fausse transparence** : le damier gris et blanc est dessiné dans l'image (aucun canal alpha), le détourage laisse des points gris partout ; touffes trop grandes (0,7–1,2 case) et en grosses rosettes, loin des brins fins de VALIDE_BORD ; pavés et plaques de terre justes | refusé → r2 |
 
 **Leçon** : demander explicitement un canal alpha réel et **interdire le damier** ; à défaut, un fond uni magenta `#FF00FF`, facile à détourer par script.
+| NE_r2 | **vraie transparence** (canal alpha), touffes fines du même vert que l'herbe validée, pavés et terre justes ; voile presque invisible (alpha < 30) supprimé par script → `VALIDE_DECAL_BORD.png` | **validé** |
+
+Le sol de la place est complet : herbe, pavés, bord (référence de rendu), décalcomanies de bordure.
