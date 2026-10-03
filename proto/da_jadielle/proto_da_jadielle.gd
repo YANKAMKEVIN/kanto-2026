@@ -10,6 +10,7 @@ const TEX := "res://proto/da_jadielle/tex/"
 const SOL_SHADER := preload("res://proto/da_jadielle/sol.gdshader")
 const VENT_SHADER := preload("res://proto/da_jadielle/vent.gdshader")
 const OMBRE_SHADER := preload("res://proto/da_jadielle/ombre.gdshader")
+const CONTACT_SHADER := preload("res://proto/da_jadielle/contact.gdshader")
 const JOUEUR := preload("res://assets/sprites/characters/placeholder/player_sheet.png")
 
 ## Zones pavées, en cases [x, y, largeur, hauteur].
@@ -33,6 +34,7 @@ const OBJETS: Array = [
 	["tree_a.png", 10.0, 14.2, true],
 	["tree_b.png", 16.0, 14.4, true],
 ]
+const BATIMENTS: Array[String] = ["centre.png", "boutique.png"]
 ## Lumière GH : teinte chaude du sol (les objets sont déjà peints en GH).
 const TEINTE_SOL := Color(1.0, 0.95, 0.86)
 
@@ -158,6 +160,8 @@ func _poser_objet(nom: String, pied: Vector2, vent: bool, tries: Node2D, ombres:
 		sprite.material = materiau
 	tries.add_child(sprite)
 	_ombre(texture, pied, ombres, Rect2())
+	# Ombre de contact : ce qui « pose » l'objet au sol (les bâtiments sur toute leur base).
+	_contact(texture, pied, 0.12 if nom in BATIMENTS else 0.05, ombres)
 
 
 func _poser_joueur(pied: Vector2, tries: Node2D, ombres: Node2D) -> void:
@@ -167,6 +171,7 @@ func _poser_joueur(pied: Vector2, tries: Node2D, ombres: Node2D) -> void:
 	sprite.position = pied
 	tries.add_child(sprite)
 	_ombre(JOUEUR, pied, ombres, Rect2(0, 0, 32, 64), 2.0)
+	_contact(JOUEUR, pied, 0.1, ombres, Rect2(0, 0, 32, 64), 2.0)
 
 
 func _sprite_au_pied(texture: Texture2D, region := Rect2()) -> Sprite2D:
@@ -200,3 +205,19 @@ func _ombre(texture: Texture2D, pied: Vector2, parent: Node2D, region: Rect2,
 
 func _dans_la_carte(cellule: Vector2i) -> bool:
 	return cellule.x >= 0 and cellule.y >= 0 and cellule.x < LARGEUR and cellule.y < HAUTEUR
+
+
+## Ombre de contact (contact.gdshader) : la base de la silhouette, décalée vers le bas et
+## floutée ; elle assombrit le sol juste contre la base de l'objet, en suivant sa forme.
+func _contact(texture: Texture2D, pied: Vector2, part_base: float, parent: Node2D,
+		region := Rect2(), echelle := 1.0) -> void:
+	var etendue := 18.0
+	var sprite := _sprite_au_pied(texture, region)
+	var materiau := ShaderMaterial.new()
+	materiau.shader = CONTACT_SHADER
+	materiau.set_shader_parameter(&"etendue", etendue / echelle)
+	materiau.set_shader_parameter(&"part_base", part_base)
+	sprite.material = materiau
+	sprite.scale = Vector2(echelle, echelle)
+	sprite.position = pied + Vector2(0.0, etendue)
+	parent.add_child(sprite)
