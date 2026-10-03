@@ -58,7 +58,7 @@ OBJETS = [
 # Enveloppes des pièces (15 × 10 cases), opaques.
 PIECES = [
     ("INT_CENTRE_COQUE_NE_r1.png", "int_centre_coque.png"),
-    ("INT_BOUTIQUE_COQUE_NE_r1.png", "int_boutique_coque.png"),
+    ("INT_BOUTIQUE_COQUE_NE_r2.png", "int_boutique_coque.png"),
 ]
 SOLS = [
     ("VALIDE_HERBE.png", "herbe.png", 1.0),

@@ -71,8 +71,8 @@ func _ready() -> void:
 	_sol(cases)
 	# Au-dessus de la carte : la vue vers le Plateau à l'ouest, la forêt ailleurs.
 	var lisiere := ColorRect.new()
-	lisiere.position = Vector2(15, -7) * CASE
-	lisiere.size = Vector2(LARGEUR - 15, 7) * CASE
+	lisiere.position = Vector2(14, -7) * CASE
+	lisiere.size = Vector2(LARGEUR - 14, 7) * CASE
 	var mat_lisiere := ShaderMaterial.new()
 	mat_lisiere.shader = SOL_SHADER
 	mat_lisiere.set_shader_parameter(&"herbe", load(TEX + "herbe.png"))
@@ -82,6 +82,18 @@ func _ready() -> void:
 	lisiere.material = mat_lisiere
 	lisiere.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	add_child(lisiere)
+	var fondu := Shader.new()
+	fondu.code = """shader_type canvas_item;
+void fragment() {
+	vec4 c = texture(TEXTURE, UV);
+	// Bord droit et bas fondus dans la forêt et le sol (pas de raccord net).
+	c.a *= 1.0 - smoothstep(0.86, 1.0, UV.x);
+	c.a *= 1.0 - smoothstep(0.88, 1.0, UV.y);
+	COLOR = c;
+}"""
+	var mat_vue := ShaderMaterial.new()
+	mat_vue.shader = fondu
+	vue.material = mat_vue
 	add_child(vue)
 	var ombres := Node2D.new()
 	add_child(ombres)
@@ -237,7 +249,7 @@ func _foret(cases: Dictionary, tries: Node2D, ombres: Node2D) -> void:
 		var p := Vector2(_hasard.randf_range(0.5, LARGEUR - 0.5),
 			_hasard.randf_range(-6.0, HAUTEUR - 0.2))
 		# Au-dessus de la carte : seulement la forêt à droite de la vue (x ≥ 14,5).
-		if p.y < 0.8 and p.x < 14.5:
+		if p.y < 0.8 and p.x < 15.8:
 			continue
 		var cellule := Vector2i(p)
 		var proche := false
@@ -245,8 +257,13 @@ func _foret(cases: Dictionary, tries: Node2D, ombres: Node2D) -> void:
 			for dy in range(-1, 2):
 				if cases.has(cellule + Vector2i(dx, dy)):
 					proche = true
-		for zone in HERBES + DEGAGES:
+		for zone in DEGAGES:
 			if zone.grow(1.0).has_point(p):
+				proche = true
+		# Clairière autour des herbes hautes : plus large au sud, où les arbres (hauts de
+		# 4 à 5 cases) cacheraient le champ et les Pokémon.
+		for zone in HERBES:
+			if Rect2(zone.position - Vector2(2, 2), zone.size + Vector2(4, 7)).has_point(p):
 				proche = true
 		for autre in poses:
 			if autre.distance_to(p) < 2.1:
