@@ -52,10 +52,10 @@ func _ready() -> void:
 	_appliquer_piste()
 
 
-func _unhandled_input(event: InputEvent) -> void:
-	var touche: bool = event is InputEventScreenTouch and event.pressed
-	var clic: bool = event is InputEventMouseButton and event.pressed
-	if touche or clic:
+func _input(event: InputEvent) -> void:
+	# Seulement le toucher : Android émet aussi un clic simulé (un seul geste = une piste) ;
+	# sur le Mac, le clic est converti en toucher (pointing/emulate_touch_from_mouse).
+	if event is InputEventScreenTouch and event.pressed:
 		_piste = (_piste + 1) % PISTES.size()
 		_appliquer_piste()
 

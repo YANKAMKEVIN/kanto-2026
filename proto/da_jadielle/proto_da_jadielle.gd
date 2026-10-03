@@ -126,6 +126,8 @@ func _construire_sol(cases: Dictionary) -> void:
 	sol.name = "Sol"
 	sol.size = Vector2(LARGEUR, HAUTEUR) * CASE
 	sol.material = materiau
+	# Le sol est un contrôle d'interface : il ne doit pas intercepter les touchers.
+	sol.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	add_child(sol)
 
 
