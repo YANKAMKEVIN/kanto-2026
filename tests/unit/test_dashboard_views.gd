@@ -149,3 +149,13 @@ func test_dex_text_never_shows_a_total() -> void:
 	assert_eq(DashboardViews.dex_text(27, 14), "27 vus · 14 capturés")
 	assert_eq(DashboardViews.dex_text(1, 0), "1 vu · 0 capturé")
 	assert_false(DashboardViews.dex_text(151, 151).contains("/"))
+
+
+func test_seen_and_caught_texts_apart() -> void:
+	assert_eq(DashboardViews.seen_text(0), "0 vu")
+	assert_eq(DashboardViews.seen_text(1), "1 vu")
+	assert_eq(DashboardViews.seen_text(27), "27 vus")
+	assert_eq(DashboardViews.caught_text(1), "1 capturé")
+	assert_eq(DashboardViews.caught_text(14), "14 capturés")
+	assert_eq(DashboardViews.caught_text(1250),
+		"1%s250 capturés" % MenuFormat.THOUSANDS_SEPARATOR, "milliers séparés (insécable)")

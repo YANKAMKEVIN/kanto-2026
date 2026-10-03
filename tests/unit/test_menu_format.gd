@@ -23,3 +23,13 @@ func test_number_groups_thousands() -> void:
 	assert_eq(MenuFormat.number(117360), "117" + nbsp + "360")
 	assert_eq(MenuFormat.number(1000000), "1" + nbsp + "000" + nbsp + "000")
 	assert_eq(MenuFormat.number(-1500), "-1" + nbsp + "500")
+
+
+func test_play_time() -> void:
+	assert_eq(MenuFormat.play_time(0.0), "0 h 00")
+	assert_eq(MenuFormat.play_time(420.0), "0 h 07")
+	assert_eq(MenuFormat.play_time(1616.6), "0 h 26")
+	assert_eq(MenuFormat.play_time(45780.0), "12 h 43")
+	assert_eq(MenuFormat.play_time(-1.0), "0 h 00")
+	assert_eq(DashboardViews.play_time_text(45780.0), MenuFormat.play_time(45780.0),
+		"une seule règle pour le tableau de bord et l'écran Dresseur")

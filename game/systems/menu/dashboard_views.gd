@@ -61,13 +61,21 @@ static func member(pokemon: Pokemon, index: int, data: PokemonData) -> TeamMembe
 	return view
 
 
-## Temps de jeu affiché : « 0 h 07 », « 12 h 43 » (heures, minutes entamées non comptées).
+## Temps de jeu affiché : « 0 h 07 », « 12 h 43 » ([method MenuFormat.play_time]).
 static func play_time_text(seconds: float) -> String:
-	var minutes := int(floorf(maxf(seconds, 0.0) / 60.0))
-	return "%d h %02d" % [floori(minutes / 60.0), minutes % 60]
+	return MenuFormat.play_time(seconds)
 
 
 ## « 27 vus · 14 capturés » (singulier : « 1 vu · 1 capturé »). Jamais de « / 151 ».
 static func dex_text(seen: int, caught: int) -> String:
-	return "%d %s · %d %s" % [seen, "vu" if seen <= 1 else "vus", caught,
-		"capturé" if caught <= 1 else "capturés"]
+	return "%s · %s" % [seen_text(seen), caught_text(caught)]
+
+
+## « 27 vus », « 1 vu », « 0 vu » (écran Dresseur : un lien chacun).
+static func seen_text(seen: int) -> String:
+	return "%s %s" % [MenuFormat.number(seen), "vu" if seen <= 1 else "vus"]
+
+
+## « 14 capturés », « 1 capturé », « 0 capturé ».
+static func caught_text(caught: int) -> String:
+	return "%s %s" % [MenuFormat.number(caught), "capturé" if caught <= 1 else "capturés"]

@@ -323,6 +323,15 @@ Tests : `test_zone_library` (étendu : rectangles dans l'image, sous-titres), `t
 
 Tests : `test_trainer_summary` (badges muets, pas de « 0/8 », pas de vus/capturés avant l'activation, moments dans l'ordre, lieux en noms de zone).
 
+**Fait au T23 (2026-10-03)** — ce qui diffère du croquis ci-dessus :
+- Fichiers : `data/trainer/moments.json` ; `game/systems/menu/` : `moment_library.gd`, `moment_text_data.gd`, `trainer_summary.gd`, `views/trainer_view.gd`, `views/badge_slot_view.gd`, `views/moment_view.gd`, `views/trainer_stat_view.gd` ; `menu_format.gd` (`play_time`), `dashboard_views.gd` (`play_time_text` devient une enveloppe de `MenuFormat.play_time` ; `seen_text`, `caught_text`, réutilisés par `dex_text`). Tests : `test_moment_library`, `test_trainer_summary` (nouveaux), `test_menu_format`, `test_dashboard_views` (étendus). **Aucun champ de sauvegarde nouveau** ; `GameState`, `Boot`, `MenuDirector` et les zones intacts.
+- **Temps de jeu : une seule règle**, `MenuFormat.play_time` (« 0 h 07 », « 12 h 43 ») ; pas de `TrainerSummary.play_time_text` (doublon évité).
+- **`moments.json`** : `moments` (un texte par type, les quatre obligatoires : `starter`, `rival_battle`, `first_capture`, `zone_arrival`), `outcomes` (texte de l'issue du combat : `win`, `loss` ; une autre issue → pas de détail), `zone_arrivals` (texte propre à l'arrivée dans une zone, vérifié contre `ZoneLibrary` par `check_references` ; sinon le texte général `zone_arrival` : titre « {zone} », détail « Une nouvelle zone découverte. »). Marques : `{zone}` partout, `{species}` pour `starter` et `first_capture`, `{outcome}` pour `rival_battle` ; une marque non permise est une erreur. Textes **`draft`**.
+- **Première arrivée dans une zone** : déduite de `GameState.discovered_maps` (date la plus ancienne parmi les cartes de la zone ; un intérieur compte pour sa ville) ; **la zone de départ** (celle de la toute première carte découverte) **n'a pas de moment** : la date de départ (`started_at`) le dit déjà, et « Départ de Bourg Palette » est l'arrivée sur la Route 1 (Q-14). Une carte rangée dans aucune zone n'est jamais un moment. (`TrainerSummary.first_arrivals` a le même sens que `MapJournal.discovered_zones` du T18 : à unifier après la fusion des deux, §6.11.)
+- **Ordre** : chronologique (dates ISO) ; à date égale, l'arrivée avant le moment enregistré, puis l'ordre d'enregistrement ; une date vide va à la fin. Un type inconnu (sauvegarde plus récente) est ignoré ; une `zone_arrival` enregistrée à la main aussi (les arrivées ne viennent que des cartes). Espèce, issue ou zone sans nom → **ligne absente**, jamais un identifiant ; un titre qui ne se remplit pas écarte le moment.
+- **Statistiques** (déjà enregistrées) : temps de jeu (toujours), zones découvertes, **captures** (Pokémon de l'équipe et du stockage dont la rencontre est une capture : un fait de la partie, pas du Pokédex ; le starter n'en est pas), objets trouvés ; **une statistique à 0 est absente** (pas de « 0 capture », esprit de Q-13). Libellés : « Temps de jeu », « Zones découvertes », « Captures », « Objets trouvés » (aucun ne contient « vus », « capturés » ni « Pokédex » : règle de déblocage, §4).
+- **Liens dans la vue** : `seen_route` / `caught_route` (`MenuRoute.pokedex(SEEN / CAUGHT)`, null avant l'activation) et `MomentView.route` du premier Pokémon (`team(i)` du Pokémon reçu — origine STARTER, sinon de la même espèce sans rencontre enregistrée — ; sinon `pokedex(ALL, espèce)` si visible ; sinon null). L'écran émet la route telle quelle : il ne décide aucun déblocage.
+
 ### 3.8 Paramètres (T27)
 
 ```gdscript
@@ -893,6 +902,53 @@ func open_species(species: StringName) -> void          # PokedexQuery.sheet ; n
 
 Ordre : T15 ∥ T16 ; **T15 fusionné d'abord**, puis T16 relie l'écran dans `Boot` (garde `has_signal(&"pokedex_species_opened")`, comme au 6A et au 6B ; `pokedex_back()` avant `bag_back()` / `handle_back` au retour Android) et finit `test_menu_pokedex.gd` (vrai `Boot`, `debug_pokedex`) et ses captures ; puis T17. Avant la fusion, T16 teste avec `fake_trainer_menu.gd` étendu ; T15 teste avec des vues fabriquées **ou** construites par `PokedexQuery` sur un Pokédex de test.
 
+### 6.11 Contrat du 6E et partage T24 ∥ T25 (figé au T23)
+
+**Vues figées** (T23, `game/systems/menu/views/` ; même règle qu'au §6.6 : on peut seulement **ajouter** des champs, par l'architecte ; **texte vide = élément absent**, route null = pas de lien) :
+- `TrainerView` : `player_name`, `player_title`, `play_time_text`, `started_text` (« 2 octobre 2026 », écrit après `STARTED_LABEL`), `seen_text` / `caught_text` (« 4 vus », « 3 capturés » ; **vides avant l'activation**) et `seen_route` / `caught_route`, `badges: Array[BadgeSlotView]` (**toujours 8**), `moments: Array[MomentView]` (du plus ancien au plus récent), `stats: Array[TrainerStatView]`, `obtained_badges()`, `stat(id)`. Constantes d'interface : `BADGE_COUNT` (8), `BADGES_TITLE` (« Badges »), `MOMENTS_TITLE` (« Grands moments »), `STATS_TITLE` (« Statistiques »), `STARTED_LABEL` (« Début de l'aventure »), `MOMENTS_EMPTY_TEXT` (« Ton aventure ne fait que commencer. », frise vide).
+- `BadgeSlotView` : `index` (0 à 7), `obtained` (**toujours faux au J6**), `badge_id`, `name`, `detail` (vides si non obtenu). **Un emplacement non obtenu est muet** : ni nom, ni image, ni « ??? », ni toucher ; jamais de compteur « n / 8 » (Q-13).
+- `MomentView` : `kind` (`MomentLibrary.STARTER` … `ZONE_ARRIVAL`, pour une icône), `title` (jamais vide), `detail`, `place` (nom de zone), `date_text`, `date` (ISO, pas à afficher), `zone_id`, `species_id` (premier Pokémon, première capture ; petite image possible par `BattleStage.sprite_path(species_id, false)`, sprite absent → rien), `route` (null = la ligne ne se touche pas).
+- `TrainerStatView` : `stat_id` (`TrainerSummary.STAT_PLAY_TIME`, `STAT_ZONES`, `STAT_CAPTURES`, `STAT_ITEMS_FOUND`), `label`, `value_text`.
+- `TrainerSummary.build(state, data, zones, moments, unlocks) -> TrainerView`, `MomentLibrary` (§3.7, « Fait au T23 »).
+
+**`TrainerScreen`** (T24, `game/ui/menu/trainer/trainer_screen.gd`, construit en code comme les autres écrans, d'après la DA de `menu-dresseur-v1.jpg` **recomposée en paysage**, **sans** niveau, XP, titre, tenue, « Personnaliser », pourcentage, biographie, argent, heure, « 27 / 151 », « 1 / 8 », Équipe actuelle ni « Voir tout le carnet ») :
+```gdscript
+class_name TrainerScreen extends MenuScreen
+func show_trainer(view: TrainerView) -> void   # rappelé écran affiché : mise à jour sans rejouer l'entrée
+```
+- Identité et portrait à gauche (nom, « Dresseur Pokémon », temps de jeu, « Début de l'aventure : … », « vus » / « capturés » s'ils ne sont pas vides) ; **badges au centre**, pièce maîtresse (8 emplacements muets, `BadgeSlot`) ; **frise des grands moments** à droite (`MomentRow` : titre, détail, lieu, date ; défilement si elle dépasse ; `MOMENTS_EMPTY_TEXT` si vide) ; statistiques en section secondaire. Portrait : le sprite actuel du joueur agrandi à échelle entière (provisoire jusqu'à la phase DA).
+- Toucher « vus » / « capturés » → **un** `route_requested(view.seen_route / caught_route)` ; toucher un moment dont `route` n'est pas null → **un** `route_requested(moment.route)` ; rien d'autre ne se touche au J6 (badges muets). L'écran **n'invente aucune route** : il émet celles de la vue.
+
+**`TrainerMenu`** (T24 ajoute ; le reste est inchangé) :
+```gdscript
+func show_trainer(view: TrainerView) -> void   # TrainerScreen dans l'hôte (1re visite, puis gardé)
+```
+Les liens de l'écran passent par `TrainerMenu.route_requested` (relais, comme UTILISER UN OBJET et Habitat → Carte). Aucun nouveau signal.
+
+**`MenuDirector`** (T25 ajoute) : `setup(..., moments: MomentLibrary = null)` (paramètre facultatif, **en dernier**, après ceux du T21 s'il y en a) ;
+```gdscript
+signal trainer_shown(view: TrainerView)        # Boot → TrainerMenu.show_trainer
+```
+`_on_route_shown` : `MenuRoute.TRAINER` → `trainer_shown(TrainerSummary.build(state, data, zones, moments, unlocks))` au lieu de l'écran provisoire. La vue est construite **à l'entrée** (et au retour depuis un autre écran) : le temps de jeu n'est pas rafraîchi en direct, écran ouvert (défaut). Rien n'est sauvegardé (pas de `mark_changed`). Les routes de la vue passent par `go` comme tout lien croisé (`MenuNavigator` refuse toujours le Pokédex sans déblocage).
+
+**`Boot`** (T25) : `MomentLibrary.load_file()` + `check_references(zones)` au démarrage (erreurs au journal), passée à `MenuDirector.setup` ; `MenuDirector.trainer_shown` → `TrainerMenu.show_trainer` (garde `has_method(&"show_trainer")`, comme aux sous-jalons précédents). Rien d'autre : les faits sont enregistrés depuis le J5.
+
+**À la fusion avec le T18 (Carte)** : `TrainerSummary.first_arrivals(discovered_maps, zones)` et `MapJournal.discovered_zones(...)` ont le même sens (zone → date de première visite). S'ils coïncident, l'un devient l'enveloppe de l'autre (petite tâche de l'architecte, sans changement de vue).
+
+| Fichiers | T24 (ui-mobile) | T25 (constructeur-monde) |
+|---|---|---|
+| `game/ui/menu/trainer/**` (TrainerScreen, BadgeSlot, MomentRow) | **oui** | lecture |
+| `game/ui/menu/trainer_menu.gd/.tscn` (`show_trainer`) | **oui** | lecture |
+| `game/ui/theme/ui_tokens.gd`, `ui_theme.tres`, `tools/build_ui_theme.gd` (`TRAINER_*`) | **oui** | lecture |
+| `assets/ui/icons/trainer/**` (icônes des moments et des statistiques), `tools/capture_menu.gd` (scénarios `trainer`, `trainer_dex`, `trainer_empty`) | **oui** | lecture (captures du T25 : son propre outil) |
+| `tests/integration/test_trainer_screen.gd`, `test_trainer_menu.gd` (étendu) | **oui** | — |
+| `game/systems/menu/menu_director.gd`, `game/boot.gd`, `game/boot.tscn` | — | **oui** |
+| `tests/helpers/fake_trainer_menu.gd` (étendu : `show_trainer`), `tests/integration/test_menu_trainer.gd`, `test_menu_unlock_rule.gd` (étendu : écran Dresseur parcouru), `test_menu_open.gd`, `test_boot.gd` | — | **oui** |
+| Fondations du T23 (`game/systems/menu/moment_*.gd`, `trainer_summary.gd`, `views/trainer_view.gd`, `badge_slot_view.gd`, `moment_view.gd`, `trainer_stat_view.gd`, `data/trainer/`) | lecture | lecture (un manque → l'architecte) |
+| `docs/tech/etat-projet.md` | sa ligne dans « Point de reprise » | sa ligne ; l'orchestrateur fusionne |
+
+Ordre : T24 ∥ T25 ; **T24 fusionné d'abord**, puis T25 relie l'écran dans `Boot` et finit `test_menu_trainer.gd` (vrai `Boot`, partie de test avec les trois moments et des arrivées : ordre, temps de jeu, liens « vus » / « capturés » absents sans déblocage et acceptés avec `debug_pokedex`, premier Pokémon → sa fiche Équipe) ; puis T26. Avant la fusion, T25 teste avec `fake_trainer_menu.gd` étendu ; T24 teste avec des vues fabriquées **ou** construites par `TrainerSummary.build` sur une partie de test (la fixture `tests/fixtures/save/v1_after_capture.json` raconte la vraie partie de Kevin). **T24 et T25 ne démarrent qu'après la validation du 6D (T22)** : un écran à la fois (§8).
+
 ---
 
 ## 7. Découpage des tâches (dans l'ordre)
@@ -1006,7 +1062,7 @@ Chaque tâche finit par `tools/test.sh` vert (nombre de tests rapporté), un imp
 ### 6E — Dresseur
 
 #### T23 — architecte-godot : fondations du Dresseur
-- §3.7 ; `data/trainer/moments.json`. **CA** : tests verts.
+- §3.7 ; `data/trainer/moments.json`. **CA** : tests verts. **Fait le 2026-10-03** (en avance, pendant le 6D) ; contrat au §6.11.
 
 #### T24 — ui-mobile : l'écran Dresseur (recomposé en paysage)
 - `TrainerScreen` d'après la DA de `menu-dresseur-v1.jpg` **recomposée en paysage** : identité et portrait à gauche, badges au centre (8 emplacements muets), frise des grands moments à droite, statistiques en section secondaire. Sans niveau, XP, tenues, titres, pourcentage, biographie.
