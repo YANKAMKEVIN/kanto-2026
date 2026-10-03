@@ -35,3 +35,10 @@ static func number(value: int) -> String:
 		result = THOUSANDS_SEPARATOR + digits.right(3) + result
 		digits = digits.left(digits.length() - 3)
 	return ("-" if value < 0 else "") + digits + result
+
+
+## Temps de jeu : « 0 h 07 », « 12 h 43 » (heures, puis minutes entamées non comptées ;
+## négatif → 0). Tableau de bord et écran Dresseur (jalon-06.md §13).
+static func play_time(seconds: float) -> String:
+	var minutes := int(floorf(maxf(seconds, 0.0) / 60.0))
+	return "%d h %02d" % [floori(minutes / 60.0), minutes % 60]

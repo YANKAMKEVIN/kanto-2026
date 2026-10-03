@@ -1,0 +1,40 @@
+{
+	"moments": {
+		"starter": {
+			"title": "Premier Pokémon",
+			"detail": "{species} rejoint ton équipe.",
+			"draft": true
+		},
+		"rival_battle": {
+			"title": "Combat contre le rival",
+			"detail": "{outcome}",
+			"draft": true
+		},
+		"first_capture": {
+			"title": "Première capture",
+			"detail": "{species} rejoint l'aventure.",
+			"draft": true
+		},
+		"zone_arrival": {
+			"title": "{zone}",
+			"detail": "Une nouvelle zone découverte.",
+			"draft": true
+		}
+	},
+	"outcomes": {
+		"win": { "text": "Tu l'emportes.", "draft": true },
+		"loss": { "text": "Il l'emporte, cette fois.", "draft": true }
+	},
+	"zone_arrivals": {
+		"route_1": {
+			"title": "Départ de Bourg Palette",
+			"detail": "Premiers pas sur la Route 1.",
+			"draft": true
+		},
+		"viridian_city": {
+			"title": "Arrivée à Jadielle",
+			"detail": "Une nouvelle ville.",
+			"draft": true
+		}
+	}
+}
