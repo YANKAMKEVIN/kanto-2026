@@ -137,3 +137,43 @@ func test_placeholder_and_back() -> void:
 	_menu.show_dashboard(_view())
 	assert_true(_menu.get_dashboard().visible)
 	assert_false(_menu.get_placeholder().visible)
+
+
+func _team_view() -> TeamView:
+	var view := TeamView.new()
+	for i: int in 2:
+		var member := TeamMemberView.new()
+		member.party_index = i
+		member.species_id = &"charmander"
+		member.display_name = "Salamèche"
+		member.level = 5
+		member.hp = 19
+		member.max_hp = 19
+		var sheet := PokemonSheetView.new()
+		sheet.member = member
+		sheet.history = HistoryView.new()
+		view.members.append(member)
+		view.sheets.append(sheet)
+	return view
+
+
+func test_show_team_relays_signals_and_keeps_screen() -> void:
+	var moved: Array = []
+	var routes: Array[MenuRoute] = []
+	_menu.team_member_moved.connect(func(a: int, b: int) -> void: moved.append([a, b]))
+	_menu.route_requested.connect(func(r: MenuRoute) -> void: routes.append(r))
+	_menu.show_team(_team_view(), 0)
+	await _menu.open_animated()
+	var team := _menu.get_team()
+	assert_not_null(team)
+	assert_eq(_menu.get_current_screen(), team)
+	team.member_moved.emit(0, 1)
+	assert_eq(moved, [[0, 1]])
+	team.use_item_requested.emit(1)
+	assert_eq(routes.size(), 1)
+	assert_eq(routes[0].screen, MenuRoute.BAG)
+	assert_eq(routes[0].params["context"], MenuRoute.BAG_CONTEXT_TEAM)
+	assert_eq(routes[0].params["target"], 1)
+	_menu.show_team(_team_view(), 1)
+	assert_eq(_menu.get_team(), team, "gardé, pas ré-instancié")
+	assert_eq(team.modulate.a, 1.0)

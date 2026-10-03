@@ -628,6 +628,66 @@ const MENU_BUTTON_CENTER_FROM_CORNER := Vector2(SAFE_MARGIN + ROUND_BUTTON * 0.5
 	SAFE_MARGIN + ROUND_BUTTON * 0.5)
 
 
+# --- Équipe (jalon 6, T7) ---------------------------------------------------------------------
+
+## Colonnes : liste (à gauche) et fiche (à droite) ; la vedette prend le reste.
+const TEAM_LIST_WIDTH := 560
+const TEAM_SHEET_WIDTH := 800
+const TEAM_COLUMN_GAP := GAP
+## Emplacement de la liste (≥ TOUCH_MIN) : six de TEAM_SLOT_HEIGHT + cinq écarts ≤ 840.
+const TEAM_SLOT_HEIGHT := TOUCH_MIN
+const TEAM_SLOT_GAP := 14
+const TEAM_SLOT_PAD := 12
+const TEAM_SLOT_THUMB := 112
+const TEAM_SLOT_NAME_FONT := FONT_BODY
+const TEAM_SLOT_META_FONT := FONT_CAPTION
+const TEAM_SLOT_STAR := 28
+## Un doigt qui bouge de plus que cela avant LONG_PRESS n'est pas un appui long (px).
+const TEAM_DRAG_SLOP := 28.0
+## Pendant le glissement : l'emplacement d'origine s'atténue, la copie suit le doigt.
+const TEAM_DRAG_SOURCE_ALPHA := 0.4
+const TEAM_DRAG_GHOST_ALPHA := 0.92
+## Échange (les deux emplacements glissent l'un vers l'autre) et changement de Pokémon.
+const TEAM_SWAP_TIME := 0.2
+const TEAM_SWITCH_TIME := 0.14
+## Vedette : sprite 64 px ×6 (entier, NEAREST), respiration par décalage vertical (px).
+const TEAM_SPRITE_SOURCE := 64
+const TEAM_SPRITE_SCALE := 6
+const TEAM_BREATH_PX := 6
+const TEAM_BREATH_TIME := 1.1
+const TEAM_SHADOW := Color(0, 0, 0, 0.3)
+const TEAM_NAME_FONT := FONT_TITLE
+const TEAM_LEVEL_FONT := FONT_BODY
+const TEAM_HEADER_GAP := 8
+const TEAM_BAR_LABEL_FONT := FONT_CAPTION
+## Fiche : onglets (≥ TOUCH_MIN), actions (≥ TOUCH_MIN), pages.
+const TEAM_TAB_HEIGHT := TOUCH_MIN
+const TEAM_TAB_FONT := 28
+const TEAM_ACTION_HEIGHT := TOUCH_MIN
+const TEAM_ACTION_FONT := FONT_CAPTION
+const TEAM_ACTION_ICON := 44
+const TEAM_PAGE_GAP := 10
+const TEAM_PANEL_PAD := 20
+const TEAM_SECTION_BG := Color(1, 1, 1, 0.06)
+const TEAM_STAT_ROW := 32
+const TEAM_STAT_FONT := 26
+const TEAM_STAT_NAME_WIDTH := 200
+const TEAM_STAT_VALUE_WIDTH := 70
+const TEAM_GAUGE_HEIGHT := 12
+const TEAM_GAUGE_FILL := ACCENT
+const TEAM_MOVE_CARD_HEIGHT := 116
+const TEAM_HISTORY_FONT := 30
+const TEAM_EVO_CIRCLE := 64
+const TEAM_EVO_SPRITE := 64
+const TEAM_EVO_FONT := FONT_CAPTION
+## Fiche d'une capacité ouverte au toucher : voile derrière.
+const TEAM_SCRIM := Color(0.02, 0.03, 0.05, 0.55)
+## Sélection d'un emplacement et cible de dépôt.
+const TEAM_SLOT_SELECTED_BORDER := 4
+const HAPTIC_TEAM_DRAG_MS := 25
+const HAPTIC_TEAM_SWAP_MS := 20
+
+
 ## [param tint] avec l'opacité [param alpha] (les écrans ne construisent jamais de couleur).
 static func tinted(tint: Color, alpha: float) -> Color:
 	return Color(tint, alpha)
