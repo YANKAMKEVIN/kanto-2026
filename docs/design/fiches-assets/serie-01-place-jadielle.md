@@ -600,3 +600,15 @@ Le sol de la place est complet : herbe, pavés, bord (référence de rendu), dé
 **Défaut d'échelle (règle 4)** : le Centre est affiché sur **8 cases de large** (environ 8 × 6,9 cases ; porte ≈ 1,8 × 1,5 case) au lieu de 6 × 6. Emprise de collision à recalculer dans la scène prototype (8 de large). Même règle pour la Boutique, qui doit rester sœur du Centre.
 **À noter pour le sol** : à côté des bâtiments, les pavés paraissent gros ; essai à × 0,7 dans la scène prototype.
 | GH_r2 (retouche) | même forme, rendu peint (grain de pinceau, contour coloré), lumière dorée marquée : le Centre et les arbres semblent de la même main ; pavés à × 0,7 plus justes à côté | **validé** |
+
+### WORLD_BLDG_BOUTIQUE_01 (2026-10-03)
+
+| Révision | Résultat | Décision |
+|---|---|---|
+| GH_r1 | du premier coup avec le Centre validé comme ancre : vraie sœur du Centre (gabarit, construction, rendu, lumière), toit et emblème bleus, auvents rayés, vitrines sans étiquette lisible | **validé** (affichée sur 8 cases comme le Centre) |
+
+## Bilan de la série 01 (2026-10-03)
+
+Validés en lumière GH : `WORLD_TREE_A_01` (r3), `WORLD_TREE_B_01`, `WORLD_TREE_CENTRAL_01`, `WORLD_BLDG_CENTRE_01` (r2), `WORLD_BLDG_BOUTIQUE_01`. Sol (NE) : herbe, pavés, bord (référence), planche de bordure.
+**Reste** : les variantes **NE** des cinq objets (pour la comparaison de lumière du prototype, §5.3 du cahier) ; elles se font par retouche de l'image GH validée.
+Ce qui a le mieux marché : nouvelle image « comme extraite de la référence » avec un recadrage au plus près de l'objet ; une ancre validée jointe à chaque prompt ; la retouche réservée aux changements de rendu ou de lumière sur une forme déjà juste ; une vraie transparence exigée explicitement.
