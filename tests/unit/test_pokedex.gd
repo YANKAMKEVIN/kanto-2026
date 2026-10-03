@@ -233,3 +233,57 @@ func test_entry_round_trip_and_tolerant_reading() -> void:
 	assert_eq(sparse.times_seen, 0)
 	assert_eq(sparse.seen_maps.size(), 0)
 	assert_eq(sparse.first_seen_map, &"")
+
+
+# --- J6 (jalon-06.md §3.5) : signal recorded, notes, lieux ----------------------------------
+
+func test_recorded_is_emitted_for_each_sighting_and_capture() -> void:
+	var calls: Array[Array] = []
+	_dex.recorded.connect(func(species: StringName, map: StringName, first_seen: bool,
+			new_map: bool, caught: bool) -> void:
+		calls.append([species, map, first_seen, new_map, caught]))
+	_dex.mark_seen(&"pidgey", &"pallet_town")
+	_dex.mark_seen(&"pidgey", &"pallet_town")
+	_dex.mark_seen(&"pidgey", &"route_1")
+	_dex.mark_caught(&"pidgey", &"route_1")
+	_dex.mark_caught(&"rattata", &"route_1")
+	_dex.mark_seen(&"", &"route_1")
+	assert_eq(calls, [
+		[&"pidgey", &"pallet_town", true, true, false],
+		[&"pidgey", &"pallet_town", false, false, false],
+		[&"pidgey", &"route_1", false, true, false],
+		[&"pidgey", &"route_1", false, false, true],
+		[&"rattata", &"route_1", true, true, true],
+	] as Array[Array], "une espèce vide n'émet rien")
+
+
+func test_loading_never_emits_recorded() -> void:
+	var source := Pokedex.new()
+	source.mark_caught(&"pidgey", &"route_1")
+	var count := [0]
+	_dex.recorded.connect(func(_s: StringName, _m: StringName, _f: bool, _n: bool,
+			_c: bool) -> void: count[0] += 1)
+	_dex.from_dict(source.to_dict())
+	_dex.from_dict({"seen": ["rattata"], "caught": ["pidgey"]})
+	assert_eq(count[0], 0)
+	assert_true(_dex.is_caught(&"pidgey"), "ancienne forme toujours lue")
+	assert_eq(_dex.times_seen(&"pidgey"), 1)
+
+
+func test_has_seen_at() -> void:
+	_dex.mark_seen(&"pidgey", &"route_1")
+	assert_true(_dex.has_seen_at(&"pidgey", &"route_1"))
+	assert_false(_dex.has_seen_at(&"pidgey", &"pallet_town"))
+	assert_false(_dex.has_seen_at(&"pidgey", &""))
+	assert_false(_dex.has_seen_at(&"rattata", &"route_1"))
+
+
+func test_unlock_note() -> void:
+	assert_false(_dex.unlock_note(&"pidgey", &"pidgey_paths"), "espèce jamais vue")
+	_dex.mark_seen(&"pidgey")
+	assert_true(_dex.unlock_note(&"pidgey", &"pidgey_paths"))
+	assert_false(_dex.unlock_note(&"pidgey", &"pidgey_paths"), "déjà débloquée")
+	assert_false(_dex.unlock_note(&"pidgey", &""))
+	assert_true(_dex.has_note(&"pidgey", &"pidgey_paths"))
+	assert_false(_dex.has_note(&"rattata", &"pidgey_paths"))
+	assert_eq(_dex.get_entry(&"pidgey").notes, [&"pidgey_paths"] as Array[StringName])

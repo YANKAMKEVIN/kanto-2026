@@ -1,0 +1,81 @@
+{
+	"size": 151,
+	"species": {
+		"bulbasaur": {
+			"height": 0.7, "weight": 6.9, "draft": true,
+			"description": "Le bulbe sur son dos se gorge de lumière. Calme, il observe longtemps avant d'approcher.",
+			"notes": [
+				{ "id": "bulbasaur_rain", "unlock": { "seen": 1 }, "draft": true,
+				  "text": "Après une averse, il reste immobile dans l'herbe mouillée, comme s'il buvait." }
+			]
+		},
+		"ivysaur": {
+			"height": 1.0, "weight": 13.0, "draft": true,
+			"description": "Le bouton sur son dos alourdit sa démarche. Il cherche les clairières où le soleil tombe droit."
+		},
+		"venusaur": {
+			"height": 2.0, "weight": 100.0, "draft": true,
+			"description": "Il se déplace lentement, sa large fleur tournée vers le ciel. Là où il se repose, l'herbe pousse plus haute."
+		},
+		"charmander": {
+			"height": 0.6, "weight": 8.5, "draft": true,
+			"description": "Petit et curieux, il suit volontiers ceux qui lui parlent avec douceur. La flamme de sa queue s'agite quand il est content.",
+			"notes": [
+				{ "id": "charmander_shelter", "unlock": { "seen": 1 }, "draft": true,
+				  "text": "Par temps humide, il se blottit pour garder sa flamme à l'abri." }
+			]
+		},
+		"charmeleon": {
+			"height": 1.1, "weight": 19.0, "draft": true,
+			"description": "Plus vif qu'il n'en a l'air, il s'emporte vite. Sa flamme grandit quand il s'agite."
+		},
+		"charizard": {
+			"height": 1.7, "weight": 90.5, "draft": true,
+			"description": "On le reconnaît de loin à la lueur de sa queue, quand il plane au-dessus des crêtes."
+		},
+		"squirtle": {
+			"height": 0.5, "weight": 9.0, "draft": true,
+			"description": "Il adore les flaques et les bords de rivière, où il peut nager des heures sans se lasser.",
+			"notes": [
+				{ "id": "squirtle_peek", "unlock": { "seen": 1 }, "draft": true,
+				  "text": "Surpris, il rentre dans sa carapace, puis jette un œil avant de ressortir." }
+			]
+		},
+		"wartortle": {
+			"height": 1.0, "weight": 22.5, "draft": true,
+			"description": "Il nage vite et longtemps. Les pêcheurs racontent qu'il suit parfois les barques."
+		},
+		"blastoise": {
+			"height": 1.6, "weight": 85.5, "draft": true,
+			"description": "Massif et posé, il ne s'énerve presque jamais. Sa carapace porte les marques de nombreuses années."
+		},
+		"pidgey": {
+			"height": 0.3, "weight": 1.8, "draft": true,
+			"description": "Discret et peu farouche, il picore au bord des chemins et s'envole en rase-mottes quand on approche trop.",
+			"notes": [
+				{ "id": "pidgey_paths", "unlock": { "seen": 1 }, "draft": true,
+				  "text": "On l'aperçoit souvent près des chemins et des zones boisées." }
+			]
+		},
+		"pidgeotto": {
+			"height": 1.1, "weight": 30.0, "draft": true,
+			"description": "On l'entend avant de le voir : son cri porte loin au-dessus des bois."
+		},
+		"pidgeot": {
+			"height": 1.5, "weight": 39.5, "draft": true,
+			"description": "Ses plumes brillent au soleil quand il plane très haut, sans presque battre des ailes."
+		},
+		"rattata": {
+			"height": 0.3, "weight": 3.5, "draft": true,
+			"description": "Toujours affairé, il file d'un abri à l'autre en longeant les herbes hautes. On l'entend plus souvent qu'on ne le voit.",
+			"notes": [
+				{ "id": "rattata_hops", "unlock": { "seen": 1 }, "draft": true,
+				  "text": "Il traverse les hautes herbes par petits bonds : il s'arrête, écoute, puis repart." }
+			]
+		},
+		"raticate": {
+			"height": 0.7, "weight": 18.5, "draft": true,
+			"description": "Méfiant, il guette depuis son terrier et ne se montre qu'une fois sûr de lui."
+		}
+	}
+}
