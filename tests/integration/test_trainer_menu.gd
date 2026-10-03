@@ -177,3 +177,38 @@ func test_show_team_relays_signals_and_keeps_screen() -> void:
 	_menu.show_team(_team_view(), 1)
 	assert_eq(_menu.get_team(), team, "gardé, pas ré-instancié")
 	assert_eq(team.modulate.a, 1.0)
+
+
+func test_show_pokedex_relays_signals_and_back_closes_sheet_first() -> void:
+	var filters: Array = []
+	var opened: Array[StringName] = []
+	var backs: Array = [0]
+	_menu.pokedex_filter_changed.connect(func(f: int, z: StringName, t: StringName,
+		x: String) -> void: filters.append([f, z, t, x]))
+	_menu.pokedex_species_opened.connect(func(s: StringName) -> void: opened.append(s))
+	_menu.back_requested.connect(func() -> void: backs[0] += 1)
+	var view := PokedexGridView.new()
+	view.title = "POKÉDEX — KANTO"
+	view.filter_labels = PackedStringArray(["TOUS", "VUS", "CAPTURÉS", "HABITATS"])
+	view.slots.append(PokedexSlotView.new(4, &"charmander", "Salamèche",
+		PokedexQuery.State.CAUGHT))
+	_menu.show_pokedex(view)
+	await _menu.open_animated()
+	var dex := _menu.get_pokedex()
+	assert_not_null(dex)
+	assert_eq(_menu.get_current_screen(), dex)
+	dex.filter_changed.emit(1, &"", &"", "")
+	dex.species_opened.emit(&"charmander")
+	assert_eq(filters, [[1, &"", &"", ""]])
+	assert_eq(opened, [&"charmander"])
+	assert_false(_menu.pokedex_back(), "pas de fiche : rien à fermer")
+	var sheet := PokedexSheetView.new()
+	sheet.species_id = &"charmander"
+	sheet.name = "Salamèche"
+	_menu.show_pokedex_sheet(sheet)
+	assert_true(dex.is_sheet_open())
+	assert_true(_menu.pokedex_back())
+	assert_false(dex.is_sheet_open())
+	assert_eq(backs[0], 0)
+	_menu.show_pokedex(view)
+	assert_eq(_menu.get_pokedex(), dex, "gardé, pas ré-instancié")

@@ -33,6 +33,10 @@ signal bag_sort_changed(sort: int)
 signal bag_use_requested(item_id: StringName)
 signal bag_target_chosen(item_id: StringName, index: int)
 signal bag_repeat_requested
+## Relais de l'écran Pokédex (6C) : filtre, zone, type ou recherche changé ; fiche demandée
+## (case connue touchée). Le lien Habitat → Carte passe par [signal route_requested].
+signal pokedex_filter_changed(filter: int, zone: StringName, type: StringName, text: String)
+signal pokedex_species_opened(species: StringName)
 
 ## Titre des écrans provisoires (carte → « Équipe »…), texte d'interface.
 const PLACEHOLDER_TITLES: Dictionary[StringName, String] = {
@@ -63,6 +67,8 @@ var _placeholder: PlaceholderScreen
 var _team: TeamScreen
 ## Sac (6B) : instancié à la première visite, puis gardé.
 var _bag: BagScreen
+## Pokédex (6C) : instancié à la première visite, puis gardé.
+var _pokedex: PokedexScreen
 
 @onready var _root: Control = %Root
 @onready var _backdrop: ColorRect = %Backdrop
@@ -204,6 +210,34 @@ func show_bag(view: BagView) -> void:
 	_select(_bag)
 
 
+## Écran Pokédex (6C) : [param view] (en-tête, filtres, grille). Rappelé pendant que le Pokédex
+## est affiché (filtre, recherche), il met à jour sans rejouer l'entrée ; la fiche reste ouverte.
+func show_pokedex(view: PokedexGridView) -> void:
+	if _pokedex == null:
+		_pokedex = PokedexScreen.new()
+		_pokedex.speed_scale = speed_scale
+		_pokedex.back_requested.connect(back_requested.emit)
+		_pokedex.route_requested.connect(route_requested.emit)
+		_pokedex.filter_changed.connect(pokedex_filter_changed.emit)
+		_pokedex.species_opened.connect(pokedex_species_opened.emit)
+		_host.add_child(_pokedex)
+		_pokedex.hide_now()
+	_pokedex.show_grid(view)
+	_select(_pokedex)
+
+
+## La fiche d'une espèce, à droite de la grille du Pokédex.
+func show_pokedex_sheet(view: PokedexSheetView) -> void:
+	if _pokedex != null:
+		_pokedex.show_sheet(view)
+
+
+## Retour (retour Android, Échap) : referme la fiche du Pokédex si elle est ouverte. Vrai si
+## c'est ce qui s'est passé (l'événement est consommé) ; faux : le retour suit son cours.
+func pokedex_back() -> bool:
+	return _pokedex != null and _current == _pokedex and _pokedex.close_sheet()
+
+
 ## Le choix du Pokémon dans le Sac (UTILISER), dans l'écran Sac.
 func show_bag_targets(view: PartyPickerView) -> void:
 	if _bag != null:
@@ -244,6 +278,11 @@ func get_placeholder() -> PlaceholderScreen:
 ## L'écran Sac (null avant la première visite).
 func get_bag() -> BagScreen:
 	return _bag
+
+
+## L'écran Pokédex (null avant la première visite).
+func get_pokedex() -> PokedexScreen:
+	return _pokedex
 
 
 ## L'écran Équipe (null avant la première visite).
@@ -291,6 +330,8 @@ func _screens() -> Array[MenuScreen]:
 		screens.append(_team)
 	if _bag != null:
 		screens.append(_bag)
+	if _pokedex != null:
+		screens.append(_pokedex)
 	return screens
 
 
