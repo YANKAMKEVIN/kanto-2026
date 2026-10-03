@@ -74,6 +74,8 @@ var _bag: BagScreen
 var _pokedex: PokedexScreen
 ## Carte (6D) : instanciée à la première visite, puis gardée.
 var _map: MapScreen
+## Dresseur (6E) : instancié à la première visite, puis gardé.
+var _trainer: TrainerScreen
 
 @onready var _root: Control = %Root
 @onready var _backdrop: ColorRect = %Backdrop
@@ -258,6 +260,21 @@ func show_map(view: MapView) -> void:
 	_select(_map)
 
 
+## Écran Dresseur (6E) : [param view] (identité, badges, grands moments, statistiques). Rappelé
+## pendant que l'écran est affiché, il met à jour sans rejouer l'entrée. Ses liens (vus,
+## capturés, moments) passent par [signal route_requested], tels que la vue les fournit.
+func show_trainer(view: TrainerView) -> void:
+	if _trainer == null:
+		_trainer = TrainerScreen.new()
+		_trainer.speed_scale = speed_scale
+		_trainer.back_requested.connect(back_requested.emit)
+		_trainer.route_requested.connect(route_requested.emit)
+		_host.add_child(_trainer)
+		_trainer.hide_now()
+	_trainer.show_trainer(view)
+	_select(_trainer)
+
+
 ## Le panneau d'une zone découverte, à droite de l'illustration (sans changer d'écran).
 func show_map_zone(view: ZonePanelView) -> void:
 	if _map != null:
@@ -321,6 +338,11 @@ func get_map() -> MapScreen:
 	return _map
 
 
+## L'écran Dresseur (null avant la première visite).
+func get_trainer() -> TrainerScreen:
+	return _trainer
+
+
 func get_close_button() -> Button:
 	return _close_button
 
@@ -365,6 +387,8 @@ func _screens() -> Array[MenuScreen]:
 		screens.append(_pokedex)
 	if _map != null:
 		screens.append(_map)
+	if _trainer != null:
+		screens.append(_trainer)
 	return screens
 
 

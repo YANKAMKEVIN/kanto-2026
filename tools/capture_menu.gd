@@ -27,6 +27,10 @@ extends SceneTree
 ##   map                  Bourg Palette (portrait du joueur, panneau sans section : rien de trouvé)
 ##   map_panel            Route 1, Pokédex pas visible : objets trouvés seulement
 ##   map_dex              Route 1, Pokédex visible : Pokémon observés et objets trouvés
+## Dresseur (T24, avec --only=trainer,trainer_dex,trainer_empty) : vraies vues de TrainerSummary
+##   trainer              la vraie partie de Kevin (fixture v1), Pokédex pas visible : ni vus ni capturés
+##   trainer_dex          idem, Pokédex activé : « vus » et « capturés » (liens)
+##   trainer_empty        partie neuve : frise vide (« Ton aventure ne fait que commencer. »)
 ##
 ## Sur le Mac, en 2340×1080 :
 ##   godot --path . --resolution 2340x1080 --fixed-fps 30 --quit-after 900 \
@@ -115,6 +119,8 @@ func _begin(scenario: String) -> void:
 			_dex_scenario(scenario)
 		"map", "map_panel", "map_dex":
 			_map_scenario(scenario)
+		"trainer", "trainer_dex", "trainer_empty":
+			_trainer_scenario(scenario)
 		"bag", "bag_use", "bag_result", "bag_from_team", "bag_refuse", "bag_heal_mid", "bag_heal_end":
 			_bag_scenario(scenario)
 
@@ -169,6 +175,32 @@ func _dex_scenario(scenario: String) -> void:
 			sheet.select_tab(PokedexSheet.Tab.EVOLUTION)
 		"dex_notes":
 			sheet.select_tab(PokedexSheet.Tab.NOTES)
+
+
+## Dresseur du menu : vraies vues de TrainerSummary (la partie de Kevin à la fin du J5, ou une
+## partie neuve).
+func _trainer_scenario(scenario: String) -> void:
+	var state: Node = (load("res://game/autoload/game_state.gd") as GDScript).new()
+	var data := PokemonData.new()
+	data.load_dir()
+	var zones := ZoneLibrary.new()
+	zones.load_file()
+	var moments := MomentLibrary.new()
+	moments.load_file()
+	if scenario == "trainer_empty":
+		state.new_game(7)
+	else:
+		var content: Dictionary = JSON.parse_string(FileAccess.get_file_as_string(
+			"res://tests/fixtures/save/v1_after_capture.json"))
+		SaveSystem.upgrade(content)
+		state.load_dict(content, data)
+		if scenario == "trainer_dex":
+			state.flags.set_flag(StoryFlags.POKEDEX_ACTIVATED)
+			state.record_seen(&"pidgey", &"route_1")
+	var unlocks := MenuUnlocks.new(state.flags, state.party)
+	_menu.open_animated()
+	_menu.show_trainer(TrainerSummary.build(state, data, zones, moments, unlocks))
+	state.free()
 
 
 ## Carte du menu : vraies vues de MapJournal sur une partie de test (Bourg Palette et Route 1

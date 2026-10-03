@@ -1371,6 +1371,91 @@ shadow_color = Color(0, 0, 0, 0.35)
 shadow_size = 12
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_cpu1x"]
+bg_color = Color(1, 1, 1, 0.05)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(1, 1, 1, 0.1)
+corner_radius_top_left = 16
+corner_radius_top_right = 16
+corner_radius_bottom_right = 16
+corner_radius_bottom_left = 16
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_olvbh"]
+content_margin_left = 16.0
+content_margin_top = 16.0
+content_margin_right = 16.0
+content_margin_bottom = 16.0
+bg_color = Color(0.9607843, 0.77254903, 0.25882354, 0.18)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.9607843, 0.77254903, 0.25882354, 1)
+corner_radius_top_left = 16
+corner_radius_top_right = 16
+corner_radius_bottom_right = 16
+corner_radius_bottom_left = 16
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_8avng"]
+content_margin_left = 28.0
+content_margin_right = 28.0
+bg_color = Color(1, 1, 1, 0.08)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(1, 1, 1, 0.14)
+corner_radius_top_left = 16
+corner_radius_top_right = 16
+corner_radius_bottom_right = 16
+corner_radius_bottom_left = 16
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_qk72e"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_slvsc"]
+content_margin_left = 28.0
+content_margin_right = 28.0
+bg_color = Color(0.9607843, 0.77254903, 0.25882354, 1)
+corner_radius_top_left = 16
+corner_radius_top_right = 16
+corner_radius_bottom_right = 16
+corner_radius_bottom_left = 16
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_84g4p"]
+content_margin_left = 16.0
+content_margin_top = 12.0
+content_margin_right = 16.0
+content_margin_bottom = 12.0
+bg_color = Color(1, 1, 1, 0.06)
+border_color = Color(0, 0, 0, 0)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_82nwt"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_41seg"]
+content_margin_left = 16.0
+content_margin_top = 12.0
+content_margin_right = 16.0
+content_margin_bottom = 12.0
+bg_color = Color(0.9607843, 0.77254903, 0.25882354, 0.25)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.9607843, 0.77254903, 0.25882354, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_wlvf0"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_yjedl"]
 content_margin_left = 10.0
 content_margin_top = 6.0
 content_margin_right = 16.0
@@ -1381,7 +1466,7 @@ corner_radius_top_right = 22
 corner_radius_bottom_right = 22
 corner_radius_bottom_left = 22
 
-[sub_resource type="FontVariation" id="FontVariation_olvbh"]
+[sub_resource type="FontVariation" id="FontVariation_qijj7"]
 resource_name = "CaptionDefault"
 variation_embolden = 0.6
 spacing_glyph = 3
@@ -1994,8 +2079,61 @@ ToastTitle/base_type = &"Label"
 ToastTitle/colors/font_color = Color(1, 1, 1, 1)
 ToastTitle/font_sizes/font_size = 32
 ToastTitle/fonts/font = SubResource("FontVariation_mql0s")
+TrainerBadge/base_type = &"PanelContainer"
+TrainerBadge/styles/panel = SubResource("StyleBoxFlat_cpu1x")
+TrainerBadgeName/base_type = &"Label"
+TrainerBadgeName/colors/font_color = Color(1, 1, 1, 1)
+TrainerBadgeName/font_sizes/font_size = 24
+TrainerBadgeName/fonts/font = SubResource("FontVariation_mql0s")
+TrainerBadgeOn/base_type = &"PanelContainer"
+TrainerBadgeOn/styles/panel = SubResource("StyleBoxFlat_olvbh")
+TrainerEmpty/base_type = &"Label"
+TrainerEmpty/colors/font_color = Color(0.72156864, 0.76862746, 0.8392157, 1)
+TrainerEmpty/font_sizes/font_size = 32
+TrainerLink/base_type = &"Button"
+TrainerLink/font_sizes/font_size = 28
+TrainerLink/fonts/font = SubResource("FontVariation_mql0s")
+TrainerLink/styles/disabled = SubResource("StyleBoxFlat_8avng")
+TrainerLink/styles/focus = SubResource("StyleBoxEmpty_qk72e")
+TrainerLink/styles/hover = SubResource("StyleBoxFlat_8avng")
+TrainerLink/styles/hover_pressed = SubResource("StyleBoxFlat_slvsc")
+TrainerLink/styles/normal = SubResource("StyleBoxFlat_8avng")
+TrainerLink/styles/pressed = SubResource("StyleBoxFlat_slvsc")
+TrainerMoment/base_type = &"Button"
+TrainerMoment/styles/disabled = SubResource("StyleBoxFlat_84g4p")
+TrainerMoment/styles/focus = SubResource("StyleBoxEmpty_82nwt")
+TrainerMoment/styles/hover = SubResource("StyleBoxFlat_84g4p")
+TrainerMoment/styles/hover_pressed = SubResource("StyleBoxFlat_41seg")
+TrainerMoment/styles/normal = SubResource("StyleBoxFlat_84g4p")
+TrainerMoment/styles/pressed = SubResource("StyleBoxFlat_41seg")
+TrainerMomentBox/base_type = &"PanelContainer"
+TrainerMomentBox/styles/panel = SubResource("StyleBoxEmpty_wlvf0")
+TrainerMomentDetail/base_type = &"Label"
+TrainerMomentDetail/colors/font_color = Color(1, 1, 1, 1)
+TrainerMomentDetail/font_sizes/font_size = 26
+TrainerMomentMeta/base_type = &"Label"
+TrainerMomentMeta/colors/font_color = Color(0.72156864, 0.76862746, 0.8392157, 1)
+TrainerMomentMeta/font_sizes/font_size = 24
+TrainerMomentTitle/base_type = &"Label"
+TrainerMomentTitle/colors/font_color = Color(1, 1, 1, 1)
+TrainerMomentTitle/font_sizes/font_size = 30
+TrainerMomentTitle/fonts/font = SubResource("FontVariation_mql0s")
+TrainerRow/base_type = &"Label"
+TrainerRow/colors/font_color = Color(1, 1, 1, 1)
+TrainerRow/font_sizes/font_size = 28
+TrainerSection/base_type = &"Label"
+TrainerSection/colors/font_color = Color(1, 1, 1, 1)
+TrainerSection/font_sizes/font_size = 30
+TrainerSection/fonts/font = SubResource("FontVariation_mql0s")
+TrainerStatLabel/base_type = &"Label"
+TrainerStatLabel/colors/font_color = Color(0.72156864, 0.76862746, 0.8392157, 1)
+TrainerStatLabel/font_sizes/font_size = 24
+TrainerStatValue/base_type = &"Label"
+TrainerStatValue/colors/font_color = Color(1, 1, 1, 1)
+TrainerStatValue/font_sizes/font_size = 36
+TrainerStatValue/fonts/font = SubResource("FontVariation_mql0s")
 TypeBadge/base_type = &"PanelContainer"
-TypeBadge/styles/panel = SubResource("StyleBoxFlat_cpu1x")
+TypeBadge/styles/panel = SubResource("StyleBoxFlat_yjedl")
 TypeBadgeText/base_type = &"Label"
 TypeBadgeText/colors/font_color = Color(1, 1, 1, 1)
 TypeBadgeText/colors/font_shadow_color = Color(0, 0, 0, 0.45)
@@ -2010,7 +2148,7 @@ WorldCaption/constants/shadow_offset_x = 0
 WorldCaption/constants/shadow_offset_y = 3
 WorldCaption/constants/shadow_outline_size = 12
 WorldCaption/font_sizes/font_size = 44
-WorldCaption/fonts/font = SubResource("FontVariation_olvbh")
+WorldCaption/fonts/font = SubResource("FontVariation_qijj7")
 ZoneTitleName/base_type = &"Label"
 ZoneTitleName/colors/font_color = Color(1, 1, 1, 1)
 ZoneTitleName/colors/font_shadow_color = Color(0, 0, 0, 0.45)
