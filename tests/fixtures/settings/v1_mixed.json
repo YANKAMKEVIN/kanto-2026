@@ -1,0 +1,17 @@
+{
+	"version": 1,
+	"text_speed": "fast",
+	"confirm_actions": true,
+	"joystick_scale": 1.2,
+	"joystick_opacity": 0.7,
+	"button_scale": 1.2,
+	"haptics": false,
+	"left_handed": true,
+	"text_size": "large",
+	"high_contrast": "oui",
+	"reduce_motion": true,
+	"reduce_flashes": 1,
+	"graphics": "eco",
+	"music_volume": 0.5,
+	"autosave": false
+}

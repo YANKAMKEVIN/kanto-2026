@@ -6,8 +6,8 @@ extends RefCounted
 ##
 ## Appelé par celui qui joue la capture (jalon 5D T15) au moment de l'événement : la carte de
 ## capture n'arrive qu'après. [param sink] reçoit chaque vibration (millisecondes) ; par défaut
-## Input.vibrate_handheld. Les tests injectent un espion et passent [param time_scale] à 0 (les
-## pauses ne durent pas).
+## Haptics.vibrate (coupé par le réglage « Vibrations »). Les tests injectent un espion et
+## passent [param time_scale] à 0 (les pauses ne durent pas).
 
 
 ## « Toc » d'une secousse de la Ball (HAPTIC_BALL_SHAKE_MS).
@@ -38,4 +38,4 @@ static func _vibrate(sink: Callable, duration_ms: int) -> void:
 	if sink.is_valid():
 		sink.call(duration_ms)
 	else:
-		Input.vibrate_handheld(duration_ms)
+		Haptics.vibrate(duration_ms)

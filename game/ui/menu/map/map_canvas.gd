@@ -183,7 +183,7 @@ func _gui_input(event: InputEvent) -> void:
 	var zone := _pressed_zone
 	_pressed_zone = &""
 	if not zone.is_empty() and zone_at(button.position) == zone:
-		Input.vibrate_handheld(UiTokens.HAPTIC_TICK_MS)
+		Haptics.vibrate(UiTokens.HAPTIC_TICK_MS)
 		zone_pressed.emit(zone)
 
 

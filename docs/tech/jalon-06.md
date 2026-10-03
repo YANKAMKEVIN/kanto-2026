@@ -392,6 +392,15 @@ static func vibrate(duration_ms: int) -> void
 
 Tests : `test_game_settings` (défauts, bornes, aller-retour, champ inconnu ignoré, valeurs mal formées), `test_settings_store` (système de fichiers en mémoire : atomicité, fichier corrompu mis de côté), `test_haptics`.
 
+**Fait au T27 (2026-10-04)** — `game/systems/settings/`, ce qui diffère du croquis ci-dessus :
+- **`GameSettings`** : + `graphics: Graphics { AUTO, HIGH, ECO }` (Q-17, défaut AUTO) ; clés `StringName` (`KEYS`, `TEXT_SPEED`… `GRAPHICS`) = identifiants des contrôles = noms des champs JSON ; `set_value(key, value) -> bool` (vrai si permise **et** différente, sinon rien ne change), `is_valid(key, value)` (statique), `get_value(key)`, `equals`, `duplicate`. Enums écrites **par leur nom** dans le JSON (`"fast"`, `"large"`, `"eco"`). **Crans** (§13) : joystick 0,8 / 1,0 / 1,2 (le « 1,3 » du croquis est abandonné), opacité 0,3 → 1,0 par 0,1, boutons 1,0 / 1,2 ; hors cran ou hors bornes → défaut. `chars_per_second()` : 25 / 45 (`UiTokens.DIALOG_CHARS_PER_SECOND`) / 90 / **0** (= page entière, convention de `DialogueSession`, pas `INF`). Ni « sauvegarde automatique », ni AUDIO (testé).
+- **`SettingsStore`** : enveloppe un `SaveSystem` (même code d'écriture atomique, de mise de côté `.corrupt` et de refus des versions plus récentes) avec **sa propre version** (`SettingsStore.VERSION` = 1). Fichier absent → défauts sans avertissement ; illisible → défauts, fichier mis de côté ; version plus récente → défauts, fichier laissé jusqu'au prochain changement de réglage (qui l'écrase : ce ne sont que des préférences). `load_settings()` ne rend jamais null ; `last_status`, `last_error`.
+- **`Haptics`** (statique) : `enabled`, `sink`, `vibrate(ms)`, `reset()`. **Les 34 appels** à `Input.vibrate_handheld` (22 fichiers ; il y en avait 7 dans 6 fichiers au T0, les écrans du J6 en ont ajouté) passent par `Haptics.vibrate`, `HapticPattern` compris ; `test_haptics` vérifie qu'aucun appel direct ne reste dans `game/`. Les drapeaux `haptics_enabled` des composants de combat et du toast restent (coupure de test, signaux toujours émis) ; le réglage coupe tout en amont.
+- **`GraphicsProfile`** (nouveau) : `resolve(choice, device) -> GraphicsProfile` (`quality` HIGH/ECO, `auto`, `max_fps` 0 ou 30, `menu_blur`, `reduced_effects`), `auto_quality(device)` (Économie sous 6 cœurs ou sous 4 Go connus, sinon Élevée ; S24 → Élevée), `current_device()` (seul appel au système).
+- **`UiPrefs`** (statique) : `text_scale`, `high_contrast`, `revision` (augmente à chaque changement : pas de signal statique en GDScript, un composant construit compare sa révision), `apply(settings) -> bool`, `font(size)`, `panel_bg(base = PANEL_BG)`, `text_muted()`, `reset()`. Jetons `UiTokens.TEXT_SCALE_LARGE` (1,15), `CONTRAST_PANEL_ALPHA` (0,95), `TEXT_MUTED_CONTRAST`.
+- **`SettingsViews.build(settings, device_quality, can_save) -> SettingsView`**, `save_result_text(error, time)`, `quality_name`, `percent_text` ; vues au §6.12.
+- Tests : `test_game_settings`, `test_settings_store` (fixture `tests/fixtures/settings/v1_mixed.json`), `test_haptics`, `test_graphics_profile`, `test_ui_prefs`, `test_settings_views`.
+
 ---
 
 ## 4. La règle de déblocage appliquée au J6
@@ -1025,6 +1034,83 @@ signal trainer_shown(view: TrainerView)        # Boot → TrainerMenu.show_train
 
 Ordre : T24 ∥ T25 ; **T24 fusionné d'abord**, puis T25 relie l'écran dans `Boot` et finit `test_menu_trainer.gd` (vrai `Boot`, partie de test avec les trois moments et des arrivées : ordre, temps de jeu, liens « vus » / « capturés » absents sans déblocage et acceptés avec `debug_pokedex`, premier Pokémon → sa fiche Équipe) ; puis T26. Avant la fusion, T25 teste avec `fake_trainer_menu.gd` étendu ; T24 teste avec des vues fabriquées **ou** construites par `TrainerSummary.build` sur une partie de test (la fixture `tests/fixtures/save/v1_after_capture.json` raconte la vraie partie de Kevin). **T24 et T25 ne démarrent qu'après la validation du 6D (T22)** : un écran à la fois (§8).
 
+### 6.12 Contrat du 6F et partage T28 ∥ T29 (figé au T27)
+
+**Vues figées** (T27, `game/systems/menu/views/` ; même règle qu'au §6.6 : on peut seulement **ajouter** des champs, par l'architecte ; **texte vide = élément absent**) :
+- `SettingsView` : `categories: Array[SettingsCategoryView]` (dans l'ordre ; la première est ouverte à l'entrée), `control(key)`, `category(id)`.
+- `SettingsCategoryView` : `id` (`SettingsViews.CATEGORY_GAME`, `CATEGORY_CONTROLS`, `CATEGORY_ACCESSIBILITY`, `CATEGORY_GRAPHICS`), `title` (« JEU », « COMMANDES », « ACCESSIBILITÉ », « GRAPHISMES » : **ordre du dossier 08 §7**, sans AUDIO ; la liste du T28 au §7 ne fixait pas l'ordre), `controls` (jamais vide).
+- `SettingControlView` : `key` (une clé de `GameSettings.KEYS`, ou `SettingsViews.SAVE_NOW`), `kind` (`TOGGLE`, `CHOICE`, `SLIDER`, `ACTION`), `label`, `detail` (aide, "" = absente ; pour l'action inactive : la raison), `value`, **`value_text` (toujours affiché : l'état ne passe jamais par la seule position ni la seule couleur)**, `options: Array[SettingOptionView]` (CHOICE), `min_value` / `max_value` / `step` (SLIDER), `enabled` (faux : visible, ne se touche pas), `selected_option()`.
+- `SettingOptionView` : `label`, `value` (**valeur du réglage**, à renvoyer telle quelle : entier d'enum ou flottant d'échelle, jamais un rang).
+- `ChoiceView` : `title`, `detail`, `confirm_label`, `confirm_detail`, `cancel_label`, `cancel_detail` (Q-18, bible §4).
+- Construites par `SettingsViews.build(settings, device_quality, can_save)` (§3.8, « Fait au T27 ») ; contenu au T27 : JEU (Vitesse du texte : 4 choix ; Confirmer certaines actions ; **Sauvegarder maintenant**, action), COMMANDES (Taille du joystick : 3 choix ; Opacité du joystick : curseur 30–100 % ; Taille des boutons : 2 choix ; Vibrations ; Mode gaucher), ACCESSIBILITÉ (Taille du texte : 2 choix ; Contraste renforcé ; Réduire les animations ; Réduire les flashs), GRAPHISMES (Qualité : Auto / Élevée / Économie, « Auto (Élevée) » en texte). **Aucune** option « sauvegarde automatique », AUDIO ni option technique de plus (testé).
+
+**`SettingsScreen`** (T28, `game/ui/menu/settings/settings_screen.gd`, construit en code comme les autres écrans, d'après la DA de `menu-parametres-v1.jpg` **recomposée en paysage**, sans rien de la maquette exclu par le dossier 08 §7) :
+```gdscript
+class_name SettingsScreen extends MenuScreen
+signal setting_changed(key: StringName, value: Variant)   # un seul par geste
+signal save_now_requested
+func show_settings(view: SettingsView) -> void   # rappelé écran affiché : mise à jour sans rejouer
+                                                 # l'entrée, catégorie ouverte et défilement gardés
+func show_save_result(text: String) -> void      # message bref dans l'écran (le toast du monde
+                                                 # serait sous le menu)
+```
+- Catégories à gauche, contrôles de la catégorie ouverte à droite (`SettingToggle`, `SettingChoice`, `SettingSlider`, bouton d'action), cibles ≥ `TOUCH_MIN`, `value_text` toujours écrit.
+- TOGGLE → `setting_changed(key, not value)` ; CHOICE → `setting_changed(key, option.value)` (toucher l'option déjà choisie : rien) ; SLIDER → **une** émission au lâcher, valeur sur un cran (`min_value + n × step`), le pourcentage suit le doigt pendant le geste ; ACTION active → `save_now_requested` ; inactive → rien (sa raison est dans `detail`).
+- **L'écran n'invente pas l'état** : la nouvelle valeur s'affiche quand `show_settings` revient avec la vue reconstruite (le directeur la renvoie aussitôt).
+
+**`ChoiceCards`** (T28, **`game/ui/components/choice_cards.gd`** : composant générique, servira en combat dès le 6F et au J7A, d'où ce dossier plutôt que `menu/settings/` du §6.1) :
+```gdscript
+class_name ChoiceCards extends Control
+signal chosen(confirmed: bool)            # un seul par question
+var speed_scale: float = 1.0              # 0 : instantané (tests)
+func show_choice(view: ChoiceView) -> void
+func hide_choice() -> void
+func is_showing() -> bool
+```
+Deux grandes cartes côte à côte (action, renoncement), jamais « Oui / Non » ; `title` au-dessus. Le composant ne gère pas le retour Android (celui qui le montre décide).
+
+**`TrainerMenu`** (T28 ajoute ; le reste est inchangé) : `signal setting_changed(key, value)`, `signal save_now_requested` (relais de l'écran), `show_settings(view)`, `show_save_result(text)`, `get_settings() -> SettingsScreen`, **`set_backdrop_blur(enabled: bool)`** (Économie : fond du menu sans flou, voile gardé). `speed_scale` existant reçoit la réduction des animations.
+
+**Commandes et texte** (T28) :
+- `TouchJoystick` : `size_scale: float = 1.0` (rayon et zone tactile), `opacity: float = 1.0` (multiplie l'opacité actuelle).
+- `ExplorationHud` : `set_left_handed(enabled: bool)` (joystick dans la moitié droite, courir et bouton contextuel en bas à gauche ; **bouton Menu en haut à droite inchangé** ; exploration seulement, Q-16), `set_joystick_style(size_scale: float, opacity: float)`, `set_button_scale(scale: float)` (courir et contextuel ; le bouton Menu garde sa taille, défaut). Tout reste dans `SAFE_MARGIN`.
+- `UiPrefs` lu par `DialogueBox`, `Toast`, `ZoneTitle` (à chaque affichage) et les écrans du menu (`TrainerMenu` compare `UiPrefs.revision` à chaque `show_*` et remet en forme l'écran courant : changer la taille du texte se voit tout de suite dans l'écran Paramètres). Le HUD de combat n'est pas couvert (Q-19).
+
+**`MenuDirector`** (T29 ajoute) :
+```gdscript
+signal settings_shown(view: SettingsView)          # Boot → TrainerMenu.show_settings
+signal settings_changed(settings: GameSettings)    # déjà au §6.2 : Boot écrit le fichier et applique
+func set_settings(settings: GameSettings, device_quality: GameSettings.Graphics,
+		can_save: bool) -> void
+func change_setting(key: StringName, value: Variant) -> bool  # GameSettings.set_value ; vrai →
+		# settings_changed(settings) puis settings_shown(vue neuve) ; faux → rien n'est émis
+```
+Route SETTINGS → `settings_shown(SettingsViews.build(...))`. `request_save()` et `save_requested` existent déjà. **Aucun `mark_changed`** : les réglages ne sont pas la partie.
+
+**`Boot`** (T29) :
+- `var settings_store: SettingsStore = null`, injectable ; le vrai (`user://settings.json`) **seulement si Boot est la scène principale** (même garde que `save_system`) ; null → réglages par défaut, rien d'écrit. Lu **au début de `_ready`**, avant le premier dialogue ; appliqué aussitôt. Le départ de débogage n'empêche pas les réglages (§5.3).
+- `_apply_settings(s)` : `DialogueRunner.chars_per_second` ; `BattleDirector.speed_scale = s.battle_speed_scale()` (la tenue des messages ne change pas : `BattleHud.message_hold_scale` séparé, à 1) ; `BattleStage.reduce_flashes` (clignotement du coup → léger assombrissement, flash du critique et de la capture adoucis) ; `TrainerMenu.speed_scale = s.menu_speed_scale()` ; `Haptics.enabled = s.haptics` ; `UiPrefs.apply(s)` ; HUD (`set_left_handed`, `set_joystick_style`, `set_button_scale`) ; graphismes : `GraphicsProfile.resolve(s.graphics, GraphicsProfile.current_device())` (appareil lu une fois) → `Engine.max_fps`, `TrainerMenu.set_backdrop_blur(menu_blur)`, `reduced_effects` → flou du fond de combat coupé (le seul autre effet coûteux du jeu au T27 : ni particules ni lumières 2D dans `game/`) ; `confirm_actions` → `BattleDirector.confirm_forget` : oublier une capacité passe par `ChoiceCards` (« Oublier {move} ? », OUBLIER / GARDER ; textes `draft` dans `data/battle/messages.json`). Méthodes du T28 derrière `has_method` jusqu'à la fusion, comme aux sous-jalons précédents.
+- `settings_changed(s)` → `settings_store.save_settings(s)` (erreur au journal) puis `_apply_settings(s)`.
+- `save_requested` → si `_can_write()` : `_write_save("menu")` puis `TrainerMenu.show_save_result(SettingsViews.save_result_text(erreur, Time.get_datetime_dict_from_system()))` ; sinon `show_save_result(SettingsViews.SAVE_DISABLED_TEXT)` (et le bouton est déjà inactif : `can_save = _can_write()`).
+- `_exit_tree` : `Haptics.reset()`, `UiPrefs.reset()`, `Engine.max_fps = 0` (statiques : un test ne doit jamais hériter des réglages du précédent). Les tests qui touchent ces statiques les remettent dans `after_each`.
+
+| Fichiers | T28 (ui-mobile) | T29 (constructeur-monde) |
+|---|---|---|
+| `game/ui/menu/settings/**` (SettingsScreen, SettingToggle, SettingChoice, SettingSlider) | **oui** | lecture |
+| `game/ui/components/choice_cards.gd` (nouveau) | **oui** | lecture |
+| `game/ui/menu/trainer_menu.gd/.tscn`, `menu_backdrop.gdshader`, écrans de `game/ui/menu/**` (UiPrefs) | **oui** | lecture |
+| `game/ui/hud/exploration_hud.gd/.tscn`, `game/ui/components/virtual_joystick.gd`, `interact_button.gd`, `round_button_visual.gd`, `toast.gd`, `zone_title.gd`, `game/ui/dialogue/dialogue_box.gd` | **oui** | lecture |
+| `game/ui/theme/ui_tokens.gd`, `ui_theme.tres`, `tools/build_ui_theme.gd` (`SETTINGS_*`, `CHOICE_*`) | **oui** | lecture |
+| `assets/ui/icons/settings/**`, `tools/capture_menu.gd` (scénarios `settings`, `left_handed`, `text_large`, `contrast`, `choice_cards`) | **oui** | lecture (captures du T29 : son propre outil) |
+| `tests/integration/test_settings_screen.gd`, `test_choice_cards.gd`, `test_trainer_menu.gd` (étendu), `test_exploration_hud.gd`, `test_virtual_joystick.gd`, `test_dialogue_box.gd` / `test_toast.gd` (taille, contraste) | **oui** | — |
+| `game/boot.gd`, `game/boot.tscn`, `game/systems/menu/menu_director.gd` | — | **oui** |
+| `game/battle/**` (`battle_director.gd` : confirmation d'oubli ; `battle_stage.gd` : `reduce_flashes`, flou du fond), `game/ui/battle/battle_hud.gd` (`message_hold_scale`), `data/battle/messages.json` | — | **oui** |
+| `tests/helpers/fake_trainer_menu.gd` (étendu : `show_settings`, `show_save_result`, `set_backdrop_blur`), `tests/integration/test_settings_apply.gd`, `test_menu_settings.gd`, `test_menu_open.gd`, `test_boot.gd`, `test_battle_director.gd`, `test_battle_stage.gd` | — | **oui** |
+| Fondations du T27 (`game/systems/settings/**`, `views/setting*_view.gd`, `views/settings_*.gd`, `views/choice_view.gd`, tests unitaires du §3.8, `tests/fixtures/settings/`) | lecture | lecture (un manque → l'architecte) |
+| `docs/tech/etat-projet.md` | sa ligne dans « Point de reprise » | sa ligne ; l'orchestrateur fusionne |
+
+Ordre : T28 ∥ T29 ; **T28 fusionné d'abord**, puis T29 relie l'écran (`setting_changed` → `change_setting`, `save_now_requested` → `request_save`, `settings_shown` → `show_settings`), branche `ChoiceCards` dans le combat et finit `test_settings_apply.gd` (vrai `Boot`, CA du §7) et `test_menu_settings.gd` (vrai écran : toucher → fichier écrit → effet). Avant la fusion, T29 teste avec `fake_trainer_menu.gd` étendu ; la confirmation d'oubli se teste après la fusion (elle a besoin du vrai `ChoiceCards`). **T29 touche le combat** : aucune autre tâche de combat en parallèle (§8). Puis T30.
+
 ---
 
 ## 7. Découpage des tâches (dans l'ordre)
@@ -1156,6 +1242,7 @@ Chaque tâche finit par `tools/test.sh` vert (nombre de tests rapporté), un imp
 #### T27 — architecte-godot : fondations des Paramètres
 - §3.8 ; remplacement des 7 appels à `Input.vibrate_handheld` par `Haptics.vibrate` (comportement inchangé, tests existants verts).
 - **CA** : tests du §3.8 verts.
+- **Fait (2026-10-04)** : §3.8 « Fait au T27 » ; **34 appels dans 22 fichiers** remplacés (les écrans du J6 en avaient ajouté), comportement inchangé ; vues figées et partage T28 ∥ T29 au §6.12. Aucune interface, `Boot` et `MenuDirector` intacts.
 
 #### T28 — ui-mobile : l'écran Paramètres et les commandes réglables
 - `SettingsScreen` d'après la DA de `menu-parametres-v1.jpg` recomposée en paysage : catégories à gauche (JEU, COMMANDES, GRAPHISMES, ACCESSIBILITÉ ; **pas** d'AUDIO, Q-17). GRAPHISMES : un seul choix **Auto** (défaut) / **Élevée** / **Économie** ; Économie = 30 images/s (`Engine.max_fps`) et flou du fond du menu coupé, autres effets coûteux réduits ; Auto choisit le profil selon l'appareil (S24 → Élevée) ; aucune autre option technique, interrupteurs, curseurs, choix ; « Sauvegarder maintenant » ; **aucune** option « sauvegarde automatique ». `TouchJoystick.size_scale` et `opacity`, échelle des boutons ronds, `ExplorationHud.set_left_handed(bool)` (joystick dans la moitié droite, boutons courir et contextuel en bas à gauche, bouton Menu en haut à droite inchangé ; exploration seulement, Q-16) ; `UiPrefs` dans la boîte de dialogue, le toast, le titre de zone et les écrans du menu ; `ChoiceCards` (Q-18).
@@ -1181,7 +1268,7 @@ Chaque tâche finit par `tools/test.sh` vert (nombre de tests rapporté), un imp
 - deux tâches qui touchent `game/boot.gd` / `boot.tscn`, `game_state.gd`, le format de sauvegarde, `battle_director.gd` / `battle.gd`, `project.godot` ou `ui_tokens.gd` + `build_ui_theme.gd` (conflits garantis) ;
 - **deux écrans** du menu (dossier 08 §11 : jamais les six à la fois ; Kevin les valide un par un) ;
 - **T0 et quoi que ce soit d'autre** : la sauvegarde v2 est seule jusqu'à sa validation (T1) ;
-- **T27** (remplacement des appels de vibration, 6 fichiers) et une tâche de combat.
+- **T27** (remplacement des appels de vibration, 6 fichiers ; 22 au moment de le faire) et une tâche de combat ; de même **T29** (il touche `battle_director.gd`, `battle_stage.gd`, `battle_hud.gd`).
 
 ---
 

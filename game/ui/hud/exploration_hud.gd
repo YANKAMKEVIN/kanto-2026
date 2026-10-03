@@ -163,5 +163,5 @@ func get_menu_button() -> TouchScreenButton:
 
 
 func _on_menu_pressed() -> void:
-	Input.vibrate_handheld(UiTokens.HAPTIC_TAP_MS)
+	Haptics.vibrate(UiTokens.HAPTIC_TAP_MS)
 	menu_requested.emit()

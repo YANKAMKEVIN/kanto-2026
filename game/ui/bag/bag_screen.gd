@@ -599,7 +599,7 @@ func _close_picker_now() -> void:
 
 
 func _haptic(duration_ms: int) -> void:
-	Input.vibrate_handheld(duration_ms)
+	Haptics.vibrate(duration_ms)
 
 
 func _on_tab_tapped(category_id: StringName) -> void:

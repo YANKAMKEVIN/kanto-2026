@@ -391,7 +391,7 @@ func _request_move(from: int, to: int) -> void:
 			or from >= _view.size() or to >= _view.size():
 		return
 	_set_move_mode(false)
-	Input.vibrate_handheld(UiTokens.HAPTIC_TEAM_SWAP_MS)
+	Haptics.vibrate(UiTokens.HAPTIC_TEAM_SWAP_MS)
 	_selected = TeamViews.selection_after_swap(_selected, from, to)
 	_swap_pending = Vector2i(from, to)
 	member_moved.emit(from, to)
@@ -442,7 +442,7 @@ func _on_slot_tapped(index: int) -> void:
 		else:
 			_request_move(_move_from, index)
 		return
-	Input.vibrate_handheld(UiTokens.HAPTIC_TICK_MS)
+	Haptics.vibrate(UiTokens.HAPTIC_TICK_MS)
 	_hint_alone = false
 	_select(index)
 	_update_move_ui()
@@ -510,21 +510,21 @@ func _slot_at(global_pos: Vector2) -> int:
 
 
 func _on_back() -> void:
-	Input.vibrate_handheld(UiTokens.HAPTIC_TAP_MS)
+	Haptics.vibrate(UiTokens.HAPTIC_TAP_MS)
 	back_requested.emit()
 
 
 func _on_use_pressed() -> void:
 	if _view == null or _view.size() == 0:
 		return
-	Input.vibrate_handheld(UiTokens.HAPTIC_TAP_MS)
+	Haptics.vibrate(UiTokens.HAPTIC_TAP_MS)
 	use_item_requested.emit(_selected)
 
 
 func _on_move_pressed() -> void:
 	if _view == null or _view.size() == 0:
 		return
-	Input.vibrate_handheld(UiTokens.HAPTIC_TAP_MS)
+	Haptics.vibrate(UiTokens.HAPTIC_TAP_MS)
 	if _move_mode:
 		_set_move_mode(false)
 	elif _view.size() < 2:
@@ -538,7 +538,7 @@ func _on_move_pressed() -> void:
 func _on_favorite_pressed() -> void:
 	if _view == null or _view.size() == 0:
 		return
-	Input.vibrate_handheld(UiTokens.HAPTIC_TAP_MS)
+	Haptics.vibrate(UiTokens.HAPTIC_TAP_MS)
 	favorite_toggled.emit(_selected)
 
 

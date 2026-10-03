@@ -144,7 +144,7 @@ func _show_tab(tab: Tab) -> void:
 func _on_tab_pressed(tab: Tab) -> void:
 	if tab == _tab:
 		return
-	Input.vibrate_handheld(UiTokens.HAPTIC_TICK_MS)
+	Haptics.vibrate(UiTokens.HAPTIC_TICK_MS)
 	_show_tab(tab)
 	tab_changed.emit(int(tab))
 
@@ -261,7 +261,7 @@ func _fill_habitat(view: PokedexSheetView) -> void:
 
 
 func _on_chip_pressed(zone_id: StringName) -> void:
-	Input.vibrate_handheld(UiTokens.HAPTIC_TAP_MS)
+	Haptics.vibrate(UiTokens.HAPTIC_TAP_MS)
 	route_requested.emit(MenuRoute.map(zone_id))
 
 

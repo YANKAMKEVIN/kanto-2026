@@ -153,7 +153,7 @@ func _apply_tint(tint: Color) -> void:
 
 
 func _on_pressed() -> void:
-	Input.vibrate_handheld(UiTokens.HAPTIC_TAP_MS)
+	Haptics.vibrate(UiTokens.HAPTIC_TAP_MS)
 	chosen.emit(_screen)
 
 

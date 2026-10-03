@@ -436,7 +436,7 @@ func _on_link_pressed(is_seen: bool) -> void:
 	var route := _seen_route if is_seen else _caught_route
 	if route == null:
 		return
-	Input.vibrate_handheld(UiTokens.HAPTIC_TICK_MS)
+	Haptics.vibrate(UiTokens.HAPTIC_TICK_MS)
 	route_requested.emit(route)
 
 

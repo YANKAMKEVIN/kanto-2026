@@ -91,7 +91,7 @@ func is_repeat_shown() -> bool:
 func _on_repeat() -> void:
 	if not visible:
 		return
-	Input.vibrate_handheld(UiTokens.HAPTIC_TAP_MS)
+	Haptics.vibrate(UiTokens.HAPTIC_TAP_MS)
 	repeat_requested.emit()
 
 

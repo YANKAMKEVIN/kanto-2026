@@ -50,5 +50,5 @@ func get_back_button() -> Button:
 
 
 func _on_back() -> void:
-	Input.vibrate_handheld(UiTokens.HAPTIC_TAP_MS)
+	Haptics.vibrate(UiTokens.HAPTIC_TAP_MS)
 	back_requested.emit()

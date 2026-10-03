@@ -520,7 +520,7 @@ func _vibrate() -> void:
 func _on_haptic(duration_ms: int) -> void:
 	haptic_requested.emit(duration_ms)
 	if haptics_enabled and (not is_instance_valid(_hud) or _hud.haptics_enabled):
-		Input.vibrate_handheld(duration_ms)
+		Haptics.vibrate(duration_ms)
 
 
 ## Le Sac de combat (créé au premier besoin, dans l'écran de la HUD, à son emplacement).
