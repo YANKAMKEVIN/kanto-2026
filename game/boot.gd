@@ -181,6 +181,12 @@ func _ready() -> void:
 	_menu_screen.route_requested.connect(_menu.go)
 	_menu_screen.back_requested.connect(_menu.handle_back)
 	_menu_screen.close_requested.connect(_menu.close)
+	# Équipe (T8) : reliée dès que l'écran porte l'interface du §6.7 (TeamScreen du T7).
+	if _menu_screen.has_signal(&"team_member_moved"):
+		_menu.team_shown.connect(_menu_screen.show_team)
+		_menu_screen.team_member_moved.connect(_menu.move_member)
+		_menu_screen.team_favorite_toggled.connect(_menu.toggle_favorite)
+		_menu_screen.team_member_selected.connect(_menu.select_member)
 	_hud.menu_requested.connect(_menu.open)
 	SceneRouter.setup(_world, _player, _fade)
 	# Destinations « à venir » (dossier-07 §12, build de développement) : l'écran provisoire.

@@ -26,6 +26,9 @@ signal menu_closed(changed: bool)
 signal save_requested
 ## Le tableau de bord est à afficher (ouverture, retour jusqu'à lui) : vue neuve.
 signal dashboard_shown(view: DashboardView)
+## L'Équipe est à afficher ou à rafraîchir (ouverture, après un échange ou un favori) ;
+## [param selected] est déjà ramené dans l'équipe (jalon-06.md §6.7).
+signal team_shown(view: TeamView, selected: int)
 ## Un écran pas encore construit est à afficher (écran provisoire « À venir »).
 signal placeholder_shown(screen: StringName)
 
@@ -37,6 +40,7 @@ var _unlocks: MenuUnlocks
 var _can_open: Callable
 var _navigator: MenuNavigator
 var _changed: bool = false
+var _team_selected: int = 0
 
 
 func _init() -> void:
@@ -120,6 +124,43 @@ func build_dashboard() -> DashboardView:
 	return DashboardViews.build(_state, _data, _zones, _objectives, _unlocks)
 
 
+## Échange les places [param from] et [param to] de l'équipe ([method Party.swap] :
+## réordonner = échanger, dossier 08 §2). Vrai si l'ordre a changé : la sélection suit le
+## Pokémon sélectionné, l'état est marqué changé (autosave) et l'Équipe est réémise.
+func move_member(from: int, to: int) -> bool:
+	if _state == null or not _state.party.swap(from, to):
+		return false
+	_team_selected = TeamViews.selection_after_swap(_team_selected, from, to)
+	mark_changed()
+	_emit_team()
+	return true
+
+
+## Inverse le favori du Pokémon [param index]. Faux si la place n'existe pas.
+func toggle_favorite(index: int) -> bool:
+	if _state == null:
+		return false
+	var pokemon: Pokemon = _state.party.get_at(index)
+	if pokemon == null:
+		return false
+	pokemon.favorite = not pokemon.favorite
+	mark_changed()
+	_emit_team()
+	return true
+
+
+## Retient le Pokémon sélectionné de l'Équipe (informatif : l'écran change de fiche seul).
+func select_member(index: int) -> void:
+	if _state != null:
+		_team_selected = TeamViews.clamp_selection(index, _state.party.size())
+
+
+func _emit_team() -> void:
+	var view := TeamViews.build(_state.party, _data, _zones, _state.pokedex, _unlocks)
+	_team_selected = TeamViews.clamp_selection(_team_selected, view.size())
+	team_shown.emit(view, _team_selected)
+
+
 ## Un écran est à afficher : le tableau de bord avec sa vue, sinon l'écran provisoire (les
 ## écrans des sous-jalons 6A+ n'existent pas encore : ils remplaceront ce cas un à un).
 func _on_route_shown(route: MenuRoute) -> void:
@@ -127,6 +168,10 @@ func _on_route_shown(route: MenuRoute) -> void:
 		return
 	if route.screen == MenuRoute.DASHBOARD:
 		dashboard_shown.emit(build_dashboard())
+	elif route.screen == MenuRoute.TEAM:
+		_team_selected = 0
+		select_member(int(route.params.get("index", 0)))
+		_emit_team()
 	else:
 		placeholder_shown.emit(route.screen)
 
