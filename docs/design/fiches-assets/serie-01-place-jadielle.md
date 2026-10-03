@@ -657,3 +657,8 @@ Toucher l'écran fait défiler 4 modes : **A** golden hour peinte dans les asset
 1. `etalonnage.gdshader` : gains par zone de luminance mesurés sur les paires GH/NE de la série 01 (ombres ×1,16/1,07/0,97, tons moyens ×1,06/1,01/0,91, hautes lumières ×1,01/0,97/0,85 en RVB), contours sombres laissés neutres ; pas de teinte uniforme ;
 2. `objet.gdshader` : **liseré de soleil** doré sur les bords des objets tournés vers le haut-gauche (ce que la teinte d'écran ne crée pas).
 Écart moyen à A (somme RVB, capture plein écran) : C v1 42,8 → C2 ≈ 30. Reste à rapprocher : les hautes lumières internes des feuillages (A plus jaune-vert au sommet des masses) ; piste : légère carte de lumière par asset, plus tard.
+
+## Série 02 — personnages du J7 (2026-10-03, lumière NE, peints)
+
+Générés par Codex du premier coup, ancre = planche du héros `PERSO_P2_PEINT_r1` : `PNJ_INFIRMIERE`, `PNJ_MARCHAND`, `PNJ_LIVREUR`, `PNJ_DRESSEUSE`, `PNJ_VIEIL_HOMME` (canne), `PNJ_VOYAGEUR`, `PNJ_RIVAL` (d'après le storyboard `route-22-rival-02-v1`), `POKE_ROUCOOL` (suffixe `_NE_r1`). Tenues = **valeurs par défaut** (règle 4) tirées du dossier 09 §2 et §19, à valider par Kevin. Tailles en jeu : adultes 132–136 px, Dresseuse 126, vieil homme 122, rival 130, Roucool 50.
+Scène : Jadielle peuplée (infirmière devant le Centre, marchand devant la Boutique, livreur qui fait sa tournée, Dresseuse et son Roucool près du banc, vieil homme qui fait les cent pas, voyageur qui traverse vers la Route 1, enfant et Rattata, rival, héros qui marche et court). Lumière par défaut : C2.

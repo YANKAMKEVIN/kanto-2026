@@ -60,7 +60,8 @@ const MODES_LUMIERE: Array = [
 	["D — assets neutres + fin de journée par Godot", true, Color.WHITE, Color(0.82, 0.66, 0.66)],
 ]
 
-var _mode := 0
+## Mode par défaut : C2, la méthode retenue par Kevin.
+var _mode := 3
 var _materiau_sol: ShaderMaterial
 var _teinte := CanvasModulate.new()
 var _etalonnage := ColorRect.new()
@@ -307,34 +308,40 @@ func _contact(texture: Texture2D, pied: Vector2, part_base: float, parent: Node2
 	parent.add_child(sprite)
 
 
-## Test personnage côte à côte (J7.1) : à gauche la piste 1 (pixel art, ×2), à droite la
-## piste 2 (peint). Chaque côté : le héros (marche, court en bas du circuit), l'enfant de
-## Jadielle et son Rattata qui le suit.
+## Jadielle peuplée (J7, personnages peints en lumière neutre). Chaque entrée :
+## [texture, coins du circuit en cases (un seul = immobile), pas d'avance, taille d'ombre].
+const HABITANTS: Array = [
+	["perso_p2", [Vector2i(4, 8), Vector2i(4, 12), Vector2i(8, 12), Vector2i(8, 8)], 0, 1.0],
+	["enfant_p2", [Vector2i(17, 11), Vector2i(17, 12), Vector2i(21, 12), Vector2i(21, 11)], 1,
+		0.85],
+	["rattata_p2", [Vector2i(17, 11), Vector2i(17, 12), Vector2i(21, 12), Vector2i(21, 11)], 0,
+		0.6],
+	["infirmiere", [Vector2i(5, 7)], 0, 1.0],
+	["marchand", [Vector2i(17, 7)], 0, 1.0],
+	["livreur", [Vector2i(20, 8), Vector2i(23, 8), Vector2i(23, 10), Vector2i(20, 10)], 0, 1.0],
+	["dresseuse", [Vector2i(16, 11)], 0, 1.0],
+	["roucool", [Vector2i(15, 11)], 0, 0.6],
+	["vieil_homme", [Vector2i(9, 9), Vector2i(10, 9)], 0, 0.95],
+	["voyageur", [Vector2i(13, 13), Vector2i(13, 12), Vector2i(2, 12), Vector2i(2, 13)], 0, 1.0],
+	["rival", [Vector2i(10, 12), Vector2i(16, 12)], 0, 1.0],
+]
+
+
 func _poser_groupes(tries: Node2D) -> void:
-	var dx := 14
-	for piste: int in [1, 2]:
-		var decalage := Vector2i(0 if piste == 1 else dx, 0)
-		# Personnages peints des deux côtés (décision de Kevin, 2026-10-03).
-		var pixel := false
-		var echelle := 1.0
-		var tex := "res://proto/da_jadielle/tex/%s_p%d.png"
-		var course := "res://proto/da_jadielle/tex/perso_p2_course.png"
-		var heros := _marcheur(load(tex % ["perso", 2]), load(course), echelle, pixel,
-			[Vector2i(4, 7), Vector2i(4, 12), Vector2i(7, 12), Vector2i(7, 7)], decalage)
-		heros.segments_course.assign([1])
-		tries.add_child(heros)
-		# L'enfant et son Rattata tournent à l'intérieur du circuit du héros.
-		var boucle: Array[Vector2i] = [Vector2i(5, 8), Vector2i(5, 11), Vector2i(6, 11),
-			Vector2i(6, 8)]
-		var enfant := _marcheur(load(tex % ["enfant", 2]), null, echelle, pixel, boucle,
-			decalage)
-		enfant.avance_depart = 1
-		enfant.taille_ombre = 0.85
-		tries.add_child(enfant)
-		var rattata := _marcheur(load(tex % ["rattata", 2]), null, echelle, pixel, boucle,
-			decalage)
-		rattata.taille_ombre = 0.6
-		tries.add_child(rattata)
+	for habitant: Array in HABITANTS:
+		var nom: String = habitant[0]
+		var course: Texture2D = null
+		if nom == "perso_p2":
+			course = load("res://proto/da_jadielle/tex/perso_p2_course.png")
+		var coins: Array[Vector2i] = []
+		coins.assign(habitant[1])
+		var marcheur := _marcheur(load(TEX + nom + ".png"), course, 1.0, false, coins,
+			Vector2i.ZERO)
+		if nom == "perso_p2":
+			marcheur.segments_course.assign([1])
+		marcheur.avance_depart = habitant[2]
+		marcheur.taille_ombre = habitant[3]
+		tries.add_child(marcheur)
 	var calque := CanvasLayer.new()
 	var etiquette := _etiquette
 	etiquette.position = Vector2(32, 24)

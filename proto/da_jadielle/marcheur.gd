@@ -44,6 +44,11 @@ func _ready() -> void:
 
 
 func _process(delta: float) -> void:
+	if circuit.size() < 2:
+		# Personnage immobile : regarde vers le bas, image de repos.
+		_direction = Vector2i.DOWN
+		_corps.frame = 0
+		return
 	var court := _cible in segments_course
 	if court != _court:
 		_court = court
