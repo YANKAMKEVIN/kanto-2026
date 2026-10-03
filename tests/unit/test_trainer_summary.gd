@@ -312,13 +312,28 @@ func test_unknown_or_broken_records_never_show_identifiers() -> void:
 	assert_false(_all_texts(view).contains("nowhere"))
 
 
-func test_captures_count_the_storage_but_not_the_starter() -> void:
-	_add(&"charmander", Pokemon.Origin.STARTER)
+func test_captures_are_career_captures_not_the_starter() -> void:
+	_state.record_caught(&"charmander", &"oak_lab")
+	_state.starter_species = &"charmander"
 	assert_null(_build().stat(&"captures"), "le starter n'est pas une capture")
-	_add(&"pidgey", Pokemon.Origin.CAPTURE)
-	_add(&"rattata", Pokemon.Origin.CAPTURE, true)
-	assert_eq(_build().stat(&"captures").value_text, "2")
-	assert_eq(TrainerSummary.capture_count(_state.party, _state.storage), 2)
+	_state.record_caught(&"pidgey", &"route_1")
+	_state.record_caught(&"charmander", &"route_1")
+	_state.record_caught(&"pidgey", &"route_1")
+	assert_eq(_build().stat(&"captures").value_text, "3", "deux Roucool et un Salamèche capturés")
+	assert_eq(TrainerSummary.capture_count(_state.pokedex, &"charmander"), 3)
+
+
+func test_captures_never_drop_when_a_pokemon_leaves() -> void:
+	_state.record_caught(&"charmander", &"oak_lab")
+	_state.starter_species = &"charmander"
+	var pidgey := _add(&"pidgey", Pokemon.Origin.CAPTURE)
+	_state.record_caught(&"pidgey", &"route_1")
+	assert_eq(_build().stat(&"captures").value_text, "1")
+	_state.party.clear()
+	_state.storage.add(pidgey)
+	assert_eq(_build().stat(&"captures").value_text, "1", "déposé au stockage")
+	_state.storage.clear()
+	assert_eq(_build().stat(&"captures").value_text, "1", "relâché")
 
 
 func test_without_zones_or_moments() -> void:

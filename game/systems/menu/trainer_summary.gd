@@ -13,7 +13,8 @@ extends RefCounted
 ##   ancienne de [code]discovered_maps[/code] parmi les cartes de la zone), sauf la zone où
 ##   l'aventure commence ; « Départ de Bourg Palette » = première arrivée sur la Route 1.
 ##   Ordre chronologique ; lieu = nom de la **zone**, jamais un identifiant de carte ;
-## - statistiques : temps de jeu, zones découvertes, captures, objets trouvés (pas de combats
+## - statistiques : temps de jeu, zones découvertes, captures depuis le début (carrière : relâcher ne les
+##   fait pas baisser ; le starter n'en est pas), objets trouvés (pas de combats
 ##   gagnés : non enregistrés) ; une statistique à 0 est absente.
 
 ## Identifiants des statistiques ([member TrainerStatView.stat_id]), dans l'ordre d'affichage.
@@ -99,7 +100,7 @@ static func stat_views(state: Object, zones: ZoneLibrary) -> Array[TrainerStatVi
 	var zone_count := first_arrivals(state.discovered_maps, zones).size()
 	if zone_count > 0:
 		stats.append(_stat(STAT_ZONES, MenuFormat.number(zone_count)))
-	var captures := capture_count(state.party, state.storage)
+	var captures := capture_count(state.pokedex, state.starter_species)
 	if captures > 0:
 		stats.append(_stat(STAT_CAPTURES, MenuFormat.number(captures)))
 	var found: Array[Dictionary] = state.found_items
@@ -134,15 +135,17 @@ static func start_zone_of(arrivals: Dictionary[StringName, String]) -> StringNam
 	return &""
 
 
-## Pokémon capturés encore avec le joueur (équipe et stockage, rencontre « capture ») : un
-## fait de la partie, pas du Pokédex (le starter n'en est pas).
-static func capture_count(party: Party, storage: PokemonStorage) -> int:
+## Captures depuis le début de la partie (statistique de carrière, décision de Kevin du
+## 2026-10-03) : somme des compteurs de capture du Pokédex, qui ne baissent jamais (relâcher ou
+## déposer au stockage n'y change rien). Le starter, reçu et non capturé, est enregistré une
+## fois au Pokédex : on le retire.
+static func capture_count(pokedex: Pokedex, starter: StringName) -> int:
 	var count := 0
-	for group: Array[Pokemon] in [party.get_all(), storage.get_all()]:
-		for pokemon: Pokemon in group:
-			if pokemon.origin == Pokemon.Origin.CAPTURE:
-				count += 1
-	return count
+	for species: StringName in pokedex.caught_ids():
+		count += pokedex.times_caught(species)
+	if not starter.is_empty() and pokedex.times_caught(starter) > 0:
+		count -= 1
+	return maxi(count, 0)
 
 
 static func _arrival_view(zone: StringName, date: String, zones: ZoneLibrary,
