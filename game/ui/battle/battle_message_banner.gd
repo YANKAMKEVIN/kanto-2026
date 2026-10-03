@@ -9,6 +9,9 @@ extends BattleWidget
 ## émulé depuis la souris). Pas d'indicateur « › » : le combat avance seul (dossier 05 §21).
 ## Un nouveau message remplace le précédent (qui se termine aussitôt).
 
+## Multiplie la tenue d'un message, indépendamment de [member speed_scale] (qui règle les
+## animations ; 0 reste instantané pour les tests).
+var hold_scale: float = 1.0
 var _hold: Tween
 
 @onready var _text: Label = %Text
@@ -38,7 +41,8 @@ func show_message(text: String) -> void:
 	_text.text = text
 	if not _shown:
 		slide_in()
-	var time := UiTokens.BATTLE_MESSAGE_HOLD * speed_scale
+	# La réduction des animations n'abrège pas la lecture : seul 0 (tests) rend instantané.
+	var time := UiTokens.BATTLE_MESSAGE_HOLD * hold_scale if speed_scale > 0.0 else 0.0
 	if time <= 0.0:
 		return
 	_hold = create_tween()

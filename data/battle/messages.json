@@ -37,6 +37,10 @@
 			"draft": true
 		},
 		"move_forgot": { "text": "{pokemon} oublie {old_move} et apprend {move} !", "draft": true },
+		"forget_confirm_title": { "text": "Oublier {old_move} ?", "draft": true },
+		"forget_confirm_detail": { "text": "{old_move} sera remplacée par {move}.", "draft": true },
+		"forget_confirm_yes": { "text": "OUBLIER", "draft": true },
+		"forget_confirm_no": { "text": "GARDER", "draft": true },
 		"move_not_learned": { "text": "{pokemon} n'apprend pas {move}.", "draft": true },
 		"seeded": { "text": "Une graine est plantée sur {pokemon} !", "draft": true },
 		"drained": { "text": "Vampigraine draine l'énergie {de_pokemon} !", "draft": true },

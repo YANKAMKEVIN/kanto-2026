@@ -47,6 +47,13 @@ signal map_zone_shown(view: ZonePanelView)
 ## L'écran Dresseur est à afficher : vue construite à l'entrée (et au retour d'un autre
 ## écran), le temps de jeu n'est pas rafraîchi en direct (jalon-06.md §6.11).
 signal trainer_shown(view: TrainerView)
+## Les Paramètres sont à afficher ou à rafraîchir (ouverture, après chaque changement) : vue
+## neuve construite depuis les réglages courants (jalon-06.md §6.12).
+signal settings_shown(view: SettingsView)
+## Le résultat de « Sauvegarder maintenant » est à afficher dans l'écran des Paramètres.
+signal save_result_shown(text: String)
+## Un réglage a changé : [Boot] écrit le fichier des réglages et les applique.
+signal settings_changed(settings: GameSettings)
 ## Un écran pas encore construit est à afficher (écran provisoire « À venir »).
 signal placeholder_shown(screen: StringName)
 
@@ -73,6 +80,9 @@ var _dex_filter: int = PokedexQuery.Filter.ALL
 var _dex_zone: StringName = &""
 var _dex_type: StringName = &""
 var _dex_text: String = ""
+var _settings: GameSettings
+var _device_quality: GameSettings.Graphics = GameSettings.Graphics.HIGH
+var _can_save: bool = false
 
 
 func _init() -> void:
@@ -145,6 +155,32 @@ func handle_back() -> bool:
 ## « Sauvegarder maintenant » (6F) : l'écran le demande, [Boot] écrit.
 func request_save() -> void:
 	save_requested.emit()
+
+
+## Branche les réglages courants ([param settings], modifiés en place) : sans eux, la route
+## SETTINGS reste l'écran provisoire. [param device_quality] : la qualité que choisirait Auto
+## sur cet appareil ; [param can_save] : « Sauvegarder maintenant » est actif.
+func set_settings(settings: GameSettings, device_quality: GameSettings.Graphics,
+		can_save: bool) -> void:
+	_settings = settings
+	_device_quality = device_quality
+	_can_save = can_save
+
+
+## Change le réglage [param key] (geste de l'écran). Vrai si la valeur était permise et
+## différente : [signal settings_changed] puis la vue neuve ([signal settings_shown]) ; sinon
+## rien n'est émis. Ce n'est jamais un changement de la partie (pas d'autosave).
+func change_setting(key: StringName, value: Variant) -> bool:
+	if _settings == null or not _settings.set_value(key, value):
+		return false
+	settings_changed.emit(_settings)
+	_emit_settings()
+	return true
+
+
+## Annonce le résultat de « Sauvegarder maintenant » ([Boot], une fois l'écriture faite).
+func show_save_result(text: String) -> void:
+	save_result_shown.emit(text)
 
 
 ## Un écran a modifié la partie (équipe réordonnée, favori, objet utilisé) : autosave à la
@@ -312,6 +348,11 @@ func _emit_bag() -> void:
 		_state.party, _bag_target, _data))
 
 
+func _emit_settings() -> void:
+	if _settings != null:
+		settings_shown.emit(SettingsViews.build(_settings, _device_quality, _can_save))
+
+
 func _emit_team() -> void:
 	var view := TeamViews.build(_state.party, _data, _zones, _state.pokedex, _unlocks)
 	_team_selected = TeamViews.clamp_selection(_team_selected, view.size())
@@ -348,6 +389,8 @@ func _on_route_shown(route: MenuRoute) -> void:
 			open_zone(map_view.selected)
 	elif route.screen == MenuRoute.TRAINER:
 		trainer_shown.emit(TrainerSummary.build(_state, _data, _zones, _moments, _unlocks))
+	elif route.screen == MenuRoute.SETTINGS and _settings != null:
+		_emit_settings()
 	else:
 		placeholder_shown.emit(route.screen)
 

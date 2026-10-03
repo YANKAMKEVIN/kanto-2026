@@ -22,6 +22,9 @@ signal pokedex_species_opened(species: StringName)
 
 signal map_zone_touched(zone: StringName)
 
+signal setting_changed(key: StringName, value: Variant)
+signal save_now_requested
+
 var speed_scale: float = 1.0
 var opened_count: int = 0
 var closed_count: int = 0
@@ -38,6 +41,9 @@ var pokedex_sheets: Array[PokedexSheetView] = []
 var trainers: Array[TrainerView] = []
 var maps: Array[MapView] = []
 var map_zones: Array[ZonePanelView] = []
+var settings_views: Array[SettingsView] = []
+var save_results: Array[String] = []
+var backdrop_blur: bool = true
 var pokedex_back_count: int = 0
 var _open: bool = false
 
@@ -98,6 +104,18 @@ func show_map_zone(view: ZonePanelView) -> void:
 	map_zones.append(view)
 
 
+func show_settings(view: SettingsView) -> void:
+	settings_views.append(view)
+
+
+func show_save_result(text: String) -> void:
+	save_results.append(text)
+
+
+func set_backdrop_blur(enabled: bool) -> void:
+	backdrop_blur = enabled
+
+
 func pokedex_back() -> bool:
 	pokedex_back_count += 1
 	return false
@@ -134,6 +152,10 @@ func wire(director: MenuDirector) -> void:
 	director.map_zone_shown.connect(show_map_zone)
 	map_zone_touched.connect(director.open_zone)
 	director.trainer_shown.connect(show_trainer)
+	director.settings_shown.connect(show_settings)
+	director.save_result_shown.connect(show_save_result)
+	setting_changed.connect(director.change_setting)
+	save_now_requested.connect(director.request_save)
 	route_requested.connect(director.go)
 	back_requested.connect(director.handle_back)
 	close_requested.connect(director.close)

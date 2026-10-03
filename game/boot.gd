@@ -57,6 +57,17 @@ var debug_unlocks_path: String = DebugUnlocks.USER_PATH
 ## Tests seulement : appliquer les déblocages de débogage même sous GUT (jamais en jeu).
 var force_debug_unlocks: bool = false
 
+## Fichier des réglages de l'appareil (jalon 6, T29). Les tests en injectent un (système de
+## fichiers en mémoire) avant add_child. Null : Boot ouvre le vrai (`user://settings.json`)
+## **seulement s'il est la scène principale lancée par le moteur** (même garde que la
+## sauvegarde) ; sinon réglages par défaut et rien d'écrit.
+var settings_store: SettingsStore = null
+## Appareil pour « Auto » ([method GraphicsProfile.current_device]) ; vide : l'appareil réel
+## (tests : injecter une description).
+var device: Dictionary = {}
+
+var _settings := GameSettings.new()
+var _profile: GraphicsProfile
 var _player: Player
 var _announcer := ZoneAnnouncer.new()
 var _library := DialogueLibrary.new()
@@ -109,6 +120,7 @@ var _in_foreground: bool = true
 
 func _ready() -> void:
 	GameState.new_game()
+	_load_settings()
 	# Compteur de fps de QA (journal « [perf] »), seulement en build debug, Boot scène principale.
 	if PerfCounter.is_allowed(OS.is_debug_build(), get_tree().current_scene == self):
 		add_child(PerfCounter.new())
@@ -235,6 +247,15 @@ func _ready() -> void:
 	else:
 		_menu.trainer_shown.connect(
 			func(_view: TrainerView) -> void: _menu_screen.show_placeholder(MenuRoute.TRAINER))
+	# Paramètres (T29) : reliés dès que l'écran porte l'interface du §6.12 (SettingsScreen du
+	# T28) ; sinon l'écran provisoire reste.
+	_menu.settings_changed.connect(_on_settings_changed)
+	_menu.save_requested.connect(_on_save_requested)
+	if _menu_screen.has_signal(&"setting_changed"):
+		_menu.save_result_shown.connect(_menu_screen.show_save_result)
+		_menu.settings_shown.connect(_menu_screen.show_settings)
+		_menu_screen.setting_changed.connect(_menu.change_setting)
+		_menu_screen.save_now_requested.connect(_menu.request_save)
 	# Une seule écoute de tout ce qui s'enregistre au Pokédex (jalon-06.md §6.9).
 	GameState.pokedex.recorded.connect(_on_pokedex_recorded)
 	GameState.flags.flag_changed.connect(_on_flag_changed)
@@ -251,6 +272,7 @@ func _ready() -> void:
 	SceneRouter.map_entered.connect(_interactions.on_map_entered)
 	SceneRouter.map_entered.connect(_starter_choice.on_map_entered)
 	_start_game()
+	_menu.set_settings(_settings, _profile_device_quality(), _can_write())
 
 
 func _process(delta: float) -> void:
@@ -293,6 +315,10 @@ func _unhandled_input(event: InputEvent) -> void:
 
 
 func _exit_tree() -> void:
+	# Statiques : un test ne doit jamais hériter des réglages du précédent.
+	Haptics.reset()
+	UiPrefs.reset()
+	Engine.max_fps = 0
 	var links: Array[Array] = [
 		[SceneRouter.transition_started, _on_transition_started],
 		[SceneRouter.map_changed, _on_map_changed],
@@ -312,6 +338,16 @@ func get_player() -> Player:
 
 func get_map() -> GameMap:
 	return SceneRouter.get_current_map()
+
+
+## Réglages courants (jalon 6, T29).
+func get_settings() -> GameSettings:
+	return _settings
+
+
+## Profil graphique appliqué (jalon 6, T29).
+func get_graphics_profile() -> GraphicsProfile:
+	return _profile
 
 
 ## Écran du Menu Dresseur (jalon 6).
@@ -822,3 +858,64 @@ func _refresh_controls() -> void:
 	_hud.set_controls_visible(not _menu.is_open() and not _runner.is_running() and not _cutscenes_node.is_running()
 		and not _starter_choice.is_sheet_open() and not _battle_director.is_running()
 		and not _encounters.is_running())
+
+
+## Lit les réglages (fichier de l'appareil, indépendant de la sauvegarde et du départ de
+## débogage) et les applique, avant le premier dialogue (jalon-06.md §6.12).
+func _load_settings() -> void:
+	if settings_store == null and get_tree().current_scene == self:
+		settings_store = SettingsStore.new()
+	if settings_store != null:
+		_settings = settings_store.load_settings()
+		if settings_store.last_status != OK and settings_store.last_status != ERR_FILE_NOT_FOUND:
+			push_warning("Réglages : %s (valeurs par défaut)" % settings_store.last_error)
+	if device.is_empty():
+		device = GraphicsProfile.current_device()
+	_apply_settings(_settings)
+
+
+func _profile_device_quality() -> GameSettings.Graphics:
+	return GraphicsProfile.auto_quality(device)
+
+
+## Un réglage a changé (geste de l'écran) : fichier réécrit, puis effet.
+func _on_settings_changed(settings: GameSettings) -> void:
+	if settings_store != null:
+		var error := settings_store.save_settings(settings)
+		if error != OK:
+			push_error("Réglages : écriture impossible (%s)" % error_string(error))
+	_apply_settings(settings)
+
+
+## Fait agir [param s] dans le jeu (jalon-06.md §6.12). Les écrans reçoivent les réglages
+## par leurs méthodes dédiées (derrière `has_method` tant que le HUD du T28 n'est pas là).
+func _apply_settings(s: GameSettings) -> void:
+	_settings = s
+	_runner.chars_per_second = s.chars_per_second()
+	_battle_director.speed_scale = s.battle_speed_scale()
+	_battle_director.confirm_forget = s.confirm_actions
+	_battle_hud.message_hold_scale = 1.0
+	_battle_stage.reduce_flashes = s.reduce_flashes
+	_menu_screen.speed_scale = s.menu_speed_scale()
+	Haptics.enabled = s.haptics
+	UiPrefs.apply(s)
+	if _hud.has_method(&"set_left_handed"):
+		_hud.call(&"set_left_handed", s.left_handed)
+	if _hud.has_method(&"set_joystick_style"):
+		_hud.call(&"set_joystick_style", s.joystick_scale, s.joystick_opacity)
+	if _hud.has_method(&"set_button_scale"):
+		_hud.call(&"set_button_scale", s.button_scale)
+	_profile = GraphicsProfile.resolve(s.graphics, device)
+	Engine.max_fps = _profile.max_fps
+	if _menu_screen.has_method(&"set_backdrop_blur"):
+		_menu_screen.call(&"set_backdrop_blur", _profile.menu_blur)
+	_battle_stage.backdrop_blur = not _profile.reduced_effects
+
+
+## « Sauvegarder maintenant » : écrit la sauvegarde et affiche le résultat dans l'écran.
+func _on_save_requested() -> void:
+	var text := SettingsViews.SAVE_DISABLED_TEXT
+	if _can_write():
+		var error := _write_save("menu")
+		text = SettingsViews.save_result_text(error, Time.get_datetime_dict_from_system())
+	_menu.show_save_result(text)
