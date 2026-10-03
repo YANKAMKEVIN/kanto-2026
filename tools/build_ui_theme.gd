@@ -69,6 +69,13 @@ extends SceneTree
 ##   MenuLeadName / MenuLeadLevel / MenuLeadHp   Label
 ##   MenuName / MenuSubtitle / MenuStat   Label  carte du Dresseur ; MenuIdBar   Panel
 ##   MenuObjective    Label  ligne d'objectif, discrète
+## Équipe (jalon 6, T7) :
+##   TeamSlot / TeamSlotSelected / TeamSlotSource / TeamSlotTarget / TeamSlotEmpty   Panel
+##   TeamSlotName / TeamSlotMeta / TeamCaption / TeamValue / TeamStat / TeamLevel   Label
+##   TeamTab          Button  onglet (bouton à bascule : enfoncé = ACCENT) ; TeamAction /
+##                    TeamActionOn  Button  actions de la fiche ; TeamSection  PanelContainer
+##   TeamPill / TeamPillAccent  PanelContainer  « Favori » et consigne du mode DÉPLACER ;
+##   TeamPillText / TeamPillAccentText  Label ; TeamEvoCircle  Panel
 ## tests/unit/test_ui_theme.gd vérifie que le fichier est à jour avec les tokens.
 
 const TOKENS_PATH: String = "res://game/ui/theme/ui_tokens.gd"
@@ -130,6 +137,7 @@ func _init() -> void:
 	_add_bag_and_capture(theme, bold, t)
 	_add_toast(theme, bold, t)
 	_add_menu(theme, bold, t)
+	_add_team(theme, bold, t)
 
 	var err := ResourceSaver.save(theme, THEME_PATH)
 	print("ui_theme.tres : ", error_string(err))
@@ -676,3 +684,92 @@ func _menu_card_box(bg: Color, border: Color, radius: int, t: GDScript) -> Style
 	box.shadow_size = t.SHADOW_SIZE
 	box.anti_aliasing = true
 	return box
+
+
+# --- Équipe (jalon 6, T7) -------------------------------------------------------------------------
+
+
+func _add_team(theme: Theme, bold: Font, t: GDScript) -> void:
+	var slot := _menu_card_box(t.PANEL_BG, t.PANEL_BORDER, t.RADIUS, t)
+	var slot_selected := _menu_card_box(t.PANEL_BG_STRONG, t.ACCENT, t.RADIUS, t)
+	slot_selected.set_border_width_all(t.TEAM_SLOT_SELECTED_BORDER)
+	slot_selected.shadow_color = t.MOVE_CARD_SELECTED_GLOW
+	slot_selected.shadow_size = t.MOVE_CARD_SELECTED_GLOW_SIZE
+	var slot_source := _menu_card_box(t.tinted(t.ACCENT, 0.12), t.ACCENT, t.RADIUS, t)
+	var slot_target := _menu_card_box(t.PANEL_BG_STRONG, t.ACCENT, t.RADIUS, t)
+	slot_target.set_border_width_all(t.TEAM_SLOT_SELECTED_BORDER)
+	var slot_empty := _menu_card_box(t.MOVE_CARD_EMPTY_BG, t.MOVE_CARD_EMPTY_BORDER, t.RADIUS, t)
+	slot_empty.shadow_size = 0
+	for pair: Array in [[&"TeamSlot", slot], [&"TeamSlotSelected", slot_selected],
+			[&"TeamSlotSource", slot_source], [&"TeamSlotTarget", slot_target],
+			[&"TeamSlotEmpty", slot_empty]]:
+		theme.set_type_variation(pair[0], &"Panel")
+		theme.set_stylebox(&"panel", pair[0], pair[1])
+	var section := _menu_card_box(t.TEAM_SECTION_BG, t.PANEL_BORDER, t.RADIUS, t)
+	section.shadow_size = 0
+	theme.set_type_variation(&"TeamSection", &"PanelContainer")
+	theme.set_stylebox(&"panel", &"TeamSection", section)
+	var circle := StyleBoxFlat.new()
+	circle.bg_color = t.CAPTURE_THUMB_BG
+	circle.border_color = t.CAPTURE_THUMB_BORDER
+	circle.set_border_width_all(t.BORDER_WIDTH)
+	circle.set_corner_radius_all(t.TEAM_EVO_CIRCLE)
+	circle.anti_aliasing = true
+	theme.set_type_variation(&"TeamEvoCircle", &"Panel")
+	theme.set_stylebox(&"panel", &"TeamEvoCircle", circle)
+
+	for pair: Array in [[&"TeamPill", t.tinted(t.ACCENT, 0.16), t.ACCENT],
+			[&"TeamPillAccent", t.ACCENT, t.ACCENT]]:
+		var pill := StyleBoxFlat.new()
+		pill.bg_color = pair[1]
+		pill.border_color = pair[2]
+		pill.set_border_width_all(t.BORDER_WIDTH)
+		pill.set_corner_radius_all(t.ROUND_BUTTON)
+		pill.anti_aliasing = true
+		pill.set_content_margin(SIDE_LEFT, t.TYPE_BADGE_PAD_H)
+		pill.set_content_margin(SIDE_RIGHT, t.TYPE_BADGE_PAD_H)
+		pill.set_content_margin(SIDE_TOP, t.TYPE_BADGE_PAD_V)
+		pill.set_content_margin(SIDE_BOTTOM, t.TYPE_BADGE_PAD_V)
+		theme.set_type_variation(pair[0], &"PanelContainer")
+		theme.set_stylebox(&"panel", pair[0], pill)
+	_add_plain_label(theme, &"TeamPillText", t.TYPE_BADGE_FONT, t.ACCENT, bold)
+	_add_plain_label(theme, &"TeamPillAccentText", t.TYPE_BADGE_FONT, t.ACCENT_TEXT, bold)
+
+	_add_plain_label(theme, &"TeamSlotName", t.TEAM_SLOT_NAME_FONT, t.TEXT, bold)
+	_add_plain_label(theme, &"TeamSlotMeta", t.TEAM_SLOT_META_FONT, t.TEXT_MUTED, null)
+	_add_plain_label(theme, &"TeamCaption", t.TEAM_BAR_LABEL_FONT, t.TEXT_MUTED, null)
+	_add_plain_label(theme, &"TeamValue", t.TEAM_STAT_FONT, t.TEXT, bold)
+	_add_plain_label(theme, &"TeamStat", t.TEAM_STAT_FONT, t.TEXT, null)
+	_add_plain_label(theme, &"TeamLevel", t.TEAM_LEVEL_FONT, t.TEXT, null)
+
+	var tab := _button_style(t.BUTTON_BG, true, t)
+	var tab_on := _button_style(t.ACCENT, false, t)
+	_add_button_variation(theme, &"TeamTab", tab, tab_on, bold, t)
+	theme.set_font_size(&"font_size", &"TeamTab", t.TEAM_TAB_FONT)
+	for state: StringName in [&"font_color", &"font_hover_color", &"font_focus_color"]:
+		theme.set_color(state, &"TeamTab", t.TEXT)
+	for state: StringName in [&"font_pressed_color", &"font_hover_pressed_color"]:
+		theme.set_color(state, &"TeamTab", t.ACCENT_TEXT)
+
+	var action := _button_style(t.BUTTON_BG, true, t)
+	action.set_content_margin(SIDE_LEFT, t.TEAM_SLOT_PAD)
+	action.set_content_margin(SIDE_RIGHT, t.TEAM_SLOT_PAD)
+	var action_pressed := _button_style(t.ACCENT_PRESSED, false, t)
+	var action_on := _button_style(t.ACCENT, false, t)
+	for pair: Array in [[&"TeamAction", action, action_pressed],
+			[&"TeamActionOn", action_on, action_pressed]]:
+		_add_button_variation(theme, pair[0], pair[1], pair[2], bold, t)
+		theme.set_font_size(&"font_size", pair[0], t.TEAM_ACTION_FONT)
+		theme.set_constant(&"icon_max_width", pair[0], t.TEAM_ACTION_ICON)
+		theme.set_constant(&"h_separation", pair[0], t.TEAM_HEADER_GAP)
+	for state: StringName in [&"font_color", &"font_hover_color", &"font_focus_color",
+			&"font_pressed_color", &"font_hover_pressed_color"]:
+		theme.set_color(state, &"TeamActionOn", t.ACCENT_TEXT)
+		theme.set_color(state, &"TeamAction", t.TEXT if state in [&"font_color",
+			&"font_hover_color", &"font_focus_color"] else t.ACCENT_TEXT)
+	for state: StringName in [&"icon_normal_color", &"icon_hover_color", &"icon_focus_color"]:
+		theme.set_color(state, &"TeamAction", t.TEXT)
+		theme.set_color(state, &"TeamActionOn", t.ACCENT_TEXT)
+	for state: StringName in [&"icon_pressed_color", &"icon_hover_pressed_color"]:
+		theme.set_color(state, &"TeamAction", t.ACCENT_TEXT)
+		theme.set_color(state, &"TeamActionOn", t.ACCENT_TEXT)

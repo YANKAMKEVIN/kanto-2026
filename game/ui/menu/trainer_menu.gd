@@ -21,6 +21,10 @@ signal route_requested(route: MenuRoute)
 signal back_requested
 ## × touché.
 signal close_requested
+## Relais de l'écran Équipe (6A) : Pokémon sélectionné, échange A ↔ B, favori basculé.
+signal team_member_selected(index: int)
+signal team_member_moved(from: int, to: int)
+signal team_favorite_toggled(index: int)
 
 ## Titre des écrans provisoires (carte → « Équipe »…), texte d'interface.
 const PLACEHOLDER_TITLES: Dictionary[StringName, String] = {
@@ -47,6 +51,8 @@ var _amount: float = 0.0
 var _tween: Tween
 var _dashboard: DashboardScreen
 var _placeholder: PlaceholderScreen
+## Équipe (6A) : instanciée à la première visite, puis gardée.
+var _team: TeamScreen
 
 @onready var _root: Control = %Root
 @onready var _backdrop: ColorRect = %Backdrop
@@ -142,6 +148,24 @@ func show_dashboard(view: DashboardView) -> void:
 	_select(_dashboard)
 
 
+## Écran Équipe (6A) : [param view] et le Pokémon [param selected] sélectionné. Rappelé pendant
+## que l'Équipe est affichée, il met à jour sans rejouer l'entrée (l'onglet reste ouvert).
+func show_team(view: TeamView, selected: int) -> void:
+	if _team == null:
+		_team = TeamScreen.new()
+		_team.speed_scale = speed_scale
+		_team.back_requested.connect(back_requested.emit)
+		_team.route_requested.connect(route_requested.emit)
+		_team.member_selected.connect(team_member_selected.emit)
+		_team.member_moved.connect(team_member_moved.emit)
+		_team.favorite_toggled.connect(team_favorite_toggled.emit)
+		_team.use_item_requested.connect(_on_team_use_item)
+		_host.add_child(_team)
+		_team.hide_now()
+	_team.show_team(view, selected)
+	_select(_team)
+
+
 ## Écran provisoire « ÉQUIPE — À venir » avec son RETOUR.
 func show_placeholder(screen: StringName) -> void:
 	_placeholder.set_screen_title(PLACEHOLDER_TITLES.get(screen, String(screen)))
@@ -159,6 +183,11 @@ func get_dashboard() -> DashboardScreen:
 
 func get_placeholder() -> PlaceholderScreen:
 	return _placeholder
+
+
+## L'écran Équipe (null avant la première visite).
+func get_team() -> TeamScreen:
+	return _team
 
 
 func get_close_button() -> Button:
@@ -197,6 +226,8 @@ func _screens() -> Array[MenuScreen]:
 		screens.append(_dashboard)
 	if _placeholder != null:
 		screens.append(_placeholder)
+	if _team != null:
+		screens.append(_team)
 	return screens
 
 
@@ -242,3 +273,8 @@ func _on_card_chosen(screen: StringName) -> void:
 
 func _on_lead_chosen() -> void:
 	route_requested.emit(MenuRoute.team(0))
+
+
+## UTILISER UN OBJET : lien croisé vers le Sac, filtré sur ce Pokémon (dossier 08 §6, 6B).
+func _on_team_use_item(index: int) -> void:
+	route_requested.emit(MenuRoute.bag(MenuRoute.BAG_CONTEXT_TEAM, index))
