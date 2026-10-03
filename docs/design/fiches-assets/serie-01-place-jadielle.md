@@ -599,3 +599,4 @@ Le sol de la place est complet : herbe, pavés, bord (référence de rendu), dé
 
 **Défaut d'échelle (règle 4)** : le Centre est affiché sur **8 cases de large** (environ 8 × 6,9 cases ; porte ≈ 1,8 × 1,5 case) au lieu de 6 × 6. Emprise de collision à recalculer dans la scène prototype (8 de large). Même règle pour la Boutique, qui doit rester sœur du Centre.
 **À noter pour le sol** : à côté des bâtiments, les pavés paraissent gros ; essai à × 0,7 dans la scène prototype.
+| GH_r2 (retouche) | même forme, rendu peint (grain de pinceau, contour coloré), lumière dorée marquée : le Centre et les arbres semblent de la même main ; pavés à × 0,7 plus justes à côté | **validé** |
