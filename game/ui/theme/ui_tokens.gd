@@ -687,6 +687,45 @@ const TEAM_SLOT_SELECTED_BORDER := 4
 const HAPTIC_TEAM_DRAG_MS := 25
 const HAPTIC_TEAM_SWAP_MS := 20
 
+# Écran Sac du Menu Dresseur (jalon 6, T11).
+## Colonnes : catégories à gauche, cartes au centre (le reste), aperçu à droite.
+const BAG_SCREEN_LEFT_WIDTH := 440
+const BAG_SCREEN_DETAIL_WIDTH := 580
+const BAG_SCREEN_GAP := GAP
+const BAG_SCREEN_TITLE_FONT := FONT_TITLE
+const BAG_SCREEN_HEADER_GAP := 12
+const BAG_TAB_COUNT_FONT := 26
+const BAG_TAB_COUNT_WIDTH := 56
+const BAG_SORT_WIDTH := 400
+const BAG_SORT_ICON := 40
+const BAG_BIG_ICON := 208
+const BAG_STAR_ICON := 32
+const BAG_CARD_STAR_ICON := 36
+const BAG_NOTE_FONT := FONT_CAPTION
+const BAG_HINT_FONT := 22
+## Appui long sur une carte : vibration de confirmation (favori marqué ou retiré).
+const HAPTIC_BAG_FAVORITE_MS := 25
+# Choix du Pokémon (PartyPicker) et résultat d'un usage (UseResultBar).
+const PICKER_ROW_HEIGHT := 140
+const PICKER_COLUMN_WIDTH := 540
+const PICKER_COLUMNS := 2
+const PICKER_GAP := 14
+const PICKER_PAD := 10
+const PICKER_THUMB := 116
+const PICKER_NAME_FONT := FONT_BODY
+const PICKER_META_FONT := 26
+const PICKER_TITLE_FONT := FONT_BUTTON
+const PICKER_CHEVRON := 48
+const PICKER_UNUSABLE_ALPHA := 0.6
+const PICKER_SELECTED_BORDER := 4
+const RESULT_HEIGHT := TOUCH_MIN
+const RESULT_FONT := FONT_BODY
+const RESULT_PAD_H := 28
+const RESULT_PAD_V := 8
+const RESULT_ICON := 56
+const RESULT_BG_ALPHA := 0.16
+const RESULT_REPEAT_WIDTH := 460
+
 
 ## [param tint] avec l'opacité [param alpha] (les écrans ne construisent jamais de couleur).
 static func tinted(tint: Color, alpha: float) -> Color:

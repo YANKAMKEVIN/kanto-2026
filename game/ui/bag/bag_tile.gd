@@ -9,17 +9,36 @@ extends PanelContainer
 
 ## Relâchement après un appui sur la case : le toucher compte.
 signal tapped
+## Option (long_press_enabled) : le doigt est resté LONG_PRESS sur la case sans s'éloigner ; émis
+## une seule fois, et le relâchement qui suit n'est alors PAS un toucher.
+signal long_pressed
 
 ## Variation de thème au repos et sélectionnée (fixées par la case concrète).
 var normal_variation: StringName = &""
 var selected_variation: StringName = &""
 ## Échelle d'une case sélectionnée (1 = inchangée).
 var selected_scale: float = 1.0
+## Active l'appui long (BagScreen : favori). Faux par défaut : le Sac du combat n'en a pas.
+var long_press_enabled: bool = false
 
 var _selected: bool = false
 var _held: bool = false
 var _press_position: Vector2 = Vector2.ZERO
 var _scale_tween: Tween
+var _held_time: float = 0.0
+var _long_done: bool = false
+
+
+func _init() -> void:
+	set_process(false)
+
+
+func _process(delta: float) -> void:
+	_held_time += delta
+	if not _long_done and _held_time >= UiTokens.LONG_PRESS:
+		_long_done = true
+		set_process(false)
+		long_pressed.emit()
 
 
 func _gui_input(event: InputEvent) -> void:
@@ -32,12 +51,18 @@ func _gui_input(event: InputEvent) -> void:
 			return
 		_held = true
 		_press_position = mouse.global_position
+		_held_time = 0.0
+		_long_done = false
+		set_process(long_press_enabled)
 		_animate_scale()
 		return
 	if not _held:
 		return
 	_held = false
+	set_process(false)
 	_animate_scale()
+	if _long_done:
+		return
 	var inside := Rect2(Vector2.ZERO, size).has_point(mouse.position)
 	var moved := mouse.global_position.distance_to(_press_position)
 	if inside and moved <= UiTokens.BAG_TAP_SLOP:

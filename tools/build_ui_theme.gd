@@ -74,6 +74,9 @@ extends SceneTree
 ##   TeamSlotName / TeamSlotMeta / TeamCaption / TeamValue / TeamStat / TeamLevel   Label
 ##   TeamTab          Button  onglet (bouton à bascule : enfoncé = ACCENT) ; TeamAction /
 ##                    TeamActionOn  Button  actions de la fiche ; TeamSection  PanelContainer
+##   Sac du menu (T11) : BagTabCount / BagNote / BagHint / PickerTitle / PickerName / PickerMeta /
+##     PickerReason / ResultText  Label ; PickerRow / PickerRowSelected / PickerRowOff /
+##     ResultBar / ResultBarRefused  PanelContainer
 ##   TeamPill / TeamPillAccent  PanelContainer  « Favori » et consigne du mode DÉPLACER ;
 ##   TeamPillText / TeamPillAccentText  Label ; TeamEvoCircle  Panel
 ## tests/unit/test_ui_theme.gd vérifie que le fichier est à jour avec les tokens.
@@ -138,6 +141,7 @@ func _init() -> void:
 	_add_toast(theme, bold, t)
 	_add_menu(theme, bold, t)
 	_add_team(theme, bold, t)
+	_add_bag_screen(theme, bold, t)
 
 	var err := ResourceSaver.save(theme, THEME_PATH)
 	print("ui_theme.tres : ", error_string(err))
@@ -773,3 +777,36 @@ func _add_team(theme: Theme, bold: Font, t: GDScript) -> void:
 	for state: StringName in [&"icon_pressed_color", &"icon_hover_pressed_color"]:
 		theme.set_color(state, &"TeamAction", t.ACCENT_TEXT)
 		theme.set_color(state, &"TeamActionOn", t.ACCENT_TEXT)
+
+
+# --- Écran Sac du menu et choix du Pokémon (jalon 6, T11) ---------------------------------------
+
+
+func _add_bag_screen(theme: Theme, bold: Font, t: GDScript) -> void:
+	var row := _bag_box(t.PANEL_BG, t.PANEL_BORDER, t.BORDER_WIDTH, t.PICKER_PAD, t.PICKER_PAD, t)
+	var row_selected := _bag_box(t.PANEL_BG_STRONG, t.ACCENT, t.PICKER_SELECTED_BORDER,
+		t.PICKER_PAD, t.PICKER_PAD, t)
+	row_selected.shadow_color = t.MOVE_CARD_SELECTED_GLOW
+	row_selected.shadow_size = t.MOVE_CARD_SELECTED_GLOW_SIZE
+	var row_off := _bag_box(t.MOVE_CARD_EMPTY_BG, t.MOVE_CARD_EMPTY_BORDER, t.BORDER_WIDTH,
+		t.PICKER_PAD, t.PICKER_PAD, t)
+	for pair: Array in [[&"PickerRow", row], [&"PickerRowSelected", row_selected],
+			[&"PickerRowOff", row_off]]:
+		theme.set_type_variation(pair[0], &"PanelContainer")
+		theme.set_stylebox(&"panel", pair[0], pair[1])
+	var bar := _bag_box(t.tinted(t.SUCCESS, t.RESULT_BG_ALPHA), t.SUCCESS, t.BORDER_WIDTH,
+		t.RESULT_PAD_H, t.RESULT_PAD_V, t)
+	theme.set_type_variation(&"ResultBar", &"PanelContainer")
+	theme.set_stylebox(&"panel", &"ResultBar", bar)
+	var refused := _bag_box(t.tinted(t.ACCENT, t.RESULT_BG_ALPHA), t.ACCENT, t.BORDER_WIDTH,
+		t.RESULT_PAD_H, t.RESULT_PAD_V, t)
+	theme.set_type_variation(&"ResultBarRefused", &"PanelContainer")
+	theme.set_stylebox(&"panel", &"ResultBarRefused", refused)
+	_add_plain_label(theme, &"BagTabCount", t.BAG_TAB_COUNT_FONT, t.TEXT_MUTED, bold)
+	_add_plain_label(theme, &"BagNote", t.BAG_NOTE_FONT, t.ACCENT, bold)
+	_add_plain_label(theme, &"BagHint", t.BAG_HINT_FONT, t.TEXT_MUTED, null)
+	_add_plain_label(theme, &"PickerTitle", t.PICKER_TITLE_FONT, t.TEXT, bold)
+	_add_plain_label(theme, &"PickerName", t.PICKER_NAME_FONT, t.TEXT, bold)
+	_add_plain_label(theme, &"PickerMeta", t.PICKER_META_FONT, t.TEXT_MUTED, null)
+	_add_plain_label(theme, &"PickerReason", t.PICKER_META_FONT, t.TEXT, bold)
+	_add_plain_label(theme, &"ResultText", t.RESULT_FONT, t.TEXT, bold)
