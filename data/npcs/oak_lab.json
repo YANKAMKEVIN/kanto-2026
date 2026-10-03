@@ -2,17 +2,17 @@
 	"maya": { "cell": [5, 3], "facing": "up", "sprite": "maya", "dialogue": "maya" },
 	"bulbasaur": {
 		"cell": [10, 5], "facing": "down", "sprite": "bulbasaur",
-		"dialogue": "observe_bulbasaur", "verb": "observe", "lift": 56,
+		"dialogue": "observe_bulbasaur", "verb": "observe", "species": "bulbasaur", "lift": 56,
 		"hop_style": "calm", "unless": ["taken_bulbasaur"]
 	},
 	"charmander": {
 		"cell": [11, 5], "facing": "down", "sprite": "charmander",
-		"dialogue": "observe_charmander", "verb": "observe", "lift": 56,
+		"dialogue": "observe_charmander", "verb": "observe", "species": "charmander", "lift": 56,
 		"hop_style": "eager", "unless": ["taken_charmander"]
 	},
 	"squirtle": {
 		"cell": [12, 5], "facing": "down", "sprite": "squirtle",
-		"dialogue": "observe_squirtle", "verb": "observe", "lift": 56,
+		"dialogue": "observe_squirtle", "verb": "observe", "species": "squirtle", "lift": 56,
 		"hop_style": "playful", "unless": ["taken_squirtle"]
 	},
 	"oak": { "cell": [8, 4], "facing": "down", "sprite": "oak", "dialogue": "oak_lab_waiting", "if": ["oak_met"] },

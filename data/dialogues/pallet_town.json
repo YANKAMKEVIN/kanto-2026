@@ -13,6 +13,18 @@
 			{ "text": "...enfin, presque.", "react": "leo_rattata", "pause": 0.6 }
 		]
 	},
+	"observe_aoki_pidgey": {
+		"draft": true,
+		"speaker": "Roucool",
+		"narration": true,
+		"pages": ["Il picore les graines, l'œil attentif."]
+	},
+	"observe_leo_rattata": {
+		"draft": true,
+		"speaker": "Rattata",
+		"narration": true,
+		"pages": ["Il te renifle, les moustaches frémissantes."]
+	},
 	"haru": {
 		"speaker": "Haru",
 		"pages": ["La mer est calme aujourd'hui.", "Les Pokémon le sentent avant nous."]
