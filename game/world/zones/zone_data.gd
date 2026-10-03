@@ -21,5 +21,14 @@ var name: String = ""
 var kind: StringName = KIND_TOWN
 ## Cartes de la zone (identifiants de [MapCatalog]) ; vide tant que la zone n'est pas construite.
 var maps: Array[StringName] = []
+## Connexions, sous le nom dans le panneau de la Carte (« Bourg Palette — Jadielle », Q-15) ;
+## "" = pas de sous-titre.
+var subtitle: String = ""
+## Courte description du paysage (panneau de la Carte) ; "" = pas de description.
+var description: String = ""
+## Sous-titre et description provisoires, à relire par Kevin.
+var draft: bool = false
+## Services de la zone (Centre, Boutique, Arène), découverts un à un ; aucun au J6.
+var services: Array[ZoneService] = []
 ## Fichier d'origine (messages d'erreur).
 var source: String = ""

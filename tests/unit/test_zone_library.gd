@@ -105,7 +105,89 @@ func test_same_zones_as_the_kanto_illustration() -> void:
 	assert_eq(ids, area_ids)
 
 
+## Carte (T18) : chaque zone construite a sa description provisoire ; la Route 1 annonce ses
+## connexions comme son titre en jeu (Q-15).
+func test_built_zones_have_their_map_texts() -> void:
+	_zones.load_file()
+	for id: StringName in _zones.get_ids():
+		var zone := _zones.get_zone(id)
+		if not zone.maps.is_empty():
+			assert_false(zone.description.is_empty(), "%s : description" % id)
+			assert_true(zone.draft, "%s : textes à relire par Kevin" % id)
+		assert_false(zone.description.contains("???"), id)
+		assert_false(zone.subtitle.contains("???"), id)
+	assert_eq(_zones.get_zone(&"route_1").subtitle, "Bourg Palette — Jadielle")
+	assert_eq(_zones.get_zone(&"route_1").subtitle, _root_property(&"route_1", &"region"),
+		"même connexion que le titre de zone en jeu")
+	assert_eq(_zones.get_zone(&"pallet_town").subtitle, "")
+	assert_eq(_zones.get_zone(&"viridian_city").description, "", "pas encore écrite")
+
+
+func test_service_catalog_and_no_service_yet() -> void:
+	_zones.load_file()
+	assert_eq(_zones.get_service_ids(), [&"pokemon_center", &"poke_mart", &"gym"]
+		as Array[StringName])
+	assert_eq(_zones.service_name(&"pokemon_center"), "Centre Pokémon")
+	assert_eq(_zones.service_name(&"poke_mart"), "Boutique")
+	assert_eq(_zones.service_name(&"gym"), "Arène")
+	assert_eq(_zones.service_name(&"casino"), "")
+	for id: StringName in _zones.get_ids():
+		assert_true(_zones.get_zone(id).services.is_empty(), "%s : aucun service au J6" % id)
+
+
 # --- Règles --------------------------------------------------------------------------------
+
+func test_map_texts_and_services_are_read() -> void:
+	assert_true(_zones.add_from_dict({
+		"services": {"pokemon_center": {"name": "Centre Pokémon"}},
+		"zones": {"v": {"name": "Jadielle", "kind": "town", "maps": ["v", "v_center"],
+			"subtitle": "Route 1 — Route 2", "description": "Une ville.", "draft": true,
+			"services": [{"id": "pokemon_center", "found_on": "v_center"}]}},
+	}, "t"), "\n".join(_zones.get_errors()))
+	var zone := _zones.get_zone(&"v")
+	assert_eq(zone.subtitle, "Route 1 — Route 2")
+	assert_eq(zone.description, "Une ville.")
+	assert_true(zone.draft)
+	assert_eq(zone.services.size(), 1)
+	assert_eq(zone.services[0].id, &"pokemon_center")
+	assert_eq(zone.services[0].found_on, &"v_center")
+	assert_true(_zones.add_from_dict({"zones": {"w": {"name": "W", "kind": "route"}}}, "t"))
+	assert_eq(_zones.get_zone(&"w").subtitle, "")
+	assert_false(_zones.get_zone(&"w").draft)
+
+
+func test_invalid_map_texts_and_services_are_rejected() -> void:
+	assert_false(_zones.add_from_dict({
+		"services": {"pokemon_center": {"name": "Centre Pokémon"}, "bad": {"title": "X"},
+			"empty": {"name": " "}},
+		"zones": {
+			"blank": {"name": "X", "kind": "town", "subtitle": ""},
+			"number": {"name": "X", "kind": "town", "description": 3},
+			"draft": {"name": "X", "kind": "town", "draft": "oui"},
+			"unknown": {"name": "X", "kind": "town", "maps": ["u"],
+				"services": [{"id": "casino", "found_on": "u"}]},
+			"elsewhere": {"name": "X", "kind": "town", "maps": ["e"],
+				"services": [{"id": "pokemon_center", "found_on": "other"}]},
+			"twice": {"name": "X", "kind": "town", "maps": ["t"],
+				"services": [{"id": "pokemon_center", "found_on": "t"},
+					{"id": "pokemon_center", "found_on": "t"}]},
+			"shape": {"name": "X", "kind": "town", "services": {"id": "pokemon_center"}},
+			"typo": {"name": "X", "kind": "town", "maps": ["y"],
+				"services": [{"id": "pokemon_center", "found_on": "y", "at": "y"}]},
+		}}, "t"))
+	assert_eq(_zones.get_ids(), [] as Array[StringName], "toutes écartées")
+	assert_eq(_zones.get_service_ids(), [&"pokemon_center"] as Array[StringName])
+	var errors := "\n".join(_zones.get_errors())
+	assert_string_contains(errors, "« subtitle » est un texte non vide")
+	assert_string_contains(errors, "« description » est un texte non vide")
+	assert_string_contains(errors, "« draft » vaut true ou false")
+	assert_string_contains(errors, "service « casino » absent du catalogue")
+	assert_string_contains(errors, "« found_on » doit être une carte de la zone")
+	assert_string_contains(errors, "service « pokemon_center » en double")
+	assert_string_contains(errors, "clé inconnue « at »")
+	assert_string_contains(errors, "clé inconnue « title »")
+	assert_push_error_count(11)
+
 
 func test_maps_default_to_empty() -> void:
 	assert_true(_zones.add_from_dict({"zones": {"z": {"name": "Z", "kind": "place"}}}, "t"))

@@ -316,6 +316,18 @@ Tests : `test_pokedex_library` (données réelles : 0 erreur, espèces connues, 
 
 Tests : `test_zone_library` (étendu : rectangles dans l'image, sous-titres), `test_map_journal` (zone non découverte : pas de panneau ; intérieur → sa ville ; Pokémon observés vides tant que le Pokédex n'est pas visible ; objets trouvés de la zone seulement).
 
+**Fait au T18 (2026-10-03)** — ce qui diffère du croquis ci-dessus :
+- Fichiers : `data/world/zones.json` ; `game/world/zones/` : `zone_data.gd` (+ `subtitle`, `description`, `draft`, `services`), **`zone_service.gd`** (`ZoneService` : `id`, `found_on`), `zone_library.gd` (catalogue, `service_name`, `get_service_ids`) ; `game/systems/menu/` : **`map_journal.gd`**, **`map_illustration.gd`**, `views/map_view.gd`, `map_zone_view.gd`, `zone_panel_view.gd`, `zone_entry_view.gd`. Tests : `test_map_journal`, `test_map_illustration` (nouveaux), `test_zone_library` (étendu). Aucune interface ; `Boot`, `MenuDirector`, `GameState`, `TrainerMenu` intacts.
+- **`zones.json`** : catalogue racine **`services`** (`pokemon_center` « Centre Pokémon », `poke_mart` « Boutique », `gym` « Arène ») ; par zone, `subtitle`, `description` (textes non vides, facultatifs), `draft`, `services: [{ "id", "found_on" }]` (service du catalogue, une fois, `found_on` = **une carte de la zone** : le service est découvert à la première entrée sur cette carte, l'intérieur du Centre par exemple). Aucun service au J6. Textes : Bourg Palette (description, **pas de sous-titre**, défaut) et Route 1 (« Bourg Palette — Jadielle », le même que son titre en jeu, test croisé ; description) ; les 20 autres zones n'ont rien (jamais affichées avant d'être construites ; test : toute zone **avec des cartes** a sa description).
+- **`MapIllustration`** (pure) lit `kanto_placeholder_areas.json` (image, taille, rectangles entiers dans l'image, clés strictes) et vérifie ses identifiants contre `ZoneLibrary` (`check_references`). La géométrie reste dans le fichier de l'illustration (décision du T2) ; le **T18 ne la recopie pas** dans `zones.json` (la note du T19 « à recopier au T18 » est caduque). C'est la vue qui porte les rectangles : l'écran Carte ne lit aucun fichier. (`PokedexHabitatMap`, du T15, lit encore le fichier lui-même : il pourra passer par `MapIllustration` à l'occasion, sans urgence.)
+- **`MapJournal`** (statique) : `TITLE` (« CARTE — KANTO ») ; `discovered_zones(discovered_maps, zones)` → zone → date ISO de la première visite (la plus ancienne de ses cartes ; une date vide cède à toute date connue), dans l'ordre de `zones.json` ; `player_zone(current_map, zones)` (un intérieur → sa ville) ; `is_discovered(zone, state, zones)` ; `view(state, zones, illustration, zone = &"") -> MapView` ; `panel(zone, state, data, zones, items, pokedex_visible) -> ZonePanelView` (**null** si non découverte) ; `observed_pokemon(zone, pokedex, data, zones)` et `found_items(zone, found, items, zones)` (publiques, testées seules). Règles :
+  - **la zone du joueur est toujours découverte** (on y est ; utile si une carte n'a pas été datée, départs de débogage) ;
+  - Pokémon observés = espèces vues sur une carte de la zone (même règle que l'onglet Habitat : `PokedexQuery.habitat_zones`), **par numéro du Pokédex**, espèce inconnue des données écartée ; **vides si le Pokédex n'est pas visible** ;
+  - objets trouvés = `GameState.found_items` dont la carte est dans la zone (les objets **reçus**, comme les Poké Balls de Chen, n'y sont jamais) ; **une ligne par objet**, ordre de la première trouvaille, « ×2 » s'il a été trouvé deux fois (pas un total) ; un objet absent d'`ItemLibrary` n'est jamais listé (jamais d'identifiant brut) ; `items` null → aucun objet ;
+  - services = ceux dont la carte `found_on` est dans `discovered_maps`, ordre des données ;
+  - panneau à l'arrivée (`MapView.selected`) : la zone de la route **si elle est découverte** (lien Habitat du Pokédex), sinon celle du joueur ; zone inconnue ou non découverte demandée → celle du joueur, jamais un panneau vide ni un nom.
+- Le croquis `panel(zone, state, data, zones, pokedex_visible)` gagne **`items: ItemLibrary`** (noms des objets) ; `view` prend l'illustration. Contrat des vues et partage T20 ∥ T21 : §6.10.
+
 ### 3.7 Dresseur (T23)
 
 - `data/trainer/moments.json` (`MomentLibrary`) : par type de moment (`starter`, `rival_battle`, `first_capture`, `zone_arrival`), un titre et un détail (`{species}`, `{zone}`, `{outcome}`), textes `draft`.
@@ -893,6 +905,70 @@ func open_species(species: StringName) -> void          # PokedexQuery.sheet ; n
 
 Ordre : T15 ∥ T16 ; **T15 fusionné d'abord**, puis T16 relie l'écran dans `Boot` (garde `has_signal(&"pokedex_species_opened")`, comme au 6A et au 6B ; `pokedex_back()` avant `bag_back()` / `handle_back` au retour Android) et finit `test_menu_pokedex.gd` (vrai `Boot`, `debug_pokedex`) et ses captures ; puis T17. Avant la fusion, T16 teste avec `fake_trainer_menu.gd` étendu ; T15 teste avec des vues fabriquées **ou** construites par `PokedexQuery` sur un Pokédex de test.
 
+### 6.10 Contrat du 6D et partage T20 ∥ T21 (figé au T18)
+
+**Fondations figées** (T18, `game/systems/menu/` ; même règle qu'au §6.6 : on peut seulement **ajouter** des champs, par l'architecte ; **texte vide = élément absent**, **liste vide = section absente**, titre compris) :
+- `MapView` : `title` (« CARTE — KANTO »), `image_path` / `image_size` (illustration ; les rectangles sont en pixels de cette image), `zones: Array[MapZoneView]` (**seulement les zones découvertes**, ordre de `zones.json`), `player_zone` (&"" = pas de portrait), `selected` (panneau à ouvrir à l'arrivée, &"" = aucun), `zone(id)` (null si non découverte), `player_area()`.
+- `MapZoneView` : `zone_id`, `name`, `kind` (`ZoneData.KIND_*`), `area: Rect2` (vide si l'illustration n'en a pas), `current` (le joueur y est), `is_touchable()` (= rectangle connu).
+- `ZonePanelView` : `zone_id`, `name`, `subtitle`, `description`, `current`, `pokemon` / `items` / `services` (`Array[ZoneEntryView]`), titres de section `POKEMON_TITLE` (« Pokémon observés »), `ITEMS_TITLE` (« Objets trouvés »), `SERVICES_TITLE` (« Services »). `pokemon` est **vide tant que le Pokédex n'est pas visible**.
+- `ZoneEntryView` : `id` (espèce, objet ou service), `name`, `count`, `count_text()` (« ×2 », sinon "").
+- `MapJournal`, `MapIllustration`, `ZoneLibrary` (textes et services), `ZoneService` (§3.6, « Fait au T18 »).
+
+Une zone **non découverte** n'a **ni vue, ni nom, ni toucher, ni panneau** (Q-15) ; l'illustration seule la montre (géographie entière, pas de brouillard noir, dossier 08 §5).
+
+**`MapScreen`** (T20, `game/ui/menu/map/map_screen.gd`, construit en code comme Équipe, Sac et Pokédex ; DA de `menu-carte-v1.jpg` **sans** : « Se rendre ici » ni aucun bouton de déplacement, « 4/6 », « 8 / 12 zones découvertes » ni aucun total, « ??? » ni silhouettes, onglet Îles Sevii, heure, argent, compteur du Pokédex, bandeau de vignettes en bas, étiquettes des zones non découvertes) :
+```gdscript
+class_name MapScreen extends MenuScreen
+signal zone_touched(zone: StringName)          # une zone DÉCOUVERTE touchée sur l'illustration ;
+                                               # un seul signal par toucher, jamais une autre zone
+func show_map(view: MapView) -> void           # illustration, zones découvertes, portrait
+func show_zone(view: ZonePanelView) -> void    # panneau latéral, sans changer d'écran
+```
+- **Illustration entière** (`load(view.image_path)`, filtre linéaire : c'est un décor HD), à l'échelle qui tient dans la place laissée par le panneau, rapport gardé ; un rectangle `area` se convertit avec la même échelle et le même décalage.
+- **Zones touchables** : seulement `view.zones` dont `is_touchable()` ; zone de toucher = le rectangle mis à l'échelle et **agrandi autour de son centre jusqu'à `UiTokens.TOUCH_MIN`** au moins (la Route 1 fait 50 px de large sur l'image) ; si deux zones agrandies se recouvrent, le centre le plus proche gagne (défaut laissé à T20). Nom discret sur les zones découvertes seulement ; très peu d'icônes.
+- **Portrait du joueur** : `assets/ui/map/player_portrait.png` (provisoire, comme tous les personnages jusqu'à la phase DA), petit, au centre de `view.player_area()` ; absent si `player_zone` est vide. Pas de flèche GPS, pas de ligne.
+- **Panneau** (`ZonePanel`, `game/ui/menu/map/zone_panel.gd`) : nom, sous-titre, description, puis les trois sections **seulement si leur liste n'est pas vide** (titre de section compris) ; Pokémon : sprite (`BattleStage.sprite_path(id, false)`, NEAREST, échelle entière ; **sprite absent → le nom seul**, jamais une silhouette) et nom, **toucher → un `route_requested(MenuRoute.pokedex(MenuRoute.DEX_FILTER_ALL, id))`** ; objets : icône (`BagEntryView.icon_for(id)`), nom, `count_text()` ; services : nom. La zone du panneau est mise en avant sur l'illustration. Aucun bouton d'action dans le panneau.
+- Toucher une zone n'ouvre pas le panneau tout seul : l'écran émet `zone_touched` et attend `show_zone` (le directeur décide). `show_map` / `show_zone` rappelés écran affiché : mise à jour **sans** rejouer l'entrée.
+- Retour (« ‹ », retour Android) : `back_requested`, comme les autres écrans ; **pas de `map_back`** (le panneau est latéral, il ne recouvre rien en paysage).
+
+**`TrainerMenu`** (T20 ajoute ; le reste est inchangé) :
+```gdscript
+signal map_zone_touched(zone: StringName)                # relais de MapScreen.zone_touched
+func show_map(view: MapView) -> void                     # MapScreen dans l'hôte (1re visite, puis gardé)
+func show_map_zone(view: ZonePanelView) -> void
+```
+Le lien Pokémon observé → Pokédex est émis par `TrainerMenu.route_requested` (relais, comme Habitat → Carte).
+
+**`MenuDirector`** (T21 ajoute) : `setup(..., items, dex, illustration: MapIllustration = null)` (paramètre en fin, facultatif) ;
+```gdscript
+signal map_shown(view: MapView)                          # Boot → TrainerMenu.show_map
+signal map_zone_shown(view: ZonePanelView)               # Boot → show_map_zone
+func open_zone(zone: StringName) -> void                 # MapJournal.panel(zone, state, data, zones,
+                                                         # items, unlocks.pokedex_visible()) ;
+                                                         # null (non découverte) → rien
+```
+`_on_route_shown` : `MenuRoute.MAP` → `map_shown(MapJournal.view(state, zones, illustration, params.zone))`, puis, si `view.selected` n'est pas vide, `open_zone(view.selected)`. Rien n'est sauvegardé (la Carte ne change pas l'état : pas de `mark_changed`). La zone touchée n'est pas retenue d'une visite à l'autre (défaut) : chaque arrivée suit la route.
+
+**`Boot`** (T21) : `MapIllustration.load_file()` + `check_references(zones)` au démarrage (erreurs au journal), passée à `MenuDirector.setup` ; `TrainerMenu.map_zone_touched` → `open_zone` ; `MenuDirector.map_shown` → `show_map`, `map_zone_shown` → `show_map_zone` (garde `has_signal(&"map_zone_touched")`, comme aux sous-jalons précédents). Rien à ajouter au retour Android. **Liens** (§6.3) : Habitat → Carte (`MenuRoute.map(zone)`, posé au 6C, arrive enfin sur l'écran) ; Pokémon observé → Pokédex ; aller-retour Pokédex → Carte → Pokédex **sans empiler** (déjà garanti par `MenuNavigator.go`, à vérifier sur le vrai `Boot`).
+
+| Fichiers | T20 (ui-mobile) | T21 (constructeur-monde) |
+|---|---|---|
+| `game/ui/menu/map/**` (MapScreen, ZonePanel) | **oui** | lecture |
+| `game/ui/menu/trainer_menu.gd/.tscn` (`show_map*`, signal `map_zone_touched`) | **oui** | lecture |
+| `game/ui/theme/ui_tokens.gd`, `ui_theme.tres`, `tools/build_ui_theme.gd` (`MAP_*`) | **oui** | lecture |
+| `assets/ui/map/**` (illustration et portrait : **lecture**, ni redessinés ni déplacés), `tools/capture_menu.gd` (scénarios `map`, `map_panel`, `map_dex`) | **oui** (capture) | lecture (captures du T21 : son propre outil) |
+| `tests/integration/test_map_screen.gd`, `test_trainer_menu.gd` (étendu) | **oui** | — |
+| `game/systems/menu/menu_director.gd`, `game/boot.gd`, `game/boot.tscn` | — | **oui** |
+| `tests/helpers/fake_trainer_menu.gd` (étendu), `tests/integration/test_menu_map.gd`, `test_menu_unlock_rule.gd` (étendu : panneau de la Carte sans « Pokémon observés »), `test_menu_open.gd`, `test_boot.gd` | — | **oui** |
+| Fondations du T18 (`game/systems/menu/map_*.gd`, `views/map_*`, `views/zone_*`, `game/world/zones/**`, `data/world/zones.json`) | lecture | lecture (un manque → l'architecte) |
+| `docs/tech/etat-projet.md` | sa ligne dans « Point de reprise » | sa ligne ; l'orchestrateur fusionne |
+
+Ordre : T20 ∥ T21 ; **T20 fusionné d'abord**, puis T21 relie l'écran dans `Boot` et finit `test_menu_map.gd` (vrai `Boot`) et ses captures ; puis T22. Avant la fusion, T21 teste avec `fake_trainer_menu.gd` étendu ; T20 teste avec des vues fabriquées **ou** construites par `MapJournal` sur une partie de test (`game_state.gd` instancié, comme `test_map_journal`).
+
+**Critères vérifiables** :
+- T20 `test_map_screen.gd` : une zone absente de `view.zones` n'a ni étiquette ni zone de toucher (toucher son rectangle de l'illustration → **aucun** signal) ; zone découverte touchée → **un** `zone_touched` ; `show_zone` affiche le panneau **sans** changer d'écran ; section vide → aucun titre (« Pokémon observés » absent si `pokemon` est vide) ; Pokémon touché → **un** `route_requested` vers le Pokédex avec son espèce ; aucun `Label` visible ne contient « ??? », « / » suivi d'un nombre, « Se rendre » ; zone de toucher ≥ `TOUCH_MIN` pour la Route 1 ; portrait au centre de `player_area()`. Captures `map`, `map_panel`, `map_dex` à 2340 × 1080 et 1920 × 1080.
+- T21 `test_menu_map.gd` (vrai `Boot`) : joueur dans la maison → portrait et panneau de Bourg Palette ; Potion de la Route 1 ramassée → listée dans le panneau de la Route 1 et pas dans celui de Bourg Palette ; Pokémon observés **absents** sans `debug_pokedex`, présents avec ; Habitat (Pokédex) → Carte sur la zone choisie ; Pokémon du panneau → fiche du Pokédex ; Pokédex → Carte → Pokédex : profondeur de la pile inchangée ; Jadielle (non découverte) sans étiquette ni toucher sur l'illustration (son nom n'apparaît que dans le sous-titre de la Route 1, déjà annoncé par le titre en jeu).
+
 ---
 
 ## 7. Découpage des tâches (dans l'ordre)
@@ -987,6 +1063,7 @@ Chaque tâche finit par `tools/test.sh` vert (nombre de tests rapporté), un imp
 #### T18 — architecte-godot : fondations de la Carte
 - §3.6 ; `zones.json` complet pour Bourg Palette et la Route 1 (descriptions provisoires) et l'emplacement des autres zones sur l'illustration (Q-15).
 - **CA** : tests du §3.6 verts.
+- **Fait (2026-10-03)** : §3.6 « Fait au T18 » ; vues figées et partage T20 ∥ T21 au §6.10. L'emplacement des zones reste dans le fichier de l'illustration (lu par `MapIllustration`).
 
 #### T19 — constructeur-monde : l'illustration provisoire de Kanto
 - `tools/gen_kanto_map.gd` → `assets/ui/map/kanto_placeholder.png` (géographie de Rouge/Bleu stylisée, villes, routes, eau, reliefs, **sans aucun nom**), portrait du joueur (sprite agrandi). **Peut avancer en parallèle** dès le 6A (§8).
