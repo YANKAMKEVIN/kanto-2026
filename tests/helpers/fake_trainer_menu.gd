@@ -20,6 +20,8 @@ signal bag_repeat_requested
 signal pokedex_filter_changed(filter: int, zone: StringName, type: StringName, text: String)
 signal pokedex_species_opened(species: StringName)
 
+signal map_zone_touched(zone: StringName)
+
 var speed_scale: float = 1.0
 var opened_count: int = 0
 var closed_count: int = 0
@@ -33,6 +35,8 @@ var bag_results: Array[String] = []
 var bag_repeats: Array[bool] = []
 var pokedex_grids: Array[PokedexGridView] = []
 var pokedex_sheets: Array[PokedexSheetView] = []
+var maps: Array[MapView] = []
+var map_zones: Array[ZonePanelView] = []
 var pokedex_back_count: int = 0
 var _open: bool = false
 
@@ -81,6 +85,14 @@ func show_pokedex_sheet(view: PokedexSheetView) -> void:
 	pokedex_sheets.append(view)
 
 
+func show_map(view: MapView) -> void:
+	maps.append(view)
+
+
+func show_map_zone(view: ZonePanelView) -> void:
+	map_zones.append(view)
+
+
 func pokedex_back() -> bool:
 	pokedex_back_count += 1
 	return false
@@ -113,6 +125,9 @@ func wire(director: MenuDirector) -> void:
 	director.pokedex_sheet_shown.connect(show_pokedex_sheet)
 	pokedex_filter_changed.connect(director.set_pokedex_filter)
 	pokedex_species_opened.connect(director.open_species)
+	director.map_shown.connect(show_map)
+	director.map_zone_shown.connect(show_map_zone)
+	map_zone_touched.connect(director.open_zone)
 	route_requested.connect(director.go)
 	back_requested.connect(director.handle_back)
 	close_requested.connect(director.close)

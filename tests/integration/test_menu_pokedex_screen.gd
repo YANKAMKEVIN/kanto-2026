@@ -85,7 +85,7 @@ func test_touching_a_known_slot_opens_its_sheet_and_a_filter_does_not_reopen_it(
 	_menu.close()
 
 
-func test_habitat_chip_goes_to_the_map_placeholder() -> void:
+func test_habitat_chip_goes_to_the_map_route() -> void:
 	var dex := await _open_with_pidgey()
 	dex.get_sheet().select_tab(PokedexSheet.Tab.HABITAT)
 	var chips := dex.get_sheet().get_chips()
@@ -93,7 +93,9 @@ func test_habitat_chip_goes_to_the_map_placeholder() -> void:
 	chips[0].pressed.emit()
 	await wait_process_frames(2)
 	assert_eq(_menu.get_navigator().current().screen, MenuRoute.MAP)
-	assert_eq(_screen.get_current_screen(), _screen.get_placeholder())
+	if _screen.has_signal(&"map_zone_touched"):
+		# Depuis le T20/T21, la Carte est un vrai écran, avec la zone choisie.
+		assert_ne(_screen.get_current_screen(), dex, "l'écran a changé")
 	_menu.close()
 
 

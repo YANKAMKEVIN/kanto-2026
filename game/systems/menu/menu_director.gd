@@ -39,6 +39,11 @@ signal bag_result_shown(text: String, can_repeat: bool)
 signal pokedex_shown(view: PokedexGridView)
 ## Une fiche du Pokédex est à afficher (espèce touchée, ou demandée par la route).
 signal pokedex_sheet_shown(view: PokedexSheetView)
+## La Carte est à afficher (ouverture, lien Habitat → Carte) : vue neuve, zone du joueur
+## (portrait) et zone à ouvrir ([member MapView.selected]).
+signal map_shown(view: MapView)
+## Le panneau d'une zone découverte est à afficher (toucher, ou zone choisie à l'arrivée).
+signal map_zone_shown(view: ZonePanelView)
 ## Un écran pas encore construit est à afficher (écran provisoire « À venir »).
 signal placeholder_shown(screen: StringName)
 
@@ -59,6 +64,7 @@ var _bag_sort: int = BagQuery.Sort.RELEVANCE
 var _repeat_item: StringName = &""
 var _repeat_index: int = -1
 var _dex: PokedexLibrary
+var _illustration: MapIllustration
 var _dex_filter: int = PokedexQuery.Filter.ALL
 var _dex_zone: StringName = &""
 var _dex_type: StringName = &""
@@ -73,7 +79,8 @@ func _init() -> void:
 ## [param can_open] : [code]func() -> bool[/code], la garde d'ouverture.
 func setup(state: Object, data: PokemonData, zones: ZoneLibrary, objectives: ObjectiveLibrary,
 		unlocks: MenuUnlocks, can_open: Callable, items: ItemLibrary = null,
-		dex: PokedexLibrary = null) -> void:
+		dex: PokedexLibrary = null, illustration: MapIllustration = null) -> void:
+	_illustration = illustration
 	_items = items
 	_dex = dex
 	_state = state
@@ -270,6 +277,17 @@ func open_species(species: StringName) -> void:
 		pokedex_sheet_shown.emit(view)
 
 
+## Panneau de [param zone] (toucher sur l'illustration, ou zone choisie à l'arrivée). Une zone
+## non découverte, inconnue ou sans état ne donne rien : jamais un panneau vide ni un nom.
+func open_zone(zone: StringName) -> void:
+	if _state == null or _zones == null:
+		return
+	var view := MapJournal.panel(zone, _state, _data, _zones, _items,
+		_unlocks.pokedex_visible())
+	if view != null:
+		map_zone_shown.emit(view)
+
+
 ## [param with_sheet] : la fiche proposée par la grille (celle demandée par la route, sinon la
 ## première espèce connue) est émise aussi ; faux au changement de filtre.
 func _emit_pokedex(selected: StringName, with_sheet: bool) -> void:
@@ -317,6 +335,12 @@ func _on_route_shown(route: MenuRoute) -> void:
 		_dex_type = &""
 		_dex_text = ""
 		_emit_pokedex(StringName(route.params.get("species", &"")), true)
+	elif route.screen == MenuRoute.MAP and _zones != null:
+		var map_view := MapJournal.view(_state, _zones, _illustration,
+			StringName(route.params.get("zone", &"")))
+		map_shown.emit(map_view)
+		if not map_view.selected.is_empty():
+			open_zone(map_view.selected)
 	else:
 		placeholder_shown.emit(route.screen)
 

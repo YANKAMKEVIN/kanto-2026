@@ -69,6 +69,7 @@ var _items := ItemLibrary.new()
 var _encounter_library: EncounterLibrary
 var _zones := ZoneLibrary.new()
 var _dex := PokedexLibrary.new()
+var _map_illustration := MapIllustration.new()
 ## Toasts du Pokédex en attente (au plus un par espèce) : des paires [espèce, [titre, détail]].
 var _dex_toasts: Array[Array] = []
 ## Individus observés pendant la visite de la carte (OBSERVER, une fois par individu).
@@ -178,7 +179,12 @@ func _ready() -> void:
 		_dex.check_references(_pokemon)
 	for error: String in _dex.get_errors():
 		push_error("Pokédex : %s" % error)
-	_menu.setup(GameState, _pokemon, _zones, _objectives, _unlocks, _can_open_menu, _items, _dex)
+	if _map_illustration.load_file():
+		_map_illustration.check_references(_zones)
+	for error: String in _map_illustration.get_errors():
+		push_error(error)
+	_menu.setup(GameState, _pokemon, _zones, _objectives, _unlocks, _can_open_menu, _items, _dex,
+		_map_illustration)
 	_menu.menu_opened.connect(_on_menu_opened)
 	_menu.menu_closed.connect(_on_menu_closed)
 	# L'écran (jalon-06.md §6.6) : ouverture et vue dans la même frame, sans await (un fondu
@@ -213,6 +219,11 @@ func _ready() -> void:
 		_menu.pokedex_sheet_shown.connect(_menu_screen.show_pokedex_sheet)
 		_menu_screen.pokedex_filter_changed.connect(_menu.set_pokedex_filter)
 		_menu_screen.pokedex_species_opened.connect(_menu.open_species)
+	# Carte (T21) : reliée dès que l'écran porte l'interface du §6.10 (MapScreen du T20).
+	if _menu_screen.has_signal(&"map_zone_touched"):
+		_menu.map_shown.connect(_menu_screen.show_map)
+		_menu.map_zone_shown.connect(_menu_screen.show_map_zone)
+		_menu_screen.map_zone_touched.connect(_menu.open_zone)
 	# Une seule écoute de tout ce qui s'enregistre au Pokédex (jalon-06.md §6.9).
 	GameState.pokedex.recorded.connect(_on_pokedex_recorded)
 	GameState.flags.flag_changed.connect(_on_flag_changed)
