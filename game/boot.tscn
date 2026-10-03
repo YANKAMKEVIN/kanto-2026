@@ -16,6 +16,7 @@
 [ext_resource type="Script" path="res://game/pokemon/encounters/encounter_director.gd" id="14_encounters"]
 [ext_resource type="PackedScene" path="res://game/ui/components/coming_soon_screen.tscn" id="15_soon"]
 [ext_resource type="Script" path="res://game/systems/menu/menu_director.gd" id="16_menu"]
+[ext_resource type="PackedScene" path="res://game/ui/menu/trainer_menu.tscn" id="17_trainer"]
 
 [node name="Boot" type="Node"]
 script = ExtResource("1_boot")
@@ -92,3 +93,7 @@ process_mode = 1
 unique_name_in_owner = true
 process_mode = 3
 script = ExtResource("16_menu")
+
+[node name="TrainerMenu" parent="." instance=ExtResource("17_trainer")]
+unique_name_in_owner = true
+process_mode = 3

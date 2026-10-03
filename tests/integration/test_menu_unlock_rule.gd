@@ -2,10 +2,6 @@ extends GutTest
 ## Règle de déblocage du Menu Dresseur appliquée avec le vrai Boot (jalon-06.md §4), partie T4 :
 ## cartes du tableau de bord selon l'équipe et le Pokédex, route Pokédex refusée sans
 ## déblocage, déblocage de débogage sans drapeau d'histoire ni sauvegarde.
-##
-## RESTE APRÈS LA FUSION DU T3 (vrais écrans, §4) : ouvrir le menu, parcourir tous les écrans
-## et relever le texte de tous les Label visibles (aucun « Pokédex », « vus », « capturés »,
-## « habitat » sans déblocage) ; aucun toast Pokédex après une observation.
 
 const MemoryFs := preload("res://tests/helpers/memory_file_system.gd")
 const BOOT_SCENE := preload("res://game/boot.tscn")
@@ -31,6 +27,7 @@ func _start(debug_unlock: bool = false) -> void:
 		_boot.debug_unlocks_path = "res://tests/fixtures/debug_unlocks/pokedex.json"
 	add_child_autofree(_boot)
 	_menu = _boot.get_menu_director()
+	_boot.get_trainer_menu().speed_scale = 0.0
 	await wait_until(func() -> bool: return _boot.is_stable(), 12.0)
 
 
@@ -101,4 +98,57 @@ func test_debug_unlock_shows_the_dex_without_the_story_flag_nor_in_the_save() ->
 		"jamais un drapeau d'histoire")
 	var flags: Array = GameState.to_dict().get("flags", [])
 	assert_false(flags.has(String(StoryFlags.POKEDEX_ACTIVATED)), "pas dans la sauvegarde")
+	_menu.close()
+
+
+# --- Vrais écrans (§4) --------------------------------------------------------------------
+
+const FORBIDDEN: Array[String] = ["pokédex", "vus", "capturés", "habitat"]
+
+
+## Texte de tous les Label visibles sous [param node].
+func _visible_texts(node: Node, out: Array[String] = []) -> Array[String]:
+	if node is CanvasItem and not (node as CanvasItem).visible:
+		return out
+	if node is Label and not (node as Label).text.is_empty():
+		out.append((node as Label).text)
+	if node is Button and not (node as Button).text.is_empty():
+		out.append((node as Button).text)
+	for child: Node in node.get_children():
+		_visible_texts(child, out)
+	return out
+
+
+func _assert_no_dex_text(context: String) -> void:
+	for text: String in _visible_texts(_boot.get_trainer_menu().get_root()):
+		for word: String in FORBIDDEN:
+			assert_false(text.to_lower().contains(word), "%s : « %s »" % [context, text])
+
+
+func test_without_unlock_no_screen_shows_anything_about_the_dex() -> void:
+	await _start()
+	_give_starter()
+	GameState.record_seen(&"pidgey", &"route_1")
+	GameState.record_caught(&"charmander", &"oak_lab")
+	assert_true(_menu.open())
+	await wait_process_frames(2)
+	_assert_no_dex_text("tableau de bord")
+	for screen: StringName in [MenuRoute.TEAM, MenuRoute.BAG, MenuRoute.MAP, MenuRoute.TRAINER,
+			MenuRoute.SETTINGS]:
+		assert_true(_menu.go(MenuRoute.for_screen(screen)), String(screen))
+		await wait_process_frames(2)
+		_assert_no_dex_text(String(screen))
+	assert_false(_boot.get_hud().get_toast().visible, "aucun toast Pokédex")
+	_menu.close()
+
+
+func test_with_the_debug_unlock_the_dex_card_is_shown() -> void:
+	await _start(true)
+	_give_starter()
+	assert_true(_menu.open())
+	await wait_process_frames(2)
+	var found := false
+	for text: String in _visible_texts(_boot.get_trainer_menu().get_root()):
+		found = found or text.to_lower().contains("pokédex")
+	assert_true(found, "la carte Pokédex est visible")
 	_menu.close()
