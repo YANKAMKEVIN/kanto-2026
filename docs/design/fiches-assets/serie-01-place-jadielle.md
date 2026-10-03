@@ -648,3 +648,7 @@ Prompts conservés dans `build/art/prompts/` (non versionné). Découpage des pl
 
 Générés par Codex : `PERSO_P1_COURSE_r1`, `PERSO_P2_COURSE_r1` (cycles de course), `PNJ_ENFANT_P1_r1`, `PNJ_ENFANT_P2_r1` (l'enfant de Jadielle : cheveux noirs, t-shirt vert, short beige, **défaut pour le test**), `POKE_RATTATA_P1_r1`, `POKE_RATTATA_P2_r1`. Tous exploitables du premier coup.
 Scène : à gauche la piste 1 (pixel art ×2 ; héros 64 px, enfant 54 px, Rattata 28 px natifs), à droite la piste 2 (peint ; 128, 108, 56 px). Chaque héros marche et **court** sur le bas de son circuit (0,16 s par case) ; l'enfant et son Rattata qui le suit tournent à l'intérieur. Deux arbres du bas retirés pour la lisibilité ; caméra abaissée (7,3 cases). S24 : 58–59 fps, 22,6 Mo de textures.
+
+## Comparaison de lumière sur S24 (cahier §5.3, 2026-10-03)
+
+Toucher l'écran fait défiler 4 modes : **A** golden hour peinte dans les assets ; **B** assets neutres bruts ; **C** assets neutres + golden hour par Godot (`CanvasModulate` chaud) ; **D** assets neutres + fin de journée par Godot (aperçu de ce que permettrait le jour/nuit). Le massif, les bancs et les lampadaires n'existent qu'en GH (petits objets, effet négligeable). Personnages peints des deux côtés. Capture : `build/art/comparaison_lumieres.png`.

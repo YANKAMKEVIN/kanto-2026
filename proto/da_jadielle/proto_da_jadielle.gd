@@ -48,8 +48,21 @@ const VARIANTES_NE: Array[String] = ["centre.png", "boutique.png", "tree_a.png",
 ## Lumière GH : teinte chaude du sol (les objets sont déjà peints en GH).
 const TEINTE_SOL := Color(1.0, 0.95, 0.86)
 
-## Lumière neutre (`-- --lumiere=ne`) : variantes NE, sol non teinté (comparaison §5.3).
-var _neutre := "--lumiere=ne" in OS.get_cmdline_user_args()
+## Comparaison de lumière (cahier §5.3) ; toucher l'écran passe au mode suivant.
+## [nom, variantes NE, teinte du sol, teinte globale de Godot (CanvasModulate)].
+const MODES_LUMIERE: Array = [
+	["A — golden hour PEINTE dans les assets", false, Color(1.0, 0.95, 0.86), Color.WHITE],
+	["B — assets NEUTRES, sans traitement", true, Color.WHITE, Color.WHITE],
+	["C — assets neutres + golden hour par Godot", true, Color.WHITE, Color(1.0, 0.9, 0.76)],
+	["D — assets neutres + fin de journée par Godot", true, Color.WHITE, Color(0.82, 0.66, 0.66)],
+]
+
+var _mode := 0
+var _materiau_sol: ShaderMaterial
+var _teinte := CanvasModulate.new()
+var _etiquette := Label.new()
+## Objets qui ont une variante NE : [sprite, nom de la texture GH].
+var _variables: Array = []
 
 var _hasard := RandomNumberGenerator.new()
 
@@ -72,6 +85,29 @@ func _ready() -> void:
 	_poser_groupes(tries)
 	add_child(_camera())
 	_journal_fps()
+	add_child(_teinte)
+	for argument in OS.get_cmdline_user_args():
+		if argument.begins_with("--lumiere="):
+			_mode = clampi(argument.trim_prefix("--lumiere=").to_int(), 0, MODES_LUMIERE.size() - 1)
+	_appliquer_lumiere()
+
+
+func _input(event: InputEvent) -> void:
+	# Seulement le toucher (Android émet aussi un clic simulé).
+	if event is InputEventScreenTouch and event.pressed:
+		_mode = (_mode + 1) % MODES_LUMIERE.size()
+		_appliquer_lumiere()
+
+
+func _appliquer_lumiere() -> void:
+	var mode: Array = MODES_LUMIERE[_mode]
+	for entree: Array in _variables:
+		var nom: String = entree[1]
+		(entree[0] as Sprite2D).texture = load(TEX + (nom.replace(".png", "_ne.png") if mode[1]
+			else nom))
+	_materiau_sol.set_shader_parameter(&"teinte", mode[2])
+	_teinte.color = mode[3]
+	_etiquette.text = "%s   ·   toucher l'écran pour changer" % mode[0]
 
 
 ## Relevé « [proto-perf] » toutes les 2 s dans le journal (lu par adb logcat sur le S24).
@@ -118,7 +154,7 @@ func _construire_sol(cases: Dictionary) -> void:
 	materiau.set_shader_parameter(&"herbe", load(TEX + "herbe.png"))
 	materiau.set_shader_parameter(&"paves", load(TEX + "paves.png"))
 	materiau.set_shader_parameter(&"masque", ImageTexture.create_from_image(image))
-	materiau.set_shader_parameter(&"teinte", Color.WHITE if _neutre else TEINTE_SOL)
+	_materiau_sol = materiau
 	var sol := ColorRect.new()
 	sol.name = "Sol"
 	sol.size = Vector2(LARGEUR, HAUTEUR) * CASE
@@ -176,8 +212,6 @@ func _poser_massif(ombres: Node2D) -> void:
 
 
 func _poser_objet(nom: String, pied: Vector2, vent: bool, tries: Node2D, ombres: Node2D) -> void:
-	if _neutre and nom in VARIANTES_NE:
-		nom = nom.replace(".png", "_ne.png")
 	var texture: Texture2D = load(TEX + nom)
 	var sprite := _sprite_au_pied(texture)
 	sprite.position = pied
@@ -186,6 +220,8 @@ func _poser_objet(nom: String, pied: Vector2, vent: bool, tries: Node2D, ombres:
 		materiau.shader = VENT_SHADER
 		sprite.material = materiau
 	tries.add_child(sprite)
+	if nom in VARIANTES_NE:
+		_variables.append([sprite, nom])
 	_ombre(texture, pied, ombres, Rect2())
 	# Ombre de contact : ce qui « pose » l'objet au sol (les bâtiments sur toute leur base).
 	_contact(texture, pied, 0.12 if nom.begins_with("centre") or nom.begins_with("boutique") \
@@ -258,29 +294,29 @@ func _poser_groupes(tries: Node2D) -> void:
 	var dx := 14
 	for piste: int in [1, 2]:
 		var decalage := Vector2i(0 if piste == 1 else dx, 0)
-		var pixel := piste == 1
-		var echelle := 2.0 if pixel else 1.0
+		# Personnages peints des deux côtés (décision de Kevin, 2026-10-03).
+		var pixel := false
+		var echelle := 1.0
 		var tex := "res://proto/da_jadielle/tex/%s_p%d.png"
-		var course := "res://proto/da_jadielle/tex/perso_p%d_course.png" % piste
-		var heros := _marcheur(load(tex % ["perso", piste]), load(course), echelle, pixel,
+		var course := "res://proto/da_jadielle/tex/perso_p2_course.png"
+		var heros := _marcheur(load(tex % ["perso", 2]), load(course), echelle, pixel,
 			[Vector2i(4, 7), Vector2i(4, 12), Vector2i(7, 12), Vector2i(7, 7)], decalage)
 		heros.segments_course.assign([1])
 		tries.add_child(heros)
 		# L'enfant et son Rattata tournent à l'intérieur du circuit du héros.
 		var boucle: Array[Vector2i] = [Vector2i(5, 8), Vector2i(5, 11), Vector2i(6, 11),
 			Vector2i(6, 8)]
-		var enfant := _marcheur(load(tex % ["enfant", piste]), null, echelle, pixel, boucle,
+		var enfant := _marcheur(load(tex % ["enfant", 2]), null, echelle, pixel, boucle,
 			decalage)
 		enfant.avance_depart = 1
 		enfant.taille_ombre = 0.85
 		tries.add_child(enfant)
-		var rattata := _marcheur(load(tex % ["rattata", piste]), null, echelle, pixel, boucle,
+		var rattata := _marcheur(load(tex % ["rattata", 2]), null, echelle, pixel, boucle,
 			decalage)
 		rattata.taille_ombre = 0.6
 		tries.add_child(rattata)
 	var calque := CanvasLayer.new()
-	var etiquette := Label.new()
-	etiquette.text = "Gauche : piste 1 — pixel art 64 px (×2)      Droite : piste 2 — peint 128 px"
+	var etiquette := _etiquette
 	etiquette.position = Vector2(32, 24)
 	etiquette.add_theme_font_size_override(&"font_size", 34)
 	etiquette.add_theme_color_override(&"font_outline_color", Color(0, 0, 0, 0.8))
