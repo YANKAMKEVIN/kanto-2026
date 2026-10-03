@@ -618,3 +618,10 @@ Ce qui a le mieux marché : nouvelle image « comme extraite de la référence �
 `proto/da_jadielle/` (scène construite en code, jetable, scène principale de l'APK **sur cette branche seulement**). Textures préparées par `tools/art/preparer_proto.py` depuis `build/art/`. Sol : herbe et pavés (× 0,7) mélangés par un masque de cases à bord bruité + bande de terre (shader), décalcomanies de bordure le long de la frontière ; objets triés par les pieds ; ombres portées = silhouette retournée, écrasée, inclinée vers le bas à droite ; vent par shader sur les arbres ; sol teinté chaud (GH). Joueur = sprite provisoire 64 px ×2, comme repère d'échelle.
 **S24** : 59 fps stables, 18 Mo de textures, aucune erreur. Capture : `build/art/proto_s24_v1.png`.
 **Tests** : 1 échec attendu sur cette branche seulement, `test_boot.gd::test_main_scene_is_boot` (la scène principale est le prototype) ; tous les autres passent. La branche ne sera jamais fusionnée telle quelle : seuls les documents et les outils d'art en sortiront.
+
+## J7.1 — tranche de la place (décision de Kevin, 2026-10-03)
+
+1. **Ombres** (fait) : `ombre.gdshader`, silhouette floutée (rayon 10 px), écrasée à 0,26, inclinée à 45°, alpha 0,34 au pied s'effaçant vers l'extrémité. À revoir sur S24.
+2. Massif autour de l'arbre central, un banc, un lampadaire (série 02, première partie).
+3. **Personnage** : test comparatif des deux pistes (pixel art détaillé 64 px / peint simplifié), même personnage, 4 directions et vrai cycle de marche chacun, intégrés tour à tour dans la place et jugés **en mouvement sur S24** (cohérence, lisibilité, fluidité, stabilité entre images, **reproductibilité pour des dizaines de PNJ**). `CLAUDE.md` inchangé : le 64 px reste la règle jusqu'au verdict.
+4. Pas de brume, de rayons ni de vignettage ; au plus une légère harmonisation colorimétrique. Bâtiments, végétation et sols **verrouillés**.

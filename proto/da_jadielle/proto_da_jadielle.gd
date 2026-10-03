@@ -9,6 +9,7 @@ const HAUTEUR := 14
 const TEX := "res://proto/da_jadielle/tex/"
 const SOL_SHADER := preload("res://proto/da_jadielle/sol.gdshader")
 const VENT_SHADER := preload("res://proto/da_jadielle/vent.gdshader")
+const OMBRE_SHADER := preload("res://proto/da_jadielle/ombre.gdshader")
 const JOUEUR := preload("res://assets/sprites/characters/placeholder/player_sheet.png")
 
 ## Zones pavées, en cases [x, y, largeur, hauteur].
@@ -34,7 +35,6 @@ const OBJETS: Array = [
 ]
 ## Lumière GH : teinte chaude du sol (les objets sont déjà peints en GH).
 const TEINTE_SOL := Color(1.0, 0.95, 0.86)
-const COULEUR_OMBRE := Color(0.10, 0.09, 0.22, 0.30)
 
 var _hasard := RandomNumberGenerator.new()
 
@@ -183,15 +183,18 @@ func _sprite_au_pied(texture: Texture2D, region := Rect2()) -> Sprite2D:
 
 
 ## Ombre portée vers le bas à droite (soleil en haut à gauche) : la silhouette
-## retournée, écrasée et inclinée, teintée bleu-violet.
+## retournée, écrasée et inclinée, floutée et teintée bleu-violet (ombre.gdshader).
+## Réglage J7.1 : plus courte, plus légère, bords doux.
 func _ombre(texture: Texture2D, pied: Vector2, parent: Node2D, region: Rect2,
 		echelle := 1.0) -> void:
 	var ombre := _sprite_au_pied(texture, region)
 	ombre.texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR
-	ombre.modulate = COULEUR_OMBRE
+	var materiau := ShaderMaterial.new()
+	materiau.shader = OMBRE_SHADER
+	ombre.material = materiau
 	ombre.position = pied
-	ombre.scale = Vector2(echelle, -0.42 * echelle)
-	ombre.skew = deg_to_rad(-38.0)
+	ombre.scale = Vector2(echelle, -0.26 * echelle)
+	ombre.skew = deg_to_rad(-45.0)
 	parent.add_child(ombre)
 
 
