@@ -17,12 +17,6 @@ const WILD_BATTLE_ACTIONS: Dictionary[StringName, bool] = {
 	&"attack": true, &"bag": true, &"run": true,
 }
 
-## Catégories d'objets proposées dans le Sac de combat sauvage tant que le soin en combat n'est
-## pas câblé : les Balls. Le moteur sait soigner depuis le T10 (jalon-06.md §3.4) ; le T12
-## retire ce filtre en câblant le choix du Pokémon et l'action [method BattleAction.heal].
-const USABLE_IN_WILD_BATTLE: Array[ItemData.Category] = [ItemData.Category.BALL]
-
-
 ## Carte d'information du Pokémon envoyé par [param event] (SENT_OUT) : nom, sexe, niveau,
 ## PV ; PV chiffrés du côté du joueur seulement (dossier 05 §5).
 static func card(event: BattleEvent) -> BattleCardView:
@@ -82,11 +76,6 @@ static func move_category(category: MoveData.Category) -> BattleMoveView.Categor
 ## Objets du Sac de combat sauvage ([BagEntryView]) : enveloppe de [method BagQuery.entries]
 ## (contexte combat sauvage, pertinence : Balls puis soins). Un objet inconnu de [param items]
 ## est omis (push_error). Nom au singulier, catégorie en identifiant des données ;
-## [member BagEntryView.usable] vrai seulement pour les catégories de
-## [constant USABLE_IN_WILD_BATTLE] (jusqu'au câblage du soin en combat, T12).
+## [member BagEntryView.usable] selon les règles des données (Balls et soins).
 static func bag_entries(bag: Bag, items: ItemLibrary) -> Array[BagEntryView]:
-	var views := BagQuery.entries(bag, items, BagQuery.CONTEXT_WILD_BATTLE)
-	for view: BagEntryView in views:
-		var item := items.get_item(view.item_id)
-		view.usable = view.usable and USABLE_IN_WILD_BATTLE.has(item.category)
-	return views
+	return BagQuery.entries(bag, items, BagQuery.CONTEXT_WILD_BATTLE)

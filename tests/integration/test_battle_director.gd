@@ -11,6 +11,7 @@ extends GutTest
 const PLAYER_SCENE := preload("res://game/player/player.tscn")
 const STAGE_SCENE := preload("res://game/battle/battle_stage.tscn")
 const HUD_SCENE := preload("res://game/ui/battle/battle_hud.tscn")
+const FakePicker := preload("res://tests/helpers/fake_party_picker.gd")
 const GAME_STATE := preload("res://game/autoload/game_state.gd")
 const NPCS := "res://tests/fixtures/npcs/"
 const MINE_ID := &"mine_poke"
@@ -1146,17 +1147,86 @@ func test_back_from_the_bag_consumes_nothing() -> void:
 	assert_push_error_count(0)
 
 
-func test_the_potion_is_never_offered_in_a_wild_battle() -> void:
-	_state.party = _player_party(&"charmander")
-	_state.starter_species = &"charmander"
-	_state.rng = GameRng.new(7)
-	_state.bag.add(&"potion", 3)
+## Joue [param request] : SAC, onglet SOINS, Potion, UTILISER, puis le Pokémon [param target]
+## (ou « ‹ » du choix si [param back_from_picker]) ; ensuite FUITE. Renvoie { events, view,
+## picker_seen, bag_reopened }.
+func _play_potion(request: BattleRequest, target: int, back_from_picker: bool = false) -> Dictionary:
+	var report := {"events": [], "view": null, "picker_seen": false, "bag_reopened": false}
+	_director.party_picker_scene = FakePicker.make_scene()
+	_director.event_played.connect(func(e: BattleEvent) -> void: report["events"].append(e))
+	var done: Array[bool] = [false]
+	var runner := func() -> void:
+		await _director.run_request(request, _map)
+		done[0] = true
+	runner.call()
+	var stage := 0
+	var deadline := Time.get_ticks_msec() + 20000
+	while not done[0] and Time.get_ticks_msec() < deadline:
+		var panel := _director.get_bag_panel()
+		var picker := _director.get_party_picker()
+		var battle := _director.get_battle()
+		if picker != null and picker.shown:
+			report["picker_seen"] = true
+			report["view"] = picker.last_view
+			picker.shown = false
+			if back_from_picker:
+				picker.back_requested.emit()
+			else:
+				picker.target_chosen.emit(target)
+		elif panel != null and panel.is_shown() and not panel.is_answered():
+			if stage == 1 and report["picker_seen"]:
+				report["bag_reopened"] = true
+				panel.get_back_button().back_requested.emit()
+			else:
+				panel.open_category(&"heal")
+				panel.select_item(&"potion")
+				panel.get_action_button().pressed.emit()
+				stage = 1
+		elif battle != null and battle.get_state() == Battle.State.CHOOSING \
+				and _hud.get_zone() == BattleHud.Zone.ACTIONS:
+			_hud.action_selected.emit(ActionGrid.BAG if stage == 0 else ActionGrid.RUN)
+		await wait_process_frames(1)
+	assert_true(done[0], "le combat s'est terminé")
+	return report
+
+
+## Équipe : [param starter] au complet, puis un Roucool au Nv. 20 blessé (PV [param hp]).
+func _prepare_potion(hp: int) -> BattleRequest:
 	var request := _wild_request(&"rattata", 3, 7)
-	var report := await _play_capture(request, [&"back", &"run"])
-	assert_true(report["bag_seen"])
-	assert_true(report["bag_empty_shown"], "« Aucun objet utilisable pour l'instant. »")
-	assert_eq(_state.bag.count_of(&"potion"), 3, "la Potion reste")
-	assert_eq(BattleBagPanel.EMPTY_TEXT, "Aucun objet utilisable pour l'instant.")
+	var hurt := PokemonFactory.create(_data, &"pidgey", 20, GameRng.new(3))
+	hurt.hp = hp
+	(_state.party as Party).add(hurt)
+	_state.bag.add(&"potion", 3)
+	return request
+
+
+func test_a_potion_on_another_member_heals_it_once_then_the_foe_plays() -> void:
+	var request := _prepare_potion(5)
+	var hurt: Pokemon = (_state.party as Party).get_at(1)
+	var report := await _play_potion(request, 1)
+	assert_true(report["picker_seen"], "le choix du Pokémon s'est ouvert")
+	assert_eq(hurt.hp, 25, "+20 PV")
+	assert_eq(_state.bag.count_of(&"potion"), 2, "une seule Potion retirée")
+	var kinds := _kinds_of(report["events"])
+	var used := kinds.find(BattleEvent.Kind.ITEM_USED)
+	assert_gt(used, -1, "ITEM_USED")
+	assert_true(kinds.slice(used).has(BattleEvent.Kind.MOVE_USED)
+		or kinds.slice(used).has(BattleEvent.Kind.MOVE_MISSED), "l'adversaire joue ensuite")
+	assert_eq(report["view"].targets.size(), 2)
+	assert_false(report["view"].targets[0].usable, "le Pokémon en jeu est à PV pleins")
+	assert_true(report["view"].targets[1].usable)
+	assert_push_error_count(0)
+
+
+func test_back_from_the_party_choice_reopens_the_bag_and_consumes_nothing() -> void:
+	var request := _prepare_potion(5)
+	var hurt: Pokemon = (_state.party as Party).get_at(1)
+	var report := await _play_potion(request, 1, true)
+	assert_true(report["picker_seen"])
+	assert_true(report["bag_reopened"], "le Sac revient")
+	assert_eq(hurt.hp, 5)
+	assert_eq(_state.bag.count_of(&"potion"), 3)
+	assert_false(_kinds_of(report["events"]).has(BattleEvent.Kind.ITEM_USED))
 
 
 func test_without_an_item_library_no_ball_can_be_thrown() -> void:
@@ -1204,6 +1274,7 @@ func test_the_bag_stays_closed_against_a_trainer() -> void:
 	var battle_seed := _seed_for(&"charmander", Battle.Outcome.WIN)
 	_prepare(&"charmander", battle_seed)
 	_state.bag.add(BALL, 3)
+	_state.bag.add(&"potion", 2)
 	var opened: Array[bool] = [false]
 	var done: Array[bool] = [false]
 	var actors: Dictionary[StringName, StringName] = {&"player": MINE_ID, &"foe": FOE_ID}
@@ -1228,3 +1299,4 @@ func test_the_bag_stays_closed_against_a_trainer() -> void:
 	assert_true(done[0])
 	assert_false(opened[0], "le Sac ne s'ouvre pas contre un dresseur")
 	assert_eq(_state.bag.count_of(BALL), 3, "aucune Ball consommée")
+	assert_eq(_state.bag.count_of(&"potion"), 2, "aucune Potion consommée")
