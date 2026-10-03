@@ -8,6 +8,7 @@ const LARGEUR := 26
 const HAUTEUR := 14
 const TEX := "res://proto/da_jadielle/tex/"
 const SOL_SHADER := preload("res://proto/da_jadielle/sol.gdshader")
+const EMPRISES := preload("res://proto/da_jadielle/emprises.gd")
 const OBJET_SHADER := preload("res://proto/da_jadielle/objet.gdshader")
 const OMBRE_SHADER := preload("res://proto/da_jadielle/ombre.gdshader")
 const CONTACT_SHADER := preload("res://proto/da_jadielle/contact.gdshader")
@@ -73,6 +74,7 @@ var _etiquette := Label.new()
 var _variables: Array = []
 
 var _hasard := RandomNumberGenerator.new()
+var _obstacles: Array[Rect2i] = []
 
 
 func _ready() -> void:
@@ -223,6 +225,7 @@ func _decal(parent: Node2D, nom: String, point: Vector2, echelle: float) -> void
 
 ## Massif fleuri : au sol (non trié), sous l'arbre central dont le tronc sort de son trou.
 func _poser_massif(ombres: Node2D) -> void:
+	_obstacles.append(Rect2i(Vector2i(PIED_ARBRE_CENTRAL) - Vector2i(2, 1), Vector2i(4, 3)))
 	var texture: Texture2D = load(TEX + "massif.png")
 	var sprite := Sprite2D.new()
 	sprite.texture = texture
@@ -234,6 +237,7 @@ func _poser_massif(ombres: Node2D) -> void:
 
 
 func _poser_objet(nom: String, pied: Vector2, vent: bool, tries: Node2D, ombres: Node2D) -> void:
+	_obstacles.append_array(EMPRISES.de(nom, pied / CASE))
 	var texture: Texture2D = load(TEX + nom)
 	var sprite := _sprite_au_pied(texture)
 	sprite.position = pied
@@ -331,6 +335,10 @@ const HABITANTS: Array = [
 
 func _poser_groupes(tries: Node2D) -> void:
 	for habitant: Array in HABITANTS:
+		if (habitant[1] as Array).size() == 1:
+			_obstacles.append(Rect2i(habitant[1][0], Vector2i.ONE))
+	var grille: AStarGrid2D = EMPRISES.grille(Vector2i(LARGEUR, HAUTEUR), _obstacles)
+	for habitant: Array in HABITANTS:
 		var nom: String = habitant[0]
 		var course: Texture2D = null
 		if nom == "perso_p2":
@@ -342,6 +350,7 @@ func _poser_groupes(tries: Node2D) -> void:
 		if nom == "perso_p2":
 			marcheur.segments_course.assign([1])
 		marcheur.avance_depart = habitant[2]
+		marcheur.obstacles = grille
 		marcheur.taille_ombre = habitant[3]
 		tries.add_child(marcheur)
 	var calque := CanvasLayer.new()

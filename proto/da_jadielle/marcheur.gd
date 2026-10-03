@@ -19,6 +19,9 @@ var avance_depart := 0
 ## Index des segments (du coin i au coin i + 1) parcourus en courant.
 var segments_course: Array[int] = []
 var taille_ombre := 1.0
+## Grille de déplacement (emprises.gd) : si elle est fournie, le marcheur va d'un coin au
+## suivant par le plus court chemin libre, au lieu de traverser les obstacles.
+var obstacles: AStarGrid2D
 
 var _corps := Sprite2D.new()
 var _case := Vector2i.ZERO
@@ -30,6 +33,7 @@ var _court := false
 
 
 func _ready() -> void:
+	_tracer_chemin()
 	_case = circuit[0]
 	for i in avance_depart:
 		_avancer_case()
@@ -65,6 +69,23 @@ func _process(delta: float) -> void:
 		_temps -= duree
 		_avancer_case()
 		_image = (_image + 1) % 2
+
+
+func _tracer_chemin() -> void:
+	if obstacles == null or circuit.size() < 2:
+		return
+	var chemin: Array[Vector2i] = []
+	for i in circuit.size():
+		var depart := circuit[i]
+		var arrivee := circuit[(i + 1) % circuit.size()]
+		var troncon := obstacles.get_id_path(depart, arrivee)
+		if troncon.is_empty():
+			push_warning("Trajet impossible de %s à %s" % [depart, arrivee])
+			chemin.append(depart)
+			continue
+		for j in troncon.size() - 1:
+			chemin.append(troncon[j])
+	circuit = chemin
 
 
 func _pas() -> Vector2i:

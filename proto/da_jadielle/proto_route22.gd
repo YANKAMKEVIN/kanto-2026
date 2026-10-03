@@ -15,6 +15,7 @@ const OMBRE_SHADER := preload("res://proto/da_jadielle/ombre.gdshader")
 const CONTACT_SHADER := preload("res://proto/da_jadielle/contact.gdshader")
 const ETALONNAGE := preload("res://proto/da_jadielle/etalonnage.gdshader")
 const MARCHEUR := preload("res://proto/da_jadielle/marcheur.gd")
+const EMPRISES := preload("res://proto/da_jadielle/emprises.gd")
 
 ## Chemin de terre [x, y, largeur, hauteur] en cases.
 const CHEMIN: Array[Rect2i] = [
@@ -31,7 +32,8 @@ const OBJETS: Array = [
 	["falaise.png", 2.0, 4.2, false, 0.3], ["falaise.png", 6.0, 4.2, false, 0.3],
 	["falaise.png", 10.0, 4.2, false, 0.3], ["falaise.png", 14.0, 4.2, false, 0.3],
 	["falaise.png", 2.0, 8.0, false, 0.3], ["falaise.png", 6.0, 8.0, false, 0.3],
-	["falaise.png", 10.0, 8.0, false, 0.3], ["escalier.png", 16.0, 8.4, false, 0.2],
+	["falaise.png", 10.0, 8.0, false, 0.3], ["falaise.png", 13.0, 8.0, false, 0.3],
+	["escalier.png", 16.0, 8.4, false, 0.2],
 	["falaise.png", 19.0, 8.0, false, 0.3], ["falaise.png", 23.0, 8.0, false, 0.3],
 	["falaise.png", 27.0, 8.0, false, 0.3],
 	["rocher.png", 30.0, 14.4, false, 0.15], ["rocher.png", 41.0, 7.6, false, 0.15],
@@ -56,6 +58,7 @@ const PARCOURS: Array[Vector2] = [Vector2(36, 10), Vector2(26, 11), Vector2(17, 
 const DUREE_TOUR := 50.0
 
 var _camera := Camera2D.new()
+var _obstacles: Array[Rect2i] = []
 var _temps := 0.0
 var _hasard := RandomNumberGenerator.new()
 
@@ -107,8 +110,14 @@ void fragment() {
 		_objet(objet, tries, ombres)
 	_herbes_hautes(tries)
 	_foret(cases, tries, ombres)
+	# Les personnages immobiles sont aussi des obstacles pour ceux qui marchent.
+	for habitant: Array in HABITANTS:
+		if (habitant[1] as Array).size() == 1:
+			_obstacles.append(Rect2i(habitant[1][0], Vector2i.ONE))
+	var grille: AStarGrid2D = EMPRISES.grille(Vector2i(LARGEUR, HAUTEUR), _obstacles)
 	for habitant: Array in HABITANTS:
 		var marcheur: Node2D = MARCHEUR.new()
+		marcheur.obstacles = grille
 		marcheur.planche_marche = load(TEX + habitant[0] + ".png")
 		marcheur.planche_course = marcheur.planche_marche
 		var coins: Array[Vector2i] = []
@@ -216,6 +225,7 @@ func _decal(parent: Node2D, nom: String, point: Vector2, echelle: float) -> void
 func _objet(objet: Array, tries: Node2D, ombres: Node2D) -> void:
 	var texture: Texture2D = load(TEX + objet[0])
 	var pied := Vector2(objet[1], objet[2]) * CASE
+	_obstacles.append_array(EMPRISES.de(objet[0], Vector2(objet[1], objet[2])))
 	var sprite := _au_pied(texture)
 	sprite.position = pied
 	var materiau := ShaderMaterial.new()

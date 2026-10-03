@@ -6,6 +6,7 @@ const CASE := 96
 const TEX := "res://proto/da_jadielle/tex/"
 const CONTACT_SHADER := preload("res://proto/da_jadielle/contact.gdshader")
 const MARCHEUR := preload("res://proto/da_jadielle/marcheur.gd")
+const EMPRISES := preload("res://proto/da_jadielle/emprises.gd")
 ## Lumière d'intérieur : neutre légèrement chaude (lampes), sans voile.
 const TEINTE := Color(1.0, 0.97, 0.92)
 
@@ -20,7 +21,7 @@ const PIECES := {
 		["infirmiere", [Vector2i(7, 3)]],
 		["dresseuse", [Vector2i(10, 6)]],
 		["roucool", [Vector2i(9, 6)]],
-		["perso_p2", [Vector2i(5, 6), Vector2i(5, 8), Vector2i(10, 8), Vector2i(10, 6)]],
+		["perso_p2", [Vector2i(4, 6), Vector2i(4, 8), Vector2i(11, 8), Vector2i(11, 6)]],
 	]],
 	"boutique": ["int_boutique_coque.png", [
 		["int_caisse.png", 7.5, 5.0], ["int_rayon.png", 2.3, 3.2], ["int_rayon.png", 12.7, 3.2],
@@ -47,9 +48,13 @@ func _ready() -> void:
 	var tries := Node2D.new()
 	tries.y_sort_enabled = true
 	add_child(tries)
+	# Murs : le fond (3 rangées), les côtés, le bas sauf l'entrée (colonnes 6 à 8).
+	var obstacles: Array[Rect2i] = [Rect2i(0, 0, 15, 3), Rect2i(0, 0, 1, 10),
+		Rect2i(14, 0, 1, 10), Rect2i(0, 9, 6, 1), Rect2i(9, 9, 6, 1)]
 	for meuble: Array in donnees[1]:
 		var texture: Texture2D = load(TEX + meuble[0])
 		var pied := Vector2(meuble[1], meuble[2]) * CASE
+		obstacles.append_array(EMPRISES.de(meuble[0], Vector2(meuble[1], meuble[2])))
 		var sprite := _au_pied(texture)
 		sprite.position = pied
 		tries.add_child(sprite)
@@ -62,7 +67,12 @@ func _ready() -> void:
 		contact.position = pied + Vector2(0, 14)
 		ombres.add_child(contact)
 	for habitant: Array in donnees[2]:
+		if (habitant[1] as Array).size() == 1:
+			obstacles.append(Rect2i(habitant[1][0], Vector2i.ONE))
+	var grille: AStarGrid2D = EMPRISES.grille(Vector2i(15, 10), obstacles)
+	for habitant: Array in donnees[2]:
 		var marcheur: Node2D = MARCHEUR.new()
+		marcheur.obstacles = grille
 		marcheur.planche_marche = load(TEX + habitant[0] + ".png")
 		marcheur.planche_course = marcheur.planche_marche
 		var coins: Array[Vector2i] = []

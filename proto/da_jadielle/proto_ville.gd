@@ -14,6 +14,7 @@ const OMBRE_SHADER := preload("res://proto/da_jadielle/ombre.gdshader")
 const CONTACT_SHADER := preload("res://proto/da_jadielle/contact.gdshader")
 const ETALONNAGE := preload("res://proto/da_jadielle/etalonnage.gdshader")
 const MARCHEUR := preload("res://proto/da_jadielle/marcheur.gd")
+const EMPRISES := preload("res://proto/da_jadielle/emprises.gd")
 
 ## Zones pavées [x, y, largeur, hauteur] en cases.
 const PAVES: Array[Rect2i] = [
@@ -49,14 +50,13 @@ const HABITANTS: Array = [
 		Vector2i(3, 13), Vector2i(14, 13), Vector2i(14, 18), Vector2i(22, 18)]],
 	["infirmiere", [Vector2i(16, 13)]],
 	["marchand", [Vector2i(27, 13)]],
-	["livreur", [Vector2i(22, 1), Vector2i(22, 9), Vector2i(30, 9), Vector2i(30, 11),
-		Vector2i(22, 11)]],
+	["livreur", [Vector2i(23, 2), Vector2i(23, 13), Vector2i(32, 13)]],
 	["dresseuse", [Vector2i(18, 17)]], ["roucool", [Vector2i(17, 17)]],
 	["vieil_homme", [Vector2i(6, 12), Vector2i(9, 12)]],
 	["voyageur", [Vector2i(23, 0), Vector2i(23, 27)]],
 	["enfant_p2", [Vector2i(27, 16), Vector2i(27, 18), Vector2i(31, 18), Vector2i(31, 16)]],
 	["rattata_p2", [Vector2i(27, 16), Vector2i(27, 18), Vector2i(31, 18), Vector2i(31, 16)]],
-	["rival", [Vector2i(13, 12), Vector2i(13, 17)]],
+	["rival", [Vector2i(13, 13), Vector2i(13, 17)]],
 ]
 ## Parcours de la caméra (en cases) et durée d'un tour.
 const PARCOURS: Array[Vector2] = [Vector2(22.5, 8), Vector2(22.5, 14), Vector2(9, 11),
@@ -64,6 +64,7 @@ const PARCOURS: Array[Vector2] = [Vector2(22.5, 8), Vector2(22.5, 14), Vector2(9
 const DUREE_TOUR := 48.0
 
 var _camera := Camera2D.new()
+var _obstacles: Array[Rect2i] = []
 var _temps := 0.0
 var _hasard := RandomNumberGenerator.new()
 
@@ -85,11 +86,18 @@ func _ready() -> void:
 	massif.centered = false
 	massif.position = Vector2(22.5, 15.6) * CASE - Vector2(182, 109)
 	bordures.add_child(massif)
+	_obstacles.append(Rect2i(21, 14, 4, 3))  # massif de l'arbre central
 	for objet: Array in OBJETS:
 		_objet(objet, tries, ombres)
 	_foret(cases, tries, ombres)
+	# Les personnages immobiles sont aussi des obstacles pour ceux qui marchent.
+	for habitant: Array in HABITANTS:
+		if (habitant[1] as Array).size() == 1:
+			_obstacles.append(Rect2i(habitant[1][0], Vector2i.ONE))
+	var grille: AStarGrid2D = EMPRISES.grille(Vector2i(LARGEUR, HAUTEUR), _obstacles)
 	for habitant: Array in HABITANTS:
 		var marcheur: Node2D = MARCHEUR.new()
+		marcheur.obstacles = grille
 		marcheur.planche_marche = load(TEX + habitant[0] + ".png")
 		marcheur.planche_course = marcheur.planche_marche
 		var coins: Array[Vector2i] = []
@@ -166,6 +174,7 @@ func _decal(parent: Node2D, nom: String, point: Vector2, echelle: float) -> void
 func _objet(objet: Array, tries: Node2D, ombres: Node2D) -> void:
 	var texture: Texture2D = load(TEX + objet[0])
 	var pied := Vector2(objet[1], objet[2]) * CASE
+	_obstacles.append_array(EMPRISES.de(objet[0], Vector2(objet[1], objet[2])))
 	var sprite := _au_pied(texture)
 	sprite.position = pied
 	var materiau := ShaderMaterial.new()
