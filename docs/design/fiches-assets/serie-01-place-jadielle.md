@@ -567,3 +567,15 @@ Premier essai à l'échelle du jeu : sol en mosaïque 4 × 4 cases + les trois a
 | NE_r1 | frontière réussie (touffes qui débordent, terre, pavés déchaussés), même matière que les deux sols ; raccord gauche-droite bon (7–10) ; raccords haut et bas imparfaits (14 et 21–28), invisibles après un fondu de 24 px | **validé** ; fondu des raccords et coupe le long des joints à faire dans Godot |
 
 **Correction de l'étalonnage** : la première version verdissait la pierre beige (teinte voisine des jaunes). Le script ne corrige plus que les pixels saturés (≥ 90/255) de teinte 34 à 70 ; la végétation déjà validée est inchangée (écart moyen < 0,2/255).
+
+### WORLD_GROUND_PAVE_A_01_COIN_EXT (2026-10-03) — changement de technique pour les transitions
+
+| Révision | Résultat | Décision |
+|---|---|---|
+| NE_r1 | beau pris seul, frontière fidèle au bord ; mais le montage avec le bord et les sols (`build/art/test_COIN_EXT_r1.png`) montre deux limites de fond | gardé comme **référence de rendu** |
+
+**Limites constatées** :
+1. **Tourner une tuile peinte ne marche pas** : le bord tourné de 90° pour faire un côté vertical couche les touffes sur le flanc et déplace la lumière. Il faudrait 12 transitions peintes séparément (4 bords, 4 coins extérieurs, 4 coins intérieurs), toutes raccordées entre elles : trop fragile avec un générateur.
+2. **Chaque génération repeint l'herbe un peu autrement** (plus claire, plus citron que l'herbe validée) : les bords de tuiles se voient.
+
+**Décision (Claude, technique ; prévue par la fiche du sol)** : on garde la matière, on change la technique. Les transitions sont faites **dans Godot** : les deux textures validées sont mélangées par un **masque** à bord irrégulier (shader), avec une fine bande de terre, puis **décorées de décalcomanies** posées le long de la frontière (touffes qui débordent, pavés déchaussés, plaques de terre). Les décalcomanies sont des objets debout ou à plat qui se posent dans toutes les directions sans rotation. Elles sont produites en une planche : `WORLD_GROUND_DECAL_BORD_01`. `COIN_INT` n'est plus produit.
