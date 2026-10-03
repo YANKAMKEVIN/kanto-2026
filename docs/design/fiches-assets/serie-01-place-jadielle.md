@@ -643,3 +643,8 @@ Premiers essais : `WORLD_TREE_A_01_NE_r1` et `WORLD_TREE_B_01_NE_r1` (rééclair
 
 Prompts conservés dans `build/art/prompts/` (non versionné). Découpage des planches : `tools/art/decouper_perso.py` (recalage tête/pieds, réduction commune ; piste 1 : 64 px, palette de 28 couleurs, alpha net ; piste 2 : 128 px lissé).
 **Scène** : le personnage d'essai (`marcheur.gd`) fait le tour de la place case par case à la vitesse de marche du jeu (0,27 s par case) ; **toucher l'écran** passe de la piste 1 à la piste 2 puis au repère provisoire. Lumière neutre : `-- --lumiere=ne`.
+
+## Test personnage côte à côte (2026-10-03)
+
+Générés par Codex : `PERSO_P1_COURSE_r1`, `PERSO_P2_COURSE_r1` (cycles de course), `PNJ_ENFANT_P1_r1`, `PNJ_ENFANT_P2_r1` (l'enfant de Jadielle : cheveux noirs, t-shirt vert, short beige, **défaut pour le test**), `POKE_RATTATA_P1_r1`, `POKE_RATTATA_P2_r1`. Tous exploitables du premier coup.
+Scène : à gauche la piste 1 (pixel art ×2 ; héros 64 px, enfant 54 px, Rattata 28 px natifs), à droite la piste 2 (peint ; 128, 108, 56 px). Chaque héros marche et **court** sur le bas de son circuit (0,16 s par case) ; l'enfant et son Rattata qui le suit tournent à l'intérieur. Deux arbres du bas retirés pour la lisibilité ; caméra abaissée (7,3 cases). S24 : 58–59 fps, 22,6 Mo de textures.

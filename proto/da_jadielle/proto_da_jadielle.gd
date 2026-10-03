@@ -33,8 +33,6 @@ const OBJETS: Array = [
 	["tree_a.png", 25.0, 5.5, true],
 	["tree_b.png", 24.8, 9.6, true],
 	["tree_a.png", 25.0, 13.8, true],
-	["tree_a.png", 7.6, 14.2, true],
-	["tree_b.png", 18.6, 14.4, true],
 	# J7.1 : bancs face au sud de part et d'autre du massif, lampadaires.
 	["banc.png", 9.4, 10.7, false],
 	["banc.png", 16.6, 10.7, false],
@@ -71,8 +69,7 @@ func _ready() -> void:
 	_poser_massif(ombres)
 	for objet: Array in OBJETS:
 		_poser_objet(objet[0], Vector2(objet[1], objet[2]) * CASE, objet[3], tries, ombres)
-	var marcheur: Node2D = preload("res://proto/da_jadielle/marcheur.gd").new()
-	tries.add_child(marcheur)
+	_poser_groupes(tries)
 	add_child(_camera())
 	_journal_fps()
 
@@ -92,7 +89,7 @@ func _journal_fps() -> void:
 ## `-- --zoom=2 --vise=8.5,9` (zoom et point visé en cases).
 func _camera() -> Camera2D:
 	var camera := Camera2D.new()
-	camera.position = Vector2(LARGEUR / 2.0, 6.4) * CASE
+	camera.position = Vector2(LARGEUR / 2.0, 7.3) * CASE
 	for argument in OS.get_cmdline_user_args():
 		if argument.begins_with("--zoom="):
 			var zoom := argument.trim_prefix("--zoom=").to_float()
@@ -252,3 +249,55 @@ func _contact(texture: Texture2D, pied: Vector2, part_base: float, parent: Node2
 	sprite.scale = Vector2(echelle, echelle)
 	sprite.position = pied + Vector2(0.0, etendue)
 	parent.add_child(sprite)
+
+
+## Test personnage côte à côte (J7.1) : à gauche la piste 1 (pixel art, ×2), à droite la
+## piste 2 (peint). Chaque côté : le héros (marche, court en bas du circuit), l'enfant de
+## Jadielle et son Rattata qui le suit.
+func _poser_groupes(tries: Node2D) -> void:
+	var dx := 14
+	for piste: int in [1, 2]:
+		var decalage := Vector2i(0 if piste == 1 else dx, 0)
+		var pixel := piste == 1
+		var echelle := 2.0 if pixel else 1.0
+		var tex := "res://proto/da_jadielle/tex/%s_p%d.png"
+		var course := "res://proto/da_jadielle/tex/perso_p%d_course.png" % piste
+		var heros := _marcheur(load(tex % ["perso", piste]), load(course), echelle, pixel,
+			[Vector2i(4, 7), Vector2i(4, 12), Vector2i(7, 12), Vector2i(7, 7)], decalage)
+		heros.segments_course.assign([1])
+		tries.add_child(heros)
+		# L'enfant et son Rattata tournent à l'intérieur du circuit du héros.
+		var boucle: Array[Vector2i] = [Vector2i(5, 8), Vector2i(5, 11), Vector2i(6, 11),
+			Vector2i(6, 8)]
+		var enfant := _marcheur(load(tex % ["enfant", piste]), null, echelle, pixel, boucle,
+			decalage)
+		enfant.avance_depart = 1
+		enfant.taille_ombre = 0.85
+		tries.add_child(enfant)
+		var rattata := _marcheur(load(tex % ["rattata", piste]), null, echelle, pixel, boucle,
+			decalage)
+		rattata.taille_ombre = 0.6
+		tries.add_child(rattata)
+	var calque := CanvasLayer.new()
+	var etiquette := Label.new()
+	etiquette.text = "Gauche : piste 1 — pixel art 64 px (×2)      Droite : piste 2 — peint 128 px"
+	etiquette.position = Vector2(32, 24)
+	etiquette.add_theme_font_size_override(&"font_size", 34)
+	etiquette.add_theme_color_override(&"font_outline_color", Color(0, 0, 0, 0.8))
+	etiquette.add_theme_constant_override(&"outline_size", 8)
+	calque.add_child(etiquette)
+	add_child(calque)
+
+
+func _marcheur(marche: Texture2D, course: Texture2D, echelle: float, pixel: bool,
+		coins: Array[Vector2i], decalage: Vector2i) -> Node2D:
+	var marcheur: Node2D = preload("res://proto/da_jadielle/marcheur.gd").new()
+	marcheur.planche_marche = marche
+	marcheur.planche_course = course if course else marche
+	marcheur.echelle = echelle
+	marcheur.pixel = pixel
+	var circuit: Array[Vector2i] = []
+	for coin in coins:
+		circuit.append(coin + decalage)
+	marcheur.circuit = circuit
+	return marcheur
