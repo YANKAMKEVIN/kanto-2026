@@ -29,6 +29,12 @@ signal dashboard_shown(view: DashboardView)
 ## L'Équipe est à afficher ou à rafraîchir (ouverture, après un échange ou un favori) ;
 ## [param selected] est déjà ramené dans l'équipe (jalon-06.md §6.7).
 signal team_shown(view: TeamView, selected: int)
+## Le Sac est à afficher ou à rafraîchir (ouverture, favori, tri, après un usage).
+signal bag_shown(view: BagView)
+## Le choix du Pokémon pour un objet est à afficher (UTILISER depuis le Sac d'exploration).
+signal bag_targets_shown(view: PartyPickerView)
+## Résultat d'un usage (texte, UTILISER À NOUVEAU possible) : « +20 PV — … » ou la raison.
+signal bag_result_shown(text: String, can_repeat: bool)
 ## Un écran pas encore construit est à afficher (écran provisoire « À venir »).
 signal placeholder_shown(screen: StringName)
 
@@ -41,6 +47,13 @@ var _can_open: Callable
 var _navigator: MenuNavigator
 var _changed: bool = false
 var _team_selected: int = 0
+var _items: ItemLibrary
+var _bag_context: StringName = BagQuery.CONTEXT_FIELD
+var _bag_target: int = -1
+var _bag_last: StringName = &""
+var _bag_sort: int = BagQuery.Sort.RELEVANCE
+var _repeat_item: StringName = &""
+var _repeat_index: int = -1
 
 
 func _init() -> void:
@@ -50,7 +63,8 @@ func _init() -> void:
 ## [param state] : l'autoload GameState (ou une instance de game_state.gd en test).
 ## [param can_open] : [code]func() -> bool[/code], la garde d'ouverture.
 func setup(state: Object, data: PokemonData, zones: ZoneLibrary, objectives: ObjectiveLibrary,
-		unlocks: MenuUnlocks, can_open: Callable) -> void:
+		unlocks: MenuUnlocks, can_open: Callable, items: ItemLibrary = null) -> void:
+	_items = items
 	_state = state
 	_data = data
 	_zones = zones
@@ -155,6 +169,79 @@ func select_member(index: int) -> void:
 		_team_selected = TeamViews.clamp_selection(index, _state.party.size())
 
 
+## Mémorise l'onglet ouvert du Sac (session seulement, jamais sauvegardé).
+func open_bag_category(category: StringName) -> void:
+	_bag_last = category
+
+
+## Inverse le favori de [param item_id] (Sac). Faux si l'objet n'est pas dans le Sac.
+func toggle_item_favorite(item_id: StringName) -> bool:
+	if _state == null or not _state.bag.has(item_id):
+		return false
+	_state.bag.toggle_favorite(item_id)
+	mark_changed()
+	_emit_bag()
+	return true
+
+
+## Change le tri du Sac (session seulement).
+func set_bag_sort(sort: int) -> void:
+	_bag_sort = sort
+	_emit_bag()
+
+
+## UTILISER sur [param item_id] : depuis l'Équipe, sur le Pokémon déjà choisi ; sinon le choix
+## du Pokémon s'ouvre.
+func request_item_use(item_id: StringName) -> void:
+	if _state == null or _items == null:
+		return
+	if _bag_context == BagQuery.CONTEXT_TEAM and _bag_target >= 0:
+		use_item_on(item_id, _bag_target)
+		return
+	var item := _items.get_item(item_id)
+	if item == null:
+		return
+	bag_targets_shown.emit(BagQuery.targets(_state.party, _state.bag, item, _bag_context,
+		_data))
+
+
+## Donne [param item_id] au Pokémon [param index] ([ItemUse.apply]). Vrai si l'objet a servi
+## (autosave à la fermeture) ; sinon la raison est affichée et rien n'est consommé.
+func use_item_on(item_id: StringName, index: int) -> bool:
+	if _state == null or _items == null:
+		return false
+	var item := _items.get_item(item_id)
+	var pokemon: Pokemon = _state.party.get_at(index)
+	if item == null or pokemon == null:
+		return false
+	var result := ItemUse.apply(_state.bag, item, pokemon, _bag_context)
+	_repeat_item = item_id
+	_repeat_index = index
+	if result.is_ok():
+		mark_changed()
+	bag_result_shown.emit(BagQuery.result_text(result, pokemon.display_name(_data)),
+		BagQuery.can_repeat(result))
+	if _bag_context != BagQuery.CONTEXT_TEAM:
+		bag_targets_shown.emit(BagQuery.targets(_state.party, _state.bag, item, _bag_context,
+			_data, index))
+	_emit_bag()
+	return result.is_ok()
+
+
+## UTILISER À NOUVEAU : même objet, même Pokémon.
+func repeat_item_use() -> bool:
+	if _repeat_item.is_empty():
+		return false
+	return use_item_on(_repeat_item, _repeat_index)
+
+
+func _emit_bag() -> void:
+	if _state == null:
+		return
+	bag_shown.emit(BagQuery.view(_state.bag, _items, _bag_context, _bag_sort, _bag_last,
+		_state.party, _bag_target, _data))
+
+
 func _emit_team() -> void:
 	var view := TeamViews.build(_state.party, _data, _zones, _state.pokedex, _unlocks)
 	_team_selected = TeamViews.clamp_selection(_team_selected, view.size())
@@ -172,6 +259,11 @@ func _on_route_shown(route: MenuRoute) -> void:
 		_team_selected = 0
 		select_member(int(route.params.get("index", 0)))
 		_emit_team()
+	elif route.screen == MenuRoute.BAG and _items != null:
+		_bag_context = route.params.get("context", BagQuery.CONTEXT_FIELD)
+		_bag_target = int(route.params.get("target", -1))
+		_repeat_item = &""
+		_emit_bag()
 	else:
 		placeholder_shown.emit(route.screen)
 

@@ -215,8 +215,8 @@ func test_dashboard_view_is_sent_on_open_and_a_placeholder_for_other_screens() -
 	var view: DashboardView = _screen.dashboards[0]
 	assert_eq(view.cards.size(), 4, "avant le starter : 4 cartes (Q-2)")
 	assert_eq(view.zone_name, "Bourg Palette")
-	_screen.route_requested.emit(MenuRoute.for_screen(MenuRoute.BAG))
-	assert_eq(_screen.placeholders, [MenuRoute.BAG] as Array[StringName], "écran provisoire")
+	_screen.route_requested.emit(MenuRoute.for_screen(MenuRoute.MAP))
+	assert_eq(_screen.placeholders, [MenuRoute.MAP] as Array[StringName], "écran provisoire")
 	_screen.back_requested.emit()
 	assert_eq(_screen.dashboards.size(), 2, "retour au tableau de bord : vue neuve")
 	assert_true(_menu.is_open(), "un niveau en arrière seulement")

@@ -169,7 +169,7 @@ func _ready() -> void:
 	_objectives.load_file()
 	_unlocks = MenuUnlocks.new(GameState.flags, GameState.party)
 	_apply_debug_unlocks()
-	_menu.setup(GameState, _pokemon, _zones, _objectives, _unlocks, _can_open_menu)
+	_menu.setup(GameState, _pokemon, _zones, _objectives, _unlocks, _can_open_menu, _items)
 	_menu.menu_opened.connect(_on_menu_opened)
 	_menu.menu_closed.connect(_on_menu_closed)
 	# L'écran (jalon-06.md §6.6) : ouverture et vue dans la même frame, sans await (un fondu
@@ -187,6 +187,17 @@ func _ready() -> void:
 		_menu_screen.team_member_moved.connect(_menu.move_member)
 		_menu_screen.team_favorite_toggled.connect(_menu.toggle_favorite)
 		_menu_screen.team_member_selected.connect(_menu.select_member)
+	# Sac (T12) : relié dès que l'écran porte l'interface du §6.8 (BagScreen du T11).
+	if _menu_screen.has_signal(&"bag_use_requested"):
+		_menu.bag_shown.connect(_menu_screen.show_bag)
+		_menu.bag_targets_shown.connect(_menu_screen.show_bag_targets)
+		_menu.bag_result_shown.connect(_menu_screen.show_bag_result)
+		_menu_screen.bag_category_opened.connect(_menu.open_bag_category)
+		_menu_screen.bag_favorite_toggled.connect(_menu.toggle_item_favorite)
+		_menu_screen.bag_sort_changed.connect(_menu.set_bag_sort)
+		_menu_screen.bag_use_requested.connect(_menu.request_item_use)
+		_menu_screen.bag_target_chosen.connect(_menu.use_item_on)
+		_menu_screen.bag_repeat_requested.connect(_menu.repeat_item_use)
 	_hud.menu_requested.connect(_menu.open)
 	SceneRouter.setup(_world, _player, _fade)
 	# Destinations « à venir » (dossier-07 §12, build de développement) : l'écran provisoire.

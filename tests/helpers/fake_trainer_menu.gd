@@ -10,6 +10,13 @@ signal team_member_selected(index: int)
 signal team_member_moved(from: int, to: int)
 signal team_favorite_toggled(index: int)
 
+signal bag_category_opened(category: StringName)
+signal bag_favorite_toggled(item_id: StringName)
+signal bag_sort_changed(sort: int)
+signal bag_use_requested(item_id: StringName)
+signal bag_target_chosen(item_id: StringName, index: int)
+signal bag_repeat_requested
+
 var speed_scale: float = 1.0
 var opened_count: int = 0
 var closed_count: int = 0
@@ -17,6 +24,10 @@ var dashboards: Array[DashboardView] = []
 var placeholders: Array[StringName] = []
 var teams: Array[TeamView] = []
 var team_selections: Array[int] = []
+var bags: Array[BagView] = []
+var bag_targets: Array[PartyPickerView] = []
+var bag_results: Array[String] = []
+var bag_repeats: Array[bool] = []
 var _open: bool = false
 
 
@@ -43,6 +54,19 @@ func show_team(view: TeamView, selected: int) -> void:
 	team_selections.append(selected)
 
 
+func show_bag(view: BagView) -> void:
+	bags.append(view)
+
+
+func show_bag_targets(view: PartyPickerView) -> void:
+	bag_targets.append(view)
+
+
+func show_bag_result(text: String, can_repeat: bool) -> void:
+	bag_results.append(text)
+	bag_repeats.append(can_repeat)
+
+
 func is_open() -> bool:
 	return _open
 
@@ -57,6 +81,15 @@ func wire(director: MenuDirector) -> void:
 	team_member_selected.connect(director.select_member)
 	team_member_moved.connect(director.move_member)
 	team_favorite_toggled.connect(director.toggle_favorite)
+	director.bag_shown.connect(show_bag)
+	director.bag_targets_shown.connect(show_bag_targets)
+	director.bag_result_shown.connect(show_bag_result)
+	bag_category_opened.connect(director.open_bag_category)
+	bag_favorite_toggled.connect(director.toggle_item_favorite)
+	bag_sort_changed.connect(director.set_bag_sort)
+	bag_use_requested.connect(director.request_item_use)
+	bag_target_chosen.connect(director.use_item_on)
+	bag_repeat_requested.connect(director.repeat_item_use)
 	route_requested.connect(director.go)
 	back_requested.connect(director.handle_back)
 	close_requested.connect(director.close)
