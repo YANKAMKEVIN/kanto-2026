@@ -43,7 +43,6 @@ signal haptic_requested(duration_ms: int)
 
 ## Raison de blocage du joueur pendant un combat ([method Player.set_input_enabled]).
 const REASON: StringName = &"battle"
-const CHOICE_CARDS_PATH: String = "res://game/ui/components/choice_cards.gd"
 const FORGET_PANEL_SCENE: PackedScene = preload("res://game/ui/battle/move_forget_panel.tscn")
 const BAG_PANEL_SCENE: PackedScene = preload("res://game/ui/battle/battle_bag_panel.tscn")
 const PARTY_PICKER_SCENE: PackedScene = preload("res://game/ui/bag/party_picker.tscn")
@@ -650,14 +649,11 @@ func _offer_forget(event: BattleEvent) -> void:
 
 
 ## Coroutine : la question « Oublier {capacité} ? » en deux cartes (composant `ChoiceCards`).
-## Vrai si le joueur confirme (OUBLIER) ; GARDER rend la main au panneau d'oubli. Sans le
-## composant (build sans lui), la confirmation est réputée donnée.
+## Vrai si le joueur confirme (OUBLIER) ; GARDER rend la main au panneau d'oubli.
 func _confirm_forget(event: BattleEvent, old_move: StringName) -> bool:
-	var script := choice_cards_script
-	if script == null and ResourceLoader.exists(CHOICE_CARDS_PATH):
-		script = load(CHOICE_CARDS_PATH) as GDScript
-	if script == null or not is_instance_valid(_hud):
+	if not is_instance_valid(_hud):
 		return true
+	var script: GDScript = choice_cards_script if choice_cards_script != null else ChoiceCards
 	var view := ChoiceView.new(
 		_texts.line_for(&"forget_confirm_title", event, _data, old_move),
 		_texts.line_for(&"forget_confirm_yes", event, _data, old_move),
