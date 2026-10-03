@@ -41,6 +41,14 @@ OBJETS = [
     ("INT_BOUTIQUE_CAISSE_NE_r1.png", "int_caisse.png", ("w", 5)),
     ("INT_BOUTIQUE_RAYON_MURAL_NE_r1.png", "int_rayon.png", ("w", 2.7)),
     ("INT_BOUTIQUE_PRESENTOIR_NE_r1.png", "int_presentoir.png", ("w", 3)),
+    # Reste de Jadielle (série 04, lumière neutre).
+    ("WORLD_BLDG_MAISON_A_01_NE_r1.png", "maison_a.png", ("w", 6)),
+    ("WORLD_BLDG_MAISON_B_01_NE_r1.png", "maison_b.png", ("w", 5.5)),
+    ("WORLD_BLDG_ARENE_01_NE_r1.png", "arene.png", ("w", 10)),
+    ("WORLD_PROP_HAIE_01_NE_r1.png", "haie.png", ("w", 4)),
+    ("WORLD_PROP_CLOTURE_01_NE_r1.png", "cloture.png", ("w", 4)),
+    ("WORLD_PROP_PANNEAU_01_NE_r1.png", "panneau.png", ("h", 2)),
+    ("WORLD_PROP_PORTE_NORD_01_NE_r1.png", "porte_nord.png", ("w", 5)),
 ]
 # Enveloppes des pièces (15 × 10 cases), opaques.
 PIECES = [
