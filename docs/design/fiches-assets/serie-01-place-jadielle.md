@@ -612,3 +612,48 @@ Le sol de la place est complet : herbe, pavés, bord (référence de rendu), dé
 Validés en lumière GH : `WORLD_TREE_A_01` (r3), `WORLD_TREE_B_01`, `WORLD_TREE_CENTRAL_01`, `WORLD_BLDG_CENTRE_01` (r2), `WORLD_BLDG_BOUTIQUE_01`. Sol (NE) : herbe, pavés, bord (référence), planche de bordure.
 **Reste** : les variantes **NE** des cinq objets (pour la comparaison de lumière du prototype, §5.3 du cahier) ; elles se font par retouche de l'image GH validée.
 Ce qui a le mieux marché : nouvelle image « comme extraite de la référence » avec un recadrage au plus près de l'objet ; une ancre validée jointe à chaque prompt ; la retouche réservée aux changements de rendu ou de lumière sur une forme déjà juste ; une vraie transparence exigée explicitement.
+
+## Scène prototype v1 (2026-10-03, branche `proto/da-jadielle`)
+
+`proto/da_jadielle/` (scène construite en code, jetable, scène principale de l'APK **sur cette branche seulement**). Textures préparées par `tools/art/preparer_proto.py` depuis `build/art/`. Sol : herbe et pavés (× 0,7) mélangés par un masque de cases à bord bruité + bande de terre (shader), décalcomanies de bordure le long de la frontière ; objets triés par les pieds ; ombres portées = silhouette retournée, écrasée, inclinée vers le bas à droite ; vent par shader sur les arbres ; sol teinté chaud (GH). Joueur = sprite provisoire 64 px ×2, comme repère d'échelle.
+**S24** : 59 fps stables, 18 Mo de textures, aucune erreur. Capture : `build/art/proto_s24_v1.png`.
+**Tests** : 1 échec attendu sur cette branche seulement, `test_boot.gd::test_main_scene_is_boot` (la scène principale est le prototype) ; tous les autres passent. La branche ne sera jamais fusionnée telle quelle : seuls les documents et les outils d'art en sortiront.
+
+## J7.1 — tranche de la place (décision de Kevin, 2026-10-03)
+
+1. **Ombres** (fait) : `ombre.gdshader`, silhouette floutée (rayon 10 px), écrasée à 0,26, inclinée à 45°, alpha 0,34 au pied s'effaçant vers l'extrémité. À revoir sur S24.
+2. Massif autour de l'arbre central, un banc, un lampadaire (série 02, première partie).
+3. **Personnage** : test comparatif des deux pistes (pixel art détaillé 64 px / peint simplifié), même personnage, 4 directions et vrai cycle de marche chacun, intégrés tour à tour dans la place et jugés **en mouvement sur S24** (cohérence, lisibilité, fluidité, stabilité entre images, **reproductibilité pour des dizaines de PNJ**). `CLAUDE.md` inchangé : le 64 px reste la règle jusqu'au verdict.
+4. Pas de brume, de rayons ni de vignettage ; au plus une légère harmonisation colorimétrique. Bâtiments, végétation et sols **verrouillés**.
+5. **Bâtiments « en suspension »** (Kevin, 2026-10-03) : il manquait l'ombre de contact. Ajout de `contact.gdshader` : la base de la silhouette (12 % du bas pour les bâtiments, 5 % pour les arbres) étirée de 18 px vers le bas et floutée, sous l'objet ; elle épouse la vraie forme de la base (angles coupés compris). Une ellipse générique avait été essayée d'abord : trop étroite, invisible sous les bâtiments.
+
+## Génération automatique par Codex (2026-10-03)
+
+L'app ChatGPT de Kevin embarque **Codex** (`/Applications/ChatGPT.app/Contents/Resources/codex-cli/bin/codex`), qui a un outil de génération d'images **compris dans l'abonnement ChatGPT** : aucune clé API, aucune dépense en plus. Script : `tools/art/generer.sh ID prompt.txt [références...]` → `build/art/ID.png` (vraie transparence). Claude génère, analyse et relance seul ; Kevin valide sur les montages.
+Premiers essais : `WORLD_TREE_A_01_NE_r1` et `WORLD_TREE_B_01_NE_r1` (rééclairage NE) : même forme, lumière neutre, fond transparent.
+
+## J7.1 — lot généré par Codex (2026-10-03)
+
+| Identifiant | Résultat |
+|---|---|
+| `WORLD_TREE_CENTRAL_01_NE_r1`, `WORLD_BLDG_CENTRE_01_NE_r1`, `WORLD_BLDG_BOUTIQUE_01_NE_r1` | rééclairages NE fidèles (forme conservée, vraie transparence) |
+| `WORLD_PROP_MASSIF_01_GH_r1` | massif circulaire à bordure de pierre, fleurs rouges/jaunes/blanches/violettes, trou central pour le tronc ; posé sous l'arbre central (non étalonné : les fleurs jaunes verdiraient) |
+| `WORLD_PROP_BANC_01_GH_r1`, `WORLD_PROP_LAMPADAIRE_01_GH_r1` | banc bois et fonte verte, lampadaire à lanterne ; même rendu que la série |
+| `PERSO_P1_PIXEL_r1`, `PERSO_P2_PEINT_r1` | planches de marche 4 directions × 4 images, même personnage (tenue de la référence `ouverture-storyboard-v1` : casquette rouge, t-shirt blanc, sac jaune, jean, baskets rouges ; **défaut pour le test**, règle 4) |
+
+Prompts conservés dans `build/art/prompts/` (non versionné). Découpage des planches : `tools/art/decouper_perso.py` (recalage tête/pieds, réduction commune ; piste 1 : 64 px, palette de 28 couleurs, alpha net ; piste 2 : 128 px lissé).
+**Scène** : le personnage d'essai (`marcheur.gd`) fait le tour de la place case par case à la vitesse de marche du jeu (0,27 s par case) ; **toucher l'écran** passe de la piste 1 à la piste 2 puis au repère provisoire. Lumière neutre : `-- --lumiere=ne`.
+
+## Test personnage côte à côte (2026-10-03)
+
+Générés par Codex : `PERSO_P1_COURSE_r1`, `PERSO_P2_COURSE_r1` (cycles de course), `PNJ_ENFANT_P1_r1`, `PNJ_ENFANT_P2_r1` (l'enfant de Jadielle : cheveux noirs, t-shirt vert, short beige, **défaut pour le test**), `POKE_RATTATA_P1_r1`, `POKE_RATTATA_P2_r1`. Tous exploitables du premier coup.
+Scène : à gauche la piste 1 (pixel art ×2 ; héros 64 px, enfant 54 px, Rattata 28 px natifs), à droite la piste 2 (peint ; 128, 108, 56 px). Chaque héros marche et **court** sur le bas de son circuit (0,16 s par case) ; l'enfant et son Rattata qui le suit tournent à l'intérieur. Deux arbres du bas retirés pour la lisibilité ; caméra abaissée (7,3 cases). S24 : 58–59 fps, 22,6 Mo de textures.
+
+## Comparaison de lumière sur S24 (cahier §5.3, 2026-10-03)
+
+Toucher l'écran fait défiler 4 modes : **A** golden hour peinte dans les assets ; **B** assets neutres bruts ; **C** assets neutres + golden hour par Godot (`CanvasModulate` chaud) ; **D** assets neutres + fin de journée par Godot (aperçu de ce que permettrait le jour/nuit). Le massif, les bancs et les lampadaires n'existent qu'en GH (petits objets, effet négligeable). Personnages peints des deux côtés. Capture : `build/art/comparaison_lumieres.png`.
+
+**Verdict (Kevin) : méthode C retenue**, A = référence. Calibration v2 (mode « C2 » du prototype) :
+1. `etalonnage.gdshader` : gains par zone de luminance mesurés sur les paires GH/NE de la série 01 (ombres ×1,16/1,07/0,97, tons moyens ×1,06/1,01/0,91, hautes lumières ×1,01/0,97/0,85 en RVB), contours sombres laissés neutres ; pas de teinte uniforme ;
+2. `objet.gdshader` : **liseré de soleil** doré sur les bords des objets tournés vers le haut-gauche (ce que la teinte d'écran ne crée pas).
+Écart moyen à A (somme RVB, capture plein écran) : C v1 42,8 → C2 ≈ 30. Reste à rapprocher : les hautes lumières internes des feuillages (A plus jaune-vert au sommet des masses) ; piste : légère carte de lumière par asset, plus tard.

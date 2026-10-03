@@ -47,7 +47,7 @@ Corollaires : la nostalgie vient du contenu, la modernité vient de sa présenta
 
 Trois critères pour toute décision visuelle : **beau immédiatement, crédible quand on l'observe, vivant quand on y reste.**
 
-- **Hybride** : de loin une illustration 2D HD ; de près, la texture et le charme du pixel art. Personnages et Pokémon en pixel art fin (**48–64 px de haut** en natif), environnements 2D haute définition, éclairage et effets modernes par-dessus.
+- **Hybride** : de loin une illustration 2D HD ; de près, la matière peinte. **Personnages et Pokémon peints simplifiés, dans la même main que les décors** (décision de Kevin, 2026-10-03 : test comparatif pixel art 64 px / peint en mouvement sur S24, `cahier-art-monde-v0.1.md` §4) ; environnements 2D haute définition.
 - **Détail** : tuiles de toit, bois, rebords de fenêtres, gouttières, légère usure, plantes. Plusieurs essences d'arbres, pas de répétition visible du même arbre. Toujours **lisible immédiatement** (jeu mobile).
 - **La lumière est la signature graphique** (~50 % du résultat). Même lieu, cinq émotions :
   - 07:00 légère brume, lumière froide, rosée
@@ -69,7 +69,7 @@ Références visuelles :
 - [`reference/chambre-joueur-v1.webp`](reference/chambre-joueur-v1.webp) : **référence de la chambre du joueur** (fournie par Kevin, 2026-09-25) : agencement de la pièce et rendu cible des intérieurs (lumière chaude du soir par la fenêtre, parquet, décor riche, murs visibles).
 - [`reference/ouverture-storyboard-v1.webp`](reference/ouverture-storyboard-v1.webp), [`reference/maison-rival-v1.webp`](reference/maison-rival-v1.webp), [`reference/labo-chen-v1.png`](reference/labo-chen-v1.png) : **références des intérieurs** et de l'ouverture (Kevin, 2026-09-25/26). L'Évoli de la maison du rival est une erreur, à ignorer.
 
-Historique : d'abord « C : Pokémon 2D 2026 » en pixel art HD, puis évolution validée vers la 2D HD atmosphérique hybride.
+Historique : d'abord « C : Pokémon 2D 2026 » en pixel art HD, puis évolution validée vers la 2D HD atmosphérique hybride, puis (2026-10-03) personnages et Pokémon peints comme le décor.
 
 ## Contrôles mobiles
 
