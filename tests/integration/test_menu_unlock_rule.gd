@@ -101,6 +101,23 @@ func test_debug_unlock_shows_the_dex_without_the_story_flag_nor_in_the_save() ->
 	_menu.close()
 
 
+func test_the_map_panel_has_no_observed_pokemon_before_the_activation() -> void:
+	await _start()
+	_give_starter()
+	GameState.record_seen(&"pidgey", &"pallet_town")
+	var panels: Array[ZonePanelView] = []
+	_menu.map_zone_shown.connect(panels.append)
+	assert_true(_menu.open(MenuRoute.map()))
+	assert_eq(panels.size(), 1)
+	assert_eq(panels[0].zone_id, &"pallet_town")
+	assert_eq(panels[0].pokemon.size(), 0, "ni section, ni titre « Pokémon observés »")
+	GameState.flags.set_flag(StoryFlags.POKEDEX_ACTIVATED)
+	_menu.open_zone(&"pallet_town")
+	assert_eq(panels.size(), 2)
+	assert_eq(panels[1].pokemon.size(), 1, "visible après l'activation")
+	_menu.close()
+
+
 # --- Vrais écrans (§4) --------------------------------------------------------------------
 
 const FORBIDDEN: Array[String] = ["pokédex", "vus", "capturés", "habitat"]
