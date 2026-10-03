@@ -33,6 +33,15 @@ func _init() -> void:
 	set_process(false)
 
 
+func _notification(what: int) -> void:
+	if what != NOTIFICATION_READY:
+		return
+	# Godot active _process à l'entrée dans l'arbre dès que le script en définit une, par-dessus
+	# le set_process(false) de _init : sans cela, toute carte devenait « favori » après LONG_PRESS.
+	# (notification et non _ready : les sous-classes redéfinissent _ready.)
+	set_process(false)
+
+
 func _process(delta: float) -> void:
 	_held_time += delta
 	if not _long_done and _held_time >= UiTokens.LONG_PRESS:

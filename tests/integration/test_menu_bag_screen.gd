@@ -113,3 +113,12 @@ func test_escape_action_closes_the_picker_first() -> void:
 	assert_true(_menu.is_open(), "le menu reste ouvert")
 	_boot._unhandled_input(event)
 	assert_false(_menu.is_open(), "puis Échap ferme le menu")
+
+
+func test_cards_never_turn_favorite_by_themselves() -> void:
+	assert_true(_menu.open(MenuRoute.bag()))
+	var end := Time.get_ticks_msec() + 1200
+	while Time.get_ticks_msec() < end:
+		await wait_process_frames(1)
+	assert_false(GameState.bag.is_favorite(&"potion"), "aucun appui long sans doigt")
+	_menu.close()
