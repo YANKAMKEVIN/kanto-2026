@@ -169,3 +169,40 @@ func test_with_the_debug_unlock_the_dex_card_is_shown() -> void:
 		found = found or text.to_lower().contains("pokédex")
 	assert_true(found, "la carte Pokédex est visible")
 	_menu.close()
+
+
+func _texts_of(view: TrainerView) -> Array[String]:
+	var texts: Array[String] = [view.player_name, view.player_title, view.play_time_text,
+		view.started_text, view.seen_text, view.caught_text]
+	for moment: MomentView in view.moments:
+		texts.append_array([moment.title, moment.detail, moment.place])
+	for stat: TrainerStatView in view.stats:
+		texts.append_array([stat.label, stat.value_text])
+	return texts
+
+
+func test_the_trainer_view_has_no_trace_of_the_dex_before_the_activation() -> void:
+	await _start()
+	_give_starter()
+	GameState.record_seen(&"pidgey", &"route_1")
+	GameState.record_caught(&"charmander", &"oak_lab")
+	GameState.record_moment(&"first_capture", &"route_1", {"species": "pidgey"})
+	var views: Array[TrainerView] = []
+	_menu.trainer_shown.connect(views.append)
+	assert_true(_menu.open(MenuRoute.trainer()))
+	assert_eq(views.size(), 1)
+	var view := views[0]
+	assert_null(view.seen_route)
+	assert_null(view.caught_route)
+	for text: String in _texts_of(view):
+		for word: String in FORBIDDEN:
+			assert_false(text.to_lower().contains(word), "« %s »" % text)
+	for moment: MomentView in view.moments:
+		if moment.route != null:
+			assert_ne(moment.route.screen, MenuRoute.POKEDEX, "aucun lien vers le Pokédex")
+	_menu.close()
+	GameState.flags.set_flag(StoryFlags.POKEDEX_ACTIVATED)
+	assert_true(_menu.open(MenuRoute.trainer()))
+	assert_eq(views.size(), 2)
+	assert_ne(views.back().seen_text, "", "présent après l'activation")
+	_menu.close()
