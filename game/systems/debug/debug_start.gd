@@ -27,7 +27,8 @@ extends RefCounted
 ## [/codeblock]
 ## Équipe : 1 à 6 Pokémon créés par [PokemonFactory] (capacités de Rouge/Bleu au niveau) ;
 ## « moves » (1 à 4, distinctes) les remplace ; « exp_to_next » fixe l'XP qui manque pour le
-## niveau suivant (1 = un seul point). Le starter est le premier de l'équipe ; chaque espèce
+## niveau suivant (1 = un seul point) ; « hp » fixe les PV de départ (0 = K.O., borné aux PV
+## max). Le starter est le premier de l'équipe ; chaque espèce
 ## de l'équipe est « capturée » au Pokédex. Sans « map », départ par défaut de [Boot].
 
 const USER_PATH: String = "user://debug_start.json"
@@ -37,7 +38,7 @@ const FACINGS: Dictionary[String, Vector2i] = {
 const MAX_PARTY: int = 6
 
 const _KEYS: Array[String] = ["map", "spawn", "facing", "seed", "flags", "party", "bag"]
-const _MEMBER_KEYS: Array[String] = ["species", "level", "moves", "exp_to_next"]
+const _MEMBER_KEYS: Array[String] = ["species", "level", "moves", "exp_to_next", "hp"]
 
 ## Carte et point d'apparition de départ (&"" = départ par défaut de Boot).
 var map: StringName = &""
@@ -159,6 +160,9 @@ func apply(state: Object, data: PokemonData) -> void:
 		if to_next > 0:
 			var rate := data.get_species(pokemon.species_id).growth_rate
 			pokemon.experience = ExpCurve.exp_for_level(rate, pokemon.level + 1) - to_next
+		var hp: int = member.get("hp", -1)
+		if hp >= 0:
+			pokemon.hp = mini(hp, pokemon.max_hp())
 		state.party.add(pokemon)
 		state.pokedex.mark_caught(pokemon.species_id)
 	state.starter_species = party[0]["species"] if not party.is_empty() else &""
@@ -223,9 +227,17 @@ func _parse_member(value: Variant, data: PokemonData, where: String) -> Dictiona
 			ok = _fail("%s : « exp_to_next » est un entier de 1 à %d" % [where, span])
 		else:
 			to_next = int(raw_next)
+	var hp := -1
+	if entry.has("hp"):
+		var raw_hp: Variant = entry["hp"]
+		if not _is_int(raw_hp) or int(raw_hp) < 0:
+			ok = _fail("%s : « hp » est un entier positif ou nul" % where)
+		else:
+			hp = int(raw_hp)
 	if not ok:
 		return {}
-	return { "species": species_id, "level": level, "moves": moves, "exp_to_next": to_next }
+	return { "species": species_id, "level": level, "moves": moves, "exp_to_next": to_next,
+		"hp": hp }
 
 
 static func _is_text(value: Variant) -> bool:
