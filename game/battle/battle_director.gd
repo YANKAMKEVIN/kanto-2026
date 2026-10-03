@@ -45,9 +45,7 @@ signal haptic_requested(duration_ms: int)
 const REASON: StringName = &"battle"
 const FORGET_PANEL_SCENE: PackedScene = preload("res://game/ui/battle/move_forget_panel.tscn")
 const BAG_PANEL_SCENE: PackedScene = preload("res://game/ui/battle/battle_bag_panel.tscn")
-## Choix du Pokémon pour un soin (PartyPicker, T11) : chargé au premier besoin, par chemin, tant
-## que le composant est livré par une autre branche ; les tests y glissent une scène factice.
-const PARTY_PICKER_PATH: String = "res://game/ui/bag/party_picker.tscn"
+const PARTY_PICKER_SCENE: PackedScene = preload("res://game/ui/bag/party_picker.tscn")
 const CAPTURE_CARD_SCENE: PackedScene = preload("res://game/ui/battle/capture_card.tscn")
 ## Catégorie du Sac ouverte d'emblée en combat (les Balls).
 const BAG_START_CATEGORY: StringName = &"ball"
@@ -71,9 +69,7 @@ var _trainer_id: StringName = &""
 var _items: ItemLibrary
 var _bag_panel: BattleBagPanel
 var _capture_card: CaptureCard
-var _party_picker: Control
-## Scène du choix du Pokémon (null : celle de [constant PARTY_PICKER_PATH]).
-var party_picker_scene: PackedScene
+var _party_picker: PartyPicker
 ## Pokémon sauvage du combat en cours (null contre un dresseur) et carte où il se joue.
 var _wild_foe: Pokemon
 var _map_id: StringName = &""
@@ -245,7 +241,7 @@ func get_capture_card() -> CaptureCard:
 
 
 ## Le choix du Pokémon, tant qu'il existe (tests) ; null sinon.
-func get_party_picker() -> Control:
+func get_party_picker() -> PartyPicker:
 	return _party_picker if is_instance_valid(_party_picker) else null
 
 
@@ -317,8 +313,6 @@ func _choose_item() -> BattleAction:
 ## Coroutine : le choix du Pokémon pour [param item] ; son index dans l'équipe, ou −1 (« ‹ »).
 func _choose_target(item: ItemData) -> int:
 	var picker := _ensure_party_picker()
-	if picker == null:
-		return -1
 	picker.show_targets(BagQuery.targets(_state.party, _state.bag, item,
 		_battle.item_context(), _data))
 	picker.slide_in()
@@ -541,22 +535,15 @@ func _ensure_bag_panel() -> BattleBagPanel:
 	return _bag_panel
 
 
-## Le choix du Pokémon (créé au premier besoin, dans l'écran de la HUD, à son emplacement) ;
-## null (push_error) si la scène n'est pas livrée.
-func _ensure_party_picker() -> Control:
+## Le choix du Pokémon (créé au premier besoin, dans l'écran de la HUD, à son emplacement).
+func _ensure_party_picker() -> PartyPicker:
 	if is_instance_valid(_party_picker):
 		return _party_picker
-	var scene := party_picker_scene
-	if scene == null and ResourceLoader.exists(PARTY_PICKER_PATH):
-		scene = load(PARTY_PICKER_PATH) as PackedScene
-	if scene == null:
-		push_error("BattleDirector : PartyPicker introuvable")
-		return null
-	_party_picker = scene.instantiate() as Control
+	_party_picker = PARTY_PICKER_SCENE.instantiate() as PartyPicker
 	_hud.get_screen().add_child(_party_picker)
 	BattleHudLayout.place(_party_picker, BattleHudLayout.Slot.PARTY_PICKER)
-	_party_picker.set(&"speed_scale", _hud.speed_scale)
-	_party_picker.set(&"haptics_enabled", _hud.haptics_enabled)
+	_party_picker.speed_scale = _hud.speed_scale
+	_party_picker.haptics_enabled = _hud.haptics_enabled
 	return _party_picker
 
 

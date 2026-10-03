@@ -44,7 +44,8 @@ func show_targets(view: PartyPickerView) -> void:
 	_title.text = TITLE_FORMAT % [view.item_name, "×%d" % view.quantity]
 	for card: PartyTargetCard in _cards:
 		_grid.remove_child(card)
-		card.free()
+		# Différé : show_targets est rappelé depuis le toucher de cette carte (tapped).
+		card.queue_free()
 	_cards.clear()
 	for i: int in view.size():
 		var card := PartyTargetCard.new()

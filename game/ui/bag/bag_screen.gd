@@ -462,7 +462,7 @@ func _centered(variation: StringName) -> Label:
 func _build_tabs() -> void:
 	for tab: BagCategoryTab in _tabs.values():
 		_tabs_box.remove_child(tab)
-		tab.free()
+		tab.queue_free()  # différé : rappelé depuis le toucher de cet onglet
 	_tabs.clear()
 	for category_id: StringName in _view.categories:
 		var tab := TAB_SCENE.instantiate() as BagCategoryTab
@@ -494,7 +494,7 @@ func _open_category(category_id: StringName, wanted: StringName) -> void:
 func _rebuild_cards() -> void:
 	for card: BagItemCard in _cards:
 		_flow.remove_child(card)
-		card.free()
+		card.queue_free()  # différé : rappelé depuis le toucher de cette carte
 	_cards.clear()
 	if _open.is_empty():
 		return

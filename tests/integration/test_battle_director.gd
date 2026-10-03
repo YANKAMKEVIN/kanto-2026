@@ -11,7 +11,6 @@ extends GutTest
 const PLAYER_SCENE := preload("res://game/player/player.tscn")
 const STAGE_SCENE := preload("res://game/battle/battle_stage.tscn")
 const HUD_SCENE := preload("res://game/ui/battle/battle_hud.tscn")
-const FakePicker := preload("res://tests/helpers/fake_party_picker.gd")
 const GAME_STATE := preload("res://game/autoload/game_state.gd")
 const NPCS := "res://tests/fixtures/npcs/"
 const MINE_ID := &"mine_poke"
@@ -1152,7 +1151,6 @@ func test_back_from_the_bag_consumes_nothing() -> void:
 ## picker_seen, bag_reopened }.
 func _play_potion(request: BattleRequest, target: int, back_from_picker: bool = false) -> Dictionary:
 	var report := {"events": [], "view": null, "picker_seen": false, "bag_reopened": false}
-	_director.party_picker_scene = FakePicker.make_scene()
 	_director.event_played.connect(func(e: BattleEvent) -> void: report["events"].append(e))
 	var done: Array[bool] = [false]
 	var runner := func() -> void:
@@ -1160,15 +1158,16 @@ func _play_potion(request: BattleRequest, target: int, back_from_picker: bool = 
 		done[0] = true
 	runner.call()
 	var stage := 0
+	var answered := false
 	var deadline := Time.get_ticks_msec() + 20000
 	while not done[0] and Time.get_ticks_msec() < deadline:
 		var panel := _director.get_bag_panel()
 		var picker := _director.get_party_picker()
 		var battle := _director.get_battle()
-		if picker != null and picker.shown:
+		if picker != null and picker.is_shown() and not answered:
 			report["picker_seen"] = true
-			report["view"] = picker.last_view
-			picker.shown = false
+			report["view"] = picker.get_view()
+			answered = true
 			if back_from_picker:
 				picker.back_requested.emit()
 			else:
