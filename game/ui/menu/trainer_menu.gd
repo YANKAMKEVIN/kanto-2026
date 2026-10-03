@@ -25,6 +25,14 @@ signal close_requested
 signal team_member_selected(index: int)
 signal team_member_moved(from: int, to: int)
 signal team_favorite_toggled(index: int)
+## Relais de l'écran Sac (6B) : onglet ouvert, favori basculé (appui long), tri choisi, UTILISER,
+## cible choisie, UTILISER À NOUVEAU.
+signal bag_category_opened(category: StringName)
+signal bag_favorite_toggled(item_id: StringName)
+signal bag_sort_changed(sort: int)
+signal bag_use_requested(item_id: StringName)
+signal bag_target_chosen(item_id: StringName, index: int)
+signal bag_repeat_requested
 
 ## Titre des écrans provisoires (carte → « Équipe »…), texte d'interface.
 const PLACEHOLDER_TITLES: Dictionary[StringName, String] = {
@@ -53,6 +61,8 @@ var _dashboard: DashboardScreen
 var _placeholder: PlaceholderScreen
 ## Équipe (6A) : instanciée à la première visite, puis gardée.
 var _team: TeamScreen
+## Sac (6B) : instancié à la première visite, puis gardé.
+var _bag: BagScreen
 
 @onready var _root: Control = %Root
 @onready var _backdrop: ColorRect = %Backdrop
@@ -166,6 +176,44 @@ func show_team(view: TeamView, selected: int) -> void:
 	_select(_team)
 
 
+## Écran Sac (6B) : [param view] (onglets, cartes, aperçu). Rappelé pendant que le Sac est
+## affiché (après un usage, un favori, un tri), il met à jour sans rejouer l'entrée.
+func show_bag(view: BagView) -> void:
+	if _bag == null:
+		_bag = BagScreen.new()
+		_bag.speed_scale = speed_scale
+		_bag.back_requested.connect(back_requested.emit)
+		_bag.route_requested.connect(route_requested.emit)
+		_bag.category_opened.connect(bag_category_opened.emit)
+		_bag.favorite_toggled.connect(bag_favorite_toggled.emit)
+		_bag.sort_changed.connect(bag_sort_changed.emit)
+		_bag.use_requested.connect(bag_use_requested.emit)
+		_bag.target_chosen.connect(bag_target_chosen.emit)
+		_bag.repeat_requested.connect(bag_repeat_requested.emit)
+		_host.add_child(_bag)
+		_bag.hide_now()
+	_bag.show_bag(view)
+	_select(_bag)
+
+
+## Le choix du Pokémon dans le Sac (UTILISER), dans l'écran Sac.
+func show_bag_targets(view: PartyPickerView) -> void:
+	if _bag != null:
+		_bag.show_targets(view)
+
+
+## Le résultat d'un usage (UseResultBar) dans l'écran Sac.
+func show_bag_result(text: String, can_repeat: bool) -> void:
+	if _bag != null:
+		_bag.show_result(text, can_repeat)
+
+
+## Retour (retour Android, Échap) : referme le choix du Pokémon du Sac s'il est ouvert. Vrai si
+## c'est ce qui s'est passé (l'événement est consommé) ; faux : le retour suit son cours.
+func bag_back() -> bool:
+	return _bag != null and _current == _bag and _bag.go_back()
+
+
 ## Écran provisoire « ÉQUIPE — À venir » avec son RETOUR.
 func show_placeholder(screen: StringName) -> void:
 	_placeholder.set_screen_title(PLACEHOLDER_TITLES.get(screen, String(screen)))
@@ -183,6 +231,11 @@ func get_dashboard() -> DashboardScreen:
 
 func get_placeholder() -> PlaceholderScreen:
 	return _placeholder
+
+
+## L'écran Sac (null avant la première visite).
+func get_bag() -> BagScreen:
+	return _bag
 
 
 ## L'écran Équipe (null avant la première visite).
@@ -228,6 +281,8 @@ func _screens() -> Array[MenuScreen]:
 		screens.append(_placeholder)
 	if _team != null:
 		screens.append(_team)
+	if _bag != null:
+		screens.append(_bag)
 	return screens
 
 

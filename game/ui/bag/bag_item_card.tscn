@@ -1,6 +1,6 @@
 [gd_scene format=3]
 
-[ext_resource type="Script" path="res://game/ui/battle/bag_item_card.gd" id="1_card"]
+[ext_resource type="Script" path="res://game/ui/bag/bag_item_card.gd" id="1_card"]
 
 [node name="BagItemCard" type="PanelContainer"]
 theme_type_variation = &"BagCard"

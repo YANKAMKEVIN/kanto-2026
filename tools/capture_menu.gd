@@ -10,6 +10,11 @@ extends SceneTree
 ##   team_sheet_moves     onglet Capacités, fiche de la première capacité ouverte
 ##   team_history         onglet Histoire
 ##   team_move_mode       DÉPLACER actif sur Roucool
+## Sac (T11, avec --only=bag,bag_use,bag_result,bag_from_team) :
+##   bag                  SOINS ouvert, Potion aperçue (favori), cartes, tri
+##   bag_use              le choix du Pokémon après UTILISER (un membre à PV pleins, un K.O.)
+##   bag_result           après un usage : « +20 PV — … » et UTILISER À NOUVEAU
+##   bag_from_team        ouvert depuis la fiche Équipe de Salamèche (« Pour Salamèche »)
 ##
 ## Sur le Mac, en 2340×1080 :
 ##   godot --path . --resolution 2340x1080 --fixed-fps 30 --quit-after 900 \
@@ -86,6 +91,8 @@ func _begin(scenario: String) -> void:
 			_open(_view(5, false, false, ""))
 		"team", "team_sheet_moves", "team_history", "team_move_mode":
 			_team_scenario(scenario)
+		"bag", "bag_use", "bag_result", "bag_from_team":
+			_bag_scenario(scenario)
 
 
 func _team_scenario(scenario: String) -> void:
@@ -101,6 +108,59 @@ func _team_scenario(scenario: String) -> void:
 			team.get_sheet().select_tab(PokemonSheet.Tab.HISTORY)
 		"team_move_mode":
 			team.get_move_button().pressed.emit()
+
+
+## Sac du menu : vraies vues de BagQuery sur un Sac de test (cinq catégories) et trois Pokémon.
+func _bag_scenario(scenario: String) -> void:
+	var state: Node = (load("res://game/autoload/game_state.gd") as GDScript).new()
+	state.new_game(7)
+	var data := PokemonData.new()
+	data.load_dir()
+	var items := ItemLibrary.new()
+	var specs: Array = [
+		["potion", "Potion", "heal", {"heal_amount": 20}, 7, "Un spray qui soigne les blessures. Restaure 20 PV d'un Pokémon."],
+		["super_potion", "Super Potion", "heal", {"heal_amount": 50}, 3, "Restaure 50 PV d'un Pokémon."],
+		["hyper_potion", "Hyper Potion", "heal", {"heal_amount": 120}, 1, "Restaure 120 PV d'un Pokémon."],
+		["poke_ball", "Poké Ball", "ball", {"catch_bonus": 1}, 12, "Permet de capturer un Pokémon sauvage."],
+		["great_ball", "Super Ball", "ball", {"catch_bonus": 1.5}, 4, "Plus efficace qu'une Poké Ball."],
+		["x_attack", "Attaque +", "battle", {}, 2, "Augmente l'Attaque pendant un combat."],
+		["repel", "Repousse", "field", {}, 3, "Éloigne les Pokémon sauvages faibles."],
+		["parcel", "Colis", "key", {}, 1, "Un colis pour le Prof. Chen."],
+	]
+	for spec: Array in specs:
+		var entry := {"name": spec[1], "plural": spec[1] + "s", "feminine": false,
+			"category": spec[2], "description": spec[5]}
+		entry.merge(spec[3])
+		items.add_from_dict({spec[0]: entry}, "capture")
+		state.bag.add(StringName(spec[0]), spec[4])
+	state.bag.set_favorite(&"potion", true)
+	state.bag.set_favorite(&"poke_ball", true)
+	var mons: Array = [[&"charmander", 14, 13], [&"pidgey", 12, -1], [&"rattata", 10, 0]]
+	for mon_spec: Array in mons:
+		var pokemon := PokemonFactory.create(data, mon_spec[0], mon_spec[1], state.rng)
+		if mon_spec[2] >= 0:
+			pokemon.hp = mon_spec[2]
+		state.party.add(pokemon)
+	var from_team := scenario == "bag_from_team"
+	var context := BagQuery.CONTEXT_TEAM if from_team else BagQuery.CONTEXT_FIELD
+	var view := BagQuery.view(state.bag, items, context, BagQuery.Sort.RELEVANCE,
+		&"heal", state.party, 0 if from_team else -1, data)
+	_menu.open_animated()
+	_menu.show_bag(view)
+	var potion := items.get_item(&"potion")
+	if scenario == "bag_use" or scenario == "bag_result":
+		var picker := BagQuery.targets(state.party, state.bag, potion, context, data)
+		_menu.show_bag_targets(picker)
+		if scenario == "bag_result":
+			var mon: Pokemon = state.party.get_at(0)
+			var result := ItemUse.apply(state.bag, potion, mon, context)
+			_menu.show_bag(BagQuery.view(state.bag, items, context, BagQuery.Sort.RELEVANCE,
+				&"heal", state.party, -1, data))
+			_menu.show_bag_targets(BagQuery.targets(state.party, state.bag, potion, context,
+				data, 0))
+			_menu.show_bag_result(BagQuery.result_text(result, mon.display_name(data)),
+				BagQuery.can_repeat(result))
+	state.free()
 
 
 ## Vraie vue d'Équipe (TeamViews) sur une équipe de trois Pokémon.

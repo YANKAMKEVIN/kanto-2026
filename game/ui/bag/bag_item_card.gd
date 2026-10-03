@@ -6,7 +6,10 @@ extends BagTile
 ##
 ## Elle ne décide rien : elle rapporte le toucher (tapped) au panneau, qui montre l'aperçu.
 
+const STAR_ICON: Texture2D = preload("res://assets/ui/icons/menu/star_filled.svg")
+
 var _view: BagEntryView
+var _star: TextureRect
 
 @onready var _column: VBoxContainer = %Column
 @onready var _icon_box: Control = %IconBox
@@ -22,6 +25,17 @@ func _ready() -> void:
 	custom_minimum_size = UiTokens.BAG_CARD_SIZE
 	_icon_box.custom_minimum_size.y = UiTokens.BAG_CARD_ICON
 	_icon.custom_minimum_size = Vector2.ONE * UiTokens.BAG_CARD_ICON
+	_star = TextureRect.new()
+	_star.texture = STAR_ICON
+	_star.modulate = UiTokens.ACCENT
+	_star.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_star.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	_star.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+	_star.custom_minimum_size = Vector2.ONE * UiTokens.BAG_CARD_STAR_ICON
+	_star.size = _star.custom_minimum_size
+	_star.set_anchors_preset(Control.PRESET_TOP_LEFT)
+	_star.visible = false
+	_icon_box.add_child(_star)
 	_apply()
 
 
@@ -49,6 +63,11 @@ func get_icon() -> Texture2D:
 	return _icon.texture
 
 
+## L'étoile des favoris est affichée sur la carte.
+func is_favorite_shown() -> bool:
+	return _star != null and _star.visible
+
+
 func _apply() -> void:
 	mouse_filter = Control.MOUSE_FILTER_STOP if _view != null else Control.MOUSE_FILTER_IGNORE
 	_column.visible = _view != null
@@ -57,4 +76,5 @@ func _apply() -> void:
 	_name_label.text = _view.display_name
 	_quantity.text = _view.quantity_text()
 	_icon.texture = _view.get_icon()
+	_star.visible = _view.favorite
 	set_selected(_selected)
