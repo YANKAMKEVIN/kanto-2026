@@ -136,6 +136,10 @@ const BURST_RED := Color(1.0, 0.25, 0.20, 1.0)
 const SPARK_COUNT: int = 10
 const SPARK_DISTANCE: float = 260.0
 const CATCH_FLASH: float = 0.30
+## Flashs réduits (Accessibilité, jalon-06.md §6.12) : le clignotement du coup devient un
+## léger assombrissement ; le flash du critique, de la capture et des éclats sont adoucis.
+const REDUCED_HIT_DIM := Color(0.72, 0.72, 0.72, 1.0)
+const REDUCED_FLASH_GAIN: float = 0.35
 const CATCH_HOP: float = 36.0
 ## Le Pokémon libéré ressort de la Ball.
 const RELEASE_DURATION: float = 0.40
@@ -148,6 +152,13 @@ const LIMIT_FREE: int = 10000000
 
 ## Multiplicateur des durées (0 = instantané, tests).
 var speed_scale: float = 1.0
+## Accessibilité : pas de clignotement ni d'éclair vif (voir [constant REDUCED_HIT_DIM]).
+var reduce_flashes: bool = false
+## Flou du fond du combat ; coupé en profil Économie.
+var backdrop_blur: bool = true:
+	set(value):
+		backdrop_blur = value
+		_apply_blur()
 
 var _active: bool = false
 var _camera: Camera2D
@@ -200,8 +211,20 @@ func _ready() -> void:
 	material.set_shader_parameter(&"veil_color", UiTokens.FADE_COLOR)
 	material.set_shader_parameter(&"veil", VEIL)
 	material.set_shader_parameter(&"vignette", VIGNETTE)
-	material.set_shader_parameter(&"blur_lod", BLUR_LOD if BLUR_ENABLED else 0.0)
+	_apply_blur()
 	_apply_reset()
+
+
+func _apply_blur() -> void:
+	if not is_node_ready():
+		return
+	var material := _backdrop.material as ShaderMaterial
+	material.set_shader_parameter(&"blur_lod", BLUR_LOD if BLUR_ENABLED and backdrop_blur else 0.0)
+
+
+## Opacité d'un éclair plein écran selon [member reduce_flashes].
+func _flash_alpha(alpha: float) -> float:
+	return alpha * REDUCED_FLASH_GAIN if reduce_flashes else alpha
 
 
 ## Chemin du sprite de combat de [param species] (de dos si [param back]) : seule
@@ -398,11 +421,17 @@ func play_hit(side: BattleEvent.SideId, critical: bool) -> void:
 	var base := _anchor(side)
 	var tween := _new_tween()
 	tween.set_parallel(true)
-	for i: int in HIT_BLINKS:
-		tween.tween_property(sprite, ^"modulate:a", HIT_ALPHA, HIT_BLINK) \
-			.set_delay(HIT_BLINK * 2 * i)
-		tween.tween_property(sprite, ^"modulate:a", 1.0, HIT_BLINK) \
-			.set_delay(HIT_BLINK * (2 * i + 1))
+	if reduce_flashes:
+		# Un seul assombrissement doux à la place du clignotement.
+		tween.tween_property(sprite, ^"modulate", REDUCED_HIT_DIM, HIT_BLINK * 2.0)
+		tween.tween_property(sprite, ^"modulate", Color.WHITE, HIT_BLINK * 2.0) \
+			.set_delay(HIT_BLINK * 2.0)
+	else:
+		for i: int in HIT_BLINKS:
+			tween.tween_property(sprite, ^"modulate:a", HIT_ALPHA, HIT_BLINK) \
+				.set_delay(HIT_BLINK * 2 * i)
+			tween.tween_property(sprite, ^"modulate:a", 1.0, HIT_BLINK) \
+				.set_delay(HIT_BLINK * (2 * i + 1))
 	var shake := HIT_SHAKE
 	for i: int in HIT_BLINKS * 2:
 		tween.tween_property(sprite, ^"position", base + Vector2(shake, 0), HIT_BLINK / 2.0) \
@@ -411,7 +440,7 @@ func play_hit(side: BattleEvent.SideId, critical: bool) -> void:
 	tween.tween_property(sprite, ^"position", base, HIT_BLINK / 2.0) \
 		.set_delay(HIT_BLINK * HIT_BLINKS * 2)
 	if critical:
-		_flash.color = Color(1, 1, 1, CRIT_FLASH)
+		_flash.color = Color(1, 1, 1, _flash_alpha(CRIT_FLASH))
 		tween.tween_property(_flash, ^"color:a", 0.0, CRIT_FLASH_DURATION)
 		for i: int in 4:
 			var jolt := Vector2(CRIT_CAMERA_SHAKE * (1 if i % 2 == 0 else -1), 0)
@@ -575,7 +604,7 @@ func play_catch_burst() -> void:
 	if not _active or _ball == null or not _ball.visible:
 		return
 	var origin := _ball_rest + Vector2(0.0, -BALL_RADIUS * BALL_REST_SCALE * 0.4)
-	_flash.color = Color(BURST_GOLD, CATCH_FLASH)
+	_flash.color = Color(BURST_GOLD, _flash_alpha(CATCH_FLASH))
 	var tween := _new_tween()
 	tween.set_parallel(true)
 	tween.tween_property(_ball, ^"position", _ball_rest + Vector2(0.0, -CATCH_HOP), 0.14) \
@@ -1032,7 +1061,7 @@ func _set_absorb_flash(t: float) -> void:
 	_set_absorbed(_ease(t))
 	_ball.rotation = t * TAU
 	_glow.scale = Vector2.ONE * lerpf(1.0, 4.0, t)
-	_glow.modulate = Color(BURST_RED, sin(PI * t))
+	_glow.modulate = Color(BURST_RED, _flash_alpha(sin(PI * t)))
 
 
 ## Le Pokémon sauvage à [param k] de l'absorption (0 : à son ancre, taille normale ; 1 :
@@ -1061,7 +1090,7 @@ func _set_burst(t: float, origin: Vector2, color: Color) -> void:
 	_glow.visible = true
 	_glow.position = origin
 	_glow.scale = Vector2.ONE * lerpf(0.5, BURST_SCALE, out)
-	_glow.modulate = Color(color, (1.0 - t) * 0.9)
+	_glow.modulate = Color(color, _flash_alpha((1.0 - t) * 0.9))
 	for i: int in _sparks.size():
 		var angle := TAU * float(i) / float(_sparks.size()) + 0.3
 		var spark := _sparks[i]

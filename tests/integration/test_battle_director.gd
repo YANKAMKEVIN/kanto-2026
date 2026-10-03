@@ -8,6 +8,7 @@ extends GutTest
 ## XP ; PNJ Pokémon réaffichés, caméra rendue, HUD cachée, joueur libre ; refus si un combat
 ## tourne ou si le dresseur est inconnu.
 
+const FakeChoiceCards := preload("res://tests/helpers/fake_choice_cards.gd")
 const PLAYER_SCENE := preload("res://game/player/player.tscn")
 const STAGE_SCENE := preload("res://game/battle/battle_stage.tscn")
 const HUD_SCENE := preload("res://game/ui/battle/battle_hud.tscn")
@@ -699,6 +700,41 @@ func test_forget_offer_refused_keeps_the_moves() -> void:
 	assert_false(lead.knows_move(&"poison_powder"))
 	assert_eq(after, ["Bulbizarre n'apprend pas Poudre Toxik."] as Array[String],
 		"phrase du refus")
+	assert_push_error_count(0)
+
+
+## « Confirmer certaines actions » (T29) : OUBLIER passe par une question à deux cartes ;
+## GARDER ramène au panneau, OUBLIER confirme.
+func test_forget_confirmation_asks_before_forgetting() -> void:
+	var moves: Array[StringName] = [&"tackle", &"growl", &"leech_seed", &"vine_whip"]
+	var party_fn := func() -> Party: return _xp_party(&"bulbasaur", 19, 1, moves)
+	var seed := _xp_seed(party_fn, &"rattata", 3, [0] as Array[int],
+		func(events: Array) -> bool:
+			return _has_kind(events, BattleEvent.Kind.MOVE_FORGET_OFFERED))
+	assert_gt(seed, -1, "une victoire qui propose une cinquième capacité")
+	if seed < 0:
+		return
+	var party: Party = party_fn.call()
+	var lead := party.get_lead()
+	var request := _xp_request(party, &"rattata", 3, seed)
+	FakeChoiceCards.views.clear()
+	FakeChoiceCards.answers = [false, true] as Array[bool]
+	_director.confirm_forget = true
+	_director.choice_cards_script = FakeChoiceCards
+	var offers: Array[int] = []
+	var on_offer := func(panel: MoveForgetPanel, _events: Array) -> void:
+		offers.append(1)
+		await wait_process_frames(2)
+		panel.select(2)
+		panel.get_confirm_button().pressed.emit()
+	var played := await _play_with_offers(request, [0] as Array[int], on_offer)
+	assert_eq(played[0], Battle.Outcome.WIN)
+	assert_eq(FakeChoiceCards.views.size(), 2, "deux questions : GARDER puis OUBLIER")
+	assert_eq(FakeChoiceCards.views[0].title, "Oublier Vampigraine ?")
+	assert_eq(FakeChoiceCards.views[0].confirm_label, "OUBLIER")
+	assert_eq(FakeChoiceCards.views[0].cancel_label, "GARDER")
+	assert_eq(offers.size(), 2, "GARDER rend la main au panneau")
+	assert_eq(lead.moves[2].move_id, &"poison_powder", "la seconde réponse a confirmé")
 	assert_push_error_count(0)
 
 

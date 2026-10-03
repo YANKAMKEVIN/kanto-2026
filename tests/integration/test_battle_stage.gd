@@ -412,3 +412,24 @@ func test_throw_takes_a_second_or_so_at_real_speed_and_shows_the_thrower() -> vo
 	var elapsed := (Time.get_ticks_msec() - started) / 1000.0
 	assert_between(elapsed, 1.0, 3.0, "le lancer dure ~1,5 s")
 	_stage.reset()
+
+
+# --- Réglages (jalon-06.md §6.12, T29) -------------------------------------------------------
+
+func test_backdrop_blur_can_be_cut_and_restored() -> void:
+	var material := _stage.get_node("%Backdrop").material as ShaderMaterial
+	assert_eq(material.get_shader_parameter(&"blur_lod"), BattleStage.BLUR_LOD)
+	_stage.backdrop_blur = false
+	assert_eq(material.get_shader_parameter(&"blur_lod"), 0.0)
+	_stage.backdrop_blur = true
+	assert_eq(material.get_shader_parameter(&"blur_lod"), BattleStage.BLUR_LOD)
+
+
+func test_reduced_flashes_soften_the_flash_and_still_end_clean() -> void:
+	await _enter()
+	_stage.reduce_flashes = true
+	assert_almost_eq(_stage._flash_alpha(1.0), BattleStage.REDUCED_FLASH_GAIN, 0.0001)
+	await _stage.play_hit(FOE_SIDE, true)
+	assert_eq(_stage.get_sprite(FOE_SIDE).modulate, Color.WHITE, "retour à l etat de repos")
+	_stage.reduce_flashes = false
+	assert_eq(_stage._flash_alpha(1.0), 1.0)

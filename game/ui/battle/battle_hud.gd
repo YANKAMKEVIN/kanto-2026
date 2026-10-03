@@ -35,6 +35,13 @@ var speed_scale: float = 1.0:
 	set(value):
 		speed_scale = value
 		_relay_settings()
+## Tenue des messages du bandeau, séparée de [member speed_scale] : réduire les animations
+## ne raccourcit pas la lecture (jalon-06.md §6.12).
+var message_hold_scale: float = 1.0:
+	set(value):
+		message_hold_scale = value
+		if is_node_ready():
+			_banner.hold_scale = value
 ## Faux en test : aucune vibration réelle (haptic_played est quand même émis).
 var haptics_enabled: bool = true:
 	set(value):
@@ -272,3 +279,4 @@ func _relay_settings() -> void:
 	for widget: BattleWidget in _widgets():
 		widget.speed_scale = speed_scale
 		widget.haptics_enabled = haptics_enabled
+	_banner.hold_scale = message_hold_scale

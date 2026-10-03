@@ -43,6 +43,7 @@ signal haptic_requested(duration_ms: int)
 
 ## Raison de blocage du joueur pendant un combat ([method Player.set_input_enabled]).
 const REASON: StringName = &"battle"
+const CHOICE_CARDS_PATH: String = "res://game/ui/components/choice_cards.gd"
 const FORGET_PANEL_SCENE: PackedScene = preload("res://game/ui/battle/move_forget_panel.tscn")
 const BAG_PANEL_SCENE: PackedScene = preload("res://game/ui/battle/battle_bag_panel.tscn")
 const PARTY_PICKER_SCENE: PackedScene = preload("res://game/ui/bag/party_picker.tscn")
@@ -51,6 +52,11 @@ const CAPTURE_CARD_SCENE: PackedScene = preload("res://game/ui/battle/capture_ca
 const BAG_START_CATEGORY: StringName = &"ball"
 ## Durées multipliées (0 = instantané, tests) ; relayé à la scène et à la HUD.
 var speed_scale: float = 1.0
+## « Confirmer certaines actions » (Paramètres, Q-18) : oublier une capacité passe par une
+## question à deux cartes (OUBLIER / GARDER). Désactivé par défaut : comportement du 5C.
+var confirm_forget: bool = false
+## Tests seulement : composant à deux cartes de remplacement (défaut : `ChoiceCards`).
+var choice_cards_script: GDScript = null
 ## Faux : pas de vibration réelle (haptic_requested est quand même émis) ; la HUD coupée
 ## (tests) coupe aussi celles de la capture.
 var haptics_enabled: bool = true
@@ -618,10 +624,19 @@ func _offer_forget(event: BattleEvent) -> void:
 	while banner.is_sliding():
 		await get_tree().process_frame
 	var panel := _ensure_forget_panel()
-	panel.show_offer(offered, known)
-	var answer: Array = await _first_of(panel.forget_chosen, panel.skip_chosen)
-	while panel.is_sliding():
-		await get_tree().process_frame
+	var answer: Array = []
+	while true:
+		panel.show_offer(offered, known)
+		answer = await _first_of(panel.forget_chosen, panel.skip_chosen)
+		while panel.is_sliding():
+			await get_tree().process_frame
+		if answer[0] != 0 or not confirm_forget:
+			break
+		var slot := int(answer[1])
+		var old_id: StringName = pokemon.moves[slot].move_id \
+			if slot >= 0 and slot < pokemon.moves.size() else &""
+		if await _confirm_forget(event, old_id):
+			break
 	var line := ""
 	if answer[0] == 0:
 		var slot := int(answer[1])
@@ -632,6 +647,33 @@ func _offer_forget(event: BattleEvent) -> void:
 	if line.is_empty():
 		line = _texts.line_for(&"move_not_learned", event, _data)
 	await _hud.show_message(line)
+
+
+## Coroutine : la question « Oublier {capacité} ? » en deux cartes (composant `ChoiceCards`).
+## Vrai si le joueur confirme (OUBLIER) ; GARDER rend la main au panneau d'oubli. Sans le
+## composant (build sans lui), la confirmation est réputée donnée.
+func _confirm_forget(event: BattleEvent, old_move: StringName) -> bool:
+	var script := choice_cards_script
+	if script == null and ResourceLoader.exists(CHOICE_CARDS_PATH):
+		script = load(CHOICE_CARDS_PATH) as GDScript
+	if script == null or not is_instance_valid(_hud):
+		return true
+	var view := ChoiceView.new(
+		_texts.line_for(&"forget_confirm_title", event, _data, old_move),
+		_texts.line_for(&"forget_confirm_yes", event, _data, old_move),
+		_texts.line_for(&"forget_confirm_no", event, _data, old_move))
+	view.detail = _texts.line_for(&"forget_confirm_detail", event, _data, old_move)
+	var cards: Control = script.new()
+	cards.set(&"speed_scale", _hud.speed_scale)
+	_hud.get_screen().add_child(cards)
+	cards.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	cards.call(&"show_choice", view)
+	var box: Array[bool] = []
+	cards.connect(&"chosen", func(confirmed: bool) -> void: box.append(confirmed))
+	while box.is_empty():
+		await get_tree().process_frame
+	cards.queue_free()
+	return box[0]
 
 
 ## Le panneau d'oubli (créé au premier besoin, dans l'écran de la HUD, à son emplacement).

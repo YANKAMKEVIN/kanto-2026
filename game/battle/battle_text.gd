@@ -54,6 +54,8 @@ const TEMPLATE_IDS: Array[StringName] = [
 	&"ball_thrown", &"broke_free", &"caught_title", &"pokedex_new", &"joined_party",
 	&"sent_to_storage",
 	&"item_used", &"hp_restored",
+	&"forget_confirm_title", &"forget_confirm_detail", &"forget_confirm_yes",
+	&"forget_confirm_no",
 ]
 const PLACEHOLDERS: Array[String] = [
 	"pokemon", "de_pokemon", "move", "trainer", "stat", "level", "exp", "old_move", "item",
