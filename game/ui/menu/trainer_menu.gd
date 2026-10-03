@@ -37,6 +37,9 @@ signal bag_repeat_requested
 ## (case connue touchée). Le lien Habitat → Carte passe par [signal route_requested].
 signal pokedex_filter_changed(filter: int, zone: StringName, type: StringName, text: String)
 signal pokedex_species_opened(species: StringName)
+## Relais de l'écran Carte (6D) : zone découverte touchée. Le lien Pokémon observé → Pokédex
+## passe par [signal route_requested].
+signal map_zone_touched(zone: StringName)
 
 ## Titre des écrans provisoires (carte → « Équipe »…), texte d'interface.
 const PLACEHOLDER_TITLES: Dictionary[StringName, String] = {
@@ -69,6 +72,8 @@ var _team: TeamScreen
 var _bag: BagScreen
 ## Pokédex (6C) : instancié à la première visite, puis gardé.
 var _pokedex: PokedexScreen
+## Carte (6D) : instanciée à la première visite, puis gardée.
+var _map: MapScreen
 
 @onready var _root: Control = %Root
 @onready var _backdrop: ColorRect = %Backdrop
@@ -238,6 +243,27 @@ func pokedex_back() -> bool:
 	return _pokedex != null and _current == _pokedex and _pokedex.close_sheet()
 
 
+## Écran Carte (6D) : [param view] (illustration, zones découvertes, portrait). Rappelé pendant
+## que la Carte est affichée, il met à jour sans rejouer l'entrée.
+func show_map(view: MapView) -> void:
+	if _map == null:
+		_map = MapScreen.new()
+		_map.speed_scale = speed_scale
+		_map.back_requested.connect(back_requested.emit)
+		_map.route_requested.connect(route_requested.emit)
+		_map.zone_touched.connect(map_zone_touched.emit)
+		_host.add_child(_map)
+		_map.hide_now()
+	_map.show_map(view)
+	_select(_map)
+
+
+## Le panneau d'une zone découverte, à droite de l'illustration (sans changer d'écran).
+func show_map_zone(view: ZonePanelView) -> void:
+	if _map != null:
+		_map.show_zone(view)
+
+
 ## Le choix du Pokémon dans le Sac (UTILISER), dans l'écran Sac.
 func show_bag_targets(view: PartyPickerView) -> void:
 	if _bag != null:
@@ -290,6 +316,11 @@ func get_team() -> TeamScreen:
 	return _team
 
 
+## L'écran Carte (null avant la première visite).
+func get_map() -> MapScreen:
+	return _map
+
+
 func get_close_button() -> Button:
 	return _close_button
 
@@ -332,6 +363,8 @@ func _screens() -> Array[MenuScreen]:
 		screens.append(_bag)
 	if _pokedex != null:
 		screens.append(_pokedex)
+	if _map != null:
+		screens.append(_map)
 	return screens
 
 

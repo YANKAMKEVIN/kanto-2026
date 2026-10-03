@@ -23,6 +23,10 @@ extends SceneTree
 ##   dex_habitat          filtre HABITATS (Route 1), fiche de Roucool, onglet Habitat
 ##   dex_search_empty     recherche sans résultat
 ##   dex_evolution / dex_notes   onglets Évolution et Observations de Salamèche / Roucool
+## Carte (T20, avec --only=map,map_panel,map_dex) : vraies vues de MapJournal sur une partie de test
+##   map                  Bourg Palette (portrait du joueur, panneau sans section : rien de trouvé)
+##   map_panel            Route 1, Pokédex pas visible : objets trouvés seulement
+##   map_dex              Route 1, Pokédex visible : Pokémon observés et objets trouvés
 ##
 ## Sur le Mac, en 2340×1080 :
 ##   godot --path . --resolution 2340x1080 --fixed-fps 30 --quit-after 900 \
@@ -109,6 +113,8 @@ func _begin(scenario: String) -> void:
 		"dex_grid", "dex_sheet_caught", "dex_sheet_seen", "dex_habitat", "dex_search_empty", \
 		"dex_evolution", "dex_notes":
 			_dex_scenario(scenario)
+		"map", "map_panel", "map_dex":
+			_map_scenario(scenario)
 		"bag", "bag_use", "bag_result", "bag_from_team", "bag_refuse", "bag_heal_mid", "bag_heal_end":
 			_bag_scenario(scenario)
 
@@ -163,6 +169,36 @@ func _dex_scenario(scenario: String) -> void:
 			sheet.select_tab(PokedexSheet.Tab.EVOLUTION)
 		"dex_notes":
 			sheet.select_tab(PokedexSheet.Tab.NOTES)
+
+
+## Carte du menu : vraies vues de MapJournal sur une partie de test (Bourg Palette et Route 1
+## découvertes, le joueur à Bourg Palette).
+func _map_scenario(scenario: String) -> void:
+	var state: Node = (load("res://game/autoload/game_state.gd") as GDScript).new()
+	state.new_game(7)
+	var data := PokemonData.new()
+	data.load_dir()
+	var zones := ZoneLibrary.new()
+	zones.load_file()
+	var items := ItemLibrary.new()
+	items.load_dir()
+	var illustration := MapIllustration.new()
+	illustration.load_file()
+	state.discover_map(&"pallet_town")
+	state.discover_map(&"route_1")
+	state.set_player_location(&"pallet_town", Vector2i.ZERO, Vector2i.DOWN)
+	if scenario != "map":
+		for species: StringName in [&"rattata", &"pidgey", &"charmander", &"squirtle"]:
+			state.record_seen(species, &"route_1")
+		state.record_item_found(&"potion", &"route_1")
+		state.record_item_found(&"potion", &"route_1")
+		state.record_item_found(&"poke_ball", &"route_1")
+	var zone: StringName = &"pallet_town" if scenario == "map" else &"route_1"
+	_menu.open_animated()
+	_menu.show_map(MapJournal.view(state, zones, illustration, zone))
+	_menu.show_map_zone(MapJournal.panel(zone, state, data, zones, items,
+		scenario == "map_dex"))
+	state.free()
 
 
 func _team_scenario(scenario: String) -> void:

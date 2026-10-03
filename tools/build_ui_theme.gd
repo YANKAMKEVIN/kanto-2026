@@ -77,6 +77,9 @@ extends SceneTree
 ##   Sac du menu (T11) : BagTabCount / BagNote / BagHint / PickerTitle / PickerName / PickerMeta /
 ##     PickerReason / ResultText  Label ; PickerRow / PickerRowSelected / PickerRowOff /
 ##     ResultBar / ResultBarRefused  PanelContainer
+##   Carte (T20) : MapPanel / MapFrame / MapLabel / MapLabelOn / MapChip (PanelContainer),
+##     MapEntry (Button), MapName / MapSubtitle / MapText / MapSection / MapEntryText /
+##     MapLabelText / MapLabelTextOn (Label)
 ##   Pokédex (T15) : DexPanel (PanelContainer), DexCell / DexCellSelected / DexCellUnknown
 ##     (PanelContainer, case de la grille), DexTab (Button à bascule : onglets et filtres),
 ##     DexSearch (LineEdit), DexTitle / DexName / DexNumber (Label), DexSpriteFrame (Panel)
@@ -146,6 +149,7 @@ func _init() -> void:
 	_add_team(theme, bold, t)
 	_add_bag_screen(theme, bold, t)
 	_add_pokedex_screen(theme, bold, t)
+	_add_map_screen(theme, bold, t)
 
 	var err := ResourceSaver.save(theme, THEME_PATH)
 	print("ui_theme.tres : ", error_string(err))
@@ -864,3 +868,49 @@ func _add_pokedex_screen(theme: Theme, bold: Font, t: GDScript) -> void:
 	_add_plain_label(theme, &"DexTitle", t.DEX_TITLE_FONT, t.TEXT, bold)
 	_add_plain_label(theme, &"DexName", t.DEX_SHEET_NAME_FONT, t.TEXT, bold)
 	_add_plain_label(theme, &"DexNumber", t.DEX_SHEET_NUMBER_FONT, t.TEXT_MUTED, bold)
+
+
+# --- Écran Carte du menu (jalon 6, T20) ---------------------------------------------------------
+
+
+func _add_map_screen(theme: Theme, bold: Font, t: GDScript) -> void:
+	var panel := _panel_style(t.MENU_PANEL_BG, t.RADIUS, t)
+	panel.set_content_margin_all(t.MAP_PANEL_PAD)
+	theme.set_type_variation(&"MapPanel", &"PanelContainer")
+	theme.set_stylebox(&"panel", &"MapPanel", panel)
+
+	var frame := StyleBoxFlat.new()
+	frame.bg_color = t.SURFACE_DARK
+	frame.border_color = t.PANEL_BORDER
+	frame.set_border_width_all(t.MAP_FRAME_BORDER)
+	frame.set_corner_radius_all(t.RADIUS)
+	frame.anti_aliasing = true
+	theme.set_type_variation(&"MapFrame", &"PanelContainer")
+	theme.set_stylebox(&"panel", &"MapFrame", frame)
+
+	var label := _bag_box(t.MAP_LABEL_BG, t.PANEL_BORDER, t.BORDER_WIDTH, t.MAP_LABEL_PAD_H,
+		t.MAP_LABEL_PAD_V, t)
+	var label_on := _bag_box(t.ACCENT, t.ACCENT, t.BORDER_WIDTH, t.MAP_LABEL_PAD_H,
+		t.MAP_LABEL_PAD_V, t)
+	theme.set_type_variation(&"MapLabel", &"PanelContainer")
+	theme.set_stylebox(&"panel", &"MapLabel", label)
+	theme.set_type_variation(&"MapLabelOn", &"PanelContainer")
+	theme.set_stylebox(&"panel", &"MapLabelOn", label_on)
+	_add_plain_label(theme, &"MapLabelText", t.MAP_LABEL_FONT, t.TEXT, bold)
+	_add_plain_label(theme, &"MapLabelTextOn", t.MAP_LABEL_FONT, t.ACCENT_TEXT, bold)
+
+	var chip := _bag_box(t.PANEL_BG, t.PANEL_BORDER, t.BORDER_WIDTH, t.MAP_CHIP_PAD_H,
+		t.MAP_CHIP_PAD_V, t)
+	theme.set_type_variation(&"MapChip", &"PanelContainer")
+	theme.set_stylebox(&"panel", &"MapChip", chip)
+
+	var entry := _button_style(t.BUTTON_BG, true, t)
+	var entry_pressed := _button_style(t.ACCENT, false, t)
+	_add_button_variation(theme, &"MapEntry", entry, entry_pressed, bold, t)
+	theme.set_font_size(&"font_size", &"MapEntry", t.MAP_ENTRY_FONT)
+
+	_add_plain_label(theme, &"MapName", t.MAP_NAME_FONT, t.TEXT, bold)
+	_add_plain_label(theme, &"MapSubtitle", t.MAP_SUBTITLE_FONT, t.TEXT_MUTED, null)
+	_add_plain_label(theme, &"MapText", t.MAP_TEXT_FONT, t.TEXT, null)
+	_add_plain_label(theme, &"MapSection", t.MAP_SECTION_FONT, t.TEXT, bold)
+	_add_plain_label(theme, &"MapEntryText", t.MAP_ENTRY_FONT, t.TEXT, bold)
