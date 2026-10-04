@@ -21,6 +21,7 @@ extends Node
 ## Jalon 4B (jalon-04.md §14.3) : étape battle (combat contre un dresseur, verrou gardé, issue
 ## → drapeaux), étape give (objets au Sac + [signal item_given]) ; conditions d'étape
 ## « if » / « unless » ([method CutsceneStep.applies]) pour les suites selon l'issue.
+## Jalon 7 (jalon-07.md §3.2) : étape scare (réaction d'un Pokémon d'ambiance, sans attendre).
 
 signal cutscene_started(cutscene_id: StringName)
 ## Début d'une étape (tests, outils de capture).
@@ -237,6 +238,8 @@ func _play_step(source_step: CutsceneStep) -> bool:
 			await _battle(step)
 		CutsceneStep.Kind.GIVE:
 			_give(step)
+		CutsceneStep.Kind.SCARE:
+			_scare(step)
 		_:
 			_step_error("étape « %s » inconnue" % CutsceneStep.kind_name(step.kind))
 	return true
@@ -346,6 +349,35 @@ func _despawn(step: CutsceneStep) -> void:
 		await _wait(DESPAWN_FADE)
 	if is_instance_valid(map):
 		map.remove_npc(id)
+
+
+## Étape « scare » (jalon 7, jalon-07.md §3.2) : le Pokémon d'ambiance « shy » réagit tout
+## de suite comme à l'approche du joueur (même geste qu'[AmbientWatcher] : envol, ou fuite de
+## [constant AmbientWatcher.FLEE_STEPS] pas à l'opposé du joueur), puis quitte la carte à la
+## fin de sa réaction ([signal Npc.left_scene] → [method GameMap.remove_npc]). La scène
+## n'attend pas : l'étape suivante commence aussitôt. Comme pour l'[AmbientWatcher], un
+## Pokémon acculé (aucun pas de fuite possible) se retourne et reste. PNJ introuvable ou pas
+## « shy » : push_error, étape sautée.
+func _scare(step: CutsceneStep) -> void:
+	var npc := _find_actor(step.actor) as Npc
+	if npc == null:
+		_step_error("PNJ « %s » introuvable" % step.actor)
+		return
+	if not npc.get_spec().is_shy():
+		_step_error("« %s » n'est pas un Pokémon d'ambiance « shy »" % step.actor)
+		return
+	var map := _map
+	var on_left := func(npc_id: StringName) -> void:
+		if is_instance_valid(map):
+			map.remove_npc(npc_id)
+	npc.left_scene.connect(on_left, CONNECT_ONE_SHOT)
+	if npc.get_spec().shy_action == &"fly":
+		npc.fly_away()
+		return
+	var away_from := _player.get_cell() if is_instance_valid(_player) else npc.get_cell()
+	var path := AmbientRules.flee_path(map.get_grid(), npc.get_cell(), away_from,
+		AmbientWatcher.FLEE_STEPS, npc)
+	npc.flee(path)
 
 
 ## Étape « battle » (jalon 4B, jalon-04.md §14.3) : joue le combat contre le dresseur, en

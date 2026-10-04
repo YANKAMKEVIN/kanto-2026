@@ -576,3 +576,37 @@ func test_copy_is_independent() -> void:
 	other.if_flags.clear()
 	assert_eq(step.win_flags, [&"won"] as Array[StringName])
 	assert_eq(step.if_flags, [&"ready"] as Array[StringName])
+
+
+# --- Jalon 7 (T2) : étape scare -------------------------------------------------------
+
+func test_scare_step() -> void:
+	assert_eq(CutsceneStep.kind_name(CutsceneStep.Kind.SCARE), &"scare")
+	var step := _one_step({"scare": "viridian_roof_pidgey"}, "a")
+	assert_not_null(step, str(_library.get_errors()))
+	assert_eq(step.kind, CutsceneStep.Kind.SCARE)
+	assert_eq(step.actor, &"viridian_roof_pidgey")
+	assert_eq(step.copy().kind, CutsceneStep.Kind.SCARE, "copiée")
+	var aliased := _one_step({"scare": "$bird", "unless": ["calm"]}, "b")
+	assert_not_null(aliased, str(_library.get_errors()))
+	assert_eq(aliased.get_aliases(), [&"bird"] as Array[StringName], "alias permis")
+	assert_eq(aliased.unless_flags, [&"calm"] as Array[StringName], "conditions d'étape")
+
+
+func test_invalid_scare_steps() -> void:
+	var bad: Array[Dictionary] = [
+		{"scare": "player"},
+		{"scare": ""},
+		{"scare": 3},
+		{"scare": "$Bad"},
+		{"scare": "pidgey", "to": [1, 1]},
+		{"scare": "pidgey", "despawn": "pidgey"},
+	]
+	for i: int in bad.size():
+		assert_null(_one_step(bad[i], "bad_%d" % i), str(bad[i]))
+	assert_eq(_library.size(), 0)
+	assert_push_error_count(bad.size(), "une erreur par étape")
+	var errors := "\n".join(_library.get_errors())
+	for expected: String in ["réservé aux PNJ", "scare : identifiant attendu",
+			"alias mal formé", "clé inconnue « to »", "exactement un type"]:
+		assert_string_contains(errors, expected)

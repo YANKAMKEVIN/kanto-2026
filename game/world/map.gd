@@ -39,6 +39,10 @@ const _NPC_SCENE: PackedScene = preload("res://game/world/npc/npc.tscn")
 @export var battle_arena: Rect2i = Rect2i()
 ## Dossier des fichiers de PNJ (`<map_id>.json`) ; les tests pointent sur leurs données.
 @export var npcs_dir: String = NpcRoster.DATA_DIR
+## Profil de lumière du monde (`data/world/lighting.json`, [LightingLibrary], jalon-07.md
+## §3.2) appliqué par `WorldLighting` à l'arrivée. Vide = **aucune** lumière du monde (Bourg
+## Palette, la Route 1 et les intérieurs existants restent tels quels jusqu'à la phase DA).
+@export var light_profile: StringName = &""
 
 var _grid: GridWorld
 var _warps: WarpTable

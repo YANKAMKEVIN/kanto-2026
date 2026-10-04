@@ -127,6 +127,16 @@ const SCENES := {
 	"give_found": {"steps": [
 		{"give": "potion", "count": 1, "found": true}, {"set": ["after"]},
 	]},
+	"scare_bird": {"steps": [
+		{"spawn": "bird", "sprite": "pidgey", "cell": [9, 9], "shy": {"action": "fly"}},
+		{"scare": "bird"}, {"set": ["after"]},
+	]},
+	"scare_rat": {"steps": [
+		{"spawn": "rat", "sprite": "rattata", "cell": [9, 9], "shy": {"action": "flee"}},
+		{"scare": "$rat"}, {"set": ["after"]},
+	]},
+	"scare_mom": {"steps": [{"scare": "mom"}, {"set": ["after"]}]},
+	"scare_ghost": {"steps": [{"scare": "nobody"}, {"set": ["after"]}]},
 }
 
 
@@ -819,6 +829,42 @@ func test_despawn_frees_the_cell_and_removes_the_npc() -> void:
 	assert_true(not is_instance_valid(mom) or mom.is_queued_for_deletion())
 	assert_true(_flags.has_flag(&"after"))
 	assert_push_error_count(0)
+
+
+# --- Jalon 7 (T2) : étape scare ---------------------------------------------------------
+
+func test_scare_fly_does_not_wait_and_removes_the_pokemon_after_its_flight() -> void:
+	_director.play(&"scare_bird")
+	await _await_scene_end()
+	assert_true(_flags.has_flag(&"after"), "la scène n'attend pas la fin de l'envol")
+	var bird := _map.get_npc(&"bird")
+	assert_not_null(bird, "encore là pendant l'envol")
+	assert_false(_map.get_grid().is_occupied(Vector2i(9, 9)), "case libérée dès l'envol")
+	await wait_until(func() -> bool: return _map.get_npc(&"bird") == null, TIMEOUT)
+	assert_null(_map.get_npc(&"bird"), "parti pour la visite")
+	assert_push_error_count(0)
+
+
+func test_scare_flee_runs_away_from_the_player_then_leaves() -> void:
+	_director.play(&"scare_rat", {&"rat": &"rat"})
+	await _await_scene_end()
+	assert_true(_flags.has_flag(&"after"))
+	assert_false(_map.get_grid().is_occupied(Vector2i(9, 9)), "il a détalé")
+	await wait_until(func() -> bool: return _map.get_npc(&"rat") == null, TIMEOUT)
+	assert_null(_map.get_npc(&"rat"), "parti pour la visite")
+	assert_push_error_count(0)
+
+
+func test_scare_on_a_non_shy_npc_or_a_missing_one_is_skipped_with_error() -> void:
+	_director.play(&"scare_mom")
+	await _await_scene_end()
+	assert_not_null(_map.get_npc(&"mom"), "Maman reste")
+	assert_true(_flags.has_flag(&"after"), "étape sautée, la scène continue")
+	_flags.set_flag(&"after", false)
+	_director.play(&"scare_ghost")
+	await _await_scene_end()
+	assert_true(_flags.has_flag(&"after"))
+	assert_push_error_count(2)
 
 
 # --- Jalon 4B : conditions d'étape ----------------------------------------------------

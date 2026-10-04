@@ -482,7 +482,7 @@ Les textes du dossier 09 §19 sont **la référence** (validés, raccourcissable
 
 ### 5.5 Départs de débogage (`tools/debug_start/`)
 
-`viridian` (arrivée au bord sud de Jadielle, équipe Nv. 7–8 réaliste, `rival_battle_done`) · `center_qa` (équipe blessée et un K.O., devant le Centre) · `shop_qa` (6 000 ₽, des Potions favorites, devant la Boutique) · `storage_qa` (6 en équipe dont un K.O., 10 au stockage dont un favori, au Centre) · `parcel` (colis en main, devant le labo) · `route_22` (Pokédex activé, équipe Nv. 8, entrée de la Route 22) · `rival_2_weak` (équipe Nv. 4, pour perdre). `DebugStart` gagne `money` et `storage` (même format que `party`).
+`viridian` (arrivée au bord sud de Jadielle, équipe Nv. 7–8 réaliste, `rival_battle_done`) · `center_qa` (équipe blessée et un K.O., devant le Centre) · `shop_qa` (6 000 ₽, des Potions favorites, devant la Boutique) · `storage_qa` (6 en équipe dont un K.O., 10 au stockage dont un favori, au Centre) · `parcel` (colis en main, devant le labo) · `route_22` (Pokédex activé, équipe Nv. 8, entrée de la Route 22) · `rival_2_weak` (équipe Nv. 4, pour perdre). `DebugStart` gagne `money` et `storage` (même format que `party`). **TODO (après le T0)** : le T2 a livré `viridian` **sans** ces deux clés (elles dépendent de `GameState.money` et de la sauvegarde v3, faites en parallèle) ; les ajouter à `DebugStart` (`_KEYS`, `apply`, `test_debug_start`) dès la fusion du T0, au plus tard avec `center_qa` (T8) / `shop_qa` (T12) qui en ont besoin (§15.2).
 
 ---
 
@@ -646,6 +646,7 @@ Chaque tâche finit par `tools/test.sh` vert (nombre de tests rapporté), un imp
 #### T2 — architecte-godot : fondations du monde peint
 - §3.2 ; `data/world/lighting.json` (valeurs C2 du prototype) ; `CharacterLook` ; extensions de `NpcSpec` ; étape `scare` ; `DebugStart` (`money`, `storage`) ; départ `viridian`.
 - **CA** : tests du §3.2 verts ; aucune carte, aucune image.
+- **Fait (2026-10-05)** : voir §15.2 (écarts avec ce plan, contrats pour T3 / T4). `DebugStart` `money` / `storage` reportés après le T0.
 
 #### T3 — constructeur-monde : le pipeline de l'art et la lumière C2
 - `tools/art/manifeste.json` + `tools/art/preparer.py` (successeur de `preparer_proto.py` : sorties dans `assets/`, ombres et contacts pré-floutés, moitié basse des herbes hautes) ; import des textures des séries 01 à 05 (depuis `proto/da-jadielle:proto/da_jadielle/tex/`, renommées) ; `tools/build_painted_props.gd` (scènes `WorldProp` peintes, emprises du §6.6) ; `tools/build_character_frames.gd` (PNJ du J7) ; `WorldLighting` et les 5 shaders ; `CharacterLook` branché dans `Npc` et `Player` ; `PerfCounter` + mémoire des textures ; une **scène de test** (`tools/capture_lighting.gd`) qui pose la place de la série 01 avec la vraie chaîne.
@@ -882,3 +883,22 @@ Seules les vraies questions de game design et de direction artistique sont ici ;
 | T20 | Chen, le Pokédex activé, puis tout le J7A d'une traite. **Validation du J7A.** |
 | T23 | La Route 22 et ses Pokémon. **Validation du 7B.1.** |
 | T26 | Le rival n° 2, victoire et défaite, puis tout le J7. **Validation du jalon 7.** |
+
+---
+
+## 15. Alignement du plan sur le code
+
+### 15.2 T2 — fondations du monde peint (2026-10-05, base `j7-monde` à `8716088`)
+
+Fait en parallèle du T0 (sauvegarde v3, autre session) : **aucun** fichier de `boot.gd`, `game_state.gd`, `save_system.gd`, du combat ni de `tools/art/` touché. Écarts et précisions par rapport au §3.2 :
+
+1. **`DebugStart` `money` / `storage` : pas faits** (ils dépendent de `GameState.money`, T0). Le départ `tools/debug_start/viridian.json` existe **sans** eux. TODO au §5.5.
+2. **Départ `viridian`** : `route_1` / spawn `jadielle_soon_w` / vers le haut (au bout nord de la Route 1, un pas = l'arrivée à Jadielle), Salamèche N8 + Roucool N7, 3 Poké Balls, 2 Potions, drapeaux du prologue jusqu'à `rival_left_lab`. La carte de Jadielle n'existant qu'au T4, c'est le seul point d'arrivée vérifiable aujourd'hui ; il sert aussi `test_arrival_scene` (la scène se déclenche 2 cases après l'entrée). **Contrat T4** : si `build_route_1.gd` renomme ce spawn, mettre à jour `viridian.json` (le test `test_shipped_viridian_start` vérifie que le spawn existe sur la carte).
+3. **`data/world/lighting.json`** : un objet `profiles`, chaque profil en **blocs** (`grade` { shadows, midtones, highlights, strength }, `sun_direction`, `rim` { color, strength, width }, `cast_shadow` { color, alpha, length, skew_deg }, `contact` { color, alpha }, `wind`) ; couleurs `#rrggbb`, alpha à part. `grade` et `sun_direction` obligatoires, les autres blocs facultatifs (absents = aucun effet). Valeurs `golden_hour` relevées dans les shaders et le script du prototype (`etalonnage`, `objet` : liseré `#ffd17a` force 1 largeur 5 px, `ombre` : `#1a1738` α 0,34, 0,26, −45°, `contact` : `#1f1a33` α 0,62, vent 5 px). **`interior_warm`** (défaut, règle 4 ; non mesuré, rien au prototype) : gains ombres 1,04/1,02/0,99, moyens 1,02/1,00/0,97, lumières 1,01/0,99/0,95, sans liseré, sans ombre portée, sans vent, contact gardé.
+4. **Restent dans les shaders et l'outil d'art (T3), pas dans le profil** : vitesse du vent (1,1), seuils de luminance de l'étalonnage (contours 0,04–0,14, zones 0,15–0,45 / 0,50–0,85), facteur du liseré (×1,45, 0,55, seuil 0,12–0,4), rayon du flou de l'ombre portée (10 px, désormais pré-flouté), étendue de l'ombre de contact (18 px) et part de la base (0,05 objets, 0,12 bâtiments, 0,1 personnages). Ce sont des constantes de technique, pas d'ambiance ; le jour/nuit n'en a pas besoin.
+5. **`LightProfile`** gagne `has_grade()`, `has_rim()`, `has_cast_shadow()`, `has_contact_shadow()`, `has_wind()` (pour `WorldLighting` : bloc absent = calque caché / paramètre à zéro). `LightingLibrary` gagne `has_profile`, `get_ids`, `size`, et `parse_profile` statique.
+6. **`CharacterLook`** dans `game/world/character_look.gd` (partagé par `Npc` et `Player`, comme `grid.gd`) ; gagne `painted: bool`, `painted_frames_path` / `placeholder_frames_path` ; `resolve(sprite, exists := Callable())` (sans Callable : `ResourceLoader.exists`). Générique = `placeholder/npc_frames.tres` (même que `Npc.FALLBACK_SPRITE`). **Non branché** dans `Npc` / `Player` : c'est le T3.
+7. **`NpcSpec.route_start`** : avec `"start"`, `cell` doit être `cells[start]` (sinon refus) ; **sans** `"start"`, `route_start` = première occurrence de `cell` dans la boucle (0 si absente), exactement ce que fait `Npc._start_route` aujourd'hui — le T3 peut donc remplacer `_route.find(cell)` par `route_start` sans changer le Voyageur de la Route 1 (`route_start` = 1). `route.enter` = `{ "cell", "seconds" }`, case dans la boucle, secondes dans ]0, 120] ; `idle_react` dans ]0, 120], interdit sur un « shy ». Aides `enters_building()`, `has_idle_react()`. Le **comportement** (fondu, absence, animation) est au T4 dans `Npc` (rien n'est joué au T2).
+8. **Étape `scare`** : bibliothèque **et** directeur (`CutsceneDirector._scare`). L'étape **n'attend pas** la fin de la réaction (la micro-scène ≤ 4 s enchaîne ses gestes) ; même geste que `AmbientWatcher` (envol, ou fuite de 3 pas à l'opposé du joueur ; acculé : il se retourne et reste), puis `GameMap.remove_npc` à `left_scene`. Acteur pas « shy » ou introuvable : `push_error`, étape sautée. `test_cutscene_data` vérifie que l'acteur d'une étape `scare` des vraies données est « shy ».
+9. **`GameMap.light_profile`** ajouté (vide partout) ; rien ne le lit encore (T3 : `WorldLighting`).
+

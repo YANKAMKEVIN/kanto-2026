@@ -196,6 +196,25 @@ func test_shipped_debug_starts_are_valid() -> void:
 		assert_true(start.flags.has(&"starter_chosen"), name)
 
 
+## Jalon 7 (T2, jalon-07.md §5.5) : départ « viridian », au bout nord de la Route 1, tourné vers
+## Jadielle, prologue et rival du labo faits, équipe Nv. 7–8. Sans « money » ni « storage » :
+## ces clés attendent la sauvegarde v3 (T0).
+func test_shipped_viridian_start() -> void:
+	var start := DebugStart.new()
+	assert_true(start.load_file(TOOL_STARTS + "viridian.json", _data, _items),
+		"\n".join(start.get_errors()))
+	assert_eq([start.map, start.spawn, start.facing], [&"route_1", &"jadielle_soon_w",
+		Vector2i.UP])
+	assert_true(start.flags.has(&"rival_battle_done"))
+	assert_false(start.flags.has(&"pokedex_activated"), "jamais par un départ de débogage")
+	for member: Dictionary in start.party:
+		assert_between(int(member["level"]), 7, 8, str(member["species"]))
+	assert_true(MapCatalog.has_map(start.map))
+	var map := (load(MapCatalog.scene_path(start.map)) as PackedScene).instantiate() as GameMap
+	assert_true(map.has_spawn(start.spawn), "le point d'apparition existe sur la carte")
+	map.free()
+
+
 func test_shipped_forget_move_start_reaches_the_forget_offer() -> void:
 	# forget_move.json : Bulbizarre N19 à 1 XP du N20, 4 capacités → oubli au premier K.O.
 	var start := DebugStart.new()

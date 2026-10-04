@@ -20,7 +20,12 @@ extends RefCounted
 ## if et unless (listes de drapeaux : présence conditionnelle, jalon 3B §2.6),
 ## species (espèce d'un Pokémon du décor : le geste OBSERVER l'enregistre « vu » au Pokédex,
 ## jalon 6 §3.5, Q-7 ; seulement avec « verb »: « observe » et un dialogue ; l'espèce est
-## vérifiée contre PokemonData par les tests des données réelles).
+## vérifiée contre PokemonData par les tests des données réelles),
+## idle_react (secondes > 0 : petite animation d'ambiance périodique, jalon 7 : le Roucool de
+## la Dresseuse ; interdit sur un Pokémon « shy »),
+## route (routine de marche, jalon 5, étendue au jalon 7 :
+## { "cells": [[x, y], …], "pause": 1.2, "start": 1, "enter": { "cell": [x, y], "seconds": 8 } },
+## voir [method _read_route]).
 ## Le verbe « meet » (Rencontrer) est refusé : il est posé par le code (jalon 4 §3.5).
 ## Toute autre clé est une erreur. Pas de fichier = aucun PNJ sur la carte (sans erreur).
 ## L'identifiant « player » est réservé au joueur.
@@ -33,8 +38,11 @@ const PLAYER_ID: StringName = &"player"
 ## Clés d'une entrée (aussi celles de l'étape « spawn » des scènes, sans if / unless).
 const KEYS: Array[String] = [
 	"cell", "facing", "sprite", "dialogue", "verb", "turn_to_player", "keep_facing", "lift",
-	"hop_style", "shy", "route", "if", "unless", "species",
+	"hop_style", "shy", "route", "if", "unless", "species", "idle_react",
 ]
+## Clés d'une routine « route » ([method _read_route]).
+const ROUTE_KEYS: Array[String] = ["cells", "pause", "start", "enter"]
+const _ENTER_KEYS: Array[String] = ["cell", "seconds"]
 
 var _specs: Array[NpcSpec] = []
 var _errors: PackedStringArray = PackedStringArray()
@@ -186,6 +194,16 @@ static func parse_entry(value: Variant, errors: PackedStringArray) -> NpcSpec:
 		_read_route(entry["route"], spec, errors)
 	_read_flags(entry, "if", spec.if_flags, errors)
 	_read_flags(entry, "unless", spec.unless_flags, errors)
+	if entry.has("idle_react"):
+		var every: Variant = entry["idle_react"]
+		if not (every is float or every is int) or float(every) <= 0.0 \
+				or float(every) > NpcSpec.IDLE_REACT_MAX:
+			errors.append("« idle_react » doit être un nombre de secondes dans ]0, %s]"
+				% NpcSpec.IDLE_REACT_MAX)
+		elif spec.is_shy():
+			errors.append("« idle_react » interdit sur un Pokémon « shy »")
+		else:
+			spec.idle_react_every = float(every)
 	if entry.has("species"):
 		if not entry["species"] is String or (entry["species"] as String).is_empty():
 			errors.append("« species » doit être un identifiant d'espèce")
@@ -228,13 +246,19 @@ static func _read_shy(value: Variant, spec: NpcSpec, errors: PackedStringArray) 
 ## { "cells": [[x, y], …], "pause": secondes }. Deux cases consécutives (et la boucle de la
 ## dernière à la première) doivent être voisines (un pas cardinal). « pause » facultatif
 ## ([constant NpcSpec.ROUTE_PAUSE_DEFAULT] par défaut). Interdit sur un Pokémon « shy ».
+## Jalon 7 (dossier 09 §2), facultatifs :
+## - « start » : index de départ dans « cells » (entier, dans les bornes) ; « cell » du PNJ
+##   doit alors être cette case. Sans « start » : première occurrence de « cell » dans la
+##   boucle, 0 si elle n'y est pas (comportement du jalon 5) ;
+## - « enter » : { "cell": [x, y], "seconds": s } : arrivé sur cette case (qui appartient à la
+##   boucle), le PNJ entre dans un bâtiment et reste absent s secondes (]0, 120]).
 static func _read_route(value: Variant, spec: NpcSpec, errors: PackedStringArray) -> void:
 	if not value is Dictionary:
-		errors.append("« route » doit être un objet { cells, pause }")
+		errors.append("« route » doit être un objet { cells, pause, start, enter }")
 		return
 	var route: Dictionary = value
 	for key: Variant in route:
-		if str(key) != "cells" and str(key) != "pause":
+		if not ROUTE_KEYS.has(str(key)):
 			errors.append("clé inconnue dans « route » : « %s »" % key)
 	var cells: Variant = route.get("cells")
 	if not cells is Array or (cells as Array).size() < 2:
@@ -266,6 +290,50 @@ static func _read_route(value: Variant, spec: NpcSpec, errors: PackedStringArray
 			spec.route_pause = float(pause)
 	if spec.has_route() and spec.is_shy():
 		errors.append("« route » interdit sur un Pokémon « shy »")
+	if not spec.has_route():
+		return
+	if route.has("start"):
+		var start: Variant = route["start"]
+		if not (start is float or start is int) or float(start) != floorf(float(start)) \
+				or int(start) < 0 or int(start) >= spec.route_cells.size():
+			errors.append("« route.start » doit être un index de « route.cells » (0 à %d)"
+				% (spec.route_cells.size() - 1))
+		elif spec.route_cells[int(start)] != spec.cell:
+			errors.append("« route.start » : la case %s n'est pas « cell » %s" % [
+				spec.route_cells[int(start)], spec.cell])
+		else:
+			spec.route_start = int(start)
+	else:
+		spec.route_start = maxi(spec.route_cells.find(spec.cell), 0)
+	if route.has("enter"):
+		_read_route_enter(route["enter"], spec, errors)
+
+
+## « route.enter » : { "cell": [x, y], "seconds": s } ; la case appartient à la boucle.
+static func _read_route_enter(value: Variant, spec: NpcSpec, errors: PackedStringArray) -> void:
+	if not value is Dictionary:
+		errors.append("« route.enter » doit être un objet { cell, seconds }")
+		return
+	var enter: Dictionary = value
+	var count := errors.size()
+	for key: Variant in enter:
+		if not _ENTER_KEYS.has(str(key)):
+			errors.append("clé inconnue dans « route.enter » : « %s »" % key)
+	var cell := NpcSpec.NO_ENTER_CELL
+	if not is_cell(enter.get("cell")):
+		errors.append("« route.enter.cell » doit être [x, y] (entiers ≥ 0)")
+	else:
+		cell = Vector2i(int(enter["cell"][0]), int(enter["cell"][1]))
+		if not spec.route_cells.has(cell):
+			errors.append("« route.enter.cell » %s n'appartient pas à la boucle" % cell)
+	var seconds: Variant = enter.get("seconds")
+	if not (seconds is float or seconds is int) or float(seconds) <= 0.0 \
+			or float(seconds) > NpcSpec.ROUTE_ENTER_SECONDS_MAX:
+		errors.append("« route.enter.seconds » doit être un nombre dans ]0, %s]"
+			% NpcSpec.ROUTE_ENTER_SECONDS_MAX)
+	if errors.size() == count:
+		spec.route_enter_cell = cell
+		spec.route_enter_seconds = float(seconds)
 
 
 ## Vrai pour une case de données : [x, y], entiers ≥ 0.
