@@ -1,0 +1,1066 @@
+{
+ "case": 96,
+ "objets": {
+  "tree_a_01": {
+   "fichier": "res://assets/world/props/tree_a_01.png",
+   "taille": [
+    267,
+    384
+   ],
+   "ombre": {
+    "fichier": "res://assets/world/props/tree_a_01_shadow.png",
+    "decalage": [
+     -159,
+     -4
+    ],
+    "echelle": 2,
+    "taille": [
+     194,
+     40
+    ]
+   },
+   "contact": {
+    "fichier": "res://assets/world/props/tree_a_01_contact.png",
+    "decalage": [
+     -141,
+     -19
+    ],
+    "echelle": 2,
+    "taille": [
+     142,
+     22
+    ]
+   }
+  },
+  "tree_b_01": {
+   "fichier": "res://assets/world/props/tree_b_01.png",
+   "taille": [
+    287,
+    480
+   ],
+   "ombre": {
+    "fichier": "res://assets/world/props/tree_b_01_shadow.png",
+    "decalage": [
+     -169,
+     -4
+    ],
+    "echelle": 2,
+    "taille": [
+     213,
+     49
+    ]
+   },
+   "contact": {
+    "fichier": "res://assets/world/props/tree_b_01_contact.png",
+    "decalage": [
+     -151,
+     -24
+    ],
+    "echelle": 2,
+    "taille": [
+     152,
+     24
+    ]
+   }
+  },
+  "tree_central_01": {
+   "fichier": "res://assets/world/props/tree_central_01.png",
+   "taille": [
+    442,
+    576
+   ],
+   "ombre": {
+    "fichier": "res://assets/world/props/tree_central_01_shadow.png",
+    "decalage": [
+     -246,
+     -4
+    ],
+    "echelle": 2,
+    "taille": [
+     299,
+     57
+    ]
+   },
+   "contact": {
+    "fichier": "res://assets/world/props/tree_central_01_contact.png",
+    "decalage": [
+     -229,
+     -29
+    ],
+    "echelle": 2,
+    "taille": [
+     229,
+     27
+    ]
+   }
+  },
+  "bldg_centre_01": {
+   "fichier": "res://assets/world/buildings/bldg_centre_01.png",
+   "taille": [
+    768,
+    662
+   ],
+   "ombre": {
+    "fichier": "res://assets/world/buildings/bldg_centre_01_shadow.png",
+    "decalage": [
+     -409,
+     -4
+    ],
+    "echelle": 2,
+    "taille": [
+     470,
+     65
+    ]
+   },
+   "contact": {
+    "fichier": "res://assets/world/buildings/bldg_centre_01_contact.png",
+    "decalage": [
+     -392,
+     -79
+    ],
+    "echelle": 2,
+    "taille": [
+     392,
+     52
+    ]
+   }
+  },
+  "bldg_boutique_01": {
+   "fichier": "res://assets/world/buildings/bldg_boutique_01.png",
+   "taille": [
+    768,
+    664
+   ],
+   "ombre": {
+    "fichier": "res://assets/world/buildings/bldg_boutique_01_shadow.png",
+    "decalage": [
+     -409,
+     -4
+    ],
+    "echelle": 2,
+    "taille": [
+     470,
+     65
+    ]
+   },
+   "contact": {
+    "fichier": "res://assets/world/buildings/bldg_boutique_01_contact.png",
+    "decalage": [
+     -392,
+     -80
+    ],
+    "echelle": 2,
+    "taille": [
+     392,
+     52
+    ]
+   }
+  },
+  "bldg_maison_a_01": {
+   "fichier": "res://assets/world/buildings/bldg_maison_a_01.png",
+   "taille": [
+    576,
+    542
+   ],
+   "ombre": {
+    "fichier": "res://assets/world/buildings/bldg_maison_a_01_shadow.png",
+    "decalage": [
+     -313,
+     -4
+    ],
+    "echelle": 2,
+    "taille": [
+     363,
+     54
+    ]
+   },
+   "contact": {
+    "fichier": "res://assets/world/buildings/bldg_maison_a_01_contact.png",
+    "decalage": [
+     -296,
+     -65
+    ],
+    "echelle": 2,
+    "taille": [
+     296,
+     45
+    ]
+   }
+  },
+  "bldg_maison_b_01": {
+   "fichier": "res://assets/world/buildings/bldg_maison_b_01.png",
+   "taille": [
+    528,
+    560
+   ],
+   "ombre": {
+    "fichier": "res://assets/world/buildings/bldg_maison_b_01_shadow.png",
+    "decalage": [
+     -289,
+     -4
+    ],
+    "echelle": 2,
+    "taille": [
+     341,
+     56
+    ]
+   },
+   "contact": {
+    "fichier": "res://assets/world/buildings/bldg_maison_b_01_contact.png",
+    "decalage": [
+     -272,
+     -67
+    ],
+    "echelle": 2,
+    "taille": [
+     272,
+     46
+    ]
+   }
+  },
+  "bldg_arene_01": {
+   "fichier": "res://assets/world/buildings/bldg_arene_01.png",
+   "taille": [
+    960,
+    597
+   ],
+   "ombre": {
+    "fichier": "res://assets/world/buildings/bldg_arene_01_shadow.png",
+    "decalage": [
+     -505,
+     -4
+    ],
+    "echelle": 2,
+    "taille": [
+     560,
+     59
+    ]
+   },
+   "contact": {
+    "fichier": "res://assets/world/buildings/bldg_arene_01_contact.png",
+    "decalage": [
+     -488,
+     -60
+    ],
+    "echelle": 2,
+    "taille": [
+     488,
+     42
+    ]
+   }
+  },
+  "prop_massif_01": {
+   "fichier": "res://assets/world/props/prop_massif_01.png",
+   "taille": [
+    384,
+    232
+   ],
+   "contact": {
+    "fichier": "res://assets/world/props/prop_massif_01_contact.png",
+    "decalage": [
+     -200,
+     -58
+    ],
+    "echelle": 2,
+    "taille": [
+     200,
+     41
+    ]
+   }
+  },
+  "prop_banc_01": {
+   "fichier": "res://assets/world/props/prop_banc_01.png",
+   "taille": [
+    192,
+    99
+   ],
+   "ombre": {
+    "fichier": "res://assets/world/props/prop_banc_01_shadow.png",
+    "decalage": [
+     -121,
+     -4
+    ],
+    "echelle": 2,
+    "taille": [
+     131,
+     14
+    ]
+   },
+   "contact": {
+    "fichier": "res://assets/world/props/prop_banc_01_contact.png",
+    "decalage": [
+     -104,
+     -20
+    ],
+    "echelle": 2,
+    "taille": [
+     104,
+     22
+    ]
+   }
+  },
+  "prop_lampadaire_01": {
+   "fichier": "res://assets/world/props/prop_lampadaire_01.png",
+   "taille": [
+    62,
+    250
+   ],
+   "ombre": {
+    "fichier": "res://assets/world/props/prop_lampadaire_01_shadow.png",
+    "decalage": [
+     -56,
+     -4
+    ],
+    "echelle": 2,
+    "taille": [
+     79,
+     27
+    ]
+   },
+   "contact": {
+    "fichier": "res://assets/world/props/prop_lampadaire_01_contact.png",
+    "decalage": [
+     -39,
+     -25
+    ],
+    "echelle": 2,
+    "taille": [
+     39,
+     25
+    ]
+   }
+  },
+  "prop_haie_01": {
+   "fichier": "res://assets/world/props/prop_haie_01.png",
+   "taille": [
+    384,
+    98
+   ],
+   "ombre": {
+    "fichier": "res://assets/world/props/prop_haie_01_shadow.png",
+    "decalage": [
+     -217,
+     -4
+    ],
+    "echelle": 2,
+    "taille": [
+     226,
+     13
+    ]
+   },
+   "contact": {
+    "fichier": "res://assets/world/props/prop_haie_01_contact.png",
+    "decalage": [
+     -200,
+     -29
+    ],
+    "echelle": 2,
+    "taille": [
+     200,
+     27
+    ]
+   }
+  },
+  "prop_cloture_01": {
+   "fichier": "res://assets/world/props/prop_cloture_01.png",
+   "taille": [
+    384,
+    61
+   ],
+   "ombre": {
+    "fichier": "res://assets/world/props/prop_cloture_01_shadow.png",
+    "decalage": [
+     -217,
+     -4
+    ],
+    "echelle": 2,
+    "taille": [
+     223,
+     10
+    ]
+   },
+   "contact": {
+    "fichier": "res://assets/world/props/prop_cloture_01_contact.png",
+    "decalage": [
+     -200,
+     -18
+    ],
+    "echelle": 2,
+    "taille": [
+     200,
+     21
+    ]
+   }
+  },
+  "prop_panneau_01": {
+   "fichier": "res://assets/world/props/prop_panneau_01.png",
+   "taille": [
+    171,
+    192
+   ],
+   "ombre": {
+    "fichier": "res://assets/world/props/prop_panneau_01_shadow.png",
+    "decalage": [
+     -111,
+     -4
+    ],
+    "echelle": 2,
+    "taille": [
+     129,
+     22
+    ]
+   },
+   "contact": {
+    "fichier": "res://assets/world/props/prop_panneau_01_contact.png",
+    "decalage": [
+     -93,
+     -19
+    ],
+    "echelle": 2,
+    "taille": [
+     94,
+     22
+    ]
+   }
+  },
+  "prop_porte_nord_01": {
+   "fichier": "res://assets/world/props/prop_porte_nord_01.png",
+   "taille": [
+    480,
+    298
+   ],
+   "ombre": {
+    "fichier": "res://assets/world/props/prop_porte_nord_01_shadow.png",
+    "decalage": [
+     -265,
+     -4
+    ],
+    "echelle": 2,
+    "taille": [
+     293,
+     32
+    ]
+   },
+   "contact": {
+    "fichier": "res://assets/world/props/prop_porte_nord_01_contact.png",
+    "decalage": [
+     -248,
+     -30
+    ],
+    "echelle": 2,
+    "taille": [
+     248,
+     27
+    ]
+   }
+  },
+  "prop_rocher_01": {
+   "fichier": "res://assets/world/props/prop_rocher_01.png",
+   "taille": [
+    192,
+    134
+   ],
+   "ombre": {
+    "fichier": "res://assets/world/props/prop_rocher_01_shadow.png",
+    "decalage": [
+     -121,
+     -4
+    ],
+    "echelle": 2,
+    "taille": [
+     134,
+     17
+    ]
+   },
+   "contact": {
+    "fichier": "res://assets/world/props/prop_rocher_01_contact.png",
+    "decalage": [
+     -104,
+     -13
+    ],
+    "echelle": 2,
+    "taille": [
+     104,
+     19
+    ]
+   }
+  },
+  "relief_falaise_01": {
+   "fichier": "res://assets/world/relief/relief_falaise_01.png",
+   "taille": [
+    384,
+    127
+   ]
+  },
+  "relief_escalier_01": {
+   "fichier": "res://assets/world/relief/relief_escalier_01.png",
+   "taille": [
+    211,
+    185
+   ]
+  },
+  "int_centre_comptoir": {
+   "fichier": "res://assets/world/interiors/int_centre_comptoir.png",
+   "taille": [
+    480,
+    169
+   ],
+   "contact": {
+    "fichier": "res://assets/world/interiors/int_centre_comptoir_contact.png",
+    "decalage": [
+     -248,
+     -17
+    ],
+    "echelle": 2,
+    "taille": [
+     248,
+     21
+    ]
+   }
+  },
+  "int_centre_terminal": {
+   "fichier": "res://assets/world/interiors/int_centre_terminal.png",
+   "taille": [
+    183,
+    211
+   ],
+   "contact": {
+    "fichier": "res://assets/world/interiors/int_centre_terminal_contact.png",
+    "decalage": [
+     -99,
+     -21
+    ],
+    "echelle": 2,
+    "taille": [
+     100,
+     23
+    ]
+   }
+  },
+  "int_centre_banquette": {
+   "fichier": "res://assets/world/interiors/int_centre_banquette.png",
+   "taille": [
+    221,
+    116
+   ],
+   "contact": {
+    "fichier": "res://assets/world/interiors/int_centre_banquette_contact.png",
+    "decalage": [
+     -118,
+     -12
+    ],
+    "echelle": 2,
+    "taille": [
+     119,
+     18
+    ]
+   }
+  },
+  "int_plante": {
+   "fichier": "res://assets/world/interiors/int_plante.png",
+   "taille": [
+    155,
+    230
+   ],
+   "contact": {
+    "fichier": "res://assets/world/interiors/int_plante_contact.png",
+    "decalage": [
+     -85,
+     -23
+    ],
+    "echelle": 2,
+    "taille": [
+     86,
+     24
+    ]
+   }
+  },
+  "int_boutique_caisse": {
+   "fichier": "res://assets/world/interiors/int_boutique_caisse.png",
+   "taille": [
+    480,
+    159
+   ],
+   "contact": {
+    "fichier": "res://assets/world/interiors/int_boutique_caisse_contact.png",
+    "decalage": [
+     -248,
+     -16
+    ],
+    "echelle": 2,
+    "taille": [
+     248,
+     20
+    ]
+   }
+  },
+  "int_boutique_rayon_mural": {
+   "fichier": "res://assets/world/interiors/int_boutique_rayon_mural.png",
+   "taille": [
+    259,
+    188
+   ],
+   "contact": {
+    "fichier": "res://assets/world/interiors/int_boutique_rayon_mural_contact.png",
+    "decalage": [
+     -137,
+     -19
+    ],
+    "echelle": 2,
+    "taille": [
+     138,
+     22
+    ]
+   }
+  },
+  "int_boutique_presentoir": {
+   "fichier": "res://assets/world/interiors/int_boutique_presentoir.png",
+   "taille": [
+    288,
+    106
+   ],
+   "contact": {
+    "fichier": "res://assets/world/interiors/int_boutique_presentoir_contact.png",
+    "decalage": [
+     -152,
+     -11
+    ],
+    "echelle": 2,
+    "taille": [
+     152,
+     18
+    ]
+   }
+  },
+  "ground_hautes_herbes_01": {
+   "fichier": "res://assets/world/ground/ground_hautes_herbes_01.png",
+   "taille": [
+    110,
+    95
+   ],
+   "bas": {
+    "fichier": "res://assets/world/ground/ground_hautes_herbes_01_bas.png",
+    "taille": [
+     110,
+     47
+    ]
+   }
+  }
+ },
+ "personnages": {
+  "heros": {
+   "fichier": "res://assets/sprites/characters/painted/heros_sheet.png",
+   "cellule": [
+    74,
+    130
+   ],
+   "hauteur": 128,
+   "colonnes": 4,
+   "lignes": 4,
+   "ordre_lignes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "heros_run": {
+   "fichier": "res://assets/sprites/characters/painted/heros_run_sheet.png",
+   "cellule": [
+    95,
+    130
+   ],
+   "hauteur": 128,
+   "colonnes": 4,
+   "lignes": 4,
+   "ordre_lignes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "infirmiere": {
+   "fichier": "res://assets/sprites/characters/painted/infirmiere_sheet.png",
+   "cellule": [
+    88,
+    134
+   ],
+   "hauteur": 132,
+   "colonnes": 4,
+   "lignes": 4,
+   "ordre_lignes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "marchand": {
+   "fichier": "res://assets/sprites/characters/painted/marchand_sheet.png",
+   "cellule": [
+    81,
+    138
+   ],
+   "hauteur": 136,
+   "colonnes": 4,
+   "lignes": 4,
+   "ordre_lignes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "livreur": {
+   "fichier": "res://assets/sprites/characters/painted/livreur_sheet.png",
+   "cellule": [
+    82,
+    136
+   ],
+   "hauteur": 134,
+   "colonnes": 4,
+   "lignes": 4,
+   "ordre_lignes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "dresseuse": {
+   "fichier": "res://assets/sprites/characters/painted/dresseuse_sheet.png",
+   "cellule": [
+    80,
+    128
+   ],
+   "hauteur": 126,
+   "colonnes": 4,
+   "lignes": 4,
+   "ordre_lignes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "vieil_homme": {
+   "fichier": "res://assets/sprites/characters/painted/vieil_homme_sheet.png",
+   "cellule": [
+    78,
+    124
+   ],
+   "hauteur": 122,
+   "colonnes": 4,
+   "lignes": 4,
+   "ordre_lignes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "voyageur": {
+   "fichier": "res://assets/sprites/characters/painted/voyageur_sheet.png",
+   "cellule": [
+    83,
+    138
+   ],
+   "hauteur": 136,
+   "colonnes": 4,
+   "lignes": 4,
+   "ordre_lignes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "rival": {
+   "fichier": "res://assets/sprites/characters/painted/rival_sheet.png",
+   "cellule": [
+    71,
+    132
+   ],
+   "hauteur": 130,
+   "colonnes": 4,
+   "lignes": 4,
+   "ordre_lignes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "jeune_dresseur": {
+   "fichier": "res://assets/sprites/characters/painted/jeune_dresseur_sheet.png",
+   "cellule": [
+    73,
+    128
+   ],
+   "hauteur": 126,
+   "colonnes": 4,
+   "lignes": 4,
+   "ordre_lignes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "enfant": {
+   "fichier": "res://assets/sprites/characters/painted/enfant_sheet.png",
+   "cellule": [
+    65,
+    110
+   ],
+   "hauteur": 108,
+   "colonnes": 4,
+   "lignes": 4,
+   "ordre_lignes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "roucool": {
+   "fichier": "res://assets/sprites/pokemon/painted/roucool_sheet.png",
+   "cellule": [
+    56,
+    52
+   ],
+   "hauteur": 50,
+   "colonnes": 4,
+   "lignes": 4,
+   "ordre_lignes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "rattata": {
+   "fichier": "res://assets/sprites/pokemon/painted/rattata_sheet.png",
+   "cellule": [
+    59,
+    58
+   ],
+   "hauteur": 56,
+   "colonnes": 4,
+   "lignes": 4,
+   "ordre_lignes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "piafabec": {
+   "fichier": "res://assets/sprites/pokemon/painted/piafabec_sheet.png",
+   "cellule": [
+    58,
+    56
+   ],
+   "hauteur": 54,
+   "colonnes": 4,
+   "lignes": 4,
+   "ordre_lignes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "ferosinge": {
+   "fichier": "res://assets/sprites/pokemon/painted/ferosinge_sheet.png",
+   "cellule": [
+    70,
+    62
+   ],
+   "hauteur": 60,
+   "colonnes": 4,
+   "lignes": 4,
+   "ordre_lignes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "nidoran_f": {
+   "fichier": "res://assets/sprites/pokemon/painted/nidoran_f_sheet.png",
+   "cellule": [
+    52,
+    50
+   ],
+   "hauteur": 48,
+   "colonnes": 4,
+   "lignes": 4,
+   "ordre_lignes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "nidoran_m": {
+   "fichier": "res://assets/sprites/pokemon/painted/nidoran_m_sheet.png",
+   "cellule": [
+    50,
+    52
+   ],
+   "hauteur": 50,
+   "colonnes": 4,
+   "lignes": 4,
+   "ordre_lignes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  }
+ },
+ "images": {
+  "int_centre_coque": {
+   "fichier": "res://assets/world/interiors/int_centre_coque.png",
+   "taille": [
+    1440,
+    960
+   ]
+  },
+  "int_boutique_coque": {
+   "fichier": "res://assets/world/interiors/int_boutique_coque.png",
+   "taille": [
+    1440,
+    960
+   ]
+  },
+  "backdrop_plateau_indigo_01": {
+   "fichier": "res://assets/world/backdrops/backdrop_plateau_indigo_01.png",
+   "taille": [
+    1536,
+    1024
+   ]
+  },
+  "ground_herbe_01": {
+   "fichier": "res://assets/world/ground/ground_herbe_01.png",
+   "taille": [
+    384,
+    384
+   ]
+  },
+  "ground_paves_01": {
+   "fichier": "res://assets/world/ground/ground_paves_01.png",
+   "taille": [
+    384,
+    384
+   ]
+  },
+  "ground_chemin_01": {
+   "fichier": "res://assets/world/ground/ground_chemin_01.png",
+   "taille": [
+    384,
+    384
+   ]
+  },
+  "decal_touffe_1": {
+   "fichier": "res://assets/world/ground/decals/decal_touffe_1.png",
+   "taille": [
+    41,
+    36
+   ]
+  },
+  "decal_touffe_2": {
+   "fichier": "res://assets/world/ground/decals/decal_touffe_2.png",
+   "taille": [
+    53,
+    41
+   ]
+  },
+  "decal_touffe_3": {
+   "fichier": "res://assets/world/ground/decals/decal_touffe_3.png",
+   "taille": [
+    40,
+    36
+   ]
+  },
+  "decal_touffe_4": {
+   "fichier": "res://assets/world/ground/decals/decal_touffe_4.png",
+   "taille": [
+    53,
+    41
+   ]
+  },
+  "decal_pave_1": {
+   "fichier": "res://assets/world/ground/decals/decal_pave_1.png",
+   "taille": [
+    83,
+    82
+   ]
+  },
+  "decal_pave_2": {
+   "fichier": "res://assets/world/ground/decals/decal_pave_2.png",
+   "taille": [
+    95,
+    86
+   ]
+  },
+  "decal_pave_3": {
+   "fichier": "res://assets/world/ground/decals/decal_pave_3.png",
+   "taille": [
+    77,
+    72
+   ]
+  },
+  "decal_pave_4": {
+   "fichier": "res://assets/world/ground/decals/decal_pave_4.png",
+   "taille": [
+    109,
+    67
+   ]
+  },
+  "decal_terre_1": {
+   "fichier": "res://assets/world/ground/decals/decal_terre_1.png",
+   "taille": [
+    86,
+    74
+   ]
+  },
+  "decal_terre_2": {
+   "fichier": "res://assets/world/ground/decals/decal_terre_2.png",
+   "taille": [
+    121,
+    94
+   ]
+  },
+  "decal_terre_3": {
+   "fichier": "res://assets/world/ground/decals/decal_terre_3.png",
+   "taille": [
+    124,
+    64
+   ]
+  },
+  "decal_terre_4": {
+   "fichier": "res://assets/world/ground/decals/decal_terre_4.png",
+   "taille": [
+    121,
+    86
+   ]
+  },
+  "heros_lancer": {
+   "fichier": "res://assets/sprites/characters/painted/heros_lancer.png",
+   "taille": [
+    255,
+    384
+   ]
+  },
+  "heros_portrait": {
+   "fichier": "res://assets/sprites/characters/painted/heros_portrait.png",
+   "taille": [
+    379,
+    768
+   ]
+  }
+ }
+}
