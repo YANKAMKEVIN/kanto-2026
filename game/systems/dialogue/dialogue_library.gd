@@ -18,13 +18,24 @@ extends RefCounted
 ## Clés de page : text, speaker, pause, face_player, react, turn ({ acteur: cible }, 3B).
 ## Sans « variants », les clés d'une variante (pages, if, unless, set, auto) peuvent être
 ## écrites directement dans le dialogue. Toute clé inconnue est une erreur (faute de frappe).
+## Fin d'une variante (jalon 7 §3.3) : **une seule** de « choice » ([DialogueChoice] : confirm,
+## cancel, confirm_action, confirm_pages, cancel_pages), « action » ([constant ACTIONS]) ou
+## « cutscene » (identifiant de scène). L'ancienne clé « heal »: true vaut « action »: "heal".
+## « pages » peut manquer (ou être vide) si la variante a une « action » ou une « cutscene » ;
+## jamais avec un « choice » (sa dernière page est la question).
 ## Une entrée invalide est écartée, l'erreur est signalée ([method get_errors], push_error).
 
 const DATA_DIR: String = "res://data/dialogues/"
+## Actions de fin de variante ou de choix (jalon-07.md §3.3, §6.2) : soin de Maman, soin du
+## Centre (rituel, point de repos), Boutique, Stockage.
+const ACTIONS: Array[StringName] = [&"heal", &"center_heal", &"open_shop", &"open_storage"]
 
 const _DIALOGUE_KEYS: Array[String] = ["speaker", "narration", "draft", "variants"]
 const _VARIANT_KEYS: Array[String] = [
-	"pages", "if", "unless", "set", "auto", "heal", "draft",
+	"pages", "if", "unless", "set", "auto", "heal", "draft", "action", "choice", "cutscene",
+]
+const _CHOICE_KEYS: Array[String] = [
+	"confirm", "cancel", "confirm_action", "confirm_pages", "cancel_pages",
 ]
 const _PAGE_KEYS: Array[String] = [
 	"text", "speaker", "pause", "face_player", "react", "turn",
@@ -177,28 +188,105 @@ func _parse_variant(value: Variant, where: String) -> DialogueVariant:
 	var entry: Dictionary = value
 	var variant := DialogueVariant.new()
 	var ok := _check_keys(entry, _VARIANT_KEYS, where)
-	if not entry.get("pages") is Array or (entry.get("pages") as Array).is_empty():
-		return _null_fail("%s : « pages » doit être une liste non vide" % where)
-	var pages: Array = entry["pages"]
-	for i: int in pages.size():
-		var page := _parse_page(pages[i], "%s page %d" % [where, i + 1])
-		if page == null:
-			ok = false
-		else:
-			variant.pages.append(page)
+	ok = _read_ending(entry, variant, where) and ok
+	var pages_optional := not variant.action.is_empty() or not variant.cutscene.is_empty()
+	if entry.has("pages") or not pages_optional:
+		var pages_ok := _read_pages(entry.get("pages"), variant.pages, "pages", where,
+			pages_optional)
+		if not pages_ok and variant.pages.is_empty():
+			return null
+		ok = pages_ok and ok
 	ok = _read_flags(entry, "if", variant.if_flags, where) and ok
 	ok = _read_flags(entry, "unless", variant.unless_flags, where) and ok
 	ok = _read_flags(entry, "set", variant.set_flags, where) and ok
 	if entry.has("auto"):
 		ok = _read_bool(entry["auto"], where + " auto") and ok
 		variant.auto = entry["auto"] is bool and entry["auto"]
-	if entry.has("heal"):
-		ok = _read_bool(entry["heal"], where + " heal") and ok
-		variant.heal = entry["heal"] is bool and entry["heal"]
 	if entry.has("draft"):
 		ok = _read_bool(entry["draft"], where + " draft") and ok
 		variant.draft = entry["draft"] is bool and entry["draft"]
 	return variant if ok else null
+
+
+## Fin de la variante : « heal » (ancienne forme), « action », « choice », « cutscene » ; une
+## seule. Lue avant les pages (elle dit si les pages peuvent manquer).
+func _read_ending(entry: Dictionary, variant: DialogueVariant, where: String) -> bool:
+	var ok := true
+	var endings: Array[String] = []
+	for key: String in ["heal", "action", "choice", "cutscene"]:
+		if entry.has(key):
+			endings.append(key)
+	if endings.size() > 1:
+		ok = _fail("%s : une seule fin parmi %s" % [where, ", ".join(endings)])
+	if entry.has("heal"):
+		if _read_bool(entry["heal"], where + " heal"):
+			if entry["heal"]:
+				variant.action = &"heal"
+		else:
+			ok = false
+	if entry.has("action"):
+		var action := _read_action(entry["action"], where + " action")
+		ok = not action.is_empty() and ok
+		variant.action = action
+	if entry.has("cutscene"):
+		if not entry["cutscene"] is String or (entry["cutscene"] as String).is_empty():
+			ok = _fail("%s : « cutscene » doit être un identifiant de scène" % where)
+		else:
+			variant.cutscene = StringName(entry["cutscene"])
+	if entry.has("choice"):
+		variant.choice = _parse_choice(entry["choice"], where + " choice")
+		ok = variant.choice != null and ok
+	return ok
+
+
+func _parse_choice(value: Variant, where: String) -> DialogueChoice:
+	if not value is Dictionary:
+		return _null_fail("%s : un objet { confirm, cancel, … } est attendu" % where)
+	var entry: Dictionary = value
+	var choice := DialogueChoice.new()
+	var ok := _check_keys(entry, _CHOICE_KEYS, where)
+	for key: String in ["confirm", "cancel"]:
+		if not entry.get(key) is String or (entry[key] as String).strip_edges().is_empty():
+			ok = _fail("%s : « %s » doit être un libellé non vide" % [where, key])
+	if ok:
+		choice.confirm_label = entry["confirm"]
+		choice.cancel_label = entry["cancel"]
+	if entry.has("confirm_action"):
+		choice.confirm_action = _read_action(entry["confirm_action"], where + " confirm_action")
+		ok = not choice.confirm_action.is_empty() and ok
+	if entry.has("confirm_pages"):
+		ok = _read_pages(entry["confirm_pages"], choice.confirm_pages, "confirm_pages", where,
+			true) and ok
+	if entry.has("cancel_pages"):
+		ok = _read_pages(entry["cancel_pages"], choice.cancel_pages, "cancel_pages", where,
+			true) and ok
+	return choice if ok else null
+
+
+## Liste de pages [param key] ; vide permise seulement si [param may_be_empty].
+func _read_pages(value: Variant, into: Array[DialoguePage], key: String, where: String,
+		may_be_empty: bool) -> bool:
+	if not value is Array or (not may_be_empty and (value as Array).is_empty()):
+		return _fail("%s : « %s » doit être une liste %s" % [where, key,
+			"de pages" if may_be_empty else "non vide"])
+	var ok := true
+	var pages: Array = value
+	for i: int in pages.size():
+		var page := _parse_page(pages[i], "%s %s %d" % [where, key.replace("pages", "page"),
+			i + 1])
+		if page == null:
+			ok = false
+		else:
+			into.append(page)
+	return ok
+
+
+## Action connue ([constant ACTIONS]), sinon &"" (erreur signalée).
+func _read_action(value: Variant, where: String) -> StringName:
+	if not value is String or not ACTIONS.has(StringName(value)):
+		_fail("%s : action inconnue « %s » (attendu : %s)" % [where, value, ACTIONS])
+		return &""
+	return StringName(value)
 
 
 func _parse_page(value: Variant, where: String) -> DialoguePage:
