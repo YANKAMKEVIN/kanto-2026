@@ -21,6 +21,12 @@ const SHY_ACTIONS: Array[StringName] = [&"fly", &"flee"]
 const SHY_RADIUS_DEFAULT: int = 2
 ## Pause par défaut (secondes) à chaque case d'une routine de marche quand la donnée l'omet.
 const ROUTE_PAUSE_DEFAULT: float = 1.2
+## Pas de case d'entrée dans un bâtiment ([member route_enter_cell]).
+const NO_ENTER_CELL: Vector2i = Vector2i(-1, -1)
+## Bornes des données du jalon 7 (lues par [NpcRoster]) : absence dans un bâtiment et
+## période de l'animation d'ambiance, en secondes.
+const ROUTE_ENTER_SECONDS_MAX: float = 120.0
+const IDLE_REACT_MAX: float = 120.0
 
 ## Identifiant unique sur la carte (cible des indications « react » des dialogues).
 var id: StringName = &""
@@ -55,6 +61,18 @@ var shy_radius: int = SHY_RADIUS_DEFAULT
 var route_cells: Array[Vector2i] = []
 ## Pause (secondes) à chaque case de la routine.
 var route_pause: float = ROUTE_PAUSE_DEFAULT
+## Index de départ dans la boucle (jalon 7, dossier 09 §2 : le Rattata part un pas derrière
+## l'enfant, même boucle). [member cell] est toujours la case [code]route_cells[route_start]
+## [/code] quand la donnée le précise ; sinon, la première occurrence de [member cell] dans
+## la boucle (0 si elle n'y est pas), comme avant le jalon 7.
+var route_start: int = 0
+## Entrer dans un bâtiment (V1, dossier 09 §2) : arrivé sur [member route_enter_cell] (une
+## case de la boucle), le PNJ s'efface (fondu), reste absent [member route_enter_seconds],
+## puis réapparaît et reprend. (-1, -1) = jamais.
+var route_enter_cell: Vector2i = NO_ENTER_CELL
+var route_enter_seconds: float = 0.0
+## Petite animation d'ambiance (le Roucool de la Dresseuse) toutes les N secondes ; 0 = aucune.
+var idle_react_every: float = 0.0
 ## Présence conditionnelle (docs/tech/jalon-03b.md §2.6) : présent si tous les drapeaux de
 ## [member if_flags] sont levés et aucun de [member unless_flags], comme une variante de
 ## dialogue. Sans condition, toujours présent.
@@ -84,6 +102,16 @@ func is_observable_species() -> bool:
 ## Vrai si le PNJ a une routine de marche (jalon 5, le Voyageur).
 func has_route() -> bool:
 	return not route_cells.is_empty()
+
+
+## Vrai si la routine fait entrer le PNJ dans un bâtiment (jalon 7).
+func enters_building() -> bool:
+	return has_route() and route_enter_cell != NO_ENTER_CELL
+
+
+## Vrai si le PNJ joue une petite animation d'ambiance périodique (jalon 7).
+func has_idle_react() -> bool:
+	return idle_react_every > 0.0
 
 
 ## Vrai si le PNJ est sur la carte avec les drapeaux [param flags] (null = nouvelle partie,

@@ -187,6 +187,22 @@ func test_static_simulation_of_every_variant() -> void:
 	assert_gt(checked, 60, "acteurs vérifiés")
 
 
+## Jalon 7 (T2) : la simulation connaît l'étape « scare » (acteur présent et « shy », retiré
+## ensuite), sur les vrais Pokémon d'ambiance de la Route 1 et sur un PNJ créé par la scène.
+func test_simulation_knows_the_scare_step() -> void:
+	var library := CutsceneLibrary.new()
+	assert_true(library.add_from_dict({"scare_test": {"steps": [
+		{"scare": "route_pidgey"},
+		{"spawn": "roof_bird", "sprite": "pidgey", "cell": [3, 3], "shy": {"action": "fly"}},
+		{"scare": "$bird"},
+		{"face": "traveler", "to": "player"},
+	]}}, "test"), str(library.get_errors()))
+	var variant := library.get_cutscene(&"scare_test").variants[0]
+	var checked := _simulate("scare_test", variant, &"route_1", _flags([]),
+		{&"bird": &"roof_bird"})
+	assert_eq(checked, 4, "deux Pokémon effrayés, le voyageur et le joueur")
+
+
 ## Jeux d'alias d'une scène : ceux de l'offre pour la scène du choix (un par starter), un
 ## jeu vide sinon.
 func _alias_sets(cutscene_id: StringName) -> Array[Dictionary]:
@@ -320,6 +336,8 @@ func _simulate(label: String, variant: CutsceneVariant, start_map: StringName,
 	var map_id := start_map
 	var actors := _present(map_id, flags)
 	var checked := 0
+	# PNJ créés par les étapes « spawn » de la carte courante.
+	var spawned: Dictionary[StringName, NpcSpec] = {}
 	for source: CutsceneStep in variant.steps:
 		# Conditions d'étape (« if » / « unless ») évaluées au moment de la jouer : une étape
 		# sautée ne vérifie aucun acteur (jalon-04.md §14.3).
@@ -347,9 +365,11 @@ func _simulate(label: String, variant: CutsceneVariant, start_map: StringName,
 				assert_false(actors.has(step.spec.id), "%s : « %s » déjà là" % [where,
 					step.spec.id])
 				actors.append(step.spec.id)
+				spawned[step.spec.id] = step.spec
 			CutsceneStep.Kind.CHANGE_MAP:
 				map_id = step.map_id
 				actors = _present(map_id, flags)
+				spawned.clear()
 			CutsceneStep.Kind.FACE:
 				needed.append(step.actor)
 				if not Grid.is_direction_name(step.target):
@@ -365,6 +385,12 @@ func _simulate(label: String, variant: CutsceneVariant, start_map: StringName,
 					needed.append(step.target)
 			CutsceneStep.Kind.DESPAWN:
 				needed.append(step.actor)
+			CutsceneStep.Kind.SCARE:
+				# Jalon 7 (T2) : seul un Pokémon d'ambiance « shy » peut être effrayé.
+				needed.append(step.actor)
+				var spec := _spec_of(step.actor, map_id, spawned)
+				assert_true(spec != null and spec.is_shy(), "%s : « %s » est « shy »" % [
+					where, step.actor])
 			CutsceneStep.Kind.DIALOGUE:
 				var dialogue := _dialogues.get_dialogue(step.dialogue_id)
 				var picked: DialogueVariant = dialogue.pick(flags) if dialogue != null else null
@@ -380,9 +406,17 @@ func _simulate(label: String, variant: CutsceneVariant, start_map: StringName,
 			checked += 1
 			assert_false(CutsceneStep.is_alias(who), "%s : alias « %s » résolu" % [where, who])
 			assert_true(actors.has(who), "%s : « %s » présent" % [where, who])
-		if step.kind == CutsceneStep.Kind.DESPAWN:
+		if step.kind == CutsceneStep.Kind.DESPAWN or step.kind == CutsceneStep.Kind.SCARE:
 			actors.erase(step.actor)
 	return checked
+
+
+## Description du PNJ [param id] : créé par la scène, sinon lu dans le fichier de la carte.
+func _spec_of(id: StringName, map_id: StringName,
+		spawned: Dictionary[StringName, NpcSpec]) -> NpcSpec:
+	if spawned.has(id):
+		return spawned[id]
+	return NpcRoster.load_for_map(map_id).get_spec(id)
 
 
 ## Copie de [param step] avec ses alias remplacés (acteur, cible, voisin, suiveur).

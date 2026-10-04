@@ -32,7 +32,10 @@ extends RefCounted
 ##   [member lose_flags] levés selon l'issue ([method outcome_flags]) ;
 ## - [constant Kind.GIVE] (jalon 4B) : [member count] objets [member item_id] ajoutés au Sac ;
 ##   [member found] (jalon 5C.5) : objet **trouvé dans le monde** (la Potion de la Route 1),
-##   pas reçu d'un personnage (les Poké Balls de Chen) : il entre au journal des objets trouvés.
+##   pas reçu d'un personnage (les Poké Balls de Chen) : il entre au journal des objets trouvés ;
+## - [constant Kind.SCARE] (jalon 7, micro-scène d'arrivée à Jadielle) : le Pokémon d'ambiance
+##   [member actor] (un PNJ « shy ») joue **tout de suite** sa réaction (envol ou fuite) et
+##   quitte la carte pour la visite ; la scène n'attend pas la fin de la réaction.
 ## Conditions d'étape (jalon 4B) : [member if_flags] / [member unless_flags] ; une étape dont
 ## les conditions ne sont pas remplies au moment de la jouer est sautée ([method applies]).
 ## Elles servent aux suites qui dépendent de l'issue d'un combat (victoire / défaite), qu'une
@@ -45,12 +48,13 @@ extends RefCounted
 ## Nouvelles valeurs en fin d'enum (ordre de [constant TYPE_KEYS]).
 enum Kind {
 	WAIT, DIALOGUE, FACE, SET_FLAGS, SPAWN, MOVE, CHANGE_MAP, HOP, LEAN, DESPAWN, BATTLE, GIVE,
+	SCARE,
 }
 
 ## Clé de type de chaque étape dans les fichiers, dans l'ordre de [enum Kind].
 const TYPE_KEYS: Array[String] = [
 	"wait", "dialogue", "face", "set", "spawn", "move", "change_map", "hop", "lean",
-	"despawn", "battle", "give",
+	"despawn", "battle", "give", "scare",
 ]
 ## Préfixe d'un alias d'acteur (« $player_starter »).
 const ALIAS_PREFIX: String = "$"

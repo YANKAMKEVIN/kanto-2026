@@ -53,7 +53,10 @@ extends RefCounted
 ##   l'issue) ;
 ## - give (jalon 4B) : identifiant d'objet (data/items/), avec « count » facultatif (entier
 ##   ≥ 1, 1 par défaut) et « found » facultatif (booléen, faux par défaut : vrai pour un objet
-##   trouvé dans le monde, comme la Potion de la Route 1, plutôt que reçu d'un personnage).
+##   trouvé dans le monde, comme la Potion de la Route 1, plutôt que reçu d'un personnage) ;
+## - scare (jalon 7) : Pokémon d'ambiance (PNJ « shy » ou alias, pas « player ») qui réagit
+##   tout de suite (envol ou fuite) et quitte la carte pour la visite ; que l'acteur soit
+##   « shy » est vérifié par les tests des données réelles et, au jeu, par le directeur.
 ## Toute étape sauf spawn accepte « if » et « unless » (listes de drapeaux) : elle n'est jouée
 ## que si ses conditions sont remplies **au moment de la jouer** (suite d'un combat selon son
 ## issue). Les références aux dresseurs et aux objets ne sont pas vérifiées ici (tests de
@@ -82,7 +85,7 @@ const _VARIANT_KEYS: Array[String] = ["if", "unless", "steps"]
 const _EXTRA_KEYS: Array[Array] = [
 	[], [], ["to"], [], [], ["path", "to", "run", "follower", "keep_facing", "optional"],
 	["at", "facing"], ["to"],
-	["to"], [], ["player_pokemon", "foe_pokemon", "win", "lose"], ["count", "found"],
+	["to"], [], ["player_pokemon", "foe_pokemon", "win", "lose"], ["count", "found"], [],
 ]
 ## Conditions permises sur toute étape sauf spawn.
 const _CONDITION_KEYS: Array[String] = ["if", "unless"]
@@ -355,6 +358,8 @@ func _parse_step(value: Variant, where: String) -> CutsceneStep:
 				step.target = v) and ok
 		CutsceneStep.Kind.DESPAWN:
 			ok = _read_npc_actor(main, where + " despawn", step) and ok
+		CutsceneStep.Kind.SCARE:
+			ok = _read_npc_actor(main, where + " scare", step) and ok
 		CutsceneStep.Kind.BATTLE:
 			ok = _parse_battle(entry, step, where) and ok
 		CutsceneStep.Kind.GIVE:
