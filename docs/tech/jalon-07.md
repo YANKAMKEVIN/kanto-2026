@@ -812,6 +812,8 @@ Chaque tâche finit par `tools/test.sh` vert (nombre de tests rapporté), un imp
 
 ## 12. Questions pour Kevin (valeur par défaut appliquée si tu ne dis rien)
 
+> **Validées par Kevin (2026-10-04)** : Q-1 → (b) ; **Q-2 à Q-14 → valeurs par défaut retenues**. Seules les tenues des habitants (Q-4) restent à confirmer sur S24 au 7A.1.
+
 Seules les vraies questions de game design et de direction artistique sont ici ; les petites ont leur valeur au §13.
 
 **Personnages et style**
