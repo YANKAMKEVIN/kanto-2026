@@ -360,3 +360,20 @@ func test_show_map_again_updates_without_duplicating() -> void:
 	assert_eq(screen.get_map_canvas().get_label_texts().size(), 3)
 	assert_eq(screen.get_map_canvas().get_selected(), &"route_1", "le panneau reste")
 	assert_eq(screen.modulate.a, 1.0, "l'entrée n'est pas rejouée")
+
+
+# --- Toucher ou défilement (retour S24 de la validation J6) -------------------------------------
+
+func test_swipe_from_a_pokemon_cell_opens_nothing_and_a_tap_opens_once() -> void:
+	var screen := await _screen_in(2340, _view(), _panel())
+	var cell := screen.get_panel().get_pokemon_entries()[0]
+	var from := cell.get_global_rect().get_center()
+	var finger := TouchFinger.new(screen.get_viewport())
+	finger.swipe(from, Vector2(0.0, -150.0))
+	finger.swipe(from, Vector2(60.0, 0.0))
+	await wait_process_frames(2)
+	assert_true(_routes.is_empty(), "un glissement n'ouvre pas la fiche")
+	cell = screen.get_panel().get_pokemon_entries()[0]
+	finger.tap(cell.get_global_rect().get_center())
+	await wait_process_frames(2)
+	assert_eq(_routes.size(), 1, "un toucher court : un seul lien")

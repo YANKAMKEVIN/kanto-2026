@@ -27,6 +27,7 @@ func _init() -> void:
 	custom_minimum_size.x = UiTokens.MAP_PANEL_WIDTH
 	_scroll = ScrollContainer.new()
 	_scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
+	_scroll.scroll_deadzone = roundi(UiTokens.TAP_SLOP)
 	add_child(_scroll)
 	_column = VBoxContainer.new()
 	_column.mouse_filter = Control.MOUSE_FILTER_IGNORE
@@ -122,6 +123,9 @@ func _pokemon_cell(entry: ZoneEntryView) -> Button:
 	cell.theme_type_variation = &"MapEntry"
 	cell.focus_mode = Control.FOCUS_NONE
 	cell.custom_minimum_size = UiTokens.MAP_ENTRY_SIZE
+	# Dans un défilement : le glissement du doigt doit atteindre le ScrollContainer.
+	cell.mouse_filter = Control.MOUSE_FILTER_PASS
+	TapGuard.attach(cell)
 	cell.pressed.connect(_on_pokemon_pressed.bind(entry.id))
 	var box := VBoxContainer.new()
 	box.mouse_filter = Control.MOUSE_FILTER_IGNORE

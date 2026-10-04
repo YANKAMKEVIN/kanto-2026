@@ -16,6 +16,8 @@ var _value_label: Label
 
 func _init() -> void:
 	theme_type_variation = &"SettingsRowBox"
+	# Dans un défilement : le glissement du doigt doit atteindre le ScrollContainer.
+	mouse_filter = Control.MOUSE_FILTER_PASS
 	custom_minimum_size = Vector2(0.0, UiTokens.SETTINGS_ROW_HEIGHT)
 	size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	var row := HBoxContainer.new()

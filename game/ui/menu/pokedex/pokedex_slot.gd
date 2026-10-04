@@ -55,7 +55,7 @@ func set_view(view: PokedexSlotView) -> void:
 	if view == null:
 		return
 	var known := not view.is_unknown()
-	mouse_filter = Control.MOUSE_FILTER_STOP if known else Control.MOUSE_FILTER_IGNORE
+	mouse_filter = Control.MOUSE_FILTER_PASS if known else Control.MOUSE_FILTER_IGNORE
 	normal_variation = &"DexCell" if known else &"DexCellUnknown"
 	selected_variation = &"DexCellSelected" if known else &"DexCellUnknown"
 	if is_selected() and not known:

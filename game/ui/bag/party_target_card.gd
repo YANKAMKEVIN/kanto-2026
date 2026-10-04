@@ -44,7 +44,7 @@ func _init() -> void:
 	selected_variation = &"PickerRowSelected"
 	theme_type_variation = &"PickerRow"
 	custom_minimum_size = Vector2(UiTokens.PICKER_COLUMN_WIDTH, UiTokens.PICKER_ROW_HEIGHT)
-	mouse_filter = Control.MOUSE_FILTER_STOP
+	mouse_filter = Control.MOUSE_FILTER_PASS
 	_build()
 
 

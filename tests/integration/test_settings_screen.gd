@@ -65,6 +65,7 @@ func _mouse(track: Control, x: float, pressed: bool) -> void:
 	event.button_index = MOUSE_BUTTON_LEFT
 	event.pressed = pressed
 	event.position = Vector2(x, track.size.y * 0.5)
+	event.global_position = event.position
 	track._gui_input(event)
 
 
@@ -358,3 +359,155 @@ func test_large_text_and_contrast_are_applied_and_restored() -> void:
 	_menu.show_settings(_view())
 	await wait_process_frames(2)
 	assert_eq(label.get_theme_font_size(&"font_size"), base, "restitué")
+
+
+# --- Toucher ou défilement (retour S24 de la validation J6) -------------------------------------
+
+func _finger(screen: Control) -> TouchFinger:
+	return TouchFinger.new(screen.get_viewport())
+
+
+func _center(control: Control) -> Vector2:
+	return control.get_global_rect().get_center()
+
+
+## Ouvre COMMANDES et vérifie que la liste défile bien (sinon le test ne prouve rien).
+func _controls_scrollable(screen: SettingsScreen) -> ScrollContainer:
+	await _open(screen, SettingsViews.CATEGORY_CONTROLS)
+	await wait_process_frames(2)
+	var scroll := screen.get_scroll()
+	var overflow := scroll.get_v_scroll_bar().max_value - scroll.get_v_scroll_bar().page
+	assert_gt(overflow, 20.0, "la liste COMMANDES déborde et défile")
+	return scroll
+
+
+func test_vertical_swipe_from_a_switch_scrolls_and_changes_nothing() -> void:
+	var screen := await _screen_in()
+	var scroll := await _controls_scrollable(screen)
+	var row := screen.get_row(GameSettings.HAPTICS) as SettingToggle
+	assert_not_null(row)
+	var start := Vector2(_center(row).x, scroll.get_global_rect().end.y - 120.0)
+	_finger(screen).swipe(start, Vector2(0.0, -200.0))
+	await wait_process_frames(2)
+	assert_gt(scroll.scroll_vertical, 0, "la liste a défilé")
+	assert_true(_changes.is_empty(), "aucun setting_changed : %s" % [_changes])
+
+
+func test_vertical_swipe_from_a_choice_scrolls_and_changes_nothing() -> void:
+	var screen := await _screen_in()
+	var scroll := await _controls_scrollable(screen)
+	var row := screen.get_row(GameSettings.JOYSTICK_SCALE) as SettingChoice
+	var option := row.get_option_buttons()[2]
+	var from := _center(option)
+	assert_true(scroll.get_global_rect().has_point(from), "l'option est visible")
+	_finger(screen).swipe(from, Vector2(0.0, -200.0))
+	await wait_process_frames(2)
+	assert_gt(scroll.scroll_vertical, 0, "la liste a défilé")
+	assert_true(_changes.is_empty(), "aucun setting_changed : %s" % [_changes])
+
+
+func test_vertical_swipe_from_the_slider_scrolls_and_changes_nothing() -> void:
+	var screen := await _screen_in()
+	var scroll := await _controls_scrollable(screen)
+	var track := (screen.get_row(GameSettings.JOYSTICK_OPACITY) as SettingSlider).get_track()
+	var from := _center(track) + Vector2(-100.0, 0.0)
+	assert_true(scroll.get_global_rect().has_point(from), "la piste est visible")
+	_finger(screen).swipe(from, Vector2(0.0, -200.0))
+	await wait_process_frames(2)
+	assert_gt(scroll.scroll_vertical, 0, "la liste a défilé")
+	assert_true(_changes.is_empty(), "le curseur n'a pas bougé : %s" % [_changes])
+
+
+func test_vertical_swipe_ending_back_on_the_control_still_scrolls_only() -> void:
+	var screen := await _screen_in()
+	var scroll := await _controls_scrollable(screen)
+	var row := screen.get_row(GameSettings.HAPTICS) as SettingToggle
+	var from := _center(row)
+	assert_true(scroll.get_global_rect().has_point(from))
+	var finger := _finger(screen)
+	finger.press(from)
+	finger.move_to(from + Vector2(0.0, 150.0))
+	finger.move_to(from)
+	finger.release()
+	await wait_process_frames(2)
+	assert_true(_changes.is_empty(), "revenu sur l'interrupteur : toujours un défilement")
+
+
+func test_short_tap_on_a_switch_emits_once() -> void:
+	var screen := await _screen_in()
+	var scroll := await _controls_scrollable(screen)
+	var row := screen.get_row(GameSettings.HAPTICS) as SettingToggle
+	assert_true(scroll.get_global_rect().has_point(_center(row)))
+	_finger(screen).tap(_center(row))
+	await wait_process_frames(2)
+	assert_eq(_changes.size(), 1, "un seul signal")
+	assert_eq(_changes[0][0], GameSettings.HAPTICS)
+	assert_eq(scroll.scroll_vertical, 0)
+
+
+func test_tiny_wobble_still_counts_as_a_tap() -> void:
+	var screen := await _screen_in()
+	await _controls_scrollable(screen)
+	var row := screen.get_row(GameSettings.HAPTICS) as SettingToggle
+	var from := _center(row)
+	_finger(screen).swipe(from, Vector2(6.0, 8.0))
+	await wait_process_frames(2)
+	assert_eq(_changes.size(), 1, "sous le seuil : un toucher")
+
+
+func test_short_tap_on_a_choice_emits_once() -> void:
+	var screen := await _screen_in()
+	var scroll := await _controls_scrollable(screen)
+	var row := screen.get_row(GameSettings.JOYSTICK_SCALE) as SettingChoice
+	var option := row.get_option_buttons()[2]
+	assert_true(scroll.get_global_rect().has_point(_center(option)))
+	_finger(screen).tap(_center(option))
+	await wait_process_frames(2)
+	assert_eq(_changes.size(), 1)
+	assert_eq(_changes[0][0], GameSettings.JOYSTICK_SCALE)
+
+
+func test_choice_works_again_after_a_cancelled_swipe() -> void:
+	var screen := await _screen_in()
+	var scroll := await _controls_scrollable(screen)
+	var row := screen.get_row(GameSettings.JOYSTICK_SCALE) as SettingChoice
+	var option := row.get_option_buttons()[2]
+	_finger(screen).swipe(_center(option), Vector2(0.0, -150.0))
+	await wait_process_frames(2)
+	assert_true(_changes.is_empty())
+	scroll.scroll_vertical = 0
+	await wait_process_frames(2)
+	option = row.get_option_buttons()[2]
+	assert_true(scroll.get_global_rect().has_point(_center(option)))
+	_finger(screen).tap(_center(option))
+	await wait_process_frames(2)
+	assert_eq(_changes.size(), 1, "le toucher suivant marche")
+
+
+func test_horizontal_swipe_on_the_slider_sets_it_without_scrolling() -> void:
+	var screen := await _screen_in()
+	var scroll := await _controls_scrollable(screen)
+	var slider := screen.get_row(GameSettings.JOYSTICK_OPACITY) as SettingSlider
+	var track := slider.get_track()
+	var rect := track.get_global_rect()
+	var from := Vector2(rect.end.x - 30.0, rect.get_center().y)
+	assert_true(scroll.get_global_rect().has_point(from))
+	var before := scroll.scroll_vertical
+	# Glissement presque horizontal (un doigt réel dérive un peu en hauteur).
+	_finger(screen).swipe(from, Vector2(-rect.size.x * 0.5, -10.0))
+	await wait_process_frames(2)
+	assert_eq(_changes.size(), 1, "une valeur au lâcher")
+	assert_eq(_changes[0][0], GameSettings.JOYSTICK_OPACITY)
+	assert_lt(float(_changes[0][1]), 1.0)
+	assert_eq(scroll.scroll_vertical, before, "pas de défilement")
+
+
+func test_short_tap_on_the_slider_sets_it_on_release() -> void:
+	var screen := await _screen_in()
+	await _controls_scrollable(screen)
+	var track := (screen.get_row(GameSettings.JOYSTICK_OPACITY) as SettingSlider).get_track()
+	var rect := track.get_global_rect()
+	_finger(screen).tap(Vector2(rect.position.x + rect.size.x * 0.4, rect.get_center().y))
+	await wait_process_frames(2)
+	assert_eq(_changes.size(), 1)
+	assert_lt(float(_changes[0][1]), 0.8)

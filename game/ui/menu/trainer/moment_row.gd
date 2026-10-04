@@ -37,6 +37,7 @@ func _init(view: MomentView = null, first: bool = true, last: bool = true) -> vo
 	# Dans un défilement : le glissement du doigt doit atteindre le ScrollContainer.
 	_hit.mouse_filter = Control.MOUSE_FILTER_PASS
 	_hit.disabled = _view.route == null
+	TapGuard.attach(_hit)
 	_hit.pressed.connect(_on_pressed)
 	add_child(_hit)
 	_build(first, last)
