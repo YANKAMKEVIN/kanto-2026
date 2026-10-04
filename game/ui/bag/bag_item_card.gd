@@ -69,7 +69,7 @@ func is_favorite_shown() -> bool:
 
 
 func _apply() -> void:
-	mouse_filter = Control.MOUSE_FILTER_STOP if _view != null else Control.MOUSE_FILTER_IGNORE
+	mouse_filter = Control.MOUSE_FILTER_PASS if _view != null else Control.MOUSE_FILTER_IGNORE
 	_column.visible = _view != null
 	if _view == null:
 		return

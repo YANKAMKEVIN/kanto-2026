@@ -254,6 +254,9 @@ func _fill_habitat(view: PokedexSheetView) -> void:
 		chip.focus_mode = Control.FOCUS_NONE
 		chip.custom_minimum_size.y = UiTokens.DEX_CHIP_HEIGHT
 		chip.add_theme_constant_override(&"icon_max_width", UiTokens.DEX_CHIP_ICON)
+		# Dans un défilement : le glissement du doigt doit atteindre le ScrollContainer.
+		chip.mouse_filter = Control.MOUSE_FILTER_PASS
+		TapGuard.attach(chip)
 		chip.pressed.connect(_on_chip_pressed.bind(habitat.zone_id))
 		list.add_child(chip)
 		_chips.append(chip)
@@ -423,6 +426,7 @@ func _build() -> void:
 
 	_scroll = ScrollContainer.new()
 	_scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
+	_scroll.scroll_deadzone = roundi(UiTokens.TAP_SLOP)
 	_scroll.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	add_child(_scroll)
 	var stack := VBoxContainer.new()

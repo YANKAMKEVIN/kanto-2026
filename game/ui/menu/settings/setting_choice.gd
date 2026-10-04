@@ -20,6 +20,8 @@ var _group := ButtonGroup.new()
 
 func _init() -> void:
 	theme_type_variation = &"SettingsRowBox"
+	# Dans un défilement : le glissement du doigt doit atteindre le ScrollContainer.
+	mouse_filter = Control.MOUSE_FILTER_PASS
 	custom_minimum_size = Vector2(0.0, UiTokens.SETTINGS_ROW_HEIGHT)
 	size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	var row := HBoxContainer.new()
@@ -92,6 +94,7 @@ func _rebuild(view: SettingControlView) -> void:
 			UiTokens.TOUCH_MIN)
 		button.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 		button.size_flags_vertical = Control.SIZE_SHRINK_CENTER
+		TapGuard.attach(button)
 		button.pressed.connect(_on_option_pressed.bind(i))
 		_options.add_child(button)
 		_buttons.append(button)

@@ -216,6 +216,7 @@ func _build_content() -> PanelContainer:
 	column.add_child(_panel_title)
 	_scroll = ScrollContainer.new()
 	_scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
+	_scroll.scroll_deadzone = roundi(UiTokens.TAP_SLOP)
 	_scroll.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	column.add_child(_scroll)
 	_rows_box = VBoxContainer.new()
@@ -375,6 +376,7 @@ func _make_action_row() -> Control:
 	button.mouse_filter = Control.MOUSE_FILTER_PASS
 	button.custom_minimum_size = Vector2(UiTokens.SETTINGS_ACTION_WIDTH, UiTokens.TOUCH_MIN)
 	button.size_flags_vertical = Control.SIZE_SHRINK_CENTER
+	TapGuard.attach(button)
 	button.pressed.connect(_on_action_pressed)
 	row.add_child(button)
 	return panel

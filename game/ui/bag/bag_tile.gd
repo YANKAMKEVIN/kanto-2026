@@ -31,6 +31,9 @@ var _long_done: bool = false
 
 func _init() -> void:
 	set_process(false)
+	# Dans un défilement : un STOP arrêterait les événements tactiles avant la liste (elle ne
+	# défilerait plus quand le doigt démarre sur une case) ; les cases acceptent la souris.
+	mouse_filter = Control.MOUSE_FILTER_PASS
 
 
 func _notification(what: int) -> void:
@@ -54,7 +57,8 @@ func _gui_input(event: InputEvent) -> void:
 	var mouse := event as InputEventMouseButton
 	if mouse == null or mouse.button_index != MOUSE_BUTTON_LEFT:
 		return
-	accept_event()
+	# Pas d'accept_event : l'appui doit aussi atteindre la liste qui défile (sinon elle ne démarre
+	# pas quand le doigt est posé sur une case).
 	if mouse.pressed:
 		if _held:
 			return

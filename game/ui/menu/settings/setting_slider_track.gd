@@ -5,6 +5,7 @@ extends Control
 ## le doigt), puis **un seul** [signal committed] au lâcher, avec la valeur calée sur un cran
 ## (`min + n × step`) ; si elle égale la valeur de départ, rien n'est émis.
 ## Zone tactile : toute la piste, ≥ TOUCH_MIN de haut.
+## L'appui n'est **pas** accepté : la liste qui défile doit le voir (sinon elle ne démarre pas).
 
 signal previewed(value: float)
 signal committed(value: float)
@@ -16,34 +17,64 @@ var enabled: bool = true
 
 var _value: float = 0.0
 var _start_value: float = 0.0
+## Appui en cours (le doigt est posé sur la piste).
+var _pressed: bool = false
+## Le geste est horizontal : la piste suit le doigt.
 var _dragging: bool = false
+## Le geste est vertical (ou fini en défilement) : il appartient à la liste, la piste n'agit pas.
+var _scrolling: bool = false
+var _origin: Vector2 = Vector2.ZERO
 
 
 func _init() -> void:
 	custom_minimum_size = Vector2(UiTokens.SETTINGS_SLIDER_WIDTH, UiTokens.TOUCH_MIN)
 	size_flags_vertical = Control.SIZE_SHRINK_CENTER
-	mouse_filter = Control.MOUSE_FILTER_STOP
+	# Dans un défilement : les événements tactiles doivent remonter jusqu'au ScrollContainer.
+	mouse_filter = Control.MOUSE_FILTER_PASS
 
 
+## Règle « toucher ou défilement » : rien ne bouge à l'appui ; au-delà de TAP_SLOP, l'axe dominant
+## décide (horizontal : la piste suit le doigt et garde le geste ; vertical : la liste défile) ;
+## relâché sans avoir passé le seuil, c'est un toucher : la valeur se pose au relâchement.
 func _gui_input(event: InputEvent) -> void:
 	if not enabled:
 		return
 	var button := event as InputEventMouseButton
 	if button != null and button.button_index == MOUSE_BUTTON_LEFT:
-		accept_event()
 		if button.pressed:
-			_dragging = true
-			_start_value = _value
-			_move_to(button.position.x)
-		elif _dragging:
+			_pressed = true
 			_dragging = false
-			if not is_equal_approx(_value, _start_value):
-				committed.emit(_value)
+			_scrolling = false
+			_origin = button.global_position
+			_start_value = _value
+		elif _pressed:
+			var tap := not _dragging and not _scrolling
+			_pressed = false
+			if tap:
+				_dragging = true
+				_move_to(button.position.x)
+			if _dragging:
+				_dragging = false
+				if not is_equal_approx(_value, _start_value):
+					committed.emit(_value)
+			_scrolling = false
 		return
 	var motion := event as InputEventMouseMotion
-	if motion != null and _dragging:
+	if motion != null and _pressed:
+		if not _dragging and not _scrolling and TapGuard.is_scroll(_origin,
+				motion.global_position):
+			var delta := motion.global_position - _origin
+			if absf(delta.x) >= absf(delta.y):
+				_dragging = true
+			else:
+				_scrolling = true
+		if _dragging:
+			# Le geste horizontal est à la piste : la liste ne doit pas aussi défiler.
+			accept_event()
+			_move_to(motion.position.x)
+		return
+	if event is InputEventScreenDrag and _dragging:
 		accept_event()
-		_move_to(motion.position.x)
 
 
 func _draw() -> void:

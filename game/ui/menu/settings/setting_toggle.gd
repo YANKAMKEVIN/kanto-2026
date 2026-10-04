@@ -51,6 +51,7 @@ func _init() -> void:
 	row.add_child(_value_label)
 	_switch = SettingSwitch.new()
 	row.add_child(_switch)
+	TapGuard.attach(self)
 	pressed.connect(_on_pressed)
 
 

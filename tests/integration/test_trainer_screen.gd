@@ -180,3 +180,39 @@ func test_enter_is_instant_at_speed_zero() -> void:
 	var screen := await _screen_in(2340, _view())
 	assert_true(screen.visible)
 	assert_eq(screen.modulate.a, 1.0)
+
+
+# --- Toucher ou défilement (retour S24 de la validation J6) -------------------------------------
+
+func test_swipe_from_a_linked_moment_scrolls_and_emits_nothing() -> void:
+	var screen := await _screen_in(2340, _view(true, 10))
+	var scroll := screen.get_scroll()
+	var hit := screen.get_moment_rows()[0].get_hit()
+	var from := hit.get_global_rect().get_center()
+	assert_true(scroll.get_global_rect().has_point(from), "la ligne liée est visible")
+	var finger := TouchFinger.new(screen.get_viewport())
+	finger.swipe(from, Vector2(0.0, -200.0))
+	await wait_process_frames(2)
+	assert_true(_routes.is_empty(), "aucun lien suivi")
+	var overflow := scroll.get_v_scroll_bar().max_value - scroll.get_v_scroll_bar().page
+	if overflow > 20.0:
+		assert_gt(scroll.scroll_vertical, 0, "la frise a défilé")
+
+
+func test_short_tap_on_a_linked_moment_emits_one_route() -> void:
+	var screen := await _screen_in(2340, _view(true, 10))
+	var hit := screen.get_moment_rows()[0].get_hit()
+	TouchFinger.new(screen.get_viewport()).tap(hit.get_global_rect().get_center())
+	await wait_process_frames(2)
+	assert_eq(_routes.size(), 1)
+	assert_eq(_routes[0].screen, MenuRoute.TEAM)
+
+
+func test_sideways_swipe_from_a_linked_moment_emits_nothing() -> void:
+	var screen := await _screen_in(2340, _view(true, 10))
+	var hit := screen.get_moment_rows()[0].get_hit()
+	var from := hit.get_global_rect().get_center()
+	# Le doigt reste sur la ligne : sans garde, le relâchement l'activerait.
+	TouchFinger.new(screen.get_viewport()).swipe(from, Vector2(120.0, 0.0))
+	await wait_process_frames(2)
+	assert_true(_routes.is_empty(), "un glissement n'est pas un toucher")

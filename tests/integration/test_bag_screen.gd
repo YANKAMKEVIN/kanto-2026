@@ -325,3 +325,19 @@ func test_picker_touch_targets_and_margins_at_both_widths() -> void:
 			assert_gte(rect.position.x, UiTokens.SAFE_MARGIN - 0.5)
 			assert_lte(rect.end.x, width - UiTokens.SAFE_MARGIN + 0.5)
 			assert_lte(rect.end.y, HEIGHT - UiTokens.SAFE_MARGIN + 0.5)
+
+
+# --- Toucher ou défilement (retour S24 de la validation J6) -------------------------------------
+
+func test_swipe_from_a_card_previews_nothing_and_a_tap_previews_once() -> void:
+	var screen := await _screen_in(2340, _view())
+	var card := screen.get_cards()[1]
+	var from := card.get_global_rect().get_center()
+	var finger := TouchFinger.new(screen.get_viewport())
+	finger.swipe(from, Vector2(0.0, -150.0))
+	finger.swipe(from, Vector2(80.0, 0.0))
+	await wait_process_frames(2)
+	assert_true(_previews.is_empty(), "un glissement n'est pas un toucher")
+	finger.tap(screen.get_cards()[1].get_global_rect().get_center())
+	await wait_process_frames(2)
+	assert_eq(_previews.size(), 1, "un toucher court : un seul aperçu")

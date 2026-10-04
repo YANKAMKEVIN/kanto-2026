@@ -227,7 +227,7 @@ func _interactive(node: Node, found: Array[Control]) -> void:
 	var control := node as Control
 	if control != null and control.is_visible_in_tree() and (control is BaseButton
 			or control is LineEdit or (control is PokedexSlot
-			and control.mouse_filter == Control.MOUSE_FILTER_STOP)):
+			and control.mouse_filter != Control.MOUSE_FILTER_IGNORE)):
 		found.append(control)
 	for child: Node in node.get_children():
 		_interactive(child, found)
@@ -251,3 +251,35 @@ func test_touch_targets_and_margins_at_both_widths() -> void:
 			if not control is PokedexSlot:
 				assert_gte(rect.position.y, UiTokens.SAFE_MARGIN - 0.5)
 				assert_lte(rect.end.y, HEIGHT - UiTokens.SAFE_MARGIN + 0.5, "marge basse")
+
+
+# --- Toucher ou défilement (retour S24 de la validation J6) -------------------------------------
+
+func test_swipe_from_a_known_slot_scrolls_the_grid_and_opens_nothing() -> void:
+	var screen := await _screen_in(2340, _grid())
+	var scroll := screen.get_scroll()
+	var slot := screen.get_slots()[3]
+	var from := slot.get_global_rect().get_center()
+	assert_true(scroll.get_global_rect().has_point(from))
+	var finger := TouchFinger.new(screen.get_viewport())
+	finger.swipe(from, Vector2(0.0, -250.0))
+	await wait_process_frames(2)
+	assert_gt(scroll.scroll_vertical, 0, "la grille a défilé")
+	assert_true(_opened.is_empty(), "aucune fiche ouverte")
+
+
+func test_swipe_from_a_habitat_chip_opens_nothing_and_a_tap_opens_once() -> void:
+	var screen := await _screen_in(2340, _grid())
+	screen.show_sheet(_sheet(&"pidgey"))
+	var sheet := screen.get_sheet()
+	sheet.select_tab(PokedexSheet.Tab.HABITAT)
+	await wait_process_frames(3)
+	var from := sheet.get_chips()[1].get_global_rect().get_center()
+	var finger := TouchFinger.new(screen.get_viewport())
+	finger.swipe(from, Vector2(80.0, 0.0))
+	finger.swipe(from, Vector2(0.0, -150.0))
+	await wait_process_frames(2)
+	assert_true(_routes.is_empty(), "un glissement n'ouvre pas la Carte")
+	finger.tap(sheet.get_chips()[1].get_global_rect().get_center())
+	await wait_process_frames(2)
+	assert_eq(_routes.size(), 1)

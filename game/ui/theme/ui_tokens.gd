@@ -535,9 +535,12 @@ const BAG_ACTION_SIZE := Vector2(300, TOUCH_MIN)
 const BAG_DETAIL_FADE_FROM := 0.4
 ## Texte posé quand rien n'est utilisable (pas un bouton).
 const BAG_EMPTY_HEIGHT := 160
+## Seuil commun (px de référence 1080 p) : un toucher qui bouge de plus que cela devient un
+## défilement et n'active aucun contrôle ; en deçà, c'est un toucher (activé au relâchement).
+const TAP_SLOP := 24.0
 ## Le doigt qui s'éloigne de plus que cela entre l'appui et le relâchement fait défiler : ce
 ## n'est pas un toucher.
-const BAG_TAP_SLOP := 24.0
+const BAG_TAP_SLOP := TAP_SLOP
 
 # Carte de capture.
 const CAPTURE_CARD_WIDTH := 760

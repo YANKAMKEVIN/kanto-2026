@@ -268,6 +268,7 @@ func _build_moments() -> PanelContainer:
 	_section_title(column, TrainerView.MOMENTS_TITLE)
 	_scroll = ScrollContainer.new()
 	_scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
+	_scroll.scroll_deadzone = roundi(UiTokens.TAP_SLOP)
 	_scroll.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	column.add_child(_scroll)
 	_moments = VBoxContainer.new()
