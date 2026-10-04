@@ -231,6 +231,24 @@ func test_start_encounter_forces_a_rencontre() -> void:
 	assert_true(_player.is_input_enabled(), "contrôle rendu")
 
 
+## Jalon 7 (§3.1) : la première espèce sauvage rencontrée est retenue dès le début de la
+## rencontre (avant le combat), une seule fois ; les suivantes ne la remplacent pas.
+func test_the_first_wild_encounter_is_recorded_at_the_start_only_once() -> void:
+	_state.rng = ScriptedRng.new([1, 1, 1, 1, 1, 1, 1])
+	_fake.frames_to_run = 2
+	assert_eq(_state.first_wild_species(), &"", "aucune rencontre au départ")
+	assert_true(_director.start_encounter(WildEncounter.new(&"rattata", 4, &"test_grass_table")))
+	await wait_until(func() -> bool: return _director.is_running(), 3.0)
+	assert_eq(_state.first_wild_species(), &"rattata", "retenue dès le début")
+	assert_eq(_state.first_wild_encounter.get("map"), String(MAP_ID))
+	await wait_until(func() -> bool: return not _director.is_running(), 3.0)
+	_state.rng = ScriptedRng.new([1, 1, 1, 1, 1, 1, 1])
+	assert_true(_director.start_encounter(WildEncounter.new(&"pidgey", 3, &"test_grass_table")))
+	await wait_until(func() -> bool: return not _director.is_running(), 3.0)
+	assert_eq(_fake.runs, 2)
+	assert_eq(_state.first_wild_species(), &"rattata", "la première reste")
+
+
 func test_no_orphans_after_an_encounter() -> void:
 	_state.rng = ScriptedRng.new(WIN_ROLLS.duplicate())
 	_fake.frames_to_run = 2

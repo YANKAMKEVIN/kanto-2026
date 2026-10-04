@@ -9,6 +9,9 @@ const ScriptedRng := preload("res://tests/helpers/scripted_rng.gd")
 const GameStateScript := preload("res://game/autoload/game_state.gd")
 const PATH := "user://test/save.json"
 const FIXTURE_V1 := "res://tests/fixtures/save/v1_after_capture.json"
+## Vraie partie de Kevin en v2 (S24, QA T1 du J6 : `build/qa/jalon06_t1/save_v2_apres_t0.json`,
+## copiée telle quelle ; jalon-07.md §5.1).
+const FIXTURE_V2 := "res://tests/fixtures/save/v2_kevin_j6.json"
 
 var _fs: SaveFileSystem
 var _save: SaveSystem
@@ -71,6 +74,13 @@ func _full_state() -> Node:
 func _fixture_v1() -> Dictionary:
 	var parsed: Variant = JSON.parse_string(FileAccess.get_file_as_string(FIXTURE_V1))
 	assert_true(parsed is Dictionary, "fixture v1 lisible")
+	return parsed if parsed is Dictionary else {}
+
+
+## Vraie partie de Kevin en v2 (voir [constant FIXTURE_V2]).
+func _fixture_v2() -> Dictionary:
+	var parsed: Variant = JSON.parse_string(FileAccess.get_file_as_string(FIXTURE_V2))
+	assert_true(parsed is Dictionary, "fixture v2 lisible")
 	return parsed if parsed is Dictionary else {}
 
 
@@ -157,24 +167,24 @@ func test_newer_version_is_refused_and_left_untouched() -> void:
 	assert_false(_fs.exists(PATH + ".corrupt"))
 
 
-func test_a_v3_save_is_refused_and_left_untouched() -> void:
-	# Jalon 6 : cette build écrit la v2 ; une v3 (build future) n'est jamais lue ni écrasée.
-	var future := _fixture_v1()
-	future["version"] = 3
+func test_a_v4_save_is_refused_and_left_untouched() -> void:
+	# Jalon 7 : cette build écrit la v3 ; une v4 (build future) n'est jamais lue ni écrasée.
+	var future := _fixture_v2()
+	future["version"] = 4
 	var text := JSON.stringify(future, "\t")
 	(_fs as MemoryFs).files[PATH] = text
 	assert_eq(_save.read(), {})
 	assert_eq(_save.last_status, ERR_INVALID_DATA)
-	assert_true(_save.last_error.contains("3 > 2"), _save.last_error)
+	assert_true(_save.last_error.contains("4 > 3"), _save.last_error)
 	assert_eq((_fs as MemoryFs).files[PATH], text, "fichier intact")
 	assert_false(_fs.exists(PATH + ".corrupt"))
 
 
-func test_a_v2_save_is_refused_by_a_build_that_writes_v1() -> void:
-	# Ce que fait un APK du jalon 5 (VERSION = 1) devant la sauvegarde du J6 : refus, intacte.
+func test_a_v3_save_is_refused_by_a_build_that_writes_v1() -> void:
+	# Ce que fait un APK du jalon 5 (VERSION = 1) devant la sauvegarde du J7 : refus, intacte.
 	assert_eq(_save.write(_full_state().to_dict()), OK)
 	var written: String = (_fs as MemoryFs).files[PATH]
-	assert_eq(int((JSON.parse_string(written) as Dictionary)["version"]), 2, "écrite en v2")
+	assert_eq(int((JSON.parse_string(written) as Dictionary)["version"]), 3, "écrite en v3")
 	var old_build := SaveSystem.new(_fs, PATH)
 	old_build.version = 1
 	assert_eq(old_build.read(), {})
@@ -296,12 +306,12 @@ func test_loading_a_save_without_the_newer_fields_applies_defaults() -> void:
 
 func test_unknown_fields_are_ignored() -> void:
 	(_fs as MemoryFs).files[PATH] = JSON.stringify({
-		"version": SaveSystem.VERSION, "money": 3000, "badges": ["boulder"],
+		"version": SaveSystem.VERSION, "badges": ["boulder"],
 		"observations": {"pidgey": ["note"]}, "player_name": "Kevin",
 	})
 	var state := _state()
 	assert_true(state.load_dict(_save.read(), _data))
-	assert_false(state.to_dict().has("money"), "les inconnus ne sont pas réécrits")
+	assert_false(state.to_dict().has("badges"), "les inconnus ne sont pas réécrits")
 
 
 func test_malformed_fields_fall_back_to_defaults_without_crashing() -> void:
@@ -381,11 +391,15 @@ func test_invalid_storage_entries_are_discarded() -> void:
 
 # --- Version 2 (jalon 6, T0 : jalon-06.md §5.1) ---------------------------------------------
 
-func test_the_real_v1_save_is_migrated_to_v2_on_read() -> void:
+func test_the_real_v1_save_is_migrated_to_v3_on_read() -> void:
+	# 1 → 2 → 3 enchaînées (jalon 6 puis jalon 7).
 	(_fs as MemoryFs).files[PATH] = FileAccess.get_file_as_string(FIXTURE_V1)
 	var content := _save.read()
 	assert_eq(_save.last_status, OK)
-	assert_eq(int(content["version"]), 2, "migrée en v2")
+	assert_eq(int(content["version"]), 3, "migrée en v3")
+	assert_eq(content["money"], 3000)
+	assert_eq(content["first_wild_encounter"], {"species": "pidgey", "map": "route_1",
+		"date": "2026-10-02T19:10:43"}, "Roucool, vu d'abord sur la Route 1")
 	assert_eq(_json(content["bag"]), _json({"items": {"poke_ball": 3, "potion": 1},
 		"favorites": [], "acquired": {"poke_ball": 1, "potion": 2}}), "Sac v2")
 	for member: Dictionary in content["party"]:
@@ -440,21 +454,22 @@ func test_the_real_v1_save_loads_identically_after_migration() -> void:
 		dex[species]["notes"] = []
 	dex["charmander"]["times_seen"] = 1.0
 	assert_eq(after["pokedex"]["entries"], dex, "Pokédex identique, notes en plus, starter vu 1")
-	assert_eq(after.keys().size(), before.keys().size() - 1, "aucun champ perdu (sauf version)")
+	assert_eq(after.keys().size(), before.keys().size() + 1,
+		"aucun champ perdu (sauf version), argent et première rencontre en plus")
 
 
-func test_a_migrated_save_is_rewritten_in_v2_and_reads_back_identically() -> void:
+func test_a_migrated_v1_save_is_rewritten_in_v3_and_reads_back_identically() -> void:
 	(_fs as MemoryFs).files[PATH] = FileAccess.get_file_as_string(FIXTURE_V1)
 	var state := _state()
 	assert_true(state.load_dict(_save.read(), _data))
 	var dict: Dictionary = state.to_dict()
 	assert_eq(_save.write(dict), OK)
 	var written: Dictionary = JSON.parse_string((_fs as MemoryFs).files[PATH])
-	assert_eq(int(written["version"]), 2)
+	assert_eq(int(written["version"]), 3)
 	assert_true((written["bag"] as Dictionary).has("items"), "Sac écrit en v2")
 	var again := _state()
 	assert_true(again.load_dict(_save.read(), _data))
-	assert_eq(again.to_dict(), dict, "aller-retour v2 stable")
+	assert_eq(again.to_dict(), dict, "aller-retour stable")
 
 
 func test_v2_round_trip_keeps_favorites_and_notes() -> void:
@@ -482,18 +497,224 @@ func test_v2_round_trip_keeps_favorites_and_notes() -> void:
 func test_upgrade_1_to_2_leaves_v2_shapes_and_malformed_fields_alone() -> void:
 	var content := {"version": 1, "bag": {"items": {"potion": 2}, "favorites": ["potion"],
 		"acquired": {"potion": 4}}, "party": [{"species": "pidgey", "favorite": true}, 7]}
-	assert_eq(SaveSystem.upgrade(content), OK)
+	assert_eq(SaveSystem.upgrade(content, 2), OK)
 	assert_eq(content["bag"], {"items": {"potion": 2}, "favorites": ["potion"],
 		"acquired": {"potion": 4}}, "Sac déjà en v2 : intact")
 	assert_eq(content["party"], [{"species": "pidgey", "favorite": true}, 7])
 	var odd := {"version": 1, "bag": 3, "party": "x", "storage": null,
 		"pokedex": {"entries": []}}
-	assert_eq(SaveSystem.upgrade(odd), OK, "rien ne plante")
+	assert_eq(SaveSystem.upgrade(odd, 2), OK, "rien ne plante")
 	assert_eq(odd["bag"], 3, "mal formé : laissé aux chargeurs tolérants")
 	assert_eq(odd["version"], 2)
 	var bare := {"version": 1}
-	assert_eq(SaveSystem.upgrade(bare), OK)
+	assert_eq(SaveSystem.upgrade(bare, 2), OK)
 	assert_eq(bare, {"version": 2}, "aucun champ inventé")
+
+
+# --- Version 3 (jalon 7, T0 : jalon-07.md §5.1) ---------------------------------------------
+
+## Le contenu d'une sauvegarde sans ce que la v3 ajoute (pour comparer à la v2).
+func _without_v3(content: Dictionary) -> Dictionary:
+	var copy: Dictionary = _json(content)
+	for key: String in ["version", "money", "first_wild_encounter"]:
+		copy.erase(key)
+	return copy
+
+
+func test_the_real_v2_save_is_migrated_to_v3_on_read() -> void:
+	var v2 := _fixture_v2()
+	assert_eq(int(v2["version"]), 2, "la fixture est bien une v2")
+	(_fs as MemoryFs).files[PATH] = FileAccess.get_file_as_string(FIXTURE_V2)
+	var content := _save.read()
+	assert_eq(_save.last_status, OK, _save.last_error)
+	assert_eq(int(content["version"]), 3, "migrée en v3")
+	assert_eq(content["money"], 3000, "3 000 ₽ (dossier 09 §17)")
+	assert_eq(content["first_wild_encounter"], {"species": "pidgey", "map": "route_1",
+		"date": "2026-10-02T20:51:16"}, "Roucool : première espèce vue sur la Route 1")
+	assert_eq(_without_v3(content), _without_v3(v2), "rien d'autre ne change")
+
+
+func test_the_real_v2_save_loads_and_is_rewritten_identically_in_v3() -> void:
+	var v2 := _fixture_v2()
+	(_fs as MemoryFs).files[PATH] = FileAccess.get_file_as_string(FIXTURE_V2)
+	var state := _state()
+	assert_true(state.load_dict(_save.read(), _data), "rien d'écarté")
+	# La partie de Kevin, lue directement.
+	assert_eq(state.current_map, &"route_1")
+	assert_eq(state.player_cell, Vector2i(24, 2))
+	assert_eq(state.player_facing, Vector2i.DOWN)
+	var summary: Array = []
+	for pokemon: Pokemon in state.party.get_all():
+		summary.append([pokemon.species_id, pokemon.level, pokemon.hp, pokemon.experience])
+	assert_eq(summary, [[&"charmander", 6, 21, 219], [&"pidgey", 3, 16, 92],
+		[&"rattata", 3, 15, 27]], "équipe, ordre, Nv., PV, XP")
+	assert_eq(state.bag.count_of(&"poke_ball"), 2)
+	assert_eq(state.bag.count_of(&"potion"), 1)
+	assert_eq(state.money, 3000)
+	assert_eq(state.first_wild_species(), &"pidgey")
+	assert_eq(state.play_time, 3732.01731968654)
+	# Réécrite : tout ce que la v2 avait, à l'identique, plus les deux champs de la v3.
+	assert_eq(_save.write(state.to_dict()), OK)
+	var written: Dictionary = JSON.parse_string((_fs as MemoryFs).files[PATH])
+	assert_eq(int(written["version"]), 3)
+	assert_eq(written["money"], 3000.0)
+	assert_eq(written["first_wild_encounter"]["species"], "pidgey")
+	assert_eq(_without_v3(written), _without_v3(v2), "tout le reste réécrit à l'identique")
+	assert_eq(written.keys().size(), v2.keys().size() + 2, "aucun champ perdu")
+	var again := _state()
+	assert_true(again.load_dict(_save.read(), _data))
+	assert_eq(again.to_dict(), state.to_dict(), "aller-retour v3 stable")
+
+
+func test_v3_round_trip_keeps_money_and_the_first_wild_encounter() -> void:
+	var original := _full_state()
+	assert_true(original.spend_money(2900))
+	original.add_money(12_345)
+	assert_true(original.record_wild_encounter(&"rattata", &"route_22"))
+	var before: Dictionary = original.to_dict()
+	assert_eq(_save.write(before), OK)
+	var loaded := _state()
+	assert_true(loaded.load_dict(_save.read(), _data), "rien d'écarté")
+	assert_eq(loaded.to_dict(), before, "même état après rechargement")
+	assert_eq(loaded.money, 12_445)
+	assert_eq(loaded.first_wild_encounter, {"species": "rattata", "map": "route_22",
+		"date": "2026-10-02T14:03:05"})
+
+
+func test_a_v3_save_is_refused_by_a_j6_build_and_left_untouched() -> void:
+	# Ce que fait l'APK du jalon 6 (VERSION = 2) devant la sauvegarde du J7 : refus, intacte,
+	# pas mise de côté comme corrompue (le J6 ne la lit jamais, donc ne l'écrase jamais).
+	(_fs as MemoryFs).files[PATH] = FileAccess.get_file_as_string(FIXTURE_V2)
+	var state := _state()
+	assert_true(state.load_dict(_save.read(), _data))
+	assert_eq(_save.write(state.to_dict()), OK)
+	var written: String = (_fs as MemoryFs).files[PATH]
+	(_fs as MemoryFs).journal.clear()
+	var j6_build := SaveSystem.new(_fs, PATH)
+	j6_build.version = 2
+	assert_eq(j6_build.read(), {})
+	assert_eq(j6_build.last_status, ERR_INVALID_DATA)
+	assert_true(j6_build.last_error.contains("3 > 2"), j6_build.last_error)
+	assert_eq((_fs as MemoryFs).files[PATH], written, "fichier intact")
+	assert_eq((_fs as MemoryFs).journal.size(), 0, "aucune écriture, aucun renommage")
+	assert_false(_fs.exists(PATH + ".corrupt"))
+
+
+func test_upgrade_2_to_3_adds_only_money_and_the_first_wild_encounter() -> void:
+	var bare := {"version": 2}
+	assert_eq(SaveSystem.upgrade(bare), OK)
+	assert_eq(bare, {"version": 3, "money": 3000, "first_wild_encounter": {}},
+		"aucune rencontre connue : vide (Chen omet sa réplique)")
+	var kept := {"version": 2, "money": 42, "first_wild_encounter": {"species": "rattata"}}
+	assert_eq(SaveSystem.upgrade(kept), OK)
+	assert_eq(kept["money"], 42, "un champ déjà là n'est pas remplacé")
+	assert_eq(kept["first_wild_encounter"], {"species": "rattata"})
+	var odd := {"version": 2, "pokedex": "x", "party": [3, {"met": 4}], "moments": {"a": 1},
+		"storage": null}
+	assert_eq(SaveSystem.upgrade(odd), OK, "rien ne plante")
+	assert_eq(odd["first_wild_encounter"], {})
+	assert_eq(odd["pokedex"], "x", "mal formé : laissé aux chargeurs tolérants")
+
+
+# --- Rattrapage de la première espèce sauvage (§5.1) -----------------------------------------
+
+## Entrée du Pokédex (forme v2) : première observation, capture éventuelle, cartes vues.
+func _entry(seen_map: String, seen_date: String, caught_map: String = "",
+		caught_date: String = "", seen_maps: Array = []) -> Dictionary:
+	return {
+		"caught": not caught_map.is_empty(), "first_seen_map": seen_map,
+		"first_seen_date": seen_date, "first_caught_map": caught_map,
+		"first_caught_date": caught_date,
+		"seen_maps": seen_maps if not seen_maps.is_empty() else [seen_map],
+	}
+
+
+func _recover(entries: Dictionary, extra: Dictionary = {}, from_v1: bool = false) -> Dictionary:
+	var content := {"pokedex": {"entries": entries}}
+	content.merge(extra)
+	return SaveSystem.recover_first_wild_encounter(content, from_v1)
+
+
+func test_recovery_takes_the_earliest_first_sighting_on_route_1() -> void:
+	var found := _recover({
+		"charmander": _entry("oak_lab", "2026-10-02T10:00:00", "oak_lab", "2026-10-02T10:00:00"),
+		"squirtle": _entry("oak_lab", "2026-10-02T10:01:00"),
+		"rattata": _entry("route_1", "2026-10-02T10:20:00"),
+		"pidgey": _entry("route_1", "2026-10-02T10:10:00", "route_1", "2026-10-02T10:30:00"),
+	})
+	assert_eq(found, {"species": "pidgey", "map": "route_1", "date": "2026-10-02T10:10:00"},
+		"le starter et le Pokémon du rival (labo) ne comptent jamais")
+
+
+func test_recovery_ignores_an_observation_in_pallet_town_for_a_v2_save() -> void:
+	# J6 : OBSERVER marque « vu » le Roucool d'un habitant à Bourg Palette. Ce n'est pas un
+	# combat ; Rattata, vu plus tard sur la Route 1, l'emporte.
+	var found := _recover({
+		"pidgey": _entry("pallet_town", "2026-10-02T10:05:00"),
+		"rattata": _entry("route_1", "2026-10-02T10:20:00"),
+	})
+	assert_eq(found["species"], "rattata")
+
+
+func test_recovery_counts_pallet_town_sightings_for_a_save_written_before_observe() -> void:
+	# Une v1 (J5, sans OBSERVER) : « vu » à Bourg Palette = un combat dans son herbe.
+	var entries := {
+		"pidgey": _entry("pallet_town", "2026-10-02T10:05:00"),
+		"rattata": _entry("route_1", "2026-10-02T10:20:00"),
+	}
+	assert_eq(_recover(entries, {}, true)["species"], "pidgey")
+	var content := {"version": 1, "pokedex": {"entries": entries}}
+	assert_eq(SaveSystem.upgrade(content), OK)
+	assert_eq(content["first_wild_encounter"]["species"], "pidgey", "upgrade le sait seul")
+
+
+func test_recovery_uses_a_wild_capture_date_as_an_upper_bound() -> void:
+	# Roucool observé à Bourg Palette, puis combattu et capturé sur la Route 1 avant toute
+	# autre rencontre : seule sa capture est datée sur une carte sauvage.
+	var found := _recover({
+		"pidgey": _entry("pallet_town", "2026-10-02T10:05:00", "route_1", "2026-10-02T10:12:00",
+			["pallet_town", "route_1"]),
+		"rattata": _entry("route_1", "2026-10-02T10:20:00"),
+	})
+	assert_eq(found, {"species": "pidgey", "map": "route_1", "date": "2026-10-02T10:12:00"})
+
+
+func test_recovery_falls_back_on_meetings_and_moments_without_a_pokedex() -> void:
+	var content := {
+		"party": [{"species": "charmander", "met": {"origin": "starter", "map": "oak_lab",
+			"date": "2026-10-02T09:00:00"}},
+			{"species": "rattata", "met": {"origin": "capture", "map": "route_1",
+			"date": "2026-10-02T10:40:00"}}],
+		"storage": [{"species": "pidgey", "met": {"origin": "capture", "map": "pallet_town",
+			"date": "2026-10-02T10:30:00"}}],
+		"moments": [{"type": "first_capture", "map": "route_1", "date": "2026-10-02T10:35:00",
+			"details": {"species": "rattata"}}],
+	}
+	assert_eq(SaveSystem.recover_first_wild_encounter(content), {"species": "pidgey",
+		"map": "pallet_town", "date": "2026-10-02T10:30:00"})
+
+
+func test_recovery_without_dates_needs_a_single_species_fought_on_route_1() -> void:
+	var one := _recover({
+		"pidgey": _entry("pallet_town", "", "", "", ["pallet_town", "route_1"]),
+		"rattata": _entry("pallet_town", "2026-10-02T10:05:00"),
+	})
+	assert_eq(one, {"species": "pidgey", "map": "route_1", "date": ""},
+		"seul Roucool a été vu sur la Route 1")
+	var two := _recover({
+		"pidgey": _entry("pallet_town", "2026-10-02T10:01:00", "", "", ["pallet_town", "route_1"]),
+		"rattata": _entry("pallet_town", "2026-10-02T10:02:00", "", "", ["pallet_town", "route_1"]),
+	})
+	assert_eq(two, {}, "deux candidates sans date : aucune n'est sûre")
+
+
+func test_recovery_finds_nothing_without_a_wild_encounter() -> void:
+	assert_eq(_recover({
+		"charmander": _entry("oak_lab", "2026-10-02T10:00:00", "oak_lab", "2026-10-02T10:00:00"),
+		"squirtle": _entry("oak_lab", "2026-10-02T10:01:00"),
+		"pidgey": _entry("pallet_town", "2026-10-02T10:05:00"),
+	}), {}, "le starter, le rival et un Roucool observé ne sont pas des rencontres")
+	assert_eq(SaveSystem.recover_first_wild_encounter({}), {})
 
 
 # --- Système de fichiers réel ---------------------------------------------------------------

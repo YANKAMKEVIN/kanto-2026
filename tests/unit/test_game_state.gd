@@ -153,8 +153,12 @@ func test_new_game_resets_every_fact() -> void:
 	state.discover_map(&"route_1")
 	state.record_item_found(&"potion", &"route_1")
 	state.record_moment(state.MOMENT_STARTER, &"oak_lab")
+	state.add_money(500)
+	state.record_wild_encounter(&"pidgey", &"route_1")
 	state.clock.iso = "2027-01-01T00:00:00"
 	state.new_game()
+	assert_eq(state.money, 3000, "argent de départ")
+	assert_eq(state.first_wild_encounter, {}, "aucune rencontre sauvage")
 	assert_eq(state.player_name, "Kevin")
 	assert_eq(state.play_time, 0.0)
 	assert_eq(state.started_at, "2027-01-01T00:00:00", "nouvelle aventure, nouvelle date")
@@ -261,12 +265,13 @@ func test_stamp_meeting_uses_the_player_name_the_date_and_the_level() -> void:
 
 
 func test_to_dict_lists_every_saved_field_and_nothing_else() -> void:
-	# §16.2 + §16.3 ; pas d'argent, de badges ni de statistiques (§16.3 « pas stocké »).
+	# §16.2 + §16.3 ; v3 (jalon-07.md §5.1) : argent et première rencontre sauvage. Ni badges
+	# ni statistiques (§16.3 « pas stocké »).
 	var keys: Array = _dated().to_dict().keys()
 	keys.sort()
-	assert_eq(keys, ["bag", "cell", "discovered_maps", "facing", "flags", "found_items",
-		"heal_map", "heal_spawn", "map", "moments", "party", "play_time", "player_name",
-		"pokedex", "rng", "started_at", "starter", "storage"])
+	assert_eq(keys, ["bag", "cell", "discovered_maps", "facing", "first_wild_encounter",
+		"flags", "found_items", "heal_map", "heal_spawn", "map", "moments", "money", "party",
+		"play_time", "player_name", "pokedex", "rng", "started_at", "starter", "storage"])
 
 
 func test_starts_with_an_empty_storage_and_new_game_empties_it() -> void:
@@ -296,3 +301,88 @@ func test_has_moment_tells_whether_a_moment_type_is_recorded() -> void:
 	state.record_moment(state.MOMENT_FIRST_CAPTURE, &"route_1", {"species": "pidgey"})
 	assert_true(state.has_moment(state.MOMENT_FIRST_CAPTURE))
 	assert_true(state.has_moment(state.MOMENT_STARTER))
+
+
+# --- Jalon 7 (jalon-07.md §3.1) : argent et première rencontre sauvage ---------------------
+
+func test_a_new_game_starts_with_3000_and_no_wild_encounter() -> void:
+	var state := _dated()
+	assert_eq(state.STARTING_MONEY, 3000, "dossier 09 §10")
+	assert_eq(state.money, 3000)
+	assert_eq(state.first_wild_encounter, {})
+	assert_eq(state.first_wild_species(), &"")
+	assert_eq(SaveSystem.V3_MIGRATED_MONEY, state.STARTING_MONEY,
+		"une partie migrée reçoit la même somme qu'une nouvelle partie (dossier 09 §17)")
+
+
+func test_add_money_is_capped_and_ignores_negative_amounts() -> void:
+	var state := _dated()
+	assert_eq(state.add_money(250), 250)
+	assert_eq(state.money, 3250)
+	assert_eq(state.add_money(0), 0)
+	assert_eq(state.add_money(-100), 0, "un montant négatif n'enlève rien")
+	assert_eq(state.money, 3250)
+	assert_eq(state.add_money(state.MONEY_MAX), state.MONEY_MAX - 3250, "borné au plafond")
+	assert_eq(state.money, 999_999)
+	assert_eq(state.add_money(1), 0, "déjà au plafond")
+	assert_eq(state.money, 999_999)
+
+
+func test_spend_money_refuses_without_changing_anything_when_short() -> void:
+	var state := _dated()
+	assert_false(state.spend_money(3001), "pas assez")
+	assert_eq(state.money, 3000, "rien n'a changé")
+	assert_false(state.spend_money(-5), "montant négatif refusé")
+	assert_eq(state.money, 3000)
+	assert_true(state.spend_money(200))
+	assert_eq(state.money, 2800)
+	assert_true(state.spend_money(2800), "la somme exacte passe")
+	assert_eq(state.money, 0, "jamais négatif")
+	assert_false(state.spend_money(1))
+	assert_true(state.spend_money(0), "rien à payer")
+	assert_eq(state.money, 0)
+
+
+func test_record_wild_encounter_keeps_only_the_first_one() -> void:
+	var state := _dated()
+	assert_false(state.record_wild_encounter(&"", &"route_1"), "sans espèce : rien")
+	assert_true(state.record_wild_encounter(&"rattata", &"route_1"))
+	state.clock.iso = "2026-10-02T15:00:00"
+	assert_false(state.record_wild_encounter(&"pidgey", &"route_22"), "déjà retenue")
+	assert_eq(state.first_wild_encounter, {"species": "rattata", "map": "route_1",
+		"date": "2026-10-02T14:03:05"})
+	assert_eq(state.first_wild_species(), &"rattata")
+
+
+func test_money_and_first_wild_encounter_round_trip_and_tolerant_loading() -> void:
+	var data := PokemonData.new()
+	assert_true(data.load_dir())
+	var state := _dated()
+	state.add_money(1234)
+	state.record_wild_encounter(&"pidgey", &"route_1")
+	var saved: Dictionary = JSON.parse_string(JSON.stringify(state.to_dict()))
+	var loaded := _dated()
+	assert_true(loaded.load_dict(saved, data))
+	assert_eq(loaded.money, 4234)
+	assert_eq(loaded.first_wild_encounter, state.first_wild_encounter)
+	assert_eq(loaded.to_dict(), state.to_dict())
+	# Formes inattendues : bornées ou valeurs par défaut, rien ne plante.
+	var cases := [[-50, 0], [5_000_000, 999_999], ["beaucoup", 3000], [12.5, 3000]]
+	for case: Array in cases:
+		saved["money"] = case[0]
+		assert_true(loaded.load_dict(saved, data))
+		assert_eq(loaded.money, case[1], "argent lu depuis %s" % [case[0]])
+	saved.erase("money")
+	assert_true(loaded.load_dict(saved, data))
+	assert_eq(loaded.money, 3000, "absent : argent de départ")
+	for odd: Variant in [null, "pidgey", {}, {"species": 3}, {"species": ""}]:
+		saved["first_wild_encounter"] = odd
+		assert_true(loaded.load_dict(saved, data))
+		assert_eq(loaded.first_wild_encounter, {}, "mal formée : aucune")
+	saved["first_wild_encounter"] = {"species": "pidgey", "map": 4}
+	assert_true(loaded.load_dict(saved, data))
+	assert_eq(loaded.first_wild_encounter, {"species": "pidgey", "map": "", "date": ""})
+	saved["first_wild_encounter"] = {"species": "missingno", "map": "route_1", "date": ""}
+	assert_false(loaded.load_dict(saved, data), "espèce inconnue écartée")
+	assert_eq(loaded.first_wild_encounter, {})
+	assert_push_error_count(1)
