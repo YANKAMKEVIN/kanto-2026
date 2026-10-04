@@ -154,6 +154,9 @@ func _run(encounter: WildEncounter, origin: Vector2i) -> void:
 	if _state != null and _state.pokedex != null:
 		# Pokédex daté (jalon 5 §16.3) : espèce vue sur cette carte, une observation de plus.
 		_state.record_seen(encounter.species, _map.map_id)
+	if _state != null:
+		# Première espèce sauvage rencontrée en combat (jalon 7 §3.1) : celle que Chen cite.
+		_state.record_wild_encounter(encounter.species, _map.map_id)
 	encounter_started.emit(encounter.species, encounter.level)
 	await _play_grass_beat(origin, encounter.species)
 	# Les objets connus du combat : sans eux, aucune Ball n'est légale (jalon 5D).

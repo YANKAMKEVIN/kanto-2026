@@ -20,7 +20,23 @@
 >
 > Pas de marqueur, pas de « OBJECTIF MIS À JOUR », pas de PNJ guide, pas de « niveau recommandé ».
 
-**Pré-requis** : le **jalon 6 validé par Kevin (T30) et fusionné dans `main`**. Au moment de ce plan, le J6 est en 6F (T27 fait, T28 ∥ T29 puis T30 à venir). **Rien du J7 n'est codé avant** (règle du dossier 09 : le J6 reste prioritaire). Ce plan s'appuie sur le code réel de `jalon-06` au commit `5beb353` (2133 tests verts au dernier comptage du T27) ; **chaque tâche d'architecture commence par aligner ce plan sur le code du moment** (comme les §15 des jalons 5 et 6). Il dépend en particulier de `ChoiceCards` (T28, `game/ui/components/choice_cards.gd`) : si le 6F le livre autrement, le T6 adapte le §6.5.
+**Pré-requis** : le **jalon 6 validé par Kevin (T30, `2f7da20`) et fusionné dans `main`** (`d44077d`) — **fait**. Branche `jalon-07` créée depuis `8716088` (J6 + ce plan + art du héros peint ; aucun changement de `game/` ni de `data/` entre `2f7da20` et `8716088`). Ce plan a été écrit sur `jalon-06` à `5beb353` (2133 tests) ; **aligné au T0 sur le code réel** (§0 ci-dessous, 2244 tests au départ du J7). **Chaque tâche d'architecture commence encore par aligner ce plan sur le code du moment** (comme les §15 des jalons 5 et 6).
+
+## 0. Écarts constatés au T0 (alignement sur `8716088`)
+
+Le code du J6 a bougé après `5beb353` (T28, T29, T30, correctif `TapGuard`) : 44 fichiers de `game/`, `boot.gd` passe de 824 à **921 lignes**. Ce qui change pour ce plan :
+
+1. **`ChoiceCards`** (`game/ui/components/choice_cards.gd`, livré au T28) n'a **qu'un signal**, `chosen(confirmed: bool)` (et non `confirmed` / `cancelled`), un seul par question ; `show_choice(view: ChoiceView)`, `hide_choice()`, `is_showing()`. Il pose un **voile plein cadre** (82 %) qui intercepte le toucher et **ne gère pas le retour Android** (celui qui le montre décide). Précédent d'emploi : `BattleDirector._confirm_forget` (le crée à la demande sur le calque de la HUD, attend `chosen`, le libère). Conséquences au §6.2 et au §6.5 : `chosen(bool)` → `DialogueRunner.choose(bool)` ; le voile couvre la boîte de dialogue, donc **la question passe dans `ChoiceView.title`** (comme OUBLIER / GARDER, validé au T30) et la boîte reste ouverte derrière (défaut, à confirmer au T6/T7 sur capture). `tests/helpers/fake_choice_cards.gd` existe déjà pour les tests de câblage.
+2. **`ChoiceView`** (`game/systems/menu/views/choice_view.gd`) : `title`, `detail`, `confirm_label`, `confirm_detail`, `cancel_label`, `cancel_detail`, constructeur `ChoiceView.new(question, confirm, cancel)`. `DialogueChoice.to_view(question)` le construit tel quel (§3.3).
+3. **`TapGuard`** (`game/ui/components/tap_guard.gd`, `TapGuard.attach(bouton)`, seuil `UiTokens.TAP_SLOP` = 24 px) : **tout bouton d'une liste qui défile** au J7 (stock de la Boutique, grille du Stockage) l'utilise, avec `scroll_deadzone = TAP_SLOP` et des filtres de souris en PASS (défaut validé au T30). Ajouté aux CA du T11 et du T15. Doigt simulé pour les tests : `tests/helpers/touch_finger.gd`.
+4. **Réglages (6F)** : `GameSettings`, `SettingsStore` (fichier **séparé** `user://settings.json`, version propre ; **hors du format de sauvegarde v3**), `Haptics` (`game/systems/settings/haptics.gd`, `Haptics.vibrate(ms)` : **seule porte** des vibrations, un test interdit tout appel direct), `GraphicsProfile`, `UiPrefs`, `UiPrefsApplier` (`game/ui/theme/`, à appliquer aux écrans nouveaux du J7 : Boutique, Stockage, comme aux écrans du menu). « Réduire les animations » = `GameSettings.reduce_motion` (le ×0,5 du rituel du Centre suit `REDUCED_MENU_SPEED` = 0,5).
+5. **« Économie » coupe bien plus que le §7 ne le disait** : `GraphicsProfile` Économie = **30 images/s** (`ECO_MAX_FPS`), flou du menu coupé, `reduced_effects` vrai. La lumière C2 lit `reduced_effects` (vent et liseré coupés). **Les mesures de fps du §7 se font en Auto (Élevée sur le S24)**.
+6. **« Confirmer certaines actions »** (`GameSettings.confirm_actions`, désactivé par défaut) n'agit au J6 que sur l'oubli d'une capacité. Au J7 : **défaut = n'ajoute rien** (achat sans seconde confirmation, dossier 09 §9 ; vendre un favori et LIBÉRER sont **toujours** confirmés). Petite question notée, pas bloquante.
+7. **`MenuDirector`** : `setup(...)` a gagné `moments`, `illustration`, `set_settings`, `change_setting`, signaux `map_*`, `trainer_shown`, `settings_*`, `save_result_shown`. Les routes SHOP / STORAGE (T10, T14) s'ajoutent sur le même modèle (signal `*_shown(view)`, branchement de `Boot` derrière `has_signal`). `MenuNavigator.open(route)` n'a toujours qu'un paramètre (le `standalone` du §2.3 reste à faire au T10).
+8. **`MapJournal`** (`view(state, zones, illustration, …)`) et **`TrainerSummary.build(state, data, zones, moments, …)`** existent comme prévu ; la statistique « Captures » est de carrière (somme des `times_caught` moins le starter) : libérer au Stockage ne la fait pas baisser, **sans champ de sauvegarde**.
+9. **Sauvegarde** : identique à `5beb353` (v2). **Rattrapage de la première espèce sauvage corrigé** : le §5.1 supposait que la Route 1 était la seule carte de combat sauvage ; or la table `route_1_grass` couvre aussi **`pallet_town`** (l'herbe au nord du bourg, depuis le 5B : la vraie partie v1 de Kevin a capturé son Roucool à Bourg Palette), où OBSERVER (J6, T16) marque aussi « vu ». La règle est réécrite au §5.1.
+10. **Fixture v2** : aucune copie de la partie de Kevin **en fin de J6** n'existe sur le Mac (les QA du J6 après le T1 ont tourné avec des départs de débogage, qui ne lisent ni n'écrivent la sauvegarde, ou sans relevé du fichier). La fixture `tests/fixtures/save/v2_kevin_j6.json` est la **vraie partie v2 de Kevin relevée au T1 du J6** (`build/qa/jalon06_t1/save_v2_apres_t0.json`, copie telle quelle). Le T1 relève le fichier de fin de J6 (étape 1) et, s'il diffère, le **remplace** dans la fixture et relance les tests (§5.1.1).
+11. Pas d'autre écart : `BattleViews.TRAINER_BATTLE_ACTIONS`, `EncounterDirector._handle_defeat` / `_WAKEUP_DIALOGUE = mom_wakeup`, `DialogueVariant.heal`, `CutsceneStep.Kind` (12 sortes, `GIVE` en dernier), `DebugStart` (ni `money` ni `storage`), `PerfCounter` (`[perf] fps= min= draw=`) sont tels que le plan les décrit.
 
 **Hors périmètre** (dossier 09, règle de déblocage, règle « une couche à la fois ») :
 - **Route 2, Forêt de Jade** (J8, J9) : la sortie nord mène à « ROUTE 2 — À venir » (build de développement), inerte en release.
@@ -58,7 +74,7 @@ Chaque sous-jalon ne commence qu'une fois le précédent **validé par Kevin**. 
 
 ---
 
-## 2. Ce qui existe déjà (code réel, `jalon-06` à `5beb353`) et ce que le J7 réutilise
+## 2. Ce qui existe déjà (code réel, `jalon-06` à `5beb353`, aligné au T0 sur `8716088` : §0) et ce que le J7 réutilise
 
 ### 2.1 Faits et données déjà en place
 
@@ -84,7 +100,7 @@ Chaque sous-jalon ne commence qu'une fois le précédent **validé par Kevin**. 
 | IA | `BattleAI` (une seule sorte, `random`), `TrainerData.make_ai()`, appelée par `Battle` (`_foe.ai.choose(_foe, _player, _rng)`) | la sorte `smart` (niveau 2) |
 | Rencontres | `EncounterLibrary`, `EncounterTable` (taux, rampe 15 → 20 pas), `data/encounters/route_1.json` | `route_22.json`, 10 espèces dans `PokemonData` |
 | Hautes herbes | donnée de tuile `tall_grass`, `GrassRustle`, `grass_front.png` (jambes cachées) | version peinte (dérivée de `WORLD_GROUND_HAUTES_HERBES_01`) |
-| Choix à deux cartes | `ChoiceView` (T27, figé) ; `ChoiceCards` (T28, à venir) | l'afficher **dans un dialogue** |
+| Choix à deux cartes | `ChoiceView` (T27, figé) ; `ChoiceCards` (T28, livré : signal unique `chosen(bool)`, voile plein cadre, §0) | l'afficher **dans un dialogue** |
 | Départs de débogage | `DebugStart` (`map`, `party`, `bag`, `flags`…), `tools/debug_start/*.json`, `tools/deploy_s24.sh --debug-start` | clés `money`, `storage` ; départs du J7 (§5.5) |
 | Réglages graphiques | `GraphicsProfile` (Auto / Élevée / Économie), `Haptics`, `UiPrefs` | ce que « Économie » coupe dans la lumière du monde (§7) |
 | Mesure des fps | `PerfCounter` (ligne `[perf]` toutes les 2 s, build debug) | la mémoire des textures dans la même ligne (T3) |
@@ -93,7 +109,7 @@ Chaque sous-jalon ne commence qu'une fois le précédent **validé par Kevin**. 
 
 - **Monde** : `GameMap` (grille lue dans les tuiles `Ground` / `Detail` / `Obstacles` + empreintes des `WorldProp`), `GridWorld`, `WorldProp` (origine aux pieds, `footprint`, `fade_when_covering`), `Warp` / `WarpPoint`, `InteractPoint`, `EventTriggerPoint`, `SceneRouter` (préchargement des voisines, fondu), `CameraFraming` (intérieurs plus petits que l'écran : carte centrée, bandes de la couleur de fond, déjà admis pour la maison et le labo), `ZoneAnnouncer`.
 - **Menu** : `MenuDirector` (pause, pile, `mark_changed` → autosave à la fermeture), `MenuNavigator`, `TrainerMenu` (fond flouté, en-tête, hôte d'écrans), `TeamSlotCard`, `PokemonShowcase`, `BagTile`, `BagItemCard`, `BagCategoryTab`, `UseResultBar`, `MenuFormat`, `HpBar`.
-- **Interface** : `Toast`, `WorldCaption` (via `ExplorationHud`), `ComingSoonScreen`, `DialogueBox`, `ChoiceCards` (T28), `Haptics`.
+- **Interface** : `Toast`, `WorldCaption` (via `ExplorationHud`), `ComingSoonScreen`, `DialogueBox`, `ChoiceCards` (T28), `TapGuard` (listes qui défilent), `UiPrefsApplier` (texte Grande, contraste), `Haptics`.
 - **Sauvegarde** : `SaveSystem` (`upgrade`, `version` pour simuler une ancienne build), `SaveFileSystem`, `JsonFields`, protocole S24 du J6 (`jalon-06.md` §5.1.1).
 
 ### 2.3 Ce qui doit être généralisé
@@ -116,31 +132,31 @@ Chaque sous-jalon ne commence qu'une fois le précédent **validé par Kevin**. 
 
 Toutes en `RefCounted` (ou statiques), sans nœud ni autoload, testées avec GUT ; données JSON validées strictement comme les bibliothèques existantes (clé inconnue, type, bornes, doublon, ligne du JSON illisible, références croisées vérifiées). Les vues (`*View`) ne contiennent que des chaînes, des nombres et des textures : les écrans ne connaissent ni `GameState`, ni `Pokemon`, ni les données.
 
-### 3.1 Sauvegarde v3 (T0)
+### 3.1 Sauvegarde v3 (T0) — **fait**
 
-Voir §5.1. `GameState` gagne :
+Voir §5.1. `GameState` (`game/autoload/game_state.gd`) a gagné :
 
 ```gdscript
-## Argent du joueur (dossier 09 §10) : 3 000 ₽ pour une nouvelle partie et pour une partie
-## migrée. Jamais négatif ; plafond de Rouge/Bleu.
+## Argent (dossier 09 §10) : 3 000 ₽ pour une nouvelle partie (provisoire) ; plafond de
+## Rouge/Bleu. Jamais négatif.
 const STARTING_MONEY: int = 3000
 const MONEY_MAX: int = 999_999
 var money: int = STARTING_MONEY
-
 ## Première espèce sauvage rencontrée **en combat** (dossier 09 §19, J6 Q-7) : la seule que
-## Chen peut citer. { "species", "map", "date" } ; vide tant qu'aucune rencontre.
+## Chen peut citer. { "species", "map", "date" } (chaînes) ; vide tant qu'aucune rencontre.
 var first_wild_encounter: Dictionary = {}
 
-## Ajoute [param amount] (≥ 0), borné à MONEY_MAX. Renvoie la somme réellement ajoutée.
+## Ajoute [param amount] (≥ 0 ; négatif : rien), borné à MONEY_MAX. Renvoie la somme ajoutée.
 func add_money(amount: int) -> int
-## Retire [param amount] si le joueur l'a. Faux (rien ne change) sinon.
+## Retire [param amount] si le joueur l'a : vrai. Sinon (ou montant négatif) : faux, rien ne
+## change.
 func spend_money(amount: int) -> bool
-## Appelé au début de chaque rencontre sauvage. Vrai si c'est la première.
+## Appelée au **début** de chaque rencontre sauvage. Vrai si c'est la première (seule retenue).
 func record_wild_encounter(species: StringName, map: StringName) -> bool
-func first_wild_species() -> StringName
+func first_wild_species() -> StringName   ## &"" sans rencontre
 ```
 
-`EncounterDirector` appelle `record_wild_encounter` là où il enregistre déjà « vu ». `new_game` remet `money` à 3 000 et vide `first_wild_encounter`.
+`EncounterDirector._run` appelle `record_wild_encounter` juste après `record_seen` (avant le froissement et le combat : une fuite compte). `new_game` remet `money` à 3 000 et vide `first_wild_encounter`. `load_dict` est tolérant : argent borné à [0, `MONEY_MAX`], absent ou mal formé → 3 000 ; première rencontre mal formée → vide, espèce inconnue → écartée (push_error, `load_dict` rend faux comme pour un Pokémon inconnu). **Aucune perte d'argent à la défaite** (dossier 09 §10) : rien ne débite l'argent hors de la Boutique.
 
 ### 3.2 Monde peint, lumière et personnages (T2)
 
@@ -362,7 +378,7 @@ static func resolve(text: String, values: Dictionary[StringName, String]) -> Str
 
 `DialogueRunner.token_values: Callable` (renvoie le dictionnaire du moment ; `Boot` le nourrit depuis `GameState.first_wild_species()` et `PokemonData`). `DialogueLibrary` refuse un jeton inconnu. Étapes de scène (fin d'enum, après `scare`) : **`caption`** (`text` : « POKÉDEX ACTIVÉ », via `ExplorationHud`, attend la fin de la légende) et **`take`** (`item_id`, `count` : le colis quitte le Sac ; sans l'objet : étape sautée, push_error).
 
-**Tests (T18)** : `test_dialogue_tokens`, `test_dialogue_runner` (page omise sans valeur, résolue avec), `test_cutscene_data` (`caption`, `take`), `test_game_state` (`record_wild_encounter` : une seule fois ; vide → Chen omet sa réplique).
+**Tests (T18)** : `test_dialogue_tokens`, `test_dialogue_runner` (page omise sans valeur, résolue avec), `test_cutscene_data` (`caption`, `take`) ; `record_wild_encounter` est déjà testé depuis le T0 (vide → Chen omet sa réplique : `test_parcel_scene`).
 
 ### 3.7 Route 22 : données (T21)
 
@@ -414,28 +430,59 @@ Règles de `smart` (dossier 09 §14) : (1) une attaque **sans effet** (×0) n'es
 
 ## 5. Données et sauvegarde
 
-### 5.1 Version 3 du format (T0, validée seule sur le S24 au T1)
+### 5.1 Version 3 du format (T0 — **fait** ; validée seule sur le S24 au T1)
 
-**Pourquoi une version 3** pour peu de champs : un APK du J6 qui lirait une sauvegarde du J7 ignorerait `money` et `first_wild_encounter` puis les effacerait au premier autosave (et ne connaîtrait pas le colis). Avec `VERSION = 3`, il refuse le fichier sans l'écraser (code du J6, inchangé). **Une seule version pour tout le J7** : le J7B n'ajoute que des drapeaux (`rival_route22_won`, `rival_route22_lost`), qui vivent dans la liste `flags` existante.
+**Pourquoi une version 3** pour peu de champs : un APK du J6 qui lirait une sauvegarde du J7 ignorerait `money` et `first_wild_encounter` puis les effacerait au premier autosave (et ne connaîtrait pas le colis). Avec `VERSION = 3`, il refuse le fichier sans l'écraser (code du J6, inchangé : nouvelle partie **sans autosave**, fichier intact). **Une seule version pour tout le J7** : les autres faits du J7A et du J7B entrent dans des champs qui existent déjà (tableau ci-dessous).
 
-| Champ | Forme v3 | Valeur pour une partie v2 | Sert à |
+| Champ | Forme v3 | Valeur pour une partie v2 (migration `_upgrade_2_to_3`) | Sert à |
 |---|---|---|---|
-| `money` | entier ≥ 0 | **3 000** (dossier 09 §17 : même somme pour une partie existante) | 7A.3 |
-| `first_wild_encounter` | `{ "species", "map", "date" }` ou absent | **rattrapé** : parmi les entrées du Pokédex dont `first_seen_map` est `route_1`, celle à la `first_seen_date` la plus ancienne ; aucune → absent (la réplique de Chen est omise) | 7A.5 |
-| `heal_map`, `heal_spawn` | inchangés | inchangés (la maison) | 7A.2 |
-| `bag` | inchangé (le colis est un objet de catégorie `key`) | inchangé | 7A.3 |
-| `party[i].favorite`, `storage[i].favorite` | inchangés (v2) | inchangés | 7A.4 |
-| `flags` | inchangé | inchangé | partout |
+| `money` | entier, 0 à 999 999 | **3 000** (`SaveSystem.V3_MIGRATED_MONEY`, dossier 09 §17 : même somme qu'une nouvelle partie) | 7A.3, 7B.2 |
+| `first_wild_encounter` | `{ "species", "map", "date" }` (chaînes), **toujours écrit**, `{}` = aucune | **rattrapé** (règle ci-dessous), `{}` si introuvable (la réplique de Chen est omise) | 7A.5 |
+| `heal_map`, `heal_spawn` | inchangés (le point de repos ; l'orientation et le mot de réveil viennent de `rest_points.json`) | inchangés (la maison) | 7A.2 |
+| `bag` | inchangé (le colis est un objet `key` ; acheter passe par `Bag.add`, qui tient `acquired`) | inchangé | 7A.3 |
+| `party[i].favorite`, `storage[i].favorite`, `storage` | inchangés (v2) ; libérer retire l'entrée, sans trace | inchangés | 7A.4 |
+| `flags` | inchangé : `viridian_arrived`, `got_oak_parcel`, `pokedex_activated`, `rival_route22_won` / `rival_route22_lost` (**aucun des deux = pas affronté** : les trois états du dossier 09 §17), drapeaux posés par les dialogues | inchangé | partout |
+| `moments` | inchangé (le rival n° 2 est daté par `Boot._on_battle_finished` comme le premier) | inchangé | 7B.2 |
+| `discovered_maps`, `pokedex`, `found_items` | inchangés | inchangés | 7A.1, 7A.5 |
 
-**Le rattrapage est exact pour toute sauvegarde v1 / v2** : avant la v3, la Route 1 est la seule carte où un combat sauvage a pu avoir lieu, et OBSERVER (J6) n'enregistre qu'à Bourg Palette et au labo. C'est un fait historique figé des anciennes versions, documenté dans `_upgrade_2_to_3`, pas une règle de contenu. **Pas dans la sauvegarde** (déduits) : les services découverts (`discovered_maps`), l'Arène vue (son service `found_on = viridian_city`, au lieu du drapeau du dossier 09 §17 : une source par fait), l'objectif, le stock de la Boutique, l'onglet et la quantité de la Boutique, la sélection du Stockage, le profil de lumière.
+**Pas dans la sauvegarde** (déduits ou de session) : les services découverts (`discovered_maps`), l'Arène vue (son service `found_on = viridian_city`, au lieu du drapeau du dossier 09 §17 : une source par fait), l'objectif, le stock de la Boutique (données + drapeaux), l'onglet et la quantité de la Boutique, la sélection du Stockage, le profil de lumière, l'absence du Roucool du toit après la micro-scène (jusqu'au changement de carte), les réglages (`user://settings.json`, à part).
 
-**Fixture v2 réelle** : la sauvegarde du S24 de Kevin à la fin du J6 (relevée au T30 du J6, ou au début du T1 si elle n'existe pas) copiée **telle quelle** dans `tests/fixtures/save/v2_kevin_j6.json`.
+**Règle de rattrapage de la première espèce sauvage** (`SaveSystem.recover_first_wild_encounter(content, from_v1)`, pure, documentée dans le code). Avant la v3, « vu » au Pokédex vient de quatre sources : le début d'une rencontre sauvage (table `route_1_grass`, cartes **`route_1` et `pallet_town`**), OBSERVER (J6, T16 : Pokémon des habitants à `pallet_town`, starters à `oak_lab`), le Pokémon du rival (`oak_lab`) et le starter (« capturé » à `oak_lab`). Une capture n'a lieu qu'au bout d'un combat sauvage.
+1. **Sûr et daté** : une entrée du Pokédex dont la **première observation** est sur la **Route 1** (aucune autre source n'y a jamais existé) → date = début de la rencontre. Pour un fichier **écrit par une build du J5** (v1, migré en chaîne 1 → 2 → 3), Bourg Palette compte aussi (OBSERVER n'existait pas).
+2. **Sûr, date majorée** : une **capture** sur `route_1` ou `pallet_town` (Pokédex `first_caught_*`, rencontre `met` d'origine `capture` de l'équipe et du stockage, grand moment `first_capture`) → le combat a commencé avant cette date.
+3. La candidate **la plus ancienne** l'emporte (dates ISO de l'appareil comparées comme chaînes ; à égalité : règle 1, puis ordre alphabétique de l'espèce). La carte retenue est celle de la candidate.
+4. Sans aucune candidate datée : si **une seule** espèce a la Route 1 (ou, pour une v1, Bourg Palette) dans ses `seen_maps`, c'est elle, **date vide**. Sinon : `{}`.
 
-**Tests (T0)** : `test_save_system` (v2 réelle migrée : `money` 3 000, `first_wild_encounter` = l'espèce attendue de la vraie partie, **tout le reste réécrit à l'identique** ; aller-retour v3 ; v4 refusée ; une v3 lue par un `SaveSystem` en version 2 → refusée, intacte ; `upgrade` 1 → 3 enchaîne les deux migrations sur `v1_after_capture.json`), `test_game_state` (`money`, `add_money` plafonné, `spend_money` refusé sans fonds, `record_wild_encounter`), `test_save_boot` (vrai `Boot` : la v2 réelle reprend à l'identique, puis est réécrite en v3).
+**Limites** (assumées) : une espèce vue d'abord autrement (OBSERVER à Bourg Palette, Pokémon du rival) puis **combattue sans être capturée** n'a pas de date de combat ; si ce combat précède tous les autres, la règle désigne une autre espèce (ou aucune). Un combat dans l'herbe de Bourg Palette **écrit par une build du J6**, sans capture, est indiscernable d'une observation : il est ignoré. La date d'une candidate de la règle 2 est celle de la capture, pas celle du début du combat. Aucune de ces limites ne touche la partie de Kevin (Roucool vu d'abord sur la Route 1). À partir de la v3, le fait est enregistré au début de chaque rencontre (§3.1) : plus d'approximation.
+
+**Fixture v2 réelle** : `tests/fixtures/save/v2_kevin_j6.json` = copie **telle quelle** de `build/qa/jalon06_t1/save_v2_apres_t0.json` (dépôt principal), la vraie partie de Kevin en v2 relevée au **T1 du J6** (2026-10-03) : Route 1 (24, 2) face au bas, Salamèche Nv. 6 (21 PV), Roucool Nv. 3, Rattata Nv. 3, 2 Poké Balls et 1 Potion, 4 espèces au Pokédex, 3 grands moments, 3 732 s de jeu. **Aucune copie de la fin du J6 n'existe** (§0 point 10) : l'étape 1 du T1 la relève ; si elle diffère, elle **remplace** la fixture (même nom), les attendus des tests sont ajustés (espèce, position, équipe) et `tools/test.sh` est relancé avant l'étape 2. Attendu pour la fixture actuelle : **`{ "species": "pidgey", "map": "route_1", "date": "2026-10-02T20:51:16" }`** (Roucool, règle 1).
+
+**Fixture de fin de J6 (T1, étape 1)** : `tests/fixtures/save/v2_kevin_j6_fin.json`, copie exacte de la partie relevée sur le S24 (`integ-j7/build/qa/jalon07_t1/save_v2_kevin.json` : Route 1 (24, 8) face à droite, Rattata en tête, Roucool favori, Potion favorite à 0, notes, 50 250 s). Même espèce trouvée : **Roucool**, `2026-10-02T20:51:16`. Testée dans `test_save_system` et `test_save_boot` (tout le reste identique, notes comprises) ; la fixture du T1 du J6 reste pour les tests existants.
+
+**Tests (T0, faits)** : `test_save_system` (v2 réelle migrée à la lecture : `money` 3 000, Roucool, **tout le reste identique** ; chargée puis réécrite en v3 : tout le reste réécrit à l'identique, aucun champ perdu, aller-retour stable ; aller-retour v3 (argent, première rencontre) ; v4 refusée, intacte ; **v3 lue par un `SaveSystem` en version 2 → refusée « 3 > 2 », intacte, aucune écriture ni renommage, pas mise de côté** ; v3 refusée par une build v1 ; v1 réelle migrée 1 → 2 → 3 (Roucool, `2026-10-02T19:10:43`) ; `upgrade` 2 → 3 sur un fichier nu, un champ déjà présent gardé, des champs mal formés ; règle de rattrapage : Route 1 la plus ancienne, observation de Bourg Palette ignorée en v2 et comptée en v1, capture comme date majorée, rencontres et moments sans Pokédex, repli sans date (une seule espèce / deux = aucune), rien sans rencontre), `test_game_state` (clés de `to_dict`, nouvelle partie à 3 000 ₽, `add_money` plafonné et sans négatif, `spend_money` refusé sans rien changer, somme exacte, `record_wild_encounter` une seule fois, chargement tolérant), `test_encounter_director` (première rencontre retenue au début, la suivante ne la remplace pas), `test_save_boot` (vrai `Boot` : la v2 réelle reprend à l'identique — carte, case, orientation, équipe, Sac, argent, espèce, temps de jeu — puis est réécrite en v3 avec **tout le reste identique**, à part les notes du Pokédex que le J6 débloque au chargement selon les drapeaux (la fixture est d'avant leurs données) ; la v3 devant le vrai `Boot` d'une build v2 → nouvelle partie, aucune écriture de la session, fichier intact ; v1 réelle réécrite en v3).
 
 #### 5.1.1 Protocole S24 du T1 (migration validée seule)
 
-Le protocole du J6 (`jalon-06.md` §5.1.1), à l'identique, avec ces changements : APK de référence = **celui du J6** (`git archive <commit de fusion du J6 dans main> | tar -x -C ~/dev/kanto-2026-j6`, export vers `build/kanto2026-j6-debug.apk`, `SaveSystem.VERSION` y vaut 2) ; dossier des preuves `build/qa/jalon07_t1/` ; filtre `jq` de l'étape 4 : `del(.version,.money,.first_wild_encounter,.play_time)` ; attendu de l'étape 4 : `"version": 3`, `"money": 3000`, `first_wild_encounter` = l'espèce que Kevin a rencontrée la première sur la Route 1 (il la confirme de mémoire) ; étape 6 : l'APK du J6 refuse (« version plus récente (3 > 2) »), aucune écriture, fichier identique octet pour octet. Mêmes règles de sécurité (jamais `uninstall`, toujours `install -r`, `-r -d` pour revenir en arrière).
+But : la **vraie partie de Kevin** (fin du J6, sur le S24, format v2) passe en v3 sans rien perdre, avec 3 000 ₽ et sa première espèce sauvage, et l'APK du J6 ne l'écrase jamais. Tout se fait depuis le Mac, S24 branché (ou débogage sans fil), APK **debug** (sinon `run-as` est refusé). Dossier des preuves : `build/qa/jalon07_t1/`. Variables : `ADB=~/Library/Android/sdk/platform-tools/adb`, `S=$(tools/s24_serial.sh)`, `PKG=dev.kevin.kanto2026`.
+
+**Règles de sécurité** : jamais `adb uninstall`, jamais « Effacer les données » (la partie disparaîtrait) ; toujours `install -r` (et `-r -d` pour revenir à l'APK du J6) ; les deux APK sont signés par la même clé debug du Mac, sinon `install -r` échoue **sans** toucher aux données : s'arrêter et prévenir. Jamais `pkill` / `killall` sur Godot.
+
+0. **APK du J6, à part, sans toucher au dépôt** (une fois, avant tout) :
+   ```bash
+   mkdir -p ~/dev/kanto-2026-j6 && git -C ~/dev/kanto-2026 archive 2f7da20 | tar -x -C ~/dev/kanto-2026-j6
+   cd ~/dev/kanto-2026-j6 && godot --headless --path . --import >/dev/null 2>&1; \
+     godot --headless --path . --export-debug "Android" ~/dev/kanto-2026/build/kanto2026-j6-debug.apk
+   grep "VERSION: int" ~/dev/kanto-2026-j6/game/systems/save/save_system.gd   # doit dire 2
+   ```
+   (`2f7da20` = T30 du J6, dans `main` ; `git archive` ne fait que lire les objets. Dossier **hors** du projet.)
+1. **Sauvegarde de départ et copie de secours** (APK du J6 encore installé, application arrêtée) : `$ADB -s $S shell am force-stop $PKG`, puis `$ADB -s $S shell run-as $PKG ls files` (noter la présence de `debug_start.json` / `debug_unlocks.json` : le déploiement du T0 les retire) et `$ADB -s $S exec-out run-as $PKG cat files/save.json > build/qa/jalon07_t1/save_v2_kevin.json`. Contrôler : `"version": 2`, la carte, la case, l'équipe (Kevin la lit à voix haute : espèces, Nv., PV), le Sac, le temps de jeu, **pas de clé `money`**. **Cette copie est la sauvegarde de secours** (restauration : application arrêtée, `$ADB -s $S shell "run-as $PKG sh -c 'cat > files/save.json'" < build/qa/jalon07_t1/save_v2_kevin.json`). Copier aussi `files/settings.json` (`settings_j6.json`). Capture d'écran du jeu si possible (référence de la reprise). **Fixture** : si `save_v2_kevin.json` diffère de `tests/fixtures/save/v2_kevin_j6.json`, la remplacer (copie telle quelle), ajuster les attendus de `test_save_system` / `test_save_boot` (espèce attendue par la règle du §5.1, position, équipe), `tools/test.sh` vert, commit — **avant** l'étape 2. Calculer l'espèce attendue au Mac : `jq '.pokedex.entries | to_entries | map(select(.value.first_seen_map=="route_1")) | sort_by(.value.first_seen_date) | .[0].key' build/qa/jalon07_t1/save_v2_kevin.json` (règle 1 ; si vide, appliquer les règles 2 à 4 à la main ou par les tests).
+2. **Installer le build du T0** : `tools/deploy_s24.sh` (construit, `install -r`, retire les fichiers de débogage, lance, capture, journal). Ne pas bouger avant la vérification.
+3. **Reprise exacte** : même carte, même case, même orientation ; comparer à l'étape 1 : équipe (ordre, Nv., PV), Sac, temps de jeu qui reprend (pas remis à 0). Journal : « Sauvegarde chargée : … », **aucune** ligne `SaveSystem` ni `Boot : sauvegarde chargée en partie seulement`, aucun `ERROR`. (L'argent n'a pas encore d'écran : il se vérifie dans le fichier, étape 4.)
+4. **Écrite en v3** : Accueil (la sauvegarde est écrite au passage en arrière-plan), puis `$ADB -s $S exec-out run-as $PKG cat files/save.json > build/qa/jalon07_t1/save_v3_apres_t0.json`. Attendu : `"version": 3` ; `"money": 3000` ; `"first_wild_encounter"` = `{ "species": <espèce de l'étape 1>, "map": "route_1", "date": <sa première observation> }` (Kevin confirme de mémoire la première espèce qu'il a affrontée dans les herbes) ; **tout le reste identique** à l'étape 1, sauf `play_time` (plus grand) et la position si Kevin a bougé. Comparaison au Mac : `diff <(jq -S 'del(.version,.money,.first_wild_encounter,.play_time)' build/qa/jalon07_t1/save_v2_kevin.json) <(jq -S 'del(.version,.money,.first_wild_encounter,.play_time)' build/qa/jalon07_t1/save_v3_apres_t0.json)` → **vide**. Aucun fichier `save.json.corrupt` (`$ADB -s $S shell run-as $PKG ls files`).
+5. **Quitter et relancer** (application tuée depuis les applications récentes) : reprise identique à l'étape 3, journal propre ; le fichier relu reste en v3 avec les mêmes `money` et `first_wild_encounter`.
+6. **Retour à l'APK du J6** : `$ADB -s $S shell run-as $PKG rm -f files/debug_start.json files/debug_unlocks.json` (un départ de débogage ne lirait pas la sauvegarde : le test ne prouverait rien), `$ADB -s $S install -r -d build/kanto2026-j6-debug.apk`, `logcat -c`, lancer. Attendu : **partie neuve** (chambre), journal `SaveSystem : sauvegarde d'une version plus récente (3 > 2) : mise à jour du jeu requise` puis `Boot : … Nouvelle partie SANS sauvegarde automatique`. Jouer 1 à 2 minutes (sortir de la chambre, changer de carte, ouvrir le menu, passer en arrière-plan) : rien ne doit être écrit. Puis `run-as … cat files/save.json` → **identique octet pour octet** à `save_v3_apres_t0.json` (`cmp`) ; `ls files` : ni `.corrupt`, ni `.tmp`.
+7. **Retour au J7** : `tools/deploy_s24.sh --no-build` (réinstalle le build du T0 avec `install -r`). Attendu : la partie de Kevin reprend exactement comme à l'étape 5 ; `save.json` toujours en v3, 3 000 ₽, même première espèce.
+8. **Rapport** : chaque étape conforme ou non, les fichiers JSON (`save_v2_kevin.json`, `save_v3_apres_t0.json`, relevés des étapes 5 à 7) et les journaux (`logcat_etape_N.txt`) dans `build/qa/jalon07_t1/`, captures, nombre de sauvegardes automatiques vues, la confirmation de Kevin sur l'espèce, et sa validation (« sa partie est là »). En cas d'écart à l'étape 3 ou 4 : **ne plus lancer le J7**, réinstaller l'APK du J6 (`-r -d`), restaurer la copie de l'étape 1, rapporter.
 
 ### 5.2 Données nouvelles ou étendues (`data/`)
 
@@ -535,8 +582,8 @@ assets/sprites/pokemon/painted/      Pokémon du monde (Roucool, Rattata, Piafab
 Interaction (PNJ, terminal)
   → DialogueRunner.play
       ├─ pages (jetons résolus, page omise si jeton vide)
-      ├─ choice_requested(view) → DialogueBox garde la question, ChoiceCards s'affiche
-      │     ChoiceCards.confirmed / cancelled → DialogueRunner.choose(bool)
+      ├─ choice_requested(view) → ChoiceCards s'affiche (question dans view.title, boîte ouverte derrière)
+      │     ChoiceCards.chosen(confirmed) → DialogueRunner.choose(confirmed)
       ├─ action → await action_handler(action) = ServiceDirector.run_action
       │     heal          → Party.heal_all (Maman) ; heal_requested (autosave « soin »)
       │     center_heal   → Party.heal_all ; rituel 3 s sur la carte ; RestPointLibrary.register
@@ -566,7 +613,7 @@ SceneRouter.map_changed → WorldLighting.apply(LightingLibrary.get_profile(map.
 
 ### 6.5 Choix à deux cartes dans un dialogue (7A.2)
 
-`DialogueBox` reste affichée avec la question ; `ChoiceCards` (T28) apparaît au-dessus de la boîte, cartes ≥ `TOUCH_MIN`, dans `SAFE_MARGIN`. Retour Android pendant le choix = la carte d'annulation. Interface figée au T6 :
+`DialogueBox` reste ouverte ; `ChoiceCards` (T28) apparaît au-dessus avec son voile, **la question dans `ChoiceView.title`** (le voile couvre la boîte : défaut du T0, §0 point 1, comme OUBLIER / GARDER), cartes ≥ `TOUCH_MIN`, dans `SAFE_MARGIN`. Retour Android pendant le choix = la carte d'annulation (`ChoiceCards` ne le gère pas : la boîte s'en charge). Interface figée au T6 :
 
 ```gdscript
 ## DialogueBox (ui-mobile, T7)
@@ -624,7 +671,7 @@ Comme au J6 (§6.6 à §6.12), chaque tâche d'architecture fige dans ce fichier
 | Changement de carte | ≤ ce qu'on mesure aujourd'hui Route 1 ↔ Bourg Palette (journal `SceneRouter : … en N ms`) | préchargement des voisines (existant) |
 | Menu ouvert sur Jadielle | même tenue qu'au J6 | le flou lit l'écran déjà étalonné : rien de plus |
 
-**Leviers posés d'emblée** : ombres pré-floutées (de ~85 lectures de texture par pixel d'objet à 2) ; textures en **compression VRAM** (ETC2/ASTC, déjà activée dans `project.godot`), sauf si la QA voit des artefacts sur les dégradés peints (alors « sans perte » pour les seuls bâtiments) — **comparaison A/B au T3**, captures à 2340 × 1080 ; pas de mipmaps pour les objets affichés à 1:1, mipmaps pour les textures répétées du sol ; un seul `ShaderMaterial` partagé par famille (lots de dessin) ; PNJ : `set_process(false)` hors routine ; pas de `PointLight2D` au J7. **« Économie »** (6F) coupe le vent et le liseré, garde l'étalonnage (une lecture par pixel) et les ombres.
+**Leviers posés d'emblée** : ombres pré-floutées (de ~85 lectures de texture par pixel d'objet à 2) ; textures en **compression VRAM** (ETC2/ASTC, déjà activée dans `project.godot`), sauf si la QA voit des artefacts sur les dégradés peints (alors « sans perte » pour les seuls bâtiments) — **comparaison A/B au T3**, captures à 2340 × 1080 ; pas de mipmaps pour les objets affichés à 1:1, mipmaps pour les textures répétées du sol ; un seul `ShaderMaterial` partagé par famille (lots de dessin) ; PNJ : `set_process(false)` hors routine ; pas de `PointLight2D` au J7. **« Économie »** (6F : déjà **30 images/s**, flou du menu coupé, `GraphicsProfile.reduced_effects`) coupe en plus le vent et le liseré, garde l'étalonnage (une lecture par pixel) et les ombres. Les budgets ci-dessus se mesurent en **Auto** (Élevée sur le S24).
 
 ---
 
@@ -634,12 +681,12 @@ Chaque tâche finit par `tools/test.sh` vert (nombre de tests rapporté), un imp
 
 ### 7A.0 — Sauvegarde v3
 
-#### T0 — architecte-godot : alignement et sauvegarde v3
-- Aligner ce plan sur le code du J6 fusionné (ce qui a bougé depuis `5beb353`, dont `ChoiceCards`) ; §3.1, §5.1 ; fixture v2 réelle.
+#### T0 — architecte-godot : alignement et sauvegarde v3 — **fait**
+- Plan aligné sur `8716088` (§0) ; §3.1, §5.1 ; fixture v2 réelle (celle du T1 du J6, §0 point 10).
 - **CA** : tests du §5.1 verts ; `etat-projet.md` à jour ; aucune interface.
 
 #### T1 — qa-mobile : la migration sur le S24 (validée seule)
-- Protocole du §5.1.1. **CA à rapporter** : chaque étape conforme ; `save.json` en version 3, 3 000 ₽, première rencontre retrouvée ; l'APK du J6 ne l'écrase pas (identique octet pour octet) ; journal sans erreur ; validation de Kevin.
+- Protocole du §5.1.1 (APK du J6 depuis `2f7da20`). **CA à rapporter** : chaque étape conforme ; `save.json` en version 3, 3 000 ₽, première espèce retrouvée et confirmée par Kevin ; tout le reste identique (`diff` vide) ; l'APK du J6 ne l'écrase pas (identique octet pour octet) ; journal sans erreur ; validation de Kevin. Si la partie de fin de J6 diffère de la fixture : fixture remplacée et tests verts **avant** l'installation.
 
 ### 7A.1 — Jadielle
 
@@ -684,7 +731,7 @@ Chaque tâche finit par `tools/test.sh` vert (nombre de tests rapporté), un imp
 
 #### T11 — ui-mobile : l'écran Boutique et l'argent affiché
 - `ShopScreen` (§6.4, langage du Sac) ; argent dans l'écran Dresseur et le Sac (`money_text`) ; confirmation de vente d'un favori par `ChoiceCards` ; scénarios `shop_buy`, `shop_sell`, `shop_no_money`, `trainer_money`.
-- **CA** : `test_shop_screen` (onglets, quantité bornée par `max_quantity`, total à chaque cran, CONFIRMER → **un** signal, refus visibles, retour) ; captures relues.
+- **CA** : `test_shop_screen` (onglets, quantité bornée par `max_quantity`, total à chaque cran, CONFIRMER → **un** signal, refus visibles, retour ; **glisser la liste n'achète rien** : `TapGuard`, `touch_finger.gd`) ; `UiPrefsApplier` appliqué ; captures relues.
 
 #### T12 — constructeur-monde : la Boutique jouable
 - Carte `viridian_mart` (paillasson bleu, rayons sans étiquette), marchand, scène de première visite (§6.4), `open_shop`, routes `SHOP` dans `MenuDirector`, `mark_changed` et autosave.
@@ -701,7 +748,7 @@ Chaque tâche finit par `tools/test.sh` vert (nombre de tests rapporté), un imp
 
 #### T15 — ui-mobile : l'écran Stockage
 - §6.4 ; scénarios `storage`, `storage_drag`, `storage_release`, `storage_refusal`.
-- **CA** : `test_storage_screen` (glisser = un signal, sélection + bouton = le même, refus = tremblement + raison, LIBÉRER seulement dans le menu secondaire, confirmation, favori sans contournement) ; captures relues.
+- **CA** : `test_storage_screen` (glisser = un signal, sélection + bouton = le même, refus = tremblement + raison, LIBÉRER seulement dans le menu secondaire, confirmation, favori sans contournement ; défiler la grille ne sélectionne rien : `TapGuard`) ; `UiPrefsApplier` appliqué ; captures relues.
 
 #### T16 — constructeur-monde : le Stockage jouable
 - Terminal (`open_storage`), bouton STOCKAGE de l'Équipe (au Centre seulement), câblage, autosave.
@@ -784,7 +831,7 @@ Chaque tâche finit par `tools/test.sh` vert (nombre de tests rapporté), un imp
 
 **Écarts et contradictions relevés** :
 1. **« Arène vue = drapeau »** (dossier 09 §17) : le format des services du T18 la déduit de la carte `found_on` (Jadielle). Le plan garde la déduction (une source par fait) ; aucun drapeau.
-2. **« Première espèce sauvage »** : aucun fait ne la distingue aujourd'hui d'une observation (OBSERVER, Pokémon du rival). D'où `first_wild_encounter` (v3) et son rattrapage (§5.1).
+2. **« Première espèce sauvage »** : aucun fait ne la distingue aujourd'hui d'une observation (OBSERVER, Pokémon du rival), et l'herbe de Bourg Palette est une zone de rencontres comme la Route 1 (§0 point 9). D'où `first_wild_encounter` (v3) et son rattrapage (§5.1, avec ses limites).
 3. **Défaite contre un Dresseur** : jamais codée (le seul dresseur, `rival_lab`, ne fait pas perdre). `BattleConclusion.blackout` existe, rien ne l'applique : `DefeatRecovery` + étape `wake_up`.
 4. **SAC contre les Dresseurs** : la grille le tait contre tous (`TRAINER_BATTLE_ACTIONS`) ; la décision du 2026-10-03 passe en donnée (`allow_bag`).
 5. **Mot de réveil** codé en dur (`mom_wakeup`) dans `EncounterDirector` : passe en donnée (`rest_points.json`).
