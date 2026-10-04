@@ -10,6 +10,16 @@ extends Node
 ## `interact`, puis, à la fin, lève les drapeaux « set » **avant** d'émettre
 ## [signal dialogue_finished].
 ## Il reçoit ses dépendances par [method setup] : il ne lit aucun autoload.
+##
+## Fins de variante (jalon-07.md §3.3, §6.2) :
+## - **choix** ([DialogueChoice]) : après la dernière page (la question), la boîte reste
+##   ouverte et [signal choice_requested] est émis ; le lecteur n'avance plus jusqu'à
+##   [method choose]. Confirmer : l'action du choix est attendue (boîte ouverte, joueur bloqué),
+##   puis les pages de confirmation ; annuler : les pages d'annulation. Puis la fin normale.
+## - **action** : jouée à la fin, boîte fermée, **avant** que le joueur soit rendu.
+##   `heal` émet [signal heal_requested] (moment du jalon 5 inchangé : après avoir rendu le
+##   joueur) ; les autres sont attendues par [member action_handler].
+## - **scène** : [signal cutscene_requested] juste après [signal dialogue_finished].
 
 signal dialogue_started(dialogue_id: StringName)
 ## Début d'une page (première comprise), après sa mise en scène : tests, futurs sons.
@@ -19,6 +29,12 @@ signal dialogue_finished(dialogue_id: StringName)
 ## La variante jouée demande un soin de l'équipe (clé « heal », jalon 5 §3.11) : émis une
 ## seule fois, à la fin du dialogue, avant [signal dialogue_finished]. Câblé par [Boot].
 signal heal_requested
+## Le choix de la variante attend le joueur (la boîte garde la question) : [param view] porte la
+## question en titre et les deux libellés. Câblé par [Boot] vers [method DialogueBox.show_choice].
+signal choice_requested(view: ChoiceView)
+## La variante se termine par une scène : émis une fois, juste après [signal dialogue_finished]
+## (joueur rendu ; la scène pose son propre verrou). Câblé par [Boot] vers [CutsceneDirector].
+signal cutscene_requested(cutscene_id: StringName)
 
 ## Raison de blocage du joueur pendant un dialogue ([method Player.set_input_enabled]).
 const REASON: StringName = &"dialogue"
@@ -26,6 +42,10 @@ const _INTERACT: StringName = &"interact"
 
 ## Vitesse d'écriture (caractères par seconde ; 0 = page affichée d'un coup).
 var chars_per_second: float = UiTokens.DIALOG_CHARS_PER_SECOND
+## Coroutine appelée pour une action autre que `heal` (`func(action: StringName) -> void`),
+## attendue avant la suite (pages du choix ou fin). Non valide : l'action est ignorée
+## (push_error) et le dialogue continue. Posé par [Boot] (ServiceDirector.run_action, T8).
+var action_handler: Callable
 
 var _library: DialogueLibrary
 var _flags: StoryFlags
@@ -42,6 +62,12 @@ var _closing: bool = false
 var _delay_left: float = 0.0
 ## Image de l'appel à play : un appui dans cette image ne fait pas avancer.
 var _play_frame: int = -1
+## Le choix de la variante attend [method choose].
+var _awaiting_choice: bool = false
+## Le choix a été fait (les pages jouées sont celles de sa réponse).
+var _choice_done: bool = false
+## Une action du choix est en cours (rien n'avance).
+var _in_action: bool = false
 
 
 func _ready() -> void:
@@ -102,6 +128,9 @@ func play(dialogue_id: StringName, npc: Npc = null, map: GameMap = null,
 	_npc = npc
 	_map = map
 	_session = null
+	_awaiting_choice = false
+	_choice_done = false
+	_in_action = false
 	_delay_left = maxf(delay, 0.0)
 	_play_frame = Engine.get_process_frames()
 	if _player != null:
@@ -126,6 +155,33 @@ func has_auto_variant(dialogue_id: StringName) -> bool:
 	return variant != null and variant.auto
 
 
+## Réponse du joueur au choix en attente ([signal choice_requested]) ; sans choix en attente
+## (ou une seconde fois) : rien.
+func choose(confirmed: bool) -> void:
+	if not _running or not _awaiting_choice:
+		return
+	_awaiting_choice = false
+	_choice_done = true
+	var choice := _variant.choice
+	if confirmed and not choice.confirm_action.is_empty():
+		_in_action = true
+		await _run_action(choice.confirm_action)
+		_in_action = false
+		if not _running:
+			return
+	var pages := choice.confirm_pages if confirmed else choice.cancel_pages
+	if pages.is_empty():
+		_finish()
+		return
+	_session = DialogueSession.new(pages, _dialogue.speaker, chars_per_second)
+	_begin_page()
+
+
+## Vrai entre [signal choice_requested] et [method choose].
+func is_awaiting_choice() -> bool:
+	return _awaiting_choice
+
+
 ## Déroulé en cours (null avant l'ouverture de la boîte et hors dialogue).
 func get_session() -> DialogueSession:
 	return _session
@@ -138,6 +194,12 @@ func get_dialogue_id() -> StringName:
 
 ## Étape 2 : ouverture de la boîte et première page.
 func _start_session() -> void:
+	if _variant.pages.is_empty():
+		# Action ou scène seule (terminal du Stockage) : pas de boîte. Fin à l'image suivante,
+		# pour que play() rende la main avant dialogue_finished.
+		_closing = true
+		_finish.call_deferred()
+		return
 	_session = DialogueSession.new(_variant.pages, _dialogue.speaker, chars_per_second)
 	if _box != null:
 		_box.open()
@@ -214,7 +276,7 @@ func _refresh_box() -> void:
 
 ## Étape 5 : toucher ou `interact`.
 func _advance() -> void:
-	if not _running or _closing or _session == null:
+	if not _running or _closing or _session == null or _awaiting_choice or _in_action:
 		return
 	match _session.advance():
 		DialogueSession.Step.REVEALED:
@@ -222,7 +284,24 @@ func _advance() -> void:
 		DialogueSession.Step.NEXT_PAGE:
 			_begin_page()
 		DialogueSession.Step.FINISHED:
-			_finish()
+			if _variant.choice != null and not _choice_done:
+				_awaiting_choice = true
+				choice_requested.emit(_variant.choice.to_view(_session.get_text()))
+			else:
+				_finish()
+
+
+## Action [param action] : `heal` → [signal heal_requested] ; sinon [member action_handler],
+## attendu.
+func _run_action(action: StringName) -> void:
+	if action == &"heal":
+		heal_requested.emit()
+		return
+	if not action_handler.is_valid():
+		push_error("DialogueRunner : action « %s » sans gestionnaire (%s)" % [
+			action, _dialogue.id if _dialogue != null else &""])
+		return
+	await action_handler.call(action)
 
 
 ## Étape 6 : fermeture, drapeaux, PNJ, joueur, puis signal.
@@ -231,10 +310,13 @@ func _finish() -> void:
 	if _box != null:
 		await _box.close()
 	var dialogue := _dialogue
-	var wants_heal := _variant != null and _variant.heal
+	var action := _variant.action
+	var cutscene := _variant.cutscene
 	if _flags != null:
 		for flag: StringName in _variant.set_flags:
 			_flags.set_flag(flag)
+	if not action.is_empty() and action != &"heal":
+		await _run_action(action)
 	if is_instance_valid(_npc):
 		_npc.end_interaction()
 	if is_instance_valid(_player):
@@ -244,12 +326,16 @@ func _finish() -> void:
 	_dialogue = null
 	_variant = null
 	_session = null
+	_awaiting_choice = false
+	_choice_done = false
 	_npc = null
 	_map = null
 	set_process(false)
-	if wants_heal:
+	if action == &"heal":
 		heal_requested.emit()
 	dialogue_finished.emit(dialogue.id)
+	if not cutscene.is_empty():
+		cutscene_requested.emit(cutscene)
 
 
 func _on_advance_requested() -> void:

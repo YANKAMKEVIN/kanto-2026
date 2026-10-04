@@ -70,9 +70,12 @@ func before_all() -> void:
 	_offer.load_file()
 	# Scène du choix : jouée par le code (StarterChoice) sur la carte de l'offre.
 	_use_cutscene(_offer.chosen_scene, _offer.map_id)
-	# Mot de Maman au réveil après une défaite sauvage (dossier 07 §11) : joué par le code
-	# (EncounterDirector) sur la carte du point de soin, pas par un PNJ ni une scène.
-	_use(&"mom_wakeup", &"player_house_1f")
+	# Mots de réveil après une défaite (dossier 07 §11, dossier 09 §7) : joués par le code sur
+	# la carte du point de repos (data/world/rest_points.json, jalon 7 T6), pas par un PNJ.
+	var rest_points := RestPointLibrary.new()
+	rest_points.load_file()
+	for rest_map: StringName in rest_points.get_maps():
+		_use(rest_points.get_point(rest_map).wakeup_dialogue, rest_map)
 	for map_id: StringName in MAPS:
 		_npc_ids[map_id] = []
 		for spec: NpcSpec in NpcRoster.load_for_map(map_id).get_all():
@@ -390,14 +393,14 @@ func test_draft_variants_are_exactly_the_expected_ones() -> void:
 				drafts.append("%s:%d" % [id, i])
 	assert_eq(drafts, ["mom:1"] as Array[String])
 	var heal: DialogueVariant = _library.get_dialogue(&"mom").variants[1]
-	assert_true(heal.heal, "soigne l'équipe")
+	assert_eq(heal.action, &"heal", "soigne l'équipe")
 	assert_eq(heal.if_flags, [&"starter_chosen"] as Array[StringName], "après le starter")
 	assert_false(heal.auto, "jamais automatique")
 	assert_eq(heal.pages.size(), 2, "courte")
 	# Seule cette variante soigne (le réveil après défaite soigne par la défaite, pas par le texte).
 	for id: StringName in _library.get_ids():
 		for variant: DialogueVariant in _library.get_dialogue(id).variants:
-			assert_eq(variant.heal, variant == heal, "%s : « heal »" % id)
+			assert_eq(variant.action == &"heal", variant == heal, "%s : « heal »" % id)
 
 
 func test_texts_are_the_dossier_02_texts_word_for_word() -> void:

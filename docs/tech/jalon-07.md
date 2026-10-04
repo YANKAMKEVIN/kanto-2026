@@ -306,6 +306,55 @@ static func register(state: Node, point: RestPoint) -> bool
 
 **Tests (T6)** : `test_dialogue_library` (choix, action, scène, variante sans page, action inconnue refusée, `heal: true` → `heal`), `test_dialogue_runner` (choix demandé après la dernière page, confirmer → action attendue puis pages, annuler → pages d'annulation, `heal_requested` toujours émis), `test_rest_points` (Centre enregistré, maison jamais, deuxième soin au même Centre : pas de changement, défaut de `GameState` = maison).
 
+#### 3.3.1 Fait au T6 (ce qui a été figé, et les écarts avec le texte ci-dessus)
+
+Livré : `DialogueChoice` (`game/systems/dialogue/dialogue_choice.gd`), `DialogueVariant` (`action`, `choice`, `cutscene` ; **le champ `heal: bool` disparaît**, remplacé par `action == &"heal"`), `DialogueLibrary` (`ACTIONS`, clés `action` / `choice` / `cutscene`, validation), `DialogueRunner` (contrat ci-dessus + `is_awaiting_choice()`), `RestPoint` et `RestPointLibrary` (`game/world/rest/`), `data/world/rest_points.json`. **Format de sauvegarde inchangé** (v3 : `heal_map` / `heal_spawn`). Aucun câblage dans `Boot` : sans `action_handler`, une action autre que `heal` est signalée (push_error) et le dialogue continue ; aucune donnée actuelle n'en contient.
+
+Règles figées (défauts du T6, règle 4) :
+- **Une seule fin par variante** : `choice`, `action` (ou l'ancienne `heal: true`) ou `cutscene`. Une variante à `choice` a toujours au moins une page (la question) ; `confirm_pages` / `cancel_pages` peuvent être vides (le dialogue se termine).
+- **Action d'un choix** (`confirm_action`, le rituel du Centre) : jouée **boîte ouverte** (elle garde la question), joueur bloqué ; toucher et `interact` n'avancent rien pendant l'action ni pendant le choix. *À revoir sur capture au T8 / T9* (cacher la boîte pendant le rituel est une décision de présentation, pas de format).
+- **Action de fin de variante** (`open_shop`, `open_storage`) : jouée **boîte fermée**, drapeaux `set` déjà levés, joueur **encore bloqué** ; le lecteur l'attend, puis rend le joueur et émet `dialogue_finished`. Variante sans page : la boîte ne s'ouvre pas, la fin passe à l'image suivante (`play` rend la main avant).
+- **`heal`** n'est jamais passée à `action_handler` : elle émet `heal_requested` (fin de variante : au même moment qu'au J5, après avoir rendu le joueur, juste avant `dialogue_finished` ; dans un choix : au moment de la réponse). `Boot._on_heal_requested` reste le seul à soigner pour Maman.
+- **`cutscene_requested`** est émis juste **après** `dialogue_finished` (joueur rendu ; la scène pose son verrou dans la même image).
+- **Point de repos** : `data/world/rest_points.json` ne contient au T6 **que la maison** (`player_house_1f`) ; le Centre de Jadielle y entre **au T8**, avec sa carte et `nurse_wakeup` (le test de données vérifie carte, point d'apparition et dialogue de chaque point ; `test_dialogue_data` compte les mots de réveil comme utilisés sur leur carte). Format : `{ "registered_title": "Point de repos enregistré", "points": { carte: { spawn, facing, wakeup_dialogue, registers } } }`.
+- **Toast** : `RestPointLibrary.registered_toast(zone_name) -> PackedStringArray` = `[titre, détail]` = `["Point de repos enregistré", "Jadielle"]`, pour `ExplorationHud.show_toast(titre, détail)` (le « — » du dossier sépare le titre et le détail, comme « Poké Balls ×5 — Ajoutées au Sac »). Nom de zone : `ZoneLibrary.zone_name_of(map)`.
+- **Réveil** : `RestPointLibrary.wakeup_point(state) -> RestPoint` (jamais null) : le point de la donnée si `heal_map` en a un au même `heal_spawn`, sinon un point construit sur l'état (haut, **sans** mot de réveil).
+
+Tests : `test_dialogue_library` (+11), `test_dialogue_runner` (+10), `test_rest_points` (nouveau, 13), `test_rest_point_data` (nouveau, 4), `test_dialogue_data` adapté (`action == heal`, mots de réveil lus dans `rest_points.json`).
+
+#### 3.3.2 Contrats du T8 (constructeur-monde), figés au T6
+
+```gdscript
+## game/systems/services/service_director.gd — actions de dialogue (jalon-07.md §6.2).
+class_name ServiceDirector
+extends Node
+## Soin d'un Centre fini (équipe soignée, rituel joué, point de repos traité). [param registered] :
+## vrai si le point de repos a changé. Boot : écriture immédiate « soin » (§5.3) et, si
+## [param registered], toast RestPointLibrary.registered_toast(zone).
+signal center_healed(map_id: StringName, registered: bool)
+func setup(state: Node, rest_points: RestPointLibrary) -> void
+func set_map(map: GameMap) -> void           ## carte courante (machine %HealMachine du Centre)
+## = DialogueRunner.action_handler. center_heal : Party.heal_all, rituel UiTokens.CENTER_HEAL
+## (×0,5 si reduce_motion), vibration par Haptics, RestPointLibrary.register(state,
+## get_point(map)), center_healed. open_shop / open_storage : T12 / T16 (même méthode).
+## Action inconnue : push_error, rien.
+func run_action(action: StringName) -> void   ## coroutine
+
+## game/world/rest/defeat_recovery.gd — remplace EncounterDirector._handle_defeat.
+class_name DefeatRecovery
+extends Node
+## Le joueur vient de se réveiller au point de repos (équipe soignée), avant le mot du lieu :
+## Boot écrit la sauvegarde (comme woke_up_after_defeat, que EncounterDirector relaie).
+signal woke_up(map_id: StringName)
+func setup(state: Node, rest_points: RestPointLibrary, router: Node, runner: DialogueRunner) -> void
+func set_map(map: GameMap) -> void
+## Soin, change_map(point.map, point.spawn, point.facing) avec point = wakeup_point(state),
+## woke_up, puis runner.play(point.wakeup_dialogue) non attendu (si non vide). Coroutine.
+func recover() -> void
+```
+
+`EncounterDirector` reçoit `DefeatRecovery` (paramètre de `setup` facultatif, en fin de liste) et l'attend sur une défaite ; sans lui (tests purs), comportement actuel. `_WAKEUP_DIALOGUE` disparaît. La défaite contre un Dresseur (étape `wake_up`, T25) appellera le même `recover()`.
+
 ### 3.4 Boutique et économie (T10)
 
 `ItemData` : `price: int` (0 = pas en vente ; un objet clé n'a jamais de prix), `sell_price() -> int` (moitié, arrondie en dessous, Rouge/Bleu), `is_sellable() -> bool`. `data/items/items.json` : Poké Ball 200, Potion 300 (dossier 09 §10, provisoires) ; **`oak_parcel`** (« Colis pour Chen », `key`, description `draft`). Le toast d'un objet clé dit « ajouté aux objets clés » (`ItemData.added_text` selon la catégorie).
@@ -624,6 +673,23 @@ func hide_choice() -> void
 
 `Boot` relie `DialogueRunner.choice_requested` → `DialogueBox.show_choice` et `DialogueBox.choice_made` → `DialogueRunner.choose`.
 
+**Précisions figées au T6** (contrat de la boîte pour le T7, sans rien changer à `ChoiceView` ni à `ChoiceCards`) :
+- `show_choice(view)` : la boîte (ouverte) montre un `ChoiceCards` **à elle** (enfant, au-dessus de son panneau, créé au premier besoin et gardé), avec `view` tel quel ; un appel boîte fermée est ignoré (push_warning).
+- `choice_made(confirmed)` : **un seul par question** (relais de `ChoiceCards.chosen`). Retour pendant le choix = `choice_made(false)` : `func cancel_choice() -> bool` (vrai si un choix était affiché : il se ferme et émet `choice_made(false)` ; sinon faux, rien) ; la boîte l'appelle elle-même sur `ui_cancel` (clavier) ; le retour **Android** arrive à `Boot._on_go_back` (`NOTIFICATION_WM_GO_BACK_REQUEST`), qui appelle `_box.cancel_choice()` **en premier** (câblage du T8).
+- Pendant le choix, la boîte **n'émet pas** `advance_requested` (le lecteur l'ignore de toute façon : `DialogueRunner.is_awaiting_choice()`).
+- `hide_choice()` : cache sans signal ; `close()` cache aussi un choix encore affiché. `func is_choice_showing() -> bool` pour les tests.
+- `UiPrefsApplier` (texte Grande, contraste) s'applique aux cartes comme au reste de la boîte.
+- Le toast du point de repos n'est **pas** une tâche du T7 : `ExplorationHud.show_toast(titre, détail)` existe ; le T8 l'appelle avec `RestPointLibrary.registered_toast(zone)`.
+
+**Partage des fichiers T7 ∥ T8** (§9 ; écran fusionné d'abord, câblage ensuite) :
+
+| T7 — ui-mobile | T8 — constructeur-monde |
+|---|---|
+| `game/ui/dialogue/dialogue_box.gd` / `.tscn` ; `tests/integration/test_dialogue_box.gd` ; capture `nurse_choice` (scénario de capture du T7, vues fabriquées) | `game/boot.gd` / `.tscn` (câblage derrière `has_method(&"show_choice")`, `cancel_choice()` en tête de `_on_go_back`, `action_handler`, `cutscene_requested` non câblé avant le T19) ; `game/systems/services/` ; `game/world/rest/defeat_recovery.gd` ; `game/pokemon/encounters/encounter_director.gd` ; `game/ui/theme/ui_tokens.gd` (`CENTER_HEAL`) ; carte `viridian_center` et `tools/build_interiors.gd` ; `data/world/rest_points.json` (+ `viridian_center`), `data/dialogues/viridian_center.json` (`nurse`, `nurse_wakeup`), `data/npcs/viridian_center.json`, `data/world/zones.json` (cartes et service du Centre — **après** le T4, qui pose Jadielle) ; `tools/debug_start/center_qa.json` ; tests `test_center_heal`, `test_encounter_director`, `test_dialogue_data` (IDS), `test_rest_point_data` |
+| ne touche pas `dialogue_runner.gd` (figé au T6), ni `boot.gd` | ne touche pas `dialogue_box.*` ; teste avec `tests/helpers/fake_choice_cards.gd` ou une boîte factice tant que le T7 n'est pas fusionné |
+
+Ni l'un ni l'autre ne touche `dialogue_runner.gd`, `dialogue_library.gd` ni `rest_point_library.gd` : un écart trouvé remonte à l'architecte.
+
 ### 6.6 De l'art du prototype à la production
 
 **Principe** : la branche `proto/da-jadielle` n'est **jamais fusionnée** ; on en reprend les **textures préparées** et les **techniques**, réécrites proprement dans `game/` avec des tests.
@@ -708,7 +774,7 @@ Chaque tâche finit par `tools/test.sh` vert (nombre de tests rapporté), un imp
 
 ### 7A.2 — Centre Pokémon
 
-#### T6 — architecte-godot : fondations du Centre
+#### T6 — architecte-godot : fondations du Centre — **fait** (§3.3.1, §3.3.2, §6.5)
 - §3.3 ; contrat du §6.5 ; `data/world/rest_points.json` ; contrat de `ServiceDirector` et `DefeatRecovery` (§6.2).
 - **CA** : tests du §3.3 verts.
 

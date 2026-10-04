@@ -226,3 +226,140 @@ func test_invalid_turn_is_rejected() -> void:
 		}, "test"), str(bad_turns[i]))
 	assert_push_error_count(bad_turns.size())
 	assert_eq(_library.size(), 0)
+
+
+# --- Fins de variante : choix, action, scène (jalon 7 §3.3) -------------------------------
+
+## L'infirmière du Centre (textes du dossier 09 §19), forme du jalon-07.md §3.3.
+func _nurse() -> Dictionary:
+	return {
+		"nurse": {
+			"speaker": "Infirmière",
+			"variants": [{
+				"pages": ["Bonjour. Je m'occupe de ton équipe ?"],
+				"choice": {
+					"confirm": "SOIGNER", "cancel": "PAS MAINTENANT",
+					"confirm_action": "center_heal",
+					"confirm_pages": ["Voilà. Tout le monde est en pleine forme."],
+					"cancel_pages": ["Très bien. Reviens quand tu veux."],
+				},
+			}],
+		},
+	}
+
+
+func test_choice_is_read_with_its_action_and_pages() -> void:
+	assert_true(_library.add_from_dict(_nurse(), "test"))
+	var variant := _library.get_dialogue(&"nurse").variants[0]
+	assert_eq(variant.pages.size(), 1, "la question est la dernière page")
+	assert_eq(variant.action, &"", "pas d'action de fin à côté d'un choix")
+	var choice := variant.choice
+	assert_not_null(choice)
+	assert_eq(choice.confirm_label, "SOIGNER")
+	assert_eq(choice.cancel_label, "PAS MAINTENANT")
+	assert_eq(choice.confirm_action, &"center_heal")
+	assert_eq(choice.confirm_pages.size(), 1)
+	assert_eq(choice.confirm_pages[0].text, "Voilà. Tout le monde est en pleine forme.")
+	assert_eq(choice.cancel_pages[0].text, "Très bien. Reviens quand tu veux.")
+
+
+func test_choice_view_carries_the_question_and_both_labels() -> void:
+	_library.add_from_dict(_nurse(), "test")
+	var view := _library.get_dialogue(&"nurse").variants[0].choice.to_view("Question ?")
+	assert_eq(view.title, "Question ?")
+	assert_eq(view.confirm_label, "SOIGNER")
+	assert_eq(view.cancel_label, "PAS MAINTENANT")
+	assert_eq(view.detail, "", "aucune précision")
+
+
+func test_choice_without_action_or_answer_pages_is_valid() -> void:
+	assert_true(_library.add_from_dict({"q": {"pages": ["Sûr ?"],
+		"choice": {"confirm": "OUI", "cancel": "NON", "confirm_pages": []}}}, "test"))
+	var choice := _library.get_dialogue(&"q").variants[0].choice
+	assert_eq(choice.confirm_action, &"")
+	assert_true(choice.confirm_pages.is_empty())
+	assert_true(choice.cancel_pages.is_empty())
+
+
+func test_invalid_choices_are_rejected() -> void:
+	var bad: Array = [
+		"SOIGNER",
+		{"cancel": "NON"},
+		{"confirm": "OUI", "cancel": "  "},
+		{"confirm": "OUI", "cancel": "NON", "confirm_action": "teleport"},
+		{"confirm": "OUI", "cancel": "NON", "cancel_pages": "Non."},
+		{"confirm": "OUI", "cancel": "NON", "confirm_pages": [""]},
+		{"confirm": "OUI", "cancel": "NON", "typo": true},
+	]
+	for i: int in bad.size():
+		assert_false(_library.add_from_dict({"bad_%d" % i: {"pages": ["?"], "choice": bad[i]}},
+			"test"), str(bad[i]))
+	assert_push_error_count(bad.size())
+	assert_eq(_library.size(), 0)
+	assert_string_contains(";".join(_library.get_errors()), "action inconnue « teleport »")
+
+
+func test_choice_needs_its_question_page() -> void:
+	assert_false(_library.add_from_dict({"q": {"choice": {"confirm": "OUI", "cancel": "NON"}}},
+		"test"))
+	assert_push_error("« pages » doit être une liste non vide")
+
+
+func test_action_and_cutscene_are_read() -> void:
+	assert_true(_library.add_from_dict({
+		"clerk": {"pages": ["Bonjour ! Qu'est-ce qu'il te faut aujourd'hui ?"],
+			"action": "open_shop"},
+		"oak": {"pages": ["Tiens…"], "cutscene": "oak_parcel"},
+	}, "test"))
+	assert_eq(_library.get_dialogue(&"clerk").variants[0].action, &"open_shop")
+	assert_eq(_library.get_dialogue(&"clerk").variants[0].cutscene, &"")
+	assert_eq(_library.get_dialogue(&"oak").variants[0].cutscene, &"oak_parcel")
+	assert_null(_library.get_dialogue(&"oak").variants[0].choice)
+
+
+func test_every_known_action_is_accepted() -> void:
+	for action: StringName in DialogueLibrary.ACTIONS:
+		assert_true(_library.add_from_dict({String(action): {"pages": ["x"],
+			"action": String(action)}}, "test"), String(action))
+	assert_eq(DialogueLibrary.ACTIONS, [&"heal", &"center_heal", &"open_shop",
+		&"open_storage"] as Array[StringName])
+
+
+func test_unknown_action_is_rejected() -> void:
+	assert_false(_library.add_from_dict({"a": {"pages": ["x"], "action": "fly"}}, "test"))
+	assert_false(_library.add_from_dict({"b": {"pages": ["x"], "action": 3}}, "test"))
+	assert_false(_library.add_from_dict({"c": {"pages": ["x"], "cutscene": ""}}, "test"))
+	assert_push_error_count(3)
+	assert_eq(_library.size(), 0)
+
+
+func test_variant_without_pages_needs_an_action_or_a_cutscene() -> void:
+	assert_true(_library.add_from_dict({
+		"terminal": {"action": "open_storage"},
+		"oak_parcel_talk": {"pages": [], "cutscene": "oak_parcel"},
+	}, "test"))
+	assert_true(_library.get_dialogue(&"terminal").variants[0].pages.is_empty())
+	assert_true(_library.get_dialogue(&"oak_parcel_talk").variants[0].pages.is_empty())
+	assert_false(_library.add_from_dict({"nothing": {"set": ["x"]}}, "test"))
+	assert_push_error("« pages » doit être une liste non vide")
+
+
+func test_old_heal_key_means_the_heal_action() -> void:
+	assert_true(_library.add_from_dict({
+		"mom": {"pages": ["Laisse-moi m'occuper de tes Pokémon."], "heal": true},
+		"mom_off": {"pages": ["Bonjour."], "heal": false},
+	}, "test"))
+	assert_eq(_library.get_dialogue(&"mom").variants[0].action, &"heal")
+	assert_eq(_library.get_dialogue(&"mom_off").variants[0].action, &"")
+
+
+func test_only_one_ending_per_variant() -> void:
+	assert_false(_library.add_from_dict({"a": {"pages": ["x"], "heal": true,
+		"action": "center_heal"}}, "test"))
+	assert_false(_library.add_from_dict({"b": {"pages": ["x"], "action": "open_shop",
+		"cutscene": "oak_parcel"}}, "test"))
+	assert_false(_library.add_from_dict({"c": {"pages": ["x"], "action": "open_shop",
+		"choice": {"confirm": "OUI", "cancel": "NON"}}}, "test"))
+	assert_push_error_count(3)
+	assert_string_contains(_library.get_errors()[0], "une seule fin parmi heal, action")
+	assert_eq(_library.size(), 0)
