@@ -12,6 +12,9 @@ const FIXTURE_V1 := "res://tests/fixtures/save/v1_after_capture.json"
 ## Vraie partie de Kevin en v2 (S24, QA T1 du J6 : `build/qa/jalon06_t1/save_v2_apres_t0.json`,
 ## copiée telle quelle ; jalon-07.md §5.1).
 const FIXTURE_V2 := "res://tests/fixtures/save/v2_kevin_j6.json"
+## Vraie partie de Kevin en **fin de J6** (S24, relevée à l'étape 1 du T1 du J7 :
+## `integ-j7/build/qa/jalon07_t1/save_v2_kevin.json`, copie exacte ; 13 h 57 de jeu).
+const FIXTURE_V2_END := "res://tests/fixtures/save/v2_kevin_j6_fin.json"
 
 var _fs: SaveFileSystem
 var _save: SaveSystem
@@ -564,6 +567,36 @@ func test_the_real_v2_save_loads_and_is_rewritten_identically_in_v3() -> void:
 	var again := _state()
 	assert_true(again.load_dict(_save.read(), _data))
 	assert_eq(again.to_dict(), state.to_dict(), "aller-retour v3 stable")
+
+
+## T1 du J7 : la vraie partie de fin de J6 (Potion favorite à 0, notes, OBSERVER faits).
+func test_the_real_end_of_j6_save_migrates_to_v3_and_rewrites_identically() -> void:
+	var text := FileAccess.get_file_as_string(FIXTURE_V2_END)
+	var v2: Dictionary = JSON.parse_string(text)
+	assert_eq(int(v2["version"]), 2, "la fixture est bien une v2")
+	(_fs as MemoryFs).files[PATH] = text
+	var content := _save.read()
+	assert_eq(_save.last_status, OK, _save.last_error)
+	assert_eq(int(content["version"]), 3)
+	assert_eq(content["money"], 3000)
+	assert_eq(content["first_wild_encounter"], {"species": "pidgey", "map": "route_1",
+		"date": "2026-10-02T20:51:16"}, "Roucool : première espèce vue sur la Route 1")
+	assert_eq(_without_v3(content), _without_v3(v2), "rien d'autre ne change")
+	var state := _state()
+	assert_true(state.load_dict(content, _data), "rien d'écarté")
+	assert_eq(state.current_map, &"route_1")
+	assert_eq(state.player_cell, Vector2i(24, 8))
+	assert_eq(state.player_facing, Vector2i.RIGHT)
+	assert_eq(state.party.get_lead().species_id, &"rattata")
+	assert_true(state.party.get_at(2).favorite, "Roucool favori")
+	assert_eq(state.bag.count_of(&"potion"), 0)
+	assert_true(state.bag.is_favorite(&"potion"), "favori gardé à 0")
+	assert_eq(state.money, 3000)
+	assert_eq(_save.write(state.to_dict()), OK)
+	var written: Dictionary = JSON.parse_string((_fs as MemoryFs).files[PATH])
+	assert_eq(int(written["version"]), 3)
+	assert_eq(_without_v3(written), _without_v3(v2), "tout le reste réécrit à l'identique")
+	assert_eq(written.keys().size(), v2.keys().size() + 2, "aucun champ perdu")
 
 
 func test_v3_round_trip_keeps_money_and_the_first_wild_encounter() -> void:
