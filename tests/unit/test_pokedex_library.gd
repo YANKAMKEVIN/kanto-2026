@@ -2,9 +2,11 @@ extends GutTest
 ## PokedexLibrary : data/pokedex/kanto.json (jalon-06.md §3.5 ; Q-5 taille et poids officiels,
 ## descriptions provisoires ; Q-6 une note par espèce rencontrable).
 
-## Espèces rencontrables au J6 (Q-6) : une note chacune, débloquée à la première observation.
+## Espèces rencontrables (J6 Q-6, + Route 22 au J7) : une note chacune, débloquée à la
+## première observation.
 const ENCOUNTERABLE: Array[StringName] = [
 	&"bulbasaur", &"charmander", &"squirtle", &"pidgey", &"rattata",
+	&"spearow", &"mankey", &"nidoran_f", &"nidoran_m",
 ]
 
 var _data: PokemonData
@@ -59,6 +61,10 @@ func test_real_heights_and_weights_are_the_official_ones() -> void:
 		&"bulbasaur": [0.7, 6.9], &"charmander": [0.6, 8.5], &"squirtle": [0.5, 9.0],
 		&"charizard": [1.7, 90.5], &"venusaur": [2.0, 100.0], &"pidgey": [0.3, 1.8],
 		&"rattata": [0.3, 3.5], &"raticate": [0.7, 18.5],
+		&"spearow": [0.3, 2.0], &"fearow": [1.2, 38.0], &"mankey": [0.5, 28.0],
+		&"primeape": [1.0, 32.0], &"nidoran_f": [0.4, 7.0], &"nidorina": [0.8, 20.0],
+		&"nidoqueen": [1.3, 60.0], &"nidoran_m": [0.5, 9.0], &"nidorino": [0.9, 19.5],
+		&"nidoking": [1.4, 62.0],
 	}
 	for id: StringName in official:
 		assert_almost_eq(_lib.get_species(id).height, float(official[id][0]), 0.001, id)
