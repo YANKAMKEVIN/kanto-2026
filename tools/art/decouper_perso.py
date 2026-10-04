@@ -53,26 +53,20 @@ def _centre_tete(pose: Image.Image) -> float:
     return (boite[0] + boite[2]) / 2.0 if boite else pose.width / 2.0
 
 
-def main() -> None:
-    arguments = argparse.ArgumentParser()
-    arguments.add_argument("source")
-    arguments.add_argument("sortie")
-    arguments.add_argument("--hauteur", type=int, required=True)
-    arguments.add_argument("--pixel", action="store_true")
-    options = arguments.parse_args()
-
-    poses = _poses(Image.open(options.source).convert("RGBA"))
-    echelle = options.hauteur / max(p.height for p in poses)
+def decouper(source: str, sortie: str, hauteur: int, pixel: bool = False) -> tuple[int, int]:
+    """Découpe `source` en planche de jeu 4 × 4 ; renvoie la taille d'une cellule."""
+    poses = _poses(Image.open(source).convert("RGBA"))
+    echelle = hauteur / max(p.height for p in poses)
     marge_gauche = max(_centre_tete(p) for p in poses)
     marge_droite = max(p.width - _centre_tete(p) for p in poses)
     cellule_l = int((2 * max(marge_gauche, marge_droite)) * echelle) + 4
-    cellule_h = options.hauteur + 2
-    sortie = Image.new("RGBA", (cellule_l * COLONNES, cellule_h * LIGNES), (0, 0, 0, 0))
+    cellule_h = hauteur + 2
+    planche = Image.new("RGBA", (cellule_l * COLONNES, cellule_h * LIGNES), (0, 0, 0, 0))
     for index, pose in enumerate(poses):
         taille = (max(1, round(pose.width * echelle)), max(1, round(pose.height * echelle)))
-        filtre = Image.BOX if options.pixel else Image.LANCZOS
+        filtre = Image.BOX if pixel else Image.LANCZOS
         reduite = pose.resize(taille, filtre)
-        if options.pixel:
+        if pixel:
             alpha = reduite.getchannel("A").point(lambda a: 255 if a > 110 else 0)
             couleurs = reduite.convert("RGB").quantize(colors=28, method=Image.MEDIANCUT)
             reduite = couleurs.convert("RGBA")
@@ -80,8 +74,19 @@ def main() -> None:
         colonne, ligne = index % COLONNES, index // COLONNES
         x = colonne * cellule_l + round(cellule_l / 2 - _centre_tete(pose) * echelle)
         y = ligne * cellule_h + cellule_h - reduite.height
-        sortie.alpha_composite(reduite, (x, y))
-    sortie.save(options.sortie)
+        planche.alpha_composite(reduite, (x, y))
+    planche.save(sortie)
+    return cellule_l, cellule_h
+
+
+def main() -> None:
+    arguments = argparse.ArgumentParser()
+    arguments.add_argument("source")
+    arguments.add_argument("sortie")
+    arguments.add_argument("--hauteur", type=int, required=True)
+    arguments.add_argument("--pixel", action="store_true")
+    options = arguments.parse_args()
+    cellule_l, cellule_h = decouper(options.source, options.sortie, options.hauteur, options.pixel)
     print(f"{options.sortie} : cellule {cellule_l} × {cellule_h}")
 
 
