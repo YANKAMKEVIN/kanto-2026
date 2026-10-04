@@ -4,6 +4,32 @@ extends GutTest
 
 const FIXTURES := "res://tests/fixtures/pokemon/"
 
+## Valeurs de Rouge/Bleu (PokeAPI, groupe de versions red-blue), statistiques et rendement
+## d'XP modernes comme les espèces déjà présentes : [dex, nom, types, PV, Att, Déf, Att. Spé.,
+## Déf. Spé., Vit., base_exp, male_ratio, croissance].
+const ROUTE_22_SPECIES := {
+	&"spearow": [21, "Piafabec", [&"normal", &"flying"], 40, 60, 30, 31, 31, 70, 52, 0.5,
+		ExpCurve.Rate.MEDIUM_FAST],
+	&"fearow": [22, "Rapasdepic", [&"normal", &"flying"], 65, 90, 65, 61, 61, 100, 155, 0.5,
+		ExpCurve.Rate.MEDIUM_FAST],
+	&"nidoran_f": [29, "Nidoran♀", [&"poison"], 55, 47, 52, 40, 40, 41, 55, 0.0,
+		ExpCurve.Rate.MEDIUM_SLOW],
+	&"nidorina": [30, "Nidorina", [&"poison"], 70, 62, 67, 55, 55, 56, 128, 0.0,
+		ExpCurve.Rate.MEDIUM_SLOW],
+	&"nidoqueen": [31, "Nidoqueen", [&"poison", &"ground"], 90, 92, 87, 75, 85, 76, 227, 0.0,
+		ExpCurve.Rate.MEDIUM_SLOW],
+	&"nidoran_m": [32, "Nidoran♂", [&"poison"], 46, 57, 40, 40, 40, 50, 55, 1.0,
+		ExpCurve.Rate.MEDIUM_SLOW],
+	&"nidorino": [33, "Nidorino", [&"poison"], 61, 72, 57, 55, 55, 65, 128, 1.0,
+		ExpCurve.Rate.MEDIUM_SLOW],
+	&"nidoking": [34, "Nidoking", [&"poison", &"ground"], 81, 102, 77, 85, 75, 85, 227, 1.0,
+		ExpCurve.Rate.MEDIUM_SLOW],
+	&"mankey": [56, "Férosinge", [&"fighting"], 40, 80, 35, 35, 45, 70, 61, 0.5,
+		ExpCurve.Rate.MEDIUM_FAST],
+	&"primeape": [57, "Colossinge", [&"fighting"], 65, 105, 60, 60, 70, 95, 159, 0.5,
+		ExpCurve.Rate.MEDIUM_FAST],
+}
+
 var _data: PokemonData
 
 
@@ -23,9 +49,10 @@ func test_real_data_loads_without_error() -> void:
 	assert_eq(_data.get_type_chart().get_type_ids().size(), 18)
 	assert_eq(_data.get_species_ids(), [&"bulbasaur", &"ivysaur", &"venusaur", &"charmander",
 		&"charmeleon", &"charizard", &"squirtle", &"wartortle", &"blastoise",
-		&"pidgey", &"pidgeotto", &"pidgeot", &"rattata", &"raticate"]
-		as Array[StringName])
-	assert_eq(_data.get_move_ids().size(), 34)
+		&"pidgey", &"pidgeotto", &"pidgeot", &"rattata", &"raticate", &"spearow", &"fearow",
+		&"nidoran_f", &"nidorina", &"nidoqueen", &"nidoran_m", &"nidorino", &"nidoking",
+		&"mankey", &"primeape"] as Array[StringName])
+	assert_eq(_data.get_move_ids().size(), 47)
 	assert_true(_data.has_move(&"struggle"))
 
 
@@ -67,6 +94,10 @@ func test_real_evolution_chains() -> void:
 		&"squirtle": [&"wartortle", 16], &"wartortle": [&"blastoise", 36],
 		&"pidgey": [&"pidgeotto", 18], &"pidgeotto": [&"pidgeot", 36],
 		&"rattata": [&"raticate", 20],
+		# Route 22 (jalon 7, T21) : Rouge/Bleu ; Nidorina et Nidorino par la Pierre Lune.
+		&"spearow": [&"fearow", 20], &"mankey": [&"primeape", 28],
+		&"nidoran_f": [&"nidorina", 16], &"nidorina": [&"nidoqueen", &"moon_stone"],
+		&"nidoran_m": [&"nidorino", 16], &"nidorino": [&"nidoking", &"moon_stone"],
 	}
 	for id: StringName in _data.get_species_ids():
 		var rules := _data.get_species(id).evolutions
@@ -74,9 +105,13 @@ func test_real_evolution_chains() -> void:
 			assert_eq(rules.size(), 0, "%s : forme finale" % id)
 			continue
 		assert_eq(rules.size(), 1, String(id))
-		assert_eq(rules[0].method, EvolutionRule.Method.LEVEL, String(id))
 		assert_eq(rules[0].into, expected[id][0], String(id))
-		assert_eq(rules[0].level, expected[id][1], String(id))
+		if expected[id][1] is int:
+			assert_eq(rules[0].method, EvolutionRule.Method.LEVEL, String(id))
+			assert_eq(rules[0].level, expected[id][1], String(id))
+		else:
+			assert_eq(rules[0].method, EvolutionRule.Method.ITEM, String(id))
+			assert_eq(rules[0].item, expected[id][1], String(id))
 
 
 func test_starters_know_red_blue_moves_at_level_5() -> void:
@@ -302,6 +337,9 @@ func test_real_catch_rates_are_the_official_ones() -> void:
 		&"squirtle": 45, &"wartortle": 45, &"blastoise": 45,
 		&"pidgey": 255, &"pidgeotto": 120, &"pidgeot": 45,
 		&"rattata": 255, &"raticate": 127,
+		&"spearow": 255, &"fearow": 90, &"mankey": 190, &"primeape": 75,
+		&"nidoran_f": 235, &"nidorina": 120, &"nidoqueen": 45,
+		&"nidoran_m": 235, &"nidorino": 120, &"nidoking": 45,
 	}
 	assert_eq(_data.get_species_ids().size(), expected.size(), "toutes les espèces")
 	for id: StringName in _data.get_species_ids():
@@ -402,9 +440,101 @@ func test_low_level_wild_moves_have_no_pending_effects() -> void:
 	# Invariant de jouabilité (§3.2) : aux niveaux des rencontres (Roucool 2..5, Rattata
 	# 2..4), toute capacité connue est pleinement codée.
 	_data.load_dir()
-	for pair: Array in [[&"pidgey", 5], [&"rattata", 4]]:
+	# Route 22 (jalon 7) : Rattata 2..4, Piafabec 3..5, Férosinge 3..5, Nidoran ♀ ♂ 3..4.
+	for pair: Array in [[&"pidgey", 5], [&"rattata", 4], [&"spearow", 5], [&"mankey", 5],
+			[&"nidoran_f", 4], [&"nidoran_m", 4]]:
 		var species := _data.get_species(pair[0])
 		for move_id: StringName in species.moves_at(pair[1]):
 			var move := _data.get_move(move_id)
 			assert_eq(move.pending_effects.size(), 0,
 				"%s à Nv.%d connaît %s (effet non codé)" % [pair[0], pair[1], move_id])
+
+
+# --- Espèces et capacités du jalon 7 (Route 22, T21) ------------------------------------
+
+func test_route_22_species_values() -> void:
+	_data.load_dir()
+	assert_eq(_data.get_errors().size(), 0, _errors())
+	for id: StringName in ROUTE_22_SPECIES:
+		var v: Array = ROUTE_22_SPECIES[id]
+		var species := _data.get_species(id)
+		assert_not_null(species, String(id))
+		if species == null:
+			continue
+		assert_eq([species.dex, species.name], [v[0], v[1]], String(id))
+		var types: Array[StringName] = []
+		types.assign(v[2])
+		assert_eq(species.types, types, String(id))
+		assert_eq(species.base_stats, {&"hp": v[3], &"atk": v[4], &"def": v[5], &"spa": v[6],
+			&"spd": v[7], &"spe": v[8]} as Dictionary[StringName, int], String(id))
+		assert_eq(species.base_exp, v[9], String(id))
+		assert_eq(species.male_ratio, v[10], String(id))
+		assert_eq(species.growth_rate, v[11], String(id))
+
+
+func test_route_22_species_know_red_blue_moves_at_route_levels() -> void:
+	# Niveaux 2 à 5 de la Route 22 : capacités de départ de Rouge/Bleu ; aucune capacité de
+	# poison (dossier 09 §12).
+	_data.load_dir()
+	var expected := {
+		&"spearow": [&"peck", &"growl"], &"mankey": [&"scratch", &"leer"],
+		&"nidoran_f": [&"growl", &"tackle"], &"nidoran_m": [&"leer", &"tackle"],
+	}
+	for id: StringName in expected:
+		var moves: Array[StringName] = []
+		moves.assign(expected[id])
+		for level: int in range(2, 6):
+			assert_eq(_data.get_species(id).moves_at(level), moves, "%s Nv. %d" % [id, level])
+		for move_id: StringName in moves:
+			assert_ne(_data.get_move(move_id).type, &"poison", String(move_id))
+	# Premières capacités apprises en montant : Rouge/Bleu.
+	assert_eq(_data.get_species(&"nidoran_f").moves_at(8), [&"growl", &"tackle", &"scratch"]
+		as Array[StringName])
+	assert_eq(_data.get_species(&"nidoran_m").moves_at(8),
+		[&"leer", &"tackle", &"horn_attack"] as Array[StringName])
+	assert_eq(_data.get_species(&"spearow").moves_at(9), [&"peck", &"growl", &"leer"]
+		as Array[StringName])
+	# Rattata (aussi sur la Route 22) : Croc Fatal au Nv. 34 en Rouge/Bleu (30 avant T21).
+	assert_eq(_data.get_species(&"rattata").learnset.back(), [34, &"super_fang"])
+
+
+func test_route_22_moves_values() -> void:
+	_data.load_dir()
+	# [type, catégorie, puissance, précision, PP] : valeurs modernes, comme les autres.
+	var expected := {
+		&"peck": [&"flying", MoveData.Category.PHYSICAL, 35, 100, 35],
+		&"fury_attack": [&"normal", MoveData.Category.PHYSICAL, 15, 85, 20],
+		&"drill_peck": [&"flying", MoveData.Category.PHYSICAL, 80, 100, 20],
+		&"karate_chop": [&"fighting", MoveData.Category.PHYSICAL, 50, 100, 25],
+		&"fury_swipes": [&"normal", MoveData.Category.PHYSICAL, 18, 80, 15],
+		&"thrash": [&"normal", MoveData.Category.PHYSICAL, 120, 100, 10],
+		&"screech": [&"normal", MoveData.Category.STATUS, 0, 85, 40],
+		&"poison_sting": [&"poison", MoveData.Category.PHYSICAL, 15, 100, 35],
+		&"double_kick": [&"fighting", MoveData.Category.PHYSICAL, 30, 100, 30],
+		&"horn_attack": [&"normal", MoveData.Category.PHYSICAL, 65, 100, 25],
+		&"body_slam": [&"normal", MoveData.Category.PHYSICAL, 85, 100, 15],
+		# Dégâts fixes et K.O. en un coup : comme Croc Fatal, statut sans effet (en attente).
+		&"seismic_toss": [&"fighting", MoveData.Category.STATUS, 0, 100, 20],
+		&"horn_drill": [&"normal", MoveData.Category.STATUS, 0, 30, 5],
+	}
+	for id: StringName in expected:
+		var move := _data.get_move(id)
+		assert_not_null(move, String(id))
+		if move == null:
+			continue
+		assert_eq([move.type, move.category, move.power, move.accuracy, move.pp], expected[id],
+			String(id))
+	assert_eq(_data.get_move(&"karate_chop").crit_stage, 1, "critique élevé")
+	var screech := _data.get_move(&"screech")
+	assert_eq([screech.effects[0].stat, screech.effects[0].stages, screech.effects[0].target],
+		[&"def", -2, MoveEffect.Target.FOE])
+	# Mécaniques absentes du moteur (jalon-07.md §3.7) : la capacité frappe une fois, sans effet.
+	var pending := {
+		&"fury_attack": ["multi_hit"], &"fury_swipes": ["multi_hit"],
+		&"double_kick": ["hits_2"], &"poison_sting": ["poison_30"],
+		&"thrash": ["rampage"], &"body_slam": ["paralysis_30"],
+		&"seismic_toss": ["level_damage"], &"horn_drill": ["ohko"],
+	}
+	for id: StringName in pending:
+		assert_eq(_data.get_move(id).pending_effects, PackedStringArray(pending[id]),
+			String(id))

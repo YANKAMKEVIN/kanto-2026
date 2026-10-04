@@ -220,6 +220,85 @@
 		"description": "Mord la cible pour lui retirer la moitié de ses PV. Sans effet dans le moteur actuel.",
 		"draft": true
 	},
+	"peck": {
+		"name": "Picpic", "type": "flying", "category": "physical",
+		"power": 35, "accuracy": 100, "pp": 35,
+		"description": "Frappe la cible d'un bec pointu.",
+		"draft": true
+	},
+	"fury_attack": {
+		"name": "Furie", "type": "normal", "category": "physical",
+		"power": 15, "accuracy": 85, "pp": 20, "pending_effects": ["multi_hit"],
+		"description": "Frappe la cible de deux à cinq coups de corne ou de bec. Un seul coup dans le moteur actuel.",
+		"draft": true
+	},
+	"drill_peck": {
+		"name": "Bec Vrille", "type": "flying", "category": "physical",
+		"power": 80, "accuracy": 100, "pp": 20,
+		"description": "Le lanceur tourne sur lui-même et transperce la cible de son bec.",
+		"draft": true
+	},
+	"karate_chop": {
+		"name": "Poing Karaté", "type": "fighting", "category": "physical",
+		"power": 50, "accuracy": 100, "pp": 25, "crit_stage": 1,
+		"description": "Un coup du tranchant de la main. Taux de critique élevé.",
+		"draft": true
+	},
+	"fury_swipes": {
+		"name": "Combo-Griffe", "type": "normal", "category": "physical",
+		"power": 18, "accuracy": 80, "pp": 15, "pending_effects": ["multi_hit"],
+		"description": "Griffe la cible de deux à cinq coups rapides. Un seul coup dans le moteur actuel.",
+		"draft": true
+	},
+	"seismic_toss": {
+		"name": "Frappe Atlas", "type": "fighting", "category": "status",
+		"accuracy": 100, "pp": 20, "pending_effects": ["level_damage"],
+		"description": "Projette la cible au sol. Sans effet dans le moteur actuel.",
+		"draft": true
+	},
+	"thrash": {
+		"name": "Mania", "type": "normal", "category": "physical",
+		"power": 120, "accuracy": 100, "pp": 10, "pending_effects": ["rampage"],
+		"description": "Le lanceur se déchaîne pendant plusieurs tours, puis finit étourdi.",
+		"draft": true
+	},
+	"screech": {
+		"name": "Grincement", "type": "normal", "category": "status",
+		"accuracy": 85, "pp": 40,
+		"effects": [{ "kind": "stat_stage", "stat": "def", "stages": -2, "target": "foe" }],
+		"description": "Un cri strident qui fait beaucoup baisser la Défense de la cible.",
+		"draft": true
+	},
+	"poison_sting": {
+		"name": "Dard-Venin", "type": "poison", "category": "physical",
+		"power": 15, "accuracy": 100, "pp": 35, "pending_effects": ["poison_30"],
+		"description": "Pique la cible d'un dard venimeux. Peut l'empoisonner.",
+		"draft": true
+	},
+	"double_kick": {
+		"name": "Double Pied", "type": "fighting", "category": "physical",
+		"power": 30, "accuracy": 100, "pp": 30, "pending_effects": ["hits_2"],
+		"description": "Deux coups de pied rapides. Un seul coup dans le moteur actuel.",
+		"draft": true
+	},
+	"horn_attack": {
+		"name": "Koud'Korne", "type": "normal", "category": "physical",
+		"power": 65, "accuracy": 100, "pp": 25,
+		"description": "Frappe la cible d'une corne pointue.",
+		"draft": true
+	},
+	"horn_drill": {
+		"name": "Empal'Korne", "type": "normal", "category": "status",
+		"accuracy": 30, "pp": 5, "pending_effects": ["ohko"],
+		"description": "Une corne en vrille qui met K.O. d'un coup. Sans effet dans le moteur actuel.",
+		"draft": true
+	},
+	"body_slam": {
+		"name": "Plaquage", "type": "normal", "category": "physical",
+		"power": 85, "accuracy": 100, "pp": 15, "pending_effects": ["paralysis_30"],
+		"description": "Le lanceur se jette de tout son poids sur la cible. Peut la paralyser.",
+		"draft": true
+	},
 	"struggle": {
 		"name": "Lutte", "type": "normal", "category": "physical",
 		"power": 50, "accuracy": 0, "pp": 1, "typeless": true,

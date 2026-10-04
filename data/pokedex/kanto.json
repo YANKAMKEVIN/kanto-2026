@@ -76,6 +76,62 @@
 		"raticate": {
 			"height": 0.7, "weight": 18.5, "draft": true,
 			"description": "Méfiant, il guette depuis son terrier et ne se montre qu'une fois sûr de lui."
+		},
+		"spearow": {
+			"height": 0.3, "weight": 2.0, "draft": true,
+			"description": "Petit mais querelleur, il crie fort pour défendre son coin de prairie et chasse les insectes au ras des herbes.",
+			"notes": [
+				{ "id": "spearow_hover", "unlock": { "seen": 1 }, "draft": true,
+				  "text": "Il bat des ailes très vite pour rester sur place, puis pique d'un coup vers le sol." }
+			]
+		},
+		"fearow": {
+			"height": 1.2, "weight": 38.0, "draft": true,
+			"description": "Ses grandes ailes le portent longtemps sans qu'il se pose. Son long bec fouille la terre comme l'eau."
+		},
+		"nidoran_f": {
+			"height": 0.4, "weight": 7.0, "draft": true,
+			"description": "Discrète, elle dresse ses grandes oreilles au moindre bruit. Ses petites épines la protègent quand on l'approche de trop près.",
+			"notes": [
+				{ "id": "nidoran_f_grass", "unlock": { "seen": 1 }, "draft": true,
+				  "text": "Elle ne s'éloigne jamais beaucoup des herbes hautes, prête à s'y glisser." }
+			]
+		},
+		"nidorina": {
+			"height": 0.8, "weight": 20.0, "draft": true,
+			"description": "Plus douce qu'elle n'en a l'air, elle replie ses épines quand elle se sent en confiance."
+		},
+		"nidoqueen": {
+			"height": 1.3, "weight": 60.0, "draft": true,
+			"description": "Couverte d'écailles dures, elle veille sur son terrier avec une patience immense."
+		},
+		"nidoran_m": {
+			"height": 0.5, "weight": 9.0, "draft": true,
+			"description": "Ses grandes oreilles pivotent pour guetter le danger. La petite corne de son front lui sert à se défendre.",
+			"notes": [
+				{ "id": "nidoran_m_ears", "unlock": { "seen": 1 }, "draft": true,
+				  "text": "Avant de charger, il agite les oreilles : un avertissement qu'il vaut mieux écouter." }
+			]
+		},
+		"nidorino": {
+			"height": 0.9, "weight": 19.5, "draft": true,
+			"description": "Prompt à s'emporter, il pointe sa corne vers tout ce qui approche."
+		},
+		"nidoking": {
+			"height": 1.4, "weight": 62.0, "draft": true,
+			"description": "On l'entend marteler le sol bien avant de l'apercevoir. Sa queue épaisse peut renverser un arbre."
+		},
+		"mankey": {
+			"height": 0.5, "weight": 28.0, "draft": true,
+			"description": "Il passe en un instant du calme à la colère. Mieux vaut ne pas le fixer quand il se met à trépigner.",
+			"notes": [
+				{ "id": "mankey_branches", "unlock": { "seen": 1 }, "draft": true,
+				  "text": "Des branches qui s'agitent sans vent, à la lisière des bois : c'est souvent lui." }
+			]
+		},
+		"primeape": {
+			"height": 1.0, "weight": 32.0, "draft": true,
+			"description": "Quand il s'emporte, plus rien ne l'arrête. Il poursuit longtemps ce qui l'a contrarié."
 		}
 	}
 }
