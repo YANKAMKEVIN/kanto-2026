@@ -34,10 +34,14 @@ extends RefCounted
 ## - CATCH : éclat doré et motif de vibration ; le directeur range ensuite le Pokémon et
 ##   montre la carte de capture (la lecture est suspendue jusqu'au toucher) ;
 ## - RELEASE : la Ball s'ouvre, le Pokémon sauvage ressort et sa carte revient.
+## Jalon 6 (soin) :
+## - HEAL : la barre de PV du Pokémon soigné remonte jusqu'à [member BattleEvent.hp] ; seulement
+##   s'il est en jeu ([member BattleEvent.party_index]), sinon rien ne bouge à l'écran.
 
 enum Kind {
 	MESSAGE, SEND_OUT, MOVE, DAMAGE, STAT, FAINT, EXP, LEVEL, DRAIN, FORGET,
 	THROW, SHAKE, CATCH, RELEASE,
+	HEAL,
 }
 
 var kind: Kind = Kind.MESSAGE

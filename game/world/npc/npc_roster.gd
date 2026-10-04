@@ -17,7 +17,10 @@ extends RefCounted
 ## hop_style (calm | eager | playful : style de saut, jalon 4 ; aucun par défaut),
 ## shy ({ action: fly | flee, radius: 1..4 } : réaction d'ambiance, jalon 5 ; interdit sur
 ## un PNJ interactif),
-## if et unless (listes de drapeaux : présence conditionnelle, jalon 3B §2.6).
+## if et unless (listes de drapeaux : présence conditionnelle, jalon 3B §2.6),
+## species (espèce d'un Pokémon du décor : le geste OBSERVER l'enregistre « vu » au Pokédex,
+## jalon 6 §3.5, Q-7 ; seulement avec « verb »: « observe » et un dialogue ; l'espèce est
+## vérifiée contre PokemonData par les tests des données réelles).
 ## Le verbe « meet » (Rencontrer) est refusé : il est posé par le code (jalon 4 §3.5).
 ## Toute autre clé est une erreur. Pas de fichier = aucun PNJ sur la carte (sans erreur).
 ## L'identifiant « player » est réservé au joueur.
@@ -30,7 +33,7 @@ const PLAYER_ID: StringName = &"player"
 ## Clés d'une entrée (aussi celles de l'étape « spawn » des scènes, sans if / unless).
 const KEYS: Array[String] = [
 	"cell", "facing", "sprite", "dialogue", "verb", "turn_to_player", "keep_facing", "lift",
-	"hop_style", "shy", "route", "if", "unless",
+	"hop_style", "shy", "route", "if", "unless", "species",
 ]
 
 var _specs: Array[NpcSpec] = []
@@ -183,6 +186,13 @@ static func parse_entry(value: Variant, errors: PackedStringArray) -> NpcSpec:
 		_read_route(entry["route"], spec, errors)
 	_read_flags(entry, "if", spec.if_flags, errors)
 	_read_flags(entry, "unless", spec.unless_flags, errors)
+	if entry.has("species"):
+		if not entry["species"] is String or (entry["species"] as String).is_empty():
+			errors.append("« species » doit être un identifiant d'espèce")
+		elif spec.verb != Interaction.Kind.OBSERVE or not spec.is_interactive():
+			errors.append("« species » demande « verb »: « observe » et un dialogue")
+		else:
+			spec.species = StringName(entry["species"])
 	return spec if errors.size() == count else null
 
 

@@ -9,6 +9,7 @@ config/description="Remake 2D personnel de Pokémon Rouge/Bleu, version smartpho
 run/main_scene="res://game/boot.tscn"
 config/icon="res://assets/ui/icon.png"
 config/features=PackedStringArray("4.7", "Mobile")
+config/quit_on_go_back=false
 
 [autoload]
 

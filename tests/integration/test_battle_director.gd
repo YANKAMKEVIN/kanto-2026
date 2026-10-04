@@ -8,6 +8,7 @@ extends GutTest
 ## XP ; PNJ Pokémon réaffichés, caméra rendue, HUD cachée, joueur libre ; refus si un combat
 ## tourne ou si le dresseur est inconnu.
 
+const FakeChoiceCards := preload("res://tests/helpers/fake_choice_cards.gd")
 const PLAYER_SCENE := preload("res://game/player/player.tscn")
 const STAGE_SCENE := preload("res://game/battle/battle_stage.tscn")
 const HUD_SCENE := preload("res://game/ui/battle/battle_hud.tscn")
@@ -702,6 +703,83 @@ func test_forget_offer_refused_keeps_the_moves() -> void:
 	assert_push_error_count(0)
 
 
+## « Confirmer certaines actions » (T29) : OUBLIER passe par une question à deux cartes ;
+## GARDER ramène au panneau, OUBLIER confirme.
+func test_forget_confirmation_asks_before_forgetting() -> void:
+	var moves: Array[StringName] = [&"tackle", &"growl", &"leech_seed", &"vine_whip"]
+	var party_fn := func() -> Party: return _xp_party(&"bulbasaur", 19, 1, moves)
+	var seed := _xp_seed(party_fn, &"rattata", 3, [0] as Array[int],
+		func(events: Array) -> bool:
+			return _has_kind(events, BattleEvent.Kind.MOVE_FORGET_OFFERED))
+	assert_gt(seed, -1, "une victoire qui propose une cinquième capacité")
+	if seed < 0:
+		return
+	var party: Party = party_fn.call()
+	var lead := party.get_lead()
+	var request := _xp_request(party, &"rattata", 3, seed)
+	FakeChoiceCards.views.clear()
+	FakeChoiceCards.answers = [false, true] as Array[bool]
+	_director.confirm_forget = true
+	_director.choice_cards_script = FakeChoiceCards
+	var offers: Array[int] = []
+	var on_offer := func(panel: MoveForgetPanel, _events: Array) -> void:
+		offers.append(1)
+		await wait_process_frames(2)
+		panel.select(2)
+		panel.get_confirm_button().pressed.emit()
+	var played := await _play_with_offers(request, [0] as Array[int], on_offer)
+	assert_eq(played[0], Battle.Outcome.WIN)
+	assert_eq(FakeChoiceCards.views.size(), 2, "deux questions : GARDER puis OUBLIER")
+	assert_eq(FakeChoiceCards.views[0].title, "Oublier Vampigraine ?")
+	assert_eq(FakeChoiceCards.views[0].confirm_label, "OUBLIER")
+	assert_eq(FakeChoiceCards.views[0].cancel_label, "GARDER")
+	assert_eq(offers.size(), 2, "GARDER rend la main au panneau")
+	assert_eq(lead.moves[2].move_id, &"poison_powder", "la seconde réponse a confirmé")
+	assert_push_error_count(0)
+
+
+## Même question avec le vrai composant `ChoiceCards` : texte à l'écran, GARDER puis OUBLIER.
+func test_forget_confirmation_with_the_real_choice_cards() -> void:
+	var moves: Array[StringName] = [&"tackle", &"growl", &"leech_seed", &"vine_whip"]
+	var party_fn := func() -> Party: return _xp_party(&"bulbasaur", 19, 1, moves)
+	var seed := _xp_seed(party_fn, &"rattata", 3, [0] as Array[int],
+		func(events: Array) -> bool:
+			return _has_kind(events, BattleEvent.Kind.MOVE_FORGET_OFFERED))
+	if seed < 0:
+		fail_test("aucune graine avec offre d'oubli")
+		return
+	var party: Party = party_fn.call()
+	var lead := party.get_lead()
+	var request := _xp_request(party, &"rattata", 3, seed)
+	_director.confirm_forget = true
+	var asked: Array[String] = []
+	var on_offer := func(panel: MoveForgetPanel, _events: Array) -> void:
+		await wait_process_frames(2)
+		panel.select(2)
+		panel.get_confirm_button().pressed.emit()
+		var cards: ChoiceCards = null
+		for i: int in 120:
+			await wait_process_frames(1)
+			for child: Node in _hud.get_screen().get_children():
+				if child is ChoiceCards and (child as ChoiceCards).is_showing():
+					cards = child
+			if cards != null:
+				break
+		assert_not_null(cards, "la question est affichée")
+		if cards == null:
+			return
+		asked.append(cards.get_title_label().text)
+		if asked.size() == 1:
+			cards.get_cancel_button().pressed.emit()
+		else:
+			cards.get_confirm_button().pressed.emit()
+	var played := await _play_with_offers(request, [0] as Array[int], on_offer)
+	assert_eq(played[0], Battle.Outcome.WIN)
+	assert_eq(asked.size(), 2)
+	assert_eq(asked[0], "Oublier Vampigraine ?")
+	assert_eq(lead.moves[2].move_id, &"poison_powder", "OUBLIER a remplacé la capacité")
+
+
 ## Équipe de deux Bulbizarre identiques (même espèce, même nom) : le premier est K.O. avec
 ## [param first_moves], le second tient debout, à 1 XP du N20, avec [param second_moves].
 func _twin_party(first_moves: Array[StringName], second_moves: Array[StringName]) -> Party:
@@ -1146,17 +1224,86 @@ func test_back_from_the_bag_consumes_nothing() -> void:
 	assert_push_error_count(0)
 
 
-func test_the_potion_is_never_offered_in_a_wild_battle() -> void:
-	_state.party = _player_party(&"charmander")
-	_state.starter_species = &"charmander"
-	_state.rng = GameRng.new(7)
-	_state.bag.add(&"potion", 3)
+## Joue [param request] : SAC, onglet SOINS, Potion, UTILISER, puis le Pokémon [param target]
+## (ou « ‹ » du choix si [param back_from_picker]) ; ensuite FUITE. Renvoie { events, view,
+## picker_seen, bag_reopened }.
+func _play_potion(request: BattleRequest, target: int, back_from_picker: bool = false) -> Dictionary:
+	var report := {"events": [], "view": null, "picker_seen": false, "bag_reopened": false}
+	_director.event_played.connect(func(e: BattleEvent) -> void: report["events"].append(e))
+	var done: Array[bool] = [false]
+	var runner := func() -> void:
+		await _director.run_request(request, _map)
+		done[0] = true
+	runner.call()
+	var stage := 0
+	var answered := false
+	var deadline := Time.get_ticks_msec() + 20000
+	while not done[0] and Time.get_ticks_msec() < deadline:
+		var panel := _director.get_bag_panel()
+		var picker := _director.get_party_picker()
+		var battle := _director.get_battle()
+		if picker != null and picker.is_shown() and not answered:
+			report["picker_seen"] = true
+			report["view"] = picker.get_view()
+			answered = true
+			if back_from_picker:
+				picker.back_requested.emit()
+			else:
+				picker.target_chosen.emit(target)
+		elif panel != null and panel.is_shown() and not panel.is_answered():
+			if stage == 1 and report["picker_seen"]:
+				report["bag_reopened"] = true
+				panel.get_back_button().back_requested.emit()
+			else:
+				panel.open_category(&"heal")
+				panel.select_item(&"potion")
+				panel.get_action_button().pressed.emit()
+				stage = 1
+		elif battle != null and battle.get_state() == Battle.State.CHOOSING \
+				and _hud.get_zone() == BattleHud.Zone.ACTIONS:
+			_hud.action_selected.emit(ActionGrid.BAG if stage == 0 else ActionGrid.RUN)
+		await wait_process_frames(1)
+	assert_true(done[0], "le combat s'est terminé")
+	return report
+
+
+## Équipe : [param starter] au complet, puis un Roucool au Nv. 20 blessé (PV [param hp]).
+func _prepare_potion(hp: int) -> BattleRequest:
 	var request := _wild_request(&"rattata", 3, 7)
-	var report := await _play_capture(request, [&"back", &"run"])
-	assert_true(report["bag_seen"])
-	assert_true(report["bag_empty_shown"], "« Aucun objet utilisable pour l'instant. »")
-	assert_eq(_state.bag.count_of(&"potion"), 3, "la Potion reste")
-	assert_eq(BattleBagPanel.EMPTY_TEXT, "Aucun objet utilisable pour l'instant.")
+	var hurt := PokemonFactory.create(_data, &"pidgey", 20, GameRng.new(3))
+	hurt.hp = hp
+	(_state.party as Party).add(hurt)
+	_state.bag.add(&"potion", 3)
+	return request
+
+
+func test_a_potion_on_another_member_heals_it_once_then_the_foe_plays() -> void:
+	var request := _prepare_potion(5)
+	var hurt: Pokemon = (_state.party as Party).get_at(1)
+	var report := await _play_potion(request, 1)
+	assert_true(report["picker_seen"], "le choix du Pokémon s'est ouvert")
+	assert_eq(hurt.hp, 25, "+20 PV")
+	assert_eq(_state.bag.count_of(&"potion"), 2, "une seule Potion retirée")
+	var kinds := _kinds_of(report["events"])
+	var used := kinds.find(BattleEvent.Kind.ITEM_USED)
+	assert_gt(used, -1, "ITEM_USED")
+	assert_true(kinds.slice(used).has(BattleEvent.Kind.MOVE_USED)
+		or kinds.slice(used).has(BattleEvent.Kind.MOVE_MISSED), "l'adversaire joue ensuite")
+	assert_eq(report["view"].targets.size(), 2)
+	assert_false(report["view"].targets[0].usable, "le Pokémon en jeu est à PV pleins")
+	assert_true(report["view"].targets[1].usable)
+	assert_push_error_count(0)
+
+
+func test_back_from_the_party_choice_reopens_the_bag_and_consumes_nothing() -> void:
+	var request := _prepare_potion(5)
+	var hurt: Pokemon = (_state.party as Party).get_at(1)
+	var report := await _play_potion(request, 1, true)
+	assert_true(report["picker_seen"])
+	assert_true(report["bag_reopened"], "le Sac revient")
+	assert_eq(hurt.hp, 5)
+	assert_eq(_state.bag.count_of(&"potion"), 3)
+	assert_false(_kinds_of(report["events"]).has(BattleEvent.Kind.ITEM_USED))
 
 
 func test_without_an_item_library_no_ball_can_be_thrown() -> void:
@@ -1204,6 +1351,7 @@ func test_the_bag_stays_closed_against_a_trainer() -> void:
 	var battle_seed := _seed_for(&"charmander", Battle.Outcome.WIN)
 	_prepare(&"charmander", battle_seed)
 	_state.bag.add(BALL, 3)
+	_state.bag.add(&"potion", 2)
 	var opened: Array[bool] = [false]
 	var done: Array[bool] = [false]
 	var actors: Dictionary[StringName, StringName] = {&"player": MINE_ID, &"foe": FOE_ID}
@@ -1228,3 +1376,4 @@ func test_the_bag_stays_closed_against_a_trainer() -> void:
 	assert_true(done[0])
 	assert_false(opened[0], "le Sac ne s'ouvre pas contre un dresseur")
 	assert_eq(_state.bag.count_of(BALL), 3, "aucune Ball consommée")
+	assert_eq(_state.bag.count_of(&"potion"), 2, "aucune Potion consommée")

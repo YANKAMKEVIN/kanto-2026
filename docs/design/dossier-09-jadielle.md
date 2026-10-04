@@ -16,6 +16,32 @@ Application directe : le Pokédex (§6). Ses données sont enregistrées depuis 
 
 La première vraie ville après Bourg Palette et la Route 1 : **dense et vivante plutôt que grande pour être grande** (échelle A+). Verdoyante, plus urbaine que Bourg Palette sans être une métropole ; ville de passage, commerces et voyageurs ; humains et Pokémon visibles dans la vie quotidienne (`vision.md` : « première vraie ville, commerces, voyageurs »). Les lieux importants se reconnaissent par l'architecture et le level design, **sans marqueur d'interface permanent**.
 
+## Références visuelles (Kevin, 2026-10-02)
+
+> **Les images définissent la direction artistique, l'ambiance et les intentions de mise en scène ; elles ne constituent pas des plans à reproduire au pixel près.** Si une image contredit ce dossier, le dossier gagne (`CLAUDE.md` règle 10).
+
+| Fichier (`reference/`) | Contenu |
+|---|---|
+| `jadielle-vue-generale-v1.webp` | Jadielle vue de haut : place centrale et son arbre, Centre à l'ouest, Boutique à l'est, Arène au nord-ouest, pont vers l'ouest, sortie nord, arrivée de la Route 1 au sud |
+| `jadielle-planche-v1.webp` | Planche : vue d'ensemble, Centre, Boutique, rue avec l'enfant, son Rattata et le Roucool qui s'envole (§2), entrée de la Route 22 |
+| `centre-pokemon-v1.webp` | Centre Pokémon : extérieur, salle, comptoir, terminal de stockage, coin repos |
+| `boutique-jadielle-v1.webp` | Boutique : extérieur, salle, comptoir, rayons |
+| `route-22-rival-02-v1.webp` | Route 22 (entrée, herbes, relief, vue vers le Plateau Indigo) et storyboard du rival n°2 en 5 cases |
+
+**Ce qui est retenu** : l'organisation de la ville (conforme au §1), sa densité verdoyante, les lieux reconnaissables à leur architecture (toit rouge du Centre, toit bleu de la Boutique) ; un Centre et une Boutique compacts, chaleureux et vivants ; la micro-scène d'arrivée (§2) ; la Route 22 en relief avec le Plateau Indigo au loin (§12) ; le storyboard du rival (§13 : jeune Dresseur battu, rappel du Pokémon, le rival remarque le joueur, échange, combat), dont la réplique de la case 4 est celle du §19.
+
+**Ce que les images ne changent pas** (le dossier gagne) :
+- **Pokémon des PNJ** : Évoli et Pikachu (Centre, Boutique) ne sont pas repris ; seuls Roucool et Rattata habillent Jadielle (décisions verrouillées).
+- **Rayons de la Boutique** : décor sans étiquettes lisibles. Super Potion, Hyper Potion, Rappel, Super Rappel, Total Soin, Super Ball et Hyper Ball n'existent pas au J7 (§9 : stock Poké Ball + Potion, rien pour une mécanique absente). Les panneaux de catégories restent du décor ; l'achat passe par l'interface (§9).
+- **Orientation de la Route 22** : elle part **vers l'ouest** depuis Jadielle (§1, §19). Les flèches de la planche (« Vers Jadielle » à gauche, « Vers l'est » à droite) sont inversées et ne sont pas reprises, pas plus que ces libellés d'interface.
+- **Dresseurs sur la Route 22** : seuls le voyageur, le jeune Dresseur de la scène et le rival sont prévus (§13, §19), pas les autres silhouettes de la planche.
+- « Le rival veut se battre ! » : c'est le message générique du moteur de combat (`data/battle/messages.json`), pas une nouvelle réplique.
+
+**Arbitrages (Kevin, 2026-10-02 nuit, recommandations de Claude suivies)** :
+1. **Pas de mer autour de Jadielle** : la ville est dans les terres, comme dans Rouge/Bleu. Elle est bordée de forêt et de relief ; les falaises et les dénivelés sont gardés, la côte et l'eau ne le sont pas.
+2. **Pas de Leveinard** : l'infirmière est seule au comptoir, conformément à la règle « aucune espèce nouvelle pour habiller Jadielle ». Cela évite aussi un sprite de plus au J7.
+3. **Pas d'escalier dans le Centre** : rien n'existe à l'étage, et un lieu ne montre pas de fonction absente (règle D). L'espace libéré revient au coin repos.
+
 ## Règles Kanto 2026 renforcées par le J7
 
 - **A. Le monde existe indépendamment du joueur** : les personnages ont de petites activités et changent avec les événements.
@@ -69,7 +95,7 @@ Logique du lieu (**à ne pas reproduire au pixel près** ; le plan exact se con�
 - **Environ 6 habitants significatifs** plutôt que beaucoup de PNJ immobiles. Pistes : un **livreur lié à la Boutique** (il peut être le Voyageur de la Route 1, comme le prévoit déjà le dossier 07 §5), une jeune Dresseuse qui revient de la Route 2 avec son Pokémon, un enfant qui joue avec son Pokémon, un voyageur arrivé du nord, un habitant intrigué par la fermeture de l'Arène, le **vieil homme** (§19).
 - **Petits comportements** : marcher, regarder son Pokémon, changer de réplique ou disparaître après certains événements (drapeaux `if` / `unless`, déjà disponibles).
 - **Entrer ou sortir d'un bâtiment (V1)** : le PNJ marche jusqu'à la porte puis disparaît ; sa présence à l'intérieur dépend des drapeaux. Pas de système de continuité physique entre les cartes pour cette seule animation.
-- **Première arrivée** : une micro-scène de quelques secondes au plus, par exemple un Roucool qui s'envole du toit de la Boutique sous le regard d'un enfant (envol déjà codé pour les Pokémon d'ambiance). Pas de cinématique lourde, pas de tutoriel.
+- **Première arrivée** (décision de Kevin, 2026-10-02) : micro-scène **à la première arrivée seulement**, **4 s au plus**, contrôles bloqués, **aucun dialogue** ni caméra spectaculaire : titre JADIELLE, l'enfant traverse en courant derrière son Rattata, le Roucool posé sur le toit de la Boutique s'envole à leur passage (et reste absent pour cette visite), un voyageur venu du nord croise le joueur et continue vers le sud ; puis contrôle rendu et la ville reprend sa vie normale. Elle dit seulement : il y a du monde ici.
 
 ## 3. L'Arène
 
@@ -115,7 +141,7 @@ Quatre fonctions : **refuge, soin, point de retour, stockage**. Compact mais viv
 - **Nom d'interface officiel : « Stockage Pokémon ».** Un stockage unique, pas de boîtes 1, 2, 3.
 - **Équipe de 6 au plus.** À partir du 7e Pokémon capturé, il est envoyé automatiquement au stockage (déjà codé au J5). Texte narratif conservé : « {Pokémon} a été confié au système de recherche de Chen. » : il relie le stockage au travail de Chen sans nommer toute l'interface ainsi.
 - **Accès uniquement depuis un Centre Pokémon** ou un lieu explicitement équipé pour cela, par le menu Équipe. **Pas de PC magique accessible partout.**
-- **V1** : voir l'équipe et le stockage ; **déposer** ; **reprendre** ; glisser-déposer tactile **et** une alternative par sélection et bouton (accessibilité) ; **favori** ; **LIBÉRER** dans un menu secondaire, avec confirmation. **Un favori ne peut pas être libéré.**
+- **V1** : voir l'équipe et le stockage ; **déposer** ; **reprendre** ; glisser-déposer tactile **et** une alternative par sélection et bouton (accessibilité) ; **favori** ; **LIBÉRER** dans un menu secondaire, avec confirmation. **Un favori ne peut pas être libéré.** **Le dernier Pokémon de l'équipe ne peut être ni déposé ni libéré** (« Tu dois garder au moins un Pokémon avec toi. ») : **règle métier** (logique testable du stockage), pas seulement une protection de l'interface.
 - **Reportés** : recherche et filtres (Type, Niveau, Récents, Favoris), quand la taille réelle de la collection les rendra utiles.
 
 ## 9. Boutique
@@ -198,70 +224,74 @@ Le format de sauvegarde est versionné (jalon 5 §16) : les ajouts du J7 passent
 - **J7B** : IA de niveau 2 (moteur) ; environ 10 nouvelles espèces si l'on suit Rouge/Bleu pour la Route 22 (données, apprentissages, sprites) ; mise en scène du rival contre un autre dresseur.
 - Sprites : infirmière, marchand, habitants, jeune dresseur.
 
-## 19. Textes à valider (un seul lot, par Kevin)
+## 19. Textes de référence J7 V1 (validés par Kevin, 2026-10-02)
 
-Toutes les répliques ci-dessous sont **proposées** ; les « trous » sont à écrire.
+Textes **de référence**, plus des placeholders. **Raccourcissables à la QA** : une réplique juste sur papier peut être une bulle de trop au doigt.
 
-**Boutique — marchand (première visite)**
-> « Bonjour ! Première fois à Jadielle ? »
-> « Hmm… Ce Pokémon vient du laboratoire du Professeur Chen, non ? »
-> « Ça tombe bien. J'ai justement reçu quelque chose pour lui ce matin. »
-> « Tu pourrais lui remettre quand tu retourneras à Bourg Palette ? »
-
-Toast : « COLIS POUR CHEN — ajouté aux objets clés ». Objectif : « Objectif : remettre le colis au Professeur Chen. »
-*Trous* : réplique d'accueil du marchand aux visites suivantes ; libellés de l'écran (ACHETER, VENDRE, quantité, total).
+**Boutique — marchand**
+> Première visite : « Bonjour ! Première fois à Jadielle ? » · « Hmm… Ce Pokémon vient du laboratoire du Professeur Chen, non ? » · « Ça tombe bien. J'ai justement reçu quelque chose pour lui ce matin. » · « Tu pourrais lui remettre quand tu retourneras à Bourg Palette ? »
+> Toast : « COLIS POUR CHEN — ajouté aux objets clés ». Objectif : « Objectif : remettre le colis au Professeur Chen. »
+> Visites suivantes : « Bonjour ! Qu'est-ce qu'il te faut aujourd'hui ? »
+> Libellés : **ACHETER · VENDRE · QUANTITÉ · TOTAL · DANS LE SAC · CONFIRMER · RETOUR** (« Dans le Sac » plutôt que « Possédé »).
+> Messages : « Tu n'as pas assez d'argent. » · « Je ne peux pas te reprendre ça. » (objet clé) · « Merci ! » (après un achat).
 
 **Arène**
 > Porte : « La porte est verrouillée. »
 > Habitant : « Encore fermée… Je me demande où est passé le Champion. »
 
-**Vieil homme** (texte de Kevin : clin d'œil au tutoriel historique, sans tutoriel ni quatrième mur)
-> « Tu pars vers le nord ? »
-> « La Forêt de Jade surprend souvent les jeunes Dresseurs. »
-> « Garde toujours quelques Poké Balls avec toi. On ne sait jamais quelle rencontre nous attend. »
+**Vieil homme** (clin d'œil au tutoriel historique, sans tutoriel ni quatrième mur)
+> « Tu pars vers le nord ? » · « La Forêt de Jade surprend souvent les jeunes Dresseurs. » · « Garde toujours quelques Poké Balls avec toi. On ne sait jamais quelle rencontre nous attend. »
 > En lui reparlant : « Il y a des choses qu'on apprend mieux sur la route qu'en écoutant un vieux monsieur. »
 
 **Chen — remise du colis et activation**
-> « Tiens… »
-> « Il a déjà commencé à enregistrer tes rencontres. »
-> Variante dynamique, si une espèce sauvage a été observée : « Un {espèce}… Tu n'as pas perdu de temps. »
-> « J'étudie depuis longtemps la manière dont les Pokémon vivent à travers Kanto. »
-> « Mais aucune recherche ne remplacera ce qu'un Dresseur découvre sur le terrain. »
-> « Ton voyage peut nous apprendre beaucoup. »
-> Caption : « POKÉDEX ACTIVÉ »
+> « Tiens… » · « Il a déjà commencé à enregistrer tes rencontres. »
+> Si une espèce sauvage a été rencontrée en combat : « Un {espèce}… Tu n'as pas perdu de temps. » — {espèce} = **la première espèce sauvage rencontrée en combat** (J6 Q-7), jamais un Pokémon d'habitant ni un Pokémon seulement observé dans le décor ; aucune → la réplique est omise.
+> « J'étudie depuis longtemps la manière dont les Pokémon vivent à travers Kanto. » · « Mais aucune recherche ne remplacera ce qu'un Dresseur découvre sur le terrain. » · « Ton voyage peut nous apprendre beaucoup. »
+> Caption : **POKÉDEX ACTIVÉ**
 > « Il enregistrera les Pokémon que tu observes, les endroits où tu les rencontres et ce que tu découvriras sur eux. »
-> Au joueur : « Observe. Explore. Fais-toi ta propre idée du monde. »
+> Au joueur : « Observe. Explore. Fais-toi ta propre idée du monde. » — **phrase importante de l'aventure**, à garder.
 
-**Rival — au labo** (il arrive après la remise du colis)
-> *Trou* : sa réplique d'arrivée. L'ancienne proposition « Alors c'était pour ça que tu nous faisais attendre ? » est **supprimée** (elle supposait qu'il attendait au labo).
-> Après l'activation : « Pas mal. » / « Mais ne t'imagine pas que je vais t'attendre. »
-> *Trou* : la motivation que Chen donne au rival (différente de celle du joueur).
+**Rival — au labo** (il arrive après la remise du colis ; il revient lui aussi de quelque part, il n'attendait pas le joueur)
+> En entrant : « Professeur ! Je suis revenu. »
+> Au joueur : « Tiens. T'es déjà revenu, toi aussi ? »
+> Chen, au rival : « Et toi… apprends à regarder au-delà de la victoire. » — Rival, après une courte pause : « …On verra. » (Chen n'annonce pas l'arc du rival.)
+> Après l'activation : « Pas mal. » · « Mais ne t'imagine pas que je vais t'attendre. »
 
 **Centre Pokémon — infirmière**
-> « Bonjour. Je m'occupe de ton équipe ? » — SOIGNER / PAS MAINTENANT
-> Fin : « Voilà. Tout le monde est en pleine forme. »
+> « Bonjour. Je m'occupe de ton équipe ? » — **SOIGNER / PAS MAINTENANT**
+> PAS MAINTENANT : « Très bien. Reviens quand tu veux. »
+> Après soin : « Voilà. Tout le monde est en pleine forme. »
 > Toast (première fois) : « Point de repos enregistré — Jadielle »
-> *Trou* : réponse à « PAS MAINTENANT ».
 
-**Stockage**
-> Équipe pleine : « {Pokémon} a été confié au système de recherche de Chen. » (déjà en jeu depuis le J5)
-> *Trous* : libellés de l'écran (DÉPOSER, REPRENDRE, FAVORI, LIBÉRER) et texte de confirmation de la libération ; message quand on tente de libérer un favori.
+**Stockage Pokémon**
+> Libellés : **ÉQUIPE · STOCKAGE · DÉPOSER · REPRENDRE · FAVORI · LIBÉRER · RETOUR**
+> Confirmation : **Libérer {Pokémon} ?** — « Il quittera définitivement ton équipe et ton stockage. » — **LIBÉRER / ANNULER**
+> Favori : « Retire d'abord {Pokémon} de tes favoris pour pouvoir le libérer. » — **aucun bouton de contournement** dans cette boîte : il faut retirer le favori volontairement.
+> Dernier Pokémon de l'équipe (déposer ou libérer) : « Tu dois garder au moins un Pokémon avec toi. » (règle métier, §8)
+> Équipe pleine après une capture : « {Pokémon} a été confié au système de recherche de Chen. » (en jeu depuis le J5)
 
 **Route 22 (J7B)**
-> *Trou* : la remarque diégétique facultative (« je ne suis peut-être pas censé aller loin… »).
-> Jeune Dresseur : « Sérieusement… ? »
-> Rival : « Tu hésites trop. » / « Tiens. » / « Toi aussi, tu es venu voir jusqu'où cette route mène ? »
-> Victoire du joueur : « …D'accord. » / « Tu progresses vite. » / « Mais moi aussi. » / « On verra lequel de nous deux arrive le plus loin. »
-> *Trou* : répliques du rival si le joueur perd.
+> Voyageur revenant de l'ouest, **seulement si le joueur lui parle** (aucun déclencheur automatique) : « Tu vas par là ? » · « La route continue loin vers l'ouest… mais je n'irais pas trop loin sans une équipe prête. »
+> Scène : Jeune Dresseur : « Sérieusement… ? » — Rival : « Tu hésites trop. »
+> Rival, au joueur : « Tiens. » · « Toi aussi, tu es venu voir jusqu'où cette route mène ? » · « Ça tombe bien. » · « Voyons ce que tu as appris depuis notre premier combat. » → combat.
+> Victoire du joueur : « …D'accord. » · « Tu progresses vite. » · « Mais moi aussi. » · « On verra lequel de nous deux arrive le plus loin. »
+> Défaite du joueur (sans mépris : il n'a rien à prouver) : « Tu t'es amélioré. » · « Mais pas assez. » · (il rappelle son Pokémon) « La prochaine fois, ne me laisse pas autant d'avance. » → **fondu → réveil au dernier Centre utilisé**, ou chez Maman si aucun Centre n'a été enregistré. On ne montre pas le rival partir.
 
-**Habitants** — *Trous* : répliques des ~6 habitants (livreur, jeune Dresseuse, enfant, voyageur du nord, habitant de l'Arène, vieil homme ci-dessus) et la micro-scène d'arrivée.
+**Habitants de Jadielle** (une petite touche de monde chacun, aucune information de gameplay obligatoire ; pas de quota de PNJ)
+> Livreur : « Encore une livraison pour la Boutique… » · « Jadielle est petite, mais tout le monde finit par passer par ici. »
+> Jeune Dresseuse, avec son **Roucool** (petite animation à côté d'elle) : « On revient de la route au nord. » · « On pensait aller plus loin… mais on va d'abord souffler un peu. »
+> Enfant, avec son **Rattata** qui trottine derrière lui (avant-goût discret du compagnon, sans l'annoncer) : « Il me suit partout. » · « Même quand je lui dis de rester à la maison ! »
+> Voyageur venant du nord : « Tu viens de Bourg Palette ? » · « Alors tu verras : au nord de Jadielle, le paysage change vite. »
+> Habitant près de l'Arène et vieil homme : ci-dessus.
 
-## 20. Questions ouvertes (valeur par défaut si Kevin ne dit rien)
+**Micro-scène d'arrivée** : sans texte, voir §2.
 
-1. **Argent gagné contre le rival n°2** : *défaut* : formule de Rouge/Bleu (base du dresseur × niveau du dernier Pokémon), valeurs provisoires.
-2. **Où marquer un Pokémon favori** : *défaut* : depuis sa fiche Équipe (J6) et depuis le Stockage (J7A).
-3. **Bestiaire exact de la Route 22** (§12) : *défaut* : celui de Rouge/Bleu, à confirmer avec le coût en sprites.
+## 20. Questions (réponses par défaut validées par Kevin, 2026-10-02)
+
+1. **Argent gagné contre le rival n°2** : formule de Rouge/Bleu (base du dresseur × niveau du dernier Pokémon), valeurs provisoires.
+2. **Où marquer un Pokémon favori** : depuis sa fiche Équipe (J6) et depuis le Stockage (J7A).
+3. **Bestiaire exact de la Route 22** (§12) : celui de Rouge/Bleu, à confirmer avec le coût en sprites.
 
 ## Décisions verrouillées
 
-Découpage J7A / J7B · Jadielle dense et vivante, sans marqueurs ni PNJ guide · Arène fermée, mystère sans calendrier · Colis à la Boutique, arrivée et retour libres, objectif silencieux · Rebords de la Route 1 conservés · Données collectées par le système de recherche de Chen, Pokédex = interface activée par Chen, rien de visible avant · Rival au labo après la remise du colis · Centre : soin ~3 s, dernier Centre utilisé = point de retour, Maman soigne toujours · « Stockage Pokémon » unique, accès au Centre seulement, V1 minimale, favoris protégés · Boutique rapide, rien pour une mécanique absente · 3 000 ₽, aucune perte d'argent à la défaite · Sortie nord « ROUTE 2 — À venir » en développement · Rival n°2 seulement après l'activation, facultatif, trois états mémorisés · IA du rival qui progresse avec son arc · Aucun PNJ omniscient.
+Découpage J7A / J7B · Jadielle dense et vivante, sans marqueurs ni PNJ guide · Arène fermée, mystère sans calendrier · Colis à la Boutique, arrivée et retour libres, objectif silencieux · Rebords de la Route 1 conservés · Données collectées par le système de recherche de Chen, Pokédex = interface activée par Chen, rien de visible avant · Rival au labo après la remise du colis · Centre : soin ~3 s, dernier Centre utilisé = point de retour, Maman soigne toujours · « Stockage Pokémon » unique, accès au Centre seulement, V1 minimale, favoris protégés · Boutique rapide, rien pour une mécanique absente · 3 000 ₽, aucune perte d'argent à la défaite · Sortie nord « ROUTE 2 — À venir » en développement · Rival n°2 seulement après l'activation, facultatif, trois états mémorisés · IA du rival qui progresse avec son arc · Aucun PNJ omniscient · Textes J7 V1 (§19) validés, raccourcissables à la QA · Dernier Pokémon de l'équipe ni déposé ni libéré (règle métier) · **SAC utilisable contre tous les Dresseurs**, rival n°2 compris (décision de Kevin, 2026-10-03) ; seul le combat du labo garde le SAC muet · Pokémon des habitants : Roucool (Dresseuse), Rattata (enfant), aucune espèce nouvelle pour habiller Jadielle.

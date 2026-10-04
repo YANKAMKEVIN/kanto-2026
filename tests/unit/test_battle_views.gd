@@ -89,7 +89,7 @@ func test_wild_battle_actions_attack_bag_and_run() -> void:
 
 ## Sac de combat : les Balls sont utilisables, la Potion est rangée mais jamais proposée (son
 ## usage arrive au jalon 6) ; nom au singulier, quantité du Sac, catégorie des données.
-func test_bag_entries_offer_the_balls_and_never_the_potion() -> void:
+func test_bag_entries_offer_the_balls_and_the_potion() -> void:
 	var items := ItemLibrary.new()
 	assert_true(items.load_dir(), "objets chargés")
 	var bag := Bag.new()
@@ -108,8 +108,9 @@ func test_bag_entries_offer_the_balls_and_never_the_potion() -> void:
 	assert_true(ball.is_displayable())
 	var potion := by_id[&"potion"]
 	assert_eq(potion.category_id, &"heal")
-	assert_false(potion.usable, "la Potion n'est pas utilisable au jalon 5")
-	assert_false(potion.is_displayable(), "jamais affichée")
+	assert_true(potion.usable, "la Potion est utilisable en combat (jalon 6)")
+	assert_true(potion.targets_pokemon, "elle ouvre le choix du Pokémon")
+	assert_true(potion.is_displayable())
 
 
 func test_bag_entries_skip_unknown_items_and_handle_no_bag() -> void:

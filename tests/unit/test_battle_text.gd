@@ -376,3 +376,14 @@ func test_capture_card_texts_are_those_of_dossier_05() -> void:
 	assert_eq(_text.line_for(&"joined_party", caught, _data), "Roucool rejoint ton équipe.")
 	caught.pokemon_name = "Salamèche"
 	assert_eq(_text.line_for(&"caught_title", caught, _data).to_upper(), "SALAMÈCHE CAPTURÉE !")
+
+
+## Jalon 6 : soin en combat, textes proposés (draft, à relire par Kevin).
+func test_item_used_then_hp_restored() -> void:
+	var used := _event(K.ITEM_USED, false, "Salamèche")
+	used.item_name = "Potion"
+	used.amount = 20
+	assert_eq(_lines(used), ["Tu utilises Potion sur Salamèche.",
+		"Salamèche récupère 20 PV."] as Array[String])
+	assert_true(_text.is_draft(&"item_used"))
+	assert_true(_text.is_draft(&"hp_restored"))

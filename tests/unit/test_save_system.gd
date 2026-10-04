@@ -8,6 +8,7 @@ const FixedClock := preload("res://tests/helpers/fixed_clock.gd")
 const ScriptedRng := preload("res://tests/helpers/scripted_rng.gd")
 const GameStateScript := preload("res://game/autoload/game_state.gd")
 const PATH := "user://test/save.json"
+const FIXTURE_V1 := "res://tests/fixtures/save/v1_after_capture.json"
 
 var _fs: SaveFileSystem
 var _save: SaveSystem
@@ -63,6 +64,19 @@ func _full_state() -> Node:
 	state.record_moment(state.MOMENT_RIVAL_BATTLE, &"oak_lab", {"outcome": "win"})
 	state.rng.roll(100)
 	return state
+
+
+## Vraie sauvegarde v1 du jalon 5 (S24 de Kevin, QA T16 passage 1, après les captures de
+## Roucool et Rattata ; starter « vu 0 fois » d'avant la correction Q-8).
+func _fixture_v1() -> Dictionary:
+	var parsed: Variant = JSON.parse_string(FileAccess.get_file_as_string(FIXTURE_V1))
+	assert_true(parsed is Dictionary, "fixture v1 lisible")
+	return parsed if parsed is Dictionary else {}
+
+
+## Passage par le JSON (entiers en flottants), pour comparer deux dictionnaires de sauvegarde.
+func _json(value: Variant) -> Variant:
+	return JSON.parse_string(JSON.stringify(value))
 
 
 # --- Écriture ----------------------------------------------------------------------------
@@ -141,6 +155,32 @@ func test_newer_version_is_refused_and_left_untouched() -> void:
 	assert_true(_save.last_error.contains("plus récente"))
 	assert_eq((_fs as MemoryFs).files[PATH], text, "fichier intact")
 	assert_false(_fs.exists(PATH + ".corrupt"))
+
+
+func test_a_v3_save_is_refused_and_left_untouched() -> void:
+	# Jalon 6 : cette build écrit la v2 ; une v3 (build future) n'est jamais lue ni écrasée.
+	var future := _fixture_v1()
+	future["version"] = 3
+	var text := JSON.stringify(future, "\t")
+	(_fs as MemoryFs).files[PATH] = text
+	assert_eq(_save.read(), {})
+	assert_eq(_save.last_status, ERR_INVALID_DATA)
+	assert_true(_save.last_error.contains("3 > 2"), _save.last_error)
+	assert_eq((_fs as MemoryFs).files[PATH], text, "fichier intact")
+	assert_false(_fs.exists(PATH + ".corrupt"))
+
+
+func test_a_v2_save_is_refused_by_a_build_that_writes_v1() -> void:
+	# Ce que fait un APK du jalon 5 (VERSION = 1) devant la sauvegarde du J6 : refus, intacte.
+	assert_eq(_save.write(_full_state().to_dict()), OK)
+	var written: String = (_fs as MemoryFs).files[PATH]
+	assert_eq(int((JSON.parse_string(written) as Dictionary)["version"]), 2, "écrite en v2")
+	var old_build := SaveSystem.new(_fs, PATH)
+	old_build.version = 1
+	assert_eq(old_build.read(), {})
+	assert_eq(old_build.last_status, ERR_INVALID_DATA)
+	assert_eq((_fs as MemoryFs).files[PATH], written, "fichier intact")
+	assert_false(_fs.exists(PATH + ".corrupt"), "pas mis de côté comme corrompu")
 
 
 func test_upgrade_is_idempotent_on_the_current_version() -> void:
@@ -293,7 +333,7 @@ func test_invalid_entries_are_discarded_and_reported() -> void:
 	var state := _state()
 	var dict: Dictionary = _full_state().to_dict()
 	dict["party"].append({"species": "missingno"})
-	dict["bag"]["poke_ball"] = "cinq"
+	dict["bag"]["items"]["poke_ball"] = "cinq"
 	assert_false(state.load_dict(dict, _data), "une entrée écartée → faux")
 	assert_eq(state.party.size(), 2, "les Pokémon valides sont gardés")
 	assert_eq(state.bag.count_of(&"potion"), 1)
@@ -337,6 +377,123 @@ func test_invalid_storage_entries_are_discarded() -> void:
 	assert_false(state.load_dict(dict, _data), "une entrée écartée → faux")
 	assert_eq(state.storage.size(), 1, "le Pokémon valide est gardé")
 	assert_push_error_count(2, "espèce inconnue (Pokemon), entrée écartée (PokemonStorage)")
+
+
+# --- Version 2 (jalon 6, T0 : jalon-06.md §5.1) ---------------------------------------------
+
+func test_the_real_v1_save_is_migrated_to_v2_on_read() -> void:
+	(_fs as MemoryFs).files[PATH] = FileAccess.get_file_as_string(FIXTURE_V1)
+	var content := _save.read()
+	assert_eq(_save.last_status, OK)
+	assert_eq(int(content["version"]), 2, "migrée en v2")
+	assert_eq(_json(content["bag"]), _json({"items": {"poke_ball": 3, "potion": 1},
+		"favorites": [], "acquired": {"poke_ball": 1, "potion": 2}}), "Sac v2")
+	for member: Dictionary in content["party"]:
+		assert_eq(member.get("favorite"), false, "favori posé à faux")
+	var entries: Dictionary = content["pokedex"]["entries"]
+	for species: String in entries:
+		assert_eq(entries[species].get("notes"), [], "notes vides : %s" % species)
+	assert_eq(int(entries["charmander"]["times_seen"]), 0,
+		"la migration ne touche pas times_seen (corrigé au chargement, une seule règle)")
+
+
+func test_the_real_v1_save_loads_identically_after_migration() -> void:
+	var v1 := _fixture_v1()
+	(_fs as MemoryFs).files[PATH] = FileAccess.get_file_as_string(FIXTURE_V1)
+	var state := _state()
+	assert_true(state.load_dict(_save.read(), _data), "rien d'écarté")
+	# Lu directement : la partie de Kevin.
+	assert_eq(state.current_map, &"route_1")
+	assert_eq(state.player_cell, Vector2i(30, 32))
+	assert_eq(state.player_facing, Vector2i.RIGHT)
+	assert_eq(state.party.size(), 3)
+	var summary: Array = []
+	for pokemon: Pokemon in state.party.get_all():
+		summary.append([pokemon.species_id, pokemon.level, pokemon.hp, pokemon.experience,
+			pokemon.favorite])
+	assert_eq(summary, [[&"charmander", 5, 4, 163, false], [&"pidgey", 4, 1, 96, false],
+		[&"rattata", 4, 17, 64, false]], "équipe, ordre, PV, XP")
+	assert_eq(state.bag.count_of(&"poke_ball"), 3)
+	assert_eq(state.bag.count_of(&"potion"), 1)
+	assert_eq(state.bag.favorite_ids(), [] as Array[StringName])
+	assert_eq(state.pokedex.seen_count(), 4)
+	assert_eq(state.pokedex.caught_count(), 3)
+	assert_eq(state.pokedex.times_seen(&"charmander"), 1, "starter : vu une fois (Q-8)")
+	assert_eq(state.pokedex.get_entry(&"charmander").first_seen_date, "2026-10-02T19:07:52")
+	assert_eq(state.pokedex.times_seen(&"pidgey"), 2)
+	assert_eq(state.pokedex.times_seen(&"rattata"), 4)
+	assert_eq(state.moments.size(), 3)
+	assert_eq(state.play_time, 1616.63664866551, "temps de jeu")
+	# Tout ce que la v2 ne change pas est réécrit à l'identique.
+	var after: Dictionary = _json(state.to_dict())
+	var before: Dictionary = _json(v1)
+	for key: String in before:
+		if key not in ["version", "bag", "party", "pokedex"]:
+			assert_eq(after.get(key), before[key], "champ « %s » identique" % key)
+	var party: Array = before["party"]
+	for i: int in party.size():
+		var expected: Dictionary = party[i].duplicate(true)
+		expected["favorite"] = false
+		assert_eq(after["party"][i], expected, "Pokémon %d identique, favori en plus" % i)
+	var dex: Dictionary = before["pokedex"]["entries"].duplicate(true)
+	for species: String in dex:
+		dex[species]["notes"] = []
+	dex["charmander"]["times_seen"] = 1.0
+	assert_eq(after["pokedex"]["entries"], dex, "Pokédex identique, notes en plus, starter vu 1")
+	assert_eq(after.keys().size(), before.keys().size() - 1, "aucun champ perdu (sauf version)")
+
+
+func test_a_migrated_save_is_rewritten_in_v2_and_reads_back_identically() -> void:
+	(_fs as MemoryFs).files[PATH] = FileAccess.get_file_as_string(FIXTURE_V1)
+	var state := _state()
+	assert_true(state.load_dict(_save.read(), _data))
+	var dict: Dictionary = state.to_dict()
+	assert_eq(_save.write(dict), OK)
+	var written: Dictionary = JSON.parse_string((_fs as MemoryFs).files[PATH])
+	assert_eq(int(written["version"]), 2)
+	assert_true((written["bag"] as Dictionary).has("items"), "Sac écrit en v2")
+	var again := _state()
+	assert_true(again.load_dict(_save.read(), _data))
+	assert_eq(again.to_dict(), dict, "aller-retour v2 stable")
+
+
+func test_v2_round_trip_keeps_favorites_and_notes() -> void:
+	var original := _full_state()
+	original.bag.set_favorite(&"potion", true)
+	original.party.get_at(1).favorite = true
+	original.pokedex.get_entry(&"pidgey").notes.append(&"pidgey_paths")
+	var rattata := PokemonFactory.create(_data, &"rattata", 3, GameRng.new(5))
+	rattata.favorite = true
+	original.storage.add(rattata)
+	var before: Dictionary = original.to_dict()
+	assert_eq(_save.write(before), OK)
+	var loaded := _state()
+	assert_true(loaded.load_dict(_save.read(), _data), "rien d'écarté")
+	assert_eq(loaded.to_dict(), before, "même état après rechargement")
+	assert_true(loaded.bag.is_favorite(&"potion"))
+	assert_gt(loaded.bag.acquired_rank(&"potion"), loaded.bag.acquired_rank(&"poke_ball"),
+		"ordre d'obtention gardé")
+	assert_false(loaded.party.get_lead().favorite)
+	assert_true(loaded.party.get_at(1).favorite)
+	assert_true(loaded.storage.get_all()[0].favorite, "favori du stockage")
+	assert_eq(loaded.pokedex.get_entry(&"pidgey").notes, [&"pidgey_paths"] as Array[StringName])
+
+
+func test_upgrade_1_to_2_leaves_v2_shapes_and_malformed_fields_alone() -> void:
+	var content := {"version": 1, "bag": {"items": {"potion": 2}, "favorites": ["potion"],
+		"acquired": {"potion": 4}}, "party": [{"species": "pidgey", "favorite": true}, 7]}
+	assert_eq(SaveSystem.upgrade(content), OK)
+	assert_eq(content["bag"], {"items": {"potion": 2}, "favorites": ["potion"],
+		"acquired": {"potion": 4}}, "Sac déjà en v2 : intact")
+	assert_eq(content["party"], [{"species": "pidgey", "favorite": true}, 7])
+	var odd := {"version": 1, "bag": 3, "party": "x", "storage": null,
+		"pokedex": {"entries": []}}
+	assert_eq(SaveSystem.upgrade(odd), OK, "rien ne plante")
+	assert_eq(odd["bag"], 3, "mal formé : laissé aux chargeurs tolérants")
+	assert_eq(odd["version"], 2)
+	var bare := {"version": 1}
+	assert_eq(SaveSystem.upgrade(bare), OK)
+	assert_eq(bare, {"version": 2}, "aucun champ inventé")
 
 
 # --- Système de fichiers réel ---------------------------------------------------------------

@@ -14,8 +14,10 @@ Kevin est le **directeur du jeu** : il conçoit (souvent avec ChatGPT), Claude i
 - `docs/design/reference/bourg-palette-aplus-v1.png` — benchmark graphique du **monde** (2D HD atmosphérique, golden hour).
 - `docs/design/reference/chambre-joueur-v1.webp` — référence de la **chambre du joueur** (agencement + rendu cible des intérieurs) ; autres intérieurs : `ouverture-storyboard-v1.webp`, `maison-rival-v1.webp`, `labo-chen-v1.png` ; combat : `combat-v1.webp`, `combat-capture-v1.webp`.
 - `docs/design/dossier-08-menu-dresseur.md` — Menu Dresseur du **jalon 6** (tableau de bord, Équipe, Sac, Pokédex, Carte, Dresseur, Paramètres) ; maquettes `reference/menu-*-v1.jpg`.
+- Jadielle (J7) : `reference/jadielle-vue-generale-v1.webp`, `jadielle-planche-v1.webp`, `centre-pokemon-v1.webp`, `boutique-jadielle-v1.webp`, `route-22-rival-02-v1.webp` (écarts avec le dossier 09 listés dans sa section « Références visuelles »).
 - `docs/design/dossier-09-jadielle.md` — **jalon 7** (J7A : Jadielle, Centre, Boutique, économie, colis, activation du Pokédex, stockage ; J7B : Route 22, rival n°2) ; textes à valider au §19. Pas d'implémentation avant validation.
 - `docs/design/dossier-*.md` — conception détaillée par zone (`dossier-02-prologue.md` : textes définitifs du prologue, découpage 3A / 3B / 4).
+- `docs/design/cahier-art-monde-v0.1.md` — cahier des charges de l'art du monde et prototype de faisabilité de Jadielle (cible = références J7, pas de nivellement par le bas).
 - `docs/tech/etat-projet.md` — **où en est le projet, prochaine étape, questions ouvertes.** À lire en début de session.
 - `docs/tech/jalon-*.md` — plans techniques des jalons (tâches et critères d'acceptation).
 
@@ -29,7 +31,7 @@ Kevin est le **directeur du jeu** : il conçoit (souvent avec ChatGPT), Claude i
 6. Kevin prépare le dossier de conception du jalon suivant **pendant** le jalon en cours, pour que le code n'attende pas les décisions.
 7. Données (Pokémon, attaques, objets, rencontres, dialogues) = fichiers de données, jamais codées en dur dans la logique.
 8. Logique de jeu séparée de la présentation (testable sans scène).
-9. Monde en **2D HD atmosphérique** (décors HD, personnages et Pokémon en pixel art fin, lumière dynamique) ; UI **non** pixel art (skill `ui-theme-2026`).
+9. Monde en **2D HD atmosphérique** (décors HD peints, personnages et Pokémon **peints simplifiés** dans la même main, y compris en combat et dans les menus, lumière dynamique) ; UI **non** pixel art (skill `ui-theme-2026`). Production de l'art : `docs/design/cahier-art-monde-v0.1.md`.
 10. **Les maquettes et images de référence donnent la DA et la composition, jamais la vérité fonctionnelle.** Si une image contredit un dossier, `vision.md`, la bible UI/UX ou une décision validée, l'écrit gagne. On n'implémente jamais un élément simplement parce qu'il apparaît sur une maquette.
 
 ## Décisions techniques
@@ -37,9 +39,9 @@ Kevin est le **directeur du jeu** : il conçoit (souvent avec ChatGPT), Claude i
 | Sujet | Valeur |
 |---|---|
 | Résolution de référence | 1920×1080, stretch `canvas_items`, aspect `expand` (le S24 affiche ~2340×1080) |
-| Rendu | `mobile`, filtre par défaut `linear` (décors HD), `nearest` sur les sprites pixel art (personnages, Pokémon), snap 2D au pixel |
+| Rendu | `mobile`, filtre `linear` partout (décors, personnages et Pokémon peints), snap 2D au pixel |
 | Grille | **case = 96 px** en unités monde = pixels de référence, caméra zoom 1 (≈ 11 cases de haut) ; décors HD dessinés à 1:1 |
-| Personnages | pixel art 64 px de haut en natif, affichés ×2 (128 px ≈ 1,33 case), origine aux pieds |
+| Personnages | **peints simplifiés** (décision de Kevin, 2026-10-03, après test en mouvement sur S24), 128 px de haut affichés à 1:1 (≈ 1,33 case), origine aux pieds ; enfant ≈ 108 px, petit Pokémon (Rattata) ≈ 56 px |
 | Déplacement | Case par case (grille 96 px), marche/course |
 | Couches physiques | 1 monde · 2 joueur · 3 pnj · 4 interactifs · 5 déclencheurs |
 | Actions d'entrée | `move_up/down/left/right`, `interact`, `run`, `menu` (clavier pour tests desktop, tactile sur mobile) |

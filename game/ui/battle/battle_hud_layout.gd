@@ -14,10 +14,12 @@ extends RefCounted
 ##   FORGET      panneau d'oubli d'une capacité (jalon 5C), bas droite, plus haut que MOVES
 ##   BAG         Sac de combat (jalon 5D), colonne gauche : cadre au-dessus du bouton « ‹ »
 ##   CAPTURE     carte de capture (jalon 5D), centrée sur l'écran
+##   PARTY_PICKER choix du Pokémon à soigner (jalon 6), coin bas gauche, à la place du Sac
 ## Rien d'interactif à moins de SAFE_MARGIN des bords (vérifié par les tests).
 
 enum Slot {
 	FOE_CARD, OWN_CARD, PARTY_PIPS, BACK, ACTIONS, MOVES, MESSAGE, FORGET, BAG, CAPTURE,
+	PARTY_PICKER,
 }
 
 ## Valeur de « coin » d'un axe pour un emplacement centré (la distance au bord est ignorée).
@@ -90,6 +92,8 @@ static func frame(slot: Slot) -> Array[Vector2]:
 			return [Vector2(0, 1), Vector2(edge, edge), bag_size()]
 		Slot.CAPTURE:
 			return [Vector2(CENTERED, CENTERED), Vector2.ZERO, capture_size()]
+		Slot.PARTY_PICKER:
+			return [Vector2(0, 1), Vector2(edge, edge), picker_size()]
 	return [Vector2.ZERO, Vector2.ZERO, Vector2.ZERO]
 
 
@@ -122,6 +126,18 @@ static func forget_size() -> Vector2:
 static func bag_size() -> Vector2:
 	return Vector2(UiTokens.BAG_PANEL_WIDTH, UiTokens.BAG_FRAME_MAX_HEIGHT + UiTokens.GAP
 		+ UiTokens.BATTLE_BACK_SIZE)
+
+
+## Taille du choix du Pokémon (PartyPicker) : PICKER_COLUMNS colonnes de cartes, trois rangées
+## (six Pokémon), l'en-tête et les marges ; jamais plus étroit que le Sac.
+static func picker_size() -> Vector2:
+	var width := UiTokens.PICKER_COLUMNS * UiTokens.PICKER_COLUMN_WIDTH \
+		+ (UiTokens.PICKER_COLUMNS - 1) * UiTokens.PICKER_GAP + UiTokens.MENU_PANEL_PAD * 2
+	var rows := ceili(UiTokens.PARTY_SIZE / float(UiTokens.PICKER_COLUMNS))
+	var height := UiTokens.MENU_PANEL_PAD * 2 + UiTokens.TOUCH_MIN + UiTokens.PICKER_GAP \
+		+ rows * UiTokens.PICKER_ROW_HEIGHT + (rows - 1) * UiTokens.PICKER_GAP \
+		+ UiTokens.BAG_SCROLL_PAD * 2
+	return Vector2(maxf(width, UiTokens.BAG_PANEL_WIDTH), height)
 
 
 ## Taille de l'emplacement de la carte de capture (elle épouse son contenu, au centre).

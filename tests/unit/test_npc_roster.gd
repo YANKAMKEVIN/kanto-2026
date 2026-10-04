@@ -331,3 +331,42 @@ func test_real_route_1_traveler_has_a_route() -> void:
 	if traveler != null:
 		assert_true(traveler.has_route(), "le Voyageur marche")
 		assert_true(traveler.is_interactive(), "on peut lui parler")
+
+
+## Espèce d'un Pokémon du décor à OBSERVER (jalon-06.md §3.5, Q-7).
+func test_species_is_read_on_an_observable_pokemon() -> void:
+	var errors := PackedStringArray()
+	var spec := NpcRoster.parse_entry({"cell": [27, 13], "sprite": "pidgey",
+		"dialogue": "observe_aoki_pidgey", "verb": "observe", "species": "pidgey"}, errors)
+	assert_true(errors.is_empty(), "\n".join(errors))
+	assert_eq(spec.species, &"pidgey")
+	assert_true(spec.is_observable_species())
+	var plain := NpcRoster.parse_entry({"cell": [1, 1], "sprite": "mom"}, errors)
+	assert_eq(plain.species, &"", "aucune espèce par défaut")
+	assert_false(plain.is_observable_species())
+
+
+func test_species_needs_the_observe_verb_and_a_dialogue() -> void:
+	var errors := PackedStringArray()
+	assert_null(NpcRoster.parse_entry({"cell": [1, 1], "sprite": "pidgey",
+		"species": "pidgey"}, errors), "sans dialogue")
+	assert_null(NpcRoster.parse_entry({"cell": [1, 1], "sprite": "aoki", "dialogue": "aoki",
+		"species": "pidgey"}, errors), "verbe parler")
+	assert_null(NpcRoster.parse_entry({"cell": [1, 1], "sprite": "pidgey", "dialogue": "x",
+		"verb": "observe", "species": ""}, errors), "identifiant vide")
+	assert_null(NpcRoster.parse_entry({"cell": [1, 1], "sprite": "pidgey", "dialogue": "x",
+		"verb": "observe", "species": 16}, errors), "pas un identifiant")
+	assert_eq(errors.size(), 4)
+
+
+func test_real_species_exist_in_the_pokemon_data() -> void:
+	var data := PokemonData.new()
+	data.load_dir()
+	for file: String in DirAccess.get_files_at(NpcRoster.DATA_DIR):
+		if file.get_extension() != "json":
+			continue
+		var roster := NpcRoster.load_for_map(StringName(file.get_basename()))
+		assert_eq(roster.get_errors().size(), 0, file)
+		for spec: NpcSpec in roster.get_all():
+			if spec.is_observable_species():
+				assert_true(data.has_species(spec.species), "%s : %s" % [file, spec.species])

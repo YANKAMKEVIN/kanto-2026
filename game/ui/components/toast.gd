@@ -74,6 +74,8 @@ func show_toast(title: String, detail: String, icon: Texture2D = null) -> void:
 	_detail.text = detail
 	_detail.visible = not detail.is_empty()
 	_icon.texture = icon if icon != null else DEFAULT_ICON
+	# Taille du texte et contraste (UiPrefs), lus à chaque affichage ; le toast grandit avec.
+	UiPrefsApplier.apply(_body)
 	_kill()
 	if not _showing:
 		_body.position = Vector2.UP * UiTokens.TOAST_SLIDE
@@ -137,7 +139,7 @@ func _fit_body() -> void:
 func _haptic(duration_ms: int) -> void:
 	haptic_played.emit(duration_ms)
 	if haptics_enabled:
-		Input.vibrate_handheld(duration_ms)
+		Haptics.vibrate(duration_ms)
 
 
 func _kill() -> void:

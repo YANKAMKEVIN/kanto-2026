@@ -29,6 +29,9 @@ extends RefCounted
 ## - CAUGHT : CATCH seulement (l'éclat, puis le directeur range le Pokémon et montre la carte
 ##   de capture, qui porte tout le texte) ;
 ## - BROKE_FREE : RELEASE (le Pokémon ressort), puis le message.
+## Jalon 6 (soin) :
+## - ITEM_USED : « Tu utilises Potion sur … », HEAL (la barre remonte), puis « … récupère
+##   20 PV. ».
 ## Les phrases viennent de [BattleText] : rien n'est écrit ici.
 
 
@@ -83,6 +86,10 @@ static func beats(event: BattleEvent, texts: BattleText, data: PokemonData,
 		BattleEvent.Kind.BROKE_FREE:
 			result.append(BattleBeat.new(BattleBeat.Kind.RELEASE, event))
 			result.append_array(messages)
+		BattleEvent.Kind.ITEM_USED:
+			result.append_array(messages.slice(0, 1))
+			result.append(BattleBeat.new(BattleBeat.Kind.HEAL, event))
+			result.append_array(messages.slice(1))
 		_:
 			result.append_array(messages)
 	return result

@@ -59,6 +59,40 @@ extends SceneTree
 ## Notifications :
 ##   Toast            PanelContainer  capsule du toast (bible UI/UX §6)
 ##   ToastTitle / ToastDetail   Label  « Poké Balls ×5 » (gras) / « Ajoutées au Sac » (discret)
+## Menu Dresseur (jalon 6, T3) :
+##   MenuPanel        PanelContainer  panneau translucide (carte du Dresseur)
+##   MenuZonePill     PanelContainer  pastille du nom de zone (en-tête) ; MenuZoneName   Label
+##   MenuCloseButton  Button  × rond de l'en-tête (TOUCH_MIN)
+##   MenuCard         Button  grande carte (la teinte est posée par carte à l'usage)
+##   MenuCardTitle / MenuCardCaption   Label ; MenuCardChevron   Panel  pastille « › »
+##   MenuLeadCard     Button  carte du Pokémon de tête ; MenuLeadThumb   Panel
+##   MenuLeadName / MenuLeadLevel / MenuLeadHp   Label
+##   MenuName / MenuSubtitle / MenuStat   Label  carte du Dresseur ; MenuIdBar   Panel
+##   MenuObjective    Label  ligne d'objectif, discrète
+## Équipe (jalon 6, T7) :
+##   TeamSlot / TeamSlotSelected / TeamSlotSource / TeamSlotTarget / TeamSlotEmpty   Panel
+##   TeamSlotName / TeamSlotMeta / TeamCaption / TeamValue / TeamStat / TeamLevel   Label
+##   TeamTab          Button  onglet (bouton à bascule : enfoncé = ACCENT) ; TeamAction /
+##                    TeamActionOn  Button  actions de la fiche ; TeamSection  PanelContainer
+##   Sac du menu (T11) : BagTabCount / BagNote / BagHint / PickerTitle / PickerName / PickerMeta /
+##     PickerReason / ResultText  Label ; PickerRow / PickerRowSelected / PickerRowOff /
+##     ResultBar / ResultBarRefused  PanelContainer
+##   Carte (T20) : MapPanel / MapFrame / MapLabel / MapLabelOn / MapChip (PanelContainer),
+##     MapEntry (Button), MapName / MapSubtitle / MapText / MapSection / MapEntryText /
+##     MapLabelText / MapLabelTextOn (Label)
+##   Dresseur (T24) : TrainerBadge / TrainerBadgeOn (PanelContainer), TrainerMoment / TrainerLink
+##     (Button), TrainerMomentBox (PanelContainer), TrainerSection / TrainerBadgeName / TrainerMomentTitle / TrainerMomentDetail /
+##     TrainerMomentMeta / TrainerStatLabel / TrainerStatValue / TrainerRow / TrainerEmpty (Label)
+##   Pokédex (T15) : DexPanel (PanelContainer), DexCell / DexCellSelected / DexCellUnknown
+##     (PanelContainer, case de la grille), DexTab (Button à bascule : onglets et filtres),
+##     DexSearch (LineEdit), DexTitle / DexName / DexNumber (Label), DexSpriteFrame (Panel)
+##   TeamPill / TeamPillAccent  PanelContainer  « Favori » et consigne du mode DÉPLACER ;
+##   TeamPillText / TeamPillAccentText  Label ; TeamEvoCircle  Panel
+##   Paramètres (T28) : SettingsCategory / SettingsRow / SettingsOption / SettingsAction (Button),
+##     SettingsRowBox (PanelContainer), SettingsPanelTitle / SettingsLabel / SettingsDetail /
+##     SettingsValue (Label) ; ChoiceConfirm / ChoiceCancel (Button, carte de ChoiceCards),
+##     ChoiceTitle / ChoiceDetail / ChoiceConfirmLabel / ChoiceConfirmDetail / ChoiceCancelLabel /
+##     ChoiceCancelDetail (Label)
 ## tests/unit/test_ui_theme.gd vérifie que le fichier est à jour avec les tokens.
 
 const TOKENS_PATH: String = "res://game/ui/theme/ui_tokens.gd"
@@ -119,6 +153,13 @@ func _init() -> void:
 	_add_exp_and_forget(theme, bold, t)
 	_add_bag_and_capture(theme, bold, t)
 	_add_toast(theme, bold, t)
+	_add_menu(theme, bold, t)
+	_add_team(theme, bold, t)
+	_add_bag_screen(theme, bold, t)
+	_add_pokedex_screen(theme, bold, t)
+	_add_map_screen(theme, bold, t)
+	_add_trainer_screen(theme, bold, t)
+	_add_settings_screen(theme, bold, t)
 
 	var err := ResourceSaver.save(theme, THEME_PATH)
 	print("ui_theme.tres : ", error_string(err))
@@ -571,3 +612,440 @@ func _bag_box(bg: Color, border: Color, width: int, pad_h: int, pad_v: int,
 	box.set_content_margin(SIDE_TOP, pad_v)
 	box.set_content_margin(SIDE_BOTTOM, pad_v)
 	return box
+
+
+# --- Menu Dresseur (jalon 6, T3) ----------------------------------------------------------------
+
+
+func _add_menu(theme: Theme, bold: Font, t: GDScript) -> void:
+	var panel := _panel_style(t.MENU_PANEL_BG, t.RADIUS, t)
+	panel.set_content_margin_all(t.MENU_PANEL_PAD)
+	theme.set_type_variation(&"MenuPanel", &"PanelContainer")
+	theme.set_stylebox(&"panel", &"MenuPanel", panel)
+
+	var pill := _panel_style(t.PANEL_BG, t.ROUND_BUTTON, t)
+	pill.shadow_size = 0
+	pill.set_content_margin(SIDE_LEFT, t.MENU_ZONE_PAD_H)
+	pill.set_content_margin(SIDE_RIGHT, t.MENU_ZONE_PAD_H)
+	pill.set_content_margin(SIDE_TOP, t.MENU_ZONE_PAD_V)
+	pill.set_content_margin(SIDE_BOTTOM, t.MENU_ZONE_PAD_V)
+	theme.set_type_variation(&"MenuZonePill", &"PanelContainer")
+	theme.set_stylebox(&"panel", &"MenuZonePill", pill)
+	_add_plain_label(theme, &"MenuZoneName", t.FONT_BUTTON, t.TEXT, bold)
+
+	var close_normal := _round_style(t.PANEL_BG, t)
+	var close_pressed := _round_style(t.ACCENT, t)
+	theme.set_type_variation(&"MenuCloseButton", &"Button")
+	for state: StringName in [&"normal", &"hover", &"disabled"]:
+		theme.set_stylebox(state, &"MenuCloseButton", close_normal)
+	for state: StringName in [&"pressed", &"hover_pressed"]:
+		theme.set_stylebox(state, &"MenuCloseButton", close_pressed)
+	theme.set_stylebox(&"focus", &"MenuCloseButton", StyleBoxEmpty.new())
+	for state: StringName in [&"icon_normal_color", &"icon_hover_color", &"icon_focus_color"]:
+		theme.set_color(state, &"MenuCloseButton", t.TEXT)
+	for state: StringName in [&"icon_pressed_color", &"icon_hover_pressed_color"]:
+		theme.set_color(state, &"MenuCloseButton", t.ACCENT_TEXT)
+	theme.set_constant(&"icon_max_width", &"MenuCloseButton", t.BATTLE_BACK_ICON)
+
+	var card_normal := _menu_card_box(t.menu_card_bg(t.MENU_CARD_TINT_DEFAULT),
+		t.menu_card_border(t.MENU_CARD_TINT_DEFAULT), t.RADIUS, t)
+	var card_pressed := _menu_card_box(t.menu_card_bg_pressed(t.MENU_CARD_TINT_DEFAULT),
+		t.ACCENT, t.RADIUS, t)
+	_add_flat_button(theme, &"MenuCard", card_normal, card_pressed)
+	var lead_normal := _menu_card_box(t.PANEL_BG, t.PANEL_BORDER, t.MENU_LEAD_HEIGHT, t)
+	var lead_pressed := _menu_card_box(t.PANEL_BG_STRONG, t.ACCENT, t.MENU_LEAD_HEIGHT, t)
+	_add_flat_button(theme, &"MenuLeadCard", lead_normal, lead_pressed)
+
+	var chevron := StyleBoxFlat.new()
+	chevron.bg_color = t.tinted(t.TEXT, 0.18)
+	chevron.set_corner_radius_all(t.MENU_CARD_CHEVRON)
+	chevron.anti_aliasing = true
+	theme.set_type_variation(&"MenuCardChevron", &"Panel")
+	theme.set_stylebox(&"panel", &"MenuCardChevron", chevron)
+	var thumb := StyleBoxFlat.new()
+	thumb.bg_color = t.CAPTURE_THUMB_BG
+	thumb.border_color = t.CAPTURE_THUMB_BORDER
+	thumb.set_border_width_all(t.BORDER_WIDTH)
+	thumb.set_corner_radius_all(t.MENU_LEAD_THUMB)
+	thumb.anti_aliasing = true
+	theme.set_type_variation(&"MenuLeadThumb", &"Panel")
+	theme.set_stylebox(&"panel", &"MenuLeadThumb", thumb)
+	var bar := StyleBoxFlat.new()
+	bar.bg_color = t.NAME_TAG
+	bar.set_corner_radius_all(3)
+	theme.set_type_variation(&"MenuIdBar", &"Panel")
+	theme.set_stylebox(&"panel", &"MenuIdBar", bar)
+
+	_add_plain_label(theme, &"MenuCardTitle", t.MENU_CARD_TITLE_FONT, t.TEXT, bold)
+	_add_plain_label(theme, &"MenuCardCaption", t.MENU_CARD_CAPTION_FONT, t.TEXT_MUTED, null)
+	_add_plain_label(theme, &"MenuLeadName", t.MENU_LEAD_NAME_FONT, t.TEXT, bold)
+	_add_plain_label(theme, &"MenuLeadLevel", t.MENU_LEAD_LEVEL_FONT, t.TEXT_MUTED, null)
+	_add_plain_label(theme, &"MenuLeadHp", t.MENU_LEAD_HP_FONT, t.TEXT, null)
+	_add_plain_label(theme, &"MenuName", t.MENU_NAME_FONT, t.TEXT, bold)
+	_add_plain_label(theme, &"MenuSubtitle", t.MENU_SUBTITLE_FONT, t.TEXT_MUTED, null)
+	_add_plain_label(theme, &"MenuStat", t.MENU_STAT_FONT, t.TEXT, null)
+	_add_label_variation(theme, &"MenuObjective", t.MENU_OBJECTIVE_FONT, t.TEXT_MUTED, t)
+
+
+func _add_flat_button(theme: Theme, type: StringName, normal: StyleBox, pressed: StyleBox) -> void:
+	theme.set_type_variation(type, &"Button")
+	for state: StringName in [&"normal", &"hover", &"disabled"]:
+		theme.set_stylebox(state, type, normal)
+	for state: StringName in [&"pressed", &"hover_pressed"]:
+		theme.set_stylebox(state, type, pressed)
+	theme.set_stylebox(&"focus", type, StyleBoxEmpty.new())
+
+
+func _menu_card_box(bg: Color, border: Color, radius: int, t: GDScript) -> StyleBoxFlat:
+	var box := StyleBoxFlat.new()
+	box.bg_color = bg
+	box.border_color = border
+	box.set_border_width_all(t.BORDER_WIDTH)
+	box.set_corner_radius_all(radius)
+	box.shadow_color = t.SHADOW
+	box.shadow_size = t.SHADOW_SIZE
+	box.anti_aliasing = true
+	return box
+
+
+# --- Équipe (jalon 6, T7) -------------------------------------------------------------------------
+
+
+func _add_team(theme: Theme, bold: Font, t: GDScript) -> void:
+	var slot := _menu_card_box(t.PANEL_BG, t.PANEL_BORDER, t.RADIUS, t)
+	var slot_selected := _menu_card_box(t.PANEL_BG_STRONG, t.ACCENT, t.RADIUS, t)
+	slot_selected.set_border_width_all(t.TEAM_SLOT_SELECTED_BORDER)
+	slot_selected.shadow_color = t.MOVE_CARD_SELECTED_GLOW
+	slot_selected.shadow_size = t.MOVE_CARD_SELECTED_GLOW_SIZE
+	var slot_source := _menu_card_box(t.tinted(t.ACCENT, 0.12), t.ACCENT, t.RADIUS, t)
+	var slot_target := _menu_card_box(t.PANEL_BG_STRONG, t.ACCENT, t.RADIUS, t)
+	slot_target.set_border_width_all(t.TEAM_SLOT_SELECTED_BORDER)
+	var slot_empty := _menu_card_box(t.MOVE_CARD_EMPTY_BG, t.MOVE_CARD_EMPTY_BORDER, t.RADIUS, t)
+	slot_empty.shadow_size = 0
+	for pair: Array in [[&"TeamSlot", slot], [&"TeamSlotSelected", slot_selected],
+			[&"TeamSlotSource", slot_source], [&"TeamSlotTarget", slot_target],
+			[&"TeamSlotEmpty", slot_empty]]:
+		theme.set_type_variation(pair[0], &"Panel")
+		theme.set_stylebox(&"panel", pair[0], pair[1])
+	var section := _menu_card_box(t.TEAM_SECTION_BG, t.PANEL_BORDER, t.RADIUS, t)
+	section.shadow_size = 0
+	theme.set_type_variation(&"TeamSection", &"PanelContainer")
+	theme.set_stylebox(&"panel", &"TeamSection", section)
+	var circle := StyleBoxFlat.new()
+	circle.bg_color = t.CAPTURE_THUMB_BG
+	circle.border_color = t.CAPTURE_THUMB_BORDER
+	circle.set_border_width_all(t.BORDER_WIDTH)
+	circle.set_corner_radius_all(t.TEAM_EVO_CIRCLE)
+	circle.anti_aliasing = true
+	theme.set_type_variation(&"TeamEvoCircle", &"Panel")
+	theme.set_stylebox(&"panel", &"TeamEvoCircle", circle)
+
+	for pair: Array in [[&"TeamPill", t.tinted(t.ACCENT, 0.16), t.ACCENT],
+			[&"TeamPillAccent", t.ACCENT, t.ACCENT]]:
+		var pill := StyleBoxFlat.new()
+		pill.bg_color = pair[1]
+		pill.border_color = pair[2]
+		pill.set_border_width_all(t.BORDER_WIDTH)
+		pill.set_corner_radius_all(t.ROUND_BUTTON)
+		pill.anti_aliasing = true
+		pill.set_content_margin(SIDE_LEFT, t.TYPE_BADGE_PAD_H)
+		pill.set_content_margin(SIDE_RIGHT, t.TYPE_BADGE_PAD_H)
+		pill.set_content_margin(SIDE_TOP, t.TYPE_BADGE_PAD_V)
+		pill.set_content_margin(SIDE_BOTTOM, t.TYPE_BADGE_PAD_V)
+		theme.set_type_variation(pair[0], &"PanelContainer")
+		theme.set_stylebox(&"panel", pair[0], pill)
+	_add_plain_label(theme, &"TeamPillText", t.TYPE_BADGE_FONT, t.ACCENT, bold)
+	_add_plain_label(theme, &"TeamPillAccentText", t.TYPE_BADGE_FONT, t.ACCENT_TEXT, bold)
+
+	_add_plain_label(theme, &"TeamSlotName", t.TEAM_SLOT_NAME_FONT, t.TEXT, bold)
+	_add_plain_label(theme, &"TeamSlotMeta", t.TEAM_SLOT_META_FONT, t.TEXT_MUTED, null)
+	_add_plain_label(theme, &"TeamCaption", t.TEAM_BAR_LABEL_FONT, t.TEXT_MUTED, null)
+	_add_plain_label(theme, &"TeamValue", t.TEAM_STAT_FONT, t.TEXT, bold)
+	_add_plain_label(theme, &"TeamStat", t.TEAM_STAT_FONT, t.TEXT, null)
+	_add_plain_label(theme, &"TeamLevel", t.TEAM_LEVEL_FONT, t.TEXT, null)
+
+	var tab := _button_style(t.BUTTON_BG, true, t)
+	var tab_on := _button_style(t.ACCENT, false, t)
+	_add_button_variation(theme, &"TeamTab", tab, tab_on, bold, t)
+	theme.set_font_size(&"font_size", &"TeamTab", t.TEAM_TAB_FONT)
+	for state: StringName in [&"font_color", &"font_hover_color", &"font_focus_color"]:
+		theme.set_color(state, &"TeamTab", t.TEXT)
+	for state: StringName in [&"font_pressed_color", &"font_hover_pressed_color"]:
+		theme.set_color(state, &"TeamTab", t.ACCENT_TEXT)
+
+	var action := _button_style(t.BUTTON_BG, true, t)
+	action.set_content_margin(SIDE_LEFT, t.TEAM_SLOT_PAD)
+	action.set_content_margin(SIDE_RIGHT, t.TEAM_SLOT_PAD)
+	var action_pressed := _button_style(t.ACCENT_PRESSED, false, t)
+	var action_on := _button_style(t.ACCENT, false, t)
+	for pair: Array in [[&"TeamAction", action, action_pressed],
+			[&"TeamActionOn", action_on, action_pressed]]:
+		_add_button_variation(theme, pair[0], pair[1], pair[2], bold, t)
+		theme.set_font_size(&"font_size", pair[0], t.TEAM_ACTION_FONT)
+		theme.set_constant(&"icon_max_width", pair[0], t.TEAM_ACTION_ICON)
+		theme.set_constant(&"h_separation", pair[0], t.TEAM_HEADER_GAP)
+	for state: StringName in [&"font_color", &"font_hover_color", &"font_focus_color",
+			&"font_pressed_color", &"font_hover_pressed_color"]:
+		theme.set_color(state, &"TeamActionOn", t.ACCENT_TEXT)
+		theme.set_color(state, &"TeamAction", t.TEXT if state in [&"font_color",
+			&"font_hover_color", &"font_focus_color"] else t.ACCENT_TEXT)
+	for state: StringName in [&"icon_normal_color", &"icon_hover_color", &"icon_focus_color"]:
+		theme.set_color(state, &"TeamAction", t.TEXT)
+		theme.set_color(state, &"TeamActionOn", t.ACCENT_TEXT)
+	for state: StringName in [&"icon_pressed_color", &"icon_hover_pressed_color"]:
+		theme.set_color(state, &"TeamAction", t.ACCENT_TEXT)
+		theme.set_color(state, &"TeamActionOn", t.ACCENT_TEXT)
+
+
+# --- Écran Sac du menu et choix du Pokémon (jalon 6, T11) ---------------------------------------
+
+
+func _add_bag_screen(theme: Theme, bold: Font, t: GDScript) -> void:
+	var row := _bag_box(t.PANEL_BG, t.PANEL_BORDER, t.BORDER_WIDTH, t.PICKER_PAD, t.PICKER_PAD, t)
+	var row_selected := _bag_box(t.PANEL_BG_STRONG, t.ACCENT, t.PICKER_SELECTED_BORDER,
+		t.PICKER_PAD, t.PICKER_PAD, t)
+	row_selected.shadow_color = t.MOVE_CARD_SELECTED_GLOW
+	row_selected.shadow_size = t.MOVE_CARD_SELECTED_GLOW_SIZE
+	var row_off := _bag_box(t.MOVE_CARD_EMPTY_BG, t.MOVE_CARD_EMPTY_BORDER, t.BORDER_WIDTH,
+		t.PICKER_PAD, t.PICKER_PAD, t)
+	for pair: Array in [[&"PickerRow", row], [&"PickerRowSelected", row_selected],
+			[&"PickerRowOff", row_off]]:
+		theme.set_type_variation(pair[0], &"PanelContainer")
+		theme.set_stylebox(&"panel", pair[0], pair[1])
+	var bar := _bag_box(t.tinted(t.SUCCESS, t.RESULT_BG_ALPHA), t.SUCCESS, t.BORDER_WIDTH,
+		t.RESULT_PAD_H, t.RESULT_PAD_V, t)
+	theme.set_type_variation(&"ResultBar", &"PanelContainer")
+	theme.set_stylebox(&"panel", &"ResultBar", bar)
+	var refused := _bag_box(t.tinted(t.ACCENT, t.RESULT_BG_ALPHA), t.ACCENT, t.BORDER_WIDTH,
+		t.RESULT_PAD_H, t.RESULT_PAD_V, t)
+	theme.set_type_variation(&"ResultBarRefused", &"PanelContainer")
+	theme.set_stylebox(&"panel", &"ResultBarRefused", refused)
+	_add_plain_label(theme, &"BagTabCount", t.BAG_TAB_COUNT_FONT, t.TEXT_MUTED, bold)
+	_add_plain_label(theme, &"BagNote", t.BAG_NOTE_FONT, t.ACCENT, bold)
+	_add_plain_label(theme, &"BagHint", t.BAG_HINT_FONT, t.TEXT_MUTED, null)
+	_add_plain_label(theme, &"PickerTitle", t.PICKER_TITLE_FONT, t.TEXT, bold)
+	_add_plain_label(theme, &"PickerName", t.PICKER_NAME_FONT, t.TEXT, bold)
+	_add_plain_label(theme, &"PickerMeta", t.PICKER_META_FONT, t.TEXT_MUTED, null)
+	_add_plain_label(theme, &"PickerReason", t.PICKER_META_FONT, t.TEXT, bold)
+	_add_plain_label(theme, &"ResultText", t.RESULT_FONT, t.TEXT, bold)
+
+
+# --- Écran Pokédex du menu (jalon 6, T15) -------------------------------------------------------
+
+
+func _add_pokedex_screen(theme: Theme, bold: Font, t: GDScript) -> void:
+	var panel := _panel_style(t.MENU_PANEL_BG, t.RADIUS, t)
+	panel.set_content_margin_all(t.DEX_PANEL_PAD)
+	theme.set_type_variation(&"DexPanel", &"PanelContainer")
+	theme.set_stylebox(&"panel", &"DexPanel", panel)
+
+	var cell := _bag_box(t.PANEL_BG, t.PANEL_BORDER, t.BORDER_WIDTH, 0, 0, t)
+	var cell_selected := _bag_box(t.PANEL_BG, t.ACCENT, t.MOVE_CARD_SELECTED_BORDER, 0, 0, t)
+	cell_selected.shadow_color = t.MOVE_CARD_SELECTED_GLOW
+	cell_selected.shadow_size = t.MOVE_CARD_SELECTED_GLOW_SIZE
+	var cell_unknown := _bag_box(t.MOVE_CARD_EMPTY_BG, t.MOVE_CARD_EMPTY_BORDER, t.BORDER_WIDTH,
+		0, 0, t)
+	for pair: Array in [[&"DexCell", cell], [&"DexCellSelected", cell_selected],
+			[&"DexCellUnknown", cell_unknown]]:
+		theme.set_type_variation(pair[0], &"PanelContainer")
+		theme.set_stylebox(&"panel", pair[0], pair[1])
+
+	var frame := _bag_box(t.CAPTURE_THUMB_BG, t.CAPTURE_THUMB_BORDER, t.BORDER_WIDTH, 0, 0, t)
+	theme.set_type_variation(&"DexSpriteFrame", &"Panel")
+	theme.set_stylebox(&"panel", &"DexSpriteFrame", frame)
+
+	var tab := _button_style(t.BUTTON_BG, true, t)
+	var tab_on := _button_style(t.ACCENT, false, t)
+	_add_button_variation(theme, &"DexTab", tab, tab_on, bold, t)
+	theme.set_font_size(&"font_size", &"DexTab", t.DEX_TAB_FONT)
+	for state: StringName in [&"font_color", &"font_hover_color", &"font_focus_color"]:
+		theme.set_color(state, &"DexTab", t.TEXT)
+	for state: StringName in [&"font_pressed_color", &"font_hover_pressed_color"]:
+		theme.set_color(state, &"DexTab", t.ACCENT_TEXT)
+
+	var field := _bag_box(t.BUTTON_BG, t.PANEL_BORDER, t.BORDER_WIDTH, t.DEX_SEARCH_PAD_H, 0, t)
+	var field_focus := _bag_box(t.BUTTON_BG, t.ACCENT, t.BORDER_WIDTH, t.DEX_SEARCH_PAD_H, 0, t)
+	theme.set_type_variation(&"DexSearch", &"LineEdit")
+	theme.set_stylebox(&"normal", &"DexSearch", field)
+	theme.set_stylebox(&"read_only", &"DexSearch", field)
+	theme.set_stylebox(&"focus", &"DexSearch", field_focus)
+	theme.set_font_size(&"font_size", &"DexSearch", t.DEX_SEARCH_FONT)
+	theme.set_color(&"font_color", &"DexSearch", t.TEXT)
+	theme.set_color(&"font_placeholder_color", &"DexSearch", t.TEXT_MUTED)
+	theme.set_color(&"caret_color", &"DexSearch", t.ACCENT)
+	theme.set_color(&"selection_color", &"DexSearch", t.tinted(t.ACCENT, 0.35))
+
+	_add_plain_label(theme, &"DexTitle", t.DEX_TITLE_FONT, t.TEXT, bold)
+	_add_plain_label(theme, &"DexName", t.DEX_SHEET_NAME_FONT, t.TEXT, bold)
+	_add_plain_label(theme, &"DexNumber", t.DEX_SHEET_NUMBER_FONT, t.TEXT_MUTED, bold)
+
+
+# --- Écran Carte du menu (jalon 6, T20) ---------------------------------------------------------
+
+
+func _add_map_screen(theme: Theme, bold: Font, t: GDScript) -> void:
+	var panel := _panel_style(t.MENU_PANEL_BG, t.RADIUS, t)
+	panel.set_content_margin_all(t.MAP_PANEL_PAD)
+	theme.set_type_variation(&"MapPanel", &"PanelContainer")
+	theme.set_stylebox(&"panel", &"MapPanel", panel)
+
+	var frame := StyleBoxFlat.new()
+	frame.bg_color = t.SURFACE_DARK
+	frame.border_color = t.PANEL_BORDER
+	frame.set_border_width_all(t.MAP_FRAME_BORDER)
+	frame.set_corner_radius_all(t.RADIUS)
+	frame.anti_aliasing = true
+	theme.set_type_variation(&"MapFrame", &"PanelContainer")
+	theme.set_stylebox(&"panel", &"MapFrame", frame)
+
+	var label := _bag_box(t.MAP_LABEL_BG, t.PANEL_BORDER, t.BORDER_WIDTH, t.MAP_LABEL_PAD_H,
+		t.MAP_LABEL_PAD_V, t)
+	var label_on := _bag_box(t.ACCENT, t.ACCENT, t.BORDER_WIDTH, t.MAP_LABEL_PAD_H,
+		t.MAP_LABEL_PAD_V, t)
+	theme.set_type_variation(&"MapLabel", &"PanelContainer")
+	theme.set_stylebox(&"panel", &"MapLabel", label)
+	theme.set_type_variation(&"MapLabelOn", &"PanelContainer")
+	theme.set_stylebox(&"panel", &"MapLabelOn", label_on)
+	_add_plain_label(theme, &"MapLabelText", t.MAP_LABEL_FONT, t.TEXT, bold)
+	_add_plain_label(theme, &"MapLabelTextOn", t.MAP_LABEL_FONT, t.ACCENT_TEXT, bold)
+
+	var chip := _bag_box(t.PANEL_BG, t.PANEL_BORDER, t.BORDER_WIDTH, t.MAP_CHIP_PAD_H,
+		t.MAP_CHIP_PAD_V, t)
+	theme.set_type_variation(&"MapChip", &"PanelContainer")
+	theme.set_stylebox(&"panel", &"MapChip", chip)
+
+	var entry := _button_style(t.BUTTON_BG, true, t)
+	var entry_pressed := _button_style(t.ACCENT, false, t)
+	_add_button_variation(theme, &"MapEntry", entry, entry_pressed, bold, t)
+	theme.set_font_size(&"font_size", &"MapEntry", t.MAP_ENTRY_FONT)
+
+	_add_plain_label(theme, &"MapName", t.MAP_NAME_FONT, t.TEXT, bold)
+	_add_plain_label(theme, &"MapSubtitle", t.MAP_SUBTITLE_FONT, t.TEXT_MUTED, null)
+	_add_plain_label(theme, &"MapText", t.MAP_TEXT_FONT, t.TEXT, null)
+	_add_plain_label(theme, &"MapSection", t.MAP_SECTION_FONT, t.TEXT, bold)
+	_add_plain_label(theme, &"MapEntryText", t.MAP_ENTRY_FONT, t.TEXT, bold)
+
+
+# --- Écran Dresseur du menu (jalon 6, T24) ------------------------------------------------------
+
+
+func _add_trainer_screen(theme: Theme, bold: Font, t: GDScript) -> void:
+	var mute := StyleBoxFlat.new()
+	mute.bg_color = t.TRAINER_BADGE_MUTE_BG
+	mute.border_color = t.TRAINER_BADGE_MUTE_BORDER
+	mute.set_border_width_all(t.BORDER_WIDTH)
+	mute.set_corner_radius_all(t.RADIUS)
+	mute.anti_aliasing = true
+	theme.set_type_variation(&"TrainerBadge", &"PanelContainer")
+	theme.set_stylebox(&"panel", &"TrainerBadge", mute)
+	var on := mute.duplicate() as StyleBoxFlat
+	on.bg_color = t.tinted(t.ACCENT, 0.18)
+	on.border_color = t.ACCENT
+	on.set_content_margin_all(t.GAP)
+	theme.set_type_variation(&"TrainerBadgeOn", &"PanelContainer")
+	theme.set_stylebox(&"panel", &"TrainerBadgeOn", on)
+
+	var row := _bag_box(t.TRAINER_MOMENT_BG, Color(0, 0, 0, 0), 0, t.TRAINER_MOMENT_PAD_H,
+		t.TRAINER_MOMENT_PAD_V, t)
+	row.set_corner_radius_all(t.RADIUS_SMALL)
+	var row_pressed := _bag_box(t.tinted(t.ACCENT, 0.25), t.ACCENT, t.BORDER_WIDTH,
+		t.TRAINER_MOMENT_PAD_H, t.TRAINER_MOMENT_PAD_V, t)
+	row_pressed.set_corner_radius_all(t.RADIUS_SMALL)
+	_add_flat_button(theme, &"TrainerMoment", row, row_pressed)
+	theme.set_type_variation(&"TrainerMomentBox", &"PanelContainer")
+	theme.set_stylebox(&"panel", &"TrainerMomentBox", StyleBoxEmpty.new())
+
+	var link := _button_style(t.BUTTON_BG, true, t)
+	var link_pressed := _button_style(t.ACCENT, false, t)
+	_add_button_variation(theme, &"TrainerLink", link, link_pressed, bold, t)
+	theme.set_font_size(&"font_size", &"TrainerLink", t.TRAINER_LINK_FONT)
+
+	_add_plain_label(theme, &"TrainerSection", t.TRAINER_SECTION_FONT, t.TEXT, bold)
+	_add_plain_label(theme, &"TrainerBadgeName", t.TRAINER_BADGE_NAME_FONT, t.TEXT, bold)
+	_add_plain_label(theme, &"TrainerMomentTitle", t.TRAINER_MOMENT_TITLE_FONT, t.TEXT, bold)
+	_add_plain_label(theme, &"TrainerMomentDetail", t.TRAINER_MOMENT_DETAIL_FONT, t.TEXT, null)
+	_add_plain_label(theme, &"TrainerMomentMeta", t.TRAINER_MOMENT_META_FONT, t.TEXT_MUTED, null)
+	_add_plain_label(theme, &"TrainerStatLabel", t.TRAINER_STAT_LABEL_FONT, t.TEXT_MUTED, null)
+	_add_plain_label(theme, &"TrainerStatValue", t.TRAINER_STAT_VALUE_FONT, t.TEXT, bold)
+	_add_plain_label(theme, &"TrainerRow", t.TRAINER_ROW_FONT, t.TEXT, null)
+	_add_plain_label(theme, &"TrainerEmpty", t.TRAINER_EMPTY_FONT, t.TEXT_MUTED, null)
+
+
+# --- Écran Paramètres et ChoiceCards (jalon 6, T28) ---------------------------------------------
+
+
+func _row_box(bg: Color, border: Color, width: int, pad_h: int, pad_v: int,
+		t: GDScript) -> StyleBoxFlat:
+	var box := _bag_box(bg, border, width, pad_h, pad_v, t)
+	box.set_corner_radius_all(t.RADIUS_SMALL)
+	return box
+
+
+func _add_settings_screen(theme: Theme, bold: Font, t: GDScript) -> void:
+	# Catégories : ligne translucide, sélectionnée = ACCENT (bouton à bascule).
+	var category := _row_box(t.SETTINGS_ROW_BG, Color(0, 0, 0, 0), 0, t.SETTINGS_ROW_PAD_H, 0, t)
+	var category_on := _row_box(t.ACCENT, Color(0, 0, 0, 0), 0, t.SETTINGS_ROW_PAD_H, 0, t)
+	_add_flat_button(theme, &"SettingsCategory", category, category_on)
+	theme.set_font(&"font", &"SettingsCategory", bold)
+	theme.set_font_size(&"font_size", &"SettingsCategory", t.FONT_BUTTON)
+	theme.set_constant(&"h_separation", &"SettingsCategory", t.GAP)
+	theme.set_constant(&"icon_max_width", &"SettingsCategory", t.SETTINGS_CATEGORY_ICON)
+	for state: StringName in [&"font_color", &"font_hover_color", &"font_focus_color",
+			&"icon_normal_color", &"icon_hover_color", &"icon_focus_color"]:
+		theme.set_color(state, &"SettingsCategory", t.TEXT)
+	for state: StringName in [&"font_pressed_color", &"font_hover_pressed_color",
+			&"icon_pressed_color", &"icon_hover_pressed_color"]:
+		theme.set_color(state, &"SettingsCategory", t.ACCENT_TEXT)
+
+	# Ligne d'interrupteur (touchable en entier) et ligne de texte d'un choix / curseur.
+	var row := _row_box(t.SETTINGS_ROW_BG, Color(0, 0, 0, 0), 0, t.SETTINGS_ROW_PAD_H,
+		t.SETTINGS_ROW_PAD_V, t)
+	var row_pressed := _row_box(t.tinted(t.ACCENT, 0.25), t.ACCENT, t.BORDER_WIDTH,
+		t.SETTINGS_ROW_PAD_H, t.SETTINGS_ROW_PAD_V, t)
+	_add_flat_button(theme, &"SettingsRow", row, row_pressed)
+	theme.set_type_variation(&"SettingsRowBox", &"PanelContainer")
+	theme.set_stylebox(&"panel", &"SettingsRowBox", row)
+
+	# Options d'un choix : bouton à bascule, choisie = ACCENT.
+	var option := _button_style(t.BUTTON_BG, true, t)
+	var option_on := _button_style(t.ACCENT, false, t)
+	for box: StyleBoxFlat in [option, option_on]:
+		box.set_content_margin(SIDE_LEFT, t.GAP)
+		box.set_content_margin(SIDE_RIGHT, t.GAP)
+	_add_button_variation(theme, &"SettingsOption", option, option_on, bold, t)
+	theme.set_font_size(&"font_size", &"SettingsOption", t.SETTINGS_OPTION_FONT)
+	for state: StringName in [&"font_color", &"font_hover_color", &"font_focus_color"]:
+		theme.set_color(state, &"SettingsOption", t.TEXT)
+	for state: StringName in [&"font_pressed_color", &"font_hover_pressed_color"]:
+		theme.set_color(state, &"SettingsOption", t.ACCENT_TEXT)
+
+	# Action : bouton d'accent ; inactif = grisé (la raison est écrite dans la ligne).
+	var action := _button_style(t.ACCENT, false, t)
+	var action_pressed := _button_style(t.ACCENT_PRESSED, false, t)
+	var action_off := _button_style(t.SETTINGS_ACTION_OFF_BG, true, t)
+	_add_button_variation(theme, &"SettingsAction", action, action_pressed, bold, t)
+	theme.set_stylebox(&"disabled", &"SettingsAction", action_off)
+	theme.set_font_size(&"font_size", &"SettingsAction", t.SETTINGS_OPTION_FONT)
+	for state: StringName in [&"font_color", &"font_hover_color", &"font_focus_color",
+			&"font_pressed_color", &"font_hover_pressed_color"]:
+		theme.set_color(state, &"SettingsAction", t.ACCENT_TEXT)
+	theme.set_color(&"font_disabled_color", &"SettingsAction", t.TEXT_MUTED)
+
+	_add_plain_label(theme, &"SettingsPanelTitle", t.SETTINGS_PANEL_TITLE_FONT, t.TEXT, bold)
+	_add_plain_label(theme, &"SettingsLabel", t.SETTINGS_LABEL_FONT, t.TEXT, bold)
+	_add_plain_label(theme, &"SettingsDetail", t.SETTINGS_DETAIL_FONT, t.TEXT_MUTED, null)
+	_add_plain_label(theme, &"SettingsValue", t.SETTINGS_VALUE_FONT, t.TEXT, bold)
+
+	# ChoiceCards : la carte de l'action (ACCENT) et celle du renoncement (panneau).
+	var confirm := _menu_card_box(t.ACCENT, t.ACCENT, t.RADIUS, t)
+	var confirm_pressed := _menu_card_box(t.ACCENT_PRESSED, t.ACCENT_PRESSED, t.RADIUS, t)
+	_add_flat_button(theme, &"ChoiceConfirm", confirm, confirm_pressed)
+	var cancel := _menu_card_box(t.PANEL_BG_STRONG, t.PANEL_BORDER, t.RADIUS, t)
+	var cancel_pressed := _menu_card_box(t.tinted(t.ACCENT, 0.25), t.ACCENT, t.RADIUS, t)
+	_add_flat_button(theme, &"ChoiceCancel", cancel, cancel_pressed)
+	_add_plain_label(theme, &"ChoiceTitle", t.CHOICE_TITLE_FONT, t.TEXT, bold)
+	_add_plain_label(theme, &"ChoiceDetail", t.CHOICE_DETAIL_FONT, t.TEXT_MUTED, null)
+	_add_plain_label(theme, &"ChoiceConfirmLabel", t.CHOICE_LABEL_FONT, t.ACCENT_TEXT, bold)
+	_add_plain_label(theme, &"ChoiceConfirmDetail", t.CHOICE_CARD_DETAIL_FONT, t.ACCENT_TEXT, null)
+	_add_plain_label(theme, &"ChoiceCancelLabel", t.CHOICE_LABEL_FONT, t.TEXT, bold)
+	_add_plain_label(theme, &"ChoiceCancelDetail", t.CHOICE_CARD_DETAIL_FONT, t.TEXT_MUTED, null)

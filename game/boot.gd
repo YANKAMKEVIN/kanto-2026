@@ -24,6 +24,11 @@ extends Node
 ## départ de débogage, ni quand la sauvegarde vient d'une version plus récente du jeu (elle
 ## n'est jamais écrasée). Boot enregistre aussi les faits du §16.3 (Pokédex daté, starter,
 ## combat du rival, objets trouvés, zones découvertes, temps de jeu).
+##
+## Menu Dresseur (jalon 6, T4) : Boot est en mode ALWAYS (le temps de jeu et l'autosave
+## continuent menu ouvert, Q-21) et tous ses enfants sont PAUSABLE sauf [MenuDirector] : le
+## directeur met l'arbre en pause à l'ouverture. Ouverture par l'action `menu` ou le retour
+## Android (en exploration : sauvegarde puis ouverture, **jamais** de sortie du jeu, Q-3).
 
 ## Une zone vient d'être annoncée (titre de zone affiché).
 signal zone_announced(zone_name: String, region: String)
@@ -46,7 +51,23 @@ var force_debug_start: bool = false
 ## est la scène principale lancée par le moteur** ; sous GUT et dans les outils de capture
 ## (qui instancient Boot eux-mêmes), aucune sauvegarde n'est lue ni écrite.
 var save_system: SaveSystem = null
+## Fichier des déblocages de débogage ([DebugUnlocks]) ; mêmes règles que [member
+## debug_start_path].
+var debug_unlocks_path: String = DebugUnlocks.USER_PATH
+## Tests seulement : appliquer les déblocages de débogage même sous GUT (jamais en jeu).
+var force_debug_unlocks: bool = false
 
+## Fichier des réglages de l'appareil (jalon 6, T29). Les tests en injectent un (système de
+## fichiers en mémoire) avant add_child. Null : Boot ouvre le vrai (`user://settings.json`)
+## **seulement s'il est la scène principale lancée par le moteur** (même garde que la
+## sauvegarde) ; sinon réglages par défaut et rien d'écrit.
+var settings_store: SettingsStore = null
+## Appareil pour « Auto » ([method GraphicsProfile.current_device]) ; vide : l'appareil réel
+## (tests : injecter une description).
+var device: Dictionary = {}
+
+var _settings := GameSettings.new()
+var _profile: GraphicsProfile
 var _player: Player
 var _announcer := ZoneAnnouncer.new()
 var _library := DialogueLibrary.new()
@@ -57,6 +78,16 @@ var _trainers: TrainerLibrary
 var _texts := BattleText.new()
 var _items := ItemLibrary.new()
 var _encounter_library: EncounterLibrary
+var _zones := ZoneLibrary.new()
+var _dex := PokedexLibrary.new()
+var _map_illustration := MapIllustration.new()
+var _moments := MomentLibrary.new()
+## Toasts du Pokédex en attente (au plus un par espèce) : des paires [espèce, [titre, détail]].
+var _dex_toasts: Array[Array] = []
+## Individus observés pendant la visite de la carte (OBSERVER, une fois par individu).
+var _observed: Dictionary[StringName, bool] = {}
+var _objectives := ObjectiveLibrary.new()
+var _unlocks: MenuUnlocks
 ## Faux : aucune écriture de toute la session (pas de sauvegarde, départ de débogage, ou
 ## sauvegarde d'une version plus récente à ne jamais écraser).
 var _autosave_enabled: bool = false
@@ -83,10 +114,13 @@ var _in_foreground: bool = true
 @onready var _battle_director: BattleDirector = %BattleDirector
 @onready var _ambient: AmbientWatcher = %AmbientWatcher
 @onready var _encounters: EncounterDirector = %EncounterDirector
+@onready var _menu: MenuDirector = %MenuDirector
+@onready var _menu_screen: TrainerMenu = %TrainerMenu
 
 
 func _ready() -> void:
 	GameState.new_game()
+	_load_settings()
 	# Compteur de fps de QA (journal « [perf] »), seulement en build debug, Boot scène principale.
 	if PerfCounter.is_allowed(OS.is_debug_build(), get_tree().current_scene == self):
 		add_child(PerfCounter.new())
@@ -148,6 +182,85 @@ func _ready() -> void:
 	_runner.heal_requested.connect(_on_heal_requested)
 	_cutscenes_node.cutscene_started.connect(_on_cutscene_started)
 	_cutscenes_node.cutscene_finished.connect(_on_cutscene_finished)
+	# Menu Dresseur (jalon 6, T4) : le directeur pilote la pile et la pause ; l'écran
+	# (TrainerMenu) est relié après la fusion du T3 (jalon-06.md §6.6).
+	_zones.load_file()
+	_objectives.load_file()
+	_unlocks = MenuUnlocks.new(GameState.flags, GameState.party)
+	_apply_debug_unlocks()
+	if _dex.load_file():
+		_dex.check_references(_pokemon)
+	for error: String in _dex.get_errors():
+		push_error("Pokédex : %s" % error)
+	if _map_illustration.load_file():
+		_map_illustration.check_references(_zones)
+	for error: String in _map_illustration.get_errors():
+		push_error(error)
+	if _moments.load_file():
+		_moments.check_references(_zones)
+	for error: String in _moments.get_errors():
+		push_error(error)
+	_menu.setup(GameState, _pokemon, _zones, _objectives, _unlocks, _can_open_menu, _items, _dex,
+		_map_illustration, _moments)
+	_menu.menu_opened.connect(_on_menu_opened)
+	_menu.menu_closed.connect(_on_menu_closed)
+	# L'écran (jalon-06.md §6.6) : ouverture et vue dans la même frame, sans await (un fondu
+	# coupé laisse une coroutine non reprise).
+	_menu.menu_opened.connect(_menu_screen.open_animated)
+	_menu.menu_closed.connect(_menu_screen.close_animated.unbind(1))
+	_menu.dashboard_shown.connect(_menu_screen.show_dashboard)
+	_menu.placeholder_shown.connect(_menu_screen.show_placeholder)
+	_menu_screen.route_requested.connect(_menu.go)
+	_menu_screen.back_requested.connect(_menu.handle_back)
+	_menu_screen.close_requested.connect(_menu.close)
+	# Équipe (T8) : reliée dès que l'écran porte l'interface du §6.7 (TeamScreen du T7).
+	if _menu_screen.has_signal(&"team_member_moved"):
+		_menu.team_shown.connect(_menu_screen.show_team)
+		_menu_screen.team_member_moved.connect(_menu.move_member)
+		_menu_screen.team_favorite_toggled.connect(_menu.toggle_favorite)
+		_menu_screen.team_member_selected.connect(_menu.select_member)
+	# Sac (T12) : relié dès que l'écran porte l'interface du §6.8 (BagScreen du T11).
+	if _menu_screen.has_signal(&"bag_use_requested"):
+		_menu.bag_shown.connect(_menu_screen.show_bag)
+		_menu.bag_targets_shown.connect(_menu_screen.show_bag_targets)
+		_menu.bag_result_shown.connect(_menu_screen.show_bag_result)
+		_menu_screen.bag_category_opened.connect(_menu.open_bag_category)
+		_menu_screen.bag_favorite_toggled.connect(_menu.toggle_item_favorite)
+		_menu_screen.bag_sort_changed.connect(_menu.set_bag_sort)
+		_menu_screen.bag_use_requested.connect(_menu.request_item_use)
+		_menu_screen.bag_target_chosen.connect(_menu.use_item_on)
+		_menu_screen.bag_repeat_requested.connect(_menu.repeat_item_use)
+	# Pokédex (T16) : relié dès que l'écran porte l'interface du §6.9 (PokedexScreen du T15).
+	if _menu_screen.has_signal(&"pokedex_species_opened"):
+		_menu.pokedex_shown.connect(_menu_screen.show_pokedex)
+		_menu.pokedex_sheet_shown.connect(_menu_screen.show_pokedex_sheet)
+		_menu_screen.pokedex_filter_changed.connect(_menu.set_pokedex_filter)
+		_menu_screen.pokedex_species_opened.connect(_menu.open_species)
+	# Carte (T21) : reliée dès que l'écran porte l'interface du §6.10 (MapScreen du T20).
+	if _menu_screen.has_signal(&"map_zone_touched"):
+		_menu.map_shown.connect(_menu_screen.show_map)
+		_menu.map_zone_shown.connect(_menu_screen.show_map_zone)
+		_menu_screen.map_zone_touched.connect(_menu.open_zone)
+	# Dresseur (T25) : sans show_trainer (écran pas encore fusionné), l'écran provisoire.
+	if _menu_screen.has_method(&"show_trainer"):
+		_menu.trainer_shown.connect(_menu_screen.show_trainer)
+	else:
+		_menu.trainer_shown.connect(
+			func(_view: TrainerView) -> void: _menu_screen.show_placeholder(MenuRoute.TRAINER))
+	# Paramètres (T29) : reliés dès que l'écran porte l'interface du §6.12 (SettingsScreen du
+	# T28) ; sinon l'écran provisoire reste.
+	_menu.settings_changed.connect(_on_settings_changed)
+	_menu.save_requested.connect(_on_save_requested)
+	if _menu_screen.has_signal(&"setting_changed"):
+		_menu.save_result_shown.connect(_menu_screen.show_save_result)
+		_menu.settings_shown.connect(_menu_screen.show_settings)
+		_menu_screen.setting_changed.connect(_menu.change_setting)
+		_menu_screen.save_now_requested.connect(_menu.request_save)
+	# Une seule écoute de tout ce qui s'enregistre au Pokédex (jalon-06.md §6.9).
+	GameState.pokedex.recorded.connect(_on_pokedex_recorded)
+	GameState.flags.flag_changed.connect(_on_flag_changed)
+	_interactions.observed.connect(_on_observed)
+	_hud.menu_requested.connect(_menu.open)
 	SceneRouter.setup(_world, _player, _fade)
 	# Destinations « à venir » (dossier-07 §12, build de développement) : l'écran provisoire.
 	SceneRouter.coming_soon_presenter = _coming_soon.present
@@ -159,6 +272,7 @@ func _ready() -> void:
 	SceneRouter.map_entered.connect(_interactions.on_map_entered)
 	SceneRouter.map_entered.connect(_starter_choice.on_map_entered)
 	_start_game()
+	_menu.set_settings(_settings, _profile_device_quality(), _can_write())
 
 
 func _process(delta: float) -> void:
@@ -166,25 +280,45 @@ func _process(delta: float) -> void:
 		GameState.add_play_time(minf(delta, MAX_PLAY_TIME_STEP))
 	if _save_pending and is_stable():
 		_write_save(_save_reason)
+	if not _dex_toasts.is_empty():
+		_show_next_dex_toast()
 
 
 ## Passage en arrière-plan (Android) ou fermeture de la fenêtre (Mac) : sauvegarde immédiate
 ## si la partie est stable (jalon 5C.5 §16.1) ; sinon la dernière sauvegarde stable reste.
 func _notification(what: int) -> void:
 	match what:
-		NOTIFICATION_APPLICATION_PAUSED, NOTIFICATION_WM_CLOSE_REQUEST, \
-				NOTIFICATION_WM_GO_BACK_REQUEST:
+		NOTIFICATION_APPLICATION_PAUSED, NOTIFICATION_WM_CLOSE_REQUEST:
 			if what == NOTIFICATION_APPLICATION_PAUSED:
 				_in_foreground = false
 			if _can_write() and is_stable():
 				_write_save("arrière-plan")
+		NOTIFICATION_WM_GO_BACK_REQUEST:
+			_on_go_back()
 		NOTIFICATION_APPLICATION_RESUMED, NOTIFICATION_APPLICATION_FOCUS_IN:
 			_in_foreground = true
 		NOTIFICATION_APPLICATION_FOCUS_OUT:
 			_in_foreground = false
 
 
+## Action `menu` (Échap, M) : ouvre le menu en exploration, le ferme s'il est ouvert (après avoir
+## refermé le choix du Pokémon du Sac s'il est ouvert).
+func _unhandled_input(event: InputEvent) -> void:
+	if event.is_action_pressed(&"menu") and not event.is_echo():
+		if _menu.is_open():
+			# Le choix du Pokémon du Sac se referme d'abord (retour d'un niveau).
+			if not _screen_back():
+				_menu.close()
+		else:
+			_menu.open()
+		get_viewport().set_input_as_handled()
+
+
 func _exit_tree() -> void:
+	# Statiques : un test ne doit jamais hériter des réglages du précédent.
+	Haptics.reset()
+	UiPrefs.reset()
+	Engine.max_fps = 0
 	var links: Array[Array] = [
 		[SceneRouter.transition_started, _on_transition_started],
 		[SceneRouter.map_changed, _on_map_changed],
@@ -204,6 +338,26 @@ func get_player() -> Player:
 
 func get_map() -> GameMap:
 	return SceneRouter.get_current_map()
+
+
+## Réglages courants (jalon 6, T29).
+func get_settings() -> GameSettings:
+	return _settings
+
+
+## Profil graphique appliqué (jalon 6, T29).
+func get_graphics_profile() -> GraphicsProfile:
+	return _profile
+
+
+## Écran du Menu Dresseur (jalon 6).
+func get_trainer_menu() -> TrainerMenu:
+	return _menu_screen
+
+
+## Directeur du Menu Dresseur (jalon 6).
+func get_menu_director() -> MenuDirector:
+	return _menu
 
 
 func get_hud() -> ExplorationHud:
@@ -315,6 +469,64 @@ func is_stable() -> bool:
 		and not _battle_director.is_running() and not _encounters.is_running()
 
 
+## Garde d'ouverture du Menu Dresseur : partie stable (ce qui exclut dialogue, scène, rencontre,
+## combat et transition), sans écran « À venir ». [method is_stable] reste vrai menu ouvert :
+## chaque action du menu est appliquée d'un bloc à l'état (jalon-06.md §5.4).
+func _can_open_menu() -> bool:
+	return is_stable() and not _coming_soon.is_showing()
+
+
+## Retour Android (jalon-06.md §6.2, Q-3 : le jeu ne quitte **jamais** sur le retour) : menu
+## ouvert, un niveau en arrière (la fermeture a son autosave) ; en exploration, sauvegarde
+## immédiate puis ouverture du menu ; pendant un dialogue, une scène, un combat ou une
+## transition, ignoré.
+func _on_go_back() -> void:
+	if _menu.is_open() and _screen_back():
+		return
+	if _menu.handle_back():
+		return
+	if _hud.are_controls_visible() and _can_open_menu():
+		if _can_write():
+			_write_save("retour")
+		_menu.open()
+
+
+## Le menu s'ouvre (pause posée) : contrôles cachés (relâche joystick et boutons), titre de
+## zone retiré.
+func _on_menu_opened() -> void:
+	# La position vit dans GameState seulement après une sauvegarde : la pousser à l'ouverture,
+	# pour que la Carte et le Dresseur sachent où est le joueur dès une partie neuve.
+	var here := SceneRouter.get_current_map()
+	if is_instance_valid(here) and is_instance_valid(_player):
+		GameState.set_player_location(here.map_id, _player.get_cell(), _player.get_facing())
+	_hud.hide_zone_title()
+	# Le fondu du titre est un Tween du HUD, gelé par la pause : masqué net (la fin du fondu,
+	# reprise à la fermeture, ne change plus rien).
+	_hud.get_zone_title().visible = false
+	_refresh_controls()
+
+
+## Le menu se ferme (pause levée) : le monde reprend, les contrôles reviennent ; autosave
+## seulement si l'état a changé.
+func _on_menu_closed(changed: bool) -> void:
+	_refresh_controls()
+	if changed:
+		request_autosave("menu")
+
+
+## Déblocages de débogage ([DebugUnlocks]) : même garde que le départ de débogage, sans effet
+## sur la sauvegarde ni sur les drapeaux d'histoire.
+func _apply_debug_unlocks() -> void:
+	var allowed := force_debug_unlocks \
+		or DebugUnlocks.is_allowed(OS.is_debug_build(), get_tree().current_scene == self)
+	if not allowed or not FileAccess.file_exists(debug_unlocks_path):
+		return
+	var unlocks := DebugUnlocks.new()
+	if unlocks.load_file(debug_unlocks_path):
+		unlocks.apply(_unlocks)
+		print("Déblocages de débogage : %s" % unlocks.describe())
+
+
 ## Demande un autosave (jalon 5C.5 §16.1) : écrit à la première image où la partie est
 ## stable ([method is_stable]). Sans effet si l'autosave est coupé pour la session. Point
 ## d'appel de la capture (T15).
@@ -329,6 +541,13 @@ func request_autosave(reason: String) -> void:
 ## la sauvegarde), sinon reprise de la sauvegarde si elle se charge, sinon nouvelle partie sur
 ## [member start_map] / [member start_spawn].
 func _start_game() -> void:
+	_start_game_state()
+	# Parties existantes : notes débloquées sans bruit (jalon-06.md §6.9, point 4).
+	PokedexNotes.refresh(GameState.pokedex, _dex, GameState.flags)
+	_dex_toasts.clear()
+
+
+func _start_game_state() -> void:
 	if _apply_debug_start():
 		print("Départ de débogage : la sauvegarde n'est ni lue ni écrite.")
 	else:
@@ -443,6 +662,7 @@ func _on_transition_started(_target_map: StringName) -> void:
 ## Écran noir (ou démarrage) : présence des PNJ selon les drapeaux de la partie d'abord
 ## (jalon 3B §2.6), puis la carte passe aux contrôleurs.
 func _on_map_changed(map: GameMap) -> void:
+	_observed.clear()
 	map.refresh_npcs(GameState.flags)
 	_interactions.set_map(map)
 	_cutscenes_node.set_map(map)
@@ -578,9 +798,124 @@ func _on_item_given(item_id: StringName, count: int) -> void:
 	_hud.show_toast(item.quantity_text(count), item.added_text(count))
 
 
+## Retour de l'écran : la fiche du Pokédex d'abord, puis le choix du Pokémon du Sac.
+func _screen_back() -> bool:
+	if _menu_screen.has_method(&"pokedex_back") and _menu_screen.call(&"pokedex_back"):
+		return true
+	return _menu_screen.bag_back()
+
+
+## OBSERVER (Q-7, jalon-06.md §6.9) : l'espèce est « vue » ici, une fois par individu et par
+## visite de la carte. Le toast éventuel vient plus tard (file différée).
+func _on_observed(npc: Npc, species: StringName) -> void:
+	if _observed.has(npc.get_id()):
+		return
+	_observed[npc.get_id()] = true
+	GameState.record_seen(species, _current_map_id())
+
+
+## Une espèce vient d'être vue ou capturée : notes rafraîchies, puis toast en attente.
+func _on_pokedex_recorded(species: StringName, map: StringName, first_seen: bool,
+		new_map: bool, caught: bool) -> void:
+	var fresh := PokedexNotes.refresh(GameState.pokedex, _dex, GameState.flags, species)
+	var kind := PokedexUpdates.classify(GameState.pokedex, _pokemon, _zones, species, map,
+		first_seen, new_map, caught, not fresh.is_empty())
+	_queue_dex_toast(species, kind)
+
+
+## Un drapeau d'histoire a changé : notes de toutes les espèces ; un toast par espèce
+## concernée, sauf à l'activation du Pokédex (tout apparaît d'un coup, sans rafale).
+func _on_flag_changed(flag: StringName, _value: bool) -> void:
+	var fresh := PokedexNotes.refresh(GameState.pokedex, _dex, GameState.flags)
+	if flag == StoryFlags.POKEDEX_ACTIVATED:
+		return
+	for species: StringName in PokedexNotes.species_of(fresh):
+		_queue_dex_toast(species, PokedexUpdates.Kind.NEW_NOTE)
+
+
+func _queue_dex_toast(species: StringName, kind: PokedexUpdates.Kind) -> void:
+	for pending: Array in _dex_toasts:
+		if pending[0] == species:
+			return
+	var data := _pokemon.get_species(species)
+	var message := PokedexUpdates.message(kind, data.name if data != null else "",
+		_unlocks.pokedex_visible())
+	if not message.is_empty():
+		_dex_toasts.append([species, message])
+
+
+## Un toast à la fois, seulement partie stable, menu fermé, aucun toast à l'écran.
+func _show_next_dex_toast() -> void:
+	if _menu.is_open() or not is_stable() or _hud.get_toast().is_showing():
+		return
+	var message: PackedStringArray = _dex_toasts.pop_front()[1]
+	_hud.show_toast(message[0], message[1])
+
+
 ## Contrôles visibles seulement hors dialogue, hors scène, hors fiche du starter et hors
 ## combat : pendant une scène ou un combat, ils restent cachés entre deux dialogues.
 func _refresh_controls() -> void:
-	_hud.set_controls_visible(not _runner.is_running() and not _cutscenes_node.is_running()
+	_hud.set_controls_visible(not _menu.is_open() and not _runner.is_running() and not _cutscenes_node.is_running()
 		and not _starter_choice.is_sheet_open() and not _battle_director.is_running()
 		and not _encounters.is_running())
+
+
+## Lit les réglages (fichier de l'appareil, indépendant de la sauvegarde et du départ de
+## débogage) et les applique, avant le premier dialogue (jalon-06.md §6.12).
+func _load_settings() -> void:
+	if settings_store == null and get_tree().current_scene == self:
+		settings_store = SettingsStore.new()
+	if settings_store != null:
+		_settings = settings_store.load_settings()
+		if settings_store.last_status != OK and settings_store.last_status != ERR_FILE_NOT_FOUND:
+			push_warning("Réglages : %s (valeurs par défaut)" % settings_store.last_error)
+	if device.is_empty():
+		device = GraphicsProfile.current_device()
+	_apply_settings(_settings)
+
+
+func _profile_device_quality() -> GameSettings.Graphics:
+	return GraphicsProfile.auto_quality(device)
+
+
+## Un réglage a changé (geste de l'écran) : fichier réécrit, puis effet.
+func _on_settings_changed(settings: GameSettings) -> void:
+	if settings_store != null:
+		var error := settings_store.save_settings(settings)
+		if error != OK:
+			push_error("Réglages : écriture impossible (%s)" % error_string(error))
+	_apply_settings(settings)
+
+
+## Fait agir [param s] dans le jeu (jalon-06.md §6.12). Les écrans reçoivent les réglages
+## par leurs méthodes dédiées (derrière `has_method` tant que le HUD du T28 n'est pas là).
+func _apply_settings(s: GameSettings) -> void:
+	_settings = s
+	_runner.chars_per_second = s.chars_per_second()
+	_battle_director.speed_scale = s.battle_speed_scale()
+	_battle_director.confirm_forget = s.confirm_actions
+	_battle_hud.message_hold_scale = 1.0
+	_battle_stage.reduce_flashes = s.reduce_flashes
+	_menu_screen.speed_scale = s.menu_speed_scale()
+	Haptics.enabled = s.haptics
+	UiPrefs.apply(s)
+	if _hud.has_method(&"set_left_handed"):
+		_hud.call(&"set_left_handed", s.left_handed)
+	if _hud.has_method(&"set_joystick_style"):
+		_hud.call(&"set_joystick_style", s.joystick_scale, s.joystick_opacity)
+	if _hud.has_method(&"set_button_scale"):
+		_hud.call(&"set_button_scale", s.button_scale)
+	_profile = GraphicsProfile.resolve(s.graphics, device)
+	Engine.max_fps = _profile.max_fps
+	if _menu_screen.has_method(&"set_backdrop_blur"):
+		_menu_screen.call(&"set_backdrop_blur", _profile.menu_blur)
+	_battle_stage.backdrop_blur = not _profile.reduced_effects
+
+
+## « Sauvegarder maintenant » : écrit la sauvegarde et affiche le résultat dans l'écran.
+func _on_save_requested() -> void:
+	var text := SettingsViews.SAVE_DISABLED_TEXT
+	if _can_write():
+		var error := _write_save("menu")
+		text = SettingsViews.save_result_text(error, Time.get_datetime_dict_from_system())
+	_menu.show_save_result(text)

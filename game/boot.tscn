@@ -15,58 +15,85 @@
 [ext_resource type="Script" path="res://game/world/npc/ambient_watcher.gd" id="13_ambient"]
 [ext_resource type="Script" path="res://game/pokemon/encounters/encounter_director.gd" id="14_encounters"]
 [ext_resource type="PackedScene" path="res://game/ui/components/coming_soon_screen.tscn" id="15_soon"]
+[ext_resource type="Script" path="res://game/systems/menu/menu_director.gd" id="16_menu"]
+[ext_resource type="PackedScene" path="res://game/ui/menu/trainer_menu.tscn" id="17_trainer"]
 
 [node name="Boot" type="Node"]
 script = ExtResource("1_boot")
+process_mode = 3
 
 [node name="World" type="Node2D" parent="."]
 unique_name_in_owner = true
+process_mode = 1
 
 [node name="BattleStage" parent="." instance=ExtResource("10_stage")]
 unique_name_in_owner = true
+process_mode = 1
 
 [node name="ExplorationHud" parent="." instance=ExtResource("2_hud")]
 unique_name_in_owner = true
+process_mode = 1
 
 [node name="BattleHud" parent="." instance=ExtResource("11_hud")]
 unique_name_in_owner = true
+process_mode = 1
 
 [node name="StarterSheet" parent="." instance=ExtResource("8_sheet")]
 unique_name_in_owner = true
+process_mode = 1
 
 [node name="DialogueBox" parent="." instance=ExtResource("4_box")]
 unique_name_in_owner = true
+process_mode = 1
 
 [node name="DialogueRunner" type="Node" parent="."]
 unique_name_in_owner = true
+process_mode = 1
 script = ExtResource("5_runner")
 
 [node name="InteractionController" type="Node" parent="."]
 unique_name_in_owner = true
+process_mode = 1
 script = ExtResource("6_ctrl")
 
 [node name="CutsceneDirector" type="Node" parent="."]
 unique_name_in_owner = true
+process_mode = 1
 script = ExtResource("7_director")
 
 [node name="StarterChoice" type="Node" parent="."]
 unique_name_in_owner = true
+process_mode = 1
 script = ExtResource("9_choice")
 
 [node name="BattleDirector" type="Node" parent="."]
 unique_name_in_owner = true
+process_mode = 1
 script = ExtResource("12_director")
 
 [node name="AmbientWatcher" type="Node" parent="."]
 unique_name_in_owner = true
+process_mode = 1
 script = ExtResource("13_ambient")
 
 [node name="EncounterDirector" type="Node" parent="."]
 unique_name_in_owner = true
+process_mode = 1
 script = ExtResource("14_encounters")
 
 [node name="ScreenFade" parent="." instance=ExtResource("3_fade")]
 unique_name_in_owner = true
+process_mode = 1
 
 [node name="ComingSoonScreen" parent="." instance=ExtResource("15_soon")]
 unique_name_in_owner = true
+process_mode = 1
+
+[node name="MenuDirector" type="Node" parent="."]
+unique_name_in_owner = true
+process_mode = 3
+script = ExtResource("16_menu")
+
+[node name="TrainerMenu" parent="." instance=ExtResource("17_trainer")]
+unique_name_in_owner = true
+process_mode = 3

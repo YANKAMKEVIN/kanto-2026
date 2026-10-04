@@ -37,6 +37,10 @@
 			"draft": true
 		},
 		"move_forgot": { "text": "{pokemon} oublie {old_move} et apprend {move} !", "draft": true },
+		"forget_confirm_title": { "text": "Oublier {old_move} ?", "draft": true },
+		"forget_confirm_detail": { "text": "{old_move} sera remplacée par {move}.", "draft": true },
+		"forget_confirm_yes": { "text": "OUBLIER", "draft": true },
+		"forget_confirm_no": { "text": "GARDER", "draft": true },
 		"move_not_learned": { "text": "{pokemon} n'apprend pas {move}.", "draft": true },
 		"seeded": { "text": "Une graine est plantée sur {pokemon} !", "draft": true },
 		"drained": { "text": "Vampigraine draine l'énergie {de_pokemon} !", "draft": true },
@@ -51,7 +55,9 @@
 		"sent_to_storage": {
 			"text": "{pokemon} a été confié au système de recherche de Chen.",
 			"text_f": "{pokemon} a été confiée au système de recherche de Chen."
-		}
+		},
+		"item_used": { "text": "Tu utilises {item} sur {pokemon}.", "draft": true },
+		"hp_restored": { "text": "{pokemon} récupère {amount} PV.", "draft": true }
 	},
 	"stats": {
 		"atk": "L'Attaque", "def": "La Défense", "spa": "L'Attaque Spéciale",

@@ -17,7 +17,7 @@ extends Node
 ## cache). Aucune indication du Prof. Chen pendant le combat (décision de Kevin n° 9).
 ##
 ## Capture (jalon 5D, jalon-05.md §3.10) : en combat sauvage, SAC ouvre le [BattleBagPanel]
-## (construit depuis le Sac et l'[ItemLibrary], jamais la Potion : son usage arrive au jalon 6) ;
+## (construit depuis le Sac et l'[ItemLibrary]) ; la Potion (jalon 6, T12) ouvre le choix du Pokémon, puis [BattleAction.heal] : l'adversaire joue ensuite ;
 ## « ‹ » revient aux actions sans rien consommer ; une Ball choisie est retirée du Sac [b]une
 ## seule fois[/b], puis le moteur joue le lancer ([BattleEvent.Kind.BALL_THROWN], secousses,
 ## CAUGHT ou BROKE_FREE). Sur CAUGHT, le [i]même[/i] Pokémon (PV gardés) rejoint l'équipe, ou le
@@ -45,11 +45,17 @@ signal haptic_requested(duration_ms: int)
 const REASON: StringName = &"battle"
 const FORGET_PANEL_SCENE: PackedScene = preload("res://game/ui/battle/move_forget_panel.tscn")
 const BAG_PANEL_SCENE: PackedScene = preload("res://game/ui/battle/battle_bag_panel.tscn")
+const PARTY_PICKER_SCENE: PackedScene = preload("res://game/ui/bag/party_picker.tscn")
 const CAPTURE_CARD_SCENE: PackedScene = preload("res://game/ui/battle/capture_card.tscn")
 ## Catégorie du Sac ouverte d'emblée en combat (les Balls).
 const BAG_START_CATEGORY: StringName = &"ball"
 ## Durées multipliées (0 = instantané, tests) ; relayé à la scène et à la HUD.
 var speed_scale: float = 1.0
+## « Confirmer certaines actions » (Paramètres, Q-18) : oublier une capacité passe par une
+## question à deux cartes (OUBLIER / GARDER). Désactivé par défaut : comportement du 5C.
+var confirm_forget: bool = false
+## Tests seulement : composant à deux cartes de remplacement (défaut : `ChoiceCards`).
+var choice_cards_script: GDScript = null
 ## Faux : pas de vibration réelle (haptic_requested est quand même émis) ; la HUD coupée
 ## (tests) coupe aussi celles de la capture.
 var haptics_enabled: bool = true
@@ -68,6 +74,7 @@ var _trainer_id: StringName = &""
 var _items: ItemLibrary
 var _bag_panel: BattleBagPanel
 var _capture_card: CaptureCard
+var _party_picker: PartyPicker
 ## Pokémon sauvage du combat en cours (null contre un dresseur) et carte où il se joue.
 var _wild_foe: Pokemon
 var _map_id: StringName = &""
@@ -188,8 +195,8 @@ func run_request(request: BattleRequest, map: GameMap) -> int:
 		var action := await _choose_action(actions, can_flee)
 		if _battle.get_state() != Battle.State.CHOOSING:
 			break
-		# Une Ball lancée quitte le Sac une seule fois, avant le lancer (réussi ou non).
-		if action.kind == BattleAction.Kind.ITEM and not _spend_ball(action):
+		# Une Ball ou une Potion quitte le Sac une seule fois, avant d'être jouée.
+		if action.kind == BattleAction.Kind.ITEM and not _spend_item(action):
 			continue
 		await _play_events(_battle.submit(action), trainer)
 	# Fin : sortie de la vue, puis conclusion. Dresseur : soin éventuel (les deux Pokémon,
@@ -238,6 +245,11 @@ func get_capture_card() -> CaptureCard:
 	return _capture_card if is_instance_valid(_capture_card) else null
 
 
+## Le choix du Pokémon, tant qu'il existe (tests) ; null sinon.
+func get_party_picker() -> PartyPicker:
+	return _party_picker if is_instance_valid(_party_picker) else null
+
+
 ## Le panneau d'oubli, tant qu'il existe (ouvert pendant une offre, tests) ; null sinon.
 func get_forget_panel() -> MoveForgetPanel:
 	return _forget_panel if is_instance_valid(_forget_panel) else null
@@ -257,11 +269,11 @@ func _choose_action(actions: Dictionary[StringName, bool], can_flee: bool) -> Ba
 		if action == ActionGrid.RUN and can_flee:
 			return BattleAction.run()
 		if action == ActionGrid.BAG and actions.get(ActionGrid.BAG, false) \
-				and _battle.can_use_balls():
-			var ball := await _choose_ball()
-			if ball.is_empty():
+				and (_battle.can_use_balls() or _battle.can_use_heal_items()):
+			var chosen := await _choose_item()
+			if chosen == null:
 				continue
-			return BattleAction.ball(ball)
+			return chosen
 		if action != ActionGrid.ATTACK:
 			# ÉQUIPE (et SAC / FUITE contre un dresseur) : atténués et muets, mais on ne bloque
 			# pas si un signal arrive.
@@ -278,28 +290,54 @@ func _choose_action(actions: Dictionary[StringName, bool], can_flee: bool) -> Ba
 	return BattleAction.move(BattleAction.STRUGGLE)
 
 
-## Coroutine : ouvre le Sac de combat et attend une Ball (son identifiant) ou « ‹ » (vide). La
-## carte du joueur et ses pastilles cèdent la place au panneau, la grille d'actions sort ; au
-## retour (« ‹ »), la carte revient. Rien n'est consommé ici.
-func _choose_ball() -> StringName:
+## Coroutine : ouvre le Sac de combat et attend un objet : une Ball ([BattleAction.ball]), ou un
+## soin puis le Pokémon à soigner ([BattleAction.heal]) ; « ‹ » du Sac renvoie null (la carte
+## du joueur revient), « ‹ » du choix du Pokémon rouvre le Sac. Rien n'est consommé ici.
+func _choose_item() -> BattleAction:
 	var panel := _ensure_bag_panel()
 	_hud.hide_card(BattleHud.Side.PLAYER)
 	await _hud.hide_zone()
-	panel.show_bag(BattleViews.bag_entries(_state.bag, _items), BAG_START_CATEGORY)
-	var answer: Array = await _first_of(panel.item_chosen, panel.back_requested)
-	while panel.is_sliding():
+	while true:
+		panel.show_bag(BattleViews.bag_entries(_state.bag, _items), BAG_START_CATEGORY)
+		var answer: Array = await _first_of(panel.item_chosen, panel.back_requested)
+		while panel.is_sliding():
+			await get_tree().process_frame
+		if answer[0] == 1:
+			_show_own_card()
+			return null
+		var id := StringName(answer[1])
+		var item := _items.get_item(id) if _items != null else null
+		if item == null or not item.targets_pokemon():
+			return BattleAction.ball(id)
+		var index := await _choose_target(item)
+		if index >= 0:
+			return BattleAction.heal(id, index)
+	return null
+
+
+## Coroutine : le choix du Pokémon pour [param item] ; son index dans l'équipe, ou −1 (« ‹ »).
+func _choose_target(item: ItemData) -> int:
+	var picker := _ensure_party_picker()
+	picker.show_targets(BagQuery.targets(_state.party, _state.bag, item,
+		_battle.item_context(), _data))
+	picker.slide_in()
+	var answer: Array = await _first_of(picker.target_chosen, picker.back_requested)
+	picker.slide_out()
+	while picker.is_sliding():
 		await get_tree().process_frame
-	if answer[0] == 1:
-		_show_own_card()
-		return &""
-	return StringName(answer[1])
+	return int(answer[1]) if answer[0] == 0 else -1
 
 
-## Retire une Ball du Sac pour [param action] (une seule fois par lancer) ; faux, et rien ne
-## change, si l'action n'est pas permise ou si le Sac n'en a plus.
-func _spend_ball(action: BattleAction) -> bool:
-	if not _battle.is_legal(action) or not _state.bag.remove(action.item_id):
-		push_error("BattleDirector : Ball « %s » refusée" % action.item_id)
+## Retire l'objet de [param action] du Sac, une seule fois ; faux, et rien ne change, si
+## l'action n'est pas permise, si le Sac n'en a plus ou (soin) si le Pokémon le refuse.
+func _spend_item(action: BattleAction) -> bool:
+	var allowed := _battle.is_legal(action)
+	if allowed and action.is_heal():
+		var item := _items.get_item(action.item_id) if _items != null else null
+		allowed = ItemUse.check(_state.bag, item, (_state.party as Party).get_at(action.target),
+			_battle.item_context()) == ItemUse.Check.OK
+	if not allowed or not _state.bag.remove(action.item_id):
+		push_error("BattleDirector : objet « %s » refusé" % action.item_id)
 		return false
 	return true
 
@@ -401,6 +439,10 @@ func _play_beat(beat: BattleBeat) -> void:
 				await _stage.play_ball_shake()
 		BattleBeat.Kind.CATCH:
 			await _play_catch(beat.event)
+		BattleBeat.Kind.HEAL:
+			# La barre ne bouge que si le Pokémon soigné est celui en jeu.
+			if is_instance_valid(_hud) and _is_in_play(beat.event):
+				await _hud.animate_hp(side, beat.event.hp, beat.event.max_hp, false)
 		BattleBeat.Kind.RELEASE:
 			if is_instance_valid(_stage):
 				await _stage.play_break_free()
@@ -483,7 +525,7 @@ func _vibrate() -> void:
 func _on_haptic(duration_ms: int) -> void:
 	haptic_requested.emit(duration_ms)
 	if haptics_enabled and (not is_instance_valid(_hud) or _hud.haptics_enabled):
-		Input.vibrate_handheld(duration_ms)
+		Haptics.vibrate(duration_ms)
 
 
 ## Le Sac de combat (créé au premier besoin, dans l'écran de la HUD, à son emplacement).
@@ -496,6 +538,18 @@ func _ensure_bag_panel() -> BattleBagPanel:
 	_bag_panel.speed_scale = _hud.speed_scale
 	_bag_panel.haptics_enabled = _hud.haptics_enabled
 	return _bag_panel
+
+
+## Le choix du Pokémon (créé au premier besoin, dans l'écran de la HUD, à son emplacement).
+func _ensure_party_picker() -> PartyPicker:
+	if is_instance_valid(_party_picker):
+		return _party_picker
+	_party_picker = PARTY_PICKER_SCENE.instantiate() as PartyPicker
+	_hud.get_screen().add_child(_party_picker)
+	BattleHudLayout.place(_party_picker, BattleHudLayout.Slot.PARTY_PICKER)
+	_party_picker.speed_scale = _hud.speed_scale
+	_party_picker.haptics_enabled = _hud.haptics_enabled
+	return _party_picker
 
 
 ## La carte de capture (créée au premier besoin, centrée dans l'écran de la HUD).
@@ -569,10 +623,19 @@ func _offer_forget(event: BattleEvent) -> void:
 	while banner.is_sliding():
 		await get_tree().process_frame
 	var panel := _ensure_forget_panel()
-	panel.show_offer(offered, known)
-	var answer: Array = await _first_of(panel.forget_chosen, panel.skip_chosen)
-	while panel.is_sliding():
-		await get_tree().process_frame
+	var answer: Array = []
+	while true:
+		panel.show_offer(offered, known)
+		answer = await _first_of(panel.forget_chosen, panel.skip_chosen)
+		while panel.is_sliding():
+			await get_tree().process_frame
+		if answer[0] != 0 or not confirm_forget:
+			break
+		var slot := int(answer[1])
+		var old_id: StringName = pokemon.moves[slot].move_id \
+			if slot >= 0 and slot < pokemon.moves.size() else &""
+		if await _confirm_forget(event, old_id):
+			break
 	var line := ""
 	if answer[0] == 0:
 		var slot := int(answer[1])
@@ -583,6 +646,30 @@ func _offer_forget(event: BattleEvent) -> void:
 	if line.is_empty():
 		line = _texts.line_for(&"move_not_learned", event, _data)
 	await _hud.show_message(line)
+
+
+## Coroutine : la question « Oublier {capacité} ? » en deux cartes (composant `ChoiceCards`).
+## Vrai si le joueur confirme (OUBLIER) ; GARDER rend la main au panneau d'oubli.
+func _confirm_forget(event: BattleEvent, old_move: StringName) -> bool:
+	if not is_instance_valid(_hud):
+		return true
+	var script: GDScript = choice_cards_script if choice_cards_script != null else ChoiceCards
+	var view := ChoiceView.new(
+		_texts.line_for(&"forget_confirm_title", event, _data, old_move),
+		_texts.line_for(&"forget_confirm_yes", event, _data, old_move),
+		_texts.line_for(&"forget_confirm_no", event, _data, old_move))
+	view.detail = _texts.line_for(&"forget_confirm_detail", event, _data, old_move)
+	var cards: Control = script.new()
+	cards.set(&"speed_scale", _hud.speed_scale)
+	_hud.get_screen().add_child(cards)
+	cards.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	cards.call(&"show_choice", view)
+	var box: Array[bool] = []
+	cards.connect(&"chosen", func(confirmed: bool) -> void: box.append(confirmed))
+	while box.is_empty():
+		await get_tree().process_frame
+	cards.queue_free()
+	return box[0]
 
 
 ## Le panneau d'oubli (créé au premier besoin, dans l'écran de la HUD, à son emplacement).
@@ -606,11 +693,12 @@ func _free_forget_panel() -> void:
 ## Libère les panneaux ouverts pendant le combat (oubli, Sac, carte de capture).
 func _free_panels() -> void:
 	_free_forget_panel()
-	for panel: Control in [_bag_panel, _capture_card]:
+	for panel: Control in [_bag_panel, _capture_card, _party_picker]:
 		if is_instance_valid(panel):
 			panel.queue_free()
 	_bag_panel = null
 	_capture_card = null
+	_party_picker = null
 
 
 func _npc(map: GameMap, id: StringName) -> Node2D:

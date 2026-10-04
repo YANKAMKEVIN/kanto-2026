@@ -60,6 +60,10 @@ var route_pause: float = ROUTE_PAUSE_DEFAULT
 ## dialogue. Sans condition, toujours présent.
 var if_flags: Array[StringName] = []
 var unless_flags: Array[StringName] = []
+## Espèce d'un Pokémon du décor que le joueur peut OBSERVER (jalon-06.md §3.5, Q-7) : le
+## geste l'enregistre « vu » au Pokédex sur la carte. &"" = rien n'est enregistré. Seulement
+## sur un PNJ interactif au verbe OBSERVER ([NpcRoster] le vérifie).
+var species: StringName = &""
 
 
 ## Vrai si l'on peut interagir avec lui (un dialogue est renseigné).
@@ -70,6 +74,11 @@ func is_interactive() -> bool:
 ## Vrai si c'est un Pokémon d'ambiance qui réagit à l'approche du joueur (jalon 5 §3.5).
 func is_shy() -> bool:
 	return not shy_action.is_empty()
+
+
+## Vrai si l'observer enregistre une espèce au Pokédex (Q-7).
+func is_observable_species() -> bool:
+	return not species.is_empty()
 
 
 ## Vrai si le PNJ a une routine de marche (jalon 5, le Voyageur).

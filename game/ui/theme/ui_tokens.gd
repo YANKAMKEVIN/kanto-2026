@@ -535,9 +535,12 @@ const BAG_ACTION_SIZE := Vector2(300, TOUCH_MIN)
 const BAG_DETAIL_FADE_FROM := 0.4
 ## Texte posé quand rien n'est utilisable (pas un bouton).
 const BAG_EMPTY_HEIGHT := 160
+## Seuil commun (px de référence 1080 p) : un toucher qui bouge de plus que cela devient un
+## défilement et n'active aucun contrôle ; en deçà, c'est un toucher (activé au relâchement).
+const TAP_SLOP := 24.0
 ## Le doigt qui s'éloigne de plus que cela entre l'appui et le relâchement fait défiler : ce
 ## n'est pas un toucher.
-const BAG_TAP_SLOP := 24.0
+const BAG_TAP_SLOP := TAP_SLOP
 
 # Carte de capture.
 const CAPTURE_CARD_WIDTH := 760
@@ -561,3 +564,411 @@ const CAPTURE_LINE_DELAY := 0.28
 const CAPTURE_LINE_FADE := 0.2
 ## Un toucher n'est pris qu'après ce délai : celui qui a lancé la Ball ne ferme pas la carte.
 const CAPTURE_TOUCH_LOCK := 0.6
+
+# --- Menu Dresseur (jalon 6, T3 : tableau de bord) -------------------------------------------------
+
+## Ouverture (fond puis panneaux) et fermeture du menu ; vibration légère à l'ouverture.
+const MENU_OPEN := 0.25
+const MENU_CLOSE := 0.2
+const HAPTIC_MENU_MS := HAPTIC_TAP_MS
+## Monde flouté et assombri derrière le menu (jalon-06.md §6.2) : rayon du flou en pixels de
+## référence, niveau de mipmap de base, voile SURFACE_DARK (opacité).
+const MENU_BLUR_RADIUS := 5.0
+const MENU_BLUR_LOD := 1.5
+const MENU_DIM := 0.5
+## En-tête : × (zone tactile TOUCH_MIN) et nom de la zone ; le corps commence dessous.
+const MENU_CLOSE_SIZE := TOUCH_MIN
+const MENU_BODY_TOP := SAFE_MARGIN + TOUCH_MIN + GAP
+const MENU_ZONE_ICON := 40
+const MENU_ZONE_PAD_H := 28
+const MENU_ZONE_PAD_V := 14
+## Panneaux du menu : plus translucides que PANEL_BG pour laisser deviner le monde.
+const MENU_PANEL_BG := Color(0.07, 0.10, 0.15, 0.72)
+const MENU_PANEL_PAD := 28
+## Carte du Dresseur (à gauche) : largeur, portrait en pixel art à l'échelle entière (NEAREST).
+const MENU_LEFT_WIDTH := 680
+const MENU_PORTRAIT_SOURCE := Vector2i(32, 64)
+const MENU_PORTRAIT_SCALE := 6
+const MENU_NAME_FONT := FONT_TITLE
+const MENU_SUBTITLE_FONT := 28
+const MENU_STAT_FONT := 28
+const MENU_STAT_ICON := 40
+const MENU_STAT_GAP := 14
+const MENU_ID_BAR := Vector2(96, 6)
+## Pokémon de tête : carte tactile (≥ TOUCH_MIN), vignette en pixel art à l'échelle entière.
+const MENU_LEAD_HEIGHT := 160
+const MENU_LEAD_THUMB := 128
+const MENU_LEAD_SPRITE_SCALE := 2
+const MENU_LEAD_NAME_FONT := FONT_BUTTON
+const MENU_LEAD_LEVEL_FONT := 26
+const MENU_LEAD_HP_FONT := 26
+## Grandes cartes : écart, icône, pastille « › », barre de teinte, textes.
+const MENU_CARD_GAP := GAP
+const MENU_CARD_PAD := 24
+const MENU_CARD_ICON := 112
+const MENU_CARD_CHEVRON := 64
+const MENU_CARD_CHEVRON_ICON := 36
+const MENU_CARD_BAR := Vector2(56, 6)
+const MENU_CARD_TITLE_FONT := FONT_BUTTON
+const MENU_CARD_CAPTION_FONT := FONT_CAPTION
+## Teinte de chaque carte (planche : bleu, rouge, or, vert, violet, gris).
+const MENU_CARD_TINTS: Dictionary[StringName, Color] = {
+	&"team": Color("#3E7BD6"),
+	&"pokedex": Color("#E8473C"),
+	&"bag": Color("#D9A93A"),
+	&"map": Color("#2FB88A"),
+	&"trainer": Color("#7B5BD6"),
+	&"settings": Color("#8A94A6"),
+}
+const MENU_CARD_TINT_DEFAULT := Color("#8A94A6")
+## Ligne d'objectif : discrète, en bas du tableau de bord.
+const MENU_OBJECTIVE_HEIGHT := 48
+const MENU_OBJECTIVE_FONT := FONT_CAPTION
+## Bouton Menu de l'exploration (Q-1) : rond, translucide, coin haut-droit ; centre mesuré depuis
+## le coin haut-droit de l'écran.
+const MENU_BUTTON_ALPHA := 0.7
+const MENU_BUTTON_CENTER_FROM_CORNER := Vector2(SAFE_MARGIN + ROUND_BUTTON * 0.5,
+	SAFE_MARGIN + ROUND_BUTTON * 0.5)
+
+
+# --- Équipe (jalon 6, T7) ---------------------------------------------------------------------
+
+## Colonnes : liste (à gauche) et fiche (à droite) ; la vedette prend le reste.
+const TEAM_LIST_WIDTH := 560
+const TEAM_SHEET_WIDTH := 800
+const TEAM_COLUMN_GAP := GAP
+## Emplacement de la liste (≥ TOUCH_MIN) : six de TEAM_SLOT_HEIGHT + cinq écarts ≤ 840.
+const TEAM_SLOT_HEIGHT := TOUCH_MIN
+const TEAM_SLOT_GAP := 14
+const TEAM_SLOT_PAD := 12
+const TEAM_SLOT_THUMB := 112
+const TEAM_SLOT_NAME_FONT := FONT_BODY
+const TEAM_SLOT_META_FONT := FONT_CAPTION
+const TEAM_SLOT_STAR := 28
+## Un doigt qui bouge de plus que cela avant LONG_PRESS n'est pas un appui long (px).
+const TEAM_DRAG_SLOP := 28.0
+## Pendant le glissement : l'emplacement d'origine s'atténue, la copie suit le doigt.
+const TEAM_DRAG_SOURCE_ALPHA := 0.4
+const TEAM_DRAG_GHOST_ALPHA := 0.92
+## Échange (les deux emplacements glissent l'un vers l'autre) et changement de Pokémon.
+const TEAM_SWAP_TIME := 0.2
+const TEAM_SWITCH_TIME := 0.14
+## Vedette : sprite 64 px ×6 (entier, NEAREST), respiration par décalage vertical (px).
+const TEAM_SPRITE_SOURCE := 64
+const TEAM_SPRITE_SCALE := 6
+const TEAM_BREATH_PX := 6
+const TEAM_BREATH_TIME := 1.1
+const TEAM_SHADOW := Color(0, 0, 0, 0.3)
+const TEAM_NAME_FONT := FONT_TITLE
+const TEAM_LEVEL_FONT := FONT_BODY
+const TEAM_HEADER_GAP := 8
+const TEAM_BAR_LABEL_FONT := FONT_CAPTION
+## Fiche : onglets (≥ TOUCH_MIN), actions (≥ TOUCH_MIN), pages.
+const TEAM_TAB_HEIGHT := TOUCH_MIN
+const TEAM_TAB_FONT := 28
+const TEAM_ACTION_HEIGHT := TOUCH_MIN
+const TEAM_ACTION_FONT := FONT_CAPTION
+const TEAM_ACTION_ICON := 44
+const TEAM_PAGE_GAP := 10
+const TEAM_PANEL_PAD := 20
+const TEAM_SECTION_BG := Color(1, 1, 1, 0.06)
+const TEAM_STAT_ROW := 32
+const TEAM_STAT_FONT := 26
+const TEAM_STAT_NAME_WIDTH := 200
+const TEAM_STAT_VALUE_WIDTH := 70
+const TEAM_GAUGE_HEIGHT := 12
+const TEAM_GAUGE_FILL := ACCENT
+const TEAM_MOVE_CARD_HEIGHT := 116
+const TEAM_HISTORY_FONT := 30
+const TEAM_EVO_CIRCLE := 64
+const TEAM_EVO_SPRITE := 64
+const TEAM_EVO_FONT := FONT_CAPTION
+## Fiche d'une capacité ouverte au toucher : voile derrière.
+const TEAM_SCRIM := Color(0.02, 0.03, 0.05, 0.55)
+## Sélection d'un emplacement et cible de dépôt.
+const TEAM_SLOT_SELECTED_BORDER := 4
+const HAPTIC_TEAM_DRAG_MS := 25
+const HAPTIC_TEAM_SWAP_MS := 20
+
+# Écran Sac du Menu Dresseur (jalon 6, T11).
+## Colonnes : catégories à gauche, cartes au centre (le reste), aperçu à droite.
+const BAG_SCREEN_LEFT_WIDTH := 440
+const BAG_SCREEN_DETAIL_WIDTH := 580
+const BAG_SCREEN_GAP := GAP
+const BAG_SCREEN_TITLE_FONT := FONT_TITLE
+const BAG_SCREEN_HEADER_GAP := 12
+const BAG_TAB_COUNT_FONT := 26
+const BAG_TAB_COUNT_WIDTH := 56
+const BAG_SORT_WIDTH := 400
+const BAG_SORT_ICON := 40
+const BAG_BIG_ICON := 208
+const BAG_STAR_ICON := 32
+const BAG_CARD_STAR_ICON := 36
+const BAG_NOTE_FONT := FONT_CAPTION
+const BAG_HINT_FONT := 22
+## Appui long sur une carte : vibration de confirmation (favori marqué ou retiré).
+const HAPTIC_BAG_FAVORITE_MS := 25
+# Choix du Pokémon (PartyPicker) et résultat d'un usage (UseResultBar).
+const PICKER_ROW_HEIGHT := 140
+const PICKER_COLUMN_WIDTH := 540
+const PICKER_COLUMNS := 2
+const PICKER_GAP := 14
+const PICKER_PAD := 10
+const PICKER_THUMB := 116
+const PICKER_NAME_FONT := FONT_BODY
+const PICKER_META_FONT := 26
+const PICKER_TITLE_FONT := FONT_BUTTON
+const PICKER_CHEVRON := 48
+const PICKER_UNUSABLE_ALPHA := 0.6
+const PICKER_SELECTED_BORDER := 4
+## Refus d'une cible inutilisable : la carte tremble (amplitude horizontale, allers-retours
+## en PICKER_SHAKE_TIME), vibration courte.
+const PICKER_SHAKE_AMPLITUDE := 12.0
+const PICKER_SHAKE_TIME := 0.25
+const PICKER_SHAKE_STEPS := 4
+const HAPTIC_REFUSE_MS := 20
+## Soin réussi : éclat vert de la carte (opacité au départ), qui s'estompe après la barre.
+const PICKER_HEAL_FLASH_ALPHA := 0.4
+const PICKER_HEAL_FLASH_COLOR := Color(0.298, 0.851, 0.392, PICKER_HEAL_FLASH_ALPHA)
+const PICKER_HEAL_FLASH_FADE := ANIM_PANEL
+const RESULT_HEIGHT := TOUCH_MIN
+const RESULT_FONT := FONT_BODY
+const RESULT_PAD_H := 28
+const RESULT_PAD_V := 8
+const RESULT_ICON := 56
+const RESULT_BG_ALPHA := 0.16
+const RESULT_REPEAT_WIDTH := 460
+
+
+## [param tint] avec l'opacité [param alpha] (les écrans ne construisent jamais de couleur).
+static func tinted(tint: Color, alpha: float) -> Color:
+	return Color(tint, alpha)
+
+
+## Fond d'une grande carte : SURFACE_DARK teinté, translucide.
+static func menu_card_bg(tint: Color) -> Color:
+	return tinted(SURFACE_DARK.lerp(tint, 0.38), 0.86)
+
+
+## Fond d'une grande carte enfoncée.
+static func menu_card_bg_pressed(tint: Color) -> Color:
+	return tinted(SURFACE_DARK.lerp(tint, 0.62), 0.94)
+
+
+## Liseré d'une grande carte.
+static func menu_card_border(tint: Color) -> Color:
+	return tinted(tint, 0.6)
+
+# Écran Pokédex du Menu Dresseur (jalon 6, T15). Aucune statistique, aucun talent, aucune
+# silhouette : seulement ce que le joueur a découvert.
+## En-tête : RETOUR, titre + compteur, filtres (TOUS · VUS · CAPTURÉS · HABITATS).
+const DEX_HEADER_HEIGHT := TOUCH_MIN
+const DEX_BACK_WIDTH := MENU_CARD_ICON * 2
+const DEX_TITLE_FONT := FONT_TITLE
+const DEX_COUNTS_FONT := FONT_CAPTION
+const DEX_FILTER_MIN_WIDTH := 168
+const DEX_FILTER_FONT := 26
+const DEX_GAP := GAP
+const DEX_SECTION_GAP := 12
+## Colonne de la grille quand la fiche est ouverte ; sans fiche, la grille prend tout.
+const DEX_LIST_WIDTH := 828
+const DEX_PANEL_PAD := 20
+const DEX_SCROLL_PAD := 6
+## Ligne de recherche : champ, bouton Type, bouton Zone (filtre HABITATS seulement).
+const DEX_SEARCH_MIN_WIDTH := 260
+const DEX_SEARCH_FONT := 28
+const DEX_SEARCH_ICON := 40
+const DEX_SEARCH_PAD_H := 20
+const DEX_REFINE_WIDTH := 220
+## Case de la grille : légère (un seul dessin), sprite de 64 px affiché à l'échelle entière.
+const DEX_CELL_SIZE := Vector2(180, 208)
+const DEX_CELL_GAP := 12
+const DEX_CELL_PAD := 10
+const DEX_CELL_SPRITE_SOURCE := 64
+const DEX_CELL_SPRITE_SCALE := 2
+const DEX_CELL_SPRITE_TOP := 6
+const DEX_CELL_NUMBER_FONT := 22
+const DEX_CELL_NAME_FONT := 26
+const DEX_CELL_STATUS_FONT := 22
+const DEX_CELL_BALL := 22
+const DEX_CELL_SELECTED_SCALE := 1.03
+## Une case inconnue : numéro et « ??? » seulement, estompés.
+const DEX_UNKNOWN_ALPHA := 0.55
+## Fiche : identité (vignette, numéro, nom, types), onglets, pages.
+const DEX_SHEET_MIN_WIDTH := 960
+const DEX_SPRITE_FRAME := 160
+const DEX_SHEET_SPRITE_SCALE := 2
+const DEX_SHEET_NAME_FONT := FONT_TITLE
+const DEX_SHEET_NUMBER_FONT := 26
+const DEX_TAB_HEIGHT := TOUCH_MIN
+const DEX_TAB_FONT := 26
+const DEX_SHEET_GAP := 12
+const DEX_SHEET_FADE := ANIM_PANEL
+const DEX_SEEN_ALPHA := 0.7
+const DEX_INFO_FONT := 30
+const DEX_DESCRIPTION_FONT := 28
+## Évolution : un stade = un rond et un nom ; un stade inconnu = un rond vide et « ??? ».
+const DEX_EVO_CIRCLE := 152
+const DEX_EVO_SPRITE_SCALE := 2
+## Habitat : petite carte (seulement les zones observées, le reste est voilé) et pastilles.
+const DEX_MAP_SIZE := Vector2(460, 288)
+const DEX_MAP_PIN := 9
+const DEX_MAP_PIN_BORDER := 3
+## Marge autour de chaque zone (px de l'illustration) et autour de l'ensemble montré.
+const DEX_MAP_PATCH_MARGIN := 14.0
+const DEX_MAP_FRAME_MARGIN := 40.0
+const DEX_MAP_PATCH_BORDER := 2
+const DEX_CHIP_HEIGHT := TOUCH_MIN
+const DEX_CHIP_ICON := 40
+
+# Écran Carte du Menu Dresseur (jalon 6, T20). Un journal : l'illustration entière, les noms
+# des seules zones découvertes, un panneau latéral ; aucun total, aucun « ??? ».
+## En-tête : RETOUR et titre.
+const MAP_HEADER_HEIGHT := TOUCH_MIN
+const MAP_BACK_WIDTH := MENU_CARD_ICON * 2
+const MAP_TITLE_FONT := FONT_TITLE
+const MAP_GAP := GAP
+## Cadre de l'illustration (coins arrondis, l'image est rognée aux coins seulement).
+const MAP_FRAME_BORDER := BORDER_WIDTH
+## Étiquette d'une zone découverte : pastille sombre translucide, nom discret.
+const MAP_LABEL_FONT := FONT_CAPTION
+const MAP_LABEL_PAD_H := 14
+const MAP_LABEL_PAD_V := 6
+const MAP_LABEL_GAP := 8
+const MAP_LABEL_BG := Color(0.07, 0.10, 0.15, 0.8)
+const MAP_LABEL_ALPHA := 0.9
+## Zone du panneau : halo sur l'illustration (au moins MAP_HIGHLIGHT_MIN de côté pour qu'une
+## route fine reste visible), remplissage léger et liseré d'ACCENT.
+const MAP_HIGHLIGHT_MIN := 56.0
+const MAP_HIGHLIGHT_FILL := 0.22
+const MAP_HIGHLIGHT_BORDER := 4.0
+const MAP_HIGHLIGHT_RADIUS := 12.0
+## Portrait du joueur (hauteur ; la largeur suit le rapport 1 : 2 de l'image).
+const MAP_PORTRAIT_HEIGHT := 80.0
+## Panneau latéral.
+const MAP_PANEL_WIDTH := 700
+const MAP_PANEL_PAD := 24
+const MAP_PANEL_GAP := 16
+const MAP_NAME_FONT := FONT_TITLE
+const MAP_SUBTITLE_FONT := 28
+const MAP_TEXT_FONT := 28
+const MAP_SECTION_FONT := 30
+const MAP_ENTRY_FONT := FONT_CAPTION
+## Pokémon observé : cellule tactile (≥ TOUCH_MIN), sprite de 64 px à l'échelle entière.
+const MAP_ENTRY_SIZE := Vector2(172, 190)
+const MAP_ENTRY_SPRITE_SOURCE := 64
+const MAP_ENTRY_SPRITE_SCALE := 2
+const MAP_ENTRY_GAP := 12
+## Objet trouvé et service : pastille (icône, nom, « ×2 »).
+const MAP_CHIP_ICON := 56
+const MAP_CHIP_PAD_H := 18
+const MAP_CHIP_PAD_V := 10
+const MAP_FADE := ANIM_PANEL
+
+
+# --- Écran Dresseur du Menu Dresseur (jalon 6, T24) ----------------------------------------------
+# Paysage : identité et portrait à gauche, badges et statistiques au centre, grands moments à
+# droite. Aucun niveau, XP, titre, tenue ni compteur de badges.
+const TRAINER_LEFT_WIDTH := 520
+const TRAINER_RIGHT_WIDTH := 600
+const TRAINER_GAP := GAP
+const TRAINER_HEADER_HEIGHT := TOUCH_MIN
+const TRAINER_BACK_WIDTH := MENU_CARD_ICON * 2
+const TRAINER_TITLE_FONT := FONT_TITLE
+const TRAINER_SECTION_FONT := 30
+const TRAINER_SECTION_GAP := 12
+## Portrait (sprite du joueur de face, pixel art à l'échelle entière, provisoire jusqu'à la DA).
+const TRAINER_PORTRAIT_SCALE := 4
+const TRAINER_ROW_ICON := 40
+const TRAINER_ROW_FONT := 28
+## « vus » / « capturés » : boutons de lien (≥ TOUCH_MIN de haut).
+const TRAINER_LINK_HEIGHT := TOUCH_MIN
+const TRAINER_LINK_FONT := 28
+const TRAINER_LINK_GAP := 12
+## Emplacements de badges : 4 par ligne, toujours 8 ; muets tant que non obtenus (Q-13).
+const TRAINER_BADGE_COLUMNS := 4
+const TRAINER_BADGE_HEIGHT := 150
+const TRAINER_BADGE_GAP := 16
+const TRAINER_BADGE_MUTE_BG := Color(1, 1, 1, 0.05)
+const TRAINER_BADGE_MUTE_BORDER := Color(1, 1, 1, 0.10)
+const TRAINER_BADGE_NAME_FONT := FONT_CAPTION
+## Statistiques : deux colonnes, icône, libellé discret et valeur.
+const TRAINER_STAT_COLUMNS := 2
+const TRAINER_STAT_ICON := 44
+const TRAINER_STAT_LABEL_FONT := FONT_CAPTION
+const TRAINER_STAT_VALUE_FONT := FONT_BUTTON
+const TRAINER_STAT_GAP := 14
+## Frise des grands moments : rail (ligne et pastille), ligne tactile si lien (≥ TOUCH_MIN).
+const TRAINER_MOMENT_HEIGHT := TOUCH_MIN
+const TRAINER_MOMENT_GAP := 12
+const TRAINER_MOMENT_PAD_H := 16
+const TRAINER_MOMENT_PAD_V := 12
+const TRAINER_MOMENT_BG := Color(1, 1, 1, 0.06)
+const TRAINER_RAIL_WIDTH := 36
+const TRAINER_RAIL_LINE := 3.0
+const TRAINER_RAIL_DOT := 9.0
+const TRAINER_RAIL_COLOR := Color(1, 1, 1, 0.3)
+const TRAINER_MOMENT_ICON := 48
+const TRAINER_MOMENT_SPRITE := 64
+const TRAINER_MOMENT_TITLE_FONT := 30
+const TRAINER_MOMENT_DETAIL_FONT := 26
+const TRAINER_MOMENT_META_FONT := FONT_CAPTION
+const TRAINER_EMPTY_FONT := FONT_BODY
+const TRAINER_FADE := ANIM_PANEL
+
+# --- Paramètres (jalon 6, T27 : préférences lues à l'exécution par UiPrefs) ----------------
+
+## Taille du texte « Grande » (Q-19) : facteur des tailles de police (UiPrefs.font).
+const TEXT_SCALE_LARGE := 1.15
+## Contraste renforcé (Q-19) : opacité minimale des panneaux et texte secondaire plus clair.
+const CONTRAST_PANEL_ALPHA := 0.95
+const TEXT_MUTED_CONTRAST := Color("#E2E8F2")
+
+# --- Écran Paramètres et choix à deux cartes (jalon 6, T28) -------------------------------------
+# Paysage : catégories à gauche, contrôles de la catégorie ouverte à droite. Chaque contrôle fait
+# au moins SETTINGS_ROW_HEIGHT de haut (zone tactile ≥ TOUCH_MIN) ; la valeur est toujours écrite.
+const SETTINGS_CATEGORY_WIDTH := 460
+const SETTINGS_CATEGORY_ICON := 48
+const SETTINGS_CATEGORY_GAP := 12
+const SETTINGS_ROW_HEIGHT := TOUCH_MIN + 16
+const SETTINGS_ROW_GAP := 12
+const SETTINGS_ROW_PAD_H := 24
+const SETTINGS_ROW_PAD_V := 8
+const SETTINGS_ROW_BG := Color(1, 1, 1, 0.06)
+const SETTINGS_PANEL_TITLE_FONT := FONT_BUTTON
+const SETTINGS_LABEL_FONT := FONT_BODY
+const SETTINGS_DETAIL_FONT := FONT_CAPTION
+const SETTINGS_VALUE_FONT := 28
+const SETTINGS_OPTION_FONT := 28
+const SETTINGS_OPTION_MIN_WIDTH := 180
+const SETTINGS_OPTION_GAP := 12
+const SETTINGS_TEXT_MIN_WIDTH := 300
+## Interrupteur : piste arrondie (vert SUCCESS activé, grisé sinon) et pastille blanche.
+const SETTINGS_SWITCH_SIZE := Vector2(112, 64)
+const SETTINGS_SWITCH_KNOB := 48
+const SETTINGS_SWITCH_OFF := Color(1, 1, 1, 0.22)
+const SETTINGS_SWITCH_KNOB_COLOR := Color(1, 1, 1, 1)
+## Curseur : piste, pastille, largeur de la zone tactile et du pourcentage.
+const SETTINGS_SLIDER_WIDTH := 460
+const SETTINGS_SLIDER_TRACK := 12
+const SETTINGS_SLIDER_KNOB := 56
+const SETTINGS_SLIDER_VALUE_WIDTH := 110
+const SETTINGS_SLIDER_TRACK_BG := Color(1, 1, 1, 0.18)
+## Action « Sauvegarder maintenant ».
+const SETTINGS_ACTION_WIDTH := 480
+const SETTINGS_ACTION_OFF_BG := Color(1, 1, 1, 0.10)
+## Résultat de la sauvegarde : barre sous les contrôles, tenue avant de s'effacer.
+const SETTINGS_RESULT_HEIGHT := 88
+const SETTINGS_RESULT_HOLD := 3.5
+const SETTINGS_FADE := ANIM_PANEL
+## ChoiceCards : voile sur le jeu, deux grandes cartes côte à côte.
+const CHOICE_SCRIM := Color(0.02, 0.03, 0.05, 0.82)
+const CHOICE_CARD_SIZE := Vector2(560, 240)
+const CHOICE_CARD_GAP := 32
+const CHOICE_CARD_PAD := 28
+const CHOICE_TITLE_FONT := FONT_TITLE
+const CHOICE_DETAIL_FONT := FONT_BODY
+const CHOICE_LABEL_FONT := FONT_TITLE
+const CHOICE_CARD_DETAIL_FONT := 28
+const CHOICE_SLIDE := 40.0
+const CHOICE_FADE := ANIM_PANEL

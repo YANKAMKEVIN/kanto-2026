@@ -261,3 +261,21 @@ func test_a_caught_battle_end_has_no_message() -> void:
 	var ended := BattleEvent.new(BattleEvent.Kind.BATTLE_ENDED, BattleEvent.SideId.PLAYER)
 	ended.outcome = Battle.Outcome.CAUGHT
 	assert_eq(BattlePlayback.beats(ended, _texts, _data).size(), 0)
+
+
+## Jalon 6 : le soin dit l'objet, remonte la barre, puis dit les PV rendus.
+func test_item_used_is_a_message_the_heal_then_a_message() -> void:
+	var used := _event(BattleEvent.Kind.ITEM_USED, BattleEvent.SideId.PLAYER, "Salamèche")
+	used.item_id = &"potion"
+	used.item_name = "Potion"
+	used.amount = 13
+	used.hp = 18
+	used.max_hp = 18
+	used.party_index = 1
+	var beats := BattlePlayback.beats(used, _texts, _data)
+	assert_eq(_kinds(beats), [BattleBeat.Kind.MESSAGE, BattleBeat.Kind.HEAL,
+		BattleBeat.Kind.MESSAGE] as Array[BattleBeat.Kind])
+	assert_eq(_messages(beats), ["Tu utilises Potion sur Salamèche.",
+		"Salamèche récupère 13 PV."] as Array[String])
+	assert_eq(beats[1].event.party_index, 1, "le directeur sait quel Pokémon remonte")
+	assert_eq(beats[1].side, BattleEvent.SideId.PLAYER)

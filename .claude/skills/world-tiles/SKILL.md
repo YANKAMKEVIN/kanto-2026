@@ -7,13 +7,13 @@ description: Construction du monde de Kanto 2026 dans Godot 4.7 — 2D HD atmosp
 
 ## Direction artistique à respecter
 
-**2D HD atmosphérique** (voir `docs/design/vision.md`) : décors 2D haute définition très détaillés, légèrement texturés pixel art ; personnages et Pokémon en pixel art fin ; lumière dynamique. Benchmark : `docs/design/reference/bourg-palette-aplus-v1.png`. **Pas de répétition visible** : un sol en tuiles, mais les éléments marquants (arbres, maisons, rochers, massifs) sont des **props uniques ou à variantes**, placés à la main.
+**2D HD atmosphérique** (voir `docs/design/vision.md`) : décors 2D haute définition très détaillés, légèrement texturés pixel art ; personnages et Pokémon peints simplifiés (même main que les décors) ; lumière dynamique. Benchmark : `docs/design/reference/bourg-palette-aplus-v1.png`. **Pas de répétition visible** : un sol en tuiles, mais les éléments marquants (arbres, maisons, rochers, massifs) sont des **props uniques ou à variantes**, placés à la main.
 
 ## Échelle
 
 - **Case = 96×96 px** en unités monde. Les unités monde = pixels de la résolution de référence (1080 p de haut) ; `Camera2D` **zoom 1** → ≈ 11 cases de haut, ≈ 24 de large sur S24.
 - **Décors HD** dessinés à **1:1** (une tuile de sol = 96×96 px de texture), filtre `linear` (défaut du projet).
-- **Personnages et Pokémon du monde** : pixel art **64 px de haut** en natif, `scale = 2` (128 px ≈ 1,33 case), `texture_filter = NEAREST` sur le nœud. Origine du sprite **aux pieds** (bas-centre de la case).
+- **Personnages et Pokémon du monde** : **peints simplifiés** (décision de Kevin, 2026-10-03), planches 4 × 4 (bas, gauche, droite, haut × 4 images), héros **128 px de haut** affichés à 1:1 (≈ 1,33 case), `texture_filter = LINEAR`. Origine du sprite **aux pieds**. Voir `docs/design/cahier-art-monde-v0.1.md` §4.
 - `snap_2d_transforms_to_pixel` actif ; positions de caméra arrondies.
 
 ## Sol, props et collisions

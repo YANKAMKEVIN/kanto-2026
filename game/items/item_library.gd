@@ -14,13 +14,15 @@ extends RefCounted
 ## [/codeblock]
 ## Clés obligatoires : name, plural, feminine, category ([constant ItemData.CATEGORY_NAMES]),
 ## description ; catch_bonus (nombre > 0) obligatoire pour une Ball et refusé ailleurs ;
+## heal_amount (entier > 0, PV rendus) obligatoire pour un soin (« heal ») et refusé ailleurs ;
 ## draft facultative (texte à relire par Kevin). Toute clé inconnue est une erreur ; une
 ## entrée invalide est écartée ([method get_errors], push_error).
 
 const DATA_DIR: String = "res://data/items/"
 
 const _KEYS: Array[String] = [
-	"name", "plural", "feminine", "category", "catch_bonus", "description", "draft",
+	"name", "plural", "feminine", "category", "catch_bonus", "heal_amount", "description",
+	"draft",
 ]
 const _REQUIRED: Array[String] = ["name", "plural", "feminine", "category", "description"]
 
@@ -75,6 +77,7 @@ func add_from_dict(data: Dictionary, source: String = "") -> bool:
 			continue
 		item.id = id
 		item.source = source
+		item.order = _items.size()
 		_items[id] = item
 	return ok
 
@@ -86,6 +89,14 @@ func has_item(id: StringName) -> bool:
 ## Objet [param id], ou null.
 func get_item(id: StringName) -> ItemData:
 	return _items.get(id)
+
+
+## Identifiants connus, dans l'ordre des données (fichiers par ordre alphabétique, puis ordre
+## des entrées) : ordre « pertinence » du Sac.
+func get_ids_in_data_order() -> Array[StringName]:
+	var ids: Array[StringName] = []
+	ids.assign(_items.keys())
+	return ids
 
 
 ## Identifiants connus, triés.
@@ -146,6 +157,14 @@ func _parse_item(value: Variant, where: String) -> ItemData:
 			item.catch_bonus = float(bonus)
 	elif entry.has("catch_bonus"):
 		ok = _fail("%s : « catch_bonus » est réservé aux Balls" % where)
+	if item.category == ItemData.Category.HEAL:
+		var amount: Variant = entry.get("heal_amount")
+		if not JsonFields.is_int(amount) or int(amount) <= 0:
+			ok = _fail("%s : « heal_amount » doit être un entier > 0 pour un soin" % where)
+		else:
+			item.heal_amount = int(amount)
+	elif entry.has("heal_amount"):
+		ok = _fail("%s : « heal_amount » est réservé aux soins" % where)
 	return item if ok else null
 
 

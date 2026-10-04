@@ -17,12 +17,6 @@ const WILD_BATTLE_ACTIONS: Dictionary[StringName, bool] = {
 	&"attack": true, &"bag": true, &"run": true,
 }
 
-## Catégories d'objets utilisables dans le Sac de combat sauvage (jalon 5) : les Balls. La
-## Potion est rangée mais son usage arrive au jalon 6 (décision de Kevin) : elle n'est jamais
-## affichée au combat.
-const USABLE_IN_WILD_BATTLE: Array[ItemData.Category] = [ItemData.Category.BALL]
-
-
 ## Carte d'information du Pokémon envoyé par [param event] (SENT_OUT) : nom, sexe, niveau,
 ## PV ; PV chiffrés du côté du joueur seulement (dossier 05 §5).
 static func card(event: BattleEvent) -> BattleCardView:
@@ -79,20 +73,9 @@ static func move_category(category: MoveData.Category) -> BattleMoveView.Categor
 	return BattleMoveView.Category.PHYSICAL
 
 
-## Objets du Sac de combat ([BagEntryView]), dans l'ordre des identifiants de [param bag] : un
-## objet inconnu de [param items] est omis (push_error). Nom au singulier, catégorie en
-## identifiant des données ; [member BagEntryView.usable] vrai pour les catégories de
-## [constant USABLE_IN_WILD_BATTLE] seulement (jamais la Potion au jalon 5).
+## Objets du Sac de combat sauvage ([BagEntryView]) : enveloppe de [method BagQuery.entries]
+## (contexte combat sauvage, pertinence : Balls puis soins). Un objet inconnu de [param items]
+## est omis (push_error). Nom au singulier, catégorie en identifiant des données ;
+## [member BagEntryView.usable] selon les règles des données (Balls et soins).
 static func bag_entries(bag: Bag, items: ItemLibrary) -> Array[BagEntryView]:
-	var views: Array[BagEntryView] = []
-	if bag == null or items == null:
-		return views
-	for id: StringName in bag.get_ids():
-		var item := items.get_item(id)
-		if item == null:
-			push_error("BattleViews : objet inconnu « %s »" % id)
-			continue
-		views.append(BagEntryView.new(id, item.name, bag.count_of(id), item.description,
-			StringName(ItemData.CATEGORY_NAMES[item.category]),
-			USABLE_IN_WILD_BATTLE.has(item.category)))
-	return views
+	return BagQuery.entries(bag, items, BagQuery.CONTEXT_WILD_BATTLE)

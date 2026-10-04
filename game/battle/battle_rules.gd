@@ -17,14 +17,18 @@ var gives_exp: bool = true
 var exp_multiplier: float = 1.0
 ## Le Sac et les Balls sont permis (sauvage seulement, 5D).
 var allow_balls: bool = false
+## Les soins sur un Pokémon de l'équipe sont permis (jalon 6, Q-10 : sauvage et dresseur). Il
+## faut aussi [member items] pour lire le soin. Le SAC reste muet contre le rival du labo : c'est
+## la grille d'actions qui le tait (BattleViews.TRAINER_BATTLE_ACTIONS, décision n° 12).
+var allow_heal_items: bool = false
 ## Objets connus (5D) : le moteur y lit le [member ItemData.catch_bonus] de la Ball lancée.
 ## Null = aucune Ball n'est utilisable, même si [member allow_balls]. Le Sac n'est pas ici :
 ## le moteur ne compte ni ne retire aucun objet (le directeur s'en charge).
 var items: ItemLibrary = null
 
 
-## Règles d'un combat sauvage : fuite permise, XP ×1, Balls permises (bonus lus dans
-## [param item_library]).
+## Règles d'un combat sauvage : fuite permise, XP ×1, Balls et soins permis (bonus et soins
+## lus dans [param item_library]).
 static func for_wild(item_library: ItemLibrary = null) -> BattleRules:
 	var rules := BattleRules.new()
 	rules.wild = true
@@ -32,6 +36,7 @@ static func for_wild(item_library: ItemLibrary = null) -> BattleRules:
 	rules.gives_exp = true
 	rules.exp_multiplier = 1.0
 	rules.allow_balls = true
+	rules.allow_heal_items = true
 	rules.items = item_library
 	return rules
 
@@ -39,11 +44,15 @@ static func for_wild(item_library: ItemLibrary = null) -> BattleRules:
 ## Règles d'un combat de dresseur : pas de fuite, XP ×1,5, pas de Balls (Q23). L'XP suit
 ## [member TrainerData.gives_exp] de [param trainer] (faux pour le premier combat du rival,
 ## `rival_lab` : ni XP ni argent, décisions n° 6 et 15) ; sans dresseur, elle est donnée.
-static func for_trainer(trainer: TrainerData = null) -> BattleRules:
+## Soins permis (Q-10), lus dans [param item_library] (null : aucun soin possible).
+static func for_trainer(trainer: TrainerData = null,
+		item_library: ItemLibrary = null) -> BattleRules:
 	var rules := BattleRules.new()
 	rules.wild = false
 	rules.can_flee = false
 	rules.gives_exp = trainer.gives_exp if trainer != null else true
 	rules.exp_multiplier = 1.5
 	rules.allow_balls = false
+	rules.allow_heal_items = true
+	rules.items = item_library
 	return rules

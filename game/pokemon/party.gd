@@ -33,6 +33,32 @@ func index_of(pokemon: Pokemon) -> int:
 	return _members.find(pokemon)
 
 
+## Échange les places [param a] et [param b] (Équipe du Menu Dresseur, jalon 6A : glisser A
+## sur B, ou DÉPLACER A puis B ; « courte animation d'échange », dossier 08 §2). Le premier
+## de la liste reste le Pokémon de tête. Vrai si l'ordre a changé ; faux (rien ne change) si
+## une place n'existe pas ou si [param a] = [param b].
+func swap(a: int, b: int) -> bool:
+	if a == b or not _has_index(a) or not _has_index(b):
+		return false
+	var other := _members[a]
+	_members[a] = _members[b]
+	_members[b] = other
+	return true
+
+
+## Déplace le Pokémon de la place [param from] à la place [param to] en décalant les autres
+## (insertion). Vrai si l'ordre a changé ; faux (rien ne change) si une place n'existe pas ou
+## si [param from] = [param to]. L'Équipe du J6 échange ([method swap]) ; ceci sert à un
+## futur glisser « insérer » (Stockage, J7A).
+func move(from: int, to: int) -> bool:
+	if from == to or not _has_index(from) or not _has_index(to):
+		return false
+	var pokemon := _members[from]
+	_members.remove_at(from)
+	_members.insert(to, pokemon)
+	return true
+
+
 ## Les membres, dans l'ordre (copie de la liste).
 func get_all() -> Array[Pokemon]:
 	return _members.duplicate()
@@ -87,3 +113,7 @@ func load_array(entries: Array, data: PokemonData) -> bool:
 			push_error("Party : entrée d'équipe écartée")
 			ok = false
 	return ok
+
+
+func _has_index(index: int) -> bool:
+	return index >= 0 and index < _members.size()

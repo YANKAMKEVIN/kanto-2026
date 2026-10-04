@@ -30,8 +30,8 @@ signal item_previewed(item_id: StringName)
 ## Un onglet est touché : sa catégorie est ouverte.
 signal category_opened(category_id: StringName)
 
-const TAB_SCENE: PackedScene = preload("res://game/ui/battle/bag_category_tab.tscn")
-const CARD_SCENE: PackedScene = preload("res://game/ui/battle/bag_item_card.tscn")
+const TAB_SCENE: PackedScene = preload("res://game/ui/bag/bag_category_tab.tscn")
+const CARD_SCENE: PackedScene = preload("res://game/ui/bag/bag_item_card.tscn")
 const TITLE_ICON: Texture2D = preload("res://assets/ui/icons/battle/bag.svg")
 ## Illustration de l'onglet d'une catégorie ; le sac pour les autres.
 const CATEGORY_ICONS: Dictionary[StringName, Texture2D] = {

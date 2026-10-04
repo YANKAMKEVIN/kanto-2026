@@ -107,6 +107,34 @@ func test_invalid_fields_are_rejected_and_nothing_is_kept() -> void:
 	assert_push_error_count(12)
 
 
+func test_hp_sets_the_starting_hp_bounded_by_the_max() -> void:
+	var start := DebugStart.new()
+	assert_true(start.add_from_dict({ "party": [
+		{ "species": "charmander", "level": 8, "hp": 6 },
+		{ "species": "rattata", "level": 5, "hp": 0 },
+		{ "species": "pidgey", "level": 5, "hp": 999 },
+		{ "species": "pidgey", "level": 5 },
+	] }, _data, _items))
+	var state: Node = autofree(GameStateScript.new())
+	start.apply(state, _data)
+	var members: Array = []
+	for i: int in state.party.size():
+		var pokemon: Pokemon = state.party.get_at(i)
+		members.append([pokemon.hp, pokemon.max_hp()])
+	assert_eq(members[0][0], 6)
+	assert_eq(members[1][0], 0, "K.O.")
+	assert_eq(members[2][0], members[2][1], "borné aux PV max")
+	assert_eq(members[3][0], members[3][1], "sans « hp » : PV pleins")
+
+
+func test_hp_must_be_a_non_negative_integer() -> void:
+	var start := DebugStart.new()
+	assert_false(start.add_from_dict({ "party": [{ "species": "pidgey", "level": 5, "hp": -1 }] },
+		_data, _items, "t"))
+	assert_string_contains("\n".join(start.get_errors()), "t party 1 : « hp » est un entier positif ou nul")
+	assert_push_error_count(1)
+
+
 func test_party_size_is_bounded() -> void:
 	var start := DebugStart.new()
 	assert_false(start.add_from_dict({ "party": [] }, _data, _items, "vide"))

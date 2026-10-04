@@ -98,7 +98,7 @@ func _fit_body() -> void:
 func _haptic(duration_ms: int) -> void:
 	haptic_played.emit(duration_ms)
 	if haptics_enabled:
-		Input.vibrate_handheld(duration_ms)
+		Haptics.vibrate(duration_ms)
 
 
 func _animate(target: Vector2, alpha: float, duration: float, ease: Tween.EaseType) -> void:

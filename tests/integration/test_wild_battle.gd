@@ -536,3 +536,58 @@ func test_a_second_capture_keeps_a_single_first_capture_moment() -> void:
 	assert_true(GameState.pokedex.is_caught(&"pidgey"))
 	assert_true(GameState.pokedex.is_caught(&"rattata"))
 	assert_push_error_count(0)
+
+
+# --- Soin en combat (jalon 6, T12) -----------------------------------------------------------
+
+## Pilote une rencontre : SAC, SOINS, Potion, UTILISER, puis le Pokémon [param target] ; ensuite
+## FUITE jusqu'à la fin. Renvoie le nombre de fois où le choix du Pokémon s'est ouvert.
+func _drive_potion(target: int) -> int:
+	var enc := _boot.get_encounter_director()
+	var battle_director := _boot.get_battle_director()
+	var battle_hud := _boot.get_battle_hud()
+	var opened := 0
+	var answered := false
+	var stage := 0
+	var deadline := Time.get_ticks_msec() + int(TIMEOUT * 1000)
+	while enc.is_running() and Time.get_ticks_msec() < deadline:
+		var picker := battle_director.get_party_picker()
+		var panel := battle_director.get_bag_panel()
+		var battle := battle_director.get_battle()
+		if picker != null and picker.is_shown() and not answered:
+			opened += 1
+			answered = true
+			picker.target_chosen.emit(target)
+		elif panel != null and panel.is_shown() and not panel.is_answered():
+			panel.open_category(&"heal")
+			panel.select_item(&"potion")
+			panel.get_action_button().pressed.emit()
+		elif battle != null and battle.get_state() == Battle.State.CHOOSING \
+				and battle_hud.get_zone() == BattleHud.Zone.ACTIONS:
+			battle_hud.action_selected.emit(ActionGrid.BAG if stage == 0 else ActionGrid.RUN)
+			stage = 1
+		await wait_process_frames(1)
+	assert_false(enc.is_running(), "la rencontre s'est terminée")
+	return opened
+
+
+func test_a_potion_in_a_wild_battle_heals_another_member_once() -> void:
+	var seed := _route_seed(true, Battle.Outcome.FLED)
+	assert_gt(seed, -1, "une graine de rencontre")
+	if seed < 0:
+		return
+	_new_route_game(seed)
+	var hurt := PokemonFactory.create(_boot.get_pokemon_data(), &"pidgey", 20, GameRng.new(3))
+	hurt.hp = 4
+	GameState.party.add(hurt)
+	GameState.bag.add(&"potion", 3)
+	_stand_below_grass()
+	var enc := _boot.get_encounter_director()
+	Input.action_press(&"move_up")
+	await wait_until(func() -> bool: return enc.is_running(), 5.0)
+	Input.action_release(&"move_up")
+	var opened := await _drive_potion(1)
+	assert_eq(opened, 1, "le choix du Pokémon s'est ouvert une fois")
+	assert_eq(hurt.hp, 24, "+20 PV")
+	assert_eq(GameState.bag.count_of(&"potion"), 2, "une Potion retirée")
+	assert_push_error_count(0)

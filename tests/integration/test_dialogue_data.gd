@@ -27,8 +27,10 @@ const MAPS: Array[StringName] = [
 	&"player_house_2f", &"player_house_1f", &"rival_house", &"oak_lab", &"pallet_town",
 	&"route_1",
 ]
-## Seuls textes provisoires : le panneau « BOURG PALETTE » (Q8).
-const DRAFTS: Array[StringName] = [&"sign_pallet_town"]
+## Seuls textes provisoires : le panneau « BOURG PALETTE » (Q8) et les textes d'observation
+## des Pokémon des habitants (jalon 6 T16, à valider par Kevin).
+const DRAFTS: Array[StringName] = [&"observe_aoki_pidgey", &"observe_leo_rattata",
+	&"sign_pallet_town"]
 ## Identifiants attendus (3A) : Maman, table, rival, carte, Maya, 3 starters, 3 habitants,
 ## panneau ; (3B) « Hé ! Attends ! », les répliques du Prof. Chen et la pensée des herbes ;
 ## (4A, T1) la proposition du Prof. Chen ; (4A, T3) le choix et la sortie empêchée.
@@ -37,7 +39,8 @@ const IDS: Array[StringName] = [
 	&"oak_after_battle",
 	&"oak_lab_exit_block", &"oak_lab_reunion", &"oak_lab_waiting", &"oak_poke_balls",
 	&"oak_poke_balls_intro", &"oak_route1_call", &"oak_route1_warning", &"oak_starter_offer",
-	&"oak_starter_reciprocal", &"observe_bulbasaur", &"observe_charmander", &"observe_squirtle",
+	&"oak_starter_reciprocal", &"observe_aoki_pidgey", &"observe_bulbasaur",
+	&"observe_charmander", &"observe_leo_rattata", &"observe_squirtle",
 	&"rival", &"rival_challenge", &"rival_challenge_wait", &"rival_kanto_map",
 	&"rival_lab_lost", &"rival_lab_waiting", &"rival_lab_won", &"rival_lab_won_leaving",
 	&"rival_starter_pick", &"rival_starter_smile", &"route1_grass_thought",
@@ -417,7 +420,8 @@ func test_speakers_and_narration() -> void:
 		&"aoki": ["Mme Aoki", false], &"leo": ["Léo", false], &"haru": ["Haru", false],
 		&"breakfast_table": ["", true], &"rival_kanto_map": ["", true],
 		&"observe_bulbasaur": ["Bulbizarre", true], &"observe_charmander": ["Salamèche", true],
-		&"observe_squirtle": ["Carapuce", true], &"sign_pallet_town": ["", false],
+		&"observe_squirtle": ["Carapuce", true], &"observe_aoki_pidgey": ["Roucool", true],
+		&"observe_leo_rattata": ["Rattata", true], &"sign_pallet_town": ["", false],
 		&"oak_route1_call": ["???", false], &"route1_grass_thought": ["", true],
 		&"oak_route1_warning": ["Prof. Chen", false], &"oak_lab_reunion": ["", false],
 		&"oak_lab_waiting": ["Prof. Chen", false], &"rival_lab_waiting": ["Rival", false],

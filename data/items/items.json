@@ -6,7 +6,7 @@
 	},
 	"potion": {
 		"name": "Potion", "plural": "Potions", "feminine": true,
-		"category": "heal",
+		"category": "heal", "heal_amount": 20,
 		"description": "Restaure les PV d'un Pokémon.", "draft": true
 	}
 }

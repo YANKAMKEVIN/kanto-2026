@@ -1,0 +1,41 @@
+{
+	"services": {
+		"pokemon_center": { "name": "Centre Pokémon" },
+		"poke_mart": { "name": "Boutique" },
+		"gym": { "name": "Arène" }
+	},
+	"zones": {
+		"pallet_town": {
+			"name": "Bourg Palette", "kind": "town",
+			"maps": ["pallet_town", "player_house_1f", "player_house_2f", "rival_house", "oak_lab"],
+			"description": "Un bourg tranquille entre les prés et la mer. Le vent du large y porte l'odeur de l'herbe coupée.",
+			"draft": true
+		},
+		"route_1": {
+			"name": "Route 1", "kind": "route", "maps": ["route_1"],
+			"subtitle": "Bourg Palette — Jadielle",
+			"description": "Un chemin de campagne qui serpente vers Jadielle, entre clôtures et hautes herbes. Quitter le sentier y est souvent récompensé.",
+			"draft": true
+		},
+		"viridian_city": { "name": "Jadielle", "kind": "town", "maps": [] },
+		"route_22": { "name": "Route 22", "kind": "route", "maps": [] },
+		"route_2": { "name": "Route 2", "kind": "route", "maps": [] },
+		"viridian_forest": { "name": "Forêt de Jade", "kind": "place", "maps": [] },
+		"pewter_city": { "name": "Argenta", "kind": "town", "maps": [] },
+		"route_3": { "name": "Route 3", "kind": "route", "maps": [] },
+		"mt_moon": { "name": "Mont Sélénite", "kind": "place", "maps": [] },
+		"route_4": { "name": "Route 4", "kind": "route", "maps": [] },
+		"cerulean_city": { "name": "Azuria", "kind": "town", "maps": [] },
+		"vermilion_city": { "name": "Carmin-sur-Mer", "kind": "town", "maps": [] },
+		"lavender_town": { "name": "Lavanville", "kind": "town", "maps": [] },
+		"route_8": { "name": "Route 8", "kind": "route", "maps": [] },
+		"saffron_city": { "name": "Safrania", "kind": "town", "maps": [] },
+		"route_7": { "name": "Route 7", "kind": "route", "maps": [] },
+		"celadon_city": { "name": "Céladopole", "kind": "town", "maps": [] },
+		"fuchsia_city": { "name": "Parmanie", "kind": "town", "maps": [] },
+		"route_21": { "name": "Route 21", "kind": "sea_route", "maps": [] },
+		"cinnabar_island": { "name": "Cramois'Île", "kind": "town", "maps": [] },
+		"route_23": { "name": "Route 23", "kind": "route", "maps": [] },
+		"indigo_plateau": { "name": "Plateau Indigo", "kind": "place", "maps": [] }
+	}
+}

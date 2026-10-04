@@ -870,3 +870,127 @@ func test_capture_log_is_reproducible() -> void:
 	assert_eq(logs[0], logs[1])
 	assert_eq(logs[0][1]["kind"], "BALL_THROWN")
 	assert_eq(logs[0][-1]["kind"], "BATTLE_ENDED")
+
+
+# --- Soin en combat (jalon 6 §3.4, Q-10, Q-11) ------------------------------------------
+# Salamèche N5 (18 PV) et Bulbizarre N5 (19 PV) contre Roucool N3 (Tornade seule). Après le
+# soin, l'adversaire joue : IA roll(1)=1, précision 50, critique 2 (non), aléatoire 16.
+
+const FOE_TURN: Array[int] = [1, 50, 2, 16]
+
+
+func _heal_battle(draws: Array[int], rules: BattleRules = null) -> Battle:
+	return _xp_battle([_mon(&"charmander", 5), _mon(&"bulbasaur", 5)], _mon(&"pidgey", 3),
+		draws, rules if rules != null else BattleRules.for_wild(_items()))
+
+
+func test_heal_takes_the_turn_then_the_foe_plays() -> void:
+	var battle := _heal_battle(FOE_TURN)
+	var charmander := battle.get_player_side().active.pokemon
+	charmander.hp = 3
+	var action := BattleAction.heal(&"potion", 0)
+	assert_true(action.is_heal())
+	assert_false(BattleAction.ball(&"poke_ball").is_heal())
+	assert_true(battle.can_use_heal_items())
+	assert_true(battle.is_legal(action))
+	var events := battle.submit(action)
+	assert_eq(_rng.remaining(), 0, "aucun tirage propre au soin ; puis le tour adverse")
+	var kinds := _kinds(events)
+	assert_eq(kinds.slice(0, 3), [["TURN_STARTED", "PLAYER"], ["ITEM_USED", "PLAYER"],
+		["MOVE_USED", "FOE"]], "le soin avant l'adversaire, qui joue ensuite (Q-10)")
+	var used := events[1]
+	assert_eq([used.item_id, used.item_name, used.amount, used.hp, used.max_hp,
+		used.party_index, used.species_id, used.pokemon_name],
+		[&"potion", "Potion", 15, 18, 18, 0, &"charmander", "Salamèche"], "PV bornés : +15")
+	assert_lt(charmander.hp, 18, "puis Tornade le touche")
+	assert_eq(battle.get_state(), Battle.State.CHOOSING)
+	assert_eq(battle.get_turn(), 1)
+
+
+func test_heal_a_member_who_is_not_in_play() -> void:
+	var battle := _heal_battle(FOE_TURN)
+	var bulbasaur := battle.get_player_side().party.get_at(1)
+	bulbasaur.hp = 2
+	var events := battle.submit(BattleAction.heal(&"potion", 1))
+	var used := _find(events, K.ITEM_USED)
+	assert_eq([used.party_index, used.species_id, used.amount, used.hp], [1, &"bulbasaur", 17, 19])
+	assert_eq(bulbasaur.hp, 19)
+	assert_eq(battle.get_player_side().active.pokemon.species_id, &"charmander",
+		"le Pokémon en jeu ne change pas")
+	assert_not_null(_find(events, K.MOVE_USED), "l'adversaire joue")
+
+
+func test_heal_is_refused_on_full_hp_fainted_or_missing_member() -> void:
+	var battle := _heal_battle([])
+	var party := battle.get_player_side().party
+	party.get_at(1).hp = 0
+	assert_false(battle.is_legal(BattleAction.heal(&"potion", 0)), "PV pleins")
+	assert_false(battle.is_legal(BattleAction.heal(&"potion", 1)), "K.O. (Q-11)")
+	assert_false(battle.is_legal(BattleAction.heal(&"potion", 2)), "pas de membre")
+	party.get_at(0).hp = 1
+	assert_false(battle.is_legal(BattleAction.heal(&"poke_ball", 0)), "une Ball ne soigne pas")
+	assert_false(battle.is_legal(BattleAction.heal(&"elixir", 0)), "objet inconnu")
+	assert_false(battle.is_legal(BattleAction.ball(&"potion")), "la Potion ne se lance pas")
+	assert_eq(battle.submit(BattleAction.heal(&"potion", 1)).size(), 0)
+	assert_push_error("action refusée")
+	assert_eq(battle.get_turn(), 0, "rien n'a été joué")
+	assert_eq(party.get_at(1).hp, 0)
+
+
+func test_heal_needs_rules_and_items() -> void:
+	var rival := _battle(&"charmander", &"squirtle", [])
+	rival.get_player_side().active.pokemon.hp = 1
+	assert_false(rival.can_use_heal_items(), "règles nulles (rival du 4B)")
+	assert_false(rival.is_legal(BattleAction.heal(&"potion", 0)))
+	var no_items := _heal_battle([], BattleRules.for_wild())
+	no_items.get_player_side().active.pokemon.hp = 1
+	assert_false(no_items.is_legal(BattleAction.heal(&"potion", 0)), "sans objets connus")
+	var trainer_rules := BattleRules.for_trainer()
+	assert_true(trainer_rules.allow_heal_items, "Q-10 : permis contre un dresseur")
+	var trainer := _heal_battle([], trainer_rules)
+	trainer.get_player_side().active.pokemon.hp = 1
+	assert_false(trainer.is_legal(BattleAction.heal(&"potion", 0)),
+		"rival du labo : la requête ne passe aucun objet")
+	assert_eq(trainer.item_context(), ItemData.CONTEXT_TRAINER_BATTLE)
+	var with_items := _heal_battle([], BattleRules.for_trainer(null, _items()))
+	with_items.get_player_side().active.pokemon.hp = 1
+	assert_true(with_items.is_legal(BattleAction.heal(&"potion", 0)))
+	assert_false(with_items.is_legal(BattleAction.ball(&"poke_ball")),
+		"toujours pas de Ball contre un dresseur")
+	assert_eq(_heal_battle([]).item_context(), ItemData.CONTEXT_WILD_BATTLE)
+
+
+func test_the_engine_never_touches_the_bag_and_the_rules_stay_as_in_j5() -> void:
+	var wild := BattleRules.for_wild(_items())
+	assert_true(wild.allow_balls and wild.allow_heal_items and wild.can_flee)
+	var trainer := BattleRules.for_trainer()
+	assert_false(trainer.allow_balls or trainer.can_flee)
+	assert_null(trainer.items)
+	# Le moteur n'a aucun Sac : une Potion « donnée » ne retire rien nulle part ; c'est le
+	# directeur qui la retire (T12). Le soin rendu est celui des données.
+	var battle := _heal_battle(FOE_TURN)
+	battle.get_player_side().active.pokemon.hp = 1
+	var used := _find(battle.submit(BattleAction.heal(&"potion", 0)), K.ITEM_USED)
+	assert_eq(used.amount, 17)
+
+
+func test_heal_log_is_reproducible() -> void:
+	var logs: Array = []
+	for i: int in 2:
+		var rng := GameRng.new(77)
+		var party := Party.new()
+		party.add(_mon(&"charmander", 5))
+		var foes := Party.new()
+		foes.add(_mon(&"pidgey", 3))
+		var battle := Battle.new(BattleSide.new(party, true), BattleSide.new(foes, false, ""),
+			_data, rng, BattleRules.for_wild(_items()))
+		var journal: Array = []
+		battle.start()
+		while battle.get_state() == Battle.State.CHOOSING and battle.get_turn() < 50:
+			var action := BattleAction.heal(&"potion", 0)
+			if not battle.is_legal(action):
+				action = BattleAction.move(0)
+			for event: BattleEvent in battle.submit(action):
+				journal.append(event.to_dict())
+		logs.append(journal)
+	assert_eq(logs[0], logs[1])

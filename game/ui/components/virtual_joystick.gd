@@ -12,6 +12,9 @@ extends Control
 ##   transforme la souris en toucher : il se teste donc à la souris.
 ## - Il relâche toujours tout : doigt levé, toucher annulé, perte de focus, mise en
 ##   pause (application ou arbre), masquage, sortie de l'arbre.
+## Réglages (Paramètres, T28) : [member size_scale] (rayon, pastille, course du pouce : la
+## zone d'apparition ne change pas), [member opacity] (opacité quand il est visible, multipliée
+## par la teinte de base), [member zone_on_right] (mode gaucher : moitié droite de l'écran).
 ## Le nœud couvre tout l'écran (ancres pleines) et ignore la souris (mouse_filter).
 ## Nommé TouchJoystick car Godot 4.7 a une classe native VirtualJoystick (analogique,
 ## deux actions possibles en diagonale : incompatible avec la règle « une seule move_* »).
@@ -28,6 +31,22 @@ const MOVE_ACTIONS: Dictionary[Vector2i, StringName] = {
 
 @export var fade_in_duration: float = UiTokens.JOYSTICK_FADE_IN
 @export var fade_out_duration: float = UiTokens.JOYSTICK_FADE_OUT
+
+## Facteur de taille (0,8 / 1,0 / 1,2) : anneau, pastille, flèches et course du pouce.
+var size_scale: float = 1.0:
+	set(value):
+		size_scale = clampf(value, 0.25, 3.0)
+		queue_redraw()
+## Opacité du joystick quand il apparaît (0,3 à 1,0) ; il reste invisible au repos.
+var opacity: float = 1.0:
+	set(value):
+		opacity = clampf(value, 0.0, 1.0)
+		if _finger != NO_FINGER:
+			if _tween != null:
+				_tween.kill()
+			modulate.a = opacity
+## Vrai (mode gaucher) : le joystick apparaît dans la moitié **droite** de l'écran.
+var zone_on_right: bool = false
 
 var _finger: int = NO_FINGER
 ## Centre de l'anneau, en coordonnées du viewport.
@@ -66,18 +85,28 @@ func _draw() -> void:
 	if modulate.a <= 0.0 and _finger == NO_FINGER:
 		return
 	var center := get_global_transform_with_canvas().affine_inverse() * _center
-	var ring_radius := UiTokens.JOYSTICK_RING * 0.5
+	var ring_radius := ring_size() * 0.5
 	draw_circle(center, ring_radius, UiTokens.JOYSTICK_RING_FILL, true, -1.0, true)
 	draw_circle(center, ring_radius - UiTokens.JOYSTICK_RING_WIDTH * 0.5,
 		UiTokens.JOYSTICK_RING_LINE, false, UiTokens.JOYSTICK_RING_WIDTH, true)
 	for dir: Vector2i in MOVE_ACTIONS:
 		var color := UiTokens.ACCENT if dir == _direction else UiTokens.JOYSTICK_ARROW
 		_draw_arrow(center, Vector2(dir), color)
-	var knob := center + _vector * UiTokens.JOYSTICK_TRAVEL
-	var knob_radius := UiTokens.JOYSTICK_KNOB * 0.5
+	var knob := center + _vector * travel()
+	var knob_radius := UiTokens.JOYSTICK_KNOB * size_scale * 0.5
 	draw_circle(knob, knob_radius, UiTokens.JOYSTICK_KNOB_FILL, true, -1.0, true)
 	var line := UiTokens.JOYSTICK_KNOB_LINE_WIDTH
 	draw_circle(knob, knob_radius - line * 0.5, UiTokens.JOYSTICK_KNOB_LINE, false, line, true)
+
+
+## Diamètre de l'anneau, taille réglée comprise.
+func ring_size() -> float:
+	return UiTokens.JOYSTICK_RING * size_scale
+
+
+## Course du pouce (pixels) pour atteindre le bord, taille réglée comprise.
+func travel() -> float:
+	return UiTokens.JOYSTICK_TRAVEL * size_scale
 
 
 ## Vrai tant qu'un doigt tient le joystick.
@@ -120,10 +149,11 @@ func _on_drag(drag: InputEventScreenDrag) -> void:
 	get_viewport().set_input_as_handled()
 
 
-## Zone d'apparition : moitié gauche du viewport.
+## Zone d'apparition : moitié gauche du viewport (droite en mode gaucher).
 func _is_in_zone(point: Vector2) -> bool:
 	var rect := get_viewport_rect()
-	return point.x < rect.position.x + rect.size.x * 0.5
+	var middle := rect.position.x + rect.size.x * 0.5
+	return point.x >= middle if zone_on_right else point.x < middle
 
 
 func _start(finger: int, point: Vector2) -> void:
@@ -131,12 +161,12 @@ func _start(finger: int, point: Vector2) -> void:
 	_center = point
 	_vector = Vector2.ZERO
 	_set_direction(Vector2i.ZERO)
-	_fade_to(1.0, fade_in_duration)
+	_fade_to(opacity, fade_in_duration)
 	queue_redraw()
 
 
 func _update_vector(point: Vector2) -> void:
-	_vector = ((point - _center) / UiTokens.JOYSTICK_TRAVEL).limit_length(1.0)
+	_vector = ((point - _center) / travel()).limit_length(1.0)
 	_set_direction(DirectionInput.quantize(_vector, _direction))
 	queue_redraw()
 
@@ -181,8 +211,8 @@ func _fade_to(alpha: float, duration: float) -> void:
 
 ## Flèche (triangle) pointant vers [param dir], à l'intérieur de l'anneau.
 func _draw_arrow(center: Vector2, dir: Vector2, color: Color) -> void:
-	var tip_distance := UiTokens.JOYSTICK_RING * 0.5 - UiTokens.JOYSTICK_ARROW_INSET
+	var tip_distance := ring_size() * 0.5 - UiTokens.JOYSTICK_ARROW_INSET * size_scale
 	var tip := center + dir * tip_distance
-	var base := tip - dir * UiTokens.JOYSTICK_ARROW_SIZE
-	var side := Vector2(-dir.y, dir.x) * UiTokens.JOYSTICK_ARROW_SIZE
+	var base := tip - dir * UiTokens.JOYSTICK_ARROW_SIZE * size_scale
+	var side := Vector2(-dir.y, dir.x) * UiTokens.JOYSTICK_ARROW_SIZE * size_scale
 	draw_colored_polygon(PackedVector2Array([tip, base + side, base - side]), color)

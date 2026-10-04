@@ -38,3 +38,13 @@ rm "$HOME/Library/Application Support/Godot/app_userdata/Kanto 2026/debug_start.
 | `forget_move.json` | Bulbizarre N19 à 1 XP du N20, 4 capacités : Poudre Toxik → choix de l'oubli |
 | `capture_qa.json` | Salamèche N5 sur la Route 1, 30 Poké Balls : juger l'équilibrage de la capture (QA T16) |
 | `team_full.json` | Équipe de 6 sur la Route 1, 10 Poké Balls : une capture part au stockage (QA T16) |
+| `bag_qa.json` | Salamèche N8 à 6 PV, Roucool N5 en pleine forme, Rattata N5 K.O., 10 Potions et 5 Poké Balls : soin, refus et Potion en combat (QA 6B). Clé de membre « hp » : PV de départ (0 = K.O.) |
+
+## Déblocages du Menu Dresseur (jalon 6 T2)
+
+`tools/deploy_s24.sh --debug-unlock pokedex` dépose `user://debug_unlocks.json`
+(`{ "pokedex": true }`, lu par `DebugUnlocks`, `game/systems/debug/debug_unlocks.gd`) : l'écran
+Pokédex existe **sans** que le drapeau d'histoire `pokedex_activated` soit posé ; rien n'est
+sauvegardé. Même garde que le départ de débogage (build debug, Boot scène principale, fichier
+présent). Se combine avec `--debug-start` ou avec la vraie partie ; sans l'option, le fichier est
+retiré. Sur le Mac : `echo '{ "pokedex": true }' > "$HOME/Library/Application Support/Godot/app_userdata/Kanto 2026/debug_unlocks.json"`.
