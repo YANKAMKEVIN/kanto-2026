@@ -1,13 +1,18 @@
-"""Rend un Pokémon (modèle 3D extrait, format SMD) de dos pour le combat, dans Blender 5.
+"""Rend un Pokémon (modèle 3D extrait de Pokémon X/Y) de dos pour le combat, dans Blender 5.
 
 Usage (sans ouvrir Blender) :
-  blender -b --python tools/art/blender/rendre_pokemon.py -- modele.SMD dossier_images sortie.png
+  blender -b --python tools/art/blender/rendre_pokemon.py -- modele dossier_images sortie.png
       [--azimut 35] [--elevation 12] [--taille 1024] [--pose bras=-55,avant=25]
-      [--flamme Fire]
+      [--os LWing:Y:30,RWing:Y:-30] [--tourner 0] [--redresser 0] [--flamme Fire] [--vues 1]
 
-1. Import du SMD : squelette (pose de référence), maillage, UV, normales, poids des os.
-   Blender 5 ne lit plus le Collada ni les FBX anciens de ces modèles.
-2. Pose de combat : bras abaissés et ramenés vers l'avant (rotation monde autour de l'épaule).
+modele : .SMD ou .DAE (importeurs maison : Blender 5 ne lit plus le Collada ni les FBX 6100
+de ces modèles), .FBX récent (7100+) ou .glb.
+--tourner / --redresser : rotation (degrés) autour de Z / de X pour que le Pokémon soit debout
+et regarde vers -Y ; --vues 1 rend quatre vues (0, 90, 180, 270°) pour le vérifier.
+
+1. Import : squelette (pose de référence), maillage, UV, normales, poids des os.
+2. Pose de combat : --pose (bras des bipèdes : abaisser, ramener vers l'avant) et --os
+   (os:axe monde:degrés, rotation autour de la tête de l'os).
 3. Rendu « artwork officiel » : aplats à deux tons (lumière / ombre) sur la couleur de la
    texture, lumière neutre du haut à gauche, contour sombre par coque inversée.
    Les matériaux dont le nom contient --flamme (masques noir et blanc) deviennent une flamme
@@ -32,7 +37,7 @@ SATURATION = 1.12             # saturation des textures du corps
 def arguments():
 	a = sys.argv[sys.argv.index("--") + 1:]
 	opts = {"azimut": 35.0, "elevation": 12.0, "taille": 1024, "pose": "bras=-55,avant=25",
-		"flamme": "Fire"}
+		"flamme": "Fire", "os": "", "tourner": 0, "redresser": 0, "vues": 0}
 	positionnels = []
 	i = 0
 	while i < len(a):
@@ -42,7 +47,7 @@ def arguments():
 		else:
 			positionnels.append(a[i])
 			i += 1
-	opts["smd"], opts["images"], opts["sortie"] = positionnels[:3]
+	opts["modele"], opts["images"], opts["sortie"] = positionnels[:3]
 	return opts
 
 
@@ -102,9 +107,168 @@ def matrices_monde(noeuds, squelette):
 	return monde
 
 
-def construire(opts):
-	noeuds, squelette, triangles = lire_smd(opts["smd"])
-	monde = matrices_monde(noeuds, squelette)
+def lire_dae(chemin):
+	"""Collada (1.4) → mêmes données que le SMD : {indice: (nom, parent)}, {indice: matrice
+	monde de liaison}, [(matériau, [(pos, normale, uv, [(os, poids)]) × 3])], et
+	{matériau: chemin de sa texture de couleur}. Positions × bind_shape_matrix ; os placés à
+	l'inverse de leur INV_BIND_MATRIX (sinon à leur matrice de scène)."""
+	import xml.etree.ElementTree as ET
+	ns = {"c": "http://www.collada.org/2005/11/COLLADASchema"}
+	racine = ET.parse(chemin).getroot()
+	dossier = os.path.dirname(chemin)
+	def floats(el):
+		return [float(x) for x in el.text.split()] if el is not None and el.text else []
+	def matrice(valeurs):
+		return Matrix([valeurs[0:4], valeurs[4:8], valeurs[8:12], valeurs[12:16]])
+	sources = {}
+	for src in racine.iter("{%s}source" % ns["c"]):
+		fa = src.find("c:float_array", ns)
+		na = src.find("c:Name_array", ns)
+		acc = src.find(".//c:accessor", ns)
+		pas = int(acc.get("stride", "1")) if acc is not None else 1
+		if fa is not None:
+			v = floats(fa)
+			sources[src.get("id")] = [v[i:i + pas] for i in range(0, len(v), pas)]
+		elif na is not None:
+			sources[src.get("id")] = na.text.split()
+	# Os : hiérarchie et matrices de la scène.
+	noeuds, monde_scene, par_nom = {}, {}, {}
+	def parcourir(node, parent, m_parent):
+		m = node.find("c:matrix", ns)
+		local = matrice(floats(m)) if m is not None else Matrix.Identity(4)
+		m_monde = m_parent @ local
+		if node.get("type") == "JOINT":
+			import re
+			i = len(noeuds)
+			# Nom lisible (« _50_LArm » → « LArm ») ; la peau désigne l'os par sid ou nom.
+			nom = re.sub(r"^_\d+_", "", node.get("name") or node.get("sid"))
+			noeuds[i] = (nom, parent)
+			monde_scene[i] = m_monde
+			for cle in (node.get("sid"), node.get("name"), nom):
+				if cle:
+					par_nom.setdefault(cle, i)
+			parent = i
+		for enfant in node.findall("c:node", ns):
+			parcourir(enfant, parent, m_monde)
+	for scene in racine.iter("{%s}visual_scene" % ns["c"]):
+		for node in scene.findall("c:node", ns):
+			parcourir(node, -1, Matrix.Identity(4))
+	monde = dict(monde_scene)
+	# Matériaux : symbole → texture (material → effect → sampler → surface → image).
+	images = {im.get("id"): im.find("c:init_from", ns).text for im in racine.iter(
+		"{%s}image" % ns["c"]) if im.find("c:init_from", ns) is not None}
+	effets = {}
+	for eff in racine.iter("{%s}effect" % ns["c"]):
+		params = {p.get("sid"): p for p in eff.iter("{%s}newparam" % ns["c"])}
+		tex = eff.find(".//c:diffuse/c:texture", ns)
+		if tex is None:
+			continue
+		cible = tex.get("texture")
+		if cible in params:
+			src = params[cible].find(".//c:source", ns)
+			if src is not None and src.text in params:
+				init = params[src.text].find(".//c:init_from", ns)
+				cible = init.text if init is not None else cible
+		effets[eff.get("id")] = images.get(cible, cible)
+	materiaux = {}
+	for mat in racine.iter("{%s}material" % ns["c"]):
+		ie = mat.find("c:instance_effect", ns)
+		if ie is not None:
+			materiaux[mat.get("id")] = effets.get(ie.get("url").lstrip("#"))
+	symboles = {}
+	for im in racine.iter("{%s}instance_material" % ns["c"]):
+		symboles[im.get("symbol")] = materiaux.get(im.get("target").lstrip("#"))
+	textures = {}
+	for symbole, fichier in symboles.items():
+		if fichier:
+			fichier = fichier.replace("file://", "")
+			for cand in (os.path.join(dossier, fichier),
+					os.path.join(dossier, os.path.basename(fichier)),
+					os.path.join(dossier, "Textures", os.path.basename(fichier)),
+					os.path.join(dossier, "images", os.path.basename(fichier)),
+					os.path.join(dossier, "Images", os.path.basename(fichier))):
+				if os.path.exists(cand):
+					textures[symbole] = cand
+					break
+	# Contrôleurs (peau) : géométrie → (bind shape, poids par sommet, os).
+	peaux = {}
+	for ctrl in racine.iter("{%s}controller" % ns["c"]):
+		skin = ctrl.find("c:skin", ns)
+		if skin is None:
+			continue
+		bsm = skin.find("c:bind_shape_matrix", ns)
+		bsm = matrice(floats(bsm)) if bsm is not None else Matrix.Identity(4)
+		ent = {i.get("semantic"): i.get("source").lstrip("#") for i in skin.find("c:joints", ns)}
+		noms = sources[ent["JOINT"]]
+		inv = sources.get(ent.get("INV_BIND_MATRIX"), [])
+		for k, nom in enumerate(noms):
+			if nom in par_nom and k < len(inv):
+				monde[par_nom[nom]] = matrice(inv[k]).inverted()
+		vw = skin.find("c:vertex_weights", ns)
+		entrees = {i.get("semantic"): (int(i.get("offset")), i.get("source").lstrip("#"))
+			for i in vw.findall("c:input", ns)}
+		nb = len(entrees)
+		vcount = [int(x) for x in vw.find("c:vcount", ns).text.split()]
+		v = [int(x) for x in vw.find("c:v", ns).text.split()]
+		poids_src = sources[entrees["WEIGHT"][1]]
+		poids, pos = [], 0
+		for n in vcount:
+			liens = []
+			for _ in range(n):
+				j = v[pos + entrees["JOINT"][0]]
+				w = poids_src[v[pos + entrees["WEIGHT"][0]]][0]
+				if 0 <= j < len(noms) and noms[j] in par_nom:
+					liens.append((par_nom[noms[j]], w))
+				pos += nb
+			poids.append(liens)
+		peaux[skin.get("source").lstrip("#")] = (bsm, poids)
+	# Triangles.
+	triangles = []
+	for geo in racine.iter("{%s}geometry" % ns["c"]):
+		mesh = geo.find("c:mesh", ns)
+		if mesh is None:
+			continue
+		bsm, poids = peaux.get(geo.get("id"), (Matrix.Identity(4), None))
+		rot = bsm.to_3x3()
+		verts = {v.get("id"): v.find("c:input[@semantic='POSITION']", ns).get(
+			"source").lstrip("#") for v in mesh.findall("c:vertices", ns)}
+		for prim in mesh:
+			balise = prim.tag.split("}")[1]
+			if balise not in ("triangles", "polylist"):
+				continue
+			entrees = {}
+			for i in prim.findall("c:input", ns):
+				sem = i.get("semantic")
+				if sem == "TEXCOORD" and "TEXCOORD" in entrees:
+					continue
+				src = i.get("source").lstrip("#")
+				entrees[sem] = (int(i.get("offset")), verts.get(src, src))
+			nb = max(o for o, _ in entrees.values()) + 1
+			idx = [int(x) for x in prim.find("c:p", ns).text.split()]
+			vc = prim.find("c:vcount", ns)
+			tailles = [int(x) for x in vc.text.split()] if vc is not None else \
+				[3] * (len(idx) // (3 * nb))
+			mat = prim.get("material") or "defaut"
+			pos = 0
+			for t in tailles:
+				coins = []
+				for _ in range(t):
+					vi = idx[pos + entrees["VERTEX"][0]]
+					p = bsm @ Vector(sources[entrees["VERTEX"][1]][vi][:3])
+					n = (rot @ Vector(sources[entrees["NORMAL"][1]][idx[pos + entrees["NORMAL"][0]]][:3])
+						) if "NORMAL" in entrees else Vector((0, 0, 1))
+					uv = tuple(sources[entrees["TEXCOORD"][1]][idx[pos + entrees["TEXCOORD"][0]]][:2]
+						) if "TEXCOORD" in entrees else (0.0, 0.0)
+					liens = poids[vi] if poids is not None and vi < len(poids) else []
+					coins.append((list(p), list(n), uv, liens))
+					pos += nb
+				for k in range(1, t - 1):
+					triangles.append((mat, [coins[0], coins[k], coins[k + 1]]))
+	return noeuds, monde, triangles, textures
+
+
+def construire(noeuds, monde, triangles, textures, opts):
+	"""Squelette + maillage pondéré dans Blender. [textures] : {matériau: chemin}."""
 	# Squelette.
 	arm_data = bpy.data.armatures.new("os")
 	arm = bpy.data.objects.new("squelette", arm_data)
@@ -112,12 +276,17 @@ def construire(opts):
 	bpy.context.view_layer.objects.active = arm
 	bpy.ops.object.mode_set(mode="EDIT")
 	enfants = {n: [c for c, (_, p) in noeuds.items() if p == n] for n in noeuds}
+	# Longueur minimale d'un os : relative à la taille du modèle (les unités varient).
+	tous = [Vector(c[0]) for _m, sommets in triangles for c in sommets]
+	etendue = max((max(v[i] for v in tous) - min(v[i] for v in tous)) for i in range(3)) \
+		if tous else 60.0
+	echelle_os = etendue * 0.01
 	os_edit = {}
 	for n, (nom, _p) in noeuds.items():
 		b = arm_data.edit_bones.new(nom)
 		b.head = monde[n].to_translation()
 		suite = [monde[c].to_translation() for c in enfants[n]]
-		longueur = max(1.0, max(((v - b.head).length for v in suite), default=1.0))
+		longueur = max(echelle_os, max(((v - b.head).length for v in suite), default=echelle_os))
 		b.tail = b.head + monde[n].to_3x3() @ Vector((0, longueur, 0))
 		os_edit[n] = b
 	for n, (_nom, p) in noeuds.items():
@@ -159,18 +328,70 @@ def construire(opts):
 	mod = obj.modifiers.new("os", "ARMATURE")
 	mod.object = arm
 	for nom in noms_mats:
-		obj.data.materials.append(materiau(os.path.splitext(nom)[0], nom, opts))
-	return arm, obj
+		chemin = textures.get(nom) or os.path.join(opts["images"], nom)
+		image = bpy.data.images.load(chemin) if os.path.exists(chemin) else None
+		if image is None:
+			print("TEXTURE ABSENTE", nom)
+		obj.data.materials.append(materiau(os.path.splitext(nom)[0], image, opts))
+	return arm, [obj]
+
+
+def importer(opts):
+	"""[squelette, maillages] : SMD par l'importeur maison, FBX / glTF par Blender ; les
+	matériaux d'origine sont remplacés par les aplats (texture de couleur gardée)."""
+	chemin = opts["modele"]
+	ext = os.path.splitext(chemin)[1].lower()
+	if ext == ".smd":
+		noeuds, squelette, triangles = lire_smd(chemin)
+		arm, objs = construire(noeuds, matrices_monde(noeuds, squelette), triangles, {}, opts)
+	elif ext == ".dae":
+		arm, objs = construire(*lire_dae(chemin), opts)
+	else:
+		if ext == ".fbx":
+			bpy.ops.import_scene.fbx(filepath=chemin)
+		else:
+			bpy.ops.import_scene.gltf(filepath=chemin)
+		arm = next((o for o in bpy.data.objects if o.type == "ARMATURE"), None)
+		objs = [o for o in bpy.data.objects if o.type == "MESH"]
+		for o in objs:
+			for slot in o.material_slots:
+				if slot.material is not None:
+					slot.material = materiau(slot.material.name, image_couleur(slot.material,
+						opts), opts)
+	racines = [o for o in bpy.data.objects if o.parent is None]
+	r = Matrix.Rotation(math.radians(float(opts["tourner"])), 4, "Z") \
+		@ Matrix.Rotation(math.radians(float(opts["redresser"])), 4, "X")
+	for o in racines:
+		o.matrix_world = r @ o.matrix_world
+	bpy.context.view_layer.update()
+	return arm, objs
+
+
+def image_couleur(mat, opts):
+	"""Texture de couleur d'un matériau importé : la première image qui n'est ni une normale,
+	ni un masque d'identifiants, ni une seconde couche (…Nor, …Id, …Mask, …2)."""
+	images = [n.image for n in mat.node_tree.nodes if n.type == "TEX_IMAGE" and n.image] \
+		if mat.use_nodes else []
+	def ok(im):
+		nom = os.path.splitext(im.name)[0]
+		return not any(k in nom for k in ("Nor", "Id", "Mask")) and not nom.endswith("2")
+	choix = next((im for im in images if ok(im)), images[0] if images else None)
+	if choix is None:
+		# Pas de nœud image : chercher un PNG du nom du matériau dans le dossier d'images.
+		candidat = os.path.join(opts["images"], mat.name + ".png")
+		choix = bpy.data.images.load(candidat) if os.path.exists(candidat) else None
+	return choix
 
 
 def materiau(nom, image, opts):
+	"""Aplats « artwork » sur [image] (bpy.types.Image, ou None : blanc)."""
 	m = bpy.data.materials.new(nom)
 	m.use_nodes = True
 	nt = m.node_tree
 	nt.nodes.clear()
 	sortie = nt.nodes.new("ShaderNodeOutputMaterial")
 	tex = nt.nodes.new("ShaderNodeTexImage")
-	tex.image = bpy.data.images.load(os.path.join(opts["images"], image))
+	tex.image = image
 	emission = nt.nodes.new("ShaderNodeEmission")
 	transparent = nt.nodes.new("ShaderNodeBsdfTransparent")
 	melange = nt.nodes.new("ShaderNodeMixShader")
@@ -222,8 +443,11 @@ def materiau(nom, image, opts):
 	return m
 
 
-def poser(arm, pose):
-	"""Bras : rotation monde autour de l'épaule (abaisser, ramener vers l'avant)."""
+def poser(arm, pose, rotations):
+	"""Bras : rotation monde autour de l'épaule (abaisser, ramener vers l'avant) ; puis chaque
+	« os:axe:degrés » de [rotations] (axe monde X, Y ou Z, autour de la tête de l'os)."""
+	if arm is None:
+		return
 	reglages = dict(p.split("=") for p in pose.split(",") if "=" in p)
 	bas = math.radians(float(reglages.get("bras", -55)))
 	avant = math.radians(float(reglages.get("avant", 25)))
@@ -236,6 +460,19 @@ def poser(arm, pose):
 		# Le Pokémon regarde vers -Y ; son bras gauche part vers +X : abaisser = rotation
 		# autour de Y, ramener vers l'avant = rotation autour de Z.
 		r = (Matrix.Rotation(signe * avant, 4, "Z") @ Matrix.Rotation(-signe * bas, 4, "Y"))
+		tete = pb.head.copy()
+		pb.matrix = Matrix.Translation(tete) @ r @ Matrix.Translation(-tete) @ pb.matrix
+		bpy.context.view_layer.update()
+	for regle in filter(None, rotations.split(",")):
+		nom, axe, degres = regle.split(":")
+		pb = arm.pose.bones.get(nom)
+		if pb is None:
+			print("OS ABSENT", nom)
+			continue
+		# Axe monde ramené dans l'espace du squelette.
+		axe_arm = (arm.matrix_world.inverted().to_3x3() @ Vector(
+			{"X": (1, 0, 0), "Y": (0, 1, 0), "Z": (0, 0, 1)}[axe])).normalized()
+		r = Matrix.Rotation(math.radians(float(degres)), 4, axe_arm)
 		tete = pb.head.copy()
 		pb.matrix = Matrix.Translation(tete) @ r @ Matrix.Translation(-tete) @ pb.matrix
 		bpy.context.view_layer.update()
@@ -277,7 +514,10 @@ def contour(obj, hauteur, flamme):
 	for g in obj.vertex_groups:
 		coque.vertex_groups.new(name=g.name)
 	coque.parent = obj.parent
-	coque.modifiers.new("os", "ARMATURE").object = obj.modifiers["os"].object
+	coque.matrix_world = obj.matrix_world
+	arm_mod = next((m for m in obj.modifiers if m.type == "ARMATURE"), None)
+	if arm_mod is not None:
+		coque.modifiers.new("os", "ARMATURE").object = arm_mod.object
 	solid = coque.modifiers.new("contour", "SOLIDIFY")
 	solid.thickness = hauteur * CONTOUR_EPAISSEUR
 	solid.offset = 1.0
@@ -286,7 +526,7 @@ def contour(obj, hauteur, flamme):
 	return coque
 
 
-def cadrer(objs, opts):
+def cadrer(objs, opts, azimut=None):
 	sc = bpy.context.scene
 	bpy.context.view_layer.update()
 	deps = bpy.context.evaluated_depsgraph_get()
@@ -295,13 +535,15 @@ def cadrer(objs, opts):
 		ev = o.evaluated_get(deps)
 		pts += [ev.matrix_world @ v.co for v in ev.to_mesh().vertices]
 		ev.to_mesh_clear()
-	az = math.radians(float(opts["azimut"]))
+	az = math.radians(float(opts["azimut"] if azimut is None else azimut))
 	el = math.radians(float(opts["elevation"]))
 	# De dos : la caméra est du côté +Y (le Pokémon regarde -Y), décalée de l'azimut.
 	direction = Vector((-math.sin(az) * math.cos(el), math.cos(az) * math.cos(el), math.sin(el)))
-	cam = bpy.data.objects.new("camera", bpy.data.cameras.new("camera"))
-	sc.collection.objects.link(cam)
-	sc.camera = cam
+	cam = sc.camera
+	if cam is None:
+		cam = bpy.data.objects.new("camera", bpy.data.cameras.new("camera"))
+		sc.collection.objects.link(cam)
+		sc.camera = cam
 	cam.data.type = "ORTHO"
 	centre = sum(pts, Vector()) / len(pts)
 	cam.location = centre + direction * 500
@@ -336,11 +578,14 @@ def eclairer(direction):
 def main():
 	opts = arguments()
 	bpy.ops.wm.read_factory_settings(use_empty=True)
-	arm, obj = construire(opts)
-	poser(arm, opts["pose"])
-	hauteur = obj.dimensions.z or 60.0
-	contour(obj, hauteur, opts["flamme"])
-	direction = cadrer([obj], opts)
+	arm, objs = importer(opts)
+	poser(arm, opts["pose"], opts["os"])
+	bpy.context.view_layer.update()
+	zs = [(o.matrix_world @ Vector(c)).z for o in objs for c in o.bound_box]
+	hauteur = (max(zs) - min(zs)) or 60.0
+	for o in list(objs):
+		contour(o, hauteur, opts["flamme"])
+	direction = cadrer(objs, opts)
 	eclairer(direction)
 	sc = bpy.context.scene
 	for moteur in ("BLENDER_EEVEE", "BLENDER_EEVEE_NEXT"):
@@ -352,6 +597,15 @@ def main():
 	sc.render.film_transparent = True
 	sc.render.resolution_x = sc.render.resolution_y = int(opts["taille"])
 	sc.view_settings.view_transform = "Standard"
+	if int(opts["vues"]):
+		# Vérification d'orientation : 0 = de dos (attendu), 180 = de face.
+		sc.render.resolution_x = sc.render.resolution_y = 320
+		for az in (0, 90, 180, 270):
+			cadrer(objs, opts, az)
+			sc.render.filepath = os.path.abspath(opts["sortie"].replace(".png", f"_vue{az}.png"))
+			bpy.ops.render.render(write_still=True)
+		print("VUES", opts["sortie"])
+		return
 	sc.render.filepath = os.path.abspath(opts["sortie"])
 	bpy.ops.render.render(write_still=True)
 	print("RENDU", opts["sortie"])

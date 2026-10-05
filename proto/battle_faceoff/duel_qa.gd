@@ -11,8 +11,9 @@ extends Node2D
 ## nets (échelle entière) à plusieurs tailles, contre l'artwork officiel HD de l'adversaire ;
 ## puis, pour mémoire, les essais précédents (tout en sprite net, lissé Scale2x ×3, peint).
 ##
-## Commandes (S24 : barre du haut ; Mac : T, C, D) : traitement, cadrage, décor.
-## Arguments `--treatment=N`, `--framing=combat|old`, `--decor=N` (Movie Maker).
+## Commandes (S24 : barre du haut ; Mac : T, C, D) : traitement, cadrage, décor, et
+## « Pokémon » (pilote des dos 3D : Bulbizarre, Salamèche, Carapuce, Roucool, Onix).
+## Arguments `--treatment=N`, `--framing=combat|old`, `--decor=N`, `--pilot=N` (Movie Maker).
 
 const SHEETS_PATH: String = "res://proto/battle_faceoff/sprite_sheets.json"
 const SPRITE_DIR: String = "res://assets/sprites/pokemon/battle_proto/"
@@ -31,6 +32,19 @@ const PLAYER := {"sheet": "salameche_dos_bw", "painted": "salameche_dos_peint",
 const FOE := {"sheet": "roucool_face_bw", "painted": "roucool_face_peint", "official": 16,
 	"name": "Roucool", "level": 9}
 const OFFICIAL_DIR: String = "res://assets/sprites/pokemon/official/"
+## Pilote des dos 3D (tools/art/blender/rendre_pokemon.py) : n°, nom, taille réelle (m).
+## L'échelle suit la taille réelle (FaceoffScale, compressée et bornée) à partir de
+## Salamèche, référence de gabarit.
+const PILOT: Array[Dictionary] = [
+	{"number": 1, "name": "Bulbizarre", "height": 0.7},
+	{"number": 4, "name": "Salamèche", "height": 0.6},
+	{"number": 7, "name": "Carapuce", "height": 0.5},
+	{"number": 16, "name": "Roucool", "height": 0.3},
+	{"number": 95, "name": "Onix", "height": 8.8},
+]
+const PILOT_REFERENCE: int = 1
+## Boîte maximale de ton Pokémon à l'écran (hauteurs d'écran) : protège l'interface.
+const PILOT_MAX_BOX := Vector2(0.75, 0.62)
 ## Traitements : rendu de chaque camp (net = sprite aux pixels nets, smooth = lissé, rebuilt =
 ## reconstruit sans IA par tools/art/reconstruire_sprite.py, model = rendu de dos du modèle 3D
 ## par tools/art/blender/rendre_pokemon.py, painted = repeint, official = artwork officiel HD) et taille du tien (fraction de la hauteur du
@@ -42,12 +56,14 @@ const TREATMENTS: Array[Dictionary] = [
 	{"label": "reconstruit 60 % · Roucool HD", "player": "rebuilt", "ratio": 0.6,
 		"foe": "official"},
 	{"label": "dos 3D 60 % · Roucool HD", "player": "model", "ratio": 0.6, "foe": "official"},
+	{"label": "pilote dos 3D · taille réelle", "player": "pilot", "ratio": 0.6,
+		"foe": "official"},
 	{"label": "sprite net 50 % · Roucool HD", "player": "net", "ratio": 0.5, "foe": "official"},
 	{"label": "ancien : tout sprite net", "player": "net", "ratio": 1.0, "foe": "net"},
 	{"label": "ancien : sprite lissé", "player": "smooth", "ratio": 1.0, "foe": "smooth"},
 	{"label": "ancien : peint", "player": "painted", "ratio": 1.0, "foe": "painted"},
 ]
-const DEFAULT_TREATMENT: int = 4
+const DEFAULT_TREATMENT: int = 5
 ## Cadrages : zoom de la caméra, voile, vignettage, flou du décor ; pieds (x : décalage depuis
 ## le centre, y : depuis le haut, en hauteurs d'écran) et hauteur visible (hauteurs d'écran)
 ## de chaque Pokémon.
@@ -68,6 +84,7 @@ const HUD_GAP: float = 18.0
 
 var _sheets: Dictionary = {}
 var _treatment: int = DEFAULT_TREATMENT
+var _pilot_index: int = PILOT_REFERENCE
 var _framing: String = "combat"
 var _decor_index: int = 0
 var _map: Node2D
@@ -100,6 +117,8 @@ func _ready() -> void:
 			_treatment = clampi(arg.trim_prefix("--treatment=").to_int(), 0, TREATMENTS.size() - 1)
 		elif arg.begins_with("--framing="):
 			_framing = arg.trim_prefix("--framing=")
+		elif arg.begins_with("--pilot="):
+			_pilot_index = clampi(arg.trim_prefix("--pilot=").to_int(), 0, PILOT.size() - 1)
 		elif arg.begins_with("--decor="):
 			_decor_index = clampi(arg.trim_prefix("--decor=").to_int(), 0, DECORS.size() - 1)
 	_load_decor()
@@ -142,7 +161,7 @@ func _build_controls() -> void:
 	bar.add_theme_constant_override(&"separation", 12)
 	layer.add_child(bar)
 	for spec: Array in [["Traitement", _toggle_treatment], ["Cadrage", _toggle_framing],
-			["Décor", _next_decor]]:
+			["Décor", _next_decor], ["Pokémon", _next_pilot]]:
 		var button := Button.new()
 		button.text = spec[0]
 		button.custom_minimum_size = Vector2(150, 72)
@@ -163,6 +182,14 @@ func _toggle_treatment() -> void:
 
 func _toggle_framing() -> void:
 	_framing = "old" if _framing == "combat" else "combat"
+	_show()
+
+
+func _next_pilot() -> void:
+	_pilot_index = (_pilot_index + 1) % PILOT.size()
+	if TREATMENTS[_treatment]["player"] != "pilot":
+		_treatment = TREATMENTS.find(TREATMENTS.filter(
+			func(t: Dictionary) -> bool: return t["player"] == "pilot")[0])
 	_show()
 
 
@@ -197,14 +224,21 @@ func _show() -> void:
 	_backdrop.set_shader_parameter(&"blur_lod", framing["blur"])
 	var view := get_viewport().get_visible_rect().size
 	var treatment: Dictionary = TREATMENTS[_treatment]
-	_place(true, PLAYER, _anchor(framing["player_feet"], view),
+	var player: Dictionary = PLAYER
+	var foe: Dictionary = FOE
+	if treatment["player"] == "pilot":
+		player = PILOT[_pilot_index].merged({"level": 12})
+		if player["number"] == FOE["official"]:
+			# Roucool contre Roucool : l'adversaire devient Rattata.
+			foe = FOE.merged({"official": 19, "name": "Rattata"}, true)
+	_place(true, player, _anchor(framing["player_feet"], view),
 		float(framing["player_height"]) * float(treatment["ratio"]) * view.y, treatment["player"])
-	_place(false, FOE, _anchor(framing["foe_feet"], view), float(framing["foe_height"]) * view.y,
+	_place(false, foe, _anchor(framing["foe_feet"], view), float(framing["foe_height"]) * view.y,
 		treatment["foe"])
-	_hud.set_card(BattleHud.Side.PLAYER, BattleCardView.new(PLAYER["name"],
-		BattleCardView.Gender.MALE, PLAYER["level"], 30, 30, true))
-	_hud.set_card(BattleHud.Side.FOE, BattleCardView.new(FOE["name"],
-		BattleCardView.Gender.MALE, FOE["level"], 22, 22, false))
+	_hud.set_card(BattleHud.Side.PLAYER, BattleCardView.new(player["name"],
+		BattleCardView.Gender.MALE, player["level"], 30, 30, true))
+	_hud.set_card(BattleHud.Side.FOE, BattleCardView.new(foe["name"],
+		BattleCardView.Gender.MALE, foe["level"], 22, 22, false))
 	_hud.set_party(2)
 	_hud.show_actions({ActionGrid.ATTACK: true, ActionGrid.BAG: true, ActionGrid.TEAM: true,
 		ActionGrid.RUN: true})
@@ -233,13 +267,15 @@ func _place(is_player: bool, who: Dictionary, feet: Vector2, height: float, kind
 	_actors.add_child(shadow)
 	var node: Node2D
 	var box: Rect2
-	var still_path := SPRITE_DIR + "%s.png" % who["painted"]
+	var still_path := SPRITE_DIR + "%s.png" % who.get("painted", "")
 	if kind == "official":
 		still_path = OFFICIAL_DIR + "%03d.png" % int(who["official"])
 	elif kind == "model":
 		still_path = SPRITE_DIR + "%s.png" % who["model"]
+	elif kind == "pilot":
+		still_path = SPRITE_DIR + "dos3d_%03d.png" % int(who["number"])
 	var scale: float
-	if kind in ["painted", "official", "model"] and ResourceLoader.exists(still_path):
+	if kind in ["painted", "official", "model", "pilot"] and ResourceLoader.exists(still_path):
 		var texture: Texture2D = load(still_path)
 		box = _visible_box(texture.get_image())
 		var sprite := Sprite2D.new()
@@ -248,6 +284,8 @@ func _place(is_player: bool, who: Dictionary, feet: Vector2, height: float, kind
 		sprite.texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR_WITH_MIPMAPS
 		sprite.offset = -Vector2(box.get_center().x, box.end.y)
 		scale = height / box.size.y
+		if kind == "pilot":
+			scale = _pilot_scale(box, float(who["height"]), height)
 		node = sprite
 	else:
 		var sheet: String = who["sheet"] + {"smooth": "_lisse"}.get(kind, "")
@@ -283,6 +321,22 @@ func _place(is_player: bool, who: Dictionary, feet: Vector2, height: float, kind
 		tween.tween_property(node, ^"scale", Vector2.ONE * scale, BREATH_PERIOD / 2.0) \
 			.set_trans(Tween.TRANS_SINE)
 	_sides[is_player] = {"node": node, "shadow": shadow, "tween": tween}
+
+
+## Échelle d'un dos du pilote : présence (racine de l'aire visible) de Salamèche à la hauteur
+## [param reference_height], multipliée par le rapport de présence FaceoffScale entre la taille
+## réelle [param height_m] et celle de Salamèche ; bornée par [constant PILOT_MAX_BOX].
+func _pilot_scale(box: Rect2, height_m: float, reference_height: float) -> float:
+	var reference: Dictionary = PILOT[PILOT_REFERENCE]
+	var ref_texture: Texture2D = load(SPRITE_DIR + "dos3d_%03d.png" % int(reference["number"]))
+	var ref_box := _visible_box(ref_texture.get_image())
+	var ref_presence := reference_height * sqrt(ref_box.size.x / ref_box.size.y)
+	var ratio := FaceoffScale.presence(height_m, true) \
+		/ FaceoffScale.presence(float(reference["height"]), true)
+	var scale := ref_presence * ratio / sqrt(box.size.x * box.size.y)
+	var view := get_viewport().get_visible_rect().size
+	return minf(scale, minf(PILOT_MAX_BOX.x * view.y / box.size.x,
+		PILOT_MAX_BOX.y * view.y / box.size.y))
 
 
 ## [AnimatedSprite2D (pieds à l'origine), boîte visible] depuis une planche Noir/Blanc.
