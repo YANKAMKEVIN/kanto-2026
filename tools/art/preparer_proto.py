@@ -71,6 +71,17 @@ OBJETS = [
     ("WORLD_RELIEF_ESCALIER_BOIS_01_NE_r1.png", "escalier_bois.png", ("w", 2)),
     ("WORLD_PROP_BOITE_LETTRES_01_NE_r1.png", "boite_lettres.png", ("h", 1.3)),
     ("WORLD_PROP_POTAGER_01_NE_r1.png", "potager.png", ("w", 3)),
+    # Habillage de Bourg Palette, repris des sessions du J7 (lumière neutre).
+    ("WORLD_PROP_BUISSON_A_01_NE_r1.png", "buisson_a.png", ("w", 1.4)),
+    ("WORLD_PROP_BUISSON_B_01_NE_r1.png", "buisson_b.png", ("w", 1.5)),
+    ("WORLD_PROP_BUISSON_C_01_NE_r1.png", "buisson_c.png", ("w", 1.3)),
+    ("WORLD_PROP_PLATEBANDE_01_NE_r1.png", "platebande.png", ("w", 3)),
+    ("WORLD_PROP_POTS_FLEURS_01_NE_r1.png", "pots_fleurs.png", ("w", 1)),
+    ("WORLD_PROP_TONNEAU_01_NE_r1.png", "tonneau.png", ("h", 1)),
+    ("WORLD_PROP_LINGE_01_NE_r1.png", "linge.png", ("w", 2.6)),
+    ("WORLD_TREE_FRUITIER_01_NE_r1.png", "fruitier.png", ("h", 3.6)),
+    ("WORLD_PROP_CAISSES_01_NE_r1.png", "caisses.png", ("w", 1.3)),
+    ("WORLD_PROP_HAIE_V_01_NE_r1.png", "haie_v.png", ("h", 3.6)),
     # Intérieurs de Bourg Palette (série 07, lumière neutre).
     ("INT_MEUBLE_BAS_01_NE_r1.png", "int_meuble_bas.png", ("w", 3)),
     ("INT_CANAPE_01_NE_r1.png", "int_canape.png", ("w", 3)),

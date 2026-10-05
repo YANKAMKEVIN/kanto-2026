@@ -51,9 +51,30 @@ const OBJETS: Array = [
 	["champ.png", 42.5, 6.0, false, 0.0],
 	["camionnette.png", 12.8, 23.8, false, 0.15],
 	["velo.png", 38.6, 8.6, false, 0.15],
-	["boite_lettres.png", 11.3, 9.8, false, 0.1], ["boite_lettres.png", 33.3, 9.8, false, 0.1],
-	["cloture_piquets.png", 10.0, 9.9, false, 0.3], ["cloture_piquets.png", 16.0, 9.9, false, 0.3],
-	["cloture_piquets.png", 32.0, 9.9, false, 0.3], ["cloture_piquets.png", 38.0, 9.9, false, 0.3],
+	["boite_lettres.png", 11.4, 10.2, false, 0.1], ["boite_lettres.png", 33.4, 10.2, false, 0.1],
+	["cloture_piquets.png", 10.0, 10.4, false, 0.3], ["cloture_piquets.png", 16.0, 10.4, false, 0.3],
+	["cloture_piquets.png", 32.0, 10.4, false, 0.3], ["cloture_piquets.png", 38.0, 10.4, false, 0.3],
+	# Jardins des maisons : haies sur les côtés, fruitiers, linge, pots, buissons, plates-bandes.
+	["haie_v.png", 7.6, 10.3, false, 0.3], ["haie_v.png", 7.6, 7.3, false, 0.3],
+	["haie_v.png", 17.4, 10.3, false, 0.3], ["haie_v.png", 17.4, 7.3, false, 0.3],
+	["haie_v.png", 30.6, 10.3, false, 0.3], ["haie_v.png", 30.6, 7.3, false, 0.3],
+	["haie_v.png", 39.4, 10.3, false, 0.3], ["haie_v.png", 39.4, 7.3, false, 0.3],
+	["platebande.png", 10.0, 9.3, false, 0.2], ["platebande.png", 15.6, 9.3, false, 0.2],
+	["platebande.png", 32.4, 9.3, false, 0.2], ["platebande.png", 37.9, 9.3, false, 0.2],
+	["fruitier.png", 8.8, 5.2, true, 0.05], ["fruitier.png", 38.6, 5.0, true, 0.05],
+	["linge.png", 16.0, 5.0, false, 0.2], ["pots_fleurs.png", 13.9, 8.9, false, 0.1],
+	["pots_fleurs.png", 36.2, 8.9, false, 0.1], ["buisson_b.png", 8.6, 8.0, false, 0.1],
+	["buisson_a.png", 16.4, 8.0, false, 0.1], ["buisson_b.png", 31.6, 8.0, false, 0.1],
+	["tonneau.png", 31.5, 6.6, false, 0.15], ["caisses.png", 32.6, 6.4, false, 0.15],
+	# Place : pots aux bords, buissons à l'entrée nord.
+	["pots_fleurs.png", 19.4, 9.6, false, 0.1], ["pots_fleurs.png", 28.6, 9.6, false, 0.1],
+	["buisson_b.png", 21.6, 8.6, false, 0.1], ["buisson_b.png", 26.4, 8.6, false, 0.1],
+	# Abords du labo : buissons entre les allées et la façade, matériel.
+	["buisson_a.png", 17.9, 16.4, false, 0.1], ["buisson_c.png", 17.9, 18.6, false, 0.1],
+	["buisson_a.png", 30.1, 16.4, false, 0.1], ["buisson_c.png", 30.1, 18.6, false, 0.1],
+	["caisses.png", 30.4, 21.3, false, 0.15], ["tonneau.png", 18.0, 21.3, false, 0.15],
+	["massif.png", 11.6, 15.6, false, 0.1], ["massif.png", 36.4, 15.6, false, 0.1],
+	["rocher.png", 3.0, 26.6, false, 0.15], ["rocher.png", 44.2, 21.0, false, 0.15],
 	["potager.png", 19.5, 25.6, false, 0.2], ["potager.png", 23.0, 25.6, false, 0.2],
 	["potager.png", 26.5, 25.6, false, 0.2],
 	["ronces.png", 35.6, 25.0, false, 0.2], ["tronc_couche.png", 39.5, 24.9, false, 0.2],
@@ -131,6 +152,11 @@ func _ready() -> void:
 		_objet(objet, calque, ombres)
 	_herbes_hautes(tries)
 	_foret(chemins, tries, ombres)
+	var interdits := eau.duplicate()
+	interdits.merge(_cases(SABLE))
+	for zone in HERBES:
+		interdits.merge(_cases([Rect2i(zone)]))
+	_semis(chemins, interdits, bordures, tries, ombres)
 	for cellule: Vector2i in eau:
 		_obstacles.append(Rect2i(cellule, Vector2i.ONE))
 	for habitant: Array in HABITANTS:
@@ -301,8 +327,38 @@ func _foret(cases: Dictionary, tries: Node2D, ombres: Node2D) -> void:
 		if proche:
 			continue
 		poses.append(p)
-		var nom := "tree_b_ne.png" if _hasard.randf() < 0.5 else "tree_a_ne.png"
+		var nom: String = ["tree_a_ne.png", "tree_b_ne.png", "tree_central_ne.png",
+			"tree_a_ne.png"][_hasard.randi_range(0, 3)]
 		_objet([nom, p.x, p.y, true, 0.05], tries, ombres)
+
+
+## Semis sur l'herbe libre : touffes et buissons épars pour casser les grandes pelouses
+## unies (remarque de Kevin : village « simple et vide »).
+func _semis(chemins: Dictionary, interdits: Dictionary, sol: Node2D, tries: Node2D,
+		ombres: Node2D) -> void:
+	var occupees := {}
+	for zone in _obstacles:
+		for x in range(zone.position.x - 1, zone.end.x + 1):
+			for y in range(zone.position.y - 1, zone.end.y + 1):
+				occupees[Vector2i(x, y)] = true
+	for essai in 1400:
+		var p := Vector2(_hasard.randf_range(0.5, LARGEUR - 0.5), _hasard.randf_range(1.0, 26.0))
+		var cellule := Vector2i(p)
+		if chemins.has(cellule) or interdits.has(cellule):
+			continue
+		_decal(sol, "bord_touffe_%d.png" % _hasard.randi_range(1, 4), p * CASE, 0.9)
+		if occupees.has(cellule) or _hasard.randf() > 0.06:
+			continue
+		var proche := false
+		for dx in range(-1, 2):
+			for dy in range(-1, 2):
+				if chemins.has(cellule + Vector2i(dx, dy)):
+					proche = true
+		if proche:
+			continue
+		occupees[cellule] = true
+		var nom: String = ["buisson_a.png", "buisson_b.png", "buisson_c.png"][_hasard.randi_range(0, 2)]
+		_objet([nom, p.x, p.y, false, 0.1], tries, ombres)
 
 
 func _lumiere() -> void:
