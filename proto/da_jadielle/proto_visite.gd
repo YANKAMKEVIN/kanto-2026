@@ -1,9 +1,9 @@
 extends Node
-## Visite du prototype sur le S24 : toucher l'écran passe de la place (lumière C2) à
-## l'intérieur du Centre, puis de la Boutique.
+## Visite du prototype sur le S24 : toucher l'écran passe d'un lieu au suivant (Bourg
+## Palette et ses intérieurs, Jadielle, Route 22, place, Centre, Boutique).
 
-const LIEUX := ["bourg", "ville", "route22", "place", "centre", "boutique"]
-const NOMS := {"bourg": "Bourg Palette (la caméra fait le tour)", "route22": "Route 22 (la caméra fait le tour)", "ville": "Jadielle entière (la caméra fait le tour)", "place": "Place de Jadielle (lumière C2)", "centre": "Centre Pokémon — intérieur",
+const LIEUX := ["bourg", "chambre", "rdc", "rival", "labo", "ville", "route22", "place", "centre", "boutique"]
+const NOMS := {"bourg": "Bourg Palette (la caméra fait le tour)", "chambre": "Chambre du joueur", "rdc": "Maison du joueur — rez-de-chaussée", "rival": "Maison du rival", "labo": "Laboratoire de Chen", "route22": "Route 22 (la caméra fait le tour)", "ville": "Jadielle entière (la caméra fait le tour)", "place": "Place de Jadielle (lumière C2)", "centre": "Centre Pokémon — intérieur",
 	"boutique": "Boutique — intérieur"}
 
 var _index := 0
@@ -38,6 +38,9 @@ func _montrer() -> void:
 	var nom: String = LIEUX[_index]
 	if nom == "bourg":
 		_lieu = preload("res://proto/da_jadielle/proto_bourg.gd").new()
+	elif nom in ["chambre", "rdc", "rival", "labo"]:
+		_lieu = preload("res://proto/da_jadielle/proto_interieur_bourg.gd").new()
+		_lieu.piece = nom
 	elif nom == "ville":
 		_lieu = preload("res://proto/da_jadielle/proto_ville.gd").new()
 	elif nom == "route22":
