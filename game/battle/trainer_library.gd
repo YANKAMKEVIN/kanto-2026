@@ -16,8 +16,11 @@ extends RefCounted
 ## [/codeblock]
 ## Clés obligatoires : name, ai, can_lose, heal_after, gives_exp, prize_money, et
 ## [b]une[/b] des deux : team (équipe fixe) ou team_by_starter (starter du joueur → équipe).
-## Facultative : end_message (true par défaut ; false = pas de message générique de fin,
-## [member TrainerData.end_message]).
+## Facultatives : end_message et start_message (true par défaut ; false = pas de message
+## générique, [member TrainerData.end_message]), bag (true par défaut : SAC utilisable,
+## [member TrainerData.allow_bag]), prize_per_level (0 par défaut, entier ≥ 0 : argent par
+## niveau du dernier Pokémon, [member TrainerData.prize_per_level] ; exclusif d'un
+## prize_money > 0).
 ## Une équipe compte 1 à 6 Pokémon { species, level }. Les espèces (et les starters de
 ## team_by_starter) sont vérifiées contre [PokemonData].
 
@@ -25,7 +28,7 @@ const DATA_DIR: String = "res://data/trainers/"
 
 const _KEYS: Array[String] = [
 	"name", "ai", "can_lose", "heal_after", "gives_exp", "prize_money", "end_message",
-	"start_message", "team", "team_by_starter",
+	"start_message", "team", "team_by_starter", "bag", "prize_per_level",
 ]
 const _REQUIRED: Array[String] = [
 	"name", "ai", "can_lose", "heal_after", "gives_exp", "prize_money",
@@ -164,13 +167,21 @@ func _parse(value: Variant, where: String) -> TrainerData:
 				trainer.set(key, entry[key])
 			else:
 				ok = _fail("%s : « %s » vaut true ou false" % [where, key])
-	if entry.has("prize_money"):
-		var money: Variant = entry["prize_money"]
-		if not (money is int or money is float) or float(money) != floorf(float(money)) \
-				or float(money) < 0.0:
-			ok = _fail("%s : « prize_money » doit être un entier ≥ 0" % where)
+	if entry.has("bag"):
+		if entry["bag"] is bool:
+			trainer.allow_bag = entry["bag"]
 		else:
-			trainer.prize_money = int(money)
+			ok = _fail("%s : « bag » vaut true ou false" % where)
+	for key: String in ["prize_money", "prize_per_level"]:
+		if entry.has(key):
+			var money: Variant = entry[key]
+			if not (money is int or money is float) or float(money) != floorf(float(money)) \
+					or float(money) < 0.0:
+				ok = _fail("%s : « %s » doit être un entier ≥ 0" % [where, key])
+			else:
+				trainer.set(key, int(money))
+	if trainer.prize_money > 0 and trainer.prize_per_level > 0:
+		ok = _fail("%s : « prize_money » et « prize_per_level » sont exclusifs" % where)
 	if entry.has("team"):
 		ok = _read_team(entry["team"], trainer.team, where + " team") and ok
 	if entry.has("team_by_starter"):

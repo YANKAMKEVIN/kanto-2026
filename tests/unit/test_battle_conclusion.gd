@@ -45,3 +45,48 @@ func test_wild_battle() -> void:
 	assert_eq(win.prize_money, 0)
 	assert_false(win.blackout)
 	assert_true(BattleConclusion.resolve(null, Battle.Outcome.LOSS).blackout)
+
+
+# --- Jalon 7 : argent par niveau (Rouge/Bleu), rival n° 2 -----------------------------
+
+func test_prize_per_level_uses_the_last_foe_level() -> void:
+	var trainer := TrainerData.new()
+	trainer.prize_per_level = 35
+	assert_eq(BattleConclusion.resolve(trainer, Battle.Outcome.WIN, 8).prize_money, 280)
+	assert_eq(BattleConclusion.resolve(trainer, Battle.Outcome.WIN, 12).prize_money, 420)
+	assert_eq(BattleConclusion.resolve(trainer, Battle.Outcome.WIN).prize_money, 0,
+		"sans niveau : rien")
+	assert_eq(BattleConclusion.resolve(trainer, Battle.Outcome.WIN, -3).prize_money, 0,
+		"jamais négatif")
+
+
+func test_fixed_prize_wins_over_the_level() -> void:
+	var trainer := TrainerData.new()
+	trainer.prize_money = 120
+	assert_eq(BattleConclusion.resolve(trainer, Battle.Outcome.WIN, 8).prize_money, 120)
+	assert_eq(trainer.prize_for(50), 120)
+
+
+func test_defeat_never_gives_nor_takes_money() -> void:
+	var trainer := TrainerData.new()
+	trainer.prize_per_level = 35
+	trainer.can_lose = false
+	for outcome: int in [Battle.Outcome.LOSS, Battle.Outcome.FLED, Battle.Outcome.NONE]:
+		var result := BattleConclusion.resolve(trainer, outcome, 8)
+		assert_eq(result.prize_money, 0, "issue %d : rien" % outcome)
+
+
+func test_rival_route22_conclusion() -> void:
+	var data := PokemonData.new()
+	data.load_dir()
+	var trainers := TrainerLibrary.new(data)
+	trainers.load_dir()
+	var rival := trainers.get_trainer(&"rival_route22")
+	assert_not_null(rival)
+	var win := BattleConclusion.resolve(rival, Battle.Outcome.WIN, 8)
+	assert_eq(win.prize_money, 280, "35 × Nv. 8")
+	assert_false(win.heal_party, "pas de soin")
+	assert_false(win.blackout)
+	var loss := BattleConclusion.resolve(rival, Battle.Outcome.LOSS, 8)
+	assert_eq(loss.prize_money, 0)
+	assert_true(loss.blackout, "can_lose faux : retour au point de repos")
