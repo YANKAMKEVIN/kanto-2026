@@ -26,23 +26,27 @@ const DECORS: Array[Dictionary] = [
 ]
 ## Les deux combattants : planche sprite, image peinte, nom affiché.
 const PLAYER := {"sheet": "salameche_dos_bw", "painted": "salameche_dos_peint",
+	"rebuilt": "salameche_dos_reconstruit",
 	"name": "Salamèche", "level": 12}
 const FOE := {"sheet": "roucool_face_bw", "painted": "roucool_face_peint", "official": 16,
 	"name": "Roucool", "level": 9}
 const OFFICIAL_DIR: String = "res://assets/sprites/pokemon/official/"
-## Traitements : rendu de chaque camp (net = sprite aux pixels nets, smooth = lissé, painted =
-## repeint, official = artwork officiel HD) et taille du tien (fraction de la hauteur du
+## Traitements : rendu de chaque camp (net = sprite aux pixels nets, smooth = lissé, rebuilt =
+## reconstruit sans IA par tools/art/reconstruire_sprite.py, painted = repeint, official =
+## artwork officiel HD) et taille du tien (fraction de la hauteur du
 ## cadrage). Le premier affiché est [constant DEFAULT_TREATMENT].
 const TREATMENTS: Array[Dictionary] = [
 	{"label": "sprite net 100 % · Roucool HD", "player": "net", "ratio": 1.0, "foe": "official"},
 	{"label": "sprite net 70 % · Roucool HD", "player": "net", "ratio": 0.7, "foe": "official"},
 	{"label": "sprite net 60 % · Roucool HD", "player": "net", "ratio": 0.6, "foe": "official"},
+	{"label": "reconstruit 60 % · Roucool HD", "player": "rebuilt", "ratio": 0.6,
+		"foe": "official"},
 	{"label": "sprite net 50 % · Roucool HD", "player": "net", "ratio": 0.5, "foe": "official"},
 	{"label": "ancien : tout sprite net", "player": "net", "ratio": 1.0, "foe": "net"},
 	{"label": "ancien : sprite lissé", "player": "smooth", "ratio": 1.0, "foe": "smooth"},
 	{"label": "ancien : peint", "player": "painted", "ratio": 1.0, "foe": "painted"},
 ]
-const DEFAULT_TREATMENT: int = 1
+const DEFAULT_TREATMENT: int = 3
 ## Cadrages : zoom de la caméra, voile, vignettage, flou du décor ; pieds (x : décalage depuis
 ## le centre, y : depuis le haut, en hauteurs d'écran) et hauteur visible (hauteurs d'écran)
 ## de chaque Pokémon.
@@ -243,7 +247,10 @@ func _place(is_player: bool, who: Dictionary, feet: Vector2, height: float, kind
 		scale = height / box.size.y
 		node = sprite
 	else:
-		var built := _animated(who["sheet"] + ("_lisse" if kind == "smooth" else ""), kind == "net")
+		var sheet: String = who["sheet"] + {"smooth": "_lisse"}.get(kind, "")
+		if kind == "rebuilt":
+			sheet = who["rebuilt"]
+		var built := _animated(sheet, kind == "net")
 		node = built[0]
 		box = built[1]
 		# Pixels nets : échelle entière (planche brute) ; la planche lissée est libre.
