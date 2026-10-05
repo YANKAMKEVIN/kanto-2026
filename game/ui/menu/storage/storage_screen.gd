@@ -72,6 +72,7 @@ var _favorite: Button
 var _more: Button
 var _refusal: PanelContainer
 var _refusal_label: Label
+var _result: UseResultBar
 var _drop_zone: Panel
 var _ghost: TeamSlotCard
 var _menu_layer: Control
@@ -104,6 +105,7 @@ func show_storage(view: StorageView) -> void:
 	_end_drag()
 	_close_menu()
 	_clear_refusal()
+	_show_result(view.result_text)
 	_party_title.text = view.party_title
 	_grid_title.text = view.storage_title
 	_back.text = view.back_label
@@ -251,6 +253,11 @@ func get_drop_place() -> int:
 	return _drop_place
 
 
+## Ligne de résultat affichée ("" si aucune).
+func get_result_text() -> String:
+	return _result.get_text() if _result.visible else ""
+
+
 ## Raison d'un refus affichée ("" si aucune).
 func get_refusal_text() -> String:
 	return _refusal_label.text if _refusal.visible else ""
@@ -329,6 +336,15 @@ func _build_detail(parent: Control) -> void:
 	_showcase = PokemonShowcase.new(UiTokens.STORAGE_SPRITE_SCALE, false)
 	_showcase.size_flags_horizontal = Control.SIZE_FILL
 	_detail_panel.add_child(_showcase)
+	# Ligne de résultat (libération), en haut de la fiche sous la pastille de refus : même barre que le Sac, sans UTILISER À NOUVEAU.
+	_result = UseResultBar.new()
+	_result.speed_scale = speed_scale
+	_result.set_anchors_and_offsets_preset(Control.PRESET_TOP_WIDE)
+	_result.offset_left = UiTokens.GAP / 2
+	_result.offset_right = -UiTokens.GAP / 2
+	_result.offset_top = UiTokens.GAP / 2
+	_result.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_detail_holder.add_child(_result)
 	_refusal = PanelContainer.new()
 	_refusal.theme_type_variation = &"StorageRefusal"
 	_refusal.mouse_filter = Control.MOUSE_FILTER_IGNORE
@@ -597,6 +613,14 @@ func _stop_shake() -> void:
 	if _shaking_card != null and is_instance_valid(_shaking_card):
 		_shaking_card.position = _home_of(_shaking_card)
 	_shake_tween = null
+
+
+func _show_result(text: String) -> void:
+	if text.is_empty():
+		_result.clear()
+	else:
+		_result.speed_scale = speed_scale
+		_result.show_result(text, false, 1)
 
 
 func _clear_refusal() -> void:
