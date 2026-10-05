@@ -1,37 +1,15 @@
 [gd_scene format=3]
 
-[ext_resource type="Script" path="res://game/world/props/prop.gd" id="1_fi62o"]
-[ext_resource type="Material" path="res://game/world/lighting/materials/world_object.tres" id="2_sf7ab"]
-[ext_resource type="Texture2D" path="res://assets/world/props/prop_boite_lettres_01.png" id="3_fay3q"]
-[ext_resource type="Material" path="res://game/world/lighting/materials/cast_shadow.tres" id="4_3b1ap"]
-[ext_resource type="Texture2D" path="res://assets/world/props/prop_boite_lettres_01_shadow.png" id="5_q754k"]
-[ext_resource type="Material" path="res://game/world/lighting/materials/contact_shadow.tres" id="6_ipp3x"]
-[ext_resource type="Texture2D" path="res://assets/world/props/prop_boite_lettres_01_contact.png" id="7_64oli"]
+[ext_resource type="Script" path="res://game/world/props/prop.gd" id="1_edocg"]
+[ext_resource type="Material" path="res://game/world/lighting/materials/world_object.tres" id="2_mrm3k"]
+[ext_resource type="Texture2D" path="res://assets/world/props/prop_boite_lettres_01.png" id="3_x5uqm"]
 
-[node name="PropBoiteLettres01" type="Node2D" unique_id=1374263340]
-script = ExtResource("1_fi62o")
+[node name="PropBoiteLettres01" type="Node2D" unique_id=263829711]
+script = ExtResource("1_edocg")
 
-[node name="Sprite" type="Sprite2D" parent="." unique_id=1771011074]
+[node name="Sprite" type="Sprite2D" parent="." unique_id=2055171726]
 unique_name_in_owner = true
-material = ExtResource("2_sf7ab")
-texture = ExtResource("3_fay3q")
+material = ExtResource("2_mrm3k")
+texture = ExtResource("3_x5uqm")
 centered = false
 offset = Vector2(-22.5, -115)
-
-[node name="CastShadow" type="Sprite2D" parent="." unique_id=1001542095 groups=["cast_shadows"]]
-z_index = -2
-z_as_relative = false
-material = ExtResource("4_3b1ap")
-scale = Vector2(2, 2)
-texture = ExtResource("5_q754k")
-centered = false
-offset = Vector2(-24, -2)
-
-[node name="ContactShadow" type="Sprite2D" parent="." unique_id=1920916926 groups=["contact_shadows"]]
-z_index = -2
-z_as_relative = false
-material = ExtResource("6_ipp3x")
-scale = Vector2(2, 2)
-texture = ExtResource("7_64oli")
-centered = false
-offset = Vector2(-15, 3)

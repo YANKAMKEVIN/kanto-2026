@@ -13,7 +13,7 @@ extends SceneTree
 ##   ombres pré-floutées de tools/art/preparer.py, à l'échelle 2, z absolu
 ##   `WorldLighting.Z_SHADOWS` (sous les décalcomanies et les personnages), matériaux partagés.
 ##   `WorldLighting` règle leur couleur, leur visibilité et l'inclinaison de l'ombre portée.
-##   **Jamais pour la végétation** (`PaintedPropRules.casts_shadows`, retours T5 §15.21).
+##   **Seulement pour les bâtiments** (`PaintedPropRules.casts_shadows`, règle « shadow »).
 ## Un identifiant du catalogue sans règle (ou l'inverse) est une erreur : un nouvel objet
 ## peint demande sa règle d'emprise. Les images seules du catalogue (« images » : sols,
 ## décalcomanies, enveloppes d'intérieur, fond peint) n'ont pas de scène.
@@ -74,7 +74,7 @@ func _build(id: StringName, entry: Dictionary) -> void:
 			else "world_object.tres"))
 	_add(root, sprite)
 	sprite.unique_name_in_owner = true
-	# Végétation (PaintedPropRules.casts_shadows, retours T5) : aucune ombre.
+	# Seuls les bâtiments ont une ombre (PaintedPropRules.casts_shadows).
 	var shadows: bool = _rules.call(&"casts_shadows", id)
 	if shadows and entry.has("ombre"):
 		_add(root, _shadow("CastShadow", entry["ombre"], "cast_shadow.tres", CAST_GROUP,
