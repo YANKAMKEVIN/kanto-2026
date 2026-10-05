@@ -15,14 +15,15 @@ extends RefCounted
 ## Clés obligatoires : name, plural, feminine, category ([constant ItemData.CATEGORY_NAMES]),
 ## description ; catch_bonus (nombre > 0) obligatoire pour une Ball et refusé ailleurs ;
 ## heal_amount (entier > 0, PV rendus) obligatoire pour un soin (« heal ») et refusé ailleurs ;
-## draft facultative (texte à relire par Kevin). Toute clé inconnue est une erreur ; une
+## draft facultative (texte à relire par Kevin) ; price facultatif (entier ≥ 0, ₽ ; 0 ou absent =
+## pas en vente), refusé non nul pour un objet clé (« key »). Toute clé inconnue est une erreur ; une
 ## entrée invalide est écartée ([method get_errors], push_error).
 
 const DATA_DIR: String = "res://data/items/"
 
 const _KEYS: Array[String] = [
 	"name", "plural", "feminine", "category", "catch_bonus", "heal_amount", "description",
-	"draft",
+	"draft", "price",
 ]
 const _REQUIRED: Array[String] = ["name", "plural", "feminine", "category", "description"]
 
@@ -165,6 +166,14 @@ func _parse_item(value: Variant, where: String) -> ItemData:
 			item.heal_amount = int(amount)
 	elif entry.has("heal_amount"):
 		ok = _fail("%s : « heal_amount » est réservé aux soins" % where)
+	if entry.has("price"):
+		var price: Variant = entry["price"]
+		if not JsonFields.is_int(price) or int(price) < 0:
+			ok = _fail("%s : « price » doit être un entier ≥ 0 (₽)" % where)
+		elif item.category == ItemData.Category.KEY and int(price) > 0:
+			ok = _fail("%s : un objet clé n'a pas de prix" % where)
+		else:
+			item.price = int(price)
 	return item if ok else null
 
 

@@ -16,6 +16,8 @@ const GameStateScript := preload("res://game/autoload/game_state.gd")
 const BOOT_SCENE := preload("res://game/boot.tscn")
 const SAVE_PATH := "user://test_s2_save.json"
 const FIXTURE_V1 := "res://tests/fixtures/save/v1_after_capture.json"
+const FIXTURE_V2 := "res://tests/fixtures/save/v2_kevin_j6.json"
+const FIXTURE_V2_END := "res://tests/fixtures/save/v2_kevin_j6_fin.json"
 const DATE := "2026-10-02T14:03:05"
 const FADE := 0.05
 const TIMEOUT := 12.0
@@ -230,8 +232,8 @@ func test_a_newer_save_is_never_written_during_the_whole_session() -> void:
 
 
 ## Jalon 6, T0 (jalon-06.md §5.1) : la vraie sauvegarde v1 de Kevin (QA T16) reprend à
-## l'identique, puis est réécrite en v2.
-func test_the_real_v1_save_resumes_then_is_rewritten_in_v2() -> void:
+## l'identique, puis est réécrite (en v3 depuis le jalon 7).
+func test_the_real_v1_save_resumes_then_is_rewritten_in_v3() -> void:
 	var v1_text := FileAccess.get_file_as_string(FIXTURE_V1)
 	_fs.files[SAVE_PATH] = v1_text
 	await _start_boot()
@@ -249,20 +251,21 @@ func test_the_real_v1_save_resumes_then_is_rewritten_in_v2() -> void:
 	assert_gte(GameState.play_time, 1616.0, "temps de jeu repris")
 	_boot.notification(Node.NOTIFICATION_APPLICATION_PAUSED)
 	var saved := _saved()
-	assert_eq(int(saved.get("version", 0)), 2, "réécrite en version 2")
+	assert_eq(int(saved.get("version", 0)), 3, "réécrite en version 3")
 	assert_eq(_bag_items(saved), {"poke_ball": 3.0, "potion": 1.0}, "Sac v2")
+	assert_eq(saved.get("money"), 3000.0, "3 000 ₽")
 	assert_eq(saved.get("map"), "route_1")
 	assert_eq(JsonFields.get_vector2i(saved, "cell"), Vector2i(30, 32))
 	assert_false(_fs.files.has(SAVE_PATH + ".rejected"), "rien d'écarté")
 	assert_push_error_count(0)
 
 
-## Ce que fait un APK du jalon 5 (VERSION = 1) devant une sauvegarde v2 : la vraie Boot avec un
+## Ce que fait un APK du jalon 5 (VERSION = 1) devant une sauvegarde v3 : la vraie Boot avec un
 ## SaveSystem qui n'accepte que la v1 → nouvelle partie sans autosave, fichier intact.
-func test_a_v2_save_is_never_written_by_a_build_that_only_knows_v1() -> void:
+func test_a_v3_save_is_never_written_by_a_build_that_only_knows_v1() -> void:
 	_write_saved_game(&"route_1", _free_route_cell(), Vector2i.LEFT)
 	var v2_text: String = _fs.files[SAVE_PATH]
-	assert_eq(int((JSON.parse_string(v2_text) as Dictionary)["version"]), 2)
+	assert_eq(int((JSON.parse_string(v2_text) as Dictionary)["version"]), 3)
 	_save.version = 1
 	await _start_boot(&"player_house_1f", &"stairs", Vector2i.DOWN)
 	assert_false(_boot.has_resumed(), "nouvelle partie")
@@ -274,6 +277,115 @@ func test_a_v2_save_is_never_written_by_a_build_that_only_knows_v1() -> void:
 	_boot.notification(Node.NOTIFICATION_APPLICATION_PAUSED)
 	assert_eq(_fs.journal.size(), 0, "aucune écriture")
 	assert_eq(_fs.files[SAVE_PATH], v2_text, "la sauvegarde v2 est intacte")
+	assert_push_error_count(0)
+
+
+## Jalon 7, T0 (jalon-07.md §5.1) : la vraie partie v2 de Kevin reprend à l'identique, puis
+## est réécrite en v3 avec 3 000 ₽ et sa première espèce sauvage ; rien d'autre ne change.
+func test_the_real_v2_save_resumes_then_is_rewritten_in_v3() -> void:
+	var v2: Dictionary = JSON.parse_string(FileAccess.get_file_as_string(FIXTURE_V2))
+	_fs.files[SAVE_PATH] = FileAccess.get_file_as_string(FIXTURE_V2)
+	await _start_boot()
+	assert_true(_boot.has_resumed(), "partie reprise")
+	assert_true(_boot.is_autosave_enabled())
+	assert_eq(_boot.get_map().map_id, &"route_1", "même carte")
+	assert_eq(_player.get_cell(), Vector2i(24, 2), "même case")
+	assert_eq(_player.get_facing(), Vector2i.DOWN, "même orientation")
+	assert_eq(GameState.party.size(), 3)
+	assert_eq(GameState.party.get_lead().hp, 21, "PV gardés")
+	assert_eq(GameState.party.get_at(1).experience, 92, "XP gardée")
+	assert_eq(GameState.bag.count_of(&"poke_ball"), 2, "Sac")
+	assert_eq(GameState.money, 3000, "3 000 ₽")
+	assert_eq(GameState.first_wild_species(), &"pidgey", "Roucool, première rencontre")
+	assert_gte(GameState.play_time, 3732.0, "temps de jeu repris")
+	_boot.notification(Node.NOTIFICATION_APPLICATION_PAUSED)
+	var saved := _saved()
+	assert_eq(int(saved.get("version", 0)), 3, "réécrite en version 3")
+	assert_eq(saved.get("money"), 3000.0)
+	assert_eq(saved.get("first_wild_encounter"), {"species": "pidgey", "map": "route_1",
+		"date": "2026-10-02T20:51:16"})
+	var before := v2.duplicate(true)
+	var after := saved.duplicate(true)
+	for key: String in ["version", "money", "first_wild_encounter", "play_time"]:
+		before.erase(key)
+		after.erase(key)
+	# Les notes du Pokédex se débloquent au chargement selon les drapeaux (J6, T16) : la fixture
+	# date du T1 du J6, d'avant les données de notes ; la vraie partie de fin de J6 les a déjà.
+	var notes: Array = []
+	for entries: Dictionary in [before["pokedex"]["entries"], after["pokedex"]["entries"]]:
+		for species: String in entries:
+			notes.append(entries[species].get("notes"))
+			entries[species].erase("notes")
+	assert_eq(notes.slice(0, 4), [[], [], [], []], "fixture sans notes")
+	assert_eq(notes.slice(4), [["charmander_shelter"], ["pidgey_paths"], ["rattata_hops"],
+		["squirtle_peek"]], "notes débloquées au chargement, comme au J6")
+	for key: String in before:
+		assert_eq(after.get(key), before[key], "champ « %s » identique" % key)
+	assert_eq(after.keys().size(), before.keys().size(), "aucun champ perdu ni ajouté")
+	assert_false(_fs.files.has(SAVE_PATH + SaveSystem.CORRUPT_SUFFIX), "rien d'écarté")
+	assert_push_error_count(0)
+
+
+## T1 du J7 : la vraie partie de **fin de J6** (S24) reprend à l'identique avec le vrai Boot,
+## puis est réécrite en v3 : 3 000 ₽, Roucool, et tout le reste identique (notes comprises).
+func test_the_real_end_of_j6_save_resumes_then_is_rewritten_in_v3() -> void:
+	var text := FileAccess.get_file_as_string(FIXTURE_V2_END)
+	var v2: Dictionary = JSON.parse_string(text)
+	_fs.files[SAVE_PATH] = text
+	await _start_boot()
+	assert_true(_boot.has_resumed(), "partie reprise")
+	assert_true(_boot.is_autosave_enabled())
+	assert_eq(_boot.get_map().map_id, &"route_1", "même carte")
+	assert_eq(_player.get_cell(), Vector2i(24, 8), "même case")
+	assert_eq(_player.get_facing(), Vector2i.RIGHT, "même orientation")
+	assert_eq(GameState.party.size(), 3)
+	assert_eq(GameState.party.get_lead().species_id, &"rattata", "ordre de l'équipe")
+	assert_eq(GameState.money, 3000, "3 000 ₽")
+	assert_eq(GameState.first_wild_species(), &"pidgey")
+	assert_gte(GameState.play_time, 50250.0, "temps de jeu repris")
+	_boot.notification(Node.NOTIFICATION_APPLICATION_PAUSED)
+	var saved := _saved()
+	assert_eq(int(saved.get("version", 0)), 3, "réécrite en version 3")
+	assert_eq(saved.get("money"), 3000.0)
+	assert_eq(saved.get("first_wild_encounter"), {"species": "pidgey", "map": "route_1",
+		"date": "2026-10-02T20:51:16"})
+	var before := v2.duplicate(true)
+	var after := saved.duplicate(true)
+	for key: String in ["version", "money", "first_wild_encounter", "play_time"]:
+		before.erase(key)
+		after.erase(key)
+	for key: String in before:
+		assert_eq(after.get(key), before[key], "champ « %s » identique" % key)
+	assert_eq(after.keys().size(), before.keys().size(), "aucun champ perdu ni ajouté")
+	assert_false(_fs.files.has(SAVE_PATH + SaveSystem.CORRUPT_SUFFIX), "rien d'écarté")
+	assert_push_error_count(0)
+
+
+## Ce que fait l'APK du jalon 6 (VERSION = 2) devant la sauvegarde du J7 : nouvelle partie
+## sans autosave, la v3 reste intacte (protocole T1, étape 6).
+func test_a_v3_save_is_never_written_by_the_j6_build() -> void:
+	_fs.files[SAVE_PATH] = FileAccess.get_file_as_string(FIXTURE_V2_END)
+	var reader := SaveSystem.new(_fs, SAVE_PATH)
+	var state: Node = autofree(GameStateScript.new())
+	var data := PokemonData.new()
+	data.load_dir()
+	assert_true(state.load_dict(reader.read(), data))
+	assert_eq(reader.write(state.to_dict()), OK, "la partie de Kevin, écrite en v3")
+	var v3_text: String = _fs.files[SAVE_PATH]
+	_fs.journal.clear()
+	_save.version = 2
+	await _start_boot(&"player_house_1f", &"stairs", Vector2i.DOWN)
+	assert_false(_boot.has_resumed(), "nouvelle partie")
+	assert_false(_boot.is_autosave_enabled(), "autosave coupé pour la session")
+	assert_eq(GameState.party.size(), 0)
+	await _finish_dialogue()
+	_boot.request_autosave("test")
+	await wait_process_frames(3)
+	_boot.notification(Node.NOTIFICATION_APPLICATION_PAUSED)
+	_boot.notification(Node.NOTIFICATION_WM_CLOSE_REQUEST)
+	assert_eq(_fs.journal.size(), 0, "aucune écriture")
+	assert_eq(_fs.files[SAVE_PATH], v3_text, "la sauvegarde v3 est intacte")
+	assert_false(_fs.files.has(SAVE_PATH + SaveSystem.CORRUPT_SUFFIX))
 	assert_push_error_count(0)
 
 

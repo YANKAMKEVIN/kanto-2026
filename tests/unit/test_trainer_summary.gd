@@ -347,3 +347,13 @@ func test_without_zones_or_moments() -> void:
 	var no_zones := TrainerSummary.build(_state, _data, null, _moments, _unlocks)
 	assert_eq(_titles(no_zones), ["Premier Pokémon"] as Array[String])
 	assert_eq(no_zones.moments[0].place, "")
+
+
+# --- Argent (jalon 7, dossier 09 §10, Q-8) ---------------------------------------------------
+
+func test_money_is_shown_from_the_start() -> void:
+	var nbsp := MenuFormat.THOUSANDS_SEPARATOR
+	assert_eq(_build().money_text, "3" + nbsp + "000" + nbsp + "₽", "nouvelle partie : 3 000 ₽")
+	_state.spend_money(2750)
+	assert_eq(_build().money_text, "250" + nbsp + "₽")
+	assert_eq(TrainerView.MONEY_LABEL, "Argent")

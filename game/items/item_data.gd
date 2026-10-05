@@ -27,6 +27,9 @@ const CONTEXT_TRAINER_BATTLE: StringName = &"trainer_battle"
 ## Texte du toast après l'ajout au Sac (bible UI §6 : « Potion ×1 — Ajoutée au Sac »).
 const ADDED_BASE := "Ajouté"
 const ADDED_SUFFIX := " au Sac"
+## Toast d'un objet clé (dossier 09 §19 : « COLIS POUR CHEN — ajouté aux objets clés »).
+const KEY_ADDED_BASE := "ajouté"
+const KEY_ADDED_SUFFIX := " aux objets clés"
 
 var id: StringName = &""
 ## Nom au singulier (« Poké Ball ») et au pluriel (« Poké Balls »).
@@ -44,6 +47,9 @@ var description: String = ""
 var draft: bool = false
 ## Fichier d'origine (messages d'erreur).
 var source: String = ""
+## Prix d'achat en ₽ (dossier 09 §10, jalon-07.md §3.4) ; 0 = jamais vendu en Boutique ni
+## repris. Un objet clé n'a jamais de prix ([ItemLibrary] le refuse).
+var price: int = 0
 ## Rang dans les données (0, 1, 2… dans l'ordre de lecture des fichiers) : ordre « pertinence »
 ## du Sac hors combat. Posé par [ItemLibrary].
 var order: int = 0
@@ -85,12 +91,34 @@ func name_for(count: int) -> String:
 	return name if count <= 1 else plural
 
 
-## « Poké Balls ×5 », « Poké Ball ×1 ».
+## « Poké Balls ×5 », « Poké Ball ×1 » ; un objet clé, unique, n'a que son nom en capitales
+## (« COLIS POUR CHEN », dossier 09 §19).
 func quantity_text(count: int) -> String:
+	if is_key():
+		return name.to_upper()
 	return "%s ×%d" % [name_for(count), count]
 
 
 ## « Ajoutée au Sac », « Ajoutées au Sac », « Ajouté au Sac »… accordé au genre du nom et à
-## [param count].
+## [param count] ; un objet clé : « ajouté aux objets clés » (dossier 09 §19).
 func added_text(count: int) -> String:
-	return ADDED_BASE + ("e" if feminine else "") + ("s" if count > 1 else "") + ADDED_SUFFIX
+	var agreement := ("e" if feminine else "") + ("s" if count > 1 else "")
+	if is_key():
+		return KEY_ADDED_BASE + agreement + KEY_ADDED_SUFFIX
+	return ADDED_BASE + agreement + ADDED_SUFFIX
+
+
+## Objet clé (OBJETS CLÉS) : jamais utilisé, vendu ni jeté.
+func is_key() -> bool:
+	return category == Category.KEY
+
+
+## Vrai si la Boutique peut reprendre l'objet : il a un prix et ce n'est pas un objet clé.
+func is_sellable() -> bool:
+	return price > 0 and not is_key()
+
+
+## Prix de reprise en ₽ : la moitié du prix, arrondie en dessous (Rouge/Bleu) ; 0 si l'objet
+## ne se vend pas.
+func sell_price() -> int:
+	return floori(price / 2.0) if is_sellable() else 0

@@ -20,6 +20,12 @@ const MAPS: Array[StringName] = [
 	&"player_house_2f", &"player_house_1f", &"rival_house", &"oak_lab", &"pallet_town",
 	&"route_1", &"viridian_city",
 ]
+## Jalon 7 (T18) : partie qui revient au labo avec le colis (rival parti après le combat).
+const PARCEL_FLAGS: Array[StringName] = [
+	&"oak_met", &"oak_lab_reunion", &"starter_offered", &"starter_chosen", &"rival_challenged",
+	&"rival_lab_won", &"rival_battle_done", &"rival_left_lab", &"viridian_arrived",
+	&"got_oak_parcel",
+]
 ## Scène → drapeaux qui choisissent chaque variante, dans l'ordre (§3.6).
 const VARIANT_FLAGS: Dictionary = {
 	&"route1_grass": [[], [&"oak_met"]],
@@ -27,9 +33,13 @@ const VARIANT_FLAGS: Dictionary = {
 	&"oak_lab_exit": [[&"oak_met", &"oak_lab_reunion", &"starter_offered"]],
 	&"starter_chosen": [[&"oak_met", &"oak_lab_reunion", &"starter_offered"]],
 	&"viridian_arrival": [[&"rival_battle_done"]],
+	&"oak_parcel": [PARCEL_FLAGS],
 }
 ## Scènes jouées par le code (pas de déclencheur) → carte où elles sont jouées.
-const CODE_PLAYED: Dictionary[StringName, StringName] = {&"starter_chosen": &"oak_lab"}
+## Jalon 7 (T18) : la scène du colis est lancée par la variante « cutscene » du dialogue de Chen.
+const CODE_PLAYED: Dictionary[StringName, StringName] = {
+	&"starter_chosen": &"oak_lab", &"oak_parcel": &"oak_lab",
+}
 
 var _cutscenes: CutsceneLibrary
 var _dialogues: DialogueLibrary
@@ -76,8 +86,8 @@ func test_library_loads_without_error() -> void:
 	var library := CutsceneLibrary.new()
 	assert_true(library.load_dir(), "data/cutscenes/ se charge")
 	assert_eq(library.get_errors().size(), 0, str(library.get_errors()))
-	assert_eq(library.get_ids(), [&"oak_lab_exit", &"route1_grass", &"route_1_potion",
-		&"starter_chosen", &"viridian_arrival"] as Array[StringName])
+	assert_eq(library.get_ids(), [&"oak_lab_exit", &"oak_parcel", &"route1_grass",
+		&"route_1_potion", &"starter_chosen", &"viridian_arrival"] as Array[StringName])
 
 
 func test_route1_grass_ends_with_the_starter_offer() -> void:
@@ -331,6 +341,81 @@ func test_oak_lab_exit_only_during_the_choice() -> void:
 	assert_null(cutscene.pick(_flags([&"starter_offered", &"starter_chosen"])), "après")
 
 
+## Jalon 7 (T18, dossier 09 §6 et §19) : scène du colis, lancée en parlant à Chen avec le colis
+## (variante « cutscene » de son dialogue). Ordre : le colis quitte le Sac, Chen remarque les
+## rencontres (réplique de l'espèce dans le même dialogue, omise sans rencontre), le Pokédex est
+## activé **une seule fois**, juste avant la légende POKÉDEX ACTIVÉ, puis « Observe. Explore. » ;
+## le rival entre ensuite, reçoit le sien, ses répliques, il repart.
+func test_oak_parcel_scene_order() -> void:
+	var cutscene := _cutscenes.get_cutscene(&"oak_parcel")
+	assert_eq(cutscene.variants.size(), 1)
+	var variant := cutscene.variants[0]
+	assert_true(variant.if_flags.is_empty())
+	assert_eq(variant.unless_flags, [StoryFlags.POKEDEX_ACTIVATED] as Array[StringName],
+		"jamais rejouée après l'activation")
+	var steps := variant.steps
+	var take := _index_of(steps, CutsceneStep.Kind.TAKE)
+	var activated := -1
+	var caption := _index_of(steps, CutsceneStep.Kind.CAPTION)
+	var spawn := _index_of(steps, CutsceneStep.Kind.SPAWN)
+	var dialogues: Array[StringName] = []
+	for i: int in steps.size():
+		assert_true(steps[i].if_flags.is_empty() and steps[i].unless_flags.is_empty(),
+			"étape %d sans condition" % i)
+		if steps[i].kind == CutsceneStep.Kind.SET_FLAGS:
+			assert_eq(steps[i].flags, [StoryFlags.POKEDEX_ACTIVATED] as Array[StringName])
+			assert_eq(activated, -1, "un seul « set »")
+			activated = i
+		if steps[i].kind == CutsceneStep.Kind.DIALOGUE:
+			dialogues.append(steps[i].dialogue_id)
+	assert_eq(steps[take].item_id, &"oak_parcel")
+	assert_eq(steps[take].count, 1)
+	assert_eq(steps[caption].text, "POKÉDEX ACTIVÉ")
+	assert_lt(take, _index_of_dialogue(steps, &"oak_parcel_records"), "colis remis d'abord")
+	assert_lt(_index_of_dialogue(steps, &"oak_parcel_records"), activated)
+	assert_eq(caption, activated + 1, "la légende suit l'activation")
+	assert_eq(_index_of_dialogue(steps, &"oak_pokedex_activated"), caption + 1)
+	assert_gt(spawn, caption, "le rival arrive après l'activation")
+	assert_eq(steps[spawn].spec.id, &"rival")
+	assert_eq(steps[spawn].spec.sprite, &"rival")
+	assert_eq(dialogues, [&"oak_parcel_records", &"oak_pokedex_activated",
+		&"rival_parcel_return", &"rival_parcel_greet", &"oak_parcel_rival",
+		&"rival_parcel_leaving"] as Array[StringName])
+	var despawn := _index_of(steps, CutsceneStep.Kind.DESPAWN)
+	assert_eq(steps[despawn].actor, &"rival", "il repart")
+	assert_gt(despawn, _index_of_dialogue(steps, &"rival_parcel_leaving"))
+	assert_eq(_cutscenes.get_item_ids().count(&"oak_parcel"), 1)
+
+
+## Une seule étape de toutes les données lève pokedex_activated (jamais un dialogue).
+func test_pokedex_activated_is_raised_only_by_the_parcel_scene() -> void:
+	var raised := 0
+	for id: StringName in _cutscenes.get_ids():
+		for variant: CutsceneVariant in _cutscenes.get_cutscene(id).variants:
+			for step: CutsceneStep in variant.steps:
+				if step.flags.has(StoryFlags.POKEDEX_ACTIVATED) \
+						or step.win_flags.has(StoryFlags.POKEDEX_ACTIVATED) \
+						or step.lose_flags.has(StoryFlags.POKEDEX_ACTIVATED):
+					raised += 1
+					assert_eq(id, &"oak_parcel")
+	assert_eq(raised, 1)
+	assert_false(_dialogues.get_set_flags().has(StoryFlags.POKEDEX_ACTIVATED))
+
+
+func _index_of(steps: Array[CutsceneStep], kind: CutsceneStep.Kind) -> int:
+	for i: int in steps.size():
+		if steps[i].kind == kind:
+			return i
+	return -1
+
+
+func _index_of_dialogue(steps: Array[CutsceneStep], dialogue_id: StringName) -> int:
+	for i: int in steps.size():
+		if steps[i].kind == CutsceneStep.Kind.DIALOGUE and steps[i].dialogue_id == dialogue_id:
+			return i
+	return -1
+
+
 ## Joue [param variant] « à blanc » : renvoie le nombre d'acteurs vérifiés. [param aliases] :
 ## « nom sans $ » → PNJ, remplacés comme le fait le directeur.
 func _simulate(label: String, variant: CutsceneVariant, start_map: StringName,
@@ -361,6 +446,9 @@ func _simulate(label: String, variant: CutsceneVariant, start_map: StringName,
 				for flag: StringName in step.outcome_flags(outcome):
 					flags.set_flag(flag)
 			CutsceneStep.Kind.GIVE:
+				assert_true(_items.has_item(step.item_id), "%s : objet « %s »" % [where,
+					step.item_id])
+			CutsceneStep.Kind.TAKE:
 				assert_true(_items.has_item(step.item_id), "%s : objet « %s »" % [where,
 					step.item_id])
 			CutsceneStep.Kind.SPAWN:

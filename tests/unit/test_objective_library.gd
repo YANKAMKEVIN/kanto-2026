@@ -14,7 +14,7 @@ func test_real_data_loads_without_error() -> void:
 	var library := ObjectiveLibrary.new()
 	assert_true(library.load_file(), "\n".join(library.get_errors()))
 	assert_eq(library.get_errors().size(), 0)
-	assert_eq(library.get_ids(), [&"reach_viridian"] as Array[StringName])
+	assert_eq(library.get_ids(), [&"deliver_parcel", &"reach_viridian"] as Array[StringName])
 
 
 func test_q4_nothing_before_the_rival_battle_then_reach_viridian() -> void:
@@ -37,6 +37,35 @@ func test_q4_nothing_before_the_rival_battle_then_reach_viridian() -> void:
 	assert_eq(library.current(flags), "", "arrivé à Jadielle : plus de ligne")
 
 
+## Drapeaux lus par les objectifs avant que leur scène existe (J7) : à retirer de cette liste
+## dès que la tâche qui les lève est fusionnée — `viridian_arrived` (T4, arrivée à Jadielle),
+## `got_oak_parcel` (T12, première visite de la Boutique). `pokedex_activated` est levé par la
+## scène du colis depuis le T18 (data/cutscenes/oak_lab.json).
+const _PENDING_FLAGS: Array[StringName] = [&"viridian_arrived", &"got_oak_parcel"]
+
+
+## Jalon 7 (dossier 09 §4, §19) : le colis en main → « remettre le colis au Professeur
+## Chen. » ; après l'activation, plus de ligne (Q-10) ; « rejoindre Jadielle » s'efface à
+## l'arrivée.
+func test_parcel_objective_then_nothing_after_the_activation() -> void:
+	var library := ObjectiveLibrary.new()
+	library.load_file()
+	var flags := StoryFlags.new()
+	flags.set_flag(&"rival_battle_done")
+	assert_eq(library.current_id(flags), &"reach_viridian")
+	flags.set_flag(&"viridian_arrived")
+	assert_eq(library.current(flags), "", "arrivé à Jadielle : plus de « rejoindre Jadielle »")
+	flags.set_flag(&"got_oak_parcel")
+	assert_eq(library.current(flags), "remettre le colis au Professeur Chen.")
+	assert_eq(library.current_id(flags), &"deliver_parcel")
+	assert_false(library.is_draft(&"deliver_parcel"), "texte validé (dossier 09 §19)")
+	flags.set_flag(&"viridian_arrived", false)
+	assert_eq(library.current_id(flags), &"deliver_parcel", "le colis passe en tête")
+	flags.set_flag(&"viridian_arrived")
+	flags.set_flag(StoryFlags.POKEDEX_ACTIVATED)
+	assert_eq(library.current(flags), "", "Q-10 : aucune ligne après l'activation")
+
+
 func test_real_condition_flags_are_raised_by_the_story() -> void:
 	var library := ObjectiveLibrary.new()
 	library.load_file()
@@ -46,6 +75,8 @@ func test_real_condition_flags_are_raised_by_the_story() -> void:
 	dialogues.load_dir()
 	var raised := cutscenes.get_set_flags() + dialogues.get_set_flags()
 	for flag: StringName in library.get_condition_flags():
+		if _PENDING_FLAGS.has(flag) and not raised.has(flag):
+			continue
 		assert_true(raised.has(flag), "« %s » levé par une scène ou un dialogue" % flag)
 
 

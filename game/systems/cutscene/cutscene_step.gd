@@ -44,17 +44,22 @@ extends RefCounted
 ## « $nom » ([method is_alias]) désigne un PNJ choisi au lancement de la scène
 ## (CutsceneDirector.play(id, alias)). La bibliothèque valide sa forme ; il est résolu
 ## par le directeur au début de chaque étape.
+## Jalon 7 (jalon-07.md §3.6, T18), scène du colis et de l'activation du Pokédex :
+## - [constant Kind.CAPTION] : légende [member text] posée sur le monde (« POKÉDEX ACTIVÉ ») ;
+##   la scène attend qu'elle disparaisse ;
+## - [constant Kind.TAKE] : [member count] objets [member item_id] **quittent** le Sac (le
+##   colis remis à Chen) ; sans l'objet : étape sautée (push_error), rien ne change.
 
 ## Nouvelles valeurs en fin d'enum (ordre de [constant TYPE_KEYS]).
 enum Kind {
 	WAIT, DIALOGUE, FACE, SET_FLAGS, SPAWN, MOVE, CHANGE_MAP, HOP, LEAN, DESPAWN, BATTLE, GIVE,
-	SCARE,
+	CAPTION, TAKE, SCARE,
 }
 
 ## Clé de type de chaque étape dans les fichiers, dans l'ordre de [enum Kind].
 const TYPE_KEYS: Array[String] = [
 	"wait", "dialogue", "face", "set", "spawn", "move", "change_map", "hop", "lean",
-	"despawn", "battle", "give", "scare",
+	"despawn", "battle", "give", "caption", "take", "scare",
 ]
 ## Préfixe d'un alias d'acteur (« $player_starter »).
 const ALIAS_PREFIX: String = "$"
@@ -90,6 +95,8 @@ var lose_flags: Array[StringName] = []
 var item_id: StringName = &""
 var count: int = 1
 var found: bool = false
+## Étape « caption » : texte de la légende.
+var text: String = ""
 ## Conditions de l'étape (toutes levées / aucune levée), vides = toujours jouée.
 var if_flags: Array[StringName] = []
 var unless_flags: Array[StringName] = []
@@ -173,6 +180,7 @@ func copy() -> CutsceneStep:
 	other.item_id = item_id
 	other.count = count
 	other.found = found
+	other.text = text
 	other.if_flags = if_flags.duplicate()
 	other.unless_flags = unless_flags.duplicate()
 	return other

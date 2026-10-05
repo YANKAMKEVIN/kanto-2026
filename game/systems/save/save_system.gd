@@ -25,12 +25,25 @@ extends RefCounted
 ## nouveaux puis les perdrait au premier autosave ; un numéro plus grand la fait refuser le
 ## fichier sans jamais l'écraser (jalon-06.md §5.1).
 ## Historique : 1 = jalon 5 (5C.5) ; 2 = jalon 6 (Sac { items, favorites, acquired }, favori
-## des Pokémon, notes du Pokédex), une seule version pour tout le J6.
-const VERSION: int = 2
+## des Pokémon, notes du Pokédex), une seule version pour tout le J6 ; 3 = jalon 7 (argent,
+## première rencontre sauvage), une seule version pour tout le J7 (jalon-07.md §5.1).
+const VERSION: int = 3
 const DEFAULT_PATH: String = "user://save.json"
 const TEMP_SUFFIX: String = ".tmp"
 const CORRUPT_SUFFIX: String = ".corrupt"
 const VERSION_KEY: String = "version"
+## Argent donné à une partie v2 migrée (dossier 09 §17 : la même somme qu'une nouvelle partie
+## au J7, `GameState.STARTING_MONEY`). Figé ici : c'est un fait de la migration, il ne suit pas
+## une future retouche de l'argent de départ.
+const V3_MIGRATED_MONEY: int = 3000
+## Cartes où un combat sauvage a pu avoir lieu avant la v3 (fait historique figé, pas une
+## règle de contenu) : la table `route_1_grass` (data/encounters/route_1.json) couvre la
+## Route 1 et l'herbe du nord de Bourg Palette, et aucune autre table n'existait.
+const V3_LEGACY_WILD_MAPS: Array[String] = ["route_1", "pallet_town"]
+## Parmi elles, celles où « vu » ne pouvait venir que d'une rencontre sauvage, quelle que soit
+## la build : la Route 1 n'a jamais eu ni Pokémon à OBSERVER ni Dresseur. À Bourg Palette,
+## OBSERVER (J6, T16) marque aussi « vu » le Roucool et le Rattata des habitants.
+const V3_LEGACY_BATTLE_ONLY_MAPS: Array[String] = ["route_1"]
 
 ## Chemin de la sauvegarde (les tests en changent).
 var path: String = DEFAULT_PATH
@@ -130,10 +143,14 @@ static func upgrade(content: Dictionary, target: int = VERSION) -> Error:
 	var from := JsonFields.get_int(content, VERSION_KEY, 0)
 	if from > target:
 		return ERR_INVALID_DATA
+	var original := from
 	while from < target:
 		match from:
 			1:
 				_upgrade_1_to_2(content)
+			2:
+				# Avant la v2 (builds du J5), OBSERVER n'existait pas.
+				_upgrade_2_to_3(content, original < 2)
 			_:
 				pass  # 0 → 1 : aucune forme n'a changé, les défauts suffisent.
 		from += 1
@@ -164,6 +181,109 @@ static func _upgrade_1_to_2(content: Dictionary) -> void:
 			var entry: Variant = (entries as Dictionary)[species]
 			if entry is Dictionary and not (entry as Dictionary).has("notes"):
 				(entry as Dictionary)["notes"] = []
+
+
+## Jalon 7 (jalon-07.md §5.1) : « money » = [constant V3_MIGRATED_MONEY] et
+## « first_wild_encounter » rattrapée par [method recover_first_wild_encounter] ({} si
+## introuvable). Rien d'autre ne change. Un champ déjà présent (fichier retouché à la main)
+## n'est pas remplacé.
+static func _upgrade_2_to_3(content: Dictionary, from_v1: bool = false) -> void:
+	if not content.has("money"):
+		content["money"] = V3_MIGRATED_MONEY
+	if not content.has("first_wild_encounter"):
+		content["first_wild_encounter"] = recover_first_wild_encounter(content, from_v1)
+
+
+## Retrouve, dans une sauvegarde d'avant la v3, la **première espèce sauvage rencontrée en
+## combat** (dossier 09 §19, J6 Q-7), que la v2 n'enregistrait pas. Rend { "species", "map",
+## "date" } ou {} si aucune n'est sûre. Règle (faits déjà enregistrés, jalon 5 §16.3) :
+##  1. **Sûr et daté** : une entrée du Pokédex dont la première observation est sur une carte
+##     de [constant V3_LEGACY_BATTLE_ONLY_MAPS] (Route 1) — date = début de la rencontre. Si
+##     [param from_v1] (fichier écrit par une build du J5, sans OBSERVER), toute carte de
+##     [constant V3_LEGACY_WILD_MAPS] l'est aussi (Bourg Palette).
+##  2. **Sûr, date majorée** : une capture sur une carte de [constant V3_LEGACY_WILD_MAPS]
+##     (Pokédex `first_caught_*`, rencontre `met` d'origine « capture » de l'équipe et du
+##     stockage, grand moment « first_capture ») — le combat a commencé avant cette date.
+##  La candidate à la date la plus ancienne l'emporte (dates ISO de l'appareil, comparées
+##  comme des chaînes ; à égalité, la règle 1 puis l'ordre alphabétique de l'espèce).
+##  3. Sans candidate datée : si **une seule** espèce a, dans ses `seen_maps`, une carte de la
+##     règle 1, c'est elle (date vide).
+## Limites (assumées, documentées au §5.1) : une espèce vue d'abord autrement (OBSERVER à Bourg
+## Palette, Pokémon du rival au labo) puis combattue sans être capturée n'a pas de date de
+## combat ; si elle a été combattue avant toutes les autres, la règle en désigne une autre (ou
+## aucune). Un combat dans l'herbe de Bourg Palette d'une espèce jamais capturée, écrit par une
+## build du J6, est indiscernable d'une observation : il est ignoré.
+static func recover_first_wild_encounter(content: Dictionary, from_v1: bool = false) -> Dictionary:
+	var exact_maps: Array[String] = V3_LEGACY_WILD_MAPS if from_v1 else V3_LEGACY_BATTLE_ONLY_MAPS
+	var best: Dictionary = {}
+	var best_rank := 0
+	var entries := JsonFields.get_dict(JsonFields.get_dict(content, "pokedex"), "entries")
+	for key: Variant in entries:
+		if not key is String or not entries[key] is Dictionary:
+			continue
+		var entry := entries[key] as Dictionary
+		var seen_map := JsonFields.get_string(entry, "first_seen_map")
+		if seen_map in exact_maps:
+			best_rank = _keep_earliest(best, best_rank, key, seen_map,
+				JsonFields.get_string(entry, "first_seen_date"), 1)
+		var caught_map := JsonFields.get_string(entry, "first_caught_map")
+		if JsonFields.get_bool(entry, "caught") and caught_map in V3_LEGACY_WILD_MAPS:
+			best_rank = _keep_earliest(best, best_rank, key, caught_map,
+				JsonFields.get_string(entry, "first_caught_date"), 2)
+	for list_key: String in ["party", "storage"]:
+		for member: Variant in JsonFields.get_array(content, list_key):
+			if not member is Dictionary:
+				continue
+			var met := JsonFields.get_dict(member, "met")
+			var met_map := JsonFields.get_string(met, "map")
+			if JsonFields.get_string(met, "origin") == "capture" and met_map in V3_LEGACY_WILD_MAPS:
+				best_rank = _keep_earliest(best, best_rank,
+					JsonFields.get_string(member, "species"), met_map,
+					JsonFields.get_string(met, "date"), 2)
+	for moment: Variant in JsonFields.get_array(content, "moments"):
+		if moment is Dictionary and JsonFields.get_string(moment, "type") == "first_capture":
+			var moment_map := JsonFields.get_string(moment, "map")
+			if moment_map in V3_LEGACY_WILD_MAPS:
+				best_rank = _keep_earliest(best, best_rank,
+					JsonFields.get_string(JsonFields.get_dict(moment, "details"), "species"),
+					moment_map, JsonFields.get_string(moment, "date"), 2)
+	if not best.is_empty():
+		return best
+	var fought: Dictionary = {}  # espèce → carte où elle a été combattue
+	for key: Variant in entries:
+		if key is String and entries[key] is Dictionary:
+			for map: Variant in JsonFields.get_array(entries[key], "seen_maps"):
+				if map is String and map in exact_maps:
+					fought[key] = map
+	if fought.size() == 1:
+		var species: String = fought.keys()[0]
+		return {"species": species, "map": fought[species], "date": ""}
+	return {}
+
+
+## Remplace [param best] (modifié en place) par la candidate si elle est plus ancienne ; une
+## candidate sans espèce ou sans date est ignorée. Renvoie le rang de la meilleure.
+static func _keep_earliest(best: Dictionary, best_rank: int, species: String, map: String,
+		date: String, rank: int) -> int:
+	if species.is_empty() or date.is_empty():
+		return best_rank
+	if not best.is_empty():
+		var key := [date, rank, species]
+		var held := [best["date"], best_rank, best["species"]]
+		if not _before(key, held):
+			return best_rank
+	best["species"] = species
+	best["map"] = map
+	best["date"] = date
+	return rank
+
+
+## Ordre (date, rang, espèce) : vrai si [param a] passe avant [param b].
+static func _before(a: Array, b: Array) -> bool:
+	for i: int in a.size():
+		if a[i] != b[i]:
+			return a[i] < b[i]
+	return false
 
 
 func _corrupt_path() -> String:
