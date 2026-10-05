@@ -2,7 +2,7 @@
 """Rend les dos 3D d'un lot de Pokémon d'après tools/art/blender/dos_pokemon.json.
 
 Usage : tools/art/blender/rendre_lot.py dossier_modeles dossier_sortie [n° ...] [--vues]
-        [--taille 1024]
+        [--taille 1024] [--passe profondeur]
 Chaque Pokémon : blender -b --python rendre_pokemon.py -- modele images sortie/dos3d_NNN.png
 avec ses options ; --vues rend les quatre vues d'orientation (dos3d_NNN_vueA.png) à la place.
 """
@@ -20,6 +20,10 @@ def main():
 	taille = sys.argv[sys.argv.index("--taille") + 1] if "--taille" in sys.argv else "1024"
 	if "--taille" in sys.argv:
 		args.remove(taille)
+	passe = sys.argv[sys.argv.index("--passe") + 1] if "--passe" in sys.argv else "couleur"
+	if "--passe" in sys.argv:
+		args.remove(passe)
+	suffixe = "" if passe == "couleur" else f"_{passe}"
 	modeles, sortie, numeros = args[0], args[1], args[2:]
 	lot = json.load(open(os.path.join(ICI, "dos_pokemon.json"), encoding="utf-8"))
 	os.makedirs(sortie, exist_ok=True)
@@ -28,7 +32,7 @@ def main():
 			continue
 		cmd = ["blender", "-b", "--python", os.path.join(ICI, "rendre_pokemon.py"), "--",
 			os.path.join(modeles, entree["modele"]), os.path.join(modeles, entree["images"]),
-			os.path.join(sortie, f"dos3d_{num}.png"), "--taille", taille]
+			os.path.join(sortie, f"dos3d_{num}{suffixe}.png"), "--taille", taille, "--passe", passe]
 		for cle, valeur in entree.get("options", {}).items():
 			cmd += [f"--{cle}", str(valeur)]
 		if vues:
