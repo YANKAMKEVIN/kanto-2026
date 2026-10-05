@@ -1,0 +1,41 @@
+{
+	"rival_route22": {
+		"variants": [
+			{
+				"if": ["pokedex_activated"],
+				"unless": ["rival_route22_won", "rival_route22_lost"],
+				"steps": [
+					{ "wait": 0.6 },
+					{ "dialogue": "route22_youngster_sigh" },
+					{ "despawn": "youngster_rattata" },
+					{ "wait": 0.4 },
+					{ "despawn": "rival_charmander", "if": ["taken_bulbasaur", "taken_charmander"] },
+					{ "despawn": "rival_squirtle", "if": ["taken_charmander", "taken_squirtle"] },
+					{ "despawn": "rival_bulbasaur", "if": ["taken_squirtle", "taken_bulbasaur"] },
+					{ "wait": 0.3 },
+					{ "dialogue": "route22_rival_hesitates" },
+					{ "wait": 0.5 },
+					{ "face": "rival", "to": "player" },
+					{ "wait": 0.6 },
+					{ "move": "youngster", "path": ["up"] },
+					{ "face": "youngster", "to": "rival" },
+					{ "move": "rival", "to": { "near": "player", "offsets": [[-1, 0], [-1, 1], [-1, -1]] } },
+					{ "face": "rival", "to": "player" },
+					{ "face": "player", "to": "rival" },
+					{ "dialogue": "route22_rival_greet" },
+					{ "battle": "rival_route22", "win": ["rival_route22_won"], "lose": ["rival_route22_lost"] },
+					{ "wait": 0.6, "if": ["rival_route22_won"] },
+					{ "dialogue": "route22_rival_won", "if": ["rival_route22_won"] },
+					{ "move": "rival", "to": [24, 18], "if": ["rival_route22_won"] },
+					{ "despawn": "rival", "if": ["rival_route22_won"] },
+					{ "face": "youngster", "to": "player", "if": ["rival_route22_won"] },
+					{ "wait": 0.4, "if": ["rival_route22_won"] },
+					{ "move": "youngster", "to": [24, 18], "if": ["rival_route22_won"] },
+					{ "despawn": "youngster", "if": ["rival_route22_won"] },
+					{ "dialogue": "route22_rival_lost", "if": ["rival_route22_lost"] },
+					{ "wake_up": true, "if": ["rival_route22_lost"] }
+				]
+			}
+		]
+	}
+}

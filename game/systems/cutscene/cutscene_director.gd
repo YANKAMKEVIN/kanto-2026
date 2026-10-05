@@ -22,6 +22,8 @@ extends Node
 ## → drapeaux), étape give (objets au Sac + [signal item_given]) ; conditions d'étape
 ## « if » / « unless » ([method CutsceneStep.applies]) pour les suites selon l'issue.
 ## Jalon 7 (jalon-07.md §3.2) : étape scare (réaction d'un Pokémon d'ambiance, sans attendre).
+## Jalon 7 (jalon-07.md §3.8, T25) : étape wake_up (défaite contre un Dresseur : réveil au point
+## de repos par le [DefeatRecovery] branché par [method set_recovery], puis fin de la scène).
 
 signal cutscene_started(cutscene_id: StringName)
 ## Début d'une étape (tests, outils de capture).
@@ -87,6 +89,8 @@ var _bag: Bag
 var _items: ItemLibrary
 ## HUD d'exploration (jalon 7, étape « caption ») : branchée par Boot après setup.
 var _hud: ExplorationHud
+## Réveil après une défaite (jalon 7, étape « wake_up ») : branché par Boot après setup.
+var _recovery: DefeatRecovery
 
 
 func _ready() -> void:
@@ -158,6 +162,13 @@ func set_hud(hud: ExplorationHud) -> void:
 	_hud = hud
 
 
+## Branche le réveil après une défaite (jalon-07.md §3.8, T25) : l'étape « wake_up » appelle
+## [method DefeatRecovery.recover]. Sans lui, une étape « wake_up » est sautée (push_error) et
+## la scène s'arrête quand même.
+func set_recovery(recovery: DefeatRecovery) -> void:
+	_recovery = recovery
+
+
 ## Joue [param cutscene_id]. Faux (et rien ne se passe) si une scène tourne, si
 ## l'identifiant est inconnu (push_error) ou si aucune variante ne s'applique (sans erreur :
 ## déclencheur désarmé). [param aliases] : « nom sans $ » → identifiant de PNJ de la carte
@@ -210,7 +221,8 @@ func _run(variant: CutsceneVariant, session: int) -> void:
 	_finish()
 
 
-## Joue une étape. Faux : la scène s'arrête (réservé au changement de carte manqué, T4).
+## Joue une étape. Faux : la scène s'arrête (changement de carte manqué, T4 ; réveil après
+## une défaite, étape « wake_up »).
 ## Une étape dont les conditions (« if » / « unless », jalon 4B) ne sont pas remplies est
 ## sautée sans erreur. Les alias sont résolus d'abord ; un alias absent saute l'étape
 ## (push_error).
@@ -254,6 +266,9 @@ func _play_step(source_step: CutsceneStep) -> bool:
 			_give(step)
 		CutsceneStep.Kind.SCARE:
 			_scare(step)
+		CutsceneStep.Kind.WAKE_UP:
+			await _wake_up()
+			return false
 		_:
 			_step_error("étape « %s » inconnue" % CutsceneStep.kind_name(step.kind))
 	return true
@@ -453,6 +468,17 @@ func _take(step: CutsceneStep) -> void:
 		return
 	if not _bag.remove(step.item_id, step.count):
 		_step_error("le Sac n'a pas %d « %s »" % [step.count, step.item_id])
+
+
+## Étape « wake_up » (jalon-07.md §3.8, T25) : défaite contre un Dresseur, le joueur se réveille
+## au point de repos ([method DefeatRecovery.recover] : soin, fondu et changement de carte, mot du
+## lieu non attendu). L'appelant arrête la scène ensuite : les PNJ de la carte quittée n'existent
+## plus. Le verrou « cutscene » est gardé pendant le fondu. Sans [DefeatRecovery] : push_error.
+func _wake_up() -> void:
+	if _recovery == null:
+		_step_error("pas de réveil branché (DefeatRecovery)")
+		return
+	await _recovery.recover()
 
 
 ## Attente de [param seconds] s par le mécanisme de l'étape « wait » (_process).

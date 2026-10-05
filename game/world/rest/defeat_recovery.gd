@@ -2,7 +2,8 @@ class_name DefeatRecovery
 extends Node
 ## Réveil après une défaite (dossier 07 §11, dossier 09 §7 ; jalon-07.md §3.3.2, §6.3) : remplace
 ## l'ancien `EncounterDirector._handle_defeat`. Partagé par la défaite sauvage
-## ([EncounterDirector]) et, au T25, la défaite contre un Dresseur (étape « wake_up »).
+## ([EncounterDirector]) et la défaite contre un Dresseur (étape de scène « wake_up »,
+## [method CutsceneDirector.set_recovery], T25 : le rival de la Route 22).
 ##
 ## [method recover] : l'équipe est soignée, le joueur se réveille au **point de repos** de la
 ## partie ([method RestPointLibrary.wakeup_point] : le dernier Centre utilisé, sinon la maison),

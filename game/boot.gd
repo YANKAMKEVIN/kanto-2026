@@ -192,6 +192,8 @@ func _ready() -> void:
 	_encounter_library.load_dir()
 	_recovery.setup(GameState, _rest_points, SceneRouter, _runner)
 	_recovery.woke_up.connect(_on_woke_up_after_defeat.unbind(1))
+	# Défaite contre un Dresseur (jalon-07.md §3.8, T25) : l'étape de scène « wake_up ».
+	_cutscenes_node.set_recovery(_recovery)
 	_encounters.setup(_encounter_library, _pokemon, GameState, _player, _battle_director,
 		SceneRouter, _cutscenes_node, _recovery)
 	_encounters.encounter_started.connect(_on_encounter_state_changed.unbind(2))

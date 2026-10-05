@@ -296,3 +296,27 @@ func test_shipped_center_qa_start() -> void:
 	var map := (load(MapCatalog.scene_path(start.map)) as PackedScene).instantiate() as GameMap
 	assert_true(map.has_spawn(start.spawn), "le point d'apparition existe sur la carte")
 	map.free()
+
+
+## Jalon 7 (T25, jalon-07.md §5.5) : `route_22` (Pokédex activé, équipe Nv. 7–8, entrée de la
+## Route 22) et `rival_2_weak` (équipe Nv. 4 pour perdre, au pied de l'escalier) : la scène du
+## rival se joue (drapeaux de la variante et paire `taken_*` qui choisit son Pokémon).
+func test_shipped_route_22_starts() -> void:
+	var rows: Array = [["route_22", &"from_viridian", 7, 8], ["rival_2_weak", &"stair_foot", 4, 4]]
+	for row: Array in rows:
+		var start := DebugStart.new()
+		assert_true(start.load_file(TOOL_STARTS + row[0] + ".json", _data, _items),
+			"%s : %s" % [row[0], "\n".join(start.get_errors())])
+		assert_eq([start.map, start.spawn], [&"route_22", row[1]], row[0])
+		for flag: StringName in [&"pokedex_activated", &"taken_charmander", &"taken_squirtle"]:
+			assert_true(start.flags.has(flag), "%s : %s" % [row[0], flag])
+		for flag: StringName in [&"rival_route22_won", &"rival_route22_lost"]:
+			assert_false(start.flags.has(flag), "%s : rival pas encore affronté" % row[0])
+		assert_eq(start.party[0]["species"], &"charmander", "%s : starter" % row[0])
+		for member: Dictionary in start.party:
+			assert_between(int(member["level"]), int(row[2]), int(row[3]), row[0])
+		assert_eq(start.money, 3000, row[0])
+		var map := (load(MapCatalog.scene_path(start.map)) as PackedScene).instantiate() \
+				as GameMap
+		assert_true(map.has_spawn(start.spawn), "%s : point d'apparition" % row[0])
+		map.free()

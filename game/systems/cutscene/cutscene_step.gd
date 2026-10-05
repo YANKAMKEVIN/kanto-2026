@@ -49,17 +49,21 @@ extends RefCounted
 ##   la scène attend qu'elle disparaisse ;
 ## - [constant Kind.TAKE] : [member count] objets [member item_id] **quittent** le Sac (le
 ##   colis remis à Chen) ; sans l'objet : étape sautée (push_error), rien ne change.
+## Jalon 7 (jalon-07.md §3.8, T25), défaite contre un Dresseur (le rival de la Route 22) :
+## - [constant Kind.WAKE_UP] : [method DefeatRecovery.recover] (équipe soignée, fondu, réveil au
+##   point de repos, mot du lieu) ; la carte a changé, **la scène s'arrête là** (les étapes
+##   suivantes ne sont pas jouées). Sans paramètre (« wake_up »: true dans les fichiers).
 
 ## Nouvelles valeurs en fin d'enum (ordre de [constant TYPE_KEYS]).
 enum Kind {
 	WAIT, DIALOGUE, FACE, SET_FLAGS, SPAWN, MOVE, CHANGE_MAP, HOP, LEAN, DESPAWN, BATTLE, GIVE,
-	CAPTION, TAKE, SCARE,
+	CAPTION, TAKE, SCARE, WAKE_UP,
 }
 
 ## Clé de type de chaque étape dans les fichiers, dans l'ordre de [enum Kind].
 const TYPE_KEYS: Array[String] = [
 	"wait", "dialogue", "face", "set", "spawn", "move", "change_map", "hop", "lean",
-	"despawn", "battle", "give", "caption", "take", "scare",
+	"despawn", "battle", "give", "caption", "take", "scare", "wake_up",
 ]
 ## Préfixe d'un alias d'acteur (« $player_starter »).
 const ALIAS_PREFIX: String = "$"
