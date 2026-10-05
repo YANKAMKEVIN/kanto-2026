@@ -26,14 +26,14 @@ const DECORS: Array[Dictionary] = [
 ]
 ## Les deux combattants : planche sprite, image peinte, nom affiché.
 const PLAYER := {"sheet": "salameche_dos_bw", "painted": "salameche_dos_peint",
-	"rebuilt": "salameche_dos_reconstruit",
+	"rebuilt": "salameche_dos_reconstruit", "model": "salameche_dos_3d",
 	"name": "Salamèche", "level": 12}
 const FOE := {"sheet": "roucool_face_bw", "painted": "roucool_face_peint", "official": 16,
 	"name": "Roucool", "level": 9}
 const OFFICIAL_DIR: String = "res://assets/sprites/pokemon/official/"
 ## Traitements : rendu de chaque camp (net = sprite aux pixels nets, smooth = lissé, rebuilt =
-## reconstruit sans IA par tools/art/reconstruire_sprite.py, painted = repeint, official =
-## artwork officiel HD) et taille du tien (fraction de la hauteur du
+## reconstruit sans IA par tools/art/reconstruire_sprite.py, model = rendu de dos du modèle 3D
+## par tools/art/blender/rendre_pokemon.py, painted = repeint, official = artwork officiel HD) et taille du tien (fraction de la hauteur du
 ## cadrage). Le premier affiché est [constant DEFAULT_TREATMENT].
 const TREATMENTS: Array[Dictionary] = [
 	{"label": "sprite net 100 % · Roucool HD", "player": "net", "ratio": 1.0, "foe": "official"},
@@ -41,12 +41,13 @@ const TREATMENTS: Array[Dictionary] = [
 	{"label": "sprite net 60 % · Roucool HD", "player": "net", "ratio": 0.6, "foe": "official"},
 	{"label": "reconstruit 60 % · Roucool HD", "player": "rebuilt", "ratio": 0.6,
 		"foe": "official"},
+	{"label": "dos 3D 60 % · Roucool HD", "player": "model", "ratio": 0.6, "foe": "official"},
 	{"label": "sprite net 50 % · Roucool HD", "player": "net", "ratio": 0.5, "foe": "official"},
 	{"label": "ancien : tout sprite net", "player": "net", "ratio": 1.0, "foe": "net"},
 	{"label": "ancien : sprite lissé", "player": "smooth", "ratio": 1.0, "foe": "smooth"},
 	{"label": "ancien : peint", "player": "painted", "ratio": 1.0, "foe": "painted"},
 ]
-const DEFAULT_TREATMENT: int = 3
+const DEFAULT_TREATMENT: int = 4
 ## Cadrages : zoom de la caméra, voile, vignettage, flou du décor ; pieds (x : décalage depuis
 ## le centre, y : depuis le haut, en hauteurs d'écran) et hauteur visible (hauteurs d'écran)
 ## de chaque Pokémon.
@@ -235,8 +236,10 @@ func _place(is_player: bool, who: Dictionary, feet: Vector2, height: float, kind
 	var still_path := SPRITE_DIR + "%s.png" % who["painted"]
 	if kind == "official":
 		still_path = OFFICIAL_DIR + "%03d.png" % int(who["official"])
+	elif kind == "model":
+		still_path = SPRITE_DIR + "%s.png" % who["model"]
 	var scale: float
-	if kind in ["painted", "official"] and ResourceLoader.exists(still_path):
+	if kind in ["painted", "official", "model"] and ResourceLoader.exists(still_path):
 		var texture: Texture2D = load(still_path)
 		box = _visible_box(texture.get_image())
 		var sprite := Sprite2D.new()
