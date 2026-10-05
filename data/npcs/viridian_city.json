@@ -10,11 +10,11 @@
 		}
 	},
 	"lass": {
-		"cell": [13, 22], "facing": "right", "sprite": "lass", "dialogue": "viridian_lass",
+		"cell": [15, 21], "facing": "right", "sprite": "lass", "dialogue": "viridian_lass",
 		"look": { "facings": ["right", "down", "right", "up", "left"], "every": 3.0 }
 	},
 	"lass_pidgey": {
-		"cell": [14, 22], "facing": "left", "sprite": "pokemon/pidgey", "idle_react": 6.0,
+		"cell": [16, 21], "facing": "left", "sprite": "pokemon/pidgey", "idle_react": 6.0,
 		"look": { "facings": ["left", "down", "right", "left"], "every": 4.5 }
 	},
 	"old_man": {
@@ -25,7 +25,7 @@
 		}
 	},
 	"gym_watcher": {
-		"cell": [12, 10], "facing": "up", "sprite": "youngster", "dialogue": "viridian_gym_watcher",
+		"cell": [7, 11], "facing": "up", "sprite": "youngster", "dialogue": "viridian_gym_watcher",
 		"look": { "facings": ["up", "left", "up", "down", "right"], "every": 3.0 }
 	},
 	"viridian_roof_pidgey": {
@@ -49,18 +49,18 @@
 		"look": { "facings": ["down", "right", "down", "left"], "every": 2.5 }
 	},
 	"kid": {
-		"cell": [17, 22], "facing": "right", "sprite": "kid", "dialogue": "viridian_kid",
+		"cell": [13, 19], "facing": "right", "sprite": "kid", "dialogue": "viridian_kid",
 		"if": ["viridian_arrived"],
 		"route": {
-			"cells": [[16, 22], [17, 22], [18, 22], [18, 23], [17, 23], [16, 23]],
+			"cells": [[12, 19], [13, 19], [14, 19], [14, 20], [13, 20], [12, 20]],
 			"pause": 0.9, "start": 1
 		}
 	},
 	"kid_rattata": {
-		"cell": [16, 22], "facing": "right", "sprite": "pokemon/rattata",
+		"cell": [12, 19], "facing": "right", "sprite": "pokemon/rattata",
 		"if": ["viridian_arrived"],
 		"route": {
-			"cells": [[16, 22], [17, 22], [18, 22], [18, 23], [17, 23], [16, 23]],
+			"cells": [[12, 19], [13, 19], [14, 19], [14, 20], [13, 20], [12, 20]],
 			"pause": 0.9, "start": 0
 		}
 	},

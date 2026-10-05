@@ -426,3 +426,153 @@ static func _ids(specs: Array[NpcSpec]) -> Array[StringName]:
 	for spec: NpcSpec in specs:
 		ids.append(spec.id)
 	return ids
+
+
+## QA T5 sur S21 (jalon-07.md §15.22) : un toit du niveau bas ne s'efface pas sous le joueur
+## de la terrasse (rue de la place, au-dessus du mur sud) ; derrière un décor du même niveau,
+## si (arbre fruitier du jardin nord-ouest).
+func test_roofs_fade_only_for_a_player_at_their_level() -> void:
+	assert_eq(Array(_map.level_rows), [12, 24, 32], "murs de soutènement et falaise")
+	var player := (load("res://game/player/player.tscn") as PackedScene).instantiate() as Player
+	_map.get_entities().add_child(player)
+	var house := _map.get_entities().get_node(^"HouseSouthWest") as WorldProp
+	var tree := _map.get_entities().get_node(^"NWFruit") as WorldProp
+	assert_true(house.fade_when_covering and tree.fade_when_covering)
+	# Au-dessus du mur : le toit chevauche le corps (ce qui le faisait s'effacer) …
+	player.position = Grid.cell_to_world(Vector2i(20, 23))
+	var sprite := house.get_node(^"%Sprite") as Sprite2D
+	assert_true(WorldProp.covers(sprite.get_global_transform() * sprite.get_rect(),
+		house.global_position.y, player.get_body_rect()), "le toit monte jusqu'à la rue")
+	# … mais le joueur est un niveau plus haut : le toit reste opaque.
+	_run_fade(house, 0.5)
+	assert_eq(sprite.modulate.a, 1.0, "toit du niveau bas opaque")
+	# Derrière l'arbre fruitier, même niveau : il s'efface.
+	player.position = Grid.cell_to_world(Vector2i(17, 5))
+	_run_fade(tree, 0.5)
+	assert_almost_eq((tree.get_node(^"%Sprite") as Sprite2D).modulate.a,
+		WorldProp.COVERED_ALPHA, 0.001, "arbre du même niveau effacé")
+	player.free()
+
+
+func _run_fade(prop: WorldProp, seconds: float) -> void:
+	var t := 0.0
+	while t < seconds:
+		prop._process(1.0 / 60.0)
+		t += 1.0 / 60.0
+
+
+## QA T5 sur S21 : collé au garde-corps (rangée au-dessus d'un mur), un personnage n'en a que
+## les jambes cachées : ≤ 46 px des 128 du héros (≈ 36 %), et l'image n'est jamais étirée
+## au-delà de sa largeur (bande recadrée dans l'image).
+func test_balustrades_hide_only_the_legs() -> void:
+	const LEGS := 46.0
+	var count := 0
+	for child: Node in _map.get_entities().get_children():
+		if not String(child.name).begins_with("Balustrade"):
+			continue
+		count += 1
+		var prop := child as Node2D
+		var sprite := prop.get_node(^"Sprite") as Sprite2D
+		var rect := sprite.get_global_transform() * sprite.get_rect()
+		var wall_row := floori(prop.position.y / Grid.TILE_SIZE)
+		assert_true([12, 24].has(wall_row), "%s sur un mur" % child.name)
+		# Pieds d'un personnage sur la rangée du dessus = haut de la rangée du mur.
+		var feet := float(wall_row * Grid.TILE_SIZE)
+		assert_lte(feet - rect.position.y, LEGS, "%s : jambes seulement" % child.name)
+		assert_gt(prop.position.y, feet, "%s devant la rangée du dessus" % child.name)
+		assert_lte(sprite.region_rect.end.x, float(sprite.texture.get_width()),
+			"%s : bande dans l'image" % child.name)
+	assert_gt(count, 10, "garde-corps posés")
+
+
+## QA T5 sur S21 : aucun habitant ne bloque le passage. Depuis l'entrée sud, chaque porte
+## (Centre, Boutique, Arène, six maisons) et chaque sortie reste atteignable avec **toutes**
+## les cases de **tous** les habitants occupées à la fois (positions de départ et de route,
+## avant et après l'arrivée : le pire cas couvre chaque combinaison) ; et aucun habitant ne
+## se tient ni ne passe sur une case goulet (escaliers, portails, portes et le devant des
+## portes, sortie ouest, toute case dont l'absence coupe une destination).
+func test_inhabitants_never_block_a_passage() -> void:
+	var targets := _passage_targets()
+	var start: Vector2i = SOUTH[1]
+	var goulets := _explicit_goulets()
+	for y: int in SIZE.y:
+		for x: int in SIZE.x:
+			var cell := Vector2i(x, y)
+			if _terrain.is_solid(cell) or cell == start or goulets.has(cell):
+				continue
+			_terrain.set_solid(cell)
+			if not _all_reached(_terrain.find_reachable(start), targets):
+				goulets[cell] = true
+			_terrain.set_solid(cell, false)
+	var crowded := GridWorld.new(SIZE)
+	for y: int in SIZE.y:
+		for x: int in SIZE.x:
+			if _terrain.is_solid(Vector2i(x, y)):
+				crowded.set_solid(Vector2i(x, y))
+	for spec: NpcSpec in _roster.get_all():
+		if spec.lift > 0:
+			continue
+		var cells: Array[Vector2i] = [spec.cell]
+		cells.append_array(spec.route_cells)
+		for cell: Vector2i in cells:
+			crowded.set_solid(cell)
+			if cell == spec.route_enter_cell:
+				continue
+			assert_false(goulets.has(cell), "%s sur une case goulet %s" % [spec.id, cell])
+	var reach := crowded.find_reachable(start)
+	for target: Array in targets:
+		var reached := false
+		for cell: Vector2i in target:
+			reached = reached or reach.has(cell)
+		assert_true(reached, "habitants partout : %s atteignable" % [target])
+	# Le parvis de l'Arène reste traversable : la porte s'atteint aussi depuis le chemin de
+	# l'est (rue nord), sans redescendre par l'escalier de l'Arène (QA T5, 2e passe).
+	for x: int in range(9, 12):
+		crowded.set_solid(Vector2i(x, 12))
+	var from_east := crowded.find_reachable(Vector2i(17, 10))
+	assert_true(from_east.has(GYM_DOOR[0] + Vector2i.DOWN) or from_east.has(
+		GYM_DOOR[1] + Vector2i.DOWN), "porte de l'Arène atteinte par le parvis, depuis l'est")
+
+
+## Destinations : une liste de cases par porte ou sortie (une seule suffit).
+func _passage_targets() -> Array:
+	var targets: Array = [NORTH, WEST, CENTER_DOORS, MART_DOORS,
+		[GYM_DOOR[0] + Vector2i.DOWN, GYM_DOOR[1] + Vector2i.DOWN]]
+	for point: Node in _map.get_node(^"Interactables").get_children():
+		if point.get(&"dialogue_id") == &"viridian_house_door":
+			targets.append([Grid.world_to_cell((point as Node2D).position) + Vector2i.DOWN])
+	assert_eq(targets.size(), 11, "trois sorties, Centre, Boutique, Arène, six maisons")
+	return targets
+
+
+func _all_reached(reach: Dictionary, targets: Array) -> bool:
+	for target: Array in targets:
+		var reached := false
+		for cell: Vector2i in target:
+			reached = reached or reach.has(cell)
+		if not reached:
+			return false
+	return true
+
+
+## Goulets nommés : marches des escaliers et leurs paliers, portails, portes du Centre et de la
+## Boutique (deux cases : leur devant reste une rue), passages, chemin de la sortie ouest. Le
+## devant des portes de maisons (une case) est un goulet calculé.
+func _explicit_goulets() -> Dictionary:
+	var cells := {}
+	for row: int in [12, 24]:
+		for x: int in SIZE.x:
+			if not _terrain.is_solid(Vector2i(x, row)):
+				for dy: int in [-1, 0, 1]:
+					cells[Vector2i(x, row + dy)] = true
+	for gate: Vector2i in [Vector2i(19, 9), Vector2i(37, 9), Vector2i(7, 21), Vector2i(47, 21),
+			Vector2i(20, 30), Vector2i(38, 30)]:
+		cells[gate] = true
+	for door: Vector2i in CENTER_DOORS + MART_DOORS:
+		cells[door] = true
+	for warp: Warp in _map.get_warps().get_all():
+		cells[warp.cell] = true
+	for x: int in range(0, 9):
+		for y: int in [22, 23]:
+			cells[Vector2i(x, y)] = true
+	return cells

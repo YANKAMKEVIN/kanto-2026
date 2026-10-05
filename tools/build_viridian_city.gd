@@ -143,6 +143,11 @@ const WALL_ROWS: Array[int] = [12, 24]
 const CLIFF_ROW := 32
 ## Pied du garde-corps sous le haut de la rangée du mur (px) : posé sur le couronnement.
 const BALUSTRADE_DROP := 10.0
+## Échelle du garde-corps (image de 88 px de haut → ≈ 55 px) : collé au garde-corps, un
+## personnage (héros 128 px, pieds 10 px au-dessus du pied du garde-corps) n'en a que les
+## jambes cachées (≈ 45 px ; QA T5 sur S21 : il n'en restait que la tête). Mesuré par
+## `test_viridian_city.test_balustrades_hide_only_the_legs`.
+const BALUSTRADE_SCALE := 0.62
 
 ## Jardins clos : [maison, case d'ancrage, nom, enclos (Rect2i : colonnes des clôtures, de la
 ## rangée du haut de la maison à la rangée de la clôture avant)]. Les clôtures courent sur les
@@ -261,7 +266,7 @@ const PROPS: Array = [
 	[&"prop_lampadaire_01", Vector2i(8, 21), "LampWest"],
 	# Jardins publics : banc de la Dresseuse (ouest), banc du parc (est), pots, buissons.
 	[&"prop_banc_01", Vector2i(14, 21), "BenchSquare"],
-	[&"prop_pots_fleurs_01", Vector2i(12, 21), "PotsSquareW"],
+	[&"prop_pots_fleurs_01", Vector2i(17, 19), "PotsSquareW"],
 	[&"prop_buisson_b_01", Vector2i(16, 19), "BushSquareW"],
 	[&"prop_banc_01", Vector2i(42, 18), "BenchPark"],
 	[&"prop_pots_fleurs_01", Vector2i(42, 21), "PotsSquareE"],
@@ -502,6 +507,11 @@ func _build() -> Node2D:
 	root.set(&"size", SIZE)
 	root.set(&"light_profile", &"golden_hour")
 	root.set(&"blocked_cells", _blocked_cells())
+	# Murs de soutènement et falaise : un toit du niveau du dessous ne s'efface pas sous le
+	# joueur de la terrasse (QA T5).
+	var levels: Array[int] = WALL_ROWS.duplicate()
+	levels.append(CLIFF_ROW)
+	root.set(&"level_rows", levels)
 	var ground: Node2D = (load("res://game/world/ground/painted_ground.gd") as Script).new()
 	ground.name = "PaintedGround"
 	ground.set(&"size", SIZE)
@@ -675,7 +685,7 @@ func _segments(run: Vector2) -> Array[float]:
 
 
 ## Garde-corps de pierre sur le bord haut des murs (sauf devant les escaliers) : bandes de
-## 4 cases, la dernière recadrée à la longueur restante.
+## 4 × BALUSTRADE_SCALE cases (image entière), la dernière recadrée à la longueur restante.
 func _place_balustrades(root: Node, entities: Node) -> void:
 	var index := 0
 	for row: int in WALL_ROWS:
@@ -683,10 +693,10 @@ func _place_balustrades(root: Node, entities: Node) -> void:
 			var left := run.x + WALL_UNDER_PILLAR
 			var end := run.y - WALL_UNDER_PILLAR
 			while end - left > 0.2:
-				var length := minf(4.0, end - left)
+				var length := minf(4.0 * BALUSTRADE_SCALE, end - left)
 				_strip(root, entities, &"prop_balustrade_01",
 					Vector2(left * TILE, row * TILE + BALUSTRADE_DROP), length, false,
-					"Balustrade%02d" % index)
+					"Balustrade%02d" % index, BALUSTRADE_SCALE)
 				index += 1
 				left += length
 
@@ -736,9 +746,10 @@ func _place_gardens(root: Node, entities: Node) -> void:
 
 ## Bande peinte recadrée ([param length] cases) d'un objet de 4 cases : clôture, garde-corps.
 ## Horizontale : [param foot] = bas-gauche ; verticale : milieu du bas, l'image garde son bas.
-## Sans emprise (cases bloquées par la carte) ni ombre.
+## Sans emprise (cases bloquées par la carte) ni ombre. [param scale] : échelle de l'image
+## (la bande couvre toujours [param length] cases).
 func _strip(root: Node, parent: Node, id: StringName, foot: Vector2, length: float,
-		vertical: bool, node_name: String) -> Node2D:
+		vertical: bool, node_name: String, scale: float = 1.0) -> Node2D:
 	var entry: Dictionary = _catalogue[String(id)]
 	var texture := load(entry["fichier"]) as Texture2D
 	var size := Vector2(entry["taille"][0], entry["taille"][1])
@@ -759,9 +770,10 @@ func _strip(root: Node, parent: Node, id: StringName, foot: Vector2, length: flo
 		sprite.region_rect = Rect2(0.0, size.y - shown, size.x, shown)
 		sprite.offset = Vector2(-size.x / 2.0, -shown)
 	else:
-		var shown := roundf(length * TILE)
+		var shown := roundf(length * TILE / scale)
 		sprite.region_rect = Rect2(0.0, 0.0, shown, size.y)
 		sprite.offset = Vector2(0.0, -size.y)
+	sprite.scale = Vector2(scale, scale)
 	_attach(root, prop, sprite)
 	return prop
 
