@@ -5,5 +5,46 @@
 			"Tu vas par là ?",
 			"La route continue loin vers l'ouest… mais je n'irais pas trop loin sans une équipe prête."
 		]
+	},
+	"route22_youngster_sigh": {
+		"speaker": "Jeune Dresseur",
+		"pages": [
+			"Sérieusement… ?"
+		]
+	},
+	"route22_rival_hesitates": {
+		"speaker": "Rival",
+		"pages": [
+			"Tu hésites trop."
+		]
+	},
+	"route22_rival_greet": {
+		"speaker": "Rival",
+		"pages": [
+			"Tiens.",
+			"Toi aussi, tu es venu voir jusqu'où cette route mène ?",
+			"Ça tombe bien.",
+			"Voyons ce que tu as appris depuis notre premier combat."
+		]
+	},
+	"route22_rival_won": {
+		"speaker": "Rival",
+		"pages": [
+			"…D'accord.",
+			"Tu progresses vite.",
+			"Mais moi aussi.",
+			"On verra lequel de nous deux arrive le plus loin."
+		]
+	},
+	"route22_rival_lost": {
+		"speaker": "Rival",
+		"pages": [
+			"Tu t'es amélioré.",
+			"Mais pas assez.",
+			{
+				"text": "La prochaine fois, ne me laisse pas autant d'avance.",
+				"pause": 0.8
+			}
+		]
 	}
 }

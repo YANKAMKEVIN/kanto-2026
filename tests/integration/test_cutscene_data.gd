@@ -15,10 +15,14 @@ extends GutTest
 ## cours seulement) ; scène starter_chosen **jouée par le code** (StarterChoice, pas de
 ## déclencheur), simulée sur le labo avec les 3 jeux d'alias de l'offre ; elle lève
 ## starter_chosen une seule fois, juste après « On dirait que le choix est réciproque. ».
+## Jalon 7 (T25) : scène du rival n° 2 (déclencheur de la Route 22), simulée pour les trois
+## paires `taken_*` (Pokémon du rival) et les deux issues du combat ; l'étape « wake_up » arrête
+## la simulation (la scène s'arrête au réveil). Correctif : les scènes **déclenchées** n'étaient
+## plus simulées (boucle indentée sous `if CODE_PLAYED.has(id)`), elles le sont de nouveau.
 
 const MAPS: Array[StringName] = [
 	&"player_house_2f", &"player_house_1f", &"rival_house", &"oak_lab", &"pallet_town",
-	&"route_1", &"viridian_city",
+	&"route_1", &"viridian_city", &"route_22",
 ]
 ## Jalon 7 (T18) : partie qui revient au labo avec le colis (rival parti après le combat).
 const PARCEL_FLAGS: Array[StringName] = [
@@ -26,6 +30,19 @@ const PARCEL_FLAGS: Array[StringName] = [
 	&"rival_lab_won", &"rival_battle_done", &"rival_left_lab", &"viridian_arrived",
 	&"got_oak_parcel",
 ]
+## Jalon 7 (T25) : partie qui arrive sur la Route 22 après l'activation du Pokédex.
+const ROUTE22_FLAGS: Array[StringName] = [
+	&"oak_met", &"oak_lab_reunion", &"starter_offered", &"starter_chosen", &"rival_challenged",
+	&"rival_lab_won", &"rival_battle_done", &"rival_left_lab", &"viridian_arrived",
+	&"got_oak_parcel", &"pokedex_activated",
+]
+## Paires `taken_*` posées au labo (starter du joueur, puis celui du rival) → Pokémon du rival
+## présent sur la Route 22 (data/npcs/route_22.json).
+const RIVAL_PAIRS: Dictionary = {
+	&"rival_charmander": [&"taken_bulbasaur", &"taken_charmander"],
+	&"rival_squirtle": [&"taken_charmander", &"taken_squirtle"],
+	&"rival_bulbasaur": [&"taken_squirtle", &"taken_bulbasaur"],
+}
 ## Scène → drapeaux qui choisissent chaque variante, dans l'ordre (§3.6).
 const VARIANT_FLAGS: Dictionary = {
 	&"route1_grass": [[], [&"oak_met"]],
@@ -34,6 +51,7 @@ const VARIANT_FLAGS: Dictionary = {
 	&"starter_chosen": [[&"oak_met", &"oak_lab_reunion", &"starter_offered"]],
 	&"viridian_arrival": [[&"rival_battle_done"]],
 	&"oak_parcel": [PARCEL_FLAGS],
+	&"rival_route22": [ROUTE22_FLAGS],
 }
 ## Scènes jouées par le code (pas de déclencheur) → carte où elles sont jouées.
 ## Jalon 7 (T18) : la scène du colis est lancée par la variante « cutscene » du dialogue de Chen.
@@ -86,8 +104,9 @@ func test_library_loads_without_error() -> void:
 	var library := CutsceneLibrary.new()
 	assert_true(library.load_dir(), "data/cutscenes/ se charge")
 	assert_eq(library.get_errors().size(), 0, str(library.get_errors()))
-	assert_eq(library.get_ids(), [&"oak_lab_exit", &"oak_parcel", &"route1_grass",
-		&"route_1_potion", &"starter_chosen", &"viridian_arrival"] as Array[StringName])
+	assert_eq(library.get_ids(), [&"oak_lab_exit", &"oak_parcel", &"rival_route22",
+		&"route1_grass", &"route_1_potion", &"starter_chosen", &"viridian_arrival"]
+		as Array[StringName])
 
 
 func test_route1_grass_ends_with_the_starter_offer() -> void:
@@ -117,6 +136,7 @@ func test_every_trigger_targets_a_scene_and_every_scene_is_triggered() -> void:
 	assert_eq(_triggered_on.get(&"route_1_potion"), [&"route_1"])
 	assert_eq(_triggered_on.get(&"oak_lab_exit"), [&"oak_lab"])
 	assert_eq(_triggered_on.get(&"viridian_arrival"), [&"viridian_city"])
+	assert_eq(_triggered_on.get(&"rival_route22"), [&"route_22"])
 	assert_eq(_offer.chosen_scene, &"starter_chosen", "scène du choix = CODE_PLAYED")
 	assert_eq(CODE_PLAYED[_offer.chosen_scene], _offer.map_id)
 
@@ -186,17 +206,35 @@ func test_static_simulation_of_every_variant() -> void:
 		var maps: Array = _triggered_on.get(id, [])
 		if CODE_PLAYED.has(id):
 			maps = [CODE_PLAYED[id]]
-			# La scène du choix contient un combat : on la joue « à blanc » pour les deux issues
-			# (jalon-04.md §14.11 T8) ; les autres n'ont pas d'étape « battle ».
-			var outcomes: Array[int] = ([Battle.Outcome.WIN, Battle.Outcome.LOSS] as Array[int]) \
-				if id == _offer.chosen_scene else ([Battle.Outcome.WIN] as Array[int])
-			for i: int in mini(rows.size(), cutscene.variants.size()):
-				for map_id: StringName in maps:
-					for aliases: Dictionary in _alias_sets(id):
+		# Une scène avec un combat est jouée « à blanc » pour les deux issues (jalon-04.md §14.11
+		# T8 ; rival n° 2, T25).
+		var outcomes: Array[int] = ([Battle.Outcome.WIN, Battle.Outcome.LOSS] as Array[int]) \
+			if _has_battle(cutscene) else ([Battle.Outcome.WIN] as Array[int])
+		for i: int in mini(rows.size(), cutscene.variants.size()):
+			for map_id: StringName in maps:
+				for aliases: Dictionary in _alias_sets(id):
+					for extra: Array in _extra_flag_sets(id):
 						for outcome: int in outcomes:
-							checked += _simulate("%s/%d %s %d" % [id, i + 1, aliases, outcome],
-								cutscene.variants[i], map_id, _flags(rows[i]), aliases, outcome)
+							checked += _simulate("%s/%d %s %s %d" % [id, i + 1, aliases, extra,
+								outcome], cutscene.variants[i], map_id,
+								_flags(rows[i] + extra), aliases, outcome)
 	assert_gt(checked, 60, "acteurs vérifiés")
+
+
+func _has_battle(cutscene: Cutscene) -> bool:
+	for variant: CutsceneVariant in cutscene.variants:
+		for step: CutsceneStep in variant.steps:
+			if step.kind == CutsceneStep.Kind.BATTLE:
+				return true
+	return false
+
+
+## Drapeaux ajoutés à chaque simulation d'une scène : les trois paires `taken_*` pour la scène
+## du rival n° 2 (le Pokémon du rival présent en dépend), aucun sinon.
+func _extra_flag_sets(cutscene_id: StringName) -> Array:
+	if cutscene_id != &"rival_route22":
+		return [[]]
+	return RIVAL_PAIRS.values()
 
 
 ## Jalon 7 (T2) : la simulation connaît l'étape « scare » (acteur présent et « shy », retiré
@@ -433,6 +471,9 @@ func _simulate(label: String, variant: CutsceneVariant, start_map: StringName,
 		var step := _resolved(source, aliases)
 		var where := "%s sur %s (%s)" % [label, map_id, CutsceneStep.kind_name(step.kind)]
 		var needed: Array[StringName] = []
+		if step.kind == CutsceneStep.Kind.WAKE_UP:
+			# Réveil au point de repos (T25) : la scène s'arrête là.
+			break
 		match step.kind:
 			CutsceneStep.Kind.SET_FLAGS:
 				for flag: StringName in step.flags:

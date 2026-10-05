@@ -3,6 +3,33 @@
 		"cell": [21, 16], "facing": "right", "sprite": "traveler", "dialogue": "route_22_traveler",
 		"route": { "cells": [[20, 16], [21, 16], [22, 16], [23, 16], [22, 16], [21, 16]], "pause": 1.4 }
 	},
+	"rival": {
+		"cell": [6, 13], "facing": "right", "sprite": "rival",
+		"if": ["pokedex_activated"], "unless": ["rival_route22_won", "rival_route22_lost"]
+	},
+	"rival_charmander": {
+		"cell": [7, 13], "facing": "right", "sprite": "charmander",
+		"if": ["pokedex_activated", "taken_bulbasaur", "taken_charmander"],
+		"unless": ["rival_route22_won", "rival_route22_lost"]
+	},
+	"rival_squirtle": {
+		"cell": [7, 13], "facing": "right", "sprite": "squirtle",
+		"if": ["pokedex_activated", "taken_charmander", "taken_squirtle"],
+		"unless": ["rival_route22_won", "rival_route22_lost"]
+	},
+	"rival_bulbasaur": {
+		"cell": [7, 13], "facing": "right", "sprite": "bulbasaur",
+		"if": ["pokedex_activated", "taken_squirtle", "taken_bulbasaur"],
+		"unless": ["rival_route22_won", "rival_route22_lost"]
+	},
+	"youngster_rattata": {
+		"cell": [8, 13], "facing": "left", "sprite": "pokemon/rattata",
+		"if": ["pokedex_activated"], "unless": ["rival_route22_won", "rival_route22_lost"]
+	},
+	"youngster": {
+		"cell": [9, 13], "facing": "left", "sprite": "youngster",
+		"if": ["pokedex_activated"], "unless": ["rival_route22_won", "rival_route22_lost"]
+	},
 	"route22_rattata": {
 		"cell": [23, 24], "facing": "up", "sprite": "pokemon/rattata",
 		"shy": { "action": "flee", "radius": 2 }

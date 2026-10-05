@@ -16,7 +16,10 @@ extends SceneTree
 ## - trois champs de hautes herbes peintes (deux touffes par case) branchés sur la table
 ##   `route_22` ; clairières sans arbres autour d'eux ;
 ## - forêt : arbres peints dont la cime masque le bord ; rochers ;
-## - voyageur et Pokémon d'ambiance dans data/npcs/route_22.json.
+## - voyageur et Pokémon d'ambiance dans data/npcs/route_22.json ;
+## - scène du rival n° 2 (T25) : déclencheur `RivalVista` en haut de l'escalier (pas vers l'ouest
+##   sur les deux rangées du sentier), rival et jeune Dresseur face à face sur (6..9, 13), dans
+##   data/npcs/route_22.json (présents après l'activation du Pokédex, avant le combat).
 ## Le TileMapLayer `Ground` est la source logique (solide, hautes herbes), invisible ; l'image
 ## vient du sol peint (masque G = chemin de terre), des décalcomanies et des objets peints.
 
@@ -48,11 +51,19 @@ const WARP_SPAWN: StringName = &"from_route_22"
 const PUSH: int = 1
 
 ## Points d'apparition (Marker2D enfants de `Spawns`). `from_viridian` : bord est ;
-## `vista` : le sentier du point de vue (débogage, captures, T25).
+## `vista` : le sentier du point de vue (débogage, captures) ; `stair_foot` : pied de l'escalier
+## (départ de débogage `rival_2_weak`, T25 : quelques pas jusqu'à la scène du rival).
 const SPAWNS: Dictionary = {
 	"from_viridian": Vector2i(44, 18),
 	"vista": Vector2i(11, 13),
+	"stair_foot": Vector2i(16, 16),
 }
+## Déclencheurs de scène [nom, ancre (bas-gauche), taille, direction du pas, scène] : en haut de
+## l'escalier, le premier pas vers l'ouest sur le sentier (rangées 12 et 13) lance la scène du
+## rival n° 2 (ses variantes décident : Pokédex activé, pas encore affronté).
+const TRIGGERS: Array = [
+	["RivalVista", Vector2i(14, 13), Vector2i(1, 2), Vector2i.LEFT, &"rival_route22"],
+]
 
 ## Rectangles [x, y, largeur, hauteur] du prototype (décalés de OY au dessin).
 const WALKABLE_LOWER := Rect2i(1, 8, 44, 10)
@@ -139,6 +150,7 @@ func _init() -> void:
 		_attach(root, root, node)
 	_add_spawns(root)
 	_add_warps(root)
+	_add_triggers(root)
 
 	_place_border_decals(root, decals)
 	_place_relief(root, decals)
@@ -249,6 +261,19 @@ func _add_spawns(root: Node) -> void:
 		marker.name = spawn_name
 		marker.position = _world(SPAWNS[spawn_name])
 		_attach(root, root.get_node(^"Spawns"), marker)
+
+
+func _add_triggers(root: Node) -> void:
+	var point_script: GDScript = load("res://game/world/triggers/event_trigger_point.gd")
+	for entry: Array in TRIGGERS:
+		var point := Marker2D.new()
+		point.set_script(point_script)
+		point.name = entry[0]
+		point.position = _world(entry[1])
+		point.set(&"size", entry[2])
+		point.set(&"direction", entry[3])
+		point.set(&"cutscene_id", entry[4])
+		_attach(root, root.get_node(^"Triggers"), point)
 
 
 func _add_warps(root: Node) -> void:

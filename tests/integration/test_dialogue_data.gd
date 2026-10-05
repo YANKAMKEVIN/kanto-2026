@@ -51,6 +51,8 @@ const IDS: Array[StringName] = [
 	&"rival_lab_lost", &"rival_lab_waiting", &"rival_lab_won", &"rival_lab_won_leaving",
 	&"rival_parcel_greet", &"rival_parcel_leaving", &"rival_parcel_return",
 	&"rival_starter_pick", &"rival_starter_smile", &"route1_grass_thought",
+	&"route22_rival_greet", &"route22_rival_hesitates", &"route22_rival_lost",
+	&"route22_rival_won", &"route22_youngster_sigh",
 	&"route_1_potion_found", &"route_1_traveler", &"route_22_traveler", &"sign_pallet_town",
 	&"viridian_courier", &"viridian_gym_door", &"viridian_gym_watcher", &"viridian_kid",
 	&"viridian_lass", &"viridian_old_man", &"viridian_traveler",
@@ -181,7 +183,9 @@ func test_every_dialogue_played_by_a_cutscene_exists() -> void:
 		&"rival_challenge", &"rival_challenge_wait", &"rival_lab_lost", &"rival_lab_won",
 		&"rival_lab_won_leaving", &"rival_parcel_greet", &"rival_parcel_leaving",
 		&"rival_parcel_return", &"rival_starter_pick", &"rival_starter_smile",
-		&"route1_grass_thought", &"route_1_potion_found"] as Array[StringName])
+		&"route1_grass_thought", &"route22_rival_greet", &"route22_rival_hesitates",
+		&"route22_rival_lost", &"route22_rival_won", &"route22_youngster_sigh",
+		&"route_1_potion_found"] as Array[StringName])
 	for id: StringName in played:
 		assert_true(_library.has_dialogue(id), "dialogue « %s » défini" % id)
 		assert_true(_used_on.has(id), "« %s » joué depuis un déclencheur ou par le code" % id)
@@ -190,6 +194,10 @@ func test_every_dialogue_played_by_a_cutscene_exists() -> void:
 			&"oak_lab_exit_block", &"rival_lab_won", &"rival_lab_won_leaving", &"rival_lab_lost",
 			&"oak_after_battle", &"oak_poke_balls_intro", &"oak_poke_balls"]:
 		assert_eq(_used_on.get(id), [&"oak_lab"], "%s joué au labo" % id)
+	# Jalon 7 (T25) : la scène du rival n° 2, sur la Route 22 seulement.
+	for id: StringName in [&"route22_youngster_sigh", &"route22_rival_hesitates",
+			&"route22_rival_greet", &"route22_rival_won", &"route22_rival_lost"]:
+		assert_eq(_used_on.get(id), [&"route_22"], "%s joué sur la Route 22" % id)
 
 
 func test_every_react_targets_an_npc_of_the_map_where_it_is_used() -> void:
@@ -252,8 +260,8 @@ func test_every_condition_flag_is_set_somewhere() -> void:
 		as Array[StringName])
 	assert_eq(_cutscenes.get_set_flags(), [&"got_potion_route_1", &"oak_lab_reunion", &"oak_met",
 		&"pokedex_activated", &"rival_battle_done", &"rival_challenged", &"rival_lab_lost",
-		&"rival_lab_won", &"rival_left_lab", &"starter_chosen", &"starter_offered",
-		&"viridian_arrived"] as Array[StringName])
+		&"rival_lab_won", &"rival_left_lab", &"rival_route22_lost", &"rival_route22_won",
+		&"starter_chosen", &"starter_offered", &"viridian_arrived"] as Array[StringName])
 	assert_eq(_used_on.get(&"oak_lab_reunion"), [&"oak_lab"], "joué au labo, après le fondu")
 	assert_eq(_used_on.get(&"oak_starter_offer"), [&"oak_lab"], "joué au labo")
 
@@ -479,6 +487,9 @@ func test_speakers_and_narration() -> void:
 		&"rival_parcel_leaving": ["Rival", false],
 		&"nurse": ["Infirmière", false], &"nurse_wakeup": ["Infirmière", false],
 		&"center_lass": ["Dresseuse", false],
+		&"route22_youngster_sigh": ["Jeune Dresseur", false],
+		&"route22_rival_hesitates": ["Rival", false], &"route22_rival_greet": ["Rival", false],
+		&"route22_rival_won": ["Rival", false], &"route22_rival_lost": ["Rival", false],
 	}
 	for id: StringName in expected:
 		var dialogue := _library.get_dialogue(id)
