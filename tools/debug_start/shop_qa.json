@@ -1,0 +1,15 @@
+{
+	"map": "viridian_city", "spawn": "from_mart", "facing": "down",
+	"flags": [
+		"mom_greeted", "rival_met", "oak_met", "oak_lab_reunion", "starter_offered",
+		"starter_chosen", "rival_challenged", "rival_battle_done", "rival_left_lab",
+		"viridian_arrived"
+	],
+	"party": [
+		{ "species": "charmander", "level": 8 },
+		{ "species": "pidgey", "level": 7 }
+	],
+	"bag": { "poke_ball": 3, "potion": 4 },
+	"favorites": ["potion"],
+	"money": 6000
+}

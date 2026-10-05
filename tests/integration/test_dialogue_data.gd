@@ -28,18 +28,19 @@ const DOSSIER_09 := "res://docs/design/dossier-09-jadielle.md"
 const _DOSSIER_TOKENS: Dictionary[String, String] = {"{first_wild_species}": "{espèce}"}
 const MAPS: Array[StringName] = [
 	&"player_house_2f", &"player_house_1f", &"rival_house", &"oak_lab", &"pallet_town",
-	&"route_1", &"route_22", &"viridian_city", &"viridian_center",
+	&"route_1", &"route_22", &"viridian_city", &"viridian_center", &"viridian_mart",
 ]
 ## Seuls textes provisoires : le panneau « BOURG PALETTE » (Q8), les textes d'observation
 ## des Pokémon des habitants (jalon 6 T16, à valider par Kevin) et la Dresseuse au repos du
-## Centre (jalon 7 T8, absente du dossier 09 §19).
-const DRAFTS: Array[StringName] = [&"center_lass", &"observe_aoki_pidgey",
+## Centre (jalon 7 T8, absente du dossier 09 §19) ; le livreur dans la Boutique (T12, idem).
+const DRAFTS: Array[StringName] = [&"center_lass", &"mart_courier", &"observe_aoki_pidgey",
 	&"observe_leo_rattata", &"sign_pallet_town"]
 ## Identifiants attendus (3A) : Maman, table, rival, carte, Maya, 3 starters, 3 habitants,
 ## panneau ; (3B) « Hé ! Attends ! », les répliques du Prof. Chen et la pensée des herbes ;
 ## (4A, T1) la proposition du Prof. Chen ; (4A, T3) le choix et la sortie empêchée.
 const IDS: Array[StringName] = [
-	&"aoki", &"breakfast_table", &"center_lass", &"haru", &"leo", &"maya", &"mom",
+	&"aoki", &"breakfast_table", &"center_lass", &"clerk", &"clerk_parcel",
+	&"clerk_parcel_hello", &"haru", &"leo", &"mart_courier", &"maya", &"mom",
 	&"mom_wakeup", &"nurse", &"nurse_wakeup",
 	&"oak_after_battle",
 	&"oak_lab_exit_block", &"oak_lab_reunion", &"oak_lab_waiting", &"oak_parcel_records",
@@ -57,9 +58,9 @@ const IDS: Array[StringName] = [
 ]
 ## Plus aucun drapeau futur au 4B : rival_battle_done est levé par la scène du combat
 ## (jalon-04.md §14.5, §14.8), quelle que soit l'issue.
-## Jalon 7 (T18) : got_oak_parcel, lu par Chen (scène du colis), est levé par la première visite
-## de la Boutique (T12) : à retirer de cette liste à la fusion du T12.
-const FUTURE_FLAGS: Array[StringName] = [&"got_oak_parcel"]
+## Jalon 7 : got_oak_parcel, lu par Chen (scène du colis, T18), est levé par la première visite
+## de la Boutique depuis le T12 (data/cutscenes/viridian_mart.json).
+const FUTURE_FLAGS: Array[StringName] = []
 
 var _library: DialogueLibrary
 var _cutscenes: CutsceneLibrary
@@ -174,7 +175,8 @@ func test_every_dialogue_is_used() -> void:
 func test_every_dialogue_played_by_a_cutscene_exists() -> void:
 	assert_eq(_cutscenes.get_errors().size(), 0, str(_cutscenes.get_errors()))
 	var played := _cutscenes.get_dialogue_ids()
-	assert_eq(played, [&"oak_after_battle", &"oak_lab_exit_block", &"oak_lab_reunion",
+	assert_eq(played, [&"clerk_parcel", &"clerk_parcel_hello",
+		&"oak_after_battle", &"oak_lab_exit_block", &"oak_lab_reunion",
 		&"oak_parcel_records", &"oak_parcel_rival", &"oak_poke_balls", &"oak_poke_balls_intro",
 		&"oak_pokedex_activated", &"oak_route1_call",
 		&"oak_route1_warning", &"oak_starter_offer", &"oak_starter_reciprocal",
@@ -250,7 +252,7 @@ func test_every_condition_flag_is_set_somewhere() -> void:
 	assert_eq(_library.get_set_flags(),
 		[&"blacked_out_before", &"mom_greeted", &"rival_met", &"viridian_old_man_talked"]
 		as Array[StringName])
-	assert_eq(_cutscenes.get_set_flags(), [&"got_potion_route_1", &"oak_lab_reunion", &"oak_met",
+	assert_eq(_cutscenes.get_set_flags(), [&"got_oak_parcel", &"got_potion_route_1", &"oak_lab_reunion", &"oak_met",
 		&"pokedex_activated", &"rival_battle_done", &"rival_challenged", &"rival_lab_lost",
 		&"rival_lab_won", &"rival_left_lab", &"starter_chosen", &"starter_offered",
 		&"viridian_arrived"] as Array[StringName])

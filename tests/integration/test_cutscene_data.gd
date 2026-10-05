@@ -18,7 +18,7 @@ extends GutTest
 
 const MAPS: Array[StringName] = [
 	&"player_house_2f", &"player_house_1f", &"rival_house", &"oak_lab", &"pallet_town",
-	&"route_1", &"viridian_city",
+	&"route_1", &"viridian_city", &"viridian_mart",
 ]
 ## Jalon 7 (T18) : partie qui revient au labo avec le colis (rival parti après le combat).
 const PARCEL_FLAGS: Array[StringName] = [
@@ -33,6 +33,7 @@ const VARIANT_FLAGS: Dictionary = {
 	&"oak_lab_exit": [[&"oak_met", &"oak_lab_reunion", &"starter_offered"]],
 	&"starter_chosen": [[&"oak_met", &"oak_lab_reunion", &"starter_offered"]],
 	&"viridian_arrival": [[&"rival_battle_done"]],
+	&"mart_parcel": [[&"rival_battle_done", &"viridian_arrived"]],
 	&"oak_parcel": [PARCEL_FLAGS],
 }
 ## Scènes jouées par le code (pas de déclencheur) → carte où elles sont jouées.
@@ -86,7 +87,7 @@ func test_library_loads_without_error() -> void:
 	var library := CutsceneLibrary.new()
 	assert_true(library.load_dir(), "data/cutscenes/ se charge")
 	assert_eq(library.get_errors().size(), 0, str(library.get_errors()))
-	assert_eq(library.get_ids(), [&"oak_lab_exit", &"oak_parcel", &"route1_grass",
+	assert_eq(library.get_ids(), [&"mart_parcel", &"oak_lab_exit", &"oak_parcel", &"route1_grass",
 		&"route_1_potion", &"starter_chosen", &"viridian_arrival"] as Array[StringName])
 
 
@@ -117,6 +118,7 @@ func test_every_trigger_targets_a_scene_and_every_scene_is_triggered() -> void:
 	assert_eq(_triggered_on.get(&"route_1_potion"), [&"route_1"])
 	assert_eq(_triggered_on.get(&"oak_lab_exit"), [&"oak_lab"])
 	assert_eq(_triggered_on.get(&"viridian_arrival"), [&"viridian_city"])
+	assert_eq(_triggered_on.get(&"mart_parcel"), [&"viridian_mart"])
 	assert_eq(_offer.chosen_scene, &"starter_chosen", "scène du choix = CODE_PLAYED")
 	assert_eq(CODE_PLAYED[_offer.chosen_scene], _offer.map_id)
 

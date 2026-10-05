@@ -1,0 +1,8 @@
+{
+	"clerk": {
+		"cell": [7, 3], "facing": "down", "sprite": "clerk"
+	},
+	"mart_courier": {
+		"cell": [12, 6], "facing": "left", "sprite": "courier", "dialogue": "mart_courier"
+	}
+}
