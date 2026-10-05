@@ -748,11 +748,11 @@ func test_without_idle_react_nothing_plays() -> void:
 
 # --- Retours T5 (jalon-07.md §15.21) : marcher ou courir, jamais un mélange --------------
 
-## Planche peinte sans course (l'enfant) : un pas demandé en course est marché, à la cadence
-## de marche, avec l'animation de marche.
+## Planche peinte sans course (le vieil homme ; l'enfant a désormais sa planche de course) :
+## un pas demandé en course est marché, à la cadence de marche, avec l'animation de marche.
 func test_a_painted_look_without_run_walks_when_asked_to_run() -> void:
 	var grid := GridWorld.new(Vector2i(10, 10))
-	var npc := _make_on_grid(_spec({"sprite": &"kid"}), grid)
+	var npc := _make_on_grid(_spec({"sprite": &"old_man"}), grid)
 	var sprite := _sprite(npc)
 	assert_false(sprite.sprite_frames.has_animation(&"run_right"), "pas de fausse course")
 	assert_false(npc.can_run())
@@ -765,11 +765,15 @@ func test_a_painted_look_without_run_walks_when_asked_to_run() -> void:
 	assert_eq(npc.get_cell(), CELL + Vector2i.RIGHT)
 
 
-## Le héros peint court (planche de course) ; les apparences provisoires (Chen : marche et
+## Le héros, l'enfant et le Rattata peints courent (planches de course) ; les apparences provisoires (Chen : marche et
 ## course ; générique : aucune animation de pas) gardent la course.
 func test_looks_with_a_run_or_without_any_step_animation_can_run() -> void:
 	var grid := GridWorld.new(Vector2i(10, 10))
 	assert_true(_make_on_grid(_spec({"sprite": &"player"}), grid).can_run())
+	assert_true(_make_on_grid(_spec({"id": &"kid", "sprite": &"kid",
+		"cell": Vector2i(3, 3)}), grid).can_run())
+	assert_true(_make_on_grid(_spec({"id": &"rat", "sprite": &"pokemon/rattata",
+		"cell": Vector2i(6, 2)}), grid).can_run())
 	assert_true(_make_on_grid(_spec({"id": &"oak", "sprite": &"oak",
 		"cell": Vector2i(1, 1)}), grid).can_run())
 	assert_true(_make_on_grid(_spec({"id": &"npc2", "cell": Vector2i(8, 8)}), grid).can_run())

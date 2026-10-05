@@ -91,6 +91,26 @@ func test_a_scene_asks_to_run_only_a_look_that_really_runs() -> void:
 					"%s : un cycle de course = deux pas de course" % sprite)
 
 
+## Décision de Kevin (2026-10-05, dossier 09 §2) : l'enfant de Jadielle et son Rattata
+## **courent** dans la micro-scène d'arrivée, avec leurs vraies planches de course, de même
+## cadre (même hauteur de cellule, pieds sur l'origine) que leur planche de marche.
+func test_the_kid_and_his_rattata_run_with_their_own_sheets() -> void:
+	for sprite: StringName in [&"kid", &"pokemon/rattata"]:
+		assert_true(_movers.get(sprite, false), "%s court dans une scène" % sprite)
+		var frames := load(CharacterLook.resolve(sprite).frames_path) as SpriteFrames
+		for dir: String in DIRECTIONS:
+			var run := StringName("run_" + dir)
+			assert_eq(frames.get_frame_count(run), 4, "%s : %s" % [sprite, run])
+			var walk_cell := (frames.get_frame_texture(StringName("walk_" + dir), 0) \
+				as AtlasTexture).region.size
+			var textures := {}
+			for i: int in 4:
+				var atlas := frames.get_frame_texture(run, i) as AtlasTexture
+				assert_eq(atlas.region.size.y, walk_cell.y, "%s : même cadre" % sprite)
+				textures[atlas.region.position] = true
+			assert_eq(textures.size(), 4, "%s : 4 images distinctes (%s)" % [sprite, run])
+
+
 ## Aucune planche peinte sans planche de course n'a d'animation « run » (sinon : poses de
 ## marche à la cadence de course) ; [method Npc.can_run] le reflète.
 func test_painted_looks_run_only_with_a_run_sheet() -> void:

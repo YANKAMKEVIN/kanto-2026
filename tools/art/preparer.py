@@ -247,13 +247,14 @@ class Preparateur:
             for e in self.m[groupe]:
                 sortie = self._sortie(e["sortie"])
                 sortie.parent.mkdir(parents=True, exist_ok=True)
-                largeur, hauteur = decoupeur.decouper(str(self.source / e["source"]),
-                                                      str(sortie), e["hauteur"])
+                largeur, hauteur = decoupeur.decouper(
+                    str(self.source / e["source"]), str(sortie), e["hauteur"],
+                    rebond_passage=e.get("rebond_passage"))
                 profil = e.get("profil_course")
                 if profil:  # rangées de profil remplacées (cycle de course lisible)
                     largeur, hauteur = _profil_course().remplacer(
                         str(self.source / profil["source"]), str(sortie),
-                        profil.get("rebond", 3), profil["jambe_lointaine"])
+                        profil.get("rebond", 3), profil.get("jambe_lointaine"))
                 self.catalogue["personnages"][e["id"]] = {
                     "fichier": self._res(e["sortie"]), "cellule": [largeur, hauteur],
                     "hauteur": e["hauteur"], "colonnes": 4, "lignes": 4,

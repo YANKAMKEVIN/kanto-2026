@@ -562,6 +562,23 @@
    "source": "PNJ_ENFANT_P2_r1.png",
    "sortie": "assets/sprites/characters/painted/enfant_sheet.png",
    "hauteur": 108
+  },
+  {
+   "id": "enfant_run",
+   "source": "PNJ_ENFANT_COURSE_r1_v2.png",
+   "sortie": "assets/sprites/characters/painted/enfant_run_sheet.png",
+   "hauteur": 108,
+   "rebond_passage": 3,
+   "profil_course": {
+    "source": "PNJ_ENFANT_COURSE_PROFIL_r1_v2.png",
+    "rebond": 3,
+    "jambe_lointaine": [
+     [[[25, 630], [130, 625], [165, 660], [160, 690], [105, 748], [25, 748]]],
+     [],
+     [[[1000, 650], [1060, 625], [1085, 680], [1150, 690], [1150, 772], [1020, 772], [1000, 700]]],
+     []
+    ]
+   }
   }
  ],
  "pokemon": [
@@ -576,6 +593,17 @@
    "source": "POKE_RATTATA_P2_r1.png",
    "sortie": "assets/sprites/pokemon/painted/rattata_sheet.png",
    "hauteur": 56
+  },
+  {
+   "id": "rattata_run",
+   "source": "POKE_RATTATA_COURSE_r1_v2.png",
+   "sortie": "assets/sprites/pokemon/painted/rattata_run_sheet.png",
+   "hauteur": 56,
+   "rebond_passage": 2,
+   "profil_course": {
+    "source": "POKE_RATTATA_COURSE_PROFIL_r1_v2.png",
+    "rebond": 2
+   }
   },
   {
    "id": "piafabec",

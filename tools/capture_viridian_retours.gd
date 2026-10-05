@@ -12,8 +12,9 @@ extends SceneTree
 ## - walk : planches (une vignette par image à 30 i/s) d'habitants qui marchent pendant leurs
 ##   pas → walk_<id>_<tag>.png ;
 ## - scene : micro-scène d'arrivée, une image sur trois (0,1 s) en demi-taille
-##   → scene_<tag>/f<nnn>.png, planche scene_<tag>.png, et vignettes de l'enfant
-##   → scene_kid_<tag>.png ; la durée est écrite dans le journal.
+##   → scene_<tag>/f<nnn>.png, planche scene_<tag>.png, et vignettes de l'enfant et du Rattata
+##   pendant leurs pas de course → scene_kid_<tag>.png, scene_rattata_<tag>.png ; la durée est
+##   écrite dans le journal.
 
 const BOOT_SCENE := "res://game/boot.tscn"
 const START := "res://tools/debug_start/viridian.json"
@@ -160,14 +161,18 @@ func _run_scene() -> void:
 	Input.action_release(&"move_up")
 	var map: Node = _boot.call(&"get_map")
 	var kid := map.call(&"get_npc", &"arrival_kid") as Node2D
+	var rattata := map.call(&"get_npc", &"arrival_rattata") as Node2D
 	var frames := 0
 	var shots: Array[Image] = []
 	var kid_thumbs: Array[Image] = []
+	var rattata_thumbs: Array[Image] = []
 	while director.call(&"is_running") and frames < 300:
 		await process_frame
 		await RenderingServer.frame_post_draw
 		if is_instance_valid(kid) and kid.call(&"is_moving"):
 			kid_thumbs.append(_crop_around(kid))
+		if is_instance_valid(rattata) and rattata.call(&"is_moving"):
+			rattata_thumbs.append(_crop_around(rattata))
 		if frames % 3 == 0:
 			var image := root.get_texture().get_image()
 			image.resize(image.get_width() / 2, image.get_height() / 2, Image.INTERPOLATE_BILINEAR)
@@ -180,6 +185,7 @@ func _run_scene() -> void:
 	print("SCENE : %d images à 30 i/s = %.2f s de jeu" % [frames, frames / 30.0])
 	_save_sheet(shots, "scene_" + _tag, 6)
 	_save_sheet(kid_thumbs, "scene_kid_" + _tag)
+	_save_sheet(rattata_thumbs, "scene_rattata_" + _tag)
 	await _seconds(0.3)
 	await _shot("scene_after_" + _tag)
 

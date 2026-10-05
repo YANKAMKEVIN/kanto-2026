@@ -1,0 +1,12 @@
+POKE_RATTATA_COURSE_PROFIL — même Rattata que la planche jointe POKE_RATTATA_P2_r1 (sa planche de marche) : même main peinte, mêmes couleurs, mêmes proportions, même tête, même queue. Reprends exactement le rendu du Rattata de profil de la ligne 3 de POKE_RATTATA_P2_r1 (il regarde vers la DROITE).
+Style : illustration 2D peinte numériquement, contour fin et doux d'une teinte sombre et colorée, aucun trait noir, trois valeurs nettes par matériau, légère granularité de pinceau, lumière dorée venant du haut à gauche. Formes simplifiées et lisibles pour rester net une fois réduit à 56 px de haut. Ni pixel art, ni 3D.
+POKÉMON : Rattata (n° 019) de Pokémon Rouge/Bleu, petit rongeur violet, ventre et pattes crème, grandes incisives, longues moustaches, grandes oreilles rondes roses à l'intérieur, queue rose enroulée au bout.
+
+PLANCHE : image paysage 1536 × 1024, fond avec une vraie transparence (canal alpha, aucun damier). UNE seule ligne de 4 poses, de gauche à droite, chaque pose dans une colonne invisible de 384 px de large, bien séparées par du vide, le Pokémon entier (queue comprise), à la même échelle dans les 4 poses, tous de profil tournés vers la DROITE. Pas de sol, pas d'ombre, pas de texte, pas de numéros, pas de cadres.
+
+C'est un CYCLE DE GALOP de petit quadrupède. Les pattes LOINTAINES (côté caché) sont peintes nettement plus sombres (crème grisé, ombrées) ; les pattes PROCHES sont claires, au premier plan.
+- Pose 1 = ÉTIRÉ : corps allongé au maximum, presque à plat, pattes avant lancées loin devant (patte avant proche posée au sol), pattes arrière tendues loin derrière.
+- Pose 2 = EN L'AIR : petit bond, les quatre pattes décollées et regroupées vers le ventre, corps un peu plus haut, oreilles rabattues en arrière.
+- Pose 3 = RAMASSÉ : dos rond en arche, pattes arrière ramenées sous le ventre devant les pattes avant, pattes arrière au sol, corps court et compact.
+- Pose 4 = REPOUSSE : les pattes arrière poussent, le corps se redéploie vers l'avant en montant, pattes avant tendues devant, encore décollé.
+La longueur du corps doit nettement CHANGER entre les poses 1 et 3. La queue suit le mouvement (ondule). Même tête, mêmes couleurs dans les 4 poses.
