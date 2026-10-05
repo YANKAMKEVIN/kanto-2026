@@ -135,6 +135,32 @@ func test_keep_facing_keeps_orientation_after_interaction() -> void:
 	assert_eq(npc.get_facing(), Vector2i.RIGHT)
 
 
+## Attente animée (jalon 7, Jadielle agrandie) : il se tourne tour à tour vers chaque
+## orientation, en commençant par celle qui suit son repos ; rien pendant un dialogue.
+func test_look_around_turns_through_its_facings_but_not_while_talking() -> void:
+	var facings: Array[Vector2i] = [Vector2i.UP, Vector2i.LEFT, Vector2i.RIGHT]
+	var npc := _make(_spec({"facing": Vector2i.UP, "look_facings": facings,
+		"look_every": NpcSpec.LOOK_EVERY_MIN}))
+	assert_true(npc.is_looking_around())
+	assert_eq(npc.get_facing(), Vector2i.UP)
+	await wait_seconds(NpcSpec.LOOK_EVERY_MIN + 0.1)
+	assert_eq(npc.get_facing(), Vector2i.LEFT, "première orientation après le repos")
+	await wait_seconds(NpcSpec.LOOK_EVERY_MIN)
+	assert_eq(npc.get_facing(), Vector2i.RIGHT)
+	npc.begin_interaction(CELL + Vector2i.DOWN)
+	await wait_seconds(NpcSpec.LOOK_EVERY_MIN * 2.0 + 0.1)
+	assert_eq(npc.get_facing(), Vector2i.DOWN, "tourné vers le joueur tout le dialogue")
+	npc.end_interaction()
+	assert_eq(npc.get_facing(), Vector2i.UP, "reprend son repos")
+	await wait_seconds(NpcSpec.LOOK_EVERY_MIN + 0.1)
+	assert_ne(npc.get_facing(), Vector2i.DOWN, "l'attente reprend")
+
+
+func test_without_look_no_look_loop() -> void:
+	var npc := _make(_spec())
+	assert_false(npc.is_looking_around())
+
+
 func test_get_interaction_is_same_instance_with_source_and_verb() -> void:
 	var npc := _make(_spec())
 	var first := npc.get_interaction()

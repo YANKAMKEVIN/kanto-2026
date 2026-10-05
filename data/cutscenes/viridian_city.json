@@ -4,11 +4,11 @@
 			{
 				"unless": ["viridian_arrived"],
 				"steps": [
-					{ "move": "arrival_rattata", "run": true, "to": [27, 23],
+					{ "move": "arrival_rattata", "run": true, "to": [30, 22],
 						"follower": "arrival_kid" },
 					{ "scare": "viridian_roof_pidgey" },
 					{ "move": "arrival_traveler",
-						"to": { "near": "player", "offsets": [[1, 2], [-1, 2], [0, 2]] } },
+						"to": { "near": "player", "offsets": [[-1, 2], [1, 2], [0, 2]] } },
 					{ "despawn": "arrival_traveler" },
 					{ "set": ["viridian_arrived"] }
 				]

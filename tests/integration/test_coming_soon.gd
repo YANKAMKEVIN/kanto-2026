@@ -74,7 +74,7 @@ func _walk_into_the_north_edge() -> void:
 func test_the_north_edge_shows_the_coming_soon_screen_then_returns_facing_south() -> void:
 	await _start_at_the_north_gate()
 	var screen := _boot.get_coming_soon_screen()
-	assert_eq(_player.get_cell(), Vector2i(21, 3))
+	assert_eq(_player.get_cell(), Vector2i(27, 3))
 	var zones: Array[String] = []
 	_boot.zone_announced.connect(func(zone: String, _region: String) -> void:
 		zones.append(zone))
@@ -86,7 +86,7 @@ func test_the_north_edge_shows_the_coming_soon_screen_then_returns_facing_south(
 	await wait_until(func() -> bool: return not screen.is_showing(), TIMEOUT)
 	await wait_until(func() -> bool: return not SceneRouter.is_transitioning(), TIMEOUT)
 	assert_eq(_boot.get_map().map_id, &"viridian_city", "retour à Jadielle")
-	assert_eq(_player.get_cell(), Vector2i(21, 3), "devant l'arche")
+	assert_eq(_player.get_cell(), Vector2i(27, 3), "devant l'arche")
 	assert_eq(_player.get_facing(), Vector2i.DOWN, "tourné vers le sud")
 	assert_true(_player.is_input_enabled(), "joueur libre")
 	assert_false(_boot.get_fade().is_opaque())
@@ -102,7 +102,7 @@ func test_the_east_column_works_too() -> void:
 	await _walk_into_the_north_edge()
 	await wait_until(func() -> bool: return not SceneRouter.is_transitioning(), TIMEOUT)
 	assert_false(screen.is_showing())
-	assert_eq(_player.get_cell(), Vector2i(23, 3))
+	assert_eq(_player.get_cell(), Vector2i(29, 3))
 	assert_eq(_player.get_facing(), Vector2i.DOWN)
 
 
@@ -124,7 +124,7 @@ func test_nothing_is_saved_during_the_screen_then_the_normal_autosave_applies() 
 	assert_eq(_writes(), 2, "écrit une fois la partie stable")
 	var saved: Variant = JSON.parse_string(_fs.files[SAVE_PATH])
 	assert_eq(saved.get("map"), "viridian_city")
-	assert_eq(JsonFields.get_vector2i(saved, "cell"), Vector2i(21, 3), "case de retour")
+	assert_eq(JsonFields.get_vector2i(saved, "cell"), Vector2i(27, 3), "case de retour")
 	assert_false((saved.get("discovered_maps", {}) as Dictionary).has("route_2"))
 
 
@@ -151,6 +151,6 @@ func test_in_a_release_build_the_north_edge_stays_blocked() -> void:
 	Input.action_release(&"move_up")
 	assert_false(_boot.get_coming_soon_screen().is_showing())
 	assert_false(SceneRouter.is_transitioning())
-	assert_eq(_player.get_cell(), Vector2i(21, 1), "arrêté sous le bord nord")
+	assert_eq(_player.get_cell(), Vector2i(27, 1), "arrêté sous le bord nord")
 	assert_true(_player.is_input_enabled())
 	assert_eq(_boot.get_map().map_id, &"viridian_city")

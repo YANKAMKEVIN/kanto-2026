@@ -1,5 +1,5 @@
 {
- "_doc": "Manifeste de l'art valide (series 01 a 06). Lu par tools/art/preparer.py. Les sources sont dans build/art/ (non versionne, sur le Mac de Kevin). Tailles en cases de 96 px. 'ombre' : ombre portee pre-floutee <id>_shadow.png ; 'contact' : part basse de l'objet (0..1) pour <id>_contact.png, null = aucune.",
+ "_doc": "Manifeste de l'art valide (series 01 a 07 ; serie 07 = Jadielle agrandie). Lu par tools/art/preparer.py. Les sources sont dans build/art/ (non versionne, sur le Mac de Kevin). Tailles en cases de 96 px. 'ombre' : ombre portee pre-floutee <id>_shadow.png ; 'contact' : part basse de l'objet (0..1) pour <id>_contact.png, null = aucune.",
  "case": 96,
  "ombre_portee": {
   "flou": 7.0,
@@ -173,6 +173,60 @@
    "sortie": "assets/world/relief/relief_escalier_01.png",
    "axe": "w",
    "cases": 2.2,
+   "ombre": false,
+   "contact": null
+  },
+  {
+   "id": "relief_muret_01",
+   "source": "WORLD_RELIEF_MURET_01_NE_r1.png",
+   "sortie": "assets/world/relief/relief_muret_01.png",
+   "axe": "w",
+   "cases": 4,
+   "ombre": false,
+   "contact": null
+  },
+  {
+   "id": "relief_escalier_ville_01",
+   "source": "WORLD_RELIEF_ESCALIER_VILLE_01_NE_r1.png",
+   "sortie": "assets/world/relief/relief_escalier_ville_01.png",
+   "axe": "w",
+   "cases": 4.5,
+   "ombre": false,
+   "contact": null
+  },
+  {
+   "id": "prop_potager_01",
+   "source": "WORLD_PROP_POTAGER_01_NE_r1.png",
+   "sortie": "assets/world/props/prop_potager_01.png",
+   "axe": "w",
+   "cases": 3,
+   "ombre": false,
+   "contact": 0.25
+  },
+  {
+   "id": "prop_platebande_01",
+   "source": "WORLD_PROP_PLATEBANDE_01_NE_r1.png",
+   "sortie": "assets/world/props/prop_platebande_01.png",
+   "axe": "w",
+   "cases": 3,
+   "ombre": false,
+   "contact": 0.25
+  },
+  {
+   "id": "prop_cloture_v_01",
+   "source": "WORLD_PROP_CLOTURE_V_01_NE_r1.png",
+   "sortie": "assets/world/props/prop_cloture_v_01.png",
+   "axe": "h",
+   "cases": 4,
+   "ombre": false,
+   "contact": null
+  },
+  {
+   "id": "prop_haie_v_01",
+   "source": "WORLD_PROP_HAIE_V_01_NE_r1.png",
+   "sortie": "assets/world/props/prop_haie_v_01.png",
+   "axe": "h",
+   "cases": 4.3,
    "ombre": false,
    "contact": null
   },

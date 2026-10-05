@@ -499,6 +499,72 @@
     185
    ]
   },
+  "relief_muret_01": {
+   "fichier": "res://assets/world/relief/relief_muret_01.png",
+   "taille": [
+    384,
+    94
+   ]
+  },
+  "relief_escalier_ville_01": {
+   "fichier": "res://assets/world/relief/relief_escalier_ville_01.png",
+   "taille": [
+    432,
+    258
+   ]
+  },
+  "prop_potager_01": {
+   "fichier": "res://assets/world/props/prop_potager_01.png",
+   "taille": [
+    288,
+    148
+   ],
+   "contact": {
+    "fichier": "res://assets/world/props/prop_potager_01_contact.png",
+    "decalage": [
+     -152,
+     -19
+    ],
+    "echelle": 2,
+    "taille": [
+     152,
+     29
+    ]
+   }
+  },
+  "prop_platebande_01": {
+   "fichier": "res://assets/world/props/prop_platebande_01.png",
+   "taille": [
+    288,
+    79
+   ],
+   "contact": {
+    "fichier": "res://assets/world/props/prop_platebande_01_contact.png",
+    "decalage": [
+     -152,
+     -2
+    ],
+    "echelle": 2,
+    "taille": [
+     152,
+     20
+    ]
+   }
+  },
+  "prop_cloture_v_01": {
+   "fichier": "res://assets/world/props/prop_cloture_v_01.png",
+   "taille": [
+    37,
+    384
+   ]
+  },
+  "prop_haie_v_01": {
+   "fichier": "res://assets/world/props/prop_haie_v_01.png",
+   "taille": [
+    117,
+    413
+   ]
+  },
   "int_centre_comptoir": {
    "fichier": "res://assets/world/interiors/int_centre_comptoir.png",
    "taille": [

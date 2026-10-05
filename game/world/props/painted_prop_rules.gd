@@ -60,6 +60,18 @@ const RULES: Dictionary[StringName, Dictionary] = {
 	&"relief_falaise_01": {"width": 4, "depth": 1, "layer": LAYER_GROUND},
 	&"relief_escalier_01": {"traversable": true, "layer": LAYER_GROUND,
 		"align": ALIGN_CENTRE},
+	# Série 07 (Jadielle agrandie). Murs de soutènement des terrasses et escaliers de ville :
+	# relief de la couche du sol, sans emprise (la carte bloque la rangée du mur dans
+	# `blocked_cells`, piliers compris ; les tronçons se chevauchent librement).
+	&"relief_muret_01": {"traversable": true, "layer": LAYER_GROUND},
+	&"relief_escalier_ville_01": {"traversable": true, "layer": LAYER_GROUND,
+		"align": ALIGN_CENTRE},
+	# Jardins : potager et plate-bande (3 cases, rangée du pied), clôture et haie qui courent
+	# du nord au sud (4 cases au-dessus du pied, sur la colonne d'ancrage).
+	&"prop_potager_01": {"width": 3, "depth": 1},
+	&"prop_platebande_01": {"width": 3, "depth": 1},
+	&"prop_cloture_v_01": {"width": 1, "depth": 4},
+	&"prop_haie_v_01": {"width": 1, "depth": 4},
 	&"int_centre_comptoir": {"width": 5, "depth": 1},
 	&"int_centre_terminal": {"width": 2, "depth": 1},
 	&"int_centre_banquette": {"width": 2, "depth": 1},

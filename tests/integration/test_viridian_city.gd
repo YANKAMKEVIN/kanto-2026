@@ -6,14 +6,14 @@ extends GutTest
 ## vers le nord, présence des habitants selon l'arrivée.
 
 const MAP_PATH := "res://game/world/maps/viridian_city.tscn"
-const SIZE := Vector2i(40, 28)
-const SOUTH := [Vector2i(21, 27), Vector2i(22, 27), Vector2i(23, 27)]
-const NORTH := [Vector2i(21, 1), Vector2i(22, 1), Vector2i(23, 1)]
-const WEST := [Vector2i(0, 16), Vector2i(0, 17)]
-const CENTER_DOORS := [Vector2i(15, 20), Vector2i(16, 20)]
-const MART_DOORS := [Vector2i(29, 20), Vector2i(30, 20)]
-const GYM_DOOR := [Vector2i(5, 15), Vector2i(6, 15)]
-const ARRIVAL_CELLS := [Vector2i(21, 25), Vector2i(22, 25), Vector2i(23, 25)]
+const SIZE := Vector2i(56, 40)
+const SOUTH := [Vector2i(27, 39), Vector2i(28, 39), Vector2i(29, 39)]
+const NORTH := [Vector2i(27, 1), Vector2i(28, 1), Vector2i(29, 1)]
+const WEST := [Vector2i(0, 22), Vector2i(0, 23)]
+const CENTER_DOORS := [Vector2i(21, 21), Vector2i(22, 21)]
+const MART_DOORS := [Vector2i(35, 21), Vector2i(36, 21)]
+const GYM_DOOR := [Vector2i(9, 9), Vector2i(10, 9)]
+const ARRIVAL_CELLS := [Vector2i(27, 23), Vector2i(28, 23), Vector2i(29, 23)]
 
 var _map: GameMap
 var _grid: GridWorld
@@ -66,9 +66,9 @@ func test_metadata_and_painted_ground() -> void:
 
 
 func test_landmarks_are_painted_props() -> void:
-	for spec: Array in [["PokemonCenter", Vector2i(16, 20)], ["PokeMart", Vector2i(30, 20)],
-			["Gym", Vector2i(6, 15)], ["CentralTree", Vector2i(23, 19)],
-			["NorthGate", Vector2i(22, 2)]]:
+	for spec: Array in [["PokemonCenter", Vector2i(22, 21)], ["PokeMart", Vector2i(36, 21)],
+			["Gym", Vector2i(10, 9)], ["CentralTree", Vector2i(29, 20)],
+			["NorthGate", Vector2i(28, 2)]]:
 		var prop := _map.get_entities().get_node_or_null(NodePath(spec[0])) as WorldProp
 		assert_not_null(prop, spec[0])
 		if prop != null:
@@ -82,8 +82,8 @@ func test_landmarks_are_painted_props() -> void:
 func test_south_entrance_links_both_ways_with_route_1() -> void:
 	var route := _load_map(&"route_1")
 	add_child(route)
-	var expected := {Vector2i(21, 27): &"from_viridian_w", Vector2i(22, 27): &"from_viridian_w",
-		Vector2i(23, 27): &"from_viridian_e"}
+	var expected := {Vector2i(27, 39): &"from_viridian_w", Vector2i(28, 39): &"from_viridian_w",
+		Vector2i(29, 39): &"from_viridian_e"}
 	for cell: Vector2i in SOUTH:
 		var warp := _map.get_warps().find_on_push(cell, Vector2i.DOWN)
 		assert_not_null(warp, "sortie sud %s" % cell)
@@ -167,13 +167,13 @@ func test_north_exit_is_route_2_coming_soon() -> void:
 
 
 func test_a_path_links_the_three_entrances_and_the_doors() -> void:
-	var reach := _terrain.find_reachable(Vector2i(22, 27))
+	var reach := _terrain.find_reachable(SOUTH[1])
 	for cell: Vector2i in SOUTH + NORTH + WEST + CENTER_DOORS + MART_DOORS:
 		assert_true(reach.has(cell), "atteignable depuis l'entrée sud : %s" % cell)
 	for cell: Vector2i in GYM_DOOR:
 		assert_true(reach.has(cell + Vector2i.DOWN), "devant la porte de l'Arène %s" % cell)
 	# Avec les habitants à leur place de départ, rien n'est bloqué non plus.
-	var crowded := _grid.find_reachable(Vector2i(22, 27))
+	var crowded := _grid.find_reachable(SOUTH[1])
 	for cell: Vector2i in NORTH + WEST + CENTER_DOORS + MART_DOORS:
 		assert_true(crowded.has(cell), "habitants : passage libre vers %s" % cell)
 
@@ -194,23 +194,59 @@ func test_the_gym_door_answers_and_is_locked() -> void:
 	assert_eq(pages[0].text, "La porte est verrouillée.")
 
 
-## Micro-scène d'arrivée : déclencheur deux cases après l'entrée, seul passage vers le nord.
+## Micro-scène d'arrivée (Jadielle agrandie) : le premier pas sur la place, en haut du grand
+## escalier sud, seul passage vers le nord ; la Boutique (et son Roucool) dans le champ.
 func test_arrival_trigger_is_the_only_way_north() -> void:
 	var cells: Array[Vector2i] = []
 	for trigger: EventTrigger in _map.get_triggers().get_all():
 		if trigger.cutscene_id == &"viridian_arrival":
 			cells.append(trigger.cell)
-	assert_eq(cells.size(), ARRIVAL_CELLS.size(), "trois cases, la largeur de la rue")
+	assert_eq(cells.size(), ARRIVAL_CELLS.size(), "trois cases, la largeur de l'escalier")
 	for cell: Vector2i in ARRIVAL_CELLS:
 		assert_true(cells.has(cell), "déclencheur en %s" % cell)
-		assert_eq(cell.y, _map.get_spawn_cell(&"from_route_1_w").y - 2, "2 cases après l'entrée")
+		assert_false(_terrain.is_solid(cell + Vector2i.DOWN), "en haut des marches %s" % cell)
+		# ≈ 11 cases de haut à l'écran, caméra aux pieds : 5 rangées visibles au-dessus.
+		assert_lte(cell.y - MART_DOORS[0].y, 2, "la façade de la Boutique est dans le champ")
 	var blocked := GridWorld.new(SIZE)
 	for y: int in SIZE.y:
 		for x: int in SIZE.x:
 			if _terrain.is_solid(Vector2i(x, y)) or ARRIVAL_CELLS.has(Vector2i(x, y)):
 				blocked.set_solid(Vector2i(x, y))
-	var reach := blocked.find_reachable(Vector2i(22, 27))
-	assert_false(reach.has(Vector2i(22, 22)), "impossible de contourner le déclencheur")
+	var reach := blocked.find_reachable(SOUTH[1])
+	assert_false(reach.has(MART_DOORS[0]), "impossible de contourner le déclencheur")
+	assert_false(reach.has(WEST[0]), "ni par l'ouest")
+
+
+## Trois niveaux (référence `jadielle-vue-generale-v1`) : les murs de soutènement ne se
+## franchissent que par les escaliers ; la falaise du sud seulement par le chemin.
+func test_terraces_are_crossed_only_by_the_stairs() -> void:
+	for row: int in [12, 24]:
+		var open: Array[int] = []
+		for x: int in SIZE.x:
+			if not _terrain.is_solid(Vector2i(x, row)):
+				open.append(x)
+		var expected: Array = [9, 10, 11, 27, 28, 29] if row == 12 else [27, 28, 29]
+		assert_eq(Array(open), expected, "mur de la rangée %d : seulement les escaliers" % row)
+	var cliff: Array[int] = []
+	for x: int in SIZE.x:
+		if not _terrain.is_solid(Vector2i(x, 34)):
+			cliff.append(x)
+	assert_eq(Array(cliff), [27, 28, 29], "falaise : le chemin de la Route 1")
+	var decals := _map.get_node(^"GroundDecals")
+	for stair: String in ["StairGym", "StairNorth", "StairSouth"]:
+		assert_not_null(decals.get_node_or_null(NodePath(stair)), stair)
+	# La place est au centre : l'arbre est entre le Centre (ouest) et la Boutique (est).
+	var tree := _map.get_entities().get_node(^"CentralTree") as Node2D
+	var center := _map.get_entities().get_node(^"PokemonCenter") as Node2D
+	var mart := _map.get_entities().get_node(^"PokeMart") as Node2D
+	assert_between(tree.position.x, center.position.x, mart.position.x)
+	assert_between(tree.position.y / Grid.TILE_SIZE, SIZE.y * 0.4, SIZE.y * 0.6, "au centre")
+
+
+## Aucun habitant figé (Kevin, T5) : chacun marche, ou regarde autour de lui.
+func test_no_inhabitant_stands_frozen() -> void:
+	for spec: NpcSpec in _roster.get_all():
+		assert_true(spec.has_route() or spec.has_look(), "%s vit (route ou look)" % spec.id)
 
 
 func test_npcs_stand_on_free_cells_and_routines_are_possible() -> void:

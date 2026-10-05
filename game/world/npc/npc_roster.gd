@@ -23,6 +23,9 @@ extends RefCounted
 ## vérifiée contre PokemonData par les tests des données réelles),
 ## idle_react (secondes > 0 : petite animation d'ambiance périodique, jalon 7 : le Roucool de
 ## la Dresseuse ; interdit sur un Pokémon « shy »),
+## look ({ "facings": ["up", "left", …], "every": 3.5 } : attente animée, jalon 7 — il se
+## tourne tour à tour vers chaque orientation ; « every » facultatif, dans [0,5 ; 120] ;
+## interdit avec « route »),
 ## route (routine de marche, jalon 5, étendue au jalon 7 :
 ## { "cells": [[x, y], …], "pause": 1.2, "start": 1, "enter": { "cell": [x, y], "seconds": 8 } },
 ## voir [method _read_route]).
@@ -38,8 +41,10 @@ const PLAYER_ID: StringName = &"player"
 ## Clés d'une entrée (aussi celles de l'étape « spawn » des scènes, sans if / unless).
 const KEYS: Array[String] = [
 	"cell", "facing", "sprite", "dialogue", "verb", "turn_to_player", "keep_facing", "lift",
-	"hop_style", "shy", "route", "if", "unless", "species", "idle_react",
+	"hop_style", "shy", "route", "if", "unless", "species", "idle_react", "look",
 ]
+## Clés d'une attente animée « look » ([method _read_look]).
+const LOOK_KEYS: Array[String] = ["facings", "every"]
 ## Clés d'une routine « route » ([method _read_route]).
 const ROUTE_KEYS: Array[String] = ["cells", "pause", "start", "enter"]
 const _ENTER_KEYS: Array[String] = ["cell", "seconds"]
@@ -204,6 +209,8 @@ static func parse_entry(value: Variant, errors: PackedStringArray) -> NpcSpec:
 			errors.append("« idle_react » interdit sur un Pokémon « shy »")
 		else:
 			spec.idle_react_every = float(every)
+	if entry.has("look"):
+		_read_look(entry["look"], spec, errors)
 	if entry.has("species"):
 		if not entry["species"] is String or (entry["species"] as String).is_empty():
 			errors.append("« species » doit être un identifiant d'espèce")
@@ -212,6 +219,43 @@ static func parse_entry(value: Variant, errors: PackedStringArray) -> NpcSpec:
 		else:
 			spec.species = StringName(entry["species"])
 	return spec if errors.size() == count else null
+
+
+## Lit l'attente animée « look » : { "facings": [noms de directions, au moins deux],
+## "every": secondes } (« every » facultatif : [constant NpcSpec.LOOK_EVERY_DEFAULT]).
+## Refusée avec une routine de marche.
+static func _read_look(value: Variant, spec: NpcSpec, errors: PackedStringArray) -> void:
+	if not value is Dictionary:
+		errors.append("« look » doit être { \"facings\": [...], \"every\": secondes }")
+		return
+	var look: Dictionary = value
+	for key: Variant in look:
+		if not LOOK_KEYS.has(str(key)):
+			errors.append("« look » : clé inconnue « %s »" % key)
+	var names: Variant = look.get("facings")
+	if not names is Array or (names as Array).size() < 2:
+		errors.append("« look.facings » : au moins deux orientations")
+		return
+	var facings: Array[Vector2i] = []
+	for direction: Variant in names:
+		if not direction is String or not Grid.is_direction_name(direction):
+			errors.append("« look.facings » : down, up, left ou right")
+			return
+		facings.append(Grid.direction_from_name(direction))
+	var every := NpcSpec.LOOK_EVERY_DEFAULT
+	if look.has("every"):
+		var raw: Variant = look["every"]
+		if not (raw is float or raw is int) or float(raw) < NpcSpec.LOOK_EVERY_MIN \
+				or float(raw) > NpcSpec.LOOK_EVERY_MAX:
+			errors.append("« look.every » : secondes dans [%s, %s]"
+				% [NpcSpec.LOOK_EVERY_MIN, NpcSpec.LOOK_EVERY_MAX])
+			return
+		every = float(raw)
+	if spec.has_route():
+		errors.append("« look » interdit avec « route » (la marche le fait déjà vivre)")
+		return
+	spec.look_facings = facings
+	spec.look_every = every
 
 
 ## Lit la réaction d'ambiance « shy » : { "action": "fly" | "flee", "radius": 1..4 }.

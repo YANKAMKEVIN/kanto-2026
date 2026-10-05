@@ -1,0 +1,27 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://game/world/props/prop.gd" id="1_rt4j1"]
+[ext_resource type="Material" path="res://game/world/lighting/materials/world_object.tres" id="2_835c7"]
+[ext_resource type="Texture2D" path="res://assets/world/props/prop_platebande_01.png" id="3_axfys"]
+[ext_resource type="Material" path="res://game/world/lighting/materials/contact_shadow.tres" id="4_16vqq"]
+[ext_resource type="Texture2D" path="res://assets/world/props/prop_platebande_01_contact.png" id="5_fuela"]
+
+[node name="PropPlatebande01" type="Node2D" unique_id=1332851490]
+script = ExtResource("1_rt4j1")
+footprint = Array[Vector2i]([Vector2i(-1, 0), Vector2i(0, 0), Vector2i(1, 0)])
+
+[node name="Sprite" type="Sprite2D" parent="." unique_id=967574578]
+unique_name_in_owner = true
+material = ExtResource("2_835c7")
+texture = ExtResource("3_axfys")
+centered = false
+offset = Vector2(-144, -79)
+
+[node name="ContactShadow" type="Sprite2D" parent="." unique_id=1950297762 groups=["contact_shadows"]]
+z_index = -2
+z_as_relative = false
+material = ExtResource("4_16vqq")
+scale = Vector2(2, 2)
+texture = ExtResource("5_fuela")
+centered = false
+offset = Vector2(-76, -1)

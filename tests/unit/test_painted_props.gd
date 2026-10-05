@@ -7,9 +7,12 @@ const CATALOGUE := "res://assets/world/catalogue.json"
 const MANIFEST := "res://tools/art/manifeste.json"
 const SCENES := "res://game/world/props/painted/"
 ## Les seuls objets peints qu'on traverse (jalon-07.md §6.6).
-const TRAVERSABLE: Array[StringName] = [&"relief_escalier_01", &"ground_hautes_herbes_01"]
+## Série 07 : murs de soutènement et escaliers de ville (la carte bloque la rangée du mur).
+const TRAVERSABLE: Array[StringName] = [&"relief_escalier_01", &"ground_hautes_herbes_01",
+	&"relief_muret_01", &"relief_escalier_ville_01"]
 const GROUND_LAYER: Array[StringName] = [
-	&"relief_falaise_01", &"relief_escalier_01", &"prop_massif_01",
+	&"relief_falaise_01", &"relief_escalier_01", &"prop_massif_01", &"relief_muret_01",
+	&"relief_escalier_ville_01",
 ]
 
 var _objects: Dictionary = {}
