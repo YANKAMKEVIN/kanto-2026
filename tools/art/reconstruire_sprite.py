@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
-"""Reconstruit un sprite de combat (pixel art) en petite illustration Kanto 2026, sans IA.
+"""EXPÉRIENCE REJETÉE pour la production (2026-10-05, voir docs/design/fiches-assets/serie-combat-dos-pilote.md) :
+reconstruit un sprite de combat (pixel art) en petite illustration Kanto 2026, sans IA.
 
 Image par image (l'animation est conservée) :
 1. les traits (pixels sombres : contour, œil, bouche, séparations) sont séparés des masses ;
