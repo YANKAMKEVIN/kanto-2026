@@ -6,17 +6,19 @@ extends Node
 ## [b]dans le `moved`[/b] (le pas suivant ne part pas, doigt maintenu ou en courant), marque
 ## le sauvage « vu » au Pokédex, joue le froissement d'herbe, puis lance la séquence de combat
 ## par le [BattleDirector] (`run_request`) et rend le contrôle à la fin. Sur une défaite
-## ([constant Battle.Outcome.LOSS]), il soigne l'équipe et renvoie le joueur au point de soin
-## (§3.11) avant de rendre le contrôle. Le directeur ne lit aucun autoload : il reçoit
-## [GameState] et le routeur par [method setup].
+## ([constant Battle.Outcome.LOSS]), il attend le réveil au point de repos ([DefeatRecovery],
+## jalon-07.md §3.3.2 : soin, dernier Centre utilisé sinon la maison, mot du lieu) avant de
+## rendre le contrôle. Le directeur ne lit aucun autoload : il reçoit [GameState] et le routeur
+## par [method setup].
 
 ## Une rencontre commence (joueur bloqué, transition lancée).
 signal encounter_started(species_id: StringName, level: int)
 ## Une rencontre se termine (contrôle rendu). [param outcome] : [enum Battle.Outcome].
 signal encounter_finished(outcome: int)
-## Défaite : le joueur vient de se réveiller au point de soin, équipe soignée, juste avant le
-## mot de Maman (décision de Kevin du 2026-10-02 : la défaite est un fait accompli, Boot écrit
-## la sauvegarde à cet instant).
+## Défaite : le joueur vient de se réveiller au point de repos, équipe soignée, juste avant le
+## mot du lieu (relais de [signal DefeatRecovery.woke_up] pendant une rencontre ; décision de
+## Kevin du 2026-10-02 : la défaite est un fait accompli). Boot écoute le [DefeatRecovery]
+## lui-même ; ce relais sert aux tests et aux outils.
 signal woke_up_after_defeat
 ## Point d'accroche du cri du sauvage (sans son au jalon 5, Q14) : émis à l'apparition.
 signal cry_requested(species_id: StringName)
@@ -24,9 +26,6 @@ signal cry_requested(species_id: StringName)
 ## Raison de blocage du joueur, de la rencontre jusqu'à la sortie du combat.
 const REASON: StringName = &"encounter"
 const _GRASS_TERRAIN: StringName = &"grass"
-## Dialogue automatique de Maman au réveil après une défaite (dossier 07 §11). Deux variantes
-## selon le drapeau [constant _BLACKED_OUT_FLAG] (première défaite / suivantes).
-const _WAKEUP_DIALOGUE: StringName = &"mom_wakeup"
 
 ## Faux : aucun tirage (outils de capture, tests d'autres systèmes).
 var enabled: bool = true
@@ -38,7 +37,7 @@ var _player: Player
 var _battles: BattleDirector
 var _router: Node
 var _cutscenes: CutsceneDirector
-var _runner: DialogueRunner
+var _recovery: DefeatRecovery
 var _map: GameMap
 var _running: bool = false
 ## Pas d'herbe consécutifs sans rencontre (tirés, donc hors gardes), remis à zéro à chaque
@@ -50,10 +49,11 @@ var _quiet_steps: int = 0
 
 ## Branche le directeur. [param state] : l'autoload GameState en jeu, une instance neuve de
 ## game_state.gd en test. [param router] : SceneRouter en jeu, une instance en test.
-## [param runner] : lecteur de dialogues, pour le mot de Maman après une défaite (§3.11).
+## [param recovery] : le réveil après une défaite (jalon-07.md §3.3.2) ; null (tests purs) :
+## soin et retour au point de repos de l'état, tourné vers le haut, sans mot du lieu.
 func setup(library: EncounterLibrary, data: PokemonData, state: Node, player: Player,
 		battles: BattleDirector, router: Node, cutscenes: CutsceneDirector,
-		runner: DialogueRunner = null) -> void:
+		recovery: DefeatRecovery = null) -> void:
 	_library = library
 	_data = data
 	_state = state
@@ -61,7 +61,11 @@ func setup(library: EncounterLibrary, data: PokemonData, state: Node, player: Pl
 	_battles = battles
 	_router = router
 	_cutscenes = cutscenes
-	_runner = runner
+	if _recovery != null and _recovery.woke_up.is_connected(_on_recovery_woke_up):
+		_recovery.woke_up.disconnect(_on_recovery_woke_up)
+	_recovery = recovery
+	if _recovery != null:
+		_recovery.woke_up.connect(_on_recovery_woke_up)
 	if is_instance_valid(_player) and not _player.moved.is_connected(_on_player_moved):
 		_player.moved.connect(_on_player_moved)
 
@@ -166,19 +170,19 @@ func _run(encounter: WildEncounter, origin: Vector2i) -> void:
 	if _battles != null:
 		outcome = await _battles.run_request(request, _map)
 	if outcome == Battle.Outcome.LOSS:
-		await _handle_defeat()
+		if _recovery != null:
+			await _recovery.recover()
+		else:
+			await _handle_defeat()
 	if is_instance_valid(_player):
 		_player.set_input_enabled(true, REASON)
 	_running = false
 	encounter_finished.emit(outcome)
 
 
-## Défaite sauvage (jalon 5 §3.11) : l'équipe est soignée, puis le joueur se réveille au point
-## de soin ([member GameState.heal_map] / [member GameState.heal_spawn], tourné vers le haut —
-## vers Maman). Le fondu du routeur tient lieu de l'« écran très bref » (dossier 05 §23) ; le
-## verrou du joueur est tenu tout du long (REASON) et rendu par l'appelant. Une fois sur place
-## (équipe soignée), Maman dit son mot automatiquement (dossier 07 §11) : la variante dépend du
-## drapeau « a déjà fait un K.O. général », levé par le dialogue lui-même la première fois.
+## Défaite sans [DefeatRecovery] (tests purs) : soin, retour au point de repos de l'état, tourné
+## vers le haut, sans mot du lieu. Le verrou du joueur est tenu tout du long (REASON) et rendu
+## par l'appelant.
 func _handle_defeat() -> void:
 	if _state == null:
 		return
@@ -188,16 +192,12 @@ func _handle_defeat() -> void:
 	if _router != null and _router.has_method(&"change_map"):
 		await _router.change_map(_state.heal_map, _state.heal_spawn, Vector2i.UP)
 	woke_up_after_defeat.emit()
-	_play_wakeup_dialogue()
 
 
-## Mot de Maman au réveil : joué par le [DialogueRunner] sur la carte du point de soin. On ne
-## l'attend pas : la rencontre se termine, mais le dialogue pose son propre verrou sur le joueur
-## (DialogueRunner.REASON) et ne le rendra qu'à sa dernière page (le joueur reprend alors la
-## main). Sans lecteur (tests purs), rien n'est joué. Sa variante dépend du drapeau déjà lu.
-func _play_wakeup_dialogue() -> void:
-	if _runner != null:
-		_runner.play(_WAKEUP_DIALOGUE, null, _map)
+## Relais du réveil, seulement pendant une rencontre de ce directeur.
+func _on_recovery_woke_up(_map_id: StringName) -> void:
+	if _running:
+		woke_up_after_defeat.emit()
 
 
 ## Le joueur se tourne vers l'herbe qui bouge, elle s'agite, le cri s'accroche (sans son).

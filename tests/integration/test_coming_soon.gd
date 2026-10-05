@@ -41,7 +41,11 @@ func after_each() -> void:
 		Input.action_release(action)
 
 
-
+## Boot sur la place nord de Jadielle, sous l'arche (une case sous le bord), tourné vers le nord.
+func _start_at_the_north_gate(spawn: StringName = &"route_2_soon_w") -> void:
+	_boot = BOOT_SCENE.instantiate() as Boot
+	_boot.save_system = _save
+	_boot.start_map = &"viridian_city"
 	_boot.start_spawn = spawn
 	_boot.start_facing = Vector2i.UP
 	add_child_autofree(_boot)

@@ -1,0 +1,11 @@
+{
+	"nurse": {
+		"cell": [7, 3], "facing": "down", "sprite": "nurse"
+	},
+	"center_lass": {
+		"cell": [10, 6], "facing": "left", "sprite": "lass", "dialogue": "center_lass"
+	},
+	"center_lass_pidgey": {
+		"cell": [9, 6], "facing": "right", "sprite": "pokemon/pidgey", "idle_react": 6.0
+	}
+}

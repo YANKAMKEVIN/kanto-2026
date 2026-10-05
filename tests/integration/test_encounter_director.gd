@@ -6,6 +6,8 @@ extends GutTest
 ## requête (espèce, niveau, case d'origine), marque le sauvage « vu » au Pokédex, puis rend le
 ## contrôle et émet `encounter_finished`. Aucun tirage hors herbe, sans table, pendant une
 ## transition, un combat, un pas non libre (scène / dialogue), ni sans Pokémon valide.
+## Jalon 7 (T8) : une défaite passe par le [DefeatRecovery] (soin, réveil au dernier Centre
+## enregistré sinon à la maison, mot du lieu lu dans data/world/rest_points.json).
 
 const PLAYER_SCENE := "res://game/player/player.tscn"
 const ScriptedRng := preload("res://tests/helpers/scripted_rng.gd")
@@ -45,9 +47,15 @@ class FakeBattleDirector extends BattleDirector:
 
 class FakeRouter extends Node:
 	var transitioning: bool = false
+	## Changements de carte demandés : [carte, point d'apparition, orientation].
+	var changes: Array[Array] = []
 
 	func is_transitioning() -> bool:
 		return transitioning
+
+	func change_map(map_id: StringName, spawn: StringName, facing: Vector2i) -> void:
+		changes.append([map_id, spawn, facing])
+		await get_tree().process_frame
 
 
 var _data: PokemonData
@@ -374,3 +382,79 @@ func _one_step(dir: Vector2i, goal: Vector2i) -> void:
 	await wait_until(func() -> bool:
 		return _player.get_cell() == goal and not _player.is_moving(), 3.0)
 	await wait_process_frames(2)
+
+
+# --- Défaite : réveil au point de repos (jalon 7 T8) ------------------------------------------
+
+## Directeur branché sur un vrai [DefeatRecovery] (vrais points de repos, vrai lecteur de
+## dialogues sans boîte) ; le combat factice est perdu.
+func _use_recovery() -> DialogueRunner:
+	var library := DialogueLibrary.new()
+	library.load_dir()
+	var runner := DialogueRunner.new()
+	add_child_autofree(runner)
+	runner.setup(library, _state.flags, null, _player)
+	var points := RestPointLibrary.new()
+	points.load_file()
+	var recovery := DefeatRecovery.new()
+	add_child_autofree(recovery)
+	recovery.setup(_state, points, _router, runner)
+	recovery.set_map(_map)
+	_director.setup(_library, _data, _state, _player, _fake, _router, null, recovery)
+	_fake.outcome = Battle.Outcome.LOSS
+	_fake.frames_to_run = 2
+	_state.party.get_lead().hp = 0
+	return runner
+
+
+func _lose_once() -> Array[int]:
+	var woke: Array[int] = [0]
+	_director.woke_up_after_defeat.connect(func() -> void: woke[0] += 1)
+	_state.rng = ScriptedRng.new([1, 1, 1, 1, 1, 1, 1])
+	assert_true(_director.start_encounter(WildEncounter.new(&"rattata", 4, &"test_grass_table")))
+	await wait_until(func() -> bool: return not _director.is_running(), 3.0)
+	return woke
+
+
+func test_a_defeat_wakes_at_home_while_no_center_is_registered() -> void:
+	var runner := _use_recovery()
+	var woke := await _lose_once()
+	assert_eq(_router.changes, [[&"player_house_1f", &"heal", Vector2i.UP]] as Array[Array],
+		"la maison, face à Maman")
+	assert_eq(_state.party.get_lead().hp, _state.party.get_lead().max_hp(), "équipe soignée")
+	assert_eq(woke[0], 1, "réveil relayé une fois")
+	assert_eq(_finished, [Battle.Outcome.LOSS] as Array[int])
+	assert_eq(runner.get_dialogue_id(), &"mom_wakeup", "le mot de Maman")
+
+
+func test_a_defeat_wakes_at_the_last_registered_center() -> void:
+	var runner := _use_recovery()
+	var points := RestPointLibrary.new()
+	points.load_file()
+	assert_true(RestPointLibrary.register(_state, points.get_point(&"viridian_center")))
+	var woke := await _lose_once()
+	assert_eq(_router.changes, [[&"viridian_center", &"heal", Vector2i.UP]] as Array[Array],
+		"le Centre, face à l'infirmière")
+	assert_eq(_state.party.get_lead().hp, _state.party.get_lead().max_hp(), "équipe soignée")
+	assert_eq(woke[0], 1)
+	assert_eq(runner.get_dialogue_id(), &"nurse_wakeup", "le mot de l'infirmière")
+	assert_eq(_state.heal_map, &"viridian_center", "le point de repos ne change pas")
+
+
+func test_mom_heals_without_replacing_the_registered_center() -> void:
+	var points := RestPointLibrary.new()
+	points.load_file()
+	RestPointLibrary.register(_state, points.get_point(&"viridian_center"))
+	assert_false(RestPointLibrary.register(_state, points.get_point(&"player_house_1f")),
+		"Maman ne réenregistre pas la maison")
+	assert_eq(_state.heal_map, &"viridian_center")
+
+
+func test_without_recovery_a_defeat_still_heals_and_goes_home_silently() -> void:
+	_fake.outcome = Battle.Outcome.LOSS
+	_fake.frames_to_run = 2
+	_state.party.get_lead().hp = 0
+	var woke := await _lose_once()
+	assert_eq(_router.changes, [[&"player_house_1f", &"heal", Vector2i.UP]] as Array[Array])
+	assert_eq(_state.party.get_lead().hp, _state.party.get_lead().max_hp())
+	assert_eq(woke[0], 1)

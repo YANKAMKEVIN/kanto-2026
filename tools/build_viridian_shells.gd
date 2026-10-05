@@ -1,9 +1,9 @@
 extends SceneTree
-## **Provisoire (T4)** : construit des intérieurs **vides** pour le Centre Pokémon et la Boutique
-## de Jadielle (game/world/maps/viridian_center.tscn, viridian_mart.tscn), pour que les portes
-## de Jadielle mènent quelque part. Les intérieurs jouables (meubles, infirmière, marchand,
-## murs relus sur l'enveloppe) sont les tâches T8 (Centre) et T12 (Boutique) de
-## docs/tech/jalon-07.md, qui **remplacent** ces cartes (et retirent cet outil).
+## **Provisoire (T4)** : construit l'intérieur **vide** de la Boutique de Jadielle
+## (game/world/maps/viridian_mart.tscn), pour que sa porte mène quelque part. L'intérieur jouable
+## (meubles, marchand) est la tâche T12 de docs/tech/jalon-07.md, qui **remplace** cette carte
+## (dans tools/build_painted_interiors.gd) et retire cet outil. Le Centre (T8) est déjà construit
+## par tools/build_painted_interiors.gd.
 ##
 ##   godot --headless --path . -s res://tools/build_viridian_shells.gd
 ##
@@ -23,8 +23,6 @@ const ENTRANCE := Vector2i(7, 8)
 ## [identifiant de carte, nom du nœud, enveloppe, spawn de retour dans Jadielle]. Titre de
 ## carte = nom de la ville (règle des intérieurs, test_zone_names_match_the_map_titles).
 const SHELLS: Array = [
-	[&"viridian_center", "ViridianCenter",
-		"res://assets/world/interiors/int_centre_coque.png", &"from_center"],
 	[&"viridian_mart", "ViridianMart",
 		"res://assets/world/interiors/int_boutique_coque.png", &"from_mart"],
 ]
