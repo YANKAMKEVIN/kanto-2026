@@ -23,9 +23,10 @@ const BOX_SCENE := "res://game/ui/dialogue/dialogue_box.tscn"
 const DOSSIER := "res://docs/design/dossier-02-prologue.md"
 ## Route 1 (jalon 5) : ses textes définitifs viennent du dossier-07, pas du dossier-02.
 const DOSSIER_07 := "res://docs/design/dossier-07-route-1.md"
+const DOSSIER_09 := "res://docs/design/dossier-09-jadielle.md"
 const MAPS: Array[StringName] = [
 	&"player_house_2f", &"player_house_1f", &"rival_house", &"oak_lab", &"pallet_town",
-	&"route_1",
+	&"route_1", &"route_22",
 ]
 ## Seuls textes provisoires : le panneau « BOURG PALETTE » (Q8) et les textes d'observation
 ## des Pokémon des habitants (jalon 6 T16, à valider par Kevin).
@@ -44,7 +45,7 @@ const IDS: Array[StringName] = [
 	&"rival", &"rival_challenge", &"rival_challenge_wait", &"rival_kanto_map",
 	&"rival_lab_lost", &"rival_lab_waiting", &"rival_lab_won", &"rival_lab_won_leaving",
 	&"rival_starter_pick", &"rival_starter_smile", &"route1_grass_thought",
-	&"route_1_potion_found", &"route_1_traveler", &"sign_pallet_town",
+	&"route_1_potion_found", &"route_1_traveler", &"route_22_traveler", &"sign_pallet_town",
 ]
 ## Plus aucun drapeau futur au 4B : rival_battle_done est levé par la scène du combat
 ## (jalon-04.md §14.5, §14.8), quelle que soit l'issue.
@@ -405,11 +406,13 @@ func test_texts_are_the_dossier_02_texts_word_for_word() -> void:
 	assert_true(FileAccess.file_exists(DOSSIER_07), DOSSIER_07)
 	var dossier := FileAccess.get_file_as_string(DOSSIER)
 	var dossier_07 := FileAccess.get_file_as_string(DOSSIER_07)
+	var dossier_09 := FileAccess.get_file_as_string(DOSSIER_09)
 	for row: Array in _pages():
 		if _library.get_dialogue(row[0]).draft or (row[3] as DialogueVariant).draft:
 			continue
 		# Prologue : dossier 02 ; Route 1 (jalon 5) : dossier 07 (textes définitifs).
-		assert_true(dossier.contains(row[1]) or dossier_07.contains(row[1]),
+		assert_true(dossier.contains(row[1]) or dossier_07.contains(row[1])
+				or dossier_09.contains(row[1]),
 			"%s : « %s » dans un dossier de conception" % [row[0], row[1]])
 
 
