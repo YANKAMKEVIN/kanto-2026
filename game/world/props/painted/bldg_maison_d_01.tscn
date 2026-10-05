@@ -1,0 +1,39 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://game/world/props/prop.gd" id="1_armvu"]
+[ext_resource type="Material" path="res://game/world/lighting/materials/world_object.tres" id="2_v7tqd"]
+[ext_resource type="Texture2D" path="res://assets/world/buildings/bldg_maison_d_01.png" id="3_wyby1"]
+[ext_resource type="Material" path="res://game/world/lighting/materials/cast_shadow.tres" id="4_2b4wn"]
+[ext_resource type="Texture2D" path="res://assets/world/buildings/bldg_maison_d_01_shadow.png" id="5_nelqe"]
+[ext_resource type="Material" path="res://game/world/lighting/materials/contact_shadow.tres" id="6_dxkco"]
+[ext_resource type="Texture2D" path="res://assets/world/buildings/bldg_maison_d_01_contact.png" id="7_q8qgw"]
+
+[node name="BldgMaisonD01" type="Node2D" unique_id=1233481768]
+script = ExtResource("1_armvu")
+footprint = Array[Vector2i]([Vector2i(-2, -2), Vector2i(-1, -2), Vector2i(0, -2), Vector2i(1, -2), Vector2i(2, -2), Vector2i(-2, -1), Vector2i(-1, -1), Vector2i(0, -1), Vector2i(1, -1), Vector2i(2, -1), Vector2i(-2, 0), Vector2i(-1, 0), Vector2i(0, 0), Vector2i(1, 0), Vector2i(2, 0)])
+fade_when_covering = true
+
+[node name="Sprite" type="Sprite2D" parent="." unique_id=1172236337]
+unique_name_in_owner = true
+material = ExtResource("2_v7tqd")
+texture = ExtResource("3_wyby1")
+centered = false
+offset = Vector2(-264, -526)
+
+[node name="CastShadow" type="Sprite2D" parent="." unique_id=2092907584 groups=["cast_shadows"]]
+z_index = -2
+z_as_relative = false
+material = ExtResource("4_2b4wn")
+scale = Vector2(2, 2)
+texture = ExtResource("5_nelqe")
+centered = false
+offset = Vector2(-144.5, -2)
+
+[node name="ContactShadow" type="Sprite2D" parent="." unique_id=1045602619 groups=["contact_shadows"]]
+z_index = -2
+z_as_relative = false
+material = ExtResource("6_dxkco")
+scale = Vector2(2, 2)
+texture = ExtResource("7_q8qgw")
+centered = false
+offset = Vector2(-136, -22.5)

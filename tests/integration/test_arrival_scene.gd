@@ -1,6 +1,7 @@
 extends GutTest
 ## Micro-scène d'arrivée à Jadielle (jalon 7 T4, dossier 09 §2, plan §13) avec le vrai Boot et
-## le départ de débogage `viridian` (entrée sud de Jadielle) : deux pas vers le nord, la scène
+## le départ de débogage `viridian` (entrée sud de Jadielle) : on monte jusqu'au premier pas sur la
+## place (haut du grand escalier sud, Jadielle agrandie) ; la scène
 ## se joue **une seule fois**, en **4 s au plus** de bout en bout, **sans dialogue** ; les
 ## contrôles reviennent ; le Roucool du toit de la Boutique est parti pour la visite et revient
 ## au changement de carte ; l'objectif « rejoindre Jadielle » disparaît.
@@ -80,7 +81,7 @@ func test_debug_start_lands_at_the_south_entrance() -> void:
 	await _start()
 	var map := _boot.get_map()
 	assert_eq(map.map_id, &"viridian_city")
-	assert_eq(_player.get_cell(), Vector2i(22, 27))
+	assert_eq(_player.get_cell(), Vector2i(28, 35))
 	assert_eq(_player.get_facing(), Vector2i.UP)
 	assert_not_null(map.get_npc(&"arrival_kid"), "l'enfant attend la scène")
 	assert_not_null(map.get_npc(&"viridian_roof_pidgey"), "le Roucool est sur le toit")
@@ -95,7 +96,7 @@ func test_the_arrival_plays_once_in_four_seconds_without_dialogue() -> void:
 	var map := _boot.get_map()
 	await _walk_in_and_watch()
 	assert_eq(_plays, 1, "la scène s'est jouée")
-	assert_eq(_player.get_cell(), Vector2i(22, 25), "deux cases après l'entrée")
+	assert_eq(_player.get_cell(), Vector2i(28, 23), "premier pas sur la place (haut de l'escalier)")
 	var seconds := (_finished_ms - _started_ms) / 1000.0
 	gut.p("micro-scène d'arrivée : %.2f s" % seconds)
 	assert_between(seconds, 0.5, MAX_SECONDS, "4 s au plus de bout en bout")
@@ -107,14 +108,14 @@ func test_the_arrival_plays_once_in_four_seconds_without_dialogue() -> void:
 	assert_null(map.get_npc(&"viridian_roof_pidgey"), "le Roucool s'est envolé")
 	assert_null(map.get_npc(&"arrival_traveler"), "le voyageur a continué vers le sud")
 	assert_not_null(map.get_npc(&"arrival_kid"), "l'enfant reste pour la visite")
-	assert_eq(map.get_npc(&"arrival_rattata").get_cell(), Vector2i(27, 23))
+	assert_eq(map.get_npc(&"arrival_rattata").get_cell(), Vector2i(30, 22))
 	# Revenir sur le déclencheur ne rejoue rien.
 	Input.action_press(&"move_down")
-	await wait_until(func() -> bool: return _player.get_cell() == Vector2i(22, 26), TIMEOUT)
+	await wait_until(func() -> bool: return _player.get_cell() == Vector2i(28, 24), TIMEOUT)
 	Input.action_release(&"move_down")
 	await wait_until(func() -> bool: return not _player.is_moving(), TIMEOUT)
 	Input.action_press(&"move_up")
-	await wait_until(func() -> bool: return _player.get_cell() == Vector2i(22, 24), TIMEOUT)
+	await wait_until(func() -> bool: return _player.get_cell() == Vector2i(28, 22), TIMEOUT)
 	Input.action_release(&"move_up")
 	await wait_process_frames(5)
 	assert_eq(_plays, 1, "une seule fois")
@@ -134,7 +135,7 @@ func test_the_pidgey_is_back_after_a_map_change_and_the_town_lives_normally() ->
 	SceneRouter.change_map(&"viridian_city", &"from_center", Vector2i.DOWN)
 	await wait_until(func() -> bool: return not SceneRouter.is_transitioning(), TIMEOUT)
 	var map := _boot.get_map()
-	assert_eq(_player.get_cell(), Vector2i(15, 20), "devant la porte du Centre")
+	assert_eq(_player.get_cell(), Vector2i(21, 21), "devant la porte du Centre")
 	assert_not_null(map.get_npc(&"viridian_roof_pidgey"), "le Roucool est revenu")
 	for id: StringName in [&"arrival_kid", &"arrival_rattata", &"arrival_traveler"]:
 		assert_null(map.get_npc(id), "%s : seulement pour la première arrivée" % id)
@@ -165,7 +166,7 @@ func test_route_1_and_viridian_are_linked_by_walking() -> void:
 	Input.action_release(&"move_up")
 	await wait_until(func() -> bool: return not SceneRouter.is_transitioning(), TIMEOUT)
 	assert_eq(_boot.get_map().map_id, &"viridian_city")
-	assert_eq(_player.get_cell(), Vector2i(22, 27))
+	assert_eq(_player.get_cell(), Vector2i(28, 35))
 	assert_true(zones.has("Jadielle"), "titre « JADIELLE »")
 	Input.action_press(&"move_down")
 	await wait_until(func() -> bool: return _boot.get_map().map_id == &"route_1", TIMEOUT)

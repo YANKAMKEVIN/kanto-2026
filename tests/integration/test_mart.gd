@@ -22,7 +22,7 @@ const SAVE_PATH := "user://test_mart_save.json"
 const DATE := "2026-10-05T18:30:00"
 const FADE := 0.05
 const TIMEOUT := 12.0
-const DOOR := Vector2i(30, 20)
+const DOOR := Vector2i(36, 21)
 const PARCEL_PAGES: Array[String] = [
 	"Bonjour ! Première fois à Jadielle ?",
 	"Hmm… Ce Pokémon vient du laboratoire du Professeur Chen, non ?",

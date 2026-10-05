@@ -20,7 +20,9 @@ extends Node2D
 ## pendant sa routine, il **entre dans le bâtiment** (fondu, case libérée, absent
 ## [member NpcSpec.route_enter_seconds] s, puis il ressort sur la même case dès qu'elle est
 ## libre et reprend sa boucle) ; [member NpcSpec.idle_react_every] fait jouer [method react]
-## à intervalle régulier (le Roucool de la Dresseuse), toujours en [Tween], sans _process.
+## à intervalle régulier (le Roucool de la Dresseuse), toujours en [Tween], sans _process ;
+## [member NpcSpec.look_facings] le fait regarder autour de lui quand il reste sur place
+## (attente animée : aucun habitant figé), en [Tween] aussi.
 
 ## Réaction jouée ([method react]) : tests, futurs sons.
 signal reacted
@@ -185,6 +187,11 @@ var _inside_grid: GridWorld
 var _inside_tween: Tween
 ## Boucle de l'animation d'ambiance ([member NpcSpec.idle_react_every]).
 var _idle_tween: Tween
+## Attente animée ([member NpcSpec.look_facings]) : boucle et prochaine orientation.
+var _look_tween: Tween
+var _look_index: int = 0
+## Pendant un dialogue avec le joueur ([method begin_interaction] → [method end_interaction]).
+var _interacting: bool = false
 
 @onready var _sprite: AnimatedSprite2D = %Sprite
 @onready var _shadow: Sprite2D = %Shadow
@@ -405,6 +412,7 @@ func face_toward(cell: Vector2i) -> void:
 ## suspendue) et se tourne vers lui si [member NpcSpec.turn_to_player].
 func begin_interaction(player_cell: Vector2i) -> void:
 	_route_suspended = true
+	_interacting = true
 	if _spec.turn_to_player:
 		face_toward(player_cell)
 
@@ -413,6 +421,7 @@ func begin_interaction(player_cell: Vector2i) -> void:
 ## affaires »), sauf [member NpcSpec.keep_facing], puis reprend sa routine après un court
 ## instant (dossier 07 §5).
 func end_interaction() -> void:
+	_interacting = false
 	if not _spec.keep_facing:
 		face(_spec.facing)
 	if _route_active:
@@ -882,6 +891,7 @@ func _cancel_inside() -> void:
 
 ## Lance (ou relance) l'animation d'ambiance périodique de la description, s'il en a une.
 func _start_idle_react() -> void:
+	_start_look()
 	if _idle_tween != null and _idle_tween.is_valid():
 		_idle_tween.kill()
 	_idle_tween = null
@@ -890,6 +900,37 @@ func _start_idle_react() -> void:
 	_idle_tween = create_tween().set_loops()
 	_idle_tween.tween_interval(_spec.idle_react_every)
 	_idle_tween.tween_callback(_on_idle_react)
+
+
+## Lance (ou relance) l'attente animée de la description, s'il en a une : une orientation de
+## [member NpcSpec.look_facings] toutes les [member NpcSpec.look_every] s, en [Tween] (pas de
+## _process). La boucle commence par l'orientation qui suit celle du repos.
+func _start_look() -> void:
+	if _look_tween != null and _look_tween.is_valid():
+		_look_tween.kill()
+	_look_tween = null
+	_look_index = 0
+	if not _spec.has_look() or not is_inside_tree():
+		return
+	var rest := _spec.look_facings.find(_spec.facing)
+	_look_index = (rest + 1) % _spec.look_facings.size() if rest >= 0 else 0
+	_look_tween = create_tween().set_loops()
+	_look_tween.tween_interval(_spec.look_every)
+	_look_tween.tween_callback(_on_look)
+
+
+## Se tourne vers l'orientation suivante, sauf s'il marche, saute, parle, part ou est dans
+## un bâtiment (le tour est alors simplement sauté).
+func _on_look() -> void:
+	if is_moving() or _hopping or _leaving or _inside or _interacting:
+		return
+	face(_spec.look_facings[_look_index])
+	_look_index = (_look_index + 1) % _spec.look_facings.size()
+
+
+## Vrai si une attente animée tourne ([member NpcSpec.look_facings]).
+func is_looking_around() -> bool:
+	return _look_tween != null and _look_tween.is_valid()
 
 
 func _on_idle_react() -> void:

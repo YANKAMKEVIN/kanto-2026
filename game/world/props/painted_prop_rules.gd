@@ -60,6 +60,35 @@ const RULES: Dictionary[StringName, Dictionary] = {
 	&"relief_falaise_01": {"width": 4, "depth": 1, "layer": LAYER_GROUND},
 	&"relief_escalier_01": {"traversable": true, "layer": LAYER_GROUND,
 		"align": ALIGN_CENTRE},
+	# Série 07 (Jadielle agrandie). Murs de soutènement des terrasses et escaliers de ville :
+	# relief de la couche du sol, sans emprise (la carte bloque la rangée du mur dans
+	# `blocked_cells`, piliers compris ; les tronçons se chevauchent librement).
+	&"relief_muret_01": {"traversable": true, "layer": LAYER_GROUND},
+	&"relief_escalier_ville_01": {"traversable": true, "layer": LAYER_GROUND,
+		"align": ALIGN_CENTRE},
+	# Jardins : potager et plate-bande (3 cases, rangée du pied), clôture et haie qui courent
+	# du nord au sud (4 cases au-dessus du pied, sur la colonne d'ancrage).
+	&"prop_potager_01": {"width": 3, "depth": 1},
+	&"prop_platebande_01": {"width": 3, "depth": 1},
+	&"prop_cloture_v_01": {"width": 1, "depth": 4},
+	&"prop_haie_v_01": {"width": 1, "depth": 4},
+	# Série 07, passe 2 : deux nouveaux modèles de maisons, portail ouvert (on le traverse :
+	# poteaux sur les bords de la case du passage, traverses sur les clôtures voisines),
+	# buissons, garde-corps posé sur le haut d'un mur (la rangée du mur est déjà bloquée),
+	# arbre fruitier, petit mobilier de jardin.
+	&"bldg_maison_c_01": {"width": 6, "depth": 3, "fade": true},
+	&"bldg_maison_d_01": {"width": 5, "depth": 3, "fade": true},
+	&"prop_portail_01": {"traversable": true, "align": ALIGN_CENTRE},
+	&"prop_buisson_a_01": {"width": 1, "depth": 1},
+	&"prop_buisson_b_01": {"width": 1, "depth": 1},
+	&"prop_buisson_c_01": {"width": 2, "depth": 1},
+	&"prop_balustrade_01": {"traversable": true, "align": ALIGN_EDGE},
+	&"tree_fruitier_01": {"width": 1, "depth": 1, "wind": true, "fade": true},
+	&"prop_tonneau_01": {"width": 1, "depth": 1},
+	&"prop_caisses_01": {"width": 1, "depth": 1},
+	&"prop_boite_lettres_01": {"width": 1, "depth": 1},
+	&"prop_pots_fleurs_01": {"width": 1, "depth": 1},
+	&"prop_linge_01": {"width": 3, "depth": 1},
 	&"int_centre_comptoir": {"width": 5, "depth": 1},
 	&"int_centre_terminal": {"width": 2, "depth": 1},
 	&"int_centre_banquette": {"width": 2, "depth": 1},

@@ -426,6 +426,38 @@ func test_idle_react() -> void:
 	assert_string_contains("\n".join(shy), "« idle_react » interdit sur un Pokémon « shy »")
 
 
+## Attente animée (Jadielle agrandie : aucun habitant figé).
+func test_look_around() -> void:
+	var errors := PackedStringArray()
+	var guard := NpcRoster.parse_entry({"cell": [3, 3], "sprite": "youngster",
+		"look": {"facings": ["up", "left", "up", "right"], "every": 2.5}}, errors)
+	var default_every := NpcRoster.parse_entry({"cell": [3, 3], "sprite": "lass",
+		"look": {"facings": ["right", "down"]}}, errors)
+	var still := NpcRoster.parse_entry({"cell": [3, 3], "sprite": "lass"}, errors)
+	assert_eq(errors.size(), 0, str(errors))
+	assert_true(guard.has_look())
+	assert_eq(guard.look_facings, [Vector2i.UP, Vector2i.LEFT, Vector2i.UP, Vector2i.RIGHT])
+	assert_eq(guard.look_every, 2.5)
+	assert_eq(default_every.look_every, NpcSpec.LOOK_EVERY_DEFAULT)
+	assert_false(still.has_look(), "aucune par défaut")
+	var cases := {
+		"« look » doit être": "up",
+		"au moins deux orientations": {"facings": ["up"]},
+		"down, up, left ou right": {"facings": ["up", "north"]},
+		"« look.every »": {"facings": ["up", "down"], "every": 0.1},
+		"clé inconnue « speed »": {"facings": ["up", "down"], "speed": 2},
+	}
+	for expected: String in cases:
+		var refused := PackedStringArray()
+		assert_null(NpcRoster.parse_entry({"cell": [3, 3], "sprite": "lass",
+			"look": cases[expected]}, refused), expected)
+		assert_string_contains("\n".join(refused), expected)
+	var walker := PackedStringArray()
+	assert_null(NpcRoster.parse_entry({"cell": [3, 3], "sprite": "lass",
+		"route": {"cells": [[3, 3], [4, 3]]}, "look": {"facings": ["up", "down"]}}, walker))
+	assert_string_contains("\n".join(walker), "« look » interdit avec « route »")
+
+
 func test_roster_file_reads_the_jalon_7_keys() -> void:
 	var roster := NpcRoster.new()
 	assert_true(roster.add_from_dict({
