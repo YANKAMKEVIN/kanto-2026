@@ -25,7 +25,7 @@ var lead: TeamMemberView = null
 ## Cartes, dans l'ordre d'affichage : 4 à 6 (ÉQUIPE et POKÉDEX peuvent manquer), jamais
 ## d'emplacement vide.
 var cards: Array[MenuCardView] = []
-## Ligne entière (« Objectif : rejoindre Jadielle ») ; "" = pas de ligne.
+## Ligne entière (« Objectif : rejoindre Jadielle. ») ; "" = pas de ligne.
 var objective_text: String = ""
 
 

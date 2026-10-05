@@ -68,7 +68,7 @@ func test_after_the_rival_battle_on_route_1() -> void:
 	assert_eq(view.card_screens(), [&"team", &"bag", &"map", &"trainer", &"settings"]
 		as Array[StringName], "cinq cartes : POKÉDEX absente, pas grisée")
 	assert_eq(view.dex_text, "", "pas de « vus · capturés » avant l'activation")
-	assert_eq(view.objective_text, "Objectif : rejoindre Jadielle")
+	assert_eq(view.objective_text, "Objectif : rejoindre Jadielle.")
 	assert_not_null(view.lead)
 	assert_eq(view.lead.display_name, "Salamèche")
 	assert_eq(view.lead.species_id, &"charmander")

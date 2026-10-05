@@ -30,6 +30,10 @@ var actions: Array[StorageActionView] = []
 ## Menu secondaire « ⋯ » : LIBÉRER (dossier 09 §8 : jamais en bouton principal). Vide sans
 ## sélection.
 var more_actions: Array[StorageActionView] = []
+## Ligne de résultat après un succès (comme la barre du Sac) : « Roucool a été libéré. » après
+## une libération, sinon "" (pas de ligne). Un refus ne passe pas par ici (pas de vue neuve :
+## [code]show_refusal[/code]). Ajouté le 2026-10-05.
+var result_text: String = ""
 
 
 ## Carte de [param place] à [param index], ou null.
