@@ -76,3 +76,27 @@ Chaque référence a **un seul rôle** :
 - **Qui produit les dos** : illustrateur (commande, budget, délai) ou autre outil de génération
   hors OpenAI (par exemple un modèle local guidé par la pose du sprite). La fiche vaut pour les
   deux.
+
+## 7. Décision (2026-10-06) : dos rendus en 3D puis repeints par IA
+
+Après le pilote (5 dos 3D) et le stress-test (8 morphologies), **Kevin retient la chaîne
+« rendu 3D → repeint IA »** pour les dos (« on peut aller dessus ») ; l'illustrateur n'est plus
+qu'une solution de secours.
+
+| Étape | Outil | Réglages retenus |
+|---|---|---|
+| 1. Modèle 3D extrait de Pokémon X/Y | The Models Resource (voir `provenance-modeles-3d.md`) | — |
+| 2. Rendu de dos, pose de combat | `tools/art/blender/rendre_lot.py` + `dos_pokemon.json` | passe couleur + passe profondeur, 512 px |
+| 3. Repeint « artwork officiel » | notebook Colab (`tools/art/ia/creer_notebook_colab_v2.py`, GPU T4 gratuit) | AnyLoRA (SD 1.5), LoRA Pokémon 0,7, ControlNet profondeur 0,8 + traits 0,6, IP-Adapter = artwork officiel de face à **35 %**, force 0,6, puis agrandissement repeint 1024 px à 0,35 |
+| 4. Choix à l'œil | une variante par Pokémon | découpe à la silhouette du rendu |
+
+Pourquoi pas sur le Mac : 8 Go de mémoire, déjà occupés par l'appli Claude (machine virtuelle
+de 4 Go) ; ComfyUI y est installé (`~/dev/comfyui`) mais ne peut pas tourner pendant une session.
+
+**Limites connues** : un Pokémon dont le dos diffère beaucoup de la face peut recevoir des traits
+de face (Smogo : visage dessiné sur le dos) → pour lui, référence de face désactivée ou rendu 3D
+seul ; les défauts du rendu 3D passent dans le repeint (barbillon de Magicarpe) → à corriger dans
+la pose ; chaque Pokémon est vérifié à l'œil.
+
+**Suite** : vie des dos dans Godot (respiration, queue, flamme, ailes) ; production route par
+route, au rythme des jalons ; intégration au vrai combat avec le cadrage validé (J11).

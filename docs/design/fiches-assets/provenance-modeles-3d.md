@@ -53,3 +53,19 @@ Les dos des Pokémon du joueur en combat sont **rendus** à partir des modèles 
   demande explicitement.
 - Avant tout nouveau lot, noter la source et l'auteur de chaque modèle dans
   `dos_pokemon.json` et dans ce tableau.
+
+## 4. Modèles d'IA du repeint (notebook Colab)
+
+Tous téléchargés depuis Hugging Face par le notebook, sur la machine de Colab (rien n'est
+versionné) :
+
+| Rôle | Modèle | Source |
+|---|---|---|
+| Modèle d'illustration (Stable Diffusion 1.5) | AnyLoRA | `Lykon/AnyLoRA` |
+| Style Pokémon (LoRA, entraîné sur des artworks officiels) | pokemon-lora | `juliensimon/stable-diffusion-v1-5-pokemon-lora` |
+| Guidage par la profondeur | ControlNet v1.1 depth | `lllyasviel/control_v11f1p_sd15_depth` |
+| Guidage par les traits | ControlNet v1.1 lineart anime | `lllyasviel/control_v11p_sd15s2_lineart_anime` |
+| Référence de style (artwork officiel de face) | IP-Adapter SD 1.5 | `h94/IP-Adapter` |
+
+Le LoRA « Pokémon » a été entraîné sur des images Pokémon sous copyright : même statut que le
+reste (projet personnel, jamais distribué).
