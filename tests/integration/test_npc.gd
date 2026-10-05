@@ -188,12 +188,14 @@ func test_react_without_react_animation_hops_and_comes_back() -> void:
 	var sprite := _sprite(npc)
 	assert_false(sprite.sprite_frames.has_animation(Npc.REACT_ANIM))
 	npc.react()
-	# Point le plus haut du bond, relevé à chaque image jusqu'au retour.
+	# Point le plus haut du bond, relevé à chaque pas jusqu'au retour ; temps simulé
+	# ([method _step_tween]) : indépendant de la charge de la machine.
 	var highest := sprite.position.y
-	var started := Time.get_ticks_msec()
-	while Time.get_ticks_msec() - started < int(Npc.HOP_DURATION * 1000.0) + 200:
-		await get_tree().process_frame
+	var steps := 0
+	while _step_tween(npc._hop):
+		steps += 1
 		highest = minf(highest, sprite.position.y)
+	_assert_lasts(steps, Npc.HOP_DURATION, "bond de HOP_DURATION")
 	assert_lt(highest, -20.0 - Npc.HOP_HEIGHT / 2.0, "le sprite a bondi (%.1f)" % highest)
 	assert_gte(highest, -20.0 - Npc.HOP_HEIGHT, "bond de %d px au plus" % Npc.HOP_HEIGHT)
 	assert_eq(sprite.position.y, -20.0, "retour à sa hauteur")
@@ -248,6 +250,24 @@ func _make_on_grid(spec: NpcSpec, grid: GridWorld) -> Npc:
 	var npc := _make(spec)
 	assert_true(npc.enter_grid(grid), "enter_grid")
 	return npc
+
+
+## Fait avancer [param tween] d'un pas de [constant FRAME] à la main (temps simulé : la
+## charge de la machine ne change ni la durée mesurée ni les états vus). Faux quand il n'y
+## a plus rien à jouer (tween fini ou absent) ; il est mis en pause au premier appel pour
+## que le moteur ne le fasse plus avancer en parallèle.
+func _step_tween(tween: Tween) -> bool:
+	if tween == null or not tween.is_valid():
+		return false
+	tween.pause()
+	return tween.custom_step(FRAME)
+
+
+## [param steps] pas de [constant FRAME] couvrent [param seconds] au pas près : pas fini
+## avant, au plus un pas de plus (le dernier pas déborde de la fin).
+func _assert_lasts(steps: int, seconds: float, label: String) -> void:
+	assert_between(steps * FRAME, seconds - 0.0001, seconds + FRAME + 0.0001,
+		"%s (%d pas)" % [label, steps])
 
 
 ## Simule [param frames] images du PNJ (le moteur ne le fait pas tourner en parallèle).
@@ -501,11 +521,9 @@ func _check_hop(style: StringName) -> void:
 	npc.set_interaction_override(meet)
 	var target := CELL + Vector2i.DOWN
 	watch_signals(npc)
-	# Temps de jeu (somme des delta, comme le Tween) et image la plus longue ; point le
-	# plus haut du sprite ; rotation, décalage horizontal, compression et plan de dessin vus.
-	# Relevés image par image dans le test lui-même.
-	var elapsed := 0.0
-	var longest := 0.0
+	# Temps simulé (pas de 1/60 s, indépendant de la charge de la machine) ; point le plus
+	# haut du sprite ; rotation, décalage horizontal, compression et plan de dessin vus.
+	# Relevés pas par pas dans le test lui-même.
 	var peak := 0.0
 	var rotated := false
 	var swayed := false
@@ -520,12 +538,9 @@ func _check_hop(style: StringName) -> void:
 	assert_eq(npc.get_facing(), Vector2i.DOWN, "tourné vers l'arrivée")
 	assert_false(npc.step(Vector2i.RIGHT), "pas de pas pendant un saut")
 	assert_false(npc.hop_to(target + Vector2i.DOWN, grid), "pas de second saut")
-	var deadline := Time.get_ticks_msec() + 3000
-	while npc.is_hopping() and Time.get_ticks_msec() < deadline:
-		await get_tree().process_frame
-		var delta := get_process_delta_time()
-		elapsed += delta
-		longest = maxf(longest, delta)
+	var steps := 0
+	while npc.is_hopping() and _step_tween(npc._hop_tween):
+		steps += 1
 		peak = minf(peak, sprite.position.y)
 		rotated = rotated or not is_zero_approx(sprite.rotation)
 		swayed = swayed or not is_zero_approx(sprite.position.x)
@@ -553,8 +568,7 @@ func _check_hop(style: StringName) -> void:
 	assert_true(raised, "« %s » : dessiné au-dessus des personnages en vol" % style)
 	assert_eq(npc.z_index, 0, "« %s » : de nouveau trié au sol" % style)
 	var expected := Npc.hop_total_duration(style)
-	assert_almost_eq(elapsed, expected, longest * 2.0 + 0.02,
-		"« %s » : %.2f s" % [style, expected])
+	_assert_lasts(steps, expected, "« %s » : %.2f s" % [style, expected])
 	# Il marche normalement ensuite.
 	assert_true(npc.step(Vector2i.DOWN))
 

@@ -27,11 +27,14 @@ var _fade: ScreenFade
 ## Cartes fabriquées, par identifiant (la dernière instance).
 var _made: Dictionary[StringName, GameMap] = {}
 var _events: Array[String] = []
+## Rideau opaque à chaque appel du présentateur « à venir » ([method _install_presenter]).
+var _opaque_when_shown: Array[bool] = []
 
 
 func before_each() -> void:
 	_made.clear()
 	_events.clear()
+	_opaque_when_shown.clear()
 	_router = ROUTER_SCRIPT.new()
 	add_child_autofree(_router)
 	_router.map_factory = _make_map
@@ -422,10 +425,14 @@ func test_start_at_an_unknown_map_changes_nothing() -> void:
 
 # --- Destinations « à venir » (jalon 5, dossier-07 §12) ----------------------------------
 
-## Présentateur de test : enregistre le libellé et rend la main après un court délai.
+## Présentateur de test : enregistre le libellé et l'état du rideau au moment où l'écran
+## est montré (dans [member _opaque_when_shown] : relevé à l'événement lui-même, pas après
+## un await dont la reprise dépend de la charge de la machine), puis rend la main après un
+## court délai.
 func _install_presenter(shown: Array[String]) -> void:
 	_router.coming_soon_presenter = func(label: String) -> void:
 		shown.append(label)
+		_opaque_when_shown.append(_fade.is_opaque())
 		await get_tree().create_timer(0.05).timeout
 
 
@@ -450,9 +457,9 @@ func test_coming_soon_shows_the_screen_then_returns_without_changing_map() -> vo
 	assert_true(_router.is_transitioning(), "pousser vers le haut sur la case déclenche")
 	assert_false(_player.is_input_enabled(), "entrées bloquées dans la même image")
 	assert_eq(_player.get_cell(), Vector2i(2, 1))
-	await wait_for_signal(_router.coming_soon_shown, TIMEOUT)
-	assert_true(_fade.is_opaque(), "écran montré sous le rideau opaque")
 	await _await_idle()
+	assert_signal_emit_count(_router, "coming_soon_shown", 1)
+	assert_eq(_opaque_when_shown, [true] as Array[bool], "écran montré sous le rideau opaque")
 	assert_eq(shown, ["Route 2"] as Array[String])
 	assert_eq(_router.get_current_map(), map_c, "aucune carte chargée")
 	assert_eq(_player.get_cell(), Vector2i(2, 2), "retour sur le spawn de la carte")
