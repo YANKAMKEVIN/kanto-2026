@@ -57,7 +57,8 @@
 			"text_f": "{pokemon} a été confiée au système de recherche de Chen."
 		},
 		"item_used": { "text": "Tu utilises {item} sur {pokemon}.", "draft": true },
-		"hp_restored": { "text": "{pokemon} récupère {amount} PV.", "draft": true }
+		"hp_restored": { "text": "{pokemon} récupère {amount} PV.", "draft": true },
+		"prize_won": { "text": "Tu remportes {money}.", "draft": true }
 	},
 	"stats": {
 		"atk": "L'Attaque", "def": "La Défense", "spa": "L'Attaque Spéciale",

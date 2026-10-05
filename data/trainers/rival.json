@@ -2,11 +2,28 @@
 	"rival_lab": {
 		"name": "Le Rival", "ai": "random",
 		"can_lose": true, "heal_after": true, "gives_exp": false, "prize_money": 0,
-		"end_message": false, "start_message": false,
+		"end_message": false, "start_message": false, "bag": false,
 		"team_by_starter": {
 			"bulbasaur": [{ "species": "charmander", "level": 5 }],
 			"charmander": [{ "species": "squirtle", "level": 5 }],
 			"squirtle": [{ "species": "bulbasaur", "level": 5 }]
+		}
+	},
+	"rival_route22": {
+		"name": "Le Rival", "ai": "smart",
+		"can_lose": false, "heal_after": false, "gives_exp": true,
+		"prize_money": 0, "prize_per_level": 35,
+		"end_message": false, "start_message": true, "bag": true,
+		"team_by_starter": {
+			"bulbasaur": [
+				{ "species": "pidgey", "level": 7 }, { "species": "charmander", "level": 8 }
+			],
+			"charmander": [
+				{ "species": "pidgey", "level": 7 }, { "species": "squirtle", "level": 8 }
+			],
+			"squirtle": [
+				{ "species": "pidgey", "level": 7 }, { "species": "bulbasaur", "level": 8 }
+			]
 		}
 	}
 }

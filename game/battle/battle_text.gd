@@ -33,6 +33,8 @@ extends RefCounted
 ## vient pas d'un événement : la présentation la demande à [method line_for].
 ## Soin (jalon 6) : ITEM_USED → « item_used » (« Tu utilises Potion sur Salamèche. »), puis
 ## « hp_restored » ({amount} : PV rendus, [member BattleEvent.amount]).
+## Argent (jalon 7) : « prize_won » ({money} : somme formatée, « 280 ₽ ») ne vient pas d'un
+## événement du moteur ; le directeur le demande à [method prize_line] après une victoire.
 ## « draft » : texte à relire par Kevin. « text_f » (facultatif) : la phrase accordée au
 ## féminin, employée quand le Pokémon de l'événement est une femelle (décision de Kevin
 ## n° 15, jalon 4 §8) ; sans elle, « text » sert pour tous. [method lines] traduit un
@@ -53,13 +55,13 @@ const TEMPLATE_IDS: Array[StringName] = [
 	&"seeded", &"drained",
 	&"ball_thrown", &"broke_free", &"caught_title", &"pokedex_new", &"joined_party",
 	&"sent_to_storage",
-	&"item_used", &"hp_restored",
+	&"item_used", &"hp_restored", &"prize_won",
 	&"forget_confirm_title", &"forget_confirm_detail", &"forget_confirm_yes",
 	&"forget_confirm_no",
 ]
 const PLACEHOLDERS: Array[String] = [
 	"pokemon", "de_pokemon", "move", "trainer", "stat", "level", "exp", "old_move", "item",
-	"amount",
+	"amount", "money",
 ]
 
 const _TEMPLATE_KEYS: Array[String] = ["text", "text_f", "draft"]
@@ -235,6 +237,14 @@ func line_for(id: StringName, event: BattleEvent, data: PokemonData,
 	if not _texts.has(id):
 		return ""
 	return _fill(id, event, data, old_move)
+
+
+## « Tu remportes 280 ₽. » : gain d'argent [param amount] après une victoire contre un dresseur
+## (chaîne vide si le modèle manque).
+func prize_line(amount: int) -> String:
+	if not _texts.has(&"prize_won"):
+		return ""
+	return get_template(&"prize_won").format({"money": MenuFormat.money(amount)})
 
 
 ## « de Salamèche », « d'Évoli » : élision devant une voyelle.

@@ -517,7 +517,7 @@ _cutscenes_node.set_hud(_hud)                                ## étape « captio
 
 **Tests (T21)** : `test_pokemon_data` (10 espèces valides, chaînes d'évolution), `test_encounter_library` (table de la Route 22), `test_pokedex_library` (références), simulation `tools/simulate_grass_pacing.gd` relancée sur la Route 22 (rythme comparable à la Route 1).
 
-### 3.8 Rival n° 2 : IA de niveau 2 et gains (T24)
+### 3.8 Rival n° 2 : IA de niveau 2 et gains (T24) — **fait** (écarts au §15.5)
 
 ```gdscript
 ## BattleAI : nouvelle sorte, par son nom (dossier 09 §14, règle durable).
@@ -1264,3 +1264,29 @@ Aucun fichier de `game_state.gd`, `save_system.gd`, du combat, de `data/encounte
 9. **Apparences** : habitant de l'Arène = `youngster` (aucune autre tenue peinte libre ; même tenue que le jeune Dresseur de la Route 22, à trancher au T5 avec Q-4) ; Pokémon peints opt-in `pokemon/pidgey`, `pokemon/rattata`. Le Voyageur de la Route 1 garde l'apparence générique (Q-3).
 10. **Lumière** : `Boot` crée `WorldLighting` dans `_ready`, `apply(profil de la carte, carte)` dans `_on_map_changed` (profil vide → `null` ; inconnu → `push_error` + `null`), `set_reduced_effects` dans `_apply_settings`. `Boot.get_world_lighting()` pour les tests et outils.
 11. **Mémoire** : `[perf] tex=` compte toutes les textures résidentes du processus (UI, combat, cartes voisines préchargées, dont les deux enveloppes 1440 × 960) : 72,3 Mo à Jadielle sur le Mac ; la carte seule ajoute 18,3 Mo (Bourg Palette : 13,0). Le budget « ≤ 64 Mo par carte » est tenu pour la carte ; la mesure S24 du T5 dira si le total du processus pose problème.
+
+
+### 15.5 T24 — IA de niveau 2 et gains (2026-10-05, base `jalon-07` à `da54783`)
+
+Seule tâche de combat en cours. Aucun fichier de `boot.gd`, de la sauvegarde, des cartes ni de `game/ui/` touché. Écarts et précisions par rapport au §3.8 :
+
+1. **Règles de `smart`** (`BattleAI`, une IA par combat via `TrainerData.make_ai`) : note d'une attaque = puissance × STAB (1,5) × efficacité × précision (« ne rate jamais » = 100 %) ; **note nulle = inutile** (×0 ; statut sous ⅓ des PV ; statut déjà choisi **2 fois par ce Pokémon** dans le combat ; statut dont aucun effet ne peut plus agir : niveau déjà à ±6 dans le sens voulu, graine déjà plantée ou cible Plante, capacité sans effet géré comme Poudre Toxik). Choix : s'il existe une attaque **super efficace** utile, seules elles sont candidates (règle 2 appliquée **avant** la note : Flammèche ×2 l'emporte sur Croc de Mort STAB neutre, dont la note est plus haute) ; sinon la meilleure note ; égalité → `pick_index` parmi les meilleures (**aucun tirage s'il n'y a qu'une meilleure**) ; toutes inutiles → tirage parmi toutes ; sans PP → Lutte sans tirage. Les capacités de statut ignorent les types (comme le moteur). Sans `PokemonData` (`data` nul), `smart` = `random`.
+2. **Note d'une capacité de statut utile** (le §3.8 ne la fixait pas ; défaut, règle 4) : `STATUS_SCORE` = **40** × précision, soit une attaque neutre de puissance 40 sans STAB : à égalité avec Charge / Griffe (tirage), derrière Tornade d'un Roucool (STAB), loin derrière toute attaque super efficace. Réglable à la QA (T26).
+3. **`score_move(move, own, foe, chart, times_used)`** comme prévu ; ajouts : `times_used(pokemon, move_id)`, `is_low`, `status_has_effect`, `effectiveness_of` (statiques et testés), constantes `STATUS_MAX_USES` (2), `LOW_HP_RATIO` (⅓), `STATUS_SCORE`, `STAB`.
+4. **Gains** : `TrainerData.prize_for(last_level)` (somme fixe si `prize_money` > 0, sinon `prize_per_level × niveau`, jamais négatif) ; `BattleConclusion.resolve(trainer, outcome, last_foe_level := 0)` ; défaite, fuite = 0, l'argent du joueur n'est jamais retiré. `TrainerLibrary` : clés facultatives `bag` (booléen, défaut vrai) et `prize_per_level` (entier ≥ 0) ; `prize_money` reste **obligatoire** (0 pour le rival n° 2) ; les deux > 0 → erreur « exclusifs ».
+5. **Versement (fait ici, flux du §6.2)** : `BattleDirector`, à la fin d'un combat de dresseur gagné, avant la sortie de la HUD : bandeau « Tu remportes 280 ₽. » (`BattleText.prize_line`, marque `{money}` = `MenuFormat.money`, modèle `prize_won` en `draft`), puis `GameState.add_money`. Niveau du dernier Pokémon = dernier de l'équipe de la requête. **Le T25 n'a rien à brancher pour l'argent** ; l'autosave de fin de scène (`cutscene_finished`) l'écrit.
+6. **SAC contre un dresseur** : `BattleViews.TRAINER_BATTLE_ACTIONS` supprimée → `trainer_actions(trainer)` (ATTAQUER, SAC si `allow_bag` ; ÉQUIPE et FUITE atténués ; sans dresseur : SAC permis). **Écart corrigé** : le Sac de combat était toujours construit en contexte « sauvage » ; `BattleViews.bag_entries(bag, items, context)` reçoit maintenant `Battle.item_context()` (contre un dresseur, les Balls sont rangées mais pas utilisables) et l'onglet d'ouverture suit `BagQuery.start_category` (SOINS contre un dresseur, CAPTURE en sauvage).
+7. **Données** : `rival_lab` gagne `"bag": false` ; `rival_route22` comme au §3.8 (Roucool Nv. 7 puis le starter avantagé Nv. 8, `smart`, `can_lose: false`, `heal_after: false`, `gives_exp: true`, `prize_per_level: 35`, `bag: true`, `start_message: true`, `end_message: false`).
+8. **Pas fait ici (hors du périmètre donné au T24)** : l'étape de scène **`wake_up`** (§3.8, dernier paragraphe) — elle touche `CutsceneStep` / `CutsceneDirector` et `DefeatRecovery` (monde) ; à faire avec le T25 ou par l'architecte juste avant. `BattleConclusion.blackout` est vrai pour une défaite contre `rival_route22`, rien ne l'applique encore dans le directeur (comme prévu : c'est la scène qui enchaîne `wake_up`).
+9. **Simulation** (`tools/simulate_first_battle.gd`, partie J4 identique à l'octet ; `simulate_route_1_exp` et `simulate_grass_pacing` identiques) : 1 000 graines par starter, équipe du joueur Nv. 8 + un Pokémon de la Route 1 Nv. 7, sans objet, XP du combat comprise. Taux de victoire du joueur (Bulbizarre · Salamèche · Carapuce — moyenne) :
+
+| Rival | Joueur | + Roucool Nv. 7 | + Rattata Nv. 7 | starter seul |
+|---|---|---|---|---|
+| smart | capacité au hasard | 7,6 · 0,9 · 74,8 — **27,8 %** | 10,9 · 0,0 · 69,5 — 26,8 % | 0,5 % |
+| smart | 1re capacité offensive | 9,0 · 1,1 · 98,8 — **36,3 %** | 20,5 · 1,4 · 87,2 — 36,4 % | 0,5 % |
+| smart | IA smart (joueur attentif) | 3,1 · 0,1 · 99,9 — 34,4 % | 11,4 · 0,3 · 99,2 — 37,0 % | 3,9 % |
+| random (témoin) | 1re capacité offensive | 65,2 · 44,3 · 94,7 — 68,1 % | 58,9 · 50,7 · 40,9 — 50,2 % | 0,5 % |
+
+Lecture : l'IA de niveau 2 divise à peu près par deux les chances du joueur ; **avec Salamèche, le rival n° 2 est presque imbattable sans objet** (son Carapuce Nv. 8 a Écume, super efficace, choisie à chaque tour ; le Salamèche du joueur n'a que Griffe et Rugissement avant le Nv. 9) ; avec Bulbizarre, Roucool (Tornade ×2) puis Salamèche sont durs ; avec Carapuce, la victoire est presque assurée (le Bulbizarre du rival n'a ni Fouet Lianes ni attaque super efficace avant le Nv. 13). Non simulés : les Potions (2 au départ, achetables), l'ordre de l'équipe, les niveaux au-delà de 8. **Question Q-14 pour Kevin** (compte rendu du T24).
+10. **Constaté, pas corrigé (hors périmètre)** : à `da54783`, `tests/integration/test_coming_soon.gd` ne compile pas (en-tête de `_start_at_the_north_gate()` perdu à une fusion, ligne ~43 : `spawn` non déclaré) ; GUT l'écarte **sans échec**, donc `tools/test.sh` reste vert sans ce test. À réparer par la session du monde (sortie nord de Jadielle).
+
