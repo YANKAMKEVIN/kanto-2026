@@ -221,3 +221,17 @@ func test_closing_forgets_the_selection() -> void:
 	assert_true(_open())
 	assert_true(_last().selection.equals(StorageSelection.new(PARTY, 0)), "tête d'équipe")
 	_director.close()
+
+
+func test_release_view_carries_the_result_and_the_next_action_clears_it() -> void:
+	_add(_state.party, &"charmander", 8)
+	_add(_state.party, &"pidgey", 6)
+	_add(_state.storage, &"rattata", 4)
+	assert_true(_open())
+	assert_true(_director.confirm_release(STORAGE, 0))
+	assert_eq(_last().result_text, StorageViews.RELEASED_TEXT % "Rattata")
+	assert_true(_director.deposit_member(1))
+	assert_eq(_last().result_text, "", "déposer est muet et efface la ligne")
+	assert_true(_director.withdraw_member(0))
+	assert_eq(_last().result_text, "")
+	assert_eq(_director.build_storage().result_text, "", "une vue sans résultat l'efface")

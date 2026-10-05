@@ -260,10 +260,10 @@ func build_shop() -> ShopView:
 
 
 ## Vue du Stockage pour la sélection courante (null : directeur non branché).
-func build_storage() -> StorageView:
+func build_storage(result: StorageResult = null) -> StorageView:
 	if _state == null:
 		return null
-	return StorageViews.build(_state, _data, _storage_selection, _zones, _unlocks)
+	return StorageViews.build(_state, _data, _storage_selection, _zones, _unlocks, result)
 
 
 ## Sélection courante du Stockage (copie).
@@ -542,12 +542,12 @@ func _storage_result(result: StorageResult) -> bool:
 		return false
 	_storage_selection = result.selection
 	mark_changed()
-	_emit_storage()
+	_emit_storage(result)
 	return true
 
 
-func _emit_storage() -> void:
-	var view := build_storage()
+func _emit_storage(result: StorageResult = null) -> void:
+	var view := build_storage(result)
 	if view == null:
 		return
 	_storage_selection = view.selection

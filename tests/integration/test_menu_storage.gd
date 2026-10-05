@@ -288,6 +288,12 @@ func test_release_protects_the_favorite_confirms_and_saves() -> void:
 	screen.get_choice().get_confirm_button().pressed.emit()
 	await wait_process_frames(2)
 	assert_eq(GameState.storage.size(), 9, "libéré")
+	assert_eq(screen.get_result_text(), StorageViews.RELEASED_TEXT
+		% released.display_name(_boot.get_pokemon_data()), "« Roucool a été libéré. »")
+	await _tap(screen.get_party_cards()[1])
+	screen.get_primary_button().pressed.emit()
+	await wait_process_frames(1)
+	assert_eq(screen.get_result_text(), "", "l'action suivante efface la ligne")
 	assert_false(GameState.storage.get_all().has(released))
 	assert_true(GameState.pokedex.is_caught(&"pidgey"), "le Pokédex ne bouge pas")
 	assert_eq(_writes(), writes, "rien d'écrit menu ouvert")
@@ -297,8 +303,8 @@ func test_release_protects_the_favorite_confirms_and_saves() -> void:
 	var reloaded: Node = autofree(GameStateScript.new())
 	assert_true(reloaded.load_dict(SaveSystem.new(_fs, SAVE_PATH).read(),
 		_boot.get_pokemon_data()))
-	assert_eq(reloaded.party.size(), 6)
-	assert_eq(reloaded.storage.size(), 9)
+	assert_eq(reloaded.party.size(), 5, "un déposé après la libération")
+	assert_eq(reloaded.storage.size(), 10)
 	assert_eq(_species(reloaded.storage.get_all()), _species(GameState.storage.get_all()))
 	assert_true(reloaded.storage.get_at(1).favorite, "le favori, désormais en 2e place")
 	assert_push_error_count(0)

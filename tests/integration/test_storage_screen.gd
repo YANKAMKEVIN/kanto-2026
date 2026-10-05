@@ -390,3 +390,34 @@ func test_team_screen_storage_button_only_when_available() -> void:
 	button.pressed.emit()
 	assert_eq(routes.size(), 1)
 	assert_eq((routes[0] as MenuRoute).screen, MenuRoute.STORAGE)
+
+
+func test_result_line_shows_the_release_and_a_view_without_result_clears_it() -> void:
+	var menu := await _menu_in(2340)
+	var screen := menu.get_storage()
+	assert_eq(screen.get_result_text(), "", "rien à l'entrée")
+	var result := StorageRules.release(_state.party, _state.storage,
+		StorageRules.Place.STORAGE, 0)
+	_selection = result.selection
+	menu.show_storage(StorageViews.build(_state, _data, _selection, null, null, result))
+	assert_eq(screen.get_result_text(), "Roucool a été libéré.")
+	# Une pastille de refus ne l'écrase pas ; une vue sans texte l'efface.
+	menu.show_storage_refusal(StorageRules.Place.PARTY, 0, "Raison")
+	assert_eq(screen.get_refusal_text(), "Raison")
+	assert_eq(screen.get_result_text(), "Roucool a été libéré.")
+	menu.show_storage(_view())
+	assert_eq(screen.get_result_text(), "")
+	assert_eq(screen.get_refusal_text(), "")
+
+
+func test_last_able_refusal_is_written_on_the_sheet() -> void:
+	_state.party.get_at(1).hp = 0
+	_state.party.get_at(2).hp = 0
+	var menu := await _menu_in(2340)
+	var screen := menu.get_storage()
+	var status := StorageRules.deposit(_state.party, _state.storage, 0)
+	assert_false(status.is_ok())
+	menu.show_storage_refusal(StorageRules.Place.PARTY, 0,
+		StorageViews.result_text(status, _data))
+	assert_eq(screen.get_refusal_text(),
+		"Tu dois garder au moins un Pokémon en état de combattre.")

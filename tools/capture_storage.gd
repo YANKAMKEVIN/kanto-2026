@@ -10,7 +10,7 @@ extends SceneTree
 ## storage_01_open (écran seul, tête sélectionnée) ; storage_02_full (REPRENDRE refusé, équipe
 ## pleine) ; storage_03_deposit (la tête déposée, sélectionnée à la fin du stockage) ;
 ## storage_04_favorite (LIBÉRER le favori refusé, sans confirmation) ; storage_05_confirm
-## (« Libérer Roucool ? ») ; storage_06_released ; storage_07_last (dernier Pokémon refusé) ;
+## (« Libérer Roucool ? ») ; storage_06_released (ligne « X a été libéré. ») ; storage_07_last (dernier Pokémon refusé) ;
 ## storage_08_team (l'Équipe au Centre, bouton STOCKAGE).
 
 const START := "res://tools/debug_start/storage_qa.json"
@@ -61,10 +61,9 @@ func _on_frame() -> void:
 		0:
 			if _frame == 60:
 				_shot("storage_00_terminal")
-				Input.action_press(&"interact")
-			elif _frame == 62:
-				Input.action_release(&"interact")
-			elif _frame > 62 and _menu.call(&"is_open"):
+				var route: Object = load("res://game/systems/menu/menu_route.gd")
+				_menu.call(&"open", route.call(&"storage"), true)
+			elif _frame > 60 and _menu.call(&"is_open"):
 				_next()
 		1:
 			if _wait == 40:
