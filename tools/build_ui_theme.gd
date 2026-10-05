@@ -96,6 +96,8 @@ extends SceneTree
 ##   Boutique (T11) : ShopStepper (Button, − / +), ShopName / ShopOwned / ShopDescription /
 ##     ShopCaption / ShopUnitPrice / ShopQuantity / ShopTotal / ShopCardPrice / ShopMoney /
 ##     ShopMoneyLabel (Label)
+##   Stockage (T15) : StorageDropZone (Panel, cadre ACCENT), StorageRefusal / StorageMenu (PanelContainer),
+##     StorageRefusalText / StorageTitle / StorageEmpty (Label)
 ## tests/unit/test_ui_theme.gd vérifie que le fichier est à jour avec les tokens.
 
 const TOKENS_PATH: String = "res://game/ui/theme/ui_tokens.gd"
@@ -164,6 +166,7 @@ func _init() -> void:
 	_add_trainer_screen(theme, bold, t)
 	_add_settings_screen(theme, bold, t)
 	_add_shop_screen(theme, bold, t)
+	_add_storage_screen(theme, bold, t)
 
 	var err := ResourceSaver.save(theme, THEME_PATH)
 	print("ui_theme.tres : ", error_string(err))
@@ -1056,6 +1059,33 @@ func _add_settings_screen(theme: Theme, bold: Font, t: GDScript) -> void:
 
 
 # --- Écran Boutique (jalon 7, T11) --------------------------------------------------------------
+
+
+func _add_storage_screen(theme: Theme, bold: Font, t: GDScript) -> void:
+	# Zone de dépôt : un cadre ACCENT sans fond, posé par-dessus la colonne visée par un glisser.
+	var drop := StyleBoxFlat.new()
+	drop.bg_color = t.tinted(t.ACCENT, 0.10)
+	drop.border_color = t.ACCENT
+	drop.set_border_width_all(t.STORAGE_DROP_BORDER)
+	drop.set_corner_radius_all(t.RADIUS)
+	drop.anti_aliasing = true
+	theme.set_type_variation(&"StorageDropZone", &"Panel")
+	theme.set_stylebox(&"panel", &"StorageDropZone", drop)
+	# Raison d'un refus : pastille sombre rougie, texte clair.
+	var refusal := _panel_style(t.STORAGE_REFUSAL_BG, t.RADIUS_SMALL, t)
+	refusal.border_color = t.HP_LOW
+	refusal.set_border_width_all(t.BORDER_WIDTH)
+	refusal.set_content_margin_all(t.GAP)
+	theme.set_type_variation(&"StorageRefusal", &"PanelContainer")
+	theme.set_stylebox(&"panel", &"StorageRefusal", refusal)
+	# Menu « ⋯ » : opaque (il recouvre des boutons).
+	var menu := _panel_style(Color(t.PANEL_BG_STRONG, 1.0), t.RADIUS, t)
+	menu.set_content_margin_all(t.GAP)
+	theme.set_type_variation(&"StorageMenu", &"PanelContainer")
+	theme.set_stylebox(&"panel", &"StorageMenu", menu)
+	_add_plain_label(theme, &"StorageRefusalText", t.STORAGE_REFUSAL_FONT, t.TEXT, bold)
+	_add_plain_label(theme, &"StorageTitle", t.STORAGE_TITLE_FONT, t.TEXT, bold)
+	_add_plain_label(theme, &"StorageEmpty", t.FONT_BODY, t.TEXT_MUTED, null)
 
 
 func _add_shop_screen(theme: Theme, bold: Font, t: GDScript) -> void:

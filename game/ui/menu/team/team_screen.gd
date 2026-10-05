@@ -25,6 +25,7 @@ signal favorite_toggled(index: int)
 signal use_item_requested(index: int)
 
 const BACK_TEXT := "RETOUR"
+const STORAGE_TEXT := "STOCKAGE"
 const USE_TEXT := "UTILISER UN OBJET"
 const MOVE_TEXT := "DÉPLACER"
 const CANCEL_TEXT := "ANNULER"
@@ -34,6 +35,7 @@ const COUNT_FORMAT := "Équipe  %d / %d"
 const MOVE_HINT_FORMAT := "Choisis où placer %s"
 const MOVE_ALONE_TEXT := "Il faut deux Pokémon pour en déplacer un."
 const BACK_ICON: Texture2D = preload("res://assets/ui/icons/battle/back.svg")
+const STORAGE_ICON: Texture2D = preload("res://assets/ui/icons/storage/deposit.svg")
 const BAG_ICON: Texture2D = preload("res://assets/ui/icons/battle/bag.svg")
 const SWAP_ICON: Texture2D = preload("res://assets/ui/icons/menu/swap.svg")
 const STAR_ON_ICON: Texture2D = preload("res://assets/ui/icons/menu/star_filled.svg")
@@ -54,6 +56,7 @@ var _slots: Array[TeamSlotCard] = []
 var _list: Control
 var _ghost: TeamSlotCard
 var _back: Button
+var _storage_button: Button
 var _caption: Label
 var _hint: PanelContainer
 var _hint_label: Label
@@ -91,6 +94,7 @@ func show_team(view: TeamView, selected: int) -> void:
 	_selected = TeamViews.clamp_selection(selected, view.size())
 	_end_drag()
 	_close_move_sheet_now()
+	_storage_button.visible = view.storage_available
 	if _move_mode and (_move_from < 0 or _move_from >= view.size()):
 		_set_move_mode(false)
 	for i: int in TeamView.SLOT_COUNT:
@@ -147,6 +151,11 @@ func get_sheet() -> PokemonSheet:
 
 func get_back_button() -> Button:
 	return _back
+
+
+## STOCKAGE (visible seulement si [member TeamView.storage_available]).
+func get_storage_button() -> Button:
+	return _storage_button
 
 
 func get_use_button() -> Button:
@@ -216,6 +225,10 @@ func _build_center(parent: Control) -> void:
 	column.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	column.add_theme_constant_override(&"separation", UiTokens.TEAM_HEADER_GAP)
 	parent.add_child(column)
+	var top := HBoxContainer.new()
+	top.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	top.add_theme_constant_override(&"separation", UiTokens.GAP)
+	column.add_child(top)
 	_back = Button.new()
 	_back.theme_type_variation = &"PanelButton"
 	_back.text = BACK_TEXT
@@ -224,7 +237,19 @@ func _build_center(parent: Control) -> void:
 	_back.custom_minimum_size = Vector2(UiTokens.MENU_CARD_ICON * 2, UiTokens.TOUCH_MIN)
 	_back.size_flags_horizontal = Control.SIZE_SHRINK_BEGIN
 	_back.pressed.connect(_on_back)
-	column.add_child(_back)
+	top.add_child(_back)
+	# STOCKAGE : seulement quand le Stockage existe ici (au Centre) ; absent ailleurs, jamais grisé.
+	_storage_button = Button.new()
+	_storage_button.theme_type_variation = &"PanelButton"
+	_storage_button.text = STORAGE_TEXT
+	_storage_button.icon = STORAGE_ICON
+	_storage_button.focus_mode = Control.FOCUS_NONE
+	_storage_button.custom_minimum_size = Vector2(UiTokens.MENU_CARD_ICON * 2,
+		UiTokens.TOUCH_MIN)
+	_storage_button.size_flags_horizontal = Control.SIZE_SHRINK_BEGIN
+	_storage_button.visible = false
+	_storage_button.pressed.connect(_on_storage_pressed)
+	top.add_child(_storage_button)
 	var info := Control.new()
 	info.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	info.custom_minimum_size.y = UiTokens.MENU_OBJECTIVE_HEIGHT
@@ -512,6 +537,11 @@ func _slot_at(global_pos: Vector2) -> int:
 func _on_back() -> void:
 	Haptics.vibrate(UiTokens.HAPTIC_TAP_MS)
 	back_requested.emit()
+
+
+func _on_storage_pressed() -> void:
+	Haptics.vibrate(UiTokens.HAPTIC_TAP_MS)
+	route_requested.emit(MenuRoute.storage())
 
 
 func _on_use_pressed() -> void:
