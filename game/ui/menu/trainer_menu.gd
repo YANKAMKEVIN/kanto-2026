@@ -44,6 +44,12 @@ signal map_zone_touched(zone: StringName)
 ## « Sauvegarder maintenant » touché.
 signal setting_changed(key: StringName, value: Variant)
 signal save_now_requested
+## Relais de l'écran Boutique (7A.3, jalon-07.md §6.10) : onglet touché ; CONFIRMER en ACHETER (un
+## seul signal par toucher) ; CONFIRMER en VENDRE (confirmed = faux), puis confirmed = vrai quand la
+## carte VENDRE de la confirmation d'un favori est choisie.
+signal shop_mode_changed(mode: StringName)
+signal shop_buy_requested(item_id: StringName, quantity: int)
+signal shop_sell_requested(item_id: StringName, quantity: int, confirmed: bool)
 
 ## Titre des écrans provisoires (carte → « Équipe »…), texte d'interface.
 const PLACEHOLDER_TITLES: Dictionary[StringName, String] = {
@@ -82,6 +88,12 @@ var _map: MapScreen
 var _trainer: TrainerScreen
 ## Paramètres (6F) : instancié à la première visite, puis gardé.
 var _settings: SettingsScreen
+## Boutique (7A.3) : instanciée à la première visite, puis gardée ; sa confirmation de vente
+## (ChoiceCards) est sur le fond du menu, au-dessus de l'écran.
+var _shop: ShopScreen
+var _shop_choice: ChoiceCards
+var _shop_choice_item: StringName = &""
+var _shop_choice_quantity: int = 1
 ## Dernière révision de [UiPrefs] appliquée à chaque écran (taille du texte, contraste).
 var _prefs_fitted: Dictionary[MenuScreen, int] = {}
 var _blur_enabled: bool = true
@@ -156,6 +168,8 @@ func open_animated() -> void:
 ## Coroutine : ferme le menu (MENU_CLOSE) ; invisible à la fin, plus rien ne reçoit le toucher.
 func close_animated() -> void:
 	_open = false
+	if _shop_choice != null and _shop_choice.is_showing():
+		_shop_choice.hide_choice()
 	_kill_tween()
 	_root.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	var leaving := _current if _entered else null
@@ -309,6 +323,56 @@ func show_settings(view: SettingsView) -> void:
 	_fit_prefs(_settings)
 
 
+## Écran Boutique (7A.3) : [param view] (onglet, argent, objets). Écran seul : ni tableau de bord,
+## ni pastille de zone. Rappelé pendant qu'il est affiché (après un achat ou une vente), il met à
+## jour sans rejouer l'entrée : objet sélectionné et quantité sont gardés s'ils existent encore.
+func show_shop(view: ShopView) -> void:
+	if _shop == null:
+		_shop = ShopScreen.new()
+		_shop.speed_scale = speed_scale
+		_shop.back_requested.connect(back_requested.emit)
+		_shop.mode_changed.connect(shop_mode_changed.emit)
+		_shop.buy_requested.connect(shop_buy_requested.emit)
+		_shop.sell_requested.connect(shop_sell_requested.emit)
+		_host.add_child(_shop)
+		_shop.hide_now()
+	set_zone_name("")
+	_shop.show_shop(view)
+	_select(_shop)
+	_fit_prefs(_shop)
+
+
+## « Merci ! » ([param ok]) ou le refus (CONFIRMER tremble), dans la barre de résultat de la
+## Boutique.
+func show_shop_result(text: String, ok: bool) -> void:
+	if _shop != null:
+		_shop.show_result(text, ok)
+		_fit_prefs(_shop)
+
+
+## La confirmation de la vente d'un favori ([param view], ChoiceCards) : VENDRE → un
+## [signal shop_sell_requested] avec confirmed = vrai ; ANNULER (ou [method shop_back]) → rien.
+func show_shop_confirm(view: ChoiceView, item_id: StringName, quantity: int) -> void:
+	if _shop_choice == null:
+		_shop_choice = ChoiceCards.new()
+		_shop_choice.speed_scale = speed_scale
+		_shop_choice.chosen.connect(_on_shop_choice)
+		_root.add_child(_shop_choice)
+	_shop_choice.speed_scale = speed_scale
+	_shop_choice_item = item_id
+	_shop_choice_quantity = quantity
+	_shop_choice.show_choice(view)
+
+
+## Retour (retour Android, Échap) : referme la confirmation de vente si elle est ouverte. Vrai si
+## c'est ce qui s'est passé (l'événement est consommé) ; faux : l'hôte ferme la Boutique.
+func shop_back() -> bool:
+	if _shop_choice == null or not _shop_choice.is_showing():
+		return false
+	_shop_choice.hide_choice()
+	return true
+
+
 ## Message bref de l'écran Paramètres (« Partie sauvegardée ») : le toast du monde serait sous
 ## le menu.
 func show_save_result(text: String) -> void:
@@ -397,6 +461,16 @@ func get_trainer() -> TrainerScreen:
 	return _trainer
 
 
+## L'écran Boutique (null avant la première visite).
+func get_shop() -> ShopScreen:
+	return _shop
+
+
+## La confirmation de vente d'un favori (null avant le premier besoin).
+func get_shop_choice() -> ChoiceCards:
+	return _shop_choice
+
+
 ## L'écran Paramètres (null avant la première visite).
 func get_settings() -> SettingsScreen:
 	return _settings
@@ -450,6 +524,8 @@ func _screens() -> Array[MenuScreen]:
 		screens.append(_trainer)
 	if _settings != null:
 		screens.append(_settings)
+	if _shop != null:
+		screens.append(_shop)
 	return screens
 
 
@@ -501,6 +577,11 @@ func _on_close_pressed() -> void:
 
 func _on_card_chosen(screen: StringName) -> void:
 	route_requested.emit(MenuRoute.for_screen(screen))
+
+
+func _on_shop_choice(confirmed: bool) -> void:
+	if confirmed:
+		shop_sell_requested.emit(_shop_choice_item, _shop_choice_quantity, true)
 
 
 func _on_lead_chosen() -> void:

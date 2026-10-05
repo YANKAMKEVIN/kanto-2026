@@ -979,3 +979,33 @@ const CHOICE_LABEL_FONT := FONT_TITLE
 const CHOICE_CARD_DETAIL_FONT := 28
 const CHOICE_SLIDE := 40.0
 const CHOICE_FADE := ANIM_PANEL
+
+# Écran Boutique (jalon 7, T11) : langage du Sac (colonnes, cartes) + sélecteur de quantité.
+## Colonne de droite (aperçu, QUANTITÉ, TOTAL, CONFIRMER).
+const SHOP_DETAIL_WIDTH := 580
+const SHOP_ICON := 112
+const SHOP_NAME_FONT := FONT_BUTTON
+const SHOP_OWNED_FONT := FONT_CAPTION
+const SHOP_DESCRIPTION_FONT := 28
+const SHOP_CAPTION_FONT := FONT_CAPTION
+const SHOP_UNIT_PRICE_FONT := FONT_BODY
+## Prix sous chaque carte d'objet.
+const SHOP_CARD_PRICE_FONT := 28
+const SHOP_CARD_PRICE_HEIGHT := 44
+## Sélecteur de quantité : boutons − / + (≥ TOUCH_MIN) et nombre au centre.
+const SHOP_STEPPER_SIZE := TOUCH_MIN
+const SHOP_STEPPER_ICON := 56
+const SHOP_QUANTITY_FONT := 56
+const SHOP_TOTAL_FONT := 44
+## Argent affiché dans la colonne de gauche.
+const SHOP_MONEY_FONT := 44
+const SHOP_MONEY_LABEL_FONT := FONT_CAPTION
+const SHOP_COIN_ICON := 48
+## Appui long sur − / + : délai (LONG_PRESS), intervalle lent puis rapide, pas rapide.
+const SHOP_REPEAT_DELAY := LONG_PRESS
+const SHOP_REPEAT_SLOW := 0.16
+const SHOP_REPEAT_FAST := 0.06
+const SHOP_REPEAT_FAST_AFTER := 1.2
+const SHOP_REPEAT_FAST_STEP := 5
+## Indisponible : CONFIRMER et sélecteur atténués (la raison est écrite à côté).
+const SHOP_DISABLED_ALPHA := 0.45
