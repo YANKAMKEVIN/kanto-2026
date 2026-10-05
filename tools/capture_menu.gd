@@ -99,7 +99,7 @@ func _init() -> void:
 func _start() -> void:
 	_boot = (load(BOOT_SCENE) as PackedScene).instantiate()
 	_boot.set(&"start_map", &"route_1")
-	_boot.set(&"start_spawn", &"jadielle_soon_w")
+	_boot.set(&"start_spawn", &"from_viridian_w")
 	root.add_child(_boot)
 	_menu = (load(MENU_SCENE) as PackedScene).instantiate() as TrainerMenu
 	_menu.speed_scale = 0.0
