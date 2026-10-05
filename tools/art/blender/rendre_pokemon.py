@@ -4,7 +4,9 @@ Usage (sans ouvrir Blender) :
   blender -b --python tools/art/blender/rendre_pokemon.py -- modele dossier_images sortie.png
       [--azimut 35] [--elevation 12] [--taille 1024] [--pose bras=-55,avant=25]
       [--os LWing:Y:30,RWing:Y:-30] [--tourner 0] [--redresser 0] [--flamme Fire] [--vues 1]
-      [--saturation 1.12] [--valeur 1.0]
+      [--saturation 1.12] [--valeur 1.0] [--passe couleur|profondeur]
+--passe profondeur : carte de profondeur (proche = blanc, fond noir, sans contour) pour guider
+un générateur d'images (ControlNet) ; même cadrage que la passe couleur.
 
 modele : .SMD ou .DAE (importeurs maison : Blender 5 ne lit plus le Collada ni les FBX 6100
 de ces modèles), .FBX récent (7100+) ou .glb.
@@ -33,13 +35,14 @@ SEUIL_OMBRE = 0.45    # seuil lumière / ombre du diffus
 CONTOUR = (0.16, 0.10, 0.10)  # couleur du contour (brun très sombre, comme les artworks)
 CONTOUR_EPAISSEUR = 0.016     # fraction de la hauteur du modèle
 SATURATION = 1.12             # saturation des textures du corps
+FLAMME_PAR_DEFAUT = "Fire"    # matériaux d'effet (flamme) : exclus de la passe de profondeur
 
 
 def arguments():
 	a = sys.argv[sys.argv.index("--") + 1:]
 	opts = {"azimut": 35.0, "elevation": 12.0, "taille": 1024, "pose": "bras=-55,avant=25",
 		"flamme": "Fire", "os": "", "tourner": 0, "redresser": 0, "vues": 0,
-		"saturation": SATURATION, "valeur": 1.0}
+		"saturation": SATURATION, "valeur": 1.0, "passe": "couleur"}
 	positionnels = []
 	i = 0
 	while i < len(a):
@@ -578,6 +581,49 @@ def eclairer(direction):
 	monde.node_tree.nodes["Background"].inputs["Color"].default_value = (0.5, 0.5, 0.5, 1)
 
 
+def passe_profondeur(objs, direction):
+	"""Remplace tous les matériaux par la profondeur vue de la caméra (proche = blanc)."""
+	bpy.context.view_layer.update()
+	cam = bpy.context.scene.camera
+	inv = cam.matrix_world.inverted()
+	deps = bpy.context.evaluated_depsgraph_get()
+	zs = []
+	for o in objs:
+		ev = o.evaluated_get(deps)
+		zs += [-(inv @ (ev.matrix_world @ v.co)).z for v in ev.to_mesh().vertices]
+		ev.to_mesh_clear()
+	proche, loin = min(zs), max(zs)
+	m = bpy.data.materials.new("profondeur")
+	m.use_nodes = True
+	nt = m.node_tree
+	nt.nodes.clear()
+	camera = nt.nodes.new("ShaderNodeCameraData")
+	plage = nt.nodes.new("ShaderNodeMapRange")
+	plage.inputs["From Min"].default_value = proche
+	plage.inputs["From Max"].default_value = loin
+	plage.inputs["To Min"].default_value = 1.0
+	plage.inputs["To Max"].default_value = 0.12
+	e = nt.nodes.new("ShaderNodeEmission")
+	s = nt.nodes.new("ShaderNodeOutputMaterial")
+	nt.links.new(camera.outputs["View Z Depth"], plage.inputs["Value"])
+	nt.links.new(plage.outputs["Result"], e.inputs["Color"])
+	nt.links.new(e.outputs["Emission"], s.inputs["Surface"])
+	noir = bpy.data.materials.new("hors_profondeur")
+	noir.use_nodes = True
+	noir.node_tree.nodes.clear()
+	e2 = noir.node_tree.nodes.new("ShaderNodeEmission")
+	e2.inputs["Color"].default_value = (0, 0, 0, 1)
+	s2 = noir.node_tree.nodes.new("ShaderNodeOutputMaterial")
+	noir.node_tree.links.new(e2.outputs["Emission"], s2.inputs["Surface"])
+	for o in objs:
+		for slot in o.material_slots:
+			# Les effets (flamme : volume en forme d'œuf, masqué par sa texture) restent noirs.
+			effet = slot.material is not None and FLAMME_PAR_DEFAUT in slot.material.name
+			slot.material = noir if effet else m
+	bpy.context.scene.world.node_tree.nodes["Background"].inputs["Color"].default_value = \
+		(0, 0, 0, 1)
+
+
 def main():
 	opts = arguments()
 	bpy.ops.wm.read_factory_settings(use_empty=True)
@@ -586,10 +632,14 @@ def main():
 	bpy.context.view_layer.update()
 	zs = [(o.matrix_world @ Vector(c)).z for o in objs for c in o.bound_box]
 	hauteur = (max(zs) - min(zs)) or 60.0
-	for o in list(objs):
-		contour(o, hauteur, opts["flamme"])
+	profondeur = opts["passe"] == "profondeur"
+	if not profondeur:
+		for o in list(objs):
+			contour(o, hauteur, opts["flamme"])
 	direction = cadrer(objs, opts)
 	eclairer(direction)
+	if profondeur:
+		passe_profondeur(objs, direction)
 	sc = bpy.context.scene
 	for moteur in ("BLENDER_EEVEE", "BLENDER_EEVEE_NEXT"):
 		try:
@@ -597,7 +647,7 @@ def main():
 			break
 		except TypeError:
 			continue
-	sc.render.film_transparent = True
+	sc.render.film_transparent = not profondeur
 	sc.render.resolution_x = sc.render.resolution_y = int(opts["taille"])
 	sc.view_settings.view_transform = "Standard"
 	if int(opts["vues"]):
