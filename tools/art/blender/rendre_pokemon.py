@@ -22,11 +22,11 @@ import sys
 import bpy
 from mathutils import Euler, Matrix, Vector
 
-OMBRE = 0.72          # valeur de l'aplat d'ombre (1 = lumière)
+OMBRE = 0.64          # valeur de l'aplat d'ombre (1 = lumière)
 SEUIL_OMBRE = 0.45    # seuil lumière / ombre du diffus
 CONTOUR = (0.16, 0.10, 0.10)  # couleur du contour (brun très sombre, comme les artworks)
-CONTOUR_EPAISSEUR = 0.010     # fraction de la hauteur du modèle
-SATURATION = 1.35             # saturation des textures du corps
+CONTOUR_EPAISSEUR = 0.016     # fraction de la hauteur du modèle
+SATURATION = 1.12             # saturation des textures du corps
 
 
 def arguments():
