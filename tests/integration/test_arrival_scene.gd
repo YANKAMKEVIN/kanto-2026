@@ -108,7 +108,9 @@ func test_the_arrival_plays_once_in_four_seconds_without_dialogue() -> void:
 	assert_null(map.get_npc(&"viridian_roof_pidgey"), "le Roucool s'est envolé")
 	assert_null(map.get_npc(&"arrival_traveler"), "le voyageur a continué vers le sud")
 	assert_not_null(map.get_npc(&"arrival_kid"), "l'enfant reste pour la visite")
-	assert_eq(map.get_npc(&"arrival_rattata").get_cell(), Vector2i(30, 22))
+	assert_eq(map.get_npc(&"arrival_rattata").get_cell(), Vector2i(33, 22))
+	assert_eq(map.get_npc(&"arrival_kid").get_cell(), Vector2i(32, 22), "derrière son Rattata")
+	assert_eq(_player.get_facing(), Vector2i.UP, "le héros regarde de nouveau la ville")
 	# Revenir sur le déclencheur ne rejoue rien.
 	Input.action_press(&"move_down")
 	await wait_until(func() -> bool: return _player.get_cell() == Vector2i(28, 24), TIMEOUT)
@@ -143,6 +145,61 @@ func test_the_pidgey_is_back_after_a_map_change_and_the_town_lives_normally() ->
 			&"old_man", &"gym_watcher"]:
 		assert_not_null(map.get_npc(id), "%s présent" % id)
 	assert_eq(_plays, 1)
+	assert_push_error_count(0)
+
+
+## Retours de Kevin au T5 (jalon-07.md §15.21) : une action après l'autre, regard guidé.
+## L'enfant et son Rattata **marchent** (planches sans course) et passent devant le héros, qui
+## les suit des yeux (gauche, haut, droite) ; puis le Roucool réagit et s'envole, le héros
+## lève la tête avec un petit bond ; puis le voyageur descend et croise le héros, qui se
+## tourne vers lui. Contrôles bloqués tout du long.
+func test_the_arrival_beats_come_one_after_the_other() -> void:
+	await _start()
+	var map := _boot.get_map()
+	var rattata := map.get_npc(&"arrival_rattata")
+	var kid := map.get_npc(&"arrival_kid")
+	var pidgey := map.get_npc(&"viridian_roof_pidgey")
+	var times := {}
+	var facings: Array[Vector2i] = []
+	var kid_steps: Array[float] = []
+	var mark := func(key: String) -> void:
+		if not times.has(key):
+			times[key] = (Time.get_ticks_msec() - _started_ms) / 1000.0
+	pidgey.reacted.connect(func() -> void: mark.call("pidgey"))
+	_player.reacted.connect(func() -> void: mark.call("hero_react"))
+	kid.step_finished.connect(func(_cell: Vector2i) -> void:
+		kid_steps.append((Time.get_ticks_msec() - _started_ms) / 1000.0))
+	var watch := func() -> void:
+		if not _director.is_running():
+			return
+		assert_false(_player.is_input_enabled(), "contrôles bloqués pendant la scène")
+		if facings.is_empty() or facings[-1] != _player.get_facing():
+			facings.append(_player.get_facing())
+		if rattata.get_cell().x > 28:
+			mark.call("kid_crossed")
+		# Retrouvé à chaque image : il quitte la carte à la fin de la scène.
+		var traveler := map.get_npc(&"arrival_traveler")
+		if traveler != null and traveler.get_cell() != Vector2i(26, 21):
+			mark.call("traveler")
+	get_tree().process_frame.connect(watch)
+	await _walk_in_and_watch()
+	get_tree().process_frame.disconnect(watch)
+	if facings[-1] != _player.get_facing():
+		facings.append(_player.get_facing())
+	gut.p("temps des actions : %s ; regards du héros : %s" % [times, facings])
+	for key: String in ["kid_crossed", "pidgey", "hero_react", "traveler"]:
+		assert_true(times.has(key), key)
+	assert_lt(times["kid_crossed"], times["pidgey"], "l'enfant passe, puis le Roucool")
+	assert_lt(times["pidgey"], times["traveler"], "le Roucool, puis le voyageur")
+	assert_almost_eq(times["hero_react"], times["pidgey"], 0.4, "surprise à l'envol")
+	var expected: Array[Vector2i] = [Vector2i.UP, Vector2i.LEFT, Vector2i.UP, Vector2i.RIGHT,
+		Vector2i.UP, Vector2i.LEFT, Vector2i.DOWN, Vector2i.UP]
+	assert_eq(facings, expected, "le héros suit l'action des yeux")
+	# L'enfant marche : un pas par durée de marche (jamais à la cadence de course).
+	assert_eq(kid_steps.size(), 9)
+	for i: int in range(1, kid_steps.size()):
+		assert_gt(kid_steps[i] - kid_steps[i - 1], Grid.WALK_STEP_DURATION * 0.8,
+			"pas de marche %d" % i)
 	assert_push_error_count(0)
 
 

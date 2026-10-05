@@ -17,7 +17,9 @@ func _one_step(step: Dictionary, id: String) -> CutsceneStep:
 
 func test_type_key_at_the_end_of_the_enum() -> void:
 	assert_eq(CutsceneStep.kind_name(CutsceneStep.Kind.WAKE_UP), &"wake_up")
-	assert_eq(CutsceneStep.Kind.WAKE_UP, CutsceneStep.Kind.size() - 1, "fin d'enum")
+	# Ajoutée en fin d'enum au T25 ; « react » (retours T5, §15.21) vient après elle.
+	assert_eq(CutsceneStep.Kind.WAKE_UP, CutsceneStep.Kind.REACT - 1, "fin d'enum au T25")
+	assert_eq(CutsceneStep.Kind.REACT, CutsceneStep.Kind.size() - 1, "react en dernier")
 	assert_eq(CutsceneStep.TYPE_KEYS.size(), CutsceneStep.Kind.size(), "une clé par type")
 
 

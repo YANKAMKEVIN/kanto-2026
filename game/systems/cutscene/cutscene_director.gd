@@ -24,6 +24,10 @@ extends Node
 ## Jalon 7 (jalon-07.md §3.2) : étape scare (réaction d'un Pokémon d'ambiance, sans attendre).
 ## Jalon 7 (jalon-07.md §3.8, T25) : étape wake_up (défaite contre un Dresseur : réveil au point
 ## de repos par le [DefeatRecovery] branché par [method set_recovery], puis fin de la scène).
+## Retours T5 (jalon-07.md §15.21) : « move » en arrière-plan ([member CutsceneStep.background] :
+## le PNJ marche pendant que la scène continue ; une étape suivante sur lui attend la fin de
+## sa marche ; la scène ne finit qu'à la fin de toutes) et étape « react » (petite surprise du
+## joueur ou d'un PNJ, sans attendre).
 
 signal cutscene_started(cutscene_id: StringName)
 ## Début d'une étape (tests, outils de capture).
@@ -51,6 +55,12 @@ const LEAN_HOLD: float = 0.3
 ## Étape « despawn » : fondu du PNJ avant son retrait (s) ; sa case est libérée dès le début.
 const DESPAWN_FADE: float = 0.2
 const _ROUTER_SCRIPT := preload("res://game/autoload/scene_router.gd")
+## Étapes qui agissent sur leur acteur : elles attendent d'abord la fin de sa marche en
+## arrière-plan.
+const _JOINING_KINDS: Array[CutsceneStep.Kind] = [
+	CutsceneStep.Kind.MOVE, CutsceneStep.Kind.HOP, CutsceneStep.Kind.LEAN,
+	CutsceneStep.Kind.DESPAWN, CutsceneStep.Kind.SCARE, CutsceneStep.Kind.REACT,
+]
 
 var _library: CutsceneLibrary
 var _flags: StoryFlags
@@ -83,6 +93,10 @@ var _move_blocked: float = 0.0
 var _follow_actor: Node2D
 var _follow_path: Array[Vector2i] = []
 var _follow_index: int = 0
+## Marches en arrière-plan (« move » avec « background ») : { actor, path, index, run,
+## blocked }, pilotées dans [method _process], dans l'ordre où elles ont commencé (un meneur
+## parti avant libère sa case dans la même image pour celui qui le suit).
+var _background: Array[Dictionary] = []
 ## Combat et Sac (jalon 4B) : branchés par Boot après setup.
 var _battle_runner: BattleDirector
 var _bag: Bag
@@ -101,6 +115,8 @@ func _ready() -> void:
 
 
 func _process(delta: float) -> void:
+	if not _background.is_empty():
+		_update_background(delta)
 	if _moving:
 		_update_move(delta)
 		return
@@ -124,6 +140,7 @@ func setup(library: CutsceneLibrary, flags: StoryFlags, runner: DialogueRunner,
 	_running = false
 	_waiting = false
 	_stop_move()
+	_background.clear()
 	_cutscene_id = &""
 	_step_index = -1
 	_library = library
@@ -218,6 +235,11 @@ func _run(variant: CutsceneVariant, session: int) -> void:
 			return
 		if not go_on:
 			break
+	# Les marches en arrière-plan finissent avant la scène (contrôles rendus ensuite).
+	while not _background.is_empty():
+		await get_tree().process_frame
+		if session != _session:
+			return
 	_finish()
 
 
@@ -232,6 +254,8 @@ func _play_step(source_step: CutsceneStep) -> bool:
 	var step := _resolve_aliases(source_step)
 	if step == null:
 		return true
+	if _JOINING_KINDS.has(step.kind):
+		await _await_background(step.actor)
 	match step.kind:
 		CutsceneStep.Kind.WAIT:
 			await _wait(step.seconds)
@@ -250,7 +274,9 @@ func _play_step(source_step: CutsceneStep) -> bool:
 		CutsceneStep.Kind.SPAWN:
 			_spawn(step)
 		CutsceneStep.Kind.MOVE:
-			if _begin_move(step):
+			if step.background:
+				_begin_background_move(step)
+			elif _begin_move(step):
 				await _move_done
 		CutsceneStep.Kind.CHANGE_MAP:
 			return await _change_map(step)
@@ -269,6 +295,8 @@ func _play_step(source_step: CutsceneStep) -> bool:
 		CutsceneStep.Kind.WAKE_UP:
 			await _wake_up()
 			return false
+		CutsceneStep.Kind.REACT:
+			_react(step)
 		_:
 			_step_error("étape « %s » inconnue" % CutsceneStep.kind_name(step.kind))
 	return true
@@ -562,28 +590,7 @@ func _begin_move(step: CutsceneStep) -> bool:
 	if actor == null:
 		_step_error("acteur « %s » introuvable" % step.actor)
 		return false
-	var path: Array[Vector2i] = step.path
-	if step.has_destination():
-		if not is_instance_valid(_map):
-			_step_error("pas de carte pour la destination de « %s »" % step.actor)
-			return false
-		var grid := _map.get_grid()
-		var from := _cell_of(actor)
-		var goal := step.cell
-		if not step.near.is_empty():
-			var anchor := _find_actor(step.near)
-			if anchor == null:
-				_step_error("acteur « %s » introuvable" % step.near)
-				return false
-			goal = CutsceneMoves.resolve_near(grid, _cell_of(anchor), step.offsets, actor)
-		if goal == CutsceneStep.NO_CELL:
-			if not step.optional:
-				_step_error("aucune case libre près de « %s »" % step.near)
-			return false
-		path = grid.find_path(from, goal, actor)
-		if path.is_empty() and goal != from:
-			_step_error("aucun chemin de %s à %s pour « %s »" % [from, goal, step.actor])
-			return false
+	var path := _move_path_of(step, actor)
 	if path.is_empty():
 		return false
 	_follow_actor = null
@@ -600,6 +607,99 @@ func _begin_move(step: CutsceneStep) -> bool:
 	_moving = true
 	_try_next_steps()
 	return true
+
+
+## Directions de l'étape « move » pour [param actor] : le chemin écrit, ou celui calculé vers
+## sa destination (case absolue ou voisine d'un acteur). Vide si l'acteur est déjà arrivé, ou
+## si la destination ou le chemin manque (push_error, sauf « optional » sans case libre).
+func _move_path_of(step: CutsceneStep, actor: Node2D) -> Array[Vector2i]:
+	var path: Array[Vector2i] = step.path
+	if not step.has_destination():
+		return path
+	if not is_instance_valid(_map):
+		_step_error("pas de carte pour la destination de « %s »" % step.actor)
+		return []
+	var grid := _map.get_grid()
+	var from := _cell_of(actor)
+	var goal := step.cell
+	if not step.near.is_empty():
+		var anchor := _find_actor(step.near)
+		if anchor == null:
+			_step_error("acteur « %s » introuvable" % step.near)
+			return []
+		goal = CutsceneMoves.resolve_near(grid, _cell_of(anchor), step.offsets, actor)
+	if goal == CutsceneStep.NO_CELL:
+		if not step.optional:
+			_step_error("aucune case libre près de « %s »" % step.near)
+		return []
+	path = grid.find_path(from, goal, actor)
+	if path.is_empty() and goal != from:
+		_step_error("aucun chemin de %s à %s pour « %s »" % [from, goal, step.actor])
+	return path
+
+
+## « move » en arrière-plan : le PNJ part (premier pas dans cette image si possible) et la
+## scène continue. PNJ introuvable ou sans chemin : push_error, rien.
+func _begin_background_move(step: CutsceneStep) -> void:
+	var npc := _find_actor(step.actor) as Npc
+	if npc == null:
+		_step_error("PNJ « %s » introuvable" % step.actor)
+		return
+	var path := _move_path_of(step, npc)
+	if path.is_empty():
+		return
+	_background.append({"actor": npc, "path": path, "index": 0, "run": step.run,
+		"blocked": 0.0})
+	_update_background(0.0)
+
+
+## Pas suivant de chaque marche en arrière-plan à l'arrêt ; une marche finie (dernier pas
+## terminé), bloquée plus de [constant MOVE_BLOCK_TIMEOUT] s ou dont le PNJ a disparu est
+## retirée.
+func _update_background(delta: float) -> void:
+	var i := 0
+	while i < _background.size():
+		var move: Dictionary = _background[i]
+		var npc := move["actor"] as Npc
+		var done := not is_instance_valid(npc)
+		if not done and not npc.is_moving():
+			var path: Array[Vector2i] = move["path"]
+			var index: int = move["index"]
+			if index >= path.size():
+				done = true
+			elif npc.step(path[index], move["run"]):
+				move["index"] = index + 1
+				move["blocked"] = 0.0
+			else:
+				move["blocked"] = float(move["blocked"]) + delta
+				if float(move["blocked"]) > MOVE_BLOCK_TIMEOUT:
+					_step_error("« %s » bloqué en %s" % [npc.name, npc.get_cell()])
+					done = true
+		if done:
+			_background.remove_at(i)
+		else:
+			i += 1
+
+
+## Attend la fin de la marche en arrière-plan de [param actor_id] (rien s'il n'en a pas).
+func _await_background(actor_id: StringName) -> void:
+	var actor := _find_actor(actor_id)
+	if actor == null:
+		return
+	while _background.any(func(move: Dictionary) -> bool: return move["actor"] == actor):
+		await get_tree().process_frame
+
+
+## Étape « react » : petite réaction de surprise du joueur ou d'un PNJ, sans attendre.
+func _react(step: CutsceneStep) -> void:
+	var actor := _find_actor(step.actor)
+	if actor == null:
+		_step_error("acteur « %s » introuvable" % step.actor)
+		return
+	if actor is Player:
+		(actor as Player).react()
+	else:
+		(actor as Npc).react()
 
 
 ## Prépare le suiveur [param follower_id] du meneur [param leader] : un pas vers la case de
@@ -737,6 +837,7 @@ func _finish() -> void:
 	_running = false
 	_waiting = false
 	_stop_move()
+	_background.clear()
 	_cutscene_id = &""
 	_step_index = -1
 	_aliases = {}

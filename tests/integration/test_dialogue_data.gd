@@ -32,9 +32,10 @@ const MAPS: Array[StringName] = [
 ]
 ## Seuls textes provisoires : le panneau « BOURG PALETTE » (Q8), les textes d'observation
 ## des Pokémon des habitants (jalon 6 T16, à valider par Kevin) et la Dresseuse au repos du
-## Centre (jalon 7 T8, absente du dossier 09 §19) ; le livreur dans la Boutique (T12, idem).
+## Centre (jalon 7 T8, absente du dossier 09 §19) ; le livreur dans la Boutique (T12, idem) ;
+## les portes des maisons de Jadielle, « C'est fermé. » (retours T5, en attendant Kevin).
 const DRAFTS: Array[StringName] = [&"observe_aoki_pidgey", &"observe_leo_rattata",
-	&"sign_pallet_town"]
+	&"sign_pallet_town", &"viridian_house_door"]
 ## Identifiants attendus (3A) : Maman, table, rival, carte, Maya, 3 starters, 3 habitants,
 ## panneau ; (3B) « Hé ! Attends ! », les répliques du Prof. Chen et la pensée des herbes ;
 ## (4A, T1) la proposition du Prof. Chen ; (4A, T3) le choix et la sortie empêchée.
@@ -56,7 +57,8 @@ const IDS: Array[StringName] = [
 	&"route22_rival_won", &"route22_youngster_sigh",
 	&"route_1_potion_found", &"route_1_traveler", &"route_22_traveler", &"sign_pallet_town",
 	&"storage_terminal",
-	&"viridian_courier", &"viridian_gym_door", &"viridian_gym_watcher", &"viridian_kid",
+	&"viridian_courier", &"viridian_gym_door", &"viridian_gym_watcher", &"viridian_house_door",
+	&"viridian_kid",
 	&"viridian_lass", &"viridian_old_man", &"viridian_traveler",
 ]
 ## Plus aucun drapeau futur au 4B : rival_battle_done est levé par la scène du combat
@@ -486,6 +488,7 @@ func test_speakers_and_narration() -> void:
 		&"viridian_kid": ["Enfant", false], &"viridian_traveler": ["Voyageur", false],
 		&"viridian_old_man": ["Vieil homme", false],
 		&"viridian_gym_watcher": ["Habitant", false], &"viridian_gym_door": ["", true],
+		&"viridian_house_door": ["", true],
 		&"oak_parcel_records": ["Prof. Chen", false],
 		&"oak_pokedex_activated": ["Prof. Chen", false], &"oak_parcel_rival": ["", false],
 		&"rival_parcel_return": ["Rival", false], &"rival_parcel_greet": ["Rival", false],

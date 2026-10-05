@@ -137,6 +137,19 @@ const SCENES := {
 	]},
 	"scare_mom": {"steps": [{"scare": "mom"}, {"set": ["after"]}]},
 	"scare_ghost": {"steps": [{"scare": "nobody"}, {"set": ["after"]}]},
+	"mom_background": {"steps": [
+		{"move": "mom", "background": true, "path": ["down", "down", "left"]},
+		{"face": "player", "to": "left"}, {"set": ["during"]},
+	]},
+	"mom_background_then_despawn": {"steps": [
+		{"move": "mom", "background": true, "path": ["down", "down"]},
+		{"set": ["during"]}, {"despawn": "mom"}, {"set": ["after"]},
+	]},
+	"two_backgrounds": {"steps": [
+		{"move": "leo_rattata", "background": true, "path": ["up", "up", "up"]},
+		{"move": "leo", "background": true, "path": ["left", "up", "up"]},
+	]},
+	"reactions": {"steps": [{"react": "player"}, {"react": "mom"}, {"set": ["after"]}]},
 }
 
 
@@ -992,3 +1005,66 @@ func test_give_without_a_bag_is_skipped_with_error() -> void:
 	await _await_scene_end()
 	assert_push_error("pas de Sac")
 	assert_true(_flags.has_flag(&"after"))
+
+
+# --- Retours T5 (jalon-07.md §15.21) : move en arrière-plan, étape react ------------------
+
+func test_background_move_lets_the_scene_go_on_and_the_scene_waits_for_it() -> void:
+	var mom := _map.get_npc(&"mom")
+	var elapsed: Array[float] = [0.0]
+	assert_true(_director.play(&"mom_background"))
+	assert_true(mom.is_moving(), "premier pas parti tout de suite")
+	await wait_process_frames(2)
+	assert_true(_flags.has_flag(&"during"), "les étapes suivantes n'attendent pas")
+	assert_eq(_player.get_facing(), Vector2i.LEFT)
+	assert_true(_director.is_running(), "la scène attend la fin de la marche")
+	var count := func() -> void:
+		if _director.is_running():
+			elapsed[0] += get_process_delta_time()
+	get_tree().process_frame.connect(count)
+	await _await_scene_end()
+	get_tree().process_frame.disconnect(count)
+	assert_eq(mom.get_cell(), Vector2i(6, 6))
+	assert_gt(elapsed[0], 2.0 * Grid.WALK_STEP_DURATION, "fin de scène après le dernier pas")
+	assert_true(_player.is_input_enabled())
+	assert_push_error_count(0)
+
+
+func test_a_later_step_on_the_same_npc_waits_for_its_background_move() -> void:
+	var mom := _map.get_npc(&"mom")
+	var cells: Array[Vector2i] = []
+	mom.step_finished.connect(func(cell: Vector2i) -> void: cells.append(cell))
+	_director.play(&"mom_background_then_despawn")
+	await _await_scene_end()
+	assert_eq(cells, [Vector2i(7, 5), Vector2i(7, 6)] as Array[Vector2i],
+		"despawn après les deux pas")
+	assert_null(_map.get_npc(&"mom"))
+	assert_true(_flags.has_flag(&"after"))
+	assert_push_error_count(0)
+
+
+func test_two_background_moves_one_behind_the_other_never_stall() -> void:
+	# Le Rattata (17, 9) part vers le haut ; Léo (18, 9) prend sa case dans la même image.
+	var rat := _map.get_npc(&"leo_rattata")
+	var leo := _map.get_npc(&"leo")
+	var leo_steps: Array[int] = []
+	leo.step_finished.connect(func(_cell: Vector2i) -> void:
+		leo_steps.append(Engine.get_process_frames()))
+	_director.play(&"two_backgrounds")
+	await _await_scene_end()
+	assert_eq(rat.get_cell(), Vector2i(17, 6))
+	assert_eq(leo.get_cell(), Vector2i(17, 7))
+	assert_eq(leo_steps.size(), 3)
+	assert_push_error_count(0)
+
+
+func test_react_step_for_the_player_and_an_npc() -> void:
+	watch_signals(_player)
+	var mom := _map.get_npc(&"mom")
+	watch_signals(mom)
+	_director.play(&"reactions")
+	await _await_scene_end()
+	assert_signal_emit_count(_player, "reacted", 1)
+	assert_signal_emit_count(mom, "reacted", 1)
+	assert_true(_flags.has_flag(&"after"), "la scène n'attend pas la réaction")
+	assert_push_error_count(0)

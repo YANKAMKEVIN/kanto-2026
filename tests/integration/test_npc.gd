@@ -744,3 +744,47 @@ func test_without_idle_react_nothing_plays() -> void:
 	watch_signals(npc)
 	await wait_seconds(0.4)
 	assert_signal_not_emitted(npc, "reacted")
+
+
+# --- Retours T5 (jalon-07.md §15.21) : marcher ou courir, jamais un mélange --------------
+
+## Planche peinte sans course (l'enfant) : un pas demandé en course est marché, à la cadence
+## de marche, avec l'animation de marche.
+func test_a_painted_look_without_run_walks_when_asked_to_run() -> void:
+	var grid := GridWorld.new(Vector2i(10, 10))
+	var npc := _make_on_grid(_spec({"sprite": &"kid"}), grid)
+	var sprite := _sprite(npc)
+	assert_false(sprite.sprite_frames.has_animation(&"run_right"), "pas de fausse course")
+	assert_false(npc.can_run())
+	assert_true(npc.step(Vector2i.RIGHT, true))
+	assert_eq(sprite.animation, &"walk_right")
+	_simulate(npc, int(Grid.RUN_STEP_DURATION / FRAME) + 2)
+	assert_true(npc.is_moving(), "encore en marche après la durée d'un pas de course")
+	_simulate(npc, int((Grid.WALK_STEP_DURATION - Grid.RUN_STEP_DURATION) / FRAME) + 2)
+	assert_false(npc.is_moving())
+	assert_eq(npc.get_cell(), CELL + Vector2i.RIGHT)
+
+
+## Le héros peint court (planche de course) ; les apparences provisoires (Chen : marche et
+## course ; générique : aucune animation de pas) gardent la course.
+func test_looks_with_a_run_or_without_any_step_animation_can_run() -> void:
+	var grid := GridWorld.new(Vector2i(10, 10))
+	assert_true(_make_on_grid(_spec({"sprite": &"player"}), grid).can_run())
+	assert_true(_make_on_grid(_spec({"id": &"oak", "sprite": &"oak",
+		"cell": Vector2i(1, 1)}), grid).can_run())
+	assert_true(_make_on_grid(_spec({"id": &"npc2", "cell": Vector2i(8, 8)}), grid).can_run())
+
+
+## Un pas = un demi-cycle (2 images sur 4) ; les pas alternent les deux pieds, même avec
+## un arrêt entre deux pas (routines) : jamais le même pied à chaque case.
+func test_steps_alternate_feet_even_after_a_stop() -> void:
+	var grid := GridWorld.new(Vector2i(10, 10))
+	var npc := _make_on_grid(_spec({"sprite": &"kid"}), grid)
+	var sprite := _sprite(npc)
+	var first_frames: Array[int] = []
+	for direction: Vector2i in [Vector2i.RIGHT, Vector2i.RIGHT, Vector2i.DOWN, Vector2i.LEFT]:
+		assert_true(npc.step(direction))
+		first_frames.append(sprite.frame)
+		_simulate(npc, int(Grid.WALK_STEP_DURATION / FRAME) + 3)
+		assert_false(npc.is_moving())
+	assert_eq(first_frames, [0, 2, 0, 2] as Array[int], "pied gauche, pied droit…")
