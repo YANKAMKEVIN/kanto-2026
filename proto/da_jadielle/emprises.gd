@@ -13,6 +13,11 @@ const REGLES: Array = [
 	["falaise", 4, 1], ["int_comptoir", 5, 1], ["int_caisse", 5, 1], ["int_rayon", 3, 1],
 	["int_presentoir", 3, 1], ["int_banquette", 2, 1], ["int_plante", 1, 1],
 	["int_terminal", 2, 1],
+	# Bourg Palette (série 06).
+	["maison_joueur", 6, 3], ["maison_rival", 6, 3], ["labo", 10, 4], ["serre", 3, 2],
+	["arbre_ancien", 4, 3], ["champ", 5, 3], ["camionnette", 3, 2], ["velo", 1, 1],
+	["boite_lettres", 1, 1], ["potager", 3, 1], ["ronces", 2, 1], ["tronc_couche", 3, 1],
+	["rocher_mer", 2, 1],
 ]
 
 

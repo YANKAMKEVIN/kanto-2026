@@ -54,6 +54,23 @@ OBJETS = [
     ("WORLD_RELIEF_ESCALIER_01_NE_r1.png", "escalier.png", ("w", 2.2)),
     ("WORLD_PROP_ROCHER_01_NE_r1.png", "rocher.png", ("w", 2)),
     ("WORLD_GROUND_HAUTES_HERBES_01_NE_r1.png", "hautes_herbes.png", ("w", 1.15)),
+    # Bourg Palette (série 06, lumière neutre) ; boîte aux lettres et potager repris du J7.
+    ("WORLD_BLDG_MAISON_JOUEUR_01_NE_r1.png", "maison_joueur.png", ("w", 6.5)),
+    ("WORLD_BLDG_MAISON_RIVAL_01_NE_r1.png", "maison_rival.png", ("w", 6.5)),
+    ("WORLD_BLDG_LABO_01_NE_r1.png", "labo.png", ("w", 10)),
+    ("WORLD_BLDG_SERRE_01_NE_r1.png", "serre.png", ("w", 3)),
+    ("WORLD_TREE_ANCIEN_01_NE_r1.png", "arbre_ancien.png", ("w", 6)),
+    ("WORLD_PROP_CLOTURE_PIQUETS_01_NE_r1.png", "cloture_piquets.png", ("w", 4)),
+    ("WORLD_PROP_VELO_01_NE_r1.png", "velo.png", ("w", 1.6)),
+    ("WORLD_PROP_CAMIONNETTE_01_NE_r1.png", "camionnette.png", ("w", 2.4)),
+    ("WORLD_GROUND_CHAMP_01_NE_r1.png", "champ.png", ("w", 6)),
+    ("WORLD_PROP_PONTON_01_NE_r1.png", "ponton.png", ("w", 5)),
+    ("WORLD_PROP_RONCES_01_NE_r1.png", "ronces.png", ("w", 2)),
+    ("WORLD_PROP_TRONC_COUCHE_01_NE_r1.png", "tronc_couche.png", ("w", 3)),
+    ("WORLD_PROP_ROCHER_MER_01_NE_r1.png", "rocher_mer.png", ("w", 2)),
+    ("WORLD_RELIEF_ESCALIER_BOIS_01_NE_r1.png", "escalier_bois.png", ("w", 2)),
+    ("WORLD_PROP_BOITE_LETTRES_01_NE_r1.png", "boite_lettres.png", ("h", 1.3)),
+    ("WORLD_PROP_POTAGER_01_NE_r1.png", "potager.png", ("w", 3)),
 ]
 # Enveloppes des pièces (15 × 10 cases), opaques.
 PIECES = [
@@ -64,6 +81,8 @@ SOLS = [
     ("VALIDE_HERBE.png", "herbe.png", 1.0),
     ("VALIDE_PAVE_CENTRE.png", "paves.png", 0.7),  # contraste réduit (fiche)
     ("WORLD_GROUND_CHEMIN_01_NE_r1.png", "chemin.png", 0.55),
+    ("WORLD_GROUND_SABLE_01_NE_r1.png", "sable.png", 0.8),
+    ("WORLD_GROUND_EAU_01_NE_r1.png", "eau.png", 1.0),
 ]
 TEXTURE_SOL = 384  # 4 × 4 cases
 PLANCHE_BORDURE = "VALIDE_DECAL_BORD.png"
