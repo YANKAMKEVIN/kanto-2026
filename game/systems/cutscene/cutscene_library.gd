@@ -74,6 +74,10 @@ extends RefCounted
 ## Jalon 7 (jalon-07.md §3.8, T25) :
 ## - wake_up : true (aucun autre paramètre) ; réveil au point de repos après une défaite contre
 ##   un Dresseur ([DefeatRecovery]) ; la scène s'arrête après elle.
+## Retours T5 (jalon-07.md §15.21) :
+## - move accepte « background » (true : PNJ seulement, sans « follower ») : marche en
+##   arrière-plan, la scène continue ([member CutsceneStep.background]) ;
+## - react : acteur (joueur, PNJ ou alias) qui a une petite réaction de surprise.
 ## Acteur = « player », identifiant d'un PNJ de la carte courante, ou **alias** « $nom »
 ## (forme $[a-z_]+, [method CutsceneStep.is_alias]) : PNJ choisi par le code qui lance la
 ## scène (CutsceneDirector.play(id, alias)), résolu au début de chaque étape. Les alias
@@ -89,10 +93,11 @@ const _SCENE_KEYS: Array[String] = ["variants"]
 const _VARIANT_KEYS: Array[String] = ["if", "unless", "steps"]
 ## Clés permises en plus de la clé de type, par type (ordre de CutsceneStep.Kind).
 const _EXTRA_KEYS: Array[Array] = [
-	[], [], ["to"], [], [], ["path", "to", "run", "follower", "keep_facing", "optional"],
+	[], [], ["to"], [], [],
+	["path", "to", "run", "follower", "keep_facing", "optional", "background"],
 	["at", "facing"], ["to"],
 	["to"], [], ["player_pokemon", "foe_pokemon", "win", "lose"], ["count", "found"],
-	[], ["count"], [], [],
+	[], ["count"], [], [], [],
 ]
 ## Conditions permises sur toute étape sauf spawn.
 const _CONDITION_KEYS: Array[String] = ["if", "unless"]
@@ -396,6 +401,9 @@ func _parse_step(value: Variant, where: String) -> CutsceneStep:
 		CutsceneStep.Kind.WAKE_UP:
 			if not main is bool or not main:
 				ok = _fail("%s : « wake_up » vaut true" % where)
+		CutsceneStep.Kind.REACT:
+			ok = _read_actor(main, where + " react", func(v: StringName) -> void:
+				step.actor = v) and ok
 	return step if ok else null
 
 
@@ -503,6 +511,15 @@ func _parse_move(entry: Dictionary, step: CutsceneStep, where: String) -> bool:
 			step.optional = entry["optional"]
 		if step.optional and step.near.is_empty():
 			ok = _fail("%s : « optional » exige une destination « near »" % where)
+	if entry.has("background"):
+		if not entry["background"] is bool:
+			ok = _fail("%s : « background » vaut true ou false" % where)
+		else:
+			step.background = entry["background"]
+		if step.background and step.actor == NpcRoster.PLAYER_ID:
+			ok = _fail("%s : « background » ne vaut que pour un PNJ" % where)
+		if step.background and not step.follower.is_empty():
+			ok = _fail("%s : « background » sans « follower »" % where)
 	return ok
 
 

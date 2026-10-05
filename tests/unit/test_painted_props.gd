@@ -82,7 +82,7 @@ func test_shadow_textures_exist_and_are_drawn_under_everything() -> void:
 		for pair: Array in [["ombre", "CastShadow", WorldLighting.GROUP_CAST_SHADOWS],
 				["contact", "ContactShadow", WorldLighting.GROUP_CONTACT_SHADOWS]]:
 			var node := prop.get_node_or_null(NodePath(pair[1])) as Sprite2D
-			if not entry.has(pair[0]):
+			if not entry.has(pair[0]) or not PaintedPropRules.casts_shadows(StringName(id)):
 				assert_null(node, "%s : pas de %s" % [id, pair[1]])
 				continue
 			var shadow: Dictionary = entry[pair[0]]
@@ -101,9 +101,48 @@ func test_shadow_textures_exist_and_are_drawn_under_everything() -> void:
 				- PaintedPropRules.origin(StringName(id), size)
 			assert_eq(node.offset * 2.0,
 				Vector2(shadow["decalage"][0], shadow["decalage"][1]) + image_foot, id)
-	# Bâtiments et arbres ont les deux ombres.
-	for id: String in ["bldg_centre_01", "tree_central_01", "prop_banc_01"]:
+	# Bâtiments et mobilier ont les deux ombres.
+	for id: String in ["bldg_centre_01", "prop_banc_01", "prop_lampadaire_01"]:
 		assert_true(_objects[id].has("ombre") and _objects[id].has("contact"), id)
+		assert_not_null(_scene(id).get_node_or_null(^"CastShadow"), id)
+
+
+## Retours de Kevin au T5 (jalon-07.md §15.21) : la végétation n'a **aucune** ombre (ni portée,
+## ni de contact), sur toutes les cartes : scènes peintes, et ombres peintes dans les images
+## provisoires (Bourg Palette, Route 1, intérieurs).
+func test_vegetation_has_no_shadow_node() -> void:
+	var vegetation: Array[String] = []
+	for id: String in _objects:
+		if PaintedPropRules.is_vegetation(StringName(id)):
+			vegetation.append(id)
+	for id: String in ["tree_a_01", "tree_b_01", "tree_central_01", "tree_fruitier_01",
+			"prop_buisson_a_01", "prop_buisson_b_01", "prop_buisson_c_01", "prop_haie_01",
+			"prop_haie_v_01", "prop_platebande_01", "prop_massif_01", "prop_pots_fleurs_01",
+			"prop_potager_01", "int_plante", "ground_hautes_herbes_01"]:
+		assert_true(vegetation.has(id), "%s : végétation" % id)
+	for id: String in ["bldg_centre_01", "prop_banc_01", "prop_tonneau_01", "prop_cloture_01",
+			"prop_rocher_01", "prop_lampadaire_01"]:
+		assert_false(vegetation.has(id), "%s : garde ses ombres" % id)
+	for id: String in vegetation:
+		var prop := _scene(id)
+		if prop == null:
+			continue
+		for child: Node in prop.get_children():
+			assert_false(child.is_in_group(WorldLighting.GROUP_CAST_SHADOWS)
+				or child.is_in_group(WorldLighting.GROUP_CONTACT_SHADOWS)
+				or String(child.name).contains("Shadow"), "%s : %s" % [id, child.name])
+	# Images provisoires : plus d'ellipse d'ombre (couleur de tools/gen_placeholder_props.gd,
+	# alpha 0,28) sous les arbres, buissons et plantes.
+	for path: String in ["tree_oak_a", "tree_oak_b", "tree_pine", "tree_birch", "tree_maple",
+			"plaza_tree", "bush_a", "bush_b", "interior/plant"]:
+		var image := (load("res://assets/tiles/placeholder/props/%s.png" % path)
+			as Texture2D).get_image()
+		var shadow_pixels := 0
+		for x: int in range(0, image.get_width(), 2):
+			var c := image.get_pixel(x, image.get_height() - 10)
+			if absf(c.a - 0.28) < 0.02 and c.r < 0.2 and c.g < 0.2:
+				shadow_pixels += 1
+		assert_eq(shadow_pixels, 0, "%s : pas d'ombre peinte" % path)
 
 
 func test_materials_shared_by_family() -> void:

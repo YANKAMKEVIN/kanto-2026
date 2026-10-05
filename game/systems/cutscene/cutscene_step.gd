@@ -53,17 +53,25 @@ extends RefCounted
 ## - [constant Kind.WAKE_UP] : [method DefeatRecovery.recover] (équipe soignée, fondu, réveil au
 ##   point de repos, mot du lieu) ; la carte a changé, **la scène s'arrête là** (les étapes
 ##   suivantes ne sont pas jouées). Sans paramètre (« wake_up »: true dans les fichiers).
+## Retours T5 (jalon-07.md §15.21), micro-scène d'arrivée à Jadielle :
+## - [member background] d'un « move » (PNJ seulement, sans suiveur) : le PNJ marche **en
+##   arrière-plan**, la scène passe aussitôt à l'étape suivante (regards, réactions pendant
+##   qu'il traverse) ; une étape suivante sur le même PNJ (move, hop, lean, despawn, scare,
+##   react) attend d'abord la fin de sa marche, et la scène ne finit qu'à la fin de toutes ;
+## - [constant Kind.REACT] : [member actor] (joueur ou PNJ) a une petite réaction de surprise
+##   ([method Npc.react], [method Player.react] : animation « react » ou petit bond), sans
+##   attendre sa fin.
 
 ## Nouvelles valeurs en fin d'enum (ordre de [constant TYPE_KEYS]).
 enum Kind {
 	WAIT, DIALOGUE, FACE, SET_FLAGS, SPAWN, MOVE, CHANGE_MAP, HOP, LEAN, DESPAWN, BATTLE, GIVE,
-	CAPTION, TAKE, SCARE, WAKE_UP,
+	CAPTION, TAKE, SCARE, WAKE_UP, REACT,
 }
 
 ## Clé de type de chaque étape dans les fichiers, dans l'ordre de [enum Kind].
 const TYPE_KEYS: Array[String] = [
 	"wait", "dialogue", "face", "set", "spawn", "move", "change_map", "hop", "lean",
-	"despawn", "battle", "give", "caption", "take", "scare", "wake_up",
+	"despawn", "battle", "give", "caption", "take", "scare", "wake_up", "react",
 ]
 ## Préfixe d'un alias d'acteur (« $player_starter »).
 const ALIAS_PREFIX: String = "$"
@@ -86,6 +94,8 @@ var run: bool = false
 var follower: StringName = &""
 var keep_facing: bool = false
 var optional: bool = false
+## Étape « move » : marche en arrière-plan (la scène continue sans attendre).
+var background: bool = false
 var map_id: StringName = &""
 var spawn: StringName = &""
 var facing: Vector2i = Vector2i.ZERO
@@ -173,6 +183,7 @@ func copy() -> CutsceneStep:
 	other.follower = follower
 	other.keep_facing = keep_facing
 	other.optional = optional
+	other.background = background
 	other.map_id = map_id
 	other.spawn = spawn
 	other.facing = facing

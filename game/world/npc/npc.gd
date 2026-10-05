@@ -12,6 +12,10 @@ extends Node2D
 ## courante vit dans son [GridMover] ; [member NpcSpec.cell] reste sa case de départ.
 ## Au repos, [method _process] est coupé ; seule l'[AnimatedSprite2D] tourne (idle_<dir>).
 ## Il ne tourne que pendant un pas (walk_<dir> ou run_<dir> si l'apparence les a).
+## Retours T5 (jalon-07.md §15.21) : un PNJ **marche ou court, jamais un mélange** : sans vraie
+## animation de course ([method can_run]), un pas demandé en course est marché (cadence de
+## marche) ; chaque pas montre **un demi-cycle** et les pas alternent les deux pieds
+## ([member _stride]), comme le joueur qui enchaîne les cases (un appui de pied par case).
 ## Jalon 4 (docs/tech/jalon-04.md §3.5, §13.4) : surcharge d'interaction (« Rencontrer »),
 ## léger élan vers une case ([method lean_toward] / [method settle]) et saut en arc depuis
 ## un meuble ([method hop_to]), dans le style de [member NpcSpec.hop_style]. Tout est en
@@ -192,6 +196,8 @@ var _look_tween: Tween
 var _look_index: int = 0
 ## Pendant un dialogue avec le joueur ([method begin_interaction] → [method end_interaction]).
 var _interacting: bool = false
+## Demi-cycle du prochain pas (0 : pied gauche, images 0-1 ; 1 : pied droit, images 2-3).
+var _stride: int = 0
 
 @onready var _sprite: AnimatedSprite2D = %Sprite
 @onready var _shadow: Sprite2D = %Shadow
@@ -330,7 +336,7 @@ func leave_grid() -> void:
 func step(direction: Vector2i, run: bool = false) -> bool:
 	if _mover == null or _hopping or not Grid.is_cardinal(direction):
 		return false
-	var started := _mover.start_step(direction, run)
+	var started := _mover.start_step(direction, run and can_run())
 	_facing = _mover.get_facing()
 	if not started:
 		_play_idle()
@@ -342,6 +348,17 @@ func step(direction: Vector2i, run: bool = false) -> bool:
 
 func is_moving() -> bool:
 	return _mover != null and _mover.is_moving()
+
+
+## Vrai si l'apparence peut courir : elle a une vraie animation de course (run_<dir>), ou
+## aucune animation de pas (provisoire immobile, qui glisse à la vitesse demandée). Une
+## apparence qui marche sans course (planches peintes sauf le héros) marche toujours.
+func can_run() -> bool:
+	var frames := _sprite.sprite_frames if _sprite != null else null
+	if frames == null:
+		return true
+	return frames.has_animation(_RUN_ANIMS[Vector2i.DOWN]) \
+		or not frames.has_animation(_WALK_ANIMS[Vector2i.DOWN])
 
 
 ## Interaction du PNJ (toujours la même instance : aucune allocation) : la surcharge si
@@ -783,6 +800,11 @@ func _play_move() -> void:
 		return
 	if _sprite.animation != anim or not _sprite.is_playing():
 		_sprite.play(anim)
+	# Un pas = un demi-cycle calé sur sa durée (4 images pour deux cases) : il commence sur le
+	# pied suivant, même après un arrêt (sinon chaque pas rejoue le même pied).
+	var count := _sprite.sprite_frames.get_frame_count(anim)
+	_sprite.set_frame_and_progress(_stride * (count / 2), 0.0)
+	_stride = 1 - _stride
 
 
 ## Fin d'un pas (dans [method GridMover.update]) : l'interaction suit la case (aucune

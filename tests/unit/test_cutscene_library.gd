@@ -610,3 +610,40 @@ func test_invalid_scare_steps() -> void:
 	for expected: String in ["réservé aux PNJ", "scare : identifiant attendu",
 			"alias mal formé", "clé inconnue « to »", "exactement un type"]:
 		assert_string_contains(errors, expected)
+
+
+# --- Retours T5 (jalon-07.md §15.21) : move en arrière-plan, étape react ------------------
+
+func test_background_move_and_react_steps() -> void:
+	var move := _one_step({"move": "kid", "background": true, "path": ["right", "right"]}, "a")
+	assert_not_null(move, str(_library.get_errors()))
+	assert_true(move.background)
+	assert_true(move.copy().background, "copiée")
+	var plain := _one_step({"move": "kid", "path": ["right"]}, "b")
+	assert_false(plain.background, "faux par défaut")
+	assert_eq(CutsceneStep.kind_name(CutsceneStep.Kind.REACT), &"react")
+	var actors: Array[String] = ["player", "viridian_roof_pidgey", "$buddy"]
+	for i: int in actors.size():
+		var react := _one_step({"react": actors[i]}, "r_%d" % i)
+		assert_not_null(react, str(_library.get_errors()))
+		assert_eq(react.kind, CutsceneStep.Kind.REACT)
+		assert_eq(react.actor, StringName(actors[i]))
+
+
+func test_invalid_background_and_react_steps() -> void:
+	var bad: Array[Dictionary] = [
+		{"move": "player", "background": true, "path": ["up"]},
+		{"move": "kid", "background": true, "follower": "rat", "path": ["up"]},
+		{"move": "kid", "background": "yes", "path": ["up"]},
+		{"react": ""},
+		{"react": "kid", "to": "up"},
+	]
+	for i: int in bad.size():
+		assert_null(_one_step(bad[i], "bad_%d" % i), str(bad[i]))
+	assert_eq(_library.size(), 0)
+	var errors := "\n".join(_library.get_errors())
+	for expected: String in ["« background » ne vaut que pour un PNJ",
+			"« background » sans « follower »", "« background » vaut true ou false",
+			"clé inconnue « to »"]:
+		assert_string_contains(errors, expected)
+	assert_push_error_count(bad.size(), "une erreur par étape")

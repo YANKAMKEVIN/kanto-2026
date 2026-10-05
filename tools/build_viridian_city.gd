@@ -111,17 +111,11 @@ const REGIONS: Array = [
 	[Cell.STAIR, Rect2i(9, 12, 3, 1)],
 	[Cell.STAIR, Rect2i(27, 12, 3, 1)],
 	[Cell.STAIR, Rect2i(27, 24, 3, 1)],
-	# Chemins de terre : liaisons du niveau haut, route de l'ouest (Route 22), allées des
-	# jardins, chemin du bas, chemin de la Route 1.
+	# Chemins de terre : liaisons du niveau haut, route de l'ouest (Route 22), chemin du bas,
+	# chemin de la Route 1 (allées des jardins, de la porte au portail : _paint_cells).
 	[Cell.PATH, Rect2i(17, 10, 10, 2)],
 	[Cell.PATH, Rect2i(30, 10, 14, 2)],
 	[Cell.PATH, Rect2i(0, 22, 9, 2)],
-	[Cell.PATH, Rect2i(19, 7, 1, 2)],
-	[Cell.PATH, Rect2i(37, 7, 1, 2)],
-	[Cell.PATH, Rect2i(7, 18, 1, 3)],
-	[Cell.PATH, Rect2i(46, 18, 1, 3)],
-	[Cell.PATH, Rect2i(19, 30, 1, 1)],
-	[Cell.PATH, Rect2i(38, 30, 1, 1)],
 	[Cell.PATH, Rect2i(18, 31, 9, 1)],
 	[Cell.PATH, Rect2i(30, 31, 10, 1)],
 	[Cell.PATH, Rect2i(27, 31, 3, 5)],
@@ -151,17 +145,31 @@ const CLIFF_ROW := 32
 const BALUSTRADE_DROP := 10.0
 
 ## Jardins clos : [maison, case d'ancrage, nom, enclos (Rect2i : colonnes des clôtures, de la
-## rangée du haut de la maison à la rangée de la clôture avant), colonne du portail]. Les
-## clôtures courent sur les deux colonnes de côté et la rangée avant, sauf le portail et les
-## cases de la maison ; la boîte aux lettres est à gauche du portail.
+## rangée du haut de la maison à la rangée de la clôture avant)]. Les clôtures courent sur les
+## deux colonnes de côté et la rangée avant, sauf le portail et les cases de la maison ; le
+## **portail est dans la colonne de la porte** ([constant HOUSE_DOOR_DX]) et une allée de terre
+## mène tout droit du portail à la case devant la porte (retours de Kevin au T5 : on doit
+## pouvoir aller jusqu'à chaque porte, et le voir) ; la boîte aux lettres est à gauche du
+## portail. Au moins une rangée d'allée entre la façade et la clôture avant.
 const GARDENS: Array = [
-	[&"bldg_maison_b_01", Vector2i(20, 6), "HouseNorthWest", Rect2i(16, 4, 9, 6), 19],
-	[&"bldg_maison_a_01", Vector2i(38, 6), "HouseNorthEast", Rect2i(33, 4, 11, 6), 37],
-	[&"bldg_maison_d_01", Vector2i(6, 17), "HouseWest", Rect2i(3, 15, 6, 7), 7],
-	[&"bldg_maison_c_01", Vector2i(47, 17), "HouseEast", Rect2i(43, 15, 8, 7), 46],
-	[&"bldg_maison_c_01", Vector2i(20, 29), "HouseSouthWest", Rect2i(13, 26, 12, 5), 19],
-	[&"bldg_maison_d_01", Vector2i(37, 29), "HouseSouthEast", Rect2i(32, 26, 12, 5), 38],
+	[&"bldg_maison_b_01", Vector2i(20, 6), "HouseNorthWest", Rect2i(16, 4, 9, 6)],
+	[&"bldg_maison_a_01", Vector2i(38, 6), "HouseNorthEast", Rect2i(33, 4, 11, 6)],
+	[&"bldg_maison_d_01", Vector2i(6, 17), "HouseWest", Rect2i(3, 15, 6, 7)],
+	[&"bldg_maison_c_01", Vector2i(47, 17), "HouseEast", Rect2i(43, 15, 8, 7)],
+	[&"bldg_maison_c_01", Vector2i(20, 28), "HouseSouthWest", Rect2i(13, 26, 12, 5)],
+	[&"bldg_maison_d_01", Vector2i(37, 28), "HouseSouthEast", Rect2i(32, 26, 12, 5)],
 ]
+## Colonne de la porte peinte de chaque modèle de maison, relative à la case d'ancrage (lue
+## sur les images : A et B à gauche du milieu, C au milieu, D à droite). La porte est la case
+## du bas de l'emprise dans cette colonne : on l'examine depuis la case du dessous.
+const HOUSE_DOOR_DX: Dictionary = {
+	&"bldg_maison_a_01": -1,
+	&"bldg_maison_b_01": -1,
+	&"bldg_maison_c_01": 0,
+	&"bldg_maison_d_01": 1,
+}
+## Dialogue des portes de maisons (fermées : défaut en attendant la décision de Kevin).
+const HOUSE_DOOR_DIALOGUE := &"viridian_house_door"
 
 ## Objets peints : [identifiant, case d'ancrage, nom du nœud]. Pied posé par
 ## PaintedPropRules.foot_position (bord ou milieu de case selon la largeur).
@@ -183,16 +191,16 @@ const PROPS: Array = [
 	[&"tree_fruitier_01", Vector2i(42, 5), "NEFruit"],
 	[&"prop_buisson_a_01", Vector2i(34, 5), "NEBush"],
 	[&"prop_caisses_01", Vector2i(41, 6), "NECrates"],
-	[&"prop_pots_fleurs_01", Vector2i(38, 7), "NEPots"],
+	[&"prop_pots_fleurs_01", Vector2i(39, 7), "NEPots"],
 	# Jardin ouest.
 	[&"tree_fruitier_01", Vector2i(4, 18), "WFruit"],
 	[&"prop_pots_fleurs_01", Vector2i(5, 18), "WPots"],
 	[&"prop_potager_01", Vector2i(5, 20), "WVeg"],
 	# Jardin est.
-	[&"prop_potager_01", Vector2i(48, 20), "EVeg"],
+	[&"prop_potager_01", Vector2i(45, 20), "EVeg"],
 	[&"tree_fruitier_01", Vector2i(44, 19), "EFruit"],
-	[&"prop_pots_fleurs_01", Vector2i(45, 20), "EPots"],
-	[&"prop_tonneau_01", Vector2i(48, 18), "EBarrel"],
+	[&"prop_pots_fleurs_01", Vector2i(48, 20), "EPots"],
+	[&"prop_tonneau_01", Vector2i(49, 19), "EBarrel"],
 	[&"prop_caisses_01", Vector2i(49, 18), "ECrates"],
 	# Jardin sud-ouest.
 	[&"prop_potager_01", Vector2i(15, 29), "SWVeg"],
@@ -200,14 +208,14 @@ const PROPS: Array = [
 	[&"tree_fruitier_01", Vector2i(14, 28), "SWFruit"],
 	[&"prop_tonneau_01", Vector2i(23, 27), "SWBarrel"],
 	[&"prop_caisses_01", Vector2i(23, 26), "SWCrates"],
-	[&"prop_pots_fleurs_01", Vector2i(20, 30), "SWPots"],
+	[&"prop_pots_fleurs_01", Vector2i(22, 29), "SWPots"],
 	# Jardin sud-est.
 	[&"prop_potager_01", Vector2i(41, 29), "SEVeg"],
 	[&"prop_linge_01", Vector2i(41, 26), "SELinen"],
 	[&"tree_fruitier_01", Vector2i(33, 27), "SEFruit"],
 	[&"prop_buisson_b_01", Vector2i(34, 29), "SEBush"],
 	[&"prop_tonneau_01", Vector2i(42, 27), "SEBarrel"],
-	[&"prop_pots_fleurs_01", Vector2i(37, 30), "SEPots"],
+	[&"prop_pots_fleurs_01", Vector2i(36, 29), "SEPots"],
 	# Plates-bandes et buissons au pied des murs, derrière le Centre et la Boutique.
 	[&"prop_platebande_01", Vector2i(19, 14), "BedBehindCenterW"],
 	[&"prop_platebande_01", Vector2i(23, 14), "BedBehindCenterE"],
@@ -391,6 +399,11 @@ func _paint_cells() -> void:
 		for y in range(rect.position.y, rect.end.y):
 			for x in range(rect.position.x, rect.end.x):
 				_cells[y * SIZE.x + x] = region[0]
+	# Allées des jardins : de la case devant la porte jusqu'au portail (clôture avant).
+	for garden: Array in GARDENS:
+		var door := _door_cell(garden)
+		for y in range(door.y + 1, (garden[3] as Rect2i).end.y):
+			_cells[y * SIZE.x + door.x] = Cell.PATH
 
 
 func _cell(c: Vector2i) -> int:
@@ -401,6 +414,16 @@ func _cell(c: Vector2i) -> int:
 
 func _walkable_kind(kind: int) -> bool:
 	return kind == Cell.LAWN or kind == Cell.PAVING or kind == Cell.PATH or kind == Cell.STAIR
+
+
+## Case de la porte d'une maison (rangée du bas de son emprise, colonne de la porte peinte).
+func _door_cell(garden: Array) -> Vector2i:
+	return (garden[1] as Vector2i) + Vector2i(int(HOUSE_DOOR_DX[garden[0]]), 0)
+
+
+## Colonne du portail d'un jardin : celle de la porte.
+func _gate_x(garden: Array) -> int:
+	return _door_cell(garden).x
 
 
 ## Cases des maisons d'un jardin (emprise du modèle autour de la case d'ancrage).
@@ -416,7 +439,7 @@ func _house_cells(garden: Array) -> Array[Vector2i]:
 func _plan_fences() -> void:
 	for garden: Array in GARDENS:
 		var rect: Rect2i = garden[3]
-		var gate := Vector2i(garden[4], rect.end.y - 1)
+		var gate := Vector2i(_gate_x(garden), rect.end.y - 1)
 		var house := _house_cells(garden)
 		var cells: Array[Vector2i] = []
 		for y in range(rect.position.y, rect.end.y - 1):
@@ -674,7 +697,7 @@ func _place_gardens(root: Node, entities: Node) -> void:
 		var rect: Rect2i = garden[3]
 		var prefix: String = garden[2]
 		var front := rect.end.y - 1
-		var gate_x: int = garden[4]
+		var gate_x := _gate_x(garden)
 		# Rangée avant : de part et d'autre du portail.
 		var runs: Array[Vector2i] = [Vector2i(rect.position.x, gate_x - 1),
 			Vector2i(gate_x + 1, rect.end.x - 1)]
@@ -917,6 +940,16 @@ func _add_interactables(root: Node) -> void:
 		point.set(&"facing", entry[3])
 		point.set(&"dialogue_id", entry[4])
 		_attach(root, root.get_node(^"Interactables"), point)
+	# Portes des maisons : fermées (« C'est fermé. »), examinées de face depuis l'allée.
+	for garden: Array in GARDENS:
+		var door := Marker2D.new()
+		door.set_script(point_script)
+		door.name = String(garden[2]) + "Door"
+		door.position = _world(_door_cell(garden))
+		door.set(&"size", Vector2i.ONE)
+		door.set(&"facing", Vector2i.UP)
+		door.set(&"dialogue_id", HOUSE_DOOR_DIALOGUE)
+		_attach(root, root.get_node(^"Interactables"), door)
 
 
 func _add_triggers(root: Node) -> void:

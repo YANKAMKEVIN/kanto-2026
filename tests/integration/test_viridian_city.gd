@@ -247,7 +247,7 @@ func test_terraces_are_crossed_only_by_the_stairs() -> void:
 ## moins quatre modèles de maisons, aucun plus de deux fois.
 func test_every_house_has_a_closed_garden_with_a_gate() -> void:
 	var gates: Array[Vector2i] = [Vector2i(19, 9), Vector2i(37, 9), Vector2i(7, 21),
-		Vector2i(46, 21), Vector2i(19, 30), Vector2i(38, 30)]
+		Vector2i(47, 21), Vector2i(20, 30), Vector2i(38, 30)]
 	var reach := _terrain.find_reachable(SOUTH[1])
 	for gate: Vector2i in gates:
 		assert_true(reach.has(gate), "portail atteignable %s" % gate)
@@ -261,6 +261,79 @@ func test_every_house_has_a_closed_garden_with_a_gate() -> void:
 	assert_gte(models.size(), 4, "au moins quatre modèles de maisons")
 	for path: String in models:
 		assert_lte(int(models[path]), 2, "%s au plus deux fois" % path.get_file())
+
+
+## Retours de Kevin au T5 (jalon-07.md §15.21) : « on ne peut pas accéder aux portes des
+## maisons ». Chaque porte de maison (six) est atteignable **à pied depuis l'entrée sud** sur la
+## vraie grille de collisions (relief et habitants), par une allée droite qui part du portail
+## (clôture de part et d'autre) ; rien n'est posé sur l'allée ni devant la porte ; examinée de
+## face, la porte répond « C'est fermé. ».
+func test_every_house_door_is_reachable_from_the_south_entrance_and_closed() -> void:
+	var interactions := _map.get_interactions()
+	var doors: Array[Vector2i] = []
+	for point: Node in _map.get_node(^"Interactables").get_children():
+		if point.get(&"dialogue_id") == &"viridian_house_door":
+			doors.append(Grid.world_to_cell((point as Node2D).position))
+	assert_eq(doors.size(), 6, "une porte par maison")
+	var reach := _terrain.find_reachable(SOUTH[1])
+	var crowded := _grid.find_reachable(SOUTH[1])
+	var props := _prop_cells()
+	for door: Vector2i in doors:
+		var front := door + Vector2i.DOWN
+		assert_true(_terrain.is_solid(door), "la porte %s est dans la maison" % door)
+		assert_true(reach.has(front), "devant la porte %s : atteignable" % door)
+		assert_true(crowded.has(front), "devant la porte %s : habitants à leur place" % door)
+		# Allée droite jusqu'au portail : la première case flanquée de clôtures.
+		var cell := front
+		while not (_terrain.is_solid(cell + Vector2i.LEFT)
+				and _terrain.is_solid(cell + Vector2i.RIGHT)):
+			assert_false(_terrain.is_solid(cell), "allée libre en %s" % cell)
+			assert_false(props.has(cell), "rien posé sur l'allée en %s" % cell)
+			cell += Vector2i.DOWN
+			if cell.y >= SIZE.y:
+				break
+		assert_lte(cell.y - front.y, 3, "portail à trois cases au plus de la porte %s" % door)
+		assert_false(props.has(cell), "portail ouvert en %s" % cell)
+		assert_true(reach.has(cell + Vector2i.DOWN), "chemin public devant le portail %s" % cell)
+		var found := InteractionFinder.find(_grid, interactions, front, Vector2i.UP)
+		assert_not_null(found, "porte %s examinée de face" % door)
+		if found != null:
+			assert_eq(found.kind, Interaction.Kind.EXAMINE)
+			assert_eq(found.dialogue_id, &"viridian_house_door")
+		assert_null(InteractionFinder.find(_grid, interactions, front + Vector2i.LEFT,
+			Vector2i.UP), "pas de côté : seulement de face (%s)" % door)
+	var library := DialogueLibrary.new()
+	library.load_dir()
+	var dialogue := library.get_dialogue(&"viridian_house_door")
+	assert_true(dialogue.draft, "texte provisoire (draft)")
+	assert_eq(dialogue.variants[0].pages[0].text, "C'est fermé.")
+
+
+## Cases occupées par l'emprise ou le pied d'un objet posé (sauf portails, clôtures et maisons
+## elles-mêmes, et les reliefs de la couche du sol).
+func _prop_cells() -> Dictionary:
+	var cells := {}
+	for child: Node in _map.get_entities().get_children():
+		var prop := child as WorldProp
+		if prop == null or child.scene_file_path.contains("bldg_maison_") \
+				or child.scene_file_path.contains("prop_portail_"):
+			continue
+		for cell: Vector2i in prop.get_solid_cells():
+			cells[cell] = true
+		if not child.scene_file_path.is_empty():
+			cells[prop.get_anchor_cell()] = true
+	return cells
+
+
+## Retours T5 (§15.21) : le Rattata de l'enfant suit son maître **au même rythme** (même boucle,
+## même pause, une case derrière) : il ne trottine pas puis s'arrête net contre lui.
+func test_the_kid_rattata_follows_at_the_kid_pace() -> void:
+	var kid := _roster.get_spec(&"kid")
+	var rattata := _roster.get_spec(&"kid_rattata")
+	assert_eq(rattata.route_cells, kid.route_cells, "même boucle")
+	assert_eq(rattata.route_pause, kid.route_pause, "même pause")
+	assert_eq(kid.route_start, (rattata.route_start + 1) % kid.route_cells.size(),
+		"une case devant son Rattata")
 
 
 ## Aucun habitant figé (Kevin, T5) : chacun marche, ou regarde autour de lui.

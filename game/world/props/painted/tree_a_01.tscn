@@ -1,38 +1,16 @@
 [gd_scene format=3]
 
-[ext_resource type="Script" path="res://game/world/props/prop.gd" id="1_3t1c7"]
-[ext_resource type="Material" path="res://game/world/lighting/materials/world_object_wind.tres" id="2_kn2gf"]
-[ext_resource type="Texture2D" path="res://assets/world/props/tree_a_01.png" id="3_vascr"]
-[ext_resource type="Material" path="res://game/world/lighting/materials/cast_shadow.tres" id="4_kdfue"]
-[ext_resource type="Texture2D" path="res://assets/world/props/tree_a_01_shadow.png" id="5_oiqi6"]
-[ext_resource type="Material" path="res://game/world/lighting/materials/contact_shadow.tres" id="6_tki61"]
-[ext_resource type="Texture2D" path="res://assets/world/props/tree_a_01_contact.png" id="7_364hi"]
+[ext_resource type="Script" path="res://game/world/props/prop.gd" id="1_cafx5"]
+[ext_resource type="Material" path="res://game/world/lighting/materials/world_object_wind.tres" id="2_lsdd5"]
+[ext_resource type="Texture2D" path="res://assets/world/props/tree_a_01.png" id="3_v28xu"]
 
-[node name="TreeA01" type="Node2D" unique_id=1888893037]
-script = ExtResource("1_3t1c7")
+[node name="TreeA01" type="Node2D" unique_id=826195564]
+script = ExtResource("1_cafx5")
 fade_when_covering = true
 
-[node name="Sprite" type="Sprite2D" parent="." unique_id=1859976064]
+[node name="Sprite" type="Sprite2D" parent="." unique_id=1064761788]
 unique_name_in_owner = true
-material = ExtResource("2_kn2gf")
-texture = ExtResource("3_vascr")
+material = ExtResource("2_lsdd5")
+texture = ExtResource("3_v28xu")
 centered = false
 offset = Vector2(-133.5, -384)
-
-[node name="CastShadow" type="Sprite2D" parent="." unique_id=2041471418 groups=["cast_shadows"]]
-z_index = -2
-z_as_relative = false
-material = ExtResource("4_kdfue")
-scale = Vector2(2, 2)
-texture = ExtResource("5_oiqi6")
-centered = false
-offset = Vector2(-79.5, -2)
-
-[node name="ContactShadow" type="Sprite2D" parent="." unique_id=1066976494 groups=["contact_shadows"]]
-z_index = -2
-z_as_relative = false
-material = ExtResource("6_tki61")
-scale = Vector2(2, 2)
-texture = ExtResource("7_364hi")
-centered = false
-offset = Vector2(-70.5, -0.5)

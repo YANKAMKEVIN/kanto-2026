@@ -1,38 +1,16 @@
 [gd_scene format=3]
 
-[ext_resource type="Script" path="res://game/world/props/prop.gd" id="1_2ewkn"]
-[ext_resource type="Material" path="res://game/world/lighting/materials/world_object_wind.tres" id="2_n460q"]
-[ext_resource type="Texture2D" path="res://assets/world/props/tree_fruitier_01.png" id="3_h21qi"]
-[ext_resource type="Material" path="res://game/world/lighting/materials/cast_shadow.tres" id="4_b1n1x"]
-[ext_resource type="Texture2D" path="res://assets/world/props/tree_fruitier_01_shadow.png" id="5_t0ksv"]
-[ext_resource type="Material" path="res://game/world/lighting/materials/contact_shadow.tres" id="6_ivl7k"]
-[ext_resource type="Texture2D" path="res://assets/world/props/tree_fruitier_01_contact.png" id="7_uikoc"]
+[ext_resource type="Script" path="res://game/world/props/prop.gd" id="1_887b7"]
+[ext_resource type="Material" path="res://game/world/lighting/materials/world_object_wind.tres" id="2_rwo5g"]
+[ext_resource type="Texture2D" path="res://assets/world/props/tree_fruitier_01.png" id="3_uvk27"]
 
-[node name="TreeFruitier01" type="Node2D" unique_id=1875943318]
-script = ExtResource("1_2ewkn")
+[node name="TreeFruitier01" type="Node2D" unique_id=1700324728]
+script = ExtResource("1_887b7")
 fade_when_covering = true
 
-[node name="Sprite" type="Sprite2D" parent="." unique_id=2144415660]
+[node name="Sprite" type="Sprite2D" parent="." unique_id=1417375838]
 unique_name_in_owner = true
-material = ExtResource("2_n460q")
-texture = ExtResource("3_h21qi")
+material = ExtResource("2_rwo5g")
+texture = ExtResource("3_uvk27")
 centered = false
 offset = Vector2(-138.5, -298)
-
-[node name="CastShadow" type="Sprite2D" parent="." unique_id=959158027 groups=["cast_shadows"]]
-z_index = -2
-z_as_relative = false
-material = ExtResource("4_b1n1x")
-scale = Vector2(2, 2)
-texture = ExtResource("5_t0ksv")
-centered = false
-offset = Vector2(-82, -2)
-
-[node name="ContactShadow" type="Sprite2D" parent="." unique_id=88129587 groups=["contact_shadows"]]
-z_index = -2
-z_as_relative = false
-material = ExtResource("6_ivl7k")
-scale = Vector2(2, 2)
-texture = ExtResource("7_uikoc")
-centered = false
-offset = Vector2(-73, 1.5)

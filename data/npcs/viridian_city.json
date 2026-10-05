@@ -29,7 +29,7 @@
 		"look": { "facings": ["up", "left", "up", "down", "right"], "every": 3.0 }
 	},
 	"viridian_roof_pidgey": {
-		"cell": [38, 21], "facing": "left", "sprite": "pokemon/pidgey", "lift": 230,
+		"cell": [33, 21], "facing": "left", "sprite": "pokemon/pidgey", "lift": 230,
 		"shy": { "action": "fly", "radius": 2 },
 		"look": { "facings": ["left", "down", "right", "down"], "every": 2.5 }
 	},
@@ -61,7 +61,7 @@
 		"if": ["viridian_arrived"],
 		"route": {
 			"cells": [[16, 22], [17, 22], [18, 22], [18, 23], [17, 23], [16, 23]],
-			"pause": 0.5, "start": 0
+			"pause": 0.9, "start": 0
 		}
 	},
 	"traveler": {

@@ -100,6 +100,17 @@ const RULES: Dictionary[StringName, Dictionary] = {
 }
 
 
+## Familles de **végétation** (préfixes d'identifiant) : arbres, buissons, haies, plates-bandes,
+## massif, pots de fleurs, potager, plante d'intérieur, herbes hautes. Retours de Kevin au T5
+## (jalon-07.md §15.21) : leurs ombres donnaient une impression de suspension ; **ni ombre
+## portée ni ombre de contact** ([method casts_shadows]), sur toutes les cartes. Un nouvel
+## objet d'une de ces familles est sans ombre sans autre réglage.
+const VEGETATION_PREFIXES: Array[String] = [
+	"tree_", "prop_buisson_", "prop_haie", "prop_platebande_", "prop_massif_",
+	"prop_pots_fleurs_", "prop_potager_", "int_plante", "ground_hautes_herbes_",
+]
+
+
 static func has_rule(id: StringName) -> bool:
 	return RULES.has(id)
 
@@ -146,6 +157,21 @@ static func layer(id: StringName) -> StringName:
 
 static func has_wind(id: StringName) -> bool:
 	return bool((RULES.get(id, {}) as Dictionary).get("wind", false))
+
+
+## Vrai pour un objet d'une famille de végétation ([constant VEGETATION_PREFIXES]).
+static func is_vegetation(id: StringName) -> bool:
+	var name := String(id)
+	for prefix: String in VEGETATION_PREFIXES:
+		if name.begins_with(prefix):
+			return true
+	return false
+
+
+## Faux pour la végétation : la scène n'a ni `CastShadow` ni `ContactShadow`, même si le
+## catalogue fournit les images d'ombre (elles restent disponibles).
+static func casts_shadows(id: StringName) -> bool:
+	return not is_vegetation(id)
 
 
 static func fades(id: StringName) -> bool:

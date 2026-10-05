@@ -1,37 +1,15 @@
 [gd_scene format=3]
 
-[ext_resource type="Script" path="res://game/world/props/prop.gd" id="1_jbbjw"]
-[ext_resource type="Material" path="res://game/world/lighting/materials/world_object.tres" id="2_6ffic"]
-[ext_resource type="Texture2D" path="res://assets/world/props/prop_buisson_b_01.png" id="3_j2akq"]
-[ext_resource type="Material" path="res://game/world/lighting/materials/cast_shadow.tres" id="4_6fhvw"]
-[ext_resource type="Texture2D" path="res://assets/world/props/prop_buisson_b_01_shadow.png" id="5_jku4e"]
-[ext_resource type="Material" path="res://game/world/lighting/materials/contact_shadow.tres" id="6_68w01"]
-[ext_resource type="Texture2D" path="res://assets/world/props/prop_buisson_b_01_contact.png" id="7_im64t"]
+[ext_resource type="Script" path="res://game/world/props/prop.gd" id="1_x21g1"]
+[ext_resource type="Material" path="res://game/world/lighting/materials/world_object.tres" id="2_v7gen"]
+[ext_resource type="Texture2D" path="res://assets/world/props/prop_buisson_b_01.png" id="3_xqwj6"]
 
-[node name="PropBuissonB01" type="Node2D" unique_id=1390735855]
-script = ExtResource("1_jbbjw")
+[node name="PropBuissonB01" type="Node2D" unique_id=875734723]
+script = ExtResource("1_x21g1")
 
-[node name="Sprite" type="Sprite2D" parent="." unique_id=1886291776]
+[node name="Sprite" type="Sprite2D" parent="." unique_id=1375462831]
 unique_name_in_owner = true
-material = ExtResource("2_6ffic")
-texture = ExtResource("3_j2akq")
+material = ExtResource("2_v7gen")
+texture = ExtResource("3_xqwj6")
 centered = false
 offset = Vector2(-57.5, -91)
-
-[node name="CastShadow" type="Sprite2D" parent="." unique_id=1083585031 groups=["cast_shadows"]]
-z_index = -2
-z_as_relative = false
-material = ExtResource("4_6fhvw")
-scale = Vector2(2, 2)
-texture = ExtResource("5_jku4e")
-centered = false
-offset = Vector2(-41.5, -2)
-
-[node name="ContactShadow" type="Sprite2D" parent="." unique_id=1214342998 groups=["contact_shadows"]]
-z_index = -2
-z_as_relative = false
-material = ExtResource("6_68w01")
-scale = Vector2(2, 2)
-texture = ExtResource("7_im64t")
-centered = false
-offset = Vector2(-32.5, 2)
