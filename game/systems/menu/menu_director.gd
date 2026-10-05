@@ -345,7 +345,7 @@ func _emit_bag() -> void:
 	if _state == null:
 		return
 	bag_shown.emit(BagQuery.view(_state.bag, _items, _bag_context, _bag_sort, _bag_last,
-		_state.party, _bag_target, _data))
+		_state.party, _bag_target, _data, _state.money))
 
 
 func _emit_settings() -> void:

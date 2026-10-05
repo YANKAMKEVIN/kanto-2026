@@ -43,6 +43,9 @@ func is_available(screen: StringName) -> bool:
 		MenuRoute.DASHBOARD, MenuRoute.BAG, MenuRoute.MAP, MenuRoute.TRAINER, \
 				MenuRoute.SETTINGS:
 			return true
+		MenuRoute.SHOP:
+			# Écran seul, ouvert par le marchand ; jamais une carte (absent de DASHBOARD_ORDER).
+			return true
 	return false
 
 

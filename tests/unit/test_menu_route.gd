@@ -60,3 +60,18 @@ func test_routes_are_independent_copies() -> void:
 	var copy := route.duplicate_route()
 	copy.params["index"] = 3
 	assert_eq(route.get_param("index"), 1, "duplicate_route copie les paramètres")
+
+
+## Jalon 7 : la Boutique, écran seul (jalon-07.md §3.4).
+func test_shop_route() -> void:
+	var shop := MenuRoute.shop(&"viridian_mart", MenuRoute.SHOP_MODE_SELL)
+	assert_eq(shop.screen, MenuRoute.SHOP)
+	assert_eq(shop.params, {"shop": &"viridian_mart", "mode": &"sell"})
+	assert_eq(MenuRoute.shop(&"x").get_param("mode"), MenuRoute.SHOP_MODE_BUY)
+	assert_eq([MenuRoute.SHOP_MODE_BUY, MenuRoute.SHOP_MODE_SELL],
+		[ShopViews.MODE_BUY, ShopViews.MODE_SELL], "mêmes valeurs que ShopViews")
+	assert_true(MenuRoute.is_standalone_screen(MenuRoute.SHOP))
+	assert_false(MenuRoute.is_standalone_screen(MenuRoute.BAG))
+	assert_false(MenuRoute.SCREENS.has(MenuRoute.SHOP), "pas un écran du tableau de bord")
+	assert_false(MenuRoute.DASHBOARD_ORDER.has(MenuRoute.SHOP))
+	assert_null(MenuRoute.for_screen(MenuRoute.SHOP), "pas de route par défaut")

@@ -115,11 +115,14 @@ static func start_category(context: StringName, last: StringName,
 
 ## Vue de l'écran Sac du menu. [param party], [param target_index] et [param data] : le
 ## Pokémon visé depuis la fiche Équipe ([constant CONTEXT_TEAM]) ; sinon null / −1.
+## [param money] : l'argent du joueur (« 3 000 ₽ », J7) ; négatif = non affiché.
 static func view(bag: Bag, items: ItemLibrary, context: StringName,
 		sort: Sort = Sort.RELEVANCE, last_category: StringName = &"", party: Party = null,
-		target_index: int = -1, data: PokemonData = null) -> BagView:
+		target_index: int = -1, data: PokemonData = null, money: int = -1) -> BagView:
 	var result := BagView.new()
 	result.context = context
+	if money >= 0:
+		result.money_text = MenuFormat.money(money)
 	result.sort = sort
 	result.sort_labels = PackedStringArray(SORT_LABELS)
 	var target: Pokemon = null

@@ -313,3 +313,16 @@ func test_result_text_and_repeat() -> void:
 	assert_false(BagQuery.can_repeat(last), "plus de Potion")
 	assert_eq(BagQuery.result_text(null, "x"), "")
 	assert_eq(BagQuery.reason_text(ItemUse.Check.OK), "")
+
+
+# --- Argent (jalon 7, dossier 09 §10) --------------------------------------------------------
+
+func test_money_text_only_when_given() -> void:
+	var nbsp := MenuFormat.THOUSANDS_SEPARATOR
+	assert_eq(BagQuery.view(_bag, _items, BagQuery.CONTEXT_FIELD).money_text, "",
+		"sans argent donné : absent")
+	var view := BagQuery.view(_bag, _items, BagQuery.CONTEXT_FIELD, BagQuery.Sort.RELEVANCE,
+		&"", null, -1, null, 3000)
+	assert_eq(view.money_text, "3" + nbsp + "000" + nbsp + "₽")
+	assert_eq(BagQuery.view(_bag, _items, BagQuery.CONTEXT_FIELD, BagQuery.Sort.RELEVANCE,
+		&"", null, -1, null, 0).money_text, "0" + nbsp + "₽", "0 ₽ s'affiche")
