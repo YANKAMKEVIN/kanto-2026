@@ -1216,6 +1216,10 @@ Seules les vraies questions de game design et de direction artistique sont ici ;
 
 ## 15. Alignement du plan sur le code
 
+### 15.7 T7 — le choix dans la boîte de dialogue (ui-mobile, 2026-10-05)
+
+API conforme au §6.5, sans écart de contrat : `DialogueBox.show_choice(view)`, `hide_choice()` (silencieux), `cancel_choice() -> bool` (émet `choice_made(false)`), `is_choice_showing()`, signal `choice_made(confirmed)` (un par question). Précisions : (1) `ChoiceCards` est un **enfant de la boîte** (calque 30, créé au premier choix, gardé) ; la boîte reste ouverte derrière le voile, sa page à peine lisible : la question est dans `ChoiceView.title`. (2) Pendant un choix, `_input` n'avance plus et ne consomme plus le toucher (les cartes le reçoivent) ; `ui_cancel` = `cancel_choice()`. (3) `close()` cache un choix encore affiché, sans signal. (4) `get_choice_cards()` expose le composant (tests, `speed_scale`). (5) **Correctif dans `ChoiceCards` (T28)** : le contenu n'était jamais centré verticalement (collé en haut ou, en position animée, hors écran : la position d'un conteneur ancré cassait sa hauteur) ; le glissement d'apparition passe par `offset_top` / `offset_bottom` du `CenterContainer` et le contenu a une largeur minimale (deux cartes + écart). Les usages existants (confirmation d'oubli) en profitent. Rappel T8 : le retour Android appelle `_box.cancel_choice()` en premier dans `Boot._on_go_back`.
+
 ### 15.2 T2 — fondations du monde peint (2026-10-05, base `j7-monde` à `8716088`)
 
 Fait en parallèle du T0 (sauvegarde v3, autre session) : **aucun** fichier de `boot.gd`, `game_state.gd`, `save_system.gd`, du combat ni de `tools/art/` touché. Écarts et précisions par rapport au §3.2 :
