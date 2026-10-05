@@ -169,6 +169,11 @@ func _ready() -> void:
 		GameState, _items)
 	_cutscenes_node.set_battle_runner(_battle_director)
 	_cutscenes_node.set_inventory(GameState.bag, _items)
+	# Remise du colis (jalon-07.md §3.6.2, T19) : jeton {first_wild_species} des répliques de
+	# Chen, scène lancée par une variante de dialogue (« colis en main »), légende POKÉDEX ACTIVÉ.
+	_runner.token_values = _dialogue_token_values
+	_runner.cutscene_requested.connect(_on_cutscene_requested)
+	_cutscenes_node.set_hud(_hud)
 	_cutscenes_node.item_given.connect(_on_item_given)
 	_cutscenes_node.item_found.connect(_on_item_found)
 	_battle_director.battle_started.connect(_on_battle_state_changed.unbind(1))
@@ -783,6 +788,20 @@ func _on_center_healed(map_id: StringName, registered: bool) -> void:
 
 func _on_cutscene_started(_cutscene_id: StringName) -> void:
 	_refresh_controls()
+
+
+## Valeurs des jetons des dialogues (jalon-07.md §3.6, T19) : lues au début d'un dialogue qui en
+## contient (« Un Roucool… » ; aucune rencontre → la page est omise).
+func _dialogue_token_values() -> Dictionary[StringName, String]:
+	return DialogueTokens.values_for(GameState.first_wild_species(), _pokemon)
+
+
+## Une variante de dialogue lance une scène à sa fin (Chen, colis en main → `oak_parcel`). Le
+## verrou du joueur passe du dialogue à la scène dans la même image (jalon-07.md §3.6.2).
+func _on_cutscene_requested(cutscene_id: StringName) -> void:
+	if not _cutscenes_node.play(cutscene_id):
+		push_warning("Boot : la scène « %s » demandée par un dialogue n'a pas été jouée"
+			% cutscene_id)
 
 
 func _on_cutscene_finished(_cutscene_id: StringName) -> void:

@@ -1044,7 +1044,7 @@ Chaque tâche finit par `tools/test.sh` vert (nombre de tests rapporté), un imp
 - §3.6.
 - **CA** : tests du §3.6 verts.
 
-#### T19 — constructeur-monde : la remise du colis et l'activation
+#### T19 — constructeur-monde : la remise du colis et l'activation — **fait** (§15.19)
 - Contrat et partage : §3.6.2 (données de la scène, textes et étapes déjà livrés au T18 ; reste le câblage, le départ `parcel`, les tests de bout en bout et les réglages de mise en scène).
 - `oak_lab` : parler à Chen avec le colis → scène (`cutscene`) : répliques du §19 dans leur ordre, page de l'espèce omise sans rencontre, `take oak_parcel`, `set pokedex_activated`, `caption` POKÉDEX ACTIVÉ, « Observe. Explore. Fais-toi ta propre idée du monde. », le rival entre (sprite peint, Q-1), répliques, il repart ; objectif effacé.
 - **CA** : `test_parcel_scene` (vrai `Boot`, départ `parcel` puis la **vraie partie migrée** de Kevin : réplique avec son espèce ; partie sans rencontre : réplique omise ; 6 cartes après, données d'avant visibles, drapeau sauvegardé, colis retiré, aucun toast de rattrapage) ; captures `oak_parcel`, `pokedex_activated`.
@@ -1215,6 +1215,18 @@ Seules les vraies questions de game design et de direction artistique sont ici ;
 ---
 
 ## 15. Alignement du plan sur le code
+
+### 15.19 T19 — la remise du colis et l'activation du Pokédex (constructeur-monde, 2026-10-05, base `j7-centre` à `33fb9bd`)
+
+Contrat du §3.6.2 **respecté tel quel**. Aucun fichier de la Boutique, de `game/ui/`, de la sauvegarde (format), du combat, de `dialogue_*.gd`, `cutscene_step.gd`, `cutscene_library.gd`, `game_state.gd`, `menu_unlocks.gd` ni des textes de `data/dialogues/oak_lab.json` touché. Écarts et précisions :
+
+1. **`Boot`** (seul fichier de jeu modifié, minimum) : `_runner.token_values = _dialogue_token_values` (méthode plutôt que lambda : `DialogueTokens.values_for(GameState.first_wild_species(), _pokemon)`), `_runner.cutscene_requested.connect(_on_cutscene_requested)` (`play(id)` ; refus → `push_warning`), `_cutscenes_node.set_hud(_hud)`. Rien d'autre : l'autosave de fin de scène et l'absence de toast à l'activation existaient déjà.
+2. **Mise en scène** (`data/cutscenes/oak_lab.json`, réglage permis) : **une étape `move` ajoutée** — le rival, apparu sur la porte (7, 9), marche jusqu'à (7, 7) **avant** « Professeur ! Je suis revenu. » (sur la capture, la porte est sous la boîte de dialogue : il parlait invisible). Ordre des répliques et de `take` / `set` / `caption` inchangé (`test_cutscene_data` vert). Silences et regards du T18 gardés (lisibles sur capture).
+3. **Départ `parcel`** : Salamèche N9 + Roucool N7, Poké Ball ×3, Potion ×2, colis, 2 700 ₽ (défauts), drapeaux du prologue + `got_potion_route_1`, `viridian_arrived`, `got_oak_parcel`, paire `taken_charmander` / `taken_squirtle`, `rival_lab_won` ; devant la porte du labo (`oak_lab_door`, tourné vers le nord). `DebugStart` ne sait pas poser de première rencontre : ce départ est le cas « **sans rencontre** » (réplique de l'espèce omise) ; le cas avec espèce est la vraie partie.
+4. **`test_parcel_scene`** (2 tests, vrai `Boot`) : départ `parcel` et **vraie partie de Kevin** (`v2_kevin_j6_fin.json` migrée, + `viridian_arrived`, `got_oak_parcel` et le colis, comme après la Boutique du T12). Vérifie : pages exactes dans l'ordre (« Un Roucool… » seulement pour Kevin), drapeau levé **une fois** après « Ton voyage… », légende POKÉDEX ACTIVÉ juste après, rival entré puis reparti, **aucun toast** tout du long (+ 30 images après), colis retiré (`got_oak_parcel` gardé), 5 → 6 cartes, objectif vide, ligne vus · capturés, drapeau et Sac **écrits** à la fin de la scène, Pokédex de Kevin montrant Roucool, Rattata, Salamèche, reparler à Chen → « Le monde qui vous attend… », aucune scène. La légende garde ses fondus, sa tenue est raccourcie à 0,3 s dans le test.
+5. **Captures** : `tools/capture_parcel.gd` (`--save=kevin` | `--save=parcel`) → `build/captures/jalon07_t19/oak_parcel_<partie>_*.png`, `pokedex_activated_<partie>.png` (légende), `pokedex_activated_<partie>_menu.png` (6 cartes, « 4 vus · 3 capturés » pour Kevin), 2340 × 1080. La sauvegarde de Kevin est chargée en mémoire (jamais le vrai `user://`).
+6. Chen et Maya sont encore des sprites provisoires (pas de planche peinte `oak`) ; le rival et le héros sont peints. Rendu : à noter seulement (règle 3).
+
 
 ### 15.11 T11 — l'écran Boutique et l'argent affiché (ui-mobile, 2026-10-05, base `j7-centre` à `cc3572f`)
 
