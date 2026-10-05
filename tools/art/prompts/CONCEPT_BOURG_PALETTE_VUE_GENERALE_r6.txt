@@ -1,0 +1,42 @@
+CONCEPT ART — VUE GÉNÉRALE DE BOURG PALETTE (Kanto 2026), image de référence de direction artistique.
+
+Deux images sont jointes.
+IMAGE 1 : un PLAN SCHÉMATIQUE en aplats de couleur, vu du dessus, qui donne la COMPOSITION EXACTE à suivre : vert foncé = forêt dense ; vert moyen = herbe ; vert sombre en haut = hautes herbes ; beige clair = chemins de terre (Route 1 au nord, sentier côtier au sud) ; gris-beige = chemins et places PAVÉS ; rectangles rouges = maisons (toit rouge) avec leur porte (petit carré brun) ; vert pâle autour = jardins clôturés ; ocre en haut à droite = champ cultivé ; grand rectangle gris = laboratoire, sa porte vitrée (carré bleu) sur sa face SUD ; blanc = camionnette ; vert olive sous le laboratoire = jardins de recherche, bleu très pâle = petite serre ; trait brun à droite = ancien sentier envahi ; brun-gris = falaises ; sable = plage avec escalier et ponton ; bleu = océan.
+Le plan contient : un escalier (bande brune) sur la Route 1, au nord de la place, et JUSTE AU NORD de cet escalier une bande de HAUTES HERBES (vert sombre) qui couvre toute la largeur du chemin et le BARRE complètement : pour continuer vers la Route 1, il faut traverser les hautes herbes, il n'y a aucun contournement ni passage dégagé. Les hautes herbes sont hautes, touffues, d'un vert plus sombre que la pelouse, nettement reconnaissables.
+Respecte ce plan À LA LETTRE, en particulier TOUS les chemins pavés : de chaque porte de maison à la place, et DEUX chemins pavés qui descendent de la place de part et d'autre du laboratoire jusqu'au PARVIS PAVÉ devant sa porte, au sud. Aucun arbre, haie, clôture ou massif ne coupe un chemin.
+RÈGLE ABSOLUE DES CHEMINS : le joueur se déplace case par case, seulement à l'horizontale et à la verticale. Tous les chemins sont donc droits et suivent une grille : uniquement des segments horizontaux et verticaux, avec des angles droits. AUCUN chemin en diagonale, aucun chemin courbe ou en biais (seule la place centrale autour de l'arbre est arrondie). Depuis la place, les allées partent à l'horizontale puis descendent à la verticale de part et d'autre du laboratoire jusqu'au parvis ; à gauche, l'allée continue tout droit vers le sud jusqu'au sentier côtier. Le plan ne donne que la composition : son style en aplats ne doit pas apparaître.
+IMAGE 2 : la vue générale de Jadielle, un autre village du même jeu. Respecte EXACTEMENT son style de rendu : même pinceau, même feuillage en masses arrondies et lisses, mêmes toits, mêmes personnages, même saturation. Bourg Palette doit sembler peint par la même main. Ne reprends PAS sa composition (pas de Centre Pokémon, pas d'Arène, pas d'escaliers monumentaux) : la composition est décrite ci-dessous.
+Le feuillage est peint en grandes masses douces avec quelques touches de lumière, JAMAIS en petits points nets ou en pixels.
+
+Format : paysage 3:2, vue plongeante de tout le village, comme les deux images jointes.
+
+RENDU (adapté de l'ADN visuel Kanto 2026 v1)
+- Illustration 2D peinte numériquement, dans l'esprit d'un RPG Pokémon moderne au rendu « HD-2D peint » : formes simples, lisibles et arrondies, détails fins mais ordonnés. Ni pixel art, ni 3D, ni photo, ni aquarelle, ni cartoon en aplats.
+- Perspective : vue de dessus de trois quarts, projection oblique frontale, sans point de fuite. Les verticales restent verticales. On voit le dessus des objets et leur face avant (côté sud). Pas de vue isométrique.
+- Proportions légèrement stylisées, trapues et rassurantes. Un adulte mesure environ 1,33 m de case ; une porte fait 1 case de large.
+- Aucun trait noir : contours fins et doux, plus sombres et plus saturés que la couleur locale.
+- Trois valeurs nettes par matériau, transitions douces. Matériaux reconnaissables (bois, pierre, tuile, feuillage, verre), jamais de texture photographique.
+- Couleurs chaudes, lumineuses et saturées sans être fluo ; verts du vert-jaune au vert sapin ; ombres colorées bleu-vert ou violet froid, jamais grises. Toits aux couleurs franches.
+- Pinceau net et propre, légère granularité picturale ; pas de flou, pas de vignettage, pas de brume.
+- LUMIÈRE NE (neutre) : lumière de milieu de journée, diffuse et blanche, venant légèrement du haut à gauche ; volumes conservés par un ombrage doux ; aucune teinte dorée ou orangée, aucun liseré chaud ; ombres propres neutres, légèrement bleutées.
+- Personnages : PEINTS SIMPLIFIÉS, dans la même main que le décor (comme sur l'image 2), jamais en pixels.
+
+COMPOSITION (du nord en haut au sud en bas) — Bourg Palette est un petit village paisible et dense, pas une ville
+1. NORD, au centre : départ de la ROUTE 1, chemin de terre entre deux clôtures en bois, qui sort par le haut de l'image. Juste en dessous, la PRAIRIE DU NORD : herbe, quelques fleurs, clôtures basses, un carré de vraies hautes herbes plus sombres et touffues à l'entrée de la route. Champ cultivé en haut à droite. Forêt dense sur les bords nord.
+2. QUARTIER RÉSIDENTIEL : deux maisons qui se font face de part et d'autre de l'axe central.
+   - Nord-ouest : MAISON DU RIVAL. Nord-est : MAISON DU JOUEUR.
+   - Les deux sont petites, chaleureuses, d'un étage, toits de tuiles rouges, murs clairs crème, porte en bois, jardin fleuri clôturé de piquets blancs, boîte aux lettres. Un vélo appuyé contre la maison du joueur.
+3. PLACE CENTRALE au milieu de l'image : un GRAND ARBRE ANCIEN sur un îlot circulaire de fleurs bordé de pierre, entouré de pavés ; deux bancs ; un panneau en bois SANS TEXTE ; lampadaires anciens noirs. C'est le repère émotionnel du village.
+4. LABORATOIRE DU PROFESSEUR CHEN, au centre-sud, sous la place : le plus grand bâtiment du village mais sobre, gris clair moderne, toit plat avec panneaux solaires et une antenne, entrée vitrée, emblème Poké Ball (le seul emblème autorisé) au-dessus de la porte. Une camionnette blanche garée à gauche, des caisses et du matériel scientifique, des vélos de chercheurs.
+5. JARDINS DE RECHERCHE : DERRIÈRE le laboratoire, c'est-à-dire JUSTE AU SUD de lui, entre le laboratoire et le sentier côtier, centrés sous le laboratoire (rien à l'est du laboratoire hormis des arbres) : une petite serre vitrée, des potagers en carrés, des chercheurs en blouse au travail. À leur bord est, un ANCIEN SENTIER envahi par la végétation, à peine visible, qui s'enfonce dans la forêt, fermé par des broussailles.
+Répartition verticale de l'image : routes et prairie ≈ 15 %, maisons ≈ 20 %, place ≈ 15 %, laboratoire ≈ 15 %, jardins de recherche ≈ 15 %, littoral et océan ≈ 20 %.
+6. LITTORAL tout le long du SUD, sous les jardins : un SENTIER CÔTIER avec barrières en bois et lampadaires, puis falaises rocheuses, petite plage de sable au sud-ouest avec un escalier en bois qui y descend, un ponton en bois avec un pêcheur, l'océan bleu turquoise avec écume et rochers. Le sentier côtier continue vers l'EST (bord droit de l'image) : départ de la Route 21, sur l'eau.
+7. Bords ouest et est : forêt dense d'arbres variés et rochers ; aucun arbre répété à l'identique côte à côte.
+
+VIE (discrète, peu nombreuse)
+- Une dizaine d'habitants au plus : une vieille dame sur un banc de la place, un jardinier, deux enfants, un chercheur qui traverse, le pêcheur, deux chercheurs dans les jardins.
+- Quelques Pokémon sauvages de Kanto : deux Roucool dans la prairie du Nord, un Rattata près d'une clôture, un Magicarpe qui saute dans l'eau, un Bulbizarre dans les jardins de recherche.
+- AUCUN Pikachu, AUCUN Évoli. Aucun Pokémon près des maisons du joueur et du rival. Aucun oiseau marin de type mouette ou goéland.
+
+INTERDITS
+Texte, lettres, chiffres, étiquettes, bulles, panneaux lisibles, logo (sauf l'emblème Poké Ball du laboratoire), signature, filigrane, cadre, interface, Centre Pokémon, Boutique, immeubles, routes goudronnées, voitures autres que la camionnette du laboratoire, flou de profondeur, vignettage, pixel art.

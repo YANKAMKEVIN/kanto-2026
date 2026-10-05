@@ -74,6 +74,13 @@ Fichier : [`reference/bourg-palette-aplus-v1.png`](reference/bourg-palette-aplus
 - **Oiseaux marins** (Goélise, Gen 3) : à remplacer. L'espèce reste à définir dans le *Population & Life System*.
 - Route 21 : départ vers l'est au bout du sentier côtier, comme sur l'image (compatible avec le texte).
 
+### Vue générale peinte v1 — référence de rendu et de composition (validée par Kevin, 2026-10-05)
+Fichiers : [`reference/bourg-palette-vue-generale-v1.png`](reference/bourg-palette-vue-generale-v1.png) (générée par Codex, prompt `tools/art/prompts/CONCEPT_BOURG_PALETTE_VUE_GENERALE_r6.txt`) et son plan schématique [`reference/bourg-palette-plan-v1.png`](reference/bourg-palette-plan-v1.png). Même main que `jadielle-vue-generale-v1`, lumière neutre (Godot porte l'ambiance). **Elle remplace la vue A+ comme cible de rendu** ; la vue A+ reste la référence d'éclairage golden hour.
+- **Chemins à angle droit seulement** (on se déplace à l'horizontale ou à la verticale, jamais en diagonale) ; seule la place autour de l'arbre est arrondie.
+- **Accès au labo** : sa porte est sur sa face sud (convention de la vue de trois quarts) ; depuis la place, deux allées partent à l'horizontale puis descendent de part et d'autre du labo jusqu'au parvis ; à l'ouest, l'allée continue jusqu'au sentier côtier.
+- **Route 1** : une bande de hautes herbes barre toute la largeur du chemin, sans contournement : c'est là que Chen arrête le joueur.
+- Jardins de recherche au sud du labo, ancien sentier envahi à leur est.
+
 ### 1. Maison du joueur — nord-est
 Petit jardin, boîte aux lettres, vélo visible avant d'être utilisable, objets familiers.
 **La chambre est le journal visuel de la progression** : au fil de l'aventure y apparaissent discrètement souvenirs, photos, cadeaux de PNJ, traces d'exploits (badges/récompenses). Pas un musée : quelques changements subtils. Revenir à la fin dans la chambre raconte le parcours.
