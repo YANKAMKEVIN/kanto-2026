@@ -132,7 +132,7 @@ func test_encounter_table_is_wired_to_the_map() -> void:
 func test_no_warp_trigger_or_npc_on_tall_grass_and_spawns_are_free() -> void:
 	for warp: Warp in _map.get_warps().get_all():
 		assert_false(_grid.is_tall_grass(warp.cell))
-	for spawn: StringName in [&"from_viridian", &"vista"]:
+	for spawn: StringName in [&"from_viridian", &"vista", &"stair_foot"]:
 		var cell := _map.get_spawn_cell(spawn)
 		assert_false(_grid.is_solid(cell), String(spawn))
 		assert_false(_grid.is_tall_grass(cell), String(spawn))
@@ -169,8 +169,30 @@ func test_residents_stand_on_free_cells() -> void:
 			assert_true(Npc.has_frames(npc.get_spec().sprite), "%s : planche peinte" % id)
 
 
+## Le voyageur n'a aucun déclencheur ; le seul déclencheur de la carte est la scène du rival
+## n° 2 (T25) : en haut de l'escalier, un pas vers l'ouest sur les deux rangées du sentier.
 func test_traveler_has_no_trigger_only_a_line_when_spoken_to() -> void:
-	assert_eq(_map.get_triggers().get_all().size(), 0, "aucun déclencheur automatique")
+	var triggers := _map.get_triggers().get_all()
+	assert_eq(triggers.size(), 2, "le seul déclencheur : la scène du rival")
+	var cells: Array[Vector2i] = []
+	for trigger: EventTrigger in triggers:
+		assert_eq(trigger.cutscene_id, &"rival_route22")
+		assert_eq(trigger.direction, Vector2i.LEFT)
+		cells.append(trigger.cell)
+	cells.sort()
+	assert_eq(cells, [Vector2i(14, 12), Vector2i(14, 13)] as Array[Vector2i])
+	for cell: Vector2i in cells:
+		assert_true(_reachable.has(cell), "déclencheur atteignable %s" % cell)
+	# Aucun autre accès au point de vue que par ces deux cases (falaise, escalier) : fermées,
+	# le point de vue n'est plus atteignable.
+	for cell: Vector2i in cells:
+		_grid.set_solid(cell)
+	var without := _grid.find_reachable(FROM_VIRIDIAN)
+	for cell: Vector2i in cells:
+		_grid.set_solid(cell, false)
+	assert_false(without.has(VISTA), "le déclencheur barre tout le sentier")
+	assert_true(_map.has_spawn(&"stair_foot"), "départ de débogage rival_2_weak")
+	assert_true(_reachable.has(_map.get_spawn_cell(&"stair_foot")))
 
 
 func _has_reachable_neighbour(cell: Vector2i) -> bool:

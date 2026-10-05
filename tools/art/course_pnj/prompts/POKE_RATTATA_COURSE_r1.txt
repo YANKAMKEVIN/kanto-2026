@@ -1,0 +1,16 @@
+POKE_RATTATA_COURSE — planche de COURSE du même Rattata que la planche jointe POKE_RATTATA_P2_r1 (sa planche de marche) : même main peinte, mêmes couleurs, mêmes proportions, même tête, même queue enroulée. Reprends exactement sa disposition (4 lignes × 4 colonnes, mêmes angles de vue), mais au GALOP.
+Style : illustration 2D peinte numériquement, contour fin et doux d'une teinte sombre et colorée, aucun trait noir, trois valeurs nettes par matériau, légère granularité de pinceau, lumière dorée venant du haut à gauche. Formes simplifiées et lisibles pour rester net une fois réduit à 56 px de haut. Ni pixel art, ni 3D.
+POKÉMON : Rattata (n° 019) de Pokémon Rouge/Bleu, petit rongeur violet, ventre et pattes crème, grandes incisives, longues moustaches, grandes oreilles rondes roses à l'intérieur, queue rose enroulée au bout.
+
+PLANCHE : image portrait 1024 × 1536, fond avec une vraie transparence (canal alpha, aucun damier dessiné). 4 lignes × 4 colonnes de poses, bien séparées par du vide, le Pokémon entier dans chaque case (queue comprise), à la même taille dans les 16 poses. Pas de sol, pas d'ombre, pas de texte, pas de numéros, pas de cadres.
+- Ligne 1 : il galope vers le BAS (vu de face, vers le spectateur).
+- Ligne 2 : il galope vers la GAUCHE (de profil, tourné vers la gauche).
+- Ligne 3 : il galope vers la DROITE (de profil, tourné vers la droite).
+- Ligne 4 : il galope vers le HAUT (vu de dos, queue vers le spectateur).
+Chaque ligne = un CYCLE DE GALOP de petit rongeur en 4 images, dans l'ordre :
+1. ÉTIRÉ : corps allongé au maximum, pattes avant lancées loin devant, pattes arrière tendues loin derrière, presque à plat ;
+2. EN L'AIR : petit bond, les quatre pattes décollées, corps un peu plus haut, oreilles rabattues par la vitesse ;
+3. RAMASSÉ : dos rond en arche, pattes arrière ramenées sous le ventre jusqu'aux pattes avant, corps court et compact ;
+4. EN L'AIR (repousse) : les pattes arrière poussent, le corps se redéploie, encore un peu décollé du sol.
+La silhouette doit nettement CHANGER de longueur entre les images 1 et 3 (étiré / ramassé), la queue suit le mouvement. De face et de dos, on voit les pattes avant lancées puis les pattes arrière ramassées sous le corps. Air pressé et joyeux, il détale.
+Les couleurs, la tête et les proportions doivent être EXACTEMENT celles de POKE_RATTATA_P2_r1.

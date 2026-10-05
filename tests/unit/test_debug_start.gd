@@ -296,3 +296,149 @@ func test_shipped_center_qa_start() -> void:
 	var map := (load(MapCatalog.scene_path(start.map)) as PackedScene).instantiate() as GameMap
 	assert_true(map.has_spawn(start.spawn), "le point d'apparition existe sur la carte")
 	map.free()
+
+
+## Jalon 7 (T25, jalon-07.md §5.5) : `route_22` (Pokédex activé, équipe Nv. 7–8, entrée de la
+## Route 22) et `rival_2_weak` (équipe Nv. 4 pour perdre, au pied de l'escalier) : la scène du
+## rival se joue (drapeaux de la variante et paire `taken_*` qui choisit son Pokémon).
+func test_shipped_route_22_starts() -> void:
+	var rows: Array = [["route_22", &"from_viridian", 7, 8], ["rival_2_weak", &"stair_foot", 4, 4]]
+	for row: Array in rows:
+		var start := DebugStart.new()
+		assert_true(start.load_file(TOOL_STARTS + row[0] + ".json", _data, _items),
+			"%s : %s" % [row[0], "\n".join(start.get_errors())])
+		assert_eq([start.map, start.spawn], [&"route_22", row[1]], row[0])
+		for flag: StringName in [&"pokedex_activated", &"taken_charmander", &"taken_squirtle"]:
+			assert_true(start.flags.has(flag), "%s : %s" % [row[0], flag])
+		for flag: StringName in [&"rival_route22_won", &"rival_route22_lost"]:
+			assert_false(start.flags.has(flag), "%s : rival pas encore affronté" % row[0])
+		assert_eq(start.party[0]["species"], &"charmander", "%s : starter" % row[0])
+		for member: Dictionary in start.party:
+			assert_between(int(member["level"]), int(row[2]), int(row[3]), row[0])
+		assert_eq(start.money, 3000, row[0])
+		var map := (load(MapCatalog.scene_path(start.map)) as PackedScene).instantiate() \
+				as GameMap
+		assert_true(map.has_spawn(start.spawn), "%s : point d'apparition" % row[0])
+		map.free()
+
+
+# --- Jalon 7 (T12) : favoris du Sac, départ shop_qa --------------------------------------------
+
+func test_favorites_mark_bag_items() -> void:
+	var start := DebugStart.new()
+	assert_true(start.add_from_dict({
+		"party": [{ "species": "charmander", "level": 8 }],
+		"bag": { "potion": 4, "poke_ball": 2 }, "favorites": ["potion", "potion"],
+	}, _data, _items), "\n".join(start.get_errors()))
+	assert_eq(start.favorites, [&"potion"] as Array[StringName], "sans doublon")
+	var state: Node = autofree(GameStateScript.new())
+	start.apply(state, _data)
+	assert_true(state.bag.is_favorite(&"potion"))
+	assert_false(state.bag.is_favorite(&"poke_ball"))
+
+
+func test_favorites_must_be_in_the_bag() -> void:
+	var start := DebugStart.new()
+	assert_false(start.add_from_dict({ "party": [{ "species": "pidgey", "level": 3 }],
+		"bag": { "potion": 1 }, "favorites": ["poke_ball"] }, _data, _items, "t"))
+	assert_string_contains("\n".join(start.get_errors()),
+		"t favorites : « poke_ball » n'est pas un objet de « bag »")
+	assert_false(start.add_from_dict({ "party": [{ "species": "pidgey", "level": 3 }],
+		"favorites": "potion" }, _data, _items, "u"))
+	assert_push_error_count(2)
+
+
+## Jalon 7 (T12, jalon-07.md §5.5) : 6 000 ₽, des Potions favorites, devant la porte de la
+## Boutique (spawn `from_mart`, tourné vers le sud), arrivée faite, colis pas encore reçu.
+func test_shipped_shop_qa_start() -> void:
+	var start := DebugStart.new()
+	assert_true(start.load_file(TOOL_STARTS + "shop_qa.json", _data, _items),
+		"\n".join(start.get_errors()))
+	assert_eq([start.map, start.spawn, start.facing], [&"viridian_city", &"from_mart",
+		Vector2i.DOWN])
+	assert_true(start.flags.has(&"viridian_arrived"), "pas de micro-scène d'arrivée")
+	assert_false(start.flags.has(&"got_oak_parcel"), "la première visite reste à faire")
+	assert_false(start.flags.has(&"pokedex_activated"))
+	var state: Node = autofree(GameStateScript.new())
+	start.apply(state, _data)
+	assert_eq(state.money, 6000)
+	assert_gt(state.bag.count_of(&"potion"), 1)
+	assert_true(state.bag.is_favorite(&"potion"), "Potions favorites")
+	var map := (load(MapCatalog.scene_path(start.map)) as PackedScene).instantiate() as GameMap
+	assert_true(map.has_spawn(start.spawn), "le point d'apparition existe sur la carte")
+	map.free()
+
+
+## Jalon 7 (T19, jalon-07.md §3.6.2) : `parcel` — colis en main, devant la porte du labo, rival du
+## labo parti ; jamais `pokedex_activated` (seule la scène de Chen le lève).
+func test_shipped_parcel_start() -> void:
+	var start := DebugStart.new()
+	assert_true(start.load_file(TOOL_STARTS + "parcel.json", _data, _items),
+		"\n".join(start.get_errors()))
+	assert_eq([start.map, start.spawn], [&"pallet_town", &"oak_lab_door"])
+	for flag: StringName in [&"got_oak_parcel", &"rival_battle_done", &"rival_left_lab"]:
+		assert_true(start.flags.has(flag), String(flag))
+	assert_false(start.flags.has(&"pokedex_activated"), "jamais par un départ de débogage")
+	assert_eq(start.bag.get(&"oak_parcel", 0), 1, "le colis est dans le Sac")
+	var map := (load(MapCatalog.scene_path(start.map)) as PackedScene).instantiate() as GameMap
+	assert_true(map.has_spawn(start.spawn), "le point d'apparition existe sur la carte")
+	map.free()
+
+
+# --- Jalon 7 (T16) : favori d'un Pokémon, départ storage_qa -----------------------------------
+
+func test_favorite_marks_a_member() -> void:
+	var start := DebugStart.new()
+	assert_true(start.add_from_dict({
+		"party": [{ "species": "charmander", "level": 8, "favorite": true }],
+		"storage": [{ "species": "rattata", "level": 4 },
+			{ "species": "spearow", "level": 3, "favorite": true }],
+	}, _data, _items), "\n".join(start.get_errors()))
+	var state: Node = autofree(GameStateScript.new())
+	start.apply(state, _data)
+	assert_true(state.party.get_at(0).favorite)
+	assert_false(state.storage.get_at(0).favorite, "faux par défaut")
+	assert_true(state.storage.get_at(1).favorite)
+
+
+func test_favorite_must_be_a_boolean() -> void:
+	var start := DebugStart.new()
+	assert_false(start.add_from_dict({
+		"party": [{ "species": "charmander", "level": 8, "favorite": "oui" }] }, _data, _items,
+		"f"))
+	assert_string_contains("\n".join(start.get_errors()), "« favorite » est un booléen")
+	assert_push_error_count(1)
+
+
+## Jalon 7 (T16, jalon-07.md §5.5) : 6 en équipe dont un K.O., 10 au stockage dont un favori,
+## dans le Centre, devant le terminal.
+func test_shipped_storage_qa_start() -> void:
+	var start := DebugStart.new()
+	assert_true(start.load_file(TOOL_STARTS + "storage_qa.json", _data, _items),
+		"\n".join(start.get_errors()))
+	assert_eq([start.map, start.spawn, start.facing], [&"viridian_center", &"terminal",
+		Vector2i.UP])
+	var state: Node = autofree(GameStateScript.new())
+	start.apply(state, _data)
+	assert_eq(state.party.size(), 6, "équipe pleine")
+	assert_eq(state.storage.size(), 10)
+	var fainted := 0
+	for pokemon: Pokemon in state.party.get_all():
+		if pokemon.is_fainted():
+			fainted += 1
+	assert_eq(fainted, 1, "un K.O. dans l'équipe")
+	var favorites := 0
+	for pokemon: Pokemon in state.storage.get_all():
+		if pokemon.favorite:
+			favorites += 1
+	assert_eq(favorites, 1, "un favori au stockage")
+	var map := (load(MapCatalog.scene_path(start.map)) as PackedScene).instantiate() as GameMap
+	assert_true(map.has_spawn(start.spawn), "le point d'apparition existe sur la carte")
+	assert_true(MenuUnlocks.is_storage_map(start.map, _zones()), "dans un Centre")
+	map.free()
+
+
+func _zones() -> ZoneLibrary:
+	var zones := ZoneLibrary.new()
+	zones.load_file()
+	return zones

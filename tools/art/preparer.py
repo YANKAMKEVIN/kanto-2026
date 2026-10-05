@@ -35,6 +35,16 @@ def _decoupeur():
     return module
 
 
+def _profil_course():
+    import sys
+    sys.path.insert(0, str(ICI))  # remplacer_profil_course importe decouper_perso
+    spec = importlib.util.spec_from_file_location(
+        "remplacer_profil_course", ICI / "remplacer_profil_course.py")
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module
+
+
 def _silhouette(image: Image.Image) -> Image.Image:
     masque = image.getchannel("A").point(lambda a: 255 if a > 32 else 0)
     return image.crop(masque.getbbox())
@@ -237,8 +247,14 @@ class Preparateur:
             for e in self.m[groupe]:
                 sortie = self._sortie(e["sortie"])
                 sortie.parent.mkdir(parents=True, exist_ok=True)
-                largeur, hauteur = decoupeur.decouper(str(self.source / e["source"]),
-                                                      str(sortie), e["hauteur"])
+                largeur, hauteur = decoupeur.decouper(
+                    str(self.source / e["source"]), str(sortie), e["hauteur"],
+                    rebond_passage=e.get("rebond_passage"))
+                profil = e.get("profil_course")
+                if profil:  # rangées de profil remplacées (cycle de course lisible)
+                    largeur, hauteur = _profil_course().remplacer(
+                        str(self.source / profil["source"]), str(sortie),
+                        profil.get("rebond", 3), profil.get("jambe_lointaine"))
                 self.catalogue["personnages"][e["id"]] = {
                     "fichier": self._res(e["sortie"]), "cellule": [largeur, hauteur],
                     "hauteur": e["hauteur"], "colonnes": 4, "lignes": 4,

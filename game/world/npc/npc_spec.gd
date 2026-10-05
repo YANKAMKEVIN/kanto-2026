@@ -27,6 +27,11 @@ const NO_ENTER_CELL: Vector2i = Vector2i(-1, -1)
 ## période de l'animation d'ambiance, en secondes.
 const ROUTE_ENTER_SECONDS_MAX: float = 120.0
 const IDLE_REACT_MAX: float = 120.0
+## Attente animée (jalon 7, Jadielle agrandie : « aucun habitant figé ») : période par
+## défaut entre deux changements d'orientation, et ses bornes (secondes).
+const LOOK_EVERY_DEFAULT: float = 3.5
+const LOOK_EVERY_MIN: float = 0.5
+const LOOK_EVERY_MAX: float = 120.0
 
 ## Identifiant unique sur la carte (cible des indications « react » des dialogues).
 var id: StringName = &""
@@ -73,6 +78,13 @@ var route_enter_cell: Vector2i = NO_ENTER_CELL
 var route_enter_seconds: float = 0.0
 ## Petite animation d'ambiance (le Roucool de la Dresseuse) toutes les N secondes ; 0 = aucune.
 var idle_react_every: float = 0.0
+## Attente animée d'un PNJ qui reste sur place (garde de l'Arène, Dresseuse sur son banc,
+## acteurs qui attendent une scène) : il se tourne tour à tour vers chaque orientation de
+## [member look_facings] (en boucle), une toutes les [member look_every] secondes, quand il
+## ne marche pas et ne parle pas. Vide = aucune. Jamais avec une routine de marche (elle
+## suffit à le faire vivre).
+var look_facings: Array[Vector2i] = []
+var look_every: float = LOOK_EVERY_DEFAULT
 ## Présence conditionnelle (docs/tech/jalon-03b.md §2.6) : présent si tous les drapeaux de
 ## [member if_flags] sont levés et aucun de [member unless_flags], comme une variante de
 ## dialogue. Sans condition, toujours présent.
@@ -112,6 +124,11 @@ func enters_building() -> bool:
 ## Vrai si le PNJ joue une petite animation d'ambiance périodique (jalon 7).
 func has_idle_react() -> bool:
 	return idle_react_every > 0.0
+
+
+## Vrai si le PNJ regarde autour de lui quand il attend (jalon 7).
+func has_look() -> bool:
+	return not look_facings.is_empty()
 
 
 ## Vrai si le PNJ est sur la carte avec les drapeaux [param flags] (null = nouvelle partie,

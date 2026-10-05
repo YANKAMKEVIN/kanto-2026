@@ -165,7 +165,39 @@ func test_sprite_is_the_painted_hero_at_scale_one() -> void:
 		var walk := sprite.sprite_frames.get_frame_texture(StringName("walk_" + dir), 0)
 		var run := sprite.sprite_frames.get_frame_texture(StringName("run_" + dir), 0)
 		assert_eq(walk.get_size(), Vector2(74, 130), "marche " + dir)
-		assert_eq(run.get_size(), Vector2(95, 130), "planche de course " + dir)
+		assert_eq(run.get_size(), Vector2(101, 130), "planche de course " + dir)
+
+
+## Course de profil (retour S24) : contact A ≠ contact B (la jambe en avant change), passage ≠
+## contact, et la rangée gauche est le miroir exact de la droite.
+func test_painted_run_profile_alternates_and_mirrors() -> void:
+	var frames := load(CharacterLook.painted_frames_path(&"player")) as SpriteFrames
+	var right: Array[Image] = []
+	for i: int in 4:
+		right.append(frames.get_frame_texture(&"run_right", i).get_image())
+	assert_false(_same(right[0], right[2]), "contact A et contact B distincts")
+	assert_false(_same(right[0], right[1]), "contact et passage distincts")
+	assert_false(_same(right[1], right[3]), "les deux passages distincts")
+	for i: int in 4:
+		var left := frames.get_frame_texture(&"run_left", i).get_image()
+		left.flip_x()
+		assert_true(_same(left, right[i]), "run_left = miroir de run_right, image %d" % i)
+
+
+## Mêmes pixels visibles (la couleur des pixels presque transparents est réécrite à l'import,
+## alpha ≤ 0,1 : elle ne compte pas).
+func _same(a: Image, b: Image) -> bool:
+	if a.get_size() != b.get_size():
+		return false
+	for y: int in a.get_height():
+		for x: int in a.get_width():
+			var ca := a.get_pixel(x, y)
+			var cb := b.get_pixel(x, y)
+			if absf(ca.a - cb.a) > 0.01:
+				return false
+			if ca.a > 0.1 and not ca.is_equal_approx(cb):
+				return false
+	return true
 
 
 func test_camera_zoom_one_and_limits_from_bounds() -> void:

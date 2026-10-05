@@ -1,5 +1,5 @@
 extends SceneTree
-## Captures de Jadielle (jalon 7 T4) avec la vraie scène Boot et le départ de débogage
+## Captures de Jadielle (jalon 7 T4, agrandie au T5) avec la vraie scène Boot et le départ de débogage
 ## `tools/debug_start/viridian.json` (entrée sud, prologue fait) :
 ##
 ##   godot --path . --write-movie build/cap/viridian.avi --fixed-fps 30 \
@@ -15,6 +15,8 @@ extends SceneTree
 ##   _03_traveler (le voyageur croise le joueur), _04_after (contrôles rendus) ; la durée
 ##   de la scène est écrite dans le journal ;
 ## - viridian_square : retour par la porte du Centre (nouvelle visite : habitants et routines) ;
+##   viridian_square_east, viridian_north_stair, viridian_south_quarter, viridian_west_exit
+##   (vers la Route 22), viridian_gym_stair (terrasse de l'Arène) ;
 ## - viridian_gym : devant l'Arène, porte examinée (« La porte est verrouillée. ») ;
 ## - viridian_north_exit : sous l'arche ; viridian_route2_soon : écran « ROUTE 2 — À venir ».
 ## `--perf=<s>` : place centrale, habitants en mouvement, journal `[perf]` (fps, mémoire des
@@ -85,21 +87,44 @@ func _run() -> void:
 	# Nouvelle visite : retour par la porte du Centre.
 	_router.call(&"change_map", &"viridian_city", &"from_center", Vector2i.DOWN)
 	await _until(func() -> bool: return not _router.call(&"is_transitioning"), 5.0)
-	_teleport(Vector2i(22, 24), Vector2i.UP)
+	_teleport(Vector2i(28, 22), Vector2i.UP)
 	await _seconds(3.0)
 	await _shot("viridian_square")
-	_teleport(Vector2i(25, 22), Vector2i.RIGHT)
+	_teleport(Vector2i(33, 23), Vector2i.RIGHT)
 	await _seconds(2.0)
 	await _shot("viridian_square_east")
-	_teleport(Vector2i(6, 16), Vector2i.UP)
+	_teleport(Vector2i(28, 14), Vector2i.UP)
+	await _seconds(1.0)
+	await _shot("viridian_north_stair")
+	_teleport(Vector2i(28, 28), Vector2i.DOWN)
+	await _seconds(1.0)
+	await _shot("viridian_south_quarter")
+	_teleport(Vector2i(21, 31), Vector2i.UP)
+	await _seconds(1.0)
+	await _shot("viridian_quarter_sw")
+	_teleport(Vector2i(37, 10), Vector2i.UP)
+	await _seconds(1.0)
+	await _shot("viridian_quarter_ne")
+	_teleport(Vector2i(2, 22), Vector2i.LEFT)
+	await _seconds(1.0)
+	await _shot("viridian_west_exit")
+	_teleport(Vector2i(10, 15), Vector2i.UP)
+	await _seconds(1.0)
+	await _shot("viridian_gym_stair")
+	_teleport(Vector2i(10, 10), Vector2i.UP)
 	await _seconds(0.8)
 	await _shot("viridian_gym_front")
 	await _tap_interact()
 	await _seconds(1.5)
 	await _shot("viridian_gym")
-	await _tap_interact()
-	await _seconds(0.6)
-	_teleport(Vector2i(22, 3), Vector2i.UP)
+	# Fermer la réplique (plusieurs appuis si le texte s'écrivait encore).
+	var runner: Node = _boot.call(&"get_dialogue_runner")
+	for attempt in 6:
+		if not runner.call(&"is_running"):
+			break
+		await _tap_interact()
+		await _seconds(0.4)
+	_teleport(Vector2i(28, 3), Vector2i.UP)
 	await _seconds(0.8)
 	await _shot("viridian_north_exit")
 	Input.action_press(&"move_up")
@@ -118,7 +143,7 @@ func _run_perf() -> void:
 	if _perf_map == &"viridian_city":
 		_router.call(&"change_map", &"viridian_city", &"from_center", Vector2i.DOWN)
 		await _until(func() -> bool: return not _router.call(&"is_transitioning"), 5.0)
-		_teleport(Vector2i(22, 24), Vector2i.UP)
+		_teleport(Vector2i(28, 22), Vector2i.UP)
 	else:
 		_router.call(&"change_map", _perf_map, &"start", Vector2i.DOWN)
 		await _until(func() -> bool: return not _router.call(&"is_transitioning"), 5.0)

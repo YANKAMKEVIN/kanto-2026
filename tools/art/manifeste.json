@@ -1,5 +1,5 @@
 {
- "_doc": "Manifeste de l'art valide (series 01 a 06). Lu par tools/art/preparer.py. Les sources sont dans build/art/ (non versionne, sur le Mac de Kevin). Tailles en cases de 96 px. 'ombre' : ombre portee pre-floutee <id>_shadow.png ; 'contact' : part basse de l'objet (0..1) pour <id>_contact.png, null = aucune.",
+ "_doc": "Manifeste de l'art valide (series 01 a 07 ; serie 07 = Jadielle agrandie). Lu par tools/art/preparer.py. Les sources sont dans build/art/ (non versionne, sur le Mac de Kevin). Tailles en cases de 96 px. 'ombre' : ombre portee pre-floutee <id>_shadow.png ; 'contact' : part basse de l'objet (0..1) pour <id>_contact.png, null = aucune.",
  "case": 96,
  "ombre_portee": {
   "flou": 7.0,
@@ -177,6 +177,177 @@
    "contact": null
   },
   {
+   "id": "relief_muret_01",
+   "source": "WORLD_RELIEF_MURET_01_NE_r1.png",
+   "sortie": "assets/world/relief/relief_muret_01.png",
+   "axe": "w",
+   "cases": 4,
+   "ombre": false,
+   "contact": null
+  },
+  {
+   "id": "relief_escalier_ville_01",
+   "source": "WORLD_RELIEF_ESCALIER_VILLE_01_NE_r1.png",
+   "sortie": "assets/world/relief/relief_escalier_ville_01.png",
+   "axe": "w",
+   "cases": 4.5,
+   "ombre": false,
+   "contact": null
+  },
+  {
+   "id": "prop_potager_01",
+   "source": "WORLD_PROP_POTAGER_01_NE_r1.png",
+   "sortie": "assets/world/props/prop_potager_01.png",
+   "axe": "w",
+   "cases": 3,
+   "ombre": false,
+   "contact": 0.25
+  },
+  {
+   "id": "prop_platebande_01",
+   "source": "WORLD_PROP_PLATEBANDE_01_NE_r1.png",
+   "sortie": "assets/world/props/prop_platebande_01.png",
+   "axe": "w",
+   "cases": 3,
+   "ombre": false,
+   "contact": 0.25
+  },
+  {
+   "id": "prop_cloture_v_01",
+   "source": "WORLD_PROP_CLOTURE_V_01_NE_r3.png",
+   "sortie": "assets/world/props/prop_cloture_v_01.png",
+   "axe": "h",
+   "cases": 4,
+   "ombre": false,
+   "contact": null
+  },
+  {
+   "id": "prop_haie_v_01",
+   "source": "WORLD_PROP_HAIE_V_01_NE_r1.png",
+   "sortie": "assets/world/props/prop_haie_v_01.png",
+   "axe": "h",
+   "cases": 4.3,
+   "ombre": false,
+   "contact": null
+  },
+  {
+   "id": "bldg_maison_c_01",
+   "source": "WORLD_BLDG_MAISON_C_01_NE_r1.png",
+   "sortie": "assets/world/buildings/bldg_maison_c_01.png",
+   "axe": "w",
+   "cases": 6,
+   "ombre": true,
+   "contact": 0.12
+  },
+  {
+   "id": "bldg_maison_d_01",
+   "source": "WORLD_BLDG_MAISON_D_01_NE_r1.png",
+   "sortie": "assets/world/buildings/bldg_maison_d_01.png",
+   "axe": "w",
+   "cases": 5.5,
+   "ombre": true,
+   "contact": 0.12
+  },
+  {
+   "id": "prop_portail_01",
+   "source": "WORLD_PROP_PORTAIL_01_NE_r1.png",
+   "sortie": "assets/world/props/prop_portail_01.png",
+   "axe": "w",
+   "cases": 3,
+   "ombre": false,
+   "contact": null
+  },
+  {
+   "id": "prop_buisson_a_01",
+   "source": "WORLD_PROP_BUISSON_A_01_NE_r1.png",
+   "sortie": "assets/world/props/prop_buisson_a_01.png",
+   "axe": "w",
+   "cases": 1.1,
+   "ombre": true,
+   "contact": 0.15
+  },
+  {
+   "id": "prop_buisson_b_01",
+   "source": "WORLD_PROP_BUISSON_B_01_NE_r1.png",
+   "sortie": "assets/world/props/prop_buisson_b_01.png",
+   "axe": "w",
+   "cases": 1.2,
+   "ombre": true,
+   "contact": 0.15
+  },
+  {
+   "id": "prop_buisson_c_01",
+   "source": "WORLD_PROP_BUISSON_C_01_NE_r1.png",
+   "sortie": "assets/world/props/prop_buisson_c_01.png",
+   "axe": "w",
+   "cases": 2,
+   "ombre": true,
+   "contact": 0.15
+  },
+  {
+   "id": "prop_balustrade_01",
+   "source": "WORLD_PROP_BALUSTRADE_01_NE_r1.png",
+   "sortie": "assets/world/props/prop_balustrade_01.png",
+   "axe": "w",
+   "cases": 4,
+   "ombre": false,
+   "contact": null
+  },
+  {
+   "id": "tree_fruitier_01",
+   "source": "WORLD_TREE_FRUITIER_01_NE_r1.png",
+   "sortie": "assets/world/props/tree_fruitier_01.png",
+   "axe": "h",
+   "cases": 3.1,
+   "ombre": true,
+   "contact": 0.05
+  },
+  {
+   "id": "prop_tonneau_01",
+   "source": "WORLD_PROP_TONNEAU_01_NE_r1.png",
+   "sortie": "assets/world/props/prop_tonneau_01.png",
+   "axe": "w",
+   "cases": 0.7,
+   "ombre": true,
+   "contact": 0.15
+  },
+  {
+   "id": "prop_caisses_01",
+   "source": "WORLD_PROP_CAISSES_01_NE_r1.png",
+   "sortie": "assets/world/props/prop_caisses_01.png",
+   "axe": "w",
+   "cases": 1.1,
+   "ombre": true,
+   "contact": 0.15
+  },
+  {
+   "id": "prop_boite_lettres_01",
+   "source": "WORLD_PROP_BOITE_LETTRES_01_NE_r1.png",
+   "sortie": "assets/world/props/prop_boite_lettres_01.png",
+   "axe": "h",
+   "cases": 1.2,
+   "ombre": true,
+   "contact": 0.1
+  },
+  {
+   "id": "prop_pots_fleurs_01",
+   "source": "WORLD_PROP_POTS_FLEURS_01_NE_r1.png",
+   "sortie": "assets/world/props/prop_pots_fleurs_01.png",
+   "axe": "w",
+   "cases": 1.2,
+   "ombre": true,
+   "contact": 0.15
+  },
+  {
+   "id": "prop_linge_01",
+   "source": "WORLD_PROP_LINGE_01_NE_r1.png",
+   "sortie": "assets/world/props/prop_linge_01.png",
+   "axe": "w",
+   "cases": 3,
+   "ombre": true,
+   "contact": 0.1
+  },
+  {
    "id": "int_centre_comptoir",
    "source": "INT_CENTRE_COMPTOIR_NE_r1.png",
    "sortie": "assets/world/interiors/int_centre_comptoir.png",
@@ -326,7 +497,17 @@
    "id": "heros_run",
    "source": "PERSO_P2_COURSE_r1.png",
    "sortie": "assets/sprites/characters/painted/heros_run_sheet.png",
-   "hauteur": 128
+   "hauteur": 128,
+   "profil_course": {
+    "source": "HEROS_COURSE_PROFIL_r1.png",
+    "rebond": 3,
+    "jambe_lointaine": [
+     [[[0, 500], [240, 500], [256, 550], [256, 730], [0, 730]]],
+     [[[700, 440], [975, 440], [975, 660], [766, 660], [766, 518], [717, 503], [700, 503]]],
+     [[[1255, 500], [1560, 500], [1560, 730], [1288, 730], [1288, 550]]],
+     [[[1640, 498], [1736, 503], [1802, 512], [1802, 660], [1640, 660]]]
+    ]
+   }
   },
   {
    "id": "infirmiere",
@@ -381,6 +562,23 @@
    "source": "PNJ_ENFANT_P2_r1.png",
    "sortie": "assets/sprites/characters/painted/enfant_sheet.png",
    "hauteur": 108
+  },
+  {
+   "id": "enfant_run",
+   "source": "PNJ_ENFANT_COURSE_r1_v2.png",
+   "sortie": "assets/sprites/characters/painted/enfant_run_sheet.png",
+   "hauteur": 108,
+   "rebond_passage": 3,
+   "profil_course": {
+    "source": "PNJ_ENFANT_COURSE_PROFIL_r1_v2.png",
+    "rebond": 3,
+    "jambe_lointaine": [
+     [[[25, 630], [130, 625], [165, 660], [160, 690], [105, 748], [25, 748]]],
+     [],
+     [[[1000, 650], [1060, 625], [1085, 680], [1150, 690], [1150, 772], [1020, 772], [1000, 700]]],
+     []
+    ]
+   }
   }
  ],
  "pokemon": [
@@ -395,6 +593,17 @@
    "source": "POKE_RATTATA_P2_r1.png",
    "sortie": "assets/sprites/pokemon/painted/rattata_sheet.png",
    "hauteur": 56
+  },
+  {
+   "id": "rattata_run",
+   "source": "POKE_RATTATA_COURSE_r1_v2.png",
+   "sortie": "assets/sprites/pokemon/painted/rattata_run_sheet.png",
+   "hauteur": 56,
+   "rebond_passage": 2,
+   "profil_course": {
+    "source": "POKE_RATTATA_COURSE_PROFIL_r1_v2.png",
+    "rebond": 2
+   }
   },
   {
    "id": "piafabec",

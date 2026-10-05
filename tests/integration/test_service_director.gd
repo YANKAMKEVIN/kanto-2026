@@ -2,9 +2,11 @@ extends GutTest
 ## ServiceDirector (jalon 7 T8, jalon-07.md §3.3.2) hors de Boot : soin simple, soin d'un Centre
 ## sans carte (attente de la durée du rituel, aucun point de repos), sur la vraie carte du Centre
 ## (machine, point de repos enregistré une seule fois), actions inconnues ou à venir refusées.
+## T12 : `open_shop` demande la boutique de la carte courante (sans carte : refusée).
 
 const GameStateScript := preload("res://game/autoload/game_state.gd")
 const CENTER := "res://game/world/maps/viridian_center.tscn"
+const MART := "res://game/world/maps/viridian_mart.tscn"
 
 var _state: Node
 var _points: RestPointLibrary
@@ -87,9 +89,37 @@ func test_center_heal_on_the_center_registers_it_once() -> void:
 	assert_eq(_healed[1], [&"viridian_center", false], "même Centre : rien de changé")
 
 
-func test_unknown_and_pending_actions_are_reported() -> void:
+func test_unknown_and_mapless_actions_are_reported() -> void:
+	var shops: Array[StringName] = []
+	_services.shop_requested.connect(shops.append)
 	await _services.run_action(&"teleport")
 	await _services.run_action(&"open_shop")
 	await _services.run_action(&"open_storage")
-	assert_push_error_count(3)
+	assert_push_error_count(3, "inconnue, Boutique sans carte, Stockage sans carte")
 	assert_false(_all_healed(), "rien n'est fait")
+	assert_eq(shops.size(), 0, "pas de boutique sans carte")
+
+
+func test_open_shop_asks_for_the_shop_of_the_current_map() -> void:
+	var map := (load(MART) as PackedScene).instantiate() as GameMap
+	add_child_autofree(map)
+	_services.set_map(map)
+	var shops: Array[StringName] = []
+	_services.shop_requested.connect(shops.append)
+	await _services.run_action(&"open_shop")
+	assert_eq(shops, [&"viridian_mart"] as Array[StringName], "la boutique porte l'id de sa carte")
+	assert_false(_services.is_running(), "rend la main tout de suite")
+	assert_false(_all_healed(), "aucun soin")
+
+
+func test_open_storage_asks_for_the_storage_and_returns_at_once() -> void:
+	var map := (load(CENTER) as PackedScene).instantiate() as GameMap
+	add_child_autofree(map)
+	_services.set_map(map)
+	var asked: Array[bool] = []
+	_services.storage_requested.connect(func() -> void: asked.append(true))
+	await _services.run_action(&"open_storage")
+	assert_eq(asked.size(), 1, "le Stockage est demandé")
+	assert_false(_services.is_running(), "rend la main tout de suite")
+	assert_false(_all_healed(), "aucun soin")
+	assert_push_error_count(0)

@@ -12,6 +12,10 @@ extends Node2D
 ## courante vit dans son [GridMover] ; [member NpcSpec.cell] reste sa case de départ.
 ## Au repos, [method _process] est coupé ; seule l'[AnimatedSprite2D] tourne (idle_<dir>).
 ## Il ne tourne que pendant un pas (walk_<dir> ou run_<dir> si l'apparence les a).
+## Retours T5 (jalon-07.md §15.21) : un PNJ **marche ou court, jamais un mélange** : sans vraie
+## animation de course ([method can_run]), un pas demandé en course est marché (cadence de
+## marche) ; chaque pas montre **un demi-cycle** et les pas alternent les deux pieds
+## ([member _stride]), comme le joueur qui enchaîne les cases (un appui de pied par case).
 ## Jalon 4 (docs/tech/jalon-04.md §3.5, §13.4) : surcharge d'interaction (« Rencontrer »),
 ## léger élan vers une case ([method lean_toward] / [method settle]) et saut en arc depuis
 ## un meuble ([method hop_to]), dans le style de [member NpcSpec.hop_style]. Tout est en
@@ -20,7 +24,9 @@ extends Node2D
 ## pendant sa routine, il **entre dans le bâtiment** (fondu, case libérée, absent
 ## [member NpcSpec.route_enter_seconds] s, puis il ressort sur la même case dès qu'elle est
 ## libre et reprend sa boucle) ; [member NpcSpec.idle_react_every] fait jouer [method react]
-## à intervalle régulier (le Roucool de la Dresseuse), toujours en [Tween], sans _process.
+## à intervalle régulier (le Roucool de la Dresseuse), toujours en [Tween], sans _process ;
+## [member NpcSpec.look_facings] le fait regarder autour de lui quand il reste sur place
+## (attente animée : aucun habitant figé), en [Tween] aussi.
 
 ## Réaction jouée ([method react]) : tests, futurs sons.
 signal reacted
@@ -185,6 +191,13 @@ var _inside_grid: GridWorld
 var _inside_tween: Tween
 ## Boucle de l'animation d'ambiance ([member NpcSpec.idle_react_every]).
 var _idle_tween: Tween
+## Attente animée ([member NpcSpec.look_facings]) : boucle et prochaine orientation.
+var _look_tween: Tween
+var _look_index: int = 0
+## Pendant un dialogue avec le joueur ([method begin_interaction] → [method end_interaction]).
+var _interacting: bool = false
+## Demi-cycle du prochain pas (0 : pied gauche, images 0-1 ; 1 : pied droit, images 2-3).
+var _stride: int = 0
 
 @onready var _sprite: AnimatedSprite2D = %Sprite
 @onready var _shadow: Sprite2D = %Shadow
@@ -323,7 +336,7 @@ func leave_grid() -> void:
 func step(direction: Vector2i, run: bool = false) -> bool:
 	if _mover == null or _hopping or not Grid.is_cardinal(direction):
 		return false
-	var started := _mover.start_step(direction, run)
+	var started := _mover.start_step(direction, run and can_run())
 	_facing = _mover.get_facing()
 	if not started:
 		_play_idle()
@@ -335,6 +348,17 @@ func step(direction: Vector2i, run: bool = false) -> bool:
 
 func is_moving() -> bool:
 	return _mover != null and _mover.is_moving()
+
+
+## Vrai si l'apparence peut courir : elle a une vraie animation de course (run_<dir>), ou
+## aucune animation de pas (provisoire immobile, qui glisse à la vitesse demandée). Une
+## apparence qui marche sans course (planches peintes sauf le héros) marche toujours.
+func can_run() -> bool:
+	var frames := _sprite.sprite_frames if _sprite != null else null
+	if frames == null:
+		return true
+	return frames.has_animation(_RUN_ANIMS[Vector2i.DOWN]) \
+		or not frames.has_animation(_WALK_ANIMS[Vector2i.DOWN])
 
 
 ## Interaction du PNJ (toujours la même instance : aucune allocation) : la surcharge si
@@ -405,6 +429,7 @@ func face_toward(cell: Vector2i) -> void:
 ## suspendue) et se tourne vers lui si [member NpcSpec.turn_to_player].
 func begin_interaction(player_cell: Vector2i) -> void:
 	_route_suspended = true
+	_interacting = true
 	if _spec.turn_to_player:
 		face_toward(player_cell)
 
@@ -413,6 +438,7 @@ func begin_interaction(player_cell: Vector2i) -> void:
 ## affaires »), sauf [member NpcSpec.keep_facing], puis reprend sa routine après un court
 ## instant (dossier 07 §5).
 func end_interaction() -> void:
+	_interacting = false
 	if not _spec.keep_facing:
 		face(_spec.facing)
 	if _route_active:
@@ -774,6 +800,11 @@ func _play_move() -> void:
 		return
 	if _sprite.animation != anim or not _sprite.is_playing():
 		_sprite.play(anim)
+	# Un pas = un demi-cycle calé sur sa durée (4 images pour deux cases) : il commence sur le
+	# pied suivant, même après un arrêt (sinon chaque pas rejoue le même pied).
+	var count := _sprite.sprite_frames.get_frame_count(anim)
+	_sprite.set_frame_and_progress(_stride * (count / 2), 0.0)
+	_stride = 1 - _stride
 
 
 ## Fin d'un pas (dans [method GridMover.update]) : l'interaction suit la case (aucune
@@ -882,6 +913,7 @@ func _cancel_inside() -> void:
 
 ## Lance (ou relance) l'animation d'ambiance périodique de la description, s'il en a une.
 func _start_idle_react() -> void:
+	_start_look()
 	if _idle_tween != null and _idle_tween.is_valid():
 		_idle_tween.kill()
 	_idle_tween = null
@@ -890,6 +922,37 @@ func _start_idle_react() -> void:
 	_idle_tween = create_tween().set_loops()
 	_idle_tween.tween_interval(_spec.idle_react_every)
 	_idle_tween.tween_callback(_on_idle_react)
+
+
+## Lance (ou relance) l'attente animée de la description, s'il en a une : une orientation de
+## [member NpcSpec.look_facings] toutes les [member NpcSpec.look_every] s, en [Tween] (pas de
+## _process). La boucle commence par l'orientation qui suit celle du repos.
+func _start_look() -> void:
+	if _look_tween != null and _look_tween.is_valid():
+		_look_tween.kill()
+	_look_tween = null
+	_look_index = 0
+	if not _spec.has_look() or not is_inside_tree():
+		return
+	var rest := _spec.look_facings.find(_spec.facing)
+	_look_index = (rest + 1) % _spec.look_facings.size() if rest >= 0 else 0
+	_look_tween = create_tween().set_loops()
+	_look_tween.tween_interval(_spec.look_every)
+	_look_tween.tween_callback(_on_look)
+
+
+## Se tourne vers l'orientation suivante, sauf s'il marche, saute, parle, part ou est dans
+## un bâtiment (le tour est alors simplement sauté).
+func _on_look() -> void:
+	if is_moving() or _hopping or _leaving or _inside or _interacting:
+		return
+	face(_spec.look_facings[_look_index])
+	_look_index = (_look_index + 1) % _spec.look_facings.size()
+
+
+## Vrai si une attente animée tourne ([member NpcSpec.look_facings]).
+func is_looking_around() -> bool:
+	return _look_tween != null and _look_tween.is_valid()
 
 
 func _on_idle_react() -> void:

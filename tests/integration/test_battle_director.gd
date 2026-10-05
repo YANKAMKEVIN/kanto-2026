@@ -130,14 +130,14 @@ func _seed_for(starter: StringName, outcome: int) -> int:
 
 ## Joue tout le combat : lance run (coroutine), pilote la HUD (ATTAQUER puis 1re capacité à
 ## chaque choix), collecte les événements joués. Renvoie [issue, événements, pv_aux_damage].
-func _play() -> Array:
+func _play(trainer_id: StringName = &"rival_lab") -> Array:
 	var events: Array[BattleEvent] = []
 	_director.event_played.connect(func(e: BattleEvent) -> void: events.append(e))
 	var result: Array = [Battle.Outcome.NONE]
 	var done: Array[bool] = [false]
 	var world_actors: Dictionary[StringName, StringName] = {&"player": MINE_ID, &"foe": FOE_ID}
 	var runner := func() -> void:
-		result[0] = await _director.run(&"rival_lab", _map, world_actors)
+		result[0] = await _director.run(trainer_id, _map, world_actors)
 		done[0] = true
 	runner.call()
 	# Le joueur est bloqué dès l'appel (avant tout await).
@@ -414,6 +414,53 @@ func test_run_while_a_battle_is_running_is_refused() -> void:
 			BattleHud.Zone.MOVES:
 				_hud.move_selected.emit(0)
 		await wait_process_frames(1)
+
+
+# --- Rival n° 2 : argent et SAC (jalon 7, T24) -----------------------------------------
+
+## Victoire contre le rival de la Route 22 : « Tu remportes 280 ₽. » (35 × Nv. 8 du dernier
+## Pokémon) puis l'argent versé ; SAC actif dans la grille ; pas de soin.
+func test_route22_victory_pays_the_prize_and_offers_the_bag() -> void:
+	var party := Party.new()
+	var strong := PokemonFactory.create(_data, &"charmander", 40, GameRng.new(PLAYER_SEED))
+	strong.moves.clear()
+	strong.moves.append(MoveSlot.new(&"ember", 25))
+	party.add(strong)
+	_state.party = party
+	_state.starter_species = &"bulbasaur"
+	_state.rng = GameRng.new(5)
+	_state.money = 3000
+	var bag_seen: Array[bool] = []
+	_hud.get_action_grid().visibility_changed.connect(func() -> void:
+		bag_seen.append(_hud.get_action_grid().is_action_enabled(ActionGrid.BAG)))
+	var played: Array = await _play(&"rival_route22")
+	assert_eq(played[0], Battle.Outcome.WIN)
+	assert_eq(_state.money, 3280, "3 000 + 35 × 8")
+	assert_eq(_hud.get_message_banner().get_text(), "Tu remportes %s." % MenuFormat.money(280))
+	assert_true(_hud.get_action_grid().is_action_enabled(ActionGrid.BAG), "SAC actif")
+	assert_false(_hud.get_action_grid().is_action_enabled(ActionGrid.RUN), "FUITE atténuée")
+
+
+## Défaite : aucun argent gagné, aucun perdu (dossier 09 §10).
+func test_route22_defeat_keeps_the_money() -> void:
+	var party := Party.new()
+	party.add(PokemonFactory.create(_data, &"bulbasaur", 2, GameRng.new(PLAYER_SEED)))
+	_state.party = party
+	_state.starter_species = &"bulbasaur"
+	_state.rng = GameRng.new(5)
+	_state.money = 3000
+	var played: Array = await _play(&"rival_route22")
+	assert_eq(played[0], Battle.Outcome.LOSS)
+	assert_eq(_state.money, 3000)
+	assert_ne(_hud.get_message_banner().get_text(), "Tu remportes %s." % MenuFormat.money(280))
+
+
+## Le labo garde le SAC muet (décision n° 12), même avec des Potions.
+func test_rival_lab_keeps_the_bag_silent() -> void:
+	_prepare(&"charmander", 1)
+	_state.bag.add(&"potion", 2)
+	await _play()
+	assert_false(_hud.get_action_grid().is_action_enabled(ActionGrid.BAG))
 
 
 func test_unknown_trainer_is_refused_and_the_player_stays_free() -> void:

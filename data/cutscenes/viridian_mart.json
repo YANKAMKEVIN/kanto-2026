@@ -1,0 +1,19 @@
+{
+	"mart_parcel": {
+		"variants": [
+			{
+				"unless": ["got_oak_parcel"],
+				"steps": [
+					{ "face": "clerk", "to": "player" },
+					{ "dialogue": "clerk_parcel_hello" },
+					{ "move": "player", "to": [7, 5] },
+					{ "face": "player", "to": "up" },
+					{ "wait": 0.3 },
+					{ "dialogue": "clerk_parcel" },
+					{ "give": "oak_parcel", "count": 1 },
+					{ "set": ["got_oak_parcel"] }
+				]
+			}
+		]
+	}
+}

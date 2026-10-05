@@ -93,6 +93,11 @@ extends SceneTree
 ##     SettingsValue (Label) ; ChoiceConfirm / ChoiceCancel (Button, carte de ChoiceCards),
 ##     ChoiceTitle / ChoiceDetail / ChoiceConfirmLabel / ChoiceConfirmDetail / ChoiceCancelLabel /
 ##     ChoiceCancelDetail (Label)
+##   Boutique (T11) : ShopStepper (Button, − / +), ShopName / ShopOwned / ShopDescription /
+##     ShopCaption / ShopUnitPrice / ShopQuantity / ShopTotal / ShopCardPrice / ShopMoney /
+##     ShopMoneyLabel (Label)
+##   Stockage (T15) : StorageDropZone (Panel, cadre ACCENT), StorageRefusal / StorageMenu (PanelContainer),
+##     StorageRefusalText / StorageTitle / StorageEmpty (Label)
 ## tests/unit/test_ui_theme.gd vérifie que le fichier est à jour avec les tokens.
 
 const TOKENS_PATH: String = "res://game/ui/theme/ui_tokens.gd"
@@ -160,6 +165,8 @@ func _init() -> void:
 	_add_map_screen(theme, bold, t)
 	_add_trainer_screen(theme, bold, t)
 	_add_settings_screen(theme, bold, t)
+	_add_shop_screen(theme, bold, t)
+	_add_storage_screen(theme, bold, t)
 
 	var err := ResourceSaver.save(theme, THEME_PATH)
 	print("ui_theme.tres : ", error_string(err))
@@ -1049,3 +1056,61 @@ func _add_settings_screen(theme: Theme, bold: Font, t: GDScript) -> void:
 	_add_plain_label(theme, &"ChoiceConfirmDetail", t.CHOICE_CARD_DETAIL_FONT, t.ACCENT_TEXT, null)
 	_add_plain_label(theme, &"ChoiceCancelLabel", t.CHOICE_LABEL_FONT, t.TEXT, bold)
 	_add_plain_label(theme, &"ChoiceCancelDetail", t.CHOICE_CARD_DETAIL_FONT, t.TEXT_MUTED, null)
+
+
+# --- Écran Boutique (jalon 7, T11) --------------------------------------------------------------
+
+
+func _add_storage_screen(theme: Theme, bold: Font, t: GDScript) -> void:
+	# Zone de dépôt : un cadre ACCENT sans fond, posé par-dessus la colonne visée par un glisser.
+	var drop := StyleBoxFlat.new()
+	drop.bg_color = t.tinted(t.ACCENT, 0.10)
+	drop.border_color = t.ACCENT
+	drop.set_border_width_all(t.STORAGE_DROP_BORDER)
+	drop.set_corner_radius_all(t.RADIUS)
+	drop.anti_aliasing = true
+	theme.set_type_variation(&"StorageDropZone", &"Panel")
+	theme.set_stylebox(&"panel", &"StorageDropZone", drop)
+	# Raison d'un refus : pastille sombre rougie, texte clair.
+	var refusal := _panel_style(t.STORAGE_REFUSAL_BG, t.RADIUS_SMALL, t)
+	refusal.border_color = t.HP_LOW
+	refusal.set_border_width_all(t.BORDER_WIDTH)
+	refusal.set_content_margin_all(t.GAP)
+	theme.set_type_variation(&"StorageRefusal", &"PanelContainer")
+	theme.set_stylebox(&"panel", &"StorageRefusal", refusal)
+	# Menu « ⋯ » : opaque (il recouvre des boutons).
+	var menu := _panel_style(Color(t.PANEL_BG_STRONG, 1.0), t.RADIUS, t)
+	menu.set_content_margin_all(t.GAP)
+	theme.set_type_variation(&"StorageMenu", &"PanelContainer")
+	theme.set_stylebox(&"panel", &"StorageMenu", menu)
+	_add_plain_label(theme, &"StorageRefusalText", t.STORAGE_REFUSAL_FONT, t.TEXT, bold)
+	_add_plain_label(theme, &"StorageTitle", t.STORAGE_TITLE_FONT, t.TEXT, bold)
+	_add_plain_label(theme, &"StorageEmpty", t.FONT_BODY, t.TEXT_MUTED, null)
+
+
+func _add_shop_screen(theme: Theme, bold: Font, t: GDScript) -> void:
+	var stepper := _button_style(t.BUTTON_BG, true, t)
+	var stepper_pressed := _button_style(t.ACCENT, false, t)
+	stepper.set_content_margin_all(0)
+	stepper_pressed.set_content_margin_all(0)
+	_add_button_variation(theme, &"ShopStepper", stepper, stepper_pressed, bold, t)
+	for state: StringName in [&"font_color", &"font_hover_color", &"font_focus_color"]:
+		theme.set_color(state, &"ShopStepper", t.TEXT)
+	for state: StringName in [&"font_pressed_color", &"font_hover_pressed_color"]:
+		theme.set_color(state, &"ShopStepper", t.ACCENT_TEXT)
+	for state: StringName in [&"icon_normal_color", &"icon_hover_color", &"icon_focus_color",
+			&"icon_disabled_color"]:
+		theme.set_color(state, &"ShopStepper", t.TEXT)
+	for state: StringName in [&"icon_pressed_color", &"icon_hover_pressed_color"]:
+		theme.set_color(state, &"ShopStepper", t.ACCENT_TEXT)
+	_add_plain_label(theme, &"ShopName", t.SHOP_NAME_FONT, t.TEXT, bold)
+	_add_plain_label(theme, &"ShopOwned", t.SHOP_OWNED_FONT, t.TEXT_MUTED, bold)
+	_add_plain_label(theme, &"ShopDescription", t.SHOP_DESCRIPTION_FONT, t.DIALOG_NARRATION,
+		null)
+	_add_plain_label(theme, &"ShopCaption", t.SHOP_CAPTION_FONT, t.TEXT_MUTED, bold)
+	_add_plain_label(theme, &"ShopUnitPrice", t.SHOP_UNIT_PRICE_FONT, t.ACCENT, bold)
+	_add_plain_label(theme, &"ShopQuantity", t.SHOP_QUANTITY_FONT, t.TEXT, bold)
+	_add_plain_label(theme, &"ShopTotal", t.SHOP_TOTAL_FONT, t.ACCENT, bold)
+	_add_plain_label(theme, &"ShopCardPrice", t.SHOP_CARD_PRICE_FONT, t.ACCENT, bold)
+	_add_plain_label(theme, &"ShopMoney", t.SHOP_MONEY_FONT, t.TEXT, bold)
+	_add_plain_label(theme, &"ShopMoneyLabel", t.SHOP_MONEY_LABEL_FONT, t.TEXT_MUTED, bold)

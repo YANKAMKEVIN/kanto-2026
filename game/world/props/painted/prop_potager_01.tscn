@@ -1,0 +1,16 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://game/world/props/prop.gd" id="1_6f5ib"]
+[ext_resource type="Material" path="res://game/world/lighting/materials/world_object.tres" id="2_kweec"]
+[ext_resource type="Texture2D" path="res://assets/world/props/prop_potager_01.png" id="3_35tku"]
+
+[node name="PropPotager01" type="Node2D" unique_id=182322515]
+script = ExtResource("1_6f5ib")
+footprint = Array[Vector2i]([Vector2i(-1, 0), Vector2i(0, 0), Vector2i(1, 0)])
+
+[node name="Sprite" type="Sprite2D" parent="." unique_id=516580792]
+unique_name_in_owner = true
+material = ExtResource("2_kweec")
+texture = ExtResource("3_35tku")
+centered = false
+offset = Vector2(-144, -148)

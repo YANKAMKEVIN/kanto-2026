@@ -1,8 +1,8 @@
 class_name ServiceDirector
 extends Node
-## Actions de dialogue des services (jalon-07.md §3.3.2, §6.2) : le soin de Maman (`heal`) et
-## le soin d'un Centre Pokémon (`center_heal`) ; la Boutique (`open_shop`, T12) et le Stockage
-## (`open_storage`, T16) viendront par la même porte. Branché par [Boot] comme
+## Actions de dialogue des services (jalon-07.md §3.3.2, §6.2) : le soin de Maman (`heal`), le
+## soin d'un Centre Pokémon (`center_heal`), la Boutique (`open_shop`, T12) et le Stockage
+## (`open_storage`, T16, le terminal du Centre). Branché par [Boot] comme
 ## [member DialogueRunner.action_handler] ([method run_action], coroutine attendue par le
 ## lecteur, joueur bloqué).
 ##
@@ -15,17 +15,30 @@ extends Node
 ## toast « Point de repos enregistré — <zone> ». Sans machine (carte de test), le rituel est une
 ## simple attente de la même durée.
 ##
+## Boutique (jalon-07.md §6.10) : `open_shop` demande la boutique **de la carte courante** (la
+## boutique porte l'identifiant de sa carte : `viridian_mart`) par [signal shop_requested] et
+## rend la main tout de suite. Le menu ne peut pas s'ouvrir pendant le dialogue (garde « partie
+## stable ») : [Boot] l'ouvre en écran seul à la fin du dialogue.
+##
+## Stockage (jalon-07.md §6.9) : `open_storage` (le terminal, sans réplique) émet
+## [signal storage_requested] de la même façon ; [Boot] ouvre `MenuRoute.storage()` en écran
+## seul à la fin du dialogue (le Stockage n'existe qu'au Centre : [MenuUnlocks]).
+##
 ## Ne lit aucun autoload : l'état de la partie et les points de repos arrivent par
 ## [method setup].
 
 ## Soin d'un Centre fini (équipe soignée, rituel joué, point de repos traité). [param registered] :
 ## vrai si le point de repos a changé (toast).
 signal center_healed(map_id: StringName, registered: bool)
+## Le marchand ouvre la Boutique [param shop_id] (= identifiant de la carte courante).
+signal shop_requested(shop_id: StringName)
+## Le terminal ouvre le Stockage (sur la carte courante).
+signal storage_requested
 
 const ACTION_HEAL: StringName = &"heal"
 const ACTION_CENTER_HEAL: StringName = &"center_heal"
-## Actions des tâches suivantes (même méthode) : signalées tant qu'elles ne sont pas branchées.
-const PENDING_ACTIONS: Array[StringName] = [&"open_shop", &"open_storage"]
+const ACTION_OPEN_SHOP: StringName = &"open_shop"
+const ACTION_OPEN_STORAGE: StringName = &"open_storage"
 const HEAL_MACHINE: NodePath = ^"%HealMachine"
 
 ## « Réduire les animations » (GameSettings.reduce_motion) : rituel deux fois plus court. Posé par
@@ -73,11 +86,12 @@ func run_action(action: StringName) -> void:
 			heal()
 		ACTION_CENTER_HEAL:
 			await _center_heal()
+		ACTION_OPEN_SHOP:
+			_open_shop()
+		ACTION_OPEN_STORAGE:
+			_open_storage()
 		_:
-			if PENDING_ACTIONS.has(action):
-				push_error("ServiceDirector : action « %s » pas encore branchée" % action)
-			else:
-				push_error("ServiceDirector : action inconnue « %s »" % action)
+			push_error("ServiceDirector : action inconnue « %s »" % action)
 
 
 func _center_heal() -> void:
@@ -111,6 +125,22 @@ func _center_heal() -> void:
 	var registered := RestPointLibrary.register(_state, point)
 	_running = false
 	center_healed.emit(map_id, registered)
+
+
+## Sans carte : push_error, rien (une boutique n'existe que sur sa carte).
+func _open_shop() -> void:
+	if not is_instance_valid(_map):
+		push_error("ServiceDirector : open_shop sans carte courante")
+		return
+	shop_requested.emit(_map.map_id)
+
+
+## Sans carte : push_error, rien (un terminal n'existe que sur sa carte).
+func _open_storage() -> void:
+	if not is_instance_valid(_map):
+		push_error("ServiceDirector : open_storage sans carte courante")
+		return
+	storage_requested.emit()
 
 
 func _on_flashed() -> void:

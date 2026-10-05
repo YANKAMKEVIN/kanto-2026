@@ -27,15 +27,17 @@ const ALIGN_CENTRE: StringName = &"centre"
 ## feuillage au vent ; « fade » : devient transparent quand le joueur passe derrière ;
 ## « layer » ; « align » (défaut : selon la parité de la largeur) ; « origin » : pied ailleurs
 ## qu'au milieu du bas de l'image (pixels de l'image) ; « traversable » : aucune emprise ;
-## « material » : faux = sprite sans shader (le massif du prototype n'en avait pas).
+## « material » : faux = sprite sans shader (le massif du prototype n'en avait pas) ;
+## « shadow » : vrai = ombre portée et ombre de contact (**faux par défaut** : seuls les
+## bâtiments, `bldg_*`, en ont ; petits objets, végétation et mobilier posés au sol non).
 const RULES: Dictionary[StringName, Dictionary] = {
-	&"bldg_centre_01": {"width": 8, "depth": 4, "fade": true,
+	&"bldg_centre_01": {"shadow": true, "width": 8, "depth": 4, "fade": true,
 		"open": [Vector2i(-1, 0), Vector2i(0, 0)]},
-	&"bldg_boutique_01": {"width": 8, "depth": 4, "fade": true,
+	&"bldg_boutique_01": {"shadow": true, "width": 8, "depth": 4, "fade": true,
 		"open": [Vector2i(-1, 0), Vector2i(0, 0)]},
-	&"bldg_arene_01": {"width": 10, "depth": 4, "fade": true},
-	&"bldg_maison_a_01": {"width": 6, "depth": 3, "fade": true},
-	&"bldg_maison_b_01": {"width": 5, "depth": 3, "fade": true},
+	&"bldg_arene_01": {"shadow": true, "width": 10, "depth": 4, "fade": true},
+	&"bldg_maison_a_01": {"shadow": true, "width": 6, "depth": 3, "fade": true},
+	&"bldg_maison_b_01": {"shadow": true, "width": 5, "depth": 3, "fade": true},
 	&"tree_a_01": {"width": 1, "depth": 1, "wind": true, "fade": true},
 	&"tree_b_01": {"width": 1, "depth": 1, "wind": true, "fade": true},
 	# Pied sur un bord de case : le massif qui l'entoure est centré sur ce bord.
@@ -60,6 +62,35 @@ const RULES: Dictionary[StringName, Dictionary] = {
 	&"relief_falaise_01": {"width": 4, "depth": 1, "layer": LAYER_GROUND},
 	&"relief_escalier_01": {"traversable": true, "layer": LAYER_GROUND,
 		"align": ALIGN_CENTRE},
+	# Série 07 (Jadielle agrandie). Murs de soutènement des terrasses et escaliers de ville :
+	# relief de la couche du sol, sans emprise (la carte bloque la rangée du mur dans
+	# `blocked_cells`, piliers compris ; les tronçons se chevauchent librement).
+	&"relief_muret_01": {"traversable": true, "layer": LAYER_GROUND},
+	&"relief_escalier_ville_01": {"traversable": true, "layer": LAYER_GROUND,
+		"align": ALIGN_CENTRE},
+	# Jardins : potager et plate-bande (3 cases, rangée du pied), clôture et haie qui courent
+	# du nord au sud (4 cases au-dessus du pied, sur la colonne d'ancrage).
+	&"prop_potager_01": {"width": 3, "depth": 1},
+	&"prop_platebande_01": {"width": 3, "depth": 1},
+	&"prop_cloture_v_01": {"width": 1, "depth": 4},
+	&"prop_haie_v_01": {"width": 1, "depth": 4},
+	# Série 07, passe 2 : deux nouveaux modèles de maisons, portail ouvert (on le traverse :
+	# poteaux sur les bords de la case du passage, traverses sur les clôtures voisines),
+	# buissons, garde-corps posé sur le haut d'un mur (la rangée du mur est déjà bloquée),
+	# arbre fruitier, petit mobilier de jardin.
+	&"bldg_maison_c_01": {"shadow": true, "width": 6, "depth": 3, "fade": true},
+	&"bldg_maison_d_01": {"shadow": true, "width": 5, "depth": 3, "fade": true},
+	&"prop_portail_01": {"traversable": true, "align": ALIGN_CENTRE},
+	&"prop_buisson_a_01": {"width": 1, "depth": 1},
+	&"prop_buisson_b_01": {"width": 1, "depth": 1},
+	&"prop_buisson_c_01": {"width": 2, "depth": 1},
+	&"prop_balustrade_01": {"traversable": true, "align": ALIGN_EDGE},
+	&"tree_fruitier_01": {"width": 1, "depth": 1, "wind": true, "fade": true},
+	&"prop_tonneau_01": {"width": 1, "depth": 1},
+	&"prop_caisses_01": {"width": 1, "depth": 1},
+	&"prop_boite_lettres_01": {"width": 1, "depth": 1},
+	&"prop_pots_fleurs_01": {"width": 1, "depth": 1},
+	&"prop_linge_01": {"width": 3, "depth": 1},
 	&"int_centre_comptoir": {"width": 5, "depth": 1},
 	&"int_centre_terminal": {"width": 2, "depth": 1},
 	&"int_centre_banquette": {"width": 2, "depth": 1},
@@ -69,6 +100,12 @@ const RULES: Dictionary[StringName, Dictionary] = {
 	&"int_boutique_presentoir": {"width": 3, "depth": 1},
 	&"ground_hautes_herbes_01": {"traversable": true, "align": ALIGN_CENTRE},
 }
+
+
+## Règle des ombres (retours de Kevin, 2026-10-05) : **aucun petit objet n'a d'ombre** (ni
+## portée ni de contact : elle donnait une impression de suspension) ; seuls les bâtiments
+## (« shadow »: true dans [constant RULES]) gardent les leurs pour l'instant. Un nouvel objet
+## est donc sans ombre sans autre réglage.
 
 
 static func has_rule(id: StringName) -> bool:
@@ -117,6 +154,12 @@ static func layer(id: StringName) -> StringName:
 
 static func has_wind(id: StringName) -> bool:
 	return bool((RULES.get(id, {}) as Dictionary).get("wind", false))
+
+
+## Vrai pour les seuls objets marqués « shadow » (bâtiments) : les autres scènes n'ont ni
+## `CastShadow` ni `ContactShadow`, même si le catalogue fournit les images d'ombre.
+static func casts_shadows(id: StringName) -> bool:
+	return bool((RULES.get(id, {}) as Dictionary).get("shadow", false))
 
 
 static func fades(id: StringName) -> bool:

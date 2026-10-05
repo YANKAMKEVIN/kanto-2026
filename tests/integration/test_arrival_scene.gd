@@ -1,6 +1,7 @@
 extends GutTest
 ## Micro-scène d'arrivée à Jadielle (jalon 7 T4, dossier 09 §2, plan §13) avec le vrai Boot et
-## le départ de débogage `viridian` (entrée sud de Jadielle) : deux pas vers le nord, la scène
+## le départ de débogage `viridian` (entrée sud de Jadielle) : on monte jusqu'au premier pas sur la
+## place (haut du grand escalier sud, Jadielle agrandie) ; la scène
 ## se joue **une seule fois**, en **4 s au plus** de bout en bout, **sans dialogue** ; les
 ## contrôles reviennent ; le Roucool du toit de la Boutique est parti pour la visite et revient
 ## au changement de carte ; l'objectif « rejoindre Jadielle » disparaît.
@@ -80,7 +81,7 @@ func test_debug_start_lands_at_the_south_entrance() -> void:
 	await _start()
 	var map := _boot.get_map()
 	assert_eq(map.map_id, &"viridian_city")
-	assert_eq(_player.get_cell(), Vector2i(22, 27))
+	assert_eq(_player.get_cell(), Vector2i(28, 35))
 	assert_eq(_player.get_facing(), Vector2i.UP)
 	assert_not_null(map.get_npc(&"arrival_kid"), "l'enfant attend la scène")
 	assert_not_null(map.get_npc(&"viridian_roof_pidgey"), "le Roucool est sur le toit")
@@ -95,7 +96,7 @@ func test_the_arrival_plays_once_in_four_seconds_without_dialogue() -> void:
 	var map := _boot.get_map()
 	await _walk_in_and_watch()
 	assert_eq(_plays, 1, "la scène s'est jouée")
-	assert_eq(_player.get_cell(), Vector2i(22, 25), "deux cases après l'entrée")
+	assert_eq(_player.get_cell(), Vector2i(28, 23), "premier pas sur la place (haut de l'escalier)")
 	var seconds := (_finished_ms - _started_ms) / 1000.0
 	gut.p("micro-scène d'arrivée : %.2f s" % seconds)
 	assert_between(seconds, 0.5, MAX_SECONDS, "4 s au plus de bout en bout")
@@ -107,14 +108,16 @@ func test_the_arrival_plays_once_in_four_seconds_without_dialogue() -> void:
 	assert_null(map.get_npc(&"viridian_roof_pidgey"), "le Roucool s'est envolé")
 	assert_null(map.get_npc(&"arrival_traveler"), "le voyageur a continué vers le sud")
 	assert_not_null(map.get_npc(&"arrival_kid"), "l'enfant reste pour la visite")
-	assert_eq(map.get_npc(&"arrival_rattata").get_cell(), Vector2i(27, 23))
+	assert_eq(map.get_npc(&"arrival_rattata").get_cell(), Vector2i(33, 22))
+	assert_eq(map.get_npc(&"arrival_kid").get_cell(), Vector2i(32, 22), "derrière son Rattata")
+	assert_eq(_player.get_facing(), Vector2i.UP, "le héros regarde de nouveau la ville")
 	# Revenir sur le déclencheur ne rejoue rien.
 	Input.action_press(&"move_down")
-	await wait_until(func() -> bool: return _player.get_cell() == Vector2i(22, 26), TIMEOUT)
+	await wait_until(func() -> bool: return _player.get_cell() == Vector2i(28, 24), TIMEOUT)
 	Input.action_release(&"move_down")
 	await wait_until(func() -> bool: return not _player.is_moving(), TIMEOUT)
 	Input.action_press(&"move_up")
-	await wait_until(func() -> bool: return _player.get_cell() == Vector2i(22, 24), TIMEOUT)
+	await wait_until(func() -> bool: return _player.get_cell() == Vector2i(28, 22), TIMEOUT)
 	Input.action_release(&"move_up")
 	await wait_process_frames(5)
 	assert_eq(_plays, 1, "une seule fois")
@@ -134,7 +137,7 @@ func test_the_pidgey_is_back_after_a_map_change_and_the_town_lives_normally() ->
 	SceneRouter.change_map(&"viridian_city", &"from_center", Vector2i.DOWN)
 	await wait_until(func() -> bool: return not SceneRouter.is_transitioning(), TIMEOUT)
 	var map := _boot.get_map()
-	assert_eq(_player.get_cell(), Vector2i(15, 20), "devant la porte du Centre")
+	assert_eq(_player.get_cell(), Vector2i(21, 21), "devant la porte du Centre")
 	assert_not_null(map.get_npc(&"viridian_roof_pidgey"), "le Roucool est revenu")
 	for id: StringName in [&"arrival_kid", &"arrival_rattata", &"arrival_traveler"]:
 		assert_null(map.get_npc(id), "%s : seulement pour la première arrivée" % id)
@@ -142,6 +145,76 @@ func test_the_pidgey_is_back_after_a_map_change_and_the_town_lives_normally() ->
 			&"old_man", &"gym_watcher"]:
 		assert_not_null(map.get_npc(id), "%s présent" % id)
 	assert_eq(_plays, 1)
+	assert_push_error_count(0)
+
+
+## Retours de Kevin au T5 (jalon-07.md §15.21) : une action après l'autre, regard guidé.
+## L'enfant et son Rattata **courent** (décision de Kevin du 2026-10-05, dossier 09 §2 : vraies
+## planches de course), le Rattata devant, l'enfant une case derrière au même rythme, et passent
+## devant le héros, qui les suit des yeux (gauche, haut, droite) ; le Rattata arrive sous
+## l'auvent juste avant que le Roucool réagisse ; puis le Roucool réagit et s'envole, le héros
+## lève la tête avec un petit bond ; puis le voyageur descend et croise le héros, qui se
+## tourne vers lui. Contrôles bloqués tout du long.
+func test_the_arrival_beats_come_one_after_the_other() -> void:
+	await _start()
+	var map := _boot.get_map()
+	var rattata := map.get_npc(&"arrival_rattata")
+	var kid := map.get_npc(&"arrival_kid")
+	var pidgey := map.get_npc(&"viridian_roof_pidgey")
+	var times := {}
+	var facings: Array[Vector2i] = []
+	var kid_steps: Array[float] = []
+	var rattata_steps: Array[float] = []
+	var gaps: Array[int] = []
+	var mark := func(key: String) -> void:
+		if not times.has(key):
+			times[key] = (Time.get_ticks_msec() - _started_ms) / 1000.0
+	pidgey.reacted.connect(func() -> void: mark.call("pidgey"))
+	_player.reacted.connect(func() -> void: mark.call("hero_react"))
+	kid.step_finished.connect(func(_cell: Vector2i) -> void:
+		kid_steps.append((Time.get_ticks_msec() - _started_ms) / 1000.0))
+	rattata.step_finished.connect(func(_cell: Vector2i) -> void:
+		rattata_steps.append((Time.get_ticks_msec() - _started_ms) / 1000.0))
+	var watch := func() -> void:
+		if not _director.is_running():
+			return
+		assert_false(_player.is_input_enabled(), "contrôles bloqués pendant la scène")
+		if facings.is_empty() or facings[-1] != _player.get_facing():
+			facings.append(_player.get_facing())
+		if not gaps.has(rattata.get_cell().x - kid.get_cell().x):
+			gaps.append(rattata.get_cell().x - kid.get_cell().x)
+		if rattata.get_cell().x > 28:
+			mark.call("kid_crossed")
+		# Retrouvé à chaque image : il quitte la carte à la fin de la scène.
+		var traveler := map.get_npc(&"arrival_traveler")
+		if traveler != null and traveler.get_cell() != Vector2i(26, 21):
+			mark.call("traveler")
+	get_tree().process_frame.connect(watch)
+	await _walk_in_and_watch()
+	get_tree().process_frame.disconnect(watch)
+	if facings[-1] != _player.get_facing():
+		facings.append(_player.get_facing())
+	gut.p("temps des actions : %s ; regards du héros : %s" % [times, facings])
+	for key: String in ["kid_crossed", "pidgey", "hero_react", "traveler"]:
+		assert_true(times.has(key), key)
+	assert_lt(times["kid_crossed"], times["pidgey"], "l'enfant passe, puis le Roucool")
+	assert_lt(times["pidgey"], times["traveler"], "le Roucool, puis le voyageur")
+	assert_almost_eq(times["hero_react"], times["pidgey"], 0.4, "surprise à l'envol")
+	var expected: Array[Vector2i] = [Vector2i.UP, Vector2i.LEFT, Vector2i.UP, Vector2i.RIGHT,
+		Vector2i.UP, Vector2i.LEFT, Vector2i.DOWN, Vector2i.UP]
+	assert_eq(facings, expected, "le héros suit l'action des yeux")
+	# Ils courent : un pas par durée de course, l'enfant au rythme de son Rattata.
+	assert_eq(kid_steps.size(), 9)
+	assert_eq(rattata_steps.size(), 9)
+	for i: int in range(1, kid_steps.size()):
+		for steps: Array[float] in [kid_steps, rattata_steps]:
+			var step := steps[i] - steps[i - 1]
+			assert_between(step, Grid.RUN_STEP_DURATION * 0.8, Grid.WALK_STEP_DURATION * 0.8,
+				"pas de course %d" % i)
+	assert_true(kid.can_run() and rattata.can_run(), "vraies planches de course")
+	assert_eq(gaps, [1] as Array[int], "le Rattata devant, l'enfant une case derrière")
+	assert_lt(rattata_steps[-1], times["pidgey"], "le Rattata arrive, puis le Roucool réagit")
+	assert_lt(times["pidgey"] - rattata_steps[-1], 0.4, "sans temps mort")
 	assert_push_error_count(0)
 
 
@@ -165,7 +238,7 @@ func test_route_1_and_viridian_are_linked_by_walking() -> void:
 	Input.action_release(&"move_up")
 	await wait_until(func() -> bool: return not SceneRouter.is_transitioning(), TIMEOUT)
 	assert_eq(_boot.get_map().map_id, &"viridian_city")
-	assert_eq(_player.get_cell(), Vector2i(22, 27))
+	assert_eq(_player.get_cell(), Vector2i(28, 35))
 	assert_true(zones.has("Jadielle"), "titre « JADIELLE »")
 	Input.action_press(&"move_down")
 	await wait_until(func() -> bool: return _boot.get_map().map_id == &"route_1", TIMEOUT)

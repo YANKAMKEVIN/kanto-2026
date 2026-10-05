@@ -4,7 +4,8 @@ extends Node
 ## ([Battle]), découpe chaque [BattleEvent] du journal en temps de mise en scène
 ## ([BattlePlayback] → [BattleBeat]) et les joue sur le [BattleStage] (le décor recomposé et
 ## les Pokémon) et la [BattleHud] (cartes, barres de PV, messages). La boucle de choix passe
-## par les signaux de la HUD ; la fin par [BattleConclusion] (soin, ni XP ni argent).
+## par les signaux de la HUD ; la fin par [BattleConclusion] (soin ; argent gagné contre un
+## dresseur vaincu, versé par [code]add_money[/code] de [GameState], jalon 7).
 ## XP (jalon 5C) : le directeur rejoue EXP_GAINED (barre d'XP de la carte du joueur), LEVEL_UP
 ## (« Nv. » qui pulse, PV max) et les phrases de capacité apprise, dans l'ordre du journal ;
 ## pour un Pokémon du joueur qui n'est pas en jeu, le gain est appliqué sans être montré
@@ -47,7 +48,8 @@ const FORGET_PANEL_SCENE: PackedScene = preload("res://game/ui/battle/move_forge
 const BAG_PANEL_SCENE: PackedScene = preload("res://game/ui/battle/battle_bag_panel.tscn")
 const PARTY_PICKER_SCENE: PackedScene = preload("res://game/ui/bag/party_picker.tscn")
 const CAPTURE_CARD_SCENE: PackedScene = preload("res://game/ui/battle/capture_card.tscn")
-## Catégorie du Sac ouverte d'emblée en combat (les Balls).
+## Catégorie du Sac voulue d'emblée en combat sauvage (les Balls) ; contre un dresseur : les
+## soins ([method BagQuery.start_category]).
 const BAG_START_CATEGORY: StringName = &"ball"
 ## Durées multipliées (0 = instantané, tests) ; relayé à la scène et à la HUD.
 var speed_scale: float = 1.0
@@ -189,7 +191,8 @@ func run_request(request: BattleRequest, map: GameMap) -> int:
 		_hud.set_party(party.size())
 	# Déroulé du moteur : présentation des camps, puis la boucle de tours.
 	await _play_events(opening, trainer)
-	var actions := BattleViews.WILD_BATTLE_ACTIONS if wild else BattleViews.TRAINER_BATTLE_ACTIONS
+	var actions := BattleViews.WILD_BATTLE_ACTIONS if wild \
+		else BattleViews.trainer_actions(trainer)
 	var can_flee := request.rules != null and request.rules.can_flee
 	while _battle.get_state() == Battle.State.CHOOSING:
 		var action := await _choose_action(actions, can_flee)
@@ -199,18 +202,26 @@ func run_request(request: BattleRequest, map: GameMap) -> int:
 		if action.kind == BattleAction.Kind.ITEM and not _spend_item(action):
 			continue
 		await _play_events(_battle.submit(action), trainer)
-	# Fin : sortie de la vue, puis conclusion. Dresseur : soin éventuel (les deux Pokémon,
-	# l'équipe du rival n'est pas gardée), ni XP ni argent (5C). Sauvage : aucun soin.
+	# Fin : l'argent gagné (dresseur vaincu : « Tu remportes 280 ₽. », versé à GameState ; jamais
+	# rien de retiré), sortie de la vue, puis le soin éventuel du dresseur (les deux Pokémon,
+	# l'équipe du rival n'est pas gardée). Sauvage : aucun soin, aucun argent.
 	var outcome := _battle.get_outcome()
+	var conclusion: BattleConclusion = null
+	if trainer != null:
+		var foes := request.foe_party
+		var last_level := foes.get_at(foes.size() - 1).level if foes.size() > 0 else 0
+		conclusion = BattleConclusion.resolve(trainer, outcome, last_level)
+		if conclusion.prize_money > 0:
+			if is_instance_valid(_hud) and _texts != null:
+				await _hud.show_message(_texts.prize_line(conclusion.prize_money))
+			_state.add_money(conclusion.prize_money)
 	if is_instance_valid(_hud):
 		await _hud.hide_all()
 	if is_instance_valid(_stage) and _stage.is_active():
 		await _stage.exit()
 	_free_panels()
-	if trainer != null:
-		var conclusion := BattleConclusion.resolve(trainer, outcome)
-		if conclusion.heal_party:
-			party.heal_all()
+	if conclusion != null and conclusion.heal_party:
+		party.heal_all()
 	_running = false
 	_battle = null
 	_wild_foe = null
@@ -260,8 +271,9 @@ func get_forget_panel() -> MoveForgetPanel:
 ## Coroutine : propose [param actions] (grille), attend le choix du joueur, renvoie l'action à
 ## soumettre. ATTAQUER sans PP → Lutte directement (règle des jeux) ; sinon les capacités,
 ## « ‹ » revient. FUITE (si [param can_flee], sauvage) → une action de fuite ([BattleAction.run]).
-## SAC (si les Balls sont permises) → le Sac de combat : une Ball choisie → [BattleAction.ball],
-## « ‹ » revient ici sans rien consommer.
+## SAC (si la grille le permet et qu'une Ball ou un soin est utilisable) → le Sac de combat :
+## une Ball choisie → [BattleAction.ball], un soin → [BattleAction.heal] ; « ‹ » revient ici
+## sans rien consommer.
 func _choose_action(actions: Dictionary[StringName, bool], can_flee: bool) -> BattleAction:
 	while true:
 		_hud.show_actions(actions)
@@ -298,7 +310,10 @@ func _choose_item() -> BattleAction:
 	_hud.hide_card(BattleHud.Side.PLAYER)
 	await _hud.hide_zone()
 	while true:
-		panel.show_bag(BattleViews.bag_entries(_state.bag, _items), BAG_START_CATEGORY)
+		var context := _battle.item_context()
+		var entries := BattleViews.bag_entries(_state.bag, _items, context)
+		panel.show_bag(entries, BagQuery.start_category(context, BAG_START_CATEGORY,
+			BagQuery.categories(entries)))
 		var answer: Array = await _first_of(panel.item_chosen, panel.back_requested)
 		while panel.is_sliding():
 			await get_tree().process_frame

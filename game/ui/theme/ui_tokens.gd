@@ -979,3 +979,67 @@ const CHOICE_LABEL_FONT := FONT_TITLE
 const CHOICE_CARD_DETAIL_FONT := 28
 const CHOICE_SLIDE := 40.0
 const CHOICE_FADE := ANIM_PANEL
+
+# Écran Boutique (jalon 7, T11) : langage du Sac (colonnes, cartes) + sélecteur de quantité.
+## Colonne de droite (aperçu, QUANTITÉ, TOTAL, CONFIRMER).
+const SHOP_DETAIL_WIDTH := 580
+const SHOP_ICON := 112
+const SHOP_NAME_FONT := FONT_BUTTON
+const SHOP_OWNED_FONT := FONT_CAPTION
+const SHOP_DESCRIPTION_FONT := 28
+const SHOP_CAPTION_FONT := FONT_CAPTION
+const SHOP_UNIT_PRICE_FONT := FONT_BODY
+## Prix sous chaque carte d'objet.
+const SHOP_CARD_PRICE_FONT := 28
+const SHOP_CARD_PRICE_HEIGHT := 44
+## Sélecteur de quantité : boutons − / + (≥ TOUCH_MIN) et nombre au centre.
+const SHOP_STEPPER_SIZE := TOUCH_MIN
+const SHOP_STEPPER_ICON := 56
+const SHOP_QUANTITY_FONT := 56
+const SHOP_TOTAL_FONT := 44
+## Argent affiché dans la colonne de gauche.
+const SHOP_MONEY_FONT := 44
+const SHOP_MONEY_LABEL_FONT := FONT_CAPTION
+const SHOP_COIN_ICON := 48
+## Appui long sur − / + : délai (LONG_PRESS), intervalle lent puis rapide, pas rapide.
+const SHOP_REPEAT_DELAY := LONG_PRESS
+const SHOP_REPEAT_SLOW := 0.16
+const SHOP_REPEAT_FAST := 0.06
+const SHOP_REPEAT_FAST_AFTER := 1.2
+const SHOP_REPEAT_FAST_STEP := 5
+## Indisponible : CONFIRMER et sélecteur atténués (la raison est écrite à côté).
+const SHOP_DISABLED_ALPHA := 0.45
+
+# --- Écran Stockage (jalon 7, T15 ; jalon-07.md §6.4, §6.9) --------------------------------------
+# Trois colonnes dans la zone sous l'en-tête (840 px de haut) : ÉQUIPE (six cartes de TOUCH_MIN),
+# Pokémon sélectionné et ses actions, STOCKAGE (grille défilante, 2 colonnes à 1920, 3 à 2340).
+
+const STORAGE_PARTY_WIDTH := 440
+const STORAGE_DETAIL_WIDTH := 400
+const STORAGE_COLUMN_GAP := GAP
+## Titre de colonne (« ÉQUIPE », « STOCKAGE »).
+const STORAGE_TITLE_HEIGHT := 40
+const STORAGE_TITLE_FONT := FONT_BODY
+## Écart entre les six cartes de l'équipe : six de TOUCH_MIN + cinq écarts + le titre ≤ 840.
+const STORAGE_PARTY_GAP := 4
+## Grille : largeur minimale d'une carte et écarts.
+const STORAGE_GRID_MIN_CELL := 420
+const STORAGE_GRID_GAP := 12
+const STORAGE_GRID_PAD := 8
+## Pokémon sélectionné : sprite 64 px à l'échelle entière.
+const STORAGE_SPRITE_SOURCE := 64
+const STORAGE_SPRITE_SCALE := 3
+const STORAGE_DETAIL_GAP := 6
+## Boutons d'action (≥ TOUCH_MIN) : le principal prend la place, FAVORI aussi, « ⋯ » est carré.
+const STORAGE_ACTION_HEIGHT := TOUCH_MIN
+const STORAGE_MORE_WIDTH := TOUCH_MIN
+## Menu secondaire « ⋯ » : largeur et hauteur d'un choix.
+const STORAGE_MENU_WIDTH := 360
+const STORAGE_MENU_ITEM_HEIGHT := TOUCH_MIN
+## La raison d'un refus reste affichée ce temps (s) ou jusqu'au prochain geste.
+const STORAGE_REFUSAL_SECONDS := 4.0
+const STORAGE_REFUSAL_FONT := 28
+const STORAGE_REFUSAL_BG := Color(0.30, 0.08, 0.08, 0.94)
+## Cadre de la colonne visée par un glisser.
+const STORAGE_DROP_BORDER := 4
+const HAPTIC_STORAGE_MOVE_MS := 20

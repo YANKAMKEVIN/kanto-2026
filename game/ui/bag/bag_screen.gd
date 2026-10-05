@@ -44,6 +44,7 @@ const TARGET_FORMAT := "Pour %s"
 const BACK_ICON: Texture2D = preload("res://assets/ui/icons/battle/back.svg")
 const SORT_ICON: Texture2D = preload("res://assets/ui/icons/menu/swap.svg")
 const STAR_ICON: Texture2D = preload("res://assets/ui/icons/menu/star_filled.svg")
+const COIN_ICON: Texture2D = preload("res://assets/ui/icons/shop/coin.svg")
 const TAB_SCENE: PackedScene = preload("res://game/ui/bag/bag_category_tab.tscn")
 const CARD_SCENE: PackedScene = preload("res://game/ui/bag/bag_item_card.tscn")
 const PICKER_SCENE: PackedScene = preload("res://game/ui/bag/party_picker.tscn")
@@ -69,6 +70,8 @@ var _detail_tween: Tween
 var _back: Button
 var _left_panel: PanelContainer
 var _tabs_box: VBoxContainer
+var _money_panel: PanelContainer
+var _money: Label
 var _center_panel: PanelContainer
 var _title: Label
 var _caption: Label
@@ -251,6 +254,11 @@ func get_result_bar() -> UseResultBar:
 	return _result
 
 
+## Argent affiché (« 3 000 ₽ »), vide si absent.
+func get_money_text() -> String:
+	return _money.text if _money_panel.visible else ""
+
+
 func get_title_text() -> String:
 	return _title.text
 
@@ -328,6 +336,30 @@ func _build_left(parent: Control) -> void:
 	_tabs_box.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	_tabs_box.add_theme_constant_override(&"separation", UiTokens.BAG_TAB_GAP)
 	scroll.add_child(_tabs_box)
+	# L'argent (J7, dossier 09 §10) : sous les catégories, jamais dans l'aperçu d'un objet.
+	_money_panel = PanelContainer.new()
+	_money_panel.theme_type_variation = &"MenuPanel"
+	_money_panel.visible = false
+	column.add_child(_money_panel)
+	var money_row := HBoxContainer.new()
+	money_row.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	money_row.add_theme_constant_override(&"separation", UiTokens.GAP)
+	_money_panel.add_child(money_row)
+	var coin := TextureRect.new()
+	coin.texture = COIN_ICON
+	coin.modulate = UiTokens.ACCENT
+	coin.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	coin.custom_minimum_size = Vector2.ONE * UiTokens.SHOP_COIN_ICON
+	coin.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	coin.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+	coin.size_flags_vertical = Control.SIZE_SHRINK_CENTER
+	money_row.add_child(coin)
+	_money = Label.new()
+	_money.theme_type_variation = &"ShopMoney"
+	_money.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_money.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	_money.clip_text = true
+	money_row.add_child(_money)
 
 
 func _build_center(parent: Control) -> void:
@@ -535,6 +567,8 @@ func _refresh() -> void:
 	_sort.visible = not empty
 	_empty.visible = empty
 	_empty.text = "" if _view == null else _view.empty_text
+	_money.text = "" if _view == null else _view.money_text
+	_money_panel.visible = not _money.text.is_empty()
 	_title.text = TITLE_TEXT if empty else BagEntryView.category_label(_open)
 	var target_name := "" if _view == null else _view.target_name
 	_caption.text = TARGET_FORMAT % target_name

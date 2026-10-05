@@ -96,6 +96,12 @@ var _light_profiles := LightingLibrary.new()
 var _rest_points := RestPointLibrary.new()
 ## Toast « Point de repos enregistré — <zone> » en attente de la fin du dialogue du soin.
 var _rest_toast: PackedStringArray = PackedStringArray()
+## Boutiques (jalon 7, 7A.3, data/shops/) ; la boutique demandée par le marchand (`open_shop`),
+## ouverte à la fin de son dialogue (le menu ne s'ouvre pas pendant un dialogue).
+var _shops := ShopLibrary.new()
+var _pending_shop: StringName = &""
+## Le terminal du Centre a demandé le Stockage (`open_storage`) : ouvert à la fin du dialogue.
+var _pending_storage: bool = false
 ## Faux : aucune écriture de toute la session (pas de sauvegarde, départ de débogage, ou
 ## sauvegarde d'une version plus récente à ne jamais écraser).
 var _autosave_enabled: bool = false
@@ -147,6 +153,8 @@ func _ready() -> void:
 	_rest_points.load_file()
 	_services.setup(GameState, _rest_points)
 	_services.center_healed.connect(_on_center_healed)
+	_services.shop_requested.connect(_on_shop_requested)
+	_services.storage_requested.connect(_on_storage_requested)
 	_runner.action_handler = _services.run_action
 	# Choix à deux cartes (jalon-07.md §6.5, T7) : la boîte montre les cartes, le lecteur attend.
 	_runner.choice_requested.connect(_dialogue_box.show_choice)
@@ -169,6 +177,11 @@ func _ready() -> void:
 		GameState, _items)
 	_cutscenes_node.set_battle_runner(_battle_director)
 	_cutscenes_node.set_inventory(GameState.bag, _items)
+	# Remise du colis (jalon-07.md §3.6.2, T19) : jeton {first_wild_species} des répliques de
+	# Chen, scène lancée par une variante de dialogue (« colis en main »), légende POKÉDEX ACTIVÉ.
+	_runner.token_values = _dialogue_token_values
+	_runner.cutscene_requested.connect(_on_cutscene_requested)
+	_cutscenes_node.set_hud(_hud)
 	_cutscenes_node.item_given.connect(_on_item_given)
 	_cutscenes_node.item_found.connect(_on_item_found)
 	_battle_director.battle_started.connect(_on_battle_state_changed.unbind(1))
@@ -192,6 +205,8 @@ func _ready() -> void:
 	_encounter_library.load_dir()
 	_recovery.setup(GameState, _rest_points, SceneRouter, _runner)
 	_recovery.woke_up.connect(_on_woke_up_after_defeat.unbind(1))
+	# Défaite contre un Dresseur (jalon-07.md §3.8, T25) : l'étape de scène « wake_up ».
+	_cutscenes_node.set_recovery(_recovery)
 	_encounters.setup(_encounter_library, _pokemon, GameState, _player, _battle_director,
 		SceneRouter, _cutscenes_node, _recovery)
 	_encounters.encounter_started.connect(_on_encounter_state_changed.unbind(2))
@@ -211,6 +226,9 @@ func _ready() -> void:
 	_zones.load_file()
 	_objectives.load_file()
 	_unlocks = MenuUnlocks.new(GameState.flags, GameState.party)
+	# Stockage (jalon-07.md §6.9, T16) : seulement dans un Centre (carte courante, relue à chaque
+	# appel) ; l'écran Stockage et le bouton STOCKAGE de l'Équipe n'existent que là.
+	_unlocks.set_location(_zones, _current_map_id)
 	_apply_debug_unlocks()
 	if _dex.load_file():
 		_dex.check_references(_pokemon)
@@ -226,6 +244,10 @@ func _ready() -> void:
 		push_error(error)
 	_menu.setup(GameState, _pokemon, _zones, _objectives, _unlocks, _can_open_menu, _items, _dex,
 		_map_illustration, _moments)
+	# Boutique (jalon-07.md §6.10, T12) : stock vérifié contre les objets.
+	_shops.load_dir()
+	_shops.check_references(_items)
+	_menu.set_shops(_shops)
 	_menu.menu_opened.connect(_on_menu_opened)
 	_menu.menu_closed.connect(_on_menu_closed)
 	# L'écran (jalon-06.md §6.6) : ouverture et vue dans la même frame, sans await (un fondu
@@ -280,6 +302,24 @@ func _ready() -> void:
 		_menu.settings_shown.connect(_menu_screen.show_settings)
 		_menu_screen.setting_changed.connect(_menu.change_setting)
 		_menu_screen.save_now_requested.connect(_menu.request_save)
+	# Boutique (jalon-07.md §6.10) : ShopScreen du T11 (TrainerMenu), directeur du T12.
+	_menu.shop_shown.connect(_menu_screen.show_shop)
+	_menu.shop_result_shown.connect(_menu_screen.show_shop_result)
+	_menu.shop_confirm_requested.connect(_menu_screen.show_shop_confirm)
+	_menu_screen.shop_mode_changed.connect(_menu.set_shop_mode)
+	_menu_screen.shop_buy_requested.connect(_menu.buy)
+	_menu_screen.shop_sell_requested.connect(_menu.sell)
+	# Stockage (jalon-07.md §6.9) : StorageScreen du T15 (TrainerMenu, fusionné avant : câblage
+	# direct, comme la Boutique), directeur du T16.
+	_menu.storage_shown.connect(_menu_screen.show_storage)
+	_menu.storage_refused.connect(_menu_screen.show_storage_refusal)
+	_menu.storage_release_asked.connect(_menu_screen.ask_storage_release)
+	_menu_screen.storage_selected.connect(_menu.select_storage)
+	_menu_screen.storage_deposit_requested.connect(_menu.deposit_member)
+	_menu_screen.storage_withdraw_requested.connect(_menu.withdraw_member)
+	_menu_screen.storage_favorite_toggled.connect(_menu.toggle_storage_favorite)
+	_menu_screen.storage_release_requested.connect(_menu.request_release)
+	_menu_screen.storage_release_confirmed.connect(_menu.confirm_release)
 	# Une seule écoute de tout ce qui s'enregistre au Pokédex (jalon-06.md §6.9).
 	GameState.pokedex.recorded.connect(_on_pokedex_recorded)
 	GameState.flags.flag_changed.connect(_on_flag_changed)
@@ -472,12 +512,16 @@ func get_defeat_recovery() -> DefeatRecovery:
 	return _recovery
 
 
-## Actions des services : soins, plus tard Boutique et Stockage (jalon 7, T8).
+## Actions des services : soins, Boutique et Stockage (jalon 7, T8, T12, T16).
 func get_service_director() -> ServiceDirector:
 	return _services
 
 
 ## Points de repos chargés au démarrage (data/world/rest_points.json).
+func get_shop_library() -> ShopLibrary:
+	return _shops
+
+
 func get_rest_points() -> RestPointLibrary:
 	return _rest_points
 
@@ -758,6 +802,30 @@ func _on_dialogue_finished(_dialogue_id: StringName) -> void:
 	if not _rest_toast.is_empty():
 		_hud.show_toast(_rest_toast[0], _rest_toast[1])
 		_rest_toast = PackedStringArray()
+	if not _pending_shop.is_empty():
+		var shop_id := _pending_shop
+		_pending_shop = &""
+		if not _menu.open(MenuRoute.shop(shop_id), true):
+			push_error("Boot : la Boutique « %s » ne s'ouvre pas" % shop_id)
+	elif _pending_storage:
+		_pending_storage = false
+		if not _menu.open(MenuRoute.storage(), true):
+			push_error("Boot : le Stockage ne s'ouvre pas sur « %s »" % _current_map_id())
+
+
+## « open_shop » (le marchand, jalon-07.md §6.10) : la Boutique s'ouvre en écran seul dès la fin
+## du dialogue (partie stable). Boutique inconnue : refusée tout de suite.
+func _on_shop_requested(shop_id: StringName) -> void:
+	if not _shops.has_shop(shop_id):
+		push_error("Boot : boutique inconnue « %s »" % shop_id)
+		return
+	_pending_shop = shop_id
+
+
+## « open_storage » (le terminal du Centre, jalon-07.md §6.9) : le Stockage s'ouvre en écran
+## seul dès la fin du dialogue ; retour = fermer, autosave à la fermeture s'il a changé.
+func _on_storage_requested() -> void:
+	_pending_storage = true
 
 
 ## Soin demandé par un dialogue « heal » (jalon 5 §3.11, Maman) : l'équipe est soignée (PV et
@@ -781,6 +849,20 @@ func _on_center_healed(map_id: StringName, registered: bool) -> void:
 
 func _on_cutscene_started(_cutscene_id: StringName) -> void:
 	_refresh_controls()
+
+
+## Valeurs des jetons des dialogues (jalon-07.md §3.6, T19) : lues au début d'un dialogue qui en
+## contient (« Un Roucool… » ; aucune rencontre → la page est omise).
+func _dialogue_token_values() -> Dictionary[StringName, String]:
+	return DialogueTokens.values_for(GameState.first_wild_species(), _pokemon)
+
+
+## Une variante de dialogue lance une scène à sa fin (Chen, colis en main → `oak_parcel`). Le
+## verrou du joueur passe du dialogue à la scène dans la même image (jalon-07.md §3.6.2).
+func _on_cutscene_requested(cutscene_id: StringName) -> void:
+	if not _cutscenes_node.play(cutscene_id):
+		push_warning("Boot : la scène « %s » demandée par un dialogue n'a pas été jouée"
+			% cutscene_id)
 
 
 func _on_cutscene_finished(_cutscene_id: StringName) -> void:
@@ -877,8 +959,13 @@ func _on_item_given(item_id: StringName, count: int) -> void:
 	_hud.show_toast(item.quantity_text(count), item.added_text(count))
 
 
-## Retour de l'écran : la fiche du Pokédex d'abord, puis le choix du Pokémon du Sac.
+## Retour de l'écran : la confirmation de vente de la Boutique, la confirmation ou le menu « ⋯ »
+## du Stockage, la fiche du Pokédex, puis le choix du Pokémon du Sac.
 func _screen_back() -> bool:
+	if _menu_screen.shop_back():
+		return true
+	if _menu_screen.storage_back():
+		return true
 	if _menu_screen.has_method(&"pokedex_back") and _menu_screen.call(&"pokedex_back"):
 		return true
 	return _menu_screen.bag_back()

@@ -9,8 +9,12 @@ extends SceneTree
 ## - `idle_<dir>` : colonne 0 (une image) ;
 ## - `walk_<dir>` : colonnes 1, 2, 3, 0 ; un cycle de 4 images couvre **2 cases**, vitesse
 ##   calée sur `Grid.WALK_STEP_DURATION` (4 / (2 × 0,27) ≈ 7,4 images/s) ;
-## - `run_<dir>` : planche de course si elle existe (le héros), sinon la marche, au rythme de
-##   `Grid.RUN_STEP_DURATION` (12,5 images/s).
+## - `run_<dir>` : **seulement avec une planche de course** (le héros ; l'enfant et le Rattata de
+##   Jadielle, qui courent dans la micro-scène d'arrivée), au rythme de
+##   `Grid.RUN_STEP_DURATION` (12,5 images/s). Sans planche de course, aucune animation de
+##   course : rejouer la marche à 12,5 images/s donnait des poses de marche à la vitesse de
+##   course (« ils courent et marchent en même temps », Kevin au T5) ; `Npc.can_run` est faux
+##   et le PNJ marche.
 ##
 ## **Correspondance des identifiants** (les planches sont nommées en français par les fiches
 ## d'art, les données du jeu en anglais) : [constant LOOKS]. Les personnages vont dans
@@ -36,19 +40,19 @@ const LOOKS: Dictionary = {
 	"marchand": [CHARACTERS_DIR, "clerk", ""],
 	"livreur": [CHARACTERS_DIR, "courier", ""],
 	"dresseuse": [CHARACTERS_DIR, "lass", ""],
-	"enfant": [CHARACTERS_DIR, "kid", ""],
+	"enfant": [CHARACTERS_DIR, "kid", "enfant_run"],
 	"vieil_homme": [CHARACTERS_DIR, "old_man", ""],
 	"voyageur": [CHARACTERS_DIR, "traveler", ""],
 	"jeune_dresseur": [CHARACTERS_DIR, "youngster", ""],
 	"roucool": [POKEMON_DIR, "pidgey", ""],
-	"rattata": [POKEMON_DIR, "rattata", ""],
+	"rattata": [POKEMON_DIR, "rattata", "rattata_run"],
 	"piafabec": [POKEMON_DIR, "spearow", ""],
 	"ferosinge": [POKEMON_DIR, "mankey", ""],
 	"nidoran_f": [POKEMON_DIR, "nidoran_f", ""],
 	"nidoran_m": [POKEMON_DIR, "nidoran_m", ""],
 }
 ## Planches lues seulement comme planche de course d'une autre.
-const RUN_ONLY: Array[String] = ["heros_run"]
+const RUN_ONLY: Array[String] = ["heros_run", "enfant_run", "rattata_run"]
 
 var _errors: int = 0
 
@@ -78,7 +82,7 @@ func _build(walk_sheet: Dictionary, run_sheet: Dictionary, path: String) -> void
 	frames.remove_animation(&"default")
 	var walk_texture := load(walk_sheet["fichier"]) as Texture2D
 	var walk_cell := Vector2(walk_sheet["cellule"][0], walk_sheet["cellule"][1])
-	var run_texture := walk_texture
+	var run_texture: Texture2D = null
 	var run_cell := walk_cell
 	if not run_sheet.is_empty():
 		run_texture = load(run_sheet["fichier"]) as Texture2D
@@ -92,8 +96,9 @@ func _build(walk_sheet: Dictionary, run_sheet: Dictionary, path: String) -> void
 		frames.add_frame(idle, _atlas(walk_texture, walk_cell, 0, row))
 		_add_cycle(frames, StringName("walk_" + dir), walk_texture, walk_cell, row,
 			4.0 / (2.0 * WALK_STEP))
-		_add_cycle(frames, StringName("run_" + dir), run_texture, run_cell, row,
-			4.0 / (2.0 * RUN_STEP))
+		if run_texture != null:
+			_add_cycle(frames, StringName("run_" + dir), run_texture, run_cell, row,
+				4.0 / (2.0 * RUN_STEP))
 	DirAccess.make_dir_recursive_absolute(ProjectSettings.globalize_path(path.get_base_dir()))
 	if ResourceSaver.save(frames, path) != OK:
 		push_error("build_character_frames : %s non écrit" % path)

@@ -4,18 +4,24 @@ extends RefCounted
 ## des chaînes et des entiers, pour que les composants de `game/ui/battle/` ne connaissent
 ## ni le moteur ni les données (jalon-04.md §3.8, §14.2). Classe pure, statique.
 
-## Actions de la grille disponibles au premier combat (décision de Kevin n° 12) : ATTAQUER
-## seulement ; SAC, ÉQUIPE et FUITE restent visibles mais atténués (pas d'objet utilisable
-## contre un dresseur, pas de changement de Pokémon, pas de fuite contre un dresseur).
-## Clés : ActionGrid.ACTIONS.
-const TRAINER_BATTLE_ACTIONS: Dictionary[StringName, bool] = {&"attack": true}
-
 ## Actions de la grille disponibles contre un Pokémon sauvage (jalons 5B et 5D) : ATTAQUER, SAC
 ## (lancer une Ball) et FUITE ; ÉQUIPE reste atténué (pas de changement de Pokémon au jalon 5).
 ## Clés : ActionGrid.ACTIONS.
 const WILD_BATTLE_ACTIONS: Dictionary[StringName, bool] = {
 	&"attack": true, &"bag": true, &"run": true,
 }
+
+## Actions de la grille disponibles contre [param trainer] : ATTAQUER, et SAC si
+## [member TrainerData.allow_bag] (décision de Kevin du 2026-10-03 : SAC contre tous les
+## Dresseurs ; le combat du labo le garde muet, décision n° 12). ÉQUIPE et FUITE restent
+## atténués (pas de changement de Pokémon, pas de fuite contre un dresseur). Sans dresseur :
+## SAC permis. Clés : ActionGrid.ACTIONS.
+static func trainer_actions(trainer: TrainerData) -> Dictionary[StringName, bool]:
+	var actions: Dictionary[StringName, bool] = {&"attack": true}
+	if trainer == null or trainer.allow_bag:
+		actions[&"bag"] = true
+	return actions
+
 
 ## Carte d'information du Pokémon envoyé par [param event] (SENT_OUT) : nom, sexe, niveau,
 ## PV ; PV chiffrés du côté du joueur seulement (dossier 05 §5).
@@ -73,9 +79,11 @@ static func move_category(category: MoveData.Category) -> BattleMoveView.Categor
 	return BattleMoveView.Category.PHYSICAL
 
 
-## Objets du Sac de combat sauvage ([BagEntryView]) : enveloppe de [method BagQuery.entries]
-## (contexte combat sauvage, pertinence : Balls puis soins). Un objet inconnu de [param items]
-## est omis (push_error). Nom au singulier, catégorie en identifiant des données ;
+## Objets du Sac de combat ([BagEntryView]) : enveloppe de [method BagQuery.entries] dans
+## [param context] (combat sauvage par défaut, pertinence : Balls puis soins ; combat de
+## dresseur : les Balls n'y sont pas utilisables). Un objet inconnu de [param items] est omis
+## (push_error). Nom au singulier, catégorie en identifiant des données ;
 ## [member BagEntryView.usable] selon les règles des données (Balls et soins).
-static func bag_entries(bag: Bag, items: ItemLibrary) -> Array[BagEntryView]:
-	return BagQuery.entries(bag, items, BagQuery.CONTEXT_WILD_BATTLE)
+static func bag_entries(bag: Bag, items: ItemLibrary,
+		context: StringName = BagQuery.CONTEXT_WILD_BATTLE) -> Array[BagEntryView]:
+	return BagQuery.entries(bag, items, context)

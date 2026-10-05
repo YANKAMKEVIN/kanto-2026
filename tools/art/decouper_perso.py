@@ -7,7 +7,17 @@ hauteur voulue avec une échelle commune à toutes les poses.
 Usage :
   tools/art/decouper_perso.py source.png sortie.png --hauteur 64 --pixel   (piste pixel art)
   tools/art/decouper_perso.py source.png sortie.png --hauteur 128          (piste peinte)
+  tools/art/decouper_perso.py source.png sortie.png --hauteur 108 --rebond-passage 3
+                                                     (planche de course : colonnes 0 et 2 =
+                                                     contacts, 1 et 3 = passages en l'air)
+
+Planche de course (`--rebond-passage`) : une pose de passage (jambes ramassées) est plus courte
+qu'une pose de contact ; posée sur le bas de la cellule, sa tête descendrait (le personnage
+« s'accroupit » au lieu de bondir). Elle est donc posée la tête `rebond` px plus haut que la plus
+haute tête des contacts de sa ligne (jamais plus bas que posée au sol).
 """
+from __future__ import annotations
+
 import argparse
 
 from PIL import Image
@@ -28,6 +38,21 @@ def _bandes(profil: list[int], nombre: int) -> list[tuple[int, int]]:
     return sorted(plages)
 
 
+def _separer(plages: list[tuple[int, int]], profil: list[int],
+             nombre: int) -> list[tuple[int, int]]:
+    """Deux poses qui se touchent (une patte, une queue) forment une seule plage : on coupe la
+    plus large à sa colonne la moins remplie, dans son tiers central, jusqu'à en avoir `nombre`."""
+    plages = list(plages)
+    while 0 < len(plages) < nombre:
+        gauche, droite = max(plages, key=lambda p: p[1] - p[0])
+        tiers = (droite - gauche) // 3
+        coupe = min(range(gauche + tiers, droite - tiers), key=lambda x: profil[x])
+        plages.remove((gauche, droite))
+        plages += [(gauche, coupe), (coupe + 1, droite)]
+        plages.sort()
+    return plages
+
+
 def _poses(planche: Image.Image) -> list[Image.Image]:
     """Découpe en suivant les vides de la planche (les poses générées ne tombent pas
     toujours dans une grille régulière)."""
@@ -38,7 +63,7 @@ def _poses(planche: Image.Image) -> list[Image.Image]:
     poses = []
     for haut, bas in _bandes(lignes, LIGNES):
         colonnes = [sum(1 for y in range(haut, bas) if donnees[x, y]) for x in range(largeur)]
-        for gauche, droite in _bandes(colonnes, COLONNES):
+        for gauche, droite in _separer(_bandes(colonnes, COLONNES), colonnes, COLONNES):
             cellule = planche.crop((gauche, haut, droite, bas))
             masque = cellule.getchannel("A").point(lambda a: 255 if a > 96 else 0)
             poses.append(cellule.crop(masque.getbbox()))
@@ -53,7 +78,8 @@ def _centre_tete(pose: Image.Image) -> float:
     return (boite[0] + boite[2]) / 2.0 if boite else pose.width / 2.0
 
 
-def decouper(source: str, sortie: str, hauteur: int, pixel: bool = False) -> tuple[int, int]:
+def decouper(source: str, sortie: str, hauteur: int, pixel: bool = False,
+             rebond_passage: int | None = None) -> tuple[int, int]:
     """Découpe `source` en planche de jeu 4 × 4 ; renvoie la taille d'une cellule."""
     poses = _poses(Image.open(source).convert("RGBA"))
     echelle = hauteur / max(p.height for p in poses)
@@ -62,6 +88,7 @@ def decouper(source: str, sortie: str, hauteur: int, pixel: bool = False) -> tup
     cellule_l = int((2 * max(marge_gauche, marge_droite)) * echelle) + 4
     cellule_h = hauteur + 2
     planche = Image.new("RGBA", (cellule_l * COLONNES, cellule_h * LIGNES), (0, 0, 0, 0))
+    hauteurs = [max(1, round(p.height * echelle)) for p in poses]
     for index, pose in enumerate(poses):
         taille = (max(1, round(pose.width * echelle)), max(1, round(pose.height * echelle)))
         filtre = Image.BOX if pixel else Image.LANCZOS
@@ -74,6 +101,10 @@ def decouper(source: str, sortie: str, hauteur: int, pixel: bool = False) -> tup
         colonne, ligne = index % COLONNES, index // COLONNES
         x = colonne * cellule_l + round(cellule_l / 2 - _centre_tete(pose) * echelle)
         y = ligne * cellule_h + cellule_h - reduite.height
+        if rebond_passage is not None and colonne % 2 == 1:
+            contact = max(hauteurs[ligne * COLONNES], hauteurs[ligne * COLONNES + 2])
+            y = min(y, ligne * cellule_h + cellule_h - contact - rebond_passage)
+            y = max(y, ligne * cellule_h)
         planche.alpha_composite(reduite, (x, y))
     planche.save(sortie)
     return cellule_l, cellule_h
@@ -85,8 +116,10 @@ def main() -> None:
     arguments.add_argument("sortie")
     arguments.add_argument("--hauteur", type=int, required=True)
     arguments.add_argument("--pixel", action="store_true")
+    arguments.add_argument("--rebond-passage", type=int, default=None)
     options = arguments.parse_args()
-    cellule_l, cellule_h = decouper(options.source, options.sortie, options.hauteur, options.pixel)
+    cellule_l, cellule_h = decouper(options.source, options.sortie, options.hauteur, options.pixel,
+                                    options.rebond_passage)
     print(f"{options.sortie} : cellule {cellule_l} × {cellule_h}")
 
 

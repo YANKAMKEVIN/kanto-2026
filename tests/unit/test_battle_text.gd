@@ -387,3 +387,10 @@ func test_item_used_then_hp_restored() -> void:
 		"Salamèche récupère 20 PV."] as Array[String])
 	assert_true(_text.is_draft(&"item_used"))
 	assert_true(_text.is_draft(&"hp_restored"))
+
+
+## Jalon 7 : « Tu remportes 280 ₽. » (draft), somme au format de l'argent du menu.
+func test_prize_line() -> void:
+	assert_eq(_text.prize_line(280), "Tu remportes %s." % MenuFormat.money(280))
+	assert_eq(_text.prize_line(1400), "Tu remportes %s." % MenuFormat.money(1400))
+	assert_true(_text.is_draft(&"prize_won"), "à relire par Kevin")

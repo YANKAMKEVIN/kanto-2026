@@ -13,7 +13,8 @@ extends RefCounted
 ## (si les deux tombent pendant la même action, le camp du lanceur gagne). En fin de tour,
 ## un camp dont le Pokémon est K.O. envoie le suivant. Sans PP, seule Lutte est permise
 ## ([constant BattleAction.STRUGGLE]) : sans type, recul d'¼ des PV max du lanceur.
-## Ordre des tirages : IA adverse (pick_index), égalité de Vitesse, puis pour chaque
+## Ordre des tirages : IA adverse (pick_index ; « smart » seulement à égalité, [BattleAI]),
+## égalité de Vitesse, puis pour chaque
 ## action ceux de [DamageCalc] (ou la seule précision pour une capacité de statut) et un
 ## roll(100) par effet de [member MoveEffect.chance] < 100. La fin de tour (Vampigraine) et
 ## l'XP ne tirent rien.
@@ -205,7 +206,7 @@ func submit(action: BattleAction) -> Array[BattleEvent]:
 	if action.kind == BattleAction.Kind.ITEM:
 		_throw_ball(action.item_id, events)
 		return events
-	var foe_action := _foe.ai.choose(_foe, _player, _rng)
+	var foe_action := _foe.ai.choose(_foe, _player, _rng, _data)
 	var order: Array[BattleSide] = [_player, _foe]
 	if _player_goes_second(action, foe_action):
 		order = [_foe, _player]
@@ -289,7 +290,7 @@ func _is_legal_heal(action: BattleAction) -> bool:
 ## Tour où seul l'adversaire agit (fuite ratée, Pokémon libéré, soin) : son IA choisit, il joue,
 ## puis la fin de tour.
 func _foe_turn_alone(events: Array[BattleEvent]) -> void:
-	var foe_action := _foe.ai.choose(_foe, _player, _rng)
+	var foe_action := _foe.ai.choose(_foe, _player, _rng, _data)
 	if _foe.active.pokemon.is_fainted():
 		return
 	_execute(_foe, foe_action, events)

@@ -3,7 +3,7 @@ extends GutTest
 ## « pas de Leveinard », « pas d'escalier ») : métadonnées et lumière, enveloppe et meubles
 ## peints (emprises solides), murs relevés sur l'enveloppe, sortie sur le paillasson, infirmière
 ## derrière le comptoir (inaccessible), parler par-dessus le comptoir, point de repos devant le
-## comptoir, machine de soin, terminal posé **inerte** (T16), Dresseuse et son Roucool au repos
+## comptoir, machine de soin, terminal du Stockage (EXAMINER face à lui, T16), Dresseuse et son Roucool au repos
 ## sur des cases libres, toute la salle atteignable depuis l'entrée.
 
 const MAP_PATH := "res://game/world/maps/viridian_center.tscn"
@@ -149,31 +149,26 @@ func test_heal_machine_sits_on_the_counter() -> void:
 		assert_eq(slot.modulate.a, 0.0, "éteinte au repos")
 
 
-func test_terminal_is_inert_until_the_storage_task() -> void:
+func test_the_storage_terminal_is_examined_from_the_front() -> void:
 	var table := _map.get_interactions()
 	for cell: Vector2i in TERMINAL:
-		for from: Vector2i in [cell + Vector2i.DOWN, cell + Vector2i.RIGHT]:
-			if _grid.is_solid(from):
-				continue
-			var facing := cell - from
-			assert_null(InteractionFinder.find(_grid, table, from, facing),
-				"terminal inerte (T16) depuis %s" % from)
+		var from := cell + Vector2i.DOWN
+		assert_false(_grid.is_solid(from), "devant le terminal : %s libre" % from)
+		var interaction := InteractionFinder.find(_grid, table, from, Vector2i.UP)
+		assert_not_null(interaction, "terminal depuis %s" % from)
+		if interaction != null:
+			assert_eq(interaction.dialogue_id, &"storage_terminal")
+			assert_eq(interaction.kind, Interaction.Kind.EXAMINE, "EXAMINER")
+	assert_null(InteractionFinder.find(_grid, table, Vector2i(3, 3), Vector2i.LEFT),
+		"seulement de face")
+	assert_eq(_map.get_spawn_cell(&"terminal"), Vector2i(1, 4), "spawn devant le terminal")
 
 
-func test_resting_trainer_and_her_pidgey() -> void:
-	var lass := _map.get_npc(&"center_lass")
-	var pidgey := _map.get_npc(&"center_lass_pidgey")
-	assert_not_null(lass)
-	assert_not_null(pidgey)
-	if lass == null or pidgey == null:
-		return
-	assert_eq(lass.get_spec().dialogue, &"center_lass")
-	assert_eq(pidgey.get_spec().sprite, &"pokemon/pidgey", "aucune espèce nouvelle")
-	assert_eq(pidgey.get_spec().idle_react_every, 6.0)
-	for npc: Npc in [lass, pidgey]:
-		assert_false(_terrain.is_solid(npc.get_cell()), "%s sur une case libre" % npc.get_id())
-		assert_true(_terrain.find_reachable(ENTRANCE).has(npc.get_cell()))
-
+## Décision de Kevin (2026-10-05) : pas de clones. La Dresseuse et son Roucool sont sur la
+## place de Jadielle ; ils ne sont pas aussi au Centre.
+func test_no_duplicate_of_the_square_lass() -> void:
+	assert_null(_map.get_npc(&"center_lass"))
+	assert_null(_map.get_npc(&"center_lass_pidgey"))
 
 func test_the_whole_room_is_reachable_with_the_inhabitants_in_place() -> void:
 	var free := _terrain.find_reachable(ENTRANCE)

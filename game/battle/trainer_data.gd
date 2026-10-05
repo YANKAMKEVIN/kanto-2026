@@ -17,8 +17,14 @@ var can_lose: bool = false
 var heal_after: bool = false
 ## Le combat rapporte de l'XP (formule d'XP gagnée : jalon 5).
 var gives_exp: bool = true
-## Argent gagné en cas de victoire.
+## Argent fixe gagné en cas de victoire (exclusif de [member prize_per_level]).
 var prize_money: int = 0
+## Argent par niveau du dernier Pokémon de l'équipe (Rouge/Bleu : base × niveau, dossier 09
+## §20 Q1) ; 0 = pas de gain par niveau. Exclusif de [member prize_money].
+var prize_per_level: int = 0
+## Le SAC est utilisable pendant le combat (décision de Kevin du 2026-10-03 : contre tous les
+## Dresseurs ; seul le combat du labo le garde muet).
+var allow_bag: bool = true
 ## Message générique de fin (« Tu as battu… », « … a gagné cette fois... »). Faux pour le
 ## premier combat du rival : ses répliques d'après-combat en tiennent lieu (décision de
 ## Kevin n° 15, jalon 4 §8).
@@ -45,6 +51,14 @@ func team_for(player_starter: StringName) -> Array[TrainerSlot]:
 	else:
 		result.assign(team_by_starter.get(player_starter, []))
 	return result
+
+
+## Argent gagné à la victoire : [member prize_money] s'il est fixé, sinon
+## [member prize_per_level] × [param last_level] (niveau du dernier Pokémon de son équipe).
+func prize_for(last_level: int) -> int:
+	if prize_money > 0:
+		return prize_money
+	return prize_per_level * maxi(last_level, 0)
 
 
 ## IA du dresseur.

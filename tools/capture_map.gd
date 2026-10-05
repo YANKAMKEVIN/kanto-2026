@@ -2,7 +2,7 @@ extends SceneTree
 ## Outil de vérification : affiche une carte entière (caméra dézoomée) pour Movie Maker.
 ##
 ##   godot --path . --write-movie build/cap/map.png --fixed-fps 10 --quit-after 6 \
-##     -s res://tools/capture_map.gd -- --size=2304x1632 [--grid]
+##     -s res://tools/capture_map.gd -- --size=2304x1632 [--grid] [--map=viridian_city]
 ##
 ## 2304×1632 a le ratio de la carte (48×34) : la carte remplit exactement la vue.
 ## `--grid` superpose la grille et les coordonnées de cases (vérification du plan).
@@ -32,7 +32,11 @@ func _arg_size() -> Vector2i:
 
 
 func _setup() -> void:
-	_map = (load(MAP_PATH) as PackedScene).instantiate()
+	var path := MAP_PATH
+	for arg: String in OS.get_cmdline_user_args():
+		if arg.begins_with("--map="):
+			path = "res://game/world/maps/%s.tscn" % arg.trim_prefix("--map=")
+	_map = (load(path) as PackedScene).instantiate()
 	root.add_child(_map)
 	var size: Vector2i = _map.get(&"size")
 	var world := Vector2(size * TILE)

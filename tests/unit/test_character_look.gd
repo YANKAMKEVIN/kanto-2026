@@ -114,12 +114,11 @@ func test_painted_frames_cycle_two_tiles_per_walk_loop() -> void:
 		var run := StringName("run_" + dir)
 		assert_eq(frames.get_frame_count(idle), 1, String(idle))
 		assert_eq(frames.get_frame_count(walk), 4, String(walk))
-		assert_eq(frames.get_frame_count(run), 4, String(run))
+		# Retours T5 : sans planche de course, aucune course (pas de marche jouée en accéléré).
+		assert_false(frames.has_animation(run), "%s : pas de fausse course" % run)
 		assert_true(frames.get_animation_loop(walk))
 		assert_almost_eq(4.0 / frames.get_animation_speed(walk), 2.0 * Grid.WALK_STEP_DURATION,
 			0.001, "un cycle = deux cases de marche")
-		assert_almost_eq(4.0 / frames.get_animation_speed(run), 2.0 * Grid.RUN_STEP_DURATION,
-			0.001, "un cycle = deux cases de course")
 		# Repos = colonne 0 de la ligne de la direction ; marche : colonnes 1, 2, 3, 0.
 		var row: int = {"down": 0, "left": 1, "right": 2, "up": 3}[dir]
 		var cell := Vector2(88, 134)
@@ -131,6 +130,9 @@ func test_painted_frames_cycle_two_tiles_per_walk_loop() -> void:
 	var run_frame := hero.get_frame_texture(&"run_down", 0) as AtlasTexture
 	assert_eq(run_frame.atlas.resource_path,
 		"res://assets/sprites/characters/painted/heros_run_sheet.png", "planche de course")
+	for dir: String in ["down", "left", "right", "up"]:
+		assert_almost_eq(4.0 / hero.get_animation_speed(StringName("run_" + dir)),
+			2.0 * Grid.RUN_STEP_DURATION, 0.001, "un cycle = deux cases de course")
 
 
 func _npc(sprite: StringName) -> Npc:

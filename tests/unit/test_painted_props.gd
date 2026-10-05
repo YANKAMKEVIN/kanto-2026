@@ -7,9 +7,12 @@ const CATALOGUE := "res://assets/world/catalogue.json"
 const MANIFEST := "res://tools/art/manifeste.json"
 const SCENES := "res://game/world/props/painted/"
 ## Les seuls objets peints qu'on traverse (jalon-07.md §6.6).
-const TRAVERSABLE: Array[StringName] = [&"relief_escalier_01", &"ground_hautes_herbes_01"]
+## Série 07 : murs de soutènement et escaliers de ville (la carte bloque la rangée du mur).
+const TRAVERSABLE: Array[StringName] = [&"relief_escalier_01", &"ground_hautes_herbes_01",
+	&"relief_muret_01", &"relief_escalier_ville_01", &"prop_portail_01", &"prop_balustrade_01"]
 const GROUND_LAYER: Array[StringName] = [
-	&"relief_falaise_01", &"relief_escalier_01", &"prop_massif_01",
+	&"relief_falaise_01", &"relief_escalier_01", &"prop_massif_01", &"relief_muret_01",
+	&"relief_escalier_ville_01",
 ]
 
 var _objects: Dictionary = {}
@@ -79,7 +82,7 @@ func test_shadow_textures_exist_and_are_drawn_under_everything() -> void:
 		for pair: Array in [["ombre", "CastShadow", WorldLighting.GROUP_CAST_SHADOWS],
 				["contact", "ContactShadow", WorldLighting.GROUP_CONTACT_SHADOWS]]:
 			var node := prop.get_node_or_null(NodePath(pair[1])) as Sprite2D
-			if not entry.has(pair[0]):
+			if not entry.has(pair[0]) or not PaintedPropRules.casts_shadows(StringName(id)):
 				assert_null(node, "%s : pas de %s" % [id, pair[1]])
 				continue
 			var shadow: Dictionary = entry[pair[0]]
@@ -98,9 +101,50 @@ func test_shadow_textures_exist_and_are_drawn_under_everything() -> void:
 				- PaintedPropRules.origin(StringName(id), size)
 			assert_eq(node.offset * 2.0,
 				Vector2(shadow["decalage"][0], shadow["decalage"][1]) + image_foot, id)
-	# Bâtiments et arbres ont les deux ombres.
-	for id: String in ["bldg_centre_01", "tree_central_01", "prop_banc_01"]:
+	# Les bâtiments ont les deux ombres.
+	for id: String in ["bldg_centre_01", "bldg_maison_a_01", "bldg_arene_01"]:
 		assert_true(_objects[id].has("ombre") and _objects[id].has("contact"), id)
+		assert_not_null(_scene(id).get_node_or_null(^"CastShadow"), id)
+		assert_not_null(_scene(id).get_node_or_null(^"ContactShadow"), id)
+
+
+## Retours de Kevin (2026-10-05) : **aucun petit objet n'a d'ombre** (ni portée, ni de contact),
+## seuls les bâtiments (`bldg_*`, règle « shadow ») gardent les leurs ; scènes peintes, puis
+## ombres peintes dans les images provisoires (Bourg Palette, Route 1, intérieurs).
+func test_only_buildings_have_shadow_nodes() -> void:
+	for id: String in _objects:
+		var building := id.begins_with("bldg_")
+		assert_eq(PaintedPropRules.casts_shadows(StringName(id)), building,
+			"%s : règle « shadow »" % id)
+		var prop := _scene(id)
+		if prop == null:
+			continue
+		var has_shadow := false
+		for child: Node in prop.get_children():
+			if child.is_in_group(WorldLighting.GROUP_CAST_SHADOWS) \
+					or child.is_in_group(WorldLighting.GROUP_CONTACT_SHADOWS) \
+					or String(child.name).contains("Shadow"):
+				has_shadow = true
+		assert_eq(has_shadow, building, "%s : nœud d'ombre seulement pour un bâtiment" % id)
+	for id: String in ["tree_a_01", "prop_buisson_a_01", "prop_banc_01", "prop_tonneau_01",
+			"prop_cloture_01", "prop_rocher_01", "prop_lampadaire_01", "prop_boite_lettres_01",
+			"prop_linge_01", "prop_portail_01", "prop_balustrade_01", "prop_potager_01",
+			"int_centre_comptoir", "int_plante"]:
+		assert_false(PaintedPropRules.casts_shadows(StringName(id)), "%s : sans ombre" % id)
+	# Images provisoires : plus d'ellipse d'ombre (couleur de tools/gen_placeholder_props.gd,
+	# alpha 0,28) sous tous les petits objets.
+	for path: String in ["tree_oak_a", "tree_oak_b", "tree_pine", "tree_birch", "tree_maple",
+			"plaza_tree", "bush_a", "bush_b", "interior/plant", "lamp_post", "bench",
+			"sign_pallet", "mailbox", "bicycle", "van", "rock_small", "rock_large",
+			"interior/desk_chair", "interior/travel_bag", "interior/coat_rack"]:
+		var image := (load("res://assets/tiles/placeholder/props/%s.png" % path)
+			as Texture2D).get_image()
+		var shadow_pixels := 0
+		for x: int in range(0, image.get_width(), 2):
+			var c := image.get_pixel(x, image.get_height() - 10)
+			if absf(c.a - 0.28) < 0.02 and c.r < 0.2 and c.g < 0.2:
+				shadow_pixels += 1
+		assert_eq(shadow_pixels, 0, "%s : pas d'ombre peinte" % path)
 
 
 func test_materials_shared_by_family() -> void:

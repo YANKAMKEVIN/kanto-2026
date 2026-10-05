@@ -65,17 +65,54 @@ func test_move_categories() -> void:
 		BattleMoveView.Category.PHYSICAL)
 
 
-## Décision de Kevin n° 12 : ATTAQUER seul actif ; SAC, ÉQUIPE, FUITE atténués.
+## Décision de Kevin n° 12 : au labo, ATTAQUER seul actif ; SAC, ÉQUIPE, FUITE atténués.
 func test_first_battle_actions_attack_only() -> void:
-	for action: StringName in BattleViews.TRAINER_BATTLE_ACTIONS:
+	var trainer := TrainerData.new()
+	trainer.allow_bag = false
+	var actions := BattleViews.trainer_actions(trainer)
+	for action: StringName in actions:
 		assert_true(ActionGrid.ACTIONS.has(action), "clé de la grille : %s" % action)
-	assert_true(BattleViews.TRAINER_BATTLE_ACTIONS.get(ActionGrid.ATTACK, false))
+	assert_true(actions.get(ActionGrid.ATTACK, false))
 	for action: StringName in [ActionGrid.BAG, ActionGrid.TEAM, ActionGrid.RUN]:
-		assert_false(BattleViews.TRAINER_BATTLE_ACTIONS.get(action, false), str(action))
+		assert_false(actions.get(action, false), str(action))
+
+
+## Décision de Kevin du 2026-10-03 (jalon 7) : SAC contre tous les Dresseurs, sauf au labo
+## (donnée « bag ») ; ÉQUIPE et FUITE restent atténués.
+func test_trainer_actions_follow_the_trainer_bag() -> void:
+	var trainer := TrainerData.new()
+	var actions := BattleViews.trainer_actions(trainer)
+	assert_true(actions.get(ActionGrid.ATTACK, false))
+	assert_true(actions.get(ActionGrid.BAG, false), "SAC actif par défaut")
+	assert_false(actions.get(ActionGrid.TEAM, false))
+	assert_false(actions.get(ActionGrid.RUN, false))
+	assert_true(BattleViews.trainer_actions(null).get(ActionGrid.BAG, false))
+	var data := PokemonData.new()
+	data.load_dir()
+	var trainers := TrainerLibrary.new(data)
+	trainers.load_dir()
+	assert_false(BattleViews.trainer_actions(trainers.get_trainer(&"rival_lab")).get(
+		ActionGrid.BAG, false), "labo : SAC muet")
+	assert_true(BattleViews.trainer_actions(trainers.get_trainer(&"rival_route22")).get(
+		ActionGrid.BAG, false), "Route 22 : SAC actif")
+
+
+## Contre un dresseur, les Balls sont rangées mais pas utilisables ; la Potion, si.
+func test_bag_entries_in_a_trainer_battle() -> void:
+	var items := ItemLibrary.new()
+	assert_true(items.load_dir(), "objets chargés")
+	var bag := Bag.new()
+	bag.add(&"poke_ball", 3)
+	bag.add(&"potion", 2)
+	var usable: Dictionary[StringName, bool] = {}
+	for entry: BagEntryView in BattleViews.bag_entries(bag, items,
+			BagQuery.CONTEXT_TRAINER_BATTLE):
+		usable[entry.item_id] = entry.usable
+	assert_eq(usable, {&"poke_ball": false, &"potion": true} as Dictionary[StringName, bool])
 
 
 ## Jalons 5B et 5D : contre un sauvage, ATTAQUER, SAC (les Balls) et FUITE actifs ; ÉQUIPE
-## atténué. Le combat de dresseur garde SAC atténué.
+## atténué.
 func test_wild_battle_actions_attack_bag_and_run() -> void:
 	for action: StringName in BattleViews.WILD_BATTLE_ACTIONS:
 		assert_true(ActionGrid.ACTIONS.has(action), "clé de la grille : %s" % action)
@@ -83,8 +120,6 @@ func test_wild_battle_actions_attack_bag_and_run() -> void:
 	assert_true(BattleViews.WILD_BATTLE_ACTIONS.get(ActionGrid.BAG, false), "SAC actif")
 	assert_true(BattleViews.WILD_BATTLE_ACTIONS.get(ActionGrid.RUN, false), "FUITE active")
 	assert_false(BattleViews.WILD_BATTLE_ACTIONS.get(ActionGrid.TEAM, false), "ÉQUIPE atténué")
-	assert_false(BattleViews.TRAINER_BATTLE_ACTIONS.get(ActionGrid.BAG, false),
-		"SAC reste atténué contre un dresseur")
 
 
 ## Sac de combat : les Balls sont utilisables, la Potion est rangée mais jamais proposée (son
