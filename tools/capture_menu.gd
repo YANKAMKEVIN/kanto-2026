@@ -42,6 +42,15 @@ extends SceneTree
 ##   left_handed          exploration en mode gaucher (joystick à droite, boutons à gauche)
 ##   text_large_* / contrast_*   dialogue (monde) et écran Paramètres en texte Grande / contraste
 ##
+## Boutique (J7 T11, avec --only=shop_buy,shop_sell,shop_no_money,shop_confirm,trainer_money,
+## bag_money) : vraies vues de ShopViews sur une partie de test (3 000 ₽, Potion favorite)
+##   shop_buy             ACHETER, Potion sélectionnée, quantité 3, TOTAL 900 ₽, « Merci ! »
+##   shop_sell            VENDRE, Poké Ball sélectionnée, quantité 2
+##   shop_no_money        ACHETER avec 50 ₽ : CONFIRMER touché, refus et raison
+##   shop_confirm         VENDRE la Potion favorite : ChoiceCards de confirmation
+##   trainer_money        écran Dresseur avec la ligne « Argent : … »
+##   bag_money            Sac avec l'argent sous les catégories
+##
 ## Sur le Mac, en 2340×1080 :
 ##   godot --path . --resolution 2340x1080 --fixed-fps 30 --quit-after 900 \
 ##     -s res://tools/capture_menu.gd -- --out=build/captures/jalon06_t3
@@ -57,6 +66,7 @@ var _suffix: String = ""
 var _frame: int = 0
 var _step: int = 0
 var _scenarios: Array[String] = ["hud_button", "dashboard_5", "dashboard_6", "dashboard_no_team"]
+var _bag_money: bool = false
 var _current: String = ""
 var _wait: int = 0
 ## Image (à 30 i/s) de la capture du scénario courant (12 par défaut ; plus tôt pour les animations).
@@ -136,6 +146,13 @@ func _begin(scenario: String) -> void:
 			_map_scenario(scenario)
 		"trainer", "trainer_dex", "trainer_empty":
 			_trainer_scenario(scenario)
+		"shop_buy", "shop_sell", "shop_no_money", "shop_confirm":
+			_shop_scenario(scenario)
+		"trainer_money":
+			_trainer_scenario("trainer")
+		"bag_money":
+			_bag_money = true
+			_bag_scenario("bag")
 		"bag", "bag_use", "bag_result", "bag_from_team", "bag_refuse", "bag_heal_mid", "bag_heal_end":
 			_bag_scenario(scenario)
 
@@ -357,6 +374,45 @@ func _team_scenario(scenario: String) -> void:
 			team.get_move_button().pressed.emit()
 
 
+## Boutique : vraies vues de ShopViews sur une partie de test.
+func _shop_scenario(scenario: String) -> void:
+	var state: Node = (load("res://game/autoload/game_state.gd") as GDScript).new()
+	state.new_game(7)
+	var items := ItemLibrary.new()
+	items.load_dir()
+	var shops := ShopLibrary.new()
+	shops.load_dir()
+	shops.check_references(items)
+	var shop := shops.get_shop(&"viridian_mart")
+	state.bag.add(&"potion", 5)
+	state.bag.add(&"poke_ball", 6)
+	state.bag.set_favorite(&"potion", true)
+	if scenario == "shop_no_money":
+		state.money = 50
+	var sell := scenario == "shop_sell" or scenario == "shop_confirm"
+	var view := ShopViews.build(state, shop, items,
+		ShopViews.MODE_SELL if sell else ShopViews.MODE_BUY)
+	_menu.open_animated()
+	_menu.show_shop(view)
+	var screen := _menu.get_shop()
+	match scenario:
+		"shop_buy":
+			screen.select_item(&"potion")
+			screen.set_quantity(3)
+			screen.show_result(ShopViews.TEXT_THANKS, true)
+		"shop_sell":
+			screen.select_item(&"poke_ball")
+			screen.set_quantity(2)
+		"shop_no_money":
+			screen.get_confirm_button().pressed.emit()
+		"shop_confirm":
+			screen.select_item(&"potion")
+			screen.set_quantity(2)
+			_menu.show_shop_confirm(ShopViews.sell_confirm_view(view.entry(&"potion"), 2),
+				&"potion", 2)
+	state.free()
+
+
 ## Sac du menu : vraies vues de BagQuery sur un Sac de test (cinq catégories) et trois Pokémon.
 func _bag_scenario(scenario: String) -> void:
 	var state: Node = (load("res://game/autoload/game_state.gd") as GDScript).new()
@@ -391,7 +447,8 @@ func _bag_scenario(scenario: String) -> void:
 	var from_team := scenario == "bag_from_team"
 	var context := BagQuery.CONTEXT_TEAM if from_team else BagQuery.CONTEXT_FIELD
 	var view := BagQuery.view(state.bag, items, context, BagQuery.Sort.RELEVANCE,
-		&"heal", state.party, 0 if from_team else -1, data)
+		&"heal", state.party, 0 if from_team else -1, data,
+		state.money if _bag_money else -1)
 	_menu.open_animated()
 	_menu.show_bag(view)
 	var potion := items.get_item(&"potion")

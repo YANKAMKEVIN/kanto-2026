@@ -1323,6 +1323,35 @@ corner_radius_bottom_right = 10
 corner_radius_bottom_left = 10
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_cpu1x"]
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+bg_color = Color(1, 1, 1, 0.08)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(1, 1, 1, 0.14)
+corner_radius_top_left = 16
+corner_radius_top_right = 16
+corner_radius_bottom_right = 16
+corner_radius_bottom_left = 16
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_olvbh"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_8avng"]
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+bg_color = Color(0.9607843, 0.77254903, 0.25882354, 1)
+corner_radius_top_left = 16
+corner_radius_top_right = 16
+corner_radius_bottom_right = 16
+corner_radius_bottom_left = 16
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_qk72e"]
 content_margin_left = 36.0
 content_margin_top = 36.0
 content_margin_right = 36.0
@@ -1340,7 +1369,7 @@ corner_radius_bottom_left = 16
 shadow_color = Color(0, 0, 0, 0.35)
 shadow_size = 12
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_olvbh"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_slvsc"]
 content_margin_left = 12.0
 content_margin_right = 12.0
 bg_color = Color(1, 1, 1, 0.08)
@@ -1354,9 +1383,9 @@ corner_radius_top_right = 16
 corner_radius_bottom_right = 16
 corner_radius_bottom_left = 16
 
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_8avng"]
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_84g4p"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_qk72e"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_82nwt"]
 content_margin_left = 28.0
 content_margin_right = 28.0
 bg_color = Color(0.8509804, 0.6627451, 0.16470589, 1)
@@ -1365,7 +1394,7 @@ corner_radius_top_right = 16
 corner_radius_bottom_right = 16
 corner_radius_bottom_left = 16
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_slvsc"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_41seg"]
 content_margin_left = 28.0
 content_margin_right = 28.0
 bg_color = Color(0.9607843, 0.77254903, 0.25882354, 1)
@@ -1374,9 +1403,9 @@ corner_radius_top_right = 16
 corner_radius_bottom_right = 16
 corner_radius_bottom_left = 16
 
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_84g4p"]
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_wlvf0"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_82nwt"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_yjedl"]
 bg_color = Color(1, 1, 1, 0.1)
 border_width_left = 2
 border_width_top = 2
@@ -1388,7 +1417,7 @@ corner_radius_top_right = 64
 corner_radius_bottom_right = 64
 corner_radius_bottom_left = 64
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_41seg"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_qijj7"]
 content_margin_left = 16.0
 content_margin_top = 6.0
 content_margin_right = 16.0
@@ -1404,7 +1433,7 @@ corner_radius_top_right = 128
 corner_radius_bottom_right = 128
 corner_radius_bottom_left = 128
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_wlvf0"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_tncfd"]
 content_margin_left = 16.0
 content_margin_top = 6.0
 content_margin_right = 16.0
@@ -1420,7 +1449,7 @@ corner_radius_top_right = 128
 corner_radius_bottom_right = 128
 corner_radius_bottom_left = 128
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_yjedl"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_okrbv"]
 bg_color = Color(1, 1, 1, 0.06)
 border_width_left = 2
 border_width_top = 2
@@ -1433,7 +1462,7 @@ corner_radius_bottom_right = 16
 corner_radius_bottom_left = 16
 shadow_color = Color(0, 0, 0, 0.35)
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_qijj7"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0yqd7"]
 bg_color = Color(0.1, 0.14, 0.2, 0.82)
 border_width_left = 2
 border_width_top = 2
@@ -1447,7 +1476,7 @@ corner_radius_bottom_left = 16
 shadow_color = Color(0, 0, 0, 0.35)
 shadow_size = 12
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_tncfd"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_gsw2x"]
 bg_color = Color(1, 1, 1, 0.04)
 border_width_left = 2
 border_width_top = 2
@@ -1460,7 +1489,7 @@ corner_radius_bottom_right = 16
 corner_radius_bottom_left = 16
 shadow_color = Color(0, 0, 0, 0.35)
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_okrbv"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_xcpka"]
 bg_color = Color(0.08, 0.11, 0.16, 0.92)
 border_width_left = 4
 border_width_top = 4
@@ -1474,7 +1503,7 @@ corner_radius_bottom_left = 16
 shadow_color = Color(0.96, 0.77, 0.26, 0.45)
 shadow_size = 14
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0yqd7"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_gqs3f"]
 bg_color = Color(0.9607843, 0.77254903, 0.25882354, 0.12)
 border_width_left = 2
 border_width_top = 2
@@ -1488,7 +1517,7 @@ corner_radius_bottom_left = 16
 shadow_color = Color(0, 0, 0, 0.35)
 shadow_size = 12
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_gsw2x"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hhn5h"]
 bg_color = Color(0.08, 0.11, 0.16, 0.92)
 border_width_left = 4
 border_width_top = 4
@@ -1502,7 +1531,7 @@ corner_radius_bottom_left = 16
 shadow_color = Color(0, 0, 0, 0.35)
 shadow_size = 12
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_xcpka"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_pe178"]
 content_margin_left = 28.0
 content_margin_right = 28.0
 bg_color = Color(1, 1, 1, 0.08)
@@ -1516,9 +1545,9 @@ corner_radius_top_right = 16
 corner_radius_bottom_right = 16
 corner_radius_bottom_left = 16
 
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_gqs3f"]
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_qf6q3"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hhn5h"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_pgwpi"]
 content_margin_left = 28.0
 content_margin_right = 28.0
 bg_color = Color(0.9607843, 0.77254903, 0.25882354, 1)
@@ -1527,7 +1556,7 @@ corner_radius_top_right = 16
 corner_radius_bottom_right = 16
 corner_radius_bottom_left = 16
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_pe178"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_phhdk"]
 content_margin_left = 20.0
 content_margin_top = 12.0
 content_margin_right = 40.0
@@ -1545,7 +1574,7 @@ corner_radius_bottom_left = 40
 shadow_color = Color(0, 0, 0, 0.35)
 shadow_size = 12
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_qf6q3"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bt4i4"]
 bg_color = Color(1, 1, 1, 0.05)
 border_width_left = 2
 border_width_top = 2
@@ -1557,7 +1586,7 @@ corner_radius_top_right = 16
 corner_radius_bottom_right = 16
 corner_radius_bottom_left = 16
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_pgwpi"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_jvxvr"]
 content_margin_left = 16.0
 content_margin_top = 16.0
 content_margin_right = 16.0
@@ -1573,7 +1602,7 @@ corner_radius_top_right = 16
 corner_radius_bottom_right = 16
 corner_radius_bottom_left = 16
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_phhdk"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_o4apg"]
 content_margin_left = 28.0
 content_margin_right = 28.0
 bg_color = Color(1, 1, 1, 0.08)
@@ -1587,9 +1616,9 @@ corner_radius_top_right = 16
 corner_radius_bottom_right = 16
 corner_radius_bottom_left = 16
 
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_bt4i4"]
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_w02pk"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_jvxvr"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_aan6f"]
 content_margin_left = 28.0
 content_margin_right = 28.0
 bg_color = Color(0.9607843, 0.77254903, 0.25882354, 1)
@@ -1598,7 +1627,7 @@ corner_radius_top_right = 16
 corner_radius_bottom_right = 16
 corner_radius_bottom_left = 16
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_o4apg"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hk25d"]
 content_margin_left = 16.0
 content_margin_top = 12.0
 content_margin_right = 16.0
@@ -1610,9 +1639,9 @@ corner_radius_top_right = 10
 corner_radius_bottom_right = 10
 corner_radius_bottom_left = 10
 
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_w02pk"]
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_rxomc"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_aan6f"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_wxy0h"]
 content_margin_left = 16.0
 content_margin_top = 12.0
 content_margin_right = 16.0
@@ -1628,9 +1657,9 @@ corner_radius_top_right = 10
 corner_radius_bottom_right = 10
 corner_radius_bottom_left = 10
 
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_hk25d"]
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_4hul6"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_rxomc"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_13hpe"]
 content_margin_left = 10.0
 content_margin_top = 6.0
 content_margin_right = 16.0
@@ -1641,7 +1670,7 @@ corner_radius_top_right = 22
 corner_radius_bottom_right = 22
 corner_radius_bottom_left = 22
 
-[sub_resource type="FontVariation" id="FontVariation_wxy0h"]
+[sub_resource type="FontVariation" id="FontVariation_rbaht"]
 resource_name = "CaptionDefault"
 variation_embolden = 0.6
 spacing_glyph = 3
@@ -2242,8 +2271,67 @@ SettingsValue/base_type = &"Label"
 SettingsValue/colors/font_color = Color(1, 1, 1, 1)
 SettingsValue/font_sizes/font_size = 28
 SettingsValue/fonts/font = SubResource("FontVariation_mql0s")
+ShopCaption/base_type = &"Label"
+ShopCaption/colors/font_color = Color(0.72156864, 0.76862746, 0.8392157, 1)
+ShopCaption/font_sizes/font_size = 24
+ShopCaption/fonts/font = SubResource("FontVariation_mql0s")
+ShopCardPrice/base_type = &"Label"
+ShopCardPrice/colors/font_color = Color(0.9607843, 0.77254903, 0.25882354, 1)
+ShopCardPrice/font_sizes/font_size = 28
+ShopCardPrice/fonts/font = SubResource("FontVariation_mql0s")
+ShopDescription/base_type = &"Label"
+ShopDescription/colors/font_color = Color(0.8666667, 0.8980392, 0.9411765, 1)
+ShopDescription/font_sizes/font_size = 28
+ShopMoney/base_type = &"Label"
+ShopMoney/colors/font_color = Color(1, 1, 1, 1)
+ShopMoney/font_sizes/font_size = 44
+ShopMoney/fonts/font = SubResource("FontVariation_mql0s")
+ShopMoneyLabel/base_type = &"Label"
+ShopMoneyLabel/colors/font_color = Color(0.72156864, 0.76862746, 0.8392157, 1)
+ShopMoneyLabel/font_sizes/font_size = 24
+ShopMoneyLabel/fonts/font = SubResource("FontVariation_mql0s")
+ShopName/base_type = &"Label"
+ShopName/colors/font_color = Color(1, 1, 1, 1)
+ShopName/font_sizes/font_size = 36
+ShopName/fonts/font = SubResource("FontVariation_mql0s")
+ShopOwned/base_type = &"Label"
+ShopOwned/colors/font_color = Color(0.72156864, 0.76862746, 0.8392157, 1)
+ShopOwned/font_sizes/font_size = 24
+ShopOwned/fonts/font = SubResource("FontVariation_mql0s")
+ShopQuantity/base_type = &"Label"
+ShopQuantity/colors/font_color = Color(1, 1, 1, 1)
+ShopQuantity/font_sizes/font_size = 56
+ShopQuantity/fonts/font = SubResource("FontVariation_mql0s")
+ShopStepper/base_type = &"Button"
+ShopStepper/colors/font_color = Color(1, 1, 1, 1)
+ShopStepper/colors/font_focus_color = Color(1, 1, 1, 1)
+ShopStepper/colors/font_hover_color = Color(1, 1, 1, 1)
+ShopStepper/colors/font_hover_pressed_color = Color(0.10980392, 0.10980392, 0.10980392, 1)
+ShopStepper/colors/font_pressed_color = Color(0.10980392, 0.10980392, 0.10980392, 1)
+ShopStepper/colors/icon_disabled_color = Color(1, 1, 1, 1)
+ShopStepper/colors/icon_focus_color = Color(1, 1, 1, 1)
+ShopStepper/colors/icon_hover_color = Color(1, 1, 1, 1)
+ShopStepper/colors/icon_hover_pressed_color = Color(0.10980392, 0.10980392, 0.10980392, 1)
+ShopStepper/colors/icon_normal_color = Color(1, 1, 1, 1)
+ShopStepper/colors/icon_pressed_color = Color(0.10980392, 0.10980392, 0.10980392, 1)
+ShopStepper/font_sizes/font_size = 36
+ShopStepper/fonts/font = SubResource("FontVariation_mql0s")
+ShopStepper/styles/disabled = SubResource("StyleBoxFlat_cpu1x")
+ShopStepper/styles/focus = SubResource("StyleBoxEmpty_olvbh")
+ShopStepper/styles/hover = SubResource("StyleBoxFlat_cpu1x")
+ShopStepper/styles/hover_pressed = SubResource("StyleBoxFlat_8avng")
+ShopStepper/styles/normal = SubResource("StyleBoxFlat_cpu1x")
+ShopStepper/styles/pressed = SubResource("StyleBoxFlat_8avng")
+ShopTotal/base_type = &"Label"
+ShopTotal/colors/font_color = Color(0.9607843, 0.77254903, 0.25882354, 1)
+ShopTotal/font_sizes/font_size = 44
+ShopTotal/fonts/font = SubResource("FontVariation_mql0s")
+ShopUnitPrice/base_type = &"Label"
+ShopUnitPrice/colors/font_color = Color(0.9607843, 0.77254903, 0.25882354, 1)
+ShopUnitPrice/font_sizes/font_size = 32
+ShopUnitPrice/fonts/font = SubResource("FontVariation_mql0s")
 StarterSheet/base_type = &"PanelContainer"
-StarterSheet/styles/panel = SubResource("StyleBoxFlat_cpu1x")
+StarterSheet/styles/panel = SubResource("StyleBoxFlat_qk72e")
 StarterSheetName/base_type = &"Label"
 StarterSheetName/colors/font_color = Color(1, 1, 1, 1)
 StarterSheetName/font_sizes/font_size = 44
@@ -2267,12 +2355,12 @@ TeamAction/constants/h_separation = 8
 TeamAction/constants/icon_max_width = 44
 TeamAction/font_sizes/font_size = 24
 TeamAction/fonts/font = SubResource("FontVariation_mql0s")
-TeamAction/styles/disabled = SubResource("StyleBoxFlat_olvbh")
-TeamAction/styles/focus = SubResource("StyleBoxEmpty_8avng")
-TeamAction/styles/hover = SubResource("StyleBoxFlat_olvbh")
-TeamAction/styles/hover_pressed = SubResource("StyleBoxFlat_qk72e")
-TeamAction/styles/normal = SubResource("StyleBoxFlat_olvbh")
-TeamAction/styles/pressed = SubResource("StyleBoxFlat_qk72e")
+TeamAction/styles/disabled = SubResource("StyleBoxFlat_slvsc")
+TeamAction/styles/focus = SubResource("StyleBoxEmpty_84g4p")
+TeamAction/styles/hover = SubResource("StyleBoxFlat_slvsc")
+TeamAction/styles/hover_pressed = SubResource("StyleBoxFlat_82nwt")
+TeamAction/styles/normal = SubResource("StyleBoxFlat_slvsc")
+TeamAction/styles/pressed = SubResource("StyleBoxFlat_82nwt")
 TeamActionOn/base_type = &"Button"
 TeamActionOn/colors/font_color = Color(0.10980392, 0.10980392, 0.10980392, 1)
 TeamActionOn/colors/font_focus_color = Color(0.10980392, 0.10980392, 0.10980392, 1)
@@ -2288,24 +2376,24 @@ TeamActionOn/constants/h_separation = 8
 TeamActionOn/constants/icon_max_width = 44
 TeamActionOn/font_sizes/font_size = 24
 TeamActionOn/fonts/font = SubResource("FontVariation_mql0s")
-TeamActionOn/styles/disabled = SubResource("StyleBoxFlat_slvsc")
-TeamActionOn/styles/focus = SubResource("StyleBoxEmpty_84g4p")
-TeamActionOn/styles/hover = SubResource("StyleBoxFlat_slvsc")
-TeamActionOn/styles/hover_pressed = SubResource("StyleBoxFlat_qk72e")
-TeamActionOn/styles/normal = SubResource("StyleBoxFlat_slvsc")
-TeamActionOn/styles/pressed = SubResource("StyleBoxFlat_qk72e")
+TeamActionOn/styles/disabled = SubResource("StyleBoxFlat_41seg")
+TeamActionOn/styles/focus = SubResource("StyleBoxEmpty_wlvf0")
+TeamActionOn/styles/hover = SubResource("StyleBoxFlat_41seg")
+TeamActionOn/styles/hover_pressed = SubResource("StyleBoxFlat_82nwt")
+TeamActionOn/styles/normal = SubResource("StyleBoxFlat_41seg")
+TeamActionOn/styles/pressed = SubResource("StyleBoxFlat_82nwt")
 TeamCaption/base_type = &"Label"
 TeamCaption/colors/font_color = Color(0.72156864, 0.76862746, 0.8392157, 1)
 TeamCaption/font_sizes/font_size = 24
 TeamEvoCircle/base_type = &"Panel"
-TeamEvoCircle/styles/panel = SubResource("StyleBoxFlat_82nwt")
+TeamEvoCircle/styles/panel = SubResource("StyleBoxFlat_yjedl")
 TeamLevel/base_type = &"Label"
 TeamLevel/colors/font_color = Color(1, 1, 1, 1)
 TeamLevel/font_sizes/font_size = 32
 TeamPill/base_type = &"PanelContainer"
-TeamPill/styles/panel = SubResource("StyleBoxFlat_41seg")
+TeamPill/styles/panel = SubResource("StyleBoxFlat_qijj7")
 TeamPillAccent/base_type = &"PanelContainer"
-TeamPillAccent/styles/panel = SubResource("StyleBoxFlat_wlvf0")
+TeamPillAccent/styles/panel = SubResource("StyleBoxFlat_tncfd")
 TeamPillAccentText/base_type = &"Label"
 TeamPillAccentText/colors/font_color = Color(0.10980392, 0.10980392, 0.10980392, 1)
 TeamPillAccentText/font_sizes/font_size = 24
@@ -2315,11 +2403,11 @@ TeamPillText/colors/font_color = Color(0.9607843, 0.77254903, 0.25882354, 1)
 TeamPillText/font_sizes/font_size = 24
 TeamPillText/fonts/font = SubResource("FontVariation_mql0s")
 TeamSection/base_type = &"PanelContainer"
-TeamSection/styles/panel = SubResource("StyleBoxFlat_yjedl")
+TeamSection/styles/panel = SubResource("StyleBoxFlat_okrbv")
 TeamSlot/base_type = &"Panel"
-TeamSlot/styles/panel = SubResource("StyleBoxFlat_qijj7")
+TeamSlot/styles/panel = SubResource("StyleBoxFlat_0yqd7")
 TeamSlotEmpty/base_type = &"Panel"
-TeamSlotEmpty/styles/panel = SubResource("StyleBoxFlat_tncfd")
+TeamSlotEmpty/styles/panel = SubResource("StyleBoxFlat_gsw2x")
 TeamSlotMeta/base_type = &"Label"
 TeamSlotMeta/colors/font_color = Color(0.72156864, 0.76862746, 0.8392157, 1)
 TeamSlotMeta/font_sizes/font_size = 24
@@ -2328,11 +2416,11 @@ TeamSlotName/colors/font_color = Color(1, 1, 1, 1)
 TeamSlotName/font_sizes/font_size = 32
 TeamSlotName/fonts/font = SubResource("FontVariation_mql0s")
 TeamSlotSelected/base_type = &"Panel"
-TeamSlotSelected/styles/panel = SubResource("StyleBoxFlat_okrbv")
+TeamSlotSelected/styles/panel = SubResource("StyleBoxFlat_xcpka")
 TeamSlotSource/base_type = &"Panel"
-TeamSlotSource/styles/panel = SubResource("StyleBoxFlat_0yqd7")
+TeamSlotSource/styles/panel = SubResource("StyleBoxFlat_gqs3f")
 TeamSlotTarget/base_type = &"Panel"
-TeamSlotTarget/styles/panel = SubResource("StyleBoxFlat_gsw2x")
+TeamSlotTarget/styles/panel = SubResource("StyleBoxFlat_hhn5h")
 TeamStat/base_type = &"Label"
 TeamStat/colors/font_color = Color(1, 1, 1, 1)
 TeamStat/font_sizes/font_size = 26
@@ -2344,18 +2432,18 @@ TeamTab/colors/font_hover_pressed_color = Color(0.10980392, 0.10980392, 0.109803
 TeamTab/colors/font_pressed_color = Color(0.10980392, 0.10980392, 0.10980392, 1)
 TeamTab/font_sizes/font_size = 28
 TeamTab/fonts/font = SubResource("FontVariation_mql0s")
-TeamTab/styles/disabled = SubResource("StyleBoxFlat_xcpka")
-TeamTab/styles/focus = SubResource("StyleBoxEmpty_gqs3f")
-TeamTab/styles/hover = SubResource("StyleBoxFlat_xcpka")
-TeamTab/styles/hover_pressed = SubResource("StyleBoxFlat_hhn5h")
-TeamTab/styles/normal = SubResource("StyleBoxFlat_xcpka")
-TeamTab/styles/pressed = SubResource("StyleBoxFlat_hhn5h")
+TeamTab/styles/disabled = SubResource("StyleBoxFlat_pe178")
+TeamTab/styles/focus = SubResource("StyleBoxEmpty_qf6q3")
+TeamTab/styles/hover = SubResource("StyleBoxFlat_pe178")
+TeamTab/styles/hover_pressed = SubResource("StyleBoxFlat_pgwpi")
+TeamTab/styles/normal = SubResource("StyleBoxFlat_pe178")
+TeamTab/styles/pressed = SubResource("StyleBoxFlat_pgwpi")
 TeamValue/base_type = &"Label"
 TeamValue/colors/font_color = Color(1, 1, 1, 1)
 TeamValue/font_sizes/font_size = 26
 TeamValue/fonts/font = SubResource("FontVariation_mql0s")
 Toast/base_type = &"PanelContainer"
-Toast/styles/panel = SubResource("StyleBoxFlat_pe178")
+Toast/styles/panel = SubResource("StyleBoxFlat_phhdk")
 ToastDetail/base_type = &"Label"
 ToastDetail/colors/font_color = Color(0.72156864, 0.76862746, 0.8392157, 1)
 ToastDetail/font_sizes/font_size = 24
@@ -2364,34 +2452,34 @@ ToastTitle/colors/font_color = Color(1, 1, 1, 1)
 ToastTitle/font_sizes/font_size = 32
 ToastTitle/fonts/font = SubResource("FontVariation_mql0s")
 TrainerBadge/base_type = &"PanelContainer"
-TrainerBadge/styles/panel = SubResource("StyleBoxFlat_qf6q3")
+TrainerBadge/styles/panel = SubResource("StyleBoxFlat_bt4i4")
 TrainerBadgeName/base_type = &"Label"
 TrainerBadgeName/colors/font_color = Color(1, 1, 1, 1)
 TrainerBadgeName/font_sizes/font_size = 24
 TrainerBadgeName/fonts/font = SubResource("FontVariation_mql0s")
 TrainerBadgeOn/base_type = &"PanelContainer"
-TrainerBadgeOn/styles/panel = SubResource("StyleBoxFlat_pgwpi")
+TrainerBadgeOn/styles/panel = SubResource("StyleBoxFlat_jvxvr")
 TrainerEmpty/base_type = &"Label"
 TrainerEmpty/colors/font_color = Color(0.72156864, 0.76862746, 0.8392157, 1)
 TrainerEmpty/font_sizes/font_size = 32
 TrainerLink/base_type = &"Button"
 TrainerLink/font_sizes/font_size = 28
 TrainerLink/fonts/font = SubResource("FontVariation_mql0s")
-TrainerLink/styles/disabled = SubResource("StyleBoxFlat_phhdk")
-TrainerLink/styles/focus = SubResource("StyleBoxEmpty_bt4i4")
-TrainerLink/styles/hover = SubResource("StyleBoxFlat_phhdk")
-TrainerLink/styles/hover_pressed = SubResource("StyleBoxFlat_jvxvr")
-TrainerLink/styles/normal = SubResource("StyleBoxFlat_phhdk")
-TrainerLink/styles/pressed = SubResource("StyleBoxFlat_jvxvr")
+TrainerLink/styles/disabled = SubResource("StyleBoxFlat_o4apg")
+TrainerLink/styles/focus = SubResource("StyleBoxEmpty_w02pk")
+TrainerLink/styles/hover = SubResource("StyleBoxFlat_o4apg")
+TrainerLink/styles/hover_pressed = SubResource("StyleBoxFlat_aan6f")
+TrainerLink/styles/normal = SubResource("StyleBoxFlat_o4apg")
+TrainerLink/styles/pressed = SubResource("StyleBoxFlat_aan6f")
 TrainerMoment/base_type = &"Button"
-TrainerMoment/styles/disabled = SubResource("StyleBoxFlat_o4apg")
-TrainerMoment/styles/focus = SubResource("StyleBoxEmpty_w02pk")
-TrainerMoment/styles/hover = SubResource("StyleBoxFlat_o4apg")
-TrainerMoment/styles/hover_pressed = SubResource("StyleBoxFlat_aan6f")
-TrainerMoment/styles/normal = SubResource("StyleBoxFlat_o4apg")
-TrainerMoment/styles/pressed = SubResource("StyleBoxFlat_aan6f")
+TrainerMoment/styles/disabled = SubResource("StyleBoxFlat_hk25d")
+TrainerMoment/styles/focus = SubResource("StyleBoxEmpty_rxomc")
+TrainerMoment/styles/hover = SubResource("StyleBoxFlat_hk25d")
+TrainerMoment/styles/hover_pressed = SubResource("StyleBoxFlat_wxy0h")
+TrainerMoment/styles/normal = SubResource("StyleBoxFlat_hk25d")
+TrainerMoment/styles/pressed = SubResource("StyleBoxFlat_wxy0h")
 TrainerMomentBox/base_type = &"PanelContainer"
-TrainerMomentBox/styles/panel = SubResource("StyleBoxEmpty_hk25d")
+TrainerMomentBox/styles/panel = SubResource("StyleBoxEmpty_4hul6")
 TrainerMomentDetail/base_type = &"Label"
 TrainerMomentDetail/colors/font_color = Color(1, 1, 1, 1)
 TrainerMomentDetail/font_sizes/font_size = 26
@@ -2417,7 +2505,7 @@ TrainerStatValue/colors/font_color = Color(1, 1, 1, 1)
 TrainerStatValue/font_sizes/font_size = 36
 TrainerStatValue/fonts/font = SubResource("FontVariation_mql0s")
 TypeBadge/base_type = &"PanelContainer"
-TypeBadge/styles/panel = SubResource("StyleBoxFlat_rxomc")
+TypeBadge/styles/panel = SubResource("StyleBoxFlat_13hpe")
 TypeBadgeText/base_type = &"Label"
 TypeBadgeText/colors/font_color = Color(1, 1, 1, 1)
 TypeBadgeText/colors/font_shadow_color = Color(0, 0, 0, 0.45)
@@ -2432,7 +2520,7 @@ WorldCaption/constants/shadow_offset_x = 0
 WorldCaption/constants/shadow_offset_y = 3
 WorldCaption/constants/shadow_outline_size = 12
 WorldCaption/font_sizes/font_size = 44
-WorldCaption/fonts/font = SubResource("FontVariation_wxy0h")
+WorldCaption/fonts/font = SubResource("FontVariation_rbaht")
 ZoneTitleName/base_type = &"Label"
 ZoneTitleName/colors/font_color = Color(1, 1, 1, 1)
 ZoneTitleName/colors/font_shadow_color = Color(0, 0, 0, 0.45)
