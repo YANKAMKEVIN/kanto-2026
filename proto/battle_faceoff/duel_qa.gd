@@ -67,12 +67,14 @@ const TREATMENTS: Array[Dictionary] = [
 	{"label": "dos 3D 60 % · Roucool HD", "player": "model", "ratio": 0.6, "foe": "official"},
 	{"label": "pilote dos 3D · taille réelle", "player": "pilot", "ratio": 0.6,
 		"foe": "official"},
+	{"label": "dos 3D repeint (IA) · taille réelle", "player": "pilot_ai", "ratio": 0.6,
+		"foe": "official"},
 	{"label": "sprite net 50 % · Roucool HD", "player": "net", "ratio": 0.5, "foe": "official"},
 	{"label": "ancien : tout sprite net", "player": "net", "ratio": 1.0, "foe": "net"},
 	{"label": "ancien : sprite lissé", "player": "smooth", "ratio": 1.0, "foe": "smooth"},
 	{"label": "ancien : peint", "player": "painted", "ratio": 1.0, "foe": "painted"},
 ]
-const DEFAULT_TREATMENT: int = 5
+const DEFAULT_TREATMENT: int = 6
 ## Cadrages : zoom de la caméra, voile, vignettage, flou du décor ; pieds (x : décalage depuis
 ## le centre, y : depuis le haut, en hauteurs d'écran) et hauteur visible (hauteurs d'écran)
 ## de chaque Pokémon.
@@ -196,7 +198,7 @@ func _toggle_framing() -> void:
 
 func _next_pilot() -> void:
 	_pilot_index = (_pilot_index + 1) % PILOT.size()
-	if TREATMENTS[_treatment]["player"] != "pilot":
+	if not TREATMENTS[_treatment]["player"].begins_with("pilot"):
 		_treatment = TREATMENTS.find(TREATMENTS.filter(
 			func(t: Dictionary) -> bool: return t["player"] == "pilot")[0])
 	_show()
@@ -235,7 +237,7 @@ func _show() -> void:
 	var treatment: Dictionary = TREATMENTS[_treatment]
 	var player: Dictionary = PLAYER
 	var foe: Dictionary = FOE
-	if treatment["player"] == "pilot":
+	if treatment["player"] in ["pilot", "pilot_ai"]:
 		player = PILOT[_pilot_index].merged({"level": 12})
 		if player["number"] == FOE["official"]:
 			# Roucool contre Roucool : l'adversaire devient Rattata.
@@ -283,8 +285,14 @@ func _place(is_player: bool, who: Dictionary, feet: Vector2, height: float, kind
 		still_path = SPRITE_DIR + "%s.png" % who["model"]
 	elif kind == "pilot":
 		still_path = SPRITE_DIR + "dos3d_%03d.png" % int(who["number"])
+	elif kind == "pilot_ai":
+		# Rendu 3D repeint par tools/art/ia (Colab) ; sinon le rendu 3D.
+		still_path = SPRITE_DIR + "dos_ia_%03d.png" % int(who["number"])
+		if not ResourceLoader.exists(still_path):
+			still_path = SPRITE_DIR + "dos3d_%03d.png" % int(who["number"])
 	var scale: float
-	if kind in ["painted", "official", "model", "pilot"] and ResourceLoader.exists(still_path):
+	if kind in ["painted", "official", "model", "pilot", "pilot_ai"] \
+			and ResourceLoader.exists(still_path):
 		var texture: Texture2D = load(still_path)
 		box = _visible_box(texture.get_image())
 		var sprite := Sprite2D.new()
@@ -293,7 +301,7 @@ func _place(is_player: bool, who: Dictionary, feet: Vector2, height: float, kind
 		sprite.texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR_WITH_MIPMAPS
 		sprite.offset = -Vector2(box.get_center().x, box.end.y)
 		scale = height / box.size.y
-		if kind == "pilot":
+		if kind in ["pilot", "pilot_ai"]:
 			scale = _pilot_scale(box, float(who["height"]), height)
 		node = sprite
 	else:
