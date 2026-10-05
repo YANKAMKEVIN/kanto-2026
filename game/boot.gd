@@ -289,15 +289,13 @@ func _ready() -> void:
 		_menu.settings_shown.connect(_menu_screen.show_settings)
 		_menu_screen.setting_changed.connect(_menu.change_setting)
 		_menu_screen.save_now_requested.connect(_menu.request_save)
-	# Boutique (T12) : reliée dès que l'écran porte l'interface du §6.10 (ShopScreen du T11) ;
-	# sinon l'écran provisoire. Par nom : TrainerMenu n'a ces signaux qu'après le T11.
-	if _menu_screen.has_signal(&"shop_buy_requested"):
-		_menu.shop_shown.connect(Callable(_menu_screen, &"show_shop"))
-		_menu.shop_result_shown.connect(Callable(_menu_screen, &"show_shop_result"))
-		_menu.shop_confirm_requested.connect(Callable(_menu_screen, &"show_shop_confirm"))
-		_menu_screen.connect(&"shop_mode_changed", _menu.set_shop_mode)
-		_menu_screen.connect(&"shop_buy_requested", _menu.buy)
-		_menu_screen.connect(&"shop_sell_requested", _menu.sell)
+	# Boutique (jalon-07.md §6.10) : ShopScreen du T11 (TrainerMenu), directeur du T12.
+	_menu.shop_shown.connect(_menu_screen.show_shop)
+	_menu.shop_result_shown.connect(_menu_screen.show_shop_result)
+	_menu.shop_confirm_requested.connect(_menu_screen.show_shop_confirm)
+	_menu_screen.shop_mode_changed.connect(_menu.set_shop_mode)
+	_menu_screen.shop_buy_requested.connect(_menu.buy)
+	_menu_screen.shop_sell_requested.connect(_menu.sell)
 	# Une seule écoute de tout ce qui s'enregistre au Pokédex (jalon-06.md §6.9).
 	GameState.pokedex.recorded.connect(_on_pokedex_recorded)
 	GameState.flags.flag_changed.connect(_on_flag_changed)
@@ -916,7 +914,7 @@ func _on_item_given(item_id: StringName, count: int) -> void:
 ## Retour de l'écran : la confirmation de vente de la Boutique, la fiche du Pokédex, puis le
 ## choix du Pokémon du Sac.
 func _screen_back() -> bool:
-	if _menu_screen.has_method(&"shop_back") and _menu_screen.call(&"shop_back"):
+	if _menu_screen.shop_back():
 		return true
 	if _menu_screen.has_method(&"pokedex_back") and _menu_screen.call(&"pokedex_back"):
 		return true

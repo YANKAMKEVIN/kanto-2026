@@ -171,6 +171,40 @@ func test_with_the_debug_unlock_the_dex_card_is_shown() -> void:
 	_menu.close()
 
 
+# --- Jalon 7 (T12, jalon-07.md §4) : la Boutique ----------------------------------------------
+
+## La Boutique est un écran seul ouvert par le marchand : jamais une carte du tableau de bord ni
+## un lien ; sans Pokédex, rien ne le mentionne à l'écran ; l'argent n'apparaît que dans la
+## Boutique, le Sac et l'écran Dresseur (dossier 09 §10), jamais au tableau de bord.
+func test_the_shop_is_never_a_card_and_shows_no_trace_of_the_dex() -> void:
+	await _start()
+	_give_starter()
+	GameState.record_seen(&"pidgey", &"route_1")
+	GameState.bag.add(&"oak_parcel", 1)
+	GameState.bag.add(&"potion", 2)
+	assert_false(_cards().has(MenuRoute.SHOP), "pas une carte du tableau de bord")
+	assert_true(_menu.open())
+	assert_false(_menu.go(MenuRoute.shop(&"viridian_mart")), "jamais par un lien")
+	await wait_process_frames(2)
+	var money := MenuFormat.money(GameState.money)
+	for text: String in _visible_texts(_boot.get_trainer_menu().get_root()):
+		assert_false(text.contains("₽"), "tableau de bord sans argent : « %s »" % text)
+	_menu.close()
+	await wait_process_frames(2)
+	for mode: StringName in [MenuRoute.SHOP_MODE_BUY, MenuRoute.SHOP_MODE_SELL]:
+		assert_true(_menu.open(MenuRoute.shop(&"viridian_mart", mode), true), String(mode))
+		await wait_process_frames(2)
+		_assert_no_dex_text("Boutique (%s)" % mode)
+		var texts := _visible_texts(_boot.get_trainer_menu().get_root())
+		var shown := false
+		for text: String in texts:
+			shown = shown or text.contains(money)
+		assert_true(shown, "argent affiché dans la Boutique (%s)" % mode)
+		_menu.close()
+		await wait_process_frames(2)
+	assert_false(GameState.flags.has_flag(StoryFlags.POKEDEX_ACTIVATED))
+
+
 func _texts_of(view: TrainerView) -> Array[String]:
 	var texts: Array[String] = [view.player_name, view.player_title, view.play_time_text,
 		view.started_text, view.seen_text, view.caught_text]

@@ -1,9 +1,8 @@
 extends Node
 ## Écran factice de la Boutique (jalon-07.md §6.10, T12) : la partie « Boutique » de l'interface
 ## figée de `TrainerMenu` (signaux et méthodes du T11), sans rendu, qui journalise ce qu'on lui
-## demande. Sert à tester [MenuDirector] et le câblage de [Boot] tant que le `ShopScreen` du
-## T11 n'est pas fusionné. [method wire] reproduit **exactement** le câblage de `Boot._ready`
-## (derrière `has_signal(&"shop_buy_requested")`).
+## demande. Sert à tester [MenuDirector] seul (`test_menu_director_shop`) ; [method wire]
+## reproduit le câblage de `Boot._ready` avec le vrai `TrainerMenu` (`test_mart`).
 
 signal shop_mode_changed(mode: StringName)
 signal shop_buy_requested(item_id: StringName, quantity: int)

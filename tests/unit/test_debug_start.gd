@@ -296,3 +296,50 @@ func test_shipped_center_qa_start() -> void:
 	var map := (load(MapCatalog.scene_path(start.map)) as PackedScene).instantiate() as GameMap
 	assert_true(map.has_spawn(start.spawn), "le point d'apparition existe sur la carte")
 	map.free()
+
+
+# --- Jalon 7 (T12) : favoris du Sac, départ shop_qa --------------------------------------------
+
+func test_favorites_mark_bag_items() -> void:
+	var start := DebugStart.new()
+	assert_true(start.add_from_dict({
+		"party": [{ "species": "charmander", "level": 8 }],
+		"bag": { "potion": 4, "poke_ball": 2 }, "favorites": ["potion", "potion"],
+	}, _data, _items), "\n".join(start.get_errors()))
+	assert_eq(start.favorites, [&"potion"] as Array[StringName], "sans doublon")
+	var state: Node = autofree(GameStateScript.new())
+	start.apply(state, _data)
+	assert_true(state.bag.is_favorite(&"potion"))
+	assert_false(state.bag.is_favorite(&"poke_ball"))
+
+
+func test_favorites_must_be_in_the_bag() -> void:
+	var start := DebugStart.new()
+	assert_false(start.add_from_dict({ "party": [{ "species": "pidgey", "level": 3 }],
+		"bag": { "potion": 1 }, "favorites": ["poke_ball"] }, _data, _items, "t"))
+	assert_string_contains("\n".join(start.get_errors()),
+		"t favorites : « poke_ball » n'est pas un objet de « bag »")
+	assert_false(start.add_from_dict({ "party": [{ "species": "pidgey", "level": 3 }],
+		"favorites": "potion" }, _data, _items, "u"))
+	assert_push_error_count(2)
+
+
+## Jalon 7 (T12, jalon-07.md §5.5) : 6 000 ₽, des Potions favorites, devant la porte de la
+## Boutique (spawn `from_mart`, tourné vers le sud), arrivée faite, colis pas encore reçu.
+func test_shipped_shop_qa_start() -> void:
+	var start := DebugStart.new()
+	assert_true(start.load_file(TOOL_STARTS + "shop_qa.json", _data, _items),
+		"\n".join(start.get_errors()))
+	assert_eq([start.map, start.spawn, start.facing], [&"viridian_city", &"from_mart",
+		Vector2i.DOWN])
+	assert_true(start.flags.has(&"viridian_arrived"), "pas de micro-scène d'arrivée")
+	assert_false(start.flags.has(&"got_oak_parcel"), "la première visite reste à faire")
+	assert_false(start.flags.has(&"pokedex_activated"))
+	var state: Node = autofree(GameStateScript.new())
+	start.apply(state, _data)
+	assert_eq(state.money, 6000)
+	assert_gt(state.bag.count_of(&"potion"), 1)
+	assert_true(state.bag.is_favorite(&"potion"), "Potions favorites")
+	var map := (load(MapCatalog.scene_path(start.map)) as PackedScene).instantiate() as GameMap
+	assert_true(map.has_spawn(start.spawn), "le point d'apparition existe sur la carte")
+	map.free()
