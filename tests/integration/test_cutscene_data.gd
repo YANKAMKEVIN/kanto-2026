@@ -419,8 +419,8 @@ func test_oak_parcel_scene_order() -> void:
 	assert_eq(steps[spawn].spec.id, &"rival")
 	assert_eq(steps[spawn].spec.sprite, &"rival")
 	assert_eq(dialogues, [&"oak_parcel_records", &"oak_pokedex_activated",
-		&"rival_parcel_return", &"rival_parcel_greet", &"oak_parcel_rival",
-		&"rival_parcel_leaving"] as Array[StringName])
+		&"rival_parcel_return", &"rival_parcel_greet", &"oak_parcel_rival_dex",
+		&"oak_parcel_rival", &"rival_parcel_leaving"] as Array[StringName])
 	var despawn := _index_of(steps, CutsceneStep.Kind.DESPAWN)
 	assert_eq(steps[despawn].actor, &"rival", "il repart")
 	assert_gt(despawn, _index_of_dialogue(steps, &"rival_parcel_leaving"))

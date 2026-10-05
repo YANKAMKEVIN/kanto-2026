@@ -34,7 +34,7 @@ const MAPS: Array[StringName] = [
 ## des Pokémon des habitants (jalon 6 T16, à valider par Kevin) et la Dresseuse au repos du
 ## Centre (jalon 7 T8, absente du dossier 09 §19) ; le livreur dans la Boutique (T12, idem) ;
 ## les portes des maisons de Jadielle, « C'est fermé. » (retours T5, en attendant Kevin).
-const DRAFTS: Array[StringName] = [&"observe_aoki_pidgey", &"observe_leo_rattata",
+const DRAFTS: Array[StringName] = [&"oak_parcel_rival_dex", &"observe_aoki_pidgey", &"observe_leo_rattata",
 	&"sign_pallet_town", &"viridian_house_door"]
 ## Identifiants attendus (3A) : Maman, table, rival, carte, Maya, 3 starters, 3 habitants,
 ## panneau ; (3B) « Hé ! Attends ! », les répliques du Prof. Chen et la pensée des herbes ;
@@ -45,8 +45,8 @@ const IDS: Array[StringName] = [
 	&"mom_wakeup", &"nurse", &"nurse_wakeup",
 	&"oak_after_battle",
 	&"oak_lab_exit_block", &"oak_lab_reunion", &"oak_lab_waiting", &"oak_parcel_records",
-	&"oak_parcel_rival", &"oak_poke_balls", &"oak_poke_balls_intro", &"oak_pokedex_activated",
-	&"oak_route1_call", &"oak_route1_warning", &"oak_starter_offer",
+	&"oak_parcel_rival", &"oak_parcel_rival_dex", &"oak_poke_balls", &"oak_poke_balls_intro",
+	&"oak_pokedex_activated", &"oak_route1_call", &"oak_route1_warning", &"oak_starter_offer",
 	&"oak_starter_reciprocal", &"observe_aoki_pidgey", &"observe_bulbasaur",
 	&"observe_charmander", &"observe_leo_rattata", &"observe_squirtle",
 	&"rival", &"rival_challenge", &"rival_challenge_wait", &"rival_kanto_map",
@@ -182,8 +182,8 @@ func test_every_dialogue_played_by_a_cutscene_exists() -> void:
 	var played := _cutscenes.get_dialogue_ids()
 	assert_eq(played, [&"clerk_parcel", &"clerk_parcel_hello",
 		&"oak_after_battle", &"oak_lab_exit_block", &"oak_lab_reunion",
-		&"oak_parcel_records", &"oak_parcel_rival", &"oak_poke_balls", &"oak_poke_balls_intro",
-		&"oak_pokedex_activated", &"oak_route1_call",
+		&"oak_parcel_records", &"oak_parcel_rival", &"oak_parcel_rival_dex", &"oak_poke_balls",
+		&"oak_poke_balls_intro", &"oak_pokedex_activated", &"oak_route1_call",
 		&"oak_route1_warning", &"oak_starter_offer", &"oak_starter_reciprocal",
 		&"rival_challenge", &"rival_challenge_wait", &"rival_lab_lost", &"rival_lab_won",
 		&"rival_lab_won_leaving", &"rival_parcel_greet", &"rival_parcel_leaving",
@@ -491,6 +491,7 @@ func test_speakers_and_narration() -> void:
 		&"viridian_house_door": ["", true],
 		&"oak_parcel_records": ["Prof. Chen", false],
 		&"oak_pokedex_activated": ["Prof. Chen", false], &"oak_parcel_rival": ["", false],
+		&"oak_parcel_rival_dex": ["Prof. Chen", false],
 		&"rival_parcel_return": ["Rival", false], &"rival_parcel_greet": ["Rival", false],
 		&"rival_parcel_leaving": ["Rival", false],
 		&"nurse": ["Infirmière", false], &"nurse_wakeup": ["Infirmière", false],

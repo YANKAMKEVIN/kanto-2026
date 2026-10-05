@@ -39,6 +39,7 @@ const LINES: Array[String] = [
 	"Observe. Explore. Fais-toi ta propre idée du monde.",
 	"Professeur ! Je suis revenu.",
 	"Tiens. T'es déjà revenu, toi aussi ?",
+	"Toi aussi, prends-en un.",
 	"Et toi… apprends à regarder au-delà de la victoire.",
 	"…On verra.",
 	"Pas mal.",

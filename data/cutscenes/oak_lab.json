@@ -25,6 +25,7 @@
 			{ "face": "rival", "to": "oak" },
 			{ "lean": "oak", "to": "rival" },
 			{ "wait": 0.6 },
+			{ "dialogue": "oak_parcel_rival_dex" },
 			{ "dialogue": "oak_parcel_rival" },
 			{ "wait": 0.6 },
 			{ "dialogue": "rival_parcel_leaving" },
