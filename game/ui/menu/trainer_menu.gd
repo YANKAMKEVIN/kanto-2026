@@ -50,6 +50,15 @@ signal save_now_requested
 signal shop_mode_changed(mode: StringName)
 signal shop_buy_requested(item_id: StringName, quantity: int)
 signal shop_sell_requested(item_id: StringName, quantity: int, confirmed: bool)
+## Relais de l'écran Stockage (7A.4, jalon-07.md §6.9) : carte touchée, DÉPOSER (ou glisser
+## ÉQUIPE → STOCKAGE), REPRENDRE (ou glisser STOCKAGE → ÉQUIPE), FAVORI, LIBÉRER demandé du menu
+## « ⋯ » (avant confirmation), LIBÉRER confirmé.
+signal storage_selected(place: int, index: int)
+signal storage_deposit_requested(index: int)
+signal storage_withdraw_requested(index: int)
+signal storage_favorite_toggled(place: int, index: int)
+signal storage_release_requested(place: int, index: int)
+signal storage_release_confirmed(place: int, index: int)
 
 ## Titre des écrans provisoires (carte → « Équipe »…), texte d'interface.
 const PLACEHOLDER_TITLES: Dictionary[StringName, String] = {
@@ -94,6 +103,9 @@ var _shop: ShopScreen
 var _shop_choice: ChoiceCards
 var _shop_choice_item: StringName = &""
 var _shop_choice_quantity: int = 1
+## Stockage (7A.4) : instancié à la première visite, puis gardé ; sa confirmation de LIBÉRER
+## (ChoiceCards) est dans l'écran lui-même.
+var _storage: StorageScreen
 ## Dernière révision de [UiPrefs] appliquée à chaque écran (taille du texte, contraste).
 var _prefs_fitted: Dictionary[MenuScreen, int] = {}
 var _blur_enabled: bool = true
@@ -170,6 +182,8 @@ func close_animated() -> void:
 	_open = false
 	if _shop_choice != null and _shop_choice.is_showing():
 		_shop_choice.hide_choice()
+	while _storage != null and _storage.go_back():
+		pass
 	_kill_tween()
 	_root.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	var leaving := _current if _entered else null
@@ -373,6 +387,51 @@ func shop_back() -> bool:
 	return true
 
 
+## Écran Stockage (7A.4) : [param view] (ÉQUIPE, Pokémon sélectionné et ses actions, STOCKAGE).
+## Écran seul : ni tableau de bord, ni pastille de zone. Rappelé pendant qu'il est affiché (vue
+## neuve après chaque action), il met à jour sans rejouer l'entrée.
+func show_storage(view: StorageView) -> void:
+	if _storage == null:
+		_storage = StorageScreen.new()
+		_storage.speed_scale = speed_scale
+		_storage.back_requested.connect(back_requested.emit)
+		_storage.selected.connect(storage_selected.emit)
+		_storage.deposit_requested.connect(storage_deposit_requested.emit)
+		_storage.withdraw_requested.connect(storage_withdraw_requested.emit)
+		_storage.favorite_toggled.connect(storage_favorite_toggled.emit)
+		_storage.release_requested.connect(storage_release_requested.emit)
+		_storage.release_confirmed.connect(storage_release_confirmed.emit)
+		_host.add_child(_storage)
+		_storage.hide_now()
+	set_zone_name("")
+	_storage.show_storage(view)
+	_select(_storage)
+	_fit_prefs(_storage)
+
+
+## Refus du directeur : la carte ([param place], [param index]) tremble et [param text] dit
+## pourquoi (aucune vue neuve).
+func show_storage_refusal(place: int, index: int, text: String) -> void:
+	if _storage != null:
+		_storage.show_refusal(place, index, text)
+		_fit_prefs(_storage)
+
+
+## La confirmation de LIBÉRER ([param view], ChoiceCards) pour la carte ([param place],
+## [param index]) : LIBÉRER → [signal storage_release_confirmed] ; ANNULER (ou
+## [method storage_back]) → rien.
+func ask_storage_release(view: ChoiceView, place: int, index: int) -> void:
+	if _storage != null:
+		_storage.ask_release(view, place, index)
+
+
+## Retour (retour Android, Échap) : ferme la confirmation de LIBÉRER ou le menu « ⋯ » s'ils sont
+## ouverts. Vrai si c'est ce qui s'est passé (l'événement est consommé) ; faux : l'hôte
+## quitte l'écran.
+func storage_back() -> bool:
+	return _storage != null and _current == _storage and _storage.go_back()
+
+
 ## Message bref de l'écran Paramètres (« Partie sauvegardée ») : le toast du monde serait sous
 ## le menu.
 func show_save_result(text: String) -> void:
@@ -471,6 +530,11 @@ func get_shop_choice() -> ChoiceCards:
 	return _shop_choice
 
 
+## L'écran Stockage (null avant la première visite).
+func get_storage() -> StorageScreen:
+	return _storage
+
+
 ## L'écran Paramètres (null avant la première visite).
 func get_settings() -> SettingsScreen:
 	return _settings
@@ -526,6 +590,8 @@ func _screens() -> Array[MenuScreen]:
 		screens.append(_settings)
 	if _shop != null:
 		screens.append(_shop)
+	if _storage != null:
+		screens.append(_storage)
 	return screens
 
 
