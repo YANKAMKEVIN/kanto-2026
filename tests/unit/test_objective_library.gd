@@ -32,6 +32,9 @@ func test_q4_nothing_before_the_rival_battle_then_reach_viridian() -> void:
 	assert_true(library.is_draft(&"reach_viridian"), "texte provisoire")
 	flags.set_flag(&"got_potion_route_1")
 	assert_eq(library.current(flags), "rejoindre Jadielle", "toujours vrai sur la Route 1")
+	# Jalon 7 T4 : l'arrivée à Jadielle (micro-scène) efface la ligne, en silence.
+	flags.set_flag(&"viridian_arrived")
+	assert_eq(library.current(flags), "", "arrivé à Jadielle : plus de ligne")
 
 
 func test_real_condition_flags_are_raised_by_the_story() -> void:

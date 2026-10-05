@@ -116,6 +116,27 @@ func test_undiscovered_zone_gives_nothing() -> void:
 	_menu.close()
 
 
+## Jalon 7 T4 : Jadielle découverte en y entrant ; l'Arène est dans ses services (vue depuis
+## la ville), pas le Centre ni la Boutique tant qu'on n'y est pas entré (règle de déblocage).
+func test_viridian_discovered_with_its_gym_only() -> void:
+	await _start()
+	GameState.discover_map(&"route_1")
+	GameState.discover_map(&"viridian_city")
+	_menu.open(MenuRoute.map(&"viridian_city"))
+	var view: MapView = _screen.maps.back()
+	assert_true(_ids(view).has(&"viridian_city"), "Jadielle sur la Carte")
+	var panel: ZonePanelView = _screen.map_zones.back()
+	assert_eq(panel.zone_id, &"viridian_city")
+	assert_eq(panel.name, "Jadielle")
+	assert_eq(_entry_ids(panel.services), [&"gym"] as Array[StringName])
+	_menu.close()
+	GameState.discover_map(&"viridian_center")
+	_menu.open(MenuRoute.map(&"viridian_city"))
+	panel = _screen.map_zones.back()
+	assert_eq(_entry_ids(panel.services), [&"pokemon_center", &"gym"] as Array[StringName])
+	_menu.close()
+
+
 func test_habitat_link_arrives_on_the_chosen_zone_without_stacking() -> void:
 	await _start(true)
 	GameState.discover_map(&"route_1")

@@ -17,7 +17,17 @@
 			"description": "Un chemin de campagne qui serpente vers Jadielle, entre clôtures et hautes herbes. Quitter le sentier y est souvent récompensé.",
 			"draft": true
 		},
-		"viridian_city": { "name": "Jadielle", "kind": "town", "maps": [] },
+		"viridian_city": {
+			"name": "Jadielle", "kind": "town",
+			"maps": ["viridian_city", "viridian_center", "viridian_mart"],
+			"services": [
+				{ "id": "pokemon_center", "found_on": "viridian_center" },
+				{ "id": "poke_mart", "found_on": "viridian_mart" },
+				{ "id": "gym", "found_on": "viridian_city" }
+			],
+			"description": "Une ville de passage entre les forêts, où les routes de Kanto se croisent. On y vient pour se reposer, se ravitailler… et on en repart toujours un peu plus loin.",
+			"draft": true
+		},
 		"route_22": {
 			"name": "Route 22", "kind": "route", "maps": ["route_22"],
 			"description": "Un chemin de terre qui s'éloigne de Jadielle vers l'ouest, au pied d'une falaise basse. Là-haut, on devine déjà le Plateau Indigo.",

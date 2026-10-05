@@ -643,3 +643,78 @@ func test_flee_leaves_the_grid_at_the_end_of_its_last_step_without_error() -> vo
 	assert_eq(npc.position, Grid.cell_to_world(last))
 	await wait_seconds(Npc.FLEE_FADE_DURATION + 0.1)
 	assert_signal_emitted(npc, "left_scene")
+
+
+# --- Jalon 7 (T4) : entrer dans un bâtiment, animation d'ambiance ---------------------------
+
+## Le livreur : arrivé sur la case d'entrée de sa boucle, il s'efface, libère sa case, reste
+## absent le temps prévu puis ressort sur la même case et reprend sa boucle.
+func test_route_enter_cell_hides_frees_then_returns() -> void:
+	var grid := GridWorld.new(Vector2i(10, 10))
+	var door := CELL + Vector2i.UP
+	var route: Array[Vector2i] = [CELL, door]
+	var npc := _make_on_grid(_spec({"route_cells": route, "route_pause": 0.05,
+		"route_enter_cell": door, "route_enter_seconds": 0.3}), grid)
+	watch_signals(npc)
+	await wait_until(func() -> bool: return npc.is_inside_building(), 3.0)
+	assert_signal_emitted(npc, "entered_building")
+	assert_false(grid.is_occupied(door), "porte libérée pendant l'absence")
+	assert_false(grid.is_occupied(CELL))
+	await wait_seconds(Npc.ENTER_FADE_DURATION + 0.05)
+	assert_almost_eq(npc.modulate.a, 0.0, 0.01, "invisible à l'intérieur")
+	await wait_until(func() -> bool: return not npc.is_inside_building(), 3.0)
+	assert_signal_emitted(npc, "left_building")
+	assert_eq(npc.get_cell(), door, "ressort par la porte")
+	assert_same(grid.get_occupant(door), npc)
+	await wait_seconds(Npc.ENTER_FADE_DURATION + 0.05)
+	assert_almost_eq(npc.modulate.a, 1.0, 0.01, "visible de nouveau")
+	await wait_until(func() -> bool: return npc.get_cell() == CELL, 3.0)
+	assert_eq(npc.get_cell(), CELL, "la boucle reprend")
+
+
+## Le joueur se tient sur la porte : le PNJ attend qu'elle se libère pour ressortir.
+func test_route_enter_waits_until_the_door_is_free() -> void:
+	var grid := GridWorld.new(Vector2i(10, 10))
+	var door := CELL + Vector2i.UP
+	var route: Array[Vector2i] = [CELL, door]
+	var npc := _make_on_grid(_spec({"route_cells": route, "route_pause": 0.05,
+		"route_enter_cell": door, "route_enter_seconds": 0.2}), grid)
+	await wait_until(func() -> bool: return npc.is_inside_building(), 3.0)
+	var player := RefCounted.new()
+	assert_true(grid.occupy(door, player), "le joueur prend la porte")
+	await wait_seconds(0.2 + 2.0 * Npc.ENTER_FADE_DURATION + Npc.ENTER_RETRY_DELAY)
+	assert_true(npc.is_inside_building(), "toujours dedans")
+	grid.release(door, player)
+	await wait_until(func() -> bool: return not npc.is_inside_building(),
+		Npc.ENTER_RETRY_DELAY * 3.0)
+	assert_same(grid.get_occupant(door), npc)
+
+
+func test_leave_grid_inside_a_building_cancels_the_return() -> void:
+	var grid := GridWorld.new(Vector2i(10, 10))
+	var door := CELL + Vector2i.UP
+	var route: Array[Vector2i] = [CELL, door]
+	var npc := _make_on_grid(_spec({"route_cells": route, "route_pause": 0.05,
+		"route_enter_cell": door, "route_enter_seconds": 0.2}), grid)
+	await wait_until(func() -> bool: return npc.is_inside_building(), 3.0)
+	npc.leave_grid()
+	assert_false(npc.is_inside_building())
+	assert_eq(npc.modulate.a, 1.0)
+	await wait_seconds(0.5)
+	assert_false(grid.is_occupied(door), "il ne ressort plus")
+
+
+## Le Roucool de la Dresseuse : petit bond toutes les N secondes, sans bouger de sa case.
+func test_idle_react_plays_periodically() -> void:
+	var npc := _make(_spec({"idle_react_every": 0.15, "dialogue": &""}))
+	watch_signals(npc)
+	await wait_seconds(0.5)
+	assert_signal_emit_count(npc, "reacted", 3)
+	assert_eq(npc.get_cell(), CELL)
+
+
+func test_without_idle_react_nothing_plays() -> void:
+	var npc := _make(_spec())
+	watch_signals(npc)
+	await wait_seconds(0.4)
+	assert_signal_not_emitted(npc, "reacted")

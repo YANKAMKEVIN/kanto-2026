@@ -39,7 +39,7 @@ rm "$HOME/Library/Application Support/Godot/app_userdata/Kanto 2026/debug_start.
 | `capture_qa.json` | Salamèche N5 sur la Route 1, 30 Poké Balls : juger l'équilibrage de la capture (QA T16) |
 | `team_full.json` | Équipe de 6 sur la Route 1, 10 Poké Balls : une capture part au stockage (QA T16) |
 | `bag_qa.json` | Salamèche N8 à 6 PV, Roucool N5 en pleine forme, Rattata N5 K.O., 10 Potions et 5 Poké Balls : soin, refus et Potion en combat (QA 6B). Clé de membre « hp » : PV de départ (0 = K.O.) |
-| `viridian.json` | J7 (7A.1) : Salamèche N8 et Roucool N7, prologue et rival du labo faits, au bout nord de la Route 1, tourné vers Jadielle (un pas vers le nord = l'arrivée). Avant la carte de Jadielle (T4), ce pas affiche « JADIELLE — À venir ». Sans argent ni stockage : les clés `money` / `storage` de `DebugStart` attendent la sauvegarde v3 (T0) |
+| `viridian.json` | J7 (7A.1) : Salamèche N8 et Roucool N7, prologue et rival du labo faits, à l'entrée sud de Jadielle (spawn `from_route_1_w`), tourné vers le nord : deux pas vers le nord jouent la micro-scène d'arrivée (une seule fois). Sans argent ni stockage : les clés `money` / `storage` de `DebugStart` attendent la sauvegarde v3 (T0) |
 
 ## Déblocages du Menu Dresseur (jalon 6 T2)
 

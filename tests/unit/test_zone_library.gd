@@ -85,7 +85,8 @@ func test_first_zones_of_the_journey() -> void:
 		assert_eq(zone.kind, expected[id][1])
 	assert_eq(_zones.get_ids().slice(0, 4), [&"pallet_town", &"route_1", &"viridian_city",
 		&"route_22"] as Array[StringName], "ordre du fichier")
-	assert_true(_zones.get_zone(&"viridian_city").maps.is_empty(), "pas encore construite")
+	assert_eq(_zones.get_zone(&"viridian_city").maps, [&"viridian_city", &"viridian_center",
+		&"viridian_mart"] as Array[StringName], "jalon 7 T4 : la ville et ses deux intérieurs")
 	assert_false(_zones.has_zone(&"route_16"), "Route 16 retirée (décision de Kevin)")
 
 
@@ -120,10 +121,13 @@ func test_built_zones_have_their_map_texts() -> void:
 	assert_eq(_zones.get_zone(&"route_1").subtitle, _root_property(&"route_1", &"region"),
 		"même connexion que le titre de zone en jeu")
 	assert_eq(_zones.get_zone(&"pallet_town").subtitle, "")
-	assert_eq(_zones.get_zone(&"viridian_city").description, "", "pas encore écrite")
+	assert_false(_zones.get_zone(&"viridian_city").description.is_empty(), "jalon 7 T4")
+	assert_eq(_zones.get_zone(&"viridian_city").subtitle, "", "aucun sous-titre (2026-10-03)")
+	assert_true(_root_property(&"viridian_city", &"region") in [null, ""],
+		"aucun sous-titre en jeu")
 
 
-func test_service_catalog_and_no_service_yet() -> void:
+func test_service_catalog_and_the_services_of_viridian() -> void:
 	_zones.load_file()
 	assert_eq(_zones.get_service_ids(), [&"pokemon_center", &"poke_mart", &"gym"]
 		as Array[StringName])
@@ -131,8 +135,16 @@ func test_service_catalog_and_no_service_yet() -> void:
 	assert_eq(_zones.service_name(&"poke_mart"), "Boutique")
 	assert_eq(_zones.service_name(&"gym"), "Arène")
 	assert_eq(_zones.service_name(&"casino"), "")
+	# Jalon 7 T4 : seuls les services de Jadielle, découverts sur leur carte (l'Arène en
+	# entrant dans la ville, le Centre et la Boutique en y entrant).
 	for id: StringName in _zones.get_ids():
-		assert_true(_zones.get_zone(id).services.is_empty(), "%s : aucun service au J6" % id)
+		if id != &"viridian_city":
+			assert_true(_zones.get_zone(id).services.is_empty(), "%s : aucun service" % id)
+	var found: Dictionary = {}
+	for service: ZoneService in _zones.get_zone(&"viridian_city").services:
+		found[service.id] = service.found_on
+	assert_eq(found, {&"pokemon_center": &"viridian_center", &"poke_mart": &"viridian_mart",
+		&"gym": &"viridian_city"})
 
 
 # --- Règles --------------------------------------------------------------------------------

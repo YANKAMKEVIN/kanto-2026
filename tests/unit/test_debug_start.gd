@@ -196,14 +196,14 @@ func test_shipped_debug_starts_are_valid() -> void:
 		assert_true(start.flags.has(&"starter_chosen"), name)
 
 
-## Jalon 7 (T2, jalon-07.md §5.5) : départ « viridian », au bout nord de la Route 1, tourné vers
-## Jadielle, prologue et rival du labo faits, équipe Nv. 7–8. Sans « money » ni « storage » :
+## Jalon 7 (T2, jalon-07.md §5.5 ; T4 : à l'entrée sud de Jadielle, la micro-scène d'arrivée
+## deux cases plus haut), prologue et rival du labo faits, équipe Nv. 7–8. Sans « money » ni « storage » :
 ## ces clés attendent la sauvegarde v3 (T0).
 func test_shipped_viridian_start() -> void:
 	var start := DebugStart.new()
 	assert_true(start.load_file(TOOL_STARTS + "viridian.json", _data, _items),
 		"\n".join(start.get_errors()))
-	assert_eq([start.map, start.spawn, start.facing], [&"route_1", &"jadielle_soon_w",
+	assert_eq([start.map, start.spawn, start.facing], [&"viridian_city", &"from_route_1_w",
 		Vector2i.UP])
 	assert_true(start.flags.has(&"rival_battle_done"))
 	assert_false(start.flags.has(&"pokedex_activated"), "jamais par un départ de débogage")

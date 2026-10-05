@@ -16,6 +16,11 @@ extends Node2D
 ## léger élan vers une case ([method lean_toward] / [method settle]) et saut en arc depuis
 ## un meuble ([method hop_to]), dans le style de [member NpcSpec.hop_style]. Tout est en
 ## [Tween] sur le sprite et l'ombre, sans nouvelle image.
+## Jalon 7 (dossier 09 §2, jalon-07.md §3.2) : arrivé sur [member NpcSpec.route_enter_cell]
+## pendant sa routine, il **entre dans le bâtiment** (fondu, case libérée, absent
+## [member NpcSpec.route_enter_seconds] s, puis il ressort sur la même case dès qu'elle est
+## libre et reprend sa boucle) ; [member NpcSpec.idle_react_every] fait jouer [method react]
+## à intervalle régulier (le Roucool de la Dresseuse), toujours en [Tween], sans _process.
 
 ## Réaction jouée ([method react]) : tests, futurs sons.
 signal reacted
@@ -28,6 +33,10 @@ signal lean_finished
 ## Pokémon d'ambiance qui quitte la scène ([method fly_away] / [method flee], jalon 5 §3.5) :
 ## le watcher fait alors [method GameMap.remove_npc].
 signal left_scene(npc_id: StringName)
+## Entré dans un bâtiment (routine, jalon 7) : invisible, hors de la grille.
+signal entered_building(npc_id: StringName)
+## Ressorti du bâtiment : de nouveau sur sa case et visible, la routine reprend.
+signal left_building(npc_id: StringName)
 
 ## SpriteFrames provisoires des apparences (les peintes : [CharacterLook]).
 const FRAMES_DIR: String = CharacterLook.PLACEHOLDER_DIR
@@ -103,6 +112,10 @@ const FLEE_FADE_DURATION: float = 0.25
 ## Délai (s) avant que le PNJ à routine reprenne sa marche après un dialogue (dossier 07 §5 :
 ## « après le dialogue, il attend un court instant puis reprend »).
 const ROUTE_RESUME_DELAY: float = 0.6
+## Entrée dans un bâtiment (jalon 7) : fondu à l'entrée comme à la sortie (s), et nouvel
+## essai de sortie tant que la case de la porte est prise (le joueur s'y tient).
+const ENTER_FADE_DURATION: float = 0.25
+const ENTER_RETRY_DELAY: float = 0.5
 const _IDLE_ANIMS: Dictionary[Vector2i, StringName] = {
 	Vector2i.DOWN: &"idle_down",
 	Vector2i.UP: &"idle_up",
@@ -166,6 +179,12 @@ var _route_suspended: bool = false
 ## Sortie de scène en cours ([method fly_away] / [method flee]) : plus d'interaction.
 var _leaving: bool = false
 var _leave_tween: Tween
+## Dans un bâtiment (jalon 7) : hors grille ; la grille où il ressortira.
+var _inside: bool = false
+var _inside_grid: GridWorld
+var _inside_tween: Tween
+## Boucle de l'animation d'ambiance ([member NpcSpec.idle_react_every]).
+var _idle_tween: Tween
 
 @onready var _sprite: AnimatedSprite2D = %Sprite
 @onready var _shadow: Sprite2D = %Shadow
@@ -175,6 +194,7 @@ func _ready() -> void:
 	set_process(is_moving())
 	_sprite.animation_finished.connect(_on_animation_finished)
 	_apply_spec()
+	_start_idle_react()
 
 
 ## Ne tourne que pendant un pas ou pour piloter la routine de marche (jalon 5) : le
@@ -194,6 +214,8 @@ func _process(delta: float) -> void:
 			_play_idle()
 			if _route_active:
 				_route_wait = _route_pause
+				if _spec.enters_building() and _mover.get_cell() == _spec.route_enter_cell:
+					_enter_building()
 		return
 	if _route_active and not _route_suspended and not _hopping and not _leaving:
 		_route_wait -= delta
@@ -221,8 +243,10 @@ func setup(spec: NpcSpec) -> void:
 	_route_index = 0
 	_route_active = false
 	_route_suspended = false
+	_cancel_inside()
 	if is_node_ready():
 		_apply_spec()
+		_start_idle_react()
 
 
 func get_id() -> StringName:
@@ -247,6 +271,10 @@ func get_facing() -> Vector2i:
 ## premier appel, sur sa case courante ensuite (grille reconstruite). Un pas en cours est
 ## annulé. Faux si la case est hors carte ou prise (le PNJ reste alors hors grille).
 func enter_grid(grid: GridWorld) -> bool:
+	if _inside:
+		# Dans un bâtiment : il ressortira sur cette grille (carte reconstruite entre-temps).
+		_inside_grid = grid
+		return true
 	_abort_hop()
 	var cell := get_cell()
 	if _mover != null:
@@ -269,8 +297,10 @@ func enter_grid(grid: GridWorld) -> bool:
 	return true
 
 
-## Libère sa case (et la case visée par un pas en cours) ; le PNJ reste où il est.
+## Libère sa case (et la case visée par un pas en cours) ; le PNJ reste où il est. Dans un
+## bâtiment, il y reste (il ne ressortira plus).
 func leave_grid() -> void:
+	_cancel_inside()
 	_abort_hop()
 	_route_active = false
 	if _mover == null:
@@ -790,6 +820,82 @@ func _advance_route() -> void:
 	else:
 		# Case prise (joueur) : il se tourne vers elle et attend, sans avancer.
 		_route_wait = _route_pause
+
+
+## Vrai pendant qu'il est dans un bâtiment (routine du jalon 7).
+func is_inside_building() -> bool:
+	return _inside
+
+
+## Arrivé sur la case d'entrée de sa routine : fondu, case libérée, puis il ressort après
+## [member NpcSpec.route_enter_seconds] s ([method _try_leave_building]).
+func _enter_building() -> void:
+	var grid := _grid
+	leave_grid()
+	_inside = true
+	_inside_grid = grid
+	entered_building.emit(get_id())
+	if _inside_tween != null and _inside_tween.is_valid():
+		_inside_tween.kill()
+	if not is_inside_tree():
+		return
+	_inside_tween = create_tween()
+	_inside_tween.tween_property(self, ^"modulate:a", 0.0, ENTER_FADE_DURATION)
+	_inside_tween.tween_interval(_spec.route_enter_seconds)
+	_inside_tween.tween_callback(_try_leave_building)
+
+
+## Ressort sur sa case si elle est libre (sinon nouvel essai dans [constant
+## ENTER_RETRY_DELAY] s), fondu d'apparition, routine reprise depuis la porte.
+func _try_leave_building() -> void:
+	if not _inside:
+		return
+	var grid := _inside_grid
+	if grid == null:
+		return
+	if grid.get_occupant(_cell) != null:
+		_inside_tween = create_tween()
+		_inside_tween.tween_interval(ENTER_RETRY_DELAY)
+		_inside_tween.tween_callback(_try_leave_building)
+		return
+	_inside = false
+	_inside_grid = null
+	if not enter_grid(grid):
+		_inside = true
+		_inside_grid = grid
+		return
+	_inside_tween = create_tween()
+	_inside_tween.tween_property(self, ^"modulate:a", 1.0, ENTER_FADE_DURATION)
+	left_building.emit(get_id())
+
+
+## Annule un séjour dans un bâtiment (nouvelle description, départ de la grille) : visible.
+func _cancel_inside() -> void:
+	if not _inside:
+		return
+	_inside = false
+	_inside_grid = null
+	if _inside_tween != null and _inside_tween.is_valid():
+		_inside_tween.kill()
+	modulate.a = 1.0
+
+
+## Lance (ou relance) l'animation d'ambiance périodique de la description, s'il en a une.
+func _start_idle_react() -> void:
+	if _idle_tween != null and _idle_tween.is_valid():
+		_idle_tween.kill()
+	_idle_tween = null
+	if not _spec.has_idle_react() or not is_inside_tree():
+		return
+	_idle_tween = create_tween().set_loops()
+	_idle_tween.tween_interval(_spec.idle_react_every)
+	_idle_tween.tween_callback(_on_idle_react)
+
+
+func _on_idle_react() -> void:
+	if is_moving() or _hopping or _leaving or _inside:
+		return
+	react()
 
 
 ## Envol d'un Pokémon d'ambiance (Roucool, jalon 5 §3.5) : montée en arc vers le haut et le
