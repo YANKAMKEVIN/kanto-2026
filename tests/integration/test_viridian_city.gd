@@ -6,8 +6,8 @@ extends GutTest
 ## vers le nord, présence des habitants selon l'arrivée.
 
 const MAP_PATH := "res://game/world/maps/viridian_city.tscn"
-const SIZE := Vector2i(56, 40)
-const SOUTH := [Vector2i(27, 39), Vector2i(28, 39), Vector2i(29, 39)]
+const SIZE := Vector2i(56, 36)
+const SOUTH := [Vector2i(27, 35), Vector2i(28, 35), Vector2i(29, 35)]
 const NORTH := [Vector2i(27, 1), Vector2i(28, 1), Vector2i(29, 1)]
 const WEST := [Vector2i(0, 22), Vector2i(0, 23)]
 const CENTER_DOORS := [Vector2i(21, 21), Vector2i(22, 21)]
@@ -82,8 +82,8 @@ func test_landmarks_are_painted_props() -> void:
 func test_south_entrance_links_both_ways_with_route_1() -> void:
 	var route := _load_map(&"route_1")
 	add_child(route)
-	var expected := {Vector2i(27, 39): &"from_viridian_w", Vector2i(28, 39): &"from_viridian_w",
-		Vector2i(29, 39): &"from_viridian_e"}
+	var expected := {Vector2i(27, 35): &"from_viridian_w", Vector2i(28, 35): &"from_viridian_w",
+		Vector2i(29, 35): &"from_viridian_e"}
 	for cell: Vector2i in SOUTH:
 		var warp := _map.get_warps().find_on_push(cell, Vector2i.DOWN)
 		assert_not_null(warp, "sortie sud %s" % cell)
@@ -229,7 +229,7 @@ func test_terraces_are_crossed_only_by_the_stairs() -> void:
 		assert_eq(Array(open), expected, "mur de la rangée %d : seulement les escaliers" % row)
 	var cliff: Array[int] = []
 	for x: int in SIZE.x:
-		if not _terrain.is_solid(Vector2i(x, 34)):
+		if not _terrain.is_solid(Vector2i(x, 32)):
 			cliff.append(x)
 	assert_eq(Array(cliff), [27, 28, 29], "falaise : le chemin de la Route 1")
 	var decals := _map.get_node(^"GroundDecals")
@@ -241,6 +241,26 @@ func test_terraces_are_crossed_only_by_the_stairs() -> void:
 	var mart := _map.get_entities().get_node(^"PokeMart") as Node2D
 	assert_between(tree.position.x, center.position.x, mart.position.x)
 	assert_between(tree.position.y / Grid.TILE_SIZE, SIZE.y * 0.4, SIZE.y * 0.6, "au centre")
+
+
+## Passe 2 (Kevin) : chaque maison a son jardin clos, ouvert par un portail atteignable ; au
+## moins quatre modèles de maisons, aucun plus de deux fois.
+func test_every_house_has_a_closed_garden_with_a_gate() -> void:
+	var gates: Array[Vector2i] = [Vector2i(19, 9), Vector2i(37, 9), Vector2i(7, 21),
+		Vector2i(46, 21), Vector2i(19, 30), Vector2i(38, 30)]
+	var reach := _terrain.find_reachable(SOUTH[1])
+	for gate: Vector2i in gates:
+		assert_true(reach.has(gate), "portail atteignable %s" % gate)
+		assert_true(_terrain.is_solid(gate + Vector2i.LEFT), "clôture à gauche de %s" % gate)
+		assert_true(_terrain.is_solid(gate + Vector2i.RIGHT), "clôture à droite de %s" % gate)
+	var models: Dictionary = {}
+	for child: Node in _map.get_entities().get_children():
+		var path := child.scene_file_path
+		if path.contains("bldg_maison_"):
+			models[path] = int(models.get(path, 0)) + 1
+	assert_gte(models.size(), 4, "au moins quatre modèles de maisons")
+	for path: String in models:
+		assert_lte(int(models[path]), 2, "%s au plus deux fois" % path.get_file())
 
 
 ## Aucun habitant figé (Kevin, T5) : chacun marche, ou regarde autour de lui.

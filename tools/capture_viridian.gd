@@ -99,6 +99,12 @@ func _run() -> void:
 	_teleport(Vector2i(28, 28), Vector2i.DOWN)
 	await _seconds(1.0)
 	await _shot("viridian_south_quarter")
+	_teleport(Vector2i(21, 31), Vector2i.UP)
+	await _seconds(1.0)
+	await _shot("viridian_quarter_sw")
+	_teleport(Vector2i(37, 10), Vector2i.UP)
+	await _seconds(1.0)
+	await _shot("viridian_quarter_ne")
 	_teleport(Vector2i(2, 22), Vector2i.LEFT)
 	await _seconds(1.0)
 	await _shot("viridian_west_exit")
@@ -111,8 +117,13 @@ func _run() -> void:
 	await _tap_interact()
 	await _seconds(1.5)
 	await _shot("viridian_gym")
-	await _tap_interact()
-	await _seconds(0.6)
+	# Fermer la réplique (plusieurs appuis si le texte s'écrivait encore).
+	var runner: Node = _boot.call(&"get_dialogue_runner")
+	for attempt in 6:
+		if not runner.call(&"is_running"):
+			break
+		await _tap_interact()
+		await _seconds(0.4)
 	_teleport(Vector2i(28, 3), Vector2i.UP)
 	await _seconds(0.8)
 	await _shot("viridian_north_exit")

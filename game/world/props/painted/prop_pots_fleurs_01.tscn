@@ -1,0 +1,37 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://game/world/props/prop.gd" id="1_doqgh"]
+[ext_resource type="Material" path="res://game/world/lighting/materials/world_object.tres" id="2_ln0bp"]
+[ext_resource type="Texture2D" path="res://assets/world/props/prop_pots_fleurs_01.png" id="3_apypa"]
+[ext_resource type="Material" path="res://game/world/lighting/materials/cast_shadow.tres" id="4_jblpw"]
+[ext_resource type="Texture2D" path="res://assets/world/props/prop_pots_fleurs_01_shadow.png" id="5_fbysc"]
+[ext_resource type="Material" path="res://game/world/lighting/materials/contact_shadow.tres" id="6_fihwh"]
+[ext_resource type="Texture2D" path="res://assets/world/props/prop_pots_fleurs_01_contact.png" id="7_u78nr"]
+
+[node name="PropPotsFleurs01" type="Node2D" unique_id=606610243]
+script = ExtResource("1_doqgh")
+
+[node name="Sprite" type="Sprite2D" parent="." unique_id=1524466737]
+unique_name_in_owner = true
+material = ExtResource("2_ln0bp")
+texture = ExtResource("3_apypa")
+centered = false
+offset = Vector2(-57.5, -96)
+
+[node name="CastShadow" type="Sprite2D" parent="." unique_id=6323550 groups=["cast_shadows"]]
+z_index = -2
+z_as_relative = false
+material = ExtResource("4_jblpw")
+scale = Vector2(2, 2)
+texture = ExtResource("5_fbysc")
+centered = false
+offset = Vector2(-41.5, -2)
+
+[node name="ContactShadow" type="Sprite2D" parent="." unique_id=921233432 groups=["contact_shadows"]]
+z_index = -2
+z_as_relative = false
+material = ExtResource("6_fihwh")
+scale = Vector2(2, 2)
+texture = ExtResource("7_u78nr")
+centered = false
+offset = Vector2(-32.5, 2)

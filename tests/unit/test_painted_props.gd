@@ -9,7 +9,7 @@ const SCENES := "res://game/world/props/painted/"
 ## Les seuls objets peints qu'on traverse (jalon-07.md §6.6).
 ## Série 07 : murs de soutènement et escaliers de ville (la carte bloque la rangée du mur).
 const TRAVERSABLE: Array[StringName] = [&"relief_escalier_01", &"ground_hautes_herbes_01",
-	&"relief_muret_01", &"relief_escalier_ville_01"]
+	&"relief_muret_01", &"relief_escalier_ville_01", &"prop_portail_01", &"prop_balustrade_01"]
 const GROUND_LAYER: Array[StringName] = [
 	&"relief_falaise_01", &"relief_escalier_01", &"prop_massif_01", &"relief_muret_01",
 	&"relief_escalier_ville_01",
