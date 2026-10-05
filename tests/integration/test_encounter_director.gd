@@ -301,6 +301,46 @@ func test_a_forced_encounter_also_resets_the_counter() -> void:
 	await wait_until(func() -> bool: return not _director.is_running(), 3.0)
 
 
+# --- Route 22 (jalon 7, T22) : la vraie carte et la vraie table `route_22` ------------------
+
+## Joueur sur la route (22, 19), champ d'herbes juste dessous (22, 20) : un pas dans le champ
+## avec un tirage gagnant lance Rattata Nv. 3 (1er emplacement de data/encounters/route_22.json) ;
+## un pas sur le chemin ne lance rien.
+func test_real_route_22_grass_runs_the_route_22_table() -> void:
+	var map := (load("res://game/world/maps/route_22.tscn") as PackedScene).instantiate() as GameMap
+	add_child_autofree(map)
+	var library := EncounterLibrary.new(_data)
+	library.load_dir()
+	assert_true(library.has_table(&"route_22", &"grass"), "table route_22")
+	var player := (load(PLAYER_SCENE) as PackedScene).instantiate() as Player
+	map.get_entities().add_child(player)
+	player.enter_map(map.get_grid(), Vector2i(22, 18), Vector2i.DOWN, map.get_pixel_rect())
+	var director := EncounterDirector.new()
+	add_child_autofree(director)
+	director.setup(library, _data, _state, player, _fake, _router, null)
+	director.set_map(map)
+	# Sur le chemin : aucun tirage.
+	_state.rng = ScriptedRng.new(WIN_ROLLS.duplicate())
+	player.script_step(Vector2i.DOWN)
+	await wait_until(func() -> bool:
+		return player.get_cell() == Vector2i(22, 19) and not player.is_moving(), 3.0)
+	await wait_process_frames(2)
+	assert_false(director.is_running(), "pas de rencontre sur le chemin")
+	assert_eq(_fake.runs, 0)
+	# Dans le champ : rencontre de la table de la Route 22.
+	assert_true(map.get_grid().is_tall_grass(Vector2i(22, 20)), "champ sous la route")
+	player.script_step(Vector2i.DOWN)
+	await wait_until(func() -> bool: return director.is_running(), 3.0)
+	assert_eq(_fake.runs, 1)
+	assert_not_null(_fake.last_request)
+	if _fake.last_request != null:
+		var foe := _fake.last_request.foe_party.get_lead()
+		assert_eq(foe.species_id, &"rattata")
+		assert_eq(foe.level, 3)
+	assert_true(_state.pokedex.is_seen(&"rattata"))
+	await wait_until(func() -> bool: return not director.is_running(), 3.0)
+
+
 # --- Outils --------------------------------------------------------------------------
 
 ## Un seul pas (scripté, entrées libres) dans la première case d'herbe (5, 5), pour éprouver

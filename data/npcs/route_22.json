@@ -1,0 +1,26 @@
+{
+	"traveler": {
+		"cell": [21, 16], "facing": "right", "sprite": "traveler", "dialogue": "route_22_traveler",
+		"route": { "cells": [[20, 16], [21, 16], [22, 16], [23, 16], [22, 16], [21, 16]], "pause": 1.4 }
+	},
+	"route22_rattata": {
+		"cell": [23, 24], "facing": "up", "sprite": "pokemon/rattata",
+		"shy": { "action": "flee", "radius": 2 }
+	},
+	"route22_nidoran_f": {
+		"cell": [18, 22], "facing": "right", "sprite": "pokemon/nidoran_f",
+		"shy": { "action": "flee", "radius": 2 }
+	},
+	"route22_nidoran_m": {
+		"cell": [12, 21], "facing": "left", "sprite": "pokemon/nidoran_m",
+		"shy": { "action": "flee", "radius": 2 }
+	},
+	"route22_spearow": {
+		"cell": [34, 14], "facing": "down", "sprite": "pokemon/spearow",
+		"shy": { "action": "fly", "radius": 2 }
+	},
+	"route22_mankey": {
+		"cell": [40, 12], "facing": "left", "sprite": "pokemon/mankey",
+		"shy": { "action": "flee", "radius": 2 }
+	}
+}
