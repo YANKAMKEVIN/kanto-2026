@@ -54,7 +54,8 @@ const OBJETS: Array = [
 	["boite_lettres.png", 11.4, 10.2, false, 0.1], ["boite_lettres.png", 33.4, 10.2, false, 0.1],
 	["cloture_piquets.png", 10.0, 10.4, false, 0.3], ["cloture_piquets.png", 16.0, 10.4, false, 0.3],
 	["cloture_piquets.png", 32.0, 10.4, false, 0.3], ["cloture_piquets.png", 38.0, 10.4, false, 0.3],
-	# Jardins des maisons : haies sur les côtés, fruitiers, linge, pots, buissons, plates-bandes.
+	# Jardins des maisons : haies sur les côtés, fruitiers, plates-bandes. Objets rares, chacun
+	# avec un propriétaire (dossier 01, principes d'habillage) : linge du rival, pots de la mère.
 	["haie_v.png", 7.6, 10.3, false, 0.3], ["haie_v.png", 7.6, 7.3, false, 0.3],
 	["haie_v.png", 17.4, 10.3, false, 0.3], ["haie_v.png", 17.4, 7.3, false, 0.3],
 	["haie_v.png", 30.6, 10.3, false, 0.3], ["haie_v.png", 30.6, 7.3, false, 0.3],
@@ -62,18 +63,14 @@ const OBJETS: Array = [
 	["platebande.png", 10.0, 9.3, false, 0.2], ["platebande.png", 15.6, 9.3, false, 0.2],
 	["platebande.png", 32.4, 9.3, false, 0.2], ["platebande.png", 37.9, 9.3, false, 0.2],
 	["fruitier.png", 8.8, 5.2, true, 0.05], ["fruitier.png", 38.6, 5.0, true, 0.05],
-	["linge.png", 16.0, 5.0, false, 0.2], ["pots_fleurs.png", 13.9, 8.9, false, 0.1],
+	["linge.png", 16.0, 5.0, false, 0.2],
 	["pots_fleurs.png", 36.2, 8.9, false, 0.1], ["buisson_b.png", 8.6, 8.0, false, 0.1],
 	["buisson_a.png", 16.4, 8.0, false, 0.1], ["buisson_b.png", 31.6, 8.0, false, 0.1],
-	["tonneau.png", 31.5, 6.6, false, 0.15], ["caisses.png", 32.6, 6.4, false, 0.15],
-	# Place : pots aux bords, buissons à l'entrée nord.
-	["pots_fleurs.png", 19.4, 9.6, false, 0.1], ["pots_fleurs.png", 28.6, 9.6, false, 0.1],
+	# Place : buissons à l'entrée nord.
 	["buisson_b.png", 21.6, 8.6, false, 0.1], ["buisson_b.png", 26.4, 8.6, false, 0.1],
-	# Abords du labo : buissons entre les allées et la façade, matériel.
+	# Abords du labo : buissons entre les allées et la façade.
 	["buisson_a.png", 17.9, 16.4, false, 0.1], ["buisson_c.png", 17.9, 18.6, false, 0.1],
 	["buisson_a.png", 30.1, 16.4, false, 0.1], ["buisson_c.png", 30.1, 18.6, false, 0.1],
-	["caisses.png", 30.4, 21.3, false, 0.15], ["tonneau.png", 18.0, 21.3, false, 0.15],
-	["massif.png", 11.6, 15.6, false, 0.1], ["massif.png", 36.4, 15.6, false, 0.1],
 	["rocher.png", 3.0, 26.6, false, 0.15], ["rocher.png", 44.2, 21.0, false, 0.15],
 	["potager.png", 19.5, 25.6, false, 0.2], ["potager.png", 23.0, 25.6, false, 0.2],
 	["potager.png", 26.5, 25.6, false, 0.2],
@@ -333,7 +330,7 @@ func _foret(cases: Dictionary, tries: Node2D, ombres: Node2D) -> void:
 
 
 ## Semis sur l'herbe libre : touffes et buissons épars pour casser les grandes pelouses
-## unies (remarque de Kevin : village « simple et vide »).
+## unies, en gardant des étendues calmes (dossier 01 : nature dense, objets rares, espaces vides).
 func _semis(chemins: Dictionary, interdits: Dictionary, sol: Node2D, tries: Node2D,
 		ombres: Node2D) -> void:
 	var occupees := {}
@@ -347,7 +344,7 @@ func _semis(chemins: Dictionary, interdits: Dictionary, sol: Node2D, tries: Node
 		if chemins.has(cellule) or interdits.has(cellule):
 			continue
 		_decal(sol, "bord_touffe_%d.png" % _hasard.randi_range(1, 4), p * CASE, 0.9)
-		if occupees.has(cellule) or _hasard.randf() > 0.06:
+		if occupees.has(cellule) or _hasard.randf() > 0.03:
 			continue
 		var proche := false
 		for dx in range(-1, 2):

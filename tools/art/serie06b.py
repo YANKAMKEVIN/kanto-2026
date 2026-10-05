@@ -2,7 +2,7 @@
 """Série 06B — habillage de Bourg Palette (lumière neutre) : densité et vie.
 
 Remarque de Kevin (2026-10-05) : « la ville est un peu simple et vide ». Objets d'habillage
-(même gabarit que la série 06), planche de fleurs sauvages à semer dans l'herbe, papillons,
+(même gabarit que la série 06) ; aucune faune non-Pokémon (Kevin, 2026-10-06), planches de fleurs sauvages et côtières à semer dans l'herbe,
 et habitants (planches de marche au format de la série 02, ancre PERSO_P2_PEINT_r1).
 Usage : tools/art/serie06b.py [IDENTIFIANT ...]   (sans argument : toute la série)
 """
@@ -52,6 +52,11 @@ OBJETS = [
 		"légèrement de dessus."),
 	("WORLD_PROP_BROUETTE_01", "REF_BP_JARDINS", 1.4,
 		"brouette en bois remplie de terre et de jeunes plants, une pelle et un râteau appuyés contre elle."),
+	("WORLD_PROP_TAS_BOIS_01", "REF_BP_MAISON_RIVAL", 1.8,
+		"tas de bûches proprement empilées contre un mur, sous un petit auvent de planches, une hache plantée "
+		"dans un billot à côté."),
+	("WORLD_PROP_ARROSOIR_SEAU_01", "REF_BP_JARDINS", 0.9,
+		"arrosoir en zinc vert et petit seau en métal posés côte à côte au bord d'un jardin."),
 	("WORLD_PROP_PIERRES_01", None, 1,
 		"petit groupe de trois pierres grises arrondies à demi enfoncées dans l'herbe, un peu de mousse."),
 ]
@@ -65,12 +70,14 @@ PLANCHES = [
 		"trèfles ; touffe d'herbe plus foncée ; trois petits cailloux ; quelques pissenlits. Chaque élément fait "
 		"environ 140 px, posé sur RIEN : fond avec une vraie transparence (canal alpha), aucun sol, aucune "
 		"herbe autour, aucune ombre portée."),
-	("WORLD_FX_PAPILLONS_01",
-		"PLANCHE de 4 petits papillons peints, vus de dessus, pour une animation de vol : grille invisible de "
-		"4 colonnes × 1 ligne dans une image 1024 × 256 (cellules de 256 × 256). Cellules 1 et 2 : un papillon "
-		"blanc ailes ouvertes puis ailes presque fermées. Cellules 3 et 4 : un papillon jaune citron ailes "
-		"ouvertes puis ailes presque fermées. Chaque papillon fait environ 120 px. Fond avec une vraie "
-		"transparence (canal alpha), aucune ombre."),
+	("WORLD_GROUND_FLEURS_COTIERES_01",
+		"PLANCHE de 8 petites décalcomanies de végétation côtière vues strictement de DESSUS, à plat : grille "
+		"invisible de 4 colonnes × 2 lignes dans une image 1024 × 512 (cellules de 256 × 256), un élément centré "
+		"par cellule, sans cadre ni séparation. Ligne 1 : touffe d'armérie rose ; touffe de chardons bleus des "
+		"dunes ; coussin de plantes grasses ; touffe de fleurs jaunes de bord de mer. Ligne 2 : herbe sèche "
+		"blonde ; touffe d'herbe couchée par le vent ; deux galets clairs ; coquillage et bois flotté. Chaque "
+		"élément fait environ 140 px, posé sur RIEN : fond avec une vraie transparence (canal alpha), aucun sol, "
+		"aucune ombre portée."),
 ]
 
 ## Habitants : (identifiant, description du personnage).

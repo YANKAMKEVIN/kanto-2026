@@ -81,6 +81,17 @@ Fichiers : [`reference/bourg-palette-vue-generale-v1.png`](reference/bourg-palet
 - **Route 1** : une bande de hautes herbes barre toute la largeur du chemin, sans contournement : c'est là que Chen arrête le joueur.
 - Jardins de recherche au sud du labo, ancien sentier envahi à leur est.
 
+### Principes d'habillage (décisions de Kevin, 2026-10-06)
+Tri des idées d'habillage proposées par ChatGPT. **Règle artistique principale de Bourg Palette : nature dense, objets rares.**
+1. **Aucune faune non-Pokémon** (ni papillons, ni insectes, ni mouettes) : les signes de vie animale sont des Pokémon (Roucool, Piafabec près de la côte…).
+2. **Pokémon des habitants** : dans le prototype, casting temporaire avec les Pokémon déjà peints (Rattata qui suit l'enfant, Roucool sur une clôture), sans figer les espèces ; choix définitifs au *Population & Life System*.
+3. **Aucun des trois starters en liberté à Bourg Palette** (pas de Bulbizarre dans les jardins, contrairement à la vue générale) : cela affaiblirait le choix chez Chen. Plus tard, éventuellement un Pokémon commun de Kanto étudié par les chercheurs.
+4. **Routines du prototype** (déplacement + pause seulement, sans animation d'action) : vieille dame maison ↔ banc ; pêcheur village ↔ ponton ; enfant + Rattata petite course ↔ retour ; chercheur labo ↔ serre. On teste d'abord si le mouvement suffit à faire vivre le village.
+5. **Pas de props génériques** : chaque petit ensemble a un propriétaire (casiers du pêcheur, brouette de la jardinière, bois d'une maison). Un objet dont on ne peut pas expliquer la présence n'a pas à être là.
+6. **Un seul ballon ou cerf-volant**, lié à l'enfant, plus tard (après l'attribution des maisons au *Population & Life System*).
+7. **Garder volontairement des espaces vides** : une étendue d'herbe, un chemin calme ou une clôture sans activité participent à la DA. Le contraste entre quelques endroits habités et beaucoup de nature tranquille distingue Bourg Palette de Jadielle.
+Plus tard : routines horaires, voisins qui discutent, fenêtres éclairées, fumée de cheminée, sons du vent et de la mer selon la position (phase 10 et *Population & Life System*) ; flaques après la pluie (météo, phase 10).
+
 ### 1. Maison du joueur — nord-est
 Petit jardin, boîte aux lettres, vélo visible avant d'être utilisable, objets familiers.
 **La chambre est le journal visuel de la progression** : au fil de l'aventure y apparaissent discrètement souvenirs, photos, cadeaux de PNJ, traces d'exploits (badges/récompenses). Pas un musée : quelques changements subtils. Revenir à la fin dans la chambre raconte le parcours.
