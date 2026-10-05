@@ -4,6 +4,7 @@ Usage (sans ouvrir Blender) :
   blender -b --python tools/art/blender/rendre_pokemon.py -- modele dossier_images sortie.png
       [--azimut 35] [--elevation 12] [--taille 1024] [--pose bras=-55,avant=25]
       [--os LWing:Y:30,RWing:Y:-30] [--tourner 0] [--redresser 0] [--flamme Fire] [--vues 1]
+      [--saturation 1.12] [--valeur 1.0]
 
 modele : .SMD ou .DAE (importeurs maison : Blender 5 ne lit plus le Collada ni les FBX 6100
 de ces modèles), .FBX récent (7100+) ou .glb.
@@ -37,7 +38,8 @@ SATURATION = 1.12             # saturation des textures du corps
 def arguments():
 	a = sys.argv[sys.argv.index("--") + 1:]
 	opts = {"azimut": 35.0, "elevation": 12.0, "taille": 1024, "pose": "bras=-55,avant=25",
-		"flamme": "Fire", "os": "", "tourner": 0, "redresser": 0, "vues": 0}
+		"flamme": "Fire", "os": "", "tourner": 0, "redresser": 0, "vues": 0,
+		"saturation": SATURATION, "valeur": 1.0}
 	positionnels = []
 	i = 0
 	while i < len(a):
@@ -430,7 +432,8 @@ def materiau(nom, image, opts):
 		nt.links.new(vers_rgb.outputs["Color"], rampe.inputs["Fac"])
 		# Couleurs des textures du jeu 3DS un peu ternes : saturation relevée (artworks).
 		teinte = nt.nodes.new("ShaderNodeHueSaturation")
-		teinte.inputs["Saturation"].default_value = SATURATION
+		teinte.inputs["Saturation"].default_value = float(opts["saturation"])
+		teinte.inputs["Value"].default_value = float(opts["valeur"])
 		nt.links.new(tex.outputs["Color"], teinte.inputs["Color"])
 		nt.links.new(teinte.outputs["Color"], produit.inputs["A"])
 		nt.links.new(rampe.outputs["Color"], produit.inputs["B"])

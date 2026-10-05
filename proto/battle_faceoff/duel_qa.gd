@@ -32,7 +32,8 @@ const PLAYER := {"sheet": "salameche_dos_bw", "painted": "salameche_dos_peint",
 const FOE := {"sheet": "roucool_face_bw", "painted": "roucool_face_peint", "official": 16,
 	"name": "Roucool", "level": 9}
 const OFFICIAL_DIR: String = "res://assets/sprites/pokemon/official/"
-## Pilote des dos 3D (tools/art/blender/rendre_pokemon.py) : n°, nom, taille réelle (m).
+## Pilote des dos 3D (tools/art/blender/rendre_lot.py) : n°, nom, taille réelle (m) et, pour
+## ceux qui volent ou flottent, hauteur au-dessus de leur ombre (hauteurs d'écran).
 ## L'échelle suit la taille réelle (FaceoffScale, compressée et bornée) à partir de
 ## Salamèche, référence de gabarit.
 const PILOT: Array[Dictionary] = [
@@ -41,6 +42,14 @@ const PILOT: Array[Dictionary] = [
 	{"number": 7, "name": "Carapuce", "height": 0.5},
 	{"number": 16, "name": "Roucool", "height": 0.3},
 	{"number": 95, "name": "Onix", "height": 8.8},
+	{"number": 25, "name": "Pikachu", "height": 0.4},
+	{"number": 12, "name": "Papilusion", "height": 1.1, "float": 0.12},
+	{"number": 41, "name": "Nosferapti", "height": 0.8, "float": 0.12},
+	{"number": 129, "name": "Magicarpe", "height": 0.9},
+	{"number": 72, "name": "Tentacool", "height": 0.9},
+	{"number": 109, "name": "Smogo", "height": 0.6, "float": 0.08},
+	{"number": 81, "name": "Magnéti", "height": 0.3, "float": 0.10},
+	{"number": 93, "name": "Spectrum", "height": 1.6, "float": 0.06},
 ]
 const PILOT_REFERENCE: int = 1
 ## Boîte maximale de ton Pokémon à l'écran (hauteurs d'écran) : protège l'interface.
@@ -302,11 +311,16 @@ func _place(is_player: bool, who: Dictionary, feet: Vector2, height: float, kind
 	shadow.position = feet
 	var shadow_width := box.size.x * scale * 0.7
 	shadow.scale = Vector2(shadow_width, shadow_width * 0.2) / Vector2(_shadow_texture.get_size())
-	node.position = feet + (Vector2(-140.0, 40.0) if is_player else Vector2(0.0, -30.0))
+	# Pokémon qui vole ou flotte : au-dessus de son ombre, ombre plus petite.
+	var lift := float(who.get("float", 0.0)) * get_viewport().get_visible_rect().size.y
+	var rest := feet - Vector2(0.0, lift)
+	if lift > 0.0:
+		shadow.scale *= 0.75
+	node.position = rest + (Vector2(-140.0, 40.0) if is_player else Vector2(0.0, -30.0))
 	node.scale = Vector2.ONE * scale
 	node.modulate.a = 0.0
 	var enter := create_tween().set_parallel()
-	enter.tween_property(node, ^"position", feet, ENTER_DURATION) \
+	enter.tween_property(node, ^"position", rest, ENTER_DURATION) \
 		.set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
 	enter.tween_property(node, ^"modulate:a", 1.0, ENTER_DURATION * 0.6)
 	var tween: Tween = null
