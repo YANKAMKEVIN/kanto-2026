@@ -38,6 +38,8 @@ extends RefCounted
 ## (au plus [constant MAX_STORAGE]), « capturés » au Pokédex eux aussi.
 ## Jalon 7 (T12, départ `shop_qa`) : « favorites » : objets du Sac marqués favoris (chacun doit
 ## être dans « bag »).
+## Jalon 7 (T16, départ `storage_qa`) : « favorite » (booléen) sur un membre de l'équipe ou du
+## stockage : Pokémon favori.
 
 const USER_PATH: String = "user://debug_start.json"
 const FACINGS: Dictionary[String, Vector2i] = {
@@ -50,7 +52,8 @@ const MAX_MONEY: int = 999_999
 
 const _KEYS: Array[String] = ["map", "spawn", "facing", "seed", "flags", "party", "bag",
 	"favorites", "money", "storage"]
-const _MEMBER_KEYS: Array[String] = ["species", "level", "moves", "exp_to_next", "hp"]
+const _MEMBER_KEYS: Array[String] = ["species", "level", "moves", "exp_to_next", "hp",
+	"favorite"]
 
 ## Carte et point d'apparition de départ (&"" = départ par défaut de Boot).
 var map: StringName = &""
@@ -232,6 +235,7 @@ static func _create(member: Dictionary, state: Object, data: PokemonData) -> Pok
 	var hp: int = member.get("hp", -1)
 	if hp >= 0:
 		pokemon.hp = mini(hp, pokemon.max_hp())
+	pokemon.favorite = bool(member.get("favorite", false))
 	return pokemon
 
 
@@ -297,10 +301,16 @@ func _parse_member(value: Variant, data: PokemonData, where: String) -> Dictiona
 			ok = _fail("%s : « hp » est un entier positif ou nul" % where)
 		else:
 			hp = int(raw_hp)
+	var favorite := false
+	if entry.has("favorite"):
+		if not entry["favorite"] is bool:
+			ok = _fail("%s : « favorite » est un booléen" % where)
+		else:
+			favorite = entry["favorite"]
 	if not ok:
 		return {}
 	return { "species": species_id, "level": level, "moves": moves, "exp_to_next": to_next,
-		"hp": hp }
+		"hp": hp, "favorite": favorite }
 
 
 static func _is_text(value: Variant) -> bool:

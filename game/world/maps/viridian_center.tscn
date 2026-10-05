@@ -10,7 +10,7 @@
 [ext_resource type="Script" path="res://game/world/warp_point.gd" id="8_24tnq"]
 [ext_resource type="Script" path="res://game/world/interactions/interact_point.gd" id="9_147r7"]
 
-[node name="ViridianCenter" type="Node2D" unique_id=1676325643]
+[node name="ViridianCenter" type="Node2D" unique_id=1852468085]
 script = ExtResource("1_t0kiu")
 map_id = &"viridian_center"
 display_name = "Jadielle"
@@ -19,12 +19,12 @@ blocked_cells = Array[Vector2i]([Vector2i(0, 0), Vector2i(1, 0), Vector2i(2, 0),
 interior = true
 light_profile = &"interior_warm"
 
-[node name="Shell" type="Sprite2D" parent="." unique_id=1175702415]
+[node name="Shell" type="Sprite2D" parent="." unique_id=625439366]
 z_index = -3
 texture = ExtResource("2_5pv4b")
 centered = false
 
-[node name="Entities" type="Node2D" parent="." unique_id=174306549]
+[node name="Entities" type="Node2D" parent="." unique_id=812167125]
 unique_name_in_owner = true
 y_sort_enabled = true
 
@@ -40,25 +40,25 @@ position = Vector2(1200, 326)
 [node name="BenchWest" parent="Entities" unique_id=217295336 instance=ExtResource("6_lj25j")]
 position = Vector2(288, 691)
 
-[node name="BenchEast" parent="Entities" unique_id=2063396894 instance=ExtResource("6_lj25j")]
+[node name="BenchEast" parent="Entities" unique_id=641167734 instance=ExtResource("6_lj25j")]
 position = Vector2(1152, 691)
 
-[node name="PlantSouthWest" parent="Entities" unique_id=1408409413 instance=ExtResource("5_k4bba")]
+[node name="PlantSouthWest" parent="Entities" unique_id=589301463 instance=ExtResource("5_k4bba")]
 position = Vector2(144, 845)
 
-[node name="PlantSouthEast" parent="Entities" unique_id=1083917814 instance=ExtResource("5_k4bba")]
+[node name="PlantSouthEast" parent="Entities" unique_id=786874852 instance=ExtResource("5_k4bba")]
 position = Vector2(1296, 845)
 
-[node name="HealMachine" type="Node2D" parent="Entities" unique_id=909267137]
+[node name="HealMachine" type="Node2D" parent="Entities" unique_id=1354410916]
 unique_name_in_owner = true
 position = Vector2(720, 481)
 script = ExtResource("7_kqf30")
 slot_offsets = Array[Vector2]([Vector2(120, -130), Vector2(146, -130), Vector2(171, -130), Vector2(122, -116), Vector2(148, -116), Vector2(173, -116)])
 flash_offset = Vector2(147, -123)
 
-[node name="Warps" type="Node2D" parent="." unique_id=2051769279]
+[node name="Warps" type="Node2D" parent="." unique_id=994056914]
 
-[node name="Exit0" type="Marker2D" parent="Warps" unique_id=324980524]
+[node name="Exit0" type="Marker2D" parent="Warps" unique_id=398053927]
 position = Vector2(624, 864)
 script = ExtResource("8_24tnq")
 trigger = 1
@@ -67,7 +67,7 @@ target_map = &"viridian_city"
 target_spawn = &"from_center"
 arrival_facing = Vector2i(0, 1)
 
-[node name="Exit1" type="Marker2D" parent="Warps" unique_id=705494329]
+[node name="Exit1" type="Marker2D" parent="Warps" unique_id=1444649586]
 position = Vector2(720, 864)
 script = ExtResource("8_24tnq")
 trigger = 1
@@ -76,7 +76,7 @@ target_map = &"viridian_city"
 target_spawn = &"from_center"
 arrival_facing = Vector2i(0, 1)
 
-[node name="Exit2" type="Marker2D" parent="Warps" unique_id=1559758533]
+[node name="Exit2" type="Marker2D" parent="Warps" unique_id=1937823051]
 position = Vector2(816, 864)
 script = ExtResource("8_24tnq")
 trigger = 1
@@ -85,9 +85,9 @@ target_map = &"viridian_city"
 target_spawn = &"from_center"
 arrival_facing = Vector2i(0, 1)
 
-[node name="Interactables" type="Node2D" parent="." unique_id=762914097]
+[node name="Interactables" type="Node2D" parent="." unique_id=443598597]
 
-[node name="NurseCounter" type="Marker2D" parent="Interactables" unique_id=1179202748]
+[node name="NurseCounter" type="Marker2D" parent="Interactables" unique_id=1538205893]
 position = Vector2(624, 480)
 script = ExtResource("9_147r7")
 dialogue_id = &"nurse"
@@ -95,12 +95,22 @@ kind = 0
 size = Vector2i(3, 1)
 facing = Vector2i(0, -1)
 
-[node name="Spawns" type="Node2D" parent="." unique_id=1642977992]
+[node name="StorageTerminalScreen" type="Marker2D" parent="Interactables" unique_id=187577920]
+position = Vector2(144, 384)
+script = ExtResource("9_147r7")
+dialogue_id = &"storage_terminal"
+size = Vector2i(2, 1)
+facing = Vector2i(0, -1)
 
-[node name="entrance" type="Marker2D" parent="Spawns" unique_id=787964927]
+[node name="Spawns" type="Node2D" parent="." unique_id=737824851]
+
+[node name="entrance" type="Marker2D" parent="Spawns" unique_id=780168624]
 position = Vector2(720, 864)
 
-[node name="heal" type="Marker2D" parent="Spawns" unique_id=1662759675]
+[node name="heal" type="Marker2D" parent="Spawns" unique_id=227570595]
 position = Vector2(720, 576)
 
-[node name="Triggers" type="Node2D" parent="." unique_id=1094145762]
+[node name="terminal" type="Marker2D" parent="Spawns" unique_id=1769436220]
+position = Vector2(144, 480)
+
+[node name="Triggers" type="Node2D" parent="." unique_id=2032374357]

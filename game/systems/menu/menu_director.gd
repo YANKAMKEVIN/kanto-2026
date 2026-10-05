@@ -20,6 +20,10 @@ extends Node
 ## true)[/code], ouvert par le marchand), sans tableau de bord ; ACHETER / VENDRE par
 ## [method buy] / [method sell] ([ShopRules]) ; tout achat ou vente réussi marque l'état changé
 ## (autosave à la fermeture).
+## [b]Stockage[/b] (jalon-07.md §6.9, T16) : écran seul ouvert par le terminal du Centre, ou
+## depuis l'Équipe (bouton STOCKAGE) ; seulement au Centre ([method MenuUnlocks.is_available]).
+## Toute règle passe par [StorageRules] : succès → sélection suivante, état changé (autosave à
+## la fermeture), vue neuve ; refus → [signal storage_refused] avec la raison, rien ne change.
 
 ## Le menu vient de s'ouvrir (la pause est posée) : l'écran joue son ouverture.
 signal menu_opened
@@ -66,6 +70,13 @@ signal shop_shown(view: ShopView)
 signal shop_result_shown(text: String, ok: bool)
 ## Vendre un favori : confirmation à demander (ChoiceCards) ; VENDRE → [method sell] confirmé.
 signal shop_confirm_requested(view: ChoiceView, item_id: StringName, quantity: int)
+## Le Stockage est à afficher ou à rafraîchir (entrée, sélection, après une action réussie).
+signal storage_shown(view: StorageView)
+## Une action du Stockage est refusée : la carte ([param place], [param index]) tremble et
+## [param text] dit pourquoi (texte vide possible : rien à dire).
+signal storage_refused(place: int, index: int, text: String)
+## LIBÉRER permis : la confirmation (LIBÉRER / ANNULER) est à montrer.
+signal storage_release_asked(view: ChoiceView, place: int, index: int)
 
 var _state: Object
 var _data: PokemonData
@@ -97,6 +108,8 @@ var _shops: ShopLibrary
 ## Boutique affichée et son onglet (de session).
 var _shop_id: StringName = &""
 var _shop_mode: StringName = ShopViews.MODE_BUY
+## Pokémon sélectionné dans le Stockage (de session, jamais sauvegardé).
+var _storage_selection: StorageSelection = StorageSelection.new()
 
 
 func _init() -> void:
@@ -244,6 +257,77 @@ func build_shop() -> ShopView:
 	if shop == null or _items == null:
 		return null
 	return ShopViews.build(_state, shop, _items, _shop_mode)
+
+
+## Vue du Stockage pour la sélection courante (null : directeur non branché).
+func build_storage() -> StorageView:
+	if _state == null:
+		return null
+	return StorageViews.build(_state, _data, _storage_selection, _zones, _unlocks)
+
+
+## Sélection courante du Stockage (copie).
+func get_storage_selection() -> StorageSelection:
+	return StorageSelection.new(_storage_selection.place, _storage_selection.index)
+
+
+## Une carte du Stockage est touchée : elle devient la sélection, vue neuve (fiche, actions).
+## Place inexistante : rien.
+func select_storage(place: int, index: int) -> void:
+	if not _storage_open() or _pokemon_at(place, index) == null:
+		return
+	var selection := StorageSelection.new(place as StorageRules.Place, index)
+	if selection.equals(_storage_selection):
+		return
+	_storage_selection = selection
+	_emit_storage()
+
+
+## DÉPOSER (ou glisser ÉQUIPE → STOCKAGE) le Pokémon [param index] de l'équipe.
+func deposit_member(index: int) -> bool:
+	if not _storage_open():
+		return false
+	return _storage_result(StorageRules.deposit(_state.party, _state.storage, index))
+
+
+## REPRENDRE (ou glisser STOCKAGE → ÉQUIPE) le Pokémon [param index] du stockage.
+func withdraw_member(index: int) -> bool:
+	if not _storage_open():
+		return false
+	return _storage_result(StorageRules.withdraw(_state.party, _state.storage, index))
+
+
+## FAVORI : inverse le favori du Pokémon de [param place] à [param index].
+func toggle_storage_favorite(place: int, index: int) -> bool:
+	if not _storage_open():
+		return false
+	return _storage_result(StorageRules.toggle_favorite(_state.party, _state.storage,
+		place as StorageRules.Place, index))
+
+
+## LIBÉRER (menu « ⋯ ») : vérifie la règle sans rien changer. Refus (dernier Pokémon, favori)
+## → [signal storage_refused], sans confirmation ; permis → [signal storage_release_asked].
+func request_release(place: int, index: int) -> bool:
+	if not _storage_open():
+		return false
+	var where := place as StorageRules.Place
+	var status := StorageRules.can_release(_state.party, _state.storage, where, index)
+	var pokemon := _pokemon_at(place, index)
+	if status != StorageRules.Status.OK:
+		var refused := StorageResult.new(status, pokemon, StorageSelection.new(where, index))
+		storage_refused.emit(place, index, StorageViews.result_text(refused, _data))
+		return false
+	storage_release_asked.emit(StorageViews.release_choice(pokemon.display_name(_data)), place,
+		index)
+	return true
+
+
+## LIBÉRER confirmé : [method StorageRules.release] (la règle est revérifiée).
+func confirm_release(place: int, index: int) -> bool:
+	if not _storage_open():
+		return false
+	return _storage_result(StorageRules.release(_state.party, _state.storage,
+		place as StorageRules.Place, index))
 
 
 ## Annonce le résultat de « Sauvegarder maintenant » ([Boot], une fois l'écriture faite).
@@ -437,6 +521,39 @@ func _shop_result(status: ShopRules.Status) -> void:
 		shop_result_shown.emit(ShopViews.status_text(status), false)
 
 
+func _storage_open() -> bool:
+	if _state == null or not is_open():
+		return false
+	return _navigator.current().screen == MenuRoute.STORAGE
+
+
+func _pokemon_at(place: int, index: int) -> Pokemon:
+	if place != StorageRules.Place.PARTY and place != StorageRules.Place.STORAGE:
+		return null
+	return StorageRules.get_pokemon(_state.party, _state.storage, place as StorageRules.Place,
+		index)
+
+
+## Succès : sélection suivante, état changé, vue neuve. Refus : la carte refusée tremble.
+func _storage_result(result: StorageResult) -> bool:
+	if not result.is_ok():
+		storage_refused.emit(result.selection.place, result.selection.index,
+			StorageViews.result_text(result, _data))
+		return false
+	_storage_selection = result.selection
+	mark_changed()
+	_emit_storage()
+	return true
+
+
+func _emit_storage() -> void:
+	var view := build_storage()
+	if view == null:
+		return
+	_storage_selection = view.selection
+	storage_shown.emit(view)
+
+
 func _emit_settings() -> void:
 	if _settings != null:
 		settings_shown.emit(SettingsViews.build(_settings, _device_quality, _can_save))
@@ -486,6 +603,9 @@ func _on_route_shown(route: MenuRoute) -> void:
 		var mode := StringName(route.params.get("mode", ShopViews.MODE_BUY))
 		_shop_mode = mode if ShopViews.MODES.has(mode) else ShopViews.MODE_BUY
 		_emit_shop()
+	elif route.screen == MenuRoute.STORAGE and _state != null:
+		_storage_selection = StorageSelection.first(_state.party, _state.storage)
+		_emit_storage()
 	else:
 		placeholder_shown.emit(route.screen)
 
@@ -494,5 +614,6 @@ func _on_closed() -> void:
 	var changed := _changed
 	_changed = false
 	_shop_id = &""
+	_storage_selection = StorageSelection.new()
 	get_tree().paused = false
 	menu_closed.emit(changed)

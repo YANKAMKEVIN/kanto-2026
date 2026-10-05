@@ -89,13 +89,13 @@ func test_center_heal_on_the_center_registers_it_once() -> void:
 	assert_eq(_healed[1], [&"viridian_center", false], "même Centre : rien de changé")
 
 
-func test_unknown_and_pending_actions_are_reported() -> void:
+func test_unknown_and_mapless_actions_are_reported() -> void:
 	var shops: Array[StringName] = []
 	_services.shop_requested.connect(shops.append)
 	await _services.run_action(&"teleport")
 	await _services.run_action(&"open_shop")
 	await _services.run_action(&"open_storage")
-	assert_push_error_count(3, "inconnue, Boutique sans carte, Stockage à venir")
+	assert_push_error_count(3, "inconnue, Boutique sans carte, Stockage sans carte")
 	assert_false(_all_healed(), "rien n'est fait")
 	assert_eq(shops.size(), 0, "pas de boutique sans carte")
 
@@ -110,3 +110,16 @@ func test_open_shop_asks_for_the_shop_of_the_current_map() -> void:
 	assert_eq(shops, [&"viridian_mart"] as Array[StringName], "la boutique porte l'id de sa carte")
 	assert_false(_services.is_running(), "rend la main tout de suite")
 	assert_false(_all_healed(), "aucun soin")
+
+
+func test_open_storage_asks_for_the_storage_and_returns_at_once() -> void:
+	var map := (load(CENTER) as PackedScene).instantiate() as GameMap
+	add_child_autofree(map)
+	_services.set_map(map)
+	var asked: Array[bool] = []
+	_services.storage_requested.connect(func() -> void: asked.append(true))
+	await _services.run_action(&"open_storage")
+	assert_eq(asked.size(), 1, "le Stockage est demandé")
+	assert_false(_services.is_running(), "rend la main tout de suite")
+	assert_false(_all_healed(), "aucun soin")
+	assert_push_error_count(0)

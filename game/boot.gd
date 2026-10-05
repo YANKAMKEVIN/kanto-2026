@@ -100,6 +100,8 @@ var _rest_toast: PackedStringArray = PackedStringArray()
 ## ouverte à la fin de son dialogue (le menu ne s'ouvre pas pendant un dialogue).
 var _shops := ShopLibrary.new()
 var _pending_shop: StringName = &""
+## Le terminal du Centre a demandé le Stockage (`open_storage`) : ouvert à la fin du dialogue.
+var _pending_storage: bool = false
 ## Faux : aucune écriture de toute la session (pas de sauvegarde, départ de débogage, ou
 ## sauvegarde d'une version plus récente à ne jamais écraser).
 var _autosave_enabled: bool = false
@@ -152,6 +154,7 @@ func _ready() -> void:
 	_services.setup(GameState, _rest_points)
 	_services.center_healed.connect(_on_center_healed)
 	_services.shop_requested.connect(_on_shop_requested)
+	_services.storage_requested.connect(_on_storage_requested)
 	_runner.action_handler = _services.run_action
 	# Choix à deux cartes (jalon-07.md §6.5, T7) : la boîte montre les cartes, le lecteur attend.
 	_runner.choice_requested.connect(_dialogue_box.show_choice)
@@ -223,6 +226,9 @@ func _ready() -> void:
 	_zones.load_file()
 	_objectives.load_file()
 	_unlocks = MenuUnlocks.new(GameState.flags, GameState.party)
+	# Stockage (jalon-07.md §6.9, T16) : seulement dans un Centre (carte courante, relue à chaque
+	# appel) ; l'écran Stockage et le bouton STOCKAGE de l'Équipe n'existent que là.
+	_unlocks.set_location(_zones, _current_map_id)
 	_apply_debug_unlocks()
 	if _dex.load_file():
 		_dex.check_references(_pokemon)
@@ -303,6 +309,17 @@ func _ready() -> void:
 	_menu_screen.shop_mode_changed.connect(_menu.set_shop_mode)
 	_menu_screen.shop_buy_requested.connect(_menu.buy)
 	_menu_screen.shop_sell_requested.connect(_menu.sell)
+	# Stockage (jalon-07.md §6.9) : StorageScreen du T15 (TrainerMenu, fusionné avant : câblage
+	# direct, comme la Boutique), directeur du T16.
+	_menu.storage_shown.connect(_menu_screen.show_storage)
+	_menu.storage_refused.connect(_menu_screen.show_storage_refusal)
+	_menu.storage_release_asked.connect(_menu_screen.ask_storage_release)
+	_menu_screen.storage_selected.connect(_menu.select_storage)
+	_menu_screen.storage_deposit_requested.connect(_menu.deposit_member)
+	_menu_screen.storage_withdraw_requested.connect(_menu.withdraw_member)
+	_menu_screen.storage_favorite_toggled.connect(_menu.toggle_storage_favorite)
+	_menu_screen.storage_release_requested.connect(_menu.request_release)
+	_menu_screen.storage_release_confirmed.connect(_menu.confirm_release)
 	# Une seule écoute de tout ce qui s'enregistre au Pokédex (jalon-06.md §6.9).
 	GameState.pokedex.recorded.connect(_on_pokedex_recorded)
 	GameState.flags.flag_changed.connect(_on_flag_changed)
@@ -495,7 +512,7 @@ func get_defeat_recovery() -> DefeatRecovery:
 	return _recovery
 
 
-## Actions des services : soins, plus tard Boutique et Stockage (jalon 7, T8).
+## Actions des services : soins, Boutique et Stockage (jalon 7, T8, T12, T16).
 func get_service_director() -> ServiceDirector:
 	return _services
 
@@ -790,6 +807,10 @@ func _on_dialogue_finished(_dialogue_id: StringName) -> void:
 		_pending_shop = &""
 		if not _menu.open(MenuRoute.shop(shop_id), true):
 			push_error("Boot : la Boutique « %s » ne s'ouvre pas" % shop_id)
+	elif _pending_storage:
+		_pending_storage = false
+		if not _menu.open(MenuRoute.storage(), true):
+			push_error("Boot : le Stockage ne s'ouvre pas sur « %s »" % _current_map_id())
 
 
 ## « open_shop » (le marchand, jalon-07.md §6.10) : la Boutique s'ouvre en écran seul dès la fin
@@ -799,6 +820,12 @@ func _on_shop_requested(shop_id: StringName) -> void:
 		push_error("Boot : boutique inconnue « %s »" % shop_id)
 		return
 	_pending_shop = shop_id
+
+
+## « open_storage » (le terminal du Centre, jalon-07.md §6.9) : le Stockage s'ouvre en écran
+## seul dès la fin du dialogue ; retour = fermer, autosave à la fermeture s'il a changé.
+func _on_storage_requested() -> void:
+	_pending_storage = true
 
 
 ## Soin demandé par un dialogue « heal » (jalon 5 §3.11, Maman) : l'équipe est soignée (PV et
@@ -932,10 +959,12 @@ func _on_item_given(item_id: StringName, count: int) -> void:
 	_hud.show_toast(item.quantity_text(count), item.added_text(count))
 
 
-## Retour de l'écran : la confirmation de vente de la Boutique, la fiche du Pokédex, puis le
-## choix du Pokémon du Sac.
+## Retour de l'écran : la confirmation de vente de la Boutique, la confirmation ou le menu « ⋯ »
+## du Stockage, la fiche du Pokédex, puis le choix du Pokémon du Sac.
 func _screen_back() -> bool:
 	if _menu_screen.shop_back():
+		return true
+	if _menu_screen.storage_back():
 		return true
 	if _menu_screen.has_method(&"pokedex_back") and _menu_screen.call(&"pokedex_back"):
 		return true

@@ -1,0 +1,30 @@
+{
+	"map": "viridian_center", "spawn": "terminal", "facing": "up",
+	"flags": [
+		"mom_greeted", "rival_met", "oak_met", "oak_lab_reunion", "starter_offered",
+		"starter_chosen", "rival_challenged", "rival_battle_done", "rival_left_lab",
+		"viridian_arrived"
+	],
+	"party": [
+		{ "species": "charmander", "level": 9 },
+		{ "species": "pidgey", "level": 8 },
+		{ "species": "rattata", "level": 6, "hp": 0 },
+		{ "species": "spearow", "level": 6 },
+		{ "species": "nidoran_f", "level": 5 },
+		{ "species": "mankey", "level": 5 }
+	],
+	"storage": [
+		{ "species": "pidgey", "level": 4 },
+		{ "species": "rattata", "level": 3 },
+		{ "species": "spearow", "level": 5, "favorite": true },
+		{ "species": "nidoran_m", "level": 4 },
+		{ "species": "nidoran_f", "level": 3 },
+		{ "species": "rattata", "level": 5 },
+		{ "species": "pidgey", "level": 3 },
+		{ "species": "mankey", "level": 4 },
+		{ "species": "nidoran_m", "level": 6 },
+		{ "species": "spearow", "level": 3 }
+	],
+	"bag": { "poke_ball": 3, "potion": 2 },
+	"money": 3000
+}
