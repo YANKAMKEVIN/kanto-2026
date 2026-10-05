@@ -9,7 +9,8 @@ extends SceneTree
 ## - `idle_<dir>` : colonne 0 (une image) ;
 ## - `walk_<dir>` : colonnes 1, 2, 3, 0 ; un cycle de 4 images couvre **2 cases**, vitesse
 ##   calée sur `Grid.WALK_STEP_DURATION` (4 / (2 × 0,27) ≈ 7,4 images/s) ;
-## - `run_<dir>` : **seulement avec une planche de course** (le héros), au rythme de
+## - `run_<dir>` : **seulement avec une planche de course** (le héros ; l'enfant et le Rattata de
+##   Jadielle, qui courent dans la micro-scène d'arrivée), au rythme de
 ##   `Grid.RUN_STEP_DURATION` (12,5 images/s). Sans planche de course, aucune animation de
 ##   course : rejouer la marche à 12,5 images/s donnait des poses de marche à la vitesse de
 ##   course (« ils courent et marchent en même temps », Kevin au T5) ; `Npc.can_run` est faux
@@ -39,19 +40,19 @@ const LOOKS: Dictionary = {
 	"marchand": [CHARACTERS_DIR, "clerk", ""],
 	"livreur": [CHARACTERS_DIR, "courier", ""],
 	"dresseuse": [CHARACTERS_DIR, "lass", ""],
-	"enfant": [CHARACTERS_DIR, "kid", ""],
+	"enfant": [CHARACTERS_DIR, "kid", "enfant_run"],
 	"vieil_homme": [CHARACTERS_DIR, "old_man", ""],
 	"voyageur": [CHARACTERS_DIR, "traveler", ""],
 	"jeune_dresseur": [CHARACTERS_DIR, "youngster", ""],
 	"roucool": [POKEMON_DIR, "pidgey", ""],
-	"rattata": [POKEMON_DIR, "rattata", ""],
+	"rattata": [POKEMON_DIR, "rattata", "rattata_run"],
 	"piafabec": [POKEMON_DIR, "spearow", ""],
 	"ferosinge": [POKEMON_DIR, "mankey", ""],
 	"nidoran_f": [POKEMON_DIR, "nidoran_f", ""],
 	"nidoran_m": [POKEMON_DIR, "nidoran_m", ""],
 }
 ## Planches lues seulement comme planche de course d'une autre.
-const RUN_ONLY: Array[String] = ["heros_run"]
+const RUN_ONLY: Array[String] = ["heros_run", "enfant_run", "rattata_run"]
 
 var _errors: int = 0
 

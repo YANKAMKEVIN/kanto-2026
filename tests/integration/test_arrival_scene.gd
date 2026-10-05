@@ -149,8 +149,10 @@ func test_the_pidgey_is_back_after_a_map_change_and_the_town_lives_normally() ->
 
 
 ## Retours de Kevin au T5 (jalon-07.md §15.21) : une action après l'autre, regard guidé.
-## L'enfant et son Rattata **marchent** (planches sans course) et passent devant le héros, qui
-## les suit des yeux (gauche, haut, droite) ; puis le Roucool réagit et s'envole, le héros
+## L'enfant et son Rattata **courent** (décision de Kevin du 2026-10-05, dossier 09 §2 : vraies
+## planches de course), le Rattata devant, l'enfant une case derrière au même rythme, et passent
+## devant le héros, qui les suit des yeux (gauche, haut, droite) ; le Rattata arrive sous
+## l'auvent juste avant que le Roucool réagisse ; puis le Roucool réagit et s'envole, le héros
 ## lève la tête avec un petit bond ; puis le voyageur descend et croise le héros, qui se
 ## tourne vers lui. Contrôles bloqués tout du long.
 func test_the_arrival_beats_come_one_after_the_other() -> void:
@@ -162,6 +164,8 @@ func test_the_arrival_beats_come_one_after_the_other() -> void:
 	var times := {}
 	var facings: Array[Vector2i] = []
 	var kid_steps: Array[float] = []
+	var rattata_steps: Array[float] = []
+	var gaps: Array[int] = []
 	var mark := func(key: String) -> void:
 		if not times.has(key):
 			times[key] = (Time.get_ticks_msec() - _started_ms) / 1000.0
@@ -169,12 +173,16 @@ func test_the_arrival_beats_come_one_after_the_other() -> void:
 	_player.reacted.connect(func() -> void: mark.call("hero_react"))
 	kid.step_finished.connect(func(_cell: Vector2i) -> void:
 		kid_steps.append((Time.get_ticks_msec() - _started_ms) / 1000.0))
+	rattata.step_finished.connect(func(_cell: Vector2i) -> void:
+		rattata_steps.append((Time.get_ticks_msec() - _started_ms) / 1000.0))
 	var watch := func() -> void:
 		if not _director.is_running():
 			return
 		assert_false(_player.is_input_enabled(), "contrôles bloqués pendant la scène")
 		if facings.is_empty() or facings[-1] != _player.get_facing():
 			facings.append(_player.get_facing())
+		if not gaps.has(rattata.get_cell().x - kid.get_cell().x):
+			gaps.append(rattata.get_cell().x - kid.get_cell().x)
 		if rattata.get_cell().x > 28:
 			mark.call("kid_crossed")
 		# Retrouvé à chaque image : il quitte la carte à la fin de la scène.
@@ -195,11 +203,18 @@ func test_the_arrival_beats_come_one_after_the_other() -> void:
 	var expected: Array[Vector2i] = [Vector2i.UP, Vector2i.LEFT, Vector2i.UP, Vector2i.RIGHT,
 		Vector2i.UP, Vector2i.LEFT, Vector2i.DOWN, Vector2i.UP]
 	assert_eq(facings, expected, "le héros suit l'action des yeux")
-	# L'enfant marche : un pas par durée de marche (jamais à la cadence de course).
+	# Ils courent : un pas par durée de course, l'enfant au rythme de son Rattata.
 	assert_eq(kid_steps.size(), 9)
+	assert_eq(rattata_steps.size(), 9)
 	for i: int in range(1, kid_steps.size()):
-		assert_gt(kid_steps[i] - kid_steps[i - 1], Grid.WALK_STEP_DURATION * 0.8,
-			"pas de marche %d" % i)
+		for steps: Array[float] in [kid_steps, rattata_steps]:
+			var step := steps[i] - steps[i - 1]
+			assert_between(step, Grid.RUN_STEP_DURATION * 0.8, Grid.WALK_STEP_DURATION * 0.8,
+				"pas de course %d" % i)
+	assert_true(kid.can_run() and rattata.can_run(), "vraies planches de course")
+	assert_eq(gaps, [1] as Array[int], "le Rattata devant, l'enfant une case derrière")
+	assert_lt(rattata_steps[-1], times["pidgey"], "le Rattata arrive, puis le Roucool réagit")
+	assert_lt(times["pidgey"] - rattata_steps[-1], 0.4, "sans temps mort")
 	assert_push_error_count(0)
 
 

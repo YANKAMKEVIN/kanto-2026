@@ -1245,6 +1245,22 @@
     "haut"
    ]
   },
+  "enfant_run": {
+   "fichier": "res://assets/sprites/characters/painted/enfant_run_sheet.png",
+   "cellule": [
+    85,
+    110
+   ],
+   "hauteur": 108,
+   "colonnes": 4,
+   "lignes": 4,
+   "ordre_lignes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
   "roucool": {
    "fichier": "res://assets/sprites/pokemon/painted/roucool_sheet.png",
    "cellule": [
@@ -1265,6 +1281,22 @@
    "fichier": "res://assets/sprites/pokemon/painted/rattata_sheet.png",
    "cellule": [
     59,
+    58
+   ],
+   "hauteur": 56,
+   "colonnes": 4,
+   "lignes": 4,
+   "ordre_lignes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "rattata_run": {
+   "fichier": "res://assets/sprites/pokemon/painted/rattata_run_sheet.png",
+   "cellule": [
+    67,
     58
    ],
    "hauteur": 56,
