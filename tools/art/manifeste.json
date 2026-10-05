@@ -326,7 +326,17 @@
    "id": "heros_run",
    "source": "PERSO_P2_COURSE_r1.png",
    "sortie": "assets/sprites/characters/painted/heros_run_sheet.png",
-   "hauteur": 128
+   "hauteur": 128,
+   "profil_course": {
+    "source": "HEROS_COURSE_PROFIL_r1.png",
+    "rebond": 3,
+    "jambe_lointaine": [
+     [[[0, 500], [240, 500], [256, 550], [256, 730], [0, 730]]],
+     [[[700, 440], [975, 440], [975, 660], [766, 660], [766, 518], [717, 503], [700, 503]]],
+     [[[1255, 500], [1560, 500], [1560, 730], [1288, 730], [1288, 550]]],
+     [[[1640, 498], [1736, 503], [1802, 512], [1802, 660], [1640, 660]]]
+    ]
+   }
   },
   {
    "id": "infirmiere",

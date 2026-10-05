@@ -667,7 +667,7 @@
   "heros_run": {
    "fichier": "res://assets/sprites/characters/painted/heros_run_sheet.png",
    "cellule": [
-    95,
+    101,
     130
    ],
    "hauteur": 128,
