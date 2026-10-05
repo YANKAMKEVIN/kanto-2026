@@ -70,3 +70,25 @@ func test_interior_plant_fades_when_player_behind() -> void:
 	_player.position = Grid.cell_to_world(Vector2i(4, 8))
 	_run(plant, 0.5)
 	assert_almost_eq(_sprite_alpha(plant), WorldProp.COVERED_ALPHA, 0.001)
+
+
+## QA T5 (Jadielle) : un mur de soutènement sépare deux niveaux ; la rangée du mur (escalier)
+## appartient au niveau du haut.
+func test_same_level_is_split_by_walls() -> void:
+	var walls: Array[int] = [12, 24]
+	assert_true(WorldProp.same_level(13, 23, walls), "même terrasse")
+	assert_false(WorldProp.same_level(23, 28, walls), "rue au-dessus d'un toit du bas")
+	assert_true(WorldProp.same_level(24, 23, walls), "escalier = niveau du haut")
+	assert_false(WorldProp.same_level(24, 25, walls))
+	assert_true(WorldProp.same_level(3, 40, [] as Array[int]), "un seul niveau")
+
+
+func test_tree_below_a_wall_stays_opaque_for_a_player_above() -> void:
+	var tree := _tree_at(Vector2i(5, 5))
+	tree.level_rows = [4] as Array[int]
+	_player.position = Grid.cell_to_world(Vector2i(5, 3))
+	_run(tree, 0.5)
+	assert_eq(_sprite_alpha(tree), 1.0, "joueur sur la terrasse du dessus")
+	tree.level_rows = [] as Array[int]
+	_run(tree, 0.5)
+	assert_almost_eq(_sprite_alpha(tree), WorldProp.COVERED_ALPHA, 0.001, "sans mur : effacé")

@@ -46,6 +46,10 @@ const _NPC_SCENE: PackedScene = preload("res://game/world/npc/npc.tscn")
 ## §3.2) appliqué par `WorldLighting` à l'arrivée. Vide = **aucune** lumière du monde (Bourg
 ## Palette, la Route 1 et les intérieurs existants restent tels quels jusqu'à la phase DA).
 @export var light_profile: StringName = &""
+## Rangées des murs de soutènement et falaises qui séparent deux niveaux (Jadielle : 12, 24,
+## 32). Un décor qui s'efface quand le joueur passe derrière ([member
+## WorldProp.fade_when_covering]) ne le fait qu'au même niveau. Vide : un seul niveau.
+@export var level_rows: Array[int] = []
 
 var _grid: GridWorld
 var _warps: WarpTable
@@ -279,6 +283,7 @@ func _build_grid() -> void:
 			var prop := child as WorldProp
 			if prop != null:
 				_grid.add_solid_footprint(prop.get_anchor_cell(), prop.get_footprint())
+				prop.level_rows = level_rows
 	for npc: Npc in _npcs:
 		if not npc.enter_grid(_grid):
 			push_error("GameMap %s : PNJ « %s » ne peut plus occuper %s" % [
