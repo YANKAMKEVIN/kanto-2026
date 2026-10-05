@@ -8,12 +8,13 @@ extends RefCounted
 ## avancées de l'histoire s'écrivent donc **en premier**.
 ## [codeblock]
 ## [
-##   { "id": "deliver_parcel", "text": "rapporter le colis au Prof. Chen",
-##     "if": ["got_parcel"], "unless": ["parcel_delivered"], "draft": true },
-##   { "id": "reach_viridian", "text": "rejoindre Jadielle", "if": ["rival_battle_done"] }
+##   { "id": "deliver_parcel", "text": "remettre le colis au Professeur Chen.",
+##     "if": ["got_oak_parcel"], "unless": ["pokedex_activated"] },
+##   { "id": "reach_viridian", "text": "rejoindre Jadielle.", "if": ["rival_battle_done"] }
 ## ]
 ## [/codeblock]
-## « text » est la fin de la ligne : l'écran affiche « Objectif : <text> »
+## « text » est la fin de la ligne : l'écran affiche « Objectif : <text> » ; convention
+## (Kevin, 2026-10-05) : tout texte finit par un point, imposée par test_objective_library.
 ## ([constant DashboardViews.OBJECTIVE_PREFIX]). « if » : drapeaux tous levés ; « unless » :
 ## aucun levé ; « draft » : texte provisoire à relire par Kevin. Toute clé inconnue est une
 ## erreur ; une entrée invalide est écartée.

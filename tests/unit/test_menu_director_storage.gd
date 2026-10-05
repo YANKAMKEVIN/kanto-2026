@@ -135,7 +135,7 @@ func test_refusals_change_nothing_and_show_no_view() -> void:
 	_add(_state.party, &"rattata", 4, 0)
 	assert_true(_open())
 	assert_false(_director.deposit_member(0), "le dernier valide, à côté d'un K.O.")
-	assert_eq(_refusals, [[PARTY, 0, StorageViews.LAST_POKEMON_TEXT]] as Array[Array])
+	assert_eq(_refusals, [[PARTY, 0, StorageViews.LAST_ABLE_TEXT]] as Array[Array])
 	assert_eq(_state.party.size(), 2)
 	assert_true(_director.deposit_member(1), "un K.O. à côté d'un valide se dépose")
 	for i: int in 5:

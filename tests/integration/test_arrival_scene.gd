@@ -85,7 +85,7 @@ func test_debug_start_lands_at_the_south_entrance() -> void:
 	assert_not_null(map.get_npc(&"arrival_kid"), "l'enfant attend la scène")
 	assert_not_null(map.get_npc(&"viridian_roof_pidgey"), "le Roucool est sur le toit")
 	assert_null(map.get_npc(&"kid"), "l'enfant « ordinaire » vient après l'arrivée")
-	assert_eq(_objective(), "Objectif : rejoindre Jadielle")
+	assert_eq(_objective(), "Objectif : rejoindre Jadielle.")
 	assert_eq(_boot.get_world_lighting().get_profile().id, &"golden_hour", "lumière C2")
 	assert_true(_boot.get_world_lighting().is_grade_visible())
 

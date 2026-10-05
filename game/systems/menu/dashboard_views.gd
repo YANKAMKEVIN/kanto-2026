@@ -3,7 +3,7 @@ extends RefCounted
 ## Traduit l'état de la partie en [DashboardView] (dossier 08 §1, jalon-06.md §3.2). Classe
 ## pure, statique : appelée par MenuDirector (T4) à chaque ouverture du tableau de bord.
 
-## Préfixe de la ligne d'objectif (dossier 08 §1 : « Objectif : rejoindre Jadielle »).
+## Préfixe de la ligne d'objectif (dossier 08 §1 : « Objectif : rejoindre Jadielle. »).
 const OBJECTIVE_PREFIX: String = "Objectif : "
 ## Sous-titre de la carte du Dresseur.
 const PLAYER_TITLE: String = "Dresseur Pokémon"

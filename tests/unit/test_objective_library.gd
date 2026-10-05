@@ -17,6 +17,18 @@ func test_real_data_loads_without_error() -> void:
 	assert_eq(library.get_ids(), [&"deliver_parcel", &"reach_viridian"] as Array[StringName])
 
 
+## Convention homogène (décision de Kevin du 2026-10-05) : tout texte d'objectif finit par un
+## point (« remettre le colis au Professeur Chen. », « rejoindre Jadielle. »).
+func test_every_objective_text_ends_with_a_period() -> void:
+	var list: Array = JSON.parse_string(FileAccess.get_file_as_string(
+		ObjectiveLibrary.DEFAULT_PATH))
+	assert_gt(list.size(), 0)
+	for entry: Dictionary in list:
+		var text := str(entry.get("text", "")).strip_edges()
+		assert_true(text.ends_with("."), "« %s » (%s) finit par un point" % [text, entry.get("id")])
+		assert_false(text.ends_with(".."), "« %s » : un seul point" % text)
+
+
 func test_q4_nothing_before_the_rival_battle_then_reach_viridian() -> void:
 	var library := ObjectiveLibrary.new()
 	library.load_file()
@@ -27,11 +39,11 @@ func test_q4_nothing_before_the_rival_battle_then_reach_viridian() -> void:
 		flags.set_flag(flag)
 		assert_eq(library.current(flags), "", "pas encore : %s" % flag)
 	flags.set_flag(&"rival_battle_done")
-	assert_eq(library.current(flags), "rejoindre Jadielle")
+	assert_eq(library.current(flags), "rejoindre Jadielle.")
 	assert_eq(library.current_id(flags), &"reach_viridian")
 	assert_true(library.is_draft(&"reach_viridian"), "texte provisoire")
 	flags.set_flag(&"got_potion_route_1")
-	assert_eq(library.current(flags), "rejoindre Jadielle", "toujours vrai sur la Route 1")
+	assert_eq(library.current(flags), "rejoindre Jadielle.", "toujours vrai sur la Route 1")
 	# Jalon 7 T4 : l'arrivée à Jadielle (micro-scène) efface la ligne, en silence.
 	flags.set_flag(&"viridian_arrived")
 	assert_eq(library.current(flags), "", "arrivé à Jadielle : plus de ligne")
