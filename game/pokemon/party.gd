@@ -59,6 +59,18 @@ func move(from: int, to: int) -> bool:
 	return true
 
 
+## Retire et rend le Pokémon de la place [param index] (la même instance : PV, PP, favori et
+## histoire gardés), ou null si la place n'existe pas. Les suivants remontent d'une place.
+## Aucune règle ici : « garder au moins un Pokémon » est une règle du Stockage
+## ([method StorageRules.can_deposit], jalon-07.md §3.5).
+func remove_at(index: int) -> Pokemon:
+	if not _has_index(index):
+		return null
+	var pokemon := _members[index]
+	_members.remove_at(index)
+	return pokemon
+
+
 ## Les membres, dans l'ordre (copie de la liste).
 func get_all() -> Array[Pokemon]:
 	return _members.duplicate()

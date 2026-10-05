@@ -93,3 +93,22 @@ func test_load_array_replaces_the_content_and_discards_invalid_entries() -> void
 	assert_eq(storage.get_all()[0].species_id, &"rattata")
 	# Espèce inconnue (Pokemon) puis deux entrées écartées (PokemonStorage).
 	assert_push_error_count(3)
+
+
+func test_get_at_index_of_and_remove_at() -> void:
+	var storage := PokemonStorage.new()
+	var pidgey := _mon(&"pidgey", 3)
+	var rattata := _mon(&"rattata", 2, 2)
+	var other := _mon(&"rattata", 2, 3)
+	storage.add(pidgey)
+	storage.add(rattata)
+	storage.add(other)
+	assert_same(storage.get_at(1), rattata)
+	assert_null(storage.get_at(3))
+	assert_null(storage.get_at(-1))
+	assert_eq(storage.index_of(other), 2)
+	assert_eq(storage.index_of(_mon(&"pidgey", 3)), -1, "comparaison par identité")
+	assert_same(storage.remove_at(0), pidgey)
+	assert_eq(storage.get_all(), [rattata, other] as Array[Pokemon], "ordre d'arrivée gardé")
+	assert_null(storage.remove_at(5))
+	assert_eq(storage.size(), 2)

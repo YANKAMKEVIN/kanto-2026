@@ -12,6 +12,10 @@ const SLOT_COUNT: int = Party.MAX_SIZE
 var members: Array[TeamMemberView] = []
 ## Fiches, même ordre que [member members].
 var sheets: Array[PokemonSheetView] = []
+## Bouton STOCKAGE de l'Équipe (J7A, dossier 09 §8 « par le menu Équipe ») : présent
+## seulement au Centre ([method MenuUnlocks.storage_available]) ; absent ailleurs, jamais
+## grisé. Ajouté au T14 du J7.
+var storage_available: bool = false
 
 
 func size() -> int:

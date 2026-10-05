@@ -12,6 +12,7 @@ extends RefCounted
 ## - [constant MAP] : « zone » (StringName, zone à montrer, &"" = celle du joueur) ;
 ## - [constant SHOP] : « shop » (StringName, boutique de `data/shops/`), « mode »
 ##   (StringName, onglet d'ouverture : [constant SHOP_MODE_BUY] ou [constant SHOP_MODE_SELL]) ;
+## - [constant STORAGE] (J7A) : aucun (la sélection est de session, MenuDirector la garde) ;
 ## - les autres : aucun.
 ## Les écrans de [constant STANDALONE_SCREENS] (la Boutique, jalon-07.md §3.4) ne sont jamais
 ## une carte du tableau de bord ni la cible d'un lien : ils s'ouvrent **seuls**
@@ -26,11 +27,16 @@ const TRAINER: StringName = &"trainer"
 const SETTINGS: StringName = &"settings"
 ## Boutique (jalon-07.md §3.4, §6.4) : écran seul, ouvert par le marchand.
 const SHOP: StringName = &"shop"
+## Écran Stockage (J7A, jalon-07.md §3.5) : pas une carte du tableau de bord ; ouvert depuis le
+## terminal du Centre ou le bouton STOCKAGE de l'Équipe, seulement au Centre
+## ([method MenuUnlocks.storage_available]).
+const STORAGE: StringName = &"storage"
 ## Ordre des cartes du tableau de bord (dossier 08 §1) ; [MenuUnlocks] retire les absentes.
 const DASHBOARD_ORDER: Array[StringName] = [TEAM, POKEDEX, BAG, MAP, TRAINER, SETTINGS]
-## Écrans du menu : le tableau de bord et ses cartes (chacun a une route par défaut,
-## [method for_screen]).
-const SCREENS: Array[StringName] = [DASHBOARD, TEAM, POKEDEX, BAG, MAP, TRAINER, SETTINGS]
+## Écrans du menu qui ont une route par défaut ([method for_screen]) : le tableau de bord, ses
+## cartes et le Stockage.
+const SCREENS: Array[StringName] = [DASHBOARD, TEAM, POKEDEX, BAG, MAP, TRAINER, SETTINGS,
+	STORAGE]
 ## Écrans qui ne s'ouvrent que seuls, jamais par une carte ni un lien (pas de route par défaut).
 const STANDALONE_SCREENS: Array[StringName] = [SHOP]
 
@@ -95,6 +101,10 @@ static func is_standalone_screen(screen_id: StringName) -> bool:
 	return STANDALONE_SCREENS.has(screen_id)
 
 
+static func storage() -> MenuRoute:
+	return MenuRoute.new(STORAGE)
+
+
 ## Route par défaut de l'écran [param screen_id] (carte du tableau de bord), ou null si
 ## l'écran est inconnu ou ne s'ouvre que seul (la Boutique demande son identifiant).
 static func for_screen(screen_id: StringName) -> MenuRoute:
@@ -113,6 +123,8 @@ static func for_screen(screen_id: StringName) -> MenuRoute:
 			return trainer()
 		SETTINGS:
 			return settings()
+		STORAGE:
+			return storage()
 	return null
 
 

@@ -228,3 +228,19 @@ func test_selection_after_swap_follows_the_selected_pokemon() -> void:
 	assert_eq(TeamViews.clamp_selection(5, 3), 2)
 	assert_eq(TeamViews.clamp_selection(-1, 3), 0)
 	assert_eq(TeamViews.clamp_selection(2, 0), 0)
+
+
+func test_storage_button_only_inside_a_center() -> void:
+	_add(&"charmander", 5, Pokemon.Origin.STARTER, &"oak_lab")
+	assert_false(_build().storage_available, "sans lieu branché")
+	var zones := ZoneLibrary.new()
+	assert_true(zones.add_from_dict({
+		"services": {"pokemon_center": {"name": "Centre Pokémon"}},
+		"zones": {"v": {"name": "Jadielle", "kind": "town", "maps": ["v", "v_center"],
+			"services": [{"id": "pokemon_center", "found_on": "v_center"}]}},
+	}, "t"))
+	var where := {"map": &"v"}
+	_unlocks.set_location(zones, func() -> StringName: return where["map"])
+	assert_false(_build().storage_available, "dans la ville : absent")
+	where["map"] = &"v_center"
+	assert_true(_build().storage_available, "au Centre : bouton STOCKAGE")

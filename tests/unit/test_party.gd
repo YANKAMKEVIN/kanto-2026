@@ -139,3 +139,20 @@ func test_new_order_survives_the_save() -> void:
 	assert_eq(loaded.get_lead().species_id, &"rattata")
 	assert_true(loaded.get_lead().favorite, "le favori suit son Pokémon")
 	assert_eq(loaded.get_at(2).species_id, &"charmander")
+
+
+func test_remove_at_returns_the_same_instance_and_shifts_the_others() -> void:
+	var first := _make(&"charmander")
+	var second := _make(&"pidgey")
+	var third := _make(&"rattata")
+	_party.add(first)
+	_party.add(second)
+	_party.add(third)
+	second.take_damage(3)
+	var hp := second.hp
+	assert_same(_party.remove_at(1), second)
+	assert_eq(second.hp, hp, "même instance, PV gardés")
+	assert_eq(_party.get_all(), [first, third] as Array[Pokemon])
+	assert_null(_party.remove_at(2))
+	assert_null(_party.remove_at(-1))
+	assert_eq(_party.size(), 2)
