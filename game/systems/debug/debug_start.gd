@@ -22,7 +22,9 @@ extends RefCounted
 ##     { "species": "bulbasaur", "level": 19, "exp_to_next": 1,
 ##       "moves": ["tackle", "growl", "leech_seed", "vine_whip"] }
 ##   ],
-##   "bag": { "poke_ball": 5 }
+##   "bag": { "poke_ball": 5 },
+##   "money": 6000,
+##   "storage": [ { "species": "rattata", "level": 4 } ]
 ## }
 ## [/codeblock]
 ## Équipe : 1 à 6 Pokémon créés par [PokemonFactory] (capacités de Rouge/Bleu au niveau) ;
@@ -30,14 +32,21 @@ extends RefCounted
 ## niveau suivant (1 = un seul point) ; « hp » fixe les PV de départ (0 = K.O., borné aux PV
 ## max). Le starter est le premier de l'équipe ; chaque espèce
 ## de l'équipe est « capturée » au Pokédex. Sans « map », départ par défaut de [Boot].
+## Jalon 7 (sauvegarde v3) : « money » (0 à GameState.MONEY_MAX ; absent : la somme d'une
+## nouvelle partie) ; « storage » : Pokémon du Stockage, même format que les membres de l'équipe
+## (au plus [constant MAX_STORAGE]), « capturés » au Pokédex eux aussi.
 
 const USER_PATH: String = "user://debug_start.json"
 const FACINGS: Dictionary[String, Vector2i] = {
 	"up": Vector2i.UP, "down": Vector2i.DOWN, "left": Vector2i.LEFT, "right": Vector2i.RIGHT,
 }
 const MAX_PARTY: int = 6
+const MAX_STORAGE: int = 60
+## = GameState.MONEY_MAX (lu sans l'autoload : classe pure).
+const MAX_MONEY: int = 999_999
 
-const _KEYS: Array[String] = ["map", "spawn", "facing", "seed", "flags", "party", "bag"]
+const _KEYS: Array[String] = ["map", "spawn", "facing", "seed", "flags", "party", "bag",
+	"money", "storage"]
 const _MEMBER_KEYS: Array[String] = ["species", "level", "moves", "exp_to_next", "hp"]
 
 ## Carte et point d'apparition de départ (&"" = départ par défaut de Boot).
@@ -50,6 +59,10 @@ var flags: Array[StringName] = []
 ## Membres de l'équipe validés : { species, level, moves (Array[StringName]), exp_to_next }.
 var party: Array[Dictionary] = []
 var bag: Dictionary[StringName, int] = {}
+## Argent de départ (−1 = celui d'une nouvelle partie).
+var money: int = -1
+## Pokémon du Stockage (même forme que [member party]).
+var storage: Array[Dictionary] = []
 var _errors: PackedStringArray = PackedStringArray()
 
 
@@ -132,6 +145,24 @@ func add_from_dict(dict: Dictionary, data: PokemonData, items: ItemLibrary,
 				ok = _fail("%s bag « %s » : quantité entière ≥ 1 attendue" % [source, id])
 			else:
 				new_bag[id] = int(raw_bag[key])
+	var new_money := -1
+	if dict.has("money"):
+		if not _is_int(dict["money"]) or int(dict["money"]) < 0 \
+				or int(dict["money"]) > MAX_MONEY:
+			ok = _fail("%s : « money » est un entier de 0 à %d" % [source, MAX_MONEY])
+		else:
+			new_money = int(dict["money"])
+	var new_storage: Array[Dictionary] = []
+	var raw_storage: Variant = dict.get("storage", [])
+	if not raw_storage is Array or (raw_storage as Array).size() > MAX_STORAGE:
+		ok = _fail("%s : « storage » est une liste de 0 à %d Pokémon" % [source, MAX_STORAGE])
+	else:
+		for i: int in (raw_storage as Array).size():
+			var stored := _parse_member(raw_storage[i], data, "%s storage %d" % [source, i + 1])
+			if stored.is_empty():
+				ok = false
+			else:
+				new_storage.append(stored)
 	if not ok:
 		return false
 	map = new_map
@@ -141,6 +172,8 @@ func add_from_dict(dict: Dictionary, data: PokemonData, items: ItemLibrary,
 	flags = new_flags
 	party = new_party
 	bag = new_bag
+	money = new_money
+	storage = new_storage
 	return true
 
 
@@ -150,26 +183,38 @@ func add_from_dict(dict: Dictionary, data: PokemonData, items: ItemLibrary,
 func apply(state: Object, data: PokemonData) -> void:
 	state.new_game(rng_seed)
 	for member: Dictionary in party:
-		var pokemon := PokemonFactory.create(data, member["species"], member["level"], state.rng)
-		var moves: Array[StringName] = member["moves"]
-		if not moves.is_empty():
-			pokemon.moves.clear()
-			for move_id: StringName in moves:
-				pokemon.learn_move(move_id, data)
-		var to_next: int = member["exp_to_next"]
-		if to_next > 0:
-			var rate := data.get_species(pokemon.species_id).growth_rate
-			pokemon.experience = ExpCurve.exp_for_level(rate, pokemon.level + 1) - to_next
-		var hp: int = member.get("hp", -1)
-		if hp >= 0:
-			pokemon.hp = mini(hp, pokemon.max_hp())
+		var pokemon := _create(member, state, data)
 		state.party.add(pokemon)
 		state.pokedex.mark_caught(pokemon.species_id)
+	for member: Dictionary in storage:
+		var stored := _create(member, state, data)
+		state.storage.add(stored)
+		state.pokedex.mark_caught(stored.species_id)
 	state.starter_species = party[0]["species"] if not party.is_empty() else &""
 	for flag: StringName in flags:
 		state.flags.set_flag(flag)
 	for id: StringName in bag:
 		state.bag.add(id, bag[id])
+	if money >= 0:
+		state.money = money
+
+
+## Un Pokémon d'après un membre validé (capacités, XP, PV).
+static func _create(member: Dictionary, state: Object, data: PokemonData) -> Pokemon:
+	var pokemon := PokemonFactory.create(data, member["species"], member["level"], state.rng)
+	var moves: Array[StringName] = member["moves"]
+	if not moves.is_empty():
+		pokemon.moves.clear()
+		for move_id: StringName in moves:
+			pokemon.learn_move(move_id, data)
+	var to_next: int = member["exp_to_next"]
+	if to_next > 0:
+		var rate := data.get_species(pokemon.species_id).growth_rate
+		pokemon.experience = ExpCurve.exp_for_level(rate, pokemon.level + 1) - to_next
+	var hp: int = member.get("hp", -1)
+	if hp >= 0:
+		pokemon.hp = mini(hp, pokemon.max_hp())
+	return pokemon
 
 
 ## Résumé d'une ligne (journal du jeu).

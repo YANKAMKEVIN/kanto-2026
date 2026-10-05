@@ -3,6 +3,9 @@
 	"points": {
 		"player_house_1f": {
 			"spawn": "heal", "facing": "up", "wakeup_dialogue": "mom_wakeup", "registers": false
+		},
+		"viridian_center": {
+			"spawn": "heal", "facing": "up", "wakeup_dialogue": "nurse_wakeup", "registers": true
 		}
 	}
 }

@@ -74,6 +74,10 @@ const ANIM_PANEL := 0.3
 ## Fondu au noir d'un changement de carte : descente du rideau, puis levée (≈ 0,45 s au total).
 const ANIM_FADE_OUT := 0.2
 const ANIM_FADE_IN := 0.25
+## Rituel de soin d'un Centre Pokémon (dossier 09 §7, « environ 3 secondes » ; jalon-07.md §13) :
+## ×GameSettings.REDUCED_MENU_SPEED avec « Réduire les animations ». Vibration légère à l'éclat.
+const CENTER_HEAL := 3.0
+const CENTER_HEAL_HAPTIC_MS := 20
 ## Glissement des panneaux à l'apparition.
 const PANEL_SLIDE := 40.0
 ## Échelle d'un bouton enfoncé.
