@@ -10,8 +10,8 @@ extends GutTest
 ## - PAS MAINTENANT → « Très bien. Reviens quand tu veux. », rien ne change ;
 ## - « Réduire les animations » : rituel deux fois plus court ;
 ## - une défaite après le soin réveille au Centre (mot de l'infirmière), sauvegardé au réveil.
-## Le choix est répondu par le lecteur (DialogueRunner.choose) comme le fera la boîte de dialogue
-## du T7 ; le câblage de la boîte est vérifié quand elle porte l'interface du T7.
+## Le choix est répondu en touchant une carte de la vraie boîte de dialogue (T7, ChoiceCards) ;
+## le retour Android pendant le choix vaut PAS MAINTENANT.
 
 const MemoryFs := preload("res://tests/helpers/memory_file_system.gd")
 const FixedClock := preload("res://tests/helpers/fixed_clock.gd")
@@ -90,12 +90,15 @@ func _start(map: StringName = &"viridian_center", spawn: StringName = &"heal") -
 	await wait_process_frames(3)
 
 
-## Faux T7 : la boîte montrerait les cartes ; le joueur répond quelques images plus tard.
+## Le joueur touche une carte de la boîte (T7) quelques images plus tard.
 func _on_choice_requested(view: ChoiceView) -> void:
 	_views.append(view)
 	await wait_process_frames(3)
+	var box := _boot.get_dialogue_box()
+	assert_true(box.is_choice_showing(), "les cartes sont affichées")
+	var cards := box.get_choice_cards()
 	_chosen_ms = Time.get_ticks_msec()
-	_runner.choose(_answer)
+	(cards.get_confirm_button() if _answer else cards.get_cancel_button()).pressed.emit()
 
 
 func _on_page_started(_index: int) -> void:
@@ -165,7 +168,7 @@ func test_heal_fills_the_team_plays_the_ritual_registers_and_saves() -> void:
 			assert_eq(slot.pp, slot.max_pp, "%s : PP pleins" % pokemon.species_id)
 	var ritual := (_after_ritual_ms - _chosen_ms) / 1000.0
 	assert_between(ritual, 2.8, 3.8, "rituel d'environ 3 s (%.2f s)" % ritual)
-	assert_eq(_vibrations, [UiTokens.CENTER_HEAL_HAPTIC_MS] as Array[int], "une vibration")
+	assert_eq(_vibrations.count(UiTokens.CENTER_HEAL_HAPTIC_MS), 1, "vibration à l'éclat")
 	assert_eq(GameState.heal_map, &"viridian_center", "dernier Centre utilisé")
 	assert_eq(GameState.heal_spawn, &"heal")
 	assert_eq(_toasts.size(), 1, "toast une fois")
@@ -194,7 +197,7 @@ func test_not_now_changes_nothing() -> void:
 	assert_true(_is_hurt(), "pas de soin")
 	assert_eq(GameState.heal_map, &"player_house_1f", "point de repos inchangé")
 	assert_eq(_toasts.size(), 0)
-	assert_eq(_vibrations.size(), 0)
+	assert_false(_vibrations.has(UiTokens.CENTER_HEAL_HAPTIC_MS), "pas de rituel")
 	assert_eq(_writes(), writes, "rien à écrire")
 	assert_push_error_count(0)
 
@@ -240,15 +243,32 @@ func test_the_heal_machine_lights_one_slot_per_pokemon() -> void:
 		await wait_process_frames(1)
 
 
-## Câblage du T7 (jalon-07.md §6.5) : vérifié dès que la boîte porte show_choice / choice_made.
-func test_the_dialogue_box_shows_the_choice_once_t7_is_merged() -> void:
+## Retour Android pendant le choix (jalon-07.md §6.5) : la carte d'annulation, rien ne change.
+func test_android_back_during_the_choice_means_not_now() -> void:
 	await _start()
+	_runner.choice_requested.disconnect(_on_choice_requested)
 	var box := _boot.get_dialogue_box()
-	if not box.has_method(&"show_choice") or not box.has_signal(&"choice_made"):
-		pending("DialogueBox.show_choice (T7, ui-mobile) pas encore fusionnée")
-		return
-	assert_true(_runner.choice_requested.is_connected(Callable(box, &"show_choice")))
-	assert_true(box.is_connected(&"choice_made", _runner.choose))
+	Input.action_press(&"interact")
+	await wait_process_frames(2)
+	Input.action_release(&"interact")
+	var deadline := Time.get_ticks_msec() + int(TIMEOUT * 1000)
+	while not box.is_choice_showing() and Time.get_ticks_msec() < deadline:
+		if box.is_open():
+			box.advance_requested.emit()
+		await wait_process_frames(1)
+	assert_true(box.is_choice_showing(), "SOIGNER / PAS MAINTENANT")
+	_boot.notification(Node.NOTIFICATION_WM_GO_BACK_REQUEST)
+	await wait_process_frames(2)
+	assert_false(box.is_choice_showing(), "choix fermé")
+	assert_false(_boot.get_menu_director().is_open(), "le menu ne s'ouvre pas")
+	await wait_until(func() -> bool: return box.is_open() and box.get_text() == LATER, TIMEOUT)
+	assert_eq(box.get_text(), LATER)
+	while _runner.is_running() and Time.get_ticks_msec() < deadline:
+		box.advance_requested.emit()
+		await wait_process_frames(1)
+	assert_true(_is_hurt(), "pas de soin")
+	assert_eq(GameState.heal_map, &"player_house_1f")
+	assert_push_error_count(0)
 
 
 ## Une défaite sauvage après un soin au Centre : réveil devant le comptoir, tourné vers

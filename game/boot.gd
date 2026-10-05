@@ -148,7 +148,9 @@ func _ready() -> void:
 	_services.setup(GameState, _rest_points)
 	_services.center_healed.connect(_on_center_healed)
 	_runner.action_handler = _services.run_action
-	_wire_dialogue_choice()
+	# Choix à deux cartes (jalon-07.md §6.5, T7) : la boîte montre les cartes, le lecteur attend.
+	_runner.choice_requested.connect(_dialogue_box.show_choice)
+	_dialogue_box.choice_made.connect(_runner.choose)
 	_interactions.setup(_player, _runner)
 	_cutscenes_node.setup(_cutscenes, GameState.flags, _runner, _player, SceneRouter)
 	_pokemon.load_dir()
@@ -524,7 +526,7 @@ func _can_open_menu() -> bool:
 ## transition, ignoré.
 func _on_go_back() -> void:
 	# Un choix à deux cartes dans un dialogue (SOIGNER / PAS MAINTENANT) : retour = annuler.
-	if _dialogue_box.has_method(&"cancel_choice") and bool(_dialogue_box.call(&"cancel_choice")):
+	if _dialogue_box.cancel_choice():
 		return
 	if _menu.is_open() and _screen_back():
 		return
@@ -763,16 +765,6 @@ func _on_dialogue_finished(_dialogue_id: StringName) -> void:
 func _on_heal_requested() -> void:
 	_services.heal()
 	request_autosave("soin")
-
-
-## Choix à deux cartes d'un dialogue (jalon-07.md §6.5) : la boîte de dialogue les montre (T7,
-## ui-mobile). Relié seulement si la boîte porte l'interface du T7 ; sans elle, une question
-## attendrait sans fin (aucune donnée n'en contient avant le Centre).
-func _wire_dialogue_choice() -> void:
-	if not _dialogue_box.has_method(&"show_choice") or not _dialogue_box.has_signal(&"choice_made"):
-		return
-	_runner.choice_requested.connect(Callable(_dialogue_box, &"show_choice"))
-	_dialogue_box.connect(&"choice_made", _runner.choose)
 
 
 ## Soin d'un Centre fini (jalon-07.md §5.3) : écriture tout de suite (joueur au comptoir, la
