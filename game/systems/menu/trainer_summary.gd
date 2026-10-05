@@ -5,7 +5,8 @@ extends RefCounted
 ## (T25) à chaque affichage de l'écran.
 ##
 ## Ne montre que ce que la partie enregistre déjà (aucun champ de sauvegarde nouveau) :
-## - identité : nom, « Dresseur Pokémon », temps de jeu, date de départ ([code]started_at[/code]) ;
+## - identité : nom, « Dresseur Pokémon », temps de jeu, date de départ ([code]started_at[/code]),
+##   argent (J7, dossier 09 §10) ;
 ## - « vus » / « capturés » : seulement si le Pokédex est visible ([MenuUnlocks]) ;
 ## - **8 emplacements de badges muets** (aucun badge avant le J10 ; jamais « 0/8 ») ;
 ## - grands moments : ceux de [code]GameState.moments[/code] (premier Pokémon, combat contre le
@@ -48,6 +49,7 @@ static func build(state: Object, data: PokemonData, zones: ZoneLibrary, moments:
 	view.player_title = DashboardViews.PLAYER_TITLE
 	view.play_time_text = MenuFormat.play_time(state.play_time)
 	view.started_text = MenuFormat.long_date(state.started_at)
+	view.money_text = MenuFormat.money(state.money)
 	var pokedex: Pokedex = state.pokedex
 	if unlocks != null and unlocks.pokedex_visible():
 		view.seen_text = DashboardViews.seen_text(pokedex.seen_count())

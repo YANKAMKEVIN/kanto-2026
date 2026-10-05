@@ -306,7 +306,9 @@ static func register(state: Node, point: RestPoint) -> bool
 
 **Tests (T6)** : `test_dialogue_library` (choix, action, scène, variante sans page, action inconnue refusée, `heal: true` → `heal`), `test_dialogue_runner` (choix demandé après la dernière page, confirmer → action attendue puis pages, annuler → pages d'annulation, `heal_requested` toujours émis), `test_rest_points` (Centre enregistré, maison jamais, deuxième soin au même Centre : pas de changement, défaut de `GameState` = maison).
 
-### 3.4 Boutique et économie (T10)
+### 3.4 Boutique et économie (T10) — **fait**
+
+> **Fait au T10** (logique pure et tests, sans écran ni câblage ; format de sauvegarde inchangé). Écarts avec le texte ci-dessous : `ShopLibrary.check_references` rend un `bool` et **retire** du stock l'objet fautif ; `ShopRules` gagne `max_sell(item, bag)`, `buy_total`, `sell_total` ; `state` est typé `Object` (comme `TrainerSummary`) ; `ShopViews.sell_confirm_view(entry, quantity) -> ChoiceView` (confirmation d'un favori) ; `ShopView` / `ShopEntryView` dans `game/systems/shop/views/` (contrat au §6.9) ; `MenuRoute.STANDALONE_SCREENS = [SHOP]` (la Boutique n'est ni dans `SCREENS` ni dans `DASHBOARD_ORDER`, jamais la cible d'un `go`, ne s'ouvre que seule) et `MenuNavigator.is_standalone()` ; `BagQuery.view(…, money := -1)` (négatif = pas d'argent affiché) et `MenuDirector._emit_bag` lui passe `_state.money` ; `ItemData.is_key()`, et le toast d'un objet clé : titre = nom en capitales (« COLIS POUR CHEN »), détail « ajouté aux objets clés » (accordé). VENDRE ne liste **que** les objets vendables (le colis n'y apparaît pas) ; « Je ne peux pas te reprendre ça. » reste la réponse de `ShopRules.sell` à un objet clé. Un achat ne demande jamais de confirmation ; chaque vente d'un favori, si (y compris le dernier exemplaire ; le favori reste marqué). Vendre au plafond d'argent : l'excédent est perdu (Rouge/Bleu). Le stock du marchand n'a aucune condition (Poké Ball, Potion dès la première visite, dossier 09 §9) ; le format `if` / `unless` est prêt pour la suite. **Gains d'argent des combats de dresseurs : non traités ici (T24, §3.8)**.
 
 `ItemData` : `price: int` (0 = pas en vente ; un objet clé n'a jamais de prix), `sell_price() -> int` (moitié, arrondie en dessous, Rouge/Bleu), `is_sellable() -> bool`. `data/items/items.json` : Poké Ball 200, Potion 300 (dossier 09 §10, provisoires) ; **`oak_parcel`** (« Colis pour Chen », `key`, description `draft`). Le toast d'un objet clé dit « ajouté aux objets clés » (`ItemData.added_text` selon la catégorie).
 
@@ -658,6 +660,82 @@ Comme au J6 (§6.6 à §6.12), chaque tâche d'architecture fige dans ce fichier
 
 ---
 
+### 6.9 Contrat de la Boutique (T10, figé) — pour T11 ∥ T12
+
+**Vues** (`game/systems/shop/views/`, classes pures ; on peut seulement **ajouter** des champs ; texte vide = élément absent) :
+
+```gdscript
+class_name ShopView            ## construit par ShopViews.build(state, shop, items, mode)
+var mode: StringName           ## ShopViews.MODE_BUY (&"buy") ou MODE_SELL (&"sell")
+var shop_id: StringName
+var modes: Array[StringName]   ## [buy, sell] ; mode_labels : ["ACHETER", "VENDRE"]
+var mode_labels: PackedStringArray
+var money_text: String         ## « 3 000 ₽ »
+var entries: Array[ShopEntryView]
+var empty_text: String         ## VENDRE sans rien de vendable : « Tu n'as rien à vendre. » (draft)
+func entry(item_id: StringName) -> ShopEntryView
+
+class_name ShopEntryView
+var item_id: StringName
+var name: String, plural: String, description: String, category_id: StringName
+var favorite: bool             ## étoile ET texte
+var owned: int                 ## owned_text « DANS LE SAC : 3 » (toujours écrit)
+var owned_text: String
+var unit_price: int            ## achat : prix ; vente : moitié arrondie en dessous
+var price_text: String         ## « 200 ₽ »
+var max_quantity: int          ## 0 = indisponible (sélecteur et CONFIRMER inactifs, reason dit pourquoi)
+var reason: String             ## « Tu n'as pas assez d'argent. »
+var needs_confirm: bool        ## VENDRE d'un favori
+var card: BagEntryView         ## la carte BagItemCard (nom accordé à owned, ×owned, favori, icône)
+func is_available() -> bool
+func clamp_quantity(quantity: int) -> int   ## [1, max(max_quantity, 1)]
+func get_icon() -> Texture2D
+```
+
+Textes : `ShopViews.LABEL_*` (ACHETER · VENDRE · QUANTITÉ · TOTAL · DANS LE SAC · CONFIRMER · RETOUR), `ShopViews.total_text(unit_price, quantity)` (TOTAL recalculé **par l'écran** à chaque cran, sans aller-retour au directeur), `ShopViews.status_text(status)`.
+
+**Écran — `ShopScreen` (ui-mobile, T11)** : `game/ui/shop/shop_screen.gd` + `.tscn` (`class_name ShopScreen extends MenuScreen`, hébergé par `TrainerMenu` comme les autres écrans ; mise en page du §6.4 ; `TapGuard` sur les cartes, `scroll_deadzone = TAP_SLOP` ; `UiPrefsApplier`). La Boutique s'ouvre **seule** : ni tableau de bord, ni pastille de zone ; RETOUR et × ferment. L'écran ne fait **aucune règle** : il garde l'onglet affiché, l'objet sélectionné et la quantité (bornée par `clamp_quantity`), et relaie.
+
+```gdscript
+## TrainerMenu (ui-mobile, T11) — ajouts
+signal shop_mode_changed(mode: StringName)                     ## onglet touché
+signal shop_buy_requested(item_id: StringName, quantity: int)  ## CONFIRMER en ACHETER : un seul par toucher
+signal shop_sell_requested(item_id: StringName, quantity: int, confirmed: bool)
+	## CONFIRMER en VENDRE : confirmed = false ; puis true si la carte VENDRE de ChoiceCards est choisie
+func show_shop(view: ShopView) -> void                         ## affiche / rafraîchit (garde sélection et quantité si l'objet y est encore)
+func show_shop_result(text: String, ok: bool) -> void          ## UseResultBar : « Merci ! » (ok) ou le refus (tremblement)
+func show_shop_confirm(view: ChoiceView, item_id: StringName, quantity: int) -> void
+	## ChoiceCards ; chosen(true) → shop_sell_requested(item_id, quantity, true) ; chosen(false) → rien
+func shop_back() -> bool                                       ## retour Android : ferme la confirmation si elle est ouverte (vrai), sinon faux
+func get_shop() -> ShopScreen
+```
+
+**Câblage — `MenuDirector` (constructeur-monde, T12)** :
+
+```gdscript
+signal shop_shown(view: ShopView)
+signal shop_result_shown(text: String, ok: bool)
+signal shop_confirm_requested(view: ChoiceView, item_id: StringName, quantity: int)
+func open(route: MenuRoute = null, standalone: bool = false) -> bool   ## passe standalone au navigateur ;
+	## écran seul : pas de dashboard_shown
+func set_shops(shops: ShopLibrary) -> void        ## comme set_settings : sans elles, SHOP = écran provisoire
+func set_shop_mode(mode: StringName) -> void      ## réémet shop_shown
+func buy(item_id: StringName, quantity: int) -> ShopRules.Status
+func sell(item_id: StringName, quantity: int, confirmed: bool = false) -> ShopRules.Status
+```
+
+Règle du directeur : OK → `mark_changed()` (autosave à la fermeture), `shop_shown` (argent et DANS LE SAC à jour) puis `shop_result_shown(status_text, true)` ; NEEDS_CONFIRM → `shop_confirm_requested(ShopViews.sell_confirm_view(entry, quantity), …)` ; autre refus → `shop_result_shown(status_text, false)`, rien d'autre (un texte vide n'affiche rien). Route SHOP dans `_on_route_shown` : `params.shop`, `params.mode`. **`open_shop`** (action de dialogue, `ServiceDirector`) ouvre `MenuRoute.shop(<identifiant de la carte courante>)` en écran seul : **la boutique porte l'identifiant de sa carte** (`viridian_mart`). `Boot` (T12) : `ShopLibrary.load_dir()` + `check_references(_items)`, `_menu.set_shops(...)`, branchement derrière `has_signal(&"shop_buy_requested")`, `shop_back()` en tête de `_screen_back()`. `DebugStart` gagne `money` (départ `shop_qa`).
+
+**Partage des fichiers** :
+
+| Qui | Fichiers |
+|---|---|
+| **T11 (ui-mobile)** | `game/ui/shop/**` (écran, sélecteur de quantité), `game/ui/menu/trainer_menu.gd` / `.tscn` (hôte, signaux et méthodes ci-dessus), `game/ui/menu/trainer/trainer_screen.gd` (ligne « Argent », `TrainerView.money_text` / `MONEY_LABEL`), `game/ui/bag/bag_screen.gd` (`BagView.money_text`), `game/ui/theme/ui_tokens.gd` + `tools/build_ui_theme.gd` (`SHOP_*`), `tests/integration/test_shop_screen.gd` (vues fabriquées à la main), scénarios de capture `shop_*`, `trainer_money` |
+| **T12 (constructeur-monde)** | `game/systems/menu/menu_director.gd`, `game/boot.gd` / `boot.tscn`, `game/systems/services/service_director.gd` (`open_shop`), `game/systems/debug/debug_start.gd` (`money`), carte `viridian_mart` et son outil, `data/npcs/viridian_mart.json`, `data/dialogues/viridian_mart.json`, `data/cutscenes/viridian_mart.json`, `tools/debug_start/shop_qa.json`, `tests/unit/test_menu_director_shop.gd` (directeur seul, signaux), `tests/integration/test_mart.gd`, `test_menu_unlock_rule.gd` |
+| **Personne sans l'architecte** | `game/systems/shop/**`, `data/shops/**`, `data/items/items.json`, `game/items/**`, `menu_route.gd`, `menu_navigator.gd`, `menu_format.gd` (ajouts de champs de vue seulement, notés ici) |
+
+**Ordre de fusion** : T11 (écran) d'abord, puis T12 (câblage, `test_mart` sur le vrai `Boot`) ; T12 développe contre ses tests du directeur sans attendre l'écran. Le retrait de `got_oak_parcel` de `_PENDING_FLAGS` (`test_objective_library`) se fait au T12, celui de `viridian_arrived` au T4, celui de `pokedex_activated` au T19.
+
 ## 7. Performance sur le S24
 
 **Mesuré au prototype** (S24, build debug) : place seule 59 fps, **18 Mo** de textures ; place + personnages en mouvement 58–59 fps, **22,6 Mo** ; visite complète (Jadielle 40 × 28, intérieurs, Route 22) validée par Kevin au doigt, sans mesure consignée ; Mac 100–145 fps. Le J6 a mesuré 58,5 fps de moyenne en exploration avec un creux d'une image toutes les ~4 s (non résolu, « à reprendre en optimisation »).
@@ -725,8 +803,8 @@ Chaque tâche finit par `tools/test.sh` vert (nombre de tests rapporté), un imp
 
 ### 7A.3 — Boutique et économie
 
-#### T10 — architecte-godot : fondations de la Boutique
-- §3.4 ; contrat de `ShopScreen` ; objectif du colis.
+#### T10 — architecte-godot : fondations de la Boutique — **fait**
+- §3.4 ; contrat de `ShopScreen` (§6.9) ; objectif du colis.
 - **CA** : tests du §3.4 verts.
 
 #### T11 — ui-mobile : l'écran Boutique et l'argent affiché

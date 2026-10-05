@@ -15,6 +15,8 @@ const BADGES_TITLE: String = "Badges"
 const MOMENTS_TITLE: String = "Grands moments"
 const STATS_TITLE: String = "Statistiques"
 const STARTED_LABEL: String = "Début de l'aventure"
+## Libellé de l'argent (J7, draft : lot de textes du jalon-07.md §12).
+const MONEY_LABEL: String = "Argent"
 ## Phrase de la frise quand aucun moment n'existe encore (prologue).
 const MOMENTS_EMPTY_TEXT: String = "Ton aventure ne fait que commencer."
 
@@ -26,6 +28,9 @@ var play_time_text: String = ""
 ## Date de départ (« 2 octobre 2026 », à écrire après [constant STARTED_LABEL]) ; "" si
 ## inconnue.
 var started_text: String = ""
+## Argent du joueur, « 3 000 ₽ » (dossier 09 §10 ; J7, Q-8 : visible dès le début), à écrire
+## après [constant MONEY_LABEL].
+var money_text: String = ""
 ## « 3 vus », « 2 capturés » : "" tant que le Pokédex n'est pas visible (règle de déblocage).
 var seen_text: String = ""
 var caught_text: String = ""
