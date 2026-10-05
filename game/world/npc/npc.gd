@@ -6,7 +6,8 @@ extends Node2D
 ## Créé par [GameMap] au chargement : [method setup] avant l'ajout à l'arbre, puis la carte
 ## l'inscrit sur la [GridWorld] par [method enter_grid] (il y possède un [GridMover], comme
 ## le joueur). [InteractionFinder] le trouve par l'occupant de la grille et
-## [method get_interaction]. Origine aux pieds, sprite pixel art ×2 en NEAREST.
+## [method get_interaction]. Origine aux pieds ; apparence [CharacterLook] (peinte 1:1 LINEAR,
+## sinon provisoire pixel art ×2 NEAREST).
 ## Jalon 3B : il peut marcher case par case ([method step], scènes scriptées). Sa case
 ## courante vit dans son [GridMover] ; [member NpcSpec.cell] reste sa case de départ.
 ## Au repos, [method _process] est coupé ; seule l'[AnimatedSprite2D] tourne (idle_<dir>).
@@ -28,10 +29,10 @@ signal lean_finished
 ## le watcher fait alors [method GameMap.remove_npc].
 signal left_scene(npc_id: StringName)
 
-## SpriteFrames des apparences : `<FRAMES_DIR><sprite>_frames.tres`.
-const FRAMES_DIR: String = "res://assets/sprites/characters/placeholder/"
-## Apparence générique (provisoire) quand `<sprite>_frames.tres` n'existe pas encore.
-const FALLBACK_SPRITE: StringName = &"npc"
+## SpriteFrames provisoires des apparences (les peintes : [CharacterLook]).
+const FRAMES_DIR: String = CharacterLook.PLACEHOLDER_DIR
+## Apparence générique (provisoire) quand l'apparence n'existe pas encore.
+const FALLBACK_SPRITE: StringName = CharacterLook.FALLBACK_SPRITE
 ## Animation de réaction facultative (non bouclée) : `react_<dir>` dans l'orientation
 ## courante si l'apparence l'a, sinon `react` ; sans aucune des deux, petit bond.
 const REACT_ANIM: StringName = &"react"
@@ -171,7 +172,6 @@ var _leave_tween: Tween
 
 
 func _ready() -> void:
-	_base_scale = _sprite.scale
 	set_process(is_moving())
 	_sprite.animation_finished.connect(_on_animation_finished)
 	_apply_spec()
@@ -332,14 +332,20 @@ func has_interaction_override() -> bool:
 	return _override != null
 
 
-## Chemin des SpriteFrames d'une apparence.
+## Chemin des SpriteFrames d'une apparence ([CharacterLook] : peinte, sinon provisoire, sinon
+## générique).
 static func frames_path(sprite: StringName) -> String:
-	return FRAMES_DIR + String(sprite) + "_frames.tres"
+	return CharacterLook.resolve(sprite).frames_path
 
 
-## Vrai si l'apparence a ses propres SpriteFrames (sinon la scène prend le générique).
+## Vrai si l'apparence a ses propres SpriteFrames, peints ou provisoires (sinon la scène prend
+## le générique).
 static func has_frames(sprite: StringName) -> bool:
-	return not sprite.is_empty() and ResourceLoader.exists(frames_path(sprite))
+	if sprite.is_empty():
+		return false
+	var path := CharacterLook.resolve(sprite).frames_path
+	return sprite == FALLBACK_SPRITE \
+		or path != CharacterLook.placeholder_frames_path(FALLBACK_SPRITE)
 
 
 ## Se tourne vers [param direction] (animation idle_<dir>). Non cardinale ou pendant un
@@ -677,11 +683,14 @@ func _set_lean(offset: Vector2) -> void:
 
 
 func _apply_spec() -> void:
-	var sprite := _spec.sprite if has_frames(_spec.sprite) else FALLBACK_SPRITE
-	var frames := load(frames_path(sprite)) as SpriteFrames
+	# Apparence peinte (1:1, LINEAR) ou provisoire (×2, NEAREST) : [CharacterLook].
+	var look := CharacterLook.resolve(_spec.sprite)
+	var frames := load(look.frames_path) as SpriteFrames
 	if frames != null:
 		_sprite.sprite_frames = frames
-	# Pieds sur l'origine quelle que soit la hauteur de l'image (64 px, 48 px, 32 px).
+	_base_scale = Vector2(look.scale, look.scale)
+	_sprite.texture_filter = look.filter
+	# Pieds sur l'origine quelle que soit la hauteur de l'image (64 px, 48 px, 130 px).
 	var frame := _sprite.sprite_frames.get_frame_texture(_IDLE_ANIMS[Vector2i.DOWN], 0)
 	if frame != null:
 		_sprite.offset = Vector2(0.0, -frame.get_size().y / 2.0)
@@ -756,7 +765,9 @@ func _sync_interaction_cells(cell: Vector2i) -> void:
 func _start_route(cell: Vector2i) -> void:
 	_route_active = true
 	_route_suspended = false
-	_route_index = maxi(_route.find(cell), 0)
+	# Case de départ : l'index de la donnée (« start », jalon 7) ; ailleurs (grille
+	# reconstruite en chemin), la première occurrence de la case.
+	_route_index = _spec.route_start if cell == _spec.cell else maxi(_route.find(cell), 0)
 	_route_wait = _route_pause
 	set_process(true)
 

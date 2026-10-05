@@ -16,7 +16,11 @@ signal bumped(direction: Vector2i)
 
 ## Groupe qui permet au décor de retrouver le joueur (transparence des feuillages).
 const GROUP: StringName = &"player"
-## Taille affichée du personnage (32×64 natif, ×2), bas-centre sur l'origine.
+## Apparence du joueur ([CharacterLook]) : le héros peint (marche et course, Q-1 du jalon 7),
+## sinon le provisoire pixel art ×2.
+const LOOK_SPRITE: StringName = &"player"
+## Taille affichée du personnage avant [method _apply_look] (provisoire 32×64 ×2), bas-centre
+## sur l'origine.
 const BODY_SIZE := Vector2(64, 128)
 ## Vitesse de l'animation de marche sur place contre un obstacle.
 const BUMP_ANIM_SPEED: float = 0.5
@@ -42,6 +46,10 @@ var _bump_direction: Vector2i = Vector2i.ZERO
 var _block_reasons: Dictionary[StringName, bool] = {}
 ## Rectangle monde de la carte courante (recalcul des limites si la vue change).
 var _map_bounds: Rect2i = Rect2i()
+## Taille affichée de l'apparence (image de repos × échelle).
+var _body_size: Vector2 = BODY_SIZE
+## Apparence résolue au chargement.
+var _look: CharacterLook
 
 @onready var _sprite: AnimatedSprite2D = %Sprite
 @onready var _camera: Camera2D = %Camera
@@ -51,6 +59,7 @@ var _map_bounds: Rect2i = Rect2i()
 
 func _ready() -> void:
 	add_to_group(GROUP)
+	_apply_look()
 	get_viewport().size_changed.connect(_on_viewport_size_changed)
 	set_process(_mover != null)
 	if _mover != null:
@@ -173,7 +182,12 @@ func is_running() -> bool:
 
 ## Rectangle du personnage affiché, en coordonnées globales.
 func get_body_rect() -> Rect2:
-	return Rect2(global_position - Vector2(BODY_SIZE.x / 2.0, BODY_SIZE.y), BODY_SIZE)
+	return Rect2(global_position - Vector2(_body_size.x / 2.0, _body_size.y), _body_size)
+
+
+## Apparence affichée (peinte ou provisoire).
+func get_look() -> CharacterLook:
+	return _look
 
 
 func get_camera() -> Camera2D:
@@ -221,6 +235,21 @@ func _update_jump_and_grass() -> void:
 	if _grass_front != null:
 		_grass_front.visible = not jumping and _grid != null \
 			and _grid.is_tall_grass(_mover.get_target_cell())
+
+
+## SpriteFrames, échelle et filtre de l'apparence ([CharacterLook]) ; pieds sur l'origine.
+func _apply_look() -> void:
+	_look = CharacterLook.resolve(LOOK_SPRITE)
+	var frames := load(_look.frames_path) as SpriteFrames
+	if frames == null:
+		return
+	_sprite.sprite_frames = frames
+	_sprite.scale = Vector2(_look.scale, _look.scale)
+	_sprite.texture_filter = _look.filter
+	var frame := frames.get_frame_texture(&"idle_down", 0)
+	if frame != null:
+		_sprite.offset = Vector2(0.0, -frame.get_size().y / 2.0)
+		_body_size = frame.get_size() * _look.scale
 
 
 func _update_animation(direction: Vector2i) -> void:

@@ -1,0 +1,39 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://game/world/props/prop.gd" id="1_2fpbo"]
+[ext_resource type="Material" path="res://game/world/lighting/materials/world_object.tres" id="2_cwvej"]
+[ext_resource type="Texture2D" path="res://assets/world/buildings/bldg_centre_01.png" id="3_6ivxt"]
+[ext_resource type="Material" path="res://game/world/lighting/materials/cast_shadow.tres" id="4_ijdad"]
+[ext_resource type="Texture2D" path="res://assets/world/buildings/bldg_centre_01_shadow.png" id="5_v4jn4"]
+[ext_resource type="Material" path="res://game/world/lighting/materials/contact_shadow.tres" id="6_7gbn8"]
+[ext_resource type="Texture2D" path="res://assets/world/buildings/bldg_centre_01_contact.png" id="7_0au60"]
+
+[node name="BldgCentre01" type="Node2D" unique_id=306213836]
+script = ExtResource("1_2fpbo")
+footprint = Array[Vector2i]([Vector2i(-4, -3), Vector2i(-3, -3), Vector2i(-2, -3), Vector2i(-1, -3), Vector2i(0, -3), Vector2i(1, -3), Vector2i(2, -3), Vector2i(3, -3), Vector2i(-4, -2), Vector2i(-3, -2), Vector2i(-2, -2), Vector2i(-1, -2), Vector2i(0, -2), Vector2i(1, -2), Vector2i(2, -2), Vector2i(3, -2), Vector2i(-4, -1), Vector2i(-3, -1), Vector2i(-2, -1), Vector2i(-1, -1), Vector2i(0, -1), Vector2i(1, -1), Vector2i(2, -1), Vector2i(3, -1), Vector2i(-4, 0), Vector2i(-3, 0), Vector2i(-2, 0), Vector2i(1, 0), Vector2i(2, 0), Vector2i(3, 0)])
+fade_when_covering = true
+
+[node name="Sprite" type="Sprite2D" parent="." unique_id=74767382]
+unique_name_in_owner = true
+material = ExtResource("2_cwvej")
+texture = ExtResource("3_6ivxt")
+centered = false
+offset = Vector2(-384, -662)
+
+[node name="CastShadow" type="Sprite2D" parent="." unique_id=140367278 groups=["cast_shadows"]]
+z_index = -2
+z_as_relative = false
+material = ExtResource("4_ijdad")
+scale = Vector2(2, 2)
+texture = ExtResource("5_v4jn4")
+centered = false
+offset = Vector2(-204.5, -2)
+
+[node name="ContactShadow" type="Sprite2D" parent="." unique_id=122517189 groups=["contact_shadows"]]
+z_index = -2
+z_as_relative = false
+material = ExtResource("6_7gbn8")
+scale = Vector2(2, 2)
+texture = ExtResource("7_0au60")
+centered = false
+offset = Vector2(-196, -30.5)

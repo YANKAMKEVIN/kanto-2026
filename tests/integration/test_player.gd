@@ -149,14 +149,23 @@ func test_animation_follows_state() -> void:
 	assert_eq(sprite.animation, &"idle_right")
 
 
-func test_sprite_is_pixel_art_nearest_scaled_twice() -> void:
+## Jalon 7 (Q-1) : le héros peint, à 1:1 en LINEAR (CharacterLook), marche et course.
+func test_sprite_is_the_painted_hero_at_scale_one() -> void:
 	var sprite := _player.get_node(^"%Sprite") as AnimatedSprite2D
-	assert_eq(sprite.texture_filter, CanvasItem.TEXTURE_FILTER_NEAREST)
-	assert_eq(sprite.scale, Vector2(2, 2))
+	assert_true(_player.get_look().painted)
+	assert_eq(sprite.sprite_frames.resource_path, CharacterLook.painted_frames_path(&"player"))
+	assert_eq(sprite.texture_filter, CanvasItem.TEXTURE_FILTER_LINEAR)
+	assert_eq(sprite.scale, Vector2.ONE)
 	var frame := sprite.sprite_frames.get_frame_texture(&"idle_down", 0)
-	assert_eq(frame.get_size(), Vector2(32, 64))
+	assert_eq(frame.get_size(), Vector2(74, 130), "planche du héros, 128 px de haut")
 	# Pieds sur l'origine : bas du cadre (offset + moitié de la hauteur) à y = 0.
 	assert_eq(sprite.offset.y + frame.get_size().y / 2.0, 0.0)
+	assert_eq(_player.get_body_rect().size, Vector2(74, 130))
+	for dir: String in ["down", "up", "left", "right"]:
+		var walk := sprite.sprite_frames.get_frame_texture(StringName("walk_" + dir), 0)
+		var run := sprite.sprite_frames.get_frame_texture(StringName("run_" + dir), 0)
+		assert_eq(walk.get_size(), Vector2(74, 130), "marche " + dir)
+		assert_eq(run.get_size(), Vector2(95, 130), "planche de course " + dir)
 
 
 func test_camera_zoom_one_and_limits_from_bounds() -> void:

@@ -1,0 +1,27 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://game/world/props/prop.gd" id="1_vl3tx"]
+[ext_resource type="Material" path="res://game/world/lighting/materials/world_object.tres" id="2_mscj1"]
+[ext_resource type="Texture2D" path="res://assets/world/interiors/int_boutique_caisse.png" id="3_lkjti"]
+[ext_resource type="Material" path="res://game/world/lighting/materials/contact_shadow.tres" id="4_iedbf"]
+[ext_resource type="Texture2D" path="res://assets/world/interiors/int_boutique_caisse_contact.png" id="5_q6e07"]
+
+[node name="IntBoutiqueCaisse" type="Node2D" unique_id=2126647726]
+script = ExtResource("1_vl3tx")
+footprint = Array[Vector2i]([Vector2i(-2, 0), Vector2i(-1, 0), Vector2i(0, 0), Vector2i(1, 0), Vector2i(2, 0)])
+
+[node name="Sprite" type="Sprite2D" parent="." unique_id=1553577738]
+unique_name_in_owner = true
+material = ExtResource("2_mscj1")
+texture = ExtResource("3_lkjti")
+centered = false
+offset = Vector2(-240, -159)
+
+[node name="ContactShadow" type="Sprite2D" parent="." unique_id=135942516 groups=["contact_shadows"]]
+z_index = -2
+z_as_relative = false
+material = ExtResource("4_iedbf")
+scale = Vector2(2, 2)
+texture = ExtResource("5_q6e07")
+centered = false
+offset = Vector2(-124, 1)

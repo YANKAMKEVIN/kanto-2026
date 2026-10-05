@@ -120,7 +120,10 @@ def ombre_contact(objet: Image.Image, part_base: float, reglages: dict
         couche = ImageChops.offset(flou, 0, round(dy)).point(lambda v, p=poids: v * p / 3.0)
         total = ImageChops.add(total, couche)
     total = total.resize((lc // reduction, hc // reduction), Image.LANCZOS)
-    return _alpha_blanc(total), (-(marge + largeur // 2), -bande_h), reduction
+    # Comme le prototype (contact.gdshader posé `etendue` px plus bas que l'objet) : l'ombre
+    # descend de `chute` px, seule la frange sous la base reste visible (J7 T3b).
+    chute = reglages.get("chute", 0)
+    return _alpha_blanc(total), (-(marge + largeur // 2), -bande_h + chute), reduction
 
 
 def _ecrire(image: Image.Image, chemin: Path) -> None:

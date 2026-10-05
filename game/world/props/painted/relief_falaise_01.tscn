@@ -1,0 +1,16 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://game/world/props/prop.gd" id="1_pc1ih"]
+[ext_resource type="Material" path="res://game/world/lighting/materials/world_object.tres" id="2_i1ppi"]
+[ext_resource type="Texture2D" path="res://assets/world/relief/relief_falaise_01.png" id="3_ftsh4"]
+
+[node name="ReliefFalaise01" type="Node2D" unique_id=1676510498]
+script = ExtResource("1_pc1ih")
+footprint = Array[Vector2i]([Vector2i(-2, 0), Vector2i(-1, 0), Vector2i(0, 0), Vector2i(1, 0)])
+
+[node name="Sprite" type="Sprite2D" parent="." unique_id=1470018871]
+unique_name_in_owner = true
+material = ExtResource("2_i1ppi")
+texture = ExtResource("3_ftsh4")
+centered = false
+offset = Vector2(-192, -127)
