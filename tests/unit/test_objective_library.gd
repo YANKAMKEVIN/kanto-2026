@@ -36,9 +36,9 @@ func test_q4_nothing_before_the_rival_battle_then_reach_viridian() -> void:
 
 ## Drapeaux lus par les objectifs avant que leur scène existe (J7) : à retirer de cette liste
 ## dès que la tâche qui les lève est fusionnée — `viridian_arrived` (T4, arrivée à Jadielle),
-## `got_oak_parcel` (T12, première visite de la Boutique), `pokedex_activated` (T19, Chen).
-const _PENDING_FLAGS: Array[StringName] = [&"viridian_arrived", &"got_oak_parcel",
-	&"pokedex_activated"]
+## `got_oak_parcel` (T12, première visite de la Boutique). `pokedex_activated` est levé par la
+## scène du colis depuis le T18 (data/cutscenes/oak_lab.json).
+const _PENDING_FLAGS: Array[StringName] = [&"viridian_arrived", &"got_oak_parcel"]
 
 
 ## Jalon 7 (dossier 09 §4, §19) : le colis en main → « remettre le colis au Professeur

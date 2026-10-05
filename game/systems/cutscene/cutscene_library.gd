@@ -65,6 +65,9 @@ extends RefCounted
 ##     { "lean": "$player_starter", "to": "player" },
 ##     { "despawn": "$rival_starter" } ] }
 ## [/codeblock]
+## Jalon 7 (jalon-07.md §3.6, T18) :
+## - caption : texte non vide de la légende posée sur le monde (« POKÉDEX ACTIVÉ ») ;
+## - take : identifiant d'objet qui quitte le Sac, avec « count » facultatif (entier ≥ 1).
 ## Acteur = « player », identifiant d'un PNJ de la carte courante, ou **alias** « $nom »
 ## (forme $[a-z_]+, [method CutsceneStep.is_alias]) : PNJ choisi par le code qui lance la
 ## scène (CutsceneDirector.play(id, alias)), résolu au début de chaque étape. Les alias
@@ -83,6 +86,7 @@ const _EXTRA_KEYS: Array[Array] = [
 	[], [], ["to"], [], [], ["path", "to", "run", "follower", "keep_facing", "optional"],
 	["at", "facing"], ["to"],
 	["to"], [], ["player_pokemon", "foe_pokemon", "win", "lose"], ["count", "found"],
+	[], ["count"],
 ]
 ## Conditions permises sur toute étape sauf spawn.
 const _CONDITION_KEYS: Array[String] = ["if", "unless"]
@@ -202,11 +206,11 @@ func get_trainer_ids() -> Array[StringName]:
 	return _sorted_keys(found)
 
 
-## Objets donnés par au moins une étape « give » (tests de données).
+## Objets donnés (« give ») ou repris (« take ») par au moins une étape (tests de données).
 func get_item_ids() -> Array[StringName]:
 	var found: Dictionary[StringName, bool] = {}
 	for step: CutsceneStep in _all_steps():
-		if step.kind == CutsceneStep.Kind.GIVE:
+		if step.kind == CutsceneStep.Kind.GIVE or step.kind == CutsceneStep.Kind.TAKE:
 			found[step.item_id] = true
 	return _sorted_keys(found)
 
@@ -372,7 +376,28 @@ func _parse_step(value: Variant, where: String) -> CutsceneStep:
 					step.found = entry["found"]
 				else:
 					ok = _fail("%s : « found » doit être un booléen" % where)
+		CutsceneStep.Kind.CAPTION:
+			if not main is String or (main as String).strip_edges().is_empty():
+				ok = _fail("%s : « caption » doit être un texte non vide" % where)
+			else:
+				step.text = main
+		CutsceneStep.Kind.TAKE:
+			ok = _read_id(main, where + " take", func(v: StringName) -> void:
+				step.item_id = v) and ok
+			ok = _read_count(entry, step, where) and ok
 	return step if ok else null
+
+
+## « count » facultatif d'une étape give ou take : entier ≥ 1 (1 par défaut).
+func _read_count(entry: Dictionary, step: CutsceneStep, where: String) -> bool:
+	if not entry.has("count"):
+		return true
+	var amount: Variant = entry["count"]
+	if not (amount is float or amount is int) \
+			or float(amount) != floorf(float(amount)) or int(amount) < 1:
+		return _fail("%s : « count » doit être un entier ≥ 1" % where)
+	step.count = int(amount)
+	return true
 
 
 ## battle : dresseur, Pokémon de la carte qui combattent (facultatifs), drapeaux de l'issue.

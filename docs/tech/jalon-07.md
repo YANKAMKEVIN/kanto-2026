@@ -460,6 +460,53 @@ static func resolve(text: String, values: Dictionary[StringName, String]) -> Str
 
 **Tests (T18)** : `test_dialogue_tokens`, `test_dialogue_runner` (page omise sans valeur, résolue avec), `test_cutscene_data` (`caption`, `take`) ; `record_wild_encounter` est déjà testé depuis le T0 (vide → Chen omet sa réplique : `test_parcel_scene`).
 
+#### 3.6.1 Fait au T18 (ce qui a été figé, et les écarts avec le texte ci-dessus)
+
+> Fait en avance (logique pure, données de la scène et tests ; **sans câblage dans `Boot`, sans écran, format de sauvegarde inchangé**).
+
+Livré :
+- **`DialogueTokens`** (`game/systems/dialogue/dialogue_tokens.gd`) : contrat ci-dessus, plus `is_well_formed(text)`, `has_tokens(pages)`, `resolve_pages(pages, values) -> Array[DialoguePage]` (copie des pages résolues, mise en scène gardée ; pages sans jeton rendues telles quelles, sans copie) et **`values_for(first_wild_species: StringName, data: PokemonData) -> Dictionary[StringName, String]`** (nom affiché de l'espèce ; vide ou espèce inconnue → aucune valeur). Jeton = `{nom}`, nom en `[a-z_]+`. Une valeur **vide** compte comme absente.
+- **`DialogueRunner`** (ajout, signalé : fichier figé au T6) : `var token_values: Callable` (`func() -> Dictionary[StringName, String]`), lu seulement si une page à jouer a un jeton ; pages résolues au début du dialogue et au début des pages d'une réponse de choix. **Toutes les pages omises** = comme une variante sans page (pas de boîte, fin à l'image suivante, drapeaux et fin de variante joués). Sans `token_values` : aucune valeur, la page à jeton est omise (pas d'erreur).
+- **`DialogueLibrary`** (ajout, signalé) : jeton inconnu refusé, accolade hors d'un jeton refusée (faute de frappe), **la question d'un choix (dernière page) n'a jamais de jeton** (elle ne peut pas être omise). Le texte des données garde son jeton (résolu au moment de jouer).
+- **Étapes de scène** `caption` (`text`, clé `"caption": "POKÉDEX ACTIVÉ"`) et `take` (`item_id`, `count` ≥ 1, clé `"take": "oak_parcel"`), `CutsceneStep.Kind.CAPTION` / `TAKE` en fin d'enum ; `CutsceneLibrary.get_item_ids()` liste aussi les objets repris. **`CutsceneDirector`** : `set_hud(hud: ExplorationHud)` ; `caption` → `ExplorationHud.show_caption(text)` puis **attend `caption_hidden`** (fondu + `CAPTION_HOLD` 3 s + fondu) ; sans HUD : push_error, étape sautée. `take` → `Bag.remove` (Sac de `set_inventory`), **sans signal ni toast** (aucun texte validé) ; sans Sac ou sans l'objet : push_error, étape sautée, Sac inchangé.
+- **Données** :
+  - `data/dialogues/oak_lab.json` : `oak_lab_waiting` gagne une variante **en tête** `{ if: [got_oak_parcel], unless: [pokedex_activated], cutscene: oak_parcel }` (sans page : parler à Chen avec le colis lance la scène, défaut du §13) ; répliques du §19, **mot pour mot** : `oak_parcel_records` (« Tiens… » · « Il a déjà commencé à enregistrer tes rencontres. » · « Un {first_wild_species}… Tu n'as pas perdu de temps. » · « J'étudie… » · « Mais aucune recherche… » · « Ton voyage peut nous apprendre beaucoup. »), `oak_pokedex_activated` (« Il enregistrera… » · « Observe. Explore. Fais-toi ta propre idée du monde. »), `rival_parcel_return` (« Professeur ! Je suis revenu. »), `rival_parcel_greet` (« Tiens. T'es déjà revenu, toi aussi ? »), `oak_parcel_rival` (Chen « Et toi… apprends à regarder au-delà de la victoire. », Rival « …On verra. » après 0,8 s), `rival_parcel_leaving` (« Pas mal. » en regardant son Pokédex, « Mais ne t'imagine pas que je vais t'attendre. » vers le joueur).
+  - `data/cutscenes/oak_lab.json`, scène **`oak_parcel`** (`unless: [pokedex_activated]`), dans l'ordre : Chen et le joueur se font face, Chen s'avance, **`take oak_parcel`**, `oak_parcel_records` (la page de l'espèce omise sans rencontre), **`set pokedex_activated`** (seule étape de toutes les données qui le lève), **`caption` POKÉDEX ACTIVÉ**, `oak_pokedex_activated`, puis le rival **entre** (`spawn rival` en (7, 9), sprite `rival` : peint si la planche existe, `CharacterLook`), « Professeur ! Je suis revenu. », s'approche de Chen, « Tiens. T'es déjà revenu… », Chen s'avance vers lui (il reçoit son Pokédex, sans texte), `oak_parcel_rival`, `rival_parcel_leaving`, il repart par la porte (`move` (7, 9), `despawn`) ; Chen et le joueur se refont face. **Objectif** : « remettre le colis… » s'efface avec `pokedex_activated` (`objectives.json`, T10 ; Q-10 : aucune ligne ensuite). `got_oak_parcel` reste levé (histoire).
+- **Ce qui apparaît à l'activation (§4)** : rien de nouveau à coder — la 6e carte, la ligne vus · capturés, les Pokémon observés de la Carte, la chaîne d'évolution et la carte de capture lisent déjà `MenuUnlocks.pokedex_visible()` à chaque construction (`test_menu_unlock_rule`, J6) ; **aucun toast à l'activation** : `Boot._on_flag_changed` sort avant de mettre des toasts en file pour `POKEDEX_ACTIVATED` (J6) — à vérifier de bout en bout par `test_parcel_scene` (T19).
+
+Défauts (règle 4) : le colis quitte le Sac **avant** « Tiens… » (Chen le reçoit et l'ouvre) ; pas de toast au retrait du colis ; la légende est attendue jusqu'à sa disparition (~3,4 s) avant « Il enregistrera… » ; le rival arrive **après** « Observe. Explore. » (ordre du T19 du plan) et reçoit son Pokédex sans réplique (Chen s'avance vers lui) ; silences et regards (0,6 s, 0,8 s, le rival baisse les yeux sur « Pas mal. ») réglables au T19 sur capture.
+
+Tests : `test_dialogue_tokens` (nouveau, 11), `test_dialogue_library` (+4 : jetons), `test_dialogue_runner` (+5 : résolue, omise, sans source, toutes omises, pages de réponse), `test_cutscene_caption_take` (unitaire, nouveau, 5 : format), `test_cutscene_director_caption_take` (intégration, nouveau, 6 : directeur, vraie `ExplorationHud`), `test_cutscene_data` (scène `oak_parcel` simulée sur le vrai labo, ordre, `pokedex_activated` levé une seule fois), `test_dialogue_data` (textes cherchés aussi dans le dossier 09, jeton écrit `{espèce}` ; scène lancée par un dialogue ; répliques du colis), `test_objective_library` (`pokedex_activated` retiré de `_PENDING_FLAGS` ; `got_oak_parcel` y reste jusqu'au T12, comme dans `FUTURE_FLAGS` de `test_dialogue_data`).
+
+**Fusion avec le T2 (`j7-monde`)** : le T2 ajoute l'étape `scare` au même endroit. Conflits attendus, triviaux, dans `cutscene_step.gd` (enum et `TYPE_KEYS`) et `cutscene_library.gd` (`_EXTRA_KEYS`) : résolution = **`GIVE, SCARE, CAPTION, TAKE`** (`"give", "scare", "caption", "take"` ; `_EXTRA_KEYS` : `["count", "found"], [], [], ["count"]`). Les cas du `match` du directeur et de la bibliothèque, et les tests (fichiers à part `test_cutscene_caption_take`, `test_cutscene_director_caption_take`), sont placés pour ne pas se chevaucher.
+
+#### 3.6.2 Contrat du T19 (constructeur-monde), figé au T18
+
+Câblage dans `Boot` (seul fichier de jeu à modifier pour faire jouer la scène) :
+
+```gdscript
+## Boot._ready, après la création des bibliothèques :
+_runner.token_values = func() -> Dictionary[StringName, String]:
+	return DialogueTokens.values_for(GameState.first_wild_species(), _pokemon)
+_runner.cutscene_requested.connect(_on_cutscene_requested)   ## → _cutscenes_node.play(id)
+_cutscenes_node.set_hud(_hud)                                ## étape « caption »
+## set_inventory(GameState.bag, _items) existe déjà (étape « take »).
+## Autosave : cutscene_finished (existant, §5.3) ; rien à ajouter pour l'activation.
+```
+
+- `_on_cutscene_requested(id)` : `_cutscenes_node.play(id)` (la scène n'a pas d'alias ; refus → push_warning). Le verrou du joueur passe du dialogue à la scène dans la même image (§3.3.1).
+- `tools/debug_start/parcel.json` (colis en main, `got_oak_parcel`, `rival_battle_done`, `rival_left_lab`, devant le labo) ; `DebugStart` ne pose jamais `pokedex_activated`.
+- `test_parcel_scene` (vrai `Boot`, départ `parcel`, puis la fixture `v2_kevin_j6_fin.json` migrée) : parler à Chen → la scène se joue jusqu'au bout ; réplique « Un Roucool… » pour la partie de Kevin, omise pour une partie sans rencontre ; colis retiré ; drapeau posé une fois et sauvegardé ; 6 cartes après, données d'avant visibles ; **aucun toast** de la scène ni de rattrapage (`_hud.get_toast().is_showing()` faux tout du long) ; objectif vide ; reparler à Chen → réplique habituelle, la scène ne se rejoue pas. Captures `oak_parcel`, `pokedex_activated`.
+- Réglages permis au T19 **sans l'architecte** : positions, silences et regards de `data/cutscenes/oak_lab.json` (case d'entrée du rival, décalages autour de Chen, `wait`, `face`, `lean`) ; l'ordre des répliques et des étapes `take` / `set` / `caption` reste celui-ci (`test_cutscene_data`).
+
+**Partage des fichiers** :
+
+| Qui | Fichiers |
+|---|---|
+| **T19 (constructeur-monde)** | `game/boot.gd` (câblage ci-dessus), `tools/debug_start/parcel.json`, `tests/integration/test_parcel_scene.gd`, scénarios de capture, réglages de mise en scène de `data/cutscenes/oak_lab.json` |
+| **Architecte seulement** (écart → remonter) | `game/systems/dialogue/dialogue_tokens.gd`, `dialogue_runner.gd`, `dialogue_library.gd`, `game/systems/cutscene/cutscene_step.gd`, `cutscene_library.gd`, les textes de `data/dialogues/oak_lab.json` (§19, mot pour mot) |
+| **Ni l'un ni l'autre** | `game_state.gd`, `save_system.gd` (format inchangé), `menu_unlocks.gd` (le déblocage suit déjà le drapeau) |
+
 ### 3.7 Route 22 : données (T21)
 
 - `data/pokemon/species/kanto.json` : **10 espèces** (Piafabec, Rapasdepic, Férosinge, Colossinge, Nidoran ♀, Nidorina, Nidoqueen, Nidoran ♂, Nidorino, Nidoking), statistiques, types, apprentissages et évolutions de Rouge/Bleu (les évolutions doivent exister pour la validation des chaînes, même invisibles au J7).
@@ -888,7 +935,7 @@ Règle du directeur : OK → `mark_changed()` (autosave à la fermeture), `shop_
 | **T12 (constructeur-monde)** | `game/systems/menu/menu_director.gd`, `game/boot.gd` / `boot.tscn`, `game/systems/services/service_director.gd` (`open_shop`), `game/systems/debug/debug_start.gd` (`money`), carte `viridian_mart` et son outil, `data/npcs/viridian_mart.json`, `data/dialogues/viridian_mart.json`, `data/cutscenes/viridian_mart.json`, `tools/debug_start/shop_qa.json`, `tests/unit/test_menu_director_shop.gd` (directeur seul, signaux), `tests/integration/test_mart.gd`, `test_menu_unlock_rule.gd` |
 | **Personne sans l'architecte** | `game/systems/shop/**`, `data/shops/**`, `data/items/items.json`, `game/items/**`, `menu_route.gd`, `menu_navigator.gd`, `menu_format.gd` (ajouts de champs de vue seulement, notés ici) |
 
-**Ordre de fusion** : T11 (écran) d'abord, puis T12 (câblage, `test_mart` sur le vrai `Boot`) ; T12 développe contre ses tests du directeur sans attendre l'écran. Le retrait de `got_oak_parcel` de `_PENDING_FLAGS` (`test_objective_library`) se fait au T12, celui de `viridian_arrived` au T4, celui de `pokedex_activated` au T19.
+**Ordre de fusion** : T11 (écran) d'abord, puis T12 (câblage, `test_mart` sur le vrai `Boot`) ; T12 développe contre ses tests du directeur sans attendre l'écran. Le retrait de `got_oak_parcel` de `_PENDING_FLAGS` (`test_objective_library`) se fait au T12, celui de `viridian_arrived` au T4 ; celui de `pokedex_activated` est fait au T18 (la scène du colis est en données, §3.6.1).
 
 ## 7. Performance sur le S24
 
@@ -991,11 +1038,12 @@ Chaque tâche finit par `tools/test.sh` vert (nombre de tests rapporté), un imp
 
 ### 7A.5 — Le Pokédex de Chen
 
-#### T18 — architecte-godot : fondations de la scène de Chen
+#### T18 — architecte-godot : fondations de la scène de Chen — **fait** (§3.6.1, contrat du T19 au §3.6.2)
 - §3.6.
 - **CA** : tests du §3.6 verts.
 
 #### T19 — constructeur-monde : la remise du colis et l'activation
+- Contrat et partage : §3.6.2 (données de la scène, textes et étapes déjà livrés au T18 ; reste le câblage, le départ `parcel`, les tests de bout en bout et les réglages de mise en scène).
 - `oak_lab` : parler à Chen avec le colis → scène (`cutscene`) : répliques du §19 dans leur ordre, page de l'espèce omise sans rencontre, `take oak_parcel`, `set pokedex_activated`, `caption` POKÉDEX ACTIVÉ, « Observe. Explore. Fais-toi ta propre idée du monde. », le rival entre (sprite peint, Q-1), répliques, il repart ; objectif effacé.
 - **CA** : `test_parcel_scene` (vrai `Boot`, départ `parcel` puis la **vraie partie migrée** de Kevin : réplique avec son espèce ; partie sans rencontre : réplique omise ; 6 cartes après, données d'avant visibles, drapeau sauvegardé, colis retiré, aucun toast de rattrapage) ; captures `oak_parcel`, `pokedex_activated`.
 

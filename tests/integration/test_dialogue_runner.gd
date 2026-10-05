@@ -592,3 +592,93 @@ func test_cutscene_is_requested_right_after_the_dialogue_ends() -> void:
 	await wait_process_frames(1)
 	assert_eq(order, ["finished", "cutscene:oak_parcel"] as Array[String])
 	assert_false(_runner.is_running(), "la scène pose son propre verrou")
+
+
+# --- Jetons de texte (jalon 7 §3.6, T18) ---------------------------------------------------
+
+const CHEN_LINE := "Un {first_wild_species}… Tu n'as pas perdu de temps."
+
+
+func _add_token_dialogues() -> void:
+	assert_true(_library.add_from_dict({
+		"oak_records": {"speaker": "Prof. Chen", "pages": [
+			"Tiens…", {"text": CHEN_LINE, "pause": 0.3}, "Ton voyage peut nous apprendre beaucoup.",
+		]},
+		"only_token": {"pages": [CHEN_LINE], "set": ["heard"]},
+		"token_answer": {"pages": ["Sûr ?"], "choice": {"confirm": "OUI", "cancel": "NON",
+			"confirm_pages": [CHEN_LINE, "Bien."]}},
+	}, "test"), str(_library.get_errors()))
+
+
+func _species_values(species: String) -> Callable:
+	return func() -> Dictionary[StringName, String]:
+		var values: Dictionary[StringName, String] = {}
+		if not species.is_empty():
+			values[DialogueTokens.FIRST_WILD_SPECIES] = species
+		return values
+
+
+## Tous les textes montrés par la boîte, page après page, jusqu'à la fin du dialogue.
+func _play_all(id: StringName) -> Array[String]:
+	var shown: Array[String] = []
+	_runner.page_started.connect(func(_i: int) -> void: shown.append(_box.get_text()))
+	assert_true(_runner.play(id))
+	var deadline := Time.get_ticks_msec() + int(TIMEOUT * 1000)
+	while _runner.is_running() and Time.get_ticks_msec() < deadline:
+		await wait_process_frames(1)
+		_advance()
+	assert_false(_runner.is_running())
+	return shown
+
+
+func test_token_resolved_with_its_value() -> void:
+	_add_token_dialogues()
+	_runner.token_values = _species_values("Roucool")
+	var shown := await _play_all(&"oak_records")
+	assert_eq(shown, ["Tiens…", "Un Roucool… Tu n'as pas perdu de temps.",
+		"Ton voyage peut nous apprendre beaucoup."] as Array[String])
+
+
+func test_page_omitted_when_its_token_has_no_value() -> void:
+	_add_token_dialogues()
+	_runner.token_values = _species_values("")
+	var shown := await _play_all(&"oak_records")
+	assert_eq(shown, ["Tiens…", "Ton voyage peut nous apprendre beaucoup."] as Array[String])
+	assert_eq(_runner.get_session(), null)
+
+
+func test_page_omitted_without_any_token_source() -> void:
+	_add_token_dialogues()
+	var shown := await _play_all(&"oak_records")
+	assert_eq(shown.size(), 2, "sans token_values : aucune valeur, la page est omise")
+	assert_push_error_count(0)
+
+
+func test_every_page_omitted_ends_without_opening_the_box() -> void:
+	_add_token_dialogues()
+	var opened: Array[bool] = []
+	_runner.page_started.connect(func(_i: int) -> void: opened.append(true))
+	assert_true(_runner.play(&"only_token"))
+	await _finish()
+	assert_eq(opened.size(), 0, "aucune page")
+	assert_false(_box.is_open())
+	assert_true(_flags.has_flag(&"heard"), "la fin de la variante a lieu")
+	assert_true(_player.is_input_enabled())
+
+
+func test_answer_pages_are_resolved_too() -> void:
+	_add_token_dialogues()
+	_runner.token_values = _species_values("Rattata")
+	_runner.play(&"token_answer")
+	await wait_process_frames(1)
+	_advance()
+	await _runner.choose(true)
+	assert_eq(_box.get_text(), "Un Rattata… Tu n'as pas perdu de temps.")
+	_runner.token_values = _species_values("")
+	_advance()
+	await _finish()
+	_runner.play(&"token_answer")
+	await wait_process_frames(1)
+	_advance()
+	await _runner.choose(true)
+	assert_eq(_box.get_text(), "Bien.", "réplique omise dans les pages de la réponse")

@@ -23,6 +23,9 @@ extends RefCounted
 ## « cutscene » (identifiant de scène). L'ancienne clé « heal »: true vaut « action »: "heal".
 ## « pages » peut manquer (ou être vide) si la variante a une « action » ou une « cutscene » ;
 ## jamais avec un « choice » (sa dernière page est la question).
+## Jetons de texte (jalon 7 §3.6, T18) : `{nom}` dans le texte d'une page, seulement ceux de
+## [constant DialogueTokens.KNOWN] ; toute autre accolade est une erreur. La question d'un
+## choix n'a pas de jeton (elle ne peut pas être omise).
 ## Une entrée invalide est écartée, l'erreur est signalée ([method get_errors], push_error).
 
 const DATA_DIR: String = "res://data/dialogues/"
@@ -196,6 +199,9 @@ func _parse_variant(value: Variant, where: String) -> DialogueVariant:
 		if not pages_ok and variant.pages.is_empty():
 			return null
 		ok = pages_ok and ok
+	if variant.choice != null and not variant.pages.is_empty() \
+			and not DialogueTokens.tokens_in(variant.pages.back().text).is_empty():
+		ok = _fail("%s : la question d'un choix (dernière page) n'a pas de jeton" % where)
 	ok = _read_flags(entry, "if", variant.if_flags, where) and ok
 	ok = _read_flags(entry, "unless", variant.unless_flags, where) and ok
 	ok = _read_flags(entry, "set", variant.set_flags, where) and ok
@@ -293,6 +299,8 @@ func _parse_page(value: Variant, where: String) -> DialoguePage:
 	if value is String:
 		if (value as String).strip_edges().is_empty():
 			return _null_fail("%s : texte vide" % where)
+		if not _check_tokens(value, where):
+			return null
 		return DialoguePage.new(value)
 	if not value is Dictionary:
 		return _null_fail("%s : texte ou objet { \"text\": … } attendu" % where)
@@ -301,6 +309,7 @@ func _parse_page(value: Variant, where: String) -> DialoguePage:
 	if not entry.get("text") is String or (entry["text"] as String).strip_edges().is_empty():
 		return _null_fail("%s : « text » doit être un texte non vide" % where)
 	var page := DialoguePage.new(entry["text"])
+	ok = _check_tokens(page.text, where) and ok
 	if entry.has("speaker"):
 		ok = _read_string(entry["speaker"], where + " speaker") and ok
 		page.speaker = str(entry["speaker"])
@@ -321,6 +330,18 @@ func _parse_page(value: Variant, where: String) -> DialoguePage:
 	if entry.has("turn"):
 		ok = _read_turn(entry["turn"], page.turn, where) and ok
 	return page if ok else null
+
+
+## Jetons de [param text] : bien formés et connus ([constant DialogueTokens.KNOWN]).
+func _check_tokens(text: String, where: String) -> bool:
+	if not DialogueTokens.is_well_formed(text):
+		return _fail("%s : accolade hors d'un jeton {nom} dans « %s »" % [where, text])
+	var ok := true
+	for token: StringName in DialogueTokens.tokens_in(text):
+		if not DialogueTokens.KNOWN.has(token):
+			ok = _fail("%s : jeton inconnu « {%s} » (attendu : %s)" % [where, token,
+				DialogueTokens.KNOWN])
+	return ok
 
 
 ## « turn » : objet non vide { acteur: cible }, textes non vides. Qu'une cible qui n'est ni une

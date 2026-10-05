@@ -20,6 +20,10 @@ extends Node
 ##   `heal` émet [signal heal_requested] (moment du jalon 5 inchangé : après avoir rendu le
 ##   joueur) ; les autres sont attendues par [member action_handler].
 ## - **scène** : [signal cutscene_requested] juste après [signal dialogue_finished].
+## Jetons de texte (jalon-07.md §3.6, T18) : les pages sont résolues par [DialogueTokens] au
+## début du dialogue et au début des pages d'une réponse de choix, avec [member token_values] ;
+## une page dont un jeton n'a pas de valeur est omise. Toutes omises : comme une variante sans
+## page (pas de boîte).
 
 signal dialogue_started(dialogue_id: StringName)
 ## Début d'une page (première comprise), après sa mise en scène : tests, futurs sons.
@@ -46,6 +50,10 @@ var chars_per_second: float = UiTokens.DIALOG_CHARS_PER_SECOND
 ## attendue avant la suite (pages du choix ou fin). Non valide : l'action est ignorée
 ## (push_error) et le dialogue continue. Posé par [Boot] (ServiceDirector.run_action, T8).
 var action_handler: Callable
+## Valeurs des jetons de texte (`func() -> Dictionary[StringName, String]`, jalon-07.md §3.6),
+## lues seulement si une page à jouer contient un jeton. Non valide : aucune valeur (les pages à
+## jeton sont omises). Posé par [Boot] (T19) : [method DialogueTokens.values_for].
+var token_values: Callable
 
 var _library: DialogueLibrary
 var _flags: StoryFlags
@@ -169,7 +177,7 @@ func choose(confirmed: bool) -> void:
 		_in_action = false
 		if not _running:
 			return
-	var pages := choice.confirm_pages if confirmed else choice.cancel_pages
+	var pages := _resolve_pages(choice.confirm_pages if confirmed else choice.cancel_pages)
 	if pages.is_empty():
 		_finish()
 		return
@@ -194,16 +202,29 @@ func get_dialogue_id() -> StringName:
 
 ## Étape 2 : ouverture de la boîte et première page.
 func _start_session() -> void:
-	if _variant.pages.is_empty():
+	var pages := _resolve_pages(_variant.pages)
+	if pages.is_empty():
 		# Action ou scène seule (terminal du Stockage) : pas de boîte. Fin à l'image suivante,
 		# pour que play() rende la main avant dialogue_finished.
 		_closing = true
 		_finish.call_deferred()
 		return
-	_session = DialogueSession.new(_variant.pages, _dialogue.speaker, chars_per_second)
+	_session = DialogueSession.new(pages, _dialogue.speaker, chars_per_second)
 	if _box != null:
 		_box.open()
 	_begin_page()
+
+
+## Pages prêtes à jouer (jetons résolus, pages sans valeur omises) ; sans jeton : telles quelles.
+func _resolve_pages(pages: Array[DialoguePage]) -> Array[DialoguePage]:
+	if not DialogueTokens.has_tokens(pages):
+		return pages
+	var values: Dictionary[StringName, String] = {}
+	if token_values.is_valid():
+		var raw: Variant = token_values.call()
+		if raw is Dictionary:
+			values.assign(raw)
+	return DialogueTokens.resolve_pages(pages, values)
 
 
 ## Étape 3 : affichage de la page courante et sa mise en scène.

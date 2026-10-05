@@ -23,6 +23,9 @@ const BOX_SCENE := "res://game/ui/dialogue/dialogue_box.tscn"
 const DOSSIER := "res://docs/design/dossier-02-prologue.md"
 ## Route 1 (jalon 5) : ses textes définitifs viennent du dossier-07, pas du dossier-02.
 const DOSSIER_07 := "res://docs/design/dossier-07-route-1.md"
+## Jalon 7 : textes de référence validés (dossier 09 §19) ; un jeton y est écrit « {espèce} ».
+const DOSSIER_09 := "res://docs/design/dossier-09-jadielle.md"
+const _DOSSIER_TOKENS: Dictionary[String, String] = {"{first_wild_species}": "{espèce}"}
 const MAPS: Array[StringName] = [
 	&"player_house_2f", &"player_house_1f", &"rival_house", &"oak_lab", &"pallet_town",
 	&"route_1",
@@ -37,18 +40,22 @@ const DRAFTS: Array[StringName] = [&"observe_aoki_pidgey", &"observe_leo_rattata
 const IDS: Array[StringName] = [
 	&"aoki", &"breakfast_table", &"haru", &"leo", &"maya", &"mom", &"mom_wakeup",
 	&"oak_after_battle",
-	&"oak_lab_exit_block", &"oak_lab_reunion", &"oak_lab_waiting", &"oak_poke_balls",
-	&"oak_poke_balls_intro", &"oak_route1_call", &"oak_route1_warning", &"oak_starter_offer",
+	&"oak_lab_exit_block", &"oak_lab_reunion", &"oak_lab_waiting", &"oak_parcel_records",
+	&"oak_parcel_rival", &"oak_poke_balls", &"oak_poke_balls_intro", &"oak_pokedex_activated",
+	&"oak_route1_call", &"oak_route1_warning", &"oak_starter_offer",
 	&"oak_starter_reciprocal", &"observe_aoki_pidgey", &"observe_bulbasaur",
 	&"observe_charmander", &"observe_leo_rattata", &"observe_squirtle",
 	&"rival", &"rival_challenge", &"rival_challenge_wait", &"rival_kanto_map",
 	&"rival_lab_lost", &"rival_lab_waiting", &"rival_lab_won", &"rival_lab_won_leaving",
+	&"rival_parcel_greet", &"rival_parcel_leaving", &"rival_parcel_return",
 	&"rival_starter_pick", &"rival_starter_smile", &"route1_grass_thought",
 	&"route_1_potion_found", &"route_1_traveler", &"sign_pallet_town",
 ]
 ## Plus aucun drapeau futur au 4B : rival_battle_done est levé par la scène du combat
 ## (jalon-04.md §14.5, §14.8), quelle que soit l'issue.
-const FUTURE_FLAGS: Array[StringName] = []
+## Jalon 7 (T18) : got_oak_parcel, lu par Chen (scène du colis), est levé par la première visite
+## de la Boutique (T12) : à retirer de cette liste à la fusion du T12.
+const FUTURE_FLAGS: Array[StringName] = [&"got_oak_parcel"]
 
 var _library: DialogueLibrary
 var _cutscenes: CutsceneLibrary
@@ -88,6 +95,13 @@ func before_all() -> void:
 		for point: Node in map.get_node(^"Triggers").get_children():
 			_use_cutscene((point as EventTriggerPoint).cutscene_id, map_id)
 		map.free()
+	# Jalon 7 (T18) : scène lancée par un dialogue (variante « cutscene ») sur les cartes où ce
+	# dialogue est joué (la scène du colis, en parlant à Chen).
+	for id: StringName in _library.get_ids():
+		for variant: DialogueVariant in _library.get_dialogue(id).variants:
+			if not variant.cutscene.is_empty():
+				for map_id: StringName in (_used_on.get(id, []) as Array).duplicate():
+					_use_cutscene(variant.cutscene, map_id)
 
 
 ## Dialogues joués par les étapes de la scène [param cutscene_id], sur la carte de son
@@ -153,10 +167,12 @@ func test_every_dialogue_played_by_a_cutscene_exists() -> void:
 	assert_eq(_cutscenes.get_errors().size(), 0, str(_cutscenes.get_errors()))
 	var played := _cutscenes.get_dialogue_ids()
 	assert_eq(played, [&"oak_after_battle", &"oak_lab_exit_block", &"oak_lab_reunion",
-		&"oak_poke_balls", &"oak_poke_balls_intro", &"oak_route1_call",
+		&"oak_parcel_records", &"oak_parcel_rival", &"oak_poke_balls", &"oak_poke_balls_intro",
+		&"oak_pokedex_activated", &"oak_route1_call",
 		&"oak_route1_warning", &"oak_starter_offer", &"oak_starter_reciprocal",
 		&"rival_challenge", &"rival_challenge_wait", &"rival_lab_lost", &"rival_lab_won",
-		&"rival_lab_won_leaving", &"rival_starter_pick", &"rival_starter_smile",
+		&"rival_lab_won_leaving", &"rival_parcel_greet", &"rival_parcel_leaving",
+		&"rival_parcel_return", &"rival_starter_pick", &"rival_starter_smile",
 		&"route1_grass_thought", &"route_1_potion_found"] as Array[StringName])
 	for id: StringName in played:
 		assert_true(_library.has_dialogue(id), "dialogue « %s » défini" % id)
@@ -226,8 +242,8 @@ func test_every_condition_flag_is_set_somewhere() -> void:
 	assert_eq(_library.get_set_flags(),
 		[&"blacked_out_before", &"mom_greeted", &"rival_met"] as Array[StringName])
 	assert_eq(_cutscenes.get_set_flags(), [&"got_potion_route_1", &"oak_lab_reunion", &"oak_met",
-		&"rival_battle_done", &"rival_challenged", &"rival_lab_lost", &"rival_lab_won",
-		&"rival_left_lab", &"starter_chosen", &"starter_offered"] as Array[StringName])
+		&"pokedex_activated", &"rival_battle_done", &"rival_challenged", &"rival_lab_lost",
+		&"rival_lab_won", &"rival_left_lab", &"starter_chosen", &"starter_offered"] as Array[StringName])
 	assert_eq(_used_on.get(&"oak_lab_reunion"), [&"oak_lab"], "joué au labo, après le fondu")
 	assert_eq(_used_on.get(&"oak_starter_offer"), [&"oak_lab"], "joué au labo")
 
@@ -281,17 +297,19 @@ func test_starter_choice_lines() -> void:
 ## (rival_battle_done) ; avant, Maya garde celle du 3B ; Maya s'accorde au sexe du starter.
 func test_waiting_lines_during_and_after_the_choice() -> void:
 	var oak := _library.get_dialogue(&"oak_lab_waiting")
-	# 4B : la variante répétée « starter_chosen » du 4A est supprimée (3 variantes).
-	assert_eq(oak.variants.size(), 3)
-	assert_eq(oak.variants[0].if_flags, [&"rival_battle_done"] as Array[StringName])
-	assert_eq(_texts(oak.variants[0]), [
+	# 4B : la variante répétée « starter_chosen » du 4A est supprimée (3 variantes) ; J7 (T18) :
+	# la variante du colis passe en tête (test_oak_parcel_lines).
+	assert_eq(oak.variants.size(), 4)
+	assert_eq(oak.variants[0].cutscene, &"oak_parcel")
+	assert_eq(oak.variants[1].if_flags, [&"rival_battle_done"] as Array[StringName])
+	assert_eq(_texts(oak.variants[1]), [
 		"Le monde qui vous attend est bien plus vaste que Bourg Palette.",
 		"Prends le temps de l'observer. Les Pokémon ont beaucoup à nous apprendre.",
 	] as Array[String])
-	assert_eq(oak.variants[1].if_flags, [&"starter_offered"] as Array[StringName])
-	assert_eq(_texts(oak.variants[1]), ["Prends ton temps.",
+	assert_eq(oak.variants[2].if_flags, [&"starter_offered"] as Array[StringName])
+	assert_eq(_texts(oak.variants[2]), ["Prends ton temps.",
 		"Choisis celui avec qui tu as envie de partir."] as Array[String])
-	assert_eq(_texts(oak.variants[2]),
+	assert_eq(_texts(oak.variants[3]),
 		["Un peu de patience. J'ai quelque chose à vous montrer."] as Array[String])
 	var rival := _library.get_dialogue(&"rival_lab_waiting")
 	assert_eq(rival.speaker, "Rival")
@@ -313,11 +331,11 @@ func test_waiting_lines_during_and_after_the_choice() -> void:
 		"Vous avez l'air de déjà bien vous entendre."] as Array[String])
 	var flags := StoryFlags.new()
 	flags.set_flag(&"oak_met")
-	assert_eq(oak.pick(flags), oak.variants[2], "avant l'offre : réplique du 3B")
+	assert_eq(oak.pick(flags), oak.variants[3], "avant l'offre : réplique du 3B")
 	assert_eq(rival.pick(flags), rival.variants[1], "avant l'offre : réplique du 3B")
 	assert_eq(maya.pick(flags), maya.variants[2], "réplique du 3B")
 	flags.set_flag(&"starter_offered")
-	assert_eq(oak.pick(flags), oak.variants[1], "pendant le choix")
+	assert_eq(oak.pick(flags), oak.variants[2], "pendant le choix")
 	assert_eq(rival.pick(flags), rival.variants[0], "pendant le choix")
 	assert_eq(maya.pick(flags), maya.variants[2])
 	# L'état « starter choisi, combat pas encore fini » n'est plus atteint par le joueur : la
@@ -327,7 +345,7 @@ func test_waiting_lines_during_and_after_the_choice() -> void:
 	flags.set_flag(&"rival_left_lab")
 	flags.set_flag(&"rival_battle_done")
 	flags.set_flag(&"starter_female")
-	assert_eq(oak.pick(flags), oak.variants[0], "après le combat : « Le monde qui vous attend… »")
+	assert_eq(oak.pick(flags), oak.variants[1], "après le combat : « Le monde qui vous attend… »")
 	assert_eq(maya.pick(flags), maya.variants[0], "starter femelle : « elle »")
 	flags.set_flag(&"starter_female", false)
 	assert_eq(maya.pick(flags), maya.variants[1], "starter mâle ou sans sexe : « lui »")
@@ -408,12 +426,17 @@ func test_texts_are_the_dossier_02_texts_word_for_word() -> void:
 	assert_true(FileAccess.file_exists(DOSSIER_07), DOSSIER_07)
 	var dossier := FileAccess.get_file_as_string(DOSSIER)
 	var dossier_07 := FileAccess.get_file_as_string(DOSSIER_07)
+	var dossier_09 := FileAccess.get_file_as_string(DOSSIER_09)
 	for row: Array in _pages():
 		if _library.get_dialogue(row[0]).draft or (row[3] as DialogueVariant).draft:
 			continue
-		# Prologue : dossier 02 ; Route 1 (jalon 5) : dossier 07 (textes définitifs).
-		assert_true(dossier.contains(row[1]) or dossier_07.contains(row[1]),
-			"%s : « %s » dans un dossier de conception" % [row[0], row[1]])
+		var text: String = row[1]
+		for token: String in _DOSSIER_TOKENS:
+			text = text.replace(token, _DOSSIER_TOKENS[token])
+		# Prologue : dossier 02 ; Route 1 (jalon 5) : dossier 07 ; Jadielle (jalon 7) : dossier 09.
+		assert_true(dossier.contains(text) or dossier_07.contains(text)
+			or dossier_09.contains(text),
+			"%s : « %s » dans un dossier de conception" % [row[0], text])
 
 
 func test_speakers_and_narration() -> void:
@@ -436,6 +459,10 @@ func test_speakers_and_narration() -> void:
 		&"rival_lab_won": ["Rival", false], &"rival_lab_won_leaving": ["Rival", false],
 		&"rival_lab_lost": ["Rival", false], &"oak_after_battle": ["Prof. Chen", false],
 		&"oak_poke_balls_intro": ["Prof. Chen", false], &"oak_poke_balls": ["Prof. Chen", false],
+		&"oak_parcel_records": ["Prof. Chen", false],
+		&"oak_pokedex_activated": ["Prof. Chen", false], &"oak_parcel_rival": ["", false],
+		&"rival_parcel_return": ["Rival", false], &"rival_parcel_greet": ["Rival", false],
+		&"rival_parcel_leaving": ["Rival", false],
 	}
 	for id: StringName in expected:
 		var dialogue := _library.get_dialogue(id)
@@ -488,3 +515,49 @@ func test_maya_after_oak_returns_and_the_lab_reunion() -> void:
 	])
 	assert_eq(reunion[1].turn, {&"oak": &"rival"} as Dictionary[StringName, StringName])
 	assert_eq(reunion[2].turn, {&"rival": &"oak"} as Dictionary[StringName, StringName])
+
+
+## Jalon 7 (T18, dossier 09 §6, §19) : parler à Chen avec le colis lance la scène (variante sans
+## page, en tête) ; jamais après l'activation. Répliques de la scène dans l'ordre du §19, la
+## réplique de l'espèce porte le jeton, « Observe. Explore. » garde sa phrase.
+func test_oak_parcel_lines() -> void:
+	var oak := _library.get_dialogue(&"oak_lab_waiting")
+	var first := oak.variants[0]
+	assert_eq(first.if_flags, [&"got_oak_parcel"] as Array[StringName])
+	assert_eq(first.unless_flags, [StoryFlags.POKEDEX_ACTIVATED] as Array[StringName])
+	assert_eq(first.cutscene, &"oak_parcel")
+	assert_true(first.pages.is_empty(), "la scène porte toutes les répliques")
+	var flags := StoryFlags.new()
+	for flag: StringName in [&"rival_battle_done", &"got_oak_parcel"]:
+		flags.set_flag(flag)
+	assert_same(oak.pick(flags), first)
+	flags.set_flag(StoryFlags.POKEDEX_ACTIVATED)
+	assert_eq(oak.pick(flags).cutscene, &"", "après l'activation : Chen parle normalement")
+	assert_eq(_used_on.get(&"oak_parcel_records"), [&"oak_lab"], "joué au labo")
+	var records := _library.get_dialogue(&"oak_parcel_records").variants[0].pages
+	var texts: Array[String] = []
+	for page: DialoguePage in records:
+		texts.append(page.text)
+	assert_eq(texts, ["Tiens…", "Il a déjà commencé à enregistrer tes rencontres.",
+		"Un {first_wild_species}… Tu n'as pas perdu de temps.",
+		"J'étudie depuis longtemps la manière dont les Pokémon vivent à travers Kanto.",
+		"Mais aucune recherche ne remplacera ce qu'un Dresseur découvre sur le terrain.",
+		"Ton voyage peut nous apprendre beaucoup."] as Array[String])
+	var activated := _library.get_dialogue(&"oak_pokedex_activated").variants[0].pages
+	assert_eq(activated.back().text, "Observe. Explore. Fais-toi ta propre idée du monde.")
+	var rival := _library.get_dialogue(&"oak_parcel_rival").variants[0].pages
+	assert_eq([rival[0].speaker, rival[1].speaker], ["Prof. Chen", "Rival"])
+	assert_gt(rival[1].pause, 0.0, "« …On verra. » après une courte pause")
+	# Toute scène lancée par un dialogue existe.
+	var launched := 0
+	for id: StringName in _library.get_ids():
+		for variant: DialogueVariant in _library.get_dialogue(id).variants:
+			if not variant.cutscene.is_empty():
+				launched += 1
+				assert_true(_cutscenes.has_cutscene(variant.cutscene), "%s : scène « %s »" % [
+					id, variant.cutscene])
+	assert_eq(launched, 1, "la scène du colis")
+	# Le jeton n'apparaît que dans la réplique de l'espèce.
+	for row: Array in _pages():
+		var tokens := DialogueTokens.tokens_in(row[1])
+		assert_eq(not tokens.is_empty(), row[1] == records[2].text, "%s : jeton" % row[0])
