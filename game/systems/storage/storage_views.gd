@@ -25,19 +25,26 @@ const RELEASE_TITLE: String = "Libérer %s ?"
 const RELEASE_DETAIL: String = "Il quittera définitivement ton équipe et ton stockage."
 ## Raisons des refus.
 const LAST_POKEMON_TEXT: String = "Tu dois garder au moins un Pokémon avec toi."
+## draft (décision de Kevin du 2026-10-05) : il resterait des Pokémon, mais tous K.O.
+const LAST_ABLE_TEXT: String = "Tu dois garder au moins un Pokémon en état de combattre."
 const FAVORITE_TEXT: String = "Retire d'abord %s de tes favoris pour pouvoir le libérer."
 ## draft (jalon-07.md §12, « Textes à relire »).
 const PARTY_FULL_TEXT: String = "Ton équipe est déjà complète."
 ## draft (jalon-07.md §12).
 const EMPTY_TEXT: String = "Le stockage est vide."
+## draft (décision de Kevin du 2026-10-05) : après une libération confirmée et réussie.
+const RELEASED_TEXT: String = "%s a été libéré."
 
 
 ## Vue de l'écran pour l'équipe et le stockage de [param state] (GameState : [code]party[/code],
 ## [code]storage[/code], [code]pokedex[/code]), avec [param selection] ramenée dans les listes.
 ## [param zones] peut être null (lieux de l'Histoire vides) ; [param unlocks] décide de la
 ## révélation de l'évolution dans la fiche (rien du Pokédex avant son activation).
+## [param result] : le succès qui vient d'avoir lieu, pour la ligne de résultat
+## ([member StorageView.result_text]) ; null à l'entrée de l'écran.
 static func build(state: Object, data: PokemonData, selection: StorageSelection,
-		zones: ZoneLibrary = null, unlocks: MenuUnlocks = null) -> StorageView:
+		zones: ZoneLibrary = null, unlocks: MenuUnlocks = null,
+		result: StorageResult = null) -> StorageView:
 	var party: Party = state.party
 	var storage: PokemonStorage = state.storage
 	var view := StorageView.new()
@@ -53,6 +60,8 @@ static func build(state: Object, data: PokemonData, selection: StorageSelection,
 	for i: int in stored.size():
 		view.storage.append(card(stored[i], StorageRules.Place.STORAGE, i, data, view.selection))
 	view.empty_text = EMPTY_TEXT if stored.is_empty() else ""
+	if result != null and result.is_ok():
+		view.result_text = result_text(result, data)
 	if view.selection.is_empty():
 		return view
 	var pokemon := StorageRules.get_pokemon(party, storage, view.selection.place,
@@ -93,6 +102,8 @@ static func status_text(status: StorageRules.Status, name: String) -> String:
 	match status:
 		StorageRules.Status.LAST_POKEMON:
 			return LAST_POKEMON_TEXT
+		StorageRules.Status.LAST_ABLE:
+			return LAST_ABLE_TEXT
 		StorageRules.Status.PARTY_FULL:
 			return PARTY_FULL_TEXT
 		StorageRules.Status.FAVORITE:
@@ -100,10 +111,14 @@ static func status_text(status: StorageRules.Status, name: String) -> String:
 	return ""
 
 
-## Texte de [param result] ([method status_text] avec le nom du Pokémon concerné). Un succès
-## n'a pas de texte (la carte qui bouge suffit ; défaut du T14).
+## Texte de [param result] : la raison d'un refus ([method status_text] avec le nom du Pokémon
+## concerné) ; après un succès, « {Pokémon} a été libéré. » pour une libération (décision de
+## Kevin du 2026-10-05), rien pour déposer, reprendre et favori (la carte qui bouge suffit).
 static func result_text(result: StorageResult, data: PokemonData) -> String:
 	if result == null:
 		return ""
 	var name := result.pokemon.display_name(data) if result.pokemon != null else ""
+	if result.is_ok():
+		return RELEASED_TEXT % name \
+			if result.action == StorageRules.Action.RELEASE and not name.is_empty() else ""
 	return status_text(result.status, name)

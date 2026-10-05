@@ -89,7 +89,7 @@ Chaque sous-jalon ne commence qu'une fois le précédent **validé par Kevin**. 
 | Favori d'un Pokémon | `Pokemon.favorite` (v2), `MenuDirector.toggle_favorite` (Équipe) | le favori dans le Stockage, la protection contre LIBÉRER |
 | Objets clés | `ItemData` catégorie `key` (fin d'enum, T10), onglet OBJETS CLÉS de `BagQuery` | le colis (premier objet clé), le prix des objets |
 | Argent des Dresseurs | `TrainerData.prize_money` (lu et validé par `TrainerLibrary`), `BattleConclusion.prize_money` | **l'argent du joueur** (aucun champ), la formule Rouge/Bleu, le versement |
-| Objectif du tableau de bord | `ObjectiveLibrary` + `data/story/objectives.json` (« rejoindre Jadielle » si `rival_battle_done`) | l'objectif du colis ; couper « rejoindre Jadielle » à l'arrivée |
+| Objectif du tableau de bord | `ObjectiveLibrary` + `data/story/objectives.json` (« rejoindre Jadielle. » si `rival_battle_done` ; point final ajouté le 2026-10-05) | l'objectif du colis ; couper « rejoindre Jadielle » à l'arrivée |
 | Zones et services | `data/world/zones.json` : `viridian_city` (Jadielle), `route_22` déjà déclarées **sans cartes** ; catalogue `services` (Centre, Boutique, Arène) au format `{ id, found_on }` (T18), **aucun service posé** ; `MapJournal` montre un service quand sa carte `found_on` est découverte | les cartes, les services posés, les descriptions (`draft`) |
 | Grand moment « Arrivée à Jadielle » | `data/trainer/moments.json` (texte propre à `viridian_city`, `draft`) ; arrivée déduite de `discovered_maps` | rien |
 | Grand moment « Combat contre le rival » | `Boot._on_battle_finished` : tout dresseur à `team_by_starter` est le rival, issue en détail | rien : le rival n° 2 sera daté tout seul |
@@ -402,9 +402,11 @@ class_name StorageRules
 extends RefCounted
 ## Règles métier du Stockage Pokémon V1 (dossier 09 §8, §19), indépendantes de l'écran.
 enum Place { PARTY, STORAGE }
-enum Status { OK, LAST_POKEMON, PARTY_FULL, FAVORITE, NOT_FOUND }
+enum Action { NONE, DEPOSIT, WITHDRAW, RELEASE, FAVORITE }                 # 2026-10-05
+enum Status { OK, LAST_POKEMON, PARTY_FULL, FAVORITE, NOT_FOUND, LAST_ABLE } # LAST_ABLE : 2026-10-05
 static func get_pokemon(party, storage, place: Place, index: int) -> Pokemon
 static func keeps_able(party: Party, without_index: int) -> bool          # Q-7
+static func keep_status(party: Party, without_index: int) -> Status       # OK / LAST_POKEMON / LAST_ABLE
 static func can_deposit(party: Party, index: int) -> Status
 static func deposit(party: Party, storage: PokemonStorage, index: int) -> StorageResult
 static func can_withdraw(party: Party, storage: PokemonStorage, index: int) -> Status
@@ -413,32 +415,36 @@ static func can_release(party, storage, place: Place, index: int) -> Status
 static func release(party, storage, place: Place, index: int) -> StorageResult
 static func toggle_favorite(party, storage, place: Place, index: int) -> StorageResult
 
-class_name StorageResult      # status, pokemon (concerné ; null si NOT_FOUND), selection, is_ok()
+class_name StorageResult      # status, pokemon (concerné ; null si NOT_FOUND), selection, is_ok(),
+                              # action (StorageRules.Action ; NONE pour un refus) — 2026-10-05
 class_name StorageSelection   # place, index (−1 = aucune) ; first(party, storage), clamped(…), equals
 class_name StorageViews
-static func build(state, data, selection: StorageSelection, zones = null, unlocks = null) -> StorageView
+static func build(state, data, selection: StorageSelection, zones = null, unlocks = null,
+		result: StorageResult = null) -> StorageView   # result : 2026-10-05, ligne de résultat
 static func card(pokemon, place, index, data, selection = null) -> StorageCardView
 static func release_choice(name: String) -> ChoiceView
 static func status_text(status: StorageRules.Status, name: String) -> String
 static func result_text(result: StorageResult, data: PokemonData) -> String
 ```
 
-Vues figées (`game/systems/storage/views/`) : `StorageView` (`party_title`, `storage_title`, `back_label`, `party` / `storage` : `Array[StorageCardView]`, `empty_text`, `selection`, `sheet: PokemonSheetView` — la fiche de l'Équipe, même règle d'évolution —, `actions` : DÉPOSER ou REPRENDRE puis FAVORI, `more_actions` : LIBÉRER, `card_at(place, index)`, `PARTY_SLOTS` = 6) ; `StorageCardView` (`place`, `index`, `member: TeamMemberView`, `selected`) ; `StorageActionView` (`id` = `StorageViews.ACTION_*`, `label`, `active` pour FAVORI). Une action n'est **jamais grisée** : un refus se montre au toucher.
+Vues figées (`game/systems/storage/views/`) : `StorageView` (`party_title`, `storage_title`, `back_label`, `party` / `storage` : `Array[StorageCardView]`, `empty_text`, `selection`, `sheet: PokemonSheetView` — la fiche de l'Équipe, même règle d'évolution —, `actions` : DÉPOSER ou REPRENDRE puis FAVORI, `more_actions` : LIBÉRER, `card_at(place, index)`, `PARTY_SLOTS` = 6 ; **ajouté le 2026-10-05** : `result_text`, la ligne de résultat d'un succès, « {Pokémon} a été libéré. » après une libération, sinon "") ; `StorageCardView` (`place`, `index`, `member: TeamMemberView`, `selected`) ; `StorageActionView` (`id` = `StorageViews.ACTION_*`, `label`, `active` pour FAVORI). Une action n'est **jamais grisée** : un refus se montre au toucher.
 
 **Règles** (testées, `test_storage_rules`) :
-- **Déposer** : le Pokémon va **à la fin** du stockage, la sélection le suit. Refus `LAST_POKEMON` si l'équipe garderait **0 Pokémon en état de combattre** (Q-7 : le seul Pokémon, ou le dernier valide à côté de K.O. ; déposer un K.O. à côté d'un valide est permis).
+- **Déposer** : le Pokémon va **à la fin** du stockage, la sélection le suit. Refus si l'équipe garderait **0 Pokémon en état de combattre** (Q-7, règle stricte validée par Kevin le 2026-10-05), avec **deux raisons distinctes** pour que le refus explique pourquoi : `LAST_POKEMON` si l'équipe serait **vide** (le seul Pokémon, même K.O.) ; `LAST_ABLE` s'il resterait des Pokémon, **tous K.O.** (le dernier valide à côté de K.O., ou un K.O. à côté d'autres K.O.). Déposer un K.O. à côté d'un valide est permis. `keep_status(party, index)` rend l'une ou l'autre.
 - **Reprendre** : en **fin d'équipe**, la sélection le suit ; refus `PARTY_FULL` à 6. Un K.O. se reprend.
-- **Libérer** : depuis l'équipe ou le stockage ; refus `LAST_POKEMON` (équipe seulement) **avant** `FAVORITE` (retirer le favori n'y changerait rien) ; `FAVORITE` sans contournement : la règle ne touche jamais au favori. Après une libération, la sélection va à celui qui prend la place (index borné), sinon au premier de l'autre liste. **Ni le Pokédex ni la statistique « Captures »** (`TrainerSummary.capture_count`, carrière) ne bougent : vérifié sur un `GameState`.
+- **Libérer** : depuis l'équipe ou le stockage ; refus `LAST_POKEMON` / `LAST_ABLE` (équipe seulement) **avant** `FAVORITE` (retirer le favori n'y changerait rien) ; `FAVORITE` sans contournement : la règle ne touche jamais au favori. Après une libération, la sélection va à celui qui prend la place (index borné), sinon au premier de l'autre liste. **Ni le Pokédex ni la statistique « Captures »** (`TrainerSummary.capture_count`, carrière) ne bougent : vérifié sur un `GameState`.
 - **Favori** : depuis l'équipe ou le stockage (dossier 09 §20) ; seul refus : `NOT_FOUND`.
 - **Capacité** : **aucune limite** (un stockage unique, sans boîtes ; `PokemonStorage` depuis le J5) : pas de statut « stockage plein ».
 - Déplacer garde **la même instance** (PV, PP, XP, favori, surnom, histoire : `to_dict` identique). Un refus ne change rien ; sa `selection` est la carte refusée (celle qui tremble).
 - `Party.remove_at(index) -> Pokemon` (sans règle : la règle est au Stockage), `PokemonStorage.get_at`, `index_of`, `remove_at`.
 
-**Textes** (`StorageViews`, constantes) : libellés validés ÉQUIPE · STOCKAGE · DÉPOSER · REPRENDRE · FAVORI · LIBÉRER · RETOUR · ANNULER ; confirmation « Libérer {Pokémon} ? » / « Il quittera définitivement ton équipe et ton stockage. » ; refus « Tu dois garder au moins un Pokémon avec toi. », « Retire d'abord {Pokémon} de tes favoris pour pouvoir le libérer. » ; **draft** : « Ton équipe est déjà complète. », « Le stockage est vide. ». Un succès n'a **pas de texte** (défaut du T14 : la carte qui bouge suffit ; aucun texte validé pour « libéré »).
+**Textes** (`StorageViews`, constantes) : libellés validés ÉQUIPE · STOCKAGE · DÉPOSER · REPRENDRE · FAVORI · LIBÉRER · RETOUR · ANNULER ; confirmation « Libérer {Pokémon} ? » / « Il quittera définitivement ton équipe et ton stockage. » ; refus « Tu dois garder au moins un Pokémon avec toi. » (`LAST_POKEMON`, équipe vide), « Retire d'abord {Pokémon} de tes favoris pour pouvoir le libérer. » ; **draft** : « Ton équipe est déjà complète. », « Le stockage est vide. », **« Tu dois garder au moins un Pokémon en état de combattre. »** (`LAST_ABLE`, décision de Kevin du 2026-10-05), **« {Pokémon} a été libéré. »** (`RELEASED_TEXT`, après une libération confirmée et réussie : défaut du T14 inversé par Kevin le 2026-10-05). Les autres succès (déposer, reprendre, favori) restent **sans texte** (la carte qui bouge suffit). `result_text(result, data)` rend la raison d'un refus ou le texte d'une libération, "" sinon.
 
 **Déblocage** : `MenuRoute.STORAGE` (`MenuRoute.storage()`, sans paramètre, **pas** une carte du tableau de bord) ; `MenuUnlocks.STORAGE_SERVICE = &"pokemon_center"`, `MenuUnlocks.set_location(zones, current_map: Callable)` (branché par `Boot` au T16), `storage_available()` (relu à chaque appel), `static is_storage_map(map, zones)` : vrai seulement sur la carte `found_on` d'un service `pokemon_center` — **pas** dans la ville du Centre ; `is_available(STORAGE)` = équipe visible **et** `storage_available()`. Sans `set_location`, le Stockage n'existe nulle part. `TeamView.storage_available` (rempli par `TeamViews.build`) : le bouton STOCKAGE de l'Équipe.
 
 **Sauvegarde** : **inchangée** (v3) ; la sélection est de session.
+
+**Décisions de Kevin du 2026-10-05 (appliquées)** : raison distincte « tous K.O. » (`LAST_ABLE`, ajouté en fin d'enum : les valeurs existantes ne bougent pas) ; message après une libération ; `StorageResult.action`, `StorageView.result_text` et le paramètre `result` de `build` sont des **ajouts** (rien de figé n'a changé de nom ; seul le sens de `LAST_POKEMON` se resserre : il ne couvre plus que l'équipe vide). Tests : `test_storage_rules` (+4 : raisons distinctes, `keep_status`, action portée par chaque succès, `LAST_ABLE` avant le favori), `test_storage_views` (+3 : texte « tous K.O. », seule la libération a un texte, la ligne de la vue).
 
 **Tests (T14, faits)** : `test_storage_rules` (24), `test_storage_views` (11), `test_menu_unlocks` (+4), `test_party`, `test_pokemon_storage`, `test_menu_route`, `test_team_views` étendus.
 
@@ -474,7 +480,7 @@ Livré :
   - `data/cutscenes/oak_lab.json`, scène **`oak_parcel`** (`unless: [pokedex_activated]`), dans l'ordre : Chen et le joueur se font face, Chen s'avance, **`take oak_parcel`**, `oak_parcel_records` (la page de l'espèce omise sans rencontre), **`set pokedex_activated`** (seule étape de toutes les données qui le lève), **`caption` POKÉDEX ACTIVÉ**, `oak_pokedex_activated`, puis le rival **entre** (`spawn rival` en (7, 9), sprite `rival` : peint si la planche existe, `CharacterLook`), « Professeur ! Je suis revenu. », s'approche de Chen, « Tiens. T'es déjà revenu… », Chen s'avance vers lui (il reçoit son Pokédex, sans texte), `oak_parcel_rival`, `rival_parcel_leaving`, il repart par la porte (`move` (7, 9), `despawn`) ; Chen et le joueur se refont face. **Objectif** : « remettre le colis… » s'efface avec `pokedex_activated` (`objectives.json`, T10 ; Q-10 : aucune ligne ensuite). `got_oak_parcel` reste levé (histoire).
 - **Ce qui apparaît à l'activation (§4)** : rien de nouveau à coder — la 6e carte, la ligne vus · capturés, les Pokémon observés de la Carte, la chaîne d'évolution et la carte de capture lisent déjà `MenuUnlocks.pokedex_visible()` à chaque construction (`test_menu_unlock_rule`, J6) ; **aucun toast à l'activation** : `Boot._on_flag_changed` sort avant de mettre des toasts en file pour `POKEDEX_ACTIVATED` (J6) — à vérifier de bout en bout par `test_parcel_scene` (T19).
 
-Défauts (règle 4) : le colis quitte le Sac **avant** « Tiens… » (Chen le reçoit et l'ouvre) ; pas de toast au retrait du colis ; la légende est attendue jusqu'à sa disparition (~3,4 s) avant « Il enregistrera… » ; le rival arrive **après** « Observe. Explore. » (ordre du T19 du plan) et reçoit son Pokédex sans réplique (Chen s'avance vers lui) ; silences et regards (0,6 s, 0,8 s, le rival baisse les yeux sur « Pas mal. ») réglables au T19 sur capture.
+Défauts (règle 4) : le colis quitte le Sac **avant** « Tiens… » (Chen le reçoit et l'ouvre) ; pas de toast au retrait du colis ; la légende est attendue jusqu'à sa disparition (~3,4 s) avant « Il enregistrera… » ; le rival arrive **après** « Observe. Explore. » (ordre du T19 du plan ; **validé par Kevin le 2026-10-05**) et reçoit son Pokédex sans réplique (Chen s'avance vers lui ; **validé pour l'instant, à juger en QA** : silence intentionnel ou vide) ; silences et regards (0,6 s, 0,8 s, le rival baisse les yeux sur « Pas mal. ») réglables au T19 sur capture.
 
 Tests : `test_dialogue_tokens` (nouveau, 11), `test_dialogue_library` (+4 : jetons), `test_dialogue_runner` (+5 : résolue, omise, sans source, toutes omises, pages de réponse), `test_cutscene_caption_take` (unitaire, nouveau, 5 : format), `test_cutscene_director_caption_take` (intégration, nouveau, 6 : directeur, vraie `ExplorationHud`), `test_cutscene_data` (scène `oak_parcel` simulée sur le vrai labo, ordre, `pokedex_activated` levé une seule fois), `test_dialogue_data` (textes cherchés aussi dans le dossier 09, jeton écrit `{espèce}` ; scène lancée par un dialogue ; répliques du colis), `test_objective_library` (`pokedex_activated` retiré de `_PENDING_FLAGS` ; `got_oak_parcel` y reste jusqu'au T12, comme dans `FUTURE_FLAGS` de `test_dialogue_data`).
 
@@ -813,7 +819,8 @@ signal withdraw_requested(index: int)               # REPRENDRE, ou glisser STOC
 signal favorite_toggled(place: int, index: int)     # FAVORI
 signal release_requested(place: int, index: int)    # LIBÉRER du menu « ⋯ » (avant confirmation)
 signal release_confirmed(place: int, index: int)    # carte LIBÉRER de la confirmation
-func show_storage(view: StorageView) -> void        # vue neuve après chaque action
+func show_storage(view: StorageView) -> void        # vue neuve après chaque action ;
+                                                    # view.result_text non vide → ligne de résultat
 func show_refusal(place: int, index: int, text: String) -> void    # tremblement + raison (6B)
 func ask_release(view: ChoiceView, place: int, index: int) -> void # ChoiceCards LIBÉRER / ANNULER
 func go_back() -> bool   # retour : ferme d'abord la confirmation (= ANNULER) ou le menu « ⋯ »
@@ -844,8 +851,9 @@ func confirm_release(place: int, index: int) -> bool   # StorageRules.release (r
 ```
 
 - **Glisser = un signal, bouton = le même** : glisser une carte de l'ÉQUIPE sur la grille émet `deposit_requested(index)` exactement comme DÉPOSER ; dans l'autre sens `withdraw_requested(index)` comme REPRENDRE. Le glisser part d'un **appui long** (`LONG_PRESS`, comme l'Équipe) ; la grille défile sans rien sélectionner (`TapGuard`, `scroll_deadzone = TAP_SLOP`). Pas de réordonnancement dans l'écran Stockage (V1 : l'Équipe le fait) ; un dépôt arrive à la fin, une reprise en fin d'équipe.
-- **Directeur** : à l'entrée de la route STORAGE, sélection = `StorageSelection.first(party, storage)`, puis `storage_shown(StorageViews.build(state, data, sélection, zones, unlocks))`. Après une action : succès → sélection = `result.selection`, `mark_changed()` (autosave à la fermeture, comme le J6), vue neuve ; refus → `storage_refused(place, index, StorageViews.result_text(result, data))` avec la place de `result.selection`, rien ne change, **pas** de vue neuve. `request_release` ne modifie rien.
-- **Libérer** : `release_requested` → le directeur vérifie → refus (favori, dernier) = tremblement + raison, **sans** confirmation ni bouton de contournement ; sinon `ask_release` montre `ChoiceCards` ; ANNULER (ou retour) ne fait rien ; LIBÉRER → `release_confirmed` → `confirm_release`.
+- **Directeur** : à l'entrée de la route STORAGE, sélection = `StorageSelection.first(party, storage)`, puis `storage_shown(StorageViews.build(state, data, sélection, zones, unlocks))`. Après une action : succès → sélection = `result.selection`, `mark_changed()` (autosave à la fermeture, comme le J6), vue neuve **construite avec le résultat** : `StorageViews.build(state, data, result.selection, zones, unlocks, result)` (ajout du 2026-10-05) ; refus → `storage_refused(place, index, StorageViews.result_text(result, data))` avec la place de `result.selection`, rien ne change, **pas** de vue neuve. `request_release` ne modifie rien.
+- **Libérer** : `release_requested` → le directeur vérifie → refus (favori, équipe vide, tous K.O.) = tremblement + raison, **sans** confirmation ni bouton de contournement ; sinon `ask_release` montre `ChoiceCards` ; ANNULER (ou retour) ne fait rien ; LIBÉRER → `release_confirmed` → `confirm_release` → vue neuve dont `result_text` = « {Pokémon} a été libéré. ».
+- **Ligne de résultat** (décision de Kevin du 2026-10-05) : l'écran montre `view.result_text` sur **une ligne de résultat, comme la barre du Sac** (`show_result` du Sac, variation de thème `ResultText`), quand il n'est pas vide ; une vue neuve dont le texte est vide l'efface (déposer, reprendre, favori, sélection : pas de texte). Seule la libération en produit un. Les refus restent sur `show_refusal` (tremblement + raison, pas de vue neuve) ; l'écran peut montrer leur raison sur la même ligne. Aucun signal nouveau : le texte voyage dans la vue.
 - **Bouton STOCKAGE de l'Équipe** : présent seulement si `TeamView.storage_available` (absent ailleurs, jamais grisé) ; il émet `route_requested(MenuRoute.storage())` (signal existant de l'Équipe) ; retour = l'Équipe, rafraîchie (mécanique existante).
 - **Terminal** : action `open_storage` → `MenuDirector.open(MenuRoute.storage(), standalone = true)` (le `standalone` du T10 : retour = fermer). `Boot` appelle une fois `_unlocks.set_location(_zones, <carte courante>)`.
 - `UiPrefsApplier` appliqué à l'écran (comme les autres écrans du menu).
@@ -1029,11 +1037,11 @@ Chaque tâche finit par `tools/test.sh` vert (nombre de tests rapporté), un imp
 
 #### T15 — ui-mobile : l'écran Stockage
 - §6.4 ; scénarios `storage`, `storage_drag`, `storage_release`, `storage_refusal`.
-- **CA** : `test_storage_screen` (glisser = un signal, sélection + bouton = le même, refus = tremblement + raison, LIBÉRER seulement dans le menu secondaire, confirmation, favori sans contournement ; défiler la grille ne sélectionne rien : `TapGuard`) ; `UiPrefsApplier` appliqué ; captures relues.
+- **CA** : `test_storage_screen` (glisser = un signal, sélection + bouton = le même, refus = tremblement + raison, `view.result_text` affiché sur la ligne de résultat et effacé par une vue sans texte, LIBÉRER seulement dans le menu secondaire, confirmation, favori sans contournement ; défiler la grille ne sélectionne rien : `TapGuard`) ; `UiPrefsApplier` appliqué ; captures relues.
 
 #### T16 — constructeur-monde : le Stockage jouable
 - Terminal (`open_storage`), bouton STOCKAGE de l'Équipe (au Centre seulement), câblage, autosave.
-- **CA** : `test_menu_storage` (vrai `Boot`, départ `storage_qa` : déposer, reprendre, libérer avec confirmation, dernier Pokémon refusé, favori protégé, rien hors du Centre, sauvegarde relue, le combat suivant envoie le bon premier).
+- **CA** : `test_menu_storage` (vrai `Boot`, départ `storage_qa` : déposer, reprendre, libérer avec confirmation puis « {Pokémon} a été libéré. » dans la vue, dernier Pokémon refusé avec ses deux raisons (équipe vide, tous K.O.), favori protégé, rien hors du Centre, sauvegarde relue, le combat suivant envoie le bon premier).
 
 #### T17 — qa-mobile : validation du 7A.4
 - **CA** : glisser au pouce (une dizaine d'essais), alternative par boutons, refus lisibles, libération confirmée, sauvegarde après relance.
@@ -1156,12 +1164,14 @@ Seules les vraies questions de game design et de direction artistique sont ici ;
 - **Q-6 — Pokémon des habitants observables** (Roucool de la Dresseuse, Rattata de l'enfant) : OBSERVER demande une phrase de narration non écrite. *Défaut : non au J7 (comme les Pokémon des prés au 6C).*
 
 **Centre, Stockage, argent**
-- **Q-7 — « Dernier Pokémon »** : le dossier dit « le dernier Pokémon de l'équipe ». Si l'équipe compte un Pokémon valide et un K.O., déposer le valide laisserait une équipe incapable de combattre. *Défaut : on compte les Pokémon **en état de combattre** ; même message « Tu dois garder au moins un Pokémon avec toi. ».*
+- **Q-7 — « Dernier Pokémon »** : le dossier dit « le dernier Pokémon de l'équipe ». Si l'équipe compte un Pokémon valide et un K.O., déposer le valide laisserait une équipe incapable de combattre. *Défaut : on compte les Pokémon **en état de combattre** ; même message « Tu dois garder au moins un Pokémon avec toi. ».* **Précisé par Kevin (2026-10-05)** : règle stricte validée ; le refus **explique la raison** : équipe vide → « Tu dois garder au moins un Pokémon avec toi. » (validé) ; il resterait des Pokémon, tous K.O. → « Tu dois garder au moins un Pokémon en état de combattre. » (`draft`). Après une libération : « {Pokémon} a été libéré. » (`draft`).
 - **Q-8 — L'argent avant la première Boutique.** *Défaut : visible dès le début dans l'écran Dresseur et le Sac (3 000 ₽ existent depuis le départ, aucun événement ne les « donne »).*
 - **Q-9 — Ce que dit l'infirmière au réveil après une défaite.** *Défaut : la réplique validée « Voilà. Tout le monde est en pleine forme. » (aucun texte nouveau).*
 
 **Chen et le Pokédex**
 - **Q-10 — L'objectif après l'activation.** *Défaut : aucune ligne jusqu'au J8 (le monde s'ouvre, pas de checklist).*
+- **Objectifs, ponctuation (Kevin, 2026-10-05)** : convention homogène, **tout texte d'objectif finit par un point** ; « remettre le colis au Professeur Chen. » garde le sien, « rejoindre Jadielle » devient « rejoindre Jadielle. ». Imposé par `test_objective_library` (`test_every_objective_text_ends_with_a_period`) pour toute entrée de `data/story/objectives.json`.
+- **Scène de Chen (Kevin, 2026-10-05)** : le rival entre **après** « Observe. Explore. Fais-toi ta propre idée du monde. » (validé) ; Chen lui remet son Pokédex **sans réplique** (validé pour l'instant ; à juger en QA : silence intentionnel ou vide).
 - **Q-11 — Un grand moment « Pokédex » dans l'écran Dresseur ?** *Défaut : non (la liste du dossier 08 reste telle quelle).*
 - **Q-12 — « Efficace / Peu efficace » en combat après l'activation** (dossier 05 §5) : *défaut : pas au J7 (J11, avec la lecture des types).*
 
@@ -1169,7 +1179,7 @@ Seules les vraies questions de game design et de direction artistique sont ici ;
 - **Q-13 — La mise en scène du rival contre le jeune Dresseur.** *Défaut : le starter du rival (sprite provisoire actuel, Q-1) face au Rattata du jeune Dresseur ; le Rattata est rappelé (fondu) ; après la scène, le jeune Dresseur repart vers Jadielle, sans réplique de plus.*
 - **Q-14 — Difficulté du rival n° 2.** *Défaut : l'équipe du dossier (Roucool Nv. 7, starter avantagé Nv. 8) et l'IA de niveau 2 ; on ajuste après la simulation du T24 et ton essai au T26.*
 
-**Textes à relire** (un seul lot, tous `draft`) : message de gain « Tu remportes {money}. » ; description du colis ; descriptions de zone de Jadielle et de la Route 22 ; « Ton équipe est déjà complète. » (REPRENDRE, équipe pleine) ; « Le stockage est vide. » ; « Vendre {objet} ? » (favori) ; les 4 descriptions du Pokédex (Piafabec, Férosinge, Nidoran ♀, Nidoran ♂) ; libellé « Argent ». Le panneau de Jadielle n'est pas examinable au J7 (aucun texte validé).
+**Textes à relire** (un seul lot, tous `draft`) : message de gain « Tu remportes {money}. » ; description du colis ; descriptions de zone de Jadielle et de la Route 22 ; « Ton équipe est déjà complète. » (REPRENDRE, équipe pleine) ; « Le stockage est vide. » ; « Tu dois garder au moins un Pokémon en état de combattre. » et « {Pokémon} a été libéré. » (Stockage, 2026-10-05) ; « Vendre {objet} ? » (favori) ; les 4 descriptions du Pokédex (Piafabec, Férosinge, Nidoran ♀, Nidoran ♂) ; libellé « Argent ». Le panneau de Jadielle n'est pas examinable au J7 (aucun texte validé).
 
 ---
 

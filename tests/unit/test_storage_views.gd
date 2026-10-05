@@ -163,6 +163,8 @@ func test_release_choice_uses_validated_texts() -> void:
 func test_status_texts() -> void:
 	assert_eq(StorageViews.status_text(StorageRules.Status.LAST_POKEMON, "Salamèche"),
 		"Tu dois garder au moins un Pokémon avec toi.")
+	assert_eq(StorageViews.status_text(StorageRules.Status.LAST_ABLE, "Salamèche"),
+		"Tu dois garder au moins un Pokémon en état de combattre.")
 	assert_eq(StorageViews.status_text(StorageRules.Status.FAVORITE, "Roucool"),
 		"Retire d'abord Roucool de tes favoris pour pouvoir le libérer.")
 	assert_eq(StorageViews.status_text(StorageRules.Status.PARTY_FULL, "Roucool"),
@@ -186,3 +188,39 @@ func test_result_text_names_the_refused_pokemon() -> void:
 	assert_true(withdraw.is_ok())
 	assert_eq(StorageViews.result_text(withdraw, _data), "", "un succès n'a pas de texte")
 	assert_eq(StorageViews.result_text(null, _data), "")
+
+
+func test_result_text_explains_all_fainted_apart_from_empty() -> void:
+	_add(&"charmander", 7)
+	var fainted := _add(&"pidgey", 3)
+	fainted.take_damage(fainted.hp)
+	var refused := StorageRules.deposit(_state.party, _state.storage, 0)
+	assert_eq(StorageViews.result_text(refused, _data),
+		"Tu dois garder au moins un Pokémon en état de combattre.")
+
+
+func test_only_a_release_has_a_success_text() -> void:
+	_add(&"charmander", 7)
+	_add(&"rattata", 4)
+	var stored := _add(&"pidgey", 3, true)
+	stored.nickname = "Plume"
+	var favorite := StorageRules.toggle_favorite(_state.party, _state.storage, PARTY, 0)
+	assert_eq(StorageViews.result_text(favorite, _data), "", "favori : pas de texte")
+	var deposit := StorageRules.deposit(_state.party, _state.storage, 1)
+	assert_eq(StorageViews.result_text(deposit, _data), "", "déposer : pas de texte")
+	var released := StorageRules.release(_state.party, _state.storage, STORAGE, 0)
+	assert_true(released.is_ok())
+	assert_eq(StorageViews.result_text(released, _data), "Plume a été libéré.")
+
+
+func test_view_carries_the_release_line_only_after_a_release() -> void:
+	_add(&"charmander", 7)
+	_add(&"pidgey", 3, true)
+	assert_eq(_build().result_text, "", "à l'entrée de l'écran : pas de ligne")
+	var released := StorageRules.release(_state.party, _state.storage, STORAGE, 0)
+	var view := StorageViews.build(_state, _data, released.selection, _zones, _unlocks,
+		released)
+	assert_eq(view.result_text, "Roucool a été libéré.")
+	var refused := StorageRules.deposit(_state.party, _state.storage, 0)
+	view = StorageViews.build(_state, _data, refused.selection, _zones, _unlocks, refused)
+	assert_eq(view.result_text, "", "un refus ne passe pas par la vue")

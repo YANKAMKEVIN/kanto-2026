@@ -9,7 +9,7 @@ const ORDER: Array[StringName] = [&"team", &"pokedex", &"bag", &"map", &"trainer
 
 
 func _view(card_count: int, with_lead: bool = true, dex: String = "",
-		objective: String = "Objectif : rejoindre Jadielle") -> DashboardView:
+		objective: String = "Objectif : rejoindre Jadielle.") -> DashboardView:
 	var view := DashboardView.new()
 	view.zone_name = "Route 1"
 	view.player_name = "Kevin"
@@ -106,7 +106,7 @@ func test_empty_texts_hide_their_lines() -> void:
 	assert_eq(trainer.get_lead_card().get_hp_text(), "19 / 19")
 	assert_eq(trainer.get_lead_card().get_level_text(), "Nv. 5")
 	assert_true(dash.get_objective_label().visible)
-	assert_eq(dash.get_objective_label().text, "Objectif : rejoindre Jadielle")
+	assert_eq(dash.get_objective_label().text, "Objectif : rejoindre Jadielle.")
 
 
 func test_touch_zones_and_safe_margin() -> void:

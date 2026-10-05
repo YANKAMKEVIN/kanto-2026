@@ -71,8 +71,8 @@ func test_deposit_the_only_pokemon_is_refused_and_nothing_changes() -> void:
 func test_deposit_the_last_able_pokemon_is_refused_q7() -> void:
 	var members := _fill_party(2)
 	_faint(members[1])
-	assert_eq(StorageRules.can_deposit(_party, 0), StorageRules.Status.LAST_POKEMON,
-		"il ne resterait qu'un K.O.")
+	assert_eq(StorageRules.can_deposit(_party, 0), StorageRules.Status.LAST_ABLE,
+		"il ne resterait qu'un K.O. : raison distincte de l'équipe vide")
 	assert_eq(StorageRules.can_deposit(_party, 1), StorageRules.Status.OK,
 		"déposer le K.O. laisse un Pokémon valide")
 	assert_true(StorageRules.deposit(_party, _storage, 1).is_ok())
@@ -83,7 +83,44 @@ func test_deposit_a_fainted_pokemon_when_no_able_one_would_remain_is_refused() -
 	var members := _fill_party(2)
 	_faint(members[0])
 	_faint(members[1])
-	assert_eq(StorageRules.can_deposit(_party, 1), StorageRules.Status.LAST_POKEMON)
+	assert_eq(StorageRules.can_deposit(_party, 1), StorageRules.Status.LAST_ABLE)
+	var result := StorageRules.deposit(_party, _storage, 1)
+	assert_eq(result.status, StorageRules.Status.LAST_ABLE)
+	assert_eq(result.action, StorageRules.Action.NONE, "un refus n'a pas d'action")
+	assert_eq(_party.size(), 2)
+	assert_true(_storage.is_empty())
+
+
+func test_deposit_a_lone_fainted_pokemon_would_empty_the_party() -> void:
+	var members := _fill_party(1)
+	_faint(members[0])
+	assert_eq(StorageRules.can_deposit(_party, 0), StorageRules.Status.LAST_POKEMON,
+		"l'équipe serait vide : la raison « vide » l'emporte")
+
+
+func test_keep_status_distinguishes_empty_and_all_fainted() -> void:
+	var members := _fill_party(3)
+	assert_eq(StorageRules.keep_status(_party, 0), StorageRules.Status.OK)
+	_faint(members[1])
+	_faint(members[2])
+	assert_eq(StorageRules.keep_status(_party, 0), StorageRules.Status.LAST_ABLE)
+	assert_eq(StorageRules.keep_status(_party, 1), StorageRules.Status.OK)
+	var lone := Party.new()
+	lone.add(_mon())
+	assert_eq(StorageRules.keep_status(lone, 0), StorageRules.Status.LAST_POKEMON)
+
+
+func test_each_success_carries_its_action() -> void:
+	_fill_party(3)
+	_storage.add(_mon())
+	assert_eq(StorageRules.deposit(_party, _storage, 0).action, StorageRules.Action.DEPOSIT)
+	assert_eq(StorageRules.withdraw(_party, _storage, 0).action, StorageRules.Action.WITHDRAW)
+	assert_eq(StorageRules.toggle_favorite(_party, _storage, PARTY, 0).action,
+		StorageRules.Action.FAVORITE)
+	assert_eq(StorageRules.release(_party, _storage, STORAGE, 0).action,
+		StorageRules.Action.RELEASE)
+	assert_eq(StorageRules.release(_party, _storage, STORAGE, 9).action,
+		StorageRules.Action.NONE, "refus : aucune action")
 
 
 func test_deposit_an_unknown_place_is_not_found() -> void:
@@ -225,8 +262,16 @@ func test_release_the_last_able_pokemon_is_refused_q7() -> void:
 	var members := _fill_party(2)
 	_faint(members[1])
 	assert_eq(StorageRules.can_release(_party, _storage, PARTY, 0),
-		StorageRules.Status.LAST_POKEMON)
+		StorageRules.Status.LAST_ABLE)
 	assert_eq(StorageRules.can_release(_party, _storage, PARTY, 1), StorageRules.Status.OK)
+
+
+func test_last_able_comes_before_favorite() -> void:
+	var members := _fill_party(2)
+	_faint(members[1])
+	members[0].favorite = true
+	assert_eq(StorageRules.can_release(_party, _storage, PARTY, 0),
+		StorageRules.Status.LAST_ABLE, "retirer le favori n'aiderait pas")
 
 
 func test_last_pokemon_comes_before_favorite() -> void:
