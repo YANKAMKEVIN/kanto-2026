@@ -28,17 +28,19 @@ const DOSSIER_09 := "res://docs/design/dossier-09-jadielle.md"
 const _DOSSIER_TOKENS: Dictionary[String, String] = {"{first_wild_species}": "{espèce}"}
 const MAPS: Array[StringName] = [
 	&"player_house_2f", &"player_house_1f", &"rival_house", &"oak_lab", &"pallet_town",
-	&"route_1", &"route_22", &"viridian_city",
+	&"route_1", &"route_22", &"viridian_city", &"viridian_center",
 ]
-## Seuls textes provisoires : le panneau « BOURG PALETTE » (Q8) et les textes d'observation
-## des Pokémon des habitants (jalon 6 T16, à valider par Kevin).
-const DRAFTS: Array[StringName] = [&"observe_aoki_pidgey", &"observe_leo_rattata",
-	&"sign_pallet_town"]
+## Seuls textes provisoires : le panneau « BOURG PALETTE » (Q8), les textes d'observation
+## des Pokémon des habitants (jalon 6 T16, à valider par Kevin) et la Dresseuse au repos du
+## Centre (jalon 7 T8, absente du dossier 09 §19).
+const DRAFTS: Array[StringName] = [&"center_lass", &"observe_aoki_pidgey",
+	&"observe_leo_rattata", &"sign_pallet_town"]
 ## Identifiants attendus (3A) : Maman, table, rival, carte, Maya, 3 starters, 3 habitants,
 ## panneau ; (3B) « Hé ! Attends ! », les répliques du Prof. Chen et la pensée des herbes ;
 ## (4A, T1) la proposition du Prof. Chen ; (4A, T3) le choix et la sortie empêchée.
 const IDS: Array[StringName] = [
-	&"aoki", &"breakfast_table", &"haru", &"leo", &"maya", &"mom", &"mom_wakeup",
+	&"aoki", &"breakfast_table", &"center_lass", &"haru", &"leo", &"maya", &"mom",
+	&"mom_wakeup", &"nurse", &"nurse_wakeup",
 	&"oak_after_battle",
 	&"oak_lab_exit_block", &"oak_lab_reunion", &"oak_lab_waiting", &"oak_parcel_records",
 	&"oak_parcel_rival", &"oak_poke_balls", &"oak_poke_balls_intro", &"oak_pokedex_activated",
@@ -142,6 +144,10 @@ func _pages() -> Array[Array]:
 		for variant: DialogueVariant in _library.get_dialogue(id).variants:
 			for page: DialoguePage in variant.pages:
 				pages.append([id, page.text, page, variant])
+			# Jalon 7 (T8) : pages des réponses d'un choix (SOIGNER / PAS MAINTENANT).
+			if variant.choice != null:
+				for page: DialoguePage in variant.choice.confirm_pages + variant.choice.cancel_pages:
+					pages.append([id, page.text, page, variant])
 	return pages
 
 
@@ -471,6 +477,8 @@ func test_speakers_and_narration() -> void:
 		&"oak_pokedex_activated": ["Prof. Chen", false], &"oak_parcel_rival": ["", false],
 		&"rival_parcel_return": ["Rival", false], &"rival_parcel_greet": ["Rival", false],
 		&"rival_parcel_leaving": ["Rival", false],
+		&"nurse": ["Infirmière", false], &"nurse_wakeup": ["Infirmière", false],
+		&"center_lass": ["Dresseuse", false],
 	}
 	for id: StringName in expected:
 		var dialogue := _library.get_dialogue(id)

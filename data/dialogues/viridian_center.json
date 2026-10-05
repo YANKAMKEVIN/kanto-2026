@@ -1,0 +1,28 @@
+{
+	"nurse": {
+		"speaker": "Infirmière",
+		"variants": [
+			{
+				"pages": ["Bonjour. Je m'occupe de ton équipe ?"],
+				"choice": {
+					"confirm": "SOIGNER", "cancel": "PAS MAINTENANT",
+					"confirm_action": "center_heal",
+					"confirm_pages": ["Voilà. Tout le monde est en pleine forme."],
+					"cancel_pages": ["Très bien. Reviens quand tu veux."]
+				}
+			}
+		]
+	},
+	"nurse_wakeup": {
+		"speaker": "Infirmière",
+		"pages": ["Voilà. Tout le monde est en pleine forme."]
+	},
+	"center_lass": {
+		"speaker": "Dresseuse",
+		"draft": true,
+		"pages": [
+			"Mon Roucool avait besoin d'une pause.",
+			"Ici, on reprend toujours des forces avant de repartir."
+		]
+	}
+}

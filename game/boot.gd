@@ -92,6 +92,10 @@ var _unlocks: MenuUnlocks
 ## changement de carte (écran noir) ; profil vide = aucun effet (Bourg Palette, Route 1).
 var _lighting: WorldLighting
 var _light_profiles := LightingLibrary.new()
+## Points de repos (jalon 7, 7A.2) : maison et Centres, mot du réveil (data/world/rest_points.json).
+var _rest_points := RestPointLibrary.new()
+## Toast « Point de repos enregistré — <zone> » en attente de la fin du dialogue du soin.
+var _rest_toast: PackedStringArray = PackedStringArray()
 ## Faux : aucune écriture de toute la session (pas de sauvegarde, départ de débogage, ou
 ## sauvegarde d'une version plus récente à ne jamais écraser).
 var _autosave_enabled: bool = false
@@ -118,6 +122,8 @@ var _in_foreground: bool = true
 @onready var _battle_director: BattleDirector = %BattleDirector
 @onready var _ambient: AmbientWatcher = %AmbientWatcher
 @onready var _encounters: EncounterDirector = %EncounterDirector
+@onready var _recovery: DefeatRecovery = %DefeatRecovery
+@onready var _services: ServiceDirector = %ServiceDirector
 @onready var _menu: MenuDirector = %MenuDirector
 @onready var _menu_screen: TrainerMenu = %TrainerMenu
 
@@ -136,6 +142,15 @@ func _ready() -> void:
 	_library.load_dir()
 	_cutscenes.load_dir()
 	_runner.setup(_library, GameState.flags, _dialogue_box, _player)
+	# Centre Pokémon (jalon 7, 7A.2, jalon-07.md §6.2) : actions de dialogue (soins), choix à deux
+	# cartes dans la boîte de dialogue (T7), réveil au point de repos.
+	_rest_points.load_file()
+	_services.setup(GameState, _rest_points)
+	_services.center_healed.connect(_on_center_healed)
+	_runner.action_handler = _services.run_action
+	# Choix à deux cartes (jalon-07.md §6.5, T7) : la boîte montre les cartes, le lecteur attend.
+	_runner.choice_requested.connect(_dialogue_box.show_choice)
+	_dialogue_box.choice_made.connect(_runner.choose)
 	_interactions.setup(_player, _runner)
 	_cutscenes_node.setup(_cutscenes, GameState.flags, _runner, _player, SceneRouter)
 	_pokemon.load_dir()
@@ -175,13 +190,14 @@ func _ready() -> void:
 	# (BattleDirector.run_request). Une défaite renvoie au point de soin (§3.11).
 	_encounter_library = EncounterLibrary.new(_pokemon)
 	_encounter_library.load_dir()
+	_recovery.setup(GameState, _rest_points, SceneRouter, _runner)
+	_recovery.woke_up.connect(_on_woke_up_after_defeat.unbind(1))
 	_encounters.setup(_encounter_library, _pokemon, GameState, _player, _battle_director,
-		SceneRouter, _cutscenes_node, _runner)
+		SceneRouter, _cutscenes_node, _recovery)
 	_encounters.encounter_started.connect(_on_encounter_state_changed.unbind(2))
 	_encounters.encounter_started.connect(_hud.hide_zone_title.unbind(2))
 	_encounters.encounter_finished.connect(_on_encounter_state_changed.unbind(1))
 	_encounters.encounter_finished.connect(_on_encounter_finished)
-	_encounters.woke_up_after_defeat.connect(_on_woke_up_after_defeat)
 	_interactions.target_changed.connect(_on_target_changed)
 	_runner.dialogue_started.connect(_on_dialogue_started)
 	_runner.dialogue_finished.connect(_on_dialogue_finished)
@@ -451,6 +467,21 @@ func get_encounter_director() -> EncounterDirector:
 	return _encounters
 
 
+## Réveil après une défaite (jalon 7, T8).
+func get_defeat_recovery() -> DefeatRecovery:
+	return _recovery
+
+
+## Actions des services : soins, plus tard Boutique et Stockage (jalon 7, T8).
+func get_service_director() -> ServiceDirector:
+	return _services
+
+
+## Points de repos chargés au démarrage (data/world/rest_points.json).
+func get_rest_points() -> RestPointLibrary:
+	return _rest_points
+
+
 ## Tables de rencontre chargées au démarrage (data/encounters/).
 func get_encounter_library() -> EncounterLibrary:
 	return _encounter_library
@@ -494,6 +525,9 @@ func _can_open_menu() -> bool:
 ## immédiate puis ouverture du menu ; pendant un dialogue, une scène, un combat ou une
 ## transition, ignoré.
 func _on_go_back() -> void:
+	# Un choix à deux cartes dans un dialogue (SOIGNER / PAS MAINTENANT) : retour = annuler.
+	if _dialogue_box.cancel_choice():
+		return
 	if _menu.is_open() and _screen_back():
 		return
 	if _menu.handle_back():
@@ -683,6 +717,8 @@ func _on_map_changed(map: GameMap) -> void:
 	_starter_choice.set_map(map)
 	_ambient.set_map(map)
 	_encounters.set_map(map)
+	_services.set_map(map)
+	_recovery.set_map(map)
 
 
 ## Profil de lumière de [param map] ([member GameMap.light_profile]) ; vide ou inconnu :
@@ -719,12 +755,28 @@ func _on_dialogue_started(_dialogue_id: StringName) -> void:
 
 func _on_dialogue_finished(_dialogue_id: StringName) -> void:
 	_refresh_controls()
+	if not _rest_toast.is_empty():
+		_hud.show_toast(_rest_toast[0], _rest_toast[1])
+		_rest_toast = PackedStringArray()
 
 
-## Soin demandé par un dialogue « heal » (jalon 5 §3.11) : l'équipe est soignée (PV et PP).
+## Soin demandé par un dialogue « heal » (jalon 5 §3.11, Maman) : l'équipe est soignée (PV et
+## PP) ; le point de repos ne change pas (dossier 09 §7).
 func _on_heal_requested() -> void:
-	GameState.party.heal_all()
+	_services.heal()
 	request_autosave("soin")
+
+
+## Soin d'un Centre fini (jalon-07.md §5.3) : écriture tout de suite (joueur au comptoir, la
+## partie ne peut plus rien perdre), comme au réveil ; le toast du point de repos attend la fin
+## du dialogue (après « Voilà. Tout le monde est en pleine forme. »), une fois par changement.
+func _on_center_healed(map_id: StringName, registered: bool) -> void:
+	if registered:
+		_rest_toast = _rest_points.registered_toast(_zones.zone_name_of(map_id))
+	if _can_write() and not SceneRouter.is_transitioning():
+		_write_save("soin")
+	else:
+		request_autosave("soin")
 
 
 func _on_cutscene_started(_cutscene_id: StringName) -> void:
@@ -785,16 +837,17 @@ func _on_battle_finished(trainer_id: StringName, outcome: int) -> void:
 	request_autosave("fin de combat")
 
 
-## Fin d'une rencontre sauvage (victoire, fuite ou défaite → réveil chez Maman) : autosave,
-## écrit dès que la partie est stable (après le mot de Maman en cas de défaite).
+## Fin d'une rencontre sauvage (victoire, fuite ou défaite → réveil au point de repos) :
+## autosave, écrit dès que la partie est stable (après le mot du lieu en cas de défaite).
 func _on_encounter_finished(_outcome: int) -> void:
 	request_autosave("fin de rencontre")
 
 
-## Réveil chez Maman après une défaite (décision de Kevin du 2026-10-02, QA S3) : la défaite
-## est un fait accompli. L'équipe est soignée et le joueur est au point de soin : on écrit tout
-## de suite, avant le mot de Maman ; sinon, quitter pendant son mot effaçait la défaite (retour
-## à la dernière case stable d'avant le combat). Une scène interrompue, elle, se rejoue.
+## Réveil au point de repos après une défaite ([DefeatRecovery] : dernier Centre utilisé, sinon
+## la maison ; décision de Kevin du 2026-10-02, QA S3) : la défaite est un fait accompli.
+## L'équipe est soignée et le joueur est au point de repos : on écrit tout de suite, avant le mot
+## du lieu ; sinon, quitter pendant ce mot effaçait la défaite (retour à la dernière case stable
+## d'avant le combat). Une scène interrompue, elle, se rejoue.
 func _on_woke_up_after_defeat() -> void:
 	if _can_write() and not SceneRouter.is_transitioning():
 		_write_save("réveil")
@@ -922,6 +975,7 @@ func _apply_settings(s: GameSettings) -> void:
 	_battle_director.confirm_forget = s.confirm_actions
 	_battle_hud.message_hold_scale = 1.0
 	_battle_stage.reduce_flashes = s.reduce_flashes
+	_services.reduce_motion = s.reduce_motion
 	_menu_screen.speed_scale = s.menu_speed_scale()
 	Haptics.enabled = s.haptics
 	UiPrefs.apply(s)

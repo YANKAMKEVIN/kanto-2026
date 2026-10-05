@@ -17,6 +17,8 @@
 [ext_resource type="PackedScene" path="res://game/ui/components/coming_soon_screen.tscn" id="15_soon"]
 [ext_resource type="Script" path="res://game/systems/menu/menu_director.gd" id="16_menu"]
 [ext_resource type="PackedScene" path="res://game/ui/menu/trainer_menu.tscn" id="17_trainer"]
+[ext_resource type="Script" path="res://game/world/rest/defeat_recovery.gd" id="18_recovery"]
+[ext_resource type="Script" path="res://game/systems/services/service_director.gd" id="19_services"]
 
 [node name="Boot" type="Node"]
 script = ExtResource("1_boot")
@@ -80,6 +82,16 @@ script = ExtResource("13_ambient")
 unique_name_in_owner = true
 process_mode = 1
 script = ExtResource("14_encounters")
+
+[node name="DefeatRecovery" type="Node" parent="."]
+unique_name_in_owner = true
+process_mode = 1
+script = ExtResource("18_recovery")
+
+[node name="ServiceDirector" type="Node" parent="."]
+unique_name_in_owner = true
+process_mode = 1
+script = ExtResource("19_services")
 
 [node name="ScreenFade" parent="." instance=ExtResource("3_fade")]
 unique_name_in_owner = true

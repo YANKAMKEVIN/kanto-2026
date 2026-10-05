@@ -227,3 +227,72 @@ func test_shipped_forget_move_start_reaches_the_forget_offer() -> void:
 	assert_eq(steps.size(), 1)
 	assert_eq(steps[0].moves, [&"poison_powder"] as Array[StringName])
 	assert_eq(bulbasaur.learn_move(&"poison_powder", _data), Pokemon.LearnResult.NEEDS_FORGET)
+
+
+# --- Jalon 7 (T8) : argent et Stockage ---------------------------------------------------------
+
+func test_money_and_storage_are_applied() -> void:
+	var start := DebugStart.new()
+	assert_true(start.add_from_dict({
+		"party": [{ "species": "charmander", "level": 8 }],
+		"money": 6000,
+		"storage": [{ "species": "rattata", "level": 4 }, { "species": "spearow", "level": 3,
+			"hp": 0 }],
+	}, _data, _items), "\n".join(start.get_errors()))
+	var state: Node = autofree(GameStateScript.new())
+	start.apply(state, _data)
+	assert_eq(state.money, 6000)
+	assert_eq(state.party.size(), 1, "le Stockage n'entre pas dans l'équipe")
+	assert_eq(state.storage.size(), 2)
+	assert_eq(state.storage.get_at(0).species_id, &"rattata")
+	assert_eq(state.storage.get_at(1).hp, 0, "même format que l'équipe (PV)")
+	assert_true(state.pokedex.is_caught(&"spearow"), "capturé au Pokédex")
+
+
+func test_without_money_the_new_game_sum_is_kept() -> void:
+	var start := DebugStart.new()
+	assert_true(start.add_from_dict({ "party": [{ "species": "pidgey", "level": 3 }] }, _data,
+		_items))
+	var state: Node = autofree(GameStateScript.new())
+	state.money = 12
+	start.apply(state, _data)
+	assert_eq(state.money, GameStateScript.STARTING_MONEY)
+	assert_eq(state.storage.size(), 0)
+
+
+func test_money_and_storage_are_validated() -> void:
+	var start := DebugStart.new()
+	assert_false(start.add_from_dict({ "party": [{ "species": "pidgey", "level": 3 }],
+		"money": -5, "storage": [{ "species": "missingno", "level": 3 }] }, _data, _items, "t"))
+	var errors := "\n".join(start.get_errors())
+	assert_string_contains(errors, "t : « money » est un entier de 0 à 999999")
+	assert_string_contains(errors, "t storage 1 : espèce inconnue « missingno »")
+	assert_false(start.add_from_dict({ "party": [{ "species": "pidgey", "level": 3 }],
+		"money": 1_000_000, "storage": "rattata" }, _data, _items, "u"))
+	assert_eq(DebugStart.MAX_MONEY, GameStateScript.MONEY_MAX)
+	assert_push_error_count(4)
+
+
+## Jalon 7 (T8, jalon-07.md §5.5) : équipe blessée et un K.O., devant la porte du Centre de
+## Jadielle, arrivée déjà faite (pas de micro-scène), aucun Centre enregistré.
+func test_shipped_center_qa_start() -> void:
+	var start := DebugStart.new()
+	assert_true(start.load_file(TOOL_STARTS + "center_qa.json", _data, _items),
+		"\n".join(start.get_errors()))
+	assert_eq([start.map, start.spawn], [&"viridian_city", &"from_center"])
+	assert_true(start.flags.has(&"viridian_arrived"), "pas de micro-scène d'arrivée")
+	assert_false(start.flags.has(&"pokedex_activated"))
+	var state: Node = autofree(GameStateScript.new())
+	start.apply(state, _data)
+	var hurt := 0
+	var fainted := 0
+	for pokemon: Pokemon in state.party.get_all():
+		if pokemon.hp == 0:
+			fainted += 1
+		elif pokemon.hp < pokemon.max_hp():
+			hurt += 1
+	assert_eq([hurt, fainted], [1, 1], "un blessé, un K.O.")
+	assert_eq(state.heal_map, &"player_house_1f", "aucun Centre enregistré")
+	var map := (load(MapCatalog.scene_path(start.map)) as PackedScene).instantiate() as GameMap
+	assert_true(map.has_spawn(start.spawn), "le point d'apparition existe sur la carte")
+	map.free()
