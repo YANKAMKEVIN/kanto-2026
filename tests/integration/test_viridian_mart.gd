@@ -148,16 +148,10 @@ func test_the_first_visit_trigger_covers_the_only_way_in() -> void:
 	assert_null(triggers.find_on_step(ENTRANCE, Vector2i.UP), "pas sur le paillasson")
 
 
-func test_the_courier_stands_on_a_free_cell() -> void:
-	var courier := _map.get_npc(&"mart_courier")
-	assert_not_null(courier)
-	if courier == null:
-		return
-	assert_eq(courier.get_spec().dialogue, &"mart_courier")
-	assert_eq(courier.get_spec().sprite, &"courier")
-	assert_false(_terrain.is_solid(courier.get_cell()))
-	assert_true(_terrain.find_reachable(ENTRANCE).has(courier.get_cell()))
-
+## Décision de Kevin (2026-10-05) : pas de clones. Le livreur fait sa tournée dans la rue (il
+## entre et ressort de la Boutique) ; il n'a pas de double posté à l'intérieur.
+func test_no_duplicate_courier_inside() -> void:
+	assert_null(_map.get_npc(&"mart_courier"))
 
 func test_the_whole_room_is_reachable_with_the_inhabitants_in_place() -> void:
 	var free := _terrain.find_reachable(ENTRANCE)

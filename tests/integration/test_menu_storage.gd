@@ -99,11 +99,21 @@ func _frames_until(condition: Callable) -> bool:
 	return bool(condition.call())
 
 
-## EXAMINER le terminal (face à lui) : le Stockage s'ouvre à la fin du dialogue sans réplique.
+## EXAMINER le terminal (face à lui) : le Stockage s'ouvre à la fin du dialogue. La première
+## fois, une ligne de narration (« Un terminal de Stockage Pokémon. », décision de Kevin du
+## 2026-10-05) précède l'ouverture : on l'avance d'un appui.
 func _use_the_terminal() -> void:
 	Input.action_press(&"interact")
 	await wait_process_frames(2)
 	Input.action_release(&"interact")
+	for i: int in 40:
+		if _menu.is_open():
+			break
+		if _pages.size() > 0:
+			Input.action_press(&"interact")
+			await wait_process_frames(2)
+			Input.action_release(&"interact")
+		await wait_process_frames(2)
 	await _frames_until(func() -> bool: return _menu.is_open())
 	await wait_process_frames(2)
 
@@ -171,7 +181,8 @@ func test_the_terminal_opens_the_storage_alone_and_back_closes_it() -> void:
 	assert_true(_menu.get_navigator().is_standalone(), "écran seul")
 	assert_eq(_menu.get_navigator().current().screen, MenuRoute.STORAGE)
 	assert_true(get_tree().paused, "monde en pause")
-	assert_eq(_pages.size(), 0, "aucune réplique : le terminal ouvre l'écran")
+	assert_eq(_pages, ["Un terminal de Stockage Pokémon."] as Array[String],
+		"la première fois, une seule ligne de narration")
 	var screen := _storage()
 	assert_not_null(screen, "le vrai StorageScreen")
 	if screen == null:

@@ -1,12 +1,16 @@
 {
 	"clerk": {
 		"speaker": "Marchand",
-		"pages": ["Bonjour ! Qu'est-ce qu'il te faut aujourd'hui ?"],
+		"pages": [
+			"Bonjour ! Qu'est-ce qu'il te faut aujourd'hui ?"
+		],
 		"action": "open_shop"
 	},
 	"clerk_parcel_hello": {
 		"speaker": "Marchand",
-		"pages": ["Bonjour ! Première fois à Jadielle ?"]
+		"pages": [
+			"Bonjour ! Première fois à Jadielle ?"
+		]
 	},
 	"clerk_parcel": {
 		"speaker": "Marchand",
@@ -14,14 +18,6 @@
 			"Hmm… Ce Pokémon vient du laboratoire du Professeur Chen, non ?",
 			"Ça tombe bien. J'ai justement reçu quelque chose pour lui ce matin.",
 			"Tu pourrais lui remettre quand tu retourneras à Bourg Palette ?"
-		]
-	},
-	"mart_courier": {
-		"speaker": "Livreur",
-		"draft": true,
-		"pages": [
-			"Les cartons sont posés. Plus qu'à faire signer…",
-			"Les Potions partent toujours en premier, ici."
 		]
 	}
 }

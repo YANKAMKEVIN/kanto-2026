@@ -33,14 +33,14 @@ const MAPS: Array[StringName] = [
 ## Seuls textes provisoires : le panneau « BOURG PALETTE » (Q8), les textes d'observation
 ## des Pokémon des habitants (jalon 6 T16, à valider par Kevin) et la Dresseuse au repos du
 ## Centre (jalon 7 T8, absente du dossier 09 §19) ; le livreur dans la Boutique (T12, idem).
-const DRAFTS: Array[StringName] = [&"center_lass", &"mart_courier", &"observe_aoki_pidgey",
-	&"observe_leo_rattata", &"sign_pallet_town"]
+const DRAFTS: Array[StringName] = [&"observe_aoki_pidgey", &"observe_leo_rattata",
+	&"sign_pallet_town"]
 ## Identifiants attendus (3A) : Maman, table, rival, carte, Maya, 3 starters, 3 habitants,
 ## panneau ; (3B) « Hé ! Attends ! », les répliques du Prof. Chen et la pensée des herbes ;
 ## (4A, T1) la proposition du Prof. Chen ; (4A, T3) le choix et la sortie empêchée.
 const IDS: Array[StringName] = [
-	&"aoki", &"breakfast_table", &"center_lass", &"clerk", &"clerk_parcel",
-	&"clerk_parcel_hello", &"haru", &"leo", &"mart_courier", &"maya", &"mom",
+	&"aoki", &"breakfast_table", &"clerk", &"clerk_parcel",
+	&"clerk_parcel_hello", &"haru", &"leo", &"maya", &"mom",
 	&"mom_wakeup", &"nurse", &"nurse_wakeup",
 	&"oak_after_battle",
 	&"oak_lab_exit_block", &"oak_lab_reunion", &"oak_lab_waiting", &"oak_parcel_records",
@@ -259,7 +259,8 @@ func test_every_condition_flag_is_set_somewhere() -> void:
 		assert_false(set_flags.has(flag), "« %s » : levé par un jalon futur" % flag)
 	assert_true(read_flags.has(&"starter_chosen"), "starter_chosen lu (pensée des herbes)")
 	assert_eq(_library.get_set_flags(),
-		[&"blacked_out_before", &"mom_greeted", &"rival_met", &"viridian_old_man_talked"]
+		[&"blacked_out_before", &"mom_greeted", &"rival_met", &"storage_terminal_seen",
+			&"viridian_old_man_talked"]
 		as Array[StringName])
 	assert_eq(_cutscenes.get_set_flags(), [&"got_oak_parcel", &"got_potion_route_1", &"oak_lab_reunion", &"oak_met",
 		&"pokedex_activated", &"rival_battle_done", &"rival_challenged", &"rival_lab_lost",
@@ -430,7 +431,8 @@ func test_draft_variants_are_exactly_the_expected_ones() -> void:
 		for i: int in dialogue.variants.size():
 			if dialogue.variants[i].draft:
 				drafts.append("%s:%d" % [id, i])
-	assert_eq(drafts, ["mom:1"] as Array[String])
+	# + la narration du terminal du Stockage à la première utilisation (Kevin, 2026-10-05).
+	assert_eq(drafts, ["mom:1", "storage_terminal:0"] as Array[String])
 	var heal: DialogueVariant = _library.get_dialogue(&"mom").variants[1]
 	assert_eq(heal.action, &"heal", "soigne l'équipe")
 	assert_eq(heal.if_flags, [&"starter_chosen"] as Array[StringName], "après le starter")
@@ -489,7 +491,6 @@ func test_speakers_and_narration() -> void:
 		&"rival_parcel_return": ["Rival", false], &"rival_parcel_greet": ["Rival", false],
 		&"rival_parcel_leaving": ["Rival", false],
 		&"nurse": ["Infirmière", false], &"nurse_wakeup": ["Infirmière", false],
-		&"center_lass": ["Dresseuse", false],
 		&"route22_youngster_sigh": ["Jeune Dresseur", false],
 		&"route22_rival_hesitates": ["Rival", false], &"route22_rival_greet": ["Rival", false],
 		&"route22_rival_won": ["Rival", false], &"route22_rival_lost": ["Rival", false],

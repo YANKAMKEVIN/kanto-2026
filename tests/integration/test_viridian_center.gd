@@ -164,20 +164,11 @@ func test_the_storage_terminal_is_examined_from_the_front() -> void:
 	assert_eq(_map.get_spawn_cell(&"terminal"), Vector2i(1, 4), "spawn devant le terminal")
 
 
-func test_resting_trainer_and_her_pidgey() -> void:
-	var lass := _map.get_npc(&"center_lass")
-	var pidgey := _map.get_npc(&"center_lass_pidgey")
-	assert_not_null(lass)
-	assert_not_null(pidgey)
-	if lass == null or pidgey == null:
-		return
-	assert_eq(lass.get_spec().dialogue, &"center_lass")
-	assert_eq(pidgey.get_spec().sprite, &"pokemon/pidgey", "aucune espèce nouvelle")
-	assert_eq(pidgey.get_spec().idle_react_every, 6.0)
-	for npc: Npc in [lass, pidgey]:
-		assert_false(_terrain.is_solid(npc.get_cell()), "%s sur une case libre" % npc.get_id())
-		assert_true(_terrain.find_reachable(ENTRANCE).has(npc.get_cell()))
-
+## Décision de Kevin (2026-10-05) : pas de clones. La Dresseuse et son Roucool sont sur la
+## place de Jadielle ; ils ne sont pas aussi au Centre.
+func test_no_duplicate_of_the_square_lass() -> void:
+	assert_null(_map.get_npc(&"center_lass"))
+	assert_null(_map.get_npc(&"center_lass_pidgey"))
 
 func test_the_whole_room_is_reachable_with_the_inhabitants_in_place() -> void:
 	var free := _terrain.find_reachable(ENTRANCE)
