@@ -22,7 +22,8 @@ extends RefCounted
 ##     { "species": "bulbasaur", "level": 19, "exp_to_next": 1,
 ##       "moves": ["tackle", "growl", "leech_seed", "vine_whip"] }
 ##   ],
-##   "bag": { "poke_ball": 5 },
+##   "bag": { "poke_ball": 5, "potion": 4 },
+##   "favorites": ["potion"],
 ##   "money": 6000,
 ##   "storage": [ { "species": "rattata", "level": 4 } ]
 ## }
@@ -35,6 +36,8 @@ extends RefCounted
 ## Jalon 7 (sauvegarde v3) : « money » (0 à GameState.MONEY_MAX ; absent : la somme d'une
 ## nouvelle partie) ; « storage » : Pokémon du Stockage, même format que les membres de l'équipe
 ## (au plus [constant MAX_STORAGE]), « capturés » au Pokédex eux aussi.
+## Jalon 7 (T12, départ `shop_qa`) : « favorites » : objets du Sac marqués favoris (chacun doit
+## être dans « bag »).
 
 const USER_PATH: String = "user://debug_start.json"
 const FACINGS: Dictionary[String, Vector2i] = {
@@ -46,7 +49,7 @@ const MAX_STORAGE: int = 60
 const MAX_MONEY: int = 999_999
 
 const _KEYS: Array[String] = ["map", "spawn", "facing", "seed", "flags", "party", "bag",
-	"money", "storage"]
+	"favorites", "money", "storage"]
 const _MEMBER_KEYS: Array[String] = ["species", "level", "moves", "exp_to_next", "hp"]
 
 ## Carte et point d'apparition de départ (&"" = départ par défaut de Boot).
@@ -59,6 +62,8 @@ var flags: Array[StringName] = []
 ## Membres de l'équipe validés : { species, level, moves (Array[StringName]), exp_to_next }.
 var party: Array[Dictionary] = []
 var bag: Dictionary[StringName, int] = {}
+## Objets du Sac marqués favoris.
+var favorites: Array[StringName] = []
 ## Argent de départ (−1 = celui d'une nouvelle partie).
 var money: int = -1
 ## Pokémon du Stockage (même forme que [member party]).
@@ -145,6 +150,16 @@ func add_from_dict(dict: Dictionary, data: PokemonData, items: ItemLibrary,
 				ok = _fail("%s bag « %s » : quantité entière ≥ 1 attendue" % [source, id])
 			else:
 				new_bag[id] = int(raw_bag[key])
+	var new_favorites: Array[StringName] = []
+	var raw_favorites: Variant = dict.get("favorites", [])
+	if not raw_favorites is Array:
+		ok = _fail("%s : « favorites » est une liste d'objets du Sac" % source)
+	else:
+		for value: Variant in raw_favorites:
+			if not _is_text(value) or not new_bag.has(StringName(value)):
+				ok = _fail("%s favorites : « %s » n'est pas un objet de « bag »" % [source, value])
+			elif not new_favorites.has(StringName(value)):
+				new_favorites.append(StringName(value))
 	var new_money := -1
 	if dict.has("money"):
 		if not _is_int(dict["money"]) or int(dict["money"]) < 0 \
@@ -172,6 +187,7 @@ func add_from_dict(dict: Dictionary, data: PokemonData, items: ItemLibrary,
 	flags = new_flags
 	party = new_party
 	bag = new_bag
+	favorites = new_favorites
 	money = new_money
 	storage = new_storage
 	return true
@@ -195,6 +211,8 @@ func apply(state: Object, data: PokemonData) -> void:
 		state.flags.set_flag(flag)
 	for id: StringName in bag:
 		state.bag.add(id, bag[id])
+	for id: StringName in favorites:
+		state.bag.set_favorite(id, true)
 	if money >= 0:
 		state.money = money
 

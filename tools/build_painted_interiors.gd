@@ -1,8 +1,7 @@
 extends SceneTree
 ## Construit les intérieurs **peints** du jalon 7 (docs/tech/jalon-07.md §6.3, §6.6) :
 ##   viridian_center — le Centre Pokémon de Jadielle (T8)
-## (la Boutique, T12, viendra ici à son tour ; tools/build_viridian_shells.gd ne construit plus
-## que sa coquille vide).
+##   viridian_mart   — la Boutique de Jadielle (T12 ; remplace la coquille vide du T4)
 ##
 ##   godot --headless --path . -s res://tools/build_painted_interiors.gd
 ##   godot --headless --path . --import
@@ -13,7 +12,8 @@ extends SceneTree
 ## `Entities` (tri par les pieds) ; les murs = cases bloquées (`GameMap.blocked_cells`) relevées
 ## sur l'enveloppe ; aucun TileMapLayer. Agencement : prototype validé par Kevin
 ## (`proto/da-jadielle:proto/da_jadielle/proto_interieur.gd`), colonnes posées sur la grille
-## pour que les emprises tombent sous les images (banquettes en x = 3 et 12, symétriques).
+## pour que les emprises tombent sous les images (banquettes en x = 3 et 12, présentoirs en
+## x = 3 et 11, symétriques).
 ##
 ## Coordonnées en cases (x vers l'est, y vers le sud). Un meuble : [identifiant, case d'ancrage,
 ## pied en cases (y, peut remonter dans la case d'ancrage comme au prototype), nom du nœud].
@@ -36,7 +36,7 @@ var _scenes: Dictionary = {}
 func _init() -> void:
 	_rules = load(RULES_SCRIPT)
 	var errors := 0
-	for room: Dictionary in [_viridian_center()]:
+	for room: Dictionary in [_viridian_center(), _viridian_mart()]:
 		var root := _build(room)
 		var packed := PackedScene.new()
 		var err := packed.pack(root)
@@ -87,6 +87,39 @@ func _viridian_center() -> Dictionary:
 		"interactables": [["NurseCounter", Vector2i(6, 4), Vector2i(3, 1), &"nurse", TALK,
 			Vector2i.UP]],
 		"spawns": {"entrance": Vector2i(7, 8), "heal": Vector2i(7, 5)},
+	}
+
+
+## Boutique de Jadielle (dossier 09 §4, §9 ; prototype validé) : la caisse au milieu (le
+## marchand derrière, on lui parle par-dessus), deux rayons muraux sans étiquette au fond, deux
+## présentoirs de part et d'autre de l'allée qui mène au paillasson bleu, une plante. Première
+## visite : déclencheur sur toute la rangée qu'on traverse en entrant (le seul passage depuis le
+## paillasson) → scène `mart_parcel` (data/cutscenes/viridian_mart.json), qui ne se joue que sans
+## `got_oak_parcel`.
+func _viridian_mart() -> Dictionary:
+	return {
+		"id": &"viridian_mart", "node": "ViridianMart", "size": Vector2i(15, 10),
+		"shell": "res://assets/world/interiors/int_boutique_coque.png",
+		"title": "Jadielle", "light": &"interior_warm",
+		# Mur du fond : 3 rangées (prototype) ; derrière la caisse : le marchand seul.
+		"back_rows": 3,
+		"exit": [Vector2i(6, 8), Vector2i(7, 8), Vector2i(8, 8)],
+		"exit_target": [&"viridian_city", &"from_mart"],
+		"blocked": [Vector2i(5, 3), Vector2i(6, 3), Vector2i(8, 3), Vector2i(9, 3)],
+		"props": [
+			[&"int_boutique_caisse", Vector2i(7, 4), 5.0, "Counter"],
+			[&"int_boutique_rayon_mural", Vector2i(2, 3), 3.2, "ShelfWest"],
+			[&"int_boutique_rayon_mural", Vector2i(12, 3), 3.2, "ShelfEast"],
+			[&"int_boutique_presentoir", Vector2i(3, 7), 7.3, "StandWest"],
+			[&"int_boutique_presentoir", Vector2i(11, 7), 7.3, "StandEast"],
+			[&"int_plante", Vector2i(13, 8), 8.8, "PlantSouthEast"],
+		],
+		# Parler au marchand par-dessus la caisse (trois cases devant lui, tourné vers le haut).
+		"interactables": [["ClerkCounter", Vector2i(6, 4), Vector2i(3, 1), &"clerk", TALK,
+			Vector2i.UP]],
+		# Rangée d'entrée (5..9, 7), toutes directions : on la traverse forcément en entrant.
+		"triggers": [["ParcelTrigger", Vector2i(5, 7), Vector2i(5, 1), &"mart_parcel"]],
+		"spawns": {"entrance": Vector2i(7, 8), "counter": Vector2i(7, 5)},
 	}
 
 
@@ -152,6 +185,15 @@ func _build(room: Dictionary) -> Node2D:
 		point.set(&"kind", entry[4])
 		point.set(&"facing", entry[5])
 		_attach(root, root.get_node(^"Interactables"), point)
+	var trigger_script: GDScript = load("res://game/world/triggers/event_trigger_point.gd")
+	for entry: Array in room.get("triggers", []):
+		var point := Marker2D.new()
+		point.set_script(trigger_script)
+		point.name = entry[0]
+		point.position = _world(entry[1])
+		point.set(&"size", entry[2])
+		point.set(&"cutscene_id", entry[3])
+		_attach(root, root.get_node(^"Triggers"), point)
 	return root
 
 

@@ -96,6 +96,10 @@ var _light_profiles := LightingLibrary.new()
 var _rest_points := RestPointLibrary.new()
 ## Toast « Point de repos enregistré — <zone> » en attente de la fin du dialogue du soin.
 var _rest_toast: PackedStringArray = PackedStringArray()
+## Boutiques (jalon 7, 7A.3, data/shops/) ; la boutique demandée par le marchand (`open_shop`),
+## ouverte à la fin de son dialogue (le menu ne s'ouvre pas pendant un dialogue).
+var _shops := ShopLibrary.new()
+var _pending_shop: StringName = &""
 ## Faux : aucune écriture de toute la session (pas de sauvegarde, départ de débogage, ou
 ## sauvegarde d'une version plus récente à ne jamais écraser).
 var _autosave_enabled: bool = false
@@ -147,6 +151,7 @@ func _ready() -> void:
 	_rest_points.load_file()
 	_services.setup(GameState, _rest_points)
 	_services.center_healed.connect(_on_center_healed)
+	_services.shop_requested.connect(_on_shop_requested)
 	_runner.action_handler = _services.run_action
 	# Choix à deux cartes (jalon-07.md §6.5, T7) : la boîte montre les cartes, le lecteur attend.
 	_runner.choice_requested.connect(_dialogue_box.show_choice)
@@ -228,6 +233,10 @@ func _ready() -> void:
 		push_error(error)
 	_menu.setup(GameState, _pokemon, _zones, _objectives, _unlocks, _can_open_menu, _items, _dex,
 		_map_illustration, _moments)
+	# Boutique (jalon-07.md §6.10, T12) : stock vérifié contre les objets.
+	_shops.load_dir()
+	_shops.check_references(_items)
+	_menu.set_shops(_shops)
 	_menu.menu_opened.connect(_on_menu_opened)
 	_menu.menu_closed.connect(_on_menu_closed)
 	# L'écran (jalon-06.md §6.6) : ouverture et vue dans la même frame, sans await (un fondu
@@ -282,6 +291,13 @@ func _ready() -> void:
 		_menu.settings_shown.connect(_menu_screen.show_settings)
 		_menu_screen.setting_changed.connect(_menu.change_setting)
 		_menu_screen.save_now_requested.connect(_menu.request_save)
+	# Boutique (jalon-07.md §6.10) : ShopScreen du T11 (TrainerMenu), directeur du T12.
+	_menu.shop_shown.connect(_menu_screen.show_shop)
+	_menu.shop_result_shown.connect(_menu_screen.show_shop_result)
+	_menu.shop_confirm_requested.connect(_menu_screen.show_shop_confirm)
+	_menu_screen.shop_mode_changed.connect(_menu.set_shop_mode)
+	_menu_screen.shop_buy_requested.connect(_menu.buy)
+	_menu_screen.shop_sell_requested.connect(_menu.sell)
 	# Une seule écoute de tout ce qui s'enregistre au Pokédex (jalon-06.md §6.9).
 	GameState.pokedex.recorded.connect(_on_pokedex_recorded)
 	GameState.flags.flag_changed.connect(_on_flag_changed)
@@ -480,6 +496,10 @@ func get_service_director() -> ServiceDirector:
 
 
 ## Points de repos chargés au démarrage (data/world/rest_points.json).
+func get_shop_library() -> ShopLibrary:
+	return _shops
+
+
 func get_rest_points() -> RestPointLibrary:
 	return _rest_points
 
@@ -760,6 +780,20 @@ func _on_dialogue_finished(_dialogue_id: StringName) -> void:
 	if not _rest_toast.is_empty():
 		_hud.show_toast(_rest_toast[0], _rest_toast[1])
 		_rest_toast = PackedStringArray()
+	if not _pending_shop.is_empty():
+		var shop_id := _pending_shop
+		_pending_shop = &""
+		if not _menu.open(MenuRoute.shop(shop_id), true):
+			push_error("Boot : la Boutique « %s » ne s'ouvre pas" % shop_id)
+
+
+## « open_shop » (le marchand, jalon-07.md §6.10) : la Boutique s'ouvre en écran seul dès la fin
+## du dialogue (partie stable). Boutique inconnue : refusée tout de suite.
+func _on_shop_requested(shop_id: StringName) -> void:
+	if not _shops.has_shop(shop_id):
+		push_error("Boot : boutique inconnue « %s »" % shop_id)
+		return
+	_pending_shop = shop_id
 
 
 ## Soin demandé par un dialogue « heal » (jalon 5 §3.11, Maman) : l'équipe est soignée (PV et
@@ -879,8 +913,11 @@ func _on_item_given(item_id: StringName, count: int) -> void:
 	_hud.show_toast(item.quantity_text(count), item.added_text(count))
 
 
-## Retour de l'écran : la fiche du Pokédex d'abord, puis le choix du Pokémon du Sac.
+## Retour de l'écran : la confirmation de vente de la Boutique, la fiche du Pokédex, puis le
+## choix du Pokémon du Sac.
 func _screen_back() -> bool:
+	if _menu_screen.shop_back():
+		return true
 	if _menu_screen.has_method(&"pokedex_back") and _menu_screen.call(&"pokedex_back"):
 		return true
 	return _menu_screen.bag_back()
