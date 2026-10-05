@@ -17,6 +17,12 @@ const SCENE_DIR: String = "res://game/world/props/"
 const INTERIOR_TEX_DIR: String = "res://assets/tiles/placeholder/props/interior/"
 const INTERIOR_SCENE_DIR: String = "res://game/world/props/interior/"
 const SEED: int = 4242
+## Végétation (retours de Kevin au T5, jalon-07.md §15.21) : aucune ombre peinte sous les
+## arbres, buissons, ronces, potager et plantes (préfixes de nom) ; elle donnait une impression
+## de suspension. Les autres objets gardent la leur.
+const NO_SHADOW_PREFIXES: Array[String] = [
+	"tree_", "plaza_tree", "bush_", "brambles", "vegetable_patch", "plant",
+]
 
 ## nom → [largeur, hauteur (cases), colonne d'ancre depuis la gauche, empreinte]
 var _props: Dictionary = {
@@ -142,6 +148,8 @@ var _interior: Dictionary = {
 ## du sol, sous les entités), jamais dans `Entities` où le y-sort les mettrait devant le joueur.
 
 var _rng := RandomNumberGenerator.new()
+## Objet en cours de dessin (règle des ombres).
+var _current: String = ""
 
 
 func _init() -> void:
@@ -149,6 +157,7 @@ func _init() -> void:
 	for prop_name: String in _props:
 		var spec: Array = _props[prop_name]
 		_rng.seed = SEED + prop_name.hash()
+		_current = prop_name
 		var img := Image.create_empty(spec[0] * T, spec[1] * T, false, Image.FORMAT_RGBA8)
 		img.fill(Color(0, 0, 0, 0))
 		call("_draw_" + _draw_key(prop_name), img, prop_name)
@@ -168,6 +177,7 @@ func _init() -> void:
 	for prop_name: String in _interior:
 		var spec: Array = _interior[prop_name]
 		_rng.seed = SEED + prop_name.hash()
+		_current = prop_name
 		var img := Image.create_empty(spec[0] * T, spec[1] * T, false, Image.FORMAT_RGBA8)
 		img.fill(Color(0, 0, 0, 0))
 		call("_draw_" + prop_name, img)
@@ -320,6 +330,9 @@ func _poly(img: Image, points: PackedVector2Array, c: Color) -> void:
 
 
 func _shadow(img: Image, center: Vector2, radii: Vector2) -> void:
+	for prefix: String in NO_SHADOW_PREFIXES:
+		if _current.begins_with(prefix):
+			return
 	_ellipse(img, center, radii, Color(0.08, 0.1, 0.05, 0.28))
 
 

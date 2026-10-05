@@ -43,7 +43,7 @@ func _map() -> Node2D:
 	entities.name = "Entities"
 	entities.y_sort_enabled = true
 	map.add_child(entities)
-	for id: String in ["tree_a_01", "bldg_centre_01"]:
+	for id: String in ["prop_banc_01", "bldg_centre_01"]:
 		var prop := (load(SCENES + id + ".tscn") as PackedScene).instantiate() as Node2D
 		prop.position = Vector2(480, 960)
 		entities.add_child(prop)
@@ -190,7 +190,7 @@ func test_shadows_oriented_shown_and_hidden_by_profile() -> void:
 func test_shadows_of_a_map_outside_the_tree() -> void:
 	var map := Node2D.new()
 	autofree(map)
-	var prop := (load(SCENES + "tree_b_01.tscn") as PackedScene).instantiate()
+	var prop := (load(SCENES + "prop_banc_01.tscn") as PackedScene).instantiate()
 	map.add_child(prop)
 	var lighting := _lighting()
 	lighting.apply(null, map)

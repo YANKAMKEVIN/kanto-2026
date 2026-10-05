@@ -86,7 +86,24 @@ func _run() -> void:
 		await _run_houses()
 	if _wants("walk"):
 		await _run_walk()
+	if _wants("shadows"):
+		await _run_shadows()
 	quit()
+
+
+## Même cadrage avant / après la végétation sans ombre : la place de Jadielle, un jardin du
+## bas, puis Bourg Palette (arbre de la place).
+func _run_shadows() -> void:
+	_teleport(Vector2i(28, 22), Vector2i.UP)
+	await _seconds(0.6)
+	await _shot("shadows_viridian_square_" + _tag)
+	_teleport(Vector2i(38, 31), Vector2i.UP)
+	await _seconds(0.6)
+	await _shot("shadows_viridian_garden_" + _tag)
+	_router.call(&"change_map", &"pallet_town", &"player_house_door", Vector2i.DOWN)
+	await _until(func() -> bool: return not _router.call(&"is_transitioning"), 5.0)
+	await _seconds(2.5)
+	await _shot("shadows_pallet_" + _tag)
 
 
 func _run_houses() -> void:
