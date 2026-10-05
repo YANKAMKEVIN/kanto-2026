@@ -3,6 +3,9 @@
 Mis à jour : 2026-10-05 (**jalon 7 en cours sur `jalon-07`**, deux sessions en parallèle : **T0 + T1 sauvegarde v3 validée seule sur S24** ; fondations **T6 Centre, T10 Boutique, T14 Stockage, T18 Chen** faites et fusionnées ; l'autre session a fusionné **T4, la carte de Jadielle** (`j7-monde`) ; décisions de Kevin du 2026-10-05 appliquées ; **2525 tests verts** ; prochain : T5 (validation 7A.1, autre session) puis les paires écran ∥ câblage T7 ∥ T8, T11 ∥ T12, T15 ∥ T16, T19).
 
 
+## Pose à l'arrêt (QA T20/S21, 2026-10-06, branche `j7-pose-arret`)
+- **Pas de bug d'état** : joueur et PNJ (routine, scène, `face`, `react`, marche, course) reviennent bien à `idle_<dir>` image 0 (`tests/integration/test_rest_pose.gd`, mesuré aussi dans la vraie scène `oak_parcel`). La pose « de marche » **est l'image d'attente** : `idle_<dir>` = colonne 0 des planches peintes, et en vue de profil/dos cette colonne « passage » a déjà les jambes écartées (aucune colonne n'est plus serrée ; écart mesuré). Depuis `a08fa01`. **Reporté (art, décision de Kevin)** : regénérer une vraie colonne d'attente (pieds joints) par planche. Captures `build/captures/jalon07_pose_arret/`.
+
 ## QA T5 sur téléphone (S21) de Jadielle (2026-10-05, branche `j7-jadielle-qa`, base `j7-centre` à `7646231`) — détail : `jalon-07.md` §15.22
 - **Toit vert effacé à tort** sous le joueur de la terrasse : un décor ne s'efface plus que pour un joueur **au même niveau** (`GameMap.level_rows`, `WorldProp.same_level`). **Garde-corps** réduits (×0,62, ≈ 55 px) : ils ne cachent plus que les jambes (≤ 46 px). **Habitants hors des passages** : gardien de l'Arène en (7, 11) (parvis traversable), Dresseuse + Roucool au bout du banc (15–16, 21), enfant + Rattata sur la pelouse derrière le banc ; test « habitants partout, toutes les portes et sorties atteignables, aucun sur un goulet ». Défauts (règle 4) notés au §15.22. Captures : `build/captures/jalon07_t5_qa/`. **À revalider sur S24** avec le T5.
 
