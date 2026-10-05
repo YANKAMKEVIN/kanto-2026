@@ -84,6 +84,8 @@ var _follow_index: int = 0
 var _battle_runner: BattleDirector
 var _bag: Bag
 var _items: ItemLibrary
+## HUD d'exploration (jalon 7, étape « caption ») : branchée par Boot après setup.
+var _hud: ExplorationHud
 
 
 func _ready() -> void:
@@ -145,6 +147,14 @@ func set_battle_runner(runner: BattleDirector) -> void:
 func set_inventory(bag: Bag, items: ItemLibrary) -> void:
 	_bag = bag
 	_items = items
+
+
+## Branche la HUD d'exploration (jalon-07.md §3.6, T18) : l'étape « caption » y pose sa
+## légende ([method ExplorationHud.show_caption]) et attend [signal ExplorationHud.caption_hidden].
+## Sans elle, une étape « caption » est sautée (push_error). L'étape « take » (le colis remis à
+## Chen) passe par le Sac de [method set_inventory].
+func set_hud(hud: ExplorationHud) -> void:
+	_hud = hud
 
 
 ## Joue [param cutscene_id]. Faux (et rien ne se passe) si une scène tourne, si
@@ -220,6 +230,10 @@ func _play_step(source_step: CutsceneStep) -> bool:
 			if _flags != null:
 				for flag: StringName in step.flags:
 					_flags.set_flag(flag)
+		CutsceneStep.Kind.CAPTION:
+			await _caption(step)
+		CutsceneStep.Kind.TAKE:
+			_take(step)
 		CutsceneStep.Kind.SPAWN:
 			_spawn(step)
 		CutsceneStep.Kind.MOVE:
@@ -385,6 +399,28 @@ func _give(step: CutsceneStep) -> void:
 		item_given.emit(step.item_id, step.count)
 		if step.found:
 			item_found.emit(step.item_id, step.count)
+
+
+## Étape « caption » (jalon 7, « POKÉDEX ACTIVÉ ») : légende posée sur le monde par la HUD
+## (fondu, tenue UiTokens.CAPTION_HOLD, fondu), puis la scène reprend quand elle a disparu.
+## Sans HUD branchée : push_error, étape sautée.
+func _caption(step: CutsceneStep) -> void:
+	if not is_instance_valid(_hud):
+		_step_error("pas de HUD pour la légende « %s »" % step.text)
+		return
+	_hud.show_caption(step.text)
+	await _hud.caption_hidden
+
+
+## Étape « take » (jalon 7, le colis remis à Chen) : retire [member CutsceneStep.count] objets
+## du Sac, sans toast ni signal (aucun texte validé). Sans Sac branché, ou sans assez d'objets
+## : push_error, étape sautée (Sac inchangé).
+func _take(step: CutsceneStep) -> void:
+	if _bag == null:
+		_step_error("pas de Sac pour reprendre « %s »" % step.item_id)
+		return
+	if not _bag.remove(step.item_id, step.count):
+		_step_error("le Sac n'a pas %d « %s »" % [step.count, step.item_id])
 
 
 ## Attente de [param seconds] s par le mécanisme de l'étape « wait » (_process).

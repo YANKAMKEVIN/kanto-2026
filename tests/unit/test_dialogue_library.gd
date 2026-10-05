@@ -363,3 +363,52 @@ func test_only_one_ending_per_variant() -> void:
 	assert_push_error_count(3)
 	assert_string_contains(_library.get_errors()[0], "une seule fin parmi heal, action")
 	assert_eq(_library.size(), 0)
+
+
+# --- Jetons de texte (jalon 7 §3.6, T18) ---------------------------------------------------
+
+func test_known_token_is_accepted_in_both_page_forms() -> void:
+	assert_true(_library.add_from_dict({"oak": {"pages": [
+		"Un {first_wild_species}… Tu n'as pas perdu de temps.",
+		{"text": "{first_wild_species} !", "pause": 0.2},
+	]}}, "test"), str(_library.get_errors()))
+	var pages := _library.get_dialogue(&"oak").variants[0].pages
+	assert_eq(pages[0].text, "Un {first_wild_species}… Tu n'as pas perdu de temps.",
+		"le texte des données garde son jeton (résolu au moment de jouer)")
+	assert_eq(DialogueTokens.tokens_in(pages[1].text),
+		[&"first_wild_species"] as Array[StringName])
+
+
+func test_unknown_or_malformed_tokens_are_rejected() -> void:
+	var bad: Array = [
+		"Un {species}…", {"text": "Bonjour {player_name}"}, "Accolade { seule",
+		"Fin }", "{First_wild_species}", "{}",
+	]
+	for i: int in bad.size():
+		assert_false(_library.add_from_dict({"d%d" % i: {"pages": [bad[i]]}}, "test"),
+			str(bad[i]))
+	assert_eq(_library.size(), 0)
+	assert_push_error_count(bad.size())
+	var errors := "\n".join(_library.get_errors())
+	assert_string_contains(errors, "jeton inconnu « {species} »")
+	assert_string_contains(errors, "jeton inconnu « {player_name} »")
+	assert_string_contains(errors, "accolade hors d'un jeton")
+
+
+func test_tokens_are_checked_in_the_answer_pages_of_a_choice() -> void:
+	assert_false(_library.add_from_dict({"nurse": {"pages": ["Je soigne ?"], "choice": {
+		"confirm": "OUI", "cancel": "NON", "confirm_pages": ["Voilà, {nobody}."]}}}, "test"))
+	assert_push_error("jeton inconnu « {nobody} »")
+	assert_true(_library.add_from_dict({"ok": {"pages": ["Je soigne ?"], "choice": {
+		"confirm": "OUI", "cancel": "NON",
+		"cancel_pages": ["Un {first_wild_species}…"]}}}, "test"), "réponse : jeton permis")
+
+
+## La question d'un choix ne peut pas être omise : jamais de jeton dans sa dernière page.
+func test_the_question_of_a_choice_has_no_token() -> void:
+	assert_false(_library.add_from_dict({"q": {"pages": ["Tu as vu un {first_wild_species} ?"],
+		"choice": {"confirm": "OUI", "cancel": "NON"}}}, "test"))
+	assert_push_error("la question d'un choix (dernière page) n'a pas de jeton")
+	assert_true(_library.add_from_dict({"q2": {"pages": ["Un {first_wild_species}…",
+		"Je soigne ?"], "choice": {"confirm": "OUI", "cancel": "NON"}}}, "test"),
+		"jeton permis avant la question")
