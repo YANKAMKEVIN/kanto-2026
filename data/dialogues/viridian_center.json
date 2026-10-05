@@ -13,6 +13,10 @@
 			}
 		]
 	},
+	"storage_terminal": {
+		"narration": true,
+		"action": "open_storage"
+	},
 	"nurse_wakeup": {
 		"speaker": "Infirmière",
 		"pages": ["Voilà. Tout le monde est en pleine forme."]

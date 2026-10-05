@@ -55,6 +55,7 @@ const IDS: Array[StringName] = [
 	&"route22_rival_greet", &"route22_rival_hesitates", &"route22_rival_lost",
 	&"route22_rival_won", &"route22_youngster_sigh",
 	&"route_1_potion_found", &"route_1_traveler", &"route_22_traveler", &"sign_pallet_town",
+	&"storage_terminal",
 	&"viridian_courier", &"viridian_gym_door", &"viridian_gym_watcher", &"viridian_kid",
 	&"viridian_lass", &"viridian_old_man", &"viridian_traveler",
 ]

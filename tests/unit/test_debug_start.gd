@@ -383,3 +383,62 @@ func test_shipped_parcel_start() -> void:
 	var map := (load(MapCatalog.scene_path(start.map)) as PackedScene).instantiate() as GameMap
 	assert_true(map.has_spawn(start.spawn), "le point d'apparition existe sur la carte")
 	map.free()
+
+
+# --- Jalon 7 (T16) : favori d'un Pokémon, départ storage_qa -----------------------------------
+
+func test_favorite_marks_a_member() -> void:
+	var start := DebugStart.new()
+	assert_true(start.add_from_dict({
+		"party": [{ "species": "charmander", "level": 8, "favorite": true }],
+		"storage": [{ "species": "rattata", "level": 4 },
+			{ "species": "spearow", "level": 3, "favorite": true }],
+	}, _data, _items), "\n".join(start.get_errors()))
+	var state: Node = autofree(GameStateScript.new())
+	start.apply(state, _data)
+	assert_true(state.party.get_at(0).favorite)
+	assert_false(state.storage.get_at(0).favorite, "faux par défaut")
+	assert_true(state.storage.get_at(1).favorite)
+
+
+func test_favorite_must_be_a_boolean() -> void:
+	var start := DebugStart.new()
+	assert_false(start.add_from_dict({
+		"party": [{ "species": "charmander", "level": 8, "favorite": "oui" }] }, _data, _items,
+		"f"))
+	assert_string_contains("\n".join(start.get_errors()), "« favorite » est un booléen")
+	assert_push_error_count(1)
+
+
+## Jalon 7 (T16, jalon-07.md §5.5) : 6 en équipe dont un K.O., 10 au stockage dont un favori,
+## dans le Centre, devant le terminal.
+func test_shipped_storage_qa_start() -> void:
+	var start := DebugStart.new()
+	assert_true(start.load_file(TOOL_STARTS + "storage_qa.json", _data, _items),
+		"\n".join(start.get_errors()))
+	assert_eq([start.map, start.spawn, start.facing], [&"viridian_center", &"terminal",
+		Vector2i.UP])
+	var state: Node = autofree(GameStateScript.new())
+	start.apply(state, _data)
+	assert_eq(state.party.size(), 6, "équipe pleine")
+	assert_eq(state.storage.size(), 10)
+	var fainted := 0
+	for pokemon: Pokemon in state.party.get_all():
+		if pokemon.is_fainted():
+			fainted += 1
+	assert_eq(fainted, 1, "un K.O. dans l'équipe")
+	var favorites := 0
+	for pokemon: Pokemon in state.storage.get_all():
+		if pokemon.favorite:
+			favorites += 1
+	assert_eq(favorites, 1, "un favori au stockage")
+	var map := (load(MapCatalog.scene_path(start.map)) as PackedScene).instantiate() as GameMap
+	assert_true(map.has_spawn(start.spawn), "le point d'apparition existe sur la carte")
+	assert_true(MenuUnlocks.is_storage_map(start.map, _zones()), "dans un Centre")
+	map.free()
+
+
+func _zones() -> ZoneLibrary:
+	var zones := ZoneLibrary.new()
+	zones.load_file()
+	return zones

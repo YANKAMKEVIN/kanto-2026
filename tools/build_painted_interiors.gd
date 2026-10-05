@@ -26,6 +26,7 @@ const TILE := 96
 const PUSH := 1
 ## Interaction.Kind (valeurs).
 const TALK := 0
+const EXAMINE := 1
 ## WorldLighting.Z_GROUND.
 const Z_GROUND := -3
 
@@ -51,8 +52,8 @@ func _init() -> void:
 
 
 ## Centre Pokémon de Jadielle (dossier 09 §7) : comptoir au milieu (infirmière derrière, machine
-## de soin à droite du plateau), terminal du Stockage au nord-ouest (posé **inerte** jusqu'au
-## T16), deux banquettes, trois plantes ; pas d'escalier ni de Leveinard (arbitrages du dossier).
+## de soin à droite du plateau), terminal du Stockage au nord-ouest (EXAMINER face à lui →
+## `storage_terminal` → l'écran Stockage, T16), deux banquettes, trois plantes ; pas d'escalier ni de Leveinard (arbitrages du dossier).
 func _viridian_center() -> Dictionary:
 	return {
 		"id": &"viridian_center", "node": "ViridianCenter", "size": Vector2i(15, 10),
@@ -84,9 +85,12 @@ func _viridian_center() -> Dictionary:
 		},
 		# Parler à l'infirmière par-dessus le comptoir (trois cases devant elle, tourné vers le
 		# haut).
+		# Le terminal du Stockage (T16) : ses deux cases, face à lui (tourné vers le haut).
 		"interactables": [["NurseCounter", Vector2i(6, 4), Vector2i(3, 1), &"nurse", TALK,
-			Vector2i.UP]],
-		"spawns": {"entrance": Vector2i(7, 8), "heal": Vector2i(7, 5)},
+			Vector2i.UP], ["StorageTerminalScreen", Vector2i(1, 3), Vector2i(2, 1),
+			&"storage_terminal", EXAMINE, Vector2i.UP]],
+		"spawns": {"entrance": Vector2i(7, 8), "heal": Vector2i(7, 5),
+			"terminal": Vector2i(1, 4)},
 	}
 
 
