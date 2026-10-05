@@ -367,3 +367,19 @@ func test_shipped_shop_qa_start() -> void:
 	var map := (load(MapCatalog.scene_path(start.map)) as PackedScene).instantiate() as GameMap
 	assert_true(map.has_spawn(start.spawn), "le point d'apparition existe sur la carte")
 	map.free()
+
+
+## Jalon 7 (T19, jalon-07.md §3.6.2) : `parcel` — colis en main, devant la porte du labo, rival du
+## labo parti ; jamais `pokedex_activated` (seule la scène de Chen le lève).
+func test_shipped_parcel_start() -> void:
+	var start := DebugStart.new()
+	assert_true(start.load_file(TOOL_STARTS + "parcel.json", _data, _items),
+		"\n".join(start.get_errors()))
+	assert_eq([start.map, start.spawn], [&"pallet_town", &"oak_lab_door"])
+	for flag: StringName in [&"got_oak_parcel", &"rival_battle_done", &"rival_left_lab"]:
+		assert_true(start.flags.has(flag), String(flag))
+	assert_false(start.flags.has(&"pokedex_activated"), "jamais par un départ de débogage")
+	assert_eq(start.bag.get(&"oak_parcel", 0), 1, "le colis est dans le Sac")
+	var map := (load(MapCatalog.scene_path(start.map)) as PackedScene).instantiate() as GameMap
+	assert_true(map.has_spawn(start.spawn), "le point d'apparition existe sur la carte")
+	map.free()
