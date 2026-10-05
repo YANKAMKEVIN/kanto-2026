@@ -1,0 +1,62 @@
+{
+	"courier": {
+		"cell": [34, 22], "facing": "left", "sprite": "courier", "dialogue": "viridian_courier",
+		"route": {
+			"cells": [[34, 22], [33, 22], [32, 22], [31, 22], [30, 22], [30, 21], [30, 20],
+				[30, 21], [30, 22], [31, 22], [32, 22], [33, 22]],
+			"pause": 0.8,
+			"enter": { "cell": [30, 20], "seconds": 8 }
+		}
+	},
+	"lass": {
+		"cell": [13, 23], "facing": "right", "sprite": "lass", "dialogue": "viridian_lass"
+	},
+	"lass_pidgey": {
+		"cell": [14, 23], "facing": "left", "sprite": "pokemon/pidgey", "idle_react": 6.0
+	},
+	"old_man": {
+		"cell": [16, 11], "facing": "right", "sprite": "old_man", "dialogue": "viridian_old_man",
+		"route": { "cells": [[16, 11], [17, 11], [18, 11], [17, 11]], "pause": 1.5 }
+	},
+	"gym_watcher": {
+		"cell": [8, 16], "facing": "up", "sprite": "youngster", "dialogue": "viridian_gym_watcher"
+	},
+	"viridian_roof_pidgey": {
+		"cell": [32, 20], "facing": "left", "sprite": "pokemon/pidgey", "lift": 230,
+		"shy": { "action": "fly", "radius": 2 }
+	},
+	"arrival_kid": {
+		"cell": [18, 23], "facing": "right", "sprite": "kid", "dialogue": "viridian_kid",
+		"unless": ["viridian_arrived"]
+	},
+	"arrival_rattata": {
+		"cell": [19, 23], "facing": "right", "sprite": "pokemon/rattata",
+		"unless": ["viridian_arrived"]
+	},
+	"arrival_traveler": {
+		"cell": [22, 22], "facing": "down", "sprite": "traveler", "dialogue": "viridian_traveler",
+		"unless": ["viridian_arrived"]
+	},
+	"kid": {
+		"cell": [32, 23], "facing": "right", "sprite": "kid", "dialogue": "viridian_kid",
+		"if": ["viridian_arrived"],
+		"route": {
+			"cells": [[31, 23], [32, 23], [33, 23], [33, 24], [33, 25], [32, 25], [31, 25],
+				[31, 24]],
+			"pause": 0.9, "start": 1
+		}
+	},
+	"kid_rattata": {
+		"cell": [31, 23], "facing": "right", "sprite": "pokemon/rattata",
+		"if": ["viridian_arrived"],
+		"route": {
+			"cells": [[31, 23], [32, 23], [33, 23], [33, 24], [33, 25], [32, 25], [31, 25],
+				[31, 24]],
+			"pause": 0.5, "start": 0
+		}
+	},
+	"traveler": {
+		"cell": [24, 5], "facing": "left", "sprite": "traveler", "dialogue": "viridian_traveler",
+		"if": ["viridian_arrived"]
+	}
+}

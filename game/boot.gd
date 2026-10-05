@@ -88,6 +88,10 @@ var _dex_toasts: Array[Array] = []
 var _observed: Dictionary[StringName, bool] = {}
 var _objectives := ObjectiveLibrary.new()
 var _unlocks: MenuUnlocks
+## Lumière du monde (jalon 7, jalon-07.md §6.7, §15.3) : profil de la carte appliqué à chaque
+## changement de carte (écran noir) ; profil vide = aucun effet (Bourg Palette, Route 1).
+var _lighting: WorldLighting
+var _light_profiles := LightingLibrary.new()
 ## Faux : aucune écriture de toute la session (pas de sauvegarde, départ de débogage, ou
 ## sauvegarde d'une version plus récente à ne jamais écraser).
 var _autosave_enabled: bool = false
@@ -120,6 +124,10 @@ var _in_foreground: bool = true
 
 func _ready() -> void:
 	GameState.new_game()
+	_lighting = WorldLighting.new()
+	_lighting.process_mode = Node.PROCESS_MODE_PAUSABLE
+	add_child(_lighting)
+	_light_profiles.load_file()
 	_load_settings()
 	# Compteur de fps de QA (journal « [perf] »), seulement en build debug, Boot scène principale.
 	if PerfCounter.is_allowed(OS.is_debug_build(), get_tree().current_scene == self):
@@ -341,6 +349,11 @@ func get_map() -> GameMap:
 
 
 ## Réglages courants (jalon 6, T29).
+## Lumière du monde (jalon 7) : tests et outils de capture.
+func get_world_lighting() -> WorldLighting:
+	return _lighting
+
+
 func get_settings() -> GameSettings:
 	return _settings
 
@@ -663,12 +676,25 @@ func _on_transition_started(_target_map: StringName) -> void:
 ## (jalon 3B §2.6), puis la carte passe aux contrôleurs.
 func _on_map_changed(map: GameMap) -> void:
 	_observed.clear()
+	_apply_lighting(map)
 	map.refresh_npcs(GameState.flags)
 	_interactions.set_map(map)
 	_cutscenes_node.set_map(map)
 	_starter_choice.set_map(map)
 	_ambient.set_map(map)
 	_encounters.set_map(map)
+
+
+## Profil de lumière de [param map] ([member GameMap.light_profile]) ; vide ou inconnu :
+## aucun effet ([method WorldLighting.apply] avec null).
+func _apply_lighting(map: GameMap) -> void:
+	var profile: LightProfile = null
+	if not map.light_profile.is_empty():
+		profile = _light_profiles.get_profile(map.light_profile)
+		if profile == null:
+			push_error("Boot : profil de lumière inconnu « %s » (%s)" % [map.light_profile,
+				map.map_id])
+	_lighting.apply(profile, map)
 
 
 ## Arrivée sur une carte (écran visible) : zone découverte, autosave demandé, titre de zone.
@@ -910,6 +936,7 @@ func _apply_settings(s: GameSettings) -> void:
 	if _menu_screen.has_method(&"set_backdrop_blur"):
 		_menu_screen.call(&"set_backdrop_blur", _profile.menu_blur)
 	_battle_stage.backdrop_blur = not _profile.reduced_effects
+	_lighting.set_reduced_effects(_profile.reduced_effects)
 
 
 ## « Sauvegarder maintenant » : écrit la sauvegarde et affiche le résultat dans l'écran.

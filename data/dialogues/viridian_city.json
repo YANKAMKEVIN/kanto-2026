@@ -1,0 +1,57 @@
+{
+	"viridian_courier": {
+		"speaker": "Livreur",
+		"pages": [
+			"Encore une livraison pour la Boutique…",
+			"Jadielle est petite, mais tout le monde finit par passer par ici."
+		]
+	},
+	"viridian_lass": {
+		"speaker": "Dresseuse",
+		"pages": [
+			"On revient de la route au nord.",
+			"On pensait aller plus loin… mais on va d'abord souffler un peu."
+		]
+	},
+	"viridian_kid": {
+		"speaker": "Enfant",
+		"pages": [
+			"Il me suit partout.",
+			"Même quand je lui dis de rester à la maison !"
+		]
+	},
+	"viridian_traveler": {
+		"speaker": "Voyageur",
+		"pages": [
+			"Tu viens de Bourg Palette ?",
+			"Alors tu verras : au nord de Jadielle, le paysage change vite."
+		]
+	},
+	"viridian_old_man": {
+		"speaker": "Vieil homme",
+		"variants": [
+			{
+				"unless": ["viridian_old_man_talked"],
+				"set": ["viridian_old_man_talked"],
+				"pages": [
+					"Tu pars vers le nord ?",
+					"La Forêt de Jade surprend souvent les jeunes Dresseurs.",
+					"Garde toujours quelques Poké Balls avec toi. On ne sait jamais quelle rencontre nous attend."
+				]
+			},
+			{
+				"pages": [
+					"Il y a des choses qu'on apprend mieux sur la route qu'en écoutant un vieux monsieur."
+				]
+			}
+		]
+	},
+	"viridian_gym_watcher": {
+		"speaker": "Habitant",
+		"pages": ["Encore fermée… Je me demande où est passé le Champion."]
+	},
+	"viridian_gym_door": {
+		"narration": true,
+		"pages": ["La porte est verrouillée."]
+	}
+}
