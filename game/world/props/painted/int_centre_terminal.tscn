@@ -1,0 +1,27 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://game/world/props/prop.gd" id="1_u1nw0"]
+[ext_resource type="Material" path="res://game/world/lighting/materials/world_object.tres" id="2_yqfon"]
+[ext_resource type="Texture2D" path="res://assets/world/interiors/int_centre_terminal.png" id="3_jraps"]
+[ext_resource type="Material" path="res://game/world/lighting/materials/contact_shadow.tres" id="4_bwfm3"]
+[ext_resource type="Texture2D" path="res://assets/world/interiors/int_centre_terminal_contact.png" id="5_psdek"]
+
+[node name="IntCentreTerminal" type="Node2D" unique_id=1843123259]
+script = ExtResource("1_u1nw0")
+footprint = Array[Vector2i]([Vector2i(-1, 0), Vector2i(0, 0)])
+
+[node name="Sprite" type="Sprite2D" parent="." unique_id=1930864599]
+unique_name_in_owner = true
+material = ExtResource("2_yqfon")
+texture = ExtResource("3_jraps")
+centered = false
+offset = Vector2(-91.5, -211)
+
+[node name="ContactShadow" type="Sprite2D" parent="." unique_id=1910317665 groups=["contact_shadows"]]
+z_index = -2
+z_as_relative = false
+material = ExtResource("4_bwfm3")
+scale = Vector2(2, 2)
+texture = ExtResource("5_psdek")
+centered = false
+offset = Vector2(-49.5, -1.5)

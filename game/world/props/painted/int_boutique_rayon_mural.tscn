@@ -1,0 +1,27 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://game/world/props/prop.gd" id="1_6cimq"]
+[ext_resource type="Material" path="res://game/world/lighting/materials/world_object.tres" id="2_h5eyx"]
+[ext_resource type="Texture2D" path="res://assets/world/interiors/int_boutique_rayon_mural.png" id="3_0mupt"]
+[ext_resource type="Material" path="res://game/world/lighting/materials/contact_shadow.tres" id="4_hqhd2"]
+[ext_resource type="Texture2D" path="res://assets/world/interiors/int_boutique_rayon_mural_contact.png" id="5_0qx8c"]
+
+[node name="IntBoutiqueRayonMural" type="Node2D" unique_id=1818408590]
+script = ExtResource("1_6cimq")
+footprint = Array[Vector2i]([Vector2i(-1, 0), Vector2i(0, 0), Vector2i(1, 0)])
+
+[node name="Sprite" type="Sprite2D" parent="." unique_id=1608754419]
+unique_name_in_owner = true
+material = ExtResource("2_h5eyx")
+texture = ExtResource("3_0mupt")
+centered = false
+offset = Vector2(-129.5, -188)
+
+[node name="ContactShadow" type="Sprite2D" parent="." unique_id=282915265 groups=["contact_shadows"]]
+z_index = -2
+z_as_relative = false
+material = ExtResource("4_hqhd2")
+scale = Vector2(2, 2)
+texture = ExtResource("5_0qx8c")
+centered = false
+offset = Vector2(-68.5, -0.5)

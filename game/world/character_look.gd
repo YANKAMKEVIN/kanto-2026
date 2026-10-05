@@ -1,14 +1,25 @@
 class_name CharacterLook
 extends RefCounted
 ## Où trouver l'apparence d'un personnage et comment l'afficher (docs/tech/jalon-07.md §3.2) :
-## **peinte** (128 px à 1:1, filtre LINEAR ; CLAUDE.md) si
-## `painted/<sprite>_frames.tres` existe, sinon **provisoire** (pixel art ×2, NEAREST), sinon
-## l'apparence générique provisoire. Une seule règle pour `Npc` et `Player` (branchés au T3).
+## **peinte** (≈ 128 px à 1:1, filtre LINEAR ; CLAUDE.md) si `painted/<sprite>_frames.tres`
+## existe, sinon **provisoire** (pixel art ×2, NEAREST), sinon l'apparence générique
+## provisoire. Une seule règle pour `Npc` et `Player`.
 ## Classe pure : l'existence des fichiers est demandée à un [Callable] (les tests en
 ## fournissent un faux).
+##
+## **Identifiants** (anglais, ceux des données) : les SpriteFrames peints sont générés par
+## `tools/build_character_frames.gd` depuis les planches des fiches d'art (en français) ;
+## la correspondance est la table `LOOKS` de cet outil (« heros » → `player`, « infirmiere »
+## → `nurse`, « marchand » → `clerk`, « roucool » → `pokemon/pidgey`…).
+## **Pokémon du monde peints** : `"sprite": "pokemon/<espèce>"` (choix explicite de la carte)
+## → `assets/sprites/pokemon/painted/<espèce>_frames.tres`, sinon le provisoire `<espèce>`.
+## Un simple `"pidgey"` reste provisoire (Bourg Palette, Route 1 : Q-2 / Q-3, phase DA).
 
 const PAINTED_DIR: String = "res://assets/sprites/characters/painted/"
+const POKEMON_PAINTED_DIR: String = "res://assets/sprites/pokemon/painted/"
 const PLACEHOLDER_DIR: String = "res://assets/sprites/characters/placeholder/"
+## Préfixe d'un Pokémon du monde peint (`pokemon/pidgey`).
+const POKEMON_PREFIX: String = "pokemon/"
 ## Apparence générique (provisoire) quand aucune planche n'existe pour le nom demandé.
 const FALLBACK_SPRITE: StringName = &"npc"
 const FRAMES_SUFFIX: String = "_frames.tres"
@@ -46,12 +57,17 @@ static func resolve(sprite: StringName, exists: Callable = Callable()) -> Charac
 	return look
 
 
+## Apparence peinte de [param sprite] (`pokemon/<espèce>` : dossier des Pokémon peints).
 static func painted_frames_path(sprite: StringName) -> String:
-	return PAINTED_DIR + String(sprite) + FRAMES_SUFFIX
+	var name := String(sprite)
+	if name.begins_with(POKEMON_PREFIX):
+		return POKEMON_PAINTED_DIR + name.trim_prefix(POKEMON_PREFIX) + FRAMES_SUFFIX
+	return PAINTED_DIR + name + FRAMES_SUFFIX
 
 
+## Apparence provisoire de [param sprite] (`pokemon/<espèce>` → `<espèce>`).
 static func placeholder_frames_path(sprite: StringName) -> String:
-	return PLACEHOLDER_DIR + String(sprite) + FRAMES_SUFFIX
+	return PLACEHOLDER_DIR + String(sprite).trim_prefix(POKEMON_PREFIX) + FRAMES_SUFFIX
 
 
 static func _resource_exists(path: String) -> bool:

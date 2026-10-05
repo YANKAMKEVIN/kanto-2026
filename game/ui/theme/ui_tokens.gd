@@ -81,6 +81,9 @@ const PRESSED_SCALE := 0.97
 
 # --- Calques (CanvasLayer.layer) --------------------------------------------------------------
 
+## Étalonnage d'écran du monde (jalon-07.md §6.1) : au-dessus du monde et des sprites de
+## combat (LAYER_BATTLE_STAGE), sous le HUD.
+const LAYER_WORLD_GRADE := 6
 const LAYER_HUD := 10
 const LAYER_MENU := 20
 const LAYER_DIALOG := 30

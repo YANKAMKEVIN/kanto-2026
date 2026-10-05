@@ -1,0 +1,39 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://game/world/props/prop.gd" id="1_s55ps"]
+[ext_resource type="Material" path="res://game/world/lighting/materials/world_object.tres" id="2_jsqwb"]
+[ext_resource type="Texture2D" path="res://assets/world/props/prop_porte_nord_01.png" id="3_t4i4p"]
+[ext_resource type="Material" path="res://game/world/lighting/materials/cast_shadow.tres" id="4_whpu1"]
+[ext_resource type="Texture2D" path="res://assets/world/props/prop_porte_nord_01_shadow.png" id="5_dcy3d"]
+[ext_resource type="Material" path="res://game/world/lighting/materials/contact_shadow.tres" id="6_d2lyr"]
+[ext_resource type="Texture2D" path="res://assets/world/props/prop_porte_nord_01_contact.png" id="7_y5r8q"]
+
+[node name="PropPorteNord01" type="Node2D" unique_id=509581538]
+script = ExtResource("1_s55ps")
+footprint = Array[Vector2i]([Vector2i(-2, 0), Vector2i(2, 0)])
+fade_when_covering = true
+
+[node name="Sprite" type="Sprite2D" parent="." unique_id=1025824007]
+unique_name_in_owner = true
+material = ExtResource("2_jsqwb")
+texture = ExtResource("3_t4i4p")
+centered = false
+offset = Vector2(-240, -298)
+
+[node name="CastShadow" type="Sprite2D" parent="." unique_id=807562404 groups=["cast_shadows"]]
+z_index = -2
+z_as_relative = false
+material = ExtResource("4_whpu1")
+scale = Vector2(2, 2)
+texture = ExtResource("5_dcy3d")
+centered = false
+offset = Vector2(-132.5, -2)
+
+[node name="ContactShadow" type="Sprite2D" parent="." unique_id=1979329177 groups=["contact_shadows"]]
+z_index = -2
+z_as_relative = false
+material = ExtResource("6_d2lyr")
+scale = Vector2(2, 2)
+texture = ExtResource("7_y5r8q")
+centered = false
+offset = Vector2(-124, -6)

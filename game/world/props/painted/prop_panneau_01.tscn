@@ -1,0 +1,37 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://game/world/props/prop.gd" id="1_akfdj"]
+[ext_resource type="Material" path="res://game/world/lighting/materials/world_object.tres" id="2_p7nst"]
+[ext_resource type="Texture2D" path="res://assets/world/props/prop_panneau_01.png" id="3_iluq4"]
+[ext_resource type="Material" path="res://game/world/lighting/materials/cast_shadow.tres" id="4_k412h"]
+[ext_resource type="Texture2D" path="res://assets/world/props/prop_panneau_01_shadow.png" id="5_csf0v"]
+[ext_resource type="Material" path="res://game/world/lighting/materials/contact_shadow.tres" id="6_b0flq"]
+[ext_resource type="Texture2D" path="res://assets/world/props/prop_panneau_01_contact.png" id="7_sm2j1"]
+
+[node name="PropPanneau01" type="Node2D" unique_id=383531776]
+script = ExtResource("1_akfdj")
+
+[node name="Sprite" type="Sprite2D" parent="." unique_id=1462911903]
+unique_name_in_owner = true
+material = ExtResource("2_p7nst")
+texture = ExtResource("3_iluq4")
+centered = false
+offset = Vector2(-85.5, -192)
+
+[node name="CastShadow" type="Sprite2D" parent="." unique_id=469665318 groups=["cast_shadows"]]
+z_index = -2
+z_as_relative = false
+material = ExtResource("4_k412h")
+scale = Vector2(2, 2)
+texture = ExtResource("5_csf0v")
+centered = false
+offset = Vector2(-55.5, -2)
+
+[node name="ContactShadow" type="Sprite2D" parent="." unique_id=870236592 groups=["contact_shadows"]]
+z_index = -2
+z_as_relative = false
+material = ExtResource("6_b0flq")
+scale = Vector2(2, 2)
+texture = ExtResource("7_sm2j1")
+centered = false
+offset = Vector2(-46.5, -0.5)

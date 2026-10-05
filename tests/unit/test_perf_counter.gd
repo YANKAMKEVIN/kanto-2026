@@ -23,7 +23,7 @@ func test_inactive_under_gut() -> void:
 
 
 func test_line_format() -> void:
-	assert_eq(PerfCounter.format_line(59.6, 41.2, 87), "[perf] fps=60 min=41 draw=87")
+	assert_eq(PerfCounter.format_line(59.6, 41.2, 87), "[perf] fps=60 min=41 draw=87 tex=0.0")
 
 
 func test_no_report_before_the_window_is_full() -> void:
@@ -45,7 +45,7 @@ func test_steady_cadence() -> void:
 	for i in 128:
 		ready = counter.tick(FRAME)
 	assert_true(ready)
-	assert_eq(counter.take_line(55), "[perf] fps=64 min=64 draw=55")
+	assert_eq(counter.take_line(55), "[perf] fps=64 min=64 draw=55 tex=0.0")
 
 
 func test_a_stutter_shows_in_min_but_barely_in_the_average() -> void:
@@ -57,7 +57,7 @@ func test_a_stutter_shows_in_min_but_barely_in_the_average() -> void:
 	assert_false(ready)
 	ready = counter.tick(17.0 * FRAME)  # une image de 266 ms : ~4 fps
 	assert_true(ready)
-	assert_eq(counter.take_line(10), "[perf] fps=56 min=4 draw=10")
+	assert_eq(counter.take_line(10), "[perf] fps=56 min=4 draw=10 tex=0.0")
 
 
 func test_window_resets_after_a_report() -> void:
@@ -68,5 +68,16 @@ func test_window_resets_after_a_report() -> void:
 	assert_eq(counter.take_line(1), "", "fenêtre vide : pas de ligne")
 	for i in 128:
 		counter.tick(FRAME)
-	assert_eq(counter.take_line(2), "[perf] fps=64 min=64 draw=2",
+	assert_eq(counter.take_line(2), "[perf] fps=64 min=64 draw=2 tex=0.0",
 		"la saccade de la fenêtre précédente ne fuit pas")
+
+
+## Jalon 7 (§7) : la mémoire des textures, en Mo à 0,1 près.
+func test_line_reports_texture_memory() -> void:
+	assert_eq(PerfCounter.format_line(58.7, 57.0, 120, 23 * 1048576 + 524288),
+		"[perf] fps=59 min=57 draw=120 tex=23.5")
+	var counter := PerfCounter.new()
+	autofree(counter)
+	for i in 128:
+		counter.tick(FRAME)
+	assert_eq(counter.take_line(40, 18 * 1048576), "[perf] fps=64 min=64 draw=40 tex=18.0")

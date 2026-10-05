@@ -9,7 +9,8 @@
   "reduction": 2
  },
  "ombre_contact": {
-  "etendue": 22,
+  "etendue": 18,
+  "chute": 18,
   "reduction": 2
  },
  "objets": [

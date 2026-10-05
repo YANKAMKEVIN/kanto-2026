@@ -23,12 +23,12 @@
     "fichier": "res://assets/world/props/tree_a_01_contact.png",
     "decalage": [
      -141,
-     -19
+     -1
     ],
     "echelle": 2,
     "taille": [
      142,
-     22
+     20
     ]
    }
   },
@@ -54,12 +54,12 @@
     "fichier": "res://assets/world/props/tree_b_01_contact.png",
     "decalage": [
      -151,
-     -24
+     -6
     ],
     "echelle": 2,
     "taille": [
      152,
-     24
+     22
     ]
    }
   },
@@ -85,12 +85,12 @@
     "fichier": "res://assets/world/props/tree_central_01_contact.png",
     "decalage": [
      -229,
-     -29
+     -11
     ],
     "echelle": 2,
     "taille": [
      229,
-     27
+     25
     ]
    }
   },
@@ -116,12 +116,12 @@
     "fichier": "res://assets/world/buildings/bldg_centre_01_contact.png",
     "decalage": [
      -392,
-     -79
+     -61
     ],
     "echelle": 2,
     "taille": [
      392,
-     52
+     50
     ]
    }
   },
@@ -147,12 +147,12 @@
     "fichier": "res://assets/world/buildings/bldg_boutique_01_contact.png",
     "decalage": [
      -392,
-     -80
+     -62
     ],
     "echelle": 2,
     "taille": [
      392,
-     52
+     50
     ]
    }
   },
@@ -178,12 +178,12 @@
     "fichier": "res://assets/world/buildings/bldg_maison_a_01_contact.png",
     "decalage": [
      -296,
-     -65
+     -47
     ],
     "echelle": 2,
     "taille": [
      296,
-     45
+     43
     ]
    }
   },
@@ -209,12 +209,12 @@
     "fichier": "res://assets/world/buildings/bldg_maison_b_01_contact.png",
     "decalage": [
      -272,
-     -67
+     -49
     ],
     "echelle": 2,
     "taille": [
      272,
-     46
+     44
     ]
    }
   },
@@ -240,12 +240,12 @@
     "fichier": "res://assets/world/buildings/bldg_arene_01_contact.png",
     "decalage": [
      -488,
-     -60
+     -42
     ],
     "echelle": 2,
     "taille": [
      488,
-     42
+     40
     ]
    }
   },
@@ -259,12 +259,12 @@
     "fichier": "res://assets/world/props/prop_massif_01_contact.png",
     "decalage": [
      -200,
-     -58
+     -40
     ],
     "echelle": 2,
     "taille": [
      200,
-     41
+     39
     ]
    }
   },
@@ -290,12 +290,12 @@
     "fichier": "res://assets/world/props/prop_banc_01_contact.png",
     "decalage": [
      -104,
-     -20
+     -2
     ],
     "echelle": 2,
     "taille": [
      104,
-     22
+     20
     ]
    }
   },
@@ -321,12 +321,12 @@
     "fichier": "res://assets/world/props/prop_lampadaire_01_contact.png",
     "decalage": [
      -39,
-     -25
+     -7
     ],
     "echelle": 2,
     "taille": [
      39,
-     25
+     23
     ]
    }
   },
@@ -352,12 +352,12 @@
     "fichier": "res://assets/world/props/prop_haie_01_contact.png",
     "decalage": [
      -200,
-     -29
+     -11
     ],
     "echelle": 2,
     "taille": [
      200,
-     27
+     25
     ]
    }
   },
@@ -383,12 +383,12 @@
     "fichier": "res://assets/world/props/prop_cloture_01_contact.png",
     "decalage": [
      -200,
-     -18
+     0
     ],
     "echelle": 2,
     "taille": [
      200,
-     21
+     19
     ]
    }
   },
@@ -414,12 +414,12 @@
     "fichier": "res://assets/world/props/prop_panneau_01_contact.png",
     "decalage": [
      -93,
-     -19
+     -1
     ],
     "echelle": 2,
     "taille": [
      94,
-     22
+     20
     ]
    }
   },
@@ -445,12 +445,12 @@
     "fichier": "res://assets/world/props/prop_porte_nord_01_contact.png",
     "decalage": [
      -248,
-     -30
+     -12
     ],
     "echelle": 2,
     "taille": [
      248,
-     27
+     25
     ]
    }
   },
@@ -476,12 +476,12 @@
     "fichier": "res://assets/world/props/prop_rocher_01_contact.png",
     "decalage": [
      -104,
-     -13
+     5
     ],
     "echelle": 2,
     "taille": [
      104,
-     19
+     17
     ]
    }
   },
@@ -509,12 +509,12 @@
     "fichier": "res://assets/world/interiors/int_centre_comptoir_contact.png",
     "decalage": [
      -248,
-     -17
+     1
     ],
     "echelle": 2,
     "taille": [
      248,
-     21
+     19
     ]
    }
   },
@@ -528,12 +528,12 @@
     "fichier": "res://assets/world/interiors/int_centre_terminal_contact.png",
     "decalage": [
      -99,
-     -21
+     -3
     ],
     "echelle": 2,
     "taille": [
      100,
-     23
+     21
     ]
    }
   },
@@ -547,12 +547,12 @@
     "fichier": "res://assets/world/interiors/int_centre_banquette_contact.png",
     "decalage": [
      -118,
-     -12
+     6
     ],
     "echelle": 2,
     "taille": [
      119,
-     18
+     16
     ]
    }
   },
@@ -566,12 +566,12 @@
     "fichier": "res://assets/world/interiors/int_plante_contact.png",
     "decalage": [
      -85,
-     -23
+     -5
     ],
     "echelle": 2,
     "taille": [
      86,
-     24
+     22
     ]
    }
   },
@@ -585,12 +585,12 @@
     "fichier": "res://assets/world/interiors/int_boutique_caisse_contact.png",
     "decalage": [
      -248,
-     -16
+     2
     ],
     "echelle": 2,
     "taille": [
      248,
-     20
+     18
     ]
    }
   },
@@ -604,12 +604,12 @@
     "fichier": "res://assets/world/interiors/int_boutique_rayon_mural_contact.png",
     "decalage": [
      -137,
-     -19
+     -1
     ],
     "echelle": 2,
     "taille": [
      138,
-     22
+     20
     ]
    }
   },
@@ -623,12 +623,12 @@
     "fichier": "res://assets/world/interiors/int_boutique_presentoir_contact.png",
     "decalage": [
      -152,
-     -11
+     7
     ],
     "echelle": 2,
     "taille": [
      152,
-     18
+     16
     ]
    }
   },
