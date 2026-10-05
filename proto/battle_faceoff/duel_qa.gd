@@ -7,13 +7,12 @@ extends Node2D
 ## en haut à droite ; l'interface libère cette diagonale (carte adverse en haut à gauche, la
 ## tienne en bas à droite au-dessus des boutons). Cadrage « ancien » : celui du combat actuel,
 ## pour comparer.
-## Trois traitements des Pokémon : « sprite » (sprites animés Noir/Blanc, agrandis en pixels
-## nets, échelle entière), « smooth » (les mêmes, lissés par Scale2x ×3 : escaliers adoucis,
-## silhouette et animation intactes) et « painted » (le sprite repeint dans le style du jeu,
-## s'il existe ; sinon la planche sprite).
+## Traitements ([constant TREATMENTS]) : ton Pokémon en sprite animé Noir/Blanc aux pixels
+## nets (échelle entière) à plusieurs tailles, contre l'artwork officiel HD de l'adversaire ;
+## puis, pour mémoire, les essais précédents (tout en sprite net, lissé Scale2x ×3, peint).
 ##
 ## Commandes (S24 : barre du haut ; Mac : T, C, D) : traitement, cadrage, décor.
-## Arguments `--treatment=sprite|smooth|painted`, `--framing=combat|old`, `--decor=N` (Movie Maker).
+## Arguments `--treatment=N`, `--framing=combat|old`, `--decor=N` (Movie Maker).
 
 const SHEETS_PATH: String = "res://proto/battle_faceoff/sprite_sheets.json"
 const SPRITE_DIR: String = "res://assets/sprites/pokemon/battle_proto/"
@@ -28,14 +27,28 @@ const DECORS: Array[Dictionary] = [
 ## Les deux combattants : planche sprite, image peinte, nom affiché.
 const PLAYER := {"sheet": "salameche_dos_bw", "painted": "salameche_dos_peint",
 	"name": "Salamèche", "level": 12}
-const FOE := {"sheet": "roucool_face_bw", "painted": "roucool_face_peint",
+const FOE := {"sheet": "roucool_face_bw", "painted": "roucool_face_peint", "official": 16,
 	"name": "Roucool", "level": 9}
+const OFFICIAL_DIR: String = "res://assets/sprites/pokemon/official/"
+## Traitements : rendu de chaque camp (net = sprite aux pixels nets, smooth = lissé, painted =
+## repeint, official = artwork officiel HD) et taille du tien (fraction de la hauteur du
+## cadrage). Le premier affiché est [constant DEFAULT_TREATMENT].
+const TREATMENTS: Array[Dictionary] = [
+	{"label": "sprite net 100 % · Roucool HD", "player": "net", "ratio": 1.0, "foe": "official"},
+	{"label": "sprite net 70 % · Roucool HD", "player": "net", "ratio": 0.7, "foe": "official"},
+	{"label": "sprite net 60 % · Roucool HD", "player": "net", "ratio": 0.6, "foe": "official"},
+	{"label": "sprite net 50 % · Roucool HD", "player": "net", "ratio": 0.5, "foe": "official"},
+	{"label": "ancien : tout sprite net", "player": "net", "ratio": 1.0, "foe": "net"},
+	{"label": "ancien : sprite lissé", "player": "smooth", "ratio": 1.0, "foe": "smooth"},
+	{"label": "ancien : peint", "player": "painted", "ratio": 1.0, "foe": "painted"},
+]
+const DEFAULT_TREATMENT: int = 1
 ## Cadrages : zoom de la caméra, voile, vignettage, flou du décor ; pieds (x : décalage depuis
 ## le centre, y : depuis le haut, en hauteurs d'écran) et hauteur visible (hauteurs d'écran)
 ## de chaque Pokémon.
 const FRAMINGS: Dictionary = {
 	"combat": {"zoom": 1.9, "veil": 0.28, "vignette": 0.6, "blur": 1.6,
-		"player_feet": Vector2(-0.42, 1.02), "player_height": 0.56,
+		"player_feet": Vector2(-0.42, 0.97), "player_height": 0.56,
 		"foe_feet": Vector2(0.36, 0.50), "foe_height": 0.21, "hud": "diagonal"},
 	"old": {"zoom": 1.4, "veil": 0.35, "vignette": 0.45, "blur": 1.0,
 		"player_feet": Vector2(-0.30, 0.63), "player_height": 0.30,
@@ -49,7 +62,7 @@ const SHADOW_ALPHA: float = 0.45
 const HUD_GAP: float = 18.0
 
 var _sheets: Dictionary = {}
-var _treatment: String = "sprite"
+var _treatment: int = DEFAULT_TREATMENT
 var _framing: String = "combat"
 var _decor_index: int = 0
 var _map: Node2D
@@ -79,7 +92,7 @@ func _ready() -> void:
 	_build_controls()
 	for arg: String in OS.get_cmdline_user_args():
 		if arg.begins_with("--treatment="):
-			_treatment = arg.trim_prefix("--treatment=")
+			_treatment = clampi(arg.trim_prefix("--treatment=").to_int(), 0, TREATMENTS.size() - 1)
 		elif arg.begins_with("--framing="):
 			_framing = arg.trim_prefix("--framing=")
 		elif arg.begins_with("--decor="):
@@ -139,8 +152,7 @@ func _build_controls() -> void:
 
 
 func _toggle_treatment() -> void:
-	var order: Array[String] = ["sprite", "smooth", "painted"]
-	_treatment = order[(order.find(_treatment) + 1) % order.size()]
+	_treatment = (_treatment + 1) % TREATMENTS.size()
 	_show()
 
 
@@ -179,9 +191,11 @@ func _show() -> void:
 	_backdrop.set_shader_parameter(&"vignette", framing["vignette"])
 	_backdrop.set_shader_parameter(&"blur_lod", framing["blur"])
 	var view := get_viewport().get_visible_rect().size
+	var treatment: Dictionary = TREATMENTS[_treatment]
 	_place(true, PLAYER, _anchor(framing["player_feet"], view),
-		float(framing["player_height"]) * view.y)
-	_place(false, FOE, _anchor(framing["foe_feet"], view), float(framing["foe_height"]) * view.y)
+		float(framing["player_height"]) * float(treatment["ratio"]) * view.y, treatment["player"])
+	_place(false, FOE, _anchor(framing["foe_feet"], view), float(framing["foe_height"]) * view.y,
+		treatment["foe"])
 	_hud.set_card(BattleHud.Side.PLAYER, BattleCardView.new(PLAYER["name"],
 		BattleCardView.Gender.MALE, PLAYER["level"], 30, 30, true))
 	_hud.set_card(BattleHud.Side.FOE, BattleCardView.new(FOE["name"],
@@ -190,9 +204,8 @@ func _show() -> void:
 	_hud.show_actions({ActionGrid.ATTACK: true, ActionGrid.BAG: true, ActionGrid.TEAM: true,
 		ActionGrid.RUN: true})
 	_arrange_hud(framing["hud"] == "diagonal")
-	_label.text = "%s · cadrage %s · %s" % [{"sprite": "sprite net", "smooth": "sprite lissé",
-		"painted": "peint"}[_treatment],
-		_framing, decor["name"]]
+	_label.text = "%d/%d %s · cadrage %s · %s" % [_treatment + 1, TREATMENTS.size(),
+		treatment["label"], _framing, decor["name"]]
 
 
 static func _anchor(feet: Vector2, view: Vector2) -> Vector2:
@@ -200,8 +213,9 @@ static func _anchor(feet: Vector2, view: Vector2) -> Vector2:
 
 
 ## Place un combattant : pieds (bas de la boîte visible) sur [param feet], hauteur visible
-## [param height] ; sprite = échelle entière (pixels nets), peint = échelle libre.
-func _place(is_player: bool, who: Dictionary, feet: Vector2, height: float) -> void:
+## [param height], rendu [param kind] (voir [constant TREATMENTS]) ; « net » = échelle entière
+## (pixels nets), les images HD = échelle libre.
+func _place(is_player: bool, who: Dictionary, feet: Vector2, height: float, kind: String) -> void:
 	if _sides.has(is_player):
 		var old: Dictionary = _sides[is_player]
 		if old["tween"] != null:
@@ -214,10 +228,12 @@ func _place(is_player: bool, who: Dictionary, feet: Vector2, height: float) -> v
 	_actors.add_child(shadow)
 	var node: Node2D
 	var box: Rect2
-	var painted_path := SPRITE_DIR + "%s.png" % who["painted"]
+	var still_path := SPRITE_DIR + "%s.png" % who["painted"]
+	if kind == "official":
+		still_path = OFFICIAL_DIR + "%03d.png" % int(who["official"])
 	var scale: float
-	if _treatment == "painted" and ResourceLoader.exists(painted_path):
-		var texture: Texture2D = load(painted_path)
+	if kind in ["painted", "official"] and ResourceLoader.exists(still_path):
+		var texture: Texture2D = load(still_path)
 		box = _visible_box(texture.get_image())
 		var sprite := Sprite2D.new()
 		sprite.centered = false
@@ -227,12 +243,12 @@ func _place(is_player: bool, who: Dictionary, feet: Vector2, height: float) -> v
 		scale = height / box.size.y
 		node = sprite
 	else:
-		var built := _animated(who["sheet"] + ("_lisse" if _treatment == "smooth" else ""))
+		var built := _animated(who["sheet"] + ("_lisse" if kind == "smooth" else ""), kind == "net")
 		node = built[0]
 		box = built[1]
 		# Pixels nets : échelle entière (planche brute) ; la planche lissée est libre.
 		scale = height / box.size.y
-		if _treatment == "sprite":
+		if kind == "net":
 			scale = maxf(1.0, roundf(scale))
 	_actors.add_child(node)
 	shadow.position = feet
@@ -260,7 +276,7 @@ func _place(is_player: bool, who: Dictionary, feet: Vector2, height: float) -> v
 
 
 ## [AnimatedSprite2D (pieds à l'origine), boîte visible] depuis une planche Noir/Blanc.
-func _animated(sheet_id: String) -> Array:
+func _animated(sheet_id: String, nearest: bool) -> Array:
 	var meta: Dictionary = _sheets[sheet_id]
 	var texture: Texture2D = load(SPRITE_DIR + "%s.png" % sheet_id)
 	var image := texture.get_image()
@@ -283,7 +299,7 @@ func _animated(sheet_id: String) -> Array:
 	var sprite := AnimatedSprite2D.new()
 	sprite.sprite_frames = frames
 	sprite.centered = false
-	sprite.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST if _treatment == "sprite" \
+	sprite.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST if nearest \
 		else CanvasItem.TEXTURE_FILTER_LINEAR
 	sprite.offset = -Vector2(roundf(box.get_center().x), box.end.y)
 	sprite.play(&"default")
