@@ -10,6 +10,9 @@ extends CanvasLayer
 ## - Ouverte, un toucher n'importe où sur l'écran émet advance_requested (un toucher = un
 ##   signal : seul l'appui d'un InputEventScreenTouch compte ; la souris émulée depuis le
 ##   toucher, ou le toucher émulé depuis la souris sur Mac, n'est donc pas compté deux fois).
+## - Un choix à deux cartes ([method show_choice], ChoiceCards à elle, au-dessus du panneau)
+##   suspend l'avance par toucher : seul le toucher d'une carte compte. Retour (ui_cancel au
+##   clavier, Boot pour Android) = [method cancel_choice] = renoncement.
 ## - Fermée, elle est invisible, ignore la souris et n'émet rien.
 ## - Taille du texte Grande et contraste renforcé ([UiPrefs]) lus à chaque ouverture et page.
 ## - Elle monte légèrement depuis le bas en fondu (DIALOG_OPEN), sans « pop ».
@@ -18,6 +21,9 @@ extends CanvasLayer
 
 ## Toucher sur l'écran pendant que la boîte est ouverte.
 signal advance_requested
+## Une carte du choix est touchée (SOIGNER / PAS MAINTENANT…) : un seul signal par question,
+## vrai pour l'action, faux pour le renoncement (ou le retour, voir [method cancel_choice]).
+signal choice_made(confirmed: bool)
 ## Fin de l'animation de fermeture (la boîte est invisible).
 signal closed
 ## Fin (ou interruption par open) de l'animation de fermeture : c'est ce qu'attend close.
@@ -26,6 +32,7 @@ signal _close_settled
 var _open: bool = false
 var _tween: Tween
 var _blink: Tween
+var _cards: ChoiceCards
 
 @onready var _root: Control = %Root
 @onready var _panel: PanelContainer = %Panel
@@ -56,6 +63,12 @@ func _ready() -> void:
 
 func _input(event: InputEvent) -> void:
 	if not _open:
+		return
+	if is_choice_showing():
+		# Les cartes (et leur voile) reçoivent le toucher ; seul le retour clavier est ici.
+		if event.is_action_pressed(&"ui_cancel"):
+			get_viewport().set_input_as_handled()
+			cancel_choice()
 		return
 	var touch := event as InputEventScreenTouch
 	if touch == null or not touch.pressed:
@@ -128,6 +141,7 @@ func close() -> void:
 	if not _open:
 		return
 	_open = false
+	hide_choice()
 	_root.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	set_continue_visible(false)
 	_kill_tween()
@@ -145,6 +159,45 @@ func close() -> void:
 	# l'appelant peut alors la libérer sans erreur (objet verrouillé pendant une émission).
 	if is_inside_tree():
 		await get_tree().process_frame
+
+
+## Montre le choix à deux cartes de [param view] au-dessus de la boîte (qui reste ouverte
+## derrière le voile : la question est dans view.title). Ignoré, avec un avertissement, si la
+## boîte est fermée. Un seul [signal choice_made] par question.
+func show_choice(view: ChoiceView) -> void:
+	if not _open:
+		push_warning("DialogueBox.show_choice : la boîte est fermée, choix ignoré.")
+		return
+	if _cards == null:
+		_cards = ChoiceCards.new()
+		add_child(_cards)
+		_cards.chosen.connect(_on_cards_chosen)
+	set_continue_visible(false)
+	_cards.show_choice(view)
+
+
+## Cache le choix sans émettre de signal.
+func hide_choice() -> void:
+	if _cards != null:
+		_cards.hide_choice()
+
+
+## Retour pendant un choix : le ferme et émet choice_made(false). Vrai si un choix était
+## affiché, sinon faux et rien ne se passe.
+func cancel_choice() -> bool:
+	if not is_choice_showing():
+		return false
+	_cards.hide_choice()
+	choice_made.emit(false)
+	return true
+
+
+func is_choice_showing() -> bool:
+	return _cards != null and _cards.is_showing()
+
+
+func get_choice_cards() -> ChoiceCards:
+	return _cards
 
 
 ## Vrai de open() jusqu'au début de close().
@@ -170,6 +223,10 @@ func is_narration() -> bool:
 
 func get_panel() -> PanelContainer:
 	return _panel
+
+
+func _on_cards_chosen(confirmed: bool) -> void:
+	choice_made.emit(confirmed)
 
 
 func _set_closed_state() -> void:
