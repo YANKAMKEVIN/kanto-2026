@@ -27,15 +27,17 @@ const ALIGN_CENTRE: StringName = &"centre"
 ## feuillage au vent ; « fade » : devient transparent quand le joueur passe derrière ;
 ## « layer » ; « align » (défaut : selon la parité de la largeur) ; « origin » : pied ailleurs
 ## qu'au milieu du bas de l'image (pixels de l'image) ; « traversable » : aucune emprise ;
-## « material » : faux = sprite sans shader (le massif du prototype n'en avait pas).
+## « material » : faux = sprite sans shader (le massif du prototype n'en avait pas) ;
+## « shadow » : vrai = ombre portée et ombre de contact (**faux par défaut** : seuls les
+## bâtiments, `bldg_*`, en ont ; petits objets, végétation et mobilier posés au sol non).
 const RULES: Dictionary[StringName, Dictionary] = {
-	&"bldg_centre_01": {"width": 8, "depth": 4, "fade": true,
+	&"bldg_centre_01": {"shadow": true, "width": 8, "depth": 4, "fade": true,
 		"open": [Vector2i(-1, 0), Vector2i(0, 0)]},
-	&"bldg_boutique_01": {"width": 8, "depth": 4, "fade": true,
+	&"bldg_boutique_01": {"shadow": true, "width": 8, "depth": 4, "fade": true,
 		"open": [Vector2i(-1, 0), Vector2i(0, 0)]},
-	&"bldg_arene_01": {"width": 10, "depth": 4, "fade": true},
-	&"bldg_maison_a_01": {"width": 6, "depth": 3, "fade": true},
-	&"bldg_maison_b_01": {"width": 5, "depth": 3, "fade": true},
+	&"bldg_arene_01": {"shadow": true, "width": 10, "depth": 4, "fade": true},
+	&"bldg_maison_a_01": {"shadow": true, "width": 6, "depth": 3, "fade": true},
+	&"bldg_maison_b_01": {"shadow": true, "width": 5, "depth": 3, "fade": true},
 	&"tree_a_01": {"width": 1, "depth": 1, "wind": true, "fade": true},
 	&"tree_b_01": {"width": 1, "depth": 1, "wind": true, "fade": true},
 	# Pied sur un bord de case : le massif qui l'entoure est centré sur ce bord.
@@ -76,8 +78,8 @@ const RULES: Dictionary[StringName, Dictionary] = {
 	# poteaux sur les bords de la case du passage, traverses sur les clôtures voisines),
 	# buissons, garde-corps posé sur le haut d'un mur (la rangée du mur est déjà bloquée),
 	# arbre fruitier, petit mobilier de jardin.
-	&"bldg_maison_c_01": {"width": 6, "depth": 3, "fade": true},
-	&"bldg_maison_d_01": {"width": 5, "depth": 3, "fade": true},
+	&"bldg_maison_c_01": {"shadow": true, "width": 6, "depth": 3, "fade": true},
+	&"bldg_maison_d_01": {"shadow": true, "width": 5, "depth": 3, "fade": true},
 	&"prop_portail_01": {"traversable": true, "align": ALIGN_CENTRE},
 	&"prop_buisson_a_01": {"width": 1, "depth": 1},
 	&"prop_buisson_b_01": {"width": 1, "depth": 1},
@@ -100,15 +102,10 @@ const RULES: Dictionary[StringName, Dictionary] = {
 }
 
 
-## Familles de **végétation** (préfixes d'identifiant) : arbres, buissons, haies, plates-bandes,
-## massif, pots de fleurs, potager, plante d'intérieur, herbes hautes. Retours de Kevin au T5
-## (jalon-07.md §15.21) : leurs ombres donnaient une impression de suspension ; **ni ombre
-## portée ni ombre de contact** ([method casts_shadows]), sur toutes les cartes. Un nouvel
-## objet d'une de ces familles est sans ombre sans autre réglage.
-const VEGETATION_PREFIXES: Array[String] = [
-	"tree_", "prop_buisson_", "prop_haie", "prop_platebande_", "prop_massif_",
-	"prop_pots_fleurs_", "prop_potager_", "int_plante", "ground_hautes_herbes_",
-]
+## Règle des ombres (retours de Kevin, 2026-10-05) : **aucun petit objet n'a d'ombre** (ni
+## portée ni de contact : elle donnait une impression de suspension) ; seuls les bâtiments
+## (« shadow »: true dans [constant RULES]) gardent les leurs pour l'instant. Un nouvel objet
+## est donc sans ombre sans autre réglage.
 
 
 static func has_rule(id: StringName) -> bool:
@@ -159,19 +156,10 @@ static func has_wind(id: StringName) -> bool:
 	return bool((RULES.get(id, {}) as Dictionary).get("wind", false))
 
 
-## Vrai pour un objet d'une famille de végétation ([constant VEGETATION_PREFIXES]).
-static func is_vegetation(id: StringName) -> bool:
-	var name := String(id)
-	for prefix: String in VEGETATION_PREFIXES:
-		if name.begins_with(prefix):
-			return true
-	return false
-
-
-## Faux pour la végétation : la scène n'a ni `CastShadow` ni `ContactShadow`, même si le
-## catalogue fournit les images d'ombre (elles restent disponibles).
+## Vrai pour les seuls objets marqués « shadow » (bâtiments) : les autres scènes n'ont ni
+## `CastShadow` ni `ContactShadow`, même si le catalogue fournit les images d'ombre.
 static func casts_shadows(id: StringName) -> bool:
-	return not is_vegetation(id)
+	return bool((RULES.get(id, {}) as Dictionary).get("shadow", false))
 
 
 static func fades(id: StringName) -> bool:

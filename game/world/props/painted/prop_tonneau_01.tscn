@@ -1,37 +1,15 @@
 [gd_scene format=3]
 
-[ext_resource type="Script" path="res://game/world/props/prop.gd" id="1_mjt2q"]
-[ext_resource type="Material" path="res://game/world/lighting/materials/world_object.tres" id="2_8eayx"]
-[ext_resource type="Texture2D" path="res://assets/world/props/prop_tonneau_01.png" id="3_3xbu3"]
-[ext_resource type="Material" path="res://game/world/lighting/materials/cast_shadow.tres" id="4_now32"]
-[ext_resource type="Texture2D" path="res://assets/world/props/prop_tonneau_01_shadow.png" id="5_cosn0"]
-[ext_resource type="Material" path="res://game/world/lighting/materials/contact_shadow.tres" id="6_fsuug"]
-[ext_resource type="Texture2D" path="res://assets/world/props/prop_tonneau_01_contact.png" id="7_vcea4"]
+[ext_resource type="Script" path="res://game/world/props/prop.gd" id="1_xkrf6"]
+[ext_resource type="Material" path="res://game/world/lighting/materials/world_object.tres" id="2_0oq4t"]
+[ext_resource type="Texture2D" path="res://assets/world/props/prop_tonneau_01.png" id="3_344hf"]
 
-[node name="PropTonneau01" type="Node2D" unique_id=491990313]
-script = ExtResource("1_mjt2q")
+[node name="PropTonneau01" type="Node2D" unique_id=1852549389]
+script = ExtResource("1_xkrf6")
 
-[node name="Sprite" type="Sprite2D" parent="." unique_id=1900617786]
+[node name="Sprite" type="Sprite2D" parent="." unique_id=233565363]
 unique_name_in_owner = true
-material = ExtResource("2_8eayx")
-texture = ExtResource("3_3xbu3")
+material = ExtResource("2_0oq4t")
+texture = ExtResource("3_344hf")
 centered = false
 offset = Vector2(-33.5, -87)
-
-[node name="CastShadow" type="Sprite2D" parent="." unique_id=434424378 groups=["cast_shadows"]]
-z_index = -2
-z_as_relative = false
-material = ExtResource("4_now32")
-scale = Vector2(2, 2)
-texture = ExtResource("5_cosn0")
-centered = false
-offset = Vector2(-29.5, -2)
-
-[node name="ContactShadow" type="Sprite2D" parent="." unique_id=420078001 groups=["contact_shadows"]]
-z_index = -2
-z_as_relative = false
-material = ExtResource("6_fsuug")
-scale = Vector2(2, 2)
-texture = ExtResource("7_vcea4")
-centered = false
-offset = Vector2(-20.5, 2.5)

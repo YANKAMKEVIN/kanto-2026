@@ -17,11 +17,11 @@ const SCENE_DIR: String = "res://game/world/props/"
 const INTERIOR_TEX_DIR: String = "res://assets/tiles/placeholder/props/interior/"
 const INTERIOR_SCENE_DIR: String = "res://game/world/props/interior/"
 const SEED: int = 4242
-## Végétation (retours de Kevin au T5, jalon-07.md §15.21) : aucune ombre peinte sous les
-## arbres, buissons, ronces, potager et plantes (préfixes de nom) ; elle donnait une impression
-## de suspension. Les autres objets gardent la leur.
-const NO_SHADOW_PREFIXES: Array[String] = [
-	"tree_", "plaza_tree", "bush_", "brambles", "vegetable_patch", "plant",
+## Règle des ombres (retours de Kevin, 2026-10-05) : aucun petit objet (végétation, mobilier,
+## véhicules, rochers…) n'a d'ombre peinte, elle donnait une impression de suspension. Seuls
+## les bâtiments gardent leur ellipse d'ombre pour l'instant.
+const SHADOW_PROPS: Array[String] = [
+	"house_player", "house_rival", "oak_lab", "greenhouse_large", "greenhouse_small",
 ]
 
 ## nom → [largeur, hauteur (cases), colonne d'ancre depuis la gauche, empreinte]
@@ -330,9 +330,8 @@ func _poly(img: Image, points: PackedVector2Array, c: Color) -> void:
 
 
 func _shadow(img: Image, center: Vector2, radii: Vector2) -> void:
-	for prefix: String in NO_SHADOW_PREFIXES:
-		if _current.begins_with(prefix):
-			return
+	if not SHADOW_PROPS.has(_current):
+		return
 	_ellipse(img, center, radii, Color(0.08, 0.1, 0.05, 0.28))
 
 

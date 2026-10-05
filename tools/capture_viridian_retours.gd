@@ -104,6 +104,17 @@ func _run_shadows() -> void:
 	await _until(func() -> bool: return not _router.call(&"is_transitioning"), 5.0)
 	await _seconds(2.5)
 	await _shot("shadows_pallet_" + _tag)
+	_teleport(Vector2i(37, 10), Vector2i.UP)
+	await _seconds(0.6)
+	await _shot("shadows_pallet_house_" + _tag)
+	_router.call(&"change_map", &"route_1", &"start", Vector2i.UP)
+	await _until(func() -> bool: return not _router.call(&"is_transitioning"), 5.0)
+	await _seconds(2.0)
+	await _shot("shadows_route1_" + _tag)
+	_router.call(&"change_map", &"viridian_center", &"entrance", Vector2i.UP)
+	await _until(func() -> bool: return not _router.call(&"is_transitioning"), 5.0)
+	await _seconds(2.0)
+	await _shot("shadows_interior_" + _tag)
 
 
 func _run_houses() -> void:
