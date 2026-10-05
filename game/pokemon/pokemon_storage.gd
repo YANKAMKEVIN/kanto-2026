@@ -1,8 +1,8 @@
 class_name PokemonStorage
 extends RefCounted
 ## Le « système de recherche de Chen » : les Pokémon capturés quand l'équipe est pleine
-## (dossier 04 §5, dossier 05 §17, jalon 5 §2.4). Classe pure, sans interface : la liste reste
-## invisible jusqu'au menu « Mes Pokémon » (Q38). Aucune limite, ordre d'arrivée.
+## (dossier 04 §5, dossier 05 §17, jalon 5 §2.4). Classe pure, sans interface : l'écran
+## Stockage du Centre (J7A, [StorageRules]) la montre. Aucune limite, ordre d'arrivée.
 ##
 ## [method to_array] / [method load_array] : la sauvegarde (même format que [Party]).
 
@@ -16,6 +16,26 @@ func add(pokemon: Pokemon) -> bool:
 		return false
 	_pokemon.append(pokemon)
 	return true
+
+
+## Pokémon d'index [param index] (ordre d'arrivée), ou null.
+func get_at(index: int) -> Pokemon:
+	return _pokemon[index] if index >= 0 and index < _pokemon.size() else null
+
+
+## Place de [param pokemon] (comparaison par identité), −1 s'il n'est pas rangé.
+func index_of(pokemon: Pokemon) -> int:
+	return _pokemon.find(pokemon)
+
+
+## Retire et rend le Pokémon d'index [param index] (la même instance), ou null si l'index
+## n'existe pas. Les suivants gardent leur ordre d'arrivée.
+func remove_at(index: int) -> Pokemon:
+	if index < 0 or index >= _pokemon.size():
+		return null
+	var pokemon := _pokemon[index]
+	_pokemon.remove_at(index)
+	return pokemon
 
 
 func size() -> int:

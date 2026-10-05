@@ -391,7 +391,9 @@ static func sell(state: Node, item: ItemData, quantity: int, confirmed: bool = f
 
 **Tests (T10)** : `test_item_library` (prix, objet clé sans prix), `test_shop_library`, `test_shop_rules` (achat exact, argent insuffisant, quantité 0 et > 99, stock conditionnel, vente moitié prix, objet clé refusé, favori → NEEDS_CONFIRM puis OK, rien ne change sur un refus), `test_shop_views`, `test_menu_format` (argent), `test_menu_navigator` (écran seul : retour = fermer), `test_objective_library` (colis, puis rien après l'activation), `test_trainer_summary` / `test_bag_query` (argent).
 
-### 3.5 Stockage (T14)
+### 3.5 Stockage (T14) — **fait, figé**
+
+`game/systems/storage/` (classes pures ; règles et vues statiques) :
 
 ```gdscript
 class_name StorageRules
@@ -399,17 +401,44 @@ extends RefCounted
 ## Règles métier du Stockage Pokémon V1 (dossier 09 §8, §19), indépendantes de l'écran.
 enum Place { PARTY, STORAGE }
 enum Status { OK, LAST_POKEMON, PARTY_FULL, FAVORITE, NOT_FOUND }
+static func get_pokemon(party, storage, place: Place, index: int) -> Pokemon
+static func keeps_able(party: Party, without_index: int) -> bool          # Q-7
 static func can_deposit(party: Party, index: int) -> Status
-static func deposit(party: Party, storage: PokemonStorage, index: int) -> Status
+static func deposit(party: Party, storage: PokemonStorage, index: int) -> StorageResult
 static func can_withdraw(party: Party, storage: PokemonStorage, index: int) -> Status
-static func withdraw(party: Party, storage: PokemonStorage, index: int) -> Status
-static func can_release(party: Party, place: Place, index: int, pokemon: Pokemon) -> Status
-static func release(party: Party, storage: PokemonStorage, place: Place, index: int) -> Status
+static func withdraw(party: Party, storage: PokemonStorage, index: int) -> StorageResult
+static func can_release(party, storage, place: Place, index: int) -> Status
+static func release(party, storage, place: Place, index: int) -> StorageResult
+static func toggle_favorite(party, storage, place: Place, index: int) -> StorageResult
+
+class_name StorageResult      # status, pokemon (concerné ; null si NOT_FOUND), selection, is_ok()
+class_name StorageSelection   # place, index (−1 = aucune) ; first(party, storage), clamped(…), equals
+class_name StorageViews
+static func build(state, data, selection: StorageSelection, zones = null, unlocks = null) -> StorageView
+static func card(pokemon, place, index, data, selection = null) -> StorageCardView
+static func release_choice(name: String) -> ChoiceView
+static func status_text(status: StorageRules.Status, name: String) -> String
+static func result_text(result: StorageResult, data: PokemonData) -> String
 ```
 
-`LAST_POKEMON` : l'équipe garderait 0 Pokémon **en état de combattre** (Q-7 ; « Tu dois garder au moins un Pokémon avec toi. »). `FAVORITE` : « Retire d'abord {Pokémon} de tes favoris pour pouvoir le libérer. », **sans contournement**. `Party.remove_at(index) -> Pokemon`, `PokemonStorage.remove_at`, `get_at`. Libérer ne touche pas au Pokédex ni à la statistique « Captures » (carrière, T25 du J6). `StorageViews.build(state, data, selection) -> StorageView` (équipe, stockage dans l'ordre d'arrivée, Pokémon sélectionné, actions avec leur raison). `MenuRoute.STORAGE` ; `MenuUnlocks.storage_available(map)` : vrai si `map` est la carte `found_on` d'un service `pokemon_center` (`zones.json`) — **aucun Stockage hors d'un Centre**.
+Vues figées (`game/systems/storage/views/`) : `StorageView` (`party_title`, `storage_title`, `back_label`, `party` / `storage` : `Array[StorageCardView]`, `empty_text`, `selection`, `sheet: PokemonSheetView` — la fiche de l'Équipe, même règle d'évolution —, `actions` : DÉPOSER ou REPRENDRE puis FAVORI, `more_actions` : LIBÉRER, `card_at(place, index)`, `PARTY_SLOTS` = 6) ; `StorageCardView` (`place`, `index`, `member: TeamMemberView`, `selected`) ; `StorageActionView` (`id` = `StorageViews.ACTION_*`, `label`, `active` pour FAVORI). Une action n'est **jamais grisée** : un refus se montre au toucher.
 
-**Tests (T14)** : `test_storage_rules` (déposer le dernier, le dernier valide, reprendre équipe pleine, libérer un favori, libérer le dernier, libérer depuis le stockage, l'instance déplacée garde PV, PP, favori et histoire), `test_storage_views`, `test_menu_unlocks` (Stockage seulement au Centre), `test_party` / `test_pokemon_storage` étendus.
+**Règles** (testées, `test_storage_rules`) :
+- **Déposer** : le Pokémon va **à la fin** du stockage, la sélection le suit. Refus `LAST_POKEMON` si l'équipe garderait **0 Pokémon en état de combattre** (Q-7 : le seul Pokémon, ou le dernier valide à côté de K.O. ; déposer un K.O. à côté d'un valide est permis).
+- **Reprendre** : en **fin d'équipe**, la sélection le suit ; refus `PARTY_FULL` à 6. Un K.O. se reprend.
+- **Libérer** : depuis l'équipe ou le stockage ; refus `LAST_POKEMON` (équipe seulement) **avant** `FAVORITE` (retirer le favori n'y changerait rien) ; `FAVORITE` sans contournement : la règle ne touche jamais au favori. Après une libération, la sélection va à celui qui prend la place (index borné), sinon au premier de l'autre liste. **Ni le Pokédex ni la statistique « Captures »** (`TrainerSummary.capture_count`, carrière) ne bougent : vérifié sur un `GameState`.
+- **Favori** : depuis l'équipe ou le stockage (dossier 09 §20) ; seul refus : `NOT_FOUND`.
+- **Capacité** : **aucune limite** (un stockage unique, sans boîtes ; `PokemonStorage` depuis le J5) : pas de statut « stockage plein ».
+- Déplacer garde **la même instance** (PV, PP, XP, favori, surnom, histoire : `to_dict` identique). Un refus ne change rien ; sa `selection` est la carte refusée (celle qui tremble).
+- `Party.remove_at(index) -> Pokemon` (sans règle : la règle est au Stockage), `PokemonStorage.get_at`, `index_of`, `remove_at`.
+
+**Textes** (`StorageViews`, constantes) : libellés validés ÉQUIPE · STOCKAGE · DÉPOSER · REPRENDRE · FAVORI · LIBÉRER · RETOUR · ANNULER ; confirmation « Libérer {Pokémon} ? » / « Il quittera définitivement ton équipe et ton stockage. » ; refus « Tu dois garder au moins un Pokémon avec toi. », « Retire d'abord {Pokémon} de tes favoris pour pouvoir le libérer. » ; **draft** : « Ton équipe est déjà complète. », « Le stockage est vide. ». Un succès n'a **pas de texte** (défaut du T14 : la carte qui bouge suffit ; aucun texte validé pour « libéré »).
+
+**Déblocage** : `MenuRoute.STORAGE` (`MenuRoute.storage()`, sans paramètre, **pas** une carte du tableau de bord) ; `MenuUnlocks.STORAGE_SERVICE = &"pokemon_center"`, `MenuUnlocks.set_location(zones, current_map: Callable)` (branché par `Boot` au T16), `storage_available()` (relu à chaque appel), `static is_storage_map(map, zones)` : vrai seulement sur la carte `found_on` d'un service `pokemon_center` — **pas** dans la ville du Centre ; `is_available(STORAGE)` = équipe visible **et** `storage_available()`. Sans `set_location`, le Stockage n'existe nulle part. `TeamView.storage_available` (rempli par `TeamViews.build`) : le bouton STOCKAGE de l'Équipe.
+
+**Sauvegarde** : **inchangée** (v3) ; la sélection est de session.
+
+**Tests (T14, faits)** : `test_storage_rules` (24), `test_storage_views` (11), `test_menu_unlocks` (+4), `test_party`, `test_pokemon_storage`, `test_menu_route`, `test_team_views` étendus.
 
 ### 3.6 Chen et le Pokédex (T18)
 
@@ -721,6 +750,65 @@ Ni l'un ni l'autre ne touche `dialogue_runner.gd`, `dialogue_library.gd` ni `res
 ### 6.8 Contrats des écrans (figés par l'architecte avant chaque paire ui-mobile ∥ constructeur-monde)
 
 Comme au J6 (§6.6 à §6.12), chaque tâche d'architecture fige dans ce fichier, **avant** la paire suivante : les signaux et méthodes de l'écran, les vues, le partage des fichiers entre les deux agents, et l'ordre de fusion (écran d'abord, câblage ensuite, branchement de `Boot` derrière `has_signal`). Contrats attendus : T6 (§6.5, `DialogueBox`), T10 (`ShopScreen`), T14 (`StorageScreen`, bouton STOCKAGE de l'Équipe).
+
+### 6.9 Contrat de l'écran Stockage (figé au T14)
+
+Même modèle que l'Équipe : l'écran émet, `TrainerMenu` relaie (préfixe `storage_`), `Boot` relie au `MenuDirector` derrière `has_signal(&"storage_deposit_requested")`. **Toute règle passe par `StorageRules` dans le directeur** : l'écran ne décide d'aucun refus, il les montre.
+
+```gdscript
+## StorageScreen (ui-mobile, T15) — game/ui/menu/storage/storage_screen.gd, extends MenuScreen
+signal back_requested
+signal selected(place: int, index: int)             # informatif (toucher une carte)
+signal deposit_requested(index: int)                # DÉPOSER, ou glisser une carte ÉQUIPE → STOCKAGE
+signal withdraw_requested(index: int)               # REPRENDRE, ou glisser STOCKAGE → ÉQUIPE
+signal favorite_toggled(place: int, index: int)     # FAVORI
+signal release_requested(place: int, index: int)    # LIBÉRER du menu « ⋯ » (avant confirmation)
+signal release_confirmed(place: int, index: int)    # carte LIBÉRER de la confirmation
+func show_storage(view: StorageView) -> void        # vue neuve après chaque action
+func show_refusal(place: int, index: int, text: String) -> void    # tremblement + raison (6B)
+func ask_release(view: ChoiceView, place: int, index: int) -> void # ChoiceCards LIBÉRER / ANNULER
+func go_back() -> bool   # retour : ferme d'abord la confirmation (= ANNULER) ou le menu « ⋯ »
+
+## TrainerMenu (ui-mobile, T15)
+signal storage_selected(place: int, index: int)
+signal storage_deposit_requested(index: int)
+signal storage_withdraw_requested(index: int)
+signal storage_favorite_toggled(place: int, index: int)
+signal storage_release_requested(place: int, index: int)
+signal storage_release_confirmed(place: int, index: int)
+func show_storage(view: StorageView) -> void
+func show_storage_refusal(place: int, index: int, text: String) -> void
+func ask_storage_release(view: ChoiceView, place: int, index: int) -> void
+func storage_back() -> bool                         # appelé par Boot._screen_back
+
+## MenuDirector (constructeur-monde, T16)
+signal storage_shown(view: StorageView)
+signal storage_refused(place: int, index: int, text: String)
+signal storage_release_asked(view: ChoiceView, place: int, index: int)
+func select_storage(place: int, index: int) -> void
+func deposit_member(index: int) -> bool             # StorageRules.deposit
+func withdraw_member(index: int) -> bool            # StorageRules.withdraw
+func toggle_storage_favorite(place: int, index: int) -> bool
+func request_release(place: int, index: int) -> bool   # refus → storage_refused ;
+                                                       # OK → storage_release_asked(release_choice)
+func confirm_release(place: int, index: int) -> bool   # StorageRules.release (règle revérifiée)
+```
+
+- **Glisser = un signal, bouton = le même** : glisser une carte de l'ÉQUIPE sur la grille émet `deposit_requested(index)` exactement comme DÉPOSER ; dans l'autre sens `withdraw_requested(index)` comme REPRENDRE. Le glisser part d'un **appui long** (`LONG_PRESS`, comme l'Équipe) ; la grille défile sans rien sélectionner (`TapGuard`, `scroll_deadzone = TAP_SLOP`). Pas de réordonnancement dans l'écran Stockage (V1 : l'Équipe le fait) ; un dépôt arrive à la fin, une reprise en fin d'équipe.
+- **Directeur** : à l'entrée de la route STORAGE, sélection = `StorageSelection.first(party, storage)`, puis `storage_shown(StorageViews.build(state, data, sélection, zones, unlocks))`. Après une action : succès → sélection = `result.selection`, `mark_changed()` (autosave à la fermeture, comme le J6), vue neuve ; refus → `storage_refused(place, index, StorageViews.result_text(result, data))` avec la place de `result.selection`, rien ne change, **pas** de vue neuve. `request_release` ne modifie rien.
+- **Libérer** : `release_requested` → le directeur vérifie → refus (favori, dernier) = tremblement + raison, **sans** confirmation ni bouton de contournement ; sinon `ask_release` montre `ChoiceCards` ; ANNULER (ou retour) ne fait rien ; LIBÉRER → `release_confirmed` → `confirm_release`.
+- **Bouton STOCKAGE de l'Équipe** : présent seulement si `TeamView.storage_available` (absent ailleurs, jamais grisé) ; il émet `route_requested(MenuRoute.storage())` (signal existant de l'Équipe) ; retour = l'Équipe, rafraîchie (mécanique existante).
+- **Terminal** : action `open_storage` → `MenuDirector.open(MenuRoute.storage(), standalone = true)` (le `standalone` du T10 : retour = fermer). `Boot` appelle une fois `_unlocks.set_location(_zones, <carte courante>)`.
+- `UiPrefsApplier` appliqué à l'écran (comme les autres écrans du menu).
+
+**Partage des fichiers T15 ∥ T16** (écran fusionné d'abord, câblage ensuite) :
+
+| T15 — ui-mobile | T16 — constructeur-monde |
+|---|---|
+| `game/ui/menu/storage/` (`storage_screen.gd`, cartes, grille) ; `game/ui/menu/trainer_menu.gd` (hôte, relais `storage_*`, `storage_back`) ; `game/ui/menu/team/team_screen.gd` (bouton STOCKAGE si `view.storage_available`) ; `tests/integration/test_storage_screen.gd` (vues fabriquées) ; scénarios de capture `storage`, `storage_drag`, `storage_release`, `storage_refusal` | `game/systems/menu/menu_director.gd` (signaux et méthodes ci-dessus, route STORAGE) ; `game/boot.gd` (`set_location`, câblage derrière `has_signal`, `storage_back` dans `_screen_back`) ; `game/systems/services/` (`open_storage`) ; `data/dialogues/viridian_center.json` (terminal) ; `tools/debug_start/storage_qa.json` ; `tests/integration/test_menu_storage.gd`, `test_menu_director` étendu |
+| ne touche ni `boot.gd` ni `menu_director.gd` | ne touche ni `storage_screen.*`, ni `trainer_menu.gd`, ni `team_screen.gd` ; teste avec un écran factice tant que le T15 n'est pas fusionné |
+
+Ni l'un ni l'autre ne touche `game/systems/storage/**`, `menu_unlocks.gd`, `menu_route.gd`, `team_view.gd` / `team_views.gd`, `party.gd` ni `pokemon_storage.gd` (figés au T14) : un écart trouvé remonte à l'architecte.
 
 ---
 

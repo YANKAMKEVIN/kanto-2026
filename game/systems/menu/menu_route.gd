@@ -10,6 +10,7 @@ extends RefCounted
 ## - [constant POKEDEX] : « filter » (int, [constant DEX_FILTER_ALL]…), « species »
 ##   (StringName, fiche à ouvrir, &"" = la grille) ;
 ## - [constant MAP] : « zone » (StringName, zone à montrer, &"" = celle du joueur) ;
+## - [constant STORAGE] (J7A) : aucun (la sélection est de session, MenuDirector la garde) ;
 ## - les autres : aucun.
 
 const DASHBOARD: StringName = &"dashboard"
@@ -19,10 +20,15 @@ const POKEDEX: StringName = &"pokedex"
 const MAP: StringName = &"map"
 const TRAINER: StringName = &"trainer"
 const SETTINGS: StringName = &"settings"
+## Écran Stockage (J7A, jalon-07.md §3.5) : pas une carte du tableau de bord ; ouvert depuis le
+## terminal du Centre ou le bouton STOCKAGE de l'Équipe, seulement au Centre
+## ([method MenuUnlocks.storage_available]).
+const STORAGE: StringName = &"storage"
 ## Ordre des cartes du tableau de bord (dossier 08 §1) ; [MenuUnlocks] retire les absentes.
 const DASHBOARD_ORDER: Array[StringName] = [TEAM, POKEDEX, BAG, MAP, TRAINER, SETTINGS]
 ## Tous les écrans connus.
-const SCREENS: Array[StringName] = [DASHBOARD, TEAM, POKEDEX, BAG, MAP, TRAINER, SETTINGS]
+const SCREENS: Array[StringName] = [DASHBOARD, TEAM, POKEDEX, BAG, MAP, TRAINER, SETTINGS,
+	STORAGE]
 
 ## Contextes du Sac (jalon-06.md §3.4). [code]BagQuery[/code] (T10) reprend ces valeurs.
 const BAG_CONTEXT_FIELD: StringName = &"field"
@@ -71,6 +77,10 @@ static func settings() -> MenuRoute:
 	return MenuRoute.new(SETTINGS)
 
 
+static func storage() -> MenuRoute:
+	return MenuRoute.new(STORAGE)
+
+
 ## Route par défaut de l'écran [param screen_id] (carte du tableau de bord), ou null si
 ## l'écran est inconnu.
 static func for_screen(screen_id: StringName) -> MenuRoute:
@@ -89,6 +99,8 @@ static func for_screen(screen_id: StringName) -> MenuRoute:
 			return trainer()
 		SETTINGS:
 			return settings()
+		STORAGE:
+			return storage()
 	return null
 
 

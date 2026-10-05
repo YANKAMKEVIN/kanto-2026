@@ -61,7 +61,7 @@ func test_always_available_screens_and_unknown_screen() -> void:
 	for screen: StringName in [MenuRoute.DASHBOARD, MenuRoute.BAG, MenuRoute.MAP,
 			MenuRoute.TRAINER, MenuRoute.SETTINGS]:
 		assert_true(_unlocks.is_available(screen), screen)
-	assert_false(_unlocks.is_available(&"storage"))
+	assert_false(_unlocks.is_available(&"unknown_screen"))
 	assert_false(_unlocks.is_available(&""))
 
 
@@ -70,3 +70,61 @@ func test_without_state_nothing_conditional_is_visible() -> void:
 	assert_false(bare.team_visible())
 	assert_false(bare.pokedex_visible())
 	assert_eq(bare.dashboard_cards().size(), 4)
+
+
+# --- Stockage (J7A, jalon-07.md §3.5) ----------------------------------------------------------
+
+## Une zone avec un Centre (« v_center ») et une Boutique (« v_mart »), et une zone sans service.
+func _zones_with_center() -> ZoneLibrary:
+	var zones := ZoneLibrary.new()
+	assert_true(zones.add_from_dict({
+		"services": {"pokemon_center": {"name": "Centre Pokémon"},
+			"poke_mart": {"name": "Boutique"}},
+		"zones": {
+			"v": {"name": "Jadielle", "kind": "town", "maps": ["v", "v_center", "v_mart"],
+				"services": [{"id": "pokemon_center", "found_on": "v_center"},
+					{"id": "poke_mart", "found_on": "v_mart"}]},
+			"r": {"name": "Route", "kind": "route", "maps": ["r"]},
+		},
+	}, "t"), "\n".join(zones.get_errors()))
+	return zones
+
+
+func test_storage_only_inside_a_pokemon_center() -> void:
+	var zones := _zones_with_center()
+	assert_true(MenuUnlocks.is_storage_map(&"v_center", zones))
+	assert_false(MenuUnlocks.is_storage_map(&"v", zones), "pas dans la ville du Centre")
+	assert_false(MenuUnlocks.is_storage_map(&"v_mart", zones), "pas à la Boutique")
+	assert_false(MenuUnlocks.is_storage_map(&"r", zones))
+	assert_false(MenuUnlocks.is_storage_map(&"", zones))
+	assert_false(MenuUnlocks.is_storage_map(&"v_center", null))
+
+
+func test_storage_available_follows_the_current_map() -> void:
+	_add_member()
+	var where := {"map": &"v"}
+	_unlocks.set_location(_zones_with_center(), func() -> StringName: return where["map"])
+	assert_false(_unlocks.storage_available())
+	assert_false(_unlocks.is_available(MenuRoute.STORAGE))
+	where["map"] = &"v_center"
+	assert_true(_unlocks.storage_available(), "relu à chaque appel")
+	assert_true(_unlocks.is_available(MenuRoute.STORAGE))
+	assert_false(_unlocks.dashboard_cards().has(MenuRoute.STORAGE),
+		"jamais une carte du tableau de bord")
+
+
+func test_storage_needs_a_location_and_a_team() -> void:
+	assert_false(_unlocks.storage_available(), "sans lieu branché : nulle part")
+	_unlocks.set_location(_zones_with_center(), func() -> StringName: return &"v_center")
+	assert_true(_unlocks.storage_available())
+	assert_false(_unlocks.is_available(MenuRoute.STORAGE), "sans équipe, pas d'écran")
+	_add_member()
+	assert_true(_unlocks.is_available(MenuRoute.STORAGE))
+
+
+func test_real_zones_have_no_storage_outside_centers() -> void:
+	var zones := ZoneLibrary.new()
+	assert_true(zones.load_file())
+	for map: StringName in [&"pallet_town", &"player_house_1f", &"oak_lab", &"route_1",
+			&"viridian_city"]:
+		assert_false(MenuUnlocks.is_storage_map(map, zones), map)
