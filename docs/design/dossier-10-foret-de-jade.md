@@ -1,6 +1,6 @@
 # Dossier 10 — Forêt de Jade
 
-> Conçu par Kevin avec ChatGPT, reçu le 2026-10-06 ; passe d'alignement de Claude et **11 décisions de Kevin** le même jour (section « Arbitrages »). **Source de vérité** pour la Forêt de Jade (jalon 9 de la roadmap). Le tracé ASCII donne la logique, **pas à reproduire case par case**. Textes : section « Textes à valider » (dernière lecture de Kevin avant verrouillage). **Pas d'implémentation avant le jalon 9.**
+> Conçu par Kevin avec ChatGPT, reçu le 2026-10-06 ; passe d'alignement de Claude et **11 décisions de Kevin** le même jour (section « Arbitrages »). **Source de vérité** pour la Forêt de Jade (jalon 9 de la roadmap). Le tracé ASCII donne la logique, **pas à reproduire case par case**. Textes : section « Textes validés » (**validés tels quels par Kevin le 2026-10-06**, verrouillés). Jalon 9 lancé le 2026-10-06 (plan : `docs/tech/jalon-09.md`).
 
 **Ligne directrice** : la Forêt de Jade est le premier endroit où Kanto cesse d'être confortable sans devenir hostile. Jusqu'ici, le joueur découvre ; ici, il commence à préparer son équipe.
 
@@ -27,7 +27,7 @@ Différences avec la Route 1 : **orientation moins immédiate** (on voit moins l
 Durées visées (indicatives, arbitrage 4) : traversée directe 7–9 min ; première traversée 15–20 min ; exploration attentive 25–30 min, combats compris. La distance au Centre de Jadielle doit commencer à compter.
 
 ## 3. Entrées et sorties
-ADN Rouge/Bleu : **Route 2 → poste sud → forêt → poste nord → Route 2 nord → Argenta**. Les postes sont de petits bâtiments-portes d'une pièce, traversés en quelques secondes, avec un garde chacun (une scène paramétrée, arbitrage 9). Répliques : « Textes à valider ».
+ADN Rouge/Bleu : **Route 2 → poste sud → forêt → poste nord → Route 2 nord → Argenta**. Les postes sont de petits bâtiments-portes d'une pièce, traversés en quelques secondes, avec un garde chacun (une scène paramétrée, arbitrage 9). Répliques : « Textes validés ».
 Conséquence pour la Route 2 : arbitrage 11.
 
 ## 4. Tracé
@@ -113,7 +113,7 @@ IA simple (début de jeu). Champs de vision en cases ; récompenses en ₽.
 | D4 | Scout Milo | 5 | oui (détour par les hautes herbes) | Chenipan Nv. 6, Aspicot Nv. 6 | 144 |
 | D5 | Scout Éli | 5 | oui | Chrysacier Nv. 7, Coconfort Nv. 7, Chenipan Nv. 7 | 252 |
 
-Progression : un Pokémon simple → premier duo → autre famille → opposition de types → première petite équipe de trois. **Léo est le premier vrai Dresseur de l'aventure** (arbitrage 11). Répliques : « Textes à valider ».
+Progression : un Pokémon simple → premier duo → autre famille → opposition de types → première petite équipe de trois. **Léo est le premier vrai Dresseur de l'aventure** (arbitrage 11). Répliques : « Textes validés ».
 **Système à créer au jalon 9** (n'existe pas : le rival est déclenché par des scènes) : Dresseur qui voit le joueur dans son champ → « ! » → il avance de 2–3 cases → répliques → combat ; battu = mémorisé, réplique « après » ensuite.
 
 ## 9. PNJ non-combattants (2, plus les gardes)
@@ -174,8 +174,8 @@ Système normal : **réveil au dernier Centre utilisé** (normalement Jadielle),
 - **Postes de garde** : une scène d'intérieur paramétrée (système existant).
 - **Carte** 58 × 74 avec la forêt serrée du prototype de DA : performances à vérifier sur S24 (plus d'arbres que la Route 1).
 
-## Textes à valider
-Lot proposé par ChatGPT, conservé tel quel ; **dernière lecture de Kevin avant verrouillage**. Bulles de 2 lignes.
+## Textes validés
+Lot proposé par ChatGPT, **validé tel quel par Kevin le 2026-10-06** (verrouillé : à reprendre mot pour mot dans `data/dialogues/`). Bulles de 2 lignes.
 
 **Garde du poste sud** — « La Forêt de Jade est juste devant. » / « Garde un Antidote avec toi. » · en lui reparlant : « Les Aspicot peuvent empoisonner. » / « Mieux vaut être préparé. »
 **Garde du poste nord** — depuis la forêt : « Encore quelques pas vers le nord, » / « et tu atteindras Argenta. » · depuis Argenta : « La Forêt de Jade mène à Jadielle. » / « Les jeunes Dresseurs s'y entraînent. »
@@ -215,4 +215,4 @@ Lot proposé par ChatGPT, conservé tel quel ; **dernière lecture de Kevin avan
 | Décor | Nature dense, objets rares et justifiés ; aucune faune non-Pokémon |
 | Jour / nuit | Même table au J9 |
 | Défaite | Dernier Centre utilisé (Jadielle), sinon Maman ; pas de perte d'argent |
-| Textes | Lot ci-dessus, à relire par Kevin avant verrouillage |
+| Textes | Lot ci-dessus, validé tel quel par Kevin (2026-10-06) |
