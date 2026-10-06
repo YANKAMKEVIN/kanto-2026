@@ -38,7 +38,12 @@ var _new_level: Label
 var _bar: ExpBar
 var _points: Label
 var _gain: Label
-var _stats: Label
+var _stats_box: PanelContainer
+var _stats_grid: GridContainer
+## Une cellule par gain du dernier niveau (libellé, valeur) : la place est réservée dès le
+## départ, les valeurs apparaissent niveau par niveau.
+var _stat_cells: Array[Array] = []
+var _stats_text: String = ""
 
 
 func _init() -> void:
@@ -60,9 +65,10 @@ func set_view(view: ExpSummaryRowView) -> void:
 	_arrow.visible = false
 	_new_level.visible = false
 	_new_level.text = ""
-	_stats.visible = view.levels_gained() > 0
-	_stats.text = " "
-	_stats.modulate.a = 0.0
+	_stats_text = ""
+	_build_stat_cells(view)
+	_stats_box.visible = view.levels_gained() > 0
+	_stats_box.modulate.a = 0.0
 	theme_type_variation = &"SummaryRow"
 	_show_segment(0, view.segments[0].x)
 
@@ -140,7 +146,7 @@ func get_gain_text() -> String:
 
 ## Gains de statistiques affichés (vide tant qu'aucun niveau n'est passé).
 func get_stats_text() -> String:
-	return _stats.text.strip_edges() if _stats.visible and _stats.modulate.a > 0.0 else ""
+	return _stats_text if _stats_box.visible and _stats_box.modulate.a > 0.0 else ""
 
 
 func get_bar() -> ExpBar:
@@ -191,9 +197,9 @@ func _level_up(index: int, speed_scale: float) -> void:
 	pivot_offset = size * 0.5
 	bounce.tween_property(self, ^"scale", Vector2.ONE * UiTokens.SUMMARY_ROW_BOUNCE, up)
 	bounce.tween_property(self, ^"scale", Vector2.ONE, down)
-	_stats.modulate.a = 0.0
+	_stats_box.modulate.a = 0.0
 	var fade := create_tween()
-	fade.tween_property(_stats, ^"modulate:a", 1.0, UiTokens.SUMMARY_STATS_FADE * speed_scale)
+	fade.tween_property(_stats_box, ^"modulate:a", 1.0, UiTokens.SUMMARY_STATS_FADE * speed_scale)
 	_effects = [pulse, bounce, fade]
 
 
@@ -202,8 +208,8 @@ func _set_level_state(index: int) -> void:
 	_arrow.visible = true
 	_new_level.visible = true
 	_new_level.text = _view.level_texts[index]
-	_stats.text = _view.stat_texts[index]
-	_stats.modulate.a = 1.0
+	_fill_stat_cells(_view.stat_texts[index])
+	_stats_box.modulate.a = 1.0
 	theme_type_variation = &"SummaryRowLit"
 
 
@@ -262,13 +268,14 @@ func _build() -> void:
 	column.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	column.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	column.size_flags_vertical = Control.SIZE_SHRINK_CENTER
-	column.add_theme_constant_override(&"separation", 0)
+	column.add_theme_constant_override(&"separation", UiTokens.SUMMARY_LINE_GAP)
 	row.add_child(column)
 
+	# Dessus : nom et niveaux. Dessous : barre et « 112 / 173 ». À droite : « +42 XP », puis
+	# (si le Pokémon monte) la grille des gains.
 	var line := HBoxContainer.new()
 	line.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	line.add_theme_constant_override(&"separation", UiTokens.GAP)
-	line.custom_minimum_size.y = UiTokens.SUMMARY_THUMB
 	column.add_child(line)
 	_name = _label(&"SummaryName", UiTokens.SUMMARY_NAME_WIDTH)
 	_name.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
@@ -289,26 +296,82 @@ func _build() -> void:
 	_arrow.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
 	_arrow.custom_minimum_size = Vector2.ONE * UiTokens.SUMMARY_LEVEL_ARROW
 	_arrow.size_flags_vertical = Control.SIZE_SHRINK_CENTER
-	_arrow.self_modulate = UiTokens.TEXT_MUTED
+	_arrow.self_modulate = UiTokens.SUMMARY_SECONDARY
 	levels.add_child(_arrow)
 	_new_level = _label(&"SummaryLevelUp", 0)
 	levels.add_child(_new_level)
 
+	var bar_line := HBoxContainer.new()
+	bar_line.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	bar_line.add_theme_constant_override(&"separation", UiTokens.GAP)
+	column.add_child(bar_line)
 	_bar = ExpBar.new()
 	_bar.theme_type_variation = &"SummaryExpBar"
 	_bar.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	line.add_child(_bar)
-	_bar.custom_minimum_size.y = UiTokens.SUMMARY_BAR_HEIGHT
+	bar_line.add_child(_bar)
+	_bar.custom_minimum_size = Vector2(0, UiTokens.SUMMARY_BAR_HEIGHT)
+	_bar.size_flags_vertical = Control.SIZE_SHRINK_CENTER
 	_points = _label(&"SummaryPoints", UiTokens.SUMMARY_POINTS_WIDTH)
 	_points.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
-	line.add_child(_points)
+	bar_line.add_child(_points)
 	_gain = _label(&"SummaryGain", UiTokens.SUMMARY_GAIN_WIDTH)
 	_gain.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
-	line.add_child(_gain)
+	row.add_child(_gain)
 
-	_stats = _label(&"SummaryStats", 0)
-	_stats.visible = false
-	column.add_child(_stats)
+	_stats_box = PanelContainer.new()
+	_stats_box.theme_type_variation = &"SummaryStatsBox"
+	_stats_box.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_stats_box.size_flags_vertical = Control.SIZE_SHRINK_CENTER
+	_stats_box.visible = false
+	row.add_child(_stats_box)
+	_stats_grid = GridContainer.new()
+	_stats_grid.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_stats_grid.columns = UiTokens.SUMMARY_STATS_COLUMNS
+	_stats_grid.add_theme_constant_override(&"h_separation", UiTokens.SUMMARY_STATS_GAP_H)
+	_stats_grid.add_theme_constant_override(&"v_separation", UiTokens.SUMMARY_STATS_GAP_V)
+	_stats_box.add_child(_stats_grid)
+
+
+## Prépare les cellules de la grille d'après le dernier niveau (qui contient tous les gains) :
+## leur place est réservée, les valeurs sont vides tant que le niveau n'est pas passé.
+func _build_stat_cells(view: ExpSummaryRowView) -> void:
+	for cell: Array in _stat_cells:
+		(cell[0] as Control).get_parent().queue_free()
+	_stat_cells.clear()
+	if view.levels_gained() == 0:
+		return
+	for pair: PackedStringArray in _split_stats(view.stat_texts[view.levels_gained() - 1]):
+		var cell := HBoxContainer.new()
+		cell.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		var name_label := _label(&"SummaryStatName", UiTokens.SUMMARY_STATS_LABEL_WIDTH)
+		name_label.text = pair[0]
+		cell.add_child(name_label)
+		var value_label := _label(&"SummaryStatValue", UiTokens.SUMMARY_STATS_VALUE_WIDTH)
+		value_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
+		cell.add_child(value_label)
+		_stats_grid.add_child(cell)
+		_stat_cells.append([name_label, value_label])
+
+
+## Pose les valeurs de [param text] (« PV +2 · Attaque +1 ») dans les cellules.
+func _fill_stat_cells(text: String) -> void:
+	_stats_text = text
+	var values: Dictionary[String, String] = {}
+	for pair: PackedStringArray in _split_stats(text):
+		values[pair[0]] = pair[1]
+	for cell: Array in _stat_cells:
+		(cell[1] as Label).text = values.get((cell[0] as Label).text, "")
+
+
+## « PV +2 · Attaque +1 » → [[« PV », « +2 »], [« Attaque », « +1 »]] (la valeur est le
+## dernier mot de chaque gain : « Atq. Spé. +1 » → « Atq. Spé. », « +1 »).
+static func _split_stats(text: String) -> Array[PackedStringArray]:
+	var pairs: Array[PackedStringArray] = []
+	for part: String in text.split(ExpSummaryRowView.STAT_SEPARATOR, false):
+		var cut := part.rfind(" ")
+		if cut > 0:
+			pairs.append(PackedStringArray([part.left(cut), part.substr(cut + 1)]))
+	return pairs
 
 
 func _label(variation: StringName, width: int) -> Label:

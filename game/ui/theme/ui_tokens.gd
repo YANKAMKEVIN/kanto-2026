@@ -409,6 +409,8 @@ const BATTLE_MESSAGE_PAD_V := 26
 const BATTLE_MESSAGE_MAX_LINES := 2
 ## Tenue d'un message avant que le combat avance seul (ou au toucher).
 const BATTLE_MESSAGE_HOLD := 0.9
+## Une phrase qui attend un toucher (« X apprend Y ! ») ignore les touchers de cette durée.
+const BATTLE_MESSAGE_TOUCH_LOCK := 0.3
 
 # Bouton rond « ‹ » (retour à la grille d'actions), sous la carte joueur.
 const BATTLE_BACK_SIZE := TOUCH_MIN
@@ -578,12 +580,19 @@ const CAPTURE_TOUCH_LOCK := 0.6
 # gains de statistiques sous la ligne de celui qui monte, la consigne discrète en dessous.
 
 ## Largeur de la carte (référence 1920) et marges ; écart entre les lignes.
-const SUMMARY_CARD_WIDTH := 1500
+const SUMMARY_CARD_WIDTH := 1800
 const SUMMARY_CARD_MAX_HEIGHT := 984
-const SUMMARY_CARD_BG := DIALOG_PANEL_BG
+## Fond quasi opaque : ni la tête du Pokémon ni le joueur ne transparaissent sous le texte
+## (le décor reste visible autour de la carte, sous le voile du combat).
+const SUMMARY_CARD_BG := Color(0.06, 0.09, 0.13, 0.97)
+## Texte secondaire (« Nv. 8 », « 58 / 105 », consigne, libellés des stats) : plus clair que
+## TEXT_MUTED, contraste ≥ 7 : 1 sur le fond de la carte (testé).
+const SUMMARY_SECONDARY := DIALOG_NARRATION
 const SUMMARY_CARD_PAD_H := 28
 const SUMMARY_CARD_PAD_V := 24
 const SUMMARY_ROW_GAP := 10
+## Écart entre la ligne nom/niveaux et la ligne barre/points.
+const SUMMARY_LINE_GAP := 6
 ## Une ligne : fond translucide, liseré ; celle qui monte de niveau prend un liseré ACCENT.
 const SUMMARY_ROW_BG := Color(1, 1, 1, 0.05)
 const SUMMARY_ROW_BORDER := PANEL_BORDER
@@ -593,24 +602,34 @@ const SUMMARY_ROW_HIGHLIGHT_BORDER := 3
 ## Fond de la ligne mise en valeur : opaque, pour que le halo ACCENT reste autour (pas dessous).
 const SUMMARY_ROW_LIT_BG := PANEL_BG_STRONG
 ## Vignette du Pokémon (sprite pixel art, NEAREST) et son cadre.
-const SUMMARY_THUMB := 80
+const SUMMARY_THUMB := 112
 const SUMMARY_THUMB_PAD := 4
 ## Colonnes : nom, niveaux, barre (le reste), « 112 / 173 », « +11 XP ».
-const SUMMARY_NAME_WIDTH := 250
-const SUMMARY_LEVEL_WIDTH := 290
-const SUMMARY_POINTS_WIDTH := 180
-const SUMMARY_GAIN_WIDTH := 170
-const SUMMARY_NAME_FONT := FONT_BODY
-const SUMMARY_LEVEL_FONT := 28
-const SUMMARY_LEVEL_UP_FONT := FONT_BUTTON
-const SUMMARY_POINTS_FONT := FONT_CAPTION
-const SUMMARY_GAIN_FONT := FONT_BODY
-const SUMMARY_STATS_FONT := FONT_CAPTION
-const SUMMARY_LEVEL_ARROW := 22
+const SUMMARY_NAME_WIDTH := 300
+const SUMMARY_LEVEL_WIDTH := 340
+const SUMMARY_POINTS_WIDTH := 210
+const SUMMARY_GAIN_WIDTH := 230
+const SUMMARY_NAME_FONT := FONT_TITLE
+const SUMMARY_LEVEL_FONT := FONT_BUTTON
+const SUMMARY_LEVEL_UP_FONT := FONT_TITLE
+const SUMMARY_POINTS_FONT := FONT_BODY
+const SUMMARY_GAIN_FONT := FONT_TITLE
+const SUMMARY_LEVEL_ARROW := 28
+## Gains de statistiques : grille de SUMMARY_STATS_COLUMNS colonnes à droite de la ligne
+## (libellé clair, valeur ACCENT), dans un cadre discret.
+const SUMMARY_STATS_FONT := FONT_BODY
+const SUMMARY_STATS_COLUMNS := 2
+const SUMMARY_STATS_LABEL_WIDTH := 150
+const SUMMARY_STATS_VALUE_WIDTH := 56
+const SUMMARY_STATS_GAP_H := 28
+const SUMMARY_STATS_GAP_V := 0
+const SUMMARY_STATS_BG := Color(1, 1, 1, 0.06)
+const SUMMARY_STATS_PAD_H := 20
+const SUMMARY_STATS_PAD_V := 8
 ## Barre d'XP du bilan : plus épaisse que celle de la carte de combat.
 const SUMMARY_BAR_HEIGHT := 14
 ## Consigne « Touchez l'écran pour continuer » : capsule discrète sous la carte.
-const SUMMARY_HINT_FONT := FONT_CAPTION
+const SUMMARY_HINT_FONT := FONT_BODY
 const SUMMARY_HINT_BG := PANEL_BG
 const SUMMARY_HINT_PAD_H := 32
 const SUMMARY_HINT_PAD_V := 10

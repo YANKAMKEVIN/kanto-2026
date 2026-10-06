@@ -568,12 +568,12 @@ func _play_with_offers(request: BattleRequest, order: Array[int],
 	return [result[0], events]
 
 
-## La carte du joueur porte le niveau et les PV de [param e] (LEVEL_UP rejoué).
+## La carte du joueur garde l'ancien niveau et ses PV max (le bilan est l'unique lieu de la
+## progression, pas de spoiler pendant « X est K.O. ! »).
 func _check_card_level(e: BattleEvent) -> void:
 	var card := _hud.get_card(BattleHud.Side.PLAYER)
-	assert_eq(card.get_level_text(), "Nv. %d" % e.level, "Nv. de la carte à jour")
-	assert_eq(card.get_hp_bar().get_target_hp(), e.hp, "PV de la carte à jour")
-	assert_eq(card.get_hp_bar().get_max_hp(), e.max_hp, "PV max de la carte")
+	assert_eq(card.get_level_text(), "Nv. %d" % (e.level - 1), "Nv. de la carte inchangé")
+	assert_lt(card.get_hp_bar().get_max_hp(), e.max_hp, "PV max de la carte inchangés")
 
 
 ## Ponction de Vampigraine rejouée : la cible a perdu, celui d'en face a gagné.
@@ -679,7 +679,10 @@ func test_a_learned_move_is_announced_without_the_forget_panel() -> void:
 	var party: Party = party_fn.call()
 	var request := _xp_request(party, &"rattata", 3, seed)
 	var lines: Array[String] = []
+	var waits: Array[bool] = []
 	var order: Array[String] = []
+	_hud.get_message_banner().message_shown.connect(func(_t: String, wait: bool) -> void:
+		waits.append(wait))
 	_director.event_played.connect(func(e: BattleEvent) -> void:
 		if e.kind in [BattleEvent.Kind.MOVE_LEARNED, BattleEvent.Kind.BATTLE_ENDED]:
 			order.append(BattleEvent.Kind.find_key(e.kind))
@@ -693,6 +696,7 @@ func test_a_learned_move_is_announced_without_the_forget_panel() -> void:
 	assert_true(party.get_lead().knows_move(&"leech_seed"), "Vampigraine apprise au N7")
 	assert_eq(lines, ["Bulbizarre apprend Vampigraine !"] as Array[String],
 		"phrase d'apprentissage")
+	assert_true(waits.has(true), "« apprend » attend un toucher")
 	assert_null(_director.get_forget_panel(), "aucun panneau d'oubli")
 	assert_push_error_count(0)
 

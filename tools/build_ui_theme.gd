@@ -59,7 +59,8 @@ extends SceneTree
 ## Bilan de fin de combat (demande n° 1) :
 ##   SummaryCard / SummaryRow / SummaryRowLit (liseré ACCENT : la ligne qui monte de niveau) /
 ##   SummaryThumb / SummaryHint   PanelContainer ; SummaryExpBar   Control (barre plus épaisse) ;
-##   SummaryName / SummaryLevel / SummaryLevelUp / SummaryPoints / SummaryGain / SummaryStats /
+##   SummaryName / SummaryLevel / SummaryLevelUp / SummaryPoints / SummaryGain / SummaryStatName /
+##   SummaryStatValue   Label ; SummaryStatsBox   PanelContainer (grille des gains) /
 ##   SummaryHintText   Label
 ## Notifications :
 ##   Toast            PanelContainer  capsule du toast (bible UI/UX §6)
@@ -649,11 +650,16 @@ func _add_exp_summary(theme: Theme, bold: Font, t: GDScript) -> void:
 	theme.set_stylebox(&"background", &"SummaryExpBar", track)
 	theme.set_stylebox(&"fill", &"SummaryExpBar", fill)
 	_add_plain_label(theme, &"SummaryName", t.SUMMARY_NAME_FONT, t.TEXT, bold)
-	_add_plain_label(theme, &"SummaryLevel", t.SUMMARY_LEVEL_FONT, t.TEXT_MUTED, bold)
+	_add_plain_label(theme, &"SummaryLevel", t.SUMMARY_LEVEL_FONT, t.SUMMARY_SECONDARY, bold)
 	_add_plain_label(theme, &"SummaryLevelUp", t.SUMMARY_LEVEL_UP_FONT, t.ACCENT, bold)
-	_add_plain_label(theme, &"SummaryPoints", t.SUMMARY_POINTS_FONT, t.TEXT_MUTED, null)
+	_add_plain_label(theme, &"SummaryPoints", t.SUMMARY_POINTS_FONT, t.SUMMARY_SECONDARY, null)
 	_add_plain_label(theme, &"SummaryGain", t.SUMMARY_GAIN_FONT, t.TEXT, bold)
-	_add_plain_label(theme, &"SummaryStats", t.SUMMARY_STATS_FONT, t.ACCENT, bold)
+	var stats := _bag_box(t.SUMMARY_STATS_BG, t.TRANSPARENT, 0, t.SUMMARY_STATS_PAD_H,
+		t.SUMMARY_STATS_PAD_V, t)
+	theme.set_type_variation(&"SummaryStatsBox", &"PanelContainer")
+	theme.set_stylebox(&"panel", &"SummaryStatsBox", stats)
+	_add_plain_label(theme, &"SummaryStatName", t.SUMMARY_STATS_FONT, t.SUMMARY_SECONDARY, null)
+	_add_plain_label(theme, &"SummaryStatValue", t.SUMMARY_STATS_FONT, t.ACCENT, bold)
 	var hint := _panel_style(t.SUMMARY_HINT_BG, t.ROUND_BUTTON, t)
 	hint.shadow_size = 0
 	hint.set_content_margin(SIDE_LEFT, t.SUMMARY_HINT_PAD_H)
@@ -662,7 +668,7 @@ func _add_exp_summary(theme: Theme, bold: Font, t: GDScript) -> void:
 	hint.set_content_margin(SIDE_BOTTOM, t.SUMMARY_HINT_PAD_V)
 	theme.set_type_variation(&"SummaryHint", &"PanelContainer")
 	theme.set_stylebox(&"panel", &"SummaryHint", hint)
-	_add_plain_label(theme, &"SummaryHintText", t.SUMMARY_HINT_FONT, t.TEXT_MUTED, null)
+	_add_plain_label(theme, &"SummaryHintText", t.SUMMARY_HINT_FONT, t.SUMMARY_SECONDARY, null)
 
 
 ## Case arrondie du Sac et de la carte de capture : fond, liseré, marges [param pad_h] et

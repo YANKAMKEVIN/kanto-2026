@@ -18,7 +18,7 @@ extends RefCounted
 ## Jalon 5C, revu par la demande n° 1 (2026-10-06 : le bilan de fin de combat raconte l'XP et
 ## les niveaux, aucune phrase pendant le combat) :
 ## - EXP_GAINED : EXP seulement (rien à l'écran : le directeur le note pour le bilan) ;
-## - LEVEL_UP : LEVEL seulement (la carte prend en silence le niveau et les PV max) ;
+## - LEVEL_UP : LEVEL seulement (rien à l'écran : la carte garde l'ancien niveau jusqu'à la fin du bilan) ;
 ## - MOVE_LEARNED : le message ;
 ## - MOVE_FORGET_OFFERED : le message, puis FORGET (le choix et sa phrase sont à la charge du
 ##   BattleDirector : la lecture est suspendue) ;
