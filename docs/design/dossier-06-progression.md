@@ -31,6 +31,7 @@ Ami d'enfance très compétitif, toujours une longueur d'avance, badges rapides,
 - **Lavanville, tournant du rival** : son Rattata/Rattatac disparaît de son équipe ; jamais confirmé explicitement, ambiguïté. À la Tour Pokémon, il est plus silencieux : « ...Tu es venu pour quoi ? » / « Laisse tomber. » Combat, puis il reste quelques secondes et part. Pas de « JE VAIS M'ENTRAÎNER ».
 - **Après** : toujours compétitif, parfois arrogant, mais sa relation avec ses Pokémon devient visible ; il peut parler positivement de l'un d'eux. Pas de discours moralisateur.
 - **Final** : après le Conseil 4, on apprend qu'un autre Dresseur vient de devenir Maître. Le rival, sans blague : « Je savais que tu arriverais. » / « Alors allons jusqu'au bout. »
+- **Trajectoire** : 8 combats majeurs comme dans Rouge/Bleu (labo, Route 22, Azuria / Pont Pépite, S.S. Anne, Tour Pokémon, Sylphe SARL, Route 22 avant la Ligue, Plateau Indigo) : voir [`roadmap.md`](roadmap.md) « Jalons narratifs à ne pas oublier » (2026-10-06).
 
 ## 7. La Ligue, une expédition
 Route Victoire → Plateau Indigo → Conseil 4 → Maître. Pas de Centre Pokémon entre les membres : préparation, objets, gestion d'équipe. Examen final ; chaque membre teste une leçon de l'aventure.
