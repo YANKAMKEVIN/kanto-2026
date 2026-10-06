@@ -3,6 +3,9 @@
 Mis à jour : 2026-10-05 (**jalon 7 en cours sur `jalon-07`**, deux sessions en parallèle : **T0 + T1 sauvegarde v3 validée seule sur S24** ; fondations **T6 Centre, T10 Boutique, T14 Stockage, T18 Chen** faites et fusionnées ; l'autre session a fusionné **T4, la carte de Jadielle** (`j7-monde`) ; décisions de Kevin du 2026-10-05 appliquées ; **2525 tests verts** ; prochain : T5 (validation 7A.1, autre session) puis les paires écran ∥ câblage T7 ∥ T8, T11 ∥ T12, T15 ∥ T16, T19).
 
 
+## Carte de PV après une Potion (2026-10-06, branche `j7-carte-pv`, base `jalon-07` à `b2069b5`)
+- Bug QA (rival n° 2) : le Sac cache la carte du joueur et seul « ‹ » la rendait ; le chemin soin (HEAL) ne la rappelait pas, donc plus de PV visibles aux tours suivants. Correctif : le temps HEAL de `BattleDirector._play_beat` fait revenir la carte (quel que soit le Pokémon soigné) ; Ball ratée (RELEASE) et carte adverse déjà OK, testées. 2 tests d'intégration ajoutés (vrai `BattleHud`), capture `build/captures/jalon07_carte_pv/`, script `tools/capture_potion_card.gd`.
+
 ## Tests intermittents sous charge (2026-10-06, branche `fix/tests-deterministes`, base `jalon-07` à `9e23c4e`, fusionnée dans `jalon-07` le 2026-10-06)
 - **`test_npc.gd`** (saut depuis un meuble, 4 styles, et bond de `react`) : le tween est mis en pause puis avancé **à la main** par pas de 1/60 s (`Tween.custom_step`) ; durée vérifiée au pas près (pas finie avant, au plus un pas de plus), états relevés à chaque pas. Cause de l'échec (0,22 s mesuré pour 0,35 s) : la première image du tween n'était pas comptée, et sous charge elle peut durer 0,1 s et plus.
 - **`test_scene_router.gd`** (« écran montré sous le rideau opaque ») : l'opacité est relevée **par le présentateur, au moment où l'écran est montré**, plus après `wait_for_signal` (dont la reprise, sous charge, arrivait après le délai du présentateur et le fondu d'entrée). Avant/après sous 10 processus `yes` : ancien 2 échecs sur 3, nouveau 0 sur 3.

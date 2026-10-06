@@ -455,7 +455,10 @@ func _play_beat(beat: BattleBeat) -> void:
 		BattleBeat.Kind.CATCH:
 			await _play_catch(beat.event)
 		BattleBeat.Kind.HEAL:
-			# La barre ne bouge que si le Pokémon soigné est celui en jeu.
+			# Le Sac a caché la carte du joueur : elle revient dès le soin, quel que soit le
+			# Pokémon soigné. La barre ne bouge que si c'est celui en jeu.
+			if is_instance_valid(_hud):
+				_show_own_card()
 			if is_instance_valid(_hud) and _is_in_play(beat.event):
 				await _hud.animate_hp(side, beat.event.hp, beat.event.max_hp, false)
 		BattleBeat.Kind.RELEASE:
