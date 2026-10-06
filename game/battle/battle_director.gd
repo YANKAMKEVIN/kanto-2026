@@ -28,6 +28,14 @@ extends Node
 ## puis la [CaptureCard] (« Nouvelle entrée Pokédex » seulement si le Pokédex est activé par
 ## Chen : [constant StoryFlags.POKEDEX_ACTIVATED], jalon 7) et le signal [signal pokemon_caught]
 ## (autosave demandé par Boot). Aucune XP, aucun soin.
+##
+## Changement de Pokémon (jalon 7, jalon-07.md §15.23) : ÉQUIPE (active dès que l'équipe compte
+## deux Pokémon, [method BattleViews.with_team]) ouvre le [BattlePartyPanel] à la place de la
+## carte du joueur ; ENVOYER → [method BattleAction.switch_to] (« Reviens, … ! », rappel,
+## « En avant, … ! », la carte du nouveau arrive, puis l'adversaire joue) ; « ‹ » rend la carte
+## et la grille. K.O. du Pokémon du joueur avec d'autres valides
+## ([method Battle.needs_replacement]) : le même panneau, sans « ‹ », fait choisir le suivant
+## ([method Battle.replace]).
 
 ## Le combat commence (verrou posé, monde figé).
 signal battle_started(trainer_id: StringName)
@@ -48,6 +56,7 @@ const FORGET_PANEL_SCENE: PackedScene = preload("res://game/ui/battle/move_forge
 const BAG_PANEL_SCENE: PackedScene = preload("res://game/ui/battle/battle_bag_panel.tscn")
 const PARTY_PICKER_SCENE: PackedScene = preload("res://game/ui/bag/party_picker.tscn")
 const CAPTURE_CARD_SCENE: PackedScene = preload("res://game/ui/battle/capture_card.tscn")
+const PARTY_PANEL_SCENE: PackedScene = preload("res://game/ui/battle/battle_party_panel.tscn")
 ## Catégorie du Sac voulue d'emblée en combat sauvage (les Balls) ; contre un dresseur : les
 ## soins ([method BagQuery.start_category]).
 const BAG_START_CATEGORY: StringName = &"ball"
@@ -77,6 +86,7 @@ var _items: ItemLibrary
 var _bag_panel: BattleBagPanel
 var _capture_card: CaptureCard
 var _party_picker: PartyPicker
+var _party_panel: BattlePartyPanel
 ## Pokémon sauvage du combat en cours (null contre un dresseur) et carte où il se joue.
 var _wild_foe: Pokemon
 var _map_id: StringName = &""
@@ -191,10 +201,14 @@ func run_request(request: BattleRequest, map: GameMap) -> int:
 		_hud.set_party(party.size())
 	# Déroulé du moteur : présentation des camps, puis la boucle de tours.
 	await _play_events(opening, trainer)
-	var actions := BattleViews.WILD_BATTLE_ACTIONS if wild \
-		else BattleViews.trainer_actions(trainer)
+	var actions := BattleViews.with_team(BattleViews.WILD_BATTLE_ACTIONS if wild
+		else BattleViews.trainer_actions(trainer), party.size())
 	var can_flee := request.rules != null and request.rules.can_flee
-	while _battle.get_state() == Battle.State.CHOOSING:
+	while _battle.get_state() in [Battle.State.CHOOSING, Battle.State.REPLACING]:
+		# K.O. du Pokémon du joueur : il choisit le suivant (pas de retour, pas de fuite).
+		if _battle.needs_replacement():
+			await _play_events(_battle.replace(await _choose_party(true)), trainer)
+			continue
 		var action := await _choose_action(actions, can_flee)
 		if _battle.get_state() != Battle.State.CHOOSING:
 			break
@@ -261,6 +275,11 @@ func get_party_picker() -> PartyPicker:
 	return _party_picker if is_instance_valid(_party_picker) else null
 
 
+## Le panneau ÉQUIPE, tant qu'il existe (ouvert pendant un choix, tests) ; null sinon.
+func get_party_panel() -> BattlePartyPanel:
+	return _party_panel if is_instance_valid(_party_panel) else null
+
+
 ## Le panneau d'oubli, tant qu'il existe (ouvert pendant une offre, tests) ; null sinon.
 func get_forget_panel() -> MoveForgetPanel:
 	return _forget_panel if is_instance_valid(_forget_panel) else null
@@ -273,7 +292,8 @@ func get_forget_panel() -> MoveForgetPanel:
 ## « ‹ » revient. FUITE (si [param can_flee], sauvage) → une action de fuite ([BattleAction.run]).
 ## SAC (si la grille le permet et qu'une Ball ou un soin est utilisable) → le Sac de combat :
 ## une Ball choisie → [BattleAction.ball], un soin → [BattleAction.heal] ; « ‹ » revient ici
-## sans rien consommer.
+## sans rien consommer. ÉQUIPE (si la grille le permet) → le panneau ÉQUIPE : ENVOYER →
+## [BattleAction.switch_to] ; « ‹ » revient ici.
 func _choose_action(actions: Dictionary[StringName, bool], can_flee: bool) -> BattleAction:
 	while true:
 		_hud.show_actions(actions)
@@ -286,6 +306,11 @@ func _choose_action(actions: Dictionary[StringName, bool], can_flee: bool) -> Ba
 			if chosen == null:
 				continue
 			return chosen
+		if action == ActionGrid.TEAM and actions.get(ActionGrid.TEAM, false):
+			var index := await _choose_party(false)
+			if index < 0:
+				continue
+			return BattleAction.switch_to(index)
 		if action != ActionGrid.ATTACK:
 			# ÉQUIPE (et SAC / FUITE contre un dresseur) : atténués et muets, mais on ne bloque
 			# pas si un signal arrive.
@@ -328,6 +353,24 @@ func _choose_item() -> BattleAction:
 		if index >= 0:
 			return BattleAction.heal(id, index)
 	return null
+
+
+## Coroutine : le panneau ÉQUIPE à la place de la carte du joueur ; renvoie la place du Pokémon
+## à envoyer, ou −1 (« ‹ » : la carte du joueur revient). [param forced] : remplacement après un
+## K.O. (pas de « ‹ », titre « Qui envoyer au combat ? »).
+func _choose_party(forced: bool) -> int:
+	var panel := _ensure_party_panel()
+	_hud.hide_card(BattleHud.Side.PLAYER)
+	await _hud.hide_zone()
+	var prompt := _texts.get_template(&"replace_prompt") if _texts != null else ""
+	panel.show_party(BattleViews.party(_battle, _data, _texts), forced, prompt)
+	var answer: Array = await _first_of(panel.pokemon_chosen, panel.back_requested)
+	while panel.is_sliding():
+		await get_tree().process_frame
+	if answer[0] == 1:
+		_show_own_card()
+		return -1
+	return int(answer[1])
 
 
 ## Coroutine : le choix du Pokémon pour [param item] ; son index dans l'équipe, ou −1 (« ‹ »).
@@ -461,6 +504,12 @@ func _play_beat(beat: BattleBeat) -> void:
 				_show_own_card()
 			if is_instance_valid(_hud) and _is_in_play(beat.event):
 				await _hud.animate_hp(side, beat.event.hp, beat.event.max_hp, false)
+		BattleBeat.Kind.WITHDRAW:
+			# La carte est déjà sortie (panneau ÉQUIPE) ; le SEND_OUT suivant ramène la nouvelle.
+			if is_instance_valid(_hud):
+				_hud.hide_card(side)
+			if is_instance_valid(_stage):
+				await _stage.play_withdraw(beat.side)
 		BattleBeat.Kind.RELEASE:
 			if is_instance_valid(_stage):
 				await _stage.play_break_free()
@@ -568,6 +617,18 @@ func _ensure_party_picker() -> PartyPicker:
 	_party_picker.speed_scale = _hud.speed_scale
 	_party_picker.haptics_enabled = _hud.haptics_enabled
 	return _party_picker
+
+
+## Le panneau ÉQUIPE (créé au premier besoin, dans l'écran de la HUD, à son emplacement).
+func _ensure_party_panel() -> BattlePartyPanel:
+	if is_instance_valid(_party_panel):
+		return _party_panel
+	_party_panel = PARTY_PANEL_SCENE.instantiate() as BattlePartyPanel
+	_hud.get_screen().add_child(_party_panel)
+	BattleHudLayout.place(_party_panel, BattleHudLayout.Slot.PARTY)
+	_party_panel.speed_scale = _hud.speed_scale
+	_party_panel.haptics_enabled = _hud.haptics_enabled
+	return _party_panel
 
 
 ## La carte de capture (créée au premier besoin, centrée dans l'écran de la HUD).
@@ -708,15 +769,16 @@ func _free_forget_panel() -> void:
 	_forget_panel = null
 
 
-## Libère les panneaux ouverts pendant le combat (oubli, Sac, carte de capture).
+## Libère les panneaux ouverts pendant le combat (oubli, Sac, carte de capture, ÉQUIPE).
 func _free_panels() -> void:
 	_free_forget_panel()
-	for panel: Control in [_bag_panel, _capture_card, _party_picker]:
+	for panel: Control in [_bag_panel, _capture_card, _party_picker, _party_panel]:
 		if is_instance_valid(panel):
 			panel.queue_free()
 	_bag_panel = null
 	_capture_card = null
 	_party_picker = null
+	_party_panel = null
 
 
 func _npc(map: GameMap, id: StringName) -> Node2D:

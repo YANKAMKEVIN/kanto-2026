@@ -738,6 +738,17 @@ const HAPTIC_REFUSE_MS := 20
 const PICKER_HEAL_FLASH_ALPHA := 0.4
 const PICKER_HEAL_FLASH_COLOR := Color(0.298, 0.851, 0.392, PICKER_HEAL_FLASH_ALPHA)
 const PICKER_HEAL_FLASH_FADE := ANIM_PANEL
+# Panneau ÉQUIPE du combat (jalon 7, BattlePartyPanel) : même cadre que le Sac (BAG_PANEL_WIDTH,
+# BagPanel), deux colonnes de cartes de PICKER_ROW_HEIGHT (≥ TOUCH_MIN), pied avec ENVOYER.
+const BATTLE_PARTY_COLUMNS := 2
+## (BAG_PANEL_WIDTH − 2 × BAG_PANEL_PAD − PICKER_GAP) / 2, arrondi en dessous.
+const BATTLE_PARTY_CARD_WIDTH := 475
+const BATTLE_PARTY_CARD_HEIGHT := PICKER_ROW_HEIGHT
+## Pastille de type (cercle à la couleur du type, icône blanche) à gauche de la carte.
+const BATTLE_PARTY_TYPE_CHIP := 52
+const BATTLE_PARTY_TYPE_ICON := 32
+## Pied : nom du Pokémon choisi (ou raison d'un refus) et ENVOYER (BAG_ACTION_SIZE).
+const BATTLE_PARTY_FOOTER_HEIGHT := TOUCH_MIN
 const RESULT_HEIGHT := TOUCH_MIN
 const RESULT_FONT := FONT_BODY
 const RESULT_PAD_H := 28

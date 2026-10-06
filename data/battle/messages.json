@@ -58,7 +58,11 @@
 		},
 		"item_used": { "text": "Tu utilises {item} sur {pokemon}.", "draft": true },
 		"hp_restored": { "text": "{pokemon} récupère {amount} PV.", "draft": true },
-		"prize_won": { "text": "Tu remportes {money}.", "draft": true }
+		"prize_won": { "text": "Tu remportes {money}.", "draft": true },
+		"withdrawn": { "text": "Reviens, {pokemon} !", "draft": true },
+		"switch_reason_active": { "text": "Déjà au combat", "draft": true },
+		"switch_reason_fainted": { "text": "Ne peut plus combattre", "draft": true },
+		"replace_prompt": { "text": "Qui envoyer au combat ?", "draft": true }
 	},
 	"stats": {
 		"atk": "L'Attaque", "def": "La Défense", "spa": "L'Attaque Spéciale",
