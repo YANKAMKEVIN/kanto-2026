@@ -100,3 +100,17 @@ la pose ; chaque Pokémon est vérifié à l'œil.
 
 **Suite** : vie des dos dans Godot (respiration, queue, flamme, ailes) ; production route par
 route, au rythme des jalons ; intégration au vrai combat avec le cadrage validé (J11).
+
+## 8. R&D figée (2026-10-06)
+
+- **La recette v2 Colab est figée** (§7) ; plus d'optimisation artistique avant le premier lot réel.
+- **Cible de cohérence** : les dos appartiennent à la même couche visuelle que l'**artwork officiel
+  de l'adversaire**, pas au décor peint. Le décor est la scène ; les deux Pokémon forment une
+  même famille graphique.
+- **Ordre de la suite** : 1) refonte du Pokédex ; 2) premier lot réel de dos (Pokémon des zones
+  jouables, Route 1 / Route 22, 10 à 15 consécutifs) pour transformer la v2 en chaîne de
+  production à trois catégories : automatique standard ; automatique **sans référence de face**
+  (morphologies comme Smogo) ; correction en amont d'un défaut du modèle 3D. Critère : qualité
+  stable, règles reproductibles, temps raisonnable ; 3) prototype d'animation procédurale très
+  léger (Salamèche, Roucool, Bulbizarre ; aucune nouvelle image) pour répondre à « une image
+  fixe v2 animée par Godot paraît-elle vivante en combat ? » ; industrialisation au J11.
