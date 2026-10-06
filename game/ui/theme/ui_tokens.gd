@@ -779,7 +779,7 @@ static func menu_card_border(tint: Color) -> Color:
 
 # Écran Pokédex du Menu Dresseur (jalon 6, T15). Aucune statistique, aucun talent, aucune
 # silhouette : seulement ce que le joueur a découvert.
-## En-tête : RETOUR, titre + compteur, filtres (TOUS · VUS · CAPTURÉS · HABITATS).
+## En-tête : RETOUR, titre + compteur, filtres (Tous · Vus · Capturés · Habitats).
 const DEX_HEADER_HEIGHT := TOUCH_MIN
 const DEX_BACK_WIDTH := MENU_CARD_ICON * 2
 const DEX_TITLE_FONT := FONT_TITLE
@@ -831,7 +831,7 @@ const DEX_CHIP_HEIGHT := TOUCH_MIN
 const DEX_CHIP_ICON := 40
 ## Images (refonte du Pokédex, T1) : artworks officiels, vignettes de l'atlas, silhouettes.
 ## Silhouette d'une espèce inconnue (forme seule, plus sombre que la case, sur le halo).
-const DEX_SILHOUETTE := Color(0.05, 0.07, 0.10, 0.88)
+const DEX_SILHOUETTE := Color(0.10, 0.13, 0.19, 0.92)
 ## Halo radial clair derrière chaque image (centre → transparent), pour les Pokémon sombres.
 const DEX_HALO_CENTER := Color(1.0, 1.0, 1.0, 0.16)
 ## Opacité du halo derrière une silhouette (moitié du halo d'une espèce connue).
@@ -905,7 +905,7 @@ const DEX_LAYOUT_DESC_FONT := 26
 const DEX_LAYOUT_HERO_PAD := 24
 ## Aperçu de droite : petite carte d'habitat, ronds d'évolution.
 const DEX_LAYOUT_MAP_PREVIEW_HEIGHT := 150
-const DEX_LAYOUT_EVO_PREVIEW := 104
+const DEX_LAYOUT_EVO_PREVIEW := 120
 ## Vignette dans son rond (part du diamètre) ; hauteur des lignes titre / pied des aperçus.
 const DEX_LAYOUT_EVO_IMAGE_RATIO := 0.86
 const DEX_LAYOUT_PREVIEW_ROW := 48
@@ -915,6 +915,85 @@ const DEX_LAYOUT_PILL_RADIUS := 64
 ## Onglets de la fiche : texte serré pour que « Observations » tienne à 1920.
 const DEX_LAYOUT_TAB_FONT := 22
 const DEX_LAYOUT_TAB_PAD := 4
+
+# --- Pokédex : rapprochement de la maquette (refonte, T4) ----------------------------------------
+## Fond du menu derrière le Pokédex : voile plus léger que MENU_DIM (le monde lumineux, flouté,
+## se voit à travers les panneaux de verre) et flou un peu plus large.
+const DEX_BACKDROP_DIM := 0.2
+const DEX_BACKDROP_BLUR := 10.0
+const DEX_BACKDROP_LOD := 3.0
+## Panneaux en verre teinté : fond translucide, coins très arrondis, liseré fin et clair.
+const DEX_GLASS_BG := Color(0.05, 0.09, 0.14, 0.62)
+const DEX_GLASS_BORDER := Color(1.0, 1.0, 1.0, 0.18)
+const DEX_GLASS_BORDER_WIDTH := 2
+const DEX_GLASS_RADIUS := 30
+const DEX_GLASS_SHADOW := Color(0.0, 0.0, 0.0, 0.25)
+const DEX_GLASS_SHADOW_SIZE := 18
+## Cartes posées dans un panneau (Types, Habitat, Évolution, Vu / Capturé, Taille / Poids).
+const DEX_CARD_BG := Color(0.03, 0.06, 0.10, 0.42)
+const DEX_CARD_BORDER := Color(1.0, 1.0, 1.0, 0.12)
+const DEX_CARD_RADIUS := 20
+const DEX_CARD_PAD := 16
+## Rangée du haut : « Pokédex » sobre + compteur discret, capsule de filtres, recherche compacte.
+## Les zones touchables gardent TOUCH_MIN de haut ; le dessin est plus fin (marges négatives).
+const DEX_TOP_TITLE_FONT := 42
+const DEX_TOP_COUNTS_FONT := 20
+const DEX_TOP_BALL := 56
+const DEX_TOP_BACK_DRAW := 96
+const DEX_CAPSULE_DRAW := 80
+const DEX_CAPSULE_PAD := 6
+const DEX_SEGMENT_DRAW := 66
+const DEX_SEGMENT_MIN_WIDTH := TOUCH_MIN
+const DEX_SEGMENT_PAD := 22
+const DEX_SEGMENT_FONT := 26
+const DEX_SEGMENT_ON_BG := Color(0.16, 0.36, 0.48, 0.85)
+const DEX_SEGMENT_ON_BORDER := Color(0.55, 0.85, 0.95, 0.9)
+const DEX_SEARCH_WIDTH := 400
+const DEX_SEARCH_DRAW := 80
+## Tête de la grille : bouton Type (et Zone) en capsule fine.
+const DEX_REFINE_DRAW := 68
+const DEX_REFINE_FONT := 26
+## Grand portrait : décor peint flouté (PokedexScene) sous le Pokémon, lumière douce et chaude,
+## vignettage léger, fondu vers le panneau en bas (description lisible).
+const DEX_SCENE_LIGHT_CENTER := Vector2(0.55, 0.36)
+const DEX_SCENE_LIGHT_COLOR := Color(1.0, 0.86, 0.62)
+const DEX_SCENE_LIGHT := 0.32
+const DEX_SCENE_LIFT := 0.0
+const DEX_SCENE_SATURATION := 1.2
+const DEX_SCENE_VIGNETTE := 0.45
+const DEX_SCENE_FADE_COLOR := Color(0.05, 0.08, 0.13, 0.94)
+## Le fondu commence au bas des cartes Vu / Capturé (part de la hauteur du panneau) + marge.
+const DEX_SCENE_FADE_SPAN := 0.16
+## Le Pokémon : boîte au plus PORTRAIT_WIDTH de la scène en largeur ; il peut monter dans la zone
+## du nom de PORTRAIT_RISE de sa hauteur ; ses pieds s'arrêtent FEET_GAP au-dessus des cartes.
+const DEX_PORTRAIT_WIDTH := 0.9
+const DEX_PORTRAIT_RISE := 0.35
+const DEX_PORTRAIT_FEET_GAP := 6
+const DEX_PORTRAIT_SHIFT := 0.07
+## Hauteur maximale du Pokémon (espèce seulement vue : la scène est plus haute).
+const DEX_PORTRAIT_MAX := 470.0
+const DEX_PORTRAIT_HALO_ALPHA := 0.55
+## Nom et numéro lisibles sur le décor (ombre portée).
+const DEX_SCENE_TEXT_SHADOW := Color(0.0, 0.0, 0.0, 0.55)
+const DEX_SCENE_TEXT_SHADOW_SIZE := 6
+## Cartes Taille / Poids sous la description (centre).
+const DEX_FACT_ICON := 40
+## Onglets de la fiche : icône au-dessus du libellé.
+const DEX_TAB_ICON := 44
+const DEX_TAB_LABEL_FONT := 22
+## Aperçu : carte d'Habitat (carte resserrée sur les zones observées, à gauche ; noms à droite).
+const DEX_MAP_PREVIEW_HEIGHT := 250
+const DEX_MAP_ASPECT := 1.5
+## Part de la largeur de la carte d'Habitat face à ses noms (la carte domine, comme la maquette).
+const DEX_MAP_STRETCH := 1.5
+## Région la plus petite montrée (pixels de l'illustration) : une petite zone n'est pas
+## agrandie à l'excès.
+const DEX_MAP_MIN_REGION := Vector2(300, 200)
+## Voile sur la géographie autour des zones observées (aucune zone n'y est nommée ni marquée).
+const DEX_MAP_VEIL := Color(0.04, 0.07, 0.12, 0.6)
+const DEX_MAP_RADIUS := 16
+const DEX_MAP_ZONE_ROWS := 3
+const DEX_PREVIEW_ROW := 44
 
 # Écran Carte du Menu Dresseur (jalon 6, T20). Un journal : l'illustration entière, les noms
 # des seules zones découvertes, un panneau latéral ; aucun total, aucun « ??? ».

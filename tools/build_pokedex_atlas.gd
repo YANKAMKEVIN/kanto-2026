@@ -3,6 +3,8 @@ extends SceneTree
 ## assets/sprites/pokemon/official/atlas_128.png, depuis les 151 artworks NNN.png.
 ## Disposition lue dans PokedexArt (une seule source). Pour chaque artwork : recadrage à
 ## l'alpha + marge, réduction au grand côté THUMB_ART (Lanczos), centré dans sa case.
+## Écrit aussi le cadre utile de chaque artwork (boîte de l'alpha + marge, en pixels de la
+## source) dans `crops.json` (PokedexArt.CROPS_PATH) : le grand portrait est resserré dessus.
 ## Refuse un numéro manquant. Usage :
 ##   godot --headless --path . -s res://tools/build_pokedex_atlas.gd
 ## puis `godot --headless --path . --import`.
@@ -14,6 +16,7 @@ func _init() -> void:
 	var thumb: int = art.THUMB
 	var size: Vector2i = art.atlas_size()
 	var atlas := Image.create_empty(size.x, size.y, false, Image.FORMAT_RGBA8)
+	var crops: Dictionary = {}
 	for number: int in range(1, count + 1):
 		var path: String = art.portrait_path(number)
 		var source := Image.load_from_file(ProjectSettings.globalize_path(path))
@@ -29,6 +32,7 @@ func _init() -> void:
 			return
 		used = used.grow(art.THUMB_CROP_MARGIN).intersection(
 			Rect2i(Vector2i.ZERO, source.get_size()))
+		crops["%03d" % number] = [used.position.x, used.position.y, used.size.x, used.size.y]
 		var cropped := source.get_region(used)
 		# Couleurs étalées sous les pixels transparents : pas de liseré sombre à la réduction.
 		cropped.fix_alpha_edges()
@@ -45,5 +49,10 @@ func _init() -> void:
 		push_error("Atlas du Pokédex : écriture impossible (%s)" % error_string(error))
 		quit(1)
 		return
+	var file := FileAccess.open(ProjectSettings.globalize_path(art.CROPS_PATH), FileAccess.WRITE)
+	file.store_string(JSON.stringify({"_comment": "Cadre utile de chaque artwork [x, y, w, h] "
+		+ "(boîte de l'alpha + marge), généré par tools/build_pokedex_atlas.gd.",
+		"crops": crops}, "\t", true) + "\n")
+	file.close()
 	print("Atlas du Pokédex : %s (%d × %d, %d vignettes)" % [out, size.x, size.y, count])
 	quit()

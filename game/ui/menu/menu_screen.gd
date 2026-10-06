@@ -13,6 +13,11 @@ signal back_requested
 ## Vrai : l'écran occupe aussi la rangée du × (le Pokédex y met son en-tête) ; l'hôte cache
 ## alors la pastille de zone. L'écran lui laisse la place du × à gauche.
 var covers_header: bool = false
+## Voile et flou du fond du menu propres à l'écran (négatif : ceux du menu, MENU_DIM et
+## MENU_BLUR_RADIUS). Le Pokédex éclaircit le fond pour ses panneaux de verre.
+var backdrop_dim: float = -1.0
+var backdrop_blur: float = -1.0
+var backdrop_lod: float = -1.0
 ## Durées multipliées (0 = instantané, pour les tests).
 var speed_scale: float = 1.0
 

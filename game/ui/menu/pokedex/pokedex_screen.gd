@@ -9,8 +9,10 @@ extends MenuScreen
 ## Il reçoit un [PokedexGridView] et un [PokedexSheetView] et n'en sait rien d'autre : ni
 ## Pokédex, ni données, ni règles. Il émet des intentions ; le directeur du menu les applique
 ## et rappelle [method show_grid] / [method show_sheet].
-## - En-tête : ‹ RETOUR, Poké Ball + titre + compteur, filtres TOUS · VUS · CAPTURÉS · HABITATS
-##   (pastilles), recherche. Au-dessus de la grille : bouton Type et, pour HABITATS, bouton Zone.
+## - En-tête : « ‹ » rond (RETOUR), Poké Ball + titre + compteur discret, filtres Tous · Vus ·
+##   Capturés · Habitats regroupés dans une capsule segmentée (chaque segment touche sur
+##   TOUCH_MIN), recherche compacte. Au-dessus de la grille : bouton Type et, pour Habitats,
+##   bouton Zone (capsules fines). Fond du menu plus clair (DEX_BACKDROP_*) : panneaux de verre.
 ##   **Un seul** [signal filter_changed] par geste ; l'écran attend la vue qui revient.
 ## - Une case connue touchée : **un** [signal species_opened] ; une case inconnue : rien.
 ## - RETOUR (et le retour Android) quittent le Pokédex : la fiche est toujours visible, il n'y a
@@ -47,6 +49,7 @@ var _back: Button
 var _title: Label
 var _counts: Label
 var _header: HBoxContainer
+var _capsule: PanelContainer
 var _list_panel: PanelContainer
 var _search: LineEdit
 var _type_button: Button
@@ -62,6 +65,9 @@ var _sheet_empty: Label
 
 func _init() -> void:
 	covers_header = true
+	backdrop_dim = UiTokens.DEX_BACKDROP_DIM
+	backdrop_blur = UiTokens.DEX_BACKDROP_BLUR
+	backdrop_lod = UiTokens.DEX_BACKDROP_LOD
 
 
 func _ready() -> void:
@@ -170,6 +176,11 @@ func get_filter_buttons() -> Array[Button]:
 	return _filters
 
 
+## Capsule qui regroupe les filtres (segments = [method get_filter_buttons]).
+func get_filter_capsule() -> PanelContainer:
+	return _capsule
+
+
 func get_search() -> LineEdit:
 	return _search
 
@@ -242,12 +253,15 @@ func _build_header(parent: Control) -> void:
 	_header.custom_minimum_size.y = UiTokens.DEX_HEADER_HEIGHT
 	_header.add_theme_constant_override(&"separation", UiTokens.DEX_GAP)
 	margin.add_child(_header)
+	# « ‹ » rond (maquette) : le dessin fait DEX_TOP_BACK_DRAW, la zone touchable TOUCH_MIN.
 	_back = Button.new()
-	_back.theme_type_variation = &"PanelButton"
-	_back.text = BACK_TEXT
+	_back.theme_type_variation = &"DexBackRound"
 	_back.icon = BACK_ICON
+	_back.icon_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	_back.expand_icon = false
+	_back.tooltip_text = BACK_TEXT
 	_back.focus_mode = Control.FOCUS_NONE
-	_back.custom_minimum_size = Vector2(UiTokens.DEX_LAYOUT_BACK_WIDTH, UiTokens.TOUCH_MIN)
+	_back.custom_minimum_size = Vector2.ONE * UiTokens.TOUCH_MIN
 	_back.pressed.connect(_on_back)
 	_header.add_child(_back)
 	var ball := TextureRect.new()
@@ -255,7 +269,7 @@ func _build_header(parent: Control) -> void:
 	ball.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	ball.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 	ball.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
-	ball.custom_minimum_size = Vector2.ONE * UiTokens.DEX_LAYOUT_TITLE_ICON
+	ball.custom_minimum_size = Vector2.ONE * UiTokens.DEX_TOP_BALL
 	ball.size_flags_vertical = Control.SIZE_SHRINK_CENTER
 	_header.add_child(ball)
 	var titles := VBoxContainer.new()
@@ -264,33 +278,43 @@ func _build_header(parent: Control) -> void:
 	titles.add_theme_constant_override(&"separation", 0)
 	_header.add_child(titles)
 	_title = Label.new()
-	_title.theme_type_variation = &"DexHeaderTitle"
+	_title.theme_type_variation = &"DexTopTitle"
 	_title.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	titles.add_child(_title)
 	_counts = Label.new()
-	_counts.theme_type_variation = &"DexHeaderCounts"
+	_counts.theme_type_variation = &"DexTopCounts"
 	_counts.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	titles.add_child(_counts)
+	# Filtres : une seule capsule segmentée (maquette) ; chaque segment touche sur TOUCH_MIN.
+	_capsule = PanelContainer.new()
+	_capsule.theme_type_variation = &"DexCapsule"
+	_capsule.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_header.add_child(_capsule)
+	var segments := HBoxContainer.new()
+	segments.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	segments.add_theme_constant_override(&"separation", 0)
+	_capsule.add_child(segments)
 	var group := ButtonGroup.new()
 	for i: int in 4:
 		var button := Button.new()
-		button.theme_type_variation = &"DexFilterPill"
+		button.theme_type_variation = &"DexSegment"
 		button.toggle_mode = true
 		button.button_group = group
 		button.focus_mode = Control.FOCUS_NONE
-		button.custom_minimum_size = Vector2(UiTokens.DEX_LAYOUT_FILTER_MIN_WIDTH,
-			UiTokens.TOUCH_MIN)
+		button.custom_minimum_size = Vector2(UiTokens.DEX_SEGMENT_MIN_WIDTH, UiTokens.TOUCH_MIN)
 		button.pressed.connect(_on_filter_pressed.bind(i))
-		_header.add_child(button)
+		segments.add_child(button)
 		_filters.append(button)
+	var spacer := Control.new()
+	spacer.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	spacer.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	_header.add_child(spacer)
 	_search = LineEdit.new()
 	_search.theme_type_variation = &"DexSearch"
 	_search.placeholder_text = SEARCH_PLACEHOLDER
 	_search.right_icon = SEARCH_ICON
 	_search.clear_button_enabled = true
-	_search.custom_minimum_size = Vector2(UiTokens.DEX_LAYOUT_SEARCH_MIN_WIDTH,
-		UiTokens.TOUCH_MIN)
-	_search.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	_search.custom_minimum_size = Vector2(UiTokens.DEX_SEARCH_WIDTH, UiTokens.TOUCH_MIN)
 	_search.add_theme_constant_override(&"icon_max_width", UiTokens.DEX_SEARCH_ICON)
 	_search.text_changed.connect(_on_search_changed)
 	_search.text_submitted.connect(_on_search_submitted)
@@ -345,10 +369,11 @@ func _build_list(parent: Control) -> void:
 
 func _refine_button(icon: Texture2D) -> Button:
 	var button := Button.new()
-	button.theme_type_variation = &"TeamAction"
+	button.theme_type_variation = &"DexRefine"
 	button.icon = icon
 	button.focus_mode = Control.FOCUS_NONE
 	button.custom_minimum_size = Vector2(UiTokens.DEX_REFINE_WIDTH, UiTokens.TOUCH_MIN)
+	button.add_theme_constant_override(&"icon_max_width", UiTokens.DEX_SEARCH_ICON)
 	button.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	button.clip_text = true
 	button.visible = false

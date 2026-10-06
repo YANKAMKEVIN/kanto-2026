@@ -7,8 +7,10 @@ extends VBoxContainer
 ## Anti-spoiler (règle 10, Q-9) : **seulement ce que le joueur a découvert**. Une espèce
 ## seulement vue n'a ni types, ni taille, ni poids (absents, pas de cases vides « ??? »). Jamais
 ## de statistiques de base, de talents, de condition d'évolution, ni de zone non découverte.
-## - Aperçu : types, taille et poids (à la capture), aperçu Habitat (petite carte, « Zones
-##   observées : N », un toucher ouvre l'onglet Habitat) et aperçu Évolution (ronds + noms).
+## - Aperçu : types (à la capture), aperçu Habitat (carte resserrée sur les zones observées,
+##   leurs noms, « Zones observées : N », un toucher ouvre l'onglet Habitat) et aperçu Évolution
+##   (grands ronds + noms). Taille et poids sont au centre, sous la description (refonte T4).
+## - Onglets : icône au-dessus du libellé, l'onglet ouvert est plein (maquette).
 ## - Habitat : une petite carte (les zones observées seules) et une pastille par zone ; la
 ##   toucher émet **un** [signal route_requested] vers la Carte.
 ## - Évolution : vignettes de l'atlas ; un stade pas encore vu en **silhouette** (nom « ??? »),
@@ -22,8 +24,6 @@ signal tab_changed(tab: int)
 
 enum Tab { OVERVIEW, HABITAT, EVOLUTION, NOTES }
 
-const SIZE_CAPTION := "Taille"
-const WEIGHT_CAPTION := "Poids"
 const TYPES_CAPTION := "Types"
 const HABITAT_TITLE := "Habitat"
 const EVOLUTION_TITLE := "Évolution"
@@ -33,6 +33,13 @@ const PREVIEW_ARROW := "»"
 const BRANCH_SEPARATOR := "/"
 const BADGE_SCENE: PackedScene = preload("res://game/ui/components/type_badge.tscn")
 const PIN_ICON: Texture2D = preload("res://assets/ui/icons/pokedex/pin.svg")
+## Icônes des onglets, dans l'ordre de [enum Tab].
+const TAB_ICONS: Array[Texture2D] = [
+	preload("res://assets/ui/icons/pokedex/overview.svg"),
+	preload("res://assets/ui/icons/pokedex/pin.svg"),
+	preload("res://assets/ui/icons/pokedex/evolution.svg"),
+	preload("res://assets/ui/icons/pokedex/notes.svg"),
+]
 const CHEVRON_ICON: Texture2D = preload("res://assets/ui/icons/menu/chevron.svg")
 
 var _view: PokedexSheetView
@@ -169,7 +176,7 @@ func _on_tab_pressed(tab: Tab) -> void:
 	tab_changed.emit(int(tab))
 
 
-## Aperçu : à la capture, types, taille et poids ; puis les aperçus d'Habitat et d'Évolution.
+## Aperçu : à la capture, les types ; puis les aperçus d'Habitat et d'Évolution.
 func _fill_overview(view: PokedexSheetView) -> void:
 	_clear(_overview)
 	_preview_map = null
@@ -182,97 +189,106 @@ func _fill_overview(view: PokedexSheetView) -> void:
 		var badge := BADGE_SCENE.instantiate() as TypeBadge
 		_type_row.add_child(badge)
 		badge.set_type(view.type_ids[i], view.type_names[i])
-	var facts := HBoxContainer.new()
-	facts.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	facts.add_theme_constant_override(&"separation", UiTokens.DEX_SHEET_GAP)
 	if not view.type_ids.is_empty():
-		facts.add_child(_fact_card(TYPES_CAPTION, _type_row))
+		_overview.add_child(_types_card(_type_row))
 	else:
 		_type_row.visible = false
 		_overview.add_child(_type_row)
-	if not view.height_text.is_empty():
-		facts.add_child(_fact(SIZE_CAPTION, view.height_text))
-	if not view.weight_text.is_empty():
-		facts.add_child(_fact(WEIGHT_CAPTION, view.weight_text))
-	if facts.get_child_count() > 0:
-		_overview.add_child(facts)
-	else:
-		facts.queue_free()
 	if not view.habitats.is_empty():
 		_overview.add_child(_habitat_preview_card(view))
 	if not view.evolution.is_empty():
 		_overview.add_child(_evolution_preview(view))
 
 
-func _fact(caption: String, value: String) -> PanelContainer:
-	var val := Label.new()
-	val.theme_type_variation = &"TeamValue"
-	val.add_theme_font_size_override(&"font_size", UiTokens.DEX_INFO_FONT)
-	val.text = value
-	val.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	return _fact_card(caption, val)
-
-
-func _fact_card(caption: String, content: Control) -> PanelContainer:
+## Carte « Types » : la légende et les pastilles sur une ligne.
+func _types_card(content: Control) -> PanelContainer:
 	var card := _section()
-	card.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	var box := VBoxContainer.new()
-	box.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	box.add_theme_constant_override(&"separation", 0)
-	card.get_child(0).add_child(box)
+	var row := HBoxContainer.new()
+	row.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	row.add_theme_constant_override(&"separation", UiTokens.DEX_GAP)
+	card.add_child(row)
 	var cap := Label.new()
-	cap.theme_type_variation = &"TeamCaption"
-	cap.text = caption
+	cap.theme_type_variation = &"DexPreviewTitle"
+	cap.text = TYPES_CAPTION
+	cap.size_flags_vertical = Control.SIZE_SHRINK_CENTER
 	cap.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	box.add_child(cap)
-	box.add_child(content)
+	row.add_child(cap)
+	content.size_flags_vertical = Control.SIZE_SHRINK_CENTER
+	row.add_child(content)
 	return card
 
 
-## Carte de l'aperçu d'Habitat : titre, petite carte, « Zones observées : N » et un chevron ;
-## un toucher ouvre l'onglet Habitat (jamais la Carte directement).
+## Carte de l'aperçu d'Habitat : à gauche la carte resserrée sur les zones observées, à droite
+## le titre, les noms des zones (les premières) et « Zones observées : N » avec un chevron ; un
+## toucher ouvre l'onglet Habitat (jamais la Carte directement).
 func _habitat_preview_card(view: PokedexSheetView) -> Button:
 	var button := Button.new()
 	button.theme_type_variation = &"DexPreviewCard"
 	button.focus_mode = Control.FOCUS_NONE
 	# Dans un défilement : le glissement du doigt doit atteindre le ScrollContainer.
 	button.mouse_filter = Control.MOUSE_FILTER_PASS
-	button.custom_minimum_size.y = UiTokens.DEX_LAYOUT_MAP_PREVIEW_HEIGHT \
-		+ 2 * UiTokens.GAP + 2 * UiTokens.DEX_SHEET_GAP + 2 * UiTokens.DEX_LAYOUT_PREVIEW_ROW
+	button.custom_minimum_size.y = UiTokens.DEX_MAP_PREVIEW_HEIGHT + 2 * UiTokens.DEX_CARD_PAD
 	TapGuard.attach(button)
 	button.pressed.connect(_on_habitat_preview_pressed)
 	_habitat_preview = button
-	var box := VBoxContainer.new()
-	box.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	box.add_theme_constant_override(&"separation", UiTokens.DEX_SHEET_GAP)
-	button.add_child(box)
-	box.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT, Control.PRESET_MODE_MINSIZE,
-		UiTokens.GAP)
-	var title := Label.new()
-	title.theme_type_variation = &"DexPreviewTitle"
-	title.text = HABITAT_TITLE
-	title.custom_minimum_size.y = UiTokens.DEX_LAYOUT_PREVIEW_ROW
-	title.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
-	title.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	box.add_child(title)
+	var row := HBoxContainer.new()
+	row.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	row.add_theme_constant_override(&"separation", UiTokens.DEX_GAP)
+	button.add_child(row)
+	row.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT, Control.PRESET_MODE_MINSIZE,
+		UiTokens.DEX_CARD_PAD)
 	_preview_map = PokedexHabitatMap.new()
-	_preview_map.custom_minimum_size = Vector2(0.0, UiTokens.DEX_LAYOUT_MAP_PREVIEW_HEIGHT)
-	_preview_map.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	_preview_map.custom_minimum_size = Vector2(
+		UiTokens.DEX_MAP_PREVIEW_HEIGHT * UiTokens.DEX_MAP_ASPECT * 0.8,
+		UiTokens.DEX_MAP_PREVIEW_HEIGHT)
 	_preview_map.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	_preview_map.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	_preview_map.size_flags_stretch_ratio = UiTokens.DEX_MAP_STRETCH
 	var zone_ids: Array[StringName] = []
 	for habitat: PokedexHabitatView in view.habitats:
 		zone_ids.append(habitat.zone_id)
 	_preview_map.set_zones(zone_ids)
-	box.add_child(_preview_map)
+	row.add_child(_preview_map)
+	var side := VBoxContainer.new()
+	side.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	side.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	side.add_theme_constant_override(&"separation", 0)
+	row.add_child(side)
+	var title := Label.new()
+	title.theme_type_variation = &"DexPreviewTitle"
+	title.text = HABITAT_TITLE
+	title.custom_minimum_size.y = UiTokens.DEX_PREVIEW_ROW
+	title.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+	title.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	side.add_child(title)
+	for i: int in mini(view.habitats.size(), UiTokens.DEX_MAP_ZONE_ROWS):
+		var zone_row := HBoxContainer.new()
+		zone_row.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		zone_row.add_theme_constant_override(&"separation", UiTokens.DEX_SHEET_GAP)
+		zone_row.custom_minimum_size.y = UiTokens.DEX_PREVIEW_ROW
+		zone_row.add_child(_icon(PIN_ICON))
+		var zone := Label.new()
+		zone.theme_type_variation = &"DexCardCaption"
+		zone.text = view.habitats[i].name
+		zone.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
+		zone.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		zone.size_flags_vertical = Control.SIZE_SHRINK_CENTER
+		zone.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		zone_row.add_child(zone)
+		side.add_child(zone_row)
+	var filler := Control.new()
+	filler.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	filler.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	side.add_child(filler)
 	var footer := HBoxContainer.new()
 	footer.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	footer.add_theme_constant_override(&"separation", UiTokens.DEX_SHEET_GAP)
-	footer.custom_minimum_size.y = UiTokens.DEX_LAYOUT_PREVIEW_ROW
-	box.add_child(footer)
-	footer.add_child(_icon(PIN_ICON))
+	footer.custom_minimum_size.y = UiTokens.DEX_PREVIEW_ROW
+	side.add_child(footer)
 	var count := Label.new()
 	count.theme_type_variation = &"DexCardValue"
 	count.text = view.habitat_count_text
+	count.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
 	count.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	count.size_flags_vertical = Control.SIZE_SHRINK_CENTER
 	count.mouse_filter = Control.MOUSE_FILTER_IGNORE
@@ -306,7 +322,8 @@ func _evolution_preview(view: PokedexSheetView) -> PanelContainer:
 	title.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	var row := HFlowContainer.new()
 	row.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	row.add_theme_constant_override(&"h_separation", UiTokens.DEX_SHEET_GAP)
+	row.alignment = FlowContainer.ALIGNMENT_CENTER
+	row.add_theme_constant_override(&"h_separation", UiTokens.DEX_GAP)
 	row.add_theme_constant_override(&"v_separation", UiTokens.DEX_SHEET_GAP)
 	for i: int in view.evolution.size():
 		var stage := view.evolution[i]
@@ -321,7 +338,7 @@ func _evolution_preview(view: PokedexSheetView) -> PanelContainer:
 	box.add_child(title)
 	box.add_child(row)
 	var card := _section()
-	card.get_child(0).add_child(box)
+	card.add_child(box)
 	return card
 
 
@@ -401,7 +418,7 @@ func _fill_evolution(view: PokedexSheetView) -> void:
 
 func _separator(text: String, height: int) -> Label:
 	var label := Label.new()
-	label.theme_type_variation = &"DexNumber"
+	label.theme_type_variation = &"DexPreviewTitle"
 	label.text = text
 	label.custom_minimum_size.y = height
 	label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
@@ -416,7 +433,7 @@ func _stage_node(stage: EvolutionStageView, diameter: int, circles: Array[Panel]
 	column.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	column.add_theme_constant_override(&"separation", 0)
 	var circle := Panel.new()
-	circle.theme_type_variation = &"TeamEvoCircle"
+	circle.theme_type_variation = &"DexEvoCircle"
 	circle.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	circle.custom_minimum_size = Vector2.ONE * diameter
 	circle.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
@@ -429,8 +446,7 @@ func _stage_node(stage: EvolutionStageView, diameter: int, circles: Array[Panel]
 		halo.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 		halo.stretch_mode = TextureRect.STRETCH_SCALE
 		halo.size = Vector2.ONE * diameter
-		if not stage.known:
-			halo.modulate.a = UiTokens.DEX_HALO_UNKNOWN_ALPHA
+		# Halo plein même derrière une silhouette : sur le rond sombre, la forme doit se lire.
 		circle.add_child(halo)
 		var image := TextureRect.new()
 		image.texture = PokedexArt.thumbnail(stage.number)
@@ -444,7 +460,7 @@ func _stage_node(stage: EvolutionStageView, diameter: int, circles: Array[Panel]
 		circle.add_child(image)
 		images.append(image)
 	var name_label := Label.new()
-	name_label.theme_type_variation = &"TeamCaption"
+	name_label.theme_type_variation = &"DexCardValue"
 	name_label.text = stage.name
 	name_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	name_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
@@ -471,7 +487,7 @@ func _fill_notes(view: PokedexSheetView) -> void:
 		text.text = note
 		text.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 		text.mouse_filter = Control.MOUSE_FILTER_IGNORE
-		card.get_child(0).add_child(text)
+		card.add_child(text)
 		_notes.add_child(card)
 
 
@@ -485,6 +501,9 @@ func _build() -> void:
 		var button := Button.new()
 		button.theme_type_variation = &"DexSheetTab"
 		button.text = PokedexSheetView.TAB_LABELS[i]
+		button.icon = TAB_ICONS[i]
+		button.icon_alignment = HORIZONTAL_ALIGNMENT_CENTER
+		button.vertical_icon_alignment = VERTICAL_ALIGNMENT_TOP
 		button.toggle_mode = true
 		button.button_group = group
 		button.focus_mode = Control.FOCUS_NONE
@@ -508,6 +527,7 @@ func _build() -> void:
 	_overview.add_theme_constant_override(&"separation", UiTokens.DEX_SHEET_GAP)
 	_habitat = VBoxContainer.new()
 	_evolution = HFlowContainer.new()
+	_evolution.alignment = FlowContainer.ALIGNMENT_CENTER
 	_evolution.add_theme_constant_override(&"h_separation", UiTokens.DEX_GAP)
 	_evolution.add_theme_constant_override(&"v_separation", UiTokens.DEX_GAP)
 	_notes = VBoxContainer.new()
@@ -521,16 +541,11 @@ func _build() -> void:
 	_overview.visible = true
 
 
-## Un encadré discret avec marge ; le conteneur intérieur est son premier enfant.
+## Une carte de verre (DexCard, marge comprise) ; on y ajoute directement le contenu.
 func _section() -> PanelContainer:
 	var section := PanelContainer.new()
-	section.theme_type_variation = &"TeamSection"
+	section.theme_type_variation = &"DexCard"
 	section.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	var margin := MarginContainer.new()
-	margin.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	for side: StringName in [&"margin_left", &"margin_right", &"margin_top", &"margin_bottom"]:
-		margin.add_theme_constant_override(side, UiTokens.GAP)
-	section.add_child(margin)
 	return section
 
 

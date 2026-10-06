@@ -611,6 +611,7 @@ func _select(screen: MenuScreen) -> void:
 		previous.leave()
 	_current = screen
 	_refresh_zone_pill()
+	_apply_backdrop(screen)
 	if _open:
 		_entered = true
 		screen.enter()
@@ -627,6 +628,17 @@ func _fit_prefs(screen: MenuScreen) -> void:
 		return
 	UiPrefsApplier.apply(screen)
 	_prefs_fitted[screen] = UiPrefs.revision
+
+
+## Voile et flou du fond selon l'écran affiché (valeurs du menu si l'écran n'en a pas).
+func _apply_backdrop(screen: MenuScreen) -> void:
+	var material := _backdrop.material as ShaderMaterial
+	material.set_shader_parameter(&"dim",
+		screen.backdrop_dim if screen.backdrop_dim >= 0.0 else UiTokens.MENU_DIM)
+	material.set_shader_parameter(&"blur_radius",
+		screen.backdrop_blur if screen.backdrop_blur >= 0.0 else UiTokens.MENU_BLUR_RADIUS)
+	material.set_shader_parameter(&"blur_lod",
+		screen.backdrop_lod if screen.backdrop_lod >= 0.0 else UiTokens.MENU_BLUR_LOD)
 
 
 func _set_amount(value: float) -> void:

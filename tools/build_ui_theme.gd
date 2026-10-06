@@ -163,6 +163,7 @@ func _init() -> void:
 	_add_bag_screen(theme, bold, t)
 	_add_pokedex_screen(theme, bold, t)
 	_add_pokedex_layout(theme, bold, t)
+	_add_pokedex_glass(theme, bold, t)
 	_add_map_screen(theme, bold, t)
 	_add_trainer_screen(theme, bold, t)
 	_add_settings_screen(theme, bold, t)
@@ -941,6 +942,158 @@ func _add_pokedex_layout(theme: Theme, bold: Font, t: GDScript) -> void:
 	_add_plain_label(theme, &"DexCardValue", t.DEX_LAYOUT_CARD_VALUE_FONT, t.TEXT, bold)
 	_add_plain_label(theme, &"DexDescription", t.DEX_LAYOUT_DESC_FONT, t.TEXT, null)
 	_add_plain_label(theme, &"DexPreviewTitle", t.DEX_LAYOUT_PREVIEW_TITLE_FONT, t.TEXT, bold)
+
+
+# --- Pokédex : rapprochement de la maquette (refonte, T4) -------------------------------------
+##   Remplace DexPanel / DexHeroPanel par du verre teinté (DEX_GLASS_*), et ajoute :
+##   DexHeroRim (Panel, liseré seul, par-dessus le décor du portrait), DexCard (PanelContainer,
+##   carte d'un panneau), DexCapsule (PanelContainer, capsule des filtres), DexSegment (Button à
+##   bascule, segment de la capsule), DexBackRound (Button rond « ‹ »), DexRefine (Button, capsule
+##   fine de la grille), DexTopTitle / DexTopCounts / DexSceneNumber / DexSceneName (Label),
+##   DexEvoCircle (Panel). DexSearch, DexSheetTab et DexPreviewCard sont redessinés. Les zones
+##   touchables restent de TOUCH_MIN : le dessin est resserré par des marges d'expansion négatives.
+
+
+## Boîte dessinée plus petite que le contrôle : [param draw_h] de haut, centrée verticalement
+## dans [param control_h] (et [param inset_x] de chaque côté).
+func _inset(box: StyleBoxFlat, control_h: float, draw_h: float, inset_x: float = 0.0) -> void:
+	var dy := -(control_h - draw_h) * 0.5
+	box.expand_margin_top = dy
+	box.expand_margin_bottom = dy
+	box.expand_margin_left = -inset_x
+	box.expand_margin_right = -inset_x
+
+
+func _glass(bg: Color, border: Color, radius: int, t: GDScript) -> StyleBoxFlat:
+	var box := StyleBoxFlat.new()
+	box.bg_color = bg
+	box.border_color = border
+	box.set_border_width_all(t.DEX_GLASS_BORDER_WIDTH)
+	box.set_corner_radius_all(radius)
+	box.anti_aliasing = true
+	return box
+
+
+func _add_pokedex_glass(theme: Theme, bold: Font, t: GDScript) -> void:
+	var panel := _glass(t.DEX_GLASS_BG, t.DEX_GLASS_BORDER, t.DEX_GLASS_RADIUS, t)
+	panel.shadow_color = t.DEX_GLASS_SHADOW
+	panel.shadow_size = t.DEX_GLASS_SHADOW_SIZE
+	panel.set_content_margin_all(t.DEX_PANEL_PAD)
+	theme.set_stylebox(&"panel", &"DexPanel", panel)
+	# Portrait : le verre seul (le décor et le contenu se posent dessus), puis le liseré par-dessus.
+	var hero := _glass(t.DEX_GLASS_BG, Color(0, 0, 0, 0), t.DEX_GLASS_RADIUS, t)
+	hero.set_border_width_all(0)
+	hero.shadow_color = t.DEX_GLASS_SHADOW
+	hero.shadow_size = t.DEX_GLASS_SHADOW_SIZE
+	hero.set_content_margin_all(0)
+	theme.set_stylebox(&"panel", &"DexHeroPanel", hero)
+	var rim := _glass(Color(0, 0, 0, 0), t.DEX_GLASS_BORDER, t.DEX_GLASS_RADIUS, t)
+	rim.draw_center = false
+	theme.set_type_variation(&"DexHeroRim", &"Panel")
+	theme.set_stylebox(&"panel", &"DexHeroRim", rim)
+
+	var card := _glass(t.DEX_CARD_BG, t.DEX_CARD_BORDER, t.DEX_CARD_RADIUS, t)
+	card.set_content_margin_all(t.DEX_CARD_PAD)
+	theme.set_type_variation(&"DexCard", &"PanelContainer")
+	theme.set_stylebox(&"panel", &"DexCard", card)
+	var preview := _glass(t.DEX_CARD_BG, t.DEX_CARD_BORDER, t.DEX_CARD_RADIUS, t)
+	var preview_on := _glass(t.tinted(t.ACCENT, 0.22), t.ACCENT, t.DEX_CARD_RADIUS, t)
+	_add_button_variation(theme, &"DexPreviewCard", preview, preview_on, bold, t)
+	theme.set_font_size(&"font_size", &"DexPreviewCard", t.DEX_LAYOUT_PREVIEW_TITLE_FONT)
+	for state: StringName in [&"font_color", &"font_hover_color", &"font_focus_color",
+			&"font_pressed_color", &"font_hover_pressed_color"]:
+		theme.set_color(state, &"DexPreviewCard", t.TEXT)
+
+	var touch := float(t.TOUCH_MIN)
+	var capsule := _glass(t.DEX_GLASS_BG, t.DEX_GLASS_BORDER, t.DEX_CAPSULE_DRAW / 2, t)
+	_inset(capsule, touch, t.DEX_CAPSULE_DRAW)
+	capsule.set_content_margin(SIDE_LEFT, t.DEX_CAPSULE_PAD)
+	capsule.set_content_margin(SIDE_RIGHT, t.DEX_CAPSULE_PAD)
+	theme.set_type_variation(&"DexCapsule", &"PanelContainer")
+	theme.set_stylebox(&"panel", &"DexCapsule", capsule)
+	var segment := StyleBoxFlat.new()
+	segment.bg_color = Color(0, 0, 0, 0)
+	segment.set_content_margin(SIDE_LEFT, t.DEX_SEGMENT_PAD)
+	segment.set_content_margin(SIDE_RIGHT, t.DEX_SEGMENT_PAD)
+	var segment_on := _glass(t.DEX_SEGMENT_ON_BG, t.DEX_SEGMENT_ON_BORDER, t.DEX_SEGMENT_DRAW / 2,
+		t)
+	_inset(segment_on, touch, t.DEX_SEGMENT_DRAW)
+	segment_on.set_content_margin(SIDE_LEFT, t.DEX_SEGMENT_PAD)
+	segment_on.set_content_margin(SIDE_RIGHT, t.DEX_SEGMENT_PAD)
+	_add_button_variation(theme, &"DexSegment", segment, segment_on, bold, t)
+	theme.set_font_size(&"font_size", &"DexSegment", t.DEX_SEGMENT_FONT)
+	for state: StringName in [&"font_color", &"font_hover_color", &"font_focus_color"]:
+		theme.set_color(state, &"DexSegment", t.TEXT_MUTED)
+	for state: StringName in [&"font_pressed_color", &"font_hover_pressed_color"]:
+		theme.set_color(state, &"DexSegment", t.TEXT)
+
+	var back := _glass(t.DEX_GLASS_BG, t.DEX_GLASS_BORDER, t.DEX_TOP_BACK_DRAW / 2, t)
+	var back_on := _glass(t.ACCENT, t.ACCENT, t.DEX_TOP_BACK_DRAW / 2, t)
+	for box: StyleBoxFlat in [back, back_on]:
+		_inset(box, touch, t.DEX_TOP_BACK_DRAW, (touch - t.DEX_TOP_BACK_DRAW) * 0.5)
+	_add_button_variation(theme, &"DexBackRound", back, back_on, bold, t)
+	theme.set_color(&"icon_pressed_color", &"DexBackRound", t.ACCENT_TEXT)
+	theme.set_color(&"icon_hover_pressed_color", &"DexBackRound", t.ACCENT_TEXT)
+
+	var refine := _glass(t.DEX_CARD_BG, t.DEX_CARD_BORDER, t.DEX_REFINE_DRAW / 2, t)
+	var refine_on := _glass(t.tinted(t.ACCENT, 0.25), t.ACCENT, t.DEX_REFINE_DRAW / 2, t)
+	for box: StyleBoxFlat in [refine, refine_on]:
+		_inset(box, touch, t.DEX_REFINE_DRAW)
+		box.set_content_margin(SIDE_LEFT, t.DEX_SEGMENT_PAD)
+		box.set_content_margin(SIDE_RIGHT, t.DEX_SEGMENT_PAD)
+	_add_button_variation(theme, &"DexRefine", refine, refine_on, bold, t)
+	theme.set_font_size(&"font_size", &"DexRefine", t.DEX_REFINE_FONT)
+	for state: StringName in [&"font_color", &"font_hover_color", &"font_focus_color",
+			&"font_pressed_color", &"font_hover_pressed_color"]:
+		theme.set_color(state, &"DexRefine", t.TEXT)
+
+	var field := _glass(t.DEX_GLASS_BG, t.DEX_GLASS_BORDER, t.DEX_SEARCH_DRAW / 2, t)
+	var field_focus := _glass(t.DEX_GLASS_BG, t.ACCENT, t.DEX_SEARCH_DRAW / 2, t)
+	for box: StyleBoxFlat in [field, field_focus]:
+		_inset(box, touch, t.DEX_SEARCH_DRAW)
+		box.set_content_margin(SIDE_LEFT, t.DEX_SEGMENT_PAD)
+		box.set_content_margin(SIDE_RIGHT, t.DEX_SEGMENT_PAD)
+	theme.set_stylebox(&"normal", &"DexSearch", field)
+	theme.set_stylebox(&"read_only", &"DexSearch", field)
+	theme.set_stylebox(&"focus", &"DexSearch", field_focus)
+	theme.set_font_size(&"font_size", &"DexSearch", t.DEX_SEGMENT_FONT)
+
+	var tab := _glass(t.DEX_CARD_BG, t.DEX_CARD_BORDER, t.DEX_CARD_RADIUS, t)
+	var tab_on := _glass(t.ACCENT, t.ACCENT, t.DEX_CARD_RADIUS, t)
+	for box: StyleBoxFlat in [tab, tab_on]:
+		box.set_content_margin(SIDE_LEFT, t.DEX_LAYOUT_TAB_PAD)
+		box.set_content_margin(SIDE_RIGHT, t.DEX_LAYOUT_TAB_PAD)
+	_add_button_variation(theme, &"DexSheetTab", tab, tab_on, bold, t)
+	theme.set_font_size(&"font_size", &"DexSheetTab", t.DEX_TAB_LABEL_FONT)
+	for state: StringName in [&"font_color", &"font_hover_color", &"font_focus_color"]:
+		theme.set_color(state, &"DexSheetTab", t.TEXT)
+	for state: StringName in [&"font_pressed_color", &"font_hover_pressed_color"]:
+		theme.set_color(state, &"DexSheetTab", t.ACCENT_TEXT)
+	for state: StringName in [&"icon_normal_color", &"icon_hover_color", &"icon_focus_color"]:
+		theme.set_color(state, &"DexSheetTab", t.TEXT)
+	for state: StringName in [&"icon_pressed_color", &"icon_hover_pressed_color"]:
+		theme.set_color(state, &"DexSheetTab", t.ACCENT_TEXT)
+	theme.set_constant(&"icon_max_width", &"DexSheetTab", t.DEX_TAB_ICON)
+	theme.set_constant(&"h_separation", &"DexSheetTab", 4)
+
+	var circle := StyleBoxFlat.new()
+	circle.bg_color = t.DEX_CARD_BG
+	circle.border_color = t.DEX_GLASS_BORDER
+	circle.set_border_width_all(t.BORDER_WIDTH)
+	circle.set_corner_radius_all(t.DEX_LAYOUT_EVO_PREVIEW)
+	circle.anti_aliasing = true
+	theme.set_type_variation(&"DexEvoCircle", &"Panel")
+	theme.set_stylebox(&"panel", &"DexEvoCircle", circle)
+
+	_add_plain_label(theme, &"DexTopTitle", t.DEX_TOP_TITLE_FONT, t.TEXT, bold)
+	_add_plain_label(theme, &"DexTopCounts", t.DEX_TOP_COUNTS_FONT, t.TEXT_MUTED, null)
+	for pair: Array in [[&"DexSceneNumber", t.DEX_SHEET_NUMBER_FONT, t.TEXT],
+			[&"DexSceneName", t.DEX_SHEET_NAME_FONT, t.TEXT]]:
+		_add_plain_label(theme, pair[0], pair[1], pair[2], bold)
+		theme.set_color(&"font_shadow_color", pair[0], t.DEX_SCENE_TEXT_SHADOW)
+		theme.set_constant(&"shadow_offset_x", pair[0], 0)
+		theme.set_constant(&"shadow_offset_y", pair[0], 2)
+		theme.set_constant(&"shadow_outline_size", pair[0], t.DEX_SCENE_TEXT_SHADOW_SIZE)
 
 
 # --- Écran Carte du menu (jalon 6, T20) ---------------------------------------------------------

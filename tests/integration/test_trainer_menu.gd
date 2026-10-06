@@ -188,8 +188,8 @@ func test_show_pokedex_relays_signals_and_back_is_never_consumed() -> void:
 	_menu.pokedex_species_opened.connect(func(s: StringName) -> void: opened.append(s))
 	_menu.back_requested.connect(func() -> void: backs[0] += 1)
 	var view := PokedexGridView.new()
-	view.title = "POKÉDEX — KANTO"
-	view.filter_labels = PackedStringArray(["TOUS", "VUS", "CAPTURÉS", "HABITATS"])
+	view.title = "Pokédex"
+	view.filter_labels = PackedStringArray(["Tous", "Vus", "Capturés", "Habitats"])
 	view.slots.append(PokedexSlotView.new(4, &"charmander", "Salamèche",
 		PokedexQuery.State.CAUGHT))
 	_menu.show_pokedex(view)

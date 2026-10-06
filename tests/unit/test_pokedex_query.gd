@@ -69,7 +69,7 @@ func test_filters_follow_the_menu_route_values() -> void:
 	assert_eq(Filter.CAUGHT, MenuRoute.DEX_FILTER_CAUGHT)
 	assert_eq(Filter.HABITAT, MenuRoute.DEX_FILTER_HABITAT)
 	assert_eq(PokedexQuery.FILTER_LABELS,
-		PackedStringArray(["TOUS", "VUS", "CAPTURÉS", "HABITATS"]))
+		PackedStringArray(["Tous", "Vus", "Capturés", "Habitats"]))
 
 
 func test_three_states() -> void:
@@ -121,7 +121,7 @@ func test_unknown_slots_keep_their_number_for_the_silhouette_but_never_a_species
 func test_header_and_counter_without_slash() -> void:
 	_kevin()
 	var view := _grid()
-	assert_eq(view.title, "POKÉDEX — KANTO")
+	assert_eq(view.title, "Pokédex")
 	assert_eq(view.counts_text, "4 vus · 3 capturés · 151 espèces")
 	assert_false(view.counts_text.contains("/"))
 	assert_eq(PokedexQuery.counts_text(Pokedex.new(), _lib), "0 vu · 0 capturé · 151 espèces")

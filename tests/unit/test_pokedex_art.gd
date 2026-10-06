@@ -93,3 +93,26 @@ func _import_config(path: String) -> ConfigFile:
 	var config := ConfigFile.new()
 	assert_eq(config.load(path + ".import"), OK, path)
 	return config
+
+
+func test_portrait_is_cropped_on_its_useful_frame() -> void:
+	for number: int in range(1, PokedexArt.COUNT + 1):
+		var crop := PokedexArt.portrait_crop(number)
+		assert_true(crop.has_area(), "cadre de %d" % number)
+		assert_true(Rect2(0, 0, 475, 475).encloses(crop), "cadre de %d dans la source" % number)
+	var portrait := PokedexArt.portrait(4)
+	assert_true(portrait is AtlasTexture)
+	assert_eq((portrait as AtlasTexture).atlas.resource_path, PokedexArt.portrait_path(4))
+	assert_eq((portrait as AtlasTexture).region, PokedexArt.portrait_crop(4))
+	assert_lt(portrait.get_size().x, 475.0, "plus serré que la source")
+	assert_null(PokedexArt.portrait(0))
+	assert_eq(PokedexArt.portrait_crop(152), Rect2())
+
+
+## Régression (T4) : dans fragment(), COLOR vaut déjà « modulate × texture » ; multiplier par
+## lui faisait réapparaître couleurs et traits de l'artwork dans la silhouette.
+func test_silhouette_shader_never_reuses_the_texture_color() -> void:
+	var code := (PokedexArt.silhouette_material().shader as Shader).code
+	var fragment := code.substr(code.find("void fragment()"))
+	assert_false(fragment.contains("* COLOR"), "la couleur de la texture ne revient jamais")
+	assert_true(fragment.contains("texture(TEXTURE, UV).a"), "seul l'alpha est lu")

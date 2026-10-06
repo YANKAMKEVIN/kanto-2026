@@ -18,10 +18,11 @@ enum State { UNKNOWN, SEEN, CAUGHT }
 ## Filtres de la grille : mêmes valeurs, même ordre que `MenuRoute.DEX_FILTER_*` (T2).
 enum Filter { ALL, SEEN, CAUGHT, HABITAT }
 
-## En-tête de l'écran (dossier 08 §4).
-const TITLE: String = "POKÉDEX — KANTO"
-## Libellés des filtres, dans l'ordre de [enum Filter].
-const FILTER_LABELS: PackedStringArray = ["TOUS", "VUS", "CAPTURÉS", "HABITATS"]
+## En-tête de l'écran (dossier 08 §4 ; refonte T4 : titre sobre en casse normale, comme la
+## maquette ; la région unique n'est plus répétée).
+const TITLE: String = "Pokédex"
+## Libellés des filtres, dans l'ordre de [enum Filter] (casse de la maquette, refonte T4).
+const FILTER_LABELS: PackedStringArray = ["Tous", "Vus", "Capturés", "Habitats"]
 ## Textes d'interface provisoires (règle 4).
 const COUNTS_SPECIES_FORMAT: String = "%s · %d espèces"
 const EMPTY_TEXT: String = "Aucune espèce ne correspond."

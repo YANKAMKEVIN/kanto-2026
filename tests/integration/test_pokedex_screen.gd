@@ -91,7 +91,7 @@ func _tap(tile: BagTile) -> void:
 func test_grid_has_151_cells_with_title_and_counts() -> void:
 	var screen := await _screen_in(2340, _grid())
 	assert_eq(screen.get_slots().size(), 151)
-	assert_eq(screen.get_title_label().text, "POKÉDEX — KANTO")
+	assert_eq(screen.get_title_label().text, "Pokédex")
 	assert_eq(screen.get_counts_label().text, "3 vus · 2 capturés · 151 espèces")
 
 
@@ -119,8 +119,8 @@ func test_known_cell_opens_one_sheet() -> void:
 func test_filter_buttons_emit_one_signal_each() -> void:
 	var screen := await _screen_in(2340, _grid())
 	var buttons := screen.get_filter_buttons()
-	assert_eq(buttons[0].text, "TOUS")
-	assert_eq(buttons[3].text, "HABITATS")
+	assert_eq(buttons[0].text, "Tous")
+	assert_eq(buttons[3].text, "Habitats")
 	buttons[2].pressed.emit()
 	assert_eq(_filters, [[Filter.CAUGHT, &"", &"", ""]])
 	buttons[0].pressed.emit()
@@ -168,6 +168,8 @@ func test_seen_only_species_has_no_types_size_weight_description_or_unknown_mark
 	for absent: String in ["Taille", "Poids", "kg", "Capturé", "Types"]:
 		assert_false(texts.contains(absent), "« %s » absent" % absent)
 	assert_false(portrait.get_caught_card().visible, "pas de carte Capturé")
+	assert_false(portrait.get_size_card().visible, "pas de carte Taille")
+	assert_false(portrait.get_weight_card().visible, "pas de carte Poids")
 	assert_true(portrait.get_seen_card().visible)
 	assert_eq(sheet.get_view().description, "")
 	var facts := " | ".join(portrait.get_texts())
@@ -181,8 +183,10 @@ func test_caught_species_shows_everything() -> void:
 	var portrait := screen.get_portrait()
 	assert_eq(sheet.get_type_row().get_child_count(), 1)
 	assert_eq(portrait.get_type_row().get_child_count(), 1)
-	var texts := " | ".join(sheet.get_texts(PokedexSheet.Tab.OVERVIEW))
+	var texts := " | ".join(portrait.get_texts())
 	assert_true(texts.contains("0,6 m") and texts.contains("8,5 kg"), texts)
+	assert_true(portrait.get_size_card().is_visible_in_tree(), "Taille sous la description")
+	assert_true(portrait.get_weight_card().is_visible_in_tree(), "Poids sous la description")
 	assert_true(portrait.get_caught_card().visible)
 	assert_eq(portrait.get_description().text, _lib.get_species(&"charmander").description)
 	assert_true(screen.is_sheet_open())
@@ -414,3 +418,115 @@ func test_swipe_from_a_habitat_chip_opens_nothing_and_a_tap_opens_once() -> void
 	finger.tap(sheet.get_chips()[1].get_global_rect().get_center())
 	await wait_process_frames(2)
 	assert_eq(_routes.size(), 1)
+
+
+# --- Rapprochement de la maquette (refonte T4) ----------------------------------------------------
+
+func test_filters_are_one_capsule_of_touch_sized_segments_in_normal_case() -> void:
+	for width: int in WIDTHS:
+		var screen := await _screen_in(width, _grid())
+		await wait_frames(2)
+		var capsule := screen.get_filter_capsule()
+		var buttons := screen.get_filter_buttons()
+		assert_eq(buttons.size(), 4)
+		for button: Button in buttons:
+			assert_true(capsule.is_ancestor_of(button), "« %s » dans la capsule" % button.text)
+			var rect := button.get_global_rect()
+			assert_gte(rect.size.x, UiTokens.TOUCH_MIN - 0.5, "largeur touchable à %d" % width)
+			assert_gte(rect.size.y, UiTokens.TOUCH_MIN - 0.5, "hauteur touchable à %d" % width)
+			assert_ne(button.text, button.text.to_upper(), "casse normale : %s" % button.text)
+		# Le dessin est plus fin que la zone touchable (capsule légère, comme la maquette).
+		var pressed := buttons[0].get_theme_stylebox(&"pressed") as StyleBoxFlat
+		assert_lt(pressed.expand_margin_top, 0.0, "segment dessiné plus fin que sa zone")
+		var drawn := capsule.get_theme_stylebox(&"panel") as StyleBoxFlat
+		assert_lt(drawn.expand_margin_top, 0.0, "capsule dessinée plus fine que sa zone")
+		# Un segment touché = un seul filtre, comme avant.
+		_filters.clear()
+		buttons[2].pressed.emit()
+		assert_eq(_filters.size(), 1)
+		assert_eq(_filters[0][0], Filter.CAUGHT)
+
+
+func test_habitat_map_fills_its_frame_and_marks_only_observed_zones() -> void:
+	var screen := await _screen_in(2340, _grid())
+	screen.show_sheet(_sheet(&"pidgey"))
+	await wait_frames(3)
+	var map := screen.get_sheet().get_preview_map()
+	assert_not_null(map)
+	var areas: Dictionary = (JSON.parse_string(FileAccess.get_file_as_string(
+		PokedexHabitatMap.AREAS_PATH)) as Dictionary)["zones"]
+	var observed: Array[Rect2] = []
+	for zone: String in ["pallet_town", "route_1"]:
+		var a: Array = areas[zone]["area"]
+		observed.append(Rect2(a[0], a[1], a[2], a[3]))
+	var marked := map.get_marked_areas()
+	assert_eq(marked.size(), 2, "deux zones observées")
+	for rect: Rect2 in marked:
+		assert_has(observed, rect, "seule une zone observée est marquée")
+	assert_eq(map.get_pin_count(), 2)
+	var region := map.get_shown_region()
+	assert_true(region.has_area())
+	for rect: Rect2 in observed:
+		assert_true(region.encloses(rect), "la région montre les zones observées")
+	var image := Rect2(Vector2.ZERO, PokedexHabitatMap.MAP_TEXTURE.get_size())
+	assert_true(image.grow(0.5).encloses(region), "jamais hors de l'illustration")
+	assert_almost_eq(region.size.x / region.size.y, map.size.x / map.size.y, 0.01,
+		"la carte remplit son cadre (même rapport)")
+	assert_gt(map.size.x, 300.0, "une vraie carte, pas une vignette")
+
+
+func test_habitat_map_of_a_species_without_zone_is_absent() -> void:
+	var screen := await _screen_in(2340, _grid())
+	var map := PokedexHabitatMap.new()
+	add_child_autofree(map)
+	map.size = Vector2(400, 250)
+	map.set_zones([&"oak_lab_inconnue"] as Array[StringName])
+	assert_eq(map.get_marked_areas().size(), 0)
+	assert_eq(map.get_shown_region(), Rect2(), "rien à montrer, aucune géographie au hasard")
+	assert_not_null(screen)
+
+
+func test_portrait_scene_follows_the_first_observed_habitat() -> void:
+	_dex.mark_seen(&"rattata", &"route_1")
+	_dex.mark_seen(&"rattata", &"pallet_town")
+	var screen := await _screen_in(2340, _grid())
+	var portrait := screen.get_portrait()
+	screen.show_sheet(_sheet(&"rattata"))
+	assert_eq(portrait.get_scene_name(), "prairie", "première zone : Route 1")
+	assert_eq(portrait.get_backdrop().texture.resource_path,
+		"res://assets/ui/pokedex/scenes/prairie.webp")
+	assert_true(portrait.get_backdrop().is_visible_in_tree())
+	screen.show_sheet(_sheet(&"pidgey"))
+	assert_eq(portrait.get_scene_name(), "village", "première zone : Bourg Palette")
+
+
+func test_portrait_is_large_and_cropped_on_its_art() -> void:
+	for width: int in WIDTHS:
+		var screen := await _screen_in(width, _grid())
+		screen.show_sheet(_sheet(&"charmander"))
+		await wait_frames(3)
+		var art := screen.get_portrait().get_art()
+		assert_true(art.texture is AtlasTexture, "resserré sur le cadre utile")
+		assert_gte(art.size.y, 370.0, "grand portrait à %d" % width)
+		assert_eq(screen.get_portrait().get_art_path(),
+			"res://assets/sprites/pokemon/official/004.png")
+
+
+func test_no_forbidden_label_anywhere() -> void:
+	_dex.mark_seen(&"charmeleon", &"route_1")
+	var screen := await _screen_in(2340, _grid())
+	var forbidden: Array[String] = ["PV", "Attaque", "Défense", "Vitesse", "Talent",
+		"Statistiques", "N. ", "Niv", "niveau", "♂", "♀", "/ 151", "/151", "₽", "Favori"]
+	for species: StringName in [&"charmander", &"squirtle", &"pidgey"]:
+		screen.show_sheet(_sheet(species))
+		var texts: Array[String] = [screen.get_title_label().text,
+			screen.get_counts_label().text]
+		texts.append_array(screen.get_portrait().get_texts())
+		for tab: int in 4:
+			screen.get_sheet().select_tab(tab as PokedexSheet.Tab)
+			texts.append_array(screen.get_sheet().get_texts())
+		var joined := " | ".join(texts)
+		for word: String in forbidden:
+			assert_false(joined.contains(word), "%s : « %s » interdit" % [species, word])
+		var hour := RegEx.create_from_string("\\d{1,2}:\\d{2}")
+		assert_null(hour.search(joined), "pas d'heure")

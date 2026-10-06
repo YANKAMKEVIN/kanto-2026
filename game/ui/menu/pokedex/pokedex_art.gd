@@ -16,6 +16,8 @@ const COUNT := 151
 ## Dossier des artworks et de l'atlas.
 const PORTRAIT_DIR := "res://assets/sprites/pokemon/official/"
 const ATLAS_PATH := PORTRAIT_DIR + "atlas_128.png"
+## Cadre utile de chaque artwork (boîte de l'alpha + marge), écrit par build_pokedex_atlas.gd.
+const CROPS_PATH := PORTRAIT_DIR + "crops.json"
 const SILHOUETTE_SHADER_PATH := "res://game/ui/menu/pokedex/pokedex_silhouette.gdshader"
 ## Disposition de l'atlas : cases de [constant THUMB] px au pas de THUMB + [constant THUMB_PAD]
 ## (marge transparente de THUMB_PAD / 2 de chaque côté : le filtre linéaire ne bave pas).
@@ -31,6 +33,8 @@ static var _thumbs: Dictionary[int, AtlasTexture] = {}
 static var _atlas: Texture2D
 static var _silhouette: ShaderMaterial
 static var _halo: GradientTexture2D
+static var _crops: Dictionary = {}
+static var _crops_loaded: bool = false
 
 
 ## « res://…/004.png » ; "" hors de 1..[constant COUNT].
@@ -44,6 +48,38 @@ static func portrait_path(number: int) -> String:
 static func has_portrait(number: int) -> bool:
 	var path := portrait_path(number)
 	return not path.is_empty() and ResourceLoader.exists(path)
+
+
+## Cadre utile de l'artwork [param number] en pixels de la source (boîte de l'alpha + marge) ;
+## Rect2() si inconnu (hors bornes ou fichier absent : le portrait est alors montré entier).
+static func portrait_crop(number: int) -> Rect2:
+	if number < 1 or number > COUNT:
+		return Rect2()
+	if not _crops_loaded:
+		_crops_loaded = true
+		var parsed: Variant = JSON.parse_string(FileAccess.get_file_as_string(CROPS_PATH))
+		if parsed is Dictionary and (parsed as Dictionary).get("crops") is Dictionary:
+			_crops = (parsed as Dictionary)["crops"]
+	var entry: Variant = _crops.get("%03d" % number, null)
+	if not entry is Array or (entry as Array).size() != 4:
+		return Rect2()
+	var a: Array = entry
+	return Rect2(float(a[0]), float(a[1]), float(a[2]), float(a[3]))
+
+
+## Grand portrait de [param number], **resserré sur son cadre utile** (une [AtlasTexture] sur
+## l'artwork chargé à l'appel) ; null si l'artwork n'existe pas.
+static func portrait(number: int) -> Texture2D:
+	if not has_portrait(number):
+		return null
+	var source := load(portrait_path(number)) as Texture2D
+	var crop := portrait_crop(number)
+	if source == null or not crop.has_area():
+		return source
+	var texture := AtlasTexture.new()
+	texture.atlas = source
+	texture.region = crop
+	return texture
 
 
 ## Pas d'une case de l'atlas.
