@@ -84,6 +84,22 @@ Cramois'Île (Auguste), Jadielle finale (Giovanni), Route Victoire, Ligue.
 Conseil 4, Rival Maître, générique, retour à Bourg Palette, monde post-Ligue (Champions améliorés),
 Grotte Azurée / Mewtwo, puis le mystère Mew.
 
+## Jalons narratifs à ne pas oublier
+
+### Team Rocket (décision de Kevin, 2026-10-06)
+- La **Team Rocket fait partie de l'aventure** de Kanto 2026 : à prévoir dans la conception de
+  chaque jalon concerné, en particulier **Argenta (J10), Route 3 et Mont Sélénite (J12+)**.
+- **Rythme de Rouge/Bleu conservé** : Bourg Palette → Route 1 → Jadielle → Route 2 → Forêt de Jade
+  → Argenta → Route 3 → **Mont Sélénite = première véritable apparition et premiers combats** contre
+  la Team Rocket.
+- **Avant le Mont Sélénite : aucune confrontation directe** avec la Team Rocket (ni à Bourg Palette,
+  ni à Jadielle, ni en chemin).
+- **Non décidé, à ne pas inventer ni verrouiller** : la manière dont Kanto 2026 modernise la Team
+  Rocket (personnages, activités, narration). À demander à Kevin lors de la conception de ces jalons.
+- Pour mémoire, le dossier 06 (§4) prévoit déjà une présence progressive (« l'influence se ressent
+  avant l'affrontement ») ; ce qui précède le Mont Sélénite reste à concevoir avec Kevin.
+- Il s'agit d'un **jalon narratif**, pas d'une demande d'implémentation.
+
 ## Ordre immédiat
 
 ```
