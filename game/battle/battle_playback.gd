@@ -32,6 +32,9 @@ extends RefCounted
 ## Jalon 6 (soin) :
 ## - ITEM_USED : « Tu utilises Potion sur … », HEAL (la barre remonte), puis « … récupère
 ##   20 PV. ».
+## Jalon 7 (changement de Pokémon) :
+## - WITHDRAWN : le message (« Reviens, Salamèche ! »), puis WITHDRAW ; le SENT_OUT qui suit
+##   joue « En avant, … ! » et l'entrée du nouveau.
 ## Les phrases viennent de [BattleText] : rien n'est écrit ici.
 
 
@@ -90,6 +93,9 @@ static func beats(event: BattleEvent, texts: BattleText, data: PokemonData,
 			result.append_array(messages.slice(0, 1))
 			result.append(BattleBeat.new(BattleBeat.Kind.HEAL, event))
 			result.append_array(messages.slice(1))
+		BattleEvent.Kind.WITHDRAWN:
+			result.append_array(messages)
+			result.append(BattleBeat.new(BattleBeat.Kind.WITHDRAW, event))
 		_:
 			result.append_array(messages)
 	return result

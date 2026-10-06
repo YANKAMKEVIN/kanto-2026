@@ -605,7 +605,10 @@ func test_fainted_participant_gets_nothing() -> void:
 	charmander.hp = 1
 	battle.get_player_side().active.change_stage(&"spe", -6)
 	var first := battle.submit(BattleAction.move(0))
-	assert_eq(_kinds(first).slice(-2), [["FAINTED", "PLAYER"], ["SENT_OUT", "PLAYER"]])
+	assert_eq(_kinds(first).slice(-2), [["DAMAGE", "PLAYER"], ["FAINTED", "PLAYER"]])
+	# Jalon 7 : le joueur choisit son remplaçant.
+	assert_eq(battle.get_state(), Battle.State.REPLACING)
+	assert_eq(_kinds(battle.replace(1)), [["SENT_OUT", "PLAYER"]])
 	assert_eq(battle.get_participants(), [charmander, squirtle] as Array[Pokemon])
 	var events := _knock_out(battle)
 	assert_eq(_rng.remaining(), 0)

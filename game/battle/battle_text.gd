@@ -33,6 +33,10 @@ extends RefCounted
 ## vient pas d'un événement : la présentation la demande à [method line_for].
 ## Soin (jalon 6) : ITEM_USED → « item_used » (« Tu utilises Potion sur Salamèche. »), puis
 ## « hp_restored » ({amount} : PV rendus, [member BattleEvent.amount]).
+## Changement de Pokémon (jalon 7) : WITHDRAWN → « withdrawn » (« Reviens, Salamèche ! ») ; le
+## Pokémon envoyé reprend « sent_out_player ». Le panneau ÉQUIPE lit, sans événement
+## ([method get_template]), « switch_reason_active », « switch_reason_fainted » (raisons sur
+## les cartes) et « replace_prompt » (son titre après un K.O.).
 ## Argent (jalon 7) : « prize_won » ({money} : somme formatée, « 280 ₽ ») ne vient pas d'un
 ## événement du moteur ; le directeur le demande à [method prize_line] après une victoire.
 ## « draft » : texte à relire par Kevin. « text_f » (facultatif) : la phrase accordée au
@@ -58,6 +62,7 @@ const TEMPLATE_IDS: Array[StringName] = [
 	&"item_used", &"hp_restored", &"prize_won",
 	&"forget_confirm_title", &"forget_confirm_detail", &"forget_confirm_yes",
 	&"forget_confirm_no",
+	&"withdrawn", &"switch_reason_active", &"switch_reason_fainted", &"replace_prompt",
 ]
 const PLACEHOLDERS: Array[String] = [
 	"pokemon", "de_pokemon", "move", "trainer", "stat", "level", "exp", "old_move", "item",
@@ -214,6 +219,8 @@ func lines(event: BattleEvent, data: PokemonData, trainer: TrainerData = null) \
 			result.append(_fill(&"ball_thrown", event, data))
 		BattleEvent.Kind.BROKE_FREE:
 			result.append(_fill(&"broke_free", event, data))
+		BattleEvent.Kind.WITHDRAWN:
+			result.append(_fill(&"withdrawn", event, data))
 		BattleEvent.Kind.ITEM_USED:
 			result.append(_fill(&"item_used", event, data))
 			result.append(_fill(&"hp_restored", event, data))

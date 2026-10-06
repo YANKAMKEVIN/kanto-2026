@@ -11,7 +11,8 @@ extends RefCounted
 ## Vitesse effective, puis tirage roll(2) à égalité : 1 = le joueur d'abord), exécution. Un
 ## Pokémon K.O. n'agit plus ; le combat s'arrête dès qu'un camp n'a plus de Pokémon valide
 ## (si les deux tombent pendant la même action, le camp du lanceur gagne). En fin de tour,
-## un camp dont le Pokémon est K.O. envoie le suivant. Sans PP, seule Lutte est permise
+## l'adversaire dont le Pokémon est K.O. envoie le suivant ; le joueur choisit le sien
+## (jalon 7, [constant State.REPLACING]). Sans PP, seule Lutte est permise
 ## ([constant BattleAction.STRUGGLE]) : sans type, recul d'¼ des PV max du lanceur.
 ## Ordre des tirages : IA adverse (pick_index ; « smart » seulement à égalité, [BattleAI]),
 ## égalité de Vitesse, puis pour chaque
@@ -22,7 +23,7 @@ extends RefCounted
 ## Fin de tour (jalon 5 Q28) : si le combat continue, chaque Pokémon porteur d'une graine de
 ## Vampigraine (le joueur d'abord, puis l'adversaire) perd la fraction de ses PV max fixée par
 ## la capacité (au moins 1) au profit du Pokémon d'en face, sauf si celui-ci est K.O. ; puis
-## les camps dont le Pokémon est K.O. envoient le suivant.
+## les remplaçants (voir plus haut).
 ##
 ## XP (jalon 5 §2.3, Q23, Q24) : seulement si [member BattleRules.gives_exp] (règles nulles :
 ## pas d'XP, comme le combat du rival du 4B). Les [b]participants[/b] sont les Pokémon du
@@ -49,8 +50,23 @@ extends RefCounted
 ## [param index] de l'équipe (n'importe lequel, pas un K.O., pas à PV pleins). Jouée avant les
 ## capacités : ITEM_USED (PV rendus, bornés), puis l'adversaire joue son tour. Aucun tirage
 ## propre. Le moteur ne touche pas au Sac (le directeur retire l'objet une fois).
+##
+## Changement de Pokémon (jalon 7, jalon-07.md §15.23) : [code]BattleAction.switch_to(index)
+## [/code] est légale (sauvage comme dresseur) si [method check_switch] l'accepte : ni le
+## Pokémon actif, ni un K.O. Jouée avant les capacités (priorité du changement, comme
+## Rouge/Bleu) : WITHDRAWN (le sortant), SENT_OUT (le nouveau, ses niveaux de statistiques à
+## zéro ; le sortant perd les siens et sa graine), puis l'adversaire joue son tour contre le
+## nouveau. Aucun tirage propre. Le nouveau devient participant (XP) ; le sortant le reste.
+## K.O. du Pokémon du joueur : en fin de tour, s'il lui reste un Pokémon valide, le moteur
+## passe en [constant State.REPLACING] (l'adversaire, lui, envoie [method Party.first_able]) ;
+## le joueur choisit par [method replace] (SENT_OUT, puis de nouveau CHOOSING ; ni retour, ni
+## fuite). L'ordre de l'équipe ne change jamais.
 
-enum State { READY, CHOOSING, OVER }
+## REPLACING (jalon 7) : le Pokémon du joueur est K.O., il doit en choisir un autre
+## ([method replace]) ; ajouté en fin d'enum.
+enum State { READY, CHOOSING, OVER, REPLACING }
+## Réponse de [method check_switch] : OK, ou la raison du refus.
+enum SwitchCheck { OK, NO_POKEMON, FAINTED, ACTIVE }
 enum Outcome { NONE, WIN, LOSS, FLED, CAUGHT }
 
 const STRUGGLE_ID: StringName = &"struggle"
@@ -145,6 +161,8 @@ func is_legal(action: BattleAction) -> bool:
 		return _rules != null and _rules.can_flee
 	if action.is_heal():
 		return _is_legal_heal(action)
+	if action.kind == BattleAction.Kind.SWITCH:
+		return check_switch(action.target) == SwitchCheck.OK
 	if action.kind == BattleAction.Kind.ITEM:
 		if not can_use_balls():
 			return false
@@ -156,6 +174,40 @@ func is_legal(action: BattleAction) -> bool:
 	if action.move_index == BattleAction.STRUGGLE:
 		return usable.is_empty()
 	return usable.has(action.move_index)
+
+
+## Le Pokémon [param party_index] de l'équipe du joueur peut-il entrer en jeu ? OK, ou la
+## raison : pas de Pokémon à cette place, K.O., ou déjà en jeu. Ne regarde pas l'état du
+## combat ([method is_legal] et [method replace] le font).
+func check_switch(party_index: int) -> SwitchCheck:
+	var pokemon := _player.party.get_at(party_index)
+	if pokemon == null:
+		return SwitchCheck.NO_POKEMON
+	if pokemon.is_fainted():
+		return SwitchCheck.FAINTED
+	if _player.active != null and _player.active.pokemon == pokemon:
+		return SwitchCheck.ACTIVE
+	return SwitchCheck.OK
+
+
+## Vrai si le Pokémon du joueur est K.O. et qu'il doit en choisir un autre ([method replace]).
+func needs_replacement() -> bool:
+	return _state == State.REPLACING
+
+
+## Envoie le Pokémon [param party_index] à la place du Pokémon du joueur K.O. (hors tour :
+## aucun tirage, l'adversaire ne joue pas) : SENT_OUT, puis le combat attend de nouveau un
+## choix. Tableau vide (push_error) si aucun remplacement n'est attendu ou si
+## [method check_switch] refuse ce Pokémon.
+func replace(party_index: int) -> Array[BattleEvent]:
+	var events: Array[BattleEvent] = []
+	if _state != State.REPLACING or check_switch(party_index) != SwitchCheck.OK:
+		push_error("Battle : remplacement refusé (état %s, place %d)"
+			% [State.find_key(_state), party_index])
+		return events
+	_send_out(_player, events, _player.party.get_at(party_index))
+	_state = State.CHOOSING
+	return events
 
 
 ## Vrai si le joueur peut tenter de fuir maintenant (règles du combat sauvage).
@@ -202,6 +254,9 @@ func submit(action: BattleAction) -> Array[BattleEvent]:
 		return events
 	if action.is_heal():
 		_use_heal(action, events)
+		return events
+	if action.kind == BattleAction.Kind.SWITCH:
+		_switch(action.target, events)
 		return events
 	if action.kind == BattleAction.Kind.ITEM:
 		_throw_ball(action.item_id, events)
@@ -278,6 +333,14 @@ func _use_heal(action: BattleAction, events: Array[BattleEvent]) -> void:
 	_foe_turn_alone(events)
 
 
+## Changement volontaire (joué avant les capacités) : WITHDRAWN, SENT_OUT du Pokémon
+## [param party_index], puis l'adversaire joue son tour contre lui.
+func _switch(party_index: int, events: Array[BattleEvent]) -> void:
+	events.append(_event(BattleEvent.Kind.WITHDRAWN, _player))
+	_send_out(_player, events, _player.party.get_at(party_index))
+	_foe_turn_alone(events)
+
+
 func _is_legal_heal(action: BattleAction) -> bool:
 	if not can_use_heal_items():
 		return false
@@ -309,15 +372,17 @@ func _finish(outcome: Outcome, events: Array[BattleEvent]) -> void:
 	events.append(ended)
 
 
-## Fin du tour (le combat continue) : drain de Vampigraine, puis envoi des remplaçants.
+## Fin du tour (le combat continue) : drain de Vampigraine, puis l'adversaire envoie son
+## remplaçant ; un joueur dont le Pokémon est K.O. devra choisir le sien (REPLACING).
 func _end_turn(events: Array[BattleEvent]) -> void:
 	for side: BattleSide in [_player, _foe]:
 		_drain_seed(side, events)
 		if _state == State.OVER:
 			return
-	for side: BattleSide in [_foe, _player]:
-		if side.active.pokemon.is_fainted():
-			_send_out(side, events)
+	if _foe.active.pokemon.is_fainted():
+		_send_out(_foe, events)
+	if _player.active.pokemon.is_fainted():
+		_state = State.REPLACING
 
 
 ## Vampigraine en fin de tour : le Pokémon de [param side], s'il porte une graine et tient
@@ -472,8 +537,9 @@ func _check_end(acting: BattleSide, events: Array[BattleEvent]) -> void:
 		_finish(Outcome.WIN if foe_out else Outcome.LOSS, events)
 
 
-func _send_out(side: BattleSide, events: Array[BattleEvent]) -> void:
-	side.send_out(side.party.first_able(), _data)
+## Met en jeu [param pokemon] pour [param side] (null : son premier Pokémon valide).
+func _send_out(side: BattleSide, events: Array[BattleEvent], pokemon: Pokemon = null) -> void:
+	side.send_out(pokemon if pokemon != null else side.party.first_able(), _data)
 	# Participants (XP) : un nouvel adversaire les remet à zéro (le Pokémon du joueur en jeu,
 	# s'il tient debout) ; un nouveau Pokémon du joueur s'y ajoute.
 	if side == _foe:

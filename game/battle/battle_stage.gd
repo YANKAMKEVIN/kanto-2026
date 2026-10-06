@@ -88,6 +88,12 @@ const STAT_PULSE: float = 0.16
 const STAT_NUDGE: float = 8.0
 const FAINT_DROP: float = 40.0
 const FAINT_DURATION: float = 0.45
+## Rappel dans la Poké Ball (jalon 7, changement de Pokémon) : le Pokémon rougit, rétrécit vers
+## le sol et s'efface (provisoire jusqu'à la DA ; pas de Ball dessinée, le nouveau entre par
+## [method show_pokemon]).
+const WITHDRAW_TINT := Color(1.6, 0.45, 0.45, 0.0)
+const WITHDRAW_SCALE: float = 0.2
+const WITHDRAW_DURATION: float = 0.35
 ## Capture (jalon 5D, jalon-05.md §3.10, storyboard combat-capture-v1) : le dresseur de dos
 ## entre en bas à gauche, la Ball part de sa main en arc, le Pokémon sauvage est absorbé dans un
 ## éclat rouge, la Ball tombe dans l'herbe (ombre au sol), tremble 0 à 3 fois, puis éclat doré
@@ -489,6 +495,25 @@ func play_faint(side: BattleEvent.SideId) -> void:
 	_fainted[side] = true
 	sprite.visible = false
 	_shadows[side].visible = false
+
+
+## Coroutine : le Pokémon de [param side] est rappelé (jalon 7) : il rougit, rétrécit vers ses
+## pieds et s'efface, ombre comprise ; il est ensuite caché ([method show_pokemon] fera entrer le
+## suivant). Sans effet hors combat ou s'il n'est pas affiché.
+func play_withdraw(side: BattleEvent.SideId) -> void:
+	var sprite := _sprites[side]
+	if not _active or not sprite.visible:
+		return
+	var tween := _new_tween()
+	tween.set_parallel(true)
+	tween.tween_property(sprite, ^"scale", sprite.scale * WITHDRAW_SCALE, WITHDRAW_DURATION) \
+		.set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN)
+	tween.tween_property(sprite, ^"modulate", WITHDRAW_TINT, WITHDRAW_DURATION)
+	tween.tween_property(_shadows[side], ^"modulate:a", 0.0, WITHDRAW_DURATION)
+	await _play(tween)
+	sprite.visible = false
+	_shadows[side].visible = false
+	_species.erase(side)
 
 
 ## Coroutine (~1,5 s) : le dresseur lance la Ball sur le Pokémon sauvage (jalon 5D). Il entre

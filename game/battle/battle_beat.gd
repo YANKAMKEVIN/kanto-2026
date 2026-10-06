@@ -37,11 +37,15 @@ extends RefCounted
 ## Jalon 6 (soin) :
 ## - HEAL : la barre de PV du Pokémon soigné remonte jusqu'à [member BattleEvent.hp] ; seulement
 ##   s'il est en jeu ([member BattleEvent.party_index]), sinon rien ne bouge à l'écran.
+## Jalon 7 (changement de Pokémon) :
+## - WITHDRAW : le Pokémon du joueur est rappelé dans sa Poké Ball (il rétrécit dans un éclat
+##   rouge), sa carte et les pastilles sortent ; le SEND_OUT du suivant les ramène.
 
 enum Kind {
 	MESSAGE, SEND_OUT, MOVE, DAMAGE, STAT, FAINT, EXP, LEVEL, DRAIN, FORGET,
 	THROW, SHAKE, CATCH, RELEASE,
 	HEAL,
+	WITHDRAW,
 }
 
 var kind: Kind = Kind.MESSAGE

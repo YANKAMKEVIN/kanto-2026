@@ -5,7 +5,7 @@ extends RefCounted
 ## ni le moteur ni les données (jalon-04.md §3.8, §14.2). Classe pure, statique.
 
 ## Actions de la grille disponibles contre un Pokémon sauvage (jalons 5B et 5D) : ATTAQUER, SAC
-## (lancer une Ball) et FUITE ; ÉQUIPE reste atténué (pas de changement de Pokémon au jalon 5).
+## (lancer une Ball) et FUITE ; ÉQUIPE s'y ajoute par [method with_team] (jalon 7).
 ## Clés : ActionGrid.ACTIONS.
 const WILD_BATTLE_ACTIONS: Dictionary[StringName, bool] = {
 	&"attack": true, &"bag": true, &"run": true,
@@ -15,12 +15,61 @@ const WILD_BATTLE_ACTIONS: Dictionary[StringName, bool] = {
 ## [member TrainerData.allow_bag] (décision de Kevin du 2026-10-03 : SAC contre tous les
 ## Dresseurs ; le combat du labo le garde muet, décision n° 12). ÉQUIPE et FUITE restent
 ## atténués (pas de changement de Pokémon, pas de fuite contre un dresseur). Sans dresseur :
-## SAC permis. Clés : ActionGrid.ACTIONS.
+## SAC permis. ÉQUIPE s'y ajoute par [method with_team] (jalon 7). Clés : ActionGrid.ACTIONS.
 static func trainer_actions(trainer: TrainerData) -> Dictionary[StringName, bool]:
 	var actions: Dictionary[StringName, bool] = {&"attack": true}
 	if trainer == null or trainer.allow_bag:
 		actions[&"bag"] = true
 	return actions
+
+
+## [param actions] avec ÉQUIPE active si l'équipe du joueur compte au moins deux Pokémon
+## ([param party_size]) ; seul, il n'aurait personne à envoyer (ÉQUIPE reste atténué, le combat du
+## labo ne change pas). Défaut du jalon 7 (jalon-07.md §15.23). Copie : l'original ne change pas.
+static func with_team(actions: Dictionary[StringName, bool],
+		party_size: int) -> Dictionary[StringName, bool]:
+	var result := actions.duplicate()
+	if party_size > 1:
+		result[&"team"] = true
+	return result
+
+
+## Le panneau ÉQUIPE (jalon 7) : un [BattlePartyView] par Pokémon de l'équipe du joueur, dans
+## l'ordre de l'équipe ; le Pokémon en jeu est « actif » ; [member BattlePartyView.can_send]
+## suit [method Battle.check_switch], et la raison vient de [param texts]
+## (« switch_reason_active », « switch_reason_fainted »).
+static func party(battle: Battle, data: PokemonData,
+		texts: BattleText) -> Array[BattlePartyView]:
+	var views: Array[BattlePartyView] = []
+	var side := battle.get_player_side()
+	var active := side.active.pokemon if side.active != null else null
+	var chart := data.get_type_chart()
+	var members := side.party.get_all()
+	for i: int in members.size():
+		var pokemon := members[i]
+		var view := BattlePartyView.new()
+		view.party_index = i
+		view.species_id = pokemon.species_id
+		view.display_name = pokemon.display_name(data)
+		view.level = pokemon.level
+		view.hp = pokemon.hp
+		view.max_hp = pokemon.max_hp()
+		var species := data.get_species(pokemon.species_id)
+		if species != null:
+			view.type_ids = species.types.duplicate()
+			for type: StringName in species.types:
+				view.type_names.append(chart.get_type_name(type))
+		view.status_text = TeamMemberView.STATUS_FAINTED if pokemon.is_fainted() else ""
+		view.active = pokemon == active and not pokemon.is_fainted()
+		var check := battle.check_switch(i)
+		view.can_send = check == Battle.SwitchCheck.OK
+		match check:
+			Battle.SwitchCheck.ACTIVE:
+				view.reason = texts.get_template(&"switch_reason_active")
+			Battle.SwitchCheck.FAINTED:
+				view.reason = texts.get_template(&"switch_reason_fainted")
+		views.append(view)
+	return views
 
 
 ## Carte d'information du Pokémon envoyé par [param event] (SENT_OUT) : nom, sexe, niveau,
