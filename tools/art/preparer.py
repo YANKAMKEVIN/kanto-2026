@@ -8,7 +8,8 @@ objet sur sa silhouette, le ramène à sa taille en jeu (1 case = 96 px) et écr
   - pour chaque objet qui en a, l'ombre portée pré-floutée `<id>_shadow.png` et l'ombre de contact
     `<id>_contact.png` (alpha seul : RVB blanc, la couleur et l'opacité viennent du jeu) ;
   - la moitié basse des herbes hautes (cache-jambes) ;
-  - les planches de personnages et de Pokémon (4 × 4, via decouper_perso.py) ;
+  - les planches de personnages et de Pokémon (4 × 4, via decouper_perso.py) et leurs planches
+    d'attente (pieds joints, 4 × 1, via decouper_attente.py) ;
   - `assets/world/catalogue.json` : tailles et décalages (par rapport au pied de l'objet : milieu
     du bas de l'image) de chaque ombre, pour les outils de construction des scènes.
 Les ombres reproduisent le prototype (ombre.gdshader, contact.gdshader), calculées une fois ici
@@ -30,6 +31,15 @@ ICI = Path(__file__).resolve().parent
 
 def _decoupeur():
     spec = importlib.util.spec_from_file_location("decouper_perso", ICI / "decouper_perso.py")
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module
+
+
+def _attente():
+    import sys
+    sys.path.insert(0, str(ICI))  # decouper_attente importe decouper_perso
+    spec = importlib.util.spec_from_file_location("decouper_attente", ICI / "decouper_attente.py")
     module = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(module)
     return module
@@ -261,6 +271,20 @@ class Preparateur:
                     "ordre_lignes": ["bas", "gauche", "droite", "haut"]}
                 print(f"{e['id']} : cellule {largeur} × {hauteur}")
 
+    def attentes(self) -> None:
+        """Planches d'attente (pieds joints, 4 colonnes bas / gauche / droite / haut × 1 ligne),
+        calées sur la planche de marche déjà écrite (`marche` = identifiant du catalogue)."""
+        for e in self.m.get("attentes", []):
+            marche = self.catalogue["personnages"][e["marche"]]
+            sortie = self._sortie(e["sortie"])
+            largeur, hauteur = _attente().decouper(
+                str(self.source / e["source"]), str(RACINE / marche["fichier"][6:]),
+                str(sortie), e.get("miroir"))
+            self.catalogue["personnages"][e["id"]] = {
+                "fichier": self._res(e["sortie"]), "cellule": [largeur, hauteur],
+                "hauteur": marche["hauteur"], "colonnes": 4, "lignes": 1,
+                "ordre_colonnes": ["bas", "gauche", "droite", "haut"]}
+
     def heros_images(self) -> None:
         for e in self.m["heros_images"]:
             image = _silhouette(Image.open(self.source / e["source"]).convert("RGBA"))
@@ -291,9 +315,17 @@ def reglages_import(manifeste: dict) -> None:
 def main() -> None:
     arguments = argparse.ArgumentParser()
     arguments.add_argument("--source", default=str(RACINE / "build" / "art"))
+    arguments.add_argument("--attentes-seulement", action="store_true",
+                           help="seulement les planches d'attente (catalogue existant conservé)")
     options = arguments.parse_args()
     manifeste = json.loads((ICI / "manifeste.json").read_text())
     p = Preparateur(manifeste, Path(options.source))
+    if options.attentes_seulement:
+        chemin = RACINE / "assets" / "world" / "catalogue.json"
+        p.catalogue = json.loads(chemin.read_text())
+        p.attentes()
+        p.ecrire_catalogue()
+        return
     p.objets()
     p.hautes_herbes()
     p.pieces()
@@ -301,6 +333,7 @@ def main() -> None:
     p.sols()
     p.bordures()
     p.personnages()
+    p.attentes()
     p.heros_images()
     p.ecrire_catalogue()
     reglages_import(manifeste)
