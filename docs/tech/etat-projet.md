@@ -10,6 +10,7 @@ Mis à jour : 2026-10-05 (**jalon 6 terminé, validé par Kevin sur S24 (T30) et
 
 ## À ne pas oublier (design)
 - **Team Rocket** (Kevin, 2026-10-06) : fait partie de l'aventure ; première vraie apparition et premiers combats au **Mont Sélénite**, aucune confrontation directe avant (Bourg Palette, Jadielle…) ; modernisation (personnages, activités, narration) **non décidée**. Documenté dans `docs/design/roadmap.md`, « Jalons narratifs à ne pas oublier ». À relire en concevant Argenta / Route 3 / Mont Sélénite.
+- **Trajectoire du rival** (Kevin, 2026-10-06) : 8 combats majeurs comme dans Rouge/Bleu (labo ✅, Route 22 = J7B, puis Azuria / Pont Pépite, S.S. Anne, Tour Pokémon, Sylphe SARL, Route 22 avant la Ligue, Plateau Indigo) ; chacun = Grand moment, victoire comme défaite ; équipes, niveaux, dialogues et mises en scène **non décidés**. Même section de `roadmap.md`.
 
 ## Point de reprise (2026-10-03) — J6
 - **Décision de Kevin (6F, 2026-10-04)** : résultat de « Sauvegarder maintenant » = **« Partie sauvegardée — 14 h 32 »** (défaut du plan, §5.4), pas « Sauvegarde effectuée ! ». **« Confirmer certaines actions » agit dès le J6** sur l'oubli d'une capacité (OUBLIER / GARDER), réglage désactivé par défaut (validé par Kevin).

@@ -176,6 +176,8 @@ La Route 2 est au J8. Dans la version de développement seulement, la sortie nor
 
 ## 13. Rival n°2
 
+> Deuxième des 8 combats majeurs du rival (trajectoire complète : [`roadmap.md`](roadmap.md), « Jalons narratifs à ne pas oublier »).
+
 - **N'existe qu'après l'activation officielle du Pokédex.** Avant, la Route 22 peut être explorée, mais la rencontre ne se déclenche pas.
 - **Le rival ne se contente pas d'attendre** : à l'arrivée, on le voit terminer un combat contre un autre jeune Dresseur (mise en scène, pas un combat jouable), puis il remarque le joueur (§19). Il poursuit sa propre aventure.
 - **Rencontre facultative** : elle n'a pas besoin d'être gagnée pour continuer l'histoire.

@@ -100,6 +100,30 @@ Grotte Azurée / Mewtwo, puis le mystère Mew.
   avant l'affrontement ») ; ce qui précède le Mont Sélénite reste à concevoir avec Kevin.
 - Il s'agit d'un **jalon narratif**, pas d'une demande d'implémentation.
 
+### Trajectoire du rival (décision de Kevin, 2026-10-06)
+Référence actuelle : la structure de Rouge/Bleu, **8 combats majeurs** contre le rival pendant
+l'histoire principale. À reprendre à la conception de chaque jalon concerné.
+
+| # | Lieu | État |
+|---|---|---|
+| 1 | Laboratoire de Chen — Bourg Palette | fait (J4) ; dossier 02 |
+| 2 | Route 22 — près de Jadielle | prévu au J7B ; dossier 09 §13–15 (rencontre facultative) |
+| 3 | Azuria / Pont Pépite | à concevoir |
+| 4 | S.S. Anne — Carmin-sur-Mer | à concevoir |
+| 5 | Tour Pokémon — Lavanville | à concevoir ; tournant du rival déjà posé au dossier 06 §6 |
+| 6 | Sylphe SARL — Safrania | à concevoir |
+| 7 | Route 22 — avant la Ligue Pokémon | à concevoir |
+| 8 | Plateau Indigo — combat final contre le rival devenu Maître de la Ligue | à concevoir ; dossier 06 §6 « Final », phase 9 ci-dessus |
+
+- **Chaque combat contre le rival est enregistré comme un Grand moment, victoire comme défaite**
+  (décision existante : `rival_battle` avec son issue, jalon 5 et jalon 6 §6E).
+- **Non décidé, à ne pas verrouiller** : équipes, niveaux, dialogues, mises en scène et
+  adaptations propres à Kanto 2026 de chaque combat. Décidés avec Kevin à la conception du jalon.
+- Restent valables les décisions déjà prises : progression de son IA (dossier 05, dossier 09 §14),
+  arc narratif et tournant de Lavanville (dossier 06 §6), états gagné / perdu / pas affronté comme
+  mémoire du monde, jamais comme branches (dossier 09 §15).
+- Jalon narratif à ne pas oublier, **pas une demande d'implémentation**.
+
 ## Ordre immédiat
 
 ```
