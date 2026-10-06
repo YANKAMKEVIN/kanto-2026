@@ -9,18 +9,59 @@ const SCENES := "res://game/world/props/painted/"
 ## Les seuls objets peints qu'on traverse (jalon-07.md §6.6).
 ## Série 07 : murs de soutènement et escaliers de ville (la carte bloque la rangée du mur).
 const TRAVERSABLE: Array[StringName] = [&"relief_escalier_01", &"ground_hautes_herbes_01",
-	&"relief_muret_01", &"relief_escalier_ville_01", &"prop_portail_01", &"prop_balustrade_01"]
+	&"relief_muret_01", &"relief_escalier_ville_01", &"prop_portail_01", &"prop_balustrade_01",
+	# DA.0 (integration-da-bourg-route1.md) : à plat (champ, ponton, escalier en bois, rebord,
+	# tapis), herbes, oyats et petites pierres, arbres de forêt (les cases de forêt bloquent).
+	&"ground_champ_01", &"prop_ponton_01", &"relief_escalier_bois_01", &"relief_rebord_01",
+	&"ground_hautes_herbes_jaune_01", &"prop_herbes_dune_01", &"prop_pierres_01",
+	&"int_tapis_salon_01", &"int_tapis_plaid_01", &"int_tapis_pokeball_01",
+	&"int_tapis_carreaux_01", &"int_tapis_rouge_01", &"int_tapis_labo_pokeball_01",
+	&"tree_foret_01", &"tree_foret_02", &"tree_foret_03", &"tree_foret_04",
+	&"tree_foret_05", &"tree_foret_06", &"tree_foret_07", &"tree_foret_08"]
 const GROUND_LAYER: Array[StringName] = [
 	&"relief_falaise_01", &"relief_escalier_01", &"prop_massif_01", &"relief_muret_01",
 	&"relief_escalier_ville_01",
+	&"ground_champ_01", &"prop_ponton_01", &"relief_escalier_bois_01", &"relief_rebord_01",
+	&"int_tapis_salon_01", &"int_tapis_plaid_01", &"int_tapis_pokeball_01",
+	&"int_tapis_carreaux_01", &"int_tapis_rouge_01", &"int_tapis_labo_pokeball_01",
 ]
+## Objets de Bourg Palette, de ses intérieurs et de la Route 1 (DA.0) : tous au catalogue,
+## chacun avec sa règle et sa scène (assets des scènes du prototype validé).
+const DA0_OBJECTS: Array[StringName] = [
+	&"bldg_maison_joueur_01", &"bldg_maison_rival_01", &"bldg_labo_01", &"bldg_serre_01",
+	&"tree_ancien_01", &"prop_cloture_piquets_01", &"prop_velo_01", &"prop_camionnette_01",
+	&"ground_champ_01", &"prop_ponton_01", &"prop_ronces_01", &"prop_tronc_couche_01",
+	&"prop_rocher_mer_01", &"relief_escalier_bois_01", &"prop_buisson_a_01_bourg",
+	&"prop_buisson_b_01_bourg", &"prop_buisson_c_01_bourg", &"prop_pots_fleurs_01_bourg",
+	&"prop_linge_01_bourg", &"tree_fruitier_01_bourg", &"prop_haie_v_01_bourg",
+	&"prop_cloture_piquets_v_01", &"tree_c_01", &"tree_d_01", &"tree_e_01",
+	&"prop_hortensias_01", &"prop_mangeoire_01", &"prop_epouvantail_01", &"prop_barque_01",
+	&"prop_casiers_peche_01", &"prop_herbes_dune_01", &"prop_materiel_labo_01",
+	&"prop_ratelier_velos_01", &"prop_brouette_01", &"prop_tas_bois_01",
+	&"prop_arrosoir_seau_01", &"prop_pierres_01", &"prop_cloture_courte_01",
+	&"tree_automne_01", &"prop_souche_01", &"relief_rebord_01",
+	&"ground_hautes_herbes_jaune_01", &"int_lit_01", &"int_bureau_pc_01", &"int_tele_01",
+	&"int_escalier_montant_01", &"int_canape_01", &"int_cuisine_01", &"int_bureau_chen_01",
+	&"int_table_starters_01", &"int_lit_pokeball_01", &"int_cloison_v_01",
+	&"int_tapis_pokeball_01",
+]
+## Images seules (sans scène) de DA.0 : sols de la côte, enveloppes des pièces, fleurs.
+const DA0_IMAGES: Dictionary = {
+	"ground_sable_01": Vector2i(384, 384), "ground_eau_01": Vector2i(384, 384),
+	"int_chambre_joueur_coque": Vector2i(14 * 96, 10 * 96),
+	"int_maison_joueur_rdc_coque": Vector2i(14 * 96, 10 * 96),
+	"int_maison_rival_coque": Vector2i(18 * 96, 11 * 96),
+	"int_labo_coque": Vector2i(16 * 96, 11 * 96),
+}
 
 var _objects: Dictionary = {}
+var _images: Dictionary = {}
 
 
 func before_all() -> void:
 	var catalogue: Dictionary = JSON.parse_string(FileAccess.get_file_as_string(CATALOGUE))
 	_objects = catalogue["objets"]
+	_images = catalogue["images"]
 
 
 func _scene(id: String) -> WorldProp:
@@ -255,3 +296,72 @@ func test_baked_shadow_matches_the_art_manifest() -> void:
 		0.0001)
 	assert_eq(float(cast["reduction"]), WorldLighting.SHADOW_TEXTURE_SCALE)
 	assert_eq(float(manifest["ombre_contact"]["reduction"]), WorldLighting.SHADOW_TEXTURE_SCALE)
+
+
+func test_bourg_palette_and_route_1_objects_are_in_the_catalogue() -> void:
+	for id: StringName in DA0_OBJECTS:
+		assert_true(_objects.has(String(id)), "%s au catalogue" % id)
+		assert_true(PaintedPropRules.has_rule(id), "%s a sa règle" % id)
+		assert_true(ResourceLoader.exists(SCENES + String(id) + ".tscn"), "%s a sa scène" % id)
+	# La forêt serrée n'utilise que des objets du catalogue.
+	for id: StringName in DenseForest.TREE_IDS + DenseForest.BUSH_IDS:
+		assert_true(_objects.has(String(id)) and PaintedPropRules.has_rule(id), String(id))
+		assert_false(PaintedPropRules.fades(id), "%s : pas de fondu (aucun _process)" % id)
+	for id: StringName in DenseForest.TREE_IDS:
+		assert_true(PaintedPropRules.has_wind(id), "%s au vent" % id)
+		assert_true(PaintedPropRules.is_traversable(id), "%s : la case de forêt bloque" % id)
+		# Arbres de forêt ≈ 3 cases (échelle du prototype validée par Kevin).
+		var height: int = _objects[String(id)]["taille"][1]
+		assert_between(height, 260, 320, "%s : environ 3 cases" % id)
+
+
+func test_bourg_palette_images_and_decals() -> void:
+	for id: String in DA0_IMAGES:
+		assert_true(_images.has(id), "%s au catalogue" % id)
+		if not _images.has(id):
+			continue
+		assert_eq(Vector2i(_images[id]["taille"][0], _images[id]["taille"][1]), DA0_IMAGES[id],
+			"%s à sa taille" % id)
+		assert_true(ResourceLoader.exists(_images[id]["fichier"]), id)
+	for family: String in ["fleur", "cote"]:
+		for i in range(1, 9):
+			var id := "decal_%s_%d" % [family, i]
+			assert_true(_images.has(id) and ResourceLoader.exists(_images[id]["fichier"]), id)
+	# Herbes jaune-vert de la Route 1 : une image recolorée (et son cache-jambes), même taille
+	# que les herbes vertes ; aucune teinte au lancement.
+	var green: Dictionary = _objects["ground_hautes_herbes_01"]
+	var yellow: Dictionary = _objects["ground_hautes_herbes_jaune_01"]
+	assert_eq(yellow["taille"], green["taille"])
+	assert_true(ResourceLoader.exists(yellow["bas"]["fichier"]), "cache-jambes jaune-vert")
+	var tuft := _scene("ground_hautes_herbes_jaune_01")
+	assert_eq(tuft.modulate, Color.WHITE)
+	assert_eq((tuft.get_node(^"%Sprite") as Sprite2D).self_modulate, Color.WHITE)
+
+
+func test_cast_shadows_are_prepared_for_buildings_only() -> void:
+	# Manifeste (DA.0) : ombre portée pré-floutée pour les bâtiments seulement ; la végétation
+	# et les petits objets n'ont au plus qu'une ombre de contact (non posée dans les scènes).
+	for id: StringName in DA0_OBJECTS + DenseForest.TREE_IDS:
+		var entry: Dictionary = _objects.get(String(id), {})
+		assert_eq(entry.has("ombre"), String(id).begins_with("bldg_"),
+			"%s : ombre portée seulement pour un bâtiment" % id)
+
+
+func test_footprints_of_bourg_palette() -> void:
+	# Maisons 6 × 3, porte libre sous la porte peinte (le joueur à gauche, le rival à droite).
+	var player := PaintedPropRules.footprint(&"bldg_maison_joueur_01")
+	assert_eq(player.size(), 6 * 3 - 1)
+	assert_false(player.has(Vector2i(-1, 0)), "porte de la maison du joueur")
+	assert_true(player.has(Vector2i(-3, -2)) and player.has(Vector2i(2, 0)))
+	assert_false(PaintedPropRules.footprint(&"bldg_maison_rival_01").has(Vector2i(0, 0)))
+	# Labo 10 × 4, double porte au milieu du bas.
+	var lab := PaintedPropRules.footprint(&"bldg_labo_01")
+	assert_eq(lab.size(), 10 * 4 - 2)
+	assert_eq(PaintedPropRules.open_cells(&"bldg_labo_01"), [Vector2i(-1, 0), Vector2i(0, 0)])
+	assert_eq(PaintedPropRules.footprint(&"tree_ancien_01").size(), 12)
+	assert_eq(PaintedPropRules.footprint(&"prop_haie_v_01_bourg"),
+		[Vector2i(0, -2), Vector2i(0, -1), Vector2i(0, 0)])
+	# Escalier montant : la rangée du bas porte les passages vers l'étage.
+	assert_eq(PaintedPropRules.footprint(&"int_escalier_montant_01"),
+		[Vector2i(-1, -1), Vector2i(0, -1)])
+	assert_eq(PaintedPropRules.footprint(&"int_lit_01").size(), 6)

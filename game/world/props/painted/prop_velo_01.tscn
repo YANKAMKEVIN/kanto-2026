@@ -1,0 +1,15 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://game/world/props/prop.gd" id="1_cnw3m"]
+[ext_resource type="Material" path="res://game/world/lighting/materials/world_object.tres" id="2_etgu7"]
+[ext_resource type="Texture2D" path="res://assets/world/props/prop_velo_01.png" id="3_y3b45"]
+
+[node name="PropVelo01" type="Node2D" unique_id=1155468228]
+script = ExtResource("1_cnw3m")
+
+[node name="Sprite" type="Sprite2D" parent="." unique_id=587451881]
+unique_name_in_owner = true
+material = ExtResource("2_etgu7")
+texture = ExtResource("3_y3b45")
+centered = false
+offset = Vector2(-77, -102)

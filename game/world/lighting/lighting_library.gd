@@ -16,7 +16,8 @@ extends RefCounted
 ##       "contact": { "color": "#1f1a33", "alpha": 0.62 },
 ##       "wind": 5.0
 ##     }
-##   }
+##   },
+##   "maps": { "viridian_city": "golden_hour", "viridian_center": "interior_warm" }
 ## }
 ## [/codeblock]
 ## « grade » et « sun_direction » sont obligatoires ; « rim », « cast_shadow », « contact »
@@ -27,12 +28,14 @@ extends RefCounted
 ## [constant LightProfile.RIM_WIDTH_MAX]] pixels de texture ; « length » dans ]0, 1] ;
 ## « skew_deg » dans [−89, 89] ; « wind » dans [0, [constant LightProfile.WIND_MAX]] pixels ;
 ## « sun_direction » non nulle ; couleurs « #rrggbb » (l'alpha est une clé à part).
-## Toute clé inconnue est une erreur ; un profil invalide est écarté, l'erreur signalée
+## « maps » (facultatif) : profil prévu pour chaque carte peinte, que l'outil de construction de
+## la carte écrit dans `GameMap.light_profile` (la carte reste la source lue par `Boot`) ; un
+## profil inconnu y est une erreur. Toute clé inconnue est une erreur ; un profil invalide est écarté, l'erreur signalée
 ## ([method get_errors], push_error).
 
 const DATA_PATH: String = "res://data/world/lighting.json"
 
-const _ROOT_KEYS: Array[String] = ["profiles"]
+const _ROOT_KEYS: Array[String] = ["profiles", "maps"]
 const _PROFILE_KEYS: Array[String] = [
 	"grade", "sun_direction", "rim", "cast_shadow", "contact", "wind",
 ]
@@ -42,6 +45,7 @@ const _CAST_KEYS: Array[String] = ["color", "alpha", "length", "skew_deg"]
 const _CONTACT_KEYS: Array[String] = ["color", "alpha"]
 
 var _profiles: Dictionary[StringName, LightProfile] = {}
+var _maps: Dictionary[StringName, StringName] = {}
 var _errors: PackedStringArray = PackedStringArray()
 
 
@@ -87,6 +91,8 @@ func add_from_dict(data: Dictionary, source: String = "") -> bool:
 			continue
 		profile.id = id
 		_profiles[id] = profile
+	if data.has("maps"):
+		ok = _add_maps(data["maps"], source) and ok
 	return ok
 
 
@@ -108,6 +114,18 @@ func get_ids() -> Array[StringName]:
 
 func size() -> int:
 	return _profiles.size()
+
+
+## Profil prévu pour la carte [param map_id] (section « maps »), &"" si elle n'en a pas.
+func get_map_profile(map_id: StringName) -> StringName:
+	return _maps.get(map_id, &"")
+
+
+## Cartes de la section « maps », dans l'ordre du fichier.
+func get_planned_maps() -> Array[StringName]:
+	var ids: Array[StringName] = []
+	ids.assign(_maps.keys())
+	return ids
 
 
 func get_errors() -> PackedStringArray:
@@ -243,6 +261,26 @@ static func _is_vector2(value: Variant) -> bool:
 		if not (n is float or n is int):
 			return false
 	return true
+
+
+func _add_maps(value: Variant, source: String) -> bool:
+	if not value is Dictionary:
+		return _fail("%s : « maps » doit être un objet { carte: profil }" % source)
+	var ok := true
+	var maps: Dictionary = value
+	for key: Variant in maps:
+		var map_id := StringName(str(key))
+		var profile_id := StringName(str(maps[key]))
+		if map_id.is_empty() or not maps[key] is String:
+			ok = _fail("%s « maps » : entrée invalide « %s »" % [source, key])
+		elif not _profiles.has(profile_id):
+			ok = _fail("%s « maps » « %s » : profil inconnu « %s »" % [source, map_id,
+				profile_id])
+		elif _maps.has(map_id):
+			ok = _fail("%s « maps » « %s » : carte déjà définie" % [source, map_id])
+		else:
+			_maps[map_id] = profile_id
+	return ok
 
 
 func _fail(message: String) -> bool:

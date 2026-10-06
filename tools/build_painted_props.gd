@@ -2,7 +2,10 @@ extends SceneTree
 ## Génère une scène `WorldProp` par objet peint de `assets/world/catalogue.json`
 ## (docs/tech/jalon-07.md §6.6) : `game/world/props/painted/<id>.tscn`.
 ##
-##   godot --headless --path . -s res://tools/build_painted_props.gd
+##   godot --headless --path . -s res://tools/build_painted_props.gd [-- --nouveaux]
+##
+## `--nouveaux` : seulement les objets qui n'ont pas encore de scène (les scènes existantes
+## gardent leurs `unique_id` : pas de différence inutile dans git quand on ajoute des objets).
 ##
 ## Chaque scène :
 ## - racine `WorldProp` (prop.gd) au **pied** de l'objet, emprise et transparence lues dans
@@ -37,17 +40,23 @@ func _init() -> void:
 	var catalogue: Dictionary = JSON.parse_string(FileAccess.get_file_as_string(CATALOGUE))
 	var objects: Dictionary = catalogue["objets"]
 	DirAccess.make_dir_recursive_absolute(ProjectSettings.globalize_path(OUT_DIR))
+	var only_new := OS.get_cmdline_user_args().has("--nouveaux")
+	var built := 0
 	for id: String in objects:
 		if not _rules.call(&"has_rule", StringName(id)):
 			push_error("build_painted_props : « %s » n'a pas de règle d'emprise" % id)
 			_errors += 1
 			continue
+		if only_new and FileAccess.file_exists(OUT_DIR + id + ".tscn"):
+			continue
 		_build(StringName(id), objects[id])
+		built += 1
 	for id: StringName in _rules.call(&"get_ids"):
 		if not objects.has(String(id)):
 			push_error("build_painted_props : règle « %s » sans objet au catalogue" % id)
 			_errors += 1
-	print("build_painted_props : %d scènes, %d erreur(s)" % [objects.size(), _errors])
+	print("build_painted_props : %d objets, %d scène(s) écrite(s), %d erreur(s)" % [
+		objects.size(), built, _errors])
 	quit(1 if _errors > 0 else 0)
 
 
