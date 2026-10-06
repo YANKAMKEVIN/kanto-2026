@@ -42,7 +42,10 @@
 
 ## Décisions de Kevin (2026-10-06, validées avec ChatGPT) — font foi
 
-Référence visuelle : `docs/design/reference/bilan-xp-v1.webp` (**DA et composition seulement**, CLAUDE.md règle 10 : le décor marin, les nombres d'XP « 112 / 173 » et la consigne « Touchez l'écran pour continuer » de l'image ne sont **pas** validés et ne sont pas implémentés).
+Référence visuelle : `docs/design/reference/bilan-xp-v1.webp` (DA et composition, CLAUDE.md règle 10). **Précisions de Kevin du 2026-10-06 sur l'image** :
+- **Nombres d'XP validés** : chaque ligne montre « 112 / 173 » (XP dans le niveau / XP nécessaire pour le niveau suivant), qui défilent avec la barre et repartent de zéro à chaque passage de niveau.
+- **Consigne validée** : « Touchez l'écran pour continuer » (texte draft), en bas, discrète ; elle n'apparaît qu'une fois les barres arrivées (avant, un toucher accélère).
+- **Décor** : simplement celui du combat en cours, visible derrière (le décor marin de l'image n'est qu'une illustration).
 
 1. **Oui** : bilan de fin de combat, une carte, une ligne par Pokémon ayant gagné de l'XP, barres qui se remplissent.
 2. **Après chaque combat qui rapporte de l'XP** (pas seulement en cas de montée de niveau). Rapide quand il ne se passe rien de particulier, **accélérable au toucher**.

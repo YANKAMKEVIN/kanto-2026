@@ -16,7 +16,8 @@ var _tween: Tween
 
 func _ready() -> void:
 	mouse_filter = Control.MOUSE_FILTER_IGNORE
-	custom_minimum_size.y = UiTokens.EXP_BAR_HEIGHT
+	# Le bilan de fin de combat en demande une plus épaisse (posée avant l'entrée dans l'arbre).
+	custom_minimum_size.y = maxf(custom_minimum_size.y, UiTokens.EXP_BAR_HEIGHT)
 	size_flags_vertical = Control.SIZE_SHRINK_CENTER
 
 

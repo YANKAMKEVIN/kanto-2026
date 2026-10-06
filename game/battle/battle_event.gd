@@ -30,7 +30,12 @@ extends RefCounted
 ##   [member exp_from] à [member exp_to] (fractions 0..1 de la barre) ; [member amount] =
 ##   XP gagnée en tout sur la première tranche, 0 sur les suivantes (un niveau gagné ouvre
 ##   une nouvelle tranche) ; [member hp], [member max_hp] avant le niveau suivant ;
-## - LEVEL_UP : nouveau [member level], [member hp] et [member max_hp] recalculés ;
+##   [member exp_points_from], [member exp_points_to] : la même tranche en points d'XP du
+##   niveau, sur [member exp_points_need] (« 112 / 173 » ; 0 au niveau 100 : pas de nombres) ;
+## - LEVEL_UP : nouveau [member level], [member hp] et [member max_hp] recalculés,
+##   [member stat_gains] (gain de chaque statistique à ce niveau, bilan de fin de combat) ;
+##   [member exp_from], [member exp_points_from], [member exp_points_need] : la barre du
+##   nouveau niveau, d'où elle repart ;
 ## - MOVE_LEARNED : [member move_id] appris dans un emplacement libre (déjà fait par le
 ##   moteur) ;
 ## - MOVE_FORGET_OFFERED : [member move_id] à apprendre alors que les 4 emplacements sont
@@ -97,6 +102,13 @@ var outcome: int = 0
 ## EXP_GAINED : remplissage de la barre d'XP au début et à la fin de la tranche (0..1).
 var exp_from: float = 0.0
 var exp_to: float = 0.0
+## EXP_GAINED : la tranche en points d'XP dans le niveau ([method ExpCalc.level_span]) : début,
+## fin, et XP du niveau entier (0 au niveau 100).
+var exp_points_from: int = 0
+var exp_points_to: int = 0
+var exp_points_need: int = 0
+## LEVEL_UP : gain de chaque statistique ([constant SpeciesData.STATS]) à ce niveau.
+var stat_gains: Dictionary[StringName, int] = {}
 ## DRAINED : PV rendus au Pokémon d'en face, et ses PV ensuite.
 var healed: int = 0
 var healed_hp: int = 0
@@ -120,6 +132,8 @@ func to_dict() -> Dictionary:
 		"trainer": trainer_name, "turn": turn, "move": move_id, "pp": pp, "amount": amount, "hp": hp,
 		"max_hp": max_hp, "effectiveness": effectiveness, "critical": critical,
 		"stat": stat, "stages": stages, "stage": stage, "outcome": outcome,
-		"exp_from": exp_from, "exp_to": exp_to, "healed": healed, "healed_hp": healed_hp,
+		"exp_from": exp_from, "exp_to": exp_to, "exp_points_from": exp_points_from,
+		"exp_points_to": exp_points_to, "exp_points_need": exp_points_need,
+		"stat_gains": stat_gains, "healed": healed, "healed_hp": healed_hp,
 		"item": item_id, "item_name": item_name, "shake": shake,
 	}

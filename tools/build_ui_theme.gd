@@ -56,6 +56,11 @@ extends SceneTree
 ##     BagDetailText   Label ; l'action est un AccentButton ; BagEmpty   Label
 ##   CaptureCard      PanelContainer  carte de capture ; CaptureTitle / CapturePokedex /
 ##     CaptureResult   Label ; CaptureThumb   PanelContainer  cadre de la vignette
+## Bilan de fin de combat (demande n° 1) :
+##   SummaryCard / SummaryRow / SummaryRowLit (liseré ACCENT : la ligne qui monte de niveau) /
+##   SummaryThumb / SummaryHint   PanelContainer ; SummaryExpBar   Control (barre plus épaisse) ;
+##   SummaryName / SummaryLevel / SummaryLevelUp / SummaryPoints / SummaryGain / SummaryStats /
+##   SummaryHintText   Label
 ## Notifications :
 ##   Toast            PanelContainer  capsule du toast (bible UI/UX §6)
 ##   ToastTitle / ToastDetail   Label  « Poké Balls ×5 » (gras) / « Ajoutées au Sac » (discret)
@@ -602,6 +607,60 @@ func _add_bag_and_capture(theme: Theme, bold: Font, t: GDScript) -> void:
 	_add_plain_label(theme, &"CaptureTitle", t.CAPTURE_TITLE_FONT, t.TEXT, bold)
 	_add_plain_label(theme, &"CapturePokedex", t.CAPTURE_LINE_FONT, t.TEXT_MUTED, null)
 	_add_plain_label(theme, &"CaptureResult", t.CAPTURE_LINE_FONT, t.TEXT, null)
+	_add_exp_summary(theme, bold, t)
+
+
+## Bilan de fin de combat (demande n° 1).
+func _add_exp_summary(theme: Theme, bold: Font, t: GDScript) -> void:
+	var card := _panel_style(t.SUMMARY_CARD_BG, t.DIALOG_RADIUS, t)
+	card.set_content_margin(SIDE_LEFT, t.SUMMARY_CARD_PAD_H)
+	card.set_content_margin(SIDE_RIGHT, t.SUMMARY_CARD_PAD_H)
+	card.set_content_margin(SIDE_TOP, t.SUMMARY_CARD_PAD_V)
+	card.set_content_margin(SIDE_BOTTOM, t.SUMMARY_CARD_PAD_V)
+	theme.set_type_variation(&"SummaryCard", &"PanelContainer")
+	theme.set_stylebox(&"panel", &"SummaryCard", card)
+	var row := _bag_box(t.SUMMARY_ROW_BG, t.SUMMARY_ROW_BORDER, t.BORDER_WIDTH,
+		t.SUMMARY_ROW_PAD_H, t.SUMMARY_ROW_PAD_V, t)
+	var lit := _bag_box(t.SUMMARY_ROW_LIT_BG, t.ACCENT, t.SUMMARY_ROW_HIGHLIGHT_BORDER,
+		t.SUMMARY_ROW_PAD_H, t.SUMMARY_ROW_PAD_V, t)
+	lit.shadow_color = t.MOVE_CARD_SELECTED_GLOW
+	lit.shadow_size = t.MOVE_CARD_SELECTED_GLOW_SIZE
+	for pair: Array in [[&"SummaryRow", row], [&"SummaryRowLit", lit]]:
+		theme.set_type_variation(pair[0], &"PanelContainer")
+		theme.set_stylebox(&"panel", pair[0], pair[1])
+	var thumb := _bag_box(t.CAPTURE_THUMB_BG, t.CAPTURE_THUMB_BORDER, t.BORDER_WIDTH,
+		t.SUMMARY_THUMB_PAD, t.SUMMARY_THUMB_PAD, t)
+	theme.set_type_variation(&"SummaryThumb", &"PanelContainer")
+	theme.set_stylebox(&"panel", &"SummaryThumb", thumb)
+	var radius: int = t.SUMMARY_BAR_HEIGHT / 2
+	var track := StyleBoxFlat.new()
+	track.bg_color = t.EXP_BAR_TRACK
+	track.border_color = t.HP_BAR_TRACK_BORDER
+	track.set_border_width_all(t.BORDER_WIDTH)
+	track.set_corner_radius_all(radius)
+	track.anti_aliasing = true
+	var fill := StyleBoxFlat.new()
+	fill.bg_color = t.EXP_BAR_FILL
+	fill.set_corner_radius_all(radius - t.BORDER_WIDTH)
+	fill.anti_aliasing = true
+	theme.set_type_variation(&"SummaryExpBar", &"Control")
+	theme.set_stylebox(&"background", &"SummaryExpBar", track)
+	theme.set_stylebox(&"fill", &"SummaryExpBar", fill)
+	_add_plain_label(theme, &"SummaryName", t.SUMMARY_NAME_FONT, t.TEXT, bold)
+	_add_plain_label(theme, &"SummaryLevel", t.SUMMARY_LEVEL_FONT, t.TEXT_MUTED, bold)
+	_add_plain_label(theme, &"SummaryLevelUp", t.SUMMARY_LEVEL_UP_FONT, t.ACCENT, bold)
+	_add_plain_label(theme, &"SummaryPoints", t.SUMMARY_POINTS_FONT, t.TEXT_MUTED, null)
+	_add_plain_label(theme, &"SummaryGain", t.SUMMARY_GAIN_FONT, t.TEXT, bold)
+	_add_plain_label(theme, &"SummaryStats", t.SUMMARY_STATS_FONT, t.ACCENT, bold)
+	var hint := _panel_style(t.SUMMARY_HINT_BG, t.ROUND_BUTTON, t)
+	hint.shadow_size = 0
+	hint.set_content_margin(SIDE_LEFT, t.SUMMARY_HINT_PAD_H)
+	hint.set_content_margin(SIDE_RIGHT, t.SUMMARY_HINT_PAD_H)
+	hint.set_content_margin(SIDE_TOP, t.SUMMARY_HINT_PAD_V)
+	hint.set_content_margin(SIDE_BOTTOM, t.SUMMARY_HINT_PAD_V)
+	theme.set_type_variation(&"SummaryHint", &"PanelContainer")
+	theme.set_stylebox(&"panel", &"SummaryHint", hint)
+	_add_plain_label(theme, &"SummaryHintText", t.SUMMARY_HINT_FONT, t.TEXT_MUTED, null)
 
 
 ## Case arrondie du Sac et de la carte de capture : fond, liseré, marges [param pad_h] et

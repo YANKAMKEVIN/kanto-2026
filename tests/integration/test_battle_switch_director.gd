@@ -237,6 +237,52 @@ func test_withdraw_and_send_out_lines_are_played() -> void:
 		as Array[String])
 
 
+## Bilan de fin de combat (demande n° 1) : les deux participants (Salamèche, puis Carapuce
+## envoyé) ont leur ligne, dans l'ordre de l'équipe, avec leur part ; Bulbizarre, resté dans
+## l'équipe, est absent.
+func test_summary_lists_the_participants_only() -> void:
+	var charmander := _mon(&"charmander", 5)
+	var squirtle := _mon(&"squirtle", 5)
+	var bulbasaur := _mon(&"bulbasaur", 5)
+	var request := _request([charmander, squirtle, bulbasaur], &"rattata", 2, &"tail_whip")
+	var phase: Array[int] = [0]
+	var seen := {}
+	_director.exp_summary_shown.connect(func(summary: ExpSummary) -> void:
+		var names: Array[String] = []
+		var gains: Array[String] = []
+		for row: ExpSummaryRow in _director.get_summary_card().get_rows():
+			names.append(row.get_name_text())
+			gains.append(row.get_gain_text())
+		seen["names"] = names
+		seen["gains"] = gains
+		seen["shares"] = summary.get_entries().map(
+			func(entry: ExpSummaryEntry) -> int: return entry.exp_gained))
+	var step := func(battle: Battle, panel: BattlePartyPanel) -> void:
+		var zone := _hud.get_zone()
+		var choosing := battle.get_state() == Battle.State.CHOOSING
+		if phase[0] == 0 and choosing and zone == BattleHud.Zone.ACTIONS:
+			_hud.action_selected.emit(ActionGrid.TEAM)
+			phase[0] = 1
+		elif phase[0] == 1 and _panel_waiting(panel):
+			panel.get_send_button().pressed.emit()
+			phase[0] = 2
+		elif phase[0] == 2 and choosing:
+			if zone == BattleHud.Zone.ACTIONS:
+				_hud.action_selected.emit(ActionGrid.ATTACK)
+			elif zone == BattleHud.Zone.MOVES:
+				_hud.move_selected.emit(0)
+	var report := await _drive(request, step)
+	assert_eq(report["outcome"], Battle.Outcome.WIN)
+	assert_eq(seen.get("names"), ["Salamèche", "Carapuce"] as Array[String],
+		"les deux participants, pas Bulbizarre")
+	var shares: Array = seen.get("shares", [])
+	assert_eq(shares.size(), 2)
+	if shares.size() == 2:
+		assert_eq(seen.get("gains"), ["+%d XP" % shares[0], "+%d XP" % shares[1]]
+			as Array[String])
+	assert_push_error_count(0)
+
+
 # --- K.O. : choix forcé --------------------------------------------------------------------
 
 func test_a_knock_out_makes_the_player_choose_without_back() -> void:

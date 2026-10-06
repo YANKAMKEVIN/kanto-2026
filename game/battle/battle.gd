@@ -596,13 +596,25 @@ func _grant_exp(pokemon: Pokemon, amount: int, events: Array[BattleEvent]) -> vo
 			pokemon)
 		slice.amount = total if remaining == total else 0
 		slice.exp_from = ExpCalc.progress(pokemon, _data)
+		var span := ExpCalc.level_span(pokemon, _data)
+		slice.exp_points_from = span.x
+		slice.exp_points_need = span.y
 		var steps := pokemon.gain_exp(gained, _data)
 		remaining -= gained
 		slice.exp_to = 1.0 if not steps.is_empty() else ExpCalc.progress(pokemon, _data)
+		slice.exp_points_to = span.y if not steps.is_empty() \
+			else ExpCalc.level_span(pokemon, _data).x
 		events.append(slice)
 		for step: LevelUp in steps:
-			events.append(_pokemon_event(BattleEvent.Kind.LEVEL_UP, BattleEvent.SideId.PLAYER,
-				pokemon))
+			var level_up := _pokemon_event(BattleEvent.Kind.LEVEL_UP, BattleEvent.SideId.PLAYER,
+				pokemon)
+			level_up.stat_gains = step.stat_gains.duplicate()
+			# La barre du nouveau niveau (bilan) : là où elle repart, sur combien de points.
+			var next_span := ExpCalc.level_span(pokemon, _data)
+			level_up.exp_from = ExpCalc.progress(pokemon, _data)
+			level_up.exp_points_from = next_span.x
+			level_up.exp_points_need = next_span.y
+			events.append(level_up)
 			for move_id: StringName in step.moves:
 				_offer_move(pokemon, move_id, events)
 

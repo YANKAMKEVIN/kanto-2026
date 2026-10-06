@@ -26,9 +26,9 @@ extends RefCounted
 ## (dossier 05 §17) demande à [method line_for], avec l'événement CAUGHT (accord au féminin) :
 ## « caught_title » (« Roucool CAPTURÉ ! » ; la carte l'affiche en capitales), « pokedex_new »
 ## (seulement pour une nouvelle entrée), puis « joined_party » ou « sent_to_storage ».
-## XP (jalon 5C) : EXP_GAINED n'a pas de phrase (« +21 XP » est sur la carte) ; LEVEL_UP →
-## « level_up » (décision de Kevin du 2026-10-02 après le S24 : la seule pulsation de « Nv. »
-## passait inaperçue) ; MOVE_LEARNED → « move_learned » ; MOVE_FORGET_OFFERED →
+## XP (jalon 5C) : EXP_GAINED et LEVEL_UP n'ont pas de phrase : le bilan de fin de combat
+## raconte la progression (demande n° 1, décision de Kevin du 2026-10-06 : il remplace « … monte
+## au niveau … ! ») ; MOVE_LEARNED → « move_learned » ; MOVE_FORGET_OFFERED →
 ## « move_forget_prompt ». La suite de l'oubli (« move_forgot », « move_not_learned ») ne
 ## vient pas d'un événement : la présentation la demande à [method line_for].
 ## Soin (jalon 6) : ITEM_USED → « item_used » (« Tu utilises Potion sur Salamèche. »), puis
@@ -39,6 +39,12 @@ extends RefCounted
 ## les cartes) et « replace_prompt » (son titre après un K.O.).
 ## Argent (jalon 7) : « prize_won » ({money} : somme formatée, « 280 ₽ ») ne vient pas d'un
 ## événement du moteur ; le directeur le demande à [method prize_line] après une victoire.
+## Bilan de fin de combat (demande n° 1) : libellés courts, sans événement — « summary_exp »
+## ([method summary_exp], « +11 XP »), « summary_level » ([method summary_level], « Nv. 9 »),
+## « summary_stat » ({stat} : nom court de « stat_labels », {amount} ; [method summary_stats] :
+## « PV +2 · Attaque +1 »), « summary_continue » (consigne « Touchez l'écran pour continuer »).
+## « stat_labels » (facultatif ; s'il est là, complet) : noms courts des six statistiques
+## ([constant SpeciesData.STATS]) ; sans lui, l'identifiant de la statistique est écrit.
 ## « draft » : texte à relire par Kevin. « text_f » (facultatif) : la phrase accordée au
 ## féminin, employée quand le Pokémon de l'événement est une femelle (décision de Kevin
 ## n° 15, jalon 4 §8) ; sans elle, « text » sert pour tous. [method lines] traduit un
@@ -55,7 +61,7 @@ const TEMPLATE_IDS: Array[StringName] = [
 	&"stat_rose", &"stat_rose_2", &"stat_rose_3", &"stat_fell", &"stat_fell_2",
 	&"stat_fell_3", &"stat_no_higher", &"stat_no_lower", &"recoil", &"fainted",
 	&"battle_won", &"battle_lost", &"wild_appeared", &"fled", &"flee_failed",
-	&"level_up", &"move_learned", &"move_forget_prompt", &"move_forgot", &"move_not_learned",
+	&"move_learned", &"move_forget_prompt", &"move_forgot", &"move_not_learned",
 	&"seeded", &"drained",
 	&"ball_thrown", &"broke_free", &"caught_title", &"pokedex_new", &"joined_party",
 	&"sent_to_storage",
@@ -63,7 +69,10 @@ const TEMPLATE_IDS: Array[StringName] = [
 	&"forget_confirm_title", &"forget_confirm_detail", &"forget_confirm_yes",
 	&"forget_confirm_no",
 	&"withdrawn", &"switch_reason_active", &"switch_reason_fainted", &"replace_prompt",
+	&"summary_exp", &"summary_level", &"summary_stat", &"summary_continue",
 ]
+## Entre deux gains de statistiques du bilan (« PV +2 · Attaque +1 »).
+const SUMMARY_SEPARATOR: String = " · "
 const PLACEHOLDERS: Array[String] = [
 	"pokemon", "de_pokemon", "move", "trainer", "stat", "level", "exp", "old_move", "item",
 	"amount", "money",
@@ -77,6 +86,8 @@ var _texts: Dictionary[StringName, String] = {}
 var _texts_f: Dictionary[StringName, String] = {}
 var _drafts: Dictionary[StringName, bool] = {}
 var _stats: Dictionary[StringName, String] = {}
+## Noms courts des statistiques du bilan (« PV », « Atq. Spé. »).
+var _stat_labels: Dictionary[StringName, String] = {}
 var _errors: PackedStringArray = PackedStringArray()
 var _placeholder: RegEx = RegEx.create_from_string("\\{([^}]*)\\}")
 
@@ -99,10 +110,12 @@ func load_file(path: String = DATA_PATH) -> bool:
 func add_from_dict(data: Dictionary, source: String = "") -> bool:
 	var ok := true
 	for key: Variant in data:
-		if not ["templates", "stats"].has(str(key)):
+		if not ["templates", "stats", "stat_labels"].has(str(key)):
 			ok = _fail("%s : clé inconnue « %s »" % [source, key])
 	if not data.get("templates") is Dictionary or not data.get("stats") is Dictionary:
 		return _fail("%s : « templates » et « stats » doivent être des objets" % source)
+	if data.has("stat_labels") and not data["stat_labels"] is Dictionary:
+		return _fail("%s : « stat_labels » doit être un objet" % source)
 	var texts: Dictionary[StringName, String] = {}
 	var texts_f: Dictionary[StringName, String] = {}
 	var drafts: Dictionary[StringName, bool] = {}
@@ -130,8 +143,23 @@ func add_from_dict(data: Dictionary, source: String = "") -> bool:
 	for stat: StringName in MoveEffect.STAGE_STATS:
 		if not raw_stats.has(String(stat)):
 			ok = _fail("%s stats : « %s » manquant" % [source, stat])
+	var labels: Dictionary[StringName, String] = {}
+	# Facultatif (jeux de messages de test) ; s'il est là, les six statistiques sont nommées.
+	var raw_labels: Dictionary = data.get("stat_labels", {})
+	for key: Variant in raw_labels:
+		var stat := StringName(str(key))
+		if not SpeciesData.STATS.has(stat):
+			ok = _fail("%s stat_labels : statistique inconnue « %s »" % [source, stat])
+		elif not _is_text(raw_labels[key]):
+			ok = _fail("%s stat_labels « %s » : texte non vide attendu" % [source, stat])
+		else:
+			labels[stat] = raw_labels[key]
+	for stat: StringName in SpeciesData.STATS:
+		if not raw_labels.is_empty() and not raw_labels.has(String(stat)):
+			ok = _fail("%s stat_labels : « %s » manquant" % [source, stat])
 	if not ok:
 		return false
+	_stat_labels = labels
 	_texts = texts
 	_texts_f = texts_f
 	_drafts = drafts
@@ -205,8 +233,6 @@ func lines(event: BattleEvent, data: PokemonData, trainer: TrainerData = null) \
 			result.append(_fill(&"fled", event, data))
 		BattleEvent.Kind.FLEE_FAILED:
 			result.append(_fill(&"flee_failed", event, data))
-		BattleEvent.Kind.LEVEL_UP:
-			result.append(_fill(&"level_up", event, data))
 		BattleEvent.Kind.MOVE_LEARNED:
 			result.append(_fill(&"move_learned", event, data))
 		BattleEvent.Kind.MOVE_FORGET_OFFERED:
@@ -252,6 +278,29 @@ func prize_line(amount: int) -> String:
 	if not _texts.has(&"prize_won"):
 		return ""
 	return get_template(&"prize_won").format({"money": MenuFormat.money(amount)})
+
+
+## « +11 XP » (bilan de fin de combat).
+func summary_exp(amount: int) -> String:
+	return get_template(&"summary_exp").format({"exp": amount})
+
+
+## « Nv. 9 » (bilan de fin de combat).
+func summary_level(level: int) -> String:
+	return get_template(&"summary_level").format({"level": level})
+
+
+## « PV +2 · Attaque +1 · … » : les gains de [param gains] dans l'ordre de
+## [constant SpeciesData.STATS] ; une statistique qui n'augmente pas (+0) n'est pas écrite.
+## Chaîne vide si rien n'augmente.
+func summary_stats(gains: Dictionary[StringName, int]) -> String:
+	var parts := PackedStringArray()
+	for stat: StringName in SpeciesData.STATS:
+		var amount: int = gains.get(stat, 0)
+		if amount > 0:
+			parts.append(get_template(&"summary_stat").format({
+				"stat": _stat_labels.get(stat, String(stat)), "amount": amount}))
+	return SUMMARY_SEPARATOR.join(parts)
 
 
 ## « de Salamèche », « d'Évoli » : élision devant une voyelle.

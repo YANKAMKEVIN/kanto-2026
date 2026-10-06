@@ -590,9 +590,11 @@ func _has_kind(events: Array, kind: BattleEvent.Kind) -> bool:
 	return events.any(func(e: BattleEvent) -> bool: return e.kind == kind)
 
 
-## L'XP du Pokémon augmente exactement de la somme des « +N XP » joués : chaque EXP_GAINED est
-## rejoué sur la carte du joueur (elle montre « +N XP » avec le total du gain), l'ordre du
-## journal est respecté et un niveau gagné met la carte à jour (Nv., PV max).
+## L'XP du Pokémon augmente exactement de la somme des gains du journal, et c'est ce que montre
+## le bilan de fin de combat (demande n° 1) : une ligne, « +N XP », « Nv. 6 », la barre et les
+## nombres finissent à la bonne valeur. Pendant le combat, plus de « +N XP » sur la carte ni de
+## « monte au niveau » ; la carte prend en silence le niveau et les PV max. Ordre du journal
+## respecté.
 func test_xp_gained_equals_the_sum_shown_and_the_card_follows_the_level() -> void:
 	var party_fn := func() -> Party: return _xp_party(&"charmander", 5, 1)
 	var seed := _xp_seed(party_fn, &"rattata", 3, [0] as Array[int],
@@ -604,14 +606,30 @@ func test_xp_gained_equals_the_sum_shown_and_the_card_follows_the_level() -> voi
 	var lead := party.get_lead()
 	var before := lead.experience
 	var request := _xp_request(party, &"rattata", 3, seed)
-	var texts: Array[String] = []
+	var gain_shown: Array[bool] = []
 	var levels: Array[int] = []
+	var banner: Array[String] = []
 	_director.event_played.connect(func(e: BattleEvent) -> void:
+		banner.append(_hud.get_message_banner().get_text())
 		if e.kind == BattleEvent.Kind.EXP_GAINED and e.amount > 0:
-			texts.append(_hud.get_card(BattleHud.Side.PLAYER).get_exp_gain_text())
+			gain_shown.append(_hud.get_card(BattleHud.Side.PLAYER).is_exp_gain_visible())
 		elif e.kind == BattleEvent.Kind.LEVEL_UP:
 			levels.append(e.level)
 			_check_card_level(e))
+	var seen: Dictionary = {}
+	_director.exp_summary_shown.connect(func(summary: ExpSummary) -> void:
+		var card := _director.get_summary_card()
+		seen["entries"] = summary.get_entries().size()
+		seen["shown"] = card != null and card.is_visible_in_tree() and card.is_filled()
+		var row := card.get_rows()[0]
+		seen["gain"] = row.get_gain_text()
+		seen["level"] = row.get_level_text()
+		seen["start"] = row.get_start_level_text()
+		seen["fraction"] = row.get_bar().get_fraction()
+		seen["points"] = row.get_points_text()
+		seen["lit"] = row.is_lit()
+		seen["stats"] = row.get_stats_text()
+		seen["hud_hidden"] = not _hud.is_shown())
 	var played := await _play_with_offers(request, [0] as Array[int])
 	assert_eq(played[0], Battle.Outcome.WIN)
 	var events: Array[BattleEvent] = played[1]
@@ -623,9 +641,23 @@ func test_xp_gained_equals_the_sum_shown_and_the_card_follows_the_level() -> voi
 			total += event.amount
 	assert_gt(total, 0, "de l'XP a été gagnée")
 	assert_eq(lead.experience - before, total, "XP du Pokémon = somme des gains joués")
-	assert_eq(texts, ["+%d XP" % total] as Array[String], "la carte a montré le total gagné")
+	assert_eq(gain_shown, [false] as Array[bool], "plus de « +N XP » sur la carte en combat")
 	assert_eq(levels, [6] as Array[int], "montée au niveau 6")
 	assert_eq(lead.level, 6)
+	for line: String in banner:
+		assert_false(line.contains("monte au niveau"), "plus de phrase de niveau : " + line)
+	var span := ExpCalc.level_span(lead, _data)
+	assert_eq(seen.get("entries"), 1, "un Pokémon dans le bilan")
+	assert_true(seen.get("shown", false), "bilan affiché, barres arrivées")
+	assert_true(seen.get("hud_hidden", false), "cartes et bandeau sortis pendant le bilan")
+	assert_eq(seen.get("gain"), "+%d XP" % total, "le bilan montre le total gagné")
+	assert_eq([seen.get("start"), seen.get("level")], ["Nv. 5", "Nv. 6"])
+	assert_almost_eq(float(seen.get("fraction", -1.0)), ExpCalc.progress(lead, _data), 0.0001,
+		"la barre finit à la bonne valeur")
+	assert_eq(seen.get("points"), "%d / %d" % [span.x, span.y], "nombres du nouveau niveau")
+	assert_true(seen.get("lit", false), "sa ligne est mise en valeur")
+	assert_true(String(seen.get("stats", "")).begins_with("PV +"), "gains de statistiques")
+	assert_null(_director.get_summary_card(), "bilan libéré à la fin")
 	# Ordre du journal : K.O. adverse, puis XP, puis niveau, puis la fin du combat.
 	assert_lt(kinds.rfind(BattleEvent.Kind.FAINTED), kinds.find(BattleEvent.Kind.EXP_GAINED),
 		"XP après le K.O.")
@@ -647,11 +679,17 @@ func test_a_learned_move_is_announced_without_the_forget_panel() -> void:
 	var party: Party = party_fn.call()
 	var request := _xp_request(party, &"rattata", 3, seed)
 	var lines: Array[String] = []
+	var order: Array[String] = []
 	_director.event_played.connect(func(e: BattleEvent) -> void:
+		if e.kind in [BattleEvent.Kind.MOVE_LEARNED, BattleEvent.Kind.BATTLE_ENDED]:
+			order.append(BattleEvent.Kind.find_key(e.kind))
 		if e.kind == BattleEvent.Kind.MOVE_LEARNED:
 			lines.append(_hud.get_message_banner().get_text()))
+	_director.exp_summary_shown.connect(func(_s: ExpSummary) -> void: order.append("SUMMARY"))
 	var played := await _play_with_offers(request, [0] as Array[int])
 	assert_eq(played[0], Battle.Outcome.WIN)
+	assert_eq(order, ["BATTLE_ENDED", "SUMMARY", "MOVE_LEARNED"] as Array[String],
+		"fin du combat, bilan, puis l'apprentissage")
 	assert_true(party.get_lead().knows_move(&"leech_seed"), "Vampigraine apprise au N7")
 	assert_eq(lines, ["Bulbizarre apprend Vampigraine !"] as Array[String],
 		"phrase d'apprentissage")
