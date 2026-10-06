@@ -73,7 +73,7 @@ Décisions de Kevin (2026-10-05/06), qui **s'ajoutent au dossier 08** :
 | E18 | Bouton retour | « ‹ » rond dans l'en-tête | — | Le × du menu reste à sa place ; « ‹ » (RETOUR, 128 px) juste à sa droite dans la même rangée. |
 | E19 | Faute « Salaméche » | — | — | Sans objet (noms venant des données). |
 | E20 | « Grand sprite vivant » | statique | §4 : vivant | Respiration discrète du portrait (échelle 1,00 ↔ 1,015, 2,4 s, `Tween`), coupée par « réduction des animations » ; fondu 150 ms au changement d'espèce. Défaut, règle 4. |
-| E21 | Silhouettes dans la chaîne d'évolution | silhouette du stade inconnu (Dracaufeu sombre) | « → ??? » | **Pas de silhouette** dans l'Évolution (elle révélerait la forme **et** le lien de parenté) : rond vide + `???`, comme aujourd'hui. Question Q-1. |
+| E21 | Silhouettes dans la chaîne d'évolution | silhouette du stade inconnu (Dracaufeu sombre) | « → ??? » | **Décision de Kevin (Q-1, 2026-10-06) : silhouette** du stade pas encore vu, même si elle révèle la forme et la parenté ; le nom reste « ??? » et la condition d'évolution n'est jamais affichée (dossier 08 §4). |
 
 ---
 
@@ -232,6 +232,11 @@ Stratégie :
 ---
 
 ## 5. Questions pour Kevin
+
+> **Réponses de Kevin (2026-10-06)** : **Q-1 = oui**, silhouettes dans la chaîne d'Évolution
+> (le nom reste « ??? », jamais de condition) ; **Q-2 à Q-5 = défauts** (artworks dans le
+> Pokédex seulement ; pas d'agrandissement par espèce ; halo et ombre au sol, décor à la phase
+> DA ; fusion après la validation du J7).
 
 Vraies décisions :
 - **Q-1 — Silhouettes dans la chaîne d'Évolution ?** La maquette montre le stade inconnu en silhouette. Cela révèle la forme **et** le lien de parenté (« Salamèche → [forme de Reptincel] »), au-delà de la grille où la silhouette n'est liée à rien. *Défaut : non, rond vide et « ??? » (dossier 08 §4).*
