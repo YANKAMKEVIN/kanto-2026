@@ -37,3 +37,25 @@
 
 - Petit à moyen : une carte d'interface (ui-mobile), un événement de fin de combat qui résume l'XP par Pokémon (déjà calculée), des tests. Aucun changement de sauvegarde.
 - Proposé dans le **J7** (avant la QA finale), puisque le changement de Pokémon y est entré et rend le partage d'XP visible pour la première fois.
+
+---
+
+## Décisions de Kevin (2026-10-06, validées avec ChatGPT) — font foi
+
+Référence visuelle : `docs/design/reference/bilan-xp-v1.webp` (**DA et composition seulement**, CLAUDE.md règle 10 : le décor marin, les nombres d'XP « 112 / 173 » et la consigne « Touchez l'écran pour continuer » de l'image ne sont **pas** validés et ne sont pas implémentés).
+
+1. **Oui** : bilan de fin de combat, une carte, une ligne par Pokémon ayant gagné de l'XP, barres qui se remplissent.
+2. **Après chaque combat qui rapporte de l'XP** (pas seulement en cas de montée de niveau). Rapide quand il ne se passe rien de particulier, **accélérable au toucher**.
+3. **Gains de stats affichés à la montée de niveau** (« PV +2 · Attaque +1 · Défense +1… »), **uniquement** quand il y a montée de niveau.
+4. **Pokémon sans XP absents** : c'est un écran de progression, pas un récapitulatif d'équipe.
+5. **Le bilan remplace « X monte au niveau N ! »** pendant le combat (pas de doublon). La montée de niveau doit être un **petit moment gratifiant** dans le bilan : remplissage complet de la barre → passage au niveau suivant → légère mise en valeur → gains de stats.
+6. **Vibration courte** à la montée de niveau, soumise au réglage des vibrations.
+7. **Partage Rouge/Bleu conservé** (déjà codé) ; le Multi Exp viendra avec l'objet.
+8. **Hors combat** : la barre d'XP de l'Équipe du Menu Dresseur suffit.
+9. **Pas de titre.** Libellés courts validés : « +11 XP », « Nv. 9 », « PV +2 », « Attaque +1 »…
+
+**Précisions UX** :
+- Pas un tableau administratif où six lignes s'animent toutes pareil : les Pokémon sont présentés ensemble, la progression reste très lisible ; plusieurs barres peuvent progresser **ensemble** ; quand un Pokémon monte de niveau, son animation **attire brièvement l'attention sur sa ligne**.
+- **Plusieurs niveaux d'un coup** : l'animation enchaîne correctement plusieurs remplissages de barre sans perdre l'information (chaque niveau passé, gains de stats cumulés ou par niveau, lisibles).
+- **Après le bilan** : apprentissage de capacité, puis évolution (quand elle existera).
+- **Intégré au J7**, avant la QA finale.
