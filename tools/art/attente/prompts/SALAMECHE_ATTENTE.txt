@@ -1,0 +1,9 @@
+SALAMECHE_ATTENTE — POSE D'ATTENTE (immobile, au repos) du même Pokémon que la planche jointe (sa planche de marche 4 × 4) : Salamèche, petit lézard orange debout sur deux pattes, ventre crème, flamme au bout de la queue (exactement celui de la planche jointe). Même main peinte, mêmes couleurs, mêmes proportions, même taille. Ce n'est PAS une marche : il ne bouge pas, il attend.
+Style : illustration 2D peinte numériquement, contour fin et doux d'une teinte sombre et colorée, aucun trait noir, trois valeurs nettes par matériau, légère granularité de pinceau, lumière neutre de milieu de journée, diffuse et blanche, venant légèrement du haut à gauche, aucune teinte dorée. Formes simplifiées et lisibles pour rester net une fois réduit à environ 60 px de haut. Ni pixel art, ni 3D.
+
+PLANCHE : image paysage 1536 × 1024, fond avec une vraie transparence (canal alpha, aucun damier dessiné). UNE seule ligne de 4 poses, de gauche à droite, chaque pose dans une colonne invisible de 384 px de large, bien séparées par du vide, le Pokémon entier dans chaque colonne, à la même taille dans les 4 poses (même taille que dans la planche jointe), les pieds des 4 poses sur une même ligne horizontale. Pas de sol, pas d'ombre, pas de texte, pas de numéros, pas de cadres.
+- Pose 1 : tourné vers le BAS (vu de face), comme la ligne 1 de la planche jointe.
+- Pose 2 : tourné vers la GAUCHE (de profil), comme la ligne 2 de la planche jointe.
+- Pose 3 : tourné vers la DROITE (de profil), comme la ligne 3 de la planche jointe.
+- Pose 4 : tourné vers le HAUT (vu de dos), comme la ligne 4 de la planche jointe.
+POSE D'ATTENTE dans les 4 vues : debout, immobile et calme, les DEUX pieds joints côte à côte, posés à plat, aucun pied en avant (pas un pas), les petits bras détendus ; de profil, les deux pieds se superposent presque.

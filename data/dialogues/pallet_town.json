@@ -27,6 +27,10 @@
 		"speaker": "Haru",
 		"pages": ["La mer est calme aujourd'hui.", "Les Pokémon le sentent avant nous."]
 	},
+	"researcher": {
+		"speaker": "Chercheur",
+		"pages": ["Le professeur nous fait tout noter.", "Même la couleur des feuilles des serres !"]
+	},
 	"sign_pallet_town": {
 		"pages": ["BOURG PALETTE"]
 	},

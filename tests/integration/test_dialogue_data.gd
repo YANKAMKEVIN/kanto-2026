@@ -46,6 +46,8 @@ const IDS: Array[StringName] = [
 	&"oak_pokedex_activated", &"oak_route1_call", &"oak_route1_warning", &"oak_starter_offer",
 	&"oak_starter_reciprocal", &"observe_aoki_pidgey", &"observe_bulbasaur",
 	&"observe_charmander", &"observe_leo_rattata", &"observe_squirtle",
+	# DA.2 : le chercheur de Bourg Palette (réplique validée par Kevin, dossier-02 §4).
+	&"researcher",
 	&"rival", &"rival_challenge", &"rival_challenge_wait", &"rival_kanto_map",
 	&"rival_lab_lost", &"rival_lab_waiting", &"rival_lab_won", &"rival_lab_won_leaving",
 	&"rival_parcel_greet", &"rival_parcel_leaving", &"rival_parcel_return",

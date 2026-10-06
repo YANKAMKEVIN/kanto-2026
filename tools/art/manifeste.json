@@ -1,5 +1,5 @@
 {
- "_doc": "Manifeste de l'art valide (series 01 a 08 ; serie 07 = Jadielle agrandie ; 06, 06B, 07 interieurs et 08 = Bourg Palette, ses interieurs et la Route 1, integration DA.0). Lu par tools/art/preparer.py. Les sources sont dans build/art/ (non versionne, sur le Mac de Kevin). Tailles en cases de 96 px. 'ombre' : ombre portee pre-floutee <id>_shadow.png (batiments seulement) ; 'contact' : part basse de l'objet (0..1) pour <id>_contact.png, null = aucune (objets poses a plat). Suffixe '_bourg' : meme source qu'un objet de Jadielle, a l'echelle validee au prototype de Bourg Palette. 'planches_arbres' : planche 2 x 2 coupee a la rangee et a la colonne les plus vides (30-70 %), chaque arbre a sa hauteur en pixels (echelle du prototype, environ 3 cases). 'hautes_herbes_variantes' : herbes hautes recolorees a la preparation (TSV : decalage de teinte, gamma de la valeur, saturation, desaturation des hautes lumieres [debut, fin, force]). 'decalcomanies' : planches colonnes x lignes, chaque element a 'largeur_cases' de large. 'attentes' : planches d'attente pieds joints (4 x 1 : bas, gauche, droite, haut), calees sur la planche de marche 'marche' (decouper_attente.py) ; 'miroir' : gauche|droite = profil remplace par le miroir de l'autre.",
+ "_doc": "Manifeste de l'art valide (series 01 a 08 ; serie 07 = Jadielle agrandie ; 06, 06B, 07 interieurs et 08 = Bourg Palette, ses interieurs et la Route 1, integration DA.0 ; serie 09 et personnages du prototype = habitants de Bourg Palette, DA.2). Lu par tools/art/preparer.py. Les sources sont dans build/art/ (non versionne, sur le Mac de Kevin). Tailles en cases de 96 px. 'ombre' : ombre portee pre-floutee <id>_shadow.png (batiments seulement) ; 'contact' : part basse de l'objet (0..1) pour <id>_contact.png, null = aucune (objets poses a plat). Suffixe '_bourg' : meme source qu'un objet de Jadielle, a l'echelle validee au prototype de Bourg Palette. 'planches_arbres' : planche 2 x 2 coupee a la rangee et a la colonne les plus vides (30-70 %), chaque arbre a sa hauteur en pixels (echelle du prototype, environ 3 cases). 'hautes_herbes_variantes' : herbes hautes recolorees a la preparation (TSV : decalage de teinte, gamma de la valeur, saturation, desaturation des hautes lumieres [debut, fin, force]). 'decalcomanies' : planches colonnes x lignes, chaque element a 'largeur_cases' de large. 'attentes' : planches d'attente pieds joints (4 x 1 : bas, gauche, droite, haut), calees sur la planche de marche 'marche' (decouper_attente.py) ; 'miroir' : gauche|droite = profil remplace par le miroir de l'autre.",
  "case": 96,
  "ombre_portee": {
   "flou": 7.0,
@@ -1461,6 +1461,48 @@
      []
     ]
    }
+  },
+  {
+   "id": "maman",
+   "source": "PNJ_MAMAN_NE_r1.png",
+   "sortie": "assets/sprites/characters/painted/maman_sheet.png",
+   "hauteur": 128
+  },
+  {
+   "id": "chen",
+   "source": "PNJ_CHEN_NE_r1.png",
+   "sortie": "assets/sprites/characters/painted/chen_sheet.png",
+   "hauteur": 134
+  },
+  {
+   "id": "leo",
+   "source": "PNJ_LEO_NE_r1.png",
+   "sortie": "assets/sprites/characters/painted/leo_sheet.png",
+   "hauteur": 108
+  },
+  {
+   "id": "vieille_dame",
+   "source": "PNJ_VIEILLE_DAME_NE_r1.png",
+   "sortie": "assets/sprites/characters/painted/vieille_dame_sheet.png",
+   "hauteur": 120
+  },
+  {
+   "id": "pecheur",
+   "source": "PNJ_PECHEUR_NE_r1.png",
+   "sortie": "assets/sprites/characters/painted/pecheur_sheet.png",
+   "hauteur": 130
+  },
+  {
+   "id": "chercheuse",
+   "source": "PNJ_CHERCHEUSE_NE_r1.png",
+   "sortie": "assets/sprites/characters/painted/chercheuse_sheet.png",
+   "hauteur": 128
+  },
+  {
+   "id": "chercheur",
+   "source": "PNJ_CHERCHEUR_NE_r1.png",
+   "sortie": "assets/sprites/characters/painted/chercheur_sheet.png",
+   "hauteur": 130
   }
  ],
  "pokemon": [
@@ -1602,6 +1644,48 @@
    "source": "RATTATA_ATTENTE_r2.png",
    "sortie": "assets/sprites/pokemon/painted/rattata_idle_sheet.png",
    "marche": "rattata"
+  },
+  {
+   "id": "maman_idle",
+   "source": "MAMAN_ATTENTE_r1.png",
+   "sortie": "assets/sprites/characters/painted/maman_idle_sheet.png",
+   "marche": "maman"
+  },
+  {
+   "id": "chen_idle",
+   "source": "CHEN_ATTENTE_r1.png",
+   "sortie": "assets/sprites/characters/painted/chen_idle_sheet.png",
+   "marche": "chen"
+  },
+  {
+   "id": "leo_idle",
+   "source": "LEO_ATTENTE_r1.png",
+   "sortie": "assets/sprites/characters/painted/leo_idle_sheet.png",
+   "marche": "leo"
+  },
+  {
+   "id": "vieille_dame_idle",
+   "source": "VIEILLE_DAME_ATTENTE_r1.png",
+   "sortie": "assets/sprites/characters/painted/vieille_dame_idle_sheet.png",
+   "marche": "vieille_dame"
+  },
+  {
+   "id": "pecheur_idle",
+   "source": "PECHEUR_ATTENTE_r1.png",
+   "sortie": "assets/sprites/characters/painted/pecheur_idle_sheet.png",
+   "marche": "pecheur"
+  },
+  {
+   "id": "chercheuse_idle",
+   "source": "CHERCHEUSE_ATTENTE_r1.png",
+   "sortie": "assets/sprites/characters/painted/chercheuse_idle_sheet.png",
+   "marche": "chercheuse"
+  },
+  {
+   "id": "chercheur_idle",
+   "source": "CHERCHEUR_ATTENTE_r1.png",
+   "sortie": "assets/sprites/characters/painted/chercheur_idle_sheet.png",
+   "marche": "chercheur"
   }
  ]
 }
