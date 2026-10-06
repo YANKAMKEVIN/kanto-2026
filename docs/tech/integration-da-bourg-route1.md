@@ -113,3 +113,7 @@ Rien de visible en jeu : aucune carte, aucun intérieur ni sprite de personnage 
    - **B** : on refait la carte sur le plan du prototype (herbes 9 × 3, place plus haute, mer plus basse) ; il faut reprendre le prologue, les PNJ et 7 fichiers de tests. Plus fidèle au plan peint, plus long et plus risqué.
 2. **Personnages peints (DA.4) maintenant ou en phase DA ?** Le jalon 7 avait reporté Maman et Chen à la phase DA (Q-3). Recommandation : **maintenant**, dans ce chantier : Bourg Palette et ses intérieurs sont le décor de Maman et de Chen, et un personnage pixel au milieu du peint jure.
 3. **Place dans la roadmap.** Recommandation : **avant le jalon 8 (Route 2)**, en chantier court, pour que tout le début du jeu (de la chambre à Jadielle) soit peint d'un bloc et que la Route 2 et la Forêt de Jade naissent directement en peint.
+
+
+## Validation DA.1 (Kevin, S24, 2026-10-06)
+Route 1 peinte **validée** sur sa vraie partie (« en vrai ça va ») : rencontres, rebord, voyageur, entrée de Jadielle ; Potion du recoin déjà ramassée dans sa partie (2026-10-02), cache correctement ignorée. **58,8 fps de moyenne, min 53** (166 relevés). Choix gardés par défaut : pas d'ombre de contact sous la forêt (`FOREST_CONTACT_SHADOWS = false`), souche sur la case de la Potion, personnages partiellement cachés par les cimes en lisière.
