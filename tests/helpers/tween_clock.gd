@@ -10,9 +10,9 @@ extends RefCounted
 ## Les tweens sont figés par une vitesse nulle, pas par une pause : ils restent « en cours »
 ## ([method Tween.is_running]), que du code de jeu consulte (cartes de combat, élan des PNJ).
 ## Pendant que l'horloge les tient, un [method Tween.custom_step] du jeu sur l'un d'eux
-## (« terminer tout de suite ») est sans effet. Les tweens sont supposés à la vitesse 1
-## (Tween n'expose pas sa vitesse) : à ne pas utiliser sur un tween dont le jeu change la
-## vitesse (BattleStage, GrassRustle).
+## (« terminer tout de suite ») est sans effet. Les tweens sont avancés à la vitesse 1
+## (Tween n'expose pas sa vitesse) : BattleStage et GrassRustle ne s'utilisent qu'avec leur
+## speed_scale à 1.
 
 const STEP := 1.0 / 60.0
 

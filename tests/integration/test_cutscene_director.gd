@@ -14,7 +14,7 @@ extends GutTest
 ## Jalon 4B (jalon-04.md §14.3) : conditions d'étape « if » / « unless », évaluées au moment
 ## de jouer l'étape (drapeaux levés plus tôt dans la même scène compris).
 
-const TweenClock := preload("res://tests/helpers/tween_clock.gd")
+const FrameSim := preload("res://tests/helpers/frame_sim.gd")
 const ROUTER_SCRIPT := preload("res://game/autoload/scene_router.gd")
 const PLAYER_SCENE := preload("res://game/player/player.tscn")
 const BOX_SCENE := preload("res://game/ui/dialogue/dialogue_box.tscn")
@@ -178,9 +178,8 @@ var _runner: DialogueRunner
 var _director: CutsceneDirector
 var _flags: StoryFlags
 var _map: GameMap
-## Temps simulé ([method _sim_begin]) : horloge des tweens et nœuds retirés du moteur.
-var _sim_clock: TweenClock
-var _sim_frozen: Dictionary[Node, Node.ProcessMode] = {}
+## Images simulées ([method _sim_begin]).
+var _sim: FrameSim
 
 
 func before_each() -> void:
@@ -625,55 +624,21 @@ func _play_timed(cutscene_id: StringName) -> float:
 	return elapsed[0]
 
 
-## Temps simulé, à ouvrir avant [method CutsceneDirector.play] : le moteur ne fait plus
-## tourner le directeur, le joueur ni les PNJ, ni les tweens nés ensuite ; chaque
-## [method _sim_frame] les fait avancer d'une image de [constant FRAME], dans l'ordre du
-## moteur (PNJ et joueur, puis le directeur, process_priority 10). Une durée se compte
-## alors en images, quelle que soit la charge de la machine. Un PNJ qui apparaît (spawn)
-## est retiré du moteur dès son entrée dans la carte, avant toute image.
+## Images simulées (FrameSim), à ouvrir avant [method CutsceneDirector.play] : le moteur ne
+## fait plus tourner le directeur, le joueur ni les PNJ (même ceux qui apparaissent), ni les
+## tweens nés ensuite. Une durée se compte alors en images, quelle que soit la charge.
 func _sim_begin() -> void:
-	_sim_clock = TweenClock.new(get_tree())
-	_sim_frozen.clear()
-	_sim_freeze()
-	_map.get_entities().child_entered_tree.connect(_sim_freeze_node)
-
-
-## Une image simulée (attend aussi une vraie image, pour les étapes qui en attendent une).
-func _sim_frame() -> void:
-	await get_tree().process_frame
-	_sim_freeze()
-	_sim_clock.step(FRAME)
-	for npc: Npc in _map.get_npcs():
-		if npc.is_processing():
-			npc._process(FRAME)
-	if _player.is_processing():
-		_player._process(FRAME)
-	if _director.is_processing():
-		_director._process(FRAME)
-
-
-## Rend le directeur, le joueur, les PNJ et les tweens au moteur (temps réel).
-func _sim_end() -> void:
-	_map.get_entities().child_entered_tree.disconnect(_sim_freeze_node)
-	_sim_clock.release()
-	for node: Node in _sim_frozen:
-		if is_instance_valid(node):
-			node.process_mode = _sim_frozen[node]
-	_sim_frozen.clear()
-
-
-func _sim_freeze() -> void:
 	var nodes: Array[Node] = [_director, _player]
 	nodes.append_array(_map.get_npcs())
-	for node: Node in nodes:
-		_sim_freeze_node(node)
+	_sim = FrameSim.new(get_tree(), nodes, [_map.get_entities()])
 
 
-func _sim_freeze_node(node: Node) -> void:
-	if node is Npc or node == _director or node == _player:
-		if not _sim_frozen.has(node):
-			_sim_frozen[node] = node.process_mode
-			node.process_mode = Node.PROCESS_MODE_DISABLED
+func _sim_frame() -> void:
+	await _sim.frame()
+
+
+func _sim_end() -> void:
+	_sim.finish()
 
 
 ## Images simulées tant que la scène tourne (au plus [constant TIMEOUT] s) ; rend leur nombre.
