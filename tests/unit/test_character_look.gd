@@ -93,8 +93,12 @@ func test_every_sheet_maps_to_generated_frames() -> void:
 	var looks: Dictionary = constants["LOOKS"]
 	var catalogue: Dictionary = JSON.parse_string(
 		FileAccess.get_file_as_string("res://assets/world/catalogue.json"))
+	var idle_suffix: String = constants["IDLE_SUFFIX"]
 	for sheet: String in catalogue["personnages"]:
-		assert_true(looks.has(sheet) or (constants["RUN_ONLY"] as Array).has(sheet), sheet)
+		var idle_of := sheet.trim_suffix(idle_suffix)
+		var is_idle := idle_of != sheet and looks.has(idle_of)
+		assert_true(looks.has(sheet) or (constants["RUN_ONLY"] as Array).has(sheet) or is_idle,
+			sheet)
 	for sheet: String in looks:
 		var entry: Array = looks[sheet]
 		var path := String(entry[0]) + String(entry[1]) + "_frames.tres"
@@ -119,11 +123,15 @@ func test_painted_frames_cycle_two_tiles_per_walk_loop() -> void:
 		assert_true(frames.get_animation_loop(walk))
 		assert_almost_eq(4.0 / frames.get_animation_speed(walk), 2.0 * Grid.WALK_STEP_DURATION,
 			0.001, "un cycle = deux cases de marche")
-		# Repos = colonne 0 de la ligne de la direction ; marche : colonnes 1, 2, 3, 0.
+		# Repos = planche d'attente pieds joints (une colonne par direction, décision de Kevin du
+		# 2026-10-06 ; test_rest_pose) ; marche : colonnes 1, 2, 3, 0 de la ligne.
 		var row: int = {"down": 0, "left": 1, "right": 2, "up": 3}[dir]
 		var cell := Vector2(88, 134)
 		var rest := frames.get_frame_texture(idle, 0) as AtlasTexture
-		assert_eq(rest.region, Rect2(Vector2(0, row) * cell, cell))
+		assert_eq(rest.atlas.resource_path,
+			"res://assets/sprites/characters/painted/infirmiere_idle_sheet.png", "attente")
+		assert_eq(rest.region.size.y, cell.y, "même hauteur que la marche (ancrage aux pieds)")
+		assert_eq(rest.region.position, Vector2(row * rest.region.size.x, 0))
 		var first_step := frames.get_frame_texture(walk, 0) as AtlasTexture
 		assert_eq(first_step.region, Rect2(Vector2(1, row) * cell, cell))
 	var hero := load(CharacterLook.painted_frames_path(&"player")) as SpriteFrames

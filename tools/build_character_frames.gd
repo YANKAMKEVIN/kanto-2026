@@ -6,7 +6,9 @@ extends SceneTree
 ##
 ## Planche : lignes bas, gauche, droite, haut ; colonnes 0 passage, 1 pas gauche, 2 passage,
 ## 3 pas droit (`decouper_perso.py`, `marcheur.gd` du prototype). Animations :
-## - `idle_<dir>` : colonne 0 (une image) ;
+## - `idle_<dir>` : la **planche d'attente** `<planche>_idle` quand elle existe (pieds joints, une
+##   ligne de 4 images bas, gauche, droite, haut ; décision de Kevin du 2026-10-06), sinon la
+##   colonne 0 de la marche (une image ; « passage », jambes déjà écartées de profil) ;
 ## - `walk_<dir>` : colonnes 1, 2, 3, 0 ; un cycle de 4 images couvre **2 cases**, vitesse
 ##   calée sur `Grid.WALK_STEP_DURATION` (4 / (2 × 0,27) ≈ 7,4 images/s) ;
 ## - `run_<dir>` : **seulement avec une planche de course** (le héros ; l'enfant et le Rattata de
@@ -53,6 +55,9 @@ const LOOKS: Dictionary = {
 }
 ## Planches lues seulement comme planche de course d'une autre.
 const RUN_ONLY: Array[String] = ["heros_run", "enfant_run", "rattata_run"]
+## Suffixe des planches d'attente (`heros_idle` pour `heros`) ; colonne de chaque direction.
+const IDLE_SUFFIX := "_idle"
+const IDLE_COLUMNS := {"down": 0, "left": 1, "right": 2, "up": 3}
 
 var _errors: int = 0
 
@@ -61,6 +66,9 @@ func _init() -> void:
 	var catalogue: Dictionary = JSON.parse_string(FileAccess.get_file_as_string(CATALOGUE))
 	var sheets: Dictionary = catalogue["personnages"]
 	for sheet_id: String in sheets:
+		var idle_of := sheet_id.trim_suffix(IDLE_SUFFIX)
+		if idle_of != sheet_id and LOOKS.has(idle_of):
+			continue
 		if not LOOKS.has(sheet_id) and not RUN_ONLY.has(sheet_id):
 			push_error("build_character_frames : planche « %s » sans correspondance" % sheet_id)
 			_errors += 1
@@ -72,12 +80,14 @@ func _init() -> void:
 		var look: Array = LOOKS[sheet_id]
 		var run_id: String = look[2]
 		var run: Dictionary = sheets.get(run_id, {}) if not run_id.is_empty() else {}
-		_build(sheets[sheet_id], run, String(look[0]) + String(look[1]) + "_frames.tres")
+		var idle: Dictionary = sheets.get(sheet_id + IDLE_SUFFIX, {})
+		_build(sheets[sheet_id], run, idle, String(look[0]) + String(look[1]) + "_frames.tres")
 	print("build_character_frames : %d apparences, %d erreur(s)" % [LOOKS.size(), _errors])
 	quit(1 if _errors > 0 else 0)
 
 
-func _build(walk_sheet: Dictionary, run_sheet: Dictionary, path: String) -> void:
+func _build(walk_sheet: Dictionary, run_sheet: Dictionary, idle_sheet: Dictionary,
+		path: String) -> void:
 	var frames := SpriteFrames.new()
 	frames.remove_animation(&"default")
 	var walk_texture := load(walk_sheet["fichier"]) as Texture2D
@@ -87,13 +97,25 @@ func _build(walk_sheet: Dictionary, run_sheet: Dictionary, path: String) -> void
 	if not run_sheet.is_empty():
 		run_texture = load(run_sheet["fichier"]) as Texture2D
 		run_cell = Vector2(run_sheet["cellule"][0], run_sheet["cellule"][1])
+	var idle_texture: Texture2D = null
+	var idle_cell := walk_cell
+	if not idle_sheet.is_empty():
+		idle_texture = load(idle_sheet["fichier"]) as Texture2D
+		idle_cell = Vector2(idle_sheet["cellule"][0], idle_sheet["cellule"][1])
+		if idle_cell.y != walk_cell.y:
+			push_error("build_character_frames : %s : hauteur d'attente ≠ marche (ancrage)"
+				% path)
+			_errors += 1
 	for dir: String in ROWS:
 		var row: int = ROWS[dir]
 		var idle := StringName("idle_" + dir)
 		frames.add_animation(idle)
 		frames.set_animation_loop(idle, true)
 		frames.set_animation_speed(idle, 1.0)
-		frames.add_frame(idle, _atlas(walk_texture, walk_cell, 0, row))
+		if idle_texture != null:
+			frames.add_frame(idle, _atlas(idle_texture, idle_cell, IDLE_COLUMNS[dir], 0))
+		else:
+			frames.add_frame(idle, _atlas(walk_texture, walk_cell, 0, row))
 		_add_cycle(frames, StringName("walk_" + dir), walk_texture, walk_cell, row,
 			4.0 / (2.0 * WALK_STEP))
 		if run_texture != null:
@@ -104,8 +126,9 @@ func _build(walk_sheet: Dictionary, run_sheet: Dictionary, path: String) -> void
 		push_error("build_character_frames : %s non écrit" % path)
 		_errors += 1
 	else:
-		print("%s (%d × %d%s)" % [path, walk_cell.x, walk_cell.y,
-			", course" if not run_sheet.is_empty() else ""])
+		print("%s (%d × %d%s%s)" % [path, walk_cell.x, walk_cell.y,
+			", course" if not run_sheet.is_empty() else "",
+			", attente" if not idle_sheet.is_empty() else ""])
 
 
 func _add_cycle(frames: SpriteFrames, anim: StringName, texture: Texture2D, cell: Vector2,

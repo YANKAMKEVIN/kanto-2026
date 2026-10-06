@@ -1,5 +1,5 @@
 {
- "_doc": "Manifeste de l'art valide (series 01 a 07 ; serie 07 = Jadielle agrandie). Lu par tools/art/preparer.py. Les sources sont dans build/art/ (non versionne, sur le Mac de Kevin). Tailles en cases de 96 px. 'ombre' : ombre portee pre-floutee <id>_shadow.png ; 'contact' : part basse de l'objet (0..1) pour <id>_contact.png, null = aucune.",
+ "_doc": "Manifeste de l'art valide (series 01 a 07 ; serie 07 = Jadielle agrandie). Lu par tools/art/preparer.py. Les sources sont dans build/art/ (non versionne, sur le Mac de Kevin). Tailles en cases de 96 px. 'ombre' : ombre portee pre-floutee <id>_shadow.png ; 'contact' : part basse de l'objet (0..1) pour <id>_contact.png, null = aucune. 'attentes' : planches d'attente pieds joints (4 x 1 : bas, gauche, droite, haut), calees sur la planche de marche 'marche' (decouper_attente.py) ; 'miroir' : gauche|droite = profil remplace par le miroir de l'autre.",
  "case": 96,
  "ombre_portee": {
   "flou": 7.0,
@@ -644,6 +644,82 @@
    "sortie": "assets/sprites/characters/painted/heros_portrait.png",
    "hauteur": 768,
    "note": "portrait en pied (ecran Dresseur, carte) ; remplace assets/ui/map/player_portrait.png"
+  }
+ ],
+ "attentes": [
+  {
+   "id": "heros_idle",
+   "source": "HEROS_ATTENTE_r1.png",
+   "sortie": "assets/sprites/characters/painted/heros_idle_sheet.png",
+   "marche": "heros"
+  },
+  {
+   "id": "rival_idle",
+   "source": "RIVAL_ATTENTE_r1.png",
+   "sortie": "assets/sprites/characters/painted/rival_idle_sheet.png",
+   "marche": "rival"
+  },
+  {
+   "id": "infirmiere_idle",
+   "source": "INFIRMIERE_ATTENTE_r1.png",
+   "sortie": "assets/sprites/characters/painted/infirmiere_idle_sheet.png",
+   "marche": "infirmiere"
+  },
+  {
+   "id": "marchand_idle",
+   "source": "MARCHAND_ATTENTE_r1.png",
+   "sortie": "assets/sprites/characters/painted/marchand_idle_sheet.png",
+   "marche": "marchand"
+  },
+  {
+   "id": "livreur_idle",
+   "source": "LIVREUR_ATTENTE_r1.png",
+   "sortie": "assets/sprites/characters/painted/livreur_idle_sheet.png",
+   "marche": "livreur",
+   "miroir": "droite",
+   "note": "profil droit = miroir du gauche : la r1 cache la sacoche derriere la hanche"
+  },
+  {
+   "id": "dresseuse_idle",
+   "source": "DRESSEUSE_ATTENTE_r1.png",
+   "sortie": "assets/sprites/characters/painted/dresseuse_idle_sheet.png",
+   "marche": "dresseuse"
+  },
+  {
+   "id": "vieil_homme_idle",
+   "source": "VIEIL_HOMME_ATTENTE_r1.png",
+   "sortie": "assets/sprites/characters/painted/vieil_homme_idle_sheet.png",
+   "marche": "vieil_homme"
+  },
+  {
+   "id": "voyageur_idle",
+   "source": "VOYAGEUR_ATTENTE_r1.png",
+   "sortie": "assets/sprites/characters/painted/voyageur_idle_sheet.png",
+   "marche": "voyageur"
+  },
+  {
+   "id": "jeune_dresseur_idle",
+   "source": "JEUNE_DRESSEUR_ATTENTE_r1.png",
+   "sortie": "assets/sprites/characters/painted/jeune_dresseur_idle_sheet.png",
+   "marche": "jeune_dresseur"
+  },
+  {
+   "id": "enfant_idle",
+   "source": "ENFANT_ATTENTE_r1.png",
+   "sortie": "assets/sprites/characters/painted/enfant_idle_sheet.png",
+   "marche": "enfant"
+  },
+  {
+   "id": "roucool_idle",
+   "source": "ROUCOOL_ATTENTE_r1.png",
+   "sortie": "assets/sprites/pokemon/painted/roucool_idle_sheet.png",
+   "marche": "roucool"
+  },
+  {
+   "id": "rattata_idle",
+   "source": "RATTATA_ATTENTE_r2.png",
+   "sortie": "assets/sprites/pokemon/painted/rattata_idle_sheet.png",
+   "marche": "rattata"
   }
  ]
 }

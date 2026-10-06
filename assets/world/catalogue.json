@@ -1372,6 +1372,198 @@
     "droite",
     "haut"
    ]
+  },
+  "heros_idle": {
+   "fichier": "res://assets/sprites/characters/painted/heros_idle_sheet.png",
+   "cellule": [
+    74,
+    130
+   ],
+   "hauteur": 128,
+   "colonnes": 4,
+   "lignes": 1,
+   "ordre_colonnes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "rival_idle": {
+   "fichier": "res://assets/sprites/characters/painted/rival_idle_sheet.png",
+   "cellule": [
+    73,
+    132
+   ],
+   "hauteur": 130,
+   "colonnes": 4,
+   "lignes": 1,
+   "ordre_colonnes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "infirmiere_idle": {
+   "fichier": "res://assets/sprites/characters/painted/infirmiere_idle_sheet.png",
+   "cellule": [
+    90,
+    134
+   ],
+   "hauteur": 132,
+   "colonnes": 4,
+   "lignes": 1,
+   "ordre_colonnes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "marchand_idle": {
+   "fichier": "res://assets/sprites/characters/painted/marchand_idle_sheet.png",
+   "cellule": [
+    83,
+    138
+   ],
+   "hauteur": 136,
+   "colonnes": 4,
+   "lignes": 1,
+   "ordre_colonnes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "livreur_idle": {
+   "fichier": "res://assets/sprites/characters/painted/livreur_idle_sheet.png",
+   "cellule": [
+    82,
+    136
+   ],
+   "hauteur": 134,
+   "colonnes": 4,
+   "lignes": 1,
+   "ordre_colonnes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "dresseuse_idle": {
+   "fichier": "res://assets/sprites/characters/painted/dresseuse_idle_sheet.png",
+   "cellule": [
+    80,
+    128
+   ],
+   "hauteur": 126,
+   "colonnes": 4,
+   "lignes": 1,
+   "ordre_colonnes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "vieil_homme_idle": {
+   "fichier": "res://assets/sprites/characters/painted/vieil_homme_idle_sheet.png",
+   "cellule": [
+    78,
+    124
+   ],
+   "hauteur": 122,
+   "colonnes": 4,
+   "lignes": 1,
+   "ordre_colonnes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "voyageur_idle": {
+   "fichier": "res://assets/sprites/characters/painted/voyageur_idle_sheet.png",
+   "cellule": [
+    85,
+    138
+   ],
+   "hauteur": 136,
+   "colonnes": 4,
+   "lignes": 1,
+   "ordre_colonnes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "jeune_dresseur_idle": {
+   "fichier": "res://assets/sprites/characters/painted/jeune_dresseur_idle_sheet.png",
+   "cellule": [
+    75,
+    128
+   ],
+   "hauteur": 126,
+   "colonnes": 4,
+   "lignes": 1,
+   "ordre_colonnes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "enfant_idle": {
+   "fichier": "res://assets/sprites/characters/painted/enfant_idle_sheet.png",
+   "cellule": [
+    67,
+    110
+   ],
+   "hauteur": 108,
+   "colonnes": 4,
+   "lignes": 1,
+   "ordre_colonnes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "roucool_idle": {
+   "fichier": "res://assets/sprites/pokemon/painted/roucool_idle_sheet.png",
+   "cellule": [
+    56,
+    52
+   ],
+   "hauteur": 50,
+   "colonnes": 4,
+   "lignes": 1,
+   "ordre_colonnes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "rattata_idle": {
+   "fichier": "res://assets/sprites/pokemon/painted/rattata_idle_sheet.png",
+   "cellule": [
+    65,
+    58
+   ],
+   "hauteur": 56,
+   "colonnes": 4,
+   "lignes": 1,
+   "ordre_colonnes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
   }
  },
  "images": {
