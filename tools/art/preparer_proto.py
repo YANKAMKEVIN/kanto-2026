@@ -100,6 +100,11 @@ OBJETS = [
     ("WORLD_PROP_TAS_BOIS_01_NE_r1.png", "tas_bois.png", ("w", 1.8)),
     ("WORLD_PROP_ARROSOIR_SEAU_01_NE_r1.png", "arrosoir.png", ("w", 0.9)),
     ("WORLD_PROP_PIERRES_01_NE_r1.png", "pierres.png", ("w", 0.9)),
+    # Route 1 (série 08, lumière neutre) ; clôture blanche courte tirée de la série 06B.
+    ("WORLD_PROP_CLOTURE_PIQUETS_V_01_NE_r1.png", "piquet_court.png", ("h", 1.6)),
+    ("WORLD_TREE_AUTOMNE_01_NE_r1.png", "automne.png", ("h", 4)),
+    ("WORLD_PROP_SOUCHE_01_NE_r1.png", "souche.png", ("w", 1.2)),
+    ("WORLD_RELIEF_REBORD_01_NE_r1.png", "rebord.png", ("w", 1.05)),
     # Intérieurs de Bourg Palette (série 07, lumière neutre).
     ("INT_MEUBLE_BAS_01_NE_r1.png", "int_meuble_bas.png", ("w", 3)),
     ("INT_CANAPE_01_NE_r1.png", "int_canape.png", ("w", 3)),

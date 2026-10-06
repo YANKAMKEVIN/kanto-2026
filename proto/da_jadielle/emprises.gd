@@ -22,7 +22,8 @@ const REGLES: Array = [
 	["tonneau", 1, 1], ["linge", 3, 1], ["fruitier", 1, 1], ["caisses", 1, 1], ["haie_v", 1, 3],
 	["epouvantail", 1, 1], ["barque", 1, 2], ["casiers", 2, 1], ["materiel_labo", 2, 1],
 	["ratelier", 2, 1], ["brouette", 1, 1], ["tas_bois", 2, 1], ["arrosoir", 1, 1],
-	["mangeoire", 1, 1], ["hortensias", 1, 1],
+	["mangeoire", 1, 1], ["hortensias", 1, 1], ["souche", 1, 1], ["piquet_court", 1, 1],
+	["automne", 1, 1],
 ]
 
 
