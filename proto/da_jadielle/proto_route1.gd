@@ -404,6 +404,7 @@ func _foret_serree(foret: Dictionary, tries: Node2D, ombres: Node2D) -> void:
 		mat_contact.set_shader_parameter(&"part_base", 0.05)
 		contact.material = mat_contact
 		contact.position = p * CASE + Vector2(0, 18)
+		contact.scale = sprite.scale  # même taille et même sens que l'arbre
 		ombres.add_child(contact)
 	# Bandes trop étroites pour un arbre (bords du rebord, goulet) : buissons denses.
 	poses.append_array(reperes)
