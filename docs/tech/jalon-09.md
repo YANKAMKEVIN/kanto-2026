@@ -497,7 +497,17 @@ Branche d'intégration `jalon-09` (cette copie) ; une branche par tâche, chacun
 
 ## 5. Questions pour Kevin
 
-Vraies questions (une valeur par défaut permet de continuer ; le code part du défaut) :
+**Décisions de Kevin (2026-10-07) : les six recommandations sont retenues.**
+- **Q-1** : l'architecte rédige le lot complet au T0 ; Kevin le valide en une seule passe avant verrouillage.
+- **Q-2** : bouton « ARRÊTER » visible pendant la transformation + retour Android ; pas de maintien du doigt ; une évolution annulée est reproposée à la prochaine montée de niveau.
+- **Q-3** : la réplique « après » est dite immédiatement après la défaite du Dresseur, puis devient sa réplique permanente quand on lui reparle.
+- **Q-4** : le garde sud interpelle le joueur automatiquement, **une seule fois**, au premier passage vers la forêt ; cette interaction pose `poison_unlocked` ; ensuite PNJ normal (interaction volontaire).
+- **Q-5** : Chrysacier et Coconfort apprennent Armure à l'évolution (modernisation assumée).
+- **Q-6** : 1/8 des PV max par tour, Dard-Venin 30 %, Poison et Acier immunisés, capture ×1,5 sur une cible empoisonnée. **Hors combat : aucune perte de PV en marchant** ; le statut reste jusqu'à un Antidote ou un soin au Centre (dossier 10).
+- Découpage 9A (systèmes, parallèle au J8) → 9B (forêt, après fusion du J8) validé ; **9A.1 (sauvegarde v4) validée seule sur S24 avant d'empiler le poison**.
+- **Point de vigilance de Kevin pour 9A.3** : l'évolution est le premier moment vraiment émotionnel du jeu ; même simple au J9, elle ne doit **jamais** avoir l'air d'un écran technique provisoire. Le J11 l'enrichit, mais la première version doit déjà être satisfaisante (soin particulier au T9 et à la session S24 du T10).
+
+Questions d'origine (conservées pour mémoire) :
 
 - **Q-1 — Lot de textes système du J9.** Le dossier ne couvre pas : messages de combat du poison (« {pokemon} est empoisonné ! », « {pokemon} souffre du poison ! », « {pokemon} est déjà empoisonné ! », « {pokemon} n'est plus empoisonné. »), de l'évolution (« Félicitations ! {pokemon} a évolué en {species} ! », « {pokemon} n'évolue plus. », bouton « ARRÊTER » ; « Quoi ? {pokemon} évolue ! » vient du dossier 04), la description de l'Antidote, 12 descriptions de capacités, 8 descriptions Pokédex (Chenipan → Raichu), le sous-titre et la description de la zone « Forêt de Jade », les noms « Garde », « Naturaliste », « Randonneuse ». *Défaut : l'architecte rédige le lot au T0 (`textes-brouillon-j9.md`), dans le ton des textes validés ; tu le valides en une fois (ou ChatGPT le réécrit).* Bloque la fusion des données, pas le code.
 - **Q-2 — Annuler une évolution sur un écran tactile.** *Recommandation : un bouton « ARRÊTER » discret, visible seulement pendant la transformation (≈ 5 s), plus le retour Android ; l'évolution est reproposée au prochain niveau gagné (Rouge/Bleu).* Alternative : maintenir le doigt sur l'écran (plus proche du « maintenir B », mais invisible).

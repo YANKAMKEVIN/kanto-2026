@@ -5,6 +5,7 @@ Mis à jour : 2026-10-06 (**jalon 9 lancé** : textes du dossier 10 validés par
 
 
 ## Jalon 9 — Forêt de Jade (2026-10-06, branche `jalon-09`, base `main` à `4107a05`) — plan : `docs/tech/jalon-09.md`
+- **2026-10-07 : Q-1 à Q-6 tranchées par Kevin (toutes les recommandations retenues, `jalon-09.md` §5)** ; poison sans perte de PV à la marche ; 9A.1 validée seule ; vigilance particulière sur la qualité de l'écran d'évolution (9A.3). **T0 et T2 lancés en parallèle**, puis T1.
 - **Décisions de Kevin (2026-10-06)** : textes du dossier 10 **validés tels quels** (verrouillés) ; **plan maintenant, systèmes codés en parallèle du J8**, la forêt après la fusion du J8.
 - **Plan écrit (document seul, aucun code)**. Deux tranches : **A — systèmes** (9A.0 fondations et données ; **9A.1 sauvegarde v4, validée seule** ; 9A.2 poison ; 9A.3 évolution ; 9A.4 Dresseurs), validés sur S24 grâce à une carte de QA `qa_forest_systems` (retirée à la clôture) ; **B — forêt** (9B.0 vue générale validée par Kevin, 9B.1 carte et postes, 9B.2 vie de la forêt + QA finale). Tâches T0 à T23.
 - **Écarts importants (code réel)** : aucun statut n'existe (poison = vrai système, sauvegarde v4) ; l'évolution est codée (`Evolution`, `evolve_into`) mais **jamais déclenchée** ; le déroulé « apprendre / oublier » vit dans `BattleDirector` (à extraire) ; aucun système de Dresseurs (le rival n° 2 est une scène écrite) ; les 8 espèces (Chenipan → Dardargnan, Pikachu, Raichu) et 12 capacités manquent ; le plan du J8 date d'avant la fusion du DA.0 (forêt serrée déjà dans `game/`).
