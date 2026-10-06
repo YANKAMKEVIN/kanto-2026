@@ -25,6 +25,10 @@ const TREE_IDS: Array[StringName] = [
 ## Buissons des bandes étroites (échelle du prototype de Bourg Palette).
 const BUSH_IDS: Array[StringName] = [&"prop_buisson_a_01_bourg", &"prop_buisson_b_01_bourg"]
 const PROPS_DIR: String = "res://game/world/props/painted/"
+## Catalogue de l'art (ombres de contact préparées des arbres de forêt).
+const CATALOGUE_PATH: String = "res://assets/world/catalogue.json"
+const CONTACT_MATERIAL: String = "res://game/world/lighting/materials/contact_shadow.tres"
+const CONTACT_NODE: StringName = &"ContactShadow"
 const KIND_TREE: StringName = &"tree"
 const KIND_BUSH: StringName = &"bush"
 
@@ -144,9 +148,14 @@ static func is_covered(cell: Vector2i, feet: Array[Vector2]) -> bool:
 ## de la scène peinte par entrée (`Forest000`, `ForestBush000`…), pied en pixels, taille,
 ## miroir du sprite et teinte (modulate) cuits dans le nœud. [param owner_node] : propriétaire
 ## pour l'enregistrement de la scène. Renvoie les nœuds créés, dans l'ordre.
+## [param contact_shadows] : ombre de contact sous chaque **arbre** (comme le prototype validé ;
+## désactivée par défaut, règle du J7 « pas d'ombre pour la végétation ») : l'image préparée
+## `<id>_contact.png` du catalogue, nœud `ContactShadow` du groupe
+## [constant WorldLighting.GROUP_CONTACT_SHADOWS] (couleur et visibilité réglées par la lumière).
 static func place(entries: Array[Dictionary], parent: Node,
-		owner_node: Node = null) -> Array[Node2D]:
+		owner_node: Node = null, contact_shadows: bool = false) -> Array[Node2D]:
 	var nodes: Array[Node2D] = []
+	var contacts: Dictionary = _contact_entries() if contact_shadows else {}
 	var trees := 0
 	var bushes := 0
 	for entry: Dictionary in entries:
@@ -171,8 +180,45 @@ static func place(entries: Array[Dictionary], parent: Node,
 		parent.add_child(node)
 		if owner_node != null:
 			node.owner = owner_node
+		if entry["kind"] == KIND_TREE and contacts.has(String(entry["id"])):
+			var shadow := contact_shadow(contacts[String(entry["id"])])
+			node.add_child(shadow)
+			if owner_node != null:
+				shadow.owner = owner_node
 		nodes.append(node)
 	return nodes
+
+
+## Ombre de contact pré-floutée d'une entrée « contact » du catalogue (demi-résolution à
+## l'échelle 2, coin haut gauche à « decalage » du pied), comme `tools/build_painted_props.gd`.
+static func contact_shadow(entry: Dictionary) -> Sprite2D:
+	var sprite := Sprite2D.new()
+	sprite.name = CONTACT_NODE
+	sprite.texture = load(entry["fichier"])
+	sprite.centered = false
+	var scale := float(entry["echelle"])
+	sprite.offset = Vector2(entry["decalage"][0], entry["decalage"][1]) / scale
+	sprite.scale = Vector2(scale, scale)
+	sprite.z_as_relative = false
+	sprite.z_index = WorldLighting.Z_SHADOWS
+	sprite.material = load(CONTACT_MATERIAL)
+	sprite.add_to_group(WorldLighting.GROUP_CONTACT_SHADOWS, true)
+	return sprite
+
+
+## Entrées « contact » du catalogue des arbres de forêt, par identifiant.
+static func _contact_entries() -> Dictionary:
+	var result: Dictionary = {}
+	var catalogue: Variant = JSON.parse_string(FileAccess.get_file_as_string(CATALOGUE_PATH))
+	if not catalogue is Dictionary:
+		push_error("DenseForest : catalogue illisible")
+		return result
+	var objects: Dictionary = (catalogue as Dictionary).get("objets", {})
+	for id: StringName in TREE_IDS:
+		var entry: Dictionary = objects.get(String(id), {})
+		if entry.has("contact"):
+			result[String(id)] = entry["contact"]
+	return result
 
 
 static func _entry(kind: StringName, id: StringName, foot: Vector2, scale: float,

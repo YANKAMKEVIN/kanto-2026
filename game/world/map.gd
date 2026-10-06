@@ -43,13 +43,16 @@ const _NPC_SCENE: PackedScene = preload("res://game/world/npc/npc.tscn")
 ## Dossier des fichiers de PNJ (`<map_id>.json`) ; les tests pointent sur leurs données.
 @export var npcs_dir: String = NpcRoster.DATA_DIR
 ## Profil de lumière du monde (`data/world/lighting.json`, [LightingLibrary], jalon-07.md
-## §3.2) appliqué par `WorldLighting` à l'arrivée. Vide = **aucune** lumière du monde (Bourg
-## Palette, la Route 1 et les intérieurs existants restent tels quels jusqu'à la phase DA).
+## §3.2) appliqué par `WorldLighting` à l'arrivée. Vide = **aucune** lumière du monde (cartes
+## encore provisoires : Bourg Palette et ses intérieurs jusqu'au DA.2 / DA.3).
 @export var light_profile: StringName = &""
 ## Rangées des murs de soutènement et falaises qui séparent deux niveaux (Jadielle : 12, 24,
 ## 32). Un décor qui s'efface quand le joueur passe derrière ([member
 ## WorldProp.fade_when_covering]) ne le fait qu'au même niveau. Vide : un seul niveau.
 @export var level_rows: Array[int] = []
+## Bande d'herbe devant les jambes du joueur en hautes herbes (cartes peintes : moitié basse
+## des touffes, `ground_hautes_herbes_*_bas.png`). Nulle : la bande provisoire du joueur.
+@export var grass_front: Texture2D
 
 var _grid: GridWorld
 var _warps: WarpTable
@@ -220,6 +223,7 @@ func spawn_player(player: Player, spawn_name: StringName, facing: Vector2i) -> v
 			player.get_parent().remove_child(player)
 		entities.add_child(player)
 	player.enter_map(get_grid(), get_spawn_cell(spawn_name), facing, get_pixel_rect())
+	player.set_grass_front(grass_front)
 
 
 ## Ajoute le joueur à `Entities` et le place sur la case [param cell] (reprise d'une
@@ -231,6 +235,7 @@ func spawn_player_at(player: Player, cell: Vector2i, facing: Vector2i) -> void:
 			player.get_parent().remove_child(player)
 		entities.add_child(player)
 	player.enter_map(get_grid(), cell, facing, get_pixel_rect())
+	player.set_grass_front(grass_front)
 
 
 ## Case où reprendre la partie à partir de la case sauvegardée [param cell] (jalon 5C.5) :
