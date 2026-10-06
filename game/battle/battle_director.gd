@@ -7,8 +7,8 @@ extends Node
 ## par les signaux de la HUD ; la fin par [BattleConclusion] (soin ; argent gagné contre un
 ## dresseur vaincu, versé par [code]add_money[/code] de [GameState], jalon 7).
 ## XP (jalon 5C, revu par la demande n° 1 du 2026-10-06) : pendant le combat, EXP_GAINED et
-## LEVEL_UP ne montrent rien (la carte du Pokémon en jeu prend en silence son niveau et ses PV
-## max) ; le directeur les note dans un [ExpSummary]. Les capacités apprises (MOVE_LEARNED,
+## LEVEL_UP ne montrent rien (la carte du Pokémon en jeu garde son ancien niveau et ses PV
+## max jusqu'à la fin du bilan) ; le directeur les note dans un [ExpSummary]. Les capacités apprises (MOVE_LEARNED,
 ## MOVE_FORGET_OFFERED) sont mises de côté. À la fin du combat, après sa dernière phrase (et
 ## l'argent gagné) : le [b]bilan de fin de combat[/b] ([ExpSummaryCard] : une ligne par Pokémon
 ## qui a gagné de l'XP, quelle que soit l'issue ; rien si aucun), puis les apprentissages, dans
@@ -483,6 +483,8 @@ func _play_events(events: Array[BattleEvent], trainer: TrainerData) -> void:
 			continue
 		_summary.add(event)
 		for beat: BattleBeat in BattlePlayback.beats(event, _texts, _data, trainer):
+			# « X apprend Y ! » (annoncé après le bilan) attend un toucher.
+			beat.wait_touch = event.kind == BattleEvent.Kind.MOVE_LEARNED
 			await _play_beat(beat)
 		_log_progress(event)
 		event_played.emit(event)
@@ -511,7 +513,7 @@ func _play_beat(beat: BattleBeat) -> void:
 	match beat.kind:
 		BattleBeat.Kind.MESSAGE:
 			if is_instance_valid(_hud):
-				await _hud.show_message(beat.text)
+				await _hud.show_message(beat.text, beat.wait_touch)
 		BattleBeat.Kind.SEND_OUT:
 			if is_instance_valid(_stage):
 				_stage.show_pokemon(beat.side, beat.event.species_id)
@@ -539,10 +541,9 @@ func _play_beat(beat: BattleBeat) -> void:
 			# Rien à l'écran : le bilan de fin de combat est l'unique lieu de la progression.
 			pass
 		BattleBeat.Kind.LEVEL:
-			# La carte reste vraie (niveau, PV max), sans pulsation ni phrase.
-			if is_instance_valid(_hud) and _is_in_play(beat.event):
-				_hud.set_level(side, beat.event.level)
-				_hud.get_card(side).set_hp(beat.event.hp, beat.event.max_hp)
+			# La carte garde l'ancien niveau et ses PV max jusqu'à la fin du bilan, qui est
+			# l'unique lieu de la progression (pas de spoiler pendant « X est K.O. ! »).
+			pass
 		BattleBeat.Kind.DRAIN:
 			if is_instance_valid(_hud):
 				await _play_drain(beat.event)
@@ -837,7 +838,7 @@ func _offer_forget(event: BattleEvent) -> void:
 			line = _texts.line_for(&"move_forgot", event, _data, old_move)
 	if line.is_empty():
 		line = _texts.line_for(&"move_not_learned", event, _data)
-	await _hud.show_message(line)
+	await _hud.show_message(line, true)
 
 
 ## Coroutine : la question « Oublier {capacité} ? » en deux cartes (composant `ChoiceCards`).

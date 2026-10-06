@@ -8,6 +8,10 @@ extends RefCounted
 ## ligne des gains prend [member stat_texts] (cumulés depuis le début du bilan). Les nombres
 ## « 112 / 173 » suivent la barre ([member points]).
 
+## Séparateur des gains dans [member stat_texts] (celui du formulateur de textes, vérifié
+## par un test) : la ligne les range en grille.
+const STAT_SEPARATOR := " · "
+
 ## Surnom, sinon nom de l'espèce.
 var display_name: String = ""
 ## Vignette du Pokémon (sprite de face) ; null = pas de vignette.

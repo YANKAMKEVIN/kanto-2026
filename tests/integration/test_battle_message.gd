@@ -86,6 +86,20 @@ func test_touch_when_not_waiting_is_not_consumed() -> void:
 	assert_true(true, "aucun effet ni erreur")
 
 
+func test_important_message_waits_for_a_touch() -> void:
+	await wait_process_frames(2)
+	var flag := func() -> void:
+		await _banner.show_message("Bulbizarre apprend Vampigraine !", true)
+		_done = true
+	flag.call()
+	await wait_seconds(UiTokens.BATTLE_MESSAGE_HOLD + 0.5)
+	assert_false(_done, "ne part pas seul après la tenue standard")
+	assert_true(_banner.is_waiting())
+	_touch(true)
+	await wait_process_frames(2)
+	assert_true(_done, "un toucher (après le verrou) la termine")
+
+
 func test_next_message_replaces_previous() -> void:
 	_show_and_flag(INTRO)
 	await wait_process_frames(2)

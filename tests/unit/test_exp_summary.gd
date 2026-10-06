@@ -202,3 +202,7 @@ func test_real_battle_summary_matches_the_pokemon() -> void:
 	assert_almost_eq(entry.end_fraction(), ExpCalc.progress(lead, _data), 0.0001)
 	var hp_gain := entry.stat_gains()[&"hp"]
 	assert_gt(hp_gain, 0)
+
+
+func test_stat_separator_matches_the_text_formatter() -> void:
+	assert_eq(ExpSummaryRowView.STAT_SEPARATOR, BattleText.SUMMARY_SEPARATOR)

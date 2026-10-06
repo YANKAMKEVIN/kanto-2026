@@ -177,6 +177,57 @@ func test_card_is_centered_inside_the_screen() -> void:
 	assert_almost_eq(frame.get_center().x, SCREEN.x * 0.5, 1.0, "centrée")
 
 
+func _luminance(c: Color) -> float:
+	var lin := func(v: float) -> float:
+		return v / 12.92 if v <= 0.03928 else pow((v + 0.055) / 1.055, 2.4)
+	return 0.2126 * lin.call(c.r) + 0.7152 * lin.call(c.g) + 0.0722 * lin.call(c.b)
+
+
+func _ratio(fg: Color, bg: Color) -> float:
+	var a := _luminance(fg)
+	var b := _luminance(bg)
+	return (maxf(a, b) + 0.05) / (minf(a, b) + 0.05)
+
+
+func test_texts_are_readable_sizes_and_contrasted() -> void:
+	_card.speed_scale = 0.0
+	await _card.show_summary(_views([_two_levels()]), "Touchez")
+	await wait_process_frames(2)
+	var row := _card.get_rows()[0]
+	var theme := _card.get_theme()
+	if theme == null:
+		theme = ThemeDB.get_project_theme()
+	for variation: StringName in [&"SummaryName", &"SummaryLevel", &"SummaryLevelUp",
+			&"SummaryPoints", &"SummaryGain", &"SummaryStatName", &"SummaryStatValue",
+			&"SummaryHintText"]:
+		var minimum := UiTokens.FONT_CAPTION if variation == &"SummaryHintText" \
+			else UiTokens.FONT_BODY
+		assert_gte(theme.get_font_size(&"font_size", variation), minimum,
+			"taille lisible : %s" % variation)
+	# Fond réel d'un texte : la carte composée sur un décor clair (pire cas).
+	var bg := UiTokens.SUMMARY_CARD_BG
+	assert_gte(bg.a, 0.95, "carte quasi opaque")
+	var worst := Color(1, 1, 1).lerp(Color(bg.r, bg.g, bg.b), bg.a)
+	for fg: Color in [UiTokens.SUMMARY_SECONDARY, UiTokens.TEXT, UiTokens.ACCENT]:
+		assert_gte(_ratio(fg, worst), 7.0, "contraste %s sur %s" % [fg, worst])
+	assert_gte(_ratio(UiTokens.SUMMARY_SECONDARY, Color(0.06, 0.09, 0.13)), 9.0)
+	assert_eq(row.get_stats_text(), "PV +5 · Attaque +2")
+
+
+func test_stats_are_a_grid_with_reserved_space() -> void:
+	var view := _row("Salamèche", [Vector2(0.5, 1.0), Vector2(0.0, 0.3)] as Array[Vector2],
+		[Vector3i(50, 100, 100), Vector3i(0, 30, 100)] as Array[Vector3i],
+		PackedStringArray(["Nv. 9"]), PackedStringArray([
+			"PV +2 · Attaque +1 · Défense +1 · Atq. Spé. +2 · Déf. Spé. +1 · Vitesse +1"]))
+	_card.speed_scale = 0.0
+	await _card.show_summary(_views([view]), "Touchez")
+	await wait_process_frames(2)
+	var grid := _card.find_children("*", "GridContainer", true, false)[0] as GridContainer
+	assert_eq(grid.columns, 2)
+	assert_eq(grid.get_child_count(), 6, "six gains : 2 colonnes × 3 lignes")
+	assert_eq(_card.get_rows()[0].get_stats_text().split(" · ").size(), 6)
+
+
 func test_invalid_views_are_refused() -> void:
 	var bad := _plain("")
 	await _card.show_summary(_views([bad]), "Touchez")

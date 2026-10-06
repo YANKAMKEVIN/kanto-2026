@@ -161,10 +161,11 @@ func show_moves(views: Array[BattleMoveView]) -> void:
 ## Coroutine : affiche [param text] dans le bandeau (après la sortie de la zone affichée) et
 ## attend BATTLE_MESSAGE_HOLD ou un toucher. Le bandeau reste ensuite jusqu'à la zone
 ## suivante ou hide_all.
-func show_message(text: String) -> void:
+## [param wait_touch] : la phrase attend un toucher (phrase importante).
+func show_message(text: String, wait_touch: bool = false) -> void:
 	if not await _switch(Zone.MESSAGE):
 		return
-	await _banner.show_message(text)
+	await _banner.show_message(text, wait_touch)
 
 
 ## Coroutine : fait sortir la zone du bas (grille, capacités, « ‹ », bandeau) et attend sa

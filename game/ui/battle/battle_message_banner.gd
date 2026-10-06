@@ -9,10 +9,17 @@ extends BattleWidget
 ## émulé depuis la souris). Pas d'indicateur « › » : le combat avance seul (dossier 05 §21).
 ## Un nouveau message remplace le précédent (qui se termine aussitôt).
 
+## Un message est posé ; [param wait_touch] : il attend un toucher.
+signal message_shown(text: String, wait_touch: bool)
+
+## Attente qui ne se termine jamais d'elle-même (secondes).
+const WAIT_LIMIT := 3000.0
+
 ## Multiplie la tenue d'un message, indépendamment de [member speed_scale] (qui règle les
 ## animations ; 0 reste instantané pour les tests).
 var hold_scale: float = 1.0
 var _hold: Tween
+var _unlock_at_ms: int = 0
 
 @onready var _text: Label = %Text
 
@@ -27,6 +34,11 @@ func _ready() -> void:
 func _input(event: InputEvent) -> void:
 	if not is_waiting():
 		return
+	if Time.get_ticks_msec() < _unlock_at_ms:
+		# Le toucher qui vient de fermer l'écran précédent ne compte pas.
+		if event is InputEventScreenTouch and (event as InputEventScreenTouch).pressed:
+			get_viewport().set_input_as_handled()
+		return
 	var touch := event as InputEventScreenTouch
 	if touch == null or not touch.pressed:
 		return
@@ -36,11 +48,21 @@ func _input(event: InputEvent) -> void:
 
 ## Coroutine : affiche [param text] (le bandeau apparaît s'il était caché) et attend
 ## BATTLE_MESSAGE_HOLD ou un toucher. Le bandeau reste affiché ensuite (slide_out le cache).
-func show_message(text: String) -> void:
+## Avec [param wait_touch] (phrase importante : « X apprend Y ! »), le message attend un
+## toucher (pris après BATTLE_MESSAGE_TOUCH_LOCK) au lieu de partir seul.
+func show_message(text: String, wait_touch: bool = false) -> void:
 	skip()
 	_text.text = text
+	message_shown.emit(text, wait_touch)
 	if not _shown:
 		slide_in()
+	if wait_touch and speed_scale > 0.0:
+		_unlock_at_ms = Time.get_ticks_msec() + int(UiTokens.BATTLE_MESSAGE_TOUCH_LOCK * 1000.0)
+		_hold = create_tween()
+		_hold.tween_interval(WAIT_LIMIT)
+		await _hold.finished
+		return
+	_unlock_at_ms = 0
 	# La réduction des animations n'abrège pas la lecture : seul 0 (tests) rend instantané.
 	var time := UiTokens.BATTLE_MESSAGE_HOLD * hold_scale if speed_scale > 0.0 else 0.0
 	if time <= 0.0:

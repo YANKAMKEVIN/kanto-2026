@@ -52,6 +52,8 @@ var kind: Kind = Kind.MESSAGE
 var side: BattleEvent.SideId = BattleEvent.SideId.PLAYER
 ## MESSAGE : la phrase à afficher.
 var text: String = ""
+## MESSAGE : la phrase attend un toucher (« X apprend Y ! » : phrase importante).
+var wait_touch: bool = false
 ## Événement du journal d'où vient ce temps.
 var event: BattleEvent
 ## MOVE : catégorie de la capacité (animation).
