@@ -90,7 +90,7 @@ func test_all_shows_151_numbered_slots_and_unknown_ones_carry_nothing() -> void:
 		assert_eq(slot.number_text, "%03d" % (i + 1))
 	var unknown := view.slots[0]
 	assert_true(unknown.is_unknown(), "Bulbizarre jamais vu")
-	assert_eq(unknown.species_id, &"", "ni espèce, donc ni image ni silhouette")
+	assert_eq(unknown.species_id, &"", "ni espèce, ni nom (la silhouette vient du seul numéro)")
 	assert_eq(unknown.name, "???")
 	assert_eq(unknown.state, State.UNKNOWN)
 	assert_false(unknown.caught)
@@ -106,6 +106,16 @@ func test_all_shows_151_numbered_slots_and_unknown_ones_carry_nothing() -> void:
 	assert_eq(view.slot(&"pidgey").number, 16)
 	assert_null(view.slot(&""), "jamais une case inconnue")
 	assert_eq(view.empty_text, "")
+
+
+func test_unknown_slots_keep_their_number_for_the_silhouette_but_never_a_species() -> void:
+	_kevin()
+	for slot: PokedexSlotView in _grid().slots:
+		assert_gt(slot.number, 0)
+		if slot.is_unknown():
+			assert_eq(slot.species_id, &"", "n° %d" % slot.number)
+			assert_eq(slot.name, PokedexSlotView.UNKNOWN_NAME)
+			assert_ne(PokedexArt.thumb_region(slot.number), Rect2(), "silhouette trouvable")
 
 
 func test_header_and_counter_without_slash() -> void:

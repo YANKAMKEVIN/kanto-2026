@@ -827,6 +827,15 @@ const DEX_MAP_FRAME_MARGIN := 40.0
 const DEX_MAP_PATCH_BORDER := 2
 const DEX_CHIP_HEIGHT := TOUCH_MIN
 const DEX_CHIP_ICON := 40
+## Images (refonte du Pokédex, T1) : artworks officiels, vignettes de l'atlas, silhouettes.
+## Silhouette d'une espèce inconnue (forme seule, plus sombre que la case, sur le halo).
+const DEX_SILHOUETTE := Color(0.05, 0.07, 0.10, 0.88)
+## Halo radial clair derrière chaque image (centre → transparent), pour les Pokémon sombres.
+const DEX_HALO_CENTER := Color(1.0, 1.0, 1.0, 0.16)
+## Opacité du halo derrière une silhouette (moitié du halo d'une espèce connue).
+const DEX_HALO_UNKNOWN_ALPHA := 0.5
+## Côté de la texture du halo (étirée par l'écran, filtre linéaire).
+const DEX_HALO_TEXTURE := 128
 
 # Écran Carte du Menu Dresseur (jalon 6, T20). Un journal : l'illustration entière, les noms
 # des seules zones découvertes, un panneau latéral ; aucun total, aucun « ??? ».

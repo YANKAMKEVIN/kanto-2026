@@ -73,7 +73,7 @@ Décisions de Kevin (2026-10-05/06), qui **s'ajoutent au dossier 08** :
 | E18 | Bouton retour | « ‹ » rond dans l'en-tête | — | Le × du menu reste à sa place ; « ‹ » (RETOUR, 128 px) juste à sa droite dans la même rangée. |
 | E19 | Faute « Salaméche » | — | — | Sans objet (noms venant des données). |
 | E20 | « Grand sprite vivant » | statique | §4 : vivant | Respiration discrète du portrait (échelle 1,00 ↔ 1,015, 2,4 s, `Tween`), coupée par « réduction des animations » ; fondu 150 ms au changement d'espèce. Défaut, règle 4. |
-| E21 | Silhouettes dans la chaîne d'évolution | silhouette du stade inconnu (Dracaufeu sombre) | « → ??? » | **Décision de Kevin (Q-1, 2026-10-06) : silhouette** du stade pas encore vu, même si elle révèle la forme et la parenté ; le nom reste « ??? » et la condition d'évolution n'est jamais affichée (dossier 08 §4). |
+| E21 | Silhouettes dans la chaîne d'évolution | silhouette du stade inconnu (Dracaufeu sombre) | « → ??? » | **Décision de Kevin (Q-1, 2026-10-06) : silhouette** du stade pas encore vu, même si elle révèle la forme et la parenté ; le nom reste « ??? » et la condition d'évolution n'est jamais affichée (dossier 08 §4). **Implémenté (T1)** : `EvolutionStageView.number` est rempli aussi pour un stade inconnu (`known` = faux, nom « ??? », `species_id` vide) ; **0** (rond vide) quand le stade inconnu ne désigne pas une seule espèce : colonne de branches toutes inconnues (Évoli → ???, montrer une forme choisirait une branche ou trahirait leur nombre) et lignée d'avant l'activation du Pokédex. Silhouette = `PokedexArt.thumbnail(number)` + `silhouette_material()`, comme la grille. |
 
 ---
 
@@ -130,7 +130,7 @@ Appliqué (un **seul** `ShaderMaterial` partagé, `PokedexArt.silhouette_materia
 - **zéro octet** de plus dans l'APK et en mémoire vidéo (une planche de silhouettes = +11 Mo de mémoire, +1 outil à maintenir) ;
 - **aucune fuite au-delà de la forme** : la sortie ne lit que l'alpha (couleurs, traits, yeux jamais tracés) ; les parties translucides (gaz de Fantominus) restent de la forme ;
 - teinte réglable par jeton (`UiTokens.DEX_SILHOUETTE`, défaut `Color(0.05, 0.07, 0.10, 0.88)`, plus sombre que la case, sur le halo) et par le contraste renforcé des Paramètres.
-Coût : un changement de matériau entre cases connues et inconnues casse le regroupement des tracés (≤ ~40 cases visibles → ≤ ~40 tracés), négligeable. Le shader ne s'applique **jamais** au portrait ni à l'Évolution (E21).
+Coût : un changement de matériau entre cases connues et inconnues casse le regroupement des tracés (≤ ~40 cases visibles → ≤ ~40 tracés), négligeable. Le shader ne s'applique **jamais** au portrait ; dans l'Évolution, seulement aux stades inconnus (E21, Q-1).
 
 ### 2.5 Recadrage, taille relative, halo (décision D4)
 
@@ -155,14 +155,16 @@ Fichiers :
 - `game/ui/menu/pokedex/pokedex_art.gd` — `class_name PokedexArt extends RefCounted`, statique : `const COUNT := 151`, `ATLAS_COLUMNS := 13`, `THUMB := 128`, `THUMB_PAD := 4`, `PORTRAIT_DIR` ; `portrait_path(number: int) -> String` ("" hors 1..COUNT) ; `has_portrait(number) -> bool` ; `thumbnail(number: int) -> AtlasTexture` (cache, null hors bornes) ; `thumb_region(number) -> Rect2` ; `silhouette_material() -> ShaderMaterial` (partagé) ; `halo_texture() -> Texture2D` (partagée) ;
 - `game/ui/menu/pokedex/pokedex_silhouette.gdshader` ;
 - jetons `DEX_SILHOUETTE`, `DEX_HALO_CENTER`, `DEX_HALO_UNKNOWN_ALPHA` dans le bloc `DEX_*` de `ui_tokens.gd` ;
-- **vues** (ajout de champs seulement) : `EvolutionStageView.number: int` (0 si stade inconnu : anti-spoiler) rempli par `EvolutionReveal` depuis `SpeciesData.dex`. `PokedexSlotView` et `PokedexSheetView` portent déjà `number`.
+- **vues** (ajout de champs seulement) : `EvolutionStageView.number: int` rempli par `EvolutionReveal` depuis `SpeciesData.dex`, **aussi pour un stade inconnu** (silhouette, Q-1) ; l'indicateur connu / inconnu est le champ existant `known` ; 0 seulement si le stade inconnu n'est pas une seule espèce (E21). `PokedexSlotView` et `PokedexSheetView` portent déjà `number`.
 
 Tests GUT :
 - `tests/unit/test_pokedex_art.gd` (nouveau) : chemins de 1, 4, 151 ; 0, 152, −1 → "" / null ; les 151 portraits existent ; région de 1 = (2, 2, 128, 128) au pas de 132 (2 px de marge de chaque côté), région de 151 dans l'atlas ; atlas de 1716 × 1584 ; **chaque case de l'atlas a de l'alpha** (`get_image().get_region(...).get_used_rect()` non vide) et **rien ne déborde dans les marges** ; le cache rend la même `AtlasTexture` ; `silhouette_material()` partagé, shader chargé ; **réglages d'import** des 151 `.import` (Lossy, qualité 0,9, mipmaps faux) et de l'atlas (Lossless, mipmaps faux) lus par `ConfigFile`.
-- `test_evolution_reveal.gd` (+2) : `number` rempli pour un stade connu, **0** pour un stade inconnu.
+- `test_evolution_reveal.gd` (+3) : `number` rempli pour un stade connu ; pour un stade inconnu (suivant ou trou), numéro rempli, nom « ??? », `species_id` vide, `known` faux ; 0 pour une colonne de branches inconnues et avant l'activation.
 - `test_pokedex_query.gd` (+1) : une case inconnue a son `number` et **toujours** `species_id` vide.
 
 Critères : import propre ; tests verts ; APK debug reconstruit et **taille notée** (attendu ≈ +6 Mo) ; aucun écran modifié.
+
+**Fait (2026-10-06)** : voir `etat-projet.md`, section « Refonte du Pokédex ». Précisions d'implémentation : `PokedexArt` expose aussi `ATLAS_PATH`, `ATLAS_ROWS` (12), `THUMB_ART` (124), `THUMB_CROP_MARGIN` (2), `SILHOUETTE_SHADER_PATH`, `thumb_pitch()` (132), `atlas_size()` ; `thumb_region()` hors bornes = `Rect2()` ; le shader multiplie par `COLOR` (le `modulate` du nœud — fondus, estompage — s'applique) ; jeton supplémentaire `DEX_HALO_TEXTURE` (128, côté de la texture du halo). Le n° 151 est en colonne 7, rangée 11 de l'atlas.
 
 ### T2 — La case de la grille (ui-mobile) — parallèle à T3
 

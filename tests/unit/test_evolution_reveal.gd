@@ -1,7 +1,7 @@
 extends GutTest
 ## EvolutionReveal : la lignée sans spoiler (jalon-06.md §3.3 ; Q-9 verrouillée : avant
-## l'activation « ??? » ; après, seulement ce que le joueur a découvert ; ni niveau, ni
-## silhouette, ni nom d'une évolution inconnue).
+## l'activation « ??? » ; après, seulement ce que le joueur a découvert ; ni niveau, ni nom
+## d'une évolution inconnue ; Q-1 de Kevin, 2026-10-06 : son numéro, pour la silhouette).
 
 var _data: PokemonData
 var _dex: Pokedex
@@ -84,6 +84,38 @@ func test_unknown_stages_carry_no_species_nor_name() -> void:
 		if not stage.known:
 			assert_eq(stage.species_id, &"")
 			assert_eq(stage.name, "???")
+
+
+func test_known_stages_carry_their_number() -> void:
+	_dex.mark_seen(&"charmeleon")
+	var stages := EvolutionReveal.chain(&"charmander", _data, _dex, true)
+	assert_eq(stages[0].number, 4)
+	assert_true(stages[0].known)
+	assert_eq(stages[1].number, 5)
+	assert_true(stages[1].known)
+
+
+func test_unknown_stages_carry_their_number_for_the_silhouette() -> void:
+	var stages := EvolutionReveal.chain(&"charmander", _data, _dex, true)
+	assert_eq(stages.size(), 2)
+	assert_false(stages[1].known, "indicateur inconnu")
+	assert_eq(stages[1].number, 5, "Reptincel : silhouette")
+	assert_eq(stages[1].name, "???")
+	assert_eq(stages[1].species_id, &"")
+	_dex.mark_seen(&"charizard")
+	stages = EvolutionReveal.chain(&"charmander", _data, _dex, true)
+	assert_eq(stages[1].number, 5, "un trou entre deux stades connus aussi")
+	assert_false(stages[1].known)
+
+
+func test_no_silhouette_when_the_stage_is_not_one_species() -> void:
+	var stages := EvolutionReveal.chain(&"eevee", _data, _dex, true)
+	assert_eq(stages[1].number, 0, "trois branches inconnues : aucune forme choisie")
+	assert_false(stages[1].known)
+	stages = EvolutionReveal.chain(&"charmander", _data, _dex, false)
+	assert_eq(stages[0].number, 0, "avant l'activation : rond vide")
+	assert_eq(EvolutionReveal.chain(&"vaporeon", _data, _dex, true)[0].number, 1001,
+		"Évoli jamais vu, seul de sa colonne : silhouette")
 
 
 func test_never_a_condition() -> void:

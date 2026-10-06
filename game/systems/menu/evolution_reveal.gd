@@ -11,7 +11,11 @@ extends RefCounted
 ##   colonnes connues, est un « ??? » ; après la dernière colonne connue, **un seul** « ??? »
 ##   s'il reste des stades (jamais leur nombre). Dans une colonne qui a une espèce vue, les
 ##   branches inconnues sont tues.
-## - jamais de condition (niveau, objet), ni de nom, d'espèce ou d'image d'un stade inconnu.
+## - jamais de condition (niveau, objet), ni de nom ou d'espèce d'un stade inconnu ;
+## - un stade inconnu porte le numéro de son espèce pour la **silhouette** du Pokédex (Q-1 de
+##   Kevin, 2026-10-06) s'il en désigne une seule ; une colonne de branches toutes inconnues
+##   (un seul « ??? ») et la lignée d'avant l'activation n'en ont pas (0) : montrer une forme
+##   trahirait le nombre de branches ou choisirait l'une d'elles.
 
 ## Séparateurs de [method text].
 const STEP_SEPARATOR: String = " → "
@@ -46,13 +50,14 @@ static func chain(species_id: StringName, data: PokemonData, pokedex: Pokedex,
 			last_known = step
 	for step: int in last_known + 1:
 		if known_columns[step].is_empty():
-			stages.append(EvolutionStageView.new(step))
+			stages.append(_unknown_stage(step, columns[step], data))
 			continue
 		for id: StringName in known_columns[step]:
-			stages.append(EvolutionStageView.new(step, id, data.get_species(id).name,
-				id == species_id))
+			var species := data.get_species(id)
+			stages.append(EvolutionStageView.new(step, id, species.name, id == species_id,
+				species.dex))
 	if last_known < columns.size() - 1:
-		stages.append(EvolutionStageView.new(last_known + 1))
+		stages.append(_unknown_stage(last_known + 1, columns[last_known + 1], data))
 	return stages
 
 
@@ -95,6 +100,15 @@ static func family(species_id: StringName, data: PokemonData) -> Array[Array]:
 			return data.get_species(a).dex < data.get_species(b).dex)
 		column = next
 	return columns
+
+
+## Stade inconnu de la colonne [param step] : le numéro (silhouette) seulement si la colonne
+## n'a qu'une espèce.
+static func _unknown_stage(step: int, column: Array, data: PokemonData) -> EvolutionStageView:
+	var number := 0
+	if column.size() == 1:
+		number = data.get_species(column[0]).dex
+	return EvolutionStageView.new(step, &"", EvolutionStageView.UNKNOWN_NAME, false, number)
 
 
 ## Espèce → celle dont elle évolue (la première trouvée, dans l'ordre du Pokédex).

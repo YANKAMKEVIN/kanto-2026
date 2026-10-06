@@ -4,9 +4,10 @@ extends RefCounted
 ## [PokedexQuery]. Contrat figé au T14 (§6.9) : on peut seulement ajouter des champs
 ## (architecte).
 ##
-## Anti-spoiler : une case **inconnue** n'a que son numéro et « ??? » : ni espèce, ni nom, ni
-## image, ni silhouette ([member species_id] vide). L'écran charge un sprite seulement si
-## [member species_id] n'est pas vide (`BattleStage.sprite_path(species_id, false)`).
+## Anti-spoiler : une case **inconnue** n'a que son numéro et « ??? » : ni espèce, ni nom
+## ([member species_id] vide). Refonte du Pokédex (décision D2 de Kevin) : l'écran en dessine
+## la **silhouette** depuis le seul [member number] ([method PokedexArt.thumbnail] +
+## [method PokedexArt.silhouette_material]), sans jamais connaître l'espèce.
 
 ## Ce qu'affiche une case inconnue.
 const UNKNOWN_NAME: String = "???"
