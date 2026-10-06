@@ -22,6 +22,8 @@ const FOE_CELL := Vector2i(8, 7)
 ## Graine du joueur : le même Pokémon à chaque essai (recherche de graine reproductible).
 const PLAYER_SEED := 999
 const LEVEL := 5
+## Dresseur des défaites après un premier K.O. (il donne de l'XP, contrairement au labo).
+const LOSS_TRAINER := &"rival_route22"
 const STARTERS: Array[StringName] = [&"bulbasaur", &"charmander", &"squirtle"]
 
 var _data: PokemonData
@@ -1495,3 +1497,124 @@ func test_the_bag_stays_closed_against_a_trainer() -> void:
 	assert_false(opened[0], "le Sac ne s'ouvre pas contre un dresseur")
 	assert_eq(_state.bag.count_of(BALL), 3, "aucune Ball consommée")
 	assert_eq(_state.bag.count_of(&"potion"), 2, "aucune Potion consommée")
+
+
+# --- Défaite : pas de bilan (décision de Kevin du 2026-10-06) ---------------------------
+
+## Équipe adverse pour une défaite après un premier K.O. : un Rattata N2 (vaincu, il rapporte
+## de l'XP), puis un Carapuce N[param strong_level] qui gagne.
+func _two_foes(rng: GameRng, strong_level: int) -> Party:
+	var foes := Party.new()
+	foes.add(PokemonFactory.create(_data, &"rattata", 2, rng))
+	foes.add(PokemonFactory.create(_data, &"squirtle", strong_level, rng))
+	return foes
+
+
+## Graine d'une [b]défaite[/b] contre le rival de la Route 22 (il donne de l'XP) (équipe [method _two_foes]) dont le
+## journal satisfait [param wanted] ; reproduit la consommation d'aléatoire du directeur
+## (équipe adverse, puis toujours la 1re capacité). −1 si aucune sous la limite.
+func _loss_seed(party_fn: Callable, strong_level: int, wanted: Callable) -> int:
+	var trainer := _trainers.get_trainer(LOSS_TRAINER)
+	for seed: int in range(0, 600):
+		var rng := GameRng.new(seed)
+		var foes := _two_foes(rng, strong_level)
+		var battle := Battle.new(BattleSide.new(party_fn.call(), true),
+			BattleSide.new(foes, false, trainer.name, trainer.make_ai()), _data, rng,
+			BattleRules.for_trainer(trainer, _items))
+		var events: Array[BattleEvent] = []
+		events.append_array(battle.start())
+		var turn := 0
+		while battle.get_state() == Battle.State.CHOOSING and turn < 60:
+			events.append_array(battle.submit(BattleAction.move(0)))
+			turn += 1
+		if battle.get_outcome() == Battle.Outcome.LOSS and bool(wanted.call(events)):
+			return seed
+	return -1
+
+
+## Joue la défaite de graine [param seed] (équipe [param party]) ; renvoie [issue, événements,
+## nombre de bilans montrés, phrases du bandeau].
+func _play_loss(party: Party, strong_level: int, seed: int) -> Array:
+	_state.party = party
+	_state.starter_species = party.get_lead().species_id
+	_state.rng = GameRng.new(seed)
+	var trainer := _trainers.get_trainer(LOSS_TRAINER)
+	var foes := _two_foes(_state.rng as GameRng, strong_level)
+	var actors: Dictionary[StringName, StringName] = {&"player": MINE_ID, &"foe": FOE_ID}
+	var request := BattleRequest.trainer_battle(trainer, foes, actors, _items)
+	var summaries: Array[int] = [0]
+	_director.exp_summary_shown.connect(func(_s: ExpSummary) -> void: summaries[0] += 1)
+	var lines: Array[String] = []
+	_hud.get_message_banner().message_shown.connect(func(text: String, _w: bool) -> void:
+		lines.append(text))
+	var played := await _play_with_offers(request, [0] as Array[int])
+	return [played[0], played[1], summaries[0], lines]
+
+
+static func _exp_total(events: Array) -> int:
+	var total := 0
+	for event: BattleEvent in events:
+		if event.kind == BattleEvent.Kind.EXP_GAINED:
+			total += event.amount
+	return total
+
+
+## Défaite après un premier K.O. adverse : aucun bilan ; l'XP, le niveau et la capacité apprise
+## dans un emplacement libre restent acquis (le moteur les a appliqués au K.O., comme Rouge/
+## Bleu), mais « X apprend Y ! » n'est pas annoncé.
+func test_a_loss_after_a_knock_out_shows_no_summary_but_keeps_the_exp() -> void:
+	var party_fn := func() -> Party: return _xp_party(&"bulbasaur", 6, 5)
+	var seed := _loss_seed(party_fn, 20, func(events: Array) -> bool:
+		return _has_kind(events, BattleEvent.Kind.MOVE_LEARNED))
+	assert_gt(seed, -1, "une défaite après un K.O. qui fait apprendre une capacité")
+	if seed < 0:
+		return
+	var party: Party = party_fn.call()
+	var lead := party.get_lead()
+	var before := lead.experience
+	var played := await _play_loss(party, 20, seed)
+	assert_eq(played[0], Battle.Outcome.LOSS)
+	var events: Array = played[1]
+	var total := _exp_total(events)
+	assert_gt(total, 0, "de l'XP a été gagnée sur le premier adversaire")
+	assert_eq(lead.experience - before, total, "XP conservée après la défaite")
+	assert_eq(lead.level, 7, "niveau conservé")
+	assert_true(lead.knows_move(&"leech_seed"), "capacité apprise conservée")
+	assert_eq(played[2], 0, "aucun bilan après une défaite")
+	assert_null(_director.get_summary_card(), "carte du bilan jamais créée")
+	assert_false(_has_kind(events, BattleEvent.Kind.MOVE_LEARNED), "apprentissage non annoncé")
+	for line: String in played[3]:
+		assert_false(line.contains("apprend"), "pas de « apprend » : " + line)
+	assert_push_error_count(0)
+
+
+## Défaite après un K.O. qui proposait une cinquième capacité : l'offre n'est pas présentée
+## (aucun panneau d'oubli), la capacité n'est pas apprise, les quatre connues restent.
+func test_a_loss_drops_a_pending_forget_offer() -> void:
+	var moves: Array[StringName] = [&"tackle", &"growl", &"leech_seed", &"vine_whip"]
+	var party_fn := func() -> Party: return _xp_party(&"bulbasaur", 19, 1, moves)
+	var seed := _loss_seed(party_fn, 45, func(events: Array) -> bool:
+		return _has_kind(events, BattleEvent.Kind.MOVE_FORGET_OFFERED))
+	assert_gt(seed, -1, "une défaite après un K.O. qui propose une cinquième capacité")
+	if seed < 0:
+		return
+	var party: Party = party_fn.call()
+	var lead := party.get_lead()
+	var played := await _play_loss(party, 45, seed)
+	assert_eq(played[0], Battle.Outcome.LOSS)
+	assert_eq(played[2], 0, "aucun bilan")
+	assert_false(_has_kind(played[1], BattleEvent.Kind.MOVE_FORGET_OFFERED), "offre non jouée")
+	assert_null(_director.get_forget_panel(), "panneau d'oubli jamais ouvert")
+	var known: Array[StringName] = []
+	for slot: MoveSlot in lead.moves:
+		known.append(slot.move_id)
+	assert_eq(known, moves, "les quatre capacités connues restent")
+	assert_push_error_count(0)
+
+
+## Bilan et apprentissages : victoire et capture seulement (défaut : rien après une fuite).
+func test_progress_is_shown_after_a_win_or_a_capture_only() -> void:
+	assert_true(BattleDirector.shows_progress(Battle.Outcome.WIN))
+	assert_true(BattleDirector.shows_progress(Battle.Outcome.CAUGHT))
+	assert_false(BattleDirector.shows_progress(Battle.Outcome.LOSS))
+	assert_false(BattleDirector.shows_progress(Battle.Outcome.FLED))

@@ -62,3 +62,5 @@ Référence visuelle : `docs/design/reference/bilan-xp-v1.webp` (DA et compositi
 - **Plusieurs niveaux d'un coup** : l'animation enchaîne correctement plusieurs remplissages de barre sans perdre l'information (chaque niveau passé, gains de stats cumulés ou par niveau, lisibles).
 - **Après le bilan** : apprentissage de capacité, puis évolution (quand elle existera).
 - **Intégré au J7**, avant la QA finale.
+
+**Décision de Kevin du 2026-10-06 (après la QA du bilan)** : **pas de bilan après une défaite** (seulement après une victoire ou une capture qui rapporte de l'XP). La capacité gagnée en cours de combat reste annoncée après le bilan (inchangé). Défauts techniques notés (règle 4, `jalon-07.md` §15.24) : après une défaite, XP, niveaux et capacités déjà apprises sont conservés sans annonce ; une offre d'oubli en attente n'est pas présentée (la capacité n'est pas apprise) ; rien non plus après une fuite.
