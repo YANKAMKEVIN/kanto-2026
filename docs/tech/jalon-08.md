@@ -4,13 +4,13 @@
 >
 > **8.0 — La vue générale peinte.** Une image Codex de toute la Route 2 sud, tirée d'un plan schématique en aplats qui suit **case par case** la grille fonctionnelle de ce plan. Kevin valide composition, densité, lisibilité et transition vers la forêt **avant** toute découpe d'asset.
 >
-> **8.1 — La route.** Au nord de l'arche de Jadielle, plus d'écran « ROUTE 2 — À venir » : le chemin de terre continue, « ROUTE 2 ». Prairies lumineuses et deux grands arbres au départ, une petite zone d'herbes contournable, la grande prairie centrale (traversée courte ou chemin sûr), un rebord pour redescendre, la grande pierre claire, puis les arbres qui se resserrent ; dans la clairière C3, le toit du poste apparaît ; cinq à sept cases d'herbes obligatoires ; la façade du poste, sa porte → « FORÊT DE JADE — À venir ». Roucool, Rattata, Nidoran ♀ ♂, Piafabec, Férosinge (3 %). Art final de la série 09, forêt serrée, lumière `golden_hour`, 60 fps.
+> **8.1 — La route.** Au nord de l'arche de Jadielle, plus d'écran « ROUTE 2 — À venir » : le chemin de terre continue, « ROUTE 2 ». Prairies lumineuses et deux grands arbres au départ, une petite zone d'herbes contournable, la grande prairie centrale (traversée courte ou chemin sûr), un rebord pour redescendre, la grande pierre claire, puis les arbres qui se resserrent ; dans la clairière C3, le toit du poste apparaît ; cinq à sept cases d'herbes obligatoires ; la façade du poste, sa porte → « FORÊT DE JADE — À venir ». Roucool, Rattata, Nidoran ♀ ♂, Piafabec, Férosinge (3 %). Art final de la série 10, forêt serrée, lumière `golden_hour`, 60 fps.
 >
 > **8.2 — La vie de la route.** Une Randonneuse qui fait trois pas en regardant le nord, un Jeune Dresseur près de la grande pierre (sans combat), deux Roucool qui s'écartent ou s'envolent, un Rattata qui fouille près de la souche puis disparaît en fondu, un Nidoran au loin. Deux Poké Balls au sol (« PRENDRE »), deux objets cachés, trois panneaux, le passage boisé et le sentier fermé (« plus tard »). Objectif du menu : « continuer vers le nord. ».
 >
 > Aucune cinématique, aucun Dresseur, aucun rival, aucune nouvelle mécanique de jeu, **format de sauvegarde inchangé (v3)**.
 
-**Pré-requis** (dossier 11, en-tête) : **textes T1 à T16 validés par Kevin** et **ce plan validé**. Rien de l'art ni du code ne démarre avant. Le J7 est fusionné dans `main`. Ce plan est écrit sur `docs/dossier-11-route-2` à `cc8d515` (= `main` à `86e220f` + dossier 11) ; **chaque tâche d'architecture commence par aligner ce plan sur le code du moment**.
+**Pré-requis** (dossier 11, en-tête) : **textes T1 à T16 validés par Kevin** et **ce plan validé**. Rien de l'art ni du code ne démarre avant. Le J7 est fusionné dans `main`. Ce plan est écrit sur `docs/dossier-11-route-2` à `cc8d515` (= `main` à `86e220f` + dossier 11) ; **chaque tâche d'architecture commence par aligner ce plan sur le code du moment**. **Aligné au T0 (2026-10-06)** sur `main` local à `4107a05` (DA.0 et DA.1 du monde peint, validés par Kevin, pas encore poussés sur `origin`) : §0.3.
 
 Références : `CLAUDE.md` (règles 1 à 10), `docs/design/dossier-11-route-2.md` (**source de vérité** : 14 arbitrages, contrainte de raccord, §1 à §18, textes T1–T16), `dossier-10-foret-de-jade.md` (poste sud, J9), `dossier-09-jadielle.md` §11 (sortie nord), `dossier-07-route-1.md` (« Vue générale peinte v1 », Potion cachée), `cahier-art-monde-v0.1.md`, `fiches-assets/serie-01-place-jadielle.md` (journal des séries 06 à 08, forêt serrée), `roadmap.md` phase 5, `jalon-07.md` (§6.6 monde peint, T4, T22).
 
@@ -38,9 +38,9 @@ Références : `CLAUDE.md` (règles 1 à 10), `docs/design/dossier-11-route-2.md
 | Zone | `zones.json` : `route_2` **existe sans carte** (`"maps": []`) ; `GameState.discovered_maps` ; Carte, Pokédex (habitats) | `maps`, `subtitle`, `description` |
 | Lumière | `golden_hour` (`data/world/lighting.json`), `WorldLighting` | rien |
 | Départ de débogage | `tools/debug_start/*.json` (`route_22.json`…) | `route_2.json` |
-| Pipeline d'art | `tools/art/generer.sh` (Codex), `serie06*.py` / `serie07.py` / `serie08.py`, `preparer.py` + `manifeste.json` (sources dans `build/art/` du Mac), `build_painted_props.gd`, `build_character_frames.gd` | série 09, plan en aplats reproductible (§1.1) |
+| Pipeline d'art | `tools/art/generer.sh` (Codex), `serie06*.py` / `serie07.py` / `serie08.py`, `preparer.py` + `manifeste.json` (sources dans `build/art/` du Mac), `build_painted_props.gd`, `build_character_frames.gd` | série 10, plan en aplats reproductible (§1.1) |
 
-### 0.2 Écarts constatés
+### 0.2 Écarts constatés (à `cc8d515` ; n° 1, 2, 3 et 7 levés depuis, §0.3)
 
 1. **Bourg Palette et la Route 1 peints n'existent que dans le prototype** (`proto/da_jadielle/proto_bourg.gd`, `proto_route1.gd`) ; les cartes du jeu restent en tuiles provisoires. La Route 2 sera donc **la première vraie carte avec la forêt serrée** : son portage (sous-bois, arbres de forêt ≈ 3 cases teintés, hautes herbes jaune-vert) est un travail de ce jalon (§2.12), mutualisé ensuite avec la Forêt de Jade (J9) et le repeint de Bourg Palette et de la Route 1.
 2. **Plusieurs textures validées ont été préparées hors pipeline** : découpe des planches `WORLD_TREE_FORET_PLANCHE_A/B` en `foret_1..8`, recoloration jaune-vert des hautes herbes ; aucun script versionné. Les autres (souche, rebord, pierres, ronces, tronc couché, bouleau, conifère, grand chêne) ont leur source dans `build/art/` mais ne sont pas dans le manifeste. → T3 les fait entrer dans `manifeste.json` (§1.2).
@@ -51,6 +51,18 @@ Références : `CLAUDE.md` (règles 1 à 10), `docs/design/dossier-11-route-2.md
 7. Chaque `WorldProp` avec `fade` tourne un `_process` par image : à proscrire sur les centaines d'arbres de forêt (§2.12, §4).
 8. Le dossier 11 §17 dit « dialogues lus de P1 / P2 : pas à mémoriser », mais le seul mécanisme « première fois / ensuite » existant est un drapeau d'histoire sauvegardé (Q-2, §5).
 
+### 0.3 Alignement du T0 (2026-10-06) : le monde peint est arrivé dans `main`
+
+`main` (local, `4107a05`, « Fusion : DA.0 et DA.1 ») contient l'intégration du monde peint (`docs/tech/integration-da-bourg-route1.md`). La branche du J8 (`docs/dossier-11-route-2`, fusionnée avec `origin/main`) ne l'a pas encore : **la fusionner avant le T4**. Conséquences sur ce plan :
+
+1. **Forêt serrée de production déjà dans `game/`** : `DenseForest` (`game/world/forest/dense_forest.gd`, classe pure, plan à graine fixe, arbres cuits dans la scène par l'outil, règle du couvert de 3 cases, buissons des bandes étroites, arbres repères dégagés) et `ForestFloor` (`game/world/ground/forest_floor.gd` + `forest_floor.gdshader`, sous-bois, masque L8 1 pixel = 1 case **intégré à la scène**). Écarts §0.2 n° 1, 2 et 7 **résolus** ; la Route 2 n'est plus la première carte à forêt serrée (la Route 1 peinte l'est, `tools/build_route_1.gd`, `test_route_1_painted`).
+2. **Assets promus au DA.0** (manifeste, `preparer.py`, scènes `WorldProp`, règles `PaintedPropRules`) : `tree_foret_01` … `tree_foret_08` (et non `tree_foret_1_01`…), `ground_hautes_herbes_jaune_01` (recoloration faite par `preparer.py`), `prop_souche_01`, `relief_rebord_01`, `prop_pierres_01`, `prop_ronces_01`, `prop_tronc_couche_01`, `tree_c_01` / `tree_d_01` / `tree_e_01`, décalcomanies de fleurs ; le tableau « à promouvoir » du §1.2 est donc **fait**. Le T3 ne génère que les nouveaux (série 10).
+3. **Sous-bois** : plus de canal B dans `GroundMask` ni de `ground_blend.gdshader` modifié (§2.12 corrigé) : `ForestFloor.create(size, cases_de_forêt)`. Le masque est binaire : l'assombrissement vers le nord passe par la **teinte des arbres en fonction de la rangée** (paramètre à ajouter à `DenseForest`, T4) et, si la capture du T5 le demande, des couleurs du sous-bois réglées par carte (uniformes `dark_color` / `light_color`).
+4. **Modèle de l'outil** : `tools/build_route_1.gd` (carte peinte avec forêt serrée, arbres repères, rebord, touffes jaune-vert, `grass_front`) plutôt que `build_route_22.gd`.
+5. **Numéro de série** : `tools/art/serie09.py` existe sur `main` (personnages peints de Bourg Palette, DA.4) → la Route 2 est la **série 10** (`serie10.py`, fiche « Série 10 — Route 2 »).
+6. **Grille v1 (T0)** par rapport à la v0 : rangée 59 = forêt sauf l'entrée (19..21) — le joueur ne longe plus un bord invisible ; pieds des grands arbres (`G`) et deux clôtures basses (`c`, (13..15, 58) et (25..27, 58)) inscrits dans la grille ; panneaux T1 (22, 56) et T2 (23, 9) en `x` comme T8 ; trajet le plus court **88 pas** (89 en v0 : la case de départ n'est plus comptée), 98 par le chemin sûr. Rien d'autre ne bouge.
+7. Sans effet sur le plan : `origin/main` a avancé de `abc12b9` (`tools/test.sh` échoue si un test ne se charge pas) et `58060a0` (capacités au K.O.). `Interaction.Kind` n'a toujours pas `TAKE` ; à ne pas confondre avec `CutsceneStep.Kind.TAKE` (objets retirés du Sac), qui existe.
+
 **Hors périmètre** (dossier 11) : intérieur du poste, garde, `poison_unlocked`, Antidote (J9) ; Route 2 nord (après la forêt) ; son et musique (intentions seulement, `GameMap.music` reste vide) ; mécaniques de FUTUR A / B ; jour / nuit.
 
 ---
@@ -59,20 +71,20 @@ Références : `CLAUDE.md` (règles 1 à 10), `docs/design/dossier-11-route-2.md
 
 | | 8.0 Vue générale | 8.1 La route | 8.2 La vie de la route |
 |---|---|---|---|
-| Couche nouvelle | plan en aplats reproductible, image Codex | forêt serrée dans le jeu, série 09, carte, raccord, rencontres, porte « À venir » | objets au sol (verbe PRENDRE), objets cachés, PNJ, ambiance, panneaux, FUTUR, objectif |
+| Couche nouvelle | plan en aplats reproductible, image Codex | forêt serrée (déjà dans le jeu, §0.3), série 10, carte, raccord, rencontres, porte « À venir » | objets au sol (verbe PRENDRE), objets cachés, PNJ, ambiance, panneaux, FUTUR, objectif |
 | Validation | **Kevin, sur l'image** (T1) | **S24** (T6) | **S24** + QA finale du J8 (T8) |
 
 - **(a) Vue générale** (T0 → T1) : la grille fonctionnelle (§1.1) → plan en aplats → Codex (méthode de Bourg Palette et de la Route 1 : plan + vue d'un **autre** lieu comme ancre de style ; joindre un rendu précédent du même lieu le fait recopier). **Validation de Kevin** ; si elle demande un changement de composition, la **grille** est corrigée d'abord, puis le plan, puis l'image (la vue respecte toujours le plan fonctionnel).
-- **(b) Assets** (T2 → T3) : liste exacte tirée de la vue validée, série 09 Codex en **lumière neutre (NE)**, promotion des textures validées du prototype, manifeste, `preparer.py`.
+- **(b) Assets** (T2 → T3) : liste exacte tirée de la vue validée, série 10 Codex en **lumière neutre (NE)** (les textures du prototype sont déjà promues, §0.3), manifeste, `preparer.py`.
 - **(c) Vraie carte** (T5) : `tools/build_route_2.gd` lit la **même grille** et construit `route_2.tscn` directement. Pas de prototype.
 - **Deux validations S24** (règle 1) : 8.1 porte le changement lourd (première carte à forêt serrée, performances, raccord) ; 8.2 ajoute la seule brique nouvelle (objet au sol) et le contenu. Aucune validation de sauvegarde isolée : le format ne change pas.
 - Pendant l'attente de la validation de l'image (T1) et la génération (T3), l'architecte pose les fondations de code (T4), qui ne dépendent pas de l'art.
 
-### 1.1 Grille fonctionnelle v0 (42 × 60) — à reprendre au T0
+### 1.1 Grille fonctionnelle v1 (42 × 60) — `tools/plans/route_2.txt` fait foi
 
-Source unique de la géométrie : plan en aplats, vue générale, outil de construction et critères des tests. Vérifiée par recherche de chemin (respect du rebord) : **trajet le plus court 89 pas** de l'entrée sud à la porte (par H2 ; 99 par le chemin sûr), **6 cases d'herbes obligatoires, toutes dans H3**, H1 et H2 évitables, **H2 traversée en 19 pas contre 29 par le chemin sûr**, **retour par le rebord 19 pas contre 29**. Le T0 la recopie dans `tools/plans/route_2.txt` (le dossier `tools/` n'est pas importé : rien ne part dans l'APK) et peut l'ajuster, critères du T0 à l'appui.
+Source unique de la géométrie : plan en aplats, vue générale, outil de construction et critères des tests. Vérifiée par `python3 tools/art/plan_check.py` (règles de `GridWorld` : 4 directions, rebord sauté vers le sud = un pas ; PNJ, Pokémon, Poké Balls, panneaux et clôtures = obstacles) : **trajet le plus court 88 pas** de l'entrée sud à la porte (par H2 ; 98 par le chemin sûr), **6 cases d'herbes obligatoires, toutes dans H3**, H1 et H2 évitables (ensemble), **H2 traversée en 19 pas contre 29 par le chemin sûr** (repères (17, 37) → (8, 27)), **retour porte → entrée 78 pas par le rebord contre 89 sans** ((13, 28) → (10, 38) : 12 contre 21). Fichier sous `tools/` (non importé : rien ne part dans l'APK). Ci-dessous, la v1 recopiée pour lecture ; **en cas d'écart, le fichier gagne**.
 
-Légende : `T` forêt (bloquée) · `.` herbe rase · `=` chemin de terre · `h` hautes herbes · `v` rebord (sauté vers le sud) · `P` emprise du poste · `D` porte du poste · `A` arbre dense (FUTUR A) · `a` sentier peint derrière l'arbre (bloqué) · `B` barrière (FUTUR B) · `b` sentier peint derrière la barrière (bloqué) · `R` grande pierre claire · `S` souche · `x` buissons, ronces ou panneau (bloqués, végétation basse). Nord en haut ; x = colonne 0..41, y = rangée 0..59.
+Légende : `T` forêt (bloquée) · `.` herbe rase · `=` chemin de terre · `h` hautes herbes · `v` rebord (sauté vers le sud) · `P` emprise du poste · `D` porte du poste · `A` arbre dense (FUTUR A) · `a` sentier peint derrière l'arbre (bloqué) · `B` barrière (FUTUR B) · `b` sentier peint derrière la barrière (bloqué) · `R` grande pierre claire · `S` souche · `G` pied d'un grand arbre repère · `c` clôture basse · `x` buissons, ronces ou panneau (bloqués, végétation basse). Nord en haut ; x = colonne 0..41, y = rangée 0..59.
 
 ```text
              x : 0         1         2         3         4
@@ -86,7 +98,7 @@ Légende : `T` forêt (bloquée) · `.` herbe rase · `=` chemin de terre · `h`
  6               TTTTTTTTTTTTTTTTTPPPPPPPTTTTTTTTTTTTTTTTTT
  7               TTT..........TTTTPPPPPPPTTTTTTTTTTTTTTTTTT
  8               TTT..........TTTTPPPDPPPTTTTTTTTTTTTTTTTTT
- 9               TTT..........TTT.TT===...TTTTTTTTTTTTTTTTT
+ 9               TTT..........TTT.TT===.x.TTTTTTTTTTTTTTTTT
 10               TTT..........hhhhhh===...TTTTTTTTTTTTTTTTT
 11               TTT....======hhhhhh===...TTTTTTTTTTTTTTTTT
 12               TTT....======hhhhhh===...TTTTTTTTTTTTTTTTT
@@ -133,10 +145,10 @@ Légende : `T` forêt (bloquée) · `.` herbe rase · `=` chemin de terre · `h`
 53               TTTTTTTTTT.hhhhh...===.........TTTTTTTTTTT
 54               TTTTTTTTTTThhhhh...===.........TTTTTTTTTTT
 55               TTTTTTTTTTThhhhh...===.........TTTTTTTTTTT
-56               TTTTTTTTTTT........===.........TTTTTTTTTTT
+56               TTTTTTTTTTT........===x........TTTTTTTTTTT
 57               TTTTTTTTTTT........===.........TTTTTTTTTTT
-58               TTTTTTTTTTT........===.........TTTTTTTTTTT
-59               TTTTTTTTTTT........===.........TTTTTTTTTTT
+58               TTTTTTTTTTT..ccc.G.===.G.ccc...TTTTTTTTTTT
+59               TTTTTTTTTTTTTTTTTTT===TTTTTTTTTTTTTTTTTTTT
                                     ↓ Jadielle (19..21, 59) ↔ (27..29, 1)
 ```
 
@@ -144,7 +156,7 @@ Lecture du tracé (sud → nord, dossier 11 §5) : **C1** (rangées 50–59) dé
 
 **C3 près du poste** (défaut, règle 4) : la caméra montre ≈ 5,6 rangées au-dessus du joueur ; pour que le toit du poste apparaisse « au loin » depuis C3 sans contrôle retiré (§14), C3 doit être à ≈ 6 rangées de la façade. « Aux deux tiers » s'entend donc en **temps de parcours** (H2, C2 et la montée viennent avant), pas en rangées.
 
-**Positions de départ** (défauts, ajustables au T0 et au T7) :
+**Positions de départ** (défauts, ajustables au T7 ; source : section `POSITIONS` de `tools/plans/route_2.txt`, qui ajoute les deux clôtures basses (13..15, 58) et (25..27, 58) et les repères de mesure de `plan_check.py`) :
 
 | Élément | Case(s) | Détail |
 |---|---|---|
@@ -171,21 +183,9 @@ Lecture du tracé (sud → nord, dossier 11 §5) : **C1** (rangées 50–59) dé
 
 **Déjà dans le jeu** (`assets/world/`, réutilisés tels quels) : sols `ground_herbe_01`, `ground_chemin_01`, `ground_paves_01` (amorce de pavés déchaussés au bord sud, raccord visuel avec la rue nord de Jadielle) ; décalcomanies de bord ; `tree_a_01`, `tree_b_01` (grands arbres repères) ; `prop_buisson_a/b/c_01` ; `prop_rocher_01` ; `prop_panneau_01` (×3) ; `prop_cloture_01` / `prop_cloture_v_01` (quelques clôtures au sud, « Jadielle encore perceptible » ; barrière de FUTUR B par défaut) ; `ground_hautes_herbes_01` (+ `_bas`) en repli. Personnages et Pokémon : `youngster` (Jeune Dresseur), `pokemon/pidgey`, `pokemon/rattata` (+ course), `pokemon/nidoran_f`, `pokemon/nidoran_m`.
 
-**Validés au prototype, à promouvoir** (sources dans `build/art/`, entrées à ajouter au manifeste ; T3) :
+**Validés au prototype, déjà promus au DA.0** (`main` à `4107a05`, §0.3) : `tree_foret_01` … `tree_foret_08` (forêt serrée ≈ 3 cases, posés par `DenseForest`), `ground_hautes_herbes_jaune_01` (H1, H2, H3), `prop_souche_01`, `relief_rebord_01`, `prop_pierres_01`, `prop_ronces_01`, `prop_tronc_couche_01`, `tree_c_01` / `tree_d_01` / `tree_e_01` (grands arbres du nord, repères), décalcomanies de fleurs sauvages (prairies du sud). Rien à promouvoir au T3.
 
-| Identifiant en jeu | Source | Usage |
-|---|---|---|
-| `tree_foret_1_01` … `tree_foret_8_01` | `WORLD_TREE_FORET_PLANCHE_A_NE_r1`, `_B_NE_r1` (2 × 2, découpe à la rangée la plus vide, comme au prototype) | forêt serrée (≈ 3 cases) |
-| `ground_hautes_herbes_jaune_01` (+ `_bas`) | `WORLD_GROUND_HAUTES_HERBES_01_NE_r1` recoloré jaune-vert (réglage relevé sur `hautes_herbes_jaune.png`) | H1, H2, H3 |
-| `prop_souche_01` | `WORLD_PROP_SOUCHE_01_NE_r1` | souche (O3, Rattata) |
-| `relief_rebord_01` | `WORLD_RELIEF_REBORD_01_NE_r1` (tronçon d'1 case raccordable) | rebord |
-| `prop_pierres_01`, `prop_ronces_01`, `prop_tronc_couche_01` | `WORLD_PROP_*_01_NE_r1` | centre (« grosses pierres »), enclos du Nidoran, lisière |
-| `tree_c_01`, `tree_d_01`, `tree_e_01` | `WORLD_TREE_C/D/E_01_NE_r1` | grands arbres du nord (canopée), repères |
-| décalcomanies de fleurs sauvages | `WORLD_GROUND_FLEURS_SAUVAGES_01_NE_r1` (planche 4 × 2) | prairies du sud |
-
-Repli si la recoloration ou la découpe ne se reproduisent pas à l'identique : le manifeste reçoit une famille « déjà préparés » qui reprend les PNG de `proto/da_jadielle/tex/` tels quels (ombres calculées par `preparer.py`).
-
-**Nouveaux (série 09, Codex, lumière NE)** :
+**Nouveaux (série 10, Codex, lumière NE)** :
 
 | Fiche | Taille en jeu | Usage | Remarque |
 |---|---|---|---|
@@ -199,69 +199,18 @@ Repli si la recoloration ou la découpe ne se reproduisent pas à l'identique : 
 
 Poids attendu : < 3 Mo de PNG ajoutés à l'APK (la Route 1 du prototype : ≈ 36,5 Mo de textures **en mémoire** à 60 fps ; budget du cahier : ≤ 300 Mo par carte).
 
-### 1.3 Fiche et prompt de la vue générale (brouillon ; le T0 l'écrit dans `tools/art/prompts/CONCEPT_ROUTE2_VUE_GENERALE_r1.txt`, le T1 le lance)
+### 1.3 Fiche et prompt de la vue générale (écrits au T0, lancés au T1)
 
-Lancement prévu : `tools/art/generer.sh CONCEPT_ROUTE2_VUE_GENERALE_r1 tools/art/prompts/CONCEPT_ROUTE2_VUE_GENERALE_r1.txt build/art/PLAN_ROUTE2_v1.png docs/design/reference/route-1-vue-generale-v1.png` (plan + **Route 1** comme ancre de style, un autre lieu ; jamais un rendu précédent de la Route 2). Trois essais au plus avant de revenir à Kevin.
+Prompt : `tools/art/prompts/CONCEPT_ROUTE2_VUE_GENERALE_r1.txt` (le brouillon de ce plan, complété : légende des fleurs, des clôtures, des sentiers fermés et des trois panneaux ; placement de la vie d'après la grille ; « sous-bois sombre » retiré de l'ancre de style, invisible sur la vue de la Route 1). Images jointes : le plan en aplats `build/art/PLAN_ROUTE2_v1.png` (`python3 tools/art/plan_aplats.py`) et **la vue de la Route 1** comme ancre de style (un autre lieu ; jamais un rendu précédent de la Route 2). Lancement, depuis la copie qui contient le plan :
 
-```text
-CONCEPT ART — VUE GÉNÉRALE DE LA ROUTE 2 SUD (Kanto 2026), image de référence de direction artistique.
-
-Deux images sont jointes.
-IMAGE 1 : un PLAN SCHÉMATIQUE en aplats de couleur, vu du dessus, qui donne la COMPOSITION EXACTE à suivre :
-vert très foncé = forêt dense infranchissable ; vert moyen = herbe rase praticable ; beige = chemin de terre ;
-jaune-vert olive = HAUTES HERBES (touffues, où vivent les Pokémon sauvages) ; bande brune = un petit REBORD de
-terrain (une marche de talus d'environ une demi-case, qu'on ne peut sauter que vers le bas de l'image) ;
-rectangle gris-bleu en haut = le POSTE DE GARDE de la Forêt de Jade : un petit bâtiment-porte d'une seule pièce,
-en bois et pierre, toit en pente, une porte au milieu de sa façade sud, posé au bout du chemin, la forêt derrière
-et autour ; grand disque gris clair = une GRANDE PIERRE CLAIRE isolée (repère) ; petit carré brun = une vieille
-SOUCHE ; petit disque vert sombre au bout d'un sentier à gauche = un PETIT ARBRE TRÈS DENSE qui bloque ce sentier
-(le sentier continue derrière, visible mais inaccessible) ; barre blanche à droite = une BARRIÈRE légère en bois,
-entretenue, qui ferme un sentier vers l'est, avec un panneau à côté ; petits disques vert sombre = buissons et
-ronces bas qui forment un petit enclos naturel dans la prairie ; deux grands disques verts en bas = deux GRANDS
-ARBRES qui encadrent le départ ; petits carrés ocre = panneaux en bois SANS TEXTE ; deux petits points rouge et
-blanc = une Poké Ball posée dans l'herbe (deux en tout).
-Respecte ce plan À LA LETTRE : le chemin de terre qui monte du bas (Jadielle) vers le haut (le poste) en changeant
-plusieurs fois de direction à ANGLES DROITS, les trois zones de hautes herbes (une petite à gauche du départ, la
-grande prairie au centre, une bande au pied du poste que le chemin traverse), les clairières, le rebord.
-RÈGLE ABSOLUE DES CHEMINS : le joueur se déplace case par case, seulement à l'horizontale et à la verticale ; le
-chemin suit donc une grille, uniquement des segments horizontaux et verticaux à angles droits, AUCUN segment en
-diagonale ni courbe. RELIEF : terrain PLAT partout ; le SEUL relief est le petit rebord. Le plan ne donne que la
-composition : son style en aplats ne doit pas apparaître.
-IMAGE 2 : la vue générale de la Route 1, un autre lieu du même jeu, juste avant Jadielle. Respecte EXACTEMENT son
-style de rendu : même pinceau, mêmes arbres de forêt serrés en masses arrondies et lisses, même sous-bois sombre
-entre les troncs, mêmes hautes herbes jaune-vert, même saturation, mêmes personnages. Ne reprends PAS sa
-composition.
-
-Format : PORTRAIT 1024 × 1536, vue plongeante de toute la route, comme le plan.
-
-RENDU (ADN visuel Kanto 2026 v1) : illustration 2D peinte numériquement, RPG Pokémon moderne « HD-2D peint »,
-formes simples, lisibles et arrondies, détails fins mais ordonnés ; ni pixel art, ni 3D, ni photo, ni aquarelle.
-Feuillage en grandes masses douces, jamais en petits points. Vue de dessus de trois quarts, projection oblique
-frontale, sans point de fuite ; on voit le dessus des objets et leur face sud. Aucun trait noir. Ombres colorées
-bleu-vert ou violet froid, jamais grises.
-LUMIÈRE NE (neutre), LA MÊME SUR TOUTE L'IMAGE : milieu de journée, diffuse et blanche, venant légèrement du haut
-à gauche ; aucune teinte dorée. La route ne change pas l'heure : elle change la QUANTITÉ DE LUMIÈRE QUI ATTEINT LE
-SOL, uniquement par le décor :
-- SUD (bas de l'image) : beaucoup de lumière, larges prairies fleuries, arbres espacés, une ou deux clôtures
-  basses près du bord inférieur (Jadielle est juste en dessous) ;
-- CENTRE : végétation plus haute, grosses pierres, chemin plus étroit, plus d'ombre portée par les arbres ;
-- NORD (haut de l'image) : grands arbres, canopée qui se rejoint, sous-bois plus sombre et plus froid, moins
-  d'herbe éclairée ; le poste au bout du chemin, et derrière lui la masse profonde de la Forêt de Jade.
-Repères à rendre bien lisibles : les deux grands arbres du départ, la grande pierre claire, puis la forêt.
-
-VIE (très discrète) : une RANDONNEUSE adulte (sac à dos, bâton de marche, chapeau de randonnée ; PAS le héros à
-casquette rouge) près du premier embranchement, tournée vers le nord ; un JEUNE DRESSEUR (garçon, casquette,
-short) près de la grande pierre, avec un petit Pokémon à ses pieds ; deux Roucool (petits oiseaux bruns Pokémon)
-au sol près du départ ; un Rattata (petit rongeur violet Pokémon) près de la souche ; un Nidoran (petit Pokémon
-rose ou bleu-violet à oreilles et corne) dans l'enclos de buissons. Aucun Pokémon insecte, aucun autre animal
-(aucune faune non-Pokémon, aucun papillon, aucun oiseau réel).
-
-INTERDITS : texte, lettres, chiffres, étiquettes, panneaux lisibles, logo, signature, filigrane, cadre, interface,
-autre bâtiment que le poste, eau, rivière, falaise, route goudronnée, véhicule, brouillard, flou de profondeur,
-vignettage, pixel art.
+```bash
+python3 tools/art/plan_check.py && python3 tools/art/plan_aplats.py
+tools/art/generer.sh CONCEPT_ROUTE2_VUE_GENERALE_r1 tools/art/prompts/CONCEPT_ROUTE2_VUE_GENERALE_r1.txt build/art/PLAN_ROUTE2_v1.png docs/design/reference/route-1-vue-generale-v1.png
 ```
 
-Couleurs du plan en aplats (`tools/art/plan_aplats.py`, T0) : celles du plan de la Route 1 (`reference/route-1-plan-v1.png`) pour `T . = h v`, plus gris-bleu (poste), gris clair (grande pierre), brun (souche, rebord), vert sombre (arbre dense, buissons), blanc (barrière), ocre (panneaux), points rouge et blanc (Poké Balls), disques verts (grands arbres) ; sentiers `a` / `b` en beige atténué. 1 case = 24 px (1008 × 1440), centré sur un fond 1024 × 1536.
+Trois essais au plus avant de revenir à Kevin (r2, r3 : nouveau fichier de prompt, même grille).
+
+Couleurs du plan en aplats (`tools/art/plan_aplats.py`, T0) : celles du plan de la Route 1 (`reference/route-1-plan-v1.png`) pour `T . = h v`, plus gris-bleu (poste), gris clair (grande pierre), brun (souche, rebord), vert sombre (arbre dense, buissons), blanc (barrière), ocre (panneaux), points rouge et blanc (Poké Balls), disques verts (grands arbres) ; sentiers `a` / `b` en beige atténué. 1 case = 24 px (1008 × 1440), centré sur un fond de forêt 1024 × 1536 ; chemins et sentiers qui sortent de la carte prolongés jusqu'au bord ; fleurs roses semées dans les prairies, de plus en plus rares vers le nord (graine fixe : même grille → même image) ; personnages et objets cachés non dessinés (comme au plan de la Route 1).
 
 ---
 
@@ -367,8 +316,8 @@ En **tête** de `data/story/objectives.json` (la première entrée valide l'empo
 ### 2.12 Lumière unique et ambiance par le décor (arbitrage 3) ; forêt serrée dans le jeu
 
 - Un seul profil, `golden_hour`, aucune variation dynamique. Le nord est plus sombre **par le décor construit une fois par l'outil** :
-  - **sous-bois** (portage de `sous_bois.gdshader`) : canal **B** du masque du sol = densité du sous-bois sous les cases de forêt (0 = aucun ; `GroundMask` passe en RGB8, les masques RG existants lisent B = 0, donc aucun changement ailleurs) ; `ground_blend.gdshader` mêle les couleurs sombre / claire du prototype selon B ; l'outil fait croître B vers le nord ;
-  - **arbres de forêt** `tree_foret_*_01` : taille, miroir et teinte tirés par graine fixe (règles du prototype), **plus serrés et plus froids vers le nord** (teinte RVB du sprite fonction de la rangée), grands arbres `tree_c/d/e` en lisière ; le nombre de cases de prairie visibles diminue vers le nord (grille).
+  - **sous-bois** : `ForestFloor` existant (§0.3), masque des cases de forêt ; couleurs réglables par carte si la capture du T5 le demande ;
+  - **arbres de forêt** `tree_foret_01..08` par `DenseForest` (graine fixe), **plus froids et plus sombres vers le nord** : teinte fonction de la rangée (petit ajout à `DenseForest`, T4, testé), grands arbres `tree_c/d/e` en lisière ; le nombre de cases de prairie visibles diminue vers le nord (grille).
 - Règle du prototype gardée : un arbre de forêt ne pousse que si les cases couvertes par son feuillage (3 au-dessus du pied) sont aussi de la forêt (rien ne cache un chemin) ; bandes trop étroites garnies de buissons.
 - **Performance** : les arbres de forêt ont `fade` faux (ils ne couvrent jamais une case praticable) et pas d'ombre portée (ombre de contact seulement, comme au prototype) ; aucun `_process` par arbre. Budget de la scène (défaut) : ≤ 3 000 nœuds, changement de carte Jadielle → Route 2 au plus 1,5 × celui de Jadielle (`SceneRouter : <carte> en N ms`) ; si dépassé, les arbres de forêt passent en `Sprite2D` simples (sans scène `WorldProp`), voir §4.
 
@@ -392,7 +341,7 @@ Tous les textes T1–T16 dans `data/` (dialogues, zones, objectifs) **après val
 Branche d'intégration `jalon-08` depuis `main`, dans une copie dédiée ; une branche par tâche ; jamais de `pkill`.
 
 #### T0 — architecte : alignement, grille, plan en aplats, prompt (8.0)
-- Aligner ce plan sur le code du moment (§0) ; `tools/plans/route_2.txt` (grille §1.1, positions §1.1 en fin de fichier) ; `tools/art/plan_aplats.py` → `build/art/PLAN_ROUTE2_v1.png` ; `tools/art/plan_check.py` (recherche de chemin : mêmes critères que `test_route_2`) ; `tools/art/prompts/CONCEPT_ROUTE2_VUE_GENERALE_r1.txt` (§1.3) ; en-tête « Série 09 — Route 2 » dans `fiches-assets/serie-01-place-jadielle.md`.
+- Aligner ce plan sur le code du moment (§0) ; `tools/plans/route_2.txt` (grille §1.1, positions §1.1 en fin de fichier) ; `tools/art/plan_aplats.py` → `build/art/PLAN_ROUTE2_v1.png` ; `tools/art/plan_check.py` (recherche de chemin : mêmes critères que `test_route_2`) ; `tools/art/prompts/CONCEPT_ROUTE2_VUE_GENERALE_r1.txt` (§1.3) ; en-tête « Série 10 — Route 2 » (fait ; « 09 » est pris, §0.3) dans `fiches-assets/serie-01-place-jadielle.md`.
 - **CA** : `plan_check.py` : porte atteignable, 5 ≤ cases d'herbes obligatoires ≤ 7 et toutes dans H3, H1 et H2 évitables, H2 plus courte que le chemin sûr, rebord = raccourci de retour, entrée sud = 3 cases en x 19–21 ; plan relu (image) ; aucun fichier de `game/` touché.
 
 #### T1 — constructeur-monde (Mac, Codex) : la vue générale → **validation de Kevin (8.0)**
@@ -401,21 +350,21 @@ Branche d'intégration `jalon-08` depuis `main`, dans une copie dédiée ; une b
 - **CA** : Kevin a validé l'image ; tout changement de composition demandé est d'abord reporté dans la grille (T0 rejoué).
 
 #### T2 — architecte : liste exacte des assets (après T1)
-- Fiche « Série 09 » complète (une fiche par asset nouveau : taille en cases, emprise, couche, ombre, références recadrées `REF_R2_*` de la vue validée) ; `tools/art/serie09.py` ; entrées du manifeste prévues (nouveaux + promus, §1.2) ; règles `PaintedPropRules` prévues.
+- Fiche « Série 10 » complète (une fiche par asset nouveau : taille en cases, emprise, couche, ombre, références recadrées `REF_R2_*` de la vue validée) ; `tools/art/serie10.py` ; entrées du manifeste prévues (nouveaux + promus, §1.2) ; règles `PaintedPropRules` prévues.
 - **CA** : chaque élément visible de la vue validée a un asset (existant, promu ou nouveau) ou est explicitement abandonné ; liste relue par Kevin en même temps que la vue s'il le souhaite (non bloquant).
 
-#### T3 — constructeur-monde (Mac, Codex) : série 09 et promotion (8.1)
-- Génération (lumière NE, ancre de style = assets validés de la série 08) ; `manifeste.json` + `preparer.py` (découpe des planches de forêt, recoloration jaune-vert ou famille « déjà préparés ») ; `--import` ; `build_painted_props.gd` (règles d'emprise ajoutées) ; `build_character_frames.gd` (Randonneuse : marche + attente ; Ball : objet fixe).
-- **CA** : `preparer.py` relancé deux fois ne change aucun fichier ; `test_painted_props` passe (une règle par nouvel identifiant) ; planche contact `build/captures/jalon08_assets/` relue ; journal de la série 09 dans la fiche.
+#### T3 — constructeur-monde (Mac, Codex) : série 10 (8.1)
+- Génération (lumière NE, ancre de style = assets validés de la série 08) ; `manifeste.json` + `preparer.py` (entrées des nouveaux seulement, en fin de manifeste) ; `--import` ; `build_painted_props.gd` (règles d'emprise ajoutées) ; `build_character_frames.gd` (Randonneuse : marche + attente ; Ball : objet fixe).
+- **CA** : `preparer.py` relancé deux fois ne change aucun fichier ; `test_painted_props` passe (une règle par nouvel identifiant) ; planche contact `build/captures/jalon08_assets/` relue ; journal de la série 10 dans la fiche.
 
 #### T4 — architecte : fondations (en parallèle de T1–T3, après validation du plan et des textes)
-- Code : `Interaction.Kind.TAKE` ; `NpcRoster` verbe `take` ; `CharacterLook` préfixe `object/` ; `GroundMask` canal B (sous-bois) + `ground_blend.gdshader` ; `build_character_frames.gd` objet fixe.
+- Code : `Interaction.Kind.TAKE` ; `NpcRoster` verbe `take` ; `CharacterLook` préfixe `object/` ; teinte des arbres de `DenseForest` fonction de la rangée (assombrissement vers le nord, §2.12) ; `build_character_frames.gd` objet fixe. **Avant** : fusionner `main` (DA.0, DA.1).
 - Données : `data/encounters/route_2.json`, `zones.json`, `objectives.json`, `data/dialogues/route_2.json`, `data/cutscenes/route_2.json`, `data/npcs/route_2.json` (cases de la grille), `tools/debug_start/route_2.json` (partie après l'activation du Pokédex, équipe Nv. 8–10, spawn `from_viridian_c`).
-- Tests : `test_interaction` (TAKE, nom, ordre de l'enum), `test_npc_roster` (take accepté, meet refusé), `test_character_look` (`object/`), nouveau `test_ground_mask` (B, compatibilité RG), `test_encounter_library` (table de la Route 2 : poids 100, aucun Insecte ni Pikachu), `test_zone_library`, `test_objective_library`, `test_dialogue_data`, `test_cutscene_library` (scènes des objets : `despawn` d'un PNJ du fichier, `give found`, `set`).
+- Tests : `test_interaction` (TAKE, nom, ordre de l'enum), `test_npc_roster` (take accepté, meet refusé), `test_character_look` (`object/`), `test_dense_forest` (teinte selon la rangée, sans effet quand le réglage est neutre), `test_encounter_library` (table de la Route 2 : poids 100, aucun Insecte ni Pikachu), `test_zone_library`, `test_objective_library`, `test_dialogue_data`, `test_cutscene_library` (scènes des objets : `despawn` d'un PNJ du fichier, `give found`, `set`).
 - **CA** : `tools/test.sh` vert, import propre ; aucune carte touchée.
 
 #### T5 — constructeur-monde : la carte (8.1)
-- `tools/build_route_2.gd` (modèle `build_route_22.gd`, deux passes masque / scène) lit `tools/plans/route_2.txt` : `Ground` logique (forêt, herbe, chemin, hautes herbes, rebord), `PaintedGround` + masque RGB, sous-bois, décalcomanies, forêt serrée (graine fixe), grands arbres repères, hautes herbes jaune-vert (deux touffes par case), relief du rebord, poste et warp « À venir », panneaux et FUTUR A / B (props et points d'examen), spawns, warps sud ; cases des PNJ réservées (lues dans `data/npcs/route_2.json`).
+- `tools/build_route_2.gd` (modèle `build_route_1.gd`, carte peinte à forêt serrée, §0.3) lit `tools/plans/route_2.txt` (même lecteur que `tools/art/plan_grille.py`) : `Ground` logique (forêt, herbe, chemin, hautes herbes, rebord), `PaintedGround` + masque, sous-bois (`ForestFloor`), décalcomanies, forêt serrée (graine fixe), grands arbres repères, hautes herbes jaune-vert (deux touffes par case), relief du rebord, poste et warp « À venir », panneaux et FUTUR A / B (props et points d'examen), spawns, warps sud ; cases des PNJ réservées (lues dans `data/npcs/route_2.json`).
 - Jadielle : §2.1 (outil + six nœuds à la main).
 - Tests : **`test_route_2`** (taille, `light_profile`, warps et spawns, recherche de chemin : critères du T0 sur la **vraie grille** de la scène, rebord, porte « À venir », cellules des objets cachés sur herbe rase, aucune case praticable sous une cime d'arbre de forêt, nombre de nœuds ≤ 3 000), `test_viridian_city` (warps nord vers `route_2`, spawns `from_route_2_*`, diff limité), `test_map_links`, `test_coming_soon` réécrit (porte du poste ; « FORÊT DE JADE — À venir » ; retour devant la porte tourné ↓ ; rien de sauvegardé ; aucune carte `viridian_forest`), `test_encounter_director` (rencontre dans H1, H2, H3) ; `tools/capture_route_2.gd` (C1, H2 et rebord, C2, C3 avec le poste, porte).
 - **CA** : tests verts, import propre, captures 2340 × 1080 relues contre la vue générale ; `[perf]` sur Mac relevé.
@@ -445,9 +394,9 @@ Branche d'intégration `jalon-08` depuis `main`, dans une copie dédiée ; une b
 
 | Risque | Effet | Parade |
 |---|---|---|
-| **Conflits avec d'autres branches** : préparation du J9 (dossier 10, étude de DA de la forêt : `tools/art/`, `manifeste.json`, fiche des séries), Pokédex (T5), `etat-projet.md` toujours | conflits de fusion, art écrasé | regarder les branches ouvertes avant chaque fusion (copie d'intégration dédiée) ; série 09 **ajoutée en fin** de manifeste et de fiche ; Jadielle modifiée sur six nœuds seulement ; `zones.json` / `objectives.json` : une entrée chacun |
+| **Conflits avec d'autres branches** : préparation du J9 (dossier 10, étude de DA de la forêt : `tools/art/`, `manifeste.json`, fiche des séries), Pokédex (T5), `etat-projet.md` toujours | conflits de fusion, art écrasé | regarder les branches ouvertes avant chaque fusion (copie d'intégration dédiée) ; série 10 **ajoutée en fin** de manifeste et de fiche ; Jadielle modifiée sur six nœuds seulement ; `zones.json` / `objectives.json` : une entrée chacun |
 | **Poids et nombre de nœuds** (forêt serrée sur 1 700 cases bloquées, ≈ 1 000 arbres) | chargement lent, fps | `fade` faux et pas d'ombre portée sur la forêt ; budget ≤ 3 000 nœuds testé ; repli `Sprite2D` simples ; mesures au T5 (Mac) puis T6 (S24) ; textures déjà mesurées au prototype (≈ 36,5 Mo, 60 fps) |
-| **Recoloration et découpe hors pipeline** non reproductibles | rendu différent du validé | comparaison pixel avec `proto/da_jadielle/tex/` ; repli « déjà préparés » |
+| ~~**Recoloration et découpe hors pipeline** non reproductibles~~ | — | **levé** : faites par `preparer.py` au DA.0 (§0.3) |
 | **Rythme des rencontres** (rampe calée sur la Route 1, H3 obligatoire) | trop ou pas assez de combats avant la forêt | simulation (T6) + S24 ; ajuster la **grille** (taille de H3, H2) avant de toucher au taux |
 | **Raccord** (Jadielle générée, `unique_id`) | diff massif, régressions dans Jadielle | modification à la main de six nœuds, test de cohérence outil ↔ scène, `test_viridian_city` complet |
 | **Vue générale qui s'écarte du plan** (Codex ajoute des courbes, de l'eau, des bâtiments) | composition invalide | interdits explicites, 3 essais, la grille fait foi (règle 10) |
