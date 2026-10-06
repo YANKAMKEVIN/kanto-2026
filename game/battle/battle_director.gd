@@ -6,11 +6,17 @@ extends Node
 ## les Pokémon) et la [BattleHud] (cartes, barres de PV, messages). La boucle de choix passe
 ## par les signaux de la HUD ; la fin par [BattleConclusion] (soin ; argent gagné contre un
 ## dresseur vaincu, versé par [code]add_money[/code] de [GameState], jalon 7).
-## XP (jalon 5C) : le directeur rejoue EXP_GAINED (barre d'XP de la carte du joueur), LEVEL_UP
-## (« Nv. » qui pulse, PV max) et les phrases de capacité apprise, dans l'ordre du journal ;
-## pour un Pokémon du joueur qui n'est pas en jeu, le gain est appliqué sans être montré
-## (Q24). MOVE_FORGET_OFFERED suspend la lecture : le bandeau sort, le [MoveForgetPanel] fait
-## choisir la capacité à oublier (ou aucune), puis la phrase suit et la lecture reprend.
+## XP (jalon 5C, revu par la demande n° 1 du 2026-10-06) : pendant le combat, EXP_GAINED et
+## LEVEL_UP ne montrent rien (la carte du Pokémon en jeu prend en silence son niveau et ses PV
+## max) ; le directeur les note dans un [ExpSummary]. Les capacités apprises (MOVE_LEARNED,
+## MOVE_FORGET_OFFERED) sont mises de côté. À la fin du combat, après sa dernière phrase (et
+## l'argent gagné) : le [b]bilan de fin de combat[/b] ([ExpSummaryCard] : une ligne par Pokémon
+## qui a gagné de l'XP, quelle que soit l'issue ; rien si aucun), puis les apprentissages, dans
+## l'ordre du journal, puis la sortie. MOVE_FORGET_OFFERED suspend la lecture : le bandeau
+## sort, le [MoveForgetPanel] fait choisir la capacité à oublier (ou aucune), puis la phrase
+## suit. Une capacité apprise dans un emplacement libre l'est déjà dans le moteur au moment du
+## K.O. (utilisable pour la suite d'un combat à plusieurs Pokémon) ; elle est annoncée après le
+## bilan.
 ##
 ## Il ne lit aucun autoload : il reçoit [GameState] par [method setup] et la carte par
 ## [method run] (appelée par l'étape « battle » du [CutsceneDirector]). Il n'appelle jamais
@@ -49,6 +55,8 @@ signal pokemon_caught(pokemon: Pokemon, stored: bool)
 ## Vibration jouée ou demandée (millisecondes) : une par secousse de la Ball, puis les
 ## vibrations du motif de capture. Émise même sans vibration réelle (tests).
 signal haptic_requested(duration_ms: int)
+## Les barres du bilan de fin de combat sont arrivées (la carte attend le toucher qui ferme).
+signal exp_summary_shown(summary: ExpSummary)
 
 ## Raison de blocage du joueur pendant un combat ([method Player.set_input_enabled]).
 const REASON: StringName = &"battle"
@@ -57,6 +65,7 @@ const BAG_PANEL_SCENE: PackedScene = preload("res://game/ui/battle/battle_bag_pa
 const PARTY_PICKER_SCENE: PackedScene = preload("res://game/ui/bag/party_picker.tscn")
 const CAPTURE_CARD_SCENE: PackedScene = preload("res://game/ui/battle/capture_card.tscn")
 const PARTY_PANEL_SCENE: PackedScene = preload("res://game/ui/battle/battle_party_panel.tscn")
+const SUMMARY_CARD_SCENE: PackedScene = preload("res://game/ui/battle/exp_summary_card.tscn")
 ## Catégorie du Sac voulue d'emblée en combat sauvage (les Balls) ; contre un dresseur : les
 ## soins ([method BagQuery.start_category]).
 const BAG_START_CATEGORY: StringName = &"ball"
@@ -91,6 +100,11 @@ var _party_panel: BattlePartyPanel
 var _wild_foe: Pokemon
 var _map_id: StringName = &""
 var _haptic_busy: bool = false
+## Progression du combat en cours (bilan de fin de combat) et apprentissages mis de côté.
+var _summary: ExpSummary = ExpSummary.new()
+var _deferred: Array[BattleEvent] = []
+var _defer_learning: bool = false
+var _summary_card: ExpSummaryCard
 ## Vue vers camp de la HUD (l'UI a son propre enum, sans lien avec BattleEvent.SideId).
 const _HUD_SIDE: Dictionary[BattleEvent.SideId, BattleHud.Side] = {
 	BattleEvent.SideId.PLAYER: BattleHud.Side.PLAYER,
@@ -165,6 +179,9 @@ func run_request(request: BattleRequest, map: GameMap) -> int:
 	var wild := request.is_wild()
 	var trainer := request.trainer
 	_running = true
+	_summary = ExpSummary.new()
+	_deferred.clear()
+	_defer_learning = true
 	_wild_foe = foe if wild else null
 	_map_id = map.map_id if is_instance_valid(map) else &""
 	_trainer_id = trainer.id if trainer != null else &""
@@ -229,6 +246,8 @@ func run_request(request: BattleRequest, map: GameMap) -> int:
 			if is_instance_valid(_hud) and _texts != null:
 				await _hud.show_message(_texts.prize_line(conclusion.prize_money))
 			_state.add_money(conclusion.prize_money)
+	# Bilan de fin de combat, puis les capacités apprises (demande n° 1).
+	await _play_progress(trainer)
 	if is_instance_valid(_hud):
 		await _hud.hide_all()
 	if is_instance_valid(_stage) and _stage.is_active():
@@ -278,6 +297,22 @@ func get_party_picker() -> PartyPicker:
 ## Le panneau ÉQUIPE, tant qu'il existe (ouvert pendant un choix, tests) ; null sinon.
 func get_party_panel() -> BattlePartyPanel:
 	return _party_panel if is_instance_valid(_party_panel) else null
+
+
+## Le bilan de fin de combat, tant qu'il existe (tests) ; null sinon.
+func get_summary_card() -> ExpSummaryCard:
+	return _summary_card if is_instance_valid(_summary_card) else null
+
+
+## Progression notée pendant le combat en cours (ou le dernier), pour les tests.
+func get_exp_summary() -> ExpSummary:
+	return _summary
+
+
+## Retour (Android, relayé par Boot) : ferme le bilan de fin de combat s'il est affiché. Vrai si
+## le geste a servi.
+func handle_back() -> bool:
+	return is_instance_valid(_summary_card) and _summary_card.handle_back()
 
 
 ## Le panneau d'oubli, tant qu'il existe (ouvert pendant une offre, tests) ; null sinon.
@@ -441,6 +476,12 @@ func _first_of(a: Signal, b: Signal) -> Array:
 ## Coroutine : joue chaque événement de [param events] à la suite, temps par temps.
 func _play_events(events: Array[BattleEvent], trainer: TrainerData) -> void:
 	for event: BattleEvent in events:
+		# Pendant le combat, les capacités apprises attendent la fin du bilan.
+		if _defer_learning and event.kind in [BattleEvent.Kind.MOVE_LEARNED,
+				BattleEvent.Kind.MOVE_FORGET_OFFERED]:
+			_deferred.append(event)
+			continue
+		_summary.add(event)
 		for beat: BattleBeat in BattlePlayback.beats(event, _texts, _data, trainer):
 			await _play_beat(beat)
 		_log_progress(event)
@@ -454,8 +495,11 @@ static func _log_progress(event: BattleEvent) -> void:
 		return
 	match event.kind:
 		BattleEvent.Kind.EXP_GAINED:
-			print("[qa] XP : %s (équipe %d) +%d" % [event.pokemon_name, event.party_index,
-				event.amount])
+			# Une ligne par gain : les tranches suivantes d'une montée de plusieurs niveaux
+			# (amount = 0) ne sont pas un nouveau gain.
+			if event.amount > 0:
+				print("[qa] XP : %s (équipe %d) +%d" % [event.pokemon_name, event.party_index,
+					event.amount])
 		BattleEvent.Kind.LEVEL_UP:
 			print("[qa] niveau : %s (équipe %d) → N%d" % [event.pokemon_name,
 				event.party_index, event.level])
@@ -492,13 +536,13 @@ func _play_beat(beat: BattleBeat) -> void:
 			if is_instance_valid(_hud):
 				_hud.hide_card(side)
 		BattleBeat.Kind.EXP:
-			# Un seul Pokémon a une carte : le gain des autres est appliqué sans être montré.
-			if is_instance_valid(_hud) and _is_in_play(beat.event):
-				await _hud.animate_exp(beat.event.exp_from, beat.event.exp_to, beat.event.amount)
+			# Rien à l'écran : le bilan de fin de combat est l'unique lieu de la progression.
+			pass
 		BattleBeat.Kind.LEVEL:
+			# La carte reste vraie (niveau, PV max), sans pulsation ni phrase.
 			if is_instance_valid(_hud) and _is_in_play(beat.event):
-				await _hud.pulse_level(side, beat.event.level)
-				await _hud.animate_hp(side, beat.event.hp, beat.event.max_hp, false)
+				_hud.set_level(side, beat.event.level)
+				_hud.get_card(side).set_hp(beat.event.hp, beat.event.max_hp)
 		BattleBeat.Kind.DRAIN:
 			if is_instance_valid(_hud):
 				await _play_drain(beat.event)
@@ -531,6 +575,60 @@ func _play_beat(beat: BattleBeat) -> void:
 			if is_instance_valid(_hud):
 				_hud.set_card(BattleHud.Side.FOE, BattleViews.card(beat.event))
 				_show_own_card()
+
+
+# --- Bilan de fin de combat (demande n° 1) ---------------------------------------------
+
+## Coroutine : après la dernière phrase du combat, le bilan (si de l'XP a été gagnée), puis les
+## capacités apprises mises de côté, dans l'ordre du journal.
+func _play_progress(trainer: TrainerData) -> void:
+	_defer_learning = false
+	if not _summary.is_empty() and is_instance_valid(_hud) and _texts != null:
+		await _hud.hide_all()
+		await _show_summary()
+	var learning := _deferred.duplicate()
+	_deferred.clear()
+	await _play_events(learning, trainer)
+
+
+## Coroutine : la carte du bilan ; rend la main une fois fermée.
+func _show_summary() -> void:
+	var rows := BattleViews.exp_summary(_summary, _texts)
+	var entries := _summary.get_entries()
+	for i: int in rows.size():
+		var path := BattleStage.sprite_path(entries[i].species_id, false)
+		if ResourceLoader.exists(path):
+			rows[i].portrait = load(path) as Texture2D
+	var card := _ensure_summary_card()
+	await card.show_summary(rows, _texts.get_template(&"summary_continue"))
+	_log_summary()
+	exp_summary_shown.emit(_summary)
+	await card.wait_closed()
+
+
+## Journal de QA (builds debug) : une ligne par Pokémon du bilan.
+func _log_summary() -> void:
+	if not OS.is_debug_build():
+		return
+	for entry: ExpSummaryEntry in _summary.get_entries():
+		var before := entry.points[0]
+		var after := entry.points[-1]
+		print("[qa] bilan : %s (équipe %d) +%d XP, N%d %d/%d → N%d %d/%d" % [
+			entry.pokemon_name, entry.party_index, entry.exp_gained, entry.start_level,
+			before.x, before.z, entry.end_level(), after.y, after.z])
+
+
+## Le bilan (créé au premier besoin, centré dans l'écran de la HUD).
+func _ensure_summary_card() -> ExpSummaryCard:
+	if is_instance_valid(_summary_card):
+		return _summary_card
+	_summary_card = SUMMARY_CARD_SCENE.instantiate() as ExpSummaryCard
+	_hud.get_screen().add_child(_summary_card)
+	BattleHudLayout.place(_summary_card, BattleHudLayout.Slot.SUMMARY)
+	_summary_card.speed_scale = _hud.speed_scale
+	_summary_card.haptics_enabled = _hud.haptics_enabled
+	_summary_card.haptic_played.connect(_hud.haptic_played.emit)
+	return _summary_card
 
 
 # --- Capture (jalon 5D) ---------------------------------------------------------------
@@ -784,12 +882,14 @@ func _free_forget_panel() -> void:
 	_forget_panel = null
 
 
-## Libère les panneaux ouverts pendant le combat (oubli, Sac, carte de capture, ÉQUIPE).
+## Libère les panneaux ouverts pendant le combat (oubli, Sac, carte de capture, ÉQUIPE, bilan).
 func _free_panels() -> void:
 	_free_forget_panel()
-	for panel: Control in [_bag_panel, _capture_card, _party_picker, _party_panel]:
+	for panel: Control in [_bag_panel, _capture_card, _party_picker, _party_panel,
+			_summary_card]:
 		if is_instance_valid(panel):
 			panel.queue_free()
+	_summary_card = null
 	_bag_panel = null
 	_capture_card = null
 	_party_picker = null

@@ -569,6 +569,9 @@ func _can_open_menu() -> bool:
 ## immédiate puis ouverture du menu ; pendant un dialogue, une scène, un combat ou une
 ## transition, ignoré.
 func _on_go_back() -> void:
+	# Bilan de fin de combat affiché : retour = le fermer (demande n° 1).
+	if _battle_director.handle_back():
+		return
 	# Un choix à deux cartes dans un dialogue (SOIGNER / PAS MAINTENANT) : retour = annuler.
 	if _dialogue_box.cancel_choice():
 		return
