@@ -305,7 +305,7 @@ func test_every_house_door_is_reachable_from_the_south_entrance_and_closed() -> 
 	var library := DialogueLibrary.new()
 	library.load_dir()
 	var dialogue := library.get_dialogue(&"viridian_house_door")
-	assert_true(dialogue.draft, "texte provisoire (draft)")
+	assert_false(dialogue.draft, "texte validé par Kevin le 2026-10-06")
 	assert_eq(dialogue.variants[0].pages[0].text, "C'est fermé.")
 
 

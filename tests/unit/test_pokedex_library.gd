@@ -71,14 +71,14 @@ func test_real_heights_and_weights_are_the_official_ones() -> void:
 		assert_almost_eq(_lib.get_species(id).weight, float(official[id][1]), 0.001, id)
 
 
-func test_real_texts_are_drafts_and_never_spoil() -> void:
+func test_real_texts_are_validated_and_never_spoil() -> void:
 	_lib.load_file()
 	for id: StringName in _lib.get_species_ids():
 		var info := _lib.get_species(id)
-		assert_true(info.draft, "%s : description provisoire (Q-5)" % id)
+		assert_false(info.draft, "%s : description validée (2026-10-06)" % id)
 		var texts: Array[String] = [info.description]
 		for note: PokedexNoteData in info.notes:
-			assert_true(note.draft, "%s : note provisoire (Q-6)" % note.id)
+			assert_false(note.draft, "%s : note validée (2026-10-06)" % note.id)
 			texts.append(note.text)
 		for text: String in texts:
 			var lower := text.to_lower()

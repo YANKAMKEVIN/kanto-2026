@@ -261,7 +261,6 @@ func test_withdrawn_is_a_line_then_a_withdraw_beat() -> void:
 	var events := battle.submit(BattleAction.switch_to(1))
 	var withdrawn := events[1]
 	assert_eq(texts.lines(withdrawn, _data), PackedStringArray(["Reviens, Salamèche !"]))
-	assert_true(texts.is_draft(&"withdrawn"))
 	var beats := BattlePlayback.beats(withdrawn, texts, _data)
 	assert_eq(beats.size(), 2)
 	assert_eq([beats[0].kind, beats[0].text], [BattleBeat.Kind.MESSAGE, "Reviens, Salamèche !"])
@@ -271,4 +270,4 @@ func test_withdrawn_is_a_line_then_a_withdraw_beat() -> void:
 	assert_eq(sent[1].kind, BattleBeat.Kind.SEND_OUT)
 	for id: StringName in [&"switch_reason_active", &"switch_reason_fainted",
 			&"replace_prompt"]:
-		assert_true(texts.is_draft(id), id)
+		assert_false(texts.get_template(id).is_empty(), id)

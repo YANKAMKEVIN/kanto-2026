@@ -43,14 +43,10 @@ func test_real_messages_load_without_error() -> void:
 		assert_false(_text.get_template(id).is_empty(), String(id))
 
 
-func test_messages_fixed_by_kevin_are_final_and_the_others_draft() -> void:
-	# Jalon 5D : les textes de la carte de capture viennent du dossier 05 §17 (Q36).
-	var fixed: Array[StringName] = [&"sent_out_foe", &"critical", &"super_effective",
-		&"not_very_effective", &"caught_title", &"pokedex_new", &"joined_party",
-		&"sent_to_storage", &"summary_exp", &"summary_level", &"summary_stat"]
-	# Bilan de fin de combat : libellés courts validés par Kevin (demande n° 1, décision 9).
+## Lot de textes validé par Kevin le 2026-10-06 : plus aucun message provisoire.
+func test_no_message_is_draft() -> void:
 	for id: StringName in BattleText.TEMPLATE_IDS:
-		assert_eq(_text.is_draft(id), not fixed.has(id), String(id))
+		assert_false(_text.is_draft(id), String(id))
 
 
 func test_foe_is_named_alone() -> void:
@@ -380,22 +376,19 @@ func test_capture_card_texts_are_those_of_dossier_05() -> void:
 	assert_eq(_text.line_for(&"caught_title", caught, _data).to_upper(), "SALAMÈCHE CAPTURÉE !")
 
 
-## Jalon 6 : soin en combat, textes proposés (draft, à relire par Kevin).
+## Jalon 6 : soin en combat.
 func test_item_used_then_hp_restored() -> void:
 	var used := _event(K.ITEM_USED, false, "Salamèche")
 	used.item_name = "Potion"
 	used.amount = 20
 	assert_eq(_lines(used), ["Tu utilises Potion sur Salamèche.",
 		"Salamèche récupère 20 PV."] as Array[String])
-	assert_true(_text.is_draft(&"item_used"))
-	assert_true(_text.is_draft(&"hp_restored"))
 
 
-## Jalon 7 : « Tu remportes 280 ₽. » (draft), somme au format de l'argent du menu.
+## Jalon 7 : « Tu remportes 280 ₽. », somme au format de l'argent du menu.
 func test_prize_line() -> void:
 	assert_eq(_text.prize_line(280), "Tu remportes %s." % MenuFormat.money(280))
 	assert_eq(_text.prize_line(1400), "Tu remportes %s." % MenuFormat.money(1400))
-	assert_true(_text.is_draft(&"prize_won"), "à relire par Kevin")
 
 
 ## Bilan de fin de combat (demande n° 1) : « +11 XP », « Nv. 9 », gains de statistiques courts

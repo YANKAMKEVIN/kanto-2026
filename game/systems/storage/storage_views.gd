@@ -4,8 +4,8 @@ extends RefCounted
 ## [StorageRules] en textes (dossier 09 §8, §19 ; jalon-07.md §3.5). Classe pure, statique :
 ## appelée par MenuDirector (T16) à l'entrée de l'écran et après chaque action.
 ##
-## Libellés et textes **validés** (dossier 09 §19) sauf ceux marqués « draft » (lot de textes
-## du jalon-07.md §12, à relire par Kevin).
+## Libellés et textes **validés** (dossier 09 §19 ; les autres : lot de textes validé par Kevin
+## le 2026-10-06).
 
 const ACTION_DEPOSIT: StringName = &"deposit"
 const ACTION_WITHDRAW: StringName = &"withdraw"
@@ -25,14 +25,14 @@ const RELEASE_TITLE: String = "Libérer %s ?"
 const RELEASE_DETAIL: String = "Il quittera définitivement ton équipe et ton stockage."
 ## Raisons des refus.
 const LAST_POKEMON_TEXT: String = "Tu dois garder au moins un Pokémon avec toi."
-## draft (décision de Kevin du 2026-10-05) : il resterait des Pokémon, mais tous K.O.
+## Décision de Kevin du 2026-10-05 : il resterait des Pokémon, mais tous K.O.
 const LAST_ABLE_TEXT: String = "Tu dois garder au moins un Pokémon en état de combattre."
 const FAVORITE_TEXT: String = "Retire d'abord %s de tes favoris pour pouvoir le libérer."
-## draft (jalon-07.md §12, « Textes à relire »).
+## Équipe pleine (REPRENDRE).
 const PARTY_FULL_TEXT: String = "Ton équipe est déjà complète."
-## draft (jalon-07.md §12).
+## Stockage vide.
 const EMPTY_TEXT: String = "Le stockage est vide."
-## draft (décision de Kevin du 2026-10-05) : après une libération confirmée et réussie.
+## Décision de Kevin du 2026-10-05 : après une libération confirmée et réussie.
 const RELEASED_TEXT: String = "%s a été libéré."
 
 

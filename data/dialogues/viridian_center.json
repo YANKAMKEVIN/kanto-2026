@@ -33,8 +33,7 @@
 				"set": [
 					"storage_terminal_seen"
 				],
-				"action": "open_storage",
-				"draft": true
+				"action": "open_storage"
 			},
 			{
 				"action": "open_storage"
