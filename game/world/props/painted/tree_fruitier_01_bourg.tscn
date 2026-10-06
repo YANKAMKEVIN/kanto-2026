@@ -1,0 +1,16 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://game/world/props/prop.gd" id="1_jcwwt"]
+[ext_resource type="Material" path="res://game/world/lighting/materials/world_object_wind.tres" id="2_ydub6"]
+[ext_resource type="Texture2D" path="res://assets/world/props/tree_fruitier_01_bourg.png" id="3_kisqf"]
+
+[node name="TreeFruitier01Bourg" type="Node2D" unique_id=2035488339]
+script = ExtResource("1_jcwwt")
+fade_when_covering = true
+
+[node name="Sprite" type="Sprite2D" parent="." unique_id=1937924142]
+unique_name_in_owner = true
+material = ExtResource("2_ydub6")
+texture = ExtResource("3_kisqf")
+centered = false
+offset = Vector2(-160.5, -346)

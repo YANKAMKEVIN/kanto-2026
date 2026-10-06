@@ -1,14 +1,14 @@
 {
 	"traveler": {
-		"cell": [25, 38], "facing": "left", "sprite": "npc", "dialogue": "route_1_traveler",
+		"cell": [25, 38], "facing": "left", "sprite": "traveler", "dialogue": "route_1_traveler",
 		"route": { "cells": [[25, 37], [25, 38], [25, 39], [25, 38]], "pause": 1.2 }
 	},
 	"route_pidgey": {
-		"cell": [21, 39], "facing": "right", "sprite": "pidgey",
+		"cell": [22, 37], "facing": "right", "sprite": "pokemon/pidgey",
 		"shy": { "action": "fly", "radius": 2 }
 	},
 	"route_rattata": {
-		"cell": [15, 27], "facing": "right", "sprite": "rattata",
+		"cell": [15, 27], "facing": "right", "sprite": "pokemon/rattata",
 		"shy": { "action": "flee", "radius": 2 }
 	}
 }

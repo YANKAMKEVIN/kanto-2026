@@ -1,0 +1,16 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://game/world/props/prop.gd" id="1_8r63o"]
+[ext_resource type="Material" path="res://game/world/lighting/materials/world_object.tres" id="2_kx0mr"]
+[ext_resource type="Texture2D" path="res://assets/world/relief/relief_escalier_bois_01.png" id="3_j23e6"]
+
+[node name="ReliefEscalierBois01" type="Node2D" unique_id=577803496]
+script = ExtResource("1_8r63o")
+footprint = Array[Vector2i]([])
+
+[node name="Sprite" type="Sprite2D" parent="." unique_id=891400118]
+unique_name_in_owner = true
+material = ExtResource("2_kx0mr")
+texture = ExtResource("3_j23e6")
+centered = false
+offset = Vector2(-96, -240)

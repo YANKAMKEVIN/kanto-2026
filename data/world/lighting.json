@@ -23,5 +23,17 @@
 			"sun_direction": [-0.7, -0.7],
 			"contact": { "color": "#1f1a33", "alpha": 0.62 }
 		}
+	},
+	"maps": {
+		"viridian_city": "golden_hour",
+		"route_22": "golden_hour",
+		"viridian_center": "interior_warm",
+		"viridian_mart": "interior_warm",
+		"pallet_town": "golden_hour",
+		"route_1": "golden_hour",
+		"player_house_2f": "interior_warm",
+		"player_house_1f": "interior_warm",
+		"rival_house": "interior_warm",
+		"oak_lab": "interior_warm"
 	}
 }

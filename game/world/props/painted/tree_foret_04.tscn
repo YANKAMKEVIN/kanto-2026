@@ -1,0 +1,16 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://game/world/props/prop.gd" id="1_ty120"]
+[ext_resource type="Material" path="res://game/world/lighting/materials/world_object_wind.tres" id="2_g0ui8"]
+[ext_resource type="Texture2D" path="res://assets/world/props/tree_foret_04.png" id="3_o4wpe"]
+
+[node name="TreeForet04" type="Node2D" unique_id=659440798]
+script = ExtResource("1_ty120")
+footprint = Array[Vector2i]([])
+
+[node name="Sprite" type="Sprite2D" parent="." unique_id=627749099]
+unique_name_in_owner = true
+material = ExtResource("2_g0ui8")
+texture = ExtResource("3_o4wpe")
+centered = false
+offset = Vector2(-135, -288)

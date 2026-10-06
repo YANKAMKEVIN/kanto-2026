@@ -36,6 +36,8 @@ const REACT_DURATION: float = 0.28
 const SHADOW_REST_Y: float = -6.0
 ## Raison de blocage par défaut : celle du routeur de scènes (changement de carte).
 const REASON_TRANSITION: StringName = &"transition"
+## Bas de la bande d'herbe devant les jambes, sous l'origine (pieds), en px monde.
+const GRASS_FRONT_BOTTOM: float = 2.0
 ## Animations par direction : [immobile, marche, course].
 const _ANIMS: Dictionary[Vector2i, Array] = {
 	Vector2i.DOWN: [&"idle_down", &"walk_down", &"run_down"],
@@ -59,6 +61,10 @@ var _look: CharacterLook
 ## Hauteur courante du bond de surprise (px monde), animée par [member _react_tween].
 var _react_lift: float = 0.0
 var _react_tween: Tween
+## Bande d'herbe de la carte ([member GameMap.grass_front]) ; nulle = la bande provisoire.
+var _grass_front_texture: Texture2D
+## Bande provisoire de la scène (pixel ×2, NEAREST), gardée pour les cartes non peintes.
+var _default_grass_front: Texture2D
 
 @onready var _sprite: AnimatedSprite2D = %Sprite
 @onready var _camera: Camera2D = %Camera
@@ -69,6 +75,8 @@ var _react_tween: Tween
 func _ready() -> void:
 	add_to_group(GROUP)
 	_apply_look()
+	_default_grass_front = _grass_front.texture
+	_apply_grass_front()
 	get_viewport().size_changed.connect(_on_viewport_size_changed)
 	set_process(_mover != null)
 	if _mover != null:
@@ -119,6 +127,20 @@ func enter_map(grid: GridWorld, cell: Vector2i, facing: Vector2i, bounds: Rect2i
 		_update_jump_and_grass()
 		_camera.reset_smoothing()
 	facing_changed.emit(_mover.get_facing())
+
+
+## Bande d'herbe dessinée devant les jambes en hautes herbes : la moitié basse des touffes
+## peintes de la carte ([member GameMap.grass_front], filtre LINEAR, à 1:1), ou la bande
+## provisoire si [param texture] est nulle. Bas de la bande juste sous les pieds.
+func set_grass_front(texture: Texture2D) -> void:
+	_grass_front_texture = texture
+	if is_node_ready():
+		_apply_grass_front()
+
+
+## Texture de la bande d'herbe affichée devant les jambes.
+func get_grass_front_texture() -> Texture2D:
+	return _grass_front.texture if _grass_front != null else null
 
 
 ## Bloque ([param enabled] faux) ou débloque les entrées pour [param reason]. Le joueur est
@@ -271,6 +293,20 @@ func _update_jump_and_grass() -> void:
 	if _grass_front != null:
 		_grass_front.visible = not jumping and _grid != null \
 			and _grid.is_tall_grass(_mover.get_target_cell())
+
+
+func _apply_grass_front() -> void:
+	if _grass_front == null:
+		return
+	var texture := _grass_front_texture
+	var painted := texture != null
+	if not painted:
+		texture = _default_grass_front
+	_grass_front.texture = texture
+	_grass_front.texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR if painted \
+		else CanvasItem.TEXTURE_FILTER_NEAREST
+	if texture != null:
+		_grass_front.position = Vector2(0.0, GRASS_FRONT_BOTTOM - texture.get_height() / 2.0)
 
 
 ## SpriteFrames, échelle et filtre de l'apparence ([CharacterLook]) ; pieds sur l'origine.

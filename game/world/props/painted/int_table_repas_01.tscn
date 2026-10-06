@@ -1,0 +1,16 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://game/world/props/prop.gd" id="1_crbu6"]
+[ext_resource type="Material" path="res://game/world/lighting/materials/world_object.tres" id="2_sk5jx"]
+[ext_resource type="Texture2D" path="res://assets/world/interiors/int_table_repas_01.png" id="3_ikcml"]
+
+[node name="IntTableRepas01" type="Node2D" unique_id=1053635810]
+script = ExtResource("1_crbu6")
+footprint = Array[Vector2i]([Vector2i(-1, -1), Vector2i(0, -1), Vector2i(1, -1), Vector2i(-1, 0), Vector2i(0, 0), Vector2i(1, 0)])
+
+[node name="Sprite" type="Sprite2D" parent="." unique_id=167608120]
+unique_name_in_owner = true
+material = ExtResource("2_sk5jx")
+texture = ExtResource("3_ikcml")
+centered = false
+offset = Vector2(-144, -251)
