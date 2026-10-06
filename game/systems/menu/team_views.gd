@@ -4,7 +4,7 @@ extends RefCounted
 ## dit où va la sélection après un échange. Classe pure, statique : appelée par MenuDirector
 ## (T8) à chaque visite de l'Équipe et après chaque action (échange, favori).
 ##
-## Textes d'interface provisoires (règle 4) : noms des statistiques, libellés de l'Histoire.
+## Textes d'interface validés par Kevin le 2026-10-06 : noms des statistiques, libellés de l'Histoire.
 
 ## Noms des statistiques de l'Aperçu, dans l'ordre de [constant SpeciesData.STATS].
 const STAT_NAMES: Dictionary[StringName, String] = {

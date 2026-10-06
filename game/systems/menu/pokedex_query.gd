@@ -23,7 +23,7 @@ enum Filter { ALL, SEEN, CAUGHT, HABITAT }
 const TITLE: String = "Pokédex"
 ## Libellés des filtres, dans l'ordre de [enum Filter] (casse de la maquette, refonte T4).
 const FILTER_LABELS: PackedStringArray = ["Tous", "Vus", "Capturés", "Habitats"]
-## Textes d'interface provisoires (règle 4).
+## Textes d'interface validés par Kevin le 2026-10-06.
 const COUNTS_SPECIES_FORMAT: String = "%s · %d espèces"
 const EMPTY_TEXT: String = "Aucune espèce ne correspond."
 const NO_SPECIES_TEXT: String = "Aucune espèce enregistrée."

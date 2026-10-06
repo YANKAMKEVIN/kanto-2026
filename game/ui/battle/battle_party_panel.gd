@@ -32,7 +32,7 @@ signal pokemon_selected(index: int)
 signal pokemon_refused(index: int, reason: String)
 
 const TITLE_ICON: Texture2D = preload("res://assets/ui/icons/battle/team.svg")
-## Textes d'interface (provisoires).
+## Textes d'interface (validés par Kevin le 2026-10-06).
 const TITLE := "ÉQUIPE"
 const SEND_TEXT := "ENVOYER"
 

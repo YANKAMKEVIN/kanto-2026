@@ -4,7 +4,7 @@ extends RefCounted
 ## §3.8, §6.12). Pur : ni nœud, ni fichier.
 ##
 ## Catégories dans l'ordre du dossier 08 §7, sans AUDIO (Q-17) : JEU, COMMANDES,
-## ACCESSIBILITÉ, GRAPHISMES. Textes d'interface provisoires (règle 4), à relire en lot.
+## ACCESSIBILITÉ, GRAPHISMES. Textes d'interface validés par Kevin le 2026-10-06.
 
 const CATEGORY_GAME: StringName = &"game"
 const CATEGORY_CONTROLS: StringName = &"controls"

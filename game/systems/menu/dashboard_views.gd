@@ -7,7 +7,7 @@ extends RefCounted
 const OBJECTIVE_PREFIX: String = "Objectif : "
 ## Sous-titre de la carte du Dresseur.
 const PLAYER_TITLE: String = "Dresseur Pokémon"
-## Titre et ligne de description de chaque carte (textes d'interface, provisoires : règle 4).
+## Titre et ligne de description de chaque carte (textes d'interface validés par Kevin le 2026-10-06).
 ## Pas d'AUDIO aux Paramètres (Q-17).
 const CARD_TEXTS: Dictionary[StringName, Array] = {
 	MenuRoute.TEAM: ["Équipe", "Tes Pokémon et leurs capacités."],

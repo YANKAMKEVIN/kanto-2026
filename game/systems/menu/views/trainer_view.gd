@@ -10,7 +10,7 @@ extends RefCounted
 
 ## Nombre d'emplacements de badges (toujours tous affichés, Q-13).
 const BADGE_COUNT: int = 8
-## Libellés de l'écran (textes d'interface provisoires, règle 4 ; à relire avec le lot du J6).
+## Libellés de l'écran (textes d'interface validés par Kevin le 2026-10-06).
 const BADGES_TITLE: String = "Badges"
 const MOMENTS_TITLE: String = "Grands moments"
 const STATS_TITLE: String = "Statistiques"

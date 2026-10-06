@@ -12,7 +12,7 @@ extends RefCounted
 enum Kind { NONE, NEW_SPECIES, NEW_HABITAT, NEW_NOTE, EVOLUTION_DISCOVERED }
 
 ## Titre du toast de chaque genre (le détail est le nom de l'espèce). Textes d'interface
-## provisoires (dossier 08 §4).
+## validés par Kevin le 2026-10-06 (dossier 08 §4).
 const TITLES: Dictionary[Kind, String] = {
 	Kind.NEW_SPECIES: "Pokédex mis à jour",
 	Kind.NEW_HABITAT: "Nouvel habitat observé",
