@@ -59,6 +59,13 @@ Avant d'étendre Kanto. Chaque entrée du menu devient un vrai système (UI 2026
 Nouveaux Pokémon, premiers vrais Dresseurs, poison / antidotes, plus d'objets, capture plus
 intéressante, équipe qui se construit, premier apprentissage de nouvelles capacités, premières
 évolutions selon les niveaux.
+- **Poison seul au J9** (décision de Kevin, 2026-10-06, dossier 10) : persistant après le combat,
+  **aucun dégât en marchant**, guéri par Antidote ou Centre. Les autres statuts arrivent au J11.
+- **Premières évolutions au J9** : séquence simple mais propre et **définitive fonctionnellement**,
+  avec annulation ; le J11 n'enrichit que la mise en scène, sans refaire la logique métier.
+- **Contraintes de la Route 2 (J8)** : **aucun Dresseur avant la Forêt de Jade** (le Scout Léo
+  reste le premier vrai Dresseur) ; la Route 2 est **interrompue par la forêt** et ne permet pas
+  de la contourner lors de la première progression.
 
 ### Phase 6 — Argenta + première Arène (J10)
 Ville d'Argenta (musée, habitants, Centre, Boutique, Arène). **Système de badges** : victoire →
@@ -66,10 +73,12 @@ Badge Roche → profil dresseur mis à jour, progression narrative, réactions d
 boucle longue : Bourg Palette → routes → captures → ville → préparation → Arène → badge.
 
 ### Phase 7 — Systèmes avancés Pokémon (J11) — grande passe avant d'étendre Kanto
-- **Évolutions** jouables et visibles (montée de niveau → « Salamèche évolue ! », animation 2026,
+- **Évolutions** : la logique et une séquence propre existent depuis le J9 ; ici, présentation
+  enrichie (montée de niveau → « Salamèche évolue ! », animation 2026,
   annulation possible, nouvelles stats, Pokédex).
 - **CT** : trouver, Sac → CT, Pokémon compatibles, apprentissage.
-- **Statuts complets** : poison, paralysie, sommeil, brûlure, gel.
+- **Statuts complets** : paralysie, sommeil, brûlure, gel, et système général des statuts
+  (le poison existe depuis le J9).
 - **Changement de Pokémon en combat** (équipe → choisir → transition).
 - **Compagnon Pokémon** : sortir de sa Ball et suivre le joueur, proprement (comportements par
   espèce, vitesse, obstacles, intérieurs, réactions, animations, rappel automatique, interactions).
