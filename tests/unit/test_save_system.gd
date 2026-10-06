@@ -15,6 +15,10 @@ const FIXTURE_V2 := "res://tests/fixtures/save/v2_kevin_j6.json"
 ## Vraie partie de Kevin en **fin de J6** (S24, relevée à l'étape 1 du T1 du J7 :
 ## `integ-j7/build/qa/jalon07_t1/save_v2_kevin.json`, copie exacte ; 13 h 57 de jeu).
 const FIXTURE_V2_END := "res://tests/fixtures/save/v2_kevin_j6_fin.json"
+## Vraie partie de Kevin en **fin de J7** (v3) : QA finale du J7 sur le S21, sans départ de
+## débogage (`integ-j7/build/qa/jalon07_final_s21/save_final.json`, copie exacte) ; Centre de
+## Jadielle (7, 5), 4 Pokémon, Pokédex activé, 2 100 ₽, 20 h 12 de jeu (jalon-09.md §2.2).
+const FIXTURE_V3 := "res://tests/fixtures/save/v3_kevin_j7_fin.json"
 
 var _fs: SaveFileSystem
 var _save: SaveSystem
@@ -170,24 +174,25 @@ func test_newer_version_is_refused_and_left_untouched() -> void:
 	assert_false(_fs.exists(PATH + ".corrupt"))
 
 
-func test_a_v4_save_is_refused_and_left_untouched() -> void:
-	# Jalon 7 : cette build écrit la v3 ; une v4 (build future) n'est jamais lue ni écrasée.
-	var future := _fixture_v2()
-	future["version"] = 4
+func test_a_v5_save_is_refused_and_left_untouched() -> void:
+	# Jalon 9 : cette build écrit la v4 ; une v5 (build future) n'est jamais lue ni écrasée.
+	var future: Dictionary = JSON.parse_string(FileAccess.get_file_as_string(FIXTURE_V3))
+	future["version"] = 5
 	var text := JSON.stringify(future, "\t")
 	(_fs as MemoryFs).files[PATH] = text
 	assert_eq(_save.read(), {})
 	assert_eq(_save.last_status, ERR_INVALID_DATA)
-	assert_true(_save.last_error.contains("4 > 3"), _save.last_error)
+	assert_eq(_save.read_version, 0, "aucune lecture réussie")
+	assert_true(_save.last_error.contains("5 > 4"), _save.last_error)
 	assert_eq((_fs as MemoryFs).files[PATH], text, "fichier intact")
 	assert_false(_fs.exists(PATH + ".corrupt"))
 
 
-func test_a_v3_save_is_refused_by_a_build_that_writes_v1() -> void:
-	# Ce que fait un APK du jalon 5 (VERSION = 1) devant la sauvegarde du J7 : refus, intacte.
+func test_the_current_save_is_refused_by_a_build_that_writes_v1() -> void:
+	# Ce que fait un APK du jalon 5 (VERSION = 1) devant la sauvegarde du J9 : refus, intacte.
 	assert_eq(_save.write(_full_state().to_dict()), OK)
 	var written: String = (_fs as MemoryFs).files[PATH]
-	assert_eq(int((JSON.parse_string(written) as Dictionary)["version"]), 3, "écrite en v3")
+	assert_eq(int((JSON.parse_string(written) as Dictionary)["version"]), 4, "écrite en v4")
 	var old_build := SaveSystem.new(_fs, PATH)
 	old_build.version = 1
 	assert_eq(old_build.read(), {})
@@ -394,12 +399,13 @@ func test_invalid_storage_entries_are_discarded() -> void:
 
 # --- Version 2 (jalon 6, T0 : jalon-06.md §5.1) ---------------------------------------------
 
-func test_the_real_v1_save_is_migrated_to_v3_on_read() -> void:
-	# 1 → 2 → 3 enchaînées (jalon 6 puis jalon 7).
+func test_the_real_v1_save_is_migrated_to_the_current_version_on_read() -> void:
+	# 1 → 2 → 3 → 4 enchaînées (jalons 6, 7 et 9).
 	(_fs as MemoryFs).files[PATH] = FileAccess.get_file_as_string(FIXTURE_V1)
 	var content := _save.read()
 	assert_eq(_save.last_status, OK)
-	assert_eq(int(content["version"]), 3, "migrée en v3")
+	assert_eq(int(content["version"]), 4, "migrée en v4")
+	assert_eq(_save.read_version, 1, "lue en v1")
 	assert_eq(content["money"], 3000)
 	assert_eq(content["first_wild_encounter"], {"species": "pidgey", "map": "route_1",
 		"date": "2026-10-02T19:10:43"}, "Roucool, vu d'abord sur la Route 1")
@@ -451,7 +457,9 @@ func test_the_real_v1_save_loads_identically_after_migration() -> void:
 	for i: int in party.size():
 		var expected: Dictionary = party[i].duplicate(true)
 		expected["favorite"] = false
-		assert_eq(after["party"][i], expected, "Pokémon %d identique, favori en plus" % i)
+		expected["status"] = ""
+		assert_eq(after["party"][i], expected,
+			"Pokémon %d identique, favori (v2) et statut vide (v4) en plus" % i)
 	var dex: Dictionary = before["pokedex"]["entries"].duplicate(true)
 	for species: String in dex:
 		dex[species]["notes"] = []
@@ -461,14 +469,14 @@ func test_the_real_v1_save_loads_identically_after_migration() -> void:
 		"aucun champ perdu (sauf version), argent et première rencontre en plus")
 
 
-func test_a_migrated_v1_save_is_rewritten_in_v3_and_reads_back_identically() -> void:
+func test_a_migrated_v1_save_is_rewritten_in_v4_and_reads_back_identically() -> void:
 	(_fs as MemoryFs).files[PATH] = FileAccess.get_file_as_string(FIXTURE_V1)
 	var state := _state()
 	assert_true(state.load_dict(_save.read(), _data))
 	var dict: Dictionary = state.to_dict()
 	assert_eq(_save.write(dict), OK)
 	var written: Dictionary = JSON.parse_string((_fs as MemoryFs).files[PATH])
-	assert_eq(int(written["version"]), 3)
+	assert_eq(int(written["version"]), 4)
 	assert_true((written["bag"] as Dictionary).has("items"), "Sac écrit en v2")
 	var again := _state()
 	assert_true(again.load_dict(_save.read(), _data))
@@ -516,28 +524,40 @@ func test_upgrade_1_to_2_leaves_v2_shapes_and_malformed_fields_alone() -> void:
 
 # --- Version 3 (jalon 7, T0 : jalon-07.md §5.1) ---------------------------------------------
 
-## Le contenu d'une sauvegarde sans ce que la v3 ajoute (pour comparer à la v2).
+## Le contenu d'une sauvegarde sans ce que la v3 et la v4 ajoutent (pour comparer à la v2).
 func _without_v3(content: Dictionary) -> Dictionary:
-	var copy: Dictionary = _json(content)
-	for key: String in ["version", "money", "first_wild_encounter"]:
+	var copy := _without_v4(content)
+	for key: String in ["money", "first_wild_encounter"]:
 		copy.erase(key)
 	return copy
 
 
-func test_the_real_v2_save_is_migrated_to_v3_on_read() -> void:
+## Le contenu d'une sauvegarde sans ce que la v4 ajoute (pour comparer à la v3) : la version et
+## le statut (« status ») de chaque Pokémon de l'équipe et du stockage.
+func _without_v4(content: Dictionary) -> Dictionary:
+	var copy: Dictionary = _json(content)
+	copy.erase("version")
+	for key: String in ["party", "storage"]:
+		for member: Variant in JsonFields.get_array(copy, key):
+			if member is Dictionary:
+				(member as Dictionary).erase("status")
+	return copy
+
+
+func test_the_real_v2_save_is_migrated_to_the_current_version_on_read() -> void:
 	var v2 := _fixture_v2()
 	assert_eq(int(v2["version"]), 2, "la fixture est bien une v2")
 	(_fs as MemoryFs).files[PATH] = FileAccess.get_file_as_string(FIXTURE_V2)
 	var content := _save.read()
 	assert_eq(_save.last_status, OK, _save.last_error)
-	assert_eq(int(content["version"]), 3, "migrée en v3")
+	assert_eq(int(content["version"]), 4, "migrée en v4")
 	assert_eq(content["money"], 3000, "3 000 ₽ (dossier 09 §17)")
 	assert_eq(content["first_wild_encounter"], {"species": "pidgey", "map": "route_1",
 		"date": "2026-10-02T20:51:16"}, "Roucool : première espèce vue sur la Route 1")
 	assert_eq(_without_v3(content), _without_v3(v2), "rien d'autre ne change")
 
 
-func test_the_real_v2_save_loads_and_is_rewritten_identically_in_v3() -> void:
+func test_the_real_v2_save_loads_and_is_rewritten_identically_in_v4() -> void:
 	var v2 := _fixture_v2()
 	(_fs as MemoryFs).files[PATH] = FileAccess.get_file_as_string(FIXTURE_V2)
 	var state := _state()
@@ -556,28 +576,29 @@ func test_the_real_v2_save_loads_and_is_rewritten_identically_in_v3() -> void:
 	assert_eq(state.money, 3000)
 	assert_eq(state.first_wild_species(), &"pidgey")
 	assert_eq(state.play_time, 3732.01731968654)
-	# Réécrite : tout ce que la v2 avait, à l'identique, plus les deux champs de la v3.
+	# Réécrite : tout ce que la v2 avait, à l'identique, plus les deux champs de la v3 et le
+	# statut (vide) de la v4.
 	assert_eq(_save.write(state.to_dict()), OK)
 	var written: Dictionary = JSON.parse_string((_fs as MemoryFs).files[PATH])
-	assert_eq(int(written["version"]), 3)
+	assert_eq(int(written["version"]), 4)
 	assert_eq(written["money"], 3000.0)
 	assert_eq(written["first_wild_encounter"]["species"], "pidgey")
 	assert_eq(_without_v3(written), _without_v3(v2), "tout le reste réécrit à l'identique")
 	assert_eq(written.keys().size(), v2.keys().size() + 2, "aucun champ perdu")
 	var again := _state()
 	assert_true(again.load_dict(_save.read(), _data))
-	assert_eq(again.to_dict(), state.to_dict(), "aller-retour v3 stable")
+	assert_eq(again.to_dict(), state.to_dict(), "aller-retour v4 stable")
 
 
 ## T1 du J7 : la vraie partie de fin de J6 (Potion favorite à 0, notes, OBSERVER faits).
-func test_the_real_end_of_j6_save_migrates_to_v3_and_rewrites_identically() -> void:
+func test_the_real_end_of_j6_save_migrates_to_v4_and_rewrites_identically() -> void:
 	var text := FileAccess.get_file_as_string(FIXTURE_V2_END)
 	var v2: Dictionary = JSON.parse_string(text)
 	assert_eq(int(v2["version"]), 2, "la fixture est bien une v2")
 	(_fs as MemoryFs).files[PATH] = text
 	var content := _save.read()
 	assert_eq(_save.last_status, OK, _save.last_error)
-	assert_eq(int(content["version"]), 3)
+	assert_eq(int(content["version"]), 4)
 	assert_eq(content["money"], 3000)
 	assert_eq(content["first_wild_encounter"], {"species": "pidgey", "map": "route_1",
 		"date": "2026-10-02T20:51:16"}, "Roucool : première espèce vue sur la Route 1")
@@ -594,7 +615,7 @@ func test_the_real_end_of_j6_save_migrates_to_v3_and_rewrites_identically() -> v
 	assert_eq(state.money, 3000)
 	assert_eq(_save.write(state.to_dict()), OK)
 	var written: Dictionary = JSON.parse_string((_fs as MemoryFs).files[PATH])
-	assert_eq(int(written["version"]), 3)
+	assert_eq(int(written["version"]), 4)
 	assert_eq(_without_v3(written), _without_v3(v2), "tout le reste réécrit à l'identique")
 	assert_eq(written.keys().size(), v2.keys().size() + 2, "aucun champ perdu")
 
@@ -614,8 +635,8 @@ func test_v3_round_trip_keeps_money_and_the_first_wild_encounter() -> void:
 		"date": "2026-10-02T14:03:05"})
 
 
-func test_a_v3_save_is_refused_by_a_j6_build_and_left_untouched() -> void:
-	# Ce que fait l'APK du jalon 6 (VERSION = 2) devant la sauvegarde du J7 : refus, intacte,
+func test_the_current_save_is_refused_by_a_j6_build_and_left_untouched() -> void:
+	# Ce que fait l'APK du jalon 6 (VERSION = 2) devant la sauvegarde du J9 : refus, intacte,
 	# pas mise de côté comme corrompue (le J6 ne la lit jamais, donc ne l'écrase jamais).
 	(_fs as MemoryFs).files[PATH] = FileAccess.get_file_as_string(FIXTURE_V2)
 	var state := _state()
@@ -627,7 +648,7 @@ func test_a_v3_save_is_refused_by_a_j6_build_and_left_untouched() -> void:
 	j6_build.version = 2
 	assert_eq(j6_build.read(), {})
 	assert_eq(j6_build.last_status, ERR_INVALID_DATA)
-	assert_true(j6_build.last_error.contains("3 > 2"), j6_build.last_error)
+	assert_true(j6_build.last_error.contains("4 > 2"), j6_build.last_error)
 	assert_eq((_fs as MemoryFs).files[PATH], written, "fichier intact")
 	assert_eq((_fs as MemoryFs).journal.size(), 0, "aucune écriture, aucun renommage")
 	assert_false(_fs.exists(PATH + ".corrupt"))
@@ -635,7 +656,7 @@ func test_a_v3_save_is_refused_by_a_j6_build_and_left_untouched() -> void:
 
 func test_upgrade_2_to_3_adds_only_money_and_the_first_wild_encounter() -> void:
 	var bare := {"version": 2}
-	assert_eq(SaveSystem.upgrade(bare), OK)
+	assert_eq(SaveSystem.upgrade(bare, 3), OK)
 	assert_eq(bare, {"version": 3, "money": 3000, "first_wild_encounter": {}},
 		"aucune rencontre connue : vide (Chen omet sa réplique)")
 	var kept := {"version": 2, "money": 42, "first_wild_encounter": {"species": "rattata"}}
@@ -647,6 +668,132 @@ func test_upgrade_2_to_3_adds_only_money_and_the_first_wild_encounter() -> void:
 	assert_eq(SaveSystem.upgrade(odd), OK, "rien ne plante")
 	assert_eq(odd["first_wild_encounter"], {})
 	assert_eq(odd["pokedex"], "x", "mal formé : laissé aux chargeurs tolérants")
+
+
+# --- Version 4 (jalon 9, T2 : jalon-09.md §2.2) : statut des Pokémon -------------------------
+
+func _fixture_v3() -> Dictionary:
+	var parsed: Variant = JSON.parse_string(FileAccess.get_file_as_string(FIXTURE_V3))
+	assert_true(parsed is Dictionary, "fixture v3 lisible")
+	return parsed if parsed is Dictionary else {}
+
+
+func test_upgrade_3_to_4_changes_nothing_but_the_version() -> void:
+	var bare := {"version": 3}
+	assert_eq(SaveSystem.upgrade(bare), OK)
+	assert_eq(bare, {"version": 4}, "aucun champ inventé")
+	var content := {"version": 3, "party": [{"species": "pidgey"}, 7], "storage": "x"}
+	assert_eq(SaveSystem.upgrade(content), OK)
+	assert_eq(content, {"version": 4, "party": [{"species": "pidgey"}, 7], "storage": "x"},
+		"aucun « status » ajouté : absent = aucun statut (Pokemon.from_dict)")
+
+
+func test_migration_note() -> void:
+	assert_eq(SaveSystem.migration_note(3, 4), "sauvegarde v3 → v4")
+	assert_eq(SaveSystem.migration_note(1, 4), "sauvegarde v1 → v4")
+	assert_eq(SaveSystem.migration_note(4, 4), "", "déjà à jour : rien")
+
+
+func test_the_real_v3_save_is_migrated_to_v4_on_read_without_any_change() -> void:
+	var v3 := _fixture_v3()
+	assert_eq(int(v3["version"]), 3, "la fixture est bien une v3")
+	(_fs as MemoryFs).files[PATH] = FileAccess.get_file_as_string(FIXTURE_V3)
+	var content := _save.read()
+	assert_eq(_save.last_status, OK, _save.last_error)
+	assert_eq(int(content["version"]), 4, "migrée en v4")
+	assert_eq(_save.read_version, 3, "lue en v3 : le journal note la migration")
+	assert_eq(_without_v4(content), _without_v4(v3), "rien d'autre ne change")
+	assert_false((_fs as MemoryFs).files.has(PATH + SaveSystem.CORRUPT_SUFFIX))
+
+
+func test_the_real_v3_save_loads_with_no_status_and_is_rewritten_identically_in_v4() -> void:
+	var v3 := _fixture_v3()
+	(_fs as MemoryFs).files[PATH] = FileAccess.get_file_as_string(FIXTURE_V3)
+	var state := _state()
+	assert_true(state.load_dict(_save.read(), _data), "rien d'écarté")
+	# La partie de Kevin (fin du J7), lue directement.
+	assert_eq(state.current_map, &"viridian_center")
+	assert_eq(state.player_cell, Vector2i(7, 5))
+	assert_eq(state.player_facing, Vector2i.UP)
+	var summary: Array = []
+	for pokemon: Pokemon in state.party.get_all():
+		summary.append([pokemon.species_id, pokemon.level, pokemon.hp, pokemon.experience,
+			pokemon.status])
+	assert_eq(summary, [[&"charmander", 8, 25, 336, &""], [&"pidgey", 3, 16, 92, &""],
+		[&"rattata", 3, 15, 62, &""], [&"nidoran_m", 3, 16, 57, &""]],
+		"équipe, ordre, Nv., PV, XP ; aucun statut")
+	assert_eq(state.money, 2100)
+	assert_true(state.flags.has_flag(&"pokedex_activated"))
+	assert_eq(state.pokedex.seen_count(), 5)
+	assert_eq(state.heal_map, &"viridian_center", "point de repos : le Centre")
+	assert_eq(state.first_wild_species(), &"pidgey")
+	assert_eq(state.play_time, float(v3["play_time"]), "temps de jeu")
+	# Réécrite : tout ce que la v3 avait, à l'identique, plus « status » vide sur chaque Pokémon.
+	assert_eq(_save.write(state.to_dict()), OK)
+	var written: Dictionary = JSON.parse_string((_fs as MemoryFs).files[PATH])
+	assert_eq(int(written["version"]), 4)
+	for member: Dictionary in written["party"]:
+		assert_eq(member.get("status"), "", "statut écrit vide")
+	assert_eq(_without_v4(written), _without_v4(v3), "tout le reste réécrit à l'identique")
+	assert_eq(written.keys().size(), v3.keys().size(), "aucun champ perdu ni ajouté")
+	var again := _state()
+	assert_true(again.load_dict(_save.read(), _data))
+	assert_eq(_save.read_version, 4, "relue en v4 : plus de migration")
+	assert_eq(again.to_dict(), state.to_dict(), "aller-retour v4 stable")
+
+
+func test_v4_round_trip_keeps_poisoned_party_and_storage_members() -> void:
+	var original := _full_state()
+	original.party.get_lead().status = StatusRules.POISON
+	var rattata := PokemonFactory.create(_data, &"rattata", 3, GameRng.new(5))
+	rattata.status = StatusRules.POISON
+	original.storage.add(rattata)
+	var before: Dictionary = original.to_dict()
+	assert_eq(_save.write(before), OK)
+	var text: String = (_fs as MemoryFs).files[PATH]
+	assert_string_contains(text, '"status": "poison"')
+	var loaded := _state()
+	assert_true(loaded.load_dict(_save.read(), _data), "rien d'écarté")
+	assert_eq(loaded.to_dict(), before, "même état après rechargement")
+	assert_eq(loaded.party.get_lead().status, StatusRules.POISON, "équipe")
+	assert_eq(loaded.party.get_at(1).status, StatusRules.NONE)
+	assert_eq(loaded.storage.get_at(0).status, StatusRules.POISON, "stockage")
+	# Relue puis réécrite : identique octet pour octet.
+	assert_eq(_save.write(loaded.to_dict()), OK)
+	assert_eq((_fs as MemoryFs).files[PATH], text, "réécriture identique")
+
+
+func test_a_v4_save_is_refused_by_a_j7_build_and_left_untouched() -> void:
+	# Ce que fait l'APK du jalon 7 / 8 (VERSION = 3) devant la sauvegarde du J9 : refus, intacte,
+	# pas mise de côté comme corrompue ; il ne la lit jamais, donc n'efface jamais un statut.
+	(_fs as MemoryFs).files[PATH] = FileAccess.get_file_as_string(FIXTURE_V3)
+	var state := _state()
+	assert_true(state.load_dict(_save.read(), _data))
+	state.party.get_lead().status = StatusRules.POISON
+	assert_eq(_save.write(state.to_dict()), OK)
+	var written: String = (_fs as MemoryFs).files[PATH]
+	(_fs as MemoryFs).journal.clear()
+	var j7_build := SaveSystem.new(_fs, PATH)
+	j7_build.version = 3
+	assert_eq(j7_build.read(), {})
+	assert_eq(j7_build.last_status, ERR_INVALID_DATA)
+	assert_true(j7_build.last_error.contains("4 > 3"), j7_build.last_error)
+	assert_eq((_fs as MemoryFs).files[PATH], written, "fichier intact")
+	assert_eq((_fs as MemoryFs).journal.size(), 0, "aucune écriture, aucun renommage")
+	assert_false(_fs.exists(PATH + SaveSystem.CORRUPT_SUFFIX))
+
+
+func test_a_v4_save_with_an_unknown_status_loads_without_it() -> void:
+	# Fichier retouché ou statut d'une build future en v4 : le Pokémon est gardé, sans statut.
+	var dict: Dictionary = _full_state().to_dict()
+	dict["party"][0]["status"] = "paralysis"
+	assert_eq(_save.write(dict), OK)
+	var loaded := _state()
+	assert_true(loaded.load_dict(_save.read(), _data), "rien d'écarté")
+	assert_eq(loaded.party.size(), 2)
+	assert_eq(loaded.party.get_lead().status, StatusRules.NONE)
+	assert_push_warning_count(1)
+	assert_push_error_count(0)
 
 
 # --- Rattrapage de la première espèce sauvage (§5.1) -----------------------------------------

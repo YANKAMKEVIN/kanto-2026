@@ -377,6 +377,7 @@ Branche d'intégration `jalon-09` (cette copie) ; une branche par tâche, chacun
 #### T2 — architecte : sauvegarde v4 (9A.1) — parallèle à T0 / T1
 - §2.2 ; `Pokemon.status`, `cure_status`, `heal_full` ; `StatusRules` (constantes et `KNOWN` seulement) ; `DebugStart` (`status`) ; `tools/debug_start/save_v4_qa.json` (Salamèche N9 empoisonné, Roucool N7, à Jadielle devant le Centre).
 - **CA** : tests §2.2 verts ; `[qa]` au chargement : « sauvegarde v3 → v4 » une fois.
+- **Fait (2026-10-07, branche `j9-t2-sauvegarde-v4`)** : voir §6.1 (écarts) ; procédure exacte du T3 au §6.2.
 
 #### T3 — qa-mobile : validation 9A.1 sur S24 → Kevin
 - APK actuel (v3) : partie avancée → installer l'APK du J9 → reprise intacte (équipe, Sac, argent, position, Pokédex) ; départ `save_v4_qa` : statut relu après fermeture forcée (journal `[qa]`, fichier `save.json` relevé par `adb`) ; réinstaller l'APK v3 → refus propre, fichier intact.
@@ -543,3 +544,35 @@ Valeurs par défaut notées (règle 4), à corriger d'un mot si besoin :
 | Budget | ≤ 3 000 nœuds ; changement de carte ≤ 1,5 × Jadielle ; moyenne ≥ 58 fps, creux ≥ 50 |
 | Chemin principal | 220 à 280 pas |
 | Carte de QA | `qa_forest_systems`, hors zone, retirée au T23 |
+
+---
+
+## 6. Écarts au plan et contrats (tâches faites)
+
+### 6.1 T2 — sauvegarde v4 (2026-10-07)
+
+Fait comme au §2.2 (`Pokemon.status` / `has_status` / `cure_status`, `heal_full` efface le statut, `StatusRules` réduit à `NONE` / `POISON` / `KNOWN` + `is_known`, `SaveSystem.VERSION = 4`, migration 3 → 4 **sans aucune transformation**, `DebugStart` clé de membre `status`, départ `save_v4_qa`). Écarts et ajouts :
+
+1. **Fixture v3 réelle** : `tests/fixtures/save/v3_kevin_j7_fin.json` = copie exacte de `integ-j7/build/qa/jalon07_final_s21/save_final.json` (la vraie partie de Kevin à la fin de la QA finale du J7, jouée sur le S21 **sans** départ de débogage : Centre de Jadielle (7, 5), Salamèche N8, Roucool, Rattata, Nidoran ♂ N3, 2 100 ₽, Pokédex activé, 72 722 s). Aucune copie de la partie du S24 en v3 n'existe sur le Mac : le T3 la relève (étape 1) et la fait passer sur le Mac avant toute installation.
+2. **Départ de débogage qui écrit la sauvegarde** (ajout nécessaire au T3) : un départ de débogage ne lisait ni n'écrivait jamais la sauvegarde, donc « statut relu après fermeture forcée » était impossible. Nouvelle clé racine **`"autosave": true`** (faux par défaut) : le départ **remplace `user://save.json`** (autosave actif pour la session ; Boot l'annonce au journal : « la sauvegarde n'est pas lue, elle sera REMPLACÉE »). Seul `save_v4_qa.json` l'a. Tous les autres départs gardent la garantie d'origine (test existant inchangé).
+3. **Journal `[qa]`** (build debug, `Boot._log_loaded_save`) : `[qa] sauvegarde vN → v4` une seule fois, au chargement d'un fichier plus ancien (`SaveSystem.read_version`, version lue avant migration ; `SaveSystem.migration_note`) ; **en plus**, une ligne `[qa] statut relu : <nom> (équipe|stockage <n>) <statut>` par Pokémon ayant un statut, puisque « PSN » n'est affiché qu'au T5.
+4. **Statut inconnu ou mal formé** dans un fichier (`"paralysis"`, nombre, `null`…) : Pokémon gardé sans statut + `push_warning` (jamais d'erreur, jamais `.rejected`). Statut absent (v3) : aucun, sans avertissement.
+5. `DebugStart` refuse un `status` inconnu (validation stricte comme les autres clés) ; `describe()` affiche `charmander N9 (poison)` et « (remplace la sauvegarde) ».
+6. Tests existants recalés sur la v4 (attendus « v3 » → « v4 », comparaisons « rien d'autre ne change » qui ignorent maintenant le `status` vide écrit sur chaque Pokémon) ; `test_upgrade_2_to_3_…` migre explicitement jusqu'à 3.
+
+Valeurs par défaut (règle 4) : `save_v4_qa` = Salamèche N9 empoisonné PV pleins, Roucool N7, 3 Poké Balls, 2 Potions, 3 000 ₽, drapeaux du départ `center_qa` (prologue fait, Jadielle découverte), spawn `from_center` face au sud ; aucun Centre enregistré (point de repos : chez Maman).
+
+### 6.2 Procédure du T3 (qa-mobile, S24, 9A.1 validée seule)
+
+Variables : `PKG=dev.kevin.kanto2026`, `ADB=$HOME/Library/Android/sdk/platform-tools/adb`, `S=$(tools/s24_serial.sh)`, dossier `build/qa/jalon09_t3/`. **Jamais `adb uninstall`** (efface la partie). Lecture d'un fichier : `"$ADB" -s $S shell "run-as $PKG cat files/save.json" > <fichier>` ; écriture : `"$ADB" -s $S shell "run-as $PKG sh -c 'cat > files/save.json'" < <fichier>`.
+
+0. **APK v3 de référence** : construire l'APK de `main` (dernier code qui écrit la v3) dans un worktree dédié (`tools/build_android.sh`), le copier en `build/qa/jalon09_t3/kanto2026-v3.apk`. Vérifier que c'est celui installé sur le S24 (sinon l'installer avec `adb install -r` **avant** l'étape 1, partie de Kevin conservée).
+1. **Relevé de la vraie partie (v3)** : `save_v3_kevin_avant.json` ; vérifier `"version": 3`. **Répétition sur le Mac** avant de toucher au téléphone : copier ce fichier dans `~/Library/Application Support/Godot/app_userdata/Kanto 2026/save.json` (après avoir mis de côté celui du Mac), lancer `godot --path . --quit-after 600` depuis la branche du J9 : journal `Sauvegarde chargée : …` puis **une** ligne `[qa] sauvegarde v3 → v4`, aucune erreur ; puis restaurer le fichier du Mac. Si la partie du S24 diffère de la fixture, l'ajouter en `tests/fixtures/save/v3_kevin_s24.json` (copie exacte) et le signaler à l'architecte (test de migration à doubler), sans bloquer.
+2. **Migration sur le S24** : `tools/deploy_s24.sh` (APK du J9, sans départ de débogage). Attendus : journal `Sauvegarde chargée : <carte> <case>` et **exactement une** ligne `[qa] sauvegarde v3 → v4` ; reprise intacte à l'écran (même carte, case, orientation ; équipe, PV, ordre ; Sac ; argent ; Pokédex) — captures. Relever `save_v4_kevin_apres.json` : `"version": 4`, chaque Pokémon a `"status": ""`, et **rien d'autre ne change** hormis `version`, `play_time` et les champs que l'autosave met à jour normalement (position si le joueur a bougé) :
+   `python3 -c "import json;a=json.load(open('save_v3_kevin_avant.json'));b=json.load(open('save_v4_kevin_apres.json'));[m.pop('status') for k in ('party','storage') for m in b[k]];[d.pop(k) for d in (a,b) for k in ('version','play_time')];print('IDENTIQUE' if a==b else 'DIFF')"` (sans avoir bougé : `IDENTIQUE`). Puis `am force-stop $PKG` et relance (`monkey -p $PKG -c android.intent.category.LAUNCHER 1`) : **aucune** ligne `[qa] sauvegarde` (déjà en v4).
+3. **Statut persistant** : relever la partie v4 de Kevin (`save_v4_kevin.json`, sauvegarde de sécurité). `tools/deploy_s24.sh --no-build --debug-start save_v4_qa` : journal `Départ de débogage (…) : viridian_city/from_center, charmander N9 (poison), pidgey N7 (remplace la sauvegarde)` puis `Sauvegarde automatique (changement de carte) : viridian_city …, OK`. Relever `save_qa_1.json` : `party[0].status == "poison"`, `party[1].status == ""`. Faire quelques pas, entrer et sortir du Centre **sans parler à l'infirmière**. Puis `tools/deploy_s24.sh --no-build` (retire le départ, fermeture forcée, relance) : journal `Sauvegarde chargée : …` et `[qa] statut relu : Salamèche (équipe 1) poison`. Encore une fermeture forcée + relance : même ligne. Relever `save_qa_2.json` : toujours `"poison"`, PV de Salamèche **inchangés** (aucun dégât à la marche). Facultatif : soigner au Centre, relancer : plus de ligne `statut relu`, `"status": ""` dans le fichier.
+4. **Restauration** de la partie de Kevin : écrire `save_v4_kevin.json` dans `files/save.json`, relancer : reprise identique à l'étape 2.
+5. **Refus par la build v3** : relever `save_v4_avant_v3.json` ; `adb install -r -d build/qa/jalon09_t3/kanto2026-v3.apk` puis lancer. Attendus : journal `SaveSystem : sauvegarde d'une version plus récente (4 > 3)` et `Nouvelle partie SANS sauvegarde automatique` ; jouer une minute (changer de pièce, ouvrir le menu, passer en arrière-plan) ; relever `save_v4_apres_v3.json` : **identique octet pour octet** (`cmp save_v4_avant_v3.json save_v4_apres_v3.json`) ; aucun `save.json.corrupt` (`run-as $PKG ls files`).
+6. **Retour au J9** : `tools/deploy_s24.sh` (ou `--no-build`) : la partie de Kevin reprend, aucune ligne `[qa] sauvegarde` (déjà v4).
+7. Rapport `build/qa/jalon09_t3/rapport.md` (verdict par étape, fichiers relevés, journal `logcat -d -s godot:V`, captures) → **validation de Kevin**.
+

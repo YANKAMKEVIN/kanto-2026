@@ -257,6 +257,69 @@ func test_favorite_round_trip_and_default() -> void:
 	assert_false(Pokemon.from_dict(dict, _data).favorite, "mal formé : faux, sans erreur")
 
 
+# --- Statut (jalon 9, T2 : sauvegarde v4) ---------------------------------------------
+
+func test_a_new_pokemon_has_no_status() -> void:
+	var charmander := _create(&"charmander", 9)
+	assert_eq(charmander.status, StatusRules.NONE)
+	assert_false(charmander.has_status(StatusRules.POISON))
+	assert_false(charmander.has_status(StatusRules.NONE), "« aucun » n'est pas un statut")
+	assert_eq(charmander.to_dict()["status"], "", "écrit vide")
+
+
+func test_cure_status_returns_the_cured_status() -> void:
+	var charmander := _create(&"charmander", 9)
+	charmander.status = StatusRules.POISON
+	assert_true(charmander.has_status(StatusRules.POISON))
+	assert_eq(charmander.cure_status(), StatusRules.POISON)
+	assert_eq(charmander.status, StatusRules.NONE)
+	assert_eq(charmander.cure_status(), StatusRules.NONE, "rien à soigner")
+
+
+func test_heal_full_also_cures_the_status() -> void:
+	var charmander := _create(&"charmander", 9)
+	charmander.take_damage(5)
+	charmander.status = StatusRules.POISON
+	charmander.heal_full()
+	assert_eq(charmander.hp, charmander.max_hp())
+	assert_eq(charmander.status, StatusRules.NONE, "Centre, Maman, réveil : statut effacé")
+
+
+func test_status_round_trip() -> void:
+	var charmander := _create(&"charmander", 9)
+	charmander.take_damage(4)
+	charmander.status = StatusRules.POISON
+	var dict := charmander.to_dict()
+	assert_eq(dict["status"], "poison")
+	var copy := Pokemon.from_dict(JSON.parse_string(JSON.stringify(dict)), _data)
+	assert_eq(copy.status, StatusRules.POISON)
+	assert_eq(copy.hp, charmander.hp)
+	assert_eq(copy.to_dict(), dict)
+	assert_true(charmander.evolve_into(&"charmeleon", _data))
+	assert_eq(charmander.status, StatusRules.POISON, "l'évolution garde le statut")
+
+
+func test_missing_status_means_none_without_warning() -> void:
+	# Sauvegarde v3 (jalon 7) : pas de clé « status ».
+	var dict := _create(&"charmander", 9).to_dict()
+	dict.erase("status")
+	var copy := Pokemon.from_dict(dict, _data)
+	assert_not_null(copy, "un Pokémon v3 se charge")
+	assert_eq(copy.status, StatusRules.NONE)
+	assert_push_warning_count(0)
+
+
+func test_unknown_or_malformed_status_is_dropped_with_a_warning_never_refused() -> void:
+	var dict := _create(&"charmander", 9).to_dict()
+	for odd: Variant in ["paralysis", 3, null, ["poison"]]:
+		dict["status"] = odd
+		var copy := Pokemon.from_dict(dict, _data)
+		assert_not_null(copy, "statut %s : le Pokémon est gardé" % [odd])
+		assert_eq(copy.status, StatusRules.NONE, "statut %s : aucun" % [odd])
+	assert_push_warning_count(4)
+	assert_push_error_count(0)
+
+
 func test_from_dict_rejects_invalid_content() -> void:
 	var dict := _create(&"squirtle", 5).to_dict()
 	var bad := dict.duplicate(true)

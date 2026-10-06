@@ -54,6 +54,10 @@ var original_trainer: String = ""
 ## Marqué favori par le joueur (Menu Dresseur, jalon 6A ; champ posé au T0 du J6). Aucun rôle
 ## dans les règles.
 var favorite: bool = false
+## Statut durable (jalon 9 : le poison seul, [StatusRules]) ; [constant StatusRules.NONE] =
+## aucun. Persiste après le combat, sauvegardé (v4) ; effacé par [method heal_full] (Centre,
+## Maman, réveil après défaite) et par [method cure_status] (objet qui le soigne).
+var status: StringName = StatusRules.NONE
 
 
 ## Nom affiché : le surnom, sinon le nom de l'espèce.
@@ -79,9 +83,10 @@ func take_damage(amount: int) -> int:
 	return lost
 
 
-## PV et PP au maximum.
+## PV et PP au maximum, statut effacé.
 func heal_full() -> void:
 	hp = max_hp()
+	status = StatusRules.NONE
 	for slot: MoveSlot in moves:
 		slot.restore()
 
@@ -97,6 +102,19 @@ func recalc(data: PokemonData) -> void:
 	stats = StatCalc.compute(species, level, ivs, evs)
 	if hp > 0:
 		hp = clampi(hp + max_hp() - old_max, 1, max_hp())
+
+
+## Vrai si le Pokémon a le statut [param id].
+func has_status(id: StringName) -> bool:
+	return id != StatusRules.NONE and status == id
+
+
+## Efface le statut ; rend celui qui a été effacé ([constant StatusRules.NONE] s'il n'y en avait
+## pas).
+func cure_status() -> StringName:
+	var cured := status
+	status = StatusRules.NONE
+	return cured
 
 
 func knows_move(move_id: StringName) -> bool:
@@ -201,6 +219,7 @@ func to_dict() -> Dictionary:
 			"level": met_level, "date": met_date, "trainer": original_trainer,
 		},
 		"favorite": favorite,
+		"status": String(status),
 	}
 
 
@@ -248,6 +267,13 @@ static func from_dict(dict: Dictionary, data: PokemonData) -> Pokemon:
 	pokemon.original_trainer = JsonFields.get_string(met, "trainer")
 	# Favori (J6) : absent d'une sauvegarde v1 ou mal formé → faux.
 	pokemon.favorite = JsonFields.get_bool(dict, "favorite")
+	# Statut (v4, J9) : absent d'une sauvegarde v3 → aucun ; inconnu de cette build (fichier
+	# retouché, statut d'une build future) → aucun, avec un avertissement : jamais un refus.
+	var raw_status: Variant = dict.get("status", "")
+	if raw_status is String and StatusRules.is_known(StringName(raw_status)):
+		pokemon.status = StringName(raw_status)
+	elif not (raw_status is String and (raw_status as String).is_empty()):
+		push_warning("Pokemon.from_dict : statut inconnu « %s » ignoré" % str(raw_status))
 	return pokemon
 
 
