@@ -2,6 +2,17 @@
 
 > Conçu par Kevin (avec ChatGPT), reçu le 2026-09-26. **Source de vérité** pour la Route 1 (jalon 5). Les répliques sont **définitives**. Le tracé ASCII donne la logique, **pas à reproduire littéralement**.
 
+## Vue générale peinte v1 (validée par Kevin, 2026-10-06)
+Fichiers : [`reference/route-1-vue-generale-v1.png`](reference/route-1-vue-generale-v1.png) (Codex, prompt `tools/art/prompts/CONCEPT_ROUTE1_VUE_GENERALE_r2.txt`) et son plan [`reference/route-1-plan-v1.png`](reference/route-1-plan-v1.png), tiré case par case de `game/world/maps/route_1.tscn` (géométrie du jalon 5 inchangée). « Mix » de la carte du jeu et d'une première vue, selon les choix de Kevin :
+1. **Clairières larges** le long du chemin (forêt à distance), quelques arbres et buissons seulement sur leurs bords.
+2. **Prairie du nord** aussi large que la carte, avec panneau sans texte, clôture basse, banc et Roucool (traces humaines qui annoncent Jadielle).
+3. **Bande d'herbes obligatoire** étroite (2 cases) dans le goulet de forêt, rendu touffu.
+4. **Arbres repères** gardés : arbre orange d'automne, bouleau près du rebord, deux conifères isolés.
+5. **Terrain plat**, aucun talus : le rebord est le seul relief.
+6. **Recoin de la Potion** : une souche au pied de l'arbre isolé de la grande zone d'herbes (« coincé entre les racines »).
+7. **Départ depuis Bourg Palette** : clôtures blanches courtes, fleurs, un rocher (pas de long couloir).
+8. **Le Voyageur** (sac à dos) et des Pokémon d'ambiance (Roucool sur une clôture, Rattata au bord des herbes).
+
 ## Intention
 La Route 1 est le premier endroit où le joueur ressent : **« Mon aventure commence. »** Ni long couloir, ni immense zone ouverte : une route **relativement courte, mais plus large et beaucoup plus riche que celle de Rouge/Bleu**, avec assez de petits recoins pour apprendre tout de suite que quitter le chemin principal peut être récompensé. Tout droit, on atteint Jadielle vite ; en explorant, on y passe bien plus de temps.
 
