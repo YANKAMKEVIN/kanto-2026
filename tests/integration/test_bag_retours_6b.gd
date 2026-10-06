@@ -3,6 +3,7 @@ extends GutTest
 ## raison en style refus, rien de consommé), soin animé (barre, chiffre, éclat, puis résultat),
 ## en-tête avec le nom de la zone dans Équipe et Sac.
 
+const TweenClock := preload("res://tests/helpers/tween_clock.gd")
 const MENU_SCENE := "res://game/ui/menu/trainer_menu.tscn"
 const PICKER_SCENE := preload("res://game/ui/bag/party_picker.tscn")
 
@@ -130,6 +131,10 @@ func test_heal_animates_bar_from_old_to_new_and_counts_the_number() -> void:
 	await wait_frames(2)
 	var old_hp := _party.get_at(0).hp
 	_party.get_at(0).hp = old_hp + 20
+	# Temps simulé (TweenClock) : relevé à mi-HP_TWEEN exactement, quelle que soit la charge.
+	var clock := TweenClock.new(get_tree())
+	var finished: Array[bool] = [false]
+	picker.heal_finished.connect(func() -> void: finished[0] = true, CONNECT_ONE_SHOT)
 	picker.show_targets(_view(0))
 	var card := picker.get_card(0)
 	var bar := card.get_hp_bar()
@@ -138,10 +143,12 @@ func test_heal_animates_bar_from_old_to_new_and_counts_the_number() -> void:
 	assert_eq(bar.get_shown_hp(), old_hp, "la barre part de l'ancienne valeur")
 	assert_eq(card.get_hp_text(), "%d / 38" % old_hp)
 	assert_gt(card.get_flash().modulate.a, 0.5, "éclat vert")
-	await get_tree().create_timer(UiTokens.HP_TWEEN * 0.5).timeout
+	clock.run_until(func() -> bool: return false, UiTokens.HP_TWEEN * 0.5)
 	var mid := bar.get_shown_value()
 	assert_true(mid > old_hp and mid < old_hp + 20, "en plein milieu : %s" % mid)
-	await picker.heal_finished
+	clock.run_until(func() -> bool: return finished[0], 5.0)
+	clock.release()
+	assert_true(finished[0], "soin terminé")
 	assert_eq(bar.get_shown_hp(), old_hp + 20)
 	assert_eq(card.get_hp_text(), "%d / 38" % (old_hp + 20))
 	assert_false(picker.is_healing())

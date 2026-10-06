@@ -3,6 +3,7 @@ extends GutTest
 ## capitales, vignette, ligne « Nouvelle entrée Pokédex » seulement si demandée, ligne d'équipe,
 ## ▼ ; fin au toucher (après le délai de garde), centrée, dans les marges à 1920 et 2340.
 
+const TweenClock := preload("res://tests/helpers/tween_clock.gd")
 const CARD_SCENE := "res://game/ui/battle/capture_card.tscn"
 const PORTRAIT := "res://assets/sprites/pokemon/placeholder/pidgey_front.png"
 const SCREEN_WIDTHS: Array[float] = [1920.0, 2340.0]
@@ -190,11 +191,14 @@ func test_centered_and_inside_margins_at_both_widths() -> void:
 
 
 func test_continue_arrow_uses_accent_and_blinks() -> void:
-	await _show(_view())
+	# Temps simulé (TweenClock) : relevé à 90 % de la baisse exactement.
+	var clock := TweenClock.new(get_tree())
+	_run(_view())
 	var tint := _card.get_continue().self_modulate
 	assert_eq([tint.r, tint.g, tint.b], [UiTokens.ACCENT.r, UiTokens.ACCENT.g, UiTokens.ACCENT.b])
-	await wait_seconds(UiTokens.DIALOG_CONTINUE_BLINK * 0.9)
+	clock.run_until(func() -> bool: return false, UiTokens.DIALOG_CONTINUE_BLINK * 0.9)
 	assert_lt(_card.get_continue().self_modulate.a, 1.0, "▼ clignote doucement")
+	clock.release()
 
 
 func test_card_does_not_intercept_mouse() -> void:

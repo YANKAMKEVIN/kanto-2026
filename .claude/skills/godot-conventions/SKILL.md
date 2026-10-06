@@ -52,7 +52,7 @@ Plusieurs processus Godot tournent en même temps sur le Mac : une image peut du
 
 - **Une durée se vérifie en temps simulé, jamais en temps réel** (une image = 1/60 s, comptée par le test) :
   - tweens : `tests/helpers/tween_clock.gd` (`TweenClock.new(get_tree())` **avant** l'appel, puis `step()` / `run_until()`, `release()` à la fin) ;
-  - directeur de scènes, joueur, PNJ : `tests/helpers/frame_sim.gd` (`FrameSim`, `await sim.frame()`, `finish()`) ;
+  - nœuds qui comptent le temps dans `_process` (directeur de scènes, joueur, PNJ, DialogueRunner, appui long d'une carte) : `tests/helpers/frame_sim.gd` (`FrameSim`, `await sim.frame()`, `finish()`). Un Control retiré du moteur ne reçoit plus le toucher : poser le doigt d'abord (l'appui est traité dans l'appel même), créer le FrameSim ensuite ;
   - `AnimationPlayer` : `callback_mode_process = ANIMATION_CALLBACK_MODE_PROCESS_MANUAL` puis `advance(1.0 / 60.0)`.
   - Tolérance : « pas fini avant la durée, au plus un pas de plus » (une image par enchaînement), jamais une marge en secondes.
 - **Un état intermédiaire** (« en mouvement », « il pulse », « pas encore ouvert ») se relève **au pas près** avec ces outils, pas après un `wait_seconds` partiel.
