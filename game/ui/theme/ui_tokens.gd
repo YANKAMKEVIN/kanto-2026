@@ -858,6 +858,64 @@ const DEX_CELL_SELECTED_SCALE := 1.03
 ## Numéro d'une case inconnue (estompé).
 const DEX_UNKNOWN_ALPHA := 0.55
 
+# --- Pokédex : composition en trois colonnes (refonte, T3) -------------------------------------
+## L'écran remonte dans la rangée du × (hauteur de l'en-tête commun) et lui laisse sa place.
+const DEX_LAYOUT_RISE := MENU_BODY_TOP - SAFE_MARGIN
+const DEX_LAYOUT_CLOSE_RESERVE := MENU_CLOSE_SIZE + GAP
+## Rangée d'en-tête : ‹ RETOUR · Poké Ball + titre + compteur · filtres · recherche.
+const DEX_LAYOUT_BACK_WIDTH := 190
+const DEX_LAYOUT_TITLE_ICON := 64
+const DEX_LAYOUT_FILTER_MIN_WIDTH := 110
+const DEX_LAYOUT_FILTER_FONT := 24
+const DEX_LAYOUT_FILTER_PAD := 20
+const DEX_LAYOUT_TITLE_FONT := 36
+const DEX_LAYOUT_COUNTS_FONT := 22
+const DEX_LAYOUT_SEARCH_MIN_WIDTH := 200
+## Colonne de la grille : 4 cases de 128 px (cible tactile) ; le surplus d'écran va à droite.
+const DEX_LAYOUT_COLUMNS := 4
+const DEX_LAYOUT_CELL := TOUCH_MIN
+const DEX_LAYOUT_CELL_GAP := 12
+const DEX_LAYOUT_SCROLLBAR := 12
+const DEX_LAYOUT_GRID_WIDTH := DEX_LAYOUT_COLUMNS * DEX_LAYOUT_CELL \
+	+ (DEX_LAYOUT_COLUMNS - 1) * DEX_LAYOUT_CELL_GAP + 2 * DEX_SCROLL_PAD + 2 * DEX_PANEL_PAD \
+	+ DEX_LAYOUT_SCROLLBAR
+## Centre (portrait) et droite (fiche) : largeurs minimales et partage du surplus.
+const DEX_LAYOUT_CENTER_MIN := 500
+const DEX_LAYOUT_CENTER_STRETCH := 1.0
+const DEX_LAYOUT_RIGHT_MIN := 620
+const DEX_LAYOUT_RIGHT_STRETCH := 1.25
+## Grand portrait : boîte carrée qui prend la hauteur restante (au moins PORTRAIT_MIN).
+const DEX_LAYOUT_PORTRAIT_MIN := 280
+const DEX_LAYOUT_PORTRAIT_GAP := 10
+const DEX_LAYOUT_HALO_SCALE := 1.15
+## Ombre au sol : ellipse sombre sous les pieds (largeur et hauteur en part de la boîte).
+const DEX_LAYOUT_SHADOW_COLOR := Color(0.0, 0.0, 0.0, 0.5)
+const DEX_LAYOUT_SHADOW_WIDTH := 0.62
+const DEX_LAYOUT_SHADOW_HEIGHT := 0.09
+const DEX_LAYOUT_SHADOW_RISE := 0.03
+## Respiration discrète (échelle 1 ↔ 1 + BREATH, durée d'un aller-retour) et fondu de l'espèce.
+const DEX_LAYOUT_BREATH := 0.015
+const DEX_LAYOUT_BREATH_TIME := 2.4
+const DEX_LAYOUT_PORTRAIT_FADE := 0.15
+## Cartes Vu / Capturé, texte du centre.
+const DEX_LAYOUT_CARD_ICON := 44
+const DEX_LAYOUT_CARD_CAPTION_FONT := 22
+const DEX_LAYOUT_CARD_VALUE_FONT := 28
+const DEX_LAYOUT_DESC_FONT := 26
+const DEX_LAYOUT_HERO_PAD := 24
+## Aperçu de droite : petite carte d'habitat, ronds d'évolution.
+const DEX_LAYOUT_MAP_PREVIEW_HEIGHT := 150
+const DEX_LAYOUT_EVO_PREVIEW := 104
+## Vignette dans son rond (part du diamètre) ; hauteur des lignes titre / pied des aperçus.
+const DEX_LAYOUT_EVO_IMAGE_RATIO := 0.86
+const DEX_LAYOUT_PREVIEW_ROW := 48
+const DEX_LAYOUT_PREVIEW_ICON := 36
+const DEX_LAYOUT_PREVIEW_TITLE_FONT := 28
+const DEX_LAYOUT_PILL_RADIUS := 64
+## Onglets de la fiche : texte serré pour que « Observations » tienne à 1920.
+const DEX_LAYOUT_TAB_FONT := 22
+const DEX_LAYOUT_TAB_PAD := 4
+
 # Écran Carte du Menu Dresseur (jalon 6, T20). Un journal : l'illustration entière, les noms
 # des seules zones découvertes, un panneau latéral ; aucun total, aucun « ??? ».
 ## En-tête : RETOUR et titre.

@@ -17,12 +17,14 @@ extends SceneTree
 ##   bag_from_team        ouvert depuis la fiche Équipe de Salamèche (« Pour Salamèche »)
 ## Pokédex (T15, avec --only=dex_grid,dex_sheet_caught,dex_sheet_seen,dex_habitat,dex_search_empty
 ## ,dex_evolution,dex_notes) : vraies vues de PokedexQuery sur un Pokédex de test
-##   dex_grid             grille seule (fiche fermée), 151 cases dont 6 connues
+##   dex_grid             grille et fiche de Salamèche (trois colonnes permanentes)
 ##   dex_sheet_caught     fiche de Salamèche (capturé) : Aperçu complet
 ##   dex_sheet_seen       fiche de Carapuce (seulement vu) : ni types, ni taille, ni poids
 ##   dex_habitat          filtre HABITATS (Route 1), fiche de Roucool, onglet Habitat
 ##   dex_search_empty     recherche sans résultat
 ##   dex_evolution / dex_notes   onglets Évolution et Observations de Salamèche / Roucool
+##   dex_planche[_023|_074|_095|_147]   les 151 cases « vues » (vues fabriquées), défilées
+##                        jusqu'au numéro ; dex_planche_unknown[_074] : la même grille inconnue
 ## Carte (T20, avec --only=map,map_panel,map_dex) : vraies vues de MapJournal sur une partie de test
 ##   map                  Bourg Palette (portrait du joueur, panneau sans section : rien de trouvé)
 ##   map_panel            Route 1, Pokédex pas visible : objets trouvés seulement
@@ -150,7 +152,8 @@ func _begin(scenario: String) -> void:
 		"team", "team_sheet_moves", "team_history", "team_move_mode":
 			_team_scenario(scenario)
 		"dex_grid", "dex_sheet_caught", "dex_sheet_seen", "dex_habitat", "dex_search_empty", \
-		"dex_evolution", "dex_notes":
+		"dex_evolution", "dex_notes", "dex_planche", "dex_planche_023", "dex_planche_074", \
+		"dex_planche_095", "dex_planche_147", "dex_planche_unknown", "dex_planche_unknown_074":
 			_dex_scenario(scenario)
 		"map", "map_panel", "map_dex":
 			_map_scenario(scenario)
@@ -301,12 +304,23 @@ func _dex_scenario(scenario: String) -> void:
 		"dex_notes":
 			species = &"pidgey"
 	var grid := PokedexQuery.grid(dex, data, library, zones, filter, zone, &"", text)
+	if scenario.begins_with("dex_planche"):
+		grid = _planche_grid(grid, data, not scenario.begins_with("dex_planche_unknown"))
 	_menu.open_animated()
 	_menu.show_pokedex(grid)
-	if scenario == "dex_grid" or scenario == "dex_search_empty":
+	if scenario == "dex_search_empty":
 		return
 	_menu.show_pokedex_sheet(PokedexQuery.sheet(species, dex, data, library, zones))
 	var sheet := _menu.get_pokedex().get_sheet()
+	sheet.select_tab(PokedexSheet.Tab.OVERVIEW)
+	if scenario.begins_with("dex_planche_"):
+		for _i: int in 3:
+			await process_frame
+		var number := int(scenario.trim_prefix("dex_planche_").trim_prefix("unknown_"))
+		var target := _menu.get_pokedex().get_slot(number)
+		if target != null:
+			_menu.get_pokedex().get_scroll().scroll_vertical = maxi(
+				0, roundi(target.position.y) - 40)
 	match scenario:
 		"dex_habitat":
 			sheet.select_tab(PokedexSheet.Tab.HABITAT)
@@ -314,6 +328,27 @@ func _dex_scenario(scenario: String) -> void:
 			sheet.select_tab(PokedexSheet.Tab.EVOLUTION)
 		"dex_notes":
 			sheet.select_tab(PokedexSheet.Tab.NOTES)
+
+
+## Vue fabriquée de la planche de contrôle : les 151 cases « vues » (ou toutes inconnues), les
+## noms des espèces qui existent dans les données, « Nom » sinon.
+func _planche_grid(base: PokedexGridView, data: PokemonData, seen: bool) -> PokedexGridView:
+	var view := base
+	view.slots = []
+	var names: Dictionary[int, String] = {}
+	var ids: Dictionary[int, StringName] = {}
+	for id: StringName in data.get_species_ids():
+		var species := data.get_species(id)
+		names[species.dex] = species.name
+		ids[species.dex] = id
+	for number: int in range(1, 152):
+		if seen:
+			var id: StringName = ids.get(number, StringName("dex_%d" % number))
+			view.slots.append(PokedexSlotView.new(number, id, names.get(number, "Nom"),
+				PokedexQuery.State.CAUGHT if number % 3 == 0 else PokedexQuery.State.SEEN))
+		else:
+			view.slots.append(PokedexSlotView.new(number))
+	return view
 
 
 ## Dresseur du menu : vraies vues de TrainerSummary (la partie de Kevin à la fin du J5, ou une

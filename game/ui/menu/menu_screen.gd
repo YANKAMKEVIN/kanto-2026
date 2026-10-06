@@ -10,6 +10,9 @@ signal route_requested(route: MenuRoute)
 ## Retour demandé (bouton RETOUR de l'écran).
 signal back_requested
 
+## Vrai : l'écran occupe aussi la rangée du × (le Pokédex y met son en-tête) ; l'hôte cache
+## alors la pastille de zone. L'écran lui laisse la place du × à gauche.
+var covers_header: bool = false
 ## Durées multipliées (0 = instantané, pour les tests).
 var speed_scale: float = 1.0
 

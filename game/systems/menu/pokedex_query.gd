@@ -25,8 +25,11 @@ const FILTER_LABELS: PackedStringArray = ["TOUS", "VUS", "CAPTURÉS", "HABITATS"
 ## Textes d'interface provisoires (règle 4).
 const COUNTS_SPECIES_FORMAT: String = "%s · %d espèces"
 const EMPTY_TEXT: String = "Aucune espèce ne correspond."
+const NO_SPECIES_TEXT: String = "Aucune espèce enregistrée."
 const HABITAT_EMPTY_TEXT: String = "Aucun habitat noté pour l'instant."
 const NOTES_EMPTY_TEXT: String = "Rien de noté pour l'instant."
+const TIMES_FORMAT: String = "%d fois"
+const HABITAT_COUNT_FORMAT: String = "Zones observées : %d"
 const NUMBER_FORMAT: String = "N° %03d"
 const SEEN_FORMAT: String = "Vu %d fois"
 const CAUGHT_FORMAT: String = " · capturé %d fois"
@@ -76,6 +79,7 @@ static func grid(pokedex: Pokedex, data: PokemonData, library: PokedexLibrary,
 	view.text = text
 	view.slots = slots(pokedex, data, library, zones, view.filter, view.zone, view.type, text)
 	view.empty_text = EMPTY_TEXT if view.slots.is_empty() else ""
+	view.no_species_text = NO_SPECIES_TEXT if pokedex.seen_count() == 0 else ""
 	if state_of(pokedex, selected) != State.UNKNOWN and data.has_species(selected):
 		view.selected = selected
 	else:
@@ -132,7 +136,9 @@ static func sheet(species: StringName, pokedex: Pokedex, data: PokemonData,
 	view.state = state
 	view.caught = state == State.CAUGHT
 	view.counts_text = SEEN_FORMAT % entry.times_seen
+	view.seen_times_text = TIMES_FORMAT % entry.times_seen
 	if view.caught:
+		view.caught_times_text = TIMES_FORMAT % entry.times_caught
 		view.counts_text += CAUGHT_FORMAT % entry.times_caught
 		var chart := data.get_type_chart()
 		for type: StringName in species_data.types:
@@ -145,6 +151,8 @@ static func sheet(species: StringName, pokedex: Pokedex, data: PokemonData,
 			view.description = info.description
 	for zone: StringName in habitat_zones(pokedex, species, zones):
 		view.habitats.append(PokedexHabitatView.new(zone, zones.get_zone(zone).name))
+	if not view.habitats.is_empty():
+		view.habitat_count_text = HABITAT_COUNT_FORMAT % view.habitats.size()
 	view.habitat_empty_text = HABITAT_EMPTY_TEXT if view.habitats.is_empty() else ""
 	view.evolution = EvolutionReveal.chain(species, data, pokedex, true)
 	view.evolution_text = EvolutionReveal.text(view.evolution)

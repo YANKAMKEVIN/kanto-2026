@@ -34,6 +34,9 @@ var slots: Array[PokedexSlotView] = []
 var selected: StringName = &""
 ## Phrase d'une grille vide (« Aucune espèce ne correspond. ») ; "" si la grille a des cases.
 var empty_text: String = ""
+## Pokédex sans aucune espèce vue (débogage seulement) : la phrase du centre et de la droite
+## (« Aucune espèce enregistrée. ») ; "" sinon.
+var no_species_text: String = ""
 
 
 func is_empty() -> bool:

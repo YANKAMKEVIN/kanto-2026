@@ -215,7 +215,7 @@ func show_dashboard(view: DashboardView) -> void:
 ## Gardé tant qu'un autre nom n'est pas donné (Équipe, Sac… ne le touchent pas).
 func set_zone_name(zone_name: String) -> void:
 	_zone_name.text = zone_name
-	_zone_pill.visible = not zone_name.is_empty()
+	_refresh_zone_pill()
 
 
 ## Écran Équipe (6A) : [param view] et le Pokémon [param selected] sélectionné. Rappelé pendant
@@ -595,6 +595,12 @@ func _screens() -> Array[MenuScreen]:
 	return screens
 
 
+## La pastille de zone existe avec un nom, sauf sur un écran qui occupe la rangée du ×.
+func _refresh_zone_pill() -> void:
+	_zone_pill.visible = not _zone_name.text.is_empty() \
+		and not (_current != null and _current.covers_header)
+
+
 ## Change d'écran : l'ancien se fond, le nouveau entre. Menu fermé : choisi mais pas encore
 ## présenté (open_animated le fera).
 func _select(screen: MenuScreen) -> void:
@@ -604,6 +610,7 @@ func _select(screen: MenuScreen) -> void:
 	if previous != null and previous != screen and _entered:
 		previous.leave()
 	_current = screen
+	_refresh_zone_pill()
 	if _open:
 		_entered = true
 		screen.enter()

@@ -162,6 +162,7 @@ func _init() -> void:
 	_add_team(theme, bold, t)
 	_add_bag_screen(theme, bold, t)
 	_add_pokedex_screen(theme, bold, t)
+	_add_pokedex_layout(theme, bold, t)
 	_add_map_screen(theme, bold, t)
 	_add_trainer_screen(theme, bold, t)
 	_add_settings_screen(theme, bold, t)
@@ -885,6 +886,61 @@ func _add_pokedex_screen(theme: Theme, bold: Font, t: GDScript) -> void:
 	_add_plain_label(theme, &"DexTitle", t.DEX_TITLE_FONT, t.TEXT, bold)
 	_add_plain_label(theme, &"DexName", t.DEX_SHEET_NAME_FONT, t.TEXT, bold)
 	_add_plain_label(theme, &"DexNumber", t.DEX_SHEET_NUMBER_FONT, t.TEXT_MUTED, bold)
+
+
+# --- Pokédex : composition en trois colonnes (refonte, T3) ---------------------------------------
+##   DexHeroPanel (PanelContainer, panneau du portrait), DexFilterPill (Button à bascule en
+##   pastille), DexPreviewCard (Button, carte tactile de l'Aperçu), DexCardCaption /
+##   DexCardValue / DexDescription / DexPreviewTitle (Label)
+
+
+func _add_pokedex_layout(theme: Theme, bold: Font, t: GDScript) -> void:
+	var hero := _panel_style(t.MENU_PANEL_BG, t.RADIUS, t)
+	hero.set_content_margin_all(t.DEX_LAYOUT_HERO_PAD)
+	theme.set_type_variation(&"DexHeroPanel", &"PanelContainer")
+	theme.set_stylebox(&"panel", &"DexHeroPanel", hero)
+
+	var pill := _button_style(t.BUTTON_BG, true, t)
+	pill.set_corner_radius_all(t.DEX_LAYOUT_PILL_RADIUS)
+	var pill_on := _button_style(t.ACCENT, false, t)
+	pill_on.set_corner_radius_all(t.DEX_LAYOUT_PILL_RADIUS)
+	for box: StyleBoxFlat in [pill, pill_on]:
+		box.set_content_margin(SIDE_LEFT, t.DEX_LAYOUT_FILTER_PAD)
+		box.set_content_margin(SIDE_RIGHT, t.DEX_LAYOUT_FILTER_PAD)
+	_add_button_variation(theme, &"DexFilterPill", pill, pill_on, bold, t)
+	theme.set_font_size(&"font_size", &"DexFilterPill", t.DEX_LAYOUT_FILTER_FONT)
+	for state: StringName in [&"font_color", &"font_hover_color", &"font_focus_color"]:
+		theme.set_color(state, &"DexFilterPill", t.TEXT)
+	for state: StringName in [&"font_pressed_color", &"font_hover_pressed_color"]:
+		theme.set_color(state, &"DexFilterPill", t.ACCENT_TEXT)
+
+	var sheet_tab := _button_style(t.BUTTON_BG, true, t)
+	var sheet_tab_on := _button_style(t.ACCENT, false, t)
+	for box: StyleBoxFlat in [sheet_tab, sheet_tab_on]:
+		box.set_content_margin(SIDE_LEFT, t.DEX_LAYOUT_TAB_PAD)
+		box.set_content_margin(SIDE_RIGHT, t.DEX_LAYOUT_TAB_PAD)
+	_add_button_variation(theme, &"DexSheetTab", sheet_tab, sheet_tab_on, bold, t)
+	theme.set_font_size(&"font_size", &"DexSheetTab", t.DEX_LAYOUT_TAB_FONT)
+	for state: StringName in [&"font_color", &"font_hover_color", &"font_focus_color"]:
+		theme.set_color(state, &"DexSheetTab", t.TEXT)
+	for state: StringName in [&"font_pressed_color", &"font_hover_pressed_color"]:
+		theme.set_color(state, &"DexSheetTab", t.ACCENT_TEXT)
+
+	var card := _bag_box(t.TEAM_SECTION_BG, t.PANEL_BORDER, t.BORDER_WIDTH, t.GAP, t.GAP, t)
+	var card_pressed := _bag_box(t.tinted(t.ACCENT, 0.25), t.ACCENT, t.BORDER_WIDTH, t.GAP,
+		t.GAP, t)
+	_add_button_variation(theme, &"DexPreviewCard", card, card_pressed, bold, t)
+	theme.set_font_size(&"font_size", &"DexPreviewCard", t.DEX_LAYOUT_PREVIEW_TITLE_FONT)
+	for state: StringName in [&"font_color", &"font_hover_color", &"font_focus_color",
+			&"font_pressed_color", &"font_hover_pressed_color"]:
+		theme.set_color(state, &"DexPreviewCard", t.TEXT)
+
+	_add_plain_label(theme, &"DexHeaderTitle", t.DEX_LAYOUT_TITLE_FONT, t.TEXT, bold)
+	_add_plain_label(theme, &"DexHeaderCounts", t.DEX_LAYOUT_COUNTS_FONT, t.TEXT_MUTED, null)
+	_add_plain_label(theme, &"DexCardCaption", t.DEX_LAYOUT_CARD_CAPTION_FONT, t.TEXT_MUTED, null)
+	_add_plain_label(theme, &"DexCardValue", t.DEX_LAYOUT_CARD_VALUE_FONT, t.TEXT, bold)
+	_add_plain_label(theme, &"DexDescription", t.DEX_LAYOUT_DESC_FONT, t.TEXT, null)
+	_add_plain_label(theme, &"DexPreviewTitle", t.DEX_LAYOUT_PREVIEW_TITLE_FONT, t.TEXT, bold)
 
 
 # --- Écran Carte du menu (jalon 6, T20) ---------------------------------------------------------
