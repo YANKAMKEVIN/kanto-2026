@@ -8,17 +8,18 @@ extends Node
 ## dresseur vaincu, versé par [code]add_money[/code] de [GameState], jalon 7).
 ## XP (jalon 5C, revu par la demande n° 1 du 2026-10-06) : pendant le combat, EXP_GAINED et
 ## LEVEL_UP ne montrent rien (la carte du Pokémon en jeu garde son ancien niveau et ses PV
-## max jusqu'à la fin du bilan) ; le directeur les note dans un [ExpSummary]. Les capacités
-## apprises (MOVE_LEARNED, MOVE_FORGET_OFFERED) sont mises de côté. À la fin du combat, après
-## sa dernière phrase (et l'argent gagné) : le [b]bilan de fin de combat[/b] ([ExpSummaryCard] :
-## une ligne par Pokémon qui a gagné de l'XP ; rien si aucun), puis les apprentissages, dans
-## l'ordre du journal, puis la sortie. Bilan et apprentissages seulement après une victoire ou
-## une capture : après une défaite, l'XP et les capacités déjà apprises restent, rien n'est
-## annoncé, une offre d'oubli en attente est abandonnée. MOVE_FORGET_OFFERED suspend la
-## lecture : le bandeau sort, le [MoveForgetPanel] fait choisir la capacité à oublier (ou
-## aucune), puis la phrase suit. Une capacité apprise dans un emplacement libre l'est déjà dans
-## le moteur au moment du K.O. (utilisable pour la suite d'un combat à plusieurs Pokémon) ;
-## elle est annoncée après le bilan.
+## max jusqu'à la fin du bilan) ; le directeur les note dans un [ExpSummary]. À la fin du
+## combat, après sa dernière phrase (et l'argent gagné), après une victoire ou une capture
+## seulement : le [b]bilan de fin de combat[/b] ([ExpSummaryCard] : une ligne par Pokémon qui
+## a gagné de l'XP ; rien si aucun), puis la sortie. Après une défaite, l'XP reste, rien n'est
+## montré.
+## Capacités (décision de Kevin du 2026-10-06, « comme dans Rouge/Bleu ») : MOVE_LEARNED et
+## MOVE_FORGET_OFFERED sont joués à leur place dans le journal, juste après le K.O. adverse qui
+## les a produits, avant l'envoi du Pokémon suivant ou la fin du combat. « X apprend Y ! »
+## attend un toucher ; MOVE_FORGET_OFFERED suspend la lecture : le bandeau sort, le
+## [MoveForgetPanel] fait choisir la capacité à oublier (ou aucune), puis la phrase suit. La
+## capacité est utilisable dès le tour suivant (la grille relit les capacités à chaque choix) ;
+## la carte de PV garde l'ancien niveau jusqu'au bilan (défaut).
 ##
 ## Il ne lit aucun autoload : il reçoit [GameState] par [method setup] et la carte par
 ## [method run] (appelée par l'étape « battle » du [CutsceneDirector]). Il n'appelle jamais
@@ -102,10 +103,8 @@ var _party_panel: BattlePartyPanel
 var _wild_foe: Pokemon
 var _map_id: StringName = &""
 var _haptic_busy: bool = false
-## Progression du combat en cours (bilan de fin de combat) et apprentissages mis de côté.
+## Progression du combat en cours (bilan de fin de combat).
 var _summary: ExpSummary = ExpSummary.new()
-var _deferred: Array[BattleEvent] = []
-var _defer_learning: bool = false
 var _summary_card: ExpSummaryCard
 ## Vue vers camp de la HUD (l'UI a son propre enum, sans lien avec BattleEvent.SideId).
 const _HUD_SIDE: Dictionary[BattleEvent.SideId, BattleHud.Side] = {
@@ -182,8 +181,6 @@ func run_request(request: BattleRequest, map: GameMap) -> int:
 	var trainer := request.trainer
 	_running = true
 	_summary = ExpSummary.new()
-	_deferred.clear()
-	_defer_learning = true
 	_wild_foe = foe if wild else null
 	_map_id = map.map_id if is_instance_valid(map) else &""
 	_trainer_id = trainer.id if trainer != null else &""
@@ -248,9 +245,9 @@ func run_request(request: BattleRequest, map: GameMap) -> int:
 			if is_instance_valid(_hud) and _texts != null:
 				await _hud.show_message(_texts.prize_line(conclusion.prize_money))
 			_state.add_money(conclusion.prize_money)
-	# Bilan de fin de combat, puis les capacités apprises (demande n° 1) : victoire ou capture
-	# seulement (décision de Kevin du 2026-10-06 : rien après une défaite).
-	await _play_progress(trainer, outcome)
+	# Bilan de fin de combat (demande n° 1) : victoire ou capture seulement (décision de Kevin
+	# du 2026-10-06 : rien après une défaite). Les capacités ont été annoncées au K.O.
+	await _play_progress(outcome)
 	if is_instance_valid(_hud):
 		await _hud.hide_all()
 	if is_instance_valid(_stage) and _stage.is_active():
@@ -479,14 +476,9 @@ func _first_of(a: Signal, b: Signal) -> Array:
 ## Coroutine : joue chaque événement de [param events] à la suite, temps par temps.
 func _play_events(events: Array[BattleEvent], trainer: TrainerData) -> void:
 	for event: BattleEvent in events:
-		# Pendant le combat, les capacités apprises attendent la fin du bilan.
-		if _defer_learning and event.kind in [BattleEvent.Kind.MOVE_LEARNED,
-				BattleEvent.Kind.MOVE_FORGET_OFFERED]:
-			_deferred.append(event)
-			continue
 		_summary.add(event)
 		for beat: BattleBeat in BattlePlayback.beats(event, _texts, _data, trainer):
-			# « X apprend Y ! » (annoncé après le bilan) attend un toucher.
+			# « X apprend Y ! » (juste après le K.O. adverse) attend un toucher.
 			beat.wait_touch = event.kind == BattleEvent.Kind.MOVE_LEARNED
 			await _play_beat(beat)
 		_log_progress(event)
@@ -583,26 +575,20 @@ func _play_beat(beat: BattleBeat) -> void:
 
 # --- Bilan de fin de combat (demande n° 1) ---------------------------------------------
 
-## Coroutine : après la dernière phrase du combat, le bilan (si de l'XP a été gagnée), puis les
-## capacités apprises mises de côté, dans l'ordre du journal. Seulement après une victoire ou une
-## capture ([method shows_progress]) : après une défaite (ou une fuite), l'XP, les niveaux et les
-## capacités apprises dans un emplacement libre restent acquis (le moteur les a déjà appliqués),
-## mais rien n'est annoncé, et une offre d'oubli en attente n'est pas présentée (la capacité
-## n'est pas apprise).
-func _play_progress(trainer: TrainerData, outcome: Battle.Outcome) -> void:
-	_defer_learning = false
-	var learning := _deferred.duplicate()
-	_deferred.clear()
+## Coroutine : après la dernière phrase du combat, le bilan (si de l'XP a été gagnée).
+## Seulement après une victoire ou une capture ([method shows_progress]) : après une défaite (ou
+## une fuite), l'XP et les niveaux restent acquis (le moteur les a déjà appliqués) mais rien
+## n'est montré. Les capacités, elles, ont déjà été annoncées au K.O. qui les a apprises.
+func _play_progress(outcome: Battle.Outcome) -> void:
 	if not shows_progress(outcome):
 		return
 	if not _summary.is_empty() and is_instance_valid(_hud) and _texts != null:
 		await _hud.hide_all()
 		await _show_summary()
-	await _play_events(learning, trainer)
 
 
-## Le bilan et les apprentissages différés ne sont montrés qu'après une victoire ou une capture
-## (décision de Kevin du 2026-10-06 ; fuite : défaut, rien non plus).
+## Le bilan n'est montré qu'après une victoire ou une capture (décision de Kevin du
+## 2026-10-06 ; fuite : défaut, rien non plus).
 static func shows_progress(outcome: Battle.Outcome) -> bool:
 	return outcome == Battle.Outcome.WIN or outcome == Battle.Outcome.CAUGHT
 

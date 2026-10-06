@@ -26,7 +26,7 @@ var segments: Array[Vector2] = []
 ## z = 0 au niveau 100 (pas de nombres).
 var points: Array[Vector3i] = []
 ## Un [LevelUp] par niveau gagné ([member LevelUp.level], [member LevelUp.stat_gains] ; ses
-## capacités ne sont pas remplies : l'apprentissage vient après le bilan).
+## capacités ne sont pas remplies : l'apprentissage est annoncé au K.O., pas au bilan).
 var level_ups: Array[LevelUp] = []
 
 
