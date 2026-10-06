@@ -557,6 +557,12 @@ func _timed(call: Callable) -> float:
 	return steps * TweenClock.STEP
 
 
+## Avance [param clock] de [param seconds] (arrondi au pas supérieur).
+func _advance(clock: TweenClock, seconds: float) -> void:
+	for i: int in ceili(seconds / TweenClock.STEP - 0.0001):
+		clock.step()
+
+
 ## [param elapsed] (temps simulé) couvre [param seconds] au pas près : pas fini avant, au plus
 ## [param links] pas de plus (un par tween enchaîné : il démarre au pas suivant).
 func _assert_lasts(elapsed: float, seconds: float, label: String, links: int = 1) -> void:
@@ -579,19 +585,23 @@ func test_exp_bar_hidden_at_start() -> void:
 func test_animate_exp_fills_from_to_in_exp_tween_then_hides() -> void:
 	var card := _real_time_card()
 	await wait_process_frames(2)
-	var start := Time.get_ticks_msec()
+	# Temps simulé (TweenClock) : chaque état est relevé à un instant exact.
+	var clock := TweenClock.new(get_tree())
+	var bar := card.get_exp_bar()
 	_hud.animate_exp(0.2, 0.8)
-	await wait_process_frames(2)
+	_advance(clock, 2 * TweenClock.STEP)
 	assert_true(card.is_exp_bar_visible(), "la barre apparaît")
-	assert_between(card.get_exp_bar().get_fraction(), 0.2, 0.5, "elle part de from")
-	await wait_seconds(UiTokens.EXP_TWEEN * 0.5)
-	assert_between(card.get_exp_bar().get_fraction(), 0.3, 0.79, "elle monte")
-	await wait_seconds(UiTokens.EXP_TWEEN)
-	var elapsed := (Time.get_ticks_msec() - start) / 1000.0
-	assert_gt(elapsed, UiTokens.EXP_TWEEN, "plus de EXP_TWEEN écoulés")
-	assert_almost_eq(card.get_exp_bar().get_fraction(), 0.8, 0.0001, "elle arrive à to")
+	assert_between(bar.get_fraction(), 0.2, 0.5, "elle part de from")
+	_advance(clock, UiTokens.EXP_TWEEN * 0.5 - 2 * TweenClock.STEP)
+	assert_between(bar.get_fraction(), 0.3, 0.79, "elle monte")
+	_advance(clock, UiTokens.EXP_TWEEN * 0.5 - 2 * TweenClock.STEP)
+	assert_lt(bar.get_fraction(), 0.8, "pas arrivée avant EXP_TWEEN")
+	_advance(clock, 2 * TweenClock.STEP)
+	assert_almost_eq(bar.get_fraction(), 0.8, 0.0001, "elle arrive à to")
 	assert_true(card.is_exp_bar_visible(), "elle reste un instant")
-	await wait_seconds(UiTokens.EXP_BAR_LINGER + UiTokens.EXP_BAR_FADE + 0.15)
+	clock.run_until(func() -> bool: return not card.is_exp_bar_visible(),
+		UiTokens.EXP_BAR_LINGER + UiTokens.EXP_BAR_FADE + 0.15)
+	clock.release()
 	assert_false(card.is_exp_bar_visible(), "puis elle est cachée")
 
 
@@ -743,16 +753,18 @@ func test_pulse_level_updates_text_and_pulses() -> void:
 	var card := _real_time_card()
 	await wait_process_frames(2)
 	assert_eq(card.get_level_text(), "Nv. 5")
-	var start := Time.get_ticks_msec()
+	# Temps simulé (TweenClock) : relevé au sommet de la pulsation, puis à sa fin exacte.
+	var clock := TweenClock.new(get_tree())
 	_hud.pulse_level(BattleHud.Side.PLAYER, 6)
 	assert_eq(card.get_level_text(), "Nv. 6", "mis à jour tout de suite")
 	assert_eq(card.get_level_label().text, "6")
-	await wait_seconds(UiTokens.LEVEL_PULSE_UP + 0.03)
+	_advance(clock, UiTokens.LEVEL_PULSE_UP)
 	assert_gt(card.get_level_label().scale.x, 1.2, "il pulse")
 	assert_ne(card.get_level_label().modulate, UiTokens.MODULATE_FULL, "il s'illumine")
-	await wait_seconds(UiTokens.LEVEL_PULSE_DOWN + 0.1)
-	var elapsed := (Time.get_ticks_msec() - start) / 1000.0
-	assert_gt(elapsed, UiTokens.LEVEL_PULSE_UP + UiTokens.LEVEL_PULSE_DOWN)
+	_advance(clock, UiTokens.LEVEL_PULSE_DOWN - 2 * TweenClock.STEP)
+	assert_ne(card.get_level_label().scale, Vector2.ONE, "pas revenu avant la fin")
+	_advance(clock, 3 * TweenClock.STEP)
+	clock.release()
 	assert_eq(card.get_level_label().scale, Vector2.ONE, "puis revient")
 	assert_eq(card.get_level_label().modulate, UiTokens.MODULATE_FULL)
 	assert_signal_emitted_with_parameters(_hud, "haptic_played", [UiTokens.HAPTIC_LEVEL_UP_MS])
