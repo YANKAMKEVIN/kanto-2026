@@ -6,15 +6,27 @@ extends Node2D
 ## Créé par [GameMap] au chargement : [method setup] avant l'ajout à l'arbre, puis la carte
 ## l'inscrit sur la [GridWorld] par [method enter_grid] (il y possède un [GridMover], comme
 ## le joueur). [InteractionFinder] le trouve par l'occupant de la grille et
-## [method get_interaction]. Origine aux pieds, sprite pixel art ×2 en NEAREST.
+## [method get_interaction]. Origine aux pieds ; apparence [CharacterLook] (peinte 1:1 LINEAR,
+## sinon provisoire pixel art ×2 NEAREST).
 ## Jalon 3B : il peut marcher case par case ([method step], scènes scriptées). Sa case
 ## courante vit dans son [GridMover] ; [member NpcSpec.cell] reste sa case de départ.
 ## Au repos, [method _process] est coupé ; seule l'[AnimatedSprite2D] tourne (idle_<dir>).
 ## Il ne tourne que pendant un pas (walk_<dir> ou run_<dir> si l'apparence les a).
+## Retours T5 (jalon-07.md §15.21) : un PNJ **marche ou court, jamais un mélange** : sans vraie
+## animation de course ([method can_run]), un pas demandé en course est marché (cadence de
+## marche) ; chaque pas montre **un demi-cycle** et les pas alternent les deux pieds
+## ([member _stride]), comme le joueur qui enchaîne les cases (un appui de pied par case).
 ## Jalon 4 (docs/tech/jalon-04.md §3.5, §13.4) : surcharge d'interaction (« Rencontrer »),
 ## léger élan vers une case ([method lean_toward] / [method settle]) et saut en arc depuis
 ## un meuble ([method hop_to]), dans le style de [member NpcSpec.hop_style]. Tout est en
 ## [Tween] sur le sprite et l'ombre, sans nouvelle image.
+## Jalon 7 (dossier 09 §2, jalon-07.md §3.2) : arrivé sur [member NpcSpec.route_enter_cell]
+## pendant sa routine, il **entre dans le bâtiment** (fondu, case libérée, absent
+## [member NpcSpec.route_enter_seconds] s, puis il ressort sur la même case dès qu'elle est
+## libre et reprend sa boucle) ; [member NpcSpec.idle_react_every] fait jouer [method react]
+## à intervalle régulier (le Roucool de la Dresseuse), toujours en [Tween], sans _process ;
+## [member NpcSpec.look_facings] le fait regarder autour de lui quand il reste sur place
+## (attente animée : aucun habitant figé), en [Tween] aussi.
 
 ## Réaction jouée ([method react]) : tests, futurs sons.
 signal reacted
@@ -27,11 +39,15 @@ signal lean_finished
 ## Pokémon d'ambiance qui quitte la scène ([method fly_away] / [method flee], jalon 5 §3.5) :
 ## le watcher fait alors [method GameMap.remove_npc].
 signal left_scene(npc_id: StringName)
+## Entré dans un bâtiment (routine, jalon 7) : invisible, hors de la grille.
+signal entered_building(npc_id: StringName)
+## Ressorti du bâtiment : de nouveau sur sa case et visible, la routine reprend.
+signal left_building(npc_id: StringName)
 
-## SpriteFrames des apparences : `<FRAMES_DIR><sprite>_frames.tres`.
-const FRAMES_DIR: String = "res://assets/sprites/characters/placeholder/"
-## Apparence générique (provisoire) quand `<sprite>_frames.tres` n'existe pas encore.
-const FALLBACK_SPRITE: StringName = &"npc"
+## SpriteFrames provisoires des apparences (les peintes : [CharacterLook]).
+const FRAMES_DIR: String = CharacterLook.PLACEHOLDER_DIR
+## Apparence générique (provisoire) quand l'apparence n'existe pas encore.
+const FALLBACK_SPRITE: StringName = CharacterLook.FALLBACK_SPRITE
 ## Animation de réaction facultative (non bouclée) : `react_<dir>` dans l'orientation
 ## courante si l'apparence l'a, sinon `react` ; sans aucune des deux, petit bond.
 const REACT_ANIM: StringName = &"react"
@@ -102,6 +118,10 @@ const FLEE_FADE_DURATION: float = 0.25
 ## Délai (s) avant que le PNJ à routine reprenne sa marche après un dialogue (dossier 07 §5 :
 ## « après le dialogue, il attend un court instant puis reprend »).
 const ROUTE_RESUME_DELAY: float = 0.6
+## Entrée dans un bâtiment (jalon 7) : fondu à l'entrée comme à la sortie (s), et nouvel
+## essai de sortie tant que la case de la porte est prise (le joueur s'y tient).
+const ENTER_FADE_DURATION: float = 0.25
+const ENTER_RETRY_DELAY: float = 0.5
 const _IDLE_ANIMS: Dictionary[Vector2i, StringName] = {
 	Vector2i.DOWN: &"idle_down",
 	Vector2i.UP: &"idle_up",
@@ -165,16 +185,29 @@ var _route_suspended: bool = false
 ## Sortie de scène en cours ([method fly_away] / [method flee]) : plus d'interaction.
 var _leaving: bool = false
 var _leave_tween: Tween
+## Dans un bâtiment (jalon 7) : hors grille ; la grille où il ressortira.
+var _inside: bool = false
+var _inside_grid: GridWorld
+var _inside_tween: Tween
+## Boucle de l'animation d'ambiance ([member NpcSpec.idle_react_every]).
+var _idle_tween: Tween
+## Attente animée ([member NpcSpec.look_facings]) : boucle et prochaine orientation.
+var _look_tween: Tween
+var _look_index: int = 0
+## Pendant un dialogue avec le joueur ([method begin_interaction] → [method end_interaction]).
+var _interacting: bool = false
+## Demi-cycle du prochain pas (0 : pied gauche, images 0-1 ; 1 : pied droit, images 2-3).
+var _stride: int = 0
 
 @onready var _sprite: AnimatedSprite2D = %Sprite
 @onready var _shadow: Sprite2D = %Shadow
 
 
 func _ready() -> void:
-	_base_scale = _sprite.scale
 	set_process(is_moving())
 	_sprite.animation_finished.connect(_on_animation_finished)
 	_apply_spec()
+	_start_idle_react()
 
 
 ## Ne tourne que pendant un pas ou pour piloter la routine de marche (jalon 5) : le
@@ -194,6 +227,8 @@ func _process(delta: float) -> void:
 			_play_idle()
 			if _route_active:
 				_route_wait = _route_pause
+				if _spec.enters_building() and _mover.get_cell() == _spec.route_enter_cell:
+					_enter_building()
 		return
 	if _route_active and not _route_suspended and not _hopping and not _leaving:
 		_route_wait -= delta
@@ -221,8 +256,10 @@ func setup(spec: NpcSpec) -> void:
 	_route_index = 0
 	_route_active = false
 	_route_suspended = false
+	_cancel_inside()
 	if is_node_ready():
 		_apply_spec()
+		_start_idle_react()
 
 
 func get_id() -> StringName:
@@ -247,6 +284,10 @@ func get_facing() -> Vector2i:
 ## premier appel, sur sa case courante ensuite (grille reconstruite). Un pas en cours est
 ## annulé. Faux si la case est hors carte ou prise (le PNJ reste alors hors grille).
 func enter_grid(grid: GridWorld) -> bool:
+	if _inside:
+		# Dans un bâtiment : il ressortira sur cette grille (carte reconstruite entre-temps).
+		_inside_grid = grid
+		return true
 	_abort_hop()
 	var cell := get_cell()
 	if _mover != null:
@@ -269,8 +310,10 @@ func enter_grid(grid: GridWorld) -> bool:
 	return true
 
 
-## Libère sa case (et la case visée par un pas en cours) ; le PNJ reste où il est.
+## Libère sa case (et la case visée par un pas en cours) ; le PNJ reste où il est. Dans un
+## bâtiment, il y reste (il ne ressortira plus).
 func leave_grid() -> void:
+	_cancel_inside()
 	_abort_hop()
 	_route_active = false
 	if _mover == null:
@@ -293,7 +336,7 @@ func leave_grid() -> void:
 func step(direction: Vector2i, run: bool = false) -> bool:
 	if _mover == null or _hopping or not Grid.is_cardinal(direction):
 		return false
-	var started := _mover.start_step(direction, run)
+	var started := _mover.start_step(direction, run and can_run())
 	_facing = _mover.get_facing()
 	if not started:
 		_play_idle()
@@ -305,6 +348,17 @@ func step(direction: Vector2i, run: bool = false) -> bool:
 
 func is_moving() -> bool:
 	return _mover != null and _mover.is_moving()
+
+
+## Vrai si l'apparence peut courir : elle a une vraie animation de course (run_<dir>), ou
+## aucune animation de pas (provisoire immobile, qui glisse à la vitesse demandée). Une
+## apparence qui marche sans course (planches peintes sauf le héros) marche toujours.
+func can_run() -> bool:
+	var frames := _sprite.sprite_frames if _sprite != null else null
+	if frames == null:
+		return true
+	return frames.has_animation(_RUN_ANIMS[Vector2i.DOWN]) \
+		or not frames.has_animation(_WALK_ANIMS[Vector2i.DOWN])
 
 
 ## Interaction du PNJ (toujours la même instance : aucune allocation) : la surcharge si
@@ -332,14 +386,20 @@ func has_interaction_override() -> bool:
 	return _override != null
 
 
-## Chemin des SpriteFrames d'une apparence.
+## Chemin des SpriteFrames d'une apparence ([CharacterLook] : peinte, sinon provisoire, sinon
+## générique).
 static func frames_path(sprite: StringName) -> String:
-	return FRAMES_DIR + String(sprite) + "_frames.tres"
+	return CharacterLook.resolve(sprite).frames_path
 
 
-## Vrai si l'apparence a ses propres SpriteFrames (sinon la scène prend le générique).
+## Vrai si l'apparence a ses propres SpriteFrames, peints ou provisoires (sinon la scène prend
+## le générique).
 static func has_frames(sprite: StringName) -> bool:
-	return not sprite.is_empty() and ResourceLoader.exists(frames_path(sprite))
+	if sprite.is_empty():
+		return false
+	var path := CharacterLook.resolve(sprite).frames_path
+	return sprite == FALLBACK_SPRITE \
+		or path != CharacterLook.placeholder_frames_path(FALLBACK_SPRITE)
 
 
 ## Se tourne vers [param direction] (animation idle_<dir>). Non cardinale ou pendant un
@@ -369,6 +429,7 @@ func face_toward(cell: Vector2i) -> void:
 ## suspendue) et se tourne vers lui si [member NpcSpec.turn_to_player].
 func begin_interaction(player_cell: Vector2i) -> void:
 	_route_suspended = true
+	_interacting = true
 	if _spec.turn_to_player:
 		face_toward(player_cell)
 
@@ -377,6 +438,7 @@ func begin_interaction(player_cell: Vector2i) -> void:
 ## affaires »), sauf [member NpcSpec.keep_facing], puis reprend sa routine après un court
 ## instant (dossier 07 §5).
 func end_interaction() -> void:
+	_interacting = false
 	if not _spec.keep_facing:
 		face(_spec.facing)
 	if _route_active:
@@ -677,11 +739,14 @@ func _set_lean(offset: Vector2) -> void:
 
 
 func _apply_spec() -> void:
-	var sprite := _spec.sprite if has_frames(_spec.sprite) else FALLBACK_SPRITE
-	var frames := load(frames_path(sprite)) as SpriteFrames
+	# Apparence peinte (1:1, LINEAR) ou provisoire (×2, NEAREST) : [CharacterLook].
+	var look := CharacterLook.resolve(_spec.sprite)
+	var frames := load(look.frames_path) as SpriteFrames
 	if frames != null:
 		_sprite.sprite_frames = frames
-	# Pieds sur l'origine quelle que soit la hauteur de l'image (64 px, 48 px, 32 px).
+	_base_scale = Vector2(look.scale, look.scale)
+	_sprite.texture_filter = look.filter
+	# Pieds sur l'origine quelle que soit la hauteur de l'image (64 px, 48 px, 130 px).
 	var frame := _sprite.sprite_frames.get_frame_texture(_IDLE_ANIMS[Vector2i.DOWN], 0)
 	if frame != null:
 		_sprite.offset = Vector2(0.0, -frame.get_size().y / 2.0)
@@ -735,6 +800,11 @@ func _play_move() -> void:
 		return
 	if _sprite.animation != anim or not _sprite.is_playing():
 		_sprite.play(anim)
+	# Un pas = un demi-cycle calé sur sa durée (4 images pour deux cases) : il commence sur le
+	# pied suivant, même après un arrêt (sinon chaque pas rejoue le même pied).
+	var count := _sprite.sprite_frames.get_frame_count(anim)
+	_sprite.set_frame_and_progress(_stride * (count / 2), 0.0)
+	_stride = 1 - _stride
 
 
 ## Fin d'un pas (dans [method GridMover.update]) : l'interaction suit la case (aucune
@@ -756,7 +826,9 @@ func _sync_interaction_cells(cell: Vector2i) -> void:
 func _start_route(cell: Vector2i) -> void:
 	_route_active = true
 	_route_suspended = false
-	_route_index = maxi(_route.find(cell), 0)
+	# Case de départ : l'index de la donnée (« start », jalon 7) ; ailleurs (grille
+	# reconstruite en chemin), la première occurrence de la case.
+	_route_index = _spec.route_start if cell == _spec.cell else maxi(_route.find(cell), 0)
 	_route_wait = _route_pause
 	set_process(true)
 
@@ -779,6 +851,114 @@ func _advance_route() -> void:
 	else:
 		# Case prise (joueur) : il se tourne vers elle et attend, sans avancer.
 		_route_wait = _route_pause
+
+
+## Vrai pendant qu'il est dans un bâtiment (routine du jalon 7).
+func is_inside_building() -> bool:
+	return _inside
+
+
+## Arrivé sur la case d'entrée de sa routine : fondu, case libérée, puis il ressort après
+## [member NpcSpec.route_enter_seconds] s ([method _try_leave_building]).
+func _enter_building() -> void:
+	var grid := _grid
+	leave_grid()
+	_inside = true
+	_inside_grid = grid
+	entered_building.emit(get_id())
+	if _inside_tween != null and _inside_tween.is_valid():
+		_inside_tween.kill()
+	if not is_inside_tree():
+		return
+	_inside_tween = create_tween()
+	_inside_tween.tween_property(self, ^"modulate:a", 0.0, ENTER_FADE_DURATION)
+	_inside_tween.tween_interval(_spec.route_enter_seconds)
+	_inside_tween.tween_callback(_try_leave_building)
+
+
+## Ressort sur sa case si elle est libre (sinon nouvel essai dans [constant
+## ENTER_RETRY_DELAY] s), fondu d'apparition, routine reprise depuis la porte.
+func _try_leave_building() -> void:
+	if not _inside:
+		return
+	var grid := _inside_grid
+	if grid == null:
+		return
+	if grid.get_occupant(_cell) != null:
+		_inside_tween = create_tween()
+		_inside_tween.tween_interval(ENTER_RETRY_DELAY)
+		_inside_tween.tween_callback(_try_leave_building)
+		return
+	_inside = false
+	_inside_grid = null
+	if not enter_grid(grid):
+		_inside = true
+		_inside_grid = grid
+		return
+	_inside_tween = create_tween()
+	_inside_tween.tween_property(self, ^"modulate:a", 1.0, ENTER_FADE_DURATION)
+	left_building.emit(get_id())
+
+
+## Annule un séjour dans un bâtiment (nouvelle description, départ de la grille) : visible.
+func _cancel_inside() -> void:
+	if not _inside:
+		return
+	_inside = false
+	_inside_grid = null
+	if _inside_tween != null and _inside_tween.is_valid():
+		_inside_tween.kill()
+	modulate.a = 1.0
+
+
+## Lance (ou relance) l'animation d'ambiance périodique de la description, s'il en a une.
+func _start_idle_react() -> void:
+	_start_look()
+	if _idle_tween != null and _idle_tween.is_valid():
+		_idle_tween.kill()
+	_idle_tween = null
+	if not _spec.has_idle_react() or not is_inside_tree():
+		return
+	_idle_tween = create_tween().set_loops()
+	_idle_tween.tween_interval(_spec.idle_react_every)
+	_idle_tween.tween_callback(_on_idle_react)
+
+
+## Lance (ou relance) l'attente animée de la description, s'il en a une : une orientation de
+## [member NpcSpec.look_facings] toutes les [member NpcSpec.look_every] s, en [Tween] (pas de
+## _process). La boucle commence par l'orientation qui suit celle du repos.
+func _start_look() -> void:
+	if _look_tween != null and _look_tween.is_valid():
+		_look_tween.kill()
+	_look_tween = null
+	_look_index = 0
+	if not _spec.has_look() or not is_inside_tree():
+		return
+	var rest := _spec.look_facings.find(_spec.facing)
+	_look_index = (rest + 1) % _spec.look_facings.size() if rest >= 0 else 0
+	_look_tween = create_tween().set_loops()
+	_look_tween.tween_interval(_spec.look_every)
+	_look_tween.tween_callback(_on_look)
+
+
+## Se tourne vers l'orientation suivante, sauf s'il marche, saute, parle, part ou est dans
+## un bâtiment (le tour est alors simplement sauté).
+func _on_look() -> void:
+	if is_moving() or _hopping or _leaving or _inside or _interacting:
+		return
+	face(_spec.look_facings[_look_index])
+	_look_index = (_look_index + 1) % _spec.look_facings.size()
+
+
+## Vrai si une attente animée tourne ([member NpcSpec.look_facings]).
+func is_looking_around() -> bool:
+	return _look_tween != null and _look_tween.is_valid()
+
+
+func _on_idle_react() -> void:
+	if is_moving() or _hopping or _leaving or _inside:
+		return
+	react()
 
 
 ## Envol d'un Pokémon d'ambiance (Roucool, jalon 5 §3.5) : montée en arc vers le haut et le

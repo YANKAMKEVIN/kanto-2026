@@ -32,6 +32,7 @@ static func build(party: Party, data: PokemonData, zones: ZoneLibrary, pokedex: 
 		unlocks: MenuUnlocks) -> TeamView:
 	var view := TeamView.new()
 	var visible := unlocks != null and unlocks.pokedex_visible()
+	view.storage_available = unlocks != null and unlocks.storage_available()
 	var members := party.get_all()
 	for i: int in members.size():
 		var pokemon_sheet := sheet(members[i], i, data, zones, pokedex, visible)

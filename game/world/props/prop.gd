@@ -17,6 +17,11 @@ const FADE_DURATION: float = 0.15
 ## Devient semi-transparent quand le joueur passe derrière (feuillages, toits).
 @export var fade_when_covering: bool = false
 
+## Rangées des murs de soutènement de la carte ([member GameMap.level_rows], posées par la
+## carte au chargement) : le décor ne s'efface que si le joueur est **au même niveau** que
+## lui (retours QA T5 : un toit du niveau bas s'effaçait sous le joueur de la terrasse haute).
+var level_rows: Array[int] = []
+
 var _target: Node2D
 
 
@@ -30,7 +35,8 @@ func _process(delta: float) -> void:
 	var sprite := get_node(^"%Sprite") as Sprite2D
 	var covering := _target != null and covers(
 		sprite.get_global_transform() * sprite.get_rect(), global_position.y,
-		(_target as Player).get_body_rect())
+		(_target as Player).get_body_rect()) and same_level(
+		get_anchor_cell().y, Grid.world_to_cell(_target.position).y, level_rows)
 	var alpha := COVERED_ALPHA if covering else 1.0
 	sprite.modulate.a = move_toward(sprite.modulate.a, alpha,
 		delta * (1.0 - COVERED_ALPHA) / FADE_DURATION)
@@ -40,6 +46,21 @@ func _process(delta: float) -> void:
 ## `body` : le corps est derrière (pieds plus au nord) et les rectangles se chevauchent.
 static func covers(sprite_rect: Rect2, base_y: float, body: Rect2) -> bool:
 	return body.end.y < base_y and sprite_rect.intersects(body)
+
+
+## Vrai si deux rangées sont au même niveau : aucun mur de [param walls] ne les sépare.
+## Niveau d'une rangée = nombre de murs strictement au-dessus d'elle : la rangée d'un mur
+## (ses escaliers) appartient au niveau du haut.
+static func same_level(row_a: int, row_b: int, walls: Array[int]) -> bool:
+	return _level(row_a, walls) == _level(row_b, walls)
+
+
+static func _level(row: int, walls: Array[int]) -> int:
+	var level := 0
+	for wall: int in walls:
+		if wall < row:
+			level += 1
+	return level
 
 
 ## Case d'ancrage (celle qui contient l'origine).

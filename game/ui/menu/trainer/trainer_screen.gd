@@ -5,8 +5,8 @@ extends MenuScreen
 ## portrait à gauche, **8 emplacements de badges muets** et statistiques au centre, frise des
 ## grands moments à droite.
 ##
-## Un journal, pas un tableau de bord : ni niveau, XP, titre, tenue, pourcentage, argent, heure,
-## « 27 / 151 » ni « 1 / 8 ». Il reçoit un [TrainerView] et n'en sait rien d'autre ; il n'invente
+## Un journal, pas un tableau de bord : ni niveau, XP, titre, tenue, pourcentage, heure,
+## « 27 / 151 » ni « 1 / 8 » ; **l'argent y est** (dossier 09 §10, Q-8 : visible dès le début). Il reçoit un [TrainerView] et n'en sait rien d'autre ; il n'invente
 ## aucune route et ne décide aucun déblocage.
 ## - « vus » / « capturés » (seulement s'ils sont dans la vue) : **un** [signal route_requested]
 ##   avec la route de la vue.
@@ -20,6 +20,7 @@ const BACK_TEXT := "RETOUR"
 const BACK_ICON: Texture2D = preload("res://assets/ui/icons/battle/back.svg")
 const ICON_CLOCK: Texture2D = preload("res://assets/ui/icons/menu/clock.svg")
 const ICON_CALENDAR: Texture2D = preload("res://assets/ui/icons/trainer/calendar.svg")
+const ICON_COIN: Texture2D = preload("res://assets/ui/icons/shop/coin.svg")
 const STAT_ICONS: Dictionary[StringName, Texture2D] = {
 	TrainerSummary.STAT_PLAY_TIME: preload("res://assets/ui/icons/menu/clock.svg"),
 	TrainerSummary.STAT_ZONES: preload("res://assets/ui/icons/menu/map.svg"),
@@ -37,6 +38,8 @@ var _play_time_row: HBoxContainer
 var _play_time: Label
 var _started_row: HBoxContainer
 var _started: Label
+var _money_row: HBoxContainer
+var _money: Label
 var _portrait: TextureRect
 var _links: HBoxContainer
 var _seen: Button
@@ -187,6 +190,8 @@ func _build_identity() -> PanelContainer:
 	_started = _started_row.get_child(1) as Label
 	_started.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	_started.clip_text = false
+	_money_row = _icon_row(column, ICON_COIN, UiTokens.ACCENT)
+	_money = _money_row.get_child(1) as Label
 	_portrait = TextureRect.new()
 	_portrait.texture = _portrait_texture()
 	_portrait.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
@@ -288,6 +293,10 @@ func _apply(view: TrainerView) -> void:
 	if not view.started_text.is_empty():
 		started = "%s : %s" % [TrainerView.STARTED_LABEL, view.started_text]
 	_set_row(_started_row, _started, started)
+	var money := ""
+	if not view.money_text.is_empty():
+		money = "%s : %s" % [TrainerView.MONEY_LABEL, view.money_text]
+	_set_row(_money_row, _money, money)
 	_seen_route = view.seen_route
 	_caught_route = view.caught_route
 	_set_link(_seen, view.seen_text)

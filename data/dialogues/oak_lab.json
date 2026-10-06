@@ -120,6 +120,11 @@
 		"speaker": "Prof. Chen",
 		"variants": [
 			{
+				"if": ["got_oak_parcel"],
+				"unless": ["pokedex_activated"],
+				"cutscene": "oak_parcel"
+			},
+			{
 				"if": ["rival_battle_done"],
 				"pages": [
 					"Le monde qui vous attend est bien plus vaste que Bourg Palette.",
@@ -133,6 +138,52 @@
 			{
 				"pages": ["Un peu de patience. J'ai quelque chose à vous montrer."]
 			}
+		]
+	},
+	"oak_parcel_records": {
+		"speaker": "Prof. Chen",
+		"pages": [
+			{ "text": "Tiens…", "pause": 0.6 },
+			"Il a déjà commencé à enregistrer tes rencontres.",
+			"Un {first_wild_species}… Tu n'as pas perdu de temps.",
+			"J'étudie depuis longtemps la manière dont les Pokémon vivent à travers Kanto.",
+			"Mais aucune recherche ne remplacera ce qu'un Dresseur découvre sur le terrain.",
+			"Ton voyage peut nous apprendre beaucoup."
+		]
+	},
+	"oak_pokedex_activated": {
+		"speaker": "Prof. Chen",
+		"pages": [
+			"Il enregistrera les Pokémon que tu observes, les endroits où tu les rencontres et ce que tu découvriras sur eux.",
+			{ "text": "Observe. Explore. Fais-toi ta propre idée du monde.", "pause": 0.4 }
+		]
+	},
+	"rival_parcel_return": {
+		"speaker": "Rival",
+		"pages": ["Professeur ! Je suis revenu."]
+	},
+	"rival_parcel_greet": {
+		"speaker": "Rival",
+		"pages": ["Tiens. T'es déjà revenu, toi aussi ?"]
+	},
+	"oak_parcel_rival_dex": {
+		"draft": true,
+		"speaker": "Prof. Chen",
+		"pages": [
+			{ "text": "Toi aussi, prends-en un.", "turn": { "oak": "rival" } }
+		]
+	},
+	"oak_parcel_rival": {
+		"pages": [
+			{ "speaker": "Prof. Chen", "text": "Et toi… apprends à regarder au-delà de la victoire.", "turn": { "oak": "rival" } },
+			{ "speaker": "Rival", "text": "…On verra.", "pause": 0.8 }
+		]
+	},
+	"rival_parcel_leaving": {
+		"speaker": "Rival",
+		"pages": [
+			{ "text": "Pas mal.", "turn": { "rival": "down" } },
+			{ "text": "Mais ne t'imagine pas que je vais t'attendre.", "turn": { "rival": "player" } }
 		]
 	},
 	"rival_lab_waiting": {

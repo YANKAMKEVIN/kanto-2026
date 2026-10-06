@@ -1,0 +1,27 @@
+{
+	"profiles": {
+		"golden_hour": {
+			"grade": {
+				"shadows": [1.16, 1.07, 0.97],
+				"midtones": [1.06, 1.01, 0.91],
+				"highlights": [1.01, 0.97, 0.85],
+				"strength": 1.0
+			},
+			"sun_direction": [-0.7, -0.7],
+			"rim": { "color": "#ffd17a", "strength": 1.0, "width": 5.0 },
+			"cast_shadow": { "color": "#1a1738", "alpha": 0.34, "length": 0.26, "skew_deg": -45.0 },
+			"contact": { "color": "#1f1a33", "alpha": 0.62 },
+			"wind": 5.0
+		},
+		"interior_warm": {
+			"grade": {
+				"shadows": [1.04, 1.02, 0.99],
+				"midtones": [1.02, 1.0, 0.97],
+				"highlights": [1.01, 0.99, 0.95],
+				"strength": 1.0
+			},
+			"sun_direction": [-0.7, -0.7],
+			"contact": { "color": "#1f1a33", "alpha": 0.62 }
+		}
+	}
+}

@@ -33,3 +33,14 @@ func test_play_time() -> void:
 	assert_eq(MenuFormat.play_time(-1.0), "0 h 00")
 	assert_eq(DashboardViews.play_time_text(45780.0), MenuFormat.play_time(45780.0),
 		"une seule règle pour le tableau de bord et l'écran Dresseur")
+
+
+## Jalon 7 (dossier 09 §10) : « 3 000 ₽ », espaces insécables (le nombre et le symbole ne
+## se séparent jamais).
+func test_money() -> void:
+	var nbsp := MenuFormat.THOUSANDS_SEPARATOR
+	assert_eq(MenuFormat.money(3000), "3" + nbsp + "000" + nbsp + "₽")
+	assert_eq(MenuFormat.money(0), "0" + nbsp + "₽")
+	assert_eq(MenuFormat.money(200), "200" + nbsp + "₽")
+	assert_eq(MenuFormat.money(999999), "999" + nbsp + "999" + nbsp + "₽")
+	assert_eq(MenuFormat.MONEY_SUFFIX, nbsp + "₽")

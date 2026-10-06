@@ -8,6 +8,7 @@ extends GutTest
 ## Jalon 4 (T1) : une surcharge « Rencontrer » (MEET) sur un PNJ → target_changed(MEET), et
 ## l'appui émet meet_requested(npc) sans jouer de dialogue, avec le même anti-rebond.
 
+const FrameSim := preload("res://tests/helpers/frame_sim.gd")
 const BOX_SCENE := "res://game/ui/dialogue/dialogue_box.tscn"
 const PLAYER_SCENE := "res://game/player/player.tscn"
 const DIALOGUES := "res://tests/fixtures/dialogues/"
@@ -214,6 +215,8 @@ func test_interact_without_target_does_nothing() -> void:
 func test_auto_variant_on_map_entered() -> void:
 	_place(Vector2i(2, 4), Vector2i.DOWN)
 	var mom := _map.get_npc(&"mom")
+	# Images simulées (FrameSim) : le délai du DialogueRunner se compte en images.
+	var sim := FrameSim.new(get_tree(), [_runner])
 	_controller.on_map_entered(_map)
 	assert_true(_runner.is_running(), "dialogue automatique")
 	assert_eq(_runner.get_dialogue_id(), &"mom")
@@ -221,10 +224,15 @@ func test_auto_variant_on_map_entered() -> void:
 	assert_eq(_player.get_facing(), Vector2i.RIGHT, "le joueur se tourne vers Maman")
 	assert_eq(mom.get_facing(), Vector2i.LEFT, "Maman se tourne vers le joueur")
 	assert_false(_box.is_open(), "la boîte attend le délai")
-	await wait_seconds(InteractionController.AUTO_DIALOGUE_DELAY * 0.5)
-	assert_false(_box.is_open())
-	await wait_seconds(InteractionController.AUTO_DIALOGUE_DELAY * 0.5 + 0.1)
+	await sim.run_until(func() -> bool: return false,
+		InteractionController.AUTO_DIALOGUE_DELAY - FrameSim.STEP)
+	assert_false(_box.is_open(), "pas avant AUTO_DIALOGUE_DELAY (%.3f s)" % sim.elapsed())
+	await sim.run_until(func() -> bool: return _box.is_open(), 1.0)
+	sim.finish()
 	assert_true(_box.is_open(), "ouverte après AUTO_DIALOGUE_DELAY")
+	assert_between(sim.elapsed(), InteractionController.AUTO_DIALOGUE_DELAY - 0.0001,
+		InteractionController.AUTO_DIALOGUE_DELAY + FrameSim.STEP + 0.0001,
+		"au délai près (%.3f s)" % sim.elapsed())
 	assert_eq(_box.get_speaker_text(), "Maman")
 	await _finish_dialogue()
 	assert_true(_flags.has_flag(&"mom_greeted"))

@@ -88,6 +88,20 @@ var _dex_toasts: Array[Array] = []
 var _observed: Dictionary[StringName, bool] = {}
 var _objectives := ObjectiveLibrary.new()
 var _unlocks: MenuUnlocks
+## Lumière du monde (jalon 7, jalon-07.md §6.7, §15.3) : profil de la carte appliqué à chaque
+## changement de carte (écran noir) ; profil vide = aucun effet (Bourg Palette, Route 1).
+var _lighting: WorldLighting
+var _light_profiles := LightingLibrary.new()
+## Points de repos (jalon 7, 7A.2) : maison et Centres, mot du réveil (data/world/rest_points.json).
+var _rest_points := RestPointLibrary.new()
+## Toast « Point de repos enregistré — <zone> » en attente de la fin du dialogue du soin.
+var _rest_toast: PackedStringArray = PackedStringArray()
+## Boutiques (jalon 7, 7A.3, data/shops/) ; la boutique demandée par le marchand (`open_shop`),
+## ouverte à la fin de son dialogue (le menu ne s'ouvre pas pendant un dialogue).
+var _shops := ShopLibrary.new()
+var _pending_shop: StringName = &""
+## Le terminal du Centre a demandé le Stockage (`open_storage`) : ouvert à la fin du dialogue.
+var _pending_storage: bool = false
 ## Faux : aucune écriture de toute la session (pas de sauvegarde, départ de débogage, ou
 ## sauvegarde d'une version plus récente à ne jamais écraser).
 var _autosave_enabled: bool = false
@@ -114,12 +128,18 @@ var _in_foreground: bool = true
 @onready var _battle_director: BattleDirector = %BattleDirector
 @onready var _ambient: AmbientWatcher = %AmbientWatcher
 @onready var _encounters: EncounterDirector = %EncounterDirector
+@onready var _recovery: DefeatRecovery = %DefeatRecovery
+@onready var _services: ServiceDirector = %ServiceDirector
 @onready var _menu: MenuDirector = %MenuDirector
 @onready var _menu_screen: TrainerMenu = %TrainerMenu
 
 
 func _ready() -> void:
 	GameState.new_game()
+	_lighting = WorldLighting.new()
+	_lighting.process_mode = Node.PROCESS_MODE_PAUSABLE
+	add_child(_lighting)
+	_light_profiles.load_file()
 	_load_settings()
 	# Compteur de fps de QA (journal « [perf] »), seulement en build debug, Boot scène principale.
 	if PerfCounter.is_allowed(OS.is_debug_build(), get_tree().current_scene == self):
@@ -128,6 +148,17 @@ func _ready() -> void:
 	_library.load_dir()
 	_cutscenes.load_dir()
 	_runner.setup(_library, GameState.flags, _dialogue_box, _player)
+	# Centre Pokémon (jalon 7, 7A.2, jalon-07.md §6.2) : actions de dialogue (soins), choix à deux
+	# cartes dans la boîte de dialogue (T7), réveil au point de repos.
+	_rest_points.load_file()
+	_services.setup(GameState, _rest_points)
+	_services.center_healed.connect(_on_center_healed)
+	_services.shop_requested.connect(_on_shop_requested)
+	_services.storage_requested.connect(_on_storage_requested)
+	_runner.action_handler = _services.run_action
+	# Choix à deux cartes (jalon-07.md §6.5, T7) : la boîte montre les cartes, le lecteur attend.
+	_runner.choice_requested.connect(_dialogue_box.show_choice)
+	_dialogue_box.choice_made.connect(_runner.choose)
 	_interactions.setup(_player, _runner)
 	_cutscenes_node.setup(_cutscenes, GameState.flags, _runner, _player, SceneRouter)
 	_pokemon.load_dir()
@@ -146,6 +177,11 @@ func _ready() -> void:
 		GameState, _items)
 	_cutscenes_node.set_battle_runner(_battle_director)
 	_cutscenes_node.set_inventory(GameState.bag, _items)
+	# Remise du colis (jalon-07.md §3.6.2, T19) : jeton {first_wild_species} des répliques de
+	# Chen, scène lancée par une variante de dialogue (« colis en main »), légende POKÉDEX ACTIVÉ.
+	_runner.token_values = _dialogue_token_values
+	_runner.cutscene_requested.connect(_on_cutscene_requested)
+	_cutscenes_node.set_hud(_hud)
 	_cutscenes_node.item_given.connect(_on_item_given)
 	_cutscenes_node.item_found.connect(_on_item_found)
 	_battle_director.battle_started.connect(_on_battle_state_changed.unbind(1))
@@ -167,13 +203,16 @@ func _ready() -> void:
 	# (BattleDirector.run_request). Une défaite renvoie au point de soin (§3.11).
 	_encounter_library = EncounterLibrary.new(_pokemon)
 	_encounter_library.load_dir()
+	_recovery.setup(GameState, _rest_points, SceneRouter, _runner)
+	_recovery.woke_up.connect(_on_woke_up_after_defeat.unbind(1))
+	# Défaite contre un Dresseur (jalon-07.md §3.8, T25) : l'étape de scène « wake_up ».
+	_cutscenes_node.set_recovery(_recovery)
 	_encounters.setup(_encounter_library, _pokemon, GameState, _player, _battle_director,
-		SceneRouter, _cutscenes_node, _runner)
+		SceneRouter, _cutscenes_node, _recovery)
 	_encounters.encounter_started.connect(_on_encounter_state_changed.unbind(2))
 	_encounters.encounter_started.connect(_hud.hide_zone_title.unbind(2))
 	_encounters.encounter_finished.connect(_on_encounter_state_changed.unbind(1))
 	_encounters.encounter_finished.connect(_on_encounter_finished)
-	_encounters.woke_up_after_defeat.connect(_on_woke_up_after_defeat)
 	_interactions.target_changed.connect(_on_target_changed)
 	_runner.dialogue_started.connect(_on_dialogue_started)
 	_runner.dialogue_finished.connect(_on_dialogue_finished)
@@ -187,6 +226,9 @@ func _ready() -> void:
 	_zones.load_file()
 	_objectives.load_file()
 	_unlocks = MenuUnlocks.new(GameState.flags, GameState.party)
+	# Stockage (jalon-07.md §6.9, T16) : seulement dans un Centre (carte courante, relue à chaque
+	# appel) ; l'écran Stockage et le bouton STOCKAGE de l'Équipe n'existent que là.
+	_unlocks.set_location(_zones, _current_map_id)
 	_apply_debug_unlocks()
 	if _dex.load_file():
 		_dex.check_references(_pokemon)
@@ -202,6 +244,10 @@ func _ready() -> void:
 		push_error(error)
 	_menu.setup(GameState, _pokemon, _zones, _objectives, _unlocks, _can_open_menu, _items, _dex,
 		_map_illustration, _moments)
+	# Boutique (jalon-07.md §6.10, T12) : stock vérifié contre les objets.
+	_shops.load_dir()
+	_shops.check_references(_items)
+	_menu.set_shops(_shops)
 	_menu.menu_opened.connect(_on_menu_opened)
 	_menu.menu_closed.connect(_on_menu_closed)
 	# L'écran (jalon-06.md §6.6) : ouverture et vue dans la même frame, sans await (un fondu
@@ -256,6 +302,24 @@ func _ready() -> void:
 		_menu.settings_shown.connect(_menu_screen.show_settings)
 		_menu_screen.setting_changed.connect(_menu.change_setting)
 		_menu_screen.save_now_requested.connect(_menu.request_save)
+	# Boutique (jalon-07.md §6.10) : ShopScreen du T11 (TrainerMenu), directeur du T12.
+	_menu.shop_shown.connect(_menu_screen.show_shop)
+	_menu.shop_result_shown.connect(_menu_screen.show_shop_result)
+	_menu.shop_confirm_requested.connect(_menu_screen.show_shop_confirm)
+	_menu_screen.shop_mode_changed.connect(_menu.set_shop_mode)
+	_menu_screen.shop_buy_requested.connect(_menu.buy)
+	_menu_screen.shop_sell_requested.connect(_menu.sell)
+	# Stockage (jalon-07.md §6.9) : StorageScreen du T15 (TrainerMenu, fusionné avant : câblage
+	# direct, comme la Boutique), directeur du T16.
+	_menu.storage_shown.connect(_menu_screen.show_storage)
+	_menu.storage_refused.connect(_menu_screen.show_storage_refusal)
+	_menu.storage_release_asked.connect(_menu_screen.ask_storage_release)
+	_menu_screen.storage_selected.connect(_menu.select_storage)
+	_menu_screen.storage_deposit_requested.connect(_menu.deposit_member)
+	_menu_screen.storage_withdraw_requested.connect(_menu.withdraw_member)
+	_menu_screen.storage_favorite_toggled.connect(_menu.toggle_storage_favorite)
+	_menu_screen.storage_release_requested.connect(_menu.request_release)
+	_menu_screen.storage_release_confirmed.connect(_menu.confirm_release)
 	# Une seule écoute de tout ce qui s'enregistre au Pokédex (jalon-06.md §6.9).
 	GameState.pokedex.recorded.connect(_on_pokedex_recorded)
 	GameState.flags.flag_changed.connect(_on_flag_changed)
@@ -341,6 +405,11 @@ func get_map() -> GameMap:
 
 
 ## Réglages courants (jalon 6, T29).
+## Lumière du monde (jalon 7) : tests et outils de capture.
+func get_world_lighting() -> WorldLighting:
+	return _lighting
+
+
 func get_settings() -> GameSettings:
 	return _settings
 
@@ -438,6 +507,25 @@ func get_encounter_director() -> EncounterDirector:
 	return _encounters
 
 
+## Réveil après une défaite (jalon 7, T8).
+func get_defeat_recovery() -> DefeatRecovery:
+	return _recovery
+
+
+## Actions des services : soins, Boutique et Stockage (jalon 7, T8, T12, T16).
+func get_service_director() -> ServiceDirector:
+	return _services
+
+
+## Points de repos chargés au démarrage (data/world/rest_points.json).
+func get_shop_library() -> ShopLibrary:
+	return _shops
+
+
+func get_rest_points() -> RestPointLibrary:
+	return _rest_points
+
+
 ## Tables de rencontre chargées au démarrage (data/encounters/).
 func get_encounter_library() -> EncounterLibrary:
 	return _encounter_library
@@ -481,6 +569,12 @@ func _can_open_menu() -> bool:
 ## immédiate puis ouverture du menu ; pendant un dialogue, une scène, un combat ou une
 ## transition, ignoré.
 func _on_go_back() -> void:
+	# Bilan de fin de combat affiché : retour = le fermer (demande n° 1).
+	if _battle_director.handle_back():
+		return
+	# Un choix à deux cartes dans un dialogue (SOIGNER / PAS MAINTENANT) : retour = annuler.
+	if _dialogue_box.cancel_choice():
+		return
 	if _menu.is_open() and _screen_back():
 		return
 	if _menu.handle_back():
@@ -663,12 +757,27 @@ func _on_transition_started(_target_map: StringName) -> void:
 ## (jalon 3B §2.6), puis la carte passe aux contrôleurs.
 func _on_map_changed(map: GameMap) -> void:
 	_observed.clear()
+	_apply_lighting(map)
 	map.refresh_npcs(GameState.flags)
 	_interactions.set_map(map)
 	_cutscenes_node.set_map(map)
 	_starter_choice.set_map(map)
 	_ambient.set_map(map)
 	_encounters.set_map(map)
+	_services.set_map(map)
+	_recovery.set_map(map)
+
+
+## Profil de lumière de [param map] ([member GameMap.light_profile]) ; vide ou inconnu :
+## aucun effet ([method WorldLighting.apply] avec null).
+func _apply_lighting(map: GameMap) -> void:
+	var profile: LightProfile = null
+	if not map.light_profile.is_empty():
+		profile = _light_profiles.get_profile(map.light_profile)
+		if profile == null:
+			push_error("Boot : profil de lumière inconnu « %s » (%s)" % [map.light_profile,
+				map.map_id])
+	_lighting.apply(profile, map)
 
 
 ## Arrivée sur une carte (écran visible) : zone découverte, autosave demandé, titre de zone.
@@ -693,16 +802,70 @@ func _on_dialogue_started(_dialogue_id: StringName) -> void:
 
 func _on_dialogue_finished(_dialogue_id: StringName) -> void:
 	_refresh_controls()
+	if not _rest_toast.is_empty():
+		_hud.show_toast(_rest_toast[0], _rest_toast[1])
+		_rest_toast = PackedStringArray()
+	if not _pending_shop.is_empty():
+		var shop_id := _pending_shop
+		_pending_shop = &""
+		if not _menu.open(MenuRoute.shop(shop_id), true):
+			push_error("Boot : la Boutique « %s » ne s'ouvre pas" % shop_id)
+	elif _pending_storage:
+		_pending_storage = false
+		if not _menu.open(MenuRoute.storage(), true):
+			push_error("Boot : le Stockage ne s'ouvre pas sur « %s »" % _current_map_id())
 
 
-## Soin demandé par un dialogue « heal » (jalon 5 §3.11) : l'équipe est soignée (PV et PP).
+## « open_shop » (le marchand, jalon-07.md §6.10) : la Boutique s'ouvre en écran seul dès la fin
+## du dialogue (partie stable). Boutique inconnue : refusée tout de suite.
+func _on_shop_requested(shop_id: StringName) -> void:
+	if not _shops.has_shop(shop_id):
+		push_error("Boot : boutique inconnue « %s »" % shop_id)
+		return
+	_pending_shop = shop_id
+
+
+## « open_storage » (le terminal du Centre, jalon-07.md §6.9) : le Stockage s'ouvre en écran
+## seul dès la fin du dialogue ; retour = fermer, autosave à la fermeture s'il a changé.
+func _on_storage_requested() -> void:
+	_pending_storage = true
+
+
+## Soin demandé par un dialogue « heal » (jalon 5 §3.11, Maman) : l'équipe est soignée (PV et
+## PP) ; le point de repos ne change pas (dossier 09 §7).
 func _on_heal_requested() -> void:
-	GameState.party.heal_all()
+	_services.heal()
 	request_autosave("soin")
+
+
+## Soin d'un Centre fini (jalon-07.md §5.3) : écriture tout de suite (joueur au comptoir, la
+## partie ne peut plus rien perdre), comme au réveil ; le toast du point de repos attend la fin
+## du dialogue (après « Voilà. Tout le monde est en pleine forme. »), une fois par changement.
+func _on_center_healed(map_id: StringName, registered: bool) -> void:
+	if registered:
+		_rest_toast = _rest_points.registered_toast(_zones.zone_name_of(map_id))
+	if _can_write() and not SceneRouter.is_transitioning():
+		_write_save("soin")
+	else:
+		request_autosave("soin")
 
 
 func _on_cutscene_started(_cutscene_id: StringName) -> void:
 	_refresh_controls()
+
+
+## Valeurs des jetons des dialogues (jalon-07.md §3.6, T19) : lues au début d'un dialogue qui en
+## contient (« Un Roucool… » ; aucune rencontre → la page est omise).
+func _dialogue_token_values() -> Dictionary[StringName, String]:
+	return DialogueTokens.values_for(GameState.first_wild_species(), _pokemon)
+
+
+## Une variante de dialogue lance une scène à sa fin (Chen, colis en main → `oak_parcel`). Le
+## verrou du joueur passe du dialogue à la scène dans la même image (jalon-07.md §3.6.2).
+func _on_cutscene_requested(cutscene_id: StringName) -> void:
+	if not _cutscenes_node.play(cutscene_id):
+		push_warning("Boot : la scène « %s » demandée par un dialogue n'a pas été jouée"
+			% cutscene_id)
 
 
 func _on_cutscene_finished(_cutscene_id: StringName) -> void:
@@ -759,16 +922,17 @@ func _on_battle_finished(trainer_id: StringName, outcome: int) -> void:
 	request_autosave("fin de combat")
 
 
-## Fin d'une rencontre sauvage (victoire, fuite ou défaite → réveil chez Maman) : autosave,
-## écrit dès que la partie est stable (après le mot de Maman en cas de défaite).
+## Fin d'une rencontre sauvage (victoire, fuite ou défaite → réveil au point de repos) :
+## autosave, écrit dès que la partie est stable (après le mot du lieu en cas de défaite).
 func _on_encounter_finished(_outcome: int) -> void:
 	request_autosave("fin de rencontre")
 
 
-## Réveil chez Maman après une défaite (décision de Kevin du 2026-10-02, QA S3) : la défaite
-## est un fait accompli. L'équipe est soignée et le joueur est au point de soin : on écrit tout
-## de suite, avant le mot de Maman ; sinon, quitter pendant son mot effaçait la défaite (retour
-## à la dernière case stable d'avant le combat). Une scène interrompue, elle, se rejoue.
+## Réveil au point de repos après une défaite ([DefeatRecovery] : dernier Centre utilisé, sinon
+## la maison ; décision de Kevin du 2026-10-02, QA S3) : la défaite est un fait accompli.
+## L'équipe est soignée et le joueur est au point de repos : on écrit tout de suite, avant le mot
+## du lieu ; sinon, quitter pendant ce mot effaçait la défaite (retour à la dernière case stable
+## d'avant le combat). Une scène interrompue, elle, se rejoue.
 func _on_woke_up_after_defeat() -> void:
 	if _can_write() and not SceneRouter.is_transitioning():
 		_write_save("réveil")
@@ -798,8 +962,13 @@ func _on_item_given(item_id: StringName, count: int) -> void:
 	_hud.show_toast(item.quantity_text(count), item.added_text(count))
 
 
-## Retour de l'écran : la fiche du Pokédex d'abord, puis le choix du Pokémon du Sac.
+## Retour de l'écran : la confirmation de vente de la Boutique, la confirmation ou le menu « ⋯ »
+## du Stockage, la fiche du Pokédex, puis le choix du Pokémon du Sac.
 func _screen_back() -> bool:
+	if _menu_screen.shop_back():
+		return true
+	if _menu_screen.storage_back():
+		return true
 	if _menu_screen.has_method(&"pokedex_back") and _menu_screen.call(&"pokedex_back"):
 		return true
 	return _menu_screen.bag_back()
@@ -896,6 +1065,7 @@ func _apply_settings(s: GameSettings) -> void:
 	_battle_director.confirm_forget = s.confirm_actions
 	_battle_hud.message_hold_scale = 1.0
 	_battle_stage.reduce_flashes = s.reduce_flashes
+	_services.reduce_motion = s.reduce_motion
 	_menu_screen.speed_scale = s.menu_speed_scale()
 	Haptics.enabled = s.haptics
 	UiPrefs.apply(s)
@@ -910,6 +1080,7 @@ func _apply_settings(s: GameSettings) -> void:
 	if _menu_screen.has_method(&"set_backdrop_blur"):
 		_menu_screen.call(&"set_backdrop_blur", _profile.menu_blur)
 	_battle_stage.backdrop_blur = not _profile.reduced_effects
+	_lighting.set_reduced_effects(_profile.reduced_effects)
 
 
 ## « Sauvegarder maintenant » : écrit la sauvegarde et affiche le résultat dans l'écran.

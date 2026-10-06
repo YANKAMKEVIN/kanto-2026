@@ -47,7 +47,8 @@ func test_messages_fixed_by_kevin_are_final_and_the_others_draft() -> void:
 	# Jalon 5D : les textes de la carte de capture viennent du dossier 05 §17 (Q36).
 	var fixed: Array[StringName] = [&"sent_out_foe", &"critical", &"super_effective",
 		&"not_very_effective", &"caught_title", &"pokedex_new", &"joined_party",
-		&"sent_to_storage"]
+		&"sent_to_storage", &"summary_exp", &"summary_level", &"summary_stat"]
+	# Bilan de fin de combat : libellés courts validés par Kevin (demande n° 1, décision 9).
 	for id: StringName in BattleText.TEMPLATE_IDS:
 		assert_eq(_text.is_draft(id), not fixed.has(id), String(id))
 
@@ -184,14 +185,15 @@ func test_no_generic_start_message_for_the_first_rival_battle() -> void:
 
 
 func test_exp_and_learning_lines() -> void:
-	# Jalon 5C (Q25, Q30) : pas de phrase pour l'XP ni le niveau ; une pour la capacité.
+	# Pas de phrase pour l'XP ni le niveau (le bilan de fin de combat les raconte, demande
+	# n° 1) ; une pour la capacité.
 	var gained := _event(K.EXP_GAINED, false, "Salamèche")
 	gained.amount = 21
-	assert_eq(_lines(gained), [], "« +21 XP » est sur la carte")
+	assert_eq(_lines(gained), [], "l'XP est dans le bilan")
 	var level_up := _event(K.LEVEL_UP, false, "Salamèche")
 	level_up.level = 6
-	assert_eq(_lines(level_up), ["Salamèche monte au niveau 6 !"], "message de niveau (option A)")
-	assert_eq(_text.line_for(&"level_up", level_up, _data), "Salamèche monte au niveau 6 !")
+	assert_eq(_lines(level_up), [], "plus de « monte au niveau » : le bilan le remplace")
+	assert_eq(_text.line_for(&"level_up", level_up, _data), "", "modèle retiré")
 	var learned := _event(K.MOVE_LEARNED, false, "Salamèche")
 	learned.move_id = &"ember"
 	assert_eq(_lines(learned), ["Salamèche apprend Flammèche !"])
@@ -387,3 +389,33 @@ func test_item_used_then_hp_restored() -> void:
 		"Salamèche récupère 20 PV."] as Array[String])
 	assert_true(_text.is_draft(&"item_used"))
 	assert_true(_text.is_draft(&"hp_restored"))
+
+
+## Jalon 7 : « Tu remportes 280 ₽. » (draft), somme au format de l'argent du menu.
+func test_prize_line() -> void:
+	assert_eq(_text.prize_line(280), "Tu remportes %s." % MenuFormat.money(280))
+	assert_eq(_text.prize_line(1400), "Tu remportes %s." % MenuFormat.money(1400))
+	assert_true(_text.is_draft(&"prize_won"), "à relire par Kevin")
+
+
+## Bilan de fin de combat (demande n° 1) : « +11 XP », « Nv. 9 », gains de statistiques courts
+## dans l'ordre PV, Attaque, Défense, Atq. Spé., Déf. Spé., Vitesse ; +0 non écrits.
+func test_summary_labels() -> void:
+	assert_eq(_text.summary_exp(11), "+11 XP")
+	assert_eq(_text.summary_level(9), "Nv. 9")
+	var gains: Dictionary[StringName, int] = {&"spe": 1, &"hp": 2, &"atk": 1, &"def": 0,
+		&"spa": 1, &"spd": 1}
+	assert_eq(_text.summary_stats(gains), "PV +2 · Attaque +1 · Atq. Spé. +1 · Déf. Spé. +1"
+		+ " · Vitesse +1", "ordre fixe, Défense +0 masquée")
+	var none: Dictionary[StringName, int] = {&"hp": 0}
+	assert_eq(_text.summary_stats(none), "")
+	assert_eq(_text.get_template(&"summary_continue"), "Touchez l'écran pour continuer")
+
+
+func test_incomplete_stat_labels_are_rejected() -> void:
+	var broken := BattleText.new()
+	var data: Dictionary = JSON.parse_string(FileAccess.get_file_as_string(BattleText.DATA_PATH))
+	(data["stat_labels"] as Dictionary).erase("spe")
+	(data["stat_labels"] as Dictionary)["luck"] = "Chance"
+	assert_false(broken.add_from_dict(data, "test"))
+	assert_push_error_count(2)

@@ -127,6 +127,12 @@ func pulse_level(side: BattleHud.Side, level: int) -> void:
 	await get_card(side).pulse_level(level)
 
 
+## « Nv. » de la carte de [param side] prend [param level], sans pulsation (montée de niveau
+## pendant le combat : le bilan de fin de combat la raconte, demande n° 1).
+func set_level(side: BattleHud.Side, level: int) -> void:
+	get_card(side).set_level(level)
+
+
 ## Coup reçu par [param side] : vibration HAPTIC_HIT_MS, HAPTIC_CRIT_MS si [param critical].
 func play_hit(side: BattleHud.Side, critical: bool) -> void:
 	get_card(side).play_hit(critical)
@@ -155,10 +161,11 @@ func show_moves(views: Array[BattleMoveView]) -> void:
 ## Coroutine : affiche [param text] dans le bandeau (après la sortie de la zone affichée) et
 ## attend BATTLE_MESSAGE_HOLD ou un toucher. Le bandeau reste ensuite jusqu'à la zone
 ## suivante ou hide_all.
-func show_message(text: String) -> void:
+## [param wait_touch] : la phrase attend un toucher (phrase importante).
+func show_message(text: String, wait_touch: bool = false) -> void:
 	if not await _switch(Zone.MESSAGE):
 		return
-	await _banner.show_message(text)
+	await _banner.show_message(text, wait_touch)
 
 
 ## Coroutine : fait sortir la zone du bas (grille, capacités, « ‹ », bandeau) et attend sa

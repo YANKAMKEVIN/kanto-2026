@@ -9,6 +9,9 @@ extends RefCounted
 ## la pile au-dessus (pas de boucle Pokédex → Carte → Pokédex qui s'empile). La pile compte
 ## [constant MAX_DEPTH] écrans au plus (jalon-06.md §13) : au-delà, le nouvel écran remplace
 ## celui du dessus.
+## **Écran seul** (jalon-07.md §2.3, §3.4) : [code]open(route, true)[/code] ouvre l'écran sans
+## tableau de bord dessous (la Boutique) ; retour = fermer. Un écran de
+## [constant MenuRoute.STANDALONE_SCREENS] ne s'ouvre que de cette façon.
 
 ## Le menu vient de s'ouvrir sur [param route].
 signal opened(route: MenuRoute)
@@ -30,14 +33,29 @@ func _init(unlocks: MenuUnlocks) -> void:
 
 ## Ouvre le menu sur [param route] (tableau de bord si null), posé au-dessus du tableau de
 ## bord. Une route indisponible ouvre le tableau de bord. Faux si le menu est déjà ouvert.
-func open(route: MenuRoute = null) -> bool:
+## [param standalone] : l'écran s'ouvre **seul**, sans tableau de bord (retour = fermer) ;
+## faux, et rien ne s'ouvre, si la route est nulle, le tableau de bord ou indisponible. Un
+## écran de [constant MenuRoute.STANDALONE_SCREENS] ne s'ouvre que seul (sinon : faux).
+func open(route: MenuRoute = null, standalone: bool = false) -> bool:
 	if is_open():
 		return false
+	var routed := route != null and route.screen != MenuRoute.DASHBOARD and _is_allowed(route)
+	if standalone or (route != null and MenuRoute.is_standalone_screen(route.screen)):
+		if not standalone or not routed:
+			return false
+		_stack.append(route.duplicate_route())
+		opened.emit(current())
+		return true
 	_stack.append(MenuRoute.dashboard())
-	if route != null and route.screen != MenuRoute.DASHBOARD and _is_allowed(route):
+	if routed:
 		_stack.append(route.duplicate_route())
 	opened.emit(current())
 	return true
+
+
+## Vrai si le menu est ouvert sur un écran seul (pas de tableau de bord au fond de la pile).
+func is_standalone() -> bool:
+	return is_open() and _stack[0].screen != MenuRoute.DASHBOARD
 
 
 ## Ferme le menu (sans effet s'il est fermé).
@@ -75,7 +93,8 @@ func get_screens() -> Array[StringName]:
 ## Un écran déjà dans la pile : on y revient (pile coupée au-dessus) et ses paramètres sont
 ## remplacés. [signal route_changed] n'est émis que si l'écran affiché change.
 func go(route: MenuRoute) -> bool:
-	if not is_open() or route == null or not _is_allowed(route):
+	if not is_open() or route == null or not _is_allowed(route) \
+			or MenuRoute.is_standalone_screen(route.screen):
 		return false
 	var before := _stack.back() as MenuRoute
 	var index := _index_of(route.screen)
@@ -91,7 +110,7 @@ func go(route: MenuRoute) -> bool:
 	return true
 
 
-## Retour : écran précédent ; depuis le tableau de bord, ferme le menu. Vrai si quelque
+## Retour : écran précédent ; depuis le tableau de bord ou un écran seul, ferme le menu. Vrai si quelque
 ## chose a changé (faux si le menu était fermé).
 func back() -> bool:
 	if not is_open():

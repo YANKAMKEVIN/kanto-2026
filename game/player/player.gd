@@ -13,15 +13,25 @@ extends Node2D
 signal moved(cell: Vector2i)
 signal facing_changed(direction: Vector2i)
 signal bumped(direction: Vector2i)
+## Petite réaction de surprise ([method react], scènes) : tests, futurs sons.
+signal reacted
 
 ## Groupe qui permet au décor de retrouver le joueur (transparence des feuillages).
 const GROUP: StringName = &"player"
-## Taille affichée du personnage (32×64 natif, ×2), bas-centre sur l'origine.
+## Apparence du joueur ([CharacterLook]) : le héros peint (marche et course, Q-1 du jalon 7),
+## sinon le provisoire pixel art ×2.
+const LOOK_SPRITE: StringName = &"player"
+## Taille affichée du personnage avant [method _apply_look] (provisoire 32×64 ×2), bas-centre
+## sur l'origine.
 const BODY_SIZE := Vector2(64, 128)
 ## Vitesse de l'animation de marche sur place contre un obstacle.
 const BUMP_ANIM_SPEED: float = 0.5
 ## Hauteur de l'arc du saut de rebord (px monde) : le sprite s'élève, l'ombre reste au sol.
 const JUMP_ARC_HEIGHT: float = 48.0
+## Petit bond de surprise ([method react]) : hauteur (px monde) et durée totale (s), comme le
+## bond des PNJ sans animation « react » (Npc.HOP_HEIGHT / HOP_DURATION, un peu plus marqué).
+const REACT_HEIGHT: float = 16.0
+const REACT_DURATION: float = 0.28
 ## Repos de l'ombre (px monde), comme dans la scène.
 const SHADOW_REST_Y: float = -6.0
 ## Raison de blocage par défaut : celle du routeur de scènes (changement de carte).
@@ -42,6 +52,13 @@ var _bump_direction: Vector2i = Vector2i.ZERO
 var _block_reasons: Dictionary[StringName, bool] = {}
 ## Rectangle monde de la carte courante (recalcul des limites si la vue change).
 var _map_bounds: Rect2i = Rect2i()
+## Taille affichée de l'apparence (image de repos × échelle).
+var _body_size: Vector2 = BODY_SIZE
+## Apparence résolue au chargement.
+var _look: CharacterLook
+## Hauteur courante du bond de surprise (px monde), animée par [member _react_tween].
+var _react_lift: float = 0.0
+var _react_tween: Tween
 
 @onready var _sprite: AnimatedSprite2D = %Sprite
 @onready var _camera: Camera2D = %Camera
@@ -51,6 +68,7 @@ var _map_bounds: Rect2i = Rect2i()
 
 func _ready() -> void:
 	add_to_group(GROUP)
+	_apply_look()
 	get_viewport().size_changed.connect(_on_viewport_size_changed)
 	set_process(_mover != null)
 	if _mover != null:
@@ -155,6 +173,33 @@ func script_step(direction: Vector2i, run: bool = false, keep_facing: bool = fal
 	return started
 
 
+## Petite réaction de surprise (scènes, étape « react ») : animation `react_<dir>` si
+## l'apparence l'a, sinon un petit bond sur place (le sprite monte, l'ombre reste au sol). Ne
+## bouge ni la case ni l'orientation.
+func react() -> void:
+	reacted.emit()
+	var anim := StringName("react_" + Grid.direction_name(get_facing()))
+	if _sprite != null and _sprite.sprite_frames != null \
+			and _sprite.sprite_frames.has_animation(anim):
+		_sprite.play(anim)
+		return
+	if not is_inside_tree():
+		return
+	if _react_tween != null and _react_tween.is_valid():
+		_react_tween.kill()
+	_react_tween = create_tween()
+	_react_tween.tween_property(self, ^"_react_lift", REACT_HEIGHT, REACT_DURATION / 2.0) \
+			.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+	_react_tween.tween_property(self, ^"_react_lift", 0.0, REACT_DURATION / 2.0) \
+			.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN)
+	_react_tween.finished.connect(_update_jump_and_grass)
+
+
+## Vrai pendant le bond de [method react].
+func is_reacting() -> bool:
+	return _react_tween != null and _react_tween.is_valid() and _react_tween.is_running()
+
+
 func get_cell() -> Vector2i:
 	return _mover.get_cell() if _mover != null else Grid.world_to_cell(position)
 
@@ -173,7 +218,12 @@ func is_running() -> bool:
 
 ## Rectangle du personnage affiché, en coordonnées globales.
 func get_body_rect() -> Rect2:
-	return Rect2(global_position - Vector2(BODY_SIZE.x / 2.0, BODY_SIZE.y), BODY_SIZE)
+	return Rect2(global_position - Vector2(_body_size.x / 2.0, _body_size.y), _body_size)
+
+
+## Apparence affichée (peinte ou provisoire).
+func get_look() -> CharacterLook:
+	return _look
 
 
 func get_camera() -> Camera2D:
@@ -215,12 +265,27 @@ func _update_jump_and_grass() -> void:
 		var t := _mover.get_progress()
 		arc = 4.0 * JUMP_ARC_HEIGHT * t * (1.0 - t)
 	if _sprite != null:
-		_sprite.position.y = -arc
+		_sprite.position.y = -arc - _react_lift
 	if _shadow != null:
 		_shadow.position.y = SHADOW_REST_Y
 	if _grass_front != null:
 		_grass_front.visible = not jumping and _grid != null \
 			and _grid.is_tall_grass(_mover.get_target_cell())
+
+
+## SpriteFrames, échelle et filtre de l'apparence ([CharacterLook]) ; pieds sur l'origine.
+func _apply_look() -> void:
+	_look = CharacterLook.resolve(LOOK_SPRITE)
+	var frames := load(_look.frames_path) as SpriteFrames
+	if frames == null:
+		return
+	_sprite.sprite_frames = frames
+	_sprite.scale = Vector2(_look.scale, _look.scale)
+	_sprite.texture_filter = _look.filter
+	var frame := frames.get_frame_texture(&"idle_down", 0)
+	if frame != null:
+		_sprite.offset = Vector2(0.0, -frame.get_size().y / 2.0)
+		_body_size = frame.get_size() * _look.scale
 
 
 func _update_animation(direction: Vector2i) -> void:

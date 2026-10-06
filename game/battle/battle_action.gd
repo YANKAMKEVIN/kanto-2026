@@ -4,10 +4,10 @@ extends RefCounted
 ##
 ## MOVE au jalon 4 ; RUN (fuite) au jalon 5B (combat sauvage) ; ITEM (lancer une Ball) au
 ## jalon 5D, et donner un soin à un Pokémon de l'équipe au jalon 6 ([member target] ≥ 0) ;
-## SWITCH (équipe) viendra avec son jalon. Chaque sorte s'ajoute en fin d'enum pour
-## ne rien décaler.
+## SWITCH (changer de Pokémon, ÉQUIPE) au jalon 7 ([member target] : le Pokémon envoyé).
+## Chaque sorte s'ajoute en fin d'enum pour ne rien décaler.
 
-enum Kind { MOVE, RUN, ITEM }
+enum Kind { MOVE, RUN, ITEM, SWITCH }
 
 ## [member move_index] de Lutte (quand plus aucune capacité n'a de PP).
 const STRUGGLE: int = -1
@@ -18,6 +18,7 @@ var move_index: int = 0
 ## Objet utilisé (ITEM) : identifiant d'une Ball ou d'un soin de l'[ItemLibrary].
 var item_id: StringName = &""
 ## ITEM : place du Pokémon soigné dans l'équipe du joueur (0 = en tête) ; −1 pour une Ball.
+## SWITCH : place du Pokémon envoyé dans l'équipe du joueur.
 var target: int = -1
 
 
@@ -53,6 +54,16 @@ static func heal(id: StringName, party_index: int) -> BattleAction:
 	var action := BattleAction.new()
 	action.kind = Kind.ITEM
 	action.item_id = id
+	action.target = party_index
+	return action
+
+
+## Action « rappeler le Pokémon en jeu et envoyer le Pokémon [param party_index] de l'équipe »
+## (jalon 7). Légale seulement si [method Battle.check_switch] l'accepte (ni le Pokémon actif,
+## ni un K.O.).
+static func switch_to(party_index: int) -> BattleAction:
+	var action := BattleAction.new()
+	action.kind = Kind.SWITCH
 	action.target = party_index
 	return action
 

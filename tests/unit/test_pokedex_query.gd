@@ -69,7 +69,7 @@ func test_filters_follow_the_menu_route_values() -> void:
 	assert_eq(Filter.CAUGHT, MenuRoute.DEX_FILTER_CAUGHT)
 	assert_eq(Filter.HABITAT, MenuRoute.DEX_FILTER_HABITAT)
 	assert_eq(PokedexQuery.FILTER_LABELS,
-		PackedStringArray(["TOUS", "VUS", "CAPTURÉS", "HABITATS"]))
+		PackedStringArray(["Tous", "Vus", "Capturés", "Habitats"]))
 
 
 func test_three_states() -> void:
@@ -90,7 +90,7 @@ func test_all_shows_151_numbered_slots_and_unknown_ones_carry_nothing() -> void:
 		assert_eq(slot.number_text, "%03d" % (i + 1))
 	var unknown := view.slots[0]
 	assert_true(unknown.is_unknown(), "Bulbizarre jamais vu")
-	assert_eq(unknown.species_id, &"", "ni espèce, donc ni image ni silhouette")
+	assert_eq(unknown.species_id, &"", "ni espèce, ni nom (la silhouette vient du seul numéro)")
 	assert_eq(unknown.name, "???")
 	assert_eq(unknown.state, State.UNKNOWN)
 	assert_false(unknown.caught)
@@ -108,10 +108,20 @@ func test_all_shows_151_numbered_slots_and_unknown_ones_carry_nothing() -> void:
 	assert_eq(view.empty_text, "")
 
 
+func test_unknown_slots_keep_their_number_for_the_silhouette_but_never_a_species() -> void:
+	_kevin()
+	for slot: PokedexSlotView in _grid().slots:
+		assert_gt(slot.number, 0)
+		if slot.is_unknown():
+			assert_eq(slot.species_id, &"", "n° %d" % slot.number)
+			assert_eq(slot.name, PokedexSlotView.UNKNOWN_NAME)
+			assert_ne(PokedexArt.thumb_region(slot.number), Rect2(), "silhouette trouvable")
+
+
 func test_header_and_counter_without_slash() -> void:
 	_kevin()
 	var view := _grid()
-	assert_eq(view.title, "POKÉDEX — KANTO")
+	assert_eq(view.title, "Pokédex")
 	assert_eq(view.counts_text, "4 vus · 3 capturés · 151 espèces")
 	assert_false(view.counts_text.contains("/"))
 	assert_eq(PokedexQuery.counts_text(Pokedex.new(), _lib), "0 vu · 0 capturé · 151 espèces")
@@ -230,6 +240,19 @@ func test_sheet_of_a_caught_species_is_complete() -> void:
 	assert_eq(pidgey.counts_text, "Vu 2 fois · capturé 1 fois")
 	assert_eq(pidgey.habitats.size(), 2, "Bourg Palette puis Route 1")
 	assert_eq(pidgey.habitats[1].name, "Route 1")
+
+
+func test_sheet_habitat_count_and_times_texts() -> void:
+	_kevin()
+	var pidgey := PokedexQuery.sheet(&"pidgey", _dex, _data, _lib, _zones)
+	assert_eq(pidgey.habitat_count_text, "Zones observées : 2")
+	assert_eq(pidgey.seen_times_text, "2 fois")
+	assert_eq(pidgey.caught_times_text, "1 fois")
+	var squirtle := PokedexQuery.sheet(&"squirtle", _dex, _data, _lib, _zones)
+	assert_eq(squirtle.habitat_count_text, "Zones observées : 1")
+	assert_eq(squirtle.caught_times_text, "", "seulement vue : pas de carte Capturé")
+	var lonely := PokedexQuery.sheet(&"squirtle", _dex, _data, _lib, null)
+	assert_eq(lonely.habitat_count_text, "", "aucune zone : texte vide = absent")
 
 
 func test_sheet_never_shows_stats_conditions_or_question_marks_in_habitats() -> void:

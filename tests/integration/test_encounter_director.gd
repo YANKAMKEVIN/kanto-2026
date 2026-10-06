@@ -6,6 +6,8 @@ extends GutTest
 ## requête (espèce, niveau, case d'origine), marque le sauvage « vu » au Pokédex, puis rend le
 ## contrôle et émet `encounter_finished`. Aucun tirage hors herbe, sans table, pendant une
 ## transition, un combat, un pas non libre (scène / dialogue), ni sans Pokémon valide.
+## Jalon 7 (T8) : une défaite passe par le [DefeatRecovery] (soin, réveil au dernier Centre
+## enregistré sinon à la maison, mot du lieu lu dans data/world/rest_points.json).
 
 const PLAYER_SCENE := "res://game/player/player.tscn"
 const ScriptedRng := preload("res://tests/helpers/scripted_rng.gd")
@@ -45,9 +47,15 @@ class FakeBattleDirector extends BattleDirector:
 
 class FakeRouter extends Node:
 	var transitioning: bool = false
+	## Changements de carte demandés : [carte, point d'apparition, orientation].
+	var changes: Array[Array] = []
 
 	func is_transitioning() -> bool:
 		return transitioning
+
+	func change_map(map_id: StringName, spawn: StringName, facing: Vector2i) -> void:
+		changes.append([map_id, spawn, facing])
+		await get_tree().process_frame
 
 
 var _data: PokemonData
@@ -231,6 +239,24 @@ func test_start_encounter_forces_a_rencontre() -> void:
 	assert_true(_player.is_input_enabled(), "contrôle rendu")
 
 
+## Jalon 7 (§3.1) : la première espèce sauvage rencontrée est retenue dès le début de la
+## rencontre (avant le combat), une seule fois ; les suivantes ne la remplacent pas.
+func test_the_first_wild_encounter_is_recorded_at_the_start_only_once() -> void:
+	_state.rng = ScriptedRng.new([1, 1, 1, 1, 1, 1, 1])
+	_fake.frames_to_run = 2
+	assert_eq(_state.first_wild_species(), &"", "aucune rencontre au départ")
+	assert_true(_director.start_encounter(WildEncounter.new(&"rattata", 4, &"test_grass_table")))
+	await wait_until(func() -> bool: return _director.is_running(), 3.0)
+	assert_eq(_state.first_wild_species(), &"rattata", "retenue dès le début")
+	assert_eq(_state.first_wild_encounter.get("map"), String(MAP_ID))
+	await wait_until(func() -> bool: return not _director.is_running(), 3.0)
+	_state.rng = ScriptedRng.new([1, 1, 1, 1, 1, 1, 1])
+	assert_true(_director.start_encounter(WildEncounter.new(&"pidgey", 3, &"test_grass_table")))
+	await wait_until(func() -> bool: return not _director.is_running(), 3.0)
+	assert_eq(_fake.runs, 2)
+	assert_eq(_state.first_wild_species(), &"rattata", "la première reste")
+
+
 func test_no_orphans_after_an_encounter() -> void:
 	_state.rng = ScriptedRng.new(WIN_ROLLS.duplicate())
 	_fake.frames_to_run = 2
@@ -301,6 +327,46 @@ func test_a_forced_encounter_also_resets_the_counter() -> void:
 	await wait_until(func() -> bool: return not _director.is_running(), 3.0)
 
 
+# --- Route 22 (jalon 7, T22) : la vraie carte et la vraie table `route_22` ------------------
+
+## Joueur sur la route (22, 19), champ d'herbes juste dessous (22, 20) : un pas dans le champ
+## avec un tirage gagnant lance Rattata Nv. 3 (1er emplacement de data/encounters/route_22.json) ;
+## un pas sur le chemin ne lance rien.
+func test_real_route_22_grass_runs_the_route_22_table() -> void:
+	var map := (load("res://game/world/maps/route_22.tscn") as PackedScene).instantiate() as GameMap
+	add_child_autofree(map)
+	var library := EncounterLibrary.new(_data)
+	library.load_dir()
+	assert_true(library.has_table(&"route_22", &"grass"), "table route_22")
+	var player := (load(PLAYER_SCENE) as PackedScene).instantiate() as Player
+	map.get_entities().add_child(player)
+	player.enter_map(map.get_grid(), Vector2i(22, 18), Vector2i.DOWN, map.get_pixel_rect())
+	var director := EncounterDirector.new()
+	add_child_autofree(director)
+	director.setup(library, _data, _state, player, _fake, _router, null)
+	director.set_map(map)
+	# Sur le chemin : aucun tirage.
+	_state.rng = ScriptedRng.new(WIN_ROLLS.duplicate())
+	player.script_step(Vector2i.DOWN)
+	await wait_until(func() -> bool:
+		return player.get_cell() == Vector2i(22, 19) and not player.is_moving(), 3.0)
+	await wait_process_frames(2)
+	assert_false(director.is_running(), "pas de rencontre sur le chemin")
+	assert_eq(_fake.runs, 0)
+	# Dans le champ : rencontre de la table de la Route 22.
+	assert_true(map.get_grid().is_tall_grass(Vector2i(22, 20)), "champ sous la route")
+	player.script_step(Vector2i.DOWN)
+	await wait_until(func() -> bool: return director.is_running(), 3.0)
+	assert_eq(_fake.runs, 1)
+	assert_not_null(_fake.last_request)
+	if _fake.last_request != null:
+		var foe := _fake.last_request.foe_party.get_lead()
+		assert_eq(foe.species_id, &"rattata")
+		assert_eq(foe.level, 3)
+	assert_true(_state.pokedex.is_seen(&"rattata"))
+	await wait_until(func() -> bool: return not director.is_running(), 3.0)
+
+
 # --- Outils --------------------------------------------------------------------------
 
 ## Un seul pas (scripté, entrées libres) dans la première case d'herbe (5, 5), pour éprouver
@@ -316,3 +382,79 @@ func _one_step(dir: Vector2i, goal: Vector2i) -> void:
 	await wait_until(func() -> bool:
 		return _player.get_cell() == goal and not _player.is_moving(), 3.0)
 	await wait_process_frames(2)
+
+
+# --- Défaite : réveil au point de repos (jalon 7 T8) ------------------------------------------
+
+## Directeur branché sur un vrai [DefeatRecovery] (vrais points de repos, vrai lecteur de
+## dialogues sans boîte) ; le combat factice est perdu.
+func _use_recovery() -> DialogueRunner:
+	var library := DialogueLibrary.new()
+	library.load_dir()
+	var runner := DialogueRunner.new()
+	add_child_autofree(runner)
+	runner.setup(library, _state.flags, null, _player)
+	var points := RestPointLibrary.new()
+	points.load_file()
+	var recovery := DefeatRecovery.new()
+	add_child_autofree(recovery)
+	recovery.setup(_state, points, _router, runner)
+	recovery.set_map(_map)
+	_director.setup(_library, _data, _state, _player, _fake, _router, null, recovery)
+	_fake.outcome = Battle.Outcome.LOSS
+	_fake.frames_to_run = 2
+	_state.party.get_lead().hp = 0
+	return runner
+
+
+func _lose_once() -> Array[int]:
+	var woke: Array[int] = [0]
+	_director.woke_up_after_defeat.connect(func() -> void: woke[0] += 1)
+	_state.rng = ScriptedRng.new([1, 1, 1, 1, 1, 1, 1])
+	assert_true(_director.start_encounter(WildEncounter.new(&"rattata", 4, &"test_grass_table")))
+	await wait_until(func() -> bool: return not _director.is_running(), 3.0)
+	return woke
+
+
+func test_a_defeat_wakes_at_home_while_no_center_is_registered() -> void:
+	var runner := _use_recovery()
+	var woke := await _lose_once()
+	assert_eq(_router.changes, [[&"player_house_1f", &"heal", Vector2i.UP]] as Array[Array],
+		"la maison, face à Maman")
+	assert_eq(_state.party.get_lead().hp, _state.party.get_lead().max_hp(), "équipe soignée")
+	assert_eq(woke[0], 1, "réveil relayé une fois")
+	assert_eq(_finished, [Battle.Outcome.LOSS] as Array[int])
+	assert_eq(runner.get_dialogue_id(), &"mom_wakeup", "le mot de Maman")
+
+
+func test_a_defeat_wakes_at_the_last_registered_center() -> void:
+	var runner := _use_recovery()
+	var points := RestPointLibrary.new()
+	points.load_file()
+	assert_true(RestPointLibrary.register(_state, points.get_point(&"viridian_center")))
+	var woke := await _lose_once()
+	assert_eq(_router.changes, [[&"viridian_center", &"heal", Vector2i.UP]] as Array[Array],
+		"le Centre, face à l'infirmière")
+	assert_eq(_state.party.get_lead().hp, _state.party.get_lead().max_hp(), "équipe soignée")
+	assert_eq(woke[0], 1)
+	assert_eq(runner.get_dialogue_id(), &"nurse_wakeup", "le mot de l'infirmière")
+	assert_eq(_state.heal_map, &"viridian_center", "le point de repos ne change pas")
+
+
+func test_mom_heals_without_replacing_the_registered_center() -> void:
+	var points := RestPointLibrary.new()
+	points.load_file()
+	RestPointLibrary.register(_state, points.get_point(&"viridian_center"))
+	assert_false(RestPointLibrary.register(_state, points.get_point(&"player_house_1f")),
+		"Maman ne réenregistre pas la maison")
+	assert_eq(_state.heal_map, &"viridian_center")
+
+
+func test_without_recovery_a_defeat_still_heals_and_goes_home_silently() -> void:
+	_fake.outcome = Battle.Outcome.LOSS
+	_fake.frames_to_run = 2
+	_state.party.get_lead().hp = 0
+	var woke := await _lose_once()
+	assert_eq(_router.changes, [[&"player_house_1f", &"heal", Vector2i.UP]] as Array[Array])
+	assert_eq(_state.party.get_lead().hp, _state.party.get_lead().max_hp())
+	assert_eq(woke[0], 1)

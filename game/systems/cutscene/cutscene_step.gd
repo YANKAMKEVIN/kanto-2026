@@ -32,7 +32,10 @@ extends RefCounted
 ##   [member lose_flags] levés selon l'issue ([method outcome_flags]) ;
 ## - [constant Kind.GIVE] (jalon 4B) : [member count] objets [member item_id] ajoutés au Sac ;
 ##   [member found] (jalon 5C.5) : objet **trouvé dans le monde** (la Potion de la Route 1),
-##   pas reçu d'un personnage (les Poké Balls de Chen) : il entre au journal des objets trouvés.
+##   pas reçu d'un personnage (les Poké Balls de Chen) : il entre au journal des objets trouvés ;
+## - [constant Kind.SCARE] (jalon 7, micro-scène d'arrivée à Jadielle) : le Pokémon d'ambiance
+##   [member actor] (un PNJ « shy ») joue **tout de suite** sa réaction (envol ou fuite) et
+##   quitte la carte pour la visite ; la scène n'attend pas la fin de la réaction.
 ## Conditions d'étape (jalon 4B) : [member if_flags] / [member unless_flags] ; une étape dont
 ## les conditions ne sont pas remplies au moment de la jouer est sautée ([method applies]).
 ## Elles servent aux suites qui dépendent de l'issue d'un combat (victoire / défaite), qu'une
@@ -41,16 +44,34 @@ extends RefCounted
 ## « $nom » ([method is_alias]) désigne un PNJ choisi au lancement de la scène
 ## (CutsceneDirector.play(id, alias)). La bibliothèque valide sa forme ; il est résolu
 ## par le directeur au début de chaque étape.
+## Jalon 7 (jalon-07.md §3.6, T18), scène du colis et de l'activation du Pokédex :
+## - [constant Kind.CAPTION] : légende [member text] posée sur le monde (« POKÉDEX ACTIVÉ ») ;
+##   la scène attend qu'elle disparaisse ;
+## - [constant Kind.TAKE] : [member count] objets [member item_id] **quittent** le Sac (le
+##   colis remis à Chen) ; sans l'objet : étape sautée (push_error), rien ne change.
+## Jalon 7 (jalon-07.md §3.8, T25), défaite contre un Dresseur (le rival de la Route 22) :
+## - [constant Kind.WAKE_UP] : [method DefeatRecovery.recover] (équipe soignée, fondu, réveil au
+##   point de repos, mot du lieu) ; la carte a changé, **la scène s'arrête là** (les étapes
+##   suivantes ne sont pas jouées). Sans paramètre (« wake_up »: true dans les fichiers).
+## Retours T5 (jalon-07.md §15.21), micro-scène d'arrivée à Jadielle :
+## - [member background] d'un « move » (PNJ seulement, sans suiveur) : le PNJ marche **en
+##   arrière-plan**, la scène passe aussitôt à l'étape suivante (regards, réactions pendant
+##   qu'il traverse) ; une étape suivante sur le même PNJ (move, hop, lean, despawn, scare,
+##   react) attend d'abord la fin de sa marche, et la scène ne finit qu'à la fin de toutes ;
+## - [constant Kind.REACT] : [member actor] (joueur ou PNJ) a une petite réaction de surprise
+##   ([method Npc.react], [method Player.react] : animation « react » ou petit bond), sans
+##   attendre sa fin.
 
 ## Nouvelles valeurs en fin d'enum (ordre de [constant TYPE_KEYS]).
 enum Kind {
 	WAIT, DIALOGUE, FACE, SET_FLAGS, SPAWN, MOVE, CHANGE_MAP, HOP, LEAN, DESPAWN, BATTLE, GIVE,
+	CAPTION, TAKE, SCARE, WAKE_UP, REACT,
 }
 
 ## Clé de type de chaque étape dans les fichiers, dans l'ordre de [enum Kind].
 const TYPE_KEYS: Array[String] = [
 	"wait", "dialogue", "face", "set", "spawn", "move", "change_map", "hop", "lean",
-	"despawn", "battle", "give",
+	"despawn", "battle", "give", "caption", "take", "scare", "wake_up", "react",
 ]
 ## Préfixe d'un alias d'acteur (« $player_starter »).
 const ALIAS_PREFIX: String = "$"
@@ -73,6 +94,8 @@ var run: bool = false
 var follower: StringName = &""
 var keep_facing: bool = false
 var optional: bool = false
+## Étape « move » : marche en arrière-plan (la scène continue sans attendre).
+var background: bool = false
 var map_id: StringName = &""
 var spawn: StringName = &""
 var facing: Vector2i = Vector2i.ZERO
@@ -86,6 +109,8 @@ var lose_flags: Array[StringName] = []
 var item_id: StringName = &""
 var count: int = 1
 var found: bool = false
+## Étape « caption » : texte de la légende.
+var text: String = ""
 ## Conditions de l'étape (toutes levées / aucune levée), vides = toujours jouée.
 var if_flags: Array[StringName] = []
 var unless_flags: Array[StringName] = []
@@ -158,6 +183,7 @@ func copy() -> CutsceneStep:
 	other.follower = follower
 	other.keep_facing = keep_facing
 	other.optional = optional
+	other.background = background
 	other.map_id = map_id
 	other.spawn = spawn
 	other.facing = facing
@@ -169,6 +195,7 @@ func copy() -> CutsceneStep:
 	other.item_id = item_id
 	other.count = count
 	other.found = found
+	other.text = text
 	other.if_flags = if_flags.duplicate()
 	other.unless_flags = unless_flags.duplicate()
 	return other

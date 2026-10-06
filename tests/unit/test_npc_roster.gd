@@ -331,6 +331,141 @@ func test_real_route_1_traveler_has_a_route() -> void:
 	if traveler != null:
 		assert_true(traveler.has_route(), "le Voyageur marche")
 		assert_true(traveler.is_interactive(), "on peut lui parler")
+		assert_eq(traveler.route_start, 1, "sans « start » : la case du Voyageur dans la boucle")
+		assert_false(traveler.enters_building())
+		assert_false(traveler.has_idle_react())
+
+
+# --- Jalon 7 (T2) : départ dans la boucle, entrée dans un bâtiment, animation d'ambiance ---
+
+## Le Rattata part un pas derrière l'enfant, sur la même boucle (dossier 09 §2).
+const _LOOP: Array = [[5, 5], [6, 5], [7, 5], [7, 6], [6, 6], [5, 6]]
+
+
+func test_route_start_and_enter() -> void:
+	var errors := PackedStringArray()
+	var child := NpcRoster.parse_entry({"cell": [6, 5], "sprite": "npc",
+		"route": {"cells": _LOOP, "start": 1}}, errors)
+	var rattata := NpcRoster.parse_entry({"cell": [5, 5], "sprite": "rattata",
+		"route": {"cells": _LOOP, "start": 0}}, errors)
+	var courier := NpcRoster.parse_entry({"cell": [7, 6], "sprite": "npc", "dialogue": "x",
+		"route": {"cells": _LOOP, "pause": 0.5, "start": 3,
+			"enter": {"cell": [7, 5], "seconds": 8}}}, errors)
+	assert_eq(errors.size(), 0, str(errors))
+	assert_eq(child.route_start, 1)
+	assert_eq(rattata.route_start, 0, "un pas derrière l'enfant")
+	assert_false(child.enters_building(), "pas d'entrée par défaut")
+	assert_eq(child.route_enter_cell, NpcSpec.NO_ENTER_CELL)
+	assert_eq(child.route_enter_seconds, 0.0)
+	assert_eq(courier.route_start, 3)
+	assert_true(courier.enters_building())
+	assert_eq(courier.route_enter_cell, Vector2i(7, 5))
+	assert_eq(courier.route_enter_seconds, 8.0)
+
+
+func test_route_start_defaults_to_the_cell_in_the_loop() -> void:
+	var errors := PackedStringArray()
+	var inside := NpcRoster.parse_entry({"cell": [7, 6], "sprite": "npc",
+		"route": {"cells": _LOOP}}, errors)
+	var outside := NpcRoster.parse_entry({"cell": [9, 9], "sprite": "npc",
+		"route": {"cells": _LOOP}}, errors)
+	assert_eq(errors.size(), 0, str(errors))
+	assert_eq(inside.route_start, 3)
+	assert_eq(outside.route_start, 0, "hors de la boucle : 0, comme au jalon 5")
+	assert_eq(NpcSpec.new().route_start, 0)
+
+
+func test_invalid_route_start_and_enter_are_rejected() -> void:
+	var bad: Array[Dictionary] = [
+		{"cells": _LOOP, "start": 6},
+		{"cells": _LOOP, "start": -1},
+		{"cells": _LOOP, "start": 1.5},
+		{"cells": _LOOP, "start": "1"},
+		{"cells": _LOOP, "start": 2},
+		{"cells": _LOOP, "enter": [7, 5]},
+		{"cells": _LOOP, "enter": {"cell": [9, 9], "seconds": 8}},
+		{"cells": _LOOP, "enter": {"cell": [7, 5]}},
+		{"cells": _LOOP, "enter": {"cell": [7, 5], "seconds": 0}},
+		{"cells": _LOOP, "enter": {"cell": [7, 5], "seconds": 121}},
+		{"cells": _LOOP, "enter": {"cell": [7, 5], "seconds": 8, "fade": 1}},
+		{"cells": _LOOP, "enter": {"cell": "door", "seconds": 8}},
+		{"cells": _LOOP, "loop": true},
+	]
+	var messages := PackedStringArray()
+	for route: Dictionary in bad:
+		var errors := PackedStringArray()
+		assert_null(NpcRoster.parse_entry({"cell": [6, 5], "sprite": "npc", "route": route},
+			errors), str(route))
+		messages.append_array(errors)
+	var all := "\n".join(messages)
+	for expected: String in ["« route.start » doit être un index", "n'est pas « cell »",
+			"« route.enter » doit être un objet", "n'appartient pas à la boucle",
+			"« route.enter.seconds »", "clé inconnue dans « route.enter » : « fade »",
+			"« route.enter.cell » doit être [x, y]", "clé inconnue dans « route » : « loop »"]:
+		assert_string_contains(all, expected)
+
+
+func test_idle_react() -> void:
+	var errors := PackedStringArray()
+	var pidgey := NpcRoster.parse_entry({"cell": [3, 3], "sprite": "pidgey",
+		"idle_react": 6.0}, errors)
+	var still := NpcRoster.parse_entry({"cell": [3, 3], "sprite": "pidgey"}, errors)
+	assert_eq(errors.size(), 0, str(errors))
+	assert_true(pidgey.has_idle_react())
+	assert_eq(pidgey.idle_react_every, 6.0)
+	assert_false(still.has_idle_react(), "aucune par défaut")
+	assert_eq(still.idle_react_every, 0.0)
+	for value: Variant in [0, -1, 121, "6"]:
+		var refused := PackedStringArray()
+		assert_null(NpcRoster.parse_entry({"cell": [3, 3], "sprite": "pidgey",
+			"idle_react": value}, refused), str(value))
+		assert_string_contains("\n".join(refused), "« idle_react »")
+	var shy := PackedStringArray()
+	assert_null(NpcRoster.parse_entry({"cell": [3, 3], "sprite": "pidgey",
+		"shy": {"action": "fly"}, "idle_react": 6}, shy))
+	assert_string_contains("\n".join(shy), "« idle_react » interdit sur un Pokémon « shy »")
+
+
+## Attente animée (Jadielle agrandie : aucun habitant figé).
+func test_look_around() -> void:
+	var errors := PackedStringArray()
+	var guard := NpcRoster.parse_entry({"cell": [3, 3], "sprite": "youngster",
+		"look": {"facings": ["up", "left", "up", "right"], "every": 2.5}}, errors)
+	var default_every := NpcRoster.parse_entry({"cell": [3, 3], "sprite": "lass",
+		"look": {"facings": ["right", "down"]}}, errors)
+	var still := NpcRoster.parse_entry({"cell": [3, 3], "sprite": "lass"}, errors)
+	assert_eq(errors.size(), 0, str(errors))
+	assert_true(guard.has_look())
+	assert_eq(guard.look_facings, [Vector2i.UP, Vector2i.LEFT, Vector2i.UP, Vector2i.RIGHT])
+	assert_eq(guard.look_every, 2.5)
+	assert_eq(default_every.look_every, NpcSpec.LOOK_EVERY_DEFAULT)
+	assert_false(still.has_look(), "aucune par défaut")
+	var cases := {
+		"« look » doit être": "up",
+		"au moins deux orientations": {"facings": ["up"]},
+		"down, up, left ou right": {"facings": ["up", "north"]},
+		"« look.every »": {"facings": ["up", "down"], "every": 0.1},
+		"clé inconnue « speed »": {"facings": ["up", "down"], "speed": 2},
+	}
+	for expected: String in cases:
+		var refused := PackedStringArray()
+		assert_null(NpcRoster.parse_entry({"cell": [3, 3], "sprite": "lass",
+			"look": cases[expected]}, refused), expected)
+		assert_string_contains("\n".join(refused), expected)
+	var walker := PackedStringArray()
+	assert_null(NpcRoster.parse_entry({"cell": [3, 3], "sprite": "lass",
+		"route": {"cells": [[3, 3], [4, 3]]}, "look": {"facings": ["up", "down"]}}, walker))
+	assert_string_contains("\n".join(walker), "« look » interdit avec « route »")
+
+
+func test_roster_file_reads_the_jalon_7_keys() -> void:
+	var roster := NpcRoster.new()
+	assert_true(roster.add_from_dict({
+		"child": {"cell": [6, 5], "sprite": "npc", "route": {"cells": _LOOP, "start": 1}},
+		"trainer_pidgey": {"cell": [2, 2], "sprite": "pidgey", "idle_react": 6},
+	}, "test"), str(roster.get_errors()))
+	assert_eq(roster.get_spec(&"child").route_start, 1)
+	assert_eq(roster.get_spec(&"trainer_pidgey").idle_react_every, 6.0)
 
 
 ## Espèce d'un Pokémon du décor à OBSERVER (jalon-06.md §3.5, Q-7).

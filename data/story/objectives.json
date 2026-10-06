@@ -1,8 +1,15 @@
 [
 	{
+		"id": "deliver_parcel",
+		"text": "remettre le colis au Professeur Chen.",
+		"if": ["got_oak_parcel"],
+		"unless": ["pokedex_activated"]
+	},
+	{
 		"id": "reach_viridian",
-		"text": "rejoindre Jadielle",
+		"text": "rejoindre Jadielle.",
 		"if": ["rival_battle_done"],
+		"unless": ["viridian_arrived"],
 		"draft": true
 	}
 ]

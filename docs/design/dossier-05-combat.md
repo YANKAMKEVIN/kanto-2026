@@ -79,6 +79,9 @@ Plus de « KEVIN est hors-jeu ! KEVIN perd 1240 ₽ ». Écran très bref → de
 ## 24. Gestes facultatifs (pas en V1)
 Raccourcis possibles plus tard (swipe depuis Pokémon → Équipe, depuis Sac → dernier objet). **V1 : d'abord une excellente interface tactile classique.**
 
+## 17 bis. Bilan de fin de combat (ajout du 2026-10-06)
+Décidé par Kevin dans la **demande de conception n° 1** (`demandes/demande-01-progression-visible.md`, qui fait foi ; DA : `reference/bilan-xp-v1.webp`). Après la dernière phrase de chaque combat qui rapporte de l'XP : une carte sans titre, le décor du combat derrière, une ligne par Pokémon ayant gagné de l'XP (portrait, nom, niveau, barre qui se remplit avec « 112 / 173 », « +11 XP ») ; la montée de niveau est un petit moment (barre pleine → niveau suivant → ligne mise en valeur → gains de statistiques, vibration courte) ; consigne discrète « Touchez l'écran pour continuer » à la fin ; un toucher accélère, puis ferme. Il **remplace** « X monte au niveau N ! » pendant le combat. Apprentissage de capacité (puis évolution) **après** le bilan. Mise en œuvre : `docs/tech/jalon-07.md` §15.24.
+
 ## Décisions verrouillées
 | Sujet | Kanto 2026 |
 |---|---|

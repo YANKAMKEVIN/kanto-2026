@@ -63,7 +63,7 @@ docs/design/   conception (ignoré par Godot)
 ## Commandes
 
 ```bash
-tools/test.sh                  # tests GUT headless
+tools/test.sh                  # tests GUT headless (refuse d'abord toute mesure de temps réel : tools/check_test_timing.sh)
 tools/build_android.sh         # APK debug → build/kanto2026-debug.apk
 tools/deploy_s24.sh            # build + install + lancement + capture build/screenshot.png + logs (USB ou Wi-Fi)
 tools/s24_serial.sh            # série adb du S24 (USB ou débogage sans fil)

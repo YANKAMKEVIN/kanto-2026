@@ -5,7 +5,8 @@ extends Node2D
 ##
 ## Au chargement, lit les données `solid`, `water`, `tall_grass` et `ledge` des tuiles de
 ## `Ground`, `Detail` et `Obstacles`, puis ajoute l'empreinte de chaque [WorldProp]
-## enfant de `Entities`. Les [WarpPoint] enfants de `Warps` forment la table des passages.
+## enfant de `Entities` ou de `GroundDecals` (relief peint posé au sol, jalon 7).
+## Les [WarpPoint] enfants de `Warps` forment la table des passages.
 ## Les [InteractPoint] enfants de `Interactables` forment la table des points fixes
 ## (docs/tech/jalon-03.md §2.2). Les [EventTriggerPoint] enfants de `Triggers` forment la
 ## table des déclencheurs de scène (docs/tech/jalon-03b.md §2.2).
@@ -21,6 +22,8 @@ extends Node2D
 ## Le joueur est ajouté à `Entities` (y-sort) par [method spawn_player].
 
 const _TILE_LAYERS: Array[NodePath] = [^"Ground", ^"Detail", ^"Obstacles"]
+## Nœuds dont les [WorldProp] enfants marquent leur emprise sur la grille.
+const _PROP_LAYERS: Array[NodePath] = [^"Entities", ^"GroundDecals"]
 const _NPC_SCENE: PackedScene = preload("res://game/world/npc/npc.tscn")
 
 @export var map_id: StringName = &""
@@ -39,6 +42,14 @@ const _NPC_SCENE: PackedScene = preload("res://game/world/npc/npc.tscn")
 @export var battle_arena: Rect2i = Rect2i()
 ## Dossier des fichiers de PNJ (`<map_id>.json`) ; les tests pointent sur leurs données.
 @export var npcs_dir: String = NpcRoster.DATA_DIR
+## Profil de lumière du monde (`data/world/lighting.json`, [LightingLibrary], jalon-07.md
+## §3.2) appliqué par `WorldLighting` à l'arrivée. Vide = **aucune** lumière du monde (Bourg
+## Palette, la Route 1 et les intérieurs existants restent tels quels jusqu'à la phase DA).
+@export var light_profile: StringName = &""
+## Rangées des murs de soutènement et falaises qui séparent deux niveaux (Jadielle : 12, 24,
+## 32). Un décor qui s'efface quand le joueur passe derrière ([member
+## WorldProp.fade_when_covering]) ne le fait qu'au même niveau. Vide : un seul niveau.
+@export var level_rows: Array[int] = []
 
 var _grid: GridWorld
 var _warps: WarpTable
@@ -262,12 +273,17 @@ func _build_grid() -> void:
 			_read_layer(layer)
 	for cell: Vector2i in blocked_cells:
 		_grid.set_solid(cell)
-	var entities := get_node_or_null(^"Entities")
-	if entities != null:
-		for child: Node in entities.get_children():
+	# Objets triés par les pieds (Entities) et relief peint posé au sol (GroundDecals :
+	# falaises, massif ; jalon-07.md §6.6).
+	for layer_path: NodePath in _PROP_LAYERS:
+		var layer := get_node_or_null(layer_path)
+		if layer == null:
+			continue
+		for child: Node in layer.get_children():
 			var prop := child as WorldProp
 			if prop != null:
 				_grid.add_solid_footprint(prop.get_anchor_cell(), prop.get_footprint())
+				prop.level_rows = level_rows
 	for npc: Npc in _npcs:
 		if not npc.enter_grid(_grid):
 			push_error("GameMap %s : PNJ « %s » ne peut plus occuper %s" % [

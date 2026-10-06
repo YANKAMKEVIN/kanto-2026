@@ -7,6 +7,8 @@ const MONTHS: Array[String] = [
 	"janvier", "février", "mars", "avril", "mai", "juin", "juillet", "août", "septembre",
 	"octobre", "novembre", "décembre",
 ]
+## Symbole de l'argent, séparé du nombre par une espace insécable (« 3 000 ₽ »).
+const MONEY_SUFFIX: String = " ₽"
 ## Séparateur des milliers (espace insécable : « 1 250 XP » ne se coupe pas).
 const THOUSANDS_SEPARATOR: String = " "
 
@@ -35,6 +37,11 @@ static func number(value: int) -> String:
 		result = THOUSANDS_SEPARATOR + digits.right(3) + result
 		digits = digits.left(digits.length() - 3)
 	return ("-" if value < 0 else "") + digits + result
+
+
+## Argent : 3000 → « 3 000 ₽ » (dossier 09 §10 ; Boutique, Sac, écran Dresseur).
+static func money(amount: int) -> String:
+	return number(amount) + MONEY_SUFFIX
 
 
 ## Temps de jeu : « 0 h 07 », « 12 h 43 » (heures, puis minutes entamées non comptées ;

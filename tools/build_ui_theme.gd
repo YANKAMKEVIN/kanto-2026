@@ -56,6 +56,12 @@ extends SceneTree
 ##     BagDetailText   Label ; l'action est un AccentButton ; BagEmpty   Label
 ##   CaptureCard      PanelContainer  carte de capture ; CaptureTitle / CapturePokedex /
 ##     CaptureResult   Label ; CaptureThumb   PanelContainer  cadre de la vignette
+## Bilan de fin de combat (demande n° 1) :
+##   SummaryCard / SummaryRow / SummaryRowLit (liseré ACCENT : la ligne qui monte de niveau) /
+##   SummaryThumb / SummaryHint   PanelContainer ; SummaryExpBar   Control (barre plus épaisse) ;
+##   SummaryName / SummaryLevel / SummaryLevelUp / SummaryPoints / SummaryGain / SummaryStatName /
+##   SummaryStatValue   Label ; SummaryStatsBox   PanelContainer (grille des gains) /
+##   SummaryHintText   Label
 ## Notifications :
 ##   Toast            PanelContainer  capsule du toast (bible UI/UX §6)
 ##   ToastTitle / ToastDetail   Label  « Poké Balls ×5 » (gras) / « Ajoutées au Sac » (discret)
@@ -93,6 +99,11 @@ extends SceneTree
 ##     SettingsValue (Label) ; ChoiceConfirm / ChoiceCancel (Button, carte de ChoiceCards),
 ##     ChoiceTitle / ChoiceDetail / ChoiceConfirmLabel / ChoiceConfirmDetail / ChoiceCancelLabel /
 ##     ChoiceCancelDetail (Label)
+##   Boutique (T11) : ShopStepper (Button, − / +), ShopName / ShopOwned / ShopDescription /
+##     ShopCaption / ShopUnitPrice / ShopQuantity / ShopTotal / ShopCardPrice / ShopMoney /
+##     ShopMoneyLabel (Label)
+##   Stockage (T15) : StorageDropZone (Panel, cadre ACCENT), StorageRefusal / StorageMenu (PanelContainer),
+##     StorageRefusalText / StorageTitle / StorageEmpty (Label)
 ## tests/unit/test_ui_theme.gd vérifie que le fichier est à jour avec les tokens.
 
 const TOKENS_PATH: String = "res://game/ui/theme/ui_tokens.gd"
@@ -157,9 +168,13 @@ func _init() -> void:
 	_add_team(theme, bold, t)
 	_add_bag_screen(theme, bold, t)
 	_add_pokedex_screen(theme, bold, t)
+	_add_pokedex_layout(theme, bold, t)
+	_add_pokedex_glass(theme, bold, t)
 	_add_map_screen(theme, bold, t)
 	_add_trainer_screen(theme, bold, t)
 	_add_settings_screen(theme, bold, t)
+	_add_shop_screen(theme, bold, t)
+	_add_storage_screen(theme, bold, t)
 
 	var err := ResourceSaver.save(theme, THEME_PATH)
 	print("ui_theme.tres : ", error_string(err))
@@ -595,6 +610,65 @@ func _add_bag_and_capture(theme: Theme, bold: Font, t: GDScript) -> void:
 	_add_plain_label(theme, &"CaptureTitle", t.CAPTURE_TITLE_FONT, t.TEXT, bold)
 	_add_plain_label(theme, &"CapturePokedex", t.CAPTURE_LINE_FONT, t.TEXT_MUTED, null)
 	_add_plain_label(theme, &"CaptureResult", t.CAPTURE_LINE_FONT, t.TEXT, null)
+	_add_exp_summary(theme, bold, t)
+
+
+## Bilan de fin de combat (demande n° 1).
+func _add_exp_summary(theme: Theme, bold: Font, t: GDScript) -> void:
+	var card := _panel_style(t.SUMMARY_CARD_BG, t.DIALOG_RADIUS, t)
+	card.set_content_margin(SIDE_LEFT, t.SUMMARY_CARD_PAD_H)
+	card.set_content_margin(SIDE_RIGHT, t.SUMMARY_CARD_PAD_H)
+	card.set_content_margin(SIDE_TOP, t.SUMMARY_CARD_PAD_V)
+	card.set_content_margin(SIDE_BOTTOM, t.SUMMARY_CARD_PAD_V)
+	theme.set_type_variation(&"SummaryCard", &"PanelContainer")
+	theme.set_stylebox(&"panel", &"SummaryCard", card)
+	var row := _bag_box(t.SUMMARY_ROW_BG, t.SUMMARY_ROW_BORDER, t.BORDER_WIDTH,
+		t.SUMMARY_ROW_PAD_H, t.SUMMARY_ROW_PAD_V, t)
+	var lit := _bag_box(t.SUMMARY_ROW_LIT_BG, t.ACCENT, t.SUMMARY_ROW_HIGHLIGHT_BORDER,
+		t.SUMMARY_ROW_PAD_H, t.SUMMARY_ROW_PAD_V, t)
+	lit.shadow_color = t.MOVE_CARD_SELECTED_GLOW
+	lit.shadow_size = t.MOVE_CARD_SELECTED_GLOW_SIZE
+	for pair: Array in [[&"SummaryRow", row], [&"SummaryRowLit", lit]]:
+		theme.set_type_variation(pair[0], &"PanelContainer")
+		theme.set_stylebox(&"panel", pair[0], pair[1])
+	var thumb := _bag_box(t.CAPTURE_THUMB_BG, t.CAPTURE_THUMB_BORDER, t.BORDER_WIDTH,
+		t.SUMMARY_THUMB_PAD, t.SUMMARY_THUMB_PAD, t)
+	theme.set_type_variation(&"SummaryThumb", &"PanelContainer")
+	theme.set_stylebox(&"panel", &"SummaryThumb", thumb)
+	var radius: int = t.SUMMARY_BAR_HEIGHT / 2
+	var track := StyleBoxFlat.new()
+	track.bg_color = t.EXP_BAR_TRACK
+	track.border_color = t.HP_BAR_TRACK_BORDER
+	track.set_border_width_all(t.BORDER_WIDTH)
+	track.set_corner_radius_all(radius)
+	track.anti_aliasing = true
+	var fill := StyleBoxFlat.new()
+	fill.bg_color = t.EXP_BAR_FILL
+	fill.set_corner_radius_all(radius - t.BORDER_WIDTH)
+	fill.anti_aliasing = true
+	theme.set_type_variation(&"SummaryExpBar", &"Control")
+	theme.set_stylebox(&"background", &"SummaryExpBar", track)
+	theme.set_stylebox(&"fill", &"SummaryExpBar", fill)
+	_add_plain_label(theme, &"SummaryName", t.SUMMARY_NAME_FONT, t.TEXT, bold)
+	_add_plain_label(theme, &"SummaryLevel", t.SUMMARY_LEVEL_FONT, t.SUMMARY_SECONDARY, bold)
+	_add_plain_label(theme, &"SummaryLevelUp", t.SUMMARY_LEVEL_UP_FONT, t.ACCENT, bold)
+	_add_plain_label(theme, &"SummaryPoints", t.SUMMARY_POINTS_FONT, t.SUMMARY_SECONDARY, null)
+	_add_plain_label(theme, &"SummaryGain", t.SUMMARY_GAIN_FONT, t.TEXT, bold)
+	var stats := _bag_box(t.SUMMARY_STATS_BG, t.TRANSPARENT, 0, t.SUMMARY_STATS_PAD_H,
+		t.SUMMARY_STATS_PAD_V, t)
+	theme.set_type_variation(&"SummaryStatsBox", &"PanelContainer")
+	theme.set_stylebox(&"panel", &"SummaryStatsBox", stats)
+	_add_plain_label(theme, &"SummaryStatName", t.SUMMARY_STATS_FONT, t.SUMMARY_SECONDARY, null)
+	_add_plain_label(theme, &"SummaryStatValue", t.SUMMARY_STATS_FONT, t.ACCENT, bold)
+	var hint := _panel_style(t.SUMMARY_HINT_BG, t.ROUND_BUTTON, t)
+	hint.shadow_size = 0
+	hint.set_content_margin(SIDE_LEFT, t.SUMMARY_HINT_PAD_H)
+	hint.set_content_margin(SIDE_RIGHT, t.SUMMARY_HINT_PAD_H)
+	hint.set_content_margin(SIDE_TOP, t.SUMMARY_HINT_PAD_V)
+	hint.set_content_margin(SIDE_BOTTOM, t.SUMMARY_HINT_PAD_V)
+	theme.set_type_variation(&"SummaryHint", &"PanelContainer")
+	theme.set_stylebox(&"panel", &"SummaryHint", hint)
+	_add_plain_label(theme, &"SummaryHintText", t.SUMMARY_HINT_FONT, t.SUMMARY_SECONDARY, null)
 
 
 ## Case arrondie du Sac et de la carte de capture : fond, liseré, marges [param pad_h] et
@@ -839,8 +913,8 @@ func _add_pokedex_screen(theme: Theme, bold: Font, t: GDScript) -> void:
 	theme.set_type_variation(&"DexPanel", &"PanelContainer")
 	theme.set_stylebox(&"panel", &"DexPanel", panel)
 
-	var cell := _bag_box(t.PANEL_BG, t.PANEL_BORDER, t.BORDER_WIDTH, 0, 0, t)
-	var cell_selected := _bag_box(t.PANEL_BG, t.ACCENT, t.MOVE_CARD_SELECTED_BORDER, 0, 0, t)
+	var cell := _bag_box(t.DEX_CELL_BG, t.PANEL_BORDER, t.BORDER_WIDTH, 0, 0, t)
+	var cell_selected := _bag_box(t.DEX_CELL_BG, t.ACCENT, t.MOVE_CARD_SELECTED_BORDER, 0, 0, t)
 	cell_selected.shadow_color = t.MOVE_CARD_SELECTED_GLOW
 	cell_selected.shadow_size = t.MOVE_CARD_SELECTED_GLOW_SIZE
 	var cell_unknown := _bag_box(t.MOVE_CARD_EMPTY_BG, t.MOVE_CARD_EMPTY_BORDER, t.BORDER_WIDTH,
@@ -878,6 +952,213 @@ func _add_pokedex_screen(theme: Theme, bold: Font, t: GDScript) -> void:
 	_add_plain_label(theme, &"DexTitle", t.DEX_TITLE_FONT, t.TEXT, bold)
 	_add_plain_label(theme, &"DexName", t.DEX_SHEET_NAME_FONT, t.TEXT, bold)
 	_add_plain_label(theme, &"DexNumber", t.DEX_SHEET_NUMBER_FONT, t.TEXT_MUTED, bold)
+
+
+# --- Pokédex : composition en trois colonnes (refonte, T3) ---------------------------------------
+##   DexHeroPanel (PanelContainer, panneau du portrait), DexFilterPill (Button à bascule en
+##   pastille), DexPreviewCard (Button, carte tactile de l'Aperçu), DexCardCaption /
+##   DexCardValue / DexDescription / DexPreviewTitle (Label)
+
+
+func _add_pokedex_layout(theme: Theme, bold: Font, t: GDScript) -> void:
+	var hero := _panel_style(t.MENU_PANEL_BG, t.RADIUS, t)
+	hero.set_content_margin_all(t.DEX_LAYOUT_HERO_PAD)
+	theme.set_type_variation(&"DexHeroPanel", &"PanelContainer")
+	theme.set_stylebox(&"panel", &"DexHeroPanel", hero)
+
+	var pill := _button_style(t.BUTTON_BG, true, t)
+	pill.set_corner_radius_all(t.DEX_LAYOUT_PILL_RADIUS)
+	var pill_on := _button_style(t.ACCENT, false, t)
+	pill_on.set_corner_radius_all(t.DEX_LAYOUT_PILL_RADIUS)
+	for box: StyleBoxFlat in [pill, pill_on]:
+		box.set_content_margin(SIDE_LEFT, t.DEX_LAYOUT_FILTER_PAD)
+		box.set_content_margin(SIDE_RIGHT, t.DEX_LAYOUT_FILTER_PAD)
+	_add_button_variation(theme, &"DexFilterPill", pill, pill_on, bold, t)
+	theme.set_font_size(&"font_size", &"DexFilterPill", t.DEX_LAYOUT_FILTER_FONT)
+	for state: StringName in [&"font_color", &"font_hover_color", &"font_focus_color"]:
+		theme.set_color(state, &"DexFilterPill", t.TEXT)
+	for state: StringName in [&"font_pressed_color", &"font_hover_pressed_color"]:
+		theme.set_color(state, &"DexFilterPill", t.ACCENT_TEXT)
+
+	var sheet_tab := _button_style(t.BUTTON_BG, true, t)
+	var sheet_tab_on := _button_style(t.ACCENT, false, t)
+	for box: StyleBoxFlat in [sheet_tab, sheet_tab_on]:
+		box.set_content_margin(SIDE_LEFT, t.DEX_LAYOUT_TAB_PAD)
+		box.set_content_margin(SIDE_RIGHT, t.DEX_LAYOUT_TAB_PAD)
+	_add_button_variation(theme, &"DexSheetTab", sheet_tab, sheet_tab_on, bold, t)
+	theme.set_font_size(&"font_size", &"DexSheetTab", t.DEX_LAYOUT_TAB_FONT)
+	for state: StringName in [&"font_color", &"font_hover_color", &"font_focus_color"]:
+		theme.set_color(state, &"DexSheetTab", t.TEXT)
+	for state: StringName in [&"font_pressed_color", &"font_hover_pressed_color"]:
+		theme.set_color(state, &"DexSheetTab", t.ACCENT_TEXT)
+
+	var card := _bag_box(t.TEAM_SECTION_BG, t.PANEL_BORDER, t.BORDER_WIDTH, t.GAP, t.GAP, t)
+	var card_pressed := _bag_box(t.tinted(t.ACCENT, 0.25), t.ACCENT, t.BORDER_WIDTH, t.GAP,
+		t.GAP, t)
+	_add_button_variation(theme, &"DexPreviewCard", card, card_pressed, bold, t)
+	theme.set_font_size(&"font_size", &"DexPreviewCard", t.DEX_LAYOUT_PREVIEW_TITLE_FONT)
+	for state: StringName in [&"font_color", &"font_hover_color", &"font_focus_color",
+			&"font_pressed_color", &"font_hover_pressed_color"]:
+		theme.set_color(state, &"DexPreviewCard", t.TEXT)
+
+	_add_plain_label(theme, &"DexHeaderTitle", t.DEX_LAYOUT_TITLE_FONT, t.TEXT, bold)
+	_add_plain_label(theme, &"DexHeaderCounts", t.DEX_LAYOUT_COUNTS_FONT, t.TEXT_MUTED, null)
+	_add_plain_label(theme, &"DexCardCaption", t.DEX_LAYOUT_CARD_CAPTION_FONT, t.TEXT_MUTED, null)
+	_add_plain_label(theme, &"DexCardValue", t.DEX_LAYOUT_CARD_VALUE_FONT, t.TEXT, bold)
+	_add_plain_label(theme, &"DexDescription", t.DEX_LAYOUT_DESC_FONT, t.TEXT, null)
+	_add_plain_label(theme, &"DexPreviewTitle", t.DEX_LAYOUT_PREVIEW_TITLE_FONT, t.TEXT, bold)
+
+
+# --- Pokédex : rapprochement de la maquette (refonte, T4) -------------------------------------
+##   Remplace DexPanel / DexHeroPanel par du verre teinté (DEX_GLASS_*), et ajoute :
+##   DexHeroRim (Panel, liseré seul, par-dessus le décor du portrait), DexCard (PanelContainer,
+##   carte d'un panneau), DexCapsule (PanelContainer, capsule des filtres), DexSegment (Button à
+##   bascule, segment de la capsule), DexBackRound (Button rond « ‹ »), DexRefine (Button, capsule
+##   fine de la grille), DexTopTitle / DexTopCounts / DexSceneNumber / DexSceneName (Label),
+##   DexEvoCircle (Panel). DexSearch, DexSheetTab et DexPreviewCard sont redessinés. Les zones
+##   touchables restent de TOUCH_MIN : le dessin est resserré par des marges d'expansion négatives.
+
+
+## Boîte dessinée plus petite que le contrôle : [param draw_h] de haut, centrée verticalement
+## dans [param control_h] (et [param inset_x] de chaque côté).
+func _inset(box: StyleBoxFlat, control_h: float, draw_h: float, inset_x: float = 0.0) -> void:
+	var dy := -(control_h - draw_h) * 0.5
+	box.expand_margin_top = dy
+	box.expand_margin_bottom = dy
+	box.expand_margin_left = -inset_x
+	box.expand_margin_right = -inset_x
+
+
+func _glass(bg: Color, border: Color, radius: int, t: GDScript) -> StyleBoxFlat:
+	var box := StyleBoxFlat.new()
+	box.bg_color = bg
+	box.border_color = border
+	box.set_border_width_all(t.DEX_GLASS_BORDER_WIDTH)
+	box.set_corner_radius_all(radius)
+	box.anti_aliasing = true
+	return box
+
+
+func _add_pokedex_glass(theme: Theme, bold: Font, t: GDScript) -> void:
+	var panel := _glass(t.DEX_GLASS_BG, t.DEX_GLASS_BORDER, t.DEX_GLASS_RADIUS, t)
+	panel.shadow_color = t.DEX_GLASS_SHADOW
+	panel.shadow_size = t.DEX_GLASS_SHADOW_SIZE
+	panel.set_content_margin_all(t.DEX_PANEL_PAD)
+	theme.set_stylebox(&"panel", &"DexPanel", panel)
+	# Portrait : le verre seul (le décor et le contenu se posent dessus), puis le liseré par-dessus.
+	var hero := _glass(t.DEX_GLASS_BG, Color(0, 0, 0, 0), t.DEX_GLASS_RADIUS, t)
+	hero.set_border_width_all(0)
+	hero.shadow_color = t.DEX_GLASS_SHADOW
+	hero.shadow_size = t.DEX_GLASS_SHADOW_SIZE
+	hero.set_content_margin_all(0)
+	theme.set_stylebox(&"panel", &"DexHeroPanel", hero)
+	var rim := _glass(Color(0, 0, 0, 0), t.DEX_GLASS_BORDER, t.DEX_GLASS_RADIUS, t)
+	rim.draw_center = false
+	theme.set_type_variation(&"DexHeroRim", &"Panel")
+	theme.set_stylebox(&"panel", &"DexHeroRim", rim)
+
+	var card := _glass(t.DEX_CARD_BG, t.DEX_CARD_BORDER, t.DEX_CARD_RADIUS, t)
+	card.set_content_margin_all(t.DEX_CARD_PAD)
+	theme.set_type_variation(&"DexCard", &"PanelContainer")
+	theme.set_stylebox(&"panel", &"DexCard", card)
+	var preview := _glass(t.DEX_CARD_BG, t.DEX_CARD_BORDER, t.DEX_CARD_RADIUS, t)
+	var preview_on := _glass(t.tinted(t.ACCENT, 0.22), t.ACCENT, t.DEX_CARD_RADIUS, t)
+	_add_button_variation(theme, &"DexPreviewCard", preview, preview_on, bold, t)
+	theme.set_font_size(&"font_size", &"DexPreviewCard", t.DEX_LAYOUT_PREVIEW_TITLE_FONT)
+	for state: StringName in [&"font_color", &"font_hover_color", &"font_focus_color",
+			&"font_pressed_color", &"font_hover_pressed_color"]:
+		theme.set_color(state, &"DexPreviewCard", t.TEXT)
+
+	var touch := float(t.TOUCH_MIN)
+	var capsule := _glass(t.DEX_GLASS_BG, t.DEX_GLASS_BORDER, t.DEX_CAPSULE_DRAW / 2, t)
+	_inset(capsule, touch, t.DEX_CAPSULE_DRAW)
+	capsule.set_content_margin(SIDE_LEFT, t.DEX_CAPSULE_PAD)
+	capsule.set_content_margin(SIDE_RIGHT, t.DEX_CAPSULE_PAD)
+	theme.set_type_variation(&"DexCapsule", &"PanelContainer")
+	theme.set_stylebox(&"panel", &"DexCapsule", capsule)
+	var segment := StyleBoxFlat.new()
+	segment.bg_color = Color(0, 0, 0, 0)
+	segment.set_content_margin(SIDE_LEFT, t.DEX_SEGMENT_PAD)
+	segment.set_content_margin(SIDE_RIGHT, t.DEX_SEGMENT_PAD)
+	var segment_on := _glass(t.DEX_SEGMENT_ON_BG, t.DEX_SEGMENT_ON_BORDER, t.DEX_SEGMENT_DRAW / 2,
+		t)
+	_inset(segment_on, touch, t.DEX_SEGMENT_DRAW)
+	segment_on.set_content_margin(SIDE_LEFT, t.DEX_SEGMENT_PAD)
+	segment_on.set_content_margin(SIDE_RIGHT, t.DEX_SEGMENT_PAD)
+	_add_button_variation(theme, &"DexSegment", segment, segment_on, bold, t)
+	theme.set_font_size(&"font_size", &"DexSegment", t.DEX_SEGMENT_FONT)
+	for state: StringName in [&"font_color", &"font_hover_color", &"font_focus_color"]:
+		theme.set_color(state, &"DexSegment", t.TEXT_MUTED)
+	for state: StringName in [&"font_pressed_color", &"font_hover_pressed_color"]:
+		theme.set_color(state, &"DexSegment", t.TEXT)
+
+	var back := _glass(t.DEX_GLASS_BG, t.DEX_GLASS_BORDER, t.DEX_TOP_BACK_DRAW / 2, t)
+	var back_on := _glass(t.ACCENT, t.ACCENT, t.DEX_TOP_BACK_DRAW / 2, t)
+	for box: StyleBoxFlat in [back, back_on]:
+		_inset(box, touch, t.DEX_TOP_BACK_DRAW, (touch - t.DEX_TOP_BACK_DRAW) * 0.5)
+	_add_button_variation(theme, &"DexBackRound", back, back_on, bold, t)
+	theme.set_color(&"icon_pressed_color", &"DexBackRound", t.ACCENT_TEXT)
+	theme.set_color(&"icon_hover_pressed_color", &"DexBackRound", t.ACCENT_TEXT)
+
+	var refine := _glass(t.DEX_CARD_BG, t.DEX_CARD_BORDER, t.DEX_REFINE_DRAW / 2, t)
+	var refine_on := _glass(t.tinted(t.ACCENT, 0.25), t.ACCENT, t.DEX_REFINE_DRAW / 2, t)
+	for box: StyleBoxFlat in [refine, refine_on]:
+		_inset(box, touch, t.DEX_REFINE_DRAW)
+		box.set_content_margin(SIDE_LEFT, t.DEX_SEGMENT_PAD)
+		box.set_content_margin(SIDE_RIGHT, t.DEX_SEGMENT_PAD)
+	_add_button_variation(theme, &"DexRefine", refine, refine_on, bold, t)
+	theme.set_font_size(&"font_size", &"DexRefine", t.DEX_REFINE_FONT)
+	for state: StringName in [&"font_color", &"font_hover_color", &"font_focus_color",
+			&"font_pressed_color", &"font_hover_pressed_color"]:
+		theme.set_color(state, &"DexRefine", t.TEXT)
+
+	var field := _glass(t.DEX_GLASS_BG, t.DEX_GLASS_BORDER, t.DEX_SEARCH_DRAW / 2, t)
+	var field_focus := _glass(t.DEX_GLASS_BG, t.ACCENT, t.DEX_SEARCH_DRAW / 2, t)
+	for box: StyleBoxFlat in [field, field_focus]:
+		_inset(box, touch, t.DEX_SEARCH_DRAW)
+		box.set_content_margin(SIDE_LEFT, t.DEX_SEGMENT_PAD)
+		box.set_content_margin(SIDE_RIGHT, t.DEX_SEGMENT_PAD)
+	theme.set_stylebox(&"normal", &"DexSearch", field)
+	theme.set_stylebox(&"read_only", &"DexSearch", field)
+	theme.set_stylebox(&"focus", &"DexSearch", field_focus)
+	theme.set_font_size(&"font_size", &"DexSearch", t.DEX_SEGMENT_FONT)
+
+	var tab := _glass(t.DEX_CARD_BG, t.DEX_CARD_BORDER, t.DEX_CARD_RADIUS, t)
+	var tab_on := _glass(t.ACCENT, t.ACCENT, t.DEX_CARD_RADIUS, t)
+	for box: StyleBoxFlat in [tab, tab_on]:
+		box.set_content_margin(SIDE_LEFT, t.DEX_LAYOUT_TAB_PAD)
+		box.set_content_margin(SIDE_RIGHT, t.DEX_LAYOUT_TAB_PAD)
+	_add_button_variation(theme, &"DexSheetTab", tab, tab_on, bold, t)
+	theme.set_font_size(&"font_size", &"DexSheetTab", t.DEX_TAB_LABEL_FONT)
+	for state: StringName in [&"font_color", &"font_hover_color", &"font_focus_color"]:
+		theme.set_color(state, &"DexSheetTab", t.TEXT)
+	for state: StringName in [&"font_pressed_color", &"font_hover_pressed_color"]:
+		theme.set_color(state, &"DexSheetTab", t.ACCENT_TEXT)
+	for state: StringName in [&"icon_normal_color", &"icon_hover_color", &"icon_focus_color"]:
+		theme.set_color(state, &"DexSheetTab", t.TEXT)
+	for state: StringName in [&"icon_pressed_color", &"icon_hover_pressed_color"]:
+		theme.set_color(state, &"DexSheetTab", t.ACCENT_TEXT)
+	theme.set_constant(&"icon_max_width", &"DexSheetTab", t.DEX_TAB_ICON)
+	theme.set_constant(&"h_separation", &"DexSheetTab", 4)
+
+	var circle := StyleBoxFlat.new()
+	circle.bg_color = t.DEX_CARD_BG
+	circle.border_color = t.DEX_GLASS_BORDER
+	circle.set_border_width_all(t.BORDER_WIDTH)
+	circle.set_corner_radius_all(t.DEX_LAYOUT_EVO_PREVIEW)
+	circle.anti_aliasing = true
+	theme.set_type_variation(&"DexEvoCircle", &"Panel")
+	theme.set_stylebox(&"panel", &"DexEvoCircle", circle)
+
+	_add_plain_label(theme, &"DexTopTitle", t.DEX_TOP_TITLE_FONT, t.TEXT, bold)
+	_add_plain_label(theme, &"DexTopCounts", t.DEX_TOP_COUNTS_FONT, t.TEXT_MUTED, null)
+	for pair: Array in [[&"DexSceneNumber", t.DEX_SHEET_NUMBER_FONT, t.TEXT],
+			[&"DexSceneName", t.DEX_SHEET_NAME_FONT, t.TEXT]]:
+		_add_plain_label(theme, pair[0], pair[1], pair[2], bold)
+		theme.set_color(&"font_shadow_color", pair[0], t.DEX_SCENE_TEXT_SHADOW)
+		theme.set_constant(&"shadow_offset_x", pair[0], 0)
+		theme.set_constant(&"shadow_offset_y", pair[0], 2)
+		theme.set_constant(&"shadow_outline_size", pair[0], t.DEX_SCENE_TEXT_SHADOW_SIZE)
 
 
 # --- Écran Carte du menu (jalon 6, T20) ---------------------------------------------------------
@@ -1049,3 +1330,61 @@ func _add_settings_screen(theme: Theme, bold: Font, t: GDScript) -> void:
 	_add_plain_label(theme, &"ChoiceConfirmDetail", t.CHOICE_CARD_DETAIL_FONT, t.ACCENT_TEXT, null)
 	_add_plain_label(theme, &"ChoiceCancelLabel", t.CHOICE_LABEL_FONT, t.TEXT, bold)
 	_add_plain_label(theme, &"ChoiceCancelDetail", t.CHOICE_CARD_DETAIL_FONT, t.TEXT_MUTED, null)
+
+
+# --- Écran Boutique (jalon 7, T11) --------------------------------------------------------------
+
+
+func _add_storage_screen(theme: Theme, bold: Font, t: GDScript) -> void:
+	# Zone de dépôt : un cadre ACCENT sans fond, posé par-dessus la colonne visée par un glisser.
+	var drop := StyleBoxFlat.new()
+	drop.bg_color = t.tinted(t.ACCENT, 0.10)
+	drop.border_color = t.ACCENT
+	drop.set_border_width_all(t.STORAGE_DROP_BORDER)
+	drop.set_corner_radius_all(t.RADIUS)
+	drop.anti_aliasing = true
+	theme.set_type_variation(&"StorageDropZone", &"Panel")
+	theme.set_stylebox(&"panel", &"StorageDropZone", drop)
+	# Raison d'un refus : pastille sombre rougie, texte clair.
+	var refusal := _panel_style(t.STORAGE_REFUSAL_BG, t.RADIUS_SMALL, t)
+	refusal.border_color = t.HP_LOW
+	refusal.set_border_width_all(t.BORDER_WIDTH)
+	refusal.set_content_margin_all(t.GAP)
+	theme.set_type_variation(&"StorageRefusal", &"PanelContainer")
+	theme.set_stylebox(&"panel", &"StorageRefusal", refusal)
+	# Menu « ⋯ » : opaque (il recouvre des boutons).
+	var menu := _panel_style(Color(t.PANEL_BG_STRONG, 1.0), t.RADIUS, t)
+	menu.set_content_margin_all(t.GAP)
+	theme.set_type_variation(&"StorageMenu", &"PanelContainer")
+	theme.set_stylebox(&"panel", &"StorageMenu", menu)
+	_add_plain_label(theme, &"StorageRefusalText", t.STORAGE_REFUSAL_FONT, t.TEXT, bold)
+	_add_plain_label(theme, &"StorageTitle", t.STORAGE_TITLE_FONT, t.TEXT, bold)
+	_add_plain_label(theme, &"StorageEmpty", t.FONT_BODY, t.TEXT_MUTED, null)
+
+
+func _add_shop_screen(theme: Theme, bold: Font, t: GDScript) -> void:
+	var stepper := _button_style(t.BUTTON_BG, true, t)
+	var stepper_pressed := _button_style(t.ACCENT, false, t)
+	stepper.set_content_margin_all(0)
+	stepper_pressed.set_content_margin_all(0)
+	_add_button_variation(theme, &"ShopStepper", stepper, stepper_pressed, bold, t)
+	for state: StringName in [&"font_color", &"font_hover_color", &"font_focus_color"]:
+		theme.set_color(state, &"ShopStepper", t.TEXT)
+	for state: StringName in [&"font_pressed_color", &"font_hover_pressed_color"]:
+		theme.set_color(state, &"ShopStepper", t.ACCENT_TEXT)
+	for state: StringName in [&"icon_normal_color", &"icon_hover_color", &"icon_focus_color",
+			&"icon_disabled_color"]:
+		theme.set_color(state, &"ShopStepper", t.TEXT)
+	for state: StringName in [&"icon_pressed_color", &"icon_hover_pressed_color"]:
+		theme.set_color(state, &"ShopStepper", t.ACCENT_TEXT)
+	_add_plain_label(theme, &"ShopName", t.SHOP_NAME_FONT, t.TEXT, bold)
+	_add_plain_label(theme, &"ShopOwned", t.SHOP_OWNED_FONT, t.TEXT_MUTED, bold)
+	_add_plain_label(theme, &"ShopDescription", t.SHOP_DESCRIPTION_FONT, t.DIALOG_NARRATION,
+		null)
+	_add_plain_label(theme, &"ShopCaption", t.SHOP_CAPTION_FONT, t.TEXT_MUTED, bold)
+	_add_plain_label(theme, &"ShopUnitPrice", t.SHOP_UNIT_PRICE_FONT, t.ACCENT, bold)
+	_add_plain_label(theme, &"ShopQuantity", t.SHOP_QUANTITY_FONT, t.TEXT, bold)
+	_add_plain_label(theme, &"ShopTotal", t.SHOP_TOTAL_FONT, t.ACCENT, bold)
+	_add_plain_label(theme, &"ShopCardPrice", t.SHOP_CARD_PRICE_FONT, t.ACCENT, bold)
+	_add_plain_label(theme, &"ShopMoney", t.SHOP_MONEY_FONT, t.TEXT, bold)
+	_add_plain_label(theme, &"ShopMoneyLabel", t.SHOP_MONEY_LABEL_FONT, t.TEXT_MUTED, bold)

@@ -17,12 +17,14 @@ extends SceneTree
 ##   bag_from_team        ouvert depuis la fiche Équipe de Salamèche (« Pour Salamèche »)
 ## Pokédex (T15, avec --only=dex_grid,dex_sheet_caught,dex_sheet_seen,dex_habitat,dex_search_empty
 ## ,dex_evolution,dex_notes) : vraies vues de PokedexQuery sur un Pokédex de test
-##   dex_grid             grille seule (fiche fermée), 151 cases dont 6 connues
+##   dex_grid             grille et fiche de Salamèche (trois colonnes permanentes)
 ##   dex_sheet_caught     fiche de Salamèche (capturé) : Aperçu complet
 ##   dex_sheet_seen       fiche de Carapuce (seulement vu) : ni types, ni taille, ni poids
 ##   dex_habitat          filtre HABITATS (Route 1), fiche de Roucool, onglet Habitat
 ##   dex_search_empty     recherche sans résultat
 ##   dex_evolution / dex_notes   onglets Évolution et Observations de Salamèche / Roucool
+##   dex_planche[_023|_074|_095|_147]   les 151 cases « vues » (vues fabriquées), défilées
+##                        jusqu'au numéro ; dex_planche_unknown[_074] : la même grille inconnue
 ## Carte (T20, avec --only=map,map_panel,map_dex) : vraies vues de MapJournal sur une partie de test
 ##   map                  Bourg Palette (portrait du joueur, panneau sans section : rien de trouvé)
 ##   map_panel            Route 1, Pokédex pas visible : objets trouvés seulement
@@ -42,6 +44,25 @@ extends SceneTree
 ##   left_handed          exploration en mode gaucher (joystick à droite, boutons à gauche)
 ##   text_large_* / contrast_*   dialogue (monde) et écran Paramètres en texte Grande / contraste
 ##
+## Boutique (J7 T11, avec --only=shop_buy,shop_sell,shop_no_money,shop_confirm,trainer_money,
+## bag_money) : vraies vues de ShopViews sur une partie de test (3 000 ₽, Potion favorite)
+##   shop_buy             ACHETER, Potion sélectionnée, quantité 3, TOTAL 900 ₽, « Merci ! »
+##   shop_sell            VENDRE, Poké Ball sélectionnée, quantité 2
+##   shop_no_money        ACHETER avec 50 ₽ : CONFIRMER touché, refus et raison
+##   shop_confirm         VENDRE la Potion favorite : ChoiceCards de confirmation
+##   trainer_money        écran Dresseur avec la ligne « Argent : … »
+##   bag_money            Sac avec l'argent sous les catégories
+##
+## Stockage (J7 T15, avec --only=storage,storage_drag,storage_menu,storage_release,storage_refusal,
+## storage_empty,storage_team_button) : vraies vues de StorageViews et vraies règles StorageRules
+##   storage              équipe de 4 et 9 Pokémon au stockage, Salamèche sélectionné
+##   storage_drag         glisser une carte de l'équipe : fantôme et cadre de dépôt sur le stockage
+##   storage_menu         menu « ⋯ » ouvert (LIBÉRER) sur un Pokémon du stockage
+##   storage_release      confirmation « Libérer … ? » (ChoiceCards)
+##   storage_refusal      LIBÉRER un favori : la carte tremble, la raison est écrite
+##   storage_empty        stockage vide
+##   storage_team_button  écran Équipe avec le bouton STOCKAGE (au Centre)
+##
 ## Sur le Mac, en 2340×1080 :
 ##   godot --path . --resolution 2340x1080 --fixed-fps 30 --quit-after 900 \
 ##     -s res://tools/capture_menu.gd -- --out=build/captures/jalon06_t3
@@ -57,6 +78,7 @@ var _suffix: String = ""
 var _frame: int = 0
 var _step: int = 0
 var _scenarios: Array[String] = ["hud_button", "dashboard_5", "dashboard_6", "dashboard_no_team"]
+var _bag_money: bool = false
 var _current: String = ""
 var _wait: int = 0
 ## Image (à 30 i/s) de la capture du scénario courant (12 par défaut ; plus tôt pour les animations).
@@ -79,7 +101,7 @@ func _init() -> void:
 func _start() -> void:
 	_boot = (load(BOOT_SCENE) as PackedScene).instantiate()
 	_boot.set(&"start_map", &"route_1")
-	_boot.set(&"start_spawn", &"jadielle_soon_w")
+	_boot.set(&"start_spawn", &"from_viridian_w")
 	root.add_child(_boot)
 	_menu = (load(MENU_SCENE) as PackedScene).instantiate() as TrainerMenu
 	_menu.speed_scale = 0.0
@@ -130,12 +152,23 @@ func _begin(scenario: String) -> void:
 		"team", "team_sheet_moves", "team_history", "team_move_mode":
 			_team_scenario(scenario)
 		"dex_grid", "dex_sheet_caught", "dex_sheet_seen", "dex_habitat", "dex_search_empty", \
-		"dex_evolution", "dex_notes":
+		"dex_evolution", "dex_notes", "dex_planche", "dex_planche_023", "dex_planche_074", \
+		"dex_planche_095", "dex_planche_147", "dex_planche_unknown", "dex_planche_unknown_074":
 			_dex_scenario(scenario)
 		"map", "map_panel", "map_dex":
 			_map_scenario(scenario)
 		"trainer", "trainer_dex", "trainer_empty":
 			_trainer_scenario(scenario)
+		"shop_buy", "shop_sell", "shop_no_money", "shop_confirm":
+			_shop_scenario(scenario)
+		"storage", "storage_drag", "storage_menu", "storage_release", "storage_refusal", \
+		"storage_empty", "storage_team_button":
+			_storage_scenario(scenario)
+		"trainer_money":
+			_trainer_scenario("trainer")
+		"bag_money":
+			_bag_money = true
+			_bag_scenario("bag")
 		"bag", "bag_use", "bag_result", "bag_from_team", "bag_refuse", "bag_heal_mid", "bag_heal_end":
 			_bag_scenario(scenario)
 
@@ -271,12 +304,23 @@ func _dex_scenario(scenario: String) -> void:
 		"dex_notes":
 			species = &"pidgey"
 	var grid := PokedexQuery.grid(dex, data, library, zones, filter, zone, &"", text)
+	if scenario.begins_with("dex_planche"):
+		grid = _planche_grid(grid, data, not scenario.begins_with("dex_planche_unknown"))
 	_menu.open_animated()
 	_menu.show_pokedex(grid)
-	if scenario == "dex_grid" or scenario == "dex_search_empty":
+	if scenario == "dex_search_empty":
 		return
 	_menu.show_pokedex_sheet(PokedexQuery.sheet(species, dex, data, library, zones))
 	var sheet := _menu.get_pokedex().get_sheet()
+	sheet.select_tab(PokedexSheet.Tab.OVERVIEW)
+	if scenario.begins_with("dex_planche_"):
+		for _i: int in 3:
+			await process_frame
+		var number := int(scenario.trim_prefix("dex_planche_").trim_prefix("unknown_"))
+		var target := _menu.get_pokedex().get_slot(number)
+		if target != null:
+			_menu.get_pokedex().get_scroll().scroll_vertical = maxi(
+				0, roundi(target.position.y) - 40)
 	match scenario:
 		"dex_habitat":
 			sheet.select_tab(PokedexSheet.Tab.HABITAT)
@@ -284,6 +328,27 @@ func _dex_scenario(scenario: String) -> void:
 			sheet.select_tab(PokedexSheet.Tab.EVOLUTION)
 		"dex_notes":
 			sheet.select_tab(PokedexSheet.Tab.NOTES)
+
+
+## Vue fabriquée de la planche de contrôle : les 151 cases « vues » (ou toutes inconnues), les
+## noms des espèces qui existent dans les données, « Nom » sinon.
+func _planche_grid(base: PokedexGridView, data: PokemonData, seen: bool) -> PokedexGridView:
+	var view := base
+	view.slots = []
+	var names: Dictionary[int, String] = {}
+	var ids: Dictionary[int, StringName] = {}
+	for id: StringName in data.get_species_ids():
+		var species := data.get_species(id)
+		names[species.dex] = species.name
+		ids[species.dex] = id
+	for number: int in range(1, 152):
+		if seen:
+			var id: StringName = ids.get(number, StringName("dex_%d" % number))
+			view.slots.append(PokedexSlotView.new(number, id, names.get(number, "Nom"),
+				PokedexQuery.State.CAUGHT if number % 3 == 0 else PokedexQuery.State.SEEN))
+		else:
+			view.slots.append(PokedexSlotView.new(number))
+	return view
 
 
 ## Dresseur du menu : vraies vues de TrainerSummary (la partie de Kevin à la fin du J5, ou une
@@ -357,6 +422,105 @@ func _team_scenario(scenario: String) -> void:
 			team.get_move_button().pressed.emit()
 
 
+## Boutique : vraies vues de ShopViews sur une partie de test.
+func _shop_scenario(scenario: String) -> void:
+	var state: Node = (load("res://game/autoload/game_state.gd") as GDScript).new()
+	state.new_game(7)
+	var items := ItemLibrary.new()
+	items.load_dir()
+	var shops := ShopLibrary.new()
+	shops.load_dir()
+	shops.check_references(items)
+	var shop := shops.get_shop(&"viridian_mart")
+	state.bag.add(&"potion", 5)
+	state.bag.add(&"poke_ball", 6)
+	state.bag.set_favorite(&"potion", true)
+	if scenario == "shop_no_money":
+		state.money = 50
+	var sell := scenario == "shop_sell" or scenario == "shop_confirm"
+	var view := ShopViews.build(state, shop, items,
+		ShopViews.MODE_SELL if sell else ShopViews.MODE_BUY)
+	_menu.open_animated()
+	_menu.show_shop(view)
+	var screen := _menu.get_shop()
+	match scenario:
+		"shop_buy":
+			screen.select_item(&"potion")
+			screen.set_quantity(3)
+			screen.show_result(ShopViews.TEXT_THANKS, true)
+		"shop_sell":
+			screen.select_item(&"poke_ball")
+			screen.set_quantity(2)
+		"shop_no_money":
+			screen.get_confirm_button().pressed.emit()
+		"shop_confirm":
+			screen.select_item(&"potion")
+			screen.set_quantity(2)
+			_menu.show_shop_confirm(ShopViews.sell_confirm_view(view.entry(&"potion"), 2),
+				&"potion", 2)
+	state.free()
+
+
+## Stockage : vraies vues de StorageViews sur une équipe de 4 et un stockage de 9.
+func _storage_scenario(scenario: String) -> void:
+	var state: Node = (load("res://game/autoload/game_state.gd") as GDScript).new()
+	state.new_game(7)
+	var data := PokemonData.new()
+	data.load_dir()
+	var zones := ZoneLibrary.new()
+	zones.load_file()
+	var party_specs: Array = [[&"charmander", 14], [&"pidgey", 12], [&"rattata", 10],
+		[&"squirtle", 9]]
+	var stored_specs: Array = [[&"bulbasaur", 8], [&"pidgey", 6], [&"rattata", 5],
+		[&"pidgey", 7], [&"rattata", 4], [&"bulbasaur", 11], [&"squirtle", 6],
+		[&"charmander", 5], [&"pidgey", 9]]
+	for spec: Array in party_specs:
+		state.party.add(PokemonFactory.create(data, spec[0], spec[1], state.rng))
+	if scenario != "storage_empty":
+		for spec: Array in stored_specs:
+			state.storage.add(PokemonFactory.create(data, spec[0], spec[1], state.rng))
+	state.party.get_at(0).favorite = true
+	state.party.get_at(2).hp = 0
+	if state.storage.size() > 1:
+		state.storage.get_at(1).favorite = true
+	state.flags.set_flag(StoryFlags.POKEDEX_ACTIVATED)
+	var unlocks := MenuUnlocks.new(state.flags, state.party)
+	if scenario == "storage_team_button":
+		var team := TeamViews.build(state.party, data, zones, state.pokedex, unlocks)
+		team.storage_available = true
+		_menu.open_animated()
+		_menu.show_team(team, 0)
+		state.free()
+		return
+	var selection := StorageSelection.new(StorageRules.Place.PARTY, 0)
+	if scenario == "storage_menu" or scenario == "storage_release":
+		selection = StorageSelection.new(StorageRules.Place.STORAGE, 2)
+	if scenario == "storage_refusal":
+		selection = StorageSelection.new(StorageRules.Place.STORAGE, 1)
+	var view := StorageViews.build(state, data, selection, zones, unlocks)
+	_menu.open_animated()
+	_menu.show_storage(view)
+	var screen := _menu.get_storage()
+	match scenario:
+		"storage_drag":
+			var card := screen.get_party_cards()[1]
+			card.drag_started.emit(1)
+			var target := screen.get_grid_zone().get_global_rect().get_center()
+			card.drag_moved.emit(1, target)
+		"storage_menu":
+			screen.toggle_menu()
+		"storage_release":
+			var name := view.card_at(selection.place, selection.index).member.display_name
+			_menu.ask_storage_release(StorageViews.release_choice(name),
+				int(selection.place), selection.index)
+		"storage_refusal":
+			var result := StorageRules.release(state.party, state.storage, selection.place,
+				selection.index)
+			_menu.show_storage_refusal(int(selection.place), selection.index,
+				StorageViews.result_text(result, data))
+	state.free()
+
+
 ## Sac du menu : vraies vues de BagQuery sur un Sac de test (cinq catégories) et trois Pokémon.
 func _bag_scenario(scenario: String) -> void:
 	var state: Node = (load("res://game/autoload/game_state.gd") as GDScript).new()
@@ -391,7 +555,8 @@ func _bag_scenario(scenario: String) -> void:
 	var from_team := scenario == "bag_from_team"
 	var context := BagQuery.CONTEXT_TEAM if from_team else BagQuery.CONTEXT_FIELD
 	var view := BagQuery.view(state.bag, items, context, BagQuery.Sort.RELEVANCE,
-		&"heal", state.party, 0 if from_team else -1, data)
+		&"heal", state.party, 0 if from_team else -1, data,
+		state.money if _bag_money else -1)
 	_menu.open_animated()
 	_menu.show_bag(view)
 	var potion := items.get_item(&"potion")

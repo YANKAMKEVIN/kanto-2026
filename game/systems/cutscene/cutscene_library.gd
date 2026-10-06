@@ -53,7 +53,10 @@ extends RefCounted
 ##   l'issue) ;
 ## - give (jalon 4B) : identifiant d'objet (data/items/), avec « count » facultatif (entier
 ##   ≥ 1, 1 par défaut) et « found » facultatif (booléen, faux par défaut : vrai pour un objet
-##   trouvé dans le monde, comme la Potion de la Route 1, plutôt que reçu d'un personnage).
+##   trouvé dans le monde, comme la Potion de la Route 1, plutôt que reçu d'un personnage) ;
+## - scare (jalon 7) : Pokémon d'ambiance (PNJ « shy » ou alias, pas « player ») qui réagit
+##   tout de suite (envol ou fuite) et quitte la carte pour la visite ; que l'acteur soit
+##   « shy » est vérifié par les tests des données réelles et, au jeu, par le directeur.
 ## Toute étape sauf spawn accepte « if » et « unless » (listes de drapeaux) : elle n'est jouée
 ## que si ses conditions sont remplies **au moment de la jouer** (suite d'un combat selon son
 ## issue). Les références aux dresseurs et aux objets ne sont pas vérifiées ici (tests de
@@ -65,6 +68,16 @@ extends RefCounted
 ##     { "lean": "$player_starter", "to": "player" },
 ##     { "despawn": "$rival_starter" } ] }
 ## [/codeblock]
+## Jalon 7 (jalon-07.md §3.6, T18) :
+## - caption : texte non vide de la légende posée sur le monde (« POKÉDEX ACTIVÉ ») ;
+## - take : identifiant d'objet qui quitte le Sac, avec « count » facultatif (entier ≥ 1).
+## Jalon 7 (jalon-07.md §3.8, T25) :
+## - wake_up : true (aucun autre paramètre) ; réveil au point de repos après une défaite contre
+##   un Dresseur ([DefeatRecovery]) ; la scène s'arrête après elle.
+## Retours T5 (jalon-07.md §15.21) :
+## - move accepte « background » (true : PNJ seulement, sans « follower ») : marche en
+##   arrière-plan, la scène continue ([member CutsceneStep.background]) ;
+## - react : acteur (joueur, PNJ ou alias) qui a une petite réaction de surprise.
 ## Acteur = « player », identifiant d'un PNJ de la carte courante, ou **alias** « $nom »
 ## (forme $[a-z_]+, [method CutsceneStep.is_alias]) : PNJ choisi par le code qui lance la
 ## scène (CutsceneDirector.play(id, alias)), résolu au début de chaque étape. Les alias
@@ -80,9 +93,11 @@ const _SCENE_KEYS: Array[String] = ["variants"]
 const _VARIANT_KEYS: Array[String] = ["if", "unless", "steps"]
 ## Clés permises en plus de la clé de type, par type (ordre de CutsceneStep.Kind).
 const _EXTRA_KEYS: Array[Array] = [
-	[], [], ["to"], [], [], ["path", "to", "run", "follower", "keep_facing", "optional"],
+	[], [], ["to"], [], [],
+	["path", "to", "run", "follower", "keep_facing", "optional", "background"],
 	["at", "facing"], ["to"],
 	["to"], [], ["player_pokemon", "foe_pokemon", "win", "lose"], ["count", "found"],
+	[], ["count"], [], [], [],
 ]
 ## Conditions permises sur toute étape sauf spawn.
 const _CONDITION_KEYS: Array[String] = ["if", "unless"]
@@ -202,11 +217,11 @@ func get_trainer_ids() -> Array[StringName]:
 	return _sorted_keys(found)
 
 
-## Objets donnés par au moins une étape « give » (tests de données).
+## Objets donnés (« give ») ou repris (« take ») par au moins une étape (tests de données).
 func get_item_ids() -> Array[StringName]:
 	var found: Dictionary[StringName, bool] = {}
 	for step: CutsceneStep in _all_steps():
-		if step.kind == CutsceneStep.Kind.GIVE:
+		if step.kind == CutsceneStep.Kind.GIVE or step.kind == CutsceneStep.Kind.TAKE:
 			found[step.item_id] = true
 	return _sorted_keys(found)
 
@@ -355,6 +370,8 @@ func _parse_step(value: Variant, where: String) -> CutsceneStep:
 				step.target = v) and ok
 		CutsceneStep.Kind.DESPAWN:
 			ok = _read_npc_actor(main, where + " despawn", step) and ok
+		CutsceneStep.Kind.SCARE:
+			ok = _read_npc_actor(main, where + " scare", step) and ok
 		CutsceneStep.Kind.BATTLE:
 			ok = _parse_battle(entry, step, where) and ok
 		CutsceneStep.Kind.GIVE:
@@ -372,7 +389,34 @@ func _parse_step(value: Variant, where: String) -> CutsceneStep:
 					step.found = entry["found"]
 				else:
 					ok = _fail("%s : « found » doit être un booléen" % where)
+		CutsceneStep.Kind.CAPTION:
+			if not main is String or (main as String).strip_edges().is_empty():
+				ok = _fail("%s : « caption » doit être un texte non vide" % where)
+			else:
+				step.text = main
+		CutsceneStep.Kind.TAKE:
+			ok = _read_id(main, where + " take", func(v: StringName) -> void:
+				step.item_id = v) and ok
+			ok = _read_count(entry, step, where) and ok
+		CutsceneStep.Kind.WAKE_UP:
+			if not main is bool or not main:
+				ok = _fail("%s : « wake_up » vaut true" % where)
+		CutsceneStep.Kind.REACT:
+			ok = _read_actor(main, where + " react", func(v: StringName) -> void:
+				step.actor = v) and ok
 	return step if ok else null
+
+
+## « count » facultatif d'une étape give ou take : entier ≥ 1 (1 par défaut).
+func _read_count(entry: Dictionary, step: CutsceneStep, where: String) -> bool:
+	if not entry.has("count"):
+		return true
+	var amount: Variant = entry["count"]
+	if not (amount is float or amount is int) \
+			or float(amount) != floorf(float(amount)) or int(amount) < 1:
+		return _fail("%s : « count » doit être un entier ≥ 1" % where)
+	step.count = int(amount)
+	return true
 
 
 ## battle : dresseur, Pokémon de la carte qui combattent (facultatifs), drapeaux de l'issue.
@@ -467,6 +511,15 @@ func _parse_move(entry: Dictionary, step: CutsceneStep, where: String) -> bool:
 			step.optional = entry["optional"]
 		if step.optional and step.near.is_empty():
 			ok = _fail("%s : « optional » exige une destination « near »" % where)
+	if entry.has("background"):
+		if not entry["background"] is bool:
+			ok = _fail("%s : « background » vaut true ou false" % where)
+		else:
+			step.background = entry["background"]
+		if step.background and step.actor == NpcRoster.PLAYER_ID:
+			ok = _fail("%s : « background » ne vaut que pour un PNJ" % where)
+		if step.background and not step.follower.is_empty():
+			ok = _fail("%s : « background » sans « follower »" % where)
 	return ok
 
 

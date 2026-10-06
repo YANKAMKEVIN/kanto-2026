@@ -30,7 +30,6 @@
 		},
 		"fled": { "text": "Tu prends la fuite !", "draft": true },
 		"flee_failed": { "text": "Impossible de fuir !", "draft": true },
-		"level_up": { "text": "{pokemon} monte au niveau {level} !", "draft": true },
 		"move_learned": { "text": "{pokemon} apprend {move} !", "draft": true },
 		"move_forget_prompt": {
 			"text": "{pokemon} veut apprendre {move}, mais connaît déjà quatre capacités.",
@@ -57,11 +56,24 @@
 			"text_f": "{pokemon} a été confiée au système de recherche de Chen."
 		},
 		"item_used": { "text": "Tu utilises {item} sur {pokemon}.", "draft": true },
-		"hp_restored": { "text": "{pokemon} récupère {amount} PV.", "draft": true }
+		"hp_restored": { "text": "{pokemon} récupère {amount} PV.", "draft": true },
+		"prize_won": { "text": "Tu remportes {money}.", "draft": true },
+		"withdrawn": { "text": "Reviens, {pokemon} !", "draft": true },
+		"switch_reason_active": { "text": "Déjà au combat", "draft": true },
+		"switch_reason_fainted": { "text": "Ne peut plus combattre", "draft": true },
+		"replace_prompt": { "text": "Qui envoyer au combat ?", "draft": true },
+		"summary_exp": { "text": "+{exp} XP" },
+		"summary_level": { "text": "Nv. {level}" },
+		"summary_stat": { "text": "{stat} +{amount}" },
+		"summary_continue": { "text": "Touchez l'écran pour continuer", "draft": true }
 	},
 	"stats": {
 		"atk": "L'Attaque", "def": "La Défense", "spa": "L'Attaque Spéciale",
 		"spd": "La Défense Spéciale", "spe": "La Vitesse", "acc": "La Précision",
 		"eva": "L'Esquive"
+	},
+	"stat_labels": {
+		"hp": "PV", "atk": "Attaque", "def": "Défense", "spa": "Atq. Spé.", "spd": "Déf. Spé.",
+		"spe": "Vitesse"
 	}
 }

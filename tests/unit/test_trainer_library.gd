@@ -72,6 +72,82 @@ func test_build_real_rival_team() -> void:
 	assert_eq(party.get_lead().hp, party.get_lead().max_hp())
 
 
+func test_real_rival_lab_keeps_the_bag_silent() -> void:
+	var library := TrainerLibrary.new(_data)
+	library.load_dir()
+	assert_false(library.get_trainer(&"rival_lab").allow_bag, "décision n° 12")
+
+
+## Rival n° 2 (jalon-07.md §3.8, dossier 09 §13) : IA smart, Roucool Nv. 7 puis le starter
+## avantagé Nv. 8, 35 ₽ par niveau, SAC permis, défaite qui compte.
+func test_real_rival_route22() -> void:
+	var library := TrainerLibrary.new(_data)
+	assert_true(library.load_dir())
+	var rival := library.get_trainer(&"rival_route22")
+	assert_not_null(rival)
+	assert_eq(rival.name, "Le Rival")
+	assert_eq(rival.ai, BattleAI.SMART)
+	assert_eq(rival.make_ai().kind, BattleAI.SMART)
+	assert_false(rival.can_lose, "défaite = retour au point de repos")
+	assert_false(rival.heal_after)
+	assert_true(rival.gives_exp)
+	assert_eq(rival.prize_money, 0)
+	assert_eq(rival.prize_per_level, 35)
+	assert_true(rival.allow_bag)
+	assert_true(rival.start_message, "« Le Rival veut se battre ! »")
+	assert_false(rival.end_message)
+	var advantaged := {&"bulbasaur": &"charmander", &"charmander": &"squirtle",
+		&"squirtle": &"bulbasaur"}
+	for starter: StringName in advantaged:
+		var team := rival.team_for(starter)
+		assert_eq(team.size(), 2, String(starter))
+		assert_eq([team[0].species, team[0].level], [&"pidgey", 7], String(starter))
+		assert_eq([team[1].species, team[1].level], [advantaged[starter], 8], String(starter))
+
+
+func test_bag_and_prize_per_level_defaults() -> void:
+	assert_true(_library.add_from_dict({"t": _valid_entry()}), _errors())
+	var trainer := _library.get_trainer(&"t")
+	assert_true(trainer.allow_bag, "SAC permis par défaut")
+	assert_eq(trainer.prize_per_level, 0)
+
+
+func test_bag_and_prize_per_level_are_read() -> void:
+	var entry := _valid_entry()
+	entry["bag"] = false
+	entry["prize_money"] = 0
+	entry["prize_per_level"] = 20
+	assert_true(_library.add_from_dict({"t": entry}), _errors())
+	var trainer := _library.get_trainer(&"t")
+	assert_false(trainer.allow_bag)
+	assert_eq(trainer.prize_per_level, 20)
+	assert_eq(trainer.prize_for(9), 180)
+
+
+func test_bag_and_prize_per_level_are_validated() -> void:
+	var entry := _valid_entry()
+	entry["bag"] = "non"
+	entry["prize_per_level"] = -1
+	assert_false(_library.add_from_dict({"t": entry}))
+	assert_push_error_count(2)
+	assert_string_contains(_errors(), "« bag » vaut true ou false")
+	assert_string_contains(_errors(), "« prize_per_level » doit être un entier ≥ 0")
+	assert_false(_library.has_trainer(&"t"))
+
+
+func test_fixed_prize_and_prize_per_level_are_exclusive() -> void:
+	var entry := _valid_entry()
+	entry["prize_per_level"] = 35
+	assert_false(_library.add_from_dict({"t": entry}), "prize_money 10 et prize_per_level 35")
+	assert_push_error("sont exclusifs")
+	assert_string_contains(_errors(), "sont exclusifs")
+	var zero := _valid_entry()
+	zero["prize_money"] = 0
+	zero["prize_per_level"] = 35
+	assert_true(TrainerLibrary.new(_fixture_data).add_from_dict({"z": zero}),
+		"prize_money 0 : permis")
+
+
 # --- Fixtures ---------------------------------------------------------------------------
 
 func test_fixture_directory_and_fields() -> void:
@@ -153,7 +229,7 @@ func test_start_message_is_optional_and_true_by_default() -> void:
 func test_invalid_fields_are_rejected() -> void:
 	var entry := _valid_entry()
 	entry.erase("gives_exp")
-	entry["ai"] = "smart"
+	entry["ai"] = "genius"
 	entry["can_lose"] = "yes"
 	entry["prize_money"] = -5
 	entry["reward"] = 3
@@ -164,7 +240,7 @@ func test_invalid_fields_are_rejected() -> void:
 	var errors := _errors()
 	assert_string_contains(errors, "clé inconnue « reward »")
 	assert_string_contains(errors, "« gives_exp » est obligatoire")
-	assert_string_contains(errors, "« ai » vaut random")
+	assert_string_contains(errors, "« ai » vaut random, smart")
 	assert_string_contains(errors, "« can_lose » vaut true ou false")
 	assert_string_contains(errors, "« prize_money » doit être un entier ≥ 0")
 	assert_false(_library.has_trainer(&"bad"))

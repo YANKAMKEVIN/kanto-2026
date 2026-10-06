@@ -23,6 +23,7 @@ var speed_scale: float = 1.0
 var _showing: bool = false
 var _tween: Tween
 var _scrim: ColorRect
+var _center: CenterContainer
 var _content: VBoxContainer
 var _title: Label
 var _detail: Label
@@ -43,12 +44,17 @@ func _ready() -> void:
 	_scrim.mouse_filter = Control.MOUSE_FILTER_STOP
 	add_child(_scrim)
 	var center := CenterContainer.new()
+	_center = center
 	center.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	center.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	add_child(center)
 	_content = VBoxContainer.new()
 	_content.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	_content.add_theme_constant_override(&"separation", UiTokens.GAP)
+	# Largeur fixée (les deux cartes + l'écart) : sans elle, les textes à retour automatique
+	# réclament une hauteur démesurée au premier calcul et le contenu sort de l'écran.
+	_content.custom_minimum_size.x = UiTokens.CHOICE_CARD_SIZE.x * 2.0 \
+		+ UiTokens.CHOICE_CARD_GAP
 	center.add_child(_content)
 	_title = _text_label(&"ChoiceTitle", _content)
 	_detail = _text_label(&"ChoiceDetail", _content)
@@ -94,14 +100,14 @@ func show_choice(view: ChoiceView) -> void:
 	var time := UiTokens.CHOICE_FADE * speed_scale
 	if time <= 0.0:
 		modulate.a = 1.0
-		_content.position.y = 0.0
+		_set_slide(0.0)
 		return
 	modulate.a = 0.0
 	_tween = create_tween().set_parallel(true).set_trans(Tween.TRANS_CUBIC) \
 		.set_ease(Tween.EASE_OUT)
 	_tween.tween_property(self, ^"modulate:a", 1.0, time)
-	_content.position.y = UiTokens.CHOICE_SLIDE
-	_tween.tween_property(_content, ^"position:y", 0.0, time)
+	_set_slide(UiTokens.CHOICE_SLIDE)
+	_tween.tween_method(_set_slide, UiTokens.CHOICE_SLIDE, 0.0, time)
 
 
 ## Ferme sans rien émettre (la question n'a plus de raison d'être) ; fondu, puis invisible.
@@ -175,6 +181,13 @@ func _text_label(variation: StringName, parent: Control) -> Label:
 	label.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	parent.add_child(label)
 	return label
+
+
+## Décalage vertical du contenu pendant l'apparition (les décalages d'ancrage gardent le
+## centrage ; la position d'un conteneur ancré ne le garde pas).
+func _set_slide(dy: float) -> void:
+	_center.offset_top = dy
+	_center.offset_bottom = dy
 
 
 func _on_chosen(confirmed: bool) -> void:

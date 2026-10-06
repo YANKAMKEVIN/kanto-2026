@@ -130,14 +130,14 @@ func _seed_for(starter: StringName, outcome: int) -> int:
 
 ## Joue tout le combat : lance run (coroutine), pilote la HUD (ATTAQUER puis 1re capacité à
 ## chaque choix), collecte les événements joués. Renvoie [issue, événements, pv_aux_damage].
-func _play() -> Array:
+func _play(trainer_id: StringName = &"rival_lab") -> Array:
 	var events: Array[BattleEvent] = []
 	_director.event_played.connect(func(e: BattleEvent) -> void: events.append(e))
 	var result: Array = [Battle.Outcome.NONE]
 	var done: Array[bool] = [false]
 	var world_actors: Dictionary[StringName, StringName] = {&"player": MINE_ID, &"foe": FOE_ID}
 	var runner := func() -> void:
-		result[0] = await _director.run(&"rival_lab", _map, world_actors)
+		result[0] = await _director.run(trainer_id, _map, world_actors)
 		done[0] = true
 	runner.call()
 	# Le joueur est bloqué dès l'appel (avant tout await).
@@ -416,6 +416,53 @@ func test_run_while_a_battle_is_running_is_refused() -> void:
 		await wait_process_frames(1)
 
 
+# --- Rival n° 2 : argent et SAC (jalon 7, T24) -----------------------------------------
+
+## Victoire contre le rival de la Route 22 : « Tu remportes 280 ₽. » (35 × Nv. 8 du dernier
+## Pokémon) puis l'argent versé ; SAC actif dans la grille ; pas de soin.
+func test_route22_victory_pays_the_prize_and_offers_the_bag() -> void:
+	var party := Party.new()
+	var strong := PokemonFactory.create(_data, &"charmander", 40, GameRng.new(PLAYER_SEED))
+	strong.moves.clear()
+	strong.moves.append(MoveSlot.new(&"ember", 25))
+	party.add(strong)
+	_state.party = party
+	_state.starter_species = &"bulbasaur"
+	_state.rng = GameRng.new(5)
+	_state.money = 3000
+	var bag_seen: Array[bool] = []
+	_hud.get_action_grid().visibility_changed.connect(func() -> void:
+		bag_seen.append(_hud.get_action_grid().is_action_enabled(ActionGrid.BAG)))
+	var played: Array = await _play(&"rival_route22")
+	assert_eq(played[0], Battle.Outcome.WIN)
+	assert_eq(_state.money, 3280, "3 000 + 35 × 8")
+	assert_eq(_hud.get_message_banner().get_text(), "Tu remportes %s." % MenuFormat.money(280))
+	assert_true(_hud.get_action_grid().is_action_enabled(ActionGrid.BAG), "SAC actif")
+	assert_false(_hud.get_action_grid().is_action_enabled(ActionGrid.RUN), "FUITE atténuée")
+
+
+## Défaite : aucun argent gagné, aucun perdu (dossier 09 §10).
+func test_route22_defeat_keeps_the_money() -> void:
+	var party := Party.new()
+	party.add(PokemonFactory.create(_data, &"bulbasaur", 2, GameRng.new(PLAYER_SEED)))
+	_state.party = party
+	_state.starter_species = &"bulbasaur"
+	_state.rng = GameRng.new(5)
+	_state.money = 3000
+	var played: Array = await _play(&"rival_route22")
+	assert_eq(played[0], Battle.Outcome.LOSS)
+	assert_eq(_state.money, 3000)
+	assert_ne(_hud.get_message_banner().get_text(), "Tu remportes %s." % MenuFormat.money(280))
+
+
+## Le labo garde le SAC muet (décision n° 12), même avec des Potions.
+func test_rival_lab_keeps_the_bag_silent() -> void:
+	_prepare(&"charmander", 1)
+	_state.bag.add(&"potion", 2)
+	await _play()
+	assert_false(_hud.get_action_grid().is_action_enabled(ActionGrid.BAG))
+
+
 func test_unknown_trainer_is_refused_and_the_player_stays_free() -> void:
 	_prepare(&"charmander", 1)
 	var actors: Dictionary[StringName, StringName] = {}
@@ -521,12 +568,12 @@ func _play_with_offers(request: BattleRequest, order: Array[int],
 	return [result[0], events]
 
 
-## La carte du joueur porte le niveau et les PV de [param e] (LEVEL_UP rejoué).
+## La carte du joueur garde l'ancien niveau et ses PV max (le bilan est l'unique lieu de la
+## progression, pas de spoiler pendant « X est K.O. ! »).
 func _check_card_level(e: BattleEvent) -> void:
 	var card := _hud.get_card(BattleHud.Side.PLAYER)
-	assert_eq(card.get_level_text(), "Nv. %d" % e.level, "Nv. de la carte à jour")
-	assert_eq(card.get_hp_bar().get_target_hp(), e.hp, "PV de la carte à jour")
-	assert_eq(card.get_hp_bar().get_max_hp(), e.max_hp, "PV max de la carte")
+	assert_eq(card.get_level_text(), "Nv. %d" % (e.level - 1), "Nv. de la carte inchangé")
+	assert_lt(card.get_hp_bar().get_max_hp(), e.max_hp, "PV max de la carte inchangés")
 
 
 ## Ponction de Vampigraine rejouée : la cible a perdu, celui d'en face a gagné.
@@ -543,9 +590,11 @@ func _has_kind(events: Array, kind: BattleEvent.Kind) -> bool:
 	return events.any(func(e: BattleEvent) -> bool: return e.kind == kind)
 
 
-## L'XP du Pokémon augmente exactement de la somme des « +N XP » joués : chaque EXP_GAINED est
-## rejoué sur la carte du joueur (elle montre « +N XP » avec le total du gain), l'ordre du
-## journal est respecté et un niveau gagné met la carte à jour (Nv., PV max).
+## L'XP du Pokémon augmente exactement de la somme des gains du journal, et c'est ce que montre
+## le bilan de fin de combat (demande n° 1) : une ligne, « +N XP », « Nv. 6 », la barre et les
+## nombres finissent à la bonne valeur. Pendant le combat, plus de « +N XP » sur la carte ni de
+## « monte au niveau » ; la carte prend en silence le niveau et les PV max. Ordre du journal
+## respecté.
 func test_xp_gained_equals_the_sum_shown_and_the_card_follows_the_level() -> void:
 	var party_fn := func() -> Party: return _xp_party(&"charmander", 5, 1)
 	var seed := _xp_seed(party_fn, &"rattata", 3, [0] as Array[int],
@@ -557,14 +606,30 @@ func test_xp_gained_equals_the_sum_shown_and_the_card_follows_the_level() -> voi
 	var lead := party.get_lead()
 	var before := lead.experience
 	var request := _xp_request(party, &"rattata", 3, seed)
-	var texts: Array[String] = []
+	var gain_shown: Array[bool] = []
 	var levels: Array[int] = []
+	var banner: Array[String] = []
 	_director.event_played.connect(func(e: BattleEvent) -> void:
+		banner.append(_hud.get_message_banner().get_text())
 		if e.kind == BattleEvent.Kind.EXP_GAINED and e.amount > 0:
-			texts.append(_hud.get_card(BattleHud.Side.PLAYER).get_exp_gain_text())
+			gain_shown.append(_hud.get_card(BattleHud.Side.PLAYER).is_exp_gain_visible())
 		elif e.kind == BattleEvent.Kind.LEVEL_UP:
 			levels.append(e.level)
 			_check_card_level(e))
+	var seen: Dictionary = {}
+	_director.exp_summary_shown.connect(func(summary: ExpSummary) -> void:
+		var card := _director.get_summary_card()
+		seen["entries"] = summary.get_entries().size()
+		seen["shown"] = card != null and card.is_visible_in_tree() and card.is_filled()
+		var row := card.get_rows()[0]
+		seen["gain"] = row.get_gain_text()
+		seen["level"] = row.get_level_text()
+		seen["start"] = row.get_start_level_text()
+		seen["fraction"] = row.get_bar().get_fraction()
+		seen["points"] = row.get_points_text()
+		seen["lit"] = row.is_lit()
+		seen["stats"] = row.get_stats_text()
+		seen["hud_hidden"] = not _hud.is_shown())
 	var played := await _play_with_offers(request, [0] as Array[int])
 	assert_eq(played[0], Battle.Outcome.WIN)
 	var events: Array[BattleEvent] = played[1]
@@ -576,9 +641,23 @@ func test_xp_gained_equals_the_sum_shown_and_the_card_follows_the_level() -> voi
 			total += event.amount
 	assert_gt(total, 0, "de l'XP a été gagnée")
 	assert_eq(lead.experience - before, total, "XP du Pokémon = somme des gains joués")
-	assert_eq(texts, ["+%d XP" % total] as Array[String], "la carte a montré le total gagné")
+	assert_eq(gain_shown, [false] as Array[bool], "plus de « +N XP » sur la carte en combat")
 	assert_eq(levels, [6] as Array[int], "montée au niveau 6")
 	assert_eq(lead.level, 6)
+	for line: String in banner:
+		assert_false(line.contains("monte au niveau"), "plus de phrase de niveau : " + line)
+	var span := ExpCalc.level_span(lead, _data)
+	assert_eq(seen.get("entries"), 1, "un Pokémon dans le bilan")
+	assert_true(seen.get("shown", false), "bilan affiché, barres arrivées")
+	assert_true(seen.get("hud_hidden", false), "cartes et bandeau sortis pendant le bilan")
+	assert_eq(seen.get("gain"), "+%d XP" % total, "le bilan montre le total gagné")
+	assert_eq([seen.get("start"), seen.get("level")], ["Nv. 5", "Nv. 6"])
+	assert_almost_eq(float(seen.get("fraction", -1.0)), ExpCalc.progress(lead, _data), 0.0001,
+		"la barre finit à la bonne valeur")
+	assert_eq(seen.get("points"), "%d / %d" % [span.x, span.y], "nombres du nouveau niveau")
+	assert_true(seen.get("lit", false), "sa ligne est mise en valeur")
+	assert_true(String(seen.get("stats", "")).begins_with("PV +"), "gains de statistiques")
+	assert_null(_director.get_summary_card(), "bilan libéré à la fin")
 	# Ordre du journal : K.O. adverse, puis XP, puis niveau, puis la fin du combat.
 	assert_lt(kinds.rfind(BattleEvent.Kind.FAINTED), kinds.find(BattleEvent.Kind.EXP_GAINED),
 		"XP après le K.O.")
@@ -600,14 +679,24 @@ func test_a_learned_move_is_announced_without_the_forget_panel() -> void:
 	var party: Party = party_fn.call()
 	var request := _xp_request(party, &"rattata", 3, seed)
 	var lines: Array[String] = []
+	var waits: Array[bool] = []
+	var order: Array[String] = []
+	_hud.get_message_banner().message_shown.connect(func(_t: String, wait: bool) -> void:
+		waits.append(wait))
 	_director.event_played.connect(func(e: BattleEvent) -> void:
+		if e.kind in [BattleEvent.Kind.MOVE_LEARNED, BattleEvent.Kind.BATTLE_ENDED]:
+			order.append(BattleEvent.Kind.find_key(e.kind))
 		if e.kind == BattleEvent.Kind.MOVE_LEARNED:
 			lines.append(_hud.get_message_banner().get_text()))
+	_director.exp_summary_shown.connect(func(_s: ExpSummary) -> void: order.append("SUMMARY"))
 	var played := await _play_with_offers(request, [0] as Array[int])
 	assert_eq(played[0], Battle.Outcome.WIN)
+	assert_eq(order, ["BATTLE_ENDED", "SUMMARY", "MOVE_LEARNED"] as Array[String],
+		"fin du combat, bilan, puis l'apprentissage")
 	assert_true(party.get_lead().knows_move(&"leech_seed"), "Vampigraine apprise au N7")
 	assert_eq(lines, ["Bulbizarre apprend Vampigraine !"] as Array[String],
 		"phrase d'apprentissage")
+	assert_true(waits.has(true), "« apprend » attend un toucher")
 	assert_null(_director.get_forget_panel(), "aucun panneau d'oubli")
 	assert_push_error_count(0)
 
@@ -1228,8 +1317,18 @@ func test_back_from_the_bag_consumes_nothing() -> void:
 ## (ou « ‹ » du choix si [param back_from_picker]) ; ensuite FUITE. Renvoie { events, view,
 ## picker_seen, bag_reopened }.
 func _play_potion(request: BattleRequest, target: int, back_from_picker: bool = false) -> Dictionary:
-	var report := {"events": [], "view": null, "picker_seen": false, "bag_reopened": false}
-	_director.event_played.connect(func(e: BattleEvent) -> void: report["events"].append(e))
+	var report := {"events": [], "view": null, "picker_seen": false, "bag_reopened": false,
+		"foe_turn_own_card": false, "foe_turn_hp_text": ""}
+	_director.event_played.connect(func(e: BattleEvent) -> void:
+		report["events"].append(e)
+		var kinds := _kinds_of(report["events"])
+		# Premier coup de l'adversaire après le soin : la carte du joueur doit être là.
+		if (e.kind == BattleEvent.Kind.MOVE_USED or e.kind == BattleEvent.Kind.MOVE_MISSED) \
+				and e.side == BattleEvent.SideId.FOE and kinds.has(BattleEvent.Kind.ITEM_USED) \
+				and not report["foe_turn_own_card"]:
+			var card := _hud.get_card(BattleHud.Side.PLAYER)
+			report["foe_turn_own_card"] = card.is_shown() and card.visible
+			report["foe_turn_hp_text"] = card.get_hp_text())
 	var done: Array[bool] = [false]
 	var runner := func() -> void:
 		await _director.run_request(request, _map)
@@ -1292,6 +1391,25 @@ func test_a_potion_on_another_member_heals_it_once_then_the_foe_plays() -> void:
 	assert_eq(report["view"].targets.size(), 2)
 	assert_false(report["view"].targets[0].usable, "le Pokémon en jeu est à PV pleins")
 	assert_true(report["view"].targets[1].usable)
+	assert_push_error_count(0)
+
+
+func test_a_potion_on_the_lead_brings_the_player_card_back_with_the_healed_hp() -> void:
+	var request := _prepare_potion(5)
+	var lead: Pokemon = (_state.party as Party).get_lead()
+	lead.hp = 3
+	var report := await _play_potion(request, 0)
+	assert_gt(lead.hp, 3, "le Pokémon en jeu est soigné")
+	assert_true(report["foe_turn_own_card"], "la carte du joueur est visible au tour adverse")
+	assert_true(String(report["foe_turn_hp_text"]).contains(str(lead.hp))
+		or lead.hp < 3, "la carte affiche les PV soignés : %s" % report["foe_turn_hp_text"])
+	assert_push_error_count(0)
+
+
+func test_a_potion_on_a_bench_member_also_brings_the_player_card_back() -> void:
+	var request := _prepare_potion(5)
+	var report := await _play_potion(request, 1)
+	assert_true(report["foe_turn_own_card"], "la carte du joueur est visible au tour adverse")
 	assert_push_error_count(0)
 
 

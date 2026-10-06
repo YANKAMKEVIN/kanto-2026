@@ -1,6 +1,7 @@
 extends GutTest
 ## Carte route_1 (jalon 5 §15.4, dossier-07) : métadonnées, raccord sud vers Bourg Palette,
-## sortie nord (bord bloqué, écran « Jadielle — À venir » en développement), 3 zones de hautes herbes lues par la
+## sortie nord vers Jadielle (jalon 7 T4 : warps PUSH vers viridian_city ; avant, écran
+## « Jadielle — À venir »), 3 zones de hautes herbes lues par la
 ## grille, rebord LEDGE_DOWN franchissable vers le sud, chemins praticables, Potion cachée,
 ## Voyageur et Pokémon d'ambiance ; invariants d'accessibilité du §4.
 
@@ -81,29 +82,27 @@ func test_south_connection_to_pallet_town() -> void:
 		assert_true(_grid.is_solid(cell + Vector2i.DOWN), "bord sud bloqué sous %s" % cell)
 
 
-func test_north_edge_is_reachable_and_leads_to_the_coming_soon_screen() -> void:
-	# La sortie nord vers Jadielle : le chemin atteint le haut de la carte, la rangée y 0 reste
-	# bloquée (en release, c'est tout) ; en développement, pousser vers le haut depuis le haut du
-	# chemin mène à « JADIELLE — À venir » (dossier-07 §12, jalon-05 Q5), puis une case en
-	# retrait du bord, tourné vers le sud.
+func test_north_edge_is_reachable_and_leads_to_viridian_city() -> void:
+	# La sortie nord vers Jadielle (jalon 7 T4) : le chemin atteint le haut de la carte, la
+	# rangée y 0 reste bloquée ; pousser vers le haut depuis le haut du chemin mène à Jadielle
+	# (entrée sud), et l'on revient de Jadielle sur ces mêmes cases, tourné vers le sud.
 	for cell: Vector2i in [NORTH_W, NORTH_E]:
 		assert_true(_reachable.has(cell), "haut du chemin atteignable %s" % cell)
 	for cell: Vector2i in [Vector2i(23, 0), Vector2i(24, 0)]:
 		assert_false(_reachable.has(cell), "bord nord bloqué %s" % cell)
-	for spec: Array in [[NORTH_W, &"jadielle_soon_w"], [NORTH_E, &"jadielle_soon_e"]]:
+	for spec: Array in [[NORTH_W, &"from_route_1_w", &"from_viridian_w"],
+			[NORTH_E, &"from_route_1_e", &"from_viridian_e"]]:
 		var cell: Vector2i = spec[0]
 		var warp := _map.get_warps().find_on_push(cell, Vector2i.UP)
 		assert_not_null(warp, "sortie PUSH haut en %s" % cell)
 		if warp == null:
 			continue
-		assert_true(warp.is_coming_soon())
-		assert_eq(warp.coming_soon, "Jadielle")
+		assert_false(warp.is_coming_soon(), "plus d'écran « à venir »")
+		assert_eq(warp.target_map, &"viridian_city")
 		assert_eq(warp.target_spawn, spec[1])
-		assert_eq(warp.facing, Vector2i.DOWN, "tourné vers le sud au retour")
-		var back := _map.get_spawn_cell(warp.target_spawn)
-		assert_eq(back, cell + Vector2i.DOWN, "retour une case en retrait du bord")
-		assert_true(_reachable.has(back), "retour atteignable %s" % back)
-		assert_false(_grid.is_tall_grass(back), "retour hors des hautes herbes")
+		assert_eq(warp.facing, Vector2i.UP)
+		assert_eq(_map.get_spawn_cell(spec[2]), cell, "arrivée depuis Jadielle sur le passage")
+		assert_false(_grid.is_tall_grass(cell), "hors des hautes herbes")
 
 
 func test_tall_grass_grid_matches_the_three_zones() -> void:

@@ -45,14 +45,16 @@ static func wild(encounter: WildEncounter, data: PokemonData, rng: GameRng,
 
 
 ## Requête d'un combat de dresseur ([param foe_party] déjà bâtie par le directeur, §15.6).
+## [param items] : les objets connus (null = Sac inutilisable : aucun objet de soin légal).
 static func trainer_battle(trainer: TrainerData, foe_party: Party,
-		world_actors: Dictionary[StringName, StringName] = {}) -> BattleRequest:
+		world_actors: Dictionary[StringName, StringName] = {},
+		items: ItemLibrary = null) -> BattleRequest:
 	var request := BattleRequest.new()
 	request.intro = Intro.TRAINER
 	request.trainer = trainer
 	request.foe_name = trainer.name if trainer != null else ""
 	request.foe_party = foe_party
-	request.rules = BattleRules.for_trainer(trainer)
+	request.rules = BattleRules.for_trainer(trainer, items)
 	request.world_actors = world_actors
 	return request
 

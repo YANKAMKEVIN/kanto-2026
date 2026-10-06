@@ -126,6 +126,13 @@ func animate_exp(from: float, to: float, gained: int = 0) -> void:
 		_schedule_exp_hide()
 
 
+## « Nv. » prend [param level] tout de suite, sans pulsation ni vibration.
+func set_level(level: int) -> void:
+	BattleWidget.complete_tween(_level_pulse)
+	_level = level
+	_level_value.text = str(level)
+
+
 ## Coroutine : « Nv. » prend [param level] et pulse un instant (grossit en ACCENT, puis revient,
 ## LEVEL_PULSE_UP + LEVEL_PULSE_DOWN) ; vibration courte HAPTIC_LEVEL_UP_MS.
 func pulse_level(level: int) -> void:

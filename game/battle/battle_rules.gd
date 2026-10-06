@@ -19,7 +19,7 @@ var exp_multiplier: float = 1.0
 var allow_balls: bool = false
 ## Les soins sur un Pokémon de l'équipe sont permis (jalon 6, Q-10 : sauvage et dresseur). Il
 ## faut aussi [member items] pour lire le soin. Le SAC reste muet contre le rival du labo : c'est
-## la grille d'actions qui le tait (BattleViews.TRAINER_BATTLE_ACTIONS, décision n° 12).
+## la grille d'actions qui le tait (BattleViews.trainer_actions, TrainerData.allow_bag).
 var allow_heal_items: bool = false
 ## Objets connus (5D) : le moteur y lit le [member ItemData.catch_bonus] de la Ball lancée.
 ## Null = aucune Ball n'est utilisable, même si [member allow_balls]. Le Sac n'est pas ici :

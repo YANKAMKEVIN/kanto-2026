@@ -1,0 +1,16 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://game/world/props/prop.gd" id="1_5mrp8"]
+[ext_resource type="Material" path="res://game/world/lighting/materials/world_object_wind.tres" id="2_eirjd"]
+[ext_resource type="Texture2D" path="res://assets/world/props/tree_b_01.png" id="3_voxda"]
+
+[node name="TreeB01" type="Node2D" unique_id=1653984524]
+script = ExtResource("1_5mrp8")
+fade_when_covering = true
+
+[node name="Sprite" type="Sprite2D" parent="." unique_id=873806691]
+unique_name_in_owner = true
+material = ExtResource("2_eirjd")
+texture = ExtResource("3_voxda")
+centered = false
+offset = Vector2(-143.5, -480)

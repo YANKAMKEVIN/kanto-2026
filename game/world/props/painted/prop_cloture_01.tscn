@@ -1,0 +1,16 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://game/world/props/prop.gd" id="1_twv63"]
+[ext_resource type="Material" path="res://game/world/lighting/materials/world_object.tres" id="2_x5go5"]
+[ext_resource type="Texture2D" path="res://assets/world/props/prop_cloture_01.png" id="3_fd8e6"]
+
+[node name="PropCloture01" type="Node2D" unique_id=1577899885]
+script = ExtResource("1_twv63")
+footprint = Array[Vector2i]([Vector2i(-2, 0), Vector2i(-1, 0), Vector2i(0, 0), Vector2i(1, 0)])
+
+[node name="Sprite" type="Sprite2D" parent="." unique_id=225736957]
+unique_name_in_owner = true
+material = ExtResource("2_x5go5")
+texture = ExtResource("3_fd8e6")
+centered = false
+offset = Vector2(-192, -61)

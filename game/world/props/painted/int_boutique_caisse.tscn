@@ -1,0 +1,16 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://game/world/props/prop.gd" id="1_665gr"]
+[ext_resource type="Material" path="res://game/world/lighting/materials/world_object.tres" id="2_r6jm2"]
+[ext_resource type="Texture2D" path="res://assets/world/interiors/int_boutique_caisse.png" id="3_vl3tx"]
+
+[node name="IntBoutiqueCaisse" type="Node2D" unique_id=1151773735]
+script = ExtResource("1_665gr")
+footprint = Array[Vector2i]([Vector2i(-2, 0), Vector2i(-1, 0), Vector2i(0, 0), Vector2i(1, 0), Vector2i(2, 0)])
+
+[node name="Sprite" type="Sprite2D" parent="." unique_id=372232783]
+unique_name_in_owner = true
+material = ExtResource("2_r6jm2")
+texture = ExtResource("3_vl3tx")
+centered = false
+offset = Vector2(-240, -159)

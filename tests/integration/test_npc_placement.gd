@@ -194,8 +194,11 @@ func test_every_npc_has_its_own_frames() -> void:
 				assert_true(Npc.has_frames(sprite), "%s : %s_frames.tres" % [npc.get_id(), sprite])
 				var anim := npc.get_node(^"%Sprite") as AnimatedSprite2D
 				assert_eq(anim.sprite_frames.resource_path, Npc.frames_path(sprite))
-				assert_eq(anim.texture_filter, CanvasItem.TEXTURE_FILTER_NEAREST)
-				assert_eq(anim.scale, Vector2(2, 2))
+				# Jalon 7 : peint (le rival, Q-1) à 1:1 en LINEAR, provisoire ×2 en NEAREST.
+				var look := CharacterLook.resolve(sprite)
+				assert_eq(look.painted, sprite == &"rival", String(sprite))
+				assert_eq(anim.texture_filter, look.filter)
+				assert_eq(anim.scale, Vector2(look.scale, look.scale))
 
 
 func test_sprite_sizes_and_animations() -> void:
@@ -210,7 +213,8 @@ func test_sprite_sizes_and_animations() -> void:
 	for id: StringName in pokemon:
 		sizes[id] = Vector2(32, 32)
 	for id: StringName in sizes:
-		var frames := load(Npc.frames_path(id)) as SpriteFrames
+		# Les planches provisoires (le rival a aussi la sienne, peinte, depuis le jalon 7).
+		var frames := load(CharacterLook.placeholder_frames_path(id)) as SpriteFrames
 		assert_not_null(frames, String(id))
 		if frames == null:
 			continue

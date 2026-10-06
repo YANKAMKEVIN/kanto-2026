@@ -18,11 +18,11 @@ extends RefCounted
 ## - STAT : effet de statistique sur le Pokémon de [member side] (monte si
 ##   [member BattleEvent.stages] > 0, baisse sinon) ;
 ## - FAINT : le Pokémon de [member side] tombe K.O., sa carte s'en va.
-## Jalon 5C :
-## - EXP : une tranche de la barre d'XP du Pokémon du joueur ([member BattleEvent.exp_from] →
-##   [member BattleEvent.exp_to], « +[member BattleEvent.amount] XP » sur la première) ;
-## - LEVEL : « Nv. » du Pokémon du joueur prend [member BattleEvent.level], ses PV max
-##   [member BattleEvent.max_hp] ;
+## Jalon 5C (revu par la demande n° 1 : le bilan de fin de combat raconte la progression) :
+## - EXP : une tranche de la barre d'XP du Pokémon du joueur ; rien à l'écran pendant le
+##   combat (le directeur la note pour le bilan) ;
+## - LEVEL : « Nv. » de la carte du Pokémon du joueur en jeu prend [member BattleEvent.level],
+##   ses PV max [member BattleEvent.max_hp], en silence ;
 ## - DRAIN : Vampigraine en fin de tour : la barre du Pokémon drainé ([member side]) descend à
 ##   [member BattleEvent.hp], celle du Pokémon d'en face monte à [member BattleEvent.healed_hp] ;
 ## - FORGET : le joueur choisit la capacité à oublier ([member BattleEvent.move_id] est la
@@ -37,17 +37,23 @@ extends RefCounted
 ## Jalon 6 (soin) :
 ## - HEAL : la barre de PV du Pokémon soigné remonte jusqu'à [member BattleEvent.hp] ; seulement
 ##   s'il est en jeu ([member BattleEvent.party_index]), sinon rien ne bouge à l'écran.
+## Jalon 7 (changement de Pokémon) :
+## - WITHDRAW : le Pokémon du joueur est rappelé dans sa Poké Ball (il rétrécit dans un éclat
+##   rouge), sa carte et les pastilles sortent ; le SEND_OUT du suivant les ramène.
 
 enum Kind {
 	MESSAGE, SEND_OUT, MOVE, DAMAGE, STAT, FAINT, EXP, LEVEL, DRAIN, FORGET,
 	THROW, SHAKE, CATCH, RELEASE,
 	HEAL,
+	WITHDRAW,
 }
 
 var kind: Kind = Kind.MESSAGE
 var side: BattleEvent.SideId = BattleEvent.SideId.PLAYER
 ## MESSAGE : la phrase à afficher.
 var text: String = ""
+## MESSAGE : la phrase attend un toucher (« X apprend Y ! » : phrase importante).
+var wait_touch: bool = false
 ## Événement du journal d'où vient ce temps.
 var event: BattleEvent
 ## MOVE : catégorie de la capacité (animation).

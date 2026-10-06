@@ -187,3 +187,39 @@ func test_reopen_after_close_starts_over() -> void:
 	assert_true(_nav.open())
 	assert_eq(_nav.get_screens(), [&"dashboard"] as Array[StringName])
 	assert_signal_emit_count(_nav, "opened", 2)
+
+
+# --- Écran seul : la Boutique (jalon-07.md §2.3, §3.4) --------------------------------------
+
+func test_standalone_screen_opens_alone_and_back_closes() -> void:
+	assert_true(_nav.open(MenuRoute.shop(&"viridian_mart"), true))
+	assert_true(_nav.is_standalone())
+	assert_eq(_nav.get_screens(), [&"shop"] as Array[StringName], "pas de tableau de bord")
+	assert_eq(_nav.current().get_param("shop"), &"viridian_mart")
+	assert_eq(_nav.current().get_param("mode"), MenuRoute.SHOP_MODE_BUY)
+	assert_signal_emit_count(_nav, "opened", 1)
+	assert_true(_nav.back(), "retour = fermer")
+	assert_false(_nav.is_open())
+	assert_signal_emit_count(_nav, "closed", 1)
+	assert_signal_emit_count(_nav, "route_changed", 0)
+
+
+func test_the_shop_never_opens_over_the_dashboard_nor_by_a_link() -> void:
+	assert_false(_nav.open(MenuRoute.shop(&"viridian_mart")), "seulement seul")
+	assert_false(_nav.is_open())
+	assert_true(_nav.open())
+	assert_false(_nav.is_standalone())
+	assert_false(_nav.go(MenuRoute.shop(&"viridian_mart")), "jamais par un lien")
+	assert_eq(_nav.get_screens(), [&"dashboard"] as Array[StringName])
+	assert_false(_unlocks.dashboard_cards().has(MenuRoute.SHOP), "jamais une carte")
+
+
+func test_standalone_refuses_the_dashboard_null_or_unavailable_routes() -> void:
+	assert_false(_nav.open(null, true))
+	assert_false(_nav.open(MenuRoute.dashboard(), true))
+	assert_false(_nav.open(MenuRoute.pokedex(), true), "Pokédex non activé")
+	assert_false(_nav.is_open())
+	assert_signal_emit_count(_nav, "opened", 0)
+	assert_true(_nav.open(MenuRoute.trainer(), true), "un autre écran peut s'ouvrir seul")
+	assert_eq(_nav.get_screens(), [&"trainer"] as Array[StringName])
+	assert_false(_nav.open(MenuRoute.shop(&"viridian_mart"), true), "déjà ouvert")

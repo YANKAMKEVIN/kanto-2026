@@ -15,6 +15,9 @@ const XP_TAG := "XP"
 ## Durées multipliées (0 = instantané, pas de respiration : tests).
 var speed_scale: float = 1.0
 
+var _sprite_scale: int = UiTokens.TEAM_SPRITE_SCALE
+var _with_xp: bool = true
+
 var _sheet: PokemonSheetView
 var _breath: Tween
 var _fade: Tween
@@ -36,7 +39,11 @@ var _xp_text: Label
 var _xp_remaining: Label
 
 
-func _init() -> void:
+## [param sprite_scale] : échelle entière du sprite (6 dans l'Équipe) ; [param with_xp] faux : ni
+## barre ni texte d'XP, ni pilule « Favori » (écran Stockage, où la hauteur manque).
+func _init(sprite_scale: int = UiTokens.TEAM_SPRITE_SCALE, with_xp: bool = true) -> void:
+	_sprite_scale = sprite_scale
+	_with_xp = with_xp
 	mouse_filter = Control.MOUSE_FILTER_IGNORE
 	add_theme_constant_override(&"separation", UiTokens.TEAM_HEADER_GAP)
 	_build()
@@ -52,7 +59,7 @@ func show_sheet(sheet: PokemonSheetView, animate: bool) -> void:
 	_gender.texture = BattleInfoCard.GENDER_ICONS.get(member.gender, null)
 	_gender.modulate = BattleInfoCard.GENDER_COLORS.get(member.gender, UiTokens.TEXT)
 	_gender.visible = _gender.texture != null
-	_favorite.visible = member.favorite
+	_favorite.visible = member.favorite and _with_xp
 	_level.text = "%s %d" % [BattleInfoCard.LEVEL_TAG, member.level]
 	_status.text = member.status_text
 	_status.visible = not member.status_text.is_empty()
@@ -69,7 +76,8 @@ func show_sheet(sheet: PokemonSheetView, animate: bool) -> void:
 	_xp_text.text = sheet.exp_text
 	_xp_text.visible = not sheet.exp_text.is_empty()
 	_xp_remaining.text = sheet.exp_remaining_text
-	_xp_remaining.visible = not sheet.exp_remaining_text.is_empty()
+	_xp_remaining.visible = not sheet.exp_remaining_text.is_empty() and _with_xp
+	_xp_row.visible = _with_xp
 	if animate:
 		_play_switch()
 	_restart_breath()
@@ -175,7 +183,7 @@ func _notification(what: int) -> void:
 
 
 func _build() -> void:
-	var side := UiTokens.TEAM_SPRITE_SOURCE * UiTokens.TEAM_SPRITE_SCALE
+	var side := UiTokens.TEAM_SPRITE_SOURCE * _sprite_scale
 	_sprite_box = Control.new()
 	_sprite_box.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	_sprite_box.custom_minimum_size = Vector2(side, side + UiTokens.TEAM_BREATH_PX)
@@ -193,7 +201,7 @@ func _build() -> void:
 	_sprite.stretch_mode = TextureRect.STRETCH_SCALE
 	_sprite.custom_minimum_size = Vector2.ONE * UiTokens.TEAM_SPRITE_SOURCE
 	_sprite.size = Vector2.ONE * UiTokens.TEAM_SPRITE_SOURCE
-	_sprite.scale = Vector2.ONE * UiTokens.TEAM_SPRITE_SCALE
+	_sprite.scale = Vector2.ONE * _sprite_scale
 	_sprite_box.add_child(_sprite)
 
 	var name_row := HBoxContainer.new()

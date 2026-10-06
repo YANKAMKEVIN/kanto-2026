@@ -1,5 +1,7 @@
 extends SceneTree
-## Génère les sprites de combat provisoires des trois starters (jalon-04.md §14.4, T6).
+## Génère les sprites de combat provisoires des starters (jalon-04.md §14.4, T6), des espèces
+## de la Route 1 (jalon 5) et des quatre nouvelles espèces de la Route 22 (jalon-07.md Q-2 :
+## provisoires en combat comme les autres, le peint en combat pour tous à la phase DA).
 ## Pixel art 64 × 64 natif, affiché en NEAREST par le BattleStage (×4 de dos, ×3 de face) :
 ##   assets/sprites/pokemon/placeholder/<espèce>_front.png   (vue de face : l'adversaire)
 ##   assets/sprites/pokemon/placeholder/<espèce>_back.png    (vue de dos : le Pokémon du joueur)
@@ -14,7 +16,10 @@ extends SceneTree
 
 const DIR: String = "res://assets/sprites/pokemon/placeholder/"
 const SIZE: int = 64
-const SPECIES: Array[String] = ["bulbasaur", "charmander", "squirtle", "pidgey", "rattata"]
+const SPECIES: Array[String] = [
+	"bulbasaur", "charmander", "squirtle", "pidgey", "rattata",
+	"spearow", "mankey", "nidoran_f", "nidoran_m",
+]
 const OUTLINE := Color("#1c1c28")
 const EYE := Color("#1c1c28")
 const WHITE := Color("#f4f4f4")
@@ -300,6 +305,146 @@ func _draw_rattata(img: Image, back: bool) -> void:
 	_r(img, 33, 33, 2, 3, WHITE)
 	_line(img, Vector2(24, 31), Vector2(11, 29), fur.darkened(0.25))
 	_line(img, Vector2(40, 31), Vector2(53, 29), fur.darkened(0.25))
+
+
+# --- Piafabec ---------------------------------------------------------------------
+
+func _draw_spearow(img: Image, back: bool) -> void:
+	var feather := Color("#a0643c")
+	var wing := Color("#b04a32")
+	var cream := Color("#ecd4a4")
+	var beak := Color("#e8a8a0")
+	var claw := Color("#d8b070")
+	if back:
+		# Vu de dos : corps, ailes rouges écartées, queue courte, tête et houppe.
+		_e(img, 32, 46, 18, 15, feather, true)
+		_e(img, 12, 40, 9, 13, wing, true)
+		_e(img, 52, 40, 9, 13, wing, true)
+		_r(img, 26, 56, 12, 6, feather.darkened(0.25))
+		_e(img, 32, 24, 14, 12, feather, true)
+		_r(img, 29, 8, 3, 6, wing)
+		_r(img, 33, 10, 3, 5, wing)
+		return
+	# De face : ailes rouges écartées, ventre crème, serres, sourcils froncés, bec rose.
+	_e(img, 11, 40, 9, 13, wing, true)
+	_e(img, 53, 40, 9, 13, wing, true)
+	_e(img, 32, 46, 18, 15, feather, true)
+	_e(img, 32, 50, 11, 10, cream)
+	_r(img, 25, 59, 3, 3, claw)
+	_r(img, 36, 59, 3, 3, claw)
+	_e(img, 32, 24, 15, 13, feather, true)
+	_r(img, 29, 8, 3, 6, wing)
+	_r(img, 33, 10, 3, 5, wing)
+	_eye(img, 21, 19, Color("#2a2a2a"))
+	_eye(img, 38, 19, Color("#2a2a2a"))
+	_line(img, Vector2(19, 16), Vector2(27, 19), feather.darkened(0.45), 2)
+	_line(img, Vector2(45, 16), Vector2(37, 19), feather.darkened(0.45), 2)
+	_r(img, 29, 26, 6, 4, beak)
+	_r(img, 30, 30, 4, 3, beak.darkened(0.2))
+
+
+# --- Férosinge --------------------------------------------------------------------
+
+func _draw_mankey(img: Image, back: bool) -> void:
+	var fur := Color("#e8dcc4")
+	var limb := Color("#8a5a3a")
+	var nose := Color("#e0a084")
+	if back:
+		# Vu de dos : boule de poils, bras et jambes bruns, queue, oreilles.
+		_line(img, Vector2(44, 52), Vector2(58, 40), fur.darkened(0.12), 3)
+		_r(img, 20, 52, 9, 10, limb)
+		_r(img, 35, 52, 9, 10, limb)
+		_e(img, 10, 38, 5, 9, limb, true)
+		_e(img, 54, 38, 5, 9, limb, true)
+		_e(img, 32, 36, 21, 20, fur, true)
+		_e(img, 11, 24, 5, 5, fur.darkened(0.1))
+		_e(img, 53, 24, 5, 5, fur.darkened(0.1))
+		return
+	# De face : grosse boule de poils, groin rose, yeux en colère, poings bruns levés.
+	_line(img, Vector2(20, 52), Vector2(6, 42), fur.darkened(0.12), 3)
+	_r(img, 20, 52, 9, 10, limb)
+	_r(img, 35, 52, 9, 10, limb)
+	_e(img, 32, 36, 21, 20, fur, true)
+	_e(img, 9, 36, 5, 6, limb, true)
+	_e(img, 55, 36, 5, 6, limb, true)
+	_e(img, 11, 22, 5, 5, fur.darkened(0.1))
+	_e(img, 53, 22, 5, 5, fur.darkened(0.1))
+	_e(img, 11, 22, 2, 2, nose)
+	_e(img, 53, 22, 2, 2, nose)
+	_eye(img, 20, 24, Color("#2a2a2a"))
+	_eye(img, 39, 24, Color("#2a2a2a"))
+	_line(img, Vector2(17, 20), Vector2(28, 25), limb, 2)
+	_line(img, Vector2(47, 20), Vector2(36, 25), limb, 2)
+	_e(img, 32, 37, 8, 5, nose, true)
+	_r(img, 29, 36, 2, 2, nose.darkened(0.4))
+	_r(img, 34, 36, 2, 2, nose.darkened(0.4))
+	_r(img, 27, 44, 10, 2, limb.darkened(0.2))
+
+
+# --- Nidoran ♀ --------------------------------------------------------------------
+
+func _draw_nidoran_f(img: Image, back: bool) -> void:
+	var skin := Color("#94b4e4")
+	var spot := Color("#4a6aa8")
+	var ear := Color("#e8eef8")
+	_draw_nidoran(img, back, skin, spot, ear, false)
+
+
+# --- Nidoran ♂ --------------------------------------------------------------------
+
+func _draw_nidoran_m(img: Image, back: bool) -> void:
+	var skin := Color("#c890d0")
+	var spot := Color("#7a4a90")
+	var ear := Color("#5ab0a0")
+	_draw_nidoran(img, back, skin, spot, ear, true)
+
+
+## Silhouette commune aux deux Nidoran : corps bas sur quatre pattes, grandes oreilles,
+## épines sur le dos ; la femelle a de petites moustaches, le mâle une corne et de plus
+## grandes oreilles.
+func _draw_nidoran(img: Image, back: bool, skin: Color, spot: Color, ear: Color,
+		male: bool) -> void:
+	var ear_r := Vector2(8, 12) if male else Vector2(7, 9)
+	if back:
+		# Vu de dos : corps, épines alignées, oreilles, petite queue.
+		_r(img, 14, 52, 8, 10, skin.darkened(0.15))
+		_r(img, 42, 52, 8, 10, skin.darkened(0.15))
+		_e(img, 32, 44, 22, 14, skin, true)
+		_e(img, 32, 26, 14, 11, skin, true)
+		for i: int in 4:
+			_r(img, 30, 25 + i * 7, 4, 3, spot.darkened(0.1))
+			_r(img, 31, 24 + i * 7, 2, 1, spot.darkened(0.1))
+		_e(img, 18, 18 - ear_r.y / 2.0, ear_r.x, ear_r.y, skin, true)
+		_e(img, 46, 18 - ear_r.y / 2.0, ear_r.x, ear_r.y, skin, true)
+		_r(img, 20, 40, 4, 4, spot)
+		_r(img, 42, 46, 4, 3, spot)
+		_e(img, 32, 58, 4, 3, skin.darkened(0.1))
+		return
+	# De face : pattes, corps tacheté, grande tête, oreilles, yeux rouges, épines.
+	_r(img, 12, 52, 9, 10, skin.darkened(0.12))
+	_r(img, 43, 52, 9, 10, skin.darkened(0.12))
+	_r(img, 12, 60, 9, 2, WHITE)
+	_r(img, 43, 60, 9, 2, WHITE)
+	_e(img, 32, 47, 21, 12, skin, true)
+	_r(img, 15, 44, 4, 4, spot)
+	_r(img, 46, 42, 4, 4, spot)
+	_line(img, Vector2(28, 14), Vector2(26, 9), spot, 2)
+	_line(img, Vector2(36, 14), Vector2(38, 9), spot, 2)
+	_e(img, 32, 30, 16, 13, skin, true)
+	_e(img, 13, 22 - ear_r.y / 2.0, ear_r.x, ear_r.y, skin, true)
+	_e(img, 51, 22 - ear_r.y / 2.0, ear_r.x, ear_r.y, skin, true)
+	_e(img, 13, 22 - ear_r.y / 2.0, ear_r.x * 0.5, ear_r.y * 0.6, ear)
+	_e(img, 51, 22 - ear_r.y / 2.0, ear_r.x * 0.5, ear_r.y * 0.6, ear)
+	if male:
+		_line(img, Vector2(32, 20), Vector2(32, 10), Color("#f0e6f4"), 3)
+	_eye(img, 21, 26, Color("#c0392b"))
+	_eye(img, 38, 26, Color("#c0392b"))
+	_r(img, 29, 36, 6, 2, skin.darkened(0.4))
+	if not male:
+		_line(img, Vector2(22, 36), Vector2(12, 34), skin.darkened(0.3))
+		_line(img, Vector2(42, 36), Vector2(52, 34), skin.darkened(0.3))
+		_r(img, 30, 38, 1, 2, WHITE)
+		_r(img, 33, 38, 1, 2, WHITE)
 
 
 # --- Ombre ------------------------------------------------------------------------

@@ -18,7 +18,7 @@ func test_real_data_loads_without_error() -> void:
 	assert_true(_library.load_dir(), "data/items/ se charge")
 	assert_eq(_library.get_errors().size(), 0, str(_library.get_errors()))
 	# Jalon 5 : la Potion cachée de la Route 1 (catégorie « heal », ramassée seulement).
-	assert_eq(_library.get_ids(), [&"poke_ball", &"potion"] as Array[StringName])
+	assert_eq(_library.get_ids(), [&"oak_parcel", &"poke_ball", &"potion"] as Array[StringName])
 	var ball := _library.get_item(&"poke_ball")
 	assert_eq(ball.name, "Poké Ball")
 	assert_eq(ball.plural, "Poké Balls")
@@ -33,7 +33,8 @@ func test_real_data_loads_without_error() -> void:
 	assert_eq(potion.catch_bonus, 1.0, "pas de catch_bonus hors Ball (valeur par défaut)")
 	assert_eq(potion.heal_amount, 20, "jalon 6 : la Potion rend 20 PV")
 	assert_eq(ball.heal_amount, 0)
-	assert_eq(_library.get_ids_in_data_order(), [&"poke_ball", &"potion"] as Array[StringName])
+	assert_eq(_library.get_ids_in_data_order(), [&"poke_ball", &"potion", &"oak_parcel"] \
+		as Array[StringName])
 	assert_eq([ball.order, potion.order], [0, 1])
 
 
@@ -73,7 +74,7 @@ func test_invalid_entries_are_rejected() -> void:
 		entry.erase(key)
 		bad.append(entry)
 	var extra := BALL.duplicate()
-	extra["price"] = 200
+	extra["cost"] = 200
 	bad.append(extra)
 	var no_bonus := BALL.duplicate()
 	no_bonus.erase("catch_bonus")
@@ -95,7 +96,7 @@ func test_invalid_entries_are_rejected() -> void:
 	assert_eq(_library.size(), 0)
 	assert_push_error_count(bad.size(), "une erreur par entrée")
 	var errors := "\n".join(_library.get_errors())
-	for expected: String in ["« name » est obligatoire", "clé inconnue « price »",
+	for expected: String in ["« name » est obligatoire", "clé inconnue « cost »",
 			"« catch_bonus » doit être", "catégorie inconnue « berry »",
 			"« name » doit être un texte", "« feminine » vaut true ou false"]:
 		assert_string_contains(errors, expected)
@@ -213,3 +214,68 @@ func test_only_heals_are_given_to_a_pokemon() -> void:
 	assert_true(_library.load_dir())
 	assert_true(_library.get_item(&"potion").targets_pokemon())
 	assert_false(_library.get_item(&"poke_ball").targets_pokemon())
+
+
+# --- Prix et objets clés (jalon-07.md §3.4, dossier 09 §9, §10, §19) -----------------------
+
+func test_real_prices_and_the_parcel() -> void:
+	assert_true(_library.load_dir())
+	var ball := _library.get_item(&"poke_ball")
+	var potion := _library.get_item(&"potion")
+	assert_eq(ball.price, 200, "dossier 09 §10")
+	assert_eq(potion.price, 300, "dossier 09 §10")
+	assert_eq(ball.sell_price(), 100, "moitié du prix")
+	assert_eq(potion.sell_price(), 150)
+	assert_true(ball.is_sellable())
+	var parcel := _library.get_item(&"oak_parcel")
+	assert_eq(parcel.category, ItemData.Category.KEY)
+	assert_true(parcel.is_key())
+	assert_eq(parcel.price, 0, "un objet clé n'a jamais de prix")
+	assert_false(parcel.is_sellable())
+	assert_eq(parcel.sell_price(), 0)
+	assert_true(parcel.draft, "description à relire")
+	assert_eq(parcel.contexts(), [] as Array[StringName], "jamais utilisé")
+
+
+## Dossier 09 §19 : « COLIS POUR CHEN — ajouté aux objets clés ».
+func test_key_item_toast_text() -> void:
+	assert_true(_library.load_dir())
+	var parcel := _library.get_item(&"oak_parcel")
+	assert_eq(parcel.quantity_text(1), "COLIS POUR CHEN")
+	assert_eq(parcel.added_text(1), "ajouté aux objets clés")
+	var key := ItemData.new()
+	key.name = "Clé"
+	key.feminine = true
+	key.category = ItemData.Category.KEY
+	assert_eq(key.added_text(1), "ajoutée aux objets clés", "accordé au genre")
+
+
+func test_sell_price_rounds_down_and_unpriced_items_do_not_sell() -> void:
+	var odd := BALL.duplicate()
+	odd["price"] = 25
+	var free := BALL.duplicate()
+	assert_true(_library.add_from_dict({"odd": odd, "free": free}, "test"))
+	assert_eq(_library.get_item(&"odd").sell_price(), 12, "arrondi en dessous")
+	assert_eq(_library.get_item(&"free").price, 0, "prix absent : 0")
+	assert_false(_library.get_item(&"free").is_sellable(), "sans prix : jamais repris")
+	assert_eq(_library.get_item(&"free").sell_price(), 0)
+
+
+func test_invalid_prices_are_rejected() -> void:
+	var negative := BALL.duplicate()
+	negative["price"] = -1
+	var decimal := BALL.duplicate()
+	decimal["price"] = 2.5
+	var text := BALL.duplicate()
+	text["price"] = "200"
+	var key := {"name": "Colis", "plural": "Colis", "feminine": false, "category": "key",
+		"description": "x", "price": 100}
+	var key_zero := key.duplicate()
+	key_zero["price"] = 0
+	assert_false(_library.add_from_dict({"a": negative, "b": decimal, "c": text, "d": key,
+		"e": key_zero}, "test"))
+	assert_eq(_library.get_ids(), [&"e"] as Array[StringName], "objet clé à 0 : accepté")
+	assert_push_error_count(4)
+	var errors := "\n".join(_library.get_errors())
+	assert_string_contains(errors, "« price » doit être un entier ≥ 0")
+	assert_string_contains(errors, "un objet clé n'a pas de prix")

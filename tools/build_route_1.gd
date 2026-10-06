@@ -8,8 +8,8 @@ extends SceneTree
 ## §15.4 (carte), §15.5 (raccord Bourg Palette). Level design provisoire (« géométrie
 ## d'abord ») : chemin qui serpente entre des lisières de forêt, 3 zones de hautes herbes dont
 ## une bande obligatoire, rebord franchissable vers le sud, Potion cachée, sortie sud vers
-## Bourg Palette (warps PUSH), sortie nord vers Jadielle (bord de carte bloqué ; en build de
-## développement, un warp PUSH « JADIELLE — À venir » sur le haut du chemin, dossier-07 §12).
+## Bourg Palette (warps PUSH), sortie nord vers Jadielle (warps PUSH sur le haut du chemin,
+## vers `viridian_city` ; jalon 7 T4 : remplace l'écran « JADIELLE — À venir » du jalon 5).
 ## Le Voyageur et les Pokémon d'ambiance sont dans data/npcs/route_1.json.
 
 const OUT_PATH: String = "res://game/world/maps/route_1.tscn"
@@ -17,7 +17,8 @@ const PROPS: String = "res://game/world/props/"
 const SEED: int = 2026
 const SIZE := Vector2i(48, 44)
 ## Chemin d'arrivée aligné sur Bourg Palette : x 23–24. Bords sud et nord du chemin bloqués
-## (la tête du joueur reste à l'écran ; nord = Jadielle, à venir).
+## (la tête du joueur reste à l'écran ; le passage vers Jadielle se fait en poussant vers le
+## haut depuis la rangée 1).
 const BLOCKED_CELLS: Array[Vector2i] = [
 	Vector2i(23, 43), Vector2i(24, 43), Vector2i(23, 0), Vector2i(24, 0),
 ]
@@ -27,24 +28,23 @@ const SPAWNS: Dictionary = {
 	"start": Vector2i(23, 40),
 	"from_pallet_w": Vector2i(23, 42),
 	"from_pallet_e": Vector2i(24, 42),
-	# Retour de l'écran « JADIELLE — À venir » : une case en retrait du bord nord.
-	"jadielle_soon_w": Vector2i(23, 2),
-	"jadielle_soon_e": Vector2i(24, 2),
+	# Arrivée depuis Jadielle (jalon 7 T4) : sur les cases de passage, tourné vers le sud.
+	"from_viridian_w": Vector2i(23, 1),
+	"from_viridian_e": Vector2i(24, 1),
 }
 
-## Warps PUSH vers Bourg Palette au bord sud : [nœud, case, carte, spawn, arrivée].
+## Warps PUSH : vers Bourg Palette au bord sud, vers Jadielle au bord nord (jalon 7 T4).
+## [nœud, case, carte, spawn, arrivée, direction de poussée].
 const PUSH: int = 1
 const WARPS: Array = [
-	["PalletSouthW", Vector2i(23, 42), &"pallet_town", &"from_route_1_w", Vector2i.DOWN],
-	["PalletSouthE", Vector2i(24, 42), &"pallet_town", &"from_route_1_e", Vector2i.DOWN],
-]
-
-## Destinations « à venir » (Warp.coming_soon, build de développement) : warps PUSH vers le
-## haut sur les deux cases du chemin au bord nord. [nœud, case, libellé, spawn de retour sur
-## cette carte, orientation au retour].
-const SOON_WARPS: Array = [
-	["JadielleSoonW", Vector2i(23, 1), "Jadielle", &"jadielle_soon_w", Vector2i.DOWN],
-	["JadielleSoonE", Vector2i(24, 1), "Jadielle", &"jadielle_soon_e", Vector2i.DOWN],
+	["PalletSouthW", Vector2i(23, 42), &"pallet_town", &"from_route_1_w", Vector2i.DOWN,
+		Vector2i.DOWN],
+	["PalletSouthE", Vector2i(24, 42), &"pallet_town", &"from_route_1_e", Vector2i.DOWN,
+		Vector2i.DOWN],
+	["ViridianNorthW", Vector2i(23, 1), &"viridian_city", &"from_route_1_w", Vector2i.UP,
+		Vector2i.UP],
+	["ViridianNorthE", Vector2i(24, 1), &"viridian_city", &"from_route_1_e", Vector2i.UP,
+		Vector2i.UP],
 ]
 
 ## Sol, peint dans l'ordre (le suivant écrase le précédent). [type, [x0, y0, x1, y1]].
@@ -177,19 +177,8 @@ func _add_warps(root: Node) -> void:
 		point.name = entry[0]
 		point.position = _world(entry[1])
 		point.set(&"trigger", PUSH)
-		point.set(&"direction", Vector2i.DOWN)
+		point.set(&"direction", entry[5])
 		point.set(&"target_map", entry[2])
-		point.set(&"target_spawn", entry[3])
-		point.set(&"arrival_facing", entry[4])
-		_attach(root, root.get_node(^"Warps"), point)
-	for entry: Array in SOON_WARPS:
-		var point := Marker2D.new()
-		point.set_script(warp_script)
-		point.name = entry[0]
-		point.position = _world(entry[1])
-		point.set(&"trigger", PUSH)
-		point.set(&"direction", Vector2i.UP)
-		point.set(&"coming_soon", entry[2])
 		point.set(&"target_spawn", entry[3])
 		point.set(&"arrival_facing", entry[4])
 		_attach(root, root.get_node(^"Warps"), point)

@@ -28,6 +28,8 @@ var empty_text: String = ""
 var target_index: int = -1
 ## Depuis la fiche Équipe : son nom (« Salamèche »), vide sinon.
 var target_name: String = ""
+## Argent du joueur, « 3 000 ₽ » (J7, dossier 09 §10) ; vide = non affiché.
+var money_text: String = ""
 
 
 func is_empty() -> bool:

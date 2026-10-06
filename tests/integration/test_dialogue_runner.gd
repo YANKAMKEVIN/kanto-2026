@@ -28,6 +28,10 @@ const RIVAL := {
 	},
 }
 const TIMEOUT := 3.0
+## Textes de l'infirmière (dossier 09 §19).
+const QUESTION := "Bonjour. Je m'occupe de ton équipe ?"
+const HEALED := "Voilà. Tout le monde est en pleine forme."
+const LATER := "Très bien. Reviens quand tu veux."
 
 var _box: DialogueBox
 var _runner: DialogueRunner
@@ -35,9 +39,14 @@ var _flags: StoryFlags
 var _player: Player
 var _map: GameMap
 var _library: DialogueLibrary
+## Gestionnaire d'actions des tests (T6) : déroulé et état au début de chaque action.
+var _actions: Array[String] = []
+var _action_seen: Array[Array] = []
 
 
 func before_each() -> void:
+	_actions = []
+	_action_seen = []
 	_library = DialogueLibrary.new()
 	_library.load_dir(DIALOGUES)
 	_library.add_from_dict(RIVAL, "test")
@@ -393,3 +402,283 @@ func test_turn_without_map_warns_and_continues() -> void:
 	_advance()
 	await _finish()
 	assert_true(_player.is_input_enabled())
+
+
+# --- Fins de variante : choix, action, scène (jalon 7 §3.3, T6) ---------------------------
+
+## Infirmière du Centre (textes du dossier 09 §19), plus des variantes de test.
+func _add_service_dialogues() -> void:
+	assert_true(_library.add_from_dict({
+		"nurse": {"speaker": "Infirmière", "pages": [QUESTION], "choice": {
+			"confirm": "SOIGNER", "cancel": "PAS MAINTENANT", "confirm_action": "center_heal",
+			"confirm_pages": [HEALED], "cancel_pages": [LATER]}},
+		"mom_choice": {"speaker": "Maman", "pages": ["Je les soigne ?"], "choice": {
+			"confirm": "OUI", "cancel": "NON", "confirm_action": "heal"}},
+		"plain_choice": {"pages": ["Sûr ?"], "choice": {"confirm": "OUI", "cancel": "NON"}},
+		"clerk": {"speaker": "Vendeur", "pages": ["Qu'est-ce qu'il te faut ?"],
+			"action": "open_shop", "set": ["clerk_met"]},
+		"terminal": {"narration": true, "action": "open_storage"},
+		"oak_parcel_talk": {"speaker": "Prof. Chen", "pages": ["Tiens…"],
+			"cutscene": "oak_parcel"},
+	}, "test"))
+
+
+## Gestionnaire d'actions des tests : note le début et la fin, l'état de la boîte et du
+## joueur au début, et dure quelques images (comme le rituel du Centre).
+func _slow_action(action: StringName) -> void:
+	_actions.append("start:%s" % action)
+	_action_seen.append([_box.is_open(), _player.is_blocked_by(DialogueRunner.REASON)])
+	for i: int in 5:
+		await get_tree().process_frame
+	_actions.append("end:%s" % action)
+
+
+func test_choice_is_requested_after_the_question_page_and_blocks_the_dialogue() -> void:
+	_add_service_dialogues()
+	var views: Array[ChoiceView] = []
+	_runner.choice_requested.connect(func(view: ChoiceView) -> void: views.append(view))
+	assert_true(_runner.play(&"nurse"))
+	await wait_process_frames(1)
+	assert_eq(views.size(), 0, "pas de choix avant la fin de la question")
+	_advance()
+	assert_eq(views.size(), 1, "un choix demandé après la dernière page")
+	assert_eq(views[0].title, QUESTION, "la question dans le titre (voile plein cadre)")
+	assert_eq(views[0].confirm_label, "SOIGNER")
+	assert_eq(views[0].cancel_label, "PAS MAINTENANT")
+	assert_true(_runner.is_awaiting_choice())
+	assert_true(_box.is_open(), "la boîte garde la question")
+	assert_eq(_box.get_text(), QUESTION)
+	_advance()
+	Input.action_press(&"interact")
+	await wait_process_frames(2)
+	Input.action_release(&"interact")
+	assert_true(_runner.is_awaiting_choice(), "toucher ou `interact` n'avancent plus")
+	assert_eq(views.size(), 1, "un seul choix demandé")
+	assert_true(_runner.is_running())
+	assert_true(_player.is_blocked_by(DialogueRunner.REASON))
+
+
+func test_confirm_awaits_the_action_then_plays_the_confirm_pages() -> void:
+	_add_service_dialogues()
+	_runner.action_handler = _slow_action
+	_runner.play(&"nurse")
+	await wait_process_frames(1)
+	_advance()
+	_runner.choose(true)
+	assert_eq(_actions, ["start:center_heal"] as Array[String], "action lancée tout de suite")
+	assert_eq(_action_seen[0], [true, true], "boîte ouverte, joueur bloqué pendant l'action")
+	assert_false(_runner.is_awaiting_choice())
+	_advance()
+	assert_eq(_box.get_text(), QUESTION, "rien n'avance pendant l'action")
+	await wait_process_frames(8)
+	assert_eq(_actions, ["start:center_heal", "end:center_heal"] as Array[String])
+	assert_eq(_box.get_text(), HEALED, "pages de confirmation après l'action")
+	assert_eq(_box.get_speaker_text(), "Infirmière")
+	assert_true(_runner.is_running())
+	_advance()
+	await _finish()
+	assert_true(_player.is_input_enabled(), "joueur rendu à la fin")
+	assert_false(_box.is_open())
+
+
+func test_cancel_plays_the_cancel_pages_without_any_action() -> void:
+	_add_service_dialogues()
+	_runner.action_handler = _slow_action
+	var healed: Array[bool] = []
+	_runner.heal_requested.connect(func() -> void: healed.append(true))
+	_runner.play(&"nurse")
+	await wait_process_frames(1)
+	_advance()
+	await _runner.choose(false)
+	assert_eq(_box.get_text(), LATER)
+	_advance()
+	await _finish()
+	assert_eq(_actions.size(), 0, "aucune action")
+	assert_eq(healed.size(), 0, "aucun soin")
+	assert_true(_player.is_input_enabled())
+
+
+func test_choose_without_a_pending_choice_does_nothing() -> void:
+	_add_service_dialogues()
+	_runner.action_handler = _slow_action
+	_runner.choose(true)
+	assert_false(_runner.is_running())
+	_runner.play(&"nurse")
+	await wait_process_frames(1)
+	_runner.choose(true)
+	assert_eq(_box.get_text(), QUESTION, "question pas finie : choose ignoré")
+	assert_eq(_actions.size(), 0)
+	_advance()
+	await _runner.choose(false)
+	_runner.choose(true)
+	assert_eq(_actions.size(), 0, "une seule réponse par question")
+	assert_eq(_box.get_text(), LATER)
+
+
+func test_heal_as_a_choice_action_emits_heal_requested_once() -> void:
+	_add_service_dialogues()
+	var order: Array[String] = []
+	_runner.heal_requested.connect(func() -> void: order.append("heal"))
+	_runner.dialogue_finished.connect(func(_id: StringName) -> void: order.append("finished"))
+	_runner.play(&"mom_choice")
+	await wait_process_frames(1)
+	_advance()
+	await _runner.choose(true)
+	assert_eq(order, ["heal"] as Array[String], "soin demandé au moment du choix")
+	await _finish()
+	assert_eq(order, ["heal", "finished"] as Array[String])
+
+
+func test_empty_answer_pages_end_the_dialogue() -> void:
+	_add_service_dialogues()
+	_runner.play(&"plain_choice")
+	await wait_process_frames(1)
+	_advance()
+	_runner.choose(true)
+	await _finish()
+	assert_false(_runner.is_running())
+	assert_true(_player.is_input_enabled())
+
+
+func test_final_action_is_awaited_with_the_box_closed_before_the_player_is_released() -> void:
+	_add_service_dialogues()
+	_runner.action_handler = _slow_action
+	var finished_after: Array[String] = []
+	_runner.dialogue_finished.connect(func(_id: StringName) -> void:
+		finished_after.assign(_actions))
+	_runner.play(&"clerk")
+	await wait_process_frames(1)
+	_advance()
+	await _finish()
+	assert_eq(finished_after, ["start:open_shop", "end:open_shop"] as Array[String],
+		"action attendue avant dialogue_finished")
+	assert_eq(_action_seen[0], [false, true], "boîte fermée, joueur encore bloqué")
+	assert_true(_flags.has_flag(&"clerk_met"), "drapeaux levés")
+	assert_true(_player.is_input_enabled())
+
+
+func test_action_without_handler_is_reported_and_the_dialogue_ends() -> void:
+	_add_service_dialogues()
+	_runner.play(&"clerk")
+	await wait_process_frames(1)
+	_advance()
+	await _finish()
+	assert_push_error("sans gestionnaire")
+	assert_true(_player.is_input_enabled())
+
+
+func test_variant_without_pages_runs_its_action_without_opening_the_box() -> void:
+	_add_service_dialogues()
+	_runner.action_handler = _slow_action
+	assert_true(_runner.play(&"terminal"))
+	assert_true(_runner.is_running(), "play rend la main avant la fin")
+	assert_true(_player.is_blocked_by(DialogueRunner.REASON))
+	await _finish()
+	assert_eq(_actions, ["start:open_storage", "end:open_storage"] as Array[String])
+	assert_eq(_action_seen[0], [false, true], "aucune boîte")
+	assert_true(_player.is_input_enabled())
+
+
+func test_cutscene_is_requested_right_after_the_dialogue_ends() -> void:
+	_add_service_dialogues()
+	var order: Array[String] = []
+	_runner.dialogue_finished.connect(func(_id: StringName) -> void: order.append("finished"))
+	_runner.cutscene_requested.connect(func(id: StringName) -> void:
+		order.append("cutscene:%s" % id))
+	_runner.play(&"oak_parcel_talk")
+	await wait_process_frames(1)
+	_advance()
+	await _finish()
+	await wait_process_frames(1)
+	assert_eq(order, ["finished", "cutscene:oak_parcel"] as Array[String])
+	assert_false(_runner.is_running(), "la scène pose son propre verrou")
+
+
+# --- Jetons de texte (jalon 7 §3.6, T18) ---------------------------------------------------
+
+const CHEN_LINE := "Un {first_wild_species}… Tu n'as pas perdu de temps."
+
+
+func _add_token_dialogues() -> void:
+	assert_true(_library.add_from_dict({
+		"oak_records": {"speaker": "Prof. Chen", "pages": [
+			"Tiens…", {"text": CHEN_LINE, "pause": 0.3}, "Ton voyage peut nous apprendre beaucoup.",
+		]},
+		"only_token": {"pages": [CHEN_LINE], "set": ["heard"]},
+		"token_answer": {"pages": ["Sûr ?"], "choice": {"confirm": "OUI", "cancel": "NON",
+			"confirm_pages": [CHEN_LINE, "Bien."]}},
+	}, "test"), str(_library.get_errors()))
+
+
+func _species_values(species: String) -> Callable:
+	return func() -> Dictionary[StringName, String]:
+		var values: Dictionary[StringName, String] = {}
+		if not species.is_empty():
+			values[DialogueTokens.FIRST_WILD_SPECIES] = species
+		return values
+
+
+## Tous les textes montrés par la boîte, page après page, jusqu'à la fin du dialogue.
+func _play_all(id: StringName) -> Array[String]:
+	var shown: Array[String] = []
+	_runner.page_started.connect(func(_i: int) -> void: shown.append(_box.get_text()))
+	assert_true(_runner.play(id))
+	var deadline := Time.get_ticks_msec() + int(TIMEOUT * 1000)
+	while _runner.is_running() and Time.get_ticks_msec() < deadline:
+		await wait_process_frames(1)
+		_advance()
+	assert_false(_runner.is_running())
+	return shown
+
+
+func test_token_resolved_with_its_value() -> void:
+	_add_token_dialogues()
+	_runner.token_values = _species_values("Roucool")
+	var shown := await _play_all(&"oak_records")
+	assert_eq(shown, ["Tiens…", "Un Roucool… Tu n'as pas perdu de temps.",
+		"Ton voyage peut nous apprendre beaucoup."] as Array[String])
+
+
+func test_page_omitted_when_its_token_has_no_value() -> void:
+	_add_token_dialogues()
+	_runner.token_values = _species_values("")
+	var shown := await _play_all(&"oak_records")
+	assert_eq(shown, ["Tiens…", "Ton voyage peut nous apprendre beaucoup."] as Array[String])
+	assert_eq(_runner.get_session(), null)
+
+
+func test_page_omitted_without_any_token_source() -> void:
+	_add_token_dialogues()
+	var shown := await _play_all(&"oak_records")
+	assert_eq(shown.size(), 2, "sans token_values : aucune valeur, la page est omise")
+	assert_push_error_count(0)
+
+
+func test_every_page_omitted_ends_without_opening_the_box() -> void:
+	_add_token_dialogues()
+	var opened: Array[bool] = []
+	_runner.page_started.connect(func(_i: int) -> void: opened.append(true))
+	assert_true(_runner.play(&"only_token"))
+	await _finish()
+	assert_eq(opened.size(), 0, "aucune page")
+	assert_false(_box.is_open())
+	assert_true(_flags.has_flag(&"heard"), "la fin de la variante a lieu")
+	assert_true(_player.is_input_enabled())
+
+
+func test_answer_pages_are_resolved_too() -> void:
+	_add_token_dialogues()
+	_runner.token_values = _species_values("Rattata")
+	_runner.play(&"token_answer")
+	await wait_process_frames(1)
+	_advance()
+	await _runner.choose(true)
+	assert_eq(_box.get_text(), "Un Rattata… Tu n'as pas perdu de temps.")
+	_runner.token_values = _species_values("")
+	_advance()
+	await _finish()
+	_runner.play(&"token_answer")
+	await wait_process_frames(1)
+	_advance()
+	await _runner.choose(true)
+	assert_eq(_box.get_text(), "Bien.", "réplique omise dans les pages de la réponse")

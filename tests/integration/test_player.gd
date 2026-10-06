@@ -149,14 +149,55 @@ func test_animation_follows_state() -> void:
 	assert_eq(sprite.animation, &"idle_right")
 
 
-func test_sprite_is_pixel_art_nearest_scaled_twice() -> void:
+## Jalon 7 (Q-1) : le héros peint, à 1:1 en LINEAR (CharacterLook), marche et course.
+func test_sprite_is_the_painted_hero_at_scale_one() -> void:
 	var sprite := _player.get_node(^"%Sprite") as AnimatedSprite2D
-	assert_eq(sprite.texture_filter, CanvasItem.TEXTURE_FILTER_NEAREST)
-	assert_eq(sprite.scale, Vector2(2, 2))
+	assert_true(_player.get_look().painted)
+	assert_eq(sprite.sprite_frames.resource_path, CharacterLook.painted_frames_path(&"player"))
+	assert_eq(sprite.texture_filter, CanvasItem.TEXTURE_FILTER_LINEAR)
+	assert_eq(sprite.scale, Vector2.ONE)
 	var frame := sprite.sprite_frames.get_frame_texture(&"idle_down", 0)
-	assert_eq(frame.get_size(), Vector2(32, 64))
+	assert_eq(frame.get_size(), Vector2(74, 130), "planche du héros, 128 px de haut")
 	# Pieds sur l'origine : bas du cadre (offset + moitié de la hauteur) à y = 0.
 	assert_eq(sprite.offset.y + frame.get_size().y / 2.0, 0.0)
+	assert_eq(_player.get_body_rect().size, Vector2(74, 130))
+	for dir: String in ["down", "up", "left", "right"]:
+		var walk := sprite.sprite_frames.get_frame_texture(StringName("walk_" + dir), 0)
+		var run := sprite.sprite_frames.get_frame_texture(StringName("run_" + dir), 0)
+		assert_eq(walk.get_size(), Vector2(74, 130), "marche " + dir)
+		assert_eq(run.get_size(), Vector2(101, 130), "planche de course " + dir)
+
+
+## Course de profil (retour S24) : contact A ≠ contact B (la jambe en avant change), passage ≠
+## contact, et la rangée gauche est le miroir exact de la droite.
+func test_painted_run_profile_alternates_and_mirrors() -> void:
+	var frames := load(CharacterLook.painted_frames_path(&"player")) as SpriteFrames
+	var right: Array[Image] = []
+	for i: int in 4:
+		right.append(frames.get_frame_texture(&"run_right", i).get_image())
+	assert_false(_same(right[0], right[2]), "contact A et contact B distincts")
+	assert_false(_same(right[0], right[1]), "contact et passage distincts")
+	assert_false(_same(right[1], right[3]), "les deux passages distincts")
+	for i: int in 4:
+		var left := frames.get_frame_texture(&"run_left", i).get_image()
+		left.flip_x()
+		assert_true(_same(left, right[i]), "run_left = miroir de run_right, image %d" % i)
+
+
+## Mêmes pixels visibles (la couleur des pixels presque transparents est réécrite à l'import,
+## alpha ≤ 0,1 : elle ne compte pas).
+func _same(a: Image, b: Image) -> bool:
+	if a.get_size() != b.get_size():
+		return false
+	for y: int in a.get_height():
+		for x: int in a.get_width():
+			var ca := a.get_pixel(x, y)
+			var cb := b.get_pixel(x, y)
+			if absf(ca.a - cb.a) > 0.01:
+				return false
+			if ca.a > 0.1 and not ca.is_equal_approx(cb):
+				return false
+	return true
 
 
 func test_camera_zoom_one_and_limits_from_bounds() -> void:

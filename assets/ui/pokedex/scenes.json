@@ -1,0 +1,28 @@
+{
+	"_comment": "Décor du grand portrait du Pokédex (refonte T4, essai en attendant la phase DA) : image floutée (scenes/<nom>.webp, construites par tools/build_pokedex_scenes.gd depuis les cartes peintes et la toile de fond du Plateau Indigo) choisie d'après le PREMIER habitat observé de l'espèce ; « default » sans habitat ou pour une zone absente. Présentation seulement : aucune règle de jeu.",
+	"default": "plateau",
+	"zones": {
+		"pallet_town": "village",
+		"viridian_city": "village",
+		"pewter_city": "village",
+		"cerulean_city": "village",
+		"vermilion_city": "village",
+		"lavender_town": "village",
+		"saffron_city": "village",
+		"celadon_city": "village",
+		"fuchsia_city": "village",
+		"cinnabar_island": "village",
+		"route_1": "prairie",
+		"route_2": "prairie",
+		"route_3": "prairie",
+		"route_4": "prairie",
+		"route_7": "prairie",
+		"route_8": "prairie",
+		"route_22": "prairie",
+		"route_23": "prairie",
+		"viridian_forest": "prairie",
+		"route_21": "plateau",
+		"mt_moon": "plateau",
+		"indigo_plateau": "plateau"
+	}
+}

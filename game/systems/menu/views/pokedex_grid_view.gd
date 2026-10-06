@@ -5,13 +5,13 @@ extends RefCounted
 ## Pokédex ni les données. Contrat figé au T14 (§6.9) : on peut seulement ajouter des champs
 ## (architecte) ; **texte vide = élément absent**.
 
-## « POKÉDEX — KANTO ».
+## « Pokédex ».
 var title: String = ""
 ## « 3 vus · 2 capturés · 151 espèces » (jamais « 3 / 151 »).
 var counts_text: String = ""
 ## Filtre actif ([enum PokedexQuery.Filter], mêmes valeurs que `MenuRoute.DEX_FILTER_*`).
 var filter: int = 0
-## Libellés des filtres, dans l'ordre de l'enum : TOUS, VUS, CAPTURÉS, HABITATS.
+## Libellés des filtres, dans l'ordre de l'enum : Tous, Vus, Capturés, Habitats.
 var filter_labels: PackedStringArray = PackedStringArray()
 ## Filtre HABITATS : zone choisie (&"" hors de ce filtre, ou si aucune zone n'est connue).
 var zone: StringName = &""
@@ -34,6 +34,9 @@ var slots: Array[PokedexSlotView] = []
 var selected: StringName = &""
 ## Phrase d'une grille vide (« Aucune espèce ne correspond. ») ; "" si la grille a des cases.
 var empty_text: String = ""
+## Pokédex sans aucune espèce vue (débogage seulement) : la phrase du centre et de la droite
+## (« Aucune espèce enregistrée. ») ; "" sinon.
+var no_species_text: String = ""
 
 
 func is_empty() -> bool:

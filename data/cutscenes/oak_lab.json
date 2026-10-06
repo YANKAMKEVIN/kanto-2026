@@ -1,0 +1,39 @@
+{
+	"oak_parcel": {
+		"unless": ["pokedex_activated"],
+		"steps": [
+			{ "face": "oak", "to": "player" },
+			{ "face": "player", "to": "oak" },
+			{ "lean": "oak", "to": "player" },
+			{ "take": "oak_parcel" },
+			{ "wait": 0.6 },
+			{ "dialogue": "oak_parcel_records" },
+			{ "set": ["pokedex_activated"] },
+			{ "caption": "POKÉDEX ACTIVÉ" },
+			{ "dialogue": "oak_pokedex_activated" },
+			{ "wait": 0.8 },
+			{ "spawn": "rival", "sprite": "rival", "cell": [7, 9], "facing": "up" },
+			{ "move": "rival", "to": [7, 7] },
+			{ "face": "oak", "to": "rival" },
+			{ "face": "player", "to": "rival" },
+			{ "dialogue": "rival_parcel_return" },
+			{ "move": "rival",
+				"to": { "near": "oak", "offsets": [[-1, 1], [1, 1], [-1, 2], [1, 2], [0, 2]] } },
+			{ "face": "player", "to": "rival" },
+			{ "face": "rival", "to": "player" },
+			{ "dialogue": "rival_parcel_greet" },
+			{ "face": "rival", "to": "oak" },
+			{ "lean": "oak", "to": "rival" },
+			{ "wait": 0.6 },
+			{ "dialogue": "oak_parcel_rival_dex" },
+			{ "dialogue": "oak_parcel_rival" },
+			{ "wait": 0.6 },
+			{ "dialogue": "rival_parcel_leaving" },
+			{ "move": "rival", "to": [7, 9] },
+			{ "despawn": "rival" },
+			{ "wait": 0.4 },
+			{ "face": "oak", "to": "player" },
+			{ "face": "player", "to": "oak" }
+		]
+	}
+}

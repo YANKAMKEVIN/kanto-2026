@@ -179,7 +179,7 @@ func test_show_team_relays_signals_and_keeps_screen() -> void:
 	assert_eq(team.modulate.a, 1.0)
 
 
-func test_show_pokedex_relays_signals_and_back_closes_sheet_first() -> void:
+func test_show_pokedex_relays_signals_and_back_is_never_consumed() -> void:
 	var filters: Array = []
 	var opened: Array[StringName] = []
 	var backs: Array = [0]
@@ -188,8 +188,8 @@ func test_show_pokedex_relays_signals_and_back_closes_sheet_first() -> void:
 	_menu.pokedex_species_opened.connect(func(s: StringName) -> void: opened.append(s))
 	_menu.back_requested.connect(func() -> void: backs[0] += 1)
 	var view := PokedexGridView.new()
-	view.title = "POKÉDEX — KANTO"
-	view.filter_labels = PackedStringArray(["TOUS", "VUS", "CAPTURÉS", "HABITATS"])
+	view.title = "Pokédex"
+	view.filter_labels = PackedStringArray(["Tous", "Vus", "Capturés", "Habitats"])
 	view.slots.append(PokedexSlotView.new(4, &"charmander", "Salamèche",
 		PokedexQuery.State.CAUGHT))
 	_menu.show_pokedex(view)
@@ -201,14 +201,14 @@ func test_show_pokedex_relays_signals_and_back_closes_sheet_first() -> void:
 	dex.species_opened.emit(&"charmander")
 	assert_eq(filters, [[1, &"", &"", ""]])
 	assert_eq(opened, [&"charmander"])
-	assert_false(_menu.pokedex_back(), "pas de fiche : rien à fermer")
+	assert_false(_menu.pokedex_back(), "rien à refermer")
 	var sheet := PokedexSheetView.new()
 	sheet.species_id = &"charmander"
 	sheet.name = "Salamèche"
 	_menu.show_pokedex_sheet(sheet)
 	assert_true(dex.is_sheet_open())
-	assert_true(_menu.pokedex_back())
-	assert_false(dex.is_sheet_open())
+	assert_false(_menu.pokedex_back(), "la fiche est permanente : le retour suit son cours")
+	assert_true(dex.is_sheet_open())
 	assert_eq(backs[0], 0)
 	_menu.show_pokedex(view)
 	assert_eq(_menu.get_pokedex(), dex, "gardé, pas ré-instancié")

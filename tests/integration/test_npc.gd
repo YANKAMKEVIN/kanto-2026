@@ -135,6 +135,32 @@ func test_keep_facing_keeps_orientation_after_interaction() -> void:
 	assert_eq(npc.get_facing(), Vector2i.RIGHT)
 
 
+## Attente animée (jalon 7, Jadielle agrandie) : il se tourne tour à tour vers chaque
+## orientation, en commençant par celle qui suit son repos ; rien pendant un dialogue.
+func test_look_around_turns_through_its_facings_but_not_while_talking() -> void:
+	var facings: Array[Vector2i] = [Vector2i.UP, Vector2i.LEFT, Vector2i.RIGHT]
+	var npc := _make(_spec({"facing": Vector2i.UP, "look_facings": facings,
+		"look_every": NpcSpec.LOOK_EVERY_MIN}))
+	assert_true(npc.is_looking_around())
+	assert_eq(npc.get_facing(), Vector2i.UP)
+	await wait_seconds(NpcSpec.LOOK_EVERY_MIN + 0.1)
+	assert_eq(npc.get_facing(), Vector2i.LEFT, "première orientation après le repos")
+	await wait_seconds(NpcSpec.LOOK_EVERY_MIN)
+	assert_eq(npc.get_facing(), Vector2i.RIGHT)
+	npc.begin_interaction(CELL + Vector2i.DOWN)
+	await wait_seconds(NpcSpec.LOOK_EVERY_MIN * 2.0 + 0.1)
+	assert_eq(npc.get_facing(), Vector2i.DOWN, "tourné vers le joueur tout le dialogue")
+	npc.end_interaction()
+	assert_eq(npc.get_facing(), Vector2i.UP, "reprend son repos")
+	await wait_seconds(NpcSpec.LOOK_EVERY_MIN + 0.1)
+	assert_ne(npc.get_facing(), Vector2i.DOWN, "l'attente reprend")
+
+
+func test_without_look_no_look_loop() -> void:
+	var npc := _make(_spec())
+	assert_false(npc.is_looking_around())
+
+
 func test_get_interaction_is_same_instance_with_source_and_verb() -> void:
 	var npc := _make(_spec())
 	var first := npc.get_interaction()
@@ -162,12 +188,14 @@ func test_react_without_react_animation_hops_and_comes_back() -> void:
 	var sprite := _sprite(npc)
 	assert_false(sprite.sprite_frames.has_animation(Npc.REACT_ANIM))
 	npc.react()
-	# Point le plus haut du bond, relevé à chaque image jusqu'au retour.
+	# Point le plus haut du bond, relevé à chaque pas jusqu'au retour ; temps simulé
+	# ([method _step_tween]) : indépendant de la charge de la machine.
 	var highest := sprite.position.y
-	var started := Time.get_ticks_msec()
-	while Time.get_ticks_msec() - started < int(Npc.HOP_DURATION * 1000.0) + 200:
-		await get_tree().process_frame
+	var steps := 0
+	while _step_tween(npc._hop):
+		steps += 1
 		highest = minf(highest, sprite.position.y)
+	_assert_lasts(steps, Npc.HOP_DURATION, "bond de HOP_DURATION")
 	assert_lt(highest, -20.0 - Npc.HOP_HEIGHT / 2.0, "le sprite a bondi (%.1f)" % highest)
 	assert_gte(highest, -20.0 - Npc.HOP_HEIGHT, "bond de %d px au plus" % Npc.HOP_HEIGHT)
 	assert_eq(sprite.position.y, -20.0, "retour à sa hauteur")
@@ -222,6 +250,24 @@ func _make_on_grid(spec: NpcSpec, grid: GridWorld) -> Npc:
 	var npc := _make(spec)
 	assert_true(npc.enter_grid(grid), "enter_grid")
 	return npc
+
+
+## Fait avancer [param tween] d'un pas de [constant FRAME] à la main (temps simulé : la
+## charge de la machine ne change ni la durée mesurée ni les états vus). Faux quand il n'y
+## a plus rien à jouer (tween fini ou absent) ; il est mis en pause au premier appel pour
+## que le moteur ne le fasse plus avancer en parallèle.
+func _step_tween(tween: Tween) -> bool:
+	if tween == null or not tween.is_valid():
+		return false
+	tween.pause()
+	return tween.custom_step(FRAME)
+
+
+## [param steps] pas de [constant FRAME] couvrent [param seconds] au pas près : pas fini
+## avant, au plus un pas de plus (le dernier pas déborde de la fin).
+func _assert_lasts(steps: int, seconds: float, label: String) -> void:
+	assert_between(steps * FRAME, seconds - 0.0001, seconds + FRAME + 0.0001,
+		"%s (%d pas)" % [label, steps])
 
 
 ## Simule [param frames] images du PNJ (le moteur ne le fait pas tourner en parallèle).
@@ -475,11 +521,9 @@ func _check_hop(style: StringName) -> void:
 	npc.set_interaction_override(meet)
 	var target := CELL + Vector2i.DOWN
 	watch_signals(npc)
-	# Temps de jeu (somme des delta, comme le Tween) et image la plus longue ; point le
-	# plus haut du sprite ; rotation, décalage horizontal, compression et plan de dessin vus.
-	# Relevés image par image dans le test lui-même.
-	var elapsed := 0.0
-	var longest := 0.0
+	# Temps simulé (pas de 1/60 s, indépendant de la charge de la machine) ; point le plus
+	# haut du sprite ; rotation, décalage horizontal, compression et plan de dessin vus.
+	# Relevés pas par pas dans le test lui-même.
 	var peak := 0.0
 	var rotated := false
 	var swayed := false
@@ -494,12 +538,9 @@ func _check_hop(style: StringName) -> void:
 	assert_eq(npc.get_facing(), Vector2i.DOWN, "tourné vers l'arrivée")
 	assert_false(npc.step(Vector2i.RIGHT), "pas de pas pendant un saut")
 	assert_false(npc.hop_to(target + Vector2i.DOWN, grid), "pas de second saut")
-	var deadline := Time.get_ticks_msec() + 3000
-	while npc.is_hopping() and Time.get_ticks_msec() < deadline:
-		await get_tree().process_frame
-		var delta := get_process_delta_time()
-		elapsed += delta
-		longest = maxf(longest, delta)
+	var steps := 0
+	while npc.is_hopping() and _step_tween(npc._hop_tween):
+		steps += 1
 		peak = minf(peak, sprite.position.y)
 		rotated = rotated or not is_zero_approx(sprite.rotation)
 		swayed = swayed or not is_zero_approx(sprite.position.x)
@@ -527,8 +568,7 @@ func _check_hop(style: StringName) -> void:
 	assert_true(raised, "« %s » : dessiné au-dessus des personnages en vol" % style)
 	assert_eq(npc.z_index, 0, "« %s » : de nouveau trié au sol" % style)
 	var expected := Npc.hop_total_duration(style)
-	assert_almost_eq(elapsed, expected, longest * 2.0 + 0.02,
-		"« %s » : %.2f s" % [style, expected])
+	_assert_lasts(steps, expected, "« %s » : %.2f s" % [style, expected])
 	# Il marche normalement ensuite.
 	assert_true(npc.step(Vector2i.DOWN))
 
@@ -643,3 +683,126 @@ func test_flee_leaves_the_grid_at_the_end_of_its_last_step_without_error() -> vo
 	assert_eq(npc.position, Grid.cell_to_world(last))
 	await wait_seconds(Npc.FLEE_FADE_DURATION + 0.1)
 	assert_signal_emitted(npc, "left_scene")
+
+
+# --- Jalon 7 (T4) : entrer dans un bâtiment, animation d'ambiance ---------------------------
+
+## Le livreur : arrivé sur la case d'entrée de sa boucle, il s'efface, libère sa case, reste
+## absent le temps prévu puis ressort sur la même case et reprend sa boucle.
+func test_route_enter_cell_hides_frees_then_returns() -> void:
+	var grid := GridWorld.new(Vector2i(10, 10))
+	var door := CELL + Vector2i.UP
+	var route: Array[Vector2i] = [CELL, door]
+	var npc := _make_on_grid(_spec({"route_cells": route, "route_pause": 0.05,
+		"route_enter_cell": door, "route_enter_seconds": 0.3}), grid)
+	watch_signals(npc)
+	await wait_until(func() -> bool: return npc.is_inside_building(), 3.0)
+	assert_signal_emitted(npc, "entered_building")
+	assert_false(grid.is_occupied(door), "porte libérée pendant l'absence")
+	assert_false(grid.is_occupied(CELL))
+	await wait_seconds(Npc.ENTER_FADE_DURATION + 0.05)
+	assert_almost_eq(npc.modulate.a, 0.0, 0.01, "invisible à l'intérieur")
+	await wait_until(func() -> bool: return not npc.is_inside_building(), 3.0)
+	assert_signal_emitted(npc, "left_building")
+	assert_eq(npc.get_cell(), door, "ressort par la porte")
+	assert_same(grid.get_occupant(door), npc)
+	await wait_seconds(Npc.ENTER_FADE_DURATION + 0.05)
+	assert_almost_eq(npc.modulate.a, 1.0, 0.01, "visible de nouveau")
+	await wait_until(func() -> bool: return npc.get_cell() == CELL, 3.0)
+	assert_eq(npc.get_cell(), CELL, "la boucle reprend")
+
+
+## Le joueur se tient sur la porte : le PNJ attend qu'elle se libère pour ressortir.
+func test_route_enter_waits_until_the_door_is_free() -> void:
+	var grid := GridWorld.new(Vector2i(10, 10))
+	var door := CELL + Vector2i.UP
+	var route: Array[Vector2i] = [CELL, door]
+	var npc := _make_on_grid(_spec({"route_cells": route, "route_pause": 0.05,
+		"route_enter_cell": door, "route_enter_seconds": 0.2}), grid)
+	await wait_until(func() -> bool: return npc.is_inside_building(), 3.0)
+	var player := RefCounted.new()
+	assert_true(grid.occupy(door, player), "le joueur prend la porte")
+	await wait_seconds(0.2 + 2.0 * Npc.ENTER_FADE_DURATION + Npc.ENTER_RETRY_DELAY)
+	assert_true(npc.is_inside_building(), "toujours dedans")
+	grid.release(door, player)
+	await wait_until(func() -> bool: return not npc.is_inside_building(),
+		Npc.ENTER_RETRY_DELAY * 3.0)
+	assert_same(grid.get_occupant(door), npc)
+
+
+func test_leave_grid_inside_a_building_cancels_the_return() -> void:
+	var grid := GridWorld.new(Vector2i(10, 10))
+	var door := CELL + Vector2i.UP
+	var route: Array[Vector2i] = [CELL, door]
+	var npc := _make_on_grid(_spec({"route_cells": route, "route_pause": 0.05,
+		"route_enter_cell": door, "route_enter_seconds": 0.2}), grid)
+	await wait_until(func() -> bool: return npc.is_inside_building(), 3.0)
+	npc.leave_grid()
+	assert_false(npc.is_inside_building())
+	assert_eq(npc.modulate.a, 1.0)
+	await wait_seconds(0.5)
+	assert_false(grid.is_occupied(door), "il ne ressort plus")
+
+
+## Le Roucool de la Dresseuse : petit bond toutes les N secondes, sans bouger de sa case.
+func test_idle_react_plays_periodically() -> void:
+	var npc := _make(_spec({"idle_react_every": 0.15, "dialogue": &""}))
+	watch_signals(npc)
+	await wait_seconds(0.5)
+	assert_signal_emit_count(npc, "reacted", 3)
+	assert_eq(npc.get_cell(), CELL)
+
+
+func test_without_idle_react_nothing_plays() -> void:
+	var npc := _make(_spec())
+	watch_signals(npc)
+	await wait_seconds(0.4)
+	assert_signal_not_emitted(npc, "reacted")
+
+
+# --- Retours T5 (jalon-07.md §15.21) : marcher ou courir, jamais un mélange --------------
+
+## Planche peinte sans course (le vieil homme ; l'enfant a désormais sa planche de course) :
+## un pas demandé en course est marché, à la cadence de marche, avec l'animation de marche.
+func test_a_painted_look_without_run_walks_when_asked_to_run() -> void:
+	var grid := GridWorld.new(Vector2i(10, 10))
+	var npc := _make_on_grid(_spec({"sprite": &"old_man"}), grid)
+	var sprite := _sprite(npc)
+	assert_false(sprite.sprite_frames.has_animation(&"run_right"), "pas de fausse course")
+	assert_false(npc.can_run())
+	assert_true(npc.step(Vector2i.RIGHT, true))
+	assert_eq(sprite.animation, &"walk_right")
+	_simulate(npc, int(Grid.RUN_STEP_DURATION / FRAME) + 2)
+	assert_true(npc.is_moving(), "encore en marche après la durée d'un pas de course")
+	_simulate(npc, int((Grid.WALK_STEP_DURATION - Grid.RUN_STEP_DURATION) / FRAME) + 2)
+	assert_false(npc.is_moving())
+	assert_eq(npc.get_cell(), CELL + Vector2i.RIGHT)
+
+
+## Le héros, l'enfant et le Rattata peints courent (planches de course) ; les apparences provisoires (Chen : marche et
+## course ; générique : aucune animation de pas) gardent la course.
+func test_looks_with_a_run_or_without_any_step_animation_can_run() -> void:
+	var grid := GridWorld.new(Vector2i(10, 10))
+	assert_true(_make_on_grid(_spec({"sprite": &"player"}), grid).can_run())
+	assert_true(_make_on_grid(_spec({"id": &"kid", "sprite": &"kid",
+		"cell": Vector2i(3, 3)}), grid).can_run())
+	assert_true(_make_on_grid(_spec({"id": &"rat", "sprite": &"pokemon/rattata",
+		"cell": Vector2i(6, 2)}), grid).can_run())
+	assert_true(_make_on_grid(_spec({"id": &"oak", "sprite": &"oak",
+		"cell": Vector2i(1, 1)}), grid).can_run())
+	assert_true(_make_on_grid(_spec({"id": &"npc2", "cell": Vector2i(8, 8)}), grid).can_run())
+
+
+## Un pas = un demi-cycle (2 images sur 4) ; les pas alternent les deux pieds, même avec
+## un arrêt entre deux pas (routines) : jamais le même pied à chaque case.
+func test_steps_alternate_feet_even_after_a_stop() -> void:
+	var grid := GridWorld.new(Vector2i(10, 10))
+	var npc := _make_on_grid(_spec({"sprite": &"kid"}), grid)
+	var sprite := _sprite(npc)
+	var first_frames: Array[int] = []
+	for direction: Vector2i in [Vector2i.RIGHT, Vector2i.RIGHT, Vector2i.DOWN, Vector2i.LEFT]:
+		assert_true(npc.step(direction))
+		first_frames.append(sprite.frame)
+		_simulate(npc, int(Grid.WALK_STEP_DURATION / FRAME) + 3)
+		assert_false(npc.is_moving())
+	assert_eq(first_frames, [0, 2, 0, 2] as Array[int], "pied gauche, pied droit…")

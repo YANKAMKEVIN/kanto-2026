@@ -74,6 +74,10 @@ const ANIM_PANEL := 0.3
 ## Fondu au noir d'un changement de carte : descente du rideau, puis levée (≈ 0,45 s au total).
 const ANIM_FADE_OUT := 0.2
 const ANIM_FADE_IN := 0.25
+## Rituel de soin d'un Centre Pokémon (dossier 09 §7, « environ 3 secondes » ; jalon-07.md §13) :
+## ×GameSettings.REDUCED_MENU_SPEED avec « Réduire les animations ». Vibration légère à l'éclat.
+const CENTER_HEAL := 3.0
+const CENTER_HEAL_HAPTIC_MS := 20
 ## Glissement des panneaux à l'apparition.
 const PANEL_SLIDE := 40.0
 ## Échelle d'un bouton enfoncé.
@@ -81,6 +85,9 @@ const PRESSED_SCALE := 0.97
 
 # --- Calques (CanvasLayer.layer) --------------------------------------------------------------
 
+## Étalonnage d'écran du monde (jalon-07.md §6.1) : au-dessus du monde et des sprites de
+## combat (LAYER_BATTLE_STAGE), sous le HUD.
+const LAYER_WORLD_GRADE := 6
 const LAYER_HUD := 10
 const LAYER_MENU := 20
 const LAYER_DIALOG := 30
@@ -402,6 +409,8 @@ const BATTLE_MESSAGE_PAD_V := 26
 const BATTLE_MESSAGE_MAX_LINES := 2
 ## Tenue d'un message avant que le combat avance seul (ou au toucher).
 const BATTLE_MESSAGE_HOLD := 0.9
+## Une phrase qui attend un toucher (« X apprend Y ! ») ignore les touchers de cette durée.
+const BATTLE_MESSAGE_TOUCH_LOCK := 0.3
 
 # Bouton rond « ‹ » (retour à la grille d'actions), sous la carte joueur.
 const BATTLE_BACK_SIZE := TOUCH_MIN
@@ -564,6 +573,84 @@ const CAPTURE_LINE_DELAY := 0.28
 const CAPTURE_LINE_FADE := 0.2
 ## Un toucher n'est pris qu'après ce délai : celui qui a lancé la Ball ne ferme pas la carte.
 const CAPTURE_TOUCH_LOCK := 0.6
+
+# --- Bilan de fin de combat (demande n° 1, décisions de Kevin du 2026-10-06) ------------------
+# Une carte sans titre, centrée, le décor du combat visible autour : une ligne par Pokémon qui a
+# gagné de l'XP (vignette, nom, « Nv. 8 ▸ Nv. 9 », barre d'XP, « 112 / 173 », « +11 XP »), les
+# gains de statistiques sous la ligne de celui qui monte, la consigne discrète en dessous.
+
+## Largeur de la carte (référence 1920) et marges ; écart entre les lignes.
+const SUMMARY_CARD_WIDTH := 1800
+const SUMMARY_CARD_MAX_HEIGHT := 984
+## Fond quasi opaque : ni la tête du Pokémon ni le joueur ne transparaissent sous le texte
+## (le décor reste visible autour de la carte, sous le voile du combat).
+const SUMMARY_CARD_BG := Color(0.06, 0.09, 0.13, 0.97)
+## Texte secondaire (« Nv. 8 », « 58 / 105 », consigne, libellés des stats) : plus clair que
+## TEXT_MUTED, contraste ≥ 7 : 1 sur le fond de la carte (testé).
+const SUMMARY_SECONDARY := DIALOG_NARRATION
+const SUMMARY_CARD_PAD_H := 28
+const SUMMARY_CARD_PAD_V := 24
+const SUMMARY_ROW_GAP := 10
+## Écart entre la ligne nom/niveaux et la ligne barre/points.
+const SUMMARY_LINE_GAP := 6
+## Une ligne : fond translucide, liseré ; celle qui monte de niveau prend un liseré ACCENT.
+const SUMMARY_ROW_BG := Color(1, 1, 1, 0.05)
+const SUMMARY_ROW_BORDER := PANEL_BORDER
+const SUMMARY_ROW_PAD_H := 16
+const SUMMARY_ROW_PAD_V := 6
+const SUMMARY_ROW_HIGHLIGHT_BORDER := 3
+## Fond de la ligne mise en valeur : opaque, pour que le halo ACCENT reste autour (pas dessous).
+const SUMMARY_ROW_LIT_BG := PANEL_BG_STRONG
+## Vignette du Pokémon (sprite pixel art, NEAREST) et son cadre.
+const SUMMARY_THUMB := 112
+const SUMMARY_THUMB_PAD := 4
+## Colonnes : nom, niveaux, barre (le reste), « 112 / 173 », « +11 XP ».
+const SUMMARY_NAME_WIDTH := 300
+const SUMMARY_LEVEL_WIDTH := 340
+const SUMMARY_POINTS_WIDTH := 210
+const SUMMARY_GAIN_WIDTH := 230
+const SUMMARY_NAME_FONT := FONT_TITLE
+const SUMMARY_LEVEL_FONT := FONT_BUTTON
+const SUMMARY_LEVEL_UP_FONT := FONT_TITLE
+const SUMMARY_POINTS_FONT := FONT_BODY
+const SUMMARY_GAIN_FONT := FONT_TITLE
+const SUMMARY_LEVEL_ARROW := 28
+## Gains de statistiques : grille de SUMMARY_STATS_COLUMNS colonnes à droite de la ligne
+## (libellé clair, valeur ACCENT), dans un cadre discret.
+const SUMMARY_STATS_FONT := FONT_BODY
+const SUMMARY_STATS_COLUMNS := 2
+const SUMMARY_STATS_LABEL_WIDTH := 150
+const SUMMARY_STATS_VALUE_WIDTH := 56
+const SUMMARY_STATS_GAP_H := 28
+const SUMMARY_STATS_GAP_V := 0
+const SUMMARY_STATS_BG := Color(1, 1, 1, 0.06)
+const SUMMARY_STATS_PAD_H := 20
+const SUMMARY_STATS_PAD_V := 8
+## Barre d'XP du bilan : plus épaisse que celle de la carte de combat.
+const SUMMARY_BAR_HEIGHT := 14
+## Consigne « Touchez l'écran pour continuer » : capsule discrète sous la carte.
+const SUMMARY_HINT_FONT := FONT_BODY
+const SUMMARY_HINT_BG := PANEL_BG
+const SUMMARY_HINT_PAD_H := 32
+const SUMMARY_HINT_PAD_V := 10
+const SUMMARY_HINT_GAP := 18
+const SUMMARY_HINT_FADE := ANIM_PANEL
+## Rythme : les barres partent ensemble après SUMMARY_START_DELAY ; sans montée de niveau, une
+## barre se remplit en SUMMARY_FILL (≈ 1,2 s avec l'arrivée de la carte) ; avec montée, chaque
+## tranche prend SUMMARY_FILL_SLICE, puis le passage de niveau tient SUMMARY_LEVEL_HOLD (niveau
+## qui pulse, ligne mise en valeur, gains de statistiques).
+const SUMMARY_START_DELAY := 0.1
+const SUMMARY_FILL := 0.8
+const SUMMARY_FILL_SLICE := 0.6
+const SUMMARY_LEVEL_HOLD := 0.7
+## « Nv. 9 » grossit un instant (comme LEVEL_PULSE), la ligne rebondit légèrement.
+const SUMMARY_LEVEL_PULSE_SCALE := 1.35
+const SUMMARY_ROW_BOUNCE := 1.03
+const SUMMARY_STATS_FADE := 0.25
+## Un toucher pendant le remplissage accélère tout (×SUMMARY_FAST) ; un second termine.
+const SUMMARY_FAST := 4.0
+## Un toucher n'est pris qu'après ce délai (celui du dernier message ne compte pas).
+const SUMMARY_TOUCH_LOCK := 0.3
 
 # --- Menu Dresseur (jalon 6, T3 : tableau de bord) -------------------------------------------------
 
@@ -731,6 +818,17 @@ const HAPTIC_REFUSE_MS := 20
 const PICKER_HEAL_FLASH_ALPHA := 0.4
 const PICKER_HEAL_FLASH_COLOR := Color(0.298, 0.851, 0.392, PICKER_HEAL_FLASH_ALPHA)
 const PICKER_HEAL_FLASH_FADE := ANIM_PANEL
+# Panneau ÉQUIPE du combat (jalon 7, BattlePartyPanel) : même cadre que le Sac (BAG_PANEL_WIDTH,
+# BagPanel), deux colonnes de cartes de PICKER_ROW_HEIGHT (≥ TOUCH_MIN), pied avec ENVOYER.
+const BATTLE_PARTY_COLUMNS := 2
+## (BAG_PANEL_WIDTH − 2 × BAG_PANEL_PAD − PICKER_GAP) / 2, arrondi en dessous.
+const BATTLE_PARTY_CARD_WIDTH := 475
+const BATTLE_PARTY_CARD_HEIGHT := PICKER_ROW_HEIGHT
+## Pastille de type (cercle à la couleur du type, icône blanche) à gauche de la carte.
+const BATTLE_PARTY_TYPE_CHIP := 52
+const BATTLE_PARTY_TYPE_ICON := 32
+## Pied : nom du Pokémon choisi (ou raison d'un refus) et ENVOYER (BAG_ACTION_SIZE).
+const BATTLE_PARTY_FOOTER_HEIGHT := TOUCH_MIN
 const RESULT_HEIGHT := TOUCH_MIN
 const RESULT_FONT := FONT_BODY
 const RESULT_PAD_H := 28
@@ -761,7 +859,7 @@ static func menu_card_border(tint: Color) -> Color:
 
 # Écran Pokédex du Menu Dresseur (jalon 6, T15). Aucune statistique, aucun talent, aucune
 # silhouette : seulement ce que le joueur a découvert.
-## En-tête : RETOUR, titre + compteur, filtres (TOUS · VUS · CAPTURÉS · HABITATS).
+## En-tête : RETOUR, titre + compteur, filtres (Tous · Vus · Capturés · Habitats).
 const DEX_HEADER_HEIGHT := TOUCH_MIN
 const DEX_BACK_WIDTH := MENU_CARD_ICON * 2
 const DEX_TITLE_FONT := FONT_TITLE
@@ -781,19 +879,10 @@ const DEX_SEARCH_ICON := 40
 const DEX_SEARCH_PAD_H := 20
 const DEX_REFINE_WIDTH := 220
 ## Case de la grille : légère (un seul dessin), sprite de 64 px affiché à l'échelle entière.
-const DEX_CELL_SIZE := Vector2(180, 208)
 const DEX_CELL_GAP := 12
-const DEX_CELL_PAD := 10
 const DEX_CELL_SPRITE_SOURCE := 64
 const DEX_CELL_SPRITE_SCALE := 2
-const DEX_CELL_SPRITE_TOP := 6
-const DEX_CELL_NUMBER_FONT := 22
-const DEX_CELL_NAME_FONT := 26
-const DEX_CELL_STATUS_FONT := 22
-const DEX_CELL_BALL := 22
-const DEX_CELL_SELECTED_SCALE := 1.03
 ## Une case inconnue : numéro et « ??? » seulement, estompés.
-const DEX_UNKNOWN_ALPHA := 0.55
 ## Fiche : identité (vignette, numéro, nom, types), onglets, pages.
 const DEX_SHEET_MIN_WIDTH := 960
 const DEX_SPRITE_FRAME := 160
@@ -820,6 +909,171 @@ const DEX_MAP_FRAME_MARGIN := 40.0
 const DEX_MAP_PATCH_BORDER := 2
 const DEX_CHIP_HEIGHT := TOUCH_MIN
 const DEX_CHIP_ICON := 40
+## Images (refonte du Pokédex, T1) : artworks officiels, vignettes de l'atlas, silhouettes.
+## Silhouette d'une espèce inconnue (forme seule, plus sombre que la case, sur le halo).
+const DEX_SILHOUETTE := Color(0.10, 0.13, 0.19, 0.92)
+## Halo radial clair derrière chaque image (centre → transparent), pour les Pokémon sombres.
+const DEX_HALO_CENTER := Color(1.0, 1.0, 1.0, 0.16)
+## Opacité du halo derrière une silhouette (moitié du halo d'une espèce connue).
+const DEX_HALO_UNKNOWN_ALPHA := 0.5
+## Côté de la texture du halo (étirée par l'écran, filtre linéaire).
+const DEX_HALO_TEXTURE := 128
+
+## Case de la grille (refonte du Pokédex, T2) : carré tactile, halo + vignette de l'atlas,
+## numéro en haut à gauche, Poké Ball en haut à droite (capturé). Ni nom ni « Vu / Capturé ».
+const DEX_CELL_SIZE := Vector2(128, 128)
+## Côté de l'image (vignette de l'atlas, 128 px réduite) et distance de son bord haut.
+const DEX_CELL_IMAGE := 112
+const DEX_CELL_IMAGE_TOP := 12
+## Fond d'une case connue : un peu plus clair que le panneau, comme la maquette.
+const DEX_CELL_BG := Color(0.17, 0.22, 0.31, 0.92)
+## Marge du numéro et de la Poké Ball au bord de la case.
+const DEX_CELL_PAD := 8
+const DEX_CELL_NUMBER_FONT := 22
+const DEX_CELL_BALL := 24
+## Contour du numéro d'une case connue (lisible sur un artwork clair).
+const DEX_CELL_NUMBER_OUTLINE := 6
+const DEX_CELL_NUMBER_OUTLINE_COLOR := Color(0.04, 0.06, 0.10, 0.85)
+const DEX_CELL_SELECTED_SCALE := 1.03
+## Numéro d'une case inconnue (estompé).
+const DEX_UNKNOWN_ALPHA := 0.55
+
+# --- Pokédex : composition en trois colonnes (refonte, T3) -------------------------------------
+## L'écran remonte dans la rangée du × (hauteur de l'en-tête commun) et lui laisse sa place.
+const DEX_LAYOUT_RISE := MENU_BODY_TOP - SAFE_MARGIN
+const DEX_LAYOUT_CLOSE_RESERVE := MENU_CLOSE_SIZE + GAP
+## Rangée d'en-tête : ‹ RETOUR · Poké Ball + titre + compteur · filtres · recherche.
+const DEX_LAYOUT_BACK_WIDTH := 190
+const DEX_LAYOUT_TITLE_ICON := 64
+const DEX_LAYOUT_FILTER_MIN_WIDTH := 110
+const DEX_LAYOUT_FILTER_FONT := 24
+const DEX_LAYOUT_FILTER_PAD := 20
+const DEX_LAYOUT_TITLE_FONT := 36
+const DEX_LAYOUT_COUNTS_FONT := 22
+const DEX_LAYOUT_SEARCH_MIN_WIDTH := 200
+## Colonne de la grille : 4 cases de 128 px (cible tactile) ; le surplus d'écran va à droite.
+const DEX_LAYOUT_COLUMNS := 4
+const DEX_LAYOUT_CELL := TOUCH_MIN
+const DEX_LAYOUT_CELL_GAP := 12
+const DEX_LAYOUT_SCROLLBAR := 12
+const DEX_LAYOUT_GRID_WIDTH := DEX_LAYOUT_COLUMNS * DEX_LAYOUT_CELL \
+	+ (DEX_LAYOUT_COLUMNS - 1) * DEX_LAYOUT_CELL_GAP + 2 * DEX_SCROLL_PAD + 2 * DEX_PANEL_PAD \
+	+ DEX_LAYOUT_SCROLLBAR
+## Centre (portrait) et droite (fiche) : largeurs minimales et partage du surplus.
+const DEX_LAYOUT_CENTER_MIN := 500
+const DEX_LAYOUT_CENTER_STRETCH := 1.0
+const DEX_LAYOUT_RIGHT_MIN := 620
+const DEX_LAYOUT_RIGHT_STRETCH := 1.25
+## Grand portrait : boîte carrée qui prend la hauteur restante (au moins PORTRAIT_MIN).
+const DEX_LAYOUT_PORTRAIT_MIN := 280
+const DEX_LAYOUT_PORTRAIT_GAP := 10
+const DEX_LAYOUT_HALO_SCALE := 1.15
+## Ombre au sol : ellipse sombre sous les pieds (largeur et hauteur en part de la boîte).
+const DEX_LAYOUT_SHADOW_COLOR := Color(0.0, 0.0, 0.0, 0.5)
+const DEX_LAYOUT_SHADOW_WIDTH := 0.62
+const DEX_LAYOUT_SHADOW_HEIGHT := 0.09
+const DEX_LAYOUT_SHADOW_RISE := 0.03
+## Respiration discrète (échelle 1 ↔ 1 + BREATH, durée d'un aller-retour) et fondu de l'espèce.
+const DEX_LAYOUT_BREATH := 0.015
+const DEX_LAYOUT_BREATH_TIME := 2.4
+const DEX_LAYOUT_PORTRAIT_FADE := 0.15
+## Cartes Vu / Capturé, texte du centre.
+const DEX_LAYOUT_CARD_ICON := 44
+const DEX_LAYOUT_CARD_CAPTION_FONT := 22
+const DEX_LAYOUT_CARD_VALUE_FONT := 28
+const DEX_LAYOUT_DESC_FONT := 26
+const DEX_LAYOUT_HERO_PAD := 24
+## Aperçu de droite : petite carte d'habitat, ronds d'évolution.
+const DEX_LAYOUT_MAP_PREVIEW_HEIGHT := 150
+const DEX_LAYOUT_EVO_PREVIEW := 120
+## Vignette dans son rond (part du diamètre) ; hauteur des lignes titre / pied des aperçus.
+const DEX_LAYOUT_EVO_IMAGE_RATIO := 0.86
+const DEX_LAYOUT_PREVIEW_ROW := 48
+const DEX_LAYOUT_PREVIEW_ICON := 36
+const DEX_LAYOUT_PREVIEW_TITLE_FONT := 28
+const DEX_LAYOUT_PILL_RADIUS := 64
+## Onglets de la fiche : texte serré pour que « Observations » tienne à 1920.
+const DEX_LAYOUT_TAB_FONT := 22
+const DEX_LAYOUT_TAB_PAD := 4
+
+# --- Pokédex : rapprochement de la maquette (refonte, T4) ----------------------------------------
+## Fond du menu derrière le Pokédex : voile plus léger que MENU_DIM (le monde lumineux, flouté,
+## se voit à travers les panneaux de verre) et flou un peu plus large.
+const DEX_BACKDROP_DIM := 0.2
+const DEX_BACKDROP_BLUR := 10.0
+const DEX_BACKDROP_LOD := 3.0
+## Panneaux en verre teinté : fond translucide, coins très arrondis, liseré fin et clair.
+const DEX_GLASS_BG := Color(0.05, 0.09, 0.14, 0.62)
+const DEX_GLASS_BORDER := Color(1.0, 1.0, 1.0, 0.18)
+const DEX_GLASS_BORDER_WIDTH := 2
+const DEX_GLASS_RADIUS := 30
+const DEX_GLASS_SHADOW := Color(0.0, 0.0, 0.0, 0.25)
+const DEX_GLASS_SHADOW_SIZE := 18
+## Cartes posées dans un panneau (Types, Habitat, Évolution, Vu / Capturé, Taille / Poids).
+const DEX_CARD_BG := Color(0.03, 0.06, 0.10, 0.42)
+const DEX_CARD_BORDER := Color(1.0, 1.0, 1.0, 0.12)
+const DEX_CARD_RADIUS := 20
+const DEX_CARD_PAD := 16
+## Rangée du haut : « Pokédex » sobre + compteur discret, capsule de filtres, recherche compacte.
+## Les zones touchables gardent TOUCH_MIN de haut ; le dessin est plus fin (marges négatives).
+const DEX_TOP_TITLE_FONT := 42
+const DEX_TOP_COUNTS_FONT := 20
+const DEX_TOP_BALL := 56
+const DEX_TOP_BACK_DRAW := 96
+const DEX_CAPSULE_DRAW := 80
+const DEX_CAPSULE_PAD := 6
+const DEX_SEGMENT_DRAW := 66
+const DEX_SEGMENT_MIN_WIDTH := TOUCH_MIN
+const DEX_SEGMENT_PAD := 22
+const DEX_SEGMENT_FONT := 26
+const DEX_SEGMENT_ON_BG := Color(0.16, 0.36, 0.48, 0.85)
+const DEX_SEGMENT_ON_BORDER := Color(0.55, 0.85, 0.95, 0.9)
+const DEX_SEARCH_WIDTH := 400
+const DEX_SEARCH_DRAW := 80
+## Tête de la grille : bouton Type (et Zone) en capsule fine.
+const DEX_REFINE_DRAW := 68
+const DEX_REFINE_FONT := 26
+## Grand portrait : décor peint flouté (PokedexScene) sous le Pokémon, lumière douce et chaude,
+## vignettage léger, fondu vers le panneau en bas (description lisible).
+const DEX_SCENE_LIGHT_CENTER := Vector2(0.55, 0.36)
+const DEX_SCENE_LIGHT_COLOR := Color(1.0, 0.86, 0.62)
+const DEX_SCENE_LIGHT := 0.32
+const DEX_SCENE_LIFT := 0.0
+const DEX_SCENE_SATURATION := 1.2
+const DEX_SCENE_VIGNETTE := 0.45
+const DEX_SCENE_FADE_COLOR := Color(0.05, 0.08, 0.13, 0.94)
+## Le fondu commence au bas des cartes Vu / Capturé (part de la hauteur du panneau) + marge.
+const DEX_SCENE_FADE_SPAN := 0.16
+## Le Pokémon : boîte au plus PORTRAIT_WIDTH de la scène en largeur ; il peut monter dans la zone
+## du nom de PORTRAIT_RISE de sa hauteur ; ses pieds s'arrêtent FEET_GAP au-dessus des cartes.
+const DEX_PORTRAIT_WIDTH := 0.9
+const DEX_PORTRAIT_RISE := 0.35
+const DEX_PORTRAIT_FEET_GAP := 6
+const DEX_PORTRAIT_SHIFT := 0.07
+## Hauteur maximale du Pokémon (espèce seulement vue : la scène est plus haute).
+const DEX_PORTRAIT_MAX := 470.0
+const DEX_PORTRAIT_HALO_ALPHA := 0.55
+## Nom et numéro lisibles sur le décor (ombre portée).
+const DEX_SCENE_TEXT_SHADOW := Color(0.0, 0.0, 0.0, 0.55)
+const DEX_SCENE_TEXT_SHADOW_SIZE := 6
+## Cartes Taille / Poids sous la description (centre).
+const DEX_FACT_ICON := 40
+## Onglets de la fiche : icône au-dessus du libellé.
+const DEX_TAB_ICON := 44
+const DEX_TAB_LABEL_FONT := 22
+## Aperçu : carte d'Habitat (carte resserrée sur les zones observées, à gauche ; noms à droite).
+const DEX_MAP_PREVIEW_HEIGHT := 250
+const DEX_MAP_ASPECT := 1.5
+## Part de la largeur de la carte d'Habitat face à ses noms (la carte domine, comme la maquette).
+const DEX_MAP_STRETCH := 1.5
+## Région la plus petite montrée (pixels de l'illustration) : une petite zone n'est pas
+## agrandie à l'excès.
+const DEX_MAP_MIN_REGION := Vector2(300, 200)
+## Voile sur la géographie autour des zones observées (aucune zone n'y est nommée ni marquée).
+const DEX_MAP_VEIL := Color(0.04, 0.07, 0.12, 0.6)
+const DEX_MAP_RADIUS := 16
+const DEX_MAP_ZONE_ROWS := 3
+const DEX_PREVIEW_ROW := 44
 
 # Écran Carte du Menu Dresseur (jalon 6, T20). Un journal : l'illustration entière, les noms
 # des seules zones découvertes, un panneau latéral ; aucun total, aucun « ??? ».
@@ -972,3 +1226,67 @@ const CHOICE_LABEL_FONT := FONT_TITLE
 const CHOICE_CARD_DETAIL_FONT := 28
 const CHOICE_SLIDE := 40.0
 const CHOICE_FADE := ANIM_PANEL
+
+# Écran Boutique (jalon 7, T11) : langage du Sac (colonnes, cartes) + sélecteur de quantité.
+## Colonne de droite (aperçu, QUANTITÉ, TOTAL, CONFIRMER).
+const SHOP_DETAIL_WIDTH := 580
+const SHOP_ICON := 112
+const SHOP_NAME_FONT := FONT_BUTTON
+const SHOP_OWNED_FONT := FONT_CAPTION
+const SHOP_DESCRIPTION_FONT := 28
+const SHOP_CAPTION_FONT := FONT_CAPTION
+const SHOP_UNIT_PRICE_FONT := FONT_BODY
+## Prix sous chaque carte d'objet.
+const SHOP_CARD_PRICE_FONT := 28
+const SHOP_CARD_PRICE_HEIGHT := 44
+## Sélecteur de quantité : boutons − / + (≥ TOUCH_MIN) et nombre au centre.
+const SHOP_STEPPER_SIZE := TOUCH_MIN
+const SHOP_STEPPER_ICON := 56
+const SHOP_QUANTITY_FONT := 56
+const SHOP_TOTAL_FONT := 44
+## Argent affiché dans la colonne de gauche.
+const SHOP_MONEY_FONT := 44
+const SHOP_MONEY_LABEL_FONT := FONT_CAPTION
+const SHOP_COIN_ICON := 48
+## Appui long sur − / + : délai (LONG_PRESS), intervalle lent puis rapide, pas rapide.
+const SHOP_REPEAT_DELAY := LONG_PRESS
+const SHOP_REPEAT_SLOW := 0.16
+const SHOP_REPEAT_FAST := 0.06
+const SHOP_REPEAT_FAST_AFTER := 1.2
+const SHOP_REPEAT_FAST_STEP := 5
+## Indisponible : CONFIRMER et sélecteur atténués (la raison est écrite à côté).
+const SHOP_DISABLED_ALPHA := 0.45
+
+# --- Écran Stockage (jalon 7, T15 ; jalon-07.md §6.4, §6.9) --------------------------------------
+# Trois colonnes dans la zone sous l'en-tête (840 px de haut) : ÉQUIPE (six cartes de TOUCH_MIN),
+# Pokémon sélectionné et ses actions, STOCKAGE (grille défilante, 2 colonnes à 1920, 3 à 2340).
+
+const STORAGE_PARTY_WIDTH := 440
+const STORAGE_DETAIL_WIDTH := 400
+const STORAGE_COLUMN_GAP := GAP
+## Titre de colonne (« ÉQUIPE », « STOCKAGE »).
+const STORAGE_TITLE_HEIGHT := 40
+const STORAGE_TITLE_FONT := FONT_BODY
+## Écart entre les six cartes de l'équipe : six de TOUCH_MIN + cinq écarts + le titre ≤ 840.
+const STORAGE_PARTY_GAP := 4
+## Grille : largeur minimale d'une carte et écarts.
+const STORAGE_GRID_MIN_CELL := 420
+const STORAGE_GRID_GAP := 12
+const STORAGE_GRID_PAD := 8
+## Pokémon sélectionné : sprite 64 px à l'échelle entière.
+const STORAGE_SPRITE_SOURCE := 64
+const STORAGE_SPRITE_SCALE := 3
+const STORAGE_DETAIL_GAP := 6
+## Boutons d'action (≥ TOUCH_MIN) : le principal prend la place, FAVORI aussi, « ⋯ » est carré.
+const STORAGE_ACTION_HEIGHT := TOUCH_MIN
+const STORAGE_MORE_WIDTH := TOUCH_MIN
+## Menu secondaire « ⋯ » : largeur et hauteur d'un choix.
+const STORAGE_MENU_WIDTH := 360
+const STORAGE_MENU_ITEM_HEIGHT := TOUCH_MIN
+## La raison d'un refus reste affichée ce temps (s) ou jusqu'au prochain geste.
+const STORAGE_REFUSAL_SECONDS := 4.0
+const STORAGE_REFUSAL_FONT := 28
+const STORAGE_REFUSAL_BG := Color(0.30, 0.08, 0.08, 0.94)
+## Cadre de la colonne visée par un glisser.
+const STORAGE_DROP_BORDER := 4
+const HAPTIC_STORAGE_MOVE_MS := 20

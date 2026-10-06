@@ -1,0 +1,50 @@
+{
+	"nurse": {
+		"speaker": "Infirmière",
+		"variants": [
+			{
+				"pages": [
+					"Bonjour. Je m'occupe de ton équipe ?"
+				],
+				"choice": {
+					"confirm": "SOIGNER",
+					"cancel": "PAS MAINTENANT",
+					"confirm_action": "center_heal",
+					"confirm_pages": [
+						"Voilà. Tout le monde est en pleine forme."
+					],
+					"cancel_pages": [
+						"Très bien. Reviens quand tu veux."
+					]
+				}
+			}
+		]
+	},
+	"storage_terminal": {
+		"narration": true,
+		"variants": [
+			{
+				"unless": [
+					"storage_terminal_seen"
+				],
+				"pages": [
+					"Un terminal de Stockage Pokémon."
+				],
+				"set": [
+					"storage_terminal_seen"
+				],
+				"action": "open_storage",
+				"draft": true
+			},
+			{
+				"action": "open_storage"
+			}
+		]
+	},
+	"nurse_wakeup": {
+		"speaker": "Infirmière",
+		"pages": [
+			"Voilà. Tout le monde est en pleine forme."
+		]
+	}
+}

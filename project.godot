@@ -80,3 +80,50 @@ textures/canvas_textures/default_texture_filter=1
 2d/snap/snap_2d_transforms_to_pixel=true
 textures/vram_compression/import_etc2_astc=true
 environment/defaults/default_clear_color=Color(0.02, 0.03, 0.05, 1)
+
+[shader_globals]
+
+world_sun_dir={
+"type": "vec2",
+"value": Vector2(-0.7, -0.7)
+}
+world_rim_color={
+"type": "color",
+"value": Color(1, 1, 1, 1)
+}
+world_rim_strength={
+"type": "float",
+"value": 0.0
+}
+world_rim_width={
+"type": "float",
+"value": 0.0
+}
+world_wind={
+"type": "float",
+"value": 0.0
+}
+world_cast_shadow_color={
+"type": "color",
+"value": Color(0, 0, 0, 0)
+}
+world_contact_color={
+"type": "color",
+"value": Color(0, 0, 0, 0)
+}
+world_grade_shadows={
+"type": "vec3",
+"value": Vector3(1, 1, 1)
+}
+world_grade_midtones={
+"type": "vec3",
+"value": Vector3(1, 1, 1)
+}
+world_grade_highlights={
+"type": "vec3",
+"value": Vector3(1, 1, 1)
+}
+world_grade_strength={
+"type": "float",
+"value": 0.0
+}

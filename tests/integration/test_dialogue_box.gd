@@ -3,6 +3,7 @@ extends GutTest
 ## nom du locuteur, écriture du texte, « › », toucher → advance_requested, placement à 1920
 ## et 2340 de large, narration en italique.
 
+const TweenClock := preload("res://tests/helpers/tween_clock.gd")
 const BOX_SCENE := "res://game/ui/dialogue/dialogue_box.tscn"
 const SCREEN_WIDTHS: Array[float] = [1920.0, 2340.0]
 const SCREEN_HEIGHT := 1080.0
@@ -145,13 +146,16 @@ func test_continue_indicator_only_when_asked() -> void:
 
 func test_continue_indicator_blinks() -> void:
 	_box.open()
+	# Temps simulé (TweenClock) : relevé à chaque pas de 1/60 s, aucune image sautée sous charge.
+	var clock := TweenClock.new(get_tree())
 	_box.set_continue_visible(true)
 	var lowest := 1.0
-	var elapsed := 0.0
-	while elapsed < UiTokens.DIALOG_CONTINUE_BLINK * 2.0:
-		await get_tree().process_frame
-		elapsed += get_process_delta_time()
+	var steps := 0
+	while steps * TweenClock.STEP < UiTokens.DIALOG_CONTINUE_BLINK * 2.0:
+		clock.step()
+		steps += 1
 		lowest = minf(lowest, _continue().modulate.a)
+	clock.release()
 	assert_true(lowest < 0.6, "l'opacité baisse (min %f)" % lowest)
 	assert_true(lowest >= UiTokens.DIALOG_CONTINUE_DIM - 0.01, "sans disparaître")
 
@@ -360,4 +364,155 @@ func test_large_text_box_stays_inside_the_screen() -> void:
 	assert_lte(rect.end.y, screen.end.y - UiTokens.SAFE_MARGIN + 0.5, "bas dans SAFE_MARGIN")
 	assert_gte(rect.position.y, 0.0, "reste dans l'écran")
 	assert_lt(rect.size.y, UiTokens.DIALOG_BOX_MIN_HEIGHT + 80.0, "la boîte reste compacte")
+	UiPrefs.reset()
+
+
+# --- Choix à deux cartes (jalon 7, T7) ----------------------------------------------------------
+
+
+func _nurse_view() -> ChoiceView:
+	return ChoiceView.new("Veux-tu soigner tes Pokémon ?", "SOIGNER", "PAS MAINTENANT")
+
+
+func _open_with_choice() -> void:
+	_box.open()
+	_box.show_page("Infirmière", "Bienvenue au Centre Pokémon !", false)
+	_box.show_choice(_nurse_view())
+	_box.get_choice_cards().speed_scale = 0.0
+	_box.show_choice(_nurse_view())
+
+
+func test_show_choice_on_closed_box_is_ignored() -> void:
+	_box.show_choice(_nurse_view())
+	assert_false(_box.is_choice_showing())
+	assert_push_warning_count(1)
+
+
+func test_show_choice_shows_two_cards_with_question() -> void:
+	_open_with_choice()
+	assert_true(_box.is_choice_showing())
+	var cards := _box.get_choice_cards()
+	assert_eq(cards.get_texts(), PackedStringArray(["Veux-tu soigner tes Pokémon ?",
+		"PAS MAINTENANT", "SOIGNER"]))
+	assert_true(_box.is_open(), "la boîte reste ouverte derrière")
+
+
+func _tap_card_twice(confirmed: bool) -> void:
+	_open_with_choice()
+	watch_signals(_box)
+	var cards := _box.get_choice_cards()
+	var button := cards.get_confirm_button() if confirmed else cards.get_cancel_button()
+	button.pressed.emit()
+	button.pressed.emit()
+	cards.get_confirm_button().pressed.emit()
+	cards.get_cancel_button().pressed.emit()
+	assert_signal_emit_count(_box, "choice_made", 1)
+	assert_signal_emitted_with_parameters(_box, "choice_made", [confirmed])
+	assert_false(_box.is_choice_showing())
+
+
+func test_confirm_card_gives_exactly_one_choice_made() -> void:
+	_tap_card_twice(true)
+
+
+func test_cancel_card_gives_exactly_one_choice_made() -> void:
+	_tap_card_twice(false)
+
+
+func test_choice_suspends_advance_by_touch() -> void:
+	_open_with_choice()
+	watch_signals(_box)
+	_touch(Vector2(300, 200), true)
+	_touch(Vector2(300, 200), false)
+	assert_signal_not_emitted(_box, "advance_requested")
+
+
+func test_cancel_choice_emits_false_once() -> void:
+	_open_with_choice()
+	watch_signals(_box)
+	assert_true(_box.cancel_choice())
+	assert_signal_emit_count(_box, "choice_made", 1)
+	assert_signal_emitted_with_parameters(_box, "choice_made", [false])
+	assert_false(_box.is_choice_showing())
+	assert_false(_box.cancel_choice(), "rien à annuler ensuite")
+	assert_signal_emit_count(_box, "choice_made", 1)
+
+
+func test_cancel_choice_without_choice_does_nothing() -> void:
+	_box.open()
+	watch_signals(_box)
+	assert_false(_box.cancel_choice())
+	assert_signal_not_emitted(_box, "choice_made")
+
+
+func test_ui_cancel_acts_as_cancel_choice() -> void:
+	_open_with_choice()
+	watch_signals(_box)
+	var event := InputEventAction.new()
+	event.action = &"ui_cancel"
+	event.pressed = true
+	Input.parse_input_event(event)
+	await wait_process_frames(2)
+	assert_signal_emitted_with_parameters(_box, "choice_made", [false])
+
+
+func test_hide_choice_is_silent_and_close_hides_choice() -> void:
+	_open_with_choice()
+	watch_signals(_box)
+	_box.hide_choice()
+	assert_false(_box.is_choice_showing())
+	assert_signal_not_emitted(_box, "choice_made")
+	_box.show_choice(_nurse_view())
+	await _box.close()
+	assert_false(_box.is_choice_showing())
+	assert_signal_not_emitted(_box, "choice_made")
+
+
+func test_touch_advances_again_after_choice() -> void:
+	_open_with_choice()
+	_box.get_choice_cards().get_cancel_button().pressed.emit()
+	watch_signals(_box)
+	_touch(Vector2(300, 200), true)
+	_touch(Vector2(300, 200), false)
+	assert_signal_emit_count(_box, "advance_requested", 1)
+
+
+func test_cards_inside_safe_margin_and_touch_min_at_both_widths() -> void:
+	for width: float in SCREEN_WIDTHS:
+		var viewport := SubViewport.new()
+		viewport.size = Vector2i(int(width), int(SCREEN_HEIGHT))
+		viewport.render_target_update_mode = SubViewport.UPDATE_DISABLED
+		add_child_autofree(viewport)
+		var box := (load(BOX_SCENE) as PackedScene).instantiate() as DialogueBox
+		viewport.add_child(box)
+		box.open()
+		box.show_choice(_nurse_view())
+		box.get_choice_cards().speed_scale = 0.0
+		box.show_choice(_nurse_view())
+		await wait_process_frames(2)
+		var cards := box.get_choice_cards()
+		for button: Button in [cards.get_confirm_button(), cards.get_cancel_button()]:
+			var rect := button.get_global_rect()
+			assert_gte(rect.size.x, float(UiTokens.TOUCH_MIN), "largeur (%d)" % width)
+			assert_gte(rect.size.y, float(UiTokens.TOUCH_MIN), "hauteur (%d)" % width)
+			assert_gte(rect.position.x, float(UiTokens.SAFE_MARGIN), "gauche (%d)" % width)
+			assert_lte(rect.end.x, width - UiTokens.SAFE_MARGIN, "droite (%d)" % width)
+			assert_gte(rect.position.y, float(UiTokens.SAFE_MARGIN), "haut (%d)" % width)
+			assert_lte(rect.end.y, SCREEN_HEIGHT - UiTokens.SAFE_MARGIN, "bas (%d)" % width)
+		var title := cards.get_title_label().get_global_rect()
+		assert_gte(title.position.y, float(UiTokens.SAFE_MARGIN), "question dans la marge")
+		assert_almost_eq(cards.get_confirm_button().get_global_rect().end.y,
+			SCREEN_HEIGHT * 0.5, SCREEN_HEIGHT * 0.3, "contenu centré verticalement (%d)" % width)
+
+
+func test_cards_follow_large_text_and_contrast() -> void:
+	_open_with_choice()
+	var title := _box.get_choice_cards().get_title_label()
+	var base := title.get_theme_font_size(&"font_size")
+	_prefs(true, true)
+	_box.show_choice(_nurse_view())
+	assert_eq(title.get_theme_font_size(&"font_size"), roundi(base * UiTokens.TEXT_SCALE_LARGE))
+	var confirm := _box.get_choice_cards().get_confirm_button()
+	var normal := confirm.get_theme_stylebox(&"normal") as StyleBoxFlat
+	assert_gte(normal.bg_color.a, 0.99, "carte d'action opaque")
 	UiPrefs.reset()

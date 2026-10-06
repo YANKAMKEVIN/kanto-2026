@@ -46,6 +46,22 @@ Godot **4.7** uniquement. Pas d'API Godot 3 (`KinematicBody2D`, `yield`, `export
 - Toute logique de règle a ses tests unitaires. Les scènes peuvent avoir des tests d'intégration (`tests/integration/`) avec `add_child_autofree()`.
 - Lancer : `tools/test.sh` (ou `tools/test.sh res://tests/unit`).
 
+### Tests et temps (déterministes sous charge)
+
+Plusieurs processus Godot tournent en même temps sur le Mac : une image peut durer 0,1 s ou plus. Un test ne doit jamais dépendre de la vitesse de la machine.
+
+- **Une durée se vérifie en temps simulé, jamais en temps réel** (une image = 1/60 s, comptée par le test) :
+  - tweens : `tests/helpers/tween_clock.gd` (`TweenClock.new(get_tree())` **avant** l'appel, puis `step()` / `run_until()`, `release()` à la fin) ;
+  - nœuds qui comptent le temps dans `_process` (directeur de scènes, joueur, PNJ, DialogueRunner, appui long d'une carte) : `tests/helpers/frame_sim.gd` (`FrameSim`, `await sim.frame()`, `finish()`). Un Control retiré du moteur ne reçoit plus le toucher : poser le doigt d'abord (l'appui est traité dans l'appel même), créer le FrameSim ensuite ;
+  - `AnimationPlayer` : `callback_mode_process = ANIMATION_CALLBACK_MODE_PROCESS_MANUAL` puis `advance(1.0 / 60.0)`.
+  - Tolérance : « pas fini avant la durée, au plus un pas de plus » (une image par enchaînement), jamais une marge en secondes.
+- **Un état intermédiaire** (« en mouvement », « il pulse », « pas encore ouvert ») se relève **au pas près** avec ces outils, pas après un `wait_seconds` partiel.
+- **Un état au moment d'un événement** (« rideau opaque quand l'écran s'affiche ») se relève **dans le signal ou le rappel**, pas après `wait_for_signal` (sa reprise arrive plus tard sous charge).
+- `Time.get_ticks_msec()` ne sert que de **délai de garde** (variable `deadline`), jamais de mesure ; `get_process_delta_time()` n'a pas sa place dans un test. `tools/check_test_timing.sh` (lancé par `tools/test.sh`) le refuse. Exception assumée : finir la ligne par `# temps réel : <raison>`.
+- **`wait_seconds(durée + marge)` puis l'état final** reste correct (sous charge, on attend seulement plus longtemps).
+- **Côté jeu, pour qu'un test puisse simuler le temps** : attendre avec un tween (`create_tween().tween_interval(t)`) plutôt que `create_timer`.
+- En cas de doute, lancer la suite **sous charge** (deux `tools/test.sh` en parallèle sur deux copies, et quelques `yes > /dev/null`, arrêtés par PID).
+
 ## Performance mobile
 
 - Viser 60 fps sur S24 : pas d'allocation dans `_process`, pas de `find_child` en boucle, `set_process(false)` quand inutile.

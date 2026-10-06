@@ -51,11 +51,13 @@ func _init() -> void:
 
 ## Affiche [param text] ; UTILISER À NOUVEAU seulement si [param can_repeat]. Rappelée avec un
 ## nouveau texte, elle remplace l'ancien sans rejouer l'entrée.
-func show_result(text: String, can_repeat: bool) -> void:
+## [param success] : 1 = succès, 0 = refus, −1 (défaut) = selon le « + » initial du texte (Boutique :
+## « Merci ! » est un succès sans « + »).
+func show_result(text: String, can_repeat: bool, success: int = -1) -> void:
 	_label.text = text
 	_repeat.visible = can_repeat
-	theme_type_variation = &"ResultBar" if text.begins_with(SUCCESS_PREFIX) \
-		else &"ResultBarRefused"
+	var ok := text.begins_with(SUCCESS_PREFIX) if success < 0 else success == 1
+	theme_type_variation = &"ResultBar" if ok else &"ResultBarRefused"
 	var fresh := not visible
 	visible = true
 	_kill_tween()

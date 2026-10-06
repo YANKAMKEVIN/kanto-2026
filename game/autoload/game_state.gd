@@ -7,7 +7,8 @@ extends Node
 ## aléatoire à graine de la partie. Jalon 4B (jalon-04.md §14.6) : le Sac (les 5 Poké Balls
 ## données par le Prof. Chen). Jalon 5 (jalon-05.md §16) : position du joueur, point de soin,
 ## Pokédex, et les faits que le Menu Dresseur du J6 affichera (temps de jeu, début de
-## l'aventure, zones découvertes, objets trouvés, grands moments, nom du joueur).
+## l'aventure, zones découvertes, objets trouvés, grands moments, nom du joueur). Jalon 7
+## (jalon-07.md §3.1, sauvegarde v3) : l'argent et la première espèce sauvage rencontrée.
 ## [method to_dict] / [method load_dict] font l'aller-retour complet ; [SaveSystem] écrit et
 ## lit le fichier ; Boot (tâche S2) décide des moments d'autosave et appelle les
 ## méthodes `record_*` au bon endroit.
@@ -24,6 +25,10 @@ const MOMENT_FIRST_CAPTURE: StringName = &"first_capture"
 const DEFAULT_PLAYER_NAME: String = "Kevin"
 const DEFAULT_HEAL_MAP: StringName = &"player_house_1f"
 const DEFAULT_HEAL_SPAWN: StringName = &"heal"
+## Argent (dossier 09 §10) : 3 000 ₽ pour une nouvelle partie (provisoire) ; plafond de
+## Rouge/Bleu. Jamais négatif.
+const STARTING_MONEY: int = 3000
+const MONEY_MAX: int = 999_999
 
 ## Horloge de l'appareil (dates ISO des faits) ; les tests injectent une date fixe.
 var clock: DeviceClock = DeviceClock.new()
@@ -68,6 +73,14 @@ var discovered_maps: Dictionary[StringName, String] = {}
 var found_items: Array[Dictionary] = []
 ## Grands moments, chronologiques, en ajout seul : { "type", "date", "map", "details" }.
 var moments: Array[Dictionary] = []
+## Argent du joueur, entre 0 et [constant MONEY_MAX] ([method add_money], [method spend_money]).
+var money: int = STARTING_MONEY
+## Première espèce sauvage rencontrée **en combat** (dossier 09 §19, J6 Q-7) : la seule que
+## Chen peut citer, jamais un Pokémon observé ni celui d'un Dresseur. { "species", "map",
+## "date" } (chaînes) ; vide tant qu'aucune rencontre. Posée une seule fois
+## ([method record_wild_encounter]) ; une partie v2 la reçoit de la migration
+## ([method SaveSystem._upgrade_2_to_3], date parfois approchée).
+var first_wild_encounter: Dictionary = {}
 
 
 ## Nouvelle partie (appelé par Boot au démarrage) : drapeaux baissés, équipe, Sac et Pokédex
@@ -93,6 +106,8 @@ func new_game(rng_seed: int = -1) -> void:
 	discovered_maps.clear()
 	found_items.clear()
 	moments.clear()
+	money = STARTING_MONEY
+	first_wild_encounter = {}
 
 
 # --- Faits (§16.3), appelés par la scène (tâche S2) ------------------------------------
@@ -158,6 +173,42 @@ func record_caught(species: StringName, map: StringName) -> bool:
 	return pokedex.mark_caught(species, map, now())
 
 
+## Rencontre sauvage avec [param species] sur [param map], appelée au **début** de chaque
+## rencontre (là où l'espèce est marquée « vue »). Seule la première est retenue : vrai si
+## c'est elle.
+func record_wild_encounter(species: StringName, map: StringName) -> bool:
+	if species.is_empty() or not first_wild_encounter.is_empty():
+		return false
+	first_wild_encounter = {"species": String(species), "map": String(map), "date": now()}
+	return true
+
+
+## Espèce de la première rencontre sauvage (&"" s'il n'y en a pas).
+func first_wild_species() -> StringName:
+	return StringName(first_wild_encounter.get("species", ""))
+
+
+# --- Argent (dossier 09 §10) ---------------------------------------------------------
+
+## Ajoute [param amount] (≥ 0 ; négatif : rien), borné à [constant MONEY_MAX]. Renvoie la
+## somme réellement ajoutée.
+func add_money(amount: int) -> int:
+	if amount <= 0:
+		return 0
+	var added := mini(amount, MONEY_MAX - money)
+	money += added
+	return added
+
+
+## Retire [param amount] si le joueur l'a : vrai. Sinon (ou montant négatif) : faux, et rien
+## ne change. L'argent n'est jamais négatif.
+func spend_money(amount: int) -> bool:
+	if amount < 0 or amount > money:
+		return false
+	money -= amount
+	return true
+
+
 ## Rencontre de [param pokemon] à son entrée dans l'équipe : [param kind] (starter, capture),
 ## [param map], niveau courant, date, dresseur = le joueur.
 func stamp_meeting(pokemon: Pokemon, kind: Pokemon.Origin, map: StringName) -> void:
@@ -195,6 +246,8 @@ func to_dict() -> Dictionary:
 		"discovered_maps": discovered,
 		"found_items": found_items.duplicate(true),
 		"moments": moments.duplicate(true),
+		"money": money,
+		"first_wild_encounter": first_wild_encounter.duplicate(),
 	}
 
 
@@ -250,4 +303,25 @@ func load_dict(dict: Dictionary, data: PokemonData) -> bool:
 				"map": JsonFields.get_string(entry, "map"),
 				"details": JsonFields.get_dict(entry, "details"),
 			})
+	money = clampi(JsonFields.get_int(dict, "money", STARTING_MONEY), 0, MONEY_MAX)
+	ok = _load_first_wild_encounter(JsonFields.get_dict(dict, "first_wild_encounter"), data) \
+		and ok
 	return ok
+
+
+## { "species", "map", "date" } : l'espèce doit exister ; sinon rien n'est retenu (faux si une
+## espèce inconnue a dû être écartée). Carte et date mal formées : chaînes vides.
+func _load_first_wild_encounter(entry: Dictionary, data: PokemonData) -> bool:
+	var species := JsonFields.get_id(entry, "species")
+	if species.is_empty():
+		return true
+	if data != null and not data.has_species(species):
+		push_error("GameState : première rencontre sauvage d'une espèce inconnue (%s), écartée"
+			% species)
+		return false
+	first_wild_encounter = {
+		"species": String(species),
+		"map": JsonFields.get_string(entry, "map"),
+		"date": JsonFields.get_string(entry, "date"),
+	}
+	return true

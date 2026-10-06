@@ -1,9 +1,11 @@
 extends GutTest
-## Entrée provisoire vers Jadielle (jalon 5, dossier-07 §12) avec la vraie scène Boot, l'autoload
-## SceneRouter (fondus raccourcis) et un [SaveSystem] en mémoire : le bord nord de la Route 1
-## mène à « JADIELLE — À venir » (build de développement), puis ramène le joueur une case en
-## retrait du bord, tourné vers le sud. Rien n'est sauvegardé pendant l'écran, aucun titre de
-## zone « Jadielle », aucune carte « jadielle » découverte ; en release, le bord reste bloqué.
+## Destination provisoire (jalon 5, dossier-07 §12 ; depuis le jalon 7 T4, dossier 09 §11 :
+## la sortie nord de Jadielle) avec la vraie scène Boot, l'autoload SceneRouter (fondus
+## raccourcis) et un [SaveSystem] en mémoire : l'arche nord de Jadielle mène à « ROUTE 2 — À
+## venir » (build de développement), puis ramène le joueur devant l'arche, tourné vers le sud.
+## Rien n'est sauvegardé pendant l'écran, aucun titre de zone, aucune carte « route_2 »
+## découverte ; en release, le bord reste bloqué. (Avant le T4, c'était le bord nord de la
+## Route 1 vers « JADIELLE — À venir » : il mène désormais à Jadielle.)
 
 const MemoryFs := preload("res://tests/helpers/memory_file_system.gd")
 const FixedClock := preload("res://tests/helpers/fixed_clock.gd")
@@ -39,11 +41,11 @@ func after_each() -> void:
 		Input.action_release(action)
 
 
-## Boot sur la Route 1, une case sous le haut du chemin, tourné vers le nord.
-func _start_on_route_1(spawn: StringName = &"jadielle_soon_w") -> void:
+## Boot sur la place nord de Jadielle, sous l'arche (une case sous le bord), tourné vers le nord.
+func _start_at_the_north_gate(spawn: StringName = &"route_2_soon_w") -> void:
 	_boot = BOOT_SCENE.instantiate() as Boot
 	_boot.save_system = _save
-	_boot.start_map = &"route_1"
+	_boot.start_map = &"viridian_city"
 	_boot.start_spawn = spawn
 	_boot.start_facing = Vector2i.UP
 	add_child_autofree(_boot)
@@ -70,42 +72,42 @@ func _walk_into_the_north_edge() -> void:
 
 
 func test_the_north_edge_shows_the_coming_soon_screen_then_returns_facing_south() -> void:
-	await _start_on_route_1()
+	await _start_at_the_north_gate()
 	var screen := _boot.get_coming_soon_screen()
-	assert_eq(_player.get_cell(), Vector2i(23, 2))
+	assert_eq(_player.get_cell(), Vector2i(27, 3))
 	var zones: Array[String] = []
 	_boot.zone_announced.connect(func(zone: String, _region: String) -> void:
 		zones.append(zone))
 	await _walk_into_the_north_edge()
-	assert_eq(screen.get_label().text, "JADIELLE — À venir")
+	assert_eq(screen.get_label().text, "ROUTE 2 — À venir")
 	assert_true(_boot.get_fade().is_opaque() or _boot.get_fade().get_alpha() > 0.5,
 		"sous le rideau")
 	assert_false(_player.is_input_enabled(), "joueur bloqué pendant l'écran")
 	await wait_until(func() -> bool: return not screen.is_showing(), TIMEOUT)
 	await wait_until(func() -> bool: return not SceneRouter.is_transitioning(), TIMEOUT)
-	assert_eq(_boot.get_map().map_id, &"route_1", "retour sur la Route 1")
-	assert_eq(_player.get_cell(), Vector2i(23, 2), "une case en retrait du bord nord")
+	assert_eq(_boot.get_map().map_id, &"viridian_city", "retour à Jadielle")
+	assert_eq(_player.get_cell(), Vector2i(27, 3), "devant l'arche")
 	assert_eq(_player.get_facing(), Vector2i.DOWN, "tourné vers le sud")
 	assert_true(_player.is_input_enabled(), "joueur libre")
 	assert_false(_boot.get_fade().is_opaque())
 	assert_true(zones.is_empty(), "aucun titre de zone")
 	assert_false(_boot.get_hud().get_caption().is_showing())
-	assert_false(GameState.discovered_maps.has(&"jadielle"), "aucune carte Jadielle découverte")
+	assert_false(GameState.discovered_maps.has(&"route_2"), "aucune carte Route 2 découverte")
 	assert_push_error_count(0)
 
 
 func test_the_east_column_works_too() -> void:
-	await _start_on_route_1(&"jadielle_soon_e")
+	await _start_at_the_north_gate(&"route_2_soon_e")
 	var screen := _boot.get_coming_soon_screen()
 	await _walk_into_the_north_edge()
 	await wait_until(func() -> bool: return not SceneRouter.is_transitioning(), TIMEOUT)
 	assert_false(screen.is_showing())
-	assert_eq(_player.get_cell(), Vector2i(24, 2))
+	assert_eq(_player.get_cell(), Vector2i(29, 3))
 	assert_eq(_player.get_facing(), Vector2i.DOWN)
 
 
 func test_nothing_is_saved_during_the_screen_then_the_normal_autosave_applies() -> void:
-	await _start_on_route_1()
+	await _start_at_the_north_gate()
 	var screen := _boot.get_coming_soon_screen()
 	assert_eq(_writes(), 1, "autosave à l'arrivée sur la carte")
 	await _walk_into_the_north_edge()
@@ -121,13 +123,13 @@ func test_nothing_is_saved_during_the_screen_then_the_normal_autosave_applies() 
 	await wait_process_frames(3)
 	assert_eq(_writes(), 2, "écrit une fois la partie stable")
 	var saved: Variant = JSON.parse_string(_fs.files[SAVE_PATH])
-	assert_eq(saved.get("map"), "route_1")
-	assert_eq(JsonFields.get_vector2i(saved, "cell"), Vector2i(23, 2), "case de retour")
-	assert_false((saved.get("discovered_maps", {}) as Dictionary).has("jadielle"))
+	assert_eq(saved.get("map"), "viridian_city")
+	assert_eq(JsonFields.get_vector2i(saved, "cell"), Vector2i(27, 3), "case de retour")
+	assert_false((saved.get("discovered_maps", {}) as Dictionary).has("route_2"))
 
 
 func test_a_tap_shortens_the_screen() -> void:
-	await _start_on_route_1()
+	await _start_at_the_north_gate()
 	var screen := _boot.get_coming_soon_screen()
 	screen.hold_duration = 30.0
 	await _walk_into_the_north_edge()
@@ -143,12 +145,12 @@ func test_a_tap_shortens_the_screen() -> void:
 
 func test_in_a_release_build_the_north_edge_stays_blocked() -> void:
 	SceneRouter.coming_soon_enabled = false
-	await _start_on_route_1()
+	await _start_at_the_north_gate()
 	Input.action_press(&"move_up")
 	await wait_seconds(1.0)
 	Input.action_release(&"move_up")
 	assert_false(_boot.get_coming_soon_screen().is_showing())
 	assert_false(SceneRouter.is_transitioning())
-	assert_eq(_player.get_cell(), Vector2i(23, 1), "arrêté au haut du chemin")
+	assert_eq(_player.get_cell(), Vector2i(27, 1), "arrêté sous le bord nord")
 	assert_true(_player.is_input_enabled())
-	assert_eq(_boot.get_map().map_id, &"route_1")
+	assert_eq(_boot.get_map().map_id, &"viridian_city")

@@ -32,8 +32,8 @@ func _init() -> void:
 
 func _start() -> void:
 	_boot = (load(BOOT_SCENE) as PackedScene).instantiate()
-	_boot.set(&"start_map", &"route_1")
-	_boot.set(&"start_spawn", &"jadielle_soon_w")
+	_boot.set(&"start_map", &"viridian_city")
+	_boot.set(&"start_spawn", &"route_2_soon_w")
 	_boot.set(&"start_facing", Vector2i.UP)
 	root.add_child(_boot)
 	_router = root.get_node(^"SceneRouter")
