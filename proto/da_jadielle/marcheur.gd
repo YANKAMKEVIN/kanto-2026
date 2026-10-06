@@ -22,6 +22,9 @@ var taille_ombre := 1.0
 ## Grille de déplacement (emprises.gd) : si elle est fournie, le marcheur va d'un coin au
 ## suivant par le plus court chemin libre, au lieu de traverser les obstacles.
 var obstacles: AStarGrid2D
+## Pause (en secondes) à chaque coin du circuit, dans l'ordre des coins ; le personnage y
+## regarde vers le bas. Vide : aucune pause (routines de Bourg Palette, dossier 01).
+var pauses: Array[float] = []
 
 var _corps := Sprite2D.new()
 var _case := Vector2i.ZERO
@@ -30,6 +33,9 @@ var _direction := Vector2i.DOWN
 var _temps := 0.0
 var _image := 0
 var _court := false
+var _attente := 0.0
+## Index, dans le chemin tracé, de chaque coin d'origine → durée de sa pause.
+var _pauses_chemin := {}
 
 
 func _ready() -> void:
@@ -52,6 +58,11 @@ func _process(delta: float) -> void:
 		# Personnage immobile : regarde vers le bas, image de repos.
 		_direction = Vector2i.DOWN
 		_corps.frame = 0
+		return
+	if _attente > 0.0:
+		_attente -= delta
+		_direction = Vector2i.DOWN
+		_afficher(3)
 		return
 	var court := _cible in segments_course
 	if court != _court:
@@ -76,6 +87,8 @@ func _tracer_chemin() -> void:
 		return
 	var chemin: Array[Vector2i] = []
 	for i in circuit.size():
+		if i < pauses.size() and pauses[i] > 0.0:
+			_pauses_chemin[chemin.size()] = pauses[i]
 		var depart := circuit[i]
 		var arrivee := circuit[(i + 1) % circuit.size()]
 		var troncon := obstacles.get_id_path(depart, arrivee)
@@ -100,6 +113,7 @@ func _avancer_case() -> void:
 	_case += _pas()
 	if _case == circuit[(_cible + 1) % circuit.size()]:
 		_cible = (_cible + 1) % circuit.size()
+		_attente = _pauses_chemin.get(_cible, 0.0)
 
 
 func _pied(case_grille: Vector2i) -> Vector2:

@@ -67,19 +67,18 @@ const PIECES := {
 	"labo": {
 		"taille": Vector2i(16, 11), "coque": "int_labo_coque.png", "ouverture": [7, 2],
 		"meubles": [
-			# Machines, tabouret, escalier et tapis du labo pas encore générés (limite Codex) :
-			# classeur et tapis des maisons à la place ; l'escalier décoratif viendra avec le sien.
 			["int_aquarium.png", 1, 2, 1, 1], ["int_incubateur.png", 2, 2, 2, 2],
-			["int_classeur.png", 4, 2, 1, 1], ["int_bureau_chen.png", 7, 2, 3, 1],
+			["int_machines.png", 4, 2, 2, 1], ["int_bureau_chen.png", 7, 2, 3, 1],
 			["int_chaise_bureau.png", 8, 3, 1, 1], ["int_classeur.png", 10, 2, 1, 1],
 			["int_etagere_labo.png", 11, 2, 2, 2], ["int_frigo.png", 13, 2, 1, 1],
 			["int_vitrine.png", 14, 2, 1, 3], ["int_long_comptoir.png", 1, 5, 5, 1],
 			["int_table_starters.png", 11, 4, 3, 2], ["int_canape.png", 1, 6, 3, 1],
 			["int_table_basse.png", 3, 7, 2, 1], ["int_paillasse.png", 11, 7, 3, 1],
+			["int_tabouret.png", 12, 8, 1, 1], ["int_escalier_deco.png", 1, 8, 3, 2],
 			["int_plante.png", 6, 8, 1, 1], ["int_plante.png", 4, 9, 1, 1],
 			["int_plante.png", 10, 9, 1, 1], ["int_plante.png", 14, 9, 1, 1],
 		],
-		"tapis": [["int_tapis_salon.png", 3.5, 7.5], ["int_tapis_pokeball.png", 8.0, 6.5]],
+		"tapis": [["int_tapis_rouge.png", 3.5, 7.5], ["int_tapis_labo.png", 8.0, 6.5]],
 		"habitants": [["perso_p2", [Vector2i(7, 9), Vector2i(7, 4), Vector2i(10, 4),
 			Vector2i(10, 6), Vector2i(7, 6)]]],
 	},

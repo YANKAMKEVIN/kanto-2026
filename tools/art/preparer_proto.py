@@ -82,6 +82,24 @@ OBJETS = [
     ("WORLD_TREE_FRUITIER_01_NE_r1.png", "fruitier.png", ("h", 3.6)),
     ("WORLD_PROP_CAISSES_01_NE_r1.png", "caisses.png", ("w", 1.3)),
     ("WORLD_PROP_HAIE_V_01_NE_r1.png", "haie_v.png", ("h", 3.6)),
+    # Habillage de Bourg Palette (série 06B, lumière neutre).
+    ("WORLD_PROP_CLOTURE_PIQUETS_V_01_NE_r1.png", "cloture_piquets_v.png", ("h", 3.4)),
+    ("WORLD_TREE_C_01_NE_r1.png", "tree_c_ne.png", ("h", 4)),
+    ("WORLD_TREE_D_01_NE_r1.png", "tree_d_ne.png", ("h", 4.4)),
+    ("WORLD_TREE_E_01_NE_r1.png", "tree_e_ne.png", ("h", 5)),
+    ("WORLD_PROP_HORTENSIAS_01_NE_r1.png", "hortensias.png", ("w", 1.5)),
+    ("WORLD_PROP_JARDINIERE_01_NE_r1.png", "jardiniere_fleurs.png", ("w", 2.6)),
+    ("WORLD_PROP_MANGEOIRE_01_NE_r1.png", "mangeoire.png", ("h", 1.8)),
+    ("WORLD_PROP_EPOUVANTAIL_01_NE_r1.png", "epouvantail.png", ("h", 2)),
+    ("WORLD_PROP_BARQUE_01_NE_r1.png", "barque.png", ("h", 2.6)),
+    ("WORLD_PROP_CASIERS_PECHE_01_NE_r1.png", "casiers.png", ("w", 1.6)),
+    ("WORLD_PROP_HERBES_DUNE_01_NE_r1.png", "oyats.png", ("w", 1)),
+    ("WORLD_PROP_MATERIEL_LABO_01_NE_r1.png", "materiel_labo.png", ("w", 2.2)),
+    ("WORLD_PROP_RATELIER_VELOS_01_NE_r1.png", "ratelier.png", ("w", 2.2)),
+    ("WORLD_PROP_BROUETTE_01_NE_r1.png", "brouette.png", ("w", 1.4)),
+    ("WORLD_PROP_TAS_BOIS_01_NE_r1.png", "tas_bois.png", ("w", 1.8)),
+    ("WORLD_PROP_ARROSOIR_SEAU_01_NE_r1.png", "arrosoir.png", ("w", 0.9)),
+    ("WORLD_PROP_PIERRES_01_NE_r1.png", "pierres.png", ("w", 0.9)),
     # Intérieurs de Bourg Palette (série 07, lumière neutre).
     ("INT_MEUBLE_BAS_01_NE_r1.png", "int_meuble_bas.png", ("w", 3)),
     ("INT_CANAPE_01_NE_r1.png", "int_canape.png", ("w", 3)),
@@ -204,6 +222,27 @@ def _sols() -> None:
         print(f"{sortie} : {TEXTURE_SOL} × {TEXTURE_SOL}")
 
 
+# Planches de décalcomanies 4 × 2 (série 06B) : (source, préfixe, largeur d'un élément en cases).
+PLANCHES_DECAL = [
+    ("WORLD_GROUND_FLEURS_SAUVAGES_01_NE_r1.png", "fleur", 0.55),
+    ("WORLD_GROUND_FLEURS_COTIERES_01_NE_r1.png", "cote", 0.6),
+]
+
+
+def _decalcomanies() -> None:
+    for source, prefixe, cases in PLANCHES_DECAL:
+        planche = Image.open(SOURCE / source).convert("RGBA")
+        largeur, hauteur = planche.width // 4, planche.height // 2
+        for i in range(8):
+            cellule = planche.crop(((i % 4) * largeur, (i // 4) * hauteur,
+                                    (i % 4 + 1) * largeur, (i // 4 + 1) * hauteur))
+            element = _silhouette(cellule)
+            echelle = cases * CASE / element.width
+            taille = (round(element.width * echelle), round(element.height * echelle))
+            element.resize(taille, Image.LANCZOS).save(SORTIE / f"{prefixe}_{i + 1}.png")
+        print(f"{prefixe}_1..8.png : {cases} case")
+
+
 def _bordure() -> None:
     planche = Image.open(SOURCE / PLANCHE_BORDURE).convert("RGBA")
     colonnes, lignes = 4, 3
@@ -228,3 +267,4 @@ if __name__ == "__main__":
     _decor()
     _sols()
     _bordure()
+    _decalcomanies()

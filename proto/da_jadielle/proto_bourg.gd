@@ -39,7 +39,7 @@ const PLACE_RAYONS := Vector2(6.4, 2.8)
 ## Hautes herbes en travers de la Route 1 : aucun contournement.
 const HERBES: Array[Rect2] = [Rect2(20, 2, 9, 3)]
 ## Zones laissées libres d'arbres.
-const DEGAGES: Array[Rect2] = [Rect2(7, 0, 12, 11), Rect2(29, 0, 18, 11), Rect2(19.5, 0, 9, 17),
+const DEGAGES: Array[Rect2] = [Rect2(7, 0, 12, 14), Rect2(29, 0, 18, 14), Rect2(19.5, 0, 9, 17),
 	Rect2(10, 12, 26, 15), Rect2(3, 25, 45, 9), Rect2(33, 22, 11, 4)]
 ## Objets : [texture, x (milieu du pied), y (pied), vent, part de base du contact].
 const OBJETS: Array = [
@@ -57,6 +57,7 @@ const OBJETS: Array = [
 	# Jardins des maisons : haies sur les côtés, fruitiers, plates-bandes. Objets rares, chacun
 	# avec un propriétaire (dossier 01, principes d'habillage) : linge du rival, pots de la mère.
 	["haie_v.png", 7.6, 10.3, false, 0.3], ["haie_v.png", 7.6, 7.3, false, 0.3],
+	# Côtés intérieurs : haies (la clôture blanche latérale générée fait une colonne peu lisible).
 	["haie_v.png", 17.4, 10.3, false, 0.3], ["haie_v.png", 17.4, 7.3, false, 0.3],
 	["haie_v.png", 30.6, 10.3, false, 0.3], ["haie_v.png", 30.6, 7.3, false, 0.3],
 	["haie_v.png", 39.4, 10.3, false, 0.3], ["haie_v.png", 39.4, 7.3, false, 0.3],
@@ -64,8 +65,17 @@ const OBJETS: Array = [
 	["platebande.png", 32.4, 9.3, false, 0.2], ["platebande.png", 37.9, 9.3, false, 0.2],
 	["fruitier.png", 8.8, 5.2, true, 0.05], ["fruitier.png", 38.6, 5.0, true, 0.05],
 	["linge.png", 16.0, 5.0, false, 0.2],
-	["pots_fleurs.png", 36.2, 8.9, false, 0.1], ["buisson_b.png", 8.6, 8.0, false, 0.1],
-	["buisson_a.png", 16.4, 8.0, false, 0.1], ["buisson_b.png", 31.6, 8.0, false, 0.1],
+	["pots_fleurs.png", 36.2, 8.9, false, 0.1], ["hortensias.png", 31.8, 8.4, false, 0.1],
+	["buisson_a.png", 16.4, 8.0, false, 0.1],
+	# Propriétaires : bois de la maison du rival ; champ, épouvantail, brouette et arrosoir de la
+	# jardinière ; casiers et barque du pêcheur ; matériel et vélos des chercheurs ; mangeoire de la
+	# vieille dame (dossier 01, principes d'habillage).
+	["tas_bois.png", 8.8, 8.4, false, 0.15],
+	["epouvantail.png", 42.5, 5.0, false, 0.1], ["brouette.png", 45.8, 6.9, false, 0.15],
+	["arrosoir.png", 44.6, 7.0, false, 0.1],
+	["casiers.png", 1.6, 29.3, false, 0.15], ["barque.png", 10.4, 30.7, false, 0.15],
+	["materiel_labo.png", 31.0, 21.4, false, 0.15], ["ratelier.png", 17.4, 21.5, false, 0.15],
+	["mangeoire.png", 17.7, 12.2, false, 0.1],
 	# Place : buissons à l'entrée nord.
 	["buisson_b.png", 21.6, 8.6, false, 0.1], ["buisson_b.png", 26.4, 8.6, false, 0.1],
 	# Abords du labo : buissons entre les allées et la façade.
@@ -91,20 +101,33 @@ const OBJETS: Array = [
 	["rocher_mer.png", 9.0, 33.4, false, 0.0],
 ]
 ## Posés à plat dans la couche du sol (on marche dessus) : escaliers, ponton.
-const A_PLAT := ["escalier", "ponton"]
+const A_PLAT := ["escalier", "ponton", "champ"]
+## Cases du ponton au-dessus de l'eau : on y marche.
+const PONTON := Rect2i(3, 31, 4, 2)
 ## Falaise côtière : tronçons de 4 cases entre le sentier et la mer, à l'est de la plage.
 const FALAISE_PIED := 30.2
 ## Personnages et Pokémon : [texture, coins du circuit en cases].
+## Personnages et Pokémon : [texture, coins du circuit en cases, options]. Options : « pauses »
+## (secondes à chaque coin), « course » (segments courus), « avance » (pas d'avance au départ).
+## Les 4 routines du dossier 01 (déplacement + pause) ; Pokémon = casting temporaire.
 const HABITANTS: Array = [
 	["perso_p2", [Vector2i(35, 10), Vector2i(35, 12), Vector2i(33, 14), Vector2i(33, 23),
 		Vector2i(24, 23), Vector2i(16, 23), Vector2i(16, 27), Vector2i(8, 27), Vector2i(16, 27),
-		Vector2i(16, 14), Vector2i(24, 9), Vector2i(35, 12)]],
-	["rival", [Vector2i(12, 10)]],
-	["vieil_homme", [Vector2i(21, 12)]],
-	["enfant_p2", [Vector2i(27, 9), Vector2i(30, 9), Vector2i(30, 13), Vector2i(27, 13)]],
-	["rattata_p2", [Vector2i(27, 9), Vector2i(30, 9), Vector2i(30, 13), Vector2i(27, 13)]],
-	["voyageur", [Vector2i(6, 27), Vector2i(47, 27)]],
-	["roucool", [Vector2i(19, 6), Vector2i(21, 6)]],
+		Vector2i(16, 14), Vector2i(24, 9), Vector2i(35, 12)], {}],
+	["rival", [Vector2i(12, 10)], {}],
+	# Vieille dame : maison (provisoirement celle du rival) ↔ banc de la place, près de la mangeoire.
+	["vieille_dame", [Vector2i(13, 9), Vector2i(19, 13)], {"pauses": [6.0, 14.0]}],
+	["roucool", [Vector2i(18, 12), Vector2i(18, 11)], {"pauses": [5.0, 3.0]}],
+	# Pêcheur : village ↔ bout du ponton.
+	["pecheur", [Vector2i(30, 27), Vector2i(5, 32)], {"pauses": [4.0, 16.0]}],
+	# Enfant et Rattata : petite course ↔ retour, sur la place.
+	["enfant_p2", [Vector2i(26, 13), Vector2i(31, 13)], {"pauses": [4.0, 2.0], "course": [0, 1],
+		"avance": 1}],
+	["rattata_p2", [Vector2i(26, 13), Vector2i(31, 13)], {"pauses": [4.0, 2.0], "course": [0, 1]}],
+	# Chercheur : porte du labo ↔ serre.
+	["chercheur", [Vector2i(24, 22), Vector2i(31, 24)], {"pauses": [5.0, 8.0]}],
+	["chercheuse", [Vector2i(22, 24)], {}],
+	["jardiniere", [Vector2i(43, 7)], {}],
 ]
 const PARCOURS: Array[Vector2] = [Vector2(24, 5), Vector2(24, 11), Vector2(13, 8), Vector2(35, 8),
 	Vector2(24, 19), Vector2(16, 25), Vector2(7, 29), Vector2(28, 29), Vector2(39, 23)]
@@ -155,7 +178,8 @@ func _ready() -> void:
 		interdits.merge(_cases([Rect2i(zone)]))
 	_semis(chemins, interdits, bordures, tries, ombres)
 	for cellule: Vector2i in eau:
-		_obstacles.append(Rect2i(cellule, Vector2i.ONE))
+		if not PONTON.has_point(cellule):
+			_obstacles.append(Rect2i(cellule, Vector2i.ONE))
 	for habitant: Array in HABITANTS:
 		if (habitant[1] as Array).size() == 1:
 			_obstacles.append(Rect2i(habitant[1][0], Vector2i.ONE))
@@ -168,6 +192,10 @@ func _ready() -> void:
 		var coins: Array[Vector2i] = []
 		coins.assign(habitant[1])
 		marcheur.circuit = coins
+		var options: Dictionary = habitant[2]
+		marcheur.pauses.assign(options.get("pauses", []))
+		marcheur.segments_course.assign(options.get("course", []))
+		marcheur.avance_depart = options.get("avance", 0)
 		tries.add_child(marcheur)
 	_camera.limit_left = 0
 	_camera.limit_right = LARGEUR * CASE
@@ -324,8 +352,8 @@ func _foret(cases: Dictionary, tries: Node2D, ombres: Node2D) -> void:
 		if proche:
 			continue
 		poses.append(p)
-		var nom: String = ["tree_a_ne.png", "tree_b_ne.png", "tree_central_ne.png",
-			"tree_a_ne.png"][_hasard.randi_range(0, 3)]
+		var nom: String = ["tree_a_ne.png", "tree_b_ne.png", "tree_central_ne.png", "tree_c_ne.png",
+			"tree_d_ne.png", "tree_e_ne.png", "tree_c_ne.png", "tree_e_ne.png"][_hasard.randi_range(0, 7)]
 		_objet([nom, p.x, p.y, true, 0.05], tries, ombres)
 
 
@@ -343,7 +371,10 @@ func _semis(chemins: Dictionary, interdits: Dictionary, sol: Node2D, tries: Node
 		var cellule := Vector2i(p)
 		if chemins.has(cellule) or interdits.has(cellule):
 			continue
-		_decal(sol, "bord_touffe_%d.png" % _hasard.randi_range(1, 4), p * CASE, 0.9)
+		if _hasard.randf() < 0.16:
+			_decal(sol, "fleur_%d.png" % _hasard.randi_range(1, 8), p * CASE, 1.0)
+		else:
+			_decal(sol, "bord_touffe_%d.png" % _hasard.randi_range(1, 4), p * CASE, 0.9)
 		if occupees.has(cellule) or _hasard.randf() > 0.03:
 			continue
 		var proche := false
@@ -354,8 +385,24 @@ func _semis(chemins: Dictionary, interdits: Dictionary, sol: Node2D, tries: Node
 		if proche:
 			continue
 		occupees[cellule] = true
-		var nom: String = ["buisson_a.png", "buisson_b.png", "buisson_c.png"][_hasard.randi_range(0, 2)]
+		var nom: String = ["buisson_a.png", "buisson_b.png", "buisson_c.png", "pierres.png"][
+			_hasard.randi_range(0, 3)]
 		_objet([nom, p.x, p.y, false, 0.1], tries, ombres)
+	# Bord de mer : végétation côtière sur la bande au-dessus de la falaise et sur la plage,
+	# et quelques oyats.
+	for essai in 120:
+		var p := Vector2(_hasard.randf_range(0.3, LARGEUR - 0.3), _hasard.randf_range(27.6, 30.4))
+		var cellule := Vector2i(p)
+		if interdits.has(cellule) and not _cases(SABLE).has(cellule):
+			continue
+		if p.y > 28.6 and not _cases(SABLE).has(cellule):
+			continue
+		if Rect2(2.4, 28.8, 5.4, 4.0).has_point(p):
+			continue  # pas sur le ponton
+		_decal(sol, "cote_%d.png" % _hasard.randi_range(1, 8), p * CASE, 1.0)
+	for p: Vector2 in [Vector2(11.4, 28.6), Vector2(0.8, 28.7), Vector2(14.5, 28.2),
+			Vector2(22.0, 28.2), Vector2(31.5, 28.2), Vector2(40.0, 28.2), Vector2(46.0, 28.2)]:
+		_objet(["oyats.png", p.x, p.y, true, 0.05], tries, ombres)
 
 
 func _lumiere() -> void:

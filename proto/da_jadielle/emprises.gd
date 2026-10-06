@@ -7,6 +7,7 @@ const CASE := 96
 
 ## [préfixe de texture, largeur en cases (0 = celle de la texture), profondeur en cases].
 const REGLES: Array = [
+	["cloture_piquets_v", 1, 3],  # avant « cloture » (préfixe commun)
 	["centre", 8, 4], ["boutique", 8, 4], ["arene", 10, 4], ["maison_a", 6, 3],
 	["maison_b", 5, 3], ["tree", 1, 1], ["banc", 2, 1], ["lampadaire", 1, 1],
 	["panneau", 1, 1], ["rocher", 2, 1], ["haie", 4, 1], ["cloture", 4, 1],
@@ -19,6 +20,9 @@ const REGLES: Array = [
 	["boite_lettres", 1, 1], ["potager", 3, 1], ["ronces", 2, 1], ["tronc_couche", 3, 1],
 	["rocher_mer", 2, 1], ["buisson", 1, 1], ["platebande", 3, 1], ["pots_fleurs", 1, 1],
 	["tonneau", 1, 1], ["linge", 3, 1], ["fruitier", 1, 1], ["caisses", 1, 1], ["haie_v", 1, 3],
+	["epouvantail", 1, 1], ["barque", 1, 2], ["casiers", 2, 1], ["materiel_labo", 2, 1],
+	["ratelier", 2, 1], ["brouette", 1, 1], ["tas_bois", 2, 1], ["arrosoir", 1, 1],
+	["mangeoire", 1, 1], ["hortensias", 1, 1],
 ]
 
 
