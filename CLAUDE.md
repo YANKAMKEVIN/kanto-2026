@@ -12,6 +12,7 @@ Kevin est le **directeur du jeu** : il conçoit (souvent avec ChatGPT), Claude i
 - `docs/design/ui-ux-bible-v0.1.md` — philosophie UI/UX (« le monde est la star ») ; ses contradictions avec la planche sont listées en fin de fichier.
 - `docs/design/dossier-04-systeme-pokemon.md` — système Pokémon (jalons 4+) ; `dossier-05-combat.md` — combat ; `dossier-06-progression.md` — progression, arènes, rival, Ligue.
 - `docs/design/reference/bourg-palette-aplus-v1.png` — benchmark graphique du **monde** (2D HD atmosphérique, golden hour).
+- Monde peint validé (2026-10-06) : `reference/bourg-palette-vue-generale-v1.png` et `route-1-vue-generale-v1.png` (+ plans) — cibles de rendu de Bourg Palette et de la Route 1 ; règles dans les dossiers 01 et 07 (angles droits, « nature dense, objets rares », forêt serrée).
 - `docs/design/reference/chambre-joueur-v1.webp` — référence de la **chambre du joueur** (agencement + rendu cible des intérieurs) ; autres intérieurs : `ouverture-storyboard-v1.webp`, `maison-rival-v1.webp`, `labo-chen-v1.png` ; combat : `combat-v1.webp`, `combat-capture-v1.webp`.
 - `docs/design/dossier-08-menu-dresseur.md` — Menu Dresseur du **jalon 6** (tableau de bord, Équipe, Sac, Pokédex, Carte, Dresseur, Paramètres) ; maquettes `reference/menu-*-v1.jpg`.
 - Jadielle (J7) : `reference/jadielle-vue-generale-v1.webp`, `jadielle-planche-v1.webp`, `centre-pokemon-v1.webp`, `boutique-jadielle-v1.webp`, `route-22-rival-02-v1.webp` (écarts avec le dossier 09 listés dans sa section « Références visuelles »).

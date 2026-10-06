@@ -1,0 +1,20 @@
+CONCEPT ART — VUE GÉNÉRALE DE LA FORÊT DE JADE (Kanto 2026), étude de direction artistique.
+
+Deux images sont jointes.
+IMAGE 1 : un PLAN SCHÉMATIQUE en aplats, vu du dessus, qui donne la COMPOSITION à suivre : vert très foncé = forêt impénétrable ; vert moyen = sous-bois praticable (mousse, herbe courte, fougères basses) ; beige = sentier de terre ; jaune-vert olive = HAUTES HERBES (où vivent les Pokémon sauvages) ; cercle blanc = un très grand arbre ancien au centre d'une clairière ; petit carré brun = une vieille souche creuse dans une clairière isolée ; petit carré ocre = un panneau en bois SANS TEXTE. Le sentier entre par le bas de l'image (venant de la Route 2) et ressort par le haut (vers Argenta), en serpentant. RÈGLE ABSOLUE : le joueur se déplace case par case à l'horizontale et à la verticale ; le sentier et les passages ne suivent que des segments horizontaux et verticaux à angles droits, AUCUN segment en diagonale ni courbe. Le plan ne donne que la composition : son style en aplats ne doit pas apparaître.
+IMAGE 2 : la vue générale de la Route 1, un autre lieu du même jeu, juste avant. Respecte EXACTEMENT son style de rendu (même pinceau, feuillage en masses arrondies et lisses, mêmes arbres, même saturation, mêmes personnages) ; ne reprends pas sa composition.
+
+Format : PORTRAIT 1024 × 1536, vue plongeante de toute la forêt, comme le plan.
+
+RENDU (ADN visuel Kanto 2026 v1) : illustration 2D peinte numériquement, RPG Pokémon moderne « HD-2D peint », formes simples et arrondies, détails fins mais ordonnés ; ni pixel art, ni 3D, ni photo. Vue de dessus de trois quarts, projection oblique frontale, sans point de fuite. Aucun trait noir. Ombres colorées bleu-vert ou violet froid, jamais grises.
+
+AMBIANCE — c'est la différence avec la Route 1 : une VRAIE forêt, dense, profonde et un peu mystérieuse, mais jamais effrayante (premier vrai lieu sauvage d'un jeu Pokémon).
+- Canopée épaisse et continue : grands feuillus et conifères plus hauts et plus sombres qu'à la Route 1, cimes qui se touchent, verts profonds (vert sapin, vert-bleu, olive), quelques touches vert-jaune.
+- Sous-bois praticable plus sombre et plus frais que la Route 1 : mousse, fougères, racines qui affleurent, champignons, feuilles mortes, troncs moussus, souches, rochers couverts de mousse.
+- Lumière : la scène est globalement plus ombragée ; quelques taches de soleil et rais de lumière qui tombent en biais dans les clairières et sur le sentier (lumière blanche et douce, jamais dorée).
+- Clairières : une clairière centrale avec le très grand arbre ancien aux racines énormes ; une petite clairière isolée à gauche avec la souche creuse (un recoin à découvrir).
+- Traces humaines discrètes : le panneau à l'entrée sud, un vieux rondin servant de banc, quelques planches sur un passage boueux.
+
+VIE (très discrète) : un Chenipan (chenille Pokémon verte) sur une feuille au bord des hautes herbes, un Aspicot (chenille Pokémon brun-jaune à dard) sur une branche basse, un Roucool posé sur une racine. Un seul personnage : un jeune Dresseur Scout (chapeau, filet à insectes) dans une clairière. Aucun autre animal (aucune faune non-Pokémon).
+
+INTERDITS : texte, lettres, chiffres, panneaux lisibles, logo, signature, filigrane, cadre, interface, bâtiment, eau, route goudronnée, brouillard épais, vignettage noir, flou de profondeur, pixel art, ambiance d'horreur.

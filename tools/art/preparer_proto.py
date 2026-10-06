@@ -54,16 +54,123 @@ OBJETS = [
     ("WORLD_RELIEF_ESCALIER_01_NE_r1.png", "escalier.png", ("w", 2.2)),
     ("WORLD_PROP_ROCHER_01_NE_r1.png", "rocher.png", ("w", 2)),
     ("WORLD_GROUND_HAUTES_HERBES_01_NE_r1.png", "hautes_herbes.png", ("w", 1.15)),
+    # Bourg Palette (série 06, lumière neutre) ; boîte aux lettres et potager repris du J7.
+    ("WORLD_BLDG_MAISON_JOUEUR_01_NE_r1.png", "maison_joueur.png", ("w", 6.5)),
+    ("WORLD_BLDG_MAISON_RIVAL_01_NE_r1.png", "maison_rival.png", ("w", 6.5)),
+    ("WORLD_BLDG_LABO_01_NE_r1.png", "labo.png", ("w", 10)),
+    ("WORLD_BLDG_SERRE_01_NE_r1.png", "serre.png", ("w", 3)),
+    ("WORLD_TREE_ANCIEN_01_NE_r1.png", "arbre_ancien.png", ("w", 6)),
+    ("WORLD_PROP_CLOTURE_PIQUETS_01_NE_r1.png", "cloture_piquets.png", ("w", 4)),
+    ("WORLD_PROP_VELO_01_NE_r1.png", "velo.png", ("w", 1.6)),
+    ("WORLD_PROP_CAMIONNETTE_01_NE_r1.png", "camionnette.png", ("w", 2.4)),
+    ("WORLD_GROUND_CHAMP_01_NE_r1.png", "champ.png", ("w", 6)),
+    ("WORLD_PROP_PONTON_01_NE_r1.png", "ponton.png", ("w", 5)),
+    ("WORLD_PROP_RONCES_01_NE_r1.png", "ronces.png", ("w", 2)),
+    ("WORLD_PROP_TRONC_COUCHE_01_NE_r1.png", "tronc_couche.png", ("w", 3)),
+    ("WORLD_PROP_ROCHER_MER_01_NE_r1.png", "rocher_mer.png", ("w", 2)),
+    ("WORLD_RELIEF_ESCALIER_BOIS_01_NE_r1.png", "escalier_bois.png", ("w", 2)),
+    ("WORLD_PROP_BOITE_LETTRES_01_NE_r1.png", "boite_lettres.png", ("h", 1.3)),
+    ("WORLD_PROP_POTAGER_01_NE_r1.png", "potager.png", ("w", 3)),
+    # Habillage de Bourg Palette, repris des sessions du J7 (lumière neutre).
+    ("WORLD_PROP_BUISSON_A_01_NE_r1.png", "buisson_a.png", ("w", 1.4)),
+    ("WORLD_PROP_BUISSON_B_01_NE_r1.png", "buisson_b.png", ("w", 1.5)),
+    ("WORLD_PROP_BUISSON_C_01_NE_r1.png", "buisson_c.png", ("w", 1.3)),
+    ("WORLD_PROP_PLATEBANDE_01_NE_r1.png", "platebande.png", ("w", 3)),
+    ("WORLD_PROP_POTS_FLEURS_01_NE_r1.png", "pots_fleurs.png", ("w", 1)),
+    ("WORLD_PROP_TONNEAU_01_NE_r1.png", "tonneau.png", ("h", 1)),
+    ("WORLD_PROP_LINGE_01_NE_r1.png", "linge.png", ("w", 2.6)),
+    ("WORLD_TREE_FRUITIER_01_NE_r1.png", "fruitier.png", ("h", 3.6)),
+    ("WORLD_PROP_CAISSES_01_NE_r1.png", "caisses.png", ("w", 1.3)),
+    ("WORLD_PROP_HAIE_V_01_NE_r1.png", "haie_v.png", ("h", 3.6)),
+    # Habillage de Bourg Palette (série 06B, lumière neutre).
+    ("WORLD_PROP_CLOTURE_PIQUETS_V_01_NE_r1.png", "cloture_piquets_v.png", ("h", 3.4)),
+    ("WORLD_TREE_C_01_NE_r1.png", "tree_c_ne.png", ("h", 4)),
+    ("WORLD_TREE_D_01_NE_r1.png", "tree_d_ne.png", ("h", 4.4)),
+    ("WORLD_TREE_E_01_NE_r1.png", "tree_e_ne.png", ("h", 5)),
+    ("WORLD_PROP_HORTENSIAS_01_NE_r1.png", "hortensias.png", ("w", 1.5)),
+    ("WORLD_PROP_JARDINIERE_01_NE_r1.png", "jardiniere_fleurs.png", ("w", 2.6)),
+    ("WORLD_PROP_MANGEOIRE_01_NE_r1.png", "mangeoire.png", ("h", 1.8)),
+    ("WORLD_PROP_EPOUVANTAIL_01_NE_r1.png", "epouvantail.png", ("h", 2)),
+    ("WORLD_PROP_BARQUE_01_NE_r1.png", "barque.png", ("h", 2.6)),
+    ("WORLD_PROP_CASIERS_PECHE_01_NE_r1.png", "casiers.png", ("w", 1.6)),
+    ("WORLD_PROP_HERBES_DUNE_01_NE_r1.png", "oyats.png", ("w", 1)),
+    ("WORLD_PROP_MATERIEL_LABO_01_NE_r1.png", "materiel_labo.png", ("w", 2.2)),
+    ("WORLD_PROP_RATELIER_VELOS_01_NE_r1.png", "ratelier.png", ("w", 2.2)),
+    ("WORLD_PROP_BROUETTE_01_NE_r1.png", "brouette.png", ("w", 1.4)),
+    ("WORLD_PROP_TAS_BOIS_01_NE_r1.png", "tas_bois.png", ("w", 1.8)),
+    ("WORLD_PROP_ARROSOIR_SEAU_01_NE_r1.png", "arrosoir.png", ("w", 0.9)),
+    ("WORLD_PROP_PIERRES_01_NE_r1.png", "pierres.png", ("w", 0.9)),
+    # Route 1 (série 08, lumière neutre) ; clôture blanche courte tirée de la série 06B.
+    ("WORLD_PROP_CLOTURE_PIQUETS_V_01_NE_r1.png", "piquet_court.png", ("h", 1.6)),
+    ("WORLD_TREE_AUTOMNE_01_NE_r1.png", "automne.png", ("h", 4)),
+    ("WORLD_PROP_SOUCHE_01_NE_r1.png", "souche.png", ("w", 1.2)),
+    ("WORLD_RELIEF_REBORD_01_NE_r1.png", "rebord.png", ("w", 1.05)),
+    # Intérieurs de Bourg Palette (série 07, lumière neutre).
+    ("INT_MEUBLE_BAS_01_NE_r1.png", "int_meuble_bas.png", ("w", 3)),
+    ("INT_CANAPE_01_NE_r1.png", "int_canape.png", ("w", 3)),
+    ("INT_TABLE_BASSE_01_NE_r1.png", "int_table_basse.png", ("w", 2)),
+    ("INT_TABLE_REPAS_01_NE_r1.png", "int_table_repas.png", ("w", 3)),
+    ("INT_FRIGO_01_NE_r1.png", "int_frigo.png", ("w", 1)),
+    ("INT_CUISINE_01_NE_r1.png", "int_cuisine.png", ("w", 3)),
+    ("INT_ESCALIER_MONTANT_01_NE_r1.png", "int_escalier_montant.png", ("w", 2.2)),
+    ("INT_TELE_01_NE_r1.png", "int_tele.png", ("w", 2)),
+    ("INT_PORTE_MANTEAU_01_NE_r1.png", "int_porte_manteau.png", ("w", 1)),
+    ("INT_COMMODE_POKEBALL_01_NE_r1.png", "int_commode_pokeball.png", ("w", 1)),
+    ("INT_TAPIS_SALON_01_NE_r1.png", "int_tapis_salon.png", ("w", 3)),
+    ("INT_TAPIS_PLAID_01_NE_r1.png", "int_tapis_plaid.png", ("w", 5)),
+    ("INT_LIT_01_NE_r1.png", "int_lit.png", ("w", 2)),
+    ("INT_CHEVET_LAMPE_01_NE_r1.png", "int_chevet.png", ("w", 1)),
+    ("INT_PETITE_ETAGERE_01_NE_r1.png", "int_petite_etagere.png", ("w", 1)),
+    ("INT_BUREAU_PC_01_NE_r1.png", "int_bureau_pc.png", ("w", 3)),
+    ("INT_CHAISE_BUREAU_01_NE_r1.png", "int_chaise_bureau.png", ("w", 0.8)),
+    ("INT_GRANDE_ETAGERE_01_NE_r1.png", "int_grande_etagere.png", ("w", 2)),
+    ("INT_SAC_VOYAGE_01_NE_r1.png", "int_sac.png", ("w", 0.9)),
+    ("INT_CAISSE_POKEBALLS_01_NE_r1.png", "int_caisse_pokeballs.png", ("w", 2)),
+    ("INT_TAPIS_POKEBALL_01_NE_r1.png", "int_tapis_pokeball.png", ("w", 4)),
+    ("INT_TAPIS_CARREAUX_01_NE_r1.png", "int_tapis_carreaux.png", ("w", 2)),
+    ("INT_CUISINIERE_HOTTE_01_NE_r1.png", "int_cuisiniere.png", ("w", 1)),
+    ("INT_BUREAU_ANGLE_PC_01_NE_r1.png", "int_bureau_angle.png", ("w", 2)),
+    ("INT_CHAISE_GAMER_01_NE_r1.png", "int_chaise_gamer.png", ("w", 0.9)),
+    ("INT_COMMODE_01_NE_r1.png", "int_commode.png", ("w", 2)),
+    ("INT_LIT_POKEBALL_01_NE_r1.png", "int_lit_pokeball.png", ("w", 2)),
+    ("INT_LAVABO_01_NE_r1.png", "int_lavabo.png", ("w", 2)),
+    ("INT_DOUCHE_01_NE_r1.png", "int_douche.png", ("w", 1)),
+    ("INT_MEUBLE_CHAUSSURES_01_NE_r1.png", "int_meuble_chaussures.png", ("w", 1)),
+    ("INT_CLOISON_V_01_NE_r1.png", "int_cloison_v.png", ("h", 3.6)),
+    ("INT_CLOISON_H_01_NE_r1.png", "int_cloison_h.png", ("w", 5)),
+    ("INT_AQUARIUM_01_NE_r1.png", "int_aquarium.png", ("w", 1)),
+    ("INT_INCUBATEUR_01_NE_r1.png", "int_incubateur.png", ("w", 2)),
+    ("INT_MACHINES_LABO_01_NE_r1.png", "int_machines.png", ("w", 2)),
+    ("INT_BUREAU_CHEN_01_NE_r1.png", "int_bureau_chen.png", ("w", 3)),
+    ("INT_CLASSEUR_01_NE_r1.png", "int_classeur.png", ("w", 1)),
+    ("INT_ETAGERE_LABO_01_NE_r1.png", "int_etagere_labo.png", ("w", 2)),
+    ("INT_VITRINE_POKEBALLS_01_NE_r1.png", "int_vitrine.png", ("w", 1)),
+    ("INT_LONG_COMPTOIR_01_NE_r1.png", "int_long_comptoir.png", ("w", 5)),
+    ("INT_TABLE_STARTERS_01_NE_r1.png", "int_table_starters.png", ("w", 3)),
+    ("INT_PAILLASSE_01_NE_r1.png", "int_paillasse.png", ("w", 3)),
+    ("INT_TABOURET_01_NE_r1.png", "int_tabouret.png", ("w", 0.7)),
+    ("INT_ESCALIER_DECO_01_NE_r1.png", "int_escalier_deco.png", ("w", 3)),
+    ("INT_TAPIS_ROUGE_01_NE_r1.png", "int_tapis_rouge.png", ("w", 4)),
+    ("INT_TAPIS_LABO_POKEBALL_01_NE_r1.png", "int_tapis_labo.png", ("w", 4)),
 ]
 # Enveloppes des pièces (15 × 10 cases), opaques.
 PIECES = [
     ("INT_CENTRE_COQUE_NE_r1.png", "int_centre_coque.png"),
     ("INT_BOUTIQUE_COQUE_NE_r2.png", "int_boutique_coque.png"),
 ]
+# Enveloppes des pièces de Bourg Palette (série 07) : (source, sortie, largeur, profondeur en cases).
+PIECES_BOURG = [
+    ("INT_CHAMBRE_JOUEUR_COQUE_NE_r1.png", "int_chambre_coque.png", 14, 10),
+    ("INT_MAISON_JOUEUR_RDC_COQUE_NE_r1.png", "int_rdc_coque.png", 14, 10),
+    ("INT_MAISON_RIVAL_COQUE_NE_r1.png", "int_rival_coque.png", 18, 11),
+    ("INT_LABO_COQUE_NE_r1.png", "int_labo_coque.png", 16, 11),
+]
 SOLS = [
     ("VALIDE_HERBE.png", "herbe.png", 1.0),
     ("VALIDE_PAVE_CENTRE.png", "paves.png", 0.7),  # contraste réduit (fiche)
     ("WORLD_GROUND_CHEMIN_01_NE_r1.png", "chemin.png", 0.55),
+    ("WORLD_GROUND_SABLE_01_NE_r1.png", "sable.png", 0.8),
+    ("WORLD_GROUND_EAU_01_NE_r1.png", "eau.png", 1.0),
 ]
 TEXTURE_SOL = 384  # 4 × 4 cases
 PLANCHE_BORDURE = "VALIDE_DECAL_BORD.png"
@@ -77,6 +184,9 @@ def _silhouette(image: Image.Image) -> Image.Image:
 
 def _objets() -> None:
     for source, sortie, (axe, cases) in OBJETS:
+        if not (SOURCE / source).exists():
+            print(f"{sortie} : source absente ({source}), ignoré")
+            continue
         image = _silhouette(Image.open(SOURCE / source).convert("RGBA"))
         largeur, hauteur = image.size
         echelle = cases * CASE / (hauteur if axe == "h" else largeur)
@@ -88,6 +198,11 @@ def _objets() -> None:
 def _pieces() -> None:
     for source, sortie in PIECES:
         image = Image.open(SOURCE / source).convert("RGB").resize((15 * CASE, 10 * CASE),
+                                                                   Image.LANCZOS)
+        image.save(SORTIE / sortie)
+        print(f"{sortie} : {image.width} × {image.height}")
+    for source, sortie, largeur, profondeur in PIECES_BOURG:
+        image = Image.open(SOURCE / source).convert("RGB").resize((largeur * CASE, profondeur * CASE),
                                                                    Image.LANCZOS)
         image.save(SORTIE / sortie)
         print(f"{sortie} : {image.width} × {image.height}")
@@ -110,6 +225,27 @@ def _sols() -> None:
             image = ImageEnhance.Color(image).enhance(0.55)
         image.save(SORTIE / sortie)
         print(f"{sortie} : {TEXTURE_SOL} × {TEXTURE_SOL}")
+
+
+# Planches de décalcomanies 4 × 2 (série 06B) : (source, préfixe, largeur d'un élément en cases).
+PLANCHES_DECAL = [
+    ("WORLD_GROUND_FLEURS_SAUVAGES_01_NE_r1.png", "fleur", 0.55),
+    ("WORLD_GROUND_FLEURS_COTIERES_01_NE_r1.png", "cote", 0.6),
+]
+
+
+def _decalcomanies() -> None:
+    for source, prefixe, cases in PLANCHES_DECAL:
+        planche = Image.open(SOURCE / source).convert("RGBA")
+        largeur, hauteur = planche.width // 4, planche.height // 2
+        for i in range(8):
+            cellule = planche.crop(((i % 4) * largeur, (i // 4) * hauteur,
+                                    (i % 4 + 1) * largeur, (i // 4 + 1) * hauteur))
+            element = _silhouette(cellule)
+            echelle = cases * CASE / element.width
+            taille = (round(element.width * echelle), round(element.height * echelle))
+            element.resize(taille, Image.LANCZOS).save(SORTIE / f"{prefixe}_{i + 1}.png")
+        print(f"{prefixe}_1..8.png : {cases} case")
 
 
 def _bordure() -> None:
@@ -136,3 +272,4 @@ if __name__ == "__main__":
     _decor()
     _sols()
     _bordure()
+    _decalcomanies()
