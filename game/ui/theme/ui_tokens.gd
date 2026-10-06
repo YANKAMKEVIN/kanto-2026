@@ -799,19 +799,10 @@ const DEX_SEARCH_ICON := 40
 const DEX_SEARCH_PAD_H := 20
 const DEX_REFINE_WIDTH := 220
 ## Case de la grille : légère (un seul dessin), sprite de 64 px affiché à l'échelle entière.
-const DEX_CELL_SIZE := Vector2(180, 208)
 const DEX_CELL_GAP := 12
-const DEX_CELL_PAD := 10
 const DEX_CELL_SPRITE_SOURCE := 64
 const DEX_CELL_SPRITE_SCALE := 2
-const DEX_CELL_SPRITE_TOP := 6
-const DEX_CELL_NUMBER_FONT := 22
-const DEX_CELL_NAME_FONT := 26
-const DEX_CELL_STATUS_FONT := 22
-const DEX_CELL_BALL := 22
-const DEX_CELL_SELECTED_SCALE := 1.03
 ## Une case inconnue : numéro et « ??? » seulement, estompés.
-const DEX_UNKNOWN_ALPHA := 0.55
 ## Fiche : identité (vignette, numéro, nom, types), onglets, pages.
 const DEX_SHEET_MIN_WIDTH := 960
 const DEX_SPRITE_FRAME := 160
@@ -847,6 +838,25 @@ const DEX_HALO_CENTER := Color(1.0, 1.0, 1.0, 0.16)
 const DEX_HALO_UNKNOWN_ALPHA := 0.5
 ## Côté de la texture du halo (étirée par l'écran, filtre linéaire).
 const DEX_HALO_TEXTURE := 128
+
+## Case de la grille (refonte du Pokédex, T2) : carré tactile, halo + vignette de l'atlas,
+## numéro en haut à gauche, Poké Ball en haut à droite (capturé). Ni nom ni « Vu / Capturé ».
+const DEX_CELL_SIZE := Vector2(128, 128)
+## Côté de l'image (vignette de l'atlas, 128 px réduite) et distance de son bord haut.
+const DEX_CELL_IMAGE := 112
+const DEX_CELL_IMAGE_TOP := 12
+## Fond d'une case connue : un peu plus clair que le panneau, comme la maquette.
+const DEX_CELL_BG := Color(0.17, 0.22, 0.31, 0.92)
+## Marge du numéro et de la Poké Ball au bord de la case.
+const DEX_CELL_PAD := 8
+const DEX_CELL_NUMBER_FONT := 22
+const DEX_CELL_BALL := 24
+## Contour du numéro d'une case connue (lisible sur un artwork clair).
+const DEX_CELL_NUMBER_OUTLINE := 6
+const DEX_CELL_NUMBER_OUTLINE_COLOR := Color(0.04, 0.06, 0.10, 0.85)
+const DEX_CELL_SELECTED_SCALE := 1.03
+## Numéro d'une case inconnue (estompé).
+const DEX_UNKNOWN_ALPHA := 0.55
 
 # Écran Carte du Menu Dresseur (jalon 6, T20). Un journal : l'illustration entière, les noms
 # des seules zones découvertes, un panneau latéral ; aucun total, aucun « ??? ».

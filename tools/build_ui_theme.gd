@@ -846,8 +846,8 @@ func _add_pokedex_screen(theme: Theme, bold: Font, t: GDScript) -> void:
 	theme.set_type_variation(&"DexPanel", &"PanelContainer")
 	theme.set_stylebox(&"panel", &"DexPanel", panel)
 
-	var cell := _bag_box(t.PANEL_BG, t.PANEL_BORDER, t.BORDER_WIDTH, 0, 0, t)
-	var cell_selected := _bag_box(t.PANEL_BG, t.ACCENT, t.MOVE_CARD_SELECTED_BORDER, 0, 0, t)
+	var cell := _bag_box(t.DEX_CELL_BG, t.PANEL_BORDER, t.BORDER_WIDTH, 0, 0, t)
+	var cell_selected := _bag_box(t.DEX_CELL_BG, t.ACCENT, t.MOVE_CARD_SELECTED_BORDER, 0, 0, t)
 	cell_selected.shadow_color = t.MOVE_CARD_SELECTED_GLOW
 	cell_selected.shadow_size = t.MOVE_CARD_SELECTED_GLOW_SIZE
 	var cell_unknown := _bag_box(t.MOVE_CARD_EMPTY_BG, t.MOVE_CARD_EMPTY_BORDER, t.BORDER_WIDTH,

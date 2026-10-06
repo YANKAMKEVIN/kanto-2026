@@ -98,8 +98,8 @@ func test_grid_has_151_cells_with_title_and_counts() -> void:
 func test_unknown_cell_has_no_image_and_no_touch() -> void:
 	var screen := await _screen_in(2340, _grid())
 	var unknown := screen.get_slot(2)
-	assert_eq(unknown.get_texts(), PackedStringArray(["002", "???"]))
-	assert_false(unknown.has_image(), "ni image ni silhouette")
+	assert_eq(unknown.get_texts(), PackedStringArray(["002"]), "numéro seul, jamais de nom")
+	assert_true(unknown.has_silhouette(), "silhouette, pas d'image en clair")
 	assert_eq(unknown.mouse_filter, Control.MOUSE_FILTER_IGNORE)
 	_tap(unknown)
 	assert_true(_opened.is_empty(), "aucun toucher")
@@ -109,10 +109,11 @@ func test_known_cell_opens_one_sheet() -> void:
 	var screen := await _screen_in(2340, _grid())
 	var slot := screen.get_slot(4)
 	assert_true(slot.has_image(), "Salamèche a son sprite")
-	assert_eq(slot.get_texts(), PackedStringArray(["004", "Salamèche", "Capturé"]))
+	assert_eq(slot.get_texts(), PackedStringArray(["004", "Salamèche"]))
+	assert_true(slot.has_ball(), "capturé : Poké Ball")
 	_tap(slot)
 	assert_eq(_opened, [&"charmander"])
-	assert_eq(screen.get_slot(7).get_texts()[2], "Vu", "vu : texte, pas seulement une couleur")
+	assert_false(screen.get_slot(7).has_ball(), "seulement vu : pas de Poké Ball")
 
 
 func test_filter_buttons_emit_one_signal_each() -> void:
