@@ -1,6 +1,6 @@
 # Dossier 10 — Forêt de Jade
 
-> Conçu par Kevin avec ChatGPT, reçu le 2026-10-06 ; passe d'alignement de Claude et **11 décisions de Kevin** le même jour (section « Arbitrages »). **Source de vérité** pour la Forêt de Jade (jalon 9 de la roadmap). Le tracé ASCII donne la logique, **pas à reproduire case par case**. Textes : section « Textes à valider » (dernière lecture de Kevin avant verrouillage). **Pas d'implémentation avant le jalon 9.**
+> Conçu par Kevin avec ChatGPT, reçu le 2026-10-06 ; passe d'alignement de Claude et **11 décisions de Kevin** le même jour (section « Arbitrages »). **Source de vérité** pour la Forêt de Jade (jalon 9 de la roadmap). Le tracé ASCII donne la logique, **pas à reproduire case par case**. Textes : section « Textes verrouillés » (validés par Kevin le 2026-10-06 sur recommandation de Claude). **Pas d'implémentation avant le jalon 9.**
 
 **Ligne directrice** : la Forêt de Jade est le premier endroit où Kanto cesse d'être confortable sans devenir hostile. Jusqu'ici, le joueur découvre ; ici, il commence à préparer son équipe.
 
@@ -15,7 +15,7 @@
 8. **Objets cachés** : texte environnemental pour découvrir la cache, puis **toast standard** de la bible UI (« Potion ×1 — Ajoutée au Sac », « Antidote ×1 — Ajouté au Sac ») ; pas de deuxième bulle « Une Potion ! ».
 9. **Deux postes de garde verrouillés**, **une seule scène technique paramétrée** (garde, répliques et sorties différents).
 10. **Repères : tronc incliné au sud → énorme souche au centre → clairière lumineuse au nord.** L'étude de DA (`reference/foret-jade-etude-ambiance-v1.png`, tracé provisoire, arbre ancien au centre) reste une référence d'**ambiance**, pas de level design.
-11. **Contraintes du futur dossier de la Route 2** : aucun Dresseur avant la forêt (Léo reste le premier vrai Dresseur) ; la Route 2 est interrompue par la Forêt de Jade et ne permet pas de la contourner lors de la première progression (aussi notées dans la roadmap, phase 5).
+11. **Contraintes du futur dossier de la Route 2** : aucun Dresseur avant la forêt (Théo reste le premier vrai Dresseur) ; la Route 2 est interrompue par la Forêt de Jade et ne permet pas de la contourner lors de la première progression (aussi notées dans la roadmap, phase 5).
 
 ## 1. Intention
 **Première petite expédition** de l'aventure : « Je ne suis plus juste sur une route entre deux villes. Je suis entré quelque part. »
@@ -107,13 +107,13 @@ IA simple (début de jeu). Champs de vision en cases ; récompenses en ₽.
 
 | | Dresseur | Vision | Évitable | Équipe | ₽ |
 |---|---|---:|---|---|---:|
-| D1 | Scout Léo | 4 | **non** (assez d'espace avant le déclenchement) | Chenipan Nv. 6 | 72 |
+| D1 | Scout Théo | 4 | **non** (assez d'espace avant le déclenchement) | Chenipan Nv. 6 | 72 |
 | D2 | Scout Noé | 5 | oui | Aspicot Nv. 6, Coconfort Nv. 6 | 144 |
 | D3 | Gamin Tom | 4 | oui | Rattata Nv. 7 | 84 |
 | D4 | Scout Milo | 5 | oui (détour par les hautes herbes) | Chenipan Nv. 6, Aspicot Nv. 6 | 144 |
 | D5 | Scout Éli | 5 | oui | Chrysacier Nv. 7, Coconfort Nv. 7, Chenipan Nv. 7 | 252 |
 
-Progression : un Pokémon simple → premier duo → autre famille → opposition de types → première petite équipe de trois. **Léo est le premier vrai Dresseur de l'aventure** (arbitrage 11). Répliques : « Textes à valider ».
+Progression : un Pokémon simple → premier duo → autre famille → opposition de types → première petite équipe de trois. **Théo est le premier vrai Dresseur de l'aventure** (arbitrage 11). Répliques : « Textes à valider ».
 **Système à créer au jalon 9** (n'existe pas : le rival est déclenché par des scènes) : Dresseur qui voit le joueur dans son champ → « ! » → il avance de 2–3 cases → répliques → combat ; battu = mémorisé, réplique « après » ensuite.
 
 ## 9. PNJ non-combattants (2, plus les gardes)
@@ -174,12 +174,12 @@ Système normal : **réveil au dernier Centre utilisé** (normalement Jadielle),
 - **Postes de garde** : une scène d'intérieur paramétrée (système existant).
 - **Carte** 58 × 74 avec la forêt serrée du prototype de DA : performances à vérifier sur S24 (plus d'arbres que la Route 1).
 
-## Textes à valider
-Lot proposé par ChatGPT, conservé tel quel ; **dernière lecture de Kevin avant verrouillage**. Bulles de 2 lignes.
+## Textes verrouillés
+Lot proposé par ChatGPT, **verrouillé par Kevin le 2026-10-06** sur recommandation de Claude, avec deux retouches : (1) le premier Dresseur s'appelle **Scout Théo** (« Léo » est déjà le petit garçon de Bourg Palette, jalon 3) ; (2) la réplique de rappel du garde sud dit où acheter des Antidotes (rend lisible l'arbitrage 7). Bulles de 2 lignes ; raccourcissables à la QA.
 
-**Garde du poste sud** — « La Forêt de Jade est juste devant. » / « Garde un Antidote avec toi. » · en lui reparlant : « Les Aspicot peuvent empoisonner. » / « Mieux vaut être préparé. »
+**Garde du poste sud** — « La Forêt de Jade est juste devant. » / « Garde un Antidote avec toi. » · en lui reparlant : « Les Aspicot peuvent empoisonner. » / « La Boutique de Jadielle vend des Antidotes. »
 **Garde du poste nord** — depuis la forêt : « Encore quelques pas vers le nord, » / « et tu atteindras Argenta. » · depuis Argenta : « La Forêt de Jade mène à Jadielle. » / « Les jeunes Dresseurs s'y entraînent. »
-**D1, Scout Léo** — avant : « Hé ! Toi aussi, tu cherches » / « des Pokémon dans la forêt ? » · après : « Ton Pokémon est bien entraîné. » / « Je dois encore progresser. »
+**D1, Scout Théo** — avant : « Hé ! Toi aussi, tu cherches » / « des Pokémon dans la forêt ? » · après : « Ton Pokémon est bien entraîné. » / « Je dois encore progresser. »
 **D2, Scout Noé** — avant : « Mes Pokémon ont grandi ici. » / « Tu veux les affronter ? » · après : « Ils deviennent plus forts » / « chaque jour. »
 **D3, Gamin Tom** — avant : « Je connais cette forêt par cœur ! » / « Enfin... presque. » · après : « D'accord. Peut-être pas par cœur. »
 **D4, Scout Milo** — avant : « Les Pokémon Insecte évoluent vite. » / « Regarde ça ! » · après : « Pas encore assez vite, apparemment. »
@@ -202,7 +202,7 @@ Lot proposé par ChatGPT, conservé tel quel ; **dernière lecture de Kevin avan
 | Rencontres | Chenipan 35 %, Aspicot 35 %, Coconfort 13 %, Chrysacier 12 %, Pikachu 5 % (partout) |
 | Pikachu | Rare, jamais scénarisé, pas d'ambiance |
 | Pokémon d'ambiance | Chenipan, Aspicot, Roucool (s'envole), Chrysacier/Coconfort |
-| Dresseurs | 5 ; Scout Léo obligatoire et premier vrai Dresseur |
+| Dresseurs | 5 ; Scout Théo obligatoire et premier vrai Dresseur |
 | PNJ | 2 (naturaliste, randonneuse) + 2 gardes |
 | Objets | 6, dont 2 Antidotes ; cachés = texte + toast standard |
 | Poison | Seul au J9, persistant, aucun dégât en marchant ; Antidote ou Centre |
@@ -215,4 +215,4 @@ Lot proposé par ChatGPT, conservé tel quel ; **dernière lecture de Kevin avan
 | Décor | Nature dense, objets rares et justifiés ; aucune faune non-Pokémon |
 | Jour / nuit | Même table au J9 |
 | Défaite | Dernier Centre utilisé (Jadielle), sinon Maman ; pas de perte d'argent |
-| Textes | Lot ci-dessus, à relire par Kevin avant verrouillage |
+| Textes | Verrouillés (Scout Théo ; rappel du garde sud vers la Boutique) |
