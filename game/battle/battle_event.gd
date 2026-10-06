@@ -56,6 +56,10 @@ extends RefCounted
 ## - ITEM_USED : le soin [member item_id] ([member item_name]) est donné au Pokémon du joueur
 ##   [member party_index] (pas forcément celui en jeu) ; [member amount] PV rendus,
 ##   [member hp] et [member max_hp] d'après.
+## Changement de Pokémon (jalon 7), juste après TURN_STARTED (ou sans tour : remplacement
+## après un K.O., [method Battle.replace]) :
+## - WITHDRAWN : le Pokémon du joueur en jeu est rappelé (« Reviens, … ! ») ; suit le SENT_OUT
+##   du Pokémon envoyé, puis (changement volontaire) l'adversaire joue son tour.
 
 enum Kind {
 	BATTLE_STARTED, SENT_OUT, TURN_STARTED, MOVE_USED, MOVE_MISSED, DAMAGE, NO_EFFECT,
@@ -63,6 +67,7 @@ enum Kind {
 	EXP_GAINED, LEVEL_UP, MOVE_LEARNED, MOVE_FORGET_OFFERED, SEEDED, DRAINED,
 	BALL_THROWN, BALL_SHAKE, CAUGHT, BROKE_FREE,
 	ITEM_USED,
+	WITHDRAWN,
 }
 enum SideId { PLAYER, FOE }
 

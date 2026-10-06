@@ -3,6 +3,7 @@ extends GutTest
 ## nom du locuteur, écriture du texte, « › », toucher → advance_requested, placement à 1920
 ## et 2340 de large, narration en italique.
 
+const TweenClock := preload("res://tests/helpers/tween_clock.gd")
 const BOX_SCENE := "res://game/ui/dialogue/dialogue_box.tscn"
 const SCREEN_WIDTHS: Array[float] = [1920.0, 2340.0]
 const SCREEN_HEIGHT := 1080.0
@@ -145,13 +146,16 @@ func test_continue_indicator_only_when_asked() -> void:
 
 func test_continue_indicator_blinks() -> void:
 	_box.open()
+	# Temps simulé (TweenClock) : relevé à chaque pas de 1/60 s, aucune image sautée sous charge.
+	var clock := TweenClock.new(get_tree())
 	_box.set_continue_visible(true)
 	var lowest := 1.0
-	var elapsed := 0.0
-	while elapsed < UiTokens.DIALOG_CONTINUE_BLINK * 2.0:
-		await get_tree().process_frame
-		elapsed += get_process_delta_time()
+	var steps := 0
+	while steps * TweenClock.STEP < UiTokens.DIALOG_CONTINUE_BLINK * 2.0:
+		clock.step()
+		steps += 1
 		lowest = minf(lowest, _continue().modulate.a)
+	clock.release()
 	assert_true(lowest < 0.6, "l'opacité baisse (min %f)" % lowest)
 	assert_true(lowest >= UiTokens.DIALOG_CONTINUE_DIM - 0.01, "sans disparaître")
 

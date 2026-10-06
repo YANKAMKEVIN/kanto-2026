@@ -15,11 +15,12 @@ extends RefCounted
 ##   BAG         Sac de combat (jalon 5D), colonne gauche : cadre au-dessus du bouton « ‹ »
 ##   CAPTURE     carte de capture (jalon 5D), centrée sur l'écran
 ##   PARTY_PICKER choix du Pokémon à soigner (jalon 6), coin bas gauche, à la place du Sac
+##   PARTY       panneau ÉQUIPE (jalon 7), colonne gauche comme le Sac : cadre au-dessus de « ‹ »
 ## Rien d'interactif à moins de SAFE_MARGIN des bords (vérifié par les tests).
 
 enum Slot {
 	FOE_CARD, OWN_CARD, PARTY_PIPS, BACK, ACTIONS, MOVES, MESSAGE, FORGET, BAG, CAPTURE,
-	PARTY_PICKER,
+	PARTY_PICKER, PARTY,
 }
 
 ## Valeur de « coin » d'un axe pour un emplacement centré (la distance au bord est ignorée).
@@ -94,6 +95,8 @@ static func frame(slot: Slot) -> Array[Vector2]:
 			return [Vector2(CENTERED, CENTERED), Vector2.ZERO, capture_size()]
 		Slot.PARTY_PICKER:
 			return [Vector2(0, 1), Vector2(edge, edge), picker_size()]
+		Slot.PARTY:
+			return [Vector2(0, 1), Vector2(edge, edge), party_size()]
 	return [Vector2.ZERO, Vector2.ZERO, Vector2.ZERO]
 
 
@@ -138,6 +141,18 @@ static func picker_size() -> Vector2:
 		+ rows * UiTokens.PICKER_ROW_HEIGHT + (rows - 1) * UiTokens.PICKER_GAP \
 		+ UiTokens.BAG_SCROLL_PAD * 2
 	return Vector2(maxf(width, UiTokens.BAG_PANEL_WIDTH), height)
+
+
+## Taille du panneau ÉQUIPE (jalon 7) : cadre du Sac (largeur), en-tête, filet, trois rangées
+## de deux cartes (six Pokémon), pied ENVOYER, marges ; puis l'écart et « ‹ ».
+static func party_size() -> Vector2:
+	var rows := ceili(UiTokens.PARTY_SIZE / float(UiTokens.BATTLE_PARTY_COLUMNS))
+	var frame_height := UiTokens.BAG_PANEL_PAD * 2 + UiTokens.BAG_TITLE_ICON \
+		+ UiTokens.BORDER_WIDTH + rows * UiTokens.BATTLE_PARTY_CARD_HEIGHT \
+		+ (rows - 1) * UiTokens.PICKER_GAP + UiTokens.BATTLE_PARTY_FOOTER_HEIGHT \
+		+ UiTokens.BAG_ROW_GAP * 3
+	return Vector2(UiTokens.BAG_PANEL_WIDTH, frame_height + UiTokens.GAP
+		+ UiTokens.BATTLE_BACK_SIZE)
 
 
 ## Taille de l'emplacement de la carte de capture (elle épouse son contenu, au centre).

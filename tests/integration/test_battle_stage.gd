@@ -6,6 +6,7 @@ extends GutTest
 ## l'identique ; reset ; entrée refusée pendant un combat ; aucun orphelin.
 ## Transition réelle (speed_scale = 1) : à mi-course, caméra et sprites avancent ensemble.
 
+const TweenClock := preload("res://tests/helpers/tween_clock.gd")
 const STAGE_SCENE := "res://game/battle/battle_stage.tscn"
 const NPC_SCENE := "res://game/world/npc/npc.tscn"
 const PLAYER_CELL := Vector2i(11, 7)
@@ -400,16 +401,20 @@ func test_throw_takes_a_second_or_so_at_real_speed_and_shows_the_thrower() -> vo
 	_stage.speed_scale = 1.0
 	await _stage.play_wild_intro(_camera, &"rattata", Grid.cell_to_world(FOE_CELL))
 	await _stage.play_partner_enter(&"charmander")
-	var started := Time.get_ticks_msec()
+	# Temps simulé (TweenClock, speed_scale à 1) : la durée se compte en pas, quelle que soit
+	# la charge de la machine.
+	var clock := TweenClock.new(get_tree())
 	var runner := func() -> void: await _stage.play_throw()
 	runner.call()
-	await wait_seconds(0.4)
+	var steps := clock.run_until(func() -> bool: return false, 0.4)
 	assert_true(_stage.get_thrower().visible, "le dresseur est dans le cadrage")
 	assert_true(_stage.get_ball().visible, "la Ball vole")
-	await wait_until(func() -> bool:
+	steps += clock.run_until(func() -> bool:
 		return _stage.get_ball().position.y > 0.0 and not _stage.get_thrower().visible \
 			and not _stage.get_sprite(FOE_SIDE).visible, 4.0)
-	var elapsed := (Time.get_ticks_msec() - started) / 1000.0
+	clock.release()
+	var elapsed := steps * TweenClock.STEP
+	gut.p("lancer : %.3f s (temps simulé)" % elapsed)
 	assert_between(elapsed, 1.0, 3.0, "le lancer dure ~1,5 s")
 	_stage.reset()
 

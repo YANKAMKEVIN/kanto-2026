@@ -5,6 +5,7 @@ extends GutTest
 ## capacités et « ‹ », pression longue = fiche sans move_selected, message (tenue ou toucher),
 ## une seule zone visible à la fois, PV animés, hide_all, zones tactiles à 1920 et 2340.
 
+const TweenClock := preload("res://tests/helpers/tween_clock.gd")
 const HUD_SCENE := "res://game/ui/battle/battle_hud.tscn"
 const SCREEN_WIDTHS: Array[float] = [1920.0, 2340.0]
 const SCREEN_HEIGHT := 1080.0
@@ -361,11 +362,9 @@ func test_back_ignored_outside_moves() -> void:
 func test_message_ends_after_hold() -> void:
 	_hud.speed_scale = 1.0
 	await wait_process_frames(2)
-	var start := Time.get_ticks_msec()
-	await _hud.show_message(INTRO)
-	var elapsed := (Time.get_ticks_msec() - start) / 1000.0
+	var elapsed := _timed(func() -> void: await _hud.show_message(INTRO))
 	assert_eq(_hud.get_message_banner().get_text(), INTRO)
-	assert_almost_eq(elapsed, UiTokens.BATTLE_MESSAGE_HOLD, 0.1, "BATTLE_MESSAGE_HOLD")
+	_assert_lasts(elapsed, UiTokens.BATTLE_MESSAGE_HOLD, "BATTLE_MESSAGE_HOLD")
 	assert_true(_hud.get_message_banner().visible, "reste jusqu'à la zone suivante")
 
 
@@ -423,18 +422,16 @@ func test_animate_hp_reaches_value_faster_when_big() -> void:
 	_hud.set_card(BattleHud.Side.PLAYER, _own())
 	_hud.speed_scale = 1.0
 	await wait_process_frames(2)
-	var start := Time.get_ticks_msec()
-	await _hud.animate_hp(BattleHud.Side.FOE, 14, 20, false)
-	var normal := (Time.get_ticks_msec() - start) / 1000.0
+	var normal := _timed(func() -> void:
+		await _hud.animate_hp(BattleHud.Side.FOE, 14, 20, false))
 	assert_eq(_hud.get_card(BattleHud.Side.FOE).get_hp_bar().get_shown_hp(), 14)
-	start = Time.get_ticks_msec()
-	await _hud.animate_hp(BattleHud.Side.PLAYER, 3, 19, true)
-	var big := (Time.get_ticks_msec() - start) / 1000.0
+	var big := _timed(func() -> void:
+		await _hud.animate_hp(BattleHud.Side.PLAYER, 3, 19, true))
 	var own := _hud.get_card(BattleHud.Side.PLAYER)
 	assert_eq(own.get_hp_bar().get_shown_hp(), 3)
 	assert_eq(own.get_hp_text(), "3 / 19")
-	assert_almost_eq(normal, UiTokens.HP_TWEEN, 0.08)
-	assert_almost_eq(big, UiTokens.HP_TWEEN_FAST, 0.08)
+	_assert_lasts(normal, UiTokens.HP_TWEEN, "HP_TWEEN")
+	_assert_lasts(big, UiTokens.HP_TWEEN_FAST, "HP_TWEEN_FAST")
 	assert_lt(big, normal, "gros coup plus rapide")
 	assert_eq(own.get_hp_bar().get_color(), UiTokens.HP_LOW)
 
@@ -545,6 +542,28 @@ func _own_card() -> BattleInfoCard:
 
 
 ## Carte du joueur affichée, durées réelles (speed_scale 1).
+## Joue la coroutine [param call] en temps simulé ([code]TweenClock[/code]) et rend sa durée
+## en secondes (nombre de pas × pas) : indépendante de la charge de la machine.
+func _timed(call: Callable) -> float:
+	var clock := TweenClock.new(get_tree())
+	var done: Array[bool] = [false]
+	var run := func() -> void:
+		await call.call()
+		done[0] = true
+	run.call()
+	var steps := clock.run_until(func() -> bool: return done[0])
+	clock.release()
+	assert_true(done[0], "coroutine terminée")
+	return steps * TweenClock.STEP
+
+
+## [param elapsed] (temps simulé) couvre [param seconds] au pas près : pas fini avant, au plus
+## [param links] pas de plus (un par tween enchaîné : il démarre au pas suivant).
+func _assert_lasts(elapsed: float, seconds: float, label: String, links: int = 1) -> void:
+	assert_between(elapsed, seconds - 0.0001, seconds + links * TweenClock.STEP + 0.0001,
+		"%s (%.3f s)" % [label, elapsed])
+
+
 func _real_time_card() -> BattleInfoCard:
 	_hud.set_card(BattleHud.Side.PLAYER, _own())
 	_hud.speed_scale = 1.0
@@ -579,10 +598,8 @@ func test_animate_exp_fills_from_to_in_exp_tween_then_hides() -> void:
 func test_animate_exp_ends_after_exp_tween() -> void:
 	var card := _real_time_card()
 	await wait_process_frames(2)
-	var start := Time.get_ticks_msec()
-	await _hud.animate_exp(0.0, 0.5)
-	var elapsed := (Time.get_ticks_msec() - start) / 1000.0
-	assert_almost_eq(elapsed, UiTokens.EXP_TWEEN, 0.1, "EXP_TWEEN")
+	var elapsed := _timed(func() -> void: await _hud.animate_exp(0.0, 0.5))
+	_assert_lasts(elapsed, UiTokens.EXP_TWEEN, "EXP_TWEEN")
 	assert_almost_eq(card.get_exp_bar().get_fraction(), 0.5, 0.0001)
 
 
@@ -622,10 +639,8 @@ func test_gain_text_shown_then_erased() -> void:
 func test_animate_exp_waits_for_the_gain_text_too() -> void:
 	var card := _real_time_card()
 	await wait_process_frames(2)
-	var start := Time.get_ticks_msec()
-	await _hud.animate_exp(0.1, 0.5, 21)
-	var elapsed := (Time.get_ticks_msec() - start) / 1000.0
-	assert_almost_eq(elapsed, UiTokens.EXP_GAIN_HOLD, 0.1, "EXP_GAIN_HOLD")
+	var elapsed := _timed(func() -> void: await _hud.animate_exp(0.1, 0.5, 21))
+	_assert_lasts(elapsed, UiTokens.EXP_GAIN_HOLD, "EXP_GAIN_HOLD")
 	assert_false(card.is_exp_gain_visible(), "effacé au retour")
 
 
@@ -745,10 +760,8 @@ func test_pulse_level_updates_text_and_pulses() -> void:
 
 func test_pulse_level_ends_after_the_pulse_and_is_instant_at_speed_zero() -> void:
 	var card := _real_time_card()
-	var start := Time.get_ticks_msec()
-	await _hud.pulse_level(BattleHud.Side.PLAYER, 6)
-	var elapsed := (Time.get_ticks_msec() - start) / 1000.0
-	assert_almost_eq(elapsed, UiTokens.LEVEL_PULSE_UP + UiTokens.LEVEL_PULSE_DOWN, 0.1)
+	var elapsed := _timed(func() -> void: await _hud.pulse_level(BattleHud.Side.PLAYER, 6))
+	_assert_lasts(elapsed, UiTokens.LEVEL_PULSE_UP + UiTokens.LEVEL_PULSE_DOWN, "pulsation")
 	_hud.speed_scale = 0.0
 	await _hud.pulse_level(BattleHud.Side.PLAYER, 7)
 	assert_eq(card.get_level_text(), "Nv. 7")

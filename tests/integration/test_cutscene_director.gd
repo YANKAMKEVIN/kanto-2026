@@ -14,6 +14,7 @@ extends GutTest
 ## Jalon 4B (jalon-04.md §14.3) : conditions d'étape « if » / « unless », évaluées au moment
 ## de jouer l'étape (drapeaux levés plus tôt dans la même scène compris).
 
+const FrameSim := preload("res://tests/helpers/frame_sim.gd")
 const ROUTER_SCRIPT := preload("res://game/autoload/scene_router.gd")
 const PLAYER_SCENE := preload("res://game/player/player.tscn")
 const BOX_SCENE := preload("res://game/ui/dialogue/dialogue_box.tscn")
@@ -177,6 +178,8 @@ var _runner: DialogueRunner
 var _director: CutsceneDirector
 var _flags: StoryFlags
 var _map: GameMap
+## Images simulées ([method _sim_begin]).
+var _sim: FrameSim
 
 
 func before_each() -> void:
@@ -621,6 +624,50 @@ func _play_timed(cutscene_id: StringName) -> float:
 	return elapsed[0]
 
 
+## Images simulées (FrameSim), à ouvrir avant [method CutsceneDirector.play] : le moteur ne
+## fait plus tourner le directeur, le joueur ni les PNJ (même ceux qui apparaissent), ni les
+## tweens nés ensuite. Une durée se compte alors en images, quelle que soit la charge.
+func _sim_begin() -> void:
+	var nodes: Array[Node] = [_director, _player]
+	nodes.append_array(_map.get_npcs())
+	_sim = FrameSim.new(get_tree(), nodes, [_map.get_entities()])
+
+
+func _sim_frame() -> void:
+	await _sim.frame()
+
+
+func _sim_end() -> void:
+	_sim.finish()
+
+
+## Images simulées tant que la scène tourne (au plus [constant TIMEOUT] s) ; rend leur nombre.
+func _sim_until_scene_end() -> int:
+	var frames := 0
+	while _director.is_running() and frames * FRAME < TIMEOUT:
+		await _sim_frame()
+		frames += 1
+	assert_false(_director.is_running(), "scène terminée")
+	return frames
+
+
+## [param elapsed] (temps simulé) couvre [param seconds] : pas fini avant, au plus
+## [param links] images de plus (une par enchaînement : le pas suivant d'un déplacement part à
+## l'image d'après, sans reporter le reste de l'image).
+func _assert_lasts(elapsed: float, seconds: float, label: String, links: int = 1) -> void:
+	assert_between(elapsed, seconds - 0.0001, seconds + links * FRAME + 0.0001,
+		"%s : %.3f s (%d images)" % [label, elapsed, roundi(elapsed / FRAME)])
+
+
+## Joue [param cutscene_id] en temps simulé ; rend sa durée en secondes (images × FRAME).
+func _play_simulated(cutscene_id: StringName) -> float:
+	_sim_begin()
+	assert_true(_director.play(cutscene_id))
+	var frames: int = await _sim_until_scene_end()
+	_sim_end()
+	return frames * FRAME
+
+
 func test_spawn_creates_the_npc_on_its_cell() -> void:
 	_director.play(&"spawn_oak")
 	var oak := _map.get_npc(&"oak")
@@ -652,7 +699,7 @@ func test_move_near_the_player_runs_along_find_path_and_waits_for_arrival() -> v
 			var path := _map.get_grid().find_path(oak.get_cell(), expected_goal, oak)
 			oak_cells.append_array(CutsceneMoves.path_cells(oak.get_cell(), path))
 			oak.step_finished.connect(func(cell: Vector2i) -> void: oak_cells.append(cell)))
-	var elapsed: float = await _play_timed(&"oak_runs_to_player")
+	var elapsed: float = await _play_simulated(&"oak_runs_to_player")
 	var oak := _map.get_npc(&"oak")
 	assert_eq(oak.get_cell(), expected_goal)
 	assert_false(oak.is_moving())
@@ -662,8 +709,8 @@ func test_move_near_the_player_runs_along_find_path_and_waits_for_arrival() -> v
 	assert_gt(half, 0)
 	assert_eq(oak_cells.slice(half), oak_cells.slice(0, half), "suit find_path")
 	var steps := half
-	assert_almost_eq(elapsed, steps * Grid.RUN_STEP_DURATION, 0.1 + steps * 0.02,
-		"%d pas en courant" % steps)
+	_assert_lasts(elapsed, steps * Grid.RUN_STEP_DURATION, "%d pas en courant" % steps,
+		steps + 1)
 	assert_eq(_player.get_cell(), START, "le joueur n'a pas bougé")
 	assert_push_error_count(0)
 
@@ -671,11 +718,11 @@ func test_move_near_the_player_runs_along_find_path_and_waits_for_arrival() -> v
 func test_move_to_an_absolute_cell() -> void:
 	var mom := _map.get_npc(&"mom")
 	var path := _map.get_grid().find_path(mom.get_cell(), Vector2i(9, 6), mom)
-	var elapsed: float = await _play_timed(&"mom_walks_to")
+	var elapsed: float = await _play_simulated(&"mom_walks_to")
 	assert_eq(mom.get_cell(), Vector2i(9, 6))
 	assert_true(_flags.has_flag(&"after"))
-	assert_almost_eq(elapsed, path.size() * Grid.WALK_STEP_DURATION, 0.1 + path.size() * 0.02,
-		"%d pas en marchant" % path.size())
+	_assert_lasts(elapsed, path.size() * Grid.WALK_STEP_DURATION,
+		"%d pas en marchant" % path.size(), path.size() + 1)
 	assert_false(_map.get_grid().is_occupied(Vector2i(7, 4)), "case de départ libérée")
 	assert_push_error_count(0)
 
@@ -702,10 +749,10 @@ func test_move_the_player_along_a_path_while_blocked() -> void:
 func test_move_blocked_longer_than_the_timeout_is_abandoned_with_error() -> void:
 	var blocker := RefCounted.new()
 	_map.get_grid().occupy(Vector2i(7, 5), blocker)
-	var elapsed: float = await _play_timed(&"mom_blocked")
+	var elapsed: float = await _play_simulated(&"mom_blocked")
 	assert_push_error("bloqué")
 	assert_true(_flags.has_flag(&"after"), "la scène continue")
-	assert_almost_eq(elapsed, CutsceneDirector.MOVE_BLOCK_TIMEOUT, 0.2, "abandonné au délai")
+	_assert_lasts(elapsed, CutsceneDirector.MOVE_BLOCK_TIMEOUT, "abandonné au délai")
 	assert_eq(_map.get_npc(&"mom").get_cell(), Vector2i(7, 4))
 
 
@@ -782,25 +829,22 @@ func test_aliases_are_forgotten_after_the_scene() -> void:
 
 func test_hop_waits_for_the_end_of_the_jump() -> void:
 	var mom := _map.get_npc(&"mom")
-	var elapsed: Array[float] = [0.0]
-	var count := func() -> void:
-		if _director.is_running():
-			elapsed[0] += get_process_delta_time()
-	get_tree().process_frame.connect(count)
+	_sim_begin()
 	assert_true(_director.play(&"hop_buddy", {&"buddy": &"mom"}))
 	assert_true(mom.is_hopping(), "saut lancé dans l'appel même")
 	assert_false(_map.get_grid().is_occupied(Vector2i(7, 4)), "case quittée libérée")
 	assert_same(_map.get_grid().get_occupant(Vector2i(7, 5)), mom, "arrivée réservée")
-	await wait_process_frames(3)
+	for i: int in 3:
+		await _sim_frame()
 	assert_true(_director.is_running(), "la scène attend le saut")
 	assert_false(_flags.has_flag(&"after"))
-	await _await_scene_end()
-	get_tree().process_frame.disconnect(count)
+	var frames: int = 3 + await _sim_until_scene_end()
+	_sim_end()
 	assert_false(mom.is_hopping())
 	assert_eq(mom.get_cell(), Vector2i(7, 5))
 	assert_true(_flags.has_flag(&"after"))
 	var expected := Npc.hop_total_duration(mom.get_spec().hop_style)
-	assert_almost_eq(elapsed[0], expected, 0.1, "durée du saut (%.2f s)" % expected)
+	_assert_lasts(frames * FRAME, expected, "durée du saut (%.2f s)" % expected, 2)
 	assert_push_error_count(0)
 
 

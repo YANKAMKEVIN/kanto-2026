@@ -2,6 +2,7 @@ extends GutTest
 ## HUD d'exploration : calque, titre de zone (texte, placement, cycle d'animation),
 ## placement du bouton courir, câblage dans Boot.
 
+const TweenClock := preload("res://tests/helpers/tween_clock.gd")
 const HUD_SCENE := "res://game/ui/hud/exploration_hud.tscn"
 const TITLE_SCENE := "res://game/ui/components/zone_title.tscn"
 ## Largeurs d'écran visées par l'aspect expand (1080 de haut) : 16:9 et S24.
@@ -84,18 +85,9 @@ func test_hide_zone_title_during_display() -> void:
 	await wait_process_frames(2)
 	var title := _hud.get_zone_title()
 	assert_true(title.is_showing())
-	_hud.hide_zone_title()
-	# Temps de jeu écoulé (somme des delta, comme le Tween) avant l'image où le titre est
-	# vu caché : au plus ANIM_MICRO + une image.
-	var elapsed := 0.0
-	var last_delta := 0.0
-	while title.is_showing() and elapsed < 1.0:
-		await get_tree().process_frame
-		last_delta = get_process_delta_time()
-		elapsed += last_delta
+	var elapsed := _timed(_hud.hide_zone_title, func() -> bool: return not title.is_showing())
 	assert_false(title.is_showing())
-	assert_true(elapsed - last_delta <= UiTokens.ANIM_MICRO + last_delta + 0.001,
-		"caché en %f s (≤ ANIM_MICRO + 1 image)" % elapsed)
+	_assert_lasts(elapsed, UiTokens.ANIM_MICRO, "caché en ANIM_MICRO")
 	await wait_process_frames(1)
 	assert_signal_emit_count(_hud, "title_hidden", 1)
 
@@ -235,15 +227,28 @@ func _touch(index: int, position: Vector2, pressed: bool) -> void:
 	get_viewport().push_input(event, true)
 
 
-## Temps de jeu (somme des delta) avant l'image où [param node] est vu caché.
-func _time_until_hidden(node: CanvasItem) -> Array[float]:
-	var elapsed := 0.0
-	var last_delta := 0.0
-	while node.visible and elapsed < 1.0:
-		await get_tree().process_frame
-		last_delta = get_process_delta_time()
-		elapsed += last_delta
-	return [elapsed, last_delta]
+## Appelle [param start] en temps simulé ([code]TweenClock[/code]) puis avance par pas jusqu'à
+## [param done] (au plus [param max_seconds]) ; rend le temps écoulé (pas × pas), indépendant
+## de la charge de la machine. [param on_step] est appelé après chaque pas.
+func _timed(start: Callable, done: Callable, max_seconds: float = 1.0,
+		on_step: Callable = Callable()) -> float:
+	var clock := TweenClock.new(get_tree())
+	start.call()
+	var steps := 0
+	while not done.call() and steps * TweenClock.STEP < max_seconds:
+		clock.step()
+		steps += 1
+		if on_step.is_valid():
+			on_step.call()
+	clock.release()
+	return steps * TweenClock.STEP
+
+
+## [param elapsed] (temps simulé) couvre [param seconds] au pas près : pas fini avant, au plus
+## un pas de plus.
+func _assert_lasts(elapsed: float, seconds: float, label: String) -> void:
+	assert_between(elapsed, seconds - 0.0001, seconds + TweenClock.STEP + 0.0001,
+		"%s (%.3f s)" % [label, elapsed])
 
 
 func test_interact_button_hidden_at_start() -> void:
@@ -284,12 +289,11 @@ func test_hide_interact_within_anim_micro_plus_one_frame() -> void:
 	_hud.show_interact(&"talk")
 	await wait_seconds(UiTokens.ANIM_MICRO + 0.05)
 	var button := _hud.get_interact_button()
-	_hud.hide_interact()
-	assert_eq(button.get_verb(), &"")
-	var timing := await _time_until_hidden(button)
+	var elapsed := _timed(func() -> void:
+		_hud.hide_interact()
+		assert_eq(button.get_verb(), &""), func() -> bool: return not button.visible)
 	assert_false(button.visible)
-	assert_true(timing[0] - timing[1] <= UiTokens.ANIM_MICRO + timing[1] + 0.001,
-		"caché en %f s (≤ ANIM_MICRO + 1 image)" % timing[0])
+	_assert_lasts(elapsed, UiTokens.ANIM_MICRO, "caché en ANIM_MICRO")
 
 
 func test_show_again_during_hide_keeps_button() -> void:
@@ -507,22 +511,15 @@ func test_caption_fades_holds_and_fades_out() -> void:
 	watch_signals(_hud)
 	var shown_alpha := {}
 	caption.caption_shown.connect(func() -> void: shown_alpha["a"] = caption.modulate.a)
-	_hud.show_caption(CAPTION_TEXT)
-	var elapsed := 0.0
-	var last_delta := 0.0
-	var seen_full := false
-	while caption.is_showing() and elapsed < 10.0:
-		await get_tree().process_frame
-		last_delta = get_process_delta_time()
-		elapsed += last_delta
-		if caption.modulate.a >= 0.999:
-			seen_full = true
+	var seen_full: Array[bool] = [false]
+	var elapsed := _timed(_hud.show_caption.bind(CAPTION_TEXT),
+		func() -> bool: return not caption.is_showing(), 10.0,
+		func() -> void: seen_full[0] = seen_full[0] or caption.modulate.a >= 0.999)
 	assert_false(caption.is_showing(), "jamais permanente")
-	assert_true(seen_full, "pleinement visible pendant la tenue")
+	assert_true(seen_full[0], "pleinement visible pendant la tenue")
 	assert_almost_eq(shown_alpha.get("a", 0.0) as float, 1.0, 0.01)
 	var expected := UiTokens.CAPTION_FADE * 2.0 + UiTokens.CAPTION_HOLD
-	assert_almost_eq(elapsed, expected, last_delta * 1.5 + 0.001,
-		"caché après fondu + CAPTION_HOLD + fondu (%f s)" % elapsed)
+	_assert_lasts(elapsed, expected, "caché après fondu + CAPTION_HOLD + fondu")
 	assert_signal_emit_count(_hud, "caption_hidden", 1)
 
 
@@ -537,11 +534,13 @@ func test_hide_caption_fades_quickly() -> void:
 	_hud.show_caption(CAPTION_TEXT)
 	await wait_process_frames(2)
 	watch_signals(_hud)
-	_hud.hide_caption()
-	assert_true(_hud.get_caption().is_showing(), "pas de disparition sèche")
-	var timing := await _time_until_hidden(_hud.get_caption())
-	assert_false(_hud.get_caption().is_showing())
-	assert_true(timing[0] - timing[1] <= UiTokens.ANIM_MICRO + timing[1] + 0.001)
+	var caption := _hud.get_caption()
+	var elapsed := _timed(func() -> void:
+		_hud.hide_caption()
+		assert_true(caption.is_showing(), "pas de disparition sèche"),
+		func() -> bool: return not caption.visible)
+	assert_false(caption.is_showing())
+	_assert_lasts(elapsed, UiTokens.ANIM_MICRO, "légende cachée en ANIM_MICRO")
 	await wait_process_frames(1)
 	assert_signal_emit_count(_hud, "caption_hidden", 1)
 

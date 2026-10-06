@@ -1275,8 +1275,18 @@ func test_back_from_the_bag_consumes_nothing() -> void:
 ## (ou « ‹ » du choix si [param back_from_picker]) ; ensuite FUITE. Renvoie { events, view,
 ## picker_seen, bag_reopened }.
 func _play_potion(request: BattleRequest, target: int, back_from_picker: bool = false) -> Dictionary:
-	var report := {"events": [], "view": null, "picker_seen": false, "bag_reopened": false}
-	_director.event_played.connect(func(e: BattleEvent) -> void: report["events"].append(e))
+	var report := {"events": [], "view": null, "picker_seen": false, "bag_reopened": false,
+		"foe_turn_own_card": false, "foe_turn_hp_text": ""}
+	_director.event_played.connect(func(e: BattleEvent) -> void:
+		report["events"].append(e)
+		var kinds := _kinds_of(report["events"])
+		# Premier coup de l'adversaire après le soin : la carte du joueur doit être là.
+		if (e.kind == BattleEvent.Kind.MOVE_USED or e.kind == BattleEvent.Kind.MOVE_MISSED) \
+				and e.side == BattleEvent.SideId.FOE and kinds.has(BattleEvent.Kind.ITEM_USED) \
+				and not report["foe_turn_own_card"]:
+			var card := _hud.get_card(BattleHud.Side.PLAYER)
+			report["foe_turn_own_card"] = card.is_shown() and card.visible
+			report["foe_turn_hp_text"] = card.get_hp_text())
 	var done: Array[bool] = [false]
 	var runner := func() -> void:
 		await _director.run_request(request, _map)
@@ -1339,6 +1349,25 @@ func test_a_potion_on_another_member_heals_it_once_then_the_foe_plays() -> void:
 	assert_eq(report["view"].targets.size(), 2)
 	assert_false(report["view"].targets[0].usable, "le Pokémon en jeu est à PV pleins")
 	assert_true(report["view"].targets[1].usable)
+	assert_push_error_count(0)
+
+
+func test_a_potion_on_the_lead_brings_the_player_card_back_with_the_healed_hp() -> void:
+	var request := _prepare_potion(5)
+	var lead: Pokemon = (_state.party as Party).get_lead()
+	lead.hp = 3
+	var report := await _play_potion(request, 0)
+	assert_gt(lead.hp, 3, "le Pokémon en jeu est soigné")
+	assert_true(report["foe_turn_own_card"], "la carte du joueur est visible au tour adverse")
+	assert_true(String(report["foe_turn_hp_text"]).contains(str(lead.hp))
+		or lead.hp < 3, "la carte affiche les PV soignés : %s" % report["foe_turn_hp_text"])
+	assert_push_error_count(0)
+
+
+func test_a_potion_on_a_bench_member_also_brings_the_player_card_back() -> void:
+	var request := _prepare_potion(5)
+	var report := await _play_potion(request, 1)
+	assert_true(report["foe_turn_own_card"], "la carte du joueur est visible au tour adverse")
 	assert_push_error_count(0)
 
 
