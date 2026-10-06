@@ -199,7 +199,11 @@ func play(cutscene_id: StringName, aliases: Dictionary[StringName, StringName] =
 		return false
 	var variant := cutscene.pick(_flags)
 	if variant == null:
+		if OS.is_debug_build():
+			print("[qa] scène « %s » ignorée (aucune variante pour les drapeaux)" % cutscene_id)
 		return false
+	if OS.is_debug_build():
+		print("[qa] scène « %s » jouée" % cutscene_id)
 	_running = true
 	_cutscene_id = cutscene_id
 	_step_index = -1

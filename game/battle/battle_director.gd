@@ -443,7 +443,22 @@ func _play_events(events: Array[BattleEvent], trainer: TrainerData) -> void:
 	for event: BattleEvent in events:
 		for beat: BattleBeat in BattlePlayback.beats(event, _texts, _data, trainer):
 			await _play_beat(beat)
+		_log_progress(event)
 		event_played.emit(event)
+
+
+## Journal de QA (builds debug seulement) : chaque gain d'XP et montée de niveau, lisibles
+## dans `logcat -s godot` même quand les messages défilent trop vite pour une capture.
+static func _log_progress(event: BattleEvent) -> void:
+	if not OS.is_debug_build():
+		return
+	match event.kind:
+		BattleEvent.Kind.EXP_GAINED:
+			print("[qa] XP : %s (équipe %d) +%d" % [event.pokemon_name, event.party_index,
+				event.amount])
+		BattleEvent.Kind.LEVEL_UP:
+			print("[qa] niveau : %s (équipe %d) → N%d" % [event.pokemon_name,
+				event.party_index, event.level])
 
 
 ## Coroutine : joue un temps ([BattleBeat]) sur la scène et la HUD, et attend sa fin.
