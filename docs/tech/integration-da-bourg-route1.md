@@ -130,3 +130,7 @@ Rien de visible en jeu : aucune carte, aucun intérieur ni sprite de personnage 
 
 ## Validation DA.1 (Kevin, S24, 2026-10-06)
 Route 1 peinte **validée** sur sa vraie partie (« en vrai ça va ») : rencontres, rebord, voyageur, entrée de Jadielle ; Potion du recoin déjà ramassée dans sa partie (2026-10-02), cache correctement ignorée. **58,8 fps de moyenne, min 53** (166 relevés). Choix gardés par défaut : pas d'ombre de contact sous la forêt (`FOREST_CONTACT_SHADOWS = false`), souche sur la case de la Potion, personnages partiellement cachés par les cimes en lisière.
+
+
+## Validation DA.2 (Kevin, S24, 2026-10-07)
+Bourg Palette peint **validé** sur sa vraie partie (« tout est ok ») : portes, déplacements, habitants peints et leurs poses d'attente, 4 routines, chercheur parlant, hautes herbes vers la Route 1. Gardés : labo à 75 % (toit en fondu quand le joueur passe au nord), pause à chaque case des routines, ponton d'une colonne. **58,8 fps de moyenne, min 49** (60 relevés). Décision de Kevin : **Chen court** dans le prologue → planche de course `PNJ_CHEN_COURSE_r1` (Codex) à brancher au DA.3 et `"run": true` à remettre. Starters : Bulbizarre et Carapuce (Codex, marche + attente), **Salamèche obtenu à la main dans l'app ChatGPT** (`POKE_SALAMECHE_NE_r4`, marche seulement ; attente refusée → image de marche la plus posée par direction).
