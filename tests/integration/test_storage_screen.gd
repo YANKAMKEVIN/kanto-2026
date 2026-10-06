@@ -4,6 +4,7 @@ extends GutTest
 ## seulement dans le menu « ⋯ », confirmation, favori sans contournement, défiler ne sélectionne
 ## rien, zones tactiles et marges à 1920 et 2340.
 
+const TweenClock := preload("res://tests/helpers/tween_clock.gd")
 const MENU_SCENE := "res://game/ui/menu/trainer_menu.tscn"
 const GameStateScript := preload("res://game/autoload/game_state.gd")
 const WIDTHS: Array[int] = [1920, 2340]
@@ -263,13 +264,18 @@ func test_refusal_shakes_the_card_and_writes_the_reason() -> void:
 	screen.speed_scale = 1.0
 	var card := screen.get_party_cards()[0]
 	var base := card.position
+	# Temps simulé (TweenClock) : relevé à mi-tremblement exactement, quelle que soit la charge.
+	var clock := TweenClock.new(get_tree())
 	menu.show_storage_refusal(StorageRules.Place.PARTY, 0, StorageViews.LAST_POKEMON_TEXT)
 	assert_eq(screen.get_refusal_text(), "Tu dois garder au moins un Pokémon avec toi.")
 	assert_true(screen.is_shaking())
 	assert_eq(screen.get_shaking_card(), card)
-	await wait_seconds(UiTokens.PICKER_SHAKE_TIME * 0.5)
+	clock.run_until(func() -> bool: return false, UiTokens.PICKER_SHAKE_TIME * 0.5)
 	assert_ne(card.position.x, base.x, "la carte bouge pendant le tremblement")
-	await wait_seconds(UiTokens.PICKER_SHAKE_TIME)
+	var steps := clock.run_until(func() -> bool: return not screen.is_shaking(),
+		UiTokens.PICKER_SHAKE_TIME * 2.0)
+	clock.release()
+	assert_false(screen.is_shaking(), "le tremblement s'arrête (%d pas)" % steps)
 	assert_eq(card.position, base, "elle revient à sa place")
 	assert_true(_events.is_empty(), "un refus n'émet rien")
 

@@ -21,6 +21,7 @@ const SAVE_PATH := "user://test_center_heal_save.json"
 const DATE := "2026-10-05T18:00:00"
 const FADE := 0.05
 const TIMEOUT := 12.0
+const FRAME := 1.0 / 60.0
 const QUESTION := "Bonjour. Je m'occupe de ton équipe ?"
 const DONE := "Voilà. Tout le monde est en pleine forme."
 const LATER := "Très bien. Reviens quand tu veux."
@@ -36,8 +37,11 @@ var _views: Array[ChoiceView] = []
 var _pages: Array[String] = []
 var _toasts: Array[PackedStringArray] = []
 var _vibrations: Array[int] = []
-var _chosen_ms: int = -1
-var _after_ritual_ms: int = -1
+## Rituel en temps simulé ([method _drive_ritual_by_hand]) : machine, images avancées à la
+## main pendant qu'elle joue, et leur nombre quand la réplique suivante commence.
+var _machine: HealMachine
+var _ritual_frames: int = 0
+var _frames_at_reply: int = -1
 
 
 func before_each() -> void:
@@ -51,8 +55,9 @@ func before_each() -> void:
 	_toasts.clear()
 	_vibrations.clear()
 	_answer = true
-	_chosen_ms = -1
-	_after_ritual_ms = -1
+	_machine = null
+	_ritual_frames = 0
+	_frames_at_reply = -1
 	Haptics.sink = func(ms: int) -> void: _vibrations.append(ms)
 
 
@@ -97,15 +102,14 @@ func _on_choice_requested(view: ChoiceView) -> void:
 	var box := _boot.get_dialogue_box()
 	assert_true(box.is_choice_showing(), "les cartes sont affichées")
 	var cards := box.get_choice_cards()
-	_chosen_ms = Time.get_ticks_msec()
 	(cards.get_confirm_button() if _answer else cards.get_cancel_button()).pressed.emit()
 
 
 func _on_page_started(_index: int) -> void:
 	var text := _boot.get_dialogue_box().get_text()
 	_pages.append(text)
-	if _chosen_ms >= 0 and _after_ritual_ms < 0:
-		_after_ritual_ms = Time.get_ticks_msec()
+	if _ritual_frames > 0 and _frames_at_reply < 0:
+		_frames_at_reply = _ritual_frames
 
 
 func _writes() -> int:
@@ -128,6 +132,23 @@ func _is_hurt() -> bool:
 	return false
 
 
+## La machine du Centre n'avance plus avec le moteur : [method _talk_to_the_nurse] fait
+## avancer son animation d'une image de FRAME par tour pendant qu'elle joue. La durée du
+## rituel se compte alors en images, quelle que soit la charge de la machine.
+func _drive_ritual_by_hand() -> void:
+	_machine = _boot.get_map().get_node(^"%HealMachine") as HealMachine
+	_machine.get_animation_player().callback_mode_process = \
+			AnimationMixer.ANIMATION_CALLBACK_MODE_PROCESS_MANUAL
+
+
+## Le rituel a duré [param seconds] (temps simulé), et la réplique suivante l'a attendu :
+## pas commencée avant, au plus une image après.
+func _assert_ritual_lasts(seconds: float, label: String) -> void:
+	var ritual := _frames_at_reply * FRAME
+	assert_between(ritual, seconds - 0.0001, seconds + FRAME + 0.0001,
+		"%s (%.3f s pour %.2f s)" % [label, ritual, seconds])
+
+
 ## Parle à l'infirmière (joueur devant le comptoir) et déroule tout le dialogue.
 func _talk_to_the_nurse() -> void:
 	Input.action_press(&"interact")
@@ -140,6 +161,10 @@ func _talk_to_the_nurse() -> void:
 		if box.is_open() and not _runner.is_awaiting_choice():
 			box.advance_requested.emit()
 		await wait_process_frames(1)
+		if _machine != null and _machine.is_playing():
+			# Comptée avant : la fin de l'animation enchaîne la réplique dans advance() même.
+			_ritual_frames += 1
+			_machine.get_animation_player().advance(FRAME)
 	assert_false(_runner.is_running(), "le dialogue s'est terminé")
 	await wait_process_frames(3)
 
@@ -156,6 +181,7 @@ func test_center_qa_starts_hurt_without_a_registered_center() -> void:
 func test_heal_fills_the_team_plays_the_ritual_registers_and_saves() -> void:
 	await _start()
 	var writes := _writes()
+	_drive_ritual_by_hand()
 	await _talk_to_the_nurse()
 	assert_eq(_views.size(), 1, "un choix")
 	if _views.size() == 1:
@@ -166,8 +192,7 @@ func test_heal_fills_the_team_plays_the_ritual_registers_and_saves() -> void:
 	for pokemon: Pokemon in GameState.party.get_all():
 		for slot: MoveSlot in pokemon.moves:
 			assert_eq(slot.pp, slot.max_pp, "%s : PP pleins" % pokemon.species_id)
-	var ritual := (_after_ritual_ms - _chosen_ms) / 1000.0
-	assert_between(ritual, 2.8, 3.8, "rituel d'environ 3 s (%.2f s)" % ritual)
+	_assert_ritual_lasts(UiTokens.CENTER_HEAL, "rituel d'environ 3 s")
 	assert_eq(_vibrations.count(UiTokens.CENTER_HEAL_HAPTIC_MS), 1, "vibration à l'éclat")
 	assert_eq(GameState.heal_map, &"viridian_center", "dernier Centre utilisé")
 	assert_eq(GameState.heal_spawn, &"heal")
@@ -208,9 +233,9 @@ func test_reduce_motion_halves_the_ritual() -> void:
 	settings.reduce_motion = true
 	_boot.get_menu_director().settings_changed.emit(settings)
 	assert_almost_eq(_boot.get_service_director().ritual_duration(), 1.5, 0.001)
+	_drive_ritual_by_hand()
 	await _talk_to_the_nurse()
-	var ritual := (_after_ritual_ms - _chosen_ms) / 1000.0
-	assert_between(ritual, 1.3, 2.2, "rituel raccourci (%.2f s)" % ritual)
+	_assert_ritual_lasts(1.5, "rituel raccourci")
 	assert_false(_is_hurt())
 
 

@@ -116,7 +116,11 @@ func _center_heal() -> void:
 		if machine.flashed.is_connected(_on_flashed):
 			machine.flashed.disconnect(_on_flashed)
 	else:
-		await get_tree().create_timer(duration, false).timeout
+		# Tween d'attente plutôt que minuterie : même arrêt en pause (nœud pausable), et un
+		# test peut le faire avancer en temps simulé.
+		var wait := create_tween()
+		wait.tween_interval(duration)
+		await wait.finished
 		_on_flashed()
 	if is_instance_valid(attendant) and rest_facing != Vector2i.ZERO:
 		attendant.face(rest_facing)

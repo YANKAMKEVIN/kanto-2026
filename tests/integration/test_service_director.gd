@@ -4,6 +4,7 @@ extends GutTest
 ## (machine, point de repos enregistré une seule fois), actions inconnues ou à venir refusées.
 ## T12 : `open_shop` demande la boutique de la carte courante (sans carte : refusée).
 
+const TweenClock := preload("res://tests/helpers/tween_clock.gd")
 const GameStateScript := preload("res://game/autoload/game_state.gd")
 const CENTER := "res://game/world/maps/viridian_center.tscn"
 const MART := "res://game/world/maps/viridian_mart.tscn"
@@ -65,10 +66,20 @@ func test_heal_heals_without_ritual_nor_rest_point() -> void:
 
 
 func test_center_heal_without_a_map_waits_the_ritual_and_registers_nothing() -> void:
-	var started := Time.get_ticks_msec()
-	await _services.run_action(&"center_heal")
-	var seconds := (Time.get_ticks_msec() - started) / 1000.0
-	assert_between(seconds, 1.3, 2.0, "durée du rituel (%.2f s)" % seconds)
+	# Temps simulé (TweenClock) : la durée se compte en pas, quelle que soit la charge.
+	var clock := TweenClock.new(get_tree())
+	var done: Array[bool] = [false]
+	var run := func() -> void:
+		await _services.run_action(&"center_heal")
+		done[0] = true
+	run.call()
+	assert_true(_services.is_running(), "le rituel attend")
+	var steps := clock.run_until(func() -> bool: return done[0], 5.0)
+	clock.release()
+	var seconds := steps * TweenClock.STEP
+	var expected := _services.ritual_duration()
+	assert_between(seconds, expected - 0.0001, expected + TweenClock.STEP + 0.0001,
+		"durée du rituel (%.3f s pour %.2f s)" % [seconds, expected])
 	assert_true(_all_healed())
 	assert_eq(_healed, [[&"", false]] as Array[Array])
 	assert_eq(_vibrations, [UiTokens.CENTER_HEAL_HAPTIC_MS] as Array[int])

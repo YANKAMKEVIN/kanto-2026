@@ -6,6 +6,7 @@ extends GutTest
 ## contrôles reviennent ; le Roucool du toit de la Boutique est parti pour la visite et revient
 ## au changement de carte ; l'objectif « rejoindre Jadielle » disparaît.
 
+const FrameSim := preload("res://tests/helpers/frame_sim.gd")
 const MemoryFs := preload("res://tests/helpers/memory_file_system.gd")
 const FixedClock := preload("res://tests/helpers/fixed_clock.gd")
 const BOOT_SCENE := preload("res://game/boot.tscn")
@@ -20,8 +21,10 @@ var _boot: Boot
 var _player: Player
 var _director: CutsceneDirector
 var _saved_router: Array = []
-var _started_ms: int = -1
-var _finished_ms: int = -1
+## La scène se joue en images simulées (FrameSim, ouvert à son début) : ses durées se comptent
+## en images, quelle que soit la charge de la machine. Fin de la scène en temps simulé (s).
+var _sim: FrameSim
+var _finished_s: float = -1.0
 var _plays: int = 0
 var _dialogues: int = 0
 
@@ -31,13 +34,16 @@ func before_each() -> void:
 	SceneRouter.fade_out_duration = FADE
 	SceneRouter.fade_in_duration = FADE
 	GameState.clock = FixedClock.new("2026-10-05T17:00:00")
-	_started_ms = -1
-	_finished_ms = -1
+	_sim = null
+	_finished_s = -1.0
 	_plays = 0
 	_dialogues = 0
 
 
 func after_each() -> void:
+	if _sim != null:
+		_sim.finish()
+		_sim = null
 	SceneRouter.fade_out_duration = _saved_router[0]
 	SceneRouter.fade_in_duration = _saved_router[1]
 	GameState.clock = DeviceClock.new()
@@ -56,10 +62,13 @@ func _start() -> void:
 	_director.cutscene_started.connect(func(id: StringName) -> void:
 		if id == &"viridian_arrival":
 			_plays += 1
-			_started_ms = Time.get_ticks_msec())
+			# Dans l'image même : directeur, joueur et PNJ quittent le moteur avant d'avancer.
+			var nodes: Array[Node] = [_director, _player]
+			nodes.append_array(_boot.get_map().get_npcs())
+			_sim = FrameSim.new(get_tree(), nodes, [_boot.get_map().get_entities()]))
 	_director.cutscene_finished.connect(func(id: StringName) -> void:
-		if id == &"viridian_arrival":
-			_finished_ms = Time.get_ticks_msec())
+		if id == &"viridian_arrival" and _sim != null:
+			_finished_s = _sim.elapsed())
 	_boot.get_dialogue_runner().dialogue_started.connect(func(_id: StringName) -> void:
 		_dialogues += 1)
 	await wait_process_frames(3)
@@ -69,12 +78,25 @@ func _objective() -> String:
 	return _boot.get_menu_director().build_dashboard().objective_text
 
 
-## Monte vers le nord jusqu'au début de la scène, puis attend sa fin.
+## Temps simulé depuis le début de la scène (s).
+func _now() -> float:
+	return _sim.elapsed() if _sim != null else 0.0
+
+
+## Monte vers le nord (temps réel) jusqu'au début de la scène, puis la joue en images simulées
+## jusqu'à sa fin et rend le moteur. Attente image par image : le nombre d'images entre le début
+## de la scène et la simulation ne dépend pas de la charge.
 func _walk_in_and_watch() -> void:
 	Input.action_press(&"move_up")
-	await wait_until(func() -> bool: return _director.is_running(), TIMEOUT)
+	var deadline := Time.get_ticks_msec() + int(TIMEOUT * 1000)
+	while _sim == null and Time.get_ticks_msec() < deadline:
+		await get_tree().process_frame
 	Input.action_release(&"move_up")
-	await wait_until(func() -> bool: return not _director.is_running(), TIMEOUT)
+	assert_not_null(_sim, "la scène a commencé")
+	if _sim == null:
+		return
+	await _sim.run_until(func() -> bool: return not _director.is_running(), TIMEOUT)
+	_sim.finish()
 
 
 func test_debug_start_lands_at_the_south_entrance() -> void:
@@ -97,8 +119,8 @@ func test_the_arrival_plays_once_in_four_seconds_without_dialogue() -> void:
 	await _walk_in_and_watch()
 	assert_eq(_plays, 1, "la scène s'est jouée")
 	assert_eq(_player.get_cell(), Vector2i(28, 23), "premier pas sur la place (haut de l'escalier)")
-	var seconds := (_finished_ms - _started_ms) / 1000.0
-	gut.p("micro-scène d'arrivée : %.2f s" % seconds)
+	var seconds := _finished_s
+	gut.p("micro-scène d'arrivée : %.2f s (temps simulé)" % seconds)
 	assert_between(seconds, 0.5, MAX_SECONDS, "4 s au plus de bout en bout")
 	assert_eq(_dialogues, 0, "aucun dialogue")
 	assert_true(_player.is_input_enabled(), "contrôles rendus")
@@ -168,13 +190,13 @@ func test_the_arrival_beats_come_one_after_the_other() -> void:
 	var gaps: Array[int] = []
 	var mark := func(key: String) -> void:
 		if not times.has(key):
-			times[key] = (Time.get_ticks_msec() - _started_ms) / 1000.0
+			times[key] = _now()
 	pidgey.reacted.connect(func() -> void: mark.call("pidgey"))
 	_player.reacted.connect(func() -> void: mark.call("hero_react"))
 	kid.step_finished.connect(func(_cell: Vector2i) -> void:
-		kid_steps.append((Time.get_ticks_msec() - _started_ms) / 1000.0))
+		kid_steps.append(_now()))
 	rattata.step_finished.connect(func(_cell: Vector2i) -> void:
-		rattata_steps.append((Time.get_ticks_msec() - _started_ms) / 1000.0))
+		rattata_steps.append(_now()))
 	var watch := func() -> void:
 		if not _director.is_running():
 			return
