@@ -9,6 +9,7 @@ const NOMS := {"bourg": "Bourg Palette (la caméra fait le tour)", "chambre": "C
 var _index := 0
 var _lieu: Node
 var _etiquette := Label.new()
+var _chrono := 0.0
 
 
 func _ready() -> void:
@@ -24,6 +25,16 @@ func _ready() -> void:
 		if argument.begins_with("--lieu="):
 			_index = maxi(0, LIEUX.find(argument.trim_prefix("--lieu=")))
 	_montrer()
+
+
+## Relevé « [proto-perf] » toutes les 2 s, avec le lieu (adb logcat sur le S24).
+func _process(delta: float) -> void:
+	_chrono += delta
+	if _chrono >= 2.0:
+		_chrono = 0.0
+		print("[proto-perf] lieu=%s fps=%d vram_textures_mo=%.1f" % [LIEUX[_index],
+			Engine.get_frames_per_second(),
+			Performance.get_monitor(Performance.RENDER_TEXTURE_MEM_USED) / 1048576.0])
 
 
 func _input(event: InputEvent) -> void:
