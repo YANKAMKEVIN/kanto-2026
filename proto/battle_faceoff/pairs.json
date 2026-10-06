@@ -1,0 +1,21 @@
+{
+	"species": {
+		"charmander": { "name": "Salamèche", "number": 4, "height": 0.6, "gender": "male" },
+		"pidgey": { "name": "Roucool", "number": 16, "height": 0.3, "gender": "male" },
+		"squirtle": { "name": "Carapuce", "number": 7, "height": 0.5, "gender": "male" },
+		"onix": { "name": "Onix", "number": 95, "height": 8.8, "gender": "male" },
+		"rattata": { "name": "Rattata", "number": 19, "height": 0.3, "gender": "female" },
+		"nidoran_f": { "name": "Nidoran", "number": 29, "height": 0.4, "gender": "female" },
+		"dratini": { "name": "Minidraco", "number": 147, "height": 1.8, "gender": "male" },
+		"venusaur": { "name": "Florizarre", "number": 3, "height": 2.0, "gender": "male" },
+		"charizard": { "name": "Dracaufeu", "number": 6, "height": 1.7, "gender": "male" }
+	},
+	"pairs": [
+		{ "player": "charmander", "foe": "pidgey", "note": "cas standard de début de jeu" },
+		{ "player": "squirtle", "foe": "onix", "note": "énorme différence de gabarit" },
+		{ "player": "onix", "foe": "squirtle", "note": "énorme différence, inversée" },
+		{ "player": "rattata", "foe": "nidoran_f", "note": "deux petits Pokémon" },
+		{ "player": "onix", "foe": "dratini", "note": "deux morphologies longues" },
+		{ "player": "venusaur", "foe": "charizard", "note": "deux gros Pokémon" }
+	]
+}
