@@ -3,6 +3,13 @@
 Mis à jour : 2026-10-06 (lot de textes en brouillon validé par Kevin, plus aucun `draft` dans `data/`) ; 2026-10-05 (**jalon 7 en cours sur `jalon-07`**, deux sessions en parallèle : **T0 + T1 sauvegarde v3 validée seule sur S24** ; fondations **T6 Centre, T10 Boutique, T14 Stockage, T18 Chen** faites et fusionnées ; l'autre session a fusionné **T4, la carte de Jadielle** (`j7-monde`) ; décisions de Kevin du 2026-10-05 appliquées ; **2525 tests verts** ; prochain : T5 (validation 7A.1, autre session) puis les paires écran ∥ câblage T7 ∥ T8, T11 ∥ T12, T15 ∥ T16, T19).
 
 
+## Jalon 8 — Route 2 sud : plan technique écrit (2026-10-06, branche `docs/dossier-11-route-2`)
+- **Plan : [`jalon-08.md`](jalon-08.md)** (architecte, document seul : ni code, ni image, ni Codex), d'après le dossier 11 (14 arbitrages, raccord exact sur les 3 cases de la sortie nord de Jadielle).
+- **Ordre imposé** : 8.0 vue générale peinte (grille fonctionnelle 42 × 60 → plan en aplats → Codex, prompt en brouillon au §1.3) → **validation de Kevin** → liste exacte des assets (série 09, lumière NE) → construction directe de `route_2.tscn` par `tools/build_route_2.gd` ; validations S24 : 8.1 (la route) et 8.2 (la vie de la route).
+- **Réutilisé** : monde peint du J7, `coming_soon` (porte du poste → « FORÊT DE JADE — À venir »), Potion cachée de la Route 1, rebord, `shy` / `look` / `route`, rencontres, objectifs, zones. **Nouveau, petit** : verbe PRENDRE (`Interaction.Kind.TAKE`), apparence `object/` (Poké Ball au sol = entrée du fichier de PNJ, retirée par `despawn` + drapeau), canal B du masque du sol (sous-bois) ; **portage de la forêt serrée** du prototype dans le jeu. Format de sauvegarde inchangé (v3).
+- **Questions pour Kevin** : Q-1 (la Potion au sol a-t-elle l'aspect d'une Poké Ball ? défaut oui), Q-2 (premières répliques de P1 / P2 mémorisées par drapeau, contre le §17 ? défaut oui). Petites questions : défauts au §5.
+- **Prochaine étape** : validation des textes T1–T16 et de ce plan par Kevin, puis T0 (grille, plan en aplats, prompt) et T1 (vue générale).
+
 ## Dossier 10 — Forêt de Jade (2026-10-06, branche `docs/dossier-10`)
 - `docs/design/dossier-10-foret-de-jade.md` écrit après la passe d'alignement et **11 décisions de Kevin** (poison seul au J9, persistant sans dégâts à la marche ; premières évolutions au J9, définitives avec annulation ; 58 × 74 cases ; Pikachu 5 % partout ; ni Roucool ni Rattata sauvages ; `poison_unlocked` au garde sud ; toasts standard ; une scène pour les deux postes ; repères tronc → souche → clairière ; contraintes de la Route 2). Roadmap corrigée (poison et évolutions J9, statuts complets et présentation J11). **Textes à relire par Kevin.** Pas d'implémentation avant le J9.
 
