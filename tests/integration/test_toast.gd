@@ -4,14 +4,13 @@ extends GutTest
 ## n'intercepte aucun toucher, une vibration « tic » ; ExplorationHud.show_toast, affiché
 ## aussi quand les contrôles sont cachés (scène).
 
+const TweenClock := preload("res://tests/helpers/tween_clock.gd")
 const TOAST_SCENE := "res://game/ui/components/toast.tscn"
 const HUD_SCENE := "res://game/ui/hud/exploration_hud.tscn"
 const TITLE := "Poké Balls ×5"
 const DETAIL := "Ajoutées au Sac"
 const SCREEN_WIDTHS: Array[float] = [1920.0, 2340.0]
 const SCREEN_HEIGHT := 1080.0
-## Une image à 60 fps, plus une marge pour l'image de démarrage de la mesure.
-const FRAME := 1.0 / 60.0
 
 var _toast: Toast
 
@@ -71,13 +70,17 @@ func test_fades_in_from_above() -> void:
 
 func test_hidden_after_hold_and_fades() -> void:
 	await wait_process_frames(2)
+	# Temps simulé (TweenClock) : la durée se compte en pas, quelle que soit la charge.
+	var clock := TweenClock.new(get_tree())
 	_toast.show_toast(TITLE, DETAIL)
-	var start := Time.get_ticks_msec()
-	await wait_for_signal(_toast.toast_hidden, _total() + 1.0)
-	var elapsed := (Time.get_ticks_msec() - start) / 1000.0
+	var steps := clock.run_until(func() -> bool:
+		return get_signal_emit_count(_toast, "toast_hidden") > 0, _total() + 1.0)
+	clock.release()
+	assert_signal_emit_count(_toast, "toast_hidden", 1)
 	assert_false(_toast.visible)
 	assert_false(_toast.is_showing())
-	assert_almost_eq(elapsed, _total(), FRAME * 2.0, "TOAST_HOLD + fondus, à une image près")
+	assert_between(steps * TweenClock.STEP, _total() - 0.0001, _total() + TweenClock.STEP + 0.0001,
+		"TOAST_HOLD + fondus, à une image près (%d pas)" % steps)
 
 
 func test_still_visible_during_hold() -> void:
