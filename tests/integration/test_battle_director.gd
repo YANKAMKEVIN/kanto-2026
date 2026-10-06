@@ -693,8 +693,8 @@ func test_a_learned_move_is_announced_without_the_forget_panel() -> void:
 	_director.exp_summary_shown.connect(func(_s: ExpSummary) -> void: order.append("SUMMARY"))
 	var played := await _play_with_offers(request, [0] as Array[int])
 	assert_eq(played[0], Battle.Outcome.WIN)
-	assert_eq(order, ["BATTLE_ENDED", "SUMMARY", "MOVE_LEARNED"] as Array[String],
-		"fin du combat, bilan, puis l'apprentissage")
+	assert_eq(order, ["MOVE_LEARNED", "BATTLE_ENDED", "SUMMARY"] as Array[String],
+		"l'apprentissage au K.O., puis la fin du combat, puis le bilan")
 	assert_true(party.get_lead().knows_move(&"leech_seed"), "Vampigraine apprise au N7")
 	assert_eq(lines, ["Bulbizarre apprend Vampigraine !"] as Array[String],
 		"phrase d'apprentissage")
@@ -730,6 +730,8 @@ func test_forget_offer_suspends_the_journal_and_forgetting_replaces_the_move() -
 		await wait_process_frames(6)
 		seen["suspended"] = events.size() == played_before and _director.is_running() \
 			and panel.is_shown() and panel.is_visible_in_tree()
+		seen["before_end"] = not _has_kind(events, BattleEvent.Kind.BATTLE_ENDED) \
+			and _director.get_summary_card() == null
 		seen["banner_out"] = not _hud.get_message_banner().is_shown()
 		seen["new_card"] = panel.get_new_card().get_view().display_name
 		var known: Array[String] = []
@@ -746,6 +748,7 @@ func test_forget_offer_suspends_the_journal_and_forgetting_replaces_the_move() -
 	assert_eq(played[0], Battle.Outcome.WIN)
 	assert_eq(offers.size(), 1, "une seule offre")
 	assert_true(seen["suspended"], "journal suspendu, panneau ouvert")
+	assert_true(seen["before_end"], "offre au K.O., avant la fin du combat et le bilan")
 	assert_true(seen["banner_out"], "le bandeau est sorti avant le panneau")
 	assert_eq(seen["new_card"], _data.get_move(&"poison_powder").name,
 		"nouvelle capacité")
@@ -1499,10 +1502,10 @@ func test_the_bag_stays_closed_against_a_trainer() -> void:
 	assert_eq(_state.bag.count_of(&"potion"), 2, "aucune Potion consommée")
 
 
-# --- Défaite : pas de bilan (décision de Kevin du 2026-10-06) ---------------------------
+# --- Capacités au K.O., bilan après la victoire (décisions de Kevin du 2026-10-06) ----------
 
-## Équipe adverse pour une défaite après un premier K.O. : un Rattata N2 (vaincu, il rapporte
-## de l'XP), puis un Carapuce N[param strong_level] qui gagne.
+## Équipe adverse de deux Pokémon : un Rattata N2 (vaincu, il rapporte de l'XP), puis un
+## Carapuce N[param strong_level] (fort : défaite ; faible : victoire).
 func _two_foes(rng: GameRng, strong_level: int) -> Party:
 	var foes := Party.new()
 	foes.add(PokemonFactory.create(_data, &"rattata", 2, rng))
@@ -1510,10 +1513,12 @@ func _two_foes(rng: GameRng, strong_level: int) -> Party:
 	return foes
 
 
-## Graine d'une [b]défaite[/b] contre le rival de la Route 22 (il donne de l'XP) (équipe [method _two_foes]) dont le
-## journal satisfait [param wanted] ; reproduit la consommation d'aléatoire du directeur
-## (équipe adverse, puis toujours la 1re capacité). −1 si aucune sous la limite.
-func _loss_seed(party_fn: Callable, strong_level: int, wanted: Callable) -> int:
+## Graine d'un combat contre le rival de la Route 22 (il donne de l'XP ; équipe
+## [method _two_foes]) d'issue [param outcome] dont le journal satisfait [param wanted] ;
+## reproduit la consommation d'aléatoire du directeur (équipe adverse, puis toujours la 1re
+## capacité). −1 si aucune sous la limite.
+func _two_foes_seed(party_fn: Callable, strong_level: int, outcome: Battle.Outcome,
+		wanted: Callable) -> int:
 	var trainer := _trainers.get_trainer(LOSS_TRAINER)
 	for seed: int in range(0, 600):
 		var rng := GameRng.new(seed)
@@ -1527,14 +1532,17 @@ func _loss_seed(party_fn: Callable, strong_level: int, wanted: Callable) -> int:
 		while battle.get_state() == Battle.State.CHOOSING and turn < 60:
 			events.append_array(battle.submit(BattleAction.move(0)))
 			turn += 1
-		if battle.get_outcome() == Battle.Outcome.LOSS and bool(wanted.call(events)):
+		if battle.get_outcome() == outcome and bool(wanted.call(events)):
 			return seed
 	return -1
 
 
-## Joue la défaite de graine [param seed] (équipe [param party]) ; renvoie [issue, événements,
-## nombre de bilans montrés, phrases du bandeau].
-func _play_loss(party: Party, strong_level: int, seed: int) -> Array:
+## Joue le combat de graine [param seed] contre les deux adversaires (équipe [param party]) ;
+## [param on_offer] répond aux offres d'oubli. Renvoie [issue, événements, nombre de bilans
+## montrés, phrases du bandeau, ordre des moments clés]. L'ordre note « LEARNED » / « OFFERED »
+## (capacité), « FOE_SENT_OUT », « ENDED » et « SUMMARY ».
+func _play_two_foes(party: Party, strong_level: int, seed: int,
+		on_offer: Callable = Callable()) -> Array:
 	_state.party = party
 	_state.starter_species = party.get_lead().species_id
 	_state.rng = GameRng.new(seed)
@@ -1543,12 +1551,30 @@ func _play_loss(party: Party, strong_level: int, seed: int) -> Array:
 	var actors: Dictionary[StringName, StringName] = {&"player": MINE_ID, &"foe": FOE_ID}
 	var request := BattleRequest.trainer_battle(trainer, foes, actors, _items)
 	var summaries: Array[int] = [0]
-	_director.exp_summary_shown.connect(func(_s: ExpSummary) -> void: summaries[0] += 1)
+	var order: Array[String] = []
+	_director.exp_summary_shown.connect(func(_s: ExpSummary) -> void:
+		summaries[0] += 1
+		order.append("SUMMARY"))
+	_director.event_played.connect(func(e: BattleEvent) -> void: _note_moment(e, order))
 	var lines: Array[String] = []
 	_hud.get_message_banner().message_shown.connect(func(text: String, _w: bool) -> void:
 		lines.append(text))
-	var played := await _play_with_offers(request, [0] as Array[int])
-	return [played[0], played[1], summaries[0], lines]
+	var played := await _play_with_offers(request, [0] as Array[int], on_offer)
+	return [played[0], played[1], summaries[0], lines, order]
+
+
+## Note dans [param order] le moment clé que représente [param e] (voir [method _play_two_foes]).
+static func _note_moment(e: BattleEvent, order: Array[String]) -> void:
+	match e.kind:
+		BattleEvent.Kind.MOVE_LEARNED:
+			order.append("LEARNED")
+		BattleEvent.Kind.MOVE_FORGET_OFFERED:
+			order.append("OFFERED")
+		BattleEvent.Kind.SENT_OUT:
+			if e.side == BattleEvent.SideId.FOE:
+				order.append("FOE_SENT_OUT")
+		BattleEvent.Kind.BATTLE_ENDED:
+			order.append("ENDED")
 
 
 static func _exp_total(events: Array) -> int:
@@ -1559,12 +1585,17 @@ static func _exp_total(events: Array) -> int:
 	return total
 
 
-## Défaite après un premier K.O. adverse : aucun bilan ; l'XP, le niveau et la capacité apprise
-## dans un emplacement libre restent acquis (le moteur les a appliqués au K.O., comme Rouge/
-## Bleu), mais « X apprend Y ! » n'est pas annoncé.
-func test_a_loss_after_a_knock_out_shows_no_summary_but_keeps_the_exp() -> void:
+static func _foes_sent(events: Array) -> int:
+	return events.filter(func(e: BattleEvent) -> bool:
+		return e.kind == BattleEvent.Kind.SENT_OUT and e.side == BattleEvent.SideId.FOE).size()
+
+
+## Combat de dresseur à deux Pokémon, défaite après un premier K.O. : « X apprend Y ! » est joué
+## au K.O. du premier, avant l'envoi du second (comme Rouge/Bleu) ; après la défaite, aucun
+## bilan, mais l'XP, le niveau et la capacité restent acquis.
+func test_a_move_is_learned_at_the_knock_out_and_kept_after_a_loss() -> void:
 	var party_fn := func() -> Party: return _xp_party(&"bulbasaur", 6, 5)
-	var seed := _loss_seed(party_fn, 20, func(events: Array) -> bool:
+	var seed := _two_foes_seed(party_fn, 20, Battle.Outcome.LOSS, func(events: Array) -> bool:
 		return _has_kind(events, BattleEvent.Kind.MOVE_LEARNED))
 	assert_gt(seed, -1, "une défaite après un K.O. qui fait apprendre une capacité")
 	if seed < 0:
@@ -1572,9 +1603,13 @@ func test_a_loss_after_a_knock_out_shows_no_summary_but_keeps_the_exp() -> void:
 	var party: Party = party_fn.call()
 	var lead := party.get_lead()
 	var before := lead.experience
-	var played := await _play_loss(party, 20, seed)
+	var played := await _play_two_foes(party, 20, seed)
 	assert_eq(played[0], Battle.Outcome.LOSS)
 	var events: Array = played[1]
+	assert_eq(played[4], ["FOE_SENT_OUT", "LEARNED", "FOE_SENT_OUT", "ENDED"] as Array[String],
+		"l'apprentissage est joué au K.O. du premier, avant l'envoi du second ; pas de bilan")
+	assert_true((played[3] as Array[String]).has("Bulbizarre apprend Vampigraine !"),
+		"phrase d'apprentissage pendant le combat")
 	var total := _exp_total(events)
 	assert_gt(total, 0, "de l'XP a été gagnée sur le premier adversaire")
 	assert_eq(lead.experience - before, total, "XP conservée après la défaite")
@@ -1582,37 +1617,74 @@ func test_a_loss_after_a_knock_out_shows_no_summary_but_keeps_the_exp() -> void:
 	assert_true(lead.knows_move(&"leech_seed"), "capacité apprise conservée")
 	assert_eq(played[2], 0, "aucun bilan après une défaite")
 	assert_null(_director.get_summary_card(), "carte du bilan jamais créée")
-	assert_false(_has_kind(events, BattleEvent.Kind.MOVE_LEARNED), "apprentissage non annoncé")
-	for line: String in played[3]:
-		assert_false(line.contains("apprend"), "pas de « apprend » : " + line)
 	assert_push_error_count(0)
 
 
-## Défaite après un K.O. qui proposait une cinquième capacité : l'offre n'est pas présentée
-## (aucun panneau d'oubli), la capacité n'est pas apprise, les quatre connues restent.
-func test_a_loss_drops_a_pending_forget_offer() -> void:
+## Défaite après un K.O. qui propose une cinquième capacité : le panneau d'oubli s'ouvre au
+## K.O. du premier, avant l'envoi du second (le combat attend le choix) ; le choix reste acquis
+## après la défaite.
+func test_a_forget_offer_is_made_at_the_knock_out_and_kept_after_a_loss() -> void:
 	var moves: Array[StringName] = [&"tackle", &"growl", &"leech_seed", &"vine_whip"]
 	var party_fn := func() -> Party: return _xp_party(&"bulbasaur", 19, 1, moves)
-	var seed := _loss_seed(party_fn, 45, func(events: Array) -> bool:
+	var seed := _two_foes_seed(party_fn, 45, Battle.Outcome.LOSS, func(events: Array) -> bool:
 		return _has_kind(events, BattleEvent.Kind.MOVE_FORGET_OFFERED))
 	assert_gt(seed, -1, "une défaite après un K.O. qui propose une cinquième capacité")
 	if seed < 0:
 		return
 	var party: Party = party_fn.call()
 	var lead := party.get_lead()
-	var played := await _play_loss(party, 45, seed)
+	var seen: Dictionary = {}
+	var on_offer := func(panel: MoveForgetPanel, events: Array) -> void:
+		seen["foes_sent"] = _foes_sent(events)
+		seen["ended"] = _has_kind(events, BattleEvent.Kind.BATTLE_ENDED)
+		await wait_process_frames(4)
+		seen["waits"] = _foes_sent(events) == 1
+		panel.select(2)
+		panel.get_confirm_button().pressed.emit()
+	var played := await _play_two_foes(party, 45, seed, on_offer)
 	assert_eq(played[0], Battle.Outcome.LOSS)
+	assert_eq(seen.get("foes_sent"), 1, "panneau ouvert avant l'envoi du second")
+	assert_eq(seen.get("ended"), false, "le combat n'est pas fini pendant l'offre")
+	assert_true(seen.get("waits", false), "le combat attend le choix")
+	assert_eq(played[4], ["FOE_SENT_OUT", "OFFERED", "FOE_SENT_OUT", "ENDED"] as Array[String])
 	assert_eq(played[2], 0, "aucun bilan")
-	assert_false(_has_kind(played[1], BattleEvent.Kind.MOVE_FORGET_OFFERED), "offre non jouée")
-	assert_null(_director.get_forget_panel(), "panneau d'oubli jamais ouvert")
-	var known: Array[StringName] = []
-	for slot: MoveSlot in lead.moves:
-		known.append(slot.move_id)
-	assert_eq(known, moves, "les quatre capacités connues restent")
+	assert_eq(lead.moves[2].move_id, &"poison_powder", "le choix reste après la défaite")
 	assert_push_error_count(0)
 
 
-## Bilan et apprentissages : victoire et capture seulement (défaut : rien après une fuite).
+## Combat de dresseur à deux Pokémon gagné : la capacité est annoncée au K.O. du premier, avant
+## l'envoi du second ; le bilan vient après la fin du combat, avec l'XP et le niveau, et sans
+## aucune annonce de capacité.
+func test_a_win_shows_the_summary_without_move_announcements() -> void:
+	var party_fn := func() -> Party: return _xp_party(&"bulbasaur", 6, 5)
+	var seed := _two_foes_seed(party_fn, 3, Battle.Outcome.WIN, func(events: Array) -> bool:
+		return _has_kind(events, BattleEvent.Kind.MOVE_LEARNED))
+	assert_gt(seed, -1, "une victoire à deux adversaires qui fait apprendre une capacité")
+	if seed < 0:
+		return
+	var party: Party = party_fn.call()
+	var lead := party.get_lead()
+	var after_summary: Array[String] = []
+	var summary_seen: Array[bool] = [false]
+	_director.exp_summary_shown.connect(func(s: ExpSummary) -> void:
+		summary_seen[0] = true
+		var entry := s.get_entry(0)
+		after_summary.append("N%d" % (entry.end_level() if entry != null else -1)))
+	_hud.get_message_banner().message_shown.connect(func(text: String, _w: bool) -> void:
+		if summary_seen[0]:
+			after_summary.append(text))
+	var played := await _play_two_foes(party, 3, seed)
+	assert_eq(played[0], Battle.Outcome.WIN)
+	assert_eq(played[4], ["FOE_SENT_OUT", "LEARNED", "FOE_SENT_OUT", "ENDED", "SUMMARY"]
+		as Array[String], "capacité au K.O. du premier, bilan après la fin")
+	assert_eq(played[2], 1, "un bilan")
+	assert_eq(after_summary, ["N%d" % lead.level] as Array[String],
+		"le bilan montre le niveau ; aucune phrase (ni « apprend ») après lui")
+	assert_true(lead.knows_move(&"leech_seed"))
+	assert_push_error_count(0)
+
+
+## Le bilan : victoire et capture seulement (défaut : rien après une fuite).
 func test_progress_is_shown_after_a_win_or_a_capture_only() -> void:
 	assert_true(BattleDirector.shows_progress(Battle.Outcome.WIN))
 	assert_true(BattleDirector.shows_progress(Battle.Outcome.CAUGHT))
