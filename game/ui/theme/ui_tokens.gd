@@ -572,6 +572,67 @@ const CAPTURE_LINE_FADE := 0.2
 ## Un toucher n'est pris qu'après ce délai : celui qui a lancé la Ball ne ferme pas la carte.
 const CAPTURE_TOUCH_LOCK := 0.6
 
+# --- Bilan de fin de combat (demande n° 1, décisions de Kevin du 2026-10-06) ------------------
+# Une carte sans titre, centrée, le décor du combat visible autour : une ligne par Pokémon qui a
+# gagné de l'XP (vignette, nom, « Nv. 8 ▸ Nv. 9 », barre d'XP, « 112 / 173 », « +11 XP »), les
+# gains de statistiques sous la ligne de celui qui monte, la consigne discrète en dessous.
+
+## Largeur de la carte (référence 1920) et marges ; écart entre les lignes.
+const SUMMARY_CARD_WIDTH := 1500
+const SUMMARY_CARD_MAX_HEIGHT := 984
+const SUMMARY_CARD_BG := DIALOG_PANEL_BG
+const SUMMARY_CARD_PAD_H := 28
+const SUMMARY_CARD_PAD_V := 24
+const SUMMARY_ROW_GAP := 10
+## Une ligne : fond translucide, liseré ; celle qui monte de niveau prend un liseré ACCENT.
+const SUMMARY_ROW_BG := Color(1, 1, 1, 0.05)
+const SUMMARY_ROW_BORDER := PANEL_BORDER
+const SUMMARY_ROW_PAD_H := 16
+const SUMMARY_ROW_PAD_V := 6
+const SUMMARY_ROW_HIGHLIGHT_BORDER := 3
+## Fond de la ligne mise en valeur : opaque, pour que le halo ACCENT reste autour (pas dessous).
+const SUMMARY_ROW_LIT_BG := PANEL_BG_STRONG
+## Vignette du Pokémon (sprite pixel art, NEAREST) et son cadre.
+const SUMMARY_THUMB := 80
+const SUMMARY_THUMB_PAD := 4
+## Colonnes : nom, niveaux, barre (le reste), « 112 / 173 », « +11 XP ».
+const SUMMARY_NAME_WIDTH := 250
+const SUMMARY_LEVEL_WIDTH := 290
+const SUMMARY_POINTS_WIDTH := 180
+const SUMMARY_GAIN_WIDTH := 170
+const SUMMARY_NAME_FONT := FONT_BODY
+const SUMMARY_LEVEL_FONT := 28
+const SUMMARY_LEVEL_UP_FONT := FONT_BUTTON
+const SUMMARY_POINTS_FONT := FONT_CAPTION
+const SUMMARY_GAIN_FONT := FONT_BODY
+const SUMMARY_STATS_FONT := FONT_CAPTION
+const SUMMARY_LEVEL_ARROW := 22
+## Barre d'XP du bilan : plus épaisse que celle de la carte de combat.
+const SUMMARY_BAR_HEIGHT := 14
+## Consigne « Touchez l'écran pour continuer » : capsule discrète sous la carte.
+const SUMMARY_HINT_FONT := FONT_CAPTION
+const SUMMARY_HINT_BG := PANEL_BG
+const SUMMARY_HINT_PAD_H := 32
+const SUMMARY_HINT_PAD_V := 10
+const SUMMARY_HINT_GAP := 18
+const SUMMARY_HINT_FADE := ANIM_PANEL
+## Rythme : les barres partent ensemble après SUMMARY_START_DELAY ; sans montée de niveau, une
+## barre se remplit en SUMMARY_FILL (≈ 1,2 s avec l'arrivée de la carte) ; avec montée, chaque
+## tranche prend SUMMARY_FILL_SLICE, puis le passage de niveau tient SUMMARY_LEVEL_HOLD (niveau
+## qui pulse, ligne mise en valeur, gains de statistiques).
+const SUMMARY_START_DELAY := 0.1
+const SUMMARY_FILL := 0.8
+const SUMMARY_FILL_SLICE := 0.6
+const SUMMARY_LEVEL_HOLD := 0.7
+## « Nv. 9 » grossit un instant (comme LEVEL_PULSE), la ligne rebondit légèrement.
+const SUMMARY_LEVEL_PULSE_SCALE := 1.35
+const SUMMARY_ROW_BOUNCE := 1.03
+const SUMMARY_STATS_FADE := 0.25
+## Un toucher pendant le remplissage accélère tout (×SUMMARY_FAST) ; un second termine.
+const SUMMARY_FAST := 4.0
+## Un toucher n'est pris qu'après ce délai (celui du dernier message ne compte pas).
+const SUMMARY_TOUCH_LOCK := 0.3
+
 # --- Menu Dresseur (jalon 6, T3 : tableau de bord) -------------------------------------------------
 
 ## Ouverture (fond puis panneaux) et fermeture du menu ; vibration légère à l'ouverture.

@@ -16,11 +16,12 @@ extends RefCounted
 ##   CAPTURE     carte de capture (jalon 5D), centrée sur l'écran
 ##   PARTY_PICKER choix du Pokémon à soigner (jalon 6), coin bas gauche, à la place du Sac
 ##   PARTY       panneau ÉQUIPE (jalon 7), colonne gauche comme le Sac : cadre au-dessus de « ‹ »
+##   SUMMARY     bilan de fin de combat (demande n° 1), centré sur l'écran
 ## Rien d'interactif à moins de SAFE_MARGIN des bords (vérifié par les tests).
 
 enum Slot {
 	FOE_CARD, OWN_CARD, PARTY_PIPS, BACK, ACTIONS, MOVES, MESSAGE, FORGET, BAG, CAPTURE,
-	PARTY_PICKER, PARTY,
+	PARTY_PICKER, PARTY, SUMMARY,
 }
 
 ## Valeur de « coin » d'un axe pour un emplacement centré (la distance au bord est ignorée).
@@ -97,6 +98,9 @@ static func frame(slot: Slot) -> Array[Vector2]:
 			return [Vector2(0, 1), Vector2(edge, edge), picker_size()]
 		Slot.PARTY:
 			return [Vector2(0, 1), Vector2(edge, edge), party_size()]
+		Slot.SUMMARY:
+			return [Vector2(CENTERED, CENTERED), Vector2.ZERO,
+				Vector2(UiTokens.SUMMARY_CARD_WIDTH, UiTokens.SUMMARY_CARD_MAX_HEIGHT)]
 	return [Vector2.ZERO, Vector2.ZERO, Vector2.ZERO]
 
 

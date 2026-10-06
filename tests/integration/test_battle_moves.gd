@@ -4,6 +4,7 @@ extends GutTest
 ## (liseré ACCENT + ▶), un toucher = un move_selected, pression longue = fiche SANS
 ## move_selected (même au relâchement), clavier, bouton « ‹ », placement à 1920 et 2340.
 
+const FrameSim := preload("res://tests/helpers/frame_sim.gd")
 const GRID_SCENE := "res://game/ui/battle/move_grid.tscn"
 const BACK_SCENE := "res://game/ui/battle/battle_back_button.tscn"
 const CARD_SCENE := "res://game/ui/battle/battle_info_card.tscn"
@@ -226,10 +227,18 @@ func test_release_outside_cancels() -> void:
 func test_long_press_opens_sheet_without_move_selected() -> void:
 	await _show(_charmander_moves())
 	watch_signals(_grid)
-	await _press(_center(0), true)
-	await wait_seconds(UiTokens.LONG_PRESS * 0.5)
+	# Images simulées (FrameSim) : la tenue de la carte se compte en images. Le doigt se pose
+	# d'abord (l'appui est traité dans l'appel même ; une carte retirée du moteur ne reçoit
+	# plus le toucher), puis la carte est retirée du moteur, sans image réelle entre les deux.
+	_press(_center(0), true)
+	var sim := FrameSim.new(get_tree(), [_grid.get_card(0)])
+	await sim.run_until(func() -> bool: return false, UiTokens.LONG_PRESS - FrameSim.STEP)
 	assert_signal_not_emitted(_grid, "details_opened", "pas avant LONG_PRESS")
-	await wait_seconds(UiTokens.LONG_PRESS * 0.5 + 0.1)
+	await sim.run_until(func() -> bool:
+		return get_signal_emit_count(_grid, "details_opened") > 0, 1.0)
+	sim.finish()
+	assert_between(sim.elapsed(), UiTokens.LONG_PRESS - 0.0001,
+		UiTokens.LONG_PRESS + FrameSim.STEP + 0.0001, "au bout de LONG_PRESS (%.3f s)" % sim.elapsed())
 	assert_signal_emitted_with_parameters(_grid, "details_opened", [0])
 	assert_true(_grid.is_details_open())
 	var sheet := _grid.get_detail_sheet()

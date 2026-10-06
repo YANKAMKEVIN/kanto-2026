@@ -118,6 +118,26 @@ static func offered_move(move_id: StringName, data: PokemonData) -> BattleMoveVi
 		move.pp, move.pp, move.power, move.accuracy, move.description)
 
 
+## Lignes du bilan de fin de combat ([ExpSummaryRowView], demande n° 1), une par Pokémon de
+## [param summary], dans l'ordre de l'équipe : « +11 XP », « Nv. 8 », puis pour chaque niveau
+## gagné « Nv. 9 » et les gains de statistiques cumulés jusque-là. Les vignettes sont posées
+## par l'appelant (textures).
+static func exp_summary(summary: ExpSummary, texts: BattleText) -> Array[ExpSummaryRowView]:
+	var rows: Array[ExpSummaryRowView] = []
+	for entry: ExpSummaryEntry in summary.get_entries():
+		var row := ExpSummaryRowView.new()
+		row.display_name = entry.pokemon_name
+		row.gain_text = texts.summary_exp(entry.exp_gained)
+		row.start_level_text = texts.summary_level(entry.start_level)
+		for i: int in entry.levels_gained():
+			row.level_texts.append(texts.summary_level(entry.level_ups[i].level))
+			row.stat_texts.append(texts.summary_stats(entry.stat_gains(i + 1)))
+		row.segments = entry.segments.duplicate()
+		row.points = entry.points.duplicate()
+		rows.append(row)
+	return rows
+
+
 ## Catégorie du modèle → catégorie affichée par la fiche.
 static func move_category(category: MoveData.Category) -> BattleMoveView.Category:
 	match category:

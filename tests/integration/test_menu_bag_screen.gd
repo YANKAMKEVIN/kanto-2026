@@ -117,8 +117,9 @@ func test_escape_action_closes_the_picker_first() -> void:
 
 func test_cards_never_turn_favorite_by_themselves() -> void:
 	assert_true(_menu.open(MenuRoute.bag()))
-	var end := Time.get_ticks_msec() + 1200
-	while Time.get_ticks_msec() < end:
+	# Rien ne doit se produire pendant 1,2 s : attente, pas une mesure de durée.
+	var end := Time.get_ticks_msec() + 1200  # temps réel : attente où rien ne doit arriver
+	while Time.get_ticks_msec() < end:  # temps réel : attente où rien ne doit arriver
 		await wait_process_frames(1)
 	assert_false(GameState.bag.is_favorite(&"potion"), "aucun appui long sans doigt")
 	_menu.close()

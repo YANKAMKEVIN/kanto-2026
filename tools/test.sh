@@ -3,5 +3,7 @@
 set -euo pipefail
 cd "$(dirname "$0")/.."
 DIR="${1:-res://tests}"
+# Garde-fou : aucune mesure de durée en temps réel dans les tests (voir le script).
+tools/check_test_timing.sh tests
 godot --headless --path . --import >/dev/null 2>&1 || true
 godot --headless --path . -s addons/gut/gut_cmdln.gd -gdir="$DIR" -ginclude_subdirs -gexit -glog=1

@@ -4,6 +4,7 @@ extends GutTest
 ## vibration, un toucher = un action_selected, zones ≥ TOUCH_MIN dans SAFE_MARGIN à 1920 et
 ## 2340, apparition animée.
 
+const TweenClock := preload("res://tests/helpers/tween_clock.gd")
 const GRID_SCENE := "res://game/ui/battle/action_grid.tscn"
 const CARD_SCENE := "res://game/ui/battle/battle_info_card.tscn"
 const SCREEN_WIDTHS: Array[float] = [1920.0, 2340.0]
@@ -100,12 +101,17 @@ func test_first_battle_attack_highlighted_others_dimmed() -> void:
 
 
 func test_glow_pulses() -> void:
-	await _show_first_battle()
+	# Temps simulé (TweenClock) : relevé à chaque pas sur deux pulsations, sans image sautée.
+	var clock := TweenClock.new(get_tree())
+	_grid.show_actions(FIRST_BATTLE)
 	var glow := _grid.get_node(^"%Glow") as Panel
 	var alphas: Array[float] = []
-	for i: int in 4:
-		await wait_seconds(UiTokens.ACTION_GLOW_PULSE * 0.5)
+	var steps := 0
+	while steps * TweenClock.STEP < UiTokens.ACTION_GLOW_PULSE * 2.0:
+		clock.step()
+		steps += 1
 		alphas.append(glow.modulate.a)
+	clock.release()
 	assert_lt(alphas.min(), 0.95, "la lueur baisse…")
 	assert_between(alphas.min(), UiTokens.ACTION_GLOW_MIN - 0.01, 1.0, "…doucement")
 

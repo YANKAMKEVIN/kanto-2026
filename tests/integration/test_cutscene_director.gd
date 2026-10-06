@@ -291,19 +291,9 @@ func test_play_blocks_player_in_the_same_frame_and_emits_started() -> void:
 
 
 func test_wait_lasts_the_requested_time() -> void:
-	# Temps de jeu : somme des delta de chaque image du moteur tant que la scène tourne.
-	var timing: Array[float] = [0.0, 0.0]  # [écoulé, image la plus longue]
-	var count := func() -> void:
-		if _director.is_running():
-			var delta := get_process_delta_time()
-			timing[0] += delta
-			timing[1] = maxf(timing[1], delta)
-	get_tree().process_frame.connect(count)
-	_director.play(&"timed")
-	await _await_scene_end()
-	get_tree().process_frame.disconnect(count)
+	var elapsed: float = await _play_simulated(&"timed")
 	assert_false(_director.is_running())
-	assert_almost_eq(timing[0], 0.5, timing[1] + 0.001, "0,5 s à une image près")
+	_assert_lasts(elapsed, 0.5, "0,5 s à une image près")
 
 
 func test_dialogue_step_waits_for_the_end_of_the_dialogue() -> void:
@@ -493,7 +483,7 @@ func test_follower_stays_one_step_behind_and_ends_on_the_leader_second_to_last_c
 			var gap := mom.get_cell() - _player.get_cell()
 			gaps.append(absi(gap.x) + absi(gap.y))
 	get_tree().process_frame.connect(watch)
-	await _play_timed(&"mom_leads")
+	await _play_and_wait(&"mom_leads")
 	get_tree().process_frame.disconnect(watch)
 	assert_eq(leader_cells, [Vector2i(7, 4), Vector2i(7, 5), Vector2i(7, 6), Vector2i(7, 7),
 		Vector2i(6, 7)] as Array[Vector2i])
@@ -516,7 +506,7 @@ func test_follower_steps_in_the_same_frame_as_the_leader() -> void:
 	var watch := func() -> void:
 		starts.append([mom.is_moving(), _player.is_moving()])
 	get_tree().process_frame.connect(watch)
-	await _play_timed(&"mom_leads")
+	await _play_and_wait(&"mom_leads")
 	get_tree().process_frame.disconnect(watch)
 	for pair: Array in starts:
 		assert_eq(pair[0], pair[1], "meneur et suiveur partent et s'arrêtent ensemble")
@@ -524,7 +514,7 @@ func test_follower_steps_in_the_same_frame_as_the_leader() -> void:
 
 func test_follower_not_next_to_the_leader_is_ignored_with_error() -> void:
 	var mom := _map.get_npc(&"mom")
-	await _play_timed(&"mom_leads")
+	await _play_and_wait(&"mom_leads")
 	assert_push_error("pas à côté")
 	assert_eq(mom.get_cell(), Vector2i(6, 7), "le meneur marche seul")
 	assert_eq(_player.get_cell(), START)
@@ -610,18 +600,11 @@ func test_no_trigger_on_a_scripted_step() -> void:
 
 # --- spawn et move (T3) -------------------------------------------------------------------
 
-## Temps de jeu d'une scène (somme des delta tant qu'elle tourne), joueur animé par le
-## moteur (aucune entrée tenue).
-func _play_timed(cutscene_id: StringName) -> float:
-	var elapsed: Array[float] = [0.0]
-	var count := func() -> void:
-		if _director.is_running():
-			elapsed[0] += get_process_delta_time()
-	get_tree().process_frame.connect(count)
+## Joue une scène jusqu'à sa fin, joueur animé par le moteur (aucune entrée tenue). Pour en
+## mesurer la durée : [method _play_simulated].
+func _play_and_wait(cutscene_id: StringName) -> void:
 	assert_true(_director.play(cutscene_id))
 	await _await_scene_end()
-	get_tree().process_frame.disconnect(count)
-	return elapsed[0]
 
 
 ## Images simulées (FrameSim), à ouvrir avant [method CutsceneDirector.play] : le moteur ne
@@ -729,7 +712,7 @@ func test_move_to_an_absolute_cell() -> void:
 
 func test_move_along_a_written_path() -> void:
 	var mom := _map.get_npc(&"mom")
-	await _play_timed(&"mom_path")
+	await _play_and_wait(&"mom_path")
 	assert_eq(mom.get_cell(), Vector2i(6, 6))
 	assert_eq(mom.get_facing(), Vector2i.LEFT)
 
@@ -739,7 +722,7 @@ func test_move_the_player_along_a_path_while_blocked() -> void:
 	var seen: Array = []
 	_player.moved.connect(func(cell: Vector2i) -> void:
 		seen.append([cell, _player.is_blocked_by(CutsceneDirector.REASON)]))
-	await _play_timed(&"player_path")
+	await _play_and_wait(&"player_path")
 	assert_eq(_player.get_cell(), START + Vector2i(1, 1))
 	assert_eq(seen, [[START + Vector2i.DOWN, true], [START + Vector2i(1, 1), true]])
 	assert_true(_player.is_input_enabled())
@@ -1055,21 +1038,18 @@ func test_give_without_a_bag_is_skipped_with_error() -> void:
 
 func test_background_move_lets_the_scene_go_on_and_the_scene_waits_for_it() -> void:
 	var mom := _map.get_npc(&"mom")
-	var elapsed: Array[float] = [0.0]
+	_sim_begin()
 	assert_true(_director.play(&"mom_background"))
 	assert_true(mom.is_moving(), "premier pas parti tout de suite")
-	await wait_process_frames(2)
+	for i: int in 2:
+		await _sim_frame()
 	assert_true(_flags.has_flag(&"during"), "les étapes suivantes n'attendent pas")
 	assert_eq(_player.get_facing(), Vector2i.LEFT)
 	assert_true(_director.is_running(), "la scène attend la fin de la marche")
-	var count := func() -> void:
-		if _director.is_running():
-			elapsed[0] += get_process_delta_time()
-	get_tree().process_frame.connect(count)
-	await _await_scene_end()
-	get_tree().process_frame.disconnect(count)
+	var frames: int = await _sim_until_scene_end()
+	_sim_end()
 	assert_eq(mom.get_cell(), Vector2i(6, 6))
-	assert_gt(elapsed[0], 2.0 * Grid.WALK_STEP_DURATION, "fin de scène après le dernier pas")
+	assert_gt(frames * FRAME, 2.0 * Grid.WALK_STEP_DURATION, "fin de scène après le dernier pas")
 	assert_true(_player.is_input_enabled())
 	assert_push_error_count(0)
 
