@@ -128,7 +128,7 @@ func run(trainer_id: StringName, map: GameMap,
 	# comme au 4B). La requête porte ensuite ces camps et les règles « dresseur ».
 	var rng := _state.rng as GameRng
 	var foes := _trainers.build_team(trainer_id, _state.starter_species, rng)
-	var request := BattleRequest.trainer_battle(trainer, foes, world_actors)
+	var request := BattleRequest.trainer_battle(trainer, foes, world_actors, _items)
 	return await run_request(request, map)
 
 

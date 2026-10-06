@@ -52,6 +52,8 @@ var _player: Player
 var _saved_router: Array = []
 var _pages: Array[String] = []
 var _bag_enabled: Array[bool] = []
+## Le Sac est réellement utilisable (objets de soin légaux), pas seulement affiché (QA T26).
+var _bag_usable: Array[bool] = []
 
 
 func before_each() -> void:
@@ -62,6 +64,7 @@ func before_each() -> void:
 	_fs = MemoryFs.new()
 	_pages.clear()
 	_bag_enabled.clear()
+	_bag_usable.clear()
 
 
 func after_each() -> void:
@@ -134,6 +137,7 @@ func _play_through() -> bool:
 			if battle != null and battle.get_state() == Battle.State.CHOOSING:
 				match battle_hud.get_zone():
 					BattleHud.Zone.ACTIONS:
+						_bag_usable.append(battle.can_use_heal_items())
 						_bag_enabled.append(battle_hud.get_action_grid().is_action_enabled(
 							ActionGrid.BAG))
 						battle_hud.action_selected.emit(ActionGrid.ATTACK)
@@ -210,6 +214,8 @@ func test_victory_pays_records_the_moment_and_never_replays() -> void:
 	assert_eq(GameState.money, money + 280, "35 × Nv. 8")
 	assert_true(_bag_enabled.size() > 0 and _bag_enabled.all(func(on: bool) -> bool: return on),
 		"SAC actif contre le rival")
+	assert_true(_bag_usable.size() > 0 and _bag_usable.all(func(on: bool) -> bool: return on),
+		"SAC utilisable contre le rival (objets de soin légaux, QA T26)")
 	var moments := _rival_moments()
 	assert_eq(moments.size(), 1, "un moment « Combat contre le rival »")
 	if moments.size() == 1:
