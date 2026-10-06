@@ -22,8 +22,8 @@ extends SceneTree
 ## d'art, les données du jeu en anglais) : [constant LOOKS]. Les personnages vont dans
 ## `assets/sprites/characters/painted/<id>_frames.tres` (`CharacterLook` : `"sprite": "<id>"`),
 ## les Pokémon du monde dans `assets/sprites/pokemon/painted/<espèce>_frames.tres`
-## (`"sprite": "pokemon/<espèce>"`, choix explicite : Bourg Palette et la Route 1 gardent leurs
-## Pokémon provisoires `"pidgey"` / `"rattata"` jusqu'à la phase DA, Q-2 / Q-3).
+## (`"sprite": "pokemon/<espèce>"`, choix explicite ; depuis DA.1 / DA.2, la Route 1 et Bourg
+## Palette l'utilisent ; un simple `"pidgey"` reste provisoire).
 
 const CATALOGUE := "res://assets/world/catalogue.json"
 const CHARACTERS_DIR := "res://assets/sprites/characters/painted/"
@@ -46,6 +46,15 @@ const LOOKS: Dictionary = {
 	"vieil_homme": [CHARACTERS_DIR, "old_man", ""],
 	"voyageur": [CHARACTERS_DIR, "traveler", ""],
 	"jeune_dresseur": [CHARACTERS_DIR, "youngster", ""],
+	# DA.2 (Bourg Palette) : série 09 et habitants du prototype (série 06B), avec leur
+	# planche d'attente (`<planche>_idle`), sans planche de course (ils marchent toujours).
+	"maman": [CHARACTERS_DIR, "mom", ""],
+	"chen": [CHARACTERS_DIR, "oak", ""],
+	"leo": [CHARACTERS_DIR, "leo", ""],
+	"vieille_dame": [CHARACTERS_DIR, "aoki", ""],
+	"pecheur": [CHARACTERS_DIR, "haru", ""],
+	"chercheuse": [CHARACTERS_DIR, "maya", ""],
+	"chercheur": [CHARACTERS_DIR, "researcher", ""],
 	"roucool": [POKEMON_DIR, "pidgey", ""],
 	"rattata": [POKEMON_DIR, "rattata", "rattata_run"],
 	"piafabec": [POKEMON_DIR, "spearow", ""],

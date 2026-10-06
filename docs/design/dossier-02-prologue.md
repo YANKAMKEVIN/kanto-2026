@@ -98,6 +98,8 @@ Jamais de fiche technique (« BULBIZARRE TYPE PLANTE POISON ») : on privilégie
 - **Haru** (pêcheur) — sur le littoral.
   > **Haru** — « La mer est calme aujourd'hui. » / « Les Pokémon le sentent avant nous. »
   Plus tard, il pourra parler de Pokémon inhabituels aperçus en mer.
+- **Chercheur** (assistant du labo, DA.2) — va et vient entre l'entrée du labo et la serre des jardins de recherche. Réplique validée par Kevin le 2026-10-06, la même avant et après le départ du labo :
+  > **Chercheur** — « Le professeur nous fait tout noter. » / « Même la couleur des feuilles des serres ! »
 - **Maya** (chercheuse du laboratoire) — PNJ récurrent, future responsable de certaines mises à jour du Pokédex. On crée **Maya**, pas « CHERCHEUR #4 ».
 
 ## 5. Le déclencheur (jalon 3B)

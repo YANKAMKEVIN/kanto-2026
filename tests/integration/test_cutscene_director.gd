@@ -69,8 +69,9 @@ const SCENES := {
 	"spawn_oak": {"steps": [
 		{"spawn": "oak", "sprite": "oak", "cell": [5, 15], "facing": "up"},
 	]},
+	# Apparence qui court vraiment (planche de course) : DA.2, Chen peint marche.
 	"oak_runs_to_player": {"steps": [
-		{"spawn": "oak", "sprite": "oak", "cell": [5, 15], "facing": "up"},
+		{"spawn": "oak", "sprite": "kid", "cell": [5, 15], "facing": "up"},
 		{"move": "oak", "run": true,
 			"to": {"near": "player", "offsets": [[1, 0], [-1, 0], [0, 1]]}},
 		{"set": ["arrived"]},

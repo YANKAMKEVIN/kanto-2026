@@ -44,11 +44,11 @@ func test_generic_look_last() -> void:
 
 
 func test_default_check_reads_the_real_resources() -> void:
-	# Sans Callable : ResourceLoader.exists. La mère n'a que sa planche provisoire (phase DA),
-	# l'apparence générique existe.
-	var mom := CharacterLook.resolve(&"mom")
-	assert_eq(mom.frames_path, CharacterLook.placeholder_frames_path(&"mom"))
-	assert_true(ResourceLoader.exists(mom.frames_path))
+	# Sans Callable : ResourceLoader.exists. Bulbizarre n'a que sa planche provisoire (les
+	# starters restent provisoires au DA.2), l'apparence générique existe.
+	var starter := CharacterLook.resolve(&"bulbasaur")
+	assert_eq(starter.frames_path, CharacterLook.placeholder_frames_path(&"bulbasaur"))
+	assert_true(ResourceLoader.exists(starter.frames_path))
 	var nobody := CharacterLook.resolve(&"nobody_here")
 	assert_eq(nobody.frames_path,
 		CharacterLook.placeholder_frames_path(CharacterLook.FALLBACK_SPRITE))
@@ -77,12 +77,14 @@ func test_painted_pokemon_by_explicit_prefix() -> void:
 func test_real_painted_looks() -> void:
 	for sprite: StringName in [&"player", &"rival", &"nurse", &"clerk", &"courier", &"lass",
 			&"kid", &"old_man", &"traveler", &"youngster", &"pokemon/pidgey", &"pokemon/rattata",
-			&"pokemon/spearow", &"pokemon/mankey", &"pokemon/nidoran_f", &"pokemon/nidoran_m"]:
+			&"pokemon/spearow", &"pokemon/mankey", &"pokemon/nidoran_f", &"pokemon/nidoran_m",
+			# DA.2 : habitants de Bourg Palette, Maman, Chen et Maya.
+			&"mom", &"oak", &"leo", &"aoki", &"haru", &"maya", &"researcher"]:
 		var look := CharacterLook.resolve(sprite)
 		assert_true(look.painted, String(sprite))
 		assert_eq(look.filter, CanvasItem.TEXTURE_FILTER_LINEAR)
-	# Bourg Palette et la Route 1 gardent leurs Pokémon provisoires (Q-2, Q-3).
-	for sprite: StringName in [&"pidgey", &"rattata", &"mom", &"oak"]:
+	# Un nom d'espèce seul reste provisoire ; les starters aussi (décision attendue).
+	for sprite: StringName in [&"pidgey", &"rattata", &"bulbasaur", &"charmander", &"squirtle"]:
 		assert_false(CharacterLook.resolve(sprite).painted, String(sprite))
 
 
@@ -168,9 +170,11 @@ func test_npc_painted_at_scale_one_linear() -> void:
 
 
 func test_npc_placeholder_twice_nearest() -> void:
-	var npc := _npc(&"mom")
+	# DA.2 : Maman est peinte ; les starters restent provisoires.
+	var npc := _npc(&"bulbasaur")
 	var sprite := npc.get_node(^"%Sprite") as AnimatedSprite2D
-	assert_eq(sprite.sprite_frames.resource_path, CharacterLook.placeholder_frames_path(&"mom"))
+	assert_eq(sprite.sprite_frames.resource_path,
+		CharacterLook.placeholder_frames_path(&"bulbasaur"))
 	assert_eq(sprite.scale, Vector2(2, 2))
 	assert_eq(sprite.texture_filter, CanvasItem.TEXTURE_FILTER_NEAREST)
 	var unknown := _npc(&"villager")
@@ -187,3 +191,25 @@ func test_npc_frames_helpers_follow_character_look() -> void:
 	assert_true(Npc.has_frames(&"mom"))
 	assert_false(Npc.has_frames(&"villager"))
 	assert_true(Npc.has_frames(Npc.FALLBACK_SPRITE))
+
+
+## DA.2 (demande de Kevin) : les habitants de Bourg Palette, Maman, Chen et Maya ont une vraie
+## pose d'attente (planche `<planche>_idle`, pieds joints), distincte de la marche ; le rival
+## garde la sienne (jalon 7).
+func test_pallet_town_people_have_a_real_idle_pose() -> void:
+	var sheets: Dictionary[StringName, String] = {
+		&"mom": "maman", &"oak": "chen", &"leo": "leo", &"aoki": "vieille_dame",
+		&"haru": "pecheur", &"maya": "chercheuse", &"researcher": "chercheur", &"rival": "rival",
+	}
+	for sprite: StringName in sheets:
+		var frames := load(CharacterLook.painted_frames_path(sprite)) as SpriteFrames
+		assert_not_null(frames, String(sprite))
+		if frames == null:
+			continue
+		for dir: String in ["down", "left", "right", "up"]:
+			var idle := frames.get_frame_texture(StringName("idle_" + dir), 0) as AtlasTexture
+			var walk := frames.get_frame_texture(StringName("walk_" + dir), 0) as AtlasTexture
+			var expected := CharacterLook.PAINTED_DIR + sheets[sprite] + "_idle_sheet.png"
+			assert_eq(idle.atlas.resource_path, expected, "%s : attente %s" % [sprite, dir])
+			assert_ne(idle.atlas.resource_path, walk.atlas.resource_path,
+				"%s : attente distincte de la marche" % sprite)

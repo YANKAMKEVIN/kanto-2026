@@ -1,13 +1,37 @@
 {
-	"aoki": { "cell": [29, 13], "facing": "left", "sprite": "aoki", "dialogue": "aoki" },
-	"aoki_pidgey_1": { "cell": [27, 13], "facing": "right", "sprite": "pidgey",
+	"aoki": { "cell": [29, 13], "facing": "left", "sprite": "aoki", "dialogue": "aoki",
+		"route": { "cells": [[29, 13], [30, 13], [30, 14], [29, 14]], "pause": 3.0 } },
+	"aoki_pidgey_1": { "cell": [27, 13], "facing": "right", "sprite": "pokemon/pidgey",
 		"dialogue": "observe_aoki_pidgey", "verb": "observe", "species": "pidgey" },
-	"aoki_pidgey_2": { "cell": [28, 14], "facing": "up", "sprite": "pidgey",
+	"aoki_pidgey_2": { "cell": [28, 14], "facing": "up", "sprite": "pokemon/pidgey",
 		"dialogue": "observe_aoki_pidgey", "verb": "observe", "species": "pidgey" },
-	"leo": { "cell": [18, 9], "facing": "left", "sprite": "leo", "dialogue": "leo" },
-	"leo_rattata": { "cell": [17, 9], "facing": "right", "sprite": "rattata",
-		"dialogue": "observe_leo_rattata", "verb": "observe", "species": "rattata" },
-	"haru": { "cell": [3, 29], "facing": "left", "sprite": "haru", "dialogue": "haru" },
-	"prairie_pidgey": { "cell": [20, 3], "facing": "down", "sprite": "pidgey" },
-	"prairie_rattata": { "cell": [27, 2], "facing": "left", "sprite": "rattata" }
+	"leo": { "cell": [18, 9], "facing": "left", "sprite": "leo", "dialogue": "leo",
+		"route": {
+			"cells": [[18, 9], [19, 9], [19, 8], [20, 8], [21, 8], [21, 9], [21, 10], [20, 10],
+				[19, 10], [18, 10], [17, 10], [17, 9]],
+			"pause": 0.6, "start": 0
+		} },
+	"leo_rattata": { "cell": [17, 9], "facing": "right", "sprite": "pokemon/rattata",
+		"dialogue": "observe_leo_rattata", "verb": "observe", "species": "rattata",
+		"route": {
+			"cells": [[18, 9], [19, 9], [19, 8], [20, 8], [21, 8], [21, 9], [21, 10], [20, 10],
+				[19, 10], [18, 10], [17, 10], [17, 9]],
+			"pause": 0.6, "start": 11
+		} },
+	"haru": { "cell": [3, 29], "facing": "left", "sprite": "haru", "dialogue": "haru",
+		"route": {
+			"cells": [[3, 29], [3, 30], [3, 31], [4, 31], [5, 31], [6, 31], [7, 31], [8, 31],
+				[7, 31], [6, 31], [5, 31], [4, 31], [3, 31], [3, 30]],
+			"pause": 2.0
+		} },
+	"researcher": { "cell": [25, 23], "facing": "down", "sprite": "researcher",
+		"dialogue": "researcher",
+		"route": {
+			"cells": [[25, 23], [24, 23], [24, 24], [24, 25], [25, 25], [26, 25], [27, 25],
+				[28, 25], [29, 25], [30, 25], [31, 25], [31, 26], [31, 25], [30, 25], [29, 25],
+				[28, 25], [27, 25], [26, 25], [25, 25], [24, 25], [24, 24], [24, 23]],
+			"pause": 1.2
+		} },
+	"prairie_pidgey": { "cell": [20, 3], "facing": "down", "sprite": "pokemon/pidgey" },
+	"prairie_rattata": { "cell": [27, 2], "facing": "left", "sprite": "pokemon/rattata" }
 }

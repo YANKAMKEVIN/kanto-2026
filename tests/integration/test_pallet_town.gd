@@ -20,8 +20,9 @@ const TALL_GRASS_RECT := Rect2i(23, 0, 2, 3)
 const TRIGGER_CELLS: Array[Vector2i] = [Vector2i(23, 3), Vector2i(24, 3)]
 ## Pokémon d'ambiance de la prairie : id → [case, orientation, apparence].
 const PRAIRIE: Dictionary = {
-	&"prairie_pidgey": [Vector2i(20, 3), Vector2i.DOWN, &"pidgey"],
-	&"prairie_rattata": [Vector2i(27, 2), Vector2i.LEFT, &"rattata"],
+	# DA.2 : Pokémon du monde peints (« pokemon/<espèce> »).
+	&"prairie_pidgey": [Vector2i(20, 3), Vector2i.DOWN, &"pokemon/pidgey"],
+	&"prairie_rattata": [Vector2i(27, 2), Vector2i.LEFT, &"pokemon/rattata"],
 }
 
 var _map: GameMap

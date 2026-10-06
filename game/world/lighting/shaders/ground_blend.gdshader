@@ -4,6 +4,9 @@
 // mêmes seuils) ; le chemin est le second canal (la Route 22 du prototype le mettait à la
 // place des pavés). Le TileMapLayer `Ground` reste dans la carte, invisible : il porte la
 // logique (solide, herbes hautes, rebords), ce sol ne fait qu'afficher.
+// Rivage (DA.2, facultatif : has_shore) : second masque (R sable, G eau) ; sable puis mer par
+// dessus, frange d'écume claire au bord de l'eau, eau qui ondule doucement (repris de
+// proto/da_jadielle/sol_bourg.gdshader, mêmes seuils).
 shader_type canvas_item;
 
 uniform sampler2D grass_texture : repeat_enable, filter_linear_mipmap;
@@ -16,6 +19,11 @@ uniform float texture_size = 384.0;
 uniform float paving_scale = 0.7;
 uniform float path_scale = 0.7;
 uniform vec4 earth_color : source_color = vec4(0.54, 0.42, 0.29, 1.0);
+uniform bool has_shore = false;
+uniform sampler2D shore_mask : filter_linear;
+uniform sampler2D sand_texture : repeat_enable, filter_linear_mipmap;
+uniform sampler2D water_texture : repeat_enable, filter_linear_mipmap;
+uniform vec4 foam_color : source_color = vec4(0.95, 0.97, 0.98, 1.0);
 
 varying vec2 world;
 
@@ -54,5 +62,18 @@ void fragment() {
 	c = mix(c, texture(paving_texture, world / (texture_size * paving_scale)).rgb, paving);
 	vec3 earth = earth_color.rgb * (0.85 + 0.3 * noise(world * 0.25));
 	c = mix(c, earth, band * 0.75);
+	if (has_shore) {
+		vec2 s = texture(shore_mask, world / tile_size / cells).rg;
+		float v_sand = s.r + n * 0.6;
+		c = mix(c, texture(sand_texture, world / texture_size).rgb, smoothstep(0.45, 0.55, v_sand));
+		float v_water = s.g + n * 0.5
+			+ (noise(world * 0.03 + vec2(TIME * 0.15, 0.0)) - 0.5) * 0.08;
+		vec2 swell = vec2(sin(TIME * 0.4 + world.y * 0.01), cos(TIME * 0.3 + world.x * 0.008))
+			* 6.0;
+		vec3 water = texture(water_texture, (world + swell) / (texture_size * 1.5)).rgb;
+		float foam = smoothstep(0.42, 0.5, v_water) * (1.0 - smoothstep(0.5, 0.62, v_water));
+		c = mix(c, water, smoothstep(0.5, 0.56, v_water));
+		c = mix(c, foam_color.rgb, foam * 0.8);
+	}
 	COLOR = vec4(c, 1.0);
 }

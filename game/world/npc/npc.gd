@@ -182,6 +182,8 @@ var _route_wait: float = 0.0
 var _route_active: bool = false
 ## Suspendue pendant un dialogue (il s'arrête et se tourne vers le joueur, dossier 07 §5).
 var _route_suspended: bool = false
+## Routine retenue tant que la carte n'a pas de joueur ([method set_routine_held]).
+var _route_held: bool = false
 ## Sortie de scène en cours ([method fly_away] / [method flee]) : plus d'interaction.
 var _leaving: bool = false
 var _leave_tween: Tween
@@ -230,7 +232,8 @@ func _process(delta: float) -> void:
 				if _spec.enters_building() and _mover.get_cell() == _spec.route_enter_cell:
 					_enter_building()
 		return
-	if _route_active and not _route_suspended and not _hopping and not _leaving:
+	if _route_active and not _route_suspended and not _route_held and not _hopping \
+			and not _leaving:
 		_route_wait -= delta
 		if _route_wait <= 0.0:
 			_advance_route()
@@ -344,6 +347,24 @@ func step(direction: Vector2i, run: bool = false) -> bool:
 	_play_move()
 	set_process(true)
 	return true
+
+
+## Retient (vrai) ou relâche (faux) la routine de marche (DA.2) : [GameMap] la retient tant
+## qu'aucun joueur n'est sur la carte (carte chargée par un test ou un outil : les habitants
+## restent sur leur case de départ, de façon déterministe) et la relâche à l'arrivée du joueur
+## ([method GameMap.spawn_player]). Relâchée, elle reprend après la pause habituelle. Sans
+## effet sur un pas en cours ni sur les pas d'une scène.
+func set_routine_held(held: bool) -> void:
+	if _route_held == held:
+		return
+	_route_held = held
+	if not held and _route_active:
+		_route_wait = _route_pause
+		set_process(true)
+
+
+func is_routine_held() -> bool:
+	return _route_held
 
 
 func is_moving() -> bool:
