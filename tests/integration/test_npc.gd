@@ -361,9 +361,10 @@ func test_step_refused_against_an_obstacle_or_during_a_step() -> void:
 
 func test_walk_and_run_animations_when_the_appearance_has_them() -> void:
 	var grid := GridWorld.new(Vector2i(10, 10))
-	var npc := _make_on_grid(_spec({"sprite": &"oak"}), grid)
+	# DA.2 : Chen est peint sans planche de course ; l'enfant peint a marche et course.
+	var npc := _make_on_grid(_spec({"sprite": &"kid"}), grid)
 	var sprite := _sprite(npc)
-	assert_eq(sprite.sprite_frames.resource_path, Npc.frames_path(&"oak"))
+	assert_eq(sprite.sprite_frames.resource_path, Npc.frames_path(&"kid"))
 	npc.step(Vector2i.RIGHT)
 	assert_eq(sprite.animation, &"walk_right")
 	assert_true(sprite.is_playing())
@@ -779,8 +780,8 @@ func test_a_painted_look_without_run_walks_when_asked_to_run() -> void:
 	assert_eq(npc.get_cell(), CELL + Vector2i.RIGHT)
 
 
-## Le héros, l'enfant et le Rattata peints courent (planches de course) ; les apparences provisoires (Chen : marche et
-## course ; générique : aucune animation de pas) gardent la course.
+## Le héros, l'enfant et le Rattata peints courent (planches de course) ; l'apparence générique
+## (aucune animation de pas) garde la course ; Chen, peint sans planche de course (DA.2), marche.
 func test_looks_with_a_run_or_without_any_step_animation_can_run() -> void:
 	var grid := GridWorld.new(Vector2i(10, 10))
 	assert_true(_make_on_grid(_spec({"sprite": &"player"}), grid).can_run())
@@ -788,7 +789,8 @@ func test_looks_with_a_run_or_without_any_step_animation_can_run() -> void:
 		"cell": Vector2i(3, 3)}), grid).can_run())
 	assert_true(_make_on_grid(_spec({"id": &"rat", "sprite": &"pokemon/rattata",
 		"cell": Vector2i(6, 2)}), grid).can_run())
-	assert_true(_make_on_grid(_spec({"id": &"oak", "sprite": &"oak",
+	# DA.2 : Chen peint, sans planche de course, marche (test_a_painted_look_without_run…).
+	assert_false(_make_on_grid(_spec({"id": &"oak", "sprite": &"oak",
 		"cell": Vector2i(1, 1)}), grid).can_run())
 	assert_true(_make_on_grid(_spec({"id": &"npc2", "cell": Vector2i(8, 8)}), grid).can_run())
 

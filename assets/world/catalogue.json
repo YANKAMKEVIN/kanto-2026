@@ -3299,6 +3299,230 @@
     "droite",
     "haut"
    ]
+  },
+  "maman": {
+   "fichier": "res://assets/sprites/characters/painted/maman_sheet.png",
+   "cellule": [
+    74,
+    130
+   ],
+   "hauteur": 128,
+   "colonnes": 4,
+   "lignes": 4,
+   "ordre_lignes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "chen": {
+   "fichier": "res://assets/sprites/characters/painted/chen_sheet.png",
+   "cellule": [
+    75,
+    136
+   ],
+   "hauteur": 134,
+   "colonnes": 4,
+   "lignes": 4,
+   "ordre_lignes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "leo": {
+   "fichier": "res://assets/sprites/characters/painted/leo_sheet.png",
+   "cellule": [
+    64,
+    110
+   ],
+   "hauteur": 108,
+   "colonnes": 4,
+   "lignes": 4,
+   "ordre_lignes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "vieille_dame": {
+   "fichier": "res://assets/sprites/characters/painted/vieille_dame_sheet.png",
+   "cellule": [
+    74,
+    122
+   ],
+   "hauteur": 120,
+   "colonnes": 4,
+   "lignes": 4,
+   "ordre_lignes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "pecheur": {
+   "fichier": "res://assets/sprites/characters/painted/pecheur_sheet.png",
+   "cellule": [
+    78,
+    132
+   ],
+   "hauteur": 130,
+   "colonnes": 4,
+   "lignes": 4,
+   "ordre_lignes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "chercheuse": {
+   "fichier": "res://assets/sprites/characters/painted/chercheuse_sheet.png",
+   "cellule": [
+    79,
+    130
+   ],
+   "hauteur": 128,
+   "colonnes": 4,
+   "lignes": 4,
+   "ordre_lignes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "chercheur": {
+   "fichier": "res://assets/sprites/characters/painted/chercheur_sheet.png",
+   "cellule": [
+    69,
+    132
+   ],
+   "hauteur": 130,
+   "colonnes": 4,
+   "lignes": 4,
+   "ordre_lignes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "maman_idle": {
+   "fichier": "res://assets/sprites/characters/painted/maman_idle_sheet.png",
+   "cellule": [
+    74,
+    130
+   ],
+   "hauteur": 128,
+   "colonnes": 4,
+   "lignes": 1,
+   "ordre_colonnes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "chen_idle": {
+   "fichier": "res://assets/sprites/characters/painted/chen_idle_sheet.png",
+   "cellule": [
+    77,
+    136
+   ],
+   "hauteur": 134,
+   "colonnes": 4,
+   "lignes": 1,
+   "ordre_colonnes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "leo_idle": {
+   "fichier": "res://assets/sprites/characters/painted/leo_idle_sheet.png",
+   "cellule": [
+    64,
+    110
+   ],
+   "hauteur": 108,
+   "colonnes": 4,
+   "lignes": 1,
+   "ordre_colonnes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "vieille_dame_idle": {
+   "fichier": "res://assets/sprites/characters/painted/vieille_dame_idle_sheet.png",
+   "cellule": [
+    74,
+    122
+   ],
+   "hauteur": 120,
+   "colonnes": 4,
+   "lignes": 1,
+   "ordre_colonnes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "pecheur_idle": {
+   "fichier": "res://assets/sprites/characters/painted/pecheur_idle_sheet.png",
+   "cellule": [
+    78,
+    132
+   ],
+   "hauteur": 130,
+   "colonnes": 4,
+   "lignes": 1,
+   "ordre_colonnes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "chercheuse_idle": {
+   "fichier": "res://assets/sprites/characters/painted/chercheuse_idle_sheet.png",
+   "cellule": [
+    81,
+    130
+   ],
+   "hauteur": 128,
+   "colonnes": 4,
+   "lignes": 1,
+   "ordre_colonnes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "chercheur_idle": {
+   "fichier": "res://assets/sprites/characters/painted/chercheur_idle_sheet.png",
+   "cellule": [
+    71,
+    132
+   ],
+   "hauteur": 130,
+   "colonnes": 4,
+   "lignes": 1,
+   "ordre_colonnes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
   }
  },
  "images": {
