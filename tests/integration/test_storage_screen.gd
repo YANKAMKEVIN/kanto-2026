@@ -348,6 +348,12 @@ func test_empty_storage_shows_the_phrase() -> void:
 	var screen := menu.get_storage()
 	assert_eq(screen.get_storage_cards().size(), 0)
 	assert_true(screen.get_view().empty_text == "Le stockage est vide.")
+	# QA finale J7 : la phrase tenait dans une colonne d'une lettre (largeur nulle).
+	await wait_frames(2)
+	var label := screen.get_empty_label()
+	assert_true(label.is_visible_in_tree(), "phrase visible")
+	assert_gt(label.size.x, 400.0, "la phrase a la largeur de la zone")
+	assert_eq(label.get_line_count(), 1, "sur une seule ligne")
 
 
 func test_selection_in_storage_actions() -> void:

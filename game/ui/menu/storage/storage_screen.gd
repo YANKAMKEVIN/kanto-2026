@@ -259,6 +259,11 @@ func get_result_text() -> String:
 
 
 ## Raison d'un refus affichée ("" si aucune).
+## Libellé « Le stockage est vide. » (tests).
+func get_empty_label() -> Label:
+	return _empty
+
+
 func get_refusal_text() -> String:
 	return _refusal_label.text if _refusal.visible else ""
 
@@ -410,7 +415,9 @@ func _build_grid(parent: Control) -> void:
 	_empty.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 	_empty.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	_empty.visible = false
-	_scroll.add_child(_empty)
+	# Superposé à toute la zone (le PanelContainer étend ses enfants) : dans le ScrollContainer,
+	# le libellé recevait une largeur nulle et passait à la ligne à chaque lettre (QA finale J7).
+	_grid_zone.add_child(_empty)
 
 
 func _build_overlays() -> void:
