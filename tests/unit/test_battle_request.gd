@@ -80,3 +80,13 @@ func test_trainer_request_carries_the_party_and_actors() -> void:
 	assert_eq(request.foe_party.size(), 1)
 	assert_false(request.rules.can_flee)
 	assert_eq(request.world_actors.get(&"foe"), &"rival_npc")
+
+
+## QA T26 : un combat de dresseur porte les objets connus (sinon le Sac ne fait rien).
+func test_trainer_request_carries_the_item_library() -> void:
+	var items := ItemLibrary.new()
+	var request := BattleRequest.trainer_battle(null, Party.new(), {}, items)
+	assert_eq(request.rules.items, items)
+	assert_true(request.rules.allow_heal_items)
+	assert_false(request.rules.allow_balls)
+	assert_null(BattleRequest.trainer_battle(null, Party.new()).rules.items, "sans objets : null")
