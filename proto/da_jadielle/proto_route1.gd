@@ -16,6 +16,7 @@ const CONTACT_SHADER := preload("res://proto/da_jadielle/contact.gdshader")
 const ETALONNAGE := preload("res://proto/da_jadielle/etalonnage.gdshader")
 const MARCHEUR := preload("res://proto/da_jadielle/marcheur.gd")
 const EMPRISES := preload("res://proto/da_jadielle/emprises.gd")
+const FORET := preload("res://proto/da_jadielle/foret_serree.gd")
 
 const GRILLE: Array[String] = [
 	"TTTTTTTTTTTTTTTTTTTTTTT==TTTTTTTTTTTTTTTTTTTTTTT",
@@ -114,7 +115,7 @@ func _ready() -> void:
 	var foret := _cases("T")
 	_sol(chemin)
 	if nouvelle_foret:
-		_sous_bois(foret)
+		add_child(FORET.sous_bois(foret, Vector2i(LARGEUR, HAUTEUR)))
 	var ombres := Node2D.new()
 	add_child(ombres)
 	var bordures := Node2D.new()
@@ -134,7 +135,8 @@ func _ready() -> void:
 		_objet(objet, tries, ombres)
 	_herbes_hautes(herbes, tries)
 	if nouvelle_foret:
-		_foret_serree(foret, tries, ombres)
+		FORET.planter(foret, Vector2i(LARGEUR, HAUTEUR), _reperes(), _hasard, tries, ombres,
+			func(nom: String, p: Vector2) -> void: _objet([nom, p.x, p.y, true, 0.1], tries, ombres))
 	else:
 		_foret(foret, tries, ombres)
 	_semis(chemin, herbes, foret, bordures)
@@ -340,85 +342,13 @@ func _sous_couvert(cellule: Vector2i, foret: Dictionary) -> bool:
 	return true
 
 
-func _sous_bois(foret: Dictionary) -> void:
-	var image := Image.create(LARGEUR, HAUTEUR, false, Image.FORMAT_L8)
-	for cellule: Vector2i in foret:
-		image.set_pixelv(cellule, Color.WHITE)
-	var materiau := ShaderMaterial.new()
-	materiau.shader = preload("res://proto/da_jadielle/sous_bois.gdshader")
-	materiau.set_shader_parameter(&"masque", ImageTexture.create_from_image(image))
-	var rect := ColorRect.new()
-	rect.size = Vector2(LARGEUR, HAUTEUR) * CASE
-	rect.material = materiau
-	rect.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	add_child(rect)
-
-
-## Forêt serrée : arbres de forêt (≈ 3 cases) dont la cime couvre 2 cases au-dessus du pied,
-## espacés de 1,1 case pour que les cimes se touchent, teinte et taille variées au hasard.
-func _foret_serree(foret: Dictionary, tries: Node2D, ombres: Node2D) -> void:
+func _reperes() -> Array[Vector2]:
 	var reperes: Array[Vector2] = []
 	for objet: Array in OBJETS:
 		var nom_objet: String = objet[0]
 		if nom_objet.begins_with("tree") or nom_objet.begins_with("automne"):
 			reperes.append(Vector2(objet[1], objet[2]))
-	var poses: Array[Vector2] = []
-	for essai in 9000:
-		var p := Vector2(_hasard.randf_range(0.3, LARGEUR - 0.3), _hasard.randf_range(0.6, HAUTEUR + 1.2))
-		var cellule := Vector2i(p)
-		var couvert := true
-		for dy in range(0, 3):
-			var c := cellule + Vector2i(0, -dy)
-			if c.y >= 0 and c.y < HAUTEUR and not foret.has(c):
-				couvert = false
-		if not couvert:
-			continue
-		var proche := false
-		for autre in poses:
-			if autre.distance_to(p) < 1.1:
-				proche = true
-				break
-		for repere in reperes:
-			if repere.distance_to(p) < 2.0:
-				proche = true
-		if proche:
-			continue
-		poses.append(p)
-		var texture: Texture2D = load(TEX + "foret_%d.png" % _hasard.randi_range(1, 8))
-		var sprite := _au_pied(texture)
-		sprite.position = p * CASE
-		var echelle := _hasard.randf_range(0.85, 1.15)
-		sprite.scale = Vector2(echelle * (-1.0 if _hasard.randf() < 0.5 else 1.0), echelle)
-		var v := _hasard.randf_range(0.86, 1.08)
-		sprite.modulate = Color(v * _hasard.randf_range(0.95, 1.03), v, v * _hasard.randf_range(0.93, 1.05))
-		var materiau := ShaderMaterial.new()
-		materiau.shader = OBJET_SHADER
-		materiau.set_shader_parameter(&"force_vent", 3.5)
-		materiau.set_shader_parameter(&"force_lisere", 1.0)
-		sprite.material = materiau
-		tries.add_child(sprite)
-		var contact := _au_pied(texture)
-		var mat_contact := ShaderMaterial.new()
-		mat_contact.shader = CONTACT_SHADER
-		mat_contact.set_shader_parameter(&"etendue", 18.0)
-		mat_contact.set_shader_parameter(&"part_base", 0.05)
-		contact.material = mat_contact
-		contact.position = p * CASE + Vector2(0, 18)
-		contact.scale = sprite.scale  # même taille et même sens que l'arbre
-		ombres.add_child(contact)
-	# Bandes trop étroites pour un arbre (bords du rebord, goulet) : buissons denses.
-	poses.append_array(reperes)
-	for cellule: Vector2i in foret:
-		var centre := Vector2(cellule) + Vector2(0.5, 0.7)
-		var garni := false
-		for autre in poses:
-			if autre.distance_to(centre) < 1.0 or (absf(autre.x - centre.x) < 0.9 \
-					and centre.y < autre.y and autre.y - centre.y < 2.4):
-				garni = true
-				break
-		if not garni:
-			_objet([["buisson_a.png", "buisson_b.png"][_hasard.randi_range(0, 1)],
-				centre.x + _hasard.randf_range(-0.15, 0.15), centre.y + 0.25, true, 0.1], tries, ombres)
+	return reperes
 
 
 ## Touffes, fleurs sauvages et quelques pierres sur l'herbe rase, en gardant du calme.

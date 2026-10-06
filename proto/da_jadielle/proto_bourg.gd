@@ -18,6 +18,7 @@ const CONTACT_SHADER := preload("res://proto/da_jadielle/contact.gdshader")
 const ETALONNAGE := preload("res://proto/da_jadielle/etalonnage.gdshader")
 const MARCHEUR := preload("res://proto/da_jadielle/marcheur.gd")
 const EMPRISES := preload("res://proto/da_jadielle/emprises.gd")
+const FORET := preload("res://proto/da_jadielle/foret_serree.gd")
 
 ## Zones pavées [x, y, largeur, hauteur] en cases (la place ovale est ajoutée à part).
 const PAVES: Array[Rect2i] = [
@@ -150,6 +151,9 @@ func _ready() -> void:
 	var terre := _cases(TERRE)
 	var eau := _cases(EAU)
 	_sol(paves, terre, _cases(SABLE), eau)
+	var chemins_sol := paves.duplicate()
+	chemins_sol.merge(terre)
+	add_child(FORET.sous_bois(_cases_foret(chemins_sol), Vector2i(LARGEUR, HAUTEUR)))
 	var ombres := Node2D.new()
 	add_child(ombres)
 	var bordures := Node2D.new()
@@ -171,7 +175,9 @@ func _ready() -> void:
 				calque = bordures
 		_objet(objet, calque, ombres)
 	_herbes_hautes(tries)
-	_foret(chemins, tries, ombres)
+	var foret := _cases_foret(chemins)
+	FORET.planter(foret, Vector2i(LARGEUR, HAUTEUR), _reperes(), _hasard, tries, ombres,
+		func(nom: String, p: Vector2) -> void: _objet([nom, p.x, p.y, true, 0.1], tries, ombres))
 	var interdits := eau.duplicate()
 	interdits.merge(_cases(SABLE))
 	for zone in HERBES:
@@ -331,30 +337,34 @@ func _herbes_hautes(tries: Node2D) -> void:
 					tries.add_child(sprite)
 
 
-## Forêt dense sur l'herbe, loin des chemins et des zones dégagées.
-func _foret(cases: Dictionary, tries: Node2D, ombres: Node2D) -> void:
-	var poses: Array[Vector2] = []
-	for essai in 2500:
-		var p := Vector2(_hasard.randf_range(0.5, LARGEUR - 0.5),
-			_hasard.randf_range(1.0, HAUTEUR - 0.2))
-		var cellule := Vector2i(p)
-		var proche := false
-		for dx in range(-1, 2):
-			for dy in range(-1, 2):
-				if cases.has(cellule + Vector2i(dx, dy)):
-					proche = true
-		for zone in DEGAGES:
-			if zone.has_point(p):
-				proche = true
-		for autre in poses:
-			if autre.distance_to(p) < 2.0:
-				proche = true
-		if proche:
-			continue
-		poses.append(p)
-		var nom: String = ["tree_a_ne.png", "tree_b_ne.png", "tree_central_ne.png", "tree_c_ne.png",
-			"tree_d_ne.png", "tree_e_ne.png", "tree_c_ne.png", "tree_e_ne.png"][_hasard.randi_range(0, 7)]
-		_objet([nom, p.x, p.y, true, 0.05], tries, ombres)
+## Forêt serrée (même forêt que la Route 1) : cases de forêt = herbe loin des chemins et hors
+## des zones dégagées, au-dessus de la côte ; sous-bois sombre, arbres d'environ 3 cases.
+func _cases_foret(cases: Dictionary) -> Dictionary:
+	var foret := {}
+	for x in LARGEUR:
+		for y in 26:
+			var cellule := Vector2i(x, y)
+			var centre := Vector2(cellule) + Vector2(0.5, 0.5)
+			var libre := true
+			for dx in range(-1, 2):
+				for dy in range(-1, 2):
+					if cases.has(cellule + Vector2i(dx, dy)):
+						libre = false
+			for zone in DEGAGES:
+				if zone.has_point(centre):
+					libre = false
+			if libre:
+				foret[cellule] = true
+	return foret
+
+
+func _reperes() -> Array[Vector2]:
+	var reperes: Array[Vector2] = []
+	for objet: Array in OBJETS:
+		var nom_objet: String = objet[0]
+		if nom_objet.begins_with("fruitier") or nom_objet.begins_with("arbre"):
+			reperes.append(Vector2(objet[1], objet[2]))
+	return reperes
 
 
 ## Semis sur l'herbe libre : touffes et buissons épars pour casser les grandes pelouses
