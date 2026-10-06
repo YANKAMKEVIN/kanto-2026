@@ -8,14 +8,12 @@
 		"pallet_town": {
 			"name": "Bourg Palette", "kind": "town",
 			"maps": ["pallet_town", "player_house_1f", "player_house_2f", "rival_house", "oak_lab"],
-			"description": "Un bourg tranquille entre les prés et la mer. Le vent du large y porte l'odeur de l'herbe coupée.",
-			"draft": true
+			"description": "Un bourg tranquille entre les prés et la mer. Le vent du large y porte l'odeur de l'herbe coupée."
 		},
 		"route_1": {
 			"name": "Route 1", "kind": "route", "maps": ["route_1"],
 			"subtitle": "Bourg Palette — Jadielle",
-			"description": "Un chemin de campagne qui serpente vers Jadielle, entre clôtures et hautes herbes. Quitter le sentier y est souvent récompensé.",
-			"draft": true
+			"description": "Un chemin de campagne qui serpente vers Jadielle, entre clôtures et hautes herbes. Quitter le sentier y est souvent récompensé."
 		},
 		"viridian_city": {
 			"name": "Jadielle", "kind": "town",
@@ -25,13 +23,11 @@
 				{ "id": "poke_mart", "found_on": "viridian_mart" },
 				{ "id": "gym", "found_on": "viridian_city" }
 			],
-			"description": "Une ville de passage entre les forêts, où les routes de Kanto se croisent. On y vient pour se reposer, se ravitailler… et on en repart toujours un peu plus loin.",
-			"draft": true
+			"description": "Une ville de passage entre les forêts, où les routes de Kanto se croisent. On y vient pour se reposer, se ravitailler… et on en repart toujours un peu plus loin."
 		},
 		"route_22": {
 			"name": "Route 22", "kind": "route", "maps": ["route_22"],
-			"description": "Un chemin de terre qui s'éloigne de Jadielle vers l'ouest, au pied d'une falaise basse. Là-haut, on devine déjà le Plateau Indigo.",
-			"draft": true
+			"description": "Un chemin de terre qui s'éloigne de Jadielle vers l'ouest, au pied d'une falaise basse. Là-haut, on devine déjà le Plateau Indigo."
 		},
 		"route_2": { "name": "Route 2", "kind": "route", "maps": [] },
 		"viridian_forest": { "name": "Forêt de Jade", "kind": "place", "maps": [] },

@@ -163,12 +163,12 @@ func test_real_move_values() -> void:
 	assert_eq(_data.get_move(&"ember").pending_effects, PackedStringArray(["burn_10"]))
 
 
-func test_every_real_move_has_a_draft_description() -> void:
+func test_every_real_move_has_a_validated_description() -> void:
 	_data.load_dir()
 	for id: StringName in _data.get_move_ids():
 		var move := _data.get_move(id)
 		assert_false(move.description.is_empty(), String(id))
-		assert_true(move.draft, "%s : description à relire par Kevin" % id)
+		assert_false(move.draft, "%s : description validé par Kevin le 2026-10-06" % id)
 
 
 # --- Fixture valide ---------------------------------------------------------------------

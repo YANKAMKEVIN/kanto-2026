@@ -30,7 +30,7 @@ func test_real_data_loads_without_error() -> void:
 	assert_eq(library.get_errors().size(), 0)
 	for type: StringName in MomentLibrary.TYPES:
 		assert_not_null(library.get_text(type), "texte de %s" % type)
-	assert_true(library.has_drafts(), "textes provisoires, à relire par Kevin")
+	assert_false(library.has_drafts(), "textes validé par Kevin le 2026-10-06")
 
 
 func test_real_data_q14_route_1_is_the_departure_from_pallet_town() -> void:

@@ -4,8 +4,8 @@ extends RefCounted
 ## en vente ou vendable, l'argent, les totaux, les messages. Classe pure, statique : l'écran
 ## ne reçoit que des [ShopView] et des textes.
 ##
-## Libellés et messages validés (dossier 09 §19) ; les textes marqués « draft » ci-dessous sont
-## provisoires (lot de textes à relire, jalon-07.md §12).
+## Libellés et messages validés (dossier 09 §19 ; les autres : lot de textes validé par Kevin le
+## 2026-10-06).
 
 ## Onglets.
 const MODE_BUY: StringName = &"buy"
@@ -25,9 +25,9 @@ const OWNED_FORMAT: String = "DANS LE SAC : %d"
 const TEXT_THANKS: String = "Merci !"
 const TEXT_NO_MONEY: String = "Tu n'as pas assez d'argent."
 const TEXT_NOT_SELLABLE: String = "Je ne peux pas te reprendre ça."
-## VENDRE sans rien de vendable (draft).
+## VENDRE sans rien de vendable.
 const TEXT_NOTHING_TO_SELL: String = "Tu n'as rien à vendre."
-## Confirmation de la vente d'un favori (draft) : « Vendre Potion ? », « Vendre 3 Potions ? ».
+## Confirmation de la vente d'un favori : « Vendre Potion ? », « Vendre 3 Potions ? ».
 const SELL_CONFIRM_ONE: String = "Vendre %s ?"
 const SELL_CONFIRM_MANY: String = "Vendre %d %s ?"
 const SELL_CONFIRM_DETAIL: String = "C'est un de tes favoris."

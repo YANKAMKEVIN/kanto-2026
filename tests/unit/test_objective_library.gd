@@ -41,7 +41,7 @@ func test_q4_nothing_before_the_rival_battle_then_reach_viridian() -> void:
 	flags.set_flag(&"rival_battle_done")
 	assert_eq(library.current(flags), "rejoindre Jadielle.")
 	assert_eq(library.current_id(flags), &"reach_viridian")
-	assert_true(library.is_draft(&"reach_viridian"), "texte provisoire")
+	assert_false(library.is_draft(&"reach_viridian"), "texte validé par Kevin le 2026-10-06")
 	flags.set_flag(&"got_potion_route_1")
 	assert_eq(library.current(flags), "rejoindre Jadielle.", "toujours vrai sur la Route 1")
 	# Jalon 7 T4 : l'arrivée à Jadielle (micro-scène) efface la ligne, en silence.

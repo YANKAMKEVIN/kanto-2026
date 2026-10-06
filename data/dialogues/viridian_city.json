@@ -55,7 +55,6 @@
 		"pages": ["La porte est verrouillée."]
 	},
 	"viridian_house_door": {
-		"draft": true,
 		"narration": true,
 		"pages": ["C'est fermé."]
 	}

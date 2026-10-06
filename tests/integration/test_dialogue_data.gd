@@ -3,7 +3,7 @@ extends GutTest
 ## avec les vrais PNJ (data/npcs/*.json) et les vrais points d'examen des cartes.
 ## Chargement sans erreur, références (dialogues, react), drapeaux, textes du dossier 02
 ## repris mot pour mot, trois lignes au plus dans la vraie DialogueBox à 1920 × 1080,
-## textes provisoires (draft) attendus.
+## aucun texte provisoire (draft) depuis la validation du lot de textes (2026-10-06).
 ## Jalon 3B (T2) : dialogues joués par les scènes de data/cutscenes/ (via les
 ## EventTriggerPoint des cartes), drapeaux lus et levés par dialogues, scènes et PNJ.
 ## T3 : répliques du Prof. Chen, acteurs et cibles des « turn » (PNJ de la carte ou créés
@@ -30,12 +30,9 @@ const MAPS: Array[StringName] = [
 	&"player_house_2f", &"player_house_1f", &"rival_house", &"oak_lab", &"pallet_town",
 	&"route_1", &"route_22", &"viridian_city", &"viridian_center", &"viridian_mart",
 ]
-## Seuls textes provisoires : le panneau « BOURG PALETTE » (Q8), les textes d'observation
-## des Pokémon des habitants (jalon 6 T16, à valider par Kevin) et la Dresseuse au repos du
-## Centre (jalon 7 T8, absente du dossier 09 §19) ; le livreur dans la Boutique (T12, idem) ;
-## les portes des maisons de Jadielle, « C'est fermé. » (retours T5, en attendant Kevin).
-const DRAFTS: Array[StringName] = [&"oak_parcel_rival_dex", &"observe_aoki_pidgey", &"observe_leo_rattata",
-	&"sign_pallet_town", &"viridian_house_door"]
+## Lot de textes validé par Kevin le 2026-10-06 (anciens brouillons : panneau, observations,
+## soin de Maman, terminal du Stockage, portes de Jadielle…) : source des textes hors dossiers.
+const TEXTES_VALIDES := "res://docs/design/textes/textes-brouillon-j7.md"
 ## Identifiants attendus (3A) : Maman, table, rival, carte, Maya, 3 starters, 3 habitants,
 ## panneau ; (3B) « Hé ! Attends ! », les répliques du Prof. Chen et la pensée des herbes ;
 ## (4A, T1) la proposition du Prof. Chen ; (4A, T3) le choix et la sortie empêchée.
@@ -414,27 +411,17 @@ func test_mom_first_variant_is_automatic_and_only_hers() -> void:
 				_library.get_dialogue(&"mom").variants[0], "%s : auto" % id)
 
 
-func test_drafts_are_exactly_the_expected_ones() -> void:
-	var drafts: Array[StringName] = []
-	for id: StringName in _library.get_ids():
-		if _library.get_dialogue(id).draft:
-			drafts.append(id)
-	assert_eq(drafts, DRAFTS)
-
-
-## Seules variantes provisoires (clé « draft » d'une variante) : le soin de Maman (Q22, jalon 5C),
-## à relire par Kevin à la validation 5C. Elle soigne l'équipe, seulement après le starter.
-func test_draft_variants_are_exactly_the_expected_ones() -> void:
-	var drafts: Array[String] = []
+## Lot de textes validé par Kevin le 2026-10-06 : plus aucun dialogue ni variante provisoire.
+func test_no_dialogue_nor_variant_is_draft() -> void:
 	for id: StringName in _library.get_ids():
 		var dialogue := _library.get_dialogue(id)
-		if dialogue.draft:
-			continue  # tout le dialogue est provisoire (DRAFTS)
+		assert_false(dialogue.draft, String(id))
 		for i: int in dialogue.variants.size():
-			if dialogue.variants[i].draft:
-				drafts.append("%s:%d" % [id, i])
-	# + la narration du terminal du Stockage à la première utilisation (Kevin, 2026-10-05).
-	assert_eq(drafts, ["mom:1", "storage_terminal:0"] as Array[String])
+			assert_false(dialogue.variants[i].draft, "%s:%d" % [id, i])
+
+
+## Le soin de Maman (Q22, jalon 5C) : elle soigne l'équipe, seulement après le starter.
+func test_mom_heal_variant() -> void:
 	var heal: DialogueVariant = _library.get_dialogue(&"mom").variants[1]
 	assert_eq(heal.action, &"heal", "soigne l'équipe")
 	assert_eq(heal.if_flags, [&"starter_chosen"] as Array[StringName], "après le starter")
@@ -452,15 +439,15 @@ func test_texts_are_the_dossier_02_texts_word_for_word() -> void:
 	var dossier := FileAccess.get_file_as_string(DOSSIER)
 	var dossier_07 := FileAccess.get_file_as_string(DOSSIER_07)
 	var dossier_09 := FileAccess.get_file_as_string(DOSSIER_09)
+	var valides := FileAccess.get_file_as_string(TEXTES_VALIDES)
 	for row: Array in _pages():
-		if _library.get_dialogue(row[0]).draft or (row[3] as DialogueVariant).draft:
-			continue
 		var text: String = row[1]
 		for token: String in _DOSSIER_TOKENS:
 			text = text.replace(token, _DOSSIER_TOKENS[token])
-		# Prologue : dossier 02 ; Route 1 (jalon 5) : dossier 07 ; Jadielle (jalon 7) : dossier 09.
+		# Prologue : dossier 02 ; Route 1 (jalon 5) : dossier 07 ; Jadielle (jalon 7) : dossier 09 ;
+		# anciens brouillons : lot de textes validé le 2026-10-06.
 		assert_true(dossier.contains(text) or dossier_07.contains(text)
-			or dossier_09.contains(text),
+			or dossier_09.contains(text) or valides.contains("« %s »" % text),
 			"%s : « %s » dans un dossier de conception" % [row[0], text])
 
 

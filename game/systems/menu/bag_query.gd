@@ -41,7 +41,7 @@ const REASONS: Dictionary[ItemUse.Check, String] = {
 	ItemUse.Check.WRONG_CONTEXT: "Pas maintenant",
 	ItemUse.Check.NOT_USABLE: "Sans effet",
 }
-## Phrase de refus quand on touche un Pokémon qui ne peut pas recevoir l'objet (texte draft).
+## Phrase de refus quand on touche un Pokémon qui ne peut pas recevoir l'objet.
 const REFUSAL_FORMATS: Dictionary[ItemUse.Check, String] = {
 	ItemUse.Check.FULL_HP: "%s a déjà tous ses PV.",
 	ItemUse.Check.FAINTED: "%s est K.O.",

@@ -2,135 +2,135 @@
 	"size": 151,
 	"species": {
 		"bulbasaur": {
-			"height": 0.7, "weight": 6.9, "draft": true,
+			"height": 0.7, "weight": 6.9,
 			"description": "Le bulbe sur son dos se gorge de lumière. Calme, il observe longtemps avant d'approcher.",
 			"notes": [
-				{ "id": "bulbasaur_rain", "unlock": { "seen": 1 }, "draft": true,
+				{ "id": "bulbasaur_rain", "unlock": { "seen": 1 },
 				  "text": "Après une averse, il reste immobile dans l'herbe mouillée, comme s'il buvait." }
 			]
 		},
 		"ivysaur": {
-			"height": 1.0, "weight": 13.0, "draft": true,
+			"height": 1.0, "weight": 13.0,
 			"description": "Le bouton sur son dos alourdit sa démarche. Il cherche les clairières où le soleil tombe droit."
 		},
 		"venusaur": {
-			"height": 2.0, "weight": 100.0, "draft": true,
+			"height": 2.0, "weight": 100.0,
 			"description": "Il se déplace lentement, sa large fleur tournée vers le ciel. Là où il se repose, l'herbe pousse plus haute."
 		},
 		"charmander": {
-			"height": 0.6, "weight": 8.5, "draft": true,
+			"height": 0.6, "weight": 8.5,
 			"description": "Petit et curieux, il suit volontiers ceux qui lui parlent avec douceur. La flamme de sa queue s'agite quand il est content.",
 			"notes": [
-				{ "id": "charmander_shelter", "unlock": { "seen": 1 }, "draft": true,
+				{ "id": "charmander_shelter", "unlock": { "seen": 1 },
 				  "text": "Par temps humide, il se blottit pour garder sa flamme à l'abri." }
 			]
 		},
 		"charmeleon": {
-			"height": 1.1, "weight": 19.0, "draft": true,
+			"height": 1.1, "weight": 19.0,
 			"description": "Plus vif qu'il n'en a l'air, il s'emporte vite. Sa flamme grandit quand il s'agite."
 		},
 		"charizard": {
-			"height": 1.7, "weight": 90.5, "draft": true,
+			"height": 1.7, "weight": 90.5,
 			"description": "On le reconnaît de loin à la lueur de sa queue, quand il plane au-dessus des crêtes."
 		},
 		"squirtle": {
-			"height": 0.5, "weight": 9.0, "draft": true,
+			"height": 0.5, "weight": 9.0,
 			"description": "Il adore les flaques et les bords de rivière, où il peut nager des heures sans se lasser.",
 			"notes": [
-				{ "id": "squirtle_peek", "unlock": { "seen": 1 }, "draft": true,
+				{ "id": "squirtle_peek", "unlock": { "seen": 1 },
 				  "text": "Surpris, il rentre dans sa carapace, puis jette un œil avant de ressortir." }
 			]
 		},
 		"wartortle": {
-			"height": 1.0, "weight": 22.5, "draft": true,
+			"height": 1.0, "weight": 22.5,
 			"description": "Il nage vite et longtemps. Les pêcheurs racontent qu'il suit parfois les barques."
 		},
 		"blastoise": {
-			"height": 1.6, "weight": 85.5, "draft": true,
+			"height": 1.6, "weight": 85.5,
 			"description": "Massif et posé, il ne s'énerve presque jamais. Sa carapace porte les marques de nombreuses années."
 		},
 		"pidgey": {
-			"height": 0.3, "weight": 1.8, "draft": true,
+			"height": 0.3, "weight": 1.8,
 			"description": "Discret et peu farouche, il picore au bord des chemins et s'envole en rase-mottes quand on approche trop.",
 			"notes": [
-				{ "id": "pidgey_paths", "unlock": { "seen": 1 }, "draft": true,
+				{ "id": "pidgey_paths", "unlock": { "seen": 1 },
 				  "text": "On l'aperçoit souvent près des chemins et des zones boisées." }
 			]
 		},
 		"pidgeotto": {
-			"height": 1.1, "weight": 30.0, "draft": true,
+			"height": 1.1, "weight": 30.0,
 			"description": "On l'entend avant de le voir : son cri porte loin au-dessus des bois."
 		},
 		"pidgeot": {
-			"height": 1.5, "weight": 39.5, "draft": true,
+			"height": 1.5, "weight": 39.5,
 			"description": "Ses plumes brillent au soleil quand il plane très haut, sans presque battre des ailes."
 		},
 		"rattata": {
-			"height": 0.3, "weight": 3.5, "draft": true,
+			"height": 0.3, "weight": 3.5,
 			"description": "Toujours affairé, il file d'un abri à l'autre en longeant les herbes hautes. On l'entend plus souvent qu'on ne le voit.",
 			"notes": [
-				{ "id": "rattata_hops", "unlock": { "seen": 1 }, "draft": true,
+				{ "id": "rattata_hops", "unlock": { "seen": 1 },
 				  "text": "Il traverse les hautes herbes par petits bonds : il s'arrête, écoute, puis repart." }
 			]
 		},
 		"raticate": {
-			"height": 0.7, "weight": 18.5, "draft": true,
+			"height": 0.7, "weight": 18.5,
 			"description": "Méfiant, il guette depuis son terrier et ne se montre qu'une fois sûr de lui."
 		},
 		"spearow": {
-			"height": 0.3, "weight": 2.0, "draft": true,
+			"height": 0.3, "weight": 2.0,
 			"description": "Petit mais querelleur, il crie fort pour défendre son coin de prairie et chasse les insectes au ras des herbes.",
 			"notes": [
-				{ "id": "spearow_hover", "unlock": { "seen": 1 }, "draft": true,
+				{ "id": "spearow_hover", "unlock": { "seen": 1 },
 				  "text": "Il bat des ailes très vite pour rester sur place, puis pique d'un coup vers le sol." }
 			]
 		},
 		"fearow": {
-			"height": 1.2, "weight": 38.0, "draft": true,
+			"height": 1.2, "weight": 38.0,
 			"description": "Ses grandes ailes le portent longtemps sans qu'il se pose. Son long bec fouille la terre comme l'eau."
 		},
 		"nidoran_f": {
-			"height": 0.4, "weight": 7.0, "draft": true,
+			"height": 0.4, "weight": 7.0,
 			"description": "Discrète, elle dresse ses grandes oreilles au moindre bruit. Ses petites épines la protègent quand on l'approche de trop près.",
 			"notes": [
-				{ "id": "nidoran_f_grass", "unlock": { "seen": 1 }, "draft": true,
+				{ "id": "nidoran_f_grass", "unlock": { "seen": 1 },
 				  "text": "Elle ne s'éloigne jamais beaucoup des herbes hautes, prête à s'y glisser." }
 			]
 		},
 		"nidorina": {
-			"height": 0.8, "weight": 20.0, "draft": true,
+			"height": 0.8, "weight": 20.0,
 			"description": "Plus douce qu'elle n'en a l'air, elle replie ses épines quand elle se sent en confiance."
 		},
 		"nidoqueen": {
-			"height": 1.3, "weight": 60.0, "draft": true,
+			"height": 1.3, "weight": 60.0,
 			"description": "Couverte d'écailles dures, elle veille sur son terrier avec une patience immense."
 		},
 		"nidoran_m": {
-			"height": 0.5, "weight": 9.0, "draft": true,
+			"height": 0.5, "weight": 9.0,
 			"description": "Ses grandes oreilles pivotent pour guetter le danger. La petite corne de son front lui sert à se défendre.",
 			"notes": [
-				{ "id": "nidoran_m_ears", "unlock": { "seen": 1 }, "draft": true,
+				{ "id": "nidoran_m_ears", "unlock": { "seen": 1 },
 				  "text": "Avant de charger, il agite les oreilles : un avertissement qu'il vaut mieux écouter." }
 			]
 		},
 		"nidorino": {
-			"height": 0.9, "weight": 19.5, "draft": true,
+			"height": 0.9, "weight": 19.5,
 			"description": "Prompt à s'emporter, il pointe sa corne vers tout ce qui approche."
 		},
 		"nidoking": {
-			"height": 1.4, "weight": 62.0, "draft": true,
+			"height": 1.4, "weight": 62.0,
 			"description": "On l'entend marteler le sol bien avant de l'apercevoir. Sa queue épaisse peut renverser un arbre."
 		},
 		"mankey": {
-			"height": 0.5, "weight": 28.0, "draft": true,
+			"height": 0.5, "weight": 28.0,
 			"description": "Il passe en un instant du calme à la colère. Mieux vaut ne pas le fixer quand il se met à trépigner.",
 			"notes": [
-				{ "id": "mankey_branches", "unlock": { "seen": 1 }, "draft": true,
+				{ "id": "mankey_branches", "unlock": { "seen": 1 },
 				  "text": "Des branches qui s'agitent sans vent, à la lisière des bois : c'est souvent lui." }
 			]
 		},
 		"primeape": {
-			"height": 1.0, "weight": 32.0, "draft": true,
+			"height": 1.0, "weight": 32.0,
 			"description": "Quand il s'emporte, plus rien ne l'arrête. Il poursuit longtemps ce qui l'a contrarié."
 		}
 	}

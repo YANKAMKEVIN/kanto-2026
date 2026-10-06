@@ -15,7 +15,7 @@ const BADGES_TITLE: String = "Badges"
 const MOMENTS_TITLE: String = "Grands moments"
 const STATS_TITLE: String = "Statistiques"
 const STARTED_LABEL: String = "Début de l'aventure"
-## Libellé de l'argent (J7, draft : lot de textes du jalon-07.md §12).
+## Libellé de l'argent (J7).
 const MONEY_LABEL: String = "Argent"
 ## Phrase de la frise quand aucun moment n'existe encore (prologue).
 const MOMENTS_EMPTY_TEXT: String = "Ton aventure ne fait que commencer."

@@ -25,7 +25,7 @@ func test_real_data_loads_without_error() -> void:
 	assert_true(ball.feminine)
 	assert_eq(ball.category, ItemData.Category.BALL)
 	assert_eq(ball.catch_bonus, 1.0)
-	assert_true(ball.draft, "description à relire par Kevin")
+	assert_false(ball.draft, "description validé par Kevin le 2026-10-06")
 	assert_eq(ball.source, "res://data/items/items.json")
 	var potion := _library.get_item(&"potion")
 	assert_eq(potion.name, "Potion")
@@ -233,7 +233,7 @@ func test_real_prices_and_the_parcel() -> void:
 	assert_eq(parcel.price, 0, "un objet clé n'a jamais de prix")
 	assert_false(parcel.is_sellable())
 	assert_eq(parcel.sell_price(), 0)
-	assert_true(parcel.draft, "description à relire")
+	assert_false(parcel.draft, "description validée")
 	assert_eq(parcel.contexts(), [] as Array[StringName], "jamais utilisé")
 
 

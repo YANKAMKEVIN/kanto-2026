@@ -2,35 +2,30 @@
 	"tackle": {
 		"name": "Charge", "type": "normal", "category": "physical",
 		"power": 40, "accuracy": 100, "pp": 35,
-		"description": "Le lanceur charge la cible et la percute de tout son corps.",
-		"draft": true
+		"description": "Le lanceur charge la cible et la percute de tout son corps."
 	},
 	"scratch": {
 		"name": "Griffe", "type": "normal", "category": "physical",
 		"power": 40, "accuracy": 100, "pp": 35,
-		"description": "Lacère la cible avec des griffes acérées.",
-		"draft": true
+		"description": "Lacère la cible avec des griffes acérées."
 	},
 	"growl": {
 		"name": "Rugissement", "type": "normal", "category": "status",
 		"accuracy": 100, "pp": 40,
 		"effects": [{ "kind": "stat_stage", "stat": "atk", "stages": -1, "target": "foe" }],
-		"description": "Un cri mignon qui fait baisser l'Attaque de la cible.",
-		"draft": true
+		"description": "Un cri mignon qui fait baisser l'Attaque de la cible."
 	},
 	"tail_whip": {
 		"name": "Mimi-Queue", "type": "normal", "category": "status",
 		"accuracy": 100, "pp": 30,
 		"effects": [{ "kind": "stat_stage", "stat": "def", "stages": -1, "target": "foe" }],
-		"description": "Le lanceur remue la queue pour détourner l'attention. Baisse la Défense de la cible.",
-		"draft": true
+		"description": "Le lanceur remue la queue pour détourner l'attention. Baisse la Défense de la cible."
 	},
 	"leer": {
 		"name": "Groz'Yeux", "type": "normal", "category": "status",
 		"accuracy": 100, "pp": 30,
 		"effects": [{ "kind": "stat_stage", "stat": "def", "stages": -1, "target": "foe" }],
-		"description": "Un regard intimidant qui fait baisser la Défense de la cible.",
-		"draft": true
+		"description": "Un regard intimidant qui fait baisser la Défense de la cible."
 	},
 	"growth": {
 		"name": "Croissance", "type": "normal", "category": "status",
@@ -39,89 +34,76 @@
 			{ "kind": "stat_stage", "stat": "atk", "stages": 1, "target": "self" },
 			{ "kind": "stat_stage", "stat": "spa", "stages": 1, "target": "self" }
 		],
-		"description": "Le lanceur grandit d'un coup. Augmente son Attaque et son Attaque Spéciale.",
-		"draft": true
+		"description": "Le lanceur grandit d'un coup. Augmente son Attaque et son Attaque Spéciale."
 	},
 	"withdraw": {
 		"name": "Repli", "type": "water", "category": "status",
 		"accuracy": 0, "pp": 40,
 		"effects": [{ "kind": "stat_stage", "stat": "def", "stages": 1, "target": "self" }],
-		"description": "Le lanceur se cache dans sa carapace. Augmente sa Défense.",
-		"draft": true
+		"description": "Le lanceur se cache dans sa carapace. Augmente sa Défense."
 	},
 	"leech_seed": {
 		"name": "Vampigraine", "type": "grass", "category": "status",
 		"accuracy": 90, "pp": 10,
 		"effects": [{ "kind": "seed", "fraction": 0.125, "immune_types": ["grass"] }],
-		"description": "Plante une graine sur la cible, qui perd des PV à chaque tour au profit du lanceur.",
-		"draft": true
+		"description": "Plante une graine sur la cible, qui perd des PV à chaque tour au profit du lanceur."
 	},
 	"poison_powder": {
 		"name": "Poudre Toxik", "type": "poison", "category": "status",
 		"accuracy": 75, "pp": 35,
 		"pending_effects": ["poison"],
-		"description": "Une poudre toxique qui empoisonne la cible.",
-		"draft": true
+		"description": "Une poudre toxique qui empoisonne la cible."
 	},
 	"sleep_powder": {
 		"name": "Poudre Dodo", "type": "grass", "category": "status",
 		"accuracy": 75, "pp": 15,
 		"pending_effects": ["sleep"],
-		"description": "Une poudre soporifique qui endort la cible.",
-		"draft": true
+		"description": "Une poudre soporifique qui endort la cible."
 	},
 	"vine_whip": {
 		"name": "Fouet Lianes", "type": "grass", "category": "physical",
 		"power": 45, "accuracy": 100, "pp": 25,
-		"description": "Fouette la cible avec de fines lianes.",
-		"draft": true
+		"description": "Fouette la cible avec de fines lianes."
 	},
 	"razor_leaf": {
 		"name": "Tranch'Herbe", "type": "grass", "category": "physical",
 		"power": 55, "accuracy": 95, "pp": 25, "crit_stage": 1,
-		"description": "Des feuilles tranchantes frappent la cible. Taux de critique élevé.",
-		"draft": true
+		"description": "Des feuilles tranchantes frappent la cible. Taux de critique élevé."
 	},
 	"solar_beam": {
 		"name": "Lance-Soleil", "type": "grass", "category": "special",
 		"power": 120, "accuracy": 100, "pp": 10,
 		"pending_effects": ["two_turn"],
-		"description": "Absorbe la lumière au premier tour, puis projette un rayon puissant au second.",
-		"draft": true
+		"description": "Absorbe la lumière au premier tour, puis projette un rayon puissant au second."
 	},
 	"ember": {
 		"name": "Flammèche", "type": "fire", "category": "special",
 		"power": 40, "accuracy": 100, "pp": 25,
 		"pending_effects": ["burn_10"],
-		"description": "De petites flammes frappent la cible. Peut la brûler.",
-		"draft": true
+		"description": "De petites flammes frappent la cible. Peut la brûler."
 	},
 	"flamethrower": {
 		"name": "Lance-Flammes", "type": "fire", "category": "special",
 		"power": 90, "accuracy": 100, "pp": 15,
 		"pending_effects": ["burn_10"],
-		"description": "Un torrent de flammes s'abat sur la cible. Peut la brûler.",
-		"draft": true
+		"description": "Un torrent de flammes s'abat sur la cible. Peut la brûler."
 	},
 	"fire_spin": {
 		"name": "Danse Flamme", "type": "fire", "category": "special",
 		"power": 35, "accuracy": 85, "pp": 15,
 		"pending_effects": ["trap"],
-		"description": "Enferme la cible dans un tourbillon de feu pendant quelques tours.",
-		"draft": true
+		"description": "Enferme la cible dans un tourbillon de feu pendant quelques tours."
 	},
 	"rage": {
 		"name": "Frénésie", "type": "normal", "category": "physical",
 		"power": 20, "accuracy": 100, "pp": 20,
 		"pending_effects": ["rage"],
-		"description": "Le lanceur s'emporte. Son Attaque augmente à chaque coup reçu.",
-		"draft": true
+		"description": "Le lanceur s'emporte. Son Attaque augmente à chaque coup reçu."
 	},
 	"slash": {
 		"name": "Tranche", "type": "normal", "category": "physical",
 		"power": 70, "accuracy": 100, "pp": 20, "crit_stage": 1,
-		"description": "Tranche la cible avec des griffes ou des lames. Taux de critique élevé.",
-		"draft": true
+		"description": "Tranche la cible avec des griffes ou des lames. Taux de critique élevé."
 	},
 	"bubble": {
 		"name": "Écume", "type": "water", "category": "special",
@@ -129,181 +111,152 @@
 		"effects": [
 			{ "kind": "stat_stage", "stat": "spe", "stages": -1, "target": "foe", "chance": 10 }
 		],
-		"description": "Une nuée de bulles frappe la cible. Peut baisser sa Vitesse.",
-		"draft": true
+		"description": "Une nuée de bulles frappe la cible. Peut baisser sa Vitesse."
 	},
 	"water_gun": {
 		"name": "Pistolet à O", "type": "water", "category": "special",
 		"power": 40, "accuracy": 100, "pp": 25,
-		"description": "Un jet d'eau puissant frappe la cible.",
-		"draft": true
+		"description": "Un jet d'eau puissant frappe la cible."
 	},
 	"bite": {
 		"name": "Morsure", "type": "dark", "category": "physical",
 		"power": 60, "accuracy": 100, "pp": 25,
 		"pending_effects": ["flinch_30"],
-		"description": "Mord la cible de ses crocs acérés. Peut l'apeurer.",
-		"draft": true
+		"description": "Mord la cible de ses crocs acérés. Peut l'apeurer."
 	},
 	"skull_bash": {
 		"name": "Coud'Krâne", "type": "normal", "category": "physical",
 		"power": 130, "accuracy": 100, "pp": 10,
 		"pending_effects": ["two_turn", "charge_def_up"],
-		"description": "Rentre la tête au premier tour, ce qui augmente sa Défense, puis charge au second.",
-		"draft": true
+		"description": "Rentre la tête au premier tour, ce qui augmente sa Défense, puis charge au second."
 	},
 	"hydro_pump": {
 		"name": "Hydrocanon", "type": "water", "category": "special",
 		"power": 110, "accuracy": 80, "pp": 5,
-		"description": "Un puissant jet d'eau sous pression frappe la cible.",
-		"draft": true
+		"description": "Un puissant jet d'eau sous pression frappe la cible."
 	},
 	"gust": {
 		"name": "Tornade", "type": "flying", "category": "special",
 		"power": 40, "accuracy": 100, "pp": 35,
-		"description": "Frappe la cible d'une rafale de vent soulevée par les ailes.",
-		"draft": true
+		"description": "Frappe la cible d'une rafale de vent soulevée par les ailes."
 	},
 	"sand_attack": {
 		"name": "Jet de Sable", "type": "ground", "category": "status",
 		"accuracy": 100, "pp": 15,
 		"effects": [{ "kind": "stat_stage", "stat": "acc", "stages": -1, "target": "foe" }],
-		"description": "Lance du sable au visage de la cible. Baisse sa Précision.",
-		"draft": true
+		"description": "Lance du sable au visage de la cible. Baisse sa Précision."
 	},
 	"quick_attack": {
 		"name": "Vive-Attaque", "type": "normal", "category": "physical",
 		"power": 40, "accuracy": 100, "pp": 30, "priority": 1,
-		"description": "Le lanceur fonce sur la cible si vite qu'on le voit à peine. Frappe en premier.",
-		"draft": true
+		"description": "Le lanceur fonce sur la cible si vite qu'on le voit à peine. Frappe en premier."
 	},
 	"whirlwind": {
 		"name": "Cyclone", "type": "normal", "category": "status",
 		"accuracy": 100, "pp": 20, "pending_effects": ["force_switch"],
-		"description": "Un coup de vent renvoie la cible. Sans effet dans le moteur actuel.",
-		"draft": true
+		"description": "Un coup de vent renvoie la cible. Sans effet dans le moteur actuel."
 	},
 	"wing_attack": {
 		"name": "Cru-Ailes", "type": "flying", "category": "physical",
 		"power": 60, "accuracy": 100, "pp": 35,
-		"description": "Déploie ses grandes ailes pour frapper la cible.",
-		"draft": true
+		"description": "Déploie ses grandes ailes pour frapper la cible."
 	},
 	"agility": {
 		"name": "Hâte", "type": "psychic", "category": "status",
 		"accuracy": 0, "pp": 30,
 		"effects": [{ "kind": "stat_stage", "stat": "spe", "stages": 2, "target": "self" }],
-		"description": "Détend le corps pour gagner en légèreté. Augmente beaucoup la Vitesse.",
-		"draft": true
+		"description": "Détend le corps pour gagner en légèreté. Augmente beaucoup la Vitesse."
 	},
 	"mirror_move": {
 		"name": "Mimique", "type": "flying", "category": "status",
 		"accuracy": 0, "pp": 20, "pending_effects": ["mirror"],
-		"description": "Riposte avec la dernière capacité de la cible. Sans effet dans le moteur actuel.",
-		"draft": true
+		"description": "Riposte avec la dernière capacité de la cible. Sans effet dans le moteur actuel."
 	},
 	"hyper_fang": {
 		"name": "Croc de Mort", "type": "normal", "category": "physical",
 		"power": 80, "accuracy": 90, "pp": 15, "pending_effects": ["flinch_10"],
-		"description": "Mord violemment la cible de ses incisives. Peut l'apeurer.",
-		"draft": true
+		"description": "Mord violemment la cible de ses incisives. Peut l'apeurer."
 	},
 	"focus_energy": {
 		"name": "Puissance", "type": "normal", "category": "status",
 		"accuracy": 0, "pp": 30, "pending_effects": ["crit_up"],
-		"description": "Le lanceur prend une profonde inspiration. Sans effet dans le moteur actuel.",
-		"draft": true
+		"description": "Le lanceur prend une profonde inspiration. Sans effet dans le moteur actuel."
 	},
 	"super_fang": {
 		"name": "Croc Fatal", "type": "normal", "category": "status",
 		"accuracy": 90, "pp": 10, "pending_effects": ["half_hp"],
-		"description": "Mord la cible pour lui retirer la moitié de ses PV. Sans effet dans le moteur actuel.",
-		"draft": true
+		"description": "Mord la cible pour lui retirer la moitié de ses PV. Sans effet dans le moteur actuel."
 	},
 	"peck": {
 		"name": "Picpic", "type": "flying", "category": "physical",
 		"power": 35, "accuracy": 100, "pp": 35,
-		"description": "Frappe la cible d'un bec pointu.",
-		"draft": true
+		"description": "Frappe la cible d'un bec pointu."
 	},
 	"fury_attack": {
 		"name": "Furie", "type": "normal", "category": "physical",
 		"power": 15, "accuracy": 85, "pp": 20, "pending_effects": ["multi_hit"],
-		"description": "Frappe la cible de deux à cinq coups de corne ou de bec. Un seul coup dans le moteur actuel.",
-		"draft": true
+		"description": "Frappe la cible de deux à cinq coups de corne ou de bec. Un seul coup dans le moteur actuel."
 	},
 	"drill_peck": {
 		"name": "Bec Vrille", "type": "flying", "category": "physical",
 		"power": 80, "accuracy": 100, "pp": 20,
-		"description": "Le lanceur tourne sur lui-même et transperce la cible de son bec.",
-		"draft": true
+		"description": "Le lanceur tourne sur lui-même et transperce la cible de son bec."
 	},
 	"karate_chop": {
 		"name": "Poing Karaté", "type": "fighting", "category": "physical",
 		"power": 50, "accuracy": 100, "pp": 25, "crit_stage": 1,
-		"description": "Un coup du tranchant de la main. Taux de critique élevé.",
-		"draft": true
+		"description": "Un coup du tranchant de la main. Taux de critique élevé."
 	},
 	"fury_swipes": {
 		"name": "Combo-Griffe", "type": "normal", "category": "physical",
 		"power": 18, "accuracy": 80, "pp": 15, "pending_effects": ["multi_hit"],
-		"description": "Griffe la cible de deux à cinq coups rapides. Un seul coup dans le moteur actuel.",
-		"draft": true
+		"description": "Griffe la cible de deux à cinq coups rapides. Un seul coup dans le moteur actuel."
 	},
 	"seismic_toss": {
 		"name": "Frappe Atlas", "type": "fighting", "category": "status",
 		"accuracy": 100, "pp": 20, "pending_effects": ["level_damage"],
-		"description": "Projette la cible au sol. Sans effet dans le moteur actuel.",
-		"draft": true
+		"description": "Projette la cible au sol. Sans effet dans le moteur actuel."
 	},
 	"thrash": {
 		"name": "Mania", "type": "normal", "category": "physical",
 		"power": 120, "accuracy": 100, "pp": 10, "pending_effects": ["rampage"],
-		"description": "Le lanceur se déchaîne pendant plusieurs tours, puis finit étourdi.",
-		"draft": true
+		"description": "Le lanceur se déchaîne pendant plusieurs tours, puis finit étourdi."
 	},
 	"screech": {
 		"name": "Grincement", "type": "normal", "category": "status",
 		"accuracy": 85, "pp": 40,
 		"effects": [{ "kind": "stat_stage", "stat": "def", "stages": -2, "target": "foe" }],
-		"description": "Un cri strident qui fait beaucoup baisser la Défense de la cible.",
-		"draft": true
+		"description": "Un cri strident qui fait beaucoup baisser la Défense de la cible."
 	},
 	"poison_sting": {
 		"name": "Dard-Venin", "type": "poison", "category": "physical",
 		"power": 15, "accuracy": 100, "pp": 35, "pending_effects": ["poison_30"],
-		"description": "Pique la cible d'un dard venimeux. Peut l'empoisonner.",
-		"draft": true
+		"description": "Pique la cible d'un dard venimeux. Peut l'empoisonner."
 	},
 	"double_kick": {
 		"name": "Double Pied", "type": "fighting", "category": "physical",
 		"power": 30, "accuracy": 100, "pp": 30, "pending_effects": ["hits_2"],
-		"description": "Deux coups de pied rapides. Un seul coup dans le moteur actuel.",
-		"draft": true
+		"description": "Deux coups de pied rapides. Un seul coup dans le moteur actuel."
 	},
 	"horn_attack": {
 		"name": "Koud'Korne", "type": "normal", "category": "physical",
 		"power": 65, "accuracy": 100, "pp": 25,
-		"description": "Frappe la cible d'une corne pointue.",
-		"draft": true
+		"description": "Frappe la cible d'une corne pointue."
 	},
 	"horn_drill": {
 		"name": "Empal'Korne", "type": "normal", "category": "status",
 		"accuracy": 30, "pp": 5, "pending_effects": ["ohko"],
-		"description": "Une corne en vrille qui met K.O. d'un coup. Sans effet dans le moteur actuel.",
-		"draft": true
+		"description": "Une corne en vrille qui met K.O. d'un coup. Sans effet dans le moteur actuel."
 	},
 	"body_slam": {
 		"name": "Plaquage", "type": "normal", "category": "physical",
 		"power": 85, "accuracy": 100, "pp": 15, "pending_effects": ["paralysis_30"],
-		"description": "Le lanceur se jette de tout son poids sur la cible. Peut la paralyser.",
-		"draft": true
+		"description": "Le lanceur se jette de tout son poids sur la cible. Peut la paralyser."
 	},
 	"struggle": {
 		"name": "Lutte", "type": "normal", "category": "physical",
 		"power": 50, "accuracy": 0, "pp": 1, "typeless": true,
 		"effects": [{ "kind": "recoil", "fraction": 0.25 }],
-		"description": "Utilisée quand il ne reste plus aucun PP. Blesse aussi le lanceur.",
-		"draft": true
+		"description": "Utilisée quand il ne reste plus aucun PP. Blesse aussi le lanceur."
 	}
 }

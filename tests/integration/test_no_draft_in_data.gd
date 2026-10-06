@@ -1,0 +1,45 @@
+extends GutTest
+## Aucun texte provisoire dans les données : le lot de textes en brouillon a été validé tel quel
+## par Kevin le 2026-10-06 (docs/design/textes/textes-brouillon-j7.md). Un nouveau texte marqué
+## « draft » (dialogue, message de combat, objet, Pokédex, zone, capacité, objectif, moment…)
+## fait échouer ce test : il doit être relu par Kevin, puis ce test (ou le texte) mis à jour.
+
+const DATA_DIR := "res://data"
+
+
+func test_data_has_json_files() -> void:
+	assert_gt(_json_files(DATA_DIR).size(), 10, "les fichiers de données sont trouvés")
+
+
+func test_no_draft_text_in_data() -> void:
+	var drafts: Array[String] = []
+	for path: String in _json_files(DATA_DIR):
+		var parsed: Variant = JSON.parse_string(FileAccess.get_file_as_string(path))
+		assert_not_null(parsed, "%s : JSON valide" % path)
+		_collect_drafts(parsed, path.trim_prefix(DATA_DIR + "/"), drafts)
+	assert_eq(drafts, [] as Array[String], "textes provisoires à faire relire par Kevin")
+
+
+## Ajoute à [param out] le chemin de chaque objet de [param value] qui porte une clé « draft »
+## (quelle que soit sa valeur : un « draft » à false n'a pas lieu d'être non plus).
+func _collect_drafts(value: Variant, where: String, out: Array[String]) -> void:
+	if value is Dictionary:
+		var dict: Dictionary = value
+		if dict.has("draft"):
+			out.append(where)
+		for key: Variant in dict:
+			_collect_drafts(dict[key], "%s/%s" % [where, key], out)
+	elif value is Array:
+		var list: Array = value
+		for i: int in list.size():
+			_collect_drafts(list[i], "%s/%d" % [where, i], out)
+
+
+func _json_files(dir_path: String) -> Array[String]:
+	var files: Array[String] = []
+	for file: String in DirAccess.get_files_at(dir_path):
+		if file.get_extension() == "json":
+			files.append(dir_path.path_join(file))
+	for dir: String in DirAccess.get_directories_at(dir_path):
+		files.append_array(_json_files(dir_path.path_join(dir)))
+	return files

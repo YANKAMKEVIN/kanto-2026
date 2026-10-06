@@ -167,7 +167,6 @@
 		"pages": ["Tiens. T'es déjà revenu, toi aussi ?"]
 	},
 	"oak_parcel_rival_dex": {
-		"draft": true,
 		"speaker": "Prof. Chen",
 		"pages": [
 			{ "text": "Toi aussi, prends-en un.", "turn": { "oak": "rival" } }

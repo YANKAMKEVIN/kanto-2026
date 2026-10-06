@@ -1,5 +1,7 @@
 # Textes en brouillon — lot à relire (2026-10-05)
 
+> **Validé par Kevin le 2026-10-06, tout le lot tel quel** (aucune ligne commentée), y compris les ajouts listés en fin de fichier. Tous les `"draft": true` ont été retirés de `data/` ; le test `tests/integration/test_no_draft_in_data.gd` échoue si un nouveau texte provisoire apparaît. Ce fichier sert désormais de référence des textes validés hors dossiers de conception.
+
 > Comme au J6 : commente ligne par ligne (numéro + correction) ; **tout ce que tu ne commentes pas reste inchangé** et perd son statut de brouillon. Généré depuis toutes les entrées `"draft": true` de `data/` (branche `j7-centre`).
 
 ## Jalon 7 — Jadielle, Centre, Boutique, Stockage, Route 22
@@ -215,3 +217,35 @@
 194. `route_22.json` · route22_rival_hesitates — « Rival »
 195. `viridian_mart.json` · clerk — « Marchand »
 196. `viridian_center.json` · nurse — « Infirmière »
+
+## Ajouts au lot depuis le 2026-10-05 (validés avec lui le 2026-10-06)
+
+197. `battle/messages.json` · templates/recoil · text_f — « {pokemon} est blessée par le contrecoup ! »
+198. `battle/messages.json` · templates/wild_appeared · text_f — « Une {pokemon} sauvage apparaît ! »
+199. `battle/messages.json` · templates/broke_free · text_f — « Oh non ! Elle s'est libérée ! »
+200. `battle/messages.json` · templates/withdrawn · text — « Reviens, {pokemon} ! »
+201. `battle/messages.json` · templates/switch_reason_active · text — « Déjà au combat »
+202. `battle/messages.json` · templates/switch_reason_fainted · text — « Ne peut plus combattre »
+203. `battle/messages.json` · templates/replace_prompt · text — « Qui envoyer au combat ? »
+204. `battle/messages.json` · templates/summary_continue · text — « Touchez l'écran pour continuer »
+205. `dialogues/oak_lab.json` · oak_parcel_rival_dex · page — « Toi aussi, prends-en un. »
+206. `dialogues/viridian_city.json` · viridian_house_door · page — « C'est fermé. »
+207. `story/objectives.json` · reach_viridian · text — « rejoindre Jadielle. »
+208. `trainer/moments.json` · moments/starter — « Premier Pokémon » / « {species} rejoint ton équipe. »
+209. `trainer/moments.json` · moments/rival_battle — « Combat contre le rival » / « {outcome} »
+210. `trainer/moments.json` · moments/first_capture — « Première capture » / « {species} rejoint l'aventure. »
+211. `trainer/moments.json` · moments/zone_arrival — « {zone} » / « Une nouvelle zone découverte. »
+212. `trainer/moments.json` · zone_arrivals/route_1 — « Départ de Bourg Palette » / « Premiers pas sur la Route 1. »
+213. `trainer/moments.json` · zone_arrivals/viridian_city — « Arrivée à Jadielle » / « Une nouvelle ville. »
+214. `world/zones.json` · zones/route_1 · subtitle — « Bourg Palette — Jadielle »
+
+Textes provisoires écrits dans le code (vues), validés aussi :
+
+215. `ShopViews` · TEXT_NOTHING_TO_SELL — « Tu n'as rien à vendre. »
+216. `ShopViews` · confirmation de la vente d'un favori — « Vendre %s ? » / « Vendre %d %s ? », « C'est un de tes favoris. », VENDRE / ANNULER
+217. `StorageViews` · LAST_ABLE_TEXT — « Tu dois garder au moins un Pokémon en état de combattre. »
+218. `StorageViews` · PARTY_FULL_TEXT — « Ton équipe est déjà complète. »
+219. `StorageViews` · EMPTY_TEXT — « Le stockage est vide. »
+220. `StorageViews` · RELEASED_TEXT — « %s a été libéré. »
+221. `TrainerView` · MONEY_LABEL — « Argent »
+222. `BagQuery` · REFUSAL_FORMATS — « %s a déjà tous ses PV. », « %s est K.O. », « Il n'en reste plus. », « Pas maintenant. », « Cela n'aurait aucun effet sur %s. »

@@ -106,7 +106,7 @@ func test_same_zones_as_the_kanto_illustration() -> void:
 	assert_eq(ids, area_ids)
 
 
-## Carte (T18) : chaque zone construite a sa description provisoire ; la Route 1 annonce ses
+## Carte (T18) : chaque zone construite a sa description (validée le 2026-10-06) ; la Route 1 annonce ses
 ## connexions comme son titre en jeu (Q-15).
 func test_built_zones_have_their_map_texts() -> void:
 	_zones.load_file()
@@ -114,7 +114,7 @@ func test_built_zones_have_their_map_texts() -> void:
 		var zone := _zones.get_zone(id)
 		if not zone.maps.is_empty():
 			assert_false(zone.description.is_empty(), "%s : description" % id)
-			assert_true(zone.draft, "%s : textes à relire par Kevin" % id)
+			assert_false(zone.draft, "%s : textes validé par Kevin le 2026-10-06" % id)
 		assert_false(zone.description.contains("???"), id)
 		assert_false(zone.subtitle.contains("???"), id)
 	assert_eq(_zones.get_zone(&"route_1").subtitle, "Bourg Palette — Jadielle")
