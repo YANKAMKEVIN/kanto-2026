@@ -4,8 +4,8 @@ Mis à jour : 2026-10-06 (capacités apprises au K.O., « comme dans Rouge/Bleu 
 
 
 
-## Intégration du monde peint (plan du 2026-10-06, à valider par Kevin)
-- Bourg Palette, ses 4 intérieurs et la Route 1 ne sont peints que dans le prototype ; le jeu utilise encore les tuiles provisoires. Plan : `docs/tech/integration-da-bourg-route1.md` (DA.0 pipeline → DA.1 Route 1 → DA.2 Bourg Palette → DA.3 intérieurs → DA.4 personnages peints). **Questions à Kevin** (§6) : géométrie de Bourg Palette (A : garder la carte du jeu, recommandé ; B : plan du prototype), personnages peints maintenant, chantier avant le J8.
+## Intégration du monde peint (plan du 2026-10-06, validé par Kevin)
+- Bourg Palette, ses 4 intérieurs et la Route 1 ne sont peints que dans le prototype ; le jeu utilise encore les tuiles provisoires. Plan : `docs/tech/integration-da-bourg-route1.md` (DA.0 pipeline → DA.1 Route 1 → DA.2 Bourg Palette → DA.3 intérieurs → DA.4 personnages peints). **Décisions de Kevin** : géométrie du jeu gardée (A), personnages peints dans ce chantier, **avant le J8**. Branche `da-bourg-route1`.
 ## Dossier 10 — Forêt de Jade (2026-10-06, branche `docs/dossier-10`)
 - `docs/design/dossier-10-foret-de-jade.md` écrit après la passe d'alignement et **11 décisions de Kevin** (poison seul au J9, persistant sans dégâts à la marche ; premières évolutions au J9, définitives avec annulation ; 58 × 74 cases ; Pikachu 5 % partout ; ni Roucool ni Rattata sauvages ; `poison_unlocked` au garde sud ; toasts standard ; une scène pour les deux postes ; repères tronc → souche → clairière ; contraintes de la Route 2). Roadmap corrigée (poison et évolutions J9, statuts complets et présentation J11). **Textes à relire par Kevin.** Pas d'implémentation avant le J9.
 

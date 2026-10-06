@@ -1,6 +1,6 @@
 # Intégration du monde peint : Bourg Palette, ses intérieurs et la Route 1
 
-> Plan préparé par Claude le 2026-10-06, **à valider par Kevin** (questions au §6). Pas de code avant sa réponse.
+> Plan préparé par Claude le 2026-10-06, **validé par Kevin le même jour** : Q1 = **A** (garder la géométrie du jeu), Q2 = **oui** (personnages peints dans ce chantier), Q3 = **oui** (avant le jalon 8).
 > But : que Bourg Palette, la chambre, le rez-de-chaussée, la maison du rival, le labo et la Route 1 soient **peints dans le vrai jeu** (`game/boot.tscn`), comme Jadielle depuis le jalon 7. Aujourd'hui, ils ne le sont que dans les scènes du prototype (`proto/da_jadielle/proto_bourg.gd`, `proto_interieur_bourg.gd`, `proto_route1.gd`), validées par Kevin sur S24 (60 fps).
 > Références : `docs/tech/jalon-07.md` §6.6 (de l'art du prototype à la production), §7 (budget), §15 ; dossiers 01, 02, 07 ; `docs/design/fiches-assets/serie-01-place-jadielle.md` (séries 06 à 08) ; `CLAUDE.md`.
 
