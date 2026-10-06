@@ -23,7 +23,7 @@ const STAT_PLAY_TIME: StringName = &"play_time"
 const STAT_ZONES: StringName = &"zones"
 const STAT_CAPTURES: StringName = &"captures"
 const STAT_ITEMS_FOUND: StringName = &"items_found"
-## Libellés (textes d'interface provisoires, règle 4). Ni « vus », ni « capturés », ni
+## Libellés (textes d'interface validés par Kevin le 2026-10-06). Ni « vus », ni « capturés », ni
 ## « Pokédex » : ces mots n'existent pas avant l'activation (jalon-06.md §4).
 const STAT_LABELS: Dictionary[StringName, String] = {
 	STAT_PLAY_TIME: "Temps de jeu",

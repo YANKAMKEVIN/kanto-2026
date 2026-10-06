@@ -37,7 +37,7 @@ const TITLE_ICON: Texture2D = preload("res://assets/ui/icons/battle/bag.svg")
 const CATEGORY_ICONS: Dictionary[StringName, Texture2D] = {
 	&"ball": preload("res://assets/ui/icons/items/poke_ball.svg"),
 }
-## Textes d'interface (provisoires).
+## Textes d'interface (validés par Kevin le 2026-10-06).
 const TITLE := "SAC"
 const EMPTY_TEXT := "Aucun objet utilisable pour l'instant."
 

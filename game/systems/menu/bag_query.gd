@@ -15,7 +15,7 @@ extends RefCounted
 ## données), nom, quantité (la plus grande d'abord), récents (obtenus le plus récemment
 ## d'abord, Q-12 : [method Bag.acquired_rank]).
 ##
-## Textes d'interface provisoires (règle 4) : raisons, mentions, résultat, Sac vide.
+## Textes d'interface validés par Kevin le 2026-10-06 : raisons, mentions, résultat, Sac vide.
 
 enum Sort { RELEVANCE, NAME, QUANTITY, RECENT }
 
