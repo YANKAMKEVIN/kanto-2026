@@ -1,6 +1,6 @@
 # Jalon 9 — Forêt de Jade
 
-> Objectif jouable sur le S24 : **la première vraie petite expédition**. Depuis la Route 2 sud, le poste de garde (un garde qui prévient du poison), la forêt dense en grand S (≈ 58 × 74 cases), cinq espèces nouvelles dont Pikachu rare, **les premiers vrais Dresseurs** (le Scout Léo voit le joueur, « ! », s'approche, parle, combat), **le poison** (persistant, aucun dégât en marchant, Antidote ou Centre), **les premières évolutions** (séquence propre, annulable, définitive dans sa logique), six objets dont trois cachés, deux PNJ, des Pokémon d'ambiance, puis le poste nord et « ROUTE 2 NORD — À venir ».
+> Objectif jouable sur le S24 : **la première vraie petite expédition**. Depuis la Route 2 sud, le poste de garde (un garde qui prévient du poison), la forêt dense en grand S (≈ 58 × 74 cases), cinq espèces nouvelles dont Pikachu rare, **les premiers vrais Dresseurs** (le Scout Théo voit le joueur, « ! », s'approche, parle, combat), **le poison** (persistant, aucun dégât en marchant, Antidote ou Centre), **les premières évolutions** (séquence propre, annulable, définitive dans sa logique), six objets dont trois cachés, deux PNJ, des Pokémon d'ambiance, puis le poste nord et « ROUTE 2 NORD — À venir ».
 >
 > Deux tranches, à la demande de Kevin (2026-10-06) : **A — les systèmes**, codés **tout de suite, en parallèle du J8**, sans la carte et sans toucher aux fichiers que le J8 modifie, validés sur S24 grâce à une **carte de QA** ; **B — la forêt**, après la fusion du J8 (même méthode que le 8.0 : grille → plan en aplats → vue générale Codex validée par Kevin → assets → vraie carte).
 
@@ -46,6 +46,15 @@ Références : `CLAUDE.md` (règles 1 à 10), `docs/design/dossier-10-foret-de-j
 6. **Tests qui énumèrent toutes les cartes** (`test_zone_library`, `test_map_light_profiles`) : une carte de QA les ferait échouer → préfixe `qa_` reconnu par `MapCatalog` (§2.6).
 7. **Capacités en attente qui deviennent réelles** : Poudre Toxik (Bulbizarre Nv. 20, Herbizarre Nv. 22) et Dard-Venin (Aspicot ; Nidoran Nv. 14) empoisonneront partout, et un tirage aléatoire de plus par effet décale les combats à graine fixe (`tools/simulate_first_battle.gd`, tests de reproductibilité) → à recaler au T4, jamais en masquant.
 8. **Cage-Éclair (Pikachu Nv. 9), Para-Spore, Ultrason, Choc Mental…** restent sans effet jusqu'au J11 (`pending_effects`, comme Poudre Dodo aujourd'hui) : limite connue, notée.
+
+### 0.3 Alignement au T0 (2026-10-07, `main` à `b265ab4`)
+
+Fusions dans `main` depuis `4107a05` : `360352c` (textes du dossier 10 verrouillés), DA.2 (`0fa57d4` … `c1a0215` : Bourg Palette peint, personnages peints, 4 routines) et `b265ab4` (planche de course de Chen). Effets sur ce plan :
+
+1. **Le premier Dresseur s'appelle Scout Théo** (« Léo » est déjà le petit garçon de Bourg Palette) : plan corrigé partout (`forest_scout_theo`, `scout_theo`, « couloir de Théo »). La réplique de rappel du garde sud devient « Les Aspicot peuvent empoisonner. » / « La Boutique de Jadielle vend des Antidotes. » (§2.4.8 corrigé). **`jalon-09` ne contient pas encore cette version du dossier 10** : fusionner `main` dans `jalon-09` avant T6 / T11 (données des gardes et des Dresseurs « mot pour mot »).
+2. **DA.2 a modifié `npc.gd` et `map.gd`** : routines retenues tant qu'aucun joueur n'est sur la carte (`Npc.set_routine_held`, `GameMap._release_routines`). Sans effet sur les Dresseurs (immobiles, approche jouée par des étapes `move` de scène, non concernées) ; utile aux tests de la forêt (P1 / P2 sur leur case de départ tant que le joueur n'est pas là). T11 / T12 (`Npc.show_emote`) partent d'une base qui contient ce changement.
+3. **Apparences** : depuis DA.2, les PNJ de Bourg Palette sont peints et `test_character_look` le suppose (« les starters restent provisoires ») ; la carte de QA garde l'apparence générique existante pour ses Dresseurs et son garde (T12), les planches peintes `scout` / `guard` / `naturalist` restent à la série 10 (T17).
+4. **Textes (T0)** : lot `docs/design/textes/textes-brouillon-j9.md`. Les messages d'évolution utilisent `{species}`, absent de `BattleText.PLACEHOLDERS` (T8 l'ajoute, ou les textes de l'évolution vivent hors de `BattleText`) ; les noms de Dresseurs (« Scout Théo », « Gamin Tom ») sont des `name` entiers de `TrainerData` : aucune classe de Dresseur séparée à nommer.
 
 **Hors périmètre** (dossier 10 et roadmap) : paralysie, sommeil, brûlure, gel (J11) ; mise en scène enrichie de l'évolution (J11) ; son et musique (intentions seulement, `GameMap.music` vide) ; Route 2 nord et Argenta (J10) ; mouvement « sans source » dans les feuillages (« au plus », facultatif : non fait au J9, noté) ; jour / nuit (même table).
 
@@ -193,22 +202,22 @@ Le **combat** reste dans `data/trainers/` ; le **placement et la vision** sont u
 
 ```json
 // data/trainers/viridian_forest.json
-"forest_scout_leo": {
-	"name": "Scout Léo", "ai": "random",
+"forest_scout_theo": {
+	"name": "Scout Théo", "ai": "random",
 	"can_lose": false, "heal_after": false, "gives_exp": true, "prize_money": 72,
 	"team": [{ "species": "caterpie", "level": 6 }]
 }
 // data/npcs/viridian_forest.json (et qa_forest_systems.json)
-"scout_leo": {
+"scout_theo": {
 	"cell": [x, y], "facing": "up", "sprite": "scout",
-	"dialogue": "forest_scout_leo_after",
-	"trainer": { "id": "forest_scout_leo", "sight": 4, "before": "forest_scout_leo_before" }
+	"dialogue": "forest_scout_theo_after",
+	"trainer": { "id": "forest_scout_theo", "sight": 4, "before": "forest_scout_theo_before" }
 }
 ```
 
 | Id | Nom (`name`, aussi `speaker`) | Vision | Équipe | ₽ (`prize_money`) |
 |---|---|---:|---|---:|
-| `forest_scout_leo` | Scout Léo | 4 | Chenipan 6 | 72 |
+| `forest_scout_theo` | Scout Théo | 4 | Chenipan 6 | 72 |
 | `forest_scout_noe` | Scout Noé | 5 | Aspicot 6, Coconfort 6 | 144 |
 | `forest_youngster_tom` | Gamin Tom | 4 | Rattata 7 | 84 |
 | `forest_scout_milo` | Scout Milo | 5 | Chenipan 6, Aspicot 6 | 144 |
@@ -266,7 +275,7 @@ Défaut (règle 4) : le Dresseur **marche jusqu'à la case voisine** (Rouge/Bleu
 
 #### 2.4.8 Gardes (données de la tranche A, réutilisées en B)
 
-`forest_gate_south_guard` : variante 1 `unless: [poison_unlocked]`, `set: [poison_unlocked]`, page « La Forêt de Jade est juste devant.\nGarde un Antidote avec toi. » (+ `auto` si Q-4) ; variante 2 : « Les Aspicot peuvent empoisonner.\nMieux vaut être préparé. ». `forest_gate_north_guard` : défaut « Encore quelques pas vers le nord,\net tu atteindras Argenta. » ; variante `if: [pewter_arrived]` (drapeau que le J10 posera à l'arrivée à Argenta ; défaut) « La Forêt de Jade mène à Jadielle.\nLes jeunes Dresseurs s'y entraînent. ». `speaker` « Garde » (défaut).
+`forest_gate_south_guard` : variante 1 `unless: [poison_unlocked]`, `set: [poison_unlocked]`, page « La Forêt de Jade est juste devant.\nGarde un Antidote avec toi. » (+ `auto` si Q-4) ; variante 2 : « Les Aspicot peuvent empoisonner.\nLa Boutique de Jadielle vend des Antidotes. ». `forest_gate_north_guard` : défaut « Encore quelques pas vers le nord,\net tu atteindras Argenta. » ; variante `if: [pewter_arrived]` (drapeau que le J10 posera à l'arrivée à Argenta ; défaut) « La Forêt de Jade mène à Jadielle.\nLes jeunes Dresseurs s'y entraînent. ». `speaker` « Garde » (défaut).
 
 ### 2.5 Données des espèces (tranche A, 9A.0)
 
@@ -284,7 +293,7 @@ Défaut (règle 4) : le Dresseur **marche jusqu'à la case voisine** (Rouge/Bleu
 - `tools/build_qa_forest_systems.gd` → `game/world/maps/qa_forest_systems.tscn` (≈ 24 × 18, tuiles provisoires `OverworldTiles`, aucune lumière) :
   - garde sud (sprite générique) au nord du départ : `forest_gate_south_guard` ;
   - hautes herbes 5 × 4 (table de la forêt) ;
-  - **couloir de Léo** : Dresseur tourné vers le bas, couloir d'une case de large qui oblige à entrer dans sa vision (inévitable) ;
+  - **couloir de Théo** : Dresseur tourné vers le bas, couloir d'une case de large qui oblige à entrer dans sa vision (inévitable) ;
   - **clairière de Noé et Milo** : visions qui se croisent (un seul défi à la fois), Milo contournable par l'herbe ;
   - **Tom** tourné vers la gauche, abordable de côté (défi à la parole) ;
   - **Éli** (trois Pokémon) au fond ;
@@ -293,8 +302,8 @@ Défaut (règle 4) : le Dresseur **marche jusqu'à la case voisine** (Rouge/Bleu
 - Départs (`tools/debug_start/`, README complété) :
   - `poison_qa.json` : Salamèche N9 **empoisonné** (`status`), Roucool N7, 2 Antidotes, 2 Potions, 3 000 ₽, Pokédex activé, `poison_unlocked` absent, devant le garde ;
   - `evolution_qa.json` : Chenipan N6 et Aspicot N6 à 1 XP du N7 (`exp_to_next`), Salamèche N9, 5 Potions, au bord des hautes herbes ; plus un Chrysacier N9 à 1 XP du N10 (deuxième évolution) ;
-  - `trainers_qa.json` : Salamèche N9, Roucool N8, 5 Potions, 1 Antidote, 3 000 ₽, à l'entrée du couloir de Léo ;
-  - `trainers_weak_qa.json` : Salamèche N4 seul (pour perdre contre Léo : réveil, argent intact, Léo redéfie).
+  - `trainers_qa.json` : Salamèche N9, Roucool N8, 5 Potions, 1 Antidote, 3 000 ₽, à l'entrée du couloir de Théo ;
+  - `trainers_weak_qa.json` : Salamèche N4 seul (pour perdre contre Théo : réveil, argent intact, Théo redéfie).
 
 ### 2.7 La forêt (tranche B)
 
@@ -308,7 +317,7 @@ Critères vérifiés par `plan_check.py` (J8, étendu) **et** par `test_viridian
 |---|---|
 | Chemin principal le plus court, entrée sud → sortie nord | 220 à 280 pas (≈ 250, arbitrage 4 ; défaut de tolérance) |
 | Herbes obligatoires | 6 à 8 cases, **toutes dans H3** ; H1, H2, H4 évitables |
-| D1 (Léo) | **inévitable** : tout chemin sud → nord traverse son champ de vision, et la case de détection laisse ≥ 2 cases entre lui et le joueur |
+| D1 (Théo) | **inévitable** : tout chemin sud → nord traverse son champ de vision, et la case de détection laisse ≥ 2 cases entre lui et le joueur |
 | D2, D3, D5 | évitables (un chemin sud → nord qui n'entre dans aucun de leurs champs) ; D4 évitable **par les hautes herbes** seulement |
 | Objets | les 6 cases atteignables ; O1 à moins de 25 pas de l'entrée ; O2 au fond du cul-de-sac occidental (via H2) ; O3 derrière la souche par un passage d'une case ; O6 à moins de 15 pas de la sortie nord |
 | Vision | aucune case de vision d'un Dresseur sous une cime ou sur une case infranchissable au-delà du premier obstacle (cohérence) |
@@ -368,6 +377,7 @@ Branche d'intégration `jalon-09` (cette copie) ; une branche par tâche, chacun
 #### T0 — architecte : alignement et lot de textes système (9A.0)
 - Aligner §0 sur `main` ; `docs/design/textes/textes-brouillon-j9.md` : messages de combat du poison (4), de l'évolution (3 + bouton), résultat de l'Antidote (1), description de l'Antidote, 12 descriptions de capacités, 8 descriptions Pokédex, sous-titre et description de la zone, noms affichés (« Garde », « Naturaliste », « Randonneuse »). Rien dans `data/` avant validation (`test_no_draft_in_data`).
 - **CA** : lot relu par Kevin (Q-1) ; aucun fichier de `game/` touché.
+- **Fait (2026-10-07, branche `j9-t0-textes`)** : §0.3 ; lot écrit, **en attente de la relecture de Kevin**.
 
 #### T1 — architecte : espèces, capacités, Pokédex, sprites provisoires (9A.0) — dépend de T0 (textes)
 - §2.5 ; `gen_placeholder_battlers.gd` étendu ; poison **encore** en `pending_effects` (T4 le rend réel).
@@ -394,7 +404,7 @@ Branche d'intégration `jalon-09` (cette copie) ; une branche par tâche, chacun
 
 #### T6 — constructeur-monde : carte et départs de QA (9A.2) — parallèle à T4 (dépend de T1)
 - §2.6 ; données des gardes (§2.4.8) et de la table de la forêt.
-- Tests : `test_qa_forest_systems` (warps, spawns, herbes de la table forêt, couloir de Léo inévitable par recherche de chemin, sortie vers `from_center`), `test_map_catalog` (`is_qa_map`), `test_zone_library` / `test_map_light_profiles` (cartes `qa_` ignorées), `test_dialogue_data` (gardes mot pour mot), `test_debug_start` (4 nouveaux fichiers).
+- Tests : `test_qa_forest_systems` (warps, spawns, herbes de la table forêt, couloir de Théo inévitable par recherche de chemin, sortie vers `from_center`), `test_map_catalog` (`is_qa_map`), `test_zone_library` / `test_map_light_profiles` (cartes `qa_` ignorées), `test_dialogue_data` (gardes mot pour mot), `test_debug_start` (4 nouveaux fichiers).
 - **CA** : tests verts, capture de la carte relue.
 
 #### T7 — qa-mobile : validation 9A.2 (poison) sur S24 → Kevin
@@ -426,7 +436,7 @@ Branche d'intégration `jalon-09` (cette copie) ; une branche par tâche, chacun
 - **CA** : tests verts, captures relues.
 
 #### T13 — qa-mobile : validation 9A.4 (Dresseurs) sur S24 → Kevin
-- `trainers_qa` et `trainers_weak_qa` : Léo inévitable, « ! » lisible, approche, répliques avant / après, prix « Tu remportes 72 ₽. » et argent, Milo contourné par l'herbe, Tom défié à la parole, visions croisées, défaite → réveil au Centre, argent intact, Léo redéfie ; battus après rechargement ; évolution après un combat de Dresseur (si 9A.3 est fusionnée).
+- `trainers_qa` et `trainers_weak_qa` : Théo inévitable, « ! » lisible, approche, répliques avant / après, prix « Tu remportes 72 ₽. » et argent, Milo contourné par l'herbe, Tom défié à la parole, visions croisées, défaite → réveil au Centre, argent intact, Théo redéfie ; battus après rechargement ; évolution après un combat de Dresseur (si 9A.3 est fusionnée).
 - **CA** : rapport `build/qa/jalon09_t13/` ; validation de Kevin.
 
 ### Tranche B — la forêt (après la fusion du J8 ; T14–T15 peuvent commencer dès le 8.0 validé)
@@ -467,7 +477,7 @@ Branche d'intégration `jalon-09` (cette copie) ; une branche par tâche, chacun
 - **CA** : tests verts, captures relues.
 
 #### T22 — qa-mobile : validation 9B.2 et QA finale du J9 → Kevin
-- Partie réelle sans drapeau de débogage, de Jadielle au poste nord : garde (poison, Boutique), Léo, Insecte, évolutions, objets, PNJ, ambiance, défaite au milieu (retour à Jadielle), sauvegarde et reprise dans la forêt, durées mesurées.
+- Partie réelle sans drapeau de débogage, de Jadielle au poste nord : garde (poison, Boutique), Théo, Insecte, évolutions, objets, PNJ, ambiance, défaite au milieu (retour à Jadielle), sauvegarde et reprise dans la forêt, durées mesurées.
 - **CA** : rapport `build/qa/jalon09_t22/` ; validation de Kevin ; fusion de `jalon-09` dans `main`.
 
 #### T23 — architecte : clôture
@@ -488,7 +498,7 @@ Branche d'intégration `jalon-09` (cette copie) ; une branche par tâche, chacun
 | **Ordre des réactions au pas** (scène, Dresseur, rencontre) | combat sauvage pendant une détection, double verrou | branchement ordonné dans `Boot`, test d'ordre (T11) |
 | **Performances de la forêt** (≈ 3 à 4 fois les arbres de la Route 1) | fps < 58, chargement lent | tri de visibilité à la construction, budget testé, repli `Sprite2D`, mesures Mac (T19) puis S24 (T20) |
 | **Vue générale qui s'écarte de la grille** (courbes, eau, faune) | composition invalide | interdits explicites, 3 essais, la grille fait foi (règle 10) |
-| **Léo évitable par accident** (ou D4 évitable sans l'herbe) | leçon des Dresseurs ratée | critère de recherche de chemin sur la grille (T14) **et** la vraie scène (T19, T21) |
+| **Théo évitable par accident** (ou D4 évitable sans l'herbe) | leçon des Dresseurs ratée | critère de recherche de chemin sur la grille (T14) **et** la vraie scène (T19, T21) |
 | **Évolution interrompue** (application tuée pendant l'écran) | Pokémon à moitié évolué | `evolve_into` n'est appelé qu'à la fin de la séquence ; aucune écriture avant ; vérifié au T10 |
 | **Carte de QA oubliée** | contenu de débogage dans la version finale | préfixe `qa_`, aucun warp vers elle, retrait au T23 (critère de clôture) |
 | **Capacités sans effet** (Cage-Éclair, Para-Spore, Ultrason…) | Pikachu N9+ « utilise Cage-Éclair », rien ne se passe | limite connue jusqu'au J11, notée dans `etat-projet.md` |
