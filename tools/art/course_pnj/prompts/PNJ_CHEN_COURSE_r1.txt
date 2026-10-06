@@ -1,0 +1,11 @@
+PNJ_CHEN_COURSE — planche de COURSE du même personnage que la planche jointe PNJ_CHEN_NE_r1 (sa planche de marche) : même main peinte, mêmes couleurs, mêmes proportions, même visage, même coiffure. La planche jointe PERSO_P2_COURSE_r1 (le héros du jeu qui court) donne la MISE EN PAGE et le type de mouvement attendus : reprends exactement sa disposition (4 lignes × 4 colonnes) mais avec le Professeur Chen.
+Style : illustration 2D peinte numériquement, contour fin et doux d'une teinte sombre et colorée, aucun trait noir, trois valeurs nettes par matériau, légère granularité de pinceau, lumière neutre de milieu de journée, diffuse et blanche, venant légèrement du haut à gauche, aucune teinte dorée. Formes simplifiées et lisibles pour rester net une fois réduit à 132 px de haut. Ni pixel art, ni 3D.
+PERSONNAGE : le Professeur Chen, homme d'une soixantaine d'années, énergique : cheveux gris clair coiffés en arrière, blouse blanche de laboratoire ouverte qui flotte derrière lui, chemise bordeaux, pantalon brun clair, chaussures brunes.
+
+PLANCHE : image portrait 1024 × 1536, fond avec une vraie transparence (canal alpha, aucun damier dessiné). 4 lignes × 4 colonnes de poses, bien séparées par du vide, le personnage entier dans chaque case, à la même taille dans les 16 poses. Pas de sol, pas d'ombre, pas de texte, pas de numéros, pas de cadres.
+- Ligne 1 : il court vers le BAS (vu de face).
+- Ligne 2 : il court vers la GAUCHE (de profil, tourné vers la gauche).
+- Ligne 3 : il court vers la DROITE (de profil, tourné vers la droite).
+- Ligne 4 : il court vers le HAUT (vu de dos).
+Chaque ligne = un CYCLE DE COURSE de 4 images, dans l'ordre : contact A (grande foulée, une jambe devant), passage (pieds décollés, jambes ramassées sous le corps, corps au plus haut), contact B (l'AUTRE jambe devant), passage. Buste penché en avant, bras pliés qui balancent en opposition des jambes, vrai élan de course pressée d'un adulte qui accourt pour arrêter quelqu'un (pas une marche). De face et de dos, on doit voir nettement quel pied est levé et lequel est au sol, et ce n'est pas le même dans les colonnes 1 et 3.
+Le visage, les couleurs, les proportions et les vêtements doivent être EXACTEMENT ceux de PNJ_CHEN_NE_r1.
