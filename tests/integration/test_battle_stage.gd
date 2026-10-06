@@ -201,15 +201,21 @@ func test_show_pokemon_without_world_npc_and_no_effect_when_shown() -> void:
 func test_real_transition_moves_camera_and_sprites_together() -> void:
 	_stage.speed_scale = 1.0
 	var rival: Array[Vector2i] = [RIVAL_CELL]
+	# Temps simulé (TweenClock, speed_scale à 1) : relevé à 45 % de l'entrée exactement.
+	var clock := TweenClock.new(get_tree())
+	var entered: Array[bool] = [false]
+	_stage.entered.connect(func() -> void: entered[0] = true, CONNECT_ONE_SHOT)
 	_stage.enter(_camera, _mine, _foe, &"charmander", &"squirtle", rival)
-	await wait_seconds(BattleStage.ENTER_DURATION * 0.45)
+	clock.run_until(func() -> bool: return false, BattleStage.ENTER_DURATION * 0.45)
 	var mine := _stage.get_sprite(PLAYER_SIDE)
 	assert_between(_camera.zoom.x, 1.01, BattleStage.ZOOM - 0.01, "caméra en mouvement")
 	assert_between(mine.scale.x, 1.1, 3.9, "taille intermédiaire")
 	assert_ne(mine.position, _anchors()["player_feet"], "en chemin")
 	assert_true(mine.visible)
 	assert_true((_stage.get_node(^"%Backdrop") as CanvasItem).visible)
-	await wait_for_signal(_stage.entered, 2.0)
+	clock.run_until(func() -> bool: return entered[0], 2.0)
+	clock.release()
+	assert_true(entered[0], "entrée terminée")
 	assert_eq(mine.position, _anchors()["player_feet"])
 	_stage.exit()
 	await wait_for_signal(_stage.exited, 2.0)
