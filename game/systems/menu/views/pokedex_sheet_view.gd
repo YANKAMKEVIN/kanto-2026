@@ -30,8 +30,14 @@ var weight_text: String = ""
 var description: String = ""
 ## « Vu 3 fois » ; à la capture « Vu 3 fois · capturé 1 fois ».
 var counts_text: String = ""
+## Les deux cartes sous le portrait : « 3 fois » (vu) et « 1 fois » (capturé) ; le second est
+## vide tant que l'espèce n'est pas capturée (carte absente).
+var seen_times_text: String = ""
+var caught_times_text: String = ""
 ## Habitat : zones où l'espèce a été observée, dans l'ordre de découverte.
 var habitats: Array[PokedexHabitatView] = []
+## « Zones observées : 3 » (aperçu d'Habitat) ; vide s'il n'y a aucune zone.
+var habitat_count_text: String = ""
 ## Habitat vide (espèce vue hors de toute zone) : la phrase à afficher ; "" sinon.
 var habitat_empty_text: String = ""
 ## Évolution ([EvolutionReveal], Q-9) : stades vus ou « ??? », jamais de condition ;

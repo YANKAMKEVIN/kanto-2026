@@ -242,6 +242,19 @@ func test_sheet_of_a_caught_species_is_complete() -> void:
 	assert_eq(pidgey.habitats[1].name, "Route 1")
 
 
+func test_sheet_habitat_count_and_times_texts() -> void:
+	_kevin()
+	var pidgey := PokedexQuery.sheet(&"pidgey", _dex, _data, _lib, _zones)
+	assert_eq(pidgey.habitat_count_text, "Zones observées : 2")
+	assert_eq(pidgey.seen_times_text, "2 fois")
+	assert_eq(pidgey.caught_times_text, "1 fois")
+	var squirtle := PokedexQuery.sheet(&"squirtle", _dex, _data, _lib, _zones)
+	assert_eq(squirtle.habitat_count_text, "Zones observées : 1")
+	assert_eq(squirtle.caught_times_text, "", "seulement vue : pas de carte Capturé")
+	var lonely := PokedexQuery.sheet(&"squirtle", _dex, _data, _lib, null)
+	assert_eq(lonely.habitat_count_text, "", "aucune zone : texte vide = absent")
+
+
 func test_sheet_never_shows_stats_conditions_or_question_marks_in_habitats() -> void:
 	_kevin()
 	_dex.mark_seen(&"charizard", &"route_1")

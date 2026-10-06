@@ -99,28 +99,25 @@ func test_habitat_chip_goes_to_the_map_route() -> void:
 	_menu.close()
 
 
-func test_android_back_closes_the_sheet_first_then_leaves_the_screen() -> void:
+func test_android_back_leaves_the_pokedex_directly() -> void:
 	var dex := await _open_with_pidgey()
 	_boot.notification(Node.NOTIFICATION_WM_GO_BACK_REQUEST)
 	await wait_process_frames(2)
-	assert_false(dex.is_sheet_open(), "la fiche se referme")
-	assert_eq(_menu.get_navigator().current().screen, MenuRoute.POKEDEX)
-	_boot.notification(Node.NOTIFICATION_WM_GO_BACK_REQUEST)
-	assert_eq(_menu.get_navigator().current().screen, MenuRoute.DASHBOARD)
+	assert_true(dex.is_sheet_open(), "la fiche est permanente")
+	assert_eq(_menu.get_navigator().current().screen, MenuRoute.DASHBOARD,
+		"un seul retour quitte le Pokédex")
 	_menu.close()
 
 
-func test_escape_closes_the_sheet_first_then_the_menu() -> void:
+func test_escape_closes_the_menu_directly() -> void:
 	var dex := await _open_with_pidgey()
+	assert_not_null(dex)
 	var event := InputEventAction.new()
 	event.action = &"menu"
 	event.pressed = true
 	_boot._unhandled_input(event)
 	await wait_process_frames(2)
-	assert_false(dex.is_sheet_open())
-	assert_true(_menu.is_open())
-	_boot._unhandled_input(event)
-	assert_false(_menu.is_open())
+	assert_false(_menu.is_open(), "plus de fiche à refermer d'abord")
 
 
 func test_back_with_no_sheet_open_is_not_consumed_by_the_dex() -> void:
