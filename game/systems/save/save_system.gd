@@ -26,8 +26,10 @@ extends RefCounted
 ## fichier sans jamais l'écraser (jalon-06.md §5.1).
 ## Historique : 1 = jalon 5 (5C.5) ; 2 = jalon 6 (Sac { items, favorites, acquired }, favori
 ## des Pokémon, notes du Pokédex), une seule version pour tout le J6 ; 3 = jalon 7 (argent,
-## première rencontre sauvage), une seule version pour tout le J7 (jalon-07.md §5.1).
-const VERSION: int = 3
+## première rencontre sauvage), une seule version pour tout le J7 (jalon-07.md §5.1) ; 4 =
+## jalon 9 (statut de chaque Pokémon, « status »), une seule version pour tout le J9
+## (jalon-09.md §2.2).
+const VERSION: int = 4
 const DEFAULT_PATH: String = "user://save.json"
 const TEMP_SUFFIX: String = ".tmp"
 const CORRUPT_SUFFIX: String = ".corrupt"
@@ -58,6 +60,10 @@ var fs: SaveFileSystem = SaveFileSystem.new()
 var last_status: Error = OK
 ## Message lisible du dernier échec (vide si OK).
 var last_error: String = ""
+## Version trouvée dans le fichier par la dernière lecture réussie, avant migration (0 sinon) :
+## plus petite que [member version] quand la sauvegarde vient d'être migrée
+## ([method migration_note]).
+var read_version: int = 0
 
 
 func _init(file_system: SaveFileSystem = null, save_path: String = DEFAULT_PATH) -> void:
@@ -95,6 +101,7 @@ func write(state: Dictionary) -> Error:
 ## manque ou est invalide ([member last_status], [member last_error]). Un fichier corrompu est
 ## renommé `<path>.corrupt` ; un fichier d'une version plus récente est laissé tel quel.
 func read() -> Dictionary:
+	read_version = 0
 	if not fs.exists(path):
 		_fail(ERR_FILE_NOT_FOUND, "aucune sauvegarde")
 		return {}
@@ -118,13 +125,21 @@ func read() -> Dictionary:
 			% [reason, _corrupt_path()])
 		return {}
 	var content := parsed as Dictionary
+	var found := int(content[VERSION_KEY])
 	var error := upgrade(content, version)
 	if error != OK:
 		_fail(error, "sauvegarde d'une version plus récente (%d > %d) : mise à jour du jeu requise"
 			% [int(content[VERSION_KEY]), version])
 		return {}
+	read_version = found
 	_ok()
 	return content
+
+
+## Ligne du journal de la migration de [param from] à [param to] (« sauvegarde v3 → v4 »), ou
+## vide si rien n'a été migré.
+static func migration_note(from: int, to: int) -> String:
+	return "sauvegarde v%d → v%d" % [from, to] if from < to else ""
 
 
 ## Supprime la sauvegarde (nouvelle partie volontaire ; pas appelé au jalon 5).
@@ -152,7 +167,11 @@ static func upgrade(content: Dictionary, target: int = VERSION) -> Error:
 				# Avant la v2 (builds du J5), OBSERVER n'existait pas.
 				_upgrade_2_to_3(content, original < 2)
 			_:
-				pass  # 0 → 1 : aucune forme n'a changé, les défauts suffisent.
+				# 0 → 1 : aucune forme n'a changé, les défauts suffisent.
+				# 3 → 4 (J9) : rien à transformer, un Pokémon sans « status » n'a aucun statut
+				# (Pokemon.from_dict) ; seul le numéro change, pour qu'une build v3 refuse le
+				# fichier au lieu d'effacer les statuts au premier autosave.
+				pass
 		from += 1
 	content[VERSION_KEY] = target
 	return OK

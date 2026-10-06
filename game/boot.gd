@@ -21,7 +21,8 @@ extends Node
 ## ([method is_stable] : ni dialogue, ni scène, ni fiche du starter, ni rencontre, ni combat,
 ## ni transition, joueur libre) ; au passage en arrière-plan il est écrit tout de suite, si la
 ## partie est stable (sinon la dernière sauvegarde stable reste). Jamais d'autosave après un
-## départ de débogage, ni quand la sauvegarde vient d'une version plus récente du jeu (elle
+## départ de débogage (sauf s'il le demande, clé « autosave » de [DebugStart] : il remplace
+## alors la sauvegarde, QA de la sauvegarde v4), ni quand la sauvegarde vient d'une version plus récente du jeu (elle
 ## n'est jamais écrasée). Boot enregistre aussi les faits du §16.3 (Pokédex daté, starter,
 ## combat du rival, objets trouvés, zones découvertes, temps de jeu).
 ##
@@ -107,6 +108,8 @@ var _pending_storage: bool = false
 var _autosave_enabled: bool = false
 ## Vrai si la partie a repris une sauvegarde au démarrage.
 var _resumed: bool = false
+## Le départ de débogage appliqué demande l'autosave ([member DebugStart.autosave]).
+var _debug_start_autosave: bool = false
 ## Autosave demandé, en attente d'un état stable, et sa raison (journal).
 var _save_pending: bool = false
 var _save_reason: String = ""
@@ -643,13 +646,23 @@ func _start_game() -> void:
 
 func _start_game_state() -> void:
 	if _apply_debug_start():
-		print("Départ de débogage : la sauvegarde n'est ni lue ni écrite.")
+		if _debug_start_autosave:
+			_open_save_system()
+			_autosave_enabled = save_system != null
+			print("Départ de débogage : la sauvegarde n'est pas lue, elle sera REMPLACÉE.")
+		else:
+			print("Départ de débogage : la sauvegarde n'est ni lue ni écrite.")
 	else:
-		if save_system == null and get_tree().current_scene == self:
-			save_system = SaveSystem.new()
+		_open_save_system()
 		if save_system != null and _load_save() and _resume():
 			return
 	SceneRouter.start(start_map, start_spawn, start_facing)
+
+
+## Ouvre la vraie sauvegarde si aucune n'a été injectée et que Boot est la scène principale.
+func _open_save_system() -> void:
+	if save_system == null and get_tree().current_scene == self:
+		save_system = SaveSystem.new()
 
 
 ## Lit la sauvegarde et la charge dans GameState (décisions de Kevin du 2026-10-02). Vrai si
@@ -670,6 +683,7 @@ func _load_save() -> bool:
 			_resumed = true
 			print("Sauvegarde chargée : %s %s (temps de jeu %d s)" % [GameState.current_map,
 				GameState.player_cell, int(GameState.play_time)])
+			_log_loaded_save()
 			return true
 		ERR_FILE_NOT_FOUND:
 			_autosave_enabled = true
@@ -681,6 +695,23 @@ func _load_save() -> bool:
 			push_warning(("Boot : %s. Nouvelle partie SANS sauvegarde automatique : la "
 				+ "sauvegarde existante n'est pas touchée.") % save_system.last_error)
 	return false
+
+
+## Journal de QA du chargement (build debug) : migration (une ligne, seulement si le fichier
+## était d'une version plus ancienne : « [qa] sauvegarde v3 → v4 ») et statuts relus.
+func _log_loaded_save() -> void:
+	if not OS.is_debug_build():
+		return
+	var note := SaveSystem.migration_note(save_system.read_version, save_system.version)
+	if not note.is_empty():
+		print("[qa] " + note)
+	var lists := {"équipe": GameState.party.get_all(), "stockage": GameState.storage.get_all()}
+	for where: String in lists:
+		var members: Array[Pokemon] = lists[where]
+		for i: int in members.size():
+			if members[i].status != StatusRules.NONE:
+				print("[qa] statut relu : %s (%s %d) %s" % [members[i].display_name(_pokemon),
+					where, i + 1, members[i].status])
 
 
 ## Une entrée de la sauvegarde a été écartée au chargement (Pokémon, objet ou espèce inconnus
@@ -716,6 +747,7 @@ func _apply_debug_start() -> bool:
 	if not start.load_file(debug_start_path, _pokemon, _items):
 		return false
 	start.apply(GameState, _pokemon)
+	_debug_start_autosave = start.autosave
 	if not start.map.is_empty():
 		start_map = start.map
 		start_spawn = start.spawn

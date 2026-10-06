@@ -442,3 +442,72 @@ func _zones() -> ZoneLibrary:
 	var zones := ZoneLibrary.new()
 	zones.load_file()
 	return zones
+
+
+# --- Jalon 9 (T2, sauvegarde v4) : statut d'un membre, autosave, départ save_v4_qa ------------
+
+func test_status_marks_a_member() -> void:
+	var start := DebugStart.new()
+	assert_true(start.add_from_dict({
+		"party": [{ "species": "charmander", "level": 9, "status": "poison" },
+			{ "species": "pidgey", "level": 7, "status": "" }],
+		"storage": [{ "species": "rattata", "level": 4, "status": "poison" },
+			{ "species": "spearow", "level": 3 }],
+	}, _data, _items), "\n".join(start.get_errors()))
+	var state: Node = autofree(GameStateScript.new())
+	start.apply(state, _data)
+	assert_eq(state.party.get_at(0).status, StatusRules.POISON)
+	assert_eq(state.party.get_at(1).status, StatusRules.NONE, "vide : aucun")
+	assert_eq(state.storage.get_at(0).status, StatusRules.POISON, "stockage")
+	assert_eq(state.storage.get_at(1).status, StatusRules.NONE, "absent : aucun")
+	assert_string_contains(start.describe(), "charmander N9 (poison)")
+
+
+func test_status_must_be_a_known_status() -> void:
+	var start := DebugStart.new()
+	assert_false(start.add_from_dict({ "party": [
+		{ "species": "charmander", "level": 9, "status": "paralysis" },
+		{ "species": "pidgey", "level": 7, "status": 3 },
+	] }, _data, _items, "s"))
+	var errors := "\n".join(start.get_errors())
+	assert_string_contains(errors, "s party 1 : « status » est vide ou l'un de : poison")
+	assert_string_contains(errors, "s party 2 : « status » est vide ou l'un de : poison")
+	assert_eq(start.party.size(), 0, "tout ou rien")
+	assert_push_error_count(2)
+
+
+func test_autosave_is_off_by_default_and_must_be_a_boolean() -> void:
+	var start := DebugStart.new()
+	assert_true(start.add_from_dict({ "party": [{ "species": "pidgey", "level": 3 }] },
+		_data, _items))
+	assert_false(start.autosave, "un départ de débogage n'écrit jamais la sauvegarde")
+	assert_true(start.add_from_dict({ "autosave": true,
+		"party": [{ "species": "pidgey", "level": 3 }] }, _data, _items))
+	assert_true(start.autosave)
+	assert_string_contains(start.describe(), "remplace la sauvegarde")
+	var bad := DebugStart.new()
+	assert_false(bad.add_from_dict({ "autosave": "oui",
+		"party": [{ "species": "pidgey", "level": 3 }] }, _data, _items, "a"))
+	assert_string_contains("\n".join(bad.get_errors()), "a : « autosave » est un booléen")
+	assert_push_error_count(1)
+
+
+## Jalon 9 (T2, jalon-09.md §3 T2) : Salamèche N9 empoisonné, Roucool N7, à Jadielle devant le
+## Centre ; il remplace la sauvegarde (QA T3 : statut relu après une fermeture forcée).
+func test_shipped_save_v4_qa_start() -> void:
+	var start := DebugStart.new()
+	assert_true(start.load_file(TOOL_STARTS + "save_v4_qa.json", _data, _items),
+		"\n".join(start.get_errors()))
+	assert_eq([start.map, start.spawn], [&"viridian_city", &"from_center"])
+	assert_true(start.autosave, "remplace la sauvegarde")
+	assert_true(start.flags.has(&"viridian_arrived"), "pas de micro-scène d'arrivée")
+	var state: Node = autofree(GameStateScript.new())
+	start.apply(state, _data)
+	var summary: Array = []
+	for pokemon: Pokemon in state.party.get_all():
+		summary.append([pokemon.species_id, pokemon.level, pokemon.status,
+			pokemon.hp == pokemon.max_hp()])
+	assert_eq(summary, [[&"charmander", 9, &"poison", true], [&"pidgey", 7, &"", true]])
+	var map := (load(MapCatalog.scene_path(start.map)) as PackedScene).instantiate() as GameMap
+	assert_true(map.has_spawn(start.spawn), "le point d'apparition existe sur la carte")
+	map.free()

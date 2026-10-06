@@ -386,3 +386,32 @@ func test_money_and_first_wild_encounter_round_trip_and_tolerant_loading() -> vo
 	assert_false(loaded.load_dict(saved, data), "espèce inconnue écartée")
 	assert_eq(loaded.first_wild_encounter, {})
 	assert_push_error_count(1)
+
+
+# --- Jalon 9 (T2, sauvegarde v4) : statut des Pokémon -----------------------------------------
+
+func test_poisoned_party_and_storage_members_are_reloaded_poisoned() -> void:
+	var data := PokemonData.new()
+	assert_true(data.load_dir())
+	var state := _dated()
+	var charmander := PokemonFactory.create(data, &"charmander", 9, GameRng.new(1))
+	charmander.status = StatusRules.POISON
+	charmander.take_damage(7)
+	state.party.add(charmander)
+	state.party.add(PokemonFactory.create(data, &"pidgey", 7, GameRng.new(2)))
+	var stored := PokemonFactory.create(data, &"rattata", 4, GameRng.new(3))
+	stored.status = StatusRules.POISON
+	state.storage.add(stored)
+	var saved: Dictionary = JSON.parse_string(JSON.stringify(state.to_dict()))
+	assert_eq(saved["party"][0]["status"], "poison")
+	assert_eq(saved["party"][1]["status"], "", "sans statut : écrit vide")
+	assert_eq(saved["storage"][0]["status"], "poison")
+	var loaded := _dated()
+	assert_true(loaded.load_dict(saved, data), "rien d'écarté")
+	assert_eq(loaded.party.get_at(0).status, StatusRules.POISON, "équipe : empoisonné")
+	assert_eq(loaded.party.get_at(0).hp, charmander.hp, "PV gardés")
+	assert_eq(loaded.party.get_at(1).status, StatusRules.NONE)
+	assert_eq(loaded.storage.get_at(0).status, StatusRules.POISON, "stockage : empoisonné")
+	assert_eq(loaded.to_dict(), state.to_dict(), "aller-retour identique")
+	loaded.party.heal_all()
+	assert_eq(loaded.party.get_at(0).status, StatusRules.NONE, "soin de l'équipe : effacé")
