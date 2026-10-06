@@ -124,7 +124,7 @@ Pas d'échange de Pokémon, pas de don d'objet ni de Pokémon.
 | | Objet | Visible / caché | Emplacement | Découverte |
 |---|---|---|---|---|
 | O1 | Poké Ball ×1 | visible au sol | petit détour dans H1 | ramassée ; toast standard |
-| O2 | Potion ×1 | visible au sol | au fond de H2 | ramassée ; toast standard |
+| O2 | Potion ×1 | visible au sol (même aspect qu'une Poké Ball, comme Rouge/Bleu ; Kevin, 2026-10-06) | au fond de H2 | ramassée ; toast standard |
 | O3 | Poké Ball ×1 | cachée | près d'une souche | texte, puis toast standard |
 | O4 | Potion ×1 | cachée | près de la lisière | texte, puis toast standard |
 
@@ -152,13 +152,13 @@ Transition visuelle continue, **par le décor peint seulement** (arbitrage 3) :
 Règle existante : réveil au **dernier point de repos** (Centre de Jadielle, sinon la maison). Aucun texte propre à la Route 2, aucun point intermédiaire.
 
 ## 17. Données et sauvegarde
-À mémoriser : Route 2 découverte ; O1 à O4 ramassés, **chacun** ; espèces vues / capturées (Pokédex existant). Pas à mémoriser : Pokémon d'ambiance, dialogues lus de P1 / P2, clairières, herbes visitées, FUTUR A / B, le moment C3. **Format de sauvegarde inchangé attendu** (drapeaux d'histoire existants) : à confirmer par le plan technique.
+À mémoriser : Route 2 découverte ; O1 à O4 ramassés, **chacun** ; « première fois / ensuite » de la Randonneuse et du Jeune Dresseur par **deux drapeaux** (méthode existante, comme le vieil homme de Jadielle ; décision de Kevin du 2026-10-06 sur le plan technique) ; espèces vues / capturées (Pokédex existant). Pas à mémoriser : Pokémon d'ambiance, clairières, herbes visitées, FUTUR A / B, le moment C3. **Format de sauvegarde inchangé attendu** (drapeaux d'histoire existants) : à confirmer par le plan technique.
 
 ## 18. Ce qui reste à faire au J9 (rappel)
 Intérieur du poste sud, garde et `poison_unlocked` (dossier 10) ; remplacement de l'objectif « continuer vers le nord. » ; la porte du poste cesse de mener à « À venir ».
 
 ## Textes à valider
-Lot unique (règle : Kevin relit les textes en une fois). Bulles de 2 lignes de ~40 caractères au plus.
+**Validés par Kevin le 2026-10-06, tels quels (T1 à T16).** Lot unique (règle : Kevin relit les textes en une fois). Bulles de 2 lignes de ~40 caractères au plus.
 
 | # | Où | Texte |
 |---|---|---|

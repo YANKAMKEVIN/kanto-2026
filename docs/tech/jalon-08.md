@@ -459,6 +459,8 @@ Branche d'intégration `jalon-08` depuis `main`, dans une copie dédiée ; une b
 
 ## 5. Questions pour Kevin
 
+> **Validé par Kevin (2026-10-06)** : textes T1–T16 du dossier 11 tels quels ; **Q-1 et Q-2 = défauts** (Potion au sol avec l'aspect d'une Poké Ball ; deux drapeaux pour « première fois / ensuite » de P1 et P2) ; **plan validé, lancement du sous-jalon 8.0** (vue générale peinte) ; le reste attend la validation de la vue.
+
 Vraies questions (une valeur par défaut permet de continuer) :
 
 - **Q-1 — Aspect des objets visibles.** La Potion O2 posée au sol a-t-elle le **même aspect que la Poké Ball O1** (une Poké Ball, comme dans Rouge/Bleu ; « un asset peint ») ? *Défaut : oui, une seule image ; le toast dit « Potion ×1 ».* L'alternative est une Potion peinte au sol (deuxième asset).
