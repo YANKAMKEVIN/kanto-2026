@@ -21,7 +21,7 @@ Début guidé (Bourg Palette → Route 1 → Jadielle → Route 2 → Forêt de 
 - **Giovanni.** On le connaît déjà ; on découvre à Jadielle qu'il est le Champion. Combat personnel.
 
 ## 4. Team Rocket présente progressivement
-Rumeurs, commerce volé, conversations → rencontre réelle au Mont Sélénite → Céladopole → Safrania. L'influence se ressent avant l'affrontement.
+Rumeurs, commerce volé, conversations → rencontre réelle au Mont Sélénite → Céladopole → Safrania. L'influence se ressent avant l'affrontement. Première vraie apparition et premiers combats au Mont Sélénite, aucune confrontation directe avant : voir [`roadmap.md`](roadmap.md) « Jalons narratifs à ne pas oublier » (2026-10-06).
 
 ## 5. Les événements ont des conséquences
 Après la libération de Sylphe SARL : employés de retour, bâtiments rouverts, nouveaux dialogues, journaux et panneaux, « C'était toi, non ? ». **Le monde se souvient de ce que tu fais** (même philosophie que Bourg Palette).
