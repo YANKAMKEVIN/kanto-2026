@@ -18,6 +18,13 @@ extends CanvasLayer
 ## Sortie (~0,6 s) : l'inverse ; PNJ réaffichés, caméra (zoom, position, limites, décalage)
 ## rendue à l'identique.
 ## Tout est en Tween (rien dans _process) ; [member speed_scale] = 0 rend tout instantané.
+##
+## **Décor peint (CB.3)** : si le lieu du déclenchement ([method set_place]) a un décor dans
+## `data/battle/decors.json` ([BattleDecorCatalog]), la carte n'est plus recadrée : la caméra
+## avance à peine ([constant PAINTED_ZOOM]), le monde se floute et se fond dans le master peint
+## ([BattleDecor], placé par sa ligne de sol sous les ancres du cadrage), avec son calque de
+## premier plan devant ton Pokémon ; la sortie fait l'inverse. Sans décor : **repli** sur
+## l'ancien fond (carte recadrée au zoom [constant ZOOM], voilée et floutée).
 
 ## Émis quand l'entrée est finie (vue de combat en place) et quand la sortie est finie.
 signal entered
@@ -161,6 +168,12 @@ const INSTANT_STEP: float = 1000.0
 ## Hauteur affichée d'un Pokémon du monde sans AnimatedSprite2D lisible (32 px ×2).
 const WORLD_HEIGHT_FALLBACK: float = 64.0
 const LIMIT_FREE: int = 10000000
+## Décor peint (CB.3) : la caméra du monde avance à peine pendant le fondu (pas de recadrage :
+## aucune impression de téléportation), le décor apparaît sur la fin de la transition (fraction
+## du fondu du monde) ; durée de la transition d'une rencontre sauvage avec décor.
+const PAINTED_ZOOM: float = 1.12
+const DECOR_FADE_START: float = 0.3
+const WILD_DECOR_DURATION: float = 0.7
 
 ## Multiplicateur des durées (0 = instantané, tests).
 var speed_scale: float = 1.0
@@ -210,6 +223,11 @@ var _shake_lines: Array[Line2D] = []
 ## Centre de la Ball au sol, et point d'où le Pokémon est absorbé / ressort (écran).
 var _ball_rest: Vector2 = Vector2.ZERO
 var _absorb_point: Vector2 = Vector2.ZERO
+## Décor peint du combat en cours (null : repli sur la carte) ; catalogue lu au premier besoin.
+var _decor: BattleDecor
+var _decor_catalog: BattleDecorCatalog
+var _decor_back: Sprite2D
+var _decor_front: Sprite2D
 
 @onready var _backdrop: ColorRect = %Backdrop
 @onready var _flash: ColorRect = %Flash
@@ -230,6 +248,7 @@ func _ready() -> void:
 	material.set_shader_parameter(&"veil", VEIL)
 	material.set_shader_parameter(&"vignette", VIGNETTE)
 	_build_shadows()
+	_build_decor()
 	_artwork_material = ShaderMaterial.new()
 	_artwork_material.shader = ARTWORK_SHADER
 	_apply_blur()
@@ -269,6 +288,38 @@ func set_frame(arena: Rect2, bounds: Rect2) -> void:
 	_bounds = bounds
 
 
+## Catalogue des décors peints (tests) ; sans appel, `data/battle/decors.json` est lu une fois.
+func set_decor_catalog(catalog: BattleDecorCatalog) -> void:
+	_decor_catalog = catalog
+
+
+## Lieu du prochain combat (CB.3, à appeler avant [method enter] / [method play_wild_intro]) :
+## carte [param map_id] et case du déclenchement [param cell] (variante locale). Choisit le
+## décor peint ; aucun : repli sur la carte recadrée. Renvoie le décor choisi (null : repli).
+func set_place(map_id: StringName, cell: Vector2i) -> BattleDecor:
+	if _decor_catalog == null:
+		_decor_catalog = BattleDecorCatalog.load_file()
+	_decor = _decor_catalog.pick(map_id, cell)
+	if _decor != null and not ResourceLoader.exists(_decor.back_path):
+		push_warning("BattleStage : image du décor absente « %s »" % _decor.back_path)
+		_decor = null
+	return _decor
+
+
+## Décor peint du combat (null : repli sur la carte).
+func get_decor() -> BattleDecor:
+	return _decor
+
+
+## Calques du décor peint (tests, captures) : fond et premier plan.
+func get_decor_back() -> Sprite2D:
+	return _decor_back
+
+
+func get_decor_front() -> Sprite2D:
+	return _decor_front
+
+
 ## Coroutine (~1 s) : passe de la vue d'exploration à la vue de combat. [param camera] : la
 ## caméra du joueur ; [param player_pokemon] / [param foe_pokemon] : PNJ Pokémon du monde qui
 ## combattent (null : le sprite apparaît à son ancre) ; [param trainer_cells] : cases des
@@ -302,7 +353,10 @@ func enter(camera: Camera2D, player_pokemon: Node2D, foe_pokemon: Node2D,
 		_world_height[side] = _world_sprite_height(npc)
 		_world_modulate[side] = npc.modulate
 		cells.append(Grid.world_to_cell(npc.global_position))
-	if _arena.has_area():
+	if _decor != null:
+		_focus = _cam_start_center
+		_show_decor()
+	elif _arena.has_area():
 		_focus = BattleLayout.arena_focus(_arena, _bounds, _view_size(), ZOOM)
 	elif not cells.is_empty():
 		_focus = BattleLayout.clamp_focus(BattleLayout.focus(cells), _bounds, _view_size(), ZOOM)
@@ -334,6 +388,8 @@ func show_pokemon(side: BattleEvent.SideId, species: StringName) -> void:
 	sprite.visible = true
 	_shadows[side].visible = true
 	_place(side, feet + Vector2(0.0, -APPEAR_DROP), _anchor_scale(side))
+	# L'ombre reste au sol (ligne de sol du décor) : le Pokémon tombe dessus (CB.3).
+	_shadows[side].position = feet
 	sprite.modulate = Color(1, 1, 1, 0)
 	_shadows[side].modulate = Color(1, 1, 1, 0)
 	var tween := _new_tween()
@@ -367,15 +423,20 @@ func play_wild_intro(camera: Camera2D, foe_species: StringName, origin_world: Ve
 	var owner_node := camera.get_parent()
 	if owner_node != null and owner_node.has_method(&"get_cell"):
 		cells.append(owner_node.call(&"get_cell"))
-	if _arena.has_area():
+	if _decor != null:
+		_focus = _cam_start_center
+		_show_decor()
+	elif _arena.has_area():
 		_focus = BattleLayout.arena_focus(_arena, _bounds, _view_size(), ZOOM)
 	else:
 		_focus = BattleLayout.clamp_focus(BattleLayout.focus(cells), _bounds, _view_size(), ZOOM)
 	_prepare_sprite(BattleEvent.SideId.FOE)
 	_free_camera()
-	# Recadrage + voile (pas de PNJ à faire voyager : c'est un sauvage).
+	# Recadrage + voile (pas de PNJ à faire voyager : c'est un sauvage) ; avec un décor peint,
+	# le monde se floute et se fond dans le décor.
 	var tween := _new_tween()
-	tween.tween_method(_set_recompose, 0.0, 1.0, WILD_CAMERA_DURATION)
+	tween.tween_method(_set_recompose, 0.0, 1.0,
+		WILD_DECOR_DURATION if _decor != null else WILD_CAMERA_DURATION)
 	await _play(tween)
 	if _active:
 		await _appear(BattleEvent.SideId.FOE, WILD_APPEAR_DROP, WILD_APPEAR_DURATION)
@@ -470,15 +531,14 @@ func play_hit(side: BattleEvent.SideId, critical: bool) -> void:
 		tween.tween_property(_flash, ^"color:a", 0.0, CRIT_FLASH_DURATION)
 		for i: int in 4:
 			var jolt := Vector2(CRIT_CAMERA_SHAKE * (1 if i % 2 == 0 else -1), 0)
-			tween.tween_property(_camera, ^"offset", _cam_offset + jolt, HIT_BLINK / 2.0) \
+			tween.tween_method(_set_jolt, Vector2.ZERO, jolt, HIT_BLINK / 2.0) \
 				.set_delay(HIT_BLINK * i / 2.0)
-		tween.tween_property(_camera, ^"offset", _cam_offset, HIT_BLINK / 2.0) \
+		tween.tween_method(_set_jolt, Vector2.ZERO, Vector2.ZERO, HIT_BLINK / 2.0) \
 			.set_delay(HIT_BLINK * 2.0)
 	await _play(tween)
 	_rest(side)
 	_flash.color = Color(1, 1, 1, 0)
-	if _camera != null:
-		_camera.offset = _cam_offset
+	_set_jolt(Vector2.ZERO)
 
 
 ## Coroutine : effet de statistique sur le Pokémon de [param side] (teinte chaude et petit
@@ -777,13 +837,22 @@ func _set_exit_progress(t: float) -> void:
 func _set_camera(k: float) -> void:
 	if _camera == null:
 		return
-	_camera.zoom = _cam_zoom.lerp(Vector2.ONE * ZOOM, k)
+	var zoom := _cam_zoom * PAINTED_ZOOM if _decor != null else Vector2.ONE * ZOOM
+	_camera.zoom = _cam_zoom.lerp(zoom, k)
 	_camera.global_position = _cam_start_center.lerp(_focus, k).round()
 
 
 func _set_backdrop(k: float) -> void:
 	(_backdrop.material as ShaderMaterial).set_shader_parameter(&"amount", k)
-	_backdrop.visible = k > 0.0
+	var decor := 0.0
+	if _decor != null:
+		decor = smoothstep(DECOR_FADE_START, 1.0, k)
+	_decor_back.visible = decor > 0.0
+	_decor_back.modulate.a = decor
+	_decor_front.visible = decor > 0.0 and _decor_front.texture != null
+	_decor_front.modulate.a = decor
+	# Décor opaque : le flou du monde (copie de l'écran) ne sert plus à rien.
+	_backdrop.visible = k > 0.0 and decor < 1.0
 
 
 ## Recadrage + voile de l'entrée sauvage à [param k] (0 : exploration, 1 : combat), sans faire
@@ -804,6 +873,7 @@ func _appear(side: BattleEvent.SideId, drop: float, duration: float) -> void:
 	sprite.visible = true
 	_shadows[side].visible = true
 	_place(side, feet + Vector2(0.0, -drop), scale)
+	_shadows[side].position = feet
 	sprite.modulate = Color(1, 1, 1, 0)
 	_shadows[side].modulate = Color(1, 1, 1, 0)
 	var tween := _new_tween()
@@ -918,11 +988,13 @@ func _apply_reset() -> void:
 	_scales.clear()
 	_arena = Rect2()
 	_bounds = Rect2()
+	_decor = null
 	_camera = null
 	_active = false
 	if not is_node_ready():
 		return
 	_set_backdrop(0.0)
+	_release_decor()
 	_flash.color = Color(1, 1, 1, 0)
 	_hide_capture_props()
 	for side: BattleEvent.SideId in _sprites:
@@ -1035,6 +1107,65 @@ func _play(tween: Tween) -> void:
 	if tween.is_valid() and tween.is_running():
 		await tween.finished
 	_tweens.erase(tween)
+
+
+# --- Décor peint (CB.3) ----------------------------------------------------------------
+
+## Calques du décor peint (aucun dans la scène .tscn) : le fond juste au-dessus du flou du
+## monde, sous les ombres ; le premier plan devant le Pokémon du joueur (sous les accessoires
+## de la capture et l'éclair).
+func _build_decor() -> void:
+	_decor_back = _make_decor_layer(&"DecorBack")
+	move_child(_decor_back, _backdrop.get_index() + 1)
+	_decor_front = _make_decor_layer(&"DecorFront")
+	move_child(_decor_front, _sprites[BattleEvent.SideId.PLAYER].get_index() + 1)
+
+
+func _make_decor_layer(layer_name: StringName) -> Sprite2D:
+	var sprite := Sprite2D.new()
+	sprite.name = layer_name
+	sprite.centered = false
+	sprite.texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR
+	sprite.visible = false
+	add_child(sprite)
+	return sprite
+
+
+## Charge les images du décor courant (à la demande) et les pose par sa ligne de sol, cachées
+## (le fondu de [method _set_backdrop] les montre).
+func _show_decor() -> void:
+	var rect := _decor.fit(_view_size())
+	var front: Texture2D = null
+	if _decor.front_path != "" and ResourceLoader.exists(_decor.front_path):
+		front = load(_decor.front_path) as Texture2D
+	_decor_back.texture = load(_decor.back_path) as Texture2D
+	_decor_front.texture = front
+	for sprite: Sprite2D in [_decor_back, _decor_front]:
+		if sprite.texture == null:
+			continue
+		sprite.position = rect.position.round()
+		sprite.scale = rect.size / sprite.texture.get_size()
+		sprite.set_meta(&"rest", sprite.position)
+	_set_backdrop(0.0)
+
+
+## Rend les images du décor (mémoire libérée entre deux combats).
+func _release_decor() -> void:
+	for sprite: Sprite2D in [_decor_back, _decor_front]:
+		sprite.texture = null
+		sprite.visible = false
+		sprite.modulate = Color.WHITE
+		sprite.remove_meta(&"rest")
+
+
+## Léger tremblement de la scène (coup critique) : la caméra du monde, et le décor peint s'il
+## est affiché (il cache le monde).
+func _set_jolt(jolt: Vector2) -> void:
+	if _camera != null:
+		_camera.offset = _cam_offset + jolt
+	for sprite: Sprite2D in [_decor_back, _decor_front]:
+		if sprite.has_meta(&"rest"):
+			sprite.position = sprite.get_meta(&"rest") + jolt
 
 
 # --- Capture (jalon 5D) --------------------------------------------------------------

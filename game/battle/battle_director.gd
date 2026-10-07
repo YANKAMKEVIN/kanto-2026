@@ -205,6 +205,8 @@ func run_request(request: BattleRequest, map: GameMap) -> int:
 	var camera := _player.get_camera() if is_instance_valid(_player) else null
 	if is_instance_valid(_stage) and camera != null:
 		_stage.set_frame(map.get_battle_arena_rect(), Rect2(map.get_pixel_rect()))
+		# Décor peint du lieu (CB.3) : la carte et la case du déclenchement.
+		_stage.set_place(map.map_id, request.origin_cell if wild else _player.get_cell())
 		if wild:
 			var origin_world := Grid.cell_to_world(request.origin_cell)
 			await _stage.play_wild_intro(camera, foe_species, origin_world)

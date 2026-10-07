@@ -1,0 +1,297 @@
+extends SceneTree
+## Captures du CB.3 (décor peint de combat) : le VRAI combat sauvage complet (Boot, rencontre
+## lancée par EncounterDirector.start_encounter, BattleDirector, BattleStage, interface CB.2),
+## piloté par les signaux de la BattleHud, à vitesse réelle.
+##
+##   godot --path . --resolution 2340x1080 --fixed-fps 30 --quit-after 9000 \
+##     -s res://tools/capture_combat_cb3.gd -- --out=build/captures/combat_cb3 [--place=oak_lab]
+## Lancer toutes les passes avec tools/capture_combat_cb3.sh.
+## Route 1 (préfixe cb3_route_1_) : transition_1..4 (monde → décor), roucool (actions),
+## capacites, coup, sac, lancer, ball_au_sol, carte_capture, retour_1..2 (décor → monde),
+## rattata, bilan (victoire sur Rattata), dracaufeu, fuite. Repli (--place=oak_lab, préfixe
+## cb3_oak_lab_) : transition, actions.
+## Mesures : lignes « [perf] » (fps, appels de dessin, mémoire des textures) sur la vue posée.
+
+const BOOT_SCENE: String = "res://game/boot.tscn"
+const STARTER: StringName = &"charmander"
+const SPAWNS: Dictionary = {&"route_1": &"from_pallet_w", &"oak_lab": &"entrance"}
+
+var _boot: Node
+var _out_dir: String = "build/captures/combat_cb3"
+var _place: StringName = &"route_1"
+var _hud: CanvasLayer
+var _director: Node
+var _stage: CanvasLayer
+var _encounters: Node
+
+
+func _init() -> void:
+	for action: StringName in [&"move_up", &"move_down", &"move_left", &"move_right", &"run"]:
+		InputMap.action_erase_events(action)
+	for arg: String in OS.get_cmdline_user_args():
+		if arg.begins_with("--out="):
+			_out_dir = arg.trim_prefix("--out=")
+		elif arg.begins_with("--place="):
+			_place = StringName(arg.trim_prefix("--place="))
+	process_frame.connect(_start, CONNECT_ONE_SHOT)
+
+
+func _start() -> void:
+	_boot = (load(BOOT_SCENE) as PackedScene).instantiate()
+	_boot.set(&"start_map", _place)
+	if SPAWNS.get(_place, &"") != &"":
+		_boot.set(&"start_spawn", SPAWNS[_place])
+	_boot.set(&"start_facing", Vector2i.UP)
+	root.add_child(_boot)
+	await _frames(20)
+	_setup_state()
+	_hud = _boot.call(&"get_battle_hud")
+	_hud.set(&"haptics_enabled", false)
+	_director = _boot.call(&"get_battle_director")
+	_stage = _boot.call(&"get_battle_stage")
+	_encounters = _boot.call(&"get_encounter_director")
+	var explo: CanvasLayer = _boot.call(&"get_hud")
+	explo.call(&"hide_interact")
+	await _frames(20)
+	if _place == &"route_1":
+		await _route_1()
+	else:
+		await _fallback()
+	print("CAPTURE_CB3 terminé")
+	quit()
+
+
+func _setup_state() -> void:
+	var state: Node = root.get_node(^"GameState")
+	state.call(&"new_game", 31)
+	state.get(&"flags").call(&"set_flag", &"starter_chosen")
+	state.get(&"flags").call(&"set_flag", &"pokedex_activated")
+	state.set(&"starter_species", STARTER)
+	var data: RefCounted = _boot.call(&"get_pokemon_data")
+	var party: RefCounted = load("res://game/pokemon/party.gd").new()
+	var factory: GDScript = load("res://game/pokemon/pokemon_factory.gd")
+	var rng: RefCounted = load("res://game/systems/random/game_rng.gd").new(999)
+	party.call(&"add", factory.call(&"create", data, STARTER, 9, rng))
+	state.set(&"party", party)
+	var bag: RefCounted = state.get(&"bag")
+	bag.call(&"add", &"poke_ball", 12)
+	bag.call(&"add", &"potion", 3)
+
+
+# --- Route 1 ---------------------------------------------------------------------------
+
+func _route_1() -> void:
+	# Roucool : transition, actions, capacités, un coup, Sac, lancer, capture, bilan, retour.
+	_encounter(&"pidgey", 3)
+	await _until(func() -> bool: return _stage.call(&"is_active"), 300)
+	for i: int in 4:
+		await _frames(5)
+		await _shot("transition_%d" % (i + 1))
+	await _wait_zone(1)
+	await _frames(12)
+	await _shot("roucool")
+	await _perf("roucool")
+	_hud.emit_signal(&"action_selected", &"attack")
+	await _wait_zone(2)
+	await _frames(12)
+	await _shot("capacites")
+	_hud.emit_signal(&"move_selected", 0)
+	await _frames(14)
+	await _shot("coup")
+	await _wait_zone(1)
+	await _catch()
+	# Retour au monde : le décor s'efface dans le monde flouté (sortie du stage).
+	await _until(_leaving, 900)
+	print("[qa] retour : décor %.2f" % (_stage.call(&"get_decor_back") as Sprite2D).modulate.a)
+	await _shot("retour_1")
+	await _frames(5)
+	await _shot("retour_2")
+	await _until(func() -> bool: return not _director.call(&"is_running"), 900)
+	await _frames(30)
+	# Rattata : vue posée, puis fuite.
+	_encounter(&"rattata", 3)
+	await _wait_zone(1)
+	await _frames(12)
+	await _shot("rattata")
+	await _win()
+	# Un grand Pokémon : Dracaufeu.
+	_encounter(&"charizard", 5)
+	await _wait_zone(1)
+	await _frames(12)
+	await _shot("dracaufeu")
+	await _perf("dracaufeu")
+	await _flee("fuite")
+
+
+## SAC → Poké Ball jusqu'à la capture (le Sac pris en photo une fois, le lancer et la Ball au
+## sol au premier essai), puis carte de capture et bilan.
+func _catch() -> void:
+	var first := true
+	# Les lambdas GDScript capturent les variables locales par valeur : on passe par des tableaux.
+	var got: Array = [null]
+	while true:
+		_hud.emit_signal(&"action_selected", &"bag")
+		await _until(func() -> bool:
+			got[0] = _director.call(&"get_bag_panel")
+			return got[0] != null and got[0].visible and not got[0].call(&"is_sliding"), 200)
+		var panel: Control = got[0]
+		if panel == null:
+			push_error("capture : Sac absent")
+			return
+		await _frames(10)
+		panel.call(&"select_item", &"poke_ball")
+		await _frames(6)
+		if first:
+			await _shot("sac")
+		# LANCER comme au doigt (le panneau sort de lui-même).
+		(panel.call(&"get_action_button") as Button).emit_signal(&"pressed")
+		await _until(func() -> bool:
+			var ball: Sprite2D = _stage.call(&"get_ball")
+			return ball != null and ball.visible, 300)
+		await _frames(4)
+		if first:
+			await _shot("lancer")
+		# La Ball posée dans l'herbe : le dresseur est sorti, la chute est finie.
+		await _until(func() -> bool:
+			var thrower: Sprite2D = _stage.call(&"get_thrower")
+			return thrower != null and not thrower.visible, 300)
+		await _frames(24)
+		if first:
+			await _shot("ball_au_sol")
+		first = false
+		got[0] = null
+		await _until(func() -> bool:
+			var card: Control = _director.call(&"get_capture_card")
+			if card != null and card.call(&"is_waiting"):
+				got[0] = card
+				return true
+			return int(_hud.call(&"get_zone")) == 1 or not _director.call(&"is_running"), 900)
+		var card: Control = got[0]
+		if card != null:
+			await _until(func() -> bool: return card.call(&"is_revealed"), 200)
+			await _frames(10)
+			await _shot("carte_capture")
+			card.call(&"skip")
+			break
+		if not _director.call(&"is_running"):
+			push_error("capture : combat fini sans carte")
+			return
+	got[0] = null
+	if await _until(func() -> bool:
+			var summary: Control = _director.call(&"get_summary_card")
+			if summary != null and summary.visible and summary.call(&"is_waiting"):
+				got[0] = summary
+				return true
+			return _leaving(), 600) and got[0] != null:
+		await _frames(10)
+		await _shot("bilan")
+		got[0].call(&"tap")
+
+
+## ATTAQUER, 1re capacité, jusqu'à la victoire ; photo du bilan d'XP.
+func _win() -> void:
+	var got: Array = [null]
+	while _director.call(&"is_running"):
+		var summary: Control = _director.call(&"get_summary_card")
+		if summary != null and summary.visible and summary.call(&"is_waiting"):
+			await _frames(10)
+			await _shot("bilan")
+			summary.call(&"tap")
+			break
+		match int(_hud.call(&"get_zone")):
+			1:
+				_hud.emit_signal(&"action_selected", &"attack")
+			2:
+				_hud.emit_signal(&"move_selected", 0)
+		await _frames(2)
+	await _until(func() -> bool: return not _director.call(&"is_running"), 900)
+	await _frames(40)
+
+
+## La sortie du combat a commencé : le décor peint s'efface dans le monde.
+func _leaving() -> bool:
+	var back: Sprite2D = _stage.call(&"get_decor_back")
+	return back.visible and back.modulate.a < 0.95
+
+
+func _flee(name: String) -> void:
+	while _director.call(&"is_running"):
+		if int(_hud.call(&"get_zone")) == 1:
+			_hud.emit_signal(&"action_selected", &"run")
+			if name != "":
+				await _frames(16)
+				await _shot(name)
+				name = ""
+		await _frames(2)
+	await _frames(40)
+
+
+# --- Repli -----------------------------------------------------------------------------
+
+func _fallback() -> void:
+	_encounter(&"pidgey", 3)
+	await _until(func() -> bool: return _stage.call(&"is_active"), 300)
+	await _frames(6)
+	await _shot("transition")
+	await _wait_zone(1)
+	await _frames(12)
+	await _shot("actions")
+	await _perf("repli")
+	await _flee("")
+
+
+# --- Outils ----------------------------------------------------------------------------
+
+func _encounter(species: StringName, level: int) -> void:
+	var encounter: RefCounted = load("res://game/pokemon/encounters/wild_encounter.gd").new(
+		species, level)
+	if not _encounters.call(&"start_encounter", encounter):
+		push_error("rencontre refusée : %s" % species)
+
+
+func _wait_zone(zone: int) -> void:
+	await _until(func() -> bool: return int(_hud.call(&"get_zone")) == zone, 900)
+
+
+## Attend que [param done] rende vrai (au plus [param frames] images) ; vrai si atteint.
+func _until(done: Callable, frames: int) -> bool:
+	for i: int in frames:
+		if done.call():
+			return true
+		await process_frame
+	push_warning("attente dépassée")
+	return false
+
+
+## Mesure sur la vue posée : appels de dessin et mémoire des textures ; fps réels (temps
+## mesuré sur 120 images) seulement utiles sans --fixed-fps et sans vsync (passe de mesure).
+func _perf(label: String) -> void:
+	await _frames(30)
+	var start := Time.get_ticks_usec()
+	await _frames(120)
+	var fps := 120.0 / maxf((Time.get_ticks_usec() - start) / 1000000.0, 0.001)
+	var draws := Performance.get_monitor(Performance.RENDER_TOTAL_DRAW_CALLS_IN_FRAME)
+	var tex := Performance.get_monitor(Performance.RENDER_TEXTURE_MEM_USED) / 1048576.0
+	print("[perf] %s %s : %d appels de dessin, %.1f Mo de textures, %.0f fps"
+		% [_place, label, draws, tex, fps])
+
+
+func _shot(name: String) -> void:
+	paused = true
+	for i: int in 6:
+		await process_frame
+	var path := _out_dir.path_join("cb3_%s_%s.png" % [_place, name])
+	DirAccess.make_dir_recursive_absolute(_out_dir)
+	var ball: Sprite2D = _stage.call(&"get_ball") if _stage != null else null
+	if ball != null:
+		print("[qa] %s : Ball %s %s a=%.2f" % [name, ball.visible, ball.position, ball.modulate.a])
+	# Fenêtre cachée ou occultée : macOS peut sauter des rendus ; on force celui de l'image.
+	RenderingServer.force_draw(false)
+	root.get_texture().get_image().save_png(path)
+	print("CAPTURE %s viewport=%s" % [path, root.get_visible_rect().size])
+	paused = false
+
+
+func _frames(count: int) -> void:
+	for i: int in count:
+		await process_frame
