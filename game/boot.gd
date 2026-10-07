@@ -93,6 +93,8 @@ var _unlocks: MenuUnlocks
 ## changement de carte (écran noir) ; profil vide = aucun effet (Bourg Palette, Route 1).
 var _lighting: WorldLighting
 var _light_profiles := LightingLibrary.new()
+## Évolutions de fin de combat (jalon 9, jalon-09.md §2.3) ; l'écran arrive au T9.
+var _evolutions: EvolutionDirector
 ## Points de repos (jalon 7, 7A.2) : maison et Centres, mot du réveil (data/world/rest_points.json).
 var _rest_points := RestPointLibrary.new()
 ## Toast « Point de repos enregistré — <zone> » en attente de la fin du dialogue du soin.
@@ -179,6 +181,12 @@ func _ready() -> void:
 	_battle_director.setup(_pokemon, _trainers, _texts, _battle_stage, _battle_hud, _player,
 		GameState, _items)
 	_cutscenes_node.set_battle_runner(_battle_director)
+	_evolutions = EvolutionDirector.new()
+	_evolutions.name = "EvolutionDirector"
+	_evolutions.process_mode = Node.PROCESS_MODE_PAUSABLE
+	add_child(_evolutions)
+	_evolutions.setup(GameState, _pokemon, _texts, _battle_director.get_move_learn_prompt())
+	_battle_director.set_evolution_director(_evolutions)
 	_cutscenes_node.set_inventory(GameState.bag, _items)
 	# Remise du colis (jalon-07.md §3.6.2, T19) : jeton {first_wild_species} des répliques de
 	# Chen, scène lancée par une variante de dialogue (« colis en main »), légende POKÉDEX ACTIVÉ.
@@ -486,6 +494,10 @@ func get_starter_offer() -> StarterOffer:
 
 func get_battle_director() -> BattleDirector:
 	return _battle_director
+
+
+func get_evolution_director() -> EvolutionDirector:
+	return _evolutions
 
 
 func get_battle_stage() -> BattleStage:
