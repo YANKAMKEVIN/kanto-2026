@@ -1,6 +1,7 @@
 extends GutTest
 ## Forêt serrée de production (DenseForest, docs/tech/integration-da-bourg-route1.md §3) :
 ## règle du couvert, espacement, repères dégagés, bandes étroites garnies, déterminisme.
+## Jalon 8 (§1.2 B) : teinte selon la rangée et poids des essences au nord, neutres par défaut.
 
 const SEED := 1
 
@@ -161,3 +162,107 @@ func test_place_bakes_trees_into_the_scene() -> void:
 	var bush := nodes[1] as WorldProp
 	assert_eq(String(bush.name), "ForestBush000")
 	assert_eq(bush.position, entries[1]["position"])
+
+
+# --- Variation selon la rangée (jalon 8 §1.2 B) --------------------------------------------
+
+## Réglage de la lisière de la Route 2 : × 1,00 jusqu'à la rangée 30, × 0,72 à la rangée 8 et
+## au nord, plus froid (rouge × 0,97, bleu × 1,04) ; essences bleu-vert × 2 au nord de 20.
+func _route_2_shade() -> DenseForest.Shade:
+	var shade := DenseForest.Shade.new()
+	shade.from_row = 30.0
+	shade.full_row = 8.0
+	shade.value = 0.72
+	shade.red = 0.97
+	shade.blue = 1.04
+	shade.weights_row = 20.0
+	shade.weights = {&"tree_foret_04": 2.0, &"tree_foret_05": 2.0, &"tree_foret_06": 2.0}
+	return shade
+
+
+## Forêt pleine (assez d'arbres au nord comme au sud).
+func _full_forest(size: Vector2i) -> Dictionary:
+	var forest := {}
+	for y in size.y:
+		for x in size.x:
+			forest[Vector2i(x, y)] = true
+	return forest
+
+
+func test_neutral_shade_changes_nothing() -> void:
+	assert_eq(DenseForest.plan(_forest, SIZE, _landmarks, SEED, DenseForest.Shade.new()),
+		_plan, "réglage neutre : même forêt (Route 1, Bourg Palette inchangés)")
+	assert_eq(DenseForest.plan(_forest, SIZE, _landmarks, SEED, null), _plan)
+	assert_eq(DenseForest.row_tint(null, 3.0), Color.WHITE)
+	assert_eq(DenseForest.row_tint(DenseForest.Shade.new(), 3.0), Color.WHITE)
+
+
+func test_row_tint_darkens_and_cools_towards_the_north() -> void:
+	var shade := _route_2_shade()
+	assert_eq(DenseForest.row_tint(shade, 45.0), Color.WHITE, "au sud de la rangée 30")
+	assert_eq(DenseForest.row_tint(shade, 30.0), Color.WHITE, "à la rangée 30")
+	var north := DenseForest.row_tint(shade, 8.0)
+	assert_almost_eq(north.g, 0.72, 0.0001, "× 0,72 à la rangée 8")
+	assert_almost_eq(north.r, 0.72 * 0.97, 0.0001, "moins de rouge")
+	assert_almost_eq(north.b, 0.72 * 1.04, 0.0001, "plus de bleu")
+	assert_eq(DenseForest.row_tint(shade, 2.0), north, "au nord de la rangée 8 : pareil")
+	assert_almost_eq(DenseForest.row_tint(shade, 19.0).g, 0.86, 0.0001, "linéaire entre")
+	var previous := 2.0
+	for row in range(31, 0, -1):
+		var value := DenseForest.row_tint(shade, float(row)).g
+		assert_true(value <= previous, "rangée %d : jamais plus clair en montant" % row)
+		previous = value
+
+
+func test_shade_tints_the_trees_by_their_foot_row() -> void:
+	# Teinte seule (sans poids) : mêmes tirages, donc mêmes arbres ; seule la teinte change.
+	var size := Vector2i(16, 40)
+	var forest := _full_forest(size)
+	var plain := DenseForest.plan(forest, size, [], SEED)
+	var shade := _route_2_shade()
+	shade.weights = {}
+	var shaded := DenseForest.plan(forest, size, [], SEED, shade)
+	assert_eq(shaded.size(), plain.size())
+	var south := 0
+	var north := 0
+	for i in plain.size():
+		var before: Dictionary = plain[i]
+		var after: Dictionary = shaded[i]
+		assert_eq(after["foot"], before["foot"])
+		assert_eq(after["id"], before["id"])
+		if before["kind"] != DenseForest.KIND_TREE:
+			assert_eq(after["tint"], before["tint"], "buissons : inchangés (réglés au T5)")
+			continue
+		var foot: Vector2 = before["foot"]
+		var expected: Color = (before["tint"] as Color) * DenseForest.row_tint(shade, foot.y)
+		assert_eq(after["tint"], expected, "arbre en %s" % foot)
+		if foot.y >= 30.0:
+			assert_eq(after["tint"], before["tint"], "au sud : inchangé")
+			south += 1
+		elif foot.y <= 8.0:
+			assert_lt((after["tint"] as Color).g, (before["tint"] as Color).g, "plus sombre")
+			north += 1
+	assert_gt(south, 5)
+	assert_gt(north, 5)
+
+
+func test_cold_species_weigh_more_in_the_north_only() -> void:
+	var size := Vector2i(30, 60)
+	var forest := _full_forest(size)
+	var cold: Array[StringName] = [&"tree_foret_04", &"tree_foret_05", &"tree_foret_06"]
+	var shade := DenseForest.Shade.new()
+	shade.weights_row = 30.0
+	shade.weights = {&"tree_foret_04": 6.0, &"tree_foret_05": 6.0, &"tree_foret_06": 6.0}
+	var counts := {"north": 0, "north_cold": 0, "south": 0, "south_cold": 0}
+	for entry: Dictionary in DenseForest.plan(forest, size, [], SEED, shade):
+		if entry["kind"] != DenseForest.KIND_TREE:
+			continue
+		var half := "north" if (entry["foot"] as Vector2).y < 30.0 else "south"
+		counts[half] += 1
+		if cold.has(entry["id"]):
+			counts[half + "_cold"] += 1
+	# Uniforme : 3 / 8 ≈ 0,38 ; poids × 6 : 18 / 23 ≈ 0,78.
+	var north_share: float = float(counts["north_cold"]) / float(counts["north"])
+	var south_share: float = float(counts["south_cold"]) / float(counts["south"])
+	assert_gt(north_share, 0.65, "essences froides majoritaires au nord (%s)" % counts)
+	assert_lt(south_share, 0.5, "tirage uniforme au sud (%s)" % counts)

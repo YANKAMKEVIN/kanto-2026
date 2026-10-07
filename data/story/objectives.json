@@ -1,5 +1,10 @@
 [
 	{
+		"id": "go_north",
+		"text": "continuer vers le nord.",
+		"if": ["pokedex_activated"]
+	},
+	{
 		"id": "deliver_parcel",
 		"text": "remettre le colis au Professeur Chen.",
 		"if": ["got_oak_parcel"],

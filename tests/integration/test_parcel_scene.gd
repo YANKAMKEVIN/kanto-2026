@@ -200,7 +200,9 @@ func _assert_after_scene(expected: Array[String]) -> void:
 	assert_eq(_cards().size(), 6, "6e carte : Pokédex")
 	assert_true(_cards().has(MenuRoute.POKEDEX), "carte Pokédex")
 	var dashboard := _boot.get_menu_director().build_dashboard()
-	assert_eq(dashboard.objective_text, "", "objectif du colis effacé")
+	# Jalon 8 (dossier 11, arbitrage 6) : l'objectif du colis cède la place au suivant.
+	assert_eq(dashboard.objective_text, "Objectif : continuer vers le nord.",
+		"objectif du colis remplacé")
 	assert_eq(dashboard.dex_text, DashboardViews.dex_text(GameState.pokedex.seen_count(),
 		GameState.pokedex.caught_count()), "ligne vus · capturés")
 	assert_true(_player.is_input_enabled(), "le joueur reprend la main")

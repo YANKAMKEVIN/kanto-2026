@@ -73,6 +73,36 @@ func test_painted_pokemon_by_explicit_prefix() -> void:
 	assert_false(fallback.painted)
 
 
+func test_painted_object_by_explicit_prefix() -> void:
+	# Jalon 8 §2.3 : objet visible au sol (« object/<id> »), sans apparence provisoire.
+	assert_eq(CharacterLook.painted_frames_path(&"object/poke_ball_ground"),
+		"res://assets/sprites/objects/painted/poke_ball_ground_frames.tres")
+	assert_eq(CharacterLook.placeholder_frames_path(&"object/poke_ball_ground"), "")
+	var look := CharacterLook.resolve(&"object/poke_ball_ground", _exists_in([
+		"res://assets/sprites/objects/painted/poke_ball_ground_frames.tres",
+	]))
+	assert_eq(look.frames_path,
+		"res://assets/sprites/objects/painted/poke_ball_ground_frames.tres")
+	assert_true(look.painted)
+	assert_eq(look.scale, 1.0)
+	assert_eq(look.filter, CanvasItem.TEXTURE_FILTER_LINEAR)
+	var checked: Array[String] = []
+	var missing := CharacterLook.resolve(&"object/poke_ball_ground",
+		func(path: String) -> bool:
+			checked.append(path)
+			return path.ends_with("/npc_frames.tres"))
+	assert_eq(missing.frames_path,
+		CharacterLook.placeholder_frames_path(CharacterLook.FALLBACK_SPRITE),
+		"absent : l'apparence générique")
+	assert_false(missing.painted)
+	assert_eq(checked.size(), 1, "aucun provisoire cherché pour un objet")
+	# Les préfixes existants ne changent pas.
+	assert_eq(CharacterLook.painted_frames_path(&"nurse"),
+		"res://assets/sprites/characters/painted/nurse_frames.tres")
+	assert_eq(CharacterLook.placeholder_frames_path(&"pokemon/pidgey"),
+		"res://assets/sprites/characters/placeholder/pidgey_frames.tres")
+
+
 ## Les vraies apparences générées par tools/build_character_frames.gd.
 func test_real_painted_looks() -> void:
 	for sprite: StringName in [&"player", &"rival", &"nurse", &"clerk", &"courier", &"lass",
@@ -112,6 +142,29 @@ func test_every_sheet_maps_to_generated_frames() -> void:
 	assert_eq(looks["roucool"][1], "pidgey")
 	assert_eq(looks["piafabec"][1], "spearow")
 	assert_eq(looks["ferosinge"][1], "mankey")
+
+
+## Jalon 8 (§2.3) : genre « objet fixe » de l'outil (une image → quatre attentes d'une image),
+## lu par `CharacterLook` sous le préfixe « object/ ». L'image est préparée au T3 (série 10) :
+## tant qu'elle n'est pas au catalogue, seule la correspondance est vérifiée.
+func test_fixed_objects_map_to_object_looks() -> void:
+	var constants := (load(FRAMES_TOOL) as Script).get_script_constant_map()
+	var objects: Dictionary = constants["FIXED_OBJECTS"]
+	assert_eq(objects.get("poke_ball_ground"), "poke_ball_ground", "Poké Ball au sol")
+	assert_eq(String(constants["OBJECTS_DIR"]), CharacterLook.OBJECT_PAINTED_DIR)
+	var catalogue: Dictionary = JSON.parse_string(
+		FileAccess.get_file_as_string("res://assets/world/catalogue.json"))
+	var images: Dictionary = catalogue.get("images", {})
+	for image_id: String in objects:
+		if not images.has(image_id):
+			pending("image « %s » préparée au T3 du jalon 8" % image_id)
+			continue
+		var look := CharacterLook.resolve(StringName("object/" + String(objects[image_id])))
+		assert_true(look.painted, image_id)
+		var frames := load(look.frames_path) as SpriteFrames
+		for dir: String in ["down", "left", "right", "up"]:
+			assert_eq(frames.get_frame_count(StringName("idle_" + dir)), 1, dir)
+			assert_false(frames.has_animation(StringName("walk_" + dir)), "objet immobile")
 
 
 func test_painted_frames_cycle_two_tiles_per_walk_loop() -> void:
