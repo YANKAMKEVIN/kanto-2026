@@ -252,6 +252,27 @@ func test_shy_defaults_and_values() -> void:
 	assert_true(errors.is_empty(), "\n".join(errors))
 
 
+## Jalon 9 (T18, jalon-09.md §2.7.6) : Chenipan relève la tête (« notice », reste), Aspicot se
+## rétracte (« hide », quitte la carte) ; mêmes règles que « fly » / « flee » (non interactif,
+## sans routine).
+func test_notice_and_hide_are_shy_actions() -> void:
+	var errors := PackedStringArray()
+	var notice := NpcRoster.parse_entry({"cell": [1, 2], "sprite": "pokemon/caterpie",
+		"shy": {"action": "notice"}}, errors)
+	assert_eq(notice.shy_action, &"notice")
+	assert_eq(notice.shy_radius, 2)
+	var hide := NpcRoster.parse_entry({"cell": [1, 2], "sprite": "pokemon/weedle",
+		"lift": 32, "shy": {"action": "hide", "radius": 1}}, errors)
+	assert_eq([hide.shy_action, hide.shy_radius, hide.lift], [&"hide", 1, 32])
+	assert_true(errors.is_empty(), "\n".join(errors))
+	assert_null(NpcRoster.parse_entry({"cell": [1, 2], "sprite": "pokemon/weedle",
+		"dialogue": "hello", "shy": {"action": "hide"}}, errors), "interactif : refusé")
+	assert_null(NpcRoster.parse_entry({"cell": [1, 2], "sprite": "pokemon/caterpie",
+		"shy": {"action": "notice"}, "route": {"cells": [[1, 2], [1, 3]]}}, errors),
+		"routine : refusée")
+	assert_eq(errors.size(), 2)
+
+
 func test_shy_invalid_values_are_rejected() -> void:
 	var errors := PackedStringArray()
 	assert_null(NpcRoster.parse_entry(

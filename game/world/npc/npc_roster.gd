@@ -16,8 +16,8 @@ extends RefCounted
 ## verb (talk | observe | take ; take = objet visible au sol, jalon 8), turn_to_player (true),
 ## keep_facing (false), lift (0 pixel),
 ## hop_style (calm | eager | playful : style de saut, jalon 4 ; aucun par défaut),
-## shy ({ action: fly | flee, radius: 1..4 } : réaction d'ambiance, jalon 5 ; interdit sur
-## un PNJ interactif),
+## shy ({ action: fly | flee | notice | hide, radius: 1..4 } : réaction d'ambiance, jalon 5 ;
+## notice et hide au jalon 9 ; interdit sur un PNJ interactif),
 ## if et unless (listes de drapeaux : présence conditionnelle, jalon 3B §2.6),
 ## species (espèce d'un Pokémon du décor : le geste OBSERVER l'enregistre « vu » au Pokédex,
 ## jalon 6 §3.5, Q-7 ; seulement avec « verb »: « observe » et un dialogue ; l'espèce est
@@ -307,7 +307,8 @@ static func _read_look(value: Variant, spec: NpcSpec, errors: PackedStringArray)
 	spec.look_every = every
 
 
-## Lit la réaction d'ambiance « shy » : { "action": "fly" | "flee", "radius": 1..4 }.
+## Lit la réaction d'ambiance « shy » : { "action": "fly" | "flee" | "notice" | "hide",
+## "radius": 1..4 }.
 ## Refusée sur un PNJ interactif (un Pokémon qui fuit ne se parle pas). « radius » facultatif
 ## ([constant NpcSpec.SHY_RADIUS_DEFAULT] par défaut).
 static func _read_shy(value: Variant, spec: NpcSpec, errors: PackedStringArray) -> void:

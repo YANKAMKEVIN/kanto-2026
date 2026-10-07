@@ -60,6 +60,13 @@ const VARIANT_FLAGS: Dictionary = {
 	&"route_2_item_2": [ROUTE22_FLAGS],
 	&"route_2_item_3": [ROUTE22_FLAGS],
 	&"route_2_item_4": [ROUTE22_FLAGS],
+	# Jalon 9 (T18) : les 6 objets de la Forêt de Jade.
+	&"viridian_forest_item_1": [ROUTE22_FLAGS],
+	&"viridian_forest_item_2": [ROUTE22_FLAGS],
+	&"viridian_forest_item_3": [ROUTE22_FLAGS],
+	&"viridian_forest_item_4": [ROUTE22_FLAGS],
+	&"viridian_forest_item_5": [ROUTE22_FLAGS],
+	&"viridian_forest_item_6": [ROUTE22_FLAGS],
 }
 ## Scènes jouées par le code (pas de déclencheur) → carte où elles sont jouées.
 ## Jalon 7 (T18) : la scène du colis est lancée par la variante « cutscene » du dialogue de Chen.
@@ -67,6 +74,17 @@ const VARIANT_FLAGS: Dictionary = {
 const CODE_PLAYED: Dictionary[StringName, StringName] = {
 	&"starter_chosen": &"oak_lab", &"oak_parcel": &"oak_lab",
 	&"route_2_item_1": &"route_2", &"route_2_item_2": &"route_2",
+	# Jalon 9 (T18) : objets visibles de la Forêt de Jade (PNJ « objet » de son fichier).
+	&"viridian_forest_item_1": &"viridian_forest", &"viridian_forest_item_2": &"viridian_forest",
+	&"viridian_forest_item_5": &"viridian_forest",
+}
+## Scènes à déclencheur dont la carte n'est pas encore construite → leur carte (simulées sur les
+## PNJ de son fichier). Jalon 9 : objets cachés de la forêt, déclencheurs posés au T19 par
+## `tools/build_viridian_forest.gd` ; **vider au T19** (le test les exige alors sur la carte).
+const AWAITING_MAP: Dictionary[StringName, StringName] = {
+	&"viridian_forest_item_3": &"viridian_forest",
+	&"viridian_forest_item_4": &"viridian_forest",
+	&"viridian_forest_item_6": &"viridian_forest",
 }
 
 var _cutscenes: CutsceneLibrary
@@ -117,7 +135,9 @@ func test_library_loads_without_error() -> void:
 	assert_eq(library.get_ids(), [&"mart_parcel", &"oak_lab_exit", &"oak_parcel",
 		&"rival_route22", &"route1_grass", &"route_1_potion", &"route_2_item_1",
 		&"route_2_item_2", &"route_2_item_3", &"route_2_item_4", &"starter_chosen",
-		&"viridian_arrival"] as Array[StringName])
+		&"viridian_arrival", &"viridian_forest_item_1", &"viridian_forest_item_2",
+		&"viridian_forest_item_3", &"viridian_forest_item_4", &"viridian_forest_item_5",
+		&"viridian_forest_item_6"] as Array[StringName])
 
 
 func test_route1_grass_ends_with_the_starter_offer() -> void:
@@ -141,6 +161,8 @@ func test_every_trigger_targets_a_scene_and_every_scene_is_triggered() -> void:
 	for id: StringName in _cutscenes.get_ids():
 		if CODE_PLAYED.has(id):
 			assert_false(_triggered_on.has(id), "« %s » jouée par le code seulement" % id)
+			continue
+		if AWAITING_MAP.has(id) and not MapCatalog.has_map(AWAITING_MAP[id]):
 			continue
 		assert_true(_triggered_on.has(id), "scène « %s » visée par un déclencheur" % id)
 	assert_eq(_triggered_on.get(&"route1_grass"), [&"pallet_town"])
@@ -184,7 +206,10 @@ func test_only_world_items_are_found_items() -> void:
 				if step.kind == CutsceneStep.Kind.GIVE and step.found:
 					found.append("%s:%s" % [id, step.item_id])
 	assert_eq(found, ["route_1_potion:potion", "route_2_item_1:poke_ball",
-		"route_2_item_2:potion", "route_2_item_3:poke_ball", "route_2_item_4:potion"]
+		"route_2_item_2:potion", "route_2_item_3:poke_ball", "route_2_item_4:potion",
+		"viridian_forest_item_1:antidote", "viridian_forest_item_2:poke_ball",
+		"viridian_forest_item_3:potion", "viridian_forest_item_4:antidote",
+		"viridian_forest_item_5:poke_ball", "viridian_forest_item_6:potion"]
 		as Array[String])
 
 
@@ -266,6 +291,8 @@ func test_static_simulation_of_every_variant() -> void:
 		var maps: Array = _triggered_on.get(id, [])
 		if CODE_PLAYED.has(id):
 			maps = [CODE_PLAYED[id]]
+		elif maps.is_empty() and AWAITING_MAP.has(id):
+			maps = [AWAITING_MAP[id]]
 		# Une scène avec un combat est jouée « à blanc » pour les deux issues (jalon-04.md §14.11
 		# T8 ; rival n° 2, T25).
 		var outcomes: Array[int] = ([Battle.Outcome.WIN, Battle.Outcome.LOSS] as Array[int]) \

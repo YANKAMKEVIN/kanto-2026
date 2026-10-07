@@ -13,7 +13,9 @@ extends Node2D
 ## Les PNJ ne sont pas dans la scène : à [method _ready], la carte lit
 ## `<npcs_dir>/<map_id>.json` ([NpcRoster]), crée un [Npc] par entrée **présente en
 ## nouvelle partie** ([method NpcRoster.get_present] sans drapeaux) dans `Entities` et
-## l'inscrit sur sa case ([method Npc.enter_grid], §2.3). [method refresh_npcs] ajuste
+## l'inscrit sur sa case ([method Npc.enter_grid], §2.3), même une case infranchissable
+## (Pokémon d'ambiance sur un tronc ou une clôture, jalon 9 ; un Pokémon d'ambiance sans
+## planche est sauté : [method awaits_painted_look]). [method refresh_npcs] ajuste
 ## ensuite la présence aux drapeaux de la partie (jalon 3B §2.6 : Boot l'appelle à chaque
 ## changement de carte, écran noir). Une scène scriptée peut en ajouter
 ## ([method add_npc]) ou en retirer ([method remove_npc]) pour la durée de la carte
@@ -172,7 +174,7 @@ func refresh_npcs(flags: StoryFlags) -> void:
 	for npc: Npc in _roster_npcs.duplicate():
 		if not npc.get_spec().is_present(flags):
 			remove_npc(npc.get_id())
-	for spec: NpcSpec in _roster.get_present(flags):
+	for spec: NpcSpec in _present_specs(flags):
 		if get_npc(spec.id) == null:
 			var npc := _create_npc(spec)
 			if npc != null:
@@ -370,10 +372,29 @@ func _spawn_npcs() -> void:
 	if entities == null:
 		return
 	_roster = NpcRoster.load_for_map(map_id, npcs_dir)
-	for spec: NpcSpec in _roster.get_present(null):
+	for spec: NpcSpec in _present_specs(null):
 		var npc := _create_npc(spec)
 		if npc != null:
 			_roster_npcs.append(npc)
+
+
+## Entrées du fichier présentes avec [param flags], sans les Pokémon d'ambiance dont
+## l'apparence manque encore ([method awaits_painted_look]).
+func _present_specs(flags: StoryFlags) -> Array[NpcSpec]:
+	var present: Array[NpcSpec] = []
+	for spec: NpcSpec in _roster.get_present(flags):
+		if not awaits_painted_look(spec):
+			present.append(spec)
+	return present
+
+
+## Vrai pour un Pokémon d'ambiance (`pokemon/<espèce>`, non interactif) dont aucune planche
+## n'existe encore (jalon 9 : Chenipan, refusé par Codex au T17, jalon-09.md §6.15) : la carte
+## le saute sans erreur plutôt que de le montrer sous l'apparence générique d'un humain ; il
+## apparaît de lui-même quand ses SpriteFrames sont générés.
+static func awaits_painted_look(spec: NpcSpec) -> bool:
+	return String(spec.sprite).begins_with(CharacterLook.POKEMON_PREFIX) \
+		and not spec.is_interactive() and not Npc.has_frames(spec.sprite)
 
 
 ## Crée un [Npc] dans `Entities` et l'inscrit sur sa case. Une case hors carte ou déjà

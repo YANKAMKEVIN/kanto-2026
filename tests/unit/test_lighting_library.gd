@@ -33,7 +33,8 @@ func _add(entry: Variant, id: String = "p") -> LightProfile:
 
 func test_real_file_loads_without_error() -> void:
 	assert_true(_library.load_file(), str(_library.get_errors()))
-	assert_eq(_library.get_ids(), [&"golden_hour", &"interior_warm"] as Array[StringName])
+	assert_eq(_library.get_ids(), [&"golden_hour", &"interior_warm", &"forest"]
+		as Array[StringName])
 	assert_eq(LightingLibrary.DATA_PATH, "res://data/world/lighting.json")
 
 
@@ -86,6 +87,40 @@ func test_interior_warm_is_almost_neutral_without_rim_nor_cast_shadow() -> void:
 	assert_true(warm.has_contact_shadow(), "contact gardé")
 	var gh := _library.get_profile(&"golden_hour")
 	assert_eq(warm.contact_color, gh.contact_color, "même contact que dehors")
+
+
+## Jalon 9 (T18, dossier 10 §14, jalon-09.md §2.7.5) : la Forêt de Jade, plus sombre et plus
+## froide que la Route 2 (verts profonds, ombres bleu-vert), lumière chaude seulement dans les
+## ouvertures (hautes lumières), **sans filtre vert uniforme** ; soleil du jeu (haut-gauche,
+## comme les rais de lumière, décision de Kevin) ; liseré, ombre portée et vent atténués sous la
+## canopée. Valeurs par défaut, réglées sur capture au T19.
+func test_forest_is_darker_and_cooler_without_a_green_filter() -> void:
+	_library.load_file()
+	var forest := _library.get_profile(&"forest")
+	var gh := _library.get_profile(&"golden_hour")
+	assert_not_null(forest)
+	if forest == null or gh == null:
+		return
+	for zone: Array in [[forest.grade_shadows, gh.grade_shadows],
+			[forest.grade_midtones, gh.grade_midtones]]:
+		var gains: Vector3 = zone[0]
+		var sum_forest := gains.x + gains.y + gains.z
+		var sum_gh := (zone[1] as Vector3).x + (zone[1] as Vector3).y + (zone[1] as Vector3).z
+		assert_lt(sum_forest, sum_gh, "plus sombre que la Route 2 : %s" % gains)
+		assert_lt(gains.x, 1.0, "assombri : %s" % gains)
+	assert_true(forest.grade_shadows.z > forest.grade_shadows.x
+		and forest.grade_shadows.y > forest.grade_shadows.x, "ombres bleu-vert")
+	assert_true(forest.grade_highlights.x > forest.grade_highlights.z,
+		"lumière chaude dans les ouvertures")
+	assert_true(forest.grade_midtones.y <= forest.grade_midtones.z + 0.001,
+		"pas de filtre vert uniforme sur les tons moyens")
+	assert_almost_eq(forest.sun_direction, Vector2(-0.7, -0.7), Vector2.ONE * EPS,
+		"lumière du jeu : haut-gauche")
+	assert_true(forest.has_rim() and forest.rim_strength < gh.rim_strength, "liseré atténué")
+	assert_true(forest.has_cast_shadow()
+		and forest.cast_shadow_color.a < gh.cast_shadow_color.a, "ombres portées diffuses")
+	assert_true(forest.has_wind() and forest.wind_strength < gh.wind_strength, "vent filtré")
+	assert_true(forest.has_contact_shadow())
 
 
 func test_unknown_or_empty_profile_is_null() -> void:

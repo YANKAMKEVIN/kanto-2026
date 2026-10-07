@@ -38,5 +38,52 @@
 	"forest_scout_eli_after": {
 		"speaker": "Scout Éli",
 		"pages": ["Pas mal !\nArgenta n'est plus très loin."]
+	},
+	"forest_naturalist": {
+		"speaker": "Naturaliste",
+		"variants": [
+			{
+				"unless": ["forest_naturalist_talked"],
+				"set": ["forest_naturalist_talked"],
+				"pages": ["Certains Pokémon changent très vite\nquand ils grandissent."]
+			},
+			{
+				"pages": ["J'aimerais les observer évoluer ici."]
+			}
+		]
+	},
+	"forest_hiker": {
+		"speaker": "Randonneuse",
+		"variants": [
+			{
+				"unless": ["forest_hiker_talked"],
+				"set": ["forest_hiker_talked"],
+				"pages": ["Plus on avance, plus Jadielle\nparaît loin, pas vrai ?"]
+			},
+			{
+				"pages": ["Je garde toujours de quoi soigner\nmon équipe avant de repartir."]
+			}
+		]
+	},
+	"viridian_forest_item_1": {
+		"cutscene": "viridian_forest_item_1"
+	},
+	"viridian_forest_item_2": {
+		"cutscene": "viridian_forest_item_2"
+	},
+	"viridian_forest_item_5": {
+		"cutscene": "viridian_forest_item_5"
+	},
+	"viridian_forest_item_3_found": {
+		"narration": true,
+		"pages": ["Quelque chose est caché sous les feuilles."]
+	},
+	"viridian_forest_item_4_found": {
+		"narration": true,
+		"pages": ["Quelque chose est coincé entre les racines."]
+	},
+	"viridian_forest_item_6_found": {
+		"narration": true,
+		"pages": ["Quelque chose dépasse derrière cette souche."]
 	}
 }

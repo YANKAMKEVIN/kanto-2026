@@ -3,14 +3,21 @@ extends RefCounted
 ## Réactions des Pokémon d'ambiance à l'approche du joueur (dossier 04 §1, jalon 5 §3.5).
 ##
 ## Classe pure, statique, sans dépendance à l'arbre de scènes : [AmbientWatcher]
-## (présentation, jalon 5) l'appelle pour décider quand un Pokémon « shy » réagit et,
-## pour une fuite, par où il détale. Aucun aléatoire : le résultat ne dépend que de la grille
-## et des positions (reproductible).
+## (présentation, jalon 5) l'appelle pour décider quand un Pokémon « shy » réagit, s'il quitte
+## la carte et, pour une fuite, par où il détale. Aucun aléatoire : le résultat ne dépend que
+## de la grille et des positions (reproductible).
 
 ## Ordre d'exploration des fuites (haut, bas, gauche, droite) : chemin toujours identique.
 const _DIRECTIONS: Array[Vector2i] = [
 	Vector2i.UP, Vector2i.DOWN, Vector2i.LEFT, Vector2i.RIGHT,
 ]
+
+
+## Vrai si la réaction [param action] ([constant NpcSpec.SHY_ACTIONS]) fait quitter la carte
+## au Pokémon (envol, fuite, retrait vers le feuillage) ; faux pour « notice » (il relève la
+## tête et reste, jalon 9). Une fuite sans issue reste aussi sur place ([method flee_path] vide).
+static func leaves_map(action: StringName) -> bool:
+	return action != &"notice"
 
 
 ## Vrai si le joueur est à [param radius] cases ou moins de [param npc_cell] (distance de

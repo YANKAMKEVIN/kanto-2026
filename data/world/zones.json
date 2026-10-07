@@ -34,7 +34,11 @@
 			"subtitle": "Jadielle — Forêt de Jade",
 			"description": "Un chemin bordé de prairies qui s'enfonce peu à peu sous les arbres."
 		},
-		"viridian_forest": { "name": "Forêt de Jade", "kind": "place", "maps": [] },
+		"viridian_forest": {
+			"name": "Forêt de Jade", "kind": "place", "maps": [],
+			"subtitle": "Jadielle — Argenta",
+			"description": "Une forêt profonde et fraîche, où la lumière perce à peine entre les cimes. Les Pokémon Insecte y foisonnent sous une végétation dense."
+		},
 		"pewter_city": { "name": "Argenta", "kind": "town", "maps": [] },
 		"route_3": { "name": "Route 3", "kind": "route", "maps": [] },
 		"mt_moon": { "name": "Mont Sélénite", "kind": "place", "maps": [] },

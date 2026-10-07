@@ -15,8 +15,13 @@ const HOP_STYLES: Array[StringName] = [&"calm", &"eager", &"playful"]
 
 ## Réactions d'un Pokémon d'ambiance à l'approche du joueur ([member shy_action], jalon 5
 ## §3.5, dossier 04 §1) : s'envoler (Roucool posé sur une clôture) ou détaler (Rattata).
-## Réservé aux Pokémon non interactifs (un Pokémon qui fuit ne se parle pas).
-const SHY_ACTIONS: Array[StringName] = [&"fly", &"flee"]
+## Jalon 9 (dossier 10 §7, jalon-09.md §2.7.6) : « notice » relève la tête (animation
+## « react ») et reste sur la carte (Chenipan) ; « hide » se rétracte vers le feuillage (petit
+## recul vers le haut et fondu) puis quitte la carte comme l'envol (Aspicot sur un tronc).
+## Réservé aux Pokémon non interactifs (un Pokémon qui fuit ne se parle pas). Un Pokémon
+## d'ambiance immobile et non interactif peut être posé sur une case infranchissable (tronc,
+## branche basse, clôture) : il l'occupe sans la rendre praticable.
+const SHY_ACTIONS: Array[StringName] = [&"fly", &"flee", &"notice", &"hide"]
 ## Rayon par défaut (cases) d'une réaction « shy » quand la donnée l'omet.
 const SHY_RADIUS_DEFAULT: int = 2
 ## Pause par défaut (secondes) à chaque case d'une routine de marche quand la donnée l'omet.

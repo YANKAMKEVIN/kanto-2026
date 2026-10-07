@@ -434,10 +434,10 @@ func _despawn(step: CutsceneStep) -> void:
 
 
 ## Étape « scare » (jalon 7, jalon-07.md §3.2) : le Pokémon d'ambiance « shy » réagit tout
-## de suite comme à l'approche du joueur (même geste qu'[AmbientWatcher] : envol, ou fuite de
-## [constant AmbientWatcher.FLEE_STEPS] pas à l'opposé du joueur), puis quitte la carte à la
-## fin de sa réaction ([signal Npc.left_scene] → [method GameMap.remove_npc]). La scène
-## n'attend pas : l'étape suivante commence aussitôt. Comme pour l'[AmbientWatcher], un
+## de suite comme à l'approche du joueur (même geste qu'[AmbientWatcher] :
+## [method AmbientWatcher.play_reaction] ; « notice » le laisse en place, jalon 9), puis quitte
+## la carte à la fin de sa réaction ([signal Npc.left_scene] → [method GameMap.remove_npc]).
+## La scène n'attend pas : l'étape suivante commence aussitôt. Comme pour l'[AmbientWatcher], un
 ## Pokémon acculé (aucun pas de fuite possible) se retourne et reste. PNJ introuvable ou pas
 ## « shy » : push_error, étape sautée.
 func _scare(step: CutsceneStep) -> void:
@@ -449,17 +449,13 @@ func _scare(step: CutsceneStep) -> void:
 		_step_error("« %s » n'est pas un Pokémon d'ambiance « shy »" % step.actor)
 		return
 	var map := _map
-	var on_left := func(npc_id: StringName) -> void:
-		if is_instance_valid(map):
-			map.remove_npc(npc_id)
-	npc.left_scene.connect(on_left, CONNECT_ONE_SHOT)
-	if npc.get_spec().shy_action == &"fly":
-		npc.fly_away()
-		return
+	if AmbientRules.leaves_map(npc.get_spec().shy_action):
+		var on_left := func(npc_id: StringName) -> void:
+			if is_instance_valid(map):
+				map.remove_npc(npc_id)
+		npc.left_scene.connect(on_left, CONNECT_ONE_SHOT)
 	var away_from := _player.get_cell() if is_instance_valid(_player) else npc.get_cell()
-	var path := AmbientRules.flee_path(map.get_grid(), npc.get_cell(), away_from,
-		AmbientWatcher.FLEE_STEPS, npc)
-	npc.flee(path)
+	AmbientWatcher.play_reaction(npc, map.get_grid(), away_from)
 
 
 ## Étape « battle » (jalon 4B, jalon-04.md §14.3) : joue le combat contre le dresseur, en

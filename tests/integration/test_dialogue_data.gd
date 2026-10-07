@@ -33,8 +33,13 @@ const DOSSIER_09 := "res://docs/design/dossier-09-jadielle.md"
 const DOSSIER_10 := "res://docs/design/dossier-10-foret-de-jade.md"
 ## Gardes des postes de la Forêt de Jade (T6) : textes vérifiés par un test dédié.
 const GATE_GUARDS: Array[StringName] = [&"forest_gate_north_guard", &"forest_gate_south_guard"]
-## Dialogues pas encore posés sur une carte : le garde du poste nord arrive avec sa carte (T19).
-const UNUSED_YET: Array[StringName] = [&"forest_gate_north_guard"]
+## Dialogues pas encore posés sur une carte : le garde du poste nord arrive avec sa carte (T19) ;
+## les PNJ et les objets de la Forêt de Jade (données du T18) aussi : **vider au T19** (ajouter
+## alors `viridian_forest` et les postes à [constant MAPS]).
+const UNUSED_YET: Array[StringName] = [&"forest_gate_north_guard", &"forest_hiker",
+	&"forest_naturalist", &"viridian_forest_item_1", &"viridian_forest_item_2",
+	&"viridian_forest_item_3_found", &"viridian_forest_item_4_found", &"viridian_forest_item_5",
+	&"viridian_forest_item_6_found"]
 ## Jalon 8 : textes T1–T16 validés (dossier 11, « Textes à valider ») ; dans son tableau, « / »
 ## marque le retour à la ligne de la bulle et le gras (« ** ») le titre d'un panneau.
 const DOSSIER_11 := "res://docs/design/dossier-11-route-2.md"
@@ -55,6 +60,7 @@ const TEXTES_VALIDES := "res://docs/design/textes/textes-brouillon-j7.md"
 const IDS: Array[StringName] = [
 	&"aoki", &"breakfast_table", &"clerk", &"clerk_parcel",
 	&"clerk_parcel_hello", &"forest_gate_north_guard", &"forest_gate_south_guard",
+	&"forest_hiker", &"forest_naturalist",
 	&"forest_scout_eli_after", &"forest_scout_eli_before", &"forest_scout_milo_after",
 	&"forest_scout_milo_before", &"forest_scout_noe_after", &"forest_scout_noe_before",
 	&"forest_scout_theo_after", &"forest_scout_theo_before", &"forest_youngster_tom_after",
@@ -82,7 +88,11 @@ const IDS: Array[StringName] = [
 	&"route_2_item_4_found", &"route_2_sign", &"route_2_youngster",
 	&"sign_pallet_town",
 	&"storage_terminal",
-	&"viridian_courier", &"viridian_gym_door", &"viridian_gym_watcher", &"viridian_house_door",
+	&"viridian_courier",
+	# Jalon 9 (T18) : objets de la Forêt de Jade.
+	&"viridian_forest_item_1", &"viridian_forest_item_2", &"viridian_forest_item_3_found",
+	&"viridian_forest_item_4_found", &"viridian_forest_item_5", &"viridian_forest_item_6_found",
+	&"viridian_gym_door", &"viridian_gym_watcher", &"viridian_house_door",
 	&"viridian_kid",
 	&"viridian_lass", &"viridian_old_man", &"viridian_traveler",
 ]
@@ -221,10 +231,14 @@ func test_every_dialogue_played_by_a_cutscene_exists() -> void:
 		&"rival_parcel_return", &"rival_starter_pick", &"rival_starter_smile",
 		&"route1_grass_thought", &"route22_rival_greet", &"route22_rival_hesitates",
 		&"route22_rival_lost", &"route22_rival_won", &"route22_youngster_sigh",
-		&"route_1_potion_found", &"route_2_item_3_found", &"route_2_item_4_found"]
+		&"route_1_potion_found", &"route_2_item_3_found", &"route_2_item_4_found",
+		&"viridian_forest_item_3_found", &"viridian_forest_item_4_found",
+		&"viridian_forest_item_6_found"]
 		as Array[StringName])
 	for id: StringName in played:
 		assert_true(_library.has_dialogue(id), "dialogue « %s » défini" % id)
+		if UNUSED_YET.has(id):
+			continue
 		assert_true(_used_on.has(id), "« %s » joué depuis un déclencheur ou par le code" % id)
 	for id: StringName in [&"oak_starter_reciprocal", &"rival_starter_pick",
 			&"rival_starter_smile", &"rival_challenge_wait", &"rival_challenge",
@@ -293,13 +307,17 @@ func test_every_condition_flag_is_set_somewhere() -> void:
 		assert_false(set_flags.has(flag), "« %s » : levé par un jalon futur" % flag)
 	assert_true(read_flags.has(&"starter_chosen"), "starter_chosen lu (pensée des herbes)")
 	assert_eq(_library.get_set_flags(),
-		[&"blacked_out_before", &"mom_greeted", &"poison_unlocked", &"rival_met",
+		[&"blacked_out_before", &"forest_hiker_talked", &"forest_naturalist_talked",
+			&"mom_greeted", &"poison_unlocked", &"rival_met",
 			&"route_2_hiker_talked", &"route_2_youngster_talked", &"storage_terminal_seen",
 			&"viridian_old_man_talked"]
 		as Array[StringName])
 	assert_eq(_cutscenes.get_set_flags(), [&"got_oak_parcel", &"got_potion_route_1",
 		&"got_route_2_item_1", &"got_route_2_item_2", &"got_route_2_item_3",
-		&"got_route_2_item_4", &"oak_lab_reunion", &"oak_met",
+		&"got_route_2_item_4", &"got_viridian_forest_item_1", &"got_viridian_forest_item_2",
+		&"got_viridian_forest_item_3", &"got_viridian_forest_item_4",
+		&"got_viridian_forest_item_5", &"got_viridian_forest_item_6", &"oak_lab_reunion",
+		&"oak_met",
 		&"pokedex_activated", &"rival_battle_done", &"rival_challenged", &"rival_lab_lost",
 		&"rival_lab_won", &"rival_left_lab", &"rival_route22_lost", &"rival_route22_won",
 		&"starter_chosen", &"starter_offered", &"viridian_arrived"] as Array[StringName])
@@ -633,8 +651,9 @@ func test_oak_parcel_lines() -> void:
 				launched += 1
 				assert_true(_cutscenes.has_cutscene(variant.cutscene), "%s : scène « %s »" % [
 					id, variant.cutscene])
-	# La scène du colis ; jalon 8 : les deux objets visibles de la Route 2 (PRENDRE).
-	assert_eq(launched, 3, "la scène du colis et les deux objets au sol")
+	# La scène du colis ; jalon 8 : les deux objets visibles de la Route 2 (PRENDRE) ; jalon 9 :
+	# les trois de la Forêt de Jade.
+	assert_eq(launched, 6, "la scène du colis et les cinq objets au sol")
 	# Le jeton n'apparaît que dans la réplique de l'espèce.
 	for row: Array in _pages():
 		var tokens := DialogueTokens.tokens_in(row[1])

@@ -22,6 +22,19 @@
 			},
 			"sun_direction": [-0.7, -0.7],
 			"contact": { "color": "#1f1a33", "alpha": 0.62 }
+		},
+		"forest": {
+			"grade": {
+				"shadows": [0.76, 0.86, 0.92],
+				"midtones": [0.88, 0.92, 0.92],
+				"highlights": [1.03, 1.0, 0.92],
+				"strength": 1.0
+			},
+			"sun_direction": [-0.7, -0.7],
+			"rim": { "color": "#ffdc9e", "strength": 0.45, "width": 4.0 },
+			"cast_shadow": { "color": "#10202a", "alpha": 0.22, "length": 0.26, "skew_deg": -45.0 },
+			"contact": { "color": "#141c26", "alpha": 0.66 },
+			"wind": 2.5
 		}
 	},
 	"maps": {
