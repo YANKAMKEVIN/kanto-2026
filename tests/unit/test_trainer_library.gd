@@ -105,6 +105,43 @@ func test_real_rival_route22() -> void:
 		assert_eq([team[1].species, team[1].level], [advantaged[starter], 8], String(starter))
 
 
+## Les 5 Dresseurs de la Forêt de Jade (dossier 10 §8, jalon-09.md §2.4.1) : montants fixes
+## du dossier, IA débutante, SAC permis, messages génériques, défaite qui compte.
+func test_real_viridian_forest_trainers() -> void:
+	var library := TrainerLibrary.new(_data)
+	assert_true(library.load_dir(), "\n".join(library.get_errors()))
+	var expected := {
+		&"forest_scout_theo": ["Scout Théo", 72, [[&"caterpie", 6]]],
+		&"forest_scout_noe": ["Scout Noé", 144, [[&"weedle", 6], [&"kakuna", 6]]],
+		&"forest_youngster_tom": ["Gamin Tom", 84, [[&"rattata", 7]]],
+		&"forest_scout_milo": ["Scout Milo", 144, [[&"caterpie", 6], [&"weedle", 6]]],
+		&"forest_scout_eli": ["Scout Éli", 252,
+			[[&"metapod", 7], [&"kakuna", 7], [&"caterpie", 7]]],
+	}
+	for id: StringName in expected:
+		var trainer := library.get_trainer(id)
+		assert_not_null(trainer, String(id))
+		if trainer == null:
+			continue
+		assert_eq(trainer.name, expected[id][0], String(id))
+		assert_eq(trainer.ai, BattleAI.RANDOM, String(id))
+		assert_false(trainer.can_lose, "%s : défaite = retour au point de repos" % id)
+		assert_false(trainer.heal_after, String(id))
+		assert_true(trainer.gives_exp, String(id))
+		assert_true(trainer.allow_bag, String(id))
+		assert_true(trainer.start_message, String(id))
+		assert_true(trainer.end_message, String(id))
+		assert_eq(trainer.prize_per_level, 0, "%s : montant fixe" % id)
+		assert_eq(trainer.prize_money, expected[id][1], String(id))
+		assert_eq(trainer.prize_for(99), expected[id][1], "%s : indépendant du niveau" % id)
+		var team: Array = []
+		for slot: TrainerSlot in trainer.team_for(&"charmander"):
+			team.append([slot.species, slot.level])
+		assert_eq(team, expected[id][2], String(id))
+		assert_eq(library.build_team(id, &"bulbasaur", GameRng.new(1)).size(),
+			expected[id][2].size(), String(id))
+
+
 func test_bag_and_prize_per_level_defaults() -> void:
 	assert_true(_library.add_from_dict({"t": _valid_entry()}), _errors())
 	var trainer := _library.get_trainer(&"t")

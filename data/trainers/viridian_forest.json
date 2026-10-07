@@ -1,0 +1,30 @@
+{
+	"forest_scout_theo": {
+		"name": "Scout Théo", "ai": "random",
+		"can_lose": false, "heal_after": false, "gives_exp": true, "prize_money": 72,
+		"team": [{ "species": "caterpie", "level": 6 }]
+	},
+	"forest_scout_noe": {
+		"name": "Scout Noé", "ai": "random",
+		"can_lose": false, "heal_after": false, "gives_exp": true, "prize_money": 144,
+		"team": [{ "species": "weedle", "level": 6 }, { "species": "kakuna", "level": 6 }]
+	},
+	"forest_youngster_tom": {
+		"name": "Gamin Tom", "ai": "random",
+		"can_lose": false, "heal_after": false, "gives_exp": true, "prize_money": 84,
+		"team": [{ "species": "rattata", "level": 7 }]
+	},
+	"forest_scout_milo": {
+		"name": "Scout Milo", "ai": "random",
+		"can_lose": false, "heal_after": false, "gives_exp": true, "prize_money": 144,
+		"team": [{ "species": "caterpie", "level": 6 }, { "species": "weedle", "level": 6 }]
+	},
+	"forest_scout_eli": {
+		"name": "Scout Éli", "ai": "random",
+		"can_lose": false, "heal_after": false, "gives_exp": true, "prize_money": 252,
+		"team": [
+			{ "species": "metapod", "level": 7 }, { "species": "kakuna", "level": 7 },
+			{ "species": "caterpie", "level": 7 }
+		]
+	}
+}

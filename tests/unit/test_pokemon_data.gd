@@ -29,6 +29,26 @@ const ROUTE_22_SPECIES := {
 	&"primeape": [57, "Colossinge", [&"fighting"], 65, 105, 60, 60, 70, 95, 159, 0.5,
 		ExpCurve.Rate.MEDIUM_FAST],
 }
+## Forêt de Jade (jalon 9, §2.5), même convention : PokeAPI, statistiques et rendement d'XP
+## actuels (Pikachu et Raichu : valeurs depuis la 6e génération).
+const FOREST_SPECIES := {
+	&"caterpie": [10, "Chenipan", [&"bug"], 45, 30, 35, 20, 20, 45, 39, 0.5,
+		ExpCurve.Rate.MEDIUM_FAST],
+	&"metapod": [11, "Chrysacier", [&"bug"], 50, 20, 55, 25, 25, 30, 72, 0.5,
+		ExpCurve.Rate.MEDIUM_FAST],
+	&"butterfree": [12, "Papilusion", [&"bug", &"flying"], 60, 45, 50, 90, 80, 70, 178, 0.5,
+		ExpCurve.Rate.MEDIUM_FAST],
+	&"weedle": [13, "Aspicot", [&"bug", &"poison"], 40, 35, 30, 20, 20, 50, 39, 0.5,
+		ExpCurve.Rate.MEDIUM_FAST],
+	&"kakuna": [14, "Coconfort", [&"bug", &"poison"], 45, 25, 50, 25, 25, 35, 72, 0.5,
+		ExpCurve.Rate.MEDIUM_FAST],
+	&"beedrill": [15, "Dardargnan", [&"bug", &"poison"], 65, 90, 40, 45, 80, 75, 178, 0.5,
+		ExpCurve.Rate.MEDIUM_FAST],
+	&"pikachu": [25, "Pikachu", [&"electric"], 35, 55, 40, 50, 50, 90, 112, 0.5,
+		ExpCurve.Rate.MEDIUM_FAST],
+	&"raichu": [26, "Raichu", [&"electric"], 60, 90, 55, 90, 80, 110, 218, 0.5,
+		ExpCurve.Rate.MEDIUM_FAST],
+}
 
 var _data: PokemonData
 
@@ -49,10 +69,11 @@ func test_real_data_loads_without_error() -> void:
 	assert_eq(_data.get_type_chart().get_type_ids().size(), 18)
 	assert_eq(_data.get_species_ids(), [&"bulbasaur", &"ivysaur", &"venusaur", &"charmander",
 		&"charmeleon", &"charizard", &"squirtle", &"wartortle", &"blastoise",
+		&"caterpie", &"metapod", &"butterfree", &"weedle", &"kakuna", &"beedrill",
 		&"pidgey", &"pidgeotto", &"pidgeot", &"rattata", &"raticate", &"spearow", &"fearow",
-		&"nidoran_f", &"nidorina", &"nidoqueen", &"nidoran_m", &"nidorino", &"nidoking",
+		&"pikachu", &"raichu", &"nidoran_f", &"nidorina", &"nidoqueen", &"nidoran_m", &"nidorino", &"nidoking",
 		&"mankey", &"primeape"] as Array[StringName])
-	assert_eq(_data.get_move_ids().size(), 47)
+	assert_eq(_data.get_move_ids().size(), 59, "47 + 12 de la Forêt de Jade (jalon 9)")
 	assert_true(_data.has_move(&"struggle"))
 
 
@@ -98,6 +119,11 @@ func test_real_evolution_chains() -> void:
 		&"spearow": [&"fearow", 20], &"mankey": [&"primeape", 28],
 		&"nidoran_f": [&"nidorina", 16], &"nidorina": [&"nidoqueen", &"moon_stone"],
 		&"nidoran_m": [&"nidorino", 16], &"nidorino": [&"nidoking", &"moon_stone"],
+		# Forêt de Jade (jalon 9, dossier 10 §6) ; Raichu par la Pierre Foudre, jamais
+		# déclenchée au jalon 9 (l'objet n'existe pas).
+		&"caterpie": [&"metapod", 7], &"metapod": [&"butterfree", 10],
+		&"weedle": [&"kakuna", 7], &"kakuna": [&"beedrill", 10],
+		&"pikachu": [&"raichu", &"thunder_stone"],
 	}
 	for id: StringName in _data.get_species_ids():
 		var rules := _data.get_species(id).evolutions
@@ -340,6 +366,8 @@ func test_real_catch_rates_are_the_official_ones() -> void:
 		&"spearow": 255, &"fearow": 90, &"mankey": 190, &"primeape": 75,
 		&"nidoran_f": 235, &"nidorina": 120, &"nidoqueen": 45,
 		&"nidoran_m": 235, &"nidorino": 120, &"nidoking": 45,
+		&"caterpie": 255, &"metapod": 120, &"butterfree": 45,
+		&"weedle": 255, &"kakuna": 120, &"beedrill": 45, &"pikachu": 190, &"raichu": 75,
 	}
 	assert_eq(_data.get_species_ids().size(), expected.size(), "toutes les espèces")
 	for id: StringName in _data.get_species_ids():
@@ -538,3 +566,146 @@ func test_route_22_moves_values() -> void:
 	for id: StringName in pending:
 		assert_eq(_data.get_move(id).pending_effects, PackedStringArray(pending[id]),
 			String(id))
+
+
+# --- Espèces et capacités du jalon 9 (Forêt de Jade, T1) --------------------------------
+
+func test_forest_species_values() -> void:
+	_data.load_dir()
+	assert_eq(_data.get_errors().size(), 0, _errors())
+	for id: StringName in FOREST_SPECIES:
+		var v: Array = FOREST_SPECIES[id]
+		var species := _data.get_species(id)
+		assert_not_null(species, String(id))
+		if species == null:
+			continue
+		assert_eq([species.dex, species.name], [v[0], v[1]], String(id))
+		var types: Array[StringName] = []
+		types.assign(v[2])
+		assert_eq(species.types, types, String(id))
+		assert_eq(species.base_stats, {&"hp": v[3], &"atk": v[4], &"def": v[5], &"spa": v[6],
+			&"spd": v[7], &"spe": v[8]} as Dictionary[StringName, int], String(id))
+		assert_eq(species.base_exp, v[9], String(id))
+		assert_eq(species.male_ratio, v[10], String(id))
+		assert_eq(species.growth_rate, v[11], String(id))
+
+
+func test_forest_learnsets_are_red_blue() -> void:
+	# Rouge/Bleu (PokeAPI, groupe red-blue) ; Chrysacier et Coconfort apprennent en plus
+	# Armure au niveau 7, celui de leur évolution (Q-5, jalon-09.md §2.5).
+	_data.load_dir()
+	var expected := {
+		&"caterpie": [[1, &"tackle"], [1, &"string_shot"]],
+		&"metapod": [[1, &"harden"], [7, &"harden"]],
+		&"butterfree": [[1, &"confusion"], [12, &"confusion"], [15, &"poison_powder"],
+			[16, &"stun_spore"], [17, &"sleep_powder"], [21, &"supersonic"],
+			[26, &"whirlwind"], [32, &"psybeam"]],
+		&"weedle": [[1, &"poison_sting"], [1, &"string_shot"]],
+		&"kakuna": [[1, &"harden"], [7, &"harden"]],
+		&"beedrill": [[1, &"fury_attack"], [12, &"fury_attack"], [16, &"focus_energy"],
+			[20, &"twineedle"], [25, &"rage"], [30, &"pin_missile"], [35, &"agility"]],
+		&"pikachu": [[1, &"thunder_shock"], [1, &"growl"], [9, &"thunder_wave"],
+			[16, &"quick_attack"], [26, &"swift"], [33, &"agility"], [43, &"thunder"]],
+		&"raichu": [[1, &"thunder_shock"], [1, &"growl"], [1, &"thunder_wave"]],
+	}
+	for id: StringName in expected:
+		assert_eq(_data.get_species(id).learnset, expected[id], String(id))
+	# Ce que sait un Pokémon de la forêt aux niveaux des rencontres et des Dresseurs.
+	assert_eq(_data.get_species(&"caterpie").moves_at(5), [&"tackle", &"string_shot"]
+		as Array[StringName])
+	assert_eq(_data.get_species(&"weedle").moves_at(5), [&"poison_sting", &"string_shot"]
+		as Array[StringName])
+	assert_eq(_data.get_species(&"metapod").moves_at(6), [&"harden"] as Array[StringName])
+	assert_eq(_data.get_species(&"pikachu").moves_at(5), [&"thunder_shock", &"growl"]
+		as Array[StringName])
+	assert_eq(_data.get_species(&"pikachu").moves_at(9),
+		[&"thunder_shock", &"growl", &"thunder_wave"] as Array[StringName])
+
+
+func test_forest_moves_values() -> void:
+	_data.load_dir()
+	# [nom, type, catégorie, puissance, précision, PP] : valeurs actuelles, comme les autres.
+	var expected := {
+		&"string_shot": ["Sécrétion", &"bug", MoveData.Category.STATUS, 0, 95, 40],
+		&"harden": ["Armure", &"normal", MoveData.Category.STATUS, 0, 0, 30],
+		&"thunder_shock": ["Éclair", &"electric", MoveData.Category.SPECIAL, 40, 100, 30],
+		&"thunder_wave": ["Cage-Éclair", &"electric", MoveData.Category.STATUS, 0, 90, 20],
+		&"confusion": ["Choc Mental", &"psychic", MoveData.Category.SPECIAL, 50, 100, 25],
+		&"stun_spore": ["Para-Spore", &"grass", MoveData.Category.STATUS, 0, 75, 30],
+		&"supersonic": ["Ultrason", &"normal", MoveData.Category.STATUS, 0, 55, 20],
+		&"psybeam": ["Rafale Psy", &"psychic", MoveData.Category.SPECIAL, 65, 100, 20],
+		&"twineedle": ["Double-Dard", &"bug", MoveData.Category.PHYSICAL, 25, 100, 20],
+		&"pin_missile": ["Dard-Nuée", &"bug", MoveData.Category.PHYSICAL, 25, 95, 20],
+		&"swift": ["Météores", &"normal", MoveData.Category.SPECIAL, 60, 0, 20],
+		&"thunder": ["Fatal-Foudre", &"electric", MoveData.Category.SPECIAL, 110, 70, 10],
+	}
+	for id: StringName in expected:
+		var move := _data.get_move(id)
+		assert_not_null(move, String(id))
+		if move == null:
+			continue
+		assert_eq([move.name, move.type, move.category, move.power, move.accuracy, move.pp],
+			expected[id], String(id))
+	var shot := _data.get_move(&"string_shot")
+	assert_eq([shot.effects[0].stat, shot.effects[0].stages, shot.effects[0].target],
+		[&"spe", -2, MoveEffect.Target.FOE])
+	var harden := _data.get_move(&"harden")
+	assert_eq([harden.effects[0].stat, harden.effects[0].stages, harden.effects[0].target],
+		[&"def", 1, MoveEffect.Target.SELF])
+	assert_true(_data.get_move(&"swift").never_misses(), "Météores ne rate jamais")
+	# Effets absents du moteur : paralysie et confusion au jalon 11, coups multiples plus
+	# tard ; le poison de Double-Dard devient réel au T4 (avec Dard-Venin et Poudre Toxik).
+	var pending := {
+		&"string_shot": [], &"harden": [], &"swift": [],
+		&"thunder_shock": ["paralysis_10"], &"thunder_wave": ["paralysis"],
+		&"confusion": ["confusion_10"], &"stun_spore": ["paralysis"],
+		&"supersonic": ["confusion"], &"psybeam": ["confusion_10"],
+		&"twineedle": ["hits_2", "poison_20"], &"pin_missile": ["multi_hit"],
+		&"thunder": ["paralysis_30"],
+	}
+	for id: StringName in pending:
+		assert_eq(_data.get_move(id).pending_effects, PackedStringArray(pending[id]),
+			String(id))
+
+
+func test_moves_without_effect_say_so() -> void:
+	# Lot de textes du jalon 9 (verrouillé le 2026-10-07) : toute capacité de statut dont
+	# l'effet n'est pas joué porte « Sans effet dans le moteur actuel. », Poudre Dodo comprise.
+	_data.load_dir()
+	for id: StringName in [&"thunder_wave", &"stun_spore", &"supersonic", &"sleep_powder"]:
+		assert_true(_data.get_move(id).description.ends_with(
+			" Sans effet dans le moteur actuel."), String(id))
+	assert_eq(_data.get_move(&"sleep_powder").description,
+		"Une poudre soporifique qui endort la cible. Sans effet dans le moteur actuel.")
+
+
+func test_forest_wild_moves_only_wait_for_poison_and_paralysis() -> void:
+	# Invariant de jouabilité adapté à la forêt : aux niveaux des rencontres (§6 du dossier 10)
+	# et des Dresseurs, les seuls effets encore absents sont le poison de Dard-Venin (réel au
+	# T4) et la paralysie d'Éclair (J11, limite connue) ; les dégâts, eux, sont joués.
+	_data.load_dir()
+	var allowed: Dictionary = {&"poison_sting": "poison_30", &"thunder_shock": "paralysis_10"}
+	for pair: Array in [[&"caterpie", 7], [&"weedle", 6], [&"metapod", 7], [&"kakuna", 7],
+			[&"pikachu", 5]]:
+		for move_id: StringName in _data.get_species(pair[0]).moves_at(pair[1]):
+			var move := _data.get_move(move_id)
+			if allowed.has(move_id):
+				assert_eq(move.pending_effects, PackedStringArray([allowed[move_id]]),
+					String(move_id))
+			else:
+				assert_eq(move.pending_effects.size(), 0,
+					"%s à Nv.%d connaît %s (effet non codé)" % [pair[0], pair[1], move_id])
+
+
+func test_forest_move_texts_are_the_locked_ones() -> void:
+	# Lot de textes du jalon 9 (verrouillé par Kevin le 2026-10-07), n° 16 à 39, mot pour mot.
+	_data.load_dir()
+	var lot := FileAccess.get_file_as_string("res://docs/design/textes/textes-brouillon-j9.md")
+	assert_false(lot.is_empty(), "lot de textes lisible")
+	for id: StringName in [&"string_shot", &"harden", &"thunder_shock", &"thunder_wave",
+			&"confusion", &"stun_spore", &"supersonic", &"psybeam", &"twineedle",
+			&"pin_missile", &"swift", &"thunder"]:
+		var move := _data.get_move(id)
+		assert_true(lot.contains("`%s` · `name` | " % id), String(id))
+		assert_true(lot.contains("| « %s » |" % move.name), "%s : nom" % id)
+		assert_true(lot.contains("| « %s » |" % move.description), "%s : description" % id)

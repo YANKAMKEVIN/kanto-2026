@@ -90,6 +90,52 @@
 			[52, "hydro_pump"]
 		]
 	},
+	"caterpie": {
+		"dex": 10, "name": "Chenipan", "types": ["bug"],
+		"base_stats": { "hp": 45, "atk": 30, "def": 35, "spa": 20, "spd": 20, "spe": 45 },
+		"male_ratio": 0.5, "growth_rate": "medium_fast", "base_exp": 39, "catch_rate": 255,
+		"learnset": [[1, "tackle"], [1, "string_shot"]],
+		"evolutions": [{ "into": "metapod", "method": "level", "level": 7 }]
+	},
+	"metapod": {
+		"dex": 11, "name": "Chrysacier", "types": ["bug"],
+		"base_stats": { "hp": 50, "atk": 20, "def": 55, "spa": 25, "spd": 25, "spe": 30 },
+		"male_ratio": 0.5, "growth_rate": "medium_fast", "base_exp": 72, "catch_rate": 120,
+		"learnset": [[1, "harden"], [7, "harden"]],
+		"evolutions": [{ "into": "butterfree", "method": "level", "level": 10 }]
+	},
+	"butterfree": {
+		"dex": 12, "name": "Papilusion", "types": ["bug", "flying"],
+		"base_stats": { "hp": 60, "atk": 45, "def": 50, "spa": 90, "spd": 80, "spe": 70 },
+		"male_ratio": 0.5, "growth_rate": "medium_fast", "base_exp": 178, "catch_rate": 45,
+		"learnset": [
+			[1, "confusion"], [12, "confusion"], [15, "poison_powder"], [16, "stun_spore"],
+			[17, "sleep_powder"], [21, "supersonic"], [26, "whirlwind"], [32, "psybeam"]
+		]
+	},
+	"weedle": {
+		"dex": 13, "name": "Aspicot", "types": ["bug", "poison"],
+		"base_stats": { "hp": 40, "atk": 35, "def": 30, "spa": 20, "spd": 20, "spe": 50 },
+		"male_ratio": 0.5, "growth_rate": "medium_fast", "base_exp": 39, "catch_rate": 255,
+		"learnset": [[1, "poison_sting"], [1, "string_shot"]],
+		"evolutions": [{ "into": "kakuna", "method": "level", "level": 7 }]
+	},
+	"kakuna": {
+		"dex": 14, "name": "Coconfort", "types": ["bug", "poison"],
+		"base_stats": { "hp": 45, "atk": 25, "def": 50, "spa": 25, "spd": 25, "spe": 35 },
+		"male_ratio": 0.5, "growth_rate": "medium_fast", "base_exp": 72, "catch_rate": 120,
+		"learnset": [[1, "harden"], [7, "harden"]],
+		"evolutions": [{ "into": "beedrill", "method": "level", "level": 10 }]
+	},
+	"beedrill": {
+		"dex": 15, "name": "Dardargnan", "types": ["bug", "poison"],
+		"base_stats": { "hp": 65, "atk": 90, "def": 40, "spa": 45, "spd": 80, "spe": 75 },
+		"male_ratio": 0.5, "growth_rate": "medium_fast", "base_exp": 178, "catch_rate": 45,
+		"learnset": [
+			[1, "fury_attack"], [12, "fury_attack"], [16, "focus_energy"], [20, "twineedle"],
+			[25, "rage"], [30, "pin_missile"], [35, "agility"]
+		]
+	},
 	"pidgey": {
 		"dex": 16, "name": "Roucool", "types": ["normal", "flying"],
 		"base_stats": { "hp": 40, "atk": 45, "def": 40, "spa": 35, "spd": 35, "spe": 56 },
@@ -157,6 +203,22 @@
 			[1, "peck"], [1, "growl"], [1, "leer"], [9, "leer"], [15, "fury_attack"],
 			[25, "mirror_move"], [34, "drill_peck"], [43, "agility"]
 		]
+	},
+	"pikachu": {
+		"dex": 25, "name": "Pikachu", "types": ["electric"],
+		"base_stats": { "hp": 35, "atk": 55, "def": 40, "spa": 50, "spd": 50, "spe": 90 },
+		"male_ratio": 0.5, "growth_rate": "medium_fast", "base_exp": 112, "catch_rate": 190,
+		"learnset": [
+			[1, "thunder_shock"], [1, "growl"], [9, "thunder_wave"], [16, "quick_attack"],
+			[26, "swift"], [33, "agility"], [43, "thunder"]
+		],
+		"evolutions": [{ "into": "raichu", "method": "item", "item": "thunder_stone" }]
+	},
+	"raichu": {
+		"dex": 26, "name": "Raichu", "types": ["electric"],
+		"base_stats": { "hp": 60, "atk": 90, "def": 55, "spa": 90, "spd": 80, "spe": 110 },
+		"male_ratio": 0.5, "growth_rate": "medium_fast", "base_exp": 218, "catch_rate": 75,
+		"learnset": [[1, "thunder_shock"], [1, "growl"], [1, "thunder_wave"]]
 	},
 	"nidoran_f": {
 		"dex": 29, "name": "Nidoran♀", "types": ["poison"],

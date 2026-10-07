@@ -1,0 +1,15 @@
+{
+	"viridian_forest_grass": {
+		"maps": ["viridian_forest", "qa_forest_systems"],
+		"terrain": "grass",
+		"rate": 25,
+		"ramp": { "from_step": 15, "max_steps": 20 },
+		"slots": [
+			{ "species": "caterpie", "levels": [3, 5], "weight": 35 },
+			{ "species": "weedle", "levels": [3, 5], "weight": 35 },
+			{ "species": "kakuna", "levels": [4, 6], "weight": 13 },
+			{ "species": "metapod", "levels": [4, 6], "weight": 12 },
+			{ "species": "pikachu", "levels": [4, 5], "weight": 5 }
+		]
+	}
+}

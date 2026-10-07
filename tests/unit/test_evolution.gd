@@ -32,6 +32,32 @@ func test_level_targets_of_the_three_lines() -> void:
 		"forme finale")
 
 
+func test_forest_lines_evolve_at_7_and_10() -> void:
+	# Dossier 10 §6 (jalon-09.md §2.5) : Chenipan → Chrysacier Nv. 7 → Papilusion Nv. 10,
+	# Aspicot → Coconfort Nv. 7 → Dardargnan Nv. 10.
+	var cases := [
+		[&"caterpie", &"metapod", 7], [&"metapod", &"butterfree", 10],
+		[&"weedle", &"kakuna", 7], [&"kakuna", &"beedrill", 10],
+	]
+	for c: Array in cases:
+		assert_eq(Evolution.level_up_target(_create(_real, c[0], c[2] - 1), _real), &"",
+			"%s Nv. %d" % [c[0], c[2] - 1])
+		assert_eq(Evolution.level_up_target(_create(_real, c[0], c[2]), _real), c[1],
+			"%s Nv. %d" % [c[0], c[2]])
+	assert_eq(Evolution.level_up_target(_create(_real, &"butterfree", 100), _real), &"")
+	assert_eq(Evolution.level_up_target(_create(_real, &"beedrill", 100), _real), &"")
+
+
+func test_pikachu_never_evolves_by_level() -> void:
+	# Raichu par la Pierre Foudre (objet absent au jalon 9) : jamais par niveau.
+	for level: int in [5, 9, 30, 100]:
+		assert_eq(Evolution.level_up_target(_create(_real, &"pikachu", level), _real), &"",
+			"Pikachu Nv. %d" % level)
+	var pikachu := _create(_real, &"pikachu", 5)
+	assert_eq(Evolution.item_target(pikachu, &"thunder_stone", _real), &"raichu")
+	assert_eq(Evolution.item_target(pikachu, &"moon_stone", _real), &"")
+
+
 func test_item_target() -> void:
 	var sprout := _create(_fixture, &"sprout", 5)
 	assert_eq(Evolution.item_target(sprout, &"leaf_stone", _fixture), &"flower")

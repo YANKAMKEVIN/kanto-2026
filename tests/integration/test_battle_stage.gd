@@ -444,3 +444,30 @@ func test_reduced_flashes_soften_the_flash_and_still_end_clean() -> void:
 	assert_eq(_stage.get_sprite(FOE_SIDE).modulate, Color.WHITE, "retour à l etat de repos")
 	_stage.reduce_flashes = false
 	assert_eq(_stage._flash_alpha(1.0), 1.0)
+
+
+func test_every_species_met_in_battle_has_its_sprites() -> void:
+	# jalon-09.md §2.5 (T1) : sprites provisoires (tools/gen_placeholder_battlers.gd) pour
+	# chaque espèce d'une table de rencontres ou d'une équipe de Dresseur, et pour les huit
+	# espèces de la Forêt de Jade (les évolutions naissent en combat, Raichu au Pokédex).
+	var data := PokemonData.new()
+	data.load_dir()
+	var species: Array[StringName] = [&"caterpie", &"metapod", &"butterfree", &"weedle",
+		&"kakuna", &"beedrill", &"pikachu", &"raichu"]
+	var encounters := EncounterLibrary.new(data)
+	encounters.load_dir()
+	for map_id: StringName in [&"route_1", &"route_22", &"viridian_forest"]:
+		for slot: EncounterSlot in encounters.get_table(map_id).slots:
+			species.append(slot.species)
+	var trainers := TrainerLibrary.new(data)
+	trainers.load_dir()
+	for trainer_id: StringName in trainers.get_ids():
+		for starter: StringName in [&"bulbasaur", &"charmander", &"squirtle"]:
+			species.append(starter)
+			for slot: TrainerSlot in trainers.get_trainer(trainer_id).team_for(starter):
+				species.append(slot.species)
+	for id: StringName in species:
+		assert_true(data.has_species(id), String(id))
+		for back: bool in [false, true]:
+			var path := BattleStage.sprite_path(id, back)
+			assert_true(ResourceLoader.exists(path), path)

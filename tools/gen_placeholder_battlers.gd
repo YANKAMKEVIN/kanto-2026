@@ -1,7 +1,9 @@
 extends SceneTree
 ## Génère les sprites de combat provisoires des starters (jalon-04.md §14.4, T6), des espèces
-## de la Route 1 (jalon 5) et des quatre nouvelles espèces de la Route 22 (jalon-07.md Q-2 :
-## provisoires en combat comme les autres, le peint en combat pour tous à la phase DA).
+## de la Route 1 (jalon 5), des quatre nouvelles espèces de la Route 22 (jalon-07.md Q-2 :
+## provisoires en combat comme les autres, le peint en combat pour tous à la phase DA) et des
+## huit espèces de la Forêt de Jade (jalon-09.md §2.5 : Chenipan → Papilusion, Aspicot →
+## Dardargnan, Pikachu, Raichu ; les évolutions aussi, puisqu'elles naissent en combat).
 ## Pixel art 64 × 64 natif, affiché en NEAREST par le BattleStage (×4 de dos, ×3 de face) :
 ##   assets/sprites/pokemon/placeholder/<espèce>_front.png   (vue de face : l'adversaire)
 ##   assets/sprites/pokemon/placeholder/<espèce>_back.png    (vue de dos : le Pokémon du joueur)
@@ -19,6 +21,7 @@ const SIZE: int = 64
 const SPECIES: Array[String] = [
 	"bulbasaur", "charmander", "squirtle", "pidgey", "rattata",
 	"spearow", "mankey", "nidoran_f", "nidoran_m",
+	"caterpie", "metapod", "butterfree", "weedle", "kakuna", "beedrill", "pikachu", "raichu",
 ]
 const OUTLINE := Color("#1c1c28")
 const EYE := Color("#1c1c28")
@@ -445,6 +448,208 @@ func _draw_nidoran(img: Image, back: bool, skin: Color, spot: Color, ear: Color,
 		_line(img, Vector2(42, 36), Vector2(52, 34), skin.darkened(0.3))
 		_r(img, 30, 38, 1, 2, WHITE)
 		_r(img, 33, 38, 1, 2, WHITE)
+
+
+# --- Chenipan ---------------------------------------------------------------------
+
+## Chenille verte en S, anneaux, ventre crème, antenne rouge fourchue, gros œil à pupille noire.
+func _draw_caterpie(img: Image, back: bool) -> void:
+	var skin := Color("#78c048")
+	var belly := Color("#f0e0a0")
+	var ring := Color("#4f8a30")
+	var horn := Color("#e04838")
+	# Segments du corps, de la queue (bas) à la tête (haut) ; vus de dos, la tête est en bas
+	# de la pile et l'antenne pointe vers le haut.
+	var segments: Array[Vector3] = [Vector3(50, 55, 7), Vector3(40, 54, 8),
+		Vector3(30, 50, 9), Vector3(24, 42, 9)]
+	for seg: Vector3 in segments:
+		_e(img, seg.x, seg.y, seg.z, seg.z * 0.85, skin, true)
+		if not back:
+			_e(img, seg.x - 1, seg.y + seg.z * 0.35, seg.z * 0.6, seg.z * 0.35, belly)
+		_line(img, Vector2(seg.x + seg.z * 0.7, seg.y - seg.z * 0.6),
+			Vector2(seg.x + seg.z * 0.7, seg.y + seg.z * 0.6), ring)
+	_line(img, Vector2(28, 16), Vector2(24, 7), horn, 3)
+	_line(img, Vector2(24, 7), Vector2(18, 5), horn, 2)
+	_line(img, Vector2(24, 7), Vector2(29, 3), horn, 2)
+	_e(img, 28, 26, 13, 12, skin, true)
+	if back:
+		_e(img, 24, 21, 4, 3, skin.lightened(0.2))
+		return
+	_e(img, 30, 31, 8, 5, belly)
+	_e(img, 19, 24, 5, 6, Color("#1c1c28"))
+	_e(img, 19, 24, 3, 4, WHITE)
+	_r(img, 18, 23, 3, 4, EYE)
+	_r(img, 18, 23, 1, 1, WHITE)
+	_r(img, 33, 30, 4, 2, ring.darkened(0.3))
+
+
+# --- Chrysacier -------------------------------------------------------------------
+
+## Cocon vert en amande, plaques de carapace, œil en fente.
+func _draw_metapod(img: Image, back: bool) -> void:
+	_draw_cocoon(img, back, Color("#5ea85a"), Color("#3f7a3c"), false)
+
+
+# --- Coconfort --------------------------------------------------------------------
+
+## Cocon jaune, plus pointu, crochets latéraux, œil en fente.
+func _draw_kakuna(img: Image, back: bool) -> void:
+	_draw_cocoon(img, back, Color("#e8c040"), Color("#a8842a"), true)
+
+
+## Silhouette commune des cocons : dressé, plaques en chevrons ; [param hooks] = Coconfort.
+func _draw_cocoon(img: Image, back: bool, shell: Color, plate: Color, hooks: bool) -> void:
+	_e(img, 32, 40, 15, 21, shell, true)
+	_e(img, 32, 18, 11, 10, shell, true)
+	if hooks:
+		_line(img, Vector2(19, 30), Vector2(12, 26), plate, 3)
+		_line(img, Vector2(45, 30), Vector2(52, 26), plate, 3)
+		_line(img, Vector2(32, 10), Vector2(32, 4), plate, 2)
+	for i: int in 4:
+		var y := 30 + i * 8
+		_line(img, Vector2(19, y), Vector2(32, y + 3), plate)
+		_line(img, Vector2(32, y + 3), Vector2(45, y), plate)
+	_e(img, 26, 26, 4, 7, shell.lightened(0.25))
+	if back:
+		return
+	_r(img, 22, 19, 9, 3, Color("#1c1c28"))
+	_r(img, 24, 19, 4, 2, WHITE)
+	_r(img, 36, 19, 6, 3, Color("#1c1c28"))
+
+
+# --- Papilusion -------------------------------------------------------------------
+
+## Papillon : deux paires d'ailes blanches veinées de noir, corps violet, grands yeux rouges.
+func _draw_butterfree(img: Image, back: bool) -> void:
+	var wing := Color("#f4f4f8")
+	var vein := Color("#3a3a48")
+	var body := Color("#6a5ab0")
+	for side: int in [-1, 1]:
+		_e(img, 32 + side * 17, 22, 15, 14, wing, true)
+		_e(img, 32 + side * 14, 44, 11, 10, wing, true)
+		_e(img, 32 + side * 25, 16, 5, 5, vein)
+		_line(img, Vector2(32 + side * 4, 28), Vector2(32 + side * 28, 14), vein)
+		_line(img, Vector2(32 + side * 4, 40), Vector2(32 + side * 20, 50), vein)
+	_e(img, 32, 40, 6, 12, body, true)
+	_r(img, 27, 52, 4, 6, body.darkened(0.2))
+	_r(img, 33, 52, 4, 6, body.darkened(0.2))
+	_e(img, 32, 24, 10, 9, body, true)
+	_line(img, Vector2(28, 16), Vector2(22, 4), vein)
+	_line(img, Vector2(36, 16), Vector2(42, 4), vein)
+	if back:
+		return
+	_e(img, 27, 24, 5, 6, Color("#d03838"))
+	_e(img, 37, 24, 5, 6, Color("#d03838"))
+	_r(img, 25, 22, 2, 2, WHITE)
+	_r(img, 35, 22, 2, 2, WHITE)
+	_r(img, 30, 31, 4, 1, body.darkened(0.4))
+
+
+# --- Aspicot ----------------------------------------------------------------------
+
+## Larve brun orangé à anneaux, dard sur la tête et au bout de la queue, nez rose.
+func _draw_weedle(img: Image, back: bool) -> void:
+	var skin := Color("#d89040")
+	var stinger := Color("#e8e4d8")
+	var nose := Color("#e88a9a")
+	var segments: Array[Vector3] = [Vector3(50, 55, 6), Vector3(41, 53, 7),
+		Vector3(32, 49, 8), Vector3(26, 41, 8)]
+	_line(img, Vector2(55, 54), Vector2(61, 52), stinger, 2)
+	for seg: Vector3 in segments:
+		_e(img, seg.x, seg.y, seg.z, seg.z * 0.85, skin, true)
+		_line(img, Vector2(seg.x + seg.z * 0.7, seg.y - seg.z * 0.6),
+			Vector2(seg.x + seg.z * 0.7, seg.y + seg.z * 0.6), skin.darkened(0.3))
+	_line(img, Vector2(28, 16), Vector2(28, 4), stinger, 3)
+	_e(img, 28, 26, 12, 11, skin, true)
+	if back:
+		_e(img, 24, 21, 4, 3, skin.lightened(0.2))
+		return
+	_e(img, 27, 31, 5, 4, nose)
+	_r(img, 18, 22, 4, 5, EYE)
+	_r(img, 18, 22, 1, 1, WHITE)
+	_r(img, 33, 22, 4, 5, EYE)
+	_r(img, 33, 22, 1, 1, WHITE)
+
+
+# --- Dardargnan -------------------------------------------------------------------
+
+## Guêpe jaune et noire, ailes translucides, deux dards aux bras, un au bout de l'abdomen.
+func _draw_beedrill(img: Image, back: bool) -> void:
+	var yellow := Color("#f0c838")
+	var black := Color("#2a2a30")
+	var wing := Color("#dfe8f4")
+	var stinger := Color("#e8e4d8")
+	_e(img, 14, 20, 10, 7, wing)
+	_e(img, 50, 20, 10, 7, wing)
+	_e(img, 32, 47, 10, 13, yellow, true)
+	for y: int in [42, 50]:
+		_r(img, 23, y, 18, 3, black)
+	_line(img, Vector2(32, 59), Vector2(32, 61), stinger, 2)
+	_e(img, 32, 30, 8, 6, yellow, true)
+	_line(img, Vector2(24, 30), Vector2(10, 40), yellow.darkened(0.15), 3)
+	_line(img, Vector2(40, 30), Vector2(54, 40), yellow.darkened(0.15), 3)
+	_line(img, Vector2(10, 40), Vector2(8, 52), stinger, 3)
+	_line(img, Vector2(54, 40), Vector2(56, 52), stinger, 3)
+	_e(img, 32, 16, 10, 9, yellow, true)
+	_line(img, Vector2(27, 8), Vector2(22, 1), black)
+	_line(img, Vector2(37, 8), Vector2(42, 1), black)
+	if back:
+		return
+	_e(img, 27, 16, 4, 4, Color("#d03838"))
+	_e(img, 37, 16, 4, 4, Color("#d03838"))
+	_r(img, 26, 15, 1, 1, WHITE)
+	_r(img, 36, 15, 1, 1, WHITE)
+
+
+# --- Pikachu ----------------------------------------------------------------------
+
+## Souris jaune, oreilles pointues à bout noir, joues rouges, queue en éclair.
+func _draw_pikachu(img: Image, back: bool) -> void:
+	_draw_mouse(img, back, Color("#f8d838"), Color("#2a2a30"), Color("#e84838"), false)
+
+
+# --- Raichu -----------------------------------------------------------------------
+
+## Souris orange, oreilles arrondies, ventre crème, longue queue fine terminée en éclair.
+func _draw_raichu(img: Image, back: bool) -> void:
+	_draw_mouse(img, back, Color("#e8903a"), Color("#6a4a2a"), Color("#f0d040"), true)
+
+
+## Silhouette commune des deux souris électriques ; [param evolved] = Raichu (plus grand).
+func _draw_mouse(img: Image, back: bool, fur: Color, tip: Color, cheek: Color,
+		evolved: bool) -> void:
+	var tail := Color("#2a2a30") if evolved else fur.darkened(0.08)
+	var bolt := Color("#f8d838") if evolved else fur
+	var tail_side := 1 if back else -1
+	var tx := 32 + tail_side * 20
+	_line(img, Vector2(32 + tail_side * 10, 52), Vector2(tx, 40), tail, 2 if evolved else 3)
+	_line(img, Vector2(tx, 40), Vector2(tx + tail_side * 6, 30), bolt, 4)
+	_line(img, Vector2(tx + tail_side * 6, 30), Vector2(tx - tail_side * 2, 24), bolt, 4)
+	_line(img, Vector2(tx - tail_side * 2, 24), Vector2(tx + tail_side * 8, 12), bolt, 5)
+	var body_h := 15 if evolved else 13
+	_r(img, 20, 54, 9, 8, fur.darkened(0.15))
+	_r(img, 35, 54, 9, 8, fur.darkened(0.15))
+	_e(img, 32, 46, 15, body_h, fur, true)
+	if not back and evolved:
+		_e(img, 32, 48, 9, 9, Color("#f4e4c0"))
+	var ear_top := 2 if evolved else 0
+	for side: int in [-1, 1]:
+		var base := Vector2(32 + side * 9, 20)
+		var top := Vector2(32 + side * 17, ear_top + 2)
+		for w: int in range(0, 6):
+			_line(img, base + Vector2(side * w * 0.5 - 3, 0), top, fur)
+		_line(img, top + Vector2(-side * 1, 5), top, tip, 3)
+	_e(img, 32, 26, 15, 13, fur, true)
+	if back:
+		_r(img, 22, 40, 20, 2, fur.darkened(0.3))
+		_r(img, 24, 46, 16, 2, fur.darkened(0.3))
+		return
+	_eye(img, 22, 21, Color("#2a2a30"))
+	_eye(img, 37, 21, Color("#2a2a30"))
+	_e(img, 19, 32, 4, 3, cheek)
+	_e(img, 45, 32, 4, 3, cheek)
+	_r(img, 31, 29, 2, 1, EYE)
+	_r(img, 28, 33, 8, 1, fur.darkened(0.45))
 
 
 # --- Ombre ------------------------------------------------------------------------
