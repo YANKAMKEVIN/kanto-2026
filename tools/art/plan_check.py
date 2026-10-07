@@ -1,11 +1,12 @@
 #!/usr/bin/env python3
-"""Vérifie une grille fonctionnelle de la Route 2 par recherche de chemin (jalon 8, T0).
+"""Vérifie une grille fonctionnelle de carte par recherche de chemin (jalon 8 T0, jalon 9 T14).
 
 Mêmes règles de déplacement que `GridWorld` (game/world/grid_world.gd) : 4 directions, une case
 de rebord ne s'entre que dans son sens (vers le sud) et fait atterrir sur la case suivante
-(saut = un pas). Cases bloquées : tout caractère hors `. = h v D` et les positions `bloque`.
+(saut = un pas). Cases bloquées : tout caractère hors des praticables de la grille (ligne
+`PRATICABLES`, défaut `. = h v D`) et les positions `bloque`.
 
-Critères (docs/tech/jalon-08.md §3, T0 ; repris par test_route_2 au T5) :
+**Route 2** (`route_2.txt`, docs/tech/jalon-08.md §3, T0 ; repris par test_route_2 au T5) :
   1. la porte du poste est atteignable depuis l'entrée sud ;
   2. 5 ≤ cases de hautes herbes obligatoires ≤ 7, toutes dans H3 (H3 incontournable) ;
   3. H1 et H2 évitables (ensemble) sans allonger le minimum d'herbes ;
@@ -17,7 +18,11 @@ Critères (docs/tech/jalon-08.md §3, T0 ; repris par test_route_2 au T5) :
      spawns compris.
 Zones H1, H2, H3 = composantes connexes de hautes herbes, du sud au nord.
 
-Usage : python3 tools/art/plan_check.py [tools/plans/route_2.txt]   (code 1 si un critère échoue)
+**Forêt de Jade** (`viridian_forest.txt`, docs/tech/jalon-09.md §2.7.1, T14 ; repris par
+test_viridian_forest au T19 / T21) : voir `verifier_foret`.
+
+Usage : python3 tools/art/plan_check.py [grille.txt ...]   (code 1 si un critère échoue)
+        sans argument : toutes les grilles connues (Route 2, Forêt de Jade).
 """
 from __future__ import annotations
 
@@ -26,7 +31,7 @@ from collections import deque
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parent))
-from plan_grille import HERBES, PORTE, PRATICABLES, REBORD, Plan, lire  # noqa: E402
+from plan_grille import HERBES, PORTE, REBORD, Plan, lire  # noqa: E402
 
 RACINE = Path(__file__).resolve().parents[2]
 DIRECTIONS = [(0, -1), (0, 1), (-1, 0), (1, 0)]
@@ -47,7 +52,7 @@ class Monde:
 		x, y = c
 		if not (0 <= x < self.plan.width and 0 <= y < self.plan.height):
 			return False
-		return c not in self.bloquees and self.plan.at(x, y) in PRATICABLES
+		return c not in self.bloquees and self.plan.at(x, y) in self.plan.praticables
 
 	def entrer(self, c: Case, d: Case) -> bool:
 		if not self.libre(c):
@@ -122,7 +127,7 @@ def boite(zone: set[Case]) -> str:
 	return f"x {min(xs)}–{max(xs)}, y {min(ys)}–{max(ys)}, {len(zone)} cases"
 
 
-def verifier(chemin: Path) -> bool:
+def verifier_route_2(chemin: Path) -> bool:
 	plan = lire(chemin)
 	ok = True
 
@@ -234,10 +239,299 @@ def verifier(chemin: Path) -> bool:
 	return ok
 
 
+# --- Forêt de Jade (jalon 9, T14) -------------------------------------------------------------
+
+FACINGS = {"up": (0, -1), "down": (0, 1), "left": (-1, 0), "right": (1, 0)}
+# Sol où poser un personnage, un point d'apparition ou un objet caché : herbe rase, clairière,
+# chemin, sortie (jamais les hautes herbes : un objet caché y serait confondu avec une rencontre).
+SOL_RAS = set(".C=gL")
+# Dossier 10 : taille (enveloppe verrouillée), visions, objets visibles / cachés.
+FORET_TAILLE = (58, 74)
+FORET_CHEMIN = (220, 280)          # pas, entrée sud → porte du poste nord (arbitrage 4)
+FORET_H3 = (6, 8)                  # cases d'herbes obligatoires, toutes dans H3
+FORET_VISIONS = {"D1": 4, "D2": 5, "D3": 4, "D4": 5, "D5": 5}
+FORET_OBJETS = {"O1": "objet_visible", "O2": "objet_visible", "O3": "objet_cache",
+	"O4": "objet_cache", "O5": "objet_visible", "O6": "objet_cache"}
+FORET_O1_MAX = 25                  # pas depuis l'entrée
+FORET_O6_MAX = 15                  # pas depuis la porte du poste nord
+FORET_DETECTION_D1 = 3             # distance minimale de la première case vue de Théo (≥ 2 libres)
+FORET_CLAIRIERE = (7, 5)           # C1–C3 : au moins 7 × 5 cases (caméra ≈ 24,4 × 11,25)
+
+
+def _decale(c: Case, d: Case, k: int = 1) -> Case:
+	return (c[0] + d[0] * k, c[1] + d[1] * k)
+
+
+def ligne_de_vue(monde: Monde, p) -> list[Case]:
+	"""Cases vues par un Dresseur (TrainerRules.sight_distance) : la ligne s'arrête à la première
+	case infranchissable ou occupée ; les hautes herbes ne la coupent pas."""
+	d = FACINGS[p.attrs["facing"]]
+	cases: list[Case] = []
+	for k in range(1, int(p.attrs["sight"]) + 1):
+		c = _decale(p.cells[0], d, k)
+		if not monde.libre(c):
+			break
+		cases.append(c)
+	return cases
+
+
+def ligne_brute(plan: Plan, p) -> list[Case]:
+	"""La ligne de vue déclarée, sans tenir compte des obstacles (pour les contrôles)."""
+	d = FACINGS[p.attrs["facing"]]
+	return [_decale(p.cells[0], d, k) for k in range(1, int(p.attrs["sight"]) + 1)
+		if 0 <= _decale(p.cells[0], d, k)[0] < plan.width
+		and 0 <= _decale(p.cells[0], d, k)[1] < plan.height]
+
+
+def premiere_detection(monde: Monde, departs: list[Case], vue: list[Case]) -> int:
+	"""Plus petite distance (1..vision) au Dresseur d'une case de sa ligne qu'un joueur venu de
+	[departs] peut atteindre en entrant dans la ligne pour la première fois (INF : jamais)."""
+	rang = {c: i + 1 for i, c in enumerate(vue)}
+	vu = set(departs)
+	file = deque(departs)
+	mini = INF
+	while file:
+		c = file.popleft()
+		for n in monde.voisins(c):
+			if n in vu:
+				continue
+			vu.add(n)
+			if n in rang:
+				mini = min(mini, rang[n])  # détecté : on ne va pas plus loin
+			else:
+				file.append(n)
+	return mini
+
+
+def acces(monde: Monde, p) -> list[Case]:
+	"""Cases d'où l'on prend un objet : la sienne (caché, libre) ou ses voisines (visible)."""
+	c = p.cells[0]
+	if not p.bloque:
+		return [c]
+	return [_decale(c, d) for d in DIRECTIONS if monde.libre(_decale(c, d))]
+
+
+def _role(plan: Plan, kind: str) -> dict[str, object]:
+	return {p.attrs.get("role", p.ident): p for p in plan.of_kind(kind)}
+
+
+def verifier_foret(chemin: Path) -> bool:
+	plan = lire(chemin)
+	ok = True
+
+	def critere(vrai: bool, texte: str) -> None:
+		nonlocal ok
+		ok &= vrai
+		print(f"  [{'OK' if vrai else 'ÉCHEC'}] {texte}")
+
+	monde = Monde(plan)
+	print(f"Grille {chemin.relative_to(RACINE) if chemin.is_relative_to(RACINE) else chemin} : "
+		f"{plan.width} × {plan.height}")
+	critere((plan.width, plan.height) == FORET_TAILLE,
+		f"taille {plan.width} × {plan.height} (enveloppe verrouillée {FORET_TAILLE[0]} × "
+		f"{FORET_TAILLE[1]})")
+
+	# Entrée sud, porte nord, bords fermés.
+	bas = plan.height - 1
+	entree = [c for c in plan.cells_of("g") if c[1] == bas]
+	portes = plan.cells_of(PORTE)
+	if not entree or len(portes) != 1:
+		critere(False, f"sortie sud ({len(entree)} case(s) « g » en bas) et une porte « D » "
+			f"({len(portes)}) attendues")
+		return False
+	porte = portes[0]
+	bords = [(x, y) for y in range(plan.height) for x in range(plan.width)
+		if (x in (0, plan.width - 1) or y in (0, bas)) and monde.libre((x, y))]
+	critere(sorted(bords) == sorted(entree),
+		f"carte fermée : seules les cases de la sortie sud {entree} touchent le bord")
+	warps = {c for p in plan.of_kind("warp") for c in p.cells}
+	critere(set(entree) <= warps and porte in warps,
+		"warps sur toute la sortie sud et sur la porte du poste nord")
+
+	# 1. Chemin principal.
+	dist = monde.distances(entree)
+	aller = dist.get(porte, INF)
+	critere(FORET_CHEMIN[0] <= aller <= FORET_CHEMIN[1],
+		f"chemin principal le plus court : {aller} pas (attendu {FORET_CHEMIN[0]} à "
+		f"{FORET_CHEMIN[1]})")
+	if aller >= INF:
+		return False
+	retour = monde.distances([porte])
+
+	# 2. Hautes herbes : H1..H4 du sud au nord, seule H3 obligatoire.
+	zones = zones_herbes(plan)
+	if len(zones) != 4:
+		critere(False, f"4 zones de hautes herbes attendues, {len(zones)} trouvées")
+		return False
+	h1, h2, h3, h4 = zones
+	for nom, zone in zip(("H1", "H2", "H3", "H4"), zones):
+		print(f"  {nom} : {boite(zone)}")
+	toutes = set().union(*zones)
+	g_min = monde.herbes_min(entree, lambda c: c in toutes).get(porte, INF)
+	hors_h3 = monde.herbes_min(entree, lambda c: c in toutes and c not in h3).get(porte, INF)
+	sans_h3 = Monde(plan, h3).distances(entree).get(porte, INF)
+	critere(FORET_H3[0] <= g_min <= FORET_H3[1] and hors_h3 == 0 and sans_h3 >= INF,
+		f"herbes obligatoires : {g_min} (attendu {FORET_H3[0]} à {FORET_H3[1]}), toutes dans H3 "
+		f"(H3 incontournable : {'oui' if sans_h3 >= INF else 'NON'} ; minimum hors H3 {hors_h3})")
+	for nom, zone in (("H1", h1), ("H2", h2), ("H4", h4)):
+		d = Monde(plan, zone).distances(entree).get(porte, INF)
+		critere(d == aller, f"{nom} évitable sans détour ({d} pas sans y entrer)")
+
+	# 3. Dresseurs : visions, inévitabilité de Théo, évitabilité des autres.
+	dresseurs = _role(plan, "dresseur")
+	critere(sorted(dresseurs) == sorted(FORET_VISIONS),
+		f"5 Dresseurs D1..D5 : {sorted(dresseurs)}")
+	if sorted(dresseurs) != sorted(FORET_VISIONS):
+		return False
+	vues: dict[str, list[Case]] = {}
+	for role in sorted(dresseurs):
+		p = dresseurs[role]
+		vision = int(p.attrs.get("sight", "0"))
+		vue = ligne_de_vue(monde, p)
+		vues[role] = vue
+		critere(vision == FORET_VISIONS[role] and len(vue) == vision
+			and plan.at(*p.cells[0]) in SOL_RAS,
+			f"{role} {p.ident} {p.cells[0]} tourné {p.attrs.get('facing')} : vision {len(vue)}/"
+			f"{vision} cases dégagées (dossier : {FORET_VISIONS[role]}), "
+			f"{''.join(plan.at(*c) for c in vue)}")
+	sans_d1 = Monde(plan, set(vues["D1"])).distances(entree).get(porte, INF)
+	premiere = premiere_detection(monde, entree, vues["D1"])
+	critere(sans_d1 >= INF and premiere >= FORET_DETECTION_D1,
+		f"D1 inévitable ({'oui' if sans_d1 >= INF else f'NON, {sans_d1} pas sans le croiser'}) ; "
+		+ (f"première case vue à {premiere} cases ({premiere - 1} libres entre eux, attendu ≥ "
+		f"{FORET_DETECTION_D1 - 1})" if premiere < INF else "jamais vu"))
+	for role in ("D2", "D3", "D5"):
+		d = Monde(plan, set(vues[role])).distances(entree).get(porte, INF)
+		critere(d < INF, f"{role} évitable : porte atteinte en {d} pas hors de sa vue")
+	sans_d4 = Monde(plan, set(vues["D4"]))
+	d4_pas = sans_d4.distances(entree).get(porte, INF)
+	d4_herbes = sans_d4.herbes_min(entree, lambda c: c in toutes).get(porte, INF)
+	critere(d4_pas < INF and d4_herbes > g_min,
+		f"D4 évitable par les hautes herbes seulement : {d4_herbes} cases d'herbes hors de sa vue "
+		f"contre {g_min} ({d4_pas} pas)")
+
+	# 4. Objets.
+	objets = {**_role(plan, "objet_visible"), **_role(plan, "objet_cache")}
+	critere(sorted(objets) == sorted(FORET_OBJETS)
+		and all(objets[r].kind == k for r, k in FORET_OBJETS.items() if r in objets),
+		"6 objets O1..O6 : O1, O2, O5 visibles ; O3, O4, O6 cachés")
+	if sorted(objets) != sorted(FORET_OBJETS):
+		return False
+	def au_plus_pres(dists: dict[Case, int], p) -> int:
+		return min((dists.get(c, INF) for c in acces(monde, p)), default=INF)
+	for role in sorted(objets):
+		p = objets[role]
+		sol = plan.at(*p.cells[0])
+		critere(au_plus_pres(dist, p) < INF and sol in SOL_RAS - {"="}
+			if p.kind == "objet_cache" else au_plus_pres(dist, p) < INF and sol in SOL_RAS,
+			f"{role} {p.ident} {p.cells[0]} sur « {sol} » : atteint en {au_plus_pres(dist, p)} pas")
+	critere(au_plus_pres(dist, objets["O1"]) < FORET_O1_MAX,
+		f"O1 près du début : {au_plus_pres(dist, objets['O1'])} pas (< {FORET_O1_MAX})")
+	critere(au_plus_pres(retour, objets["O6"]) < FORET_O6_MAX,
+		f"O6 près de la sortie : {au_plus_pres(retour, objets['O6'])} pas de la porte "
+		f"(< {FORET_O6_MAX})")
+	sans_h2 = Monde(plan, h2).distances(entree)
+	critere(min((sans_h2.get(c, INF) for c in acces(monde, objets["O2"])), default=INF) >= INF,
+		"O2 au fond du cul-de-sac occidental : inaccessible sans traverser H2")
+	passage = plan.positions.get("passage_o3")
+	if passage is None:
+		critere(False, "repère passage_o3 (passage d'une case vers O3) manquant")
+	else:
+		c = passage.cells[0]
+		sans_p = Monde(plan, {c}).distances(entree)
+		voisins = sum(1 for d in DIRECTIONS if monde.libre(_decale(c, d)))
+		critere(monde.libre(c) and voisins == 2 and min((sans_p.get(a, INF)
+			for a in acces(monde, objets["O3"])), default=INF) >= INF,
+			f"O3 derrière la grande souche, par le passage d'une case {c}")
+	lignes = {c for p in dresseurs.values() for c in ligne_brute(plan, p)}
+	sur_ligne = [r for r, p in objets.items() if p.kind == "objet_visible" and p.cells[0] in lignes]
+	critere(not sur_ligne, f"aucun objet visible sur une ligne de vue de Dresseur {sur_ligne}")
+
+	# 5. Un Dresseur qui s'approche ne ferme jamais un passage (jalon 9 §6.9, §6.10).
+	# Cibles : la porte, l'entrée et chaque objet (par l'une de ses cases d'accès).
+	cibles = [[porte], [entree[0]]] + [acces(monde, p) for p in objets.values()]
+	fermes: list[str] = []
+	for role, p in sorted(dresseurs.items()):
+		for i, v in enumerate(vues[role]):
+			if v not in dist:
+				continue
+			arret = vues[role][i - 1] if i >= 1 else p.cells[0]
+			m = Monde(plan)
+			m.bloquees.discard(p.cells[0])
+			m.bloquees.add(arret)
+			d = m.distances([v])
+			if any(not any(c in d for c in groupe) for groupe in cibles):
+				fermes.append(f"{role} vu en {v} → arrêt {arret}")
+	critere(not fermes, "l'approche d'un Dresseur ne ferme aucun passage "
+		f"{fermes[:3] if fermes else ''}")
+
+	# 6. PNJ, Pokémon d'ambiance : hors herbes, hors lignes de vue.
+	for p in plan.of_kind("pnj") + plan.of_kind("pokemon") + plan.of_kind("decor"):
+		mauvais = [c for c in p.cells if c in lignes or plan.at(*c) == HERBES]
+		if p.kind == "pnj":
+			mauvais += [c for c in p.cells if plan.at(*c) not in SOL_RAS]
+		else:
+			pres = any(monde.libre(_decale(c, d)) or plan.at(*_decale(c, d)) in SOL_RAS
+				for c in p.cells for d in DIRECTIONS
+				if 0 <= _decale(c, d)[0] < plan.width and 0 <= _decale(c, d)[1] < plan.height)
+			if not pres:
+				mauvais.append("loin de toute case praticable")
+		if mauvais:
+			critere(False, f"{p.ident} ({p.kind}) mal placé : {mauvais}")
+
+	# 7. Repères sud → nord, clairières (respirations).
+	def moy_y(car: str) -> float:
+		cases = plan.cells_of(car)
+		return sum(y for _, y in cases) / len(cases) if cases else -1
+	tronc, souche, rai = moy_y("I"), moy_y("S"), moy_y("L")
+	critere(min(tronc, souche, rai) >= 0 and tronc > souche > rai,
+		f"repères du sud au nord : tronc incliné (y ≈ {tronc:.0f}) → grande souche "
+		f"(y ≈ {souche:.0f}) → clairière lumineuse (y ≈ {rai:.0f})")
+	vus = all(any(_decale(c, d) in dist or c in dist for c in plan.cells_of(car) for d in DIRECTIONS)
+		for car in "ISL")
+	critere(vus, "repères au bord d'une case atteignable")
+	for p in sorted(plan.of_kind("clairiere"), key=lambda p: p.attrs.get("role", p.ident)):
+		xs = [x for x, _ in p.cells]
+		ys = [y for _, y in p.cells]
+		taille = (max(xs) - min(xs) + 1, max(ys) - min(ys) + 1)
+		ouverte = all(plan.at(*c) in plan.praticables for c in p.cells)
+		mini = p.attrs.get("role", "").startswith("C")
+		critere(ouverte and (not mini or (taille[0] >= FORET_CLAIRIERE[0]
+			and taille[1] >= FORET_CLAIRIERE[1])),
+			f"clairière {p.attrs.get('role', p.ident)} {p.ident} : {taille[0]} × {taille[1]} "
+			f"cases ouvertes{' (≥ 7 × 5)' if mini else ''}")
+
+	# 8. Positions sur des cases cohérentes.
+	for p in plan.of_kind("spawn") + plan.of_kind("repere"):
+		for c in p.cells:
+			if plan.at(*c) not in SOL_RAS:
+				critere(False, f"{p.ident} sur « {plan.at(*c)} » en {c}")
+
+	# Statistiques.
+	praticables = sum(1 for y in range(plan.height) for x in range(plan.width)
+		if plan.at(x, y) in plan.praticables)
+	print(f"  statistiques : {praticables} cases praticables sur {plan.width * plan.height} "
+		f"({100 * praticables / (plan.width * plan.height):.0f} %), {len(toutes)} cases d'herbes "
+		f"(H1 {len(h1)}, H2 {len(h2)}, H3 {len(h3)}, H4 {len(h4)}) ; porte → sortie {retour.get(entree[0], INF)} pas")
+	return ok
+
+
+VERIFICATEURS = {"route_2": verifier_route_2, "viridian_forest": verifier_foret}
+
+
 def main() -> int:
-	chemin = Path(sys.argv[1]) if len(sys.argv) > 1 else RACINE / "tools/plans/route_2.txt"
-	ok = verifier(chemin.resolve())
-	print("Plan conforme." if ok else "Plan NON conforme.")
+	chemins = [Path(a) for a in sys.argv[1:]] or [RACINE / f"tools/plans/{n}.txt"
+		for n in VERIFICATEURS]
+	ok = True
+	for chemin in chemins:
+		verifier = VERIFICATEURS.get(chemin.stem)
+		if verifier is None:
+			print(f"{chemin} : aucune règle connue (attendu : {', '.join(VERIFICATEURS)})")
+			ok = False
+			continue
+		bon = verifier(chemin.resolve())
+		print("Plan conforme." if bon else "Plan NON conforme.")
+		ok &= bon
 	return 0 if ok else 1
 
 

@@ -8,7 +8,10 @@ le reste suit la légende du prompt `CONCEPT_ROUTE2_VUE_GENERALE_r1.txt`.
 1 case = 24 px ; la grille est centrée sur un fond de forêt 1024 × 1536 (format portrait de Codex).
 
 Usage : python3 tools/art/plan_aplats.py [grille.txt] [sortie.png] [--lisiere]
-        (défaut : tools/plans/route_2.txt → build/art/PLAN_ROUTE2_v1.png)
+        (défaut : tools/plans/route_2.txt → build/art/PLAN_ROUTE2_v1.png ;
+        tools/plans/viridian_forest.txt → build/art/PLAN_FORET_JADE_v1.png, jalon 9 T14,
+        `dessiner_foret` : 1 case = 17 px pour faire tenir 58 × 74 cases ; --annote ajoute
+        <sortie>_annote.png, version de relecture réduite, JAMAIS jointe à Codex)
 --lisiere (vue générale, essai 3) : la géométrie ne change pas ; le plan PORTE la transition
 vers la forêt (canopée plus sombre vers le nord, herbe éloignée du chemin rendue en sous-bois
 ombragé, arbres serrés le long du chemin) et ferme visiblement FUTUR A (masse d'arbre dense).
@@ -246,11 +249,232 @@ def dessiner(grille: Path, sortie: Path, lisiere: bool = False) -> Path:
 	return sortie
 
 
+# --- Forêt de Jade (jalon 9, T14) -------------------------------------------------------------
+# Légende de tools/plans/viridian_forest.txt. Couleurs : celles de la Route 2 pour chemin, hautes
+# herbes, poste, Poké Balls ; forêt plus profonde, sous-bois, clairières plus claires, rai de
+# lumière presque blanc (lumière blanche et douce, jamais dorée : prompt du T14).
+F_FORET = (16, 60, 34)              # T : forêt serrée infranchissable (et marges de l'image)
+F_SOUS_BOIS = (44, 100, 56)         # . : sous-bois praticable, à l'ombre
+F_CLAIRIERE = (84, 158, 72)         # C : clairière (herbe rase éclairée)
+F_LUMIERE = (214, 228, 170)         # L : rai de lumière au sol
+F_LUMIERE_HALO = (150, 196, 110)
+F_TRONC = (122, 82, 50)
+F_TRONC_BORD = (70, 45, 28)
+F_RACINE = (104, 72, 46)
+F_FOND_CASE = {
+	"T": F_FORET, ".": F_SOUS_BOIS, "C": F_CLAIRIERE, "L": F_LUMIERE, "=": CHEMIN, "g": CHEMIN,
+	"h": HAUTES_HERBES, "P": POSTE, "D": POSTE, "I": F_SOUS_BOIS, "S": F_CLAIRIERE,
+	"s": F_CLAIRIERE, "r": F_SOUS_BOIS,
+}
+
+
+def dessiner_foret(grille: Path, sortie: Path) -> Path:
+	"""Plan en aplats de la Forêt de Jade : 1 case = CASE_FORET px (la carte 58 × 74 tient dans
+	1024 × 1536), centré sur la canopée. Personnages, Pokémon et objets cachés non dessinés ;
+	Poké Balls des objets visibles dessinées (comme à la Route 2)."""
+	plan = lire(grille)
+	case = min(CASE, TAILLE[0] // plan.width, TAILLE[1] // plan.height)
+	k = case / CASE
+	img = Image.new("RGB", TAILLE, F_FORET)
+	d = ImageDraw.Draw(img)
+	ox = (TAILLE[0] - plan.width * case) // 2
+	oy = (TAILLE[1] - plan.height * case) // 2
+
+	def coin(x: int, y: int) -> tuple[int, int]:
+		return ox + x * case, oy + y * case
+
+	def centre(x: int, y: int) -> tuple[float, float]:
+		return ox + (x + 0.5) * case, oy + (y + 0.5) * case
+
+	def boite(cases: list[tuple[int, int]]) -> tuple[int, int, int, int]:
+		xs = [x for x, _ in cases]
+		ys = [y for _, y in cases]
+		x0, y0 = coin(min(xs), min(ys))
+		x1, y1 = coin(max(xs) + 1, max(ys) + 1)
+		return x0, y0, x1, y1
+
+	# 1. Aplats ; la sortie sud est prolongée jusqu'au bas de l'image (vers le poste sud).
+	for y, row in enumerate(plan.rows):
+		for x, c in enumerate(row):
+			x0, y0 = coin(x, y)
+			d.rectangle([x0, y0, x0 + case - 1, y0 + case - 1], fill=F_FOND_CASE[c])
+			if c == "g" and y == plan.height - 1:
+				d.rectangle([x0, y0, x0 + case - 1, TAILLE[1]], fill=CHEMIN)
+
+	# 2. Rai de lumière : halo clair autour des cases L, puis le cœur presque blanc.
+	rai = plan.cells_of("L")
+	if rai:
+		x0, y0, x1, y1 = boite(rai)
+		m = case
+		d.ellipse([x0 - m, y0 - m, x1 + m, y1 + m], fill=F_LUMIERE_HALO)
+		for x, y in rai:
+			cx0, cy0 = coin(x, y)
+			d.rectangle([cx0, cy0, cx0 + case - 1, cy0 + case - 1], fill=F_LUMIERE)
+		# Le halo ne déborde pas sur la forêt ni sur le chemin : on repeint ces cases.
+		for y, row in enumerate(plan.rows):
+			for x, c in enumerate(row):
+				if c in "T=" :
+					cx0, cy0 = coin(x, y)
+					if x1 + m >= cx0 >= x0 - m - case and y1 + m >= cy0 >= y0 - m - case:
+						d.rectangle([cx0, cy0, cx0 + case - 1, cy0 + case - 1],
+							fill=F_FOND_CASE[c])
+
+	# 3. Poste nord : toit plus sombre sur la moitié haute de l'emprise, porte.
+	poste = plan.cells_of("P") + plan.cells_of("D")
+	if poste:
+		x0, y0, x1, y1 = boite(poste)
+		d.rectangle([x0, y0, x1 - 1, y0 + (y1 - y0) // 2], fill=POSTE_TOIT)
+	for x, y in plan.cells_of("D"):
+		x0, y0 = coin(x, y)
+		d.rectangle([x0 + 4 * k, y0 + 4 * k, x0 + case - 5 * k, y0 + case - 1], fill=PORTE)
+
+	# 4. Grande souche : une large ellipse brune cerclée sur toute son emprise (vue de dessus).
+	souche = plan.cells_of("S")
+	if souche:
+		x0, y0, x1, y1 = boite(souche)
+		d.ellipse([x0 - 2 * k, y0 - 2 * k, x1 + 2 * k, y1 + 2 * k], fill=F_TRONC,
+			outline=F_TRONC_BORD, width=max(2, round(3 * k)))
+		cx, cy = (x0 + x1) / 2, (y0 + y1) / 2
+		for r in (0.55, 0.3):
+			d.ellipse([cx - (x1 - x0) * r / 2 * 1.6, cy - (y1 - y0) * r / 2 * 1.6,
+				cx + (x1 - x0) * r / 2 * 1.6, cy + (y1 - y0) * r / 2 * 1.6],
+				outline=F_TRONC_BORD, width=max(1, round(2 * k)))
+
+	# 5. Tronc incliné : une grosse barre brune couchée sur ses cases, qui déborde d'une
+	#    demi-case au-dessus du bord du sentier (il penche vers lui sans le barrer).
+	tronc = plan.cells_of("I")
+	if tronc:
+		x0, y0, x1, y1 = boite(tronc)
+		cy = (y0 + y1) / 2
+		d.rectangle([x0 - 2 * k, cy - 5 * k, x1 + case * 0.5, cy + 5 * k], fill=F_TRONC,
+			outline=F_TRONC_BORD, width=max(1, round(2 * k)))
+		_disque(d, x0, cy, 8 * k, F_TRONC, F_TRONC_BORD)
+
+	# 6. Petites souches, amas de racines.
+	for x, y in plan.cells_of("s"):
+		cx, cy = centre(x, y)
+		d.rectangle([cx - 6 * k, cy - 6 * k, cx + 6 * k, cy + 6 * k], fill=SOUCHE)
+	for x, y in plan.cells_of("r"):
+		cx, cy = centre(x, y)
+		for dx, dy in ((-6, -4), (5, -6), (-4, 6), (6, 5), (0, 0)):
+			d.line([cx, cy, cx + dx * k * 1.4, cy + dy * k * 1.4], fill=F_RACINE,
+				width=max(2, round(3 * k)))
+
+	# 7. Objets visibles : Poké Ball (rouge en haut, blanche en bas).
+	for p in plan.of_kind("objet_visible"):
+		for x, y in p.cells:
+			cx, cy = centre(x, y)
+			r = max(4, round(5 * k))
+			d.pieslice([cx - r, cy - r, cx + r, cy + r], 180, 360, fill=BALL_ROUGE)
+			d.pieslice([cx - r, cy - r, cx + r, cy + r], 0, 180, fill=BLANC)
+			d.ellipse([cx - r, cy - r, cx + r, cy + r], outline=BALL_BORD, width=1)
+
+	sortie.parent.mkdir(parents=True, exist_ok=True)
+	img.save(sortie)
+	return sortie
+
+
+def annoter_foret(grille: Path, plan_png: Path, sortie: Path, largeur: int = 768) -> Path:
+	"""Version de RELECTURE (jamais jointe à Codex) : le plan en aplats + Dresseurs et lignes de
+	vue, PNJ, objets (visibles / cachés), Pokémon d'ambiance, zones et repères, étiquetés ;
+	réduite à [largeur] px de large."""
+	from PIL import ImageFont
+	sys.path.insert(0, str(Path(__file__).parent))
+	from plan_check import FACINGS, zones_herbes  # noqa: E402
+	plan = lire(grille)
+	img = Image.open(plan_png).convert("RGBA")
+	calque = Image.new("RGBA", img.size, (0, 0, 0, 0))
+	d = ImageDraw.Draw(calque)
+	case = min(CASE, TAILLE[0] // plan.width, TAILLE[1] // plan.height)
+	ox = (TAILLE[0] - plan.width * case) // 2
+	oy = (TAILLE[1] - plan.height * case) // 2
+	def fonte(taille: int):
+		for chemin in ("/System/Library/Fonts/Supplemental/Arial.ttf", "DejaVuSans.ttf"):
+			try:
+				return ImageFont.truetype(chemin, taille)
+			except OSError:
+				continue
+		return ImageFont.load_default(size=taille)
+	police = fonte(15)
+	petite = fonte(12)
+
+	def centre(c: tuple[int, int]) -> tuple[float, float]:
+		return ox + (c[0] + 0.5) * case, oy + (c[1] + 0.5) * case
+
+	def etiquette(c, texte: str, couleur, f=police, dx: float = 0, dy: float = -14) -> None:
+		cx, cy = centre(c)
+		x, y = cx + dx, cy + dy
+		box = d.textbbox((x, y), texte, font=f, anchor="mm")
+		d.rectangle([box[0] - 2, box[1] - 1, box[2] + 2, box[3] + 1], fill=(0, 0, 0, 170))
+		d.text((x, y), texte, font=f, fill=couleur, anchor="mm")
+
+	for p in plan.of_kind("dresseur"):
+		fx, fy = FACINGS[p.attrs["facing"]]
+		c = p.cells[0]
+		for k in range(1, int(p.attrs["sight"]) + 1):
+			x0, y0 = ox + (c[0] + fx * k) * case, oy + (c[1] + fy * k) * case
+			d.rectangle([x0, y0, x0 + case - 1, y0 + case - 1], fill=(230, 40, 40, 110))
+		cx, cy = centre(c)
+		d.ellipse([cx - 6, cy - 6, cx + 6, cy + 6], fill=(230, 40, 40, 255), outline=(0, 0, 0, 255))
+		etiquette(c, p.attrs.get("role", "?"), (255, 140, 140, 255))
+	for p in plan.of_kind("pnj"):
+		for c in p.cells:
+			cx, cy = centre(c)
+			d.ellipse([cx - 4, cy - 4, cx + 4, cy + 4], fill=(70, 140, 255, 255))
+		etiquette(p.cells[len(p.cells) // 2], p.attrs.get("role", "?"), (150, 190, 255, 255))
+	for p in plan.of_kind("objet_visible") + plan.of_kind("objet_cache"):
+		c = p.cells[0]
+		cx, cy = centre(c)
+		if p.kind == "objet_cache":
+			d.rectangle([cx - 4, cy - 4, cx + 4, cy + 4], fill=(255, 220, 40, 255),
+				outline=(0, 0, 0, 255))
+		etiquette(c, p.attrs.get("role", "?") + ("*" if p.kind == "objet_cache" else ""),
+			(255, 230, 90, 255))
+	for p in plan.of_kind("pokemon"):
+		cx, cy = centre(p.cells[0])
+		d.ellipse([cx - 4, cy - 4, cx + 4, cy + 4], fill=(200, 90, 230, 255), outline=(0, 0, 0, 255))
+		etiquette(p.cells[0], p.ident.split("_")[0][:4], (225, 170, 245, 255), petite, dy=12)
+	for nom, zone in zip(("H1", "H2", "H3", "H4"), zones_herbes(plan)):
+		xs = sorted(x for x, _ in zone)
+		ys = sorted(y for _, y in zone)
+		etiquette((xs[len(xs) // 2], ys[len(ys) // 2]), nom, (240, 255, 150, 255), dy=0)
+	for p in plan.of_kind("clairiere"):
+		role = p.attrs.get("role", "")
+		if role.startswith("C"):
+			etiquette(p.cells[-1], role, (255, 255, 255, 255), dx=-12, dy=-6)
+	for car, nom in (("I", "tronc incliné"), ("S", "grande souche"), ("L", "rai de lumière"),
+			("r", "racines")):
+		cases = plan.cells_of(car)
+		if cases:
+			etiquette(cases[0], nom, (255, 220, 180, 255), petite, dy=-12)
+	for p in plan.of_kind("spawn"):
+		etiquette(p.cells[0], p.ident, (180, 255, 255, 255), petite, dx=0, dy=12)
+	img = Image.alpha_composite(img, calque).convert("RGB")
+	hauteur = round(img.height * largeur / img.width)
+	img = img.resize((largeur, hauteur), Image.LANCZOS)
+	sortie.parent.mkdir(parents=True, exist_ok=True)
+	img.save(sortie)
+	return sortie
+
+
+# Grille → (fonction, sortie par défaut).
+PLANS = {
+	"route_2": (dessiner, "build/art/PLAN_ROUTE2_v1.png"),
+	"viridian_forest": (dessiner_foret, "build/art/PLAN_FORET_JADE_v1.png"),
+}
+
+
 def main() -> int:
 	args = [a for a in sys.argv[1:] if not a.startswith("--")]
 	grille = Path(args[0]) if len(args) > 0 else RACINE / "tools/plans/route_2.txt"
-	sortie = Path(args[1]) if len(args) > 1 else RACINE / "build/art/PLAN_ROUTE2_v1.png"
-	print(dessiner(grille, sortie, "--lisiere" in sys.argv))
+	fonction, defaut = PLANS.get(grille.stem, PLANS["route_2"])
+	sortie = Path(args[1]) if len(args) > 1 else RACINE / defaut
+	if fonction is dessiner:
+		print(dessiner(grille, sortie, "--lisiere" in sys.argv))
+	else:
+		print(fonction(grille, sortie))
+	if fonction is dessiner_foret and "--annote" in sys.argv:
+		print(annoter_foret(grille, sortie, sortie.with_name(sortie.stem + "_annote.png")))
 	return 0
 
 

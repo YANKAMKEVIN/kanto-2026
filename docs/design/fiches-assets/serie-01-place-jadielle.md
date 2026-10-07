@@ -775,3 +775,8 @@ Plan technique : `docs/tech/jalon-08.md` (§1.1 grille, §1.2 assets prévus, §
 - **Personnage** : apparence `hiker` (`assets/sprites/characters/painted/hiker_frames.tres`, marche + attente), table `LOOKS` de `build_character_frames.gd`.
 - **Poké Ball au sol** : image `assets/sprites/objects/painted/poke_ball_ground.png` prête ; ses `SpriteFrames` attendent le genre « objet fixe » du T4 (non créé ici).
 - **Planche de contact** : `build/captures/jalon08_assets/planche_contact.png` (non versionnée).
+
+## Série 11 — Forêt de Jade (jalon 9, 2026-10-07, lumière NE)
+
+Plan technique : `docs/tech/jalon-09.md` (§2.7 la forêt, §3 T14 à T17) ; conception : `docs/design/dossier-10-foret-de-jade.md`. Numéro **11** : la série 10 est prise deux fois (Route 2, `serie10.py` ; illustrations du Menu Dresseur, `serie10_menu.py`), jalon 9 §0.4.
+- **9B.0 — vue générale peinte (à lancer au T15)**. Grille fonctionnelle `tools/plans/viridian_forest.txt` (58 × 74, source unique de la géométrie), vérifiée par `python3 tools/art/plan_check.py tools/plans/viridian_forest.txt` (critères du jalon 9 §2.7.1) ; plan en aplats `build/art/PLAN_FORET_JADE_v1.png` tiré de la grille par `python3 tools/art/plan_aplats.py tools/plans/viridian_forest.txt` (`--annote` : version de relecture étiquetée, jamais jointe à Codex) ; prompt `tools/art/prompts/CONCEPT_FORET_JADE_VUE_GENERALE_r1.txt`, ancre de style = `reference/route-2-vue-generale-v1.png` (un autre lieu ; ni l'étude d'ambiance ni un rendu précédent de la forêt). L'ancien prompt de l'étude d'ambiance (prototype, tracé provisoire) est renommé `CONCEPT_FORET_JADE_ETUDE_AMBIANCE_r1.txt`. Génération au T15 (3 essais au plus), puis validation de Kevin ; un changement de composition passe d'abord par la grille.

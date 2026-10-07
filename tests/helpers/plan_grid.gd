@@ -3,19 +3,23 @@ extends RefCounted
 ## règles que `tools/art/plan_grille.py` : section `GRILLE L H` (« NN » + espace + L caractères
 ## par rangée), `FIN`, puis section `POSITIONS` (identifiant, type, cases, `bloque` | `libre`,
 ## commentaire après `#`), `FIN`. Cases : « x,y » ou plages « x0..x1,y0..y1 », groupes séparés
-## par « ; ».
+## par « ; ». Ligne facultative avant la grille : `PRATICABLES <caractères>` (cases praticables de
+## cette grille, [member walkable] ; défaut [constant WALKABLE], la légende de la Route 2).
 ##
 ## Utilisé par l'outil de construction de la Route 2 (`tools/build_route_2.gd`, jalon 8 T5) et
 ## par `test_route_2` (critères du T0 sur la vraie grille de la scène).
 ## Utilisation : [code]const PlanGrid := preload("res://tests/helpers/plan_grid.gd")[/code].
 
-## Cases praticables ; tout autre caractère de la légende est bloqué.
+## Cases praticables par défaut ; tout autre caractère de la légende est bloqué.
 const WALKABLE: String = ".=hvD"
 
 var width: int = 0
 var height: int = 0
 var rows: PackedStringArray = []
-## Identifiant → { "kind": String, "cells": Array[Vector2i], "blocks": bool }.
+## Cases praticables de cette grille (ligne `PRATICABLES`, sinon [constant WALKABLE]).
+var walkable: String = WALKABLE
+## Identifiant → { "kind": String, "cells": Array[Vector2i], "blocks": bool,
+## "attrs": Dictionary (String → String, attributs « cle=valeur » après bloque / libre) }.
 var positions: Dictionary = {}
 ## Message d'erreur de la dernière lecture (vide : lecture réussie).
 var error: String = ""
@@ -40,6 +44,9 @@ func load_file(path: String) -> bool:
 			width = int(words[1])
 			height = int(words[2])
 			continue
+		if words[0] == "PRATICABLES" and section.is_empty():
+			walkable = words[1]
+			continue
 		if words[0] == "POSITIONS":
 			section = "POSITIONS"
 			continue
@@ -55,8 +62,14 @@ func load_file(path: String) -> bool:
 			if words.size() < 4 or not words[3] in ["bloque", "libre"]:
 				error = "position invalide : %s" % line
 				return false
+			var attrs: Dictionary = {}
+			for i: int in range(4, words.size()):
+				if not words[i].contains("="):
+					error = "attribut invalide : %s" % line
+					return false
+				attrs[words[i].get_slice("=", 0)] = words[i].get_slice("=", 1)
 			positions[words[0]] = {"kind": words[1], "cells": parse_cells(words[2]),
-				"blocks": words[3] == "bloque"}
+				"blocks": words[3] == "bloque", "attrs": attrs}
 	if rows.size() != height:
 		error = "%d rangées au lieu de %d" % [rows.size(), height]
 		return false
@@ -81,7 +94,7 @@ func cells_of(chars: String) -> Array[Vector2i]:
 
 
 func is_walkable(cell: Vector2i) -> bool:
-	return WALKABLE.contains(at(cell))
+	return walkable.contains(at(cell))
 
 
 ## Première case de la position [param id] ((-1, -1) si absente).
@@ -89,6 +102,13 @@ func cell_of(id: String) -> Vector2i:
 	if not positions.has(id):
 		return Vector2i(-1, -1)
 	return (positions[id]["cells"] as Array)[0]
+
+
+## Attribut [param key] de la position [param id] (« cle=valeur » ; vide si absent).
+func attr(id: String, key: String) -> String:
+	if not positions.has(id):
+		return ""
+	return str((positions[id]["attrs"] as Dictionary).get(key, ""))
 
 
 ## Toutes les cases de la position [param id].
