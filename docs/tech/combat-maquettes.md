@@ -62,3 +62,13 @@ Contrat entre les deux : CB.1 ne touche pas à `game/ui/` ; CB.2 ne touche pas a
 **À valider au doigt sur S24** : carte du joueur et pastilles en bas à droite (pouce droit, lisibilité au-dessus des commandes), pile actions / capacités sous la carte, rangées du Sac (toucher, défilement), vignette de capture, entrée des cartes par les bords.
 
 **Questions pour Kevin** : (1) Sac : garder onglets + LANCER (défaut) ou liste unique sans bouton comme le storyboard ? (2) icônes des quatre types restants (Dragon, Ténèbres, Acier, Fée) à faire avec leurs premiers Pokémon ? (3) carte du joueur en bas à droite : gaucher = inverser les diagonales ? (le HUD de combat n'a pas de réglage gaucher aujourd'hui).
+
+
+## CB.3 — décor peint du lieu (décision de Kevin, 2026-10-07)
+Après les captures du CB.1 (carte vue de dessus zoomée et floutée : pas la profondeur de `combat-v1`), Kevin adopte le **décor peint et resserré du lieu** (dossier 05 §2, mis à jour ; planche d'intention `docs/design/reference/combat-decors-planche-v1.webp`). **CB.3 avant la validation S24** (option b) : on juge sur téléphone le combat complet avec son vrai fond.
+- **Périmètre** : CB.3 remplace **uniquement** le système de fond. CB.1 garde positions, échelles, artworks, ombres et animations ; CB.2 ne change pas.
+- **Catalogue** en données : décor = zone + variante locale (pas « une image = une zone ») ; le lieu du déclenchement choisit le décor ; repli documenté si aucun décor n'existe.
+- **Master** : sans Pokémon, personnage ni UI ; ≥ 2340 × 1080 natif ; sol central lisible ; **ligne de sol** documentée (pieds et échelle) ; zones calmes en haut à gauche et en bas à droite (cartes de PV) ; premier plan sur calque transparent séparé si possible (passe devant ton Pokémon) ; lumière compatible avec `WorldLighting` (pas de variantes jour/nuit maintenant).
+- **Transition** : déclenchement dans le monde → transition courte → décor peint correspondant → combat ; pas d'écran noir, pas d'impression de téléportation.
+- **Prototype d'abord, une seule zone** : Route 1 en production (résolution réelle, intégrée dans le vrai combat, avec le cadrage et l'UI actuels) → captures → S24 → validation de Kevin. **Si le rendu correspond à `combat-v1`, ce pipeline devient la référence** et on industrialise les autres. **Pas les neuf décors maintenant** (leçon des dos : une planche qui marche ne garantit pas un pipeline qui marche en jeu).
+- **Liste des premiers décors (après validation du prototype)** : Labo de Chen, Route 1, Route 22, Route 2 sud, Forêt de Jade (lisière, sous-bois, clairière), Route 2 nord, Arène de Pierre. Jadielle : aucun (pas de combat prévu).

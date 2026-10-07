@@ -10,6 +10,7 @@ Issues des prototypes de la branche `art/pokemon-pilote` (scènes QA `proto/batt
 | Sujet | Décision |
 |---|---|
 | Cadrage du combat | **Validé** : composition dédiée. Lieu réel resserré, adversaire en haut à droite au second plan, ton Pokémon **de dos** au premier plan en bas à gauche, interface sur l'autre diagonale (carte adverse en haut à gauche, la tienne en bas à droite au-dessus des commandes). |
+| Fond du combat (2026-10-07) | **Remplacé** : plus la carte d'exploration zoomée et floutée, mais le **décor peint resserré du lieu** (zone + variante locale), dossier 05 §2. Positions, échelles, artwork adverse, ombre et animations du cadrage restent. |
 | Échelle | Salamèche ≈ **60 %** de la taille du premier essai = référence de gabarit ; à normaliser ensuite par taille réelle (Onix ≠ Salamèche). |
 | Adversaire | **Artwork officiel HD** de face (PokeAPI, `official-artwork`). |
 | Pokédex et menus | Artwork officiel HD. |
