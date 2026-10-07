@@ -3,6 +3,11 @@ extends GutTest
 ## Taille, structure, spawns et warps du plan, accessibilité de toutes les cases
 ## praticables (aucune poche), murs et mobilier inaccessibles, cases réservées libres,
 ## tapis de sortie sur la dernière rangée praticable.
+## DA.3 (docs/tech/integration-da-bourg-route1.md) : pièces **peintes** (enveloppe, meubles
+## peints, tapis à plat dans `GroundDecals`, murs en `blocked_cells`) ; la géométrie est celle
+## du jalon 2, figée dans `tests/fixtures/maps/<carte>_logic.txt` (test_bourg_interiors_painted).
+## Les ancres des meubles se comparent à la case en bas à gauche de leurs cases solides
+## (convention du jalon 2), que le pied de l'image soit au milieu ou non.
 
 const BACK := "back"
 const BOX := "box"
@@ -102,15 +107,17 @@ func test_metadata_and_structure() -> void:
 		assert_eq(map.get_grid().get_size(), plan["size"], String(map_id))
 		assert_eq(map.display_name, "Bourg Palette")
 		assert_eq(map.region, "Kanto")
-		for path: String in ["Ground", "Detail", "Obstacles", "Overhead"]:
-			var layer := map.get_node_or_null(path) as TileMapLayer
-			assert_not_null(layer, "%s/%s" % [map_id, path])
-			if layer != null:
-				assert_eq(layer.tile_set.resource_path, InteriorTiles.TILESET_PATH)
-		for path: String in ["Warps", "Spawns", "Triggers"]:
+		# DA.3 : enveloppe peinte à 1:1 sous les personnages, aucune tuile.
+		var shell := map.get_node_or_null(^"Shell") as Sprite2D
+		assert_not_null(shell, "%s/Shell" % map_id)
+		if shell != null:
+			assert_eq(shell.texture.get_size(), Vector2(map.size * Grid.TILE_SIZE), String(map_id))
+			assert_lt(shell.z_index, 0)
+		for child: Node in map.get_children():
+			assert_false(child is TileMapLayer, "%s : tuiles %s" % [map_id, child.name])
+		for path: String in ["Warps", "Spawns", "Triggers", "GroundDecals"]:
 			assert_not_null(map.get_node_or_null(path), "%s/%s" % [map_id, path])
 		assert_true(map.get_entities().y_sort_enabled)
-		assert_eq((map.get_node(^"Overhead") as TileMapLayer).z_index, 10)
 
 
 func test_spawns_of_plan() -> void:
@@ -229,9 +236,7 @@ func test_exit_mat_on_last_walkable_row() -> void:
 		var mat: Vector2i = plan["mat"]
 		var last_row: int = map.size.y - (2 if plan["walls"] == BOX else 1)
 		assert_eq(mat.y, last_row, "%s : tapis sur la dernière rangée" % map_id)
-		var detail := map.get_node(^"Detail") as TileMapLayer
-		assert_eq(detail.get_cell_atlas_coords(mat),
-			InteriorTiles.atlas_coords(InteriorTiles.Kind.MAT, 0), "%s : tuile MAT" % map_id)
+		# Le paillasson est peint dans l'enveloppe (DA.3).
 		var exit := map.get_warps().find_on_push(mat, Vector2i.DOWN)
 		assert_not_null(exit, "%s : sortie en poussant vers le bas" % map_id)
 		# Le pas vers le bas est impossible : la poussée déclenche la sortie.
@@ -245,9 +250,7 @@ func test_stairs_are_enclosed_so_arrival_does_not_bounce_back() -> void:
 	var grid := map.get_grid()
 	for cell: Vector2i in [Vector2i(6, 9), Vector2i(7, 9)]:
 		assert_eq(grid.get_step_target(cell, Vector2i.DOWN), cell, "bord de carte sous %s" % cell)
-	var ground := map.get_node(^"Ground") as TileMapLayer
-	assert_eq(ground.get_cell_atlas_coords(Vector2i(6, 9)),
-		InteriorTiles.atlas_coords(InteriorTiles.Kind.STAIRS_DOWN, 0))
+	# Les marches qui descendent sont peintes dans l'enveloppe (DA.3).
 	var first := _maps[&"player_house_1f"] as GameMap
 	# Haut de l'escalier du rez-de-chaussée : solide ; les marches du bas portent les warps.
 	for cell: Vector2i in [Vector2i(1, 2), Vector2i(2, 2)]:
@@ -257,9 +260,10 @@ func test_stairs_are_enclosed_so_arrival_does_not_bounce_back() -> void:
 func test_player_room_follows_reference_layout() -> void:
 	# Agencement de la référence de Kevin (§4.3), tolérance ±1 case sur le mobilier.
 	var map: GameMap = _maps[&"player_house_2f"]
+	# DA.3 : le meuble télé du mur est (12, 4..5) = petite étagère + commode (SideCabinet).
 	var expected := {
 		&"Bed": Vector2i(1, 4), &"Desk": Vector2i(6, 2), &"DeskChair": Vector2i(7, 3),
-		&"Bookshelf": Vector2i(9, 3), &"TvConsole": Vector2i(12, 5),
+		&"Bookshelf": Vector2i(9, 3), &"SideCabinet": Vector2i(12, 5),
 		&"LowCabinet": Vector2i(1, 8), &"PokeballCrate": Vector2i(10, 8),
 	}
 	for prop_name: StringName in expected:
@@ -267,37 +271,59 @@ func test_player_room_follows_reference_layout() -> void:
 		assert_not_null(prop, String(prop_name))
 		if prop == null:
 			continue
-		var delta: Vector2i = prop.get_anchor_cell() - expected[prop_name]
+		var delta: Vector2i = _bottom_left(prop) - expected[prop_name]
 		assert_true(absi(delta.x) <= 1 and absi(delta.y) <= 1,
 			"%s en %s" % [prop_name, prop.get_anchor_cell()])
 
 
-func test_rugs_are_under_detail_not_in_entities() -> void:
+func test_rugs_are_flat_in_ground_decals_not_in_entities() -> void:
 	var rugs := 0
 	for map_id: StringName in _maps:
 		var map: GameMap = _maps[map_id]
 		for child: Node in map.get_entities().get_children():
-			assert_false(child.scene_file_path.get_file().begins_with("rug_"),
-				"%s : tapis %s dans Entities" % [map_id, child.name])
-		for child: Node in map.get_node(^"Detail").get_children():
-			assert_true(child.scene_file_path.get_file().begins_with("rug_"), String(child.name))
+			assert_false(_is_rug(child), "%s : tapis %s dans Entities" % [map_id, child.name])
+		for child: Node in map.get_node(^"GroundDecals").get_children():
+			assert_true(_is_rug(child), String(child.name))
+			assert_true((child as WorldProp).get_solid_cells().is_empty(), "tapis traversable")
 			rugs += 1
-	# Chambre : Poké Ball, escalier ; rez-de-chaussée : plaid, salon ;
-	# rival : salon, chambre, bain ; labo : Poké Ball, rouge.
-	assert_eq(rugs, 9, "tapis des quatre intérieurs")
+	# DA.3 (prototype validé) : chambre : Poké Ball ; rez-de-chaussée : plaid, salon ;
+	# rival : chambre ; labo : Poké Ball, rouge. Tapis de l'escalier et paillassons : enveloppe.
+	assert_eq(rugs, 6, "tapis des quatre intérieurs")
 
 
 func test_player_room_rugs_follow_reference() -> void:
-	var detail := (_maps[&"player_house_2f"] as GameMap).get_node(^"Detail")
-	var expected := {&"RugPokeball": Vector2i(5, 6), &"RugStairs": Vector2i(6, 8)}
-	for rug_name: StringName in expected:
-		var rug := detail.get_node_or_null(NodePath(rug_name)) as WorldProp
-		assert_not_null(rug, String(rug_name))
-		if rug != null:
-			assert_eq(rug.get_anchor_cell(), expected[rug_name], String(rug_name))
+	var decals := (_maps[&"player_house_2f"] as GameMap).get_node(^"GroundDecals")
+	var rug := decals.get_node_or_null(^"RugPokeball") as WorldProp
+	assert_not_null(rug, "RugPokeball")
+	if rug != null:
+		# Grand tapis Poké Ball sur (5..8, 4..6), comme au jalon 2.
+		# À un demi-pixel près (image de hauteur impaire, pied arrondi).
+		assert_almost_eq(_rug_centre(rug), Vector2(7.0, 5.5) * Grid.TILE_SIZE, Vector2.ONE)
 
 
-## Ancres attendues (tolérance ±1 case, écarts documentés dans tools/build_interiors.gd).
+func _is_rug(node: Node) -> bool:
+	return node.scene_file_path.get_file().begins_with("int_tapis_")
+
+
+## Centre de l'image d'un tapis (pixels de la carte).
+func _rug_centre(rug: WorldProp) -> Vector2:
+	var sprite := rug.get_node(^"%Sprite") as Sprite2D
+	return ((rug.transform * sprite.transform) * sprite.get_rect()).get_center()
+
+
+## Case en bas à gauche des cases solides d'un meuble (ancre du jalon 2).
+func _bottom_left(prop: WorldProp) -> Vector2i:
+	var cells := prop.get_solid_cells()
+	if cells.is_empty():
+		return prop.get_anchor_cell()
+	var corner := Vector2i(cells[0].x, cells[0].y)
+	for cell: Vector2i in cells:
+		corner = Vector2i(mini(corner.x, cell.x), maxi(corner.y, cell.y))
+	return corner
+
+
+## Ancres attendues (tolérance ±1 case, écarts documentés dans tools/build_interiors.gd et
+## tools/build_painted_interiors.gd).
 func _assert_layout(map_id: StringName, expected: Dictionary) -> void:
 	var map: GameMap = _maps[map_id]
 	for prop_name: StringName in expected:
@@ -305,21 +331,21 @@ func _assert_layout(map_id: StringName, expected: Dictionary) -> void:
 		assert_not_null(prop, "%s/%s" % [map_id, prop_name])
 		if prop == null:
 			continue
-		var delta: Vector2i = prop.get_anchor_cell() - expected[prop_name]
+		var delta: Vector2i = _bottom_left(prop) - expected[prop_name]
 		assert_true(absi(delta.x) <= 1 and absi(delta.y) <= 1,
-			"%s/%s en %s" % [map_id, prop_name, prop.get_anchor_cell()])
+			"%s/%s en %s" % [map_id, prop_name, _bottom_left(prop)])
 
 
 func test_rival_house_follows_reference_layout() -> void:
 	_assert_layout(&"rival_house", {
 		&"Fridge": Vector2i(1, 2), &"Kitchen": Vector2i(2, 2), &"Stove": Vector2i(5, 2),
-		&"Stairs": Vector2i(7, 4), &"DiningTable": Vector2i(2, 5), &"WallTv": Vector2i(1, 7),
+		# DA.3 : télé murale de l'ouest (1, 6..7) → petite étagère et lampe (LivingLamp).
+		&"Stairs": Vector2i(7, 4), &"DiningTable": Vector2i(2, 5), &"LivingLamp": Vector2i(1, 7),
 		&"Sofa": Vector2i(3, 7), &"CoffeeTable": Vector2i(3, 8),
 		&"CornerDesk": Vector2i(11, 3), &"GamerChair": Vector2i(12, 3),
 		&"Dresser": Vector2i(13, 2), &"Bed": Vector2i(15, 4), &"Nightstand": Vector2i(16, 5),
 		&"CoatRack": Vector2i(11, 7), &"ShoeRack": Vector2i(11, 9),
 		&"BathroomSink": Vector2i(13, 7), &"Shower": Vector2i(16, 8),
-		&"FrontDoor": Vector2i(9, 10),
 	})
 
 
@@ -351,8 +377,10 @@ func test_lab_follows_reference_layout() -> void:
 		&"FileCabinet": Vector2i(10, 2), &"Bookshelf": Vector2i(11, 3),
 		&"Fridge": Vector2i(13, 2), &"DisplayCase": Vector2i(14, 4),
 		&"LongCounter": Vector2i(1, 5), &"StarterTable": Vector2i(11, 5),
-		&"Sofa": Vector2i(2, 7), &"CoffeeTable": Vector2i(3, 7), &"Bench": Vector2i(11, 8),
-		&"WallScreen": Vector2i(14, 7), &"Stairs": Vector2i(1, 9), &"Stool": Vector2i(12, 7),
+		# DA.3 : canapé de côté (1, 6..7) → classeur et étagère (WestShelf) ; écran mural
+		# (14, 6..7) → seconde vitrine (DisplayCaseEast).
+		&"WestShelf": Vector2i(2, 7), &"CoffeeTable": Vector2i(3, 7), &"Bench": Vector2i(11, 8),
+		&"DisplayCaseEast": Vector2i(14, 7), &"Stairs": Vector2i(1, 9), &"Stool": Vector2i(12, 7),
 	})
 
 
@@ -402,8 +430,9 @@ func test_lab_battle_arena_is_the_pokeball_rug() -> void:
 	var lab: GameMap = _maps[&"oak_lab"]
 	assert_eq(lab.battle_arena, Rect2i(6, 5, 4, 3))
 	assert_eq(lab.get_battle_arena_rect(), Rect2(576, 480, 384, 288))
-	var rug := lab.get_node(^"Detail/RugPokeball") as WorldProp
-	assert_true(lab.battle_arena.has_point(rug.get_anchor_cell()), "le tapis est dans l'arène")
+	var rug := lab.get_node(^"GroundDecals/RugPokeball") as WorldProp
+	assert_almost_eq(_rug_centre(rug), Vector2(lab.get_battle_arena_rect().get_center()),
+		Vector2.ONE, "le tapis est l'arène")
 	for y: int in range(5, 8):
 		for x: int in range(6, 10):
 			assert_false(lab.get_grid().is_solid(Vector2i(x, y)), "arène dégagée %s" % [

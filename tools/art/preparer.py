@@ -17,7 +17,7 @@ objet sur sa silhouette, le ramène à sa taille en jeu (1 case = 96 px) et écr
     du bas de l'image) de chaque ombre, pour les outils de construction des scènes.
 Les ombres reproduisent le prototype (ombre.gdshader, contact.gdshader), calculées une fois ici
 au lieu de 25 à 60 lectures de texture par pixel à chaque image.
-Usage : tools/art/preparer.py [--source DOSSIER]
+Usage : tools/art/preparer.py [--source DOSSIER] [--attentes-seulement | --personnages-seulement]
 """
 from __future__ import annotations
 
@@ -400,12 +400,22 @@ def main() -> None:
     arguments.add_argument("--source", default=str(RACINE / "build" / "art"))
     arguments.add_argument("--attentes-seulement", action="store_true",
                            help="seulement les planches d'attente (catalogue existant conservé)")
+    arguments.add_argument("--personnages-seulement", action="store_true",
+                           help="planches de personnages, de Pokémon et d'attente seulement "
+                                "(catalogue existant conservé ; DA.3)")
     options = arguments.parse_args()
     manifeste = json.loads((ICI / "manifeste.json").read_text())
     p = Preparateur(manifeste, Path(options.source))
     if options.attentes_seulement:
         chemin = RACINE / "assets" / "world" / "catalogue.json"
         p.catalogue = json.loads(chemin.read_text())
+        p.attentes()
+        p.ecrire_catalogue()
+        return
+    if options.personnages_seulement:
+        chemin = RACINE / "assets" / "world" / "catalogue.json"
+        p.catalogue = json.loads(chemin.read_text())
+        p.personnages()
         p.attentes()
         p.ecrire_catalogue()
         return

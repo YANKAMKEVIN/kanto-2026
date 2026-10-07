@@ -8,17 +8,17 @@
 		"if": ["pokedex_activated"], "unless": ["rival_route22_won", "rival_route22_lost"]
 	},
 	"rival_charmander": {
-		"cell": [7, 13], "facing": "right", "sprite": "charmander",
+		"cell": [7, 13], "facing": "right", "sprite": "pokemon/charmander",
 		"if": ["pokedex_activated", "taken_bulbasaur", "taken_charmander"],
 		"unless": ["rival_route22_won", "rival_route22_lost"]
 	},
 	"rival_squirtle": {
-		"cell": [7, 13], "facing": "right", "sprite": "squirtle",
+		"cell": [7, 13], "facing": "right", "sprite": "pokemon/squirtle",
 		"if": ["pokedex_activated", "taken_charmander", "taken_squirtle"],
 		"unless": ["rival_route22_won", "rival_route22_lost"]
 	},
 	"rival_bulbasaur": {
-		"cell": [7, 13], "facing": "right", "sprite": "bulbasaur",
+		"cell": [7, 13], "facing": "right", "sprite": "pokemon/bulbasaur",
 		"if": ["pokedex_activated", "taken_squirtle", "taken_bulbasaur"],
 		"unless": ["rival_route22_won", "rival_route22_lost"]
 	},

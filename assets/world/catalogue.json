@@ -3523,6 +3523,102 @@
     "droite",
     "haut"
    ]
+  },
+  "chen_run": {
+   "fichier": "res://assets/sprites/characters/painted/chen_run_sheet.png",
+   "cellule": [
+    99,
+    136
+   ],
+   "hauteur": 134,
+   "colonnes": 4,
+   "lignes": 4,
+   "ordre_lignes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "bulbizarre": {
+   "fichier": "res://assets/sprites/pokemon/painted/bulbizarre_sheet.png",
+   "cellule": [
+    57,
+    62
+   ],
+   "hauteur": 60,
+   "colonnes": 4,
+   "lignes": 4,
+   "ordre_lignes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "salameche": {
+   "fichier": "res://assets/sprites/pokemon/painted/salameche_sheet.png",
+   "cellule": [
+    57,
+    62
+   ],
+   "hauteur": 60,
+   "colonnes": 4,
+   "lignes": 4,
+   "ordre_lignes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "carapuce": {
+   "fichier": "res://assets/sprites/pokemon/painted/carapuce_sheet.png",
+   "cellule": [
+    47,
+    62
+   ],
+   "hauteur": 60,
+   "colonnes": 4,
+   "lignes": 4,
+   "ordre_lignes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "bulbizarre_idle": {
+   "fichier": "res://assets/sprites/pokemon/painted/bulbizarre_idle_sheet.png",
+   "cellule": [
+    71,
+    62
+   ],
+   "hauteur": 60,
+   "colonnes": 4,
+   "lignes": 1,
+   "ordre_colonnes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "carapuce_idle": {
+   "fichier": "res://assets/sprites/pokemon/painted/carapuce_idle_sheet.png",
+   "cellule": [
+    49,
+    62
+   ],
+   "hauteur": 60,
+   "colonnes": 4,
+   "lignes": 1,
+   "ordre_colonnes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
   }
  },
  "images": {
