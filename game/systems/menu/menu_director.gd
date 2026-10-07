@@ -82,6 +82,8 @@ var _state: Object
 var _data: PokemonData
 var _zones: ZoneLibrary
 var _objectives: ObjectiveLibrary
+## Badges de Kanto (MM.1) : chargés au premier tableau de bord (data/badges.json).
+var _badges: BadgeLibrary
 var _unlocks: MenuUnlocks
 var _can_open: Callable
 var _navigator: MenuNavigator
@@ -351,7 +353,10 @@ func get_navigator() -> MenuNavigator:
 
 ## Vue neuve du tableau de bord pour l'état actuel de la partie.
 func build_dashboard() -> DashboardView:
-	return DashboardViews.build(_state, _data, _zones, _objectives, _unlocks)
+	if _badges == null:
+		_badges = BadgeLibrary.new()
+		_badges.load_file()
+	return DashboardViews.build(_state, _data, _zones, _objectives, _unlocks, _badges)
 
 
 ## Échange les places [param from] et [param to] de l'équipe ([method Party.swap] :

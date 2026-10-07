@@ -16,6 +16,9 @@ extends MenuScreen
 ## Placement : rempli par [TrainerMenu] sous l'en-tête, marges de SAFE_MARGIN.
 
 const TITLE := "Dresseur"
+## Portrait provisoire (le joueur, de face) jusqu'au MM.2 (portrait peint).
+const PORTRAIT_FRAMES_PATH := "res://assets/sprites/characters/placeholder/player_frames.tres"
+const PORTRAIT_ANIMATION := &"idle_down"
 const BACK_TEXT := "RETOUR"
 const BACK_ICON: Texture2D = preload("res://assets/ui/icons/battle/back.svg")
 const ICON_CLOCK: Texture2D = preload("res://assets/ui/icons/menu/clock.svg")
@@ -451,10 +454,10 @@ func _on_link_pressed(is_seen: bool) -> void:
 
 
 func _portrait_texture() -> Texture2D:
-	var frames := load(TrainerCardPanel.PORTRAIT_FRAMES_PATH) as SpriteFrames
-	if frames == null or not frames.has_animation(TrainerCardPanel.PORTRAIT_ANIMATION):
+	var frames := load(PORTRAIT_FRAMES_PATH) as SpriteFrames
+	if frames == null or not frames.has_animation(PORTRAIT_ANIMATION):
 		return null
-	return frames.get_frame_texture(TrainerCardPanel.PORTRAIT_ANIMATION, 0)
+	return frames.get_frame_texture(PORTRAIT_ANIMATION, 0)
 
 
 func _collect_texts(node: Node, into: PackedStringArray) -> void:

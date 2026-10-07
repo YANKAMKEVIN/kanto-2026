@@ -721,8 +721,8 @@ const MENU_BUTTON_CENTER_FROM_CORNER := Vector2(SAFE_MARGIN + ROUND_BUTTON * 0.5
 # --- Équipe (jalon 6, T7) ---------------------------------------------------------------------
 
 ## Colonnes : liste (à gauche) et fiche (à droite) ; la vedette prend le reste.
-const TEAM_LIST_WIDTH := 560
-const TEAM_SHEET_WIDTH := 800
+const TEAM_LIST_WIDTH := 520
+const TEAM_SHEET_WIDTH := 760
 const TEAM_COLUMN_GAP := GAP
 ## Emplacement de la liste (≥ TOUCH_MIN) : six de TEAM_SLOT_HEIGHT + cinq écarts ≤ 840.
 const TEAM_SLOT_HEIGHT := TOUCH_MIN
@@ -767,8 +767,8 @@ const TEAM_GAUGE_HEIGHT := 12
 const TEAM_GAUGE_FILL := ACCENT
 const TEAM_MOVE_CARD_HEIGHT := 116
 const TEAM_HISTORY_FONT := 30
-const TEAM_EVO_CIRCLE := 64
-const TEAM_EVO_SPRITE := 64
+const TEAM_EVO_CIRCLE := 88
+const TEAM_EVO_SPRITE := 84
 const TEAM_EVO_FONT := FONT_CAPTION
 ## Fiche d'une capacité ouverte au toucher : voile derrière.
 const TEAM_SCRIM := Color(0.02, 0.03, 0.05, 0.55)
@@ -779,7 +779,7 @@ const HAPTIC_TEAM_SWAP_MS := 20
 
 # Écran Sac du Menu Dresseur (jalon 6, T11).
 ## Colonnes : catégories à gauche, cartes au centre (le reste), aperçu à droite.
-const BAG_SCREEN_LEFT_WIDTH := 440
+const BAG_SCREEN_LEFT_WIDTH := 460
 const BAG_SCREEN_DETAIL_WIDTH := 580
 const BAG_SCREEN_GAP := GAP
 const BAG_SCREEN_TITLE_FONT := FONT_TITLE
@@ -1290,3 +1290,74 @@ const STORAGE_REFUSAL_BG := Color(0.30, 0.08, 0.08, 0.94)
 ## Cadre de la colonne visée par un glisser.
 const STORAGE_DROP_BORDER := 4
 const HAPTIC_STORAGE_MOVE_MS := 20
+
+# Menu Dresseur rapproché des maquettes (MM.1, docs/tech/menu-maquettes.md) : tableau de bord,
+# Équipe et Sac. Verre léger sur le monde flouté (méthode du Pokédex), bandeau d'état en haut à
+# droite, retour « ‹ » compact. Valeurs par défaut notées dans etat-projet.md.
+## Fond du menu derrière ces écrans : voile plus léger que MENU_DIM, flou du Pokédex.
+const MENU_GLASS_DIM := 0.3
+const MENU_GLASS_BLUR := DEX_BACKDROP_BLUR
+const MENU_GLASS_LOD := DEX_BACKDROP_LOD
+## Panneau de verre (MenuGlass) et carte intérieure (MenuGlassCard) : ceux du Pokédex.
+const MENU_GLASS_BG := DEX_GLASS_BG
+const MENU_GLASS_BORDER := DEX_GLASS_BORDER
+const MENU_GLASS_RADIUS := DEX_GLASS_RADIUS
+const MENU_GLASS_PAD := 24
+const MENU_GLASS_CARD_BG := DEX_CARD_BG
+const MENU_GLASS_CARD_BORDER := DEX_CARD_BORDER
+const MENU_GLASS_CARD_RADIUS := DEX_CARD_RADIUS
+## Rangée d'en-tête : × (tableau de bord) ou ‹ (écrans) dessinés en rond de MENU_ROUND_DRAW,
+## zone tactile TOUCH_MIN.
+const MENU_ROUND_DRAW := 88
+const MENU_ROUND_ICON := 40
+## Titre d'écran dans la rangée d'en-tête (« Équipe 3/6 », « Sac ») : icône, titre, compteur.
+const MENU_TITLE_ICON := 60
+const MENU_TITLE_FONT := FONT_TITLE
+const MENU_TITLE_COUNT_FONT := FONT_BODY
+const MENU_TITLE_GAP := 20
+## Bandeau d'état (lieu · heure · argent) : pastille de verre de MENU_STATUS_DRAW de haut.
+const MENU_STATUS_DRAW := 80
+const MENU_STATUS_FONT := 30
+const MENU_STATUS_ICON := 36
+const MENU_STATUS_PAD_H := 30
+const MENU_STATUS_GAP := 14
+const MENU_STATUS_DIVIDER := Color(1, 1, 1, 0.2)
+const MENU_STATUS_DIVIDER_SIZE := Vector2(2, 36)
+## Grandes cartes illustrées : l'illustration couvre la carte (coins arrondis), un dégradé vers
+## la teinte de la carte commence à MENU_ART_FADE_FROM de la hauteur (le titre se lit dessus).
+const MENU_ART_RADIUS := 24
+const MENU_ART_FADE_FROM := 0.38
+const MENU_ART_FADE_ALPHA := 0.96
+## Le point de l'illustration gardé quand elle est rognée (0 haut, 1 bas).
+const MENU_ART_FOCUS_Y := 0.2
+const MENU_ART_TITLE_ICON := 52
+const MENU_ART_ROUND := 72
+const MENU_ART_ROUND_ICON := 34
+const MENU_ART_RIM_WIDTH := 2
+## Carte du Dresseur : portrait peint du héros, ancré en bas à droite, au plus cette hauteur.
+const MENU_HERO_HEIGHT := 640
+const MENU_HERO_OFFSET_X := -8
+## Pokémon de tête et liste de l'Équipe : artwork dans un rond.
+const MENU_ROUND_THUMB_BG := Color(0.55, 0.75, 0.95, 0.22)
+const MENU_ROUND_THUMB_BORDER := Color(1, 1, 1, 0.3)
+## Part du rond occupée par l'artwork (l'atlas a déjà une marge de 4 px).
+const MENU_ROUND_THUMB_ART := 0.96
+## Équipe : grand artwork au centre (au plus MENU_TEAM_ART, réduit à la place disponible).
+const TEAM_ART_MAX := 540
+const TEAM_ART_HALO_ALPHA := 0.55
+const TEAM_ART_BREATH_PX := 6.0
+## Écran Stockage : même vedette, plus petite.
+const STORAGE_ART := 192
+## Sac : panneau de droite (objet en grand, « Utiliser sur… » et l'équipe dans le panneau).
+const BAG_HERO_ICON := 180
+const BAG_HERO_MIN_HEIGHT := 200
+const BAG_HERO_GAP := 16
+const BAG_TAB_CAPTION_FONT := 22
+const BAG_TAB_PAINTED_ICON := 56
+const BAG_TARGETS_TITLE_FONT := FONT_BODY
+## Ligne de la cible dans le panneau du Sac (≥ TOUCH_MIN) et son rond.
+const PICKER_COMPACT_ROW := TOUCH_MIN
+const PICKER_COMPACT_THUMB := 100
+const PICKER_COMPACT_GAP := 10
+## Fond d'une carte de verre sélectionnée (le liseré ACCENT porte la sélection).
+const MENU_GLASS_SELECTED_BG := Color(0.04, 0.07, 0.11, 0.78)

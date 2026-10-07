@@ -1,0 +1,8 @@
+MENU_HEROS_BUSTE — NOUVELLE image pour l'interface (menu) du jeu Kanto 2026, pas une capture d'écran.
+Les images jointes donnent la direction artistique ; n'en reproduis ni la mise en page ni les textes.
+
+RENDU : illustration 2D peinte numériquement, dans le style d'un RPG Pokémon moderne « HD-2D peint » : formes simples et arrondies, contour fin et doux plus sombre que la couleur, aucun trait noir, volumes doux, couleurs chaudes et lumineuses, pinceau net. Ni pixel art, ni 3D, ni photo. Lumière douce de jour venant du haut à gauche.
+
+IMAGE : le héros du jeu (EXACTEMENT celui de la planche jointe PERSO_P2_PEINT_r1 : casquette rouge et blanche, cheveux bruns, t-shirt blanc, gilet rouge, sac à dos) en portrait de trois quarts, de la tête à la taille, souriant et confiant, regard vers la gauche de l'image ; proportions d'illustration (pas chibi), comme le personnage de la maquette jointe. Seul, sans Pokémon, sans décor.
+Format : PNG portrait 1024 × 1536, fond TRANSPARENT (canal alpha).
+Interdit : texte, lettres, chiffres, logo (sauf l'emblème Poké Ball demandé), signature, filigrane, cadre.
