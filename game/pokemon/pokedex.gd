@@ -56,6 +56,20 @@ func mark_caught(species: StringName, map: StringName = &"", date: String = "") 
 	return first
 
 
+## Marque [param species] comme obtenue par évolution (jalon-09.md §2.3.2) : vue et possédée,
+## sans lieu (une évolution n'est pas une rencontre, aucun habitat) et sans compter de capture
+## ([method PokedexEntry.obtain]). Émet [signal recorded] comme une capture (aucun toast : l'écran
+## d'évolution l'annonce). Vrai si l'espèce n'était pas encore possédée.
+func mark_evolved(species: StringName, date: String = "") -> bool:
+	if species.is_empty():
+		return false
+	var entry := _entry_for(species)
+	var first_seen := entry.times_seen < 1
+	var first := entry.obtain(date)
+	recorded.emit(species, &"", first_seen, false, true)
+	return first
+
+
 func is_seen(species: StringName) -> bool:
 	return _entries.has(species)
 

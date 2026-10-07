@@ -77,7 +77,11 @@
 		"status_cured_poison": {
 			"text": "{pokemon} n'est plus empoisonné.",
 			"text_f": "{pokemon} n'est plus empoisonnée."
-		}
+		},
+		"evolution_started": { "text": "Quoi ? {pokemon} évolue !" },
+		"evolution_finished": { "text": "Félicitations ! {pokemon} a évolué en {species} !" },
+		"evolution_cancelled": { "text": "Hein ? {pokemon} n'évolue plus." },
+		"evolution_stop": { "text": "ARRÊTER" }
 	},
 	"stats": {
 		"atk": "L'Attaque", "def": "La Défense", "spa": "L'Attaque Spéciale",

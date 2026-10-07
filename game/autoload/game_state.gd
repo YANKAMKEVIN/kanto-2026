@@ -173,6 +173,12 @@ func record_caught(species: StringName, map: StringName) -> bool:
 	return pokedex.mark_caught(species, map, now())
 
 
+## Espèce obtenue par évolution (jalon-09.md §2.3.2) : vue et possédée, datée, sans habitat
+## ni capture comptée ([method Pokedex.mark_evolved]). Vrai si elle n'était pas encore possédée.
+func record_evolved(species: StringName) -> bool:
+	return pokedex.mark_evolved(species, now())
+
+
 ## Rencontre sauvage avec [param species] sur [param map], appelée au **début** de chaque
 ## rencontre (là où l'espèce est marquée « vue »). Seule la première est retenue : vrai si
 ## c'est elle.

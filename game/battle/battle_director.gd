@@ -19,7 +19,12 @@ extends Node
 ## attend un toucher ; MOVE_FORGET_OFFERED suspend la lecture : le bandeau sort, le
 ## [MoveForgetPanel] fait choisir la capacité à oublier (ou aucune), puis la phrase suit. La
 ## capacité est utilisable dès le tour suivant (la grille relit les capacités à chaque choix) ;
-## la carte de PV garde l'ancien niveau jusqu'au bilan (défaut).
+## la carte de PV garde l'ancien niveau jusqu'au bilan (défaut). Le déroulé « apprendre /
+## oublier » vit dans le [MoveLearnPrompt] (jalon 9, partagé avec l'évolution).
+## Évolution (jalon 9, jalon-09.md §2.3) : après une victoire ou une capture, après le bilan et
+## avant la sortie de la vue de combat, l'[EvolutionDirector] branché par
+## [method set_evolution_director] joue les évolutions des Pokémon qui ont gagné un niveau
+## ([method Evolution.candidates]) ; le verrou reste posé, [signal battle_finished] vient après.
 ##
 ## Il ne lit aucun autoload : il reçoit [GameState] par [method setup] et la carte par
 ## [method run] (appelée par l'étape « battle » du [CutsceneDirector]). Il n'appelle jamais
@@ -63,7 +68,6 @@ signal exp_summary_shown(summary: ExpSummary)
 
 ## Raison de blocage du joueur pendant un combat ([method Player.set_input_enabled]).
 const REASON: StringName = &"battle"
-const FORGET_PANEL_SCENE: PackedScene = preload("res://game/ui/battle/move_forget_panel.tscn")
 const BAG_PANEL_SCENE: PackedScene = preload("res://game/ui/battle/battle_bag_panel.tscn")
 const PARTY_PICKER_SCENE: PackedScene = preload("res://game/ui/bag/party_picker.tscn")
 const CAPTURE_CARD_SCENE: PackedScene = preload("res://game/ui/battle/capture_card.tscn")
@@ -90,7 +94,8 @@ var _stage: BattleStage
 var _hud: BattleHud
 var _player: Player
 var _state: Node
-var _forget_panel: MoveForgetPanel
+var _learn: MoveLearnPrompt
+var _evolutions: EvolutionDirector
 var _running: bool = false
 var _battle: Battle
 var _trainer_id: StringName = &""
@@ -128,6 +133,22 @@ func setup(data: PokemonData, trainers: TrainerLibrary, texts: BattleText, stage
 	_hud = hud
 	_player = player
 	_state = state
+	get_move_learn_prompt().setup(data, texts)
+
+
+## Le déroulé « apprendre / oublier » du combat (créé au premier besoin, enfant du directeur) ;
+## l'[EvolutionDirector] reçoit le même ([method EvolutionDirector.setup]).
+func get_move_learn_prompt() -> MoveLearnPrompt:
+	if _learn == null:
+		_learn = MoveLearnPrompt.new()
+		_learn.name = "MoveLearnPrompt"
+		add_child(_learn)
+	return _learn
+
+
+## Branche les évolutions de fin de combat (null : aucune, comportement d'avant le jalon 9).
+func set_evolution_director(director: EvolutionDirector) -> void:
+	_evolutions = director
 
 
 ## Coroutine : joue le combat contre [param trainer_id] sur [param map], renvoie une
@@ -248,6 +269,8 @@ func run_request(request: BattleRequest, map: GameMap) -> int:
 	# Bilan de fin de combat (demande n° 1) : victoire ou capture seulement (décision de Kevin
 	# du 2026-10-06 : rien après une défaite). Les capacités ont été annoncées au K.O.
 	await _play_progress(outcome)
+	# Évolutions (jalon 9) : après le bilan, avant la sortie de la vue ; verrou gardé.
+	await _play_evolutions(outcome, party)
 	if is_instance_valid(_hud):
 		await _hud.hide_all()
 	if is_instance_valid(_stage) and _stage.is_active():
@@ -309,15 +332,18 @@ func get_exp_summary() -> ExpSummary:
 	return _summary
 
 
-## Retour (Android, relayé par Boot) : ferme le bilan de fin de combat s'il est affiché. Vrai si
-## le geste a servi.
+## Retour (Android, relayé par Boot) : pendant une évolution, il revient à l'écran d'évolution
+## (ARRÊTER pendant la transformation, [method EvolutionDirector.handle_back]) ; sinon il ferme
+## le bilan de fin de combat s'il est affiché. Vrai si le geste a servi.
 func handle_back() -> bool:
+	if _evolutions != null and _evolutions.is_playing():
+		return _evolutions.handle_back()
 	return is_instance_valid(_summary_card) and _summary_card.handle_back()
 
 
 ## Le panneau d'oubli, tant qu'il existe (ouvert pendant une offre, tests) ; null sinon.
 func get_forget_panel() -> MoveForgetPanel:
-	return _forget_panel if is_instance_valid(_forget_panel) else null
+	return _learn.get_forget_panel() if _learn != null else null
 
 
 # --- Boucle de choix ------------------------------------------------------------------
@@ -597,6 +623,20 @@ static func shows_progress(outcome: Battle.Outcome) -> bool:
 	return outcome == Battle.Outcome.WIN or outcome == Battle.Outcome.CAUGHT
 
 
+## Coroutine : les évolutions de fin de combat (jalon-09.md §2.3.1) — victoire ou capture
+## seulement ([method shows_progress]), les Pokémon qui ont gagné au moins un niveau dans ce
+## combat (bilan), debout, une évolution chacun. Rien sans [EvolutionDirector].
+func _play_evolutions(outcome: Battle.Outcome, party: Party) -> void:
+	if _evolutions == null or not shows_progress(outcome):
+		return
+	var found := Evolution.candidates(party, _summary.leveled_indices(), _data)
+	if found.is_empty():
+		return
+	_sync_learn_prompt()
+	_evolutions.speed_scale = speed_scale
+	await _evolutions.play(found, party)
+
+
 ## Coroutine : la carte du bilan ; rend la main une fois fermée.
 func _show_summary() -> void:
 	var rows := BattleViews.exp_summary(_summary, _texts)
@@ -835,95 +875,34 @@ func _is_in_play(event: BattleEvent) -> bool:
 
 
 ## Coroutine : un Pokémon du joueur veut apprendre [member BattleEvent.move_id] mais connaît
-## déjà quatre capacités. Le bandeau sort, le panneau fait choisir ; seul OUBLIER (après
-## sélection d'une carte) ou NE PAS APPRENDRE ferme l'offre. Oubli : [method
-## Pokemon.replace_move] (PP pleins) et « oublie… et apprend… » ; refus : rien ne change et
-## « n'apprend pas… ». Rend la main une fois le panneau refermé.
+## déjà quatre capacités : le [MoveLearnPrompt] (bandeau du combat, panneau dans l'écran de la
+## HUD) fait choisir, puis dit la phrase. Rend la main une fois le panneau refermé.
 func _offer_forget(event: BattleEvent) -> void:
 	var pokemon := _find_player_pokemon(event)
-	var offered := BattleViews.offered_move(event.move_id, _data)
-	if pokemon == null or offered == null or not is_instance_valid(_hud):
+	if pokemon == null or not is_instance_valid(_hud):
 		push_error("BattleDirector : offre d'oubli impossible (« %s » pour « %s »)"
 			% [event.move_id, event.pokemon_name])
 		return
-	var known := BattleViews.moves(pokemon, _data)
-	# Le panneau recouvre le bandeau : le bandeau sort d'abord, jamais les deux ensemble.
-	var banner := _hud.get_message_banner()
-	banner.skip()
-	banner.slide_out()
-	while banner.is_sliding():
-		await get_tree().process_frame
-	var panel := _ensure_forget_panel()
-	var answer: Array = []
-	while true:
-		panel.show_offer(offered, known)
-		answer = await _first_of(panel.forget_chosen, panel.skip_chosen)
-		while panel.is_sliding():
-			await get_tree().process_frame
-		if answer[0] != 0 or not confirm_forget:
-			break
-		var slot := int(answer[1])
-		var old_id: StringName = pokemon.moves[slot].move_id \
-			if slot >= 0 and slot < pokemon.moves.size() else &""
-		if await _confirm_forget(event, old_id):
-			break
-	var line := ""
-	if answer[0] == 0:
-		var slot := int(answer[1])
-		var old_move: StringName = pokemon.moves[slot].move_id \
-			if slot >= 0 and slot < pokemon.moves.size() else &""
-		if pokemon.replace_move(slot, event.move_id, _data):
-			line = _texts.line_for(&"move_forgot", event, _data, old_move)
-	if line.is_empty():
-		line = _texts.line_for(&"move_not_learned", event, _data)
-	await _hud.show_message(line, true)
+	_sync_learn_prompt()
+	await get_move_learn_prompt().offer_forget(pokemon, event, _hud.get_message_banner(),
+		_hud.get_screen())
 
 
-## Coroutine : la question « Oublier {capacité} ? » en deux cartes (composant `ChoiceCards`).
-## Vrai si le joueur confirme (OUBLIER) ; GARDER rend la main au panneau d'oubli.
-func _confirm_forget(event: BattleEvent, old_move: StringName) -> bool:
-	if not is_instance_valid(_hud):
-		return true
-	var script: GDScript = choice_cards_script if choice_cards_script != null else ChoiceCards
-	var view := ChoiceView.new(
-		_texts.line_for(&"forget_confirm_title", event, _data, old_move),
-		_texts.line_for(&"forget_confirm_yes", event, _data, old_move),
-		_texts.line_for(&"forget_confirm_no", event, _data, old_move))
-	view.detail = _texts.line_for(&"forget_confirm_detail", event, _data, old_move)
-	var cards: Control = script.new()
-	cards.set(&"speed_scale", _hud.speed_scale)
-	_hud.get_screen().add_child(cards)
-	cards.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-	cards.call(&"show_choice", view)
-	var box: Array[bool] = []
-	cards.connect(&"chosen", func(confirmed: bool) -> void: box.append(confirmed))
-	while box.is_empty():
-		await get_tree().process_frame
-	cards.queue_free()
-	return box[0]
-
-
-## Le panneau d'oubli (créé au premier besoin, dans l'écran de la HUD, à son emplacement).
-func _ensure_forget_panel() -> MoveForgetPanel:
-	if is_instance_valid(_forget_panel):
-		return _forget_panel
-	_forget_panel = FORGET_PANEL_SCENE.instantiate() as MoveForgetPanel
-	_hud.get_screen().add_child(_forget_panel)
-	BattleHudLayout.place(_forget_panel, BattleHudLayout.Slot.FORGET)
-	_forget_panel.speed_scale = _hud.speed_scale
-	_forget_panel.haptics_enabled = _hud.haptics_enabled
-	return _forget_panel
-
-
-func _free_forget_panel() -> void:
-	if is_instance_valid(_forget_panel):
-		_forget_panel.queue_free()
-	_forget_panel = null
+## Réglages du combat relayés au déroulé « apprendre / oublier » (vitesse et vibrations de la
+## HUD, confirmation de l'oubli, composant de test).
+func _sync_learn_prompt() -> void:
+	var learn := get_move_learn_prompt()
+	learn.confirm_forget = confirm_forget
+	learn.choice_cards_script = choice_cards_script
+	if is_instance_valid(_hud):
+		learn.speed_scale = _hud.speed_scale
+		learn.haptics_enabled = _hud.haptics_enabled
 
 
 ## Libère les panneaux ouverts pendant le combat (oubli, Sac, carte de capture, ÉQUIPE, bilan).
 func _free_panels() -> void:
-	_free_forget_panel()
+	if _learn != null:
+		_learn.release()
 	for panel: Control in [_bag_panel, _capture_card, _party_picker, _party_panel,
 			_summary_card]:
 		if is_instance_valid(panel):

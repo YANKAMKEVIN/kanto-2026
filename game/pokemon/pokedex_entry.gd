@@ -53,6 +53,20 @@ func capture(map: StringName, date: String) -> bool:
 	return first
 
 
+## L'espèce est obtenue sans être capturée (évolution, jalon-09.md §2.3.2) : vue (première
+## observation si elle ne l'était pas) et possédée, sans lieu ; le compteur de captures ne
+## bouge pas (une évolution n'est pas une capture : statistique « Captures » du Dresseur). Vrai
+## si l'espèce n'était pas encore possédée.
+func obtain(date: String) -> bool:
+	if times_seen < 1:
+		see(&"", date)
+	var first := not caught
+	caught = true
+	if first:
+		first_caught_date = date
+	return first
+
+
 ## Une espèce de l'entrée est forcément vue : au moins une observation. Corrige une entrée
 ## sauvegardée avant cette règle (starter « capturé » mais « vu 0 fois », jalon 5) ; sans
 ## première observation datée, celle-ci reprend le lieu et la date de la première capture.

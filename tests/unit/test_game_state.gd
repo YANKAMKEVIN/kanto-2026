@@ -220,6 +220,46 @@ func test_record_seen_and_caught_date_the_pokedex() -> void:
 	assert_eq(entry.times_seen, 2)
 
 
+## Évolution (jalon-09.md §2.3.2) : la nouvelle espèce est vue et possédée, datée, sans lieu
+## (aucun habitat) et sans capture comptée (statistique « Captures » du Dresseur).
+func test_record_evolved_marks_seen_and_owned_without_habitat_nor_capture() -> void:
+	var state := _dated()
+	state.record_caught(&"caterpie", &"viridian_forest")
+	var signals: Array = []
+	state.pokedex.recorded.connect(func(species: StringName, map: StringName, first: bool,
+			new_map: bool, caught: bool) -> void:
+		signals.append([species, map, first, new_map, caught]))
+	assert_true(state.record_evolved(&"metapod"), "première fois possédé")
+	var entry: PokedexEntry = state.pokedex.get_entry(&"metapod")
+	assert_true(state.pokedex.is_seen(&"metapod"))
+	assert_true(state.pokedex.is_caught(&"metapod"))
+	assert_eq(entry.times_seen, 1, "vu une fois")
+	assert_eq(entry.times_caught, 0, "une évolution n'est pas une capture")
+	assert_eq(entry.seen_maps, [] as Array[StringName], "aucun habitat")
+	assert_eq(entry.first_seen_map, &"")
+	assert_eq(entry.first_caught_map, &"")
+	assert_eq(entry.first_seen_date, "2026-10-02T14:03:05")
+	assert_eq(entry.first_caught_date, "2026-10-02T14:03:05")
+	assert_eq(signals, [[&"metapod", &"", true, false, true]], "comme une capture : aucun toast")
+	assert_eq(TrainerSummary.capture_count(state.pokedex, &""), 1, "seule la capture compte")
+	# Une deuxième évolution vers la même espèce : déjà possédée, rien ne double.
+	assert_false(state.record_evolved(&"metapod"))
+	assert_eq(entry.times_seen, 1)
+	assert_eq(entry.times_caught, 0)
+	# Une espèce déjà vue (dans la nature) garde son observation et son habitat.
+	state.record_seen(&"butterfree", &"route_2")
+	assert_true(state.record_evolved(&"butterfree"))
+	var seen: PokedexEntry = state.pokedex.get_entry(&"butterfree")
+	assert_eq([seen.times_seen, seen.times_caught, seen.seen_maps],
+		[1, 0, [&"route_2"] as Array[StringName]])
+	# Aller-retour de la sauvegarde : possédé, 0 capture.
+	var reloaded := Pokedex.new()
+	assert_true(reloaded.from_dict(state.pokedex.to_dict()))
+	assert_true(reloaded.is_caught(&"metapod"))
+	assert_eq(reloaded.times_caught(&"metapod"), 0)
+	assert_eq(reloaded.get_entry(&"metapod").times_seen, 1)
+
+
 func test_a_captured_starter_is_seen_once_not_zero_times() -> void:
 	# Le starter n'est jamais « vu » en combat : sa capture est sa première observation.
 	var state := _dated()
