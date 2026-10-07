@@ -12,7 +12,7 @@ const PIDGEY_ARTWORK := Vector2(402, 431)
 
 func test_anchors_follow_the_pilot_framing() -> void:
 	var a := BattleLayout.anchors(Vector2(1920, 1080))
-	assert_eq(a["player_feet"], Vector2(960 - 0.42 * 1080, 0.97 * 1080).round())
+	assert_eq(a["player_feet"], Vector2(960 - 0.42 * 1080, 0.90 * 1080).round())
 	assert_eq(a["foe_feet"], Vector2(960 + 0.36 * 1080, 0.50 * 1080).round())
 	var wide := BattleLayout.anchors(Vector2(2340, 1080))
 	assert_eq(wide["player_feet"].y, a["player_feet"].y, "même hauteur")
@@ -28,7 +28,8 @@ func test_player_in_front_bottom_left_foe_further_top_right() -> void:
 		var foe: Vector2 = a["foe_feet"]
 		assert_lt(mine.x, view.x / 2.0, "%s : joueur à gauche" % view)
 		assert_gt(foe.x, view.x / 2.0, "%s : adversaire à droite" % view)
-		assert_gt(mine.y, view.y * 0.9, "%s : joueur au premier plan, en bas" % view)
+		assert_gte(mine.y, view.y * 0.85, "%s : joueur au premier plan, en bas" % view)
+		assert_lte(mine.y, view.y * 0.92, "%s : pieds au-dessus du bord bas" % view)
 		assert_lte(foe.y, view.y / 2.0, "%s : adversaire dans la moitié haute" % view)
 
 

@@ -452,6 +452,16 @@ func test_throw_takes_a_second_or_so_at_real_speed_and_shows_the_thrower() -> vo
 	runner.call()
 	var steps := clock.run_until(func() -> bool: return false, 0.4)
 	assert_true(_stage.get_thrower().visible, "le dresseur est dans le cadrage")
+	# Correctif QA S24 : le héros peint (LINEAR, 1:1) est entier à l'écran, plus coupé en bas.
+	var thrower := _stage.get_thrower()
+	var size := thrower.get_rect().size
+	for view: Vector2 in [Vector2(1920, 1080), Vector2(2340, 1080)]:
+		var feet := BattleStage.thrower_feet(view)
+		var shown := Rect2(feet - Vector2(size.x / 2.0, size.y), size)
+		assert_true(Rect2(Vector2.ZERO, view).encloses(shown),
+			"dresseur entier dans %s (%s)" % [view, shown])
+	assert_eq(thrower.texture_filter, CanvasItem.TEXTURE_FILTER_LINEAR, "héros peint")
+	assert_eq(thrower.texture, BattleStage.THROWER_TEXTURE)
 	assert_true(_stage.get_ball().visible, "la Ball vole")
 	steps += clock.run_until(func() -> bool:
 		return _stage.get_ball().position.y > 0.0 and not _stage.get_thrower().visible \

@@ -11,10 +11,16 @@ extends SceneTree
 ## rattata, bilan (victoire sur Rattata), dracaufeu, fuite. Repli (--place=oak_lab, préfixe
 ## cb3_oak_lab_) : transition, actions.
 ## Mesures : lignes « [perf] » (fps, appels de dessin, mémoire des textures) sur la vue posée.
+## Correctifs après la QA S24 (--place=route_22 : repli ; --pass=poses : ton Pokémon au sol
+## pour --starters=rattata,charmander,charmander@2.0,venusaur (espèce@taille : taille
+## imposée, boîte maximale d'un grand Pokémon ; Florizarre n'a pas de dos : rien), préfixe cb3_route_1_joueur_<espèce>) ;
+## « [perf] entrée » : plus longue image (temps réel) de l'entrée en combat ; --no-preload
+## vide le préchargement du décor avant la rencontre (comportement d'avant le correctif).
 
 const BOOT_SCENE: String = "res://game/boot.tscn"
 const STARTER: StringName = &"charmander"
-const SPAWNS: Dictionary = {&"route_1": &"from_pallet_w", &"oak_lab": &"entrance"}
+const SPAWNS: Dictionary = {&"route_1": &"from_pallet_w", &"oak_lab": &"entrance",
+	&"route_22": &"from_viridian"}
 
 var _boot: Node
 var _out_dir: String = "build/captures/combat_cb3"
@@ -23,6 +29,10 @@ var _hud: CanvasLayer
 var _director: Node
 var _stage: CanvasLayer
 var _encounters: Node
+var _starter: StringName = STARTER
+var _pass: String = "full"
+var _starters: Array[StringName] = [&"rattata", &"charmander", &"charmander@2.0", &"venusaur"]
+var _preload: bool = true
 
 
 func _init() -> void:
@@ -33,6 +43,14 @@ func _init() -> void:
 			_out_dir = arg.trim_prefix("--out=")
 		elif arg.begins_with("--place="):
 			_place = StringName(arg.trim_prefix("--place="))
+		elif arg.begins_with("--pass="):
+			_pass = arg.trim_prefix("--pass=")
+		elif arg.begins_with("--starters="):
+			_starters.clear()
+			for id: String in arg.trim_prefix("--starters=").split(","):
+				_starters.append(StringName(id))
+		elif arg == "--no-preload":
+			_preload = false
 	process_frame.connect(_start, CONNECT_ONE_SHOT)
 
 
@@ -53,7 +71,9 @@ func _start() -> void:
 	var explo: CanvasLayer = _boot.call(&"get_hud")
 	explo.call(&"hide_interact")
 	await _frames(20)
-	if _place == &"route_1":
+	if _pass == "poses":
+		await _poses()
+	elif _place == &"route_1":
 		await _route_1()
 	else:
 		await _fallback()
@@ -71,7 +91,7 @@ func _setup_state() -> void:
 	var party: RefCounted = load("res://game/pokemon/party.gd").new()
 	var factory: GDScript = load("res://game/pokemon/pokemon_factory.gd")
 	var rng: RefCounted = load("res://game/systems/random/game_rng.gd").new(999)
-	party.call(&"add", factory.call(&"create", data, STARTER, 9, rng))
+	party.call(&"add", factory.call(&"create", data, _starter, 9, rng))
 	state.set(&"party", party)
 	var bag: RefCounted = state.get(&"bag")
 	bag.call(&"add", &"poke_ball", 12)
@@ -82,6 +102,7 @@ func _setup_state() -> void:
 
 func _route_1() -> void:
 	# Roucool : transition, actions, capacités, un coup, Sac, lancer, capture, bilan, retour.
+	await _entry_perf()
 	_encounter(&"pidgey", 3)
 	await _until(func() -> bool: return _stage.call(&"is_active"), 300)
 	for i: int in 4:
@@ -226,9 +247,65 @@ func _flee(name: String) -> void:
 	await _frames(40)
 
 
+## Plus longue image (temps réel) de l'entrée en combat (rencontre → actions), décor préchargé
+## à l'entrée de la carte (ou pas : --no-preload). Rencontre à part, terminée par la fuite.
+func _entry_perf() -> void:
+	await _until(func() -> bool:
+		var cache: RefCounted = _stage.call(&"get_decor_cache") \
+			if _stage.has_method(&"get_decor_cache") else null
+		return cache == null or not _preload or cache.call(&"get_paths").is_empty() \
+			or cache.call(&"is_ready", cache.call(&"get_paths")[0]), 600)
+	if not _preload and _stage.has_method(&"get_decor_cache"):
+		var empty: Array[String] = []
+		_stage.call(&"get_decor_cache").call(&"prepare", empty)
+	await _frames(10)
+	var worst := 0
+	var last := Time.get_ticks_usec()
+	_encounter(&"pidgey", 3)
+	while int(_hud.call(&"get_zone")) != 1:
+		await process_frame
+		var now := Time.get_ticks_usec()
+		worst = maxi(worst, now - last)
+		last = now
+	print("[perf] entrée %s (préchargement %s) : plus longue image %.1f ms"
+		% [_place, "oui" if _preload else "non", worst / 1000.0])
+	await _flee("")
+	await _frames(30)
+
+
+## Ton Pokémon (de dos) posé au sol pour chaque espèce de --starters (un combat chacun).
+func _poses() -> void:
+	var data: RefCounted = _boot.call(&"get_pokemon_data")
+	var factory: GDScript = load("res://game/pokemon/pokemon_factory.gd")
+	var rng: RefCounted = load("res://game/systems/random/game_rng.gd").new(7)
+	var state: Node = root.get_node(^"GameState")
+	for entry: StringName in _starters:
+		# « espèce@taille » : taille (m) imposée, pour voir la boîte maximale d'un grand
+		# Pokémon avec un dos provisoire existant (aucun dos de Florizarre / Dracaufeu).
+		var parts := String(entry).split("@")
+		var species := StringName(parts[0])
+		if parts.size() > 1:
+			var dex: RefCounted = load("res://game/pokemon/pokedex_library.gd").new()
+			dex.call(&"add_from_dict", {"size": 151, "species": {parts[0]: {
+				"height": float(parts[1]), "weight": 1.0, "description": "x"}}})
+			_stage.call(&"set_species_source", data, dex)
+		var party: RefCounted = load("res://game/pokemon/party.gd").new()
+		party.call(&"add", factory.call(&"create", data, species, 9, rng))
+		state.set(&"party", party)
+		_encounter(&"rattata" if species != &"rattata" else &"pidgey", 3)
+		await _wait_zone(1)
+		await _frames(12)
+		await _shot("joueur_%s" % String(entry).replace("@", "_"))
+		await _flee("")
+		await _frames(30)
+		if parts.size() > 1:
+			_stage.call(&"set_species_source", data, _boot.get(&"_dex"))
+
+
 # --- Repli -----------------------------------------------------------------------------
 
 func _fallback() -> void:
+	await _entry_perf()
 	_encounter(&"pidgey", 3)
 	await _until(func() -> bool: return _stage.call(&"is_active"), 300)
 	await _frames(6)

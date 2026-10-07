@@ -5,8 +5,8 @@ extends RefCounted
 ##
 ## Composition du pilote validée (fiche `serie-combat-dos-pilote.md` §1, 2026-10-05 ; reprise
 ## au CB.1, `docs/tech/combat-maquettes.md`) : lieu réel resserré, ton Pokémon **de dos** au
-## premier plan en bas à gauche (pieds presque au bas de l'écran), l'adversaire nettement plus
-## loin en haut à droite. L'interface occupe l'autre diagonale : carte adverse dans le quart
+## premier plan en bas à gauche (pieds sur le sol visible, au-dessus du feuillage flou de premier
+## plan du décor peint), l'adversaire nettement plus loin en haut à droite. L'interface occupe l'autre diagonale : carte adverse dans le quart
 ## haut gauche, ta carte et les commandes dans le bas droit ([method hud_zones]) ; aucun
 ## Pokémon n'y entre, quelle que soit sa taille (boîtes maximales).
 ##
@@ -17,7 +17,9 @@ extends RefCounted
 ## du premier essai du pilote).
 
 ## Pieds du Pokémon du joueur et de l'adversaire (prototype `duel_qa.gd`, cadrage « combat »).
-const PLAYER_FEET := Vector2(-0.42, 0.97)
+## Correctif QA S24 (2026-10-07) : pieds du joueur remontés de 0,97 à 0,90 (à 0,97 la base
+## touchait le bord bas et passait derrière le feuillage de premier plan du décor peint).
+const PLAYER_FEET := Vector2(-0.42, 0.90)
 const FOE_FEET := Vector2(0.36, 0.50)
 ## Taille réelle (m) de référence : Salamèche.
 const REFERENCE_HEIGHT_M: float = 0.6
@@ -31,8 +33,9 @@ const FOE_PRESENCE: float = 0.27
 const SIZE_EXPONENT: float = 0.4
 const MIN_RATIO: float = 0.73
 const MAX_RATIO: float = 1.73
-## Boîtes maximales (largeur, hauteur en hauteurs d'écran) : protègent l'interface.
-const PLAYER_MAX_BOX := Vector2(0.80, 0.46)
+## Boîtes maximales (largeur, hauteur en hauteurs d'écran) : protègent l'interface. La hauteur
+## du joueur suit ses pieds (0,90 − 0,40 = 0,50 : jamais dans le quart haut gauche).
+const PLAYER_MAX_BOX := Vector2(0.80, 0.40)
 const FOE_MAX_BOX := Vector2(0.50, 0.38)
 ## Taille native des sprites provisoires (pixel art) : dos du joueur, adversaire sans artwork.
 const NATIVE := Vector2i(64, 64)

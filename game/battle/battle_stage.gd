@@ -90,7 +90,9 @@ const STATUS_HOP_DURATION: float = 0.16
 const HIT_BLINKS: int = 3
 const HIT_BLINK: float = 0.06
 const HIT_SHAKE: float = 10.0
-const HIT_ALPHA: float = 0.25
+## Correctif QA S24 : 0 (le Pokémon disparaît franchement, comme Rouge/Bleu ; à 0,25 l'artwork
+## translucide décalé par le tremblement se lisait comme un « fantôme »). L'ombre reste au sol.
+const HIT_ALPHA: float = 0.0
 ## Coup critique : éclair blanc bref et très léger tremblement de la scène (px monde).
 const CRIT_FLASH: float = 0.35
 const CRIT_FLASH_DURATION: float = 0.16
@@ -110,29 +112,32 @@ const WITHDRAW_DURATION: float = 0.35
 ## Capture (jalon 5D, jalon-05.md §3.10, storyboard combat-capture-v1) : le dresseur de dos
 ## entre en bas à gauche, la Ball part de sa main en arc, le Pokémon sauvage est absorbé dans un
 ## éclat rouge, la Ball tombe dans l'herbe (ombre au sol), tremble 0 à 3 fois, puis éclat doré
-## (capturé) ou éclat blanc (libéré : le Pokémon ressort). Sprites provisoires (pixel art,
-## NEAREST), tout en Tween ; durées (s) à speed_scale = 1, réglables sur le S24.
+## (capturé) ou éclat blanc (libéré : le Pokémon ressort). Ball provisoire (pixel art, NEAREST) ;
+## dresseur = le héros **peint** de dos (pose de lancer, `heros_lancer.png`, 384 px affichés à
+## 1:1, LINEAR ; correctif QA S24). Tout en Tween ; durées (s) à speed_scale = 1.
 const BALL_TEXTURE: Texture2D = preload("res://assets/sprites/pokemon/placeholder/poke_ball.png")
 const THROWER_TEXTURE: Texture2D = preload(
-	"res://assets/sprites/pokemon/placeholder/trainer_back.png")
+	"res://assets/sprites/characters/painted/heros_lancer.png")
 const SHADOW_TEXTURE: Texture2D = preload(
 	"res://assets/sprites/pokemon/placeholder/battle_shadow.png")
-## Échelles d'affichage : dresseur (64 px natifs), Ball en vol (loin) puis au sol (près).
-## La Ball au sol est aux pieds de l'adversaire, au second plan (CB.1 : ×4, avant ×6).
-const THROWER_SCALE: int = 6
+## Échelles d'affichage : dresseur peint (1:1, son image est à la taille voulue), Ball en vol
+## (loin) puis au sol (près). La Ball au sol est aux pieds de l'adversaire, au second plan
+## (CB.1 : ×4, avant ×6).
+const THROWER_SCALE: float = 1.0
 const BALL_FLIGHT_SCALE: float = 3.0
 const BALL_REST_SCALE: float = 4.0
 ## Rayon de la Ball dans son image (px natifs) : sa hauteur au-dessus du sol une fois posée.
 const BALL_RADIUS: float = 15.0
 ## Dresseur : pieds à cette distance du centre d'écran (en hauteurs d'écran, vers la gauche) et
-## à cette hauteur (en hauteurs d'écran depuis le haut, > 1 : les jambes sortent du cadre) ;
-## glissement d'entrée (px). CB.1 : à gauche de ton Pokémon, qui est au premier plan.
+## à cette hauteur (en hauteurs d'écran depuis le haut ; correctif QA S24 : < 1, le dresseur
+## est entier, pieds au premier plan devant le feuillage) ; glissement d'entrée (px). CB.1 : à
+## gauche de ton Pokémon, qui est au premier plan.
 const THROWER_OFFSET_X: float = 0.74
-const THROWER_FEET_Y: float = 1.04
+const THROWER_FEET_Y: float = 0.98
 const THROWER_SLIDE: float = 220.0
 const THROWER_ENTER_DURATION: float = 0.30
 ## Main du dresseur dans son image (px natifs depuis le bas-centre) : départ de la Ball.
-const THROWER_HAND := Vector2(28.0, -54.0)
+const THROWER_HAND := Vector2(95.0, -305.0)
 ## Vol de la Ball : durée, hauteur de l'arc (hauteurs d'écran), tours sur elle-même.
 const THROW_DURATION: float = 0.42
 const THROW_ARC: float = 0.16
@@ -228,6 +233,8 @@ var _decor: BattleDecor
 var _decor_catalog: BattleDecorCatalog
 var _decor_back: Sprite2D
 var _decor_front: Sprite2D
+## Images du décor par défaut de la carte courante, préchargées en tâche de fond.
+var _decor_cache := BattleDecorCache.new()
 
 @onready var _backdrop: ColorRect = %Backdrop
 @onready var _flash: ColorRect = %Flash
@@ -304,6 +311,26 @@ func set_place(map_id: StringName, cell: Vector2i) -> BattleDecor:
 		push_warning("BattleStage : image du décor absente « %s »" % _decor.back_path)
 		_decor = null
 	return _decor
+
+
+## Entrée sur la carte [param map_id] (avant tout combat) : les images de son décor par défaut
+## sont chargées en tâche de fond et gardées ; celles de la carte précédente sont rendues
+## (jamais plus d'un décor en mémoire hors combat). Carte sans décor : rien n'est gardé.
+func prepare_place(map_id: StringName) -> void:
+	if _decor_catalog == null:
+		_decor_catalog = BattleDecorCatalog.load_file()
+	var paths: Array[String] = []
+	var decor := _decor_catalog.default_for(map_id)
+	if decor != null:
+		paths.append(decor.back_path)
+		if decor.front_path != "":
+			paths.append(decor.front_path)
+	_decor_cache.prepare(paths)
+
+
+## Préchargement des décors (tests, mesures).
+func get_decor_cache() -> BattleDecorCache:
+	return _decor_cache
 
 
 ## Décor peint du combat (null : repli sur la carte).
@@ -499,6 +526,11 @@ func play_move(side: BattleEvent.SideId, category: MoveData.Category) -> void:
 	_rest(side)
 
 
+## Pieds écran du dresseur du lancer pour une vue de [param view] (bas-centre de son image).
+static func thrower_feet(view: Vector2) -> Vector2:
+	return Vector2(view.x * 0.5 - THROWER_OFFSET_X * view.y, THROWER_FEET_Y * view.y).round()
+
+
 ## Coroutine : le Pokémon de [param side] est touché (clignotement et tremblement ; sur un
 ## coup critique, éclair bref et léger tremblement de la scène, puis retour au cadrage).
 func play_hit(side: BattleEvent.SideId, critical: bool) -> void:
@@ -607,8 +639,8 @@ func play_throw() -> void:
 	_build_capture_props()
 	var view := _view_size()
 	var foe := BattleEvent.SideId.FOE
-	var scale := float(THROWER_SCALE)
-	var feet := Vector2(view.x * 0.5 - THROWER_OFFSET_X * view.y, THROWER_FEET_Y * view.y)
+	var scale := THROWER_SCALE
+	var feet := thrower_feet(view)
 	var target := _foe_center()
 	_ball_rest = _anchor(foe) + Vector2(0.0, -BALL_RADIUS * BALL_REST_SCALE + 6.0)
 	_absorb_point = target
@@ -1131,15 +1163,13 @@ func _make_decor_layer(layer_name: StringName) -> Sprite2D:
 	return sprite
 
 
-## Charge les images du décor courant (à la demande) et les pose par sa ligne de sol, cachées
+## Prend les images du décor courant (préchargées à l'entrée de la carte, sinon chargées à la
+## demande) et les pose par sa ligne de sol, cachées
 ## (le fondu de [method _set_backdrop] les montre).
 func _show_decor() -> void:
 	var rect := _decor.fit(_view_size())
-	var front: Texture2D = null
-	if _decor.front_path != "" and ResourceLoader.exists(_decor.front_path):
-		front = load(_decor.front_path) as Texture2D
-	_decor_back.texture = load(_decor.back_path) as Texture2D
-	_decor_front.texture = front
+	_decor_back.texture = _decor_cache.take(_decor.back_path)
+	_decor_front.texture = _decor_cache.take(_decor.front_path)
 	for sprite: Sprite2D in [_decor_back, _decor_front]:
 		if sprite.texture == null:
 			continue
@@ -1149,7 +1179,7 @@ func _show_decor() -> void:
 	_set_backdrop(0.0)
 
 
-## Rend les images du décor (mémoire libérée entre deux combats).
+## Rend les images du décor (seul le décor préchargé de la carte courante reste en mémoire).
 func _release_decor() -> void:
 	for sprite: Sprite2D in [_decor_back, _decor_front]:
 		sprite.texture = null
@@ -1184,7 +1214,8 @@ func _build_capture_props() -> void:
 	_ball_shadow = _make_prop(SHADOW_TEXTURE)
 	_ball = _make_prop(BALL_TEXTURE)
 	_thrower = _make_prop(THROWER_TEXTURE)
-	_thrower.offset = Vector2(0.0, -32.0)
+	_thrower.texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR
+	_thrower.offset = Vector2(0.0, -THROWER_TEXTURE.get_height() / 2.0)
 	var gradient := Gradient.new()
 	gradient.set_color(0, Color(1, 1, 1, 1))
 	gradient.set_color(1, Color(1, 1, 1, 0))

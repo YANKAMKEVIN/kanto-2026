@@ -771,6 +771,8 @@ func _on_map_changed(map: GameMap) -> void:
 	_encounters.set_map(map)
 	_services.set_map(map)
 	_recovery.set_map(map)
+	# Décor de combat de la carte chargé en tâche de fond (correctif QA S24 du CB.3).
+	_battle_stage.prepare_place(map.map_id)
 
 
 ## Profil de lumière de [param map] ([member GameMap.light_profile]) ; vide ou inconnu :

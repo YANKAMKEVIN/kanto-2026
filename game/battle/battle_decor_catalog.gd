@@ -74,6 +74,17 @@ func pick(map_id: StringName, cell: Vector2i) -> BattleDecor:
 	return fallback
 
 
+## Décor par défaut de la carte [param map_id] (première entrée sans `cells`) ; null : aucun.
+## C'est lui que le BattleStage précharge à l'entrée de la carte.
+func default_for(map_id: StringName) -> BattleDecor:
+	for entry: Dictionary in _places.get(map_id, []):
+		var cells: Rect2i = entry["cells"]
+		var decor: BattleDecor = _decors.get(entry["decor"])
+		if decor != null and not cells.has_area():
+			return decor
+	return null
+
+
 func get_decor(decor_id: StringName) -> BattleDecor:
 	return _decors.get(decor_id)
 

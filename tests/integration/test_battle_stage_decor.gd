@@ -145,3 +145,47 @@ func test_transition_blurs_the_world_into_the_decor() -> void:
 	assert_true(done[0])
 	_stage.speed_scale = 0.0
 	await _stage.exit()
+
+
+# --- Correctifs après la QA S24 -----------------------------------------------------------
+
+## Le décor de la carte est préchargé en tâche de fond à l'entrée de la carte, puis repris tel
+## quel au combat ; une carte sans décor rend celui de la précédente (un seul décor gardé).
+func test_decor_is_preloaded_on_map_entry_and_reused() -> void:
+	var cache := _stage.get_decor_cache()
+	_stage.prepare_place(&"oak_lab")
+	assert_eq(cache.get_paths().size(), 0, "labo : rien à précharger")
+	_stage.prepare_place(&"route_1")
+	var decor := BattleDecorCatalog.load_file().default_for(&"route_1")
+	assert_eq(cache.get_paths().size(), 2, "fond et premier plan demandés")
+	var deadline := Time.get_ticks_msec() + 10000
+	while not cache.is_ready(decor.back_path) and Time.get_ticks_msec() < deadline:
+		await wait_process_frames(1)
+	assert_true(cache.is_ready(decor.back_path), "chargé en tâche de fond")
+	var back := cache.take(decor.back_path)
+	_stage.set_place(&"route_1", Vector2i(10, 30))
+	await _wild()
+	assert_same(_stage.get_decor_back().texture, back, "image préchargée reprise")
+	await _stage.exit()
+	assert_eq(cache.get_paths().size(), 2, "gardé hors combat sur cette carte")
+	_stage.prepare_place(&"oak_lab")
+	assert_eq(cache.get_paths().size(), 0, "rendu en quittant la carte")
+
+
+## Le coup (Griffe) fait disparaître franchement l'adversaire pendant le clignotement (plus de
+## « fantôme » translucide décalé) ; son ombre reste au sol.
+func test_hit_blink_hides_the_foe_and_keeps_its_shadow() -> void:
+	_stage.set_place(&"route_1", Vector2i(10, 30))
+	await _wild()
+	_stage.speed_scale = 1.0
+	var sprite := _stage.get_sprite(FOE_SIDE)
+	var shadow := _stage.get_node(^"%FoeShadow") as CanvasItem
+	var clock := TweenClock.new(get_tree())
+	var runner := func() -> void: await _stage.play_hit(FOE_SIDE, false)
+	runner.call()
+	clock.run_until(func() -> bool: return sprite.modulate.a <= 0.0, 0.5)
+	assert_eq(sprite.modulate.a, 0.0, "adversaire caché au creux du clignotement")
+	assert_true(shadow.visible and shadow.modulate.a == 1.0, "ombre au sol")
+	clock.run_until(func() -> bool: return false, 0.6)
+	clock.release()
+	assert_eq(sprite.modulate.a, 1.0, "de retour")

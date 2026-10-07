@@ -8,7 +8,7 @@
 			"front": "res://assets/battle/decors/route_1_chemin_front.webp",
 			"size": [2340, 1080],
 			"foe_feet": [1559, 540],
-			"player_feet": [716, 1048],
+			"player_feet": [716, 972],
 			"horizon": 404
 		}
 	},

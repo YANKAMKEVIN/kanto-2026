@@ -14,7 +14,7 @@ func _catalog() -> BattleDecorCatalog:
 func _decor_data(extra: Dictionary = {}) -> Dictionary:
 	var data := {
 		"zone": "route_1", "variant": "chemin", "back": "res://x_back.webp",
-		"size": [2340, 1080], "foe_feet": [1559, 540], "player_feet": [716, 1048],
+		"size": [2340, 1080], "foe_feet": [1559, 540], "player_feet": [716, 972],
 	}
 	data.merge(extra, true)
 	return data
@@ -66,6 +66,40 @@ func test_real_route_1_painted_for_the_anchors() -> void:
 	assert_almost_eq(rect.position.y, 0.0, 1.0)
 	assert_true(decor.horizon > 0.0 and decor.horizon < decor.foe_feet.y,
 		"horizon au-dessus des pieds de l'adversaire")
+
+
+## Correctif QA S24 : les pieds de ton Pokémon reposent sur le sol visible, **au-dessus** du
+## feuillage flou de premier plan (la bande du bas du calque avant), pas derrière lui.
+func test_real_player_feet_above_the_foreground_band() -> void:
+	var catalog := _catalog()
+	for id: StringName in catalog.get_ids():
+		var decor := catalog.get_decor(id)
+		if decor.front_path == "":
+			continue
+		var image := (load(decor.front_path) as Texture2D).get_image()
+		var feet := Vector2i(decor.player_feet)
+		var around := _mean_alpha(image, feet.x - 150, feet.x + 150, feet.y - 8, feet.y)
+		assert_lt(around, 0.1, "%s : sol dégagé sous les pieds (alpha %.2f)" % [id, around])
+		var band := _mean_alpha(image, feet.x - 150, feet.x + 150, image.get_height() - 30,
+			image.get_height() - 1)
+		assert_gt(band, 0.5, "%s : la bande de premier plan reste sous les pieds" % id)
+		assert_lt(decor.player_feet.y, decor.size.y * 0.93, "%s : pieds loin du bord bas" % id)
+
+
+func test_default_decor_of_a_map() -> void:
+	var catalog := _catalog()
+	assert_eq(catalog.default_for(&"route_1").id, &"route_1_chemin")
+	assert_null(catalog.default_for(&"oak_lab"), "pas de décor : rien à précharger")
+
+
+func _mean_alpha(image: Image, x0: int, x1: int, y0: int, y1: int) -> float:
+	var total := 0.0
+	var count := 0
+	for y: int in range(y0, y1 + 1):
+		for x: int in range(x0, x1 + 1, 4):
+			total += image.get_pixel(x, y).a
+			count += 1
+	return total / maxf(count, 1)
 
 
 # --- Catalogue ------------------------------------------------------------------------
@@ -147,6 +181,6 @@ func test_fit_always_covers_the_screen() -> void:
 func test_fit_scale_follows_ground_span() -> void:
 	# Master deux fois plus grand, peint pour les mêmes proportions : affiché à ½.
 	var decor := BattleDecor.from_dict(&"d", _decor_data({
-		"size": [4680, 2160], "foe_feet": [3118, 1080], "player_feet": [1432, 2096]}))
+		"size": [4680, 2160], "foe_feet": [3118, 1080], "player_feet": [1432, 1944]}))
 	var rect := decor.fit(Vector2(2340, 1080))
 	assert_almost_eq(rect.size.x / decor.size.x, 0.5, 0.002)
