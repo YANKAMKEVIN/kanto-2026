@@ -22,12 +22,15 @@ extends CanvasLayer
 signal title_hidden
 ## La légende vient de disparaître (fin de sa tenue ou hide_caption()).
 signal caption_hidden
+## La carte du Champion vient de disparaître (fin de sa tenue ou toucher).
+signal champion_card_hidden
 ## Le bouton Menu rond (coin haut-droit) est touché : on demande le Menu Dresseur.
 signal menu_requested
 
 @onready var _zone_title: ZoneTitle = %ZoneTitle
 @onready var _caption: WorldCaption = %WorldCaption
 @onready var _toast: Toast = %Toast
+@onready var _champion_card: ChampionCard = %ChampionCard
 @onready var _joystick: TouchJoystick = %VirtualJoystick
 const MOVE_ACTIONS: Array[StringName] = [&"move_up", &"move_down", &"move_left", &"move_right"]
 
@@ -53,6 +56,7 @@ func _ready() -> void:
 	_menu_button.pressed.connect(_on_menu_pressed)
 	_zone_title.title_hidden.connect(title_hidden.emit)
 	_caption.caption_hidden.connect(caption_hidden.emit)
+	_champion_card.card_finished.connect(champion_card_hidden.emit)
 
 
 ## Filet de sécurité : sans ce relâchement, l'action run resterait pressée si l'application
@@ -83,6 +87,17 @@ func show_caption(text: String) -> void:
 ## Efface la légende en ANIM_MICRO (changement de carte…) ; émet caption_hidden.
 func hide_caption() -> void:
 	_caption.hide_now()
+
+
+## Carte de présentation d'un Champion (« PIERRE » / « Champion d'Arène d'Argenta ») : glisse
+## depuis la gauche, reste CHAMPION_CARD_HOLD (un toucher l'abrège), ressort ; émet
+## champion_card_hidden. Indépendante des contrôles.
+func show_champion_card(champion_name: String, title: String) -> void:
+	_champion_card.show_card(champion_name, title)
+
+
+func get_champion_card() -> ChampionCard:
+	return _champion_card
 
 
 ## Toast « [param title] — [param detail] » (« Poké Balls ×5 » / « Ajoutées au Sac ») en haut
