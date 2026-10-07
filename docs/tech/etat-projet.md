@@ -4,6 +4,9 @@ Mis à jour : 2026-10-07 (DA.3 : intérieurs de Bourg Palette peints, starters p
 
 
 
+
+## Menu Dresseur : rapprochement des maquettes (2026-10-07, branche `menu-maquettes`)
+- Plan `docs/tech/menu-maquettes.md`, décisions de Kevin : MM.0 art (Codex + artworks officiels) → MM.1 tableau de bord, Équipe, Sac → MM.2 Carte, Dresseur → MM.3 Paramètres ; **heure et badges préparés dès maintenant** (horloge cachée tant que le jour/nuit n'existe pas, 8 badges en données, emplacements en silhouette). En parallèle du J8 (qui ne touche pas au menu).
 ## Intégration du monde peint (plan du 2026-10-06, validé par Kevin)
 - **DA.1 validée par Kevin sur S24 (2026-10-06)** : Route 1 peinte dans le jeu, 58,8 fps de moyenne (min 53). **DA.2 validée par Kevin sur S24 (2026-10-07)** : Bourg Palette peint, personnages peints, 4 routines, 58,8 fps. **DA.3 validée par Kevin (2026-10-07)** : intérieurs, starters et course de Chen peints ; **chantier terminé, tout le début du jeu est peint**. Meubles vus de côté : remplacements gardés (défaut). Prochain : **jalon 8 (Route 2)**, en peint dès le départ.
 - Bourg Palette, ses 4 intérieurs et la Route 1 ne sont peints que dans le prototype ; le jeu utilise encore les tuiles provisoires. Plan : `docs/tech/integration-da-bourg-route1.md` (DA.0 pipeline → DA.1 Route 1 → DA.2 Bourg Palette → DA.3 intérieurs → DA.4 personnages peints). **Décisions de Kevin** : géométrie du jeu gardée (A), personnages peints dans ce chantier, **avant le J8**. Branche `da-bourg-route1`.
