@@ -350,6 +350,69 @@ func test_npc_cells_are_free_and_match_the_grid_positions() -> void:
 		assert_not_null(_map.get_npc(spec.id), "%s posé sur la carte" % spec.id)
 
 
+# --- Vie de la route (T7) ------------------------------------------------------------------
+
+func test_the_youngster_starts_no_fight_and_has_no_trigger_nearby() -> void:
+	var roster := NpcRoster.load_for_map(&"route_2")
+	var youngster := roster.get_spec(&"youngster")
+	assert_not_null(youngster)
+	if youngster == null:
+		return
+	var dialogues := DialogueLibrary.new()
+	dialogues.load_dir()
+	for variant: Variant in dialogues.get_dialogue(youngster.dialogue).variants:
+		assert_eq(variant.cutscene, &"", "P2 : aucune scène derrière sa réplique")
+	var cutscenes := CutsceneLibrary.new()
+	cutscenes.load_dir()
+	for id: StringName in cutscenes.get_ids():
+		if not String(id).begins_with("route_2"):
+			continue
+		for variant: Variant in cutscenes.get_cutscene(id).variants:
+			for step: Variant in variant.steps:
+				assert_ne(step.kind, CutsceneStep.Kind.BATTLE, "%s : aucun combat" % id)
+	for point: Node in _map.get_node(^"Triggers").get_children():
+		var cell := (point as EventTriggerPoint).get_cell()
+		assert_gt(absi(cell.x - youngster.cell.x) + absi(cell.y - youngster.cell.y), 5,
+			"%s loin de P2" % point.name)
+	assert_eq(_map.get_node(^"Triggers").get_child_count(), 2, "seulement les deux objets cachés")
+	assert_eq(youngster.shy_action, &"", "P2 ne fuit pas et n'a pas de champ de vision")
+
+
+func test_routines_stay_off_tall_grass_and_the_main_path() -> void:
+	for spec: NpcSpec in NpcRoster.load_for_map(&"route_2").get_all():
+		var cells: Array[Vector2i] = [spec.cell]
+		cells.append_array(spec.route_cells)
+		for cell: Vector2i in cells:
+			var mark := _plan.at(cell)
+			assert_false(mark == "h", "%s en %s : pas dans les hautes herbes" % [spec.id, cell])
+			assert_false(mark == "=" or mark == "D",
+				"%s en %s : hors du chemin principal" % [spec.id, cell])
+
+
+func test_nidoran_is_unreachable_in_its_pen() -> void:
+	var reach := _terrain.find_reachable(SOUTH[1])
+	var cell: Vector2i = NpcRoster.load_for_map(&"route_2").get_spec(&"nidoran").cell
+	assert_false(reach.has(cell))
+	for direction: Vector2i in DIRECTIONS:
+		assert_false(reach.has(cell + direction), "voisine %s inatteignable" % (cell + direction))
+
+
+func test_ground_objects_are_takeable_from_a_reachable_cell() -> void:
+	var reach := _terrain.find_reachable(SOUTH[1])
+	for spec: NpcSpec in NpcRoster.load_for_map(&"route_2").get_all():
+		if spec.verb != Interaction.Kind.TAKE:
+			continue
+		var found := false
+		for direction: Vector2i in DIRECTIONS:
+			var from := spec.cell + direction
+			if not reach.has(from):
+				continue
+			var target := InteractionFinder.find(_grid, _map.get_interactions(), from, -direction)
+			if target != null and target.kind == Interaction.Kind.TAKE:
+				found = true
+		assert_true(found, "%s : PRENDRE possible depuis une case atteignable" % spec.id)
+
+
 # --- Image -------------------------------------------------------------------------------
 
 func test_forest_canopy_never_covers_a_walkable_cell() -> void:

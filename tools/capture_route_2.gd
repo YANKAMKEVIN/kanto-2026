@@ -11,7 +11,8 @@ extends SceneTree
 ## `--aim=21,30 --zoom=0.18`), `--noplayer`, `--perf` : journal des appels de dessin et de la
 ## mémoire des textures toutes les 30 images ; `--boot` : la vraie scène `game/boot.tscn` (HUD,
 ## lumière de Boot) avec le départ de débogage `tools/debug_start/route_2.json`, puis le joueur
-## posé sur `--cell`. Série complète du T5 : `tools/capture_route_2.sh`.
+## posé sur `--cell` ; `--interact` (avec `--boot`) : appui sur « interagir » après 10 images.
+## Série complète du T5 : `tools/capture_route_2.sh`.
 ## 2340 × 1080 : `override.cfg` temporaire à la racine ([display] window/size/
 ## window_width_override=2340, window_height_override=1080), à retirer après.
 
@@ -85,6 +86,20 @@ func _setup_boot() -> void:
 	if _args.has("steps"):
 		var step: PackedStringArray = String(_args["steps"]).split(":")
 		_walk(player, _direction(step[0]), int(step[1]))
+	if _args.has("interact"):
+		# T7 : le joueur appuie sur « interagir » (PRENDRE, examiner…) ; --dismiss=n appuie
+		# sur la boîte de dialogue n fois ensuite (une page par appui).
+		for i in 10:
+			await process_frame
+		Input.action_press(&"interact")
+		for i in 3:
+			await process_frame
+		Input.action_release(&"interact")
+		var box: Node = boot.call(&"get_dialogue_box")
+		for i in int(_args.get("dismiss", "0")):
+			for k in 40:
+				await process_frame
+			box.emit_signal(&"advance_requested")
 	if _args.has("perf"):
 		process_frame.connect(_report)
 

@@ -20,7 +20,7 @@
 		"shy": { "action": "fly", "radius": 2 }
 	},
 	"rattata": {
-		"cell": [16, 41], "facing": "left", "sprite": "pokemon/rattata",
+		"cell": [15, 44], "facing": "left", "sprite": "pokemon/rattata",
 		"shy": { "action": "flee", "radius": 2 },
 		"look": { "facings": ["left", "down", "right"], "every": 1.2 }
 	},

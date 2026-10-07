@@ -173,6 +173,9 @@ const NORTH_FLOWERS: Array[int] = [5, 6]
 ## Dégagement de la forêt autour des PNJ et des objets au sol (cases), comme la Route 1.
 const NPC_TREE_CLEAR_X: float = 2.2
 const NPC_TREE_CLEAR_Y: float = 3.0
+## Demi-largeur (cases) sans buisson de forêt autour d'un objet au sol, sur sa case et celle du
+## dessous (T7).
+const BALL_CLEAR_X: float = 0.9
 const FOREST_CONTACT_SHADOWS: bool = false
 ## Cime d'un arbre de forêt sur une case praticable au-dessus de lui : au plus ce débord
 ## (cases), demi-largeur prise en compte (cases, × échelle), échelle minimale avant retrait
@@ -679,6 +682,27 @@ func _place_tall_grass(root: Node, entities: Node2D) -> void:
 				tuft.modulate = Color(DARK_GRASS_VALUE, DARK_GRASS_VALUE, DARK_GRASS_VALUE)
 
 
+## Cases des objets au sol (verbe « take » du fichier de la carte).
+func _ball_cells() -> Array[Vector2i]:
+	var cells: Array[Vector2i] = []
+	var roster: Dictionary = JSON.parse_string(FileAccess.get_file_as_string(NPCS_PATH))
+	for key: String in roster:
+		var entry: Dictionary = roster[key]
+		if entry.get("verb", "") == "take":
+			cells.append(Vector2i(int(entry["cell"][0]), int(entry["cell"][1])))
+	return cells
+
+
+## Vrai si un buisson de forêt au pied [param foot] cacherait un objet au sol (T7 : la Ball
+## doit rester lisible) : buisson dans la case de l'objet ou dans celle juste au-dessous.
+func _hides_ball(foot: Vector2) -> bool:
+	for cell: Vector2i in _ball_cells():
+		if absf(foot.x - (cell.x + 0.5)) < BALL_CLEAR_X \
+				and foot.y > cell.y + 0.5 and foot.y < cell.y + 2.0:
+			return true
+	return false
+
+
 ## Cases des PNJ, Pokémon et objets du fichier de la carte (départ et routines).
 func _npc_cells() -> Array[Vector2i]:
 	var cells: Array[Vector2i] = []
@@ -718,11 +742,14 @@ func _clear_around_npcs(plan: Array[Dictionary]) -> Array[Dictionary]:
 		entry["scale"] = fitted
 		kept.append(entry)
 		trees.append(foot)
-	if not removed:
+	var hidden := false
+	for entry: Dictionary in plan:
+		hidden = hidden or (entry["kind"] == &"bush" and _hides_ball(entry["foot"]))
+	if not removed and not hidden:
 		return plan
 	var bushed: Dictionary = {}
 	for entry: Dictionary in plan:
-		if entry["kind"] == &"bush":
+		if entry["kind"] == &"bush" and not _hides_ball(entry["foot"]):
 			kept.append(entry)
 			bushed[Vector2i(floori(entry["foot"].x), floori(entry["foot"].y - 0.95))] = true
 	var bush_rng := RandomNumberGenerator.new()
@@ -736,6 +763,8 @@ func _clear_around_npcs(plan: Array[Dictionary]) -> Array[Dictionary]:
 			continue
 		var foot := Vector2(cell) + reference + Vector2(
 			bush_rng.randf_range(-0.15, 0.15), drop)
+		if _hides_ball(foot):
+			continue
 		kept.append({"kind": &"bush", "id": bush_ids[bush_rng.randi_range(0, 1)],
 			"foot": foot, "position": foot * TILE, "scale": 1.0, "flip_h": false,
 			"tint": _row_tint(foot.y)})

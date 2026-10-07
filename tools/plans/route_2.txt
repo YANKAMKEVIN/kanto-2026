@@ -106,7 +106,7 @@ youngster           pnj            29,26        bloque  # P2, look ; aucun comba
 youngster_pokemon   pokemon        30,26        bloque  # Nidoran ♂, idle_react 5 s
 pidgey_1            pokemon        24,55        bloque  # shy flee, rayon 2
 pidgey_2            pokemon        25,53        bloque  # shy fly, rayon 2
-rattata             pokemon        16,41        bloque  # shy flee rayon 2 + look (fouille)
+rattata             pokemon        15,44        bloque  # shy flee rayon 2 + look (fouille) ; niche (16,44), buissons au sud
 nidoran             pokemon        34,24        bloque  # Nidoran ♀, look lent, enclos de buissons
 route_2_ball_1      objet_visible  10,53        bloque  # O1 Poké Ball, niche au bout de H1
 route_2_ball_2      objet_visible  10,35        bloque  # O2 Potion (aspect Poké Ball, Q-1), niche de H2

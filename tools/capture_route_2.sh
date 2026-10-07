@@ -1,11 +1,13 @@
 #!/usr/bin/env bash
 # Captures de la Route 2 (jalon 8 T5), 2340 × 1080, Movie Maker (Mac, pas en headless) :
-#   tools/capture_route_2.sh [dossier]      (défaut : build/captures/jalon08_t5)
+#   tools/capture_route_2.sh [dossier [filtre]]   (défaut : build/captures/jalon08_t5, tout)
+# Le filtre est une expression régulière sur le nom du plan (ex. « ^t7_ » : la vie de la route).
 # Une image par plan (dernière image du film) + vue d'ensemble ; journal [perf] dans perf.txt.
 # override.cfg temporaire à la racine (taille de fenêtre), retiré à la fin.
 set -euo pipefail
 cd "$(dirname "$0")/.."
 OUT="${1:-build/captures/jalon08_t5}"
+FILTER="${2:-.}"
 mkdir -p "$OUT"
 TMP="$(mktemp -d)"
 cleanup() { rm -f override.cfg; rm -rf "$TMP"; }
@@ -27,6 +29,17 @@ SHOTS=(
 	"porte|40|--cell=20,10 --facing=up"
 	"futur_b|40|--cell=31,44 --facing=right"
 	"ensemble|20|--aim=21,30 --zoom=0.17 --noplayer"
+	"t7_ball_sol|40|--cell=11,53 --facing=left"
+	"t7_ball_prise|75|--boot --cell=11,53 --facing=left --interact"
+	"t7_ball_2|40|--cell=11,35 --facing=left"
+	"t7_randonneuse|60|--cell=23,50 --facing=up"
+	"t7_p2|40|--cell=27,26 --facing=right"
+	"t7_p2_dialogue|90|--boot --cell=27,26 --facing=right --interact"
+	"t7_p1_dialogue|90|--boot --cell=23,49 --facing=up --interact"
+	"t7_rattata|40|--cell=12,43 --facing=right"
+	"t7_objet_cache|90|--boot --cell=13,43 --facing=up --steps=up:1"
+	"t7_futur_a_texte|90|--boot --cell=5,19 --facing=left --interact"
+	"t7_futur_b_texte|90|--boot --cell=33,43 --facing=up --interact"
 	"perf_c1|300|--cell=20,57 --facing=up --perf"
 	"perf_c3|300|--cell=8,12 --facing=up --perf"
 )
@@ -34,6 +47,7 @@ SHOTS=(
 : > "$OUT/perf.txt"
 for shot in "${SHOTS[@]}"; do
 	IFS='|' read -r name frames opts <<< "$shot"
+	[[ "$name" =~ $FILTER ]] || continue
 	rm -rf "$TMP/f" && mkdir -p "$TMP/f"
 	if [[ "$name" == perf_* ]]; then
 		# shellcheck disable=SC2086
