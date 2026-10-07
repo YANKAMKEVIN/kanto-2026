@@ -511,3 +511,68 @@ func test_shipped_save_v4_qa_start() -> void:
 	var map := (load(MapCatalog.scene_path(start.map)) as PackedScene).instantiate() as GameMap
 	assert_true(map.has_spawn(start.spawn), "le point d'apparition existe sur la carte")
 	map.free()
+
+
+# --- Jalon 9 (T6) : départs de la carte de QA ----------------------------------------------
+
+func _load_qa_start(file_name: String) -> DebugStart:
+	var start := DebugStart.new()
+	assert_true(start.load_file(TOOL_STARTS + file_name + ".json", _data, _items),
+		"%s : %s" % [file_name, "\n".join(start.get_errors())])
+	assert_eq(start.map, &"qa_forest_systems", file_name)
+	var map := (load(MapCatalog.scene_path(start.map)) as PackedScene).instantiate() as GameMap
+	assert_true(map.has_spawn(start.spawn), "%s : le point d'apparition existe" % file_name)
+	map.free()
+	assert_false(start.autosave, "%s : ne touche jamais la sauvegarde" % file_name)
+	assert_true(start.flags.has(&"viridian_arrived"), file_name)
+	return start
+
+
+func _party_summary(start: DebugStart) -> Array:
+	var state: Node = autofree(GameStateScript.new())
+	start.apply(state, _data)
+	var summary: Array = []
+	for pokemon: Pokemon in state.party.get_all():
+		summary.append([pokemon.species_id, pokemon.level, pokemon.status])
+	return summary
+
+
+func test_shipped_poison_qa_start() -> void:
+	var start := _load_qa_start("poison_qa")
+	assert_eq([start.spawn, start.facing], [&"poison_start", Vector2i.UP])
+	assert_true(start.flags.has(&"pokedex_activated"))
+	assert_false(start.flags.has(&"poison_unlocked"), "c'est le garde qui le pose")
+	assert_eq(start.money, 3000)
+	assert_eq(_party_summary(start), [[&"charmander", 9, &"poison"], [&"pidgey", 7, &""]])
+	assert_eq(start.bag.get(&"potion"), 2)
+	# L'Antidote n'existe pas encore : 2 Antidotes à ajouter au T4 (jalon-09.md §6).
+	assert_false(_items.has_item(&"antidote") and not start.bag.has(&"antidote"),
+		"l'Antidote existe : le départ doit en avoir 2")
+
+
+func test_shipped_evolution_qa_start() -> void:
+	var start := _load_qa_start("evolution_qa")
+	assert_eq([start.spawn, start.facing], [&"evolution_start", Vector2i.LEFT])
+	assert_true(start.flags.has(&"poison_unlocked"), "le garde ne parle pas")
+	assert_eq(_party_summary(start), [[&"charmander", 9, &""], [&"caterpie", 6, &""],
+		[&"weedle", 6, &""], [&"metapod", 9, &""]])
+	assert_eq(start.bag.get(&"potion"), 5)
+	var state: Node = autofree(GameStateScript.new())
+	start.apply(state, _data)
+	for index: int in [1, 2, 3]:
+		var pokemon: Pokemon = state.party.get_at(index)
+		var rate := _data.get_species(pokemon.species_id).growth_rate
+		assert_eq(ExpCurve.exp_for_level(rate, pokemon.level + 1) - pokemon.experience, 1,
+			"%s à 1 XP du niveau suivant" % pokemon.species_id)
+
+
+func test_shipped_trainers_qa_starts() -> void:
+	var strong := _load_qa_start("trainers_qa")
+	var weak := _load_qa_start("trainers_weak_qa")
+	for start: DebugStart in [strong, weak]:
+		assert_eq([start.spawn, start.facing], [&"theo_corridor", Vector2i.LEFT])
+		assert_true(start.flags.has(&"poison_unlocked"))
+		assert_eq(start.money, 3000)
+	assert_eq(_party_summary(strong), [[&"charmander", 9, &""], [&"pidgey", 8, &""]])
+	assert_eq(_party_summary(weak), [[&"charmander", 4, &""]], "Salamèche N4 seul : pour perdre")
+	assert_eq(strong.bag.get(&"potion"), 5)

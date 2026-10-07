@@ -25,10 +25,19 @@ const DOSSIER := "res://docs/design/dossier-02-prologue.md"
 const DOSSIER_07 := "res://docs/design/dossier-07-route-1.md"
 ## Jalon 7 : textes de référence validés (dossier 09 §19) ; un jeton y est écrit « {espèce} ».
 const DOSSIER_09 := "res://docs/design/dossier-09-jadielle.md"
+## Jalon 9 : textes verrouillés des gardes (dossier 10, « Textes verrouillés »), une réplique
+## de deux lignes « « … » / « … » » = une page, les deux lignes jointes par « \n ».
+const DOSSIER_10 := "res://docs/design/dossier-10-foret-de-jade.md"
+## Gardes des postes de la Forêt de Jade (T6) : textes vérifiés par un test dédié.
+const GATE_GUARDS: Array[StringName] = [&"forest_gate_north_guard", &"forest_gate_south_guard"]
+## Dialogues pas encore posés sur une carte : le garde du poste nord arrive avec sa carte (T19).
+const UNUSED_YET: Array[StringName] = [&"forest_gate_north_guard"]
 const _DOSSIER_TOKENS: Dictionary[String, String] = {"{first_wild_species}": "{espèce}"}
 const MAPS: Array[StringName] = [
 	&"player_house_2f", &"player_house_1f", &"rival_house", &"oak_lab", &"pallet_town",
 	&"route_1", &"route_22", &"viridian_city", &"viridian_center", &"viridian_mart",
+	# Jalon 9 (T6) : carte de QA (le garde sud).
+	&"qa_forest_systems",
 ]
 ## Lot de textes validé par Kevin le 2026-10-06 (anciens brouillons : panneau, observations,
 ## soin de Maman, terminal du Stockage, portes de Jadielle…) : source des textes hors dossiers.
@@ -38,7 +47,8 @@ const TEXTES_VALIDES := "res://docs/design/textes/textes-brouillon-j7.md"
 ## (4A, T1) la proposition du Prof. Chen ; (4A, T3) le choix et la sortie empêchée.
 const IDS: Array[StringName] = [
 	&"aoki", &"breakfast_table", &"clerk", &"clerk_parcel",
-	&"clerk_parcel_hello", &"haru", &"leo", &"maya", &"mom",
+	&"clerk_parcel_hello", &"forest_gate_north_guard", &"forest_gate_south_guard",
+	&"haru", &"leo", &"maya", &"mom",
 	&"mom_wakeup", &"nurse", &"nurse_wakeup",
 	&"oak_after_battle",
 	&"oak_lab_exit_block", &"oak_lab_reunion", &"oak_lab_waiting", &"oak_parcel_records",
@@ -64,7 +74,9 @@ const IDS: Array[StringName] = [
 ## (jalon-04.md §14.5, §14.8), quelle que soit l'issue.
 ## Jalon 7 : got_oak_parcel, lu par Chen (scène du colis, T18), est levé par la première visite
 ## de la Boutique depuis le T12 (data/cutscenes/viridian_mart.json).
-const FUTURE_FLAGS: Array[StringName] = []
+## Jalon 9 : `pewter_arrived` (lu par le garde du poste nord) est posé par le J10, à l'arrivée à
+## Argenta.
+const FUTURE_FLAGS: Array[StringName] = [&"pewter_arrived"]
 
 var _library: DialogueLibrary
 var _cutscenes: CutsceneLibrary
@@ -172,6 +184,8 @@ func test_every_used_dialogue_exists() -> void:
 func test_every_dialogue_is_used() -> void:
 	var played := _cutscenes.get_dialogue_ids()
 	for id: StringName in _library.get_ids():
+		if UNUSED_YET.has(id):
+			continue
 		assert_true(_used_on.has(id) or played.has(id),
 			"dialogue « %s » utilisé par un PNJ, un point ou une scène" % id)
 
@@ -260,7 +274,8 @@ func test_every_condition_flag_is_set_somewhere() -> void:
 		assert_false(set_flags.has(flag), "« %s » : levé par un jalon futur" % flag)
 	assert_true(read_flags.has(&"starter_chosen"), "starter_chosen lu (pensée des herbes)")
 	assert_eq(_library.get_set_flags(),
-		[&"blacked_out_before", &"mom_greeted", &"rival_met", &"storage_terminal_seen",
+		[&"blacked_out_before", &"mom_greeted", &"poison_unlocked", &"rival_met",
+			&"storage_terminal_seen",
 			&"viridian_old_man_talked"]
 		as Array[StringName])
 	assert_eq(_cutscenes.get_set_flags(), [&"got_oak_parcel", &"got_potion_route_1", &"oak_lab_reunion", &"oak_met",
@@ -409,8 +424,10 @@ func test_oak_starter_offer_four_lines_and_looks() -> void:
 func test_mom_first_variant_is_automatic_and_only_hers() -> void:
 	for id: StringName in _library.get_ids():
 		for variant: DialogueVariant in _library.get_dialogue(id).variants:
-			assert_eq(variant.auto, id == &"mom" and variant == \
-				_library.get_dialogue(&"mom").variants[0], "%s : auto" % id)
+			# Maman, et le garde du poste sud à son premier passage (jalon 9, Q-4).
+			var first_of: Array[StringName] = [&"mom", &"forest_gate_south_guard"]
+			assert_eq(variant.auto, first_of.has(id) and variant == \
+				_library.get_dialogue(id).variants[0], "%s : auto" % id)
 
 
 ## Lot de textes validé par Kevin le 2026-10-06 : plus aucun dialogue ni variante provisoire.
@@ -443,6 +460,8 @@ func test_texts_are_the_dossier_02_texts_word_for_word() -> void:
 	var dossier_09 := FileAccess.get_file_as_string(DOSSIER_09)
 	var valides := FileAccess.get_file_as_string(TEXTES_VALIDES)
 	for row: Array in _pages():
+		if GATE_GUARDS.has(row[0]):
+			continue
 		var text: String = row[1]
 		for token: String in _DOSSIER_TOKENS:
 			text = text.replace(token, _DOSSIER_TOKENS[token])
@@ -585,3 +604,37 @@ func test_oak_parcel_lines() -> void:
 	for row: Array in _pages():
 		var tokens := DialogueTokens.tokens_in(row[1])
 		assert_eq(not tokens.is_empty(), row[1] == records[2].text, "%s : jeton" % row[0])
+
+
+## Jalon 9 (T6) : les deux gardes, mot pour mot du dossier 10 (« Textes verrouillés »), nom
+## affiché « Garde » (lot de textes n° 55), une page de deux lignes par réplique.
+func test_forest_gate_guards_say_the_locked_lines() -> void:
+	var dossier := FileAccess.get_file_as_string(DOSSIER_10)
+	var south := _library.get_dialogue(&"forest_gate_south_guard")
+	var north := _library.get_dialogue(&"forest_gate_north_guard")
+	assert_eq([south.speaker, north.speaker], ["Garde", "Garde"])
+	assert_eq(south.variants.size(), 2)
+	assert_eq(north.variants.size(), 2)
+	var pages: Array[String] = []
+	for dialogue: Dialogue in [south, north]:
+		for variant: DialogueVariant in dialogue.variants:
+			assert_eq(variant.pages.size(), 1, "une réplique = une page")
+			pages.append(variant.pages[0].text)
+	assert_eq(pages.size(), 4)
+	for text: String in pages:
+		var lines := text.split("\n")
+		assert_eq(lines.size(), 2, "bulle de 2 lignes : %s" % text)
+		assert_true(dossier.contains("« %s » / « %s »" % [lines[0], lines[1]]),
+			"« %s » dans le dossier 10" % text)
+	assert_eq(pages[0], "La Forêt de Jade est juste devant.\nGarde un Antidote avec toi.")
+	assert_eq(pages[1], "Les Aspicot peuvent empoisonner.\nLa Boutique de Jadielle vend des Antidotes.")
+	# Garde du sud : première conversation = avertissement + `poison_unlocked`, automatique,
+	# une seule fois ; ensuite PNJ ordinaire (rappel, pas de drapeau).
+	var first: DialogueVariant = south.variants[0]
+	assert_true(first.auto)
+	assert_eq(first.unless_flags, [&"poison_unlocked"] as Array[StringName])
+	assert_eq(first.set_flags, [&"poison_unlocked"] as Array[StringName])
+	assert_false(south.variants[1].auto)
+	assert_true(south.variants[1].set_flags.is_empty())
+	# Garde du nord : la variante d'Argenta attend le drapeau du J10.
+	assert_eq(north.variants[0].if_flags, [&"pewter_arrived"] as Array[StringName])

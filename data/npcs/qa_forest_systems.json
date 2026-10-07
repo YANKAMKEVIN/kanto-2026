@@ -1,0 +1,6 @@
+{
+	"south_guard": {
+		"cell": [11, 15], "facing": "down", "sprite": "traveler",
+		"dialogue": "forest_gate_south_guard"
+	}
+}
