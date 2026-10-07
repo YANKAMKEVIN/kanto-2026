@@ -126,3 +126,13 @@ func test_route_2_rattata_never_leaves_its_clearing_whatever_the_approach() -> v
 				assert_true(Rect2i(11, 40, 6, 5).has_point(end),
 					"approche %s : %s reste dans la clairière" % [player, end])
 	assert_gt(checked, 3)
+
+
+# --- Jalon 9 (T18) : qui quitte la carte -----------------------------------------------
+
+func test_only_notice_keeps_the_pokemon_on_the_map() -> void:
+	assert_false(AmbientRules.leaves_map(&"notice"), "Chenipan relève la tête et reste")
+	for action: StringName in [&"fly", &"flee", &"hide"]:
+		assert_true(AmbientRules.leaves_map(action), String(action))
+	for action: StringName in NpcSpec.SHY_ACTIONS:
+		assert_true(action in [&"fly", &"flee", &"notice", &"hide"], String(action))

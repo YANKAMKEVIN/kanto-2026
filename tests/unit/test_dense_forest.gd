@@ -266,3 +266,120 @@ func test_cold_species_weigh_more_in_the_north_only() -> void:
 	var south_share: float = float(counts["south_cold"]) / float(counts["south"])
 	assert_gt(north_share, 0.65, "essences froides majoritaires au nord (%s)" % counts)
 	assert_lt(south_share, 0.5, "tirage uniforme au sud (%s)" % counts)
+
+
+# --- Tri de visibilité (jalon 9 T18, jalon-09.md §2.7.4) -------------------------------
+
+## Grande carte 80 × 40, une seule case où se tenir.
+const BIG := Vector2i(80, 40)
+
+
+func _seen_cells(mask: PackedByteArray, map_size: Vector2i) -> Rect2i:
+	var rect := Rect2i()
+	var first := true
+	for y: int in map_size.y:
+		for x: int in map_size.x:
+			if mask[y * map_size.x + x] != 1:
+				continue
+			if first:
+				rect = Rect2i(x, y, 1, 1)
+				first = false
+			else:
+				rect = rect.expand(Vector2i(x, y)).expand(Vector2i(x + 1, y + 1))
+	return rect
+
+
+func test_mask_is_the_camera_view_around_the_player_plus_a_margin() -> void:
+	var mask := DenseForest.visibility_mask([Vector2i(40, 20)] as Array[Vector2i], BIG)
+	# Caméra centrée sur (40,5 ; 20,5) : ± 12,2 + 1 cases, ± 5,625 + 1 rangées.
+	assert_eq(_seen_cells(mask, BIG), Rect2i(27, 13, 27, 15))
+	var both := DenseForest.visibility_mask([Vector2i(40, 20), Vector2i(41, 20)]
+		as Array[Vector2i], BIG)
+	assert_eq(_seen_cells(both, BIG), Rect2i(27, 13, 28, 15), "union de deux vues")
+
+
+func test_mask_follows_the_camera_clamped_to_the_map() -> void:
+	# Joueur dans un coin : la caméra reste dans la carte, elle montre plus loin à l'est.
+	var mask := DenseForest.visibility_mask([Vector2i(1, 1)] as Array[Vector2i], BIG)
+	assert_eq(_seen_cells(mask, BIG), Rect2i(0, 0, 26, 13))
+	var far := DenseForest.visibility_mask([Vector2i(79, 39)] as Array[Vector2i], BIG)
+	assert_eq(_seen_cells(far, BIG), Rect2i(54, 27, 26, 13))
+
+
+func test_a_map_smaller_than_the_view_is_entirely_seen() -> void:
+	var small := Vector2i(12, 8)
+	var mask := DenseForest.visibility_mask([Vector2i(0, 0)] as Array[Vector2i], small)
+	assert_eq(_seen_cells(mask, small), Rect2i(Vector2i.ZERO, small))
+	var none := DenseForest.visibility_mask([] as Array[Vector2i], small)
+	assert_eq(none.count(1), 0, "aucune case où se tenir : rien n'est vu")
+
+
+func test_a_tree_is_seen_by_its_canopy_and_its_width() -> void:
+	var mask := DenseForest.visibility_mask([Vector2i(40, 20)] as Array[Vector2i], BIG)
+	# Rangées vues 13..27, colonnes 27..53.
+	assert_true(DenseForest.is_seen(Vector2(40.5, 31.5), mask, BIG), "cime jusqu'à 27")
+	assert_false(DenseForest.is_seen(Vector2(40.5, 32.5), mask, BIG), "cime en 28 : caché")
+	assert_true(DenseForest.is_seen(Vector2(40.5, 13.2), mask, BIG), "pied en 13 : vu")
+	assert_false(DenseForest.is_seen(Vector2(40.5, 12.9), mask, BIG), "pied en 12 : caché")
+	assert_true(DenseForest.is_seen(Vector2(55.6, 20.0), mask, BIG), "53..57 : 53 vue")
+	assert_false(DenseForest.is_seen(Vector2(56.5, 20.0), mask, BIG), "54..58 : caché")
+	assert_true(DenseForest.is_seen(Vector2(25.0, 20.0), mask, BIG), "23..27 : 27 vue")
+	assert_false(DenseForest.is_seen(Vector2(24.5, 20.0), mask, BIG), "22..26 : caché")
+
+
+func test_cull_keeps_order_and_only_drops_unseen_entries() -> void:
+	var forest: Dictionary = {}
+	for y: int in BIG.y:
+		for x: int in BIG.x:
+			if not Rect2i(4, 4, 3, 3).has_point(Vector2i(x, y)):
+				forest[Vector2i(x, y)] = true
+	var walkable: Array[Vector2i] = []
+	for y: int in range(4, 7):
+		for x: int in range(4, 7):
+			walkable.append(Vector2i(x, y))
+	var plan := DenseForest.plan(forest, BIG, [] as Array[Vector2], SEED)
+	var kept := DenseForest.cull_hidden(plan, walkable, BIG)
+	assert_gt(plan.size(), kept.size() * 3, "la plupart des arbres ne sont jamais à l'écran")
+	assert_gt(kept.size(), 50, "le voisinage reste garni")
+	var mask := DenseForest.visibility_mask(walkable, BIG)
+	var index := 0
+	for entry: Dictionary in plan:
+		var seen := DenseForest.is_seen(entry["foot"], mask, BIG)
+		if index < kept.size() and kept[index] == entry:
+			index += 1
+			assert_true(seen)
+		else:
+			assert_false(seen, "retiré seulement s'il n'est jamais vu : %s" % entry["foot"])
+	assert_eq(index, kept.size(), "même ordre (noms des nœuds stables)")
+	assert_eq(DenseForest.cull_hidden(plan, walkable, BIG), kept, "reproductible")
+
+
+func test_cull_changes_nothing_on_a_small_map() -> void:
+	var walkable: Array[Vector2i] = []
+	for y: int in SIZE.y:
+		for x: int in SIZE.x:
+			if not _forest.has(Vector2i(x, y)):
+				walkable.append(Vector2i(x, y))
+	assert_eq(DenseForest.cull_hidden(_plan, walkable, SIZE), _plan,
+		"20 × 16 tient dans la vue : rien n'est retiré")
+
+
+## Forêt de Jade (grille du T14) : ordre de grandeur pour le budget du T19 (≤ 3 000 nœuds).
+func test_viridian_forest_grid_keeps_a_fraction_of_its_trees() -> void:
+	var grid := preload("res://tests/helpers/plan_grid.gd").new()
+	assert_true(grid.load_file("res://tools/plans/viridian_forest.txt"), grid.error)
+	var map_size := Vector2i(grid.width, grid.height)
+	var forest: Dictionary = {}
+	for cell: Vector2i in grid.cells_of("T"):
+		forest[cell] = true
+	var walkable: Array[Vector2i] = []
+	for y: int in grid.height:
+		for x: int in grid.width:
+			if grid.is_walkable(Vector2i(x, y)):
+				walkable.append(Vector2i(x, y))
+	var plan := DenseForest.plan(forest, map_size, [] as Array[Vector2], SEED)
+	var kept := DenseForest.cull_hidden(plan, walkable, map_size)
+	gut.p("Forêt de Jade : %d entrées au plan, %d gardées par le tri de visibilité"
+		% [plan.size(), kept.size()])
+	assert_lte(kept.size(), plan.size())
+	assert_gt(float(kept.size()), plan.size() / 3.0, "la forêt reste presque partout à l'écran")

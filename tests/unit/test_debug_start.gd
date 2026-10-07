@@ -343,6 +343,30 @@ func test_shipped_route_2_start() -> void:
 	map.free()
 
 
+## Jalon 9 (T18, jalon-09.md §3) : entrée sud de la Forêt de Jade, équipe Nv. 8–10, le garde
+## du poste sud a déjà parlé (`poison_unlocked`), aucun objet ni Dresseur de la forêt.
+func test_shipped_viridian_forest_start() -> void:
+	var start := DebugStart.new()
+	assert_true(start.load_file(TOOL_STARTS + "viridian_forest.json", _data, _items),
+		"\n".join(start.get_errors()))
+	assert_eq([start.map, start.spawn, start.facing], [&"viridian_forest", &"from_gate_south",
+		Vector2i.UP])
+	assert_true(start.flags.has(&"pokedex_activated"))
+	assert_true(start.flags.has(&"poison_unlocked"), "le garde du poste sud a parlé")
+	for member: Dictionary in start.party:
+		assert_between(int(member["level"]), 8, 10, str(member["species"]))
+	for flag: StringName in start.flags:
+		assert_false(String(flag).begins_with("got_viridian_forest_"), "objets à prendre")
+		assert_false(String(flag).begins_with("beaten_"), "Dresseurs à battre")
+		assert_false(String(flag).begins_with("forest_"), "PNJ jamais vus")
+	assert_false(start.bag.has(&"antidote"), "l'Antidote de la forêt (O1) est à 14 pas")
+	if MapCatalog.has_map(start.map):
+		var map := (load(MapCatalog.scene_path(start.map)) as PackedScene).instantiate() \
+				as GameMap
+		assert_true(map.has_spawn(start.spawn), "le point d'apparition existe sur la carte")
+		map.free()
+
+
 # --- Jalon 7 (T12) : favoris du Sac, départ shop_qa --------------------------------------------
 
 func test_favorites_mark_bag_items() -> void:

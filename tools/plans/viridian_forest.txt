@@ -7,8 +7,8 @@
 # les cases).
 #
 # 58 × 74 cases (enveloppe verrouillée, arbitrage 4) ; nord en haut ; x = colonne 0..57,
-# y = rangée 0..73. Sud : la sortie (27..28, 73) mène au poste sud (PUSH ↓) ; nord : la porte du
-# poste nord (29, 6).
+# y = rangée 0..73. Sud : la sortie (39..40, 73) mène au poste sud (PUSH ↓) ; nord : la porte du
+# poste nord (25, 5).
 #
 # Légende :
 #   T forêt serrée (bloquée)          . sous-bois praticable (herbe rase à l'ombre, sentes)

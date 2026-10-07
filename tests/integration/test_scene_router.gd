@@ -521,3 +521,138 @@ func test_setup_clears_the_coming_soon_presenter() -> void:
 	_install_presenter([] as Array[String])
 	_router.setup(_world, _player, _fade)
 	assert_false(_router.coming_soon_presenter.is_valid())
+
+
+# --- Cache borné (jalon 9 T18, jalon-09.md §2.8.6) ---------------------------------------
+
+## Dossier des cartes de la chaîne M1 ↔ M2 ↔ M3 ↔ M4, enregistrées en vraies scènes (le cache
+## ne vaut que pour les cartes chargées depuis le disque, pas pour la fabrique).
+const CHAIN_DIR := "user://test_scene_router_chain/"
+const CHAIN: Array[StringName] = [&"m1", &"m2", &"m3", &"m4"]
+
+
+## Enregistre la chaîne : chaque carte a un point « s » et un warp vers chacune de ses
+## voisines (STEP_ON vers le haut, une case par voisine).
+func _save_chain() -> void:
+	DirAccess.make_dir_recursive_absolute(CHAIN_DIR)
+	for i: int in CHAIN.size():
+		var map := _base_map(CHAIN[i], Vector2i(8, 6))
+		_spawn(map, &"s", Vector2i(1, 4))
+		var column := 2
+		for j: int in [i - 1, i + 1]:
+			if j < 0 or j >= CHAIN.size():
+				continue
+			_warp(map, Vector2i(column, 1), Warp.Trigger.STEP_ON, Vector2i.UP, CHAIN[j], &"s")
+			column += 2
+		for node: Node in map.find_children("*", "", true, false):
+			node.owner = map
+		var packed := PackedScene.new()
+		assert_eq(packed.pack(map), OK)
+		assert_eq(ResourceSaver.save(packed, _chain_path(CHAIN[i])), OK)
+		map.free()
+
+
+func _chain_path(map_id: StringName) -> String:
+	return MapCatalog.scene_path(map_id, CHAIN_DIR)
+
+
+func _chain_paths(ids: Array[StringName]) -> PackedStringArray:
+	var paths := PackedStringArray()
+	for id: StringName in ids:
+		paths.append(_chain_path(id))
+	paths.sort()
+	return paths
+
+
+## Attend la fin des chargements en arrière-plan du routeur (délai de garde seulement).
+func _await_prefetches() -> void:
+	var deadline := Time.get_ticks_msec() + int(TIMEOUT * 1000.0)
+	for path: String in _router._prefetching.keys():
+		while ResourceLoader.load_threaded_get_status(path) \
+				== ResourceLoader.THREAD_LOAD_IN_PROGRESS and Time.get_ticks_msec() < deadline:
+			await get_tree().process_frame
+
+
+func _use_chain() -> void:
+	_save_chain()
+	_router.map_factory = Callable()
+	_router.maps_dir = CHAIN_DIR
+	_router.setup(_world, _player, null)
+
+
+func after_all() -> void:
+	for id: StringName in CHAIN:
+		DirAccess.remove_absolute(_chain_path(id))
+	DirAccess.remove_absolute(CHAIN_DIR)
+
+
+func test_cache_keeps_only_the_current_map_and_its_warp_neighbors() -> void:
+	_use_chain()
+	_router.start(&"m1", &"s", Vector2i.UP)
+	assert_eq(_router.get_cached_paths(), _chain_paths([&"m1", &"m2"]), "M1 et sa voisine")
+	_router.change_map(&"m2", &"s")
+	_router.change_map(&"m3", &"s")
+	assert_eq(_router.get_current_map().map_id, &"m3")
+	assert_eq(_router.get_cached_paths(), _chain_paths([&"m2", &"m3", &"m4"]),
+		"après M1 → M2 → M3 : M3 et ses voisines seulement")
+	assert_false(ResourceLoader.has_cached(_chain_path(&"m1")),
+		"la scène de M1 (et ce qu'elle retient) est rendue à la mémoire")
+	assert_push_error_count(0)
+
+
+func test_returning_to_a_neighbor_reads_nothing_from_disk() -> void:
+	_use_chain()
+	_router.start(&"m1", &"s", Vector2i.UP)
+	_router.change_map(&"m2", &"s")
+	_router.change_map(&"m3", &"s")
+	await _await_prefetches()
+	var loads: int = _router.disk_loads
+	assert_true(_router._scenes.has(_chain_path(&"m2")), "M2 gardée (voisine de M3)")
+	_router.change_map(&"m2", &"s")
+	assert_eq(_router.get_current_map().map_id, &"m2")
+	assert_eq(_router.disk_loads - loads, 1, "une seule lecture : M1 préchargée en arrière-plan")
+	assert_true(_router._prefetching.has(_chain_path(&"m1")), "c'est bien M1")
+	await _await_prefetches()
+	_router.change_map(&"m1", &"s")
+	assert_eq(_router.disk_loads - loads, 1, "M1 prise au préchargement, sans relecture")
+	assert_eq(_router.get_cached_paths(), _chain_paths([&"m1", &"m2"]))
+
+
+func test_trimming_never_frees_a_map_node_in_use() -> void:
+	_use_chain()
+	var first: GameMap = _router.start(&"m1", &"s", Vector2i.UP)
+	# Une instance faite depuis la scène de M1 (comme une scène, un combat ou un menu qui
+	# garderait une carte) survit à l'oubli de cette scène par le cache.
+	var kept := (_router._scenes[_chain_path(&"m1")] as PackedScene).instantiate() as GameMap
+	add_child_autofree(kept)
+	var entered: Array[GameMap] = []
+	_router.map_entered.connect(func(map: GameMap) -> void: entered.append(map))
+	_router.change_map(&"m2", &"s")
+	_router.change_map(&"m3", &"s")
+	assert_false(_router._scenes.has(_chain_path(&"m1")), "scène de M1 oubliée")
+	assert_true(is_instance_valid(kept) and kept.is_inside_tree(), "instance intacte")
+	assert_eq(kept.map_id, &"m1")
+	assert_eq(kept.get_warps().get_all().size(), 1, "warps et grille utilisables")
+	var current: GameMap = _router.get_current_map()
+	assert_true(is_instance_valid(current) and current.is_inside_tree(), "carte courante en place")
+	assert_same(current, entered[entered.size() - 1], "celle annoncée par map_entered")
+	assert_same(_player.get_parent(), current.get_entities(), "le joueur y est")
+	await get_tree().process_frame
+	assert_false(is_instance_valid(first), "l'ancienne carte part comme avant (queue_free)")
+
+
+## Un préchargement fini mais devenu inutile n'est lâché que deux images plus tard :
+## l'initialisation de ses textures attend encore dans la file du RenderingServer.
+func test_an_unused_finished_prefetch_is_released_after_the_next_draw() -> void:
+	_use_chain()
+	_router.start(&"m2", &"s", Vector2i.UP)
+	await _await_prefetches()
+	assert_true(_router._prefetching.has(_chain_path(&"m1")), "M1 préchargée (voisine de M2)")
+	_router.start(&"m4", &"s", Vector2i.UP)
+	assert_eq(_router.get_cached_paths(), _chain_paths([&"m3", &"m4"]))
+	assert_eq(_router._retired.size(), 1, "M1 encore retenue")
+	await get_tree().process_frame
+	assert_eq(_router._retired.size(), 1, "pas avant deux images")
+	await get_tree().process_frame
+	await get_tree().process_frame
+	assert_true(_router._retired.is_empty(), "puis lâchée")

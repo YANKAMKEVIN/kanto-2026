@@ -19,6 +19,9 @@ signal map_entered(map: GameMap)
 ## ne suivent : aucune carte ne change.
 signal coming_soon_shown(label: String)
 
+## Images pendant lesquelles un préchargement devenu inutile est encore retenu ([member _retired]).
+const RETIRE_FRAMES: int = 2
+
 ## Dossier des cartes (MapCatalog.MAPS_DIR) ; les tests peuvent le changer.
 var maps_dir: String = MapCatalog.MAPS_DIR
 ## Tests : fabrique func(map_id: StringName) -> GameMap utilisée à la place du chargement.
@@ -35,6 +38,9 @@ var coming_soon_enabled: bool = OS.is_debug_build()
 var coming_soon_presenter: Callable = Callable()
 ## Durée du dernier changement de carte (instanciation + placement), en millisecondes.
 var last_change_ms: float = 0.0
+## Lectures de cartes demandées au disque depuis la création du routeur (chargement direct ou
+## en arrière-plan) : mesure et tests du cache borné (jalon 9 T18).
+var disk_loads: int = 0
 
 var _world: Node2D
 var _player: Player
@@ -43,10 +49,19 @@ var _current_map: GameMap
 var _busy: bool = false
 ## Incrémenté à chaque setup() : une transition lancée avant est abandonnée à sa reprise.
 var _session: int = 0
-## Scènes de cartes déjà chargées (chemin → PackedScene).
+## Scènes de cartes déjà chargées (chemin → PackedScene). **Cache borné** (jalon 9 T18,
+## jalon-09.md §2.8.6) : seulement la carte courante et ses voisines par warps
+## ([method _trim_cache]) ; une [PackedScene] retient ses textures, une carte quittée et sans
+## lien avec la courante est donc rendue à la mémoire. Seules les scènes sont libérées : les
+## cartes instanciées (nœuds) ne viennent jamais de ce cache après coup.
 var _scenes: Dictionary[String, PackedScene] = {}
 ## Chargements en arrière-plan demandés (chemin → vrai) : cartes voisines de la courante.
 var _prefetching: Dictionary[String, bool] = {}
+## Préchargements devenus inutiles, gardés encore [constant RETIRE_FRAMES] images
+## ([method _trim_cache]) : un chargement en arrière-plan laisse l'initialisation de ses textures
+## dans la file du RenderingServer ; libérer la ressource avant que la file soit vidée
+## initialiserait une texture déjà libérée (« Parameter "t" is null »).
+var _retired: Array[Resource] = []
 
 
 func _exit_tree() -> void:
@@ -55,6 +70,7 @@ func _exit_tree() -> void:
 		ResourceLoader.load_threaded_get(path)
 	_prefetching.clear()
 	_scenes.clear()
+	_retired.clear()
 
 
 ## Branche le routeur sur le monde, le joueur et le rideau ([param fade] null = transitions
@@ -144,6 +160,7 @@ func change_map(map_id: StringName, spawn: StringName, facing: Vector2i = Vector
 	if arrived:
 		map_entered.emit(_current_map)
 		_prefetch_neighbors(_current_map)
+		_trim_cache(_current_map)
 
 
 ## Destination « à venir » (jalon 5, dossier-07 §12) : rideau, écran « <libellé> — À venir »
@@ -198,6 +215,17 @@ func get_player() -> Player:
 	return _player
 
 
+## Chemins des scènes de cartes gardées en mémoire ou en cours de chargement, triés
+## (tests, mesure de la mémoire).
+func get_cached_paths() -> PackedStringArray:
+	var paths := PackedStringArray(_scenes.keys())
+	for path: String in _prefetching:
+		if not paths.has(path):
+			paths.append(path)
+	paths.sort()
+	return paths
+
+
 ## Fin commune de [method start] et [method start_at] : ancienne carte libérée, joueur
 ## libre, rideau levé, signaux, préchargement des voisines.
 func _finish_start(map: GameMap, old: GameMap) -> void:
@@ -211,6 +239,7 @@ func _finish_start(map: GameMap, old: GameMap) -> void:
 	map_changed.emit(map)
 	map_entered.emit(map)
 	_prefetch_neighbors(map)
+	_trim_cache(map)
 
 
 ## Étapes 4 à 6 : instanciation, contrôle du spawn, placement, libération de l'ancienne
@@ -255,6 +284,7 @@ func _instantiate(map_id: StringName) -> GameMap:
 	if packed == null:
 		if not ResourceLoader.exists(path):
 			return null
+		disk_loads += 1
 		packed = load(path) as PackedScene
 		if packed == null:
 			return null
@@ -267,14 +297,63 @@ func _instantiate(map_id: StringName) -> GameMap:
 func _prefetch_neighbors(map: GameMap) -> void:
 	if map_factory.is_valid() or not is_instance_valid(map):
 		return
+	for path: String in _neighbor_paths(map):
+		if _scenes.has(path) or _prefetching.has(path) or not ResourceLoader.exists(path):
+			continue
+		if ResourceLoader.load_threaded_request(path, "PackedScene") == OK:
+			disk_loads += 1
+			_prefetching[path] = true
+
+
+## Chemins des scènes où mènent les warps de [param map] (hors destinations « à venir »).
+func _neighbor_paths(map: GameMap) -> PackedStringArray:
+	var paths := PackedStringArray()
 	for warp: Warp in map.get_warps().get_all():
 		if warp.is_coming_soon():
 			continue
 		var path := MapCatalog.scene_path(warp.target_map, maps_dir)
-		if _scenes.has(path) or _prefetching.has(path) or not ResourceLoader.exists(path):
+		if not path.is_empty() and not paths.has(path):
+			paths.append(path)
+	return paths
+
+
+## Cache borné (jalon 9 T18) : ne garde que la scène de [param map] et celles de ses voisines
+## par warps ; les autres sont oubliées (leurs textures partent avec la dernière référence).
+## Un chargement en arrière-plan devenu inutile est récupéré s'il est fini, puis lâché deux
+## images plus tard ([member _retired]) ; encore en cours, il reste en attente (récupéré au
+## prochain tri ou à la sortie).
+func _trim_cache(map: GameMap) -> void:
+	if map_factory.is_valid() or not is_instance_valid(map):
+		return
+	var keep := _neighbor_paths(map)
+	keep.append(MapCatalog.scene_path(map.map_id, maps_dir))
+	for path: String in _scenes.keys():
+		if not keep.has(path):
+			_scenes.erase(path)
+	for path: String in _prefetching.keys():
+		if keep.has(path):
 			continue
-		if ResourceLoader.load_threaded_request(path, "PackedScene") == OK:
-			_prefetching[path] = true
+		if ResourceLoader.load_threaded_get_status(path) \
+				== ResourceLoader.THREAD_LOAD_IN_PROGRESS:
+			continue
+		var resource := ResourceLoader.load_threaded_get(path)
+		_prefetching.erase(path)
+		if resource != null:
+			_retire(resource)
+
+
+## Garde [param resource] encore [constant RETIRE_FRAMES] images ([member _retired]), puis la
+## lâche. Hors de l'arbre, elle attend le prochain tri.
+func _retire(resource: Resource) -> void:
+	_retired.append(resource)
+	if _retired.size() == 1 and is_inside_tree():
+		_release_retired_later()
+
+
+func _release_retired_later() -> void:
+	for i: int in RETIRE_FRAMES:
+		await get_tree().process_frame
+	_retired.clear()
 
 
 func _disconnect_player() -> void:

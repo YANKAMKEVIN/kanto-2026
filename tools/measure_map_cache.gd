@@ -1,0 +1,138 @@
+extends SceneTree
+## Mesure de la mémoire des textures sur le trajet Bourg Palette → Route 1 → Jadielle → Route 2
+## (jalon 9 T18, jalon-09.md §2.8.6) : cache de cartes du SceneRouter **borné** (carte courante
+## et voisines par warps) contre l'ancien comportement (toute carte chargée gardée pour la
+## session, émulé ici en retenant chaque scène que le routeur a eue en cache).
+##
+##   godot --path . --resolution 1170x540 -s res://tools/measure_map_cache.gd
+##   godot --path . --resolution 1170x540 -s res://tools/measure_map_cache.gd -- --unbounded
+##   (… -- --shot=build/captures/cache_route_2.png : capture de la dernière carte)
+##
+## Pas en --headless : le pilote factice ne compte aucune texture. Une ligne « [mem] » par étape,
+## après la fin des préchargements : `cartes=` = textures (RVBA 8 bits, sans mipmaps) des scènes
+## de cartes retenues, comptées une fois chacune par leurs dépendances (calcul exact, ce que le
+## cache libère) ; `tex=` = compteur `RENDER_TEXTURE_MEM_USED` du processus, donné pour
+## information (en retard d'une étape sur les chargements en arrière-plan, et faux après des
+## libérations sur Mac : il peut passer sous zéro). Un processus par mode.
+
+const STEPS: Array[Array] = [
+	[&"pallet_town", &"start"],
+	[&"route_1", &"from_pallet_w"],
+	[&"viridian_city", &"from_route_1_w"],
+	[&"route_2", &"from_viridian_c"],
+]
+## Images attendues après chaque étape (textures envoyées, préchargements finis).
+const SETTLE_FRAMES: int = 20
+
+var _router: Node
+var _unbounded: bool = false
+## Mode « non borné » : scènes retenues comme l'ancien routeur.
+var _hold: Array[Resource] = []
+
+
+func _init() -> void:
+	_unbounded = OS.get_cmdline_user_args().has("--unbounded")
+	process_frame.connect(_run, CONNECT_ONE_SHOT)
+
+
+func _run() -> void:
+	var world := Node2D.new()
+	root.add_child(world)
+	var player: Node = (load("res://game/player/player.tscn") as PackedScene).instantiate()
+	_router = (load("res://game/autoload/scene_router.gd") as GDScript).new()
+	root.add_child(_router)
+	_router.call(&"setup", world, player, null)
+	print("[mem] mode=%s" % ("non borné (ancien)" if _unbounded else "borné (T18)"))
+	await _settle()
+	print("[mem] départ tex=%.1f Mo" % _tex_mb())
+	for i: int in STEPS.size():
+		var step: Array = STEPS[i]
+		if i == 0:
+			_router.call(&"start", step[0], step[1], Vector2i.UP)
+		else:
+			_router.call(&"change_map", step[0], step[1], Vector2i.UP)
+		await _settle()
+		if _unbounded:
+			for path: String in _router.call(&"get_cached_paths"):
+				_hold.append(load(path))
+			await _settle()
+		var cached: PackedStringArray = _router.call(&"get_cached_paths")
+		var held := PackedStringArray()
+		if _unbounded:
+			for resource: Resource in _hold:
+				if not held.has(resource.resource_path):
+					held.append(resource.resource_path)
+		else:
+			held = cached
+		print("[mem] %s cartes=%.1f Mo (%d scènes : %s) tex=%.1f Mo" % [step[0],
+			_scene_textures_mb(held), held.size(), ", ".join(_names(held)), _tex_mb()])
+	# Contrôle visuel de la dernière carte (textures intactes après les libérations).
+	for arg: String in OS.get_cmdline_user_args():
+		if arg.begins_with("--shot="):
+			var camera := Camera2D.new()
+			world.add_child(camera)
+			camera.global_position = (player as Node2D).global_position
+			camera.make_current()
+			await _settle()
+			root.get_viewport().get_texture().get_image().save_png(arg.trim_prefix("--shot="))
+	quit()
+
+
+func _settle() -> void:
+	for i: int in SETTLE_FRAMES:
+		await process_frame
+	var pending: Dictionary = _router.get(&"_prefetching")
+	var guard := 600
+	while guard > 0:
+		var busy := false
+		for path: String in pending:
+			if ResourceLoader.load_threaded_get_status(path) \
+					== ResourceLoader.THREAD_LOAD_IN_PROGRESS:
+				busy = true
+		if not busy:
+			break
+		guard -= 1
+		await process_frame
+	for i: int in SETTLE_FRAMES:
+		await process_frame
+
+
+func _names(paths: PackedStringArray) -> PackedStringArray:
+	var names := PackedStringArray()
+	for path: String in paths:
+		names.append(path.get_file().get_basename())
+	names.sort()
+	return names
+
+
+## Octets des textures (RVBA 8 bits) dont dépendent les scènes [param paths], chacune une fois.
+func _scene_textures_mb(paths: PackedStringArray) -> float:
+	var textures: Dictionary = {}
+	var visited: Dictionary = {}
+	for path: String in paths:
+		_collect_textures(path, textures, visited)
+	var bytes := 0
+	for texture_path: String in textures:
+		var texture := load(texture_path) as Texture2D
+		if texture != null:
+			bytes += texture.get_width() * texture.get_height() * 4
+	return bytes / 1048576.0
+
+
+func _collect_textures(path: String, textures: Dictionary, visited: Dictionary) -> void:
+	if visited.has(path):
+		return
+	visited[path] = true
+	for dependency: String in ResourceLoader.get_dependencies(path):
+		var dep_path := dependency.get_slice("::", dependency.get_slice_count("::") - 1)
+		if dep_path.begins_with("uid://"):
+			dep_path = ResourceUID.get_id_path(ResourceUID.text_to_id(dep_path))
+		var extension := dep_path.get_extension()
+		if extension in ["png", "webp", "jpg", "svg"]:
+			textures[dep_path] = true
+		elif extension in ["tscn", "tres", "scn", "res"]:
+			_collect_textures(dep_path, textures, visited)
+
+
+func _tex_mb() -> float:
+	return Performance.get_monitor(Performance.RENDER_TEXTURE_MEM_USED) / 1048576.0

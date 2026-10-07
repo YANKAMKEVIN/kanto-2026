@@ -1,0 +1,16 @@
+{
+	"map": "viridian_forest", "spawn": "from_gate_south", "facing": "up",
+	"flags": [
+		"mom_greeted", "rival_met", "oak_met", "oak_lab_reunion", "starter_offered",
+		"starter_chosen", "taken_charmander", "taken_squirtle", "rival_lab_won",
+		"rival_challenged", "rival_battle_done", "rival_left_lab", "viridian_arrived",
+		"got_oak_parcel", "pokedex_activated", "poison_unlocked"
+	],
+	"party": [
+		{ "species": "charmander", "level": 10 },
+		{ "species": "pidgey", "level": 9 },
+		{ "species": "rattata", "level": 8 }
+	],
+	"bag": { "poke_ball": 5, "potion": 3 },
+	"money": 3000
+}

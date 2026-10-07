@@ -117,6 +117,10 @@ const FLY_RISE: float = 96.0
 const FLY_DRIFT: float = 48.0
 const FLY_DURATION: float = 0.6
 const FLEE_FADE_DURATION: float = 0.25
+## Retrait vers le feuillage d'un Aspicot (jalon 9, [method retreat]) : petit recul vers le haut
+## (pixels) et fondu, en secondes (défauts, jalon-09.md §2.7.6).
+const RETREAT_RISE: float = 24.0
+const RETREAT_DURATION: float = 0.4
 ## Délai (s) avant que le PNJ à routine reprenne sa marche après un dialogue (dossier 07 §5 :
 ## « après le dialogue, il attend un court instant puis reprend »).
 const ROUTE_RESUME_DELAY: float = 0.6
@@ -1061,6 +1065,31 @@ func _flee_fade() -> void:
 	_leave_tween.tween_property(_sprite, ^"modulate:a", 0.0, FLEE_FADE_DURATION)
 	_leave_tween.parallel().tween_property(_shadow, ^"modulate:a", 0.0, FLEE_FADE_DURATION)
 	_leave_tween.tween_callback(func() -> void: left_scene.emit(get_id()))
+
+
+## Retrait d'un Pokémon d'ambiance vers le feuillage (Aspicot sur un tronc, jalon 9) : petit
+## recul vers le haut ([constant RETREAT_RISE] px) et fondu en [constant RETREAT_DURATION] s,
+## puis [signal left_scene] (retiré de la carte comme l'envol). Libère sa case tout de suite.
+func retreat() -> void:
+	if _leaving:
+		return
+	_leaving = true
+	_route_active = false
+	_abort_hop()
+	if _mover != null:
+		leave_grid()
+	if not is_inside_tree() or _sprite == null:
+		left_scene.emit(get_id())
+		return
+	if _leave_tween != null and _leave_tween.is_valid():
+		_leave_tween.kill()
+	_leave_tween = create_tween()
+	_leave_tween.set_parallel(true)
+	_leave_tween.tween_property(_sprite, ^"position:y", _sprite.position.y - RETREAT_RISE,
+		RETREAT_DURATION).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+	_leave_tween.tween_property(_sprite, ^"modulate:a", 0.0, RETREAT_DURATION)
+	_leave_tween.tween_property(_shadow, ^"modulate:a", 0.0, RETREAT_DURATION)
+	_leave_tween.chain().tween_callback(func() -> void: left_scene.emit(get_id()))
 
 
 func _on_animation_finished() -> void:
