@@ -19,6 +19,7 @@ const FIXTURE_V2_END := "res://tests/fixtures/save/v2_kevin_j6_fin.json"
 ## débogage (`integ-j7/build/qa/jalon07_final_s21/save_final.json`, copie exacte) ; Centre de
 ## Jadielle (7, 5), 4 Pokémon, Pokédex activé, 2 100 ₽, 20 h 12 de jeu (jalon-09.md §2.2).
 const FIXTURE_V3 := "res://tests/fixtures/save/v3_kevin_j7_fin.json"
+const FIXTURE_V3_S24 := "res://tests/fixtures/save/v3_kevin_s24.json"
 
 var _fs: SaveFileSystem
 var _save: SaveSystem
@@ -704,6 +705,25 @@ func test_the_real_v3_save_is_migrated_to_v4_on_read_without_any_change() -> voi
 	assert_eq(_save.read_version, 3, "lue en v3 : le journal note la migration")
 	assert_eq(_without_v4(content), _without_v4(v3), "rien d'autre ne change")
 	assert_false((_fs as MemoryFs).files.has(PATH + SaveSystem.CORRUPT_SUFFIX))
+
+
+func test_the_s24_v3_save_of_kevin_is_migrated_to_v4_and_loads_with_no_status() -> void:
+	# Partie relevée sur le S24 par le T3 (route_2, J8) : mêmes garanties que la fixture du J7.
+	var text := FileAccess.get_file_as_string(FIXTURE_V3_S24)
+	var v3: Variant = JSON.parse_string(text)
+	assert_true(v3 is Dictionary, "fixture S24 lisible")
+	assert_eq(int((v3 as Dictionary)["version"]), 3)
+	(_fs as MemoryFs).files[PATH] = text
+	var content := _save.read()
+	assert_eq(_save.last_status, OK, _save.last_error)
+	assert_eq(int(content["version"]), 4)
+	assert_eq(_save.read_version, 3)
+	assert_eq(_without_v4(content), _without_v4(v3 as Dictionary), "rien d'autre ne change")
+	var state := _state()
+	assert_true(state.load_dict(content, _data), "rien d'écarté")
+	assert_eq(state.party.get_all().size(), (v3 as Dictionary)["party"].size())
+	for pokemon: Pokemon in state.party.get_all():
+		assert_eq(pokemon.status, &"", "aucun statut")
 
 
 func test_the_real_v3_save_loads_with_no_status_and_is_rewritten_identically_in_v4() -> void:
