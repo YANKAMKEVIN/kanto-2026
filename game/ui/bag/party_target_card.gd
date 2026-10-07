@@ -1,6 +1,7 @@
 class_name PartyTargetCard
 extends BagTile
-## Un Pokémon dans le choix du Pokémon (PartyPicker, dossier 08 §3) : portrait en pixel art, nom,
+## Un Pokémon dans le choix du Pokémon (PartyPicker, dossier 08 §3) : artwork officiel dans un rond
+## (MM.1, [MenuArt]), nom,
 ## Nv., barre de PV et « 33 / 51 », statut en texte (« K.O. ») et, si l'objet ne peut pas servir
 ## sur lui, **la raison** en toutes lettres (« PV déjà au maximum »). Jamais un bouton grisé sans
 ## explication : un membre inutilisable reste lisible, atténué, sans flèche.
@@ -9,8 +10,6 @@ extends BagTile
 ## ACCENT. Elle rapporte le toucher (tapped, hérité de BagTile) ; c'est le PartyPicker qui
 ## décide de n'émettre un choix que pour une cible utilisable.
 
-## Sprite de face d'une espèce (%s = identifiant) ; provisoire jusqu'à la DA.
-const SPRITE_PATH := "res://assets/sprites/pokemon/placeholder/%s_front.png"
 const CHEVRON_ICON: Texture2D = preload("res://assets/ui/icons/menu/chevron.svg")
 const HP_BAR_SCENE: PackedScene = preload("res://game/ui/battle/hp_bar.tscn")
 
@@ -36,6 +35,9 @@ var _hp_text: Label
 var _reason: Label
 var _chevron: TextureRect
 var _dimmed: Array[Control] = []
+## Variations de la ligne (utilisable / non) ; le Sac du menu prend ses cartes de verre.
+var _row_variation: StringName = &"PickerRow"
+var _row_off_variation: StringName = &"PickerRowOff"
 
 
 func _init() -> void:
@@ -46,6 +48,21 @@ func _init() -> void:
 	custom_minimum_size = Vector2(UiTokens.PICKER_COLUMN_WIDTH, UiTokens.PICKER_ROW_HEIGHT)
 	mouse_filter = Control.MOUSE_FILTER_PASS
 	_build()
+
+
+## Ligne compacte du panneau du Sac (MM.1) : verre, TOUCH_MIN de haut, largeur du panneau.
+func use_compact() -> void:
+	_row_variation = &"MenuPickerRow"
+	_row_off_variation = &"MenuPickerRowOff"
+	normal_variation = _row_variation
+	selected_variation = &"MenuPickerRowSelected"
+	theme_type_variation = _row_variation
+	custom_minimum_size = Vector2(0.0, UiTokens.PICKER_COMPACT_ROW)
+	size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	_thumb_box.custom_minimum_size = Vector2.ONE * UiTokens.PICKER_COMPACT_THUMB
+	_fit_thumb(UiTokens.PICKER_COMPACT_THUMB)
+	if _target != null:
+		set_target(_target)
 
 
 ## Cible affichée (null = rien).
@@ -60,12 +77,11 @@ func set_target(target: PartyTargetView) -> void:
 	_status.visible = not member.status_text.is_empty()
 	_hp_bar.set_hp(member.hp, member.max_hp)
 	_hp_text.text = BattleInfoCard.HP_FORMAT % [member.hp, member.max_hp]
-	var path := SPRITE_PATH % member.species_id
-	_thumb.texture = load(path) as Texture2D if ResourceLoader.exists(path) else null
+	_thumb.texture = MenuArt.pokemon_thumbnail(member.dex_number)
 	_reason.text = "" if target.usable else target.reason
 	_reason.visible = not target.usable and not target.reason.is_empty()
 	_chevron.visible = target.usable
-	theme_type_variation = &"PickerRow" if target.usable else &"PickerRowOff"
+	theme_type_variation = _row_variation if target.usable else _row_off_variation
 	normal_variation = theme_type_variation
 	for control: Control in _dimmed:
 		control.modulate.a = 1.0 if target.usable else UiTokens.PICKER_UNUSABLE_ALPHA
@@ -174,6 +190,11 @@ func is_chevron_shown() -> bool:
 	return _chevron.visible
 
 
+## Image du Pokémon (artwork officiel), null si inconnue.
+func get_thumb_texture() -> Texture2D:
+	return _thumb.texture
+
+
 func get_hp_bar() -> HpBar:
 	return _hp_bar
 
@@ -190,7 +211,7 @@ func _build() -> void:
 	add_child(row)
 
 	_thumb_box = Panel.new()
-	_thumb_box.theme_type_variation = &"MenuLeadThumb"
+	_thumb_box.theme_type_variation = &"MenuRoundThumb"
 	_thumb_box.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	_thumb_box.custom_minimum_size = Vector2.ONE * UiTokens.PICKER_THUMB
 	_thumb_box.size_flags_vertical = Control.SIZE_SHRINK_CENTER
@@ -198,14 +219,10 @@ func _build() -> void:
 	_dimmed.append(_thumb_box)
 	_thumb = TextureRect.new()
 	_thumb.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	_thumb.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
 	_thumb.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 	_thumb.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
-	var side := UiTokens.TEAM_SPRITE_SOURCE * 2
-	_thumb.custom_minimum_size = Vector2.ONE * side
-	_thumb.size = Vector2.ONE * side
-	_thumb.position = (Vector2.ONE * UiTokens.PICKER_THUMB - _thumb.size) * 0.5
 	_thumb_box.add_child(_thumb)
+	_fit_thumb(UiTokens.PICKER_THUMB)
 
 	var info := VBoxContainer.new()
 	info.mouse_filter = Control.MOUSE_FILTER_IGNORE
@@ -266,6 +283,13 @@ func _build() -> void:
 	_flash.modulate.a = 0.0
 	add_child(_flash)
 	_hp_bar.display_changed.connect(_on_hp_display)
+
+
+## L'artwork occupe MENU_ROUND_THUMB_ART du rond de [param box] px, centré.
+func _fit_thumb(box: int) -> void:
+	var side := box * UiTokens.MENU_ROUND_THUMB_ART
+	_thumb.size = Vector2.ONE * side
+	_thumb.position = (Vector2.ONE * box - _thumb.size) * 0.5
 
 
 func _label(variation: StringName) -> Label:

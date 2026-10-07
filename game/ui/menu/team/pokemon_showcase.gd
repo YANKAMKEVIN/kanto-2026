@@ -1,10 +1,12 @@
 class_name PokemonShowcase
 extends VBoxContainer
-## La vedette de l'Équipe (dossier 08 §2) : grand sprite du Pokémon sélectionné (64 px ×6, entier,
-## NEAREST), respiration par un léger **décalage vertical** (jamais une échelle non entière),
-## puis l'en-tête de fiche : nom, ♂/♀, « Favori » (étoile **et** texte), Nv., statut en texte,
-## type(s), PV et XP (« 320 / 560 XP », « 240 XP avant le niveau suivant »).
+## La vedette de l'Équipe (dossier 08 §2 ; maquette menu-equipe-v1.jpg, MM.1) : **artwork officiel**
+## du Pokémon sélectionné ([MenuArt], resserré sur son cadre utile, filtre linéaire) posé sur un
+## halo et une ombre au sol, avec une respiration légère (décalage vertical), puis l'en-tête de
+## fiche : nom, ♂/♀, « Favori » (étoile **et** texte), Nv., statut en texte, type(s), PV et XP
+## (« 320 / 560 XP », « 240 XP avant le niveau suivant »).
 ## Un texte vide dans la fiche = un élément absent (niveau 100 : pas de texte d'XP).
+## Numéro inconnu (0) : pas d'image, jamais une autre espèce.
 
 const STAR_ICON: Texture2D = preload("res://assets/ui/icons/menu/star_filled.svg")
 const FAVORITE_TEXT := "Favori"
@@ -15,14 +17,18 @@ const XP_TAG := "XP"
 ## Durées multipliées (0 = instantané, pas de respiration : tests).
 var speed_scale: float = 1.0
 
-var _sprite_scale: int = UiTokens.TEAM_SPRITE_SCALE
+## Côté fixe de l'image (Stockage) ; 0 : toute la place libre, au plus TEAM_ART_MAX (Équipe).
+var _art_size: int = 0
 var _with_xp: bool = true
+var _shown_number: int = -1
+var _breath_offset: float = 0.0
 
 var _sheet: PokemonSheetView
 var _breath: Tween
 var _fade: Tween
 var _sprite_box: Control
 var _shadow: Control
+var _halo: TextureRect
 var _sprite: TextureRect
 var _name: Label
 var _gender: TextureRect
@@ -39,10 +45,10 @@ var _xp_text: Label
 var _xp_remaining: Label
 
 
-## [param sprite_scale] : échelle entière du sprite (6 dans l'Équipe) ; [param with_xp] faux : ni
-## barre ni texte d'XP, ni pilule « Favori » (écran Stockage, où la hauteur manque).
-func _init(sprite_scale: int = UiTokens.TEAM_SPRITE_SCALE, with_xp: bool = true) -> void:
-	_sprite_scale = sprite_scale
+## [param art_size] : côté fixe de l'image (0 : toute la place, Équipe) ; [param with_xp] faux :
+## ni barre ni texte d'XP, ni pilule « Favori » (écran Stockage, où la hauteur manque).
+func _init(art_size: int = 0, with_xp: bool = true) -> void:
+	_art_size = art_size
 	_with_xp = with_xp
 	mouse_filter = Control.MOUSE_FILTER_IGNORE
 	add_theme_constant_override(&"separation", UiTokens.TEAM_HEADER_GAP)
@@ -53,8 +59,10 @@ func _init(sprite_scale: int = UiTokens.TEAM_SPRITE_SCALE, with_xp: bool = true)
 func show_sheet(sheet: PokemonSheetView, animate: bool) -> void:
 	_sheet = sheet
 	var member := sheet.member
-	var path := TeamSlotCard.SPRITE_PATH % member.species_id
-	_sprite.texture = load(path) as Texture2D if ResourceLoader.exists(path) else null
+	if member.dex_number != _shown_number:
+		_shown_number = member.dex_number
+		_sprite.texture = MenuArt.pokemon_portrait(member.dex_number)
+		_layout_art()
 	_name.text = member.display_name
 	_gender.texture = BattleInfoCard.GENDER_ICONS.get(member.gender, null)
 	_gender.modulate = BattleInfoCard.GENDER_COLORS.get(member.gender, UiTokens.TEXT)
@@ -91,7 +99,7 @@ func get_sprite() -> TextureRect:
 	return _sprite
 
 
-## Taille réelle du sprite à l'écran (64 × 6 = 384).
+## Taille réelle de l'image à l'écran.
 func get_sprite_shown_size() -> Vector2:
 	return _sprite.size * _sprite.scale
 
@@ -134,7 +142,7 @@ func get_types() -> HBoxContainer:
 
 ## Décalage vertical actuel de la respiration (px, ≤ 0).
 func get_breath_offset() -> float:
-	return _sprite.position.y
+	return _breath_offset
 
 
 func is_breathing() -> bool:
@@ -145,22 +153,40 @@ func stop() -> void:
 	if _breath != null:
 		_breath.kill()
 		_breath = null
-	_sprite.position.y = 0.0
+	_set_breath(0.0)
 
 
 func _restart_breath() -> void:
 	stop()
 	if speed_scale <= 0.0 or not is_inside_tree():
 		return
-	var amplitude := float(UiTokens.TEAM_BREATH_PX)
+	var amplitude := UiTokens.TEAM_ART_BREATH_PX
 	_breath = create_tween().set_loops().set_trans(Tween.TRANS_SINE)
 	_breath.tween_method(_set_breath, 0.0, -amplitude, UiTokens.TEAM_BREATH_TIME)
 	_breath.tween_method(_set_breath, -amplitude, 0.0, UiTokens.TEAM_BREATH_TIME)
 
 
-## Par pas de 2 px (un tiers de pixel d'image) : pas de scintillement des pixels agrandis.
+## Image peinte filtrée : le décalage est continu.
 func _set_breath(value: float) -> void:
-	_sprite.position.y = roundf(value / 2.0) * 2.0
+	_breath_offset = value
+	_layout_art()
+
+
+## Image carrée posée pieds en bas au-dessus de l'ombre, centrée ; halo derrière.
+func _layout_art() -> void:
+	if _sprite_box == null:
+		return
+	var box := _sprite_box.size
+	var side := minf(minf(box.x, box.y - UiTokens.TEAM_ART_BREATH_PX), float(UiTokens.TEAM_ART_MAX))
+	if _art_size > 0:
+		side = float(_art_size)
+	side = maxf(side, 0.0)
+	var origin := Vector2((box.x - side) * 0.5, box.y - side - UiTokens.TEAM_ART_BREATH_PX * 0.5)
+	_sprite.size = Vector2.ONE * side
+	_sprite.position = origin + Vector2(0.0, _breath_offset)
+	_halo.size = Vector2.ONE * side * 1.2
+	_halo.position = origin + (Vector2.ONE * side - _halo.size) * 0.5
+	_shadow.queue_redraw()
 
 
 func _play_switch() -> void:
@@ -183,12 +209,22 @@ func _notification(what: int) -> void:
 
 
 func _build() -> void:
-	var side := UiTokens.TEAM_SPRITE_SOURCE * _sprite_scale
 	_sprite_box = Control.new()
 	_sprite_box.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	_sprite_box.custom_minimum_size = Vector2(side, side + UiTokens.TEAM_BREATH_PX)
-	_sprite_box.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
+	if _art_size > 0:
+		_sprite_box.custom_minimum_size = Vector2(_art_size, _art_size + UiTokens.TEAM_ART_BREATH_PX)
+		_sprite_box.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
+	else:
+		_sprite_box.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	_sprite_box.resized.connect(_layout_art)
 	add_child(_sprite_box)
+	_halo = TextureRect.new()
+	_halo.texture = PokedexArt.halo_texture()
+	_halo.modulate.a = UiTokens.TEAM_ART_HALO_ALPHA
+	_halo.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_halo.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	_halo.stretch_mode = TextureRect.STRETCH_SCALE
+	_sprite_box.add_child(_halo)
 	_shadow = Control.new()
 	_shadow.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	_shadow.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
@@ -196,12 +232,8 @@ func _build() -> void:
 	_sprite_box.add_child(_shadow)
 	_sprite = TextureRect.new()
 	_sprite.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	_sprite.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
 	_sprite.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
-	_sprite.stretch_mode = TextureRect.STRETCH_SCALE
-	_sprite.custom_minimum_size = Vector2.ONE * UiTokens.TEAM_SPRITE_SOURCE
-	_sprite.size = Vector2.ONE * UiTokens.TEAM_SPRITE_SOURCE
-	_sprite.scale = Vector2.ONE * _sprite_scale
+	_sprite.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
 	_sprite_box.add_child(_sprite)
 
 	var name_row := HBoxContainer.new()
@@ -304,7 +336,7 @@ func _caption_value() -> Label:
 
 ## Ombre posée sous le Pokémon (ellipse), qui ne bouge pas avec la respiration.
 func _draw_shadow() -> void:
-	var width := _shadow.size.x * 0.62
+	var width := minf(_shadow.size.x, _sprite.size.x) * 0.62
 	var height := width * 0.16
 	var center := Vector2(_shadow.size.x * 0.5, _shadow.size.y - height * 0.5 - 4.0)
 	var points := PackedVector2Array()

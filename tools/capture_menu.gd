@@ -633,6 +633,7 @@ func _view(card_count: int, with_lead: bool, fainted: bool, dex: String) -> Dash
 	if with_lead:
 		var lead := TeamMemberView.new()
 		lead.species_id = &"charmander"
+		lead.dex_number = 4
 		lead.display_name = "Salamèche"
 		lead.gender = BattleCardView.Gender.MALE
 		lead.level = 14
@@ -642,14 +643,9 @@ func _view(card_count: int, with_lead: bool, fainted: bool, dex: String) -> Dash
 		if not fainted:
 			lead.hp = 31
 		view.lead = lead
-	var texts: Dictionary = {
-		&"team": ["Équipe", "Tes Pokémon et leurs capacités."],
-		&"pokedex": ["Pokédex", "Tes découvertes dans la région de Kanto."],
-		&"bag": ["Sac", "Utilise et range tes objets."],
-		&"map": ["Carte", "Kanto et tes découvertes."],
-		&"trainer": ["Dresseur", "Ton profil et ton parcours."],
-		&"settings": ["Paramètres", "Jeu, commandes, graphismes et accessibilité."],
-	}
+	if card_count == 6:
+		view.badges_text = DashboardViews.badges_text(2)  # capture seulement : aucun badge au MM.1
+	var texts: Dictionary = DashboardViews.CARD_TEXTS
 	var order: Array[StringName] = [&"team", &"pokedex", &"bag", &"map", &"trainer", &"settings"]
 	if card_count == 5:
 		order.erase(&"pokedex")
@@ -666,3 +662,7 @@ func _save(capture_name: String) -> void:
 	var image := root.get_texture().get_image()
 	image.save_png(path)
 	print("CAPTURE %s %s" % [path, image.get_size()])
+	# Coût de l'écran (MM.1) : appels de dessin de l'image et mémoire vidéo des textures.
+	print("PERF %s draw=%d tex=%.1f Mo" % [capture_name,
+		Performance.get_monitor(Performance.RENDER_TOTAL_DRAW_CALLS_IN_FRAME),
+		Performance.get_monitor(Performance.RENDER_TEXTURE_MEM_USED) / 1048576.0])

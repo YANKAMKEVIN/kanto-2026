@@ -104,6 +104,11 @@ extends SceneTree
 ##     ShopMoneyLabel (Label)
 ##   Stockage (T15) : StorageDropZone (Panel, cadre ACCENT), StorageRefusal / StorageMenu (PanelContainer),
 ##     StorageRefusalText / StorageTitle / StorageEmpty (Label)
+##   Menu rapproché des maquettes (MM.1) : MenuGlass / MenuGlassCard / MenuStatusBar
+##     (PanelContainer), MenuRoundButton / MenuArtCard / MenuAction / MenuActionOn / MenuTab /
+##     MenuBagTab… (Button ou PanelContainer), MenuArtRim / MenuArtRimPressed / MenuArtRound /
+##     MenuRoundThumb / MenuStatusDivider (Panel), MenuScreenTitle / MenuScreenCount /
+##     MenuStatusText / MenuArtTitle / MenuArtCaption / MenuBagTabCaption / MenuTargetsTitle (Label)
 ## tests/unit/test_ui_theme.gd vérifie que le fichier est à jour avec les tokens.
 
 const TOKENS_PATH: String = "res://game/ui/theme/ui_tokens.gd"
@@ -175,6 +180,7 @@ func _init() -> void:
 	_add_settings_screen(theme, bold, t)
 	_add_shop_screen(theme, bold, t)
 	_add_storage_screen(theme, bold, t)
+	_add_menu_glass(theme, bold, t)
 
 	var err := ResourceSaver.save(theme, THEME_PATH)
 	print("ui_theme.tres : ", error_string(err))
@@ -1388,3 +1394,182 @@ func _add_shop_screen(theme: Theme, bold: Font, t: GDScript) -> void:
 	_add_plain_label(theme, &"ShopCardPrice", t.SHOP_CARD_PRICE_FONT, t.ACCENT, bold)
 	_add_plain_label(theme, &"ShopMoney", t.SHOP_MONEY_FONT, t.TEXT, bold)
 	_add_plain_label(theme, &"ShopMoneyLabel", t.SHOP_MONEY_LABEL_FONT, t.TEXT_MUTED, bold)
+
+
+# --- Menu Dresseur rapproché des maquettes (MM.1) ------------------------------------------------
+
+
+func _circle(bg: Color, border: Color, width: int, diameter: int) -> StyleBoxFlat:
+	var box := StyleBoxFlat.new()
+	box.bg_color = bg
+	box.border_color = border
+	box.set_border_width_all(width)
+	box.set_corner_radius_all(diameter)
+	box.anti_aliasing = true
+	return box
+
+
+func _add_menu_glass(theme: Theme, bold: Font, t: GDScript) -> void:
+	var glass := _glass(t.MENU_GLASS_BG, t.MENU_GLASS_BORDER, t.MENU_GLASS_RADIUS, t)
+	glass.shadow_color = t.DEX_GLASS_SHADOW
+	glass.shadow_size = t.DEX_GLASS_SHADOW_SIZE
+	glass.set_content_margin_all(t.MENU_GLASS_PAD)
+	theme.set_type_variation(&"MenuGlass", &"PanelContainer")
+	theme.set_stylebox(&"panel", &"MenuGlass", glass)
+	var card := _glass(t.MENU_GLASS_CARD_BG, t.MENU_GLASS_CARD_BORDER, t.MENU_GLASS_CARD_RADIUS, t)
+	card.set_content_margin_all(t.DEX_CARD_PAD)
+	theme.set_type_variation(&"MenuGlassCard", &"PanelContainer")
+	theme.set_stylebox(&"panel", &"MenuGlassCard", card)
+
+	# × et ‹ : un rond de verre dessiné plus petit que sa zone tactile (TOUCH_MIN).
+	var touch := float(t.TOUCH_MIN)
+	var round := _glass(t.MENU_GLASS_BG, t.MENU_GLASS_BORDER, t.MENU_ROUND_DRAW / 2, t)
+	var round_on := _glass(t.ACCENT, t.ACCENT, t.MENU_ROUND_DRAW / 2, t)
+	for box: StyleBoxFlat in [round, round_on]:
+		_inset(box, touch, t.MENU_ROUND_DRAW, (touch - t.MENU_ROUND_DRAW) * 0.5)
+	_add_button_variation(theme, &"MenuRoundButton", round, round_on, bold, t)
+	for state: StringName in [&"icon_normal_color", &"icon_hover_color", &"icon_focus_color"]:
+		theme.set_color(state, &"MenuRoundButton", t.TEXT)
+	for state: StringName in [&"icon_pressed_color", &"icon_hover_pressed_color"]:
+		theme.set_color(state, &"MenuRoundButton", t.ACCENT_TEXT)
+	theme.set_constant(&"icon_max_width", &"MenuRoundButton", t.MENU_ROUND_ICON)
+
+	var status := _glass(t.MENU_GLASS_BG, t.MENU_GLASS_BORDER, t.MENU_STATUS_DRAW / 2, t)
+	status.set_content_margin(SIDE_LEFT, t.MENU_STATUS_PAD_H)
+	status.set_content_margin(SIDE_RIGHT, t.MENU_STATUS_PAD_H)
+	theme.set_type_variation(&"MenuStatusBar", &"PanelContainer")
+	theme.set_stylebox(&"panel", &"MenuStatusBar", status)
+	var divider := StyleBoxFlat.new()
+	divider.bg_color = t.MENU_STATUS_DIVIDER
+	theme.set_type_variation(&"MenuStatusDivider", &"Panel")
+	theme.set_stylebox(&"panel", &"MenuStatusDivider", divider)
+	_add_plain_label(theme, &"MenuStatusText", t.MENU_STATUS_FONT, t.TEXT, bold)
+	_add_plain_label(theme, &"MenuScreenTitle", t.MENU_TITLE_FONT, t.TEXT, bold)
+	_add_plain_label(theme, &"MenuScreenCount", t.MENU_TITLE_COUNT_FONT, t.TEXT_MUTED, bold)
+
+	# Grandes cartes illustrées : le fond (teinte posée par la carte) est sous l'illustration ;
+	# le liseré est un Panel par-dessus (MenuArtRim, ACCENT quand la carte est enfoncée).
+	var art := _glass(t.menu_card_bg(t.MENU_CARD_TINT_DEFAULT), Color(0, 0, 0, 0),
+		t.MENU_ART_RADIUS, t)
+	art.set_border_width_all(0)
+	art.shadow_color = t.SHADOW
+	art.shadow_size = t.SHADOW_SIZE
+	_add_flat_button(theme, &"MenuArtCard", art, art)
+	var rim := _glass(Color(0, 0, 0, 0), t.MENU_GLASS_BORDER, t.MENU_ART_RADIUS, t)
+	rim.draw_center = false
+	rim.set_border_width_all(t.MENU_ART_RIM_WIDTH)
+	theme.set_type_variation(&"MenuArtRim", &"Panel")
+	theme.set_stylebox(&"panel", &"MenuArtRim", rim)
+	var rim_on := rim.duplicate() as StyleBoxFlat
+	rim_on.border_color = t.ACCENT
+	rim_on.set_border_width_all(t.MENU_ART_RIM_WIDTH * 2)
+	theme.set_type_variation(&"MenuArtRimPressed", &"Panel")
+	theme.set_stylebox(&"panel", &"MenuArtRimPressed", rim_on)
+	theme.set_type_variation(&"MenuArtRound", &"Panel")
+	theme.set_stylebox(&"panel", &"MenuArtRound", _circle(t.tinted(t.TEXT, 0.18),
+		t.tinted(t.TEXT, 0.25), t.BORDER_WIDTH, t.MENU_ART_ROUND))
+	_add_plain_label(theme, &"MenuArtTitle", t.MENU_CARD_TITLE_FONT, t.TEXT, bold)
+	_add_plain_label(theme, &"MenuArtCaption", t.MENU_CARD_CAPTION_FONT, t.TEXT, null)
+	for type: StringName in [&"MenuArtTitle", &"MenuArtCaption"]:
+		theme.set_color(&"font_shadow_color", type, t.DEX_SCENE_TEXT_SHADOW)
+		theme.set_constant(&"shadow_offset_x", type, 0)
+		theme.set_constant(&"shadow_offset_y", type, 2)
+	theme.set_type_variation(&"MenuRoundThumb", &"Panel")
+	theme.set_stylebox(&"panel", &"MenuRoundThumb", _circle(t.MENU_ROUND_THUMB_BG,
+		t.MENU_ROUND_THUMB_BORDER, t.BORDER_WIDTH, t.TOUCH_MIN))
+	var lead := _glass(t.MENU_GLASS_CARD_BG, t.MENU_GLASS_CARD_BORDER, t.MENU_LEAD_HEIGHT, t)
+	var lead_on := _glass(t.tinted(t.ACCENT, 0.22), t.ACCENT, t.MENU_LEAD_HEIGHT, t)
+	_add_flat_button(theme, &"MenuLeadCard", lead, lead_on)
+
+	# Équipe : emplacements, sections, onglets et actions en verre.
+	var slot := _glass(t.MENU_GLASS_CARD_BG, t.MENU_GLASS_CARD_BORDER, t.MENU_GLASS_CARD_RADIUS, t)
+	var slot_selected := _glass(t.MENU_GLASS_SELECTED_BG, t.ACCENT, t.MENU_GLASS_CARD_RADIUS, t)
+	slot_selected.set_border_width_all(t.TEAM_SLOT_SELECTED_BORDER)
+	slot_selected.shadow_color = t.MOVE_CARD_SELECTED_GLOW
+	slot_selected.shadow_size = t.MOVE_CARD_SELECTED_GLOW_SIZE
+	var slot_source := _glass(t.tinted(t.ACCENT, 0.12), t.ACCENT, t.MENU_GLASS_CARD_RADIUS, t)
+	var slot_target := _glass(t.MENU_GLASS_BG, t.ACCENT, t.MENU_GLASS_CARD_RADIUS, t)
+	slot_target.set_border_width_all(t.TEAM_SLOT_SELECTED_BORDER)
+	var slot_empty := _glass(t.tinted(t.MENU_GLASS_CARD_BG, 0.2), t.tinted(t.TEXT, 0.08),
+		t.MENU_GLASS_CARD_RADIUS, t)
+	for pair: Array in [[&"TeamSlot", slot], [&"TeamSlotSelected", slot_selected],
+			[&"TeamSlotSource", slot_source], [&"TeamSlotTarget", slot_target],
+			[&"TeamSlotEmpty", slot_empty]]:
+		theme.set_stylebox(&"panel", pair[0], pair[1])
+	var section := _glass(t.MENU_GLASS_CARD_BG, t.MENU_GLASS_CARD_BORDER, t.MENU_GLASS_CARD_RADIUS, t)
+	theme.set_stylebox(&"panel", &"TeamSection", section)
+	theme.set_stylebox(&"panel", &"TeamEvoCircle", _circle(t.MENU_ROUND_THUMB_BG,
+		t.MENU_ROUND_THUMB_BORDER, t.BORDER_WIDTH, t.TEAM_EVO_CIRCLE))
+
+	var tab := _glass(t.MENU_GLASS_CARD_BG, t.MENU_GLASS_CARD_BORDER, t.MENU_GLASS_CARD_RADIUS, t)
+	var tab_on := _glass(t.ACCENT, t.ACCENT, t.MENU_GLASS_CARD_RADIUS, t)
+	_add_button_variation(theme, &"MenuTab", tab, tab_on, bold, t)
+	theme.set_font_size(&"font_size", &"MenuTab", t.TEAM_TAB_FONT)
+	for state: StringName in [&"font_color", &"font_hover_color", &"font_focus_color",
+			&"icon_normal_color", &"icon_hover_color", &"icon_focus_color"]:
+		theme.set_color(state, &"MenuTab", t.TEXT)
+	for state: StringName in [&"font_pressed_color", &"font_hover_pressed_color",
+			&"icon_pressed_color", &"icon_hover_pressed_color"]:
+		theme.set_color(state, &"MenuTab", t.ACCENT_TEXT)
+	theme.set_constant(&"icon_max_width", &"MenuTab", t.DEX_TAB_ICON)
+	theme.set_constant(&"h_separation", &"MenuTab", t.TEAM_HEADER_GAP)
+
+	var action := _glass(t.MENU_GLASS_BG, t.tinted(t.TEXT, 0.4), t.MENU_GLASS_CARD_RADIUS, t)
+	var action_pressed := _glass(t.ACCENT_PRESSED, t.ACCENT_PRESSED, t.MENU_GLASS_CARD_RADIUS, t)
+	var action_on := _glass(t.ACCENT, t.ACCENT, t.MENU_GLASS_CARD_RADIUS, t)
+	for box: StyleBoxFlat in [action, action_pressed, action_on]:
+		box.set_content_margin(SIDE_LEFT, t.TEAM_SLOT_PAD)
+		box.set_content_margin(SIDE_RIGHT, t.TEAM_SLOT_PAD)
+	for pair: Array in [[&"MenuAction", action], [&"MenuActionOn", action_on]]:
+		_add_button_variation(theme, pair[0], pair[1], action_pressed, bold, t)
+		theme.set_font_size(&"font_size", pair[0], t.TEAM_ACTION_FONT)
+		theme.set_constant(&"icon_max_width", pair[0], t.TEAM_ACTION_ICON)
+		theme.set_constant(&"h_separation", pair[0], t.TEAM_HEADER_GAP)
+	for state: StringName in [&"font_color", &"font_hover_color", &"font_focus_color",
+			&"icon_normal_color", &"icon_hover_color", &"icon_focus_color"]:
+		theme.set_color(state, &"MenuAction", t.TEXT)
+		theme.set_color(state, &"MenuActionOn", t.ACCENT_TEXT)
+	for state: StringName in [&"font_pressed_color", &"font_hover_pressed_color",
+			&"icon_pressed_color", &"icon_hover_pressed_color"]:
+		theme.set_color(state, &"MenuAction", t.ACCENT_TEXT)
+		theme.set_color(state, &"MenuActionOn", t.ACCENT_TEXT)
+
+	# Sac : onglets (icône peinte, nom, légende, compteur rond), cartes et cibles en verre.
+	var bag_tab := _glass(t.MENU_GLASS_CARD_BG, t.MENU_GLASS_CARD_BORDER, t.MENU_GLASS_CARD_RADIUS, t)
+	var bag_tab_on := _glass(t.MENU_GLASS_SELECTED_BG, t.ACCENT, t.MENU_GLASS_CARD_RADIUS, t)
+	bag_tab_on.set_border_width_all(t.BAG_TAB_SELECTED_BORDER)
+	var bag_card := _glass(t.MENU_GLASS_CARD_BG, t.MENU_GLASS_CARD_BORDER, t.MENU_GLASS_CARD_RADIUS, t)
+	var bag_card_on := _glass(t.MENU_GLASS_SELECTED_BG, t.ACCENT, t.MENU_GLASS_CARD_RADIUS, t)
+	bag_card_on.set_border_width_all(t.MOVE_CARD_SELECTED_BORDER)
+	bag_card_on.shadow_color = t.MOVE_CARD_SELECTED_GLOW
+	bag_card_on.shadow_size = t.MOVE_CARD_SELECTED_GLOW_SIZE
+	for box: StyleBoxFlat in [bag_tab, bag_tab_on]:
+		box.set_content_margin(SIDE_LEFT, t.BAG_TAB_PAD_H)
+		box.set_content_margin(SIDE_RIGHT, t.BAG_TAB_PAD_H / 2)
+		box.set_content_margin(SIDE_TOP, 8)
+		box.set_content_margin(SIDE_BOTTOM, 8)
+	for box: StyleBoxFlat in [bag_card, bag_card_on]:
+		box.set_content_margin(SIDE_LEFT, t.BAG_CARD_PAD_H)
+		box.set_content_margin(SIDE_RIGHT, t.BAG_CARD_PAD_H)
+		box.set_content_margin(SIDE_TOP, t.BAG_CARD_PAD_V)
+		box.set_content_margin(SIDE_BOTTOM, t.BAG_CARD_PAD_V)
+	var row := _glass(t.MENU_GLASS_CARD_BG, t.MENU_GLASS_CARD_BORDER, t.MENU_GLASS_CARD_RADIUS, t)
+	var row_on := _glass(t.MENU_GLASS_SELECTED_BG, t.ACCENT, t.MENU_GLASS_CARD_RADIUS, t)
+	row_on.set_border_width_all(t.PICKER_SELECTED_BORDER)
+	var row_off := _glass(t.tinted(t.MENU_GLASS_CARD_BG, 0.25), t.tinted(t.TEXT, 0.08),
+		t.MENU_GLASS_CARD_RADIUS, t)
+	for box: StyleBoxFlat in [row, row_on, row_off]:
+		box.set_content_margin_all(t.PICKER_PAD)
+	for pair: Array in [[&"MenuBagTab", bag_tab], [&"MenuBagTabSelected", bag_tab_on],
+			[&"MenuBagCard", bag_card], [&"MenuBagCardSelected", bag_card_on],
+			[&"MenuPickerRow", row], [&"MenuPickerRowSelected", row_on],
+			[&"MenuPickerRowOff", row_off]]:
+		theme.set_type_variation(pair[0], &"PanelContainer")
+		theme.set_stylebox(&"panel", pair[0], pair[1])
+	theme.set_type_variation(&"MenuCountRound", &"PanelContainer")
+	var count := _circle(t.tinted(t.TEXT, 0.12), Color(0, 0, 0, 0), 0, t.BAG_TAB_COUNT_WIDTH)
+	count.set_content_margin_all(4)
+	theme.set_stylebox(&"panel", &"MenuCountRound", count)
+	_add_plain_label(theme, &"MenuBagTabName", t.BAG_TAB_COUNT_FONT + 4, t.TEXT, bold)
+	_add_plain_label(theme, &"MenuBagTabCaption", t.BAG_TAB_CAPTION_FONT, t.TEXT_MUTED, null)
+	_add_plain_label(theme, &"MenuTargetsTitle", t.BAG_TARGETS_TITLE_FONT, t.TEXT, bold)

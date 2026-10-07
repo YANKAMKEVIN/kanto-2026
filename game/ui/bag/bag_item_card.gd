@@ -39,6 +39,13 @@ func _ready() -> void:
 	_apply()
 
 
+## Écran Sac du menu (MM.1) : cartes de verre (le Sac du combat garde les siennes).
+func use_menu_style() -> void:
+	normal_variation = &"MenuBagCard"
+	selected_variation = &"MenuBagCardSelected"
+	set_selected(_selected)
+
+
 ## Objet affiché ; null = carte vide (inerte).
 func set_view(view: BagEntryView) -> void:
 	_view = view

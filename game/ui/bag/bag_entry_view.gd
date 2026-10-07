@@ -87,13 +87,17 @@ func quantity_text() -> String:
 	return "×%d" % quantity
 
 
-## Illustration à montrer : la sienne, sinon le fichier de l'objet, sinon l'illustration neutre.
+## Illustration à montrer : la sienne, sinon celle de l'objet, sinon l'illustration neutre.
 func get_icon() -> Texture2D:
 	return icon if icon != null else icon_for(item_id)
 
 
-## Illustration de l'objet [param id] (fichier du même nom dans [constant ICON_DIR]).
+## Illustration de l'objet [param id] : l'icône peinte (MM.1, [MenuArt]) si elle existe, sinon
+## le fichier du même nom dans [constant ICON_DIR], sinon l'illustration neutre.
 static func icon_for(id: StringName) -> Texture2D:
+	var painted := MenuArt.item_icon(id)
+	if painted != null:
+		return painted
 	var path := ICON_DIR + String(id) + ".svg"
 	if ResourceLoader.exists(path):
 		return load(path) as Texture2D

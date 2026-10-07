@@ -65,6 +65,7 @@ var _sheet_empty: Label
 
 func _init() -> void:
 	covers_header = true
+	status_bar = false
 	backdrop_dim = UiTokens.DEX_BACKDROP_DIM
 	backdrop_blur = UiTokens.DEX_BACKDROP_BLUR
 	backdrop_lod = UiTokens.DEX_BACKDROP_LOD

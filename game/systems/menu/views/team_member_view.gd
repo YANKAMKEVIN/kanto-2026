@@ -15,6 +15,9 @@ const STATUS_FAINTED: String = "K.O."
 var party_index: int = 0
 ## Espèce (identifiant de données) : l'écran en déduit le sprite.
 var species_id: StringName = &""
+## Numéro du Pokédex de l'espèce (artwork officiel, [PokedexArt]) ; 0 = inconnu (pas d'image).
+## Ajouté au MM.1.
+var dex_number: int = 0
 ## Surnom, sinon nom de l'espèce (« Salamèche »).
 var display_name: String = ""
 var gender: BattleCardView.Gender = BattleCardView.Gender.NONE
