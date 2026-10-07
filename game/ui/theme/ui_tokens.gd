@@ -1444,3 +1444,23 @@ const TRAINER_TEAM_LEVEL_FONT := 22
 const TRAINER_MOMENT_THUMB := Vector2(150, 92)
 const TRAINER_MOMENT_THUMB_RADIUS := 12
 const TRAINER_MOMENT_ART := 64
+
+## Carte de présentation du Champion (jalon 10, T5) : « PIERRE » / « Champion d'Arène
+## d'Argenta », posée sur le monde avant le combat. Verre sombre du combat (CB.2), liseré
+## ACCENT à gauche, aucun portrait. Réutilisée pour les 8 Champions.
+const CHAMPION_CARD_BG := DIALOG_PANEL_BG
+const CHAMPION_CARD_RADIUS := RADIUS
+## Liseré ACCENT sur le bord gauche de la carte.
+const CHAMPION_CARD_ACCENT_WIDTH := 10
+const CHAMPION_CARD_PAD_H := 56
+const CHAMPION_CARD_PAD_V := 32
+const CHAMPION_CARD_MIN_WIDTH := 640
+const CHAMPION_CARD_LINE_GAP := 8
+const CHAMPION_CARD_NAME_FONT := FONT_TITLE
+const CHAMPION_CARD_TITLE_FONT := FONT_BODY
+## Centre de la carte : fraction de la hauteur d'écran ; bord gauche à SAFE_MARGIN.
+const CHAMPION_CARD_CENTER_Y := 0.42
+## Entrée glissée depuis la gauche, tenue (un toucher l'abrège), sortie.
+const CHAMPION_CARD_SLIDE_IN := 0.4
+const CHAMPION_CARD_HOLD := 3.0
+const CHAMPION_CARD_SLIDE_OUT := 0.25
