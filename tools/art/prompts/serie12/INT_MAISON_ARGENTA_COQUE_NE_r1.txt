@@ -1,0 +1,23 @@
+INT_MAISON_ARGENTA_COQUE — NOUVELLE image : l'enveloppe VIDE d'une pièce intérieure de jeu (murs et sol, aucun meuble).
+Images jointes : INT_CENTRE_COQUE_NE_r1 et INT_MAISON_RIVAL_COQUE_NE_r1 = ancres de style des intérieurs (rendu peint, contour coloré, finesse, angle de vue, géométrie d'une enveloppe, lumière neutre) : respecte-les exactement ; WORLD_BLDG_MAISON_ARGENTA_01_NE_r1 = la façade validée de ce bâtiment (matériaux et couleurs des murs).
+
+ADN VISUEL KANTO 2026 — v1 (à respecter strictement)
+- Rendu : illustration 2D peinte numériquement, dans l'esprit d'un RPG Pokémon moderne au rendu « HD-2D peint » : formes simples, lisibles et arrondies, détails fins mais ordonnés. Ni pixel art, ni 3D, ni photo, ni aquarelle, ni cartoon en aplats.
+- Perspective : vue de dessus de trois quarts, en projection oblique frontale, sans aucun point de fuite. Les verticales restent strictement verticales et les horizontales strictement horizontales. On voit le dessus des objets et leur face avant (côté sud), jamais leurs côtés. Pas de vue isométrique, pas de rotation. Le sol est vu à plat, comme sur un plan.
+- Proportions : légèrement stylisées, trapues et rassurantes. Échelle commune : 1 case de jeu = 1 mètre environ ; un adulte mesure 1,33 case ; une porte simple mesure 1 case de large et 1,5 case de haut.
+- Contours : aucun trait noir. Contour fin et doux, d'une teinte plus sombre et plus saturée que la couleur locale, qui s'efface presque du côté éclairé.
+- Volumes : trois valeurs nettes par matériau (lumière, ombre propre, reflet ambiant), transitions douces, petits accents de lumière sur les arêtes.
+- Matériaux : reconnaissables (bois, pierre, tuile, feuillage, verre) à leur forme et à quelques touches de texture, jamais à une texture photographique.
+- Couleurs : chaudes, lumineuses et saturées sans être fluo. Verts allant du vert-jaune ensoleillé au vert sapin. Ombres colorées tirant vers le bleu-vert ou le violet froid, jamais grises ni noires. Couleurs franches pour les toits.
+- Texture : pinceau net et propre, légère granularité picturale ; pas de bruit, pas de flou, pas de netteté artificielle.
+- Lumière : une seule source, le soleil, en haut à gauche de l'image (la fiche précise la variante).
+- Ombres : aucune ombre portée au sol (le jeu l'ajoute lui-même). Les ombres propres et internes (sous le feuillage, sous un avant-toit) sont peintes.
+- Isolement : un seul objet, entier, centré, sur fond transparent ; rien autour : ni sol, ni herbe, ni décor, ni personnage.
+- Interdits partout : texte, lettres, chiffres, logo (sauf l'emblème demandé), signature, filigrane, cadre, personnage, Pokémon, ombre portée, sol sous l'objet, flou de profondeur, vignettage.
+
+LUMIÈRE NE (neutre) : lumière de milieu de journée, diffuse et blanche, venant légèrement du haut à gauche ; volumes conservés par un ombrage doux ; aucune teinte dorée ou orangée, aucun liseré chaud ; ombres propres neutres, légèrement bleutées.
+
+EXCEPTION à la règle « Isolement » de l'ADN : l'image est une pièce entière vue de dessus en trois quarts, image opaque qui remplit tout le cadre.
+Géométrie (respecte-la exactement, c'est un plan de jeu) : Format : PNG paysage 1536 × 1024, opaque ; la pièce fait 15 cases de large × 10 de profondeur (1 case ≈ 102 px). Vue de dessus en projection oblique frontale : le MUR DU FOND occupe toute la largeur en haut, on voit sa face avant ; les murs latéraux gauche et droit ne sont visibles que par leur épaisseur vue de dessus ; le mur du bas (au premier plan) n'est visible que par son épaisseur vue de dessus. Tout le reste est du SOL, entièrement libre et vide. Face avant du mur du fond sur les 2,5 cases du haut (≈ 256 px) ; épaisseur des murs latéraux ≈ 40 px ; épaisseur du mur du bas ≈ 50 px, interrompue au milieu par l'ENTRÉE : une ouverture de 2 cases (≈ 204 px) centrée, avec un paillasson. Cette enveloppe sert à DEUX maisons (meubles différents) : rien de personnel.
+Pièce : une maison d'Argenta, mêmes matériaux que la façade jointe WORLD_BLDG_MAISON_ARGENTA_01 : sol de larges planches de bois chaud ; mur du fond en pierre claire jusqu'à mi-hauteur puis enduit crème, poutres de bois apparentes en haut ; deux fenêtres à petits carreaux ; épaisseur des murs en pierre. Chaleureux et simple.
+Interdit : meubles, vitrines, plantes, tapis (sauf le paillasson demandé), personnages, Pokémon (ni Pikachu), porte fermée, texte, lettres, chiffres, logo écrit, perspective avec point de fuite, vue isométrique, ombre portée.
