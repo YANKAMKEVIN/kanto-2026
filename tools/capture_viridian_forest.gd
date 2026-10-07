@@ -100,6 +100,14 @@ func _setup_boot() -> void:
 			for k in 40:
 				await process_frame
 			box.emit_signal(&"advance_requested")
+	if _args.has("dismiss") and not _args.has("interact"):
+		# T21 : objet caché trouvé en marchant (narration puis toast) ; --dismiss=n ferme la
+		# bulle n fois, 50 images après le pas.
+		var talk_box: Node = boot.call(&"get_dialogue_box")
+		for i in int(_args.get("dismiss", "0")):
+			for k in 50:
+				await process_frame
+			talk_box.emit_signal(&"advance_requested")
 	if _args.has("perf"):
 		process_frame.connect(_report)
 

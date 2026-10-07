@@ -191,9 +191,17 @@ const LIGHT_SPOTS: Array = [
 	[Vector2(24.5, 9.0), Vector2(2.6, 1.8), 0.4],
 ]
 ## Couleur chaude des trouées (additive) ; le rai descend du haut-gauche (soleil du jeu).
-const LIGHT_COLOR := Color(1.0, 0.86, 0.55)
+## Plus orangée que le premier réglage (T19) : additive sur l'herbe, un jaune clair tirait au
+## citron ; la lumière chaude ne vit que dans les trouées (forêt plus sombre à venir).
+const LIGHT_COLOR := Color(1.0, 0.8, 0.46)
 const SPOT_ALPHA: float = 0.4
-const RAY_ALPHA: float = 0.22
+const RAY_ALPHA: float = 0.3
+const PATH_SPOT_GAIN: float = 0.55
+## Rais qui portent des particules végétales (index de `LIGHT_SPOTS` : C3, C1, C2) ; chacun
+## `PARTICLE_COUNT` grains au plus (§2.7.5 : ≤ 12), très lents, dérivant dans le sens du rai.
+const PARTICLE_SPOTS: Array[int] = [0, 1, 2]
+const PARTICLE_COUNT: int = 9
+const PARTICLE_LIFETIME: float = 7.0
 const RAY_LENGTH: float = 7.0
 const RAY_SLANT: float = 0.55
 ## `WorldLighting.Z_SHADOWS`, `Z_GROUND_DECALS` (les outils ne lisent pas les `class_name`).
@@ -913,6 +921,8 @@ func _place_light(root: Node) -> void:
 		sprite.z_index = Z_DECALS
 		sprite.position = centre * TILE
 		sprite.scale = size * TILE / 128.0
+		# Sur le sentier (beige), l'additif blanchit : tache plus discrète que sur l'herbe de C3.
+		sprite.modulate.a = 1.0 if index == 0 else PATH_SPOT_GAIN
 		_attach(root, holder, sprite)
 		var strength: float = spot[2]
 		if strength > 0.0:
@@ -936,7 +946,55 @@ func _place_light(root: Node) -> void:
 				mid, Color(LIGHT_COLOR, RAY_ALPHA * strength * 0.2),
 				Color(LIGHT_COLOR, RAY_ALPHA * strength * 0.2), mid])
 			_attach(root, holder, ray)
+			if index in PARTICLE_SPOTS:
+				_attach(root, holder, _ray_particles(index, bottom, top, half))
 		index += 1
+
+
+## Grains de pollen et brins de feuille dans un rai (T21) : `CPUParticles2D` (≤ 12), additifs,
+## émis le long de l'axe du rai, dérive lente vers le bas-droite, fondu entrée / sortie,
+## graine fixe, déjà en cours à l'ouverture de la carte (`preprocess`).
+func _ray_particles(index: int, bottom: Vector2, top: Vector2, half: float) -> CPUParticles2D:
+	var particles := CPUParticles2D.new()
+	particles.name = "RayMotes%d" % index
+	particles.z_as_relative = false
+	particles.z_index = Z_RAYS
+	particles.position = bottom.lerp(top, 0.5)
+	var additive := CanvasItemMaterial.new()
+	additive.blend_mode = CanvasItemMaterial.BLEND_MODE_ADD
+	particles.material = additive
+	var grain := Gradient.new()
+	grain.offsets = PackedFloat32Array([0.0, 0.5, 1.0])
+	grain.colors = PackedColorArray([Color(1, 1, 1, 1.0), Color(1, 1, 1, 0.5), Color(1, 1, 1, 0.0)])
+	var texture := GradientTexture2D.new()
+	texture.gradient = grain
+	texture.fill = GradientTexture2D.FILL_RADIAL
+	texture.fill_from = Vector2(0.5, 0.5)
+	texture.fill_to = Vector2(1.0, 0.5)
+	texture.width = 16
+	texture.height = 16
+	particles.texture = texture
+	particles.amount = PARTICLE_COUNT
+	particles.lifetime = PARTICLE_LIFETIME
+	particles.preprocess = PARTICLE_LIFETIME
+	particles.use_fixed_seed = true
+	particles.seed = 11 + index
+	particles.emission_shape = CPUParticles2D.EMISSION_SHAPE_RECTANGLE
+	var axis := top - bottom
+	particles.emission_rect_extents = Vector2(half * 0.9, absf(axis.y) * 0.42)
+	particles.direction = Vector2(0.55, 1.0).normalized()
+	particles.spread = 14.0
+	particles.gravity = Vector2.ZERO
+	particles.initial_velocity_min = 5.0
+	particles.initial_velocity_max = 13.0
+	particles.scale_amount_min = 0.7
+	particles.scale_amount_max = 1.5
+	var fade := Gradient.new()
+	fade.offsets = PackedFloat32Array([0.0, 0.25, 0.75, 1.0])
+	fade.colors = PackedColorArray([Color(LIGHT_COLOR, 0.0), Color(LIGHT_COLOR, 0.55),
+		Color(LIGHT_COLOR, 0.55), Color(LIGHT_COLOR, 0.0)])
+	particles.color_ramp = fade
+	return particles
 
 
 func _count(node: Node) -> int:

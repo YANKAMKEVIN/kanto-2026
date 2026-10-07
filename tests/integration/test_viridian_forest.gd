@@ -337,6 +337,121 @@ func test_trainers_sight_lines() -> void:
 		"Milo évitable par les hautes herbes seulement (12 cases au lieu de 7)")
 
 
+# --- Dresseurs sur la vraie scène, avec tous les PNJ (T21) --------------------------------
+
+## Relief de la scène + cases des PNJ, objets et Pokémon d'ambiance posés (occupation réelle),
+## plus [param extra] : le monde tel que le joueur le trouve (routines tenues sur leur case).
+func _real_world(extra: Dictionary = {}) -> GridWorld:
+	var grid := _relief(_grid)
+	for npc: Npc in _map.get_npcs():
+		grid.set_solid(npc.get_cell())
+	for cell: Vector2i in extra:
+		grid.set_solid(cell)
+	return grid
+
+
+func _trainers() -> Array[NpcSpec]:
+	var trainers: Array[NpcSpec] = []
+	for spec: NpcSpec in NpcRoster.load_for_map(&"viridian_forest").get_all():
+		if spec.is_trainer():
+			trainers.append(spec)
+	return trainers
+
+
+## Cases où le joueur est vu par [param spec], par [method TrainerRules.sight_distance] sur la
+## **vraie grille** (les autres personnages coupent la vue, comme en jeu).
+func _real_sight(spec: NpcSpec) -> Dictionary:
+	var seen: Dictionary = {}
+	for y: int in SIZE.y:
+		for x: int in SIZE.x:
+			var cell := Vector2i(x, y)
+			if _grid.is_solid(cell) or _grid.is_occupied(cell):
+				continue
+			if TrainerRules.sight_distance(_grid, spec.cell, spec.facing, spec.sight, cell) > 0:
+				seen[cell] = true
+	return seen
+
+
+func test_real_scene_sight_matches_the_grid_and_the_npcs_stay_off_it() -> void:
+	var trainers := _trainers()
+	assert_eq(trainers.size(), 5, "cinq Dresseurs")
+	for spec: NpcSpec in trainers:
+		var real := _real_sight(spec)
+		var planned := _as_set(_sight(String(spec.id)))
+		for cell: Vector2i in planned:
+			assert_true(real.has(cell), "%s voit %s (grille)" % [spec.id, cell])
+		for cell: Vector2i in real:
+			assert_true(planned.has(cell), "%s ne devrait pas voir %s" % [spec.id, cell])
+		assert_gt(real.size(), 0, "%s voit au moins une case" % spec.id)
+		# Aucun autre personnage, Pokémon d'ambiance ni objet sur sa ligne de vue.
+		for npc: Npc in _map.get_npcs():
+			assert_false(real.has(npc.get_cell()), "%s sur la vue de %s" % [npc.get_id(),
+				spec.id])
+			for cell: Vector2i in npc.get_spec().route_cells:
+				assert_false(real.has(cell), "routine de %s sur la vue de %s" % [npc.get_id(),
+					spec.id])
+
+
+func test_real_scene_trainer_avoidance_with_the_npcs() -> void:
+	var seen: Dictionary = {}
+	for spec: NpcSpec in _trainers():
+		seen[String(spec.id)] = _real_sight(spec)
+	var door_open := func(blocked: Dictionary) -> bool:
+		return _distance(_real_world(blocked), ENTRANCE, DOOR) < INF
+	assert_true(door_open.call({}), "la porte est atteignable avec tous les PNJ")
+	assert_false(door_open.call(seen["scout_theo"]), "Théo (D1) est inévitable")
+	for id: String in ["scout_noe", "youngster_tom", "scout_eli"]:
+		assert_true(door_open.call(seen[id]), "%s (D2, D3, D5) est évitable" % id)
+	assert_true(door_open.call(seen["scout_milo"]), "Milo (D4) est évitable…")
+	var all_grass: Dictionary = {}
+	for zone: Dictionary in _zones:
+		all_grass.merge(zone)
+	var world := _real_world(seen["scout_milo"])
+	assert_eq(_min_crossed(world, ENTRANCE, DOOR, all_grass), D4_GRASS,
+		"…mais seulement par les hautes herbes (12 cases au lieu de 7)")
+	var h_free: Dictionary = {}
+	for cell: Vector2i in all_grass:
+		h_free[cell] = true
+	var no_grass := _real_world(seen["scout_milo"].merged(h_free))
+	assert_eq(_distance(no_grass, ENTRANCE, DOOR), INF, "sans herbes, Milo barre le passage")
+
+
+func test_trainers_never_close_a_passage_where_they_stop() -> void:
+	# Le Dresseur qui s'est approché reste à la case d'arrêt (jusqu'au rechargement) : la porte
+	# reste atteignable pour chaque distance de détection possible (hors Dresseur sur sa case).
+	for spec: NpcSpec in _trainers():
+		var real := _real_sight(spec)
+		for distance: int in range(1, spec.sight + 1):
+			var stop := spec.cell + spec.facing * (distance - 1)
+			var world := _real_world()
+			world.set_solid(stop, true)
+			world.set_solid(spec.cell, false)
+			if _grid.is_solid(stop):
+				continue
+			# Le Dresseur n'a bougé que s'il a vu le joueur : cases d'arrêt sur sa vue.
+			if distance > 1 and not real.has(stop + spec.facing):
+				continue
+			assert_lt(_distance(world, ENTRANCE, DOOR), INF, "%s arrêté en %s ferme la forêt"
+				% [spec.id, stop])
+
+
+func test_npc_routines_stay_off_grass_and_off_the_main_passage() -> void:
+	for id: StringName in [&"naturalist", &"hiker"]:
+		var npc := _map.get_npc(id)
+		assert_not_null(npc, "%s posé" % id)
+		var route := npc.get_spec().route_cells
+		assert_gt(route.size(), 2, "%s a une boucle" % id)
+		for cell: Vector2i in route:
+			assert_false(_grid.is_solid(cell) and not _grid.is_occupied(cell),
+				"%s : %s praticable" % [id, cell])
+			assert_false(_grid.is_tall_grass(cell), "%s : %s hors des hautes herbes" % [id, cell])
+			var world := _real_world()
+			world.set_solid(npc.get_cell(), false)
+			world.set_solid(cell, true)
+			assert_lt(_distance(world, ENTRANCE, DOOR), INF,
+				"%s en %s : la porte reste atteignable" % [id, cell])
+
+
 func test_objects_are_reachable_and_placed_as_the_grid_says() -> void:
 	var from_south := _distances(_terrain, ENTRANCE)
 	var from_door := _distances(_terrain, [DOOR])
