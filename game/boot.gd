@@ -35,6 +35,7 @@ extends Node
 signal zone_announced(zone_name: String, region: String)
 
 const PLAYER_SCENE: PackedScene = preload("res://game/player/player.tscn")
+const EVOLUTION_SCREEN: PackedScene = preload("res://game/ui/evolution/evolution_screen.tscn")
 ## Temps de jeu : une image ne compte jamais plus que ceci (le retour de l'arrière-plan peut
 ## livrer un très grand delta, qui n'est pas du temps de jeu).
 const MAX_PLAY_TIME_STEP: float = 0.5
@@ -93,8 +94,9 @@ var _unlocks: MenuUnlocks
 ## changement de carte (écran noir) ; profil vide = aucun effet (Bourg Palette, Route 1).
 var _lighting: WorldLighting
 var _light_profiles := LightingLibrary.new()
-## Évolutions de fin de combat (jalon 9, jalon-09.md §2.3) ; l'écran arrive au T9.
+## Évolutions de fin de combat (jalon 9, jalon-09.md §2.3) et leur écran (T9).
 var _evolutions: EvolutionDirector
+var _evolution_screen: EvolutionScreen
 ## Points de repos (jalon 7, 7A.2) : maison et Centres, mot du réveil (data/world/rest_points.json).
 var _rest_points := RestPointLibrary.new()
 ## Toast « Point de repos enregistré — <zone> » en attente de la fin du dialogue du soin.
@@ -187,6 +189,13 @@ func _ready() -> void:
 	add_child(_evolutions)
 	_evolutions.setup(GameState, _pokemon, _texts, _battle_director.get_move_learn_prompt())
 	_battle_director.set_evolution_director(_evolutions)
+	# Écran d'évolution (T9) : au-dessus de l'interface de combat ; ses durées suivent celles du
+	# combat (relayées par le directeur), « Réduire les flashs » atténue son flash.
+	_evolution_screen = EVOLUTION_SCREEN.instantiate() as EvolutionScreen
+	_evolution_screen.process_mode = Node.PROCESS_MODE_PAUSABLE
+	add_child(_evolution_screen)
+	_evolution_screen.reduce_flashes = _settings.reduce_flashes
+	_evolutions.set_screen(_evolution_screen)
 	_cutscenes_node.set_inventory(GameState.bag, _items)
 	# Remise du colis (jalon-07.md §3.6.2, T19) : jeton {first_wild_species} des répliques de
 	# Chen, scène lancée par une variante de dialogue (« colis en main »), légende POKÉDEX ACTIVÉ.
@@ -1109,6 +1118,8 @@ func _apply_settings(s: GameSettings) -> void:
 	_battle_director.confirm_forget = s.confirm_actions
 	_battle_hud.message_hold_scale = 1.0
 	_battle_stage.reduce_flashes = s.reduce_flashes
+	if _evolution_screen != null:
+		_evolution_screen.reduce_flashes = s.reduce_flashes
 	_services.reduce_motion = s.reduce_motion
 	_menu_screen.speed_scale = s.menu_speed_scale()
 	Haptics.enabled = s.haptics
