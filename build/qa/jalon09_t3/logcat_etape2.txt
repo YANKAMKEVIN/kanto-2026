@@ -1,0 +1,11 @@
+--------- beginning of main
+10-07 20:33:32.230 15662 15745 I godot   : Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+10-07 20:33:32.486 15662 15745 I godot   : Vulkan 1.3.279 - Forward Mobile - Using Device #0: Unknown - Samsung Xclipse 940
+10-07 20:33:33.403 15662 15745 I godot   : 
+10-07 20:33:35.419 15662 15745 I godot   : Sauvegarde chargée : route_2 (24, 10) (temps de jeu 80079 s)
+10-07 20:33:35.419 15662 15745 I godot   : [qa] sauvegarde v3 → v4
+10-07 20:33:35.731 15662 15745 I godot   : Sauvegarde automatique (changement de carte) : route_2 (24, 10), OK
+10-07 20:33:37.681 15662 15745 I godot   : [perf] fps=52 min=7 draw=208 tex=72.4
+10-07 20:33:39.690 15662 15745 I godot   : [perf] fps=59 min=55 draw=201 tex=72.4
+10-07 20:33:41.717 15662 15745 I godot   : [perf] fps=59 min=56 draw=201 tex=72.4
+10-07 20:33:43.723 15662 15745 I godot   : [perf] fps=59 min=39 draw=201 tex=72.4

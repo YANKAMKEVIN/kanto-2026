@@ -1,0 +1,181 @@
+{
+	"bag": {
+		"acquired": {
+			"poke_ball": 1,
+			"potion": 2
+		},
+		"favorites": [],
+		"items": {
+			"poke_ball": 3,
+			"potion": 2
+		}
+	},
+	"cell": [
+		21,
+		21
+	],
+	"discovered_maps": {
+		"viridian_center": "2026-10-07T20:34:42",
+		"viridian_city": "2026-10-07T20:34:16"
+	},
+	"facing": [
+		0,
+		1
+	],
+	"first_wild_encounter": {},
+	"flags": [
+		"mom_greeted",
+		"oak_lab_reunion",
+		"oak_met",
+		"rival_battle_done",
+		"rival_challenged",
+		"rival_left_lab",
+		"rival_met",
+		"starter_chosen",
+		"starter_offered",
+		"viridian_arrived"
+	],
+	"found_items": [],
+	"heal_map": "player_house_1f",
+	"heal_spawn": "heal",
+	"map": "viridian_city",
+	"moments": [],
+	"money": 3000,
+	"party": [
+		{
+			"evs": {
+				"atk": 0,
+				"def": 0,
+				"hp": 0,
+				"spa": 0,
+				"spd": 0,
+				"spe": 0
+			},
+			"exp": 419,
+			"favorite": false,
+			"gender": "female",
+			"hp": 27,
+			"ivs": {
+				"atk": 11,
+				"def": 30,
+				"hp": 15,
+				"spa": 0,
+				"spd": 26,
+				"spe": 28
+			},
+			"level": 9,
+			"met": {
+				"date": "",
+				"level": 0,
+				"map": "",
+				"origin": "unknown",
+				"trainer": ""
+			},
+			"moves": [
+				{
+					"id": "scratch",
+					"max_pp": 35,
+					"pp": 35
+				},
+				{
+					"id": "growl",
+					"max_pp": 40,
+					"pp": 40
+				},
+				{
+					"id": "ember",
+					"max_pp": 25,
+					"pp": 25
+				}
+			],
+			"nickname": "",
+			"species": "charmander",
+			"status": "poison"
+		},
+		{
+			"evs": {
+				"atk": 0,
+				"def": 0,
+				"hp": 0,
+				"spa": 0,
+				"spd": 0,
+				"spe": 0
+			},
+			"exp": 236,
+			"favorite": false,
+			"gender": "female",
+			"hp": 24,
+			"ivs": {
+				"atk": 21,
+				"def": 11,
+				"hp": 29,
+				"spa": 22,
+				"spd": 26,
+				"spe": 5
+			},
+			"level": 7,
+			"met": {
+				"date": "",
+				"level": 0,
+				"map": "",
+				"origin": "unknown",
+				"trainer": ""
+			},
+			"moves": [
+				{
+					"id": "gust",
+					"max_pp": 35,
+					"pp": 35
+				},
+				{
+					"id": "sand_attack",
+					"max_pp": 15,
+					"pp": 15
+				}
+			],
+			"nickname": "",
+			"species": "pidgey",
+			"status": ""
+		}
+	],
+	"play_time": 32.6450713333336,
+	"player_name": "Kevin",
+	"pokedex": {
+		"entries": {
+			"charmander": {
+				"caught": true,
+				"first_caught_date": "",
+				"first_caught_map": "",
+				"first_seen_date": "",
+				"first_seen_map": "",
+				"notes": [
+					"charmander_shelter"
+				],
+				"seen_maps": [],
+				"times_caught": 1,
+				"times_seen": 1
+			},
+			"pidgey": {
+				"caught": true,
+				"first_caught_date": "",
+				"first_caught_map": "",
+				"first_seen_date": "",
+				"first_seen_map": "",
+				"notes": [
+					"pidgey_paths"
+				],
+				"seen_maps": [],
+				"times_caught": 1,
+				"times_seen": 1
+			}
+		}
+	},
+	"rng": {
+		"seed": "959933190",
+		"state": "5079508196978571182"
+	},
+	"started_at": "2026-10-07T20:34:16",
+	"starter": "charmander",
+	"storage": [],
+	"version": 4
+}

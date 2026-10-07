@@ -1,0 +1,10 @@
+--------- beginning of main
+10-07 20:35:04.309 17288 17323 I godot   : Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+10-07 20:35:04.394 17288 17323 I godot   : Vulkan 1.3.279 - Forward Mobile - Using Device #0: Unknown - Samsung Xclipse 940
+10-07 20:35:04.948 17288 17323 I godot   : 
+10-07 20:35:06.553 17288 17323 I godot   : Sauvegarde chargée : viridian_city (21, 21) (temps de jeu 32 s)
+10-07 20:35:06.553 17288 17323 I godot   : [qa] statut relu : Salamèche (équipe 1) poison
+10-07 20:35:06.864 17288 17323 I godot   : Sauvegarde automatique (changement de carte) : viridian_city (21, 21), OK
+10-07 20:35:08.758 17288 17323 I godot   : [perf] fps=52 min=7 draw=268 tex=95.2
+10-07 20:35:10.763 17288 17323 I godot   : [perf] fps=59 min=55 draw=263 tex=95.2
+10-07 20:35:12.773 17288 17323 I godot   : [perf] fps=59 min=55 draw=264 tex=95.2
