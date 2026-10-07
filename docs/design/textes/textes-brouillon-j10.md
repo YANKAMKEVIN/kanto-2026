@@ -1,5 +1,7 @@
 # Textes en brouillon — jalon 10, lot système (2026-10-08)
 
+> **VALIDÉ PAR KEVIN LE 2026-10-08** : les 48 textes tels que proposés, et pour chaque **Note** la proposition (pas la variante) ; Route 2 sur la Carte : rien ne change ; Racaillou du tailleur : pas d'observation. La tâche T8 recopie ce lot mot pour mot dans `data/`.
+>
 > **48 textes numérotés, à relire par Kevin en une passe** (Q-5 du plan `docs/tech/jalon-10.md`, décision du 2026-10-08 ; tâche T7). Comme aux J6, J7 et J9 : commente ligne par ligne (numéro + correction) ; **tout ce que tu ne commentes pas est validé tel quel**. Rien de ce lot n'est encore dans `data/` (le test `test_no_draft_in_data` refuse les brouillons) : la tâche T8 (données, après la fusion du J9) le recopiera mot pour mot après ta relecture.
 >
 > Ce lot ne couvre que ce que le dossier 12 ne fixe pas. Toutes les répliques des habitants, du Musée, du garde, de l'Arène, de Liam et de Pierre, la carte du Champion, les objectifs, la description d'Argenta sur la Carte et les textes du Grand moment « badge » sont **déjà verrouillés** (dossier 12, « Textes verrouillés », 2026-10-07) et ne sont pas repris ici.
