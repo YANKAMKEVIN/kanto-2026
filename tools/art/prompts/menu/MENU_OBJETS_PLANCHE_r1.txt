@@ -1,0 +1,8 @@
+MENU_OBJETS_PLANCHE — NOUVELLE image pour l'interface (menu) du jeu Kanto 2026, pas une capture d'écran.
+Les images jointes donnent la direction artistique ; n'en reproduis ni la mise en page ni les textes.
+
+RENDU : illustration 2D peinte numériquement, dans le style d'un RPG Pokémon moderne « HD-2D peint » : formes simples et arrondies, contour fin et doux plus sombre que la couleur, aucun trait noir, volumes doux, couleurs chaudes et lumineuses, pinceau net. Ni pixel art, ni 3D, ni photo. Lumière douce de jour venant du haut à gauche.
+
+IMAGE : PLANCHE de 4 icônes d'objets peintes, alignées sur une ligne, chacune dans une colonne invisible de 384 px, bien séparées par du vide, même taille (environ 280 px) : 1) une Poké Ball rouge et blanche ; 2) une Potion, flacon spray violet et blanc ; 3) un Antidote, flacon spray jaune et vert ; 4) un colis en papier kraft ficelé (colis pour le professeur). Vues de trois quarts, comme les objets de la maquette jointe.
+Format : PNG paysage 1536 × 1024, fond TRANSPARENT (canal alpha).
+Interdit : texte, lettres, chiffres, logo (sauf l'emblème Poké Ball demandé), signature, filigrane, cadre.
