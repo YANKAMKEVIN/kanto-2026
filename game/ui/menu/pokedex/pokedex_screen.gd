@@ -18,7 +18,8 @@ extends MenuScreen
 ## - RETOUR (et le retour Android) quittent le Pokédex : la fiche est toujours visible, il n'y a
 ##   plus rien à refermer ([method close_sheet] renvoie toujours faux).
 ## Placement : rempli par [TrainerMenu] dans la zone sous l'en-tête ; l'écran remonte de la
-## hauteur de l'en-tête commun (covers_header) et laisse sa place au × à gauche.
+## hauteur de l'en-tête commun (covers_header) et pose son « ‹ » à la place du × (owns_back,
+## MM.2, comme l'Équipe et le Sac).
 
 ## Filtre, zone d'HABITATS, type ou recherche changé (valeurs complètes après le geste).
 signal filter_changed(filter: int, zone: StringName, type: StringName, text: String)
@@ -65,6 +66,7 @@ var _sheet_empty: Label
 
 func _init() -> void:
 	covers_header = true
+	owns_back = true
 	status_bar = false
 	backdrop_dim = UiTokens.DEX_BACKDROP_DIM
 	backdrop_blur = UiTokens.DEX_BACKDROP_BLUR
@@ -247,7 +249,6 @@ func get_pool_size() -> int:
 func _build_header(parent: Control) -> void:
 	var margin := MarginContainer.new()
 	margin.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	margin.add_theme_constant_override(&"margin_left", UiTokens.DEX_LAYOUT_CLOSE_RESERVE)
 	parent.add_child(margin)
 	_header = HBoxContainer.new()
 	_header.mouse_filter = Control.MOUSE_FILTER_IGNORE

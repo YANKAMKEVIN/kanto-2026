@@ -181,6 +181,7 @@ func _init() -> void:
 	_add_shop_screen(theme, bold, t)
 	_add_storage_screen(theme, bold, t)
 	_add_menu_glass(theme, bold, t)
+	_add_menu_mm2(theme, bold, t)
 
 	var err := ResourceSaver.save(theme, THEME_PATH)
 	print("ui_theme.tres : ", error_string(err))
@@ -1573,3 +1574,117 @@ func _add_menu_glass(theme: Theme, bold: Font, t: GDScript) -> void:
 	_add_plain_label(theme, &"MenuBagTabName", t.BAG_TAB_COUNT_FONT + 4, t.TEXT, bold)
 	_add_plain_label(theme, &"MenuBagTabCaption", t.BAG_TAB_CAPTION_FONT, t.TEXT_MUTED, null)
 	_add_plain_label(theme, &"MenuTargetsTitle", t.BAG_TARGETS_TITLE_FONT, t.TEXT, bold)
+
+
+# --- Menu Dresseur rapproché des maquettes (MM.2) : Carte et Dresseur ------------------------------
+
+
+func _add_shadowed_label(theme: Theme, type: StringName, size: int, color: Color,
+		font: Font, t: GDScript) -> void:
+	_add_plain_label(theme, type, size, color, font)
+	theme.set_color(&"font_shadow_color", type, t.DEX_SCENE_TEXT_SHADOW)
+	theme.set_constant(&"shadow_offset_x", type, 0)
+	theme.set_constant(&"shadow_offset_y", type, 2)
+	theme.set_constant(&"shadow_outline_size", type, t.DEX_SCENE_TEXT_SHADOW_SIZE)
+
+
+func _add_menu_mm2(theme: Theme, bold: Font, t: GDScript) -> void:
+	# Carte : cadre de l'illustration et panneau de la zone en verre.
+	var frame := _glass(t.SURFACE_DARK, t.MENU_GLASS_BORDER, t.MENU_GLASS_RADIUS, t)
+	frame.shadow_color = t.DEX_GLASS_SHADOW
+	frame.shadow_size = t.DEX_GLASS_SHADOW_SIZE
+	theme.set_stylebox(&"panel", &"MapFrame", frame)
+	var panel := _glass(t.MENU_GLASS_BG, t.MENU_GLASS_BORDER, t.MENU_GLASS_RADIUS, t)
+	panel.shadow_color = t.DEX_GLASS_SHADOW
+	panel.shadow_size = t.DEX_GLASS_SHADOW_SIZE
+	panel.set_content_margin_all(t.MENU_GLASS_PAD)
+	theme.set_stylebox(&"panel", &"MapPanel", panel)
+	var strip := _glass(t.MENU_GLASS_BG, t.MENU_GLASS_BORDER, t.MENU_GLASS_RADIUS, t)
+	strip.set_content_margin_all(t.MAP_STRIP_PAD)
+	theme.set_type_variation(&"MapStrip", &"PanelContainer")
+	theme.set_stylebox(&"panel", &"MapStrip", strip)
+	var section := _glass(t.MENU_GLASS_CARD_BG, t.MENU_GLASS_CARD_BORDER, t.MENU_GLASS_CARD_RADIUS, t)
+	section.set_content_margin_all(t.DEX_CARD_PAD)
+	theme.set_type_variation(&"MapSectionCard", &"PanelContainer")
+	theme.set_stylebox(&"panel", &"MapSectionCard", section)
+	var hero := _glass(t.SURFACE_DARK, t.MENU_GLASS_CARD_BORDER, t.MAP_HERO_RADIUS, t)
+	theme.set_type_variation(&"MapHero", &"PanelContainer")
+	theme.set_stylebox(&"panel", &"MapHero", hero)
+
+	# Étiquettes : verre sombre ; lieu courant en ACCENT ; zone du panneau cerclée d'ACCENT.
+	var label := _bag_box(t.MAP_LABEL_BG, t.MENU_GLASS_BORDER, t.BORDER_WIDTH,
+		t.MAP_LABEL_PAD_H, t.MAP_LABEL_PAD_V, t)
+	label.set_corner_radius_all(t.MAP_LABEL_FONT * 2)
+	var label_on := label.duplicate() as StyleBoxFlat
+	label_on.bg_color = t.ACCENT
+	label_on.border_color = t.ACCENT
+	var label_sel := label.duplicate() as StyleBoxFlat
+	label_sel.border_color = t.ACCENT
+	label_sel.set_border_width_all(t.MAP_LABEL_SELECTED_BORDER)
+	for pair: Array in [[&"MapLabel", label], [&"MapLabelOn", label_on],
+			[&"MapLabelSelected", label_sel]]:
+		theme.set_type_variation(pair[0], &"PanelContainer")
+		theme.set_stylebox(&"panel", pair[0], pair[1])
+	theme.set_type_variation(&"MapPortrait", &"Panel")
+	theme.set_stylebox(&"panel", &"MapPortrait", _circle(t.MAP_PORTRAIT_BG, t.ACCENT,
+		t.MAP_PORTRAIT_BORDER, t.TOUCH_MIN))
+
+	# Panneau : nom sur l'image, « Tu es ici », cellules des Pokémon et des objets.
+	_add_shadowed_label(theme, &"MapHeroName", t.MAP_NAME_FONT, t.TEXT, bold, t)
+	_add_shadowed_label(theme, &"MapHeroSubtitle", t.MAP_SUBTITLE_FONT, t.TEXT, null, t)
+	var here := _bag_box(t.ACCENT, t.ACCENT, 0, 14, 4, t)
+	here.set_corner_radius_all(t.MAP_HERE_FONT * 2)
+	theme.set_type_variation(&"MapHere", &"PanelContainer")
+	theme.set_stylebox(&"panel", &"MapHere", here)
+	_add_plain_label(theme, &"MapHereText", t.MAP_HERE_FONT, t.ACCENT_TEXT, bold)
+	var cell := _glass(Color(0, 0, 0, 0), Color(0, 0, 0, 0), t.MENU_GLASS_CARD_RADIUS, t)
+	cell.set_border_width_all(0)
+	var cell_on := _glass(t.tinted(t.ACCENT, 0.2), t.ACCENT, t.MENU_GLASS_CARD_RADIUS, t)
+	_add_flat_button(theme, &"MapEntry", cell, cell_on)
+	theme.set_type_variation(&"MapItemCell", &"PanelContainer")
+	theme.set_stylebox(&"panel", &"MapItemCell", StyleBoxEmpty.new())
+
+	# Bandeau du bas : carte « Exploration » et vignettes des zones.
+	_add_plain_label(theme, &"MapExploreTitle", t.MAP_EXPLORE_TITLE_FONT, t.TEXT, bold)
+	_add_plain_label(theme, &"MapExploreText", t.MAP_EXPLORE_TEXT_FONT, t.TEXT_MUTED, null)
+	var thumb := _glass(t.SURFACE_DARK, Color(0, 0, 0, 0), t.MAP_THUMB_RADIUS, t)
+	thumb.set_border_width_all(0)
+	_add_flat_button(theme, &"MapThumb", thumb, thumb)
+	var rim := _glass(Color(0, 0, 0, 0), t.MENU_GLASS_BORDER, t.MAP_THUMB_RADIUS, t)
+	rim.draw_center = false
+	var rim_on := rim.duplicate() as StyleBoxFlat
+	rim_on.border_color = t.ACCENT
+	rim_on.set_border_width_all(t.MAP_THUMB_RIM)
+	for pair: Array in [[&"MapThumbRim", rim], [&"MapThumbRimOn", rim_on]]:
+		theme.set_type_variation(pair[0], &"Panel")
+		theme.set_stylebox(&"panel", pair[0], pair[1])
+	_add_shadowed_label(theme, &"MapThumbName", t.MAP_THUMB_NAME_FONT, t.TEXT, bold, t)
+
+	# Dresseur : badges en verre (silhouette commune et « ??? » tant qu'ils ne sont pas obtenus).
+	var badge := _glass(t.MENU_GLASS_CARD_BG, t.MENU_GLASS_CARD_BORDER, t.MENU_GLASS_CARD_RADIUS, t)
+	badge.set_content_margin_all(8)
+	var badge_on := _glass(t.tinted(t.ACCENT, 0.16), t.ACCENT, t.MENU_GLASS_CARD_RADIUS, t)
+	badge_on.set_content_margin_all(8)
+	theme.set_stylebox(&"panel", &"TrainerBadge", badge)
+	theme.set_stylebox(&"panel", &"TrainerBadgeOn", badge_on)
+	_add_plain_label(theme, &"TrainerBadgeUnknown", t.TRAINER_BADGE_UNKNOWN_FONT, t.TEXT_MUTED,
+		bold)
+	var moment := _glass(t.MENU_GLASS_CARD_BG, Color(0, 0, 0, 0), t.MENU_GLASS_CARD_RADIUS, t)
+	moment.set_border_width_all(0)
+	var moment_on := _glass(t.tinted(t.ACCENT, 0.2), t.ACCENT, t.MENU_GLASS_CARD_RADIUS, t)
+	for box: StyleBoxFlat in [moment, moment_on]:
+		box.set_content_margin(SIDE_LEFT, t.TRAINER_MOMENT_PAD_H)
+		box.set_content_margin(SIDE_RIGHT, t.TRAINER_MOMENT_PAD_H)
+		box.set_content_margin(SIDE_TOP, t.TRAINER_MOMENT_PAD_V)
+		box.set_content_margin(SIDE_BOTTOM, t.TRAINER_MOMENT_PAD_V)
+	_add_flat_button(theme, &"TrainerMoment", moment, moment_on)
+	var team := _glass(t.MENU_GLASS_CARD_BG, t.MENU_GLASS_CARD_BORDER, t.MENU_GLASS_CARD_RADIUS, t)
+	team.set_content_margin_all(12)
+	theme.set_type_variation(&"TrainerTeamCard", &"PanelContainer")
+	theme.set_stylebox(&"panel", &"TrainerTeamCard", team)
+	_add_plain_label(theme, &"TrainerTeamName", t.TRAINER_TEAM_NAME_FONT, t.TEXT, bold)
+	_add_plain_label(theme, &"TrainerTeamLevel", t.TRAINER_TEAM_LEVEL_FONT, t.TEXT_MUTED, bold)
+	var link := _glass(t.MENU_GLASS_SELECTED_BG, t.tinted(t.TEXT, 0.3), t.MENU_GLASS_CARD_RADIUS, t)
+	var link_pressed := _glass(t.ACCENT, t.ACCENT, t.MENU_GLASS_CARD_RADIUS, t)
+	_add_button_variation(theme, &"TrainerLink", link, link_pressed, bold, t)
+	theme.set_font_size(&"font_size", &"TrainerLink", t.TRAINER_LINK_FONT)

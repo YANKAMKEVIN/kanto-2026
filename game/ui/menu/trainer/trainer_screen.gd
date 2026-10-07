@@ -1,27 +1,29 @@
 class_name TrainerScreen
 extends MenuScreen
 ## Écran Dresseur du Menu Dresseur (dossier 08 §6 ; jalon-06.md §6.11 ; maquette
-## menu-dresseur-v1.jpg pour la DA seulement, règle 10), recomposé en paysage : identité et
-## portrait à gauche, **8 emplacements de badges muets** et statistiques au centre, frise des
-## grands moments à droite.
+## menu-dresseur-v1.jpg pour la DA seulement, règle 10), recomposé en paysage (MM.2) : à gauche
+## le **grand portrait peint** du héros sur le décor de sa zone, avec nom, titre, date de départ,
+## argent et liens « vus » / « capturés » ; au centre les **8 emplacements de badges** (silhouette
+## commune et « ??? » tant qu'ils ne sont pas obtenus) et l'équipe actuelle en artworks ; à droite
+## les statistiques et la frise des grands moments (vignettes des lieux).
 ##
 ## Un journal, pas un tableau de bord : ni niveau, XP, titre, tenue, pourcentage, heure,
-## « 27 / 151 » ni « 1 / 8 » ; **l'argent y est** (dossier 09 §10, Q-8 : visible dès le début). Il reçoit un [TrainerView] et n'en sait rien d'autre ; il n'invente
-## aucune route et ne décide aucun déblocage.
+## « 27 / 151 » ni « 1 / 8 » ; **l'argent y est** (dossier 09 §10, Q-8). Il reçoit un
+## [TrainerView] et n'en sait rien d'autre ; il n'invente aucune route et ne décide aucun
+## déblocage.
 ## - « vus » / « capturés » (seulement s'ils sont dans la vue) : **un** [signal route_requested]
 ##   avec la route de la vue.
 ## - Un moment avec route touché : **un** [signal route_requested] avec cette route ; sans route
-##   (et les badges) : rien.
-## - RETOUR : [signal back_requested].
+##   (et les badges, l'équipe) : rien.
+## - « ‹ » : [signal back_requested].
+## Composition (MM.2) : l'écran remonte dans la rangée du × (covers_header) et y pose son « ‹ »
+## (owns_back), l'icône du Dresseur et « Dresseur » ; bandeau d'état de l'hôte à droite.
 ## Placement : rempli par [TrainerMenu] sous l'en-tête, marges de SAFE_MARGIN.
 
 const TITLE := "Dresseur"
-## Portrait provisoire (le joueur, de face) jusqu'au MM.2 (portrait peint).
-const PORTRAIT_FRAMES_PATH := "res://assets/sprites/characters/placeholder/player_frames.tres"
-const PORTRAIT_ANIMATION := &"idle_down"
 const BACK_TEXT := "RETOUR"
 const BACK_ICON: Texture2D = preload("res://assets/ui/icons/battle/back.svg")
-const ICON_CLOCK: Texture2D = preload("res://assets/ui/icons/menu/clock.svg")
+const TITLE_ICON: Texture2D = preload("res://assets/ui/icons/menu/trainer.svg")
 const ICON_CALENDAR: Texture2D = preload("res://assets/ui/icons/trainer/calendar.svg")
 const ICON_COIN: Texture2D = preload("res://assets/ui/icons/shop/coin.svg")
 const STAT_ICONS: Dictionary[StringName, Texture2D] = {
@@ -35,10 +37,11 @@ const ICON_STAT_DEFAULT: Texture2D = preload("res://assets/ui/icons/menu/star_fi
 var _view: TrainerView
 var _built: bool = false
 var _back: Button
+var _identity: PanelContainer
+var _backdrop: ZoneArt
+var _stage: Control
 var _name: Label
 var _subtitle: Label
-var _play_time_row: HBoxContainer
-var _play_time: Label
 var _started_row: HBoxContainer
 var _started: Label
 var _money_row: HBoxContainer
@@ -50,6 +53,9 @@ var _caught: Button
 var _seen_route: MenuRoute
 var _caught_route: MenuRoute
 var _slots: Array[BadgeSlot] = []
+var _team_panel: PanelContainer
+var _team_grid: GridContainer
+var _team_cards: Array[TrainerTeamCard] = []
 var _stats_panel: PanelContainer
 var _stats_grid: GridContainer
 var _scroll: ScrollContainer
@@ -58,38 +64,47 @@ var _rows: Array[MomentRow] = []
 var _empty: Label
 
 
+func _init() -> void:
+	covers_header = true
+	owns_back = true
+	backdrop_dim = UiTokens.MENU_GLASS_DIM
+	backdrop_blur = UiTokens.MENU_GLASS_BLUR
+	backdrop_lod = UiTokens.MENU_GLASS_LOD
+
+
 func _ready() -> void:
 	super()
 	set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	var column := VBoxContainer.new()
+	column.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	column.offset_top = -UiTokens.DEX_LAYOUT_RISE
+	column.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	column.add_theme_constant_override(&"separation", UiTokens.TRAINER_GAP)
+	add_child(column)
+	_build_header(column)
 	var body := HBoxContainer.new()
-	body.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	body.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	body.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	body.add_theme_constant_override(&"separation", UiTokens.TRAINER_GAP)
-	add_child(body)
+	column.add_child(body)
 	body.add_child(_build_identity())
-	var rest := VBoxContainer.new()
-	rest.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	rest.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	rest.add_theme_constant_override(&"separation", UiTokens.TRAINER_GAP)
-	body.add_child(rest)
-	_build_header(rest)
-	var columns := HBoxContainer.new()
-	columns.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	columns.size_flags_vertical = Control.SIZE_EXPAND_FILL
-	columns.add_theme_constant_override(&"separation", UiTokens.TRAINER_GAP)
-	rest.add_child(columns)
 	var center := VBoxContainer.new()
 	center.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	center.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	center.add_theme_constant_override(&"separation", UiTokens.TRAINER_GAP)
-	columns.add_child(center)
+	body.add_child(center)
 	center.add_child(_build_badges())
+	center.add_child(_build_team())
+	var side := VBoxContainer.new()
+	side.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	side.custom_minimum_size.x = UiTokens.TRAINER_SIDE_WIDTH
+	side.add_theme_constant_override(&"separation", UiTokens.TRAINER_GAP)
+	body.add_child(side)
 	_stats_panel = PanelContainer.new()
-	_stats_panel.theme_type_variation = &"MenuPanel"
+	_stats_panel.theme_type_variation = &"MenuGlass"
 	_stats_panel.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	_stats_panel.size_flags_vertical = Control.SIZE_EXPAND_FILL
-	center.add_child(_stats_panel)
-	columns.add_child(_build_moments())
+	side.add_child(_stats_panel)
+	side.add_child(_build_moments())
 	_built = true
 	if _view != null:
 		_apply(_view)
@@ -111,8 +126,14 @@ func get_name_label() -> Label:
 	return _name
 
 
+## Grand portrait peint du héros.
 func get_portrait() -> TextureRect:
 	return _portrait
+
+
+## Décor du portrait (aperçu de la zone du joueur).
+func get_backdrop() -> ZoneArt:
+	return _backdrop
 
 
 ## Boutons « vus » et « capturés » (cachés quand la vue laisse le texte vide).
@@ -127,6 +148,15 @@ func get_caught_button() -> Button:
 ## Toujours 8 emplacements.
 func get_badge_slots() -> Array[BadgeSlot]:
 	return _slots
+
+
+## Cartes de l'équipe actuelle, dans l'ordre (vide : section absente).
+func get_team_cards() -> Array[TrainerTeamCard]:
+	return _team_cards
+
+
+func get_team_panel() -> PanelContainer:
+	return _team_panel
 
 
 ## Lignes de la frise, du plus ancien au plus récent.
@@ -162,24 +192,79 @@ func get_touch_controls() -> Array[Control]:
 	return found
 
 
+func _build_header(parent: Control) -> void:
+	var row := HBoxContainer.new()
+	row.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	row.custom_minimum_size.y = UiTokens.TOUCH_MIN
+	row.add_theme_constant_override(&"separation", UiTokens.MENU_TITLE_GAP)
+	parent.add_child(row)
+	_back = Button.new()
+	_back.theme_type_variation = &"MenuRoundButton"
+	_back.icon = BACK_ICON
+	_back.icon_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	_back.tooltip_text = BACK_TEXT
+	_back.focus_mode = Control.FOCUS_NONE
+	_back.custom_minimum_size = Vector2.ONE * UiTokens.TOUCH_MIN
+	_back.pressed.connect(_on_back)
+	row.add_child(_back)
+	var icon := TextureRect.new()
+	icon.texture = TITLE_ICON
+	icon.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	icon.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	icon.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+	icon.custom_minimum_size = Vector2.ONE * UiTokens.MENU_TITLE_ICON
+	icon.size_flags_vertical = Control.SIZE_SHRINK_CENTER
+	row.add_child(icon)
+	var title := Label.new()
+	title.theme_type_variation = &"MenuScreenTitle"
+	title.text = TITLE
+	title.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	title.size_flags_vertical = Control.SIZE_SHRINK_CENTER
+	row.add_child(title)
+
+
+## Identité : décor de la zone du joueur, grand portrait peint ancré en bas à droite, textes
+## par-dessus (ombrés), liens « vus » / « capturés » en bas.
 func _build_identity() -> PanelContainer:
-	var panel := PanelContainer.new()
-	panel.theme_type_variation = &"MenuPanel"
-	panel.custom_minimum_size.x = UiTokens.TRAINER_LEFT_WIDTH
-	panel.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_identity = PanelContainer.new()
+	_identity.theme_type_variation = &"MapHero"
+	_identity.custom_minimum_size.x = UiTokens.TRAINER_IDENTITY_WIDTH
+	_identity.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_identity.clip_contents = true
+	_backdrop = ZoneArt.new()
+	_backdrop.set_style(float(UiTokens.MENU_GLASS_RADIUS), 0.0,
+		UiTokens.tinted(UiTokens.SURFACE_DARK, 0.85), 0.25)
+	_identity.add_child(_backdrop)
+	_stage = Control.new()
+	_stage.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_stage.resized.connect(_place_portrait)
+	_identity.add_child(_stage)
+	_portrait = TextureRect.new()
+	_portrait.texture = MenuArt.hero_bust()
+	_portrait.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_portrait.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	_portrait.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+	_stage.add_child(_portrait)
+	var margin := MarginContainer.new()
+	margin.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	for side: StringName in [&"margin_left", &"margin_right", &"margin_top", &"margin_bottom"]:
+		margin.add_theme_constant_override(side, UiTokens.MENU_GLASS_PAD)
+	_identity.add_child(margin)
 	var column := VBoxContainer.new()
 	column.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	column.add_theme_constant_override(&"separation", UiTokens.GAP)
-	panel.add_child(column)
+	margin.add_child(column)
 	_name = Label.new()
 	_name.theme_type_variation = &"MenuName"
 	_name.clip_text = true
 	_name.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_shadow(_name)
 	column.add_child(_name)
 	_subtitle = Label.new()
 	_subtitle.theme_type_variation = &"MenuSubtitle"
 	_subtitle.clip_text = true
 	_subtitle.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_shadow(_subtitle)
 	column.add_child(_subtitle)
 	var bar := Panel.new()
 	bar.theme_type_variation = &"MenuIdBar"
@@ -187,25 +272,16 @@ func _build_identity() -> PanelContainer:
 	bar.size_flags_horizontal = Control.SIZE_SHRINK_BEGIN
 	bar.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	column.add_child(bar)
-	_play_time_row = _icon_row(column, ICON_CLOCK, UiTokens.TEXT)
-	_play_time = _play_time_row.get_child(1) as Label
 	_started_row = _icon_row(column, ICON_CALENDAR, UiTokens.TEXT)
 	_started = _started_row.get_child(1) as Label
 	_started.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	_started.clip_text = false
 	_money_row = _icon_row(column, ICON_COIN, UiTokens.ACCENT)
 	_money = _money_row.get_child(1) as Label
-	_portrait = TextureRect.new()
-	_portrait.texture = _portrait_texture()
-	_portrait.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
-	_portrait.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
-	_portrait.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
-	_portrait.custom_minimum_size = Vector2(UiTokens.MENU_PORTRAIT_SOURCE) \
-		* UiTokens.TRAINER_PORTRAIT_SCALE
-	_portrait.size_flags_vertical = Control.SIZE_EXPAND_FILL
-	_portrait.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
-	_portrait.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	column.add_child(_portrait)
+	var spacer := Control.new()
+	spacer.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	spacer.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	column.add_child(spacer)
 	_links = HBoxContainer.new()
 	_links.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	_links.add_theme_constant_override(&"separation", UiTokens.TRAINER_LINK_GAP)
@@ -216,35 +292,12 @@ func _build_identity() -> PanelContainer:
 	_caught = _link_button()
 	_caught.pressed.connect(_on_link_pressed.bind(false))
 	_links.add_child(_caught)
-	return panel
-
-
-func _build_header(parent: Control) -> void:
-	var row := HBoxContainer.new()
-	row.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	row.custom_minimum_size.y = UiTokens.TRAINER_HEADER_HEIGHT
-	row.add_theme_constant_override(&"separation", UiTokens.TRAINER_GAP)
-	parent.add_child(row)
-	_back = Button.new()
-	_back.theme_type_variation = &"PanelButton"
-	_back.text = BACK_TEXT
-	_back.icon = BACK_ICON
-	_back.focus_mode = Control.FOCUS_NONE
-	_back.custom_minimum_size = Vector2(UiTokens.TRAINER_BACK_WIDTH, UiTokens.TOUCH_MIN)
-	_back.pressed.connect(back_requested.emit)
-	row.add_child(_back)
-	var title := Label.new()
-	title.theme_type_variation = &"DexTitle"
-	title.text = TITLE
-	title.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	title.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	title.size_flags_vertical = Control.SIZE_SHRINK_CENTER
-	row.add_child(title)
+	return _identity
 
 
 func _build_badges() -> PanelContainer:
 	var panel := PanelContainer.new()
-	panel.theme_type_variation = &"MenuPanel"
+	panel.theme_type_variation = &"MenuGlass"
 	panel.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	var column := VBoxContainer.new()
 	column.mouse_filter = Control.MOUSE_FILTER_IGNORE
@@ -264,11 +317,31 @@ func _build_badges() -> PanelContainer:
 	return panel
 
 
+func _build_team() -> PanelContainer:
+	_team_panel = PanelContainer.new()
+	_team_panel.theme_type_variation = &"MenuGlass"
+	_team_panel.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_team_panel.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	var column := VBoxContainer.new()
+	column.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	column.add_theme_constant_override(&"separation", UiTokens.TRAINER_SECTION_GAP)
+	_team_panel.add_child(column)
+	_section_title(column, TrainerView.TEAM_TITLE)
+	_team_grid = GridContainer.new()
+	_team_grid.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_team_grid.columns = UiTokens.TRAINER_TEAM_COLUMNS
+	_team_grid.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	_team_grid.add_theme_constant_override(&"h_separation", UiTokens.TRAINER_BADGE_GAP)
+	_team_grid.add_theme_constant_override(&"v_separation", UiTokens.TRAINER_BADGE_GAP)
+	column.add_child(_team_grid)
+	return _team_panel
+
+
 func _build_moments() -> PanelContainer:
 	var panel := PanelContainer.new()
-	panel.theme_type_variation = &"MenuPanel"
-	panel.custom_minimum_size.x = UiTokens.TRAINER_RIGHT_WIDTH
+	panel.theme_type_variation = &"MenuGlass"
 	panel.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	panel.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	var column := VBoxContainer.new()
 	column.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	column.add_theme_constant_override(&"separation", UiTokens.TRAINER_SECTION_GAP)
@@ -291,7 +364,7 @@ func _apply(view: TrainerView) -> void:
 	_name.text = view.player_name
 	_subtitle.text = view.player_title
 	_subtitle.visible = not view.player_title.is_empty()
-	_set_row(_play_time_row, _play_time, view.play_time_text)
+	_backdrop.show_zone(view.zone_id)
 	var started := ""
 	if not view.started_text.is_empty():
 		started = "%s : %s" % [TrainerView.STARTED_LABEL, view.started_text]
@@ -307,8 +380,22 @@ func _apply(view: TrainerView) -> void:
 	_links.visible = _seen.visible or _caught.visible
 	for i: int in _slots.size():
 		_slots[i].setup(view.badges[i] if i < view.badges.size() else BadgeSlotView.new(i))
+	_rebuild_team(view)
 	_rebuild_stats(view)
 	_rebuild_moments(view)
+
+
+func _rebuild_team(view: TrainerView) -> void:
+	for card: TrainerTeamCard in _team_cards:
+		_team_grid.remove_child(card)
+		card.queue_free()
+	_team_cards.clear()
+	_team_panel.visible = not view.team.is_empty()
+	for member: TeamMemberView in view.team:
+		var card := TrainerTeamCard.new()
+		_team_grid.add_child(card)
+		card.setup(member)
+		_team_cards.append(card)
 
 
 func _rebuild_stats(view: TrainerView) -> void:
@@ -419,8 +506,19 @@ func _icon_row(parent: Control, icon: Texture2D, tint: Color) -> HBoxContainer:
 	label.clip_text = true
 	label.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	# Le texte est limité à la moitié gauche : le portrait occupe la droite.
+	label.custom_minimum_size.x = 0.0
+	_shadow(label)
 	row.add_child(label)
 	return row
+
+
+## Ombre portée du texte : il se lit sur le décor et le portrait peints.
+func _shadow(label: Label) -> void:
+	label.add_theme_color_override(&"font_shadow_color", UiTokens.DEX_SCENE_TEXT_SHADOW)
+	label.add_theme_constant_override(&"shadow_offset_x", 0)
+	label.add_theme_constant_override(&"shadow_offset_y", 2)
+	label.add_theme_constant_override(&"shadow_outline_size", UiTokens.DEX_SCENE_TEXT_SHADOW_SIZE)
 
 
 func _set_row(row: Control, label: Label, text: String) -> void:
@@ -445,6 +543,18 @@ func _set_link(button: Button, text: String) -> void:
 	button.visible = not text.is_empty()
 
 
+## Portrait : au plus TRAINER_HERO_MAX de haut, posé sur le bas du cadre, bord droit contre lui.
+func _place_portrait() -> void:
+	var texture := _portrait.texture
+	if texture == null:
+		return
+	var height := minf(float(UiTokens.TRAINER_HERO_MAX), _stage.size.y)
+	var width := height * texture.get_width() / float(texture.get_height())
+	_portrait.size = Vector2(width, height)
+	_portrait.position = Vector2(_stage.size.x - width + UiTokens.TRAINER_HERO_OFFSET_X,
+		_stage.size.y - height)
+
+
 func _on_link_pressed(is_seen: bool) -> void:
 	var route := _seen_route if is_seen else _caught_route
 	if route == null:
@@ -453,11 +563,9 @@ func _on_link_pressed(is_seen: bool) -> void:
 	route_requested.emit(route)
 
 
-func _portrait_texture() -> Texture2D:
-	var frames := load(PORTRAIT_FRAMES_PATH) as SpriteFrames
-	if frames == null or not frames.has_animation(PORTRAIT_ANIMATION):
-		return null
-	return frames.get_frame_texture(PORTRAIT_ANIMATION, 0)
+func _on_back() -> void:
+	Haptics.vibrate(UiTokens.HAPTIC_TAP_MS)
+	back_requested.emit()
 
 
 func _collect_texts(node: Node, into: PackedStringArray) -> void:

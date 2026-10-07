@@ -308,8 +308,10 @@ func test_three_panels_visible_without_overlap_at_both_widths() -> void:
 		var menu_close := screen.get_parent().get_parent().get_parent().find_child(
 			"CloseButton", true, false) as Control
 		var header := screen.get_header().get_global_rect()
-		assert_gte(header.position.x, menu_close.get_global_rect().end.x - 0.5,
-			"l'en-tête ne recouvre pas le ×")
+		# MM.2 : le « ‹ » du Pokédex prend la place du × (caché), à la marge de sécurité.
+		assert_false(menu_close.is_visible_in_tree(), "le × est caché : le ‹ le remplace")
+		assert_almost_eq(screen.get_back_button().get_global_rect().position.x,
+			float(UiTokens.SAFE_MARGIN), 0.5, "‹ à la place du ×")
 		assert_gte(header.position.y, UiTokens.SAFE_MARGIN - 0.5)
 		for child: Control in screen.get_header().get_children():
 			assert_lte(child.get_global_rect().end.x, header.end.x + 0.5, "dans l'en-tête")

@@ -939,9 +939,8 @@ const DEX_CELL_SELECTED_SCALE := 1.03
 const DEX_UNKNOWN_ALPHA := 0.55
 
 # --- Pokédex : composition en trois colonnes (refonte, T3) -------------------------------------
-## L'écran remonte dans la rangée du × (hauteur de l'en-tête commun) et lui laisse sa place.
+## L'écran remonte dans la rangée du × (hauteur de l'en-tête commun) et y pose son « ‹ » (MM.2).
 const DEX_LAYOUT_RISE := MENU_BODY_TOP - SAFE_MARGIN
-const DEX_LAYOUT_CLOSE_RESERVE := MENU_CLOSE_SIZE + GAP
 ## Rangée d'en-tête : ‹ RETOUR · Poké Ball + titre + compteur · filtres · recherche.
 const DEX_LAYOUT_BACK_WIDTH := 190
 const DEX_LAYOUT_TITLE_ICON := 64
@@ -1163,7 +1162,6 @@ const TRAINER_RAIL_LINE := 3.0
 const TRAINER_RAIL_DOT := 9.0
 const TRAINER_RAIL_COLOR := Color(1, 1, 1, 0.3)
 const TRAINER_MOMENT_ICON := 48
-const TRAINER_MOMENT_SPRITE := 64
 const TRAINER_MOMENT_TITLE_FONT := 30
 const TRAINER_MOMENT_DETAIL_FONT := 26
 const TRAINER_MOMENT_META_FONT := FONT_CAPTION
@@ -1361,3 +1359,64 @@ const PICKER_COMPACT_THUMB := 100
 const PICKER_COMPACT_GAP := 10
 ## Fond d'une carte de verre sélectionnée (le liseré ACCENT porte la sélection).
 const MENU_GLASS_SELECTED_BG := Color(0.04, 0.07, 0.11, 0.78)
+
+# Menu Dresseur rapproché des maquettes (MM.2) : Carte et Dresseur. Valeurs par défaut (règle 4)
+# notées dans etat-projet.md et docs/tech/menu-maquettes.md.
+## Carte : bandeau du bas (carte « Exploration » + frise des zones découvertes).
+const MAP_STRIP_HEIGHT := 168
+const MAP_STRIP_PAD := 16
+const MAP_EXPLORE_WIDTH := 540
+const MAP_EXPLORE_ROUND := 104
+const MAP_EXPLORE_TITLE_FONT := 30
+const MAP_EXPLORE_TEXT_FONT := FONT_CAPTION
+## Vignette d'une zone dans la frise (≥ TOUCH_MIN de haut) : image, nom, liseré.
+const MAP_THUMB_WIDTH := 232
+const MAP_THUMB_GAP := 14
+const MAP_THUMB_RADIUS := 16
+const MAP_THUMB_FADE_FROM := 0.35
+const MAP_THUMB_NAME_FONT := FONT_CAPTION
+const MAP_THUMB_PIN := 30
+const MAP_THUMB_RIM := 3
+## Panneau de la zone : largeur entre ces bornes (le reste va à l'illustration).
+const MAP_PANEL_MIN := 680
+const MAP_PANEL_MAX := 860
+## Grande image de la zone en tête du panneau (nom écrit dessus).
+const MAP_HERO_HEIGHT := 230
+const MAP_HERO_RADIUS := 20
+const MAP_HERO_FADE_FROM := 0.3
+const MAP_HERO_PAD := 20
+const MAP_HERE_FONT := FONT_CAPTION
+const MAP_HERE_ICON := 26
+## Pokémon observés (artwork dans un rond) et objets trouvés (icône peinte).
+const MAP_POKEMON_CELL := Vector2(144, 176)
+const MAP_POKEMON_ROUND := 108
+const MAP_ITEM_CELL := Vector2(144, 132)
+const MAP_ITEM_ICON := 76
+const MAP_SECTION_GAP := 12
+## Fond du cadre de l'illustration (illustration étirée très floue et assombrie).
+const MAP_ECHO_LOD := 5.0
+const MAP_ECHO_DIM := 0.6
+## Étiquettes des zones découvertes : icône du genre de zone ; lieu courant en ACCENT.
+const MAP_LABEL_ICON := 28
+const MAP_LABEL_SELECTED_BORDER := 3
+## Portrait du joueur sur l'illustration : tête du buste peint dans un rond (région du buste).
+const MAP_PORTRAIT_REGION := Rect2(80, 0, 300, 300)
+const MAP_PORTRAIT_BG := Color(0.86, 0.91, 0.98)
+const MAP_PORTRAIT_BORDER := 4
+## Dresseur : identité (portrait peint) à gauche, badges et équipe au centre, statistiques et
+## grands moments à droite.
+const TRAINER_IDENTITY_WIDTH := 540
+const TRAINER_SIDE_WIDTH := 640
+const TRAINER_HERO_MAX := 560
+const TRAINER_HERO_OFFSET_X := -4
+const TRAINER_BADGE_SLOT_HEIGHT := 112
+const TRAINER_BADGE_ICON := 56
+const TRAINER_BADGE_UNKNOWN := Color(1, 1, 1, 0.22)
+const TRAINER_BADGE_UNKNOWN_FONT := FONT_CAPTION
+const TRAINER_TEAM_COLUMNS := 3
+const TRAINER_TEAM_ART := 104
+const TRAINER_TEAM_NAME_FONT := 24
+const TRAINER_TEAM_LEVEL_FONT := 22
+const TRAINER_MOMENT_THUMB := Vector2(150, 92)
+const TRAINER_MOMENT_THUMB_RADIUS := 12
+const TRAINER_MOMENT_ART := 64

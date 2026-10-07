@@ -19,6 +19,8 @@ const STARTED_LABEL: String = "Début de l'aventure"
 const MONEY_LABEL: String = "Argent"
 ## Phrase de la frise quand aucun moment n'existe encore (prologue).
 const MOMENTS_EMPTY_TEXT: String = "Ton aventure ne fait que commencer."
+## Titre de la section de l'équipe (MM.2, texte à relire par Kevin).
+const TEAM_TITLE: String = "Équipe actuelle"
 
 ## Identité.
 var player_name: String = ""
@@ -37,8 +39,14 @@ var caught_text: String = ""
 ## Liens de « vus » et « capturés » (Pokédex filtré) ; null quand le texte est vide.
 var seen_route: MenuRoute = null
 var caught_route: MenuRoute = null
-## Toujours [constant BADGE_COUNT] emplacements, dans l'ordre (muets au J6).
+## Toujours [constant BADGE_COUNT] emplacements, dans l'ordre des arènes ([method
+## BadgeLibrary.slots] depuis le MM.2 : un badge non obtenu ne porte ni nom ni image, l'écran
+## montre une silhouette commune et « ??? »).
 var badges: Array[BadgeSlotView] = []
+## Zone où se tient le joueur (décor de son portrait, MM.2) ; &"" si inconnue.
+var zone_id: StringName = &""
+## Équipe actuelle, dans l'ordre de l'équipe (MM.2) ; vide = section absente.
+var team: Array[TeamMemberView] = []
 ## Grands moments, du plus ancien au plus récent ; vide → [constant MOMENTS_EMPTY_TEXT].
 var moments: Array[MomentView] = []
 ## Statistiques, dans l'ordre d'affichage ; une statistique à 0 est absente.

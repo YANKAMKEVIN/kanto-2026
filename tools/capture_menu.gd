@@ -70,6 +70,10 @@ extends SceneTree
 
 const BOOT_SCENE: String = "res://game/boot.tscn"
 const MENU_SCENE: String = "res://game/ui/menu/trainer_menu.tscn"
+## Scénarios qui montrent le monde (HUD visible) ; les autres ouvrent le menu comme Boot le fait :
+## titre de zone retiré et contrôles cachés (MM.2 : plus de titre flou derrière le ×).
+const WORLD_SCENARIOS: Array[String] = ["hud_button", "left_handed", "text_large_dialogue",
+	"contrast_dialogue"]
 
 var _boot: Node
 var _menu: TrainerMenu
@@ -121,6 +125,8 @@ func _on_frame() -> void:
 		_wait = 0
 		_save_wait = 12
 		_menu.speed_scale = 0.0
+		if not WORLD_SCENARIOS.has(_current):
+			_hide_world_hud()
 		_begin(_current)
 		return
 	_wait += 1
@@ -157,7 +163,7 @@ func _begin(scenario: String) -> void:
 			_dex_scenario(scenario)
 		"map", "map_panel", "map_dex":
 			_map_scenario(scenario)
-		"trainer", "trainer_dex", "trainer_empty":
+		"trainer", "trainer_dex", "trainer_empty", "trainer_badge":
 			_trainer_scenario(scenario)
 		"shop_buy", "shop_sell", "shop_no_money", "shop_confirm":
 			_shop_scenario(scenario)
@@ -247,6 +253,17 @@ func _touch_joystick(point: Vector2) -> void:
 	root.push_input(drag, true)
 
 
+## Comme Boot à l'ouverture du menu (_on_menu_opened) : titre de zone et légende retirés,
+## contrôles cachés.
+func _hide_world_hud() -> void:
+	var hud: ExplorationHud = _boot.get_hud()
+	hud.hide_zone_title()
+	hud.get_zone_title().visible = false
+	hud.hide_caption()
+	hud.get_caption().visible = false
+	hud.set_controls_visible(false)
+
+
 ## Remet les réglages de capture à zéro entre deux scénarios.
 func _cleanup() -> void:
 	UiPrefs.reset()
@@ -259,6 +276,7 @@ func _cleanup() -> void:
 	hud.get_toast().hide_now()
 	hud.hide_zone_title()
 	hud.get_joystick().release()
+	hud.set_controls_visible(true)
 	var box: DialogueBox = _boot.get_dialogue_box()
 	if box.is_open():
 		box.close()
@@ -368,12 +386,16 @@ func _trainer_scenario(scenario: String) -> void:
 			"res://tests/fixtures/save/v1_after_capture.json"))
 		SaveSystem.upgrade(content)
 		state.load_dict(content, data)
-		if scenario == "trainer_dex":
+		if scenario == "trainer_dex" or scenario == "trainer_badge":
 			state.flags.set_flag(StoryFlags.POKEDEX_ACTIVATED)
 			state.record_seen(&"pidgey", &"route_1")
+		if scenario == "trainer_badge":
+			state.flags.set_flag(&"badge_boulder")  # capture seulement : aucun badge avant le J10
 	var unlocks := MenuUnlocks.new(state.flags, state.party)
+	var badges := BadgeLibrary.new()
+	badges.load_file()
 	_menu.open_animated()
-	_menu.show_trainer(TrainerSummary.build(state, data, zones, moments, unlocks))
+	_menu.show_trainer(TrainerSummary.build(state, data, zones, moments, unlocks, badges))
 	state.free()
 
 

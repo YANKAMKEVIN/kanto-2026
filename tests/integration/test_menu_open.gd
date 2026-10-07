@@ -200,6 +200,21 @@ func test_open_pauses_the_world_but_not_the_play_time() -> void:
 	Input.action_release(&"move_up")
 
 
+## Retour MM.1 (S24) : rien du HUD ne doit transparaître sous le flou du menu (titre de zone
+## derrière le ×, légende du monde).
+func test_open_hides_the_zone_title_and_the_caption() -> void:
+	await _start_boot(&"route_1", &"from_pallet_w", Vector2i.UP)
+	var hud := _boot.get_hud()
+	hud.show_zone_title("Route 1", "Kanto")
+	hud.show_caption("TEST")
+	assert_true(hud.get_zone_title().visible)
+	assert_true(_menu.open())
+	assert_false(hud.get_zone_title().visible, "titre de zone retiré net")
+	assert_false(hud.get_zone_title().is_showing())
+	assert_false(hud.get_caption().is_showing(), "légende retirée")
+	_menu.close()
+
+
 func test_open_is_refused_twice_and_is_stable_stays_true() -> void:
 	await _start_free()
 	assert_true(_menu.open())
