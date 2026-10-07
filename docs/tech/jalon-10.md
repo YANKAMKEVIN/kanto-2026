@@ -447,6 +447,8 @@ Branche d'intégration **`jalon-10`** depuis `main` (dans une copie dédiée), u
 
 ## 5. Questions pour Kevin
 
+> **Décisions de Kevin (2026-10-08) : Q-1 à Q-5, toutes les recommandations retenues** (lancement des tâches « maintenant » ; drapeau `route_3_guard_cleared` ; Route 2 nord = 2e carte de la zone `route_2` ; grille gardée, durée mesurée sur S24 au T12 ; lot de textes système rédigé au T7). Choix de présentation du kit (tenues de Pierre, du Montagnard, du guide, de Liam) : retenus, à confirmer sur la planche de contact du T2.
+
 Vraies questions (une valeur par défaut permet de continuer) :
 
 - **Q-1 — Lancement.** Valider ce plan et lancer **tout de suite** les tâches « maintenant » (T1 kit d'assets puis T2 Codex, T3 capacités choisies, T4 Grand moment « badge », T5 carte du Champion, T6 écran Dresseur, T7 lot de textes), alors que le dossier 12 disait « pas d'implémentation avant la fusion du J9 » ? *Recommandation : oui ; rien de ce qui part maintenant ne touche le J9.*

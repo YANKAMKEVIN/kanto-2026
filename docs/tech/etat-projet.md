@@ -4,6 +4,7 @@ Mis à jour : 2026-10-07 (**J10 T1 : kit d'assets série 12, grilles corrigées,
 
 
 ## Dossier 12 — Argenta et l'Arène de Pierre (J10) : écrit (2026-10-07, branche `docs/dossier-12-argenta`)
+- **2026-10-08 : Q-1 à Q-5 du plan `jalon-10.md` tranchées par Kevin (recommandations retenues)** ; T1 (kit série 12, grilles corrigées) fusionné dans `jalon-10` (`.claude/worktrees/integ-j10`) ; **T2 (génération Codex de la série 12) lancée**, puis planche de contact → validation 10.0 ; T3, T4, T5, T7 lancés en parallèle.
 - V1 de ChatGPT reçue (prompt `docs/design/prompts/chatgpt-dossier-12-argenta.md`), passe d'alignement de Claude, **20 arbitrages tranchés par Kevin (toutes les recommandations retenues)** → `docs/design/dossier-12-argenta.md`.
 - Points clés : Pierre fidèle à Rouge/Bleu (Racaillou 12, Onix 14, une seule attaque Roche, IA `smart`) ; réponse de Salamèche = Papilusion + Flammèche (Férosinge n'a Poing-Karaté qu'au Nv. 15) ; badge sans bonus caché, ouvre la Route 3 (garde) ; CT de Pierre au J11 ; grand moment « badge » générique avec souvenir de l'équipe (dans les détails du moment, sans changement de format) ; roadmap inchangée (Route 3 au J12).
 - **Textes validés par Kevin (2026-10-07)** : dossier entièrement verrouillé.

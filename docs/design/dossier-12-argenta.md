@@ -46,7 +46,7 @@
 
 ## 3. Route 2 nord
 Un **sas court** entre la forêt et Argenta, pas une deuxième Route 2.
-- **Taille** : ≈ 30 × 24 cases. Traversée directe ≈ 25–35 s ; en explorant ≈ 1 min 30 (indicatif, mesuré sur S24).
+- **Taille** : ≈ 30 × 24 cases. **Durée : mesurée sur S24** (décision de Kevin du 2026-10-08, plan du J10 Q-4 : la grille donne 20 pas de la porte du poste à Argenta ; le sas court est voulu, la forêt est la longue partie).
 - **Raccords** : sud = porte nord du **poste nord** de la forêt (aujourd'hui « ROUTE 2 NORD — À venir », J9) ; nord = entrée sud d'Argenta.
 
 ```text
@@ -245,7 +245,7 @@ Une seule enveloppe peinte, deux mobiliers (arbitrage 14). Aucune récompense : 
 - **Données** : Racaillou, Onix, Sabelette (espèces, apprentissages, Pokédex), Jet-Pierres et Boul'Armure (Armure arrive au J9), table de la Route 2 nord, Campeur Liam, Pierre, stock de la Boutique d'Argenta, zones (`pewter_city` existe dans `zones.json` sans description).
 - **Art** : Racaillou dans le monde (avec le tailleur) ; Racaillou, Onix, Sabelette en combat (artwork officiel en face) ; Pierre, tailleur, habitants ; intérieurs **Musée (2 salles), Arène, maison** ; Argenta et Route 2 nord (méthode du J8 : vue générale peinte → validation → kit → carte).
 - **Moteur** : capacités choisies à la main par Pokémon de Dresseur ; répliques de défaite et de reprise pour Pierre (sur le modèle du rival) ; carte de présentation du Champion ; inscription « BADGE ROCHE » ; moment « badge » ; garde qui se décale.
-- **Valeur par défaut** (règle 4) : la Route 2 nord est une zone à part, titre « Route 2 », sous-titre « Forêt de Jade — Argenta » (le sous-titre de la Route 2 sud, « Jadielle — Forêt de Jade », ne convient pas au nord).
+- **Décision de Kevin (2026-10-08, plan du J10 Q-3)** : la Route 2 nord est la **deuxième carte de la zone `route_2`** (une seule « Route 2 » dans la Carte et le Pokédex) ; le titre d'arrivée garde le sous-titre « Forêt de Jade — Argenta », porté par la carte.
 
 ## Textes verrouillés
 Proposés par ChatGPT (V1), retouchés par Claude selon les arbitrages 6 à 9 et 15 (repérés **[retouche]**), **validés par Kevin le 2026-10-07**. Bulles de 2 lignes ; raccourcissables à la QA.
