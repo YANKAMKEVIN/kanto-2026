@@ -35,6 +35,11 @@ extends RefCounted
 ## Jalon 7 (changement de Pokémon) :
 ## - WITHDRAWN : le message (« Reviens, Salamèche ! »), puis WITHDRAW ; le SENT_OUT qui suit
 ##   joue « En avant, … ! » et l'entrée du nouveau.
+## Jalon 9 (poison) :
+## - STATUS_INFLICTED : le message, puis STATUS_TAG (l'étiquette « PSN » se pose) ;
+## - STATUS_DAMAGED : POISON (voile violet et barre de PV ensemble), puis le message ;
+## - STATUS_CURED : STATUS_TAG (l'étiquette part), puis le message ;
+## - STATUS_UNCHANGED : le message seulement.
 ## Les phrases viennent de [BattleText] : rien n'est écrit ici.
 
 
@@ -92,6 +97,15 @@ static func beats(event: BattleEvent, texts: BattleText, data: PokemonData,
 			result.append_array(messages.slice(0, 1))
 			result.append(BattleBeat.new(BattleBeat.Kind.HEAL, event))
 			result.append_array(messages.slice(1))
+		BattleEvent.Kind.STATUS_INFLICTED:
+			result.append_array(messages)
+			result.append(BattleBeat.new(BattleBeat.Kind.STATUS_TAG, event))
+		BattleEvent.Kind.STATUS_DAMAGED:
+			result.append(BattleBeat.new(BattleBeat.Kind.POISON, event))
+			result.append_array(messages)
+		BattleEvent.Kind.STATUS_CURED:
+			result.append(BattleBeat.new(BattleBeat.Kind.STATUS_TAG, event))
+			result.append_array(messages)
 		BattleEvent.Kind.WITHDRAWN:
 			result.append_array(messages)
 			result.append(BattleBeat.new(BattleBeat.Kind.WITHDRAW, event))

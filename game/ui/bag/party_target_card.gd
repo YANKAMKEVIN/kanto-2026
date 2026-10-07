@@ -57,6 +57,7 @@ func set_target(target: PartyTargetView) -> void:
 	_name.text = member.display_name
 	_level.text = "%s %d" % [BattleInfoCard.LEVEL_TAG, member.level]
 	_status.text = member.status_text
+	_status.add_theme_color_override(&"font_color", StatusView.color(member.status_text))
 	_status.visible = not member.status_text.is_empty()
 	_hp_bar.set_hp(member.hp, member.max_hp)
 	_hp_text.text = BattleInfoCard.HP_FORMAT % [member.hp, member.max_hp]

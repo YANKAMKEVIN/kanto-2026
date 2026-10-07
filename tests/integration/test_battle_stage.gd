@@ -425,6 +425,62 @@ func test_throw_takes_a_second_or_so_at_real_speed_and_shows_the_thrower() -> vo
 	_stage.reset()
 
 
+## Voile du poison (jalon 9, T5) : le sprite se fond vers le violet puis revient, STATUS_VEIL_DURATION
+## (0,35 s) au total en temps simulé, sans déplacer le Pokémon.
+func test_poison_veil_tints_violet_for_a_third_of_a_second_then_clears() -> void:
+	await _enter()
+	_stage.speed_scale = 1.0
+	var sprite := _stage.get_sprite(FOE_SIDE)
+	var feet := sprite.position
+	var done: Array[bool] = [false]
+	var clock := TweenClock.new(get_tree())
+	var runner := func() -> void:
+		await _stage.play_poison(FOE_SIDE)
+		done[0] = true
+	runner.call()
+	var half := roundi(UiTokens.STATUS_VEIL_DURATION / 2.0 / TweenClock.STEP)
+	for i: int in half:
+		clock.step()
+	assert_false(done[0], "pas fini à mi-course")
+	var material := sprite.material as ShaderMaterial
+	assert_not_null(material, "le voile est posé sur le sprite")
+	assert_almost_eq(float(material.get_shader_parameter(&"amount")),
+		UiTokens.STATUS_VEIL_AMOUNT, 0.02, "voile au pic à mi-course")
+	assert_eq(material.get_shader_parameter(&"tint"), UiTokens.STATUS_VEIL)
+	assert_gt(UiTokens.STATUS_VEIL.b, UiTokens.STATUS_VEIL.g, "violet : bleu et rouge > vert")
+	assert_gt(UiTokens.STATUS_VEIL.r, UiTokens.STATUS_VEIL.g)
+	assert_eq(sprite.position, feet, "le voile ne déplace pas le Pokémon")
+	var steps := half
+	steps += clock.run_until(func() -> bool: return done[0], 1.0)
+	clock.release()
+	var elapsed := steps * TweenClock.STEP
+	assert_true(done[0])
+	assert_gte(elapsed, UiTokens.STATUS_VEIL_DURATION - TweenClock.STEP, "pas avant 0,35 s")
+	assert_lte(elapsed, UiTokens.STATUS_VEIL_DURATION + 2.0 * TweenClock.STEP,
+		"au plus un pas de plus")
+	assert_eq(sprite.modulate, Color.WHITE, "la teinte du sprite n'est pas touchée")
+	assert_null(sprite.material, "voile retiré")
+	_stage.speed_scale = 0.0
+
+
+func test_poison_veil_is_softer_when_flashes_are_reduced() -> void:
+	await _enter()
+	_stage.reduce_flashes = true
+	_stage.speed_scale = 1.0
+	var sprite := _stage.get_sprite(PLAYER_SIDE)
+	var clock := TweenClock.new(get_tree())
+	var runner := func() -> void: await _stage.play_poison(PLAYER_SIDE)
+	runner.call()
+	for i: int in roundi(UiTokens.STATUS_VEIL_DURATION / 2.0 / TweenClock.STEP):
+		clock.step()
+	assert_almost_eq(float((sprite.material as ShaderMaterial).get_shader_parameter(&"amount")),
+		UiTokens.STATUS_VEIL_AMOUNT_REDUCED, 0.02)
+	assert_lt(UiTokens.STATUS_VEIL_AMOUNT_REDUCED, UiTokens.STATUS_VEIL_AMOUNT)
+	clock.run_until(func() -> bool: return false, 0.5)
+	clock.release()
+	_stage.speed_scale = 0.0
+
+
 # --- Réglages (jalon-06.md §6.12, T29) -------------------------------------------------------
 
 func test_backdrop_blur_can_be_cut_and_restored() -> void:

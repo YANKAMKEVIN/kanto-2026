@@ -244,3 +244,13 @@ func test_storage_button_only_inside_a_center() -> void:
 	assert_false(_build().storage_available, "dans la ville : absent")
 	where["map"] = &"v_center"
 	assert_true(_build().storage_available, "au Centre : bouton STOCKAGE")
+
+
+func test_poisoned_status_reads_psn_and_ko_wins() -> void:
+	var pokemon := _add(&"pidgey", 3)
+	pokemon.status = StatusRules.POISON
+	var view := _build()
+	assert_eq(view.members[0].status_text, "PSN")
+	assert_eq(view.sheet_at(0).member.status_text, "PSN", "la fiche lit le même statut")
+	pokemon.hp = 0
+	assert_eq(_build().members[0].status_text, "K.O.", "K.O. d'abord")

@@ -347,3 +347,49 @@ func _assert_touchable(rect: Rect2, width: float, what: String) -> void:
 	var safe := Rect2(Vector2.ONE * UiTokens.SAFE_MARGIN,
 		Vector2(width, SCREEN_HEIGHT) - Vector2.ONE * UiTokens.SAFE_MARGIN * 2.0)
 	assert_true(safe.encloses(rect), "%s dans SAFE_MARGIN à %d (%s)" % [what, width, rect])
+
+
+# --- Étiquette de statut (jalon 9, T5) -------------------------------------------------------
+
+func test_card_shows_psn_in_the_poison_color_and_hides_it_without_status() -> void:
+	var card := _card()
+	await wait_process_frames(2)
+	card.set_view(_foe_view())
+	assert_false(card.get_status_badge().visible, "aucune étiquette sans statut")
+	assert_eq(card.get_status_text(), "")
+	assert_eq(card.get_status(), StatusRules.NONE)
+	card.set_status(StatusRules.POISON)
+	assert_true(card.get_status_badge().visible)
+	assert_eq(card.get_status_text(), "PSN")
+	assert_eq(card.get_status(), StatusRules.POISON)
+	assert_eq(card.get_status_badge().get_color(), UiTokens.TYPE_COLORS[&"poison"],
+		"couleur du type Poison")
+	card.set_status(StatusRules.NONE)
+	assert_false(card.get_status_badge().visible, "soigné : l'étiquette part")
+
+
+func test_card_view_with_a_status_puts_the_tag_on_entry_and_it_fits_the_card() -> void:
+	var card := _card()
+	await wait_process_frames(2)
+	var view := _own_view()
+	view.status = StatusRules.POISON
+	card.set_view(view)
+	await wait_process_frames(2)
+	assert_eq(card.get_status_text(), "PSN", "dès la pose de la carte")
+	var badge := card.get_status_badge()
+	var body := card.get_node(^"%Body") as Control
+	assert_true(body.get_global_rect().encloses(badge.get_global_rect()),
+		"l'étiquette reste dans la carte")
+	assert_eq(body.size.x, float(UiTokens.BATTLE_CARD_WIDTH), "la carte ne s'élargit pas")
+	# Un nouveau Pokémon sans statut efface l'étiquette.
+	card.set_view(_foe_view())
+	assert_eq(card.get_status_text(), "")
+
+
+func test_poison_hit_vibrates_softly() -> void:
+	var card := _card()
+	var played: Array[int] = []
+	card.haptic_played.connect(func(ms: int) -> void: played.append(ms))
+	card.play_poison()
+	assert_eq(played, [UiTokens.HAPTIC_STATUS_MS] as Array[int])
+	assert_lt(UiTokens.HAPTIC_STATUS_MS, UiTokens.HAPTIC_HIT_MS, "plus doux qu'un coup")

@@ -82,6 +82,8 @@ const HIT_ALPHA: float = 0.25
 const CRIT_FLASH: float = 0.35
 const CRIT_FLASH_DURATION: float = 0.16
 const CRIT_CAMERA_SHAKE: float = 4.0
+## Voile du poison ([method play_poison]).
+const STATUS_VEIL_SHADER: Shader = preload("res://game/battle/status_veil.gdshader")
 const STAT_UP := Color(1.35, 1.25, 0.85, 1.0)
 const STAT_DOWN := Color(0.7, 0.8, 1.35, 1.0)
 const STAT_PULSE: float = 0.16
@@ -459,6 +461,33 @@ func play_hit(side: BattleEvent.SideId, critical: bool) -> void:
 	_flash.color = Color(1, 1, 1, 0)
 	if _camera != null:
 		_camera.offset = _cam_offset
+
+
+## Coroutine : le Pokémon de [param side] est rongé par le poison (jalon 9) : voile violet
+## (sa couleur se fond vers [constant UiTokens.STATUS_VEIL] puis revient, 
+## [constant UiTokens.STATUS_VEIL_DURATION] au total, moitié à l'aller), sans déplacement ni
+## clignotement. [member reduce_flashes] : voile plus léger.
+func play_poison(side: BattleEvent.SideId) -> void:
+	if not _active:
+		return
+	var sprite := _sprites[side]
+	var half := UiTokens.STATUS_VEIL_DURATION / 2.0
+	var peak := UiTokens.STATUS_VEIL_AMOUNT_REDUCED if reduce_flashes \
+		else UiTokens.STATUS_VEIL_AMOUNT
+	var material := ShaderMaterial.new()
+	material.shader = STATUS_VEIL_SHADER
+	material.set_shader_parameter(&"tint", UiTokens.STATUS_VEIL)
+	material.set_shader_parameter(&"amount", 0.0)
+	sprite.material = material
+	var tween := _new_tween()
+	tween.tween_property(material, ^"shader_parameter/amount", peak, half) \
+		.set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
+	tween.tween_property(material, ^"shader_parameter/amount", 0.0, half) \
+		.set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN)
+	await _play(tween)
+	if is_instance_valid(sprite) and sprite.material == material:
+		sprite.material = null
+	_rest(side)
 
 
 ## Coroutine : effet de statistique sur le Pokémon de [param side] (teinte chaude et petit

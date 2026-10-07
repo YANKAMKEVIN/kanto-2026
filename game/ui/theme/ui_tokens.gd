@@ -1290,3 +1290,20 @@ const STORAGE_REFUSAL_BG := Color(0.30, 0.08, 0.08, 0.94)
 ## Cadre de la colonne visée par un glisser.
 const STORAGE_DROP_BORDER := 4
 const HAPTIC_STORAGE_MOVE_MS := 20
+
+# --- Poison (jalon 9, T5 ; dossier 08 §2 : le statut est toujours un texte) -------------------
+## Étiquette « PSN » : pastille de la couleur du type Poison (TypeBadge, sans icône) sur la carte
+## de PV du combat.
+const STATUS_POISON := Color("#A33EA1")
+## Même teinte éclaircie pour le texte « PSN » posé sur un panneau sombre (listes d'équipe, cibles
+## du Sac) : la pastille pleine ne tient pas dans ces lignes, et #A33EA1 seul y est trop sombre.
+const STATUS_POISON_TEXT := Color("#E08EDD")
+## Dégât de poison : voile violet sur le Pokémon (shader du sprite : la couleur se fond vers
+## STATUS_VEIL, jusqu'à STATUS_VEIL_AMOUNT au pic, puis revient), durée totale (s) à
+## speed_scale = 1 ; version douce quand « Réduire les animations » est actif.
+const STATUS_VEIL := Color("#B04CC8")
+const STATUS_VEIL_AMOUNT := 0.6
+const STATUS_VEIL_AMOUNT_REDUCED := 0.3
+const STATUS_VEIL_DURATION := 0.35
+## Vibration du dégât de poison (ms) : plus douce qu'un coup reçu (HAPTIC_HIT_MS).
+const HAPTIC_STATUS_MS := 20

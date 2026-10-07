@@ -17,6 +17,8 @@ var hp: int = 1
 var max_hp: int = 1
 ## PV chiffrés sous la barre (« 19 / 19 ») : côté joueur seulement (dossier 05 §5).
 var show_hp_numbers: bool = false
+## Statut durable du Pokémon (&"" = aucun) : la carte pose l'étiquette « PSN » ([StatusView]).
+var status: StringName = StatusRules.NONE
 
 
 func _init(

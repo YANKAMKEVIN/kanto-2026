@@ -169,3 +169,34 @@ func test_offered_move_has_full_pp_and_unknown_move_is_refused() -> void:
 	assert_eq(view.category, BattleMoveView.Category.STATUS)
 	assert_null(BattleViews.offered_move(&"nope", _data))
 	assert_push_error("capacité inconnue")
+
+
+func test_card_carries_the_status_of_the_pokemon_sent_out() -> void:
+	var event := BattleEvent.new(BattleEvent.Kind.SENT_OUT, BattleEvent.SideId.PLAYER)
+	event.pokemon_name = "Salamèche"
+	event.level = 5
+	event.hp = 18
+	event.max_hp = 19
+	assert_eq(BattleViews.card(event).status, StatusRules.NONE)
+	event.status = StatusRules.POISON
+	assert_eq(BattleViews.card(event).status, StatusRules.POISON, "« PSN » dès l'entrée")
+
+
+func test_party_panel_reads_psn_standing_and_ko_fainted() -> void:
+	var rng := GameRng.new(3)
+	var mine := Party.new()
+	for species: StringName in [&"charmander", &"pidgey", &"rattata"]:
+		mine.add(PokemonFactory.create(_data, species, 5, rng))
+	mine.get_at(0).status = StatusRules.POISON
+	mine.get_at(2).hp = 0
+	var foes := Party.new()
+	foes.add(PokemonFactory.create(_data, &"rattata", 3, rng))
+	var battle := Battle.new(BattleSide.new(mine, true), BattleSide.new(foes, false), _data,
+		rng, BattleRules.for_wild())
+	battle.start()
+	var texts := BattleText.new()
+	texts.load_file()
+	var views := BattleViews.party(battle, _data, texts)
+	assert_eq(views[0].status_text, "PSN", "l'actif empoisonné")
+	assert_eq(views[1].status_text, "")
+	assert_eq(views[2].status_text, "K.O.")

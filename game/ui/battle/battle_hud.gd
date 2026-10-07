@@ -138,6 +138,18 @@ func play_hit(side: BattleHud.Side, critical: bool) -> void:
 	get_card(side).play_hit(critical)
 
 
+## Dégât de poison reçu par [param side] : vibration douce HAPTIC_STATUS_MS (le voile et la
+## barre sont joués par celui qui pilote).
+func play_poison(side: BattleHud.Side) -> void:
+	get_card(side).play_poison()
+
+
+## Pose (ou retire, avec [constant StatusRules.NONE]) l'étiquette « PSN » de la carte de [param
+## side].
+func set_status(side: BattleHud.Side, status: StringName) -> void:
+	get_card(side).set_status(status)
+
+
 ## [param count] Pokémon dans l'équipe du joueur (pastilles pleines, le reste gris).
 func set_party(count: int) -> void:
 	_pips.set_party(count)

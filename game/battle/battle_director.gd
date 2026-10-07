@@ -542,6 +542,10 @@ func _play_beat(beat: BattleBeat) -> void:
 		BattleBeat.Kind.DRAIN:
 			if is_instance_valid(_hud):
 				await _play_drain(beat.event)
+		BattleBeat.Kind.POISON:
+			await _play_poison(beat.event)
+		BattleBeat.Kind.STATUS_TAG:
+			_play_status_tag(beat.event)
 		BattleBeat.Kind.FORGET:
 			await _offer_forget(beat.event)
 		BattleBeat.Kind.THROW:
@@ -770,6 +774,39 @@ func _play_drain(event: BattleEvent) -> void:
 	await _hud.animate_hp(victim, event.hp, event.max_hp, false)
 	while other_bar.is_animating():
 		await get_tree().process_frame
+
+
+## Coroutine : dégât de poison de fin de tour, le voile violet sur le Pokémon et la descente de la
+## barre de PV en même temps ; rend la main quand les deux sont finis (au moins le voile).
+func _play_poison(event: BattleEvent) -> void:
+	var side: BattleHud.Side = _HUD_SIDE[event.side]
+	var veil: Array[bool] = [false]
+	_run_veil(event.side, veil)
+	if is_instance_valid(_hud):
+		_hud.play_poison(side)
+		await _hud.animate_hp(side, event.hp, event.max_hp, false)
+	while not veil[0]:
+		await get_tree().process_frame
+
+
+## Coroutine lancée sans attente par [method _play_poison] : le voile, puis [param done] vrai.
+func _run_veil(side: BattleEvent.SideId, done: Array[bool]) -> void:
+	if is_instance_valid(_stage):
+		await _stage.play_poison(side)
+	done[0] = true
+
+
+## L'étiquette « PSN » se pose (STATUS_INFLICTED) ou part (STATUS_CURED) sur la carte du Pokémon
+## de [param event] ; l'Antidote peut soigner un Pokémon de l'équipe qui n'est pas en jeu : alors
+## aucune carte ne change.
+func _play_status_tag(event: BattleEvent) -> void:
+	if not is_instance_valid(_hud):
+		return
+	var side: BattleHud.Side = _HUD_SIDE[event.side]
+	if event.kind == BattleEvent.Kind.STATUS_INFLICTED:
+		_hud.set_status(side, event.status)
+	elif event.side == BattleEvent.SideId.FOE or _is_in_play(event):
+		_hud.set_status(side, StatusRules.NONE)
 
 
 ## Espèce du Pokémon envoyé par [param side] d'après le SENT_OUT de [param events] (&"" si le

@@ -46,6 +46,7 @@ func setup(view: TeamMemberView) -> void:
 	_gender.modulate = BattleInfoCard.GENDER_COLORS.get(view.gender, UiTokens.TEXT)
 	_gender.visible = _gender.texture != null
 	_status.text = view.status_text
+	_status.add_theme_color_override(&"font_color", StatusView.color(view.status_text))
 	_status.visible = not view.status_text.is_empty()
 	_level.text = "%s %d" % [BattleInfoCard.LEVEL_TAG, view.level]
 	_hp_bar.set_hp(view.hp, view.max_hp)

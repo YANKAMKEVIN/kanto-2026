@@ -279,3 +279,42 @@ func test_item_used_is_a_message_the_heal_then_a_message() -> void:
 		"Salamèche récupère 13 PV."] as Array[String])
 	assert_eq(beats[1].event.party_index, 1, "le directeur sait quel Pokémon remonte")
 	assert_eq(beats[1].side, BattleEvent.SideId.PLAYER)
+
+
+# --- Poison (jalon 9, T5) ------------------------------------------------------------------
+
+func test_status_inflicted_says_it_then_puts_the_tag() -> void:
+	var event := _event(BattleEvent.Kind.STATUS_INFLICTED, BattleEvent.SideId.FOE, "Rattata")
+	event.status = StatusRules.POISON
+	var beats := BattlePlayback.beats(event, _texts, _data)
+	assert_eq(_kinds(beats), [BattleBeat.Kind.MESSAGE, BattleBeat.Kind.STATUS_TAG]
+		as Array[BattleBeat.Kind])
+	assert_eq(beats[1].side, BattleEvent.SideId.FOE)
+	assert_same(beats[1].event, event)
+
+
+func test_status_damaged_is_a_beat_of_its_own_before_the_message() -> void:
+	var event := _event(BattleEvent.Kind.STATUS_DAMAGED, BattleEvent.SideId.PLAYER, "Salamèche")
+	event.status = StatusRules.POISON
+	event.amount = 2
+	event.hp = 18
+	var beats := BattlePlayback.beats(event, _texts, _data)
+	assert_eq(_kinds(beats), [BattleBeat.Kind.POISON, BattleBeat.Kind.MESSAGE]
+		as Array[BattleBeat.Kind], "voile et barre d'abord, puis la phrase")
+	assert_eq(beats[0].event.hp, 18, "la barre ira jusqu'à event.hp")
+	assert_eq(beats[0].side, BattleEvent.SideId.PLAYER)
+
+
+func test_status_cured_removes_the_tag_then_says_it() -> void:
+	var event := _event(BattleEvent.Kind.STATUS_CURED, BattleEvent.SideId.PLAYER, "Salamèche")
+	event.status = StatusRules.POISON
+	var beats := BattlePlayback.beats(event, _texts, _data)
+	assert_eq(_kinds(beats), [BattleBeat.Kind.STATUS_TAG, BattleBeat.Kind.MESSAGE]
+		as Array[BattleBeat.Kind])
+
+
+func test_status_unchanged_is_a_message_only() -> void:
+	var event := _event(BattleEvent.Kind.STATUS_UNCHANGED, BattleEvent.SideId.FOE, "Rattata")
+	event.status = StatusRules.POISON
+	var beats := BattlePlayback.beats(event, _texts, _data)
+	assert_eq(_kinds(beats), [BattleBeat.Kind.MESSAGE] as Array[BattleBeat.Kind])

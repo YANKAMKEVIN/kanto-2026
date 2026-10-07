@@ -3,6 +3,7 @@
 [ext_resource type="Script" path="res://game/ui/battle/battle_info_card.gd" id="1_card"]
 [ext_resource type="PackedScene" path="res://game/ui/battle/hp_bar.tscn" id="2_bar"]
 [ext_resource type="Script" path="res://game/ui/battle/exp_bar.gd" id="3_exp"]
+[ext_resource type="PackedScene" path="res://game/ui/components/type_badge.tscn" id="4_badge"]
 
 [node name="BattleInfoCard" type="Control"]
 mouse_filter = 2
@@ -39,6 +40,12 @@ size_flags_vertical = 4
 mouse_filter = 2
 expand_mode = 1
 stretch_mode = 5
+
+[node name="StatusBadge" parent="Body/Rows/Header" instance=ExtResource("4_badge")]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+size_flags_vertical = 4
 
 [node name="Spacer" type="Control" parent="Body/Rows/Header"]
 layout_mode = 2

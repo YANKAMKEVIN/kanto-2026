@@ -62,6 +62,7 @@ func show_sheet(sheet: PokemonSheetView, animate: bool) -> void:
 	_favorite.visible = member.favorite and _with_xp
 	_level.text = "%s %d" % [BattleInfoCard.LEVEL_TAG, member.level]
 	_status.text = member.status_text
+	_status.add_theme_color_override(&"font_color", StatusView.color(member.status_text))
 	_status.visible = not member.status_text.is_empty()
 	for old: Node in _types.get_children():
 		_types.remove_child(old)

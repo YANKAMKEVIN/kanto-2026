@@ -8,6 +8,7 @@ extends GutTest
 ## XP ; PNJ Pokémon réaffichés, caméra rendue, HUD cachée, joueur libre ; refus si un combat
 ## tourne ou si le dresseur est inconnu.
 
+const TweenClock := preload("res://tests/helpers/tween_clock.gd")
 const FakeChoiceCards := preload("res://tests/helpers/fake_choice_cards.gd")
 const PLAYER_SCENE := preload("res://game/player/player.tscn")
 const STAGE_SCENE := preload("res://game/battle/battle_stage.tscn")
@@ -1690,3 +1691,131 @@ func test_progress_is_shown_after_a_win_or_a_capture_only() -> void:
 	assert_true(BattleDirector.shows_progress(Battle.Outcome.CAUGHT))
 	assert_false(BattleDirector.shows_progress(Battle.Outcome.LOSS))
 	assert_false(BattleDirector.shows_progress(Battle.Outcome.FLED))
+
+
+# --- Poison (jalon 9, T5) --------------------------------------------------------------------
+
+func _has_poison_turns(events: Array, side: BattleEvent.SideId) -> bool:
+	var inflicted := events.any(func(e: BattleEvent) -> bool:
+		return e.kind == BattleEvent.Kind.STATUS_INFLICTED and e.side == side)
+	var damaged := events.any(func(e: BattleEvent) -> bool:
+		return e.kind == BattleEvent.Kind.STATUS_DAMAGED and e.side == side)
+	return inflicted and damaged
+
+
+## Poudre Toxik jouée en combat : « PSN » se pose sur la carte adverse avec la phrase, puis
+## chaque dégât de poison amène la barre à l'événement ; le journal garde son ordre.
+func test_poison_powder_puts_psn_on_the_foe_card_and_the_bar_follows_the_damage() -> void:
+	var moves: Array[StringName] = [&"poison_powder", &"tackle"]
+	var party_fn := func() -> Party: return _xp_party(&"charmander", 8, 0, moves)
+	var seed := _xp_seed(party_fn, &"rattata", 6, [0, 1] as Array[int],
+		func(events: Array) -> bool: return _has_poison_turns(events, BattleEvent.SideId.FOE))
+	assert_gt(seed, -1, "un combat où le poison ronge l'adversaire")
+	if seed < 0:
+		return
+	var request := _xp_request(party_fn.call(), &"rattata", 6, seed)
+	var tags: Array[String] = []
+	var bars: Array[bool] = []
+	var order: Array[BattleEvent.Kind] = []
+	_director.event_played.connect(func(e: BattleEvent) -> void:
+		var card := _hud.get_card(BattleHud.Side.FOE)
+		if e.kind == BattleEvent.Kind.STATUS_INFLICTED:
+			tags.append(card.get_status_text())
+			order.append(e.kind)
+		elif e.kind == BattleEvent.Kind.STATUS_DAMAGED:
+			bars.append(card.get_hp_bar().get_target_hp() == e.hp
+				and card.get_hp_bar().get_shown_hp() == e.hp)
+			tags.append(card.get_status_text())
+			order.append(e.kind))
+	var played := await _play_with_offers(request, [0, 1] as Array[int])
+	assert_eq(played[0], Battle.Outcome.WIN)
+	assert_gt(order.size(), 1)
+	assert_eq(order[0], BattleEvent.Kind.STATUS_INFLICTED, "d'abord l'empoisonnement")
+	assert_eq(tags[0], "PSN", "l'étiquette est posée avec l'événement")
+	assert_gt(bars.size(), 0, "au moins un dégât de poison joué")
+	assert_false(bars.has(false), "la barre arrive à event.hp à chaque dégât de poison")
+	assert_false(tags.has(""), "l'étiquette reste jusqu'au K.O.")
+	assert_push_error_count(0)
+
+
+## Le poison reçu par le Pokémon du joueur : sa carte porte « PSN » dès l'empoisonnement
+## (Dard-Venin d'Aspicot), la barre suit les dégâts de fin de tour.
+func test_the_players_card_takes_psn_and_the_bar_follows_the_poison() -> void:
+	var moves: Array[StringName] = [&"scratch", &"ember"]
+	var party_fn := func() -> Party: return _xp_party(&"charmander", 12, 0, moves)
+	var seed := _xp_seed(party_fn, &"weedle", 3, [0] as Array[int],
+		func(events: Array) -> bool: return _has_poison_turns(events, BattleEvent.SideId.PLAYER))
+	assert_gt(seed, -1, "un combat où Aspicot empoisonne le joueur")
+	if seed < 0:
+		return
+	var request := _xp_request(party_fn.call(), &"weedle", 3, seed)
+	var tags: Array[String] = []
+	var bars: Array[bool] = []
+	_director.event_played.connect(func(e: BattleEvent) -> void:
+		var card := _hud.get_card(BattleHud.Side.PLAYER)
+		if e.kind == BattleEvent.Kind.STATUS_INFLICTED and e.side == BattleEvent.SideId.PLAYER:
+			tags.append(card.get_status_text())
+		elif e.kind == BattleEvent.Kind.STATUS_DAMAGED and e.side == BattleEvent.SideId.PLAYER:
+			bars.append(card.get_hp_bar().get_shown_hp() == e.hp
+				and card.get_status_text() == "PSN"))
+	var played := await _play_with_offers(request, [0] as Array[int])
+	assert_eq(played[0], Battle.Outcome.WIN)
+	assert_eq(tags, ["PSN"] as Array[String])
+	assert_gt(bars.size(), 0)
+	assert_false(bars.has(false))
+	assert_push_error_count(0)
+
+
+## Durée du temps POISON (temps simulé) : le voile dure 0,35 s ; la barre descend en HP_TWEEN
+## (0,4 s) en même temps ; la main n'est rendue qu'à la fin des deux, puis le message.
+func test_the_poison_beat_waits_for_the_veil_and_the_bar_together() -> void:
+	var mine := _map.get_npc(MINE_ID)
+	var foe := _map.get_npc(FOE_ID)
+	await _stage.enter(_player.get_camera(), mine, foe, &"charmander", &"rattata")
+	_stage.speed_scale = 1.0
+	_hud.speed_scale = 1.0
+	_director.speed_scale = 1.0
+	var set_up := BattleEvent.new(BattleEvent.Kind.SENT_OUT, BattleEvent.SideId.FOE)
+	set_up.pokemon_name = "Rattata"
+	set_up.level = 5
+	set_up.hp = 20
+	set_up.max_hp = 20
+	set_up.status = StatusRules.POISON
+	_hud.get_card(BattleHud.Side.FOE).set_view(BattleViews.card(set_up))
+	await wait_process_frames(2)
+	var event := BattleEvent.new(BattleEvent.Kind.STATUS_DAMAGED, BattleEvent.SideId.FOE)
+	event.status = StatusRules.POISON
+	event.amount = 2
+	event.hp = 18
+	event.max_hp = 20
+	var bar := _hud.get_card(BattleHud.Side.FOE).get_hp_bar()
+	var sprite := _stage.get_sprite(BattleEvent.SideId.FOE)
+	var done: Array[bool] = [false]
+	var clock := TweenClock.new(get_tree())
+	var runner := func() -> void:
+		await _director._play_beat(BattleBeat.new(BattleBeat.Kind.POISON, event))
+		done[0] = true
+	runner.call()
+	# À 0,2 s (pic du voile passé, barre en route) : rien n'est fini.
+	for i: int in 12:
+		clock.step()
+		await get_tree().process_frame
+	assert_false(done[0], "pas fini à 0,2 s")
+	assert_true(bar.is_animating(), "la barre descend en même temps")
+	assert_not_null(sprite.material, "le voile est posé")
+	var steps := 12
+	while not done[0] and steps * TweenClock.STEP < 2.0:
+		clock.step()
+		await get_tree().process_frame
+		steps += 1
+	clock.release()
+	var elapsed := steps * TweenClock.STEP
+	assert_true(done[0])
+	assert_gte(elapsed, UiTokens.HP_TWEEN - TweenClock.STEP, "pas avant la fin de la barre")
+	assert_lte(elapsed, UiTokens.HP_TWEEN + 4.0 * TweenClock.STEP, "ni bien après")
+	assert_eq(bar.get_shown_hp(), 18)
+	assert_null(sprite.material, "voile retiré")
+	_stage.speed_scale = 0.0
+	_hud.speed_scale = 0.0
+	_director.speed_scale = 0.0
+	await _stage.exit()

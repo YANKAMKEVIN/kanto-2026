@@ -29,6 +29,7 @@ const GENDER_COLORS: Dictionary[BattleCardView.Gender, Color] = {
 
 var _gender: BattleCardView.Gender = BattleCardView.Gender.NONE
 var _level: int = 1
+var _status: StringName = StatusRules.NONE
 var _show_numbers: bool = false
 var _pulse: Tween
 var _pulsing: bool = false
@@ -43,6 +44,7 @@ var _level_pulse: Tween
 @onready var _header: HBoxContainer = %Header
 @onready var _name_label: Label = %NameLabel
 @onready var _gender_icon: TextureRect = %Gender
+@onready var _status_badge: TypeBadge = %StatusBadge
 @onready var _level_tag: Label = %LevelTag
 @onready var _level_value: Label = %LevelValue
 @onready var _bar: HpBar = %HpBar
@@ -79,8 +81,20 @@ func set_view(view: BattleCardView) -> void:
 	_gender_icon.visible = _gender_icon.texture != null
 	_level = view.level
 	_level_value.text = str(view.level)
+	set_status(view.status)
 	set_show_hp_numbers(view.show_hp_numbers)
 	set_hp(view.hp, view.max_hp)
+
+
+## Pose (ou retire, avec [constant StatusRules.NONE]) l'étiquette de statut « PSN » à droite du
+## sexe : pastille de la couleur du type Poison, texte (dossier 08 §2). Aucune animation : elle
+## accompagne la phrase du combat.
+func set_status(status: StringName) -> void:
+	var label := StatusView.text_of(status)
+	_status = status if not label.is_empty() else StatusRules.NONE
+	_status_badge.visible = not label.is_empty()
+	if not label.is_empty():
+		_status_badge.set_type(StatusView.badge_type(status), label)
 
 
 ## Montre ou cache « 19 / 19 » sous la barre (côté joueur seulement).
@@ -105,6 +119,11 @@ func animate_hp(hp: int, max_hp: int, big: bool = false) -> void:
 ## Retour haptique d'un coup reçu : HAPTIC_HIT_MS, ou HAPTIC_CRIT_MS si [param critical].
 func play_hit(critical: bool = false) -> void:
 	_haptic(UiTokens.HAPTIC_CRIT_MS if critical else UiTokens.HAPTIC_HIT_MS)
+
+
+## Retour haptique du dégât de poison : HAPTIC_STATUS_MS, plus doux qu'un coup.
+func play_poison() -> void:
+	_haptic(UiTokens.HAPTIC_STATUS_MS)
 
 
 ## Coroutine : fait glisser la barre d'XP de [param from] à [param to] (fractions 0..1 d'une
@@ -157,6 +176,20 @@ func pulse_level(level: int) -> void:
 
 func get_name_text() -> String:
 	return _name_label.text
+
+
+## Statut posé sur la carte (&"" = aucune étiquette).
+func get_status() -> StringName:
+	return _status
+
+
+## « PSN » (vide sans étiquette).
+func get_status_text() -> String:
+	return _status_badge.get_type_text() if _status_badge.visible else ""
+
+
+func get_status_badge() -> TypeBadge:
+	return _status_badge
 
 
 func get_gender() -> BattleCardView.Gender:
