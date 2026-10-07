@@ -15,6 +15,10 @@
 		"zone_arrival": {
 			"title": "{zone}",
 			"detail": "Une nouvelle zone découverte."
+		},
+		"badge": {
+			"title": "{badge}",
+			"detail": "Obtenu à {city} contre {leader}."
 		}
 	},
 	"outcomes": {
@@ -28,6 +32,10 @@
 		},
 		"viridian_city": {
 			"title": "Arrivée à Jadielle",
+			"detail": "Une nouvelle ville."
+		},
+		"pewter_city": {
+			"title": "Arrivée à Argenta",
 			"detail": "Une nouvelle ville."
 		}
 	}

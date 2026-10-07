@@ -9,6 +9,7 @@ func _valid() -> Dictionary:
 			"rival_battle": {"title": "Rival", "detail": "{outcome}"},
 			"first_capture": {"title": "Première capture", "detail": "{species} à {zone}."},
 			"zone_arrival": {"title": "{zone}"},
+			"badge": {"title": "{badge}", "detail": "À {city} contre {leader} ({zone})."},
 		},
 		"outcomes": {"win": {"text": "Gagné."}},
 		"zone_arrivals": {"route_1": {"title": "Départ", "detail": "Vers la {zone}."}},
@@ -37,7 +38,7 @@ func test_real_data_q14_route_1_is_the_departure_from_pallet_town() -> void:
 	var library := MomentLibrary.new()
 	library.load_file()
 	assert_eq(library.get_zone_text(&"route_1").title, "Départ de Bourg Palette")
-	assert_eq(library.get_zone_text(&"pewter_city"), library.get_text(&"zone_arrival"),
+	assert_eq(library.get_zone_text(&"cerulean_city"), library.get_text(&"zone_arrival"),
 		"sans texte propre : le texte général")
 	assert_eq(library.outcome_text(&"win").is_empty(), false)
 	assert_eq(library.outcome_text(&"loss").is_empty(), false)
@@ -49,6 +50,8 @@ func test_real_texts_never_speak_of_the_pokedex() -> void:
 	library.load_file()
 	var texts: Array[MomentTextData] = []
 	for type: StringName in MomentLibrary.TYPES:
+		if type == MomentLibrary.BADGE:
+			continue # n'existe qu'une fois un badge obtenu (test du J10 plus bas)
 		texts.append(library.get_text(type))
 	for zone: StringName in library.get_zone_ids():
 		texts.append(library.get_zone_text(zone))
@@ -63,7 +66,36 @@ func test_real_texts_never_speak_of_the_pokedex() -> void:
 		assert_false(joined.contains(word), "règle de déblocage : « %s »" % word)
 
 
+## Jalon 10 (dossier 12, « Textes verrouillés » ; Q-5 du plan) : le moment « badge » générique
+## et l'arrivée à Argenta.
+func test_real_data_j10_badge_moment_and_pewter_arrival() -> void:
+	var library := MomentLibrary.new()
+	library.load_file()
+	var badge := library.get_text(MomentLibrary.BADGE)
+	assert_not_null(badge)
+	assert_eq(badge.title, "{badge}")
+	assert_eq(badge.detail, "Obtenu à {city} contre {leader}.")
+	assert_false(badge.draft, "texte verrouillé (dossier 12)")
+	var pewter := library.get_zone_text(&"pewter_city")
+	assert_eq(pewter.title, "Arrivée à Argenta")
+	assert_eq(pewter.detail, "Une nouvelle ville.", "comme Jadielle")
+	assert_eq(MomentLibrary.BADGE, BadgeMoment.TYPE)
+
+
 # --- Format --------------------------------------------------------------------------------
+
+func test_badge_marks_are_only_for_the_badge_moment() -> void:
+	var data := _valid()
+	data["moments"]["first_capture"]["detail"] = "{badge} à {city}."
+	data["zone_arrivals"]["route_1"]["detail"] = "Vers {leader}."
+	var library := MomentLibrary.new()
+	assert_false(library.add_from_dict(data, "t"))
+	var errors := "\n".join(library.get_errors())
+	assert_string_contains(errors, "moment « first_capture » : marque « {badge} »")
+	assert_string_contains(errors, "arrivée « route_1 » : marque « {leader} »")
+	assert_eq(library.get_text(MomentLibrary.BADGE).detail, "À {city} contre {leader} ({zone}).")
+	assert_push_error_count(3, "deux fautes et un type manquant")
+
 
 func test_valid_dictionary() -> void:
 	var library := MomentLibrary.new()
@@ -84,6 +116,12 @@ func test_every_type_is_required() -> void:
 	assert_false(library.add_from_dict(data, "t"))
 	assert_string_contains("\n".join(library.get_errors()), "« rival_battle » manquant")
 	assert_push_error("manquant")
+	data = _valid()
+	(data["moments"] as Dictionary).erase("badge")
+	library = MomentLibrary.new()
+	assert_false(library.add_from_dict(data, "t"), "le moment « badge » aussi (J10)")
+	assert_string_contains("\n".join(library.get_errors()), "« badge » manquant")
+	assert_push_error("« badge » manquant")
 
 
 func test_unknown_keys_and_types_are_errors() -> void:

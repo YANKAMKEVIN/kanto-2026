@@ -14,8 +14,8 @@ func test_real_data_loads_without_error() -> void:
 	var library := ObjectiveLibrary.new()
 	assert_true(library.load_file(), "\n".join(library.get_errors()))
 	assert_eq(library.get_errors().size(), 0)
-	assert_eq(library.get_ids(), [&"go_north", &"deliver_parcel", &"reach_viridian"]
-		as Array[StringName])
+	assert_eq(library.get_ids(), [&"go_route_3", &"get_boulder_badge", &"go_north",
+		&"deliver_parcel", &"reach_viridian"] as Array[StringName])
 
 
 ## Convention homogène (décision de Kevin du 2026-10-05) : tout texte d'objectif finit par un
@@ -55,7 +55,33 @@ func test_q4_nothing_before_the_rival_battle_then_reach_viridian() -> void:
 ## `got_oak_parcel` est levé par la première visite de la Boutique depuis le T12
 ## (data/cutscenes/viridian_mart.json), `pokedex_activated` par la scène du colis depuis le T18
 ## (data/cutscenes/oak_lab.json).
-const _PENDING_FLAGS: Array[StringName] = [&"viridian_arrived"]
+## Jalon 10 : `pewter_arrived` (scène d'arrivée, T14) et `badge_boulder` (victoire contre Pierre
+## et étape « badge », T9/T17), à retirer quand leur tâche est fusionnée.
+const _PENDING_FLAGS: Array[StringName] = [&"viridian_arrived", &"pewter_arrived",
+	&"badge_boulder"]
+
+
+## Jalon 10 (dossier 12 §16, jalon-10.md §2.10) : « continuer vers le nord. » jusqu'à Argenta,
+## « obtenir le Badge Roche. » dès l'entrée (défaite comprise), puis « continuer vers la
+## Route 3. » après la victoire.
+func test_j10_north_then_boulder_badge_then_route_3() -> void:
+	var library := ObjectiveLibrary.new()
+	library.load_file()
+	var flags := StoryFlags.new()
+	for flag: StringName in [&"rival_battle_done", &"viridian_arrived", &"got_oak_parcel",
+			StoryFlags.POKEDEX_ACTIVATED]:
+		flags.set_flag(flag)
+	assert_eq(library.current_id(flags), &"go_north", "Route 2 nord : toujours le nord")
+	flags.set_flag(&"pewter_arrived")
+	assert_eq(library.current(flags), "obtenir le Badge Roche.")
+	assert_eq(library.current_id(flags), &"get_boulder_badge")
+	assert_false(library.is_draft(&"get_boulder_badge"), "texte verrouillé (dossier 12)")
+	flags.set_flag(&"badge_boulder")
+	assert_eq(library.current(flags), "continuer vers la Route 3.")
+	assert_eq(library.current_id(flags), &"go_route_3")
+	assert_false(library.is_draft(&"go_route_3"), "texte verrouillé (dossier 12)")
+	flags.set_flag(&"pewter_arrived", false)
+	assert_eq(library.current_id(flags), &"go_route_3", "le badge passe en tête")
 
 
 ## Jalon 7 (dossier 09 §4, §19) : le colis en main → « remettre le colis au Professeur

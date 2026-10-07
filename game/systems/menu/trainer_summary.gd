@@ -13,7 +13,9 @@ extends RefCounted
 ## - grands moments : ceux de [code]GameState.moments[/code] (premier Pokémon, combat contre le
 ##   rival, première capture) **et** la première arrivée dans chaque zone (date la plus
 ##   ancienne de [code]discovered_maps[/code] parmi les cartes de la zone), sauf la zone où
-##   l'aventure commence ; « Départ de Bourg Palette » = première arrivée sur la Route 1.
+##   l'aventure commence ; « Départ de Bourg Palette » = première arrivée sur la Route 1 ;
+##   un badge obtenu (J10, [BadgeMoment] : titre, ville et Champion lus dans [BadgeLibrary],
+##   un badge inconnu écarte le moment ; le souvenir de l'équipe n'est pas montré au J10).
 ##   Ordre chronologique ; lieu = nom de la **zone**, jamais un identifiant de carte ;
 ## - statistiques : temps de jeu, zones découvertes, captures depuis le début (carrière : relâcher ne les
 ##   fait pas baisser ; le starter n'en est pas), objets trouvés (pas de combats
@@ -70,15 +72,17 @@ static func build(state: Object, data: PokemonData, zones: ZoneLibrary, moments:
 	for i: int in party.size():
 		view.team.append(DashboardViews.member(party.get_at(i), i, data))
 	if moments != null:
-		view.moments = moment_views(state, data, zones, moments, unlocks)
+		view.moments = moment_views(state, data, zones, moments, unlocks, badges)
 	view.stats = stat_views(state, zones)
 	return view
 
 
 ## Grands moments, du plus ancien au plus récent (à date égale : arrivées d'abord, puis dans
-## l'ordre d'enregistrement). Un moment d'un type sans texte est ignoré.
+## l'ordre d'enregistrement). Un moment d'un type sans texte est ignoré ; un moment « badge »
+## sans [param badges] ou d'un badge inconnu aussi.
 static func moment_views(state: Object, data: PokemonData, zones: ZoneLibrary,
-		moments: MomentLibrary, unlocks: MenuUnlocks) -> Array[MomentView]:
+		moments: MomentLibrary, unlocks: MenuUnlocks, badges: BadgeLibrary = null) \
+		-> Array[MomentView]:
 	var keyed: Array[Array] = []
 	var arrivals := first_arrivals(state.discovered_maps, zones)
 	var start_zone := start_zone_of(arrivals)
@@ -90,7 +94,7 @@ static func moment_views(state: Object, data: PokemonData, zones: ZoneLibrary,
 			keyed.append([_sort_date(arrival.date), 0, keyed.size(), arrival])
 	var records: Array[Dictionary] = state.moments
 	for record: Dictionary in records:
-		var moment := _record_view(record, state, data, zones, moments, unlocks)
+		var moment := _record_view(record, state, data, zones, moments, unlocks, badges)
 		if moment != null:
 			keyed.append([_sort_date(moment.date), 1, keyed.size(), moment])
 	keyed.sort_custom(func(a: Array, b: Array) -> bool:
@@ -179,7 +183,8 @@ static func _arrival_view(zone: StringName, date: String, zones: ZoneLibrary,
 
 
 static func _record_view(record: Dictionary, state: Object, data: PokemonData,
-		zones: ZoneLibrary, moments: MomentLibrary, unlocks: MenuUnlocks) -> MomentView:
+		zones: ZoneLibrary, moments: MomentLibrary, unlocks: MenuUnlocks,
+		badges: BadgeLibrary) -> MomentView:
 	var type := StringName(str(record.get("type", "")))
 	if type == MomentLibrary.ZONE_ARRIVAL:
 		return null
@@ -200,6 +205,13 @@ static func _record_view(record: Dictionary, state: Object, data: PokemonData,
 		MomentLibrary.MARK_OUTCOME: moments.outcome_text(
 			StringName(str(details.get(_DETAIL_OUTCOME, "")))),
 	}
+	if type == MomentLibrary.BADGE:
+		var badge := BadgeMoment.badge_of(details)
+		if badges == null or not badges.has_badge(badge):
+			return null
+		marks[MomentLibrary.MARK_BADGE] = badges.badge_name(badge)
+		marks[MomentLibrary.MARK_CITY] = badges.city(badge)
+		marks[MomentLibrary.MARK_LEADER] = badges.leader(badge)
 	var view := _view(type, text, marks)
 	if view == null:
 		return null
