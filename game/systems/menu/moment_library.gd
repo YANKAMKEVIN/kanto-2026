@@ -11,7 +11,8 @@ extends RefCounted
 ##     "starter":       { "title": "Premier Pokémon", "detail": "{species} rejoint…", "draft": true },
 ##     "rival_battle":  { "title": "Combat contre le rival", "detail": "{outcome}" },
 ##     "first_capture": { "title": "Première capture", "detail": "{species} rejoint…" },
-##     "zone_arrival":  { "title": "{zone}", "detail": "Une nouvelle zone découverte." }
+##     "zone_arrival":  { "title": "{zone}", "detail": "Une nouvelle zone découverte." },
+##     "badge":         { "title": "{badge}", "detail": "Obtenu à {city} contre {leader}." }
 ##   },
 ##   "outcomes": { "win": { "text": "Tu l'emportes.", "draft": true }, "loss": { … } },
 ##   "zone_arrivals": { "route_1": { "title": "Départ de Bourg Palette", "detail": "…" } }
@@ -21,7 +22,9 @@ extends RefCounted
 ## non vide, « detail » texte (facultatif, "" = pas de ligne), « draft » booléen (texte
 ## provisoire). Marques permises : {zone} partout (nom de la zone du moment) ; {species} pour
 ## [constant STARTER] et [constant FIRST_CAPTURE] ; {outcome} pour [constant RIVAL_BATTLE]
-## (texte de « outcomes » d'après l'issue enregistrée : « win », « loss »…). « zone_arrivals »
+## (texte de « outcomes » d'après l'issue enregistrée : « win », « loss »…) ; {badge}, {city},
+## {leader} pour [constant BADGE] (nom du badge, ville et Champion lus dans [BadgeLibrary]
+## d'après le badge des détails, J10). « zone_arrivals »
 ## (facultatif) : titre et détail propres à la première arrivée dans une zone (identifiant de
 ## [ZoneLibrary], vérifié par [method check_references]) ; sinon le texte de
 ## [constant ZONE_ARRIVAL]. Toute clé inconnue est une erreur ; une entrée invalide est écartée,
@@ -35,11 +38,16 @@ const STARTER: StringName = &"starter"
 const RIVAL_BATTLE: StringName = &"rival_battle"
 const FIRST_CAPTURE: StringName = &"first_capture"
 const ZONE_ARRIVAL: StringName = &"zone_arrival"
-const TYPES: Array[StringName] = [STARTER, RIVAL_BATTLE, FIRST_CAPTURE, ZONE_ARRIVAL]
+## Badge obtenu (J10, dossier 12 §13 ; détails : [BadgeMoment]).
+const BADGE: StringName = BadgeMoment.TYPE
+const TYPES: Array[StringName] = [STARTER, RIVAL_BATTLE, FIRST_CAPTURE, ZONE_ARRIVAL, BADGE]
 
 const MARK_ZONE: String = "{zone}"
 const MARK_SPECIES: String = "{species}"
 const MARK_OUTCOME: String = "{outcome}"
+const MARK_BADGE: String = "{badge}"
+const MARK_CITY: String = "{city}"
+const MARK_LEADER: String = "{leader}"
 
 const _ROOT_KEYS: Array[String] = ["moments", "outcomes", "zone_arrivals"]
 const _TEXT_KEYS: Array[String] = ["title", "detail", "draft"]
@@ -50,6 +58,7 @@ const _MARKS: Dictionary[StringName, Array] = {
 	RIVAL_BATTLE: [MARK_ZONE, MARK_OUTCOME],
 	FIRST_CAPTURE: [MARK_ZONE, MARK_SPECIES],
 	ZONE_ARRIVAL: [MARK_ZONE],
+	BADGE: [MARK_ZONE, MARK_BADGE, MARK_CITY, MARK_LEADER],
 }
 
 var _texts: Dictionary[StringName, MomentTextData] = {}
