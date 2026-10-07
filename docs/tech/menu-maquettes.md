@@ -70,3 +70,7 @@ Tableau de bord, Équipe et Sac rapprochés des maquettes **sans changer la logi
 - **Q-MM1-1** : argent dans le bandeau d'état — seulement le Sac (défaut appliqué, règle écrite) ou partout comme la maquette (changerait dossier 09 §10 et un test de règle) ?
 - **Q-MM1-2 (J10)** : un badge obtenu = un drapeau d'histoire `badge_<id>` ; si le J10 préfère un champ de sauvegarde dédié (date d'obtention, équipe victorieuse), le prévoir dans la sauvegarde v4+ (non touchée ici).
 - **Q-MM1-3** : l'illustration « Carte » de Codex montre un volcan et une géographie inventée (dossier 08 §10 : géographie de la maquette fausse) ; acceptable comme illustration de carte de menu, ou à refaire ?
+
+
+## Validation MM.1 (Kevin, S24, 2026-10-07)
+Tableau de bord, Équipe et Sac **validés** (« c'est top »). Questions laissées ouvertes, défauts gardés : argent seulement dans le Sac (règle des dossiers 08 et 09) ; badge obtenu = drapeau d'histoire (date / équipe victorieuse à décider au J10) ; illustration « Carte » gardée. À reprendre au MM.2 : le titre de zone de l'exploration transparaît flou derrière le × du tableau de bord ; le Pokédex passe au « ‹ » seul.
