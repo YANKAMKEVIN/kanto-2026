@@ -66,6 +66,9 @@ intéressante, équipe qui se construit, premier apprentissage de nouvelles capa
 - **Contraintes de la Route 2 (J8)** : **aucun Dresseur avant la Forêt de Jade** (le Scout Théo
   reste le premier vrai Dresseur) ; la Route 2 est **interrompue par la forêt** et ne permet pas
   de la contourner lors de la première progression.
+- **Forêt de Jade : vue générale peinte validée** par Kevin (2026-10-07,
+  `reference/foret-jade-vue-generale-v1.png`, dossier 10) ; la grille du jeu fait foi pour la
+  géométrie.
 
 ### Phase 6 — Argenta + première Arène (J10)
 Ville d'Argenta (musée, habitants, Centre, Boutique, Arène). **Système de badges** : victoire →

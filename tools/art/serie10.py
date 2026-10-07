@@ -338,8 +338,12 @@ def _ref(nom: str, hauteur: int) -> Image.Image:
 
 
 class _Planche:
-	def __init__(self, largeur: int) -> None:
+	TITRE = ("Route 2 — kit de la série 10 (T2, jalon 8) : 1 case = 48 px sur cette planche ; "
+		"héros à l'échelle")
+
+	def __init__(self, largeur: int, titre: str = "") -> None:
 		self.largeur = largeur
+		self.titre = titre or self.TITRE
 		self.blocs: list[tuple[str, list[tuple[Image.Image, str]], tuple[int, int, int]]] = []
 
 	def section(self, titre: str, elements: list[tuple[Image.Image, str]], couleur) -> None:
@@ -365,8 +369,7 @@ class _Planche:
 			y += ligne_h + haut_etiq + 40
 		planche = Image.new("RGBA", (self.largeur, y), FOND + (255,))
 		d = ImageDraw.Draw(planche)
-		d.text((marge, 24), "Route 2 — kit de la série 10 (T2, jalon 8) : 1 case = 48 px sur cette "
-			"planche ; héros à l'échelle", font=_police(34), fill=(255, 255, 255))
+		d.text((marge, 24), self.titre, font=_police(34), fill=(255, 255, 255))
 		# Hauteurs alignées par rangée : le bas des images sur une même ligne.
 		rangs: dict[int, int] = {}
 		for m in mises:

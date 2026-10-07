@@ -3,7 +3,10 @@
 
 Format (voir l'en-tête de `tools/plans/route_2.txt`) : section `GRILLE L H` (une rangée par
 ligne, « NN » + espace + L caractères), `FIN`, puis section `POSITIONS` (une ligne par élément :
-identifiant, type, cases, `bloque` | `libre`, commentaire après `#`), `FIN`.
+identifiant, type, cases, `bloque` | `libre`, attributs facultatifs `cle=valeur`, commentaire
+après `#`), `FIN`.
+Ligne facultative avant la grille : `PRATICABLES <caractères>` (cases praticables de cette
+grille ; défaut `.=hvD`, la légende de la Route 2). Jalon 9 : la Forêt de Jade a sa légende.
 Utilisé par `plan_aplats.py` (plan en aplats) et `plan_check.py` (recherche de chemin).
 """
 from __future__ import annotations
@@ -11,7 +14,7 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 from pathlib import Path
 
-# Cases praticables ; tout autre caractère de la légende est bloqué.
+# Cases praticables par défaut ; tout autre caractère de la légende est bloqué.
 PRATICABLES = set(".=hvD")
 HERBES = "h"
 REBORD = "v"
@@ -25,6 +28,8 @@ class Position:
 	cells: list[tuple[int, int]]
 	bloque: bool
 	note: str = ""
+	# Attributs « cle=valeur » écrits après bloque / libre (jalon 9 : facing, sight, role…).
+	attrs: dict[str, str] = field(default_factory=dict)
 
 
 @dataclass
@@ -33,6 +38,7 @@ class Plan:
 	height: int
 	rows: list[str]
 	positions: dict[str, Position] = field(default_factory=dict)
+	praticables: set[str] = field(default_factory=lambda: set(PRATICABLES))
 
 	def at(self, x: int, y: int) -> str:
 		return self.rows[y][x]
@@ -65,6 +71,7 @@ def lire(chemin: str | Path) -> Plan:
 	rows: list[str] = []
 	width = height = 0
 	positions: dict[str, Position] = {}
+	praticables = set(PRATICABLES)
 	for brute in lignes:
 		ligne = brute.split("#", 1)[0].rstrip() if section != "GRILLE" else brute.rstrip()
 		if not ligne.strip():
@@ -72,6 +79,9 @@ def lire(chemin: str | Path) -> Plan:
 		mots = ligne.split()
 		if mots[0] == "GRILLE":
 			section, width, height = "GRILLE", int(mots[1]), int(mots[2])
+			continue
+		if mots[0] == "PRATICABLES" and section == "":
+			praticables = set(mots[1])
 			continue
 		if mots[0] == "POSITIONS":
 			section = "POSITIONS"
@@ -91,10 +101,16 @@ def lire(chemin: str | Path) -> Plan:
 				raise ValueError(f"{ident} : « {etat} » au lieu de bloque / libre")
 			if ident in positions:
 				raise ValueError(f"{ident} en double")
-			positions[ident] = Position(ident, kind, _cases(cases), etat == "bloque", note)
+			attrs: dict[str, str] = {}
+			for mot in mots[4:]:
+				if "=" not in mot:
+					raise ValueError(f"{ident} : attribut « {mot} » sans « = »")
+				cle, valeur = mot.split("=", 1)
+				attrs[cle] = valeur
+			positions[ident] = Position(ident, kind, _cases(cases), etat == "bloque", note, attrs)
 	if len(rows) != height:
 		raise ValueError(f"{len(rows)} rangées au lieu de {height}")
-	plan = Plan(width, height, rows, positions)
+	plan = Plan(width, height, rows, positions, praticables)
 	for p in positions.values():
 		for x, y in p.cells:
 			if not (0 <= x < width and 0 <= y < height):

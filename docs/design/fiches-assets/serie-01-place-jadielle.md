@@ -775,3 +775,47 @@ Plan technique : `docs/tech/jalon-08.md` (§1.1 grille, §1.2 assets prévus, §
 - **Personnage** : apparence `hiker` (`assets/sprites/characters/painted/hiker_frames.tres`, marche + attente), table `LOOKS` de `build_character_frames.gd`.
 - **Poké Ball au sol** : image `assets/sprites/objects/painted/poke_ball_ground.png` prête ; ses `SpriteFrames` attendent le genre « objet fixe » du T4 (non créé ici).
 - **Planche de contact** : `build/captures/jalon08_assets/planche_contact.png` (non versionnée).
+
+## Série 11 — Forêt de Jade (jalon 9, 2026-10-07, lumière NE)
+
+Plan technique : `docs/tech/jalon-09.md` (§2.7 la forêt, §3 T14 à T17) ; conception : `docs/design/dossier-10-foret-de-jade.md`. Numéro **11** : la série 10 est prise deux fois (Route 2, `serie10.py` ; illustrations du Menu Dresseur, `serie10_menu.py`), jalon 9 §0.4.
+- **9B.0 — vue générale peinte (à lancer au T15)**. Grille fonctionnelle `tools/plans/viridian_forest.txt` (58 × 74, source unique de la géométrie), vérifiée par `python3 tools/art/plan_check.py tools/plans/viridian_forest.txt` (critères du jalon 9 §2.7.1) ; plan en aplats `build/art/PLAN_FORET_JADE_v1.png` tiré de la grille par `python3 tools/art/plan_aplats.py tools/plans/viridian_forest.txt` (`--annote` : version de relecture étiquetée, jamais jointe à Codex) ; prompt `tools/art/prompts/CONCEPT_FORET_JADE_VUE_GENERALE_r1.txt`, ancre de style = `reference/route-2-vue-generale-v1.png` (un autre lieu ; ni l'étude d'ambiance ni un rendu précédent de la forêt). L'ancien prompt de l'étude d'ambiance (prototype, tracé provisoire) est renommé `CONCEPT_FORET_JADE_ETUDE_AMBIANCE_r1.txt`. Génération au T15 (3 essais au plus), puis validation de Kevin ; un changement de composition passe d'abord par la grille.
+- **9B.0 validé par Kevin (2026-10-07)** : essai r2 → `reference/foret-jade-vue-generale-v1.png` (+ `foret-jade-plan-v1.png`) ; section « Vue générale peinte v1 » du dossier 10. **Fiches des assets** : faites au T16 (ci-dessous).
+
+### Série 11 — liste exacte et fiches (T16, 2026-10-07)
+
+**Consigne de Kevin** (celle du J8) : le plus petit kit modulaire qui produit la sensation de la vue validée, sans effet répétitif ; la grille fait foi pour la géométrie. Liste complète, variations, abandons et budget des textures : `docs/tech/jalon-09.md` §2.8. **Nouveaux : 16 images Codex** (13 tâches) ; planche de contrôle sans Codex : `build/art/FJ_KIT_v1.png` (`python3 tools/art/serie11.py --planche`). Prompts composés par `tools/art/serie11.py` (ADN v1 + LUMIÈRE NE + fiche) ; références = recadrages `REF_FJ_*` de la vue (`--refs`, boîtes versionnées, agrandies × 3 ; `REF_FJ_TRONC` retourné). Ancres : `WORLD_PROP_SOUCHE_01_NE_r1` + `WORLD_TREE_A_01_NE_r1` (décors), `INT_CENTRE_COQUE_NE_r1` + `INT_CENTRE_BANQUETTE_NE_r1` + façade `WORLD_BLDG_POSTE_FORET_01_NE_r1` (enveloppe), `PERSO_P2_PEINT_r1` (personnages, Pokémon), `POKE_RATTATA_P2_r1` (Pokémon). Tailles, tenues, emprises = valeurs par défaut (règle 4).
+
+#### WORLD_PROP_TRONC_INCLINE_01 → `prop_tronc_incline_01`
+- **Rôle** : repère sud (arbitrage 10), au bord ouest du sentier, juste au-dessus de C1. **Taille** : 4 cases de long, ≈ 3 de haut. **Emprise** : pied sur les cases `I` (37..38, 63), `cells` [(-1, 0), (0, 0)], origine au pied mesurée sur l'image ; le tronc monte vers le **haut-gauche**, au-dessus de cases de forêt seulement (jamais en arche sur le sentier : choix de Kevin au T14). Entités, sans ombre portée, sans fondu. **Référence** : `REF_FJ_TRONC` (retournée). **Contenu** : tronc mort brun-gris strié, mousse vert vif sur le dessus, cassure en biseau, champignons plats, petite fougère au pied ; aucun feuillage.
+
+#### WORLD_PROP_GRANDE_SOUCHE_01 → `prop_grande_souche_01`
+- **Rôle** : repère central ; O3 derrière, par le passage d'une case. **Taille** : ≈ 3,4 cases de large (racines comprises), ≈ 2,6 de haut. **Emprise** 3 × 2 = `S` (26..28, 43..44), ancre (27, 44). Entités, sans ombre portée. **Référence** : `REF_FJ_SOUCHE` (la souche creuse ; la seconde souche coupée à plat de la vue est écartée). **Contenu** : souche énorme, creuse, bord ébréché, écorce moussue, grosses racines étalées au ras du sol.
+
+#### WORLD_PROP_RACINES_01 → `prop_racines_01`
+- **Rôle** : amas de racines d'O4 (« Quelque chose est coincé entre les racines. »). **Taille** : ≈ 1,6 × 2 cases. **Emprise** 1 × 2 = `r` (5, 35..36), ancre (5, 36). **Référence** : `REF_FJ_RACINES`. **Contenu** : racines noueuses et moussues en boucles et arches basses, un creux sombre ; ni tronc ni feuillage ni objet.
+
+#### WORLD_PROP_SAC_RANDO_01 → `prop_sac_rando_01`
+- **Rôle** : sac posé de P2 (sa boucle va de sa souche (40, 44) à son sac (45, 44)). **Taille** : 0,7 case ; emprise 1 case. **Référence** : `REF_FJ_SAC`. **Contenu** : sac à dos kaki et brun debout, gourde, tapis de sol roulé. Pas `int_sac_voyage_01` : c'est le sac du héros, dans sa chambre.
+
+#### WORLD_GROUND_SOUS_BOIS_01 → `decal_sousbois_1..8` (conditionnel du J8, promu)
+- **Rôle** : grain du sous-bois des bandes praticables et des bords de clairière (la vue montre fougères et champignons ; réserve « haies taillées » : bord irrégulier). Planche 4 × 2, 0,6 case chacun, section `decalcomanies`. **Référence** : `REF_FJ_SOUS_BOIS`. **Contenu** : fougères sombre et claire, mousse, feuilles mortes, trèfle sombre, racines affleurantes, brindilles, deux petits champignons brun-rouge.
+
+#### INT_POSTE_FORET_COQUE → `int_poste_foret_coque`
+- **Rôle** : enveloppe vide **commune aux deux postes** (une définition, deux scènes, arbitrage 9). **Taille** : 10 × 8 cases (section `pieces`). Ouvertures de 2 cases au centre du mur du fond (vers la forêt ou la Route 2 nord) et du mur du bas (entrée, paillasson). **Matériaux** : ceux de la façade (pierre claire, bois brun), plancher clair. **Mobilier** (repris de la série 07) : `int_plante` ×2, `int_meuble_bas_01`, `int_porte_manteau_01`.
+
+#### PNJ_GARDE (+ GARDE_ATTENTE) → `garde`, `garde_idle` (apparence `guard`)
+- **Rôle** : les deux gardes. 130 px ; marche 4 × 4 (modèle `PNJ_MARCHAND_NE_r1`) + attente 4 × 1 (`tools/art/attente/prompts/GARDE_ATTENTE.txt`). **Tenue** : casquette bleu marine à insigne doré (sans texte), veste d'uniforme bleu marine, chemise bleu clair, talkie-walkie. Pas dans la vue.
+
+#### PNJ_SCOUT (+ SCOUT_ATTENTE) → `scout`, `scout_idle` (apparence `scout`)
+- **Rôle** : les quatre Scouts (Théo, Noé, Milo, Éli : une apparence). 112 px (enfant d'environ 10 ans). **Référence** : `REF_FJ_SCOUT` (tenue). **Tenue** : chapeau de paille à bord court, débardeur vert olive, short beige, chaussettes hautes, boîte à insectes, filet ; pas de casquette (Jeune Dresseur), pas de sac à dos.
+
+#### PNJ_NATURALISTE (+ NATURALISTE_ATTENTE) → `naturaliste`, `naturaliste_idle` (apparence `naturalist`)
+- **Rôle** : P1. 128 px. **Référence** : `REF_FJ_NATURALISTE`. **Tenue** : lunettes rondes, gilet beige à poches, chemise vert sauge, petit sac à dos gris-vert, carnet ouvert, loupe ; pas de blouse (chercheur de Bourg Palette).
+
+#### POKE_CHENIPAN_FIXE, POKE_ASPICOT_FIXE, POKE_CHRYSACIER_FIXE, POKE_COCONFORT_FIXE → `chenipan`, `aspicot`, `chrysacier`, `coconfort` (`pokemon/caterpie|weedle|metapod|kakuna`)
+- **Rôle** : Pokémon d'ambiance immobiles (dossier 10 §7). **Une planche chacun** : 1 ligne de 4 poses (repos face, réaction face, repos profil gauche, réaction profil gauche), même échelle ; section nouvelle `pokemon_fixes` (jalon 9 §2.8.5 : feuille 6 × 1 avec les profils droits en miroir, animations `idle_*` et `react_*`). Hauteurs : Chenipan et Aspicot 44 px, Chrysacier et Coconfort 56 px. **Réactions** : Chenipan relève la tête ; Aspicot se recroqueville, dard pointé ; cocons : léger frisson, yeux qui s'ouvrent. Ni branche, ni tronc, ni fil (le jeu les pose avec un décalage).
+
+#### Conditionnels (prompts dans `serie11.py`, lancés seulement par leur nom, sur capture)
+- `WORLD_TREE_FORET_PLANCHE_C` (4 arbres de forêt plus sombres, ancres planches A / B, `REF_FJ_FORET`) : si la forêt se répète à la capture du T19.
+- `WORLD_DECAL_RAIS_LUMIERE_01` (rai + tache sur fond noir, mode additif, `REF_FJ_RAI`) : si le rai fait par Godot au T21 ne se lit pas.
