@@ -29,6 +29,11 @@ func _root_property(map_id: StringName, property: StringName) -> Variant:
 	return null
 
 
+## Cartes rangées dans une zone avant d'être construites (jalon 8 : la Route 2, carte du T5) :
+## à retirer de cette liste dès que la carte existe.
+const _PENDING_MAPS: Array[StringName] = [&"route_2"]
+
+
 # --- Données réelles -----------------------------------------------------------------------
 
 func test_real_data_loads_without_error() -> void:
@@ -44,6 +49,9 @@ func test_every_map_belongs_to_exactly_one_zone() -> void:
 	for map_id: StringName in maps:
 		assert_ne(_zones.zone_of(map_id), &"", "carte « %s » rangée dans une zone" % map_id)
 	for map_id: StringName in _zones.get_maps():
+		if _PENDING_MAPS.has(map_id) and not MapCatalog.has_map(map_id):
+			pending("carte « %s » pas encore construite (jalon 8 T5)" % map_id)
+			continue
 		assert_true(MapCatalog.has_map(map_id), "carte « %s » existante" % map_id)
 
 
@@ -121,6 +129,15 @@ func test_built_zones_have_their_map_texts() -> void:
 	assert_eq(_zones.get_zone(&"route_1").subtitle, _root_property(&"route_1", &"region"),
 		"même connexion que le titre de zone en jeu")
 	assert_eq(_zones.get_zone(&"pallet_town").subtitle, "")
+	# Jalon 8 (dossier 11, T1 et T14) : sous-titre = le panneau sud, comme la Route 1.
+	var route_2 := _zones.get_zone(&"route_2")
+	assert_eq(route_2.maps, [&"route_2"] as Array[StringName])
+	assert_eq(route_2.subtitle, "Jadielle — Forêt de Jade")
+	assert_eq(route_2.description,
+		"Un chemin bordé de prairies qui s'enfonce peu à peu sous les arbres.")
+	if MapCatalog.has_map(&"route_2"):
+		assert_eq(route_2.subtitle, _root_property(&"route_2", &"region"),
+			"même connexion que le titre de zone en jeu")
 	assert_false(_zones.get_zone(&"viridian_city").description.is_empty(), "jalon 7 T4")
 	assert_eq(_zones.get_zone(&"viridian_city").subtitle, "", "aucun sous-titre (2026-10-03)")
 	assert_true(_root_property(&"viridian_city", &"region") in [null, ""],

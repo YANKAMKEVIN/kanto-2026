@@ -25,11 +25,26 @@ const DOSSIER := "res://docs/design/dossier-02-prologue.md"
 const DOSSIER_07 := "res://docs/design/dossier-07-route-1.md"
 ## Jalon 7 : textes de référence validés (dossier 09 §19) ; un jeton y est écrit « {espèce} ».
 const DOSSIER_09 := "res://docs/design/dossier-09-jadielle.md"
+## Jalon 8 : textes T1–T16 validés (dossier 11, « Textes à valider ») ; dans son tableau, « / »
+## marque le retour à la ligne de la bulle et le gras (« ** ») le titre d'un panneau.
+const DOSSIER_11 := "res://docs/design/dossier-11-route-2.md"
 const _DOSSIER_TOKENS: Dictionary[String, String] = {"{first_wild_species}": "{espèce}"}
 const MAPS: Array[StringName] = [
 	&"player_house_2f", &"player_house_1f", &"rival_house", &"oak_lab", &"pallet_town",
 	&"route_1", &"route_22", &"viridian_city", &"viridian_center", &"viridian_mart",
+	&"route_2",
 ]
+## Points des cartes pas encore construites (jalon 8 : la Route 2, carte du T5) : dialogues
+## des points d'examen et scènes des déclencheurs que l'outil de construction posera. Tant que
+## la carte n'existe pas, le test les tient pour utilisés ; ensuite, la vraie carte fait foi
+## (à retirer quand la carte existe).
+const PENDING_POINTS: Dictionary[StringName, Dictionary] = {
+	&"route_2": {
+		"dialogues": [&"route_2_sign", &"route_2_forest_sign", &"route_2_dense_tree",
+			&"route_2_closed_sign", &"route_2_closed_gate"],
+		"cutscenes": [&"route_2_item_3", &"route_2_item_4"],
+	},
+}
 ## Lot de textes validé par Kevin le 2026-10-06 (anciens brouillons : panneau, observations,
 ## soin de Maman, terminal du Stockage, portes de Jadielle…) : source des textes hors dossiers.
 const TEXTES_VALIDES := "res://docs/design/textes/textes-brouillon-j7.md"
@@ -54,7 +69,12 @@ const IDS: Array[StringName] = [
 	&"rival_starter_pick", &"rival_starter_smile", &"route1_grass_thought",
 	&"route22_rival_greet", &"route22_rival_hesitates", &"route22_rival_lost",
 	&"route22_rival_won", &"route22_youngster_sigh",
-	&"route_1_potion_found", &"route_1_traveler", &"route_22_traveler", &"sign_pallet_town",
+	&"route_1_potion_found", &"route_1_traveler", &"route_22_traveler",
+	# Jalon 8 : la Route 2 (dossier 11, T1 à T11).
+	&"route_2_ball_1", &"route_2_ball_2", &"route_2_closed_gate", &"route_2_closed_sign",
+	&"route_2_dense_tree", &"route_2_forest_sign", &"route_2_hiker", &"route_2_item_3_found",
+	&"route_2_item_4_found", &"route_2_sign", &"route_2_youngster",
+	&"sign_pallet_town",
 	&"storage_terminal",
 	&"viridian_courier", &"viridian_gym_door", &"viridian_gym_watcher", &"viridian_house_door",
 	&"viridian_kid",
@@ -98,6 +118,13 @@ func before_all() -> void:
 			(_npc_ids[map_id] as Array).append(spec.id)
 			if spec.is_interactive():
 				_use(spec.dialogue, map_id)
+		if not MapCatalog.has_map(map_id):
+			var pending_points: Dictionary = PENDING_POINTS[map_id]
+			for dialogue: StringName in pending_points["dialogues"]:
+				_use(dialogue, map_id)
+			for cutscene_id: StringName in pending_points["cutscenes"]:
+				_use_cutscene(cutscene_id, map_id)
+			continue
 		var map := (load(MapCatalog.scene_path(map_id)) as PackedScene).instantiate()
 		for point: Node in map.get_node(^"Interactables").get_children():
 			_use((point as InteractPoint).dialogue_id, map_id)
@@ -189,7 +216,8 @@ func test_every_dialogue_played_by_a_cutscene_exists() -> void:
 		&"rival_parcel_return", &"rival_starter_pick", &"rival_starter_smile",
 		&"route1_grass_thought", &"route22_rival_greet", &"route22_rival_hesitates",
 		&"route22_rival_lost", &"route22_rival_won", &"route22_youngster_sigh",
-		&"route_1_potion_found"] as Array[StringName])
+		&"route_1_potion_found", &"route_2_item_3_found", &"route_2_item_4_found"]
+		as Array[StringName])
 	for id: StringName in played:
 		assert_true(_library.has_dialogue(id), "dialogue « %s » défini" % id)
 		assert_true(_used_on.has(id), "« %s » joué depuis un déclencheur ou par le code" % id)
@@ -260,10 +288,12 @@ func test_every_condition_flag_is_set_somewhere() -> void:
 		assert_false(set_flags.has(flag), "« %s » : levé par un jalon futur" % flag)
 	assert_true(read_flags.has(&"starter_chosen"), "starter_chosen lu (pensée des herbes)")
 	assert_eq(_library.get_set_flags(),
-		[&"blacked_out_before", &"mom_greeted", &"rival_met", &"storage_terminal_seen",
-			&"viridian_old_man_talked"]
+		[&"blacked_out_before", &"mom_greeted", &"rival_met", &"route_2_hiker_talked",
+			&"route_2_youngster_talked", &"storage_terminal_seen", &"viridian_old_man_talked"]
 		as Array[StringName])
-	assert_eq(_cutscenes.get_set_flags(), [&"got_oak_parcel", &"got_potion_route_1", &"oak_lab_reunion", &"oak_met",
+	assert_eq(_cutscenes.get_set_flags(), [&"got_oak_parcel", &"got_potion_route_1",
+		&"got_route_2_item_1", &"got_route_2_item_2", &"got_route_2_item_3",
+		&"got_route_2_item_4", &"oak_lab_reunion", &"oak_met",
 		&"pokedex_activated", &"rival_battle_done", &"rival_challenged", &"rival_lab_lost",
 		&"rival_lab_won", &"rival_left_lab", &"rival_route22_lost", &"rival_route22_won",
 		&"starter_chosen", &"starter_offered", &"viridian_arrived"] as Array[StringName])
@@ -441,6 +471,7 @@ func test_texts_are_the_dossier_02_texts_word_for_word() -> void:
 	var dossier := FileAccess.get_file_as_string(DOSSIER)
 	var dossier_07 := FileAccess.get_file_as_string(DOSSIER_07)
 	var dossier_09 := FileAccess.get_file_as_string(DOSSIER_09)
+	var dossier_11 := FileAccess.get_file_as_string(DOSSIER_11).replace("**", "")
 	var valides := FileAccess.get_file_as_string(TEXTES_VALIDES)
 	for row: Array in _pages():
 		var text: String = row[1]
@@ -448,8 +479,12 @@ func test_texts_are_the_dossier_02_texts_word_for_word() -> void:
 			text = text.replace(token, _DOSSIER_TOKENS[token])
 		# Prologue : dossier 02 ; Route 1 (jalon 5) : dossier 07 ; Jadielle (jalon 7) : dossier 09 ;
 		# anciens brouillons : lot de textes validé le 2026-10-06.
+		# Route 2 (jalon 8) : dossier 11, « / » = retour à la ligne (forcé pour un panneau,
+		# sinon laissé à la bulle).
+		var in_dossier_11 := dossier_11.contains("| %s |" % text.replace("\n", " / ")) \
+			or dossier_11.replace(" / ", " ").contains("| %s |" % text)
 		assert_true(dossier.contains(text) or dossier_07.contains(text)
-			or dossier_09.contains(text) or valides.contains("« %s »" % text),
+			or dossier_09.contains(text) or in_dossier_11 or valides.contains("« %s »" % text),
 			"%s : « %s » dans un dossier de conception" % [row[0], text])
 
 
@@ -487,6 +522,12 @@ func test_speakers_and_narration() -> void:
 		&"route22_youngster_sigh": ["Jeune Dresseur", false],
 		&"route22_rival_hesitates": ["Rival", false], &"route22_rival_greet": ["Rival", false],
 		&"route22_rival_won": ["Rival", false], &"route22_rival_lost": ["Rival", false],
+		# Jalon 8 (dossier 11, T16) : panneaux sans locuteur, comme celui de Bourg Palette.
+		&"route_2_sign": ["", false], &"route_2_forest_sign": ["", false],
+		&"route_2_closed_sign": ["", false], &"route_2_hiker": ["Randonneuse", false],
+		&"route_2_youngster": ["Jeune Dresseur", false], &"route_2_dense_tree": ["", true],
+		&"route_2_closed_gate": ["", true], &"route_2_item_3_found": ["", true],
+		&"route_2_item_4_found": ["", true],
 	}
 	for id: StringName in expected:
 		var dialogue := _library.get_dialogue(id)
@@ -580,7 +621,8 @@ func test_oak_parcel_lines() -> void:
 				launched += 1
 				assert_true(_cutscenes.has_cutscene(variant.cutscene), "%s : scène « %s »" % [
 					id, variant.cutscene])
-	assert_eq(launched, 1, "la scène du colis")
+	# La scène du colis ; jalon 8 : les deux objets visibles de la Route 2 (PRENDRE).
+	assert_eq(launched, 3, "la scène du colis et les deux objets au sol")
 	# Le jeton n'apparaît que dans la réplique de l'espèce.
 	for row: Array in _pages():
 		var tokens := DialogueTokens.tokens_in(row[1])

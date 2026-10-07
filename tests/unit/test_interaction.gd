@@ -70,18 +70,29 @@ func test_accepts_required_facing() -> void:
 
 func test_kind_names_round_trip() -> void:
 	for kind: Interaction.Kind in [Interaction.Kind.TALK, Interaction.Kind.EXAMINE,
-			Interaction.Kind.OBSERVE, Interaction.Kind.MEET]:
+			Interaction.Kind.OBSERVE, Interaction.Kind.MEET, Interaction.Kind.TAKE]:
 		assert_eq(Interaction.kind_from_name(Interaction.kind_name(kind)), kind)
 	assert_eq(Interaction.kind_name(Interaction.Kind.MEET), &"meet")
+	assert_eq(Interaction.kind_name(Interaction.Kind.TAKE), &"take")
+	assert_eq(Interaction.kind_from_name("take"), Interaction.Kind.TAKE)
 	assert_eq(Interaction.kind_from_name("jump"), -1)
 
 
-func test_meet_is_the_last_kind() -> void:
-	# Les scripts d'outil écrivent les valeurs de l'enum dans les cartes (EXAMINE = 1).
+func test_kind_values_are_stable_and_take_is_last() -> void:
+	# Les scripts d'outil écrivent les valeurs de l'enum dans les cartes (EXAMINE = 1) :
+	# une valeur nouvelle s'ajoute en fin d'enum (TAKE, jalon 8 §2.3).
 	assert_eq(Interaction.Kind.TALK, 0)
 	assert_eq(Interaction.Kind.EXAMINE, 1)
 	assert_eq(Interaction.Kind.OBSERVE, 2)
-	assert_eq(Interaction.Kind.MEET, Interaction.Kind.size() - 1)
+	assert_eq(Interaction.Kind.MEET, 3)
+	assert_eq(Interaction.Kind.TAKE, Interaction.Kind.size() - 1)
+
+
+func test_take_needs_a_dialogue_and_has_a_button_verb() -> void:
+	assert_true(Interaction.new(Interaction.Kind.TAKE, PLAYER, &"route_2_ball_1").is_valid())
+	assert_false(Interaction.new(Interaction.Kind.TAKE, PLAYER).is_valid(), "sans dialogue")
+	assert_true(InteractButton.VERBS.has(Interaction.kind_name(Interaction.Kind.TAKE)),
+		"le bouton contextuel connaît PRENDRE")
 
 
 func test_meet_needs_a_source_and_no_dialogue() -> void:

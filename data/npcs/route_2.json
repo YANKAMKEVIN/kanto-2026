@@ -1,0 +1,41 @@
+{
+	"hiker": {
+		"cell": [23, 48], "facing": "up", "sprite": "hiker", "dialogue": "route_2_hiker",
+		"route": { "cells": [[23, 48], [23, 47], [23, 46], [23, 47]], "pause": 1.6 }
+	},
+	"youngster": {
+		"cell": [29, 26], "facing": "right", "sprite": "youngster",
+		"dialogue": "route_2_youngster",
+		"look": { "facings": ["right", "down", "right", "down", "left"], "every": 3.0 }
+	},
+	"youngster_pokemon": {
+		"cell": [30, 26], "facing": "left", "sprite": "pokemon/nidoran_m", "idle_react": 5.0
+	},
+	"pidgey_1": {
+		"cell": [24, 55], "facing": "left", "sprite": "pokemon/pidgey",
+		"shy": { "action": "flee", "radius": 2 }
+	},
+	"pidgey_2": {
+		"cell": [25, 53], "facing": "down", "sprite": "pokemon/pidgey",
+		"shy": { "action": "fly", "radius": 2 }
+	},
+	"rattata": {
+		"cell": [16, 41], "facing": "left", "sprite": "pokemon/rattata",
+		"shy": { "action": "flee", "radius": 2 },
+		"look": { "facings": ["left", "down", "right"], "every": 1.2 }
+	},
+	"nidoran": {
+		"cell": [34, 24], "facing": "down", "sprite": "pokemon/nidoran_f",
+		"look": { "facings": ["down", "left", "down", "right"], "every": 6.0 }
+	},
+	"route_2_ball_1": {
+		"cell": [10, 53], "facing": "down", "sprite": "object/poke_ball_ground",
+		"dialogue": "route_2_ball_1", "verb": "take", "turn_to_player": false,
+		"unless": ["got_route_2_item_1"]
+	},
+	"route_2_ball_2": {
+		"cell": [10, 35], "facing": "down", "sprite": "object/poke_ball_ground",
+		"dialogue": "route_2_ball_2", "verb": "take", "turn_to_player": false,
+		"unless": ["got_route_2_item_2"]
+	}
+}
