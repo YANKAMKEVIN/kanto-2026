@@ -12,7 +12,7 @@ from dataclasses import dataclass, field
 from pathlib import Path
 
 # Cases praticables ; tout autre caractère de la légende est bloqué.
-PRATICABLES = set(".=hvD")
+PRATICABLES = set(".=hvDp")
 HERBES = "h"
 REBORD = "v"
 PORTE = "D"

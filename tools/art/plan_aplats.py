@@ -12,6 +12,9 @@ Usage : python3 tools/art/plan_aplats.py [grille.txt] [sortie.png] [--lisiere]
 --lisiere (vue générale, essai 3) : la géométrie ne change pas ; le plan PORTE la transition
 vers la forêt (canopée plus sombre vers le nord, herbe éloignée du chemin rendue en sous-bois
 ombragé, arbres serrés le long du chemin) et ferme visiblement FUTUR A (masse d'arbre dense).
+--empiler NORD SUD DX (vue générale d'Argenta, J10) : assemble deux cartes raccordées, NORD au-dessus
+de SUD, SUD décalée de DX colonnes vers l'est (forêt autour) ; la case est réduite pour tenir
+dans le format portrait.
 Reproductible : même grille → même image (fleurs tirées avec une graine fixe).
 """
 from __future__ import annotations
@@ -23,7 +26,7 @@ from pathlib import Path
 from PIL import Image, ImageDraw
 
 sys.path.insert(0, str(Path(__file__).parent))
-from plan_grille import lire  # noqa: E402
+from plan_grille import Plan, Position, lire  # noqa: E402
 
 RACINE = Path(__file__).resolve().parents[2]
 CASE = 24
@@ -55,12 +58,30 @@ PANNEAU = (200, 150, 60)
 PANNEAU_BORD = (120, 85, 35)
 BALL_ROUGE = (220, 40, 40)
 BALL_BORD = (40, 40, 40)
+# Ajouts d'Argenta et de la Route 2 nord (J10).
+PAROI = (150, 138, 120)
+PAVE = (205, 192, 168)
+BANC = (125, 85, 50)
+BLOC = (185, 180, 170)
+EBOULIS = (160, 150, 135)
+# Bâtiments : (mur, toit).
+BATIMENTS = {
+	"M": ((222, 210, 185), (120, 100, 85)),   # Musée : pierre claire, grand toit sombre
+	"Z": ((175, 168, 155), (105, 98, 92)),    # Arène : pierre grise massive
+	"C": ((240, 238, 232), (205, 60, 50)),    # Centre Pokémon : toit rouge
+	"O": ((240, 238, 232), (60, 110, 195)),   # Boutique : toit bleu
+	"m": ((228, 212, 182), (165, 95, 65)),    # maison : toit de tuiles
+	"P": (POSTE, POSTE_TOIT),                 # poste de garde
+}
 
 # Couleur de fond de chaque caractère (les symboles sont dessinés par-dessus).
 FOND = {
 	"T": FORET, ".": HERBE, "=": CHEMIN, "h": HAUTES_HERBES, "v": REBORD, "P": POSTE,
 	"D": POSTE, "A": FORET, "a": SENTIER_FERME, "B": SENTIER_FERME, "b": SENTIER_FERME,
 	"R": HERBE, "S": HERBE, "x": HERBE, "G": HERBE, "c": HERBE,
+	"K": PAROI, "p": PAVE, "n": PAVE, "k": HERBE, "E": HERBE, "e": SENTIER_FERME,
+	"M": BATIMENTS["M"][0], "Z": BATIMENTS["Z"][0], "C": BATIMENTS["C"][0],
+	"O": BATIMENTS["O"][0], "m": BATIMENTS["m"][0],
 }
 # Part des cases d'herbe rase fleuries, par rangée (du sud, très fleuri, au nord, aucune).
 FLEURS_SUD = 0.35
@@ -133,8 +154,40 @@ def _futur_a_ferme(plan, d, centre) -> None:
 		_disque(d, cx, cy, CASE * 1.1, (14, 52, 34), SOMBRE_BORD)
 
 
-def dessiner(grille: Path, sortie: Path, lisiere: bool = False) -> Path:
-	plan = lire(grille)
+def empiler(nord: Plan, sud: Plan, dx: int) -> Plan:
+	"""NORD au-dessus de SUD (décalée de dx colonnes), forêt autour ; positions recalées."""
+	largeur = max(nord.width, sud.width + dx)
+	rows = [r.ljust(largeur, "T") for r in nord.rows]
+	rows += [("T" * dx + r).ljust(largeur, "T") for r in sud.rows]
+	plan = Plan(largeur, len(rows), rows)
+	plan.positions = dict(nord.positions)
+	for ident, p in sud.positions.items():
+		cells = [(x + dx, y + nord.height) for x, y in p.cells]
+		plan.positions["sud_" + ident] = Position(ident, p.kind, cells, p.bloque, p.note)
+	return plan
+
+
+def _composantes(plan: Plan, char: str) -> list[list[tuple[int, int]]]:
+	reste = set(plan.cells_of(char))
+	groupes = []
+	while reste:
+		pile = [reste.pop()]
+		groupe = []
+		while pile:
+			x, y = pile.pop()
+			groupe.append((x, y))
+			for v in ((x + 1, y), (x - 1, y), (x, y + 1), (x, y - 1)):
+				if v in reste:
+					reste.remove(v)
+					pile.append(v)
+		groupes.append(groupe)
+	return groupes
+
+
+def dessiner(grille: Path | Plan, sortie: Path, lisiere: bool = False) -> Path:
+	global CASE
+	plan = grille if isinstance(grille, Plan) else lire(grille)
+	CASE = min(24, TAILLE[0] // plan.width, TAILLE[1] // plan.height)
 	img = Image.new("RGB", TAILLE, FORET)
 	d = ImageDraw.Draw(img)
 	ox = (TAILLE[0] - plan.width * CASE) // 2
@@ -158,9 +211,16 @@ def dessiner(grille: Path, sortie: Path, lisiere: bool = False) -> Path:
 			x0, y0 = coin(x, y)
 			if lisiere and c == "T":
 				continue  # la forêt suit le dégradé déjà peint
-			d.rectangle([x0, y0, x0 + CASE - 1, y0 + CASE - 1], fill=FOND[c])
+			fond = FOND[c]
+			if c == "D":
+				for vx, vy in ((x - 1, y), (x + 1, y), (x, y - 1), (x, y + 1)):
+					if 0 <= vx < plan.width and 0 <= vy < plan.height \
+							and plan.rows[vy][vx] in BATIMENTS:
+						fond = BATIMENTS[plan.rows[vy][vx]][0]
+						break
+			d.rectangle([x0, y0, x0 + CASE - 1, y0 + CASE - 1], fill=fond)
 			# Chemins et sentiers qui sortent de la carte : prolongés jusqu'au bord de l'image.
-			if c in "=ab":
+			if c in "=abe":
 				x1, y1 = x0 + CASE - 1, y0 + CASE - 1
 				if x == 0:
 					d.rectangle([0, y0, x0, y1], fill=FOND[c])
@@ -184,16 +244,33 @@ def dessiner(grille: Path, sortie: Path, lisiere: bool = False) -> Path:
 				_disque(d, cx + alea.uniform(-6, 6), cy + alea.uniform(-6, 6), 2.5, FLEUR)
 
 	# 3. Poste : toit plus sombre sur la moitié haute de l'emprise, porte.
-	poste = plan.cells_of("P") + plan.cells_of("D")
+	portes_poste = [(x, y) for x, y in plan.cells_of("D")
+		if any(0 <= x + dx < plan.width and 0 <= y + dy < plan.height
+			and plan.rows[y + dy][x + dx] == "P" for dx, dy in ((1, 0), (-1, 0), (0, 1), (0, -1)))]
+	poste = plan.cells_of("P") + portes_poste
 	if poste:
 		xs = [x for x, _ in poste]
 		ys = [y for _, y in poste]
 		x0, y0 = coin(min(xs), min(ys))
 		x1, y1 = coin(max(xs) + 1, max(ys) + 1)
 		d.rectangle([x0, y0, x1 - 1, y0 + (y1 - y0) // 2], fill=POSTE_TOIT)
-	for x, y in plan.cells_of("D"):
+	for x, y in portes_poste:
 		x0, y0 = coin(x, y)
 		d.rectangle([x0 + 6, y0 + 6, x0 + CASE - 7, y0 + CASE - 1], fill=PORTE)
+
+	# 3 bis. Autres bâtiments (J10) : toit sur la moitié haute de chaque emprise, portes.
+	for char in "MZCOm":
+		for groupe in _composantes(plan, char):
+			xs = [x for x, _ in groupe]
+			ys = [y for _, y in groupe]
+			x0, y0 = coin(min(xs), min(ys))
+			x1, y1 = coin(max(xs) + 1, max(ys) + 1)
+			d.rectangle([x0, y0, x1 - 1, y0 + (y1 - y0) * 3 // 5], fill=BATIMENTS[char][1])
+	for x, y in plan.cells_of("D"):
+		if any(plan.rows[y][x2] in "MZCOm" for x2 in (x - 1, x + 1) if 0 <= x2 < plan.width):
+			x0, y0 = coin(x, y)
+			d.rectangle([x0 + CASE // 4, y0 + CASE // 4, x0 + CASE - CASE // 4 - 1, y0 + CASE - 1],
+				fill=PORTE)
 
 	# 4. Symboles par case.
 	panneaux = {c for p in plan.of_kind("panneau") for c in p.cells}
@@ -211,13 +288,20 @@ def dessiner(grille: Path, sortie: Path, lisiere: bool = False) -> Path:
 				d.rectangle([cx - 3, y0, cx + 3, y0 + CASE - 1], fill=BLANC)
 			elif c == "c":
 				d.rectangle([x0, cy - 2, x0 + CASE - 1, cy + 2], fill=BLANC)
+			elif c == "n":
+				d.rectangle([x0 + 2, cy - 3, x0 + CASE - 3, cy + 3], fill=BANC)
+			elif c == "k":
+				d.rectangle([x0 + 2, y0 + 3, x0 + CASE - 3, y0 + CASE - 3], fill=BLOC,
+					outline=PIERRE_BORD)
+			elif c == "E":
+				for ex, ey, er in ((-0.2, -0.2, 0.35), (0.25, 0.1, 0.3), (-0.15, 0.3, 0.25)):
+					_disque(d, cx + ex * CASE, cy + ey * CASE, CASE * er, EBOULIS, PIERRE_BORD)
 	for x, y in sorted(panneaux):
 		cx, cy = centre(x, y)
 		d.rectangle([cx - 6, cy - 6, cx + 6, cy + 6], fill=PANNEAU, outline=PANNEAU_BORD)
 
 	# 5. Grande pierre : une ellipse sur toute son emprise.
-	pierre = plan.cells_of("R")
-	if pierre:
+	for pierre in _composantes(plan, "R"):
 		xs = [x for x, _ in pierre]
 		ys = [y for _, y in pierre]
 		x0, y0 = coin(min(xs), min(ys))
@@ -248,6 +332,10 @@ def dessiner(grille: Path, sortie: Path, lisiere: bool = False) -> Path:
 
 def main() -> int:
 	args = [a for a in sys.argv[1:] if not a.startswith("--")]
+	if "--empiler" in sys.argv:
+		nord, sud, dx, sortie = args[0], args[1], int(args[2]), Path(args[3])
+		print(dessiner(empiler(lire(Path(nord)), lire(Path(sud)), dx), sortie))
+		return 0
 	grille = Path(args[0]) if len(args) > 0 else RACINE / "tools/plans/route_2.txt"
 	sortie = Path(args[1]) if len(args) > 1 else RACINE / "build/art/PLAN_ROUTE2_v1.png"
 	print(dessiner(grille, sortie, "--lisiere" in sys.argv))

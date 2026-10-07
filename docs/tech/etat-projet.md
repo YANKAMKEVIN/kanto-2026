@@ -7,6 +7,10 @@ Mis à jour : 2026-10-07 (**dossier 12 Argenta verrouillé : 20 arbitrages et te
 - V1 de ChatGPT reçue (prompt `docs/design/prompts/chatgpt-dossier-12-argenta.md`), passe d'alignement de Claude, **20 arbitrages tranchés par Kevin (toutes les recommandations retenues)** → `docs/design/dossier-12-argenta.md`.
 - Points clés : Pierre fidèle à Rouge/Bleu (Racaillou 12, Onix 14, une seule attaque Roche, IA `smart`) ; réponse de Salamèche = Papilusion + Flammèche (Férosinge n'a Poing-Karaté qu'au Nv. 15) ; badge sans bonus caché, ouvre la Route 3 (garde) ; CT de Pierre au J11 ; grand moment « badge » générique avec souvenir de l'équipe (dans les détails du moment, sans changement de format) ; roadmap inchangée (Route 3 au J12).
 - **Textes validés par Kevin (2026-10-07)** : dossier entièrement verrouillé.
+- **Vue générale peinte d'Argenta + Route 2 nord (préparée le 2026-10-07, branche `art/argenta-vue-generale`)** : grilles `tools/plans/argenta.txt` (52 × 44) et `tools/plans/route_2_nord.txt` (30 × 24), raccord (17..19, 43) ↔ (14..16, 0) ; `plan_aplats.py` étendu (paroi, pavé, bâtiments, éboulis, case automatique, `--empiler`) sans changer le plan de la Route 2 (identique au pixel) ; prompt `tools/art/prompts/CONCEPT_ARGENTA_VUE_GENERALE_r1.txt`. **Défaut (règle 4)** : Musée au sud-ouest, visible dès l'entrée (arbitrage 10). Commande (Mac, Codex, 3 essais au plus) :
+  `python3 tools/art/plan_aplats.py --empiler tools/plans/argenta.txt tools/plans/route_2_nord.txt 3 build/art/PLAN_ARGENTA_v1.png`
+  `tools/art/generer.sh CONCEPT_ARGENTA_VUE_GENERALE_r1 tools/art/prompts/CONCEPT_ARGENTA_VUE_GENERALE_r1.txt build/art/PLAN_ARGENTA_v1.png docs/design/reference/route-2-vue-generale-v1.png docs/design/reference/jadielle-vue-generale-v1.webp`
+  puis validation de Kevin sur l'image.
 - **Prochaine étape** : **après la fusion du J9**, plan technique `docs/tech/jalon-10.md` (architecte) — niveaux de Pierre ajustés sur la vraie partie mesurée en fin de J9. **Aucun code.**
 
 ## Jalon 8 — Route 2 sud : TERMINÉ, validé par Kevin sur S24 et fusionné dans `main` (2026-10-07, branche `docs/dossier-11-route-2`)

@@ -109,6 +109,7 @@ Un **sas court** entre la forêt et Argenta, pas une deuxième Route 2.
              ROUTE 2 NORD
 ```
 
+- **Grilles fonctionnelles** (2026-10-07, défauts de la règle 4) : `tools/plans/argenta.txt` et `tools/plans/route_2_nord.txt`, sources de la géométrie (plan en aplats, vue générale, construction). Pour tenir l'arbitrage 10, **le Musée est au sud-ouest, contre l'avenue d'arrivée**, et l'Arène ferme la ville au nord-est ; le tracé ci-dessus garde la logique, pas les positions.
 - **Le Musée et l'Arène** sont les deux masses architecturales dominantes ; **les reliefs** se voient derrière la ville.
 - **Le Musée est visible dès le premier écran** en arrivant du sud (arbitrage 10).
 - **Sortie est** vers la Route 3 : existe dès l'arrivée, gardée jusqu'au badge (§9). Après le badge : « ROUTE 3 — À venir » en développement.
