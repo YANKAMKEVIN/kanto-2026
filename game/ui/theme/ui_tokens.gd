@@ -1179,22 +1179,44 @@ const TEXT_MUTED_CONTRAST := Color("#E2E8F2")
 # --- Écran Paramètres et choix à deux cartes (jalon 6, T28) -------------------------------------
 # Paysage : catégories à gauche, contrôles de la catégorie ouverte à droite. Chaque contrôle fait
 # au moins SETTINGS_ROW_HEIGHT de haut (zone tactile ≥ TOUCH_MIN) ; la valeur est toujours écrite.
-const SETTINGS_CATEGORY_WIDTH := 460
-const SETTINGS_CATEGORY_ICON := 48
-const SETTINGS_CATEGORY_GAP := 12
-const SETTINGS_ROW_HEIGHT := TOUCH_MIN + 16
-const SETTINGS_ROW_GAP := 12
-const SETTINGS_ROW_PAD_H := 24
-const SETTINGS_ROW_PAD_V := 8
-const SETTINGS_ROW_BG := Color(1, 1, 1, 0.06)
-const SETTINGS_PANEL_TITLE_FONT := FONT_BUTTON
-const SETTINGS_LABEL_FONT := FONT_BODY
+# MM.3 (maquette, valeurs par défaut règle 4) : catégories de verre à gauche (la choisie en
+# ACCENT avec un halo), section de verre à droite (icône, titre, sous-titre), lignes séparées par
+# un filet dans une carte intérieure.
+const SETTINGS_CATEGORY_WIDTH := 420
+const SETTINGS_CATEGORY_ICON := 44
+const SETTINGS_CATEGORY_GAP := 10
+const SETTINGS_CATEGORY_FONT := FONT_BODY
+const SETTINGS_CATEGORY_BG := Color(1, 1, 1, 0.05)
+const SETTINGS_CATEGORY_GLOW := Color(0.96, 0.77, 0.26, 0.4)
+const SETTINGS_CATEGORY_GLOW_SIZE := 14
+const SETTINGS_ROW_HEIGHT := TOUCH_MIN
+const SETTINGS_ROW_GAP := 0
+const SETTINGS_ROW_PAD_H := 28
+const SETTINGS_ROW_PAD_V := 6
+const SETTINGS_ROW_BG := Color(1, 1, 1, 0.0)
+const SETTINGS_ROW_DIVIDER := Color(1, 1, 1, 0.09)
+const SETTINGS_ROW_DIVIDER_WIDTH := 2
+const SETTINGS_ROW_PRESSED_BG := Color(0.96, 0.77, 0.26, 0.16)
+const SETTINGS_PANEL_TITLE_FONT := FONT_TITLE
+const SETTINGS_SUBTITLE_FONT := FONT_CAPTION
+const SETTINGS_SECTION_ICON := 64
+const SETTINGS_SECTION_GAP := 20
+const SETTINGS_LABEL_FONT := 30
 const SETTINGS_DETAIL_FONT := FONT_CAPTION
 const SETTINGS_VALUE_FONT := 28
 const SETTINGS_OPTION_FONT := 28
-const SETTINGS_OPTION_MIN_WIDTH := 180
-const SETTINGS_OPTION_GAP := 12
 const SETTINGS_TEXT_MIN_WIDTH := 300
+## Sélecteur « ‹ Valeur › » : pilule de SETTINGS_PILL_HEIGHT dessinée dans une rangée de
+## TOUCH_MIN ; flèches de TOUCH_MIN de côté, valeur au milieu.
+const SETTINGS_PILL_HEIGHT := 76
+const SETTINGS_PILL_BG := Color(1, 1, 1, 0.07)
+const SETTINGS_PILL_BORDER := Color(1, 1, 1, 0.16)
+const SETTINGS_PILL_VALUE_WIDTH := 250
+const SETTINGS_ARROW_ICON := 30
+const SETTINGS_ARROW_PRESSED_DRAW := 64
+const SETTINGS_ARROW_OFF := Color(1, 1, 1, 0.22)
+## Valeur écrite à côté d'un interrupteur (« Activé ») : discrète, la règle 7 la garde.
+const SETTINGS_STATE_FONT := FONT_CAPTION
 ## Interrupteur : piste arrondie (vert SUCCESS activé, grisé sinon) et pastille blanche.
 const SETTINGS_SWITCH_SIZE := Vector2(112, 64)
 const SETTINGS_SWITCH_KNOB := 48
@@ -1206,8 +1228,10 @@ const SETTINGS_SLIDER_TRACK := 12
 const SETTINGS_SLIDER_KNOB := 56
 const SETTINGS_SLIDER_VALUE_WIDTH := 110
 const SETTINGS_SLIDER_TRACK_BG := Color(1, 1, 1, 0.18)
-## Action « Sauvegarder maintenant ».
-const SETTINGS_ACTION_WIDTH := 480
+## Action « Sauvegarder maintenant » : toute la ligne se touche ; icône sombre dans un rond
+## ACCENT à droite (action principale).
+const SETTINGS_ACTION_ROUND := 88
+const SETTINGS_ACTION_ICON := 40
 const SETTINGS_ACTION_OFF_BG := Color(1, 1, 1, 0.10)
 ## Résultat de la sauvegarde : barre sous les contrôles, tenue avant de s'effacer.
 const SETTINGS_RESULT_HEIGHT := 88

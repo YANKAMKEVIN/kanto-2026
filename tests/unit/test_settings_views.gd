@@ -112,3 +112,13 @@ func test_save_result_text() -> void:
 	assert_eq(SettingsViews.save_result_text(OK, {}), SettingsViews.SAVE_DONE_TEXT)
 	assert_eq(SettingsViews.save_result_text(ERR_FILE_CANT_WRITE, {"hour": 1, "minute": 2}),
 		SettingsViews.SAVE_FAILED_TEXT)
+
+
+func test_every_category_has_a_section_subtitle() -> void:
+	var subtitles: Array[String] = []
+	for category: SettingsCategoryView in _build().categories:
+		assert_ne(category.subtitle, "", String(category.id))
+		assert_false(subtitles.has(category.subtitle), "un sous-titre par section")
+		subtitles.append(category.subtitle)
+	assert_eq(_build().category(SettingsViews.CATEGORY_CONTROLS).subtitle,
+		SettingsViews.SUBTITLE_CONTROLS)

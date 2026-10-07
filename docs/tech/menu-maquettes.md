@@ -109,3 +109,36 @@ Carte et Dresseur rapprochés des maquettes **sans changer la logique** (`MapJou
 
 ## Validation MM.2 (Kevin, S24, 2026-10-07)
 Carte et Dresseur **validés** (« tout est ok »). Décisions : détail d'un badge obtenu au toucher → **J10** ; équipe de l'écran Dresseur **non touchable** (recommandation suivie) ; vraies illustrations des aperçus de lieux → **phase DA**. Pokédex non vu sur S24 (pas encore activé dans la partie de Kevin : colis non livré) ; « ‹ » seul vérifié sur capture Mac. Prochain : MM.3 (Paramètres).
+
+## Fait au MM.3 (2026-10-07, branche `menu-maquettes`)
+Écran Paramètres rapproché de la maquette **sans aucun réglage nouveau** : mêmes catégories, mêmes réglages, même contrat (`SettingsViews`, `GameSettings`, `MenuDirector`, `setting_changed(clé, valeur du réglage)`, `save_now_requested`, l'écran n'invente pas l'état). Seul ajout de vue : `SettingsCategoryView.subtitle` (sous-titre de section, repris de la maquette, testé).
+
+**Présentation** (`SettingsScreen`, thème `Settings*` régénéré) : « ‹ » rond à la place du × (`owns_back`), engrenage et « Paramètres », bandeau d'état de l'hôte (lieu) ; fond clair et verre comme MM.1/MM.2. À gauche, catégories de verre avec icône, en casse de phrase (« Jeu », « Commandes », « Accessibilité », « Graphismes » ; conversion à l'affichage, la vue garde ses titres), la choisie en ACCENT avec un halo ; le panneau est haut comme sa liste. À droite, **la catégorie ouverte = une section de verre** : icône, titre, sous-titre ; lignes dans une carte intérieure, séparées par un filet (pas sous la dernière). La section est **haute comme ses lignes** (Graphismes : une ligne, le monde reste visible dessous) et défile seulement si elles dépassent (texte Grande, petit écran). Le résultat de la sauvegarde s'affiche sous la carte.
+- **Choix** → sélecteur « ‹ Valeur › » (pilule de verre, valeur écrite au milieu, flèches de 128 px touchables) : une flèche = la valeur de l'option voisine ; aux bouts, la flèche est éteinte (hors des cibles touchables) et ne fait rien — pas de retour au début, la position se lit. « Auto (Élevée) » reste écrit.
+- **Interrupteurs** : toute la ligne se touche, interrupteur vert, état écrit à côté en discret (« Activé » / « Désactivé », règle 7).
+- **Curseur** : piste ACCENT, pastille blanche, pourcentage à droite (inchangé).
+- **Sauvegarder maintenant** : toute la ligne se touche (comme un interrupteur), icône dans un rond ACCENT à droite ; inactive = ligne grisée avec sa raison.
+
+**Tests** : `tests/integration/test_menu_mm3.gd` (10 : « ‹ » à la place du ×, bandeau, verre ; catégories avec icône en casse de phrase ; section = icône, titre, sous-titre de la catégorie ouverte ; **chaque réglage existant présent avec son contrôle et rien de plus** ; **chaque réglage fonctionne depuis l'écran** (interrupteurs, sélecteurs, curseur, sauvegarde) ; filets sauf la dernière ligne ; aucun texte hors champ ; cibles ≥ 128 dans la marge à 1920 et 2340, tout visible sans défiler à 1080 ; texte Grande : le sélecteur tient dans sa ligne ; section courte / longue) ; `test_settings_views.gd` (+1 : sous-titres). Mis à jour (présentation) : `test_settings_screen.gd` (flèches au lieu des options côte à côte, titres en casse de phrase, nouveau test « flèche au bout », « sélecteur dans une pilule » ; les tests « toucher ou défilement » prennent un écran de 800 px de haut, car COMMANDES tient maintenant dans 1080), `test_menu_settings.gd` (flèches). `tools/capture_settings_t29.gd` suit le sélecteur ; `tools/capture_menu.gd` pose le lieu et rouvre JEU par défaut.
+
+**Perf (Mac, 2340 × 1080, `tools/capture_menu.gd`)** : Paramètres 224–254 appels de dessin / 88,5 Mo (texte Grande et contraste : ≈ 325, mémoire cumulée de la session de capture) ; 1920 : ≈ 25 appels de moins. Pas d'image ajoutée.
+
+**Captures** : `build/captures/menu_mm3/` (dossier principal) : `*_2340x1080.png`, `*_1920x1080.png` (settings, settings_controls, settings_access, settings_graphics, settings_save, settings_no_save, left_handed, text_large_settings, contrast_settings) et planches jeu / maquette `cmp_*` (maquette en portrait, proportions gardées).
+
+**Valeurs par défaut (règle 4)** : catégories 420 px, icône 44, police 32, halo ACCENT 0,4 / 14 px ; lignes de 128 px (au lieu de 144 : la maquette est plus serrée, la cible reste 128), filet blanc 9 % de 2 px, appui teinté d'ACCENT 16 % ; titre de section 44, sous-titre 24, icône 64 ; libellé 30, état d'un interrupteur 24 en TEXT_MUTED ; pilule 76 px dessinés, valeur 250 px, flèches 30 px dessinées (128 touchables), flèche éteinte à 22 % ; rond de l'action 88 px ACCENT ; pas de retour au début dans un sélecteur.
+
+**Écarts restants avec la maquette (et pourquoi)** :
+- **Contenu** : ni difficulté, animations de combat, conseils, interface adaptative, configuration des boutons, caméra, axe Y, HDR, fréquence d'images, luminosité, Audio, Langue, Compte, Divers, Cloud, sauvegarde automatique désactivable, restaurer / supprimer, mode daltonien, aide à la navigation (dossier 08 §7 « exclus », Q-17 pour l'Audio) ; pas d'« Aperçu graphique » illustré ni de cartes Qualité / Performance (Graphismes garde son sélecteur Auto · Élevée · Économie ; une illustration du MM.0 n'aurait rien montré de vrai).
+- **Composition** : la maquette est en portrait et empile toutes les sections ; en paysage, **une catégorie ouverte à la fois** (contrat de l'écran inchangé, rien à faire défiler à 1080). Lignes plus hautes que la maquette (cible tactile 128).
+- **Bandeau d'état** : lieu seulement (ni heure ni argent ni « 27/151 », règles des dossiers 08 et 09, heure cachée tant que le jour/nuit n'existe pas).
+- **Interrupteurs** : l'état reste écrit (« Activé ») à côté, que la maquette n'a pas (règle 7 : jamais la couleur seule).
+- **Sauvegarder maintenant** : rond ACCENT avec l'icône de sauvegarde au lieu d'un « › » (c'est une action immédiate, pas une page).
+- Icônes des catégories : celles du J6 (manette, cible, silhouette, écran), pas d'engrenage pour « Jeu ».
+
+**Textes à relire par Kevin** : sous-titres des sections (« Paramètres principaux du jeu. », « Personnalise tes contrôles. », « Rends le jeu accessible à tous. », « Ajuste la qualité visuelle du jeu. », repris de la maquette) ; noms des catégories en casse de phrase (« Jeu »… au lieu de « JEU »).
+
+**Remarque (hors MM.3, déjà sur `main`)** : la capture `left_handed` de `tools/capture_menu.gd` sort assombrie (même résultat sur `main`) ; le HUD n'a pas changé ici. À regarder avec l'outil de capture, pas avec le jeu.
+
+**Questions** :
+- **Q-MM3-1** : sélecteur « ‹ Valeur › » (maquette) au lieu des options côte à côte du J6 : on voit moins vite toutes les options (Vitesse du texte en a quatre). Garder le sélecteur partout, ou revenir aux options côte à côte pour Vitesse du texte ?
+- **Q-MM3-2** : aux bouts d'un sélecteur, flèche éteinte (défaut) ou retour au début ?

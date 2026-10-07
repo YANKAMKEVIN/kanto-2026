@@ -19,6 +19,11 @@ const SAVE_DONE_TEXT: String = "Partie sauvegardée"
 const SAVE_FAILED_TEXT: String = "La sauvegarde n'a pas pu être écrite."
 const SAVE_DISABLED_TEXT: String = "Sauvegarde désactivée pour cette session."
 const SAVE_DETAIL_TEXT: String = "La partie se sauvegarde aussi toute seule."
+## Sous-titres des sections (MM.3, repris de la maquette ; à relire par Kevin).
+const SUBTITLE_GAME: String = "Paramètres principaux du jeu."
+const SUBTITLE_CONTROLS: String = "Personnalise tes contrôles."
+const SUBTITLE_ACCESSIBILITY: String = "Rends le jeu accessible à tous."
+const SUBTITLE_GRAPHICS: String = "Ajuste la qualité visuelle du jeu."
 
 
 ## Vue de l'écran. [param device_quality] : ce que donne Auto sur cet appareil
@@ -28,7 +33,7 @@ const SAVE_DETAIL_TEXT: String = "La partie se sauvegarde aussi toute seule."
 static func build(settings: GameSettings, device_quality: GameSettings.Graphics,
 		can_save: bool) -> SettingsView:
 	var view := SettingsView.new()
-	var game := SettingsCategoryView.new(CATEGORY_GAME, "JEU")
+	var game := SettingsCategoryView.new(CATEGORY_GAME, "JEU", SUBTITLE_GAME)
 	game.controls.append(_choice(GameSettings.TEXT_SPEED, "Vitesse du texte",
 		"Dans les dialogues.", settings.text_speed,
 		[["Lente", GameSettings.TextSpeed.SLOW], ["Normale", GameSettings.TextSpeed.NORMAL],
@@ -44,7 +49,8 @@ static func build(settings: GameSettings, device_quality: GameSettings.Graphics,
 	game.controls.append(save)
 	view.categories.append(game)
 
-	var controls := SettingsCategoryView.new(CATEGORY_CONTROLS, "COMMANDES")
+	var controls := SettingsCategoryView.new(CATEGORY_CONTROLS, "COMMANDES",
+		SUBTITLE_CONTROLS)
 	controls.controls.append(_choice(GameSettings.JOYSTICK_SCALE, "Taille du joystick", "",
 		settings.joystick_scale, [["Petite", GameSettings.JOYSTICK_SCALES[0]],
 		["Normale", GameSettings.JOYSTICK_SCALES[1]], ["Grande", GameSettings.JOYSTICK_SCALES[2]]]))
@@ -66,7 +72,8 @@ static func build(settings: GameSettings, device_quality: GameSettings.Graphics,
 		"Joystick à droite, boutons à gauche.", settings.left_handed))
 	view.categories.append(controls)
 
-	var access := SettingsCategoryView.new(CATEGORY_ACCESSIBILITY, "ACCESSIBILITÉ")
+	var access := SettingsCategoryView.new(CATEGORY_ACCESSIBILITY, "ACCESSIBILITÉ",
+		SUBTITLE_ACCESSIBILITY)
 	access.controls.append(_choice(GameSettings.TEXT_SIZE, "Taille du texte", "",
 		settings.text_size, [["Normale", GameSettings.TextSize.NORMAL],
 		["Grande", GameSettings.TextSize.LARGE]]))
@@ -78,7 +85,8 @@ static func build(settings: GameSettings, device_quality: GameSettings.Graphics,
 		"Coups et captures sans éclair vif.", settings.reduce_flashes))
 	view.categories.append(access)
 
-	var graphics := SettingsCategoryView.new(CATEGORY_GRAPHICS, "GRAPHISMES")
+	var graphics := SettingsCategoryView.new(CATEGORY_GRAPHICS, "GRAPHISMES",
+		SUBTITLE_GRAPHICS)
 	var quality := _choice(GameSettings.GRAPHICS, "Qualité",
 		"Économie : 30 images par seconde, pour la batterie.", settings.graphics,
 		[["Auto", GameSettings.Graphics.AUTO], ["Élevée", GameSettings.Graphics.HIGH],
