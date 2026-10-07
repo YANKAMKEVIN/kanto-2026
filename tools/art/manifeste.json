@@ -1225,6 +1225,42 @@
    "cases": 3,
    "ombre": false,
    "contact": 0.3
+  },
+  {
+   "id": "prop_tronc_incline_01",
+   "source": "WORLD_PROP_TRONC_INCLINE_01_NE_r1.png",
+   "sortie": "assets/world/props/prop_tronc_incline_01.png",
+   "axe": "w",
+   "cases": 4,
+   "ombre": false,
+   "contact": 0.15
+  },
+  {
+   "id": "prop_grande_souche_01",
+   "source": "WORLD_PROP_GRANDE_SOUCHE_01_NE_r1.png",
+   "sortie": "assets/world/props/prop_grande_souche_01.png",
+   "axe": "w",
+   "cases": 3.4,
+   "ombre": false,
+   "contact": 0.2
+  },
+  {
+   "id": "prop_racines_01",
+   "source": "WORLD_PROP_RACINES_01_NE_r1.png",
+   "sortie": "assets/world/props/prop_racines_01.png",
+   "axe": "w",
+   "cases": 1.6,
+   "ombre": false,
+   "contact": 0.2
+  },
+  {
+   "id": "prop_sac_rando_01",
+   "source": "WORLD_PROP_SAC_RANDO_01_NE_r1.png",
+   "sortie": "assets/world/props/prop_sac_rando_01.png",
+   "axe": "w",
+   "cases": 0.7,
+   "ombre": false,
+   "contact": 0.3
   }
  ],
  "hautes_herbes": {
@@ -1303,6 +1339,15 @@
     16,
     11
    ]
+  },
+  {
+   "id": "int_poste_foret_coque",
+   "source": "INT_POSTE_FORET_COQUE_NE_r1.png",
+   "sortie": "assets/world/interiors/int_poste_foret_coque.png",
+   "cases": [
+    10,
+    8
+   ]
   }
  ],
  "decor": [
@@ -1380,6 +1425,14 @@
    "source": "WORLD_GROUND_FLEURS_COTIERES_01_NE_r1.png",
    "dossier": "assets/world/ground/decals/",
    "prefixe": "decal_cote_",
+   "colonnes": 4,
+   "lignes": 2,
+   "largeur_cases": 0.6
+  },
+  {
+   "source": "WORLD_GROUND_SOUS_BOIS_01_NE_r1.png",
+   "dossier": "assets/world/ground/decals/",
+   "prefixe": "decal_sousbois_",
    "colonnes": 4,
    "lignes": 2,
    "largeur_cases": 0.6
@@ -1549,6 +1602,24 @@
    "id": "randonneuse",
    "source": "PNJ_RANDONNEUSE_NE_r1.png",
    "sortie": "assets/sprites/characters/painted/randonneuse_sheet.png",
+   "hauteur": 128
+  },
+  {
+   "id": "garde",
+   "source": "PNJ_GARDE_NE_r1.png",
+   "sortie": "assets/sprites/characters/painted/garde_sheet.png",
+   "hauteur": 130
+  },
+  {
+   "id": "scout",
+   "source": "PNJ_SCOUT_NE_r1.png",
+   "sortie": "assets/sprites/characters/painted/scout_sheet.png",
+   "hauteur": 112
+  },
+  {
+   "id": "naturaliste",
+   "source": "PNJ_NATURALISTE_NE_r1.png",
+   "sortie": "assets/sprites/characters/painted/naturaliste_sheet.png",
    "hauteur": 128
   }
  ],
@@ -1770,6 +1841,24 @@
    "source": "RANDONNEUSE_ATTENTE_r1.png",
    "sortie": "assets/sprites/characters/painted/randonneuse_idle_sheet.png",
    "marche": "randonneuse"
+  },
+  {
+   "id": "garde_idle",
+   "source": "GARDE_ATTENTE_r1.png",
+   "sortie": "assets/sprites/characters/painted/garde_idle_sheet.png",
+   "marche": "garde"
+  },
+  {
+   "id": "scout_idle",
+   "source": "SCOUT_ATTENTE_r1.png",
+   "sortie": "assets/sprites/characters/painted/scout_idle_sheet.png",
+   "marche": "scout"
+  },
+  {
+   "id": "naturaliste_idle",
+   "source": "NATURALISTE_ATTENTE_r1.png",
+   "sortie": "assets/sprites/characters/painted/naturaliste_idle_sheet.png",
+   "marche": "naturaliste"
   }
  ],
  "images_objets": [
@@ -1785,6 +1874,32 @@
    "masque": "disque",
    "sortie": "assets/sprites/objects/painted/poke_ball_ground.png",
    "hauteur": 40
+  }
+ ],
+ "pokemon_fixes": [
+  {
+   "id": "chenipan",
+   "source": "POKE_CHENIPAN_FIXE_NE_r1.png",
+   "sortie": "assets/sprites/pokemon/painted/chenipan_sheet.png",
+   "hauteur": 44
+  },
+  {
+   "id": "aspicot",
+   "source": "POKE_ASPICOT_FIXE_NE_r1.png",
+   "sortie": "assets/sprites/pokemon/painted/aspicot_sheet.png",
+   "hauteur": 44
+  },
+  {
+   "id": "chrysacier",
+   "source": "POKE_CHRYSACIER_FIXE_NE_r1.png",
+   "sortie": "assets/sprites/pokemon/painted/chrysacier_sheet.png",
+   "hauteur": 56
+  },
+  {
+   "id": "coconfort",
+   "source": "POKE_COCONFORT_FIXE_NE_r1.png",
+   "sortie": "assets/sprites/pokemon/painted/coconfort_sheet.png",
+   "hauteur": 56
   }
  ]
 }

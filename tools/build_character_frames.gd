@@ -66,6 +66,10 @@ const LOOKS: Dictionary = {
 	"chercheur": [CHARACTERS_DIR, "researcher", ""],
 	# J8 (série 10, Route 2) : P1, avec sa planche d'attente.
 	"randonneuse": [CHARACTERS_DIR, "hiker", ""],
+	# J9 (série 11, Forêt de Jade) : gardes, Scouts, naturaliste, avec leur planche d'attente.
+	"garde": [CHARACTERS_DIR, "guard", ""],
+	"scout": [CHARACTERS_DIR, "scout", ""],
+	"naturaliste": [CHARACTERS_DIR, "naturalist", ""],
 	"roucool": [POKEMON_DIR, "pidgey", ""],
 	"rattata": [POKEMON_DIR, "rattata", "rattata_run"],
 	"piafabec": [POKEMON_DIR, "spearow", ""],
@@ -78,6 +82,20 @@ const LOOKS: Dictionary = {
 	"salameche": [POKEMON_DIR, "charmander", ""],
 	"carapuce": [POKEMON_DIR, "squirtle", ""],
 }
+## Pokémon fixes (genre « Pokémon fixe », jalon 9 §2.8.5) : feuille 6 × 1 du catalogue
+## (« personnages ») → identifiant de données. Ils ne marchent jamais.
+const FIXED_POKEMON: Dictionary = {
+	"chenipan": "caterpie",
+	"aspicot": "weedle",
+	"chrysacier": "metapod",
+	"coconfort": "kakuna",
+}
+## Colonnes de la feuille 6 × 1 : repos et réaction de chaque direction (droite = miroir).
+const FIXED_COLUMNS := {
+	"down": [0, 1], "up": [0, 1], "left": [2, 3], "right": [4, 5],
+}
+## Durées relatives de `react_<dir>` (vitesse 1) : repos, réaction tenue ≈ 0,6 s, repos.
+const REACT_DURATIONS: Array[float] = [0.15, 0.6, 0.15]
 ## Objets fixes : image (catalogue, « images ») → identifiant de données (`object/<id>`).
 const FIXED_OBJECTS: Dictionary = {
 	"poke_ball_ground": "poke_ball_ground",
@@ -106,7 +124,8 @@ func _init() -> void:
 		var idle_of := sheet_id.trim_suffix(IDLE_SUFFIX)
 		if idle_of != sheet_id and LOOKS.has(idle_of):
 			continue
-		if not LOOKS.has(sheet_id) and not RUN_ONLY.has(sheet_id):
+		if not LOOKS.has(sheet_id) and not RUN_ONLY.has(sheet_id) \
+				and not FIXED_POKEMON.has(sheet_id):
 			push_error("build_character_frames : planche « %s » sans correspondance" % sheet_id)
 			_errors += 1
 	for sheet_id: String in LOOKS:
@@ -120,6 +139,15 @@ func _init() -> void:
 		var idle: Dictionary = sheets.get(sheet_id + IDLE_SUFFIX, {})
 		_build(sheets[sheet_id], run, idle, String(look[0]) + String(look[1]) + "_frames.tres",
 			IDLE_FROM_WALK.get(sheet_id, {}))
+	var fixed := 0
+	for sheet_id: String in FIXED_POKEMON:
+		if not sheets.has(sheet_id):
+			print("build_character_frames : Pokémon fixe « %s » pas encore préparé (sauté)"
+				% sheet_id)
+			continue
+		_build_fixed_pokemon(sheets[sheet_id], POKEMON_DIR + String(FIXED_POKEMON[sheet_id])
+			+ "_frames.tres")
+		fixed += 1
 	var images: Dictionary = catalogue.get("images", {})
 	var objects := 0
 	for image_id: String in FIXED_OBJECTS:
@@ -129,8 +157,8 @@ func _init() -> void:
 		_build_fixed_object(images[image_id], OBJECTS_DIR + String(FIXED_OBJECTS[image_id])
 			+ "_frames.tres")
 		objects += 1
-	print("build_character_frames : %d apparences, %d objet(s) fixe(s), %d erreur(s)"
-		% [LOOKS.size(), objects, _errors])
+	print("build_character_frames : %d apparences, %d Pokémon fixe(s), %d objet(s) fixe(s), "
+		% [LOOKS.size(), fixed, objects] + "%d erreur(s)" % _errors)
 	quit(1 if _errors > 0 else 0)
 
 
@@ -173,6 +201,30 @@ func _build(walk_sheet: Dictionary, run_sheet: Dictionary, idle_sheet: Dictionar
 	_save(frames, path, "%s (%d × %d%s%s)" % [path, walk_cell.x, walk_cell.y,
 		", course" if not run_sheet.is_empty() else "",
 		", attente" if not idle_sheet.is_empty() else ""])
+
+
+## Pokémon fixe : `idle_<dir>` (repos), `react_<dir>` non bouclée (repos, réaction, repos) ;
+## ni marche ni course. De dos, la face (un Pokémon d'ambiance se regarde de face ou de profil).
+func _build_fixed_pokemon(sheet: Dictionary, path: String) -> void:
+	var frames := SpriteFrames.new()
+	frames.remove_animation(&"default")
+	var texture := load(sheet["fichier"]) as Texture2D
+	var cell := Vector2(sheet["cellule"][0], sheet["cellule"][1])
+	for dir: String in FIXED_COLUMNS:
+		var columns: Array = FIXED_COLUMNS[dir]
+		var idle := StringName("idle_" + dir)
+		frames.add_animation(idle)
+		frames.set_animation_loop(idle, true)
+		frames.set_animation_speed(idle, 1.0)
+		frames.add_frame(idle, _atlas(texture, cell, columns[0], 0))
+		var react := StringName("react_" + dir)
+		frames.add_animation(react)
+		frames.set_animation_loop(react, false)
+		frames.set_animation_speed(react, 1.0)
+		frames.add_frame(react, _atlas(texture, cell, columns[0], 0), REACT_DURATIONS[0])
+		frames.add_frame(react, _atlas(texture, cell, columns[1], 0), REACT_DURATIONS[1])
+		frames.add_frame(react, _atlas(texture, cell, columns[0], 0), REACT_DURATIONS[2])
+	_save(frames, path, "%s (Pokémon fixe, %d × %d)" % [path, cell.x, cell.y])
 
 
 ## Objet fixe : la même image entière pour les quatre orientations d'attente.

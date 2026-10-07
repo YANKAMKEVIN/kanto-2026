@@ -2870,6 +2870,82 @@
      34
     ]
    }
+  },
+  "prop_tronc_incline_01": {
+   "fichier": "res://assets/world/props/prop_tronc_incline_01.png",
+   "taille": [
+    384,
+    308
+   ],
+   "contact": {
+    "fichier": "res://assets/world/props/prop_tronc_incline_01_contact.png",
+    "decalage": [
+     -200,
+     -28
+    ],
+    "echelle": 2,
+    "taille": [
+     200,
+     33
+    ]
+   }
+  },
+  "prop_grande_souche_01": {
+   "fichier": "res://assets/world/props/prop_grande_souche_01.png",
+   "taille": [
+    326,
+    250
+   ],
+   "contact": {
+    "fichier": "res://assets/world/props/prop_grande_souche_01_contact.png",
+    "decalage": [
+     -171,
+     -32
+    ],
+    "echelle": 2,
+    "taille": [
+     171,
+     35
+    ]
+   }
+  },
+  "prop_racines_01": {
+   "fichier": "res://assets/world/props/prop_racines_01.png",
+   "taille": [
+    154,
+    128
+   ],
+   "contact": {
+    "fichier": "res://assets/world/props/prop_racines_01_contact.png",
+    "decalage": [
+     -85,
+     -8
+    ],
+    "echelle": 2,
+    "taille": [
+     85,
+     23
+    ]
+   }
+  },
+  "prop_sac_rando_01": {
+   "fichier": "res://assets/world/props/prop_sac_rando_01.png",
+   "taille": [
+    67,
+    62
+   ],
+   "contact": {
+    "fichier": "res://assets/world/props/prop_sac_rando_01_contact.png",
+    "decalage": [
+     -41,
+     -1
+    ],
+    "echelle": 2,
+    "taille": [
+     42,
+     20
+    ]
+   }
   }
  },
  "personnages": {
@@ -3720,6 +3796,156 @@
     "droite",
     "haut"
    ]
+  },
+  "garde": {
+   "fichier": "res://assets/sprites/characters/painted/garde_sheet.png",
+   "cellule": [
+    83,
+    132
+   ],
+   "hauteur": 130,
+   "colonnes": 4,
+   "lignes": 4,
+   "ordre_lignes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "scout": {
+   "fichier": "res://assets/sprites/characters/painted/scout_sheet.png",
+   "cellule": [
+    75,
+    114
+   ],
+   "hauteur": 112,
+   "colonnes": 4,
+   "lignes": 4,
+   "ordre_lignes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "naturaliste": {
+   "fichier": "res://assets/sprites/characters/painted/naturaliste_sheet.png",
+   "cellule": [
+    73,
+    130
+   ],
+   "hauteur": 128,
+   "colonnes": 4,
+   "lignes": 4,
+   "ordre_lignes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "garde_idle": {
+   "fichier": "res://assets/sprites/characters/painted/garde_idle_sheet.png",
+   "cellule": [
+    85,
+    132
+   ],
+   "hauteur": 130,
+   "colonnes": 4,
+   "lignes": 1,
+   "ordre_colonnes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "scout_idle": {
+   "fichier": "res://assets/sprites/characters/painted/scout_idle_sheet.png",
+   "cellule": [
+    77,
+    114
+   ],
+   "hauteur": 112,
+   "colonnes": 4,
+   "lignes": 1,
+   "ordre_colonnes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "naturaliste_idle": {
+   "fichier": "res://assets/sprites/characters/painted/naturaliste_idle_sheet.png",
+   "cellule": [
+    75,
+    130
+   ],
+   "hauteur": 128,
+   "colonnes": 4,
+   "lignes": 1,
+   "ordre_colonnes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "aspicot": {
+   "fichier": "res://assets/sprites/pokemon/painted/aspicot_sheet.png",
+   "cellule": [
+    72,
+    46
+   ],
+   "hauteur": 44,
+   "colonnes": 6,
+   "lignes": 1,
+   "ordre_colonnes": [
+    "bas",
+    "bas_reaction",
+    "gauche",
+    "gauche_reaction",
+    "droite",
+    "droite_reaction"
+   ]
+  },
+  "chrysacier": {
+   "fichier": "res://assets/sprites/pokemon/painted/chrysacier_sheet.png",
+   "cellule": [
+    34,
+    58
+   ],
+   "hauteur": 56,
+   "colonnes": 6,
+   "lignes": 1,
+   "ordre_colonnes": [
+    "bas",
+    "bas_reaction",
+    "gauche",
+    "gauche_reaction",
+    "droite",
+    "droite_reaction"
+   ]
+  },
+  "coconfort": {
+   "fichier": "res://assets/sprites/pokemon/painted/coconfort_sheet.png",
+   "cellule": [
+    38,
+    59
+   ],
+   "hauteur": 56,
+   "colonnes": 6,
+   "lignes": 1,
+   "ordre_colonnes": [
+    "bas",
+    "bas_reaction",
+    "gauche",
+    "gauche_reaction",
+    "droite",
+    "droite_reaction"
+   ]
   }
  },
  "images": {
@@ -4022,6 +4248,69 @@
    "taille": [
     40,
     40
+   ]
+  },
+  "int_poste_foret_coque": {
+   "fichier": "res://assets/world/interiors/int_poste_foret_coque.png",
+   "taille": [
+    960,
+    768
+   ]
+  },
+  "decal_sousbois_1": {
+   "fichier": "res://assets/world/ground/decals/decal_sousbois_1.png",
+   "taille": [
+    58,
+    54
+   ]
+  },
+  "decal_sousbois_2": {
+   "fichier": "res://assets/world/ground/decals/decal_sousbois_2.png",
+   "taille": [
+    58,
+    43
+   ]
+  },
+  "decal_sousbois_3": {
+   "fichier": "res://assets/world/ground/decals/decal_sousbois_3.png",
+   "taille": [
+    58,
+    48
+   ]
+  },
+  "decal_sousbois_4": {
+   "fichier": "res://assets/world/ground/decals/decal_sousbois_4.png",
+   "taille": [
+    58,
+    55
+   ]
+  },
+  "decal_sousbois_5": {
+   "fichier": "res://assets/world/ground/decals/decal_sousbois_5.png",
+   "taille": [
+    58,
+    50
+   ]
+  },
+  "decal_sousbois_6": {
+   "fichier": "res://assets/world/ground/decals/decal_sousbois_6.png",
+   "taille": [
+    58,
+    50
+   ]
+  },
+  "decal_sousbois_7": {
+   "fichier": "res://assets/world/ground/decals/decal_sousbois_7.png",
+   "taille": [
+    58,
+    51
+   ]
+  },
+  "decal_sousbois_8": {
+   "fichier": "res://assets/world/ground/decals/decal_sousbois_8.png",
+   "taille": [
+    58,
+    52
    ]
   }
  }

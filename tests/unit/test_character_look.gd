@@ -128,11 +128,12 @@ func test_every_sheet_maps_to_generated_frames() -> void:
 	var catalogue: Dictionary = JSON.parse_string(
 		FileAccess.get_file_as_string("res://assets/world/catalogue.json"))
 	var idle_suffix: String = constants["IDLE_SUFFIX"]
+	var fixed_pokemon: Dictionary = constants["FIXED_POKEMON"]
 	for sheet: String in catalogue["personnages"]:
 		var idle_of := sheet.trim_suffix(idle_suffix)
 		var is_idle := idle_of != sheet and looks.has(idle_of)
-		assert_true(looks.has(sheet) or (constants["RUN_ONLY"] as Array).has(sheet) or is_idle,
-			sheet)
+		assert_true(looks.has(sheet) or (constants["RUN_ONLY"] as Array).has(sheet) or is_idle
+			or fixed_pokemon.has(sheet), sheet)
 	for sheet: String in looks:
 		var entry: Array = looks[sheet]
 		var path := String(entry[0]) + String(entry[1]) + "_frames.tres"
@@ -142,6 +143,32 @@ func test_every_sheet_maps_to_generated_frames() -> void:
 	assert_eq(looks["roucool"][1], "pidgey")
 	assert_eq(looks["piafabec"][1], "spearow")
 	assert_eq(looks["ferosinge"][1], "mankey")
+
+
+## Jalon 9 (§2.8.5) : genre « Pokémon fixe » (Aspicot, Chrysacier, Coconfort ; Chenipan dès que
+## sa planche est préparée) : repos de chaque côté, `react_<dir>` non bouclée, ni marche ni course.
+func test_fixed_pokemon_frames_have_rest_and_reaction() -> void:
+	var tool_script := load(FRAMES_TOOL) as Script
+	var fixed: Dictionary = tool_script.get_script_constant_map()["FIXED_POKEMON"]
+	var catalogue: Dictionary = JSON.parse_string(
+		FileAccess.get_file_as_string("res://assets/world/catalogue.json"))
+	var found := 0
+	for sheet: String in fixed:
+		if not catalogue["personnages"].has(sheet):
+			continue
+		found += 1
+		var frames := load("res://assets/sprites/pokemon/painted/%s_frames.tres"
+			% fixed[sheet]) as SpriteFrames
+		assert_not_null(frames, sheet)
+		for dir: String in ["down", "up", "left", "right"]:
+			assert_true(frames.has_animation(StringName("idle_" + dir)), sheet + " idle " + dir)
+			var react := StringName("react_" + dir)
+			assert_true(frames.has_animation(react), sheet + " react " + dir)
+			assert_false(frames.get_animation_loop(react), sheet + " react non bouclée")
+			assert_eq(frames.get_frame_count(react), 3, sheet)
+			assert_false(frames.has_animation(StringName("walk_" + dir)), sheet)
+			assert_false(frames.has_animation(StringName("run_" + dir)), sheet)
+	assert_gte(found, 3, "au moins trois Pokémon fixes préparés")
 
 
 ## Jalon 8 (§2.3) : genre « objet fixe » de l'outil (une image → quatre attentes d'une image),
