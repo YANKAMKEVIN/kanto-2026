@@ -24,6 +24,8 @@ var date: String = ""
 var zone_id: StringName = &""
 ## Espèce du moment (premier Pokémon, première capture), &"" sinon : petite image possible.
 var species_id: StringName = &""
+## Numéro du Pokédex de [member species_id] (artwork officiel) ; 0 sinon. Ajouté au MM.2.
+var dex_number: int = 0
 ## Lien croisé (« premier Pokémon » → sa fiche Équipe, ou sa fiche Pokédex si le Pokédex est
 ## visible, §6.3) ; null = pas de lien.
 var route: MenuRoute = null

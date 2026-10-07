@@ -12,6 +12,9 @@ var id: StringName = &""
 var name: String = ""
 ## Objets : exemplaires trouvés dans la zone (≥ 1) ; 1 pour les Pokémon et les services.
 var count: int = 1
+## Pokémon : numéro du Pokédex (artwork officiel, [PokedexArt]) ; 0 = inconnu ou pas un
+## Pokémon (pas d'image : le nom seul, jamais une silhouette). Ajouté au MM.2.
+var dex_number: int = 0
 
 
 func _init(entry_id: StringName = &"", shown_name: String = "", times: int = 1) -> void:

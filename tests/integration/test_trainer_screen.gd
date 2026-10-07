@@ -66,18 +66,24 @@ func _screen_in(width: int, view: TrainerView) -> TrainerScreen:
 	return screen
 
 
-func test_always_eight_muted_untouchable_badges() -> void:
+func test_always_eight_silhouette_untouchable_badges() -> void:
 	var view := _view()
 	view.badges.clear()
 	var screen := await _screen_in(2340, view)
 	assert_eq(screen.get_badge_slots().size(), 8)
+	var emblem: Texture2D = null
 	for slot: BadgeSlot in screen.get_badge_slots():
 		assert_true(slot.is_muted())
 		assert_eq(slot.mouse_filter, Control.MOUSE_FILTER_IGNORE)
-		assert_eq(slot.get_child_count(), 0, "ni nom, ni image")
+		# MM.2 (décision de Kevin) : silhouette commune et « ??? », ni nom ni apparence du badge.
+		assert_eq(slot.get_text(), "???")
+		assert_eq(slot.get_emblem().modulate, UiTokens.TRAINER_BADGE_UNKNOWN)
+		if emblem == null:
+			emblem = slot.get_emblem().texture
+		assert_eq(slot.get_emblem().texture, emblem, "la même silhouette pour les huit")
 	var texts := screen.get_texts()
 	for text: String in texts:
-		assert_false(text.contains("???"), text)
+		assert_false(text.contains("Badge "), "aucun nom de badge : %s" % text)
 		assert_false(text.contains("/ 8") or text.contains("/8"), text)
 	assert_true(texts.has(TrainerView.BADGES_TITLE))
 	for control: Control in screen.get_touch_controls():

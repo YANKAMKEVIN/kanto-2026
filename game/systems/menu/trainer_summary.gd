@@ -8,7 +8,8 @@ extends RefCounted
 ## - identité : nom, « Dresseur Pokémon », temps de jeu, date de départ ([code]started_at[/code]),
 ##   argent (J7, dossier 09 §10) ;
 ## - « vus » / « capturés » : seulement si le Pokédex est visible ([MenuUnlocks]) ;
-## - **8 emplacements de badges muets** (aucun badge avant le J10 ; jamais « 0/8 ») ;
+## - **8 emplacements de badges** ([BadgeLibrary], MM.2 : obtenu = drapeau levé ; aucun avant le
+##   J10 ; jamais « 0/8 ») et l'équipe actuelle (MM.2) ;
 ## - grands moments : ceux de [code]GameState.moments[/code] (premier Pokémon, combat contre le
 ##   rival, première capture) **et** la première arrivée dans chaque zone (date la plus
 ##   ancienne de [code]discovered_maps[/code] parmi les cartes de la zone), sauf la zone où
@@ -42,8 +43,10 @@ const _NO_DATE: String = "~"
 ## Vue de l'écran Dresseur pour [param state] (l'autoload GameState, ou une instance de
 ## game_state.gd en test). [param zones] et [param moments] peuvent être null (pas de lieux,
 ## pas de moments).
+## [param badges] (MM.2, facultatif) : les 8 emplacements viennent de [method BadgeLibrary.slots]
+## (un badge est obtenu quand son drapeau est levé) ; null : huit emplacements muets.
 static func build(state: Object, data: PokemonData, zones: ZoneLibrary, moments: MomentLibrary,
-		unlocks: MenuUnlocks) -> TrainerView:
+		unlocks: MenuUnlocks, badges: BadgeLibrary = null) -> TrainerView:
 	var view := TrainerView.new()
 	view.player_name = state.player_name
 	view.player_title = DashboardViews.PLAYER_TITLE
@@ -56,8 +59,16 @@ static func build(state: Object, data: PokemonData, zones: ZoneLibrary, moments:
 		view.caught_text = DashboardViews.caught_text(pokedex.caught_count())
 		view.seen_route = MenuRoute.pokedex(MenuRoute.DEX_FILTER_SEEN)
 		view.caught_route = MenuRoute.pokedex(MenuRoute.DEX_FILTER_CAUGHT)
-	for i: int in TrainerView.BADGE_COUNT:
-		view.badges.append(BadgeSlotView.new(i))
+	if badges != null:
+		view.badges = badges.slots(state.flags)
+	else:
+		for i: int in TrainerView.BADGE_COUNT:
+			view.badges.append(BadgeSlotView.new(i))
+	if zones != null:
+		view.zone_id = MapJournal.player_zone(state.current_map, zones)
+	var party: Party = state.party
+	for i: int in party.size():
+		view.team.append(DashboardViews.member(party.get_at(i), i, data))
 	if moments != null:
 		view.moments = moment_views(state, data, zones, moments, unlocks)
 	view.stats = stat_views(state, zones)
@@ -198,6 +209,7 @@ static func _record_view(record: Dictionary, state: Object, data: PokemonData,
 	view.date_text = MenuFormat.long_date(view.date)
 	if species_data != null:
 		view.species_id = species
+		view.dex_number = species_data.dex
 	if type == MomentLibrary.STARTER and species_data != null:
 		view.route = _starter_route(species, state.party, unlocks)
 	return view

@@ -12,10 +12,18 @@ extends Control
 ## ne volent jamais le toucher d'une zone voisine posé sur son propre rectangle.
 ## Un toucher = un seul [signal zone_pressed], au relâchement, si le doigt est resté sur la
 ## zone où il s'était posé.
+## MM.2 (maquette) : étiquettes en pastilles de verre avec l'icône du genre de zone (ville,
+## route, lieu) ; **lieu courant** en ACCENT, zone du panneau cerclée d'ACCENT (et son halo) ;
+## portrait du joueur = tête du buste peint dans un rond.
 
 signal zone_pressed(zone: StringName)
 
-const PORTRAIT: Texture2D = preload("res://assets/ui/map/player_portrait.png")
+const KIND_ICONS: Dictionary[StringName, Texture2D] = {
+	ZoneData.KIND_TOWN: preload("res://assets/ui/icons/map/town.svg"),
+	ZoneData.KIND_ROUTE: preload("res://assets/ui/icons/map/route.svg"),
+	ZoneData.KIND_PLACE: preload("res://assets/ui/icons/map/place.svg"),
+}
+const ICON_DEFAULT: Texture2D = preload("res://assets/ui/icons/map/route.svg")
 
 var _view: MapView
 var _texture: Texture2D
@@ -23,7 +31,9 @@ var _selected: StringName = &""
 var _pressed_zone: StringName = &""
 var _labels: Dictionary[StringName, PanelContainer] = {}
 var _label_texts: Dictionary[StringName, Label] = {}
-var _portrait: TextureRect
+var _label_icons: Dictionary[StringName, TextureRect] = {}
+var _current: StringName = &""
+var _portrait: Panel
 var _highlight: StyleBoxFlat
 
 
@@ -31,14 +41,24 @@ func _init() -> void:
 	mouse_filter = Control.MOUSE_FILTER_STOP
 	texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR
 	clip_contents = true
-	_portrait = TextureRect.new()
-	_portrait.texture = PORTRAIT
+	# Portrait : la tête du buste peint dans un rond (masque du shader de ZoneArt : un clip
+	# d'enfants ne s'imbrique pas dans celui du cadre de la Carte).
+	_portrait = Panel.new()
+	_portrait.theme_type_variation = &"MapPortrait"
 	_portrait.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	_portrait.texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR_WITH_MIPMAPS
-	_portrait.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
-	_portrait.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
 	_portrait.visible = false
 	add_child(_portrait)
+	var head := ZoneArt.new()
+	head.set_style(UiTokens.MAP_PORTRAIT_HEIGHT * 0.5 - UiTokens.MAP_PORTRAIT_BORDER, 1.0,
+		UiTokens.MAP_PORTRAIT_BG)
+	head.show_texture(MenuArt.hero_bust(), UiTokens.MAP_PORTRAIT_REGION)
+	head.set_anchors_preset(Control.PRESET_FULL_RECT)
+	var inset := float(UiTokens.MAP_PORTRAIT_BORDER)
+	head.offset_left = inset
+	head.offset_top = inset
+	head.offset_right = -inset
+	head.offset_bottom = -inset
+	_portrait.add_child(head)
 	_highlight = StyleBoxFlat.new()
 	_highlight.bg_color = UiTokens.tinted(UiTokens.ACCENT, UiTokens.MAP_HIGHLIGHT_FILL)
 	_highlight.border_color = UiTokens.ACCENT
@@ -59,19 +79,36 @@ func setup(view: MapView) -> void:
 		label.queue_free()
 	_labels.clear()
 	_label_texts.clear()
+	_label_icons.clear()
+	_current = &""
 	for zone: MapZoneView in view.zones:
+		if zone.current:
+			_current = zone.zone_id
 		if not zone.is_touchable():
 			continue
 		var pill := PanelContainer.new()
 		pill.mouse_filter = Control.MOUSE_FILTER_IGNORE
 		pill.modulate.a = UiTokens.MAP_LABEL_ALPHA
+		var row := HBoxContainer.new()
+		row.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		row.add_theme_constant_override(&"separation", UiTokens.MAP_LABEL_GAP)
+		pill.add_child(row)
+		var icon := TextureRect.new()
+		icon.texture = KIND_ICONS.get(zone.kind, ICON_DEFAULT)
+		icon.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		icon.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+		icon.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+		icon.custom_minimum_size = Vector2.ONE * UiTokens.MAP_LABEL_ICON
+		icon.size_flags_vertical = Control.SIZE_SHRINK_CENTER
+		row.add_child(icon)
 		var text := Label.new()
 		text.text = zone.name
 		text.mouse_filter = Control.MOUSE_FILTER_IGNORE
-		pill.add_child(text)
+		row.add_child(text)
 		add_child(pill)
 		_labels[zone.zone_id] = pill
 		_label_texts[zone.zone_id] = text
+		_label_icons[zone.zone_id] = icon
 	var player := view.zone(view.player_zone)
 	_portrait.visible = player != null and player.is_touchable()
 	_apply_selection_style()
@@ -79,7 +116,7 @@ func setup(view: MapView) -> void:
 	queue_redraw()
 
 
-## Zone du panneau : halo sur l'illustration et étiquette en ACCENT (&"" : aucune).
+## Zone du panneau : halo sur l'illustration et étiquette cerclée d'ACCENT (&"" : aucune).
 func set_selected(zone_id: StringName) -> void:
 	if zone_id == _selected:
 		return
@@ -160,8 +197,14 @@ func get_label(zone_id: StringName) -> PanelContainer:
 	return _labels.get(zone_id, null)
 
 
-func get_portrait() -> TextureRect:
+## Portrait du joueur (rond, tête du buste peint).
+func get_portrait() -> Control:
 	return _portrait
+
+
+## Zone du joueur dont l'étiquette est mise en avant (&"" : aucune).
+func get_current() -> StringName:
+	return _current
 
 
 func _draw() -> void:
@@ -187,11 +230,19 @@ func _gui_input(event: InputEvent) -> void:
 		zone_pressed.emit(zone)
 
 
+## Lieu courant : pastille ACCENT ; zone du panneau (si ce n'est pas lui) : pastille cerclée.
 func _apply_selection_style() -> void:
 	for zone_id: StringName in _labels:
-		var on := zone_id == _selected
-		_labels[zone_id].theme_type_variation = &"MapLabelOn" if on else &"MapLabel"
-		_label_texts[zone_id].theme_type_variation = &"MapLabelTextOn" if on else &"MapLabelText"
+		var here := zone_id == _current
+		var variation := &"MapLabel"
+		if here:
+			variation = &"MapLabelOn"
+		elif zone_id == _selected:
+			variation = &"MapLabelSelected"
+		_labels[zone_id].theme_type_variation = variation
+		_label_texts[zone_id].theme_type_variation = &"MapLabelTextOn" if here \
+			else &"MapLabelText"
+		_label_icons[zone_id].modulate = UiTokens.ACCENT_TEXT if here else UiTokens.ACCENT
 
 
 ## Étiquettes et portrait, posés à l'échelle courante.
@@ -199,7 +250,7 @@ func _layout() -> void:
 	if _view == null:
 		return
 	var portrait_height := UiTokens.MAP_PORTRAIT_HEIGHT
-	_portrait.size = Vector2(portrait_height * 0.5, portrait_height)
+	_portrait.size = Vector2(portrait_height, portrait_height)
 	var player := zone_rect(_view.player_zone)
 	if player.has_area():
 		_portrait.position = player.get_center() - _portrait.size * 0.5

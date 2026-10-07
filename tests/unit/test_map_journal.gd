@@ -288,3 +288,16 @@ func test_observed_pokemon_ignores_unknown_species() -> void:
 	var found := MapJournal.observed_pokemon(&"route_1", _state.pokedex, _data, _zones)
 	assert_eq(_ids(found), [&"rattata"] as Array[StringName])
 	assert_true(MapJournal.observed_pokemon(&"route_1", null, _data, _zones).is_empty())
+
+
+# --- MM.2 : numéro du Pokédex des Pokémon observés ------------------------------------------
+
+
+func test_observed_pokemon_carry_their_dex_number_for_the_artwork() -> void:
+	_kevin()
+	var panel := MapJournal.panel(&"route_1", _state, _data, _zones, _items, true)
+	assert_eq(_ids(panel.pokemon), [&"pidgey", &"rattata"])
+	assert_eq(panel.pokemon[0].dex_number, 16)
+	assert_eq(panel.pokemon[1].dex_number, 19)
+	for entry: ZoneEntryView in panel.items:
+		assert_eq(entry.dex_number, 0, "un objet n'a pas de numéro")
