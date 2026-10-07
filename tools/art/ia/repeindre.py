@@ -52,6 +52,17 @@ def preparer(couleur, profondeur, dossier):
 
 
 def graphe(noms, o):
+	g = _graphe(noms, o)
+	if o.traits <= 0:
+		# Mémoire limitée : un seul guidage (profondeur), le second est retiré.
+		for cle in ("8", "10", "12"):
+			del g[cle]
+		g["13"]["inputs"]["positive"] = ["11", 0]
+		g["13"]["inputs"]["negative"] = ["11", 1]
+	return g
+
+
+def _graphe(noms, o):
 	pos = POSITIF.format(nom=o.nom)
 	return {
 		"1": {"class_type": "CheckpointLoaderSimple", "inputs": {"ckpt_name": MODELE}},
@@ -108,7 +119,8 @@ def main():
 	a.add_argument("--graine", type=int, default=7)
 	a.add_argument("--lora", type=float, default=0.7)
 	a.add_argument("--profondeur", type=float, default=0.8, help="force du guidage de profondeur")
-	a.add_argument("--traits", type=float, default=0.6, help="force du guidage des traits")
+	a.add_argument("--traits", type=float, default=0.6,
+		help="force du guidage des traits (0 : retiré, moins de mémoire)")
 	a.add_argument("--pas", type=int, default=26)
 	a.add_argument("--serveur", default="http://127.0.0.1:8188")
 	o = a.parse_args()
