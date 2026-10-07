@@ -1,11 +1,11 @@
 extends GutTest
-## Destination provisoire (jalon 5, dossier-07 §12 ; depuis le jalon 7 T4, dossier 09 §11 :
-## la sortie nord de Jadielle) avec la vraie scène Boot, l'autoload SceneRouter (fondus
-## raccourcis) et un [SaveSystem] en mémoire : l'arche nord de Jadielle mène à « ROUTE 2 — À
-## venir » (build de développement), puis ramène le joueur devant l'arche, tourné vers le sud.
-## Rien n'est sauvegardé pendant l'écran, aucun titre de zone, aucune carte « route_2 »
-## découverte ; en release, le bord reste bloqué. (Avant le T4, c'était le bord nord de la
-## Route 1 vers « JADIELLE — À venir » : il mène désormais à Jadielle.)
+## Destination provisoire (jalon 5, dossier-07 §12) avec la vraie scène Boot, l'autoload
+## SceneRouter (fondus raccourcis) et un [SaveSystem] en mémoire. Depuis le jalon 8 (T5,
+## jalon-08.md §2.2) : la porte du poste de la Route 2 (STEP_ON ↑) mène à « FORÊT DE JADE — À
+## venir » (build de développement, libellé en majuscules, « Ê » compris), puis ramène le joueur
+## devant la porte, tourné vers le sud. Rien n'est sauvegardé pendant l'écran, aucun titre de
+## zone, aucune carte « viridian_forest » découverte ; en release, la porte est inerte.
+## (Jalon 5 : bord nord de la Route 1 ; jalon 7 : sortie nord de Jadielle, devenue la Route 2.)
 
 const MemoryFs := preload("res://tests/helpers/memory_file_system.gd")
 const FixedClock := preload("res://tests/helpers/fixed_clock.gd")
@@ -14,6 +14,9 @@ const SAVE_PATH := "user://test_coming_soon_save.json"
 const FADE := 0.05
 const HOLD := 0.3
 const TIMEOUT := 12.0
+## Porte du poste et case devant (spawn `from_forest_gate`), jalon-08.md §1.1.
+const GATE := Vector2i(20, 8)
+const GATE_FRONT := Vector2i(20, 9)
 
 var _fs: MemoryFs
 var _save: SaveSystem
@@ -41,12 +44,12 @@ func after_each() -> void:
 		Input.action_release(action)
 
 
-## Boot sur la place nord de Jadielle, sous l'arche (une case sous le bord), tourné vers le nord.
-func _start_at_the_north_gate(spawn: StringName = &"route_2_soon_w") -> void:
+## Boot sur la Route 2, devant la porte du poste (une case sous la porte), tourné vers le nord.
+func _start_at_the_gate() -> void:
 	_boot = BOOT_SCENE.instantiate() as Boot
 	_boot.save_system = _save
-	_boot.start_map = &"viridian_city"
-	_boot.start_spawn = spawn
+	_boot.start_map = &"route_2"
+	_boot.start_spawn = &"from_forest_gate"
 	_boot.start_facing = Vector2i.UP
 	add_child_autofree(_boot)
 	_player = _boot.get_player()
@@ -63,54 +66,56 @@ func _writes() -> int:
 	return count
 
 
-## Pousse vers le haut jusqu'à ce que l'écran « à venir » soit montré.
-func _walk_into_the_north_edge() -> void:
+## Marche vers le haut (sur la porte) jusqu'à ce que l'écran « à venir » soit montré.
+func _walk_into_the_gate() -> void:
 	var screen := _boot.get_coming_soon_screen()
 	Input.action_press(&"move_up")
 	await wait_until(func() -> bool: return screen.is_showing(), TIMEOUT)
 	Input.action_release(&"move_up")
 
 
-func test_the_north_edge_shows_the_coming_soon_screen_then_returns_facing_south() -> void:
-	await _start_at_the_north_gate()
+func test_the_gate_shows_the_coming_soon_screen_then_returns_facing_south() -> void:
+	await _start_at_the_gate()
 	var screen := _boot.get_coming_soon_screen()
-	assert_eq(_player.get_cell(), Vector2i(27, 3))
+	assert_eq(_player.get_cell(), GATE_FRONT)
 	var zones: Array[String] = []
 	_boot.zone_announced.connect(func(zone: String, _region: String) -> void:
 		zones.append(zone))
-	await _walk_into_the_north_edge()
-	assert_eq(screen.get_label().text, "ROUTE 2 — À venir")
+	await _walk_into_the_gate()
+	assert_eq(screen.get_label().text, "FORÊT DE JADE — À venir")
 	assert_true(_boot.get_fade().is_opaque() or _boot.get_fade().get_alpha() > 0.5,
 		"sous le rideau")
 	assert_false(_player.is_input_enabled(), "joueur bloqué pendant l'écran")
 	await wait_until(func() -> bool: return not screen.is_showing(), TIMEOUT)
 	await wait_until(func() -> bool: return not SceneRouter.is_transitioning(), TIMEOUT)
-	assert_eq(_boot.get_map().map_id, &"viridian_city", "retour à Jadielle")
-	assert_eq(_player.get_cell(), Vector2i(27, 3), "devant l'arche")
+	assert_eq(_boot.get_map().map_id, &"route_2", "retour sur la Route 2")
+	assert_eq(_player.get_cell(), GATE_FRONT, "devant la porte")
 	assert_eq(_player.get_facing(), Vector2i.DOWN, "tourné vers le sud")
 	assert_true(_player.is_input_enabled(), "joueur libre")
 	assert_false(_boot.get_fade().is_opaque())
 	assert_true(zones.is_empty(), "aucun titre de zone")
 	assert_false(_boot.get_hud().get_caption().is_showing())
-	assert_false(GameState.discovered_maps.has(&"route_2"), "aucune carte Route 2 découverte")
+	assert_false(GameState.discovered_maps.has(&"viridian_forest"), "aucune forêt découverte")
 	assert_push_error_count(0)
 
 
-func test_the_east_column_works_too() -> void:
-	await _start_at_the_north_gate(&"route_2_soon_e")
+func test_the_gate_works_again_after_the_return() -> void:
+	await _start_at_the_gate()
 	var screen := _boot.get_coming_soon_screen()
-	await _walk_into_the_north_edge()
-	await wait_until(func() -> bool: return not SceneRouter.is_transitioning(), TIMEOUT)
-	assert_false(screen.is_showing())
-	assert_eq(_player.get_cell(), Vector2i(29, 3))
-	assert_eq(_player.get_facing(), Vector2i.DOWN)
+	for visit: int in 2:
+		await _walk_into_the_gate()
+		await wait_until(func() -> bool: return not screen.is_showing(), TIMEOUT)
+		await wait_until(func() -> bool: return not SceneRouter.is_transitioning(), TIMEOUT)
+		assert_eq(_player.get_cell(), GATE_FRONT, "visite %d : devant la porte" % visit)
+		assert_eq(_player.get_facing(), Vector2i.DOWN)
+		_player.face(Vector2i.UP)
 
 
 func test_nothing_is_saved_during_the_screen_then_the_normal_autosave_applies() -> void:
-	await _start_at_the_north_gate()
+	await _start_at_the_gate()
 	var screen := _boot.get_coming_soon_screen()
 	assert_eq(_writes(), 1, "autosave à l'arrivée sur la carte")
-	await _walk_into_the_north_edge()
+	await _walk_into_the_gate()
 	# Un autosave demandé pendant l'écran (rien ne l'empêche d'être demandé) attend la fin.
 	_boot.request_autosave("test")
 	assert_false(_boot.is_stable(), "l'écran provisoire n'est jamais un état stable")
@@ -123,16 +128,16 @@ func test_nothing_is_saved_during_the_screen_then_the_normal_autosave_applies() 
 	await wait_process_frames(3)
 	assert_eq(_writes(), 2, "écrit une fois la partie stable")
 	var saved: Variant = JSON.parse_string(_fs.files[SAVE_PATH])
-	assert_eq(saved.get("map"), "viridian_city")
-	assert_eq(JsonFields.get_vector2i(saved, "cell"), Vector2i(27, 3), "case de retour")
-	assert_false((saved.get("discovered_maps", {}) as Dictionary).has("route_2"))
+	assert_eq(saved.get("map"), "route_2")
+	assert_eq(JsonFields.get_vector2i(saved, "cell"), GATE_FRONT, "case de retour")
+	assert_false((saved.get("discovered_maps", {}) as Dictionary).has("viridian_forest"))
 
 
 func test_a_tap_shortens_the_screen() -> void:
-	await _start_at_the_north_gate()
+	await _start_at_the_gate()
 	var screen := _boot.get_coming_soon_screen()
 	screen.hold_duration = 30.0
-	await _walk_into_the_north_edge()
+	await _walk_into_the_gate()
 	await wait_seconds(screen.SKIP_DELAY + 0.1)
 	assert_true(screen.is_showing())
 	var tap := InputEventScreenTouch.new()
@@ -143,14 +148,14 @@ func test_a_tap_shortens_the_screen() -> void:
 	assert_true(_player.is_input_enabled())
 
 
-func test_in_a_release_build_the_north_edge_stays_blocked() -> void:
+func test_in_a_release_build_the_gate_is_inert() -> void:
 	SceneRouter.coming_soon_enabled = false
-	await _start_at_the_north_gate()
+	await _start_at_the_gate()
 	Input.action_press(&"move_up")
 	await wait_seconds(1.0)
 	Input.action_release(&"move_up")
 	assert_false(_boot.get_coming_soon_screen().is_showing())
 	assert_false(SceneRouter.is_transitioning())
-	assert_eq(_player.get_cell(), Vector2i(27, 1), "arrêté sous le bord nord")
+	assert_eq(_player.get_cell(), GATE, "sur la porte, rien ne se passe")
 	assert_true(_player.is_input_enabled())
-	assert_eq(_boot.get_map().map_id, &"viridian_city")
+	assert_eq(_boot.get_map().map_id, &"route_2")

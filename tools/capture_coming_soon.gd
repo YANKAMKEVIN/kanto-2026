@@ -1,19 +1,20 @@
 extends SceneTree
-## Vérification visuelle de l'entrée provisoire vers Jadielle (jalon 5, dossier-07 §12) :
-## Boot sur la Route 1, une case sous le haut du chemin ; move_up injecté jusqu'à l'écran
-## « JADIELLE — À venir », puis retour sur la Route 1 (une case en retrait, tourné vers le sud).
+## Vérification visuelle de la destination « à venir » (depuis le jalon 8 T5 : la porte du
+## poste de la Route 2, jalon-08.md §2.2) : Boot sur la Route 2 devant la porte, move_up injecté
+## jusqu'à l'écran « FORÊT DE JADE — À venir », puis retour devant la porte, tourné vers le sud.
+## (Jalon 5 : bord nord de la Route 1 ; jalon 7 : sortie nord de Jadielle.)
 ##
 ## Sur le Mac (2340×1080 via override.cfg temporaire) :
 ##   godot --path . --always-on-top --fixed-fps 30 --quit-after 600 \
-##     -s res://tools/capture_coming_soon.gd -- --out=build/captures/jalon05_jadielle
-## Images : before (au bord nord, avant), screen (écran « à venir »), after (retour au bord).
+##     -s res://tools/capture_coming_soon.gd -- --out=build/captures/jalon08_t5/porte
+## Images : before (devant la porte, avant), screen (écran « à venir »), after (retour).
 
 const BOOT_SCENE: String = "res://game/boot.tscn"
 
 var _boot: Node
 var _player: Node
 var _router: Node
-var _out_dir: String = "build/captures/jalon05_jadielle"
+var _out_dir: String = "build/captures/jalon08_t5/porte"
 var _frame: int = 0
 var _state: String = "before"
 var _wait: int = 0
@@ -32,8 +33,8 @@ func _init() -> void:
 
 func _start() -> void:
 	_boot = (load(BOOT_SCENE) as PackedScene).instantiate()
-	_boot.set(&"start_map", &"viridian_city")
-	_boot.set(&"start_spawn", &"route_2_soon_w")
+	_boot.set(&"start_map", &"route_2")
+	_boot.set(&"start_spawn", &"from_forest_gate")
 	_boot.set(&"start_facing", Vector2i.UP)
 	root.add_child(_boot)
 	_router = root.get_node(^"SceneRouter")

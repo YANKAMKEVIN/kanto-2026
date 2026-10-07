@@ -21,17 +21,12 @@ extends GutTest
 ## plus simulées (boucle indentée sous `if CODE_PLAYED.has(id)`), elles le sont de nouveau.
 ## Jalon 8 (T4) : objets de la Route 2 — deux visibles (scène lancée par le dialogue du PNJ
 ## « objet », qui le retire : `despawn` → `give found` → `set`), deux cachés (déclencheurs de la
-## carte, comme la Potion de la Route 1). La carte arrive au T5 : d'ici là, ses déclencheurs
-## sont tenus pour posés ([constant PENDING_TRIGGERS]).
+## carte, comme la Potion de la Route 1), posés par `tools/build_route_2.gd` (T5).
 
 const MAPS: Array[StringName] = [
 	&"player_house_2f", &"player_house_1f", &"rival_house", &"oak_lab", &"pallet_town",
 	&"route_1", &"viridian_city", &"route_22", &"viridian_mart", &"route_2",
 ]
-## Déclencheurs des cartes pas encore construites (à retirer quand la carte existe).
-const PENDING_TRIGGERS: Dictionary[StringName, Array] = {
-	&"route_2": [&"route_2_item_3", &"route_2_item_4"],
-}
 ## Jalon 7 (T18) : partie qui revient au labo avec le colis (rival parti après le combat).
 const PARCEL_FLAGS: Array[StringName] = [
 	&"oak_met", &"oak_lab_reunion", &"starter_offered", &"starter_chosen", &"rival_challenged",
@@ -98,12 +93,6 @@ func before_all() -> void:
 	_items = ItemLibrary.new()
 	_items.load_dir()
 	for map_id: StringName in MAPS:
-		if not MapCatalog.has_map(map_id):
-			for id: StringName in PENDING_TRIGGERS[map_id]:
-				if not _triggered_on.has(id):
-					_triggered_on[id] = []
-				(_triggered_on[id] as Array).append(map_id)
-			continue
 		var map := (load(MapCatalog.scene_path(map_id)) as PackedScene).instantiate()
 		for point: Node in map.get_node(^"Triggers").get_children():
 			var id := (point as EventTriggerPoint).cutscene_id

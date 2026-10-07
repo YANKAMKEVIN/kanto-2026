@@ -4,6 +4,8 @@ extends GutTest
 ## sortie nord « à venir »), habitants sur des cases libres et routines possibles, chemin entre
 ## les trois entrées, porte de l'Arène qui répond, micro-scène d'arrivée sur le seul passage
 ## vers le nord, présence des habitants selon l'arrivée.
+## Jalon 8 (T5) : la sortie nord mène à la Route 2 (six nœuds modifiés à la main, comparés aux
+## constantes de `tools/build_viridian_city.gd`).
 
 const MAP_PATH := "res://game/world/maps/viridian_city.tscn"
 const SIZE := Vector2i(56, 36)
@@ -14,6 +16,8 @@ const CENTER_DOORS := [Vector2i(21, 21), Vector2i(22, 21)]
 const MART_DOORS := [Vector2i(35, 21), Vector2i(36, 21)]
 const GYM_DOOR := [Vector2i(9, 9), Vector2i(10, 9)]
 const ARRIVAL_CELLS := [Vector2i(27, 23), Vector2i(28, 23), Vector2i(29, 23)]
+## Entrée sud de la Route 2 (jalon 8), en face de NORTH.
+const SOUTH_OF_ROUTE_2 := [Vector2i(19, 59), Vector2i(20, 59), Vector2i(21, 59)]
 
 var _map: GameMap
 var _grid: GridWorld
@@ -152,18 +156,56 @@ func test_west_exit_is_the_route_22_contract() -> void:
 	route.free()
 
 
-func test_north_exit_is_route_2_coming_soon() -> void:
-	for cell: Vector2i in NORTH:
+## Jalon 8 (T5, jalon-08.md §2.1) : PUSH ↑ sur les trois cases de l'arche → `route_2` /
+## `from_viridian_w/c/e`, arrivée tournée ↑ ; retour sur ces mêmes cases (`from_route_2_*`).
+func test_north_exit_leads_to_route_2() -> void:
+	var sides := ["w", "c", "e"]
+	for i: int in NORTH.size():
+		var cell: Vector2i = NORTH[i]
 		var warp := _map.get_warps().find_on_push(cell, Vector2i.UP)
 		assert_not_null(warp, "sortie nord %s" % cell)
 		if warp == null:
 			continue
-		assert_true(warp.is_coming_soon())
-		assert_eq(warp.coming_soon, "Route 2")
-		assert_eq(warp.facing, Vector2i.DOWN)
-		var back := _map.get_spawn_cell(warp.target_spawn)
-		assert_false(_grid.is_solid(back), "retour praticable")
+		assert_false(warp.is_coming_soon(), "plus d'écran « à venir »")
+		assert_eq(warp.target_map, &"route_2")
+		assert_eq(warp.target_spawn, StringName("from_viridian_" + sides[i]))
+		assert_eq(warp.facing, Vector2i.UP)
+		assert_eq(_map.get_spawn_cell(StringName("from_route_2_" + sides[i])), cell,
+			"retour sur la case du passage")
 		assert_true(_grid.is_solid(cell + Vector2i.UP), "bord nord bloqué")
+	for old: StringName in [&"route_2_soon_w", &"route_2_soon_c", &"route_2_soon_e"]:
+		assert_false(_map.has_spawn(old), "ancien spawn « %s » retiré" % old)
+	var route := _load_map(&"route_2")
+	for i: int in SOUTH_OF_ROUTE_2.size():
+		var back := route.get_warps().find_on_push(SOUTH_OF_ROUTE_2[i], Vector2i.DOWN)
+		assert_not_null(back, "la Route 2 ramène à Jadielle (%s)" % SOUTH_OF_ROUTE_2[i])
+		if back != null:
+			assert_eq(back.target_map, &"viridian_city")
+			assert_eq(back.target_spawn, StringName("from_route_2_" + sides[i]))
+	route.free()
+
+
+## La scène (modifiée à la main) et l'outil de construction disent la même chose : warps et
+## spawns nord lus dans le texte de l'outil (non importé), comparés à la scène.
+func test_north_exit_matches_the_build_tool() -> void:
+	var tool_text := FileAccess.get_file_as_string("res://tools/build_viridian_city.gd")
+	assert_false(tool_text.is_empty(), "outil lisible")
+	var sides := ["W", "C", "E"]
+	for i: int in NORTH.size():
+		var cell: Vector2i = NORTH[i]
+		var low: String = String(sides[i]).to_lower()
+		var line := '["Route2%s", Vector2i(%d, %d), &"from_viridian_%s"]' % [sides[i], cell.x,
+			cell.y, low]
+		assert_true(tool_text.contains(line), "outil : %s" % line)
+		var spawn := '"from_route_2_%s": Vector2i(%d, %d)' % [low, cell.x, cell.y]
+		assert_true(tool_text.contains(spawn), "outil : %s" % spawn)
+		var node := _map.get_node_or_null(NodePath("Warps/Route2" + sides[i])) as WarpPoint
+		assert_not_null(node, "scène : Route2%s" % sides[i])
+		if node != null:
+			assert_eq(node.get_cell(), cell)
+			assert_eq(node.target_map, &"route_2")
+			assert_eq(node.coming_soon, "")
+	assert_false(tool_text.contains("route_2_soon"), "outil sans les anciens spawns")
 
 
 func test_a_path_links_the_three_entrances_and_the_doors() -> void:

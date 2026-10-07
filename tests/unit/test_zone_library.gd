@@ -29,11 +29,6 @@ func _root_property(map_id: StringName, property: StringName) -> Variant:
 	return null
 
 
-## Cartes rangées dans une zone avant d'être construites (jalon 8 : la Route 2, carte du T5) :
-## à retirer de cette liste dès que la carte existe.
-const _PENDING_MAPS: Array[StringName] = [&"route_2"]
-
-
 # --- Données réelles -----------------------------------------------------------------------
 
 func test_real_data_loads_without_error() -> void:
@@ -49,9 +44,6 @@ func test_every_map_belongs_to_exactly_one_zone() -> void:
 	for map_id: StringName in maps:
 		assert_ne(_zones.zone_of(map_id), &"", "carte « %s » rangée dans une zone" % map_id)
 	for map_id: StringName in _zones.get_maps():
-		if _PENDING_MAPS.has(map_id) and not MapCatalog.has_map(map_id):
-			pending("carte « %s » pas encore construite (jalon 8 T5)" % map_id)
-			continue
 		assert_true(MapCatalog.has_map(map_id), "carte « %s » existante" % map_id)
 
 

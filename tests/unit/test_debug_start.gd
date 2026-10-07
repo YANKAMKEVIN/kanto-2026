@@ -337,9 +337,7 @@ func test_shipped_route_2_start() -> void:
 	for flag: StringName in start.flags:
 		assert_false(String(flag).begins_with("got_route_2_"), "objets de la Route 2 à prendre")
 		assert_false(String(flag).begins_with("route_2_"), "PNJ de la Route 2 jamais vus")
-	if not MapCatalog.has_map(start.map):
-		pending("carte route_2 construite au T5 du jalon 8")
-		return
+	assert_true(MapCatalog.has_map(start.map), "carte route_2 construite (jalon 8 T5)")
 	var map := (load(MapCatalog.scene_path(start.map)) as PackedScene).instantiate() as GameMap
 	assert_true(map.has_spawn(start.spawn), "le point d'apparition existe sur la carte")
 	map.free()

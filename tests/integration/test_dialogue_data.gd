@@ -34,17 +34,6 @@ const MAPS: Array[StringName] = [
 	&"route_1", &"route_22", &"viridian_city", &"viridian_center", &"viridian_mart",
 	&"route_2",
 ]
-## Points des cartes pas encore construites (jalon 8 : la Route 2, carte du T5) : dialogues
-## des points d'examen et scènes des déclencheurs que l'outil de construction posera. Tant que
-## la carte n'existe pas, le test les tient pour utilisés ; ensuite, la vraie carte fait foi
-## (à retirer quand la carte existe).
-const PENDING_POINTS: Dictionary[StringName, Dictionary] = {
-	&"route_2": {
-		"dialogues": [&"route_2_sign", &"route_2_forest_sign", &"route_2_dense_tree",
-			&"route_2_closed_sign", &"route_2_closed_gate"],
-		"cutscenes": [&"route_2_item_3", &"route_2_item_4"],
-	},
-}
 ## Lot de textes validé par Kevin le 2026-10-06 (anciens brouillons : panneau, observations,
 ## soin de Maman, terminal du Stockage, portes de Jadielle…) : source des textes hors dossiers.
 const TEXTES_VALIDES := "res://docs/design/textes/textes-brouillon-j7.md"
@@ -118,13 +107,6 @@ func before_all() -> void:
 			(_npc_ids[map_id] as Array).append(spec.id)
 			if spec.is_interactive():
 				_use(spec.dialogue, map_id)
-		if not MapCatalog.has_map(map_id):
-			var pending_points: Dictionary = PENDING_POINTS[map_id]
-			for dialogue: StringName in pending_points["dialogues"]:
-				_use(dialogue, map_id)
-			for cutscene_id: StringName in pending_points["cutscenes"]:
-				_use_cutscene(cutscene_id, map_id)
-			continue
 		var map := (load(MapCatalog.scene_path(map_id)) as PackedScene).instantiate()
 		for point: Node in map.get_node(^"Interactables").get_children():
 			_use((point as InteractPoint).dialogue_id, map_id)
