@@ -367,6 +367,53 @@ func test_real_route_22_grass_runs_the_route_22_table() -> void:
 	await wait_until(func() -> bool: return not director.is_running(), 3.0)
 
 
+# --- Route 2 (jalon 8, T5) : la vraie carte et la vraie table `route_2` --------------------
+
+## Dans chacune des trois zones d'herbes de la Route 2 (H1 au sud, H2 au centre, H3 obligatoire
+## au nord), un pas depuis l'herbe rase ou le chemin avec un tirage gagnant lance Roucool Nv. 4
+## (1er emplacement de data/encounters/route_2.json, niveaux [4, 6]).
+## [départ, direction, case d'herbe] ; départs hors des hautes herbes.
+const ROUTE_2_GRASS_STEPS: Array = [
+	[Vector2i(16, 53), Vector2i.LEFT, Vector2i(15, 53)],
+	[Vector2i(22, 32), Vector2i.LEFT, Vector2i(21, 32)],
+	[Vector2i(19, 11), Vector2i.LEFT, Vector2i(18, 11)],
+]
+
+
+func test_real_route_2_grass_runs_the_route_2_table_in_h1_h2_h3() -> void:
+	var library := EncounterLibrary.new(_data)
+	library.load_dir()
+	assert_true(library.has_table(&"route_2", &"grass"), "table route_2")
+	for spec: Array in ROUTE_2_GRASS_STEPS:
+		var map := (load("res://game/world/maps/route_2.tscn") as PackedScene).instantiate() \
+			as GameMap
+		add_child_autofree(map)
+		var start: Vector2i = spec[0]
+		var grass: Vector2i = spec[2]
+		assert_false(map.get_grid().is_tall_grass(start), "départ hors herbe %s" % start)
+		assert_true(map.get_grid().is_tall_grass(grass), "hautes herbes en %s" % grass)
+		var player := (load(PLAYER_SCENE) as PackedScene).instantiate() as Player
+		map.get_entities().add_child(player)
+		player.enter_map(map.get_grid(), start, spec[1], map.get_pixel_rect())
+		var fake := FakeBattleDirector.new()
+		fake.speed_scale = 0.0
+		add_child_autofree(fake)
+		var director := EncounterDirector.new()
+		add_child_autofree(director)
+		director.setup(library, _data, _state, player, fake, _router, null)
+		director.set_map(map)
+		_state.rng = ScriptedRng.new(WIN_ROLLS.duplicate())
+		player.script_step(spec[1])
+		await wait_until(func() -> bool: return director.is_running(), 3.0)
+		assert_eq(fake.runs, 1, "rencontre en %s" % grass)
+		assert_eq(player.get_cell(), grass)
+		if fake.last_request != null:
+			var foe := fake.last_request.foe_party.get_lead()
+			assert_eq(foe.species_id, &"pidgey", "1er emplacement en %s" % grass)
+			assert_eq(foe.level, 4)
+		await wait_until(func() -> bool: return not director.is_running(), 3.0)
+
+
 # --- Outils --------------------------------------------------------------------------
 
 ## Un seul pas (scripté, entrées libres) dans la première case d'herbe (5, 5), pour éprouver

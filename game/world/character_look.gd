@@ -14,12 +14,18 @@ extends RefCounted
 ## **Pokémon du monde peints** : `"sprite": "pokemon/<espèce>"` (choix explicite de la carte)
 ## → `assets/sprites/pokemon/painted/<espèce>_frames.tres`, sinon le provisoire `<espèce>`.
 ## Un simple `"pidgey"` reste provisoire (Bourg Palette, Route 1 : Q-2 / Q-3, phase DA).
+## **Objets posés au sol** (jalon 8 §2.3, verbe PRENDRE) : `"sprite": "object/<id>"` →
+## `assets/sprites/objects/painted/<id>_frames.tres` (genre « objet fixe » de l'outil), sans
+## apparence provisoire : absent → l'apparence générique.
 
 const PAINTED_DIR: String = "res://assets/sprites/characters/painted/"
 const POKEMON_PAINTED_DIR: String = "res://assets/sprites/pokemon/painted/"
+const OBJECT_PAINTED_DIR: String = "res://assets/sprites/objects/painted/"
 const PLACEHOLDER_DIR: String = "res://assets/sprites/characters/placeholder/"
 ## Préfixe d'un Pokémon du monde peint (`pokemon/pidgey`).
 const POKEMON_PREFIX: String = "pokemon/"
+## Préfixe d'un objet peint posé au sol (`object/poke_ball_ground`).
+const OBJECT_PREFIX: String = "object/"
 ## Apparence générique (provisoire) quand aucune planche n'existe pour le nom demandé.
 const FALLBACK_SPRITE: StringName = &"npc"
 const FRAMES_SUFFIX: String = "_frames.tres"
@@ -50,23 +56,29 @@ static func resolve(sprite: StringName, exists: Callable = Callable()) -> Charac
 			look.painted = true
 			return look
 		var placeholder_path := placeholder_frames_path(sprite)
-		if check.call(placeholder_path):
+		if not placeholder_path.is_empty() and check.call(placeholder_path):
 			look.frames_path = placeholder_path
 			return look
 	look.frames_path = placeholder_frames_path(FALLBACK_SPRITE)
 	return look
 
 
-## Apparence peinte de [param sprite] (`pokemon/<espèce>` : dossier des Pokémon peints).
+## Apparence peinte de [param sprite] (`pokemon/<espèce>` : dossier des Pokémon peints ;
+## `object/<id>` : dossier des objets peints).
 static func painted_frames_path(sprite: StringName) -> String:
 	var name := String(sprite)
 	if name.begins_with(POKEMON_PREFIX):
 		return POKEMON_PAINTED_DIR + name.trim_prefix(POKEMON_PREFIX) + FRAMES_SUFFIX
+	if name.begins_with(OBJECT_PREFIX):
+		return OBJECT_PAINTED_DIR + name.trim_prefix(OBJECT_PREFIX) + FRAMES_SUFFIX
 	return PAINTED_DIR + name + FRAMES_SUFFIX
 
 
-## Apparence provisoire de [param sprite] (`pokemon/<espèce>` → `<espèce>`).
+## Apparence provisoire de [param sprite] (`pokemon/<espèce>` → `<espèce>`) ; vide pour un
+## objet (`object/<id>` : pas de provisoire).
 static func placeholder_frames_path(sprite: StringName) -> String:
+	if String(sprite).begins_with(OBJECT_PREFIX):
+		return ""
 	return PLACEHOLDER_DIR + String(sprite).trim_prefix(POKEMON_PREFIX) + FRAMES_SUFFIX
 
 

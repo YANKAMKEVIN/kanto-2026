@@ -22,6 +22,28 @@ func test_mask_is_one_pixel_per_cell() -> void:
 	assert_gt(from_array.get_pixel(1, 1).r, 0.5)
 
 
+func test_mask_takes_a_value_per_cell() -> void:
+	# Jalon 8 §1.2 B : sous-bois partiel (0,45, 0,55) sur l'herbe éloignée du chemin.
+	var image := ForestFloor.build_mask(Vector2i(5, 2), {
+		Vector2i(0, 0): true, Vector2i(1, 0): 0.45, Vector2i(2, 0): 0.55, Vector2i(3, 0): 1,
+		Vector2i(4, 0): false, Vector2i(0, 1): 1.7, Vector2i(1, 1): -0.2,
+	})
+	assert_eq(image.get_pixel(0, 0).r, 1.0, "vrai : forêt pleine (comportement d'avant)")
+	assert_almost_eq(image.get_pixel(1, 0).r, 0.45, 1.0 / 255.0)
+	assert_almost_eq(image.get_pixel(2, 0).r, 0.55, 1.0 / 255.0)
+	assert_eq(image.get_pixel(3, 0).r, 1.0, "entier 1")
+	assert_eq(image.get_pixel(4, 0).r, 0.0, "faux : rien")
+	assert_eq(image.get_pixel(0, 1).r, 1.0, "borné à 1")
+	assert_eq(image.get_pixel(1, 1).r, 0.0, "borné à 0")
+	assert_eq(image.get_pixel(2, 1).r, 0.0, "absente : noir")
+	var floor_node := ForestFloor.create(Vector2i(5, 2), {Vector2i(0, 0): true,
+		Vector2i(1, 0): 0.45, Vector2i(2, 0): 0.55})
+	autofree(floor_node)
+	assert_true(floor_node.is_forest(Vector2i(0, 0)))
+	assert_false(floor_node.is_forest(Vector2i(1, 0)), "partielle : pas une case de forêt")
+	assert_false(floor_node.is_forest(Vector2i(2, 0)), "partielle : pas une case de forêt")
+
+
 func test_created_layer_sits_on_the_painted_ground() -> void:
 	var floor_node := ForestFloor.create(Vector2i(6, 5), {Vector2i(2, 2): true})
 	autofree(floor_node)

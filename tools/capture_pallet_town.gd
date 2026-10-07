@@ -14,7 +14,8 @@ extends SceneTree
 ## posé sur `--cell` (les options de caméra libre et `--noplayer` sont alors ignorées).
 ## `--prologue=<dossier>` : nouvelle partie dans Boot, joueur en (23, 6) qui monte vers les
 ## hautes herbes ; la scène de Chen se joue (répliques avancées seules) et trois images sont
-## écrites dans le dossier : Chen qui accourt, Chen à côté du joueur, la marche vers le labo.
+## écrites dans le dossier : Chen qui accourt (deux instants), Chen à côté du joueur, la marche
+## vers le labo.
 ## 2340 × 1080 : `override.cfg` temporaire à la racine ([display] window/size/
 ## window_width_override=2340, window_height_override=1080), à retirer après.
 
@@ -110,7 +111,8 @@ func _setup_prologue() -> void:
 	for i in 10:
 		await process_frame
 	Input.action_press(&"move_up")
-	var shots := {"chen_accourt": false, "chen_arrete": false, "marche_labo": false}
+	var shots := {"chen_accourt": false, "chen_accourt_2": false, "chen_arrete": false,
+		"marche_labo": false}
 	var frame := 0
 	var running_seen := false
 	while frame < 3000:
@@ -128,6 +130,11 @@ func _setup_prologue() -> void:
 		if oak != null and not shots["chen_accourt"] and oak.call(&"get_cell").y <= 9:
 			_shot(out + "/prologue_1_chen_accourt.png")
 			shots["chen_accourt"] = true
+		# DA.3 : Chen court (planche de course) ; deuxième instant, plus près du joueur.
+		if oak != null and not shots["chen_accourt_2"] and oak.call(&"get_cell").y <= 5 \
+				and oak.call(&"is_moving"):
+			_shot(out + "/prologue_1b_chen_accourt.png")
+			shots["chen_accourt_2"] = true
 		if oak != null and not shots["chen_arrete"] and box.call(&"is_open") \
 				and oak.call(&"get_cell").y == 3:
 			_shot(out + "/prologue_2_chen_arrete.png")

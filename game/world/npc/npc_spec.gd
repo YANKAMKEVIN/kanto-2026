@@ -42,7 +42,8 @@ var facing: Vector2i = Vector2i.DOWN
 var sprite: StringName = &""
 ## Dialogue joué quand on interagit ; vide = pas d'interaction (Roucool de Mme Aoki).
 var dialogue: StringName = &""
-## Verbe du bouton contextuel ([enum Interaction.Kind]) : parler (défaut) ou observer.
+## Verbe du bouton contextuel ([enum Interaction.Kind]) : parler (défaut), observer ou
+## prendre (objet visible au sol, jalon 8 §2.3).
 var verb: Interaction.Kind = Interaction.Kind.TALK
 ## Se tourne vers le joueur dès qu'on lui parle (faux : seulement sur une page face_player).
 var turn_to_player: bool = true

@@ -35,6 +35,12 @@ const TRAINER_CAPTION := "Dresseur d'origine"
 const DATE_CAPTION := "Date"
 const STAGE_SEPARATOR := "→"
 const BRANCH_SEPARATOR := "/"
+## Icônes des onglets (maquette) : l'icône accompagne le texte, jamais seule.
+const TAB_ICONS: Dictionary[Tab, Texture2D] = {
+	Tab.OVERVIEW: preload("res://assets/ui/icons/pokedex/overview.svg"),
+	Tab.MOVES: preload("res://assets/ui/icons/poke_ball.svg"),
+	Tab.HISTORY: preload("res://assets/ui/icons/pokedex/notes.svg"),
+}
 const BADGE_SCENE: PackedScene = preload("res://game/ui/components/type_badge.tscn")
 const MOVE_CARD_SCENE: PackedScene = preload("res://game/ui/battle/move_card.tscn")
 
@@ -223,12 +229,11 @@ func _stage_node(stage: EvolutionStageView) -> VBoxContainer:
 	circle.custom_minimum_size = Vector2.ONE * UiTokens.TEAM_EVO_CIRCLE
 	circle.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
 	column.add_child(circle)
-	if stage.known:
-		var path := TeamSlotCard.SPRITE_PATH % stage.species_id
-		if ResourceLoader.exists(path):
+	if stage.known and stage.number > 0:
+		var texture := MenuArt.pokemon_thumbnail(stage.number)
+		if texture != null:
 			var image := TextureRect.new()
-			image.texture = load(path) as Texture2D
-			image.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
+			image.texture = texture
 			image.mouse_filter = Control.MOUSE_FILTER_IGNORE
 			image.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 			image.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
@@ -327,8 +332,9 @@ func _build() -> void:
 	var group := ButtonGroup.new()
 	for tab: Tab in TAB_TEXTS:
 		var button := Button.new()
-		button.theme_type_variation = &"TeamTab"
+		button.theme_type_variation = &"MenuTab"
 		button.text = TAB_TEXTS[tab]
+		button.icon = TAB_ICONS[tab]
 		button.toggle_mode = true
 		button.button_group = group
 		button.focus_mode = Control.FOCUS_NONE

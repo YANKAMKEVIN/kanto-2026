@@ -589,7 +589,7 @@ func _on_go_back() -> void:
 
 
 ## Le menu s'ouvre (pause posée) : contrôles cachés (relâche joystick et boutons), titre de
-## zone retiré.
+## zone et légende retirés.
 func _on_menu_opened() -> void:
 	# La position vit dans GameState seulement après une sauvegarde : la pousser à l'ouverture,
 	# pour que la Carte et le Dresseur sachent où est le joueur dès une partie neuve.
@@ -600,6 +600,9 @@ func _on_menu_opened() -> void:
 	# Le fondu du titre est un Tween du HUD, gelé par la pause : masqué net (la fin du fondu,
 	# reprise à la fermeture, ne change plus rien).
 	_hud.get_zone_title().visible = false
+	# Légende du monde (haut, centre) retirée aussi : rien du HUD ne transparaît sous le flou.
+	_hud.hide_caption()
+	_hud.get_caption().visible = false
 	_refresh_controls()
 
 

@@ -8,7 +8,7 @@ extends GutTest
 
 const MAP_IDS: Array[StringName] = [
 	&"pallet_town", &"player_house_2f", &"player_house_1f", &"rival_house", &"oak_lab",
-	&"route_1", &"viridian_city", &"viridian_center", &"viridian_mart",
+	&"route_1", &"viridian_city", &"viridian_center", &"viridian_mart", &"route_2",
 ]
 ## Cartes construites par une autre tâche en parallèle (jalon 7 : la Route 22, T22) : un warp
 ## qui y mène est vérifié seulement si la carte existe déjà (sinon le test le signale).
@@ -97,7 +97,7 @@ func test_every_coming_soon_warp_returns_to_a_walkable_spawn_of_its_own_map() ->
 			var back := map.get_spawn_cell(warp.target_spawn)
 			assert_false(map.get_grid().is_solid(back), "%s : retour praticable" % label)
 			assert_ne(warp.facing, Vector2i.ZERO, "%s : orientation au retour" % label)
-	assert_gt(found, 0, "au moins la sortie nord de Jadielle (Route 2)")
+	assert_gt(found, 0, "au moins la porte du poste de la Route 2 (Forêt de Jade)")
 
 
 ## Warp de [param map] qui ramène à [param origin] depuis [param arrival] : sur la case

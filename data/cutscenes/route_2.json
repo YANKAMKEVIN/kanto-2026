@@ -1,0 +1,50 @@
+{
+	"route_2_item_1": {
+		"variants": [
+			{
+				"unless": ["got_route_2_item_1"],
+				"steps": [
+					{ "despawn": "route_2_ball_1" },
+					{ "give": "poke_ball", "count": 1, "found": true },
+					{ "set": ["got_route_2_item_1"] }
+				]
+			}
+		]
+	},
+	"route_2_item_2": {
+		"variants": [
+			{
+				"unless": ["got_route_2_item_2"],
+				"steps": [
+					{ "despawn": "route_2_ball_2" },
+					{ "give": "potion", "count": 1, "found": true },
+					{ "set": ["got_route_2_item_2"] }
+				]
+			}
+		]
+	},
+	"route_2_item_3": {
+		"variants": [
+			{
+				"unless": ["got_route_2_item_3"],
+				"steps": [
+					{ "dialogue": "route_2_item_3_found" },
+					{ "give": "poke_ball", "count": 1, "found": true },
+					{ "set": ["got_route_2_item_3"] }
+				]
+			}
+		]
+	},
+	"route_2_item_4": {
+		"variants": [
+			{
+				"unless": ["got_route_2_item_4"],
+				"steps": [
+					{ "dialogue": "route_2_item_4_found" },
+					{ "give": "potion", "count": 1, "found": true },
+					{ "set": ["got_route_2_item_4"] }
+				]
+			}
+		]
+	}
+}

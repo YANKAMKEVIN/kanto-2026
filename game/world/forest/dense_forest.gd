@@ -16,6 +16,11 @@ extends RefCounted
 ## feuillage ne cache ni le chemin ni les clairières. Les arbres ne sont pas solides : les
 ## cases de forêt le sont déjà dans la carte (`Ground` ou `blocked_cells`).
 ##
+## **Variation selon la rangée** (jalon 8 §1.2 B, lisière de la Route 2) : un [DenseForest.Shade]
+## facultatif assombrit et refroidit les arbres vers le nord (teinte multipliée par
+## [method row_tint] du pied) et change les poids des essences au nord d'une rangée. Sans lui
+## (ou neutre), le plan est exactement celui d'avant (Route 1, Bourg Palette inchangés).
+##
 ## Positions en **cases** (flottants, pied de l'objet) dans le plan ; en pixels dans la scène.
 
 const TREE_IDS: Array[StringName] = [
@@ -73,8 +78,9 @@ const _BUCKET: float = 2.0
 ## Chaque entrée : { "kind": [constant KIND_TREE] | [constant KIND_BUSH], "id": StringName,
 ## "foot": Vector2 (cases), "position": Vector2 (pixels), "scale": float, "flip_h": bool,
 ## "tint": Color }. Arbres d'abord (ordre des tirages), puis buissons.
+## [param shade] : variation selon la rangée (facultative, voir [DenseForest.Shade]).
 static func plan(forest: Dictionary, map_size: Vector2i, landmarks: Array[Vector2],
-		seed_value: int) -> Array[Dictionary]:
+		seed_value: int, shade: Shade = null) -> Array[Dictionary]:
 	var rng := RandomNumberGenerator.new()
 	rng.seed = seed_value
 	var entries: Array[Dictionary] = []
@@ -93,12 +99,14 @@ static func plan(forest: Dictionary, map_size: Vector2i, landmarks: Array[Vector
 			buckets[bucket] = []
 		(buckets[bucket] as Array).append(foot)
 		# Même ordre de tirages que le prototype : essence, taille, miroir, teinte.
-		var id := TREE_IDS[rng.randi_range(0, TREE_IDS.size() - 1)]
+		var id := _pick_tree(rng, shade, foot.y)
 		var scale := rng.randf_range(SCALE_MIN, SCALE_MAX)
 		var flip := rng.randf() < 0.5
 		var value := rng.randf_range(VALUE_MIN, VALUE_MAX)
 		var tint := Color(value * rng.randf_range(RED_MIN, RED_MAX), value,
 			value * rng.randf_range(BLUE_MIN, BLUE_MAX))
+		if shade != null:
+			tint *= row_tint(shade, foot.y)
 		entries.append(_entry(KIND_TREE, id, foot, scale, flip, tint))
 	var covering: Array[Vector2] = trees.duplicate()
 	covering.append_array(landmarks)
@@ -111,6 +119,17 @@ static func plan(forest: Dictionary, map_size: Vector2i, landmarks: Array[Vector
 			reference.y + BUSH_DROP)
 		entries.append(_entry(KIND_BUSH, id, foot, 1.0, false, Color.WHITE))
 	return entries
+
+
+## Multiplicateur de teinte d'un arbre dont le pied est à la rangée [param row] (cases) ;
+## blanc sans réglage. Sert aussi aux grands arbres de lisière (« assombris comme la forêt de
+## leur rangée », jalon 8 §1.2 B).
+static func row_tint(shade: Shade, row: float) -> Color:
+	if shade == null or shade.from_row <= shade.full_row:
+		return Color.WHITE
+	var t := clampf((shade.from_row - row) / (shade.from_row - shade.full_row), 0.0, 1.0)
+	var value := lerpf(1.0, shade.value, t)
+	return Color(value * lerpf(1.0, shade.red, t), value, value * lerpf(1.0, shade.blue, t))
 
 
 ## Cases de la colonne de [param foot] couvertes par le feuillage (pied compris).
@@ -234,6 +253,22 @@ static func _entry(kind: StringName, id: StringName, foot: Vector2, scale: float
 	}
 
 
+## Essence d'un arbre : tirage uniforme (celui du prototype) sans poids applicables, sinon
+## tirage pondéré par [member Shade.weights] au nord de [member Shade.weights_row].
+static func _pick_tree(rng: RandomNumberGenerator, shade: Shade, row: float) -> StringName:
+	if shade == null or shade.weights.is_empty() or row >= shade.weights_row:
+		return TREE_IDS[rng.randi_range(0, TREE_IDS.size() - 1)]
+	var total := 0.0
+	for id: StringName in TREE_IDS:
+		total += maxf(shade.weights.get(id, 1.0), 0.0)
+	var pick := rng.randf() * total
+	for id: StringName in TREE_IDS:
+		pick -= maxf(shade.weights.get(id, 1.0), 0.0)
+		if pick < 0.0:
+			return id
+	return TREE_IDS[TREE_IDS.size() - 1]
+
+
 static func _bucket_of(foot: Vector2) -> Vector2i:
 	return Vector2i(floori(foot.x / _BUCKET), floori(foot.y / _BUCKET))
 
@@ -253,3 +288,22 @@ static func _near_landmark(landmarks: Array[Vector2], foot: Vector2) -> bool:
 		if landmark.distance_to(foot) < LANDMARK_CLEARANCE:
 			return true
 	return false
+
+
+## Réglage de la forêt selon la rangée du pied ; neutre par défaut. Effet nul au sud de
+## [member from_row], entier au nord de [member full_row] (et au-delà), linéaire entre les
+## deux ; poids des essences ([member weights], absent = 1) au nord de [member weights_row].
+class Shade:
+	extends RefCounted
+	## Rangée au sud de laquelle la teinte est inchangée (≤ [member full_row] : aucun effet).
+	var from_row: float = 0.0
+	## Rangée au nord de laquelle l'effet est entier.
+	var full_row: float = 0.0
+	## Multiplicateurs atteints au nord : valeur (les trois canaux), puis rouge et bleu.
+	var value: float = 1.0
+	var red: float = 1.0
+	var blue: float = 1.0
+	## Pied strictement au nord de cette rangée (y < weights_row) : poids des essences.
+	var weights_row: float = 0.0
+	## Essence → poids (> 0 ; absente : 1).
+	var weights: Dictionary[StringName, float] = {}

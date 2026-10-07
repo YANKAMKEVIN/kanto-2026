@@ -52,7 +52,9 @@ func test_offer_choices_are_lab_npcs_with_the_species_sprite() -> void:
 		assert_not_null(spec, "PNJ « %s » au labo" % option.npc)
 		if spec == null:
 			continue
-		assert_eq(spec.sprite, option.species, "%s : même apparence que l'espèce" % option.npc)
+		# DA.3 : starters peints (`pokemon/<espèce>`, CharacterLook).
+		assert_eq(spec.sprite, StringName("pokemon/" + String(option.species)),
+			"%s : apparence peinte de l'espèce" % option.npc)
 		assert_eq(spec.unless_flags, [StarterChoice.taken_flag(option.species)]
 			as Array[StringName], "%s : quitte la table une fois pris" % option.npc)
 		assert_gt(spec.lift, 0, "%s : sur la table" % option.npc)

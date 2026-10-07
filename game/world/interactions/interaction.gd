@@ -13,9 +13,10 @@ extends RefCounted
 ## contrôleur d'interactions signale la rencontre et le code du choix du starter s'en charge.
 ## Elle est posée par le code sur un PNJ (surcharge), jamais écrite dans les données.
 
-## Verbe du bouton contextuel : Parler / Examiner / Observer / Rencontrer. Nouvelles valeurs
-## en fin d'enum (les scripts d'outil écrivent les valeurs dans les cartes).
-enum Kind { TALK, EXAMINE, OBSERVE, MEET }
+## Verbe du bouton contextuel : Parler / Examiner / Observer / Rencontrer / Prendre
+## ([constant Kind.TAKE] : objet visible au sol, jalon 8 §2.3, porté par un PNJ). Nouvelles
+## valeurs en fin d'enum (les scripts d'outil écrivent les valeurs dans les cartes).
+enum Kind { TALK, EXAMINE, OBSERVE, MEET, TAKE }
 
 var kind: Kind = Kind.EXAMINE
 var cell: Vector2i = Vector2i.ZERO
@@ -55,7 +56,7 @@ func accepts(player_facing: Vector2i) -> bool:
 	return facing == Vector2i.ZERO or facing == player_facing
 
 
-## Nom du verbe (« talk », « examine », « observe », « meet ») : données et HUD.
+## Nom du verbe (« talk », « examine », « observe », « meet », « take ») : données, HUD.
 static func kind_name(value: Kind) -> StringName:
 	match value:
 		Kind.TALK:
@@ -64,6 +65,8 @@ static func kind_name(value: Kind) -> StringName:
 			return &"observe"
 		Kind.MEET:
 			return &"meet"
+		Kind.TAKE:
+			return &"take"
 	return &"examine"
 
 
@@ -78,4 +81,6 @@ static func kind_from_name(value: String) -> int:
 			return Kind.OBSERVE
 		"meet":
 			return Kind.MEET
+		"take":
+			return Kind.TAKE
 	return -1

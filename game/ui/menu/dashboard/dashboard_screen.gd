@@ -23,6 +23,12 @@ var _objective: Label
 var _cards: Array[MenuCard] = []
 
 
+func _init() -> void:
+	backdrop_dim = UiTokens.MENU_GLASS_DIM
+	backdrop_blur = UiTokens.MENU_GLASS_BLUR
+	backdrop_lod = UiTokens.MENU_GLASS_LOD
+
+
 func _ready() -> void:
 	super()
 	set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
