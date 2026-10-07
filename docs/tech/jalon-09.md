@@ -634,3 +634,15 @@ Fait comme au §2.6 et §2.4.8, avec les écarts suivants :
 7. **À compléter ailleurs** : **T4** : 2 Antidotes dans `poison_qa`, 1 dans `trainers_qa` (l'objet n'existe pas encore ; `test_shipped_poison_qa_start` échouera à l'ajout de l'objet tant que le Sac n'en contient pas : voulu) ; **T12** : les 5 Dresseurs dans `qa_forest_systems.json` (blocs `trainer`) ; T8 / T9 : rien dans les données (l'évolution se joue sur les départs tels quels).
 8. **`MapCatalog.QA_PREFIX` / `is_qa_map`** ; `test_zone_library` et `test_map_light_profiles` ignorent les cartes `qa_`. Aucune zone, aucune découverte au Pokédex/Carte (zone vide). Retrait à la clôture du J9 (T23) : scène, `tools/build_qa_forest_systems.gd`, `tools/capture_qa_forest.gd`, données, départs.
 
+### 6.5 T12 — bulle « ! » et Dresseurs de la carte de QA (2026-10-07, branche `j9-t12-dresseurs-carte`, base `j9-t11-dresseurs` + fusion de `j9-t6-carte-qa`)
+
+Fait comme au §2.4.4, §2.6 et §3 « T12 ». Écarts et précisions :
+
+1. **Bulle** : `assets/ui/icons/emote_exclamation.svg` (pastille jaune `ACCENT`, contour et « ! » `#1C1C1C`, pointe vers le bas) ; `Npc.show_emote` crée un `Sprite2D` « EmoteBubble » (`z_index` 10, devant le tri en profondeur) : apparition en rebond (`TRANS_BACK`, 0,18 s, légère montée), tenue, fondu 0,15 s, retrait immédiat de l'arbre ; durée totale inchangée = `Npc.EMOTE_DURATION` = `UiTokens.EMOTE_DURATION` (0,6 s) : `test_cutscene_director` et `test_trainer_watcher` non modifiés. Réglages dans `UiTokens.EMOTE_*` (échelle 0,7, pointe à 118 px au-dessus des pieds, soit un peu sur le chapeau : valeurs par défaut à juger sur S24).
+2. **Limite de cadrage** : la caméra centre le joueur ; un Dresseur à 4 cases au nord (Théo) a sa tête à ~150 px du haut de l'écran, donc le haut de la bulle effleure le bord (« ! » entièrement lisible en capture). À régler au T13 si gênant : vision de Théo à 3 (changer `TRAINER_SLOTS` et la donnée) ou bulle plus basse.
+3. **Apparences provisoires** : aucune planche `scout` : les 4 Scouts utilisent `traveler` (peint), Tom `youngster` (peint). Aucun art nouveau.
+4. **Données** : 5 PNJ dans `data/npcs/qa_forest_systems.json` sur les cases de `TRAINER_SLOTS`, `facing` écrit, aucune routine. `test_dialogue_data` : `qa_forest_systems` dans `MAPS`, `AWAITING_TRAINERS` supprimée (`UNUSED_YET` reste pour le garde nord).
+5. **Fusion** : T6 dans T11 résolue en gardant les deux côtés (`UNUSED_YET`, `GATE_GUARDS`, `pewter_arrived`, `AWAITING_TRAINERS` jusqu'à ce commit ; §6.4 des deux).
+6. **Capture** : `tools/capture_trainer_spotted.gd` (`--after` : Théo battu par drapeau, réplique « après » ; le combat lui-même n'est pas capturé) → `build/captures/jalon09_t12/`.
+
+Tests ajoutés : `test_npc` (+2 : bulle au pas près, une seule bulle), `test_qa_forest_systems` (+2 : Dresseurs sur leurs cases avec vision, regard et répliques ; aucune vision le long du couloir) ; `test_tom_can_be_reached…` recalé (Éli occupe sa case : on teste la case devant lui).

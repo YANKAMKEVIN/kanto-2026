@@ -125,7 +125,10 @@ const ROUTE_RESUME_DELAY: float = 0.6
 const ENTER_FADE_DURATION: float = 0.25
 const ENTER_RETRY_DELAY: float = 0.5
 ## Bulle « ! » d'un Dresseur ([method show_emote], jalon-09.md §2.4.4) : durée totale (s).
-const EMOTE_DURATION: float = 0.6
+const EMOTE_DURATION: float = UiTokens.EMOTE_DURATION
+const EMOTE_ICON: Texture2D = preload("res://assets/ui/icons/emote_exclamation.svg")
+## Pointe de la bulle dans l'icône (96 × 96) : en bas au centre, à (48, 92).
+const EMOTE_TIP_IN_ICON: Vector2 = Vector2(48.0, 92.0)
 const _IDLE_ANIMS: Dictionary[Vector2i, StringName] = {
 	Vector2i.DOWN: &"idle_down",
 	Vector2i.UP: &"idle_up",
@@ -196,6 +199,7 @@ var _inside: bool = false
 var _inside_grid: GridWorld
 ## Bulle en cours ([method show_emote]).
 var _emote_tween: Tween
+var _emote_bubble: Sprite2D
 var _inside_tween: Tween
 ## Boucle de l'animation d'ambiance ([member NpcSpec.idle_react_every]).
 var _idle_tween: Tween
@@ -1062,19 +1066,39 @@ func _on_animation_finished() -> void:
 
 ## Bulle [param kind] au-dessus de la tête ([constant CutsceneStep.EMOTE_KINDS], jalon 9 :
 ## le « ! » du Dresseur qui repère le joueur), pendant [constant EMOTE_DURATION] s, puis
-## [signal emote_finished]. Contrat du T11 : la durée seulement (attente en [Tween]) ; le
-## dessin de la bulle (apparition en rebond, tenue, disparition) vient au T12. Hors de l'arbre :
-## finie tout de suite.
+## [signal emote_finished]. Apparition en rebond (dépassement), tenue, fondu ; tout en [Tween],
+## dessinée au-dessus du tri en profondeur, retirée à la fin. Hors de l'arbre : finie tout de
+## suite.
 func show_emote(_kind: StringName) -> void:
-	if _emote_tween != null and _emote_tween.is_valid():
-		_emote_tween.kill()
+	_clear_emote()
 	if not is_inside_tree():
-		_emote_tween = null
 		emote_finished.emit()
 		return
+	var tip := Vector2(0.0, -UiTokens.EMOTE_TIP_HEIGHT)
+	_emote_bubble = Sprite2D.new()
+	_emote_bubble.name = "EmoteBubble"
+	_emote_bubble.texture = EMOTE_ICON
+	_emote_bubble.centered = false
+	_emote_bubble.offset = -EMOTE_TIP_IN_ICON
+	_emote_bubble.z_index = 10
+	_emote_bubble.position = tip + Vector2(0.0, UiTokens.EMOTE_RISE)
+	_emote_bubble.scale = Vector2.ZERO
+	_emote_bubble.modulate.a = 0.0
+	add_child(_emote_bubble)
+	var full := Vector2.ONE * UiTokens.EMOTE_SCALE
+	var pop := UiTokens.EMOTE_POP
+	var fade := UiTokens.EMOTE_FADE
+	var hold := maxf(0.0, EMOTE_DURATION - pop - fade)
 	_emote_tween = create_tween()
-	_emote_tween.tween_interval(EMOTE_DURATION)
-	_emote_tween.tween_callback(_finish_emote)
+	_emote_tween.set_parallel(true)
+	_emote_tween.tween_property(_emote_bubble, "scale", full, pop) \
+		.set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
+	_emote_tween.tween_property(_emote_bubble, "position", tip, pop) \
+		.set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
+	_emote_tween.tween_property(_emote_bubble, "modulate:a", 1.0, pop * 0.5)
+	_emote_tween.chain().tween_interval(hold)
+	_emote_tween.chain().tween_property(_emote_bubble, "modulate:a", 0.0, fade)
+	_emote_tween.chain().tween_callback(_finish_emote)
 
 
 ## Vrai pendant une bulle ([method show_emote]).
@@ -1084,4 +1108,16 @@ func is_emoting() -> bool:
 
 func _finish_emote() -> void:
 	_emote_tween = null
+	_clear_emote()
 	emote_finished.emit()
+
+
+func _clear_emote() -> void:
+	if _emote_tween != null and _emote_tween.is_valid():
+		_emote_tween.kill()
+	_emote_tween = null
+	if _emote_bubble != null and is_instance_valid(_emote_bubble):
+		# Retirée tout de suite (le nom « EmoteBubble » est libre pour la bulle suivante).
+		remove_child(_emote_bubble)
+		_emote_bubble.queue_free()
+	_emote_bubble = null

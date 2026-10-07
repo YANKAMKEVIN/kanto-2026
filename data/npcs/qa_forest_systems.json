@@ -2,5 +2,30 @@
 	"south_guard": {
 		"cell": [11, 15], "facing": "down", "sprite": "traveler",
 		"dialogue": "forest_gate_south_guard"
+	},
+	"theo": {
+		"cell": [16, 8], "facing": "down", "sprite": "traveler",
+		"dialogue": "forest_scout_theo_after",
+		"trainer": { "id": "forest_scout_theo", "sight": 4, "before": "forest_scout_theo_before" }
+	},
+	"noe": {
+		"cell": [7, 3], "facing": "right", "sprite": "traveler",
+		"dialogue": "forest_scout_noe_after",
+		"trainer": { "id": "forest_scout_noe", "sight": 5, "before": "forest_scout_noe_before" }
+	},
+	"milo": {
+		"cell": [11, 1], "facing": "down", "sprite": "traveler",
+		"dialogue": "forest_scout_milo_after",
+		"trainer": { "id": "forest_scout_milo", "sight": 5, "before": "forest_scout_milo_before" }
+	},
+	"tom": {
+		"cell": [19, 4], "facing": "left", "sprite": "youngster",
+		"dialogue": "forest_youngster_tom_after",
+		"trainer": { "id": "forest_youngster_tom", "sight": 4, "before": "forest_youngster_tom_before" }
+	},
+	"eli": {
+		"cell": [23, 1], "facing": "down", "sprite": "traveler",
+		"dialogue": "forest_scout_eli_after",
+		"trainer": { "id": "forest_scout_eli", "sight": 5, "before": "forest_scout_eli_before" }
 	}
 }

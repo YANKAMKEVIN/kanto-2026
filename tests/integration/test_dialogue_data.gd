@@ -39,7 +39,7 @@ const _DOSSIER_TOKENS: Dictionary[String, String] = {"{first_wild_species}": "{e
 const MAPS: Array[StringName] = [
 	&"player_house_2f", &"player_house_1f", &"rival_house", &"oak_lab", &"pallet_town",
 	&"route_1", &"route_22", &"viridian_city", &"viridian_center", &"viridian_mart",
-	# Jalon 9 (T6) : carte de QA (le garde sud).
+	# Jalon 9 (T6, T12) : carte de QA (le garde sud, les cinq Dresseurs).
 	&"qa_forest_systems",
 ]
 ## Lot de textes validé par Kevin le 2026-10-06 (anciens brouillons : panneau, observations,
@@ -84,16 +84,6 @@ const IDS: Array[StringName] = [
 ## Jalon 9 : `pewter_arrived` (lu par le garde du poste nord) est posé par le J10, à l'arrivée à
 ## Argenta.
 const FUTURE_FLAGS: Array[StringName] = [&"pewter_arrived"]
-## Répliques des Dresseurs de la Forêt de Jade (jalon 9, T11) : aucun PNJ ne les porte encore.
-## Le T12 pose les Dresseurs sur la carte de QA (ajouter « qa_forest_systems » à MAPS) et vide
-## cette liste ; le T21 les pose dans la vraie forêt.
-const AWAITING_TRAINERS: Array[StringName] = [
-	&"forest_scout_eli_after", &"forest_scout_eli_before", &"forest_scout_milo_after",
-	&"forest_scout_milo_before", &"forest_scout_noe_after", &"forest_scout_noe_before",
-	&"forest_scout_theo_after", &"forest_scout_theo_before", &"forest_youngster_tom_after",
-	&"forest_youngster_tom_before",
-]
-
 var _library: DialogueLibrary
 var _cutscenes: CutsceneLibrary
 var _offer: StarterOffer
@@ -203,7 +193,7 @@ func test_every_used_dialogue_exists() -> void:
 func test_every_dialogue_is_used() -> void:
 	var played := _cutscenes.get_dialogue_ids()
 	for id: StringName in _library.get_ids():
-		if AWAITING_TRAINERS.has(id) or UNUSED_YET.has(id):
+		if UNUSED_YET.has(id):
 			continue
 		assert_true(_used_on.has(id) or played.has(id),
 			"dialogue « %s » utilisé par un PNJ, un point ou une scène" % id)

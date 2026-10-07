@@ -210,7 +210,8 @@ func test_tom_can_be_reached_from_the_side_and_eli_at_the_far_end() -> void:
 	var reach := _reach(Vector2i(8, 6), blocked)
 	assert_true(reach.has(cell + Vector2i.UP), "abordable de côté sans passer par sa vision")
 	var eli: Vector2i = ELI[0]
-	assert_true(_reach(Vector2i(8, 6)).has(eli), "Éli est atteignable")
+	var near_eli := _reach(Vector2i(8, 6))
+	assert_true(near_eli.has(eli + Vector2i.DOWN), "Éli est atteignable (case devant lui)")
 	assert_eq(_sight(ELI).size(), 5)
 
 
@@ -218,3 +219,36 @@ func test_every_trainer_slot_is_free_ground() -> void:
 	for slot: Array in [THEO, NOE, MILO, TOM, ELI]:
 		assert_false(_grid.is_solid(slot[0]), str(slot[0]))
 		assert_false(_grid.is_tall_grass(slot[0]), "pas dans les hautes herbes : %s" % slot[0])
+
+
+## Jalon 9 (T12) : les cinq Dresseurs sont posés sur leurs cases réservées, avec la vision, le
+## regard et les répliques prévus ; aucun ne se tient dans l'axe d'un passage d'une case.
+func test_trainers_are_posed_on_their_reserved_slots() -> void:
+	var expected: Dictionary[StringName, Array] = {
+		&"theo": [THEO, &"forest_scout_theo"], &"noe": [NOE, &"forest_scout_noe"],
+		&"milo": [MILO, &"forest_scout_milo"], &"tom": [TOM, &"forest_youngster_tom"],
+		&"eli": [ELI, &"forest_scout_eli"],
+	}
+	for id: StringName in expected:
+		var npc := _map.get_npc(id)
+		assert_not_null(npc, String(id))
+		if npc == null:
+			continue
+		var slot: Array = expected[id][0]
+		var spec := npc.get_spec()
+		assert_eq(spec.cell, slot[0], "%s : case" % id)
+		assert_eq(spec.facing, slot[1], "%s : regard" % id)
+		assert_eq(spec.sight, slot[2], "%s : vision" % id)
+		assert_eq(spec.trainer_id, expected[id][1])
+		assert_eq(spec.before_dialogue, StringName(String(spec.trainer_id) + "_before"))
+		assert_eq(spec.dialogue, StringName(String(spec.trainer_id) + "_after"))
+		assert_true(spec.is_trainer())
+		assert_eq(npc.get_cell(), slot[0], "%s : posé sur la grille" % id)
+
+
+func test_no_trainer_stands_in_the_axis_of_a_one_cell_passage() -> void:
+	# Le couloir (rangée 12) est perpendiculaire à la vision de Théo : on le traverse, on ne
+	# marche jamais le long de sa ligne ; aucune case du couloir n'est dans la vision d'un autre.
+	for slot: Array in [NOE, MILO, TOM, ELI]:
+		for cell: Vector2i in _sight(slot):
+			assert_ne(cell.y, 12, "la vision de %s ne longe pas le couloir" % str(slot[0]))
