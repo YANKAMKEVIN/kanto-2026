@@ -142,3 +142,7 @@ Carte et Dresseur **validés** (« tout est ok »). Décisions : détail d'un ba
 **Questions** :
 - **Q-MM3-1** : sélecteur « ‹ Valeur › » (maquette) au lieu des options côte à côte du J6 : on voit moins vite toutes les options (Vitesse du texte en a quatre). Garder le sélecteur partout, ou revenir aux options côte à côte pour Vitesse du texte ?
 - **Q-MM3-2** : aux bouts d'un sélecteur, flèche éteinte (défaut) ou retour au début ?
+
+
+## Validation MM.3 (Kevin, S24, 2026-10-07) — chantier du menu terminé
+Paramètres **validés**. Décisions : sélecteur « ‹ Valeur › » gardé partout, Vitesse du texte comprise (Q-MM3-1) ; flèche éteinte au bout d'un sélecteur (Q-MM3-2, défaut). Les cinq écrans du Menu Dresseur et le Pokédex sont rapprochés de leurs maquettes. Restent pour plus tard : détail d'un badge au toucher (J10), illustrations dédiées des aperçus de lieux et de la carte de Kanto (phase DA), textes à relire (MM.1 à MM.3).
