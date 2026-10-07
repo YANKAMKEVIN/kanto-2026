@@ -19,6 +19,7 @@
 [ext_resource type="PackedScene" path="res://game/ui/menu/trainer_menu.tscn" id="17_trainer"]
 [ext_resource type="Script" path="res://game/world/rest/defeat_recovery.gd" id="18_recovery"]
 [ext_resource type="Script" path="res://game/systems/services/service_director.gd" id="19_services"]
+[ext_resource type="Script" path="res://game/world/npc/trainer_watcher.gd" id="30_trainers"]
 
 [node name="Boot" type="Node"]
 script = ExtResource("1_boot")
@@ -77,6 +78,11 @@ script = ExtResource("12_director")
 unique_name_in_owner = true
 process_mode = 1
 script = ExtResource("13_ambient")
+
+[node name="TrainerWatcher" type="Node" parent="."]
+unique_name_in_owner = true
+process_mode = 1
+script = ExtResource("30_trainers")
 
 [node name="EncounterDirector" type="Node" parent="."]
 unique_name_in_owner = true

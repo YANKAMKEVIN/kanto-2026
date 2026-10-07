@@ -14,6 +14,9 @@ extends Node
 ## Jalon 4 (jalon-04.md §3.5, §13.3) : une cible « Rencontrer » ([constant Interaction.Kind.MEET],
 ## surcharge posée par le choix du starter) ne joue aucun dialogue : l'appui émet
 ## [signal meet_requested] et le code du choix s'en charge. Même anti-rebond qu'un dialogue.
+## Jalon 9 (jalon-09.md §2.4.5) : parler à un Dresseur pas encore battu ne joue aucun dialogue :
+## l'appui émet [signal challenge_requested] ([TrainerWatcher] joue le défi), même anti-rebond ;
+## battu, il dit sa réplique « après » (son dialogue). Drapeaux : [method set_story_flags].
 
 ## Cible devant le joueur : kind = [enum Interaction.Kind], ou [constant NO_TARGET].
 signal target_changed(kind: int)
@@ -23,6 +26,8 @@ signal meet_requested(npc: Npc)
 ## Geste OBSERVER sur un Pokémon du décor dont l'espèce est renseignée (jalon 6 §6.9, Q-7) :
 ## émis **au début** du geste, avant le dialogue. [param npc] porte l'identifiant de l'individu.
 signal observed(npc: Npc, species: StringName)
+## Appui sur un Dresseur pas encore battu (jalon 9) : [param npc] le défie, sans dialogue.
+signal challenge_requested(npc: Npc)
 
 const NO_TARGET: int = -1
 ## Délai entre l'arrivée sur la carte et l'ouverture de la boîte d'un dialogue automatique.
@@ -37,6 +42,8 @@ var _target_kind: int = NO_TARGET
 ## Anti-rebond : après un dialogue ou une rencontre, `interact` est ignoré jusqu'à son
 ## relâchement.
 var _wait_release: bool = false
+## Drapeaux d'histoire (Dresseurs battus, jalon 9) ; null = aucun Dresseur n'est battu.
+var _flags: StoryFlags
 
 
 func _ready() -> void:
@@ -71,6 +78,11 @@ func setup(player: Player, runner: DialogueRunner) -> void:
 		_runner.dialogue_finished.connect(_on_dialogue_finished)
 	_set_target(null)
 	set_process(_player != null)
+
+
+## Drapeaux d'histoire lus pour savoir si un Dresseur est battu (jalon 9).
+func set_story_flags(flags: StoryFlags) -> void:
+	_flags = flags
 
 
 ## Nouvelle carte (SceneRouter.map_changed) : plus de cible jusqu'à la prochaine image.
@@ -126,6 +138,12 @@ func _interact(target: Interaction) -> void:
 		_wait_release = true
 		if npc != null:
 			meet_requested.emit(npc)
+		return
+	if npc != null and npc.get_spec().is_trainer() \
+			and not TrainerRules.is_beaten(_flags, npc.get_spec().trainer_id):
+		# Défi à la parole (jalon 9) : le TrainerWatcher joue la séquence, pas de dialogue ici.
+		_wait_release = true
+		challenge_requested.emit(npc)
 		return
 	if npc != null and target.kind == Interaction.Kind.OBSERVE \
 			and npc.get_spec().is_observable_species():

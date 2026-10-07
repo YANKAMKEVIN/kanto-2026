@@ -78,6 +78,9 @@ extends RefCounted
 ## - move accepte « background » (true : PNJ seulement, sans « follower ») : marche en
 ##   arrière-plan, la scène continue ([member CutsceneStep.background]) ;
 ## - react : acteur (joueur, PNJ ou alias) qui a une petite réaction de surprise.
+## Jalon 9 (jalon-09.md §2.4.4) :
+## - emote : PNJ (ou alias, pas « player ») avec « kind » obligatoire
+##   ([constant CutsceneStep.EMOTE_KINDS] : « exclamation ») ; la scène attend la fin de la bulle.
 ## Acteur = « player », identifiant d'un PNJ de la carte courante, ou **alias** « $nom »
 ## (forme $[a-z_]+, [method CutsceneStep.is_alias]) : PNJ choisi par le code qui lance la
 ## scène (CutsceneDirector.play(id, alias)), résolu au début de chaque étape. Les alias
@@ -97,7 +100,7 @@ const _EXTRA_KEYS: Array[Array] = [
 	["path", "to", "run", "follower", "keep_facing", "optional", "background"],
 	["at", "facing"], ["to"],
 	["to"], [], ["player_pokemon", "foe_pokemon", "win", "lose"], ["count", "found"],
-	[], ["count"], [], [], [],
+	[], ["count"], [], [], [], ["kind"],
 ]
 ## Conditions permises sur toute étape sauf spawn.
 const _CONDITION_KEYS: Array[String] = ["if", "unless"]
@@ -404,6 +407,14 @@ func _parse_step(value: Variant, where: String) -> CutsceneStep:
 		CutsceneStep.Kind.REACT:
 			ok = _read_actor(main, where + " react", func(v: StringName) -> void:
 				step.actor = v) and ok
+		CutsceneStep.Kind.EMOTE:
+			ok = _read_npc_actor(main, where + " emote", step) and ok
+			var emote: Variant = entry.get("kind")
+			if not emote is String or not CutsceneStep.EMOTE_KINDS.has(StringName(emote)):
+				ok = _fail("%s : « kind » vaut %s" % [where, ", ".join(PackedStringArray(
+					CutsceneStep.EMOTE_KINDS))])
+			else:
+				step.emote = StringName(emote)
 	return step if ok else null
 
 

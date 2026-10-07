@@ -1,0 +1,36 @@
+{
+	"forest_gate_south_guard": {
+		"speaker": "Garde",
+		"variants": [
+			{
+				"unless": ["poison_unlocked"],
+				"set": ["poison_unlocked"],
+				"auto": true,
+				"pages": [
+					"La Forêt de Jade est juste devant.\nGarde un Antidote avec toi."
+				]
+			},
+			{
+				"pages": [
+					"Les Aspicot peuvent empoisonner.\nLa Boutique de Jadielle vend des Antidotes."
+				]
+			}
+		]
+	},
+	"forest_gate_north_guard": {
+		"speaker": "Garde",
+		"variants": [
+			{
+				"if": ["pewter_arrived"],
+				"pages": [
+					"La Forêt de Jade mène à Jadielle.\nLes jeunes Dresseurs s'y entraînent."
+				]
+			},
+			{
+				"pages": [
+					"Encore quelques pas vers le nord,\net tu atteindras Argenta."
+				]
+			}
+		]
+	}
+}

@@ -61,18 +61,23 @@ extends RefCounted
 ## - [constant Kind.REACT] : [member actor] (joueur ou PNJ) a une petite réaction de surprise
 ##   ([method Npc.react], [method Player.react] : animation « react » ou petit bond), sans
 ##   attendre sa fin.
+## Jalon 9 (jalon-09.md §2.4.4), Dresseurs :
+## - [constant Kind.EMOTE] : bulle [member emote] (« ! », [constant EMOTE_KINDS]) au-dessus du
+##   PNJ [member actor] ([method Npc.show_emote]) ; la scène attend sa fin.
 
 ## Nouvelles valeurs en fin d'enum (ordre de [constant TYPE_KEYS]).
 enum Kind {
 	WAIT, DIALOGUE, FACE, SET_FLAGS, SPAWN, MOVE, CHANGE_MAP, HOP, LEAN, DESPAWN, BATTLE, GIVE,
-	CAPTION, TAKE, SCARE, WAKE_UP, REACT,
+	CAPTION, TAKE, SCARE, WAKE_UP, REACT, EMOTE,
 }
 
 ## Clé de type de chaque étape dans les fichiers, dans l'ordre de [enum Kind].
 const TYPE_KEYS: Array[String] = [
 	"wait", "dialogue", "face", "set", "spawn", "move", "change_map", "hop", "lean",
-	"despawn", "battle", "give", "caption", "take", "scare", "wake_up", "react",
+	"despawn", "battle", "give", "caption", "take", "scare", "wake_up", "react", "emote",
 ]
+## Bulles d'une étape « emote » (clé « kind ») : le « ! » du Dresseur qui repère le joueur.
+const EMOTE_KINDS: Array[StringName] = [&"exclamation"]
 ## Préfixe d'un alias d'acteur (« $player_starter »).
 const ALIAS_PREFIX: String = "$"
 const _ALIAS_CHARS: String = "abcdefghijklmnopqrstuvwxyz_"
@@ -111,6 +116,8 @@ var count: int = 1
 var found: bool = false
 ## Étape « caption » : texte de la légende.
 var text: String = ""
+## Étape « emote » : bulle affichée ([constant EMOTE_KINDS]).
+var emote: StringName = &""
 ## Conditions de l'étape (toutes levées / aucune levée), vides = toujours jouée.
 var if_flags: Array[StringName] = []
 var unless_flags: Array[StringName] = []
@@ -196,6 +203,7 @@ func copy() -> CutsceneStep:
 	other.count = count
 	other.found = found
 	other.text = text
+	other.emote = emote
 	other.if_flags = if_flags.duplicate()
 	other.unless_flags = unless_flags.duplicate()
 	return other

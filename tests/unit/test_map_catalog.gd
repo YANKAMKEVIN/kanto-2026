@@ -23,3 +23,11 @@ func test_empty_id() -> void:
 func test_has_map() -> void:
 	assert_true(MapCatalog.has_map(&"pallet_town"))
 	assert_false(MapCatalog.has_map(&"does_not_exist"))
+
+
+func test_qa_maps_are_recognised_by_their_prefix() -> void:
+	assert_true(MapCatalog.is_qa_map(&"qa_forest_systems"))
+	assert_false(MapCatalog.is_qa_map(&"viridian_forest"))
+	assert_false(MapCatalog.is_qa_map(&"pallet_town"))
+	assert_false(MapCatalog.is_qa_map(&""))
+	assert_true(MapCatalog.has_map(&"qa_forest_systems"))

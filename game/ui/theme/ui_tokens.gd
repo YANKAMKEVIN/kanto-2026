@@ -122,6 +122,19 @@ const INTERACT_LABEL_PAD_V := 8
 ## Vibration courte à l'appui du bouton contextuel (millisecondes).
 const HAPTIC_TAP_MS := 15
 
+# --- Bulle « ! » d'un Dresseur (jalon 9, T12) -----------------------------------------------
+
+## Durée totale (s) : apparition en rebond + tenue + fondu ; [constant Npc.EMOTE_DURATION].
+const EMOTE_DURATION := 0.6
+const EMOTE_POP := 0.18
+const EMOTE_FADE := 0.15
+## Hauteur (px monde) de la pointe de la bulle au-dessus des pieds (la tête est à ~ -128 : la pointe en effleure le haut).
+const EMOTE_TIP_HEIGHT := 118.0
+## Taille affichée (échelle de l'icône 96 px) ; le rebond (TRANS_BACK) dépasse d'environ 10 %.
+const EMOTE_SCALE := 0.7
+## Montée de la bulle pendant l'apparition (px monde).
+const EMOTE_RISE := 18.0
+
 # --- Boîte de dialogue (bible UI/UX §3) --------------------------------------------------------
 
 const DIALOG_BOX_WIDTH := 1400

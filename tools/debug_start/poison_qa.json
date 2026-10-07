@@ -1,0 +1,15 @@
+{
+	"map": "qa_forest_systems", "spawn": "poison_start", "facing": "up",
+	"flags": [
+		"mom_greeted", "rival_met", "oak_met", "oak_lab_reunion", "starter_offered",
+		"starter_chosen", "taken_charmander", "taken_squirtle", "rival_lab_won",
+		"rival_challenged", "rival_battle_done", "rival_left_lab", "viridian_arrived",
+		"got_oak_parcel", "pokedex_activated"
+	],
+	"party": [
+		{ "species": "charmander", "level": 9, "status": "poison" },
+		{ "species": "pidgey", "level": 7 }
+	],
+	"bag": { "potion": 2, "antidote": 2 },
+	"money": 3000
+}

@@ -11,6 +11,7 @@ extends GutTest
 const NPC_SCENE := "res://game/world/npc/npc.tscn"
 const CELL := Vector2i(5, 5)
 const FRAME := 1.0 / 60.0
+const TweenClock := preload("res://tests/helpers/tween_clock.gd")
 
 
 func _spec(overrides: Dictionary = {}) -> NpcSpec:
@@ -526,6 +527,7 @@ func _check_hop(style: StringName) -> void:
 	# haut du sprite ; rotation, décalage horizontal, compression et plan de dessin vus.
 	# Relevés pas par pas dans le test lui-même.
 	var peak := 0.0
+	var top := 0.0
 	var rotated := false
 	var swayed := false
 	var squashed := false
@@ -808,3 +810,54 @@ func test_steps_alternate_feet_even_after_a_stop() -> void:
 		_simulate(npc, int(Grid.WALK_STEP_DURATION / FRAME) + 3)
 		assert_false(npc.is_moving())
 	assert_eq(first_frames, [0, 2, 0, 2] as Array[int], "pied gauche, pied droit…")
+
+
+## Jalon 9 (T12) : la bulle « ! » existe pendant l'attente, au-dessus de la tête, devant le tri
+## en profondeur, grandit en rebond puis disparaît ; durée au pas près (0,6 s).
+func test_emote_bubble_pops_holds_fades_and_is_removed() -> void:
+	var npc := _make(_spec())
+	var clock := TweenClock.new(get_tree())
+	watch_signals(npc)
+	npc.show_emote(&"exclamation")
+	assert_true(npc.is_emoting())
+	var bubble := npc.get_node_or_null(^"EmoteBubble") as Sprite2D
+	assert_not_null(bubble, "bulle dessinée")
+	if bubble == null:
+		clock.release()
+		return
+	assert_gt(bubble.z_index, 0, "devant le tri en profondeur")
+	assert_almost_eq(bubble.scale.x, 0.0, 0.001, "elle naît à l'échelle zéro")
+	var peak := 0.0
+	var top := 0.0
+	var steps := 0
+	while npc.is_emoting() and steps < 120:
+		clock.step()
+		steps += 1
+		if is_instance_valid(bubble) and not bubble.is_queued_for_deletion():
+			peak = maxf(peak, bubble.scale.x)
+			top = minf(top, bubble.position.y)
+	assert_between(peak, UiTokens.EMOTE_SCALE, UiTokens.EMOTE_SCALE * 1.25,
+		"rebond : plein format, dépassement borné")
+	assert_almost_eq(top, -UiTokens.EMOTE_TIP_HEIGHT, 3.0, "pointe à la hauteur des réglages")
+	assert_between(steps, int(Npc.EMOTE_DURATION / FRAME), int(Npc.EMOTE_DURATION / FRAME) + 1,
+		"0,6 s, au pas près")
+	assert_signal_emit_count(npc, "emote_finished", 1)
+	assert_false(npc.is_emoting())
+	await wait_frames(1)
+	assert_null(npc.get_node_or_null(^"EmoteBubble"), "bulle retirée")
+	clock.release()
+
+
+func test_emote_restarted_keeps_a_single_bubble() -> void:
+	var npc := _make(_spec())
+	var clock := TweenClock.new(get_tree())
+	npc.show_emote(&"exclamation")
+	clock.step()
+	npc.show_emote(&"exclamation")
+	await wait_frames(1)
+	var bubbles := 0
+	for child: Node in npc.get_children():
+		if child.name.begins_with("EmoteBubble"):
+			bubbles += 1
+	assert_eq(bubbles, 1)
+	clock.release()
