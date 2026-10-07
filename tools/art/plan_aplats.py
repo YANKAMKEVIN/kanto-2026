@@ -7,8 +7,11 @@ vue d'un AUTRE lieu comme ancre de style). Couleurs du plan de la Route 1
 le reste suit la légende du prompt `CONCEPT_ROUTE2_VUE_GENERALE_r1.txt`.
 1 case = 24 px ; la grille est centrée sur un fond de forêt 1024 × 1536 (format portrait de Codex).
 
-Usage : python3 tools/art/plan_aplats.py [grille.txt] [sortie.png]
+Usage : python3 tools/art/plan_aplats.py [grille.txt] [sortie.png] [--lisiere]
         (défaut : tools/plans/route_2.txt → build/art/PLAN_ROUTE2_v1.png)
+--lisiere (vue générale, essai 3) : la géométrie ne change pas ; le plan PORTE la transition
+vers la forêt (canopée plus sombre vers le nord, herbe éloignée du chemin rendue en sous-bois
+ombragé, arbres serrés le long du chemin) et ferme visiblement FUTUR A (masse d'arbre dense).
 Reproductible : même grille → même image (fleurs tirées avec une graine fixe).
 """
 from __future__ import annotations
@@ -68,12 +71,80 @@ def _disque(d: ImageDraw.ImageDraw, cx: float, cy: float, r: float, fill, outlin
 	d.ellipse([cx - r, cy - r, cx + r, cy + r], fill=fill, outline=outline, width=2)
 
 
-def dessiner(grille: Path, sortie: Path) -> Path:
+# Lisière (--lisiere) : de LISIERE_DEBUT (rangée) vers le nord, la forêt s'assombrit jusqu'à
+# CANOPEE et l'herbe rase loin du chemin devient du sous-bois ombragé.
+LISIERE_DEBUT = 30
+CANOPEE = (10, 48, 28)
+SOUS_BOIS = (34, 88, 46)
+OMBRE = (22, 66, 38)
+
+
+def _melange(a, b, t: float):
+	return tuple(round(a[i] + (b[i] - a[i]) * t) for i in range(3))
+
+
+def _lisiere(plan, img, d, coin, centre) -> None:
+	"""Transition peinte vers la forêt, portée par le plan (géométrie inchangée)."""
+	alea = random.Random(GRAINE + 1)
+	ouvert = set("=hDvR")
+	def pres_du_chemin(x: int, y: int, r: int) -> bool:
+		for dy in range(-r, r + 1):
+			for dx in range(-r, r + 1):
+				yy, xx = y + dy, x + dx
+				if 0 <= yy < plan.height and 0 <= xx < plan.width and plan.rows[yy][xx] in ouvert:
+					return True
+		return False
+	for y, row in enumerate(plan.rows):
+		t = max(0.0, (LISIERE_DEBUT - y) / LISIERE_DEBUT)
+		if t <= 0:
+			continue
+		for x, c in enumerate(row):
+			x0, y0 = coin(x, y)
+			if c == ".":
+				# Herbe à plus d'une case du chemin : sous-bois de plus en plus ombragé.
+				if not pres_du_chemin(x, y, 1):
+					d.rectangle([x0, y0, x0 + CASE - 1, y0 + CASE - 1],
+						fill=_melange(HERBE, SOUS_BOIS, min(1.0, t * 1.6)))
+	# Taches d'ombre de canopée au sol, de plus en plus nombreuses vers le nord.
+	for y, row in enumerate(plan.rows):
+		t = max(0.0, (LISIERE_DEBUT - y) / LISIERE_DEBUT)
+		for x, c in enumerate(row):
+			if c in ".h" and alea.random() < 0.55 * t:
+				cx, cy = centre(x, y)
+				_disque(d, cx + alea.uniform(-8, 8), cy + alea.uniform(-8, 8),
+					alea.uniform(7, 12), OMBRE)
+	# Arbres serrés le long du chemin : houppiers débordant de la forêt sur ses bords.
+	for y, row in enumerate(plan.rows):
+		t = max(0.0, (LISIERE_DEBUT - y) / LISIERE_DEBUT)
+		for x, c in enumerate(row):
+			if c == "T" and pres_du_chemin(x, y, 1) and alea.random() < 0.35 + 0.5 * t:
+				cx, cy = centre(x, y)
+				_disque(d, cx, cy, CASE * (0.55 + 0.35 * t), _melange(ARBRE, CANOPEE, t * 0.7),
+					ARBRE_BORD)
+
+
+def _futur_a_ferme(plan, d, centre) -> None:
+	"""FUTUR A : une masse d'arbre dense coupe tout le sentier (le sentier reste visible derrière)."""
+	for x, y in plan.cells_of("A"):
+		cx, cy = centre(x, y)
+		_disque(d, cx, cy, CASE * 1.7, SOMBRE, SOMBRE_BORD)
+		for dx, dy, r in ((-0.9, -1.0, 0.8), (0.9, -1.0, 0.8), (-0.9, 1.0, 0.8), (0.9, 1.0, 0.8)):
+			_disque(d, cx + dx * CASE, cy + dy * CASE, CASE * r, BUISSON, SOMBRE_BORD)
+		_disque(d, cx, cy, CASE * 1.1, (14, 52, 34), SOMBRE_BORD)
+
+
+def dessiner(grille: Path, sortie: Path, lisiere: bool = False) -> Path:
 	plan = lire(grille)
 	img = Image.new("RGB", TAILLE, FORET)
 	d = ImageDraw.Draw(img)
 	ox = (TAILLE[0] - plan.width * CASE) // 2
 	oy = (TAILLE[1] - plan.height * CASE) // 2
+	if lisiere:
+		# Marges de l'image : même dégradé de canopée que les cases de forêt de la rangée.
+		for py in range(TAILLE[1]):
+			gy = (py - oy) / CASE
+			t = max(0.0, (LISIERE_DEBUT - gy) / LISIERE_DEBUT)
+			d.line([(0, py), (TAILLE[0], py)], fill=_melange(FORET, CANOPEE, min(1.0, t)))
 
 	def coin(x: int, y: int) -> tuple[int, int]:
 		return ox + x * CASE, oy + y * CASE
@@ -85,6 +156,8 @@ def dessiner(grille: Path, sortie: Path) -> Path:
 	for y, row in enumerate(plan.rows):
 		for x, c in enumerate(row):
 			x0, y0 = coin(x, y)
+			if lisiere and c == "T":
+				continue  # la forêt suit le dégradé déjà peint
 			d.rectangle([x0, y0, x0 + CASE - 1, y0 + CASE - 1], fill=FOND[c])
 			# Chemins et sentiers qui sortent de la carte : prolongés jusqu'au bord de l'image.
 			if c in "=ab":
@@ -97,6 +170,9 @@ def dessiner(grille: Path, sortie: Path) -> Path:
 					d.rectangle([x0, 0, x1, y0], fill=FOND[c])
 				if y == plan.height - 1:
 					d.rectangle([x0, y1, x1, TAILLE[1]], fill=FOND[c])
+
+	if lisiere:
+		_lisiere(plan, img, d, coin, centre)
 
 	# 2. Fleurs (prairies du sud ; graine fixe).
 	alea = random.Random(GRAINE)
@@ -153,6 +229,9 @@ def dessiner(grille: Path, sortie: Path) -> Path:
 		cx, cy = centre(x, y)
 		_disque(d, cx, cy - CASE * 0.5, CASE, ARBRE, ARBRE_BORD)
 
+	if lisiere:
+		_futur_a_ferme(plan, d, centre)
+
 	# 7. Objets visibles : Poké Ball (rouge en haut, blanche en bas).
 	for p in plan.of_kind("objet_visible"):
 		for x, y in p.cells:
@@ -168,9 +247,10 @@ def dessiner(grille: Path, sortie: Path) -> Path:
 
 
 def main() -> int:
-	grille = Path(sys.argv[1]) if len(sys.argv) > 1 else RACINE / "tools/plans/route_2.txt"
-	sortie = Path(sys.argv[2]) if len(sys.argv) > 2 else RACINE / "build/art/PLAN_ROUTE2_v1.png"
-	print(dessiner(grille, sortie))
+	args = [a for a in sys.argv[1:] if not a.startswith("--")]
+	grille = Path(args[0]) if len(args) > 0 else RACINE / "tools/plans/route_2.txt"
+	sortie = Path(args[1]) if len(args) > 1 else RACINE / "build/art/PLAN_ROUTE2_v1.png"
+	print(dessiner(grille, sortie, "--lisiere" in sys.argv))
 	return 0
 
 

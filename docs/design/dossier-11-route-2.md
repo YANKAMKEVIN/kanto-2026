@@ -22,6 +22,15 @@
 
 **Contrainte de raccord (Kevin)** : le raccord sud de la Route 2 correspond **exactement aux 3 cases de la sortie nord actuelle de Jadielle** (carte 56 × 36 ; avertissements `Route2SoonW/C/E`, colonnes 27 à 29). **Jadielle n'est pas modifiée** : c'est la Route 2 qui s'adapte.
 
+## Vue générale peinte v1 (validée par Kevin le 2026-10-07)
+- **`reference/route-2-vue-generale-v1.png`** (essai 3, `tools/art/prompts/CONCEPT_ROUTE2_VUE_GENERALE_r3.txt`) = **référence DA et composition** : palette, rendu peint, ambiance, bâtiment-porte à toit d'ardoise, grande pierre claire, FUTUR A fermé par un arbre dense, proportions et densité générales.
+- **`reference/route-2-plan-v2.png`** (`tools/art/plan_aplats.py --lisiere`, grille `tools/plans/route_2.txt`) = **référence fonctionnelle et autorité pour la transition vers la forêt** : géométrie, positions, H1 / H2 / H3, progression de la densité végétale.
+- **En cas de contradiction, le plan v2 gagne** pour la géométrie, les positions fonctionnelles et la densité au nord.
+- **À la construction** : accentuer progressivement la lisière sur le dernier tiers (la vue la fait commencer trop tard, autour du poste) : moins de prairie claire, masses d'arbres rapprochées du chemin, sous-bois plus dense, rangées sous la canopée progressivement plus sombres.
+- **Ne pas reproduire** les écarts décoratifs de la vue : Randonneuse déplacée près de la pierre (elle reste au premier embranchement), second rebord à droite sous H2 (un seul rebord, arbitrage 14).
+- Trois essais faits (r1 : Pikachu, pas de transition, FUTUR A ouvert ; r2 : transition faible, FUTUR A ouvert ; r3 retenu). **Pas d'essai 4.**
+- Kevin : la Route 2 a une identité distincte de la Route 1 sans changer de biome : « même région, mais la civilisation commence à céder la place à la nature ».
+
 ## 1. Intention
 Le **premier départ préparé** : le joueur quitte la sécurité de Jadielle avec son équipe, son Sac et son Pokédex et s'enfonce vers une zone inconnue.
 - **Route 1** : découverte du monde et premières rencontres ;
