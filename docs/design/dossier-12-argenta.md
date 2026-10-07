@@ -26,6 +26,12 @@
 19. **Rival** : une seule allusion, par Pierre, **après** la victoire. Rien avant.
 20. **Roadmap inchangée** : J11 = grande passe de systèmes, **la Route 3 arrive au J12** avec le Mont Sélénite (la V1 suggérait la Route 3 au J11).
 
+## Vue générale peinte v1 (validée par Kevin le 2026-10-07)
+- **`reference/argenta-vue-generale-v1.png`** (essai 2, `tools/art/prompts/CONCEPT_ARGENTA_VUE_GENERALE_r2.txt`) = **référence DA et composition** d'Argenta et de la Route 2 nord : paroi de montagne, Arène-forteresse dans les rochers, place pavée au gros rocher, Musée à colonnes (le plus grand bâtiment), enseigne Centre / Boutique, chantier du tailleur et son Racaillou, bande de forêt entre la ville et la route, relief rocheux de la Route 2 nord ; ville minérale sans être aride.
+- **`reference/argenta-plan-v1.png`** (`tools/art/plan_aplats.py --empiler tools/plans/argenta.txt tools/plans/route_2_nord.txt 3`) = **référence fonctionnelle et autorité de la géométrie**. En cas de contradiction, **le plan gagne**.
+- **Ne pas reproduire** les écarts de la vue, tous sur la Route 2 nord : le décrochement du chemin principal et le poste décalé (le chemin est droit, du poste à l'avenue d'Argenta) ; le détour par l'ouest autour de la haie de buissons, à peine lisible (il existe) ; la Potion absente (elle est au bout du détour).
+- Deux essais (r1 : ville écrasée dans la moitié haute, bâtiment en trop, hautes herbes en ville, clôtures ; r2 retenu). **Pas d'essai 3.**
+
 ## 1. Intention
 - **Soulagement** en sortant de la forêt, puis une ville qu'on a envie de parcourir quelques minutes avant d'entrer à l'Arène.
 - **Argenta se reconnaît sans lire son nom** (constitution) : **la pierre, le Musée, la montagne**.
