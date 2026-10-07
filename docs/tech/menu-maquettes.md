@@ -105,3 +105,7 @@ Carte et Dresseur rapprochés des maquettes **sans changer la logique** (`MapJou
 - **Q-MM2-1** : badge obtenu, toucher → détail (« Badge Roche — Argenta — Pierre », dossier 08 §6) : prévu au J10 avec l'image du badge (non fait ici, aucun badge avant).
 - **Q-MM2-2** : rendre l'équipe du Dresseur touchable (→ fiche Équipe) et la frise de la Carte « Voir sur la carte » (dossier 08 §5) ? défaut : non (pas de lien non prévu par le §8).
 - **Q-MM2-3** : aperçus des zones = captures floutées du jeu (aucune image générée) ; faut-il des illustrations dédiées (Codex) en phase DA ?
+
+
+## Validation MM.2 (Kevin, S24, 2026-10-07)
+Carte et Dresseur **validés** (« tout est ok »). Décisions : détail d'un badge obtenu au toucher → **J10** ; équipe de l'écran Dresseur **non touchable** (recommandation suivie) ; vraies illustrations des aperçus de lieux → **phase DA**. Pokédex non vu sur S24 (pas encore activé dans la partie de Kevin : colis non livré) ; « ‹ » seul vérifié sur capture Mac. Prochain : MM.3 (Paramètres).
