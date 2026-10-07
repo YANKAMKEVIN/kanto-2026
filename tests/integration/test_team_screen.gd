@@ -275,12 +275,23 @@ func test_move_card_opens_the_detail_sheet_and_a_tap_closes_it() -> void:
 	assert_false(team.is_move_sheet_open())
 
 
-func test_sprite_is_integer_nearest_x6() -> void:
-	var team := (await _menu_in(2340, _view())).get_team()
-	var sprite := team.get_showcase().get_sprite()
-	assert_eq(sprite.texture_filter, CanvasItem.TEXTURE_FILTER_NEAREST)
-	assert_eq(sprite.scale, Vector2(6, 6))
-	assert_eq(team.get_showcase().get_sprite_shown_size(), Vector2(384, 384))
+## MM.1 : la vedette est l'artwork officiel (filtre linéaire), la liste montre les vignettes de
+## l'atlas du Pokédex, le Pokémon tient dans sa colonne.
+func test_portrait_and_thumbnails_are_official_artworks() -> void:
+	for width: int in WIDTHS:
+		var team := (await _menu_in(width, _view())).get_team()
+		var showcase := team.get_showcase()
+		var sprite := showcase.get_sprite()
+		assert_not_null(sprite.texture, "artwork de Salamèche")
+		assert_eq(sprite.texture_filter, CanvasItem.TEXTURE_FILTER_PARENT_NODE, "filtre linéaire")
+		var shown := showcase.get_sprite_shown_size()
+		assert_gt(shown.x, 300.0, "grand portrait (%d)" % width)
+		assert_lte(shown.x, float(UiTokens.TEAM_ART_MAX))
+		var column := showcase.get_global_rect()
+		assert_true(column.grow(0.5).encloses(sprite.get_global_rect()), "dans sa colonne")
+		assert_eq(team.get_slot(0).get_thumb().texture, PokedexArt.thumbnail(4))
+		assert_eq(team.get_slot(1).get_thumb().texture, PokedexArt.thumbnail(16))
+		assert_null(team.get_slot(4).get_thumb().texture, "emplacement vide : aucune image")
 
 
 func test_breathing_is_a_vertical_offset_only() -> void:
@@ -288,13 +299,16 @@ func test_breathing_is_a_vertical_offset_only() -> void:
 	menu.speed_scale = 1.0
 	var team := menu.get_team()
 	team.speed_scale = 1.0
+	var sprite := team.get_showcase().get_sprite()
+	var rest := sprite.position
 	menu.show_team(_view(), 0)
 	await wait_seconds(0.6)
-	var sprite := team.get_showcase().get_sprite()
 	assert_true(team.get_showcase().is_breathing())
-	assert_eq(sprite.scale, Vector2(6, 6), "jamais d'échelle non entière")
-	assert_eq(sprite.position.x, 0.0)
-	assert_true(sprite.position.y <= 0.0 and sprite.position.y >= -UiTokens.TEAM_BREATH_PX)
+	assert_eq(sprite.scale, Vector2.ONE, "jamais d'échelle")
+	assert_eq(sprite.position.x, rest.x)
+	var offset := team.get_showcase().get_breath_offset()
+	assert_true(offset <= 0.0 and offset >= -UiTokens.TEAM_ART_BREATH_PX)
+	assert_almost_eq(sprite.position.y, rest.y + offset, 0.01)
 
 
 func test_touch_targets_and_safe_margins() -> void:

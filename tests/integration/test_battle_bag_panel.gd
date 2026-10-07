@@ -118,8 +118,8 @@ func test_entry_view_displayable_and_texts() -> void:
 	assert_eq(_potion().action_label, "UTILISER")
 	assert_eq(BagEntryView.category_label(&"ball"), "CAPTURE")
 	assert_eq(BagEntryView.category_label(&"heal"), "SOINS")
-	assert_eq(BagEntryView.icon_for(&"poke_ball"),
-		load("res://assets/ui/icons/items/poke_ball.svg"))
+	assert_eq(BagEntryView.icon_for(&"poke_ball"), load("res://assets/ui/items/poke_ball.webp"),
+		"icône peinte (MM.1)")
 	assert_eq(BagEntryView.icon_for(&"inconnu"), BagEntryView.GENERIC_ICON)
 
 

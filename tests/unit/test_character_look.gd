@@ -44,8 +44,8 @@ func test_generic_look_last() -> void:
 
 
 func test_default_check_reads_the_real_resources() -> void:
-	# Sans Callable : ResourceLoader.exists. Bulbizarre n'a que sa planche provisoire (les
-	# starters restent provisoires au DA.2), l'apparence générique existe.
+	# Sans Callable : ResourceLoader.exists. « bulbasaur » seul (sans « pokemon/ ») n'a que sa
+	# planche provisoire, l'apparence générique existe.
 	var starter := CharacterLook.resolve(&"bulbasaur")
 	assert_eq(starter.frames_path, CharacterLook.placeholder_frames_path(&"bulbasaur"))
 	assert_true(ResourceLoader.exists(starter.frames_path))
@@ -73,17 +73,49 @@ func test_painted_pokemon_by_explicit_prefix() -> void:
 	assert_false(fallback.painted)
 
 
+func test_painted_object_by_explicit_prefix() -> void:
+	# Jalon 8 §2.3 : objet visible au sol (« object/<id> »), sans apparence provisoire.
+	assert_eq(CharacterLook.painted_frames_path(&"object/poke_ball_ground"),
+		"res://assets/sprites/objects/painted/poke_ball_ground_frames.tres")
+	assert_eq(CharacterLook.placeholder_frames_path(&"object/poke_ball_ground"), "")
+	var look := CharacterLook.resolve(&"object/poke_ball_ground", _exists_in([
+		"res://assets/sprites/objects/painted/poke_ball_ground_frames.tres",
+	]))
+	assert_eq(look.frames_path,
+		"res://assets/sprites/objects/painted/poke_ball_ground_frames.tres")
+	assert_true(look.painted)
+	assert_eq(look.scale, 1.0)
+	assert_eq(look.filter, CanvasItem.TEXTURE_FILTER_LINEAR)
+	var checked: Array[String] = []
+	var missing := CharacterLook.resolve(&"object/poke_ball_ground",
+		func(path: String) -> bool:
+			checked.append(path)
+			return path.ends_with("/npc_frames.tres"))
+	assert_eq(missing.frames_path,
+		CharacterLook.placeholder_frames_path(CharacterLook.FALLBACK_SPRITE),
+		"absent : l'apparence générique")
+	assert_false(missing.painted)
+	assert_eq(checked.size(), 1, "aucun provisoire cherché pour un objet")
+	# Les préfixes existants ne changent pas.
+	assert_eq(CharacterLook.painted_frames_path(&"nurse"),
+		"res://assets/sprites/characters/painted/nurse_frames.tres")
+	assert_eq(CharacterLook.placeholder_frames_path(&"pokemon/pidgey"),
+		"res://assets/sprites/characters/placeholder/pidgey_frames.tres")
+
+
 ## Les vraies apparences générées par tools/build_character_frames.gd.
 func test_real_painted_looks() -> void:
 	for sprite: StringName in [&"player", &"rival", &"nurse", &"clerk", &"courier", &"lass",
 			&"kid", &"old_man", &"traveler", &"youngster", &"pokemon/pidgey", &"pokemon/rattata",
 			&"pokemon/spearow", &"pokemon/mankey", &"pokemon/nidoran_f", &"pokemon/nidoran_m",
 			# DA.2 : habitants de Bourg Palette, Maman, Chen et Maya.
-			&"mom", &"oak", &"leo", &"aoki", &"haru", &"maya", &"researcher"]:
+			&"mom", &"oak", &"leo", &"aoki", &"haru", &"maya", &"researcher",
+			# DA.3 : les trois starters.
+			&"pokemon/bulbasaur", &"pokemon/charmander", &"pokemon/squirtle"]:
 		var look := CharacterLook.resolve(sprite)
 		assert_true(look.painted, String(sprite))
 		assert_eq(look.filter, CanvasItem.TEXTURE_FILTER_LINEAR)
-	# Un nom d'espèce seul reste provisoire ; les starters aussi (décision attendue).
+	# Un nom d'espèce seul (sans « pokemon/ ») reste provisoire, starters compris.
 	for sprite: StringName in [&"pidgey", &"rattata", &"bulbasaur", &"charmander", &"squirtle"]:
 		assert_false(CharacterLook.resolve(sprite).painted, String(sprite))
 
@@ -110,6 +142,29 @@ func test_every_sheet_maps_to_generated_frames() -> void:
 	assert_eq(looks["roucool"][1], "pidgey")
 	assert_eq(looks["piafabec"][1], "spearow")
 	assert_eq(looks["ferosinge"][1], "mankey")
+
+
+## Jalon 8 (§2.3) : genre « objet fixe » de l'outil (une image → quatre attentes d'une image),
+## lu par `CharacterLook` sous le préfixe « object/ ». L'image est préparée au T3 (série 10) :
+## tant qu'elle n'est pas au catalogue, seule la correspondance est vérifiée.
+func test_fixed_objects_map_to_object_looks() -> void:
+	var constants := (load(FRAMES_TOOL) as Script).get_script_constant_map()
+	var objects: Dictionary = constants["FIXED_OBJECTS"]
+	assert_eq(objects.get("poke_ball_ground"), "poke_ball_ground", "Poké Ball au sol")
+	assert_eq(String(constants["OBJECTS_DIR"]), CharacterLook.OBJECT_PAINTED_DIR)
+	var catalogue: Dictionary = JSON.parse_string(
+		FileAccess.get_file_as_string("res://assets/world/catalogue.json"))
+	var images: Dictionary = catalogue.get("images", {})
+	for image_id: String in objects:
+		if not images.has(image_id):
+			pending("image « %s » préparée au T3 du jalon 8" % image_id)
+			continue
+		var look := CharacterLook.resolve(StringName("object/" + String(objects[image_id])))
+		assert_true(look.painted, image_id)
+		var frames := load(look.frames_path) as SpriteFrames
+		for dir: String in ["down", "left", "right", "up"]:
+			assert_eq(frames.get_frame_count(StringName("idle_" + dir)), 1, dir)
+			assert_false(frames.has_animation(StringName("walk_" + dir)), "objet immobile")
 
 
 func test_painted_frames_cycle_two_tiles_per_walk_loop() -> void:
@@ -170,7 +225,7 @@ func test_npc_painted_at_scale_one_linear() -> void:
 
 
 func test_npc_placeholder_twice_nearest() -> void:
-	# DA.2 : Maman est peinte ; les starters restent provisoires.
+	# Un nom d'espèce seul (sans « pokemon/ ») reste provisoire.
 	var npc := _npc(&"bulbasaur")
 	var sprite := npc.get_node(^"%Sprite") as AnimatedSprite2D
 	assert_eq(sprite.sprite_frames.resource_path,
@@ -213,3 +268,37 @@ func test_pallet_town_people_have_a_real_idle_pose() -> void:
 			assert_eq(idle.atlas.resource_path, expected, "%s : attente %s" % [sprite, dir])
 			assert_ne(idle.atlas.resource_path, walk.atlas.resource_path,
 				"%s : attente distincte de la marche" % sprite)
+
+
+## DA.3 : starters peints (Bulbizarre et Carapuce avec leur planche d'attente ; Salamèche,
+## planche faite à la main par Kevin, sans planche d'attente : pour chaque direction, l'image de
+## marche la plus posée, `IDLE_FROM_WALK` de l'outil), sans course, à la taille des petits
+## Pokémon (≈ 60 px).
+func test_starters_are_painted_with_a_rest_pose() -> void:
+	var tool_script := load(FRAMES_TOOL) as Script
+	var idle_from_walk: Dictionary = tool_script.get_script_constant_map()["IDLE_FROM_WALK"]
+	var sheets: Dictionary[StringName, String] = {
+		&"bulbasaur": "bulbizarre", &"charmander": "salameche", &"squirtle": "carapuce",
+	}
+	var rows := {"down": 0, "left": 1, "right": 2, "up": 3}
+	for species: StringName in sheets:
+		var sprite := StringName("pokemon/" + String(species))
+		var frames := load(CharacterLook.painted_frames_path(sprite)) as SpriteFrames
+		assert_not_null(frames, String(sprite))
+		if frames == null:
+			continue
+		var sheet := sheets[species]
+		for dir: String in rows:
+			var idle := frames.get_frame_texture(StringName("idle_" + dir), 0) as AtlasTexture
+			var walk := frames.get_frame_texture(StringName("walk_" + dir), 0) as AtlasTexture
+			assert_between(idle.get_size().y, 56.0, 66.0, "%s : ≈ 60 px" % sprite)
+			assert_false(frames.has_animation(StringName("run_" + dir)), "%s : marche" % sprite)
+			if idle_from_walk.has(sheet):
+				assert_eq(idle.atlas.resource_path, walk.atlas.resource_path, String(sprite))
+				var column: int = (idle_from_walk[sheet] as Dictionary)[dir]
+				assert_eq(idle.region.position, Vector2(column, rows[dir]) * idle.region.size,
+					"%s : attente %s = colonne %d de la marche" % [sprite, dir, column])
+			else:
+				assert_eq(idle.atlas.resource_path, CharacterLook.POKEMON_PAINTED_DIR + sheet
+					+ "_idle_sheet.png", "%s : planche d'attente" % sprite)
+	assert_true(idle_from_walk.has("salameche"), "Salamèche : attente tirée de la marche")

@@ -24,12 +24,19 @@ signal heal_finished
 signal back_requested
 
 const CANCEL_TEXT := "ANNULER"
+## Titre du choix compact, dans le panneau de l'objet du Sac (maquette ; l'objet est au-dessus).
+const COMPACT_TITLE := "Utiliser sur…"
+const CLOSE_ICON: Texture2D = preload("res://assets/ui/icons/menu/close.svg")
 ## « Utiliser Potion ×7 sur… » (texte d'interface).
 const TITLE_FORMAT := "%s  %s  —  sur quel Pokémon ?"
 const BACK_ICON: Texture2D = preload("res://assets/ui/icons/battle/back.svg")
 
 ## Le refus s'écrit dans le titre du choix (combat). Faux : l'hôte l'affiche (UseResultBar du Sac).
 var refusal_in_title: bool = true
+
+## Compact (Sac du menu, MM.1) : une colonne de lignes de verre, sans cadre (le panneau de
+## l'objet en est un), titre « Utiliser sur… » et ANNULER sur la même rangée.
+var _compact: bool = false
 
 var _view: PartyPickerView
 var _healing: int = 0
@@ -54,7 +61,8 @@ func show_targets(view: PartyPickerView) -> void:
 	_view = view
 	_heal_generation += 1
 	_healing = 0
-	_title.text = TITLE_FORMAT % [view.item_name, "×%d" % view.quantity]
+	_title.text = COMPACT_TITLE if _compact \
+		else TITLE_FORMAT % [view.item_name, "×%d" % view.quantity]
 	_title.remove_theme_color_override(&"font_color")
 	for card: PartyTargetCard in _cards:
 		_grid.remove_child(card)
@@ -63,6 +71,8 @@ func show_targets(view: PartyPickerView) -> void:
 	_cards.clear()
 	for i: int in view.size():
 		var card := PartyTargetCard.new()
+		if _compact:
+			card.use_compact()
 		_grid.add_child(card)
 		card.speed_scale = speed_scale
 		card.set_target(view.targets[i])
@@ -78,6 +88,26 @@ func show_targets(view: PartyPickerView) -> void:
 			card.heal_finished.connect(_on_card_healed.bind(_heal_generation), CONNECT_ONE_SHOT)
 			card.play_heal(old.member.hp)
 	slide_in()
+
+
+## Passe en version compacte (avant le premier show_targets) : une colonne, sans cadre ni largeur
+## minimale, glisse depuis le bas.
+func use_compact() -> void:
+	_compact = true
+	slide_direction = Vector2.DOWN
+	custom_minimum_size.x = 0.0
+	_frame.theme_type_variation = &""
+	_frame.add_theme_stylebox_override(&"panel", StyleBoxEmpty.new())
+	_grid.columns = 1
+	_grid.add_theme_constant_override(&"v_separation", UiTokens.PICKER_COMPACT_GAP)
+	_title.theme_type_variation = &"MenuTargetsTitle"
+	_cancel.theme_type_variation = &"MenuAction"
+	_cancel.icon = CLOSE_ICON
+	_scroll_pad_zero()
+
+
+func is_compact() -> bool:
+	return _compact
 
 
 ## Referme le choix sans rien choisir (back_requested), comme ANNULER. Sans effet s'il est fermé.
@@ -167,6 +197,12 @@ func _build() -> void:
 	_grid.add_theme_constant_override(&"h_separation", UiTokens.PICKER_GAP)
 	_grid.add_theme_constant_override(&"v_separation", UiTokens.PICKER_GAP)
 	pad.add_child(_grid)
+
+
+func _scroll_pad_zero() -> void:
+	var pad := _scroll.get_child(0) as MarginContainer
+	for side: StringName in [&"margin_left", &"margin_right"]:
+		pad.add_theme_constant_override(side, 0)
 
 
 func _on_card_tapped(index: int) -> void:

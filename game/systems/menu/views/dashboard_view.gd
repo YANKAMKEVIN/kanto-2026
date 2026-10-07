@@ -18,7 +18,8 @@ var player_title: String = ""
 var play_time_text: String = ""
 ## « 27 vus · 14 capturés » ; "" tant que le Pokédex n'est pas visible (règle de déblocage).
 var dex_text: String = ""
-## Ligne des badges ; "" avant le premier badge (Q-13 : pas de « 0 badge ») — toujours "" au J6.
+## Ligne des badges (« 2 badges ») ; "" avant le premier badge (Q-13 : pas de « 0 badge »).
+## Lue depuis [BadgeLibrary] (MM.1) : toujours "" tant qu'aucun badge n'est obtenu (J10).
 var badges_text: String = ""
 ## Pokémon de tête (null si l'équipe est vide, Q-2).
 var lead: TeamMemberView = null

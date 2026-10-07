@@ -1,10 +1,27 @@
 extends SceneTree
-## Construit les intérieurs **peints** du jalon 7 (docs/tech/jalon-07.md §6.3, §6.6) :
-##   viridian_center — le Centre Pokémon de Jadielle (T8)
-##   viridian_mart   — la Boutique de Jadielle (T12 ; remplace la coquille vide du T4)
+## Construit les intérieurs **peints** (docs/tech/jalon-07.md §6.3, §6.6) :
+##   viridian_center — le Centre Pokémon de Jadielle (jalon 7, T8)
+##   viridian_mart   — la Boutique de Jadielle (jalon 7, T12)
+##   player_house_2f, player_house_1f, rival_house, oak_lab — Bourg Palette (DA.3,
+##     docs/tech/integration-da-bourg-route1.md ; plans du jalon 2, géométrie inchangée)
 ##
-##   godot --headless --path . -s res://tools/build_painted_interiors.gd
+##   godot --headless --path . -s res://tools/build_painted_interiors.gd -- --bourg
+##   godot --headless --path . -s res://tools/build_painted_interiors.gd -- --rooms=oak_lab
+##   godot --headless --path . -s res://tools/build_painted_interiors.gd   (les six pièces)
 ##   godot --headless --path . --import
+##
+## **Ne relancer que les pièces voulues** : réécrire une carte change tous ses `unique_id`
+## (`--bourg` = les quatre intérieurs de Bourg Palette ; `--jadielle` = Centre et Boutique).
+##
+## Bourg Palette (DA.3) : la **géométrie logique du jalon 2** est figée dans
+## `tests/fixtures/maps/<carte>_logic.txt` (`tools/dump_map_logic.gd`, avant le passage au
+## peint) ; l'outil la relit. Chaque meuble couvre exactement les cases solides de l'ancien
+## meuble (rectangle donné en cases ; son emprise est écrite dans l'instance), ses images
+## posées pied au milieu du bas du rectangle (comme le prototype validé,
+## `proto/da_jadielle/proto_interieur_bourg.gd`) ; toutes les autres cases solides de la grille
+## figée (murs de l'enveloppe, cases d'un meuble remplacé par plus petit) vont dans
+## `blocked_cells`. Les tapis peints sont à plat dans `GroundDecals` (z −1). L'outil échoue si
+## un meuble couvre une case praticable de la grille figée.
 ##
 ## Principe (§6.6, « intérieurs enveloppe vide + meubles séparés ») : l'enveloppe peinte de la
 ## pièce (15 × 10 cases, sprite opaque du sol, z −3) ; les meubles = scènes peintes
@@ -29,16 +46,32 @@ const TALK := 0
 const EXAMINE := 1
 ## WorldLighting.Z_GROUND.
 const Z_GROUND := -3
+## WorldLighting.Z_GROUND_DECALS.
+const Z_GROUND_DECALS := -1
+const STEP_ON := 0
+const BOURG := [&"player_house_2f", &"player_house_1f", &"rival_house", &"oak_lab"]
+const JADIELLE := [&"viridian_center", &"viridian_mart"]
+const LOGIC_DIR := "res://tests/fixtures/maps/"
 
 var _rules: GDScript
 var _scenes: Dictionary = {}
+var _errors: int = 0
 
 
 func _init() -> void:
 	_rules = load(RULES_SCRIPT)
-	var errors := 0
-	for room: Dictionary in [_viridian_center(), _viridian_mart()]:
+	var wanted := _wanted_rooms()
+	var rooms: Array[Dictionary] = [_viridian_center(), _viridian_mart(), _player_house_2f(),
+		_player_house_1f(), _rival_house(), _oak_lab()]
+	for room: Dictionary in rooms:
+		if not wanted.is_empty() and not wanted.has(room["id"]):
+			continue
 		var root := _build(room)
+		if _errors > 0:
+			print("%s : non écrite (%d erreur(s))" % [room["id"], _errors])
+			root.free()
+			quit(1)
+			return
 		var packed := PackedScene.new()
 		var err := packed.pack(root)
 		var path := MAPS_DIR + "%s.tscn" % room["id"]
@@ -46,9 +79,23 @@ func _init() -> void:
 			err = ResourceSaver.save(packed, path)
 		print("%s : %s" % [room["id"], error_string(err)])
 		if err != OK:
-			errors += 1
+			_errors += 1
 		root.free()
-	quit(1 if errors > 0 else 0)
+	quit(1 if _errors > 0 else 0)
+
+
+## Pièces demandées en ligne de commande (vide = toutes).
+func _wanted_rooms() -> Array:
+	var wanted: Array = []
+	for arg: String in OS.get_cmdline_user_args():
+		if arg == "--bourg":
+			wanted.append_array(BOURG)
+		elif arg == "--jadielle":
+			wanted.append_array(JADIELLE)
+		elif arg.begins_with("--rooms="):
+			for id: String in arg.trim_prefix("--rooms=").split(","):
+				wanted.append(StringName(id))
+	return wanted
 
 
 ## Centre Pokémon de Jadielle (dossier 09 §7) : comptoir au milieu (infirmière derrière, machine
@@ -127,6 +174,195 @@ func _viridian_mart() -> Dictionary:
 	}
 
 
+## Chambre du joueur (jalon 2 §4.3, référence `chambre-joueur-v1.webp`) : affiches, fenêtre,
+## carte de Kanto, porte du mur est, tapis à carreaux et escalier = enveloppe peinte.
+## Écart (géométrie gardée) : le meuble télé du jeu est **contre le mur est** (12, 4..5), là où
+## le prototype mettait la télé au fond ; aucune image de télé vue de côté : petite étagère et
+## commode Poké Ball à sa place (question à Kevin).
+func _player_house_2f() -> Dictionary:
+	return {
+		"id": &"player_house_2f", "node": "PlayerHouse2F", "size": Vector2i(14, 10),
+		"shell": "res://assets/world/interiors/int_chambre_joueur_coque.png",
+		"title": "Bourg Palette", "region": "Kanto", "light": &"interior_warm",
+		"logic": LOGIC_DIR + "player_house_2f_logic.txt",
+		"furniture": [
+			[&"int_lit_01", Rect2i(1, 2, 2, 3), "Bed"],
+			[&"int_chevet_lampe_01", Rect2i(3, 2, 1, 1), "Nightstand"],
+			[&"int_petite_etagere_01", Rect2i(4, 2, 1, 1), "SmallShelf"],
+			[&"int_bureau_pc_01", Rect2i(6, 2, 3, 1), "Desk"],
+			[&"int_chaise_bureau_01", Rect2i(7, 3, 1, 1), "DeskChair"],
+			[&"int_grande_etagere_01", Rect2i(9, 2, 2, 2), "Bookshelf"],
+			[&"int_petite_etagere_01", Rect2i(12, 4, 1, 1), "SideShelf"],
+			[&"int_commode_pokeball_01", Rect2i(12, 5, 1, 1), "SideCabinet"],
+			[&"int_sac_voyage_01", Rect2i(1, 5, 1, 1), "TravelBag"],
+			[&"int_plante", Rect2i(1, 7, 1, 1), "PlantWest"],
+			[&"int_plante", Rect2i(12, 6, 1, 1), "PlantEast"],
+			[&"int_meuble_bas_01", Rect2i(1, 8, 3, 1), "LowCabinet"],
+			[&"int_commode_pokeball_01", Rect2i(9, 8, 1, 1), "CapCabinet"],
+			[&"int_caisse_pokeballs_01", Rect2i(10, 8, 2, 1), "PokeballCrate"],
+		],
+		"rugs": [[&"int_tapis_pokeball_01", Vector2(7.0, 5.5), "RugPokeball"]],
+		"spawns": {"start": Vector2i(3, 4), "stairs": Vector2i(6, 8)},
+		"warps": [
+			["StairsDownW", Vector2i(6, 9), STEP_ON, Vector2i.DOWN, &"player_house_1f",
+				&"stairs"],
+			["StairsDownE", Vector2i(7, 9), STEP_ON, Vector2i.DOWN, &"player_house_1f",
+				&"stairs"],
+		],
+	}
+
+
+## Rez-de-chaussée du joueur (jalon 2 §4.4, storyboard d'ouverture) : fenêtres, étagères
+## murales, porte d'entrée et paillasson = enveloppe peinte. Sortie d'**une** case (7, 8) : la
+## moitié ouest de l'ouverture peinte (2 cases) est derrière le porte-manteau (6, 8).
+## Écarts (géométrie gardée) : meuble télé contre le mur est (12, 5..6) → aquarium et lampe ;
+## le petit-déjeuner provisoire n'a pas d'image peinte (bouquet de la table peinte).
+func _player_house_1f() -> Dictionary:
+	return {
+		"id": &"player_house_1f", "node": "PlayerHouse1F", "size": Vector2i(14, 10),
+		"shell": "res://assets/world/interiors/int_maison_joueur_rdc_coque.png",
+		"title": "Bourg Palette", "region": "Kanto", "light": &"interior_warm",
+		"logic": LOGIC_DIR + "player_house_1f_logic.txt",
+		"furniture": [
+			# Escalier montant : la rangée du bas (1..2, 3) porte les passages vers l'étage.
+			[&"int_escalier_montant_01", Rect2i(1, 2, 2, 2), "Stairs",
+				[Vector2i(1, 2), Vector2i(2, 2)]],
+			[&"int_frigo_01", Rect2i(3, 2, 1, 1), "Fridge"],
+			[&"int_cuisine_01", Rect2i(4, 2, 3, 1), "Kitchen"],
+			[&"int_table_repas_01", Rect2i(3, 4, 3, 2), "DiningTable"],
+			[&"int_canape_01", Rect2i(9, 4, 3, 1), "Sofa"],
+			[&"int_table_basse_01", Rect2i(9, 6, 2, 1), "CoffeeTable"],
+			[&"int_aquarium_01", Rect2i(12, 5, 1, 1), "SideAquarium"],
+			[&"int_chevet_lampe_01", Rect2i(12, 6, 1, 1), "SideLamp"],
+			[&"int_plante", Rect2i(1, 7, 1, 1), "PlantWest"],
+			[&"int_plante", Rect2i(12, 7, 1, 1), "PlantEast"],
+			[&"int_meuble_bas_01", Rect2i(1, 8, 3, 1), "LowCabinet"],
+			[&"int_porte_manteau_01", Rect2i(6, 8, 1, 1), "CoatRack"],
+			[&"int_commode_pokeball_01", Rect2i(9, 8, 1, 1), "Dresser"],
+		],
+		# Jalon 3A : petit-déjeuner posé sur la table (provisoire, sans image peinte).
+		"decor": [["res://game/world/props/interior/breakfast.tscn", Vector2i(3, 5),
+			"Breakfast"]],
+		"rugs": [
+			[&"int_tapis_plaid_01", Vector2(4.5, 5.0), "RugPlaid"],
+			[&"int_tapis_salon_01", Vector2(10.5, 6.5), "RugLiving"],
+		],
+		"spawns": {"entrance": Vector2i(7, 8), "stairs": Vector2i(2, 4), "heal": Vector2i(7, 5)},
+		# Jalon 3A : la table à manger (3..5, 4..5) s'examine de tous côtés.
+		"interactables": [["BreakfastTable", Vector2i(3, 5), Vector2i(3, 2), &"breakfast_table",
+			EXAMINE, Vector2i.ZERO]],
+		"warps": [
+			["StairsUpW", Vector2i(1, 3), STEP_ON, Vector2i.UP, &"player_house_2f", &"stairs"],
+			["StairsUpE", Vector2i(2, 3), STEP_ON, Vector2i.UP, &"player_house_2f", &"stairs"],
+			["Exit", Vector2i(7, 8), PUSH, Vector2i.DOWN, &"pallet_town", &"player_house_door"],
+		],
+	}
+
+
+## Maison du rival (jalon 2 §4.5, référence `maison-rival-v1.webp`, sans Évoli) : fenêtres,
+## affiches du rival, porte et paillasson = enveloppe peinte. L'escalier décoratif est solide
+## sur ses **3 colonnes** (7..9, 2..4), l'image (2 cases) centrée dessus.
+## Écarts (géométrie gardée) : télé murale de l'ouest (1, 6..7) → petite étagère et lampe ;
+## coin du bureau d'angle (11, 3) → le sac du rival ; carte de Kanto dépliée sur le lit et
+## tapis du salon et de la salle de bain non peints (prototype : tapis de la chambre seul).
+func _rival_house() -> Dictionary:
+	return {
+		"id": &"rival_house", "node": "RivalHouse", "size": Vector2i(18, 11),
+		"shell": "res://assets/world/interiors/int_maison_rival_coque.png",
+		"title": "Bourg Palette", "region": "Kanto", "light": &"interior_warm",
+		"logic": LOGIC_DIR + "rival_house_logic.txt",
+		"furniture": [
+			[&"int_frigo_01", Rect2i(1, 2, 1, 1), "Fridge"],
+			[&"int_cuisine_01", Rect2i(2, 2, 3, 1), "Kitchen"],
+			[&"int_cuisiniere_hotte_01", Rect2i(5, 2, 1, 1), "Stove"],
+			[&"int_escalier_montant_01", Rect2i(7, 2, 3, 3), "Stairs"],
+			[&"int_commode_pokeball_01", Rect2i(8, 5, 1, 1), "UnderStairsCabinet"],
+			[&"int_table_repas_01", Rect2i(2, 4, 3, 2), "DiningTable"],
+			[&"int_petite_etagere_01", Rect2i(1, 6, 1, 1), "LivingShelf"],
+			[&"int_chevet_lampe_01", Rect2i(1, 7, 1, 1), "LivingLamp"],
+			[&"int_canape_01", Rect2i(3, 7, 3, 1), "Sofa"],
+			[&"int_table_basse_01", Rect2i(3, 8, 2, 1), "CoffeeTable"],
+			[&"int_plante", Rect2i(1, 9, 1, 1), "PlantLivingWest"],
+			[&"int_plante", Rect2i(6, 9, 1, 1), "PlantLivingEast"],
+			[&"int_cloison_v_01", Rect2i(10, 2, 1, 3), "PartitionBedroom"],
+			[&"int_bureau_angle_pc_01", Rect2i(11, 2, 2, 1), "CornerDesk"],
+			[&"int_sac_voyage_01", Rect2i(11, 3, 1, 1), "RivalBag"],
+			[&"int_chaise_gamer_01", Rect2i(12, 3, 1, 1), "GamerChair"],
+			[&"int_commode_01", Rect2i(13, 2, 2, 1), "Dresser"],
+			[&"int_lit_pokeball_01", Rect2i(15, 2, 2, 3), "Bed"],
+			[&"int_chevet_lampe_01", Rect2i(16, 5, 1, 1), "Nightstand"],
+			[&"int_cloison_h_01", Rect2i(12, 6, 5, 1), "PartitionBathroom"],
+			[&"int_cloison_v_01", Rect2i(7, 7, 1, 3), "PartitionHallWest"],
+			[&"int_cloison_v_01", Rect2i(10, 7, 1, 3), "PartitionHallEast"],
+			[&"int_porte_manteau_01", Rect2i(12, 7, 1, 1), "CoatRack"],
+			[&"int_lavabo_01", Rect2i(13, 7, 2, 1), "BathroomSink"],
+			[&"int_douche_01", Rect2i(16, 7, 1, 2), "Shower"],
+			[&"int_meuble_chaussures_01", Rect2i(11, 9, 1, 1), "ShoeRack"],
+			[&"int_plante", Rect2i(12, 9, 1, 1), "PlantBathroom"],
+		],
+		# Jalon 3A (Q3) : carte de Kanto dépliée, sac et affaires sur le lit (provisoire).
+		"decor": [["res://game/world/props/interior/bed_items.tscn", Vector2i(15, 4),
+			"BedItems"]],
+		"rugs": [[&"int_tapis_pokeball_01", Vector2(13.5, 4.5), "RugBedroom"]],
+		"spawns": {"entrance": Vector2i(9, 9)},
+		# Jalon 3A : la carte de Kanto sur le lit (15..16, 2..4), de tous côtés.
+		"interactables": [["KantoMap", Vector2i(15, 4), Vector2i(2, 3), &"rival_kanto_map",
+			EXAMINE, Vector2i.ZERO]],
+		"warps": [
+			["Exit", Vector2i(9, 9), PUSH, Vector2i.DOWN, &"pallet_town", &"rival_house_door"],
+		],
+	}
+
+
+## Laboratoire de Chen (jalon 2 §4.7, référence `labo-chen-v1.png`) : carte de Kanto, grande
+## fenêtre, affiche Poké Ball, suspensions et paillasson = enveloppe peinte. Tapis Poké Ball =
+## arène du combat (6..9, 5..7). Écarts (géométrie gardée) : canapé vu de côté (1, 6..7) →
+## classeur et petite étagère ; écran mural de l'est (14, 6..7) → seconde vitrine ; table des
+## starters en (10..12, 4..5) et paillasse en rangée 8 (tabouret derrière elle), comme le jeu.
+func _oak_lab() -> Dictionary:
+	return {
+		"id": &"oak_lab", "node": "OakLab", "size": Vector2i(16, 11),
+		"shell": "res://assets/world/interiors/int_labo_coque.png",
+		"title": "Bourg Palette", "region": "Kanto", "light": &"interior_warm",
+		"logic": LOGIC_DIR + "oak_lab_logic.txt",
+		"battle_arena": Rect2i(6, 5, 4, 3),
+		"furniture": [
+			[&"int_aquarium_01", Rect2i(1, 2, 1, 1), "Aquarium"],
+			[&"int_incubateur_01", Rect2i(2, 2, 2, 2), "Incubator"],
+			[&"int_machines_labo_01", Rect2i(4, 2, 2, 1), "Computers"],
+			[&"int_bureau_chen_01", Rect2i(7, 2, 3, 1), "OakDesk"],
+			[&"int_chaise_bureau_01", Rect2i(8, 3, 1, 1), "DeskChair"],
+			[&"int_classeur_01", Rect2i(10, 2, 1, 1), "FileCabinet"],
+			[&"int_etagere_labo_01", Rect2i(11, 2, 2, 2), "Bookshelf"],
+			[&"int_frigo_01", Rect2i(13, 2, 1, 1), "Fridge"],
+			[&"int_vitrine_pokeballs_01", Rect2i(14, 2, 1, 3), "DisplayCase"],
+			[&"int_long_comptoir_01", Rect2i(1, 5, 5, 1), "LongCounter"],
+			[&"int_table_starters_01", Rect2i(10, 4, 3, 2), "StarterTable"],
+			[&"int_classeur_01", Rect2i(1, 6, 1, 1), "WestCabinet"],
+			[&"int_petite_etagere_01", Rect2i(1, 7, 1, 1), "WestShelf"],
+			[&"int_table_basse_01", Rect2i(3, 7, 2, 1), "CoffeeTable"],
+			[&"int_tabouret_01", Rect2i(12, 7, 1, 1), "Stool"],
+			[&"int_paillasse_01", Rect2i(11, 8, 3, 1), "Bench"],
+			[&"int_vitrine_pokeballs_01", Rect2i(14, 6, 1, 2), "DisplayCaseEast"],
+			[&"int_escalier_deco_01", Rect2i(1, 8, 3, 2), "Stairs"],
+			[&"int_plante", Rect2i(6, 8, 1, 1), "PlantRug"],
+			[&"int_plante", Rect2i(4, 9, 1, 1), "PlantStairs"],
+			[&"int_plante", Rect2i(9, 9, 1, 1), "PlantEntrance"],
+			[&"int_plante", Rect2i(14, 8, 1, 1), "PlantCorner"],
+		],
+		"rugs": [
+			[&"int_tapis_rouge_01", Vector2(4.0, 7.5), "RugRed"],
+			[&"int_tapis_labo_pokeball_01", Vector2(8.0, 6.5), "RugPokeball"],
+		],
+		"spawns": {"entrance": Vector2i(7, 9)},
+		"warps": [
+			["Exit", Vector2i(7, 9), PUSH, Vector2i.DOWN, &"pallet_town", &"oak_lab_door"],
+		],
+		# Sortie empêchée pendant le choix du starter (jalon-04.md §13.6).
+		"triggers": [["LabExit", Vector2i(7, 9), Vector2i.ONE, &"oak_lab_exit"]],
+	}
+
+
 func _build(room: Dictionary) -> Node2D:
 	var size: Vector2i = room["size"]
 	var root := Node2D.new()
@@ -134,16 +370,28 @@ func _build(room: Dictionary) -> Node2D:
 	root.set_script(load("res://game/world/map.gd"))
 	root.set(&"map_id", room["id"])
 	root.set(&"display_name", room["title"])
+	root.set(&"region", room.get("region", ""))
 	root.set(&"size", size)
 	root.set(&"interior", true)
 	root.set(&"light_profile", room["light"])
-	root.set(&"blocked_cells", _walls(room))
+	if room.has("battle_arena"):
+		root.set(&"battle_arena", room["battle_arena"])
 	var shell := Sprite2D.new()
 	shell.name = "Shell"
 	shell.texture = load(room["shell"])
 	shell.centered = false
 	shell.z_index = Z_GROUND
 	_attach(root, root, shell)
+	if shell.texture.get_size() != Vector2(size * TILE):
+		push_error("%s : enveloppe %s ≠ %s cases" % [room["id"], shell.texture.get_size(), size])
+		_errors += 1
+	if room.has("rugs"):
+		var decals := Node2D.new()
+		decals.name = "GroundDecals"
+		decals.z_index = Z_GROUND_DECALS
+		_attach(root, root, decals)
+		for entry: Array in room["rugs"]:
+			_add_rug(root, decals, entry[0], entry[1], entry[2])
 	var entities := Node2D.new()
 	entities.name = "Entities"
 	entities.y_sort_enabled = true
@@ -153,10 +401,39 @@ func _build(room: Dictionary) -> Node2D:
 		var node := Node2D.new()
 		node.name = group
 		_attach(root, root, node)
-	for entry: Array in room["props"]:
+	for entry: Array in room.get("props", []):
 		_add_prop(root, entities, entry[0], entry[1], entry[2], entry[3])
 	if room.has("machine"):
 		_add_machine(root, entities, room["machine"])
+	if room.has("logic"):
+		var solid := _read_logic(room["logic"], size)
+		var covered: Dictionary[Vector2i, bool] = {}
+		for entry: Array in room["furniture"]:
+			var cells: Array[Vector2i] = _add_furniture(root, entities, entry)
+			for cell: Vector2i in cells:
+				if not solid.has(cell):
+					push_error("%s/%s : %s praticable dans la grille figée" % [room["id"],
+						entry[2], cell])
+					_errors += 1
+				covered[cell] = true
+		var blocked: Array[Vector2i] = []
+		for y in size.y:
+			for x in size.x:
+				var cell := Vector2i(x, y)
+				if solid.has(cell) and not covered.has(cell):
+					blocked.append(cell)
+		root.set(&"blocked_cells", blocked)
+		# Décor posé sur un meuble (jalon 3A), sans emprise, dessiné après lui : [scène, case
+		# d'ancrage du jalon 2 (en bas à gauche), nœud]. Provisoire tant qu'il n'a pas d'image
+		# peinte.
+		for entry: Array in room.get("decor", []):
+			var decor := (load(entry[0]) as PackedScene).instantiate(
+				PackedScene.GEN_EDIT_STATE_INSTANCE) as Node2D
+			decor.name = entry[2]
+			decor.position = _world(entry[1])
+			_attach(root, entities, decor)
+	else:
+		root.set(&"blocked_cells", _walls(room))
 	var spawns: Dictionary = room["spawns"]
 	for spawn_name: String in spawns:
 		var marker := Marker2D.new()
@@ -164,20 +441,32 @@ func _build(room: Dictionary) -> Node2D:
 		marker.position = _world(spawns[spawn_name])
 		_attach(root, root.get_node(^"Spawns"), marker)
 	var warp_script: GDScript = load("res://game/world/warp_point.gd")
-	var target: Array = room["exit_target"]
-	var index := 0
-	for cell: Vector2i in room["exit"]:
+	if room.has("exit"):
+		var target: Array = room["exit_target"]
+		var index := 0
+		for cell: Vector2i in room["exit"]:
+			var point := Marker2D.new()
+			point.set_script(warp_script)
+			point.name = "Exit%d" % index
+			point.position = _world(cell)
+			point.set(&"trigger", PUSH)
+			point.set(&"direction", Vector2i.DOWN)
+			point.set(&"target_map", target[0])
+			point.set(&"target_spawn", target[1])
+			point.set(&"arrival_facing", Vector2i.DOWN)
+			_attach(root, root.get_node(^"Warps"), point)
+			index += 1
+	# Passages décrits un par un : [nœud, case, déclenchement, direction, carte, spawn].
+	for warp: Array in room.get("warps", []):
 		var point := Marker2D.new()
 		point.set_script(warp_script)
-		point.name = "Exit%d" % index
-		point.position = _world(cell)
-		point.set(&"trigger", PUSH)
-		point.set(&"direction", Vector2i.DOWN)
-		point.set(&"target_map", target[0])
-		point.set(&"target_spawn", target[1])
-		point.set(&"arrival_facing", Vector2i.DOWN)
+		point.name = warp[0]
+		point.position = _world(warp[1])
+		point.set(&"trigger", warp[2])
+		point.set(&"direction", warp[3])
+		point.set(&"target_map", warp[4])
+		point.set(&"target_spawn", warp[5])
 		_attach(root, root.get_node(^"Warps"), point)
-		index += 1
 	var point_script: GDScript = load("res://game/world/interactions/interact_point.gd")
 	for entry: Array in room.get("interactables", []):
 		var point := Marker2D.new()
@@ -199,6 +488,64 @@ func _build(room: Dictionary) -> Node2D:
 		point.set(&"cutscene_id", entry[3])
 		_attach(root, root.get_node(^"Triggers"), point)
 	return root
+
+
+## Grille logique figée (`tools/dump_map_logic.gd`) : cases solides (« # » et « G »).
+func _read_logic(path: String, size: Vector2i) -> Dictionary[Vector2i, bool]:
+	var solid: Dictionary[Vector2i, bool] = {}
+	var lines := FileAccess.get_file_as_string(path).strip_edges().split("\n")
+	if lines.size() != size.y:
+		push_error("%s : %d rangées au lieu de %d" % [path, lines.size(), size.y])
+		_errors += 1
+		return solid
+	for y in size.y:
+		for x in size.x:
+			var c := lines[y][x]
+			if c == "#" or c == "G":
+				solid[Vector2i(x, y)] = true
+	return solid
+
+
+## Meuble de Bourg Palette : [identifiant, rectangle des cases solides, nœud, (cases solides
+## explicites)]. Pied au milieu du bas du rectangle ; emprise écrite dans l'instance (relative
+## à la case d'ancrage, celle qui contient le pied). Renvoie les cases solides.
+func _add_furniture(root: Node, parent: Node, entry: Array) -> Array[Vector2i]:
+	var id: StringName = entry[0]
+	var rect: Rect2i = entry[1]
+	var cells: Array[Vector2i] = []
+	if entry.size() > 3:
+		cells.assign(entry[3])
+	else:
+		for y in range(rect.position.y, rect.end.y):
+			for x in range(rect.position.x, rect.end.x):
+				cells.append(Vector2i(x, y))
+	if not _scenes.has(id):
+		_scenes[id] = load(PROPS_DIR + String(id) + ".tscn")
+	var prop := (_scenes[id] as PackedScene).instantiate(PackedScene.GEN_EDIT_STATE_INSTANCE) \
+		as Node2D
+	prop.name = entry[2]
+	prop.position = Vector2((rect.position.x + rect.size.x / 2.0) * TILE, rect.end.y * TILE)
+	var anchor := Vector2i(floori(prop.position.x / TILE), ceili(prop.position.y / TILE) - 1)
+	var footprint: Array[Vector2i] = []
+	for cell: Vector2i in cells:
+		footprint.append(cell - anchor)
+	prop.set(&"footprint", footprint)
+	_attach(root, parent, prop)
+	return cells
+
+
+## Tapis peint à plat (traversable), centré sur [param centre] (en cases).
+func _add_rug(root: Node, parent: Node, id: StringName, centre: Vector2, node_name: String) \
+		-> void:
+	if not _scenes.has(id):
+		_scenes[id] = load(PROPS_DIR + String(id) + ".tscn")
+	var rug := (_scenes[id] as PackedScene).instantiate(PackedScene.GEN_EDIT_STATE_INSTANCE) \
+		as Node2D
+	rug.name = node_name
+	var sprite := rug.get_node(^"Sprite") as Sprite2D
+	var height := sprite.texture.get_height()
+	rug.position = Vector2(roundf(centre.x * TILE), roundf(centre.y * TILE + height / 2.0))
+	_attach(root, parent, rug)
 
 
 ## Murs de l'enveloppe : les rangées du fond, les colonnes de côté, l'avant-dernière rangée sauf

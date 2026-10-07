@@ -1,8 +1,9 @@
 class_name MomentRow
 extends PanelContainer
-## Une ligne de la frise des grands moments (dossier 08 §6 ; jalon-06.md §3.7, Q-14) : rail
-## (ligne et pastille), icône du type, titre, détail, « lieu · date », petite image du Pokémon
-## s'il y en a une. Un texte vide = une ligne absente.
+## Une ligne de la frise des grands moments (dossier 08 §6 ; jalon-06.md §3.7, Q-14 ; MM.2,
+## maquette) : rail (ligne et pastille), vignette du lieu (aperçu peint de la zone, sinon l'icône
+## du type), artwork officiel du Pokémon posé sur la vignette s'il y en a un, titre, détail,
+## « lieu · date ». Un texte vide = une ligne absente.
 ##
 ## Touchable seulement si la vue a une route : un toucher émet **un** [signal touched] avec cette
 ## route, telle quelle (le déblocage est déjà appliqué par la vue). Sans route, rien ne se passe.
@@ -16,7 +17,6 @@ const ICONS: Dictionary[StringName, Texture2D] = {
 	MomentLibrary.FIRST_CAPTURE: preload("res://assets/ui/icons/poke_ball.svg"),
 	MomentLibrary.ZONE_ARRIVAL: preload("res://assets/ui/icons/menu/map.svg"),
 }
-const SPRITE_PATH := "res://assets/sprites/pokemon/placeholder/%s_front.png"
 const ICON_DEFAULT: Texture2D = preload("res://assets/ui/icons/menu/map.svg")
 
 var _view: MomentView
@@ -75,15 +75,7 @@ func _build(first: bool, last: bool) -> void:
 	row.add_theme_constant_override(&"separation", UiTokens.GAP)
 	margin.add_child(row)
 	row.add_child(Rail.new(first, last))
-	var icon := TextureRect.new()
-	icon.texture = ICONS.get(_view.kind, ICON_DEFAULT)
-	icon.modulate = UiTokens.ACCENT
-	icon.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	icon.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
-	icon.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
-	icon.custom_minimum_size = Vector2.ONE * UiTokens.TRAINER_MOMENT_ICON
-	icon.size_flags_vertical = Control.SIZE_SHRINK_CENTER
-	row.add_child(icon)
+	row.add_child(_build_thumb())
 	var column := VBoxContainer.new()
 	column.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	column.size_flags_horizontal = Control.SIZE_EXPAND_FILL
@@ -97,17 +89,43 @@ func _build(first: bool, last: bool) -> void:
 		if not part.is_empty():
 			meta.append(part)
 	_add_text(column, " · ".join(meta), &"TrainerMomentMeta")
-	var path := SPRITE_PATH % _view.species_id
-	if _view.species_id != &"" and ResourceLoader.exists(path):
-		var art := TextureRect.new()
-		art.texture = load(path) as Texture2D
-		art.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
-		art.mouse_filter = Control.MOUSE_FILTER_IGNORE
-		art.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
-		art.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
-		art.custom_minimum_size = Vector2.ONE * UiTokens.TRAINER_MOMENT_SPRITE
-		art.size_flags_vertical = Control.SIZE_SHRINK_CENTER
-		row.add_child(art)
+
+
+## Vignette : l'aperçu de la zone du moment (coins arrondis), l'icône du type par-dessus si la
+## zone n'a pas d'aperçu, l'artwork du Pokémon en bas à droite s'il y en a un.
+func _build_thumb() -> Control:
+	var thumb := Panel.new()
+	thumb.theme_type_variation = &"MapHero"
+	thumb.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	thumb.custom_minimum_size = UiTokens.TRAINER_MOMENT_THUMB
+	thumb.size_flags_vertical = Control.SIZE_SHRINK_CENTER
+	var art := ZoneArt.new()
+	art.set_style(float(UiTokens.TRAINER_MOMENT_THUMB_RADIUS), 1.0, UiTokens.SURFACE_DARK)
+	art.show_zone(_view.zone_id)
+	art.set_anchors_preset(Control.PRESET_FULL_RECT)
+	thumb.add_child(art)
+	if not art.has_image():
+		var icon := TextureRect.new()
+		icon.texture = ICONS.get(_view.kind, ICON_DEFAULT)
+		icon.modulate = UiTokens.ACCENT
+		icon.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		icon.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+		icon.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+		icon.set_anchors_preset(Control.PRESET_CENTER)
+		icon.size = Vector2.ONE * UiTokens.TRAINER_MOMENT_ICON
+		icon.position = (UiTokens.TRAINER_MOMENT_THUMB - icon.size) * 0.5
+		thumb.add_child(icon)
+	var pokemon := MenuArt.pokemon_thumbnail(_view.dex_number)
+	if pokemon != null:
+		var picture := TextureRect.new()
+		picture.texture = pokemon
+		picture.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		picture.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+		picture.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+		picture.size = Vector2.ONE * UiTokens.TRAINER_MOMENT_ART
+		picture.position = UiTokens.TRAINER_MOMENT_THUMB - picture.size
+		thumb.add_child(picture)
+	return thumb
 
 
 func _add_text(parent: Control, text: String, variation: StringName) -> void:

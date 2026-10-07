@@ -18,6 +18,11 @@ extends MenuScreen
 ##   referme, sans signal.
 ## - [method show_result] : [UseResultBar] ; [signal repeat_requested] (UTILISER À NOUVEAU).
 ##   Elle reste jusqu'au prochain geste de l'utilisateur.
+## Composition (MM.1, maquette) : l'écran remonte dans la rangée du × et y pose son « ‹ » rond,
+## l'icône du Sac et « Sac » ; l'argent passe dans le bandeau d'état de l'hôte. Catégories avec
+## icône, légende et compteur ; cartes et panneaux de verre ; l'aperçu à droite montre l'objet en
+## grand, puis, après UTILISER, **« Utiliser sur… » et l'équipe dans le même panneau** (le
+## contrat ne change pas : UTILISER → [signal use_requested] → [method show_targets]).
 ## Placement : rempli par [TrainerMenu] dans la zone sous l'en-tête, marges de SAFE_MARGIN.
 
 ## Onglet touché (le directeur s'en souvient pour la session).
@@ -36,7 +41,31 @@ signal target_chosen(item_id: StringName, index: int)
 signal repeat_requested
 
 const BACK_TEXT := "RETOUR"
-const TITLE_TEXT := "SAC"
+const TITLE_TEXT := "Sac"
+## Titres et légendes des catégories dans l'écran Sac du menu (maquette ; casse de phrase).
+## Textes d'interface **à relire par Kevin** (MM.1) ; les onglets du combat gardent
+## BagEntryView.CATEGORY_LABELS.
+const CATEGORY_TITLES: Dictionary[StringName, String] = {
+	&"favorites": "Favoris",
+	&"heal": "Soins",
+	&"ball": "Capture",
+	&"battle": "Combat",
+	&"field": "Aventure",
+	&"key": "Objets clés",
+}
+const CATEGORY_CAPTIONS: Dictionary[StringName, String] = {
+	&"favorites": "Tes objets favoris.",
+	&"heal": "Restaure les PV et soigne les altérations.",
+	&"ball": "Pour attraper les Pokémon sauvages.",
+	&"battle": "Objets pour les combats.",
+	&"field": "Objets utiles en exploration.",
+	&"key": "Objets importants.",
+}
+## Icône peinte d'une catégorie (l'objet qui la représente) ; sinon CATEGORY_ICONS.
+const CATEGORY_PAINTED: Dictionary[StringName, StringName] = {
+	&"heal": &"potion",
+	&"ball": &"poke_ball",
+}
 const SORT_FORMAT := "Tri : %s"
 const FAVORITE_TEXT := "FAVORI"
 const FAVORITE_HINT := "Appui long sur une carte : favori"
@@ -44,7 +73,7 @@ const TARGET_FORMAT := "Pour %s"
 const BACK_ICON: Texture2D = preload("res://assets/ui/icons/battle/back.svg")
 const SORT_ICON: Texture2D = preload("res://assets/ui/icons/menu/swap.svg")
 const STAR_ICON: Texture2D = preload("res://assets/ui/icons/menu/star_filled.svg")
-const COIN_ICON: Texture2D = preload("res://assets/ui/icons/shop/coin.svg")
+const BAG_ICON: Texture2D = preload("res://assets/ui/icons/battle/bag.svg")
 const TAB_SCENE: PackedScene = preload("res://game/ui/bag/bag_category_tab.tscn")
 const CARD_SCENE: PackedScene = preload("res://game/ui/bag/bag_item_card.tscn")
 const PICKER_SCENE: PackedScene = preload("res://game/ui/bag/party_picker.tscn")
@@ -68,10 +97,9 @@ var _pending_result: Array = []
 var _detail_tween: Tween
 
 var _back: Button
+var _header_caption: Label
 var _left_panel: PanelContainer
 var _tabs_box: VBoxContainer
-var _money_panel: PanelContainer
-var _money: Label
 var _center_panel: PanelContainer
 var _title: Label
 var _caption: Label
@@ -81,6 +109,8 @@ var _flow: HFlowContainer
 var _empty: Label
 var _detail_panel: PanelContainer
 var _detail_column: VBoxContainer
+var _hero: HBoxContainer
+var _halo: TextureRect
 var _big_icon: TextureRect
 var _name: Label
 var _quantity: Label
@@ -90,43 +120,48 @@ var _note: Label
 var _hint: Label
 var _action: Button
 var _browse: Control
+var _lower_browse: VBoxContainer
 var _picker: PartyPicker
 var _result: UseResultBar
+
+
+func _init() -> void:
+	covers_header = true
+	owns_back = true
+	status_money = true
+	backdrop_dim = UiTokens.MENU_GLASS_DIM
+	backdrop_blur = UiTokens.MENU_GLASS_BLUR
+	backdrop_lod = UiTokens.MENU_GLASS_LOD
 
 
 func _ready() -> void:
 	super()
 	set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	var column := VBoxContainer.new()
+	column.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	column.offset_top = -UiTokens.DEX_LAYOUT_RISE
+	column.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	column.add_theme_constant_override(&"separation", UiTokens.GAP)
+	add_child(column)
+	_build_header(column)
 	var body := HBoxContainer.new()
-	body.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	body.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	body.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	body.add_theme_constant_override(&"separation", UiTokens.BAG_SCREEN_GAP)
-	add_child(body)
+	column.add_child(body)
 	_build_left(body)
 	var zone := VBoxContainer.new()
 	zone.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	zone.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	zone.add_theme_constant_override(&"separation", UiTokens.BAG_SCREEN_GAP)
 	body.add_child(zone)
-	var stack := Control.new()
-	stack.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	stack.size_flags_vertical = Control.SIZE_EXPAND_FILL
-	zone.add_child(stack)
 	_browse = HBoxContainer.new()
 	_browse.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	_browse.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	_browse.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	_browse.add_theme_constant_override(&"separation", UiTokens.BAG_SCREEN_GAP)
-	stack.add_child(_browse)
+	zone.add_child(_browse)
 	_build_center(_browse)
 	_build_detail(_browse)
-	_picker = PICKER_SCENE.instantiate() as PartyPicker
-	_picker.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-	_picker.speed_scale = speed_scale
-	_picker.refusal_in_title = false
-	_picker.target_chosen.connect(_on_target_chosen)
-	_picker.target_refused.connect(_on_target_refused)
-	_picker.back_requested.connect(_close_picker)
-	stack.add_child(_picker)
 	_result = UseResultBar.new()
 	_result.speed_scale = speed_scale
 	_result.repeat_requested.connect(_on_repeat)
@@ -160,7 +195,9 @@ func show_bag(view: BagView) -> void:
 ## met les cartes à jour (le choix reste ouvert pour en changer).
 func show_targets(view: PartyPickerView) -> void:
 	_picker_item = view.item_id
-	_browse.visible = false
+	_lower_browse.visible = false
+	# La place de l'équipe : la description se replie pendant le choix (nom et quantité restent).
+	_description.visible = false
 	_picker.speed_scale = speed_scale
 	_picker.show_targets(view)
 
@@ -254,9 +291,10 @@ func get_result_bar() -> UseResultBar:
 	return _result
 
 
-## Argent affiché (« 3 000 ₽ »), vide si absent.
+## Argent de la vue (« 3 000 ₽ »), vide si absent ; il s'affiche dans le bandeau d'état de
+## l'hôte (MM.1).
 func get_money_text() -> String:
-	return _money.text if _money_panel.visible else ""
+	return "" if _view == null else _view.money_text
 
 
 func get_title_text() -> String:
@@ -265,7 +303,7 @@ func get_title_text() -> String:
 
 ## Légende sous le titre (« Pour Salamèche » depuis l'Équipe), vide sinon.
 func get_caption_text() -> String:
-	return _caption.text if _caption.visible else ""
+	return _header_caption.text if _header_caption.visible else ""
 
 
 func get_detail_name() -> String:
@@ -309,25 +347,50 @@ func get_detail_panel() -> PanelContainer:
 	return _detail_panel
 
 
-func _build_left(parent: Control) -> void:
-	var column := VBoxContainer.new()
-	column.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	column.custom_minimum_size.x = UiTokens.BAG_SCREEN_LEFT_WIDTH
-	column.add_theme_constant_override(&"separation", UiTokens.BAG_SCREEN_GAP)
-	parent.add_child(column)
+## Rangée d'en-tête : « ‹ » rond (zone TOUCH_MIN), icône du Sac, « Sac » et, depuis l'Équipe,
+## « Pour Salamèche ».
+func _build_header(parent: Control) -> void:
+	var top := HBoxContainer.new()
+	top.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	top.custom_minimum_size.y = UiTokens.TOUCH_MIN
+	top.add_theme_constant_override(&"separation", UiTokens.MENU_TITLE_GAP)
+	parent.add_child(top)
 	_back = Button.new()
-	_back.theme_type_variation = &"PanelButton"
-	_back.text = BACK_TEXT
+	_back.theme_type_variation = &"MenuRoundButton"
 	_back.icon = BACK_ICON
+	_back.icon_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	_back.tooltip_text = BACK_TEXT
 	_back.focus_mode = Control.FOCUS_NONE
-	_back.custom_minimum_size = Vector2(UiTokens.MENU_CARD_ICON * 2, UiTokens.TOUCH_MIN)
-	_back.size_flags_horizontal = Control.SIZE_SHRINK_BEGIN
+	_back.custom_minimum_size = Vector2.ONE * UiTokens.TOUCH_MIN
 	_back.pressed.connect(_on_back)
-	column.add_child(_back)
+	top.add_child(_back)
+	var icon := TextureRect.new()
+	icon.texture = BAG_ICON
+	icon.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	icon.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	icon.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+	icon.custom_minimum_size = Vector2.ONE * UiTokens.MENU_TITLE_ICON
+	icon.size_flags_vertical = Control.SIZE_SHRINK_CENTER
+	top.add_child(icon)
+	var title := Label.new()
+	title.theme_type_variation = &"MenuScreenTitle"
+	title.text = TITLE_TEXT
+	title.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	title.size_flags_vertical = Control.SIZE_SHRINK_CENTER
+	top.add_child(title)
+	_header_caption = Label.new()
+	_header_caption.theme_type_variation = &"MenuScreenCount"
+	_header_caption.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_header_caption.size_flags_vertical = Control.SIZE_SHRINK_CENTER
+	_header_caption.visible = false
+	top.add_child(_header_caption)
+
+
+func _build_left(parent: Control) -> void:
 	_left_panel = PanelContainer.new()
-	_left_panel.theme_type_variation = &"MenuPanel"
-	_left_panel.size_flags_vertical = Control.SIZE_EXPAND_FILL
-	column.add_child(_left_panel)
+	_left_panel.theme_type_variation = &"MenuGlass"
+	_left_panel.custom_minimum_size.x = UiTokens.BAG_SCREEN_LEFT_WIDTH
+	parent.add_child(_left_panel)
 	var scroll := ScrollContainer.new()
 	scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
 	_left_panel.add_child(scroll)
@@ -336,35 +399,11 @@ func _build_left(parent: Control) -> void:
 	_tabs_box.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	_tabs_box.add_theme_constant_override(&"separation", UiTokens.BAG_TAB_GAP)
 	scroll.add_child(_tabs_box)
-	# L'argent (J7, dossier 09 §10) : sous les catégories, jamais dans l'aperçu d'un objet.
-	_money_panel = PanelContainer.new()
-	_money_panel.theme_type_variation = &"MenuPanel"
-	_money_panel.visible = false
-	column.add_child(_money_panel)
-	var money_row := HBoxContainer.new()
-	money_row.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	money_row.add_theme_constant_override(&"separation", UiTokens.GAP)
-	_money_panel.add_child(money_row)
-	var coin := TextureRect.new()
-	coin.texture = COIN_ICON
-	coin.modulate = UiTokens.ACCENT
-	coin.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	coin.custom_minimum_size = Vector2.ONE * UiTokens.SHOP_COIN_ICON
-	coin.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
-	coin.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
-	coin.size_flags_vertical = Control.SIZE_SHRINK_CENTER
-	money_row.add_child(coin)
-	_money = Label.new()
-	_money.theme_type_variation = &"ShopMoney"
-	_money.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	_money.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	_money.clip_text = true
-	money_row.add_child(_money)
 
 
 func _build_center(parent: Control) -> void:
 	_center_panel = PanelContainer.new()
-	_center_panel.theme_type_variation = &"MenuPanel"
+	_center_panel.theme_type_variation = &"MenuGlass"
 	_center_panel.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	parent.add_child(_center_panel)
 	var column := VBoxContainer.new()
@@ -391,7 +430,7 @@ func _build_center(parent: Control) -> void:
 	_caption.visible = false
 	titles.add_child(_caption)
 	_sort = Button.new()
-	_sort.theme_type_variation = &"TeamAction"
+	_sort.theme_type_variation = &"MenuAction"
 	_sort.icon = SORT_ICON
 	_sort.focus_mode = Control.FOCUS_NONE
 	_sort.custom_minimum_size = Vector2(UiTokens.BAG_SORT_WIDTH, UiTokens.TOUCH_MIN)
@@ -429,20 +468,52 @@ func _build_center(parent: Control) -> void:
 	column.add_child(_empty)
 
 
+## Panneau de droite : l'objet en grand (illustration sur un halo, nom, « ×7 », description,
+## FAVORI), sa mention ; dessous, soit l'astuce et UTILISER, soit « Utiliser sur… » et l'équipe
+## (PartyPicker compact, dans le panneau).
 func _build_detail(parent: Control) -> void:
 	_detail_panel = PanelContainer.new()
-	_detail_panel.theme_type_variation = &"MenuPanel"
+	_detail_panel.theme_type_variation = &"MenuGlass"
 	_detail_panel.custom_minimum_size.x = UiTokens.BAG_SCREEN_DETAIL_WIDTH
 	parent.add_child(_detail_panel)
 	_detail_column = VBoxContainer.new()
 	_detail_column.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	_detail_column.add_theme_constant_override(&"separation", UiTokens.BAG_SCREEN_HEADER_GAP)
 	_detail_panel.add_child(_detail_column)
+	_hero = HBoxContainer.new()
+	_hero.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_hero.custom_minimum_size.y = UiTokens.BAG_HERO_MIN_HEIGHT
+	_hero.add_theme_constant_override(&"separation", UiTokens.BAG_HERO_GAP)
+	_detail_column.add_child(_hero)
+	var art := Control.new()
+	art.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	art.custom_minimum_size = Vector2.ONE * UiTokens.BAG_HERO_ICON
+	art.size_flags_vertical = Control.SIZE_SHRINK_CENTER
+	_hero.add_child(art)
+	_halo = TextureRect.new()
+	_halo.texture = PokedexArt.halo_texture()
+	_halo.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_halo.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	_halo.stretch_mode = TextureRect.STRETCH_SCALE
+	_halo.set_anchors_preset(Control.PRESET_FULL_RECT)
+	art.add_child(_halo)
+	_big_icon = TextureRect.new()
+	_big_icon.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_big_icon.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	_big_icon.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+	_big_icon.set_anchors_preset(Control.PRESET_FULL_RECT)
+	art.add_child(_big_icon)
+	var texts := VBoxContainer.new()
+	texts.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	texts.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	texts.size_flags_vertical = Control.SIZE_SHRINK_CENTER
+	texts.add_theme_constant_override(&"separation", UiTokens.BAG_SCREEN_HEADER_GAP / 2)
+	_hero.add_child(texts)
 	_favorite_pill = PanelContainer.new()
 	_favorite_pill.theme_type_variation = &"TeamPill"
 	_favorite_pill.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	_favorite_pill.size_flags_horizontal = Control.SIZE_SHRINK_END
-	_detail_column.add_child(_favorite_pill)
+	_favorite_pill.size_flags_horizontal = Control.SIZE_SHRINK_BEGIN
+	texts.add_child(_favorite_pill)
 	var pill_row := HBoxContainer.new()
 	pill_row.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	pill_row.add_theme_constant_override(&"separation", UiTokens.BAG_SCREEN_HEADER_GAP)
@@ -460,35 +531,56 @@ func _build_detail(parent: Control) -> void:
 	pill_text.text = FAVORITE_TEXT
 	pill_text.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	pill_row.add_child(pill_text)
-	_big_icon = TextureRect.new()
-	_big_icon.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	_big_icon.custom_minimum_size = Vector2.ONE * UiTokens.BAG_BIG_ICON
-	_big_icon.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
-	_big_icon.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
-	_detail_column.add_child(_big_icon)
-	_name = _centered(&"MenuName")
-	_detail_column.add_child(_name)
-	_quantity = _centered(&"BagDetailQuantity")
-	_detail_column.add_child(_quantity)
-	_description = _centered(&"BagDetailText")
+	_name = _left_label(&"MenuName")
+	_name.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	texts.add_child(_name)
+	_quantity = _left_label(&"BagDetailQuantity")
+	texts.add_child(_quantity)
+	_description = _left_label(&"BagDetailText")
 	_description.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	_detail_column.add_child(_description)
+	texts.add_child(_description)
 	_note = _centered(&"BagNote")
 	_note.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	_detail_column.add_child(_note)
+
+	var lower := Control.new()
+	lower.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	lower.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	_detail_column.add_child(lower)
+	_lower_browse = VBoxContainer.new()
+	_lower_browse.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_lower_browse.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	_lower_browse.add_theme_constant_override(&"separation", UiTokens.BAG_SCREEN_HEADER_GAP)
+	lower.add_child(_lower_browse)
 	var spacer := Control.new()
 	spacer.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	spacer.size_flags_vertical = Control.SIZE_EXPAND_FILL
-	_detail_column.add_child(spacer)
+	_lower_browse.add_child(spacer)
 	_hint = _centered(&"BagHint")
 	_hint.text = FAVORITE_HINT
-	_detail_column.add_child(_hint)
+	_lower_browse.add_child(_hint)
 	_action = Button.new()
 	_action.theme_type_variation = &"AccentButton"
 	_action.focus_mode = Control.FOCUS_NONE
 	_action.custom_minimum_size.y = UiTokens.TOUCH_MIN
 	_action.pressed.connect(_on_action)
-	_detail_column.add_child(_action)
+	_lower_browse.add_child(_action)
+	_picker = PICKER_SCENE.instantiate() as PartyPicker
+	_picker.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	_picker.speed_scale = speed_scale
+	_picker.refusal_in_title = false
+	_picker.target_chosen.connect(_on_target_chosen)
+	_picker.target_refused.connect(_on_target_refused)
+	_picker.back_requested.connect(_close_picker)
+	lower.add_child(_picker)
+	_picker.use_compact()
+
+
+func _left_label(variation: StringName) -> Label:
+	var label := Label.new()
+	label.theme_type_variation = variation
+	label.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	return label
 
 
 func _centered(variation: StringName) -> Label:
@@ -509,8 +601,10 @@ func _build_tabs() -> void:
 		var tab := TAB_SCENE.instantiate() as BagCategoryTab
 		_tabs_box.add_child(tab)
 		tab.use_list_layout()
-		tab.set_category(category_id, _view.category_label(category_id),
-			CATEGORY_ICONS.get(category_id, BagEntryView.GENERIC_ICON))
+		tab.use_menu_layout()
+		tab.set_category(category_id, CATEGORY_TITLES.get(category_id,
+			_view.category_label(category_id)), _category_icon(category_id))
+		tab.set_caption(CATEGORY_CAPTIONS.get(category_id, ""))
 		tab.set_count(_view.entries_in(category_id).size())
 		tab.tapped.connect(_on_tab_tapped.bind(category_id))
 		_tabs[category_id] = tab
@@ -542,6 +636,7 @@ func _rebuild_cards() -> void:
 	for entry: BagEntryView in _view.entries_in(_open):
 		var card := CARD_SCENE.instantiate() as BagItemCard
 		_flow.add_child(card)
+		card.use_menu_style()
 		card.set_view(entry)
 		card.long_press_enabled = true
 		card.tapped.connect(_on_card_tapped.bind(entry.item_id))
@@ -567,12 +662,14 @@ func _refresh() -> void:
 	_sort.visible = not empty
 	_empty.visible = empty
 	_empty.text = "" if _view == null else _view.empty_text
-	_money.text = "" if _view == null else _view.money_text
-	_money_panel.visible = not _money.text.is_empty()
-	_title.text = TITLE_TEXT if empty else BagEntryView.category_label(_open)
+	_title.text = TITLE_TEXT if empty else CATEGORY_TITLES.get(_open,
+		BagEntryView.category_label(_open))
 	var target_name := "" if _view == null else _view.target_name
+	# « Pour Salamèche » : dans la rangée d'en-tête seulement (MM.1), pas deux fois.
 	_caption.text = TARGET_FORMAT % target_name
-	_caption.visible = not target_name.is_empty()
+	_caption.visible = false
+	_header_caption.text = _caption.text
+	_header_caption.visible = not target_name.is_empty()
 	if empty:
 		return
 	if not _view.sort_labels.is_empty():
@@ -586,7 +683,7 @@ func _refresh() -> void:
 	_name.text = entry.display_name
 	_quantity.text = entry.quantity_text()
 	_description.text = entry.description
-	_description.visible = not entry.description.is_empty()
+	_description.visible = not entry.description.is_empty() and not is_picker_open()
 	_note.text = entry.note
 	_note.visible = not entry.note.is_empty()
 	_favorite_pill.visible = entry.favorite
@@ -608,28 +705,37 @@ func _flash_detail() -> void:
 	if _detail_tween != null:
 		_detail_tween.kill()
 		_detail_tween = null
-	_detail_column.modulate.a = 1.0
+	_hero.modulate.a = 1.0
 	var time := UiTokens.ANIM_MICRO * speed_scale
 	if time <= 0.0 or not is_inside_tree():
 		return
-	_detail_column.modulate.a = UiTokens.BAG_DETAIL_FADE_FROM
+	_hero.modulate.a = UiTokens.BAG_DETAIL_FADE_FROM
 	_detail_tween = create_tween().set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
-	_detail_tween.tween_property(_detail_column, ^"modulate:a", 1.0, time)
+	_detail_tween.tween_property(_hero, ^"modulate:a", 1.0, time)
 
 
 func _close_picker() -> void:
 	if not is_picker_open():
 		return
-	_browse.visible = true
+	_lower_browse.visible = true
+	_description.visible = not _description.text.is_empty()
 	_picker.slide_out()
 
 
 func _close_picker_now() -> void:
-	_browse.visible = true
+	_lower_browse.visible = true
+	_description.visible = not _description.text.is_empty()
 	if _picker != null and _picker.is_shown():
 		_picker.speed_scale = 0.0
 		_picker.slide_out()
 		_picker.speed_scale = speed_scale
+
+
+func _category_icon(category_id: StringName) -> Texture2D:
+	var painted := MenuArt.item_icon(CATEGORY_PAINTED.get(category_id, &""))
+	if painted != null:
+		return painted
+	return CATEGORY_ICONS.get(category_id, BagEntryView.GENERIC_ICON)
 
 
 func _haptic(duration_ms: int) -> void:

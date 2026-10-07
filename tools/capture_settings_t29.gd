@@ -66,8 +66,10 @@ func _start() -> void:
 
 func _choose(screen: Node, key: StringName, index: int) -> void:
 	var row: Node = screen.call(&"get_row", key)
-	var buttons: Array = row.call(&"get_option_buttons")
-	(buttons[index] as Button).pressed.emit()
+	# Sélecteur « ‹ Valeur › » (MM.3) : on émet la valeur de l'option voulue, comme une flèche.
+	var view: RefCounted = row.get(&"_view")
+	var options: Array = view.get(&"options")
+	row.emit_signal(&"changed", key, (options[index] as RefCounted).get(&"value"))
 
 
 ## Confirmation d'oubli en combat : panneau d'oubli sous le voile, puis ChoiceCards plein cadre

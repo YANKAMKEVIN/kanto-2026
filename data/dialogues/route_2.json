@@ -1,0 +1,59 @@
+{
+	"route_2_sign": {
+		"pages": ["ROUTE 2\nJadielle — Forêt de Jade"]
+	},
+	"route_2_forest_sign": {
+		"pages": ["FORÊT DE JADE"]
+	},
+	"route_2_hiker": {
+		"speaker": "Randonneuse",
+		"variants": [
+			{
+				"unless": ["route_2_hiker_talked"],
+				"set": ["route_2_hiker_talked"],
+				"pages": ["Plus on monte, plus les arbres deviennent serrés."]
+			},
+			{
+				"pages": ["La Forêt de Jade est droit devant."]
+			}
+		]
+	},
+	"route_2_youngster": {
+		"speaker": "Jeune Dresseur",
+		"variants": [
+			{
+				"unless": ["route_2_youngster_talked"],
+				"set": ["route_2_youngster_talked"],
+				"pages": ["Mon Pokémon vient d'apprendre une nouvelle capacité !"]
+			},
+			{
+				"pages": ["Je ne savais même pas qu'il pouvait apprendre ça."]
+			}
+		]
+	},
+	"route_2_dense_tree": {
+		"narration": true,
+		"pages": ["Les branches sont trop épaisses. Impossible de passer par ici."]
+	},
+	"route_2_closed_sign": {
+		"pages": ["ACCÈS FERMÉ\nTravaux sur le sentier."]
+	},
+	"route_2_closed_gate": {
+		"narration": true,
+		"pages": ["Le passage est fermé pour l'instant."]
+	},
+	"route_2_item_3_found": {
+		"narration": true,
+		"pages": ["Quelque chose dépasse sous les feuilles."]
+	},
+	"route_2_item_4_found": {
+		"narration": true,
+		"pages": ["Quelque chose est coincé près des racines."]
+	},
+	"route_2_ball_1": {
+		"cutscene": "route_2_item_1"
+	},
+	"route_2_ball_2": {
+		"cutscene": "route_2_item_2"
+	}
+}

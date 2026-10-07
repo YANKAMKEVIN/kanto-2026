@@ -94,8 +94,9 @@ extends SceneTree
 ##     DexSearch (LineEdit), DexTitle / DexName / DexNumber (Label), DexSpriteFrame (Panel)
 ##   TeamPill / TeamPillAccent  PanelContainer  « Favori » et consigne du mode DÉPLACER ;
 ##   TeamPillText / TeamPillAccentText  Label ; TeamEvoCircle  Panel
-##   Paramètres (T28) : SettingsCategory / SettingsRow / SettingsOption / SettingsAction (Button),
-##     SettingsRowBox (PanelContainer), SettingsPanelTitle / SettingsLabel / SettingsDetail /
+##   Paramètres (T28, MM.3) : SettingsCategory / SettingsRow[Last] / SettingsArrow (Button),
+##     SettingsRowBox[Last] / SettingsList / SettingsPill / SettingsActionRound (PanelContainer),
+##     SettingsPanelTitle / SettingsSubtitle / SettingsLabel / SettingsDetail / SettingsState /
 ##     SettingsValue (Label) ; ChoiceConfirm / ChoiceCancel (Button, carte de ChoiceCards),
 ##     ChoiceTitle / ChoiceDetail / ChoiceConfirmLabel / ChoiceConfirmDetail / ChoiceCancelLabel /
 ##     ChoiceCancelDetail (Label)
@@ -104,6 +105,11 @@ extends SceneTree
 ##     ShopMoneyLabel (Label)
 ##   Stockage (T15) : StorageDropZone (Panel, cadre ACCENT), StorageRefusal / StorageMenu (PanelContainer),
 ##     StorageRefusalText / StorageTitle / StorageEmpty (Label)
+##   Menu rapproché des maquettes (MM.1) : MenuGlass / MenuGlassCard / MenuStatusBar
+##     (PanelContainer), MenuRoundButton / MenuArtCard / MenuAction / MenuActionOn / MenuTab /
+##     MenuBagTab… (Button ou PanelContainer), MenuArtRim / MenuArtRimPressed / MenuArtRound /
+##     MenuRoundThumb / MenuStatusDivider (Panel), MenuScreenTitle / MenuScreenCount /
+##     MenuStatusText / MenuArtTitle / MenuArtCaption / MenuBagTabCaption / MenuTargetsTitle (Label)
 ## tests/unit/test_ui_theme.gd vérifie que le fichier est à jour avec les tokens.
 
 const TOKENS_PATH: String = "res://game/ui/theme/ui_tokens.gd"
@@ -175,6 +181,8 @@ func _init() -> void:
 	_add_settings_screen(theme, bold, t)
 	_add_shop_screen(theme, bold, t)
 	_add_storage_screen(theme, bold, t)
+	_add_menu_glass(theme, bold, t)
+	_add_menu_mm2(theme, bold, t)
 
 	var err := ResourceSaver.save(theme, THEME_PATH)
 	print("ui_theme.tres : ", error_string(err))
@@ -1262,14 +1270,31 @@ func _row_box(bg: Color, border: Color, width: int, pad_h: int, pad_v: int,
 	return box
 
 
+## Ligne de réglage (MM.3) : fond [param bg], filet SETTINGS_ROW_DIVIDER dessous sauf la dernière.
+func _settings_row(bg: Color, last: bool, t: GDScript) -> StyleBoxFlat:
+	var box := StyleBoxFlat.new()
+	box.bg_color = bg
+	box.border_color = t.SETTINGS_ROW_DIVIDER
+	box.border_width_bottom = 0 if last else t.SETTINGS_ROW_DIVIDER_WIDTH
+	box.anti_aliasing = true
+	box.set_content_margin(SIDE_LEFT, t.SETTINGS_ROW_PAD_H)
+	box.set_content_margin(SIDE_RIGHT, t.SETTINGS_ROW_PAD_H)
+	box.set_content_margin(SIDE_TOP, t.SETTINGS_ROW_PAD_V)
+	box.set_content_margin(SIDE_BOTTOM, t.SETTINGS_ROW_PAD_V)
+	return box
+
+
 func _add_settings_screen(theme: Theme, bold: Font, t: GDScript) -> void:
-	# Catégories : ligne translucide, sélectionnée = ACCENT (bouton à bascule).
-	var category := _row_box(t.SETTINGS_ROW_BG, Color(0, 0, 0, 0), 0, t.SETTINGS_ROW_PAD_H, 0, t)
+	# Catégories (MM.3) : verre léger, la choisie en ACCENT avec un halo (bouton à bascule).
+	var category := _row_box(t.SETTINGS_CATEGORY_BG, Color(0, 0, 0, 0), 0, t.SETTINGS_ROW_PAD_H,
+		0, t)
 	var category_on := _row_box(t.ACCENT, Color(0, 0, 0, 0), 0, t.SETTINGS_ROW_PAD_H, 0, t)
+	category_on.shadow_color = t.SETTINGS_CATEGORY_GLOW
+	category_on.shadow_size = t.SETTINGS_CATEGORY_GLOW_SIZE
 	_add_flat_button(theme, &"SettingsCategory", category, category_on)
 	theme.set_font(&"font", &"SettingsCategory", bold)
-	theme.set_font_size(&"font_size", &"SettingsCategory", t.FONT_BUTTON)
-	theme.set_constant(&"h_separation", &"SettingsCategory", t.GAP)
+	theme.set_font_size(&"font_size", &"SettingsCategory", t.SETTINGS_CATEGORY_FONT)
+	theme.set_constant(&"h_separation", &"SettingsCategory", t.GAP + 8)
 	theme.set_constant(&"icon_max_width", &"SettingsCategory", t.SETTINGS_CATEGORY_ICON)
 	for state: StringName in [&"font_color", &"font_hover_color", &"font_focus_color",
 			&"icon_normal_color", &"icon_hover_color", &"icon_focus_color"]:
@@ -1278,44 +1303,51 @@ func _add_settings_screen(theme: Theme, bold: Font, t: GDScript) -> void:
 			&"icon_pressed_color", &"icon_hover_pressed_color"]:
 		theme.set_color(state, &"SettingsCategory", t.ACCENT_TEXT)
 
-	# Ligne d'interrupteur (touchable en entier) et ligne de texte d'un choix / curseur.
-	var row := _row_box(t.SETTINGS_ROW_BG, Color(0, 0, 0, 0), 0, t.SETTINGS_ROW_PAD_H,
-		t.SETTINGS_ROW_PAD_V, t)
-	var row_pressed := _row_box(t.tinted(t.ACCENT, 0.25), t.ACCENT, t.BORDER_WIDTH,
-		t.SETTINGS_ROW_PAD_H, t.SETTINGS_ROW_PAD_V, t)
-	_add_flat_button(theme, &"SettingsRow", row, row_pressed)
-	theme.set_type_variation(&"SettingsRowBox", &"PanelContainer")
-	theme.set_stylebox(&"panel", &"SettingsRowBox", row)
+	# Lignes (MM.3) : sans fond, un filet dessous (pas sous la dernière : variante « Last ») ;
+	# l'interrupteur et l'action sont des boutons (toute la ligne), teintés d'ACCENT à l'appui.
+	for last: bool in [false, true]:
+		var row := _settings_row(t.SETTINGS_ROW_BG, last, t)
+		var row_pressed := _settings_row(t.SETTINGS_ROW_PRESSED_BG, last, t)
+		var suffix := "Last" if last else ""
+		_add_flat_button(theme, StringName("SettingsRow" + suffix), row, row_pressed)
+		theme.set_type_variation(StringName("SettingsRowBox" + suffix), &"PanelContainer")
+		theme.set_stylebox(&"panel", StringName("SettingsRowBox" + suffix), row)
+	# Carte intérieure qui porte les lignes.
+	var list := _glass(t.MENU_GLASS_CARD_BG, t.MENU_GLASS_CARD_BORDER, t.MENU_GLASS_CARD_RADIUS, t)
+	list.set_content_margin_all(0)
+	theme.set_type_variation(&"SettingsList", &"PanelContainer")
+	theme.set_stylebox(&"panel", &"SettingsList", list)
 
-	# Options d'un choix : bouton à bascule, choisie = ACCENT.
-	var option := _button_style(t.BUTTON_BG, true, t)
-	var option_on := _button_style(t.ACCENT, false, t)
-	for box: StyleBoxFlat in [option, option_on]:
-		box.set_content_margin(SIDE_LEFT, t.GAP)
-		box.set_content_margin(SIDE_RIGHT, t.GAP)
-	_add_button_variation(theme, &"SettingsOption", option, option_on, bold, t)
-	theme.set_font_size(&"font_size", &"SettingsOption", t.SETTINGS_OPTION_FONT)
-	for state: StringName in [&"font_color", &"font_hover_color", &"font_focus_color"]:
-		theme.set_color(state, &"SettingsOption", t.TEXT)
-	for state: StringName in [&"font_pressed_color", &"font_hover_pressed_color"]:
-		theme.set_color(state, &"SettingsOption", t.ACCENT_TEXT)
+	# Sélecteur « ‹ Valeur › » : pilule dessinée plus basse que sa rangée tactile.
+	var touch := float(t.TOUCH_MIN)
+	var pill := _glass(t.SETTINGS_PILL_BG, t.SETTINGS_PILL_BORDER, t.SETTINGS_PILL_HEIGHT / 2, t)
+	pill.set_content_margin_all(0)
+	_inset(pill, touch, t.SETTINGS_PILL_HEIGHT)
+	theme.set_type_variation(&"SettingsPill", &"PanelContainer")
+	theme.set_stylebox(&"panel", &"SettingsPill", pill)
+	var arrow := StyleBoxEmpty.new()
+	var arrow_on := _circle(t.tinted(t.ACCENT, 0.3), Color(0, 0, 0, 0), 0,
+		t.SETTINGS_ARROW_PRESSED_DRAW)
+	_inset(arrow_on, touch, t.SETTINGS_ARROW_PRESSED_DRAW,
+		(touch - t.SETTINGS_ARROW_PRESSED_DRAW) * 0.5)
+	_add_flat_button(theme, &"SettingsArrow", arrow, arrow_on)
+	theme.set_constant(&"icon_max_width", &"SettingsArrow", t.SETTINGS_ARROW_ICON)
+	for state: StringName in [&"icon_normal_color", &"icon_hover_color", &"icon_focus_color",
+			&"icon_pressed_color", &"icon_hover_pressed_color"]:
+		theme.set_color(state, &"SettingsArrow", t.TEXT)
+	theme.set_color(&"icon_disabled_color", &"SettingsArrow", t.SETTINGS_ARROW_OFF)
 
-	# Action : bouton d'accent ; inactif = grisé (la raison est écrite dans la ligne).
-	var action := _button_style(t.ACCENT, false, t)
-	var action_pressed := _button_style(t.ACCENT_PRESSED, false, t)
-	var action_off := _button_style(t.SETTINGS_ACTION_OFF_BG, true, t)
-	_add_button_variation(theme, &"SettingsAction", action, action_pressed, bold, t)
-	theme.set_stylebox(&"disabled", &"SettingsAction", action_off)
-	theme.set_font_size(&"font_size", &"SettingsAction", t.SETTINGS_OPTION_FONT)
-	for state: StringName in [&"font_color", &"font_hover_color", &"font_focus_color",
-			&"font_pressed_color", &"font_hover_pressed_color"]:
-		theme.set_color(state, &"SettingsAction", t.ACCENT_TEXT)
-	theme.set_color(&"font_disabled_color", &"SettingsAction", t.TEXT_MUTED)
+	# Rond de l'action au bout de sa ligne : ACCENT (action principale), icône sombre.
+	var action := _circle(t.ACCENT, Color(0, 0, 0, 0), 0, t.SETTINGS_ACTION_ROUND)
+	theme.set_type_variation(&"SettingsActionRound", &"PanelContainer")
+	theme.set_stylebox(&"panel", &"SettingsActionRound", action)
 
 	_add_plain_label(theme, &"SettingsPanelTitle", t.SETTINGS_PANEL_TITLE_FONT, t.TEXT, bold)
+	_add_plain_label(theme, &"SettingsSubtitle", t.SETTINGS_SUBTITLE_FONT, t.TEXT_MUTED, null)
 	_add_plain_label(theme, &"SettingsLabel", t.SETTINGS_LABEL_FONT, t.TEXT, bold)
 	_add_plain_label(theme, &"SettingsDetail", t.SETTINGS_DETAIL_FONT, t.TEXT_MUTED, null)
 	_add_plain_label(theme, &"SettingsValue", t.SETTINGS_VALUE_FONT, t.TEXT, bold)
+	_add_plain_label(theme, &"SettingsState", t.SETTINGS_STATE_FONT, t.TEXT_MUTED, null)
 
 	# ChoiceCards : la carte de l'action (ACCENT) et celle du renoncement (panneau).
 	var confirm := _menu_card_box(t.ACCENT, t.ACCENT, t.RADIUS, t)
@@ -1388,3 +1420,296 @@ func _add_shop_screen(theme: Theme, bold: Font, t: GDScript) -> void:
 	_add_plain_label(theme, &"ShopCardPrice", t.SHOP_CARD_PRICE_FONT, t.ACCENT, bold)
 	_add_plain_label(theme, &"ShopMoney", t.SHOP_MONEY_FONT, t.TEXT, bold)
 	_add_plain_label(theme, &"ShopMoneyLabel", t.SHOP_MONEY_LABEL_FONT, t.TEXT_MUTED, bold)
+
+
+# --- Menu Dresseur rapproché des maquettes (MM.1) ------------------------------------------------
+
+
+func _circle(bg: Color, border: Color, width: int, diameter: int) -> StyleBoxFlat:
+	var box := StyleBoxFlat.new()
+	box.bg_color = bg
+	box.border_color = border
+	box.set_border_width_all(width)
+	box.set_corner_radius_all(diameter)
+	box.anti_aliasing = true
+	return box
+
+
+func _add_menu_glass(theme: Theme, bold: Font, t: GDScript) -> void:
+	var glass := _glass(t.MENU_GLASS_BG, t.MENU_GLASS_BORDER, t.MENU_GLASS_RADIUS, t)
+	glass.shadow_color = t.DEX_GLASS_SHADOW
+	glass.shadow_size = t.DEX_GLASS_SHADOW_SIZE
+	glass.set_content_margin_all(t.MENU_GLASS_PAD)
+	theme.set_type_variation(&"MenuGlass", &"PanelContainer")
+	theme.set_stylebox(&"panel", &"MenuGlass", glass)
+	var card := _glass(t.MENU_GLASS_CARD_BG, t.MENU_GLASS_CARD_BORDER, t.MENU_GLASS_CARD_RADIUS, t)
+	card.set_content_margin_all(t.DEX_CARD_PAD)
+	theme.set_type_variation(&"MenuGlassCard", &"PanelContainer")
+	theme.set_stylebox(&"panel", &"MenuGlassCard", card)
+
+	# × et ‹ : un rond de verre dessiné plus petit que sa zone tactile (TOUCH_MIN).
+	var touch := float(t.TOUCH_MIN)
+	var round := _glass(t.MENU_GLASS_BG, t.MENU_GLASS_BORDER, t.MENU_ROUND_DRAW / 2, t)
+	var round_on := _glass(t.ACCENT, t.ACCENT, t.MENU_ROUND_DRAW / 2, t)
+	for box: StyleBoxFlat in [round, round_on]:
+		_inset(box, touch, t.MENU_ROUND_DRAW, (touch - t.MENU_ROUND_DRAW) * 0.5)
+	_add_button_variation(theme, &"MenuRoundButton", round, round_on, bold, t)
+	for state: StringName in [&"icon_normal_color", &"icon_hover_color", &"icon_focus_color"]:
+		theme.set_color(state, &"MenuRoundButton", t.TEXT)
+	for state: StringName in [&"icon_pressed_color", &"icon_hover_pressed_color"]:
+		theme.set_color(state, &"MenuRoundButton", t.ACCENT_TEXT)
+	theme.set_constant(&"icon_max_width", &"MenuRoundButton", t.MENU_ROUND_ICON)
+
+	var status := _glass(t.MENU_GLASS_BG, t.MENU_GLASS_BORDER, t.MENU_STATUS_DRAW / 2, t)
+	status.set_content_margin(SIDE_LEFT, t.MENU_STATUS_PAD_H)
+	status.set_content_margin(SIDE_RIGHT, t.MENU_STATUS_PAD_H)
+	theme.set_type_variation(&"MenuStatusBar", &"PanelContainer")
+	theme.set_stylebox(&"panel", &"MenuStatusBar", status)
+	var divider := StyleBoxFlat.new()
+	divider.bg_color = t.MENU_STATUS_DIVIDER
+	theme.set_type_variation(&"MenuStatusDivider", &"Panel")
+	theme.set_stylebox(&"panel", &"MenuStatusDivider", divider)
+	_add_plain_label(theme, &"MenuStatusText", t.MENU_STATUS_FONT, t.TEXT, bold)
+	_add_plain_label(theme, &"MenuScreenTitle", t.MENU_TITLE_FONT, t.TEXT, bold)
+	_add_plain_label(theme, &"MenuScreenCount", t.MENU_TITLE_COUNT_FONT, t.TEXT_MUTED, bold)
+
+	# Grandes cartes illustrées : le fond (teinte posée par la carte) est sous l'illustration ;
+	# le liseré est un Panel par-dessus (MenuArtRim, ACCENT quand la carte est enfoncée).
+	var art := _glass(t.menu_card_bg(t.MENU_CARD_TINT_DEFAULT), Color(0, 0, 0, 0),
+		t.MENU_ART_RADIUS, t)
+	art.set_border_width_all(0)
+	art.shadow_color = t.SHADOW
+	art.shadow_size = t.SHADOW_SIZE
+	_add_flat_button(theme, &"MenuArtCard", art, art)
+	var rim := _glass(Color(0, 0, 0, 0), t.MENU_GLASS_BORDER, t.MENU_ART_RADIUS, t)
+	rim.draw_center = false
+	rim.set_border_width_all(t.MENU_ART_RIM_WIDTH)
+	theme.set_type_variation(&"MenuArtRim", &"Panel")
+	theme.set_stylebox(&"panel", &"MenuArtRim", rim)
+	var rim_on := rim.duplicate() as StyleBoxFlat
+	rim_on.border_color = t.ACCENT
+	rim_on.set_border_width_all(t.MENU_ART_RIM_WIDTH * 2)
+	theme.set_type_variation(&"MenuArtRimPressed", &"Panel")
+	theme.set_stylebox(&"panel", &"MenuArtRimPressed", rim_on)
+	theme.set_type_variation(&"MenuArtRound", &"Panel")
+	theme.set_stylebox(&"panel", &"MenuArtRound", _circle(t.tinted(t.TEXT, 0.18),
+		t.tinted(t.TEXT, 0.25), t.BORDER_WIDTH, t.MENU_ART_ROUND))
+	_add_plain_label(theme, &"MenuArtTitle", t.MENU_CARD_TITLE_FONT, t.TEXT, bold)
+	_add_plain_label(theme, &"MenuArtCaption", t.MENU_CARD_CAPTION_FONT, t.TEXT, null)
+	for type: StringName in [&"MenuArtTitle", &"MenuArtCaption"]:
+		theme.set_color(&"font_shadow_color", type, t.DEX_SCENE_TEXT_SHADOW)
+		theme.set_constant(&"shadow_offset_x", type, 0)
+		theme.set_constant(&"shadow_offset_y", type, 2)
+	theme.set_type_variation(&"MenuRoundThumb", &"Panel")
+	theme.set_stylebox(&"panel", &"MenuRoundThumb", _circle(t.MENU_ROUND_THUMB_BG,
+		t.MENU_ROUND_THUMB_BORDER, t.BORDER_WIDTH, t.TOUCH_MIN))
+	var lead := _glass(t.MENU_GLASS_CARD_BG, t.MENU_GLASS_CARD_BORDER, t.MENU_LEAD_HEIGHT, t)
+	var lead_on := _glass(t.tinted(t.ACCENT, 0.22), t.ACCENT, t.MENU_LEAD_HEIGHT, t)
+	_add_flat_button(theme, &"MenuLeadCard", lead, lead_on)
+
+	# Équipe : emplacements, sections, onglets et actions en verre.
+	var slot := _glass(t.MENU_GLASS_CARD_BG, t.MENU_GLASS_CARD_BORDER, t.MENU_GLASS_CARD_RADIUS, t)
+	var slot_selected := _glass(t.MENU_GLASS_SELECTED_BG, t.ACCENT, t.MENU_GLASS_CARD_RADIUS, t)
+	slot_selected.set_border_width_all(t.TEAM_SLOT_SELECTED_BORDER)
+	slot_selected.shadow_color = t.MOVE_CARD_SELECTED_GLOW
+	slot_selected.shadow_size = t.MOVE_CARD_SELECTED_GLOW_SIZE
+	var slot_source := _glass(t.tinted(t.ACCENT, 0.12), t.ACCENT, t.MENU_GLASS_CARD_RADIUS, t)
+	var slot_target := _glass(t.MENU_GLASS_BG, t.ACCENT, t.MENU_GLASS_CARD_RADIUS, t)
+	slot_target.set_border_width_all(t.TEAM_SLOT_SELECTED_BORDER)
+	var slot_empty := _glass(t.tinted(t.MENU_GLASS_CARD_BG, 0.2), t.tinted(t.TEXT, 0.08),
+		t.MENU_GLASS_CARD_RADIUS, t)
+	for pair: Array in [[&"TeamSlot", slot], [&"TeamSlotSelected", slot_selected],
+			[&"TeamSlotSource", slot_source], [&"TeamSlotTarget", slot_target],
+			[&"TeamSlotEmpty", slot_empty]]:
+		theme.set_stylebox(&"panel", pair[0], pair[1])
+	var section := _glass(t.MENU_GLASS_CARD_BG, t.MENU_GLASS_CARD_BORDER, t.MENU_GLASS_CARD_RADIUS, t)
+	theme.set_stylebox(&"panel", &"TeamSection", section)
+	theme.set_stylebox(&"panel", &"TeamEvoCircle", _circle(t.MENU_ROUND_THUMB_BG,
+		t.MENU_ROUND_THUMB_BORDER, t.BORDER_WIDTH, t.TEAM_EVO_CIRCLE))
+
+	var tab := _glass(t.MENU_GLASS_CARD_BG, t.MENU_GLASS_CARD_BORDER, t.MENU_GLASS_CARD_RADIUS, t)
+	var tab_on := _glass(t.ACCENT, t.ACCENT, t.MENU_GLASS_CARD_RADIUS, t)
+	_add_button_variation(theme, &"MenuTab", tab, tab_on, bold, t)
+	theme.set_font_size(&"font_size", &"MenuTab", t.TEAM_TAB_FONT)
+	for state: StringName in [&"font_color", &"font_hover_color", &"font_focus_color",
+			&"icon_normal_color", &"icon_hover_color", &"icon_focus_color"]:
+		theme.set_color(state, &"MenuTab", t.TEXT)
+	for state: StringName in [&"font_pressed_color", &"font_hover_pressed_color",
+			&"icon_pressed_color", &"icon_hover_pressed_color"]:
+		theme.set_color(state, &"MenuTab", t.ACCENT_TEXT)
+	theme.set_constant(&"icon_max_width", &"MenuTab", t.DEX_TAB_ICON)
+	theme.set_constant(&"h_separation", &"MenuTab", t.TEAM_HEADER_GAP)
+
+	var action := _glass(t.MENU_GLASS_BG, t.tinted(t.TEXT, 0.4), t.MENU_GLASS_CARD_RADIUS, t)
+	var action_pressed := _glass(t.ACCENT_PRESSED, t.ACCENT_PRESSED, t.MENU_GLASS_CARD_RADIUS, t)
+	var action_on := _glass(t.ACCENT, t.ACCENT, t.MENU_GLASS_CARD_RADIUS, t)
+	for box: StyleBoxFlat in [action, action_pressed, action_on]:
+		box.set_content_margin(SIDE_LEFT, t.TEAM_SLOT_PAD)
+		box.set_content_margin(SIDE_RIGHT, t.TEAM_SLOT_PAD)
+	for pair: Array in [[&"MenuAction", action], [&"MenuActionOn", action_on]]:
+		_add_button_variation(theme, pair[0], pair[1], action_pressed, bold, t)
+		theme.set_font_size(&"font_size", pair[0], t.TEAM_ACTION_FONT)
+		theme.set_constant(&"icon_max_width", pair[0], t.TEAM_ACTION_ICON)
+		theme.set_constant(&"h_separation", pair[0], t.TEAM_HEADER_GAP)
+	for state: StringName in [&"font_color", &"font_hover_color", &"font_focus_color",
+			&"icon_normal_color", &"icon_hover_color", &"icon_focus_color"]:
+		theme.set_color(state, &"MenuAction", t.TEXT)
+		theme.set_color(state, &"MenuActionOn", t.ACCENT_TEXT)
+	for state: StringName in [&"font_pressed_color", &"font_hover_pressed_color",
+			&"icon_pressed_color", &"icon_hover_pressed_color"]:
+		theme.set_color(state, &"MenuAction", t.ACCENT_TEXT)
+		theme.set_color(state, &"MenuActionOn", t.ACCENT_TEXT)
+
+	# Sac : onglets (icône peinte, nom, légende, compteur rond), cartes et cibles en verre.
+	var bag_tab := _glass(t.MENU_GLASS_CARD_BG, t.MENU_GLASS_CARD_BORDER, t.MENU_GLASS_CARD_RADIUS, t)
+	var bag_tab_on := _glass(t.MENU_GLASS_SELECTED_BG, t.ACCENT, t.MENU_GLASS_CARD_RADIUS, t)
+	bag_tab_on.set_border_width_all(t.BAG_TAB_SELECTED_BORDER)
+	var bag_card := _glass(t.MENU_GLASS_CARD_BG, t.MENU_GLASS_CARD_BORDER, t.MENU_GLASS_CARD_RADIUS, t)
+	var bag_card_on := _glass(t.MENU_GLASS_SELECTED_BG, t.ACCENT, t.MENU_GLASS_CARD_RADIUS, t)
+	bag_card_on.set_border_width_all(t.MOVE_CARD_SELECTED_BORDER)
+	bag_card_on.shadow_color = t.MOVE_CARD_SELECTED_GLOW
+	bag_card_on.shadow_size = t.MOVE_CARD_SELECTED_GLOW_SIZE
+	for box: StyleBoxFlat in [bag_tab, bag_tab_on]:
+		box.set_content_margin(SIDE_LEFT, t.BAG_TAB_PAD_H)
+		box.set_content_margin(SIDE_RIGHT, t.BAG_TAB_PAD_H / 2)
+		box.set_content_margin(SIDE_TOP, 8)
+		box.set_content_margin(SIDE_BOTTOM, 8)
+	for box: StyleBoxFlat in [bag_card, bag_card_on]:
+		box.set_content_margin(SIDE_LEFT, t.BAG_CARD_PAD_H)
+		box.set_content_margin(SIDE_RIGHT, t.BAG_CARD_PAD_H)
+		box.set_content_margin(SIDE_TOP, t.BAG_CARD_PAD_V)
+		box.set_content_margin(SIDE_BOTTOM, t.BAG_CARD_PAD_V)
+	var row := _glass(t.MENU_GLASS_CARD_BG, t.MENU_GLASS_CARD_BORDER, t.MENU_GLASS_CARD_RADIUS, t)
+	var row_on := _glass(t.MENU_GLASS_SELECTED_BG, t.ACCENT, t.MENU_GLASS_CARD_RADIUS, t)
+	row_on.set_border_width_all(t.PICKER_SELECTED_BORDER)
+	var row_off := _glass(t.tinted(t.MENU_GLASS_CARD_BG, 0.25), t.tinted(t.TEXT, 0.08),
+		t.MENU_GLASS_CARD_RADIUS, t)
+	for box: StyleBoxFlat in [row, row_on, row_off]:
+		box.set_content_margin_all(t.PICKER_PAD)
+	for pair: Array in [[&"MenuBagTab", bag_tab], [&"MenuBagTabSelected", bag_tab_on],
+			[&"MenuBagCard", bag_card], [&"MenuBagCardSelected", bag_card_on],
+			[&"MenuPickerRow", row], [&"MenuPickerRowSelected", row_on],
+			[&"MenuPickerRowOff", row_off]]:
+		theme.set_type_variation(pair[0], &"PanelContainer")
+		theme.set_stylebox(&"panel", pair[0], pair[1])
+	theme.set_type_variation(&"MenuCountRound", &"PanelContainer")
+	var count := _circle(t.tinted(t.TEXT, 0.12), Color(0, 0, 0, 0), 0, t.BAG_TAB_COUNT_WIDTH)
+	count.set_content_margin_all(4)
+	theme.set_stylebox(&"panel", &"MenuCountRound", count)
+	_add_plain_label(theme, &"MenuBagTabName", t.BAG_TAB_COUNT_FONT + 4, t.TEXT, bold)
+	_add_plain_label(theme, &"MenuBagTabCaption", t.BAG_TAB_CAPTION_FONT, t.TEXT_MUTED, null)
+	_add_plain_label(theme, &"MenuTargetsTitle", t.BAG_TARGETS_TITLE_FONT, t.TEXT, bold)
+
+
+# --- Menu Dresseur rapproché des maquettes (MM.2) : Carte et Dresseur ------------------------------
+
+
+func _add_shadowed_label(theme: Theme, type: StringName, size: int, color: Color,
+		font: Font, t: GDScript) -> void:
+	_add_plain_label(theme, type, size, color, font)
+	theme.set_color(&"font_shadow_color", type, t.DEX_SCENE_TEXT_SHADOW)
+	theme.set_constant(&"shadow_offset_x", type, 0)
+	theme.set_constant(&"shadow_offset_y", type, 2)
+	theme.set_constant(&"shadow_outline_size", type, t.DEX_SCENE_TEXT_SHADOW_SIZE)
+
+
+func _add_menu_mm2(theme: Theme, bold: Font, t: GDScript) -> void:
+	# Carte : cadre de l'illustration et panneau de la zone en verre.
+	var frame := _glass(t.SURFACE_DARK, t.MENU_GLASS_BORDER, t.MENU_GLASS_RADIUS, t)
+	frame.shadow_color = t.DEX_GLASS_SHADOW
+	frame.shadow_size = t.DEX_GLASS_SHADOW_SIZE
+	theme.set_stylebox(&"panel", &"MapFrame", frame)
+	var panel := _glass(t.MENU_GLASS_BG, t.MENU_GLASS_BORDER, t.MENU_GLASS_RADIUS, t)
+	panel.shadow_color = t.DEX_GLASS_SHADOW
+	panel.shadow_size = t.DEX_GLASS_SHADOW_SIZE
+	panel.set_content_margin_all(t.MENU_GLASS_PAD)
+	theme.set_stylebox(&"panel", &"MapPanel", panel)
+	var strip := _glass(t.MENU_GLASS_BG, t.MENU_GLASS_BORDER, t.MENU_GLASS_RADIUS, t)
+	strip.set_content_margin_all(t.MAP_STRIP_PAD)
+	theme.set_type_variation(&"MapStrip", &"PanelContainer")
+	theme.set_stylebox(&"panel", &"MapStrip", strip)
+	var section := _glass(t.MENU_GLASS_CARD_BG, t.MENU_GLASS_CARD_BORDER, t.MENU_GLASS_CARD_RADIUS, t)
+	section.set_content_margin_all(t.DEX_CARD_PAD)
+	theme.set_type_variation(&"MapSectionCard", &"PanelContainer")
+	theme.set_stylebox(&"panel", &"MapSectionCard", section)
+	var hero := _glass(t.SURFACE_DARK, t.MENU_GLASS_CARD_BORDER, t.MAP_HERO_RADIUS, t)
+	theme.set_type_variation(&"MapHero", &"PanelContainer")
+	theme.set_stylebox(&"panel", &"MapHero", hero)
+
+	# Étiquettes : verre sombre ; lieu courant en ACCENT ; zone du panneau cerclée d'ACCENT.
+	var label := _bag_box(t.MAP_LABEL_BG, t.MENU_GLASS_BORDER, t.BORDER_WIDTH,
+		t.MAP_LABEL_PAD_H, t.MAP_LABEL_PAD_V, t)
+	label.set_corner_radius_all(t.MAP_LABEL_FONT * 2)
+	var label_on := label.duplicate() as StyleBoxFlat
+	label_on.bg_color = t.ACCENT
+	label_on.border_color = t.ACCENT
+	var label_sel := label.duplicate() as StyleBoxFlat
+	label_sel.border_color = t.ACCENT
+	label_sel.set_border_width_all(t.MAP_LABEL_SELECTED_BORDER)
+	for pair: Array in [[&"MapLabel", label], [&"MapLabelOn", label_on],
+			[&"MapLabelSelected", label_sel]]:
+		theme.set_type_variation(pair[0], &"PanelContainer")
+		theme.set_stylebox(&"panel", pair[0], pair[1])
+	theme.set_type_variation(&"MapPortrait", &"Panel")
+	theme.set_stylebox(&"panel", &"MapPortrait", _circle(t.MAP_PORTRAIT_BG, t.ACCENT,
+		t.MAP_PORTRAIT_BORDER, t.TOUCH_MIN))
+
+	# Panneau : nom sur l'image, « Tu es ici », cellules des Pokémon et des objets.
+	_add_shadowed_label(theme, &"MapHeroName", t.MAP_NAME_FONT, t.TEXT, bold, t)
+	_add_shadowed_label(theme, &"MapHeroSubtitle", t.MAP_SUBTITLE_FONT, t.TEXT, null, t)
+	var here := _bag_box(t.ACCENT, t.ACCENT, 0, 14, 4, t)
+	here.set_corner_radius_all(t.MAP_HERE_FONT * 2)
+	theme.set_type_variation(&"MapHere", &"PanelContainer")
+	theme.set_stylebox(&"panel", &"MapHere", here)
+	_add_plain_label(theme, &"MapHereText", t.MAP_HERE_FONT, t.ACCENT_TEXT, bold)
+	var cell := _glass(Color(0, 0, 0, 0), Color(0, 0, 0, 0), t.MENU_GLASS_CARD_RADIUS, t)
+	cell.set_border_width_all(0)
+	var cell_on := _glass(t.tinted(t.ACCENT, 0.2), t.ACCENT, t.MENU_GLASS_CARD_RADIUS, t)
+	_add_flat_button(theme, &"MapEntry", cell, cell_on)
+	theme.set_type_variation(&"MapItemCell", &"PanelContainer")
+	theme.set_stylebox(&"panel", &"MapItemCell", StyleBoxEmpty.new())
+
+	# Bandeau du bas : carte « Exploration » et vignettes des zones.
+	_add_plain_label(theme, &"MapExploreTitle", t.MAP_EXPLORE_TITLE_FONT, t.TEXT, bold)
+	_add_plain_label(theme, &"MapExploreText", t.MAP_EXPLORE_TEXT_FONT, t.TEXT_MUTED, null)
+	var thumb := _glass(t.SURFACE_DARK, Color(0, 0, 0, 0), t.MAP_THUMB_RADIUS, t)
+	thumb.set_border_width_all(0)
+	_add_flat_button(theme, &"MapThumb", thumb, thumb)
+	var rim := _glass(Color(0, 0, 0, 0), t.MENU_GLASS_BORDER, t.MAP_THUMB_RADIUS, t)
+	rim.draw_center = false
+	var rim_on := rim.duplicate() as StyleBoxFlat
+	rim_on.border_color = t.ACCENT
+	rim_on.set_border_width_all(t.MAP_THUMB_RIM)
+	for pair: Array in [[&"MapThumbRim", rim], [&"MapThumbRimOn", rim_on]]:
+		theme.set_type_variation(pair[0], &"Panel")
+		theme.set_stylebox(&"panel", pair[0], pair[1])
+	_add_shadowed_label(theme, &"MapThumbName", t.MAP_THUMB_NAME_FONT, t.TEXT, bold, t)
+
+	# Dresseur : badges en verre (silhouette commune et « ??? » tant qu'ils ne sont pas obtenus).
+	var badge := _glass(t.MENU_GLASS_CARD_BG, t.MENU_GLASS_CARD_BORDER, t.MENU_GLASS_CARD_RADIUS, t)
+	badge.set_content_margin_all(8)
+	var badge_on := _glass(t.tinted(t.ACCENT, 0.16), t.ACCENT, t.MENU_GLASS_CARD_RADIUS, t)
+	badge_on.set_content_margin_all(8)
+	theme.set_stylebox(&"panel", &"TrainerBadge", badge)
+	theme.set_stylebox(&"panel", &"TrainerBadgeOn", badge_on)
+	_add_plain_label(theme, &"TrainerBadgeUnknown", t.TRAINER_BADGE_UNKNOWN_FONT, t.TEXT_MUTED,
+		bold)
+	var moment := _glass(t.MENU_GLASS_CARD_BG, Color(0, 0, 0, 0), t.MENU_GLASS_CARD_RADIUS, t)
+	moment.set_border_width_all(0)
+	var moment_on := _glass(t.tinted(t.ACCENT, 0.2), t.ACCENT, t.MENU_GLASS_CARD_RADIUS, t)
+	for box: StyleBoxFlat in [moment, moment_on]:
+		box.set_content_margin(SIDE_LEFT, t.TRAINER_MOMENT_PAD_H)
+		box.set_content_margin(SIDE_RIGHT, t.TRAINER_MOMENT_PAD_H)
+		box.set_content_margin(SIDE_TOP, t.TRAINER_MOMENT_PAD_V)
+		box.set_content_margin(SIDE_BOTTOM, t.TRAINER_MOMENT_PAD_V)
+	_add_flat_button(theme, &"TrainerMoment", moment, moment_on)
+	var team := _glass(t.MENU_GLASS_CARD_BG, t.MENU_GLASS_CARD_BORDER, t.MENU_GLASS_CARD_RADIUS, t)
+	team.set_content_margin_all(12)
+	theme.set_type_variation(&"TrainerTeamCard", &"PanelContainer")
+	theme.set_stylebox(&"panel", &"TrainerTeamCard", team)
+	_add_plain_label(theme, &"TrainerTeamName", t.TRAINER_TEAM_NAME_FONT, t.TEXT, bold)
+	_add_plain_label(theme, &"TrainerTeamLevel", t.TRAINER_TEAM_LEVEL_FONT, t.TEXT_MUTED, bold)
+	var link := _glass(t.MENU_GLASS_SELECTED_BG, t.tinted(t.TEXT, 0.3), t.MENU_GLASS_CARD_RADIUS, t)
+	var link_pressed := _glass(t.ACCENT, t.ACCENT, t.MENU_GLASS_CARD_RADIUS, t)
+	_add_button_variation(theme, &"TrainerLink", link, link_pressed, bold, t)
+	theme.set_font_size(&"font_size", &"TrainerLink", t.TRAINER_LINK_FONT)

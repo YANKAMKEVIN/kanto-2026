@@ -82,6 +82,8 @@ var _state: Object
 var _data: PokemonData
 var _zones: ZoneLibrary
 var _objectives: ObjectiveLibrary
+## Badges de Kanto (MM.1) : chargés à la première demande (data/badges.json).
+var _badges: BadgeLibrary
 var _unlocks: MenuUnlocks
 var _can_open: Callable
 var _navigator: MenuNavigator
@@ -351,7 +353,7 @@ func get_navigator() -> MenuNavigator:
 
 ## Vue neuve du tableau de bord pour l'état actuel de la partie.
 func build_dashboard() -> DashboardView:
-	return DashboardViews.build(_state, _data, _zones, _objectives, _unlocks)
+	return DashboardViews.build(_state, _data, _zones, _objectives, _unlocks, _badge_library())
 
 
 ## Échange les places [param from] et [param to] de l'équipe ([method Party.swap] :
@@ -594,7 +596,8 @@ func _on_route_shown(route: MenuRoute) -> void:
 		if not map_view.selected.is_empty():
 			open_zone(map_view.selected)
 	elif route.screen == MenuRoute.TRAINER:
-		trainer_shown.emit(TrainerSummary.build(_state, _data, _zones, _moments, _unlocks))
+		trainer_shown.emit(TrainerSummary.build(_state, _data, _zones, _moments, _unlocks,
+			_badge_library()))
 	elif route.screen == MenuRoute.SETTINGS and _settings != null:
 		_emit_settings()
 	elif route.screen == MenuRoute.SHOP and _shops != null and _items != null \
@@ -608,6 +611,14 @@ func _on_route_shown(route: MenuRoute) -> void:
 		_emit_storage()
 	else:
 		placeholder_shown.emit(route.screen)
+
+
+## Badges de Kanto, chargés à la première demande (tableau de bord ou Dresseur), puis gardés.
+func _badge_library() -> BadgeLibrary:
+	if _badges == null:
+		_badges = BadgeLibrary.new()
+		_badges.load_file()
+	return _badges
 
 
 func _on_closed() -> void:
