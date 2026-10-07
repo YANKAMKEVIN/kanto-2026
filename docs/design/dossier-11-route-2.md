@@ -16,7 +16,7 @@
 9. **Description de zone** (Carte, Pokédex) : « Un chemin bordé de prairies qui s'enfonce peu à peu sous les arbres. »
 10. **Férosinge à 3 %** ; la Route 22 (15 %) reste l'endroit où le chercher.
 11. **FUTUR A** : seulement **l'obstacle végétal et son texte** ; ni Coupe, ni CS, ni manière de le franchir verrouillées.
-12. **Route 2 nord** : **non construite** au J8 ; seul son raccord futur est documenté (poste nord de la forêt → Route 2 nord → Argenta).
+12. **Route 2 nord** : **non construite** au J8 ; seul son raccord futur est documenté (poste nord de la forêt → Route 2 nord → Argenta). Conçue depuis dans le dossier 12 §3 (2026-10-07).
 13. **Méthode d'art** : **vue générale peinte → validation de Kevin → assets nécessaires → construction directe de la vraie carte** ; pas de prototype séparé. La vue générale respecte le plan fonctionnel du dossier et sert à valider composition, densité, lisibilité et transition vers la forêt **avant** la découpe des assets. **Premier livrable du J8 après validation du dossier et du plan : la vue générale peinte.**
 14. **Un seul rebord** franchissable vers le sud, sur le détour de H2 : **raccourci de retour vers Jadielle**, système existant, placement lisible, sans casser la progression vers le nord.
 
