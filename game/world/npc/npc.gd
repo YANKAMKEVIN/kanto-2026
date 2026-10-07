@@ -129,6 +129,10 @@ const EMOTE_DURATION: float = UiTokens.EMOTE_DURATION
 const EMOTE_ICON: Texture2D = preload("res://assets/ui/icons/emote_exclamation.svg")
 ## Pointe de la bulle dans l'icône (96 × 96) : en bas au centre, à (48, 92).
 const EMOTE_TIP_IN_ICON: Vector2 = Vector2(48.0, 92.0)
+## Corps de la bulle dans l'icône 96 px (x gauche, haut, x droit), pour la garder dans la vue.
+const EMOTE_BODY_LEFT := 10.0
+const EMOTE_BODY_TOP := 6.0
+const EMOTE_BODY_RIGHT := 86.0
 const _IDLE_ANIMS: Dictionary[Vector2i, StringName] = {
 	Vector2i.DOWN: &"idle_down",
 	Vector2i.UP: &"idle_up",
@@ -1074,7 +1078,7 @@ func show_emote(_kind: StringName) -> void:
 	if not is_inside_tree():
 		emote_finished.emit()
 		return
-	var tip := Vector2(0.0, -UiTokens.EMOTE_TIP_HEIGHT)
+	var tip := Vector2(0.0, -UiTokens.EMOTE_TIP_HEIGHT) + _emote_view_shift()
 	_emote_bubble = Sprite2D.new()
 	_emote_bubble.name = "EmoteBubble"
 	_emote_bubble.texture = EMOTE_ICON
@@ -1099,6 +1103,24 @@ func show_emote(_kind: StringName) -> void:
 	_emote_tween.chain().tween_interval(hold)
 	_emote_tween.chain().tween_property(_emote_bubble, "modulate:a", 0.0, fade)
 	_emote_tween.chain().tween_callback(_finish_emote)
+
+
+## Décalage local qui garde la bulle entière dans la vue (marge [constant UiTokens.SAFE_MARGIN]) :
+## vers le bas quand le Dresseur est près du haut de l'écran (caméra centrée sur le joueur),
+## vers l'intérieur près d'un bord latéral. Nul quand il y a la place (voir [EmotePlacement]).
+func _emote_view_shift() -> Vector2:
+	var viewport := get_viewport()
+	if viewport == null:
+		return Vector2.ZERO
+	var tip_screen := get_global_transform_with_canvas() \
+		* Vector2(0.0, -UiTokens.EMOTE_TIP_HEIGHT)
+	var k := UiTokens.EMOTE_SCALE * UiTokens.EMOTE_OVERSHOOT
+	var tip_icon := EMOTE_TIP_IN_ICON
+	var extent := Rect2(
+		Vector2(tip_icon.x - EMOTE_BODY_LEFT, tip_icon.y - EMOTE_BODY_TOP) * k,
+		Vector2(EMOTE_BODY_RIGHT - tip_icon.x, 0.0) * k)
+	return EmotePlacement.shift(tip_screen, viewport.get_visible_rect().size, extent,
+		float(UiTokens.SAFE_MARGIN))
 
 
 ## Vrai pendant une bulle ([method show_emote]).

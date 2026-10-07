@@ -134,6 +134,8 @@ const EMOTE_TIP_HEIGHT := 118.0
 const EMOTE_SCALE := 0.7
 ## Montée de la bulle pendant l'apparition (px monde).
 const EMOTE_RISE := 18.0
+## Dépassement maximal du rebond (TRANS_BACK, ≈ 10 %) : sert à garder la bulle dans l'écran.
+const EMOTE_OVERSHOOT := 1.12
 
 # --- Boîte de dialogue (bible UI/UX §3) --------------------------------------------------------
 
