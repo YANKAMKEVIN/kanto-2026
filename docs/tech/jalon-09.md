@@ -53,7 +53,7 @@ Fusions dans `main` depuis `4107a05` : `360352c` (textes du dossier 10 verrouill
 
 1. **Le premier Dresseur s'appelle Scout Théo** (« Léo » est déjà le petit garçon de Bourg Palette) : plan corrigé partout (`forest_scout_theo`, `scout_theo`, « couloir de Théo »). La réplique de rappel du garde sud devient « Les Aspicot peuvent empoisonner. » / « La Boutique de Jadielle vend des Antidotes. » (§2.4.8 corrigé). **`jalon-09` ne contient pas encore cette version du dossier 10** : fusionner `main` dans `jalon-09` avant T6 / T11 (données des gardes et des Dresseurs « mot pour mot »).
 2. **DA.2 a modifié `npc.gd` et `map.gd`** : routines retenues tant qu'aucun joueur n'est sur la carte (`Npc.set_routine_held`, `GameMap._release_routines`). Sans effet sur les Dresseurs (immobiles, approche jouée par des étapes `move` de scène, non concernées) ; utile aux tests de la forêt (P1 / P2 sur leur case de départ tant que le joueur n'est pas là). T11 / T12 (`Npc.show_emote`) partent d'une base qui contient ce changement.
-3. **Apparences** : depuis DA.2, les PNJ de Bourg Palette sont peints et `test_character_look` le suppose (« les starters restent provisoires ») ; la carte de QA garde l'apparence générique existante pour ses Dresseurs et son garde (T12), les planches peintes `scout` / `guard` / `naturalist` restent à la série 10 (T17).
+3. **Apparences** : depuis DA.2, les PNJ de Bourg Palette sont peints et `test_character_look` le suppose (« les starters restent provisoires ») ; la carte de QA garde l'apparence générique existante pour ses Dresseurs et son garde (T12), les planches peintes `scout` / `guard` / `naturalist` restent à la série 11 (T17, §0.4 point 3).
 4. **Textes (T0)** : lot `docs/design/textes/textes-brouillon-j9.md`. Les messages d'évolution utilisent `{species}`, absent de `BattleText.PLACEHOLDERS` (T8 l'ajoute, ou les textes de l'évolution vivent hors de `BattleText`) ; les noms de Dresseurs (« Scout Théo », « Gamin Tom ») sont des `name` entiers de `TrainerData` : aucune classe de Dresseur séparée à nommer.
 
 ### 0.4 Alignement après la fusion du J8 (2026-10-07, `jalon-09` à `5f25495` fusionné dans `j9-systemes`)
@@ -371,13 +371,101 @@ Budget (défaut, comme le J8) : ≤ 3 000 nœuds, changement de carte ≤ 1,5 ×
 
 - `NpcSpec.SHY_ACTIONS` += `notice` (Chenipan : animation « react » quand le joueur passe à ≤ 2 cases, puis reprend, sans quitter la carte ; pas plus d'une fois toutes les 4 s, défaut) et `hide` (Aspicot sur un tronc : petit recul vers le haut + fondu quand le joueur arrive à 1 case, retiré comme l'envol). Roucool `fly` existant (un seul, dans une clairière). Chrysacier / Coconfort : immobiles, sans comportement. Aucun Pikachu d'ambiance.
 - Un Pokémon d'ambiance peut être posé sur une case de forêt (tronc, branche basse) : vérifier que `NpcRoster` / `GameMap` l'acceptent pour un PNJ non interactif et immobile.
-- Apparences peintes : `pokemon/caterpie`, `pokemon/weedle`, `pokemon/metapod`, `pokemon/kakuna` (série 10).
+- Apparences peintes : `pokemon/caterpie`, `pokemon/weedle`, `pokemon/metapod`, `pokemon/kakuna` (série 11, planches « Pokémon fixes », §2.8).
 
 #### 2.7.7 PNJ et objets
 
 - P1 naturaliste : `route` de 3 cases + `look` vers un tronc ; P2 randonneuse : `route` entre la souche et son sac, apparence `hiker` du J8 (défaut) ; dialogues « première fois / ensuite » par drapeau (`forest_naturalist_talked`, `forest_hiker_talked`), modèle du J8 (Q-2 du J8).
-- Gardes : apparence peinte `guard` (nouvelle, série 10) ; Dresseurs : `scout` (nouvelle, une pour les quatre Scouts, défaut), Tom : `youngster` (existante).
+- Gardes : apparence peinte `guard` (nouvelle, série 11) ; Dresseurs : `scout` (nouvelle, une pour les quatre Scouts, défaut), Tom : `youngster` (existante).
 - Objets visibles O1 (Antidote), O2 (Poké Ball), O5 (Poké Ball) : mécanisme du J8 (§2.3 du J8 : entrée de PNJ `object/poke_ball_ground`, verbe PRENDRE, scène `despawn` + `give found` + `set`). Cachés O3 (Potion), O4 (Antidote), O6 (Potion) : `EventTriggerPoint` sur herbe rase → narration (textes validés) → `give … found: true` → toast standard (arbitrage 8). Drapeaux `got_viridian_forest_item_1` … `_6`.
+
+### 2.8 Assets de la forêt : liste exacte (T16, 2026-10-07, d'après la vue validée)
+
+**Méthode** : celle du J8 T2 (§1.2 du J8), consigne de Kevin « le plus petit kit modulaire qui produit la sensation de la vue validée dans Godot, sans effet répétitif ». Vue : `reference/foret-jade-vue-generale-v1.png` (essai r2, validé le 2026-10-07) ; **la grille `tools/plans/viridian_forest.txt` fait foi** pour la géométrie (règle 10, dossier 10 « Vue générale peinte v1 »). **Bilan : 16 images Codex** (4 décors, 1 planche de sous-bois promue du J8, 1 enveloppe de pièce, 3 personnages × marche + attente, 4 Pokémon d'ambiance en une planche chacun), 2 conditionnels, 4 abandons ; tout le reste vient de la Route 2, de la Route 1 et des intérieurs de Bourg Palette. Script : `tools/art/serie11.py` ; planche de contrôle sans Codex : `build/art/FJ_KIT_v1.png` (`python3 tools/art/serie11.py --planche`), 1 case = 48 px, héros à l'échelle.
+
+#### 2.8.1 Réutilisés tels quels (aucun travail d'art)
+
+| Élément de la vue (grille) | Asset(s) |
+|---|---|
+| Forêt serrée (toutes les cases `T`) | `tree_foret_01` … `08` par `DenseForest` + sous-bois `ForestFloor` (masque des cases de forêt) |
+| Arbres des clairières (C1, C2, C3, parvis, clairières de P2, d'O5, de H4) | `tree_e_01` (grand feuillu), `tree_b_01` (conifère), `tree_c_01`, `tree_a_01` : 2 à 3 par clairière, sur des cases `T` du bord, jamais deux fois le même côte à côte ; **aucun arbre neuf** |
+| Sentier | `ground_chemin_01` (masque G) |
+| Herbe rase des clairières et du sous-bois praticable (`C`, `L`, `.`) | `ground_herbe_01` ; `.` = herbe + `ForestFloor` partiel (comme le dernier tiers de la Route 2) |
+| Hautes herbes H1 à H4 | `ground_hautes_herbes_jaune_01` (+ `_bas`), deux touffes par case |
+| Poste nord (façade vue du sud, porte (25, 5)) | `bldg_poste_foret_01` (J8), emprise 7 × 4, porte `open [(0, 0)]` |
+| Petites souches `s` (20, 7) et (40, 44) (O6, souche de P2) | `prop_souche_01` |
+| Lisière, recoins | `prop_ronces_01`, `prop_tronc_couche_01` (sur des cases `T` au bord des clairières, deux ou trois chacun) |
+| Fleurs blanches, roses, orange des clairières | `decal_fleur_1`, `_3`, `_5`, `_6` (rares, seulement dans les clairières) ; `decal_touffe_*` |
+| Poké Balls au sol (O1 Antidote, O2, O5) | `object/poke_ball_ground` (J8 ; même aspect pour tout objet visible, décision de Kevin du dossier 11 §11) |
+| Randonneuse (P2) | `randonneuse` (`hiker`, J8, défaut du §2.7.7) |
+| Gamin Tom (D3) | `jeune_dresseur` (`youngster`) |
+| Roucool (clairière de H4) | `roucool` (`pokemon/pidgey`) |
+| Intérieur des postes : mobilier | `int_plante` ×2, `int_meuble_bas_01`, `int_porte_manteau_01` (série 07, lumière NE) ; aucun meuble neuf |
+
+#### 2.8.2 Variations sans nouvel asset
+
+| Variation | Où, comment | Qui |
+|---|---|---|
+| **Forêt plus sombre et plus froide que la Route 2** (vue : verts profonds, bleu-vert) | `DenseForest.Shade` uniforme sur toute la carte (défaut : valeur × 0,78, rouge × 0,97, bleu × 1,05), plus sombre au cœur (× 0,72 à plus de 4 cases d'une case praticable, invisible de toute façon) ; essences `04`, `05`, `06` (bleu-vert, conifères) poids × 2 partout | T19 (paramètres existants du J8) |
+| **Lumière** | profil `forest` (§2.7.5) : la forêt est assombrie par Godot, les assets restent en lumière NE | T18 |
+| **H3 sous la canopée** | touffes de H3 × 0,86 (comme H3 de la Route 2) | T19 |
+| **Ombres de canopée au sol** | ombres d'arbres existantes à plat sur l'herbe des clairières (J8 §1.2 B), plus denses hors des rais | T19 |
+| **Rais de lumière** (C3, cases `L` ; 2 à 4 taches sur le chemin) | **par Godot, sans image** : quadrilatère incliné (`Polygon2D` + `GradientTexture2D`, matériau additif) + tache au sol (`GradientTexture2D` radial) ; orientation du haut-gauche vers le bas-droite (lumière du jeu) ; particules ≤ 12 dans 2–3 rais (§2.7.5) | T21 |
+| **Souches** | `prop_souche_01` en miroir et teinte ± 8 % (les deux ne sont jamais à l'écran ensemble) | T19 |
+| **Sous-bois des bandes `.`** (réserve « haies taillées » de la vue) | bord irrégulier : `ForestFloor` partiel à taches bruitées + décalcomanies de sous-bois (2.8.3) semées à graine fixe ; **aucun buisson** sur une case praticable | T19 |
+
+#### 2.8.3 Nouveaux (série 11, Codex, lumière NE)
+
+Fiches complètes : `docs/design/fiches-assets/serie-01-place-jadielle.md` (« Série 11 — liste exacte et fiches »). Références = recadrages `REF_FJ_*` de la vue (`serie11.py --refs`).
+
+| Fiche → asset | Rôle que rien d'existant ne tient | Taille / emprise (grille) | Images |
+|---|---|---|---|
+| `WORLD_PROP_TRONC_INCLINE_01` → `prop_tronc_incline_01` | repère sud (arbitrage 10) ; `prop_tronc_couche_01` est couché et petit | ≈ 4 × 3 cases ; pied = cases `I` (37..38, 63), le tronc monte vers le haut-gauche **au-dessus de la forêt**, jamais du sentier (choix de Kevin au T14 : à côté, pas en arche) | 1 |
+| `WORLD_PROP_GRANDE_SOUCHE_01` → `prop_grande_souche_01` | repère central, creux, racines étalées (modèle : la souche creuse de la vue) | ≈ 3,4 × 2,6 cases ; emprise 3 × 2 = `S` (26..28, 43..44) | 1 |
+| `WORLD_PROP_RACINES_01` → `prop_racines_01` | amas de racines d'O4 (« coincé entre les racines ») | ≈ 1,6 × 2 cases ; emprise 1 × 2 = `r` (5, 35..36) | 1 |
+| `WORLD_PROP_SAC_RANDO_01` → `prop_sac_rando_01` | sac posé de P2 ; le sac de voyage de la chambre (`int_sac_voyage_01`) est celui du héros | 0,7 case ; emprise 1 case (45, 44) | 1 |
+| `WORLD_GROUND_SOUS_BOIS_01` → `decal_sousbois_1..8` | fougères, mousse, feuilles mortes, racines, brindilles, champignons (vue) ; **conditionnel du J8, promu** | planche 4 × 2, 0,6 case chacun | 1 |
+| `INT_POSTE_FORET_COQUE` → `int_poste_foret_coque` | enveloppe vide **commune aux deux postes** (§2.7.2) : pierre claire et bois comme la façade, ouvertures de 2 cases au centre des murs nord et sud | 10 × 8 cases | 1 |
+| `PNJ_GARDE` (+ attente) → `garde` (`guard`) | les deux gardes ; aucun uniforme dans le jeu | 130 px, marche 4 × 4 + attente 4 × 1 | 2 |
+| `PNJ_SCOUT` (+ attente) → `scout` (`scout`) | les quatre Scouts (une apparence, défaut §2.7.7) : chapeau de paille, filet | 112 px | 2 |
+| `PNJ_NATURALISTE` (+ attente) → `naturaliste` (`naturalist`) | P1 ; le chercheur de Bourg Palette porte une blouse | 128 px | 2 |
+| `POKE_CHENIPAN_FIXE` → `chenipan` (`pokemon/caterpie`) | 2 Chenipan, `notice` = relève la tête | 44 px ; planche 4 × 1 (2.8.5) | 1 |
+| `POKE_ASPICOT_FIXE` → `aspicot` (`pokemon/weedle`) | 2 Aspicot, `hide` (recul + fondu par le code), réaction = se recroqueville | 44 px | 1 |
+| `POKE_CHRYSACIER_FIXE` → `chrysacier` (`pokemon/metapod`) | cocon immobile ; réaction = frisson (si un `react` lui est donné) | 56 px | 1 |
+| `POKE_COCONFORT_FIXE` → `coconfort` (`pokemon/kakuna`) | idem | 56 px | 1 |
+
+Hauteurs, tenues et emprises = **valeurs par défaut** (règle 4).
+
+**Conditionnels** (prompts prêts dans `serie11.py`, jamais lancés par défaut ; décision de l'architecte sur capture, notée dans `etat-projet.md`) : `WORLD_TREE_FORET_PLANCHE_C` (4 arbres de forêt plus sombres, si la capture du T19 montre des répétitions : la forêt pose ≈ 2 à 3 fois plus d'arbres que la Route 2 avec les mêmes 8 images) ; `WORLD_DECAL_RAIS_LUMIERE_01` (rai et tache peints sur fond noir, mode additif, si le rai de Godot du T21 ne se lit pas).
+
+#### 2.8.4 Règles `PaintedPropRules` prévues (T17)
+
+`prop_tronc_incline_01` : `{"cells": [Vector2i(-1, 0), Vector2i(0, 0)], "align": edge, "origin": <pied mesuré sur l'image>}` (ancre (38, 63) ; l'image déborde vers le haut-gauche sur des cases de forêt seulement : ni `fade` ni vent) ; `prop_grande_souche_01` : `{"width": 3, "depth": 2}` (ancre (27, 44)) ; `prop_racines_01` : `{"width": 1, "depth": 2}` (ancre (5, 36)) ; `prop_sac_rando_01` : `{"width": 1, "depth": 1}`. Aucune ombre portée (règle des petits objets et de la végétation) ; contact préparé.
+
+#### 2.8.5 Pokémon d'ambiance immobiles : un format, deux ajouts d'outil (T17)
+
+Ils ne marchent jamais : une planche de marche 4 × 4 (le format des PNJ) serait générée pour rien. **Une planche par Pokémon**, une ligne de 4 poses : repos de face, réaction de face, repos de profil gauche, réaction de profil gauche.
+- `preparer.py`, section **`pokemon_fixes`** (entrées déjà écrites dans `serie11.py`) : coupe les 4 colonnes, **une seule échelle** pour les 4 (hauteur = la pose de repos de face ; une réaction plus haute n'est pas réduite), pieds alignés ; écrit une feuille 6 × 1 : face, face réaction, gauche, gauche réaction, **droite et droite réaction = miroirs** ; catalogue « personnages » avec `colonnes: 6`, `lignes: 1`, `ordre_colonnes`.
+- `build_character_frames.gd`, genre **« Pokémon fixe »** (`LOOKS` : `chenipan` → `caterpie`, `aspicot` → `weedle`, `chrysacier` → `metapod`, `coconfort` → `kakuna`) : `idle_down` / `idle_up` = face, `idle_left`, `idle_right` ; `react_<dir>` non bouclée (repos, réaction tenue ≈ 0,6 s, repos), lue telle quelle par `Npc.react()` (aucun code du jeu à changer) ; ni `walk_*` ni `run_*`.
+- Un cocon « accroché à un tronc » est posé sur sa case de forêt avec un décalage vertical (`lift`, comme le Roucool de l'auvent de Jadielle) ; l'image ne contient ni tronc ni fil.
+
+#### 2.8.6 Budget des textures : comment la forêt tient
+
+- **Ce que mesure le chiffre du S24** : `PerfCounter tex=` lit `RENDER_TEXTURE_MEM_USED`, la mémoire de **tout le processus**, pas celle de la carte. Le budget de 64 Mo du J7 est un budget **par carte** (mesuré sur Mac, « carte seule »). La Route 2 seule pèse **≈ 15 Mo** (borne haute, 54 images, calcul sur les fichiers de sa scène) ; les 69,3 Mo du T6 du J8 viennent surtout d'ailleurs : interface et combat, **Jadielle préchargée** comme voisine (≈ 25 Mo), et toute carte déjà visitée.
+- **Cause trouvée** : `SceneRouter._scenes` garde **chaque carte chargée pour toute la session**, sans jamais rien libérer ; une `PackedScene` retient ses textures. Après une vraie partie Bourg Palette → Route 1 → Jadielle → Route 2 → forêt, toutes ces cartes restent en mémoire (≈ 25 + 13 + 25 + 15 Mo).
+- **La carte de la forêt elle-même : ≈ 15 à 19 Mo** (estimation) : elle partage presque toutes les textures de la Route 2 (8 arbres de forêt, sols, hautes herbes, façade du poste ≈ 1,1 Mo, souche, ronces) et en perd plusieurs (pavés, grande pierre, clôtures, panneaux, buissons, rebord) ; elle ajoute ≈ 2,5 Mo de décors et de décalcomanies neufs, ≈ 1,5 Mo de personnages (3 planches de marche + attente ; les Pokémon fixes, < 0,1 Mo) ; ses deux voisines (les postes) partagent **une** enveloppe 960 × 768 (≈ 2,8 Mo). Le nombre d'arbres ne coûte pas de texture (mêmes 8 images), seulement des nœuds (budget ≤ 3 000, tri de visibilité du T18).
+- **Stratégie** : (1) **T18 : cache du `SceneRouter` borné** à la carte courante et à ses voisines par warps (les voisines restent préchargées : pas de chargement disque sous le rideau) ; dans la forêt, la mémoire attendue devient ≈ forêt + enveloppe des postes + le socle du processus (≈ 25–30 Mo d'interface et de combat, **déduit**, à confirmer au T20) ≈ **45–50 Mo**. La Route 2 garde Jadielle comme voisine, elle restera vers 60–70 Mo : ce n'est pas un défaut de la forêt. (2) Aucun nouvel arbre ni planche C par défaut (conditionnel seulement). (3) Si le T20 mesure encore plus de 64 Mo dans la forêt : compression VRAM (ETC2/ASTC) des textures du monde sur Android, à valider par A/B sur S24 (le J7 l'a écartée sur Mac à cause du rendu BPTC, jamais essayée sur le téléphone) ; c'est un choix de rendu, à présenter à Kevin.
+- **Mesures** : T19 (Mac) relève la mémoire « carte seule » et le processus après Jadielle → Route 2 → forêt ; T20 (S24) mesure la forêt et la Route 2 dans la même session, après une vraie montée depuis Jadielle.
+
+#### 2.8.7 Commande du T17 (Mac, Codex)
+
+Depuis la copie de la branche, les ancres étant dans le checkout principal :
+
+```bash
+ART=/Users/kevinyankam/dev/kanto-2026/build/art python3 tools/art/serie11.py
+```
+
+(recadre d'abord les `REF_FJ_*` ; trois générations à la fois ; 13 tâches = 16 images, les planches d'attente partent quand leur marche existe ; une image déjà là n'est pas refaite ; correction = la supprimer ou passer en `_r2`.) Puis : relecture contre la vue et `FJ_KIT_v1.png` ; `python3 tools/art/serie11.py --manifeste` (4 objets, 1 pièce, 1 planche de décalcomanies, 3 personnages, 3 attentes, 4 Pokémon fixes) ; ajouts d'outil du 2.8.5 ; `python3 tools/art/preparer.py --source /Users/kevinyankam/dev/kanto-2026/build/art` (deux fois) ; règles du 2.8.4 et `godot --headless --path . -s res://tools/build_painted_props.gd -- --nouveaux` ; `godot --headless --path . -s res://tools/build_character_frames.gd` ; planche de contact `build/captures/jalon09_assets/`. Risque connu : Codex a déjà refusé un Pokémon (Salamèche, DA.3) ; repli : la planche faite à la main par Kevin dans l'app ChatGPT, comme alors.
 
 ---
 
@@ -466,18 +554,21 @@ Branche d'intégration `jalon-09` (cette copie) ; une branche par tâche, chacun
 #### T15 — constructeur-monde (Mac, Codex) : vue générale → **validation de Kevin (9B.0)**
 - 3 essais au plus ; relecture contre la grille ; `docs/design/reference/foret-jade-vue-generale-v1.png` + `foret-jade-plan-v1.png`, section « Vue générale peinte v1 » du dossier 10.
 - **CA** : image validée ; tout changement de composition passe d'abord par la grille (T14 rejoué).
+- **Fait (2026-10-07)** : 2 essais (r1, r2) ; **r2 validé par Kevin** → `reference/foret-jade-vue-generale-v1.png` + `foret-jade-plan-v1.png` ; section « Vue générale peinte v1 » du dossier 10 (écrite au T16).
 
-#### T16 — architecte : liste exacte des assets (série 10) — dépend de T15
+#### T16 — architecte : liste exacte des assets (série 11) — dépend de T15
 - Fiches : enveloppe du poste (10 × 8), garde, Scout, naturaliste ; Chenipan, Aspicot, Chrysacier, Coconfort d'ambiance ; tronc incliné, grande souche (emprise), amas de racines, sac posé, arbres des clairières, rais de lumière (décalcomanies) ; promotions éventuelles du J8 (planche de forêt plus sombre) ; règles `PaintedPropRules`.
 - **CA** : chaque élément visible de la vue validée a un asset (existant, promu, nouveau) ou est abandonné explicitement.
+- **Fait (2026-10-07, branche `j9-t14-vue-generale`)** : liste exacte §2.8 (24 éléments repris tels quels, 7 variations sans asset, **16 images Codex** : 4 décors, 1 planche de sous-bois promue du J8, l'enveloppe des postes, 3 personnages × marche + attente, 4 Pokémon d'ambiance en une planche chacun ; 2 conditionnels ; 4 abandons) ; `tools/art/serie11.py` (références `--refs`, génération, `--manifeste`, planche `--planche`) ; prompts d'attente `tools/art/attente/prompts/{GARDE,SCOUT,NATURALISTE}_ATTENTE.txt` ; fiche « Série 11 » ; stratégie mémoire §2.8.6. Planche de contrôle `build/art/FJ_KIT_v1.png` relue. Écarts : §6.14.
 
-#### T17 — constructeur-monde (Mac, Codex) : série 10 — dépend de T16
+#### T17 — constructeur-monde (Mac, Codex) : série 11 — dépend de T16
 - Génération en lumière NE, manifeste, `preparer.py`, `build_painted_props.gd`, `build_character_frames.gd` (garde, Scout, naturaliste : marche + attente ; Pokémon d'ambiance : attente + `react`).
+- **Détail et commande : §2.8.7** (16 images, ordre, outillage à ajouter : section `pokemon_fixes` de `preparer.py`, genre « Pokémon fixe » de `build_character_frames.gd`, règles `PaintedPropRules` §2.8.4).
 - **CA** : `preparer.py` relancé deux fois ne change rien ; `test_painted_props` vert ; planche contact `build/captures/jalon09_assets/` relue.
 
 #### T18 — architecte : fondations de la forêt — parallèle à T15–T17
-- `shy` `notice` / `hide` (`NpcSpec`, `NpcRoster`, `AmbientWatcher`, `Npc`), Pokémon d'ambiance sur case de forêt, tri de visibilité de `DenseForest` (paramètre, tests purs), profil `forest` (`lighting.json`), données `data/npcs/viridian_forest.json` (cases de la grille), `data/cutscenes/viridian_forest.json` (6 objets), `zones.json` (§2.7.3, textes validés en Q-1), `tools/debug_start/viridian_forest.json` (équipe N8–10, entrée sud).
-- Tests : `test_ambient_rules` / `test_ambient_watcher` (`notice`, `hide`), `test_dense_forest` (tri de visibilité), `test_lighting_library`, `test_cutscene_library` (objets), `test_zone_library`.
+- `shy` `notice` / `hide` (`NpcSpec`, `NpcRoster`, `AmbientWatcher`, `Npc`), Pokémon d'ambiance sur case de forêt, tri de visibilité de `DenseForest` (paramètre, tests purs), profil `forest` (`lighting.json`), données `data/npcs/viridian_forest.json` (cases de la grille), `data/cutscenes/viridian_forest.json` (6 objets), `zones.json` (§2.7.3, textes validés en Q-1), `tools/debug_start/viridian_forest.json` (équipe N8–10, entrée sud) ; **cache de cartes du `SceneRouter` borné** à la carte courante et à ses voisines par warps (§2.8.6 : aujourd'hui, toute carte visitée reste en mémoire avec ses textures).
+- Tests : `test_ambient_rules` / `test_ambient_watcher` (`notice`, `hide`), `test_dense_forest` (tri de visibilité), `test_lighting_library`, `test_cutscene_library` (objets), `test_zone_library`, `test_scene_router` (cache : après A → B → C, seules C et ses voisines restent ; retour vers une voisine sans rechargement disque).
 - **CA** : tests verts ; aucune carte touchée.
 
 #### T19 — constructeur-monde : la forêt et les postes (9B.1) — dépend de T17, T18
@@ -792,3 +883,17 @@ Fait comme au §2.7.1 et au §3 « T14 » ; **aucun fichier de `game/` touché**
 python3 tools/art/plan_check.py tools/plans/viridian_forest.txt && python3 tools/art/plan_aplats.py tools/plans/viridian_forest.txt
 tools/art/generer.sh CONCEPT_FORET_JADE_VUE_GENERALE_r1 tools/art/prompts/CONCEPT_FORET_JADE_VUE_GENERALE_r1.txt build/art/PLAN_FORET_JADE_v1.png docs/design/reference/route-2-vue-generale-v1.png
 ```
+
+### 6.14 T16 — liste exacte des assets (2026-10-07, branche `j9-t14-vue-generale`)
+
+Fait comme au §2.8 ; **aucun fichier de `game/` touché**, rien lancé chez Codex. Fichiers : `tools/art/serie11.py`, `tools/art/attente/prompts/GARDE_ATTENTE.txt`, `SCOUT_ATTENTE.txt`, `NATURALISTE_ATTENTE.txt`, `tools/art/serie10.py` (titre de la planche paramétrable, sortie inchangée), fiche « Série 11 » de `fiches-assets/serie-01-place-jadielle.md`, section « Vue générale peinte v1 » du dossier 10, roadmap (phase 5). Écarts et décisions :
+1. **16 images au lieu d'un kit « 4 images » comme au J8** : la forêt a trois personnages nouveaux (garde, Scout, naturaliste) qui demandent chacun marche + attente, quatre espèces d'ambiance nouvelles, et l'intérieur des postes ; le décor neuf se limite aux trois repères du dossier (tronc, souche, racines), au sac et à une planche de sous-bois (le conditionnel du J8 « mutualisable au J9 », promu : la forêt est tout entière du sous-bois).
+2. **Pokémon d'ambiance : une planche de 4 poses chacun, sans planche de marche** (§2.8.5) : 4 images au lieu de 12 ; demande deux ajouts d'outil au T17 (section `pokemon_fixes` de `preparer.py`, genre « Pokémon fixe » de `build_character_frames.gd`), aucun code du jeu (`Npc.react()` lit déjà `react_<dir>`).
+3. **Rais de lumière par Godot**, pas par une image (méthode C : la lumière est l'affaire du moteur ; dégradés de quelques Ko, réglables à la capture) ; image peinte additive en conditionnel. Orientation du haut-gauche vers le bas-droite (lumière du jeu), alors que le rai de la vue descend du haut-droite (défaut, règle 4).
+4. **Pas de planche de forêt plus sombre** : `DenseForest.Shade` uniforme + poids des essences bleu-vert (paramètres du J8) ; planche C en conditionnel si la répétition se voit.
+5. **Abandons** (écarts de la vue) : seconde souche au centre (une seule grande souche, repère central) ; bords de couloir en haies taillées (sous-bois irrégulier, la grille fait foi) ; chicot où pend le Coconfort près du naturaliste (le Chrysacier de la grille est sur un tronc de forêt ordinaire ; un second tronc mort affaiblirait le repère sud) ; arrière du poste sud vu depuis la forêt (la sortie sud est un bord de carte, comme les autres sorties de route).
+6. **Enveloppe des postes : ouvertures de 2 cases au centre des murs nord et sud** (défaut : une seule image pour les deux postes ; la sortie sud de la forêt fait 2 cases) ; les warps de chaque poste restent posés par `_forest_gate(side)` au T19.
+7. **Mémoire des textures** (§2.8.6) : le chiffre du S24 est celui du processus ; `SceneRouter._scenes` ne libère jamais une carte visitée. Ajouté au T18 : cache borné à la carte courante et à ses voisines (+ test). Estimation de la carte de la forêt : 15–19 Mo.
+8. **Le Roucool d'ambiance de la vue est au sol dans la clairière de H4** ; la grille le met sur une branche basse (14, 9) : la grille fait foi (`lift`).
+9. **`CLAUDE.md`** : la ligne du dossier 10 doit citer la vue validée ; non modifié par l'architecte (fichier de configuration du projet : à faire par Kevin ou la session principale), texte proposé dans le compte rendu.
+
