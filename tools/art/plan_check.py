@@ -358,6 +358,27 @@ def verifier_foret(chemin: Path) -> bool:
 		return False
 	retour = monde.distances([porte])
 
+	# 1 bis. Largeur (décision de Kevin, 2026-10-07) : le chemin principal fait au moins 2 cases
+	# de large. Une case est « large » si elle appartient à un carré 2 × 2 de terrain praticable ;
+	# tout le sentier (= g) l'est, et le trajet le plus court se fait sur des cases larges (plus
+	# la porte). Les passages d'une case (passage_o3, alcôve de Théo, sentes) restent des recoins.
+	def terrain(c: Case) -> bool:
+		return 0 <= c[0] < plan.width and 0 <= c[1] < plan.height \
+			and plan.at(*c) in plan.praticables
+	larges: set[Case] = set()
+	for y in range(plan.height - 1):
+		for x in range(plan.width - 1):
+			carre = [(x, y), (x + 1, y), (x, y + 1), (x + 1, y + 1)]
+			if all(terrain(c) for c in carre):
+				larges.update(carre)
+	etroits = [c for c in plan.cells_of("=") + plan.cells_of("g") if c not in larges]
+	hors_larges = {(x, y) for y in range(plan.height) for x in range(plan.width)
+		if (x, y) not in larges and (x, y) != porte}
+	large = Monde(plan, hors_larges).distances(entree).get(porte, INF)
+	critere(not etroits and large == aller,
+		f"chemin principal ≥ 2 cases de large : sentier sans goulet ({len(etroits)} case(s) "
+		f"étroite(s) {etroits[:4]}), trajet le plus court sur cases larges {large} pas")
+
 	# 2. Hautes herbes : H1..H4 du sud au nord, seule H3 obligatoire.
 	zones = zones_herbes(plan)
 	if len(zones) != 4:
@@ -396,6 +417,9 @@ def verifier_foret(chemin: Path) -> bool:
 			f"{''.join(plan.at(*c) for c in vue)}")
 	sans_d1 = Monde(plan, set(vues["D1"])).distances(entree).get(porte, INF)
 	premiere = premiere_detection(monde, entree, vues["D1"])
+	# Théo couvre toute la largeur du sentier là où sa ligne le croise.
+	sentier_vu = [c for c in vues["D1"] if plan.at(*c) == "="]
+	critere(len(sentier_vu) >= 2, f"D1 couvre toute la largeur du sentier : {sentier_vu}")
 	critere(sans_d1 >= INF and premiere >= FORET_DETECTION_D1,
 		f"D1 inévitable ({'oui' if sans_d1 >= INF else f'NON, {sans_d1} pas sans le croiser'}) ; "
 		+ (f"première case vue à {premiere} cases ({premiere - 1} libres entre eux, attendu ≥ "
