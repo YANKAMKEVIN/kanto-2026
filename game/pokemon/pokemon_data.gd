@@ -42,6 +42,7 @@ const _EFFECT_KEYS: Dictionary[MoveEffect.Kind, Array] = {
 	MoveEffect.Kind.STAT_STAGE: ["kind", "stat", "stages", "target", "chance"],
 	MoveEffect.Kind.RECOIL: ["kind", "fraction"],
 	MoveEffect.Kind.SEED: ["kind", "fraction", "immune_types"],
+	MoveEffect.Kind.STATUS: ["kind", "status", "chance"],
 }
 ## Clés d'effet facultatives (toutes les autres de [constant _EFFECT_KEYS] sont obligatoires).
 const _EFFECT_OPTIONAL: Array[String] = ["chance", "immune_types"]
@@ -467,6 +468,20 @@ func _parse_effect(value: Variant, where: String) -> MoveEffect:
 		if entry.has("immune_types"):
 			ok = _read_type_list(entry["immune_types"], effect.immune_types,
 				where + " immune_types") and ok
+		return effect if ok else null
+	if effect.kind == MoveEffect.Kind.STATUS:
+		if entry.has("status"):
+			if not entry["status"] is String \
+					or not StatusRules.is_known(StringName(entry["status"])):
+				ok = _fail("%s : « status » vaut %s" % [where,
+					", ".join(PackedStringArray(StatusRules.KNOWN))])
+			else:
+				effect.status = StringName(entry["status"])
+		if entry.has("chance"):
+			if _read_int(entry["chance"], 1, 100, where + " chance"):
+				effect.chance = int(entry["chance"])
+			else:
+				ok = false
 		return effect if ok else null
 	if entry.has("stat"):
 		if not MoveEffect.STAGE_STATS.has(StringName(str(entry["stat"]))) \

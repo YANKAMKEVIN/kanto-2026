@@ -51,7 +51,7 @@
 	"poison_powder": {
 		"name": "Poudre Toxik", "type": "poison", "category": "status",
 		"accuracy": 75, "pp": 35,
-		"pending_effects": ["poison"],
+		"effects": [{ "kind": "status", "status": "poison" }],
 		"description": "Une poudre toxique qui empoisonne la cible."
 	},
 	"sleep_powder": {
@@ -230,7 +230,8 @@
 	},
 	"poison_sting": {
 		"name": "Dard-Venin", "type": "poison", "category": "physical",
-		"power": 15, "accuracy": 100, "pp": 35, "pending_effects": ["poison_30"],
+		"power": 15, "accuracy": 100, "pp": 35,
+		"effects": [{ "kind": "status", "status": "poison", "chance": 30 }],
 		"description": "Pique la cible d'un dard venimeux. Peut l'empoisonner."
 	},
 	"double_kick": {
@@ -297,7 +298,8 @@
 	},
 	"twineedle": {
 		"name": "Double-Dard", "type": "bug", "category": "physical",
-		"power": 25, "accuracy": 100, "pp": 20, "pending_effects": ["hits_2", "poison_20"],
+		"power": 25, "accuracy": 100, "pp": 20, "pending_effects": ["hits_2"],
+		"effects": [{ "kind": "status", "status": "poison", "chance": 20 }],
 		"description": "Deux coups de dard venimeux. Peut empoisonner la cible. Un seul coup dans le moteur actuel."
 	},
 	"pin_missile": {

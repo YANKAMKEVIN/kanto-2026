@@ -326,3 +326,52 @@ func test_money_text_only_when_given() -> void:
 	assert_eq(view.money_text, "3" + nbsp + "000" + nbsp + "₽")
 	assert_eq(BagQuery.view(_bag, _items, BagQuery.CONTEXT_FIELD, BagQuery.Sort.RELEVANCE,
 		&"", null, -1, null, 0).money_text, "0" + nbsp + "₽", "0 ₽ s'affiche")
+
+
+# --- Antidote (jalon 9 §2.1.5) ----------------------------------------------------------------
+
+func _antidote() -> ItemData:
+	var items := ItemLibrary.new()
+	assert_true(items.add_from_dict({
+		"antidote": _item("Antidote", "heal", {"cures": ["poison"], "feminine": false}),
+	}, "test"), str(items.get_errors()))
+	return items.get_item(&"antidote")
+
+
+func test_antidote_targets_say_without_effect_on_a_healthy_pokemon() -> void:
+	var antidote := _antidote()
+	_bag.add(&"antidote", 1)
+	var party := Party.new()
+	var poisoned := _mon(18)
+	poisoned.status = StatusRules.POISON
+	party.add(poisoned)
+	party.add(_mon(18))
+	var fainted := _mon(0)
+	fainted.status = StatusRules.POISON
+	party.add(fainted)
+	var picker := BagQuery.targets(party, _bag, antidote, BagQuery.CONTEXT_FIELD, _data)
+	var rows: Array = []
+	for target: PartyTargetView in picker.targets:
+		rows.append([target.usable, target.reason, target.refusal])
+	assert_eq(rows, [[true, "", ""],
+		[false, "Sans effet", "Cela n'aurait aucun effet sur Salamèche."],
+		[false, "Ce Pokémon est K.O.", "Salamèche est K.O."]])
+
+
+func test_antidote_result_text_agrees_with_the_pokemon() -> void:
+	var antidote := _antidote()
+	_bag.add(&"antidote", 3)
+	var mon := _mon(18)
+	mon.status = StatusRules.POISON
+	var result := ItemUse.apply(_bag, antidote, mon, BagQuery.CONTEXT_FIELD)
+	# Textes n° 14 et 15 du lot du J9 (verrouillé le 2026-10-07).
+	assert_eq(BagQuery.result_text(result, "Salamèche"), "Salamèche n'est plus empoisonné.")
+	var female := _mon(10)
+	female.gender = Pokemon.Gender.FEMALE
+	female.status = StatusRules.POISON
+	result = ItemUse.apply(_bag, antidote, female, BagQuery.CONTEXT_FIELD)
+	assert_eq(BagQuery.result_text(result, "Nidoran♀"), "Nidoran♀ n'est plus empoisonnée.",
+		"aucun PV rendu : la phrase du statut, pas « +0 PV »")
+	var again := ItemUse.apply(_bag, antidote, female, BagQuery.CONTEXT_FIELD)
+	assert_eq(BagQuery.result_text(again, "Nidoran♀"), "Sans effet")
+	assert_eq(_bag.count_of(&"antidote"), 1, "le refus ne consomme rien")

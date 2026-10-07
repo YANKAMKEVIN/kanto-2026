@@ -412,3 +412,49 @@ func test_incomplete_stat_labels_are_rejected() -> void:
 	(data["stat_labels"] as Dictionary)["luck"] = "Chance"
 	assert_false(broken.add_from_dict(data, "test"))
 	assert_push_error_count(2)
+
+
+# --- Poison (jalon 9, textes n° 1 à 7 du lot verrouillé le 2026-10-07) --------------------
+
+func _status_event(kind: BattleEvent.Kind, pokemon: String, female: bool = false) -> BattleEvent:
+	var event := _event(kind, true, pokemon)
+	event.status = StatusRules.POISON
+	event.gender = Pokemon.Gender.FEMALE if female else Pokemon.Gender.MALE
+	return event
+
+
+func test_poison_lines_word_for_word() -> void:
+	var expected := [
+		[K.STATUS_INFLICTED, false, "Roucool est empoisonné !"],
+		[K.STATUS_INFLICTED, true, "Roucool est empoisonnée !"],
+		[K.STATUS_UNCHANGED, false, "Roucool est déjà empoisonné !"],
+		[K.STATUS_UNCHANGED, true, "Roucool est déjà empoisonnée !"],
+		[K.STATUS_DAMAGED, false, "Roucool souffre du poison !"],
+		[K.STATUS_DAMAGED, true, "Roucool souffre du poison !"],
+		[K.STATUS_CURED, false, "Roucool n'est plus empoisonné."],
+		[K.STATUS_CURED, true, "Roucool n'est plus empoisonnée."],
+	]
+	for row: Array in expected:
+		assert_eq(_lines(_status_event(row[0], "Roucool", row[1])), [row[2]] as Array[String],
+			"%s %s" % [K.find_key(row[0]), "f" if row[1] else "m"])
+	for id: StringName in [&"status_inflicted_poison", &"status_unchanged_poison",
+			&"status_damaged_poison", &"status_cured_poison"]:
+		assert_false(_text.is_draft(id), String(id))
+
+
+func test_immunity_reuses_no_effect_and_unknown_status_has_no_line() -> void:
+	var immune := _event(K.NO_EFFECT, true, "Aspicot")
+	assert_eq(_lines(immune), ["Ça n'affecte pas Aspicot..."] as Array[String])
+	var unknown := _status_event(K.STATUS_INFLICTED, "Roucool")
+	unknown.status = &"burn"
+	assert_eq(_lines(unknown), [] as Array[String], "statut sans modèle (J11) : rien")
+
+
+func test_antidote_used_has_no_hp_line() -> void:
+	var used := _event(K.ITEM_USED, false, "Salamèche")
+	used.item_name = "Antidote"
+	used.amount = 0
+	assert_eq(_lines(used), ["Tu utilises Antidote sur Salamèche."] as Array[String],
+		"pas de « récupère 0 PV »")
+	var cured := _status_event(K.STATUS_CURED, "Salamèche")
+	assert_eq(_lines(cured), ["Salamèche n'est plus empoisonné."] as Array[String])

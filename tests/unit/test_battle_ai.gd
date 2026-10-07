@@ -185,8 +185,8 @@ func test_status_move_useless_at_the_bound() -> void:
 	var seeder := _smart_side(&"bulbasaur", [&"leech_seed"], [&"grass"])
 	foe.active.seed_fraction = 0.125
 	assert_eq(_score(&"leech_seed", seeder, foe), 0.0, "déjà une graine")
-	assert_eq(_score(&"poison_powder", seeder, foe), 0.0,
-		"effet que le moteur ne gère pas encore")
+	assert_eq(_score(&"sleep_powder", seeder, foe), 0.0,
+		"effet que le moteur ne gère pas encore (sommeil : J11)")
 
 
 ## Règle 4 : sous ⅓ de ses PV, plus aucune capacité de statut.
@@ -238,3 +238,24 @@ func test_battle_passes_the_data_to_the_ai() -> void:
 				used.append(event.move_id)
 	assert_eq(used, [&"ember", &"ember", &"ember"] as Array[StringName],
 		"jamais Charge sur un Spectre")
+
+
+## Jalon 9 : Poudre Toxik est utile sur une cible saine, inutile sur une cible déjà empoisonnée
+## ou immunisée (types Poison et Acier) ; l'IA « smart » ne la choisit alors plus.
+func test_poison_powder_is_useless_on_a_poisoned_or_immune_target() -> void:
+	var own := _smart_side(&"bulbasaur", [&"poison_powder", &"tackle"], [&"grass", &"poison"])
+	var foe := _smart_side(&"rattata", [&"tackle"], [&"normal"])
+	var move := _data.get_move(&"poison_powder")
+	assert_true(BattleAI.status_has_effect(move, own.active, foe.active))
+	assert_almost_eq(_score(&"poison_powder", own, foe), BattleAI.STATUS_SCORE * 0.75, 0.001,
+		"statut utile × précision 75 %")
+	foe.active.pokemon.status = StatusRules.POISON
+	assert_false(BattleAI.status_has_effect(move, own.active, foe.active), "déjà empoisonné")
+	assert_eq(_score(&"poison_powder", own, foe), 0.0)
+	assert_eq(own.ai.choose(own, foe, ScriptedRng.new([]), _data).move_index, 1,
+		"Charge, la seule utile")
+	var bug_poison: Array[StringName] = [&"bug", &"poison"]
+	var steel: Array[StringName] = [&"steel"]
+	for types: Array[StringName] in [bug_poison, steel]:
+		var immune := _smart_side(&"weedle", [&"tackle"], types)
+		assert_false(BattleAI.status_has_effect(move, own.active, immune.active), str(types))

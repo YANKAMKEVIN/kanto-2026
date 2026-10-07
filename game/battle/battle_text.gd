@@ -32,7 +32,12 @@ extends RefCounted
 ## « move_forget_prompt ». La suite de l'oubli (« move_forgot », « move_not_learned ») ne
 ## vient pas d'un événement : la présentation la demande à [method line_for].
 ## Soin (jalon 6) : ITEM_USED → « item_used » (« Tu utilises Potion sur Salamèche. »), puis
-## « hp_restored » ({amount} : PV rendus, [member BattleEvent.amount]).
+## « hp_restored » ({amount} : PV rendus, [member BattleEvent.amount] ; pas de phrase si aucun
+## PV n'est rendu : l'Antidote).
+## Statuts (jalon 9, le poison) : STATUS_INFLICTED, STATUS_UNCHANGED, STATUS_DAMAGED,
+## STATUS_CURED → « status_inflicted_<statut> », « status_unchanged_<statut> »,
+## « status_damaged_<statut> », « status_cured_<statut> » ([member BattleEvent.status] ; pas de
+## phrase pour un statut sans modèle). Immunité : NO_EFFECT (« no_effect »).
 ## Changement de Pokémon (jalon 7) : WITHDRAWN → « withdrawn » (« Reviens, Salamèche ! ») ; le
 ## Pokémon envoyé reprend « sent_out_player ». Le panneau ÉQUIPE lit, sans événement
 ## ([method get_template]), « switch_reason_active », « switch_reason_fainted » (raisons sur
@@ -70,6 +75,8 @@ const TEMPLATE_IDS: Array[StringName] = [
 	&"forget_confirm_no",
 	&"withdrawn", &"switch_reason_active", &"switch_reason_fainted", &"replace_prompt",
 	&"summary_exp", &"summary_level", &"summary_stat", &"summary_continue",
+	&"status_inflicted_poison", &"status_unchanged_poison", &"status_damaged_poison",
+	&"status_cured_poison",
 ]
 ## Entre deux gains de statistiques du bilan (« PV +2 · Attaque +1 »).
 const SUMMARY_SEPARATOR: String = " · "
@@ -79,6 +86,13 @@ const PLACEHOLDERS: Array[String] = [
 ]
 
 const _TEMPLATE_KEYS: Array[String] = ["text", "text_f", "draft"]
+## Début du modèle de chaque événement de statut (suivi de « _<statut> »).
+const _STATUS_PREFIXES: Dictionary[BattleEvent.Kind, String] = {
+	BattleEvent.Kind.STATUS_INFLICTED: "status_inflicted",
+	BattleEvent.Kind.STATUS_UNCHANGED: "status_unchanged",
+	BattleEvent.Kind.STATUS_DAMAGED: "status_damaged",
+	BattleEvent.Kind.STATUS_CURED: "status_cured",
+}
 const _VOWELS: String = "AEIOUYÀÂÄÉÈÊËÎÏÔÖÙÛÜaeiouyàâäéèêëîïôöùûü"
 
 var _texts: Dictionary[StringName, String] = {}
@@ -249,7 +263,13 @@ func lines(event: BattleEvent, data: PokemonData, trainer: TrainerData = null) \
 			result.append(_fill(&"withdrawn", event, data))
 		BattleEvent.Kind.ITEM_USED:
 			result.append(_fill(&"item_used", event, data))
-			result.append(_fill(&"hp_restored", event, data))
+			if event.amount > 0:
+				result.append(_fill(&"hp_restored", event, data))
+		BattleEvent.Kind.STATUS_INFLICTED, BattleEvent.Kind.STATUS_UNCHANGED, \
+				BattleEvent.Kind.STATUS_DAMAGED, BattleEvent.Kind.STATUS_CURED:
+			var id := StringName("%s_%s" % [_STATUS_PREFIXES[event.kind], event.status])
+			if _texts.has(id):
+				result.append(_fill(id, event, data))
 		BattleEvent.Kind.BATTLE_ENDED:
 			# FLED ne porte pas de message ici (il est sur l'événement FLED). Un sauvage n'a
 			# pas de dresseur (trainer_name vide) : « Tu as battu… » ne s'affiche pas.

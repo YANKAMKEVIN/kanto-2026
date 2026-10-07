@@ -18,16 +18,27 @@ extends RefCounted
 ## élevé), effects ([MoveEffect]), pending_effects, typeless (false), draft (false).
 ##
 ## [b]pending_effects[/b] : effets de la capacité que le moteur ne gère [b]pas encore[/b],
-## décrits pour ne pas les perdre ; le moteur les ignore. Chaînes libres en snake_case,
-## vocabulaire actuel :
+## décrits pour ne pas les perdre ; le moteur les ignore. Chaînes libres en snake_case ; un
+## suffixe `_N` = N % de chances. Vocabulaire actuel (le poison est joué depuis le jalon 9 :
+## effet [code]status[/code] de [MoveEffect], plus de `poison`, `poison_20` ni `poison_30`) :
 ## - `burn_10` : 10 % de chances de brûler la cible ;
-## - `poison` : empoisonne la cible ;
+## - `paralysis`, `paralysis_10`, `paralysis_30` : paralyse la cible (toujours, 10 %, 30 %) ;
+## - `confusion`, `confusion_10` : rend la cible confuse (toujours, 10 %) ;
 ## - `sleep` : endort la cible ;
+## - `flinch_10`, `flinch_30` : 10 % ou 30 % de chances d'apeurer la cible (elle perd son
+##   tour) ;
 ## - `trap` : piège la cible 4 à 5 tours et lui retire 1/8 de ses PV max à chaque tour ;
 ## - `two_turn` : se charge au premier tour, frappe au second ;
 ## - `charge_def_up` : la Défense du lanceur monte d'un niveau pendant la charge ;
-## - `flinch_30` : 30 % de chances d'apeurer la cible (elle perd son tour) ;
-## - `rage` : Frénésie, l'Attaque du lanceur monte à chaque coup reçu tant qu'il l'utilise.
+## - `rage` : Frénésie, l'Attaque du lanceur monte à chaque coup reçu tant qu'il l'utilise ;
+## - `rampage` : frappe 2 ou 3 tours de suite, puis le lanceur devient confus ;
+## - `hits_2` : frappe deux fois ; `multi_hit` : frappe 2 à 5 fois ;
+## - `crit_up` : augmente le taux de critique du lanceur ;
+## - `force_switch` : chasse la cible (fin du combat contre un sauvage) ;
+## - `mirror` : copie la dernière capacité de la cible ;
+## - `half_hp` : retire la moitié des PV restants de la cible ;
+## - `level_damage` : dégâts égaux au niveau du lanceur ;
+## - `ohko` : met la cible K.O. en un coup.
 
 enum Category { PHYSICAL, SPECIAL, STATUS }
 

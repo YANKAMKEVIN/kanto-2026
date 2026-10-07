@@ -216,3 +216,23 @@ func _scripts(dir: String) -> Array[String]:
 	for sub: String in DirAccess.get_directories_at(dir):
 		found.append_array(_scripts(dir.path_join(sub)))
 	return found
+
+
+# --- Antidote (jalon 9 §2.1.5) ----------------------------------------------------------------
+
+func test_the_antidote_is_sold_only_once_poison_is_unlocked() -> void:
+	var antidote := _items.get_item(&"antidote")
+	assert_eq(ShopRules.stock(_mart, _state.flags), [&"poke_ball", &"potion"] \
+		as Array[StringName], "avant le garde sud : le stock du J7")
+	var before := _snapshot()
+	assert_eq(ShopRules.buy(_state, _mart, antidote, 1), ShopRules.Status.NOT_SOLD_HERE)
+	assert_eq(_snapshot(), before)
+	_state.flags.set_flag(&"poison_unlocked")
+	assert_eq(ShopRules.stock(_mart, _state.flags), [&"poke_ball", &"potion", &"antidote"] \
+		as Array[StringName], "après la Potion")
+	var money: int = _state.money
+	assert_eq(ShopRules.buy(_state, _mart, antidote, 2), ShopRules.Status.OK)
+	assert_eq(_state.money, money - 200, "100 ₽ pièce (défaut, Rouge/Bleu)")
+	assert_eq(_state.bag.count_of(&"antidote"), 2)
+	assert_eq(ShopRules.sell(_state, antidote, 1), ShopRules.Status.OK, "repris 50 ₽")
+	assert_eq(_state.money, money - 150)

@@ -454,6 +454,40 @@ func test_invalid_seed_effects_are_rejected() -> void:
 	assert_push_error_count(5)
 
 
+func test_poison_moves_are_coded() -> void:
+	# Jalon 9 (T4, Q-6) : Poudre Toxik empoisonne toujours, Dard-Venin 30 %, Double-Dard 20 % ;
+	# plus aucun poison en attente.
+	_data.load_dir()
+	var expected := {&"poison_powder": 100, &"poison_sting": 30, &"twineedle": 20}
+	for id: StringName in expected:
+		var move := _data.get_move(id)
+		assert_eq(move.effects.size(), 1, String(id))
+		assert_eq([move.effects[0].kind, move.effects[0].status, move.effects[0].chance],
+			[MoveEffect.Kind.STATUS, &"poison", expected[id]], String(id))
+	for id: StringName in _data.get_move_ids():
+		for tag: String in _data.get_move(id).pending_effects:
+			assert_false(tag.begins_with("poison"), "%s : %s" % [id, tag])
+
+
+func test_invalid_status_effects_are_rejected() -> void:
+	assert_true(PokemonData.new().add_moves_from_dict(_seed_move({ "kind": "status",
+		"status": "poison" }), "ok"), "chance facultative")
+	var cases: Dictionary = {
+		"a": [{ "kind": "status" }, "« status » est obligatoire"],
+		"b": [{ "kind": "status", "status": "paralysis" }, "« status » vaut poison"],
+		"c": [{ "kind": "status", "status": "poison", "chance": 0 }, "chance"],
+		"d": [{ "kind": "status", "status": "poison", "fraction": 0.5 },
+			"clé inconnue « fraction »"],
+	}
+	for source: String in cases:
+		var data := PokemonData.new()
+		assert_false(data.add_moves_from_dict(_seed_move(cases[source][0]), source), source)
+		assert_string_contains("\n".join(data.get_errors()),
+			"%s capacité « seedy » effet 1" % source)
+		assert_string_contains("\n".join(data.get_errors()), cases[source][1])
+	assert_push_error_count(4)
+
+
 func test_unknown_immune_type_is_a_broken_reference() -> void:
 	_data.add_types_from_dict({"types": {"grass": {"name": "Plante"}}}, "t")
 	_data.add_moves_from_dict(_seed_move({ "kind": "seed", "fraction": 0.125,
@@ -559,7 +593,7 @@ func test_route_22_moves_values() -> void:
 	# Mécaniques absentes du moteur (jalon-07.md §3.7) : la capacité frappe une fois, sans effet.
 	var pending := {
 		&"fury_attack": ["multi_hit"], &"fury_swipes": ["multi_hit"],
-		&"double_kick": ["hits_2"], &"poison_sting": ["poison_30"],
+		&"double_kick": ["hits_2"], &"poison_sting": [],
 		&"thrash": ["rampage"], &"body_slam": ["paralysis_30"],
 		&"seismic_toss": ["level_damage"], &"horn_drill": ["ohko"],
 	}
@@ -654,13 +688,13 @@ func test_forest_moves_values() -> void:
 		[&"def", 1, MoveEffect.Target.SELF])
 	assert_true(_data.get_move(&"swift").never_misses(), "Météores ne rate jamais")
 	# Effets absents du moteur : paralysie et confusion au jalon 11, coups multiples plus
-	# tard ; le poison de Double-Dard devient réel au T4 (avec Dard-Venin et Poudre Toxik).
+	# tard ; le poison de Double-Dard est réel depuis le T4 (avec Dard-Venin et Poudre Toxik).
 	var pending := {
 		&"string_shot": [], &"harden": [], &"swift": [],
 		&"thunder_shock": ["paralysis_10"], &"thunder_wave": ["paralysis"],
 		&"confusion": ["confusion_10"], &"stun_spore": ["paralysis"],
 		&"supersonic": ["confusion"], &"psybeam": ["confusion_10"],
-		&"twineedle": ["hits_2", "poison_20"], &"pin_missile": ["multi_hit"],
+		&"twineedle": ["hits_2"], &"pin_missile": ["multi_hit"],
 		&"thunder": ["paralysis_30"],
 	}
 	for id: StringName in pending:
@@ -679,12 +713,12 @@ func test_moves_without_effect_say_so() -> void:
 		"Une poudre soporifique qui endort la cible. Sans effet dans le moteur actuel.")
 
 
-func test_forest_wild_moves_only_wait_for_poison_and_paralysis() -> void:
+func test_forest_wild_moves_only_wait_for_paralysis() -> void:
 	# Invariant de jouabilité adapté à la forêt : aux niveaux des rencontres (§6 du dossier 10)
-	# et des Dresseurs, les seuls effets encore absents sont le poison de Dard-Venin (réel au
-	# T4) et la paralysie d'Éclair (J11, limite connue) ; les dégâts, eux, sont joués.
+	# et des Dresseurs, le seul effet encore absent est la paralysie d'Éclair (J11, limite
+	# connue) ; le poison de Dard-Venin est joué depuis le T4, les dégâts aussi.
 	_data.load_dir()
-	var allowed: Dictionary = {&"poison_sting": "poison_30", &"thunder_shock": "paralysis_10"}
+	var allowed: Dictionary = {&"thunder_shock": "paralysis_10"}
 	for pair: Array in [[&"caterpie", 7], [&"weedle", 6], [&"metapod", 7], [&"kakuna", 7],
 			[&"pikachu", 5]]:
 		for move_id: StringName in _data.get_species(pair[0]).moves_at(pair[1]):

@@ -75,8 +75,8 @@ func times_used(pokemon: Pokemon, move_id: StringName) -> int:
 ## efficacité × précision (une capacité qui ne rate jamais compte 100 %). Statut :
 ## [constant STATUS_SCORE] × précision, ou 0 si [param own] est sous ⅓ de ses PV, si
 ## [param times_used] ≥ [constant STATUS_MAX_USES], ou si aucun de ses effets ne peut plus rien
-## changer (niveau déjà au bout, graine déjà plantée ou cible immunisée, effet que le moteur ne
-## gère pas encore). Les capacités de statut ignorent les types (comme le moteur).
+## changer (niveau déjà au bout, graine déjà plantée ou cible immunisée, statut déjà présent ou
+## cible immunisée, effet que le moteur ne gère pas encore). Les capacités de statut ignorent les types (comme le moteur).
 static func score_move(move: MoveData, own: Battler, foe: Battler, chart: TypeChart,
 		times_used: int) -> float:
 	if move == null:
@@ -105,7 +105,8 @@ static func is_low(battler: Battler) -> bool:
 
 
 ## Vrai si au moins un effet de la capacité de statut [param move] peut encore changer quelque
-## chose (un niveau pas au bout dans le bon sens, une graine qui prendrait).
+## chose (un niveau pas au bout dans le bon sens, une graine qui prendrait, un statut durable
+## qui prendrait : [method StatusRules.can_inflict]).
 static func status_has_effect(move: MoveData, own: Battler, foe: Battler) -> bool:
 	for effect: MoveEffect in move.effects:
 		match effect.kind:
@@ -117,6 +118,10 @@ static func status_has_effect(move: MoveData, own: Battler, foe: Battler) -> boo
 					return true
 			MoveEffect.Kind.SEED:
 				if not foe.is_seeded() and not foe.has_any_type(effect.immune_types):
+					return true
+			MoveEffect.Kind.STATUS:
+				if StatusRules.can_inflict(effect.status, foe.pokemon, foe.types) \
+						== StatusRules.Inflict.OK:
 					return true
 	return false
 
