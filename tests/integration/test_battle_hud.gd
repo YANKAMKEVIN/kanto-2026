@@ -160,11 +160,11 @@ func test_cards_placed_at_their_corners_and_slide_from_their_edge() -> void:
 	var size := _hud.get_screen().size
 	assert_eq(foe.get_global_rect(), BattleHudLayout.rect(BattleHudLayout.Slot.FOE_CARD, size))
 	assert_eq(own.get_global_rect(), BattleHudLayout.rect(BattleHudLayout.Slot.OWN_CARD, size))
-	assert_eq(foe.slide_direction, Vector2.RIGHT)
-	assert_eq(own.slide_direction, Vector2.LEFT)
+	assert_eq(foe.slide_direction, Vector2.LEFT)
+	assert_eq(own.slide_direction, Vector2.RIGHT)
 	_hud.speed_scale = 1.0
 	_hud.set_card(BattleHud.Side.FOE, _foe())
-	assert_eq(foe.get_body().position, Vector2.RIGHT * UiTokens.PANEL_SLIDE, "glisse en place")
+	assert_eq(foe.get_body().position, Vector2.LEFT * UiTokens.PANEL_SLIDE, "glisse en place")
 	assert_eq(foe.modulate.a, 0.0, "en fondu")
 	await wait_seconds(UiTokens.ANIM_PANEL + 0.05)
 	assert_eq(foe.get_body().position, Vector2.ZERO)

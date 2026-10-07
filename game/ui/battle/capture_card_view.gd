@@ -7,7 +7,7 @@ extends RefCounted
 
 ## Titre (« Roucool CAPTURÉ ! »).
 var title: String = ""
-## Vignette du Pokémon (sprite de face, pixel art).
+## Vignette du Pokémon (artwork officiel, PokedexArt.portrait).
 var portrait: Texture2D = null
 ## Nouvelle entrée du Pokédex : la ligne [member pokedex_line] est affichée. Faux : pas de ligne.
 var new_entry: bool = false

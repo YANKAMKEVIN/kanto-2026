@@ -259,12 +259,19 @@ const BATTLE_EDGE := SAFE_MARGIN
 ## Haut de la carte adversaire (non interactive : un peu plus haut que SAFE_MARGIN serait
 ## possible, on garde l'air de la référence).
 const BATTLE_FOE_CARD_TOP := 56
-## Bas de la carte joueur depuis le bas de l'écran : laisse la place du bouton « ‹ » dessous.
-const BATTLE_OWN_CARD_BOTTOM := SAFE_MARGIN + TOUCH_MIN + GAP
+## Bas de la carte joueur depuis le bas de l'écran (CB.2) : en bas à droite, juste au-dessus
+## de la grille d'actions et du bandeau des capacités (le plus haut des deux : 348 px).
+const BATTLE_OWN_CARD_BOTTOM := 358
 ## Bas de la grille d'actions et du bandeau des messages depuis le bas de l'écran.
-const BATTLE_GRID_BOTTOM := 80
+const BATTLE_GRID_BOTTOM := 56
 ## Bas des cartes de capacités depuis le bas de l'écran.
 const BATTLE_MOVES_BOTTOM := 56
+## CB.2 — Sac de combat en rangées (storyboard) : largeur du panneau (l'ÉQUIPE garde
+## BAG_PANEL_WIDTH), hauteur, écart, icône des rangées.
+const BATTLE_BAG_WIDTH := 760
+const BATTLE_BAG_ROW_HEIGHT := 128
+const BATTLE_BAG_ROW_GAP := 12
+const BATTLE_BAG_ROW_ICON := 72
 ## Fermeture d'un composant (plus courte que l'ouverture ANIM_PANEL).
 const BATTLE_PANEL_CLOSE := 0.2
 
@@ -318,7 +325,7 @@ const PARTY_PIP := 28
 const PARTY_PIP_GAP := 10
 ## Retrait depuis le bord gauche de la carte, et écart au-dessus de la carte.
 const PARTY_PIPS_INSET := 20
-const PARTY_PIPS_GAP := 12
+const PARTY_PIPS_GAP := 8
 const PARTY_PIP_EMPTY := Color(0.62, 0.67, 0.74, 0.9)
 const PARTY_PIP_EMPTY_BORDER := Color(0.06, 0.09, 0.13, 0.55)
 
@@ -327,7 +334,7 @@ const ACTION_ATTACK := Color("#E04A3C")
 const ACTION_BAG := Color("#D49A2E")
 const ACTION_TEAM := Color("#2D6DB5")
 const ACTION_RUN := Color(0.16, 0.2, 0.25, 0.92)
-const BATTLE_ACTION_SIZE := Vector2(360, 136)
+const BATTLE_ACTION_SIZE := Vector2(360, 128)
 const BATTLE_ACTION_GAP := 22
 const BATTLE_ACTION_ICON := 64
 const BATTLE_ACTION_PAD_H := 30
@@ -348,13 +355,13 @@ const ACTION_GLOW_PULSE := 0.9
 const ACTION_GLOW_MIN := 0.35
 
 # Cartes de capacités (combat-capacites-v1).
-const MOVE_CARD_SIZE := Vector2(560, 136)
+const MOVE_CARD_SIZE := Vector2(560, 128)
 ## Écart horizontal : il loge la flèche ▶ de sélection de la colonne de droite.
 const MOVE_GAP_H := 48
-const MOVE_GAP_V := 20
+const MOVE_GAP_V := 16
 ## Bandeau sombre derrière les cartes : marge intérieure (à gauche : MOVE_GAP_H, pour la
 ## flèche de la colonne de gauche) et débord jusqu'aux bords droit et bas de l'écran.
-const MOVE_BAND_PAD := 24
+const MOVE_BAND_PAD := 20
 const MOVE_BAND_BLEED := 96
 const MOVE_BAND_BG := Color(0.06, 0.09, 0.13, 0.66)
 ## Part de la couleur du type dans le fond de la carte (mêlée à PANEL_BG), et opacité du
@@ -531,7 +538,7 @@ const BAG_CARD_SELECTED_SCALE := 1.03
 ## carte sélectionnée (la liste coupe ce qui dépasse).
 const BAG_SCROLL_PAD := 14
 ## Au-delà de cette hauteur, la liste des cartes défile (une ligne et demie : on devine la suite).
-const BAG_GRID_MAX_HEIGHT := 360
+const BAG_GRID_MAX_HEIGHT := 400
 ## Aperçu de l'objet touché : illustration, nom, quantité, description, action.
 const BAG_DETAIL_PAD := 20
 const BAG_DETAIL_ICON := 112
