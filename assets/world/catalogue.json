@@ -1053,6 +1053,1727 @@
     ]
    }
   },
+  "bldg_maison_joueur_01": {
+   "fichier": "res://assets/world/buildings/bldg_maison_joueur_01.png",
+   "taille": [
+    624,
+    560
+   ],
+   "ombre": {
+    "fichier": "res://assets/world/buildings/bldg_maison_joueur_01_shadow.png",
+    "decalage": [
+     -337,
+     -4
+    ],
+    "echelle": 2,
+    "taille": [
+     389,
+     56
+    ]
+   },
+   "contact": {
+    "fichier": "res://assets/world/buildings/bldg_maison_joueur_01_contact.png",
+    "decalage": [
+     -320,
+     -49
+    ],
+    "echelle": 2,
+    "taille": [
+     320,
+     44
+    ]
+   }
+  },
+  "bldg_maison_rival_01": {
+   "fichier": "res://assets/world/buildings/bldg_maison_rival_01.png",
+   "taille": [
+    624,
+    578
+   ],
+   "ombre": {
+    "fichier": "res://assets/world/buildings/bldg_maison_rival_01_shadow.png",
+    "decalage": [
+     -337,
+     -4
+    ],
+    "echelle": 2,
+    "taille": [
+     391,
+     58
+    ]
+   },
+   "contact": {
+    "fichier": "res://assets/world/buildings/bldg_maison_rival_01_contact.png",
+    "decalage": [
+     -320,
+     -51
+    ],
+    "echelle": 2,
+    "taille": [
+     320,
+     45
+    ]
+   }
+  },
+  "bldg_labo_01": {
+   "fichier": "res://assets/world/buildings/bldg_labo_01.png",
+   "taille": [
+    960,
+    776
+   ],
+   "ombre": {
+    "fichier": "res://assets/world/buildings/bldg_labo_01_shadow.png",
+    "decalage": [
+     -505,
+     -4
+    ],
+    "echelle": 2,
+    "taille": [
+     577,
+     76
+    ]
+   },
+   "contact": {
+    "fichier": "res://assets/world/buildings/bldg_labo_01_contact.png",
+    "decalage": [
+     -488,
+     -60
+    ],
+    "echelle": 2,
+    "taille": [
+     488,
+     49
+    ]
+   }
+  },
+  "bldg_serre_01": {
+   "fichier": "res://assets/world/buildings/bldg_serre_01.png",
+   "taille": [
+    288,
+    258
+   ],
+   "ombre": {
+    "fichier": "res://assets/world/buildings/bldg_serre_01_shadow.png",
+    "decalage": [
+     -169,
+     -4
+    ],
+    "echelle": 2,
+    "taille": [
+     193,
+     28
+    ]
+   },
+   "contact": {
+    "fichier": "res://assets/world/buildings/bldg_serre_01_contact.png",
+    "decalage": [
+     -152,
+     -8
+    ],
+    "echelle": 2,
+    "taille": [
+     152,
+     23
+    ]
+   }
+  },
+  "tree_ancien_01": {
+   "fichier": "res://assets/world/props/tree_ancien_01.png",
+   "taille": [
+    576,
+    609
+   ],
+   "contact": {
+    "fichier": "res://assets/world/props/tree_ancien_01_contact.png",
+    "decalage": [
+     -296,
+     -12
+    ],
+    "echelle": 2,
+    "taille": [
+     296,
+     25
+    ]
+   }
+  },
+  "prop_cloture_piquets_01": {
+   "fichier": "res://assets/world/props/prop_cloture_piquets_01.png",
+   "taille": [
+    384,
+    157
+   ],
+   "contact": {
+    "fichier": "res://assets/world/props/prop_cloture_piquets_01_contact.png",
+    "decalage": [
+     -200,
+     -29
+    ],
+    "echelle": 2,
+    "taille": [
+     200,
+     34
+    ]
+   }
+  },
+  "prop_velo_01": {
+   "fichier": "res://assets/world/props/prop_velo_01.png",
+   "taille": [
+    154,
+    102
+   ],
+   "contact": {
+    "fichier": "res://assets/world/props/prop_velo_01_contact.png",
+    "decalage": [
+     -85,
+     3
+    ],
+    "echelle": 2,
+    "taille": [
+     85,
+     18
+    ]
+   }
+  },
+  "prop_camionnette_01": {
+   "fichier": "res://assets/world/props/prop_camionnette_01.png",
+   "taille": [
+    230,
+    265
+   ],
+   "contact": {
+    "fichier": "res://assets/world/props/prop_camionnette_01_contact.png",
+    "decalage": [
+     -123,
+     -22
+    ],
+    "echelle": 2,
+    "taille": [
+     123,
+     30
+    ]
+   }
+  },
+  "ground_champ_01": {
+   "fichier": "res://assets/world/ground/ground_champ_01.png",
+   "taille": [
+    576,
+    315
+   ]
+  },
+  "prop_ponton_01": {
+   "fichier": "res://assets/world/props/prop_ponton_01.png",
+   "taille": [
+    480,
+    357
+   ]
+  },
+  "prop_ronces_01": {
+   "fichier": "res://assets/world/props/prop_ronces_01.png",
+   "taille": [
+    192,
+    133
+   ],
+   "contact": {
+    "fichier": "res://assets/world/props/prop_ronces_01_contact.png",
+    "decalage": [
+     -104,
+     -9
+    ],
+    "echelle": 2,
+    "taille": [
+     104,
+     24
+    ]
+   }
+  },
+  "prop_tronc_couche_01": {
+   "fichier": "res://assets/world/props/prop_tronc_couche_01.png",
+   "taille": [
+    288,
+    78
+   ],
+   "contact": {
+    "fichier": "res://assets/world/props/prop_tronc_couche_01_contact.png",
+    "decalage": [
+     -152,
+     2
+    ],
+    "echelle": 2,
+    "taille": [
+     152,
+     18
+    ]
+   }
+  },
+  "prop_rocher_mer_01": {
+   "fichier": "res://assets/world/props/prop_rocher_mer_01.png",
+   "taille": [
+    192,
+    136
+   ]
+  },
+  "relief_escalier_bois_01": {
+   "fichier": "res://assets/world/relief/relief_escalier_bois_01.png",
+   "taille": [
+    192,
+    240
+   ]
+  },
+  "prop_buisson_a_01_bourg": {
+   "fichier": "res://assets/world/props/prop_buisson_a_01_bourg.png",
+   "taille": [
+    134,
+    116
+   ],
+   "contact": {
+    "fichier": "res://assets/world/props/prop_buisson_a_01_bourg_contact.png",
+    "decalage": [
+     -75,
+     6
+    ],
+    "echelle": 2,
+    "taille": [
+     75,
+     16
+    ]
+   }
+  },
+  "prop_buisson_b_01_bourg": {
+   "fichier": "res://assets/world/props/prop_buisson_b_01_bourg.png",
+   "taille": [
+    144,
+    114
+   ],
+   "contact": {
+    "fichier": "res://assets/world/props/prop_buisson_b_01_bourg_contact.png",
+    "decalage": [
+     -80,
+     7
+    ],
+    "echelle": 2,
+    "taille": [
+     80,
+     16
+    ]
+   }
+  },
+  "prop_buisson_c_01_bourg": {
+   "fichier": "res://assets/world/props/prop_buisson_c_01_bourg.png",
+   "taille": [
+    125,
+    74
+   ],
+   "contact": {
+    "fichier": "res://assets/world/props/prop_buisson_c_01_bourg_contact.png",
+    "decalage": [
+     -70,
+     11
+    ],
+    "echelle": 2,
+    "taille": [
+     71,
+     14
+    ]
+   }
+  },
+  "prop_pots_fleurs_01_bourg": {
+   "fichier": "res://assets/world/props/prop_pots_fleurs_01_bourg.png",
+   "taille": [
+    96,
+    80
+   ],
+   "contact": {
+    "fichier": "res://assets/world/props/prop_pots_fleurs_01_bourg_contact.png",
+    "decalage": [
+     -56,
+     10
+    ],
+    "echelle": 2,
+    "taille": [
+     56,
+     14
+    ]
+   }
+  },
+  "prop_linge_01_bourg": {
+   "fichier": "res://assets/world/props/prop_linge_01_bourg.png",
+   "taille": [
+    250,
+    115
+   ],
+   "contact": {
+    "fichier": "res://assets/world/props/prop_linge_01_bourg_contact.png",
+    "decalage": [
+     -133,
+     -5
+    ],
+    "echelle": 2,
+    "taille": [
+     133,
+     22
+    ]
+   }
+  },
+  "tree_fruitier_01_bourg": {
+   "fichier": "res://assets/world/props/tree_fruitier_01_bourg.png",
+   "taille": [
+    321,
+    346
+   ],
+   "contact": {
+    "fichier": "res://assets/world/props/tree_fruitier_01_bourg_contact.png",
+    "decalage": [
+     -168,
+     1
+    ],
+    "echelle": 2,
+    "taille": [
+     169,
+     19
+    ]
+   }
+  },
+  "prop_haie_v_01_bourg": {
+   "fichier": "res://assets/world/props/prop_haie_v_01_bourg.png",
+   "taille": [
+    98,
+    346
+   ],
+   "contact": {
+    "fichier": "res://assets/world/props/prop_haie_v_01_bourg_contact.png",
+    "decalage": [
+     -57,
+     -86
+    ],
+    "echelle": 2,
+    "taille": [
+     57,
+     62
+    ]
+   }
+  },
+  "prop_cloture_piquets_v_01": {
+   "fichier": "res://assets/world/props/prop_cloture_piquets_v_01.png",
+   "taille": [
+    85,
+    326
+   ],
+   "contact": {
+    "fichier": "res://assets/world/props/prop_cloture_piquets_v_01_contact.png",
+    "decalage": [
+     -50,
+     -80
+    ],
+    "echelle": 2,
+    "taille": [
+     51,
+     59
+    ]
+   }
+  },
+  "tree_c_01": {
+   "fichier": "res://assets/world/props/tree_c_01.png",
+   "taille": [
+    376,
+    384
+   ],
+   "contact": {
+    "fichier": "res://assets/world/props/tree_c_01_contact.png",
+    "decalage": [
+     -196,
+     -1
+    ],
+    "echelle": 2,
+    "taille": [
+     196,
+     20
+    ]
+   }
+  },
+  "tree_d_01": {
+   "fichier": "res://assets/world/props/tree_d_01.png",
+   "taille": [
+    427,
+    422
+   ],
+   "contact": {
+    "fichier": "res://assets/world/props/tree_d_01_contact.png",
+    "decalage": [
+     -221,
+     -3
+    ],
+    "echelle": 2,
+    "taille": [
+     222,
+     21
+    ]
+   }
+  },
+  "tree_e_01": {
+   "fichier": "res://assets/world/props/tree_e_01.png",
+   "taille": [
+    494,
+    480
+   ],
+   "contact": {
+    "fichier": "res://assets/world/props/tree_e_01_contact.png",
+    "decalage": [
+     -255,
+     -6
+    ],
+    "echelle": 2,
+    "taille": [
+     255,
+     22
+    ]
+   }
+  },
+  "prop_hortensias_01": {
+   "fichier": "res://assets/world/props/prop_hortensias_01.png",
+   "taille": [
+    144,
+    101
+   ],
+   "contact": {
+    "fichier": "res://assets/world/props/prop_hortensias_01_contact.png",
+    "decalage": [
+     -80,
+     8
+    ],
+    "echelle": 2,
+    "taille": [
+     80,
+     15
+    ]
+   }
+  },
+  "prop_mangeoire_01": {
+   "fichier": "res://assets/world/props/prop_mangeoire_01.png",
+   "taille": [
+    113,
+    173
+   ],
+   "contact": {
+    "fichier": "res://assets/world/props/prop_mangeoire_01_contact.png",
+    "decalage": [
+     -64,
+     1
+    ],
+    "echelle": 2,
+    "taille": [
+     65,
+     19
+    ]
+   }
+  },
+  "prop_epouvantail_01": {
+   "fichier": "res://assets/world/props/prop_epouvantail_01.png",
+   "taille": [
+    197,
+    192
+   ],
+   "contact": {
+    "fichier": "res://assets/world/props/prop_epouvantail_01_contact.png",
+    "decalage": [
+     -106,
+     -1
+    ],
+    "echelle": 2,
+    "taille": [
+     107,
+     20
+    ]
+   }
+  },
+  "prop_barque_01": {
+   "fichier": "res://assets/world/props/prop_barque_01.png",
+   "taille": [
+    198,
+    250
+   ],
+   "contact": {
+    "fichier": "res://assets/world/props/prop_barque_01_contact.png",
+    "decalage": [
+     -107,
+     -20
+    ],
+    "echelle": 2,
+    "taille": [
+     107,
+     29
+    ]
+   }
+  },
+  "prop_casiers_peche_01": {
+   "fichier": "res://assets/world/props/prop_casiers_peche_01.png",
+   "taille": [
+    154,
+    145
+   ],
+   "contact": {
+    "fichier": "res://assets/world/props/prop_casiers_peche_01_contact.png",
+    "decalage": [
+     -85,
+     -4
+    ],
+    "echelle": 2,
+    "taille": [
+     85,
+     21
+    ]
+   }
+  },
+  "prop_herbes_dune_01": {
+   "fichier": "res://assets/world/props/prop_herbes_dune_01.png",
+   "taille": [
+    96,
+    87
+   ],
+   "contact": {
+    "fichier": "res://assets/world/props/prop_herbes_dune_01_contact.png",
+    "decalage": [
+     -56,
+     14
+    ],
+    "echelle": 2,
+    "taille": [
+     56,
+     12
+    ]
+   }
+  },
+  "prop_materiel_labo_01": {
+   "fichier": "res://assets/world/props/prop_materiel_labo_01.png",
+   "taille": [
+    211,
+    188
+   ],
+   "contact": {
+    "fichier": "res://assets/world/props/prop_materiel_labo_01_contact.png",
+    "decalage": [
+     -113,
+     -10
+    ],
+    "echelle": 2,
+    "taille": [
+     114,
+     24
+    ]
+   }
+  },
+  "prop_ratelier_velos_01": {
+   "fichier": "res://assets/world/props/prop_ratelier_velos_01.png",
+   "taille": [
+    211,
+    106
+   ],
+   "contact": {
+    "fichier": "res://assets/world/props/prop_ratelier_velos_01_contact.png",
+    "decalage": [
+     -113,
+     2
+    ],
+    "echelle": 2,
+    "taille": [
+     114,
+     18
+    ]
+   }
+  },
+  "prop_brouette_01": {
+   "fichier": "res://assets/world/props/prop_brouette_01.png",
+   "taille": [
+    134,
+    110
+   ],
+   "contact": {
+    "fichier": "res://assets/world/props/prop_brouette_01_contact.png",
+    "decalage": [
+     -75,
+     2
+    ],
+    "echelle": 2,
+    "taille": [
+     75,
+     18
+    ]
+   }
+  },
+  "prop_tas_bois_01": {
+   "fichier": "res://assets/world/props/prop_tas_bois_01.png",
+   "taille": [
+    173,
+    146
+   ],
+   "contact": {
+    "fichier": "res://assets/world/props/prop_tas_bois_01_contact.png",
+    "decalage": [
+     -94,
+     -4
+    ],
+    "echelle": 2,
+    "taille": [
+     95,
+     21
+    ]
+   }
+  },
+  "prop_arrosoir_seau_01": {
+   "fichier": "res://assets/world/props/prop_arrosoir_seau_01.png",
+   "taille": [
+    86,
+    65
+   ],
+   "contact": {
+    "fichier": "res://assets/world/props/prop_arrosoir_seau_01_contact.png",
+    "decalage": [
+     -51,
+     12
+    ],
+    "echelle": 2,
+    "taille": [
+     51,
+     13
+    ]
+   }
+  },
+  "prop_pierres_01": {
+   "fichier": "res://assets/world/props/prop_pierres_01.png",
+   "taille": [
+    86,
+    61
+   ],
+   "contact": {
+    "fichier": "res://assets/world/props/prop_pierres_01_contact.png",
+    "decalage": [
+     -51,
+     12
+    ],
+    "echelle": 2,
+    "taille": [
+     51,
+     13
+    ]
+   }
+  },
+  "prop_cloture_courte_01": {
+   "fichier": "res://assets/world/props/prop_cloture_courte_01.png",
+   "taille": [
+    40,
+    154
+   ],
+   "contact": {
+    "fichier": "res://assets/world/props/prop_cloture_courte_01_contact.png",
+    "decalage": [
+     -28,
+     -13
+    ],
+    "echelle": 2,
+    "taille": [
+     28,
+     26
+    ]
+   }
+  },
+  "tree_automne_01": {
+   "fichier": "res://assets/world/props/tree_automne_01.png",
+   "taille": [
+    376,
+    384
+   ],
+   "contact": {
+    "fichier": "res://assets/world/props/tree_automne_01_contact.png",
+    "decalage": [
+     -196,
+     -1
+    ],
+    "echelle": 2,
+    "taille": [
+     196,
+     20
+    ]
+   }
+  },
+  "prop_souche_01": {
+   "fichier": "res://assets/world/props/prop_souche_01.png",
+   "taille": [
+    115,
+    83
+   ],
+   "contact": {
+    "fichier": "res://assets/world/props/prop_souche_01_contact.png",
+    "decalage": [
+     -65,
+     6
+    ],
+    "echelle": 2,
+    "taille": [
+     66,
+     16
+    ]
+   }
+  },
+  "relief_rebord_01": {
+   "fichier": "res://assets/world/relief/relief_rebord_01.png",
+   "taille": [
+    101,
+    49
+   ]
+  },
+  "int_meuble_bas_01": {
+   "fichier": "res://assets/world/interiors/int_meuble_bas_01.png",
+   "taille": [
+    288,
+    196
+   ],
+   "contact": {
+    "fichier": "res://assets/world/interiors/int_meuble_bas_01_contact.png",
+    "decalage": [
+     -152,
+     -2
+    ],
+    "echelle": 2,
+    "taille": [
+     152,
+     20
+    ]
+   }
+  },
+  "int_canape_01": {
+   "fichier": "res://assets/world/interiors/int_canape_01.png",
+   "taille": [
+    288,
+    152
+   ],
+   "contact": {
+    "fichier": "res://assets/world/interiors/int_canape_01_contact.png",
+    "decalage": [
+     -152,
+     3
+    ],
+    "echelle": 2,
+    "taille": [
+     152,
+     18
+    ]
+   }
+  },
+  "int_table_basse_01": {
+   "fichier": "res://assets/world/interiors/int_table_basse_01.png",
+   "taille": [
+    192,
+    128
+   ],
+   "contact": {
+    "fichier": "res://assets/world/interiors/int_table_basse_01_contact.png",
+    "decalage": [
+     -104,
+     5
+    ],
+    "echelle": 2,
+    "taille": [
+     104,
+     17
+    ]
+   }
+  },
+  "int_table_repas_01": {
+   "fichier": "res://assets/world/interiors/int_table_repas_01.png",
+   "taille": [
+    288,
+    251
+   ],
+   "contact": {
+    "fichier": "res://assets/world/interiors/int_table_repas_01_contact.png",
+    "decalage": [
+     -152,
+     -7
+    ],
+    "echelle": 2,
+    "taille": [
+     152,
+     23
+    ]
+   }
+  },
+  "int_frigo_01": {
+   "fichier": "res://assets/world/interiors/int_frigo_01.png",
+   "taille": [
+    96,
+    166
+   ],
+   "contact": {
+    "fichier": "res://assets/world/interiors/int_frigo_01_contact.png",
+    "decalage": [
+     -56,
+     1
+    ],
+    "echelle": 2,
+    "taille": [
+     56,
+     19
+    ]
+   }
+  },
+  "int_cuisine_01": {
+   "fichier": "res://assets/world/interiors/int_cuisine_01.png",
+   "taille": [
+    288,
+    174
+   ],
+   "contact": {
+    "fichier": "res://assets/world/interiors/int_cuisine_01_contact.png",
+    "decalage": [
+     -152,
+     1
+    ],
+    "echelle": 2,
+    "taille": [
+     152,
+     19
+    ]
+   }
+  },
+  "int_escalier_montant_01": {
+   "fichier": "res://assets/world/interiors/int_escalier_montant_01.png",
+   "taille": [
+    211,
+    359
+   ],
+   "contact": {
+    "fichier": "res://assets/world/interiors/int_escalier_montant_01_contact.png",
+    "decalage": [
+     -113,
+     -18
+    ],
+    "echelle": 2,
+    "taille": [
+     114,
+     28
+    ]
+   }
+  },
+  "int_tele_01": {
+   "fichier": "res://assets/world/interiors/int_tele_01.png",
+   "taille": [
+    192,
+    136
+   ],
+   "contact": {
+    "fichier": "res://assets/world/interiors/int_tele_01_contact.png",
+    "decalage": [
+     -104,
+     4
+    ],
+    "echelle": 2,
+    "taille": [
+     104,
+     17
+    ]
+   }
+  },
+  "int_porte_manteau_01": {
+   "fichier": "res://assets/world/interiors/int_porte_manteau_01.png",
+   "taille": [
+    96,
+    144
+   ],
+   "contact": {
+    "fichier": "res://assets/world/interiors/int_porte_manteau_01_contact.png",
+    "decalage": [
+     -56,
+     4
+    ],
+    "echelle": 2,
+    "taille": [
+     56,
+     17
+    ]
+   }
+  },
+  "int_commode_pokeball_01": {
+   "fichier": "res://assets/world/interiors/int_commode_pokeball_01.png",
+   "taille": [
+    96,
+    119
+   ],
+   "contact": {
+    "fichier": "res://assets/world/interiors/int_commode_pokeball_01_contact.png",
+    "decalage": [
+     -56,
+     6
+    ],
+    "echelle": 2,
+    "taille": [
+     56,
+     16
+    ]
+   }
+  },
+  "int_tapis_salon_01": {
+   "fichier": "res://assets/world/interiors/int_tapis_salon_01.png",
+   "taille": [
+    288,
+    187
+   ]
+  },
+  "int_tapis_plaid_01": {
+   "fichier": "res://assets/world/interiors/int_tapis_plaid_01.png",
+   "taille": [
+    480,
+    353
+   ]
+  },
+  "int_lit_01": {
+   "fichier": "res://assets/world/interiors/int_lit_01.png",
+   "taille": [
+    192,
+    243
+   ],
+   "contact": {
+    "fichier": "res://assets/world/interiors/int_lit_01_contact.png",
+    "decalage": [
+     -104,
+     -6
+    ],
+    "echelle": 2,
+    "taille": [
+     104,
+     22
+    ]
+   }
+  },
+  "int_chevet_lampe_01": {
+   "fichier": "res://assets/world/interiors/int_chevet_lampe_01.png",
+   "taille": [
+    96,
+    143
+   ],
+   "contact": {
+    "fichier": "res://assets/world/interiors/int_chevet_lampe_01_contact.png",
+    "decalage": [
+     -56,
+     4
+    ],
+    "echelle": 2,
+    "taille": [
+     56,
+     17
+    ]
+   }
+  },
+  "int_petite_etagere_01": {
+   "fichier": "res://assets/world/interiors/int_petite_etagere_01.png",
+   "taille": [
+    96,
+    93
+   ],
+   "contact": {
+    "fichier": "res://assets/world/interiors/int_petite_etagere_01_contact.png",
+    "decalage": [
+     -56,
+     9
+    ],
+    "echelle": 2,
+    "taille": [
+     56,
+     15
+    ]
+   }
+  },
+  "int_bureau_pc_01": {
+   "fichier": "res://assets/world/interiors/int_bureau_pc_01.png",
+   "taille": [
+    288,
+    243
+   ],
+   "contact": {
+    "fichier": "res://assets/world/interiors/int_bureau_pc_01_contact.png",
+    "decalage": [
+     -152,
+     -6
+    ],
+    "echelle": 2,
+    "taille": [
+     152,
+     22
+    ]
+   }
+  },
+  "int_chaise_bureau_01": {
+   "fichier": "res://assets/world/interiors/int_chaise_bureau_01.png",
+   "taille": [
+    77,
+    108
+   ],
+   "contact": {
+    "fichier": "res://assets/world/interiors/int_chaise_bureau_01_contact.png",
+    "decalage": [
+     -46,
+     7
+    ],
+    "echelle": 2,
+    "taille": [
+     47,
+     16
+    ]
+   }
+  },
+  "int_grande_etagere_01": {
+   "fichier": "res://assets/world/interiors/int_grande_etagere_01.png",
+   "taille": [
+    192,
+    281
+   ],
+   "contact": {
+    "fichier": "res://assets/world/interiors/int_grande_etagere_01_contact.png",
+    "decalage": [
+     -104,
+     -10
+    ],
+    "echelle": 2,
+    "taille": [
+     104,
+     24
+    ]
+   }
+  },
+  "int_sac_voyage_01": {
+   "fichier": "res://assets/world/interiors/int_sac_voyage_01.png",
+   "taille": [
+    86,
+    64
+   ],
+   "contact": {
+    "fichier": "res://assets/world/interiors/int_sac_voyage_01_contact.png",
+    "decalage": [
+     -51,
+     12
+    ],
+    "echelle": 2,
+    "taille": [
+     51,
+     13
+    ]
+   }
+  },
+  "int_caisse_pokeballs_01": {
+   "fichier": "res://assets/world/interiors/int_caisse_pokeballs_01.png",
+   "taille": [
+    192,
+    136
+   ],
+   "contact": {
+    "fichier": "res://assets/world/interiors/int_caisse_pokeballs_01_contact.png",
+    "decalage": [
+     -104,
+     4
+    ],
+    "echelle": 2,
+    "taille": [
+     104,
+     17
+    ]
+   }
+  },
+  "int_tapis_pokeball_01": {
+   "fichier": "res://assets/world/interiors/int_tapis_pokeball_01.png",
+   "taille": [
+    384,
+    379
+   ]
+  },
+  "int_tapis_carreaux_01": {
+   "fichier": "res://assets/world/interiors/int_tapis_carreaux_01.png",
+   "taille": [
+    192,
+    117
+   ]
+  },
+  "int_cuisiniere_hotte_01": {
+   "fichier": "res://assets/world/interiors/int_cuisiniere_hotte_01.png",
+   "taille": [
+    96,
+    183
+   ],
+   "contact": {
+    "fichier": "res://assets/world/interiors/int_cuisiniere_hotte_01_contact.png",
+    "decalage": [
+     -56,
+     0
+    ],
+    "echelle": 2,
+    "taille": [
+     56,
+     19
+    ]
+   }
+  },
+  "int_bureau_angle_pc_01": {
+   "fichier": "res://assets/world/interiors/int_bureau_angle_pc_01.png",
+   "taille": [
+    192,
+    148
+   ],
+   "contact": {
+    "fichier": "res://assets/world/interiors/int_bureau_angle_pc_01_contact.png",
+    "decalage": [
+     -104,
+     3
+    ],
+    "echelle": 2,
+    "taille": [
+     104,
+     18
+    ]
+   }
+  },
+  "int_chaise_gamer_01": {
+   "fichier": "res://assets/world/interiors/int_chaise_gamer_01.png",
+   "taille": [
+    86,
+    128
+   ],
+   "contact": {
+    "fichier": "res://assets/world/interiors/int_chaise_gamer_01_contact.png",
+    "decalage": [
+     -51,
+     5
+    ],
+    "echelle": 2,
+    "taille": [
+     51,
+     17
+    ]
+   }
+  },
+  "int_commode_01": {
+   "fichier": "res://assets/world/interiors/int_commode_01.png",
+   "taille": [
+    192,
+    179
+   ],
+   "contact": {
+    "fichier": "res://assets/world/interiors/int_commode_01_contact.png",
+    "decalage": [
+     -104,
+     0
+    ],
+    "echelle": 2,
+    "taille": [
+     104,
+     19
+    ]
+   }
+  },
+  "int_lit_pokeball_01": {
+   "fichier": "res://assets/world/interiors/int_lit_pokeball_01.png",
+   "taille": [
+    192,
+    268
+   ],
+   "contact": {
+    "fichier": "res://assets/world/interiors/int_lit_pokeball_01_contact.png",
+    "decalage": [
+     -104,
+     -9
+    ],
+    "echelle": 2,
+    "taille": [
+     104,
+     24
+    ]
+   }
+  },
+  "int_lavabo_01": {
+   "fichier": "res://assets/world/interiors/int_lavabo_01.png",
+   "taille": [
+    192,
+    249
+   ],
+   "contact": {
+    "fichier": "res://assets/world/interiors/int_lavabo_01_contact.png",
+    "decalage": [
+     -104,
+     -7
+    ],
+    "echelle": 2,
+    "taille": [
+     104,
+     23
+    ]
+   }
+  },
+  "int_douche_01": {
+   "fichier": "res://assets/world/interiors/int_douche_01.png",
+   "taille": [
+    96,
+    158
+   ],
+   "contact": {
+    "fichier": "res://assets/world/interiors/int_douche_01_contact.png",
+    "decalage": [
+     -56,
+     2
+    ],
+    "echelle": 2,
+    "taille": [
+     56,
+     18
+    ]
+   }
+  },
+  "int_meuble_chaussures_01": {
+   "fichier": "res://assets/world/interiors/int_meuble_chaussures_01.png",
+   "taille": [
+    96,
+    71
+   ],
+   "contact": {
+    "fichier": "res://assets/world/interiors/int_meuble_chaussures_01_contact.png",
+    "decalage": [
+     -56,
+     11
+    ],
+    "echelle": 2,
+    "taille": [
+     56,
+     14
+    ]
+   }
+  },
+  "int_cloison_v_01": {
+   "fichier": "res://assets/world/interiors/int_cloison_v_01.png",
+   "taille": [
+    55,
+    346
+   ],
+   "contact": {
+    "fichier": "res://assets/world/interiors/int_cloison_v_01_contact.png",
+    "decalage": [
+     -35,
+     -17
+    ],
+    "echelle": 2,
+    "taille": [
+     36,
+     28
+    ]
+   }
+  },
+  "int_cloison_h_01": {
+   "fichier": "res://assets/world/interiors/int_cloison_h_01.png",
+   "taille": [
+    480,
+    121
+   ],
+   "contact": {
+    "fichier": "res://assets/world/interiors/int_cloison_h_01_contact.png",
+    "decalage": [
+     -248,
+     6
+    ],
+    "echelle": 2,
+    "taille": [
+     248,
+     16
+    ]
+   }
+  },
+  "int_aquarium_01": {
+   "fichier": "res://assets/world/interiors/int_aquarium_01.png",
+   "taille": [
+    96,
+    86
+   ],
+   "contact": {
+    "fichier": "res://assets/world/interiors/int_aquarium_01_contact.png",
+    "decalage": [
+     -56,
+     9
+    ],
+    "echelle": 2,
+    "taille": [
+     56,
+     15
+    ]
+   }
+  },
+  "int_incubateur_01": {
+   "fichier": "res://assets/world/interiors/int_incubateur_01.png",
+   "taille": [
+    192,
+    267
+   ],
+   "contact": {
+    "fichier": "res://assets/world/interiors/int_incubateur_01_contact.png",
+    "decalage": [
+     -104,
+     -9
+    ],
+    "echelle": 2,
+    "taille": [
+     104,
+     24
+    ]
+   }
+  },
+  "int_machines_labo_01": {
+   "fichier": "res://assets/world/interiors/int_machines_labo_01.png",
+   "taille": [
+    192,
+    131
+   ],
+   "contact": {
+    "fichier": "res://assets/world/interiors/int_machines_labo_01_contact.png",
+    "decalage": [
+     -104,
+     5
+    ],
+    "echelle": 2,
+    "taille": [
+     104,
+     17
+    ]
+   }
+  },
+  "int_bureau_chen_01": {
+   "fichier": "res://assets/world/interiors/int_bureau_chen_01.png",
+   "taille": [
+    288,
+    191
+   ],
+   "contact": {
+    "fichier": "res://assets/world/interiors/int_bureau_chen_01_contact.png",
+    "decalage": [
+     -152,
+     -1
+    ],
+    "echelle": 2,
+    "taille": [
+     152,
+     20
+    ]
+   }
+  },
+  "int_classeur_01": {
+   "fichier": "res://assets/world/interiors/int_classeur_01.png",
+   "taille": [
+    96,
+    130
+   ],
+   "contact": {
+    "fichier": "res://assets/world/interiors/int_classeur_01_contact.png",
+    "decalage": [
+     -56,
+     5
+    ],
+    "echelle": 2,
+    "taille": [
+     56,
+     17
+    ]
+   }
+  },
+  "int_etagere_labo_01": {
+   "fichier": "res://assets/world/interiors/int_etagere_labo_01.png",
+   "taille": [
+    192,
+    202
+   ],
+   "contact": {
+    "fichier": "res://assets/world/interiors/int_etagere_labo_01_contact.png",
+    "decalage": [
+     -104,
+     -2
+    ],
+    "echelle": 2,
+    "taille": [
+     104,
+     20
+    ]
+   }
+  },
+  "int_vitrine_pokeballs_01": {
+   "fichier": "res://assets/world/interiors/int_vitrine_pokeballs_01.png",
+   "taille": [
+    96,
+    210
+   ],
+   "contact": {
+    "fichier": "res://assets/world/interiors/int_vitrine_pokeballs_01_contact.png",
+    "decalage": [
+     -56,
+     -3
+    ],
+    "echelle": 2,
+    "taille": [
+     56,
+     21
+    ]
+   }
+  },
+  "int_long_comptoir_01": {
+   "fichier": "res://assets/world/interiors/int_long_comptoir_01.png",
+   "taille": [
+    480,
+    215
+   ],
+   "contact": {
+    "fichier": "res://assets/world/interiors/int_long_comptoir_01_contact.png",
+    "decalage": [
+     -248,
+     -4
+    ],
+    "echelle": 2,
+    "taille": [
+     248,
+     21
+    ]
+   }
+  },
+  "int_table_starters_01": {
+   "fichier": "res://assets/world/interiors/int_table_starters_01.png",
+   "taille": [
+    288,
+    166
+   ],
+   "contact": {
+    "fichier": "res://assets/world/interiors/int_table_starters_01_contact.png",
+    "decalage": [
+     -152,
+     1
+    ],
+    "echelle": 2,
+    "taille": [
+     152,
+     19
+    ]
+   }
+  },
+  "int_paillasse_01": {
+   "fichier": "res://assets/world/interiors/int_paillasse_01.png",
+   "taille": [
+    288,
+    183
+   ],
+   "contact": {
+    "fichier": "res://assets/world/interiors/int_paillasse_01_contact.png",
+    "decalage": [
+     -152,
+     0
+    ],
+    "echelle": 2,
+    "taille": [
+     152,
+     19
+    ]
+   }
+  },
+  "int_tabouret_01": {
+   "fichier": "res://assets/world/interiors/int_tabouret_01.png",
+   "taille": [
+    67,
+    78
+   ],
+   "contact": {
+    "fichier": "res://assets/world/interiors/int_tabouret_01_contact.png",
+    "decalage": [
+     -41,
+     10
+    ],
+    "echelle": 2,
+    "taille": [
+     42,
+     14
+    ]
+   }
+  },
+  "int_escalier_deco_01": {
+   "fichier": "res://assets/world/interiors/int_escalier_deco_01.png",
+   "taille": [
+    288,
+    290
+   ],
+   "contact": {
+    "fichier": "res://assets/world/interiors/int_escalier_deco_01_contact.png",
+    "decalage": [
+     -152,
+     -11
+    ],
+    "echelle": 2,
+    "taille": [
+     152,
+     25
+    ]
+   }
+  },
+  "int_tapis_rouge_01": {
+   "fichier": "res://assets/world/interiors/int_tapis_rouge_01.png",
+   "taille": [
+    384,
+    267
+   ]
+  },
+  "int_tapis_labo_pokeball_01": {
+   "fichier": "res://assets/world/interiors/int_tapis_labo_pokeball_01.png",
+   "taille": [
+    384,
+    379
+   ]
+  },
+  "tree_foret_01": {
+   "fichier": "res://assets/world/props/tree_foret_01.png",
+   "taille": [
+    271,
+    288
+   ],
+   "contact": {
+    "fichier": "res://assets/world/props/tree_foret_01_contact.png",
+    "decalage": [
+     -143,
+     4
+    ],
+    "echelle": 2,
+    "taille": [
+     144,
+     17
+    ]
+   }
+  },
+  "tree_foret_02": {
+   "fichier": "res://assets/world/props/tree_foret_02.png",
+   "taille": [
+    284,
+    288
+   ],
+   "contact": {
+    "fichier": "res://assets/world/props/tree_foret_02_contact.png",
+    "decalage": [
+     -150,
+     4
+    ],
+    "echelle": 2,
+    "taille": [
+     150,
+     17
+    ]
+   }
+  },
+  "tree_foret_03": {
+   "fichier": "res://assets/world/props/tree_foret_03.png",
+   "taille": [
+    264,
+    298
+   ],
+   "contact": {
+    "fichier": "res://assets/world/props/tree_foret_03_contact.png",
+    "decalage": [
+     -140,
+     3
+    ],
+    "echelle": 2,
+    "taille": [
+     140,
+     18
+    ]
+   }
+  },
+  "tree_foret_04": {
+   "fichier": "res://assets/world/props/tree_foret_04.png",
+   "taille": [
+    270,
+    288
+   ],
+   "contact": {
+    "fichier": "res://assets/world/props/tree_foret_04_contact.png",
+    "decalage": [
+     -143,
+     4
+    ],
+    "echelle": 2,
+    "taille": [
+     143,
+     17
+    ]
+   }
+  },
+  "tree_foret_05": {
+   "fichier": "res://assets/world/props/tree_foret_05.png",
+   "taille": [
+    259,
+    317
+   ],
+   "contact": {
+    "fichier": "res://assets/world/props/tree_foret_05_contact.png",
+    "decalage": [
+     -137,
+     2
+    ],
+    "echelle": 2,
+    "taille": [
+     138,
+     18
+    ]
+   }
+  },
+  "tree_foret_06": {
+   "fichier": "res://assets/world/props/tree_foret_06.png",
+   "taille": [
+    221,
+    269
+   ],
+   "contact": {
+    "fichier": "res://assets/world/props/tree_foret_06_contact.png",
+    "decalage": [
+     -118,
+     5
+    ],
+    "echelle": 2,
+    "taille": [
+     119,
+     17
+    ]
+   }
+  },
+  "tree_foret_07": {
+   "fichier": "res://assets/world/props/tree_foret_07.png",
+   "taille": [
+    265,
+    278
+   ],
+   "contact": {
+    "fichier": "res://assets/world/props/tree_foret_07_contact.png",
+    "decalage": [
+     -140,
+     4
+    ],
+    "echelle": 2,
+    "taille": [
+     141,
+     17
+    ]
+   }
+  },
+  "tree_foret_08": {
+   "fichier": "res://assets/world/props/tree_foret_08.png",
+   "taille": [
+    281,
+    288
+   ],
+   "contact": {
+    "fichier": "res://assets/world/props/tree_foret_08_contact.png",
+    "decalage": [
+     -148,
+     4
+    ],
+    "echelle": 2,
+    "taille": [
+     149,
+     17
+    ]
+   }
+  },
   "ground_hautes_herbes_01": {
    "fichier": "res://assets/world/ground/ground_hautes_herbes_01.png",
    "taille": [
@@ -1061,6 +2782,20 @@
    ],
    "bas": {
     "fichier": "res://assets/world/ground/ground_hautes_herbes_01_bas.png",
+    "taille": [
+     110,
+     47
+    ]
+   }
+  },
+  "ground_hautes_herbes_jaune_01": {
+   "fichier": "res://assets/world/ground/ground_hautes_herbes_jaune_01.png",
+   "taille": [
+    110,
+    95
+   ],
+   "bas": {
+    "fichier": "res://assets/world/ground/ground_hautes_herbes_jaune_01_bas.png",
     "taille": [
      110,
      47
@@ -1564,6 +3299,326 @@
     "droite",
     "haut"
    ]
+  },
+  "maman": {
+   "fichier": "res://assets/sprites/characters/painted/maman_sheet.png",
+   "cellule": [
+    74,
+    130
+   ],
+   "hauteur": 128,
+   "colonnes": 4,
+   "lignes": 4,
+   "ordre_lignes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "chen": {
+   "fichier": "res://assets/sprites/characters/painted/chen_sheet.png",
+   "cellule": [
+    75,
+    136
+   ],
+   "hauteur": 134,
+   "colonnes": 4,
+   "lignes": 4,
+   "ordre_lignes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "leo": {
+   "fichier": "res://assets/sprites/characters/painted/leo_sheet.png",
+   "cellule": [
+    64,
+    110
+   ],
+   "hauteur": 108,
+   "colonnes": 4,
+   "lignes": 4,
+   "ordre_lignes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "vieille_dame": {
+   "fichier": "res://assets/sprites/characters/painted/vieille_dame_sheet.png",
+   "cellule": [
+    74,
+    122
+   ],
+   "hauteur": 120,
+   "colonnes": 4,
+   "lignes": 4,
+   "ordre_lignes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "pecheur": {
+   "fichier": "res://assets/sprites/characters/painted/pecheur_sheet.png",
+   "cellule": [
+    78,
+    132
+   ],
+   "hauteur": 130,
+   "colonnes": 4,
+   "lignes": 4,
+   "ordre_lignes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "chercheuse": {
+   "fichier": "res://assets/sprites/characters/painted/chercheuse_sheet.png",
+   "cellule": [
+    79,
+    130
+   ],
+   "hauteur": 128,
+   "colonnes": 4,
+   "lignes": 4,
+   "ordre_lignes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "chercheur": {
+   "fichier": "res://assets/sprites/characters/painted/chercheur_sheet.png",
+   "cellule": [
+    69,
+    132
+   ],
+   "hauteur": 130,
+   "colonnes": 4,
+   "lignes": 4,
+   "ordre_lignes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "maman_idle": {
+   "fichier": "res://assets/sprites/characters/painted/maman_idle_sheet.png",
+   "cellule": [
+    74,
+    130
+   ],
+   "hauteur": 128,
+   "colonnes": 4,
+   "lignes": 1,
+   "ordre_colonnes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "chen_idle": {
+   "fichier": "res://assets/sprites/characters/painted/chen_idle_sheet.png",
+   "cellule": [
+    77,
+    136
+   ],
+   "hauteur": 134,
+   "colonnes": 4,
+   "lignes": 1,
+   "ordre_colonnes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "leo_idle": {
+   "fichier": "res://assets/sprites/characters/painted/leo_idle_sheet.png",
+   "cellule": [
+    64,
+    110
+   ],
+   "hauteur": 108,
+   "colonnes": 4,
+   "lignes": 1,
+   "ordre_colonnes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "vieille_dame_idle": {
+   "fichier": "res://assets/sprites/characters/painted/vieille_dame_idle_sheet.png",
+   "cellule": [
+    74,
+    122
+   ],
+   "hauteur": 120,
+   "colonnes": 4,
+   "lignes": 1,
+   "ordre_colonnes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "pecheur_idle": {
+   "fichier": "res://assets/sprites/characters/painted/pecheur_idle_sheet.png",
+   "cellule": [
+    78,
+    132
+   ],
+   "hauteur": 130,
+   "colonnes": 4,
+   "lignes": 1,
+   "ordre_colonnes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "chercheuse_idle": {
+   "fichier": "res://assets/sprites/characters/painted/chercheuse_idle_sheet.png",
+   "cellule": [
+    81,
+    130
+   ],
+   "hauteur": 128,
+   "colonnes": 4,
+   "lignes": 1,
+   "ordre_colonnes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "chercheur_idle": {
+   "fichier": "res://assets/sprites/characters/painted/chercheur_idle_sheet.png",
+   "cellule": [
+    71,
+    132
+   ],
+   "hauteur": 130,
+   "colonnes": 4,
+   "lignes": 1,
+   "ordre_colonnes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "chen_run": {
+   "fichier": "res://assets/sprites/characters/painted/chen_run_sheet.png",
+   "cellule": [
+    99,
+    136
+   ],
+   "hauteur": 134,
+   "colonnes": 4,
+   "lignes": 4,
+   "ordre_lignes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "bulbizarre": {
+   "fichier": "res://assets/sprites/pokemon/painted/bulbizarre_sheet.png",
+   "cellule": [
+    57,
+    62
+   ],
+   "hauteur": 60,
+   "colonnes": 4,
+   "lignes": 4,
+   "ordre_lignes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "salameche": {
+   "fichier": "res://assets/sprites/pokemon/painted/salameche_sheet.png",
+   "cellule": [
+    57,
+    62
+   ],
+   "hauteur": 60,
+   "colonnes": 4,
+   "lignes": 4,
+   "ordre_lignes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "carapuce": {
+   "fichier": "res://assets/sprites/pokemon/painted/carapuce_sheet.png",
+   "cellule": [
+    47,
+    62
+   ],
+   "hauteur": 60,
+   "colonnes": 4,
+   "lignes": 4,
+   "ordre_lignes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "bulbizarre_idle": {
+   "fichier": "res://assets/sprites/pokemon/painted/bulbizarre_idle_sheet.png",
+   "cellule": [
+    71,
+    62
+   ],
+   "hauteur": 60,
+   "colonnes": 4,
+   "lignes": 1,
+   "ordre_colonnes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "carapuce_idle": {
+   "fichier": "res://assets/sprites/pokemon/painted/carapuce_idle_sheet.png",
+   "cellule": [
+    49,
+    62
+   ],
+   "hauteur": 60,
+   "colonnes": 4,
+   "lignes": 1,
+   "ordre_colonnes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
   }
  },
  "images": {
@@ -1579,6 +3634,34 @@
    "taille": [
     1440,
     960
+   ]
+  },
+  "int_chambre_joueur_coque": {
+   "fichier": "res://assets/world/interiors/int_chambre_joueur_coque.png",
+   "taille": [
+    1344,
+    960
+   ]
+  },
+  "int_maison_joueur_rdc_coque": {
+   "fichier": "res://assets/world/interiors/int_maison_joueur_rdc_coque.png",
+   "taille": [
+    1344,
+    960
+   ]
+  },
+  "int_maison_rival_coque": {
+   "fichier": "res://assets/world/interiors/int_maison_rival_coque.png",
+   "taille": [
+    1728,
+    1056
+   ]
+  },
+  "int_labo_coque": {
+   "fichier": "res://assets/world/interiors/int_labo_coque.png",
+   "taille": [
+    1536,
+    1056
    ]
   },
   "backdrop_plateau_indigo_01": {
@@ -1604,6 +3687,20 @@
   },
   "ground_chemin_01": {
    "fichier": "res://assets/world/ground/ground_chemin_01.png",
+   "taille": [
+    384,
+    384
+   ]
+  },
+  "ground_sable_01": {
+   "fichier": "res://assets/world/ground/ground_sable_01.png",
+   "taille": [
+    384,
+    384
+   ]
+  },
+  "ground_eau_01": {
+   "fichier": "res://assets/world/ground/ground_eau_01.png",
    "taille": [
     384,
     384
@@ -1691,6 +3788,118 @@
    "taille": [
     121,
     86
+   ]
+  },
+  "decal_fleur_1": {
+   "fichier": "res://assets/world/ground/decals/decal_fleur_1.png",
+   "taille": [
+    53,
+    50
+   ]
+  },
+  "decal_fleur_2": {
+   "fichier": "res://assets/world/ground/decals/decal_fleur_2.png",
+   "taille": [
+    53,
+    47
+   ]
+  },
+  "decal_fleur_3": {
+   "fichier": "res://assets/world/ground/decals/decal_fleur_3.png",
+   "taille": [
+    53,
+    51
+   ]
+  },
+  "decal_fleur_4": {
+   "fichier": "res://assets/world/ground/decals/decal_fleur_4.png",
+   "taille": [
+    53,
+    51
+   ]
+  },
+  "decal_fleur_5": {
+   "fichier": "res://assets/world/ground/decals/decal_fleur_5.png",
+   "taille": [
+    53,
+    51
+   ]
+  },
+  "decal_fleur_6": {
+   "fichier": "res://assets/world/ground/decals/decal_fleur_6.png",
+   "taille": [
+    53,
+    47
+   ]
+  },
+  "decal_fleur_7": {
+   "fichier": "res://assets/world/ground/decals/decal_fleur_7.png",
+   "taille": [
+    53,
+    41
+   ]
+  },
+  "decal_fleur_8": {
+   "fichier": "res://assets/world/ground/decals/decal_fleur_8.png",
+   "taille": [
+    53,
+    49
+   ]
+  },
+  "decal_cote_1": {
+   "fichier": "res://assets/world/ground/decals/decal_cote_1.png",
+   "taille": [
+    58,
+    57
+   ]
+  },
+  "decal_cote_2": {
+   "fichier": "res://assets/world/ground/decals/decal_cote_2.png",
+   "taille": [
+    58,
+    56
+   ]
+  },
+  "decal_cote_3": {
+   "fichier": "res://assets/world/ground/decals/decal_cote_3.png",
+   "taille": [
+    58,
+    53
+   ]
+  },
+  "decal_cote_4": {
+   "fichier": "res://assets/world/ground/decals/decal_cote_4.png",
+   "taille": [
+    58,
+    56
+   ]
+  },
+  "decal_cote_5": {
+   "fichier": "res://assets/world/ground/decals/decal_cote_5.png",
+   "taille": [
+    58,
+    53
+   ]
+  },
+  "decal_cote_6": {
+   "fichier": "res://assets/world/ground/decals/decal_cote_6.png",
+   "taille": [
+    58,
+    47
+   ]
+  },
+  "decal_cote_7": {
+   "fichier": "res://assets/world/ground/decals/decal_cote_7.png",
+   "taille": [
+    58,
+    41
+   ]
+  },
+  "decal_cote_8": {
+   "fichier": "res://assets/world/ground/decals/decal_cote_8.png",
+   "taille": [
+    58,
+    52
    ]
   },
   "heros_lancer": {

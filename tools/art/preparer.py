@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Prépare tout l'art validé du monde (séries 01 à 06) pour le jeu.
+"""Prépare tout l'art validé du monde (séries 01 à 08) pour le jeu.
 
 Successeur de preparer_proto.py. Lit `tools/art/manifeste.json` et les images validées de
 `build/art/` (non versionné ; sur le Mac de Kevin, jamais nécessaire au cloud), recadre chaque
@@ -7,16 +7,22 @@ objet sur sa silhouette, le ramène à sa taille en jeu (1 case = 96 px) et écr
   - les textures à 1:1 (sols, objets, bâtiments, intérieurs, relief, fond du Plateau Indigo) ;
   - pour chaque objet qui en a, l'ombre portée pré-floutée `<id>_shadow.png` et l'ombre de contact
     `<id>_contact.png` (alpha seul : RVB blanc, la couleur et l'opacité viennent du jeu) ;
-  - la moitié basse des herbes hautes (cache-jambes) ;
+  - la moitié basse des herbes hautes (cache-jambes), et leurs variantes recolorées (herbes
+    jaune-vert de la Route 1 : une image de plus, aucune teinte au lancement) ;
+  - les arbres de forêt, découpés dans des planches 2 × 2 (`planches_arbres`) ;
+  - les décalcomanies : bordures (planche 4 × 3) et fleurs (planches 4 × 2) ;
   - les planches de personnages et de Pokémon (4 × 4, via decouper_perso.py) et leurs planches
     d'attente (pieds joints, 4 × 1, via decouper_attente.py) ;
   - `assets/world/catalogue.json` : tailles et décalages (par rapport au pied de l'objet : milieu
     du bas de l'image) de chaque ombre, pour les outils de construction des scènes.
 Les ombres reproduisent le prototype (ombre.gdshader, contact.gdshader), calculées une fois ici
 au lieu de 25 à 60 lectures de texture par pixel à chaque image.
-Usage : tools/art/preparer.py [--source DOSSIER]
+Usage : tools/art/preparer.py [--source DOSSIER] [--attentes-seulement | --personnages-seulement]
 """
+from __future__ import annotations
+
 import argparse
+import colorsys
 import importlib.util
 import json
 import math
@@ -146,6 +152,36 @@ def ombre_contact(objet: Image.Image, part_base: float, reglages: dict
     return _alpha_blanc(total), (-(marge + largeur // 2), -bande_h + chute), reduction
 
 
+def _coupe_la_plus_vide(image: Image.Image) -> tuple[int, int]:
+    """Colonne et rangée les plus vides (moins de pixels opaques) entre 30 et 70 % de l'image."""
+    alpha = image.getchannel("A").point(lambda a: 1 if a > 32 else 0)
+    largeur, hauteur = image.size
+    colonnes = [sum(alpha.crop((x, 0, x + 1, hauteur)).getdata()) for x in range(largeur)]
+    rangees = [sum(alpha.crop((0, y, largeur, y + 1)).getdata()) for y in range(hauteur)]
+    x = min(range(int(largeur * 0.3), int(largeur * 0.7)), key=lambda i: colonnes[i])
+    y = min(range(int(hauteur * 0.3), int(hauteur * 0.7)), key=lambda i: rangees[i])
+    return x, y
+
+
+def recolorer(image: Image.Image, reglages: dict) -> Image.Image:
+    """Variante de couleur (TSV) : teinte décalée, valeur relevée par un gamma, saturation
+    multipliée puis réduite dans les hautes lumières (`lumieres` = [début, fin, force]).
+    Reproduit les herbes jaune-vert de la session de la forêt serrée (écart moyen 2,6 / 255)."""
+    debut, fin, force = reglages["lumieres"]
+    pixels = []
+    for r, g, b, a in image.getdata():
+        h, s, v = colorsys.rgb_to_hsv(r / 255.0, g / 255.0, b / 255.0)
+        h = (h + reglages["teinte"]) % 1.0
+        v = v ** reglages["gamma_valeur"]
+        s = min(1.0, s * reglages["saturation"]
+                * (1.0 - force * _smoothstep((v - debut) / (fin - debut))))
+        r, g, b = colorsys.hsv_to_rgb(h, s, v)
+        pixels.append((round(r * 255), round(g * 255), round(b * 255), a))
+    sortie = Image.new("RGBA", image.size)
+    sortie.putdata(pixels)
+    return sortie
+
+
 def _ecrire(image: Image.Image, chemin: Path) -> None:
     chemin.parent.mkdir(parents=True, exist_ok=True)
     image.save(chemin, optimize=True)
@@ -168,24 +204,43 @@ class Preparateur:
         for e in self.m["objets"]:
             image = _silhouette(Image.open(self.source / e["source"]).convert("RGBA"))
             image = _mettre_a_taille(image, e["axe"], e["cases"], self.case)
-            _ecrire(image, self._sortie(e["sortie"]))
-            entree = {"fichier": self._res(e["sortie"]), "taille": list(image.size)}
-            chemin = Path(e["sortie"])
-            if e["ombre"]:
-                ombre, decalage, red = ombre_portee(image, self.m["ombre_portee"])
-                nom = str(chemin.with_name(chemin.stem + "_shadow.png"))
-                _ecrire(ombre, self._sortie(nom))
-                entree["ombre"] = {"fichier": self._res(nom), "decalage": list(decalage),
-                                   "echelle": red, "taille": list(ombre.size)}
-            if e["contact"] is not None:
-                contact, decalage, red = ombre_contact(image, e["contact"],
-                                                       self.m["ombre_contact"])
-                nom = str(chemin.with_name(chemin.stem + "_contact.png"))
-                _ecrire(contact, self._sortie(nom))
-                entree["contact"] = {"fichier": self._res(nom), "decalage": list(decalage),
-                                     "echelle": red, "taille": list(contact.size)}
-            self.catalogue["objets"][e["id"]] = entree
-            print(f"{e['id']} : {image.width} × {image.height}")
+            self._objet(e["id"], e["sortie"], image, e["ombre"], e["contact"])
+
+    def _objet(self, ident: str, sortie: str, image: Image.Image, ombre: bool,
+               contact: float | None) -> None:
+        """Écrit l'objet déjà à sa taille, ses ombres demandées et son entrée du catalogue."""
+        _ecrire(image, self._sortie(sortie))
+        entree = {"fichier": self._res(sortie), "taille": list(image.size)}
+        chemin = Path(sortie)
+        if ombre:
+            image_ombre, decalage, red = ombre_portee(image, self.m["ombre_portee"])
+            nom = str(chemin.with_name(chemin.stem + "_shadow.png"))
+            _ecrire(image_ombre, self._sortie(nom))
+            entree["ombre"] = {"fichier": self._res(nom), "decalage": list(decalage),
+                               "echelle": red, "taille": list(image_ombre.size)}
+        if contact is not None:
+            image_contact, decalage, red = ombre_contact(image, contact, self.m["ombre_contact"])
+            nom = str(chemin.with_name(chemin.stem + "_contact.png"))
+            _ecrire(image_contact, self._sortie(nom))
+            entree["contact"] = {"fichier": self._res(nom), "decalage": list(decalage),
+                                 "echelle": red, "taille": list(image_contact.size)}
+        self.catalogue["objets"][ident] = entree
+        print(f"{ident} : {image.width} × {image.height}")
+
+    def planches_arbres(self) -> None:
+        """Arbres de forêt (série 08) : planche 2 × 2 coupée à la colonne et à la rangée les
+        plus vides entre 30 et 70 % (les arbres débordent de leur quart : une coupe au milieu
+        les tranchait), chaque arbre recadré sur sa silhouette puis mis à sa hauteur."""
+        for planche in self.m.get("planches_arbres", []):
+            image = Image.open(self.source / planche["source"]).convert("RGBA")
+            x, y = _coupe_la_plus_vide(image)
+            quarts = [(0, 0, x, y), (x, 0, image.width, y), (0, y, x, image.height),
+                      (x, y, image.width, image.height)]
+            for ident, hauteur, quart in zip(planche["ids"], planche["hauteurs_px"], quarts):
+                arbre = _silhouette(image.crop(quart))
+                taille = (round(arbre.width * hauteur / arbre.height), hauteur)
+                self._objet(ident, planche["dossier"] + ident + ".png",
+                            arbre.resize(taille, Image.LANCZOS), False, planche["contact"])
 
     def hautes_herbes(self) -> None:
         e = self.m["hautes_herbes"]
@@ -199,6 +254,15 @@ class Preparateur:
             "fichier": self._res(e["sortie"]), "taille": list(image.size),
             "bas": {"fichier": self._res(e["sortie_bas"]), "taille": list(bas.size)}}
         print(f"{e['id']} : {image.width} × {image.height} (moitié basse {bas.height} px)")
+        for v in self.m.get("hautes_herbes_variantes", []):
+            variante = recolorer(image, v["recoloration"])
+            _ecrire(variante, self._sortie(v["sortie"]))
+            bas_v = variante.crop((0, haut, variante.width, variante.height))
+            _ecrire(bas_v, self._sortie(v["sortie_bas"]))
+            self.catalogue["objets"][v["id"]] = {
+                "fichier": self._res(v["sortie"]), "taille": list(variante.size),
+                "bas": {"fichier": self._res(v["sortie_bas"]), "taille": list(bas_v.size)}}
+            print(f"{v['id']} : {variante.width} × {variante.height} (recolorée)")
 
     def pieces(self) -> None:
         for e in self.m["pieces"]:
@@ -246,6 +310,25 @@ class Preparateur:
                           max(1, round(element.height * echelle)))
                 nom = f"{b['prefixe']}{famille}_{colonne + 1}"
                 chemin = b["dossier"] + nom + ".png"
+                _ecrire(element.resize(taille, Image.LANCZOS), self._sortie(chemin))
+                self.catalogue["images"][nom] = {"fichier": self._res(chemin),
+                                                 "taille": list(taille)}
+                print(f"{nom} : {taille[0]} × {taille[1]}")
+
+    def decalcomanies(self) -> None:
+        """Planches de fleurs (série 06B) : chaque élément recadré, `largeur_cases` de large."""
+        for p in self.m.get("decalcomanies", []):
+            planche = Image.open(self.source / p["source"]).convert("RGBA")
+            largeur, hauteur = planche.width // p["colonnes"], planche.height // p["lignes"]
+            for i in range(p["colonnes"] * p["lignes"]):
+                colonne, ligne = i % p["colonnes"], i // p["colonnes"]
+                element = _silhouette(planche.crop((colonne * largeur, ligne * hauteur,
+                                                    (colonne + 1) * largeur,
+                                                    (ligne + 1) * hauteur)))
+                echelle = p["largeur_cases"] * self.case / element.width
+                taille = (round(element.width * echelle), round(element.height * echelle))
+                nom = f"{p['prefixe']}{i + 1}"
+                chemin = p["dossier"] + nom + ".png"
                 _ecrire(element.resize(taille, Image.LANCZOS), self._sortie(chemin))
                 self.catalogue["images"][nom] = {"fichier": self._res(chemin),
                                                  "taille": list(taille)}
@@ -317,6 +400,9 @@ def main() -> None:
     arguments.add_argument("--source", default=str(RACINE / "build" / "art"))
     arguments.add_argument("--attentes-seulement", action="store_true",
                            help="seulement les planches d'attente (catalogue existant conservé)")
+    arguments.add_argument("--personnages-seulement", action="store_true",
+                           help="planches de personnages, de Pokémon et d'attente seulement "
+                                "(catalogue existant conservé ; DA.3)")
     options = arguments.parse_args()
     manifeste = json.loads((ICI / "manifeste.json").read_text())
     p = Preparateur(manifeste, Path(options.source))
@@ -326,12 +412,21 @@ def main() -> None:
         p.attentes()
         p.ecrire_catalogue()
         return
+    if options.personnages_seulement:
+        chemin = RACINE / "assets" / "world" / "catalogue.json"
+        p.catalogue = json.loads(chemin.read_text())
+        p.personnages()
+        p.attentes()
+        p.ecrire_catalogue()
+        return
     p.objets()
+    p.planches_arbres()
     p.hautes_herbes()
     p.pieces()
     p.decor()
     p.sols()
     p.bordures()
+    p.decalcomanies()
     p.personnages()
     p.attentes()
     p.heros_images()

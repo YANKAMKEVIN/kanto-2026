@@ -180,3 +180,36 @@ func test_missing_file_and_bad_json_report_the_line() -> void:
 	assert_string_contains("\n".join(_library.get_errors()), "ligne 3")
 	assert_push_error_count(2)
 	DirAccess.remove_absolute(path)
+
+
+# --- Profils prévus par carte (« maps », intégration du monde peint DA.0) ---------------
+
+func test_real_file_plans_the_profiles_of_the_painted_maps() -> void:
+	assert_true(_library.load_file(), str(_library.get_errors()))
+	# Les 6 cartes du chantier DA (Bourg Palette, ses intérieurs, Route 1).
+	for map_id: StringName in [&"pallet_town", &"route_1"]:
+		assert_eq(_library.get_map_profile(map_id), &"golden_hour", String(map_id))
+	for map_id: StringName in [&"player_house_2f", &"player_house_1f", &"rival_house",
+			&"oak_lab"]:
+		assert_eq(_library.get_map_profile(map_id), &"interior_warm", String(map_id))
+	assert_eq(_library.get_map_profile(&"no_such_map"), &"", "carte sans profil prévu")
+	for map_id: StringName in _library.get_planned_maps():
+		assert_true(_library.has_profile(_library.get_map_profile(map_id)), String(map_id))
+
+
+func test_maps_must_name_a_known_profile() -> void:
+	assert_true(_library.add_from_dict({"profiles": {"a": _profile()},
+		"maps": {"town": "a"}}, "one"))
+	assert_eq(_library.get_map_profile(&"town"), &"a")
+	assert_eq(_library.get_planned_maps(), [&"town"] as Array[StringName])
+	assert_false(_library.add_from_dict({"profiles": {}, "maps": {"cave": "dark"}}, "two"))
+	assert_false(_library.add_from_dict({"profiles": {}, "maps": {"town": "a"}}, "three"))
+	assert_false(_library.add_from_dict({"profiles": {}, "maps": ["town"]}, "four"))
+	assert_false(_library.add_from_dict({"profiles": {}, "maps": {"x": 3}}, "five"))
+	assert_push_error_count(4)
+	var errors := "\n".join(_library.get_errors())
+	assert_string_contains(errors, "« cave » : profil inconnu « dark »")
+	assert_string_contains(errors, "« town » : carte déjà définie")
+	assert_string_contains(errors, "« maps » doit être un objet")
+	assert_string_contains(errors, "entrée invalide « x »")
+	assert_eq(_library.get_map_profile(&"cave"), &"")

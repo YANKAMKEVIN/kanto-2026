@@ -5,8 +5,11 @@ extends RefCounted
 ## ([PaintedGround]) qui rend la frontière irrégulière. Classe pure : l'outil de construction
 ## d'une carte l'écrit dans `assets/world/maps/<carte>_ground.png` ; la scène de capture le
 ## construit en mémoire.
+## **Rivage** (DA.2, Bourg Palette) : un second masque, facultatif ([method build_shore] :
+## R = sable, G = eau), intégré à la scène ([member PaintedGround.shore_mask]) ; une carte sans
+## plage ni mer n'en a pas.
 
-enum Kind { GRASS, PAVING, PATH }
+enum Kind { GRASS, PAVING, PATH, SAND, WATER }
 
 
 ## Image du masque d'une carte de [param size] cases. [param paving] et [param path] :
@@ -33,6 +36,34 @@ static func kind_at(mask: Image, cell: Vector2i) -> Kind:
 		return Kind.PAVING
 	if color.g > 0.5:
 		return Kind.PATH
+	return Kind.GRASS
+
+
+## Masque du rivage d'une carte de [param size] cases (1 pixel = 1 case) : canal rouge =
+## sable, canal vert = eau. Une case peut être les deux (sable sous l'eau peu profonde : le
+## rivage passe par le sable). Hors carte : ignoré.
+static func build_shore(size: Vector2i, sand: Variant, water: Variant = []) -> Image:
+	var image := Image.create(maxi(size.x, 1), maxi(size.y, 1), false, Image.FORMAT_RG8)
+	for cell: Vector2i in _cells(sand):
+		if _inside(size, cell):
+			image.set_pixelv(cell, Color(1.0, image.get_pixelv(cell).g, 0.0))
+	for cell: Vector2i in _cells(water):
+		if _inside(size, cell):
+			image.set_pixelv(cell, Color(image.get_pixelv(cell).r, 1.0, 0.0))
+	return image
+
+
+## Nature du rivage de [param cell] d'après [param shore] ([method build_shore]) : eau, sable,
+## sinon herbe (hors masque, masque nul : herbe).
+static func shore_at(shore: Image, cell: Vector2i) -> Kind:
+	if shore == null or cell.x < 0 or cell.y < 0 or cell.x >= shore.get_width() \
+			or cell.y >= shore.get_height():
+		return Kind.GRASS
+	var color := shore.get_pixelv(cell)
+	if color.g > 0.5:
+		return Kind.WATER
+	if color.r > 0.5:
+		return Kind.SAND
 	return Kind.GRASS
 
 

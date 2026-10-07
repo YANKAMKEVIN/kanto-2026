@@ -1,0 +1,39 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://game/world/props/prop.gd" id="1_jiwo0"]
+[ext_resource type="Material" path="res://game/world/lighting/materials/world_object.tres" id="2_vxjt4"]
+[ext_resource type="Texture2D" path="res://assets/world/buildings/bldg_labo_01.png" id="3_jkrgt"]
+[ext_resource type="Material" path="res://game/world/lighting/materials/cast_shadow.tres" id="4_epuvt"]
+[ext_resource type="Texture2D" path="res://assets/world/buildings/bldg_labo_01_shadow.png" id="5_mru03"]
+[ext_resource type="Material" path="res://game/world/lighting/materials/contact_shadow.tres" id="6_dwgra"]
+[ext_resource type="Texture2D" path="res://assets/world/buildings/bldg_labo_01_contact.png" id="7_mafgq"]
+
+[node name="BldgLabo01" type="Node2D" unique_id=1968407649]
+script = ExtResource("1_jiwo0")
+footprint = Array[Vector2i]([Vector2i(-5, -3), Vector2i(-4, -3), Vector2i(-3, -3), Vector2i(-2, -3), Vector2i(-1, -3), Vector2i(0, -3), Vector2i(1, -3), Vector2i(2, -3), Vector2i(3, -3), Vector2i(4, -3), Vector2i(-5, -2), Vector2i(-4, -2), Vector2i(-3, -2), Vector2i(-2, -2), Vector2i(-1, -2), Vector2i(0, -2), Vector2i(1, -2), Vector2i(2, -2), Vector2i(3, -2), Vector2i(4, -2), Vector2i(-5, -1), Vector2i(-4, -1), Vector2i(-3, -1), Vector2i(-2, -1), Vector2i(-1, -1), Vector2i(0, -1), Vector2i(1, -1), Vector2i(2, -1), Vector2i(3, -1), Vector2i(4, -1), Vector2i(-5, 0), Vector2i(-4, 0), Vector2i(-3, 0), Vector2i(-2, 0), Vector2i(1, 0), Vector2i(2, 0), Vector2i(3, 0), Vector2i(4, 0)])
+fade_when_covering = true
+
+[node name="Sprite" type="Sprite2D" parent="." unique_id=1383051248]
+unique_name_in_owner = true
+material = ExtResource("2_vxjt4")
+texture = ExtResource("3_jkrgt")
+centered = false
+offset = Vector2(-480, -776)
+
+[node name="CastShadow" type="Sprite2D" parent="." unique_id=1697593626 groups=["cast_shadows"]]
+z_index = -2
+z_as_relative = false
+material = ExtResource("4_epuvt")
+scale = Vector2(2, 2)
+texture = ExtResource("5_mru03")
+centered = false
+offset = Vector2(-252.5, -2)
+
+[node name="ContactShadow" type="Sprite2D" parent="." unique_id=1057032831 groups=["contact_shadows"]]
+z_index = -2
+z_as_relative = false
+material = ExtResource("6_dwgra")
+scale = Vector2(2, 2)
+texture = ExtResource("7_mafgq")
+centered = false
+offset = Vector2(-244, -30)

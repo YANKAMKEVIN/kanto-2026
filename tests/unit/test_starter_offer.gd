@@ -68,7 +68,9 @@ func test_real_offered_npcs_exist_on_the_lab_map() -> void:
 		var spec := roster.get_spec(option.npc)
 		assert_not_null(spec, String(option.npc))
 		if spec != null:
-			assert_eq(spec.sprite, option.species, "même sprite que l'espèce")
+			# DA.3 : starters peints, `pokemon/<espèce>` (CharacterLook).
+			assert_eq(spec.sprite, StringName("pokemon/" + String(option.species)),
+				"apparence peinte de l'espèce")
 
 
 func test_starters_at_the_offered_level_know_one_to_four_moves() -> void:

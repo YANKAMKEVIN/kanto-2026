@@ -44,11 +44,11 @@ func test_generic_look_last() -> void:
 
 
 func test_default_check_reads_the_real_resources() -> void:
-	# Sans Callable : ResourceLoader.exists. La mère n'a que sa planche provisoire (phase DA),
-	# l'apparence générique existe.
-	var mom := CharacterLook.resolve(&"mom")
-	assert_eq(mom.frames_path, CharacterLook.placeholder_frames_path(&"mom"))
-	assert_true(ResourceLoader.exists(mom.frames_path))
+	# Sans Callable : ResourceLoader.exists. « bulbasaur » seul (sans « pokemon/ ») n'a que sa
+	# planche provisoire, l'apparence générique existe.
+	var starter := CharacterLook.resolve(&"bulbasaur")
+	assert_eq(starter.frames_path, CharacterLook.placeholder_frames_path(&"bulbasaur"))
+	assert_true(ResourceLoader.exists(starter.frames_path))
 	var nobody := CharacterLook.resolve(&"nobody_here")
 	assert_eq(nobody.frames_path,
 		CharacterLook.placeholder_frames_path(CharacterLook.FALLBACK_SPRITE))
@@ -77,12 +77,16 @@ func test_painted_pokemon_by_explicit_prefix() -> void:
 func test_real_painted_looks() -> void:
 	for sprite: StringName in [&"player", &"rival", &"nurse", &"clerk", &"courier", &"lass",
 			&"kid", &"old_man", &"traveler", &"youngster", &"pokemon/pidgey", &"pokemon/rattata",
-			&"pokemon/spearow", &"pokemon/mankey", &"pokemon/nidoran_f", &"pokemon/nidoran_m"]:
+			&"pokemon/spearow", &"pokemon/mankey", &"pokemon/nidoran_f", &"pokemon/nidoran_m",
+			# DA.2 : habitants de Bourg Palette, Maman, Chen et Maya.
+			&"mom", &"oak", &"leo", &"aoki", &"haru", &"maya", &"researcher",
+			# DA.3 : les trois starters.
+			&"pokemon/bulbasaur", &"pokemon/charmander", &"pokemon/squirtle"]:
 		var look := CharacterLook.resolve(sprite)
 		assert_true(look.painted, String(sprite))
 		assert_eq(look.filter, CanvasItem.TEXTURE_FILTER_LINEAR)
-	# Bourg Palette et la Route 1 gardent leurs Pokémon provisoires (Q-2, Q-3).
-	for sprite: StringName in [&"pidgey", &"rattata", &"mom", &"oak"]:
+	# Un nom d'espèce seul (sans « pokemon/ ») reste provisoire, starters compris.
+	for sprite: StringName in [&"pidgey", &"rattata", &"bulbasaur", &"charmander", &"squirtle"]:
 		assert_false(CharacterLook.resolve(sprite).painted, String(sprite))
 
 
@@ -168,9 +172,11 @@ func test_npc_painted_at_scale_one_linear() -> void:
 
 
 func test_npc_placeholder_twice_nearest() -> void:
-	var npc := _npc(&"mom")
+	# Un nom d'espèce seul (sans « pokemon/ ») reste provisoire.
+	var npc := _npc(&"bulbasaur")
 	var sprite := npc.get_node(^"%Sprite") as AnimatedSprite2D
-	assert_eq(sprite.sprite_frames.resource_path, CharacterLook.placeholder_frames_path(&"mom"))
+	assert_eq(sprite.sprite_frames.resource_path,
+		CharacterLook.placeholder_frames_path(&"bulbasaur"))
 	assert_eq(sprite.scale, Vector2(2, 2))
 	assert_eq(sprite.texture_filter, CanvasItem.TEXTURE_FILTER_NEAREST)
 	var unknown := _npc(&"villager")
@@ -187,3 +193,59 @@ func test_npc_frames_helpers_follow_character_look() -> void:
 	assert_true(Npc.has_frames(&"mom"))
 	assert_false(Npc.has_frames(&"villager"))
 	assert_true(Npc.has_frames(Npc.FALLBACK_SPRITE))
+
+
+## DA.2 (demande de Kevin) : les habitants de Bourg Palette, Maman, Chen et Maya ont une vraie
+## pose d'attente (planche `<planche>_idle`, pieds joints), distincte de la marche ; le rival
+## garde la sienne (jalon 7).
+func test_pallet_town_people_have_a_real_idle_pose() -> void:
+	var sheets: Dictionary[StringName, String] = {
+		&"mom": "maman", &"oak": "chen", &"leo": "leo", &"aoki": "vieille_dame",
+		&"haru": "pecheur", &"maya": "chercheuse", &"researcher": "chercheur", &"rival": "rival",
+	}
+	for sprite: StringName in sheets:
+		var frames := load(CharacterLook.painted_frames_path(sprite)) as SpriteFrames
+		assert_not_null(frames, String(sprite))
+		if frames == null:
+			continue
+		for dir: String in ["down", "left", "right", "up"]:
+			var idle := frames.get_frame_texture(StringName("idle_" + dir), 0) as AtlasTexture
+			var walk := frames.get_frame_texture(StringName("walk_" + dir), 0) as AtlasTexture
+			var expected := CharacterLook.PAINTED_DIR + sheets[sprite] + "_idle_sheet.png"
+			assert_eq(idle.atlas.resource_path, expected, "%s : attente %s" % [sprite, dir])
+			assert_ne(idle.atlas.resource_path, walk.atlas.resource_path,
+				"%s : attente distincte de la marche" % sprite)
+
+
+## DA.3 : starters peints (Bulbizarre et Carapuce avec leur planche d'attente ; Salamèche,
+## planche faite à la main par Kevin, sans planche d'attente : pour chaque direction, l'image de
+## marche la plus posée, `IDLE_FROM_WALK` de l'outil), sans course, à la taille des petits
+## Pokémon (≈ 60 px).
+func test_starters_are_painted_with_a_rest_pose() -> void:
+	var tool_script := load(FRAMES_TOOL) as Script
+	var idle_from_walk: Dictionary = tool_script.get_script_constant_map()["IDLE_FROM_WALK"]
+	var sheets: Dictionary[StringName, String] = {
+		&"bulbasaur": "bulbizarre", &"charmander": "salameche", &"squirtle": "carapuce",
+	}
+	var rows := {"down": 0, "left": 1, "right": 2, "up": 3}
+	for species: StringName in sheets:
+		var sprite := StringName("pokemon/" + String(species))
+		var frames := load(CharacterLook.painted_frames_path(sprite)) as SpriteFrames
+		assert_not_null(frames, String(sprite))
+		if frames == null:
+			continue
+		var sheet := sheets[species]
+		for dir: String in rows:
+			var idle := frames.get_frame_texture(StringName("idle_" + dir), 0) as AtlasTexture
+			var walk := frames.get_frame_texture(StringName("walk_" + dir), 0) as AtlasTexture
+			assert_between(idle.get_size().y, 56.0, 66.0, "%s : ≈ 60 px" % sprite)
+			assert_false(frames.has_animation(StringName("run_" + dir)), "%s : marche" % sprite)
+			if idle_from_walk.has(sheet):
+				assert_eq(idle.atlas.resource_path, walk.atlas.resource_path, String(sprite))
+				var column: int = (idle_from_walk[sheet] as Dictionary)[dir]
+				assert_eq(idle.region.position, Vector2(column, rows[dir]) * idle.region.size,
+					"%s : attente %s = colonne %d de la marche" % [sprite, dir, column])
+			else:
+				assert_eq(idle.atlas.resource_path, CharacterLook.POKEMON_PAINTED_DIR + sheet
+					+ "_idle_sheet.png", "%s : planche d'attente" % sprite)
+	assert_true(idle_from_walk.has("salameche"), "Salamèche : attente tirée de la marche")

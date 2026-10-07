@@ -1,0 +1,15 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://game/world/props/prop.gd" id="1_840hb"]
+[ext_resource type="Material" path="res://game/world/lighting/materials/world_object.tres" id="2_jd8tj"]
+[ext_resource type="Texture2D" path="res://assets/world/interiors/int_chaise_gamer_01.png" id="3_e55tq"]
+
+[node name="IntChaiseGamer01" type="Node2D" unique_id=1148891017]
+script = ExtResource("1_840hb")
+
+[node name="Sprite" type="Sprite2D" parent="." unique_id=1022736782]
+unique_name_in_owner = true
+material = ExtResource("2_jd8tj")
+texture = ExtResource("3_e55tq")
+centered = false
+offset = Vector2(-43, -128)

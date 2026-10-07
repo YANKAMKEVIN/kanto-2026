@@ -1,0 +1,15 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://game/world/props/prop.gd" id="1_vrawb"]
+[ext_resource type="Material" path="res://game/world/lighting/materials/world_object.tres" id="2_0l3kg"]
+[ext_resource type="Texture2D" path="res://assets/world/props/prop_souche_01.png" id="3_8yiej"]
+
+[node name="PropSouche01" type="Node2D" unique_id=434122735]
+script = ExtResource("1_vrawb")
+
+[node name="Sprite" type="Sprite2D" parent="." unique_id=1873711577]
+unique_name_in_owner = true
+material = ExtResource("2_0l3kg")
+texture = ExtResource("3_8yiej")
+centered = false
+offset = Vector2(-57.5, -83)

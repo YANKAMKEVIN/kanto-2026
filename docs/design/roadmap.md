@@ -63,7 +63,7 @@ intéressante, équipe qui se construit, premier apprentissage de nouvelles capa
   **aucun dégât en marchant**, guéri par Antidote ou Centre. Les autres statuts arrivent au J11.
 - **Premières évolutions au J9** : séquence simple mais propre et **définitive fonctionnellement**,
   avec annulation ; le J11 n'enrichit que la mise en scène, sans refaire la logique métier.
-- **Contraintes de la Route 2 (J8)** : **aucun Dresseur avant la Forêt de Jade** (le Scout Léo
+- **Contraintes de la Route 2 (J8)** : **aucun Dresseur avant la Forêt de Jade** (le Scout Théo
   reste le premier vrai Dresseur) ; la Route 2 est **interrompue par la forêt** et ne permet pas
   de la contourner lors de la première progression.
 

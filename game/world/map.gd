@@ -20,6 +20,10 @@ extends Node2D
 ## (jalon 3B §2.5). Ils n'ont pas d'owner : les scripts de construction ne les sauvent
 ## jamais dans les `.tscn`.
 ## Le joueur est ajouté à `Entities` (y-sort) par [method spawn_player].
+## DA.2 : les routines de marche des PNJ ([member NpcSpec.route_cells]) sont **retenues tant
+## qu'aucun joueur n'est sur la carte** ([method Npc.set_routine_held]) et relâchées par
+## [method spawn_player] / [method spawn_player_at] : une carte chargée seule (tests, outils)
+## garde ses habitants sur leur case de départ.
 
 const _TILE_LAYERS: Array[NodePath] = [^"Ground", ^"Detail", ^"Obstacles"]
 ## Nœuds dont les [WorldProp] enfants marquent leur emprise sur la grille.
@@ -43,13 +47,16 @@ const _NPC_SCENE: PackedScene = preload("res://game/world/npc/npc.tscn")
 ## Dossier des fichiers de PNJ (`<map_id>.json`) ; les tests pointent sur leurs données.
 @export var npcs_dir: String = NpcRoster.DATA_DIR
 ## Profil de lumière du monde (`data/world/lighting.json`, [LightingLibrary], jalon-07.md
-## §3.2) appliqué par `WorldLighting` à l'arrivée. Vide = **aucune** lumière du monde (Bourg
-## Palette, la Route 1 et les intérieurs existants restent tels quels jusqu'à la phase DA).
+## §3.2) appliqué par `WorldLighting` à l'arrivée. Vide = **aucune** lumière du monde (cartes
+## encore provisoires : Bourg Palette et ses intérieurs jusqu'au DA.2 / DA.3).
 @export var light_profile: StringName = &""
 ## Rangées des murs de soutènement et falaises qui séparent deux niveaux (Jadielle : 12, 24,
 ## 32). Un décor qui s'efface quand le joueur passe derrière ([member
 ## WorldProp.fade_when_covering]) ne le fait qu'au même niveau. Vide : un seul niveau.
 @export var level_rows: Array[int] = []
+## Bande d'herbe devant les jambes du joueur en hautes herbes (cartes peintes : moitié basse
+## des touffes, `ground_hautes_herbes_*_bas.png`). Nulle : la bande provisoire du joueur.
+@export var grass_front: Texture2D
 
 var _grid: GridWorld
 var _warps: WarpTable
@@ -61,6 +68,8 @@ var _npcs_spawned: bool = false
 var _roster: NpcRoster
 ## PNJ créés depuis le fichier (les seuls que refresh_npcs peut retirer).
 var _roster_npcs: Array[Npc] = []
+## Vrai dès qu'un joueur a été placé sur la carte (routines relâchées).
+var _player_present: bool = false
 
 
 func _ready() -> void:
@@ -220,6 +229,8 @@ func spawn_player(player: Player, spawn_name: StringName, facing: Vector2i) -> v
 			player.get_parent().remove_child(player)
 		entities.add_child(player)
 	player.enter_map(get_grid(), get_spawn_cell(spawn_name), facing, get_pixel_rect())
+	player.set_grass_front(grass_front)
+	_release_routines()
 
 
 ## Ajoute le joueur à `Entities` et le place sur la case [param cell] (reprise d'une
@@ -231,6 +242,8 @@ func spawn_player_at(player: Player, cell: Vector2i, facing: Vector2i) -> void:
 			player.get_parent().remove_child(player)
 		entities.add_child(player)
 	player.enter_map(get_grid(), cell, facing, get_pixel_rect())
+	player.set_grass_front(grass_front)
+	_release_routines()
 
 
 ## Case où reprendre la partie à partir de la case sauvegardée [param cell] (jalon 5C.5) :
@@ -381,10 +394,18 @@ func _create_npc(spec: NpcSpec) -> Npc:
 		return null
 	var npc := _NPC_SCENE.instantiate() as Npc
 	npc.setup(spec)
+	npc.set_routine_held(not _player_present)
 	entities.add_child(npc)
 	npc.enter_grid(grid)
 	_npcs.append(npc)
 	return npc
+
+
+## Le joueur est arrivé : les routines de marche reprennent (DA.2).
+func _release_routines() -> void:
+	_player_present = true
+	for npc: Npc in _npcs:
+		npc.set_routine_held(false)
 
 
 func _read_layer(layer: TileMapLayer) -> void:

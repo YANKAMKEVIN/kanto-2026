@@ -1,0 +1,16 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://game/world/props/prop.gd" id="1_u7tad"]
+[ext_resource type="Material" path="res://game/world/lighting/materials/world_object.tres" id="2_3xpuy"]
+[ext_resource type="Texture2D" path="res://assets/world/interiors/int_escalier_montant_01.png" id="3_6qor7"]
+
+[node name="IntEscalierMontant01" type="Node2D" unique_id=962606697]
+script = ExtResource("1_u7tad")
+footprint = Array[Vector2i]([Vector2i(-1, -1), Vector2i(0, -1)])
+
+[node name="Sprite" type="Sprite2D" parent="." unique_id=2080768054]
+unique_name_in_owner = true
+material = ExtResource("2_3xpuy")
+texture = ExtResource("3_6qor7")
+centered = false
+offset = Vector2(-105.5, -359)

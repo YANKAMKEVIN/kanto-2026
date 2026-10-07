@@ -33,26 +33,30 @@ const PLAN: Dictionary = {
 	},
 	&"oak_lab": {
 		&"maya": [Vector2i(5, 3), Vector2i.UP, &"maya", &"maya", TALK, 0],
-		&"bulbasaur": [Vector2i(10, 5), Vector2i.DOWN, &"bulbasaur", &"observe_bulbasaur",
+		&"bulbasaur": [Vector2i(10, 5), Vector2i.DOWN, &"pokemon/bulbasaur", &"observe_bulbasaur",
 			OBSERVE, 56],
-		&"charmander": [Vector2i(11, 5), Vector2i.DOWN, &"charmander", &"observe_charmander",
+		&"charmander": [Vector2i(11, 5), Vector2i.DOWN, &"pokemon/charmander", &"observe_charmander",
 			OBSERVE, 56],
-		&"squirtle": [Vector2i(12, 5), Vector2i.DOWN, &"squirtle", &"observe_squirtle",
+		&"squirtle": [Vector2i(12, 5), Vector2i.DOWN, &"pokemon/squirtle", &"observe_squirtle",
 			OBSERVE, 56],
 	},
 	&"pallet_town": {
 		&"aoki": [Vector2i(29, 13), Vector2i.LEFT, &"aoki", &"aoki", TALK, 0],
-		&"aoki_pidgey_1": [Vector2i(27, 13), Vector2i.RIGHT, &"pidgey", &"observe_aoki_pidgey",
+		&"aoki_pidgey_1": [Vector2i(27, 13), Vector2i.RIGHT, &"pokemon/pidgey",
+			&"observe_aoki_pidgey",
 			OBSERVE, 0],
-		&"aoki_pidgey_2": [Vector2i(28, 14), Vector2i.UP, &"pidgey", &"observe_aoki_pidgey",
+		&"aoki_pidgey_2": [Vector2i(28, 14), Vector2i.UP, &"pokemon/pidgey",
+			&"observe_aoki_pidgey",
 			OBSERVE, 0],
 		&"leo": [Vector2i(18, 9), Vector2i.LEFT, &"leo", &"leo", TALK, 0],
-		&"leo_rattata": [Vector2i(17, 9), Vector2i.RIGHT, &"rattata",
+		&"leo_rattata": [Vector2i(17, 9), Vector2i.RIGHT, &"pokemon/rattata",
 			&"observe_leo_rattata", OBSERVE, 0],
 		&"haru": [Vector2i(3, 29), Vector2i.LEFT, &"haru", &"haru", TALK, 0],
 		# Prairie du Nord (jalon 3B §3.1) : Pokémon d'ambiance, non interactifs.
-		&"prairie_pidgey": [Vector2i(20, 3), Vector2i.DOWN, &"pidgey", &"", TALK, 0],
-		&"prairie_rattata": [Vector2i(27, 2), Vector2i.LEFT, &"rattata", &"", TALK, 0],
+		&"prairie_pidgey": [Vector2i(20, 3), Vector2i.DOWN, &"pokemon/pidgey", &"", TALK, 0],
+		&"prairie_rattata": [Vector2i(27, 2), Vector2i.LEFT, &"pokemon/rattata", &"", TALK, 0],
+		# DA.2 : chercheur qui va du labo à la serre (réplique validée par Kevin).
+		&"researcher": [Vector2i(25, 23), Vector2i.DOWN, &"researcher", &"researcher", TALK, 0],
 	},
 }
 ## Plan après l'événement de la Route 1 (jalon 3B §3.2) : seules différences avec PLAN.
@@ -194,9 +198,10 @@ func test_every_npc_has_its_own_frames() -> void:
 				assert_true(Npc.has_frames(sprite), "%s : %s_frames.tres" % [npc.get_id(), sprite])
 				var anim := npc.get_node(^"%Sprite") as AnimatedSprite2D
 				assert_eq(anim.sprite_frames.resource_path, Npc.frames_path(sprite))
-				# Jalon 7 : peint (le rival, Q-1) à 1:1 en LINEAR, provisoire ×2 en NEAREST.
+				# Peint à 1:1 en LINEAR (le rival au jalon 7, les habitants de Bourg Palette au
+				# DA.2, les trois starters au DA.3) : plus aucun personnage provisoire.
 				var look := CharacterLook.resolve(sprite)
-				assert_eq(look.painted, sprite == &"rival", String(sprite))
+				assert_true(look.painted, String(sprite))
 				assert_eq(anim.texture_filter, look.filter)
 				assert_eq(anim.scale, Vector2(look.scale, look.scale))
 
@@ -231,10 +236,12 @@ func test_sprite_sizes_and_animations() -> void:
 
 
 ## Jalon 3B (T3) : Chen, créé par l'étape « spawn » de route1_grass, a ses propres
-## SpriteFrames avec marche et course (4 images, bouclées, course plus rapide).
+## SpriteFrames. Planche provisoire : marche et course (4 images, bouclées, course plus
+## rapide). DA.2 : planche **peinte** (celle qu'il affiche) ; DA.3 : avec sa planche de course
+## (décision de Kevin : il accourt dans le prologue), course plus rapide que la marche.
 func test_oak_has_its_own_frames_with_walk_and_run() -> void:
 	assert_true(Npc.has_frames(&"oak"), "oak_frames.tres")
-	var frames := load(Npc.frames_path(&"oak")) as SpriteFrames
+	var frames := load(CharacterLook.placeholder_frames_path(&"oak")) as SpriteFrames
 	assert_not_null(frames)
 	if frames == null:
 		return
@@ -247,6 +254,17 @@ func test_oak_has_its_own_frames_with_walk_and_run() -> void:
 			assert_eq(frames.get_frame_texture(anim, 0).get_size(), Vector2(32, 64))
 		assert_gt(frames.get_animation_speed(StringName("run_" + dir)),
 			frames.get_animation_speed(StringName("walk_" + dir)), "course plus rapide")
+	var look := CharacterLook.resolve(&"oak")
+	assert_true(look.painted, "Chen peint (DA.2)")
+	var painted := load(look.frames_path) as SpriteFrames
+	for dir: String in ["down", "up", "left", "right"]:
+		var walk := StringName("walk_" + dir)
+		var run := StringName("run_" + dir)
+		assert_eq(painted.get_frame_count(walk), 4, "oak peint : marche")
+		assert_eq(painted.get_frame_count(run), 4, "oak peint : course")
+		assert_gt(painted.get_animation_speed(run), painted.get_animation_speed(walk))
+		var sheet := (painted.get_frame_texture(run, 0) as AtlasTexture).atlas.resource_path
+		assert_eq(sheet, CharacterLook.PAINTED_DIR + "chen_run_sheet.png", "planche de course")
 	var cutscenes := CutsceneLibrary.new()
 	cutscenes.load_dir()
 	var spawned: Array[StringName] = []
