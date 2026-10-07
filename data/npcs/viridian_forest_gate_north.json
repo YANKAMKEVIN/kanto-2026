@@ -1,0 +1,6 @@
+{
+	"guard": {
+		"cell": [7, 4], "facing": "left", "sprite": "guard",
+		"dialogue": "forest_gate_north_guard"
+	}
+}

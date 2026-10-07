@@ -25,8 +25,9 @@ extends SceneTree
 ##   (`tree_foret_08` réduit et assombri) et FUTUR B (barrière blanche), ronces et troncs
 ##   couchés de lisière, ombres de canopée au sol, fleurs de plus en plus rares vers le nord.
 ## - Passages : trois warps PUSH ↓ vers Jadielle au bas du chemin ; la porte du poste, STEP_ON
-##   ↑, « FORÊT DE JADE — À venir » (constantes `FOREST_GATE_*` : au J9, seule cette ligne
-##   change). Points d'examen (panneaux, FUTUR A / B), déclencheurs des objets cachés.
+##   ↑, vers le poste sud de la Forêt de Jade (jalon 9 T19 ; « FORÊT DE JADE — À venir » au J8,
+##   constantes `FOREST_GATE_*`). Points d'examen (panneaux, FUTUR A / B), déclencheurs des
+##   objets cachés.
 ## - PNJ, Pokémon d'ambiance et objets visibles : `data/npcs/route_2.json` (leurs cases restent
 ##   libres d'objets ; les arbres de forêt dont le feuillage les cacherait sont retirés).
 
@@ -53,12 +54,14 @@ const DISPLAY_NAME: String = "Route 2"
 ## Sous-titre = celui de la zone (`data/world/zones.json`, T1 du dossier 11).
 const REGION: String = "Jadielle — Forêt de Jade"
 
-## Porte du poste (dossier 11 arbitrage 1, jalon-08 §2.2). Au J9 : `FOREST_GATE_SOON` vide,
-## `FOREST_GATE_MAP` = carte du poste, `FOREST_GATE_TARGET` = son point d'arrivée.
+## Porte du poste (dossier 11 arbitrage 1, jalon-08 §2.2). Jalon 9 (T19) : la porte mène au
+## poste sud de la Forêt de Jade (`FOREST_GATE_SOON` vide). `FOREST_GATE_RETURN` : point
+## d'apparition de la Route 2 devant la porte (retour depuis le poste).
 const FOREST_GATE_CELL := Vector2i(20, 8)
-const FOREST_GATE_SOON: String = "Forêt de Jade"
-const FOREST_GATE_MAP: StringName = &""
-const FOREST_GATE_TARGET: StringName = &"from_forest_gate"
+const FOREST_GATE_RETURN: StringName = &"from_forest_gate"
+const FOREST_GATE_SOON: String = ""
+const FOREST_GATE_MAP: StringName = &"viridian_forest_gate_south"
+const FOREST_GATE_TARGET: StringName = &"from_route_2"
 ## Retour devant la porte (point d'apparition de la Route 2, tourné vers le sud).
 const FOREST_GATE_SPAWN := Vector2i(20, 9)
 
@@ -411,7 +414,7 @@ func _planted_forest() -> Dictionary:
 func _add_spawns(root: Node) -> void:
 	for entry: Array in SOUTH_EXITS:
 		_add_spawn(root, entry[3], entry[1])
-	_add_spawn(root, String(FOREST_GATE_TARGET), FOREST_GATE_SPAWN)
+	_add_spawn(root, String(FOREST_GATE_RETURN), FOREST_GATE_SPAWN)
 
 
 func _add_spawn(root: Node, spawn_name: String, cell: Vector2i) -> void:
@@ -442,7 +445,8 @@ func _add_warps(root: Node) -> void:
 	door.set(&"direction", Vector2i.UP)
 	door.set(&"target_map", FOREST_GATE_MAP)
 	door.set(&"target_spawn", FOREST_GATE_TARGET)
-	door.set(&"arrival_facing", Vector2i.DOWN)
+	# « À venir » : retour devant la porte, tourné vers le sud ; poste : on entre vers le nord.
+	door.set(&"arrival_facing", Vector2i.DOWN if not FOREST_GATE_SOON.is_empty() else Vector2i.UP)
 	door.set(&"coming_soon", FOREST_GATE_SOON)
 	_attach(root, root.get_node(^"Warps"), door)
 

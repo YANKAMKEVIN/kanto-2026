@@ -1,5 +1,6 @@
 extends SceneTree
 ## Mesure de la mémoire des textures sur le trajet Bourg Palette → Route 1 → Jadielle → Route 2
+## → poste sud → Forêt de Jade (T19)
 ## (jalon 9 T18, jalon-09.md §2.8.6) : cache de cartes du SceneRouter **borné** (carte courante
 ## et voisines par warps) contre l'ancien comportement (toute carte chargée gardée pour la
 ## session, émulé ici en retenant chaque scène que le routeur a eue en cache).
@@ -20,6 +21,9 @@ const STEPS: Array[Array] = [
 	[&"route_1", &"from_pallet_w"],
 	[&"viridian_city", &"from_route_1_w"],
 	[&"route_2", &"from_viridian_c"],
+	# Jalon 9 (T19) : la montée dans la Forêt de Jade.
+	[&"viridian_forest_gate_south", &"from_route_2"],
+	[&"viridian_forest", &"from_gate_south"],
 ]
 ## Images attendues après chaque étape (textures envoyées, préchargements finis).
 const SETTLE_FRAMES: int = 20

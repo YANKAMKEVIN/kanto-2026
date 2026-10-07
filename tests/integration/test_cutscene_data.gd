@@ -26,6 +26,8 @@ extends GutTest
 const MAPS: Array[StringName] = [
 	&"player_house_2f", &"player_house_1f", &"rival_house", &"oak_lab", &"pallet_town",
 	&"route_1", &"viridian_city", &"route_22", &"viridian_mart", &"route_2",
+	# Jalon 9 (T19) : déclencheurs des objets cachés de la forêt.
+	&"viridian_forest",
 ]
 ## Jalon 7 (T18) : partie qui revient au labo avec le colis (rival parti après le combat).
 const PARCEL_FLAGS: Array[StringName] = [
@@ -79,13 +81,8 @@ const CODE_PLAYED: Dictionary[StringName, StringName] = {
 	&"viridian_forest_item_5": &"viridian_forest",
 }
 ## Scènes à déclencheur dont la carte n'est pas encore construite → leur carte (simulées sur les
-## PNJ de son fichier). Jalon 9 : objets cachés de la forêt, déclencheurs posés au T19 par
-## `tools/build_viridian_forest.gd` ; **vider au T19** (le test les exige alors sur la carte).
-const AWAITING_MAP: Dictionary[StringName, StringName] = {
-	&"viridian_forest_item_3": &"viridian_forest",
-	&"viridian_forest_item_4": &"viridian_forest",
-	&"viridian_forest_item_6": &"viridian_forest",
-}
+## PNJ de son fichier). Vidée au T19 du jalon 9 (la forêt existe).
+const AWAITING_MAP: Dictionary[StringName, StringName] = {}
 
 var _cutscenes: CutsceneLibrary
 var _dialogues: DialogueLibrary

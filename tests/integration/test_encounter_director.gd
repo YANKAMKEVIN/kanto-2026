@@ -414,6 +414,55 @@ func test_real_route_2_grass_runs_the_route_2_table_in_h1_h2_h3() -> void:
 		await wait_until(func() -> bool: return not director.is_running(), 3.0)
 
 
+# --- Forêt de Jade (jalon 9, T19) : la vraie carte et la vraie table `viridian_forest` --------
+
+## Dans chacune des quatre zones d'herbes de la forêt (H1 à l'entrée, H2 à l'ouest, H3
+## obligatoire, H4 au nord-ouest), un pas depuis l'herbe rase ou le sentier avec un tirage gagnant
+## lance Chenipan Nv. 3 (1er emplacement de data/encounters/viridian_forest.json, niveaux [3, 5]).
+## [départ, direction, case d'herbe] ; départs hors des hautes herbes.
+const FOREST_GRASS_STEPS: Array = [
+	[Vector2i(41, 66), Vector2i.RIGHT, Vector2i(42, 66)],
+	[Vector2i(8, 53), Vector2i.LEFT, Vector2i(7, 53)],
+	[Vector2i(13, 35), Vector2i.RIGHT, Vector2i(14, 35)],
+	[Vector2i(4, 12), Vector2i.RIGHT, Vector2i(5, 12)],
+]
+
+
+func test_real_viridian_forest_grass_runs_the_forest_table_in_h1_to_h4() -> void:
+	var library := EncounterLibrary.new(_data)
+	library.load_dir()
+	assert_true(library.has_table(&"viridian_forest", &"grass"), "table viridian_forest")
+	for spec: Array in FOREST_GRASS_STEPS:
+		var map := (load("res://game/world/maps/viridian_forest.tscn") as PackedScene) \
+			.instantiate() as GameMap
+		add_child_autofree(map)
+		var start: Vector2i = spec[0]
+		var grass: Vector2i = spec[2]
+		assert_false(map.get_grid().is_tall_grass(start), "départ hors herbe %s" % start)
+		assert_false(map.get_grid().is_solid(start), "départ praticable %s" % start)
+		assert_true(map.get_grid().is_tall_grass(grass), "hautes herbes en %s" % grass)
+		var player := (load(PLAYER_SCENE) as PackedScene).instantiate() as Player
+		map.get_entities().add_child(player)
+		player.enter_map(map.get_grid(), start, spec[1], map.get_pixel_rect())
+		var fake := FakeBattleDirector.new()
+		fake.speed_scale = 0.0
+		add_child_autofree(fake)
+		var director := EncounterDirector.new()
+		add_child_autofree(director)
+		director.setup(library, _data, _state, player, fake, _router, null)
+		director.set_map(map)
+		_state.rng = ScriptedRng.new(WIN_ROLLS.duplicate())
+		player.script_step(spec[1])
+		await wait_until(func() -> bool: return director.is_running(), 3.0)
+		assert_eq(fake.runs, 1, "rencontre en %s" % grass)
+		assert_eq(player.get_cell(), grass)
+		if fake.last_request != null:
+			var foe := fake.last_request.foe_party.get_lead()
+			assert_eq(foe.species_id, &"caterpie", "1er emplacement en %s" % grass)
+			assert_eq(foe.level, 3)
+		await wait_until(func() -> bool: return not director.is_running(), 3.0)
+
+
 # --- Outils --------------------------------------------------------------------------
 
 ## Un seul pas (scripté, entrées libres) dans la première case d'herbe (5, 5), pour éprouver

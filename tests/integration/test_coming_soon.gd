@@ -1,11 +1,12 @@
 extends GutTest
 ## Destination provisoire (jalon 5, dossier-07 §12) avec la vraie scène Boot, l'autoload
-## SceneRouter (fondus raccourcis) et un [SaveSystem] en mémoire. Depuis le jalon 8 (T5,
-## jalon-08.md §2.2) : la porte du poste de la Route 2 (STEP_ON ↑) mène à « FORÊT DE JADE — À
-## venir » (build de développement, libellé en majuscules, « Ê » compris), puis ramène le joueur
-## devant la porte, tourné vers le sud. Rien n'est sauvegardé pendant l'écran, aucun titre de
-## zone, aucune carte « viridian_forest » découverte ; en release, la porte est inerte.
-## (Jalon 5 : bord nord de la Route 1 ; jalon 7 : sortie nord de Jadielle, devenue la Route 2.)
+## SceneRouter (fondus raccourcis) et un [SaveSystem] en mémoire. Depuis le jalon 9 (T19,
+## jalon-09.md §2.7.2) : la porte nord du poste nord de la Forêt de Jade (STEP_ON ↑) mène à
+## « ROUTE 2 NORD — À venir » (build de développement, libellé en majuscules), puis ramène le
+## joueur sous l'ouverture, tourné vers le sud. Rien n'est sauvegardé pendant l'écran, aucun
+## titre de zone, aucune nouvelle carte découverte ; en release, la porte est inerte.
+## (Jalon 5 : bord nord de la Route 1 ; jalon 7 : sortie nord de Jadielle ; jalon 8 : porte du
+## poste de la Route 2, devenue le passage vers le poste sud.)
 
 const MemoryFs := preload("res://tests/helpers/memory_file_system.gd")
 const FixedClock := preload("res://tests/helpers/fixed_clock.gd")
@@ -14,9 +15,10 @@ const SAVE_PATH := "user://test_coming_soon_save.json"
 const FADE := 0.05
 const HOLD := 0.3
 const TIMEOUT := 12.0
-## Porte du poste et case devant (spawn `from_forest_gate`), jalon-08.md §1.1.
-const GATE := Vector2i(20, 8)
-const GATE_FRONT := Vector2i(20, 9)
+## Porte nord du poste nord et case devant (spawn `north_door`), jalon-09.md §2.7.2.
+const MAP := &"viridian_forest_gate_north"
+const GATE := Vector2i(4, 1)
+const GATE_FRONT := Vector2i(4, 2)
 
 var _fs: MemoryFs
 var _save: SaveSystem
@@ -44,12 +46,12 @@ func after_each() -> void:
 		Input.action_release(action)
 
 
-## Boot sur la Route 2, devant la porte du poste (une case sous la porte), tourné vers le nord.
+## Boot dans le poste nord, sous l'ouverture nord (une case sous la porte), tourné vers le nord.
 func _start_at_the_gate() -> void:
 	_boot = BOOT_SCENE.instantiate() as Boot
 	_boot.save_system = _save
-	_boot.start_map = &"route_2"
-	_boot.start_spawn = &"from_forest_gate"
+	_boot.start_map = MAP
+	_boot.start_spawn = &"north_door"
 	_boot.start_facing = Vector2i.UP
 	add_child_autofree(_boot)
 	_player = _boot.get_player()
@@ -82,20 +84,21 @@ func test_the_gate_shows_the_coming_soon_screen_then_returns_facing_south() -> v
 	_boot.zone_announced.connect(func(zone: String, _region: String) -> void:
 		zones.append(zone))
 	await _walk_into_the_gate()
-	assert_eq(screen.get_label().text, "FORÊT DE JADE — À venir")
+	assert_eq(screen.get_label().text, "ROUTE 2 NORD — À venir")
 	assert_true(_boot.get_fade().is_opaque() or _boot.get_fade().get_alpha() > 0.5,
 		"sous le rideau")
 	assert_false(_player.is_input_enabled(), "joueur bloqué pendant l'écran")
 	await wait_until(func() -> bool: return not screen.is_showing(), TIMEOUT)
 	await wait_until(func() -> bool: return not SceneRouter.is_transitioning(), TIMEOUT)
-	assert_eq(_boot.get_map().map_id, &"route_2", "retour sur la Route 2")
+	assert_eq(_boot.get_map().map_id, MAP, "retour dans le poste nord")
 	assert_eq(_player.get_cell(), GATE_FRONT, "devant la porte")
 	assert_eq(_player.get_facing(), Vector2i.DOWN, "tourné vers le sud")
 	assert_true(_player.is_input_enabled(), "joueur libre")
 	assert_false(_boot.get_fade().is_opaque())
 	assert_true(zones.is_empty(), "aucun titre de zone")
 	assert_false(_boot.get_hud().get_caption().is_showing())
-	assert_false(GameState.discovered_maps.has(&"viridian_forest"), "aucune forêt découverte")
+	assert_false(GameState.discovered_maps.has(&"route_2_north"), "aucune carte découverte")
+	assert_false(MapCatalog.has_map(&"route_2_north"), "la Route 2 nord n'existe pas encore")
 	assert_push_error_count(0)
 
 
@@ -128,9 +131,9 @@ func test_nothing_is_saved_during_the_screen_then_the_normal_autosave_applies() 
 	await wait_process_frames(3)
 	assert_eq(_writes(), 2, "écrit une fois la partie stable")
 	var saved: Variant = JSON.parse_string(_fs.files[SAVE_PATH])
-	assert_eq(saved.get("map"), "route_2")
+	assert_eq(saved.get("map"), String(MAP))
 	assert_eq(JsonFields.get_vector2i(saved, "cell"), GATE_FRONT, "case de retour")
-	assert_false((saved.get("discovered_maps", {}) as Dictionary).has("viridian_forest"))
+	assert_false((saved.get("discovered_maps", {}) as Dictionary).has("route_2_north"))
 
 
 func test_a_tap_shortens_the_screen() -> void:
@@ -158,4 +161,4 @@ func test_in_a_release_build_the_gate_is_inert() -> void:
 	assert_false(SceneRouter.is_transitioning())
 	assert_eq(_player.get_cell(), GATE, "sur la porte, rien ne se passe")
 	assert_true(_player.is_input_enabled())
-	assert_eq(_boot.get_map().map_id, &"route_2")
+	assert_eq(_boot.get_map().map_id, MAP)

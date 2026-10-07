@@ -383,3 +383,36 @@ func test_viridian_forest_grid_keeps_a_fraction_of_its_trees() -> void:
 		% [plan.size(), kept.size()])
 	assert_lte(kept.size(), plan.size())
 	assert_gt(float(kept.size()), plan.size() / 3.0, "la forêt reste presque partout à l'écran")
+
+
+## Repli du budget de nœuds (jalon 9 T19) : un `Sprite2D` par entrée, même image, même décalage,
+## même matériau que le sprite de la scène peinte, taille / miroir / teinte cuits.
+func test_place_sprites_makes_one_sprite_per_entry_like_the_painted_scene() -> void:
+	var entries: Array[Dictionary] = [
+		{"kind": DenseForest.KIND_TREE, "id": &"tree_foret_03", "foot": Vector2(2, 3),
+			"position": Vector2(192, 288), "scale": 0.9, "flip_h": true,
+			"tint": Color(0.8, 0.7, 0.9)},
+		{"kind": DenseForest.KIND_BUSH, "id": &"tree_foret_05", "foot": Vector2(4, 3),
+			"position": Vector2(384, 288), "scale": 0.5, "flip_h": false, "tint": Color.WHITE},
+	]
+	var parent := Node2D.new()
+	add_child_autofree(parent)
+	var nodes := DenseForest.place_sprites(entries, parent)
+	assert_eq(nodes.size(), 2)
+	assert_eq(parent.get_child_count(), 2, "un nœud par entrée")
+	var model := (load("res://game/world/props/painted/tree_foret_03.tscn") as PackedScene) \
+		.instantiate()
+	var source := model.get_node(^"Sprite") as Sprite2D
+	var tree := nodes[0]
+	assert_eq(tree.name, &"Forest000")
+	assert_eq(tree.get_child_count(), 0)
+	assert_eq(tree.texture, source.texture)
+	assert_eq(tree.offset, source.offset)
+	assert_eq(tree.centered, source.centered)
+	assert_eq(tree.material, source.material, "vent")
+	assert_eq(tree.position, Vector2(192, 288))
+	assert_eq(tree.scale, Vector2(0.9, 0.9))
+	assert_true(tree.flip_h)
+	assert_eq(tree.modulate, Color(0.8, 0.7, 0.9))
+	assert_eq(nodes[1].name, &"ForestBush000")
+	model.free()

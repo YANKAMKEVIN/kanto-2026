@@ -48,6 +48,9 @@
 		"player_house_1f": "interior_warm",
 		"rival_house": "interior_warm",
 		"oak_lab": "interior_warm",
-		"route_2": "golden_hour"
+		"route_2": "golden_hour",
+		"viridian_forest": "forest",
+		"viridian_forest_gate_south": "interior_warm",
+		"viridian_forest_gate_north": "interior_warm"
 	}
 }

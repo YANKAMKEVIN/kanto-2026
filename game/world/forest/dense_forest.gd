@@ -291,6 +291,65 @@ static func place(entries: Array[Dictionary], parent: Node,
 	return nodes
 
 
+## Comme [method place], mais **un seul `Sprite2D` par entrée** (`Forest000`,
+## `ForestBush000`…) au lieu d'une instance de scène `WorldProp` (deux nœuds) : repli du budget
+## de nœuds (jalon 9 T19, la Forêt de Jade ; jalon-09.md §2.7.4). Même image, même décalage
+## (pied à l'origine), même matériau (vent) que le sprite de la scène peinte ; taille, miroir et
+## teinte cuits dans le nœud. Rien ne se perd : les arbres de forêt n'ont ni emprise ni fondu.
+## Pas d'ombre de contact (la règle du J7 : aucune pour la végétation). Renvoie les nœuds créés.
+static func place_sprites(entries: Array[Dictionary], parent: Node,
+		owner_node: Node = null) -> Array[Sprite2D]:
+	var nodes: Array[Sprite2D] = []
+	var models: Dictionary = {}
+	var trees := 0
+	var bushes := 0
+	for entry: Dictionary in entries:
+		var id := String(entry["id"])
+		if not models.has(id):
+			models[id] = painted_sprite_model(StringName(id))
+		var model := models[id] as Sprite2D
+		if model == null:
+			push_error("DenseForest : scène absente pour « %s »" % id)
+			continue
+		var sprite := model.duplicate() as Sprite2D
+		if entry["kind"] == KIND_TREE:
+			sprite.name = "Forest%03d" % trees
+			trees += 1
+		else:
+			sprite.name = "ForestBush%03d" % bushes
+			bushes += 1
+		sprite.unique_name_in_owner = false
+		sprite.position = entry["position"]
+		var scale: float = entry["scale"]
+		sprite.scale = Vector2(scale, scale)
+		sprite.modulate = entry["tint"]
+		sprite.flip_h = entry["flip_h"]
+		parent.add_child(sprite)
+		if owner_node != null:
+			sprite.owner = owner_node
+		nodes.append(sprite)
+	for model: Variant in models.values():
+		if model != null:
+			(model as Sprite2D).free()
+	return nodes
+
+
+## Copie libre (hors arbre) du `Sprite` de la scène peinte [param id] (texture, décalage, matériau,
+## filtre), à placer au pied ; null si la scène manque. À libérer par l'appelant.
+static func painted_sprite_model(id: StringName) -> Sprite2D:
+	var packed := load(PROPS_DIR + String(id) + ".tscn") as PackedScene
+	if packed == null:
+		return null
+	var node := packed.instantiate()
+	var source := node.get_node_or_null(^"Sprite") as Sprite2D
+	var model: Sprite2D = null
+	if source != null:
+		model = source.duplicate() as Sprite2D
+		model.unique_name_in_owner = false
+	node.free()
+	return model
+
+
 ## Ombre de contact pré-floutée d'une entrée « contact » du catalogue (demi-résolution à
 ## l'échelle 2, coin haut gauche à « decalage » du pied), comme `tools/build_painted_props.gd`.
 static func contact_shadow(entry: Dictionary) -> Sprite2D:

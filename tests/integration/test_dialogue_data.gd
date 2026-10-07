@@ -33,13 +33,9 @@ const DOSSIER_09 := "res://docs/design/dossier-09-jadielle.md"
 const DOSSIER_10 := "res://docs/design/dossier-10-foret-de-jade.md"
 ## Gardes des postes de la Forêt de Jade (T6) : textes vérifiés par un test dédié.
 const GATE_GUARDS: Array[StringName] = [&"forest_gate_north_guard", &"forest_gate_south_guard"]
-## Dialogues pas encore posés sur une carte : le garde du poste nord arrive avec sa carte (T19) ;
-## les PNJ et les objets de la Forêt de Jade (données du T18) aussi : **vider au T19** (ajouter
-## alors `viridian_forest` et les postes à [constant MAPS]).
-const UNUSED_YET: Array[StringName] = [&"forest_gate_north_guard", &"forest_hiker",
-	&"forest_naturalist", &"viridian_forest_item_1", &"viridian_forest_item_2",
-	&"viridian_forest_item_3_found", &"viridian_forest_item_4_found", &"viridian_forest_item_5",
-	&"viridian_forest_item_6_found"]
+## Dialogues pas encore posés sur une carte (vidée au T19 du jalon 9 : la forêt et ses postes
+## sont dans [constant MAPS]).
+const UNUSED_YET: Array[StringName] = []
 ## Jalon 8 : textes T1–T16 validés (dossier 11, « Textes à valider ») ; dans son tableau, « / »
 ## marque le retour à la ligne de la bulle et le gras (« ** ») le titre d'un panneau.
 const DOSSIER_11 := "res://docs/design/dossier-11-route-2.md"
@@ -50,6 +46,8 @@ const MAPS: Array[StringName] = [
 	&"route_2",
 	# Jalon 9 (T6, T12) : carte de QA (le garde sud, les cinq Dresseurs).
 	&"qa_forest_systems",
+	# Jalon 9 (T19) : la Forêt de Jade et ses deux postes.
+	&"viridian_forest", &"viridian_forest_gate_south", &"viridian_forest_gate_north",
 ]
 ## Lot de textes validé par Kevin le 2026-10-06 (anciens brouillons : panneau, observations,
 ## soin de Maman, terminal du Stockage, portes de Jadielle…) : source des textes hors dossiers.
