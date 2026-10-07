@@ -157,11 +157,11 @@ func _begin(scenario: String) -> void:
 			_menu.show_team(_team_view(), 0)
 		"team", "team_sheet_moves", "team_history", "team_move_mode":
 			_team_scenario(scenario)
-		"dex_grid", "dex_sheet_caught", "dex_sheet_seen", "dex_habitat", "dex_search_empty", \
+		"dex_grid", "dex_sheet_caught", "dex_sheet_seen", "dex_habitat", "dex_habitat_route_2", "dex_search_empty", \
 		"dex_evolution", "dex_notes", "dex_planche", "dex_planche_023", "dex_planche_074", \
 		"dex_planche_095", "dex_planche_147", "dex_planche_unknown", "dex_planche_unknown_074":
 			_dex_scenario(scenario)
-		"map", "map_panel", "map_dex":
+		"map", "map_panel", "map_dex", "map_route_2":
 			_map_scenario(scenario)
 		"trainer", "trainer_dex", "trainer_empty", "trainer_badge":
 			_trainer_scenario(scenario)
@@ -311,6 +311,7 @@ func _dex_scenario(scenario: String) -> void:
 	dex.mark_caught(&"rattata", &"route_1", "2026-10-02T18:02:00")
 	dex.mark_seen(&"pidgey", &"route_1", "2026-10-02T18:10:00")
 	dex.mark_seen(&"charmeleon", &"route_1", "2026-10-02T18:20:00")
+	dex.mark_seen(&"pidgey", &"route_2", "2026-10-07T18:10:00")
 	PokedexNotes.refresh(dex, library, null)
 	var filter := PokedexQuery.Filter.ALL
 	var zone := &""
@@ -322,6 +323,10 @@ func _dex_scenario(scenario: String) -> void:
 		"dex_habitat":
 			filter = PokedexQuery.Filter.HABITAT
 			zone = &"route_1"
+			species = &"pidgey"
+		"dex_habitat_route_2":
+			filter = PokedexQuery.Filter.HABITAT
+			zone = &"route_2"
 			species = &"pidgey"
 		"dex_search_empty":
 			text = "zzz"
@@ -346,7 +351,7 @@ func _dex_scenario(scenario: String) -> void:
 			_menu.get_pokedex().get_scroll().scroll_vertical = maxi(
 				0, roundi(target.position.y) - 40)
 	match scenario:
-		"dex_habitat":
+		"dex_habitat", "dex_habitat_route_2":
 			sheet.select_tab(PokedexSheet.Tab.HABITAT)
 		"dex_evolution":
 			sheet.select_tab(PokedexSheet.Tab.EVOLUTION)
@@ -421,17 +426,26 @@ func _map_scenario(scenario: String) -> void:
 	state.discover_map(&"pallet_town")
 	state.discover_map(&"route_1")
 	state.set_player_location(&"pallet_town", Vector2i.ZERO, Vector2i.DOWN)
-	if scenario != "map":
+	if scenario == "map_route_2":
+		state.discover_map(&"viridian_city")
+		state.discover_map(&"route_2")
+		state.set_player_location(&"route_2", Vector2i(20, 50), Vector2i.UP)
+		for species: StringName in [&"rattata", &"pidgey", &"nidoran_f"]:
+			state.record_seen(species, &"route_2")
+		state.record_item_found(&"poke_ball", &"route_2")
+	elif scenario != "map":
 		for species: StringName in [&"rattata", &"pidgey", &"charmander", &"squirtle"]:
 			state.record_seen(species, &"route_1")
 		state.record_item_found(&"potion", &"route_1")
 		state.record_item_found(&"potion", &"route_1")
 		state.record_item_found(&"poke_ball", &"route_1")
 	var zone: StringName = &"pallet_town" if scenario == "map" else &"route_1"
+	if scenario == "map_route_2":
+		zone = &"route_2"
 	_menu.open_animated()
 	_menu.show_map(MapJournal.view(state, zones, illustration, zone))
 	_menu.show_map_zone(MapJournal.panel(zone, state, data, zones, items,
-		scenario == "map_dex"))
+		scenario == "map_dex" or scenario == "map_route_2"))
 	state.free()
 
 

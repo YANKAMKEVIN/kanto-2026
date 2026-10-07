@@ -36,8 +36,11 @@ Les dos des Pokémon du joueur en combat sont **rendus** à partir des modèles 
 
 ## 2. Ce que le projet en garde
 
-- **Les modèles ne sont pas versionnés** : ils restent dans `build/art/modeles/` (ignoré par
-  Git), sur le Mac de Kevin. Seuls les **rendus** (`assets/sprites/pokemon/battle_proto/dos3d_*.png`)
+- **Les modèles ne sont pas versionnés** : ils restent sur le Mac de Kevin, hors du dépôt, dans
+  `~/dev/kanto-2026-modeles/art-pokemon-pilote/modeles/` (déplacés là le 2026-10-07 depuis
+  `build/art/modeles/` de l'ancienne copie de travail `art-pokemon`, supprimée ; le même dossier
+  garde les autres sorties du pilote : `ia/`, `officiel/`, `s21_pilote2/`). On le passe en premier
+  argument de `tools/art/blender/rendre_lot.py`. Seuls les **rendus** (`assets/sprites/pokemon/battle_proto/dos3d_*.png`)
   et les **réglages** entrent dans le dépôt.
 - Les rendus restent des **œuvres dérivées** de modèles sous copyright ; ils ont le même statut
   que les artworks officiels (PokeAPI) et que tout le reste du remake.

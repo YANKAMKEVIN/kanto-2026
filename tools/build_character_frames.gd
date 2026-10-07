@@ -25,10 +25,17 @@ extends SceneTree
 ## les Pokémon du monde dans `assets/sprites/pokemon/painted/<espèce>_frames.tres`
 ## (`"sprite": "pokemon/<espèce>"`, choix explicite ; depuis DA.1 / DA.2, la Route 1 et Bourg
 ## Palette l'utilisent ; un simple `"pidgey"` reste provisoire).
+##
+## **Objets fixes** (jalon 8 §2.3, genre « objet fixe ») : une seule image du catalogue
+## (section « images », remplie par `images_objets` du manifeste) → `idle_down/left/right/up`,
+## une image chacune, sans marche ni course, dans `assets/sprites/objects/painted/<id>_frames.tres`
+## (`"sprite": "object/<id>"`) : la Poké Ball posée au sol (O1, O2 de la Route 2). Une image pas
+## encore préparée (absente du catalogue) est signalée et sautée, sans erreur.
 
 const CATALOGUE := "res://assets/world/catalogue.json"
 const CHARACTERS_DIR := "res://assets/sprites/characters/painted/"
 const POKEMON_DIR := "res://assets/sprites/pokemon/painted/"
+const OBJECTS_DIR := "res://assets/sprites/objects/painted/"
 ## Grid.WALK_STEP_DURATION, Grid.RUN_STEP_DURATION.
 const WALK_STEP := 0.27
 const RUN_STEP := 0.16
@@ -57,6 +64,8 @@ const LOOKS: Dictionary = {
 	"pecheur": [CHARACTERS_DIR, "haru", ""],
 	"chercheuse": [CHARACTERS_DIR, "maya", ""],
 	"chercheur": [CHARACTERS_DIR, "researcher", ""],
+	# J8 (série 10, Route 2) : P1, avec sa planche d'attente.
+	"randonneuse": [CHARACTERS_DIR, "hiker", ""],
 	"roucool": [POKEMON_DIR, "pidgey", ""],
 	"rattata": [POKEMON_DIR, "rattata", "rattata_run"],
 	"piafabec": [POKEMON_DIR, "spearow", ""],
@@ -68,6 +77,10 @@ const LOOKS: Dictionary = {
 	"bulbizarre": [POKEMON_DIR, "bulbasaur", ""],
 	"salameche": [POKEMON_DIR, "charmander", ""],
 	"carapuce": [POKEMON_DIR, "squirtle", ""],
+}
+## Objets fixes : image (catalogue, « images ») → identifiant de données (`object/<id>`).
+const FIXED_OBJECTS: Dictionary = {
+	"poke_ball_ground": "poke_ball_ground",
 }
 ## Planches lues seulement comme planche de course d'une autre.
 const RUN_ONLY: Array[String] = ["heros_run", "enfant_run", "rattata_run", "chen_run"]
@@ -107,7 +120,17 @@ func _init() -> void:
 		var idle: Dictionary = sheets.get(sheet_id + IDLE_SUFFIX, {})
 		_build(sheets[sheet_id], run, idle, String(look[0]) + String(look[1]) + "_frames.tres",
 			IDLE_FROM_WALK.get(sheet_id, {}))
-	print("build_character_frames : %d apparences, %d erreur(s)" % [LOOKS.size(), _errors])
+	var images: Dictionary = catalogue.get("images", {})
+	var objects := 0
+	for image_id: String in FIXED_OBJECTS:
+		if not images.has(image_id):
+			print("build_character_frames : objet « %s » pas encore préparé (sauté)" % image_id)
+			continue
+		_build_fixed_object(images[image_id], OBJECTS_DIR + String(FIXED_OBJECTS[image_id])
+			+ "_frames.tres")
+		objects += 1
+	print("build_character_frames : %d apparences, %d objet(s) fixe(s), %d erreur(s)"
+		% [LOOKS.size(), objects, _errors])
 	quit(1 if _errors > 0 else 0)
 
 
@@ -147,14 +170,37 @@ func _build(walk_sheet: Dictionary, run_sheet: Dictionary, idle_sheet: Dictionar
 		if run_texture != null:
 			_add_cycle(frames, StringName("run_" + dir), run_texture, run_cell, row,
 				4.0 / (2.0 * RUN_STEP))
+	_save(frames, path, "%s (%d × %d%s%s)" % [path, walk_cell.x, walk_cell.y,
+		", course" if not run_sheet.is_empty() else "",
+		", attente" if not idle_sheet.is_empty() else ""])
+
+
+## Objet fixe : la même image entière pour les quatre orientations d'attente.
+func _build_fixed_object(image: Dictionary, path: String) -> void:
+	var texture := load(image["fichier"]) as Texture2D
+	if texture == null:
+		push_error("build_character_frames : image « %s » introuvable" % image["fichier"])
+		_errors += 1
+		return
+	var frames := SpriteFrames.new()
+	frames.remove_animation(&"default")
+	for dir: String in ROWS:
+		var idle := StringName("idle_" + dir)
+		frames.add_animation(idle)
+		frames.set_animation_loop(idle, true)
+		frames.set_animation_speed(idle, 1.0)
+		frames.add_frame(idle, texture)
+	_save(frames, path, "%s (objet fixe, %d × %d)" % [path, texture.get_width(),
+		texture.get_height()])
+
+
+func _save(frames: SpriteFrames, path: String, report: String) -> void:
 	DirAccess.make_dir_recursive_absolute(ProjectSettings.globalize_path(path.get_base_dir()))
 	if ResourceSaver.save(frames, path) != OK:
 		push_error("build_character_frames : %s non écrit" % path)
 		_errors += 1
 	else:
-		print("%s (%d × %d%s%s)" % [path, walk_cell.x, walk_cell.y,
-			", course" if not run_sheet.is_empty() else "",
-			", attente" if not idle_sheet.is_empty() else ""])
+		print(report)
 
 
 func _add_cycle(frames: SpriteFrames, anim: StringName, texture: Texture2D, cell: Vector2,

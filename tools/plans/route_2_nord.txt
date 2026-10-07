@@ -1,0 +1,50 @@
+# Route 2 nord — grille fonctionnelle (jalon 10, dossier 12 §3 ; préparée le 2026-10-07 pour la
+# vue générale peinte d'Argenta). Même rôle et même format que route_2.txt.
+#
+# 30 × 24 cases ; nord en haut. Raccords : nord (14..16, 0) ↔ Argenta (17..19, 43) ;
+# sud : porte du mur nord du poste nord de la forêt (15, 21), STEP_ON ↓ → viridian_forest_gate_north.
+# Le poste est vu de dessus : seul son toit occupe le bas de la carte.
+#
+# Légende (en plus de celle de route_2.txt et argenta.txt) :
+#   E éboulis du sentier est, fermé (bloqué ; arbitrage 9)   e sentier peint derrière (bloqué)
+#
+# Format : section GRILLE (« NN » + espace + 30 caractères par rangée), puis POSITIONS.
+
+GRILLE 30 24
+00 TTTTTTTTTTTTTT===..KKKKKKKKKKK
+01 TTT...........===..KKKKKKKKKKK
+02 TTT...........===..KKKKKKKKKKK
+03 TTT......========..KKKKKKKKKKK
+04 TTThhhhhh========..KKKKKKKKKKK
+05 TTThhhhhh==xxx===..KKKKKKKKKKK
+06 TTThhhhhh==xxx===..KKKKKKKKKKK
+07 TTThhhhhh==xxx===..KKKKKKKKKKK
+08 TTThhhhhh==xxx===..KKKKKKKKKKK
+09 TTThhhhhh========..KKKKKKKKKKK
+10 TTT......========..KKKKKKKKKKK
+11 TTT........xxx===RRKKKKKKKKKKK
+12 TTT........xxx===RRKKKKKKKKKKK
+13 TTT........xxx===..KKKKKKKKKKK
+14 TTThhhhhh.....===.......TTTTTT
+15 TTThhhhhh.....===.......TTTTTT
+16 TTThhhhhh===============Eeeeee
+17 TTThhhhhh===============Eeeeee
+18 TTThhhhhh.....===..TTTTTTTTTTT
+19 TTThhhhhh.....===..TTTTTTTTTTT
+20 TTTTTTTTTTT...===..TTTTTTTTTTT
+21 TTTTTTTTTTTTPPPDPPPTTTTTTTTTTT
+22 TTTTTTTTTTTTPPPPPPPTTTTTTTTTTT
+23 TTTTTTTTTTTTPPPPPPPTTTTTTTTTTT
+FIN
+
+# POSITIONS (défauts du 2026-10-07, ajustables au plan du J10)
+POSITIONS
+warp_nord_w         warp           14,0         libre   # PUSH ↑ → pewter_city
+warp_nord_c         warp           15,0         libre
+warp_nord_e         warp           16,0         libre
+porte_poste         warp           15,21        libre   # STEP_ON ↓ → viridian_forest_gate_north
+examen_eboulis      examen         24,16..17    libre   # « Des éboulis bloquent le sentier. »
+montagnard          pnj            17,5..7      bloque  # aller-retour lent au bord du chemin
+potion              objet_visible  4,1          bloque  # détour par H2
+panneau_route       panneau        13,19        bloque  # « ROUTE 2 » en sortant du poste
+FIN

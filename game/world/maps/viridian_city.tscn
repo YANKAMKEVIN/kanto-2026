@@ -9327,32 +9327,32 @@ target_map = &"route_22"
 target_spawn = &"from_viridian"
 arrival_facing = Vector2i(-1, 0)
 
-[node name="Route2SoonW" type="Marker2D" parent="Warps" unique_id=2113690702]
+[node name="Route2W" type="Marker2D" parent="Warps" unique_id=2113690702]
 position = Vector2(2640, 192)
 script = ExtResource("57_cdjjy")
 trigger = 1
 direction = Vector2i(0, -1)
-target_spawn = &"route_2_soon_w"
-arrival_facing = Vector2i(0, 1)
-coming_soon = "Route 2"
+target_map = &"route_2"
+target_spawn = &"from_viridian_w"
+arrival_facing = Vector2i(0, -1)
 
-[node name="Route2SoonC" type="Marker2D" parent="Warps" unique_id=1192117804]
+[node name="Route2C" type="Marker2D" parent="Warps" unique_id=1192117804]
 position = Vector2(2736, 192)
 script = ExtResource("57_cdjjy")
 trigger = 1
 direction = Vector2i(0, -1)
-target_spawn = &"route_2_soon_c"
-arrival_facing = Vector2i(0, 1)
-coming_soon = "Route 2"
+target_map = &"route_2"
+target_spawn = &"from_viridian_c"
+arrival_facing = Vector2i(0, -1)
 
-[node name="Route2SoonE" type="Marker2D" parent="Warps" unique_id=1036936427]
+[node name="Route2E" type="Marker2D" parent="Warps" unique_id=1036936427]
 position = Vector2(2832, 192)
 script = ExtResource("57_cdjjy")
 trigger = 1
 direction = Vector2i(0, -1)
-target_spawn = &"route_2_soon_e"
-arrival_facing = Vector2i(0, 1)
-coming_soon = "Route 2"
+target_map = &"route_2"
+target_spawn = &"from_viridian_e"
+arrival_facing = Vector2i(0, -1)
 
 [node name="Interactables" type="Node2D" parent="." unique_id=1486317497]
 
@@ -9416,14 +9416,14 @@ position = Vector2(3504, 2112)
 [node name="from_route_22" type="Marker2D" parent="Spawns" unique_id=324689081]
 position = Vector2(48, 2208)
 
-[node name="route_2_soon_w" type="Marker2D" parent="Spawns" unique_id=1096223044]
-position = Vector2(2640, 384)
+[node name="from_route_2_w" type="Marker2D" parent="Spawns" unique_id=1096223044]
+position = Vector2(2640, 192)
 
-[node name="route_2_soon_c" type="Marker2D" parent="Spawns" unique_id=703005114]
-position = Vector2(2736, 384)
+[node name="from_route_2_c" type="Marker2D" parent="Spawns" unique_id=703005114]
+position = Vector2(2736, 192)
 
-[node name="route_2_soon_e" type="Marker2D" parent="Spawns" unique_id=1441148827]
-position = Vector2(2832, 384)
+[node name="from_route_2_e" type="Marker2D" parent="Spawns" unique_id=1441148827]
+position = Vector2(2832, 192)
 
 [node name="Triggers" type="Node2D" parent="." unique_id=896312990]
 

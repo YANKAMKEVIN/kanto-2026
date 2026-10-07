@@ -77,3 +77,52 @@ func test_flee_path_stops_when_no_step_increases_distance() -> void:
 
 func test_flee_path_null_grid_is_empty() -> void:
 	assert_eq(AmbientRules.flee_path(null, Vector2i(1, 1), Vector2i(4, 4), 3).size(), 0)
+
+
+# --- Rattata de la Route 2 (jalon 8 T7) : grille de la vraie carte --------------------------
+
+func _route_2_map() -> GameMap:
+	var map := (load("res://game/world/maps/route_2.tscn") as PackedScene).instantiate() as GameMap
+	add_child_autofree(map)
+	return map
+
+
+## Le clairière du Rattata (cases 11..16 × 40..44) : la fuite n'en sort jamais.
+func test_route_2_rattata_flees_to_its_niche_behind_the_bushes() -> void:
+	var map := _route_2_map()
+	var grid := map.get_grid()
+	var rattata := NpcRoster.load_for_map(&"route_2").get_spec(&"rattata")
+	assert_eq(rattata.cell, Vector2i(15, 44))
+	assert_eq(rattata.shy_radius, 2)
+	var niche := Vector2i(16, 44)
+	var npc := map.get_npc(&"rattata")
+	# Le joueur arrive de l'ouest vers la souche (14, 42) : il passe en (14, 43).
+	var path := AmbientRules.flee_path(grid, rattata.cell, Vector2i(14, 43), 3, npc)
+	var end := rattata.cell
+	for direction: Vector2i in path:
+		end += direction
+	assert_eq(end, niche, "fuite finie sur la niche, contre les buissons du sud")
+	assert_false(grid.is_free(niche + Vector2i.DOWN), "buissons au sud de la niche")
+	assert_true(grid.is_solid(niche + Vector2i.RIGHT))
+
+
+func test_route_2_rattata_never_leaves_its_clearing_whatever_the_approach() -> void:
+	var map := _route_2_map()
+	var grid := map.get_grid()
+	var rattata := NpcRoster.load_for_map(&"route_2").get_spec(&"rattata")
+	var npc := map.get_npc(&"rattata")
+	var checked := 0
+	for dy: int in range(-2, 3):
+		for dx: int in range(-2, 3):
+			var player := rattata.cell + Vector2i(dx, dy)
+			if absi(dx) + absi(dy) > rattata.shy_radius or player == rattata.cell \
+					or not grid.is_free(player):
+				continue
+			checked += 1
+			var end := rattata.cell
+			for direction: Vector2i in AmbientRules.flee_path(grid, end, player, 3, npc):
+				end += direction
+				assert_false(grid.is_tall_grass(end), "pas d'herbes hautes en %s" % end)
+				assert_true(Rect2i(11, 40, 6, 5).has_point(end),
+					"approche %s : %s reste dans la clairière" % [player, end])
+	assert_gt(checked, 3)

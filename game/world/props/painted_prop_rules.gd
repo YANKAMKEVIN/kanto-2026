@@ -112,6 +112,12 @@ const RULES: Dictionary[StringName, Dictionary] = {
 	&"bldg_serre_01": {"shadow": true, "width": 3, "depth": 2, "fade": true},
 	&"tree_ancien_01": {"width": 4, "depth": 3, "wind": true, "fade": true},
 	&"prop_cloture_piquets_01": {"width": 4, "depth": 1},
+	# --- Série 10 : Route 2 (docs/tech/jalon-08.md §1.2). Poste : la case d'ancre (milieu du bas)
+	# est la porte, ouverte ; la carte y pose le passage vers la forêt. ---
+	&"bldg_poste_foret_01": {"shadow": true, "width": 7, "depth": 4, "fade": true,
+		"open": [Vector2i(0, 0)]},
+	&"prop_grande_pierre_01": {"width": 3, "depth": 2},
+	&"prop_cloture_piquets_01_court": {"width": 3, "depth": 1},
 	&"prop_velo_01": {"width": 1, "depth": 1},
 	&"prop_camionnette_01": {"width": 3, "depth": 2},
 	# Posés à plat dans la couche du sol, on marche dessus : champ, ponton, escalier en bois.

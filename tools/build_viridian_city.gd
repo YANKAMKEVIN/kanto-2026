@@ -12,7 +12,7 @@ extends SceneTree
 ## agrandit et on suit la **composition de la référence** `jadielle-vue-generale-v1.webp`,
 ## **sans eau** (dossier 09 §1 : ville dans les terres, bordée de forêt et de relief). La place
 ## est au **centre**. Trois niveaux reliés par des escaliers de ville :
-## - **niveau haut** (rangées 1–11) : l'**arche nord** et la rue vers la Route 2 (« à venir »),
+## - **niveau haut** (rangées 1–11) : l'**arche nord** et la rue vers la Route 2 (jalon 8),
 ##   l'**Arène fermée** au nord-ouest sur sa terrasse (parvis pavé, escalier qui descend), deux
 ##   maisons à jardins clos, chemins de terre, belvédère à l'est ;
 ## - mur de soutènement à garde-corps (rangée 12), deux escaliers (Arène, rue nord) ;
@@ -312,13 +312,14 @@ const WARPS: Array = [
 	["Route22S", Vector2i(0, 23), PUSH, Vector2i.LEFT, &"route_22", &"from_viridian",
 		Vector2i.LEFT],
 ]
-## Sortie nord « à venir » (build de développement, dossier 09 §11) : [nœud, case, spawn de
-## retour]. Le libellé est COMING_SOON_LABEL.
-const COMING_SOON_LABEL := "Route 2"
-const SOON_WARPS: Array = [
-	["Route2SoonW", Vector2i(27, 1), &"route_2_soon_w"],
-	["Route2SoonC", Vector2i(28, 1), &"route_2_soon_c"],
-	["Route2SoonE", Vector2i(29, 1), &"route_2_soon_e"],
+## Sortie nord vers la Route 2 (jalon 8 T5, jalon-08.md §2.1 ; avant : « ROUTE 2 — À venir ») :
+## [nœud, case, spawn de la Route 2]. PUSH ↑, arrivée tournée ↑ ; rangée 0 toujours bloquée.
+## **Ne pas relancer l'outil pour ce seul changement** : la scène a été modifiée à la main sur
+## ces six nœuds (warps et spawns), `test_viridian_city` compare la scène à ces constantes.
+const NORTH_WARPS: Array = [
+	["Route2W", Vector2i(27, 1), &"from_viridian_w"],
+	["Route2C", Vector2i(28, 1), &"from_viridian_c"],
+	["Route2E", Vector2i(29, 1), &"from_viridian_e"],
 ]
 ## Points d'apparition.
 const SPAWNS: Dictionary = {
@@ -327,10 +328,10 @@ const SPAWNS: Dictionary = {
 	"from_center": Vector2i(21, 21),
 	"from_mart": Vector2i(36, 21),
 	"from_route_22": Vector2i(0, 22),
-	# Retour de l'écran « ROUTE 2 — À venir » : devant l'arche, tourné vers le sud.
-	"route_2_soon_w": Vector2i(27, 3),
-	"route_2_soon_c": Vector2i(28, 3),
-	"route_2_soon_e": Vector2i(29, 3),
+	# Arrivée depuis la Route 2 (jalon 8 T5) : sur les cases du passage, tournée vers le sud.
+	"from_route_2_w": Vector2i(27, 1),
+	"from_route_2_c": Vector2i(28, 1),
+	"from_route_2_e": Vector2i(29, 1),
 }
 ## Points d'examen : [nœud, ancre (bas-gauche), taille, orientation exigée, dialogue].
 ## La porte de l'Arène (deux cases du bas de son emprise, au milieu).
@@ -928,16 +929,16 @@ func _add_warps(root: Node) -> void:
 		point.set(&"target_spawn", entry[5])
 		point.set(&"arrival_facing", entry[6])
 		_attach(root, root.get_node(^"Warps"), point)
-	for entry: Array in SOON_WARPS:
+	for entry: Array in NORTH_WARPS:
 		var point := Marker2D.new()
 		point.set_script(warp_script)
 		point.name = entry[0]
 		point.position = _world(entry[1])
 		point.set(&"trigger", PUSH)
 		point.set(&"direction", Vector2i.UP)
-		point.set(&"coming_soon", COMING_SOON_LABEL)
+		point.set(&"target_map", &"route_2")
 		point.set(&"target_spawn", entry[2])
-		point.set(&"arrival_facing", Vector2i.DOWN)
+		point.set(&"arrival_facing", Vector2i.UP)
 		_attach(root, root.get_node(^"Warps"), point)
 
 
