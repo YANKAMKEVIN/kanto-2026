@@ -1,5 +1,5 @@
 {
-	"_doc": "Réglages du rendu de dos de chaque Pokémon (tools/art/blender/rendre_lot.py). modele et images : relatifs au dossier des modèles extraits (build/art/modeles, non versionné) ; source : page de l'asset sur The Models Resource (voir docs/design/fiches-assets/provenance-modeles-3d.md). Options passées telles quelles à rendre_pokemon.py.",
+	"_doc": "Réglages du rendu de dos de chaque Pokémon (tools/art/blender/rendre_lot.py). modele et images : relatifs au dossier des modèles extraits (~/dev/kanto-2026-modeles/art-pokemon-pilote/modeles, hors du dépôt) ; source : page de l'asset sur The Models Resource (voir docs/design/fiches-assets/provenance-modeles-3d.md). Options passées telles quelles à rendre_pokemon.py.",
 	"001": {"nom": "Bulbizarre", "source": "https://models.spriters-resource.com/3ds/pokemonxy/asset/292105/",
 		"modele": "bulbizarre/Pokemon XY/Bulbasaur/Bulbasaur.SMD", "images": "bulbizarre/Pokemon XY/Bulbasaur/images",
 		"options": {"pose": "bras=0,avant=0"}},
