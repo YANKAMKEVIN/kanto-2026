@@ -226,6 +226,8 @@ func _settings_scenario(scenario: String) -> void:
 			return
 	var view := SettingsViews.build(settings, GameSettings.Graphics.HIGH,
 		scenario != "settings_no_save")
+	# Comme Boot : le lieu dans le bandeau d'état (MM.3).
+	_menu.set_zone_name("Route 1")
 	_menu.open_animated()
 	_menu.show_settings(view)
 	var screen := _menu.get_settings()
@@ -237,7 +239,11 @@ func _settings_scenario(scenario: String) -> void:
 		"settings_graphics":
 			screen.select_category(SettingsViews.CATEGORY_GRAPHICS)
 		"settings_save":
+			screen.select_category(SettingsViews.CATEGORY_GAME)
 			screen.show_save_result("Partie sauvegardée — 14 h 32")
+		_:
+			# L'écran garde la catégorie du scénario précédent : JEU par défaut.
+			screen.select_category(SettingsViews.CATEGORY_GAME)
 
 
 ## Un doigt posé (et tiré un peu) dans le viewport : le joystick apparaît, pour la capture.

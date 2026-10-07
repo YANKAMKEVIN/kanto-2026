@@ -7,6 +7,10 @@ extends GutTest
 const MENU_SCENE := "res://game/ui/menu/trainer_menu.tscn"
 const WIDTHS: Array[int] = [1920, 2340]
 const HEIGHT := 1080
+## Les lignes de COMMANDES tiennent dans 1080 px depuis le MM.3 (lignes plus serrées) : les tests
+## « toucher ou défilement » prennent un écran plus bas pour que la liste défile (texte Grande,
+## écran plus petit).
+const SHORT_HEIGHT := 800
 
 var _changes: Array = []
 var _saves: int = 0
@@ -36,9 +40,9 @@ func _view() -> SettingsView:
 	return SettingsViews.build(_settings, GameSettings.Graphics.HIGH, _can_save)
 
 
-func _screen_in(width: int = 2340) -> SettingsScreen:
+func _screen_in(width: int = 2340, height: int = HEIGHT) -> SettingsScreen:
 	var viewport := SubViewport.new()
-	viewport.size = Vector2i(width, HEIGHT)
+	viewport.size = Vector2i(width, height)
 	viewport.render_target_update_mode = SubViewport.UPDATE_DISABLED
 	add_child_autofree(viewport)
 	_menu = (load(MENU_SCENE) as PackedScene).instantiate() as TrainerMenu
@@ -84,7 +88,7 @@ func test_four_categories_in_order_without_audio() -> void:
 		order.append(id)
 	assert_eq(order, [SettingsViews.CATEGORY_GAME, SettingsViews.CATEGORY_CONTROLS,
 		SettingsViews.CATEGORY_ACCESSIBILITY, SettingsViews.CATEGORY_GRAPHICS] as Array[StringName])
-	for title: String in ["JEU", "COMMANDES", "ACCESSIBILITÉ", "GRAPHISMES"]:
+	for title: String in ["Jeu", "Commandes", "Accessibilité", "Graphismes"]:
 		assert_true(texts.has(title), title)
 	for text: String in texts:
 		var low := text.to_lower()
@@ -116,53 +120,75 @@ func test_toggle_on_emits_false() -> void:
 func test_choice_emits_option_value_not_rank() -> void:
 	var screen := await _screen_in()
 	var row := screen.get_row(GameSettings.TEXT_SPEED) as SettingChoice
-	var buttons := row.get_option_buttons()
-	assert_eq(buttons.size(), 4)
-	assert_eq(buttons[row.get_selected_index()].text, "Normale")
-	buttons[3].pressed.emit()
+	assert_eq(row.get_value_text(), "Normale", "sélecteur « ‹ Normale › »")
+	row.get_next_button().pressed.emit()
 	assert_eq(_changes.size(), 1)
 	assert_eq(_changes[0][0], GameSettings.TEXT_SPEED)
-	assert_eq(_changes[0][1], GameSettings.TextSpeed.INSTANT)
-	assert_eq(buttons[row.get_selected_index()].text, "Normale", "pas de nouvel état sans la vue")
+	assert_eq(_changes[0][1], GameSettings.TextSpeed.FAST, "valeur de l'option suivante")
+	assert_eq(row.get_value_text(), "Normale", "pas de nouvel état sans la vue")
+	row.get_prev_button().pressed.emit()
+	assert_eq(_changes[1], [GameSettings.TEXT_SPEED, GameSettings.TextSpeed.SLOW])
 
 
 func test_choice_with_float_values() -> void:
 	var screen := await _screen_in()
 	await _open(screen, SettingsViews.CATEGORY_CONTROLS)
 	var row := screen.get_row(GameSettings.JOYSTICK_SCALE) as SettingChoice
-	row.get_option_buttons()[2].pressed.emit()
+	row.get_next_button().pressed.emit()
 	assert_eq(_changes.size(), 1)
 	assert_eq(_changes[0][0], GameSettings.JOYSTICK_SCALE)
 	assert_almost_eq(float(_changes[0][1]), 1.2, 0.0001)
 	await _open(screen, SettingsViews.CATEGORY_CONTROLS)
-	var buttons := (screen.get_row(GameSettings.BUTTON_SCALE) as SettingChoice).get_option_buttons()
-	buttons[1].pressed.emit()
+	(screen.get_row(GameSettings.BUTTON_SCALE) as SettingChoice).get_next_button().pressed.emit()
 	assert_almost_eq(float(_changes[1][1]), 1.2, 0.0001)
 
 
-func test_touching_the_chosen_option_does_nothing() -> void:
+func test_arrow_at_the_end_of_the_list_is_off_and_does_nothing() -> void:
+	_settings.text_speed = GameSettings.TextSpeed.INSTANT
 	var screen := await _screen_in()
 	var row := screen.get_row(GameSettings.TEXT_SPEED) as SettingChoice
+	assert_eq(row.get_value_text(), "Instantanée")
+	assert_true(row.get_next_button().disabled, "› éteinte sur la dernière option")
+	assert_false(row.get_prev_button().disabled)
+	assert_false(screen.get_touch_controls().has(row.get_next_button()))
 	_vibrations.clear()
-	row.get_option_buttons()[row.get_selected_index()].pressed.emit()
+	row.get_next_button().pressed.emit()
 	assert_true(_changes.is_empty())
 	assert_true(_vibrations.is_empty(), "pas de vibration non plus")
+	await _open(screen, SettingsViews.CATEGORY_ACCESSIBILITY)
+	var size := screen.get_row(GameSettings.TEXT_SIZE) as SettingChoice
+	assert_true(size.get_prev_button().disabled, "‹ éteinte sur la première option")
+	size.get_prev_button().pressed.emit()
+	assert_true(_changes.is_empty())
+
+
+func test_choice_is_a_selector_with_both_arrows_in_a_pill() -> void:
+	var screen := await _screen_in()
+	var row := screen.get_row(GameSettings.TEXT_SPEED) as SettingChoice
+	var selector := row.get_selector()
+	assert_eq(selector.theme_type_variation, &"SettingsPill")
+	for arrow: Button in row.get_arrow_buttons():
+		assert_true(selector.is_ancestor_of(arrow))
+		assert_gte(arrow.size.x, float(UiTokens.TOUCH_MIN) - 0.5)
+		assert_gte(arrow.size.y, float(UiTokens.TOUCH_MIN) - 0.5)
+	var prev := row.get_prev_button().get_global_rect()
+	var next := row.get_next_button().get_global_rect()
+	assert_lt(prev.position.x, next.position.x, "‹ à gauche, › à droite")
+	assert_true(screen.get_texts().has("Normale"))
+	for text: String in ["Lente", "Rapide", "Instantanée"]:
+		assert_false(screen.get_texts().has(text), "seule la valeur choisie est écrite : " + text)
 
 
 func test_graphics_choice_shows_auto_with_device_quality() -> void:
 	var screen := await _screen_in()
 	await _open(screen, SettingsViews.CATEGORY_GRAPHICS)
 	var row := screen.get_row(GameSettings.GRAPHICS) as SettingChoice
-	var labels: Array[String] = []
-	for button: Button in row.get_option_buttons():
-		labels.append(button.text)
-	assert_eq(labels.size(), 3)
-	assert_true(labels[0].begins_with("Auto"), labels[0])
-	assert_true(labels[0].contains("Élevée"), "Auto écrit ce qu'il choisit")
-	assert_eq(labels[1], "Élevée")
-	assert_eq(labels[2], "Économie")
-	row.get_option_buttons()[2].pressed.emit()
-	assert_eq(_changes, [[GameSettings.GRAPHICS, GameSettings.Graphics.ECO]])
+	var text := row.get_value_text()
+	assert_true(text.begins_with("Auto"), text)
+	assert_true(text.contains("Élevée"), "Auto écrit ce qu'il choisit")
+	assert_true(row.get_prev_button().disabled, "Auto est la première option")
+	row.get_next_button().pressed.emit()
+	assert_eq(_changes, [[GameSettings.GRAPHICS, GameSettings.Graphics.HIGH]])
 
 
 func test_slider_one_signal_on_release_on_a_step() -> void:
@@ -268,7 +294,7 @@ func test_updated_choice_shows_the_new_option() -> void:
 	_settings.text_speed = GameSettings.TextSpeed.FAST
 	_menu.show_settings(_view())
 	var row := screen.get_row(GameSettings.TEXT_SPEED) as SettingChoice
-	assert_eq(row.get_option_buttons()[row.get_selected_index()].text, "Rapide")
+	assert_eq(row.get_value_text(), "Rapide")
 
 
 func test_back_emits_one_signal() -> void:
@@ -381,8 +407,14 @@ func _controls_scrollable(screen: SettingsScreen) -> ScrollContainer:
 	return scroll
 
 
+## Défile [param scroll] jusqu'à [param control] (l'écran bas ne montre pas toute la liste).
+func _bring_into_view(scroll: ScrollContainer, control: Control) -> void:
+	scroll.ensure_control_visible(control)
+	await wait_process_frames(2)
+
+
 func test_vertical_swipe_from_a_switch_scrolls_and_changes_nothing() -> void:
-	var screen := await _screen_in()
+	var screen := await _screen_in(2340, SHORT_HEIGHT)
 	var scroll := await _controls_scrollable(screen)
 	var row := screen.get_row(GameSettings.HAPTICS) as SettingToggle
 	assert_not_null(row)
@@ -394,10 +426,10 @@ func test_vertical_swipe_from_a_switch_scrolls_and_changes_nothing() -> void:
 
 
 func test_vertical_swipe_from_a_choice_scrolls_and_changes_nothing() -> void:
-	var screen := await _screen_in()
+	var screen := await _screen_in(2340, SHORT_HEIGHT)
 	var scroll := await _controls_scrollable(screen)
 	var row := screen.get_row(GameSettings.JOYSTICK_SCALE) as SettingChoice
-	var option := row.get_option_buttons()[2]
+	var option := row.get_next_button()
 	var from := _center(option)
 	assert_true(scroll.get_global_rect().has_point(from), "l'option est visible")
 	_finger(screen).swipe(from, Vector2(0.0, -200.0))
@@ -407,7 +439,7 @@ func test_vertical_swipe_from_a_choice_scrolls_and_changes_nothing() -> void:
 
 
 func test_vertical_swipe_from_the_slider_scrolls_and_changes_nothing() -> void:
-	var screen := await _screen_in()
+	var screen := await _screen_in(2340, SHORT_HEIGHT)
 	var scroll := await _controls_scrollable(screen)
 	var track := (screen.get_row(GameSettings.JOYSTICK_OPACITY) as SettingSlider).get_track()
 	var from := _center(track) + Vector2(-100.0, 0.0)
@@ -419,9 +451,10 @@ func test_vertical_swipe_from_the_slider_scrolls_and_changes_nothing() -> void:
 
 
 func test_vertical_swipe_ending_back_on_the_control_still_scrolls_only() -> void:
-	var screen := await _screen_in()
+	var screen := await _screen_in(2340, SHORT_HEIGHT)
 	var scroll := await _controls_scrollable(screen)
 	var row := screen.get_row(GameSettings.HAPTICS) as SettingToggle
+	await _bring_into_view(scroll, row)
 	var from := _center(row)
 	assert_true(scroll.get_global_rect().has_point(from))
 	var finger := _finger(screen)
@@ -434,21 +467,24 @@ func test_vertical_swipe_ending_back_on_the_control_still_scrolls_only() -> void
 
 
 func test_short_tap_on_a_switch_emits_once() -> void:
-	var screen := await _screen_in()
+	var screen := await _screen_in(2340, SHORT_HEIGHT)
 	var scroll := await _controls_scrollable(screen)
 	var row := screen.get_row(GameSettings.HAPTICS) as SettingToggle
+	await _bring_into_view(scroll, row)
+	var before := scroll.scroll_vertical
 	assert_true(scroll.get_global_rect().has_point(_center(row)))
 	_finger(screen).tap(_center(row))
 	await wait_process_frames(2)
 	assert_eq(_changes.size(), 1, "un seul signal")
 	assert_eq(_changes[0][0], GameSettings.HAPTICS)
-	assert_eq(scroll.scroll_vertical, 0)
+	assert_eq(scroll.scroll_vertical, before, "un toucher ne défile pas")
 
 
 func test_tiny_wobble_still_counts_as_a_tap() -> void:
-	var screen := await _screen_in()
-	await _controls_scrollable(screen)
+	var screen := await _screen_in(2340, SHORT_HEIGHT)
+	var scroll := await _controls_scrollable(screen)
 	var row := screen.get_row(GameSettings.HAPTICS) as SettingToggle
+	await _bring_into_view(scroll, row)
 	var from := _center(row)
 	_finger(screen).swipe(from, Vector2(6.0, 8.0))
 	await wait_process_frames(2)
@@ -456,10 +492,10 @@ func test_tiny_wobble_still_counts_as_a_tap() -> void:
 
 
 func test_short_tap_on_a_choice_emits_once() -> void:
-	var screen := await _screen_in()
+	var screen := await _screen_in(2340, SHORT_HEIGHT)
 	var scroll := await _controls_scrollable(screen)
 	var row := screen.get_row(GameSettings.JOYSTICK_SCALE) as SettingChoice
-	var option := row.get_option_buttons()[2]
+	var option := row.get_next_button()
 	assert_true(scroll.get_global_rect().has_point(_center(option)))
 	_finger(screen).tap(_center(option))
 	await wait_process_frames(2)
@@ -468,16 +504,16 @@ func test_short_tap_on_a_choice_emits_once() -> void:
 
 
 func test_choice_works_again_after_a_cancelled_swipe() -> void:
-	var screen := await _screen_in()
+	var screen := await _screen_in(2340, SHORT_HEIGHT)
 	var scroll := await _controls_scrollable(screen)
 	var row := screen.get_row(GameSettings.JOYSTICK_SCALE) as SettingChoice
-	var option := row.get_option_buttons()[2]
+	var option := row.get_next_button()
 	_finger(screen).swipe(_center(option), Vector2(0.0, -150.0))
 	await wait_process_frames(2)
 	assert_true(_changes.is_empty())
 	scroll.scroll_vertical = 0
 	await wait_process_frames(2)
-	option = row.get_option_buttons()[2]
+	option = row.get_next_button()
 	assert_true(scroll.get_global_rect().has_point(_center(option)))
 	_finger(screen).tap(_center(option))
 	await wait_process_frames(2)
@@ -485,7 +521,7 @@ func test_choice_works_again_after_a_cancelled_swipe() -> void:
 
 
 func test_horizontal_swipe_on_the_slider_sets_it_without_scrolling() -> void:
-	var screen := await _screen_in()
+	var screen := await _screen_in(2340, SHORT_HEIGHT)
 	var scroll := await _controls_scrollable(screen)
 	var slider := screen.get_row(GameSettings.JOYSTICK_OPACITY) as SettingSlider
 	var track := slider.get_track()
@@ -503,7 +539,7 @@ func test_horizontal_swipe_on_the_slider_sets_it_without_scrolling() -> void:
 
 
 func test_short_tap_on_the_slider_sets_it_on_release() -> void:
-	var screen := await _screen_in()
+	var screen := await _screen_in(2340, SHORT_HEIGHT)
 	await _controls_scrollable(screen)
 	var track := (screen.get_row(GameSettings.JOYSTICK_OPACITY) as SettingSlider).get_track()
 	var rect := track.get_global_rect()

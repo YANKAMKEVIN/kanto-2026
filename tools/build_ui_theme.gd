@@ -94,8 +94,9 @@ extends SceneTree
 ##     DexSearch (LineEdit), DexTitle / DexName / DexNumber (Label), DexSpriteFrame (Panel)
 ##   TeamPill / TeamPillAccent  PanelContainer  « Favori » et consigne du mode DÉPLACER ;
 ##   TeamPillText / TeamPillAccentText  Label ; TeamEvoCircle  Panel
-##   Paramètres (T28) : SettingsCategory / SettingsRow / SettingsOption / SettingsAction (Button),
-##     SettingsRowBox (PanelContainer), SettingsPanelTitle / SettingsLabel / SettingsDetail /
+##   Paramètres (T28, MM.3) : SettingsCategory / SettingsRow[Last] / SettingsArrow (Button),
+##     SettingsRowBox[Last] / SettingsList / SettingsPill / SettingsActionRound (PanelContainer),
+##     SettingsPanelTitle / SettingsSubtitle / SettingsLabel / SettingsDetail / SettingsState /
 ##     SettingsValue (Label) ; ChoiceConfirm / ChoiceCancel (Button, carte de ChoiceCards),
 ##     ChoiceTitle / ChoiceDetail / ChoiceConfirmLabel / ChoiceConfirmDetail / ChoiceCancelLabel /
 ##     ChoiceCancelDetail (Label)
@@ -1269,14 +1270,31 @@ func _row_box(bg: Color, border: Color, width: int, pad_h: int, pad_v: int,
 	return box
 
 
+## Ligne de réglage (MM.3) : fond [param bg], filet SETTINGS_ROW_DIVIDER dessous sauf la dernière.
+func _settings_row(bg: Color, last: bool, t: GDScript) -> StyleBoxFlat:
+	var box := StyleBoxFlat.new()
+	box.bg_color = bg
+	box.border_color = t.SETTINGS_ROW_DIVIDER
+	box.border_width_bottom = 0 if last else t.SETTINGS_ROW_DIVIDER_WIDTH
+	box.anti_aliasing = true
+	box.set_content_margin(SIDE_LEFT, t.SETTINGS_ROW_PAD_H)
+	box.set_content_margin(SIDE_RIGHT, t.SETTINGS_ROW_PAD_H)
+	box.set_content_margin(SIDE_TOP, t.SETTINGS_ROW_PAD_V)
+	box.set_content_margin(SIDE_BOTTOM, t.SETTINGS_ROW_PAD_V)
+	return box
+
+
 func _add_settings_screen(theme: Theme, bold: Font, t: GDScript) -> void:
-	# Catégories : ligne translucide, sélectionnée = ACCENT (bouton à bascule).
-	var category := _row_box(t.SETTINGS_ROW_BG, Color(0, 0, 0, 0), 0, t.SETTINGS_ROW_PAD_H, 0, t)
+	# Catégories (MM.3) : verre léger, la choisie en ACCENT avec un halo (bouton à bascule).
+	var category := _row_box(t.SETTINGS_CATEGORY_BG, Color(0, 0, 0, 0), 0, t.SETTINGS_ROW_PAD_H,
+		0, t)
 	var category_on := _row_box(t.ACCENT, Color(0, 0, 0, 0), 0, t.SETTINGS_ROW_PAD_H, 0, t)
+	category_on.shadow_color = t.SETTINGS_CATEGORY_GLOW
+	category_on.shadow_size = t.SETTINGS_CATEGORY_GLOW_SIZE
 	_add_flat_button(theme, &"SettingsCategory", category, category_on)
 	theme.set_font(&"font", &"SettingsCategory", bold)
-	theme.set_font_size(&"font_size", &"SettingsCategory", t.FONT_BUTTON)
-	theme.set_constant(&"h_separation", &"SettingsCategory", t.GAP)
+	theme.set_font_size(&"font_size", &"SettingsCategory", t.SETTINGS_CATEGORY_FONT)
+	theme.set_constant(&"h_separation", &"SettingsCategory", t.GAP + 8)
 	theme.set_constant(&"icon_max_width", &"SettingsCategory", t.SETTINGS_CATEGORY_ICON)
 	for state: StringName in [&"font_color", &"font_hover_color", &"font_focus_color",
 			&"icon_normal_color", &"icon_hover_color", &"icon_focus_color"]:
@@ -1285,44 +1303,51 @@ func _add_settings_screen(theme: Theme, bold: Font, t: GDScript) -> void:
 			&"icon_pressed_color", &"icon_hover_pressed_color"]:
 		theme.set_color(state, &"SettingsCategory", t.ACCENT_TEXT)
 
-	# Ligne d'interrupteur (touchable en entier) et ligne de texte d'un choix / curseur.
-	var row := _row_box(t.SETTINGS_ROW_BG, Color(0, 0, 0, 0), 0, t.SETTINGS_ROW_PAD_H,
-		t.SETTINGS_ROW_PAD_V, t)
-	var row_pressed := _row_box(t.tinted(t.ACCENT, 0.25), t.ACCENT, t.BORDER_WIDTH,
-		t.SETTINGS_ROW_PAD_H, t.SETTINGS_ROW_PAD_V, t)
-	_add_flat_button(theme, &"SettingsRow", row, row_pressed)
-	theme.set_type_variation(&"SettingsRowBox", &"PanelContainer")
-	theme.set_stylebox(&"panel", &"SettingsRowBox", row)
+	# Lignes (MM.3) : sans fond, un filet dessous (pas sous la dernière : variante « Last ») ;
+	# l'interrupteur et l'action sont des boutons (toute la ligne), teintés d'ACCENT à l'appui.
+	for last: bool in [false, true]:
+		var row := _settings_row(t.SETTINGS_ROW_BG, last, t)
+		var row_pressed := _settings_row(t.SETTINGS_ROW_PRESSED_BG, last, t)
+		var suffix := "Last" if last else ""
+		_add_flat_button(theme, StringName("SettingsRow" + suffix), row, row_pressed)
+		theme.set_type_variation(StringName("SettingsRowBox" + suffix), &"PanelContainer")
+		theme.set_stylebox(&"panel", StringName("SettingsRowBox" + suffix), row)
+	# Carte intérieure qui porte les lignes.
+	var list := _glass(t.MENU_GLASS_CARD_BG, t.MENU_GLASS_CARD_BORDER, t.MENU_GLASS_CARD_RADIUS, t)
+	list.set_content_margin_all(0)
+	theme.set_type_variation(&"SettingsList", &"PanelContainer")
+	theme.set_stylebox(&"panel", &"SettingsList", list)
 
-	# Options d'un choix : bouton à bascule, choisie = ACCENT.
-	var option := _button_style(t.BUTTON_BG, true, t)
-	var option_on := _button_style(t.ACCENT, false, t)
-	for box: StyleBoxFlat in [option, option_on]:
-		box.set_content_margin(SIDE_LEFT, t.GAP)
-		box.set_content_margin(SIDE_RIGHT, t.GAP)
-	_add_button_variation(theme, &"SettingsOption", option, option_on, bold, t)
-	theme.set_font_size(&"font_size", &"SettingsOption", t.SETTINGS_OPTION_FONT)
-	for state: StringName in [&"font_color", &"font_hover_color", &"font_focus_color"]:
-		theme.set_color(state, &"SettingsOption", t.TEXT)
-	for state: StringName in [&"font_pressed_color", &"font_hover_pressed_color"]:
-		theme.set_color(state, &"SettingsOption", t.ACCENT_TEXT)
+	# Sélecteur « ‹ Valeur › » : pilule dessinée plus basse que sa rangée tactile.
+	var touch := float(t.TOUCH_MIN)
+	var pill := _glass(t.SETTINGS_PILL_BG, t.SETTINGS_PILL_BORDER, t.SETTINGS_PILL_HEIGHT / 2, t)
+	pill.set_content_margin_all(0)
+	_inset(pill, touch, t.SETTINGS_PILL_HEIGHT)
+	theme.set_type_variation(&"SettingsPill", &"PanelContainer")
+	theme.set_stylebox(&"panel", &"SettingsPill", pill)
+	var arrow := StyleBoxEmpty.new()
+	var arrow_on := _circle(t.tinted(t.ACCENT, 0.3), Color(0, 0, 0, 0), 0,
+		t.SETTINGS_ARROW_PRESSED_DRAW)
+	_inset(arrow_on, touch, t.SETTINGS_ARROW_PRESSED_DRAW,
+		(touch - t.SETTINGS_ARROW_PRESSED_DRAW) * 0.5)
+	_add_flat_button(theme, &"SettingsArrow", arrow, arrow_on)
+	theme.set_constant(&"icon_max_width", &"SettingsArrow", t.SETTINGS_ARROW_ICON)
+	for state: StringName in [&"icon_normal_color", &"icon_hover_color", &"icon_focus_color",
+			&"icon_pressed_color", &"icon_hover_pressed_color"]:
+		theme.set_color(state, &"SettingsArrow", t.TEXT)
+	theme.set_color(&"icon_disabled_color", &"SettingsArrow", t.SETTINGS_ARROW_OFF)
 
-	# Action : bouton d'accent ; inactif = grisé (la raison est écrite dans la ligne).
-	var action := _button_style(t.ACCENT, false, t)
-	var action_pressed := _button_style(t.ACCENT_PRESSED, false, t)
-	var action_off := _button_style(t.SETTINGS_ACTION_OFF_BG, true, t)
-	_add_button_variation(theme, &"SettingsAction", action, action_pressed, bold, t)
-	theme.set_stylebox(&"disabled", &"SettingsAction", action_off)
-	theme.set_font_size(&"font_size", &"SettingsAction", t.SETTINGS_OPTION_FONT)
-	for state: StringName in [&"font_color", &"font_hover_color", &"font_focus_color",
-			&"font_pressed_color", &"font_hover_pressed_color"]:
-		theme.set_color(state, &"SettingsAction", t.ACCENT_TEXT)
-	theme.set_color(&"font_disabled_color", &"SettingsAction", t.TEXT_MUTED)
+	# Rond de l'action au bout de sa ligne : ACCENT (action principale), icône sombre.
+	var action := _circle(t.ACCENT, Color(0, 0, 0, 0), 0, t.SETTINGS_ACTION_ROUND)
+	theme.set_type_variation(&"SettingsActionRound", &"PanelContainer")
+	theme.set_stylebox(&"panel", &"SettingsActionRound", action)
 
 	_add_plain_label(theme, &"SettingsPanelTitle", t.SETTINGS_PANEL_TITLE_FONT, t.TEXT, bold)
+	_add_plain_label(theme, &"SettingsSubtitle", t.SETTINGS_SUBTITLE_FONT, t.TEXT_MUTED, null)
 	_add_plain_label(theme, &"SettingsLabel", t.SETTINGS_LABEL_FONT, t.TEXT, bold)
 	_add_plain_label(theme, &"SettingsDetail", t.SETTINGS_DETAIL_FONT, t.TEXT_MUTED, null)
 	_add_plain_label(theme, &"SettingsValue", t.SETTINGS_VALUE_FONT, t.TEXT, bold)
+	_add_plain_label(theme, &"SettingsState", t.SETTINGS_STATE_FONT, t.TEXT_MUTED, null)
 
 	# ChoiceCards : la carte de l'action (ACCENT) et celle du renoncement (panneau).
 	var confirm := _menu_card_box(t.ACCENT, t.ACCENT, t.RADIUS, t)

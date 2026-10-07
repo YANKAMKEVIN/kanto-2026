@@ -1,9 +1,9 @@
 class_name SettingToggle
 extends Button
-## Ligne d'un interrupteur (Paramètres, T28) : libellé, aide, état écrit (« Activé ») et
-## interrupteur. **Toute la ligne** est le bouton (hauteur ≥ TOUCH_MIN). Un toucher émet un seul
-## [signal changed] avec le **contraire** de la valeur affichée ; l'état affiché ne bouge qu'au
-## retour de la vue (l'écran n'invente pas l'état).
+## Ligne d'un interrupteur (Paramètres, T28 ; présentation MM.3) : libellé, aide, état écrit
+## discret (« Activé ») et interrupteur vert. **Toute la ligne** est le bouton (hauteur ≥
+## TOUCH_MIN). Un toucher émet un seul [signal changed] avec le **contraire** de la valeur
+## affichée ; l'état affiché ne bouge qu'au retour de la vue (l'écran n'invente pas l'état).
 
 signal changed(key: StringName, value: Variant)
 
@@ -45,7 +45,7 @@ func _init() -> void:
 	_label = _text_label(&"SettingsLabel", texts)
 	_detail = _text_label(&"SettingsDetail", texts)
 	_value_label = Label.new()
-	_value_label.theme_type_variation = &"SettingsValue"
+	_value_label.theme_type_variation = &"SettingsState"
 	_value_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	_value_label.size_flags_vertical = Control.SIZE_SHRINK_CENTER
 	row.add_child(_value_label)
