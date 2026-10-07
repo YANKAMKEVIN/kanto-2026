@@ -1,0 +1,18 @@
+{
+	"map": "qa_forest_systems", "spawn": "evolution_start", "facing": "left",
+	"flags": [
+		"mom_greeted", "rival_met", "oak_met", "oak_lab_reunion", "starter_offered",
+		"starter_chosen", "taken_charmander", "taken_squirtle", "rival_lab_won",
+		"rival_challenged", "rival_battle_done", "rival_left_lab", "viridian_arrived",
+		"got_oak_parcel", "pokedex_activated",
+		"poison_unlocked"
+	],
+	"party": [
+		{ "species": "charmander", "level": 9 },
+		{ "species": "caterpie", "level": 6, "exp_to_next": 1 },
+		{ "species": "weedle", "level": 6, "exp_to_next": 1 },
+		{ "species": "metapod", "level": 9, "exp_to_next": 1 }
+	],
+	"bag": { "potion": 5 },
+	"money": 3000
+}
