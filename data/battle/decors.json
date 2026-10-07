@@ -1,0 +1,20 @@
+{
+	"_doc": "Décors peints de combat (CB.3, dossier 05 §2). decors : zone + variante locale, images (fond opaque, premier plan transparent facultatif), taille du master et LIGNE DE SOL en px du master (pieds de l'adversaire et de ton Pokémon : BattleDecor.fit aligne ces deux points sur les ancres de BattleLayout ; horizon pour mémoire). places : décors par carte (map_id) ; une entrée avec cells [x, y, largeur, hauteur] (cases) est une variante locale, sans cells le décor par défaut. Carte absente : repli sur l'ancien fond (carte recadrée et floutée). Production : tools/art/combat_decors/.",
+	"decors": {
+		"route_1_chemin": {
+			"zone": "route_1",
+			"variant": "chemin",
+			"back": "res://assets/battle/decors/route_1_chemin_back.webp",
+			"front": "res://assets/battle/decors/route_1_chemin_front.webp",
+			"size": [2340, 1080],
+			"foe_feet": [1559, 540],
+			"player_feet": [716, 1048],
+			"horizon": 404
+		}
+	},
+	"places": {
+		"route_1": [
+			{ "decor": "route_1_chemin" }
+		]
+	}
+}

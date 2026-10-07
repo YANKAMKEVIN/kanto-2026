@@ -1,0 +1,14 @@
+{
+	"route_1_chemin": {
+		"composition": "COMBAT_DECOR_ROUTE1_r2b.png",
+		"tuiles": [
+			{ "image": "COMBAT_DECOR_ROUTE1_r2b_TL.png", "portion": [0, 0, 1000, 852] },
+			{ "image": "COMBAT_DECOR_ROUTE1_r2b_TR.png", "portion": [846, 0, 1846, 852] }
+		],
+		"avant_plan": "COMBAT_DECOR_ROUTE1_AVANT_r1a.png",
+		"flou_avant_plan": 7.0,
+		"degagement": [0.17, 0.80, 0.955, 0.03],
+		"taille": [2340, 1080],
+		"qualite": 90
+	}
+}

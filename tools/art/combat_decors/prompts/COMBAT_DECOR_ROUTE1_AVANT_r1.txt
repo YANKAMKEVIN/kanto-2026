@@ -1,0 +1,14 @@
+CALQUE DE PREMIER PLAN D'UN DÉCOR DE COMBAT — ROUTE 1 (Kanto 2026). Image de PRODUCTION qui sera DÉTOURÉE automatiquement : des plantes au tout premier plan, sur un FOND MAGENTA PUR UNI (#FF00FF, rouge 255, vert 0, bleu 255), sans dégradé, sans ombre, sans texture sur le fond.
+
+L'image jointe est le décor peint (le fond) sur lequel ce calque sera posé. Reprends EXACTEMENT son style de peinture, ses couleurs, sa lumière (après-midi doux, soleil du haut à gauche) et sa végétation (feuillus ronds vert clair à vert sapin, petites fleurs blanches à cœur jaune et roses, herbes jaune-vert). Ne reprends PAS le fond lui-même : tout ce qui n'est pas une plante du premier plan est du MAGENTA PUR.
+
+FORMAT : même cadre que l'image jointe, paysage très large, rapport 2,17 : 1, la plus grande résolution possible.
+
+CONTENU (positions en fractions de la largeur et de la hauteur, depuis le coin haut gauche) : des plantes très proches de la caméra, grandes, qui CADRENT la scène par les coins du bas, comme vues à travers les feuillages :
+- COIN BAS GAUCHE : une touffe dense de grandes feuilles de buisson et quelques fleurs blanches, de x 0 à 16 %, de y 62 à 100 % ; elle déborde du cadre à gauche et en bas.
+- COIN BAS DROIT : une touffe de grandes feuilles et de fleurs roses et blanches, de x 82 à 100 %, de y 70 à 100 % ; elle déborde du cadre à droite et en bas.
+- BAS DE L'IMAGE : quelques brins d'herbe hauts et fins et deux ou trois fleurs isolées qui montent du bord bas, entre x 16 et 82 %, jamais plus haut que y 90 %.
+- Tout le reste de l'image (le centre, tout le haut, le milieu) : MAGENTA PUR, rien d'autre.
+Les plantes sont NETTES, avec des bords francs (pas de flou, pas de halo, pas de transparence, pas de reflet magenta sur les feuilles) : le flou de profondeur sera ajouté par le jeu.
+
+INTERDITS : magenta ou rose fuchsia dans les plantes, Pokémon, animal, insecte, personnage, texte, lettres, logo, signature, cadre, interface, sol, terre, ciel, arbre entier, ombre portée sur le fond.
