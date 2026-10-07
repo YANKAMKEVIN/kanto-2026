@@ -131,6 +131,7 @@ var _in_foreground: bool = true
 @onready var _battle_director: BattleDirector = %BattleDirector
 @onready var _ambient: AmbientWatcher = %AmbientWatcher
 @onready var _encounters: EncounterDirector = %EncounterDirector
+@onready var _trainer_watcher: TrainerWatcher = %TrainerWatcher
 @onready var _recovery: DefeatRecovery = %DefeatRecovery
 @onready var _services: ServiceDirector = %ServiceDirector
 @onready var _menu: MenuDirector = %MenuDirector
@@ -164,6 +165,12 @@ func _ready() -> void:
 	_dialogue_box.choice_made.connect(_runner.choose)
 	_interactions.setup(_player, _runner)
 	_cutscenes_node.setup(_cutscenes, GameState.flags, _runner, _player, SceneRouter)
+	# Dresseurs (jalon-09.md §2.4.6) : branchés sur le pas du joueur APRÈS le directeur de scènes
+	# et AVANT l'EncounterDirector (setup plus bas) : un pas qui entre dans un champ de vision ne
+	# tire aucune rencontre sauvage. Défi à la parole par le contrôleur d'interactions.
+	_trainer_watcher.setup(_player, GameState.flags, _cutscenes_node)
+	_interactions.set_story_flags(GameState.flags)
+	_interactions.challenge_requested.connect(_trainer_watcher.challenge)
 	_pokemon.load_dir()
 	if _offer.load_file():
 		_offer.check_species(_pokemon)
@@ -510,6 +517,11 @@ func get_encounter_director() -> EncounterDirector:
 	return _encounters
 
 
+## Dresseurs du monde (jalon 9, T11).
+func get_trainer_watcher() -> TrainerWatcher:
+	return _trainer_watcher
+
+
 ## Réveil après une défaite (jalon 7, T8).
 func get_defeat_recovery() -> DefeatRecovery:
 	return _recovery
@@ -795,6 +807,7 @@ func _on_map_changed(map: GameMap) -> void:
 	_cutscenes_node.set_map(map)
 	_starter_choice.set_map(map)
 	_ambient.set_map(map)
+	_trainer_watcher.set_map(map)
 	_encounters.set_map(map)
 	_services.set_map(map)
 	_recovery.set_map(map)

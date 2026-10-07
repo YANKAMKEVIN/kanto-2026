@@ -29,6 +29,10 @@ extends RefCounted
 ## route (routine de marche, jalon 5, étendue au jalon 7 :
 ## { "cells": [[x, y], …], "pause": 1.2, "start": 1, "enter": { "cell": [x, y], "seconds": 8 } },
 ## voir [method _read_route]).
+## trainer (jalon 9, jalon-09.md §2.4.1) : { "id": dresseur de data/trainers/, "sight": 1..8,
+## "before": dialogue avant le combat } ; exige « facing » écrit et « dialogue » (la réplique
+## « après »), le verbe « talk », et refuse « route », « look », « shy » et « idle_react » (un
+## Dresseur qui bouge ou se tourne changerait sa vision), voir [method _read_trainer].
 ## Le verbe « meet » (Rencontrer) est refusé : il est posé par le code (jalon 4 §3.5).
 ## Toute autre clé est une erreur. Pas de fichier = aucun PNJ sur la carte (sans erreur).
 ## L'identifiant « player » est réservé au joueur.
@@ -42,7 +46,10 @@ const PLAYER_ID: StringName = &"player"
 const KEYS: Array[String] = [
 	"cell", "facing", "sprite", "dialogue", "verb", "turn_to_player", "keep_facing", "lift",
 	"hop_style", "shy", "route", "if", "unless", "species", "idle_react", "look",
+	"trainer",
 ]
+## Clés du bloc « trainer » ([method _read_trainer]).
+const TRAINER_KEYS: Array[String] = ["id", "sight", "before"]
 ## Clés d'une attente animée « look » ([method _read_look]).
 const LOOK_KEYS: Array[String] = ["facings", "every"]
 ## Clés d'une routine « route » ([method _read_route]).
@@ -218,7 +225,47 @@ static func parse_entry(value: Variant, errors: PackedStringArray) -> NpcSpec:
 			errors.append("« species » demande « verb »: « observe » et un dialogue")
 		else:
 			spec.species = StringName(entry["species"])
+	if entry.has("trainer"):
+		_read_trainer(entry, spec, errors)
 	return spec if errors.size() == count else null
+
+
+## Lit le bloc « trainer » (jalon 9) : { "id", "sight" (entier 1..8), "before" } et vérifie
+## le reste de l'entrée (lue avant) : « facing » écrit, « dialogue » (réplique « après »),
+## verbe « talk », ni « route », ni « look », ni « shy », ni « idle_react ». Les références
+## (dresseur, dialogues) sont vérifiées par les tests des données réelles.
+static func _read_trainer(entry: Dictionary, spec: NpcSpec, errors: PackedStringArray) -> void:
+	var value: Variant = entry["trainer"]
+	if not value is Dictionary:
+		errors.append("« trainer » doit être { \"id\", \"sight\", \"before\" }")
+		return
+	var block: Dictionary = value
+	var count := errors.size()
+	for key: Variant in block:
+		if not TRAINER_KEYS.has(str(key)):
+			errors.append("« trainer » : clé inconnue « %s »" % key)
+	for key: String in ["id", "before"]:
+		if not block.get(key) is String or (block.get(key) as String).is_empty():
+			errors.append("« trainer.%s » doit être un identifiant" % key)
+	var sight: Variant = block.get("sight")
+	if not (sight is float or sight is int) or float(sight) != floorf(float(sight)) \
+			or int(sight) < TrainerRules.SIGHT_MIN or int(sight) > TrainerRules.SIGHT_MAX:
+		errors.append("« trainer.sight » doit être un entier de %d à %d"
+			% [TrainerRules.SIGHT_MIN, TrainerRules.SIGHT_MAX])
+	if not entry.has("facing"):
+		errors.append("« trainer » exige « facing » (sa vision part devant lui)")
+	if not spec.is_interactive():
+		errors.append("« trainer » exige « dialogue » (sa réplique après le combat)")
+	if spec.verb != Interaction.Kind.TALK:
+		errors.append("« trainer » exige le verbe « talk »")
+	for key: String in ["route", "look", "shy", "idle_react"]:
+		if entry.has(key):
+			errors.append("« %s » interdit sur un Dresseur (sa vision est fixe)" % key)
+	if errors.size() != count:
+		return
+	spec.trainer_id = StringName(block["id"])
+	spec.sight = int(sight)
+	spec.before_dialogue = StringName(block["before"])
 
 
 ## Lit l'attente animée « look » : { "facings": [noms de directions, au moins deux],

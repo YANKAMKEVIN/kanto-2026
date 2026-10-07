@@ -319,3 +319,52 @@ func test_dominant_direction() -> void:
 	assert_eq(InteractionController.dominant_direction(from, Vector2i(6, 6)), Vector2i.DOWN,
 		"égalité : axe vertical")
 	assert_eq(InteractionController.dominant_direction(from, from), Vector2i.ZERO)
+
+
+# --- Jalon 9 (jalon-09.md §2.4.5) : défi à la parole -------------------------------------
+
+## Dresseur posé à côté du joueur (réplique « après » = le dialogue de Maman du fixture).
+func _trainer() -> Npc:
+	var errors := PackedStringArray()
+	var spec := NpcRoster.parse_entry({
+		"cell": [10, 8], "facing": "left", "sprite": "scout", "dialogue": "mom",
+		"trainer": {"id": "forest_scout_theo", "sight": 4, "before": "mom"},
+	}, errors)
+	assert_eq(errors.size(), 0, str(errors))
+	spec.id = &"theo"
+	var npc := _map.add_npc(spec)
+	_controller.set_story_flags(_flags)
+	_place(Vector2i(10, 9), Vector2i.UP)
+	return npc
+
+
+func test_talking_to_a_trainer_not_beaten_challenges_without_dialogue() -> void:
+	var theo := _trainer()
+	watch_signals(_controller)
+	await wait_process_frames(2)
+	assert_eq(_kinds.back(), Interaction.Kind.TALK, "bouton PARLER")
+	# Anti-rebond : interact tenu ne relance rien.
+	Input.action_press(&"interact")
+	await wait_process_frames(10)
+	assert_signal_emit_count(_controller, "challenge_requested", 1)
+	assert_signal_emitted_with_parameters(_controller, "challenge_requested", [theo])
+	assert_false(_runner.is_running(), "aucun dialogue : le TrainerWatcher joue le défi")
+	assert_signal_not_emitted(_runner, "dialogue_started")
+	assert_eq(theo.get_facing(), Vector2i.LEFT, "le défi le tourne, pas le contrôleur")
+	Input.action_release(&"interact")
+	await wait_process_frames(2)
+	await _press_interact()
+	assert_signal_emit_count(_controller, "challenge_requested", 2, "relâcher puis réappuyer")
+
+
+func test_talking_to_a_beaten_trainer_plays_his_after_line() -> void:
+	var theo := _trainer()
+	_flags.set_flag(TrainerRules.beaten_flag(&"forest_scout_theo"))
+	watch_signals(_controller)
+	await wait_process_frames(2)
+	await _press_interact()
+	assert_signal_not_emitted(_controller, "challenge_requested")
+	assert_true(_runner.is_running())
+	assert_signal_emitted_with_parameters(_runner, "dialogue_started", [&"mom"])
+	assert_eq(theo.get_facing(), Vector2i.DOWN, "il se tourne vers le joueur")
+	await _finish_dialogue()

@@ -28,6 +28,9 @@ extends Node
 ## le PNJ marche pendant que la scène continue ; une étape suivante sur lui attend la fin de
 ## sa marche ; la scène ne finit qu'à la fin de toutes) et étape « react » (petite surprise du
 ## joueur ou d'un PNJ, sans attendre).
+## Jalon 9 (jalon-09.md §2.4.3, §2.4.4) : [method play_variant] joue une variante construite en
+## code (séquence d'un Dresseur, [TrainerEncounter]) avec le même verrou et les mêmes signaux ;
+## étape « emote » (bulle au-dessus d'un PNJ, [method Npc.show_emote], la scène attend sa fin).
 
 signal cutscene_started(cutscene_id: StringName)
 ## Début d'une étape (tests, outils de capture).
@@ -60,6 +63,7 @@ const _ROUTER_SCRIPT := preload("res://game/autoload/scene_router.gd")
 const _JOINING_KINDS: Array[CutsceneStep.Kind] = [
 	CutsceneStep.Kind.MOVE, CutsceneStep.Kind.HOP, CutsceneStep.Kind.LEAN,
 	CutsceneStep.Kind.DESPAWN, CutsceneStep.Kind.SCARE, CutsceneStep.Kind.REACT,
+	CutsceneStep.Kind.EMOTE,
 ]
 
 var _library: CutsceneLibrary
@@ -202,6 +206,21 @@ func play(cutscene_id: StringName, aliases: Dictionary[StringName, StringName] =
 		if OS.is_debug_build():
 			print("[qa] scène « %s » ignorée (aucune variante pour les drapeaux)" % cutscene_id)
 		return false
+	return play_variant(cutscene_id, variant, aliases)
+
+
+## Joue [param variant] sous le nom [param cutscene_id] (jalon 9 : séquence d'un Dresseur
+## construite en code, [TrainerEncounter] ; aucune scène de la bibliothèque) : même verrou dans
+## l'appel même, mêmes signaux, mêmes conditions d'étape. Ses conditions de variante ne sont
+## pas relues (l'appelant l'a choisie). Faux (et rien ne se passe) si une scène tourne ou si
+## [param variant] est null (push_error).
+func play_variant(cutscene_id: StringName, variant: CutsceneVariant,
+		aliases: Dictionary[StringName, StringName] = {}) -> bool:
+	if _running:
+		return false
+	if variant == null:
+		push_error("CutsceneDirector : variante absente pour « %s »" % cutscene_id)
+		return false
 	if OS.is_debug_build():
 		print("[qa] scène « %s » jouée" % cutscene_id)
 	_running = true
@@ -301,6 +320,8 @@ func _play_step(source_step: CutsceneStep) -> bool:
 			return false
 		CutsceneStep.Kind.REACT:
 			_react(step)
+		CutsceneStep.Kind.EMOTE:
+			await _emote(step)
 		_:
 			_step_error("étape « %s » inconnue" % CutsceneStep.kind_name(step.kind))
 	return true
@@ -704,6 +725,18 @@ func _react(step: CutsceneStep) -> void:
 		(actor as Player).react()
 	else:
 		(actor as Npc).react()
+
+
+## Étape « emote » (jalon 9) : bulle au-dessus du PNJ ([method Npc.show_emote]) ; l'étape
+## attend sa fin (ou la disparition du PNJ). PNJ introuvable : push_error, étape sautée.
+func _emote(step: CutsceneStep) -> void:
+	var npc := _find_actor(step.actor) as Npc
+	if npc == null:
+		_step_error("PNJ « %s » introuvable" % step.actor)
+		return
+	npc.show_emote(step.emote)
+	while is_instance_valid(npc) and npc.is_emoting():
+		await get_tree().process_frame
 
 
 ## Prépare le suiveur [param follower_id] du meneur [param leader] : un pas vers la case de

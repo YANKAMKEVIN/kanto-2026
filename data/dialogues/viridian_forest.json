@@ -1,0 +1,42 @@
+{
+	"forest_scout_theo_before": {
+		"speaker": "Scout Théo",
+		"pages": ["Hé ! Toi aussi, tu cherches\ndes Pokémon dans la forêt ?"]
+	},
+	"forest_scout_theo_after": {
+		"speaker": "Scout Théo",
+		"pages": ["Ton Pokémon est bien entraîné.\nJe dois encore progresser."]
+	},
+	"forest_scout_noe_before": {
+		"speaker": "Scout Noé",
+		"pages": ["Mes Pokémon ont grandi ici.\nTu veux les affronter ?"]
+	},
+	"forest_scout_noe_after": {
+		"speaker": "Scout Noé",
+		"pages": ["Ils deviennent plus forts\nchaque jour."]
+	},
+	"forest_youngster_tom_before": {
+		"speaker": "Gamin Tom",
+		"pages": ["Je connais cette forêt par cœur !\nEnfin... presque."]
+	},
+	"forest_youngster_tom_after": {
+		"speaker": "Gamin Tom",
+		"pages": ["D'accord. Peut-être pas par cœur."]
+	},
+	"forest_scout_milo_before": {
+		"speaker": "Scout Milo",
+		"pages": ["Les Pokémon Insecte évoluent vite.\nRegarde ça !"]
+	},
+	"forest_scout_milo_after": {
+		"speaker": "Scout Milo",
+		"pages": ["Pas encore assez vite, apparemment."]
+	},
+	"forest_scout_eli_before": {
+		"speaker": "Scout Éli",
+		"pages": ["Tu as traversé toute la forêt ?\nAlors montre-moi ton équipe !"]
+	},
+	"forest_scout_eli_after": {
+		"speaker": "Scout Éli",
+		"pages": ["Pas mal !\nArgenta n'est plus très loin."]
+	}
+}

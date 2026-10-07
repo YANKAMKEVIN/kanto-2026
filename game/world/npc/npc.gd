@@ -43,6 +43,8 @@ signal left_scene(npc_id: StringName)
 signal entered_building(npc_id: StringName)
 ## Ressorti du bâtiment : de nouveau sur sa case et visible, la routine reprend.
 signal left_building(npc_id: StringName)
+## Bulle finie ([method show_emote], jalon 9).
+signal emote_finished
 
 ## SpriteFrames provisoires des apparences (les peintes : [CharacterLook]).
 const FRAMES_DIR: String = CharacterLook.PLACEHOLDER_DIR
@@ -122,6 +124,8 @@ const ROUTE_RESUME_DELAY: float = 0.6
 ## essai de sortie tant que la case de la porte est prise (le joueur s'y tient).
 const ENTER_FADE_DURATION: float = 0.25
 const ENTER_RETRY_DELAY: float = 0.5
+## Bulle « ! » d'un Dresseur ([method show_emote], jalon-09.md §2.4.4) : durée totale (s).
+const EMOTE_DURATION: float = 0.6
 const _IDLE_ANIMS: Dictionary[Vector2i, StringName] = {
 	Vector2i.DOWN: &"idle_down",
 	Vector2i.UP: &"idle_up",
@@ -190,6 +194,8 @@ var _leave_tween: Tween
 ## Dans un bâtiment (jalon 7) : hors grille ; la grille où il ressortira.
 var _inside: bool = false
 var _inside_grid: GridWorld
+## Bulle en cours ([method show_emote]).
+var _emote_tween: Tween
 var _inside_tween: Tween
 ## Boucle de l'animation d'ambiance ([member NpcSpec.idle_react_every]).
 var _idle_tween: Tween
@@ -1052,3 +1058,30 @@ func _flee_fade() -> void:
 func _on_animation_finished() -> void:
 	if _sprite.animation == REACT_ANIM or _REACT_ANIMS.values().has(_sprite.animation):
 		_play_idle()
+
+
+## Bulle [param kind] au-dessus de la tête ([constant CutsceneStep.EMOTE_KINDS], jalon 9 :
+## le « ! » du Dresseur qui repère le joueur), pendant [constant EMOTE_DURATION] s, puis
+## [signal emote_finished]. Contrat du T11 : la durée seulement (attente en [Tween]) ; le
+## dessin de la bulle (apparition en rebond, tenue, disparition) vient au T12. Hors de l'arbre :
+## finie tout de suite.
+func show_emote(_kind: StringName) -> void:
+	if _emote_tween != null and _emote_tween.is_valid():
+		_emote_tween.kill()
+	if not is_inside_tree():
+		_emote_tween = null
+		emote_finished.emit()
+		return
+	_emote_tween = create_tween()
+	_emote_tween.tween_interval(EMOTE_DURATION)
+	_emote_tween.tween_callback(_finish_emote)
+
+
+## Vrai pendant une bulle ([method show_emote]).
+func is_emoting() -> bool:
+	return _emote_tween != null and _emote_tween.is_valid()
+
+
+func _finish_emote() -> void:
+	_emote_tween = null
+	emote_finished.emit()

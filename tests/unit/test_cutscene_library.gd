@@ -647,3 +647,42 @@ func test_invalid_background_and_react_steps() -> void:
 			"clé inconnue « to »"]:
 		assert_string_contains(errors, expected)
 	assert_push_error_count(bad.size(), "une erreur par étape")
+
+
+# --- Jalon 9 (jalon-09.md §2.4.4) : étape emote ---------------------------------------
+
+func test_emote_step() -> void:
+	assert_eq(CutsceneStep.kind_name(CutsceneStep.Kind.EMOTE), &"emote")
+	assert_eq(CutsceneStep.Kind.EMOTE, CutsceneStep.Kind.size() - 1, "en fin d'enum")
+	assert_eq(CutsceneStep.TYPE_KEYS.size(), CutsceneStep.Kind.size())
+	assert_eq(CutsceneStep.EMOTE_KINDS, [&"exclamation"] as Array[StringName])
+	var actors: Array[String] = ["scout_theo", "$trainer"]
+	for i: int in actors.size():
+		var emote := _one_step({"emote": actors[i], "kind": "exclamation"}, "e_%d" % i)
+		assert_not_null(emote, str(_library.get_errors()))
+		assert_eq(emote.kind, CutsceneStep.Kind.EMOTE)
+		assert_eq(emote.actor, StringName(actors[i]))
+		assert_eq(emote.emote, &"exclamation")
+		assert_eq(emote.copy().emote, &"exclamation", "copiée")
+	var conditional := _one_step({"emote": "kid", "kind": "exclamation", "if": ["seen"]}, "c")
+	assert_eq(conditional.if_flags, [&"seen"] as Array[StringName], "conditions permises")
+	assert_eq(_library.get_aliases(&"e_1"), [&"trainer"] as Array[StringName])
+
+
+func test_invalid_emote_steps() -> void:
+	var bad: Array[Dictionary] = [
+		{"emote": "player", "kind": "exclamation"},
+		{"emote": "kid"},
+		{"emote": "kid", "kind": "question"},
+		{"emote": "kid", "kind": 1},
+		{"emote": "", "kind": "exclamation"},
+		{"emote": "kid", "kind": "exclamation", "to": "up"},
+	]
+	for i: int in bad.size():
+		assert_null(_one_step(bad[i], "bad_%d" % i), str(bad[i]))
+	assert_eq(_library.size(), 0)
+	var errors := "\n".join(_library.get_errors())
+	for expected: String in ["réservé aux PNJ", "« kind » vaut exclamation",
+			"emote : identifiant attendu", "clé inconnue « to »"]:
+		assert_string_contains(errors, expected)
+	assert_push_error_count(bad.size(), "une erreur par étape")

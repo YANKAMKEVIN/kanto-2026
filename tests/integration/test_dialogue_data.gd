@@ -18,6 +18,9 @@ extends GutTest
 ## par le code (StarterChoice.get_set_flags : taken_*, starter_female).
 ## Décision n° 16 : répliques de la phase de choix ; celles de la décision n° 8 réservées à
 ## l'après-combat (rival_battle_done, drapeau « futur » du 4B), Maya accordée (lui / elle).
+## Jalon 9 (T11) : répliques des 5 Dresseurs de la Forêt de Jade, mot pour mot depuis les
+## « Textes verrouillés » du dossier 10 (« « … » / « … » » = une page de deux lignes), locuteur
+## = nom du Dresseur ; réplique « avant » du bloc « trainer » utilisée comme un dialogue de PNJ.
 
 const BOX_SCENE := "res://game/ui/dialogue/dialogue_box.tscn"
 const DOSSIER := "res://docs/design/dossier-02-prologue.md"
@@ -25,6 +28,9 @@ const DOSSIER := "res://docs/design/dossier-02-prologue.md"
 const DOSSIER_07 := "res://docs/design/dossier-07-route-1.md"
 ## Jalon 7 : textes de référence validés (dossier 09 §19) ; un jeton y est écrit « {espèce} ».
 const DOSSIER_09 := "res://docs/design/dossier-09-jadielle.md"
+## Jalon 9 : textes verrouillés de la Forêt de Jade (une réplique de deux lignes y est écrite
+## « « ligne 1 » / « ligne 2 » »).
+const DOSSIER_10 := "res://docs/design/dossier-10-foret-de-jade.md"
 const _DOSSIER_TOKENS: Dictionary[String, String] = {"{first_wild_species}": "{espèce}"}
 const MAPS: Array[StringName] = [
 	&"player_house_2f", &"player_house_1f", &"rival_house", &"oak_lab", &"pallet_town",
@@ -38,7 +44,12 @@ const TEXTES_VALIDES := "res://docs/design/textes/textes-brouillon-j7.md"
 ## (4A, T1) la proposition du Prof. Chen ; (4A, T3) le choix et la sortie empêchée.
 const IDS: Array[StringName] = [
 	&"aoki", &"breakfast_table", &"clerk", &"clerk_parcel",
-	&"clerk_parcel_hello", &"haru", &"leo", &"maya", &"mom",
+	&"clerk_parcel_hello",
+	&"forest_scout_eli_after", &"forest_scout_eli_before", &"forest_scout_milo_after",
+	&"forest_scout_milo_before", &"forest_scout_noe_after", &"forest_scout_noe_before",
+	&"forest_scout_theo_after", &"forest_scout_theo_before", &"forest_youngster_tom_after",
+	&"forest_youngster_tom_before",
+	&"haru", &"leo", &"maya", &"mom",
 	&"mom_wakeup", &"nurse", &"nurse_wakeup",
 	&"oak_after_battle",
 	&"oak_lab_exit_block", &"oak_lab_reunion", &"oak_lab_waiting", &"oak_parcel_records",
@@ -65,6 +76,15 @@ const IDS: Array[StringName] = [
 ## Jalon 7 : got_oak_parcel, lu par Chen (scène du colis, T18), est levé par la première visite
 ## de la Boutique depuis le T12 (data/cutscenes/viridian_mart.json).
 const FUTURE_FLAGS: Array[StringName] = []
+## Répliques des Dresseurs de la Forêt de Jade (jalon 9, T11) : aucun PNJ ne les porte encore.
+## Le T12 pose les Dresseurs sur la carte de QA (ajouter « qa_forest_systems » à MAPS) et vide
+## cette liste ; le T21 les pose dans la vraie forêt.
+const AWAITING_TRAINERS: Array[StringName] = [
+	&"forest_scout_eli_after", &"forest_scout_eli_before", &"forest_scout_milo_after",
+	&"forest_scout_milo_before", &"forest_scout_noe_after", &"forest_scout_noe_before",
+	&"forest_scout_theo_after", &"forest_scout_theo_before", &"forest_youngster_tom_after",
+	&"forest_youngster_tom_before",
+]
 
 var _library: DialogueLibrary
 var _cutscenes: CutsceneLibrary
@@ -98,6 +118,9 @@ func before_all() -> void:
 			(_npc_ids[map_id] as Array).append(spec.id)
 			if spec.is_interactive():
 				_use(spec.dialogue, map_id)
+			# Jalon 9 : la réplique « avant » d'un Dresseur est jouée par sa séquence, sur sa carte.
+			if spec.is_trainer():
+				_use(spec.before_dialogue, map_id)
 		var map := (load(MapCatalog.scene_path(map_id)) as PackedScene).instantiate()
 		for point: Node in map.get_node(^"Interactables").get_children():
 			_use((point as InteractPoint).dialogue_id, map_id)
@@ -172,6 +195,8 @@ func test_every_used_dialogue_exists() -> void:
 func test_every_dialogue_is_used() -> void:
 	var played := _cutscenes.get_dialogue_ids()
 	for id: StringName in _library.get_ids():
+		if AWAITING_TRAINERS.has(id):
+			continue
 		assert_true(_used_on.has(id) or played.has(id),
 			"dialogue « %s » utilisé par un PNJ, un point ou une scène" % id)
 
@@ -442,6 +467,7 @@ func test_texts_are_the_dossier_02_texts_word_for_word() -> void:
 	var dossier_07 := FileAccess.get_file_as_string(DOSSIER_07)
 	var dossier_09 := FileAccess.get_file_as_string(DOSSIER_09)
 	var valides := FileAccess.get_file_as_string(TEXTES_VALIDES)
+	var dossier_10 := FileAccess.get_file_as_string(DOSSIER_10)
 	for row: Array in _pages():
 		var text: String = row[1]
 		for token: String in _DOSSIER_TOKENS:
@@ -449,7 +475,8 @@ func test_texts_are_the_dossier_02_texts_word_for_word() -> void:
 		# Prologue : dossier 02 ; Route 1 (jalon 5) : dossier 07 ; Jadielle (jalon 7) : dossier 09 ;
 		# anciens brouillons : lot de textes validé le 2026-10-06.
 		assert_true(dossier.contains(text) or dossier_07.contains(text)
-			or dossier_09.contains(text) or valides.contains("« %s »" % text),
+			or dossier_09.contains(text) or valides.contains("« %s »" % text)
+			or dossier_10.contains(_as_dossier_10(text)),
 			"%s : « %s » dans un dossier de conception" % [row[0], text])
 
 
@@ -585,3 +612,51 @@ func test_oak_parcel_lines() -> void:
 	for row: Array in _pages():
 		var tokens := DialogueTokens.tokens_in(row[1])
 		assert_eq(not tokens.is_empty(), row[1] == records[2].text, "%s : jeton" % row[0])
+
+
+
+## Forme d'une réplique dans le dossier 10 : « ligne » ou « ligne 1 » / « ligne 2 ».
+static func _as_dossier_10(text: String) -> String:
+	var quoted := PackedStringArray()
+	for line: String in text.split("\n"):
+		quoted.append("« %s »" % line)
+	return " / ".join(quoted)
+
+
+## Jalon 9 (T11) : une réplique avant et une après par Dresseur de la forêt, une page chacune,
+## locuteur = nom du Dresseur (data/trainers/), mot pour mot (dont « Enfin... presque. »).
+func test_forest_trainer_lines() -> void:
+	var data := PokemonData.new()
+	data.load_dir()
+	var trainers := TrainerLibrary.new(data)
+	trainers.load_dir()
+	var expected: Dictionary[StringName, Array] = {
+		&"forest_scout_theo": ["Hé ! Toi aussi, tu cherches\ndes Pokémon dans la forêt ?",
+			"Ton Pokémon est bien entraîné.\nJe dois encore progresser."],
+		&"forest_scout_noe": ["Mes Pokémon ont grandi ici.\nTu veux les affronter ?",
+			"Ils deviennent plus forts\nchaque jour."],
+		&"forest_youngster_tom": ["Je connais cette forêt par cœur !\nEnfin... presque.",
+			"D'accord. Peut-être pas par cœur."],
+		&"forest_scout_milo": ["Les Pokémon Insecte évoluent vite.\nRegarde ça !",
+			"Pas encore assez vite, apparemment."],
+		&"forest_scout_eli": ["Tu as traversé toute la forêt ?\nAlors montre-moi ton équipe !",
+			"Pas mal !\nArgenta n'est plus très loin."],
+	}
+	var dossier_10 := FileAccess.get_file_as_string(DOSSIER_10)
+	for trainer_id: StringName in expected:
+		var trainer := trainers.get_trainer(trainer_id)
+		assert_not_null(trainer, String(trainer_id))
+		var suffixes: Array[String] = ["_before", "_after"]
+		for i: int in suffixes.size():
+			var id := StringName(String(trainer_id) + suffixes[i])
+			var dialogue := _library.get_dialogue(id)
+			assert_not_null(dialogue, String(id))
+			if dialogue == null or trainer == null:
+				continue
+			assert_eq(dialogue.speaker, trainer.name, "%s : locuteur" % id)
+			assert_false(dialogue.narration)
+			assert_eq(dialogue.variants.size(), 1, String(id))
+			var pages := dialogue.variants[0].pages
+			assert_eq(pages.size(), 1, "%s : une page" % id)
+			assert_eq(pages[0].text, expected[trainer_id][i], String(id))
+			assert_string_contains(dossier_10, _as_dossier_10(pages[0].text))

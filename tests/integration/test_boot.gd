@@ -263,3 +263,22 @@ func test_boot_is_always_and_its_children_are_pausable_except_the_menu() -> void
 
 func test_quit_on_go_back_is_off() -> void:
 	assert_false(ProjectSettings.get_setting("application/config/quit_on_go_back", true))
+
+
+## Jalon 9 (jalon-09.md §2.4.6) : sur le pas du joueur, le directeur de scènes, puis les
+## Dresseurs, puis les rencontres sauvages (un pas qui entre dans une vision ne tire aucune
+## rencontre) ; défi à la parole relié au TrainerWatcher.
+func test_trainer_watcher_between_the_cutscenes_and_the_encounters() -> void:
+	var watcher := _boot.get_trainer_watcher()
+	assert_not_null(watcher)
+	var order: Array[Object] = []
+	for connection: Dictionary in _boot.get_player().moved.get_connections():
+		order.append((connection["callable"] as Callable).get_object())
+	var cutscenes := order.find(_boot.get_node(^"%CutsceneDirector"))
+	var trainers := order.find(watcher)
+	var encounters := order.find(_boot.get_encounter_director())
+	assert_gt(cutscenes, -1)
+	assert_gt(trainers, cutscenes, "après le directeur de scènes")
+	assert_gt(encounters, trainers, "avant les rencontres sauvages")
+	var interactions := _boot.get_node(^"%InteractionController") as InteractionController
+	assert_true(interactions.challenge_requested.is_connected(watcher.challenge))
