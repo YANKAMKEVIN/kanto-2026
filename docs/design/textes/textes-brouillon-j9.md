@@ -1,5 +1,7 @@
 # Textes en brouillon — jalon 9, lot système (2026-10-07)
 
+> **VERROUILLÉ par Kevin le 2026-10-07.** Décisions : n° 9 → « Hein ? {pokemon} n'évolue plus. » ; n° 52 réécrit ; n° 53–54 retirés (aucun Grand moment d'entrée : découverte de zone standard ; la mise en scène de la forêt fait le travail) ; notes de terrain 41, 45, 49 gardées — **principe** : une note seulement quand une vraie observation environnementale existe, jamais systématique ; Poudre Dodo reçoit « Sans effet dans le moteur actuel. » comme Cage-Éclair, Para-Spore et Ultrason (mentions retirées au J11) ; **aucun Grand moment** « premier Dresseur battu » ni « première évolution » (ni drapeau ni texte) ; tout le reste validé tel quel (n° 37 inclus).
+
 > **57 textes numérotés, à relire par Kevin en une passe** (Q-1 du plan `docs/tech/jalon-09.md`, décision du 2026-10-07). Comme aux J6 et J7 : commente ligne par ligne (numéro + correction) ; **tout ce que tu ne commentes pas est validé tel quel**. Rien de ce lot n'est encore dans `data/` (le test `test_no_draft_in_data` refuse les brouillons) : les tâches T1, T4, T8, T18 le recopieront mot pour mot après ta relecture.
 >
 > Ce lot ne couvre que ce que le dossier 10 ne fixe pas. Les répliques des gardes, des 5 Dresseurs, des 2 PNJ et des objets cachés sont **déjà verrouillées** (dossier 10, « Textes verrouillés », version de `main` : **Scout Théo**, garde sud « La Boutique de Jadielle vend des Antidotes. »).
@@ -26,7 +28,7 @@ Déjà validés, réutilisés tels quels : immunité (type Poison) → « Ça n'
 |---:|---|---|---|
 | — | `templates/evolution_started` | début de la séquence (≈ 1,5 s) — **déjà validé** (dossier 04 §7), rappelé ici | « Quoi ? {pokemon} évolue ! » |
 | 8 | `templates/evolution_finished` | après le flash, la nouvelle espèce en couleurs ; `{species}` = nom de la nouvelle espèce | « Félicitations ! {pokemon} a évolué en {species} ! » |
-| 9 | `templates/evolution_cancelled` | le joueur a touché ARRÊTER (ou retour Android) : retour à l'ancienne espèce | « {pokemon} n'évolue plus. » |
+| 9 | `templates/evolution_cancelled` | le joueur a touché ARRÊTER (ou retour Android) : retour à l'ancienne espèce | « Hein ? {pokemon} n'évolue plus. » |
 | 10 | `templates/evolution_stop` | bouton visible pendant la transformation seulement (≈ 5 s), capitales comme « OUBLIER » / « GARDER » | « ARRÊTER » |
 
 Déjà validés, réutilisés : capacités de la nouvelle espèce → « {pokemon} apprend {move} ! » et tout le déroulé « oublier » ; consigne « Touchez l'écran pour continuer » ; toast « Évolution découverte ».
@@ -100,9 +102,9 @@ Descriptions originales (observation de terrain, jamais les textes officiels). C
 | # | Clé cible | Contexte | Texte proposé |
 |---:|---|---|---|
 | 51 | `zones/viridian_forest` · `subtitle` | Carte, sous le nom (la Route 1 a « Bourg Palette — Jadielle », la Route 2 « Jadielle — Forêt de Jade ») | « Jadielle — Argenta » |
-| 52 | `zones/viridian_forest` · `description` | panneau de zone de la Carte (registre de Jadielle et des routes) | « Une forêt profonde et fraîche, où la lumière ne tombe qu'entre les cimes. Les Pokémon Insecte y foisonnent, et la route paraît vite très loin. » |
-| 53 | `zone_arrivals/viridian_forest` · `title` | **facultatif** : Grand moment à l'arrivée (sans lui : « Forêt de Jade » / « Une nouvelle zone découverte. », déjà validé) | « Entrée dans la Forêt de Jade » |
-| 54 | `zone_arrivals/viridian_forest` · `detail` | idem | « Les arbres se referment sur le sentier. » |
+| 52 | `zones/viridian_forest` · `description` | panneau de zone de la Carte (registre de Jadielle et des routes) | « Une forêt profonde et fraîche, où la lumière perce à peine entre les cimes. Les Pokémon Insecte y foisonnent sous une végétation dense. » |
+| 53 | `zone_arrivals/viridian_forest` · `title` | **facultatif** : Grand moment à l'arrivée (sans lui : « Forêt de Jade » / « Une nouvelle zone découverte. », déjà validé) | ~~« Entrée dans la Forêt de Jade »~~ **retiré** (pas de Grand moment : découverte de zone standard) |
+| 54 | `zone_arrivals/viridian_forest` · `detail` | idem | ~~« Les arbres se referment sur le sentier. »~~ **retiré** |
 
 ## G. Noms affichés (`speaker` des dialogues)
 
