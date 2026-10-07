@@ -8,11 +8,12 @@ extends SceneTree
 ## 3 pas droit (`decouper_perso.py`, `marcheur.gd` du prototype). Animations :
 ## - `idle_<dir>` : la **planche d'attente** `<planche>_idle` quand elle existe (pieds joints, une
 ##   ligne de 4 images bas, gauche, droite, haut ; décision de Kevin du 2026-10-06), sinon la
+##   colonne de la marche choisie dans [constant IDLE_FROM_WALK] (Salamèche, DA.3), sinon la
 ##   colonne 0 de la marche (une image ; « passage », jambes déjà écartées de profil) ;
 ## - `walk_<dir>` : colonnes 1, 2, 3, 0 ; un cycle de 4 images couvre **2 cases**, vitesse
 ##   calée sur `Grid.WALK_STEP_DURATION` (4 / (2 × 0,27) ≈ 7,4 images/s) ;
 ## - `run_<dir>` : **seulement avec une planche de course** (le héros ; l'enfant et le Rattata de
-##   Jadielle, qui courent dans la micro-scène d'arrivée), au rythme de
+##   Jadielle, qui courent dans la micro-scène d'arrivée ; Chen, qui accourt dans le prologue), au rythme de
 ##   `Grid.RUN_STEP_DURATION` (12,5 images/s). Sans planche de course, aucune animation de
 ##   course : rejouer la marche à 12,5 images/s donnait des poses de marche à la vitesse de
 ##   course (« ils courent et marchent en même temps », Kevin au T5) ; `Npc.can_run` est faux
@@ -49,7 +50,8 @@ const LOOKS: Dictionary = {
 	# DA.2 (Bourg Palette) : série 09 et habitants du prototype (série 06B), avec leur
 	# planche d'attente (`<planche>_idle`), sans planche de course (ils marchent toujours).
 	"maman": [CHARACTERS_DIR, "mom", ""],
-	"chen": [CHARACTERS_DIR, "oak", ""],
+	# DA.3 : Chen accourt dans le prologue (décision de Kevin du 2026-10-07).
+	"chen": [CHARACTERS_DIR, "oak", "chen_run"],
 	"leo": [CHARACTERS_DIR, "leo", ""],
 	"vieille_dame": [CHARACTERS_DIR, "aoki", ""],
 	"pecheur": [CHARACTERS_DIR, "haru", ""],
@@ -61,12 +63,25 @@ const LOOKS: Dictionary = {
 	"ferosinge": [POKEMON_DIR, "mankey", ""],
 	"nidoran_f": [POKEMON_DIR, "nidoran_f", ""],
 	"nidoran_m": [POKEMON_DIR, "nidoran_m", ""],
+	# DA.3 : les trois starters (labo, rival de la Route 22). Salamèche : planche obtenue à la
+	# main par Kevin (ChatGPT), sans planche d'attente → [constant IDLE_FROM_WALK].
+	"bulbizarre": [POKEMON_DIR, "bulbasaur", ""],
+	"salameche": [POKEMON_DIR, "charmander", ""],
+	"carapuce": [POKEMON_DIR, "squirtle", ""],
 }
 ## Planches lues seulement comme planche de course d'une autre.
-const RUN_ONLY: Array[String] = ["heros_run", "enfant_run", "rattata_run"]
+const RUN_ONLY: Array[String] = ["heros_run", "enfant_run", "rattata_run", "chen_run"]
 ## Suffixe des planches d'attente (`heros_idle` pour `heros`) ; colonne de chaque direction.
 const IDLE_SUFFIX := "_idle"
 const IDLE_COLUMNS := {"down": 0, "left": 1, "right": 2, "up": 3}
+## Planches sans planche d'attente (refusée par les générateurs) : pour chaque direction, la
+## colonne de la marche la plus posée (pieds rapprochés, les deux au sol), choisie à l'œil sur
+## la planche de jeu (DA.3, repli du J7 « colonne 0 » adapté). Salamèche : de face, la pose
+## neutre (colonne 0) ; de profil gauche, le passage (colonne 3) ; de profil droit, le passage
+## (colonne 1) ; de dos, colonne 0 (les deux pieds posés).
+const IDLE_FROM_WALK := {
+	"salameche": {"down": 0, "left": 3, "right": 1, "up": 0},
+}
 
 var _errors: int = 0
 
@@ -90,13 +105,14 @@ func _init() -> void:
 		var run_id: String = look[2]
 		var run: Dictionary = sheets.get(run_id, {}) if not run_id.is_empty() else {}
 		var idle: Dictionary = sheets.get(sheet_id + IDLE_SUFFIX, {})
-		_build(sheets[sheet_id], run, idle, String(look[0]) + String(look[1]) + "_frames.tres")
+		_build(sheets[sheet_id], run, idle, String(look[0]) + String(look[1]) + "_frames.tres",
+			IDLE_FROM_WALK.get(sheet_id, {}))
 	print("build_character_frames : %d apparences, %d erreur(s)" % [LOOKS.size(), _errors])
 	quit(1 if _errors > 0 else 0)
 
 
 func _build(walk_sheet: Dictionary, run_sheet: Dictionary, idle_sheet: Dictionary,
-		path: String) -> void:
+		path: String, idle_from_walk: Dictionary = {}) -> void:
 	var frames := SpriteFrames.new()
 	frames.remove_animation(&"default")
 	var walk_texture := load(walk_sheet["fichier"]) as Texture2D
@@ -124,7 +140,8 @@ func _build(walk_sheet: Dictionary, run_sheet: Dictionary, idle_sheet: Dictionar
 		if idle_texture != null:
 			frames.add_frame(idle, _atlas(idle_texture, idle_cell, IDLE_COLUMNS[dir], 0))
 		else:
-			frames.add_frame(idle, _atlas(walk_texture, walk_cell, 0, row))
+			frames.add_frame(idle, _atlas(walk_texture, walk_cell, idle_from_walk.get(dir, 0),
+				row))
 		_add_cycle(frames, StringName("walk_" + dir), walk_texture, walk_cell, row,
 			4.0 / (2.0 * WALK_STEP))
 		if run_texture != null:

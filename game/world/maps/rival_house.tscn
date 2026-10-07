@@ -1,216 +1,165 @@
-[gd_scene format=4]
+[gd_scene format=3]
 
-[ext_resource type="Script" path="res://game/world/map.gd" id="1_4xadv"]
-[ext_resource type="TileSet" path="res://assets/tiles/interior.tres" id="2_lmomo"]
-[ext_resource type="PackedScene" path="res://game/world/props/interior/rug_living_blue.tscn" id="3_i6374"]
-[ext_resource type="PackedScene" path="res://game/world/props/interior/rug_bedroom_grey.tscn" id="4_l480v"]
-[ext_resource type="PackedScene" path="res://game/world/props/interior/rug_bath.tscn" id="5_nxspt"]
-[ext_resource type="PackedScene" path="res://game/world/props/interior/window.tscn" id="6_n0c2e"]
-[ext_resource type="PackedScene" path="res://game/world/props/interior/rival_posters.tscn" id="7_igb74"]
-[ext_resource type="PackedScene" path="res://game/world/props/interior/fridge.tscn" id="8_j1y55"]
-[ext_resource type="PackedScene" path="res://game/world/props/interior/kitchen_counter.tscn" id="9_cygkt"]
-[ext_resource type="PackedScene" path="res://game/world/props/interior/range_hood_stove.tscn" id="10_p8bcn"]
-[ext_resource type="PackedScene" path="res://game/world/props/interior/stairs_up_wide.tscn" id="11_oe5lt"]
-[ext_resource type="PackedScene" path="res://game/world/props/interior/low_cabinet_small.tscn" id="12_vc5q6"]
-[ext_resource type="PackedScene" path="res://game/world/props/interior/dining_table.tscn" id="13_mejmo"]
-[ext_resource type="PackedScene" path="res://game/world/props/interior/wall_tv_side.tscn" id="14_u3q3e"]
-[ext_resource type="PackedScene" path="res://game/world/props/interior/sofa.tscn" id="15_w5wux"]
-[ext_resource type="PackedScene" path="res://game/world/props/interior/coffee_table.tscn" id="16_certs"]
-[ext_resource type="PackedScene" path="res://game/world/props/interior/plant.tscn" id="17_b8o2d"]
-[ext_resource type="PackedScene" path="res://game/world/props/interior/corner_desk_pc.tscn" id="18_yha8e"]
-[ext_resource type="PackedScene" path="res://game/world/props/interior/gamer_chair.tscn" id="19_301i4"]
-[ext_resource type="PackedScene" path="res://game/world/props/interior/dresser.tscn" id="20_xfqx3"]
-[ext_resource type="PackedScene" path="res://game/world/props/interior/bed_pokeball.tscn" id="21_306dm"]
-[ext_resource type="PackedScene" path="res://game/world/props/interior/bed_items.tscn" id="22_27tte"]
-[ext_resource type="PackedScene" path="res://game/world/props/interior/nightstand_bag.tscn" id="23_n2pnc"]
-[ext_resource type="PackedScene" path="res://game/world/props/interior/coat_rack.tscn" id="24_vlj5q"]
-[ext_resource type="PackedScene" path="res://game/world/props/interior/shoe_rack.tscn" id="25_32na6"]
-[ext_resource type="PackedScene" path="res://game/world/props/interior/bathroom_sink.tscn" id="26_yia5d"]
-[ext_resource type="PackedScene" path="res://game/world/props/interior/shower.tscn" id="27_xbrrd"]
-[ext_resource type="PackedScene" path="res://game/world/props/interior/front_door.tscn" id="28_flyer"]
-[ext_resource type="PackedScene" path="res://game/world/props/interior/partition.tscn" id="29_8kcrq"]
-[ext_resource type="PackedScene" path="res://game/world/props/interior/partition_h.tscn" id="30_i6a1d"]
-[ext_resource type="Script" path="res://game/world/warp_point.gd" id="31_8j20r"]
-[ext_resource type="Script" path="res://game/world/interactions/interact_point.gd" id="32_a2c7k"]
+[ext_resource type="Script" path="res://game/world/map.gd" id="1_4gaud"]
+[ext_resource type="Texture2D" path="res://assets/world/interiors/int_maison_rival_coque.png" id="2_lglls"]
+[ext_resource type="PackedScene" path="res://game/world/props/painted/int_tapis_pokeball_01.tscn" id="3_i7rkl"]
+[ext_resource type="PackedScene" path="res://game/world/props/painted/int_frigo_01.tscn" id="4_v5wym"]
+[ext_resource type="PackedScene" path="res://game/world/props/painted/int_cuisine_01.tscn" id="5_4xadv"]
+[ext_resource type="PackedScene" path="res://game/world/props/painted/int_cuisiniere_hotte_01.tscn" id="6_lmomo"]
+[ext_resource type="PackedScene" path="res://game/world/props/painted/int_escalier_montant_01.tscn" id="7_i6374"]
+[ext_resource type="PackedScene" path="res://game/world/props/painted/int_commode_pokeball_01.tscn" id="8_l480v"]
+[ext_resource type="PackedScene" path="res://game/world/props/painted/int_table_repas_01.tscn" id="9_nxspt"]
+[ext_resource type="PackedScene" path="res://game/world/props/painted/int_petite_etagere_01.tscn" id="10_n0c2e"]
+[ext_resource type="PackedScene" path="res://game/world/props/painted/int_chevet_lampe_01.tscn" id="11_igb74"]
+[ext_resource type="PackedScene" path="res://game/world/props/painted/int_canape_01.tscn" id="12_j1y55"]
+[ext_resource type="PackedScene" path="res://game/world/props/painted/int_table_basse_01.tscn" id="13_cygkt"]
+[ext_resource type="PackedScene" path="res://game/world/props/painted/int_plante.tscn" id="14_p8bcn"]
+[ext_resource type="PackedScene" path="res://game/world/props/painted/int_cloison_v_01.tscn" id="15_oe5lt"]
+[ext_resource type="PackedScene" path="res://game/world/props/painted/int_bureau_angle_pc_01.tscn" id="16_vc5q6"]
+[ext_resource type="PackedScene" path="res://game/world/props/painted/int_sac_voyage_01.tscn" id="17_mejmo"]
+[ext_resource type="PackedScene" path="res://game/world/props/painted/int_chaise_gamer_01.tscn" id="18_u3q3e"]
+[ext_resource type="PackedScene" path="res://game/world/props/painted/int_commode_01.tscn" id="19_w5wux"]
+[ext_resource type="PackedScene" path="res://game/world/props/painted/int_lit_pokeball_01.tscn" id="20_certs"]
+[ext_resource type="PackedScene" path="res://game/world/props/painted/int_cloison_h_01.tscn" id="21_b8o2d"]
+[ext_resource type="PackedScene" path="res://game/world/props/painted/int_porte_manteau_01.tscn" id="22_yha8e"]
+[ext_resource type="PackedScene" path="res://game/world/props/painted/int_lavabo_01.tscn" id="23_301i4"]
+[ext_resource type="PackedScene" path="res://game/world/props/painted/int_douche_01.tscn" id="24_xfqx3"]
+[ext_resource type="PackedScene" path="res://game/world/props/painted/int_meuble_chaussures_01.tscn" id="25_306dm"]
+[ext_resource type="PackedScene" path="res://game/world/props/interior/bed_items.tscn" id="26_27tte"]
+[ext_resource type="Script" path="res://game/world/warp_point.gd" id="27_n2pnc"]
+[ext_resource type="Script" path="res://game/world/interactions/interact_point.gd" id="28_vlj5q"]
 
-[node name="RivalHouse" type="Node2D" unique_id=1775406234]
-script = ExtResource("1_4xadv")
+[node name="RivalHouse" type="Node2D" unique_id=1431016918]
+script = ExtResource("1_4gaud")
 map_id = &"rival_house"
 display_name = "Bourg Palette"
 region = "Kanto"
 size = Vector2i(18, 11)
+blocked_cells = Array[Vector2i]([Vector2i(0, 0), Vector2i(1, 0), Vector2i(2, 0), Vector2i(3, 0), Vector2i(4, 0), Vector2i(5, 0), Vector2i(6, 0), Vector2i(7, 0), Vector2i(8, 0), Vector2i(9, 0), Vector2i(10, 0), Vector2i(11, 0), Vector2i(12, 0), Vector2i(13, 0), Vector2i(14, 0), Vector2i(15, 0), Vector2i(16, 0), Vector2i(17, 0), Vector2i(0, 1), Vector2i(1, 1), Vector2i(2, 1), Vector2i(3, 1), Vector2i(4, 1), Vector2i(5, 1), Vector2i(6, 1), Vector2i(7, 1), Vector2i(8, 1), Vector2i(9, 1), Vector2i(10, 1), Vector2i(11, 1), Vector2i(12, 1), Vector2i(13, 1), Vector2i(14, 1), Vector2i(15, 1), Vector2i(16, 1), Vector2i(17, 1), Vector2i(0, 2), Vector2i(17, 2), Vector2i(0, 3), Vector2i(17, 3), Vector2i(0, 4), Vector2i(17, 4), Vector2i(0, 5), Vector2i(17, 5), Vector2i(0, 6), Vector2i(17, 6), Vector2i(0, 7), Vector2i(17, 7), Vector2i(0, 8), Vector2i(17, 8), Vector2i(0, 9), Vector2i(17, 9), Vector2i(0, 10), Vector2i(1, 10), Vector2i(2, 10), Vector2i(3, 10), Vector2i(4, 10), Vector2i(5, 10), Vector2i(6, 10), Vector2i(7, 10), Vector2i(8, 10), Vector2i(9, 10), Vector2i(10, 10), Vector2i(11, 10), Vector2i(12, 10), Vector2i(13, 10), Vector2i(14, 10), Vector2i(15, 10), Vector2i(16, 10), Vector2i(17, 10)])
 interior = true
+light_profile = &"interior_warm"
 
-[node name="Ground" type="TileMapLayer" parent="." unique_id=2061776334]
-tile_map_data = PackedByteArray("AAABAAIAAAACAAAAAAACAAIAAAABAAAAAAADAAIAAAACAAAAAAAEAAIAAAAAAAAAAAAFAAIAAAABAAAAAAAGAAIAAAACAAAAAAAHAAIAAAABAAAAAAAIAAIAAAAAAAAAAAAJAAIAAAABAAAAAAAKAAIAAAAAAAAAAAALAAIAAAACAAAAAAAMAAIAAAAAAAAAAAANAAIAAAACAAAAAAAOAAIAAAABAAAAAAAPAAIAAAABAAAAAAAQAAIAAAACAAAAAAABAAMAAAABAAAAAAACAAMAAAABAAAAAAADAAMAAAACAAAAAAAEAAMAAAACAAAAAAAFAAMAAAACAAAAAAAGAAMAAAAAAAAAAAAHAAMAAAABAAAAAAAIAAMAAAACAAAAAAAJAAMAAAAAAAAAAAAKAAMAAAAAAAAAAAALAAMAAAABAAAAAAAMAAMAAAAAAAAAAAANAAMAAAACAAAAAAAOAAMAAAAAAAAAAAAPAAMAAAABAAAAAAAQAAMAAAABAAAAAAABAAQAAAAAAAAAAAACAAQAAAAAAAAAAAADAAQAAAACAAAAAAAEAAQAAAACAAAAAAAFAAQAAAACAAAAAAAGAAQAAAACAAAAAAAHAAQAAAABAAAAAAAIAAQAAAABAAAAAAAJAAQAAAAAAAAAAAAKAAQAAAAAAAAAAAALAAQAAAACAAAAAAAMAAQAAAABAAAAAAANAAQAAAACAAAAAAAOAAQAAAABAAAAAAAPAAQAAAABAAAAAAAQAAQAAAAAAAAAAAABAAUAAAACAAAAAAACAAUAAAACAAAAAAADAAUAAAACAAAAAAAEAAUAAAACAAAAAAAFAAUAAAABAAAAAAAGAAUAAAABAAAAAAAHAAUAAAACAAAAAAAIAAUAAAAAAAAAAAAJAAUAAAAAAAAAAAAKAAUAAAACAAAAAAALAAUAAAAAAAAAAAAMAAUAAAABAAAAAAANAAUAAAABAAAAAAAOAAUAAAACAAAAAAAPAAUAAAACAAAAAAAQAAUAAAABAAAAAAABAAYAAAAAAAAAAAACAAYAAAAAAAAAAAADAAYAAAACAAAAAAAEAAYAAAABAAAAAAAFAAYAAAACAAAAAAAGAAYAAAAAAAAAAAAHAAYAAAACAAAAAAAIAAYAAAABAAAAAAAJAAYAAAABAAAAAAAKAAYAAAACAAAAAAALAAYAAAABAAAAAAAMAAYAAAAAAAAAAAANAAYAAAABAAAAAAAOAAYAAAABAAAAAAAPAAYAAAAAAAAAAAAQAAYAAAACAAAAAAABAAcAAAABAAAAAAACAAcAAAACAAAAAAADAAcAAAACAAAAAAAEAAcAAAAAAAAAAAAFAAcAAAACAAAAAAAGAAcAAAACAAAAAAAHAAcAAAABAAAAAAAIAAcAAAACAAAAAAAJAAcAAAABAAAAAAAKAAcAAAABAAAAAAALAAcAAAABAAAAAAAMAAcAAAACAAAAAAANAAcAAAAAAAAAAAAOAAcAAAACAAAAAAAPAAcAAAAAAAAAAAAQAAcAAAAAAAAAAAABAAgAAAAAAAAAAAACAAgAAAAAAAAAAAADAAgAAAAAAAAAAAAEAAgAAAACAAAAAAAFAAgAAAABAAAAAAAGAAgAAAACAAAAAAAHAAgAAAACAAAAAAAIAAgAAAAAAAAAAAAJAAgAAAACAAAAAAAKAAgAAAACAAAAAAALAAgAAAACAAAAAAAMAAgAAAAAAAAAAAANAAgAAAACAAAAAAAOAAgAAAABAAAAAAAPAAgAAAABAAAAAAAQAAgAAAACAAAAAAABAAkAAAACAAAAAAACAAkAAAACAAAAAAADAAkAAAACAAAAAAAEAAkAAAAAAAAAAAAFAAkAAAACAAAAAAAGAAkAAAAAAAAAAAAHAAkAAAABAAAAAAAIAAkAAAAAAAAAAAAJAAkAAAAAAAAAAAAKAAkAAAAAAAAAAAALAAkAAAAAAAAAAAAMAAkAAAAAAAAAAAANAAkAAAABAAAAAAAOAAkAAAACAAAAAAAPAAkAAAAAAAAAAAAQAAkAAAAAAAAAAAA=")
-tile_set = ExtResource("2_lmomo")
+[node name="Shell" type="Sprite2D" parent="." unique_id=16239410]
+z_index = -3
+texture = ExtResource("2_lglls")
+centered = false
 
-[node name="Detail" type="TileMapLayer" parent="." unique_id=272091806]
-tile_map_data = PackedByteArray("AAAJAAkAAAAAAAYAAAA=")
-tile_set = ExtResource("2_lmomo")
+[node name="GroundDecals" type="Node2D" parent="." unique_id=1686868030]
+z_index = -1
 
-[node name="RugLiving" parent="Detail" unique_id=1292461440 instance=ExtResource("3_i6374")]
-position = Vector2(240, 960)
+[node name="RugBedroom" parent="GroundDecals" unique_id=2144140066 instance=ExtResource("3_i7rkl")]
+position = Vector2(1296, 622)
 
-[node name="RugBedroom" parent="Detail" unique_id=467792155 instance=ExtResource("4_l480v")]
-position = Vector2(1200, 576)
-
-[node name="RugBath" parent="Detail" unique_id=1428833051 instance=ExtResource("5_nxspt")]
-position = Vector2(1296, 960)
-
-[node name="Obstacles" type="TileMapLayer" parent="." unique_id=1291734063]
-tile_map_data = PackedByteArray("AAAAAAAAAAAAAAIAAAABAAAAAAAAAAIAAAACAAAAAAAAAAIAAAADAAAAAAAAAAIAAAAEAAAAAAAAAAIAAAAFAAAAAAAAAAIAAAAGAAAAAAAAAAIAAAAHAAAAAAAAAAIAAAAIAAAAAAAAAAIAAAAJAAAAAAAAAAIAAAAKAAAAAAAAAAIAAAALAAAAAAAAAAIAAAAMAAAAAAAAAAIAAAANAAAAAAAAAAIAAAAOAAAAAAAAAAIAAAAPAAAAAAAAAAIAAAAQAAAAAAAAAAIAAAARAAAAAAAAAAIAAAAAAAEAAAABAAIAAAABAAEAAAABAAIAAAACAAEAAAABAAIAAAADAAEAAAABAAIAAAAEAAEAAAABAAIAAAAFAAEAAAABAAIAAAAGAAEAAAABAAIAAAAHAAEAAAABAAIAAAAIAAEAAAABAAIAAAAJAAEAAAABAAIAAAAKAAEAAAABAAIAAAALAAEAAAABAAIAAAAMAAEAAAABAAIAAAANAAEAAAABAAIAAAAOAAEAAAABAAIAAAAPAAEAAAABAAIAAAAQAAEAAAABAAIAAAARAAEAAAABAAIAAAAAAAIAAAAAAAIAAAARAAIAAAAAAAIAAAAAAAMAAAAAAAIAAAARAAMAAAAAAAIAAAAAAAQAAAAAAAIAAAARAAQAAAAAAAIAAAAAAAUAAAAAAAIAAAARAAUAAAAAAAIAAAAAAAYAAAAAAAIAAAARAAYAAAAAAAIAAAAAAAcAAAAAAAIAAAARAAcAAAAAAAIAAAAAAAgAAAAAAAIAAAARAAgAAAAAAAIAAAAAAAkAAAAAAAIAAAARAAkAAAAAAAIAAAAAAAoAAAAAAAIAAAABAAoAAAAAAAIAAAACAAoAAAAAAAIAAAADAAoAAAAAAAIAAAAEAAoAAAAAAAIAAAAFAAoAAAAAAAIAAAAGAAoAAAAAAAIAAAAHAAoAAAAAAAIAAAAIAAoAAAAAAAIAAAAJAAoAAAAAAAIAAAAKAAoAAAAAAAIAAAALAAoAAAAAAAIAAAAMAAoAAAAAAAIAAAANAAoAAAAAAAIAAAAOAAoAAAAAAAIAAAAPAAoAAAAAAAIAAAAQAAoAAAAAAAIAAAARAAoAAAAAAAIAAAA=")
-tile_set = ExtResource("2_lmomo")
-
-[node name="Entities" type="Node2D" parent="." unique_id=354141271]
+[node name="Entities" type="Node2D" parent="." unique_id=919337663]
 unique_name_in_owner = true
 y_sort_enabled = true
 
-[node name="WindowKitchen" parent="Entities" unique_id=1861498747 instance=ExtResource("6_n0c2e")]
-position = Vector2(336, 192)
-
-[node name="WindowBedroom" parent="Entities" unique_id=1245944859 instance=ExtResource("6_n0c2e")]
-position = Vector2(1296, 192)
-
-[node name="Posters" parent="Entities" unique_id=1731213736 instance=ExtResource("7_igb74")]
-position = Vector2(1488, 192)
-
-[node name="Fridge" parent="Entities" unique_id=305849524 instance=ExtResource("8_j1y55")]
+[node name="Fridge" parent="Entities" unique_id=494471310 instance=ExtResource("4_v5wym")]
 position = Vector2(144, 288)
 
-[node name="Kitchen" parent="Entities" unique_id=1786207824 instance=ExtResource("9_cygkt")]
-position = Vector2(240, 288)
+[node name="Kitchen" parent="Entities" unique_id=332056923 instance=ExtResource("5_4xadv")]
+position = Vector2(336, 288)
 
-[node name="Stove" parent="Entities" unique_id=461210885 instance=ExtResource("10_p8bcn")]
+[node name="Stove" parent="Entities" unique_id=1520539083 instance=ExtResource("6_lmomo")]
 position = Vector2(528, 288)
 
-[node name="Stairs" parent="Entities" unique_id=1207563827 instance=ExtResource("11_oe5lt")]
-position = Vector2(720, 480)
+[node name="Stairs" parent="Entities" unique_id=962606697 instance=ExtResource("7_i6374")]
+position = Vector2(816, 480)
+footprint = Array[Vector2i]([Vector2i(-1, -2), Vector2i(0, -2), Vector2i(1, -2), Vector2i(-1, -1), Vector2i(0, -1), Vector2i(1, -1), Vector2i(-1, 0), Vector2i(0, 0), Vector2i(1, 0)])
 
-[node name="UnderStairsCabinet" parent="Entities" unique_id=2051646699 instance=ExtResource("12_vc5q6")]
+[node name="UnderStairsCabinet" parent="Entities" unique_id=2078633101 instance=ExtResource("8_l480v")]
 position = Vector2(816, 576)
 
-[node name="DiningTable" parent="Entities" unique_id=162074447 instance=ExtResource("13_mejmo")]
-position = Vector2(240, 576)
+[node name="DiningTable" parent="Entities" unique_id=1053635810 instance=ExtResource("9_nxspt")]
+position = Vector2(336, 576)
 
-[node name="WallTv" parent="Entities" unique_id=888218981 instance=ExtResource("14_u3q3e")]
+[node name="LivingShelf" parent="Entities" unique_id=1867310879 instance=ExtResource("10_n0c2e")]
+position = Vector2(144, 672)
+
+[node name="LivingLamp" parent="Entities" unique_id=1542184166 instance=ExtResource("11_igb74")]
 position = Vector2(144, 768)
 
-[node name="Sofa" parent="Entities" unique_id=2057898535 instance=ExtResource("15_w5wux")]
-position = Vector2(336, 768)
+[node name="Sofa" parent="Entities" unique_id=1822141563 instance=ExtResource("12_j1y55")]
+position = Vector2(432, 768)
 
-[node name="CoffeeTable" parent="Entities" unique_id=1769897553 instance=ExtResource("16_certs")]
-position = Vector2(336, 864)
+[node name="CoffeeTable" parent="Entities" unique_id=833737908 instance=ExtResource("13_cygkt")]
+position = Vector2(384, 864)
 
-[node name="PlantLivingWest" parent="Entities" unique_id=27880658 instance=ExtResource("17_b8o2d")]
+[node name="PlantLivingWest" parent="Entities" unique_id=1145806697 instance=ExtResource("14_p8bcn")]
 position = Vector2(144, 960)
 
-[node name="PlantLivingEast" parent="Entities" unique_id=1445691934 instance=ExtResource("17_b8o2d")]
+[node name="PlantLivingEast" parent="Entities" unique_id=1419947918 instance=ExtResource("14_p8bcn")]
 position = Vector2(624, 960)
 
-[node name="CornerDesk" parent="Entities" unique_id=1927004234 instance=ExtResource("18_yha8e")]
-position = Vector2(1104, 384)
-
-[node name="GamerChair" parent="Entities" unique_id=1871848377 instance=ExtResource("19_301i4")]
-position = Vector2(1200, 384)
-
-[node name="Dresser" parent="Entities" unique_id=1055994368 instance=ExtResource("20_xfqx3")]
-position = Vector2(1296, 288)
-
-[node name="Bed" parent="Entities" unique_id=612566692 instance=ExtResource("21_306dm")]
-position = Vector2(1488, 480)
-
-[node name="BedItems" parent="Entities" unique_id=1410637126 instance=ExtResource("22_27tte")]
-position = Vector2(1488, 480)
-
-[node name="Nightstand" parent="Entities" unique_id=958236160 instance=ExtResource("23_n2pnc")]
-position = Vector2(1584, 576)
-
-[node name="CoatRack" parent="Entities" unique_id=2067768933 instance=ExtResource("24_vlj5q")]
-position = Vector2(1200, 768)
-
-[node name="ShoeRack" parent="Entities" unique_id=1247680771 instance=ExtResource("25_32na6")]
-position = Vector2(1104, 960)
-
-[node name="BathroomSink" parent="Entities" unique_id=1718891834 instance=ExtResource("26_yia5d")]
-position = Vector2(1296, 768)
-
-[node name="Shower" parent="Entities" unique_id=1448278762 instance=ExtResource("27_xbrrd")]
-position = Vector2(1584, 864)
-
-[node name="PlantBathroom" parent="Entities" unique_id=625448592 instance=ExtResource("17_b8o2d")]
-position = Vector2(1200, 960)
-
-[node name="FrontDoor" parent="Entities" unique_id=832574005 instance=ExtResource("28_flyer")]
-position = Vector2(912, 1056)
-
-[node name="Partition_10_2" parent="Entities" unique_id=1010418167 instance=ExtResource("29_8kcrq")]
-position = Vector2(1008, 288)
-
-[node name="Partition_10_3" parent="Entities" unique_id=1296287552 instance=ExtResource("29_8kcrq")]
-position = Vector2(1008, 384)
-
-[node name="Partition_10_4" parent="Entities" unique_id=1627762330 instance=ExtResource("29_8kcrq")]
+[node name="PartitionBedroom" parent="Entities" unique_id=1505188338 instance=ExtResource("15_oe5lt")]
 position = Vector2(1008, 480)
 
-[node name="Partition_7_7" parent="Entities" unique_id=341637935 instance=ExtResource("29_8kcrq")]
-position = Vector2(720, 768)
+[node name="CornerDesk" parent="Entities" unique_id=708442419 instance=ExtResource("16_vc5q6")]
+position = Vector2(1152, 288)
 
-[node name="Partition_10_7" parent="Entities" unique_id=1902768581 instance=ExtResource("29_8kcrq")]
-position = Vector2(1008, 768)
+[node name="RivalBag" parent="Entities" unique_id=147976972 instance=ExtResource("17_mejmo")]
+position = Vector2(1104, 384)
 
-[node name="Partition_7_8" parent="Entities" unique_id=751912531 instance=ExtResource("29_8kcrq")]
-position = Vector2(720, 864)
+[node name="GamerChair" parent="Entities" unique_id=1148891017 instance=ExtResource("18_u3q3e")]
+position = Vector2(1200, 384)
 
-[node name="Partition_10_8" parent="Entities" unique_id=838378192 instance=ExtResource("29_8kcrq")]
-position = Vector2(1008, 864)
+[node name="Dresser" parent="Entities" unique_id=2073169494 instance=ExtResource("19_w5wux")]
+position = Vector2(1344, 288)
 
-[node name="Partition_7_9" parent="Entities" unique_id=257607425 instance=ExtResource("29_8kcrq")]
-position = Vector2(720, 960)
+[node name="Bed" parent="Entities" unique_id=1846446357 instance=ExtResource("20_certs")]
+position = Vector2(1536, 480)
 
-[node name="Partition_10_9" parent="Entities" unique_id=1899024218 instance=ExtResource("29_8kcrq")]
-position = Vector2(1008, 960)
+[node name="Nightstand" parent="Entities" unique_id=2135234818 instance=ExtResource("11_igb74")]
+position = Vector2(1584, 576)
 
-[node name="Partition_12_6" parent="Entities" unique_id=1110752555 instance=ExtResource("30_i6a1d")]
-position = Vector2(1200, 672)
-
-[node name="Partition_13_6" parent="Entities" unique_id=1003491021 instance=ExtResource("30_i6a1d")]
-position = Vector2(1296, 672)
-
-[node name="Partition_14_6" parent="Entities" unique_id=1404131396 instance=ExtResource("30_i6a1d")]
+[node name="PartitionBathroom" parent="Entities" unique_id=593406192 instance=ExtResource("21_b8o2d")]
 position = Vector2(1392, 672)
 
-[node name="Partition_15_6" parent="Entities" unique_id=639303634 instance=ExtResource("30_i6a1d")]
-position = Vector2(1488, 672)
+[node name="PartitionHallWest" parent="Entities" unique_id=75968462 instance=ExtResource("15_oe5lt")]
+position = Vector2(720, 960)
 
-[node name="Partition_16_6" parent="Entities" unique_id=1930429721 instance=ExtResource("30_i6a1d")]
-position = Vector2(1584, 672)
+[node name="PartitionHallEast" parent="Entities" unique_id=230108589 instance=ExtResource("15_oe5lt")]
+position = Vector2(1008, 960)
 
-[node name="Overhead" type="TileMapLayer" parent="." unique_id=1580641015]
-z_index = 10
-tile_set = ExtResource("2_lmomo")
+[node name="CoatRack" parent="Entities" unique_id=1746216360 instance=ExtResource("22_yha8e")]
+position = Vector2(1200, 768)
 
-[node name="Warps" type="Node2D" parent="." unique_id=2065917947]
+[node name="BathroomSink" parent="Entities" unique_id=1703111647 instance=ExtResource("23_301i4")]
+position = Vector2(1344, 768)
 
-[node name="Exit" type="Marker2D" parent="Warps" unique_id=201243444]
+[node name="Shower" parent="Entities" unique_id=1277176263 instance=ExtResource("24_xfqx3")]
+position = Vector2(1584, 864)
+
+[node name="ShoeRack" parent="Entities" unique_id=1994533665 instance=ExtResource("25_306dm")]
+position = Vector2(1104, 960)
+
+[node name="PlantBathroom" parent="Entities" unique_id=290864929 instance=ExtResource("14_p8bcn")]
+position = Vector2(1200, 960)
+
+[node name="BedItems" parent="Entities" unique_id=312698036 instance=ExtResource("26_27tte")]
+position = Vector2(1488, 480)
+
+[node name="Warps" type="Node2D" parent="." unique_id=562597009]
+
+[node name="Exit" type="Marker2D" parent="Warps" unique_id=1261645061]
 position = Vector2(912, 960)
-script = ExtResource("31_8j20r")
+script = ExtResource("27_n2pnc")
 trigger = 1
 direction = Vector2i(0, 1)
 target_map = &"pallet_town"
 target_spawn = &"rival_house_door"
 
-[node name="Interactables" type="Node2D" parent="." unique_id=826226349]
+[node name="Interactables" type="Node2D" parent="." unique_id=1700036502]
 
-[node name="KantoMap" type="Marker2D" parent="Interactables" unique_id=676089768]
+[node name="KantoMap" type="Marker2D" parent="Interactables" unique_id=297811759]
 position = Vector2(1488, 480)
-script = ExtResource("32_a2c7k")
+script = ExtResource("28_vlj5q")
 dialogue_id = &"rival_kanto_map"
 size = Vector2i(2, 3)
 
-[node name="Spawns" type="Node2D" parent="." unique_id=288758998]
+[node name="Spawns" type="Node2D" parent="." unique_id=415229320]
 
-[node name="entrance" type="Marker2D" parent="Spawns" unique_id=1489968171]
+[node name="entrance" type="Marker2D" parent="Spawns" unique_id=1682694660]
 position = Vector2(912, 960)
 
-[node name="Triggers" type="Node2D" parent="." unique_id=1003340054]
+[node name="Triggers" type="Node2D" parent="." unique_id=1601652136]

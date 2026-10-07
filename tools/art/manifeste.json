@@ -1503,6 +1503,14 @@
    "source": "PNJ_CHERCHEUR_NE_r1.png",
    "sortie": "assets/sprites/characters/painted/chercheur_sheet.png",
    "hauteur": 130
+  },
+  {
+   "id": "chen_run",
+   "source": "PNJ_CHEN_COURSE_r1.png",
+   "sortie": "assets/sprites/characters/painted/chen_run_sheet.png",
+   "hauteur": 134,
+   "rebond_passage": 3,
+   "note": "DA.3 : Chen accourt dans le prologue (decision de Kevin du 2026-10-07)"
   }
  ],
  "pokemon": [
@@ -1552,6 +1560,25 @@
    "source": "POKE_NIDORAN_M_NE_r3_violet.png",
    "sortie": "assets/sprites/pokemon/painted/nidoran_m_sheet.png",
    "hauteur": 50
+  },
+  {
+   "id": "bulbizarre",
+   "source": "POKE_BULBIZARRE_NE_r1.png",
+   "sortie": "assets/sprites/pokemon/painted/bulbizarre_sheet.png",
+   "hauteur": 60
+  },
+  {
+   "id": "salameche",
+   "source": "POKE_SALAMECHE_NE_r4.png",
+   "sortie": "assets/sprites/pokemon/painted/salameche_sheet.png",
+   "hauteur": 60,
+   "note": "planche obtenue a la main par Kevin dans l'app ChatGPT (Codex refuse) : a garder telle quelle ; pas de planche d'attente (refusee), voir IDLE_COLUMNS de build_character_frames.gd"
+  },
+  {
+   "id": "carapuce",
+   "source": "POKE_CARAPUCE_NE_r1.png",
+   "sortie": "assets/sprites/pokemon/painted/carapuce_sheet.png",
+   "hauteur": 60
   }
  ],
  "heros_images": [
@@ -1686,6 +1713,18 @@
    "source": "CHERCHEUR_ATTENTE_r1.png",
    "sortie": "assets/sprites/characters/painted/chercheur_idle_sheet.png",
    "marche": "chercheur"
+  },
+  {
+   "id": "bulbizarre_idle",
+   "source": "BULBIZARRE_ATTENTE_r1.png",
+   "sortie": "assets/sprites/pokemon/painted/bulbizarre_idle_sheet.png",
+   "marche": "bulbizarre"
+  },
+  {
+   "id": "carapuce_idle",
+   "source": "CARAPUCE_ATTENTE_r1.png",
+   "sortie": "assets/sprites/pokemon/painted/carapuce_idle_sheet.png",
+   "marche": "carapuce"
   }
  ]
 }
