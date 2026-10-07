@@ -398,6 +398,15 @@ class Preparateur:
 
     def ecrire_catalogue(self) -> None:
         chemin = RACINE / "assets" / "world" / "catalogue.json"
+        # Ordre stable : celui du fichier existant (les entrées nouvelles à la fin, dans l'ordre
+        # du manifeste). Relancer le script, entier ou partiel, ne réordonne plus rien.
+        if chemin.exists():
+            ancien = json.loads(chemin.read_text())
+            for section, entrees in self.catalogue.items():
+                if isinstance(entrees, dict) and isinstance(ancien.get(section), dict):
+                    connus = [k for k in ancien[section] if k in entrees]
+                    nouveaux = [k for k in entrees if k not in ancien[section]]
+                    self.catalogue[section] = {k: entrees[k] for k in connus + nouveaux}
         chemin.write_text(json.dumps(self.catalogue, ensure_ascii=False, indent=1) + "\n")
 
 

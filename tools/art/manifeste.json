@@ -1192,6 +1192,39 @@
    "cases": 4,
    "ombre": false,
    "contact": null
+  },
+  {
+   "id": "bldg_poste_foret_01",
+   "source": "WORLD_BLDG_POSTE_FORET_01_NE_r1.png",
+   "sortie": "assets/world/buildings/bldg_poste_foret_01.png",
+   "axe": "w",
+   "cases": 7,
+   "ombre": true,
+   "contact": 0.12
+  },
+  {
+   "id": "prop_grande_pierre_01",
+   "source": "WORLD_PROP_GRANDE_PIERRE_01_NE_r1.png",
+   "sortie": "assets/world/props/prop_grande_pierre_01.png",
+   "axe": "w",
+   "cases": 3,
+   "ombre": false,
+   "contact": 0.1
+  },
+  {
+   "id": "prop_cloture_piquets_01_court",
+   "source": "WORLD_PROP_CLOTURE_PIQUETS_01_NE_r1.png",
+   "recadrage": [
+    47,
+    430,
+    917,
+    903
+   ],
+   "sortie": "assets/world/props/prop_cloture_piquets_01_court.png",
+   "axe": "w",
+   "cases": 3,
+   "ombre": false,
+   "contact": 0.3
   }
  ],
  "hautes_herbes": {
@@ -1511,6 +1544,12 @@
    "hauteur": 134,
    "rebond_passage": 3,
    "note": "DA.3 : Chen accourt dans le prologue (decision de Kevin du 2026-10-07)"
+  },
+  {
+   "id": "randonneuse",
+   "source": "PNJ_RANDONNEUSE_NE_r1.png",
+   "sortie": "assets/sprites/characters/painted/randonneuse_sheet.png",
+   "hauteur": 128
   }
  ],
  "pokemon": [
@@ -1725,6 +1764,27 @@
    "source": "CARAPUCE_ATTENTE_r1.png",
    "sortie": "assets/sprites/pokemon/painted/carapuce_idle_sheet.png",
    "marche": "carapuce"
+  },
+  {
+   "id": "randonneuse_idle",
+   "source": "RANDONNEUSE_ATTENTE_r1.png",
+   "sortie": "assets/sprites/characters/painted/randonneuse_idle_sheet.png",
+   "marche": "randonneuse"
+  }
+ ],
+ "images_objets": [
+  {
+   "id": "poke_ball_ground",
+   "source": "INT_COMMODE_POKEBALL_01_NE_r1.png",
+   "recadrage": [
+    367,
+    285,
+    594,
+    512
+   ],
+   "masque": "disque",
+   "sortie": "assets/sprites/objects/painted/poke_ball_ground.png",
+   "hauteur": 40
   }
  ]
 }

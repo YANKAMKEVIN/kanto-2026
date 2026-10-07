@@ -764,3 +764,14 @@ Plan technique : `docs/tech/jalon-08.md` (§1.1 grille, §1.2 assets prévus, §
 - `WORLD_PROP_ARBRE_DENSE_01` (`REF_R2_ARBRE_DENSE`, 1,2 case de large, ≈ 1,6 de haut, emprise 1 case) : si FUTUR A en `tree_foret_08` réduit ne se lit pas comme un obstacle.
 - `WORLD_PROP_POKEBALL_SOL_01` (`REF_R2_POKEBALL`, 0,42 case) : si la Ball recadrée déçoit au sol.
 - `WORLD_GROUND_SOUS_BOIS_01` (planche 4 × 2 de décalcomanies : fougères, mousse, feuilles mortes, racines…) : si le dernier tiers manque de sous-bois ; mutualisable au J9.
+
+### Série 10 — journal (T3, 2026-10-07)
+
+- **Génération** : faite avant le T3 sur le Mac de Kevin et **validée par lui** (2026-10-07) : `WORLD_BLDG_POSTE_FORET_01_NE_r1`, `WORLD_PROP_GRANDE_PIERRE_01_NE_r1`, `PNJ_RANDONNEUSE_NE_r1` (marche 4 × 4), `RANDONNEUSE_ATTENTE_r1` (attente 4 × 1). Aucun conditionnel lancé.
+- **Préparation** : `serie10.py --manifeste` (6 entrées : 3 objets, 1 image d'objet, 1 personnage, 1 attente) puis `preparer.py --source <build/art du checkout principal>` ; second passage : 833 fichiers de `assets/` identiques octet pour octet.
+- **Résultats** : poste 672 × 425 (ombre portée + contact), grande pierre 288 × 203 (contact seul), clôture courte (3 cases, contact), Ball 40 × 40, Randonneuse : cellules 80 × 130 (marche) et 80 × 130 (attente, échelle 0,1966), soit la même hauteur de cellule que le héros (74 × 130, figure ≈ 128 px).
+- **Orientations** : la planche d'attente suit la convention du jeu (colonnes bas, gauche, droite, haut) ; relue sur la planche de contact (sac à dos à droite de la silhouette vers la gauche, à gauche vers la droite), identique au héros. Pas de miroir nécessaire.
+- **Règles `PaintedPropRules`** : `bldg_poste_foret_01` (7 × 4, ombre, fondu, porte `open [(0, 0)]`, 27 cases solides), `prop_grande_pierre_01` (3 × 2), `prop_cloture_piquets_01_court` (3 × 1) ; scènes générées par `build_painted_props.gd --nouveaux`.
+- **Personnage** : apparence `hiker` (`assets/sprites/characters/painted/hiker_frames.tres`, marche + attente), table `LOOKS` de `build_character_frames.gd`.
+- **Poké Ball au sol** : image `assets/sprites/objects/painted/poke_ball_ground.png` prête ; ses `SpriteFrames` attendent le genre « objet fixe » du T4 (non créé ici).
+- **Planche de contact** : `build/captures/jalon08_assets/planche_contact.png` (non versionnée).

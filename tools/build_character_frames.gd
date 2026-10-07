@@ -57,6 +57,8 @@ const LOOKS: Dictionary = {
 	"pecheur": [CHARACTERS_DIR, "haru", ""],
 	"chercheuse": [CHARACTERS_DIR, "maya", ""],
 	"chercheur": [CHARACTERS_DIR, "researcher", ""],
+	# J8 (série 10, Route 2) : P1, avec sa planche d'attente.
+	"randonneuse": [CHARACTERS_DIR, "hiker", ""],
 	"roucool": [POKEMON_DIR, "pidgey", ""],
 	"rattata": [POKEMON_DIR, "rattata", "rattata_run"],
 	"piafabec": [POKEMON_DIR, "spearow", ""],
