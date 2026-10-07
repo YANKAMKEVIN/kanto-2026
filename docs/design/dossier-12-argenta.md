@@ -1,6 +1,6 @@
 # Dossier 12 — Argenta et l'Arène de Pierre (jalon 10)
 
-> Conçu par Kevin avec ChatGPT, V1 reçue le 2026-10-07 (prompt : `docs/design/prompts/chatgpt-dossier-12-argenta.md`) ; passe d'alignement de Claude et **20 décisions de Kevin** le même jour (section « Arbitrages » : toutes les recommandations de Claude retenues). **Source de vérité** pour la Route 2 nord, Argenta, son Musée, son Arène et le premier badge (jalon 10 de la roadmap). Les tracés ASCII donnent la logique, **pas une grille de production**. Textes : section « Textes à valider » (relecture de Kevin en un seul lot). **Pas d'implémentation avant la fusion du J9, la relecture des textes et le plan technique `docs/tech/jalon-10.md`.**
+> Conçu par Kevin avec ChatGPT, V1 reçue le 2026-10-07 (prompt : `docs/design/prompts/chatgpt-dossier-12-argenta.md`) ; passe d'alignement de Claude et **20 décisions de Kevin** le même jour (section « Arbitrages » : toutes les recommandations de Claude retenues). **Source de vérité** pour la Route 2 nord, Argenta, son Musée, son Arène et le premier badge (jalon 10 de la roadmap). Les tracés ASCII donnent la logique, **pas une grille de production**. Textes : section « Textes verrouillés » (**validés par Kevin le 2026-10-07**, retouches de Claude comprises). **Pas d'implémentation avant la fusion du J9 et le plan technique `docs/tech/jalon-10.md`.**
 
 **Ligne directrice** : Argenta ferme la **première grande boucle** de Kanto 2026 : partir → explorer → capturer → construire son équipe → traverser une zone exigeante → atteindre une ville → se préparer → affronter un Champion → obtenir son premier badge. Après la Forêt de Jade, la ville apporte du **soulagement** : plus ouverte, minérale, calme et stable. Jadielle était le premier contact avec une vraie ville ; Argenta est **le premier objectif de Dresseur accompli**. Après Pierre : « Maintenant, mon aventure a vraiment commencé. »
 
@@ -240,8 +240,8 @@ Une seule enveloppe peinte, deux mobiliers (arbitrage 14). Aucune récompense : 
 - **Moteur** : capacités choisies à la main par Pokémon de Dresseur ; répliques de défaite et de reprise pour Pierre (sur le modèle du rival) ; carte de présentation du Champion ; inscription « BADGE ROCHE » ; moment « badge » ; garde qui se décale.
 - **Valeur par défaut** (règle 4) : la Route 2 nord est une zone à part, titre « Route 2 », sous-titre « Forêt de Jade — Argenta » (le sous-titre de la Route 2 sud, « Jadielle — Forêt de Jade », ne convient pas au nord).
 
-## Textes à valider
-Proposés par ChatGPT (V1), retouchés par Claude selon les arbitrages 6 à 9 et 15 (repérés **[retouche]**). Bulles de 2 lignes ; raccourcissables à la QA.
+## Textes verrouillés
+Proposés par ChatGPT (V1), retouchés par Claude selon les arbitrages 6 à 9 et 15 (repérés **[retouche]**), **validés par Kevin le 2026-10-07**. Bulles de 2 lignes ; raccourcissables à la QA.
 
 **Montagnard (Route 2 nord)** — avant le badge : « Argenta est juste devant. » / « On voit le Musée depuis la route. » · avec le badge **[retouche]** : « C'est le Badge Roche que je vois là ? » / « La Route 3 t'attend, alors. »
 **Sentier est (Route 2 nord)** **[retouche]** : « Des éboulis bloquent le sentier. »
@@ -291,3 +291,4 @@ Proposés par ChatGPT (V1), retouchés par Claude selon les arbitrages 6 à 9 et
 | Objectifs | « obtenir le Badge Roche. » → « continuer vers la Route 3. » |
 | Audio | Intentions seulement |
 | Roadmap | Inchangée (Route 3 au J12) |
+| Textes | Verrouillés (2026-10-07), raccourcissables à la QA |
