@@ -145,3 +145,7 @@ Route 1 peinte **validée** sur sa vraie partie (« en vrai ça va ») : rencont
 
 ## Validation DA.2 (Kevin, S24, 2026-10-07)
 Bourg Palette peint **validé** sur sa vraie partie (« tout est ok ») : portes, déplacements, habitants peints et leurs poses d'attente, 4 routines, chercheur parlant, hautes herbes vers la Route 1. Gardés : labo à 75 % (toit en fondu quand le joueur passe au nord), pause à chaque case des routines, ponton d'une colonne. **58,8 fps de moyenne, min 49** (60 relevés). Décision de Kevin : **Chen court** dans le prologue → planche de course `PNJ_CHEN_COURSE_r1` (Codex) à brancher au DA.3 et `"run": true` à remettre. Starters : Bulbizarre et Carapuce (Codex, marche + attente), **Salamèche obtenu à la main dans l'app ChatGPT** (`POKE_SALAMECHE_NE_r4`, marche seulement ; attente refusée → image de marche la plus posée par direction).
+
+
+## Validation DA.3 (Kevin, S24, 2026-10-07) — chantier terminé
+Intérieurs peints, starters peints (Salamèche de ChatGPT), Chen qui court : **validés** (« fini »). FPS non relevés (téléphone déconnecté avant la lecture du journal) ; pièces légères (7 à 10 Mo de textures). **Meubles vus de côté** : remplacements gardés sur les cases du jeu (option A, défaut de Claude, Kevin n'ayant pas tranché ; réversible en phase DA). Reportés (phase DA) : petit-déjeuner et affaires du lit du rival encore provisoires par-dessus les meubles peints ; télés du mur du fond comme au prototype (changerait la géométrie). **Tout le début du jeu est peint, de la chambre à Jadielle.** Prochain : jalon 8 (Route 2).
