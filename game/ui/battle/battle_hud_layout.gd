@@ -4,10 +4,10 @@ extends RefCounted
 ## combat-capacites-v1 (valeurs dans UiTokens) : chacun est ancré à un coin de l'écran, donc
 ## reste en place de 1920 à 2340 de large (aspect expand).
 ##
-##   FOE_CARD    carte adversaire, en haut à droite
-##   OWN_CARD    carte joueur, en bas à gauche (assez haut pour loger « ‹ » dessous)
+##   FOE_CARD    carte adversaire, en haut à gauche (diagonale opposée aux Pokémon, CB.2)
+##   OWN_CARD    carte joueur, en bas à droite, au-dessus de la grille d'actions / des capacités
 ##   PARTY_PIPS  six pastilles, juste au-dessus de la carte joueur
-##   BACK        bouton « ‹ », en bas à gauche, sous la carte joueur
+##   BACK        bouton « ‹ », en bas à gauche
 ##   ACTIONS     grille des 4 actions, en bas à droite
 ##   MOVES       bandeau des capacités, en bas à droite (il déborde jusqu'aux bords)
 ##   MESSAGE     bandeau des messages, à la place de la grille (à droite de la carte joueur)
@@ -65,16 +65,17 @@ static func frame(slot: Slot) -> Array[Vector2]:
 	var own_card := Vector2(UiTokens.BATTLE_CARD_WIDTH, UiTokens.BATTLE_CARD_HEIGHT_NUMBERS)
 	match slot:
 		Slot.FOE_CARD:
-			return [Vector2(1, 0), Vector2(edge, UiTokens.BATTLE_FOE_CARD_TOP), card]
+			return [Vector2(0, 0), Vector2(edge, UiTokens.BATTLE_FOE_CARD_TOP), card]
 		Slot.OWN_CARD:
-			return [Vector2(0, 1), Vector2(edge, UiTokens.BATTLE_OWN_CARD_BOTTOM), own_card]
+			return [Vector2(1, 1), Vector2(edge, UiTokens.BATTLE_OWN_CARD_BOTTOM), own_card]
 		Slot.PARTY_PIPS:
 			var pips := Vector2(
 				UiTokens.PARTY_SIZE * UiTokens.PARTY_PIP
 					+ (UiTokens.PARTY_SIZE - 1) * UiTokens.PARTY_PIP_GAP,
 				UiTokens.PARTY_PIP)
 			var above := UiTokens.BATTLE_OWN_CARD_BOTTOM + own_card.y + UiTokens.PARTY_PIPS_GAP
-			return [Vector2(0, 1), Vector2(edge + UiTokens.PARTY_PIPS_INSET, above), pips]
+			var inset := own_card.x - UiTokens.PARTY_PIPS_INSET - pips.x
+			return [Vector2(1, 1), Vector2(edge + inset, above), pips]
 		Slot.BACK:
 			return [Vector2(0, 1), Vector2(edge, edge), Vector2.ONE * UiTokens.BATTLE_BACK_SIZE]
 		Slot.ACTIONS:
@@ -131,7 +132,7 @@ static func forget_size() -> Vector2:
 
 ## Taille de l'emplacement du Sac : cadre (au plus BAG_FRAME_MAX_HEIGHT), écart, puis « ‹ ».
 static func bag_size() -> Vector2:
-	return Vector2(UiTokens.BAG_PANEL_WIDTH, UiTokens.BAG_FRAME_MAX_HEIGHT + UiTokens.GAP
+	return Vector2(UiTokens.BATTLE_BAG_WIDTH, UiTokens.BAG_FRAME_MAX_HEIGHT + UiTokens.GAP
 		+ UiTokens.BATTLE_BACK_SIZE)
 
 

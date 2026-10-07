@@ -13,7 +13,7 @@ var _empties: Array[Panel] = []
 
 
 func _ready() -> void:
-	slide_direction = Vector2.LEFT
+	slide_direction = Vector2.RIGHT
 	super._ready()
 	var row := _body as HBoxContainer
 	row.add_theme_constant_override(&"separation", UiTokens.PARTY_PIP_GAP)

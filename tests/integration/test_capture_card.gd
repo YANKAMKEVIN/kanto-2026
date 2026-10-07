@@ -5,7 +5,7 @@ extends GutTest
 
 const TweenClock := preload("res://tests/helpers/tween_clock.gd")
 const CARD_SCENE := "res://game/ui/battle/capture_card.tscn"
-const PORTRAIT := "res://assets/sprites/pokemon/placeholder/pidgey_front.png"
+const ROUCOOL_DEX := 16
 const SCREEN_WIDTHS: Array[float] = [1920.0, 2340.0]
 const SCREEN_HEIGHT := 1080.0
 const POKEDEX := "Nouvelle entrée Pokédex"
@@ -42,7 +42,7 @@ func _set_screen(width: float) -> void:
 
 
 func _view(new_entry: bool = true, line: String = JOINED) -> CaptureCardView:
-	return CaptureCardView.new("Roucool CAPTURÉ !", load(PORTRAIT) as Texture2D, new_entry,
+	return CaptureCardView.new("Roucool CAPTURÉ !", PokedexArt.portrait(ROUCOOL_DEX), new_entry,
 		POKEDEX if new_entry else "", line)
 
 
@@ -72,13 +72,17 @@ func test_hidden_at_start_and_not_waiting() -> void:
 
 
 func test_title_in_capitals_and_portrait() -> void:
-	await _show(CaptureCardView.new("Roucool capturé !", load(PORTRAIT) as Texture2D, false,
+	await _show(CaptureCardView.new("Roucool capturé !", PokedexArt.portrait(ROUCOOL_DEX), false,
 		"", JOINED))
 	assert_true(_card.visible)
 	assert_eq(_card.get_title_text(), "ROUCOOL CAPTURÉ !")
-	assert_eq(_card.get_portrait().texture, load(PORTRAIT))
-	assert_eq(_card.get_portrait().texture_filter, CanvasItem.TEXTURE_FILTER_NEAREST,
-		"sprite pixel art net")
+	var art := PokedexArt.portrait(ROUCOOL_DEX)
+	var shown := _card.get_portrait().texture as AtlasTexture
+	assert_eq(shown.atlas.resource_path, PokedexArt.portrait_path(ROUCOOL_DEX),
+		"artwork officiel, jamais le pixel art")
+	assert_eq(shown.region, (art as AtlasTexture).region)
+	assert_eq(_card.get_portrait().texture_filter,
+		CanvasItem.TEXTURE_FILTER_LINEAR_WITH_MIPMAPS, "filtre linéaire")
 	assert_true(_card.is_waiting())
 
 

@@ -53,7 +53,7 @@ func _ready() -> void:
 	_thumb.custom_minimum_size = Vector2.ONE * (UiTokens.CAPTURE_THUMB
 		+ 2 * UiTokens.CAPTURE_THUMB_PAD)
 	_portrait.custom_minimum_size = Vector2.ONE * UiTokens.CAPTURE_THUMB
-	_portrait.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
+	_portrait.texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR_WITH_MIPMAPS
 	_pokedex_row.add_theme_constant_override(&"separation", UiTokens.CAPTURE_LINE_GAP)
 	_pokedex_icon.custom_minimum_size = Vector2.ONE * UiTokens.CAPTURE_LINE_ICON
 	_pokedex_icon.self_modulate = UiTokens.TEXT_MUTED

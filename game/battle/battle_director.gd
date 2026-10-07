@@ -689,10 +689,8 @@ func _finish_capture(event: BattleEvent) -> void:
 	# Rien du Pokédex n'est visible tant que Chen ne l'a pas activé (jalon 7, règle de
 	# déblocage) : les données sont enregistrées, la ligne n'est pas montrée.
 	var show_entry: bool = is_new and _state.flags.has_flag(StoryFlags.POKEDEX_ACTIVATED)
-	var portrait_path := BattleStage.sprite_path(species, false)
-	var portrait: Texture2D = null
-	if ResourceLoader.exists(portrait_path):
-		portrait = load(portrait_path) as Texture2D
+	# Vignette = artwork officiel (CB.2), jamais le sprite provisoire ; sans artwork, pas de vignette.
+	var portrait: Texture2D = PokedexArt.portrait(_data.get_species(species).dex)
 	var view := CaptureCardView.new(_texts.line_for(&"caught_title", event, _data), portrait,
 		show_entry, _texts.line_for(&"pokedex_new", event, _data),
 		_texts.line_for(&"joined_party" if joined else &"sent_to_storage", event, _data))

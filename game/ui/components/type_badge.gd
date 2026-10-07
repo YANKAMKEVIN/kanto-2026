@@ -6,13 +6,22 @@ extends PanelContainer
 ## TYPE_COLORS, pour la couleur et l'icône) et le nom à afficher (« Feu »). Un type sans
 ## icône n'affiche que son nom ; un type sans couleur prend TYPE_COLOR_UNKNOWN.
 
-## Icônes disponibles (les autres types viendront avec leurs premiers Pokémon).
+## Icônes disponibles (CB.2 : Électrik et huit autres ; Dragon, Ténèbres, Acier, Fée : icône neutre).
 const ICONS: Dictionary[StringName, Texture2D] = {
 	&"normal": preload("res://assets/ui/icons/types/normal.svg"),
 	&"grass": preload("res://assets/ui/icons/types/grass.svg"),
 	&"poison": preload("res://assets/ui/icons/types/poison.svg"),
 	&"fire": preload("res://assets/ui/icons/types/fire.svg"),
 	&"water": preload("res://assets/ui/icons/types/water.svg"),
+	&"electric": preload("res://assets/ui/icons/types/electric.svg"),
+	&"ice": preload("res://assets/ui/icons/types/ice.svg"),
+	&"rock": preload("res://assets/ui/icons/types/rock.svg"),
+	&"ground": preload("res://assets/ui/icons/types/ground.svg"),
+	&"flying": preload("res://assets/ui/icons/types/flying.svg"),
+	&"bug": preload("res://assets/ui/icons/types/bug.svg"),
+	&"psychic": preload("res://assets/ui/icons/types/psychic.svg"),
+	&"ghost": preload("res://assets/ui/icons/types/ghost.svg"),
+	&"fighting": preload("res://assets/ui/icons/types/fighting.svg"),
 }
 
 var _type_id: StringName = &""

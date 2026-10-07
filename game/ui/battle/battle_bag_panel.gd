@@ -1,8 +1,8 @@
 class_name BattleBagPanel
 extends BattleWidget
 ## Le Sac ouvert pendant un combat sauvage (jalon 5D T14, jalon-05.md §3.10 et §3.12), d'après
-## le Sac du jalon 6 (dossier 08 §3) adapté au combat : panneau sombre translucide en bas à
-## gauche, au-dessus du bouton « ‹ » ; l'adversaire (centre droit) reste visible.
+## le Sac du jalon 6 (dossier 08 §3) adapté au combat, objets en rangées comme le storyboard
+## (CB.2) : panneau sombre translucide en bas à gauche, au-dessus du bouton « ‹ » ; l'adversaire (centre droit) reste visible.
 ##
 ## Composition : en-tête « SAC » et onglets de catégories (CAPTURE, SOINS…), objets en cartes
 ## (illustration, nom, quantité), aperçu de l'objet touché (illustration, nom, quantité,
@@ -31,7 +31,6 @@ signal item_previewed(item_id: StringName)
 signal category_opened(category_id: StringName)
 
 const TAB_SCENE: PackedScene = preload("res://game/ui/bag/bag_category_tab.tscn")
-const CARD_SCENE: PackedScene = preload("res://game/ui/bag/bag_item_card.tscn")
 const TITLE_ICON: Texture2D = preload("res://assets/ui/icons/battle/bag.svg")
 ## Illustration de l'onglet d'une catégorie ; le sac pour les autres.
 const CATEGORY_ICONS: Dictionary[StringName, Texture2D] = {
@@ -46,7 +45,7 @@ var _categories: Array[StringName] = []
 var _open: StringName = &""
 var _selected: StringName = &""
 var _tabs: Dictionary[StringName, BagCategoryTab] = {}
-var _cards: Array[BagItemCard] = []
+var _cards: Array[BattleBagRow] = []
 var _answered: bool = false
 var _detail_tween: Tween
 
@@ -82,10 +81,10 @@ func _ready() -> void:
 	_frame.anchor_bottom = 1.0
 	_frame.grow_vertical = Control.GROW_DIRECTION_BEGIN
 	_frame.offset_left = 0.0
-	_frame.offset_right = UiTokens.BAG_PANEL_WIDTH
+	_frame.offset_right = UiTokens.BATTLE_BAG_WIDTH
 	_frame.offset_bottom = -below
 	_frame.offset_top = -below
-	_frame.custom_minimum_size.x = UiTokens.BAG_PANEL_WIDTH
+	_frame.custom_minimum_size.x = UiTokens.BATTLE_BAG_WIDTH
 	_content.add_theme_constant_override(&"separation", UiTokens.BAG_ROW_GAP)
 	_header.add_theme_constant_override(&"separation", UiTokens.GAP)
 	_tabs_row.add_theme_constant_override(&"separation", UiTokens.GAP)
@@ -95,15 +94,21 @@ func _ready() -> void:
 	_divider.custom_minimum_size.y = UiTokens.BORDER_WIDTH
 	for side: StringName in [&"margin_left", &"margin_top", &"margin_right", &"margin_bottom"]:
 		_pad.add_theme_constant_override(side, UiTokens.BAG_SCROLL_PAD)
-	_grid.columns = UiTokens.BAG_COLUMNS
-	_grid.add_theme_constant_override(&"h_separation", UiTokens.BAG_CARD_GAP)
-	_grid.add_theme_constant_override(&"v_separation", UiTokens.BAG_CARD_GAP)
+	_pad.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	_grid.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	_grid.columns = 1
+	_grid.add_theme_constant_override(&"v_separation", UiTokens.BATTLE_BAG_ROW_GAP)
 	_empty.text = EMPTY_TEXT
 	_empty.custom_minimum_size.y = UiTokens.BAG_EMPTY_HEIGHT
 	_detail_row.add_theme_constant_override(&"separation", UiTokens.BAG_DETAIL_GAP)
 	_name_row.add_theme_constant_override(&"separation", UiTokens.BAG_TAB_GAP)
 	_detail_icon.custom_minimum_size = Vector2.ONE * UiTokens.BAG_DETAIL_ICON
 	_detail_text.max_lines_visible = 2
+	# Rangées : l'illustration, le nom et la quantité sont déjà dans la rangée choisie.
+	_detail_icon.visible = false
+	_name_row.visible = false
+	_detail_text.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	_detail_text.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	_action.custom_minimum_size = UiTokens.BAG_ACTION_SIZE
 	_action.focus_mode = Control.FOCUS_NONE
 	_action.pressed.connect(_on_action)
@@ -165,7 +170,7 @@ func open_category(category_id: StringName) -> void:
 ## N'émet aucun signal.
 func select_item(item_id: StringName) -> void:
 	var found := false
-	for card: BagItemCard in _cards:
+	for card: BattleBagRow in _cards:
 		var chosen := card.get_view().item_id == item_id
 		card.set_selected(chosen)
 		found = found or chosen
@@ -198,7 +203,7 @@ func get_tab(category_id: StringName) -> BagCategoryTab:
 
 
 ## Cartes de la catégorie ouverte, dans l'ordre.
-func get_cards() -> Array[BagItemCard]:
+func get_cards() -> Array[BattleBagRow]:
 	return _cards
 
 
@@ -282,20 +287,21 @@ func _build_tabs() -> void:
 
 
 func _rebuild_cards() -> void:
-	for card: BagItemCard in _cards:
+	for card: BattleBagRow in _cards:
 		_grid.remove_child(card)
 		card.free()
 	_cards.clear()
 	if _open.is_empty():
 		return
 	for view: BagEntryView in _by_category[_open]:
-		var card := CARD_SCENE.instantiate() as BagItemCard
+		var card := BattleBagRow.new()
 		_grid.add_child(card)
 		card.set_view(view)
 		card.tapped.connect(_on_card_tapped.bind(view.item_id))
 		_cards.append(card)
-	var rows := ceili(float(_cards.size()) / UiTokens.BAG_COLUMNS)
-	var height := rows * UiTokens.BAG_CARD_SIZE.y + maxi(rows - 1, 0) * UiTokens.BAG_CARD_GAP
+	var rows := _cards.size()
+	var height := rows * UiTokens.BATTLE_BAG_ROW_HEIGHT \
+		+ maxi(rows - 1, 0) * UiTokens.BATTLE_BAG_ROW_GAP
 	_scroll.custom_minimum_size.y = minf(height, UiTokens.BAG_GRID_MAX_HEIGHT) \
 		+ UiTokens.BAG_SCROLL_PAD * 2.0
 	_scroll.scroll_vertical = 0
@@ -322,7 +328,7 @@ func _refresh() -> void:
 
 
 func _selected_view() -> BagEntryView:
-	for card: BagItemCard in _cards:
+	for card: BattleBagRow in _cards:
 		if card.get_view().item_id == _selected:
 			return card.get_view()
 	return null
@@ -390,9 +396,8 @@ func _move_selection(step: Vector2i) -> void:
 	for i: int in _cards.size():
 		if _cards[i].get_view().item_id == _selected:
 			index = i
-	var cell := Vector2i(index % UiTokens.BAG_COLUMNS, index / UiTokens.BAG_COLUMNS) + step
-	var target := cell.y * UiTokens.BAG_COLUMNS + cell.x
-	if cell.x < 0 or cell.x >= UiTokens.BAG_COLUMNS or cell.y < 0 or target >= _cards.size():
+	var target := index + step.y
+	if step.y == 0 or target < 0 or target >= _cards.size():
 		return
 	select_item(_cards[target].get_view().item_id)
 	_scroll.ensure_control_visible(_cards[target])
