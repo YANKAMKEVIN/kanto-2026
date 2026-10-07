@@ -29,11 +29,11 @@ Références : `CLAUDE.md` (règles 1 à 10), `docs/design/dossier-11-route-2.md
 | Rencontres | `EncounterLibrary` (`data/encounters/*.json`, `levels` [min, max], `rate`, `ramp`) ; Route 1 et 22 : `rate` 25, `ramp` 15 → 20 | `data/encounters/route_2.json` |
 | Hautes herbes peintes | `ground_hautes_herbes_01` (+ `_bas`), deux touffes par case, matériau de vent (Route 22) | variante **jaune-vert** de la forêt serrée : prototype seulement (`hautes_herbes_jaune.png`, recoloration hors pipeline) |
 | Objets cachés | Potion de la Route 1 : `EventTriggerPoint` (pas sur la case) → scène `route_1_potion` : dialogue, `give … found: true` (journal `found_items` + toast), `set` | données seulement (§2.4) |
-| Objets **visibles** au sol | rien de dédié. Briques : PNJ de données (`NpcRoster`, présence `unless`), dialogue sans page qui lance une scène, étapes `despawn` / `give found` / `set`, bouton contextuel avec un verbe **`take` / « PRENDRE » déjà prévu** (`InteractButton.VERBS`, « pour les objets ramassables ») | `Interaction.Kind.TAKE`, verbe `take` accepté par `NpcRoster`, apparence d'objet (§2.3), **un asset** (Poké Ball au sol) |
+| Objets **visibles** au sol | rien de dédié. Briques : PNJ de données (`NpcRoster`, présence `unless`), dialogue sans page qui lance une scène, étapes `despawn` / `give found` / `set`, bouton contextuel avec un verbe **`take` / « PRENDRE » déjà prévu** (`InteractButton.VERBS`, « pour les objets ramassables ») | `Interaction.Kind.TAKE`, verbe `take` accepté par `NpcRoster`, apparence d'objet (§2.3), **un asset** (Poké Ball au sol ; T2 : recadrée d'un asset validé, §1.2 B) |
 | Rebord | `OverworldTiles.Kind.LEDGE_DOWN` (donnée `ledge` de `Ground`), saut du joueur (arc, aucun asset) | asset `relief_rebord_01` : **prototype seulement** (`rebord.png`, série 08) |
 | PNJ, routines | `route` (cases voisines, pause), `look` (attente animée), `idle_react`, variantes « première fois / ensuite » par drapeau (vieil homme de Jadielle) | apparence peinte de la **Randonneuse** |
 | Pokémon d'ambiance | `shy` `fly` (envol + fondu) et `flee` (fuite de 3 pas, course si planche de course, **puis fondu**), `AmbientWatcher` ; peints : `pokemon/pidgey`, `rattata` (+ course), `nidoran_f`, `nidoran_m`, `spearow`, `mankey` | rien (§2.6) |
-| FUTUR A / B, panneaux | `InteractPoint` (EXAMINE, orientation exigée), dialogues `narration`, `prop_panneau_01` (sans texte), `prop_cloture_01` / `_v_01` | asset de l'arbre dense ; barrière à confirmer sur la vue générale |
+| FUTUR A / B, panneaux | `InteractPoint` (EXAMINE, orientation exigée), dialogues `narration`, `prop_panneau_01` (sans texte), `prop_cloture_01` / `_v_01` | asset de l'arbre dense ; barrière à confirmer sur la vue générale (T2 : variations d'existants, §1.2 B) |
 | Objectif | `ObjectiveLibrary` (`data/story/objectives.json`, première entrée valide l'emporte, point final imposé par test) | une entrée |
 | Zone | `zones.json` : `route_2` **existe sans carte** (`"maps": []`) ; `GameState.discovered_maps` ; Carte, Pokédex (habitats) | `maps`, `subtitle`, `description` |
 | Lumière | `golden_hour` (`data/world/lighting.json`), `WorldLighting` | rien |
@@ -179,25 +179,70 @@ Lecture du tracé (sud → nord, dossier 11 §5) : **C1** (rangées 50–59) dé
 | Panneau T2 « FORÊT DE JADE » | (23, 9) | lu depuis (23, 10) ↑ |
 | Porte du poste, spawn `from_forest_gate` | porte (20, 8) ; spawn (20, 9) | STEP_ON ↑ ; retour tourné ↓ |
 
-### 1.2 Assets prévus (liste prévisionnelle ; liste **exacte** au T2, après la vue générale)
+### 1.2 Assets : liste exacte (T2, 2026-10-07, d'après la vue validée)
 
-**Déjà dans le jeu** (`assets/world/`, réutilisés tels quels) : sols `ground_herbe_01`, `ground_chemin_01`, `ground_paves_01` (amorce de pavés déchaussés au bord sud, raccord visuel avec la rue nord de Jadielle) ; décalcomanies de bord ; `tree_a_01`, `tree_b_01` (grands arbres repères) ; `prop_buisson_a/b/c_01` ; `prop_rocher_01` ; `prop_panneau_01` (×3) ; `prop_cloture_01` / `prop_cloture_v_01` (quelques clôtures au sud, « Jadielle encore perceptible » ; barrière de FUTUR B par défaut) ; `ground_hautes_herbes_01` (+ `_bas`) en repli. Personnages et Pokémon : `youngster` (Jeune Dresseur), `pokemon/pidgey`, `pokemon/rattata` (+ course), `pokemon/nidoran_f`, `pokemon/nidoran_m`.
+**Consigne de Kevin** : le plus petit kit modulaire qui produit la **sensation** de la vue validée dans Godot, sans effet répétitif ; la vue fixe une sensation, pas un inventaire. **Bilan : 2 assets de décor nouveaux + 1 personnage** (4 images Codex en tout : poste, grande pierre, planche de marche et planche d'attente de la Randonneuse), au lieu de 5 à 7 prévus. Planche de contrôle (sans Codex) : `build/art/R2_KIT_v1.png` (`python3 tools/art/serie10.py --planche`), réutilisés, variations rendues, références recadrées des nouveaux, abandons ; 1 case = 48 px, héros à l'échelle.
 
-**Validés au prototype, déjà promus au DA.0** (`main` à `4107a05`, §0.3) : `tree_foret_01` … `tree_foret_08` (forêt serrée ≈ 3 cases, posés par `DenseForest`), `ground_hautes_herbes_jaune_01` (H1, H2, H3), `prop_souche_01`, `relief_rebord_01`, `prop_pierres_01`, `prop_ronces_01`, `prop_tronc_couche_01`, `tree_c_01` / `tree_d_01` / `tree_e_01` (grands arbres du nord, repères), décalcomanies de fleurs sauvages (prairies du sud). Rien à promouvoir au T3.
+**A. Réutilisés tels quels** (`assets/`, aucun travail d'art)
 
-**Nouveaux (série 10, Codex, lumière NE)** :
+| Rôle (vue validée, grille) | Asset(s) |
+|---|---|
+| Sol : prairie, chemin, amorce de Jadielle | `ground_herbe_01`, `ground_chemin_01` (masque G, sentiers `a` / `b` compris), `ground_paves_01` (masque R, 2 rangées du bas) ; décalcomanies `decal_touffe_*`, `decal_terre_*`, `decal_pave_*` (`BorderDecals`) |
+| Forêt serrée (toutes les cases `T`) | `tree_foret_01` … `08` posés par `DenseForest` + sous-bois `ForestFloor` ; buissons des bandes étroites `prop_buisson_a/b_01_bourg` |
+| Repères C1 (pieds `G`) | `tree_a_01` (17, 58) et `tree_c_01` (23, 58) : deux essences différentes, pas de symétrie |
+| Lisière nord (repères à fondu, couronne au-dessus du chemin) | `tree_b_01` (conifère), `tree_e_01` (grand feuillu sombre) : 3 à 5 en tout, sur des cases de forêt au bord de C3, de la montée et du parvis |
+| Bords de chemin, enclos du Nidoran (`x`) | `prop_buisson_a/b/c_01_bourg` (une case chacun, les trois mélangés) |
+| Hautes herbes H1, H2, H3 | `ground_hautes_herbes_jaune_01` (+ `_bas` = `grass_front`), deux touffes par case |
+| Rebord (12..14, 36) | `relief_rebord_01` ×3 |
+| Souche (O3, Rattata) | `prop_souche_01` |
+| Panneaux T1, T2, T8 | `prop_panneau_01` ×3 |
+| Barrière de FUTUR B | `prop_cloture_piquets_v_01` (blanche, « entretenue »), pied en (34, 44) : emprise (34, 42..44), la case du haut est déjà de la forêt, la clôture sort du bois et ferme le sentier |
+| Lisière dense (sur des cases de forêt au bord des clairières du dernier tiers) | `prop_ronces_01`, `prop_tronc_couche_01` (deux ou trois chacun, jamais côte à côte) ; `prop_pierres_01` (traversable) dans C3 |
+| Prairies | `decal_fleur_1..8`, de plus en plus rares vers le nord ; au-delà de la rangée 20, seulement `decal_fleur_5` (trèfle) et `_6` (herbe sombre) |
+| Personnages, Pokémon | `jeune_dresseur` (P2), `roucool` ×2, `rattata` (+ course), `nidoran_f` (enclos), `nidoran_m` (Pokémon de P2) |
 
-| Fiche | Taille en jeu | Usage | Remarque |
-|---|---|---|---|
-| `WORLD_BLDG_POSTE_FORET_01` | emprise 7 × 4 cases, image ≈ 7 × 6,5 | façade du poste sud, porte au milieu du bas | **réutilisée au J9** pour le poste nord (même façade vue depuis la forêt) |
-| `WORLD_PROP_POKEBALL_SOL_01` | ≈ 0,45 case | O1 et O2 (arbitrage 2 : « un asset peint ») | Q-1 |
-| `WORLD_PROP_GRANDE_PIERRE_01` | 3 × 2 cases | repère C2 | |
-| `WORLD_PROP_ARBRE_DENSE_01` | 1 case, ≈ 1,6 de haut | FUTUR A | futur obstacle de franchissement (non défini, arbitrage 11) |
-| `PNJ_RANDONNEUSE_NE_r1` + `RANDONNEUSE_ATTENTE_r1` | ≈ 128 px | P1 | tenue = défaut à valider sur S24 |
-| *conditionnel* `WORLD_PROP_BARRIERE_SENTIER_01` | 2 cases | FUTUR B | seulement si la clôture existante ne se lit pas « barrière entretenue » sur la vue |
-| *conditionnel* `WORLD_TREE_FORET_PLANCHE_C_NE_r1` | ≈ 3,5 cases | lisière nord plus sombre (canopée qui se rejoint) | seulement si la vue l'exige ; mutualisé avec la Forêt de Jade (J9) |
+**B. Variations sans nouvel asset** (ce qui évite la répétition)
 
-Poids attendu : < 3 Mo de PNG ajoutés à l'APK (la Route 1 du prototype : ≈ 36,5 Mo de textures **en mémoire** à 60 fps ; budget du cahier : ≤ 300 Mo par carte).
+| Variation | Où, comment | Qui |
+|---|---|---|
+| **Teinte de la forêt selon la rangée** | valeur × 1,00 jusqu'à la rangée 30, puis décroissance jusqu'à × 0,72 à la rangée 8 et au-dessus ; au nord de la rangée 30, rouge × 0,97, bleu × 1,04 (plus froid) ; s'ajoute aux écarts aléatoires existants | T4 (`DenseForest`, testé), réglages en tête de `build_route_2.gd` |
+| **Essences plus froides au nord** | au nord de la rangée 20, poids × 2 pour `tree_foret_04`, `05`, `06` (bleu-vert, conifères), comme la vue | T4 (`DenseForest`, paramètre optionnel, neutre par défaut) |
+| **Sous-bois qui gagne la prairie** (dernier tiers) | herbe rase `.` à plus d'une case d'une case ouverte (`= h D v R`, comme `plan_aplats.py --lisiere`) au nord de la rangée 20 : masque `ForestFloor` à 0,45 (taches bruitées), 0,55 au nord de la rangée 12 ; jamais sur le chemin ni à côté | T4 (`ForestFloor.build_mask` accepte une valeur par case), T5 |
+| **Ombres de canopée au sol** | images d'ombre existantes (`tree_a_01_shadow`, `tree_b_01_shadow`, `tree_central_01_shadow`) posées à plat sur l'herbe de C3, du parvis et de la montée, matériau d'ombre portée, densité croissante vers le nord, graine fixe | T5 |
+| **FUTUR A, l'arbre dense** | `tree_foret_08` à l'échelle 0,55 (≈ 1,6 case de haut), valeur × 0,7, pied sur (4, 19) (case `A`, déjà bloquée par `Ground`) ; examiné depuis (5, 19) | T5 |
+| **Buissons** | miroir aléatoire, échelle 0,9–1,12, teinte ± 8 %, plus sombres au nord ; jamais deux fois la même image côte à côte dans l'enclos | T5 |
+| **H3 plus sombre** | touffes de H3 `modulate` × 0,86 environ (sous la canopée) | T5 |
+| **Grands arbres de lisière** | `tree_b_01` / `tree_e_01` en miroir, assombris comme la forêt de leur rangée | T5 |
+| **Clôtures basses de C1** (`c`, 3 cases) | `prop_cloture_piquets_01_court` : 3 des 4 cases de la clôture blanche validée, recadrées à la préparation (coupe au milieu d'un intervalle) ; règle `width 3, depth 1` | T3 (`preparer.py` : option `recadrage`, faite au T2) |
+| **Poké Ball au sol** (O1, O2) | `poke_ball_ground` : la Poké Ball de la commode du joueur (`INT_COMMODE_POKEBALL_01`, série 07, lumière NE), détachée par un disque, 40 px de haut ; section `images_objets` du manifeste → `assets/sprites/objects/painted/poke_ball_ground.png` | T3 (`preparer.py` : options `recadrage` + `masque: disque`, faites au T2) |
+
+**C. Nouveaux (série 10, Codex, lumière NE)** : fiches complètes dans `fiches-assets/serie-01-place-jadielle.md` (« Série 10 »)
+
+| Fiche | Rôle que rien d'existant ne tient | Taille / emprise | Couche, ombre | Référence |
+|---|---|---|---|---|
+| `WORLD_BLDG_POSTE_FORET_01` → `bldg_poste_foret_01` | objectif visuel de toute la route, porte vers la forêt ; **réutilisé au J9** (poste nord) | image 7 cases de large (≈ 4,5 de haut) ; emprise 7 × 4, ancre (20, 8), `open` [(0, 0)] = la porte | entités, `shadow` vrai (bâtiment), `fade` vrai | `REF_R2_POSTE` |
+| `WORLD_PROP_GRANDE_PIERRE_01` → `prop_grande_pierre_01` | repère unique de C2 (« arbres → pierre → forêt ») : `prop_rocher_01`, déjà vu trois fois sur la Route 1 et la Route 22 et anguleux, ne serait pas un repère | 3 cases de large (≈ 2,2 de haut) ; emprise 3 × 2, ancre (27, 24) | entités, sans ombre (règle des petits objets), pas de fondu | `REF_R2_GRANDE_PIERRE` |
+| `PNJ_RANDONNEUSE` (+ `RANDONNEUSE_ATTENTE`) → `randonneuse` | P1 nommée (« Randonneuse ») : le Voyageur est déjà sur la Route 1, la Dresseuse à Jadielle ; les reprendre ferait le même personnage à deux endroits | 128 px, marche 4 × 4 + attente 4 × 1 | personnage (ellipse du jeu) | `REF_R2_RANDONNEUSE` (tenue seulement) |
+
+**Conditionnels** (prompts prêts dans `serie10.py`, **jamais lancés par défaut** ; seulement si la capture du T5, relue contre la vue, le demande — décision de l'architecte, notée dans `etat-projet.md`) : `WORLD_PROP_ARBRE_DENSE_01` (si FUTUR A en `tree_foret_08` réduit ne se lit pas comme un obstacle), `WORLD_PROP_POKEBALL_SOL_01` (si la Ball recadrée déçoit au sol), `WORLD_GROUND_SOUS_BOIS_01` (planche de 8 décalcomanies de lisière, si le dernier tiers manque de sous-bois ; mutualisable au J9).
+
+**D. Abandonnés** (éléments de la vue volontairement non reproduits)
+
+| Élément de la vue | Pourquoi |
+|---|---|
+| Randonneuse près de la grande pierre | écart de la vue : P1 reste au premier embranchement (dossier 11) |
+| Second rebord sous H2, à droite | arbitrage 14 : un seul rebord |
+| Conifères isolés au milieu de C2 et de la prairie est | ils seraient sur des cases praticables : la grille fait foi ; les conifères restent dans la forêt |
+| Buissons à fleurs orange (C3, FUTUR B) | détail décoratif ; `prop_buisson_b_01_bourg` (fleurs roses) suffit, pas d'asset pour une couleur |
+| Barrière blanche dessinée de face (FUTUR B) | triche de la vue (le sentier est est-ouest, la barrière est nord-sud) : `prop_cloture_piquets_v_01` |
+| Clôtures blanches à lisses de C1 | les piquets blancs recadrés donnent la même lecture (« Jadielle encore perceptible ») |
+| Planche d'arbres de lisière sombres (`WORLD_TREE_FORET_PLANCHE_C`, conditionnel du T0) | teinte par rangée + poids des essences froides font la lisière |
+| Barrière dédiée (`WORLD_PROP_BARRIERE_SENTIER_01`, conditionnel du T0) | `prop_cloture_piquets_v_01` |
+| `tree_automne_01` | identité de la Route 1 : pas réutilisé ici |
+
+**Règles `PaintedPropRules` prévues** (T3, avec `build_painted_props.gd --nouveaux`) : `bldg_poste_foret_01` `{shadow: true, width: 7, depth: 4, fade: true, open: [Vector2i(0, 0)]}` ; `prop_grande_pierre_01` `{width: 3, depth: 2}` ; `prop_cloture_piquets_01_court` `{width: 3, depth: 1}`. La Ball n'est pas un objet du catalogue (`test_painted_props` exige une scène par objet) : c'est une image (`images_objets`) lue par `build_character_frames.gd` (genre « objet fixe », T4).
+
+Poids attendu : < 2 Mo de PNG ajoutés (poste ≈ 670 × 430, pierre ≈ 290 × 210, deux planches de personnage, une Ball, une clôture).
 
 ### 1.3 Fiche et prompt de la vue générale (écrits au T0, lancés au T1)
 
@@ -279,8 +324,8 @@ Trois cases `LEDGE_DOWN` en (12..14, 36) dans `Ground` (logique) + `relief_rebor
 
 ### 2.7 FUTUR A et FUTUR B (arbitrage 11, §6)
 
-- **A** : prop `prop_arbre_dense_01` en (4, 19) (emprise 1 case, solide) ; `InteractPoint` sur sa case, `facing` ←, dialogue `route_2_dense_tree` (narration T7) ; sentier peint (masque G) en (0..3, 19), cases bloquées (`Ground` forêt), aucun warp.
-- **B** : barrière (défaut `prop_cloture_v_01` recadrée sur 2 cases, ou l'asset conditionnel) en (34, 43..44), solide ; panneau `prop_panneau_01` en (33, 42) ; `InteractPoint` panneau (`facing` ↑, `route_2_closed_sign`, T8 « ACCÈS FERMÉ / Travaux sur le sentier. ») et barrière (2 cases, `facing` →, `route_2_closed_gate`, T9) ; sentier peint (35..41, 43..44) bloqué.
+- **A** : `tree_foret_08` réduit (× 0,55, assombri, §1.2 B) au pied de (4, 19), case `A` déjà bloquée par `Ground` (repli : asset conditionnel `WORLD_PROP_ARBRE_DENSE_01`) ; `InteractPoint` sur sa case, `facing` ←, dialogue `route_2_dense_tree` (narration T7) ; sentier peint (masque G) en (0..3, 19), cases bloquées (`Ground` forêt), aucun warp.
+- **B** : barrière `prop_cloture_piquets_v_01` au pied de (34, 44) (emprise (34, 42..44), la case du haut est de la forêt), solide ; panneau `prop_panneau_01` en (33, 42) ; `InteractPoint` panneau (`facing` ↑, `route_2_closed_sign`, T8 « ACCÈS FERMÉ / Travaux sur le sentier. ») et barrière (2 cases, `facing` →, `route_2_closed_gate`, T9) ; sentier peint (35..41, 43..44) bloqué.
 - Aucun état, aucun drapeau.
 
 ### 2.8 Panneaux (arbitrage 7)
@@ -352,15 +397,21 @@ Branche d'intégration `jalon-08` depuis `main`, dans une copie dédiée ; une b
 #### T2 — architecte : liste exacte des assets (après T1)
 - Fiche « Série 10 » complète (une fiche par asset nouveau : taille en cases, emprise, couche, ombre, références recadrées `REF_R2_*` de la vue validée) ; `tools/art/serie10.py` ; entrées du manifeste prévues (nouveaux + promus, §1.2) ; règles `PaintedPropRules` prévues.
 - **CA** : chaque élément visible de la vue validée a un asset (existant, promu ou nouveau) ou est explicitement abandonné ; liste relue par Kevin en même temps que la vue s'il le souhaite (non bloquant).
+- **Fait (2026-10-07)** : §1.2 (réutilisés, variations, 2 décors + 1 personnage nouveaux, 3 conditionnels, abandons) ; fiche « Série 10 » ; `tools/art/serie10.py` (références `--refs`, génération, `--manifeste`, planche `--planche`) ; prompt d'attente `tools/art/attente/prompts/RANDONNEUSE_ATTENTE.txt` ; `preparer.py` : options `recadrage` / `masque: disque` des objets et section `images_objets` (relancé : aucune image changée) ; planche `build/art/R2_KIT_v1.png` relue.
 
 #### T3 — constructeur-monde (Mac, Codex) : série 10 (8.1)
-- Génération (lumière NE, ancre de style = assets validés de la série 08) ; `manifeste.json` + `preparer.py` (entrées des nouveaux seulement, en fin de manifeste) ; `--import` ; `build_painted_props.gd` (règles d'emprise ajoutées) ; `build_character_frames.gd` (Randonneuse : marche + attente ; Ball : objet fixe).
+- Génération : **4 images**, §1.2 C (lumière NE ; ancres `WORLD_PROP_SOUCHE_01` + `WORLD_TREE_A_01`, plus `WORLD_BLDG_MAISON_B_01` pour le poste) ; les conditionnels **ne sont pas lancés**. Depuis la copie du J8, les sources étant dans le checkout principal :
+  ```bash
+  ART=/Users/kevinyankam/dev/kanto-2026/build/art python3 tools/art/serie10.py
+  ```
+  (recadre d'abord les `REF_R2_*` ; trois générations à la fois ; la planche d'attente part quand la marche existe ; une image déjà là n'est pas refaite ; correction = la supprimer ou passer en `_r2`).
+- Relecture contre la vue et la planche `R2_KIT_v1.png`, puis : `python3 tools/art/serie10.py --manifeste` (entrées du §1.2 en fin de sections : 3 objets, 1 image d'objet, 1 personnage, 1 attente), `python3 tools/art/preparer.py --source /Users/kevinyankam/dev/kanto-2026/build/art` (deux fois), `--import`, règles `PaintedPropRules` du §1.2, `build_painted_props.gd --nouveaux`, `build_character_frames.gd` (Randonneuse : marche + attente ; Ball : objet fixe, genre du T4).
 - **CA** : `preparer.py` relancé deux fois ne change aucun fichier ; `test_painted_props` passe (une règle par nouvel identifiant) ; planche contact `build/captures/jalon08_assets/` relue ; journal de la série 10 dans la fiche.
 
 #### T4 — architecte : fondations (en parallèle de T1–T3, après validation du plan et des textes)
-- Code : `Interaction.Kind.TAKE` ; `NpcRoster` verbe `take` ; `CharacterLook` préfixe `object/` ; teinte des arbres de `DenseForest` fonction de la rangée (assombrissement vers le nord, §2.12) ; `build_character_frames.gd` objet fixe. **Avant** : fusionner `main` (DA.0, DA.1).
+- Code : `Interaction.Kind.TAKE` ; `NpcRoster` verbe `take` ; `CharacterLook` préfixe `object/` ; teinte des arbres de `DenseForest` fonction de la rangée (assombrissement et refroidissement vers le nord, §1.2 B) et poids optionnels des essences au nord ; `ForestFloor.build_mask` avec une valeur par case (sous-bois partiel sur l'herbe éloignée du chemin, §1.2 B) ; `build_character_frames.gd` objet fixe. **Avant** : fusionner `main` (DA.0, DA.1).
 - Données : `data/encounters/route_2.json`, `zones.json`, `objectives.json`, `data/dialogues/route_2.json`, `data/cutscenes/route_2.json`, `data/npcs/route_2.json` (cases de la grille), `tools/debug_start/route_2.json` (partie après l'activation du Pokédex, équipe Nv. 8–10, spawn `from_viridian_c`).
-- Tests : `test_interaction` (TAKE, nom, ordre de l'enum), `test_npc_roster` (take accepté, meet refusé), `test_character_look` (`object/`), `test_dense_forest` (teinte selon la rangée, sans effet quand le réglage est neutre), `test_encounter_library` (table de la Route 2 : poids 100, aucun Insecte ni Pikachu), `test_zone_library`, `test_objective_library`, `test_dialogue_data`, `test_cutscene_library` (scènes des objets : `despawn` d'un PNJ du fichier, `give found`, `set`).
+- Tests : `test_interaction` (TAKE, nom, ordre de l'enum), `test_npc_roster` (take accepté, meet refusé), `test_character_look` (`object/`), `test_dense_forest` (teinte selon la rangée et poids des essences, sans effet quand les réglages sont neutres), `test_forest_floor` (valeurs du masque), `test_encounter_library` (table de la Route 2 : poids 100, aucun Insecte ni Pikachu), `test_zone_library`, `test_objective_library`, `test_dialogue_data`, `test_cutscene_library` (scènes des objets : `despawn` d'un PNJ du fichier, `give found`, `set`).
 - **CA** : `tools/test.sh` vert, import propre ; aucune carte touchée.
 
 #### T5 — constructeur-monde : la carte (8.1)
@@ -428,7 +479,9 @@ Valeurs par défaut notées (règle 4), à corriger d'un mot si besoin :
 | Nidoran d'ambiance | ♀ (à confirmer sur la vue générale) |
 | P2 | modèle peint `youngster` existant (déjà vu sur la Route 22 et devant l'Arène), avec un Nidoran ♂ |
 | Randonneuse | nouvelle planche peinte ; tenue = celle de la vue générale validée |
-| Barrière de FUTUR B | clôture existante recadrée ; asset dédié seulement si la vue l'exige |
+| Barrière de FUTUR B | `prop_cloture_piquets_v_01` (T2) ; aucun asset dédié |
+| Kit de la série 10 (T2) | 2 décors (poste, grande pierre) + Randonneuse ; FUTUR A = `tree_foret_08` × 0,55 assombri ; Ball = Poké Ball de la commode recadrée (40 px) ; clôtures de C1 = piquets blancs recadrés à 3 cases ; 3 conditionnels décidés sur la capture du T5 |
+| Lisière (T2) | forêt × 1,00 → × 0,72 de la rangée 30 à la rangée 8, plus froide ; essences bleu-vert × 2 au nord de la rangée 20 ; sous-bois du masque à 0,45 / 0,55 sur l'herbe éloignée du chemin au nord des rangées 20 / 12 ; H3 × 0,86 |
 | Panneau T1 | une page « ROUTE 2 » + « Jadielle — Forêt de Jade » (pas de gras dans la boîte) |
 | Sous-titre de zone | « Jadielle — Forêt de Jade » (comme la Route 1) |
 | Raccord | pavés déchaussés sur 2 rangées puis terre ; une ou deux clôtures courtes |

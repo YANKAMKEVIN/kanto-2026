@@ -29,7 +29,7 @@ import math
 import re
 from pathlib import Path
 
-from PIL import Image, ImageChops, ImageEnhance, ImageFilter
+from PIL import Image, ImageChops, ImageDraw, ImageEnhance, ImageFilter
 
 RACINE = Path(__file__).resolve().parents[2]
 ICI = Path(__file__).resolve().parent
@@ -71,6 +71,21 @@ def _mettre_a_taille(image: Image.Image, axe: str, cases: float, case: int) -> I
     echelle = cases * case / (hauteur if axe == "h" else largeur)
     taille = (round(largeur * echelle), round(hauteur * echelle))
     return image.resize(taille, Image.LANCZOS)
+
+
+def _recadrer(image: Image.Image, entree: dict) -> Image.Image:
+    """Options d'un objet (série 10) : « recadrage » [x0, y0, x1, y1] en pixels de la source,
+    appliqué avant la silhouette (un morceau d'un asset validé : clôture à 3 cases) ; « masque »
+    « disque » : cercle inscrit dans le recadrage, bord adouci (Poké Ball détachée d'un meuble)."""
+    if "recadrage" in entree:
+        image = image.crop(tuple(entree["recadrage"]))
+    if entree.get("masque") == "disque":
+        grand = Image.new("L", (image.width * 4, image.height * 4), 0)
+        ImageDraw.Draw(grand).ellipse((0, 0, grand.width - 1, grand.height - 1), fill=255)
+        masque = grand.resize(image.size, Image.LANCZOS)
+        image = image.copy()
+        image.putalpha(ImageChops.multiply(image.getchannel("A"), masque))
+    return image
 
 
 def _alpha_blanc(alpha: Image.Image) -> Image.Image:
@@ -202,8 +217,8 @@ class Preparateur:
 
     def objets(self) -> None:
         for e in self.m["objets"]:
-            image = _silhouette(Image.open(self.source / e["source"]).convert("RGBA"))
-            image = _mettre_a_taille(image, e["axe"], e["cases"], self.case)
+            image = _recadrer(Image.open(self.source / e["source"]).convert("RGBA"), e)
+            image = _mettre_a_taille(_silhouette(image), e["axe"], e["cases"], self.case)
             self._objet(e["id"], e["sortie"], image, e["ombre"], e["contact"])
 
     def _objet(self, ident: str, sortie: str, image: Image.Image, ombre: bool,
@@ -369,8 +384,11 @@ class Preparateur:
                 "ordre_colonnes": ["bas", "gauche", "droite", "haut"]}
 
     def heros_images(self) -> None:
-        for e in self.m["heros_images"]:
-            image = _silhouette(Image.open(self.source / e["source"]).convert("RGBA"))
+        # « images_objets » (série 10) : objets fixes affichés comme des personnages (Poké Ball
+        # posée au sol, `build_character_frames.gd`), mis à leur hauteur comme les images du héros.
+        for e in self.m["heros_images"] + self.m.get("images_objets", []):
+            image = _recadrer(Image.open(self.source / e["source"]).convert("RGBA"), e)
+            image = _silhouette(image)
             echelle = e["hauteur"] / image.height
             image = image.resize((round(image.width * echelle), e["hauteur"]), Image.LANCZOS)
             _ecrire(image, self._sortie(e["sortie"]))
