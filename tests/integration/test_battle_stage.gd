@@ -1,7 +1,9 @@
 extends GutTest
 ## BattleStage (jalon-04.md §14.4, §14.11 T6) sur une mini-carte : caméra enfant d'un
 ## « joueur », deux PNJ Pokémon posés au sol. Entrée : PNJ cachés, sprites de combat aux
-## ancres (NEAREST, ×4 de dos, ×3 de face, bonnes textures), caméra recadrée ; animations des
+## ancres du pilote (CB.1 : dos provisoire NEAREST à échelle entière, adversaire en artwork
+## officiel linéaire et étalonné, tailles de BattleLayout), hors des zones de l'interface,
+## caméra recadrée ; animations des
 ## temps qui se terminent ; sortie : PNJ réaffichés sur leur case, caméra rendue à
 ## l'identique ; reset ; entrée refusée pendant un combat ; aucun orphelin.
 ## Transition réelle (speed_scale = 1) : à mi-course, caméra et sprites avancent ensemble.
@@ -63,7 +65,36 @@ func _enter(foe: Npc = null) -> void:
 
 
 func _anchors() -> Dictionary:
-	return BattleLayout.anchors(_stage.get_viewport().get_visible_rect().size)
+	return BattleLayout.anchors(_view())
+
+
+func _view() -> Vector2:
+	return _stage.get_viewport().get_visible_rect().size
+
+
+## Échelle attendue de [param species] (BattleArt + BattleLayout).
+func _scale(species: StringName, back: bool) -> float:
+	var art := BattleArt.new()
+	var image := art.image(species, back)
+	return BattleLayout.sprite_scale((image["box"] as Rect2).size, art.height_m(species), back,
+		_view().y, not image["official"])
+
+
+## Fichier de l'image affichée par [param sprite] (l'artwork officiel est une AtlasTexture).
+func _art_path(sprite: Sprite2D) -> String:
+	var texture := sprite.texture
+	if texture is AtlasTexture:
+		return (texture as AtlasTexture).atlas.resource_path
+	return texture.resource_path
+
+
+## Le Pokémon de [param side] tient dans sa boîte maximale (BattleLayout), elle-même dans
+## l'écran et hors de l'interface à 1920 et 2340 de large (test_battle_layout ; la vue de GUT
+## n'a pas le format du téléphone).
+func _assert_framed(side: BattleEvent.SideId) -> void:
+	var rect := _stage.get_sprite_rect(side)
+	var limit := BattleLayout.max_rect(side == PLAYER_SIDE, _view()).grow(0.5)
+	assert_true(limit.encloses(rect), "%s dans %s" % [rect, limit])
 
 
 func test_idle_stage_shows_nothing() -> void:
@@ -84,18 +115,23 @@ func test_enter_hides_world_pokemon_and_shows_battle_sprites_at_anchors() -> voi
 	var foe := _stage.get_sprite(FOE_SIDE)
 	for sprite: Sprite2D in [mine, foe]:
 		assert_true(sprite.visible)
-		assert_eq(sprite.texture_filter, CanvasItem.TEXTURE_FILTER_NEAREST)
 		assert_eq(sprite.modulate, Color.WHITE)
-		assert_eq(sprite.offset, Vector2(0, -32), "pieds sur l'origine")
+		assert_false(sprite.centered, "pieds sur l'origine (offset)")
+	assert_eq(mine.texture_filter, CanvasItem.TEXTURE_FILTER_NEAREST, "dos provisoire net")
+	assert_eq(foe.texture_filter, CanvasItem.TEXTURE_FILTER_LINEAR, "artwork officiel")
+	assert_not_null(foe.material, "artwork étalonné dans la lumière du lieu")
+	assert_null(mine.material)
 	assert_eq(mine.position, a["player_feet"])
 	assert_eq(foe.position, a["foe_feet"])
-	assert_eq(mine.scale, Vector2.ONE * 4, "de dos ×4")
-	assert_eq(foe.scale, Vector2.ONE * 3, "de face ×3")
+	assert_eq(mine.scale, Vector2.ONE * _scale(&"charmander", true), "taille de BattleLayout")
+	assert_eq(mine.scale.x, floorf(mine.scale.x), "pixel art : échelle entière")
+	assert_eq(foe.scale, Vector2.ONE * _scale(&"squirtle", false))
 	assert_eq(mine.texture.resource_path, BattleStage.sprite_path(&"charmander", true))
-	assert_eq(foe.texture.resource_path, BattleStage.sprite_path(&"squirtle", false))
 	assert_string_ends_with(mine.texture.resource_path, "charmander_back.png")
-	assert_string_ends_with(foe.texture.resource_path, "squirtle_front.png")
+	assert_string_ends_with(_art_path(foe), "official/007.png", "Carapuce n° 7")
 	assert_eq(mine.texture.get_size(), Vector2(64, 64))
+	_assert_framed(PLAYER_SIDE)
+	_assert_framed(FOE_SIDE)
 	assert_true((_stage.get_node(^"%PlayerShadow") as CanvasItem).visible, "ombre au sol")
 	assert_true((_stage.get_node(^"%Backdrop") as CanvasItem).visible, "voile posé")
 
@@ -190,7 +226,7 @@ func test_show_pokemon_without_world_npc_and_no_effect_when_shown() -> void:
 	_stage.show_pokemon(FOE_SIDE, &"squirtle")
 	await wait_process_frames(2)
 	assert_true(foe.visible, "le suivant entre en jeu")
-	assert_string_ends_with(foe.texture.resource_path, "squirtle_front.png")
+	assert_string_ends_with(_art_path(foe), "official/007.png")
 	await _stage.exit()
 	assert_true(_mine.visible)
 
@@ -209,7 +245,7 @@ func test_real_transition_moves_camera_and_sprites_together() -> void:
 	clock.run_until(func() -> bool: return false, BattleStage.ENTER_DURATION * 0.45)
 	var mine := _stage.get_sprite(PLAYER_SIDE)
 	assert_between(_camera.zoom.x, 1.01, BattleStage.ZOOM - 0.01, "caméra en mouvement")
-	assert_between(mine.scale.x, 1.1, 3.9, "taille intermédiaire")
+	assert_between(mine.scale.x, 1.1, _scale(&"charmander", true) - 0.1, "taille intermédiaire")
 	assert_ne(mine.position, _anchors()["player_feet"], "en chemin")
 	assert_true(mine.visible)
 	assert_true((_stage.get_node(^"%Backdrop") as CanvasItem).visible)
@@ -257,9 +293,10 @@ func test_wild_intro_and_partner_enter_end_at_the_anchors() -> void:
 	assert_true(_stage.is_active())
 	assert_true(foe.visible, "le sauvage apparaît")
 	assert_eq(foe.position, a["foe_feet"], "à l'ancre adverse")
-	assert_eq(foe.scale, Vector2.ONE * 3, "de face ×3")
+	assert_eq(foe.scale, Vector2.ONE * _scale(&"pidgey", false))
 	assert_eq(foe.modulate, Color.WHITE)
-	assert_string_ends_with(foe.texture.resource_path, "pidgey_front.png")
+	assert_string_ends_with(_art_path(foe), "official/016.png", "artwork de Roucool")
+	_assert_framed(FOE_SIDE)
 	assert_false(_stage.get_sprite(PLAYER_SIDE).visible, "partenaire pas encore entré")
 	assert_eq(_camera.zoom, Vector2.ONE * BattleStage.ZOOM, "caméra recadrée")
 	assert_true((_stage.get_node(^"%Backdrop") as CanvasItem).visible,
@@ -268,8 +305,9 @@ func test_wild_intro_and_partner_enter_end_at_the_anchors() -> void:
 	var mine := _stage.get_sprite(PLAYER_SIDE)
 	assert_true(mine.visible)
 	assert_eq(mine.position, a["player_feet"], "à l'ancre du joueur")
-	assert_eq(mine.scale, Vector2.ONE * 4, "de dos ×4")
+	assert_eq(mine.scale, Vector2.ONE * _scale(&"charmander", true))
 	assert_string_ends_with(mine.texture.resource_path, "charmander_back.png")
+	_assert_framed(PLAYER_SIDE)
 	await _stage.exit()
 	assert_false(_stage.is_active())
 	assert_eq(_camera.zoom, Vector2.ONE, "caméra rendue")
@@ -282,8 +320,8 @@ func test_wild_intro_during_a_battle_is_refused() -> void:
 	await _enter()
 	await _stage.play_wild_intro(_camera, &"rattata", Grid.cell_to_world(FOE_CELL))
 	assert_push_error("déjà affiché")
-	assert_string_ends_with(_stage.get_sprite(FOE_SIDE).texture.resource_path,
-		"squirtle_front.png", "le combat affiché ne change pas")
+	assert_string_ends_with(_art_path(_stage.get_sprite(FOE_SIDE)), "official/007.png",
+		"le combat affiché ne change pas")
 
 
 func test_reset_after_a_wild_intro_puts_everything_back() -> void:
@@ -374,7 +412,7 @@ func test_break_free_brings_the_foe_back_and_removes_the_ball() -> void:
 	var foe := _stage.get_sprite(FOE_SIDE)
 	assert_true(foe.visible, "le Pokémon est ressorti")
 	assert_eq(foe.position, a["foe_feet"], "à sa place de combat")
-	assert_eq(foe.scale, Vector2.ONE * float(BattleLayout.FOE_SCALE), "à sa taille")
+	assert_eq(foe.scale, Vector2.ONE * _scale(&"rattata", false), "à sa taille")
 	assert_eq(foe.modulate, Color.WHITE)
 	assert_false(_stage.get_ball().visible, "la Ball s'est ouverte")
 	assert_false(_stage.is_capture_shown())

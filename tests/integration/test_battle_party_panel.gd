@@ -300,8 +300,6 @@ func test_panel_leaves_the_foe_visible() -> void:
 	for width: float in SCREEN_WIDTHS:
 		_set_screen(width)
 		await _open(_team())
-		var anchors := BattleLayout.anchors(_screen.size)
-		var foe := BattleLayout.sprite_rect(anchors["foe_feet"], anchors["foe_scale"],
-			BattleLayout.NATIVE)
+		var foe := BattleLayout.max_rect(false, _screen.size)
 		assert_false(_panel.get_frame_rect().intersects(foe),
 			"%s : l'adversaire reste visible" % width)

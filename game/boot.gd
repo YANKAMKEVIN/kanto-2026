@@ -175,6 +175,8 @@ func _ready() -> void:
 	_items.load_dir()
 	_battle_director.setup(_pokemon, _trainers, _texts, _battle_stage, _battle_hud, _player,
 		GameState, _items)
+	# CB.1 : artwork officiel de l'adversaire (numéro) et tailles réelles (Pokédex).
+	_battle_stage.set_species_source(_pokemon, _dex)
 	_cutscenes_node.set_battle_runner(_battle_director)
 	_cutscenes_node.set_inventory(GameState.bag, _items)
 	# Remise du colis (jalon-07.md §3.6.2, T19) : jeton {first_wild_species} des répliques de
