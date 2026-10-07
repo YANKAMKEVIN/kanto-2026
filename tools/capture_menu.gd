@@ -70,6 +70,10 @@ extends SceneTree
 
 const BOOT_SCENE: String = "res://game/boot.tscn"
 const MENU_SCENE: String = "res://game/ui/menu/trainer_menu.tscn"
+## Scénarios qui montrent le monde (HUD visible) ; les autres ouvrent le menu comme Boot le fait :
+## titre de zone retiré et contrôles cachés (MM.2 : plus de titre flou derrière le ×).
+const WORLD_SCENARIOS: Array[String] = ["hud_button", "left_handed", "text_large_dialogue",
+	"contrast_dialogue"]
 
 var _boot: Node
 var _menu: TrainerMenu
@@ -121,6 +125,8 @@ func _on_frame() -> void:
 		_wait = 0
 		_save_wait = 12
 		_menu.speed_scale = 0.0
+		if not WORLD_SCENARIOS.has(_current):
+			_hide_world_hud()
 		_begin(_current)
 		return
 	_wait += 1
@@ -157,7 +163,7 @@ func _begin(scenario: String) -> void:
 			_dex_scenario(scenario)
 		"map", "map_panel", "map_dex", "map_route_2":
 			_map_scenario(scenario)
-		"trainer", "trainer_dex", "trainer_empty":
+		"trainer", "trainer_dex", "trainer_empty", "trainer_badge":
 			_trainer_scenario(scenario)
 		"shop_buy", "shop_sell", "shop_no_money", "shop_confirm":
 			_shop_scenario(scenario)
@@ -220,6 +226,8 @@ func _settings_scenario(scenario: String) -> void:
 			return
 	var view := SettingsViews.build(settings, GameSettings.Graphics.HIGH,
 		scenario != "settings_no_save")
+	# Comme Boot : le lieu dans le bandeau d'état (MM.3).
+	_menu.set_zone_name("Route 1")
 	_menu.open_animated()
 	_menu.show_settings(view)
 	var screen := _menu.get_settings()
@@ -231,7 +239,11 @@ func _settings_scenario(scenario: String) -> void:
 		"settings_graphics":
 			screen.select_category(SettingsViews.CATEGORY_GRAPHICS)
 		"settings_save":
+			screen.select_category(SettingsViews.CATEGORY_GAME)
 			screen.show_save_result("Partie sauvegardée — 14 h 32")
+		_:
+			# L'écran garde la catégorie du scénario précédent : JEU par défaut.
+			screen.select_category(SettingsViews.CATEGORY_GAME)
 
 
 ## Un doigt posé (et tiré un peu) dans le viewport : le joystick apparaît, pour la capture.
@@ -247,6 +259,17 @@ func _touch_joystick(point: Vector2) -> void:
 	root.push_input(drag, true)
 
 
+## Comme Boot à l'ouverture du menu (_on_menu_opened) : titre de zone et légende retirés,
+## contrôles cachés.
+func _hide_world_hud() -> void:
+	var hud: ExplorationHud = _boot.get_hud()
+	hud.hide_zone_title()
+	hud.get_zone_title().visible = false
+	hud.hide_caption()
+	hud.get_caption().visible = false
+	hud.set_controls_visible(false)
+
+
 ## Remet les réglages de capture à zéro entre deux scénarios.
 func _cleanup() -> void:
 	UiPrefs.reset()
@@ -259,6 +282,7 @@ func _cleanup() -> void:
 	hud.get_toast().hide_now()
 	hud.hide_zone_title()
 	hud.get_joystick().release()
+	hud.set_controls_visible(true)
 	var box: DialogueBox = _boot.get_dialogue_box()
 	if box.is_open():
 		box.close()
@@ -373,12 +397,16 @@ func _trainer_scenario(scenario: String) -> void:
 			"res://tests/fixtures/save/v1_after_capture.json"))
 		SaveSystem.upgrade(content)
 		state.load_dict(content, data)
-		if scenario == "trainer_dex":
+		if scenario == "trainer_dex" or scenario == "trainer_badge":
 			state.flags.set_flag(StoryFlags.POKEDEX_ACTIVATED)
 			state.record_seen(&"pidgey", &"route_1")
+		if scenario == "trainer_badge":
+			state.flags.set_flag(&"badge_boulder")  # capture seulement : aucun badge avant le J10
 	var unlocks := MenuUnlocks.new(state.flags, state.party)
+	var badges := BadgeLibrary.new()
+	badges.load_file()
 	_menu.open_animated()
-	_menu.show_trainer(TrainerSummary.build(state, data, zones, moments, unlocks))
+	_menu.show_trainer(TrainerSummary.build(state, data, zones, moments, unlocks, badges))
 	state.free()
 
 
@@ -647,6 +675,7 @@ func _view(card_count: int, with_lead: bool, fainted: bool, dex: String) -> Dash
 	if with_lead:
 		var lead := TeamMemberView.new()
 		lead.species_id = &"charmander"
+		lead.dex_number = 4
 		lead.display_name = "Salamèche"
 		lead.gender = BattleCardView.Gender.MALE
 		lead.level = 14
@@ -656,14 +685,9 @@ func _view(card_count: int, with_lead: bool, fainted: bool, dex: String) -> Dash
 		if not fainted:
 			lead.hp = 31
 		view.lead = lead
-	var texts: Dictionary = {
-		&"team": ["Équipe", "Tes Pokémon et leurs capacités."],
-		&"pokedex": ["Pokédex", "Tes découvertes dans la région de Kanto."],
-		&"bag": ["Sac", "Utilise et range tes objets."],
-		&"map": ["Carte", "Kanto et tes découvertes."],
-		&"trainer": ["Dresseur", "Ton profil et ton parcours."],
-		&"settings": ["Paramètres", "Jeu, commandes, graphismes et accessibilité."],
-	}
+	if card_count == 6:
+		view.badges_text = DashboardViews.badges_text(2)  # capture seulement : aucun badge au MM.1
+	var texts: Dictionary = DashboardViews.CARD_TEXTS
 	var order: Array[StringName] = [&"team", &"pokedex", &"bag", &"map", &"trainer", &"settings"]
 	if card_count == 5:
 		order.erase(&"pokedex")
@@ -680,3 +704,7 @@ func _save(capture_name: String) -> void:
 	var image := root.get_texture().get_image()
 	image.save_png(path)
 	print("CAPTURE %s %s" % [path, image.get_size()])
+	# Coût de l'écran (MM.1) : appels de dessin de l'image et mémoire vidéo des textures.
+	print("PERF %s draw=%d tex=%.1f Mo" % [capture_name,
+		Performance.get_monitor(Performance.RENDER_TOTAL_DRAW_CALLS_IN_FRAME),
+		Performance.get_monitor(Performance.RENDER_TEXTURE_MEM_USED) / 1048576.0])

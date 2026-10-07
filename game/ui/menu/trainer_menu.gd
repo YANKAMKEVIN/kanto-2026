@@ -6,6 +6,12 @@ extends CanvasLayer
 ##
 ## Il ne décide de rien : il affiche ce qu'on lui donne (vues) et relaie ce que le doigt fait
 ## (signaux) ; c'est [code]Boot[/code] (T4) qui le relie au directeur du menu.
+## En-tête (MM.1, maquettes) : × rond compact à gauche (caché quand l'écran pose son propre « ‹ »,
+## [member MenuScreen.owns_back]) et **bandeau d'état** en haut à droite : lieu · heure · argent.
+## La puce « heure » interroge [WorldClock] : cachée tant que l'horloge est inactive (pas de
+## cycle jour/nuit avant la phase 10, aucune heure inventée). L'argent ne s'affiche que sur les
+## écrans qui le demandent ([member MenuScreen.status_money] : le Sac ; jamais au tableau de bord,
+## dossier 09 §10).
 ## - × : un seul [signal close_requested] par toucher.
 ## - Carte touchée : [signal route_requested] avec [method MenuRoute.for_screen] ; Pokémon de
 ##   tête : MenuRoute.team(0).
@@ -13,7 +19,7 @@ extends CanvasLayer
 ## Il tourne même quand l'arbre est en pause (process_mode ALWAYS : le monde est en pause
 ## derrière lui).
 ## Placement (aspect expand, 1920 à 2340 de large) : en-tête ancré en haut, × à
-## SAFE_MARGIN ; les écrans occupent la zone sous l'en-tête, à SAFE_MARGIN des bords.
+## SAFE_MARGIN, bandeau d'état contre la marge droite ; les écrans occupent la zone sous l'en-tête, à SAFE_MARGIN des bords.
 
 ## Une carte (ou le Pokémon de tête, ou un lien croisé) demande un écran.
 signal route_requested(route: MenuRoute)
@@ -60,6 +66,9 @@ signal storage_favorite_toggled(place: int, index: int)
 signal storage_release_requested(place: int, index: int)
 signal storage_release_confirmed(place: int, index: int)
 
+const PIN_ICON: Texture2D = preload("res://assets/ui/icons/menu/map.svg")
+const CLOCK_ICON: Texture2D = preload("res://assets/ui/icons/menu/clock.svg")
+const COIN_ICON: Texture2D = preload("res://assets/ui/icons/shop/coin.svg")
 ## Titre des écrans provisoires (carte → « Équipe »…), texte d'interface.
 const PLACEHOLDER_TITLES: Dictionary[StringName, String] = {
 	MenuRoute.TEAM: "Équipe",
@@ -109,13 +118,23 @@ var _storage: StorageScreen
 ## Dernière révision de [UiPrefs] appliquée à chaque écran (taille du texte, contraste).
 var _prefs_fitted: Dictionary[MenuScreen, int] = {}
 var _blur_enabled: bool = true
+## Horloge interrogée par la puce « heure » (inactive tant que le jour/nuit n'existe pas).
+var _clock: WorldClock = WorldClock.new()
+## Argent du bandeau d'état (« 3 840 ₽ »), gardé jusqu'à la prochaine vue qui en donne un.
+var _money_text: String = ""
+var _status: PanelContainer
+var _zone_pill: HBoxContainer
+var _zone_name: Label
+var _clock_chip: HBoxContainer
+var _clock_label: Label
+var _money_chip: HBoxContainer
+var _money_label: Label
+var _dividers: Array[Panel] = []
 
 @onready var _root: Control = %Root
 @onready var _backdrop: ColorRect = %Backdrop
 @onready var _header: HBoxContainer = %Header
 @onready var _close_button: Button = %CloseButton
-@onready var _zone_pill: PanelContainer = %ZonePill
-@onready var _zone_name: Label = %ZoneName
 @onready var _host: Control = %Host
 
 
@@ -127,7 +146,9 @@ func _ready() -> void:
 	_header.offset_top = UiTokens.SAFE_MARGIN
 	_header.offset_bottom = UiTokens.SAFE_MARGIN + UiTokens.MENU_CLOSE_SIZE
 	_header.add_theme_constant_override(&"separation", UiTokens.GAP)
-	# Jamais une pastille sans nom (l'icône seule) : elle apparaît avec le nom de la zone.
+	_build_status()
+	_clock.activity_changed.connect(_on_clock_activity)
+	# Jamais une puce sans nom (l'icône seule) : elle apparaît avec le nom de la zone.
 	set_zone_name("")
 	_close_button.custom_minimum_size = Vector2.ONE * UiTokens.MENU_CLOSE_SIZE
 	_close_button.pressed.connect(_on_close_pressed)
@@ -161,6 +182,7 @@ func _ready() -> void:
 func open_animated() -> void:
 	_open = true
 	_kill_tween()
+	_refresh_header()
 	_root.visible = true
 	_root.mouse_filter = Control.MOUSE_FILTER_STOP
 	Haptics.vibrate(UiTokens.HAPTIC_MENU_MS)
@@ -215,7 +237,28 @@ func show_dashboard(view: DashboardView) -> void:
 ## Gardé tant qu'un autre nom n'est pas donné (Équipe, Sac… ne le touchent pas).
 func set_zone_name(zone_name: String) -> void:
 	_zone_name.text = zone_name
-	_refresh_zone_pill()
+	_refresh_header()
+
+
+## Argent du bandeau d'état (« 3 840 ₽ ») ; vide : puce cachée. Gardé tant qu'une autre vue n'en
+## donne pas (le Sac) ; montré seulement sur les écrans qui le demandent.
+func set_money_text(text: String) -> void:
+	_money_text = text
+	_money_label.text = text
+	_refresh_header()
+
+
+## Horloge du monde interrogée par la puce « heure » (phase 10 : l'horloge du jeu).
+func set_clock(clock: WorldClock) -> void:
+	if _clock != null and _clock.activity_changed.is_connected(_on_clock_activity):
+		_clock.activity_changed.disconnect(_on_clock_activity)
+	_clock = clock if clock != null else WorldClock.new()
+	_clock.activity_changed.connect(_on_clock_activity)
+	_refresh_header()
+
+
+func get_clock() -> WorldClock:
+	return _clock
 
 
 ## Écran Équipe (6A) : [param view] et le Pokémon [param selected] sélectionné. Rappelé pendant
@@ -253,6 +296,7 @@ func show_bag(view: BagView) -> void:
 		_bag.repeat_requested.connect(bag_repeat_requested.emit)
 		_host.add_child(_bag)
 		_bag.hide_now()
+	set_money_text(view.money_text)
 	_bag.show_bag(view)
 	_select(_bag)
 	_fit_prefs(_bag)
@@ -548,8 +592,31 @@ func get_zone_label() -> Label:
 	return _zone_name
 
 
-func get_zone_pill() -> PanelContainer:
+## Puce du lieu dans le bandeau d'état.
+func get_zone_pill() -> Control:
 	return _zone_pill
+
+
+func get_status_bar() -> PanelContainer:
+	return _status
+
+
+## Puce « heure » (cachée tant que l'horloge est inactive).
+func get_clock_chip() -> Control:
+	return _clock_chip
+
+
+func get_clock_text() -> String:
+	return _clock_label.text if _clock_chip.visible else ""
+
+
+## Puce « argent » ; [method get_money_text] : "" si cachée.
+func get_money_chip() -> Control:
+	return _money_chip
+
+
+func get_money_text() -> String:
+	return _money_label.text if _money_chip.visible else ""
 
 
 func get_backdrop() -> ColorRect:
@@ -595,10 +662,89 @@ func _screens() -> Array[MenuScreen]:
 	return screens
 
 
-## La pastille de zone existe avec un nom, sauf sur un écran qui occupe la rangée du ×.
-func _refresh_zone_pill() -> void:
-	_zone_pill.visible = not _zone_name.text.is_empty() \
-		and not (_current != null and _current.covers_header)
+## En-tête selon l'écran courant : × (sauf si l'écran a son « ‹ »), puces du bandeau d'état
+## (lieu avec un nom, heure si l'horloge tourne, argent si l'écran le demande), séparateurs
+## entre les puces visibles ; bandeau caché s'il n'a rien à montrer.
+func _refresh_header() -> void:
+	if _status == null:
+		return
+	_close_button.visible = _current == null or not _current.owns_back
+	var allowed := _current == null or _current.status_bar
+	_zone_pill.visible = allowed and not _zone_name.text.is_empty()
+	_clock_label.text = _clock.time_text()
+	_clock_chip.visible = allowed and not _clock_label.text.is_empty()
+	_money_chip.visible = allowed and _current != null and _current.status_money \
+		and not _money_text.is_empty()
+	var chips: Array[Control] = [_zone_pill, _clock_chip, _money_chip]
+	var shown := 0
+	for i: int in chips.size():
+		if i > 0:
+			_dividers[i - 1].visible = chips[i].visible and shown > 0
+		if chips[i].visible:
+			shown += 1
+	_status.visible = shown > 0
+
+
+func _build_status() -> void:
+	var spacer := Control.new()
+	spacer.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	spacer.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	_header.add_child(spacer)
+	_status = PanelContainer.new()
+	_status.name = "StatusBar"
+	_status.theme_type_variation = &"MenuStatusBar"
+	_status.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_status.custom_minimum_size.y = UiTokens.MENU_STATUS_DRAW
+	_status.size_flags_vertical = Control.SIZE_SHRINK_CENTER
+	_header.add_child(_status)
+	var row := HBoxContainer.new()
+	row.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	row.add_theme_constant_override(&"separation", UiTokens.MENU_STATUS_GAP * 2)
+	_status.add_child(row)
+	_zone_pill = _chip(row, PIN_ICON)
+	_zone_name = _zone_pill.get_child(1) as Label
+	_dividers.append(_divider(row))
+	_clock_chip = _chip(row, CLOCK_ICON)
+	_clock_label = _clock_chip.get_child(1) as Label
+	_dividers.append(_divider(row))
+	_money_chip = _chip(row, COIN_ICON)
+	_money_label = _money_chip.get_child(1) as Label
+	(_money_chip.get_child(0) as TextureRect).modulate = UiTokens.ACCENT
+
+
+func _chip(parent: Control, icon: Texture2D) -> HBoxContainer:
+	var chip := HBoxContainer.new()
+	chip.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	chip.add_theme_constant_override(&"separation", UiTokens.MENU_STATUS_GAP)
+	parent.add_child(chip)
+	var picture := TextureRect.new()
+	picture.texture = icon
+	picture.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	picture.custom_minimum_size = Vector2.ONE * UiTokens.MENU_STATUS_ICON
+	picture.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	picture.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+	picture.size_flags_vertical = Control.SIZE_SHRINK_CENTER
+	chip.add_child(picture)
+	var label := Label.new()
+	label.theme_type_variation = &"MenuStatusText"
+	label.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+	chip.add_child(label)
+	return chip
+
+
+func _divider(parent: Control) -> Panel:
+	var divider := Panel.new()
+	divider.theme_type_variation = &"MenuStatusDivider"
+	divider.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	divider.custom_minimum_size = UiTokens.MENU_STATUS_DIVIDER_SIZE
+	divider.size_flags_vertical = Control.SIZE_SHRINK_CENTER
+	parent.add_child(divider)
+	return divider
+
+
+func _on_clock_activity(_active: bool) -> void:
+	_refresh_header()
 
 
 ## Change d'écran : l'ancien se fond, le nouveau entre. Menu fermé : choisi mais pas encore
@@ -610,7 +756,7 @@ func _select(screen: MenuScreen) -> void:
 	if previous != null and previous != screen and _entered:
 		previous.leave()
 	_current = screen
-	_refresh_zone_pill()
+	_refresh_header()
 	_apply_backdrop(screen)
 	if _open:
 		_entered = true

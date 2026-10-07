@@ -1,0 +1,8 @@
+MENU_CARTE_DRESSEUR — NOUVELLE image pour l'interface (menu) du jeu Kanto 2026, pas une capture d'écran.
+Les images jointes donnent la direction artistique ; n'en reproduis ni la mise en page ni les textes.
+
+RENDU : illustration 2D peinte numériquement, dans le style d'un RPG Pokémon moderne « HD-2D peint » : formes simples et arrondies, contour fin et doux plus sombre que la couleur, aucun trait noir, volumes doux, couleurs chaudes et lumineuses, pinceau net. Ni pixel art, ni 3D, ni photo. Lumière douce de jour venant du haut à gauche.
+
+IMAGE : illustration de la carte « Dresseur » : une carte de Dresseur bleu clair posée de biais, avec une silhouette de profil et des emplacements ronds de badges vides, SANS aucun texte, fond violet doux et lumineux.
+Format : PNG paysage 1536 × 1024, OPAQUE, cadrage plein.
+Interdit : texte, lettres, chiffres, logo (sauf l'emblème Poké Ball demandé), signature, filigrane, cadre.

@@ -13,6 +13,10 @@ extends MenuScreen
 ##   vers soi-même. Les deux emplacements glissent l'un vers l'autre (TEAM_SWAP_TIME).
 ## - Emplacements vides : neutres, aucun texte, aucune action.
 ## - Une capacité touchée ouvre [MoveDetailSheet] ; un toucher ailleurs la referme.
+## Composition (MM.1, maquette) : l'écran remonte dans la rangée du × (covers_header) et y pose
+## son « ‹ » rond compact, la Poké Ball, « Équipe » et « 3/6 » (et STOCKAGE au Centre, ou la
+## consigne de DÉPLACER) ; le bandeau d'état de l'hôte reste à droite. Panneaux de verre sur le
+## monde flouté plus clair.
 ## Placement : rempli par [TrainerMenu] dans la zone sous l'en-tête, marges de SAFE_MARGIN.
 
 ## L'écran a changé de Pokémon sélectionné (informatif : il change de fiche seul).
@@ -31,10 +35,12 @@ const MOVE_TEXT := "DÉPLACER"
 const CANCEL_TEXT := "ANNULER"
 const FAVORITE_ON_TEXT := "RETIRER FAVORI"
 const FAVORITE_OFF_TEXT := "MARQUER FAVORI"
-const COUNT_FORMAT := "Équipe  %d / %d"
+const TITLE_TEXT := "Équipe"
+const COUNT_FORMAT := "%d/%d"
 const MOVE_HINT_FORMAT := "Choisis où placer %s"
 const MOVE_ALONE_TEXT := "Il faut deux Pokémon pour en déplacer un."
 const BACK_ICON: Texture2D = preload("res://assets/ui/icons/battle/back.svg")
+const BALL_ICON: Texture2D = preload("res://assets/ui/icons/poke_ball.svg")
 const STORAGE_ICON: Texture2D = preload("res://assets/ui/icons/storage/deposit.svg")
 const BAG_ICON: Texture2D = preload("res://assets/ui/icons/battle/bag.svg")
 const SWAP_ICON: Texture2D = preload("res://assets/ui/icons/menu/swap.svg")
@@ -70,14 +76,29 @@ var _overlay: Control
 var _move_sheet: MoveDetailSheet
 
 
+func _init() -> void:
+	covers_header = true
+	owns_back = true
+	backdrop_dim = UiTokens.MENU_GLASS_DIM
+	backdrop_blur = UiTokens.MENU_GLASS_BLUR
+	backdrop_lod = UiTokens.MENU_GLASS_LOD
+
+
 func _ready() -> void:
 	super()
 	set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	var column := VBoxContainer.new()
+	column.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	column.offset_top = -UiTokens.DEX_LAYOUT_RISE
+	column.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	column.add_theme_constant_override(&"separation", UiTokens.GAP)
+	add_child(column)
+	_build_header(column)
 	var body := HBoxContainer.new()
-	body.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	body.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	body.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	body.add_theme_constant_override(&"separation", UiTokens.TEAM_COLUMN_GAP)
-	add_child(body)
+	column.add_child(body)
 	_build_list(body)
 	_build_center(body)
 	_build_sheet(body)
@@ -219,28 +240,45 @@ func _build_list(parent: Control) -> void:
 		_slots.append(slot)
 
 
-func _build_center(parent: Control) -> void:
-	var column := VBoxContainer.new()
-	column.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	column.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	column.add_theme_constant_override(&"separation", UiTokens.TEAM_HEADER_GAP)
-	parent.add_child(column)
+## Rangée d'en-tête : « ‹ » rond (zone TOUCH_MIN), Poké Ball, « Équipe », « 3/6 », STOCKAGE (au
+## Centre seulement) et la consigne de DÉPLACER à la place du compteur quand elle existe.
+func _build_header(parent: Control) -> void:
 	var top := HBoxContainer.new()
 	top.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	top.add_theme_constant_override(&"separation", UiTokens.GAP)
-	column.add_child(top)
+	top.custom_minimum_size.y = UiTokens.TOUCH_MIN
+	top.add_theme_constant_override(&"separation", UiTokens.MENU_TITLE_GAP)
+	parent.add_child(top)
 	_back = Button.new()
-	_back.theme_type_variation = &"PanelButton"
-	_back.text = BACK_TEXT
+	_back.theme_type_variation = &"MenuRoundButton"
 	_back.icon = BACK_ICON
+	_back.icon_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	_back.tooltip_text = BACK_TEXT
 	_back.focus_mode = Control.FOCUS_NONE
-	_back.custom_minimum_size = Vector2(UiTokens.MENU_CARD_ICON * 2, UiTokens.TOUCH_MIN)
-	_back.size_flags_horizontal = Control.SIZE_SHRINK_BEGIN
+	_back.custom_minimum_size = Vector2.ONE * UiTokens.TOUCH_MIN
 	_back.pressed.connect(_on_back)
 	top.add_child(_back)
+	var ball := TextureRect.new()
+	ball.texture = BALL_ICON
+	ball.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	ball.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	ball.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+	ball.custom_minimum_size = Vector2.ONE * UiTokens.MENU_TITLE_ICON
+	ball.size_flags_vertical = Control.SIZE_SHRINK_CENTER
+	top.add_child(ball)
+	var title := Label.new()
+	title.theme_type_variation = &"MenuScreenTitle"
+	title.text = TITLE_TEXT
+	title.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	title.size_flags_vertical = Control.SIZE_SHRINK_CENTER
+	top.add_child(title)
+	_caption = Label.new()
+	_caption.theme_type_variation = &"MenuScreenCount"
+	_caption.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_caption.size_flags_vertical = Control.SIZE_SHRINK_CENTER
+	top.add_child(_caption)
 	# STOCKAGE : seulement quand le Stockage existe ici (au Centre) ; absent ailleurs, jamais grisé.
 	_storage_button = Button.new()
-	_storage_button.theme_type_variation = &"PanelButton"
+	_storage_button.theme_type_variation = &"MenuAction"
 	_storage_button.text = STORAGE_TEXT
 	_storage_button.icon = STORAGE_ICON
 	_storage_button.focus_mode = Control.FOCUS_NONE
@@ -250,38 +288,29 @@ func _build_center(parent: Control) -> void:
 	_storage_button.visible = false
 	_storage_button.pressed.connect(_on_storage_pressed)
 	top.add_child(_storage_button)
-	var info := Control.new()
-	info.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	info.custom_minimum_size.y = UiTokens.MENU_OBJECTIVE_HEIGHT
-	column.add_child(info)
-	_caption = Label.new()
-	_caption.theme_type_variation = &"TeamCaption"
-	_caption.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	_caption.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-	_caption.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
-	_caption.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	info.add_child(_caption)
 	_hint = PanelContainer.new()
 	_hint.theme_type_variation = &"TeamPillAccent"
 	_hint.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	_hint.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	_hint.size_flags_vertical = Control.SIZE_SHRINK_CENTER
 	_hint.visible = false
-	info.add_child(_hint)
+	top.add_child(_hint)
 	_hint_label = Label.new()
 	_hint_label.theme_type_variation = &"TeamPillAccentText"
 	_hint_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	_hint_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	_hint_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
-	_hint_label.clip_text = true
 	_hint.add_child(_hint_label)
+
+
+func _build_center(parent: Control) -> void:
 	_showcase = PokemonShowcase.new()
-	_showcase.size_flags_horizontal = Control.SIZE_FILL
-	column.add_child(_showcase)
+	_showcase.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	parent.add_child(_showcase)
 
 
 func _build_sheet(parent: Control) -> void:
 	_sheet_panel = PanelContainer.new()
-	_sheet_panel.theme_type_variation = &"MenuPanel"
+	_sheet_panel.theme_type_variation = &"MenuGlass"
 	_sheet_panel.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	_sheet_panel.custom_minimum_size.x = UiTokens.TEAM_SHEET_WIDTH
 	parent.add_child(_sheet_panel)
@@ -311,12 +340,10 @@ func _build_sheet(parent: Control) -> void:
 
 func _action(text: String, icon: Texture2D) -> Button:
 	var button := Button.new()
-	button.theme_type_variation = &"TeamAction"
+	button.theme_type_variation = &"MenuAction"
 	button.text = text
 	button.icon = icon
-	button.icon_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	button.vertical_icon_alignment = VERTICAL_ALIGNMENT_TOP
-	button.expand_icon = true
+	button.icon_alignment = HORIZONTAL_ALIGNMENT_LEFT
 	button.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	button.focus_mode = Control.FOCUS_NONE
 	button.custom_minimum_size.y = UiTokens.TEAM_ACTION_HEIGHT
@@ -359,14 +386,14 @@ func _refresh(switched: bool) -> void:
 
 
 func _update_favorite_button(favorite: bool) -> void:
-	_favorite.theme_type_variation = &"TeamActionOn" if favorite else &"TeamAction"
+	_favorite.theme_type_variation = &"MenuActionOn" if favorite else &"MenuAction"
 	_favorite.icon = STAR_ON_ICON if favorite else STAR_OFF_ICON
 	_favorite.text = FAVORITE_ON_TEXT if favorite else FAVORITE_OFF_TEXT
 
 
 func _update_move_ui() -> void:
 	_move.text = CANCEL_TEXT if _move_mode else MOVE_TEXT
-	_move.theme_type_variation = &"TeamActionOn" if _move_mode else &"TeamAction"
+	_move.theme_type_variation = &"MenuActionOn" if _move_mode else &"MenuAction"
 	var text := ""
 	if _move_mode and _view != null and _view.sheet_at(_move_from) != null:
 		text = MOVE_HINT_FORMAT % _view.sheet_at(_move_from).member.display_name

@@ -338,7 +338,7 @@ func _build_detail(parent: Control) -> void:
 	_detail_panel.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	_detail_panel.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	_detail_holder.add_child(_detail_panel)
-	_showcase = PokemonShowcase.new(UiTokens.STORAGE_SPRITE_SCALE, false)
+	_showcase = PokemonShowcase.new(UiTokens.STORAGE_ART, false)
 	_showcase.size_flags_horizontal = Control.SIZE_FILL
 	_detail_panel.add_child(_showcase)
 	# Ligne de résultat (libération), en haut de la fiche sous la pastille de refus : même barre que le Sac, sans UTILISER À NOUVEAU.

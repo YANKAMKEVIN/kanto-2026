@@ -357,3 +357,54 @@ func test_money_is_shown_from_the_start() -> void:
 	_state.spend_money(2750)
 	assert_eq(_build().money_text, "250" + nbsp + "₽")
 	assert_eq(TrainerView.MONEY_LABEL, "Argent")
+
+
+# --- MM.2 : badges de BadgeLibrary, équipe, zone du joueur, artworks des moments ------------
+
+
+func _badges() -> BadgeLibrary:
+	var library := BadgeLibrary.new()
+	library.load_file()
+	return library
+
+
+func test_badges_come_from_the_library_and_the_flags() -> void:
+	_load_kevin()
+	var view := TrainerSummary.build(_state, _data, _zones, _moments, _unlocks, _badges())
+	assert_eq(view.badges.size(), TrainerView.BADGE_COUNT)
+	assert_eq(view.obtained_badges(), 0, "aucun badge avant le J10")
+	for badge: BadgeSlotView in view.badges:
+		assert_eq(badge.name, "", "un badge non obtenu reste muet")
+	_state.flags.set_flag(&"badge_boulder")
+	view = TrainerSummary.build(_state, _data, _zones, _moments, _unlocks, _badges())
+	assert_eq(view.obtained_badges(), 1)
+	assert_eq(view.badges[0].name, "Badge Roche")
+	assert_eq(view.badges[0].detail, "Argenta — Pierre")
+
+
+func test_team_and_player_zone_for_the_screen() -> void:
+	_load_kevin()
+	var view := _build()
+	assert_eq(view.team.size(), _state.party.size())
+	assert_gt(view.team.size(), 0)
+	for i: int in view.team.size():
+		assert_eq(view.team[i].party_index, i)
+		assert_eq(view.team[i].species_id, _state.party.get_at(i).species_id)
+		assert_gt(view.team[i].dex_number, 0)
+	assert_eq(view.zone_id, MapJournal.player_zone(_state.current_map, _zones))
+
+
+func test_no_team_in_a_new_game() -> void:
+	assert_true(_build().team.is_empty())
+
+
+func test_species_moments_carry_their_dex_number() -> void:
+	_load_kevin()
+	var found := 0
+	for moment: MomentView in _build().moments:
+		if moment.species_id.is_empty():
+			assert_eq(moment.dex_number, 0)
+		else:
+			assert_eq(moment.dex_number, _data.get_species(moment.species_id).dex)
+			found += 1
+	assert_gt(found, 0)

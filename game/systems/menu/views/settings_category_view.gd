@@ -7,10 +7,15 @@ extends RefCounted
 var id: StringName = &""
 ## « JEU ».
 var title: String = ""
+## Sous-titre de la section (MM.3, repris de la maquette : « Personnalise tes contrôles. ») ;
+## "" = absent.
+var subtitle: String = ""
 ## Contrôles, dans l'ordre d'affichage (jamais vide).
 var controls: Array[SettingControlView] = []
 
 
-func _init(category_id: StringName = &"", category_title: String = "") -> void:
+func _init(category_id: StringName = &"", category_title: String = "",
+		category_subtitle: String = "") -> void:
 	id = category_id
 	title = category_title
+	subtitle = category_subtitle

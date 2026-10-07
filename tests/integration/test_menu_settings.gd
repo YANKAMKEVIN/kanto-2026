@@ -99,14 +99,19 @@ func _stored() -> GameSettings:
 func test_real_screen_economy_choice() -> void:
 	var screen := await _open_real(SettingsViews.CATEGORY_GRAPHICS)
 	var row := screen.get_row(GameSettings.GRAPHICS) as SettingChoice
-	row.get_option_buttons()[2].pressed.emit()
+	# Auto → Élevée → Économie : une flèche par cran, la vue revient entre les deux.
+	row.get_next_button().pressed.emit()
+	assert_eq(_stored().graphics, GameSettings.Graphics.HIGH)
+	(screen.get_row(GameSettings.GRAPHICS) as SettingChoice).get_next_button().pressed.emit()
 	assert_eq(_stored().graphics, GameSettings.Graphics.ECO, "fichier réécrit")
 	assert_eq(Engine.max_fps, 30)
 	assert_false(_boot.get_trainer_menu().is_backdrop_blur_enabled(), "flou du menu coupé")
 	assert_false(_boot.get_battle_stage().backdrop_blur)
 	var again := screen.get_row(GameSettings.GRAPHICS) as SettingChoice
 	assert_eq(again.get_selected_index(), 2, "l'écran montre la vue neuve")
-	again.get_option_buttons()[1].pressed.emit()
+	assert_eq(again.get_value_text(), "Économie")
+	assert_true(again.get_next_button().disabled, "dernière option : › éteinte")
+	again.get_prev_button().pressed.emit()
 	assert_eq(Engine.max_fps, 0)
 	assert_true(_boot.get_trainer_menu().is_backdrop_blur_enabled())
 
@@ -116,15 +121,13 @@ func test_real_screen_left_handed_reaches_the_hud() -> void:
 	(screen.get_row(GameSettings.LEFT_HANDED) as SettingToggle).pressed.emit()
 	assert_true(_stored().left_handed)
 	assert_true(_boot.get_hud().is_left_handed())
-	(screen.get_row(GameSettings.BUTTON_SCALE) as SettingChoice).get_option_buttons()[1] \
-		.pressed.emit()
+	(screen.get_row(GameSettings.BUTTON_SCALE) as SettingChoice).get_next_button().pressed.emit()
 	assert_almost_eq(_boot.get_hud().get_button_scale(), 1.2, 0.001)
 
 
 func test_real_screen_large_text_reaches_ui_prefs() -> void:
 	var screen := await _open_real(SettingsViews.CATEGORY_ACCESSIBILITY)
-	(screen.get_row(GameSettings.TEXT_SIZE) as SettingChoice).get_option_buttons()[1] \
-		.pressed.emit()
+	(screen.get_row(GameSettings.TEXT_SIZE) as SettingChoice).get_next_button().pressed.emit()
 	assert_eq(_stored().text_size, GameSettings.TextSize.LARGE)
 	assert_almost_eq(UiPrefs.text_scale, 1.15, 0.001)
 

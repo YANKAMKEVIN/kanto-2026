@@ -1,21 +1,25 @@
 class_name SettingChoice
 extends PanelContainer
-## Ligne d'un choix (Paramètres, T28) : libellé et aide à gauche, **toutes** les options côte à
-## côte à droite (Lente · Normale · Rapide · Instantanée), la choisie en ACCENT. Un toucher sur
-## une autre option émet un seul [signal changed] avec la **valeur du réglage** de l'option
-## (jamais son rang) ; toucher l'option déjà choisie ne fait rien. L'état affiché ne bouge qu'au
-## retour de la vue.
+## Ligne d'un choix (Paramètres, T28 ; présentation MM.3, maquette) : libellé et aide à gauche,
+## sélecteur « ‹ Valeur › » à droite (pilule de verre, valeur écrite au milieu). Une flèche émet
+## un seul [signal changed] avec la **valeur du réglage** de l'option voisine (jamais son rang) ;
+## aux bouts de la liste, la flèche est éteinte et ne fait rien (pas de retour au début : la
+## position se lit). L'état affiché ne bouge qu'au retour de la vue.
 
 signal changed(key: StringName, value: Variant)
+
+const PREV_ICON: Texture2D = preload("res://assets/ui/icons/menu/chevron_left.svg")
+const NEXT_ICON: Texture2D = preload("res://assets/ui/icons/menu/chevron.svg")
 
 var key: StringName = &""
 
 var _view: SettingControlView
 var _label: Label
 var _detail: Label
-var _options: HBoxContainer
-var _buttons: Array[Button] = []
-var _group := ButtonGroup.new()
+var _pill: PanelContainer
+var _prev: Button
+var _next: Button
+var _value: Label
 
 
 func _init() -> void:
@@ -36,10 +40,26 @@ func _init() -> void:
 	row.add_child(texts)
 	_label = _text_label(&"SettingsLabel", texts)
 	_detail = _text_label(&"SettingsDetail", texts)
-	_options = HBoxContainer.new()
-	_options.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	_options.add_theme_constant_override(&"separation", UiTokens.SETTINGS_OPTION_GAP)
-	row.add_child(_options)
+	_pill = PanelContainer.new()
+	_pill.name = "Selector"
+	_pill.theme_type_variation = &"SettingsPill"
+	_pill.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_pill.size_flags_vertical = Control.SIZE_SHRINK_CENTER
+	row.add_child(_pill)
+	var inner := HBoxContainer.new()
+	inner.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	inner.add_theme_constant_override(&"separation", 0)
+	_pill.add_child(inner)
+	_prev = _arrow(PREV_ICON, -1, inner)
+	_value = Label.new()
+	_value.theme_type_variation = &"SettingsValue"
+	_value.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_value.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	_value.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+	_value.custom_minimum_size.x = UiTokens.SETTINGS_PILL_VALUE_WIDTH
+	_value.size_flags_vertical = Control.SIZE_FILL
+	inner.add_child(_value)
+	_next = _arrow(NEXT_ICON, 1, inner)
 
 
 func setup(view: SettingControlView, _animate: bool = false) -> void:
@@ -48,56 +68,76 @@ func setup(view: SettingControlView, _animate: bool = false) -> void:
 	_label.text = view.label
 	_detail.text = view.detail
 	_detail.visible = not view.detail.is_empty()
-	if _buttons.size() != view.options.size():
-		_rebuild(view)
 	var selected := view.selected_option()
-	for i: int in _buttons.size():
-		var button := _buttons[i]
-		# L'option choisie écrit la valeur de la vue (« Auto (Élevée) » : ce qu'Auto choisit).
-		button.text = view.value_text if i == selected and not view.value_text.is_empty() \
-			else view.options[i].label
-		button.set_pressed_no_signal(i == selected)
-		button.disabled = not view.enabled
+	# La valeur de la vue (« Auto (Élevée) » : ce qu'Auto choisit), sinon le nom de l'option.
+	if not view.value_text.is_empty():
+		_value.text = view.value_text
+	elif selected >= 0:
+		_value.text = view.options[selected].label
+	else:
+		_value.text = ""
+	_prev.disabled = not view.enabled or _neighbour(-1) < 0
+	_next.disabled = not view.enabled or _neighbour(1) < 0
 	modulate.a = 1.0 if view.enabled else 0.5
 
 
-## Boutons des options, dans l'ordre de la vue.
-func get_option_buttons() -> Array[Button]:
-	return _buttons
+## Flèche « ‹ » (option précédente).
+func get_prev_button() -> Button:
+	return _prev
 
 
-## Rang de l'option affichée comme choisie (-1 : aucune).
+## Flèche « › » (option suivante).
+func get_next_button() -> Button:
+	return _next
+
+
+## Les deux flèches (‹ puis ›).
+func get_arrow_buttons() -> Array[Button]:
+	return [_prev, _next]
+
+
+## Valeur écrite au milieu du sélecteur.
+func get_value_text() -> String:
+	return _value.text
+
+
+## Rang de l'option affichée comme choisie (-1 : aucune) : celle de la vue.
 func get_selected_index() -> int:
-	for i: int in _buttons.size():
-		if _buttons[i].button_pressed:
-			return i
-	return -1
+	return _view.selected_option() if _view != null else -1
 
 
 func get_label_text() -> String:
 	return _label.text
 
 
-func _rebuild(view: SettingControlView) -> void:
-	for button: Button in _buttons:
-		_options.remove_child(button)
-		button.queue_free()
-	_buttons.clear()
-	for i: int in view.options.size():
-		var button := Button.new()
-		button.theme_type_variation = &"SettingsOption"
-		button.toggle_mode = true
-		button.button_group = _group
-		button.focus_mode = Control.FOCUS_NONE
-		button.mouse_filter = Control.MOUSE_FILTER_PASS
-		button.custom_minimum_size = Vector2(UiTokens.SETTINGS_OPTION_MIN_WIDTH,
-			UiTokens.TOUCH_MIN)
-		button.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-		button.size_flags_vertical = Control.SIZE_SHRINK_CENTER
-		TapGuard.attach(button)
-		button.pressed.connect(_on_option_pressed.bind(i))
-		_options.add_child(button)
-		_buttons.append(button)
+func get_selector() -> Control:
+	return _pill
+
+
+## Rang de l'option à [param direction] (−1 / +1) de la choisie, ou -1 au bout de la liste.
+## Sans option choisie, « › » va à la première et « ‹ » ne mène nulle part.
+func _neighbour(direction: int) -> int:
+	if _view == null or _view.options.is_empty():
+		return -1
+	var selected := _view.selected_option()
+	if selected < 0:
+		return 0 if direction > 0 else -1
+	var index := selected + direction
+	return index if index >= 0 and index < _view.options.size() else -1
+
+
+func _arrow(icon: Texture2D, direction: int, parent: Control) -> Button:
+	var button := Button.new()
+	button.theme_type_variation = &"SettingsArrow"
+	button.icon = icon
+	button.icon_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	button.focus_mode = Control.FOCUS_NONE
+	button.mouse_filter = Control.MOUSE_FILTER_PASS
+	button.custom_minimum_size = Vector2.ONE * UiTokens.TOUCH_MIN
+	TapGuard.attach(button)
+	button.pressed.connect(_on_arrow_pressed.bind(direction))
+	parent.add_child(button)
+	return button
 
 
 func _text_label(variation: StringName, parent: Control) -> Label:
@@ -110,15 +150,10 @@ func _text_label(variation: StringName, parent: Control) -> Label:
 	return label
 
 
-func _on_option_pressed(index: int) -> void:
-	if _view == null:
-		return
-	var selected := _view.selected_option()
-	if index == selected:
-		# Option déjà choisie : le groupe la garde enfoncée, rien à dire.
+func _on_arrow_pressed(direction: int) -> void:
+	var index := _neighbour(direction)
+	if index < 0 or not _view.enabled:
 		return
 	Haptics.vibrate(UiTokens.HAPTIC_TAP_MS)
-	# La nouvelle option ne s'affiche qu'au retour de la vue : l'ancienne reste marquée.
-	if selected >= 0 and selected < _buttons.size():
-		_buttons[selected].set_pressed_no_signal(true)
+	# La nouvelle valeur ne s'affiche qu'au retour de la vue.
 	changed.emit(key, _view.options[index].value)
