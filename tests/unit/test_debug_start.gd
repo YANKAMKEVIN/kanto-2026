@@ -322,6 +322,27 @@ func test_shipped_route_22_starts() -> void:
 		map.free()
 
 
+## Jalon 8 (T4, jalon-08.md) : partie après l'activation du Pokédex, équipe Nv. 8–10, à
+## l'entrée sud de la Route 2 (case du milieu, côté Jadielle), tournée vers le nord.
+func test_shipped_route_2_start() -> void:
+	var start := DebugStart.new()
+	assert_true(start.load_file(TOOL_STARTS + "route_2.json", _data, _items),
+		"\n".join(start.get_errors()))
+	assert_eq([start.map, start.spawn, start.facing], [&"route_2", &"from_viridian_c",
+		Vector2i.UP])
+	assert_true(start.flags.has(&"pokedex_activated"), "après l'activation du Pokédex")
+	assert_true(start.flags.has(&"viridian_arrived"), "pas de micro-scène de Jadielle")
+	for member: Dictionary in start.party:
+		assert_between(int(member["level"]), 8, 10, str(member["species"]))
+	for flag: StringName in start.flags:
+		assert_false(String(flag).begins_with("got_route_2_"), "objets de la Route 2 à prendre")
+		assert_false(String(flag).begins_with("route_2_"), "PNJ de la Route 2 jamais vus")
+	assert_true(MapCatalog.has_map(start.map), "carte route_2 construite (jalon 8 T5)")
+	var map := (load(MapCatalog.scene_path(start.map)) as PackedScene).instantiate() as GameMap
+	assert_true(map.has_spawn(start.spawn), "le point d'apparition existe sur la carte")
+	map.free()
+
+
 # --- Jalon 7 (T12) : favoris du Sac, départ shop_qa --------------------------------------------
 
 func test_favorites_mark_bag_items() -> void:

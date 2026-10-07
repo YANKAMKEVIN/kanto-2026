@@ -87,8 +87,22 @@ func test_invalid_entries_are_rejected() -> void:
 	assert_eq(roster.size(), 0)
 	assert_eq(roster.get_errors().size(), 13)
 	var errors := "\n".join(roster.get_errors())
-	assert_string_contains(errors, "« meet_verb » : « verb » vaut talk ou observe")
+	assert_string_contains(errors, "« meet_verb » : « verb » vaut talk, observe ou take")
 	assert_string_contains(errors, "« hop_style » vaut calm, eager, playful")
+
+
+func test_take_verb_for_an_object_on_the_ground() -> void:
+	# Jalon 8 §2.3 : un objet visible au sol est un PNJ « take » (PRENDRE).
+	var roster := NpcRoster.new()
+	assert_true(roster.add_from_dict({"ball": {"cell": [10, 53], "facing": "down",
+		"sprite": "object/poke_ball_ground", "dialogue": "route_2_ball_1", "verb": "take",
+		"turn_to_player": false, "unless": ["got_route_2_item_1"]}}, "test"))
+	var spec := roster.get_spec(&"ball")
+	assert_eq(spec.verb, Interaction.Kind.TAKE)
+	assert_eq(spec.sprite, &"object/poke_ball_ground")
+	var interaction := spec.make_interaction(spec.cell, null)
+	assert_eq(interaction.kind, Interaction.Kind.TAKE)
+	assert_eq(Interaction.kind_name(interaction.kind), &"take")
 
 
 func test_hop_style() -> void:

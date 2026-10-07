@@ -19,10 +19,13 @@ extends GutTest
 ## paires `taken_*` (Pokémon du rival) et les deux issues du combat ; l'étape « wake_up » arrête
 ## la simulation (la scène s'arrête au réveil). Correctif : les scènes **déclenchées** n'étaient
 ## plus simulées (boucle indentée sous `if CODE_PLAYED.has(id)`), elles le sont de nouveau.
+## Jalon 8 (T4) : objets de la Route 2 — deux visibles (scène lancée par le dialogue du PNJ
+## « objet », qui le retire : `despawn` → `give found` → `set`), deux cachés (déclencheurs de la
+## carte, comme la Potion de la Route 1), posés par `tools/build_route_2.gd` (T5).
 
 const MAPS: Array[StringName] = [
 	&"player_house_2f", &"player_house_1f", &"rival_house", &"oak_lab", &"pallet_town",
-	&"route_1", &"viridian_city", &"route_22", &"viridian_mart",
+	&"route_1", &"viridian_city", &"route_22", &"viridian_mart", &"route_2",
 ]
 ## Jalon 7 (T18) : partie qui revient au labo avec le colis (rival parti après le combat).
 const PARCEL_FLAGS: Array[StringName] = [
@@ -53,11 +56,17 @@ const VARIANT_FLAGS: Dictionary = {
 	&"mart_parcel": [[&"rival_battle_done", &"viridian_arrived"]],
 	&"oak_parcel": [PARCEL_FLAGS],
 	&"rival_route22": [ROUTE22_FLAGS],
+	&"route_2_item_1": [ROUTE22_FLAGS],
+	&"route_2_item_2": [ROUTE22_FLAGS],
+	&"route_2_item_3": [ROUTE22_FLAGS],
+	&"route_2_item_4": [ROUTE22_FLAGS],
 }
 ## Scènes jouées par le code (pas de déclencheur) → carte où elles sont jouées.
 ## Jalon 7 (T18) : la scène du colis est lancée par la variante « cutscene » du dialogue de Chen.
+## Jalon 8 : les objets visibles de la Route 2, par le dialogue de leur PNJ « objet ».
 const CODE_PLAYED: Dictionary[StringName, StringName] = {
 	&"starter_chosen": &"oak_lab", &"oak_parcel": &"oak_lab",
+	&"route_2_item_1": &"route_2", &"route_2_item_2": &"route_2",
 }
 
 var _cutscenes: CutsceneLibrary
@@ -106,7 +115,8 @@ func test_library_loads_without_error() -> void:
 	assert_true(library.load_dir(), "data/cutscenes/ se charge")
 	assert_eq(library.get_errors().size(), 0, str(library.get_errors()))
 	assert_eq(library.get_ids(), [&"mart_parcel", &"oak_lab_exit", &"oak_parcel",
-		&"rival_route22", &"route1_grass", &"route_1_potion", &"starter_chosen",
+		&"rival_route22", &"route1_grass", &"route_1_potion", &"route_2_item_1",
+		&"route_2_item_2", &"route_2_item_3", &"route_2_item_4", &"starter_chosen",
 		&"viridian_arrival"] as Array[StringName])
 
 
@@ -139,6 +149,8 @@ func test_every_trigger_targets_a_scene_and_every_scene_is_triggered() -> void:
 	assert_eq(_triggered_on.get(&"viridian_arrival"), [&"viridian_city"])
 	assert_eq(_triggered_on.get(&"rival_route22"), [&"route_22"])
 	assert_eq(_triggered_on.get(&"mart_parcel"), [&"viridian_mart"])
+	assert_eq(_triggered_on.get(&"route_2_item_3"), [&"route_2"])
+	assert_eq(_triggered_on.get(&"route_2_item_4"), [&"route_2"])
 	assert_eq(_offer.chosen_scene, &"starter_chosen", "scène du choix = CODE_PLAYED")
 	assert_eq(CODE_PLAYED[_offer.chosen_scene], _offer.map_id)
 
@@ -161,16 +173,62 @@ func test_every_trainer_and_item_step_exists() -> void:
 		assert_true(_items.has_item(id), "objet « %s » chargé" % id)
 
 
-## Jalon 5C.5 (décision de Kevin) : seule la Potion de la Route 1 est un objet **trouvé** dans
-## le monde ; les 5 Poké Balls de Chen sont **reçues** (pas au journal des objets trouvés).
-func test_only_the_route_1_potion_is_a_found_item() -> void:
+## Jalon 5C.5 (décision de Kevin) : la Potion de la Route 1 est un objet **trouvé** dans le
+## monde ; les 5 Poké Balls de Chen sont **reçues** (pas au journal des objets trouvés).
+## Jalon 8 : les quatre objets de la Route 2 (dossier 11 §11) sont trouvés eux aussi.
+func test_only_world_items_are_found_items() -> void:
 	var found: Array[String] = []
 	for id: StringName in _cutscenes.get_ids():
 		for variant: CutsceneVariant in _cutscenes.get_cutscene(id).variants:
 			for step: CutsceneStep in variant.steps:
 				if step.kind == CutsceneStep.Kind.GIVE and step.found:
 					found.append("%s:%s" % [id, step.item_id])
-	assert_eq(found, ["route_1_potion:potion"] as Array[String])
+	assert_eq(found, ["route_1_potion:potion", "route_2_item_1:poke_ball",
+		"route_2_item_2:potion", "route_2_item_3:poke_ball", "route_2_item_4:potion"]
+		as Array[String])
+
+
+## Jalon 8 (jalon-08.md §2.3, §2.4) : un objet visible disparaît d'abord (son PNJ, retiré au
+## prochain chargement par son « unless »), puis entre au Sac, puis son drapeau ; un objet
+## caché joue sa narration d'abord. Une seule fois chacun (variante unique sous « unless »).
+func test_route_2_items() -> void:
+	var roster := NpcRoster.load_for_map(&"route_2")
+	var expected := {
+		&"route_2_item_1": [&"despawn", &"route_2_ball_1", &"poke_ball", &"got_route_2_item_1"],
+		&"route_2_item_2": [&"despawn", &"route_2_ball_2", &"potion", &"got_route_2_item_2"],
+		&"route_2_item_3": [&"dialogue", &"route_2_item_3_found", &"poke_ball",
+			&"got_route_2_item_3"],
+		&"route_2_item_4": [&"dialogue", &"route_2_item_4_found", &"potion",
+			&"got_route_2_item_4"],
+	}
+	for id: StringName in expected:
+		var row: Array = expected[id]
+		var cutscene := _cutscenes.get_cutscene(id)
+		assert_eq(cutscene.variants.size(), 1, String(id))
+		var variant := cutscene.variants[0]
+		assert_eq(variant.unless_flags, [row[3]] as Array[StringName], "%s : une fois" % id)
+		assert_eq(variant.steps.size(), 3, String(id))
+		var first := variant.steps[0]
+		assert_eq(CutsceneStep.kind_name(first.kind), row[0], String(id))
+		assert_eq(first.actor if first.kind == CutsceneStep.Kind.DESPAWN
+			else first.dialogue_id, row[1], String(id))
+		var give := variant.steps[1]
+		assert_eq(give.kind, CutsceneStep.Kind.GIVE)
+		assert_eq([give.item_id, give.count, give.found], [row[2], 1, true], String(id))
+		assert_eq(variant.steps[2].flags, [row[3]] as Array[StringName], String(id))
+		assert_true(cutscene.pick(_flags([row[3]])) == null, "%s : rien ensuite" % id)
+		if first.kind == CutsceneStep.Kind.DESPAWN:
+			var spec := roster.get_spec(row[1])
+			assert_not_null(spec, "%s : PNJ « objet » sur la Route 2" % row[1])
+			if spec == null:
+				continue
+			assert_eq(spec.verb, Interaction.Kind.TAKE, "%s : PRENDRE" % row[1])
+			assert_eq(spec.sprite, &"object/poke_ball_ground", "même aspect (Q-1)")
+			assert_eq(spec.unless_flags, [row[3]] as Array[StringName], "retiré ensuite")
+			var dialogue := _dialogues.get_dialogue(spec.dialogue)
+			assert_eq(dialogue.variants.size(), 1)
+			assert_eq(dialogue.variants[0].cutscene, id, "le dialogue lance la scène")
+			assert_true(dialogue.variants[0].pages.is_empty(), "aucune bulle avant le toast")
 
 
 func test_every_change_map_targets_an_existing_map_and_spawn() -> void:

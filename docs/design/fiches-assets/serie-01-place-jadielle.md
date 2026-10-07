@@ -727,3 +727,51 @@ Générés par Codex du premier coup, ancre = `PERSO_P2_PEINT_r1` : `HEROS_LANCE
 - **Ombres** (reprises du prototype, calculées une fois) : `<id>_shadow.png` = silhouette floutée (σ 7 px), retournée, écrasée à 0,26, inclinée à 45° vers le bas à droite, fondue vers l'extrémité ; `<id>_contact.png` = base de l'objet étirée de 22 px vers le bas et floutée. **Alpha seul** (RVB blanc), **demi-résolution** (à afficher à l'échelle 2, LINEAR). Couleur et opacité viennent du jeu (prototype : ombre `(0,10 ; 0,09 ; 0,22)` à 0,34 ; contact `(0,12 ; 0,10 ; 0,20)` à 0,62). `assets/world/catalogue.json` donne, pour chaque objet, taille, décalage du coin haut gauche **par rapport au pied** (milieu du bas de l'image) et échelle. Pas d'ombre pour les personnages (ellipse du jeu), le relief, les intérieurs (contact seul) ni le massif (contact seul).
 - **Herbes hautes** : `ground_hautes_herbes_01.png` et `…_bas.png` (moitié basse, même pied, à poser devant le personnage).
 - **Sols** : 384 × 384 (4 × 4 cases), pavés × 0,7 de contraste, chemin × 0,55 de contraste et de saturation ; mipmaps activés.
+
+## Série 10 — Route 2 (jalon 8, 2026-10-06, lumière NE)
+
+Plan technique : `docs/tech/jalon-08.md` (§1.1 grille, §1.2 assets prévus, §1.3 vue générale) ; conception : `docs/design/dossier-11-route-2.md`. Numéro **10** : la série 09 est déjà prise par les personnages peints de Bourg Palette (DA.4, `tools/art/serie09.py` sur `main`).
+- **8.0 — vue générale peinte (en cours)**. Grille fonctionnelle `tools/plans/route_2.txt` (42 × 60, source unique de la géométrie), vérifiée par `tools/art/plan_check.py` ; plan en aplats `build/art/PLAN_ROUTE2_v1.png` tiré de la grille par `tools/art/plan_aplats.py` (couleurs du plan de la Route 1) ; prompt `tools/art/prompts/CONCEPT_ROUTE2_VUE_GENERALE_r1.txt`, ancre de style = `reference/route-1-vue-generale-v1.png` (un autre lieu ; jamais un rendu précédent de la Route 2). Génération au T1 (3 essais au plus), puis validation de Kevin ; un changement de composition passe d'abord par la grille.
+- **8.0 validé par Kevin (2026-10-07)** : essai 3. **Fiches des assets** : faites au T2 (ci-dessous, « liste exacte et fiches »).
+
+### Série 10 — liste exacte et fiches (T2, 2026-10-07)
+
+**Consigne de Kevin** : le plus petit kit modulaire qui produit la sensation de la vue validée (`reference/route-2-vue-generale-v1.png`, essai 3 ; le plan v2 fait foi pour la géométrie) sans effet répétitif. Liste complète, variations et abandons : `docs/tech/jalon-08.md` §1.2. **Nouveaux : 2 décors + 1 personnage (4 images Codex)** ; tout le reste est repris ou obtenu par variation (teinte par rangée, échelle, miroir, recadrage d'un asset validé). Planche de contrôle sans Codex : `build/art/R2_KIT_v1.png` (`python3 tools/art/serie10.py --planche`). Prompts composés par `tools/art/serie10.py` (ADN v1 + LUMIÈRE NE + fiche) ; références = recadrages `REF_R2_*` de la vue (`--refs`, boîtes versionnées dans le script, agrandies × 3) ; ancres de style `WORLD_PROP_SOUCHE_01_NE_r1` (série 08) et `WORLD_TREE_A_01_NE_r1`.
+
+#### WORLD_BLDG_POSTE_FORET_01 → `bldg_poste_foret_01`
+- **Rôle** : façade du poste sud de la Forêt de Jade, objectif visuel de toute la route (vu depuis C3) ; porte → « FORÊT DE JADE — À venir » au J8 ; **réutilisée au J9** (poste nord, dossier 10).
+- **Taille** : 7 cases de large (`axe w`, `cases 7`), ≈ 4,5 cases de haut. **Emprise** 7 × 4 (cases (17..23, 5..8)), ancre (20, 8), porte laissée libre `open [(0, 0)]` = (20, 8).
+- **Couche** : entités (tri par les pieds), `fade` vrai. **Ombre** : oui (bâtiment), contact 0,12.
+- **Référence** : `REF_R2_POSTE` ; ancre supplémentaire `WORLD_BLDG_MAISON_B_01_NE_r1` (ardoises de Jadielle).
+- **Contenu** : toit à deux pans d'ardoises gris-bleu, murs de pierre claire, poteaux et linteau de bois, large entrée sombre et vide au milieu du bas, aucune fenêtre, aucun texte ; un peu de mousse au pied. Sans arbres, chemin ni panneau (posés par la carte). Variantes : aucune.
+
+#### WORLD_PROP_GRANDE_PIERRE_01 → `prop_grande_pierre_01`
+- **Rôle** : repère unique de C2 (« arbres → pierre → forêt », dossier 11 §15) ; P2 se tient à côté. `prop_rocher_01` (anguleux, déjà trois fois sur les Routes 1 et 22) ne serait pas un repère.
+- **Taille** : 3 cases de large, ≈ 2,2 de haut. **Emprise** 3 × 2 (cases (26..28, 23..24)), ancre (27, 24).
+- **Couche** : entités, pas de fondu. **Ombre** : non (règle des petits objets) ; contact préparé (0,1), non utilisé.
+- **Référence** : `REF_R2_GRANDE_PIERRE`. **Contenu** : un seul gros bloc arrondi et lisse, gris très clair un peu chaud, lichen pâle ; pas un amas de rochers. Variantes : aucune.
+
+#### PNJ_RANDONNEUSE (+ RANDONNEUSE_ATTENTE) → `randonneuse`, `randonneuse_idle`
+- **Rôle** : P1, « Randonneuse », au premier embranchement (boucle de 3 cases, regarde le nord). Le Voyageur (Route 1) et la Dresseuse (Jadielle) existent déjà : les reprendre mettrait le même personnage à deux endroits.
+- **Taille** : 128 px ; planche de marche 4 × 4 (modèle `PNJ_MARCHAND_NE_r1`, ancre `PERSO_P2_PEINT_r1`) puis planche d'attente 4 × 1 (`tools/art/attente/prompts/RANDONNEUSE_ATTENTE.txt`, calée sur la marche).
+- **Référence** : `REF_R2_RANDONNEUSE` (tenue seulement). **Tenue (défaut, règle 4)** : chapeau de paille à bande bleu marine, cheveux châtains longs, chemise vert sauge, short bleu marine, sac à dos orange-brun, bâton de marche ; pas de veste orange (Dresseuse).
+
+#### Variations préparées sans Codex (`preparer.py`, options `recadrage` / `masque`)
+- `prop_cloture_piquets_01_court` : 3 des 4 cases de `WORLD_PROP_CLOTURE_PIQUETS_01_NE_r1` (recadrage [47, 430, 917, 903], coupe au milieu d'un intervalle) ; clôtures basses de C1 ; emprise 3 × 1.
+- `poke_ball_ground` (section `images_objets`) : la Poké Ball de `INT_COMMODE_POKEBALL_01_NE_r1` (série 07), recadrage [367, 285, 594, 512] + disque, 40 px de haut ; O1 et O2 (Q-1 : même aspect).
+
+#### Conditionnels (prompts dans `serie10.py`, lancés seulement par leur nom, si la capture du T5 le demande)
+- `WORLD_PROP_ARBRE_DENSE_01` (`REF_R2_ARBRE_DENSE`, 1,2 case de large, ≈ 1,6 de haut, emprise 1 case) : si FUTUR A en `tree_foret_08` réduit ne se lit pas comme un obstacle.
+- `WORLD_PROP_POKEBALL_SOL_01` (`REF_R2_POKEBALL`, 0,42 case) : si la Ball recadrée déçoit au sol.
+- `WORLD_GROUND_SOUS_BOIS_01` (planche 4 × 2 de décalcomanies : fougères, mousse, feuilles mortes, racines…) : si le dernier tiers manque de sous-bois ; mutualisable au J9.
+
+### Série 10 — journal (T3, 2026-10-07)
+
+- **Génération** : faite avant le T3 sur le Mac de Kevin et **validée par lui** (2026-10-07) : `WORLD_BLDG_POSTE_FORET_01_NE_r1`, `WORLD_PROP_GRANDE_PIERRE_01_NE_r1`, `PNJ_RANDONNEUSE_NE_r1` (marche 4 × 4), `RANDONNEUSE_ATTENTE_r1` (attente 4 × 1). Aucun conditionnel lancé.
+- **Préparation** : `serie10.py --manifeste` (6 entrées : 3 objets, 1 image d'objet, 1 personnage, 1 attente) puis `preparer.py --source <build/art du checkout principal>` ; second passage : 833 fichiers de `assets/` identiques octet pour octet.
+- **Résultats** : poste 672 × 425 (ombre portée + contact), grande pierre 288 × 203 (contact seul), clôture courte (3 cases, contact), Ball 40 × 40, Randonneuse : cellules 80 × 130 (marche) et 80 × 130 (attente, échelle 0,1966), soit la même hauteur de cellule que le héros (74 × 130, figure ≈ 128 px).
+- **Orientations** : la planche d'attente suit la convention du jeu (colonnes bas, gauche, droite, haut) ; relue sur la planche de contact (sac à dos à droite de la silhouette vers la gauche, à gauche vers la droite), identique au héros. Pas de miroir nécessaire.
+- **Règles `PaintedPropRules`** : `bldg_poste_foret_01` (7 × 4, ombre, fondu, porte `open [(0, 0)]`, 27 cases solides), `prop_grande_pierre_01` (3 × 2), `prop_cloture_piquets_01_court` (3 × 1) ; scènes générées par `build_painted_props.gd --nouveaux`.
+- **Personnage** : apparence `hiker` (`assets/sprites/characters/painted/hiker_frames.tres`, marche + attente), table `LOOKS` de `build_character_frames.gd`.
+- **Poké Ball au sol** : image `assets/sprites/objects/painted/poke_ball_ground.png` prête ; ses `SpriteFrames` attendent le genre « objet fixe » du T4 (non créé ici).
+- **Planche de contact** : `build/captures/jalon08_assets/planche_contact.png` (non versionnée).

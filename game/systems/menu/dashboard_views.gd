@@ -21,9 +21,10 @@ const CARD_TEXTS: Dictionary[StringName, Array] = {
 
 ## Vue du tableau de bord pour [param state] (l'autoload GameState, ou une instance de
 ## game_state.gd en test). [param zones] et [param objectives] peuvent être null (pas de nom
-## de zone, pas d'objectif).
+## de zone, pas d'objectif) ; [param badges] null : pas de ligne des badges.
 static func build(state: Object, data: PokemonData, zones: ZoneLibrary,
-		objectives: ObjectiveLibrary, unlocks: MenuUnlocks) -> DashboardView:
+		objectives: ObjectiveLibrary, unlocks: MenuUnlocks,
+		badges: BadgeLibrary = null) -> DashboardView:
 	var view := DashboardView.new()
 	var flags: StoryFlags = state.flags
 	var party: Party = state.party
@@ -34,6 +35,8 @@ static func build(state: Object, data: PokemonData, zones: ZoneLibrary,
 	view.play_time_text = play_time_text(state.play_time)
 	if unlocks.pokedex_visible():
 		view.dex_text = dex_text(pokedex.seen_count(), pokedex.caught_count())
+	if badges != null:
+		view.badges_text = badges_text(badges.obtained_count(flags))
 	var lead := party.get_lead()
 	if lead != null and unlocks.team_visible():
 		view.lead = member(lead, 0, data)
@@ -51,6 +54,8 @@ static func member(pokemon: Pokemon, index: int, data: PokemonData) -> TeamMembe
 	var view := TeamMemberView.new()
 	view.party_index = index
 	view.species_id = pokemon.species_id
+	view.dex_number = data.get_species(pokemon.species_id).dex \
+		if data != null and data.has_species(pokemon.species_id) else 0
 	view.display_name = pokemon.display_name(data)
 	view.gender = BattleViews.card_gender(pokemon.gender)
 	view.level = pokemon.level
@@ -69,6 +74,13 @@ static func play_time_text(seconds: float) -> String:
 ## « 27 vus · 14 capturés » (singulier : « 1 vu · 1 capturé »). Jamais de « / 151 ».
 static func dex_text(seen: int, caught: int) -> String:
 	return "%s · %s" % [seen_text(seen), caught_text(caught)]
+
+
+## Ligne des badges : « 1 badge », « 2 badges » ; "" sans badge (Q-13 : jamais « 0 badge »).
+static func badges_text(count: int) -> String:
+	if count <= 0:
+		return ""
+	return "%s %s" % [MenuFormat.number(count), "badge" if count == 1 else "badges"]
 
 
 ## « 27 vus », « 1 vu », « 0 vu » (écran Dresseur : un lien chacun).

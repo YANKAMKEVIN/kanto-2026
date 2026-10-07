@@ -734,8 +734,8 @@ const MENU_BUTTON_CENTER_FROM_CORNER := Vector2(SAFE_MARGIN + ROUND_BUTTON * 0.5
 # --- Équipe (jalon 6, T7) ---------------------------------------------------------------------
 
 ## Colonnes : liste (à gauche) et fiche (à droite) ; la vedette prend le reste.
-const TEAM_LIST_WIDTH := 560
-const TEAM_SHEET_WIDTH := 800
+const TEAM_LIST_WIDTH := 520
+const TEAM_SHEET_WIDTH := 760
 const TEAM_COLUMN_GAP := GAP
 ## Emplacement de la liste (≥ TOUCH_MIN) : six de TEAM_SLOT_HEIGHT + cinq écarts ≤ 840.
 const TEAM_SLOT_HEIGHT := TOUCH_MIN
@@ -780,8 +780,8 @@ const TEAM_GAUGE_HEIGHT := 12
 const TEAM_GAUGE_FILL := ACCENT
 const TEAM_MOVE_CARD_HEIGHT := 116
 const TEAM_HISTORY_FONT := 30
-const TEAM_EVO_CIRCLE := 64
-const TEAM_EVO_SPRITE := 64
+const TEAM_EVO_CIRCLE := 88
+const TEAM_EVO_SPRITE := 84
 const TEAM_EVO_FONT := FONT_CAPTION
 ## Fiche d'une capacité ouverte au toucher : voile derrière.
 const TEAM_SCRIM := Color(0.02, 0.03, 0.05, 0.55)
@@ -792,7 +792,7 @@ const HAPTIC_TEAM_SWAP_MS := 20
 
 # Écran Sac du Menu Dresseur (jalon 6, T11).
 ## Colonnes : catégories à gauche, cartes au centre (le reste), aperçu à droite.
-const BAG_SCREEN_LEFT_WIDTH := 440
+const BAG_SCREEN_LEFT_WIDTH := 460
 const BAG_SCREEN_DETAIL_WIDTH := 580
 const BAG_SCREEN_GAP := GAP
 const BAG_SCREEN_TITLE_FONT := FONT_TITLE
@@ -952,9 +952,8 @@ const DEX_CELL_SELECTED_SCALE := 1.03
 const DEX_UNKNOWN_ALPHA := 0.55
 
 # --- Pokédex : composition en trois colonnes (refonte, T3) -------------------------------------
-## L'écran remonte dans la rangée du × (hauteur de l'en-tête commun) et lui laisse sa place.
+## L'écran remonte dans la rangée du × (hauteur de l'en-tête commun) et y pose son « ‹ » (MM.2).
 const DEX_LAYOUT_RISE := MENU_BODY_TOP - SAFE_MARGIN
-const DEX_LAYOUT_CLOSE_RESERVE := MENU_CLOSE_SIZE + GAP
 ## Rangée d'en-tête : ‹ RETOUR · Poké Ball + titre + compteur · filtres · recherche.
 const DEX_LAYOUT_BACK_WIDTH := 190
 const DEX_LAYOUT_TITLE_ICON := 64
@@ -1176,7 +1175,6 @@ const TRAINER_RAIL_LINE := 3.0
 const TRAINER_RAIL_DOT := 9.0
 const TRAINER_RAIL_COLOR := Color(1, 1, 1, 0.3)
 const TRAINER_MOMENT_ICON := 48
-const TRAINER_MOMENT_SPRITE := 64
 const TRAINER_MOMENT_TITLE_FONT := 30
 const TRAINER_MOMENT_DETAIL_FONT := 26
 const TRAINER_MOMENT_META_FONT := FONT_CAPTION
@@ -1194,22 +1192,44 @@ const TEXT_MUTED_CONTRAST := Color("#E2E8F2")
 # --- Écran Paramètres et choix à deux cartes (jalon 6, T28) -------------------------------------
 # Paysage : catégories à gauche, contrôles de la catégorie ouverte à droite. Chaque contrôle fait
 # au moins SETTINGS_ROW_HEIGHT de haut (zone tactile ≥ TOUCH_MIN) ; la valeur est toujours écrite.
-const SETTINGS_CATEGORY_WIDTH := 460
-const SETTINGS_CATEGORY_ICON := 48
-const SETTINGS_CATEGORY_GAP := 12
-const SETTINGS_ROW_HEIGHT := TOUCH_MIN + 16
-const SETTINGS_ROW_GAP := 12
-const SETTINGS_ROW_PAD_H := 24
-const SETTINGS_ROW_PAD_V := 8
-const SETTINGS_ROW_BG := Color(1, 1, 1, 0.06)
-const SETTINGS_PANEL_TITLE_FONT := FONT_BUTTON
-const SETTINGS_LABEL_FONT := FONT_BODY
+# MM.3 (maquette, valeurs par défaut règle 4) : catégories de verre à gauche (la choisie en
+# ACCENT avec un halo), section de verre à droite (icône, titre, sous-titre), lignes séparées par
+# un filet dans une carte intérieure.
+const SETTINGS_CATEGORY_WIDTH := 420
+const SETTINGS_CATEGORY_ICON := 44
+const SETTINGS_CATEGORY_GAP := 10
+const SETTINGS_CATEGORY_FONT := FONT_BODY
+const SETTINGS_CATEGORY_BG := Color(1, 1, 1, 0.05)
+const SETTINGS_CATEGORY_GLOW := Color(0.96, 0.77, 0.26, 0.4)
+const SETTINGS_CATEGORY_GLOW_SIZE := 14
+const SETTINGS_ROW_HEIGHT := TOUCH_MIN
+const SETTINGS_ROW_GAP := 0
+const SETTINGS_ROW_PAD_H := 28
+const SETTINGS_ROW_PAD_V := 6
+const SETTINGS_ROW_BG := Color(1, 1, 1, 0.0)
+const SETTINGS_ROW_DIVIDER := Color(1, 1, 1, 0.09)
+const SETTINGS_ROW_DIVIDER_WIDTH := 2
+const SETTINGS_ROW_PRESSED_BG := Color(0.96, 0.77, 0.26, 0.16)
+const SETTINGS_PANEL_TITLE_FONT := FONT_TITLE
+const SETTINGS_SUBTITLE_FONT := FONT_CAPTION
+const SETTINGS_SECTION_ICON := 64
+const SETTINGS_SECTION_GAP := 20
+const SETTINGS_LABEL_FONT := 30
 const SETTINGS_DETAIL_FONT := FONT_CAPTION
 const SETTINGS_VALUE_FONT := 28
 const SETTINGS_OPTION_FONT := 28
-const SETTINGS_OPTION_MIN_WIDTH := 180
-const SETTINGS_OPTION_GAP := 12
 const SETTINGS_TEXT_MIN_WIDTH := 300
+## Sélecteur « ‹ Valeur › » : pilule de SETTINGS_PILL_HEIGHT dessinée dans une rangée de
+## TOUCH_MIN ; flèches de TOUCH_MIN de côté, valeur au milieu.
+const SETTINGS_PILL_HEIGHT := 76
+const SETTINGS_PILL_BG := Color(1, 1, 1, 0.07)
+const SETTINGS_PILL_BORDER := Color(1, 1, 1, 0.16)
+const SETTINGS_PILL_VALUE_WIDTH := 250
+const SETTINGS_ARROW_ICON := 30
+const SETTINGS_ARROW_PRESSED_DRAW := 64
+const SETTINGS_ARROW_OFF := Color(1, 1, 1, 0.22)
+## Valeur écrite à côté d'un interrupteur (« Activé ») : discrète, la règle 7 la garde.
+const SETTINGS_STATE_FONT := FONT_CAPTION
 ## Interrupteur : piste arrondie (vert SUCCESS activé, grisé sinon) et pastille blanche.
 const SETTINGS_SWITCH_SIZE := Vector2(112, 64)
 const SETTINGS_SWITCH_KNOB := 48
@@ -1221,8 +1241,10 @@ const SETTINGS_SLIDER_TRACK := 12
 const SETTINGS_SLIDER_KNOB := 56
 const SETTINGS_SLIDER_VALUE_WIDTH := 110
 const SETTINGS_SLIDER_TRACK_BG := Color(1, 1, 1, 0.18)
-## Action « Sauvegarder maintenant ».
-const SETTINGS_ACTION_WIDTH := 480
+## Action « Sauvegarder maintenant » : toute la ligne se touche ; icône sombre dans un rond
+## ACCENT à droite (action principale).
+const SETTINGS_ACTION_ROUND := 88
+const SETTINGS_ACTION_ICON := 40
 const SETTINGS_ACTION_OFF_BG := Color(1, 1, 1, 0.10)
 ## Résultat de la sauvegarde : barre sous les contrôles, tenue avant de s'effacer.
 const SETTINGS_RESULT_HEIGHT := 88
@@ -1436,3 +1458,135 @@ const EVOLUTION_RAY_ALPHA_PEAK := 0.26
 const EVOLUTION_RAY_ALPHA_REVEALED := 0.12
 const EVOLUTION_MOTE := Color(1.0, 0.93, 0.75, 0.55)
 const EVOLUTION_SHADOW := Color(0.0, 0.0, 0.0, 0.55)
+
+# Menu Dresseur rapproché des maquettes (MM.1, docs/tech/menu-maquettes.md) : tableau de bord,
+# Équipe et Sac. Verre léger sur le monde flouté (méthode du Pokédex), bandeau d'état en haut à
+# droite, retour « ‹ » compact. Valeurs par défaut notées dans etat-projet.md.
+## Fond du menu derrière ces écrans : voile plus léger que MENU_DIM, flou du Pokédex.
+const MENU_GLASS_DIM := 0.3
+const MENU_GLASS_BLUR := DEX_BACKDROP_BLUR
+const MENU_GLASS_LOD := DEX_BACKDROP_LOD
+## Panneau de verre (MenuGlass) et carte intérieure (MenuGlassCard) : ceux du Pokédex.
+const MENU_GLASS_BG := DEX_GLASS_BG
+const MENU_GLASS_BORDER := DEX_GLASS_BORDER
+const MENU_GLASS_RADIUS := DEX_GLASS_RADIUS
+const MENU_GLASS_PAD := 24
+const MENU_GLASS_CARD_BG := DEX_CARD_BG
+const MENU_GLASS_CARD_BORDER := DEX_CARD_BORDER
+const MENU_GLASS_CARD_RADIUS := DEX_CARD_RADIUS
+## Rangée d'en-tête : × (tableau de bord) ou ‹ (écrans) dessinés en rond de MENU_ROUND_DRAW,
+## zone tactile TOUCH_MIN.
+const MENU_ROUND_DRAW := 88
+const MENU_ROUND_ICON := 40
+## Titre d'écran dans la rangée d'en-tête (« Équipe 3/6 », « Sac ») : icône, titre, compteur.
+const MENU_TITLE_ICON := 60
+const MENU_TITLE_FONT := FONT_TITLE
+const MENU_TITLE_COUNT_FONT := FONT_BODY
+const MENU_TITLE_GAP := 20
+## Bandeau d'état (lieu · heure · argent) : pastille de verre de MENU_STATUS_DRAW de haut.
+const MENU_STATUS_DRAW := 80
+const MENU_STATUS_FONT := 30
+const MENU_STATUS_ICON := 36
+const MENU_STATUS_PAD_H := 30
+const MENU_STATUS_GAP := 14
+const MENU_STATUS_DIVIDER := Color(1, 1, 1, 0.2)
+const MENU_STATUS_DIVIDER_SIZE := Vector2(2, 36)
+## Grandes cartes illustrées : l'illustration couvre la carte (coins arrondis), un dégradé vers
+## la teinte de la carte commence à MENU_ART_FADE_FROM de la hauteur (le titre se lit dessus).
+const MENU_ART_RADIUS := 24
+const MENU_ART_FADE_FROM := 0.38
+const MENU_ART_FADE_ALPHA := 0.96
+## Le point de l'illustration gardé quand elle est rognée (0 haut, 1 bas).
+const MENU_ART_FOCUS_Y := 0.2
+const MENU_ART_TITLE_ICON := 52
+const MENU_ART_ROUND := 72
+const MENU_ART_ROUND_ICON := 34
+const MENU_ART_RIM_WIDTH := 2
+## Carte du Dresseur : portrait peint du héros, ancré en bas à droite, au plus cette hauteur.
+const MENU_HERO_HEIGHT := 640
+const MENU_HERO_OFFSET_X := -8
+## Pokémon de tête et liste de l'Équipe : artwork dans un rond.
+const MENU_ROUND_THUMB_BG := Color(0.55, 0.75, 0.95, 0.22)
+const MENU_ROUND_THUMB_BORDER := Color(1, 1, 1, 0.3)
+## Part du rond occupée par l'artwork (l'atlas a déjà une marge de 4 px).
+const MENU_ROUND_THUMB_ART := 0.96
+## Équipe : grand artwork au centre (au plus MENU_TEAM_ART, réduit à la place disponible).
+const TEAM_ART_MAX := 540
+const TEAM_ART_HALO_ALPHA := 0.55
+const TEAM_ART_BREATH_PX := 6.0
+## Écran Stockage : même vedette, plus petite.
+const STORAGE_ART := 192
+## Sac : panneau de droite (objet en grand, « Utiliser sur… » et l'équipe dans le panneau).
+const BAG_HERO_ICON := 180
+const BAG_HERO_MIN_HEIGHT := 200
+const BAG_HERO_GAP := 16
+const BAG_TAB_CAPTION_FONT := 22
+const BAG_TAB_PAINTED_ICON := 56
+const BAG_TARGETS_TITLE_FONT := FONT_BODY
+## Ligne de la cible dans le panneau du Sac (≥ TOUCH_MIN) et son rond.
+const PICKER_COMPACT_ROW := TOUCH_MIN
+const PICKER_COMPACT_THUMB := 100
+const PICKER_COMPACT_GAP := 10
+## Fond d'une carte de verre sélectionnée (le liseré ACCENT porte la sélection).
+const MENU_GLASS_SELECTED_BG := Color(0.04, 0.07, 0.11, 0.78)
+
+# Menu Dresseur rapproché des maquettes (MM.2) : Carte et Dresseur. Valeurs par défaut (règle 4)
+# notées dans etat-projet.md et docs/tech/menu-maquettes.md.
+## Carte : bandeau du bas (carte « Exploration » + frise des zones découvertes).
+const MAP_STRIP_HEIGHT := 168
+const MAP_STRIP_PAD := 16
+const MAP_EXPLORE_WIDTH := 540
+const MAP_EXPLORE_ROUND := 104
+const MAP_EXPLORE_TITLE_FONT := 30
+const MAP_EXPLORE_TEXT_FONT := FONT_CAPTION
+## Vignette d'une zone dans la frise (≥ TOUCH_MIN de haut) : image, nom, liseré.
+const MAP_THUMB_WIDTH := 232
+const MAP_THUMB_GAP := 14
+const MAP_THUMB_RADIUS := 16
+const MAP_THUMB_FADE_FROM := 0.35
+const MAP_THUMB_NAME_FONT := FONT_CAPTION
+const MAP_THUMB_PIN := 30
+const MAP_THUMB_RIM := 3
+## Panneau de la zone : largeur entre ces bornes (le reste va à l'illustration).
+const MAP_PANEL_MIN := 680
+const MAP_PANEL_MAX := 860
+## Grande image de la zone en tête du panneau (nom écrit dessus).
+const MAP_HERO_HEIGHT := 230
+const MAP_HERO_RADIUS := 20
+const MAP_HERO_FADE_FROM := 0.3
+const MAP_HERO_PAD := 20
+const MAP_HERE_FONT := FONT_CAPTION
+const MAP_HERE_ICON := 26
+## Pokémon observés (artwork dans un rond) et objets trouvés (icône peinte).
+const MAP_POKEMON_CELL := Vector2(144, 176)
+const MAP_POKEMON_ROUND := 108
+const MAP_ITEM_CELL := Vector2(144, 132)
+const MAP_ITEM_ICON := 76
+const MAP_SECTION_GAP := 12
+## Fond du cadre de l'illustration (illustration étirée très floue et assombrie).
+const MAP_ECHO_LOD := 5.0
+const MAP_ECHO_DIM := 0.6
+## Étiquettes des zones découvertes : icône du genre de zone ; lieu courant en ACCENT.
+const MAP_LABEL_ICON := 28
+const MAP_LABEL_SELECTED_BORDER := 3
+## Portrait du joueur sur l'illustration : tête du buste peint dans un rond (région du buste).
+const MAP_PORTRAIT_REGION := Rect2(80, 0, 300, 300)
+const MAP_PORTRAIT_BG := Color(0.86, 0.91, 0.98)
+const MAP_PORTRAIT_BORDER := 4
+## Dresseur : identité (portrait peint) à gauche, badges et équipe au centre, statistiques et
+## grands moments à droite.
+const TRAINER_IDENTITY_WIDTH := 540
+const TRAINER_SIDE_WIDTH := 640
+const TRAINER_HERO_MAX := 560
+const TRAINER_HERO_OFFSET_X := -4
+const TRAINER_BADGE_SLOT_HEIGHT := 112
+const TRAINER_BADGE_ICON := 56
+const TRAINER_BADGE_UNKNOWN := Color(1, 1, 1, 0.22)
+const TRAINER_BADGE_UNKNOWN_FONT := FONT_CAPTION
+const TRAINER_TEAM_COLUMNS := 3
+const TRAINER_TEAM_ART := 104
+const TRAINER_TEAM_NAME_FONT := 24
+const TRAINER_TEAM_LEVEL_FONT := 22
+const TRAINER_MOMENT_THUMB := Vector2(150, 92)
+const TRAINER_MOMENT_THUMB_RADIUS := 12
+const TRAINER_MOMENT_ART := 64

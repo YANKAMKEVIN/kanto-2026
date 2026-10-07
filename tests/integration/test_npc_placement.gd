@@ -33,11 +33,11 @@ const PLAN: Dictionary = {
 	},
 	&"oak_lab": {
 		&"maya": [Vector2i(5, 3), Vector2i.UP, &"maya", &"maya", TALK, 0],
-		&"bulbasaur": [Vector2i(10, 5), Vector2i.DOWN, &"bulbasaur", &"observe_bulbasaur",
+		&"bulbasaur": [Vector2i(10, 5), Vector2i.DOWN, &"pokemon/bulbasaur", &"observe_bulbasaur",
 			OBSERVE, 56],
-		&"charmander": [Vector2i(11, 5), Vector2i.DOWN, &"charmander", &"observe_charmander",
+		&"charmander": [Vector2i(11, 5), Vector2i.DOWN, &"pokemon/charmander", &"observe_charmander",
 			OBSERVE, 56],
-		&"squirtle": [Vector2i(12, 5), Vector2i.DOWN, &"squirtle", &"observe_squirtle",
+		&"squirtle": [Vector2i(12, 5), Vector2i.DOWN, &"pokemon/squirtle", &"observe_squirtle",
 			OBSERVE, 56],
 	},
 	&"pallet_town": {
@@ -79,8 +79,6 @@ const POINTS: Dictionary = {
 		&"SignPallet": [Vector2i(21, 13), Vector2i(1, 1), &"sign_pallet_town"],
 	},
 }
-## Starters du labo : apparences provisoires (DA.2 n'y touche pas).
-const STARTERS: Array[StringName] = [&"bulbasaur", &"charmander", &"squirtle"]
 const DIRECTIONS: Array[Vector2i] = [
 	Vector2i.UP, Vector2i.DOWN, Vector2i.LEFT, Vector2i.RIGHT,
 ]
@@ -201,9 +199,9 @@ func test_every_npc_has_its_own_frames() -> void:
 				var anim := npc.get_node(^"%Sprite") as AnimatedSprite2D
 				assert_eq(anim.sprite_frames.resource_path, Npc.frames_path(sprite))
 				# Peint à 1:1 en LINEAR (le rival au jalon 7, les habitants de Bourg Palette au
-				# DA.2) ; seuls les starters restent provisoires ×2 en NEAREST (décision attendue).
+				# DA.2, les trois starters au DA.3) : plus aucun personnage provisoire.
 				var look := CharacterLook.resolve(sprite)
-				assert_eq(look.painted, not STARTERS.has(sprite), String(sprite))
+				assert_true(look.painted, String(sprite))
 				assert_eq(anim.texture_filter, look.filter)
 				assert_eq(anim.scale, Vector2(look.scale, look.scale))
 
@@ -239,8 +237,8 @@ func test_sprite_sizes_and_animations() -> void:
 
 ## Jalon 3B (T3) : Chen, créé par l'étape « spawn » de route1_grass, a ses propres
 ## SpriteFrames. Planche provisoire : marche et course (4 images, bouclées, course plus
-## rapide). DA.2 : planche **peinte** (celle qu'il affiche) : marche en 4 images, sans course
-## (pas de planche de course pour lui : le pas « run » de la scène est marché, règle du T5).
+## rapide). DA.2 : planche **peinte** (celle qu'il affiche) ; DA.3 : avec sa planche de course
+## (décision de Kevin : il accourt dans le prologue), course plus rapide que la marche.
 func test_oak_has_its_own_frames_with_walk_and_run() -> void:
 	assert_true(Npc.has_frames(&"oak"), "oak_frames.tres")
 	var frames := load(CharacterLook.placeholder_frames_path(&"oak")) as SpriteFrames
@@ -260,8 +258,13 @@ func test_oak_has_its_own_frames_with_walk_and_run() -> void:
 	assert_true(look.painted, "Chen peint (DA.2)")
 	var painted := load(look.frames_path) as SpriteFrames
 	for dir: String in ["down", "up", "left", "right"]:
-		assert_eq(painted.get_frame_count(StringName("walk_" + dir)), 4, "oak peint : marche")
-		assert_false(painted.has_animation(StringName("run_" + dir)), "oak peint : sans course")
+		var walk := StringName("walk_" + dir)
+		var run := StringName("run_" + dir)
+		assert_eq(painted.get_frame_count(walk), 4, "oak peint : marche")
+		assert_eq(painted.get_frame_count(run), 4, "oak peint : course")
+		assert_gt(painted.get_animation_speed(run), painted.get_animation_speed(walk))
+		var sheet := (painted.get_frame_texture(run, 0) as AtlasTexture).atlas.resource_path
+		assert_eq(sheet, CharacterLook.PAINTED_DIR + "chen_run_sheet.png", "planche de course")
 	var cutscenes := CutsceneLibrary.new()
 	cutscenes.load_dir()
 	var spawned: Array[StringName] = []

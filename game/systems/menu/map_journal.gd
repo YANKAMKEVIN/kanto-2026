@@ -122,7 +122,9 @@ static func observed_pokemon(zone: StringName, pokedex: Pokedex, data: PokemonDa
 	found.sort_custom(func(a: SpeciesData, b: SpeciesData) -> bool: return a.dex < b.dex)
 	var result: Array[ZoneEntryView] = []
 	for species: SpeciesData in found:
-		result.append(ZoneEntryView.new(species.id, species.name))
+		var entry := ZoneEntryView.new(species.id, species.name)
+		entry.dex_number = species.dex
+		result.append(entry)
 	return result
 
 

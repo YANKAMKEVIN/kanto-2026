@@ -120,7 +120,7 @@ func test_load_dir_keeps_valid_and_reports_broken() -> void:
 func test_real_tables_load_without_error() -> void:
 	var lib := _lib()
 	assert_true(lib.load_dir(), "\n".join(lib.get_errors()))
-	assert_eq(lib.get_ids(), [&"route_1_grass", &"route_22_grass", &"viridian_forest_grass"]
+	assert_eq(lib.get_ids(), [&"route_1_grass", &"route_22_grass", &"route_2_grass", &"viridian_forest_grass"]
 		as Array[StringName])
 
 
@@ -158,12 +158,42 @@ func test_route_22_table_is_red_blue_with_both_nidoran_and_mankey() -> void:
 		assert_true(expected.has(slot.species), "%s : hors du bestiaire" % slot.species)
 
 
+func test_route_2_table_follows_dossier_11() -> void:
+	# Dossier 11 §8 (jalon-08.md §2.9) : une table pour H1, H2, H3 ; poids = pourcentages ;
+	# rythme de la Route 1 (taux 25, rampe 15 → 20).
+	var lib := _lib()
+	lib.load_dir()
+	var table := lib.get_table(&"route_2", &"grass")
+	assert_not_null(table)
+	if table == null:
+		return
+	assert_eq(table.maps, [&"route_2"] as Array[StringName])
+	assert_eq(table.rate, 25)
+	assert_eq([table.ramp_from, table.ramp_max], [15, 20])
+	assert_eq(table.total_weight(), 100)
+	var expected := {
+		&"pidgey": [0.35, 4, 6], &"rattata": [0.30, 4, 6], &"nidoran_f": [0.12, 4, 6],
+		&"nidoran_m": [0.12, 4, 6], &"spearow": [0.08, 5, 6], &"mankey": [0.03, 5, 6],
+	}
+	for species: StringName in expected:
+		assert_almost_eq(table.chance_of(species), float(expected[species][0]), 0.0001,
+			String(species))
+	for slot: EncounterSlot in table.slots:
+		assert_true(expected.has(slot.species), "%s : hors du bestiaire" % slot.species)
+		assert_eq([slot.min_level, slot.max_level],
+			[expected[slot.species][1], expected[slot.species][2]], String(slot.species))
+		# Aucun Insecte ni Pikachu : la forêt garde ses rencontres (dossier 11 §8).
+		assert_ne(slot.species, &"pikachu")
+		assert_false(_data.get_species(slot.species).types.has(&"bug"),
+			"%s : pas d'Insecte sur la Route 2" % slot.species)
+
+
 func test_every_wild_species_has_battle_sprites() -> void:
 	# jalon-07.md Q-2 : sprites de combat provisoires (tools/gen_placeholder_battlers.gd).
 	var lib := _lib()
 	lib.load_dir()
-	assert_eq(lib.size(), 3, "une table par carte ci-dessous")
-	for map_id: StringName in [&"route_1", &"route_22", &"viridian_forest"]:
+	assert_eq(lib.size(), 4, "une table par carte ci-dessous")
+	for map_id: StringName in [&"route_1", &"route_2", &"route_22", &"viridian_forest"]:
 		for slot: EncounterSlot in lib.get_table(map_id).slots:
 			for view: String in ["front", "back"]:
 				var path := "res://assets/sprites/pokemon/placeholder/%s_%s.png" % [

@@ -171,3 +171,33 @@ func test_poisoned_lead_reads_psn() -> void:
 		"la cible du Sac lit le même texte")
 	_add(&"pidgey", 4)
 	assert_eq(DashboardViews.member(_state.party.get_at(1), 1, _data).status_text, "")
+
+
+# --- MM.1 : badges préparés, artwork du Pokémon de tête -----------------------------------------
+
+
+func test_badges_line_follows_the_obtained_badges() -> void:
+	var badges := BadgeLibrary.new()
+	assert_true(badges.load_file())
+	var build := func() -> DashboardView:
+		return DashboardViews.build(_state, _data, _zones, _objectives, _unlocks, badges)
+	assert_eq(build.call().badges_text, "", "aucun badge : pas de ligne (jamais « 0 badge »)")
+	_state.flags.set_flag(badges.flag(&"boulder"))
+	assert_eq(build.call().badges_text, "1 badge")
+	_state.flags.set_flag(badges.flag(&"cascade"))
+	assert_eq(build.call().badges_text, "2 badges")
+	assert_eq(_build().badges_text, "", "sans bibliothèque : pas de ligne")
+
+
+func test_badges_text_rule() -> void:
+	assert_eq(DashboardViews.badges_text(0), "")
+	assert_eq(DashboardViews.badges_text(-1), "")
+	assert_eq(DashboardViews.badges_text(1), "1 badge")
+	assert_eq(DashboardViews.badges_text(8), "8 badges")
+
+
+func test_member_carries_the_dex_number_for_the_artwork() -> void:
+	_add(&"charmander", 5)
+	_add(&"pidgey", 3)
+	assert_eq(DashboardViews.member(_state.party.get_at(0), 0, _data).dex_number, 4)
+	assert_eq(DashboardViews.member(_state.party.get_at(1), 1, _data).dex_number, 16)

@@ -13,6 +13,15 @@ signal back_requested
 ## Vrai : l'écran occupe aussi la rangée du × (le Pokédex y met son en-tête) ; l'hôte cache
 ## alors la pastille de zone. L'écran lui laisse la place du × à gauche.
 var covers_header: bool = false
+## Vrai : l'écran pose son propre « ‹ » compact à la place du × (MM.1) ; l'hôte cache le ×.
+## Le retour Android garde son chemin (go_back de l'écran, puis back_requested).
+var owns_back: bool = false
+## Bandeau d'état (lieu · heure) en haut à droite au-dessus de l'écran (MM.1) ; faux : l'écran
+## occupe cette place (le Pokédex y met sa recherche).
+var status_bar: bool = true
+## L'argent dans le bandeau d'état : seulement là où il sert à décider (le Sac ; dossier 08
+## règle 5, dossier 09 §10 : jamais au tableau de bord).
+var status_money: bool = false
 ## Voile et flou du fond du menu propres à l'écran (négatif : ceux du menu, MENU_DIM et
 ## MENU_BLUR_RADIUS). Le Pokédex éclaircit le fond pour ses panneaux de verre.
 var backdrop_dim: float = -1.0

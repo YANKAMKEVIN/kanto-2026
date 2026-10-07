@@ -14,7 +14,8 @@ func test_real_data_loads_without_error() -> void:
 	var library := ObjectiveLibrary.new()
 	assert_true(library.load_file(), "\n".join(library.get_errors()))
 	assert_eq(library.get_errors().size(), 0)
-	assert_eq(library.get_ids(), [&"deliver_parcel", &"reach_viridian"] as Array[StringName])
+	assert_eq(library.get_ids(), [&"go_north", &"deliver_parcel", &"reach_viridian"]
+		as Array[StringName])
 
 
 ## Convention homogène (décision de Kevin du 2026-10-05) : tout texte d'objectif finit par un
@@ -58,9 +59,9 @@ const _PENDING_FLAGS: Array[StringName] = [&"viridian_arrived"]
 
 
 ## Jalon 7 (dossier 09 §4, §19) : le colis en main → « remettre le colis au Professeur
-## Chen. » ; après l'activation, plus de ligne (Q-10) ; « rejoindre Jadielle » s'efface à
-## l'arrivée.
-func test_parcel_objective_then_nothing_after_the_activation() -> void:
+## Chen. » ; « rejoindre Jadielle » s'efface à l'arrivée. Jalon 8 (dossier 11, arbitrage 6) :
+## après l'activation, « continuer vers le nord. » (remplacé au J9 à l'entrée de la forêt).
+func test_parcel_objective_then_north_after_the_activation() -> void:
 	var library := ObjectiveLibrary.new()
 	library.load_file()
 	var flags := StoryFlags.new()
@@ -76,7 +77,11 @@ func test_parcel_objective_then_nothing_after_the_activation() -> void:
 	assert_eq(library.current_id(flags), &"deliver_parcel", "le colis passe en tête")
 	flags.set_flag(&"viridian_arrived")
 	flags.set_flag(StoryFlags.POKEDEX_ACTIVATED)
-	assert_eq(library.current(flags), "", "Q-10 : aucune ligne après l'activation")
+	assert_eq(library.current(flags), "continuer vers le nord.", "jalon 8, T13")
+	assert_eq(library.current_id(flags), &"go_north")
+	assert_false(library.is_draft(&"go_north"), "texte validé (dossier 11, T13)")
+	flags.set_flag(&"got_oak_parcel", false)
+	assert_eq(library.current_id(flags), &"go_north", "actif pendant toute la Route 2")
 
 
 func test_real_condition_flags_are_raised_by_the_story() -> void:

@@ -2801,6 +2801,75 @@
      47
     ]
    }
+  },
+  "bldg_poste_foret_01": {
+   "fichier": "res://assets/world/buildings/bldg_poste_foret_01.png",
+   "taille": [
+    672,
+    425
+   ],
+   "ombre": {
+    "fichier": "res://assets/world/buildings/bldg_poste_foret_01_shadow.png",
+    "decalage": [
+     -361,
+     -4
+    ],
+    "echelle": 2,
+    "taille": [
+     400,
+     43
+    ]
+   },
+   "contact": {
+    "fichier": "res://assets/world/buildings/bldg_poste_foret_01_contact.png",
+    "decalage": [
+     -344,
+     -33
+    ],
+    "echelle": 2,
+    "taille": [
+     344,
+     36
+    ]
+   }
+  },
+  "prop_grande_pierre_01": {
+   "fichier": "res://assets/world/props/prop_grande_pierre_01.png",
+   "taille": [
+    288,
+    203
+   ],
+   "contact": {
+    "fichier": "res://assets/world/props/prop_grande_pierre_01_contact.png",
+    "decalage": [
+     -152,
+     -2
+    ],
+    "echelle": 2,
+    "taille": [
+     152,
+     20
+    ]
+   }
+  },
+  "prop_cloture_piquets_01_court": {
+   "fichier": "res://assets/world/props/prop_cloture_piquets_01_court.png",
+   "taille": [
+    288,
+    156
+   ],
+   "contact": {
+    "fichier": "res://assets/world/props/prop_cloture_piquets_01_court_contact.png",
+    "decalage": [
+     -152,
+     -29
+    ],
+    "echelle": 2,
+    "taille": [
+     152,
+     34
+    ]
+   }
   }
  },
  "personnages": {
@@ -3523,6 +3592,134 @@
     "droite",
     "haut"
    ]
+  },
+  "chen_run": {
+   "fichier": "res://assets/sprites/characters/painted/chen_run_sheet.png",
+   "cellule": [
+    99,
+    136
+   ],
+   "hauteur": 134,
+   "colonnes": 4,
+   "lignes": 4,
+   "ordre_lignes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "bulbizarre": {
+   "fichier": "res://assets/sprites/pokemon/painted/bulbizarre_sheet.png",
+   "cellule": [
+    57,
+    62
+   ],
+   "hauteur": 60,
+   "colonnes": 4,
+   "lignes": 4,
+   "ordre_lignes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "salameche": {
+   "fichier": "res://assets/sprites/pokemon/painted/salameche_sheet.png",
+   "cellule": [
+    57,
+    62
+   ],
+   "hauteur": 60,
+   "colonnes": 4,
+   "lignes": 4,
+   "ordre_lignes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "carapuce": {
+   "fichier": "res://assets/sprites/pokemon/painted/carapuce_sheet.png",
+   "cellule": [
+    47,
+    62
+   ],
+   "hauteur": 60,
+   "colonnes": 4,
+   "lignes": 4,
+   "ordre_lignes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "bulbizarre_idle": {
+   "fichier": "res://assets/sprites/pokemon/painted/bulbizarre_idle_sheet.png",
+   "cellule": [
+    71,
+    62
+   ],
+   "hauteur": 60,
+   "colonnes": 4,
+   "lignes": 1,
+   "ordre_colonnes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "carapuce_idle": {
+   "fichier": "res://assets/sprites/pokemon/painted/carapuce_idle_sheet.png",
+   "cellule": [
+    49,
+    62
+   ],
+   "hauteur": 60,
+   "colonnes": 4,
+   "lignes": 1,
+   "ordre_colonnes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "randonneuse": {
+   "fichier": "res://assets/sprites/characters/painted/randonneuse_sheet.png",
+   "cellule": [
+    80,
+    130
+   ],
+   "hauteur": 128,
+   "colonnes": 4,
+   "lignes": 4,
+   "ordre_lignes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "randonneuse_idle": {
+   "fichier": "res://assets/sprites/characters/painted/randonneuse_idle_sheet.png",
+   "cellule": [
+    80,
+    130
+   ],
+   "hauteur": 128,
+   "colonnes": 4,
+   "lignes": 1,
+   "ordre_colonnes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
   }
  },
  "images": {
@@ -3818,6 +4015,13 @@
    "taille": [
     379,
     768
+   ]
+  },
+  "poke_ball_ground": {
+   "fichier": "res://assets/sprites/objects/painted/poke_ball_ground.png",
+   "taille": [
+    40,
+    40
    ]
   }
  }

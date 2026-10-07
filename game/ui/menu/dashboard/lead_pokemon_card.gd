@@ -1,6 +1,7 @@
 class_name LeadPokemonCard
 extends Button
-## Pokémon de tête, en bas de la carte du Dresseur (dossier 08 §1) : vignette en pixel art,
+## Pokémon de tête, en bas de la carte du Dresseur (dossier 08 §1) : artwork officiel dans un rond
+## (MM.1, [MenuArt]),
 ## nom, sexe, « Nv. 14 », barre de PV et « 39 / 39 ». Un toucher l'ouvre ([signal chosen]) :
 ## sa fiche est l'écran Équipe sur ce Pokémon (6A). Le statut K.O. s'écrit en toutes lettres.
 ## Toute la carte est la zone tactile (hauteur MENU_LEAD_HEIGHT ≥ TOUCH_MIN).
@@ -8,8 +9,6 @@ extends Button
 ## La carte est touchée.
 signal chosen
 
-## Sprite de face d'une espèce ([code]%s[/code] = identifiant) ; provisoire jusqu'à la DA.
-const SPRITE_PATH := "res://assets/sprites/pokemon/placeholder/%s_front.png"
 const HP_BAR_SCENE: PackedScene = preload("res://game/ui/battle/hp_bar.tscn")
 const CHEVRON: Texture2D = preload("res://assets/ui/icons/menu/chevron.svg")
 
@@ -51,8 +50,7 @@ func setup(view: TeamMemberView) -> void:
 	_level.text = "%s %d" % [BattleInfoCard.LEVEL_TAG, view.level]
 	_hp_bar.set_hp(view.hp, view.max_hp)
 	_hp_text.text = BattleInfoCard.HP_FORMAT % [view.hp, view.max_hp]
-	var path := SPRITE_PATH % view.species_id
-	_thumb.texture = load(path) as Texture2D if ResourceLoader.exists(path) else null
+	_thumb.texture = MenuArt.pokemon_thumbnail(view.dex_number)
 
 
 func get_name_text() -> String:
@@ -94,17 +92,21 @@ func _build() -> void:
 	margin.add_child(row)
 
 	var thumb_box := Panel.new()
-	thumb_box.theme_type_variation = &"MenuLeadThumb"
+	thumb_box.theme_type_variation = &"MenuRoundThumb"
 	thumb_box.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	thumb_box.custom_minimum_size = Vector2.ONE * UiTokens.MENU_LEAD_THUMB
 	thumb_box.size_flags_vertical = Control.SIZE_SHRINK_CENTER
 	row.add_child(thumb_box)
 	_thumb = TextureRect.new()
 	_thumb.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	_thumb.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
 	_thumb.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 	_thumb.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
 	_thumb.set_anchors_preset(Control.PRESET_FULL_RECT)
+	var inset := UiTokens.MENU_LEAD_THUMB * (1.0 - UiTokens.MENU_ROUND_THUMB_ART) * 0.5
+	_thumb.offset_left = inset
+	_thumb.offset_top = inset
+	_thumb.offset_right = -inset
+	_thumb.offset_bottom = -inset
 	thumb_box.add_child(_thumb)
 
 	var info := VBoxContainer.new()

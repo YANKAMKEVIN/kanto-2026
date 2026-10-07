@@ -122,6 +122,15 @@ func test_built_zones_have_their_map_texts() -> void:
 	assert_eq(_zones.get_zone(&"route_1").subtitle, _root_property(&"route_1", &"region"),
 		"même connexion que le titre de zone en jeu")
 	assert_eq(_zones.get_zone(&"pallet_town").subtitle, "")
+	# Jalon 8 (dossier 11, T1 et T14) : sous-titre = le panneau sud, comme la Route 1.
+	var route_2 := _zones.get_zone(&"route_2")
+	assert_eq(route_2.maps, [&"route_2"] as Array[StringName])
+	assert_eq(route_2.subtitle, "Jadielle — Forêt de Jade")
+	assert_eq(route_2.description,
+		"Un chemin bordé de prairies qui s'enfonce peu à peu sous les arbres.")
+	if MapCatalog.has_map(&"route_2"):
+		assert_eq(route_2.subtitle, _root_property(&"route_2", &"region"),
+			"même connexion que le titre de zone en jeu")
 	assert_false(_zones.get_zone(&"viridian_city").description.is_empty(), "jalon 7 T4")
 	assert_eq(_zones.get_zone(&"viridian_city").subtitle, "", "aucun sous-titre (2026-10-03)")
 	assert_true(_root_property(&"viridian_city", &"region") in [null, ""],

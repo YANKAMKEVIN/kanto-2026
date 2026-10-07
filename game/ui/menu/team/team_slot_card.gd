@@ -1,8 +1,9 @@
 class_name TeamSlotCard
 extends Control
-## Un emplacement de la liste de l'Équipe (dossier 08 §2) : portrait en pixel art, nom, ♂/♀,
-## Nv., barre de PV et « 39 / 39 », statut **en texte** (« K.O. »), étoile si favori. Un
-## emplacement vide reste neutre : aucun texte, aucune action.
+## Un emplacement de la liste de l'Équipe (dossier 08 §2) : artwork officiel dans un rond (MM.1,
+## [MenuArt]), nom, ♂/♀, Nv., barre de PV et « 39 / 39 », statut **en texte** (« K.O. »),
+## étoile si favori, « › ». Un emplacement vide reste neutre : aucun texte, aucune action (pas de
+## « Ajouter un Pokémon » : dossier 08 §2, aucun stockage dans le menu).
 ##
 ## Elle ne décide rien : elle rapporte les gestes à [TeamScreen] (souris émulée depuis le
 ## toucher, comme [MoveCard]).
@@ -20,8 +21,7 @@ signal press_cancelled(index: int)
 
 enum Look { NORMAL, SELECTED, SOURCE, TARGET }
 
-## Sprite de face d'une espèce (%s = identifiant) ; provisoire jusqu'à la DA.
-const SPRITE_PATH := "res://assets/sprites/pokemon/placeholder/%s_front.png"
+const CHEVRON_ICON: Texture2D = preload("res://assets/ui/icons/menu/chevron.svg")
 const STAR_ICON: Texture2D = preload("res://assets/ui/icons/menu/star_filled.svg")
 const BALL_ICON: Texture2D = preload("res://assets/ui/icons/poke_ball.svg")
 const HP_BAR_SCENE: PackedScene = preload("res://game/ui/battle/hp_bar.tscn")
@@ -120,8 +120,7 @@ func set_member(view: TeamMemberView) -> void:
 		_level.text = "%s %d" % [BattleInfoCard.LEVEL_TAG, view.level]
 		_hp_bar.set_hp(view.hp, view.max_hp)
 		_hp_text.text = BattleInfoCard.HP_FORMAT % [view.hp, view.max_hp]
-		var path := SPRITE_PATH % view.species_id
-		_thumb.texture = load(path) as Texture2D if ResourceLoader.exists(path) else null
+		_thumb.texture = MenuArt.pokemon_thumbnail(view.dex_number)
 	set_look(Look.NORMAL)
 
 
@@ -241,18 +240,16 @@ func _build() -> void:
 	margin.add_child(row)
 
 	var thumb_box := Panel.new()
-	thumb_box.theme_type_variation = &"MenuLeadThumb"
+	thumb_box.theme_type_variation = &"MenuRoundThumb"
 	thumb_box.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	thumb_box.custom_minimum_size = Vector2.ONE * UiTokens.TEAM_SLOT_THUMB
 	thumb_box.size_flags_vertical = Control.SIZE_SHRINK_CENTER
 	row.add_child(thumb_box)
 	_thumb = TextureRect.new()
 	_thumb.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	_thumb.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
 	_thumb.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 	_thumb.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
-	var side := UiTokens.TEAM_SPRITE_SOURCE * 2
-	_thumb.custom_minimum_size = Vector2.ONE * side
+	var side := UiTokens.TEAM_SLOT_THUMB * UiTokens.MENU_ROUND_THUMB_ART
 	_thumb.size = Vector2.ONE * side
 	_thumb.position = (Vector2.ONE * UiTokens.TEAM_SLOT_THUMB - _thumb.size) * 0.5
 	thumb_box.add_child(_thumb)
@@ -296,6 +293,9 @@ func _build() -> void:
 	hp_row.add_child(_hp_bar)
 	_hp_text = _label(&"TeamSlotMeta")
 	hp_row.add_child(_hp_text)
+	var chevron := _icon(UiTokens.MENU_STATUS_ICON)
+	chevron.texture = CHEVRON_ICON
+	row.add_child(chevron)
 	margin.visible = false
 	_bg.theme_type_variation = &"TeamSlotEmpty"
 

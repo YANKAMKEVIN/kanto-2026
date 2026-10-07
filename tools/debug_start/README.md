@@ -53,6 +53,7 @@ rm "$HOME/Library/Application Support/Godot/app_userdata/Kanto 2026/debug_start.
 | `evolution_qa` | J9 (9A.3, T6) : carte de QA, Salamèche N9, **Chenipan N6** et **Aspicot N6** à 1 XP du N7, **Chrysacier N9** à 1 XP du N10, 5 Potions, au bord des hautes herbes (spawn `evolution_start`, tourné vers elles : table de la Forêt de Jade, niveaux 3 à 6). `poison_unlocked` posé (le garde ne parle pas). Évolutions jouées après le bilan (T8 / T9) |
 | `trainers_qa` | J9 (9A.4, T6) : carte de QA, Salamèche N9, Roucool N8, 5 Potions, **1 Antidote**, 3 000 ₽, dans le couloir (spawn `theo_corridor`, tourné vers l'ouest : 4 pas jusqu'à la ligne de vue de Théo). `poison_unlocked` posé. Les 5 Dresseurs sont posés sur la carte (T12 ; cases de `tools/build_qa_forest_systems.gd`, `TRAINER_SLOTS`) |
 | `trainers_weak_qa` | J9 (9A.4, T6) : comme `trainers_qa` mais Salamèche **N4** seul, sans Sac : perdre contre Théo (réveil chez Maman, argent intact, Théo redéfie) |
+| `route_2.json` | J8 (T4) : Salamèche N10, Roucool N9, Rattata N8, **Pokédex activé**, 3 000 ₽, 5 Poké Balls et 3 Potions, à l'entrée sud de la Route 2 (spawn `from_viridian_c`, case du milieu côté Jadielle), tourné vers le nord. Aucun objet de la Route 2 ramassé, Randonneuse et Jeune Dresseur jamais vus. La carte arrive au T5 |
 
 ## Déblocages du Menu Dresseur (jalon 6 T2)
 

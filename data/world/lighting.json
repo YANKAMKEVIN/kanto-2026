@@ -34,6 +34,7 @@
 		"player_house_2f": "interior_warm",
 		"player_house_1f": "interior_warm",
 		"rival_house": "interior_warm",
-		"oak_lab": "interior_warm"
+		"oak_lab": "interior_warm",
+		"route_2": "golden_hour"
 	}
 }

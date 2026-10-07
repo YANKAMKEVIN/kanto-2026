@@ -1,0 +1,119 @@
+# Route 2 sud — grille fonctionnelle (jalon 8, docs/tech/jalon-08.md §1.1).
+# Source UNIQUE de la géométrie : plan en aplats (tools/art/plan_aplats.py), vérification
+# (tools/art/plan_check.py), vue générale peinte (T1), outil de construction de la carte (T5,
+# tools/build_route_2.gd) et critères de test_route_2. Un changement de composition se fait
+# ICI d'abord, puis plan, puis image (la vue suit toujours la grille).
+#
+# 42 × 60 cases ; nord en haut ; x = colonne 0..41, y = rangée 0..59. Jadielle est au sud :
+# (19..21, 59) ↔ Jadielle (27..29, 1).
+#
+# Légende :
+#   T forêt (bloquée)               . herbe rase                  = chemin de terre
+#   h hautes herbes                 v rebord (sauté vers le sud ; ne se monte pas)
+#   P emprise du poste (bloquée)    D porte du poste (STEP_ON ↑ → « Forêt de Jade — À venir »)
+#   A arbre dense, FUTUR A (bloqué) a sentier peint derrière l'arbre (bloqué)
+#   B barrière, FUTUR B (bloquée)   b sentier peint derrière la barrière (bloqué)
+#   R grande pierre claire (bloquée) S souche (bloquée)
+#   G pied d'un grand arbre repère (bloqué)   c clôture basse (bloquée)
+#   x végétation basse (buissons, ronces) ou panneau (bloqué ; panneaux : voir POSITIONS)
+#
+# Format : section GRILLE (« NN » + espace + 42 caractères par rangée), puis POSITIONS.
+
+GRILLE 42 60
+00 TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+01 TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+02 TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+03 TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+04 TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+05 TTTTTTTTTTTTTTTTTPPPPPPPTTTTTTTTTTTTTTTTTT
+06 TTTTTTTTTTTTTTTTTPPPPPPPTTTTTTTTTTTTTTTTTT
+07 TTT..........TTTTPPPPPPPTTTTTTTTTTTTTTTTTT
+08 TTT..........TTTTPPPDPPPTTTTTTTTTTTTTTTTTT
+09 TTT..........TTT.TT===.x.TTTTTTTTTTTTTTTTT
+10 TTT..........hhhhhh===...TTTTTTTTTTTTTTTTT
+11 TTT....======hhhhhh===...TTTTTTTTTTTTTTTTT
+12 TTT....======hhhhhh===...TTTTTTTTTTTTTTTTT
+13 TTT..........TTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+14 TTT..........TTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+15 TTT..........TTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+16 TTTTTTT==TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+17 TTTTTTT==TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+18 TTTTTTT==TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+19 aaaaA====TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+20 TTTTTTT==TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+21 TTTTTTT==TTTTTTTTTT.............TTTTTTTTTT
+22 TTTTTTT==TTTTTTTTTT.............xxxxxTTTTT
+23 TTTTTTT==TTTTTTTTTT.......RRR...x...xTTTTT
+24 TTTTTTT==TTTTTTTTTT.......RRR...x...xTTTTT
+25 TTTTTTT==TTTTTTTTTT.............x...xTTTTT
+26 TTTTTTT==================.......xxxxxTTTTT
+27 TTTTTTT==================.......TTTTTTTTTT
+28 TTTTTTTTTTT............==.......TTTTTTTTTT
+29 TTTTTTTTTTThhhhhhhhhhh.==.......TTTTTTTTTT
+30 TTTTTTTTTTThhhhhhhhhhh.==.......TTTTTTTTTT
+31 TTTTTTTTTTThhhhhhhhhhh.==TTTTTTTTTTTTTTTTT
+32 TTTTTTTTTTThhhhhhhhhhh.==TTTTTTTTTTTTTTTTT
+33 TTTTTTTTTTThhhhhhhhhhh.==TTTTTTTTTTTTTTTTT
+34 TTTTTTTTTTThhhhhhhhhhh.==TTTTTTTTTTTTTTTTT
+35 TTTTTTTTTT.hhhhhhhhhhh.==TTTTTTTTTTTTTTTTT
+36 TTTTTTTTTTTTvvvTT......==TTTTTTTTTTTTTTTTT
+37 TTTTTTTTT================TTTTTTTTTTTTTTTTT
+38 TTTTTTTTT================TTTTTTTTTTTTTTTTT
+39 TTTTTTTTT==TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+40 TTTTTTTTT==......TTTTTTTTTTTTTTTTTTTTTTTTT
+41 TTTTTTTTT==......TTTTTTTTTTTTTTTTTTTTTTTTT
+42 TTTTTTTTT==...S..TTTTTTTTTTTTTTTTxTTTTTTTT
+43 TTTTTTTTT==......TT===============Bbbbbbbb
+44 TTTTTTTTT==......TT===============Bbbbbbbb
+45 TTTTTTTTT==TTTTTT..===....TTTTTTTTTTTTTTTT
+46 TTTTTTTTT==TTTTTT..===....TTTTTTTTTTTTTTTT
+47 TTTTTTTTT=============....TTTTTTTTTTTTTTTT
+48 TTTTTTTTT=============....TTTTTTTTTTTTTTTT
+49 TTTTTTTTTTTTTTTTT..===....TTTTTTTTTTTTTTTT
+50 TTTTTTTTTTT........===.........TTTTTTTTTTT
+51 TTTTTTTTTTT........===.........TTTTTTTTTTT
+52 TTTTTTTTTTThhhhh...===.........TTTTTTTTTTT
+53 TTTTTTTTTT.hhhhh...===.........TTTTTTTTTTT
+54 TTTTTTTTTTThhhhh...===.........TTTTTTTTTTT
+55 TTTTTTTTTTThhhhh...===.........TTTTTTTTTTT
+56 TTTTTTTTTTT........===x........TTTTTTTTTTT
+57 TTTTTTTTTTT........===.........TTTTTTTTTTT
+58 TTTTTTTTTTT..ccc.G.===.G.ccc...TTTTTTTTTTT
+59 TTTTTTTTTTTTTTTTTTT===TTTTTTTTTTTTTTTTTTTT
+FIN
+
+# POSITIONS (défauts, ajustables au T7) — une ligne par élément :
+#   identifiant  type  cases  bloque|libre  # commentaire
+# cases : « x,y » ou plages « x0..x1,y0..y1 » ; plusieurs groupes séparés par « ; ».
+# « bloque » : la case est occupée (plan_check.py la traite comme un obstacle).
+# Types : warp, spawn, panneau, pnj, pokemon, objet_visible, objet_cache, examen, repere.
+POSITIONS
+warp_sud_w          warp           19,59        libre   # PUSH ↓ → viridian_city, from_route_2_w
+warp_sud_c          warp           20,59        libre   # PUSH ↓ → viridian_city, from_route_2_c
+warp_sud_e          warp           21,59        libre   # PUSH ↓ → viridian_city, from_route_2_e
+from_viridian_w     spawn          19,59        libre   # arrivée tournée ↑
+from_viridian_c     spawn          20,59        libre   # arrivée tournée ↑
+from_viridian_e     spawn          21,59        libre   # arrivée tournée ↑
+forest_gate_soon    warp           20,8         libre   # porte : STEP_ON ↑, coming_soon « Forêt de Jade »
+from_forest_gate    spawn          20,9         libre   # retour devant la porte, tourné ↓
+panneau_route       panneau        22,56        bloque  # T1, lu depuis (22, 57) tourné ↑
+panneau_foret       panneau        23,9         bloque  # T2 « FORÊT DE JADE », lu depuis (23, 10) ↑
+panneau_ferme       panneau        33,42        bloque  # T8, lu depuis (33, 43) ↑
+examen_arbre_dense  examen         4,19         libre   # T7, depuis (5, 19) tourné ←
+examen_barriere     examen         34,43..44    libre   # T9, depuis (33, 43..44) tourné →
+hiker               pnj            23,46..48    bloque  # P1, boucle (23,48)→(23,47)→(23,46)→(23,47), pause 1,6 s
+youngster           pnj            29,26        bloque  # P2, look ; aucun combat
+youngster_pokemon   pokemon        30,26        bloque  # Nidoran ♂, idle_react 5 s
+pidgey_1            pokemon        24,55        bloque  # shy flee, rayon 2
+pidgey_2            pokemon        25,53        bloque  # shy fly, rayon 2
+rattata             pokemon        15,44        bloque  # shy flee rayon 2 + look (fouille) ; niche (16,44), buissons au sud
+nidoran             pokemon        34,24        bloque  # Nidoran ♀, look lent, enclos de buissons
+route_2_ball_1      objet_visible  10,53        bloque  # O1 Poké Ball, niche au bout de H1
+route_2_ball_2      objet_visible  10,35        bloque  # O2 Potion (aspect Poké Ball, Q-1), niche de H2
+route_2_item_3      objet_cache    13,42        libre   # O3, près de la souche
+route_2_item_4      objet_cache    16,9         libre   # O4 Potion, niche au bord nord de H3
+h2_sud              repere         17,37        libre   # mesure « H2 contre chemin sûr » (départ)
+h2_nord             repere         8,27         libre   # mesure « H2 contre chemin sûr » (arrivée)
+rebord_haut         repere         13,28        libre   # mesure « retour par le rebord » (départ)
+rebord_bas          repere         10,38        libre   # mesure « retour par le rebord » (arrivée)
+FIN
