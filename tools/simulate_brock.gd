@@ -30,10 +30,17 @@ extends SceneTree
 ##   godot --headless --path . -s res://tools/simulate_brock.gd -- --seeds 200
 ##   godot --headless --path . -s res://tools/simulate_brock.gd -- --save <sauvegarde.json>
 ##   godot --headless --path . -s res://tools/simulate_brock.gd -- --grille 2
+##   godot --headless --path . -s res://tools/simulate_brock.gd -- --preparation
 ##
 ## `--grille <n>` : seulement la grille de la variante n de [constant BROCK_VARIANTS]
 ## (2 = Jet-Pierres sur Racaillou). `--save` remplace l'équipe de Kevin par l'équipe d'une
 ## sauvegarde (clé « party »).
+##
+## `--preparation` (2026-10-09, après Q-6 : Onix garde Jet-Pierres) : seulement l'équipe de
+## Kevin préparée ([constant PREP_TEAMS] : plusieurs Pokémon entraînés, Férosinge ajouté) contre
+## Pierre des données, avec 0, 3 et 5 Potions, trois joueurs : « attentif » ; « changement »
+## (attentif qui change aussi de Pokémon de lui-même quand un autre est bien mieux placé, voir
+## [method _switch_target]) ; « fidele » (comme « changement », mais le starter en tête).
 
 @warning_ignore_start("integer_division")
 
@@ -107,6 +114,28 @@ const TYPE_TEAMS: Array = [
 const TRACED: Array[String] = ["STAT_CHANGED", "STAT_UNCHANGED", "MOVE_MISSED", "FAINTED",
 	"SENT_OUT", "ITEM_USED", "LEVEL_UP", "MOVE_LEARNED", "BATTLE_ENDED"]
 const STARTERS: Array[StringName] = [&"bulbasaur", &"charmander", &"squirtle"]
+## Équipes préparées (`--preparation`) : [nom, {place dans [constant KEVIN_PARTY] : niveau
+## d'entraînement}, niveau d'un Férosinge (0 = aucun)]. Places : 0 Chenipan N6 (→ Chrysacier
+## N7 → Papilusion N10, Choc Mental au N12), 1 Roucool N9 (Vive-Attaque au N12), 4 Salamèche
+## N10 (Groz'Yeux au N15, Reptincel au N16). Le Férosinge (IV tirés, Poing-Karaté au N15) prend
+## la place du Rattata N3 (place 2) : l'équipe est pleine.
+const PREP_TEAMS: Array = [
+	["tel quel (S10 R9)", {}, 0],
+	["S14 R13 P12", {4: 14, 1: 13, 0: 12}, 0],
+	["S16 R14", {4: 16, 1: 14}, 0],
+	["S16 R14 P12", {4: 16, 1: 14, 0: 12}, 0],
+	["tel quel + F13", {}, 13],
+	["tel quel + F14", {}, 14],
+	["tel quel + F15", {}, 15],
+	["S14 R13 P12 + F15", {4: 14, 1: 13, 0: 12}, 15],
+	["S14 R13 P12 + F16", {4: 14, 1: 13, 0: 12}, 16],
+	["S14 R13 P12 + F17", {4: 14, 1: 13, 0: 12}, 17],
+	["S16 R14 P12 + F15", {4: 16, 1: 14, 0: 12}, 15],
+]
+const MANKEY_SLOT: int = 2
+## Joueur « changement » : un autre Pokémon entre si son rapport (dégâts infligés / reçus, PV
+## actuels) vaut au moins ce multiple de celui du Pokémon en jeu.
+const SWITCH_MARGIN: float = 2.0
 ## Starters et leurs évolutions (un Salamèche entraîné devient Reptincel au N16).
 const STARTER_LINES: Array[StringName] = [&"bulbasaur", &"ivysaur", &"charmander",
 	&"charmeleon", &"squirtle", &"wartortle"]
@@ -141,6 +170,8 @@ var _geodude_moves: Array[StringName] = []
 var _onix_moves: Array[StringName] = []
 ## `--grille <n>` : seulement la grille de la variante n (0 = les données) ; −1 = tout.
 var _only_variant: int = -1
+## `--preparation` : seulement [method _report_preparation].
+var _preparation_only: bool = false
 
 
 func _init() -> void:
@@ -149,6 +180,10 @@ func _init() -> void:
 		return
 	print("=== Équilibrage de Pierre (jalon 10 T16) : %d graines par ligne ===" % _seeds)
 	print("Pierre (données) : %s ; Liam : %s" % [_team_text(BROCK), _team_text(LIAM)])
+	if _preparation_only:
+		_report_preparation()
+		quit()
+		return
 	if _only_variant < 0:
 		_report_kevin()
 		_report_types()
@@ -279,10 +314,43 @@ func _report_liam() -> void:
 			print(row)
 
 
+## Équipe de Kevin préparée ([constant PREP_TEAMS]) contre Pierre des données, sans route ni
+## Liam (l'entraînement en tient lieu), soin au Centre, 0, 3 et 5 Potions, trois joueurs.
+func _report_preparation() -> void:
+	var brock := BROCK_LEVELS[0]
+	var liam := LIAM_LEVELS[0]
+	print("")
+	print("=== Préparation : équipe de Kevin entraînée contre Pierre %d / %d (données) ==="
+		% [brock.x, brock.y])
+	print("S = Salamèche, R = Roucool, P = Chenipan → Papilusion, F = Férosinge (à la place du")
+	print("Rattata) ; nombre = niveau. attentif : jamais de changement volontaire ; changement :")
+	print("change de Pokémon quand un autre est au moins %.0f× mieux placé (une fois par" %
+		SWITCH_MARGIN)
+	print("adversaire) ; fidele : comme changement, mais Salamèche en tête.")
+	var summary := PackedStringArray()
+	for team: Array in PREP_TEAMS:
+		var builder := _prepared_builder(team[1], team[2])
+		var rng: RefCounted = _rng_script.new(0)
+		print("--- %s : %s" % [team[0], _party_text(builder.call(rng))])
+		var row := "  %-20s" % team[0]
+		for policy: String in ["attentif", "changement", "fidele"]:
+			for potions: int in [0, 3, 5]:
+				var label := "%s, %s, %d Potions" % [team[0], policy, potions]
+				var stats := _line(label, builder, brock, liam, false, false, policy, potions)
+				row += " %5.1f" % stats["win"]
+			row += " |"
+		summary.append(row)
+	print("")
+	print("=== Résumé : % de victoires contre Pierre (0 / 3 / 5 Potions) ===")
+	print("  %-20s %-18s| %-18s| %-18s|" % ["équipe", " attentif", " changement", " fidele"])
+	for row: String in summary:
+		print(row)
+
+
 ## Une ligne du rapport : taux de victoire contre Pierre (et Liam), tours, Potions utilisées,
 ## niveau du starter devant Pierre ([method _measure]).
 func _line(label: String, builder: Callable, brock: Vector2i, liam: Vector2i, route: bool,
-		fight_liam: bool, policy: String, potions: int) -> void:
+		fight_liam: bool, policy: String, potions: int) -> Dictionary:
 	var stats := _measure(builder, brock, liam, route, fight_liam, policy, potions, label)
 	var text := "  %-52s Pierre %5.1f %%  %4.1f tours  %3.1f Potion(s)  starter N%.1f" % [
 		label, stats["win"], stats["turns"], stats["potions"], stats["level"]]
@@ -291,6 +359,7 @@ func _line(label: String, builder: Callable, brock: Vector2i, liam: Vector2i, ro
 	if stats["unfinished"] > 0:
 		text += "  (%d non terminés)" % stats["unfinished"]
 	print(text)
+	return stats
 
 
 ## [member _seeds] parties ; moyennes en pourcentages (victoires) ou par partie.
@@ -380,7 +449,9 @@ func _trainer_battle(party: RefCounted, trainer_id: StringName, levels: Vector2i
 	if trainer_id == BROCK:
 		_force_moves(foes.get_at(0), _geodude_moves)
 		_force_moves(foes.get_at(foes.size() - 1), _onix_moves)
-	if policy == "attentif":
+	if policy == "fidele":
+		_put_first(party, _starter_of(party))
+	elif _careful(policy):
 		_put_first(party, _best_against(party, foes.get_at(0)))
 	var player: RefCounted = _side_script.new(party, true)
 	var foe: RefCounted = _side_script.new(foes, false, trainer.name,
@@ -390,13 +461,23 @@ func _trainer_battle(party: RefCounted, trainer_id: StringName, levels: Vector2i
 	battle.start()
 	var player_ai: RefCounted = _ai_script.new(&"smart")
 	var left := potions
+	## Adversaires contre lesquels le joueur « changement » a déjà changé de Pokémon.
+	var switched: Array = []
 	while battle.get_state() != OVER and battle.get_turn() < MAX_TURNS:
 		if battle.get_state() == REPLACING:
 			var next: RefCounted = _best_against(party, foe.active.pokemon) \
-				if policy == "attentif" else party.first_able()
+				if _careful(policy) else party.first_able()
 			battle.replace(party.index_of(next))
 			continue
-		var action: RefCounted = _choose(battle, player, foe, player_ai, rng, policy, left)
+		var action: RefCounted = null
+		if policy in ["changement", "fidele"] and not switched.has(foe.active.pokemon):
+			var target: RefCounted = _switch_target(party, player.active.pokemon,
+				foe.active.pokemon)
+			if target != null:
+				action = _action_script.switch_to(party.index_of(target))
+				switched.append(foe.active.pokemon)
+		if action == null or not battle.is_legal(action):
+			action = _choose(battle, player, foe, player_ai, rng, policy, left)
 		if action.kind == 2:
 			left -= 1
 		var events: Array = battle.submit(action)
@@ -411,11 +492,11 @@ func _trainer_battle(party: RefCounted, trainer_id: StringName, levels: Vector2i
 func _choose(battle: RefCounted, player: RefCounted, foe: RefCounted, ai: RefCounted,
 		rng: RefCounted, policy: String, potions: int) -> RefCounted:
 	var active: RefCounted = player.active.pokemon
-	if policy == "attentif" and potions > 0 and _needs_potion(active, foe.active.pokemon):
+	if _careful(policy) and potions > 0 and _needs_potion(active, foe.active.pokemon):
 		var heal: RefCounted = _action_script.heal(POTION, player.party.index_of(active))
 		if battle.is_legal(heal):
 			return heal
-	if policy == "attentif":
+	if _careful(policy):
 		return ai.choose(player, foe, rng, _data)
 	# Naïf : une capacité offensive au hasard parmi celles qui ont des PP, sans regarder les
 	# types (sinon n'importe quelle capacité qui a des PP, sinon Lutte).
@@ -448,6 +529,37 @@ func _best_against(party: RefCounted, foe: RefCounted) -> RefCounted:
 			best = pokemon
 			best_score = score
 	return best
+
+
+## Joueurs « attentif », « changement » et « fidele » (tout sauf « naif »).
+func _careful(policy: String) -> bool:
+	return policy != "naif"
+
+
+## Joueur « changement » : le Pokémon debout de [param party] à envoyer contre [param foe] à la
+## place de [param active], ou null. Rapport « part des PV actuels de [param foe] retirée » /
+## « part de ses PV actuels retirée » ; il doit valoir au moins [constant SWITCH_MARGIN] fois
+## celui de [param active], et le remplaçant doit encaisser deux coups maximaux de [param foe]
+## (celui de l'entrée, gratuit, et le suivant).
+func _switch_target(party: RefCounted, active: RefCounted, foe: RefCounted) -> RefCounted:
+	var best: RefCounted = null
+	var best_score := _matchup(active, foe) * SWITCH_MARGIN
+	for pokemon: RefCounted in party.get_all():
+		if pokemon == active or pokemon.is_fainted():
+			continue
+		if pokemon.hp <= 2.0 * _best_damage(foe, pokemon, true):
+			continue
+		var score := _matchup(pokemon, foe)
+		if score > best_score:
+			best = pokemon
+			best_score = score
+	return best
+
+
+func _matchup(pokemon: RefCounted, foe: RefCounted) -> float:
+	var dealt := _best_damage(pokemon, foe) / float(maxi(foe.hp, 1))
+	var taken := maxf(_best_damage(foe, pokemon) / float(maxi(pokemon.hp, 1)), 0.01)
+	return dealt / taken
 
 
 ## Potion utile : le prochain coup le plus fort de [param foe] (tirage maximal, sans raté) peut
@@ -493,6 +605,20 @@ func _kevin_builder(charmander_level: int) -> Callable:
 		return party
 
 
+## Équipe de Kevin préparée : [param levels] = {place : niveau d'entraînement} ; [param
+## mankey_level] > 0 : un Férosinge de ce niveau (IV tirés) à la place [constant MANKEY_SLOT].
+func _prepared_builder(levels: Dictionary, mankey_level: int) -> Callable:
+	return func(rng: RefCounted) -> RefCounted:
+		var party: RefCounted = _kevin_party()
+		for index: int in levels:
+			_train_to(party.get_at(index), int(levels[index]))
+		if mankey_level > 0:
+			party.remove_at(MANKEY_SLOT)
+			party.add(_factory.create(_data, &"mankey", mankey_level, rng))
+			party.move(party.size() - 1, MANKEY_SLOT)
+		return party
+
+
 func _kevin_party() -> RefCounted:
 	var party: RefCounted = _party_script.new()
 	for entry: Dictionary in _kevin:
@@ -523,15 +649,18 @@ func _starter_of(party: RefCounted) -> RefCounted:
 	return party.get_lead()
 
 
+## Entraîne [param pokemon] jusqu'au niveau [param level], niveau par niveau comme en jeu :
+## capacités apprises si un emplacement est libre, évolution dès qu'elle est possible
+## (Chenipan → Chrysacier N7 → Papilusion N10).
 func _train_to(pokemon: RefCounted, level: int) -> void:
-	var rate: int = _data.get_species(pokemon.species_id).growth_rate
-	var needed: int = _curve_script.exp_for_level(rate, level) - pokemon.experience
-	if needed <= 0:
-		return
-	for step: RefCounted in pokemon.gain_exp(needed, _data):
-		for move_id: StringName in step.moves:
-			pokemon.learn_move(move_id, _data)
-	_evolve_one(pokemon)
+	for next: int in range(pokemon.level + 1, level + 1):
+		var rate: int = _data.get_species(pokemon.species_id).growth_rate
+		var needed: int = _curve_script.exp_for_level(rate, next) - pokemon.experience
+		if needed > 0:
+			for step: RefCounted in pokemon.gain_exp(needed, _data):
+				for move_id: StringName in step.moves:
+					pokemon.learn_move(move_id, _data)
+		_evolve_one(pokemon)
 	pokemon.hp = pokemon.max_hp()
 
 
@@ -599,6 +728,8 @@ func _load() -> bool:
 			_only_variant = int(args[i + 1])
 		elif args[i] == "--trace" and i + 1 < args.size():
 			_trace = args[i + 1]
+		elif args[i] == "--preparation":
+			_preparation_only = true
 		elif args[i] == "--save" and i + 1 < args.size():
 			save_path = args[i + 1]
 	_data = load("res://game/pokemon/pokemon_data.gd").new()
@@ -666,7 +797,11 @@ func _name(species: StringName) -> String:
 func _party_text(party: RefCounted) -> String:
 	var parts := PackedStringArray()
 	for pokemon: RefCounted in party.get_all():
-		parts.append("%s N%d" % [_name(pokemon.species_id), pokemon.level])
+		var moves := PackedStringArray()
+		for slot: RefCounted in pokemon.moves:
+			moves.append(_data.get_move(slot.move_id).name)
+		parts.append("%s N%d (%s)" % [_name(pokemon.species_id), pokemon.level,
+			", ".join(moves)])
 	return ", ".join(parts)
 
 
