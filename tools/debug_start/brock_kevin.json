@@ -1,0 +1,20 @@
+{
+	"map": "pewter_city", "spawn": "from_gym", "facing": "up",
+	"flags": [
+		"mom_greeted", "rival_met", "oak_met", "oak_lab_reunion", "starter_offered",
+		"starter_chosen", "taken_charmander", "taken_squirtle", "rival_lab_won",
+		"rival_challenged", "rival_battle_done", "rival_left_lab", "viridian_arrived",
+		"got_oak_parcel", "pokedex_activated", "poison_unlocked", "beaten_forest_scout_theo",
+		"pewter_arrived"
+	],
+	"party": [
+		{ "species": "charmander", "level": 11, "moves": ["scratch", "growl", "ember"] },
+		{ "species": "pidgey", "level": 9, "moves": ["gust", "sand_attack"] },
+		{ "species": "caterpie", "level": 6 },
+		{ "species": "caterpie", "level": 5 },
+		{ "species": "rattata", "level": 3 },
+		{ "species": "nidoran_m", "level": 3, "moves": ["leer", "tackle"] }
+	],
+	"bag": { "poke_ball": 2, "potion": 1, "antidote": 3 },
+	"money": 1396
+}
