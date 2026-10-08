@@ -15,7 +15,8 @@ func _map_ids() -> Array[StringName]:
 	var ids: Array[StringName] = []
 	for file: String in DirAccess.get_files_at(MapCatalog.MAPS_DIR):
 		var name := file.trim_suffix(".remap")
-		if name.get_extension() == "tscn":
+		if name.get_extension() == "tscn" and not MapCatalog.is_qa_map(
+				StringName(name.get_basename())):
 			ids.append(StringName(name.get_basename()))
 	return ids
 
@@ -129,6 +130,18 @@ func test_built_zones_have_their_map_texts() -> void:
 		"Un chemin bordé de prairies qui s'enfonce peu à peu sous les arbres.")
 	if MapCatalog.has_map(&"route_2"):
 		assert_eq(route_2.subtitle, _root_property(&"route_2", &"region"),
+			"même connexion que le titre de zone en jeu")
+	# Jalon 9 (T18) : textes n° 51 et 52 du lot verrouillé (textes-brouillon-j9.md) ; les cartes
+	# (forêt et ses deux postes, jalon-09.md §2.7.3) arrivent avec leurs scènes au T19.
+	var forest := _zones.get_zone(&"viridian_forest")
+	assert_eq(forest.subtitle, "Jadielle — Argenta")
+	assert_eq(forest.description, "Une forêt profonde et fraîche, où la lumière perce à peine "
+		+ "entre les cimes. Les Pokémon Insecte y foisonnent sous une végétation dense.")
+	assert_false(forest.draft)
+	if MapCatalog.has_map(&"viridian_forest"):
+		assert_eq(forest.maps, [&"viridian_forest", &"viridian_forest_gate_south",
+			&"viridian_forest_gate_north"] as Array[StringName], "les postes sont de la forêt")
+		assert_eq(forest.subtitle, _root_property(&"viridian_forest", &"region"),
 			"même connexion que le titre de zone en jeu")
 	assert_false(_zones.get_zone(&"viridian_city").description.is_empty(), "jalon 7 T4")
 	assert_eq(_zones.get_zone(&"viridian_city").subtitle, "", "aucun sous-titre (2026-10-03)")

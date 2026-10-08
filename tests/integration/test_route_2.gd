@@ -1,10 +1,11 @@
 extends GutTest
 ## Carte route_2 (jalon 8 T5, docs/tech/jalon-08.md §1.1, §2 ; dossier 11) : métadonnées et
 ## lumière, **grille de la scène = grille fonctionnelle** `tools/plans/route_2.txt` case par case,
-## raccord avec Jadielle, porte du poste « à venir », points d'examen, objets cachés sur l'herbe
-## rase, critères du T0 (`tools/art/plan_check.py`) refaits par recherche de chemin sur la
-## **vraie grille** de la scène, forêt serrée dont le feuillage ne couvre aucune case praticable,
-## objets peints posés sur les cases bloquées de la grille, budget de nœuds.
+## raccord avec Jadielle, porte du poste (vers le poste sud de la forêt, J9), points d'examen,
+## objets cachés sur l'herbe rase, critères du T0 (`tools/art/plan_check.py`) refaits par
+## recherche de chemin sur la **vraie grille** de la scène, forêt serrée dont le feuillage ne
+## couvre aucune case praticable, objets peints posés sur les cases bloquées de la grille, budget
+## de nœuds.
 
 const PlanGrid := preload("res://tests/helpers/plan_grid.gd")
 const MAP_PATH := "res://game/world/maps/route_2.tscn"
@@ -221,18 +222,33 @@ func test_south_exit_leads_back_to_viridian() -> void:
 	viridian.free()
 
 
-func test_the_gate_door_is_coming_soon() -> void:
+## Jalon 9 (T19) : la porte du poste mène au poste sud de la Forêt de Jade (plus d'« à venir »),
+## et le poste ramène devant la porte, tourné vers le sud.
+func test_the_gate_door_leads_to_the_forest_south_gate() -> void:
 	var door := _map.get_warps().find_on_step(GATE, Vector2i.UP)
 	assert_not_null(door, "porte du poste, STEP_ON ↑")
 	if door == null:
 		return
 	assert_eq(door.trigger, Warp.Trigger.STEP_ON)
-	assert_true(door.is_coming_soon())
-	assert_eq(door.coming_soon, "Forêt de Jade")
-	assert_eq(door.coming_soon.to_upper(), "FORÊT DE JADE", "majuscules, « Ê » compris")
-	assert_eq(door.target_spawn, &"from_forest_gate")
-	assert_eq(door.facing, Vector2i.DOWN)
+	assert_false(door.is_coming_soon(), "plus d'« à venir »")
+	assert_eq(door.target_map, &"viridian_forest_gate_south")
+	assert_eq(door.target_spawn, &"from_route_2")
+	assert_eq(door.facing, Vector2i.UP, "on entre dans le poste vers le nord")
 	assert_eq(_map.get_spawn_cell(&"from_forest_gate"), GATE_FRONT)
+	var warp_node := _map.get_node_or_null(^"Warps/ForestGate")
+	assert_not_null(warp_node, "le passage s'appelle ForestGate")
+	assert_null(_map.get_node_or_null(^"Warps/ForestGateSoon"))
+	var gate_map := (load(MapCatalog.scene_path(&"viridian_forest_gate_south")) as PackedScene) \
+		.instantiate() as GameMap
+	assert_true(gate_map.has_spawn(&"from_route_2"))
+	var back := 0
+	for warp: Warp in gate_map.get_warps().get_all():
+		if warp.target_map == &"route_2":
+			back += 1
+			assert_eq(warp.target_spawn, &"from_forest_gate")
+			assert_eq(warp.facing, Vector2i.DOWN)
+	assert_eq(back, 2, "les deux cases du paillasson ramènent sur la Route 2")
+	gate_map.free()
 	assert_false(_grid.is_solid(GATE), "la porte s'ouvre dans l'emprise du poste")
 	var gate := _map.get_entities().get_node_or_null(^"ForestGate") as WorldProp
 	assert_not_null(gate, "façade du poste")

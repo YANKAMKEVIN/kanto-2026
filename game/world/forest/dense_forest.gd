@@ -22,6 +22,13 @@ extends RefCounted
 ## (ou neutre), le plan est exactement celui d'avant (Route 1, Bourg Palette inchangés).
 ##
 ## Positions en **cases** (flottants, pied de l'objet) dans le plan ; en pixels dans la scène.
+##
+## **Tri de visibilité** (jalon 9 T18, jalon-09.md §2.7.4 : la Forêt de Jade, ≈ 3 fois plus
+## boisée que la Route 1, tient dans le budget de nœuds) : [method cull_hidden] retire du plan
+## les arbres et buissons qu'aucune vue de la caméra ne peut montrer, pour toutes les cases où
+## le joueur peut se tenir (caméra centrée sur lui et bornée à la carte, comme
+## [CameraFraming]) ; le sous-bois sombre ([ForestFloor]) suffit là où ils manquent. L'outil
+## de construction l'appelle après [method plan] ; sans lui, rien ne change (Route 1, Route 2).
 
 const TREE_IDS: Array[StringName] = [
 	&"tree_foret_01", &"tree_foret_02", &"tree_foret_03", &"tree_foret_04",
@@ -71,6 +78,14 @@ const BUSH_DROP: float = 0.25
 const BUSH_JITTER: float = 0.15
 ## Seau du rangement des pieds (≥ SPACING : seuls les seaux voisins sont à comparer).
 const _BUCKET: float = 2.0
+## Tri de visibilité : vue de la caméra en cases (S24 paysage au zoom 1 : 2 340 × 1 080 px de
+## référence / 96 ≈ 24,4 × 11,25), marge ajoutée de chaque côté (écrans un peu plus larges,
+## arrondis), et emprise d'un arbre autour de son pied (demi-largeur, hauteur de la cime vers
+## le nord), en cases. Défauts prudents (règle 4) : un arbre gardé pour rien ne coûte qu'un nœud.
+const VIEW_CELLS: Vector2 = Vector2(24.4, 11.25)
+const VIEW_MARGIN: float = 1.0
+const SPRITE_HALF_WIDTH: float = 2.0
+const SPRITE_HEIGHT: float = 4.0
 
 
 ## Plan de la forêt de [param forest] (cases → vrai, ordre d'insertion = ordre des buissons)
@@ -119,6 +134,74 @@ static func plan(forest: Dictionary, map_size: Vector2i, landmarks: Array[Vector
 			reference.y + BUSH_DROP)
 		entries.append(_entry(KIND_BUSH, id, foot, 1.0, false, Color.WHITE))
 	return entries
+
+
+## Entrées de [param entries] ([method plan]) qu'une vue de la caméra peut montrer depuis
+## l'une des cases [param walkable] (où le joueur peut se tenir) d'une carte de
+## [param map_size] cases ([method visibility_mask], [method is_seen]), dans le même ordre.
+static func cull_hidden(entries: Array[Dictionary], walkable: Array[Vector2i],
+		map_size: Vector2i, view: Vector2 = VIEW_CELLS) -> Array[Dictionary]:
+	var mask := visibility_mask(walkable, map_size, view)
+	var kept: Array[Dictionary] = []
+	for entry: Dictionary in entries:
+		if is_seen(entry["foot"], mask, map_size):
+			kept.append(entry)
+	return kept
+
+
+## Cases de la carte qu'au moins une vue de la caméra montre (1) ou jamais (0), rangée par
+## rangée (index y × largeur + x). Pour chaque case de [param walkable], la caméra est centrée
+## sur le joueur puis bornée à la carte (une carte plus petite que la vue reste centrée) ; la
+## vue fait [param view] cases plus [constant VIEW_MARGIN] de chaque côté. Union des vues par
+## différences cumulées (une passe par case, pas une par case vue).
+static func visibility_mask(walkable: Array[Vector2i], map_size: Vector2i,
+		view: Vector2 = VIEW_CELLS) -> PackedByteArray:
+	var w := map_size.x
+	var h := map_size.y
+	var diff := PackedInt32Array()
+	diff.resize((w + 1) * (h + 1))
+	var half := view / 2.0
+	for cell: Vector2i in walkable:
+		var centre := Vector2(_camera_axis(cell.x + 0.5, half.x, w),
+			_camera_axis(cell.y + 0.5, half.y, h))
+		var x0 := clampi(floori(centre.x - half.x - VIEW_MARGIN), 0, w)
+		var y0 := clampi(floori(centre.y - half.y - VIEW_MARGIN), 0, h)
+		var x1 := clampi(ceili(centre.x + half.x + VIEW_MARGIN), 0, w)
+		var y1 := clampi(ceili(centre.y + half.y + VIEW_MARGIN), 0, h)
+		if x0 >= x1 or y0 >= y1:
+			continue
+		diff[y0 * (w + 1) + x0] += 1
+		diff[y0 * (w + 1) + x1] -= 1
+		diff[y1 * (w + 1) + x0] -= 1
+		diff[y1 * (w + 1) + x1] += 1
+	var mask := PackedByteArray()
+	mask.resize(w * h)
+	var above := PackedInt32Array()
+	above.resize(w + 1)
+	for y: int in h:
+		var running := 0
+		for x: int in w + 1:
+			running += diff[y * (w + 1) + x]
+			above[x] += running
+			if x < w and above[x] > 0:
+				mask[y * w + x] = 1
+	return mask
+
+
+## Vrai si l'emprise d'un arbre dont le pied est en [param foot] (cases) touche une case vue de
+## [param mask] ([method visibility_mask]) : [constant SPRITE_HALF_WIDTH] de part et d'autre,
+## [constant SPRITE_HEIGHT] vers le nord, pied compris (un pied sous le bord de la carte
+## compte par sa cime).
+static func is_seen(foot: Vector2, mask: PackedByteArray, map_size: Vector2i) -> bool:
+	var x0 := maxi(floori(foot.x - SPRITE_HALF_WIDTH), 0)
+	var x1 := mini(floori(foot.x + SPRITE_HALF_WIDTH), map_size.x - 1)
+	var y0 := maxi(floori(foot.y - SPRITE_HEIGHT), 0)
+	var y1 := mini(floori(foot.y), map_size.y - 1)
+	for y: int in range(y0, y1 + 1):
+		for x: int in range(x0, x1 + 1):
+			if mask[y * map_size.x + x] == 1:
+				return true
+	return false
 
 
 ## Multiplicateur de teinte d'un arbre dont le pied est à la rangée [param row] (cases) ;
@@ -208,6 +291,65 @@ static func place(entries: Array[Dictionary], parent: Node,
 	return nodes
 
 
+## Comme [method place], mais **un seul `Sprite2D` par entrée** (`Forest000`,
+## `ForestBush000`…) au lieu d'une instance de scène `WorldProp` (deux nœuds) : repli du budget
+## de nœuds (jalon 9 T19, la Forêt de Jade ; jalon-09.md §2.7.4). Même image, même décalage
+## (pied à l'origine), même matériau (vent) que le sprite de la scène peinte ; taille, miroir et
+## teinte cuits dans le nœud. Rien ne se perd : les arbres de forêt n'ont ni emprise ni fondu.
+## Pas d'ombre de contact (la règle du J7 : aucune pour la végétation). Renvoie les nœuds créés.
+static func place_sprites(entries: Array[Dictionary], parent: Node,
+		owner_node: Node = null) -> Array[Sprite2D]:
+	var nodes: Array[Sprite2D] = []
+	var models: Dictionary = {}
+	var trees := 0
+	var bushes := 0
+	for entry: Dictionary in entries:
+		var id := String(entry["id"])
+		if not models.has(id):
+			models[id] = painted_sprite_model(StringName(id))
+		var model := models[id] as Sprite2D
+		if model == null:
+			push_error("DenseForest : scène absente pour « %s »" % id)
+			continue
+		var sprite := model.duplicate() as Sprite2D
+		if entry["kind"] == KIND_TREE:
+			sprite.name = "Forest%03d" % trees
+			trees += 1
+		else:
+			sprite.name = "ForestBush%03d" % bushes
+			bushes += 1
+		sprite.unique_name_in_owner = false
+		sprite.position = entry["position"]
+		var scale: float = entry["scale"]
+		sprite.scale = Vector2(scale, scale)
+		sprite.modulate = entry["tint"]
+		sprite.flip_h = entry["flip_h"]
+		parent.add_child(sprite)
+		if owner_node != null:
+			sprite.owner = owner_node
+		nodes.append(sprite)
+	for model: Variant in models.values():
+		if model != null:
+			(model as Sprite2D).free()
+	return nodes
+
+
+## Copie libre (hors arbre) du `Sprite` de la scène peinte [param id] (texture, décalage, matériau,
+## filtre), à placer au pied ; null si la scène manque. À libérer par l'appelant.
+static func painted_sprite_model(id: StringName) -> Sprite2D:
+	var packed := load(PROPS_DIR + String(id) + ".tscn") as PackedScene
+	if packed == null:
+		return null
+	var node := packed.instantiate()
+	var source := node.get_node_or_null(^"Sprite") as Sprite2D
+	var model: Sprite2D = null
+	if source != null:
+		model = source.duplicate() as Sprite2D
+		model.unique_name_in_owner = false
+	node.free()
+	return model
+
+
 ## Ombre de contact pré-floutée d'une entrée « contact » du catalogue (demi-résolution à
 ## l'échelle 2, coin haut gauche à « decalage » du pied), comme `tools/build_painted_props.gd`.
 static func contact_shadow(entry: Dictionary) -> Sprite2D:
@@ -267,6 +409,15 @@ static func _pick_tree(rng: RandomNumberGenerator, shade: Shade, row: float) -> 
 		if pick < 0.0:
 			return id
 	return TREE_IDS[TREE_IDS.size() - 1]
+
+
+## Centre de la caméra sur un axe : sur le joueur ([param player]), borné pour ne jamais
+## montrer l'extérieur d'une carte de [param length] cases ; centré si la carte est plus
+## petite que la vue ([param half] = demi-vue).
+static func _camera_axis(player: float, half: float, length: int) -> float:
+	if length <= half * 2.0:
+		return length / 2.0
+	return clampf(player, half, length - half)
 
 
 static func _bucket_of(foot: Vector2) -> Vector2i:

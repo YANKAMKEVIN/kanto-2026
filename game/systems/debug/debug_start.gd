@@ -40,6 +40,12 @@ extends RefCounted
 ## être dans « bag »).
 ## Jalon 7 (T16, départ `storage_qa`) : « favorite » (booléen) sur un membre de l'équipe ou du
 ## stockage : Pokémon favori.
+## Jalon 9 (T2, sauvegarde v4) : « status » sur un membre de l'équipe ou du stockage : statut
+## durable ([constant StatusRules.KNOWN], « poison » au J9 ; absent ou "" = aucun). « autosave »
+## (booléen, faux par défaut) : le départ **devient la partie sauvegardée** — l'autosave est
+## actif pour la session et **remplace `user://save.json`** (QA de la sauvegarde : relire le
+## statut après une fermeture forcée, départ `save_v4_qa`). Sans cette clé, un départ de
+## débogage ne lit ni n'écrit jamais la sauvegarde.
 
 const USER_PATH: String = "user://debug_start.json"
 const FACINGS: Dictionary[String, Vector2i] = {
@@ -51,9 +57,9 @@ const MAX_STORAGE: int = 60
 const MAX_MONEY: int = 999_999
 
 const _KEYS: Array[String] = ["map", "spawn", "facing", "seed", "flags", "party", "bag",
-	"favorites", "money", "storage"]
+	"favorites", "money", "storage", "autosave"]
 const _MEMBER_KEYS: Array[String] = ["species", "level", "moves", "exp_to_next", "hp",
-	"favorite"]
+	"favorite", "status"]
 
 ## Carte et point d'apparition de départ (&"" = départ par défaut de Boot).
 var map: StringName = &""
@@ -71,6 +77,8 @@ var favorites: Array[StringName] = []
 var money: int = -1
 ## Pokémon du Stockage (même forme que [member party]).
 var storage: Array[Dictionary] = []
+## Vrai : le départ remplace la sauvegarde (autosave actif, voir l'en-tête).
+var autosave: bool = false
 var _errors: PackedStringArray = PackedStringArray()
 
 
@@ -181,6 +189,12 @@ func add_from_dict(dict: Dictionary, data: PokemonData, items: ItemLibrary,
 				ok = false
 			else:
 				new_storage.append(stored)
+	var new_autosave := false
+	if dict.has("autosave"):
+		if not dict["autosave"] is bool:
+			ok = _fail("%s : « autosave » est un booléen" % source)
+		else:
+			new_autosave = dict["autosave"]
 	if not ok:
 		return false
 	map = new_map
@@ -193,6 +207,7 @@ func add_from_dict(dict: Dictionary, data: PokemonData, items: ItemLibrary,
 	favorites = new_favorites
 	money = new_money
 	storage = new_storage
+	autosave = new_autosave
 	return true
 
 
@@ -236,6 +251,7 @@ static func _create(member: Dictionary, state: Object, data: PokemonData) -> Pok
 	if hp >= 0:
 		pokemon.hp = mini(hp, pokemon.max_hp())
 	pokemon.favorite = bool(member.get("favorite", false))
+	pokemon.status = member.get("status", StatusRules.NONE)
 	return pokemon
 
 
@@ -243,9 +259,11 @@ static func _create(member: Dictionary, state: Object, data: PokemonData) -> Pok
 func describe() -> String:
 	var members: PackedStringArray = []
 	for member: Dictionary in party:
-		members.append("%s N%d" % [member["species"], member["level"]])
-	return "%s/%s, %s" % [map if not map.is_empty() else &"(défaut)", spawn,
-		", ".join(members)]
+		var status: StringName = member.get("status", StatusRules.NONE)
+		members.append("%s N%d%s" % [member["species"], member["level"],
+			"" if status.is_empty() else " (%s)" % status])
+	return "%s/%s, %s%s" % [map if not map.is_empty() else &"(défaut)", spawn,
+		", ".join(members), " (remplace la sauvegarde)" if autosave else ""]
 
 
 func get_errors() -> PackedStringArray:
@@ -307,10 +325,19 @@ func _parse_member(value: Variant, data: PokemonData, where: String) -> Dictiona
 			ok = _fail("%s : « favorite » est un booléen" % where)
 		else:
 			favorite = entry["favorite"]
+	var status := StatusRules.NONE
+	if entry.has("status"):
+		var raw_status: Variant = entry["status"]
+		if not raw_status is String or (not (raw_status as String).is_empty()
+				and not StatusRules.is_known(StringName(raw_status))):
+			ok = _fail("%s : « status » est vide ou l'un de : %s" % [where,
+				", ".join(PackedStringArray(StatusRules.KNOWN))])
+		else:
+			status = StringName(raw_status)
 	if not ok:
 		return {}
 	return { "species": species_id, "level": level, "moves": moves, "exp_to_next": to_next,
-		"hp": hp, "favorite": favorite }
+		"hp": hp, "favorite": favorite, "status": status }
 
 
 static func _is_text(value: Variant) -> bool:

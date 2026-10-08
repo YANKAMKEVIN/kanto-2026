@@ -64,7 +64,24 @@
 		"summary_exp": { "text": "+{exp} XP" },
 		"summary_level": { "text": "Nv. {level}" },
 		"summary_stat": { "text": "{stat} +{amount}" },
-		"summary_continue": { "text": "Touchez l'écran pour continuer" }
+		"summary_continue": { "text": "Touchez l'écran pour continuer" },
+		"status_inflicted_poison": {
+			"text": "{pokemon} est empoisonné !",
+			"text_f": "{pokemon} est empoisonnée !"
+		},
+		"status_unchanged_poison": {
+			"text": "{pokemon} est déjà empoisonné !",
+			"text_f": "{pokemon} est déjà empoisonnée !"
+		},
+		"status_damaged_poison": { "text": "{pokemon} souffre du poison !" },
+		"status_cured_poison": {
+			"text": "{pokemon} n'est plus empoisonné.",
+			"text_f": "{pokemon} n'est plus empoisonnée."
+		},
+		"evolution_started": { "text": "Quoi ? {pokemon} évolue !" },
+		"evolution_finished": { "text": "Félicitations ! {pokemon} a évolué en {species} !" },
+		"evolution_cancelled": { "text": "Hein ? {pokemon} n'évolue plus." },
+		"evolution_stop": { "text": "ARRÊTER" }
 	},
 	"stats": {
 		"atk": "L'Attaque", "def": "La Défense", "spa": "L'Attaque Spéciale",

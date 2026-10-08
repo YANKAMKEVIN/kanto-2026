@@ -105,3 +105,54 @@ func test_a_small_heal_is_exact() -> void:
 	_mon.hp = 17
 	var result := ItemUse.apply(_bag, _potion, _mon, ItemData.CONTEXT_FIELD)
 	assert_eq(result.amount(), 1, "+1 PV, jamais au-delà du maximum")
+
+
+# --- Antidote (jalon 9 §2.1.5) -----------------------------------------------------------
+
+func test_an_antidote_cures_poison_even_at_full_hp() -> void:
+	var antidote := _items.get_item(&"antidote")
+	assert_true(antidote.targets_pokemon(), "un soin de statut se donne à un Pokémon")
+	assert_eq(antidote.cures, [&"poison"] as Array[StringName])
+	_bag.add(&"antidote", 2)
+	_mon.hp = 18
+	_mon.status = StatusRules.POISON
+	_mon.gender = Pokemon.Gender.FEMALE
+	assert_eq(ItemUse.check(_bag, antidote, _mon, ItemData.CONTEXT_FIELD), C.OK)
+	var result := ItemUse.apply(_bag, antidote, _mon, ItemData.CONTEXT_FIELD)
+	assert_true(result.is_ok())
+	assert_eq([result.status_cured, result.amount(), result.remaining, result.gender],
+		[&"poison", 0, 1, Pokemon.Gender.FEMALE])
+	assert_eq(_mon.status, StatusRules.NONE)
+	assert_eq(_mon.hp, 18, "aucun PV rendu")
+
+
+func test_an_antidote_has_no_effect_without_poison() -> void:
+	var antidote := _items.get_item(&"antidote")
+	_bag.add(&"antidote", 1)
+	var result := ItemUse.apply(_bag, antidote, _mon, ItemData.CONTEXT_FIELD)
+	assert_eq(result.check, C.NO_EFFECT, "« Sans effet »")
+	assert_eq([result.status_cured, result.remaining], [StatusRules.NONE, 1], "rien consommé")
+	assert_eq(ItemUse.check_target(antidote, _mon, ItemData.CONTEXT_WILD_BATTLE), C.NO_EFFECT)
+
+
+func test_an_antidote_cannot_help_a_fainted_pokemon() -> void:
+	var antidote := _items.get_item(&"antidote")
+	_bag.add(&"antidote", 1)
+	_mon.hp = 0
+	_mon.status = StatusRules.POISON
+	assert_eq(ItemUse.check(_bag, antidote, _mon, ItemData.CONTEXT_FIELD), C.FAINTED)
+	assert_eq(ItemUse.cure(antidote, _mon), &"poison", "cure ne vérifie rien (le moteur)")
+
+
+func test_a_potion_does_not_cure_poison() -> void:
+	_mon.status = StatusRules.POISON
+	var result := ItemUse.apply(_bag, _potion, _mon, ItemData.CONTEXT_FIELD)
+	assert_true(result.is_ok())
+	assert_eq(result.status_cured, StatusRules.NONE)
+	assert_eq(_mon.status, &"poison")
+	_mon.hp = 18
+	assert_eq(ItemUse.check(_bag, _potion, _mon, ItemData.CONTEXT_FIELD), C.FULL_HP,
+		"PV pleins, même empoisonné")
+	assert_eq(ItemUse.cure(_potion, _mon), StatusRules.NONE)
+	assert_eq(ItemUse.cure(_ball, _mon), StatusRules.NONE)
+	assert_eq(ItemUse.cure(null, _mon), StatusRules.NONE)

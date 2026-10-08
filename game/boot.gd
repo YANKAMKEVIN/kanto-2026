@@ -21,7 +21,8 @@ extends Node
 ## ([method is_stable] : ni dialogue, ni scène, ni fiche du starter, ni rencontre, ni combat,
 ## ni transition, joueur libre) ; au passage en arrière-plan il est écrit tout de suite, si la
 ## partie est stable (sinon la dernière sauvegarde stable reste). Jamais d'autosave après un
-## départ de débogage, ni quand la sauvegarde vient d'une version plus récente du jeu (elle
+## départ de débogage (sauf s'il le demande, clé « autosave » de [DebugStart] : il remplace
+## alors la sauvegarde, QA de la sauvegarde v4), ni quand la sauvegarde vient d'une version plus récente du jeu (elle
 ## n'est jamais écrasée). Boot enregistre aussi les faits du §16.3 (Pokédex daté, starter,
 ## combat du rival, objets trouvés, zones découvertes, temps de jeu).
 ##
@@ -34,6 +35,7 @@ extends Node
 signal zone_announced(zone_name: String, region: String)
 
 const PLAYER_SCENE: PackedScene = preload("res://game/player/player.tscn")
+const EVOLUTION_SCREEN: PackedScene = preload("res://game/ui/evolution/evolution_screen.tscn")
 ## Temps de jeu : une image ne compte jamais plus que ceci (le retour de l'arrière-plan peut
 ## livrer un très grand delta, qui n'est pas du temps de jeu).
 const MAX_PLAY_TIME_STEP: float = 0.5
@@ -92,6 +94,9 @@ var _unlocks: MenuUnlocks
 ## changement de carte (écran noir) ; profil vide = aucun effet (Bourg Palette, Route 1).
 var _lighting: WorldLighting
 var _light_profiles := LightingLibrary.new()
+## Évolutions de fin de combat (jalon 9, jalon-09.md §2.3) et leur écran (T9).
+var _evolutions: EvolutionDirector
+var _evolution_screen: EvolutionScreen
 ## Points de repos (jalon 7, 7A.2) : maison et Centres, mot du réveil (data/world/rest_points.json).
 var _rest_points := RestPointLibrary.new()
 ## Toast « Point de repos enregistré — <zone> » en attente de la fin du dialogue du soin.
@@ -107,6 +112,8 @@ var _pending_storage: bool = false
 var _autosave_enabled: bool = false
 ## Vrai si la partie a repris une sauvegarde au démarrage.
 var _resumed: bool = false
+## Le départ de débogage appliqué demande l'autosave ([member DebugStart.autosave]).
+var _debug_start_autosave: bool = false
 ## Autosave demandé, en attente d'un état stable, et sa raison (journal).
 var _save_pending: bool = false
 var _save_reason: String = ""
@@ -128,6 +135,7 @@ var _in_foreground: bool = true
 @onready var _battle_director: BattleDirector = %BattleDirector
 @onready var _ambient: AmbientWatcher = %AmbientWatcher
 @onready var _encounters: EncounterDirector = %EncounterDirector
+@onready var _trainer_watcher: TrainerWatcher = %TrainerWatcher
 @onready var _recovery: DefeatRecovery = %DefeatRecovery
 @onready var _services: ServiceDirector = %ServiceDirector
 @onready var _menu: MenuDirector = %MenuDirector
@@ -161,6 +169,12 @@ func _ready() -> void:
 	_dialogue_box.choice_made.connect(_runner.choose)
 	_interactions.setup(_player, _runner)
 	_cutscenes_node.setup(_cutscenes, GameState.flags, _runner, _player, SceneRouter)
+	# Dresseurs (jalon-09.md §2.4.6) : branchés sur le pas du joueur APRÈS le directeur de scènes
+	# et AVANT l'EncounterDirector (setup plus bas) : un pas qui entre dans un champ de vision ne
+	# tire aucune rencontre sauvage. Défi à la parole par le contrôleur d'interactions.
+	_trainer_watcher.setup(_player, GameState.flags, _cutscenes_node)
+	_interactions.set_story_flags(GameState.flags)
+	_interactions.challenge_requested.connect(_trainer_watcher.challenge)
 	_pokemon.load_dir()
 	if _offer.load_file():
 		_offer.check_species(_pokemon)
@@ -175,7 +189,22 @@ func _ready() -> void:
 	_items.load_dir()
 	_battle_director.setup(_pokemon, _trainers, _texts, _battle_stage, _battle_hud, _player,
 		GameState, _items)
+	# CB.1 : artwork officiel de l'adversaire (numéro) et tailles réelles (Pokédex).
+	_battle_stage.set_species_source(_pokemon, _dex)
 	_cutscenes_node.set_battle_runner(_battle_director)
+	_evolutions = EvolutionDirector.new()
+	_evolutions.name = "EvolutionDirector"
+	_evolutions.process_mode = Node.PROCESS_MODE_PAUSABLE
+	add_child(_evolutions)
+	_evolutions.setup(GameState, _pokemon, _texts, _battle_director.get_move_learn_prompt())
+	_battle_director.set_evolution_director(_evolutions)
+	# Écran d'évolution (T9) : au-dessus de l'interface de combat ; ses durées suivent celles du
+	# combat (relayées par le directeur), « Réduire les flashs » atténue son flash.
+	_evolution_screen = EVOLUTION_SCREEN.instantiate() as EvolutionScreen
+	_evolution_screen.process_mode = Node.PROCESS_MODE_PAUSABLE
+	add_child(_evolution_screen)
+	_evolution_screen.reduce_flashes = _settings.reduce_flashes
+	_evolutions.set_screen(_evolution_screen)
 	_cutscenes_node.set_inventory(GameState.bag, _items)
 	# Remise du colis (jalon-07.md §3.6.2, T19) : jeton {first_wild_species} des répliques de
 	# Chen, scène lancée par une variante de dialogue (« colis en main »), légende POKÉDEX ACTIVÉ.
@@ -485,6 +514,10 @@ func get_battle_director() -> BattleDirector:
 	return _battle_director
 
 
+func get_evolution_director() -> EvolutionDirector:
+	return _evolutions
+
+
 func get_battle_stage() -> BattleStage:
 	return _battle_stage
 
@@ -505,6 +538,11 @@ func get_item_library() -> ItemLibrary:
 
 func get_encounter_director() -> EncounterDirector:
 	return _encounters
+
+
+## Dresseurs du monde (jalon 9, T11).
+func get_trainer_watcher() -> TrainerWatcher:
+	return _trainer_watcher
 
 
 ## Réveil après une défaite (jalon 7, T8).
@@ -646,13 +684,23 @@ func _start_game() -> void:
 
 func _start_game_state() -> void:
 	if _apply_debug_start():
-		print("Départ de débogage : la sauvegarde n'est ni lue ni écrite.")
+		if _debug_start_autosave:
+			_open_save_system()
+			_autosave_enabled = save_system != null
+			print("Départ de débogage : la sauvegarde n'est pas lue, elle sera REMPLACÉE.")
+		else:
+			print("Départ de débogage : la sauvegarde n'est ni lue ni écrite.")
 	else:
-		if save_system == null and get_tree().current_scene == self:
-			save_system = SaveSystem.new()
+		_open_save_system()
 		if save_system != null and _load_save() and _resume():
 			return
 	SceneRouter.start(start_map, start_spawn, start_facing)
+
+
+## Ouvre la vraie sauvegarde si aucune n'a été injectée et que Boot est la scène principale.
+func _open_save_system() -> void:
+	if save_system == null and get_tree().current_scene == self:
+		save_system = SaveSystem.new()
 
 
 ## Lit la sauvegarde et la charge dans GameState (décisions de Kevin du 2026-10-02). Vrai si
@@ -673,6 +721,7 @@ func _load_save() -> bool:
 			_resumed = true
 			print("Sauvegarde chargée : %s %s (temps de jeu %d s)" % [GameState.current_map,
 				GameState.player_cell, int(GameState.play_time)])
+			_log_loaded_save()
 			return true
 		ERR_FILE_NOT_FOUND:
 			_autosave_enabled = true
@@ -684,6 +733,23 @@ func _load_save() -> bool:
 			push_warning(("Boot : %s. Nouvelle partie SANS sauvegarde automatique : la "
 				+ "sauvegarde existante n'est pas touchée.") % save_system.last_error)
 	return false
+
+
+## Journal de QA du chargement (build debug) : migration (une ligne, seulement si le fichier
+## était d'une version plus ancienne : « [qa] sauvegarde v3 → v4 ») et statuts relus.
+func _log_loaded_save() -> void:
+	if not OS.is_debug_build():
+		return
+	var note := SaveSystem.migration_note(save_system.read_version, save_system.version)
+	if not note.is_empty():
+		print("[qa] " + note)
+	var lists := {"équipe": GameState.party.get_all(), "stockage": GameState.storage.get_all()}
+	for where: String in lists:
+		var members: Array[Pokemon] = lists[where]
+		for i: int in members.size():
+			if members[i].status != StatusRules.NONE:
+				print("[qa] statut relu : %s (%s %d) %s" % [members[i].display_name(_pokemon),
+					where, i + 1, members[i].status])
 
 
 ## Une entrée de la sauvegarde a été écartée au chargement (Pokémon, objet ou espèce inconnus
@@ -719,6 +785,7 @@ func _apply_debug_start() -> bool:
 	if not start.load_file(debug_start_path, _pokemon, _items):
 		return false
 	start.apply(GameState, _pokemon)
+	_debug_start_autosave = start.autosave
 	if not start.map.is_empty():
 		start_map = start.map
 		start_spawn = start.spawn
@@ -766,9 +833,12 @@ func _on_map_changed(map: GameMap) -> void:
 	_cutscenes_node.set_map(map)
 	_starter_choice.set_map(map)
 	_ambient.set_map(map)
+	_trainer_watcher.set_map(map)
 	_encounters.set_map(map)
 	_services.set_map(map)
 	_recovery.set_map(map)
+	# Décor de combat de la carte chargé en tâche de fond (correctif QA S24 du CB.3).
+	_battle_stage.prepare_place(map.map_id)
 
 
 ## Profil de lumière de [param map] ([member GameMap.light_profile]) ; vide ou inconnu :
@@ -1068,6 +1138,8 @@ func _apply_settings(s: GameSettings) -> void:
 	_battle_director.confirm_forget = s.confirm_actions
 	_battle_hud.message_hold_scale = 1.0
 	_battle_stage.reduce_flashes = s.reduce_flashes
+	if _evolution_screen != null:
+		_evolution_screen.reduce_flashes = s.reduce_flashes
 	_services.reduce_motion = s.reduce_motion
 	_menu_screen.speed_scale = s.menu_speed_scale()
 	Haptics.enabled = s.haptics

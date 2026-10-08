@@ -7,7 +7,11 @@ extends SceneTree
 ##
 ##   godot --headless --path . -s res://tools/build_painted_interiors.gd -- --bourg
 ##   godot --headless --path . -s res://tools/build_painted_interiors.gd -- --rooms=oak_lab
-##   godot --headless --path . -s res://tools/build_painted_interiors.gd   (les six pièces)
+##   viridian_forest_gate_south, viridian_forest_gate_north — postes de garde de la Forêt de
+##     Jade (jalon 9 T19, jalon-09.md §2.7.2 : une définition, deux scènes)
+##
+##   godot --headless --path . -s res://tools/build_painted_interiors.gd -- --foret
+##   godot --headless --path . -s res://tools/build_painted_interiors.gd   (toutes les pièces)
 ##   godot --headless --path . --import
 ##
 ## **Ne relancer que les pièces voulues** : réécrire une carte change tous ses `unique_id`
@@ -51,6 +55,7 @@ const Z_GROUND_DECALS := -1
 const STEP_ON := 0
 const BOURG := [&"player_house_2f", &"player_house_1f", &"rival_house", &"oak_lab"]
 const JADIELLE := [&"viridian_center", &"viridian_mart"]
+const FORET := [&"viridian_forest_gate_south", &"viridian_forest_gate_north"]
 const LOGIC_DIR := "res://tests/fixtures/maps/"
 
 var _rules: GDScript
@@ -62,7 +67,8 @@ func _init() -> void:
 	_rules = load(RULES_SCRIPT)
 	var wanted := _wanted_rooms()
 	var rooms: Array[Dictionary] = [_viridian_center(), _viridian_mart(), _player_house_2f(),
-		_player_house_1f(), _rival_house(), _oak_lab()]
+		_player_house_1f(), _rival_house(), _oak_lab(), _forest_gate(&"south"),
+		_forest_gate(&"north")]
 	for room: Dictionary in rooms:
 		if not wanted.is_empty() and not wanted.has(room["id"]):
 			continue
@@ -92,6 +98,8 @@ func _wanted_rooms() -> Array:
 			wanted.append_array(BOURG)
 		elif arg == "--jadielle":
 			wanted.append_array(JADIELLE)
+		elif arg == "--foret":
+			wanted.append_array(FORET)
 		elif arg.begins_with("--rooms="):
 			for id: String in arg.trim_prefix("--rooms=").split(","):
 				wanted.append(StringName(id))
@@ -172,6 +180,62 @@ func _viridian_mart() -> Dictionary:
 		"triggers": [["ParcelTrigger", Vector2i(5, 7), Vector2i(5, 1), &"mart_parcel"]],
 		"spawns": {"entrance": Vector2i(7, 8), "counter": Vector2i(7, 5)},
 	}
+
+
+## Postes de garde de la Forêt de Jade (jalon 9 T19, jalon-09.md §2.7.2, dossier 10 §3) : **une
+## définition, deux scènes** (même enveloppe peinte `int_poste_foret_coque`, mêmes meubles, garde
+## à la même place ; seuls changent l'identifiant, le fichier de PNJ — donc la réplique du garde
+## — et les passages). Pièce 10 × 8 cases : mur du fond sur 2 rangées, ouverture nord (4..5, 1),
+## sol (1..8, 2..6), paillasson sud (4..5, 7) ; défaut : le garde en (7, 4), tourné vers le
+## passage. Portes STEP_ON (on avance d'un pas dedans, comme la porte du poste de la Route 2).
+## [param side] : `&"south"` (Route 2 ↔ forêt) ou `&"north"` (forêt ↔ « Route 2 nord — À
+## venir » au J9 ; Argenta au J10).
+func _forest_gate(side: StringName) -> Dictionary:
+	var south := side == &"south"
+	var room := {
+		"id": StringName("viridian_forest_gate_" + String(side)),
+		"node": "ViridianForestGate" + ("South" if south else "North"),
+		"size": Vector2i(10, 8),
+		"shell": "res://assets/world/interiors/int_poste_foret_coque.png",
+		"title": "Forêt de Jade", "light": &"interior_warm",
+		"floor": Rect2i(1, 2, 8, 5),
+		"doors": [Vector2i(4, 1), Vector2i(5, 1), Vector2i(4, 7), Vector2i(5, 7)],
+		"props": [
+			[&"int_meuble_bas_01", Vector2i(2, 2), 3.0, "LowCabinet"],
+			[&"int_porte_manteau_01", Vector2i(8, 2), 3.0, "CoatRack"],
+			[&"int_plante", Vector2i(1, 6), 7.0, "PlantWest"],
+			[&"int_plante", Vector2i(8, 6), 7.0, "PlantEast"],
+		],
+	}
+	if south:
+		# Depuis la Route 2 : un pas dans la pièce, tourné vers le nord ; depuis la forêt : sous
+		# l'ouverture nord, tourné vers le sud.
+		room["spawns"] = {"from_route_2": Vector2i(4, 6), "from_forest": Vector2i(4, 2)}
+		room["warps"] = [
+			["ToRoute2W", Vector2i(4, 7), STEP_ON, Vector2i.DOWN, &"route_2",
+				&"from_forest_gate", Vector2i.DOWN],
+			["ToRoute2E", Vector2i(5, 7), STEP_ON, Vector2i.DOWN, &"route_2",
+				&"from_forest_gate", Vector2i.DOWN],
+			["ToForestW", Vector2i(4, 1), STEP_ON, Vector2i.UP, &"viridian_forest",
+				&"from_gate_south", Vector2i.UP],
+			["ToForestE", Vector2i(5, 1), STEP_ON, Vector2i.UP, &"viridian_forest",
+				&"from_gate_south", Vector2i.UP],
+		]
+	else:
+		# Porte nord « à venir » (build de développement) : retour sous l'ouverture, tourné vers
+		# le sud.
+		room["spawns"] = {"from_forest": Vector2i(4, 6), "north_door": Vector2i(4, 2)}
+		room["warps"] = [
+			["ToForestW", Vector2i(4, 7), STEP_ON, Vector2i.DOWN, &"viridian_forest",
+				&"from_gate_north", Vector2i.DOWN],
+			["ToForestE", Vector2i(5, 7), STEP_ON, Vector2i.DOWN, &"viridian_forest",
+				&"from_gate_north", Vector2i.DOWN],
+			["Route2NorthSoonW", Vector2i(4, 1), STEP_ON, Vector2i.UP, &"", &"north_door",
+				Vector2i.DOWN, "Route 2 nord"],
+			["Route2NorthSoonE", Vector2i(5, 1), STEP_ON, Vector2i.UP, &"", &"north_door",
+				Vector2i.DOWN, "Route 2 nord"],
+		]
+	return room
 
 
 ## Chambre du joueur (jalon 2 §4.3, référence `chambre-joueur-v1.webp`) : affiches, fenêtre,
@@ -432,6 +496,8 @@ func _build(room: Dictionary) -> Node2D:
 			decor.name = entry[2]
 			decor.position = _world(entry[1])
 			_attach(root, entities, decor)
+	elif room.has("floor"):
+		root.set(&"blocked_cells", _walls_around_floor(room))
 	else:
 		root.set(&"blocked_cells", _walls(room))
 	var spawns: Dictionary = room["spawns"]
@@ -456,7 +522,8 @@ func _build(room: Dictionary) -> Node2D:
 			point.set(&"arrival_facing", Vector2i.DOWN)
 			_attach(root, root.get_node(^"Warps"), point)
 			index += 1
-	# Passages décrits un par un : [nœud, case, déclenchement, direction, carte, spawn].
+	# Passages décrits un par un : [nœud, case, déclenchement, direction, carte, spawn,
+	# (orientation à l'arrivée), (destination « à venir »)].
 	for warp: Array in room.get("warps", []):
 		var point := Marker2D.new()
 		point.set_script(warp_script)
@@ -466,6 +533,10 @@ func _build(room: Dictionary) -> Node2D:
 		point.set(&"direction", warp[3])
 		point.set(&"target_map", warp[4])
 		point.set(&"target_spawn", warp[5])
+		if warp.size() > 6:
+			point.set(&"arrival_facing", warp[6])
+		if warp.size() > 7:
+			point.set(&"coming_soon", warp[7])
 		_attach(root, root.get_node(^"Warps"), point)
 	var point_script: GDScript = load("res://game/world/interactions/interact_point.gd")
 	for entry: Array in room.get("interactables", []):
@@ -563,6 +634,22 @@ func _walls(room: Dictionary) -> Array[Vector2i]:
 			if y == size.y - 2 and not exit.has(cell):
 				wall = true
 			if wall:
+				cells.append(cell)
+	return cells
+
+
+## Murs d'une pièce décrite par son sol (« floor », rectangle praticable) et ses portes
+## (« doors ») : toute autre case est bloquée, plus les cases listées (« blocked »).
+func _walls_around_floor(room: Dictionary) -> Array[Vector2i]:
+	var size: Vector2i = room["size"]
+	var floor_rect: Rect2i = room["floor"]
+	var doors: Array = room.get("doors", [])
+	var extra: Array = room.get("blocked", [])
+	var cells: Array[Vector2i] = []
+	for y in size.y:
+		for x in size.x:
+			var cell := Vector2i(x, y)
+			if extra.has(cell) or not (floor_rect.has_point(cell) or doors.has(cell)):
 				cells.append(cell)
 	return cells
 

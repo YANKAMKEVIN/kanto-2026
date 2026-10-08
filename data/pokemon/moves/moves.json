@@ -51,14 +51,14 @@
 	"poison_powder": {
 		"name": "Poudre Toxik", "type": "poison", "category": "status",
 		"accuracy": 75, "pp": 35,
-		"pending_effects": ["poison"],
+		"effects": [{ "kind": "status", "status": "poison" }],
 		"description": "Une poudre toxique qui empoisonne la cible."
 	},
 	"sleep_powder": {
 		"name": "Poudre Dodo", "type": "grass", "category": "status",
 		"accuracy": 75, "pp": 15,
 		"pending_effects": ["sleep"],
-		"description": "Une poudre soporifique qui endort la cible."
+		"description": "Une poudre soporifique qui endort la cible. Sans effet dans le moteur actuel."
 	},
 	"vine_whip": {
 		"name": "Fouet Lianes", "type": "grass", "category": "physical",
@@ -230,7 +230,8 @@
 	},
 	"poison_sting": {
 		"name": "Dard-Venin", "type": "poison", "category": "physical",
-		"power": 15, "accuracy": 100, "pp": 35, "pending_effects": ["poison_30"],
+		"power": 15, "accuracy": 100, "pp": 35,
+		"effects": [{ "kind": "status", "status": "poison", "chance": 30 }],
 		"description": "Pique la cible d'un dard venimeux. Peut l'empoisonner."
 	},
 	"double_kick": {
@@ -252,6 +253,69 @@
 		"name": "Plaquage", "type": "normal", "category": "physical",
 		"power": 85, "accuracy": 100, "pp": 15, "pending_effects": ["paralysis_30"],
 		"description": "Le lanceur se jette de tout son poids sur la cible. Peut la paralyser."
+	},
+	"string_shot": {
+		"name": "Sécrétion", "type": "bug", "category": "status",
+		"accuracy": 95, "pp": 40,
+		"effects": [{ "kind": "stat_stage", "stat": "spe", "stages": -2, "target": "foe" }],
+		"description": "Un fil de soie gluant entrave la cible. Baisse beaucoup sa Vitesse."
+	},
+	"harden": {
+		"name": "Armure", "type": "normal", "category": "status",
+		"accuracy": 0, "pp": 30,
+		"effects": [{ "kind": "stat_stage", "stat": "def", "stages": 1, "target": "self" }],
+		"description": "Le lanceur contracte tout son corps pour le durcir. Augmente sa Défense."
+	},
+	"thunder_shock": {
+		"name": "Éclair", "type": "electric", "category": "special",
+		"power": 40, "accuracy": 100, "pp": 30, "pending_effects": ["paralysis_10"],
+		"description": "Une décharge électrique frappe la cible. Peut la paralyser."
+	},
+	"thunder_wave": {
+		"name": "Cage-Éclair", "type": "electric", "category": "status",
+		"accuracy": 90, "pp": 20, "pending_effects": ["paralysis"],
+		"description": "Une faible onde électrique paralyse la cible. Sans effet dans le moteur actuel."
+	},
+	"confusion": {
+		"name": "Choc Mental", "type": "psychic", "category": "special",
+		"power": 50, "accuracy": 100, "pp": 25, "pending_effects": ["confusion_10"],
+		"description": "Une faible vague psychique frappe la cible. Peut la rendre confuse."
+	},
+	"stun_spore": {
+		"name": "Para-Spore", "type": "grass", "category": "status",
+		"accuracy": 75, "pp": 30, "pending_effects": ["paralysis"],
+		"description": "Une poudre qui engourdit et paralyse la cible. Sans effet dans le moteur actuel."
+	},
+	"supersonic": {
+		"name": "Ultrason", "type": "normal", "category": "status",
+		"accuracy": 55, "pp": 20, "pending_effects": ["confusion"],
+		"description": "Des ondes étranges rendent la cible confuse. Sans effet dans le moteur actuel."
+	},
+	"psybeam": {
+		"name": "Rafale Psy", "type": "psychic", "category": "special",
+		"power": 65, "accuracy": 100, "pp": 20, "pending_effects": ["confusion_10"],
+		"description": "Un étrange rayon psychique frappe la cible. Peut la rendre confuse."
+	},
+	"twineedle": {
+		"name": "Double-Dard", "type": "bug", "category": "physical",
+		"power": 25, "accuracy": 100, "pp": 20, "pending_effects": ["hits_2"],
+		"effects": [{ "kind": "status", "status": "poison", "chance": 20 }],
+		"description": "Deux coups de dard venimeux. Peut empoisonner la cible. Un seul coup dans le moteur actuel."
+	},
+	"pin_missile": {
+		"name": "Dard-Nuée", "type": "bug", "category": "physical",
+		"power": 25, "accuracy": 95, "pp": 20, "pending_effects": ["multi_hit"],
+		"description": "Lance deux à cinq dards pointus sur la cible. Un seul coup dans le moteur actuel."
+	},
+	"swift": {
+		"name": "Météores", "type": "normal", "category": "special",
+		"power": 60, "accuracy": 0, "pp": 20,
+		"description": "Des rayons en forme d'étoile frappent la cible. N'échoue jamais."
+	},
+	"thunder": {
+		"name": "Fatal-Foudre", "type": "electric", "category": "special",
+		"power": 110, "accuracy": 70, "pp": 10, "pending_effects": ["paralysis_30"],
+		"description": "Une foudre violente s'abat sur la cible. Peut la paralyser."
 	},
 	"struggle": {
 		"name": "Lutte", "type": "normal", "category": "physical",

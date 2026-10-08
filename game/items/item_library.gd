@@ -14,7 +14,9 @@ extends RefCounted
 ## [/codeblock]
 ## Clés obligatoires : name, plural, feminine, category ([constant ItemData.CATEGORY_NAMES]),
 ## description ; catch_bonus (nombre > 0) obligatoire pour une Ball et refusé ailleurs ;
-## heal_amount (entier > 0, PV rendus) obligatoire pour un soin (« heal ») et refusé ailleurs ;
+## un soin (« heal ») a heal_amount (entier > 0, PV rendus) et / ou cures (liste non vide de
+## statuts connus de [StatusRules], sans doublon : l'Antidote [code]["poison"][/code]), au moins
+## l'un des deux ; ces deux clés sont refusées ailleurs ;
 ## draft facultative (texte à relire par Kevin) ; price facultatif (entier ≥ 0, ₽ ; 0 ou absent =
 ## pas en vente), refusé non nul pour un objet clé (« key »). Toute clé inconnue est une erreur ; une
 ## entrée invalide est écartée ([method get_errors], push_error).
@@ -22,8 +24,8 @@ extends RefCounted
 const DATA_DIR: String = "res://data/items/"
 
 const _KEYS: Array[String] = [
-	"name", "plural", "feminine", "category", "catch_bonus", "heal_amount", "description",
-	"draft", "price",
+	"name", "plural", "feminine", "category", "catch_bonus", "heal_amount", "cures",
+	"description", "draft", "price",
 ]
 const _REQUIRED: Array[String] = ["name", "plural", "feminine", "category", "description"]
 
@@ -159,13 +161,20 @@ func _parse_item(value: Variant, where: String) -> ItemData:
 	elif entry.has("catch_bonus"):
 		ok = _fail("%s : « catch_bonus » est réservé aux Balls" % where)
 	if item.category == ItemData.Category.HEAL:
-		var amount: Variant = entry.get("heal_amount")
-		if not JsonFields.is_int(amount) or int(amount) <= 0:
-			ok = _fail("%s : « heal_amount » doit être un entier > 0 pour un soin" % where)
-		else:
-			item.heal_amount = int(amount)
-	elif entry.has("heal_amount"):
-		ok = _fail("%s : « heal_amount » est réservé aux soins" % where)
+		if not entry.has("heal_amount") and not entry.has("cures"):
+			ok = _fail("%s : un soin a « heal_amount » ou « cures »" % where)
+		if entry.has("heal_amount"):
+			var amount: Variant = entry["heal_amount"]
+			if not JsonFields.is_int(amount) or int(amount) <= 0:
+				ok = _fail("%s : « heal_amount » doit être un entier > 0 pour un soin" % where)
+			else:
+				item.heal_amount = int(amount)
+		if entry.has("cures"):
+			ok = _read_cures(entry["cures"], item, where) and ok
+	else:
+		for key: String in ["heal_amount", "cures"]:
+			if entry.has(key):
+				ok = _fail("%s : « %s » est réservé aux soins" % [where, key])
 	if entry.has("price"):
 		var price: Variant = entry["price"]
 		if not JsonFields.is_int(price) or int(price) < 0:
@@ -175,6 +184,21 @@ func _parse_item(value: Variant, where: String) -> ItemData:
 		else:
 			item.price = int(price)
 	return item if ok else null
+
+
+## Statuts soignés : liste non vide de statuts connus, sans doublon.
+func _read_cures(value: Variant, item: ItemData, where: String) -> bool:
+	var message := "%s : « cures » doit être une liste non vide de statuts (%s), sans doublon" \
+		% [where, ", ".join(PackedStringArray(StatusRules.KNOWN))]
+	if not value is Array or (value as Array).is_empty():
+		return _fail(message)
+	for status: Variant in value:
+		if not status is String or not StatusRules.is_known(StringName(status)) \
+				or item.cures.has(StringName(status)):
+			item.cures.clear()
+			return _fail(message)
+		item.cures.append(StringName(status))
+	return true
 
 
 func _fail(message: String) -> bool:

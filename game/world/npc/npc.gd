@@ -43,6 +43,8 @@ signal left_scene(npc_id: StringName)
 signal entered_building(npc_id: StringName)
 ## Ressorti du bâtiment : de nouveau sur sa case et visible, la routine reprend.
 signal left_building(npc_id: StringName)
+## Bulle finie ([method show_emote], jalon 9).
+signal emote_finished
 
 ## SpriteFrames provisoires des apparences (les peintes : [CharacterLook]).
 const FRAMES_DIR: String = CharacterLook.PLACEHOLDER_DIR
@@ -115,6 +117,10 @@ const FLY_RISE: float = 96.0
 const FLY_DRIFT: float = 48.0
 const FLY_DURATION: float = 0.6
 const FLEE_FADE_DURATION: float = 0.25
+## Retrait vers le feuillage d'un Aspicot (jalon 9, [method retreat]) : petit recul vers le haut
+## (pixels) et fondu, en secondes (défauts, jalon-09.md §2.7.6).
+const RETREAT_RISE: float = 24.0
+const RETREAT_DURATION: float = 0.4
 ## Délai (s) avant que le PNJ à routine reprenne sa marche après un dialogue (dossier 07 §5 :
 ## « après le dialogue, il attend un court instant puis reprend »).
 const ROUTE_RESUME_DELAY: float = 0.6
@@ -122,6 +128,15 @@ const ROUTE_RESUME_DELAY: float = 0.6
 ## essai de sortie tant que la case de la porte est prise (le joueur s'y tient).
 const ENTER_FADE_DURATION: float = 0.25
 const ENTER_RETRY_DELAY: float = 0.5
+## Bulle « ! » d'un Dresseur ([method show_emote], jalon-09.md §2.4.4) : durée totale (s).
+const EMOTE_DURATION: float = UiTokens.EMOTE_DURATION
+const EMOTE_ICON: Texture2D = preload("res://assets/ui/icons/emote_exclamation.svg")
+## Pointe de la bulle dans l'icône (96 × 96) : en bas au centre, à (48, 92).
+const EMOTE_TIP_IN_ICON: Vector2 = Vector2(48.0, 92.0)
+## Corps de la bulle dans l'icône 96 px (x gauche, haut, x droit), pour la garder dans la vue.
+const EMOTE_BODY_LEFT := 10.0
+const EMOTE_BODY_TOP := 6.0
+const EMOTE_BODY_RIGHT := 86.0
 const _IDLE_ANIMS: Dictionary[Vector2i, StringName] = {
 	Vector2i.DOWN: &"idle_down",
 	Vector2i.UP: &"idle_up",
@@ -190,6 +205,9 @@ var _leave_tween: Tween
 ## Dans un bâtiment (jalon 7) : hors grille ; la grille où il ressortira.
 var _inside: bool = false
 var _inside_grid: GridWorld
+## Bulle en cours ([method show_emote]).
+var _emote_tween: Tween
+var _emote_bubble: Sprite2D
 var _inside_tween: Tween
 ## Boucle de l'animation d'ambiance ([member NpcSpec.idle_react_every]).
 var _idle_tween: Tween
@@ -1049,6 +1067,108 @@ func _flee_fade() -> void:
 	_leave_tween.tween_callback(func() -> void: left_scene.emit(get_id()))
 
 
+## Retrait d'un Pokémon d'ambiance vers le feuillage (Aspicot sur un tronc, jalon 9) : petit
+## recul vers le haut ([constant RETREAT_RISE] px) et fondu en [constant RETREAT_DURATION] s,
+## puis [signal left_scene] (retiré de la carte comme l'envol). Libère sa case tout de suite.
+func retreat() -> void:
+	if _leaving:
+		return
+	_leaving = true
+	_route_active = false
+	_abort_hop()
+	if _mover != null:
+		leave_grid()
+	if not is_inside_tree() or _sprite == null:
+		left_scene.emit(get_id())
+		return
+	if _leave_tween != null and _leave_tween.is_valid():
+		_leave_tween.kill()
+	_leave_tween = create_tween()
+	_leave_tween.set_parallel(true)
+	_leave_tween.tween_property(_sprite, ^"position:y", _sprite.position.y - RETREAT_RISE,
+		RETREAT_DURATION).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+	_leave_tween.tween_property(_sprite, ^"modulate:a", 0.0, RETREAT_DURATION)
+	_leave_tween.tween_property(_shadow, ^"modulate:a", 0.0, RETREAT_DURATION)
+	_leave_tween.chain().tween_callback(func() -> void: left_scene.emit(get_id()))
+
+
 func _on_animation_finished() -> void:
 	if _sprite.animation == REACT_ANIM or _REACT_ANIMS.values().has(_sprite.animation):
 		_play_idle()
+
+
+## Bulle [param kind] au-dessus de la tête ([constant CutsceneStep.EMOTE_KINDS], jalon 9 :
+## le « ! » du Dresseur qui repère le joueur), pendant [constant EMOTE_DURATION] s, puis
+## [signal emote_finished]. Apparition en rebond (dépassement), tenue, fondu ; tout en [Tween],
+## dessinée au-dessus du tri en profondeur, retirée à la fin. Hors de l'arbre : finie tout de
+## suite.
+func show_emote(_kind: StringName) -> void:
+	_clear_emote()
+	if not is_inside_tree():
+		emote_finished.emit()
+		return
+	var tip := Vector2(0.0, -UiTokens.EMOTE_TIP_HEIGHT) + _emote_view_shift()
+	_emote_bubble = Sprite2D.new()
+	_emote_bubble.name = "EmoteBubble"
+	_emote_bubble.texture = EMOTE_ICON
+	_emote_bubble.centered = false
+	_emote_bubble.offset = -EMOTE_TIP_IN_ICON
+	_emote_bubble.z_index = 10
+	_emote_bubble.position = tip + Vector2(0.0, UiTokens.EMOTE_RISE)
+	_emote_bubble.scale = Vector2.ZERO
+	_emote_bubble.modulate.a = 0.0
+	add_child(_emote_bubble)
+	var full := Vector2.ONE * UiTokens.EMOTE_SCALE
+	var pop := UiTokens.EMOTE_POP
+	var fade := UiTokens.EMOTE_FADE
+	var hold := maxf(0.0, EMOTE_DURATION - pop - fade)
+	_emote_tween = create_tween()
+	_emote_tween.set_parallel(true)
+	_emote_tween.tween_property(_emote_bubble, "scale", full, pop) \
+		.set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
+	_emote_tween.tween_property(_emote_bubble, "position", tip, pop) \
+		.set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
+	_emote_tween.tween_property(_emote_bubble, "modulate:a", 1.0, pop * 0.5)
+	_emote_tween.chain().tween_interval(hold)
+	_emote_tween.chain().tween_property(_emote_bubble, "modulate:a", 0.0, fade)
+	_emote_tween.chain().tween_callback(_finish_emote)
+
+
+## Décalage local qui garde la bulle entière dans la vue (marge [constant UiTokens.SAFE_MARGIN]) :
+## vers le bas quand le Dresseur est près du haut de l'écran (caméra centrée sur le joueur),
+## vers l'intérieur près d'un bord latéral. Nul quand il y a la place (voir [EmotePlacement]).
+func _emote_view_shift() -> Vector2:
+	var viewport := get_viewport()
+	if viewport == null:
+		return Vector2.ZERO
+	var tip_screen := get_global_transform_with_canvas() \
+		* Vector2(0.0, -UiTokens.EMOTE_TIP_HEIGHT)
+	var k := UiTokens.EMOTE_SCALE * UiTokens.EMOTE_OVERSHOOT
+	var tip_icon := EMOTE_TIP_IN_ICON
+	var extent := Rect2(
+		Vector2(tip_icon.x - EMOTE_BODY_LEFT, tip_icon.y - EMOTE_BODY_TOP) * k,
+		Vector2(EMOTE_BODY_RIGHT - tip_icon.x, 0.0) * k)
+	return EmotePlacement.shift(tip_screen, viewport.get_visible_rect().size, extent,
+		float(UiTokens.SAFE_MARGIN))
+
+
+## Vrai pendant une bulle ([method show_emote]).
+func is_emoting() -> bool:
+	return _emote_tween != null and _emote_tween.is_valid()
+
+
+func _finish_emote() -> void:
+	_emote_tween = null
+	_clear_emote()
+	emote_finished.emit()
+
+
+func _clear_emote() -> void:
+	if _emote_tween != null and _emote_tween.is_valid():
+		_emote_tween.kill()
+	_emote_tween = null
+	if _emote_bubble != null and is_instance_valid(_emote_bubble):
+		# Retirée tout de suite (le nom « EmoteBubble » est libre pour la bulle suivante).
+		remove_child(_emote_bubble)
+		_emote_bubble.queue_free()
+	_emote_bubble = null

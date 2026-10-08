@@ -161,6 +161,18 @@ func test_seen_and_caught_texts_apart() -> void:
 		"1%s250 capturés" % MenuFormat.THOUSANDS_SEPARATOR, "milliers séparés (insécable)")
 
 
+func test_poisoned_lead_reads_psn() -> void:
+	var lead := _add(&"charmander", 5)
+	lead.status = StatusRules.POISON
+	var view := _build()
+	assert_eq(view.lead.status_text, "PSN")
+	assert_eq(view.lead.status_text, TeamMemberView.STATUS_POISON)
+	assert_eq(DashboardViews.member(lead, 0, _data).status_text, "PSN",
+		"la cible du Sac lit le même texte")
+	_add(&"pidgey", 4)
+	assert_eq(DashboardViews.member(_state.party.get_at(1), 1, _data).status_text, "")
+
+
 # --- MM.1 : badges préparés, artwork du Pokémon de tête -----------------------------------------
 
 

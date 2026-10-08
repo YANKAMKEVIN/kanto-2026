@@ -67,6 +67,16 @@ func has_level_up() -> bool:
 	return _entries.any(func(entry: ExpSummaryEntry) -> bool: return entry.levels_gained() > 0)
 
 
+## Places dans l'équipe des Pokémon qui ont gagné au moins un niveau, dans l'ordre de l'équipe
+## (candidats à l'évolution, [method Evolution.candidates]).
+func leveled_indices() -> Array[int]:
+	var result: Array[int] = []
+	for entry: ExpSummaryEntry in get_entries():
+		if entry.levels_gained() > 0:
+			result.append(entry.party_index)
+	return result
+
+
 func _add_exp(event: BattleEvent) -> void:
 	var entry := get_entry(event.party_index)
 	if entry == null:

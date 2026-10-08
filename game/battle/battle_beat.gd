@@ -37,6 +37,13 @@ extends RefCounted
 ## Jalon 6 (soin) :
 ## - HEAL : la barre de PV du Pokémon soigné remonte jusqu'à [member BattleEvent.hp] ; seulement
 ##   s'il est en jeu ([member BattleEvent.party_index]), sinon rien ne bouge à l'écran.
+## Jalon 9 (poison) :
+## - POISON : fin de tour, le Pokémon de [member side] est rongé par son statut : voile violet
+##   sur le Pokémon et barre de PV jusqu'à [member BattleEvent.hp] ([member BattleEvent.max_hp]),
+##   en même temps (comme DRAIN) ; le message suit ;
+## - STATUS_TAG : l'étiquette « PSN » de la carte du Pokémon concerné apparaît (STATUS_INFLICTED :
+##   [member BattleEvent.status] sur [member side]) ou disparaît (STATUS_CURED : le Pokémon
+##   [member BattleEvent.party_index], seulement s'il est en jeu) ; instantané, sans attente.
 ## Jalon 7 (changement de Pokémon) :
 ## - WITHDRAW : le Pokémon du joueur est rappelé dans sa Poké Ball (il rétrécit dans un éclat
 ##   rouge), sa carte et les pastilles sortent ; le SEND_OUT du suivant les ramène.
@@ -46,6 +53,7 @@ enum Kind {
 	THROW, SHAKE, CATCH, RELEASE,
 	HEAL,
 	WITHDRAW,
+	POISON, STATUS_TAG,
 }
 
 var kind: Kind = Kind.MESSAGE

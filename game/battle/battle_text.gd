@@ -17,10 +17,10 @@ extends RefCounted
 ## [/codeblock]
 ## Tous les modèles de [constant TEMPLATE_IDS] sont obligatoires, aucun autre n'est admis.
 ## Marques admises : {pokemon} (nom seul, jamais « ennemi » ni « du Rival »), {de_pokemon}
-## (« de Salamèche », « d'Évoli »), {move}, {trainer}, {stat} (nom de « stats »), {level}
-## (niveau de l'événement), {exp} (son [member BattleEvent.amount]), {old_move} (capacité
-## oubliée, seulement par [method line_for]), {item} (nom de la Ball,
-## [member BattleEvent.item_name]).
+## (« de Salamèche », « d'Évoli »), {species} (nom de l'espèce de l'événement), {move},
+## {trainer}, {stat} (nom de « stats »), {level} (niveau de l'événement), {exp} (son
+## [member BattleEvent.amount]), {old_move} (capacité oubliée, seulement par
+## [method line_for]), {item} (nom de la Ball, [member BattleEvent.item_name]).
 ## Capture (jalon 5D) : BALL_THROWN → « ball_thrown » ; BROKE_FREE → « broke_free » ;
 ## BALL_SHAKE, CAUGHT et BATTLE_ENDED (CAUGHT) n'ont pas de phrase. La carte de capture
 ## (dossier 05 §17) demande à [method line_for], avec l'événement CAUGHT (accord au féminin) :
@@ -32,7 +32,12 @@ extends RefCounted
 ## « move_forget_prompt ». La suite de l'oubli (« move_forgot », « move_not_learned ») ne
 ## vient pas d'un événement : la présentation la demande à [method line_for].
 ## Soin (jalon 6) : ITEM_USED → « item_used » (« Tu utilises Potion sur Salamèche. »), puis
-## « hp_restored » ({amount} : PV rendus, [member BattleEvent.amount]).
+## « hp_restored » ({amount} : PV rendus, [member BattleEvent.amount] ; pas de phrase si aucun
+## PV n'est rendu : l'Antidote).
+## Statuts (jalon 9, le poison) : STATUS_INFLICTED, STATUS_UNCHANGED, STATUS_DAMAGED,
+## STATUS_CURED → « status_inflicted_<statut> », « status_unchanged_<statut> »,
+## « status_damaged_<statut> », « status_cured_<statut> » ([member BattleEvent.status] ; pas de
+## phrase pour un statut sans modèle). Immunité : NO_EFFECT (« no_effect »).
 ## Changement de Pokémon (jalon 7) : WITHDRAWN → « withdrawn » (« Reviens, Salamèche ! ») ; le
 ## Pokémon envoyé reprend « sent_out_player ». Le panneau ÉQUIPE lit, sans événement
 ## ([method get_template]), « switch_reason_active », « switch_reason_fainted » (raisons sur
@@ -43,6 +48,12 @@ extends RefCounted
 ## ([method summary_exp], « +11 XP »), « summary_level » ([method summary_level], « Nv. 9 »),
 ## « summary_stat » ({stat} : nom court de « stat_labels », {amount} ; [method summary_stats] :
 ## « PV +2 · Attaque +1 »), « summary_continue » (consigne « Touchez l'écran pour continuer »).
+## Évolution (jalon 9, lot verrouillé le 2026-10-07, bloc B) : sans événement du moteur ;
+## [EvolutionDirector] les demande à [method line_for] avec un événement qui porte le nom du
+## Pokémon [b]d'avant[/b] l'évolution — « evolution_started » (« Quoi ? {pokemon} évolue ! »),
+## « evolution_finished » ({species} : nom de [member BattleEvent.species_id], la nouvelle
+## espèce), « evolution_cancelled » ; « evolution_stop » est le libellé du bouton ARRÊTER
+## ([method get_template]).
 ## « stat_labels » (facultatif ; s'il est là, complet) : noms courts des six statistiques
 ## ([constant SpeciesData.STATS]) ; sans lui, l'identifiant de la statistique est écrit.
 ## « draft » : texte à relire par Kevin. « text_f » (facultatif) : la phrase accordée au
@@ -70,15 +81,25 @@ const TEMPLATE_IDS: Array[StringName] = [
 	&"forget_confirm_no",
 	&"withdrawn", &"switch_reason_active", &"switch_reason_fainted", &"replace_prompt",
 	&"summary_exp", &"summary_level", &"summary_stat", &"summary_continue",
+	&"status_inflicted_poison", &"status_unchanged_poison", &"status_damaged_poison",
+	&"status_cured_poison",
+	&"evolution_started", &"evolution_finished", &"evolution_cancelled", &"evolution_stop",
 ]
 ## Entre deux gains de statistiques du bilan (« PV +2 · Attaque +1 »).
 const SUMMARY_SEPARATOR: String = " · "
 const PLACEHOLDERS: Array[String] = [
 	"pokemon", "de_pokemon", "move", "trainer", "stat", "level", "exp", "old_move", "item",
-	"amount", "money",
+	"amount", "money", "species",
 ]
 
 const _TEMPLATE_KEYS: Array[String] = ["text", "text_f", "draft"]
+## Début du modèle de chaque événement de statut (suivi de « _<statut> »).
+const _STATUS_PREFIXES: Dictionary[BattleEvent.Kind, String] = {
+	BattleEvent.Kind.STATUS_INFLICTED: "status_inflicted",
+	BattleEvent.Kind.STATUS_UNCHANGED: "status_unchanged",
+	BattleEvent.Kind.STATUS_DAMAGED: "status_damaged",
+	BattleEvent.Kind.STATUS_CURED: "status_cured",
+}
 const _VOWELS: String = "AEIOUYÀÂÄÉÈÊËÎÏÔÖÙÛÜaeiouyàâäéèêëîïôöùûü"
 
 var _texts: Dictionary[StringName, String] = {}
@@ -249,7 +270,13 @@ func lines(event: BattleEvent, data: PokemonData, trainer: TrainerData = null) \
 			result.append(_fill(&"withdrawn", event, data))
 		BattleEvent.Kind.ITEM_USED:
 			result.append(_fill(&"item_used", event, data))
-			result.append(_fill(&"hp_restored", event, data))
+			if event.amount > 0:
+				result.append(_fill(&"hp_restored", event, data))
+		BattleEvent.Kind.STATUS_INFLICTED, BattleEvent.Kind.STATUS_UNCHANGED, \
+				BattleEvent.Kind.STATUS_DAMAGED, BattleEvent.Kind.STATUS_CURED:
+			var id := StringName("%s_%s" % [_STATUS_PREFIXES[event.kind], event.status])
+			if _texts.has(id):
+				result.append(_fill(id, event, data))
 		BattleEvent.Kind.BATTLE_ENDED:
 			# FLED ne porte pas de message ici (il est sur l'événement FLED). Un sauvage n'a
 			# pas de dresseur (trainer_name vide) : « Tu as battu… » ne s'affiche pas.
@@ -319,8 +346,10 @@ func _fill(id: StringName, event: BattleEvent, data: PokemonData,
 		old_move: StringName = &"") -> String:
 	var move := data.get_move(event.move_id)
 	var forgotten := data.get_move(old_move)
+	var species := data.get_species(event.species_id)
 	return get_template(id, event.gender == Pokemon.Gender.FEMALE).format({
 		"pokemon": event.pokemon_name,
+		"species": species.name if species != null else String(event.species_id),
 		"de_pokemon": de_name(event.pokemon_name),
 		"move": move.name if move != null else String(event.move_id),
 		"trainer": event.trainer_name,

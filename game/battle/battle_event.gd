@@ -65,6 +65,18 @@ extends RefCounted
 ## après un K.O., [method Battle.replace]) :
 ## - WITHDRAWN : le Pokémon du joueur en jeu est rappelé (« Reviens, … ! ») ; suit le SENT_OUT
 ##   du Pokémon envoyé, puis (changement volontaire) l'adversaire joue son tour.
+## Statuts durables (jalon 9 §2.1.3, le poison seul) ; [member status] = le statut concerné :
+## - STATUS_INFLICTED : le Pokémon touché reçoit [member status] (Poudre Toxik, Dard-Venin) ;
+## - STATUS_UNCHANGED : capacité de statut sur un Pokémon qui a déjà [member status] (rien ne
+##   change ; une immunité de type donne NO_EFFECT) ;
+## - STATUS_DAMAGED : fin de tour, le Pokémon perd [member amount] PV à cause de
+##   [member status] ([member hp], [member max_hp] d'après) ; un K.O. suit le chemin habituel
+##   (FAINTED, XP, BATTLE_ENDED ou remplacement) ;
+## - STATUS_CURED : juste après ITEM_USED (Antidote), le Pokémon [member party_index] n'a plus
+##   [member status] (le statut [b]effacé[/b], pas l'état d'après).
+## Tous les autres événements sur un Pokémon portent dans [member status] son statut au moment
+## de l'événement (SENT_OUT : la carte de PV l'affiche dès l'entrée ; FAINTED : toujours vide,
+## le K.O. efface le statut).
 
 enum Kind {
 	BATTLE_STARTED, SENT_OUT, TURN_STARTED, MOVE_USED, MOVE_MISSED, DAMAGE, NO_EFFECT,
@@ -73,6 +85,7 @@ enum Kind {
 	BALL_THROWN, BALL_SHAKE, CAUGHT, BROKE_FREE,
 	ITEM_USED,
 	WITHDRAWN,
+	STATUS_INFLICTED, STATUS_UNCHANGED, STATUS_DAMAGED, STATUS_CURED,
 }
 enum SideId { PLAYER, FOE }
 
@@ -117,6 +130,8 @@ var item_id: StringName = &""
 var item_name: String = ""
 ## BALL_SHAKE : numéro de la secousse (1 à 3).
 var shake: int = 0
+## Statut durable concerné ([constant StatusRules.NONE] = aucun) : voir l'en-tête.
+var status: StringName = StatusRules.NONE
 
 
 func _init(event_kind: Kind = Kind.BATTLE_STARTED, event_side: SideId = SideId.PLAYER) -> void:
@@ -135,5 +150,5 @@ func to_dict() -> Dictionary:
 		"exp_from": exp_from, "exp_to": exp_to, "exp_points_from": exp_points_from,
 		"exp_points_to": exp_points_to, "exp_points_need": exp_points_need,
 		"stat_gains": stat_gains, "healed": healed, "healed_hp": healed_hp,
-		"item": item_id, "item_name": item_name, "shake": shake,
+		"item": item_id, "item_name": item_name, "shake": shake, "status": status,
 	}

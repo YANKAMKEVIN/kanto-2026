@@ -12,6 +12,10 @@ var hp_after: int = 0
 var max_hp: int = 0
 ## Exemplaires restant dans le Sac après l'usage (UTILISER À NOUVEAU possible si > 0).
 var remaining: int = 0
+## Statut soigné par l'objet ([constant StatusRules.NONE] : aucun ; jalon 9, l'Antidote).
+var status_cured: StringName = StatusRules.NONE
+## Sexe du Pokémon (accord du résultat : « … n'est plus empoisonnée. »).
+var gender: Pokemon.Gender = Pokemon.Gender.NONE
 
 
 ## Vrai si l'objet a servi (un exemplaire en moins, effet appliqué).

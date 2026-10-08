@@ -147,9 +147,9 @@ func test_opens_on_capture_with_balls_and_quantities() -> void:
 	var cards := _panel.get_cards()
 	assert_eq(cards.size(), 3)
 	assert_eq(cards[0].get_name_text(), "Poké Ball")
-	assert_eq(cards[0].get_quantity_text(), "×12")
+	assert_eq(cards[0].get_quantity_text(), "× 12")
 	assert_eq(cards[1].get_name_text(), "Super Ball")
-	assert_eq(cards[1].get_quantity_text(), "×3")
+	assert_eq(cards[1].get_quantity_text(), "× 3")
 	assert_eq(cards[0].get_icon(), BagEntryView.icon_for(&"poke_ball"), "illustration")
 
 
@@ -315,7 +315,7 @@ func test_reopening_rearms_the_panel() -> void:
 func test_keyboard_selection_then_accept() -> void:
 	await _open(_three_balls())
 	var right := InputEventAction.new()
-	right.action = &"ui_right"
+	right.action = &"ui_down"
 	right.pressed = true
 	Input.parse_input_event(right)
 	await wait_process_frames(2)
@@ -348,7 +348,7 @@ func test_touch_zones_at_least_touch_min_and_inside_margins() -> void:
 		var view := Rect2(Vector2.ZERO, _screen.size)
 		var safe := view.grow(-float(UiTokens.SAFE_MARGIN))
 		var zones: Array[Control] = [_panel.get_action_button(), _panel.get_back_button().get_button()]
-		for card: BagItemCard in _panel.get_cards():
+		for card: BattleBagRow in _panel.get_cards():
 			zones.append(card)
 		for id: StringName in _panel.get_categories():
 			zones.append(_panel.get_tab(id))
@@ -364,9 +364,7 @@ func test_panel_leaves_the_foe_visible() -> void:
 	for width: float in SCREEN_WIDTHS:
 		_set_screen(width)
 		await _open(_three_balls())
-		var anchors := BattleLayout.anchors(_screen.size)
-		var foe := BattleLayout.sprite_rect(anchors["foe_feet"], anchors["foe_scale"],
-			BattleLayout.NATIVE)
+		var foe := BattleLayout.max_rect(false, _screen.size)
 		assert_false(_panel.get_frame_rect().intersects(foe), "%s : l'adversaire reste visible" % width)
 
 
@@ -389,5 +387,17 @@ func test_styles_come_from_the_theme() -> void:
 	var other := _panel.get_cards()[1].get_theme_stylebox(&"panel") as StyleBoxFlat
 	assert_eq(other.border_color, UiTokens.PANEL_BORDER)
 	await wait_seconds(UiTokens.ANIM_MICRO + 0.15)
-	assert_almost_eq(_panel.get_cards()[0].scale.x, UiTokens.BAG_CARD_SELECTED_SCALE, 0.01)
+	assert_almost_eq(_panel.get_cards()[0].scale.x, 1.0, 0.01, "rangée : pas de grossissement")
 	assert_almost_eq(_panel.get_cards()[1].scale.x, 1.0, 0.01)
+
+
+func test_rows_show_arrow_only_on_the_selected_one_and_fill_the_width() -> void:
+	await _open(_three_balls())
+	var rows := _panel.get_cards()
+	assert_eq(rows.size(), 3)
+	for i: int in rows.size():
+		assert_eq(rows[i].is_selected(), i == 0)
+	assert_gt(rows[0].size.x, rows[0].size.y * 4.0, "une rangée, pas une tuile")
+	assert_almost_eq(rows[0].size.x, rows[1].size.x, 0.5)
+	assert_gt(rows[1].global_position.y, rows[0].global_position.y, "empilées")
+	assert_eq(rows[0].global_position.x, rows[1].global_position.x)

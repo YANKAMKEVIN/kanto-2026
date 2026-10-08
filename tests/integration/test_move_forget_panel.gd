@@ -338,8 +338,7 @@ func test_touch_zones_min_size_inside_safe_margin() -> void:
 		var panel := _panel.get_global_rect()
 		for zone: Control in zones:
 			assert_true(panel.encloses(zone.get_global_rect()), "%s dans le panneau" % zone.name)
-		for slot: BattleHudLayout.Slot in [BattleHudLayout.Slot.OWN_CARD,
-				BattleHudLayout.Slot.FOE_CARD, BattleHudLayout.Slot.BACK]:
+		for slot: BattleHudLayout.Slot in [BattleHudLayout.Slot.FOE_CARD, BattleHudLayout.Slot.BACK]:
 			assert_false(panel.intersects(BattleHudLayout.rect(slot, size)),
 				"panneau sur l'emplacement %d à %d" % [slot, width])
 		_panel.get_detail_sheet().speed_scale = 0.0

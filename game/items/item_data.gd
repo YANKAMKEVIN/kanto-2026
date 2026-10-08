@@ -40,8 +40,11 @@ var feminine: bool = false
 var category: Category = Category.BALL
 ## Multiplicateur de capture (Poké Ball : 1 ; catégorie BALL seulement).
 var catch_bonus: float = 1.0
-## PV rendus (catégorie HEAL seulement, > 0 ; la Potion : 20).
+## PV rendus (catégorie HEAL seulement ; la Potion : 20 ; 0 pour un soin de statut seul).
 var heal_amount: int = 0
+## Statuts soignés (catégorie HEAL seulement, [constant StatusRules.KNOWN] ; l'Antidote :
+## [code][&"poison"][/code]). Un soin a des PV à rendre, des statuts à soigner, ou les deux.
+var cures: Array[StringName] = []
 ## Description (fiche du Sac, jalon 5), texte provisoire tant que [member draft].
 var description: String = ""
 var draft: bool = false
@@ -81,9 +84,15 @@ func usable_in(context: StringName) -> bool:
 	return contexts().has(context)
 
 
-## Vrai si l'objet se donne à un Pokémon de l'équipe (choix du Pokémon, [ItemUse]) : les soins.
+## Vrai si l'objet se donne à un Pokémon de l'équipe (choix du Pokémon, [ItemUse]) : les soins
+## (de PV ou de statut).
 func targets_pokemon() -> bool:
-	return category == Category.HEAL and heal_amount > 0
+	return category == Category.HEAL and (heal_amount > 0 or not cures.is_empty())
+
+
+## Vrai si l'objet soigne le statut [param status].
+func cures_status(status: StringName) -> bool:
+	return status != StatusRules.NONE and cures.has(status)
 
 
 ## Nom accordé à [param count] : singulier pour 1, pluriel au-delà.

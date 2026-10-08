@@ -7,6 +7,10 @@ extends RefCounted
 ## (routeur au moment du passage, test de cohérence des cartes à l'avance).
 
 const MAPS_DIR: String = "res://game/world/maps/"
+## Préfixe des cartes de QA (jalon 9) : elles n'appartiennent à aucune zone, ne figurent ni sur
+## la Carte ni au Pokédex, et aucun passage n'y mène (départs de débogage seulement). Les tests
+## qui énumèrent les cartes du jeu les ignorent ([method is_qa_map]).
+const QA_PREFIX: String = "qa_"
 
 
 ## Chemin de la scène d'une carte ("" pour un identifiant vide).
@@ -20,3 +24,8 @@ static func scene_path(map_id: StringName, dir: String = MAPS_DIR) -> String:
 static func has_map(map_id: StringName, dir: String = MAPS_DIR) -> bool:
 	var path := scene_path(map_id, dir)
 	return not path.is_empty() and ResourceLoader.exists(path)
+
+
+## Vrai si c'est une carte de QA (identifiant préfixé de [constant QA_PREFIX]).
+static func is_qa_map(map_id: StringName) -> bool:
+	return String(map_id).begins_with(QA_PREFIX)

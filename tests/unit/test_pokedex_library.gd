@@ -2,11 +2,12 @@ extends GutTest
 ## PokedexLibrary : data/pokedex/kanto.json (jalon-06.md §3.5 ; Q-5 taille et poids officiels,
 ## descriptions provisoires ; Q-6 une note par espèce rencontrable).
 
-## Espèces rencontrables (J6 Q-6, + Route 22 au J7) : une note chacune, débloquée à la
-## première observation.
+## Formes de base rencontrables (J6 Q-6, + Route 22 au J7, + Forêt de Jade au J9) : une note
+## chacune, débloquée à la première observation. Les évolutions n'en ont pas, même
+## rencontrables (Chrysacier, Coconfort : lot de textes du J9, n° 41, 45, 49).
 const ENCOUNTERABLE: Array[StringName] = [
 	&"bulbasaur", &"charmander", &"squirtle", &"pidgey", &"rattata",
-	&"spearow", &"mankey", &"nidoran_f", &"nidoran_m",
+	&"spearow", &"mankey", &"nidoran_f", &"nidoran_m", &"caterpie", &"weedle", &"pikachu",
 ]
 
 var _data: PokemonData
@@ -65,6 +66,9 @@ func test_real_heights_and_weights_are_the_official_ones() -> void:
 		&"primeape": [1.0, 32.0], &"nidoran_f": [0.4, 7.0], &"nidorina": [0.8, 20.0],
 		&"nidoqueen": [1.3, 60.0], &"nidoran_m": [0.5, 9.0], &"nidorino": [0.9, 19.5],
 		&"nidoking": [1.4, 62.0],
+		&"caterpie": [0.3, 2.9], &"metapod": [0.7, 9.9], &"butterfree": [1.1, 32.0],
+		&"weedle": [0.3, 3.2], &"kakuna": [0.6, 10.0], &"beedrill": [1.0, 29.5],
+		&"pikachu": [0.4, 6.0], &"raichu": [0.8, 30.0],
 	}
 	for id: StringName in official:
 		assert_almost_eq(_lib.get_species(id).height, float(official[id][0]), 0.001, id)
@@ -212,3 +216,24 @@ func test_check_references_rejects_unknown_species_and_numbers_beyond_size() -> 
 func test_missing_file_and_bad_json() -> void:
 	assert_false(_lib.load_file("res://tests/fixtures/pokedex/absent.json"))
 	assert_push_error("fichier introuvable")
+
+
+func test_forest_texts_are_the_locked_ones() -> void:
+	# Lot de textes du jalon 9 (docs/design/textes/textes-brouillon-j9.md, verrouillé par
+	# Kevin le 2026-10-07), n° 40 à 50, mot pour mot.
+	_lib.load_file()
+	var lot := FileAccess.get_file_as_string("res://docs/design/textes/textes-brouillon-j9.md")
+	assert_false(lot.is_empty(), "lot de textes lisible")
+	for id: StringName in [&"caterpie", &"metapod", &"butterfree", &"weedle", &"kakuna",
+			&"beedrill", &"pikachu", &"raichu"]:
+		var info := _lib.get_species(id)
+		assert_not_null(info, String(id))
+		if info == null:
+			continue
+		assert_true(lot.contains("« %s »" % info.description), "%s : description" % id)
+		for note: PokedexNoteData in info.notes:
+			assert_true(lot.contains("« %s »" % note.text), "%s : note" % note.id)
+	var ids: Array[StringName] = []
+	for id: StringName in [&"caterpie", &"weedle", &"pikachu"]:
+		ids.append(_lib.get_notes(id)[0].id)
+	assert_eq(ids, [&"caterpie_leaf", &"weedle_curl", &"pikachu_scorch"] as Array[StringName])

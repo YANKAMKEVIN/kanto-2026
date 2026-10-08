@@ -252,6 +252,27 @@ func test_shy_defaults_and_values() -> void:
 	assert_true(errors.is_empty(), "\n".join(errors))
 
 
+## Jalon 9 (T18, jalon-09.md §2.7.6) : Chenipan relève la tête (« notice », reste), Aspicot se
+## rétracte (« hide », quitte la carte) ; mêmes règles que « fly » / « flee » (non interactif,
+## sans routine).
+func test_notice_and_hide_are_shy_actions() -> void:
+	var errors := PackedStringArray()
+	var notice := NpcRoster.parse_entry({"cell": [1, 2], "sprite": "pokemon/caterpie",
+		"shy": {"action": "notice"}}, errors)
+	assert_eq(notice.shy_action, &"notice")
+	assert_eq(notice.shy_radius, 2)
+	var hide := NpcRoster.parse_entry({"cell": [1, 2], "sprite": "pokemon/weedle",
+		"lift": 32, "shy": {"action": "hide", "radius": 1}}, errors)
+	assert_eq([hide.shy_action, hide.shy_radius, hide.lift], [&"hide", 1, 32])
+	assert_true(errors.is_empty(), "\n".join(errors))
+	assert_null(NpcRoster.parse_entry({"cell": [1, 2], "sprite": "pokemon/weedle",
+		"dialogue": "hello", "shy": {"action": "hide"}}, errors), "interactif : refusé")
+	assert_null(NpcRoster.parse_entry({"cell": [1, 2], "sprite": "pokemon/caterpie",
+		"shy": {"action": "notice"}, "route": {"cells": [[1, 2], [1, 3]]}}, errors),
+		"routine : refusée")
+	assert_eq(errors.size(), 2)
+
+
 func test_shy_invalid_values_are_rejected() -> void:
 	var errors := PackedStringArray()
 	assert_null(NpcRoster.parse_entry(
@@ -519,3 +540,97 @@ func test_real_species_exist_in_the_pokemon_data() -> void:
 		for spec: NpcSpec in roster.get_all():
 			if spec.is_observable_species():
 				assert_true(data.has_species(spec.species), "%s : %s" % [file, spec.species])
+
+
+# --- Jalon 9 (jalon-09.md §2.4.1) : bloc « trainer » -------------------------------------
+
+const _THEO: Dictionary = {
+	"cell": [5, 2], "facing": "down", "sprite": "scout", "dialogue": "forest_scout_theo_after",
+	"trainer": {"id": "forest_scout_theo", "sight": 4, "before": "forest_scout_theo_before"},
+}
+
+
+func _theo_with(changes: Dictionary, removed: Array[String] = []) -> Dictionary:
+	var entry := _THEO.duplicate(true)
+	entry.merge(changes, true)
+	for key: String in removed:
+		entry.erase(key)
+	return entry
+
+
+func test_trainer_block_is_read() -> void:
+	var errors := PackedStringArray()
+	var spec := NpcRoster.parse_entry(_THEO, errors)
+	assert_true(errors.is_empty(), "\n".join(errors))
+	assert_true(spec.is_trainer())
+	assert_eq(spec.trainer_id, &"forest_scout_theo")
+	assert_eq(spec.sight, 4)
+	assert_eq(spec.before_dialogue, &"forest_scout_theo_before")
+	assert_eq(spec.dialogue, &"forest_scout_theo_after", "réplique « après »")
+	assert_eq(spec.facing, Vector2i.DOWN)
+	var plain := NpcRoster.parse_entry({"cell": [1, 1], "sprite": "mom"}, errors)
+	assert_false(plain.is_trainer(), "pas un Dresseur par défaut")
+	assert_eq(plain.sight, 0)
+
+
+func test_trainer_sight_bounds() -> void:
+	for sight: int in [TrainerRules.SIGHT_MIN, TrainerRules.SIGHT_MAX]:
+		var errors := PackedStringArray()
+		var entry := _THEO.duplicate(true)
+		entry["trainer"]["sight"] = sight
+		assert_not_null(NpcRoster.parse_entry(entry, errors), "vision %d" % sight)
+	assert_eq([TrainerRules.SIGHT_MIN, TrainerRules.SIGHT_MAX], [1, 8])
+
+
+func test_invalid_trainer_blocks_are_rejected() -> void:
+	var bad: Array[Dictionary] = []
+	for block: Variant in [
+		"forest_scout_theo",
+		{"id": "forest_scout_theo", "sight": 4},
+		{"id": "", "sight": 4, "before": "b"},
+		{"sight": 4, "before": "b"},
+		{"id": "t", "sight": 0, "before": "b"},
+		{"id": "t", "sight": 9, "before": "b"},
+		{"id": "t", "sight": 2.5, "before": "b"},
+		{"id": "t", "sight": "4", "before": "b"},
+		{"id": "t", "sight": 4, "before": "b", "after": "a"},
+	]:
+		bad.append(_theo_with({"trainer": block}))
+	bad.append(_theo_with({}, ["facing"]))
+	bad.append(_theo_with({}, ["dialogue"]))
+	bad.append(_theo_with({"verb": "observe"}))
+	bad.append(_theo_with({"route": {"cells": [[5, 2], [5, 3]]}}))
+	bad.append(_theo_with({"look": {"facings": ["down", "left"]}}))
+	bad.append(_theo_with({"idle_react": 4}))
+	bad.append(_theo_with({"shy": {"action": "flee"}}, ["dialogue"]))
+	for i: int in bad.size():
+		var errors := PackedStringArray()
+		assert_null(NpcRoster.parse_entry(bad[i], errors), "%d : %s" % [i, bad[i]])
+		assert_false(errors.is_empty(), str(i))
+	var errors := PackedStringArray()
+	NpcRoster.parse_entry(_theo_with({}, ["facing"]), errors)
+	assert_string_contains("\n".join(errors), "exige « facing »")
+	errors.clear()
+	NpcRoster.parse_entry(_theo_with({"look": {"facings": ["down", "left"]}}), errors)
+	assert_string_contains("\n".join(errors), "« look » interdit sur un Dresseur")
+
+
+## Données réelles : chaque Dresseur posé sur une carte existe dans data/trainers/ et ses deux
+## répliques dans data/dialogues/ (aucun fichier n'en pose avant le T12 : vrai à vide).
+func test_real_trainers_exist_with_their_dialogues() -> void:
+	var data := PokemonData.new()
+	data.load_dir()
+	var trainers := TrainerLibrary.new(data)
+	trainers.load_dir()
+	var dialogues := DialogueLibrary.new()
+	dialogues.load_dir()
+	assert_not_null(trainers.get_trainer(&"forest_scout_theo"), "données des Dresseurs lues")
+	for file: String in DirAccess.get_files_at(NpcRoster.DATA_DIR):
+		if file.get_extension() != "json":
+			continue
+		for spec: NpcSpec in NpcRoster.load_for_map(StringName(file.get_basename())).get_all():
+			if not spec.is_trainer():
+				continue
+			assert_not_null(trainers.get_trainer(spec.trainer_id), "%s : %s" % [file, spec.id])
+			for dialogue: StringName in [spec.before_dialogue, spec.dialogue]:
+				assert_true(dialogues.has_dialogue(dialogue), "%s : %s" % [file, dialogue])

@@ -99,3 +99,14 @@ func test_capture_result_defaults() -> void:
 	var result := CaptureResult.new()
 	assert_false(result.caught)
 	assert_eq(result.shakes, 0)
+
+
+## Jalon 9 (Q-6) : une cible empoisonnée vaut ×1,5 (bonus de statut, StatusRules).
+func test_poison_status_bonus() -> void:
+	var bonus := StatusRules.catch_bonus(StatusRules.POISON)
+	assert_eq(bonus, 1.5)
+	assert_eq(CaptureCalc.catch_value(15, 15, 255, 1.0, bonus), 127, "⌊85 × 1,5⌋")
+	assert_gt(CaptureCalc.chance(15, 15, 255, 1.0, bonus), CaptureCalc.chance(15, 15, 255, 1.0))
+	assert_eq(CaptureCalc.catch_value(15, 1, 255, 1.0, bonus), 364, "≥ 255 : assurée")
+	assert_eq(CaptureCalc.chance(15, 1, 255, 1.0, bonus), 1.0)
+	assert_eq(CaptureCalc.catch_value(15, 15, 255, 1.0, StatusRules.catch_bonus(&"")), 85)

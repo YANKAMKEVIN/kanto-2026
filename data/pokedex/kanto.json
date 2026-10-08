@@ -49,6 +49,38 @@
 			"height": 1.6, "weight": 85.5,
 			"description": "Massif et posé, il ne s'énerve presque jamais. Sa carapace porte les marques de nombreuses années."
 		},
+		"caterpie": {
+			"height": 0.3, "weight": 2.9,
+			"description": "Il grignote les feuilles du matin au soir. Inquiet, il dresse son antenne rouge et répand une odeur qui fait fuir les curieux.",
+			"notes": [
+				{ "id": "caterpie_leaf", "unlock": { "seen": 1 },
+				  "text": "Immobile sur une feuille, il se confond avec elle. On ne le remarque que lorsqu'il relève la tête." }
+			]
+		},
+		"metapod": {
+			"height": 0.7, "weight": 9.9,
+			"description": "Sa coque durcit pour protéger le corps tendre qui se transforme à l'intérieur. Il bouge à peine et attend son heure."
+		},
+		"butterfree": {
+			"height": 1.1, "weight": 32.0,
+			"description": "Ses ailes sèment une fine poudre à chaque battement. Il passe de fleur en fleur dans les clairières, loin des sentiers."
+		},
+		"weedle": {
+			"height": 0.3, "weight": 3.2,
+			"description": "Le dard de sa tête est venimeux. Il reste caché sous les feuilles et ne s'en sert que lorsqu'on le dérange.",
+			"notes": [
+				{ "id": "weedle_curl", "unlock": { "seen": 1 },
+				  "text": "Dérangé sur son tronc, il se recroqueville aussitôt vers le feuillage, le dard tourné vers l'intrus." }
+			]
+		},
+		"kakuna": {
+			"height": 0.6, "weight": 10.0,
+			"description": "Accroché aux branches, il semble dormir dans son cocon. Pourtant, il sent tout ce qui bouge autour de lui."
+		},
+		"beedrill": {
+			"height": 1.0, "weight": 29.5,
+			"description": "Il fond sur les intrus dans un bourdonnement sourd, ses trois dards pointés en avant. Il défend son nid avec acharnement."
+		},
 		"pidgey": {
 			"height": 0.3, "weight": 1.8,
 			"description": "Discret et peu farouche, il picore au bord des chemins et s'envole en rase-mottes quand on approche trop.",
@@ -88,6 +120,18 @@
 		"fearow": {
 			"height": 1.2, "weight": 38.0,
 			"description": "Ses grandes ailes le portent longtemps sans qu'il se pose. Son long bec fouille la terre comme l'eau."
+		},
+		"pikachu": {
+			"height": 0.4, "weight": 6.0,
+			"description": "Les poches de ses joues crépitent quand il est inquiet. On l'aperçoit rarement, au détour d'un sous-bois, avant qu'il ne file.",
+			"notes": [
+				{ "id": "pikachu_scorch", "unlock": { "seen": 1 },
+				  "text": "Des feuilles roussies au pied d'un arbre trahissent parfois son passage." }
+			]
+		},
+		"raichu": {
+			"height": 0.8, "weight": 30.0,
+			"description": "Quand il a accumulé trop d'électricité, il plante le bout de sa queue dans la terre pour s'en délester, puis redevient calme."
 		},
 		"nidoran_f": {
 			"height": 0.4, "weight": 7.0,

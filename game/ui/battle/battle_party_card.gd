@@ -53,7 +53,7 @@ func set_view(view: BattlePartyView) -> void:
 		_tag.add_theme_color_override(&"font_color", UiTokens.ACCENT)
 	else:
 		_tag.text = view.status_text
-		_tag.add_theme_color_override(&"font_color", UiTokens.HP_LOW)
+		_tag.add_theme_color_override(&"font_color", StatusView.color(view.status_text))
 	_tag.visible = not _tag.text.is_empty()
 	# « ACTIF » dit déjà pourquoi on ne l'envoie pas : la raison reste pour le refus (pied).
 	_reason.text = "" if view.can_send or view.active else view.reason

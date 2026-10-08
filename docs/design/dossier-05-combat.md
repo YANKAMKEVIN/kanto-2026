@@ -10,6 +10,8 @@
 ## 2. Le combat se déroule dans l'endroit où l'on se trouve
 Décision préférée de Kevin. Pas de « transition → décor générique d'herbe ». Un Roucool rencontré près d'un petit pont de la Route 1 se combat **près de ce pont** : même végétation, même heure, même météo, même lumière (à 19 h sous la pluie : sol humide, pluie qui continue, lumière du soir). Continuité totale entre exploration et combat.
 
+> **Mise en œuvre précisée par Kevin (2026-10-07, chantier `combat-maquettes`, CB.3)** : le combat utilise une **représentation peinte et resserrée du lieu où il a été déclenché**, et non plus la caméra de la carte d'exploration zoomée et floutée (une carte vue de dessus ne donne jamais la profondeur de `combat-v1`). Ce n'est **pas un décor générique** : la Route 1 reste visuellement la Route 1, la Route 22 la Route 22, la Forêt de Jade la Forêt, le Labo le Labo. Un décor = **zone + variante locale** (ex. Forêt de Jade : lisière, sous-bois, clairière), sans règle rigide « une image par zone » ; on ne produit que les variantes utiles. Masters sans Pokémon, personnage ni UI, ≥ 2340 × 1080, sol central lisible, ligne de sol documentée, zones calmes pour les cartes de PV, premier plan sur calque séparé si possible ; compatibles avec l'étalonnage (`WorldLighting`) : pas de variantes jour/nuit maintenant, rendu temporel validé à la phase prévue. Planche d'intention : `reference/combat-decors-planche-v1.webp` (concept, pas un master). Continuité : déclenchement dans le monde → transition courte → décor peint correspondant → combat, sans impression de téléportation vers une arène.
+
 ## 3. La transition (~1 s)
 - **Sauvage** : pas de spirale Game Boy de 3 s. L'herbe bouge → cri → le personnage s'arrête → la caméra se rapproche légèrement → le Pokémon apparaît → le partenaire entre dans le cadre → combat.
 - **Dresseur** : il te voit → s'approche → quelques mots → sort sa Poké Ball → lancer. Rapide.
@@ -51,7 +53,7 @@ Paralysie → petites décharges occasionnelles ; poison → légère aura/parti
 Seulement ce qui est pertinent : **Poké Balls, Soins, Combat**, éventuellement favoris. Pas les 85 objets.
 
 ## 16. La capture
-🎒 → Poké Balls → Poké Ball. Le dresseur apparaît davantage dans le cadrage, lancer, Pokémon absorbé, la Ball tombe **dans le décor actuel**, puis toc + vibration ×3… ✨ clic. **Ces trois secondes doivent être presque sacrées.** (Storyboard : `combat-capture-v1.webp`.)
+🎒 → Poké Balls → Poké Ball. Le dresseur apparaît davantage dans le cadrage, lancer, Pokémon absorbé, la Ball tombe **dans le décor actuel** (le décor peint du lieu, §2), puis toc + vibration ×3… ✨ clic. **Ces trois secondes doivent être presque sacrées.** (Storyboard : `combat-capture-v1.webp`.)
 
 ## 17. Capture réussie
 > **Précisé le 2026-10-02 (dossier 09 §6)** : « Nouvelle entrée Pokédex » ne s'affiche **qu'après l'activation du Pokédex** par Chen (J7A). Avant, la ligne est absente ; la capture est tout de même enregistrée.

@@ -78,8 +78,8 @@ func _ready() -> void:
 		BattleHudLayout.place(widget, slots[widget])
 		widget.haptic_played.connect(haptic_played.emit)
 	# Chaque carte entre par son bord d'écran le plus proche.
-	_foe_card.slide_direction = Vector2.RIGHT
-	_own_card.slide_direction = Vector2.LEFT
+	_foe_card.slide_direction = Vector2.LEFT
+	_own_card.slide_direction = Vector2.RIGHT
 	_actions.action_selected.connect(action_selected.emit)
 	_moves.move_selected.connect(move_selected.emit)
 	_back.back_requested.connect(_on_back)
@@ -136,6 +136,18 @@ func set_level(side: BattleHud.Side, level: int) -> void:
 ## Coup reçu par [param side] : vibration HAPTIC_HIT_MS, HAPTIC_CRIT_MS si [param critical].
 func play_hit(side: BattleHud.Side, critical: bool) -> void:
 	get_card(side).play_hit(critical)
+
+
+## Dégât de poison reçu par [param side] : vibration douce HAPTIC_STATUS_MS (le voile et la
+## barre sont joués par celui qui pilote).
+func play_poison(side: BattleHud.Side) -> void:
+	get_card(side).play_poison()
+
+
+## Pose (ou retire, avec [constant StatusRules.NONE]) l'étiquette « PSN » de la carte de [param
+## side].
+func set_status(side: BattleHud.Side, status: StringName) -> void:
+	get_card(side).set_status(status)
 
 
 ## [param count] Pokémon dans l'équipe du joueur (pastilles pleines, le reste gris).

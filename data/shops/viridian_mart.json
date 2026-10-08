@@ -2,7 +2,8 @@
 	"viridian_mart": {
 		"stock": [
 			{ "item": "poke_ball" },
-			{ "item": "potion" }
+			{ "item": "potion" },
+			{ "item": "antidote", "if": ["poison_unlocked"] }
 		]
 	}
 }

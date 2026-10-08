@@ -1,0 +1,17 @@
+{
+	"caterpie": {
+		"cell": [3, 3], "facing": "left", "sprite": "pokemon/weedle",
+		"shy": { "action": "notice", "radius": 2 }
+	},
+	"weedle": {
+		"cell": [8, 2], "facing": "left", "sprite": "pokemon/weedle", "lift": 32,
+		"shy": { "action": "hide", "radius": 1 }
+	},
+	"metapod": {
+		"cell": [8, 5], "facing": "right", "sprite": "pokemon/metapod", "lift": 40
+	},
+	"no_sheet": {
+		"cell": [1, 6], "facing": "down", "sprite": "pokemon/no_such_species",
+		"shy": { "action": "notice", "radius": 2 }
+	}
+}

@@ -1,6 +1,6 @@
 # Dossier 10 — Forêt de Jade
 
-> Conçu par Kevin avec ChatGPT, reçu le 2026-10-06 ; passe d'alignement de Claude et **11 décisions de Kevin** le même jour (section « Arbitrages »). **Source de vérité** pour la Forêt de Jade (jalon 9 de la roadmap). Le tracé ASCII donne la logique, **pas à reproduire case par case**. Textes : section « Textes verrouillés » (validés par Kevin le 2026-10-06 sur recommandation de Claude). **Pas d'implémentation avant le jalon 9.**
+> Conçu par Kevin avec ChatGPT, reçu le 2026-10-06 ; passe d'alignement de Claude et **11 décisions de Kevin** le même jour (section « Arbitrages »). **Source de vérité** pour la Forêt de Jade (jalon 9 de la roadmap). Le tracé ASCII donne la logique, **pas à reproduire case par case**. Textes : section « Textes verrouillés » (validés par Kevin le 2026-10-06 sur recommandation de Claude). Jalon 9 lancé le 2026-10-06 (plan : `docs/tech/jalon-09.md`).
 
 **Ligne directrice** : la Forêt de Jade est le premier endroit où Kanto cesse d'être confortable sans devenir hostile. Jusqu'ici, le joueur découvre ; ici, il commence à préparer son équipe.
 
@@ -17,6 +17,21 @@
 10. **Repères : tronc incliné au sud → énorme souche au centre → clairière lumineuse au nord.** L'étude de DA (`reference/foret-jade-etude-ambiance-v1.png`, tracé provisoire, arbre ancien au centre) reste une référence d'**ambiance**, pas de level design.
 11. **Contraintes du futur dossier de la Route 2** : aucun Dresseur avant la forêt (Théo reste le premier vrai Dresseur) ; la Route 2 est interrompue par la Forêt de Jade et ne permet pas de la contourner lors de la première progression (aussi notées dans la roadmap, phase 5).
 
+## Vue générale peinte v1 (validée par Kevin le 2026-10-07)
+- **`reference/foret-jade-vue-generale-v1.png`** (essai r2, `tools/art/prompts/CONCEPT_FORET_JADE_VUE_GENERALE_r2.txt` ; ancre de style : la vue de la Route 2) = **référence DA et ambiance** : rendu peint de la même main que la Route 2, forêt sombre bleu-vert (verts profonds, ombres froides), sentier de terre claire en serpentin orthogonal, densité « nature dense, objets rares », hautes herbes jaune-vert en blocs nets, petites clairières plus claires et fleuries, poste nord à toit d'ardoise, et les **trois repères** dans l'ordre : tronc incliné moussu (sud), grande souche creuse aux racines étalées (centre), clairière traversée par un rai de lumière (nord). Personnages et Pokémon : un Scout au filet, le naturaliste au carnet, la randonneuse et son sac, Chenipan, Coconfort, Roucool.
+- **`reference/foret-jade-plan-v1.png`** (`tools/art/plan_aplats.py`, grille `tools/plans/viridian_forest.txt`) = **référence fonctionnelle**. **La grille fait foi pour le jeu, l'image donne la DA** (règle 10 de `CLAUDE.md`) : la vue ne suit le plan que dans les grandes lignes (serpentin compressé, clairières déplacées, proportions libres).
+- **Ce que la vue fixe** : palette et ambiance (plus sombre et plus fraîche que la Route 2, lumière chaude seulement dans les ouvertures) ; la sensation de couloirs sous la canopée qui débouchent sur des respirations ; l'aspect des repères (tronc moussu incliné, souche creuse, rai) ; la tenue des personnages (Scout : chapeau de paille et filet ; naturaliste : sac à dos et carnet) ; la rareté des objets (Poké Balls au sol, quelques souches).
+- **Ce qu'elle ne fixe pas** : la géométrie, les positions des Dresseurs, PNJ, objets et Pokémon d'ambiance, la taille des clairières, le nombre de zones d'herbes (tout cela vient de la grille, validée par Kevin au T14) ; aucun élément n'est implémenté parce qu'il est sur l'image.
+- **Écarts relevés et traitement** (r2 corrige r1 : rai dans la clairière près du poste nord au lieu d'être sur la souche, tronc incliné du bon côté du sentier, H3 traversée par le sentier, forêt plus sombre et bleu-vert) :
+  - **bords des couloirs en haies taillées régulières** → dans le jeu, **sous-bois irrégulier** : bandes de sous-bois praticable de la grille (une case le long des traversées), lisière d'arbres de forêt, décalcomanies de sous-bois ; aucune haie ;
+  - **seconde souche (coupée à plat) au centre, absente du plan** → ignorée : **une seule grande souche**, repère central, à sa case de la grille ; son aspect est celui de la souche creuse de la vue ;
+  - **feuillage un peu « pixel »** (comme la référence de la Route 2) → sans effet : le jeu utilise les arbres de forêt peints déjà validés ;
+  - **clairière d'entrée petite** → la grille fait foi (C1, 17 × 6 cases) ;
+  - **rai de lumière coupé par le coin de l'image** → dans le jeu, le rai est dans C3 (cases `L` de la grille), en entier, plus quelques taches sur le chemin ;
+  - **Aspicot discret** → posés aux cases de la grille, avec leur réaction (se rétracter) pour être remarqués ;
+  - le tronc mort près du naturaliste (où pend un Coconfort) et le Roucool au sol ne sont pas repris : la grille place le Chrysacier sur un tronc de forêt et le Roucool sur une branche basse.
+- Liste exacte des assets tirée de cette vue (réutilisés, variations, nouveaux, abandons) : `docs/tech/jalon-09.md` §2.8. Deux essais faits (r1, r2) ; **pas d'essai 3**.
+
 ## 1. Intention
 **Première petite expédition** de l'aventure : « Je ne suis plus juste sur une route entre deux villes. Je suis entré quelque part. »
 Différences avec la Route 1 : **orientation moins immédiate** (on voit moins loin) ; **pression légère sur les ressources** (poison, PV, plusieurs combats avant le prochain Centre) ; **biodiversité marquée** (Pokémon Insecte, premières compositions d'équipe intéressantes). Jamais oppressante : fraîche, vivante, mystérieuse et accueillante.
@@ -27,7 +42,7 @@ Différences avec la Route 1 : **orientation moins immédiate** (on voit moins l
 Durées visées (indicatives, arbitrage 4) : traversée directe 7–9 min ; première traversée 15–20 min ; exploration attentive 25–30 min, combats compris. La distance au Centre de Jadielle doit commencer à compter.
 
 ## 3. Entrées et sorties
-ADN Rouge/Bleu : **Route 2 → poste sud → forêt → poste nord → Route 2 nord → Argenta**. Les postes sont de petits bâtiments-portes d'une pièce, traversés en quelques secondes, avec un garde chacun (une scène paramétrée, arbitrage 9). Répliques : « Textes à valider ».
+ADN Rouge/Bleu : **Route 2 → poste sud → forêt → poste nord → Route 2 nord → Argenta**. Les postes sont de petits bâtiments-portes d'une pièce, traversés en quelques secondes, avec un garde chacun (une scène paramétrée, arbitrage 9). Répliques : « Textes verrouillés ».
 Conséquence pour la Route 2 : arbitrage 11.
 
 ## 4. Tracé
@@ -113,7 +128,7 @@ IA simple (début de jeu). Champs de vision en cases ; récompenses en ₽.
 | D4 | Scout Milo | 5 | oui (détour par les hautes herbes) | Chenipan Nv. 6, Aspicot Nv. 6 | 144 |
 | D5 | Scout Éli | 5 | oui | Chrysacier Nv. 7, Coconfort Nv. 7, Chenipan Nv. 7 | 252 |
 
-Progression : un Pokémon simple → premier duo → autre famille → opposition de types → première petite équipe de trois. **Théo est le premier vrai Dresseur de l'aventure** (arbitrage 11). Répliques : « Textes à valider ».
+Progression : un Pokémon simple → premier duo → autre famille → opposition de types → première petite équipe de trois. **Théo est le premier vrai Dresseur de l'aventure** (arbitrage 11). Répliques : « Textes verrouillés ».
 **Système à créer au jalon 9** (n'existe pas : le rival est déclenché par des scènes) : Dresseur qui voit le joueur dans son champ → « ! » → il avance de 2–3 cases → répliques → combat ; battu = mémorisé, réplique « après » ensuite.
 
 ## 9. PNJ non-combattants (2, plus les gardes)

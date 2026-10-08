@@ -1,0 +1,29 @@
+DÉCOR DE COMBAT — ROUTE 1 (Kanto 2026). Image de PRODUCTION : le fond peint d'un écran de combat Pokémon sur smartphone en paysage. AUCUN Pokémon, AUCUN personnage, AUCUNE interface, AUCUN texte.
+
+Trois images sont jointes.
+IMAGE 1 : un écran de combat de référence. Reprends sa VUE (caméra à hauteur d'yeux, légèrement plongeante, horizon dans le tiers haut, grand sol dégagé au centre), sa profondeur et sa qualité de peinture. Ne reprends PAS : les Pokémon, les cartes, les boutons, la rivière, le pont, le coucher de soleil.
+IMAGE 2 : une planche d'intention « Route 1 — chemin de campagne » (concept). Reprends l'esprit (chemin de terre, clôture de bois, campagne). Ne reprends PAS la rivière ni le pont : il n'y a AUCUNE eau sur la Route 1.
+IMAGE 3 : la vue générale de la Route 1 vue de dessus, le vrai lieu du jeu. C'est ce lieu qu'on doit reconnaître, vu à hauteur d'yeux : chemin de terre beige qui traverse de larges clairières d'herbe rase, forêt dense de feuillus ronds et de quelques conifères vert sombre tenue à distance, parcelles de HAUTES HERBES jaune-vert touffues, UN arbre aux feuilles ORANGE d'automne (le seul), UN bouleau à tronc blanc, une clôture basse en bois, des rochers, des petites fleurs blanches et roses.
+
+FORMAT : paysage très large, rapport 2,17 : 1 (comme 2340 × 1080), la plus grande résolution possible, OPAQUE, cadrage plein, sans bord.
+
+COMPOSITION (positions en fractions de la largeur et de la hauteur de l'image, depuis le coin haut gauche) — à respecter précisément :
+- Horizon : la base des collines lointaines et de la lisière la plus éloignée vers 30 à 34 % de la hauteur. Au-dessus : ciel clair et collines douces bleutées dans le lointain.
+- Au loin, au centre gauche, cinq ou six minuscules maisons aux toits rouges d'un petit bourg (Bourg Palette) à demi cachées par les arbres, très petites et discrètes. AUCUN clocher, aucune église, aucune tour, aucun château.
+- De 40 % de la hauteur jusqu'en bas : un GRAND SOL DÉGAGÉ et PLAT, une large clairière de terre battue beige mêlée d'herbe rase, où deux créatures pourront se faire face. Le chemin de terre de la Route 1 arrive du bas et s'éloigne vers le lointain au centre.
+- Point A (x 67 %, y 50 %) : terre battue nue et plate, bien lisible, une créature y posera les pieds. Rien de haut dans un rayon de 12 % de la largeur autour ; derrière lui, seulement de l'herbe rase puis des hautes herbes plus loin.
+- Point B (x 31 %, y 97 %) : sol plat de terre et d'herbe rase, une grande créature vue de dos y sera au premier plan. Rien de haut autour.
+- Plan moyen (35 à 48 % de la hauteur) : à droite, la clôture basse en bois et l'arbre orange d'automne ; à gauche, le bouleau blanc et des parcelles de hautes herbes jaune-vert ; la lisière de forêt dense derrière, des deux côtés, avec deux conifères sombres.
+- ZONE CALME en HAUT À GAUCHE (de 0 à 50 % de la largeur, de 0 à 45 % de la hauteur) : peu de détails et peu de contraste : ciel doux et la masse simple d'un grand feuillu au bord gauche.
+- ZONE CALME en BAS À DROITE (de 50 à 100 % de la largeur, de 55 à 100 % de la hauteur) : sol simple, terre et herbe rase, presque sans objet, valeurs moyennes, sans contraste fort.
+- Les deux coins du bas restent du SOL (terre, herbe rase) : pas de buisson ni de fleurs en gros plan, ils seront ajoutés sur un calque séparé.
+- Les 9 % de gauche et de droite de l'image ne contiennent rien d'important (ils seront rognés sur certains écrans).
+
+SOL : terre battue beige variée (zones plus claires et plus foncées, petits cailloux, touffes d'herbe éparses qui rapetissent avec la distance), jamais une surface uniforme.
+
+PERSPECTIVE : vue à hauteur d'yeux d'un enfant, un peu plongeante ; le sol recule nettement vers l'horizon (les touffes d'herbe et les cailloux rapetissent avec la distance). Netteté partout (aucun flou de profondeur, pas de vignettage).
+
+RENDU (ADN visuel Kanto 2026) : illustration 2D peinte numériquement, RPG Pokémon moderne « HD-2D peint », formes simples, lisibles et arrondies, feuillage en grandes masses douces (jamais en petits points ni en pixels), aucun trait noir (contours fins et doux plus sombres que la couleur), couleurs lumineuses et saturées sans être fluo, ombres colorées bleu-vert.
+LUMIÈRE : APRÈS-MIDI doux et clair, soleil haut venant du haut à gauche (hors cadre), ombres courtes et douces, ciel bleu PÂLE et doux, légèrement voilé près de l'horizon (pas de bleu vif saturé), avec quelques nuages blancs ; légèrement chaud mais PAS de coucher de soleil, pas de ciel orange, pas de soleil visible, pas de contre-jour (la teinte dorée sera ajoutée par le jeu).
+
+INTERDITS : Pokémon, animal, oiseau, personnage, silhouette, texte, lettres, chiffres, panneau lisible, logo, signature, filigrane, cadre, interface, eau, rivière, pont, lac, route goudronnée, véhicule, pixel art, flou, vignettage.

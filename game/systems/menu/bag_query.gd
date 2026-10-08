@@ -40,6 +40,7 @@ const REASONS: Dictionary[ItemUse.Check, String] = {
 	ItemUse.Check.NOT_IN_BAG: "Il n'en reste plus",
 	ItemUse.Check.WRONG_CONTEXT: "Pas maintenant",
 	ItemUse.Check.NOT_USABLE: "Sans effet",
+	ItemUse.Check.NO_EFFECT: "Sans effet",
 }
 ## Phrase de refus quand on touche un Pokémon qui ne peut pas recevoir l'objet.
 const REFUSAL_FORMATS: Dictionary[ItemUse.Check, String] = {
@@ -48,9 +49,15 @@ const REFUSAL_FORMATS: Dictionary[ItemUse.Check, String] = {
 	ItemUse.Check.NOT_IN_BAG: "Il n'en reste plus.",
 	ItemUse.Check.WRONG_CONTEXT: "Pas maintenant.",
 	ItemUse.Check.NOT_USABLE: "Cela n'aurait aucun effet sur %s.",
+	ItemUse.Check.NO_EFFECT: "Cela n'aurait aucun effet sur %s.",
 }
 ## Résultat d'un soin : « +20 PV — Salamèche 33/51 ».
 const RESULT_FORMAT: String = "+%d PV — %s %d/%d"
+## Résultat d'un soin de statut sans PV rendus (jalon 9, textes n° 14 et 15 du lot verrouillé
+## le 2026-10-07), par statut : masculin, puis féminin (Pokémon femelle).
+const STATUS_CURED_FORMATS: Dictionary[StringName, Array] = {
+	StatusRules.POISON: ["%s n'est plus empoisonné.", "%s n'est plus empoisonnée."],
+}
 ## Sac sans objet (Q-2) ; depuis la fiche Équipe, aucun objet à donner.
 const EMPTY_TEXT: String = "Ton Sac est vide."
 const EMPTY_TEAM_TEXT: String = "Aucun soin dans ton Sac."
@@ -174,13 +181,18 @@ static func reason_text(check: ItemUse.Check) -> String:
 	return REASONS.get(check, "")
 
 
-## Texte du résultat (UseResultBar) : « +20 PV — Salamèche 33/51 » si l'objet a servi, sinon
-## la raison (rien n'a été consommé).
+## Texte du résultat (UseResultBar) : « +20 PV — Salamèche 33/51 » si l'objet a rendu des PV,
+## « Salamèche n'est plus empoisonné. » s'il n'a soigné qu'un statut (accordé au sexe du
+## Pokémon), sinon la raison (rien n'a été consommé).
 static func result_text(result: ItemUseResult, pokemon_name: String) -> String:
 	if result == null:
 		return ""
 	if not result.is_ok():
 		return reason_text(result.check)
+	if result.amount() == 0 and STATUS_CURED_FORMATS.has(result.status_cured):
+		var formats: Array = STATUS_CURED_FORMATS[result.status_cured]
+		var female := result.gender == Pokemon.Gender.FEMALE
+		return String(formats[1 if female else 0]) % pokemon_name
 	return RESULT_FORMAT % [result.amount(), pokemon_name, result.hp_after, result.max_hp]
 
 

@@ -11,6 +11,7 @@ extends GutTest
 const NPC_SCENE := "res://game/world/npc/npc.tscn"
 const CELL := Vector2i(5, 5)
 const FRAME := 1.0 / 60.0
+const TweenClock := preload("res://tests/helpers/tween_clock.gd")
 
 
 func _spec(overrides: Dictionary = {}) -> NpcSpec:
@@ -526,6 +527,7 @@ func _check_hop(style: StringName) -> void:
 	# haut du sprite ; rotation, décalage horizontal, compression et plan de dessin vus.
 	# Relevés pas par pas dans le test lui-même.
 	var peak := 0.0
+	var top := 0.0
 	var rotated := false
 	var swayed := false
 	var squashed := false
@@ -808,3 +810,115 @@ func test_steps_alternate_feet_even_after_a_stop() -> void:
 		_simulate(npc, int(Grid.WALK_STEP_DURATION / FRAME) + 3)
 		assert_false(npc.is_moving())
 	assert_eq(first_frames, [0, 2, 0, 2] as Array[int], "pied gauche, pied droit…")
+
+
+## Jalon 9 (T12) : la bulle « ! » existe pendant l'attente, au-dessus de la tête, devant le tri
+## en profondeur, grandit en rebond puis disparaît ; durée au pas près (0,6 s).
+func test_emote_bubble_pops_holds_fades_and_is_removed() -> void:
+	var npc := _make(_spec())
+	var clock := TweenClock.new(get_tree())
+	watch_signals(npc)
+	npc.show_emote(&"exclamation")
+	assert_true(npc.is_emoting())
+	var bubble := npc.get_node_or_null(^"EmoteBubble") as Sprite2D
+	assert_not_null(bubble, "bulle dessinée")
+	if bubble == null:
+		clock.release()
+		return
+	assert_gt(bubble.z_index, 0, "devant le tri en profondeur")
+	assert_almost_eq(bubble.scale.x, 0.0, 0.001, "elle naît à l'échelle zéro")
+	var peak := 0.0
+	var top := 0.0
+	var steps := 0
+	while npc.is_emoting() and steps < 120:
+		clock.step()
+		steps += 1
+		if is_instance_valid(bubble) and not bubble.is_queued_for_deletion():
+			peak = maxf(peak, bubble.scale.x)
+			top = minf(top, bubble.position.y)
+	assert_between(peak, UiTokens.EMOTE_SCALE, UiTokens.EMOTE_SCALE * 1.25,
+		"rebond : plein format, dépassement borné")
+	assert_almost_eq(top, -UiTokens.EMOTE_TIP_HEIGHT, 3.0, "pointe à la hauteur des réglages")
+	assert_between(steps, int(Npc.EMOTE_DURATION / FRAME), int(Npc.EMOTE_DURATION / FRAME) + 1,
+		"0,6 s, au pas près")
+	assert_signal_emit_count(npc, "emote_finished", 1)
+	assert_false(npc.is_emoting())
+	await wait_frames(1)
+	assert_null(npc.get_node_or_null(^"EmoteBubble"), "bulle retirée")
+	clock.release()
+
+
+func test_emote_restarted_keeps_a_single_bubble() -> void:
+	var npc := _make(_spec())
+	var clock := TweenClock.new(get_tree())
+	npc.show_emote(&"exclamation")
+	clock.step()
+	npc.show_emote(&"exclamation")
+	await wait_frames(1)
+	var bubbles := 0
+	for child: Node in npc.get_children():
+		if child.name.begins_with("EmoteBubble"):
+			bubbles += 1
+	assert_eq(bubbles, 1)
+	clock.release()
+
+
+## Correctif jalon 9 : la bulle « ! » reste entière dans la vue (marge de sécurité) pour un
+## Dresseur à 4 cases au nord d'un joueur centré, et ne bouge pas quand il y a la place.
+func _bubble_rect_on_screen(npc: Npc, bubble: Sprite2D) -> Rect2:
+	var k := bubble.scale.x
+	var tip := npc.get_global_transform_with_canvas() * bubble.position
+	var icon := Npc.EMOTE_TIP_IN_ICON
+	return Rect2(tip + Vector2(Npc.EMOTE_BODY_LEFT - icon.x, Npc.EMOTE_BODY_TOP - icon.y) * k,
+		Vector2(Npc.EMOTE_BODY_RIGHT - Npc.EMOTE_BODY_LEFT, icon.y - Npc.EMOTE_BODY_TOP) * k)
+
+
+func _peak_bubble_rect(npc: Npc) -> Rect2:
+	var clock := TweenClock.new(get_tree())
+	npc.show_emote(&"exclamation")
+	var bubble := npc.get_node(^"EmoteBubble") as Sprite2D
+	var union := Rect2()
+	var first := true
+	for i in 12:
+		clock.step()
+		var r := _bubble_rect_on_screen(npc, bubble)
+		union = r if first else union.merge(r)
+		first = false
+	clock.release()
+	return union
+
+
+func test_emote_stays_inside_view_for_trainer_four_cells_north() -> void:
+	var view := get_viewport().get_visible_rect().size
+	var cam := Camera2D.new()
+	add_child_autofree(cam)
+	cam.make_current()
+	# Joueur au centre de la vue ; le Dresseur est 4 cases (384 px) plus haut.
+	var player_feet := Vector2(480.0, 480.0)
+	cam.global_position = player_feet - Vector2(0.0, 64.0)
+	var npc := _make(_spec())
+	npc.global_position = player_feet + Vector2(0.0, -4.0 * 96.0)
+	await wait_frames(1)
+	var rect := _peak_bubble_rect(npc)
+	var margin := float(UiTokens.SAFE_MARGIN)
+	assert_gte(rect.position.y, margin - 1.0, "haut de la bulle dans la vue : %s" % rect)
+	assert_gte(rect.position.x, margin - 1.0)
+	assert_lte(rect.end.x, view.x - margin + 1.0)
+	assert_gt(npc.global_position.y, 0.0)
+
+
+func test_emote_position_unchanged_when_there_is_room() -> void:
+	var cam := Camera2D.new()
+	add_child_autofree(cam)
+	cam.make_current()
+	var npc := _make(_spec())
+	npc.global_position = Vector2(500.0, 500.0)
+	cam.global_position = Vector2(500.0, 500.0)
+	await wait_frames(1)
+	var clock := TweenClock.new(get_tree())
+	npc.show_emote(&"exclamation")
+	var bubble := npc.get_node(^"EmoteBubble") as Sprite2D
+	for i in 14:
+		clock.step()
+	assert_almost_eq(bubble.position, Vector2(0.0, -UiTokens.EMOTE_TIP_HEIGHT), Vector2.ONE * 0.5)
+	clock.release()

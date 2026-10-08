@@ -1,0 +1,11 @@
+{
+	"theo": {
+		"cell": [5, 2], "facing": "down", "sprite": "scout", "dialogue": "theo_after",
+		"trainer": { "id": "forest_scout_theo", "sight": 4, "before": "theo_before" }
+	},
+	"noe": {
+		"cell": [9, 5], "facing": "left", "sprite": "scout", "dialogue": "noe_after",
+		"trainer": { "id": "forest_scout_noe", "sight": 4, "before": "noe_before" }
+	},
+	"kid": { "cell": [12, 10], "facing": "down", "sprite": "kid", "dialogue": "kid" }
+}

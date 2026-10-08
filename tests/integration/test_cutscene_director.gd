@@ -13,6 +13,8 @@ extends GutTest
 ## retour sans changer de case), despawn (case libérée, PNJ retiré).
 ## Jalon 4B (jalon-04.md §14.3) : conditions d'étape « if » / « unless », évaluées au moment
 ## de jouer l'étape (drapeaux levés plus tôt dans la même scène compris).
+## Jalon 9 (jalon-09.md §2.4.3, §2.4.4) : play_variant (variante construite en code, même verrou
+## et mêmes signaux), étape emote (attend la fin de la bulle, au pas près).
 
 const FrameSim := preload("res://tests/helpers/frame_sim.gd")
 const ROUTER_SCRIPT := preload("res://game/autoload/scene_router.gd")
@@ -152,6 +154,9 @@ const SCENES := {
 		{"move": "leo", "background": true, "path": ["left", "up", "up"]},
 	]},
 	"reactions": {"steps": [{"react": "player"}, {"react": "mom"}, {"set": ["after"]}]},
+	# Jalon 9 : bulle « ! » (la scène attend sa fin), PNJ absent.
+	"emote_mom": {"steps": [{"emote": "mom", "kind": "exclamation"}, {"set": ["after"]}]},
+	"emote_ghost": {"steps": [{"emote": "nobody", "kind": "exclamation"}, {"set": ["after"]}]},
 }
 
 
@@ -1093,3 +1098,74 @@ func test_react_step_for_the_player_and_an_npc() -> void:
 	assert_signal_emit_count(mom, "reacted", 1)
 	assert_true(_flags.has_flag(&"after"), "la scène n'attend pas la réaction")
 	assert_push_error_count(0)
+
+
+
+# --- Jalon 9 : play_variant et étape emote (jalon-09.md §2.4.3, §2.4.4) -------------------
+
+func _code_variant() -> CutsceneVariant:
+	var variant := CutsceneVariant.new()
+	var pause := CutsceneStep.new()
+	pause.kind = CutsceneStep.Kind.WAIT
+	pause.seconds = 0.1
+	var face := CutsceneStep.new()
+	face.kind = CutsceneStep.Kind.FACE
+	face.actor = &"player"
+	face.target = &"left"
+	var won := CutsceneStep.new()
+	won.kind = CutsceneStep.Kind.SET_FLAGS
+	won.flags = [&"won_line"]
+	won.if_flags = [&"won"]
+	var after := CutsceneStep.new()
+	after.kind = CutsceneStep.Kind.SET_FLAGS
+	after.flags = [&"after"]
+	variant.steps = [pause, face, won, after]
+	variant.unless_flags = [&"after"]
+	return variant
+
+
+func test_play_variant_blocks_in_the_call_and_emits_the_same_signals() -> void:
+	assert_true(_director.play_variant(&"trainer_x", _code_variant()))
+	assert_true(_player.is_blocked_by(CutsceneDirector.REASON), "bloqué dans l'appel même")
+	assert_true(_director.is_running())
+	assert_eq(_director.get_cutscene_id(), &"trainer_x")
+	assert_signal_emitted_with_parameters(_director, "cutscene_started", [&"trainer_x"])
+	await _await_scene_end()
+	assert_eq(_player.get_facing(), Vector2i.LEFT)
+	assert_false(_flags.has_flag(&"won_line"), "conditions d'étape lues au moment de jouer")
+	assert_true(_flags.has_flag(&"after"))
+	assert_true(_player.is_input_enabled())
+	assert_signal_emitted_with_parameters(_director, "cutscene_finished", [&"trainer_x"])
+	# Les conditions de la variante ne sont pas relues (l'appelant l'a choisie).
+	assert_true(_director.play_variant(&"trainer_x", _code_variant()), "« after » levé : jouée")
+	await _await_scene_end()
+	assert_push_error_count(0)
+
+
+func test_play_variant_refused_while_running_or_without_variant() -> void:
+	assert_true(_director.play(&"timed"))
+	assert_false(_director.play_variant(&"trainer_x", _code_variant()), "une scène tourne")
+	await _await_scene_end()
+	assert_false(_director.play_variant(&"trainer_x", null))
+	assert_push_error("variante absente")
+	assert_false(_director.is_running())
+	assert_true(_player.is_input_enabled())
+
+
+func test_emote_waits_for_the_end_of_the_bubble() -> void:
+	var mom := _map.get_npc(&"mom")
+	watch_signals(mom)
+	var elapsed: float = await _play_simulated(&"emote_mom")
+	_assert_lasts(elapsed, Npc.EMOTE_DURATION, "bulle de 0,6 s", 2)
+	assert_eq(Npc.EMOTE_DURATION, 0.6, "défaut du plan")
+	assert_signal_emit_count(mom, "emote_finished", 1)
+	assert_false(mom.is_emoting())
+	assert_true(_flags.has_flag(&"after"))
+	assert_push_error_count(0)
+
+
+func test_emote_on_a_missing_npc_is_skipped_with_error() -> void:
+	_director.play(&"emote_ghost")
+	await _await_scene_end()
+	assert_push_error("introuvable")
+	assert_true(_flags.has_flag(&"after"))

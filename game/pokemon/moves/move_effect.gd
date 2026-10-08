@@ -8,19 +8,26 @@ extends RefCounted
 ## { "kind": "stat_stage", "stat": "spe", "stages": -1, "target": "foe", "chance": 10 }
 ## { "kind": "recoil", "fraction": 0.25 }
 ## { "kind": "seed", "fraction": 0.125, "immune_types": ["grass"] }
+## { "kind": "status", "status": "poison" }
+## { "kind": "status", "status": "poison", "chance": 30 }
 ## [/codeblock]
 ## Seulement les sortes que le moteur sait appliquer. Les effets pas encore gérés
 ## (brûlure, sommeil…) ne sont pas des MoveEffect : voir [member MoveData.pending_effects].
 ## SEED (Vampigraine, jalon 5 Q28) : plante une graine sur la cible, qui perd en fin de tour
 ## [member fraction] de ses PV max au profit du Pokémon d'en face ; une cible d'un type de
 ## [member immune_types] n'est pas affectée. Seul statut volatil du jalon 5.
+## STATUS (jalon 9 §2.1.2) : inflige à la cible le statut durable [member status] (un de
+## [constant StatusRules.KNOWN]) ; immunités et « déjà un statut » : [StatusRules]. Sur une
+## capacité de statut (Poudre Toxik), un refus est annoncé (NO_EFFECT, STATUS_UNCHANGED) ; en
+## effet secondaire d'une attaque (Dard-Venin, [member chance] < 100), il est silencieux.
 
-enum Kind { STAT_STAGE, RECOIL, SEED }
+enum Kind { STAT_STAGE, RECOIL, SEED, STATUS }
 enum Target { SELF, FOE }
 
 ## Noms des sortes dans les données.
 const KIND_NAMES: Dictionary[String, Kind] = {
 	"stat_stage": Kind.STAT_STAGE, "recoil": Kind.RECOIL, "seed": Kind.SEED,
+	"status": Kind.STATUS,
 }
 const TARGET_NAMES: Dictionary[String, Target] = {"self": Target.SELF, "foe": Target.FOE}
 ## Statistiques qui ont un niveau en combat (−6..+6) ; « acc » précision, « eva » esquive.
@@ -33,10 +40,12 @@ var stat: StringName = &""
 var stages: int = 0
 ## STAT_STAGE : qui la subit (le lanceur ou la cible).
 var target: Target = Target.FOE
-## STAT_STAGE : chance en % (100 = toujours ; sinon un tirage 1..100 ≤ chance).
+## STAT_STAGE, STATUS : chance en % (100 = toujours ; sinon un tirage 1..100 ≤ chance).
 var chance: int = 100
 ## RECOIL : fraction des PV max du lanceur perdue après l'attaque (Lutte : 0,25).
 ## SEED : fraction des PV max de la cible drainée à chaque fin de tour (Vampigraine : ⅛).
 var fraction: float = 0.0
 ## SEED : types de cible qui n'en sont pas affectés (Vampigraine : Plante).
 var immune_types: Array[StringName] = []
+## STATUS : statut infligé à la cible ([constant StatusRules.KNOWN]).
+var status: StringName = &""

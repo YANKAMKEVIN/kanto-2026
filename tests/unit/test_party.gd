@@ -156,3 +156,18 @@ func test_remove_at_returns_the_same_instance_and_shifts_the_others() -> void:
 	assert_null(_party.remove_at(2))
 	assert_null(_party.remove_at(-1))
 	assert_eq(_party.size(), 2)
+
+
+## Jalon 9 : le soin complet (Centre, Maman, réveil après défaite) efface aussi le statut.
+func test_heal_all_clears_the_status() -> void:
+	var poisoned := _make()
+	poisoned.status = StatusRules.POISON
+	poisoned.hp = 3
+	var fainted := _make(&"bulbasaur")
+	fainted.hp = 0
+	_party.add(poisoned)
+	_party.add(fainted)
+	_party.heal_all()
+	assert_eq(poisoned.status, StatusRules.NONE)
+	assert_eq(poisoned.hp, poisoned.max_hp())
+	assert_eq(fainted.hp, fainted.max_hp())

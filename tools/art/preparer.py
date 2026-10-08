@@ -383,6 +383,42 @@ class Preparateur:
                 "hauteur": marche["hauteur"], "colonnes": 4, "lignes": 1,
                 "ordre_colonnes": ["bas", "gauche", "droite", "haut"]}
 
+    def pokemon_fixes(self) -> None:
+        """Pokémon d'ambiance immobiles (série 11, jalon 9 §2.8.5) : une planche source = une ligne
+        de 4 poses (repos de face, réaction de face, repos de profil gauche, réaction de profil
+        gauche). Une seule échelle (hauteur = la pose de repos de face ; une réaction plus haute
+        n'est pas réduite), pieds alignés sur le bas de la cellule. Feuille de jeu 6 × 1 : face,
+        face réaction, gauche, gauche réaction, droite, droite réaction (les deux dernières =
+        miroirs). Une source absente (planche refusée par le générateur) est signalée et sautée."""
+        for e in self.m.get("pokemon_fixes", []):
+            source = self.source / e["source"]
+            if not source.exists():
+                print(f"{e['id']} : source absente ({e['source']}), sautée")
+                continue
+            poses = _attente()._poses_bande(Image.open(source).convert("RGBA"))
+            echelle = e["hauteur"] / poses[0].height
+            reduites = [p.resize((max(1, round(p.width * echelle)), max(1, round(p.height * echelle))),
+                                 Image.LANCZOS) for p in poses]
+            ordre = [reduites[0], reduites[1], reduites[2], reduites[3],
+                     reduites[2].transpose(Image.FLIP_LEFT_RIGHT),
+                     reduites[3].transpose(Image.FLIP_LEFT_RIGHT)]
+            largeur = max(p.width for p in ordre) + 4
+            largeur += largeur % 2
+            hauteur = max(p.height for p in ordre) + 2
+            feuille = Image.new("RGBA", (largeur * 6, hauteur), (0, 0, 0, 0))
+            for colonne, pose in enumerate(ordre):
+                feuille.alpha_composite(pose, (colonne * largeur + (largeur - pose.width) // 2,
+                                               hauteur - pose.height))
+            sortie = self._sortie(e["sortie"])
+            sortie.parent.mkdir(parents=True, exist_ok=True)
+            feuille.save(sortie, optimize=True)
+            self.catalogue["personnages"][e["id"]] = {
+                "fichier": self._res(e["sortie"]), "cellule": [largeur, hauteur],
+                "hauteur": e["hauteur"], "colonnes": 6, "lignes": 1,
+                "ordre_colonnes": ["bas", "bas_reaction", "gauche", "gauche_reaction",
+                                   "droite", "droite_reaction"]}
+            print(f"{e['id']} : cellule {largeur} × {hauteur}")
+
     def heros_images(self) -> None:
         # « images_objets » (série 10) : objets fixes affichés comme des personnages (Poké Ball
         # posée au sol, `build_character_frames.gd`), mis à leur hauteur comme les images du héros.
@@ -444,6 +480,7 @@ def main() -> None:
         p.catalogue = json.loads(chemin.read_text())
         p.personnages()
         p.attentes()
+        p.pokemon_fixes()
         p.ecrire_catalogue()
         return
     p.objets()
@@ -456,6 +493,7 @@ def main() -> None:
     p.decalcomanies()
     p.personnages()
     p.attentes()
+    p.pokemon_fixes()
     p.heros_images()
     p.ecrire_catalogue()
     reglages_import(manifeste)

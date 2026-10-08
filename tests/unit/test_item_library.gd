@@ -18,7 +18,8 @@ func test_real_data_loads_without_error() -> void:
 	assert_true(_library.load_dir(), "data/items/ se charge")
 	assert_eq(_library.get_errors().size(), 0, str(_library.get_errors()))
 	# Jalon 5 : la Potion cachée de la Route 1 (catégorie « heal », ramassée seulement).
-	assert_eq(_library.get_ids(), [&"oak_parcel", &"poke_ball", &"potion"] as Array[StringName])
+	assert_eq(_library.get_ids(), [&"antidote", &"oak_parcel", &"poke_ball", &"potion"] \
+		as Array[StringName])
 	var ball := _library.get_item(&"poke_ball")
 	assert_eq(ball.name, "Poké Ball")
 	assert_eq(ball.plural, "Poké Balls")
@@ -33,8 +34,8 @@ func test_real_data_loads_without_error() -> void:
 	assert_eq(potion.catch_bonus, 1.0, "pas de catch_bonus hors Ball (valeur par défaut)")
 	assert_eq(potion.heal_amount, 20, "jalon 6 : la Potion rend 20 PV")
 	assert_eq(ball.heal_amount, 0)
-	assert_eq(_library.get_ids_in_data_order(), [&"poke_ball", &"potion", &"oak_parcel"] \
-		as Array[StringName])
+	assert_eq(_library.get_ids_in_data_order(),
+		[&"poke_ball", &"potion", &"antidote", &"oak_parcel"] as Array[StringName])
 	assert_eq([ball.order, potion.order], [0, 1])
 
 
@@ -279,3 +280,48 @@ func test_invalid_prices_are_rejected() -> void:
 	var errors := "\n".join(_library.get_errors())
 	assert_string_contains(errors, "« price » doit être un entier ≥ 0")
 	assert_string_contains(errors, "un objet clé n'a pas de prix")
+
+
+## Jalon 9 : un soin rend des PV et / ou soigne des statuts (« cures »).
+func test_cures() -> void:
+	var antidote := {"name": "Antidote", "plural": "Antidotes", "feminine": false,
+		"category": "heal", "cures": ["poison"], "price": 100, "description": "…"}
+	assert_true(_library.add_from_dict({"antidote": antidote}, "test"))
+	var item := _library.get_item(&"antidote")
+	assert_eq([item.cures, item.heal_amount], [[&"poison"] as Array[StringName], 0])
+	assert_true(item.targets_pokemon())
+	assert_true(item.cures_status(&"poison"))
+	assert_false(item.cures_status(StatusRules.NONE))
+	var both := antidote.duplicate()
+	both["heal_amount"] = 20
+	assert_true(_library.add_from_dict({"both": both}, "test"), "PV et statut ensemble")
+	var cases := {
+		"a": [{"category": "heal"}, "un soin a « heal_amount » ou « cures »"],
+		"b": [{"cures": []}, "« cures » doit être une liste non vide"],
+		"c": [{"cures": ["paralysis"]}, "« cures » doit être une liste non vide"],
+		"d": [{"cures": ["poison", "poison"]}, "sans doublon"],
+		"e": [{"cures": "poison"}, "« cures » doit être une liste non vide"],
+		"f": [{"category": "ball", "catch_bonus": 1}, "« cures » est réservé aux soins"],
+	}
+	for id: String in cases:
+		var entry := antidote.duplicate()
+		entry.merge(cases[id][0], true)
+		if id == "a":
+			entry.erase("cures")
+		assert_false(_library.add_from_dict({id: entry}, "test"), id)
+		assert_string_contains("\n".join(_library.get_errors()), cases[id][1])
+	assert_push_error_count(cases.size())
+	assert_eq(_library.get_ids(), [&"antidote", &"both"] as Array[StringName])
+
+
+func test_real_antidote() -> void:
+	assert_true(_library.load_dir())
+	var antidote := _library.get_item(&"antidote")
+	# Textes n° 11 à 13 du lot du J9 (verrouillé le 2026-10-07), prix de Rouge/Bleu (défaut).
+	assert_eq([antidote.name, antidote.plural, antidote.feminine, antidote.description],
+		["Antidote", "Antidotes", false, "Soigne un Pokémon empoisonné."])
+	assert_eq([antidote.category, antidote.cures, antidote.price, antidote.heal_amount],
+		[ItemData.Category.HEAL, [&"poison"] as Array[StringName], 100, 0])
+	assert_false(antidote.draft)
+	assert_eq(antidote.added_text(1), "Ajouté au Sac", "toast « Antidote ×1 — Ajouté au Sac »")
+	assert_eq(antidote.quantity_text(1), "Antidote ×1")

@@ -127,6 +127,15 @@ const RULES: Dictionary[StringName, Dictionary] = {
 	&"prop_ronces_01": {"width": 2, "depth": 1},
 	&"prop_tronc_couche_01": {"width": 3, "depth": 1},
 	&"prop_rocher_mer_01": {"width": 2, "depth": 1},
+	# Série 11 : Forêt de Jade (docs/tech/jalon-09.md §2.8.4). Le tronc incliné s'appuie sur les
+	# deux cases `I` du repère sud (pied sur le bord entre elles, mesuré sur l'image : pied du
+	# tronc à droite, 288 px de la gauche) ; il monte vers le haut-gauche au-dessus de cases de
+	# forêt : ni fondu ni vent. Petits objets : aucune ombre.
+	&"prop_tronc_incline_01": {"cells": [Vector2i(-1, 0), Vector2i(0, 0)], "align": ALIGN_EDGE,
+		"origin": Vector2(288, 304)},
+	&"prop_grande_souche_01": {"width": 3, "depth": 2},
+	&"prop_racines_01": {"width": 1, "depth": 2},
+	&"prop_sac_rando_01": {"width": 1, "depth": 1},
 	# Mêmes sources que des objets de Jadielle, à l'échelle du prototype de Bourg Palette.
 	&"prop_buisson_a_01_bourg": {"width": 1, "depth": 1},
 	&"prop_buisson_b_01_bourg": {"width": 1, "depth": 1},

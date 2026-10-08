@@ -138,7 +138,7 @@ func test_long_message_fits_two_lines() -> void:
 		Vector2(UiTokens.BATTLE_MESSAGE_WIDTH, UiTokens.BATTLE_MESSAGE_HEIGHT), "taille fixe")
 
 
-func test_placed_right_of_own_card_never_below() -> void:
+func test_placed_under_own_card_in_place_of_the_grid() -> void:
 	for width: float in SCREEN_WIDTHS:
 		var screen := Control.new()
 		screen.size = Vector2(width, SCREEN_HEIGHT)
@@ -154,7 +154,7 @@ func test_placed_right_of_own_card_never_below() -> void:
 		await wait_process_frames(2)
 		var rect := banner.get_global_rect()
 		var own := card.get_global_rect()
-		assert_gt(rect.position.x, own.end.x, "à droite de la carte joueur à %d" % width)
+		assert_gt(rect.position.y, own.end.y - 1.0, "sous la carte joueur à %d" % width)
 		assert_false(rect.intersects(own), "pas de chevauchement")
 		var actions := BattleHudLayout.rect(BattleHudLayout.Slot.ACTIONS, screen.size)
 		assert_true(rect.intersects(actions), "à la place de la grille")

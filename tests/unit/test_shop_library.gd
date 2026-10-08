@@ -23,9 +23,14 @@ func test_real_data_loads_without_error() -> void:
 	var mart := _library.get_shop(&"viridian_mart")
 	assert_eq(mart.id, &"viridian_mart")
 	assert_eq(mart.source, "res://data/shops/viridian_mart.json")
-	# Dossier 09 §9 : stock initial Poké Ball, Potion (ordre des données, §13).
-	assert_eq(mart.item_ids(), [&"poke_ball", &"potion"] as Array[StringName])
-	assert_eq(ShopRules.stock(mart, StoryFlags.new()), mart.item_ids(), "sans condition")
+	# Dossier 09 §9 : stock initial Poké Ball, Potion (ordre des données, §13) ; jalon 9 :
+	# l'Antidote après la Potion, seulement une fois le poison annoncé (« poison_unlocked »).
+	assert_eq(mart.item_ids(), [&"poke_ball", &"potion", &"antidote"] as Array[StringName])
+	assert_eq(ShopRules.stock(mart, StoryFlags.new()), [&"poke_ball", &"potion"] \
+		as Array[StringName], "sans drapeau : le stock du J7")
+	var flags := StoryFlags.new()
+	flags.set_flag(&"poison_unlocked")
+	assert_eq(ShopRules.stock(mart, flags), mart.item_ids(), "poison annoncé : l'Antidote")
 
 
 ## Dossier 09 §9 : jamais un objet pour une mécanique absente, jamais un objet clé.

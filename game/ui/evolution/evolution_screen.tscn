@@ -1,0 +1,8 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://game/ui/evolution/evolution_screen.gd" id="1_evolution"]
+
+[node name="EvolutionScreen" type="CanvasLayer"]
+layer = 24
+visible = false
+script = ExtResource("1_evolution")

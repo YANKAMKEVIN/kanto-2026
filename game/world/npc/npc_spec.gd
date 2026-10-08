@@ -15,8 +15,13 @@ const HOP_STYLES: Array[StringName] = [&"calm", &"eager", &"playful"]
 
 ## Réactions d'un Pokémon d'ambiance à l'approche du joueur ([member shy_action], jalon 5
 ## §3.5, dossier 04 §1) : s'envoler (Roucool posé sur une clôture) ou détaler (Rattata).
-## Réservé aux Pokémon non interactifs (un Pokémon qui fuit ne se parle pas).
-const SHY_ACTIONS: Array[StringName] = [&"fly", &"flee"]
+## Jalon 9 (dossier 10 §7, jalon-09.md §2.7.6) : « notice » relève la tête (animation
+## « react ») et reste sur la carte (Chenipan) ; « hide » se rétracte vers le feuillage (petit
+## recul vers le haut et fondu) puis quitte la carte comme l'envol (Aspicot sur un tronc).
+## Réservé aux Pokémon non interactifs (un Pokémon qui fuit ne se parle pas). Un Pokémon
+## d'ambiance immobile et non interactif peut être posé sur une case infranchissable (tronc,
+## branche basse, clôture) : il l'occupe sans la rendre praticable.
+const SHY_ACTIONS: Array[StringName] = [&"fly", &"flee", &"notice", &"hide"]
 ## Rayon par défaut (cases) d'une réaction « shy » quand la donnée l'omet.
 const SHY_RADIUS_DEFAULT: int = 2
 ## Pause par défaut (secondes) à chaque case d'une routine de marche quand la donnée l'omet.
@@ -95,6 +100,13 @@ var unless_flags: Array[StringName] = []
 ## geste l'enregistre « vu » au Pokédex sur la carte. &"" = rien n'est enregistré. Seulement
 ## sur un PNJ interactif au verbe OBSERVER ([NpcRoster] le vérifie).
 var species: StringName = &""
+## Dresseur (jalon 9, jalon-09.md §2.4.1) : bloc « trainer » des données. [member trainer_id]
+## = combat de `data/trainers/` ; [member sight] = portée de sa vision en cases, en ligne
+## droite devant lui ([TrainerRules]) ; [member before_dialogue] = réplique avant le combat.
+## Sa réplique « après » est [member dialogue]. &"" = pas un Dresseur.
+var trainer_id: StringName = &""
+var sight: int = 0
+var before_dialogue: StringName = &""
 
 
 ## Vrai si l'on peut interagir avec lui (un dialogue est renseigné).
@@ -150,3 +162,8 @@ func make_interaction(at_cell: Vector2i, source: Object) -> Interaction:
 	if not is_interactive():
 		return null
 	return Interaction.new(verb, at_cell, dialogue, Vector2i.ZERO, source)
+
+
+## Vrai si c'est un Dresseur qui voit le joueur et le défie (jalon 9, bloc « trainer »).
+func is_trainer() -> bool:
+	return not trainer_id.is_empty()

@@ -17,13 +17,20 @@ extends RefCounted
 ## Ordre des tirages : IA adverse (pick_index ; « smart » seulement à égalité, [BattleAI]),
 ## égalité de Vitesse, puis pour chaque
 ## action ceux de [DamageCalc] (ou la seule précision pour une capacité de statut) et un
-## roll(100) par effet de [member MoveEffect.chance] < 100. La fin de tour (Vampigraine) et
-## l'XP ne tirent rien.
+## roll(100) par effet de [member MoveEffect.chance] < 100 (pas de tirage si sa cible est déjà
+## K.O.). La fin de tour (Vampigraine, poison) et l'XP ne tirent rien.
 ##
 ## Fin de tour (jalon 5 Q28) : si le combat continue, chaque Pokémon porteur d'une graine de
 ## Vampigraine (le joueur d'abord, puis l'adversaire) perd la fraction de ses PV max fixée par
 ## la capacité (au moins 1) au profit du Pokémon d'en face, sauf si celui-ci est K.O. ; puis
 ## les remplaçants (voir plus haut).
+##
+## Poison (jalon 9 §2.1, [StatusRules]) : effet [code]status[/code] d'une capacité
+## ([method _apply_effect]) ; en fin de tour, pour chaque camp (le joueur d'abord), la graine
+## puis le poison : STATUS_DAMAGED (1/8 des PV max, au moins 1) ; un K.O. par le poison suit le
+## chemin du K.O. (FAINTED, XP, fin du combat ou remplacement). Tout K.O. efface le statut
+## ([method _faint]). Capture : [method StatusRules.catch_bonus] de la cible. Antidote :
+## ITEM_USED puis STATUS_CURED ([method ItemUse.cure]).
 ##
 ## XP (jalon 5 §2.3, Q23, Q24) : seulement si [member BattleRules.gives_exp] (règles nulles :
 ## pas d'XP, comme le combat du rival du 4B). Les [b]participants[/b] sont les Pokémon du
@@ -306,7 +313,8 @@ func _throw_ball(item_id: StringName, events: Array[BattleEvent]) -> void:
 	thrown.item_name = item.name
 	events.append(thrown)
 	var result := CaptureCalc.throw_ball(target.max_hp(), target.hp,
-		species.catch_rate if species != null else 1, item.catch_bonus, _rng)
+		species.catch_rate if species != null else 1, item.catch_bonus, _rng,
+		StatusRules.catch_bonus(target.status))
 	for i: int in result.shakes:
 		var shake := _event(BattleEvent.Kind.BALL_SHAKE, _foe)
 		shake.shake = i + 1
@@ -320,16 +328,23 @@ func _throw_ball(item_id: StringName, events: Array[BattleEvent]) -> void:
 
 
 ## Soin [member BattleAction.item_id] donné au Pokémon [member BattleAction.target] de
-## l'équipe (joué avant les capacités, §3.4) : ITEM_USED, puis l'adversaire joue son tour.
+## l'équipe (joué avant les capacités, §3.4) : ITEM_USED (PV rendus, 0 pour un Antidote), puis
+## STATUS_CURED si un statut a été soigné (jalon 9), puis l'adversaire joue son tour.
 func _use_heal(action: BattleAction, events: Array[BattleEvent]) -> void:
 	var item := _rules.items.get_item(action.item_id)
 	var pokemon := _player.party.get_at(action.target)
 	var amount := ItemUse.restore(item, pokemon)
+	var cured := ItemUse.cure(item, pokemon)
 	var used := _pokemon_event(BattleEvent.Kind.ITEM_USED, BattleEvent.SideId.PLAYER, pokemon)
 	used.item_id = action.item_id
 	used.item_name = item.name
 	used.amount = amount
 	events.append(used)
+	if cured != StatusRules.NONE:
+		var cured_event := _pokemon_event(BattleEvent.Kind.STATUS_CURED,
+			BattleEvent.SideId.PLAYER, pokemon)
+		cured_event.status = cured
+		events.append(cured_event)
 	_foe_turn_alone(events)
 
 
@@ -372,11 +387,15 @@ func _finish(outcome: Outcome, events: Array[BattleEvent]) -> void:
 	events.append(ended)
 
 
-## Fin du tour (le combat continue) : drain de Vampigraine, puis l'adversaire envoie son
-## remplaçant ; un joueur dont le Pokémon est K.O. devra choisir le sien (REPLACING).
+## Fin du tour (le combat continue) : pour chaque camp (le joueur d'abord), drain de
+## Vampigraine puis dégâts du poison ; puis l'adversaire envoie son remplaçant ; un joueur dont
+## le Pokémon est K.O. devra choisir le sien (REPLACING).
 func _end_turn(events: Array[BattleEvent]) -> void:
 	for side: BattleSide in [_player, _foe]:
 		_drain_seed(side, events)
+		if _state == State.OVER:
+			return
+		_status_damage(side, events)
 		if _state == State.OVER:
 			return
 	if _foe.active.pokemon.is_fainted():
@@ -406,6 +425,24 @@ func _drain_seed(side: BattleSide, events: Array[BattleEvent]) -> void:
 	if victim.is_fainted():
 		_faint(side, events)
 		_check_end(other_side, events)
+
+
+## Statut à dégâts en fin de tour ([method StatusRules.end_turn_damage]) : le Pokémon de
+## [param side], s'il tient debout et est empoisonné, perd ses PV (STATUS_DAMAGED) ; K.O. →
+## [method _faint] et peut-être la fin du combat.
+func _status_damage(side: BattleSide, events: Array[BattleEvent]) -> void:
+	var victim := side.active.pokemon
+	var amount := StatusRules.end_turn_damage(victim)
+	if amount <= 0:
+		return
+	var damaged := _event(BattleEvent.Kind.STATUS_DAMAGED, side)
+	damaged.status = victim.status
+	damaged.amount = victim.take_damage(amount)
+	damaged.hp = victim.hp
+	events.append(damaged)
+	if victim.is_fainted():
+		_faint(side, events)
+		_check_end(_foe if side == _player else _player, events)
 
 
 func _player_goes_second(player_action: BattleAction, foe_action: BattleAction) -> bool:
@@ -470,7 +507,7 @@ func _execute(side: BattleSide, action: BattleAction, events: Array[BattleEvent]
 		_append_missed(side, move_id, events)
 		return
 	for effect: MoveEffect in move.effects:
-		_apply_effect(effect, move_id, side, target_side, events)
+		_apply_effect(effect, move, side, target_side, events)
 	if target.pokemon.is_fainted():
 		_faint(target_side, events)
 	if user.pokemon.is_fainted():
@@ -478,8 +515,9 @@ func _execute(side: BattleSide, action: BattleAction, events: Array[BattleEvent]
 	_check_end(side, events)
 
 
-func _apply_effect(effect: MoveEffect, move_id: StringName, side: BattleSide,
+func _apply_effect(effect: MoveEffect, move: MoveData, side: BattleSide,
 		target_side: BattleSide, events: Array[BattleEvent]) -> void:
+	var move_id := move.id
 	match effect.kind:
 		MoveEffect.Kind.SEED:
 			var target := target_side.active
@@ -516,6 +554,40 @@ func _apply_effect(effect: MoveEffect, move_id: StringName, side: BattleSide,
 			recoil.amount = user.take_damage(maxi(floori(user.max_hp() * effect.fraction), 1))
 			recoil.hp = user.hp
 			events.append(recoil)
+		MoveEffect.Kind.STATUS:
+			_inflict_status(effect, move, target_side, events)
+
+
+## Effet [code]status[/code] (jalon 9 §2.1.2) sur le Pokémon de [param target_side]. Capacité
+## de statut (Poudre Toxik) : immunité → NO_EFFECT, statut déjà présent → STATUS_UNCHANGED.
+## Effet secondaire d'une attaque (Dard-Venin) : cible K.O. → rien (aucun tirage, comme les
+## niveaux de statistiques) ; sinon roll(100) si [member MoveEffect.chance] < 100, puis un refus
+## est silencieux. Réussite : le statut est posé, STATUS_INFLICTED.
+func _inflict_status(effect: MoveEffect, move: MoveData, target_side: BattleSide,
+		events: Array[BattleEvent]) -> void:
+	var target := target_side.active
+	if target.pokemon.is_fainted():
+		return
+	if effect.chance < 100 and _rng.roll(100) > effect.chance:
+		return
+	var check := StatusRules.can_inflict(effect.status, target.pokemon, target.types)
+	if check == StatusRules.Inflict.OK:
+		target.pokemon.status = effect.status
+		var inflicted := _event(BattleEvent.Kind.STATUS_INFLICTED, target_side)
+		inflicted.status = effect.status
+		events.append(inflicted)
+		return
+	if move.is_damaging():
+		return
+	if check == StatusRules.Inflict.IMMUNE:
+		var immune := _event(BattleEvent.Kind.NO_EFFECT, target_side)
+		immune.move_id = move.id
+		events.append(immune)
+	elif check == StatusRules.Inflict.ALREADY:
+		var unchanged := _event(BattleEvent.Kind.STATUS_UNCHANGED, target_side)
+		unchanged.move_id = move.id
+		unchanged.status = target.pokemon.status
+		events.append(unchanged)
 
 
 func _append_missed(side: BattleSide, move_id: StringName, events: Array[BattleEvent]) -> void:
@@ -553,8 +625,10 @@ func _send_out(side: BattleSide, events: Array[BattleEvent], pokemon: Pokemon = 
 	events.append(sent)
 
 
-## K.O. du Pokémon en jeu de [param side] ; un adversaire K.O. rapporte de l'XP (§2.3).
+## K.O. du Pokémon en jeu de [param side] : son statut est effacé (jalon 9, règle actuelle) ;
+## un adversaire K.O. rapporte de l'XP (§2.3).
 func _faint(side: BattleSide, events: Array[BattleEvent]) -> void:
+	side.active.pokemon.cure_status()
 	events.append(_event(BattleEvent.Kind.FAINTED, side))
 	if side == _foe and _rules != null and _rules.gives_exp:
 		_award_exp(side.active.pokemon, events)
@@ -653,4 +727,5 @@ func _pokemon_event(kind: BattleEvent.Kind, side_id: BattleEvent.SideId,
 	event.gender = pokemon.gender
 	event.hp = pokemon.hp
 	event.max_hp = pokemon.max_hp()
+	event.status = pokemon.status
 	return event

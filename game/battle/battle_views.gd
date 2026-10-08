@@ -59,7 +59,7 @@ static func party(battle: Battle, data: PokemonData,
 			view.type_ids = species.types.duplicate()
 			for type: StringName in species.types:
 				view.type_names.append(chart.get_type_name(type))
-		view.status_text = TeamMemberView.STATUS_FAINTED if pokemon.is_fainted() else ""
+		view.status_text = StatusView.text(pokemon)
 		view.active = pokemon == active and not pokemon.is_fainted()
 		var check := battle.check_switch(i)
 		view.can_send = check == Battle.SwitchCheck.OK
@@ -73,10 +73,13 @@ static func party(battle: Battle, data: PokemonData,
 
 
 ## Carte d'information du Pokémon envoyé par [param event] (SENT_OUT) : nom, sexe, niveau,
-## PV ; PV chiffrés du côté du joueur seulement (dossier 05 §5).
+## PV et statut (« PSN » dès l'entrée, jalon 9) ; PV chiffrés du côté du joueur seulement
+## (dossier 05 §5).
 static func card(event: BattleEvent) -> BattleCardView:
-	return BattleCardView.new(event.pokemon_name, card_gender(event.gender), event.level,
+	var view := BattleCardView.new(event.pokemon_name, card_gender(event.gender), event.level,
 		event.hp, event.max_hp, event.side == BattleEvent.SideId.PLAYER)
+	view.status = event.status
+	return view
 
 
 ## Sexe du modèle Pokémon → sexe affiché par la carte.

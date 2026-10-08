@@ -1,33 +1,19 @@
 extends GutTest
-## BattleLayout (jalon-04.md §14.4, §14.11 T6) : ancres et échelles des sprites de combat à
-## 1920 × 1080 et 2340 × 1080 ; sprites dans l'écran, sans chevauchement avec les
-## emplacements de l'interface de combat (BattleHudLayout) ; cadrage des 3 placements réels
-## du labo (§14.1).
+## BattleLayout (cadrage du pilote, CB.1 : docs/tech/combat-maquettes.md) : ancres à 1920 × 1080
+## et 2340 × 1080, loi de taille (taille réelle comprimée et bornée, Salamèche = référence),
+## boîtes maximales dans l'écran et hors des zones de l'interface (contrat CB.1 / CB.2 : quart
+## haut gauche, bas droit) ; cadrage des 3 placements réels du labo (§14.1).
 
 const VIEWS: Array[Vector2] = [Vector2(1920, 1080), Vector2(2340, 1080)]
-const HUD_SLOTS: Array[BattleHudLayout.Slot] = [
-	BattleHudLayout.Slot.FOE_CARD, BattleHudLayout.Slot.OWN_CARD,
-	BattleHudLayout.Slot.PARTY_PIPS, BattleHudLayout.Slot.BACK,
-	BattleHudLayout.Slot.ACTIONS, BattleHudLayout.Slot.MOVES, BattleHudLayout.Slot.MESSAGE,
-]
+## Boîte visible du dos provisoire de Salamèche et de l'artwork officiel de Roucool (px).
+const CHARMANDER_BACK := Vector2(48, 56)
+const PIDGEY_ARTWORK := Vector2(402, 431)
 
 
-func _rects(view: Vector2) -> Dictionary[String, Rect2]:
-	var a := BattleLayout.anchors(view)
-	return {
-		"joueur": BattleLayout.sprite_rect(a["player_feet"], a["player_scale"],
-			BattleLayout.NATIVE),
-		"adversaire": BattleLayout.sprite_rect(a["foe_feet"], a["foe_scale"],
-			BattleLayout.NATIVE),
-	}
-
-
-func test_anchors_and_scales() -> void:
+func test_anchors_follow_the_pilot_framing() -> void:
 	var a := BattleLayout.anchors(Vector2(1920, 1080))
-	assert_eq(a["player_scale"], 4, "de dos ×4 (256 px)")
-	assert_eq(a["foe_scale"], 3, "de face ×3 (192 px)")
-	assert_eq(a["player_feet"], Vector2(960 - 0.30 * 1080, 0.63 * 1080).round())
-	assert_eq(a["foe_feet"], Vector2(960 + 0.24 * 1080, 0.47 * 1080).round())
+	assert_eq(a["player_feet"], Vector2(960 - 0.42 * 1080, 0.90 * 1080).round())
+	assert_eq(a["foe_feet"], Vector2(960 + 0.36 * 1080, 0.50 * 1080).round())
 	var wide := BattleLayout.anchors(Vector2(2340, 1080))
 	assert_eq(wide["player_feet"].y, a["player_feet"].y, "même hauteur")
 	assert_eq(wide["foe_feet"] - wide["player_feet"], a["foe_feet"] - a["player_feet"],
@@ -35,39 +21,81 @@ func test_anchors_and_scales() -> void:
 	assert_eq(wide["foe_feet"].x - a["foe_feet"].x, 210.0)
 
 
-func test_player_in_front_bottom_left_foe_further_center_right() -> void:
+func test_player_in_front_bottom_left_foe_further_top_right() -> void:
 	for view: Vector2 in VIEWS:
 		var a := BattleLayout.anchors(view)
 		var mine: Vector2 = a["player_feet"]
 		var foe: Vector2 = a["foe_feet"]
 		assert_lt(mine.x, view.x / 2.0, "%s : joueur à gauche" % view)
 		assert_gt(foe.x, view.x / 2.0, "%s : adversaire à droite" % view)
-		assert_gt(mine.y, foe.y, "%s : joueur plus bas (plus près)" % view)
+		assert_gte(mine.y, view.y * 0.85, "%s : joueur au premier plan, en bas" % view)
+		assert_lte(mine.y, view.y * 0.92, "%s : pieds au-dessus du bord bas" % view)
+		assert_lte(foe.y, view.y / 2.0, "%s : adversaire dans la moitié haute" % view)
 
 
 func test_sprite_rect_feet_on_bottom_center() -> void:
-	var r := BattleLayout.sprite_rect(Vector2(500, 700), 4, Vector2i(64, 64))
+	var r := BattleLayout.sprite_rect(Vector2(500, 700), 4.0, Vector2(64, 64))
 	assert_eq(r, Rect2(372, 444, 256, 256))
 
 
-func test_sprites_inside_screen_and_apart() -> void:
+func test_max_boxes_inside_screen_apart_and_off_the_hud_zones() -> void:
 	for view: Vector2 in VIEWS:
-		var rects := _rects(view)
 		var screen := Rect2(Vector2.ZERO, view)
-		for key: String in rects:
-			assert_true(screen.encloses(rects[key]), "%s : %s dans l'écran" % [view, key])
-		assert_false(rects["joueur"].intersects(rects["adversaire"]),
-			"%s : les deux sprites ne se chevauchent pas" % view)
+		var mine := BattleLayout.max_rect(true, view)
+		var foe := BattleLayout.max_rect(false, view)
+		assert_true(screen.encloses(mine), "%s : joueur dans l'écran" % view)
+		assert_true(screen.encloses(foe), "%s : adversaire dans l'écran" % view)
+		assert_false(mine.intersects(foe), "%s : jamais l'un sur l'autre" % view)
+		for zone: Rect2 in BattleLayout.hud_zones(view):
+			assert_false(mine.intersects(zone), "%s : joueur hors de %s" % [view, zone])
+			assert_false(foe.intersects(zone), "%s : adversaire hors de %s" % [view, zone])
 
 
-func test_sprites_never_overlap_the_battle_hud() -> void:
-	for view: Vector2 in VIEWS:
-		var rects := _rects(view)
-		for slot: BattleHudLayout.Slot in HUD_SLOTS:
-			var hud := BattleHudLayout.rect(slot, view)
-			for key: String in rects:
-				assert_false(rects[key].intersects(hud), "%s : %s sur %s %s" % [
-					view, key, BattleHudLayout.Slot.find_key(slot), hud])
+func test_hud_zones_are_top_left_quarter_and_bottom_right() -> void:
+	var zones := BattleLayout.hud_zones(Vector2(2340, 1080))
+	assert_eq(zones[0], Rect2(0, 0, 1170, 540))
+	assert_eq(zones[1], Rect2(1170, 540, 1170, 540))
+
+
+func test_size_ratio_reference_compressed_and_bounded() -> void:
+	assert_almost_eq(BattleLayout.size_ratio(BattleLayout.REFERENCE_HEIGHT_M), 1.0, 0.0001)
+	assert_lt(BattleLayout.size_ratio(0.3), 1.0, "Roucool plus petit que Salamèche")
+	assert_gt(BattleLayout.size_ratio(0.3), 0.5, "mais comprimé (pas la moitié)")
+	assert_gt(BattleLayout.size_ratio(2.0), BattleLayout.size_ratio(1.0), "croissant")
+	assert_eq(BattleLayout.size_ratio(8.8), BattleLayout.MAX_RATIO, "Onix borné")
+	assert_eq(BattleLayout.size_ratio(0.01), BattleLayout.MIN_RATIO, "minuscule borné")
+
+
+## Référence du pilote : Salamèche de dos ≈ 60 % du premier essai (0,56 → ≈ 0,336 de haut),
+## Roucool de face ≈ 0,21 de haut.
+func test_pilot_reference_sizes() -> void:
+	var h := 1080.0
+	var mine := BattleLayout.sprite_scale(CHARMANDER_BACK, 0.6, true, h, true)
+	assert_eq(mine, 6.0, "pixel art net : échelle entière")
+	assert_almost_eq(CHARMANDER_BACK.y * mine / h, 0.336, 0.03)
+	var foe := BattleLayout.sprite_scale(PIDGEY_ARTWORK, 0.3, false, h)
+	assert_almost_eq(PIDGEY_ARTWORK.y * foe / h, 0.21, 0.01)
+
+
+func test_scale_follows_real_size_and_respects_max_boxes() -> void:
+	var h := 1080.0
+	var small := BattleLayout.sprite_scale(PIDGEY_ARTWORK, 0.3, false, h)
+	var big := BattleLayout.sprite_scale(PIDGEY_ARTWORK, 1.7, false, h)
+	assert_gt(big, small, "même image, plus grand Pokémon : plus grand")
+	var onix := BattleLayout.sprite_scale(Vector2(411, 431), 8.8, false, h)
+	assert_lte(431 * onix, BattleLayout.FOE_MAX_BOX.y * h + 0.01, "Onix tient dans sa boîte")
+	var wide := BattleLayout.sprite_scale(Vector2(800, 100), 0.6, true, h)
+	assert_lte(800 * wide, BattleLayout.PLAYER_MAX_BOX.x * h + 0.01, "largeur bornée")
+	var whole := BattleLayout.sprite_scale(Vector2(60, 64), 8.8, true, h, true)
+	assert_eq(whole, floorf(whole), "entière")
+	assert_lte(64 * whole, BattleLayout.PLAYER_MAX_BOX.y * h, "entière sans dépasser la boîte")
+	assert_eq(BattleLayout.sprite_scale(Vector2.ZERO, 0.6, true, h), 1.0, "boîte vide")
+
+
+func test_scale_follows_the_view_height() -> void:
+	var a := BattleLayout.sprite_scale(PIDGEY_ARTWORK, 0.3, false, 1080.0)
+	var b := BattleLayout.sprite_scale(PIDGEY_ARTWORK, 0.3, false, 540.0)
+	assert_almost_eq(b, a / 2.0, 0.0001)
 
 
 ## Cadrage : milieu des cases des combattants et des dresseurs, remonté d'une demi-case.
@@ -113,8 +141,12 @@ func test_arena_focus_puts_the_arena_between_the_anchors() -> void:
 	var lab := Rect2(0, 0, 1536, 1056)
 	var wide := BattleLayout.arena_focus(arena, lab, Vector2(2340, 1080), 1.4)
 	var half_w := 2340 / 2.8
-	assert_between(wide.x, 1536 - half_w, half_w, "labo plus étroit que la vue : entier")
-	assert_eq(wide.x, BattleLayout.arena_focus(arena, Rect2(), Vector2(2340, 1080), 1.4).x,
+	assert_between(wide.x, 1536 - half_w - 0.5, half_w + 0.5,
+		"labo plus étroit que la vue : entier (à l'arrondi près)")
+	# Arène d'une case plus à l'est : sa place libre tient dans la fenêtre, elle la garde.
+	var east := Rect2(672, 480, 384, 288)
+	assert_eq(BattleLayout.arena_focus(east, lab, Vector2(2340, 1080), 1.4).x,
+		BattleLayout.arena_focus(east, Rect2(), Vector2(2340, 1080), 1.4).x,
 		"l'arène garde sa place quand c'est possible")
 	var off := BattleLayout.arena_focus(Rect2(0, 480, 96, 96), lab, Vector2(2340, 1080), 1.4)
 	assert_almost_eq(off.x, 1536 - half_w, 1.0, "jamais plus de vide que nécessaire")
@@ -158,3 +190,16 @@ func test_party_picker_slot_fits_the_picker_and_stays_in_the_safe_area() -> void
 		assert_eq(rect.end.y, view.y - UiTokens.SAFE_MARGIN)
 		assert_gte(rect.position.y, float(UiTokens.SAFE_MARGIN))
 		assert_lt(rect.end.x, view.x * 0.7, "ne recouvre pas l'adversaire à droite")
+
+
+## Sans arène (dresseur sur une route, sauvage) : la vue reste aussi dans la carte (CB.1, zoom
+## plus fort : sans borne, un combat près du bord montrait le vide).
+func test_clamp_focus_keeps_the_view_inside_the_map() -> void:
+	var view := Vector2(2340, 1080)
+	var map := Rect2(0, 0, 4800, 2400)
+	var near_edge := BattleLayout.clamp_focus(Vector2(4750, 100), map, view, 1.9)
+	assert_almost_eq(near_edge.x, 4800 - 2340 / 3.8, 1.0, "bord droit")
+	assert_almost_eq(near_edge.y, 1080 / 3.8, 1.0, "bord haut")
+	assert_eq(BattleLayout.clamp_focus(Vector2(2000.4, 1200), map, view, 1.9), Vector2(2000, 1200))
+	assert_eq(BattleLayout.clamp_focus(Vector2(-50.4, 9.6), Rect2(), view, 1.9), Vector2(-50, 10),
+		"sans carte : arrondi seulement")

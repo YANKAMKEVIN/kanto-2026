@@ -9,6 +9,11 @@
 		"category": "heal", "heal_amount": 20, "price": 300,
 		"description": "Restaure les PV d'un Pokémon."
 	},
+	"antidote": {
+		"name": "Antidote", "plural": "Antidotes", "feminine": false,
+		"category": "heal", "cures": ["poison"], "price": 100,
+		"description": "Soigne un Pokémon empoisonné."
+	},
 	"oak_parcel": {
 		"name": "Colis pour Chen", "plural": "Colis pour Chen", "feminine": false,
 		"category": "key",

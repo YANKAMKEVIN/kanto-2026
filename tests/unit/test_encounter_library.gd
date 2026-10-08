@@ -120,7 +120,7 @@ func test_load_dir_keeps_valid_and_reports_broken() -> void:
 func test_real_tables_load_without_error() -> void:
 	var lib := _lib()
 	assert_true(lib.load_dir(), "\n".join(lib.get_errors()))
-	assert_eq(lib.get_ids(), [&"route_1_grass", &"route_22_grass", &"route_2_grass"]
+	assert_eq(lib.get_ids(), [&"route_1_grass", &"route_22_grass", &"route_2_grass", &"viridian_forest_grass"]
 		as Array[StringName])
 
 
@@ -192,10 +192,44 @@ func test_every_wild_species_has_battle_sprites() -> void:
 	# jalon-07.md Q-2 : sprites de combat provisoires (tools/gen_placeholder_battlers.gd).
 	var lib := _lib()
 	lib.load_dir()
-	assert_eq(lib.size(), 3, "une table par carte ci-dessous")
-	for map_id: StringName in [&"route_1", &"route_2", &"route_22"]:
+	assert_eq(lib.size(), 4, "une table par carte ci-dessous")
+	for map_id: StringName in [&"route_1", &"route_2", &"route_22", &"viridian_forest"]:
 		for slot: EncounterSlot in lib.get_table(map_id).slots:
 			for view: String in ["front", "back"]:
 				var path := "res://assets/sprites/pokemon/placeholder/%s_%s.png" % [
 					slot.species, view]
 				assert_true(ResourceLoader.exists(path), path)
+
+
+func test_viridian_forest_table_follows_the_dossier() -> void:
+	# Dossier 10 §6 et arbitrages 5–6 (jalon-09.md §2.5) : une seule table pour la forêt et la
+	# carte de QA, Chenipan 35 %, Aspicot 35 %, Coconfort 13 %, Chrysacier 12 %, Pikachu 5 %
+	# partout ; ni Roucool ni Rattata ; taux et rampe de la Route 1 (défaut).
+	var lib := _lib()
+	lib.load_dir()
+	var table := lib.get_table(&"viridian_forest", &"grass")
+	assert_not_null(table)
+	if table == null:
+		return
+	assert_eq(lib.get_table(&"qa_forest_systems", &"grass"), table, "même table en QA")
+	assert_eq(table.maps, [&"viridian_forest", &"qa_forest_systems"] as Array[StringName])
+	assert_eq(table.rate, 25)
+	assert_eq([table.ramp_from, table.ramp_max], [15, 20])
+	assert_eq(table.total_weight(), 100)
+	var expected := {
+		&"caterpie": [0.35, 3, 5], &"weedle": [0.35, 3, 5], &"kakuna": [0.13, 4, 6],
+		&"metapod": [0.12, 4, 6], &"pikachu": [0.05, 4, 5],
+	}
+	for species: StringName in expected:
+		assert_almost_eq(table.chance_of(species), float(expected[species][0]), 0.0001,
+			String(species))
+		var low := 100
+		var high := 1
+		for slot: EncounterSlot in table.slots:
+			if slot.species == species:
+				low = mini(low, slot.min_level)
+				high = maxi(high, slot.max_level)
+		assert_eq([low, high], [expected[species][1], expected[species][2]], String(species))
+	for slot: EncounterSlot in table.slots:
+		assert_true(expected.has(slot.species), "%s : hors du bestiaire" % slot.species)
+		assert_false(slot.species in [&"pidgey", &"rattata"], "arbitrage 6")

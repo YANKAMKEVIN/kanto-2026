@@ -997,3 +997,319 @@ func test_heal_log_is_reproducible() -> void:
 				journal.append(event.to_dict())
 		logs.append(journal)
 	assert_eq(logs[0], logs[1])
+
+
+# --- Poison (jalon 9 §2.1, Q-6) ---------------------------------------------------------
+# Aspicot N5 (IV 0) : Vit 10, Dard-Venin (emplacement 0). Roucool N3 : 15 PV, Vit 8, Tornade
+# seule. Salamèche N5 : 18 PV, Vit 11. Bulbizarre N7 : 23 PV, Vit 11. Tirages d'une attaque :
+# précision, critique (2 = non), aléatoire (16) ; puis roll(100) de l'effet à 30 %.
+
+## Combat sauvage (règles par défaut) : [param team] contre [param foes].
+func _poison_battle(team: Array[Pokemon], foes: Array[Pokemon], draws: Array[int],
+		rules: BattleRules = BattleRules.for_wild(_items())) -> Battle:
+	_rng = ScriptedRng.new(draws)
+	var party := Party.new()
+	for pokemon: Pokemon in team:
+		party.add(pokemon)
+	var foe_party := Party.new()
+	for pokemon: Pokemon in foes:
+		foe_party.add(pokemon)
+	var battle := Battle.new(BattleSide.new(party, true), BattleSide.new(foe_party, false, ""),
+		_data, _rng, rules)
+	battle.start()
+	return battle
+
+
+## [param species] N[param level] qui ne connaît que [param move_id].
+func _with_move(species: StringName, level: int, move_id: StringName) -> Pokemon:
+	var pokemon := _mon(species, level)
+	pokemon.moves.clear()
+	pokemon.moves.append(MoveSlot.new(move_id, _data.get_move(move_id).pp))
+	return pokemon
+
+
+func _poisoned(pokemon: Pokemon) -> Pokemon:
+	pokemon.status = StatusRules.POISON
+	return pokemon
+
+
+func test_poison_sting_poisons_on_a_roll_of_30_or_less() -> void:
+	var weedle := _mon(&"weedle", 5)
+	assert_eq(weedle.moves[0].move_id, &"poison_sting")
+	var battle := _poison_battle([weedle], [_mon(&"pidgey", 3)], [1, 50, 2, 16, 30, 50, 2, 16])
+	var pidgey := battle.get_foe_side().active.pokemon
+	var events := battle.submit(BattleAction.move(0))
+	assert_eq(_rng.remaining(), 0, "un roll(100) pour l'effet, rien en fin de tour")
+	assert_eq(_kinds(events).slice(1), [["MOVE_USED", "PLAYER"], ["DAMAGE", "FOE"],
+		["STATUS_INFLICTED", "FOE"], ["MOVE_USED", "FOE"], ["DAMAGE", "PLAYER"],
+		["STATUS_DAMAGED", "FOE"]])
+	var inflicted := events[3]
+	assert_eq([inflicted.status, inflicted.species_id, inflicted.party_index],
+		[&"poison", &"pidgey", 0])
+	assert_eq(pidgey.status, &"poison")
+	assert_eq(events[4].status, &"poison", "Roucool attaque déjà empoisonné")
+	assert_eq(events[5].status, StatusRules.NONE, "Aspicot, lui, n'a rien")
+	assert_eq(events[2].status, StatusRules.NONE, "le coup arrive avant le poison")
+	var missed := _poison_battle([_mon(&"weedle", 5)], [_mon(&"pidgey", 3)],
+		[1, 50, 2, 16, 31, 50, 2, 16])
+	events = missed.submit(BattleAction.move(0))
+	assert_eq(_rng.remaining(), 0)
+	assert_null(_find(events, K.STATUS_INFLICTED), "31 > 30 : rien")
+	assert_null(_find(events, K.STATUS_DAMAGED))
+	assert_eq(missed.get_foe_side().active.pokemon.status, StatusRules.NONE)
+
+
+func test_poison_sting_rate_is_30_percent_on_a_fixed_seed() -> void:
+	# GameRng à graine fixe : 1 000 piqûres sur un Roucool à 999 PV (jamais K.O.).
+	var rng := GameRng.new(2026)
+	var poisoned := 0
+	for i: int in 1000:
+		var party := Party.new()
+		party.add(_mon(&"weedle", 5))
+		var foes := Party.new()
+		var pidgey := _mon(&"pidgey", 3)
+		pidgey.stats[&"hp"] = 999
+		pidgey.hp = 999
+		foes.add(pidgey)
+		var battle := Battle.new(BattleSide.new(party, true), BattleSide.new(foes, false, ""),
+			_data, rng, BattleRules.for_wild())
+		battle.start()
+		if _find(battle.submit(BattleAction.move(0)), K.STATUS_INFLICTED) != null:
+			poisoned += 1
+	assert_between(poisoned, 260, 340, "≈ 30 %% (%d / 1 000)" % poisoned)
+
+
+func test_poison_powder_poisons_without_a_chance_roll() -> void:
+	var bulbasaur := _with_move(&"bulbasaur", 7, &"poison_powder")
+	var battle := _poison_battle([bulbasaur], [_mon(&"pidgey", 3)], [1, 50, 50, 2, 16])
+	var events := battle.submit(BattleAction.move(0))
+	assert_eq(_rng.remaining(), 0, "précision seule (75 %), aucun tirage d'effet")
+	assert_eq(_kinds(events).slice(1), [["MOVE_USED", "PLAYER"], ["STATUS_INFLICTED", "FOE"],
+		["MOVE_USED", "FOE"], ["DAMAGE", "PLAYER"], ["STATUS_DAMAGED", "FOE"]])
+	assert_eq(battle.get_foe_side().active.pokemon.status, &"poison")
+	var missed := _poison_battle([_with_move(&"bulbasaur", 7, &"poison_powder")],
+		[_mon(&"pidgey", 3)], [1, 76, 50, 2, 16])
+	events = missed.submit(BattleAction.move(0))
+	assert_eq(_kinds(events).slice(1, 3), [["MOVE_USED", "PLAYER"], ["MOVE_MISSED", "PLAYER"]],
+		"76 > 75 : raté")
+	assert_null(_find(events, K.STATUS_INFLICTED))
+
+
+func test_poison_powder_on_a_poison_type_has_no_effect() -> void:
+	var battle := _poison_battle([_with_move(&"bulbasaur", 7, &"poison_powder")],
+		[_mon(&"weedle", 3)], [1, 50, 50, 2, 16, 50])
+	var events := battle.submit(BattleAction.move(0))
+	var immune := _find(events, K.NO_EFFECT)
+	assert_not_null(immune, "« Ça n'affecte pas Aspicot... »")
+	assert_eq([immune.side, immune.move_id], [F, &"poison_powder"])
+	assert_null(_find(events, K.STATUS_INFLICTED))
+	assert_eq(battle.get_foe_side().active.pokemon.status, StatusRules.NONE)
+
+
+func test_poison_powder_on_a_poisoned_target_changes_nothing() -> void:
+	var battle := _poison_battle([_with_move(&"bulbasaur", 7, &"poison_powder")],
+		[_poisoned(_mon(&"pidgey", 3))], [1, 50, 50, 2, 16])
+	var events := battle.submit(BattleAction.move(0))
+	var unchanged := _find(events, K.STATUS_UNCHANGED)
+	assert_not_null(unchanged, "« Roucool est déjà empoisonné ! »")
+	assert_eq([unchanged.side, unchanged.status, unchanged.move_id],
+		[F, &"poison", &"poison_powder"])
+	assert_null(_find(events, K.STATUS_INFLICTED))
+	assert_not_null(_find(events, K.STATUS_DAMAGED), "le poison déjà là agit toujours")
+
+
+func test_poison_sting_is_silent_on_an_immune_or_poisoned_target() -> void:
+	# Le tirage de l'effet a lieu (30 : réussi), puis le refus est silencieux.
+	var battle := _poison_battle([_mon(&"weedle", 5)], [_with_move(&"pidgey", 3, &"growl")],
+		[1, 50, 2, 16, 30, 50])
+	var pidgey := battle.get_foe_side().active.pokemon
+	pidgey.status = StatusRules.POISON
+	var events := battle.submit(BattleAction.move(0))
+	assert_eq(_rng.remaining(), 0, "le roll(100) est consommé")
+	for kind: BattleEvent.Kind in [K.STATUS_INFLICTED, K.STATUS_UNCHANGED, K.NO_EFFECT]:
+		assert_null(_find(events, kind), K.find_key(kind))
+	var weedle_foe := _mon(&"weedle", 5)
+	weedle_foe.moves.clear()
+	weedle_foe.moves.append(MoveSlot.new(&"string_shot", 40))
+	# Égalité de Vitesse (10) : roll(2) = 1, le joueur d'abord.
+	var immune := _poison_battle([_mon(&"weedle", 5)], [weedle_foe], [1, 1, 50, 2, 16, 30, 50])
+	events = immune.submit(BattleAction.move(0))
+	assert_eq(_rng.remaining(), 0)
+	for kind: BattleEvent.Kind in [K.STATUS_INFLICTED, K.STATUS_UNCHANGED, K.NO_EFFECT]:
+		assert_null(_find(events, kind), K.find_key(kind))
+	assert_eq(weedle_foe.status, StatusRules.NONE, "type Poison : immunisé")
+
+
+func test_no_effect_roll_on_a_target_knocked_out_by_the_hit() -> void:
+	var battle := _poison_battle([_mon(&"weedle", 5)], [_mon(&"pidgey", 3)], [1, 50, 2, 16])
+	battle.get_foe_side().active.pokemon.hp = 1
+	var events := battle.submit(BattleAction.move(0))
+	assert_eq(_rng.remaining(), 0, "cible K.O. : pas de roll(100) (comme les statistiques)")
+	assert_null(_find(events, K.STATUS_INFLICTED))
+	assert_eq(battle.get_outcome(), Battle.Outcome.WIN)
+
+
+func test_poison_takes_an_eighth_of_max_hp_at_the_end_of_each_turn() -> void:
+	var charmander := _poisoned(_with_move(&"charmander", 5, &"growl"))
+	var battle := _poison_battle([charmander], [_with_move(&"pidgey", 3, &"growl")],
+		[1, 50, 50, 1, 50, 50])
+	assert_eq(charmander.max_hp(), 18)
+	var events := battle.submit(BattleAction.move(0))
+	var damaged := events[-1]
+	assert_eq(_kinds(events).slice(-1), [["STATUS_DAMAGED", "PLAYER"]])
+	assert_eq([damaged.status, damaged.amount, damaged.hp, damaged.max_hp, damaged.party_index],
+		[&"poison", 2, 16, 18, 0], "⌊18 / 8⌋ = 2")
+	events = battle.submit(BattleAction.move(0))
+	assert_eq(_rng.remaining(), 0, "la fin de tour ne tire rien")
+	assert_eq([events[-1].kind, events[-1].hp], [K.STATUS_DAMAGED, 14], "chaque tour")
+	assert_eq(charmander.status, &"poison", "le statut reste")
+
+
+func test_end_of_turn_order_is_seed_then_poison_for_each_side_player_first() -> void:
+	var bulbasaur := _poisoned(_mon(&"bulbasaur", 7))
+	var battle := _poison_battle([bulbasaur], [_poisoned(_mon(&"pidgey", 3))],
+		[1, 50, 50, 2, 16])
+	var events := battle.submit(BattleAction.move(2))
+	assert_eq(_rng.remaining(), 0)
+	assert_eq(_kinds(events).slice(-3), [["STATUS_DAMAGED", "PLAYER"], ["DRAINED", "FOE"],
+		["STATUS_DAMAGED", "FOE"]])
+
+
+func test_foe_knocked_out_by_poison_gives_exp_then_the_next_is_sent() -> void:
+	var pidgey := _poisoned(_with_move(&"pidgey", 3, &"growl"))
+	var battle := _poison_battle([_with_move(&"charmander", 5, &"growl")],
+		[pidgey, _mon(&"rattata", 3)], [1, 50, 50], BattleRules.for_trainer())
+	pidgey.hp = 1
+	var events := battle.submit(BattleAction.move(0))
+	assert_eq(_rng.remaining(), 0)
+	var kinds := _kinds(events)
+	assert_eq(kinds.slice(kinds.find(["STATUS_DAMAGED", "FOE"])), [["STATUS_DAMAGED", "FOE"],
+		["FAINTED", "FOE"], ["EXP_GAINED", "PLAYER"], ["SENT_OUT", "FOE"]])
+	var fainted := _find(events, K.FAINTED)
+	assert_eq(fainted.status, StatusRules.NONE, "le K.O. efface le statut")
+	assert_eq(pidgey.status, StatusRules.NONE)
+	assert_eq(battle.get_state(), Battle.State.CHOOSING)
+	assert_eq(battle.get_foe_side().active.pokemon.species_id, &"rattata")
+
+
+func test_last_foe_knocked_out_by_poison_is_a_win() -> void:
+	var pidgey := _poisoned(_with_move(&"pidgey", 3, &"growl"))
+	var battle := _poison_battle([_with_move(&"charmander", 5, &"growl")], [pidgey],
+		[1, 50, 50])
+	pidgey.hp = 1
+	var events := battle.submit(BattleAction.move(0))
+	assert_eq(_kinds(events).slice(-4), [["STATUS_DAMAGED", "FOE"], ["FAINTED", "FOE"],
+		["EXP_GAINED", "PLAYER"], ["BATTLE_ENDED", "PLAYER"]])
+	assert_eq(battle.get_outcome(), Battle.Outcome.WIN)
+
+
+func test_player_knocked_out_by_poison_must_be_replaced_or_loses() -> void:
+	var charmander := _poisoned(_with_move(&"charmander", 5, &"growl"))
+	charmander.hp = 1
+	var battle := _poison_battle([charmander, _mon(&"bulbasaur", 5)],
+		[_with_move(&"pidgey", 3, &"growl")], [1, 50, 50])
+	var events := battle.submit(BattleAction.move(0))
+	assert_eq(_kinds(events).slice(-2), [["STATUS_DAMAGED", "PLAYER"], ["FAINTED", "PLAYER"]])
+	assert_eq(battle.get_state(), Battle.State.REPLACING)
+	assert_eq(charmander.status, StatusRules.NONE, "statut effacé au K.O.")
+	var alone := _poisoned(_with_move(&"charmander", 5, &"growl"))
+	alone.hp = 1
+	var lost := _poison_battle([alone], [_with_move(&"pidgey", 3, &"growl")], [1, 50, 50])
+	events = lost.submit(BattleAction.move(0))
+	assert_eq(_kinds(events).slice(-3), [["STATUS_DAMAGED", "PLAYER"], ["FAINTED", "PLAYER"],
+		["BATTLE_ENDED", "PLAYER"]])
+	assert_eq(lost.get_outcome(), Battle.Outcome.LOSS)
+
+
+func test_a_knock_out_by_damage_also_clears_the_status() -> void:
+	var battle := _poison_battle([_mon(&"charmander", 5)], [_poisoned(_mon(&"pidgey", 3))],
+		[1, 50, 2, 16])
+	var pidgey := battle.get_foe_side().active.pokemon
+	pidgey.hp = 1
+	battle.submit(BattleAction.move(0))
+	assert_eq(pidgey.status, StatusRules.NONE)
+
+
+func test_sent_out_carries_the_status() -> void:
+	_rng = ScriptedRng.new([])
+	var party := Party.new()
+	party.add(_poisoned(_mon(&"charmander", 5)))
+	var foes := Party.new()
+	foes.add(_mon(&"pidgey", 3))
+	var battle := Battle.new(BattleSide.new(party, true), BattleSide.new(foes, false, ""),
+		_data, _rng, BattleRules.for_wild())
+	var events := battle.start()
+	assert_eq(_kinds(events), [["BATTLE_STARTED", "FOE"], ["SENT_OUT", "FOE"],
+		["SENT_OUT", "PLAYER"]])
+	assert_eq(events[1].status, StatusRules.NONE)
+	assert_eq(events[2].status, &"poison", "la carte de PV l'affiche dès l'entrée")
+
+
+func test_poisoned_foe_is_easier_to_catch() -> void:
+	# Roucool N3 à PV pleins : a = 85 → b = 49 795 ; empoisonné : a = ⌊85 × 1,5⌋ = 127,
+	# b plus haut. Quatre tirages de 50 000 : échec sain, capture empoisonné.
+	assert_eq(CaptureCalc.catch_value(15, 15, 255, 1.0, StatusRules.catch_bonus(&"poison")),
+		127)
+	assert_gt(CaptureCalc.shake_threshold(127), 50000)
+	assert_lt(CaptureCalc.shake_threshold(85), 50000)
+	var healthy := _capture_battle([50000, 1, 50, 2, 16])
+	var events := healthy.submit(BattleAction.ball(&"poke_ball"))
+	assert_not_null(_find(events, K.BROKE_FREE), "sain : libéré au premier test")
+	var poisoned := _capture_battle([50000, 50000, 50000, 50000])
+	poisoned.get_foe_side().active.pokemon.status = StatusRules.POISON
+	events = poisoned.submit(BattleAction.ball(&"poke_ball"))
+	assert_eq(_rng.remaining(), 0)
+	assert_not_null(_find(events, K.CAUGHT), "empoisonné : ×1,5 (Q-6)")
+	assert_eq(poisoned.get_outcome(), Battle.Outcome.CAUGHT)
+
+
+func test_antidote_in_battle_cures_then_the_foe_plays() -> void:
+	var charmander := _poisoned(_mon(&"charmander", 5))
+	var battle := _poison_battle([charmander], [_mon(&"pidgey", 3)], FOE_TURN)
+	var action := BattleAction.heal(&"antidote", 0)
+	assert_true(battle.is_legal(action), "PV pleins mais empoisonné : permis")
+	var events := battle.submit(action)
+	assert_eq(_rng.remaining(), 0)
+	assert_eq(_kinds(events).slice(0, 4), [["TURN_STARTED", "PLAYER"], ["ITEM_USED", "PLAYER"],
+		["STATUS_CURED", "PLAYER"], ["MOVE_USED", "FOE"]])
+	var used := events[1]
+	assert_eq([used.item_id, used.item_name, used.amount, used.status],
+		[&"antidote", "Antidote", 0, StatusRules.NONE])
+	var cured := events[2]
+	assert_eq([cured.status, cured.party_index, cured.species_id], [&"poison", 0, &"charmander"])
+	assert_eq(charmander.status, StatusRules.NONE)
+	assert_null(_find(events, K.STATUS_DAMAGED), "plus de dégâts en fin de tour")
+
+
+func test_antidote_on_a_member_not_in_play_and_refusals() -> void:
+	var bulbasaur := _poisoned(_mon(&"bulbasaur", 5))
+	var battle := _poison_battle([_mon(&"charmander", 5), bulbasaur], [_mon(&"pidgey", 3)],
+		FOE_TURN)
+	assert_false(battle.is_legal(BattleAction.heal(&"antidote", 0)), "pas empoisonné")
+	assert_true(battle.is_legal(BattleAction.heal(&"antidote", 1)))
+	var events := battle.submit(BattleAction.heal(&"antidote", 1))
+	assert_eq(_find(events, K.STATUS_CURED).party_index, 1)
+	assert_eq(bulbasaur.status, StatusRules.NONE)
+	var full := _poison_battle([_poisoned(_mon(&"charmander", 5))], [_mon(&"pidgey", 3)], [])
+	assert_false(full.is_legal(BattleAction.heal(&"potion", 0)),
+		"la Potion ne soigne pas le poison (PV pleins)")
+
+
+func test_poison_log_is_reproducible() -> void:
+	var logs: Array = []
+	for i: int in 2:
+		var rng := GameRng.new(9)
+		var party := Party.new()
+		party.add(_mon(&"weedle", 7))
+		var foes := Party.new()
+		foes.add(_mon(&"rattata", 5))
+		var battle := Battle.new(BattleSide.new(party, true), BattleSide.new(foes, false, ""),
+			_data, rng, BattleRules.for_wild(_items()))
+		var journal: Array = []
+		battle.start()
+		while battle.get_state() == Battle.State.CHOOSING and battle.get_turn() < 50:
+			for event: BattleEvent in battle.submit(BattleAction.move(0)):
+				journal.append(event.to_dict())
+		logs.append(journal)
+	assert_eq(logs[0], logs[1])
+	assert_eq(logs[0][-1]["kind"], "BATTLE_ENDED")

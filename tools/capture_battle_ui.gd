@@ -122,8 +122,8 @@ func _build_overlay() -> void:
 	_add(&"moves", "move_grid.tscn", slot["MOVES"])
 	_add(&"back", "battle_back_button.tscn", slot["BACK"])
 	_add(&"message", "battle_message_banner.tscn", slot["MESSAGE"])
-	(_parts[&"foe"] as Control).set(&"slide_direction", Vector2.RIGHT)
-	(_parts[&"own"] as Control).set(&"slide_direction", Vector2.LEFT)
+	(_parts[&"foe"] as Control).set(&"slide_direction", Vector2.LEFT)
+	(_parts[&"own"] as Control).set(&"slide_direction", Vector2.RIGHT)
 
 
 func _add(key: StringName, scene: String, slot: int) -> void:

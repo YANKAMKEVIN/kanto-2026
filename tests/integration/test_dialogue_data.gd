@@ -18,6 +18,9 @@ extends GutTest
 ## par le code (StarterChoice.get_set_flags : taken_*, starter_female).
 ## Décision n° 16 : répliques de la phase de choix ; celles de la décision n° 8 réservées à
 ## l'après-combat (rival_battle_done, drapeau « futur » du 4B), Maya accordée (lui / elle).
+## Jalon 9 (T11) : répliques des 5 Dresseurs de la Forêt de Jade, mot pour mot depuis les
+## « Textes verrouillés » du dossier 10 (« « … » / « … » » = une page de deux lignes), locuteur
+## = nom du Dresseur ; réplique « avant » du bloc « trainer » utilisée comme un dialogue de PNJ.
 
 const BOX_SCENE := "res://game/ui/dialogue/dialogue_box.tscn"
 const DOSSIER := "res://docs/design/dossier-02-prologue.md"
@@ -25,6 +28,14 @@ const DOSSIER := "res://docs/design/dossier-02-prologue.md"
 const DOSSIER_07 := "res://docs/design/dossier-07-route-1.md"
 ## Jalon 7 : textes de référence validés (dossier 09 §19) ; un jeton y est écrit « {espèce} ».
 const DOSSIER_09 := "res://docs/design/dossier-09-jadielle.md"
+## Jalon 9 : textes verrouillés du dossier 10 (Forêt de Jade, gardes, Dresseurs) ; une réplique
+## de deux lignes « « ligne 1 » / « ligne 2 » » = une page, lignes jointes par « \n ».
+const DOSSIER_10 := "res://docs/design/dossier-10-foret-de-jade.md"
+## Gardes des postes de la Forêt de Jade (T6) : textes vérifiés par un test dédié.
+const GATE_GUARDS: Array[StringName] = [&"forest_gate_north_guard", &"forest_gate_south_guard"]
+## Dialogues pas encore posés sur une carte (vidée au T19 du jalon 9 : la forêt et ses postes
+## sont dans [constant MAPS]).
+const UNUSED_YET: Array[StringName] = []
 ## Jalon 8 : textes T1–T16 validés (dossier 11, « Textes à valider ») ; dans son tableau, « / »
 ## marque le retour à la ligne de la bulle et le gras (« ** ») le titre d'un panneau.
 const DOSSIER_11 := "res://docs/design/dossier-11-route-2.md"
@@ -33,6 +44,10 @@ const MAPS: Array[StringName] = [
 	&"player_house_2f", &"player_house_1f", &"rival_house", &"oak_lab", &"pallet_town",
 	&"route_1", &"route_22", &"viridian_city", &"viridian_center", &"viridian_mart",
 	&"route_2",
+	# Jalon 9 (T6, T12) : carte de QA (le garde sud, les cinq Dresseurs).
+	&"qa_forest_systems",
+	# Jalon 9 (T19) : la Forêt de Jade et ses deux postes.
+	&"viridian_forest", &"viridian_forest_gate_south", &"viridian_forest_gate_north",
 ]
 ## Lot de textes validé par Kevin le 2026-10-06 (anciens brouillons : panneau, observations,
 ## soin de Maman, terminal du Stockage, portes de Jadielle…) : source des textes hors dossiers.
@@ -42,7 +57,13 @@ const TEXTES_VALIDES := "res://docs/design/textes/textes-brouillon-j7.md"
 ## (4A, T1) la proposition du Prof. Chen ; (4A, T3) le choix et la sortie empêchée.
 const IDS: Array[StringName] = [
 	&"aoki", &"breakfast_table", &"clerk", &"clerk_parcel",
-	&"clerk_parcel_hello", &"haru", &"leo", &"maya", &"mom",
+	&"clerk_parcel_hello", &"forest_gate_north_guard", &"forest_gate_south_guard",
+	&"forest_hiker", &"forest_naturalist",
+	&"forest_scout_eli_after", &"forest_scout_eli_before", &"forest_scout_milo_after",
+	&"forest_scout_milo_before", &"forest_scout_noe_after", &"forest_scout_noe_before",
+	&"forest_scout_theo_after", &"forest_scout_theo_before", &"forest_youngster_tom_after",
+	&"forest_youngster_tom_before",
+	&"haru", &"leo", &"maya", &"mom",
 	&"mom_wakeup", &"nurse", &"nurse_wakeup",
 	&"oak_after_battle",
 	&"oak_lab_exit_block", &"oak_lab_reunion", &"oak_lab_waiting", &"oak_parcel_records",
@@ -65,7 +86,11 @@ const IDS: Array[StringName] = [
 	&"route_2_item_4_found", &"route_2_sign", &"route_2_youngster",
 	&"sign_pallet_town",
 	&"storage_terminal",
-	&"viridian_courier", &"viridian_gym_door", &"viridian_gym_watcher", &"viridian_house_door",
+	&"viridian_courier",
+	# Jalon 9 (T18) : objets de la Forêt de Jade.
+	&"viridian_forest_item_1", &"viridian_forest_item_2", &"viridian_forest_item_3_found",
+	&"viridian_forest_item_4_found", &"viridian_forest_item_5", &"viridian_forest_item_6_found",
+	&"viridian_gym_door", &"viridian_gym_watcher", &"viridian_house_door",
 	&"viridian_kid",
 	&"viridian_lass", &"viridian_old_man", &"viridian_traveler",
 ]
@@ -73,8 +98,9 @@ const IDS: Array[StringName] = [
 ## (jalon-04.md §14.5, §14.8), quelle que soit l'issue.
 ## Jalon 7 : got_oak_parcel, lu par Chen (scène du colis, T18), est levé par la première visite
 ## de la Boutique depuis le T12 (data/cutscenes/viridian_mart.json).
-const FUTURE_FLAGS: Array[StringName] = []
-
+## Jalon 9 : `pewter_arrived` (lu par le garde du poste nord) est posé par le J10, à l'arrivée à
+## Argenta.
+const FUTURE_FLAGS: Array[StringName] = [&"pewter_arrived"]
 var _library: DialogueLibrary
 var _cutscenes: CutsceneLibrary
 var _offer: StarterOffer
@@ -107,6 +133,9 @@ func before_all() -> void:
 			(_npc_ids[map_id] as Array).append(spec.id)
 			if spec.is_interactive():
 				_use(spec.dialogue, map_id)
+			# Jalon 9 : la réplique « avant » d'un Dresseur est jouée par sa séquence, sur sa carte.
+			if spec.is_trainer():
+				_use(spec.before_dialogue, map_id)
 		var map := (load(MapCatalog.scene_path(map_id)) as PackedScene).instantiate()
 		for point: Node in map.get_node(^"Interactables").get_children():
 			_use((point as InteractPoint).dialogue_id, map_id)
@@ -181,6 +210,8 @@ func test_every_used_dialogue_exists() -> void:
 func test_every_dialogue_is_used() -> void:
 	var played := _cutscenes.get_dialogue_ids()
 	for id: StringName in _library.get_ids():
+		if UNUSED_YET.has(id):
+			continue
 		assert_true(_used_on.has(id) or played.has(id),
 			"dialogue « %s » utilisé par un PNJ, un point ou une scène" % id)
 
@@ -198,10 +229,14 @@ func test_every_dialogue_played_by_a_cutscene_exists() -> void:
 		&"rival_parcel_return", &"rival_starter_pick", &"rival_starter_smile",
 		&"route1_grass_thought", &"route22_rival_greet", &"route22_rival_hesitates",
 		&"route22_rival_lost", &"route22_rival_won", &"route22_youngster_sigh",
-		&"route_1_potion_found", &"route_2_item_3_found", &"route_2_item_4_found"]
+		&"route_1_potion_found", &"route_2_item_3_found", &"route_2_item_4_found",
+		&"viridian_forest_item_3_found", &"viridian_forest_item_4_found",
+		&"viridian_forest_item_6_found"]
 		as Array[StringName])
 	for id: StringName in played:
 		assert_true(_library.has_dialogue(id), "dialogue « %s » défini" % id)
+		if UNUSED_YET.has(id):
+			continue
 		assert_true(_used_on.has(id), "« %s » joué depuis un déclencheur ou par le code" % id)
 	for id: StringName in [&"oak_starter_reciprocal", &"rival_starter_pick",
 			&"rival_starter_smile", &"rival_challenge_wait", &"rival_challenge",
@@ -270,12 +305,17 @@ func test_every_condition_flag_is_set_somewhere() -> void:
 		assert_false(set_flags.has(flag), "« %s » : levé par un jalon futur" % flag)
 	assert_true(read_flags.has(&"starter_chosen"), "starter_chosen lu (pensée des herbes)")
 	assert_eq(_library.get_set_flags(),
-		[&"blacked_out_before", &"mom_greeted", &"rival_met", &"route_2_hiker_talked",
-			&"route_2_youngster_talked", &"storage_terminal_seen", &"viridian_old_man_talked"]
+		[&"blacked_out_before", &"forest_hiker_talked", &"forest_naturalist_talked",
+			&"mom_greeted", &"poison_unlocked", &"rival_met",
+			&"route_2_hiker_talked", &"route_2_youngster_talked", &"storage_terminal_seen",
+			&"viridian_old_man_talked"]
 		as Array[StringName])
 	assert_eq(_cutscenes.get_set_flags(), [&"got_oak_parcel", &"got_potion_route_1",
 		&"got_route_2_item_1", &"got_route_2_item_2", &"got_route_2_item_3",
-		&"got_route_2_item_4", &"oak_lab_reunion", &"oak_met",
+		&"got_route_2_item_4", &"got_viridian_forest_item_1", &"got_viridian_forest_item_2",
+		&"got_viridian_forest_item_3", &"got_viridian_forest_item_4",
+		&"got_viridian_forest_item_5", &"got_viridian_forest_item_6", &"oak_lab_reunion",
+		&"oak_met",
 		&"pokedex_activated", &"rival_battle_done", &"rival_challenged", &"rival_lab_lost",
 		&"rival_lab_won", &"rival_left_lab", &"rival_route22_lost", &"rival_route22_won",
 		&"starter_chosen", &"starter_offered", &"viridian_arrived"] as Array[StringName])
@@ -421,8 +461,10 @@ func test_oak_starter_offer_four_lines_and_looks() -> void:
 func test_mom_first_variant_is_automatic_and_only_hers() -> void:
 	for id: StringName in _library.get_ids():
 		for variant: DialogueVariant in _library.get_dialogue(id).variants:
-			assert_eq(variant.auto, id == &"mom" and variant == \
-				_library.get_dialogue(&"mom").variants[0], "%s : auto" % id)
+			# Maman, et le garde du poste sud à son premier passage (jalon 9, Q-4).
+			var first_of: Array[StringName] = [&"mom", &"forest_gate_south_guard"]
+			assert_eq(variant.auto, first_of.has(id) and variant == \
+				_library.get_dialogue(id).variants[0], "%s : auto" % id)
 
 
 ## Lot de textes validé par Kevin le 2026-10-06 : plus aucun dialogue ni variante provisoire.
@@ -455,7 +497,10 @@ func test_texts_are_the_dossier_02_texts_word_for_word() -> void:
 	var dossier_09 := FileAccess.get_file_as_string(DOSSIER_09)
 	var dossier_11 := FileAccess.get_file_as_string(DOSSIER_11).replace("**", "")
 	var valides := FileAccess.get_file_as_string(TEXTES_VALIDES)
+	var dossier_10 := FileAccess.get_file_as_string(DOSSIER_10)
 	for row: Array in _pages():
+		if GATE_GUARDS.has(row[0]):
+			continue
 		var text: String = row[1]
 		for token: String in _DOSSIER_TOKENS:
 			text = text.replace(token, _DOSSIER_TOKENS[token])
@@ -466,7 +511,8 @@ func test_texts_are_the_dossier_02_texts_word_for_word() -> void:
 		var in_dossier_11 := dossier_11.contains("| %s |" % text.replace("\n", " / ")) \
 			or dossier_11.replace(" / ", " ").contains("| %s |" % text)
 		assert_true(dossier.contains(text) or dossier_07.contains(text)
-			or dossier_09.contains(text) or in_dossier_11 or valides.contains("« %s »" % text),
+			or dossier_09.contains(text) or in_dossier_11 or valides.contains("« %s »" % text)
+			or dossier_10.contains(_as_dossier_10(text)),
 			"%s : « %s » dans un dossier de conception" % [row[0], text])
 
 
@@ -603,9 +649,92 @@ func test_oak_parcel_lines() -> void:
 				launched += 1
 				assert_true(_cutscenes.has_cutscene(variant.cutscene), "%s : scène « %s »" % [
 					id, variant.cutscene])
-	# La scène du colis ; jalon 8 : les deux objets visibles de la Route 2 (PRENDRE).
-	assert_eq(launched, 3, "la scène du colis et les deux objets au sol")
+	# La scène du colis ; jalon 8 : les deux objets visibles de la Route 2 (PRENDRE) ; jalon 9 :
+	# les trois de la Forêt de Jade.
+	assert_eq(launched, 6, "la scène du colis et les cinq objets au sol")
 	# Le jeton n'apparaît que dans la réplique de l'espèce.
 	for row: Array in _pages():
 		var tokens := DialogueTokens.tokens_in(row[1])
 		assert_eq(not tokens.is_empty(), row[1] == records[2].text, "%s : jeton" % row[0])
+
+
+
+## Forme d'une réplique dans le dossier 10 : « ligne » ou « ligne 1 » / « ligne 2 ».
+static func _as_dossier_10(text: String) -> String:
+	var quoted := PackedStringArray()
+	for line: String in text.split("\n"):
+		quoted.append("« %s »" % line)
+	return " / ".join(quoted)
+
+
+## Jalon 9 (T11) : une réplique avant et une après par Dresseur de la forêt, une page chacune,
+## locuteur = nom du Dresseur (data/trainers/), mot pour mot (dont « Enfin... presque. »).
+func test_forest_trainer_lines() -> void:
+	var data := PokemonData.new()
+	data.load_dir()
+	var trainers := TrainerLibrary.new(data)
+	trainers.load_dir()
+	var expected: Dictionary[StringName, Array] = {
+		&"forest_scout_theo": ["Hé ! Toi aussi, tu cherches\ndes Pokémon dans la forêt ?",
+			"Ton Pokémon est bien entraîné.\nJe dois encore progresser."],
+		&"forest_scout_noe": ["Mes Pokémon ont grandi ici.\nTu veux les affronter ?",
+			"Ils deviennent plus forts\nchaque jour."],
+		&"forest_youngster_tom": ["Je connais cette forêt par cœur !\nEnfin... presque.",
+			"D'accord. Peut-être pas par cœur."],
+		&"forest_scout_milo": ["Les Pokémon Insecte évoluent vite.\nRegarde ça !",
+			"Pas encore assez vite, apparemment."],
+		&"forest_scout_eli": ["Tu as traversé toute la forêt ?\nAlors montre-moi ton équipe !",
+			"Pas mal !\nArgenta n'est plus très loin."],
+	}
+	var dossier_10 := FileAccess.get_file_as_string(DOSSIER_10)
+	for trainer_id: StringName in expected:
+		var trainer := trainers.get_trainer(trainer_id)
+		assert_not_null(trainer, String(trainer_id))
+		var suffixes: Array[String] = ["_before", "_after"]
+		for i: int in suffixes.size():
+			var id := StringName(String(trainer_id) + suffixes[i])
+			var dialogue := _library.get_dialogue(id)
+			assert_not_null(dialogue, String(id))
+			if dialogue == null or trainer == null:
+				continue
+			assert_eq(dialogue.speaker, trainer.name, "%s : locuteur" % id)
+			assert_false(dialogue.narration)
+			assert_eq(dialogue.variants.size(), 1, String(id))
+			var pages := dialogue.variants[0].pages
+			assert_eq(pages.size(), 1, "%s : une page" % id)
+			assert_eq(pages[0].text, expected[trainer_id][i], String(id))
+			assert_string_contains(dossier_10, _as_dossier_10(pages[0].text))
+
+
+## Jalon 9 (T6) : les deux gardes, mot pour mot du dossier 10 (« Textes verrouillés »), nom
+## affiché « Garde » (lot de textes n° 55), une page de deux lignes par réplique.
+func test_forest_gate_guards_say_the_locked_lines() -> void:
+	var dossier := FileAccess.get_file_as_string(DOSSIER_10)
+	var south := _library.get_dialogue(&"forest_gate_south_guard")
+	var north := _library.get_dialogue(&"forest_gate_north_guard")
+	assert_eq([south.speaker, north.speaker], ["Garde", "Garde"])
+	assert_eq(south.variants.size(), 2)
+	assert_eq(north.variants.size(), 2)
+	var pages: Array[String] = []
+	for dialogue: Dialogue in [south, north]:
+		for variant: DialogueVariant in dialogue.variants:
+			assert_eq(variant.pages.size(), 1, "une réplique = une page")
+			pages.append(variant.pages[0].text)
+	assert_eq(pages.size(), 4)
+	for text: String in pages:
+		var lines := text.split("\n")
+		assert_eq(lines.size(), 2, "bulle de 2 lignes : %s" % text)
+		assert_true(dossier.contains("« %s » / « %s »" % [lines[0], lines[1]]),
+			"« %s » dans le dossier 10" % text)
+	assert_eq(pages[0], "La Forêt de Jade est juste devant.\nGarde un Antidote avec toi.")
+	assert_eq(pages[1], "Les Aspicot peuvent empoisonner.\nLa Boutique de Jadielle vend des Antidotes.")
+	# Garde du sud : première conversation = avertissement + `poison_unlocked`, automatique,
+	# une seule fois ; ensuite PNJ ordinaire (rappel, pas de drapeau).
+	var first: DialogueVariant = south.variants[0]
+	assert_true(first.auto)
+	assert_eq(first.unless_flags, [&"poison_unlocked"] as Array[StringName])
+	assert_eq(first.set_flags, [&"poison_unlocked"] as Array[StringName])
+	assert_false(south.variants[1].auto)
+	assert_true(south.variants[1].set_flags.is_empty())
+	# Garde du nord : la variante d'Argenta attend le drapeau du J10.
+	assert_eq(north.variants[0].if_flags, [&"pewter_arrived"] as Array[StringName])

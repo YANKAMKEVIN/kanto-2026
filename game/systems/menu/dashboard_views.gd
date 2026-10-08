@@ -61,7 +61,7 @@ static func member(pokemon: Pokemon, index: int, data: PokemonData) -> TeamMembe
 	view.level = pokemon.level
 	view.max_hp = maxi(pokemon.max_hp(), 1)
 	view.hp = clampi(pokemon.hp, 0, view.max_hp)
-	view.status_text = TeamMemberView.STATUS_FAINTED if pokemon.is_fainted() else ""
+	view.status_text = StatusView.text(pokemon)
 	view.favorite = pokemon.favorite
 	return view
 

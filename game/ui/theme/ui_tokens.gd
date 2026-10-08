@@ -122,6 +122,21 @@ const INTERACT_LABEL_PAD_V := 8
 ## Vibration courte à l'appui du bouton contextuel (millisecondes).
 const HAPTIC_TAP_MS := 15
 
+# --- Bulle « ! » d'un Dresseur (jalon 9, T12) -----------------------------------------------
+
+## Durée totale (s) : apparition en rebond + tenue + fondu ; [constant Npc.EMOTE_DURATION].
+const EMOTE_DURATION := 0.6
+const EMOTE_POP := 0.18
+const EMOTE_FADE := 0.15
+## Hauteur (px monde) de la pointe de la bulle au-dessus des pieds (la tête est à ~ -128 : la pointe en effleure le haut).
+const EMOTE_TIP_HEIGHT := 118.0
+## Taille affichée (échelle de l'icône 96 px) ; le rebond (TRANS_BACK) dépasse d'environ 10 %.
+const EMOTE_SCALE := 0.7
+## Montée de la bulle pendant l'apparition (px monde).
+const EMOTE_RISE := 18.0
+## Dépassement maximal du rebond (TRANS_BACK, ≈ 10 %) : sert à garder la bulle dans l'écran.
+const EMOTE_OVERSHOOT := 1.12
+
 # --- Boîte de dialogue (bible UI/UX §3) --------------------------------------------------------
 
 const DIALOG_BOX_WIDTH := 1400
@@ -259,12 +274,19 @@ const BATTLE_EDGE := SAFE_MARGIN
 ## Haut de la carte adversaire (non interactive : un peu plus haut que SAFE_MARGIN serait
 ## possible, on garde l'air de la référence).
 const BATTLE_FOE_CARD_TOP := 56
-## Bas de la carte joueur depuis le bas de l'écran : laisse la place du bouton « ‹ » dessous.
-const BATTLE_OWN_CARD_BOTTOM := SAFE_MARGIN + TOUCH_MIN + GAP
+## Bas de la carte joueur depuis le bas de l'écran (CB.2) : en bas à droite, juste au-dessus
+## de la grille d'actions et du bandeau des capacités (le plus haut des deux : 348 px).
+const BATTLE_OWN_CARD_BOTTOM := 358
 ## Bas de la grille d'actions et du bandeau des messages depuis le bas de l'écran.
-const BATTLE_GRID_BOTTOM := 80
+const BATTLE_GRID_BOTTOM := 56
 ## Bas des cartes de capacités depuis le bas de l'écran.
 const BATTLE_MOVES_BOTTOM := 56
+## CB.2 — Sac de combat en rangées (storyboard) : largeur du panneau (l'ÉQUIPE garde
+## BAG_PANEL_WIDTH), hauteur, écart, icône des rangées.
+const BATTLE_BAG_WIDTH := 760
+const BATTLE_BAG_ROW_HEIGHT := 128
+const BATTLE_BAG_ROW_GAP := 12
+const BATTLE_BAG_ROW_ICON := 72
 ## Fermeture d'un composant (plus courte que l'ouverture ANIM_PANEL).
 const BATTLE_PANEL_CLOSE := 0.2
 
@@ -318,7 +340,7 @@ const PARTY_PIP := 28
 const PARTY_PIP_GAP := 10
 ## Retrait depuis le bord gauche de la carte, et écart au-dessus de la carte.
 const PARTY_PIPS_INSET := 20
-const PARTY_PIPS_GAP := 12
+const PARTY_PIPS_GAP := 8
 const PARTY_PIP_EMPTY := Color(0.62, 0.67, 0.74, 0.9)
 const PARTY_PIP_EMPTY_BORDER := Color(0.06, 0.09, 0.13, 0.55)
 
@@ -327,7 +349,7 @@ const ACTION_ATTACK := Color("#E04A3C")
 const ACTION_BAG := Color("#D49A2E")
 const ACTION_TEAM := Color("#2D6DB5")
 const ACTION_RUN := Color(0.16, 0.2, 0.25, 0.92)
-const BATTLE_ACTION_SIZE := Vector2(360, 136)
+const BATTLE_ACTION_SIZE := Vector2(360, 128)
 const BATTLE_ACTION_GAP := 22
 const BATTLE_ACTION_ICON := 64
 const BATTLE_ACTION_PAD_H := 30
@@ -348,13 +370,13 @@ const ACTION_GLOW_PULSE := 0.9
 const ACTION_GLOW_MIN := 0.35
 
 # Cartes de capacités (combat-capacites-v1).
-const MOVE_CARD_SIZE := Vector2(560, 136)
+const MOVE_CARD_SIZE := Vector2(560, 128)
 ## Écart horizontal : il loge la flèche ▶ de sélection de la colonne de droite.
 const MOVE_GAP_H := 48
-const MOVE_GAP_V := 20
+const MOVE_GAP_V := 16
 ## Bandeau sombre derrière les cartes : marge intérieure (à gauche : MOVE_GAP_H, pour la
 ## flèche de la colonne de gauche) et débord jusqu'aux bords droit et bas de l'écran.
-const MOVE_BAND_PAD := 24
+const MOVE_BAND_PAD := 20
 const MOVE_BAND_BLEED := 96
 const MOVE_BAND_BG := Color(0.06, 0.09, 0.13, 0.66)
 ## Part de la couleur du type dans le fond de la carte (mêlée à PANEL_BG), et opacité du
@@ -531,7 +553,7 @@ const BAG_CARD_SELECTED_SCALE := 1.03
 ## carte sélectionnée (la liste coupe ce qui dépasse).
 const BAG_SCROLL_PAD := 14
 ## Au-delà de cette hauteur, la liste des cartes défile (une ligne et demie : on devine la suite).
-const BAG_GRID_MAX_HEIGHT := 360
+const BAG_GRID_MAX_HEIGHT := 400
 ## Aperçu de l'objet touché : illustration, nom, quantité, description, action.
 const BAG_DETAIL_PAD := 20
 const BAG_DETAIL_ICON := 112
@@ -1312,6 +1334,139 @@ const STORAGE_REFUSAL_BG := Color(0.30, 0.08, 0.08, 0.94)
 ## Cadre de la colonne visée par un glisser.
 const STORAGE_DROP_BORDER := 4
 const HAPTIC_STORAGE_MOVE_MS := 20
+
+# --- Poison (jalon 9, T5 ; dossier 08 §2 : le statut est toujours un texte) -------------------
+## Étiquette « PSN » : pastille de la couleur du type Poison (TypeBadge, sans icône) sur la carte
+## de PV du combat.
+const STATUS_POISON := Color("#A33EA1")
+## Même teinte éclaircie pour le texte « PSN » posé sur un panneau sombre (listes d'équipe, cibles
+## du Sac) : la pastille pleine ne tient pas dans ces lignes, et #A33EA1 seul y est trop sombre.
+const STATUS_POISON_TEXT := Color("#E08EDD")
+## Dégât de poison : voile violet sur le Pokémon (shader du sprite : la couleur se fond vers
+## STATUS_VEIL, jusqu'à STATUS_VEIL_AMOUNT au pic, puis revient), durée totale (s) à
+## speed_scale = 1 ; version douce quand « Réduire les animations » est actif.
+const STATUS_VEIL := Color("#B04CC8")
+const STATUS_VEIL_AMOUNT := 0.6
+const STATUS_VEIL_AMOUNT_REDUCED := 0.3
+const STATUS_VEIL_DURATION := 0.35
+## Vibration du dégât de poison (ms) : plus douce qu'un coup reçu (HAPTIC_HIT_MS).
+const HAPTIC_STATUS_MS := 20
+
+# --- Écran d'évolution (jalon 9, jalon-09.md §2.3.3 ; dossier 04 §7 : 8 à 12 s) --------------
+# Défauts (règle 4). Durées en secondes, multipliées par EvolutionScreen.speed_scale (0 = tests ;
+# « Réduire les animations » : facteur du combat). Total hors lecture des textes : OPEN +
+# PRESENT + TRANSFORM + FLASH + SILENCE + REVEAL = 0,5 + 1,5 + 5 + 0,3 + 0,4 + 0,8 = 8,5 s.
+
+## Calque : au-dessus de l'interface de combat (LAYER_BATTLE_HUD), sous les transitions.
+const LAYER_EVOLUTION := 24
+## L'environnement disparaît : fondu vers le fond sombre.
+const EVOLUTION_OPEN := 0.5
+## L'ancienne espèce au centre et « Quoi ? X évolue ! », sans toucher.
+const EVOLUTION_PRESENT := 1.5
+## Dans PRESENT : le Pokémon monte en fondu, la phrase suit.
+const EVOLUTION_ENTER := 0.7
+const EVOLUTION_ENTER_RISE := 36.0
+const EVOLUTION_TEXT_DELAY := 0.35
+## Deuxième évolution du même écran : l'espèce précédente s'efface d'abord (dans PRESENT).
+const EVOLUTION_SWITCH_OUT := 0.25
+## Transformation (ARRÊTER visible) ; couleurs → silhouette blanche en son début.
+const EVOLUTION_TRANSFORM := 5.0
+const EVOLUTION_TO_SILHOUETTE := 0.6
+## Intervalle entre deux silhouettes, au début et à la fin (elles alternent en accélérant).
+const EVOLUTION_SWAP_START := 0.7
+const EVOLUTION_SWAP_END := 0.07
+## Petit grossissement à chaque bascule de silhouette (fraction de la taille).
+const EVOLUTION_SWAP_POP := 0.06
+## Flash : montée puis retombée (total FLASH), opacité au sommet ; « Réduire les flashs ».
+const EVOLUTION_FLASH := 0.3
+const EVOLUTION_FLASH_RISE := 0.08
+const EVOLUTION_FLASH_ALPHA := 0.95
+const EVOLUTION_FLASH_REDUCED_ALPHA := 0.3
+## Silence : la nouvelle silhouette, immobile, avant les couleurs.
+const EVOLUTION_SILENCE := 0.4
+## Révélation : silhouette → couleurs, halo doré, onde ; nom puis phrase.
+const EVOLUTION_REVEAL := 0.8
+const EVOLUTION_NAME_DELAY := 0.2
+const EVOLUTION_LINE_DELAY := 0.45
+## Annulée : retour aux couleurs de l'ancienne espèce.
+const EVOLUTION_REVERT := 0.6
+## Apparition et disparition d'une phrase ; montée du texte.
+const EVOLUTION_TEXT_IN := 0.35
+const EVOLUTION_TEXT_OUT := 0.15
+const EVOLUTION_TEXT_RISE := 18.0
+## Consigne « Touchez l'écran… » : apparition puis respiration (période, opacité basse).
+const EVOLUTION_HINT_IN := 0.3
+const EVOLUTION_HINT_PERIOD := 1.4
+const EVOLUTION_HINT_DIM := 0.45
+## Fermeture : retour à la vue de combat.
+const EVOLUTION_CLOSE := 0.45
+## Bouton ARRÊTER : apparition / disparition.
+const EVOLUTION_STOP_IN := 0.18
+const EVOLUTION_STOP_OUT := 0.12
+## Vibration courte à la révélation.
+const EVOLUTION_HAPTIC_MS := 35
+
+## Composition (référence 1080 de haut ; centrée horizontalement, de 1920 à 2340 de large).
+## Cadre de l'artwork (carré, l'image y est posée sur le bas) et centre de ce cadre.
+const EVOLUTION_ART_SIZE := 500
+const EVOLUTION_ART_CENTER_Y := 400
+## Halo derrière le Pokémon, ombre au sol (largeur, hauteur), onde de la révélation.
+const EVOLUTION_GLOW_SIZE := 980
+const EVOLUTION_SHADOW_SIZE := Vector2(420, 64)
+const EVOLUTION_RING_SIZE := 900
+## Rayons : nombre, rayon, demi-largeur d'un rayon (radians), vitesse de rotation (rad/s)
+## au repos et au plus fort de la transformation.
+const EVOLUTION_RAY_COUNT := 18
+const EVOLUTION_RAY_RADIUS := 760.0
+const EVOLUTION_RAY_HALF_WIDTH := 0.06
+const EVOLUTION_RAY_SPIN := 0.06
+const EVOLUTION_RAY_SPIN_PEAK := 0.9
+## Textes : nom de la nouvelle espèce (MAJUSCULES), phrase, consigne — hauts de ligne.
+const EVOLUTION_NAME_FONT := 64
+const EVOLUTION_NAME_TOP := 700
+const EVOLUTION_LINE_TOP := 790
+const EVOLUTION_LINE_WIDTH := 1500
+const EVOLUTION_HINT_TOP := 872
+## Bouton ARRÊTER (≥ TOUCH_MIN), en bas à droite.
+const EVOLUTION_STOP_SIZE := Vector2(320, TOUCH_MIN)
+const EVOLUTION_STOP_RIGHT := SAFE_MARGIN + 32
+const EVOLUTION_STOP_BOTTOM := SAFE_MARGIN + 16
+const EVOLUTION_STOP_ICON := 40
+## Panneau d'oubli ouvert (il prend la droite) : le Pokémon et son nom glissent au milieu de
+## la place libre, à cette vitesse de rattrapage (1/s, exponentielle).
+const EVOLUTION_MAKE_ROOM_RATE := 8.0
+## Bandeau des capacités apprises : en bas au centre.
+const EVOLUTION_BANNER_BOTTOM := SAFE_MARGIN
+## Poussières de lumière qui montent (nombre, vie, vitesse min/max, étendue de l'émission).
+const EVOLUTION_MOTES := 36
+const EVOLUTION_MOTE_LIFE := 7.0
+const EVOLUTION_MOTE_SPEED := Vector2(22.0, 58.0)
+const EVOLUTION_MOTE_AREA := Vector2(1240.0, 260.0)
+const EVOLUTION_MOTE_TEXTURE := 32
+const EVOLUTION_MOTE_SCALE := Vector2(0.25, 0.8)
+## Accélération des poussières au plus fort de la transformation.
+const EVOLUTION_MOTE_RUSH := 4.0
+
+## Couleurs. Fond opaque (nuit bleutée), lueur ambiante au centre, halo froid puis doré,
+## silhouette blanche, flash, poussières.
+const EVOLUTION_BG := Color(0.02, 0.03, 0.06)
+const EVOLUTION_AMBIENT := Color(0.13, 0.19, 0.31, 1.0)
+const EVOLUTION_GLOW_COOL := Color(0.62, 0.78, 1.0, 1.0)
+const EVOLUTION_GLOW_GOLD := Color(1.0, 0.84, 0.45, 1.0)
+## Opacité du halo : calme, au plus fort de la transformation, après la révélation.
+const EVOLUTION_GLOW_CALM := 0.28
+const EVOLUTION_GLOW_PEAK := 0.85
+const EVOLUTION_GLOW_REVEALED := 0.5
+const EVOLUTION_SILHOUETTE := Color(1.0, 1.0, 1.0, 1.0)
+## Aura de la silhouette : copies agrandies et translucides (une lueur sans flou coûteux).
+const EVOLUTION_AURA_SCALES: Array[float] = [1.02, 1.045, 1.07, 1.1, 1.135]
+const EVOLUTION_AURA_ALPHAS: Array[float] = [0.3, 0.19, 0.12, 0.07, 0.035]
+const EVOLUTION_FLASH_COLOR := Color(1.0, 0.98, 0.92, 1.0)
+const EVOLUTION_RAY_COLOR := Color(1.0, 1.0, 1.0, 1.0)
+const EVOLUTION_RAY_ALPHA_PEAK := 0.26
+const EVOLUTION_RAY_ALPHA_REVEALED := 0.12
+const EVOLUTION_MOTE := Color(1.0, 0.93, 0.75, 0.55)
+const EVOLUTION_SHADOW := Color(0.0, 0.0, 0.0, 0.55)
 
 # Menu Dresseur rapproché des maquettes (MM.1, docs/tech/menu-maquettes.md) : tableau de bord,
 # Équipe et Sac. Verre léger sur le monde flouté (méthode du Pokédex), bandeau d'état en haut à
