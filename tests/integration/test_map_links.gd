@@ -11,6 +11,8 @@ const MAP_IDS: Array[StringName] = [
 	&"route_1", &"viridian_city", &"viridian_center", &"viridian_mart", &"route_2",
 	# Jalon 9 (T19) : la Forêt de Jade et ses deux postes.
 	&"viridian_forest", &"viridian_forest_gate_south", &"viridian_forest_gate_north",
+	# Jalon 10 (T11) : la Route 2 nord et Argenta (intérieurs « à venir » jusqu'au T13).
+	&"route_2_north", &"pewter_city",
 ]
 ## Cartes construites par une autre tâche en parallèle (jalon 7 : la Route 22, T22) : un warp
 ## qui y mène est vérifié seulement si la carte existe déjà (sinon le test le signale).
@@ -99,7 +101,7 @@ func test_every_coming_soon_warp_returns_to_a_walkable_spawn_of_its_own_map() ->
 			var back := map.get_spawn_cell(warp.target_spawn)
 			assert_false(map.get_grid().is_solid(back), "%s : retour praticable" % label)
 			assert_ne(warp.facing, Vector2i.ZERO, "%s : orientation au retour" % label)
-	assert_gt(found, 0, "au moins la porte nord du poste nord (Route 2 nord)")
+	assert_gt(found, 0, "au moins la sortie est d'Argenta (Route 3)")
 
 
 ## Warp de [param map] qui ramène à [param origin] depuis [param arrival] : sur la case

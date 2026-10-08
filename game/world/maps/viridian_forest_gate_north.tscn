@@ -55,21 +55,21 @@ target_map = &"viridian_forest"
 target_spawn = &"from_gate_north"
 arrival_facing = Vector2i(0, 1)
 
-[node name="Route2NorthSoonW" type="Marker2D" parent="Warps" unique_id=857452389]
+[node name="ToRoute2NorthW" type="Marker2D" parent="Warps" unique_id=857452389]
 position = Vector2(432, 192)
 script = ExtResource("6_sdo3x")
 direction = Vector2i(0, -1)
-target_spawn = &"north_door"
-arrival_facing = Vector2i(0, 1)
-coming_soon = "Route 2 nord"
+target_map = &"route_2_north"
+target_spawn = &"from_forest_gate"
+arrival_facing = Vector2i(0, -1)
 
-[node name="Route2NorthSoonE" type="Marker2D" parent="Warps" unique_id=1188990376]
+[node name="ToRoute2NorthE" type="Marker2D" parent="Warps" unique_id=1188990376]
 position = Vector2(528, 192)
 script = ExtResource("6_sdo3x")
 direction = Vector2i(0, -1)
-target_spawn = &"north_door"
-arrival_facing = Vector2i(0, 1)
-coming_soon = "Route 2 nord"
+target_map = &"route_2_north"
+target_spawn = &"from_forest_gate"
+arrival_facing = Vector2i(0, -1)
 
 [node name="Interactables" type="Node2D" parent="." unique_id=15982518]
 

@@ -222,18 +222,18 @@ func _forest_gate(side: StringName) -> Dictionary:
 				&"from_gate_south", Vector2i.UP],
 		]
 	else:
-		# Porte nord « à venir » (build de développement) : retour sous l'ouverture, tourné vers
-		# le sud.
+		# Porte nord : la Route 2 nord (J10 T11), devant la porte du poste, tourné vers le nord ;
+		# retour sous l'ouverture (spawn `north_door`), tourné vers le sud.
 		room["spawns"] = {"from_forest": Vector2i(4, 6), "north_door": Vector2i(4, 2)}
 		room["warps"] = [
 			["ToForestW", Vector2i(4, 7), STEP_ON, Vector2i.DOWN, &"viridian_forest",
 				&"from_gate_north", Vector2i.DOWN],
 			["ToForestE", Vector2i(5, 7), STEP_ON, Vector2i.DOWN, &"viridian_forest",
 				&"from_gate_north", Vector2i.DOWN],
-			["Route2NorthSoonW", Vector2i(4, 1), STEP_ON, Vector2i.UP, &"", &"north_door",
-				Vector2i.DOWN, "Route 2 nord"],
-			["Route2NorthSoonE", Vector2i(5, 1), STEP_ON, Vector2i.UP, &"", &"north_door",
-				Vector2i.DOWN, "Route 2 nord"],
+			["ToRoute2NorthW", Vector2i(4, 1), STEP_ON, Vector2i.UP, &"route_2_north",
+				&"from_forest_gate", Vector2i.UP],
+			["ToRoute2NorthE", Vector2i(5, 1), STEP_ON, Vector2i.UP, &"route_2_north",
+				&"from_forest_gate", Vector2i.UP],
 		]
 	return room
 

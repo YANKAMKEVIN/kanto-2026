@@ -51,6 +51,8 @@
 		"route_2": "golden_hour",
 		"viridian_forest": "forest",
 		"viridian_forest_gate_south": "interior_warm",
-		"viridian_forest_gate_north": "interior_warm"
+		"viridian_forest_gate_north": "interior_warm",
+		"route_2_north": "golden_hour",
+		"pewter_city": "golden_hour"
 	}
 }
