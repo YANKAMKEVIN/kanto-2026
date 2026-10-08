@@ -1,5 +1,7 @@
 # Série 12 — Argenta et Route 2 nord (jalon 10, lumière NE)
 
+> **Validé par Kevin le 2026-10-08 (10.0)** : les 23 images `_r1` générées au T2 (dans `build/art` du checkout principal ; planche de contact `build/art/AR_KIT_GENERE_v1.png`), sans nouvel essai. Intégration au T10, après la fusion du J9.
+
 > Rédigée au **J10 T1** (2026-10-07, architecte, branche `j10-t1-kit`). Plan : `docs/tech/jalon-10.md` §1.3 (grilles), §1.4 (kit) ; conception : `docs/design/dossier-12-argenta.md` (verrouillé). Fichier **nouveau** (la fiche des séries 01–11, `serie-01-place-jadielle.md`, est modifiée par le J9). **Aucune image générée au T1** : génération au **T2** (Mac, Codex), validation de Kevin sur la planche de contact (**10.0**), intégration au **T10** (après le J9 : manifeste, `preparer.py`, règles, scènes).
 
 **Consigne de Kevin (J8, J9)** : le plus petit kit modulaire qui produit la **sensation** de la vue validée dans Godot, sans répétition visible.
