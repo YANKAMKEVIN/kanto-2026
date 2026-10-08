@@ -18,13 +18,12 @@ de rebord ne s'entre que dans son sens (vers le sud) et fait atterrir sur la cas
      spawns compris.
 Zones H1, H2, H3 = composantes connexes de hautes herbes, du sud au nord.
 
-**Forêt de Jade** (`viridian_forest.txt`, docs/tech/jalon-09.md §2.7.1, T14 ; repris par
-test_viridian_forest au T19 / T21) : voir `verifier_foret`. **Forêt agrandie** (2026-10-08,
-`viridian_forest_xl.txt`, jalon-09.md §7) : mêmes critères, profil `FORET_PROFILS` (70 × 90,
-330 à 360 pas, H3 et H5 obligatoires).
+**Forêt de Jade** (`viridian_forest.txt`, docs/tech/jalon-09.md §2.7.1 et §7 ; repris par
+test_viridian_forest) : voir `verifier_foret`. Grille agrandie le 2026-10-08 (profil
+`FORET_PROFILS` : 70 × 90, 330 à 360 pas, H3 et H5 obligatoires, Théo et Milo inévitables).
 
 Usage : python3 tools/art/plan_check.py [grille.txt ...]   (code 1 si un critère échoue)
-        sans argument : toutes les grilles connues (Route 2, Forêt de Jade, forêt agrandie).
+        sans argument : toutes les grilles connues (Route 2, Forêt de Jade).
 """
 from __future__ import annotations
 
@@ -252,14 +251,9 @@ SOL_RAS = set(".C=gL")
 # elles sont nommées du sud au nord dans cet ordre. « obligatoires » : zone → (min, max) de cases
 # traversées sur le trajet le moins herbeux ; les autres zones sont évitables sans détour.
 FORET_PROFILS = {
-	# T14 (jalon 9), carte actuelle : enveloppe verrouillée de l'arbitrage 4.
+	# Forêt agrandie (décision de Kevin, 2026-10-08 ; remplace la grille 58 × 74 du T14) :
+	# 7 traversées, une 2e zone obligatoire courte (H5, défaut 4 à 6 cases) en plus de H3.
 	"viridian_forest": {
-		"taille": (58, 74), "chemin": (220, 280),
-		"zones": ("H1", "H2", "H3", "H4"), "obligatoires": {"H3": (6, 8)},
-	},
-	# Forêt agrandie (décision de Kevin, 2026-10-08) : 7 traversées, une 2e zone obligatoire
-	# courte (H5, défaut 4 à 6 cases) en plus de H3.
-	"viridian_forest_xl": {
 		"taille": (70, 90), "chemin": (330, 360),
 		"zones": ("H1", "H2", "H3", "H4", "H5"), "obligatoires": {"H3": (6, 8), "H5": (4, 6)},
 	},
@@ -268,6 +262,7 @@ FORET_PROFILS = {
 # 233 pas en 2 min 48 s), combat de Théo mesuré, combat sauvage estimé (défaut, à mesurer).
 FORET_S_PAR_PAS = 0.72
 FORET_S_THEO = 100
+FORET_S_MILO = 120                 # défaut (deux Pokémon), Milo inévitable (XL-1, 2026-10-08)
 FORET_S_SAUVAGE = 50
 FORET_TAUX = 25 / 256              # data/encounters/viridian_forest.json, « rate »
 FORET_VISIONS = {"D1": 4, "D2": 5, "D3": 4, "D4": 5, "D5": 5}
@@ -276,6 +271,7 @@ FORET_OBJETS = {"O1": "objet_visible", "O2": "objet_visible", "O3": "objet_cache
 FORET_O1_MAX = 25                  # pas depuis l'entrée
 FORET_O6_MAX = 15                  # pas depuis la porte du poste nord
 FORET_DETECTION_D1 = 3             # distance minimale de la première case vue de Théo (≥ 2 libres)
+FORET_INEVITABLES = ("D1", "D4")   # Théo, et Milo depuis la décision XL-1 (2026-10-08)
 FORET_CLAIRIERE = (7, 5)           # C1–C3 : au moins 7 × 5 cases (caméra ≈ 24,4 × 11,25)
 
 
@@ -470,24 +466,21 @@ def verifier_foret(chemin: Path) -> bool:
 			f"{role} {p.ident} {p.cells[0]} tourné {p.attrs.get('facing')} : vision {len(vue)}/"
 			f"{vision} cases dégagées (dossier : {FORET_VISIONS[role]}), "
 			f"{''.join(plan.at(*c) for c in vue)}")
-	sans_d1 = Monde(plan, set(vues["D1"])).distances(entree).get(porte, INF)
-	premiere = premiere_detection(monde, entree, vues["D1"])
-	# Théo couvre toute la largeur du sentier là où sa ligne le croise.
-	sentier_vu = [c for c in vues["D1"] if plan.at(*c) == "="]
-	critere(len(sentier_vu) >= 2, f"D1 couvre toute la largeur du sentier : {sentier_vu}")
-	critere(sans_d1 >= INF and premiere >= FORET_DETECTION_D1,
-		f"D1 inévitable ({'oui' if sans_d1 >= INF else f'NON, {sans_d1} pas sans le croiser'}) ; "
-		+ (f"première case vue à {premiere} cases ({premiere - 1} libres entre eux, attendu ≥ "
-		f"{FORET_DETECTION_D1 - 1})" if premiere < INF else "jamais vu"))
+	for role in FORET_INEVITABLES:
+		p = dresseurs[role]
+		sans = Monde(plan, set(vues[role])).distances(entree).get(porte, INF)
+		premiere = premiere_detection(monde, entree, vues[role])
+		# Le Dresseur couvre toute la largeur du sentier là où sa ligne le croise.
+		sentier_vu = [c for c in vues[role] if plan.at(*c) == "="]
+		critere(len(sentier_vu) >= 2,
+			f"{role} {p.ident} couvre toute la largeur du sentier : {sentier_vu}")
+		critere(sans >= INF and premiere >= FORET_DETECTION_D1,
+			f"{role} inévitable ({'oui' if sans >= INF else f'NON, {sans} pas sans le croiser'}) ; "
+			+ (f"première case vue à {premiere} cases ({premiere - 1} libres entre eux, attendu "
+			f"≥ {FORET_DETECTION_D1 - 1})" if premiere < INF else "jamais vu"))
 	for role in ("D2", "D3", "D5"):
 		d = Monde(plan, set(vues[role])).distances(entree).get(porte, INF)
 		critere(d < INF, f"{role} évitable : porte atteinte en {d} pas hors de sa vue")
-	sans_d4 = Monde(plan, set(vues["D4"]))
-	d4_pas = sans_d4.distances(entree).get(porte, INF)
-	d4_herbes = sans_d4.herbes_min(entree, lambda c: c in toutes).get(porte, INF)
-	critere(d4_pas < INF and d4_herbes > g_min,
-		f"D4 évitable par les hautes herbes seulement : {d4_herbes} cases d'herbes hors de sa vue "
-		f"contre {g_min} ({d4_pas} pas)")
 
 	# 4. Objets.
 	objets = {**_role(plan, "objet_visible"), **_role(plan, "objet_cache")}
@@ -594,15 +587,15 @@ def verifier_foret(chemin: Path) -> bool:
 		f"({', '.join(f'{n} {len(nommees[n])}' for n in noms)}) ; porte → sortie "
 		f"{retour.get(entree[0], INF)} pas")
 	rencontres = g_min * FORET_TAUX
-	duree = aller * FORET_S_PAR_PAS + FORET_S_THEO + rencontres * FORET_S_SAUVAGE
+	duree = aller * FORET_S_PAR_PAS + FORET_S_THEO + FORET_S_MILO + rencontres * FORET_S_SAUVAGE
 	print(f"  traversée directe estimée : {aller} pas × {FORET_S_PAR_PAS} s + Théo {FORET_S_THEO} s "
+		f"+ Milo {FORET_S_MILO} s "
 		f"+ {rencontres:.2f} rencontre(s) attendue(s) × {FORET_S_SAUVAGE} s = {duree:.0f} s "
 		f"({int(duree // 60)} min {int(duree % 60):02d} s)")
 	return ok
 
 
-VERIFICATEURS = {"route_2": verifier_route_2, "viridian_forest": verifier_foret,
-	"viridian_forest_xl": verifier_foret}
+VERIFICATEURS = {"route_2": verifier_route_2, "viridian_forest": verifier_foret}
 
 
 def main() -> int:

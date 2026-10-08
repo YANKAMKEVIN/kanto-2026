@@ -3,7 +3,7 @@ extends SceneTree
 ## joueur peint et sa caméra, PNJ peints, WorldLighting + profil de la carte), pour Movie Maker.
 ##
 ##   godot --path . --write-movie build/cap/f.png --fixed-fps 60 --quit-after 40 \
-##     -s res://tools/capture_viridian_forest.gd -- --cell=39,70 [--facing=up] [--steps=up:3]
+##     -s res://tools/capture_viridian_forest.gd -- --cell=44,86 [--facing=up] [--steps=up:3]
 ##
 ## Options (comme `tools/capture_route_2.gd`) : `--map=<id>` (défaut viridian_forest ;
 ## `viridian_forest_gate_south`, `viridian_forest_gate_north`), `--cell=x,y` case du joueur

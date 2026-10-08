@@ -24,7 +24,8 @@ func test_route_2_keeps_the_default_legend() -> void:
 
 func test_forest_has_its_own_legend_and_envelope() -> void:
 	var plan := _load(FOREST)
-	assert_eq(Vector2i(plan.width, plan.height), Vector2i(58, 74), "enveloppe du dossier 10")
+	assert_eq(Vector2i(plan.width, plan.height), Vector2i(70, 90),
+		"forêt agrandie (décision de Kevin, 2026-10-08)")
 	assert_eq(plan.walkable, ".=hCLgD")
 	assert_eq(plan.cells_of("D").size(), 1, "une porte : le poste nord")
 	for cell: Vector2i in plan.cells_of("CLg"):

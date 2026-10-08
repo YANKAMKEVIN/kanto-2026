@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Captures de la Forêt de Jade et de ses postes (jalon 9 T19), 2340 × 1080, Movie Maker (Mac,
+# Captures de la Forêt de Jade et de ses postes (jalon 9 T19 ; cases de la forêt agrandie, §7), 2340 × 1080, Movie Maker (Mac,
 # pas en headless) :
 #   tools/capture_viridian_forest.sh [dossier [filtre]]   (défaut : build/captures/jalon09_t19)
 # Le filtre est une expression régulière sur le nom du plan (ex. « ^int_ » : les postes).
@@ -18,25 +18,30 @@ printf '[display]\nwindow/size/window_width_override=2340\nwindow/size/window_he
 
 # nom | images | options de capture_viridian_forest.gd
 SHOTS=(
-	"entree|40|--cell=39,72 --facing=up"
-	"c1_objet|40|--cell=33,67 --facing=left"
-	"tronc_incline|40|--cell=40,64 --facing=up"
-	"theo|40|--cell=31,56 --facing=left"
-	"h2_cul_de_sac|40|--cell=6,56 --facing=up"
-	"souche|40|--cell=27,47 --facing=up"
-	"randonneuse|40|--cell=43,46 --facing=up"
-	"h3|40|--cell=17,36 --facing=right"
-	"racines|40|--cell=7,36 --facing=left"
-	"clairiere_rai|40|--cell=28,26 --facing=up"
-	"montee_o5|40|--cell=47,12 --facing=up"
-	"h4|40|--cell=16,13 --facing=left"
-	"poste_nord|40|--cell=25,7 --facing=up"
+	"entree|40|--cell=44,88 --facing=up"
+	"c1_objet|40|--cell=35,83 --facing=left"
+	"tronc_incline|40|--cell=45,80 --facing=up"
+	"theo|40|--cell=34,70 --facing=left"
+	"h2_cul_de_sac|40|--cell=5,76 --facing=up"
+	"souche|40|--cell=29,59 --facing=up"
+	"h3|40|--cell=17,48 --facing=right"
+	"milo|40|--cell=35,49 --facing=left"
+	"racines|40|--cell=7,49 --facing=left"
+	"randonneuse|40|--cell=43,44 --facing=up"
+	"clairiere_rai|40|--cell=36,30 --facing=up"
+	"h5|40|--cell=27,22 --facing=right"
+	"montee_o5|40|--cell=53,15 --facing=up"
+	"h4|40|--cell=17,14 --facing=left"
+	"poste_nord|40|--cell=28,8 --facing=up"
 	"int_poste_sud|40|--map=viridian_forest_gate_south --cell=4,6 --facing=up"
 	"int_poste_nord|40|--map=viridian_forest_gate_north --cell=4,3 --facing=down"
-	"ensemble|20|--aim=29,37 --zoom=0.14 --noplayer"
-	"perf_entree|300|--cell=39,70 --facing=up --perf"
-	"perf_c2|300|--cell=27,47 --facing=up --perf"
-	"perf_c3|300|--cell=28,26 --facing=up --perf"
+	"ensemble|20|--aim=35,45 --zoom=0.12 --noplayer"
+	"perf_entree|300|--cell=44,86 --facing=up --perf"
+	"perf_c2|300|--cell=29,59 --facing=up --perf"
+	"perf_h3|300|--cell=23,48 --facing=right --perf"
+	"perf_c3|300|--cell=37,32 --facing=up --perf"
+	"perf_h5|300|--cell=32,21 --facing=right --perf"
+	"perf_parvis|300|--cell=28,8 --facing=up --perf"
 )
 # Plans « perf_* » : sans Movie Maker (vraies images par seconde), pas d'image gardée.
 : > "$OUT/perf.txt"

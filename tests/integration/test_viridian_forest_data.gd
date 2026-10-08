@@ -98,13 +98,13 @@ func test_naturalist_and_hiker_walk_their_grid_cells_out_of_the_grass() -> void:
 			assert_true(_plan.is_walkable(cell) and _plan.at(cell) != "h",
 				"%s : %s praticable, hors des hautes herbes" % [id, cell])
 	# Le naturaliste revient à sa case ouest en marchant vers l'ouest : il regarde le tronc
-	# du Chrysacier (18, 44).
+	# du Chrysacier (19, 57).
 	var naturalist := _roster.get_spec(&"naturalist")
-	assert_eq(naturalist.route_cells[0], Vector2i(21, 44))
-	assert_eq(naturalist.route_cells[naturalist.route_cells.size() - 1], Vector2i(22, 44))
+	assert_eq(naturalist.route_cells[0], Vector2i(22, 57))
+	assert_eq(naturalist.route_cells[naturalist.route_cells.size() - 1], Vector2i(23, 57))
 	assert_eq(naturalist.facing, Vector2i.LEFT)
-	assert_eq(_plan.cell_of("metapod").y, 44)
-	assert_lt(_plan.cell_of("metapod").x, 21)
+	assert_eq(_plan.cell_of("metapod").y, 57)
+	assert_lt(_plan.cell_of("metapod").x, 22)
 
 
 func test_ambient_pokemon_follow_the_grid_and_may_sit_on_forest_cells() -> void:

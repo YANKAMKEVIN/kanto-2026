@@ -359,13 +359,29 @@ func test_shipped_viridian_forest_start() -> void:
 		assert_false(String(flag).begins_with("got_viridian_forest_"), "objets à prendre")
 		assert_false(String(flag).begins_with("beaten_"), "Dresseurs à battre")
 		assert_false(String(flag).begins_with("forest_"), "PNJ jamais vus")
-	assert_false(start.bag.has(&"antidote"), "l'Antidote de la forêt (O1) est à 14 pas")
+	assert_false(start.bag.has(&"antidote"), "l'Antidote de la forêt (O1) est à 15 pas")
 	if MapCatalog.has_map(start.map):
 		var map := (load(MapCatalog.scene_path(start.map)) as PackedScene).instantiate() \
 				as GameMap
 		assert_true(map.has_spawn(start.spawn), "le point d'apparition existe sur la carte")
 		map.free()
 
+
+## Forêt agrandie (2026-10-08, QA de l'étape 3) : même départ, devant la porte du poste nord
+## (spawn `from_gate_north`, tourné vers le sud) : parvis, H5, raccord nord, traversée à rebours.
+func test_shipped_viridian_forest_north_start() -> void:
+	var south := DebugStart.new()
+	var start := DebugStart.new()
+	assert_true(south.load_file(TOOL_STARTS + "viridian_forest.json", _data, _items))
+	assert_true(start.load_file(TOOL_STARTS + "viridian_forest_north.json", _data, _items),
+		"\n".join(start.get_errors()))
+	assert_eq([start.map, start.spawn, start.facing], [&"viridian_forest", &"from_gate_north",
+		Vector2i.DOWN])
+	assert_eq(start.flags, south.flags, "mêmes drapeaux que l'entrée sud")
+	assert_eq(start.party, south.party, "même équipe")
+	var map := (load(MapCatalog.scene_path(start.map)) as PackedScene).instantiate() as GameMap
+	assert_true(map.has_spawn(start.spawn), "le point d'apparition existe sur la carte")
+	map.free()
 
 # --- Jalon 7 (T12) : favoris du Sac, départ shop_qa --------------------------------------------
 

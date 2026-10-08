@@ -1,7 +1,7 @@
 extends SceneTree
-## Construit game/world/maps/viridian_forest.tscn (Forêt de Jade, 58 × 74 cases) d'après la
+## Construit game/world/maps/viridian_forest.tscn (Forêt de Jade, 70 × 90 cases) d'après la
 ## grille fonctionnelle `tools/plans/viridian_forest.txt` (jalon 9 T19, docs/tech/jalon-09.md
-## §2.7.4, §2.7.5, §2.8).
+## §2.7.4, §2.7.5, §2.8 ; forêt agrandie du 2026-10-08 : §7).
 ##
 ##   godot --headless --path . -s res://tools/build_viridian_forest.gd
 ##   godot --headless --path . --import
@@ -45,10 +45,20 @@ const FLOWER_DECAL: String = "res://assets/world/ground/decals/decal_fleur_%d.pn
 const TUFT_DECAL: String = "res://assets/world/ground/decals/decal_touffe_%d.png"
 const UNDERGROWTH_DECAL: String = "res://assets/world/ground/decals/decal_sousbois_%d.png"
 const TILE: int = 96
-const SIZE := Vector2i(58, 74)
+const SIZE := Vector2i(70, 90)
 const SEED: int = 2091
 const DECOR_SEED: int = 2092
 const FOREST_SEED: int = 9
+## Tirages de [method DenseForest.plan] : 9 000 pour 58 × 74 (T19), même densité de départ sur
+## 70 × 90 (jalon-09.md §7.4).
+const FOREST_ATTEMPTS: int = 13200
+## Densité selon la distance au praticable (§7.4, budget de nœuds) : au-delà de
+## [constant FAR_DISTANCE] cases (Tchebychev) de toute case praticable (marges, cœur des
+## massifs), un arbre sur [constant FAR_KEEP_ONE_IN] gardé, agrandi de [constant FAR_SCALE] ;
+## aucun garnissage (le sous-bois sombre et les grandes cimes suffisent).
+const FAR_DISTANCE: int = 6
+const FAR_KEEP_ONE_IN: int = 3
+const FAR_SCALE: float = 1.3
 
 const MAP_ID: StringName = &"viridian_forest"
 const DISPLAY_NAME: String = "Forêt de Jade"
@@ -80,13 +90,13 @@ const UNDERGROWTH_STRIP: float = 0.5
 
 ## Repères et objets fixes de la grille : [objet, case d'ancrage, nom, miroir].
 const FIXED_PROPS: Array = [
-	["bldg_poste_foret_01", Vector2i(25, 5), "ForestGate", false],
-	["prop_tronc_incline_01", Vector2i(38, 63), "LeaningTrunk", false],
-	["prop_grande_souche_01", Vector2i(27, 44), "BigStump", false],
-	["prop_racines_01", Vector2i(5, 36), "Roots", false],
-	["prop_sac_rando_01", Vector2i(45, 44), "HikerBag", false],
-	["prop_souche_01", Vector2i(20, 7), "StumpForecourt", false],
-	["prop_souche_01", Vector2i(40, 44), "StumpHiker", true],
+	["bldg_poste_foret_01", Vector2i(28, 5), "ForestGate", false],
+	["prop_tronc_incline_01", Vector2i(43, 78), "LeaningTrunk", false],
+	["prop_grande_souche_01", Vector2i(29, 56), "BigStump", false],
+	["prop_racines_01", Vector2i(5, 49), "Roots", false],
+	["prop_sac_rando_01", Vector2i(45, 42), "HikerBag", false],
+	["prop_souche_01", Vector2i(23, 7), "StumpForecourt", false],
+	["prop_souche_01", Vector2i(40, 42), "StumpHiker", true],
 ]
 ## Caractère de la grille sous chaque objet fixe (test_viridian_forest).
 const FIXED_MARKS: Dictionary = {
@@ -98,28 +108,29 @@ const STUMP_TINTS: Dictionary = {"StumpForecourt": 0.92, "StumpHiker": 1.06}
 ## Arbres des clairières (§2.8.1 : 2 à 3 par clairière, sur des cases `T` du bord, jamais deux
 ## fois le même côte à côte ; aucun arbre neuf) : [objet, case (pied), nom, miroir]. Posés au
 ## bord **nord** ou sur les côtés des clairières : leur cime monte sur la forêt, pas sur le
-## sentier.
+## sentier. Forêt agrandie : au nord de C2 (H3), de C3 (H5) et de la boucle de la randonneuse
+## (sentier), la forêt n'a que 2 ou 3 rangées : leurs arbres passent sur les côtés (défauts).
 const CLEARING_TREES: Array = [
-	["tree_b_01", Vector2i(45, 63), "TreeC1East", false],
-	["tree_a_01", Vector2i(31, 65), "TreeC1West", true],
-	["tree_c_01", Vector2i(24, 42), "TreeC2North", false],
-	["tree_a_01", Vector2i(33, 42), "TreeC2NorthEast", false],
-	["tree_e_01", Vector2i(24, 19), "TreeC3North", false],
-	["tree_a_01", Vector2i(32, 19), "TreeC3NorthEast", true],
-	["tree_b_01", Vector2i(42, 41), "TreeHiker", false],
-	["tree_e_01", Vector2i(8, 7), "TreeH4North", true],
-	["tree_b_01", Vector2i(13, 7), "TreeH4NorthEast", false],
-	["tree_c_01", Vector2i(45, 2), "TreeO5North", true],
-	["tree_b_01", Vector2i(31, 5), "TreeForecourtEast", true],
-	["tree_c_01", Vector2i(20, 5), "TreeForecourtWest", false],
+	["tree_b_01", Vector2i(50, 78), "TreeC1East", false],
+	["tree_a_01", Vector2i(35, 80), "TreeC1West", true],
+	["tree_a_01", Vector2i(19, 56), "TreeC2West", false],
+	["tree_c_01", Vector2i(36, 54), "TreeC2NorthEast", false],
+	["tree_a_01", Vector2i(29, 27), "TreeC3West", true],
+	["tree_b_01", Vector2i(45, 28), "TreeC3East", false],
+	["tree_a_01", Vector2i(49, 44), "TreeHiker", false],
+	["tree_e_01", Vector2i(8, 6), "TreeH4North", true],
+	["tree_b_01", Vector2i(13, 6), "TreeH4NorthEast", false],
+	["tree_c_01", Vector2i(53, 2), "TreeO5North", true],
+	["tree_b_01", Vector2i(34, 5), "TreeForecourtEast", true],
+	["tree_c_01", Vector2i(23, 5), "TreeForecourtWest", false],
 ]
 ## Lisière (sur des cases de forêt au bord des clairières) : [objet, case d'ancrage, nom].
 const EDGE_PROPS: Array = [
-	["prop_ronces_01", Vector2i(20, 42), "EdgeBrambleC2"],
-	["prop_tronc_couche_01", Vector2i(28, 19), "EdgeLogC3"],
-	["prop_ronces_01", Vector2i(42, 63), "EdgeBrambleC1"],
-	["prop_tronc_couche_01", Vector2i(4, 20), "EdgeLogH4"],
-	["prop_ronces_01", Vector2i(44, 8), "EdgeBrambleO5"],
+	["prop_ronces_01", Vector2i(21, 54), "EdgeBrambleC2"],
+	["prop_tronc_couche_01", Vector2i(36, 25), "EdgeLogC3"],
+	["prop_ronces_01", Vector2i(48, 78), "EdgeBrambleC1"],
+	["prop_tronc_couche_01", Vector2i(4, 18), "EdgeLogH4"],
+	["prop_ronces_01", Vector2i(52, 9), "EdgeBrambleO5"],
 ]
 ## Objets cachés : [nœud, position de la grille = scène].
 const HIDDEN_ITEMS: Array = [
@@ -128,8 +139,9 @@ const HIDDEN_ITEMS: Array = [
 	["ForestItem6", "viridian_forest_item_6"],
 ]
 
-## Touffes de H3 (sous la canopée, rangées 32 à 39) : valeur multipliée.
-const H3_ROWS := Vector2i(32, 39)
+## Touffes des zones d'herbes sous la canopée (H3, H5 : positions « herbes » de la grille, une
+## case dans la zone) : valeur multipliée.
+const DARK_GRASS_ZONES: Array[String] = ["herbes_h3", "herbes_h5"]
 const DARK_GRASS_VALUE: float = 0.86
 ## Ombres de canopée au sol (images d'ombre existantes, à plat) : probabilité par caractère.
 const CANOPY_SHADOWS: Array[String] = [
@@ -140,11 +152,11 @@ const CANOPY_SHADOWS: Array[String] = [
 const CANOPY_SHADOW_CHANCE: Dictionary = {".": 0.3, "=": 0.18, "h": 0.12, "C": 0.12}
 ## Sous-bois semé : décalcomanies par case `.`, et sur les cases de forêt et de clairière au
 ## bord d'une case de l'autre sorte (lisière irrégulière).
-const UNDERGROWTH_PER_STRIP: float = 0.6
+const UNDERGROWTH_PER_STRIP: float = 0.45
 const UNDERGROWTH_EDGE_CHANCE: float = 0.15
 ## Part des décalcomanies du bord du sentier gardées (budget de nœuds : le sentier fait
-## 480 cases ; les bandes de sous-bois le bordent déjà).
-const BORDER_KEEP: float = 0.4
+## ≈ 700 cases ; les bandes de sous-bois le bordent déjà ; 0,4 au T19, 0,2 forêt agrandie : premier repli du §7.4).
+const BORDER_KEEP: float = 0.2
 ## Clairières : tirages de touffes et de fleurs (fleurs rares : 1, 3, 5, 6 seulement).
 const MEADOW_ATTEMPTS: int = 420
 const MEADOW_FLOWER_CHANCE: float = 0.3
@@ -159,7 +171,7 @@ const PERCH_CLEAR_Y: float = 2.2
 const BALL_CLEAR_X: float = 0.9
 ## Repères posés contre la forêt et dégagés comme un Pokémon perché (aucun arbre juste devant) :
 ## l'amas de racines d'O4 et la case d'O4 où l'on se tient (sinon cachés par la lisière sud).
-const CLEAR_LIKE_PERCH: Array[Vector2i] = [Vector2i(5, 36), Vector2i(6, 36)]
+const CLEAR_LIKE_PERCH: Array[Vector2i] = [Vector2i(5, 49), Vector2i(6, 49)]
 ## Cime d'un arbre de forêt sur une case praticable au-dessus de lui (voir build_route_2.gd).
 const WALK_OVERLAP_MAX: float = 0.35
 const TREE_HALF_WIDTH: float = 0.8
@@ -184,11 +196,13 @@ const SHRUB_CLEAR_Y: float = 1.6
 ## Rai de lumière (C3, cases `L`) et taches sur le sentier (§2.7.5) : [centre de la tache au
 ## sol (cases), taille de la tache (cases), intensité du rai (0 = tache seule)].
 const LIGHT_SPOTS: Array = [
-	[Vector2(28.0, 23.0), Vector2(5.0, 3.6), 1.0],
-	[Vector2(40.0, 66.0), Vector2(2.6, 1.8), 0.45],
-	[Vector2(25.0, 48.0), Vector2(3.0, 2.0), 0.5],
-	[Vector2(46.0, 26.5), Vector2(2.4, 1.6), 0.0],
-	[Vector2(24.5, 9.0), Vector2(2.6, 1.8), 0.4],
+	[Vector2(37.0, 28.5), Vector2(5.0, 3.2), 1.0],
+	[Vector2(45.0, 82.0), Vector2(2.6, 1.8), 0.45],
+	[Vector2(28.0, 61.0), Vector2(3.0, 2.0), 0.5],
+	[Vector2(50.0, 31.0), Vector2(2.4, 1.6), 0.0],
+	[Vector2(27.5, 9.0), Vector2(2.6, 1.8), 0.4],
+	[Vector2(20.0, 42.0), Vector2(2.4, 1.6), 0.0],
+	[Vector2(48.0, 19.0), Vector2(2.4, 1.6), 0.3],
 ]
 ## Couleur chaude des trouées (additive) ; le rai descend du haut-gauche (soleil du jeu).
 ## Plus orangée que le premier réglage (T19) : additive sur l'herbe, un jaune clair tirait au
@@ -303,8 +317,8 @@ func _init() -> void:
 	_place_edge_props(root, entities)
 	_place_tall_grass(root, entities)
 	var raw: Array[Dictionary] = _forest_script.call(&"plan", _planted_forest(), SIZE,
-		_landmark_feet(), FOREST_SEED, _shade)
-	var cleared := _clear_around_npcs(raw)
+		_landmark_feet(), FOREST_SEED, _shade, FOREST_ATTEMPTS)
+	var cleared := _clear_around_npcs(_thin_far(raw))
 	var kept: Array[Dictionary] = _forest_script.call(&"cull_hidden", cleared,
 		_plan.call(&"cells_of", _plan.get(&"walkable")), SIZE)
 	kept = _shrubify(kept)
@@ -688,6 +702,7 @@ func _landmark_feet() -> Array[Vector2]:
 ## Deux touffes jaune-vert par case de hautes herbes (un `Sprite2D` chacune, vent) ; H3 plus
 ## sombre (sous la canopée). Non solides ; la donnée `tall_grass` est dans Ground.
 func _place_tall_grass(root: Node, entities: Node2D) -> void:
+	var dark := _dark_grass_cells()
 	var index := 0
 	for cell: Vector2i in _tall_grass_cells:
 		for k: int in 2:
@@ -700,8 +715,45 @@ func _place_tall_grass(root: Node, entities: Node2D) -> void:
 			tuft.scale = Vector2(scale, scale)
 			tuft.material = load(WIND_MATERIAL)
 			tuft.flip_h = _decor_rng.randf() < 0.5
-			if cell.y >= H3_ROWS.x and cell.y <= H3_ROWS.y:
+			if dark.has(cell):
 				tuft.modulate = Color(DARK_GRASS_VALUE, DARK_GRASS_VALUE, DARK_GRASS_VALUE)
+
+
+## Distance au praticable de la case du pied [param foot] (cases).
+func _foot_distance(foot: Vector2) -> int:
+	var cell := Vector2i(clampi(floori(foot.x), 0, SIZE.x - 1),
+		clampi(floori(foot.y - 0.01), 0, SIZE.y - 1))
+	return int(_distance.get(cell, 0))
+
+
+## Éclaircit la forêt loin du praticable (voir [constant FAR_DISTANCE]) : arbres gardés un sur
+## [constant FAR_KEEP_ONE_IN] (graine fixe) et agrandis ; buissons du plan retirés.
+func _thin_far(plan: Array[Dictionary]) -> Array[Dictionary]:
+	var rng := RandomNumberGenerator.new()
+	rng.seed = FOREST_SEED + 3
+	var kept: Array[Dictionary] = []
+	for entry: Dictionary in plan:
+		if _foot_distance(entry["foot"]) < FAR_DISTANCE:
+			kept.append(entry)
+		elif entry["kind"] == &"tree" and rng.randi_range(1, FAR_KEEP_ONE_IN) == 1:
+			entry["scale"] = float(entry["scale"]) * FAR_SCALE
+			kept.append(entry)
+	return kept
+
+
+## Cases des zones de [constant DARK_GRASS_ZONES] (composantes 4-connexes de hautes herbes).
+func _dark_grass_cells() -> Dictionary:
+	var cells: Dictionary = {}
+	for zone: String in DARK_GRASS_ZONES:
+		var queue: Array[Vector2i] = [_plan.call(&"cell_of", zone) as Vector2i]
+		while not queue.is_empty():
+			var cell: Vector2i = queue.pop_back()
+			if cells.has(cell) or not _tall_grass_cells.has(cell):
+				continue
+			cells[cell] = true
+			for direction: Vector2i in [Vector2i.UP, Vector2i.DOWN, Vector2i.LEFT, Vector2i.RIGHT]:
+				queue.append(cell + direction)
+	return cells
 
 
 ## Cases des PNJ, Pokémon et objets du fichier de la carte (départ et routines) → vrai si la
@@ -785,6 +837,8 @@ func _clear_around_npcs(plan: Array[Dictionary]) -> Array[Dictionary]:
 	var reference: Vector2 = constants["CELL_REFERENCE"]
 	var drop: float = constants["BUSH_DROP"]
 	for cell: Vector2i in _planted_forest():
+		if int(_distance.get(cell, 0)) >= FAR_DISTANCE:
+			continue
 		if bushed.has(cell) or _forest_script.call(&"is_covered", cell, trees):
 			continue
 		var foot := Vector2(cell) + reference + Vector2(bush_rng.randf_range(-0.15, 0.15), drop)

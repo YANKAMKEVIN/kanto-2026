@@ -8,7 +8,7 @@
 1. **Poison seul au jalon 9** ; le jalon 11 introduit le système général des statuts (paralysie, sommeil, brûlure, gel) et complète le poison. Roadmap corrigée.
 2. **Le Poison persiste après le combat mais ne retire aucun PV pendant la marche** (modernisation assumée par rapport à Rouge/Bleu). Il disparaît avec un Antidote ou un soin au Centre Pokémon.
 3. **Premières évolutions dès le jalon 9** (Chenipan et Aspicot atteignent leur niveau d'évolution dans la forêt) : séquence d'évolution **simple mais propre et définitive fonctionnellement**, avec possibilité d'annuler. Le jalon 11 enrichit la mise en scène et l'animation dans la présentation 2026, **sans refaire la logique métier**. Pas d'évolution « provisoire » à jeter.
-4. **58 × 74 cases = enveloppe de référence verrouillée** ; les durées ne le sont pas (≈ 250 cases de chemin principal = un peu plus d'une minute de marche ; le reste vient des combats et des détours). Durées mesurées sur une vraie partie S24 avec rencontres et combats ; géométrie ajustée ensuite seulement si le rythme réel l'exige.
+4. ~~58 × 74 cases~~ → **≈ 70 × 90 depuis le 2026-10-08** (section « Forêt agrandie ») = enveloppe de référence ; les durées ne le sont pas (≈ 250 cases de chemin principal = un peu plus d'une minute de marche ; le reste vient des combats et des détours). Durées mesurées sur une vraie partie S24 avec rencontres et combats ; géométrie ajustée ensuite seulement si le rythme réel l'exige.
 5. **Pikachu à 5 % partout** ; pas de table de rencontres par sous-zone pour H4. La clairière nord reste intéressante visuellement sans promettre davantage de Pikachu.
 6. **Ni Roucool ni Rattata dans les rencontres sauvages** : Chenipan, Chrysacier, Aspicot, Coconfort et Pikachu seulement (nouvel écosystème). Roucool reste un Pokémon d'ambiance. Les 15 % libérés vont aux quatre Insecte, Pikachu inchangé.
 7. **`poison_unlocked` s'active à la première conversation avec le garde du poste sud** : l'Antidote devient disponible à la Boutique de Jadielle (le joueur peut continuer avec celui de la forêt ou retourner s'équiper).
@@ -16,6 +16,26 @@
 9. **Deux postes de garde verrouillés**, **une seule scène technique paramétrée** (garde, répliques et sorties différents).
 10. **Repères : tronc incliné au sud → énorme souche au centre → clairière lumineuse au nord.** L'étude de DA (`reference/foret-jade-etude-ambiance-v1.png`, tracé provisoire, arbre ancien au centre) reste une référence d'**ambiance**, pas de level design.
 11. **Contraintes du futur dossier de la Route 2** : aucun Dresseur avant la forêt (Théo reste le premier vrai Dresseur) ; la Route 2 est interrompue par la Forêt de Jade et ne permet pas de la contourner lors de la première progression (aussi notées dans la roadmap, phase 5).
+
+## Forêt agrandie (décisions de Kevin, 2026-10-08)
+Après la QA finale du jalon 9 sur S21 (traversée directe mesurée : 233 pas en 2 min 48 s sans combat, ≈ 0,72 s par pas), la cible de l'arbitrage 4 (7–9 min combats compris) n'était pas tenue. Kevin a décidé d'agrandir la forêt (plan : `docs/tech/jalon-09.md` §7) :
+- **taille ≈ 70 × 90 cases** (au lieu de 58 × 74), **7 traversées** au lieu de 5, chemin principal **≈ 330–360 pas** (grille : 338) ;
+- **5 zones d'herbes** : **H3 et H5 obligatoires et courtes** (H3 6–8 cases, 7 posées ; H5 4–6 cases, 5 posées, sur la 6e traversée, entre C3 et le parvis) ; H1, H2, H4 facultatives ;
+- **mêmes repères** (tronc incliné → grande souche → clairière au rai), **mêmes Dresseurs, PNJ et objets**, même DA, **sans nouvelle vue générale** (la grille fait foi) ;
+- **XL-1 : Milo (D4) devient inévitable** (la bande d'herbes de son détour est passée en forêt) : premier duo de la forêt juste après H3, à mi-parcours ; la forêt perd son seul choix « Dresseur ou herbes » ;
+- **durée cible inchangée** (7–9 min combats compris) ; estimation de la traversée directe ≈ 8 min 40 s (Théo + Milo + rencontres attendues), à mesurer sur téléphone.
+
+Avant / après :
+
+| | Avant (T14, 2026-10-07) | Après (2026-10-08) |
+|---|---|---|
+| Taille | 58 × 74 | ≈ 70 × 90 |
+| Traversées | 5 | 7 |
+| Chemin principal | ≈ 234 pas | 338 pas |
+| Herbes obligatoires | H3 seule (7 cases) | H3 (7) + H5 (5) |
+| Dresseurs inévitables | Théo | Théo, Milo |
+| Boucle de la randonneuse | 2e traversée | 4e traversée |
+| Traversée directe (estimée) | ≈ 5 min | ≈ 8 min 40 s |
 
 ## Vue générale peinte v1 (validée par Kevin le 2026-10-07)
 - **`reference/foret-jade-vue-generale-v1.png`** (essai r2, `tools/art/prompts/CONCEPT_FORET_JADE_VUE_GENERALE_r2.txt` ; ancre de style : la vue de la Route 2) = **référence DA et ambiance** : rendu peint de la même main que la Route 2, forêt sombre bleu-vert (verts profonds, ombres froides), sentier de terre claire en serpentin orthogonal, densité « nature dense, objets rares », hautes herbes jaune-vert en blocs nets, petites clairières plus claires et fleuries, poste nord à toit d'ardoise, et les **trois repères** dans l'ordre : tronc incliné moussu (sud), grande souche creuse aux racines étalées (centre), clairière traversée par un rai de lumière (nord). Personnages et Pokémon : un Scout au filet, le naturaliste au carnet, la randonneuse et son sac, Chenipan, Coconfort, Roucool.
@@ -38,7 +58,7 @@ Différences avec la Route 1 : **orientation moins immédiate** (on voit moins l
 **Règle** : le joueur peut momentanément ne plus savoir où est la sortie, mais il n'est jamais réellement perdu.
 
 ## 2. Taille et durée
-**≈ 58 × 74 cases** (enveloppe verrouillée), forme irrégulière à l'intérieur ; une grande partie est de la végétation infranchissable. Pas plus grand : un lieu conséquent, pas un donjon.
+**≈ 70 × 90 cases** (forêt agrandie, décision de Kevin du 2026-10-08 ; avant : ≈ 58 × 74), 7 traversées, forme irrégulière à l'intérieur ; une grande partie est de la végétation infranchissable. Un lieu conséquent, pas un donjon.
 Durées visées (indicatives, arbitrage 4) : traversée directe 7–9 min ; première traversée 15–20 min ; exploration attentive 25–30 min, combats compris. La distance au Centre de Jadielle doit commencer à compter.
 
 ## 3. Entrées et sorties
@@ -46,7 +66,7 @@ ADN Rouge/Bleu : **Route 2 → poste sud → forêt → poste nord → Route 2 n
 Conséquence pour la Route 2 : arbitrage 11.
 
 ## 4. Tracé
-Structure logique (pas les dimensions exactes) :
+Structure logique (pas les dimensions exactes ; tracé d'origine à 5 traversées, la forêt agrandie en compte 7 : la grille `tools/plans/viridian_forest.txt` fait foi) :
 
 ```text
                          N
@@ -89,11 +109,12 @@ Structure logique (pas les dimensions exactes) :
 Légende : `████` forêt infranchissable · `│ ─` sentier · `~~~~` hautes herbes · `C` clairière · `H` hautes herbes · `D` Dresseur · `P` PNJ · `O` objet ou secret · `T4` repère.
 Le chemin principal dessine un **grand S**, chaque segment **strictement orthogonal**. Boucles secondaires : on quitte le chemin, on trouve quelque chose, on revient naturellement dessus. **Aucun embranchement à trois directions équivalentes.** P2 (randonneuse) est dans une petite clairière secondaire (emplacement au level design).
 
-## 5. Hautes herbes (4 zones)
+## 5. Hautes herbes (5 zones depuis le 2026-10-08)
 - **H1 — lisière** : grande, facilement contournable ; montre que les rencontres changent.
 - **H2 — sous-bois occidental** : facultative, capture / exploration, mène à O2.
 - **H3 — passage dense** : une portion **obligatoire et courte (6–8 cases)** : on ne traverse pas la forêt sans rencontre.
 - **H4 — clairière nord** : facultative, très tentante visuellement, juste avant la sortie (même table que le reste, arbitrage 5).
+- **H5 — passage court sous la canopée** (forêt agrandie, 2026-10-08) : **obligatoire et courte (4–6 cases, 5 posées)**, sur la 6e traversée entre C3 et le parvis : la 2e rencontre obligatoire tombe dans le dernier tiers.
 
 ## 6. Rencontres sauvages
 Une seule table pour toute la forêt (arbitrages 5 et 6), identique jour et nuit au jalon 9.
@@ -125,7 +146,7 @@ IA simple (début de jeu). Champs de vision en cases ; récompenses en ₽.
 | D1 | Scout Théo | 4 | **non** (assez d'espace avant le déclenchement) | Chenipan Nv. 6 | 72 |
 | D2 | Scout Noé | 5 | oui | Aspicot Nv. 6, Coconfort Nv. 6 | 144 |
 | D3 | Gamin Tom | 4 | oui | Rattata Nv. 7 | 84 |
-| D4 | Scout Milo | 5 | oui (détour par les hautes herbes) | Chenipan Nv. 6, Aspicot Nv. 6 | 144 |
+| D4 | Scout Milo | 5 | **non** depuis le 2026-10-08 (XL-1 ; avant : oui, détour par les hautes herbes) | Chenipan Nv. 6, Aspicot Nv. 6 | 144 |
 | D5 | Scout Éli | 5 | oui | Chrysacier Nv. 7, Coconfort Nv. 7, Chenipan Nv. 7 | 252 |
 
 Progression : un Pokémon simple → premier duo → autre famille → opposition de types → première petite équipe de trois. **Théo est le premier vrai Dresseur de l'aventure** (arbitrage 11). Répliques : « Textes verrouillés ».
@@ -187,7 +208,7 @@ Système normal : **réveil au dernier Centre utilisé** (normalement Jadielle),
 - **Système de Dresseur** : champ de vision, approche, répliques avant / après, mémoire, récompense.
 - **Données** : 5 espèces, leurs capacités et évolutions, la table de rencontres, les 5 Dresseurs, les objets.
 - **Postes de garde** : une scène d'intérieur paramétrée (système existant).
-- **Carte** 58 × 74 avec la forêt serrée du prototype de DA : performances à vérifier sur S24 (plus d'arbres que la Route 1).
+- **Carte** 58 × 74 (≈ 70 × 90 depuis le 2026-10-08) avec la forêt serrée du prototype de DA : performances à vérifier sur S24 (plus d'arbres que la Route 1).
 
 ## Textes verrouillés
 Lot proposé par ChatGPT, **verrouillé par Kevin le 2026-10-06** sur recommandation de Claude, avec deux retouches : (1) le premier Dresseur s'appelle **Scout Théo** (« Léo » est déjà le petit garçon de Bourg Palette, jalon 3) ; (2) la réplique de rappel du garde sud dit où acheter des Antidotes (rend lisible l'arbitrage 7). Bulles de 2 lignes ; raccourcissables à la QA.
@@ -208,16 +229,16 @@ Lot proposé par ChatGPT, **verrouillé par Kevin le 2026-10-06** sur recommanda
 |---|---|
 | Rôle | Première véritable petite expédition |
 | Ton | Dense, frais, vivant, jamais effrayant |
-| Taille | ≈ 58 × 74 cases (enveloppe) ; durées mesurées sur S24 |
+| Taille | ≈ 70 × 90 cases depuis le 2026-10-08 (avant : 58 × 74) ; 7 traversées ; durées mesurées sur téléphone |
 | Structure | Grand chemin orthogonal en S + boucles secondaires |
 | Entrée / sortie | Route 2 sud → poste sud · poste nord → Route 2 nord → Argenta |
 | Postes de garde | 2, une scène technique paramétrée |
 | Route 2 | Aucun Dresseur avant la forêt ; pas de contournement à la première progression |
-| Hautes herbes | 4 zones, passage obligatoire court (H3) |
+| Hautes herbes | 5 zones ; deux passages obligatoires courts (H3, H5) depuis le 2026-10-08 |
 | Rencontres | Chenipan 35 %, Aspicot 35 %, Coconfort 13 %, Chrysacier 12 %, Pikachu 5 % (partout) |
 | Pikachu | Rare, jamais scénarisé, pas d'ambiance |
 | Pokémon d'ambiance | Chenipan, Aspicot, Roucool (s'envole), Chrysacier/Coconfort |
-| Dresseurs | 5 ; Scout Théo obligatoire et premier vrai Dresseur |
+| Dresseurs | 5 ; Scout Théo obligatoire et premier vrai Dresseur ; **Scout Milo obligatoire** depuis le 2026-10-08 (XL-1) |
 | PNJ | 2 (naturaliste, randonneuse) + 2 gardes |
 | Objets | 6, dont 2 Antidotes ; cachés = texte + toast standard |
 | Poison | Seul au J9, persistant, aucun dégât en marchant ; Antidote ou Centre |

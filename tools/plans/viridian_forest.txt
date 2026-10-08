@@ -1,14 +1,15 @@
-# Forêt de Jade — grille fonctionnelle (jalon 9, T14 ; docs/tech/jalon-09.md §2.7.1).
-# Source UNIQUE de la géométrie : plan en aplats (tools/art/plan_aplats.py), vérification
-# (tools/art/plan_check.py), vue générale peinte (T15), outil de construction de la carte (T19,
-# tools/build_viridian_forest.gd) et critères de test_viridian_forest. Un changement de
-# composition se fait ICI d'abord, puis plan, puis image (la vue suit toujours la grille).
-# Design : docs/design/dossier-10-foret-de-jade.md (le tracé ASCII du §4 donne la logique ; ici,
-# les cases).
+# Forêt de Jade — grille fonctionnelle (jalon 9 ; T14, puis forêt agrandie du 2026-10-08 :
+# docs/tech/jalon-09.md §2.7.1 et §7). Source UNIQUE de la géométrie : plan en aplats
+# (tools/art/plan_aplats.py), vérification (tools/art/plan_check.py), outil de construction de la
+# carte (tools/build_viridian_forest.gd) et critères de test_viridian_forest. Un changement de
+# composition se fait ICI d'abord. Design : docs/design/dossier-10-foret-de-jade.md.
+# Avant / après : 58 × 74, 5 traversées, ≈ 234 pas, H3 seule obligatoire (T14) → 70 × 90,
+# 7 traversées, 338 pas, H3 et H5 obligatoires, Milo (D4) inévitable (décision XL-1, 2026-10-08 :
+# la bande d'herbes du détour (31..32, 50..51) et (30, 51) est passée en forêt).
 #
-# 58 × 74 cases (enveloppe verrouillée, arbitrage 4) ; nord en haut ; x = colonne 0..57,
-# y = rangée 0..73. Sud : la sortie (39..40, 73) mène au poste sud (PUSH ↓) ; nord : la porte du
-# poste nord (25, 5).
+# 70 × 90 cases (décision de Kevin, 2026-10-08) ; nord en haut ; x = colonne 0..69, y = rangée 0..89.
+# Sud : la sortie (44..45, 89) mène au poste sud (PUSH ↓) ; nord : la porte du poste nord (28, 5).
+# Serpentin à SEPT traversées (ouest, est, ouest, est, ouest, est, ouest) et six montées.
 #
 # Légende :
 #   T forêt serrée (bloquée)          . sous-bois praticable (herbe rase à l'ombre, sentes)
@@ -18,133 +19,153 @@
 #   P emprise du poste nord (façade bldg_poste_foret_01, 7 × 4, bloquée)  D porte du poste nord
 #   I pied du tronc incliné (repère sud, bloqué)   S grande souche (repère central, emprise 3 × 2)
 #   s petite souche (bloquée)          r amas de racines (bloqué)
-# Les Dresseurs (D1..D5), PNJ (P1, P2), objets (O1..O6) et Pokémon d'ambiance sont dans
-# POSITIONS (attribut role=), pas dans la grille.
+# Les Dresseurs (D1..D5), PNJ (P1, P2), objets (O1..O6), Pokémon d'ambiance et noms des zones
+# d'herbes (H1..H5) sont dans POSITIONS (attribut role=), pas dans la grille.
 #
-# Format : ligne PRATICABLES, section GRILLE (« NN » + espace + 58 caractères), puis POSITIONS.
+# Format : ligne PRATICABLES, section GRILLE (« NN » + espace + 70 caractères), puis POSITIONS.
 
 PRATICABLES .=hCLgD
 
-GRILLE 58 74
-00 TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
-01 TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
-02 TTTTTTTTTTTTTTTTTTTTTTPPPPPPPTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
-03 TTTTTTTTTTTTTTTTTTTTTTPPPPPPPTTTTTTTTTTTTTCCCCCCCCCCTTTTTT
-04 TTTTTTTTTTTTTTTTTTTTTTPPPPPPPTTTTTTTTTTTTTCCCCCCCCCCTTTTTT
-05 TTTTTTTTTTTTTTTTTTTTTTPPPDPPPTTTTTTTTTTTTTCCCCCCCCCCTTTTTT
-06 TTTTTTTTTTTTTTTTTTTCCCCCC==CCCCCCTTTTTTTTTCCCCCCCCCCTTTTTT
-07 TTTTTTTTTTTTTTTTTTTCsCCCC==CCCCCCTTTTTTTTTCCCCCCCCCCTTTTTT
-08 TTTCCCCCCCCCCCCCTTTCCCCCC==CCCCCCTTTTTTTTTTTTTTT.TTTTTTTTT
-09 TTTCCCCCCCCCCCCCTTTCCCCCC==CCCCCCTTTTTTTTTTTTTTT.TTTTTTTTT
-10 TTTCChhhhhhhhhCCTTTCCCCCC==CCCCCCTTTTTTTTTTTTTTT.TTTTTTTTT
-11 TTTCChhhhhhhhhCCTTTCCCCCC==CCCCCCTTTTTTTTTTTTTTT.TTTTTTTTT
-12 TTTCChhhhhhhhhCCTTTTTTTTT==TTTTTTT............TT.TTTTTTTTT
-13 TTTCChhhhhhhhhCC.........========================TTTTTTTTT
-14 TTTCChhhhhhhhhCC.........========================TTTTTTTTT
-15 TTTCChhhhhhhhhCCTTTTTTTTTTT...................T==.TTTTTTTT
-16 TTTCChhhhhhhhhCCTTTTTTTTTTTTTTTTTT....TTTTTTTTT==.TTTTTTTT
-17 TTTCChhhhhhhhhCCTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT==.TTTTTTTT
-18 TTTCCCCCCCCCCCCCTTTTTTTTTTTTTTTTTTTTTTTTTTTTT..==.TTTTTTTT
-19 TTTCCCCCCCCCCCCCTTTTTTTTTTTTTTTTTTTTTTTTTTTTT..==.TTTTTTTT
-20 TTTTTTTTTTTTTTTTTTTTTTCCCCCCCCCCCCCTTTTTTTTTT..==.TTTTTTTT
-21 TTTTTTTTTTTTTTTTTTTTTTCCCCLLLLCCCCCTTTTTTTTTT..==.TTTTTTTT
-22 TTTTTTTTTTTTTTTTTTTTTTCCCCLLLLCCCCCTTT.....TTTT==.TTTTTTTT
-23 TTTTTTTTTTTTTTTTTTTTTTCCCCLLLLCCCCCTTT.....TTTT==TTTTTTTTT
-24 TTTTTTTTTTTTTTTTTTTTTTCCCCLLLLCCCCC==============TTTTTTTTT
-25 TTTTTTTTTTT..........TCCCCCCCCCCCCC==============TTTTTTTTT
-26 TTTTTTTTT============================.........TTTTTTTTTTTT
-27 TTTTTTTTT============================TTTTTTTTTTTTTTTTTTTTT
-28 TTTTTTTTT==TT....TTTTTCCCCCCCCCCCCCTTTTTTTTTTTTTTTTTTTTTTT
-29 TTTTTTTTT==TT....TTTTTCCCCCCCCCCCCCTTTTTTTTTTTTTTTTTTTTTTT
-30 TTTTTTTTT==.TTTTTTTTTTCCCCCCCCCCCCCTTTTTTTTTTTTTTTTTTTTTTT
-31 TTTTTTTTT==.TTTTTTTTTTCCCCCCCCCCCCCT.....TTTTTTTTTTTTTTTTT
-32 TTTTTTTTT==.TThhhhhhhTTTT.TTTTTTTTTT............TTTTTTTTTT
-33 TTTTTTTTT==.TThhhhhhhTTTT.TTTTT====================TTTTTTT
-34 TTTTTTTTT==TTThhhhhhhTTTT.TTTTT====================TTTTTTT
-35 TTTTTr...=====hhhhhhh============TTTTTTTTT....TTT==TTTTTTT
-36 TTTTTr...=====hhhhhhh============TTTTTTTTT....TTT==TTTTTTT
-37 TTTTTTTTTT....hhhhhhhhhhhhhhhhhTTTTTTTTTTTTTTTTTT==TTTTTTT
-38 TTTTTTTTTTTTTThhhhhhhhhhhhhhhhhTTTTTTTTTTTTTTTTT.==TTTTTTT
-39 TTTTTTTTTTTTTThhhhhhhTTTTTTTTTTTTTTTTTTTTTTTTTTT.==TTTTTTT
-40 TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT.==..TTTTT
-41 TTTTTTTTTTTTTTTTTTTTTTTTTT.....TTTTTTTTTTTTTTTTT.==..TTTTT
-42 TTTTTTTTTTTTTTTTTTTTTTTTTTTTTT.TTTTTTTTCCCCCCCCT.==..TTTTT
-43 TTTTTTTTTTTTTTTTTTTCCCCCCCSSSCCCCCCCTTTCCCCCCCCT.==..TTTTT
-44 TTTTTTTTTTTTTTTTTTTCCCCCCCSSSCCCCCCCTTTCsCCCCCCT.==.TTTTTT
-45 TTTTTTTTTTTTTTTTTTTCCCCCCCCCCCCCCCCCTTTCCCCCCCCT.==.TTTTTT
-46 TTTTTTTTTTT.......TCCCCCCCCCCCCCCCCCTTTCCCCCCCCTT==.TTTTTT
-47 TTT...TTT===========================TTT.TTTTTT.TT==.TTTTTT
-48 TTT...TTT===========================TTT.TTTTTT.TT==.TTTTTT
-49 TTT...TTT==........CCCCCCCCCCCCCCC==TTT........TT==.TTTTTT
-50 TThhhhhhT==..TTTTTTCCCCCCCCCCCCCCC=================.TTTTTT
-51 TThhhhhhT==..TTTTTTCCCCCCCCCCCCCCC=================TTTTTTT
-52 TThhhhhhT==........TTTTTTTTTTTTTTTTT.........TTTTTTTTTTTTT
-53 TThhhhhh.============TTTTTTT.TTTTTTTTTTTTT...TTTTTTTTTTTTT
-54 TThhhhhh.============TTTTTTT.TTTTT...TTTTTTTTTTTTTTTTTTTTT
-55 TThhhhhhTTTT......T==.....TT.TTTTT...TTTTTTTTTTTTTTTTTTTTT
-56 TThhhhhhTTTT......T======================TTTTTTTTTTTTTTTTT
-57 TThhhhhhTTTT......T======================TTTTTTTTTTTTTTTTT
-58 TT....TTTTTTTTTTTTTTTTTTTTTTTTT........==.TTTTTTTTTTTTTTTT
-59 TT....TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT==.TTTTTTTTTTTTTTTT
-60 TT....TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT==.TTTTTTTTTTTTTTTT
-61 TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT==.TTTTTTTTTTTTTTTT
-62 TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT==.TTTTTTTTTTTTTTTT
-63 TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTII==TTTTTTTTTTTTTTTTT
-64 TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTCCCCCCC==ChhhhhhhTTTTTTTTT
-65 TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTCCCCCCC==ChhhhhhhTTTTTTTTT
-66 TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTCCCCCCCCC==ChhhhhhhTTTTTTTTT
-67 TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTCCCCCCCCC==ChhhhhhhTTTTTTTTT
-68 TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTCCCCCCCCC==ChhhhhhhTTTTTTTTT
-69 TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTCCCCCCC==ChhhhhhhTTTTTTTTT
-70 TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTCCCCCCC==CCCCCCCTTTTTTTTTT
-71 TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTCCCC==CCCCTTTTTTTTTTTTT
-72 TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT==TTTTTTTTTTTTTTTTT
-73 TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTggTTTTTTTTTTTTTTTTT
+GRILLE 70 90
+00 TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+01 TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+02 TTTTTTTTTTTTTTTTTTTTTTTTTPPPPPPPTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+03 TTTTTTTTTTTTTTTTTTTTTTTTTPPPPPPPTTTTTTTTTTTTTTTTTTCCCCCCCCCCCTTTTTTTTT
+04 TTTTTTTTTTTTTTTTTTTTTTTTTPPPPPPPTTTTTTTTTTTTTTTTTTCCCCCCCCCCCTTTTTTTTT
+05 TTTTTTTTTTTTTTTTTTTTTTTTTPPPDPPPTTTTTTTTTTTTTTTTTTCCCCCCCCCCCTTTTTTTTT
+06 TTTTTTTTTTTTTTTTTTTTTTCCCCCC==CCCCCCTTTTTTTTTTTTTTCCCCCCCCCCCTTTTTTTTT
+07 TTTCCCCCCCCCCCCCTTTTTTCsCCCC==CCCCCCTTTTTTTTTTTTTTCCCCCCCCCCCTTTTTTTTT
+08 TTTCCCCCCCCCCCCCTTTTTTCCCCCC==CCCCCCTTTTTTTTTTTTTTCCCCCCCCCCCTTTTTTTTT
+09 TTTCChhhhhhhhhCCTTTTTTCCCCCC==CCCCCCTTTTTTTTTTTTTTTTTT.TTTTTTTTTTTTTTT
+10 TTTCChhhhhhhhhCCTTTTTTCCCCCC==CCCCCCTTTTTTTTTTTTTTTTTT.TTTTTTTTTTTTTTT
+11 TTTCChhhhhhhhhCCTTTTTTCCCCCC==CCCCCCTTTTTTTTTTTTTTTTTT.TTTTTTTTTTTTTTT
+12 TTTCChhhhhhhhhCCTTTTTTTTTTTT==TTTTTT................TT.TTTTTTTTTTTTTTT
+13 TTTCChhhhhhhhhCC............===========================TTTTTTTTTTTTTTT
+14 TTTCChhhhhhhhhCC............===========================TTTTTTTTTTTTTTT
+15 TTTCChhhhhhhhhCCTTTTTTTTTTTTTTTTTTTTT................==.TTTTTTTTTTTTTT
+16 TTTCCCCCCCCCCCCCTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT==.TTTTTTTTTTTTTT
+17 TTTCCCCCCCCCCCCCTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT==.TTTTTTTTTTTTTT
+18 TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT=============.TTTTTTTTTTTTTT
+19 TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT=============TTTTTTTTTTTTTTT
+20 TTTTTTTTTTTTTTTTT............ThhhhhT.....T==.........TTTTTTTTTTTTTTTTT
+21 TTTTTTTTTTTTTT================hhhhh=========TTTTTTTTTTTTTTTTTTTTTTTTTT
+22 TTTTTTTTTTTTTT================hhhhh=========TTTTTTTTTTTTTTTTTTTTTTTTTT
+23 TTTTTTTTTTTTT.==T............ThhhhhT.........TTTTTTTTTTTTTTTTTTTTTTTTT
+24 TTTTTTTTTTTTT.==.TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+25 TTTTTTTTTTTTT.==.TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+26 TTTTTTTTTTTTT.==.TTTTTTTTTTTTTCCCCCCCCCCCCCCCTTTTTTTTTTTTTTTTTTTTTTTTT
+27 TTTTTTTTTTTTT.==.TTTTTTTTTTTTTCCCCCLLLLCCCCCCTTTTTTTTTTTTTTTTTTTTTTTTT
+28 TTTTTTTTTTTTT.==.TTTTTTTTTTTTTCCCCCLLLLCCCCCCTTTTTTTTTTTTTTTTTTTTTTTTT
+29 TTTTTTTTTTTTT.==..............CCCCCLLLLCCCCCC........TTTTTTTTTTTTTTTTT
+30 TTTTTTTTTTTTTT===========================================TTTTTTTTTTTTT
+31 TTTTTTTTTTTTTT===========================================TTTTTTTTTTTTT
+32 TTTTTTTTTTTTTTTT..............CCCCCCCCCCCCCCCT........T==.TTTTTTTTTTTT
+33 TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTCCCCCCCCCCCCCCCTTTTTTTTT.==.TTTTTTTTTTTT
+34 TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTCCCCCCCCCCCCCCCTTTTTTTTT.==.TTTTTTTTTTTT
+35 TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT.==.TTTTTTTTTTTT
+36 TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT.==.TTTTTTTTTTTT
+37 TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT......................T==.TTTTTTTTTTTT
+38 TTTTTTTTTTTTTTTTTTTTTTTTTTTTT============================TTTTTTTTTTTTT
+39 TTTTTTTTTTTTTTTTTTTTTTTTTTTTT============================TTTTTTTTTTTTT
+40 TTTTTTTTTTTTT...............T==........T.TTTTTTT.T.....TTTTTTTTTTTTTTT
+41 TTTTTTTTTT=====================TTTTTTTTTCCCCCCCCCTTTTTTTTTTTTTTTTTTTTT
+42 TTTTTTTTTT=====================TTTTTTTTTsCCCCCCCCTTTTTTTTTTTTTTTTTTTTT
+43 TTTTTTTTT.==T................TTTTTTTTTTTCCCCCCCCCTTTTTTTTTTTTTTTTTTTTT
+44 TTTTTTTTT.==.TTTTTTTTTTTTTTTTTTTTTTTTTTTCCCCCCCCCTTTTTTTTTTTTTTTTTTTTT
+45 TTTTTTTTT.==.TTTTTTThhhhhhhTTT.TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+46 TTTTTTTTT.==.TTTTTTThhhhhhhTTT.TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+47 TTTTTTTTTT==.......ThhhhhhhTTT.TTT.....TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+48 TTTTTr....==========hhhhhhh==========================TTTTTTTTTTTTTTTTT
+49 TTTTTr....==========hhhhhhh==========================.TTTTTTTTTTTTTTTT
+50 TTTTTTTTTTTT.......ThhhhhhhhhhhTTT................T==.TTTTTTTTTTTTTTTT
+51 TTTTTTTTTTTTTTTTTTTThhhhhhhhhhTTTTTTTTTTTTTTTTTTTT.==.TTTTTTTTTTTTTTTT
+52 TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT.==.TTTTTTTTTTTTTTTT
+53 TTTTTTTTTTTTTTTTTTTTTTTTTTTT.....TTTTTTTTTTTTTTTTT.==.TTTTTTTTTTTTTTTT
+54 TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT.TTTTTTTTTTTTTTTTT.==.TTTTTTTTTTTTTTTT
+55 TTTTTTTTTTTTTTTTTTTTCCCCCCCCSSSCCCCCCCCTTTTTTTTTTTT==.TTTTTTTTTTTTTTTT
+56 TTTTTTTTTTTTTTTTTTTTCCCCCCCCSSSCCCCCCCCTTTTT......T==.TTTTTTTTTTTTTTTT
+57 TTTTTTTTTTTTTTTTTTTTCCCCCCCCCCCCCCCCCCCTT============TTTTTTTTTTTTTTTTT
+58 TTTTTTTTTTTTTTTTTTTTCCCCCCCCCCCCCCCCCCCTT============TTTTTTTTTTTTTTTTT
+59 TTTTTTTTTTTTTT......CCCCCCCCCCCCCCCCCCC..==........TTTTTTTTTTTTTTTTTTT
+60 TTTTTTTTTTTT===============================TTTTTTTTTTTTTTTTTTTTTTTTTTT
+61 TTTTTTTTTTTT===============================TTTTTTTTTTTTTTTTTTTTTTTTTTT
+62 TTTTTTTTTTT.==.....TCCCCCCCCCCCCCCCCCCC.....TTTTTTTTTTTTTTTTTTTTTTTTTT
+63 TTTTTTTTTTT.==.TTTTTCCCCCCCCCCCCCCCCCCCTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+64 TTTTTTTTTTT.==.TTTTTCCCCCCCCCCCCCCCCCCCTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+65 TTTTT...TTT.==.TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+66 TTTTT...TTT.==.TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+67 TTThhhhhhhT.==.TTTTTTTTTTTTTTT.TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+68 TTThhhhhhhTT==.TTTTTTTTTTTTTTT.TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+69 TTThhhhhhhTT==.............TTT.TTT.........TTTTTTTTTTTTTTTTTTTTTTTTTTT
+70 TTThhhhhhh..==================================TTTTTTTTTTTTTTTTTTTTTTTT
+71 TTThhhhhhh..==================================TTTTTTTTTTTTTTTTTTTTTTTT
+72 TTThhhhhhhTTTTT............TTTTTTT.........T==TTTTTTTTTTTTTTTTTTTTTTTT
+73 TTThhhhhhhTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT.==.TTTTTTTTTTTTTTTTTTTTTTT
+74 TTThhhhhhhTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT.==.TTTTTTTTTTTTTTTTTTTTTTT
+75 TTT....TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT.==.TTTTTTTTTTTTTTTTTTTTTTT
+76 TTT....TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT.==.TTTTTTTTTTTTTTTTTTTTTTT
+77 TTT....TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT==.TTTTTTTTTTTTTTTTTTTTTTT
+78 TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTII==.TTTTTTTTTTTTTTTTTTTTTTT
+79 TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTCCCCCCCC==CCCCCCCCCCTTTTTTTTTTTTTT
+80 TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTCCCCCCCC==CChhhhhhhCTTTTTTTTTTTTTT
+81 TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTCCCCCCCC==CChhhhhhhCTTTTTTTTTTTTTT
+82 TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTCCCCCCCCCC==CChhhhhhhCTTTTTTTTTTTTTT
+83 TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTCCCCCCCCCC==CChhhhhhhCTTTTTTTTTTTTTT
+84 TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTCCCCCCCCCC==CChhhhhhhCTTTTTTTTTTTTTT
+85 TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTCCCCCCCC==CChhhhhhhCTTTTTTTTTTTTTT
+86 TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTCCCCCCCC==CCCCCCCCCCTTTTTTTTTTTTTT
+87 TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT==TTTTTTTTTTTTTTTTTTTTTTTT
+88 TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT==TTTTTTTTTTTTTTTTTTTTTTTT
+89 TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTggTTTTTTTTTTTTTTTTTTTTTTTT
 FIN
 
-# POSITIONS (défauts ; ajustables au T19 / T21 en changeant d'abord cette grille) — une ligne
-# par élément :
+# POSITIONS — une ligne par élément :
 #   identifiant  type  cases  bloque|libre  [cle=valeur ...]  # commentaire
 # cases : « x,y » ou plages « x0..x1,y0..y1 » ; plusieurs groupes séparés par « ; ».
 # « bloque » : la case est occupée (plan_check.py la traite comme un obstacle).
 # Types : warp, spawn, dresseur, pnj, pokemon, decor, objet_visible, objet_cache, repere,
-# clairiere. Attributs : role (D1..D5, P1, P2, O1..O6, C1..C3), facing (up / down / left /
-# right, comme data/npcs), sight (cases), trainer (id de data/trainers), item, shy.
-# Identifiants des PNJ = clés de data/npcs/viridian_forest.json (T18) ; objets = drapeaux
-# got_<identifiant>.
+# clairiere, herbes (une case d'une zone de hautes herbes : lui donne son nom, role=H1..H5).
+# Attributs : role, facing (up / down / left / right, comme data/npcs), sight (cases), trainer
+# (id de data/trainers), item, shy. Identifiants des PNJ = clés de data/npcs/viridian_forest.json ;
+# objets = drapeaux got_<identifiant>.
 POSITIONS
-warp_sud_w             warp           39,73        libre   # PUSH ↓ → viridian_forest_gate_south, from_forest
-warp_sud_e             warp           40,73        libre   # PUSH ↓ → viridian_forest_gate_south, from_forest
-from_gate_south        spawn          39,73        libre   # arrivée depuis le poste sud, tournée ↑
-warp_poste_nord        warp           25,5         libre   # porte : STEP_ON ↑ → viridian_forest_gate_north, from_forest
-from_gate_north        spawn          25,6         libre   # retour devant la porte, tourné ↓
-scout_theo             dresseur       28,53        bloque  role=D1 facing=down sight=4 trainer=forest_scout_theo  # alcôve au nord du couloir : vu en (28, 56) ou (28, 57)
-scout_noe              dresseur       4,48         bloque  role=D2 facing=down sight=5 trainer=forest_scout_noe  # niche au nord de H2 : regarde dans les herbes
-youngster_tom          dresseur       24,51        bloque  role=D3 facing=up sight=4 trainer=forest_youngster_tom  # C2, au sud du sentier : contournable par le nord de la clairière
-scout_milo             dresseur       25,32        bloque  role=D4 facing=down sight=5 trainer=forest_scout_milo  # niche au nord du sentier : détour par H3 (rangées 38–39)
-scout_eli              dresseur       31,9         bloque  role=D5 facing=left sight=5 trainer=forest_scout_eli  # parvis du poste nord : contournable par x ≤ 25
-naturalist             pnj            21..23,44    bloque  role=P1  # boucle (21,44)→(23,44)→(21,44), s'arrête, regarde ← le tronc (18, 44)
-hiker                  pnj            41..44,44    bloque  role=P2  # entre sa souche (40, 44) et son sac (45, 44)
-hiker_bag              decor          45,44        bloque  # sac posé au sol
-viridian_forest_item_1 objet_visible  30,67        bloque  role=O1 item=antidote  # bord ouest de C1, avant Théo
-viridian_forest_item_2 objet_visible  3,60         bloque  role=O2 item=poke_ball  # fond du cul-de-sac occidental, derrière H2
-viridian_forest_item_3 objet_cache    27,41        libre   role=O3 item=potion  # derrière la grande souche (passage_o3)
-viridian_forest_item_4 objet_cache    6,36         libre   role=O4 item=antidote  # contre l'amas de racines (5, 35..36)
-viridian_forest_item_5 objet_visible  50,4         bloque  role=O5 item=poke_ball  # clairière du détour final, au nord-est
-viridian_forest_item_6 objet_cache    20,6         libre   role=O6 item=potion  # derrière la souche du parvis (20, 7)
-passage_o3             repere         30,42        libre   # passage d'une case derrière la grande souche
-caterpie_1             pokemon        41,67        bloque  shy=notice  # sur une feuille, entre le sentier et H1
-caterpie_2             pokemon        21,33        bloque  shy=notice  # branche basse au bord est de H3 (case de forêt)
-weedle_1               pokemon        36,44        bloque  shy=hide  # tronc au bord est de C2 (case de forêt)
-weedle_2               pokemon        21,22        bloque  shy=hide  # tronc au bord ouest de C3 (case de forêt)
-metapod                pokemon        18,44        bloque  # accroché au tronc qu'observe le naturaliste (case de forêt)
-kakuna                 pokemon        8,51         bloque  # accroché près de l'entrée de H2 (case de forêt)
-pidgey                 pokemon        14,9         bloque  shy=fly  # branche basse de la clairière nord (un seul Roucool)
-clairiere_c1           clairiere      32..48,64..69  libre  role=C1  # entrée, H1 à l'est
-clairiere_c2           clairiere      19..35,45..51  libre  role=C2  # grande souche (au nord), naturaliste, Tom
-clairiere_c3           clairiere      22..34,20..31  libre  role=C3  # clairière au rayon de lumière (L)
-clairiere_randonneuse  clairiere      41..46,42..46  libre  role=P2  # petite clairière secondaire (boucle)
-clairiere_nord         clairiere      3..15,8..19    libre  role=H4  # clairière nord, H4
-clairiere_o5           clairiere      42..51,3..7    libre  role=O5  # détour final
-parvis                 clairiere      21..32,6..11   libre  role=parvis  # devant le poste nord
+warp_sud_w             warp           44,89        libre   # PUSH ↓ → viridian_forest_gate_south, from_forest
+warp_sud_e             warp           45,89        libre   # PUSH ↓ → viridian_forest_gate_south, from_forest
+from_gate_south        spawn          44,89        libre   # arrivée depuis le poste sud, tournée ↑
+warp_poste_nord        warp           28,5         libre   # porte : STEP_ON ↑ → viridian_forest_gate_north, from_forest
+from_gate_north        spawn          28,6         libre   # retour devant la porte, tourné ↓
+scout_theo             dresseur       30,67        bloque  role=D1 facing=down sight=4 trainer=forest_scout_theo  # T1 : alcôve au nord du sentier, vu en (30, 70) ou (30, 71)
+scout_noe              dresseur       6,65         bloque  role=D2 facing=down sight=5 trainer=forest_scout_noe  # niche au nord de H2 : regarde dans les herbes
+youngster_tom          dresseur       26,64        bloque  role=D3 facing=up sight=4 trainer=forest_youngster_tom  # T2, C2, au sud du sentier : contournable par le nord de la clairière
+scout_milo             dresseur       30,45        bloque  role=D4 facing=down sight=5 trainer=forest_scout_milo  # T3 : niche au nord du sentier ; inévitable (XL-1) : sa vue couvre les deux cases du sentier, (30, 48) et (30, 49)
+scout_eli              dresseur       34,9         bloque  role=D5 facing=left sight=5 trainer=forest_scout_eli  # parvis du poste nord : contournable par x ≤ 28
+naturalist             pnj            22..24,57    bloque  role=P1  # boucle (22,57)→(24,57)→(22,57), s'arrête, regarde ← le tronc (19, 57)
+hiker                  pnj            41..44,42    bloque  role=P2  # T4 : entre sa souche (40, 42) et son sac (45, 42)
+hiker_bag              decor          45,42        bloque  # sac posé au sol
+viridian_forest_item_1 objet_visible  34,83        bloque  role=O1 item=antidote  # baie ouest de C1, avant Théo
+viridian_forest_item_2 objet_visible  4,77         bloque  role=O2 item=poke_ball  # fond du cul-de-sac occidental, derrière H2
+viridian_forest_item_3 objet_cache    29,53        libre   role=O3 item=potion  # derrière la grande souche (passage_o3)
+viridian_forest_item_4 objet_cache    6,49         libre   role=O4 item=antidote  # contre l'amas de racines (5, 48..49)
+viridian_forest_item_5 objet_visible  59,5         bloque  role=O5 item=poke_ball  # clairière du détour final, au nord-est
+viridian_forest_item_6 objet_cache    23,6         libre   role=O6 item=potion  # derrière la souche du parvis (23, 7)
+passage_o3             repere         32,54        libre   # passage d'une case derrière la grande souche
+caterpie_1             pokemon        47,83        bloque  shy=notice  # sur une feuille, entre le sentier et H1
+caterpie_2             pokemon        27,46        bloque  shy=notice  # branche basse au bord est de H3 (case de forêt)
+weedle_1               pokemon        39,57        bloque  shy=hide  # tronc au bord est de C2 (case de forêt)
+weedle_2               pokemon        29,28        bloque  shy=hide  # tronc au bord ouest de C3 (case de forêt)
+metapod                pokemon        19,57        bloque  # accroché au tronc qu'observe le naturaliste (case de forêt)
+kakuna                 pokemon        11,69        bloque  # accroché près de l'entrée de H2 (case de forêt)
+pidgey                 pokemon        14,8         bloque  shy=fly  # branche basse de la clairière nord (un seul Roucool)
+herbes_h1              herbes         50,82        libre   role=H1  # lisière, dans C1 (évitable)
+herbes_h2              herbes         5,70         libre   role=H2  # cul-de-sac occidental (évitable, mène à O2)
+herbes_h3              herbes         23,48        libre   role=H3  # passage dense, T3 : obligatoire (7 cases)
+herbes_h4              herbes         9,12         libre   role=H4  # clairière nord (évitable)
+herbes_h5              herbes         32,21        libre   role=H5  # passage court, T6 : obligatoire (5 cases)
+clairiere_c1           clairiere      36..55,79..86  libre  role=C1  # entrée, H1 à l'est
+clairiere_c2           clairiere      20..38,57..64  libre  role=C2  # grande souche (au nord), naturaliste, Tom
+clairiere_c3           clairiere      30..44,26..34  libre  role=C3  # clairière au rayon de lumière (L)
+clairiere_randonneuse  clairiere      41..48,41..44  libre  role=P2  # petite clairière secondaire (boucle)
+clairiere_nord         clairiere      3..15,7..17    libre  role=H4  # clairière nord, H4
+clairiere_o5           clairiere      50..60,3..8    libre  role=O5  # détour final
+parvis                 clairiere      24..35,6..11   libre  role=parvis  # devant le poste nord
 FIN
