@@ -19,10 +19,12 @@ de rebord ne s'entre que dans son sens (vers le sud) et fait atterrir sur la cas
 Zones H1, H2, H3 = composantes connexes de hautes herbes, du sud au nord.
 
 **Forêt de Jade** (`viridian_forest.txt`, docs/tech/jalon-09.md §2.7.1, T14 ; repris par
-test_viridian_forest au T19 / T21) : voir `verifier_foret`.
+test_viridian_forest au T19 / T21) : voir `verifier_foret`. **Forêt agrandie** (2026-10-08,
+`viridian_forest_xl.txt`, jalon-09.md §7) : mêmes critères, profil `FORET_PROFILS` (70 × 90,
+330 à 360 pas, H3 et H5 obligatoires).
 
 Usage : python3 tools/art/plan_check.py [grille.txt ...]   (code 1 si un critère échoue)
-        sans argument : toutes les grilles connues (Route 2, Forêt de Jade).
+        sans argument : toutes les grilles connues (Route 2, Forêt de Jade, forêt agrandie).
 """
 from __future__ import annotations
 
@@ -245,10 +247,29 @@ FACINGS = {"up": (0, -1), "down": (0, 1), "left": (-1, 0), "right": (1, 0)}
 # Sol où poser un personnage, un point d'apparition ou un objet caché : herbe rase, clairière,
 # chemin, sortie (jamais les hautes herbes : un objet caché y serait confondu avec une rencontre).
 SOL_RAS = set(".C=gL")
-# Dossier 10 : taille (enveloppe verrouillée), visions, objets visibles / cachés.
-FORET_TAILLE = (58, 74)
-FORET_CHEMIN = (220, 280)          # pas, entrée sud → porte du poste nord (arbitrage 4)
-FORET_H3 = (6, 8)                  # cases d'herbes obligatoires, toutes dans H3
+# Dossier 10 : taille, longueur, herbes obligatoires (par profil de grille), visions, objets.
+# « zones » : noms des zones de hautes herbes ; sans position « herbes » (role=Hn) dans la grille,
+# elles sont nommées du sud au nord dans cet ordre. « obligatoires » : zone → (min, max) de cases
+# traversées sur le trajet le moins herbeux ; les autres zones sont évitables sans détour.
+FORET_PROFILS = {
+	# T14 (jalon 9), carte actuelle : enveloppe verrouillée de l'arbitrage 4.
+	"viridian_forest": {
+		"taille": (58, 74), "chemin": (220, 280),
+		"zones": ("H1", "H2", "H3", "H4"), "obligatoires": {"H3": (6, 8)},
+	},
+	# Forêt agrandie (décision de Kevin, 2026-10-08) : 7 traversées, une 2e zone obligatoire
+	# courte (H5, défaut 4 à 6 cases) en plus de H3.
+	"viridian_forest_xl": {
+		"taille": (70, 90), "chemin": (330, 360),
+		"zones": ("H1", "H2", "H3", "H4", "H5"), "obligatoires": {"H3": (6, 8), "H5": (4, 6)},
+	},
+}
+# Estimation de la traversée directe (chantier « Forêt agrandie ») : pas mesuré sur S21 (T22 :
+# 233 pas en 2 min 48 s), combat de Théo mesuré, combat sauvage estimé (défaut, à mesurer).
+FORET_S_PAR_PAS = 0.72
+FORET_S_THEO = 100
+FORET_S_SAUVAGE = 50
+FORET_TAUX = 25 / 256              # data/encounters/viridian_forest.json, « rate »
 FORET_VISIONS = {"D1": 4, "D2": 5, "D3": 4, "D4": 5, "D5": 5}
 FORET_OBJETS = {"O1": "objet_visible", "O2": "objet_visible", "O3": "objet_cache",
 	"O4": "objet_cache", "O5": "objet_visible", "O6": "objet_cache"}
@@ -315,9 +336,27 @@ def _role(plan: Plan, kind: str) -> dict[str, object]:
 	return {p.attrs.get("role", p.ident): p for p in plan.of_kind(kind)}
 
 
+def nommer_zones(plan: Plan, noms: tuple[str, ...]) -> dict[str, set[Case]]:
+	"""Zones de hautes herbes par nom : d'après les positions « herbes » (role=Hn, une case dans
+	la zone) s'il y en a, sinon du sud au nord dans l'ordre de [noms]."""
+	zones = zones_herbes(plan)
+	marques = {p.attrs.get("role", p.ident): p.cells[0] for p in plan.of_kind("herbes")}
+	if not marques:
+		return dict(zip(noms, zones))
+	nommees: dict[str, set[Case]] = {}
+	for nom, c in marques.items():
+		for zone in zones:
+			if c in zone:
+				nommees[nom] = zone
+	return nommees
+
+
 def verifier_foret(chemin: Path) -> bool:
 	plan = lire(chemin)
 	ok = True
+	profil = FORET_PROFILS[chemin.stem]
+	FORET_TAILLE = profil["taille"]
+	FORET_CHEMIN = profil["chemin"]
 
 	def critere(vrai: bool, texte: str) -> None:
 		nonlocal ok
@@ -328,7 +367,7 @@ def verifier_foret(chemin: Path) -> bool:
 	print(f"Grille {chemin.relative_to(RACINE) if chemin.is_relative_to(RACINE) else chemin} : "
 		f"{plan.width} × {plan.height}")
 	critere((plan.width, plan.height) == FORET_TAILLE,
-		f"taille {plan.width} × {plan.height} (enveloppe verrouillée {FORET_TAILLE[0]} × "
+		f"taille {plan.width} × {plan.height} (attendu {FORET_TAILLE[0]} × "
 		f"{FORET_TAILLE[1]})")
 
 	# Entrée sud, porte nord, bords fermés.
@@ -379,24 +418,40 @@ def verifier_foret(chemin: Path) -> bool:
 		f"chemin principal ≥ 2 cases de large : sentier sans goulet ({len(etroits)} case(s) "
 		f"étroite(s) {etroits[:4]}), trajet le plus court sur cases larges {large} pas")
 
-	# 2. Hautes herbes : H1..H4 du sud au nord, seule H3 obligatoire.
+	# 2. Hautes herbes : zones nommées (H1..H4, H5), seules les obligatoires du profil traversées.
 	zones = zones_herbes(plan)
-	if len(zones) != 4:
-		critere(False, f"4 zones de hautes herbes attendues, {len(zones)} trouvées")
+	noms = profil["zones"]
+	obligatoires: dict[str, tuple[int, int]] = profil["obligatoires"]
+	nommees = nommer_zones(plan, noms)
+	if len(zones) != len(noms) or sorted(nommees) != sorted(noms) \
+			or len({id(z) for z in nommees.values()}) != len(noms):
+		critere(False, f"{len(noms)} zones de hautes herbes {', '.join(noms)} attendues, "
+			f"{len(zones)} trouvées, nommées {sorted(nommees)}")
 		return False
-	h1, h2, h3, h4 = zones
-	for nom, zone in zip(("H1", "H2", "H3", "H4"), zones):
-		print(f"  {nom} : {boite(zone)}")
+	for nom in noms:
+		print(f"  {nom}{' (obligatoire)' if nom in obligatoires else ''} : {boite(nommees[nom])}")
 	toutes = set().union(*zones)
+	requises = set().union(*(nommees[n] for n in obligatoires))
 	g_min = monde.herbes_min(entree, lambda c: c in toutes).get(porte, INF)
-	hors_h3 = monde.herbes_min(entree, lambda c: c in toutes and c not in h3).get(porte, INF)
-	sans_h3 = Monde(plan, h3).distances(entree).get(porte, INF)
-	critere(FORET_H3[0] <= g_min <= FORET_H3[1] and hors_h3 == 0 and sans_h3 >= INF,
-		f"herbes obligatoires : {g_min} (attendu {FORET_H3[0]} à {FORET_H3[1]}), toutes dans H3 "
-		f"(H3 incontournable : {'oui' if sans_h3 >= INF else 'NON'} ; minimum hors H3 {hors_h3})")
-	for nom, zone in (("H1", h1), ("H2", h2), ("H4", h4)):
-		d = Monde(plan, zone).distances(entree).get(porte, INF)
+	hors = monde.herbes_min(entree, lambda c: c in toutes and c not in requises).get(porte, INF)
+	par_zone: dict[str, int] = {}
+	for nom, (lo, hi) in obligatoires.items():
+		zone = nommees[nom]
+		n = monde.herbes_min(entree, lambda c, z=zone: c in z).get(porte, INF)
+		par_zone[nom] = n
+		sans = Monde(plan, zone).distances(entree).get(porte, INF)
+		critere(lo <= n <= hi and sans >= INF,
+			f"{nom} obligatoire et courte : {n} cases traversées au moins (attendu {lo} à {hi}), "
+			f"incontournable : {'oui' if sans >= INF else 'NON'}")
+	critere(hors == 0 and g_min == sum(par_zone.values()),
+		f"herbes obligatoires : {g_min} cases en tout ({' + '.join(f'{n} {k}' for k, n in par_zone.items())}), "
+		f"aucune hors {', '.join(obligatoires)} (minimum hors de ces zones : {hors})")
+	for nom in noms:
+		if nom in obligatoires:
+			continue
+		d = Monde(plan, nommees[nom]).distances(entree).get(porte, INF)
 		critere(d == aller, f"{nom} évitable sans détour ({d} pas sans y entrer)")
+	h2 = nommees["H2"]
 
 	# 3. Dresseurs : visions, inévitabilité de Théo, évitabilité des autres.
 	dresseurs = _role(plan, "dresseur")
@@ -536,11 +591,18 @@ def verifier_foret(chemin: Path) -> bool:
 		if plan.at(x, y) in plan.praticables)
 	print(f"  statistiques : {praticables} cases praticables sur {plan.width * plan.height} "
 		f"({100 * praticables / (plan.width * plan.height):.0f} %), {len(toutes)} cases d'herbes "
-		f"(H1 {len(h1)}, H2 {len(h2)}, H3 {len(h3)}, H4 {len(h4)}) ; porte → sortie {retour.get(entree[0], INF)} pas")
+		f"({', '.join(f'{n} {len(nommees[n])}' for n in noms)}) ; porte → sortie "
+		f"{retour.get(entree[0], INF)} pas")
+	rencontres = g_min * FORET_TAUX
+	duree = aller * FORET_S_PAR_PAS + FORET_S_THEO + rencontres * FORET_S_SAUVAGE
+	print(f"  traversée directe estimée : {aller} pas × {FORET_S_PAR_PAS} s + Théo {FORET_S_THEO} s "
+		f"+ {rencontres:.2f} rencontre(s) attendue(s) × {FORET_S_SAUVAGE} s = {duree:.0f} s "
+		f"({int(duree // 60)} min {int(duree % 60):02d} s)")
 	return ok
 
 
-VERIFICATEURS = {"route_2": verifier_route_2, "viridian_forest": verifier_foret}
+VERIFICATEURS = {"route_2": verifier_route_2, "viridian_forest": verifier_foret,
+	"viridian_forest_xl": verifier_foret}
 
 
 def main() -> int:
