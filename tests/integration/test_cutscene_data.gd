@@ -32,6 +32,8 @@ const MAPS: Array[StringName] = [
 	&"route_1", &"viridian_city", &"route_22", &"viridian_mart", &"route_2",
 	# Jalon 9 (T19) : déclencheurs des objets cachés de la forêt.
 	&"viridian_forest",
+	# Jalon 10 (T11) : arrivée à Argenta et verrou du garde de la Route 3.
+	&"pewter_city",
 ]
 ## Jalon 7 (T18) : partie qui revient au labo avec le colis (rival parti après le combat).
 const PARCEL_FLAGS: Array[StringName] = [
@@ -99,11 +101,9 @@ const CODE_PLAYED: Dictionary[StringName, StringName] = {
 	&"route_2_north_item_1": &"route_2_north", &"pewter_gym_brock": &"pewter_gym",
 }
 ## Scènes à déclencheur dont la carte n'est pas encore construite → leur carte (simulées sur les
-## PNJ de son fichier). Vidée au T19 du jalon 9 (la forêt existe). Jalon 10 (T8) : les deux
-## scènes d'Argenta, jusqu'à la carte du T11.
-const AWAITING_MAP: Dictionary[StringName, StringName] = {
-	&"pewter_arrival": &"pewter_city", &"route_3_guard": &"pewter_city",
-}
+## PNJ de son fichier). Vidée au T19 du jalon 9 (la forêt existe), puis au T11 du jalon 10 (les
+## deux scènes d'Argenta ont leurs déclencheurs sur la carte).
+const AWAITING_MAP: Dictionary[StringName, StringName] = {}
 
 var _cutscenes: CutsceneLibrary
 var _dialogues: DialogueLibrary
@@ -196,6 +196,8 @@ func test_every_trigger_targets_a_scene_and_every_scene_is_triggered() -> void:
 	assert_eq(_triggered_on.get(&"mart_parcel"), [&"viridian_mart"])
 	assert_eq(_triggered_on.get(&"route_2_item_3"), [&"route_2"])
 	assert_eq(_triggered_on.get(&"route_2_item_4"), [&"route_2"])
+	assert_eq(_triggered_on.get(&"pewter_arrival"), [&"pewter_city"])
+	assert_eq(_triggered_on.get(&"route_3_guard"), [&"pewter_city"])
 	assert_eq(_offer.chosen_scene, &"starter_chosen", "scène du choix = CODE_PLAYED")
 	assert_eq(CODE_PLAYED[_offer.chosen_scene], _offer.map_id)
 

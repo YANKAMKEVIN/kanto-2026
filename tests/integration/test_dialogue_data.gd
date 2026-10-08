@@ -42,13 +42,8 @@ const GATE_GUARDS: Array[StringName] = [&"forest_gate_north_guard", &"forest_gat
 ## l'Arène ; `pewter_gym_liam_defeated` est lue par la clé « defeated » du bloc « trainer »
 ## depuis le T9). À retirer carte par carte en ajoutant la carte à [constant MAPS].
 ## T13 : les intérieurs d'Argenta sont dans [constant MAPS] (Musée, maisons, Arène : retirés).
+## T11 : la Route 2 nord et Argenta (extérieur) sont dans [constant MAPS] : liste vide.
 const UNUSED_YET: Array[StringName] = [
-	&"route_2_north_ball_1", &"route_2_north_mountaineer", &"route_2_north_rockslide",
-	&"route_2_north_sign", &"pewter_city_sign",
-	&"pewter_gym_sign", &"pewter_kid", &"pewter_lass",
-	&"pewter_museum_clerk", &"pewter_museum_sign", &"pewter_old_man", &"pewter_route_3_guard",
-	&"pewter_route_3_guard_cleared", &"pewter_route_3_guard_rule", &"pewter_stonemason",
-	&"pewter_visitor",
 ]
 ## Jalon 10 : textes verrouillés du dossier 12 (même forme que le dossier 10) et lot de textes du
 ## J10 (panneaux, noms affichés), où un retour à la ligne est écrit « \n ».
@@ -69,6 +64,8 @@ const MAPS: Array[StringName] = [
 	# Jalon 10 (T13) : les intérieurs d'Argenta.
 	&"pewter_center", &"pewter_mart", &"pewter_museum", &"pewter_museum_science", &"pewter_gym",
 	&"pewter_house_mason", &"pewter_house_researcher",
+	# Jalon 10 (T11) : la Route 2 nord et Argenta (extérieur).
+	&"route_2_north", &"pewter_city",
 ]
 ## Lot de textes validé par Kevin le 2026-10-06 (anciens brouillons : panneau, observations,
 ## soin de Maman, terminal du Stockage, portes de Jadielle…) : source des textes hors dossiers.

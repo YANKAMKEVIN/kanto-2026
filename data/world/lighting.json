@@ -58,6 +58,8 @@
 		"pewter_museum_science": "interior_warm",
 		"pewter_gym": "interior_warm",
 		"pewter_house_mason": "interior_warm",
-		"pewter_house_researcher": "interior_warm"
+		"pewter_house_researcher": "interior_warm",
+		"route_2_north": "golden_hour",
+		"pewter_city": "golden_hour"
 	}
 }

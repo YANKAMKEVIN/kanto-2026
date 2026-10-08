@@ -118,7 +118,8 @@ func test_south_gate_links_route_2_and_the_forest() -> void:
 			assert_false(warp.is_coming_soon())
 
 
-func test_north_gate_links_the_forest_and_route_2_north_coming_soon() -> void:
+## Jalon 10 (T11) : la porte nord mène à la Route 2 nord (avant : « ROUTE 2 NORD — À venir »).
+func test_north_gate_links_the_forest_and_route_2_north() -> void:
 	assert_eq(_north.get_spawn_cell(&"from_forest"), Vector2i(4, 6))
 	assert_eq(_north.get_spawn_cell(&"north_door"), Vector2i(4, 2))
 	for cell: Vector2i in SOUTH_DOOR:
@@ -131,7 +132,6 @@ func test_north_gate_links_the_forest_and_route_2_north_coming_soon() -> void:
 		var warp := _north.get_warps().find_on_step(cell, Vector2i.UP)
 		assert_not_null(warp, "ouverture nord %s" % cell)
 		if warp != null:
-			assert_true(warp.is_coming_soon())
-			assert_eq(warp.coming_soon.to_upper(), "ROUTE 2 NORD")
-			assert_eq(warp.target_spawn, &"north_door")
-			assert_eq(warp.facing, Vector2i.DOWN, "retour tourné vers le sud")
+			assert_false(warp.is_coming_soon())
+			assert_eq([warp.target_map, warp.target_spawn, warp.facing],
+				[&"route_2_north", &"from_forest_gate", Vector2i.UP])
