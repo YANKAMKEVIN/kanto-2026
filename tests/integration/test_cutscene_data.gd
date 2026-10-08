@@ -22,6 +22,9 @@ extends GutTest
 ## Jalon 8 (T4) : objets de la Route 2 — deux visibles (scène lancée par le dialogue du PNJ
 ## « objet », qui le retire : `despawn` → `give found` → `set`), deux cachés (déclencheurs de la
 ## carte, comme la Potion de la Route 1), posés par `tools/build_route_2.gd` (T5).
+## Jalon 10 (T8) : arrivée à Argenta et garde de la Route 3 (déclencheurs d'Argenta, en attente de
+## la carte du T11 : simulés sur les PNJ de son fichier), Potion de la Route 2 nord et scène de
+## Pierre (lancées par le dialogue de leur PNJ) ; étapes `champion_card` et `badge` au T9.
 
 const MAPS: Array[StringName] = [
 	&"player_house_2f", &"player_house_1f", &"rival_house", &"oak_lab", &"pallet_town",
@@ -40,6 +43,12 @@ const ROUTE22_FLAGS: Array[StringName] = [
 	&"oak_met", &"oak_lab_reunion", &"starter_offered", &"starter_chosen", &"rival_challenged",
 	&"rival_lab_won", &"rival_battle_done", &"rival_left_lab", &"viridian_arrived",
 	&"got_oak_parcel", &"pokedex_activated",
+]
+## Jalon 10 (T8) : partie qui arrive à Argenta (fin du J9 : poison annoncé, Théo battu).
+const PEWTER_FLAGS: Array[StringName] = [
+	&"oak_met", &"oak_lab_reunion", &"starter_offered", &"starter_chosen", &"rival_challenged",
+	&"rival_lab_won", &"rival_battle_done", &"rival_left_lab", &"viridian_arrived",
+	&"got_oak_parcel", &"pokedex_activated", &"poison_unlocked", &"beaten_forest_scout_theo",
 ]
 ## Paires `taken_*` posées au labo (starter du joueur, puis celui du rival) → Pokémon du rival
 ## présent sur la Route 22 (data/npcs/route_22.json).
@@ -69,6 +78,12 @@ const VARIANT_FLAGS: Dictionary = {
 	&"viridian_forest_item_4": [ROUTE22_FLAGS],
 	&"viridian_forest_item_5": [ROUTE22_FLAGS],
 	&"viridian_forest_item_6": [ROUTE22_FLAGS],
+	# Jalon 10 (T8) : Route 2 nord et Argenta.
+	&"route_2_north_item_1": [PEWTER_FLAGS],
+	&"pewter_arrival": [PEWTER_FLAGS],
+	&"route_3_guard": [PEWTER_FLAGS + [&"pewter_arrived"],
+		PEWTER_FLAGS + [&"pewter_arrived", &"brock_met", &"badge_boulder"]],
+	&"pewter_gym_brock": [PEWTER_FLAGS + [&"pewter_arrived"]],
 }
 ## Scènes jouées par le code (pas de déclencheur) → carte où elles sont jouées.
 ## Jalon 7 (T18) : la scène du colis est lancée par la variante « cutscene » du dialogue de Chen.
@@ -79,10 +94,15 @@ const CODE_PLAYED: Dictionary[StringName, StringName] = {
 	# Jalon 9 (T18) : objets visibles de la Forêt de Jade (PNJ « objet » de son fichier).
 	&"viridian_forest_item_1": &"viridian_forest", &"viridian_forest_item_2": &"viridian_forest",
 	&"viridian_forest_item_5": &"viridian_forest",
+	# Jalon 10 (T8) : Potion de la Route 2 nord (PNJ « objet »), Pierre (son dialogue).
+	&"route_2_north_item_1": &"route_2_north", &"pewter_gym_brock": &"pewter_gym",
 }
 ## Scènes à déclencheur dont la carte n'est pas encore construite → leur carte (simulées sur les
-## PNJ de son fichier). Vidée au T19 du jalon 9 (la forêt existe).
-const AWAITING_MAP: Dictionary[StringName, StringName] = {}
+## PNJ de son fichier). Vidée au T19 du jalon 9 (la forêt existe). Jalon 10 (T8) : les deux
+## scènes d'Argenta, jusqu'à la carte du T11.
+const AWAITING_MAP: Dictionary[StringName, StringName] = {
+	&"pewter_arrival": &"pewter_city", &"route_3_guard": &"pewter_city",
+}
 
 var _cutscenes: CutsceneLibrary
 var _dialogues: DialogueLibrary
@@ -130,8 +150,10 @@ func test_library_loads_without_error() -> void:
 	assert_true(library.load_dir(), "data/cutscenes/ se charge")
 	assert_eq(library.get_errors().size(), 0, str(library.get_errors()))
 	assert_eq(library.get_ids(), [&"mart_parcel", &"oak_lab_exit", &"oak_parcel",
+		&"pewter_arrival", &"pewter_gym_brock",
 		&"rival_route22", &"route1_grass", &"route_1_potion", &"route_2_item_1",
-		&"route_2_item_2", &"route_2_item_3", &"route_2_item_4", &"starter_chosen",
+		&"route_2_item_2", &"route_2_item_3", &"route_2_item_4", &"route_2_north_item_1",
+		&"route_3_guard", &"starter_chosen",
 		&"viridian_arrival", &"viridian_forest_item_1", &"viridian_forest_item_2",
 		&"viridian_forest_item_3", &"viridian_forest_item_4", &"viridian_forest_item_5",
 		&"viridian_forest_item_6"] as Array[StringName])
@@ -204,6 +226,7 @@ func test_only_world_items_are_found_items() -> void:
 					found.append("%s:%s" % [id, step.item_id])
 	assert_eq(found, ["route_1_potion:potion", "route_2_item_1:poke_ball",
 		"route_2_item_2:potion", "route_2_item_3:poke_ball", "route_2_item_4:potion",
+		"route_2_north_item_1:potion",
 		"viridian_forest_item_1:antidote", "viridian_forest_item_2:poke_ball",
 		"viridian_forest_item_3:potion", "viridian_forest_item_4:antidote",
 		"viridian_forest_item_5:poke_ball", "viridian_forest_item_6:potion"]

@@ -3,7 +3,9 @@ extends SceneTree
 ## de la Route 1 (jalon 5), des quatre nouvelles espèces de la Route 22 (jalon-07.md Q-2 :
 ## provisoires en combat comme les autres, le peint en combat pour tous à la phase DA) et des
 ## huit espèces de la Forêt de Jade (jalon-09.md §2.5 : Chenipan → Papilusion, Aspicot →
-## Dardargnan, Pikachu, Raichu ; les évolutions aussi, puisqu'elles naissent en combat).
+## Dardargnan, Pikachu, Raichu ; les évolutions aussi, puisqu'elles naissent en combat) et des
+## trois espèces des Dresseurs d'Argenta (jalon-10.md §2.3 : Sabelette, Racaillou, Onix ; en
+## face, l'adversaire est l'artwork officiel, ces sprites ne servent que de repli et de dos).
 ## Pixel art 64 × 64 natif, affiché en NEAREST par le BattleStage (×4 de dos, ×3 de face) :
 ##   assets/sprites/pokemon/placeholder/<espèce>_front.png   (vue de face : l'adversaire)
 ##   assets/sprites/pokemon/placeholder/<espèce>_back.png    (vue de dos : le Pokémon du joueur)
@@ -22,6 +24,7 @@ const SPECIES: Array[String] = [
 	"bulbasaur", "charmander", "squirtle", "pidgey", "rattata",
 	"spearow", "mankey", "nidoran_f", "nidoran_m",
 	"caterpie", "metapod", "butterfree", "weedle", "kakuna", "beedrill", "pikachu", "raichu",
+	"sandshrew", "geodude", "onix",
 ]
 const OUTLINE := Color("#1c1c28")
 const EYE := Color("#1c1c28")
@@ -650,6 +653,75 @@ func _draw_mouse(img: Image, back: bool, fur: Color, tip: Color, cheek: Color,
 	_e(img, 45, 32, 4, 3, cheek)
 	_r(img, 31, 29, 2, 1, EYE)
 	_r(img, 28, 33, 8, 1, fur.darkened(0.45))
+
+
+# --- Sabelette -------------------------------------------------------------------
+
+## Petit Pokémon trapu couleur sable, dos écaillé en briques, ventre crème, griffes blanches.
+func _draw_sandshrew(img: Image, back: bool) -> void:
+	var skin := Color("#e0c060")
+	var scale := Color("#b08a3a")
+	_r(img, 20, 54, 9, 8, skin.darkened(0.15))
+	_r(img, 35, 54, 9, 8, skin.darkened(0.15))
+	_e(img, 32, 44, 16, 15, skin, true)
+	_e(img, 32, 24, 13, 12, skin, true)
+	for side: int in [-1, 1]:
+		_e(img, 32 + side * 11, 14, 4, 5, skin.darkened(0.1))
+		_line(img, Vector2(32 + side * 15, 44), Vector2(32 + side * 20, 50), WHITE, 2)
+	if back:
+		for row: int in 4:
+			for col: int in 3:
+				_r(img, 22 + col * 7 + (row % 2) * 3, 32 + row * 6, 6, 4, scale)
+		return
+	_e(img, 32, 48, 10, 9, Color("#f4e8c0"))
+	_eye(img, 23, 20, Color("#2a2a30"))
+	_eye(img, 36, 20, Color("#2a2a30"))
+	_r(img, 30, 29, 4, 1, skin.darkened(0.45))
+
+
+# --- Racaillou --------------------------------------------------------------------
+
+## Rocher gris arrondi, deux bras musclés, sourcils épais ; pas de jambes (il flotte bas).
+func _draw_geodude(img: Image, back: bool) -> void:
+	var rock := Color("#9a9488")
+	for side: int in [-1, 1]:
+		_line(img, Vector2(32 + side * 14, 38), Vector2(32 + side * 24, 46), rock.darkened(0.1), 6)
+		_e(img, 32 + side * 26, 50, 6, 6, rock, true)
+		_r(img, 32 + side * 26 - 3, 54, 2, 2, rock.darkened(0.35))
+	_e(img, 32, 40, 17, 16, rock, true)
+	_e(img, 22, 48, 3, 2, rock.darkened(0.3))
+	_e(img, 42, 34, 3, 2, rock.darkened(0.3))
+	if back:
+		_e(img, 30, 30, 4, 3, rock.darkened(0.3))
+		return
+	_r(img, 22, 33, 8, 3, rock.darkened(0.5))
+	_r(img, 34, 33, 8, 3, rock.darkened(0.5))
+	_r(img, 24, 36, 4, 4, WHITE)
+	_r(img, 36, 36, 4, 4, WHITE)
+	_r(img, 25, 37, 2, 3, EYE)
+	_r(img, 37, 37, 2, 3, EYE)
+	_r(img, 27, 46, 10, 2, rock.darkened(0.5))
+
+
+# --- Onix -------------------------------------------------------------------------
+
+## Long serpent de rochers gris enroulé, tête au sommet avec une corne sur le crâne.
+func _draw_onix(img: Image, back: bool) -> void:
+	var rock := Color("#8e8e96")
+	var segments: Array[Vector3] = [
+		Vector3(14, 54, 7), Vector3(24, 56, 8), Vector3(36, 55, 8), Vector3(47, 50, 7),
+		Vector3(50, 40, 7), Vector3(44, 32, 7), Vector3(34, 30, 7), Vector3(26, 24, 8),
+	]
+	for seg: Vector3 in segments:
+		_e(img, seg.x, seg.y, seg.z, seg.z - 1, rock, true)
+		_r(img, int(seg.x) - 2, int(seg.y) - 1, 3, 1, rock.darkened(0.35))
+	_line(img, Vector2(24, 8), Vector2(22, 1), rock.darkened(0.2), 3)
+	_e(img, 26, 14, 12, 9, rock, true)
+	if back:
+		return
+	_r(img, 19, 12, 6, 2, WHITE)
+	_r(img, 21, 12, 2, 2, EYE)
+	_r(img, 18, 18, 14, 2, rock.darkened(0.5))
 
 
 # --- Ombre ------------------------------------------------------------------------

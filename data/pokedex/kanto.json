@@ -133,6 +133,18 @@
 			"height": 0.8, "weight": 30.0,
 			"description": "Quand il a accumulé trop d'électricité, il plante le bout de sa queue dans la terre pour s'en délester, puis redevient calme."
 		},
+		"sandshrew": {
+			"height": 0.6, "weight": 12.0,
+			"description": "Il aime les terres sèches et sablonneuses. Menacé, il se roule en boule et sa peau dure encaisse les coups.",
+			"notes": [
+				{ "id": "sandshrew_burrow", "unlock": { "seen": 1 },
+				  "text": "Il passe les heures chaudes au fond de son terrier et n'en sort que le soir, quand le sable fraîchit." }
+			]
+		},
+		"sandslash": {
+			"height": 1.0, "weight": 29.5,
+			"description": "Les piquants de son dos sont faits de peau durcie. Il les hérisse dès qu'on l'approche, puis se roule en boule pour charger."
+		},
 		"nidoran_f": {
 			"height": 0.4, "weight": 7.0,
 			"description": "Discrète, elle dresse ses grandes oreilles au moindre bruit. Ses petites épines la protègent quand on l'approche de trop près.",
@@ -176,6 +188,30 @@
 		"primeape": {
 			"height": 1.0, "weight": 32.0,
 			"description": "Quand il s'emporte, plus rien ne l'arrête. Il poursuit longtemps ce qui l'a contrarié."
+		},
+		"geodude": {
+			"height": 0.4, "weight": 20.0,
+			"description": "On le prend souvent pour une simple pierre au bord des sentiers. Ses bras robustes soulèvent des rochers plus lourds que lui.",
+			"notes": [
+				{ "id": "geodude_sun", "unlock": { "seen": 1 },
+				  "text": "Au soleil, il s'enfonce à moitié dans la terre et ne bouge plus. Seuls ses bras trahissent sa présence." }
+			]
+		},
+		"graveler": {
+			"height": 1.0, "weight": 105.0,
+			"description": "Trop lourd pour grimper vite, il descend les pentes en roulant. Sur son passage, la roche garde de longues traces."
+		},
+		"golem": {
+			"height": 1.4, "weight": 300.0,
+			"description": "Sa carapace de pierre ne craint presque rien. Une fois l'an, dit-on, il s'en défait et laisse une coque vide derrière lui."
+		},
+		"onix": {
+			"height": 8.8, "weight": 210.0,
+			"description": "Il creuse la terre en se tordant à grande vitesse. Les tunnels qu'il laisse servent ensuite de terrier à d'autres Pokémon.",
+			"notes": [
+				{ "id": "onix_rumble", "unlock": { "seen": 1 },
+				  "text": "Un grondement sourd sous les pieds, puis plus rien : un Onix vient de passer, quelque part sous la roche." }
+			]
 		}
 	}
 }

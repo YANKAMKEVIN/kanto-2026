@@ -1,0 +1,37 @@
+{
+	"pewter_arrival": {
+		"variants": [
+			{
+				"unless": ["pewter_arrived"],
+				"steps": [
+					{ "set": ["pewter_arrived"] }
+				]
+			}
+		]
+	},
+	"route_3_guard": {
+		"variants": [
+			{
+				"unless": ["badge_boulder"],
+				"steps": [
+					{ "face": "route_3_guard", "to": "player" },
+					{ "face": "player", "to": "route_3_guard" },
+					{ "dialogue": "pewter_route_3_guard_rule" },
+					{ "move": "player", "path": ["left"], "keep_facing": true }
+				]
+			},
+			{
+				"if": ["badge_boulder"],
+				"unless": ["route_3_guard_cleared"],
+				"steps": [
+					{ "face": "route_3_guard", "to": "player" },
+					{ "face": "player", "to": "route_3_guard" },
+					{ "dialogue": "pewter_route_3_guard_cleared" },
+					{ "move": "route_3_guard", "path": ["up"] },
+					{ "face": "route_3_guard", "to": "down" },
+					{ "set": ["route_3_guard_cleared"] }
+				]
+			}
+		]
+	}
+}

@@ -1,0 +1,19 @@
+{
+	"pewter_gym_liam": {
+		"name": "Campeur Liam", "ai": "random",
+		"can_lose": false, "heal_after": false, "gives_exp": true, "prize_money": 200,
+		"team": [{ "species": "geodude", "level": 10 }, { "species": "sandshrew", "level": 10 }]
+	},
+	"pewter_gym_brock": {
+		"name": "Pierre", "ai": "smart",
+		"can_lose": false, "heal_after": false, "gives_exp": true, "prize_money": 1300,
+		"start_message": false, "end_message": true, "bag": true,
+		"team": [
+			{ "species": "geodude", "level": 12, "moves": ["tackle", "defense_curl"] },
+			{
+				"species": "onix", "level": 14,
+				"moves": ["tackle", "screech", "harden", "rock_throw"]
+			}
+		]
+	}
+}

@@ -1,0 +1,40 @@
+{
+	"stonemason": {
+		"cell": [6, 25], "facing": "right", "sprite": "stonemason", "dialogue": "pewter_stonemason",
+		"route": { "cells": [[6, 25], [7, 25], [8, 25], [7, 25]], "pause": 1.5 }
+	},
+	"stonemason_geodude": {
+		"cell": [4, 25], "facing": "right", "sprite": "pokemon/geodude", "idle_react": 5.0
+	},
+	"kid": {
+		"cell": [24, 20], "facing": "up", "sprite": "kid", "dialogue": "pewter_kid",
+		"look": { "facings": ["up", "right", "down", "left"], "every": 3.0 }
+	},
+	"visitor": {
+		"cell": [12, 40], "facing": "right", "sprite": "aoki", "dialogue": "pewter_visitor",
+		"route": {
+			"cells": [[12, 40], [13, 40], [14, 40], [15, 40], [16, 40], [15, 40], [14, 40],
+				[13, 40]],
+			"pause": 2.0
+		}
+	},
+	"old_man": {
+		"cell": [10, 3], "facing": "right", "sprite": "old_man", "dialogue": "pewter_old_man"
+	},
+	"lass": {
+		"cell": [31, 40], "facing": "left", "sprite": "lass", "dialogue": "pewter_lass",
+		"look": { "facings": ["left", "down", "left", "up"], "every": 3.5 }
+	},
+	"museum_clerk": {
+		"cell": [10, 40], "facing": "down", "sprite": "courier", "dialogue": "pewter_museum_clerk",
+		"route": { "cells": [[10, 40], [11, 40]], "pause": 2.5 }
+	},
+	"route_3_guard": {
+		"cell": [48, 24], "facing": "down", "sprite": "guard", "dialogue": "pewter_route_3_guard",
+		"unless": ["route_3_guard_cleared"]
+	},
+	"route_3_guard_aside": {
+		"cell": [48, 23], "facing": "down", "sprite": "guard", "dialogue": "pewter_route_3_guard",
+		"if": ["route_3_guard_cleared"]
+	}
+}

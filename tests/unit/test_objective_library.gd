@@ -55,10 +55,9 @@ func test_q4_nothing_before_the_rival_battle_then_reach_viridian() -> void:
 ## `got_oak_parcel` est levé par la première visite de la Boutique depuis le T12
 ## (data/cutscenes/viridian_mart.json), `pokedex_activated` par la scène du colis depuis le T18
 ## (data/cutscenes/oak_lab.json).
-## Jalon 10 : `pewter_arrived` (scène d'arrivée, T14) et `badge_boulder` (victoire contre Pierre
-## et étape « badge », T9/T17), à retirer quand leur tâche est fusionnée.
-const _PENDING_FLAGS: Array[StringName] = [&"viridian_arrived", &"pewter_arrived",
-	&"badge_boulder"]
+## Jalon 10 (T8) : `pewter_arrived` (scène `pewter_arrival`) et `badge_boulder` (victoire de la
+## scène `pewter_gym_brock`) sont levés par les données : retirés de la liste.
+const _PENDING_FLAGS: Array[StringName] = [&"viridian_arrived"]
 
 
 ## Jalon 10 (dossier 12 §16, jalon-10.md §2.10) : « continuer vers le nord. » jusqu'à Argenta,

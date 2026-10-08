@@ -1,0 +1,9 @@
+{
+	"researcher": {
+		"cell": [4, 6], "facing": "up", "sprite": "researcher",
+		"dialogue": "pewter_museum_researcher"
+	},
+	"researcher_f": {
+		"cell": [10, 6], "facing": "up", "sprite": "maya", "dialogue": "pewter_museum_researcher_f"
+	}
+}

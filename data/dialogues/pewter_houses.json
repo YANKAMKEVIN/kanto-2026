@@ -1,0 +1,23 @@
+{
+	"pewter_house_mason_partner": {
+		"speaker": "Habitante",
+		"pages": ["Il travaille la pierre depuis toujours."]
+	},
+	"pewter_house_mason_kid": {
+		"speaker": "Enfant",
+		"pages": ["Racaillou peut soulever des pierres énormes !"]
+	},
+	"pewter_house_researcher": {
+		"speaker": "Chercheuse",
+		"variants": [
+			{
+				"unless": ["pewter_researcher_talked"],
+				"set": ["pewter_researcher_talked"],
+				"pages": ["Ma sœur travaille au Musée."]
+			},
+			{
+				"pages": ["Les fossiles racontent un monde\nque personne n'a vu."]
+			}
+		]
+	}
+}

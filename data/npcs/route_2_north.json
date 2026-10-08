@@ -1,0 +1,12 @@
+{
+	"mountaineer": {
+		"cell": [17, 6], "facing": "down", "sprite": "mountaineer",
+		"dialogue": "route_2_north_mountaineer",
+		"route": { "cells": [[17, 5], [17, 6], [17, 7], [17, 6]], "pause": 1.6, "start": 1 }
+	},
+	"route_2_north_ball_1": {
+		"cell": [4, 1], "facing": "down", "sprite": "object/poke_ball_ground",
+		"dialogue": "route_2_north_ball_1", "verb": "take", "turn_to_player": false,
+		"unless": ["got_route_2_north_item_1"]
+	}
+}

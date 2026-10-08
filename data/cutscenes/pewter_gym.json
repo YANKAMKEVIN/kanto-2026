@@ -1,0 +1,21 @@
+{
+	"pewter_gym_brock": {
+		"variants": [
+			{
+				"unless": ["badge_boulder"],
+				"steps": [
+					{ "face": "brock", "to": "player" },
+					{ "dialogue": "pewter_gym_brock_intro", "unless": ["brock_met"] },
+					{ "dialogue": "pewter_gym_brock_resume", "if": ["brock_met"] },
+					{ "set": ["brock_met"] },
+					{ "battle": "pewter_gym_brock", "win": ["badge_boulder"] },
+					{ "wait": 0.6, "if": ["badge_boulder"] },
+					{ "dialogue": "pewter_gym_brock_won", "if": ["badge_boulder"] },
+					{ "dialogue": "pewter_gym_brock_badge", "if": ["badge_boulder"] },
+					{ "dialogue": "pewter_gym_brock_lost", "unless": ["badge_boulder"] },
+					{ "wake_up": true, "unless": ["badge_boulder"] }
+				]
+			}
+		]
+	}
+}

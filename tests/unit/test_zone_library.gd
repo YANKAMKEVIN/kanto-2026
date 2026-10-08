@@ -2,6 +2,13 @@ extends GutTest
 ## ZoneLibrary : zones du Kanto du projet (data/world/zones.json, jalon-06.md §3.2).
 
 const AREAS_PATH := "res://assets/ui/map/kanto_placeholder_areas.json"
+## Cartes rangées dans une zone avant d'être construites (jalon 10, T8 : données prêtes) : la Route
+## 2 nord et Argenta (T11), les intérieurs d'Argenta (T13). À retirer quand leur tâche est
+## fusionnée ; leur existence est vérifiée dès que la scène existe.
+const AWAITING_MAPS: Array[StringName] = [
+	&"route_2_north", &"pewter_city", &"pewter_center", &"pewter_mart", &"pewter_museum",
+	&"pewter_museum_science", &"pewter_gym", &"pewter_house_mason", &"pewter_house_researcher",
+]
 
 var _zones: ZoneLibrary
 
@@ -45,6 +52,8 @@ func test_every_map_belongs_to_exactly_one_zone() -> void:
 	for map_id: StringName in maps:
 		assert_ne(_zones.zone_of(map_id), &"", "carte « %s » rangée dans une zone" % map_id)
 	for map_id: StringName in _zones.get_maps():
+		if AWAITING_MAPS.has(map_id) and not MapCatalog.has_map(map_id):
+			continue
 		assert_true(MapCatalog.has_map(map_id), "carte « %s » existante" % map_id)
 
 
@@ -124,7 +133,8 @@ func test_built_zones_have_their_map_texts() -> void:
 	assert_eq(_zones.get_zone(&"pallet_town").subtitle, "")
 	# Jalon 8 (dossier 11, T1 et T14) : sous-titre = le panneau sud, comme la Route 1.
 	var route_2 := _zones.get_zone(&"route_2")
-	assert_eq(route_2.maps, [&"route_2"] as Array[StringName])
+	# Jalon 10 (Q-3) : la Route 2 nord est la 2e carte de la zone, textes inchangés.
+	assert_eq(route_2.maps, [&"route_2", &"route_2_north"] as Array[StringName])
 	assert_eq(route_2.subtitle, "Jadielle — Forêt de Jade")
 	assert_eq(route_2.description,
 		"Un chemin bordé de prairies qui s'enfonce peu à peu sous les arbres.")
@@ -158,9 +168,10 @@ func test_service_catalog_and_the_services_of_viridian() -> void:
 	assert_eq(_zones.service_name(&"gym"), "Arène")
 	assert_eq(_zones.service_name(&"casino"), "")
 	# Jalon 7 T4 : seuls les services de Jadielle, découverts sur leur carte (l'Arène en
-	# entrant dans la ville, le Centre et la Boutique en y entrant).
+	# entrant dans la ville, le Centre et la Boutique en y entrant). Jalon 10 : ceux d'Argenta
+	# (test_pewter_data).
 	for id: StringName in _zones.get_ids():
-		if id != &"viridian_city":
+		if id != &"viridian_city" and id != &"pewter_city":
 			assert_true(_zones.get_zone(id).services.is_empty(), "%s : aucun service" % id)
 	var found: Dictionary = {}
 	for service: ZoneService in _zones.get_zone(&"viridian_city").services:
