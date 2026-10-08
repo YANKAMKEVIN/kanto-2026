@@ -29,8 +29,11 @@ extends SceneTree
 ##   godot --headless --path . -s res://tools/simulate_brock.gd
 ##   godot --headless --path . -s res://tools/simulate_brock.gd -- --seeds 200
 ##   godot --headless --path . -s res://tools/simulate_brock.gd -- --save <sauvegarde.json>
+##   godot --headless --path . -s res://tools/simulate_brock.gd -- --grille 2
 ##
-## `--save` remplace l'équipe de Kevin par l'équipe d'une sauvegarde (clé « party »).
+## `--grille <n>` : seulement la grille de la variante n de [constant BROCK_VARIANTS]
+## (2 = Jet-Pierres sur Racaillou). `--save` remplace l'équipe de Kevin par l'équipe d'une
+## sauvegarde (clé « party »).
 
 @warning_ignore_start("integer_division")
 
@@ -62,11 +65,16 @@ const BROCK_GRID: Array[Vector2i] = [
 	Vector2i(12, 14), Vector2i(12, 13), Vector2i(12, 12), Vector2i(11, 13), Vector2i(11, 12),
 	Vector2i(10, 12), Vector2i(10, 11), Vector2i(10, 10),
 ]
-## Capacités d'Onix essayées dans la grille : [nom, capacités (vide = les données)]. La
-## seconde n'est qu'une information pour Kevin (arbitrage 1 : décision de game design).
-const ONIX_VARIANTS: Array = [
-	["données (Charge, Grincement, Armure, Jet-Pierres)", []],
-	["sans Jet-Pierres (Charge, Grincement, Armure)", ["tackle", "screech", "harden"]],
+## Capacités de Pierre essayées dans la grille : [nom, capacités de Racaillou, capacités
+## d'Onix (vide = les données), niveaux (vide = [constant BROCK_GRID])]. Seule la première
+## est dans les données ; les autres sont une information pour Kevin (arbitrage 1, Q-6).
+const BROCK_VARIANTS: Array = [
+	["Onix des données (Charge, Grincement, Armure, Jet-Pierres)", [], [], []],
+	["Onix sans Jet-Pierres (Charge, Grincement, Armure)", [],
+		["tackle", "screech", "harden"], []],
+	["Jet-Pierres sur Racaillou (Charge, Boul'Armure, Jet-Pierres) ; Onix (Charge, "
+		+ "Grincement, Armure)", ["tackle", "defense_curl", "rock_throw"],
+		["tackle", "screech", "harden"], [Vector2i(12, 14), Vector2i(11, 14)]],
 ]
 ## Équipe de Kevin, fin du J9 (sauvegarde de la QA T22), dans l'ordre de l'équipe.
 const KEVIN_PARTY: Array[Dictionary] = [
@@ -127,8 +135,12 @@ var _orders: Dictionary = {}
 ## dont le nom contient ce texte.
 var _trace: String = ""
 var _tracing: bool = false
-## Capacités d'Onix imposées (grille, [constant ONIX_VARIANTS]) ; vide = les données.
+## Capacités de Racaillou et d'Onix imposées (grille, [constant BROCK_VARIANTS]) ; vide = les
+## données.
+var _geodude_moves: Array[StringName] = []
 var _onix_moves: Array[StringName] = []
+## `--grille <n>` : seulement la grille de la variante n (0 = les données) ; −1 = tout.
+var _only_variant: int = -1
 
 
 func _init() -> void:
@@ -137,10 +149,12 @@ func _init() -> void:
 		return
 	print("=== Équilibrage de Pierre (jalon 10 T16) : %d graines par ligne ===" % _seeds)
 	print("Pierre (données) : %s ; Liam : %s" % [_team_text(BROCK), _team_text(LIAM)])
-	_report_kevin()
-	_report_types()
+	if _only_variant < 0:
+		_report_kevin()
+		_report_types()
 	_report_levels()
-	_report_liam()
+	if _only_variant < 0:
+		_report_liam()
 	quit()
 
 
@@ -211,21 +225,29 @@ func _report_levels() -> void:
 	print("(sans Liam) ; SR / SPR / BR / CR = Salamèche + Roucool, Salamèche + Papilusion +")
 	print("Roucool, Bulbizarre + Roucool, Carapuce + Roucool (starter N11, route + Liam) ;")
 	print("nP = n Potions ; joueur attentif.")
-	for variant: Array in ONIX_VARIANTS:
-		_onix_moves.assign(variant[1])
+	for index: int in BROCK_VARIANTS.size():
+		if _only_variant >= 0 and index != _only_variant:
+			continue
+		var variant: Array = BROCK_VARIANTS[index]
+		_geodude_moves.assign(variant[1])
+		_onix_moves.assign(variant[2])
+		var levels: Array[Vector2i] = BROCK_GRID
+		if not (variant[3] as Array).is_empty():
+			levels.assign(variant[3])
 		print("")
-		print("=== Grille : %% de victoires contre Pierre ; Onix : %s ===" % variant[0])
+		print("=== Grille : %% de victoires contre Pierre ; %s ===" % variant[0])
 		var header := "  %-9s" % "Rac./Onix"
 		for column: Array in columns:
 			header += " | %8s" % column[0]
 		print(header)
-		for brock: Vector2i in BROCK_GRID:
+		for brock: Vector2i in levels:
 			var row := "  %-9s" % ("%d / %d" % [brock.x, brock.y])
 			for column: Array in columns:
 				var stats := _measure(column[1], brock, liam, column[2], column[2], "attentif",
-					column[3])
+					column[3], column[0])
 				row += " | %7.1f%%" % stats["win"]
 			print(row)
+	_geodude_moves.clear()
 	_onix_moves.clear()
 
 
@@ -355,11 +377,9 @@ func _trainer_battle(party: RefCounted, trainer_id: StringName, levels: Vector2i
 	var foes: RefCounted = _trainers.build_team(trainer_id, &"", rng)
 	for i: int in foes.size():
 		_set_level(foes.get_at(i), levels.x if i == 0 else levels.y)
-	var onix: RefCounted = foes.get_at(foes.size() - 1)
-	if trainer_id == BROCK and not _onix_moves.is_empty():
-		onix.moves.clear()
-		for move_id: StringName in _onix_moves:
-			onix.learn_move(move_id, _data)
+	if trainer_id == BROCK:
+		_force_moves(foes.get_at(0), _geodude_moves)
+		_force_moves(foes.get_at(foes.size() - 1), _onix_moves)
 	if policy == "attentif":
 		_put_first(party, _best_against(party, foes.get_at(0)))
 	var player: RefCounted = _side_script.new(party, true)
@@ -515,6 +535,15 @@ func _train_to(pokemon: RefCounted, level: int) -> void:
 	pokemon.hp = pokemon.max_hp()
 
 
+## Remplace les capacités de [param pokemon] par [param moves] (vide : rien ne change).
+func _force_moves(pokemon: RefCounted, moves: Array[StringName]) -> void:
+	if moves.is_empty():
+		return
+	pokemon.moves.clear()
+	for move_id: StringName in moves:
+		pokemon.learn_move(move_id, _data)
+
+
 ## Niveau d'un Pokémon de Dresseur (IV gardés, capacités des données gardées).
 func _set_level(pokemon: RefCounted, level: int) -> void:
 	var rate: int = _data.get_species(pokemon.species_id).growth_rate
@@ -566,6 +595,8 @@ func _load() -> bool:
 	for i: int in args.size():
 		if args[i] == "--seeds" and i + 1 < args.size():
 			_seeds = maxi(int(args[i + 1]), 1)
+		elif args[i] == "--grille" and i + 1 < args.size():
+			_only_variant = int(args[i + 1])
 		elif args[i] == "--trace" and i + 1 < args.size():
 			_trace = args[i + 1]
 		elif args[i] == "--save" and i + 1 < args.size():
