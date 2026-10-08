@@ -1261,6 +1261,60 @@
    "cases": 0.7,
    "ombre": false,
    "contact": 0.3
+  },
+  {
+   "id": "bldg_musee_argenta_01",
+   "source": "WORLD_BLDG_MUSEE_ARGENTA_01_NE_r1.png",
+   "sortie": "assets/world/buildings/bldg_musee_argenta_01.png",
+   "axe": "w",
+   "cases": 12,
+   "ombre": true,
+   "contact": 0.12
+  },
+  {
+   "id": "bldg_arene_argenta_01",
+   "source": "WORLD_BLDG_ARENE_ARGENTA_01_NE_r1.png",
+   "sortie": "assets/world/buildings/bldg_arene_argenta_01.png",
+   "axe": "w",
+   "cases": 12,
+   "ombre": true,
+   "contact": 0.12
+  },
+  {
+   "id": "bldg_maison_argenta_01",
+   "source": "WORLD_BLDG_MAISON_ARGENTA_01_NE_r1.png",
+   "sortie": "assets/world/buildings/bldg_maison_argenta_01.png",
+   "axe": "w",
+   "cases": 7,
+   "ombre": true,
+   "contact": 0.12
+  },
+  {
+   "id": "bldg_poste_foret_nord_01",
+   "source": "WORLD_BLDG_POSTE_FORET_NORD_01_NE_r1.png",
+   "sortie": "assets/world/buildings/bldg_poste_foret_nord_01.png",
+   "axe": "w",
+   "cases": 7,
+   "ombre": false,
+   "contact": 0.0
+  },
+  {
+   "id": "prop_rocher_place_01",
+   "source": "WORLD_PROP_ROCHER_PLACE_01_NE_r1.png",
+   "sortie": "assets/world/props/prop_rocher_place_01.png",
+   "axe": "w",
+   "cases": 3,
+   "ombre": false,
+   "contact": 0.15
+  },
+  {
+   "id": "prop_blocs_tailles_01",
+   "source": "WORLD_PROP_BLOCS_TAILLES_01_NE_r1.png",
+   "sortie": "assets/world/props/prop_blocs_tailles_01.png",
+   "axe": "w",
+   "cases": 3,
+   "ombre": false,
+   "contact": 0.2
   }
  ],
  "hautes_herbes": {
@@ -1347,6 +1401,33 @@
    "cases": [
     10,
     8
+   ]
+  },
+  {
+   "id": "int_musee_coque",
+   "source": "INT_MUSEE_COQUE_NE_r1.png",
+   "sortie": "assets/world/interiors/int_musee_coque.png",
+   "cases": [
+    15,
+    10
+   ]
+  },
+  {
+   "id": "int_arene_coque",
+   "source": "INT_ARENE_COQUE_NE_r1.png",
+   "sortie": "assets/world/interiors/int_arene_coque.png",
+   "cases": [
+    15,
+    11
+   ]
+  },
+  {
+   "id": "int_maison_argenta_coque",
+   "source": "INT_MAISON_ARGENTA_COQUE_NE_r1.png",
+   "sortie": "assets/world/interiors/int_maison_argenta_coque.png",
+   "cases": [
+    15,
+    10
    ]
   }
  ],
@@ -1452,6 +1533,23 @@
    "ids": ["tree_foret_05", "tree_foret_06", "tree_foret_07", "tree_foret_08"],
    "hauteurs_px": [317, 269, 278, 288],
    "contact": 0.05
+  },
+  {
+   "source": "WORLD_RELIEF_PAROI_PLANCHE_NE_r1.png",
+   "dossier": "assets/world/relief/",
+   "ids": [
+    "relief_paroi_01",
+    "relief_paroi_02",
+    "relief_paroi_03",
+    "relief_paroi_04"
+   ],
+   "hauteurs_px": [
+    288,
+    288,
+    288,
+    288
+   ],
+   "contact": 0.0
   }
  ],
  "personnages": [
@@ -1620,6 +1718,36 @@
    "id": "naturaliste",
    "source": "PNJ_NATURALISTE_NE_r1.png",
    "sortie": "assets/sprites/characters/painted/naturaliste_sheet.png",
+   "hauteur": 128
+  },
+  {
+   "id": "pierre",
+   "source": "PNJ_PIERRE_NE_r1.png",
+   "sortie": "assets/sprites/characters/painted/pierre_sheet.png",
+   "hauteur": 128
+  },
+  {
+   "id": "tailleur",
+   "source": "PNJ_TAILLEUR_NE_r1.png",
+   "sortie": "assets/sprites/characters/painted/tailleur_sheet.png",
+   "hauteur": 128
+  },
+  {
+   "id": "montagnard",
+   "source": "PNJ_MONTAGNARD_NE_r1.png",
+   "sortie": "assets/sprites/characters/painted/montagnard_sheet.png",
+   "hauteur": 132
+  },
+  {
+   "id": "campeur",
+   "source": "PNJ_CAMPEUR_NE_r1.png",
+   "sortie": "assets/sprites/characters/painted/campeur_sheet.png",
+   "hauteur": 112
+  },
+  {
+   "id": "guide_arene",
+   "source": "PNJ_GUIDE_ARENE_NE_r1.png",
+   "sortie": "assets/sprites/characters/painted/guide_arene_sheet.png",
    "hauteur": 128
   }
  ],
@@ -1859,6 +1987,36 @@
    "source": "NATURALISTE_ATTENTE_r1.png",
    "sortie": "assets/sprites/characters/painted/naturaliste_idle_sheet.png",
    "marche": "naturaliste"
+  },
+  {
+   "id": "pierre_idle",
+   "source": "PIERRE_ATTENTE_r1.png",
+   "sortie": "assets/sprites/characters/painted/pierre_idle_sheet.png",
+   "marche": "pierre"
+  },
+  {
+   "id": "tailleur_idle",
+   "source": "TAILLEUR_ATTENTE_r1.png",
+   "sortie": "assets/sprites/characters/painted/tailleur_idle_sheet.png",
+   "marche": "tailleur"
+  },
+  {
+   "id": "montagnard_idle",
+   "source": "MONTAGNARD_ATTENTE_r1.png",
+   "sortie": "assets/sprites/characters/painted/montagnard_idle_sheet.png",
+   "marche": "montagnard"
+  },
+  {
+   "id": "campeur_idle",
+   "source": "CAMPEUR_ATTENTE_r1.png",
+   "sortie": "assets/sprites/characters/painted/campeur_idle_sheet.png",
+   "marche": "campeur"
+  },
+  {
+   "id": "guide_arene_idle",
+   "source": "GUIDE_ARENE_ATTENTE_r1.png",
+   "sortie": "assets/sprites/characters/painted/guide_arene_idle_sheet.png",
+   "marche": "guide_arene"
   }
  ],
  "images_objets": [
@@ -1900,6 +2058,54 @@
    "source": "POKE_COCONFORT_FIXE_NE_r1.png",
    "sortie": "assets/sprites/pokemon/painted/coconfort_sheet.png",
    "hauteur": 56
+  },
+  {
+   "id": "racaillou",
+   "source": "POKE_RACAILLOU_FIXE_NE_r1.png",
+   "sortie": "assets/sprites/pokemon/painted/racaillou_sheet.png",
+   "hauteur": 56
+  }
+ ],
+ "planches_objets": [
+  {
+   "source": "INT_MUSEE_PLANCHE_NE_r1.png",
+   "dossier": "assets/world/interiors/",
+   "colonnes": 3,
+   "lignes": 2,
+   "ids": [
+    "int_vitrine_dome_01",
+    "int_vitrine_nautile_01",
+    "int_vitrine_pierre_lune_01",
+    "int_vitrine_journal_01",
+    "int_porte_labo_01",
+    "int_panneau_expo_01"
+   ],
+   "cases": [
+    2,
+    2,
+    1,
+    2,
+    3,
+    2
+   ],
+   "contact": 0.2
+  },
+  {
+   "source": "INT_ARENE_ROCHERS_PLANCHE_NE_r1.png",
+   "dossier": "assets/world/interiors/",
+   "colonnes": 3,
+   "lignes": 1,
+   "ids": [
+    "int_pilier_roche_01",
+    "int_rochers_bas_01",
+    "int_rochers_bas_02"
+   ],
+   "cases": [
+    2,
+    2,
+    1
+   ],
+   "contact": 0.2
   }
  ]
 }

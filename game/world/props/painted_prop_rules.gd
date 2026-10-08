@@ -136,6 +136,41 @@ const RULES: Dictionary[StringName, Dictionary] = {
 	&"prop_grande_souche_01": {"width": 3, "depth": 2},
 	&"prop_racines_01": {"width": 1, "depth": 2},
 	&"prop_sac_rando_01": {"width": 1, "depth": 1},
+	# Série 12 : Argenta et Route 2 nord (docs/design/fiches-assets/serie-12-argenta.md, emprises
+	# = cases de la grille `tools/plans/argenta.txt`, toit compris, toutes bloquées sauf la porte).
+	&"bldg_musee_argenta_01": {"shadow": true, "width": 12, "depth": 9, "fade": true,
+		"open": [Vector2i(-1, 0), Vector2i(0, 0)]},
+	&"bldg_arene_argenta_01": {"shadow": true, "width": 12, "depth": 7, "fade": true,
+		"open": [Vector2i(-1, 0), Vector2i(0, 0)]},
+	&"bldg_maison_argenta_01": {"shadow": true, "width": 7, "depth": 6, "fade": true,
+		"open": [Vector2i(0, 0)]},
+	# Poste vu du nord (Route 2 nord, ancre (15, 23) au bord sud de la carte) : porte au bord
+	# HAUT de l'emprise (0, −2). Couche du sol : le joueur est toujours au nord du bâtiment et
+	# passe devant l'avant-corps de la porte (dans `Entities`, le toit le cacherait). Pied
+	# déplacé (« origin ») pour que le seuil peint (y 249 de l'image 672 × 579) tombe au bas de
+	# la case de la porte : le bas de l'image (1,4 case) sort de la carte, coupé net.
+	&"bldg_poste_foret_nord_01": {"width": 7, "depth": 3, "open": [Vector2i(0, -2)],
+		"layer": LAYER_GROUND, "origin": Vector2(336, 441)},
+	&"prop_rocher_place_01": {"width": 3, "depth": 3},
+	&"prop_blocs_tailles_01": {"width": 3, "depth": 2},
+	# Paroi de montagne (4 modules d'≈ 5 × 3 cases) : relief du sol sans emprise, les cases `K`
+	# sont bloquées par la carte (comme les murets de Jadielle) ; les modules se chevauchent.
+	&"relief_paroi_01": {"traversable": true, "layer": LAYER_GROUND},
+	&"relief_paroi_02": {"traversable": true, "layer": LAYER_GROUND},
+	&"relief_paroi_03": {"traversable": true, "layer": LAYER_GROUND},
+	&"relief_paroi_04": {"traversable": true, "layer": LAYER_GROUND},
+	# Musée : vitrines et panneau 2 × 1, Pierre Lune 1 × 1 ; la porte du laboratoire ferme
+	# l'arche du mur du fond (cases du mur déjà bloquées par la pièce) : sans emprise.
+	&"int_vitrine_dome_01": {"width": 2, "depth": 1},
+	&"int_vitrine_nautile_01": {"width": 2, "depth": 1},
+	&"int_vitrine_pierre_lune_01": {"width": 1, "depth": 1},
+	&"int_vitrine_journal_01": {"width": 2, "depth": 1},
+	&"int_porte_labo_01": {"traversable": true, "align": ALIGN_CENTRE},
+	&"int_panneau_expo_01": {"width": 2, "depth": 1},
+	# Arène : pilier 2 × 1, bloc bas 2 × 2 (il arrête la vision du Campeur), rocher 1 × 1.
+	&"int_pilier_roche_01": {"width": 2, "depth": 1},
+	&"int_rochers_bas_01": {"width": 2, "depth": 2},
+	&"int_rochers_bas_02": {"width": 1, "depth": 1},
 	# Mêmes sources que des objets de Jadielle, à l'échelle du prototype de Bourg Palette.
 	&"prop_buisson_a_01_bourg": {"width": 1, "depth": 1},
 	&"prop_buisson_b_01_bourg": {"width": 1, "depth": 1},
