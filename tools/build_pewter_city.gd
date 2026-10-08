@@ -93,7 +93,7 @@ const TOWN_TREES: Dictionary = {
 	Vector2i(15, 22): ["tree_c_01", 0.8, false],
 	Vector2i(40, 22): ["tree_a_01", 0.85, true],
 	Vector2i(24, 25): ["tree_a_01", 0.85, false],
-	Vector2i(4, 27): ["tree_e_01", 0.95, false],
+	Vector2i(4, 30): ["tree_e_01", 0.95, false],
 	Vector2i(10, 28): ["tree_b_01", 1.0, true],
 	Vector2i(36, 30): ["tree_a_01", 0.95, false],
 	Vector2i(44, 30): ["tree_c_01", 1.0, true],
