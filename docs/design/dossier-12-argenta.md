@@ -7,7 +7,7 @@
 ## Arbitrages de Kevin (2026-10-07)
 1. **Équipe de Pierre, fidèle à Rouge/Bleu** : **Racaillou Nv. 12** (Charge, Boul'Armure) et **Onix Nv. 14** (Charge, Grincement, Armure, Jet-Pierres). Une seule attaque Roche, portée par son Pokémon fort. La V1 (Jet-Pierres sur les deux, ×4 sur Papilusion) rendait Pierre bien plus dur que l'original. **Niveaux ajustés après la mesure de la vraie partie de Kevin à la fin du J9.**
 2. **IA de Pierre : `smart`** (celle du rival n° 2), pas de troisième IA. Elle fait déjà ce que la V1 décrivait (préférence pour le super efficace, capacité de statut deux fois au plus, jamais un statut sans effet). L'identité de Pierre passe par ses capacités.
-3. **Réponse de Salamèche** (corrige la V1, d'après les données réelles) : Férosinge n'a Poing-Karaté qu'au Nv. 15 et Nidoran ♂ Double Pied au Nv. 43 ; la vraie réponse est **Papilusion** (Choc Mental dès l'évolution au Nv. 10, J9) et **Flammèche**, puisque Racaillou et Onix ont une **Défense Spéciale très faible**. Vérifié en QA avec un départ Salamèche.
+3. **Réponse de Salamèche** (corrige la V1, d'après les données réelles) : Férosinge n'a Poing-Karaté qu'au Nv. 15 et Nidoran ♂ Double Pied au Nv. 43 ; la vraie réponse est **Papilusion** (Choc Mental dès l'évolution au Nv. 10, J9) et **Flammèche**, puisque Racaillou et Onix ont une **Défense Spéciale très faible**. Vérifié en QA avec un départ Salamèche. **Corrigé par la décision de Kevin du 2026-10-09 (plan du J10, Q-6)** : Onix garde Jet-Pierres ; la simulation (T16) montre que Papilusion n'est pas une réponse (Onix plus rapide, ×4) ; un joueur Salamèche doit **se préparer sérieusement** : Salamèche vers le N17–18, plusieurs Pokémon entraînés, Potions, ou un Férosinge N15+ (Poing-Karaté). Pierre reste un vrai premier examen : exigeant, possible après entraînement, jamais une impasse.
 4. **Sabelette chez le Dresseur de l'Arène** : oui (artwork officiel en face, coût faible). Il s'appelle **Campeur Liam** et il est **évitable**, comme dans Rouge/Bleu.
 5. **Verrou de la Route 3 : un garde** à l'entrée est d'Argenta (sprite de garde du J9), qui énonce la règle. Ni gamin qui escorte, ni passage libre.
 6. **Réactions au badge, seulement de qui peut savoir** : l'enfant, la jeune Dresseuse et le guide de l'Arène. Le tailleur, le vieil habitant, la visiteuse et l'employé du Musée gardent leur réplique. Le Montagnard de la Route 2 nord **remarque** le badge, il ne le sait pas.
@@ -187,7 +187,7 @@ Calme, observateur, sûr de lui, **pas arrogant**. Il ne traite pas le joueur en
 | Onix | 14 | Charge, Grincement, Armure, Jet-Pierres |
 
 - **IA `smart`** (arbitrage 2). **Aucun objet.** **1 300 ₽** (montant fixe, comme les Dresseurs de la forêt).
-- **Starters** : Carapuce (Écume dès le Nv. 8) a un net avantage ; Bulbizarre aussi à partir de Fouet Lianes (Nv. 13 ; avant, Vampigraine) ; **Salamèche est le plus exigeant** : Papilusion (Choc Mental) et Flammèche contre une Défense Spéciale faible, ou les niveaux, les changements et les baisses de statistiques (arbitrage 3). Aucun blocage.
+- **Starters** : Carapuce (Écume dès le Nv. 8) a un net avantage ; Bulbizarre aussi à partir de Fouet Lianes (Nv. 13 ; avant, Vampigraine) ; **Salamèche est le plus exigeant** : il demande une vraie préparation (niveaux, plusieurs Pokémon, Potions, Férosinge N15+ ; arbitrage 3 corrigé le 2026-10-09). Possible après entraînement, jamais une impasse.
 
 ## 12. Défaite contre Pierre
 Pierre dit sa réplique de défaite, puis **système existant** : fondu, réveil au dernier Centre utilisé, **aucun argent perdu**. Au retour, Pierre **ne rejoue pas son introduction** (réplique courte de reprise). Campeur Liam, s'il a été battu, **reste battu**. L'objectif ne change pas.
@@ -281,7 +281,7 @@ Proposés par ChatGPT (V1), retouchés par Claude selon les arbitrages 6 à 9 et
 | Argenta | ≈ 52 × 44, Musée visible dès l'arrivée, titre seul |
 | Arène | Accessible dès l'arrivée ; aucune énigme ; guide sans conseil de types ; Campeur Liam évitable (Racaillou 10, Sabelette 10, 200 ₽) |
 | Pierre | Racaillou 12, Onix 14 (une seule attaque Roche) ; IA `smart` ; aucun objet ; 1 300 ₽ ; carte de présentation |
-| Leçon | Comprendre les types, sans tutoriel ; Salamèche le plus exigeant (Papilusion, Flammèche), jamais bloqué |
+| Leçon | Comprendre les types, sans tutoriel ; Salamèche le plus exigeant : préparation sérieuse (niveaux, équipe, Potions), possible après entraînement (Q-6, 2026-10-09) |
 | Défaite | Dernier Centre, aucune perte d'argent, Pierre sans réintroduction, Dresseur battu le reste |
 | Badge Roche | Inscription + vibration, pas de toast ; aucun bonus caché ; ouvre la Route 3 |
 | Grand moment | « badge » générique, souvenir de l'équipe (espèce, niveau, surnom, ordre) |
