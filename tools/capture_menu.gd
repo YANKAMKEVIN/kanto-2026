@@ -32,6 +32,7 @@ extends SceneTree
 ## Dresseur (T24, avec --only=trainer,trainer_dex,trainer_empty) : vraies vues de TrainerSummary
 ##   trainer              la vraie partie de Kevin (fixture v1), Pokédex pas visible : ni vus ni capturés
 ##   trainer_dex          idem, Pokédex activé : « vus » et « capturés » (liens)
+##   trainer_badge[_detail]  Badge Roche obtenu (état de test), puis bulle de détail ouverte (J10 T6)
 ##   trainer_empty        partie neuve : frise vide (« Ton aventure ne fait que commencer. »)
 ## Paramètres et commandes (T28, avec --only=settings,settings_controls,settings_access,
 ## settings_graphics,settings_save,settings_no_save,choice_cards,left_handed,text_large_dialogue,
@@ -76,6 +77,10 @@ const WORLD_SCENARIOS: Array[String] = ["hud_button", "left_handed", "text_large
 	"contrast_dialogue"]
 
 var _boot: Node
+## Image où défiler la frise du Dresseur jusqu'en bas ; -1 : jamais.
+var _scroll_end_at: int = -1
+## Image où ouvrir la bulle de détail du premier badge ; -1 : jamais.
+var _detail_at: int = -1
 var _menu: TrainerMenu
 var _out_dir: String = "build/captures/jalon06_t3"
 var _suffix: String = ""
@@ -130,6 +135,11 @@ func _on_frame() -> void:
 		_begin(_current)
 		return
 	_wait += 1
+	if _wait == _detail_at:
+		var trainer := _menu.get_trainer()
+		trainer.open_badge_detail(trainer.get_badge_slots()[0])
+	if _wait == _scroll_end_at:
+		_menu.get_trainer().get_scroll().scroll_vertical = 100000
 	if _wait == _save_wait:
 		_save(_current)
 		_current = ""
@@ -163,7 +173,7 @@ func _begin(scenario: String) -> void:
 			_dex_scenario(scenario)
 		"map", "map_panel", "map_dex", "map_route_2":
 			_map_scenario(scenario)
-		"trainer", "trainer_dex", "trainer_empty", "trainer_badge":
+		"trainer", "trainer_dex", "trainer_empty", "trainer_badge", "trainer_badge_detail", "trainer_badge_moment":
 			_trainer_scenario(scenario)
 		"shop_buy", "shop_sell", "shop_no_money", "shop_confirm":
 			_shop_scenario(scenario)
@@ -397,16 +407,21 @@ func _trainer_scenario(scenario: String) -> void:
 			"res://tests/fixtures/save/v1_after_capture.json"))
 		SaveSystem.upgrade(content)
 		state.load_dict(content, data)
-		if scenario == "trainer_dex" or scenario == "trainer_badge":
+		if scenario == "trainer_dex" or scenario.begins_with("trainer_badge"):
 			state.flags.set_flag(StoryFlags.POKEDEX_ACTIVATED)
 			state.record_seen(&"pidgey", &"route_1")
-		if scenario == "trainer_badge":
-			state.flags.set_flag(&"badge_boulder")  # capture seulement : aucun badge avant le J10
+		if scenario.begins_with("trainer_badge"):
+			# Capture seulement (état de test, pas le J9) : badge levé et moment enregistré.
+			state.flags.set_flag(&"badge_boulder")
+			state.record_moment(BadgeMoment.TYPE, &"pewter_city",
+				BadgeMoment.details(&"boulder", state.party))
 	var unlocks := MenuUnlocks.new(state.flags, state.party)
 	var badges := BadgeLibrary.new()
 	badges.load_file()
 	_menu.open_animated()
 	_menu.show_trainer(TrainerSummary.build(state, data, zones, moments, unlocks, badges))
+	_scroll_end_at = 9 if scenario == "trainer_badge_moment" else -1
+	_detail_at = 9 if scenario == "trainer_badge_detail" else -1
 	state.free()
 
 

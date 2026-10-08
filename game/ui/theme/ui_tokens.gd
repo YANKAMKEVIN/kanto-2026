@@ -1464,3 +1464,16 @@ const CHAMPION_CARD_CENTER_Y := 0.42
 const CHAMPION_CARD_SLIDE_IN := 0.4
 const CHAMPION_CARD_HOLD := 3.0
 const CHAMPION_CARD_SLIDE_OUT := 0.25
+
+## Écran Dresseur, badge obtenu (jalon 10, T6) : bulle de détail ancrée sous l'emplacement
+## (« Badge Roche » / « Argenta — Pierre »), verre sombre du combat, liseré ACCENT en haut.
+const TRAINER_BUBBLE_BG := DIALOG_PANEL_BG
+const TRAINER_BUBBLE_RADIUS := RADIUS_SMALL
+const TRAINER_BUBBLE_PAD_H := 32
+const TRAINER_BUBBLE_PAD_V := 20
+const TRAINER_BUBBLE_MIN_WIDTH := 360
+const TRAINER_BUBBLE_LINE_GAP := 4
+## Écart entre l'emplacement et la bulle ; glissement (px) et durée (s) de l'apparition.
+const TRAINER_BUBBLE_OFFSET := 12
+const TRAINER_BUBBLE_SLIDE := 16
+const TRAINER_BUBBLE_FADE := 0.16
