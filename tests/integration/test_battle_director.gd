@@ -1790,6 +1790,8 @@ func test_the_poison_beat_waits_for_the_veil_and_the_bar_together() -> void:
 	event.max_hp = 20
 	var bar := _hud.get_card(BattleHud.Side.FOE).get_hp_bar()
 	var sprite := _stage.get_sprite(BattleEvent.SideId.FOE)
+	# Artwork officiel étalonné (CB.1) : le voile passe par une copie, l'original est rendu.
+	var before := sprite.material
 	var done: Array[bool] = [false]
 	var clock := TweenClock.new(get_tree())
 	var runner := func() -> void:
@@ -1803,6 +1805,7 @@ func test_the_poison_beat_waits_for_the_veil_and_the_bar_together() -> void:
 	assert_false(done[0], "pas fini à 0,2 s")
 	assert_true(bar.is_animating(), "la barre descend en même temps")
 	assert_not_null(sprite.material, "le voile est posé")
+	assert_ne(sprite.material, before, "le voile est posé")
 	var steps := 12
 	while not done[0] and steps * TweenClock.STEP < 2.0:
 		clock.step()
@@ -1814,7 +1817,7 @@ func test_the_poison_beat_waits_for_the_veil_and_the_bar_together() -> void:
 	assert_gte(elapsed, UiTokens.HP_TWEEN - TweenClock.STEP, "pas avant la fin de la barre")
 	assert_lte(elapsed, UiTokens.HP_TWEEN + 4.0 * TweenClock.STEP, "ni bien après")
 	assert_eq(bar.get_shown_hp(), 18)
-	assert_null(sprite.material, "voile retiré")
+	assert_eq(sprite.material, before, "voile retiré, matériau d'avant rendu")
 	_stage.speed_scale = 0.0
 	_hud.speed_scale = 0.0
 	_director.speed_scale = 0.0

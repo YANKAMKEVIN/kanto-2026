@@ -1,0 +1,89 @@
+# Argenta — grille fonctionnelle (jalon 10, dossier 12 §4 ; préparée le 2026-10-07 pour la vue
+# générale peinte). Source UNIQUE de la géométrie : plan en aplats (tools/art/plan_aplats.py), vue
+# générale peinte, puis outil de construction et tests du J10. Un changement de composition se
+# fait ICI d'abord, puis plan, puis image.
+#
+# 52 × 44 cases ; nord en haut ; x = colonne 0..51, y = rangée 0..43.
+# Raccords : sud (17..19, 43) ↔ Route 2 nord (14..16, 0) ; est (51, 25..27) → Route 3 (« À venir »).
+# Arbitrage 10 : le Musée est au sud-ouest, contre l'avenue d'arrivée, pour être vu dès le premier
+# écran ; l'Arène ferme la ville au nord-est (le tracé du dossier §4 n'est pas une grille).
+#
+# Légende (en plus de celle de route_2.txt) :
+#   K paroi rocheuse (bloquée)       p pavé de la place (praticable)   n banc (bloqué)
+#   k blocs de pierre taillés du chantier (bloqués)
+#   M Musée   Z Arène   C Centre Pokémon   O Boutique   m maison  (emprises bloquées)
+#   D porte d'un bâtiment (praticable, STEP_ON ↑)
+#
+# Format : section GRILLE (« NN » + espace + 52 caractères par rangée), puis POSITIONS.
+
+GRILLE 52 44
+00 KKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKK
+01 KKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKK
+02 KKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKK
+03 TTKK....n......KKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKTT
+04 TTKK...........KKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKTT
+05 TT..........==................ZZZZZZZZZZZZ........TT
+06 TT..........==........G.......ZZZZZZZZZZZZ........TT
+07 TT..........==................ZZZZZZZZZZZZ........TT
+08 TT..........==................ZZZZZZZZZZZZ..G.....TT
+09 TT..........==...........G....ZZZZZZZZZZZZ........TT
+10 TT..........==................ZZZZZZZZZZZZ........TT
+11 TT..........==................ZZZZZDDZZZZZ.....G..TT
+12 TT..........==...................pppppp...........TT
+13 TT..........==...................pppppp...........TT
+14 TT..........ppppppppppppppppppppppppppppppp.......TT
+15 TT.mmmmmmm..pppGppppnppppppppppppnppppppGppmmmmmmmTT
+16 TT.mmmmmmm..pppppppppppppppppppppppppppppppmmmmmmmTT
+17 TT.mmmmmmm..pppppppppppppRRRpppppppppppppppmmmmmmmTT
+18 TT.mmmmmmm..pppppppppppppRRRpppppppppppppppmmmmmmmTT
+19 TT.mmmmmmm..pppppppppppppRRRpppppppppppppppmmmmmmmTT
+20 TT.mmmDmmm..pppppppppppppppppppppppppppppppmmmDmmmTT
+21 TT....======ppppppppppppppppppppppppppppppp====...TT
+22 TT....======pppGppppnppppppppppppnppppppGpp====...TT
+23 TT.kkk......ppppppppppppppppppppppppppppppp.......TT
+24 TT.kkk...........===..................ppppp.xx....TT
+25 TT.........xx....===....G.............==============
+26 TT...............===......OOOOOOOO....==============
+27 TT..G............===......OOOOOOOO....==============
+28 TT........G......===......OOOOOOOO................TT
+29 TT...............===......OOOOOOOO................TT
+30 TT...............===......OOOOOOOO..G.......G.....TT
+31 TT.MMMMMMMMMMMM..===......OOODOOOO................TT
+32 TT.MMMMMMMMMMMM..=============....................TT
+33 TT.MMMMMMMMMMMM..=============....................TT
+34 TT.MMMMMMMMMMMM..===..CCCCCCCCC....xx.............TT
+35 TT.MMMMMMMMMMMM..===..CCCCCCCCC...............G...TT
+36 TT.MMMMMMMMMMMMx.===..CCCCCCCCC.........G.........TT
+37 TT.MMMMMMMMMMMMx.===..CCCCCCCCC...................TT
+38 TT.MMMMMMMMMMMM..===..CCCCCCCCC.G.........xx......TT
+39 TT.MMMMMDDMMMMM..===..CCCCDCCCC...................TT
+40 TT......===================.......................TT
+41 TTTTTTTT===================TTTTTTTTTTTTTTTTTTTTTTTTT
+42 TTTTTTTTTTTTTTT..===..TTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+43 TTTTTTTTTTTTTTT..===..TTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+FIN
+
+# POSITIONS (défauts du 2026-10-07, ajustables au plan du J10)
+POSITIONS
+warp_sud_w          warp           17,43        libre   # PUSH ↓ → route_2_north
+warp_sud_c          warp           18,43        libre
+warp_sud_e          warp           19,43        libre
+warp_est            warp           51,25..27    libre   # PUSH → → « ROUTE 3 — À venir » (après le badge)
+porte_musee         warp           8..9,39      libre
+porte_arene         warp           35..36,11    libre
+porte_centre        warp           26,39        libre
+porte_boutique      warp           29,31        libre
+porte_tailleur      warp           6,20         libre
+porte_chercheuse    warp           46,20        libre
+garde_route_3       pnj            48,24        bloque  # se décale définitivement après le badge
+tailleur            pnj            6..8,25      bloque  # aller-retour de 3 cases devant le chantier
+racaillou_tailleur  pokemon        4,25         bloque  # Racaillou qui « travaille »
+enfant              pnj            24,20        bloque  # autour du gros rocher
+visiteuse           pnj            12..16,40    bloque  # place ↔ entrée du Musée (aller-retour)
+vieil_habitant      pnj            10,3         bloque  # point de vue
+jeune_dresseuse     pnj            31,40        bloque  # près du Centre
+employe_musee       pnj            10..11,40    bloque  # courte routine devant l'entrée
+panneau_ville       panneau        16,40        bloque  # « ARGENTA » à l'entrée
+panneau_arene       panneau        39,12        bloque
+panneau_musee       panneau        15,38        bloque
+FIN

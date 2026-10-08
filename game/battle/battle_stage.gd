@@ -4,7 +4,9 @@ extends CanvasLayer
 ## le labo reste chargé et vivant derrière ; la caméra du joueur le **recompose** (zoom et
 ## cadrage sur l'arène), un voile, un vignettage et un flou léger le mettent en retrait, et
 ## les deux Pokémon deviennent de grands sprites de combat composés en espace écran
-## (BattleLayout : le tien de dos en bas à gauche, l'adversaire de face au centre droit).
+## (BattleLayout, cadrage du pilote repris au CB.1 : le tien de dos au premier plan en bas à
+## gauche, l'adversaire en haut à droite au second plan, **artwork officiel** étalonné dans la
+## lumière du lieu avec une ombre au sol ; tailles normalisées par la taille réelle, BattleArt).
 ## Présentation seulement : le BattleDirector (T8) joue les temps du journal.
 ##
 ## Transition d'entrée (~1 s, jamais d'écran noir) : **un seul paramètre** anime tout. La
@@ -16,21 +18,27 @@ extends CanvasLayer
 ## Sortie (~0,6 s) : l'inverse ; PNJ réaffichés, caméra (zoom, position, limites, décalage)
 ## rendue à l'identique.
 ## Tout est en Tween (rien dans _process) ; [member speed_scale] = 0 rend tout instantané.
+##
+## **Décor peint (CB.3)** : si le lieu du déclenchement ([method set_place]) a un décor dans
+## `data/battle/decors.json` ([BattleDecorCatalog]), la carte n'est plus recadrée : la caméra
+## avance à peine ([constant PAINTED_ZOOM]), le monde se floute et se fond dans le master peint
+## ([BattleDecor], placé par sa ligne de sol sous les ancres du cadrage), avec son calque de
+## premier plan devant ton Pokémon ; la sortie fait l'inverse. Sans décor : **repli** sur
+## l'ancien fond (carte recadrée au zoom [constant ZOOM], voilée et floutée).
 
 ## Émis quand l'entrée est finie (vue de combat en place) et quand la sortie est finie.
 signal entered
 signal exited
 
-## Zoom de la caméra en combat (plan : ~1,35 ; 1,4 remplit mieux la largeur du S24 avec le
-## labo, à régler sur le S24).
-const ZOOM: float = 1.4
-## Voile (opacité de UiTokens.FADE_COLOR), vignettage et flou du décor : modérés, le labo
-## doit rester reconnaissable (décision n° 17).
-const VEIL: float = UiTokens.BATTLE_DIM
-const VIGNETTE: float = 0.45
+## Zoom de la caméra en combat : lieu réel resserré (cadrage « combat » du pilote, CB.1).
+const ZOOM: float = 1.9
+## Voile (opacité de UiTokens.FADE_COLOR), vignettage et flou du décor du pilote (CB.1) : le
+## lieu reste reconnaissable (décision n° 17), les Pokémon s'en détachent.
+const VEIL: float = 0.28
+const VIGNETTE: float = 0.6
 ## Flou d'arrière-plan : niveau de mipmap (0 = coupé, si le S24 perd des images).
 const BLUR_ENABLED: bool = true
-const BLUR_LOD: float = 1.0
+const BLUR_LOD: float = 1.6
 ## Durées (s) à speed_scale = 1.
 const ENTER_DURATION: float = 1.0
 const EXIT_DURATION: float = 0.6
@@ -53,8 +61,13 @@ const FOE_HOPS: int = 2
 const HOP_HEIGHT: float = 16.0
 ## Éclat du sprite de combat au moment où il remplace celui du monde (modulate).
 const SWAP_GLOW := Color(1.5, 1.5, 1.5, 1.0)
-## Ombre au sol : décalage vertical par unité d'échelle, opacité.
-const SHADOW_LIFT: float = 1.5
+## Ombre au sol (ellipse douce sous les pieds) : largeur (fraction de la boîte visible) et
+## écrasement (hauteur / largeur) ; couleur : ombre de contact du lieu (battle_shadow.gdshader).
+const SHADOW_WIDTH: float = 0.7
+const SHADOW_FLATTEN: float = 0.2
+const SHADOW_SHADER: Shader = preload("res://game/battle/battle_shadow.gdshader")
+## Étalonnage des artworks officiels dans la lumière du lieu.
+const ARTWORK_SHADER: Shader = preload("res://game/battle/battle_artwork.gdshader")
 ## Apparition d'un Pokémon sans PNJ dans le monde ([method show_pokemon]).
 const APPEAR_DURATION: float = 0.3
 const APPEAR_DROP: float = 24.0
@@ -77,7 +90,9 @@ const STATUS_HOP_DURATION: float = 0.16
 const HIT_BLINKS: int = 3
 const HIT_BLINK: float = 0.06
 const HIT_SHAKE: float = 10.0
-const HIT_ALPHA: float = 0.25
+## Correctif QA S24 : 0 (le Pokémon disparaît franchement, comme Rouge/Bleu ; à 0,25 l'artwork
+## translucide décalé par le tremblement se lisait comme un « fantôme »). L'ombre reste au sol.
+const HIT_ALPHA: float = 0.0
 ## Coup critique : éclair blanc bref et très léger tremblement de la scène (px monde).
 const CRIT_FLASH: float = 0.35
 const CRIT_FLASH_DURATION: float = 0.16
@@ -99,28 +114,32 @@ const WITHDRAW_DURATION: float = 0.35
 ## Capture (jalon 5D, jalon-05.md §3.10, storyboard combat-capture-v1) : le dresseur de dos
 ## entre en bas à gauche, la Ball part de sa main en arc, le Pokémon sauvage est absorbé dans un
 ## éclat rouge, la Ball tombe dans l'herbe (ombre au sol), tremble 0 à 3 fois, puis éclat doré
-## (capturé) ou éclat blanc (libéré : le Pokémon ressort). Sprites provisoires (pixel art,
-## NEAREST), tout en Tween ; durées (s) à speed_scale = 1, réglables sur le S24.
+## (capturé) ou éclat blanc (libéré : le Pokémon ressort). Ball provisoire (pixel art, NEAREST) ;
+## dresseur = le héros **peint** de dos (pose de lancer, `heros_lancer.png`, 384 px affichés à
+## 1:1, LINEAR ; correctif QA S24). Tout en Tween ; durées (s) à speed_scale = 1.
 const BALL_TEXTURE: Texture2D = preload("res://assets/sprites/pokemon/placeholder/poke_ball.png")
 const THROWER_TEXTURE: Texture2D = preload(
-	"res://assets/sprites/pokemon/placeholder/trainer_back.png")
+	"res://assets/sprites/characters/painted/heros_lancer.png")
 const SHADOW_TEXTURE: Texture2D = preload(
 	"res://assets/sprites/pokemon/placeholder/battle_shadow.png")
-## Échelles d'affichage : dresseur (64 px natifs), Ball en vol (loin) puis au sol (près).
-const THROWER_SCALE: int = 6
-const BALL_FLIGHT_SCALE: float = 4.0
-const BALL_REST_SCALE: float = 6.0
+## Échelles d'affichage : dresseur peint (1:1, son image est à la taille voulue), Ball en vol
+## (loin) puis au sol (près). La Ball au sol est aux pieds de l'adversaire, au second plan
+## (CB.1 : ×4, avant ×6).
+const THROWER_SCALE: float = 1.0
+const BALL_FLIGHT_SCALE: float = 3.0
+const BALL_REST_SCALE: float = 4.0
 ## Rayon de la Ball dans son image (px natifs) : sa hauteur au-dessus du sol une fois posée.
 const BALL_RADIUS: float = 15.0
 ## Dresseur : pieds à cette distance du centre d'écran (en hauteurs d'écran, vers la gauche) et
-## à cette hauteur (en hauteurs d'écran depuis le haut, > 1 : les jambes sortent du cadre) ;
-## glissement d'entrée (px).
-const THROWER_OFFSET_X: float = 0.60
-const THROWER_FEET_Y: float = 1.04
+## à cette hauteur (en hauteurs d'écran depuis le haut ; correctif QA S24 : < 1, le dresseur
+## est entier, pieds au premier plan devant le feuillage) ; glissement d'entrée (px). CB.1 : à
+## gauche de ton Pokémon, qui est au premier plan.
+const THROWER_OFFSET_X: float = 0.74
+const THROWER_FEET_Y: float = 0.98
 const THROWER_SLIDE: float = 220.0
 const THROWER_ENTER_DURATION: float = 0.30
 ## Main du dresseur dans son image (px natifs depuis le bas-centre) : départ de la Ball.
-const THROWER_HAND := Vector2(28.0, -54.0)
+const THROWER_HAND := Vector2(95.0, -305.0)
 ## Vol de la Ball : durée, hauteur de l'arc (hauteurs d'écran), tours sur elle-même.
 const THROW_DURATION: float = 0.42
 const THROW_ARC: float = 0.16
@@ -155,8 +174,13 @@ const RELEASE_DURATION: float = 0.40
 const INSTANT_STEP: float = 1000.0
 ## Hauteur affichée d'un Pokémon du monde sans AnimatedSprite2D lisible (32 px ×2).
 const WORLD_HEIGHT_FALLBACK: float = 64.0
-const SPRITE_DIR: String = "res://assets/sprites/pokemon/placeholder/"
 const LIMIT_FREE: int = 10000000
+## Décor peint (CB.3) : la caméra du monde avance à peine pendant le fondu (pas de recadrage :
+## aucune impression de téléportation), le décor apparaît sur la fin de la transition (fraction
+## du fondu du monde) ; durée de la transition d'une rencontre sauvage avec décor.
+const PAINTED_ZOOM: float = 1.12
+const DECOR_FADE_START: float = 0.3
+const WILD_DECOR_DURATION: float = 0.7
 
 ## Multiplicateur des durées (0 = instantané, tests).
 var speed_scale: float = 1.0
@@ -189,6 +213,12 @@ var _species: Dictionary[BattleEvent.SideId, StringName] = {}
 ## Côtés K.O. : leur sprite reste caché jusqu'à la sortie.
 var _fainted: Dictionary[BattleEvent.SideId, bool] = {}
 var _anchors: Dictionary = {}
+## Image de chaque côté : boîte visible (px de la texture, pieds au bas-centre) et échelle.
+var _boxes: Dictionary[BattleEvent.SideId, Rect2] = {}
+var _scales: Dictionary[BattleEvent.SideId, float] = {}
+var _art := BattleArt.new()
+var _artwork_material: ShaderMaterial
+var _shadow_texture: GradientTexture2D
 var _tweens: Array[Tween] = []
 ## Capture (5D) : accessoires créés au premier besoin (aucun dans la scène .tscn).
 var _ball: Sprite2D
@@ -200,6 +230,13 @@ var _shake_lines: Array[Line2D] = []
 ## Centre de la Ball au sol, et point d'où le Pokémon est absorbé / ressort (écran).
 var _ball_rest: Vector2 = Vector2.ZERO
 var _absorb_point: Vector2 = Vector2.ZERO
+## Décor peint du combat en cours (null : repli sur la carte) ; catalogue lu au premier besoin.
+var _decor: BattleDecor
+var _decor_catalog: BattleDecorCatalog
+var _decor_back: Sprite2D
+var _decor_front: Sprite2D
+## Images du décor par défaut de la carte courante, préchargées en tâche de fond.
+var _decor_cache := BattleDecorCache.new()
 
 @onready var _backdrop: ColorRect = %Backdrop
 @onready var _flash: ColorRect = %Flash
@@ -219,6 +256,12 @@ func _ready() -> void:
 	material.set_shader_parameter(&"veil_color", UiTokens.FADE_COLOR)
 	material.set_shader_parameter(&"veil", VEIL)
 	material.set_shader_parameter(&"vignette", VIGNETTE)
+	_build_shadows()
+	_build_decor()
+	_artwork_material = ShaderMaterial.new()
+	_artwork_material.shader = ARTWORK_SHADER
+	# Voile du poison au repos (play_poison en voile une copie).
+	_artwork_material.set_shader_parameter(&"amount", 0.0)
 	_apply_blur()
 	_apply_reset()
 
@@ -235,10 +278,16 @@ func _flash_alpha(alpha: float) -> float:
 	return alpha * REDUCED_FLASH_GAIN if reduce_flashes else alpha
 
 
-## Chemin du sprite de combat de [param species] (de dos si [param back]) : seule
-## convention de chemin des sprites de combat.
+## Chemin du sprite provisoire de [param species] (de dos si [param back]) ; l'adversaire est
+## affiché en artwork officiel quand il existe (BattleArt).
 static func sprite_path(species: StringName, back: bool) -> String:
-	return SPRITE_DIR + "%s_%s.png" % [species, "back" if back else "front"]
+	return BattleArt.placeholder_path(species, back)
+
+
+## Données d'espèces (numéro du Pokédex) et du Pokédex (taille réelle) pour les images et les
+## tailles de combat (Boot) ; sans appel, BattleArt les lit une fois.
+func set_species_source(pokemon: PokemonData, dex: PokedexLibrary) -> void:
+	_art.setup(pokemon, dex)
 
 
 ## Cadrage du prochain combat (à appeler avant [method enter]) : [param arena], sol dégagé à
@@ -248,6 +297,58 @@ static func sprite_path(species: StringName, back: bool) -> String:
 func set_frame(arena: Rect2, bounds: Rect2) -> void:
 	_arena = arena
 	_bounds = bounds
+
+
+## Catalogue des décors peints (tests) ; sans appel, `data/battle/decors.json` est lu une fois.
+func set_decor_catalog(catalog: BattleDecorCatalog) -> void:
+	_decor_catalog = catalog
+
+
+## Lieu du prochain combat (CB.3, à appeler avant [method enter] / [method play_wild_intro]) :
+## carte [param map_id] et case du déclenchement [param cell] (variante locale). Choisit le
+## décor peint ; aucun : repli sur la carte recadrée. Renvoie le décor choisi (null : repli).
+func set_place(map_id: StringName, cell: Vector2i) -> BattleDecor:
+	if _decor_catalog == null:
+		_decor_catalog = BattleDecorCatalog.load_file()
+	_decor = _decor_catalog.pick(map_id, cell)
+	if _decor != null and not ResourceLoader.exists(_decor.back_path):
+		push_warning("BattleStage : image du décor absente « %s »" % _decor.back_path)
+		_decor = null
+	return _decor
+
+
+## Entrée sur la carte [param map_id] (avant tout combat) : les images de son décor par défaut
+## sont chargées en tâche de fond et gardées ; celles de la carte précédente sont rendues
+## (jamais plus d'un décor en mémoire hors combat). Carte sans décor : rien n'est gardé.
+func prepare_place(map_id: StringName) -> void:
+	if _decor_catalog == null:
+		_decor_catalog = BattleDecorCatalog.load_file()
+	var paths: Array[String] = []
+	var decor := _decor_catalog.default_for(map_id)
+	if decor != null:
+		paths.append(decor.back_path)
+		if decor.front_path != "":
+			paths.append(decor.front_path)
+	_decor_cache.prepare(paths)
+
+
+## Préchargement des décors (tests, mesures).
+func get_decor_cache() -> BattleDecorCache:
+	return _decor_cache
+
+
+## Décor peint du combat (null : repli sur la carte).
+func get_decor() -> BattleDecor:
+	return _decor
+
+
+## Calques du décor peint (tests, captures) : fond et premier plan.
+func get_decor_back() -> Sprite2D:
+	return _decor_back
+
+
+func get_decor_front() -> Sprite2D:
+	return _decor_front
 
 
 ## Coroutine (~1 s) : passe de la vue d'exploration à la vue de combat. [param camera] : la
@@ -283,10 +384,13 @@ func enter(camera: Camera2D, player_pokemon: Node2D, foe_pokemon: Node2D,
 		_world_height[side] = _world_sprite_height(npc)
 		_world_modulate[side] = npc.modulate
 		cells.append(Grid.world_to_cell(npc.global_position))
-	if _arena.has_area():
+	if _decor != null:
+		_focus = _cam_start_center
+		_show_decor()
+	elif _arena.has_area():
 		_focus = BattleLayout.arena_focus(_arena, _bounds, _view_size(), ZOOM)
 	elif not cells.is_empty():
-		_focus = BattleLayout.focus(cells)
+		_focus = BattleLayout.clamp_focus(BattleLayout.focus(cells), _bounds, _view_size(), ZOOM)
 	else:
 		_focus = _cam_start_center
 	for side: BattleEvent.SideId in _sprites:
@@ -314,7 +418,9 @@ func show_pokemon(side: BattleEvent.SideId, species: StringName) -> void:
 	var feet := _anchor(side)
 	sprite.visible = true
 	_shadows[side].visible = true
-	_place(side, feet + Vector2(0.0, -APPEAR_DROP), float(_anchor_scale(side)))
+	_place(side, feet + Vector2(0.0, -APPEAR_DROP), _anchor_scale(side))
+	# L'ombre reste au sol (ligne de sol du décor) : le Pokémon tombe dessus (CB.3).
+	_shadows[side].position = feet
 	sprite.modulate = Color(1, 1, 1, 0)
 	_shadows[side].modulate = Color(1, 1, 1, 0)
 	var tween := _new_tween()
@@ -348,15 +454,20 @@ func play_wild_intro(camera: Camera2D, foe_species: StringName, origin_world: Ve
 	var owner_node := camera.get_parent()
 	if owner_node != null and owner_node.has_method(&"get_cell"):
 		cells.append(owner_node.call(&"get_cell"))
-	if _arena.has_area():
+	if _decor != null:
+		_focus = _cam_start_center
+		_show_decor()
+	elif _arena.has_area():
 		_focus = BattleLayout.arena_focus(_arena, _bounds, _view_size(), ZOOM)
 	else:
-		_focus = BattleLayout.focus(cells)
+		_focus = BattleLayout.clamp_focus(BattleLayout.focus(cells), _bounds, _view_size(), ZOOM)
 	_prepare_sprite(BattleEvent.SideId.FOE)
 	_free_camera()
-	# Recadrage + voile (pas de PNJ à faire voyager : c'est un sauvage).
+	# Recadrage + voile (pas de PNJ à faire voyager : c'est un sauvage) ; avec un décor peint,
+	# le monde se floute et se fond dans le décor.
 	var tween := _new_tween()
-	tween.tween_method(_set_recompose, 0.0, 1.0, WILD_CAMERA_DURATION)
+	tween.tween_method(_set_recompose, 0.0, 1.0,
+		WILD_DECOR_DURATION if _decor != null else WILD_CAMERA_DURATION)
 	await _play(tween)
 	if _active:
 		await _appear(BattleEvent.SideId.FOE, WILD_APPEAR_DROP, WILD_APPEAR_DURATION)
@@ -373,8 +484,8 @@ func play_partner_enter(player_species: StringName) -> void:
 	_fainted.erase(side)
 	_set_texture(side)
 	var feet := _anchor(side)
-	var scale := float(_anchor_scale(side))
-	var start := Vector2(-float(BattleLayout.NATIVE.x) * scale, feet.y)
+	var scale := _anchor_scale(side)
+	var start := Vector2(-_box(side).size.x * scale, feet.y)
 	var sprite := _sprites[side]
 	sprite.visible = true
 	sprite.modulate = Color.WHITE
@@ -385,8 +496,7 @@ func play_partner_enter(player_species: StringName) -> void:
 	tween.set_parallel(true)
 	tween.tween_property(sprite, ^"position", feet, PARTNER_ENTER_DURATION) \
 		.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
-	tween.tween_property(_shadows[side], ^"position",
-		feet + Vector2(0.0, -SHADOW_LIFT * scale), PARTNER_ENTER_DURATION) \
+	tween.tween_property(_shadows[side], ^"position", feet, PARTNER_ENTER_DURATION) \
 		.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
 	await _play(tween)
 	_rest(side)
@@ -418,6 +528,11 @@ func play_move(side: BattleEvent.SideId, category: MoveData.Category) -> void:
 					.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN)
 	await _play(tween)
 	_rest(side)
+
+
+## Pieds écran du dresseur du lancer pour une vue de [param view] (bas-centre de son image).
+static func thrower_feet(view: Vector2) -> Vector2:
+	return Vector2(view.x * 0.5 - THROWER_OFFSET_X * view.y, THROWER_FEET_Y * view.y).round()
 
 
 ## Coroutine : le Pokémon de [param side] est touché (clignotement et tremblement ; sur un
@@ -452,21 +567,21 @@ func play_hit(side: BattleEvent.SideId, critical: bool) -> void:
 		tween.tween_property(_flash, ^"color:a", 0.0, CRIT_FLASH_DURATION)
 		for i: int in 4:
 			var jolt := Vector2(CRIT_CAMERA_SHAKE * (1 if i % 2 == 0 else -1), 0)
-			tween.tween_property(_camera, ^"offset", _cam_offset + jolt, HIT_BLINK / 2.0) \
+			tween.tween_method(_set_jolt, Vector2.ZERO, jolt, HIT_BLINK / 2.0) \
 				.set_delay(HIT_BLINK * i / 2.0)
-		tween.tween_property(_camera, ^"offset", _cam_offset, HIT_BLINK / 2.0) \
+		tween.tween_method(_set_jolt, Vector2.ZERO, Vector2.ZERO, HIT_BLINK / 2.0) \
 			.set_delay(HIT_BLINK * 2.0)
 	await _play(tween)
 	_rest(side)
 	_flash.color = Color(1, 1, 1, 0)
-	if _camera != null:
-		_camera.offset = _cam_offset
+	_set_jolt(Vector2.ZERO)
 
 
 ## Coroutine : le Pokémon de [param side] est rongé par le poison (jalon 9) : voile violet
 ## (sa couleur se fond vers [constant UiTokens.STATUS_VEIL] puis revient, 
 ## [constant UiTokens.STATUS_VEIL_DURATION] au total, moitié à l'aller), sans déplacement ni
-## clignotement. [member reduce_flashes] : voile plus léger.
+## clignotement. [member reduce_flashes] : voile plus léger. Artwork officiel (CB.1) : le voile
+## passe par une copie de son matériau étalonné, rendu au sprite ensuite.
 func play_poison(side: BattleEvent.SideId) -> void:
 	if not _active:
 		return
@@ -474,8 +589,13 @@ func play_poison(side: BattleEvent.SideId) -> void:
 	var half := UiTokens.STATUS_VEIL_DURATION / 2.0
 	var peak := UiTokens.STATUS_VEIL_AMOUNT_REDUCED if reduce_flashes \
 		else UiTokens.STATUS_VEIL_AMOUNT
-	var material := ShaderMaterial.new()
-	material.shader = STATUS_VEIL_SHADER
+	var previous := sprite.material
+	var material: ShaderMaterial
+	if previous != null and previous == _artwork_material:
+		material = _artwork_material.duplicate() as ShaderMaterial
+	else:
+		material = ShaderMaterial.new()
+		material.shader = STATUS_VEIL_SHADER
 	material.set_shader_parameter(&"tint", UiTokens.STATUS_VEIL)
 	material.set_shader_parameter(&"amount", 0.0)
 	sprite.material = material
@@ -486,7 +606,7 @@ func play_poison(side: BattleEvent.SideId) -> void:
 		.set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN)
 	await _play(tween)
 	if is_instance_valid(sprite) and sprite.material == material:
-		sprite.material = null
+		sprite.material = previous
 	_rest(side)
 
 
@@ -556,8 +676,8 @@ func play_throw() -> void:
 	_build_capture_props()
 	var view := _view_size()
 	var foe := BattleEvent.SideId.FOE
-	var scale := float(THROWER_SCALE)
-	var feet := Vector2(view.x * 0.5 - THROWER_OFFSET_X * view.y, THROWER_FEET_Y * view.y)
+	var scale := THROWER_SCALE
+	var feet := thrower_feet(view)
 	var target := _foe_center()
 	_ball_rest = _anchor(foe) + Vector2(0.0, -BALL_RADIUS * BALL_REST_SCALE + 6.0)
 	_absorb_point = target
@@ -606,7 +726,7 @@ func play_throw() -> void:
 	_sprites[foe].visible = false
 	_shadows[foe].visible = false
 	# La Ball tombe dans l'herbe : chute à rebonds, l'ombre se pose sous elle.
-	_ball_shadow.position = _anchor(foe) + Vector2(0.0, -SHADOW_LIFT * BALL_REST_SCALE)
+	_ball_shadow.position = _anchor(foe) + Vector2(0.0, -1.5 * BALL_REST_SCALE)
 	_ball_shadow.scale = Vector2.ONE * BALL_REST_SCALE
 	_ball_shadow.modulate = Color(1, 1, 1, 0)
 	_ball_shadow.visible = true
@@ -747,6 +867,13 @@ func get_sprite(side: BattleEvent.SideId) -> Sprite2D:
 	return _sprites[side]
 
 
+## Rectangle écran de la boîte visible du Pokémon de [param side] à sa place courante (tests,
+## captures).
+func get_sprite_rect(side: BattleEvent.SideId) -> Rect2:
+	return BattleLayout.sprite_rect(_sprites[side].position, _anchor_scale(side),
+		_box(side).size)
+
+
 ## Centre monde du cadrage de combat (tests, captures).
 func get_focus() -> Vector2:
 	return _focus
@@ -779,13 +906,22 @@ func _set_exit_progress(t: float) -> void:
 func _set_camera(k: float) -> void:
 	if _camera == null:
 		return
-	_camera.zoom = _cam_zoom.lerp(Vector2.ONE * ZOOM, k)
+	var zoom := _cam_zoom * PAINTED_ZOOM if _decor != null else Vector2.ONE * ZOOM
+	_camera.zoom = _cam_zoom.lerp(zoom, k)
 	_camera.global_position = _cam_start_center.lerp(_focus, k).round()
 
 
 func _set_backdrop(k: float) -> void:
 	(_backdrop.material as ShaderMaterial).set_shader_parameter(&"amount", k)
-	_backdrop.visible = k > 0.0
+	var decor := 0.0
+	if _decor != null:
+		decor = smoothstep(DECOR_FADE_START, 1.0, k)
+	_decor_back.visible = decor > 0.0
+	_decor_back.modulate.a = decor
+	_decor_front.visible = decor > 0.0 and _decor_front.texture != null
+	_decor_front.modulate.a = decor
+	# Décor opaque : le flou du monde (copie de l'écran) ne sert plus à rien.
+	_backdrop.visible = k > 0.0 and decor < 1.0
 
 
 ## Recadrage + voile de l'entrée sauvage à [param k] (0 : exploration, 1 : combat), sans faire
@@ -802,10 +938,11 @@ func _appear(side: BattleEvent.SideId, drop: float, duration: float) -> void:
 	_fainted.erase(side)
 	_set_texture(side)
 	var feet := _anchor(side)
-	var scale := float(_anchor_scale(side))
+	var scale := _anchor_scale(side)
 	sprite.visible = true
 	_shadows[side].visible = true
 	_place(side, feet + Vector2(0.0, -drop), scale)
+	_shadows[side].position = feet
 	sprite.modulate = Color(1, 1, 1, 0)
 	_shadows[side].modulate = Color(1, 1, 1, 0)
 	var tween := _new_tween()
@@ -830,10 +967,10 @@ func _set_travel(side: BattleEvent.SideId, k: float, swap: float) -> void:
 		_shadows[side].visible = sprite.visible
 		sprite.modulate = Color(1, 1, 1, k * shown)
 		_shadows[side].modulate = Color(1, 1, 1, k * shown)
-		_place(side, _anchor(side), float(_anchor_scale(side)))
+		_place(side, _anchor(side), _anchor_scale(side))
 		return
 	var start := _project(_world_feet[side])
-	var start_scale := _world_height[side] * _camera.zoom.y / float(BattleLayout.NATIVE.y)
+	var start_scale := _world_height[side] * _camera.zoom.y / maxf(_box(side).size.y, 1.0)
 	var hops := PLAYER_HOPS if side == BattleEvent.SideId.PLAYER else FOE_HOPS
 	# Profondeur d'abord, côté ensuite : le tien vient vers l'avant-plan puis se décale, le
 	# sien recule puis se décale ; leurs trajets se croisent à des hauteurs différentes (le
@@ -844,7 +981,7 @@ func _set_travel(side: BattleEvent.SideId, k: float, swap: float) -> void:
 	var feet := Vector2(lerpf(start.x, target.x, kx), lerpf(start.y, target.y, ky))
 	feet.y -= absf(sin(k * PI * hops)) * HOP_HEIGHT * (1.0 - k * 0.5) * float(k < 1.0)
 	# Taille : même courbe que la profondeur (il grandit en venant vers la caméra).
-	_place(side, feet, lerpf(start_scale, float(_anchor_scale(side)), ky))
+	_place(side, feet, lerpf(start_scale, _anchor_scale(side), ky))
 	sprite.visible = swap * shown > 0.0
 	_shadows[side].visible = sprite.visible
 	var glow := SWAP_GLOW.lerp(Color.WHITE, swap)
@@ -916,13 +1053,17 @@ func _apply_reset() -> void:
 	_world_modulate.clear()
 	_species.clear()
 	_fainted.clear()
+	_boxes.clear()
+	_scales.clear()
 	_arena = Rect2()
 	_bounds = Rect2()
+	_decor = null
 	_camera = null
 	_active = false
 	if not is_node_ready():
 		return
 	_set_backdrop(0.0)
+	_release_decor()
 	_flash.color = Color(1, 1, 1, 0)
 	_hide_capture_props()
 	for side: BattleEvent.SideId in _sprites:
@@ -939,15 +1080,36 @@ func _prepare_sprite(side: BattleEvent.SideId) -> void:
 	_shadows[side].visible = false
 
 
+## Image de [param side] (BattleArt) : artwork officiel de l'adversaire (linéaire, étalonné)
+## ou sprite provisoire (NEAREST, échelle entière) ; pieds (bas-centre de la boîte visible) à
+## l'origine du sprite ; échelle normalisée par la taille réelle (BattleLayout).
 func _set_texture(side: BattleEvent.SideId) -> void:
 	var species: StringName = _species.get(side, &"")
-	var path := sprite_path(species, side == BattleEvent.SideId.PLAYER)
-	var texture: Texture2D = null
-	if not species.is_empty() and ResourceLoader.exists(path):
-		texture = load(path) as Texture2D
-	else:
-		push_warning("BattleStage : sprite de combat absent « %s »" % path)
-	_sprites[side].texture = texture
+	var back := side == BattleEvent.SideId.PLAYER
+	var image := _art.image(species, back)
+	var texture: Texture2D = image["texture"]
+	var official: bool = image["official"]
+	var box: Rect2 = image["box"]
+	if texture == null:
+		push_warning("BattleStage : sprite de combat absent « %s »" % sprite_path(species, back))
+	var sprite := _sprites[side]
+	sprite.texture = texture
+	sprite.centered = false
+	sprite.offset = -Vector2(box.get_center().x, box.end.y).round()
+	sprite.texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR if official \
+		else CanvasItem.TEXTURE_FILTER_NEAREST
+	sprite.material = _artwork_material if official else null
+	var scale := BattleLayout.sprite_scale(box.size, _art.height_m(species), back,
+		_view_size().y, not official)
+	_boxes[side] = box
+	_scales[side] = scale
+	if official:
+		_artwork_material.set_shader_parameter(&"texels_per_pixel", 1.0 / scale)
+
+
+## Boîte visible de l'image de [param side] (px de la texture).
+func _box(side: BattleEvent.SideId) -> Rect2:
+	return _boxes.get(side, Rect2(Vector2.ZERO, BattleLayout.NATIVE))
 
 
 ## Sprite et ombre de [param side] : pieds sur [param feet] (écran), échelle [param scale].
@@ -956,15 +1118,16 @@ func _place(side: BattleEvent.SideId, feet: Vector2, scale: float) -> void:
 	sprite.position = feet
 	sprite.scale = Vector2.ONE * scale
 	var shadow := _shadows[side]
-	shadow.position = feet + Vector2(0.0, -SHADOW_LIFT * scale)
-	shadow.scale = Vector2.ONE * scale
+	shadow.position = feet
+	var width := _box(side).size.x * scale * SHADOW_WIDTH
+	shadow.scale = Vector2(width, width * SHADOW_FLATTEN) / _shadow_texture.get_size()
 
 
 ## Remet le sprite de [param side] au repos à son ancre (après une animation).
 func _rest(side: BattleEvent.SideId) -> void:
 	if not _sprites[side].visible:
 		return
-	_place(side, _anchor(side), float(_anchor_scale(side)))
+	_place(side, _anchor(side), _anchor_scale(side))
 	var alpha := _sprites[side].modulate.a
 	_sprites[side].modulate = Color(1, 1, 1, alpha)
 
@@ -974,9 +1137,8 @@ func _anchor(side: BattleEvent.SideId) -> Vector2:
 	return _anchors.get(key, Vector2.ZERO)
 
 
-func _anchor_scale(side: BattleEvent.SideId) -> int:
-	var key := "player_scale" if side == BattleEvent.SideId.PLAYER else "foe_scale"
-	return _anchors.get(key, 1)
+func _anchor_scale(side: BattleEvent.SideId) -> float:
+	return _scales.get(side, 1.0)
 
 
 func _other(side: BattleEvent.SideId) -> BattleEvent.SideId:
@@ -1016,12 +1178,69 @@ func _play(tween: Tween) -> void:
 	_tweens.erase(tween)
 
 
+# --- Décor peint (CB.3) ----------------------------------------------------------------
+
+## Calques du décor peint (aucun dans la scène .tscn) : le fond juste au-dessus du flou du
+## monde, sous les ombres ; le premier plan devant le Pokémon du joueur (sous les accessoires
+## de la capture et l'éclair).
+func _build_decor() -> void:
+	_decor_back = _make_decor_layer(&"DecorBack")
+	move_child(_decor_back, _backdrop.get_index() + 1)
+	_decor_front = _make_decor_layer(&"DecorFront")
+	move_child(_decor_front, _sprites[BattleEvent.SideId.PLAYER].get_index() + 1)
+
+
+func _make_decor_layer(layer_name: StringName) -> Sprite2D:
+	var sprite := Sprite2D.new()
+	sprite.name = layer_name
+	sprite.centered = false
+	sprite.texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR
+	sprite.visible = false
+	add_child(sprite)
+	return sprite
+
+
+## Prend les images du décor courant (préchargées à l'entrée de la carte, sinon chargées à la
+## demande) et les pose par sa ligne de sol, cachées
+## (le fondu de [method _set_backdrop] les montre).
+func _show_decor() -> void:
+	var rect := _decor.fit(_view_size())
+	_decor_back.texture = _decor_cache.take(_decor.back_path)
+	_decor_front.texture = _decor_cache.take(_decor.front_path)
+	for sprite: Sprite2D in [_decor_back, _decor_front]:
+		if sprite.texture == null:
+			continue
+		sprite.position = rect.position.round()
+		sprite.scale = rect.size / sprite.texture.get_size()
+		sprite.set_meta(&"rest", sprite.position)
+	_set_backdrop(0.0)
+
+
+## Rend les images du décor (seul le décor préchargé de la carte courante reste en mémoire).
+func _release_decor() -> void:
+	for sprite: Sprite2D in [_decor_back, _decor_front]:
+		sprite.texture = null
+		sprite.visible = false
+		sprite.modulate = Color.WHITE
+		sprite.remove_meta(&"rest")
+
+
+## Léger tremblement de la scène (coup critique) : la caméra du monde, et le décor peint s'il
+## est affiché (il cache le monde).
+func _set_jolt(jolt: Vector2) -> void:
+	if _camera != null:
+		_camera.offset = _cam_offset + jolt
+	for sprite: Sprite2D in [_decor_back, _decor_front]:
+		if sprite.has_meta(&"rest"):
+			sprite.position = sprite.get_meta(&"rest") + jolt
+
+
 # --- Capture (jalon 5D) --------------------------------------------------------------
 
 ## Centre écran du sprite de combat adverse à son ancre.
 func _foe_center() -> Vector2:
 	var foe := BattleEvent.SideId.FOE
-	return _anchor(foe) + Vector2(0.0, -32.0 * float(_anchor_scale(foe)))
+	return _anchor(foe) + Vector2(0.0, -_box(foe).size.y * 0.5 * _anchor_scale(foe))
 
 
 ## Crée les accessoires de la capture au premier lancer (Ball, ombre, dresseur, lueur,
@@ -1032,7 +1251,8 @@ func _build_capture_props() -> void:
 	_ball_shadow = _make_prop(SHADOW_TEXTURE)
 	_ball = _make_prop(BALL_TEXTURE)
 	_thrower = _make_prop(THROWER_TEXTURE)
-	_thrower.offset = Vector2(0.0, -32.0)
+	_thrower.texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR
+	_thrower.offset = Vector2(0.0, -THROWER_TEXTURE.get_height() / 2.0)
 	var gradient := Gradient.new()
 	gradient.set_color(0, Color(1, 1, 1, 1))
 	gradient.set_color(1, Color(1, 1, 1, 0))
@@ -1068,6 +1288,27 @@ func _build_capture_props() -> void:
 		add_child(line)
 		_shake_lines.append(line)
 	move_child(_flash, -1)
+
+
+## Ombres au sol des deux Pokémon : ellipse douce partagée, teintée par le lieu.
+func _build_shadows() -> void:
+	var gradient := Gradient.new()
+	gradient.set_color(0, Color(1, 1, 1, 1))
+	gradient.set_color(1, Color(1, 1, 1, 0))
+	gradient.add_point(0.55, Color(1, 1, 1, 0.75))
+	_shadow_texture = GradientTexture2D.new()
+	_shadow_texture.gradient = gradient
+	_shadow_texture.fill = GradientTexture2D.FILL_RADIAL
+	_shadow_texture.fill_from = Vector2(0.5, 0.5)
+	_shadow_texture.fill_to = Vector2(1.0, 0.5)
+	_shadow_texture.width = 128
+	_shadow_texture.height = 128
+	var material := ShaderMaterial.new()
+	material.shader = SHADOW_SHADER
+	for side: BattleEvent.SideId in _shadows:
+		_shadows[side].texture = _shadow_texture
+		_shadows[side].texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR
+		_shadows[side].material = material
 
 
 func _make_prop(texture: Texture2D) -> Sprite2D:
@@ -1123,10 +1364,10 @@ func _set_absorb_flash(t: float) -> void:
 ## l'envers, à la libération.
 func _set_absorbed(k: float) -> void:
 	var foe := BattleEvent.SideId.FOE
-	var full := float(_anchor_scale(foe))
+	var full := _anchor_scale(foe)
 	var scale := lerpf(full, ABSORB_SHRINK, k)
 	var center := _foe_center().lerp(_absorb_point, k)
-	_place(foe, center + Vector2(0.0, 32.0 * scale), scale)
+	_place(foe, center + Vector2(0.0, _box(foe).size.y * 0.5 * scale), scale)
 	var tint := Color.WHITE.lerp(ABSORB_TINT, minf(k * 2.0, 1.0))
 	_sprites[foe].modulate = Color(tint.r, tint.g, tint.b, 1.0 - maxf(k - 0.7, 0.0) / 0.3)
 	_shadows[foe].modulate = Color(1, 1, 1, 1.0 - k)

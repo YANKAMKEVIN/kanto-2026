@@ -10,7 +10,13 @@ extends BattleWidget
 ## InputEventScreenTouch, comme le bandeau des messages), la carte ressort alors. Un toucher
 ## n'est pris qu'après CAPTURE_TOUCH_LOCK : celui qui vient de lancer la Ball ne ferme pas la
 ## carte. Les lignes se révèlent l'une après l'autre (CAPTURE_LINE_DELAY, CAPTURE_LINE_FADE).
-## Placement : BattleHudLayout.Slot.CAPTURE (centrée).
+## Placement : BattleHudLayout.Slot.CAPTURE (centrée), carte décalée de [constant SHIFT_X]
+## vers la gauche : la Ball posée aux pieds de l'adversaire reste visible (correctif QA S24).
+
+## Décalage horizontal de la carte dans son emplacement centré (px de référence). La Ball au sol
+## est à 0,36 hauteur d'écran à droite du centre (pieds de l'adversaire du cadrage), rayon ≈ 60 px : la
+## carte (760 de large) finit ≈ 70 px avant elle.
+const SHIFT_X := -120.0
 
 ## Durée d'attente qui ne se termine jamais d'elle-même (secondes ; plus courte que
 ## COMPLETE_STEP, qui l'achève).
@@ -41,8 +47,8 @@ func _ready() -> void:
 	_frame.anchor_bottom = 0.5
 	_frame.grow_horizontal = Control.GROW_DIRECTION_BOTH
 	_frame.grow_vertical = Control.GROW_DIRECTION_BOTH
-	_frame.offset_left = 0.0
-	_frame.offset_right = 0.0
+	_frame.offset_left = SHIFT_X
+	_frame.offset_right = SHIFT_X
 	_frame.offset_top = 0.0
 	_frame.offset_bottom = 0.0
 	_frame.custom_minimum_size.x = UiTokens.CAPTURE_CARD_WIDTH
@@ -53,7 +59,7 @@ func _ready() -> void:
 	_thumb.custom_minimum_size = Vector2.ONE * (UiTokens.CAPTURE_THUMB
 		+ 2 * UiTokens.CAPTURE_THUMB_PAD)
 	_portrait.custom_minimum_size = Vector2.ONE * UiTokens.CAPTURE_THUMB
-	_portrait.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
+	_portrait.texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR_WITH_MIPMAPS
 	_pokedex_row.add_theme_constant_override(&"separation", UiTokens.CAPTURE_LINE_GAP)
 	_pokedex_icon.custom_minimum_size = Vector2.ONE * UiTokens.CAPTURE_LINE_ICON
 	_pokedex_icon.self_modulate = UiTokens.TEXT_MUTED

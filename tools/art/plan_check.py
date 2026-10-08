@@ -4,7 +4,7 @@
 Mêmes règles de déplacement que `GridWorld` (game/world/grid_world.gd) : 4 directions, une case
 de rebord ne s'entre que dans son sens (vers le sud) et fait atterrir sur la case suivante
 (saut = un pas). Cases bloquées : tout caractère hors des praticables de la grille (ligne
-`PRATICABLES`, défaut `. = h v D`) et les positions `bloque`.
+`PRATICABLES`, défaut `. = h v D p`) et les positions `bloque`.
 
 **Route 2** (`route_2.txt`, docs/tech/jalon-08.md §3, T0 ; repris par test_route_2 au T5) :
   1. la porte du poste est atteignable depuis l'entrée sud ;

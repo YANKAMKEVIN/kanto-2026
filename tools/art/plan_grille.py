@@ -6,7 +6,7 @@ ligne, « NN » + espace + L caractères), `FIN`, puis section `POSITIONS` (une 
 identifiant, type, cases, `bloque` | `libre`, attributs facultatifs `cle=valeur`, commentaire
 après `#`), `FIN`.
 Ligne facultative avant la grille : `PRATICABLES <caractères>` (cases praticables de cette
-grille ; défaut `.=hvD`, la légende de la Route 2). Jalon 9 : la Forêt de Jade a sa légende.
+grille ; défaut `.=hvDp`, la légende de la Route 2 et d'Argenta). Jalon 9 : la Forêt de Jade a sa légende.
 Utilisé par `plan_aplats.py` (plan en aplats) et `plan_check.py` (recherche de chemin).
 """
 from __future__ import annotations
@@ -14,8 +14,9 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 from pathlib import Path
 
-# Cases praticables par défaut ; tout autre caractère de la légende est bloqué.
-PRATICABLES = set(".=hvD")
+# Cases praticables par défaut (Route 2, J10 : « p » pavé d'Argenta) ; tout autre caractère de
+# la légende est bloqué. Une grille peut fixer les siennes (ligne `PRATICABLES`).
+PRATICABLES = set(".=hvDp")
 HERBES = "h"
 REBORD = "v"
 PORTE = "D"

@@ -20,6 +20,10 @@ extends SceneTree
 ##   combat_inflicted  Poudre Toxik : « PSN » sur la carte adverse
 ##   combat_veil_own / combat_veil_foe  dégât de poison de fin de tour : voile violet, barre en route
 ##   combat_bag_targets  Antidote en combat : choix du Pokémon (ÉQUIPE « PSN »)
+##
+## Décor peint du combat (CB.3, fusion de `main` dans le J9) : `-- --map=route_1
+## --spawn=from_pallet_w --combat-only` joue seulement le combat, sur la Route 1 (voile du
+## poison sur l'artwork étalonné et le décor peint).
 
 const START := "res://tools/debug_start/poison_ui.json"
 ## Graine du combat de capture.
@@ -29,12 +33,21 @@ var _out_dir: String = "build/captures/jalon09_poison"
 var _boot: Node
 var _state: Node
 var _prefix: String = ""
+var _map: StringName = &"viridian_city"
+var _spawn: StringName = &"from_mart"
+var _combat_only: bool = false
 
 
 func _init() -> void:
 	for arg: String in OS.get_cmdline_user_args():
 		if arg.begins_with("--out="):
 			_out_dir = arg.trim_prefix("--out=")
+		elif arg.begins_with("--map="):
+			_map = StringName(arg.trim_prefix("--map="))
+		elif arg.begins_with("--spawn="):
+			_spawn = StringName(arg.trim_prefix("--spawn="))
+		elif arg == "--combat-only":
+			_combat_only = true
 	DirAccess.make_dir_recursive_absolute(ProjectSettings.globalize_path("res://") + _out_dir)
 	process_frame.connect(_start, CONNECT_ONE_SHOT)
 
@@ -54,8 +67,8 @@ func _shot(capture_name: String) -> void:
 func _start() -> void:
 	_prefix = "%d_" % int(root.get_visible_rect().size.x)
 	_boot = (load("res://game/boot.tscn") as PackedScene).instantiate()
-	_boot.set(&"start_map", &"viridian_city")
-	_boot.set(&"start_spawn", &"from_mart")
+	_boot.set(&"start_map", _map)
+	_boot.set(&"start_spawn", _spawn)
 	_boot.set(&"start_facing", Vector2i.DOWN)
 	root.add_child(_boot)
 	var data: PokemonData = _boot.call(&"get_pokemon_data")
@@ -65,7 +78,8 @@ func _start() -> void:
 	_state = root.get_node(^"/root/GameState")
 	start.call(&"apply", _state, data)
 	await _frames(60)
-	await _menus()
+	if not _combat_only:
+		await _menus()
 	await _combat(data)
 	print("CAPTURE_POISON terminé")
 	quit()
@@ -142,8 +156,9 @@ func _combat(data: PokemonData) -> void:
 		for side: BattleEvent.SideId in [BattleEvent.SideId.PLAYER, BattleEvent.SideId.FOE]:
 			var key: StringName = &"own" if side == BattleEvent.SideId.PLAYER else &"foe"
 			var veil := stage.get_sprite(side).material as ShaderMaterial
-			if not veils.has(key) and veil != null \
-					and float(veil.get_shader_parameter(&"amount")) > 0.5 \
+			# Artwork étalonné (CB.1) : « amount » absent hors voile.
+			var amount: Variant = veil.get_shader_parameter(&"amount") if veil != null else null
+			if not veils.has(key) and amount != null and float(amount) > 0.5 \
 					and (key == &"own" or _foe_tagged(hud)):
 				veils[key] = true
 				await _shot("combat_veil_" + String(key))

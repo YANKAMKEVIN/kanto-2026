@@ -189,6 +189,8 @@ func _ready() -> void:
 	_items.load_dir()
 	_battle_director.setup(_pokemon, _trainers, _texts, _battle_stage, _battle_hud, _player,
 		GameState, _items)
+	# CB.1 : artwork officiel de l'adversaire (numéro) et tailles réelles (Pokédex).
+	_battle_stage.set_species_source(_pokemon, _dex)
 	_cutscenes_node.set_battle_runner(_battle_director)
 	_evolutions = EvolutionDirector.new()
 	_evolutions.name = "EvolutionDirector"
@@ -835,6 +837,8 @@ func _on_map_changed(map: GameMap) -> void:
 	_encounters.set_map(map)
 	_services.set_map(map)
 	_recovery.set_map(map)
+	# Décor de combat de la carte chargé en tâche de fond (correctif QA S24 du CB.3).
+	_battle_stage.prepare_place(map.map_id)
 
 
 ## Profil de lumière de [param map] ([member GameMap.light_profile]) ; vide ou inconnu :

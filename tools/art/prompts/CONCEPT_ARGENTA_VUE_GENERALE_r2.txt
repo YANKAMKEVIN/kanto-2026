@@ -1,0 +1,71 @@
+CONCEPT ART — VUE GÉNÉRALE D'ARGENTA ET DE LA ROUTE 2 NORD (Kanto 2026), image de référence de direction artistique.
+
+Trois images sont jointes.
+
+IMAGE 1 : un PLAN SCHÉMATIQUE en aplats de couleur, vu du dessus, qui donne la COMPOSITION EXACTE à suivre. Il montre DEUX lieux raccordés : en haut la ville d'ARGENTA, en bas la ROUTE 2 NORD, reliées par un seul chemin vertical qui traverse une bande de forêt.
+Légende du plan :
+- vert très foncé = forêt dense infranchissable ; vert moyen = herbe rase praticable ; points roses = petites fleurs ; beige = chemin ou rue de terre battue ; jaune-vert olive = HAUTES HERBES (touffues, plus hautes, où vivent les Pokémon sauvages) ;
+- gris-brun en haut = la PAROI ROCHEUSE d'une montagne qui ferme la ville au nord (falaise de roche en couches, grise et beige chaud) ; au-delà du bord supérieur de l'image, on devine des sommets ;
+- gris-brun à droite de la Route 2 nord = un RELIEF ROCHEUX (affleurements et falaise basse) ;
+- beige-gris clair = la PLACE CENTRALE PAVÉE de pierre claire ; petits traits bruns sur la place = BANCS ; ellipse gris clair au milieu de la place = un GROS ROCHER NATUREL, repère de la ville ; une autre ellipse plus petite au bord du chemin de la Route 2 nord = un gros rocher repère ;
+- disques verts = arbres (le pied de l'arbre est en bas du disque) ; petits disques vert sombre groupés = buissons bas ;
+- rectangles de bâtiments : la partie haute est le TOIT, la partie basse la FAÇADE, les petits rectangles bruns sont les PORTES (toujours sur la façade sud) :
+  · grand bâtiment au toit brun sombre, en bas à gauche de la ville = le MUSÉE D'ARGENTA (porte double) ;
+  · grand bâtiment au toit gris sombre, en haut à droite = l'ARÈNE DE PIERRE (porte double) ;
+  · toit ROUGE = le CENTRE POKÉMON ; toit BLEU = la BOUTIQUE ;
+  · toits de tuiles orangés à gauche et à droite de la place = deux MAISONS ;
+  · rectangle gris-bleu tout en bas = le TOIT du poste de garde de la Forêt de Jade, vu de dessus ; le chemin y entre par une ouverture dans son mur nord ;
+- petits carrés gris clair à gauche, sous la maison de gauche = BLOCS DE PIERRE TAILLÉS empilés d'un petit chantier de tailleur de pierre ;
+- petite tache grise à droite de la Route 2 nord, sur le sentier qui part vers l'est = des ÉBOULIS qui COUPENT entièrement ce sentier (on voit le sentier continuer derrière, inaccessible) ;
+- en haut à gauche, sous la paroi = un petit BELVÉDÈRE herbeux avec un banc (point de vue sur la montagne) ;
+- rue beige qui sort par le bord droit de la ville = la sortie vers la ROUTE 3 ;
+- petits carrés ocre = panneaux en bois SANS TEXTE ; point rouge et blanc = une Poké Ball posée dans l'herbe (objet à ramasser).
+Respecte ce plan À LA LETTRE : position et taille de chaque bâtiment, de la place, des rues, des deux zones de hautes herbes de la Route 2 nord, du détour qui contourne les buissons par l'ouest, des rochers et du raccord unique entre la route et la ville. Le plan ne donne que la composition : son style en aplats ne doit pas apparaître.
+
+RÈGLE ABSOLUE DES CHEMINS : le joueur se déplace case par case, seulement à l'horizontale et à la verticale ; rues, chemins, place et bords des pelouses suivent donc une grille : uniquement des segments horizontaux et verticaux à angles droits, AUCUN segment en diagonale ni courbe, aucun escalier.
+RELIEF : le sol de la ville et de la route est PLAT (pas de terrasses, pas de murets de soutènement, pas d'escaliers). Les SEULS reliefs sont la paroi de montagne au nord, le relief rocheux à droite de la Route 2 nord, les gros rochers et les éboulis.
+
+IMAGE 2 : la vue générale de la Route 2 sud, un autre lieu du même jeu. Respecte EXACTEMENT son style de rendu : même pinceau, mêmes arbres en masses arrondies, mêmes hautes herbes jaune-vert, même chemin de terre, même saturation, MÊME LUMIÈRE, mêmes personnages et Pokémon. Ne reprends PAS sa composition.
+
+IMAGE 3 : la vue générale de Jadielle, une autre ville du même jeu. Reprends SEULEMENT l'architecture du CENTRE POKÉMON (toit rouge, emblème Poké Ball blanc, grande porte vitrée) et de la BOUTIQUE (toit bleu, même emblème) : ce sont des enseignes, identiques dans toutes les villes. Ne reprends RIEN d'autre de cette image : ni sa composition, ni la mer, ni les falaises au bord de l'eau, ni les escaliers, ni les terrasses, ni l'arbre de la place.
+
+Format : PORTRAIT 1024 × 1536, vue plongeante sur les deux lieux, comme le plan.
+
+RENDU (ADN visuel Kanto 2026 v1)
+- Illustration 2D peinte numériquement, dans l'esprit d'un RPG Pokémon moderne au rendu « HD-2D peint » : formes simples, lisibles et arrondies, détails fins mais ordonnés. Ni pixel art, ni 3D, ni photo, ni aquarelle, ni cartoon en aplats. Le feuillage est peint en grandes masses douces.
+- Perspective : vue de dessus de trois quarts, projection oblique frontale, sans point de fuite. Les verticales restent verticales. On voit le dessus des objets et leur face avant (côté sud).
+- Aucun trait noir : contours fins et doux, plus sombres et plus saturés que la couleur locale. Ombres colorées bleu-vert ou violet froid, jamais grises.
+
+IDENTITÉ D'ARGENTA : « la ville entre pierre et montagne ». Après la forêt, elle doit paraître plus OUVERTE, MINÉRALE, CALME et STABLE que Jadielle, sans devenir un désert de roche : elle reste belle et vivante.
+- Palette : pierre chaude gris-beige, ardoise, terre claire, verts légèrement moins saturés que sur la route, quelques touches de fleurs discrètes. Pas de filtre brun, pas de poussière.
+- Matériaux : murs en pierre de taille claire, soubassements en moellons, toits d'ardoise ou de tuiles, bois sombre ; quelques rochers naturels gardés dans la ville, comme si on avait construit autour.
+- LE MUSÉE : le bâtiment le plus noble de la ville ; pierre claire, façade sobre à pilastres, grandes fenêtres hautes, large porte double, un parvis devant. On doit le reconnaître comme un musée des sciences sans aucun texte.
+- L'ARÈNE : bâtiment massif de grosse pierre grise taillée, presque une forteresse basse, toit sombre, large entrée ; des formations rocheuses naturelles l'encadrent. On doit sentir « Pokémon Roche » sans aucun symbole écrit.
+- Hiérarchie visuelle : paroi de montagne → Arène → Musée → gros rocher de la place. Le Musée et l'Arène sont les deux masses dominantes.
+- Le petit chantier : quelques blocs taillés empilés, un établi, des outils, rien de plus.
+
+ROUTE 2 NORD (bas de l'image) : une courte respiration entre la forêt et la ville. Le chemin part du toit du poste (tout en bas), monte tout droit vers Argenta ; un sentier part vers la gauche jusqu'à une petite zone de hautes herbes, un autre vers la droite s'arrête net sur les éboulis au pied du relief rocheux ; plus haut, un détour contourne une haie de buissons par la gauche, le long d'une deuxième zone de hautes herbes. La végétation s'éclaircit en montant : on sort de la forêt, la lumière s'ouvre.
+
+VIE (très discrète, personnages petits, aucun ne ressemble au héros à casquette rouge et veste bleue) :
+- un TAILLEUR DE PIERRE (tablier, manches retroussées) devant le chantier, avec un RACAILLOU à côté de lui (Pokémon rocher gris, rond, à deux bras musclés, sans jambes) ;
+- un ENFANT près du gros rocher de la place ;
+- une VISITEUSE (sac en bandoulière) sur le parvis du Musée et un EMPLOYÉ DU MUSÉE en tenue sobre près de la porte ;
+- un VIEIL HABITANT au belvédère, tourné vers la montagne ;
+- une JEUNE DRESSEUSE près du Centre Pokémon ;
+- un GARDE en uniforme sobre debout au bord de la rue de la Route 3, côté nord du passage ;
+- sur la Route 2 nord, un MONTAGNARD (gros sac à dos, bâton) au bord droit du chemin, au pied du relief rocheux, dans le tiers haut de la route.
+Le RACAILLOU du tailleur est le SEUL Pokémon de l'image. Aucun Pikachu, aucun autre Pokémon, aucun animal (aucune faune non-Pokémon, aucun oiseau ni papillon réel).
+
+INTERDITS : texte, lettres, chiffres, étiquettes, panneaux lisibles, logo (seul l'emblème Poké Ball sans texte du Centre et de la Boutique est permis), signature, filigrane, cadre, interface ; eau, mer, rivière, cascade, pont ; escaliers, terrasses, murets ; arbres orange ou automnaux ; route goudronnée, véhicule ; tout bâtiment absent du plan ; brouillard, flou de profondeur, vignettage, pixel art.
+
+L'image doit raconter, sans texte : on sort de la Forêt de Jade par une courte route qui s'ouvre, et on arrive dans une ville de pierre au pied d'une montagne, dominée par son Musée et son Arène.
+
+CORRECTIONS OBLIGATOIRES (version 2) — le style du premier essai est bon ; c'est la COMPOSITION qui doit suivre le plan (IMAGE 1) beaucoup plus fidèlement :
+1. PROPORTIONS VERTICALES, comme le plan : la VILLE occupe le haut de l'image jusqu'à environ 60 % de sa hauteur (paroi de montagne tout en haut, sur environ 10 %) ; puis une BANDE DE FORÊT DENSE continue, d'environ 4 % de hauteur, sépare la ville de la route, traversée par un seul chemin ; la ROUTE 2 NORD occupe le bas, d'environ 62 % à 92 % ; le toit du poste est tout en bas. La ville ne doit PAS être écrasée dans la moitié haute.
+2. EXACTEMENT SIX BÂTIMENTS dans la ville, plus le poste en bas, et AUCUN autre : l'Arène (en haut à droite, sous la paroi), deux maisons (à gauche et à droite de la place), la Boutique (sous la place, à droite de l'avenue), le Centre Pokémon (plus bas, à droite de l'avenue), le Musée (en bas à gauche de la ville, à gauche de l'avenue, juste au-dessus de la bande de forêt). Le Musée est le plus grand bâtiment, environ deux fois la largeur du Centre ; sa porte donne sur une rue qui longe sa façade sud et rejoint l'avenue. AUCUNE maison sur la Route 2 nord.
+3. L'AVENUE : un seul chemin droit et vertical monte du poste, traverse la bande de forêt et la ville jusqu'à la place pavée, entre le Musée (à gauche) et le Centre (à droite).
+4. HAUTES HERBES : SEULEMENT sur la Route 2 nord, deux zones à GAUCHE du chemin (une petite en haut contre le détour, une en bas à gauche du croisement). AUCUNE haute herbe dans la ville.
+5. SORTIE EST : une rue large part de l'angle sud-est de la place et sort par le BORD DROIT de l'image vers la Route 3, à environ 38 % de la hauteur ; le garde se tient au bord nord de cette rue, près du bord droit.
+6. ROUTE 2 NORD : le chemin principal monte tout droit ; à mi-hauteur, un croisement : vers la gauche jusqu'à la zone de hautes herbes du bas, vers la droite jusqu'aux ÉBOULIS qui bouchent le sentier au pied du relief rocheux (le relief rocheux occupe toute la droite de la route, au-dessus du croisement) ; plus haut, le détour par l'ouest contourne une haie de buissons. Le gros rocher repère est au bord droit du chemin, juste sous le relief.
+7. AUCUNE clôture, aucune barrière, aucun muret sur toute l'image.
+8. Aucun personnage sur la Route 2 nord en dehors du Montagnard.

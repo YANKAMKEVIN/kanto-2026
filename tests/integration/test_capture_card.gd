@@ -1,11 +1,11 @@
 extends GutTest
 ## Carte de capture (jalon 5D, T14, case 9 de combat-capture-v1, dossier 05 §17) : titre en
 ## capitales, vignette, ligne « Nouvelle entrée Pokédex » seulement si demandée, ligne d'équipe,
-## ▼ ; fin au toucher (après le délai de garde), centrée, dans les marges à 1920 et 2340.
+## ▼ ; fin au toucher (après le délai de garde), centrée (décalée pour la Ball au sol), dans les marges à 1920 et 2340.
 
 const TweenClock := preload("res://tests/helpers/tween_clock.gd")
 const CARD_SCENE := "res://game/ui/battle/capture_card.tscn"
-const PORTRAIT := "res://assets/sprites/pokemon/placeholder/pidgey_front.png"
+const ROUCOOL_DEX := 16
 const SCREEN_WIDTHS: Array[float] = [1920.0, 2340.0]
 const SCREEN_HEIGHT := 1080.0
 const POKEDEX := "Nouvelle entrée Pokédex"
@@ -42,7 +42,7 @@ func _set_screen(width: float) -> void:
 
 
 func _view(new_entry: bool = true, line: String = JOINED) -> CaptureCardView:
-	return CaptureCardView.new("Roucool CAPTURÉ !", load(PORTRAIT) as Texture2D, new_entry,
+	return CaptureCardView.new("Roucool CAPTURÉ !", PokedexArt.portrait(ROUCOOL_DEX), new_entry,
 		POKEDEX if new_entry else "", line)
 
 
@@ -72,13 +72,17 @@ func test_hidden_at_start_and_not_waiting() -> void:
 
 
 func test_title_in_capitals_and_portrait() -> void:
-	await _show(CaptureCardView.new("Roucool capturé !", load(PORTRAIT) as Texture2D, false,
+	await _show(CaptureCardView.new("Roucool capturé !", PokedexArt.portrait(ROUCOOL_DEX), false,
 		"", JOINED))
 	assert_true(_card.visible)
 	assert_eq(_card.get_title_text(), "ROUCOOL CAPTURÉ !")
-	assert_eq(_card.get_portrait().texture, load(PORTRAIT))
-	assert_eq(_card.get_portrait().texture_filter, CanvasItem.TEXTURE_FILTER_NEAREST,
-		"sprite pixel art net")
+	var art := PokedexArt.portrait(ROUCOOL_DEX)
+	var shown := _card.get_portrait().texture as AtlasTexture
+	assert_eq(shown.atlas.resource_path, PokedexArt.portrait_path(ROUCOOL_DEX),
+		"artwork officiel, jamais le pixel art")
+	assert_eq(shown.region, (art as AtlasTexture).region)
+	assert_eq(_card.get_portrait().texture_filter,
+		CanvasItem.TEXTURE_FILTER_LINEAR_WITH_MIPMAPS, "filtre linéaire")
 	assert_true(_card.is_waiting())
 
 
@@ -180,7 +184,12 @@ func test_centered_and_inside_margins_at_both_widths() -> void:
 		_set_screen(width)
 		await _show(_view(true, STORED))
 		var rect := _card.get_frame().get_global_rect()
-		assert_almost_eq(rect.get_center().x, width * 0.5, 1.0, "%s : centrée" % width)
+		assert_almost_eq(rect.get_center().x, width * 0.5 + CaptureCard.SHIFT_X, 1.0,
+			"%s : centrée, décalée à gauche" % width)
+		# La Ball posée aux pieds de l'adversaire reste visible à droite de la carte.
+		var foe: Vector2 = BattleLayout.anchors(Vector2(width, SCREEN_HEIGHT))["foe_feet"]
+		var ball_left := foe.x - BattleStage.BALL_RADIUS * BattleStage.BALL_REST_SCALE
+		assert_lt(rect.end.x + 24.0, ball_left, "%s : la Ball au sol n'est pas cachée" % width)
 		assert_almost_eq(rect.get_center().y, SCREEN_HEIGHT * 0.5, 1.0)
 		assert_true(Rect2(Vector2.ZERO, _screen.size).grow(-float(UiTokens.SAFE_MARGIN))
 			.encloses(rect), "%s : dans les marges (%s)" % [width, rect])

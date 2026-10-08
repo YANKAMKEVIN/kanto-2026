@@ -327,17 +327,24 @@ func test_layout_cards_in_corners_at_both_widths() -> void:
 		BattleHudLayout.place(back, BattleHudLayout.Slot.BACK)
 		var foe_rect := foe.get_global_rect()
 		var own_rect := own.get_global_rect()
-		assert_eq(foe_rect.end.x, width - UiTokens.BATTLE_EDGE, "adversaire en haut à droite")
+		assert_eq(foe_rect.position.x, float(UiTokens.BATTLE_EDGE), "adversaire en haut à gauche")
 		assert_eq(foe_rect.position.y, float(UiTokens.BATTLE_FOE_CARD_TOP))
-		assert_eq(own_rect.position.x, float(UiTokens.BATTLE_EDGE), "joueur en bas à gauche")
+		assert_eq(own_rect.end.x, width - UiTokens.BATTLE_EDGE, "joueur en bas à droite")
 		assert_eq(own_rect.end.y, SCREEN_HEIGHT - UiTokens.BATTLE_OWN_CARD_BOTTOM)
 		assert_eq(foe_rect, BattleHudLayout.rect(BattleHudLayout.Slot.FOE_CARD, screen.size))
 		assert_eq(own_rect, BattleHudLayout.rect(BattleHudLayout.Slot.OWN_CARD, screen.size))
 		var pips_rect := pips.get_global_rect()
 		assert_lt(pips_rect.end.y, own_rect.position.y, "pastilles au-dessus de la carte")
 		assert_gt(pips_rect.position.x, own_rect.position.x)
+		assert_lt(pips_rect.end.x, own_rect.end.x, "pastilles au-dessus de la carte, à gauche")
+		# Contrat avec le cadrage : rien dans la moitié haute droite ni le quart bas gauche
+		# (pastilles : décor non interactif, tolérées à 20 px au-dessus de la mi-hauteur).
+		var half := SCREEN_HEIGHT * 0.5
+		assert_gt(own_rect.position.y, half, "carte joueur sous la mi-hauteur")
+		assert_gt(pips_rect.position.y, half - 24.0, "pastilles à la mi-hauteur au plus")
+		assert_lt(foe_rect.end.x, width * 0.5, "carte adverse dans la moitié gauche")
 		var back_rect := back.get_global_rect()
-		assert_gt(back_rect.position.y, own_rect.end.y, "« ‹ » sous la carte joueur")
+		assert_lt(back_rect.end.x, own_rect.position.x, "« ‹ » loin de la carte joueur")
 		_assert_touchable(back_rect, width, "« ‹ »")
 
 

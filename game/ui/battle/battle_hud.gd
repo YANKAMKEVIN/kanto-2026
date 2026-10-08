@@ -78,8 +78,8 @@ func _ready() -> void:
 		BattleHudLayout.place(widget, slots[widget])
 		widget.haptic_played.connect(haptic_played.emit)
 	# Chaque carte entre par son bord d'écran le plus proche.
-	_foe_card.slide_direction = Vector2.RIGHT
-	_own_card.slide_direction = Vector2.LEFT
+	_foe_card.slide_direction = Vector2.LEFT
+	_own_card.slide_direction = Vector2.RIGHT
 	_actions.action_selected.connect(action_selected.emit)
 	_moves.move_selected.connect(move_selected.emit)
 	_back.back_requested.connect(_on_back)
