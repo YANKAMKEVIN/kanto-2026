@@ -1,0 +1,36 @@
+# Maison de la chercheuse, Argenta (pewter_house_researcher) — grille fonctionnelle (jalon 10 T13,
+# défauts de la règle 4 ; dossier 12 §19, arbitrages 14 et 15). Même enveloppe que la maison du
+# tailleur (INT_MAISON_ARGENTA_COQUE), autre mobilier : bibliothèque, notes, quelques pierres.
+# Convention des intérieurs de tools/build_painted_interiors.gd (voir argenta_maison_tailleur.txt).
+# Habitante : la chercheuse (sa sœur travaille au Musée) ; deux répliques enchaînées.
+#
+# Légende :
+#   K mur (bloqué)          . sol (praticable)
+#   X sortie vers Argenta (praticable : paillasson, PUSH ↓)
+#   B bibliothèque (grandes étagères 2 × 2) (1..2, 2..3) et (3..4, 2..3)
+#   N bureau aux notes (7..9, 3) et sa chaise (8, 4)   f classeur (10, 3)
+#   E étagère du labo (pierres, bocaux) (12..13, 2..3)
+#   s pierres (rocher bas 1 × 1) contre le mur du fond (6, 3)
+#   T table de lecture (2..4, 5..6)     x plante (1, 7), (13, 7)
+#   c chercheuse (11, 5)
+#
+# Format : section GRILLE (« NN » + espace + 15 caractères par rangée), puis POSITIONS.
+
+GRILLE 15 10
+00 KKKKKKKKKKKKKKK
+01 KKKKKKKKKKKKKKK
+02 KKKKKKKKKKKKKKK
+03 KBBBB.sNNNf.EEK
+04 K.......N.....K
+05 K.TTT......c..K
+06 K.TTT.........K
+07 Kx...........xK
+08 KKKKKKXXXKKKKKK
+09 KKKKKKKKKKKKKKK
+FIN
+
+POSITIONS
+sortie              warp           6..8,8       libre   # PUSH ↓ → pewter_city, from_house_researcher
+entree              spawn          7,8          libre   # spawn « entrance », tourné ↑
+chercheuse          pnj            11,5         bloque  # maya (même famille que sa sœur du Musée), tournée ↓
+FIN

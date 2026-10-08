@@ -9,13 +9,17 @@
 #
 # Légende :
 #   K paroi de roche (bloquée : mur du fond sur 2 rangées, parois latérales sur 2 colonnes,
-#     mur du bas sur 1 rangée)
+#     mur du bas sur 2 rangées comme la coque peinte : sortie sur l'avant-dernière, convention
+#     des intérieurs ; J10 T13, la coque peint le mur du bas à partir de y ≈ 870 px)
 #   . sol de sable (praticable)
 #   R pilier ou rocher bas (bloqué) : piliers 2 × 1 en (2..3, 4), (11..12, 4), (2..3, 8),
 #     (11..12, 8) ; bloc central 2 × 2 en (8..9, 6..7) ; deux rochers 1 × 1 de part et d'autre
 #     de l'estrade, (6, 2) et (8, 2)
 #   P Pierre (sur l'estrade peinte dans la coque)   L Campeur Liam   G guide d'Arène
-#   X sortie (praticable : le paillasson dans l'ouverture du mur du bas, PUSH ↓)
+#   X sortie (praticable : la dalle dans l'ouverture du mur du bas, PUSH ↓)
+#
+# J10 T13 : sortie et guide remontés d'une rangée (rangée 9 = haut du mur du bas peint) ;
+# chemins inchangés (6 pas direct, 12 par le détour).
 #
 # Chemin direct entrée (7, 9) → Pierre (7, 3) : 6 pas par x = 7, dans la vision de Liam en (7, 6).
 # Détour hors de sa vision par x = 10 (bloc central entre les deux) : 12 pas. Liam s'approche
@@ -32,9 +36,9 @@ GRILLE 15 11
 05 KK...........KK
 06 KKL.....RR...KK
 07 KK......RR...KK
-08 KKRR.......RRKK
-09 KK...G.......KK
-10 KKKKKKXXXKKKKKK
+08 KKRR.G.....RRKK
+09 KKKKKKXXXKKKKKK
+10 KKKKKKKKKKKKKKK
 FIN
 
 # POSITIONS (défauts du J10 T1, docs/tech/jalon-10.md §1.3 et §5)
@@ -42,7 +46,7 @@ POSITIONS
 pierre              pnj            7,2          bloque  # tourné ↓ ; scène pewter_gym_brock
 parler_pierre       repere         7,3          libre   # on lui parle d'ici, tourné ↑
 liam                dresseur       2,6          bloque  # tourné →, vision 5 : (3..7, 6)
-guide               pnj            5,9          bloque  # tourné ↑, à côté de l'entrée
-sortie              warp           6..8,10      libre   # PUSH ↓ → pewter_city, from_gym
-entree              spawn          7,9          libre   # spawn « entrance », tourné ↑
+guide               pnj            5,8          bloque  # tourné ↑, à côté de l'entrée (T13 : 5,9 → 5,8)
+sortie              warp           6..8,9       libre   # PUSH ↓ → pewter_city, from_gym
+entree              spawn          7,9          libre   # spawn « entrance » (sur la dalle), tourné ↑
 FIN

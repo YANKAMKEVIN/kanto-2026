@@ -10,6 +10,6 @@
 		}
 	},
 	"gym_guide": {
-		"cell": [5, 9], "facing": "up", "sprite": "gym_guide", "dialogue": "pewter_gym_guide"
+		"cell": [5, 8], "facing": "up", "sprite": "gym_guide", "dialogue": "pewter_gym_guide"
 	}
 }

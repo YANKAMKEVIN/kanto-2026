@@ -26,6 +26,13 @@ const NPC_PLAN := {
 	&"pewter_museum_science": ["res://tools/plans/argenta_musee_science.txt", {
 		&"researcher": "chercheur", &"researcher_f": "chercheuse",
 	}],
+	# Jalon 10 (T13) : grilles des maisons (défauts de la règle 4).
+	&"pewter_house_mason": ["res://tools/plans/argenta_maison_tailleur.txt", {
+		&"partner": "compagne", &"kid": "enfant",
+	}],
+	&"pewter_house_researcher": ["res://tools/plans/argenta_maison_chercheuse.txt", {
+		&"researcher": "chercheuse",
+	}],
 }
 
 var _dialogues: DialogueLibrary

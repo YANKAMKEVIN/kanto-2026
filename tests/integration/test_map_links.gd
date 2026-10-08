@@ -11,10 +11,14 @@ const MAP_IDS: Array[StringName] = [
 	&"route_1", &"viridian_city", &"viridian_center", &"viridian_mart", &"route_2",
 	# Jalon 9 (T19) : la Forêt de Jade et ses deux postes.
 	&"viridian_forest", &"viridian_forest_gate_south", &"viridian_forest_gate_north",
+	# Jalon 10 (T13) : les intérieurs d'Argenta.
+	&"pewter_center", &"pewter_mart", &"pewter_museum", &"pewter_museum_science", &"pewter_gym",
+	&"pewter_house_mason", &"pewter_house_researcher",
 ]
-## Cartes construites par une autre tâche en parallèle (jalon 7 : la Route 22, T22) : un warp
-## qui y mène est vérifié seulement si la carte existe déjà (sinon le test le signale).
-const PARALLEL_MAPS: Array[StringName] = [&"route_22"]
+## Cartes construites par une autre tâche en parallèle (jalon 7 : la Route 22, T22 ; jalon 10 :
+## Argenta, T11, pendant les intérieurs du T13) : un warp qui y mène est vérifié seulement si la
+## carte existe déjà (sinon le test le signale).
+const PARALLEL_MAPS: Array[StringName] = [&"route_22", &"pewter_city"]
 const DIRECTIONS: Array[Vector2i] = [Vector2i.UP, Vector2i.DOWN, Vector2i.LEFT, Vector2i.RIGHT]
 
 var _maps: Dictionary = {}
@@ -63,7 +67,7 @@ func test_every_warp_targets_existing_map_and_walkable_spawn() -> void:
 				continue  # destination « à venir » : voir le test dédié
 			var label := "%s %s → %s/%s" % [map_id, warp.cell, warp.target_map, warp.target_spawn]
 			if PARALLEL_MAPS.has(warp.target_map) and not MapCatalog.has_map(warp.target_map):
-				gut.p("%s : carte « %s » pas encore construite (T22)" % [label,
+				gut.p("%s : carte « %s » pas encore construite (tâche parallèle)" % [label,
 					warp.target_map])
 				continue
 			if PARALLEL_MAPS.has(warp.target_map):

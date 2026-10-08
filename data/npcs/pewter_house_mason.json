@@ -1,0 +1,9 @@
+{
+	"partner": {
+		"cell": [3, 4], "facing": "up", "sprite": "maya", "dialogue": "pewter_house_mason_partner"
+	},
+	"kid": {
+		"cell": [12, 6], "facing": "left", "sprite": "kid", "dialogue": "pewter_house_mason_kid",
+		"look": { "facings": ["left", "down", "left", "up"], "every": 3.0 }
+	}
+}

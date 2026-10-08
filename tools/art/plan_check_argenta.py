@@ -346,9 +346,11 @@ def arene(r: Rapport, plan: Plan) -> None:
 		"Pierre visible depuis l'entrée")
 	entree = _cellules(plan, "entree")[0]
 	sortie = _cellules(plan, "sortie")
-	r.critere(sortie == [(x, plan.height - 1) for x in (6, 7, 8)] and plan.cells_of("X") == sortie
+	# J10 T13 : sortie sur l'avant-dernière rangée (mur du bas peint sur 2 rangées, convention des
+	# intérieurs), entrée sur la sortie (la dalle).
+	r.critere(sortie == [(x, plan.height - 2) for x in (6, 7, 8)] and plan.cells_of("X") == sortie
 		and entree == (7, plan.height - 2), f"sortie {sortie[0]}…{sortie[-1]} au mur du bas, "
-		f"entrée {entree} juste au-dessus")
+		f"entrée {entree} sur la dalle")
 	pierre = plan.cells_of("P")[0]
 	parler = _cellules(plan, "parler_pierre")[0]
 	dist = carte.distances([entree])
