@@ -39,8 +39,8 @@ const GATE_GUARDS: Array[StringName] = [&"forest_gate_north_guard", &"forest_gat
 ## Dialogues pas encore posés sur une carte (vidée au T19 du jalon 9 : la forêt et ses postes
 ## sont dans [constant MAPS]). Jalon 10 (T8) : tous ceux de la Route 2 nord et d'Argenta, en
 ## attente de leurs cartes (T11 Route 2 nord et Argenta, T13 intérieurs, T14 la vie, T17
-## l'Arène) ; `pewter_gym_liam_defeated` attend aussi la clé « defeated » du bloc « trainer »
-## (T9). À retirer carte par carte en ajoutant la carte à [constant MAPS].
+## l'Arène ; `pewter_gym_liam_defeated` est lue par la clé « defeated » du bloc « trainer »
+## depuis le T9). À retirer carte par carte en ajoutant la carte à [constant MAPS].
 const UNUSED_YET: Array[StringName] = [
 	&"route_2_north_ball_1", &"route_2_north_mountaineer", &"route_2_north_rockslide",
 	&"route_2_north_sign", &"pewter_city_sign", &"pewter_gym_brock", &"pewter_gym_brock_badge",
@@ -175,6 +175,9 @@ func before_all() -> void:
 			# Jalon 9 : la réplique « avant » d'un Dresseur est jouée par sa séquence, sur sa carte.
 			if spec.is_trainer():
 				_use(spec.before_dialogue, map_id)
+				# Jalon 10 (T9) : la réplique « vaincu », dite par la séquence à la victoire.
+				if not spec.defeated_dialogue.is_empty():
+					_use(spec.defeated_dialogue, map_id)
 		var map := (load(MapCatalog.scene_path(map_id)) as PackedScene).instantiate()
 		for point: Node in map.get_node(^"Interactables").get_children():
 			_use((point as InteractPoint).dialogue_id, map_id)

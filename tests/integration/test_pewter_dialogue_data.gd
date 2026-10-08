@@ -124,19 +124,25 @@ func test_brock_talks_through_his_scene_until_the_badge() -> void:
 	var kinds: Array[StringName] = []
 	for step: CutsceneStep in scene.variants[0].steps:
 		kinds.append(CutsceneStep.kind_name(step.kind))
-	assert_eq(kinds, [&"face", &"dialogue", &"dialogue", &"set", &"battle", &"wait", &"dialogue",
-		&"dialogue", &"dialogue", &"wake_up"] as Array[StringName])
+	assert_eq(kinds, [&"face", &"dialogue", &"dialogue", &"set", &"champion_card", &"battle",
+		&"wait", &"dialogue", &"badge", &"dialogue", &"dialogue", &"wake_up"] as Array[StringName])
 	var steps := scene.variants[0].steps
 	assert_eq([steps[1].dialogue_id, steps[1].unless_flags],
 		[&"pewter_gym_brock_intro", [&"brock_met"] as Array[StringName]])
 	assert_eq([steps[2].dialogue_id, steps[2].if_flags],
 		[&"pewter_gym_brock_resume", [&"brock_met"] as Array[StringName]])
 	assert_eq(steps[3].flags, [&"brock_met"] as Array[StringName])
-	assert_eq([steps[4].trainer_id, steps[4].win_flags],
+	# Jalon 10 (T9) : la carte de présentation, à chaque combat (introduction ou reprise).
+	assert_eq([steps[4].trainer_id, steps[4].if_flags, steps[4].unless_flags],
+		[&"pewter_gym_brock", [] as Array[StringName], [] as Array[StringName]])
+	assert_eq([steps[5].trainer_id, steps[5].win_flags],
 		[&"pewter_gym_brock", [&"badge_boulder"] as Array[StringName]])
-	assert_eq(steps[6].dialogue_id, &"pewter_gym_brock_won")
-	assert_eq(steps[7].dialogue_id, &"pewter_gym_brock_badge")
-	assert_eq(steps[8].dialogue_id, &"pewter_gym_brock_lost")
+	assert_eq(steps[7].dialogue_id, &"pewter_gym_brock_won")
+	# « BADGE ROCHE » entre la réplique de victoire et celle du badge (dossier 12 §13).
+	assert_eq([steps[8].badge_id, steps[8].if_flags],
+		[&"boulder", [&"badge_boulder"] as Array[StringName]])
+	assert_eq(steps[9].dialogue_id, &"pewter_gym_brock_badge")
+	assert_eq(steps[10].dialogue_id, &"pewter_gym_brock_lost")
 
 
 func test_liam_has_three_lines() -> void:
@@ -152,6 +158,15 @@ func test_liam_has_three_lines() -> void:
 	assert_true(liam.is_trainer())
 	assert_eq([liam.trainer_id, liam.sight, liam.before_dialogue, liam.dialogue],
 		[&"pewter_gym_liam", 5, &"pewter_gym_liam_before", &"pewter_gym_liam_after"])
+	# Jalon 10 (T9) : la réplique « vaincu », dite une fois juste après la victoire.
+	assert_eq(liam.defeated_dialogue, &"pewter_gym_liam_defeated")
+	var sequence := TrainerEncounter.build(&"camper_liam", liam, TrainerEncounter.TALKED_TO)
+	var said: Array[StringName] = []
+	for step: CutsceneStep in sequence.steps:
+		if step.kind == CutsceneStep.Kind.DIALOGUE:
+			said.append(step.dialogue_id)
+	assert_eq(said, [&"pewter_gym_liam_before", &"pewter_gym_liam_defeated"]
+		as Array[StringName], "avant, puis « D'accord… Tu es prêt. » à la victoire")
 	assert_eq(liam.facing, Vector2i.RIGHT)
 	assert_false(roster.get_spec(&"brock").is_trainer(), "Pierre : on vient lui parler")
 

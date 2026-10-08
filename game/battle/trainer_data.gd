@@ -38,6 +38,10 @@ var start_message: bool = true
 var team: Array[TrainerSlot] = []
 ## Équipe selon le starter du joueur (combats du rival, comme Rouge/Bleu).
 var team_by_starter: Dictionary[StringName, Array] = {}
+## Carte de présentation d'un Champion (jalon 10, jalon-10.md §2.7 : bloc « card ») : nom
+## (« PIERRE ») et titre (« Champion d'Arène d'Argenta ») ; vides = pas de carte.
+var card_name: String = ""
+var card_title: String = ""
 ## Fichier d'origine (messages d'erreur).
 var source: String = ""
 
@@ -59,6 +63,11 @@ func prize_for(last_level: int) -> int:
 	if prize_money > 0:
 		return prize_money
 	return prize_per_level * maxi(last_level, 0)
+
+
+## Vrai si le Dresseur a une carte de présentation (étape de scène « champion_card »).
+func has_card() -> bool:
+	return not card_name.is_empty() and not card_title.is_empty()
 
 
 ## IA du dresseur.

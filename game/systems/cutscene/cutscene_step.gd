@@ -64,17 +64,24 @@ extends RefCounted
 ## Jalon 9 (jalon-09.md §2.4.4), Dresseurs :
 ## - [constant Kind.EMOTE] : bulle [member emote] (« ! », [constant EMOTE_KINDS]) au-dessus du
 ##   PNJ [member actor] ([method Npc.show_emote]) ; la scène attend sa fin.
+## Jalon 10 (jalon-10.md §2.7, §2.8), Champions et badges :
+## - [constant Kind.CHAMPION_CARD] : carte de présentation du Dresseur [member trainer_id]
+##   (son bloc « card » de `data/trainers/`) ; la scène attend qu'elle disparaisse ;
+## - [constant Kind.BADGE] : remise du badge [member badge_id] (`data/badges.json`) : drapeau du
+##   badge, légende « BADGE ROCHE » (tenue courte) avec une vibration légère, Grand moment
+##   « badge » (une seule fois par badge) ; la scène attend la fin de la légende.
 
 ## Nouvelles valeurs en fin d'enum (ordre de [constant TYPE_KEYS]).
 enum Kind {
 	WAIT, DIALOGUE, FACE, SET_FLAGS, SPAWN, MOVE, CHANGE_MAP, HOP, LEAN, DESPAWN, BATTLE, GIVE,
-	CAPTION, TAKE, SCARE, WAKE_UP, REACT, EMOTE,
+	CAPTION, TAKE, SCARE, WAKE_UP, REACT, EMOTE, CHAMPION_CARD, BADGE,
 }
 
 ## Clé de type de chaque étape dans les fichiers, dans l'ordre de [enum Kind].
 const TYPE_KEYS: Array[String] = [
 	"wait", "dialogue", "face", "set", "spawn", "move", "change_map", "hop", "lean",
 	"despawn", "battle", "give", "caption", "take", "scare", "wake_up", "react", "emote",
+	"champion_card", "badge",
 ]
 ## Bulles d'une étape « emote » (clé « kind ») : le « ! » du Dresseur qui repère le joueur.
 const EMOTE_KINDS: Array[StringName] = [&"exclamation"]
@@ -104,7 +111,8 @@ var background: bool = false
 var map_id: StringName = &""
 var spawn: StringName = &""
 var facing: Vector2i = Vector2i.ZERO
-## Étape « battle » : dresseur, PNJ Pokémon qui combattent, drapeaux selon l'issue.
+## Étape « battle » (et « champion_card » : le Dresseur présenté) : dresseur, PNJ Pokémon qui
+## combattent, drapeaux selon l'issue.
 var trainer_id: StringName = &""
 var player_pokemon: StringName = &""
 var foe_pokemon: StringName = &""
@@ -118,6 +126,8 @@ var found: bool = false
 var text: String = ""
 ## Étape « emote » : bulle affichée ([constant EMOTE_KINDS]).
 var emote: StringName = &""
+## Étape « badge » : badge remis (identifiant de `data/badges.json`, « boulder »).
+var badge_id: StringName = &""
 ## Conditions de l'étape (toutes levées / aucune levée), vides = toujours jouée.
 var if_flags: Array[StringName] = []
 var unless_flags: Array[StringName] = []
@@ -204,6 +214,7 @@ func copy() -> CutsceneStep:
 	other.found = found
 	other.text = text
 	other.emote = emote
+	other.badge_id = badge_id
 	other.if_flags = if_flags.duplicate()
 	other.unless_flags = unless_flags.duplicate()
 	return other

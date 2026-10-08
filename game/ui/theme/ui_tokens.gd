@@ -1632,3 +1632,9 @@ const TRAINER_BUBBLE_LINE_GAP := 4
 const TRAINER_BUBBLE_OFFSET := 12
 const TRAINER_BUBBLE_SLIDE := 16
 const TRAINER_BUBBLE_FADE := 0.16
+
+## Remise d'un badge (jalon 10, T9 ; dossier 12 §13, arbitrage 11) : « BADGE ROCHE » par la
+## légende posée sur le monde (WorldCaption, comme « POKÉDEX ACTIVÉ »), tenue courte, et une
+## vibration légère à son apparition. Aucun toast.
+const BADGE_CAPTION_HOLD := 2.0
+const HAPTIC_BADGE_MS := 40

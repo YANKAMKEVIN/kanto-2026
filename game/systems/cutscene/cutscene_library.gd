@@ -81,6 +81,11 @@ extends RefCounted
 ## Jalon 9 (jalon-09.md §2.4.4) :
 ## - emote : PNJ (ou alias, pas « player ») avec « kind » obligatoire
 ##   ([constant CutsceneStep.EMOTE_KINDS] : « exclamation ») ; la scène attend la fin de la bulle.
+## Jalon 10 (jalon-10.md §2.7, §2.8) :
+## - champion_card : identifiant de dresseur (data/trainers/) dont le bloc « card » est présenté ;
+## - badge : identifiant de badge (data/badges.json, « boulder »).
+## Ni l'un ni l'autre n'est vérifié ici (tests de données : [method get_card_trainer_ids],
+## [method get_badge_ids]).
 ## Acteur = « player », identifiant d'un PNJ de la carte courante, ou **alias** « $nom »
 ## (forme $[a-z_]+, [method CutsceneStep.is_alias]) : PNJ choisi par le code qui lance la
 ## scène (CutsceneDirector.play(id, alias)), résolu au début de chaque étape. Les alias
@@ -100,7 +105,7 @@ const _EXTRA_KEYS: Array[Array] = [
 	["path", "to", "run", "follower", "keep_facing", "optional", "background"],
 	["at", "facing"], ["to"],
 	["to"], [], ["player_pokemon", "foe_pokemon", "win", "lose"], ["count", "found"],
-	[], ["count"], [], [], [], ["kind"],
+	[], ["count"], [], [], [], ["kind"], [], [],
 ]
 ## Conditions permises sur toute étape sauf spawn.
 const _CONDITION_KEYS: Array[String] = ["if", "unless"]
@@ -217,6 +222,25 @@ func get_trainer_ids() -> Array[StringName]:
 	for step: CutsceneStep in _all_steps():
 		if step.kind == CutsceneStep.Kind.BATTLE:
 			found[step.trainer_id] = true
+	return _sorted_keys(found)
+
+
+## Dresseurs présentés par au moins une étape « champion_card » (tests de données : chacun a
+## un bloc « card »).
+func get_card_trainer_ids() -> Array[StringName]:
+	var found: Dictionary[StringName, bool] = {}
+	for step: CutsceneStep in _all_steps():
+		if step.kind == CutsceneStep.Kind.CHAMPION_CARD:
+			found[step.trainer_id] = true
+	return _sorted_keys(found)
+
+
+## Badges remis par au moins une étape « badge » (tests de données).
+func get_badge_ids() -> Array[StringName]:
+	var found: Dictionary[StringName, bool] = {}
+	for step: CutsceneStep in _all_steps():
+		if step.kind == CutsceneStep.Kind.BADGE:
+			found[step.badge_id] = true
 	return _sorted_keys(found)
 
 
@@ -415,6 +439,12 @@ func _parse_step(value: Variant, where: String) -> CutsceneStep:
 					CutsceneStep.EMOTE_KINDS))])
 			else:
 				step.emote = StringName(emote)
+		CutsceneStep.Kind.CHAMPION_CARD:
+			ok = _read_id(main, where + " champion_card", func(v: StringName) -> void:
+				step.trainer_id = v) and ok
+		CutsceneStep.Kind.BADGE:
+			ok = _read_id(main, where + " badge", func(v: StringName) -> void:
+				step.badge_id = v) and ok
 	return step if ok else null
 
 

@@ -615,6 +615,23 @@ func test_invalid_trainer_blocks_are_rejected() -> void:
 	assert_string_contains("\n".join(errors), "« look » interdit sur un Dresseur")
 
 
+## Jalon 10 (jalon-10.md §2.5) : réplique « vaincu » facultative du bloc « trainer ».
+func test_trainer_defeated_line_is_optional() -> void:
+	var errors := PackedStringArray()
+	assert_eq(NpcRoster.parse_entry(_THEO, errors).defeated_dialogue, &"", "absente : &\"\"")
+	var block: Dictionary = (_THEO["trainer"] as Dictionary).duplicate()
+	block["defeated"] = "forest_scout_theo_defeated"
+	var spec := NpcRoster.parse_entry(_theo_with({"trainer": block}), errors)
+	assert_true(errors.is_empty(), "\n".join(errors))
+	assert_eq(spec.defeated_dialogue, &"forest_scout_theo_defeated")
+	assert_eq(spec.dialogue, &"forest_scout_theo_after", "la réplique « après » reste")
+	for bad: Variant in ["", 3, ["x"]]:
+		block["defeated"] = bad
+		errors.clear()
+		assert_null(NpcRoster.parse_entry(_theo_with({"trainer": block}), errors), str(bad))
+		assert_string_contains("\n".join(errors), "« trainer.defeated » doit être un identifiant")
+
+
 ## Données réelles : chaque Dresseur posé sur une carte existe dans data/trainers/ et ses deux
 ## répliques dans data/dialogues/ (aucun fichier n'en pose avant le T12 : vrai à vide).
 func test_real_trainers_exist_with_their_dialogues() -> void:
@@ -634,3 +651,6 @@ func test_real_trainers_exist_with_their_dialogues() -> void:
 			assert_not_null(trainers.get_trainer(spec.trainer_id), "%s : %s" % [file, spec.id])
 			for dialogue: StringName in [spec.before_dialogue, spec.dialogue]:
 				assert_true(dialogues.has_dialogue(dialogue), "%s : %s" % [file, dialogue])
+			if not spec.defeated_dialogue.is_empty():
+				assert_true(dialogues.has_dialogue(spec.defeated_dialogue), "%s : %s" % [file,
+					spec.defeated_dialogue])

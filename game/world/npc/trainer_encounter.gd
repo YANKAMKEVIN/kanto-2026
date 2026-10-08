@@ -10,7 +10,9 @@ extends RefCounted
 ## 3. le joueur et le Dresseur se font face ;
 ## 4. réplique « avant » ;
 ## 5. combat, `beaten_<id>` levé à la victoire ;
-## 6. réplique « après », tout de suite, si le Dresseur est battu (décision de Kevin, Q-3) ;
+## 6. réplique « après », tout de suite, si le Dresseur est battu (décision de Kevin, Q-3) ; s'il
+##    a une réplique « vaincu » ([member NpcSpec.defeated_dialogue], jalon 10 §2.5), c'est elle,
+##    dite cette fois seulement (la réplique « après » reste celle qu'on entend en lui reparlant) ;
 ## 7. sinon (défaite du joueur), réveil au dernier point de repos : rien n'est retiré, le
 ##    Dresseur n'est pas battu et redéfiera (dossier 10 §15).
 ## Défié à la parole (distance 0) : ni « ! » ni approche, étapes 3 à 7.
@@ -66,7 +68,8 @@ static func build(npc_id: StringName, spec: NpcSpec, distance: int) -> CutsceneV
 	battle.win_flags = [beaten]
 	steps.append(battle)
 	var after := _step(CutsceneStep.Kind.DIALOGUE)
-	after.dialogue_id = spec.dialogue
+	after.dialogue_id = spec.dialogue if spec.defeated_dialogue.is_empty() \
+		else spec.defeated_dialogue
 	after.if_flags = [beaten]
 	steps.append(after)
 	var wake_up := _step(CutsceneStep.Kind.WAKE_UP)

@@ -4,7 +4,10 @@
 	},
 	"camper_liam": {
 		"cell": [2, 6], "facing": "right", "sprite": "camper", "dialogue": "pewter_gym_liam_after",
-		"trainer": { "id": "pewter_gym_liam", "sight": 5, "before": "pewter_gym_liam_before" }
+		"trainer": {
+			"id": "pewter_gym_liam", "sight": 5, "before": "pewter_gym_liam_before",
+			"defeated": "pewter_gym_liam_defeated"
+		}
 	},
 	"gym_guide": {
 		"cell": [5, 9], "facing": "up", "sprite": "gym_guide", "dialogue": "pewter_gym_guide"
