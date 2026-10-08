@@ -41,17 +41,12 @@ const GATE_GUARDS: Array[StringName] = [&"forest_gate_north_guard", &"forest_gat
 ## attente de leurs cartes (T11 Route 2 nord et Argenta, T13 intérieurs, T14 la vie, T17
 ## l'Arène) ; `pewter_gym_liam_defeated` attend aussi la clé « defeated » du bloc « trainer »
 ## (T9). À retirer carte par carte en ajoutant la carte à [constant MAPS].
+## T13 : les intérieurs d'Argenta sont dans [constant MAPS] (Musée, maisons, Arène : retirés).
 const UNUSED_YET: Array[StringName] = [
 	&"route_2_north_ball_1", &"route_2_north_mountaineer", &"route_2_north_rockslide",
-	&"route_2_north_sign", &"pewter_city_sign", &"pewter_gym_brock", &"pewter_gym_brock_badge",
-	&"pewter_gym_brock_intro", &"pewter_gym_brock_lost", &"pewter_gym_brock_resume",
-	&"pewter_gym_brock_won", &"pewter_gym_guide", &"pewter_gym_liam_after", &"pewter_gym_liam_before",
-	&"pewter_gym_liam_defeated", &"pewter_gym_sign", &"pewter_house_mason_kid",
-	&"pewter_house_mason_partner", &"pewter_house_researcher", &"pewter_kid", &"pewter_lass",
-	&"pewter_museum_clerk", &"pewter_museum_dome", &"pewter_museum_helix", &"pewter_museum_journal",
-	&"pewter_museum_lab_door", &"pewter_museum_lab_sign", &"pewter_museum_moon_stone",
-	&"pewter_museum_researcher", &"pewter_museum_researcher_f", &"pewter_museum_science_panel",
-	&"pewter_museum_sign", &"pewter_old_man", &"pewter_route_3_guard",
+	&"route_2_north_sign", &"pewter_city_sign",
+	&"pewter_gym_liam_defeated", &"pewter_gym_sign", &"pewter_kid", &"pewter_lass",
+	&"pewter_museum_clerk", &"pewter_museum_sign", &"pewter_old_man", &"pewter_route_3_guard",
 	&"pewter_route_3_guard_cleared", &"pewter_route_3_guard_rule", &"pewter_stonemason",
 	&"pewter_visitor",
 ]
@@ -71,6 +66,9 @@ const MAPS: Array[StringName] = [
 	&"qa_forest_systems",
 	# Jalon 9 (T19) : la Forêt de Jade et ses deux postes.
 	&"viridian_forest", &"viridian_forest_gate_south", &"viridian_forest_gate_north",
+	# Jalon 10 (T13) : les intérieurs d'Argenta.
+	&"pewter_center", &"pewter_mart", &"pewter_museum", &"pewter_museum_science", &"pewter_gym",
+	&"pewter_house_mason", &"pewter_house_researcher",
 ]
 ## Lot de textes validé par Kevin le 2026-10-06 (anciens brouillons : panneau, observations,
 ## soin de Maman, terminal du Stockage, portes de Jadielle…) : source des textes hors dossiers.

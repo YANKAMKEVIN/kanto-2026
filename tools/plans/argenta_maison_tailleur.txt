@@ -1,0 +1,37 @@
+# Maison du tailleur de pierre, Argenta (pewter_house_mason) — grille fonctionnelle (jalon 10 T13,
+# défauts de la règle 4 ; dossier 12 §19, arbitrage 14 : une seule enveloppe peinte
+# INT_MAISON_ARGENTA_COQUE, deux mobiliers). Convention des intérieurs de
+# tools/build_painted_interiors.gd (15 × 10, mur du fond sur 3 rangées, colonnes 0 et 14,
+# avant-dernière rangée bloquée sauf le paillasson, dernière rangée). Mobilier de Bourg Palette.
+# Aucune récompense : la maison rend Argenta habitée. Habitants : sa compagne, un enfant.
+#
+# Légende :
+#   K mur (bloqué)          . sol (praticable)
+#   X sortie vers Argenta (praticable : paillasson, PUSH ↓ ; porte peinte ≈ 2,5 cases centrée)
+#   F réfrigérateur (1, 3)   C plan de travail (2..4, 3)   H cuisinière (5, 3)
+#   T table à manger (2..4, 5..6)
+#   S canapé (10..12, 3)     b table basse (10..11, 5)   d lampe (13, 3)
+#   p porte-manteau (5, 7)   x plante (1, 7), (13, 7)
+#   a compagne (3, 4), devant le plan de travail     e enfant (12, 6), au salon
+#
+# Format : section GRILLE (« NN » + espace + 15 caractères par rangée), puis POSITIONS.
+
+GRILLE 15 10
+00 KKKKKKKKKKKKKKK
+01 KKKKKKKKKKKKKKK
+02 KKKKKKKKKKKKKKK
+03 KFCCCH....SSSdK
+04 K..a..........K
+05 K.TTT.....bb..K
+06 K.TTT.......e.K
+07 Kx...p.......xK
+08 KKKKKKXXXKKKKKK
+09 KKKKKKKKKKKKKKK
+FIN
+
+POSITIONS
+sortie              warp           6..8,8       libre   # PUSH ↓ → pewter_city, from_house_mason
+entree              spawn          7,8          libre   # spawn « entrance », tourné ↑
+compagne            pnj            3,4          bloque  # maya, tournée ↑ (elle cuisine)
+enfant              pnj            12,6         bloque  # kid, regarde autour de lui
+FIN

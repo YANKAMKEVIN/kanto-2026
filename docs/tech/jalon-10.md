@@ -419,6 +419,7 @@ Branche d'intégration **`jalon-10`** depuis `main` (dans une copie dédiée), u
 
 #### T13 — constructeur-monde : les intérieurs — **après la fusion du J9**
 - §2.2. Tests : `test_pewter_interiors` (tailles, sorties, spawns, Centre et Boutique = définitions de Jadielle hors identifiants, Musée : passage entre salles et laboratoire fermé, Arène : critères du §1.3 sur la vraie scène), `test_map_links` (gardes du T11 retirées), `test_rest_point_data`. **CA** : tests verts, captures relues ; Jadielle non régénérée (diff nul sur ses scènes).
+- **Fait (2026-10-08, branche `j10-t13-interieurs`)** : 7 cartes par `build_painted_interiors.gd -- --argenta` (Centre et Boutique = `_pokemon_center` / `_poke_mart`, définitions de Jadielle ; Musée, Arène, maisons relus sur leur grille, clé `plan`) ; grilles des maisons ajoutées ; **Arène : sortie et guide remontés d'une rangée** (la coque peint le mur du bas sur 2 rangées) ; piliers avant remplacés par des rochers bas (ils cachaient Liam). Détail : `etat-projet.md`, « J10 T13 ».
 
 #### T14 — constructeur-monde (+ ui-mobile en relecture) : la vie (10B)
 - §2.10 (arrivée), §2.11 (garde **avant** le badge), §2.12 ; ui-mobile relit PRENDRE, toasts (point de repos « Argenta »), Boutique (Antidote), Carte (zone Argenta, description, services) et Pokédex.

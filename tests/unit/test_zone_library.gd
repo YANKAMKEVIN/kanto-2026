@@ -3,12 +3,9 @@ extends GutTest
 
 const AREAS_PATH := "res://assets/ui/map/kanto_placeholder_areas.json"
 ## Cartes rangées dans une zone avant d'être construites (jalon 10, T8 : données prêtes) : la Route
-## 2 nord et Argenta (T11), les intérieurs d'Argenta (T13). À retirer quand leur tâche est
-## fusionnée ; leur existence est vérifiée dès que la scène existe.
-const AWAITING_MAPS: Array[StringName] = [
-	&"route_2_north", &"pewter_city", &"pewter_center", &"pewter_mart", &"pewter_museum",
-	&"pewter_museum_science", &"pewter_gym", &"pewter_house_mason", &"pewter_house_researcher",
-]
+## 2 nord et Argenta (T11), les intérieurs d'Argenta (T13 : construits, retirés). À retirer
+## quand leur tâche est fusionnée ; leur existence est vérifiée dès que la scène existe.
+const AWAITING_MAPS: Array[StringName] = [&"route_2_north", &"pewter_city"]
 
 var _zones: ZoneLibrary
 
