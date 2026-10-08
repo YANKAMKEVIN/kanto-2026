@@ -70,6 +70,13 @@ const LOOKS: Dictionary = {
 	"garde": [CHARACTERS_DIR, "guard", ""],
 	"scout": [CHARACTERS_DIR, "scout", ""],
 	"naturaliste": [CHARACTERS_DIR, "naturalist", ""],
+	# J10 (série 12, Argenta) : Pierre, tailleur, Montagnard, Campeur, guide d'Arène, avec leur
+	# planche d'attente.
+	"pierre": [CHARACTERS_DIR, "brock", ""],
+	"tailleur": [CHARACTERS_DIR, "stonemason", ""],
+	"montagnard": [CHARACTERS_DIR, "mountaineer", ""],
+	"campeur": [CHARACTERS_DIR, "camper", ""],
+	"guide_arene": [CHARACTERS_DIR, "gym_guide", ""],
 	"roucool": [POKEMON_DIR, "pidgey", ""],
 	"rattata": [POKEMON_DIR, "rattata", "rattata_run"],
 	"piafabec": [POKEMON_DIR, "spearow", ""],
@@ -89,6 +96,8 @@ const FIXED_POKEMON: Dictionary = {
 	"aspicot": "weedle",
 	"chrysacier": "metapod",
 	"coconfort": "kakuna",
+	# J10 (série 12) : le Racaillou du tailleur.
+	"racaillou": "geodude",
 }
 ## Colonnes de la feuille 6 × 1 : repos et réaction de chaque direction (droite = miroir).
 const FIXED_COLUMNS := {

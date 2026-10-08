@@ -34,6 +34,8 @@ Usage :
   tools/art/serie12.py --manifeste             ajoute les entrées de la série 12 en fin de
                                                tools/art/manifeste.json (T10, après le J9 et la
                                                validation des images ; NE PAS lancer avant)
+  tools/art/serie12.py --controle [sortie.png] planche des assets PRÉPARÉS à l'échelle du jeu (T10 ;
+                                               défaut build/captures/jalon10_assets/serie12_controle.png)
   tools/art/serie12.py [IDENTIFIANT ...]       génère avec Codex, en deux vagues (sans argument :
                                                la série, sans les conditionnels ; --refs d'abord)
 """
@@ -45,14 +47,14 @@ import sys
 from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 
-from PIL import Image, ImageDraw
+from PIL import Image
 
 ICI = Path(__file__).resolve().parent
 sys.path.insert(0, str(ICI))
 from plan_check_argenta import EMPRISES  # noqa: E402
 from serie06 import ADN, LUMIERE_NE, OBJET_FIN, RACINE  # noqa: E402
-from serie10 import (CASE_PLANCHE, FOND, _asset, _cellule_perso, _echelle, _fin_de_liste,  # noqa: E402
-	_lancer, _miroir, _Planche, _police, _teinter)
+from serie10 import (CASE_PLANCHE, _asset, _cellule_perso, _echelle, _fin_de_liste,  # noqa: E402
+	_lancer, _miroir, _Planche, _teinter)
 
 ART = Path(os.environ.get("ART", RACINE / "build" / "art"))
 VUE = RACINE / "docs/design/reference/argenta-vue-generale-v1.png"
@@ -696,18 +698,6 @@ def manifeste() -> None:
 
 # --- Planche de contrôle (sans Codex) ---------------------------------------------------
 
-class _PlancheAr(_Planche):
-	"""Planche de la série 10 avec le titre de la série 12."""
-
-	def rendre(self) -> Image.Image:
-		image = super().rendre()
-		d = ImageDraw.Draw(image)
-		d.rectangle((0, 0, image.width, 80), fill=FOND + (255,))
-		d.text((24, 24), "Argenta et Route 2 nord — kit de la série 12 (T1, jalon 10) : 1 case = 48 px "
-			"sur cette planche ; héros à l'échelle", font=_police(34), fill=(255, 255, 255))
-		return image
-
-
 def _ref(nom: str, hauteur: int) -> Image.Image:
 	image = Image.open(VUE).convert("RGBA").crop(REFS[nom])
 	return _echelle(image, hauteur / image.height)
@@ -721,7 +711,8 @@ def planche(sortie: Path) -> Path:
 	heros = (_cellule_perso("assets/sprites/characters/painted/heros_sheet.png"), "héros (échelle)")
 	w = "assets/world/"
 	c = "assets/sprites/characters/painted/"
-	p = _PlancheAr(2600)
+	p = _Planche(2600, "Argenta et Route 2 nord — kit de la série 12 (T1, jalon 10) : 1 case = 48 px "
+		"sur cette planche ; héros à l'échelle")
 
 	p.section("1. RÉUTILISÉS TELS QUELS (déjà dans le jeu)", [
 		heros,
@@ -810,6 +801,81 @@ def planche(sortie: Path) -> Path:
 	return sortie
 
 
+def _jeu(relatif: str, facteur: float = 1.0) -> Image.Image:
+	"""Image préparée du jeu, à 1:1 (96 px par case) sauf `facteur`."""
+	image = Image.open(RACINE / relatif).convert("RGBA")
+	return image if facteur == 1.0 else _echelle(image, facteur)
+
+
+def _cellules(relatif: str, colonnes: int, lignes: int, choix: list[tuple[int, int]]) -> Image.Image:
+	"""Cellules (colonne, ligne) d'une feuille du jeu, côte à côte, à 1:1."""
+	feuille = Image.open(RACINE / relatif).convert("RGBA")
+	largeur, hauteur = feuille.width // colonnes, feuille.height // lignes
+	bande = Image.new("RGBA", (largeur * len(choix), hauteur), (0, 0, 0, 0))
+	for i, (colonne, ligne) in enumerate(choix):
+		bande.alpha_composite(feuille.crop((colonne * largeur, ligne * hauteur,
+			(colonne + 1) * largeur, (ligne + 1) * hauteur)), (i * largeur, 0))
+	return bande
+
+
+def controle(sortie: Path) -> Path:
+	"""Planche de contrôle du T10 : les assets **préparés** (assets/), à l'échelle du jeu
+	(1:1, 1 case = 96 px ; enveloppes des pièces à 1:2), le héros à côté de chaque groupe."""
+	c = "assets/sprites/characters/painted/"
+	b = "assets/world/buildings/"
+	i = "assets/world/interiors/"
+	heros = (_cellules(f"{c}heros_sheet.png", 4, 4, [(0, 0)]), "héros 128 px")
+	p = _Planche(4300, "Série 12 préparée (T10, jalon 10) : assets du jeu à 1:1, 1 case = 96 px "
+		"(enveloppes à 1:2) ; héros à l'échelle")
+	p.section("1. BÂTIMENTS (largeur = emprise de la grille)", [
+		heros,
+		(_jeu(f"{b}bldg_musee_argenta_01.png"), "bldg_musee_argenta_01\n12 × 9, porte (−1, 0), (0, 0)"),
+		(_jeu(f"{b}bldg_arene_argenta_01.png"), "bldg_arene_argenta_01\n12 × 7, porte (−1, 0), (0, 0)"),
+		(_jeu(f"{b}bldg_maison_argenta_01.png"), "bldg_maison_argenta_01\n7 × 6, porte (0, 0)"),
+		(_jeu(f"{b}bldg_poste_foret_nord_01.png"), "bldg_poste_foret_nord_01\n7 × 3, porte (0, −2), sol"),
+	], (40, 90, 50))
+	p.section("2. RELIEF ET OBJETS", [
+		heros,
+		*[(_jeu(f"assets/world/relief/relief_paroi_0{n}.png"), f"relief_paroi_0{n}\n288 px, sol")
+			for n in (1, 2, 3, 4)],
+		(_jeu("assets/world/props/prop_rocher_place_01.png"), "prop_rocher_place_01\n3 × 3"),
+		(_jeu("assets/world/props/prop_blocs_tailles_01.png"), "prop_blocs_tailles_01\n3 × 2"),
+		(_cellules("assets/sprites/pokemon/painted/racaillou_sheet.png", 6, 1,
+			[(n, 0) for n in range(6)]), "racaillou (geodude), Pokémon fixe 56 px :\nface, réaction, "
+			"gauche, réaction, droite, réaction"),
+	], (60, 80, 110))
+	p.section("3. PERSONNAGES : marche (face, gauche, droite, dos) puis attente", [
+		heros,
+		*[(_cellules(f"{c}{nom}_sheet.png", 4, 4, [(0, 0), (1, 1), (1, 2), (0, 3)]),
+			f"{nom} ({ident}) {h} px\nmarche") for nom, ident, h in PERSONNAGES_JEU],
+		*[(_cellules(f"{c}{nom}_idle_sheet.png", 4, 1, [(n, 0) for n in range(4)]),
+			f"{nom}_idle\nattente") for nom, _, _ in PERSONNAGES_JEU],
+	], (130, 70, 40))
+	p.section("4. MEUBLES DES INTÉRIEURS (1:1)", [
+		heros,
+		*[(_jeu(f"{i}{ident}.png"), f"{ident}\n{texte}") for ident, texte in (
+			("int_vitrine_dome_01", "2 × 1"), ("int_vitrine_nautile_01", "2 × 1"),
+			("int_vitrine_pierre_lune_01", "1 × 1"), ("int_vitrine_journal_01", "2 × 1"),
+			("int_porte_labo_01", "3, dans l'arche"), ("int_panneau_expo_01", "2 × 1"),
+			("int_pilier_roche_01", "2 × 1"), ("int_rochers_bas_01", "2 × 2"),
+			("int_rochers_bas_02", "1 × 1"))],
+	], (110, 90, 40))
+	p.section("5. ENVELOPPES DES PIÈCES (1:2)", [
+		(_jeu(f"{i}int_musee_coque.png", 0.5), "int_musee_coque 15 × 10"),
+		(_jeu(f"{i}int_arene_coque.png", 0.5), "int_arene_coque 15 × 11"),
+		(_jeu(f"{i}int_maison_argenta_coque.png", 0.5), "int_maison_argenta_coque 15 × 10"),
+	], (120, 40, 40))
+	sortie.parent.mkdir(parents=True, exist_ok=True)
+	p.rendre().convert("RGB").save(sortie, optimize=True)
+	return sortie
+
+
+## Planches de personnages préparées : (planche, identifiant de données, hauteur de fiche).
+PERSONNAGES_JEU = [("pierre", "brock", 128), ("tailleur", "stonemason", 128),
+	("montagnard", "mountaineer", 132), ("campeur", "camper", 112),
+	("guide_arene", "gym_guide", 128)]
+
+
 if __name__ == "__main__":
 	arguments = sys.argv[1:]
 	if "--prompts" in arguments:
@@ -823,5 +889,9 @@ if __name__ == "__main__":
 		print(planche(Path(autres[0]) if autres else RACINE / "build" / "art" / "AR_KIT_v1.png"))
 	elif "--manifeste" in arguments:
 		manifeste()
+	elif "--controle" in arguments:
+		autres = [a for a in arguments if a != "--controle"]
+		print(controle(Path(autres[0]) if autres else
+			RACINE / "build" / "captures" / "jalon10_assets" / "serie12_controle.png"))
 	else:
 		generer(set(arguments))
