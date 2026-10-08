@@ -91,3 +91,22 @@ func test_not_a_trainer() -> void:
 	assert_push_error("n'est pas un Dresseur")
 	assert_null(TrainerEncounter.build(&"kid", null, 2))
 	assert_push_error_count(2)
+
+
+## Jalon 10 (jalon-10.md §2.5) : avec une réplique « vaincu » (Campeur Liam), c'est elle qui est
+## dite juste après la victoire, aux mêmes conditions ; la réplique « après » reste celle du PNJ.
+## Sans elle, la séquence du jalon 9 ne change pas.
+func test_defeated_line_replaces_the_after_line_once() -> void:
+	var spec := _theo()
+	spec.defeated_dialogue = &"forest_scout_theo_defeated"
+	for distance: int in [3, TrainerEncounter.TALKED_TO]:
+		var variant := TrainerEncounter.build(&"scout_theo", spec, distance)
+		var after := variant.steps[variant.steps.size() - 2]
+		assert_eq(after.kind, K.DIALOGUE)
+		assert_eq(after.dialogue_id, &"forest_scout_theo_defeated", str(distance))
+		assert_eq(after.if_flags, [&"beaten_forest_scout_theo"] as Array[StringName])
+		assert_eq((variant.steps.back() as CutsceneStep).kind, K.WAKE_UP)
+	assert_eq(spec.dialogue, &"forest_scout_theo_after", "réplique permanente inchangée")
+	var plain := TrainerEncounter.build(&"scout_theo", _theo(), 3)
+	assert_eq(plain.steps[plain.steps.size() - 2].dialogue_id, &"forest_scout_theo_after",
+		"sans « defeated » : comportement du jalon 9")

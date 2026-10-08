@@ -8,9 +8,11 @@
 					{ "dialogue": "pewter_gym_brock_intro", "unless": ["brock_met"] },
 					{ "dialogue": "pewter_gym_brock_resume", "if": ["brock_met"] },
 					{ "set": ["brock_met"] },
+					{ "champion_card": "pewter_gym_brock" },
 					{ "battle": "pewter_gym_brock", "win": ["badge_boulder"] },
 					{ "wait": 0.6, "if": ["badge_boulder"] },
 					{ "dialogue": "pewter_gym_brock_won", "if": ["badge_boulder"] },
+					{ "badge": "boulder", "if": ["badge_boulder"] },
 					{ "dialogue": "pewter_gym_brock_badge", "if": ["badge_boulder"] },
 					{ "dialogue": "pewter_gym_brock_lost", "unless": ["badge_boulder"] },
 					{ "wake_up": true, "unless": ["badge_boulder"] }

@@ -8,6 +8,7 @@
 		"name": "Pierre", "ai": "smart",
 		"can_lose": false, "heal_after": false, "gives_exp": true, "prize_money": 1300,
 		"start_message": false, "end_message": true, "bag": true,
+		"card": { "name": "PIERRE", "title": "Champion d'Arène d'Argenta" },
 		"team": [
 			{ "species": "geodude", "level": 12, "moves": ["tackle", "defense_curl"] },
 			{

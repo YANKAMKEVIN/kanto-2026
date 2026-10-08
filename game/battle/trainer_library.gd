@@ -25,17 +25,20 @@ extends RefCounted
 ## de team_by_starter) sont vérifiées contre [PokemonData]. « moves » (facultatif, jalon 10
 ## §2.4) : 1 à 4 capacités distinctes connues de [PokemonData], dans l'ordre, sans contrôle
 ## « apprenable » ; absent = capacités de Rouge/Bleu au niveau.
+## « card » (facultatif, jalon 10 §2.7) : { "name", "title" }, deux textes non vides, la carte
+## de présentation d'un Champion ([member TrainerData.card_name], [member TrainerData.card_title]).
 
 const DATA_DIR: String = "res://data/trainers/"
 
 const _KEYS: Array[String] = [
 	"name", "ai", "can_lose", "heal_after", "gives_exp", "prize_money", "end_message",
-	"start_message", "team", "team_by_starter", "bag", "prize_per_level",
+	"start_message", "team", "team_by_starter", "bag", "prize_per_level", "card",
 ]
 const _REQUIRED: Array[String] = [
 	"name", "ai", "can_lose", "heal_after", "gives_exp", "prize_money",
 ]
 const _SLOT_KEYS: Array[String] = ["species", "level", "moves"]
+const _CARD_KEYS: Array[String] = ["name", "title"]
 
 var _pokemon: PokemonData
 var _trainers: Dictionary[StringName, TrainerData] = {}
@@ -190,11 +193,32 @@ func _parse(value: Variant, where: String) -> TrainerData:
 				trainer.set(key, int(money))
 	if trainer.prize_money > 0 and trainer.prize_per_level > 0:
 		ok = _fail("%s : « prize_money » et « prize_per_level » sont exclusifs" % where)
+	if entry.has("card"):
+		ok = _read_card(entry["card"], trainer, where) and ok
 	if entry.has("team"):
 		ok = _read_team(entry["team"], trainer.team, where + " team") and ok
 	if entry.has("team_by_starter"):
 		ok = _read_teams_by_starter(entry["team_by_starter"], trainer, where) and ok
 	return trainer if ok else null
+
+
+## Lit « card » : { "name", "title" }, deux textes non vides, aucune autre clé.
+func _read_card(value: Variant, trainer: TrainerData, where: String) -> bool:
+	if not value is Dictionary:
+		return _fail("%s : « card » doit être { name, title }" % where)
+	var card: Dictionary = value
+	var ok := true
+	for key: Variant in card:
+		if not _CARD_KEYS.has(str(key)):
+			ok = _fail("%s card : clé inconnue « %s »" % [where, key])
+	for key: String in _CARD_KEYS:
+		var text: Variant = card.get(key)
+		if not text is String or (text as String).strip_edges().is_empty():
+			ok = _fail("%s card : « %s » doit être un texte non vide" % [where, key])
+	if ok:
+		trainer.card_name = card["name"]
+		trainer.card_title = card["title"]
+	return ok
 
 
 func _read_teams_by_starter(value: Variant, trainer: TrainerData, where: String) -> bool:

@@ -24,7 +24,8 @@ extends GutTest
 ## carte, comme la Potion de la Route 1), posés par `tools/build_route_2.gd` (T5).
 ## Jalon 10 (T8) : arrivée à Argenta et garde de la Route 3 (déclencheurs d'Argenta, en attente de
 ## la carte du T11 : simulés sur les PNJ de son fichier), Potion de la Route 2 nord et scène de
-## Pierre (lancées par le dialogue de leur PNJ) ; étapes `champion_card` et `badge` au T9.
+## Pierre (lancées par le dialogue de leur PNJ) ; étapes `champion_card` et `badge` au T9 (la
+## simulation vérifie le Dresseur et sa carte, le badge et son drapeau).
 
 const MAPS: Array[StringName] = [
 	&"player_house_2f", &"player_house_1f", &"rival_house", &"oak_lab", &"pallet_town",
@@ -110,6 +111,7 @@ var _offer: StarterOffer
 var _pokemon: PokemonData
 var _trainers: TrainerLibrary
 var _items: ItemLibrary
+var _badges: BadgeLibrary
 ## Scène → cartes de ses déclencheurs.
 var _triggered_on: Dictionary[StringName, Array] = {}
 
@@ -127,6 +129,8 @@ func before_all() -> void:
 	_trainers.load_dir()
 	_items = ItemLibrary.new()
 	_items.load_dir()
+	_badges = BadgeLibrary.new()
+	_badges.load_file()
 	for map_id: StringName in MAPS:
 		var map := (load(MapCatalog.scene_path(map_id)) as PackedScene).instantiate()
 		for point: Node in map.get_node(^"Triggers").get_children():
@@ -212,6 +216,30 @@ func test_every_trainer_and_item_step_exists() -> void:
 	assert_false(item_ids.is_empty(), "au moins les Poké Balls")
 	for id: StringName in item_ids:
 		assert_true(_items.has_item(id), "objet « %s » chargé" % id)
+
+
+## Jalon 10 (T9) : chaque Dresseur présenté par une carte en a une, chaque badge remis existe, et
+## l'étape « badge » d'une scène suit le combat qui lève déjà son drapeau (« win »).
+func test_every_champion_card_and_badge_step_exists() -> void:
+	assert_eq(_cutscenes.get_card_trainer_ids(), [&"pewter_gym_brock"] as Array[StringName])
+	for id: StringName in _cutscenes.get_card_trainer_ids():
+		var trainer := _trainers.get_trainer(id)
+		assert_true(trainer != null and trainer.has_card(), "« %s » a une carte" % id)
+	assert_eq(_cutscenes.get_badge_ids(), [&"boulder"] as Array[StringName])
+	for id: StringName in _cutscenes.get_badge_ids():
+		assert_true(_badges.has_badge(id), "badge « %s » connu" % id)
+	for id: StringName in _cutscenes.get_ids():
+		for variant: CutsceneVariant in _cutscenes.get_cutscene(id).variants:
+			var won: Array[StringName] = []
+			for step: CutsceneStep in variant.steps:
+				if step.kind == CutsceneStep.Kind.BATTLE:
+					won.append_array(step.win_flags)
+				if step.kind == CutsceneStep.Kind.BADGE:
+					var flag := _badges.flag(step.badge_id)
+					assert_true(won.has(flag), "%s : « %s » levé par le combat d'abord" % [id,
+						flag])
+					assert_eq(step.if_flags, [flag] as Array[StringName],
+						"%s : badge remis seulement après la victoire" % id)
 
 
 ## Jalon 5C.5 (décision de Kevin) : la Potion de la Route 1 est un objet **trouvé** dans le
@@ -596,6 +624,14 @@ func _simulate(label: String, variant: CutsceneVariant, start_map: StringName,
 			CutsceneStep.Kind.GIVE:
 				assert_true(_items.has_item(step.item_id), "%s : objet « %s »" % [where,
 					step.item_id])
+			CutsceneStep.Kind.CHAMPION_CARD:
+				var trainer := _trainers.get_trainer(step.trainer_id)
+				assert_true(trainer != null and trainer.has_card(), "%s : carte de « %s »" % [
+					where, step.trainer_id])
+			CutsceneStep.Kind.BADGE:
+				assert_true(_badges.has_badge(step.badge_id), "%s : badge « %s »" % [where,
+					step.badge_id])
+				flags.set_flag(_badges.flag(step.badge_id))
 			CutsceneStep.Kind.TAKE:
 				assert_true(_items.has_item(step.item_id), "%s : objet « %s »" % [where,
 					step.item_id])

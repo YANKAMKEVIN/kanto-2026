@@ -77,6 +77,8 @@ var _cutscenes := CutsceneLibrary.new()
 var _pokemon := PokemonData.new()
 var _offer := StarterOffer.new()
 var _trainers: TrainerLibrary
+## Badges de Kanto (jalon 10 : étape de scène « badge »).
+var _badges: BadgeLibrary = BadgeLibrary.new()
 var _texts := BattleText.new()
 var _items := ItemLibrary.new()
 var _encounter_library: EncounterLibrary
@@ -192,6 +194,11 @@ func _ready() -> void:
 	# CB.1 : artwork officiel de l'adversaire (numéro) et tailles réelles (Pokédex).
 	_battle_stage.set_species_source(_pokemon, _dex)
 	_cutscenes_node.set_battle_runner(_battle_director)
+	# Jalon 10 (jalon-10.md §2.7, §2.8) : carte de présentation d'un Champion (bloc « card » de son
+	# Dresseur) et remise d'un badge (légende, vibration, Grand moment « badge »).
+	_cutscenes_node.set_trainers(_trainers)
+	_badges.load_file()
+	_cutscenes_node.set_badges(_badges, GameState)
 	_evolutions = EvolutionDirector.new()
 	_evolutions.name = "EvolutionDirector"
 	_evolutions.process_mode = Node.PROCESS_MODE_PAUSABLE
@@ -1141,6 +1148,8 @@ func _apply_settings(s: GameSettings) -> void:
 	if _evolution_screen != null:
 		_evolution_screen.reduce_flashes = s.reduce_flashes
 	_services.reduce_motion = s.reduce_motion
+	# Carte du Champion (jalon 10, T5) : sans glissé, un fondu court.
+	_hud.get_champion_card().reduce_motion = s.reduce_motion
 	_menu_screen.speed_scale = s.menu_speed_scale()
 	Haptics.enabled = s.haptics
 	UiPrefs.apply(s)

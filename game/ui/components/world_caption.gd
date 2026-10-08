@@ -37,8 +37,9 @@ func _ready() -> void:
 
 
 ## Affiche [param caption] (mis en MAJUSCULES) : fondu, tenue, fondu. Déjà visible, le texte
-## change et la tenue repart de zéro, sans nouveau fondu d'apparition sec.
-func show_caption(caption: String) -> void:
+## change et la tenue repart de zéro, sans nouveau fondu d'apparition sec. [param hold] : tenue
+## de cet affichage (s) ; négative = [member hold_duration] (« BADGE ROCHE » : 2 s, jalon 10).
+func show_caption(caption: String, hold: float = -1.0) -> void:
 	text = caption.to_upper()
 	if _tween != null:
 		_tween.kill()
@@ -48,7 +49,7 @@ func show_caption(caption: String) -> void:
 	_tween = create_tween().set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
 	_tween.tween_property(self, ^"modulate:a", 1.0, fade_duration)
 	_tween.tween_callback(caption_shown.emit)
-	_tween.tween_interval(hold_duration)
+	_tween.tween_interval(hold if hold >= 0.0 else hold_duration)
 	_tween.tween_property(self, ^"modulate:a", 0.0, fade_duration).set_ease(Tween.EASE_IN)
 	_tween.tween_callback(_on_hidden)
 
