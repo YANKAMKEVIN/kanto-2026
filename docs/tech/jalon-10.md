@@ -437,6 +437,7 @@ Branche d'intégration **`jalon-10`** depuis `main` (dans une copie dédiée), u
 #### T17 — constructeur-monde : l'Arène sur la carte (10C) — après T9, T13, T16
 - Guide, Liam (bloc `trainer`, vision vérifiée sur la vraie scène), Pierre (dialogue → scène), données finales ; capture `tools/capture_pewter_gym.gd` (entrée : Pierre visible ; carte du Champion ; combat contre Onix).
 - Tests : `test_pewter_gym` (Liam évitable et inévitable selon le chemin, sur la scène avec les PNJ ; approche qui ne ferme rien ; Pierre atteignable ; caméra immobile). **CA** : tests verts, captures relues.
+- **Fait (2026-10-09, branche `j10-t17-arene`)** : sans changement de moteur, de données ni de carte ; `test_pewter_gym` (5, vraies entrées sur Boot), `test_brock_sequence` rebasé sur l'Arène (graine cherchée, réveil au Centre d'Argenta), aide `tests/helpers/trainer_seed.gd`, captures `tools/capture_pewter_gym.gd` (Liam, carte, Onix, badge, après). Détail : `etat-projet.md`, « J10 T17 ».
 
 #### T18 — qa-mobile : validation 10C sur S24 → Kevin
 - Départs `brock_charmander` (**scénario Salamèche**), `brock_squirtle`, `brock_bulbasaur`, `brock_weak` (défaite : réplique, réveil, argent intact, reprise « Prêt à essayer autrement ? », Liam toujours battu) ; carte du Champion ; IA (Grincement, Armure au plus deux fois, Jet-Pierres préféré quand il est super efficace) ; durée des combats. **CA** : rapport `build/qa/jalon10_t18/` ; validation de Kevin (niveaux confirmés).
