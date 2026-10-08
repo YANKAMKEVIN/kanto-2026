@@ -72,6 +72,13 @@ func show_message(text: String, wait_touch: bool = false) -> void:
 	await _hold.finished
 
 
+## Vide le bandeau sans le cacher (il reste en place) et termine le message en attente : un
+## temps sans phrase (le voile du poison) ne montre pas la phrase d'avant.
+func clear() -> void:
+	skip()
+	_text.text = ""
+
+
 ## Termine tout de suite le message en attente (comme un toucher).
 func skip() -> void:
 	var hold := _hold

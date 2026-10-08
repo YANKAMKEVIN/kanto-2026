@@ -94,14 +94,16 @@ const SPRITE_HEIGHT: float = 4.0
 ## "foot": Vector2 (cases), "position": Vector2 (pixels), "scale": float, "flip_h": bool,
 ## "tint": Color }. Arbres d'abord (ordre des tirages), puis buissons.
 ## [param shade] : variation selon la rangée (facultative, voir [DenseForest.Shade]).
+## [param attempts] : nombre de tirages (défaut [constant ATTEMPTS] ; une carte plus grande en
+## demande plus pour garder la même densité, Forêt de Jade agrandie).
 static func plan(forest: Dictionary, map_size: Vector2i, landmarks: Array[Vector2],
-		seed_value: int, shade: Shade = null) -> Array[Dictionary]:
+		seed_value: int, shade: Shade = null, attempts: int = ATTEMPTS) -> Array[Dictionary]:
 	var rng := RandomNumberGenerator.new()
 	rng.seed = seed_value
 	var entries: Array[Dictionary] = []
 	var trees: Array[Vector2] = []
 	var buckets: Dictionary = {}
-	for _attempt in ATTEMPTS:
+	for _attempt in attempts:
 		var foot := Vector2(rng.randf_range(MARGIN_X, map_size.x - MARGIN_X),
 			rng.randf_range(TOP, map_size.y + BELOW))
 		if not is_under_canopy(forest, map_size, foot):

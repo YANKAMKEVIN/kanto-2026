@@ -817,9 +817,13 @@ func _play_drain(event: BattleEvent) -> void:
 
 
 ## Coroutine : dégât de poison de fin de tour, le voile violet sur le Pokémon et la descente de la
-## barre de PV en même temps ; rend la main quand les deux sont finis (au moins le voile).
+## barre de PV en même temps ; rend la main quand les deux sont finis (au moins le voile). Le
+## bandeau est vidé d'abord : sa phrase vient après (« X souffre du poison ! »), et celle d'avant
+## (le poison de l'autre Pokémon, la dernière attaque) ne reste pas sous le voile (clôture du J9).
 func _play_poison(event: BattleEvent) -> void:
 	var side: BattleHud.Side = _HUD_SIDE[event.side]
+	if is_instance_valid(_hud):
+		_hud.clear_message()
 	var veil: Array[bool] = [false]
 	_run_veil(event.side, veil)
 	if is_instance_valid(_hud):

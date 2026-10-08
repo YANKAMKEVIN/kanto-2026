@@ -5,19 +5,24 @@ extends GutTest
 ## refaits par recherche de chemin sur la **vraie grille** de la scène (positions `bloque` de la
 ## grille en obstacles, comme plan_check), objets cachés sur l'herbe rase, PNJ aux cases de la
 ## grille, forêt dont le feuillage ne couvre aucune case praticable, objets peints sur les cases
-## bloquées, budget de nœuds (≤ 3 000).
+## bloquées, budget de nœuds (≤ 3 000). Forêt agrandie du 2026-10-08 (§7) : 70 × 90, H3 et H5
+## obligatoires, Théo et Milo inévitables (décision XL-1).
 
 const PlanGrid := preload("res://tests/helpers/plan_grid.gd")
 const MAP_PATH := "res://game/world/maps/viridian_forest.tscn"
 const PLAN_PATH := "res://tools/plans/viridian_forest.txt"
-const SIZE := Vector2i(58, 74)
-const ENTRANCE: Array[Vector2i] = [Vector2i(39, 73), Vector2i(40, 73)]
-const DOOR := Vector2i(25, 5)
+const SIZE := Vector2i(70, 90)
+const ENTRANCE: Array[Vector2i] = [Vector2i(44, 89), Vector2i(45, 89)]
+const DOOR := Vector2i(28, 5)
 const NODE_BUDGET := 3000
-## Mesures du T14 (plan_check.py, plan élargi) : la scène doit les reproduire exactement.
-const SHORTEST := 234
-const MANDATORY_GRASS := 7
-const D4_GRASS := 12
+## Mesures de la grille (plan_check.py) : la scène doit les reproduire exactement.
+const SHORTEST := 338
+const PATH_RANGE := Vector2i(330, 360)
+## Zones d'herbes obligatoires → cases traversées au moins (H3 6–8, H5 « courte » 4–6).
+const MANDATORY: Dictionary = {"H3": 7, "H5": 5}
+const ZONE_NAMES: Array[String] = ["H1", "H2", "H3", "H4", "H5"]
+## Dresseurs inévitables : Théo (D1) et Milo (D4, décision XL-1 du 2026-10-08).
+const UNAVOIDABLE: Array[String] = ["scout_theo", "scout_milo"]
 const O1_MAX := 25
 const O6_MAX := 15
 const D1_FIRST_SEEN := 3
@@ -29,7 +34,7 @@ var _grid: GridWorld
 var _plan: PlanGrid
 ## Relief seul, plus les positions `bloque` de la grille (obstacles de plan_check).
 var _terrain: GridWorld
-## Zones d'herbes H1..H4 (du sud au nord), cases → vrai.
+## Zones d'herbes, cases → vrai ; nommées H1..H5 par les positions `herbes` de la grille.
 var _zones: Array[Dictionary] = []
 
 
@@ -90,6 +95,22 @@ func _grass_zones() -> Array[Dictionary]:
 	zones.sort_custom(func(a: Dictionary, b: Dictionary) -> bool:
 		return _mean_y(a) > _mean_y(b))
 	return zones
+
+
+## Zone d'herbes nommée [param zone_name] (H1..H5) : celle de la position `herbes_hN`.
+func _zone(zone_name: String) -> Dictionary:
+	var marker := _plan.cell_of("herbes_" + zone_name.to_lower())
+	for zone: Dictionary in _zones:
+		if zone.has(marker):
+			return zone
+	return {}
+
+
+func _all_grass() -> Dictionary:
+	var all_grass: Dictionary = {}
+	for zone: Dictionary in _zones:
+		all_grass.merge(zone)
+	return all_grass
 
 
 func _mean_y(zone: Dictionary) -> float:
@@ -218,11 +239,11 @@ func test_metadata_light_zone_and_painted_ground() -> void:
 		return
 	var mask := ground.mask.get_image()
 	assert_eq(Vector2i(mask.get_size()), SIZE, "1 pixel = 1 case")
-	assert_eq(GroundMask.kind_at(mask, Vector2i(39, 70)), GroundMask.Kind.PATH, "sentier")
-	assert_eq(GroundMask.kind_at(mask, Vector2i(35, 67)), GroundMask.Kind.GRASS, "clairière C1")
-	assert_true(floor_node.is_forest(Vector2i(10, 70)), "sous-bois plein sous la forêt")
-	assert_false(floor_node.is_forest(Vector2i(35, 67)), "pas de sous-bois dans C1")
-	var strip := floor_node.mask.get_image().get_pixelv(Vector2i(11, 31)).r
+	assert_eq(GroundMask.kind_at(mask, Vector2i(44, 85)), GroundMask.Kind.PATH, "sentier")
+	assert_eq(GroundMask.kind_at(mask, Vector2i(38, 82)), GroundMask.Kind.GRASS, "clairière C1")
+	assert_true(floor_node.is_forest(Vector2i(10, 85)), "sous-bois plein sous la forêt")
+	assert_false(floor_node.is_forest(Vector2i(38, 82)), "pas de sous-bois dans C1")
+	var strip := floor_node.mask.get_image().get_pixelv(Vector2i(13, 23)).r
 	assert_almost_eq(strip, 0.5, 0.01, "bande de sous-bois « . » partielle (taches)")
 	assert_not_null(_map.grass_front, "cache-jambes peint")
 	for layer: Node in _map.find_children("*", "TileMapLayer", true, false):
@@ -245,7 +266,9 @@ func test_scene_grid_is_the_functional_grid() -> void:
 					fail_test("case %s « %s » : solide %s, herbes %s" % [cell, mark,
 						_grid.is_solid(cell), _grid.is_tall_grass(cell)])
 	assert_eq(mismatches, 0, "grille de la scène = tools/plans/viridian_forest.txt")
-	assert_eq(_zones.size(), 4, "quatre zones d'herbes H1..H4")
+	assert_eq(_zones.size(), 5, "cinq zones d'herbes H1..H5")
+	for zone_name: String in ZONE_NAMES:
+		assert_false(_zone(zone_name).is_empty(), "zone %s nommée par la grille" % zone_name)
 
 
 # --- Passages ----------------------------------------------------------------------------
@@ -255,20 +278,20 @@ func test_south_exit_and_north_door_lead_to_the_gates() -> void:
 	for x: int in SIZE.x:
 		if not _grid.is_solid(Vector2i(x, SIZE.y - 1)):
 			entrance.append(Vector2i(x, SIZE.y - 1))
-	assert_eq(entrance, ENTRANCE, "sortie sud = 2 cases (39..40, 73)")
+	assert_eq(entrance, ENTRANCE, "sortie sud = 2 cases (44..45, 89)")
 	for cell: Vector2i in ENTRANCE:
 		var warp := _map.get_warps().find_on_push(cell, Vector2i.DOWN)
 		assert_not_null(warp, "sortie sud %s" % cell)
 		if warp != null:
 			assert_eq([warp.target_map, warp.target_spawn, warp.facing],
 				[&"viridian_forest_gate_south", &"from_forest", Vector2i.DOWN])
-	assert_eq(_map.get_spawn_cell(&"from_gate_south"), Vector2i(39, 73))
+	assert_eq(_map.get_spawn_cell(&"from_gate_south"), Vector2i(44, 89))
 	var door := _map.get_warps().find_on_step(DOOR, Vector2i.UP)
 	assert_not_null(door, "porte du poste nord, STEP_ON ↑")
 	if door != null:
 		assert_eq([door.target_map, door.target_spawn, door.facing],
 			[&"viridian_forest_gate_north", &"from_forest", Vector2i.UP])
-	assert_eq(_map.get_spawn_cell(&"from_gate_north"), Vector2i(25, 6))
+	assert_eq(_map.get_spawn_cell(&"from_gate_north"), Vector2i(28, 6))
 	assert_false(_grid.is_solid(DOOR), "la porte s'ouvre dans l'emprise du poste")
 	var gate := _map.get_entities().get_node_or_null(^"ForestGate") as WorldProp
 	assert_not_null(gate, "façade du poste nord")
@@ -284,57 +307,82 @@ func test_south_exit_and_north_door_lead_to_the_gates() -> void:
 				assert_has(ENTRANCE, cell, "seule la sortie sud touche le bord")
 
 
+## Clôture du J9 (T23) : le point d'apparition des départs `trainers_qa` / `trainers_weak_qa`
+## (ex-couloir de la carte de QA) est sur le sentier, hors de toute vue, et quatre pas vers
+## l'ouest entrent dans la vue de Théo (au quatrième, pas avant).
+func test_before_theo_spawn_is_four_steps_from_his_sight() -> void:
+	var cell := _map.get_spawn_cell(&"before_theo")
+	assert_eq(cell, _plan.cell_of("before_theo"), "position de la grille")
+	assert_true(_grid.is_free(cell), "case libre")
+	var theo := _map.get_npc(&"scout_theo").get_spec()
+	var sight := func(at: Vector2i) -> int:
+		return TrainerRules.sight_distance(_grid, theo.cell, theo.facing, theo.sight, at)
+	for step: int in range(4):
+		var at := cell + Vector2i.LEFT * step
+		assert_false(_grid.is_solid(at), "sentier en %s" % at)
+		assert_lt(sight.call(at), 1, "hors de la vue de Théo en %s" % at)
+	assert_gt(sight.call(cell + Vector2i.LEFT * 4), 0, "vu au quatrième pas")
+	for npc: Npc in _map.get_npcs():
+		var spec := npc.get_spec()
+		if spec.is_trainer() and spec.id != &"scout_theo":
+			assert_lt(TrainerRules.sight_distance(_grid, spec.cell, spec.facing, spec.sight,
+				cell), 1, "hors de la vue de %s" % spec.id)
+
+
 # --- Critères du §2.7.1 sur la vraie grille ------------------------------------------------
 
 func test_main_path_length_and_width() -> void:
 	var steps := _distance(_terrain, ENTRANCE, DOOR)
-	assert_eq(steps, SHORTEST, "chemin principal (T14 : 234 pas)")
-	assert_between(steps, 220, 280, "arbitrage 4")
+	assert_eq(steps, SHORTEST, "chemin principal (grille : 338 pas)")
+	assert_between(steps, PATH_RANGE.x, PATH_RANGE.y, "forêt agrandie (2026-10-08)")
 	# Avec les PNJ réels en place, la porte reste atteignable.
 	assert_lt(_distance(_grid, ENTRANCE, DOOR), INF, "porte atteignable avec les PNJ")
 
 
-func test_mandatory_grass_is_in_h3_only() -> void:
-	var all_grass: Dictionary = {}
-	for zone: Dictionary in _zones:
-		all_grass.merge(zone)
-	var h3: Dictionary = _zones[2]
-	assert_eq(_min_crossed(_terrain, ENTRANCE, DOOR, all_grass), MANDATORY_GRASS)
+func test_mandatory_grass_is_in_h3_and_h5_only() -> void:
+	var all_grass := _all_grass()
+	var total := 0
+	var required: Dictionary = {}
+	for zone_name: String in MANDATORY:
+		var zone := _zone(zone_name)
+		required.merge(zone)
+		total += int(MANDATORY[zone_name])
+		assert_eq(_min_crossed(_terrain, ENTRANCE, DOOR, zone), MANDATORY[zone_name],
+			"%s : cases traversées au moins" % zone_name)
+		assert_eq(_distance(_without(zone), ENTRANCE, DOOR), INF, "%s incontournable" % zone_name)
+	assert_eq(_min_crossed(_terrain, ENTRANCE, DOOR, all_grass), total, "herbes obligatoires")
 	var others := all_grass.duplicate()
-	for cell: Vector2i in h3:
+	for cell: Vector2i in required:
 		others.erase(cell)
-	assert_eq(_min_crossed(_terrain, ENTRANCE, DOOR, others), 0, "hors H3 : aucune obligatoire")
-	assert_eq(_distance(_without(h3), ENTRANCE, DOOR), INF, "H3 incontournable")
-	for index: int in [0, 1, 3]:
-		assert_eq(_distance(_without(_zones[index]), ENTRANCE, DOOR), SHORTEST,
-			"H%d évitable sans détour" % (index + 1))
+	assert_eq(_min_crossed(_terrain, ENTRANCE, DOOR, others), 0,
+		"hors H3 et H5 : aucune obligatoire")
+	for zone_name: String in ["H1", "H2", "H4"]:
+		assert_eq(_distance(_without(_zone(zone_name)), ENTRANCE, DOOR), SHORTEST,
+			"%s évitable sans détour" % zone_name)
 
 
 func test_trainers_sight_lines() -> void:
-	var theo := _sight("scout_theo")
-	assert_eq(theo.size(), 4, "Théo voit 4 cases")
-	assert_eq(_distance(_without(_as_set(theo)), ENTRANCE, DOOR), INF, "Théo inévitable")
-	var on_path := 0
-	for cell: Vector2i in theo:
-		if _plan.at(cell) == "=":
-			on_path += 1
-	assert_eq(on_path, 2, "toute la largeur du sentier")
-	# Première case vue en venant du sud : au moins 2 cases libres entre eux.
-	var dist := _distances(_without(_as_set(theo.slice(0, D1_FIRST_SEEN - 1))), ENTRANCE)
-	var reached := false
-	for i: int in range(D1_FIRST_SEEN - 1, theo.size()):
-		reached = reached or dist.has(theo[i])
-	assert_true(reached, "Théo voit d'abord le joueur à %d cases ou plus" % D1_FIRST_SEEN)
+	for id: String in UNAVOIDABLE:
+		var sight := _sight(id)
+		assert_eq(sight.size(), int(_plan.attr(id, "sight")), "%s : vue dégagée" % id)
+		assert_eq(_distance(_without(_as_set(sight)), ENTRANCE, DOOR), INF, "%s inévitable" % id)
+		var on_path := 0
+		for cell: Vector2i in sight:
+			if _plan.at(cell) == "=":
+				on_path += 1
+		assert_eq(on_path, 2, "%s : toute la largeur du sentier" % id)
+		# Première case vue en venant du sud : au moins 2 cases libres entre eux.
+		var dist := _distances(_without(_as_set(sight.slice(0, D1_FIRST_SEEN - 1))), ENTRANCE)
+		var reached := false
+		for i: int in range(D1_FIRST_SEEN - 1, sight.size()):
+			reached = reached or dist.has(sight[i])
+		assert_true(reached, "%s voit d'abord le joueur à %d cases ou plus" % [id,
+			D1_FIRST_SEEN])
+	assert_eq(_sight("scout_theo").size(), 4, "Théo voit 4 cases")
+	assert_eq(_sight("scout_milo").size(), 5, "Milo voit 5 cases")
 	for id: String in ["scout_noe", "youngster_tom", "scout_eli"]:
 		assert_lt(_distance(_without(_as_set(_sight(id))), ENTRANCE, DOOR), INF,
 			"%s évitable" % id)
-	var milo := _without(_as_set(_sight("scout_milo")))
-	assert_lt(_distance(milo, ENTRANCE, DOOR), INF, "Milo évitable")
-	var all_grass: Dictionary = {}
-	for zone: Dictionary in _zones:
-		all_grass.merge(zone)
-	assert_eq(_min_crossed(milo, ENTRANCE, DOOR, all_grass), D4_GRASS,
-		"Milo évitable par les hautes herbes seulement (12 cases au lieu de 7)")
 
 
 # --- Dresseurs sur la vraie scène, avec tous les PNJ (T21) --------------------------------
@@ -400,20 +448,10 @@ func test_real_scene_trainer_avoidance_with_the_npcs() -> void:
 		return _distance(_real_world(blocked), ENTRANCE, DOOR) < INF
 	assert_true(door_open.call({}), "la porte est atteignable avec tous les PNJ")
 	assert_false(door_open.call(seen["scout_theo"]), "Théo (D1) est inévitable")
+	assert_false(door_open.call(seen["scout_milo"]),
+		"Milo (D4) est inévitable, même par les hautes herbes (XL-1)")
 	for id: String in ["scout_noe", "youngster_tom", "scout_eli"]:
 		assert_true(door_open.call(seen[id]), "%s (D2, D3, D5) est évitable" % id)
-	assert_true(door_open.call(seen["scout_milo"]), "Milo (D4) est évitable…")
-	var all_grass: Dictionary = {}
-	for zone: Dictionary in _zones:
-		all_grass.merge(zone)
-	var world := _real_world(seen["scout_milo"])
-	assert_eq(_min_crossed(world, ENTRANCE, DOOR, all_grass), D4_GRASS,
-		"…mais seulement par les hautes herbes (12 cases au lieu de 7)")
-	var h_free: Dictionary = {}
-	for cell: Vector2i in all_grass:
-		h_free[cell] = true
-	var no_grass := _real_world(seen["scout_milo"].merged(h_free))
-	assert_eq(_distance(no_grass, ENTRANCE, DOOR), INF, "sans herbes, Milo barre le passage")
 
 
 func test_trainers_never_close_a_passage_where_they_stop() -> void:
@@ -460,7 +498,7 @@ func test_objects_are_reachable_and_placed_as_the_grid_says() -> void:
 		assert_lt(_nearest(from_south, _access(id)), INF, "%s atteignable" % id)
 	assert_lt(_nearest(from_south, _access("viridian_forest_item_1")), O1_MAX, "O1 près")
 	assert_lt(_nearest(from_door, _access("viridian_forest_item_6")), O6_MAX, "O6 près")
-	var h2_blocked := _distances(_without(_zones[1]), ENTRANCE)
+	var h2_blocked := _distances(_without(_zone("H2")), ENTRANCE)
 	assert_eq(_nearest(h2_blocked, _access("viridian_forest_item_2")), INF, "O2 derrière H2")
 
 

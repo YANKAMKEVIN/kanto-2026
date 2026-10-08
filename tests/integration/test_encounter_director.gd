@@ -416,19 +416,21 @@ func test_real_route_2_grass_runs_the_route_2_table_in_h1_h2_h3() -> void:
 
 # --- Forêt de Jade (jalon 9, T19) : la vraie carte et la vraie table `viridian_forest` --------
 
-## Dans chacune des quatre zones d'herbes de la forêt (H1 à l'entrée, H2 à l'ouest, H3
-## obligatoire, H4 au nord-ouest), un pas depuis l'herbe rase ou le sentier avec un tirage gagnant
-## lance Chenipan Nv. 3 (1er emplacement de data/encounters/viridian_forest.json, niveaux [3, 5]).
+## Dans chacune des cinq zones d'herbes de la forêt (H1 à l'entrée, H2 à l'ouest, H3
+## obligatoire, H4 au nord-ouest, H5 obligatoire et courte ; forêt agrandie du 2026-10-08), un pas
+## depuis l'herbe rase ou le sentier avec un tirage gagnant lance Chenipan Nv. 3 (1er emplacement
+## de data/encounters/viridian_forest.json, niveaux [3, 5]).
 ## [départ, direction, case d'herbe] ; départs hors des hautes herbes.
 const FOREST_GRASS_STEPS: Array = [
-	[Vector2i(41, 66), Vector2i.RIGHT, Vector2i(42, 66)],
-	[Vector2i(8, 53), Vector2i.LEFT, Vector2i(7, 53)],
-	[Vector2i(13, 35), Vector2i.RIGHT, Vector2i(14, 35)],
+	[Vector2i(47, 82), Vector2i.RIGHT, Vector2i(48, 82)],
+	[Vector2i(10, 70), Vector2i.LEFT, Vector2i(9, 70)],
+	[Vector2i(19, 48), Vector2i.RIGHT, Vector2i(20, 48)],
 	[Vector2i(4, 12), Vector2i.RIGHT, Vector2i(5, 12)],
+	[Vector2i(29, 21), Vector2i.RIGHT, Vector2i(30, 21)],
 ]
 
 
-func test_real_viridian_forest_grass_runs_the_forest_table_in_h1_to_h4() -> void:
+func test_real_viridian_forest_grass_runs_the_forest_table_in_h1_to_h5() -> void:
 	var library := EncounterLibrary.new(_data)
 	library.load_dir()
 	assert_true(library.has_table(&"viridian_forest", &"grass"), "table viridian_forest")

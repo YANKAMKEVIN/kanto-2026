@@ -203,8 +203,8 @@ func test_every_wild_species_has_battle_sprites() -> void:
 
 
 func test_viridian_forest_table_follows_the_dossier() -> void:
-	# Dossier 10 §6 et arbitrages 5–6 (jalon-09.md §2.5) : une seule table pour la forêt et la
-	# carte de QA, Chenipan 35 %, Aspicot 35 %, Coconfort 13 %, Chrysacier 12 %, Pikachu 5 %
+	# Dossier 10 §6 et arbitrages 5–6 (jalon-09.md §2.5) : une seule table pour la forêt
+	# (la carte de QA qui la partageait est retirée au T23), Chenipan 35 %, Aspicot 35 %, Coconfort 13 %, Chrysacier 12 %, Pikachu 5 %
 	# partout ; ni Roucool ni Rattata ; taux et rampe de la Route 1 (défaut).
 	var lib := _lib()
 	lib.load_dir()
@@ -212,8 +212,8 @@ func test_viridian_forest_table_follows_the_dossier() -> void:
 	assert_not_null(table)
 	if table == null:
 		return
-	assert_eq(lib.get_table(&"qa_forest_systems", &"grass"), table, "même table en QA")
-	assert_eq(table.maps, [&"viridian_forest", &"qa_forest_systems"] as Array[StringName])
+	assert_eq(table.maps, [&"viridian_forest"] as Array[StringName])
+	assert_false(lib.has_table(&"qa_forest_systems"), "carte de QA retirée")
 	assert_eq(table.rate, 25)
 	assert_eq([table.ramp_from, table.ramp_max], [15, 20])
 	assert_eq(table.total_weight(), 100)

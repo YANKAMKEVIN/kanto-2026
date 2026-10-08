@@ -9,8 +9,9 @@ le reste suit la légende du prompt `CONCEPT_ROUTE2_VUE_GENERALE_r1.txt`.
 
 Usage : python3 tools/art/plan_aplats.py [grille.txt] [sortie.png] [--lisiere]
         (défaut : tools/plans/route_2.txt → build/art/PLAN_ROUTE2_v1.png ;
-        tools/plans/viridian_forest.txt → build/art/PLAN_FORET_JADE_v1.png, jalon 9 T14,
-        `dessiner_foret` : 1 case = 17 px pour faire tenir 58 × 74 cases ; --annote ajoute
+        tools/plans/viridian_forest.txt → build/art/PLAN_FORET_JADE_v2.png, forêt agrandie du
+        2026-10-08, `dessiner_foret` : 1 case = 14 px pour faire tenir 70 × 90 cases (v1 :
+        grille 58 × 74 du T14, 17 px) ; --annote ajoute
         <sortie>_annote.png, version de relecture réduite, JAMAIS jointe à Codex)
 --lisiere (vue générale, essai 3) : la géométrie ne change pas ; le plan PORTE la transition
 vers la forêt (canopée plus sombre vers le nord, herbe éloignée du chemin rendue en sous-bois
@@ -464,7 +465,7 @@ def annoter_foret(grille: Path, plan_png: Path, sortie: Path, largeur: int = 768
 	réduite à [largeur] px de large."""
 	from PIL import ImageFont
 	sys.path.insert(0, str(Path(__file__).parent))
-	from plan_check import FACINGS, zones_herbes  # noqa: E402
+	from plan_check import FACINGS, FORET_PROFILS, nommer_zones  # noqa: E402
 	plan = lire(grille)
 	img = Image.open(plan_png).convert("RGBA")
 	calque = Image.new("RGBA", img.size, (0, 0, 0, 0))
@@ -518,7 +519,8 @@ def annoter_foret(grille: Path, plan_png: Path, sortie: Path, largeur: int = 768
 		cx, cy = centre(p.cells[0])
 		d.ellipse([cx - 4, cy - 4, cx + 4, cy + 4], fill=(200, 90, 230, 255), outline=(0, 0, 0, 255))
 		etiquette(p.cells[0], p.ident.split("_")[0][:4], (225, 170, 245, 255), petite, dy=12)
-	for nom, zone in zip(("H1", "H2", "H3", "H4"), zones_herbes(plan)):
+	profil = FORET_PROFILS.get(grille.stem, FORET_PROFILS["viridian_forest"])
+	for nom, zone in nommer_zones(plan, profil["zones"]).items():
 		xs = sorted(x for x, _ in zone)
 		ys = sorted(y for _, y in zone)
 		etiquette((xs[len(xs) // 2], ys[len(ys) // 2]), nom, (240, 255, 150, 255), dy=0)
@@ -544,7 +546,7 @@ def annoter_foret(grille: Path, plan_png: Path, sortie: Path, largeur: int = 768
 # Grille → (fonction, sortie par défaut).
 PLANS = {
 	"route_2": (dessiner, "build/art/PLAN_ROUTE2_v1.png"),
-	"viridian_forest": (dessiner_foret, "build/art/PLAN_FORET_JADE_v1.png"),
+	"viridian_forest": (dessiner_foret, "build/art/PLAN_FORET_JADE_v2.png"),
 }
 
 

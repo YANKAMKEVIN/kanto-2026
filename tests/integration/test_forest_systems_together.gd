@@ -1,14 +1,17 @@
 extends GutTest
 ## Tranche A du jalon 9 intégrée (jalon-09.md §6.11) : poison, évolution et Dresseurs ensemble,
-## avec la vraie scène Boot, la carte de QA `qa_forest_systems`, les départs `trainers_qa` et
-## `evolution_qa`, le combat instantané et une sauvegarde en mémoire :
+## avec la vraie scène Boot, le combat instantané et une sauvegarde en mémoire. Écrit pour la
+## carte de QA `qa_forest_systems`, **rebasé sur la vraie Forêt de Jade et son poste sud** à la
+## clôture du J9 (T23) : départs `trainers_qa` (devant Théo), `evolution_qa` (entrée sud) et
+## `poison_qa` (entrée du poste sud) :
 ## - un Dresseur de la forêt dont l'Aspicot connaît Dard-Venin peut empoisonner en combat de
 ##   Dresseur (Scout Noé : Aspicot puis Coconfort) ; le statut reste après le combat ;
 ## - une victoire contre un Dresseur qui fait passer Chenipan au N7 (Scout Théo) déclenche
 ##   l'écran d'évolution **après le bilan**, et la réplique « après » du Dresseur vient
 ##   **après l'évolution** (le combat rend la main une fois l'évolution jouée) ;
 ## - un Chenipan empoisonné qui évolue reste empoisonné ;
-## - `trainers_qa` et `poison_qa` portent les Antidotes ajoutés à l'intégration.
+## - `trainers_qa` et `poison_qa` portent les Antidotes ajoutés à l'intégration ;
+## - au poste sud, le garde parle de lui-même à l'arrivée et pose `poison_unlocked`.
 ## Graines : cherchées sur le moteur pur en reproduisant la consommation d'aléatoire du
 ## directeur (équipe du Dresseur, puis le combat ; le joueur joue toujours sa 1re capacité).
 
@@ -18,6 +21,8 @@ const BOOT_SCENE := preload("res://game/boot.tscn")
 const TRAINERS_START := "res://tools/debug_start/trainers_qa.json"
 const EVOLUTION_START := "res://tools/debug_start/evolution_qa.json"
 const POISON_START := "res://tools/debug_start/poison_qa.json"
+const FOREST := &"viridian_forest"
+const GATE_SOUTH := &"viridian_forest_gate_south"
 const SAVE_PATH := "user://test_forest_systems_together_save.json"
 const DATE := "2026-10-07T17:00:00"
 const FADE := 0.05
@@ -50,9 +55,9 @@ func after_each() -> void:
 	Haptics.reset()
 
 
-## Boot sur la carte de QA au point du départ [param start_path], partie appliquée à la main
-## (un départ de débogage n'est pas lu sous GUT), combat instantané, moments notés.
-func _start(start_path: String) -> DebugStart:
+## Boot sur la carte [param map_id] au point du départ [param start_path], partie appliquée à
+## la main (un départ de débogage n'est pas lu sous GUT), combat instantané, moments notés.
+func _start(start_path: String, map_id: StringName = FOREST) -> DebugStart:
 	_boot = BOOT_SCENE.instantiate() as Boot
 	_boot.save_system = SaveSystem.new(_fs, SAVE_PATH)
 	var start := DebugStart.new()
@@ -63,7 +68,7 @@ func _start(start_path: String) -> DebugStart:
 	await wait_process_frames(2)
 	await SceneRouter.change_map(start.map, start.spawn, start.facing)
 	await wait_process_frames(3)
-	assert_eq(_boot.get_map().map_id, &"qa_forest_systems")
+	assert_eq(_boot.get_map().map_id, map_id)
 	_boot.get_dialogue_runner().chars_per_second = 0.0
 	var battles := _boot.get_battle_director()
 	battles.speed_scale = 0.0
@@ -153,10 +158,24 @@ func test_trainers_qa_carries_an_antidote() -> void:
 	assert_eq(GameState.bag.count_of(&"antidote"), 1)
 
 
-func test_poison_qa_starts_poisoned_with_two_antidotes() -> void:
-	await _start(POISON_START)
+func test_poison_qa_starts_poisoned_and_the_south_guard_unlocks_the_antidote() -> void:
+	await _start(POISON_START, GATE_SOUTH)
 	assert_true(GameState.party.get_lead().has_status(StatusRules.POISON))
 	assert_eq(GameState.bag.count_of(&"antidote"), 2)
+	# Le garde du vrai poste sud parle de lui-même à l'arrivée (ex-garde de la carte de QA).
+	var runner := _boot.get_dialogue_runner()
+	var box := _boot.get_dialogue_box()
+	var deadline := Time.get_ticks_msec() + SCENE_TIMEOUT_MS
+	while not runner.is_running() and Time.get_ticks_msec() < deadline:
+		await wait_process_frames(1)
+	assert_eq(runner.get_dialogue_id(), &"forest_gate_south_guard", "le garde parle à l'arrivée")
+	while runner.is_running() and Time.get_ticks_msec() < deadline:
+		await wait_process_frames(1)
+		if box.is_open():
+			box.advance_requested.emit()
+	assert_false(runner.is_running(), "dialogue fini")
+	assert_true(GameState.flags.has_flag(&"poison_unlocked"), "Antidote en vente à Jadielle")
+	assert_push_error_count(0)
 
 
 func test_a_forest_trainer_weedle_can_poison_in_a_trainer_battle() -> void:
@@ -169,7 +188,7 @@ func test_a_forest_trainer_weedle_can_poison_in_a_trainer_battle() -> void:
 	if seed < 0:
 		return
 	GameState.rng = GameRng.new(seed)
-	await _challenge_and_play(&"noe")
+	await _challenge_and_play(&"scout_noe")
 	assert_true(_has(_events, BattleEvent.Kind.STATUS_INFLICTED), "empoisonné en combat")
 	assert_true(_has(_events, BattleEvent.Kind.STATUS_DAMAGED), "dégât de poison en fin de tour")
 	var poisoned := _events.filter(func(e: BattleEvent) -> bool:
@@ -194,7 +213,7 @@ func test_a_trainer_win_evolves_caterpie_then_the_after_line() -> void:
 	if seed < 0:
 		return
 	GameState.rng = GameRng.new(seed)
-	await _challenge_and_play(&"theo")
+	await _challenge_and_play(&"scout_theo")
 	assert_eq(_order, ["DIALOGUE forest_scout_theo_before", "SUMMARY", "EVOLUTION metapod",
 		"EVOLVED", "FINISHED", "DIALOGUE forest_scout_theo_after"] as Array[String],
 		"bilan → évolution → fin du combat → réplique « après »")
@@ -219,7 +238,7 @@ func test_a_poisoned_caterpie_evolves_and_stays_poisoned() -> void:
 	if seed < 0:
 		return
 	GameState.rng = GameRng.new(seed)
-	await _challenge_and_play(&"theo")
+	await _challenge_and_play(&"scout_theo")
 	assert_true(_order.has("EVOLVED"), "il a évolué")
 	var lead := GameState.party.get_lead()
 	assert_eq(lead.species_id, &"metapod")

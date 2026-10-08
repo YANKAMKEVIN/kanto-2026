@@ -1,80 +1,80 @@
 {
 	"scout_theo": {
-		"cell": [28, 53], "facing": "down", "sprite": "scout",
+		"cell": [30, 67], "facing": "down", "sprite": "scout",
 		"dialogue": "forest_scout_theo_after",
 		"trainer": { "id": "forest_scout_theo", "sight": 4, "before": "forest_scout_theo_before" }
 	},
 	"scout_noe": {
-		"cell": [4, 48], "facing": "down", "sprite": "scout",
+		"cell": [6, 65], "facing": "down", "sprite": "scout",
 		"dialogue": "forest_scout_noe_after",
 		"trainer": { "id": "forest_scout_noe", "sight": 5, "before": "forest_scout_noe_before" }
 	},
 	"youngster_tom": {
-		"cell": [24, 51], "facing": "up", "sprite": "youngster",
+		"cell": [26, 64], "facing": "up", "sprite": "youngster",
 		"dialogue": "forest_youngster_tom_after",
 		"trainer": { "id": "forest_youngster_tom", "sight": 4, "before": "forest_youngster_tom_before" }
 	},
 	"scout_milo": {
-		"cell": [25, 32], "facing": "down", "sprite": "scout",
+		"cell": [30, 45], "facing": "down", "sprite": "scout",
 		"dialogue": "forest_scout_milo_after",
 		"trainer": { "id": "forest_scout_milo", "sight": 5, "before": "forest_scout_milo_before" }
 	},
 	"scout_eli": {
-		"cell": [31, 9], "facing": "left", "sprite": "scout",
+		"cell": [34, 9], "facing": "left", "sprite": "scout",
 		"dialogue": "forest_scout_eli_after",
 		"trainer": { "id": "forest_scout_eli", "sight": 5, "before": "forest_scout_eli_before" }
 	},
 	"naturalist": {
-		"cell": [21, 44], "facing": "left", "sprite": "naturalist",
+		"cell": [22, 57], "facing": "left", "sprite": "naturalist",
 		"dialogue": "forest_naturalist",
-		"route": { "cells": [[21, 44], [22, 44], [23, 44], [22, 44]], "pause": 2.5 }
+		"route": { "cells": [[22, 57], [23, 57], [24, 57], [23, 57]], "pause": 2.5 }
 	},
 	"hiker": {
-		"cell": [41, 44], "facing": "left", "sprite": "hiker",
+		"cell": [41, 42], "facing": "left", "sprite": "hiker",
 		"dialogue": "forest_hiker",
 		"route": {
-			"cells": [[41, 44], [42, 44], [43, 44], [44, 44], [43, 44], [42, 44]], "pause": 1.6
+			"cells": [[41, 42], [42, 42], [43, 42], [44, 42], [43, 42], [42, 42]], "pause": 1.6
 		}
 	},
 	"viridian_forest_item_1": {
-		"cell": [30, 67], "facing": "down", "sprite": "object/poke_ball_ground",
+		"cell": [34, 83], "facing": "down", "sprite": "object/poke_ball_ground",
 		"dialogue": "viridian_forest_item_1", "verb": "take", "turn_to_player": false,
 		"unless": ["got_viridian_forest_item_1"]
 	},
 	"viridian_forest_item_2": {
-		"cell": [3, 60], "facing": "down", "sprite": "object/poke_ball_ground",
+		"cell": [4, 77], "facing": "down", "sprite": "object/poke_ball_ground",
 		"dialogue": "viridian_forest_item_2", "verb": "take", "turn_to_player": false,
 		"unless": ["got_viridian_forest_item_2"]
 	},
 	"viridian_forest_item_5": {
-		"cell": [50, 4], "facing": "down", "sprite": "object/poke_ball_ground",
+		"cell": [59, 5], "facing": "down", "sprite": "object/poke_ball_ground",
 		"dialogue": "viridian_forest_item_5", "verb": "take", "turn_to_player": false,
 		"unless": ["got_viridian_forest_item_5"]
 	},
 	"caterpie_1": {
-		"cell": [41, 67], "facing": "left", "sprite": "pokemon/caterpie",
+		"cell": [47, 83], "facing": "left", "sprite": "pokemon/caterpie",
 		"shy": { "action": "notice", "radius": 2 }
 	},
 	"caterpie_2": {
-		"cell": [21, 33], "facing": "left", "sprite": "pokemon/caterpie", "lift": 24,
+		"cell": [27, 46], "facing": "left", "sprite": "pokemon/caterpie", "lift": 24,
 		"shy": { "action": "notice", "radius": 2 }
 	},
 	"weedle_1": {
-		"cell": [36, 44], "facing": "left", "sprite": "pokemon/weedle", "lift": 32,
+		"cell": [39, 57], "facing": "left", "sprite": "pokemon/weedle", "lift": 32,
 		"shy": { "action": "hide", "radius": 1 }
 	},
 	"weedle_2": {
-		"cell": [21, 22], "facing": "right", "sprite": "pokemon/weedle", "lift": 32,
+		"cell": [29, 28], "facing": "right", "sprite": "pokemon/weedle", "lift": 32,
 		"shy": { "action": "hide", "radius": 1 }
 	},
 	"metapod": {
-		"cell": [18, 44], "facing": "right", "sprite": "pokemon/metapod", "lift": 40
+		"cell": [19, 57], "facing": "right", "sprite": "pokemon/metapod", "lift": 40
 	},
 	"kakuna": {
-		"cell": [8, 51], "facing": "right", "sprite": "pokemon/kakuna", "lift": 40
+		"cell": [11, 69], "facing": "right", "sprite": "pokemon/kakuna", "lift": 40
 	},
 	"pidgey": {
-		"cell": [14, 9], "facing": "down", "sprite": "pokemon/pidgey", "lift": 48,
+		"cell": [14, 8], "facing": "down", "sprite": "pokemon/pidgey", "lift": 48,
 		"shy": { "action": "fly", "radius": 2 }
 	}
 }

@@ -302,7 +302,7 @@ Défaut (règle 4) : le Dresseur **marche jusqu'à la case voisine** (Rouge/Bleu
 
 ### 2.6 Carte et départs de QA (tranche A)
 
-- `MapCatalog.QA_PREFIX = "qa_"`, `is_qa_map(id)` : les tests qui énumèrent les cartes (`test_zone_library`, `test_map_light_profiles`) les ignorent ; une carte de QA n'appartient à aucune zone (le Pokédex n'y note aucun habitat, la Carte ne la montre pas — tests). Inaccessible en jeu (aucun warp n'y mène) ; seulement par `DebugStart`. **Retirée à la clôture du J9** (T23) avec ses données.
+- `MapCatalog.QA_PREFIX = "qa_"`, `is_qa_map(id)` : les tests qui énumèrent les cartes (`test_zone_library`, `test_map_light_profiles`) les ignorent ; une carte de QA n'appartient à aucune zone (le Pokédex n'y note aucun habitat, la Carte ne la montre pas — tests). Inaccessible en jeu (aucun warp n'y mène) ; seulement par `DebugStart`. **Retirée à la clôture du J9** (T23, fait : §8.1) avec ses données.
 - `tools/build_qa_forest_systems.gd` → `game/world/maps/qa_forest_systems.tscn` (≈ 24 × 18, tuiles provisoires `OverworldTiles`, aucune lumière) :
   - garde sud (sprite générique) au nord du départ : `forest_gate_south_guard` ;
   - hautes herbes 5 × 4 (table de la forêt) ;
@@ -595,6 +595,7 @@ Branche d'intégration `jalon-09` (cette copie) ; une branche par tâche, chacun
 
 #### T23 — architecte : clôture
 - Retirer `qa_forest_systems` (scène, outil, PNJ, `maps` de la table, départs de QA devenus inutiles) ; `etat-projet.md` ; lot de textes ; passation au J10 (porte nord, `pewter_arrived`, réplique du garde nord « depuis Argenta »).
+- **Fait (2026-10-08, branche `j9-t23-cloture`, base `main` à `cab48bd`)** : carte de QA retirée, départs rebasés sur le poste sud et la vraie forêt, bandeau du poison vidé pendant le voile (vrai défaut, corrigé avec un test), lot de textes marqué intégré, passation au J10 : **§8**.
 
 **Parallélisme.** Tout de suite : **T0 ∥ T2**. Après T0 (textes validés) : T1. Après T1 et T2 : **T4 ∥ T6 ∥ T8 ∥ T11** (fichiers disjoints, sauf `battle_director.gd` : T5 et T9 y touchent tous deux → T9 rebasé sur T5, ou l'inverse, jamais en même temps). Puis T5 ∥ T9 ∥ T12 (ui-mobile : un à la fois si une seule session ui-mobile). Une session S24 par sous-jalon (T3, T7, T10, T13, T20, T22). Tranche B : T14 dès le 8.0 validé ; T18 ∥ T15–T17 ; T19 après la fusion du J8.
 
@@ -978,4 +979,185 @@ Fichiers : `tools/build_viridian_forest.gd` (rais, particules), `game/world/maps
 3. **Mesures** (restées à faire depuis le T20) : traversées **directe** (cible 7–9 min) et **attentive** (15–20 min) chronométrées avec rencontres et combats ; fps (`PerfCounter`, moyenne ≥ 58, creux ≥ 50) dans C1, H3, C2, C3 (rai et particules) et au parvis ; mémoire des textures (`tex=`, attendu ≈ 45–50 Mo dans la forêt après la montée depuis Jadielle) ; temps de changement de carte Route 2 → poste → forêt (≤ 1,5 × l'entrée dans Jadielle) ; taille de l'APK.
 4. **À juger au doigt** : le joueur derrière les cimes dans les recoins (§6.17 point 7) ; la position de Théo en haut de l'écran à la détection ; l'intensité des rais et des particules (ni blancs ni gênants) ; la lisibilité des objets cachés (rien à voir : seulement la narration).
 5. Rapport `build/qa/jalon09_t22/` ; validation de Kevin ; fusion de `jalon-09` dans `main`.
+
+
+## 7. Forêt agrandie (chantier du 2026-10-08, branche `j9-foret-xl`, base `main` à `322d70e`)
+
+**Décision de Kevin (2026-10-08, après la QA finale T22 sur S21)** : la traversée directe mesurée fait **233 pas en 2 min 48 s sans combat** (≈ 0,72 s par pas) ; la cible du dossier 10 (arbitrage 4) est **7–9 min combats compris**. On agrandit la carte : ≈ 58 × 74 → **≈ 70 × 90**, **7 traversées** au lieu de 5, chemin principal **≈ 330–360 pas**, **une 2e zone d'herbes obligatoire courte** en plus de H3, **mêmes repères** (tronc incliné → grande souche → clairière au rai), **mêmes Dresseurs, PNJ et objets**, même DA, **sans nouvelle vue générale**. Un combat de Dresseur obligatoire de plus (en plus de Théo) est accepté **si l'estimation reste sous 7 min** (proposition ci-dessous, §7.3).
+
+Trois étapes : **1. la grille** (ce paragraphe, fait) ; **2. la carte** (§7.5, fait le 2026-10-08) ; **3. QA chronométrée** sur téléphone puis validation de Kevin.
+
+**Décision de Kevin XL-1 (2026-10-08) : Milo devient inévitable** (variante vérifiée au §7.3 appliquée à l'étape 2).
+
+### 7.1 Étape 1 — la grille (fait, 2026-10-08)
+
+Méthode du T14 (§2.7.1, §6.13 et les décisions de Kevin sur la composition) ; **aucun fichier de `game/` touché**. Fichiers :
+- **`tools/plans/viridian_forest_xl.txt`** (70 × 90, grille + positions) : **nouveau fichier**, pas une réécriture de `viridian_forest.txt`, parce que la scène actuelle et ses tests (`test_viridian_forest`, `_life`, `_data`, `test_plan_grid`, `test_dense_forest`) lisent la grille du T14 case par case ; **il la remplace à l'étape 2**, dans le même commit que la carte reconstruite et les tests adaptés (`tools/test.sh` reste vert entre les deux).
+- **`tools/art/plan_check.py`** : critères de la forêt **par profil** (`FORET_PROFILS` : `viridian_forest` = T14, `viridian_forest_xl` = forêt agrandie) : taille, fourchette de pas (**330–360**), zones d'herbes nommées et **zones obligatoires avec leur fourchette** (H3 6–8, **H5 4–6**, défaut « courte ») : chacune incontournable, minimum d'herbes du trajet = somme des deux, aucune case hors de ces zones ; les autres zones évitables sans détour. Noms des zones par une position `herbes` (`role=H1..H5`, une case dans la zone) ; sans elle, du sud au nord comme au T14. Tous les autres critères inchangés (largeur ≥ 2, Théo inévitable sur toute la largeur, vision dégagée, aucun objet sur une vision, aucune approche qui ferme un passage, O2 derrière H2, O3 par un passage d'une case, repères ordonnés, clairières ≥ 7 × 5…). Nouvelle ligne : **estimation de la traversée directe** (§7.3). Contrôles négatifs faits : H5 contournée par le sous-bois → échec ; H5 à 9 cases → échec.
+- **`tools/art/plan_aplats.py`** : grille XL → `build/art/PLAN_FORET_JADE_v2.png` (1 case = 14 px) ; `--annote` nomme les zones par leurs positions `herbes`. Rendus non versionnés : `PLAN_FORET_JADE_v2.png`, `PLAN_FORET_JADE_v2_annote.png` (relecture seulement, **jamais joint à Codex** ; pas de nouvelle vue générale).
+
+**Résultat de `plan_check.py`** (tous les critères verts) : chemin principal **338 pas** (retour 338), entièrement sur cases larges ; **12 cases d'herbes obligatoires** (7 dans H3 + 5 dans H5) ; 1 960 cases praticables sur 6 300 (31 %, contre 37 % au T14 : la forêt serrée prend la surface ajoutée) ; 242 cases d'herbes (H1 42, H2 56, H3 61, H4 63, H5 20) ; O1 à 15 pas de l'entrée, O6 à 6 pas de la porte ; Milo évitable par 17 cases d'herbes au lieu de 12 (342 pas).
+
+**Tracé (sud → nord ; entre parenthèses, pas depuis l'entrée sur le trajet le plus court)** :
+1. Sortie sud (44..45, 89) → **C1** (x 36–55, y 79–86 ; H1 à l'est, O1 dans une baie à l'ouest) → **tronc incliné** (pied (42..43, 78), au bord ouest du sentier, juste au-dessus de C1) (11) → couloir nord (x 44–45).
+2. **T1 vers l'ouest** (y 70–71) : **Théo** dans son alcôve (30, 67) ↓, sa vue couvre les 2 cases du sentier (30, 70) et (30, 71), aucune bande de sous-bois au droit de lui (x 28–32) ; vu au pas 32. Au bout, le **cul-de-sac occidental** continue tout droit (H2, Noé, O2 au fond) pendant que le sentier tourne au nord (x 12–13).
+3. **T2 vers l'est** (y 60–61) à travers **C2** (x 20–38, y 55–64 ; **grande souche** (28..30, 55..56) au fond, O3 derrière elle par le passage d'une case (32, 54), naturaliste, Tom) (65–85), **ressaut** (x 41–42) vers y 57–58, montée à l'est (x 51–52).
+4. **T3 vers l'ouest** (y 48–49) : **Milo** (30, 45) ↓, **H3** (x 20–26, traversée obligatoire de 7 cases, pas 132–138) et la bande d'herbes du détour de Milo (x 27–32, y 50–51) ; racines et O4 au bout (5, 48..49) ; montée (x 10–11).
+5. **T4 vers l'est** (y 41–42, ressaut x 29–30, puis y 38–39) : **boucle de la randonneuse** au sud du sentier (clairière x 40–48, y 41–44, deux entrées (40, 40) et (48, 40)) (187) ; montée à l'est (x 55–56).
+6. **T5 vers l'ouest** (y 30–31) à travers **C3** (x 30–44, y 26–34, **rai de lumière** (35..38, 27..29)) (220–234) ; montée (x 14–15).
+7. **T6 vers l'est** (y 21–22) : **H5**, passage court sous la canopée (x 30–34, y 20–23, **5 cases obligatoires**, pas 274–278), ressaut (x 42–43) vers y 18–19 ; montée à l'est (x 53–54) ; la sente (54, 9..12) continue tout droit vers la **clairière d'O5** (nord-est, cul-de-sac).
+8. **T7 vers l'ouest** (y 13–14) : la sente (x 16–27) continue tout droit vers la **clairière de H4** (nord-ouest, cul-de-sac, Roucool) pendant que le sentier tourne vers le **parvis** (x 22–35, y 6–11 : Éli, O6) → **porte du poste nord** (28, 5) (338) (emprise x 25–31, y 2–5).
+
+**Écarts et choix** (défauts, règle 4) :
+1. **H5** (nom nouveau : H1–H4 gardent leur sens du dossier, la zone ajoutée prend le numéro suivant) : bloc de 5 × 4 traversé sur toute sa largeur, sur la 6e traversée, entre C3 et le parvis : la 2e rencontre obligatoire tombe dans le dernier tiers, loin de H3 (≈ 140 pas entre les deux), quand la distance au Centre compte le plus (dossier §12.3). « Courte » = **4 à 6 cases** (défaut, H3 garde 6–8).
+2. **La boucle de la randonneuse passe de la 2e à la 4e traversée** (même forme : petite clairière secondaire à deux entrées, souche et sac) : elle donne une respiration à une traversée nouvelle et décharge C2 (souche, O3, naturaliste, Tom). Tous les autres éléments gardent leur traversée.
+3. **Trois ressauts** (T2, T4, T6) et des montées de longueurs différentes, pour que les sept lacets ne se lisent pas comme un accordéon régulier ; C3 décalée vers l'est par rapport à C2. Repères espacés : tronc au pas 11, souche ≈ 76, rai ≈ 228, porte 338 (mêmes proportions qu'au T14 : 10 / 69 / 172 sur 234).
+4. Rythme : aucun tronçon de plus de ≈ 40 pas sans repère, clairière, herbes, Dresseur ou détour. Écarts entre corridors : 8 à 10 rangées de forêt (la caméra en montre ≈ 11) ; aucun embranchement à trois directions équivalentes (les trois culs-de-sac continuent **tout droit** dans l'axe du sentier, qui tourne).
+5. Bandes de sous-bois d'une case le long de la plupart des traversées et des montées, coupées par endroits ; aucune au droit de Théo. Passages d'une case seulement dans les recoins (alcôve de Théo, niches de Noé et de Milo, `passage_o3`, sentes d'O5, entrées de la boucle).
+
+### 7.2 Positions qui changent (pour l'étape 2)
+
+Les noms ne changent pas (PNJ, warps, spawns, drapeaux) ; **raccords côté postes inchangés** (scènes des postes, cibles et spawns `from_forest`) : seules les cases dans la forêt bougent. Orientations inchangées.
+
+| Élément | T14 (58 × 74) | Forêt agrandie (70 × 90) |
+|---|---|---|
+| `warp_sud_w` / `warp_sud_e` (PUSH ↓ → poste sud, `from_forest`) | (39..40, 73) | **(44..45, 89)** |
+| spawn `from_gate_south` (↑) | (39, 73) | **(44, 89)** |
+| `warp_poste_nord` (STEP_ON ↑ → poste nord, `from_forest`), façade `bldg_poste_foret_01` | (25, 5), emprise x 22–28 | **(28, 5)**, emprise x 25–31, y 2–5 |
+| spawn `from_gate_north` (↓) | (25, 6) | **(28, 6)** |
+| `scout_theo` D1 ↓ 4 | (28, 53) | **(30, 67)** |
+| `scout_noe` D2 ↓ 5 | (4, 48) | **(6, 65)** |
+| `youngster_tom` D3 ↑ 4 | (24, 51) | **(26, 64)** |
+| `scout_milo` D4 ↓ 5 | (25, 32) | **(30, 45)** |
+| `scout_eli` D5 ← 5 | (31, 9) | **(34, 9)** |
+| `naturalist` (route, regarde ←) | (21..23, 44), tronc (18, 44) | **(22..24, 57)**, route [(22,57), (23,57), (24,57), (23,57)], tronc (19, 57) |
+| `hiker` (route) / sac / souche | (41..44, 44) / (45, 44) / (40, 44) | **(41..44, 42)** / **(45, 42)** / **(40, 42)** |
+| O1 `viridian_forest_item_1` (visible) | (30, 67) | **(34, 83)** |
+| O2 (visible) | (3, 60) | **(4, 77)** |
+| O3 (caché) / `passage_o3` | (27, 41) / (30, 42) | **(29, 53)** / **(32, 54)** |
+| O4 (caché) / racines | (6, 36) / (5, 35..36) | **(6, 49)** / **(5, 48..49)** |
+| O5 (visible) | (50, 4) | **(59, 5)** |
+| O6 (caché) / souche du parvis | (20, 6) / (20, 7) | **(23, 6)** / **(23, 7)** |
+| `caterpie_1` / `caterpie_2` | (41, 67) / (21, 33) | **(47, 83)** / **(27, 46)** |
+| `weedle_1` / `weedle_2` | (36, 44) / (21, 22) | **(39, 57)** / **(29, 28)** |
+| `metapod` / `kakuna` / `pidgey` | (18, 44) / (8, 51) / (14, 9) | **(19, 57)** / **(11, 69)** / **(14, 8)** |
+| tronc incliné `I` / grande souche `S` / rai `L` | (37..38, 63) / (26..28, 43..44) / (26..29, 21..24) | **(42..43, 78)** / **(28..30, 55..56)** / **(35..38, 27..29)** |
+
+Données à reporter : `data/npcs/viridian_forest.json` (`cell` et `route` de tous les PNJ ci-dessus) ; `data/cutscenes/viridian_forest.json` n'a **aucune case** (rien à changer) ; les déclencheurs des objets cachés sont lus dans la grille par l'outil (`HIDDEN_ITEMS`). Constantes en cases de `tools/build_viridian_forest.gd` (défauts proposés, à relire en capture) :
+- `SIZE` 70 × 90 ; `FIXED_PROPS` : poste (28, 5), tronc (43, 78), souche (29, 56), racines (5, 49), sac (45, 42), souche du parvis (23, 7), souche de la randonneuse (40, 42) ; `CLEAR_LIKE_PERCH` (5, 49), (6, 49).
+- `CLEARING_TREES` : C1 est (50, 78), C1 ouest (35, 80) ; C2 nord (24, 54), C2 nord-est (35, 54) ; C3 nord (31, 25) et **côté est (45, 27)** (au nord de C3, H5 et la bande de T6 ne sont qu'à deux rangées : la cime du bord nord est bornée par `WALK_OVERLAP_MAX`, à relire en capture) ; randonneuse : **côté est (49, 43)** (le bord nord touche le sentier : une cime y couvrirait le chemin) ; H4 nord (8, 6), H4 nord-est (13, 6) ; O5 nord (53, 2) ; parvis est (34, 5), ouest (23, 5).
+- `EDGE_PROPS` : ronces C2 (21, 54), tronc couché C3 (36, 25), ronces C1 (47, 78), tronc couché H4 (4, 18), ronces O5 (52, 9).
+- `LIGHT_SPOTS` : rai de C3 centré (37, 28.5) taille ≈ (5, 3) ; taches C1 (45, 82), C2 (28, 61), T5 (50, 31), parvis (27.5, 9) ; **+2 taches** sur les nouvelles traversées (défaut) : T4 (20, 42), T6 (48, 19) ; `PARTICLE_SPOTS` inchangés (C3, C1, C2).
+- `H3_ROWS` (herbes sombres sous la canopée) → **H3 et H5** (lire les zones par leurs positions `herbes` plutôt que par des rangées).
+- `tools/capture_viridian_forest.sh` : cases des captures à reporter ; départ de débogage `viridian_forest` inchangé (spawn par nom).
+
+### 7.3 Estimation de la durée et combat obligatoire supplémentaire
+
+Modèle (demandé par Kevin, imprimé par `plan_check.py`) : pas × 0,72 s (mesure S21) + Théo ≈ 100 s (mesuré) + rencontres attendues dans les herbes **obligatoires** au taux de la table (25 / 256 par pas ; la montée du taux ne joue pas sous 15 pas) × durée d'un combat sauvage. **La durée d'un combat sauvage n'a jamais été mesurée** : défaut **50 s** (apparition, 2–3 tours, expérience).
+
+| Trajet | Calcul | Durée |
+|---|---|---|
+| T14 (référence) | 234 × 0,72 + 100 + 0,68 × 50 | ≈ 5 min 02 s (la QA T22 estimait 5–6 min) |
+| **Forêt agrandie, minimum obligatoire** (Théo seul) | 338 × 0,72 + 100 + 12 × 25/256 = 1,17 rencontre × 50 | **≈ 6 min 41 s** (6 min 18 s à 30 s par combat sauvage, 7 min 04 s à 70 s) |
+| Forêt agrandie, **+ Milo inévitable** (≈ 120 s, deux Pokémon, défaut) | 402 + 120 | **≈ 8 min 40 s** |
+| Forêt agrandie, + Tom inévitable (≈ 90 s, un Pokémon, défaut) | 402 + 90 | ≈ 8 min 10 s |
+| Joueur qui suit le sentier sans éviter personne (Théo, Tom, Milo) | 402 + 90 + 120 | ≈ 10 min |
+
+**Constat** : le minimum reste **sous 7 min** (6 min 41 s) → la proposition de Kevin s'applique. **Mais** Tom et Milo sont déjà sur le sentier (comme au T14) : les éviter demande de passer par le nord de C2 (sans détour) et par 5 cases d'herbes de plus pour Milo ; un joueur qui suit le chemin sans y penser les combat tous les deux.
+
+**Recommandation : Milo devient inévitable** (aucun 6e Dresseur) :
+- il est déjà dans l'axe du sentier ; le changement de grille est minime : couper la bande d'herbes du détour sous sa ligne et à l'est (cases (31..32, 50..51) et (30, 51) → forêt ; (30, 50) reste en herbe, 5e case de sa vue dégagée), plus aucun passage ne croise sa colonne hors de sa vue ; il voit les deux cases du sentier, détection à 3 cases comme Théo ; aucune réplique nouvelle ;
+- c'est le premier duo de la forêt (Chenipan + Aspicot : poison possible) **juste après H3 et à mi-parcours** (pas ≈ 131) : la pression sur les ressources (Potion, Antidote) arrive là où le dossier la veut (§12.3), et l'estimation tombe au milieu de la cible (≈ 8 min 40 s) ;
+- **coût** : la ligne « D4 évitable : oui (détour par les hautes herbes) » du dossier 10 §8 change, et la forêt perd son seul choix « Dresseur ou herbes ». Alternative : Tom (≈ 8 min 10 s), mais il faudrait fermer le nord de C2 (la clairière perd sa respiration autour de lui).
+- **Non appliqué** à cette étape : la grille livrée garde Milo évitable par les herbes (dossier en vigueur). Variante vérifiée sur une copie : tous les critères restent verts sauf « D4 évitable par les herbes » (Milo devient incontournable, aucune approche ne ferme un passage, H3 garde 7 cases obligatoires) ; le critère deviendrait « D4 inévitable ». → **Question XL-1 pour Kevin** (§7.6).
+
+### 7.4 Budget de nœuds de la carte (≤ 3 000)
+
+Carte du T19 : 2 683 nœuds pour 58 × 74 (1 116 arbres et jeunes arbres en `Sprite2D`, 476 touffes, ≈ 1 000 décalcomanies, ≈ 90 autres). À densité égale, la grande carte en ferait ≈ 3 600 (forêt serrée 4 340 cases au lieu de 2 713, praticables 1 960 au lieu de 1 579, herbes 242 au lieu de 238). Comment elle tient (défauts pour l'étape 2, dans l'ordre) :
+1. **Repli `Sprite2D` déjà en place** (aucun `WorldProp` pour la forêt) ; `cull_hidden` garde son rôle mais retire peu : 163 cases de forêt seulement (les coins) sont à plus de 13 colonnes / 9 rangées de toute case praticable.
+2. **Densité des arbres selon la distance au praticable** : 2 972 cases de forêt à 1–5 cases (Tchebychev) d'une case praticable gardent la densité du T19 (≈ 0,41 arbre par case → ≈ 1 220) ; les 1 368 cases à 6 cases ou plus (marges est et ouest, cœur des massifs) reçoivent un arbre sur trois, plus grand (≈ 190) : ≈ **1 410 arbres**. Les tirages de `DenseForest.plan` passent de 9 000 à ≈ 13 200 (même densité de départ).
+3. **Décalcomanies ≈ 0,5 par case praticable** (au lieu de 0,63) : `BORDER_KEEP` 0,4 → 0,3, `UNDERGROWTH_PER_STRIP` 0,6 → 0,45 → ≈ **980** ; touffes inchangées (≈ **490**) ; autres ≈ **100**.
+4. Total projeté **≈ 2 980** : juste sous le plafond. **Si le compte dépasse 3 000** : décalcomanies du bord du sentier à 0,2, puis arbres des cases à 6+ un sur quatre ; repli structurel seulement si cela ne suffit pas (un `MultiMeshInstance2D` par texture d'arbre de forêt, vent par instance) — à décider sur mesure, pas avant.
+Mémoire des textures : aucune texture nouvelle (mêmes arbres, sols, décalcomanies) ; seul le masque du sol peint grandit (≈ × 1,47).
+
+### 7.5 Étape 2 — la carte (fait, 2026-10-08)
+
+Tâche **constructeur-monde** (Sonnet), sur `j9-foret-xl`, **après la réponse de Kevin à XL-1** (si Milo devient inévitable : modifier d'abord la grille et le critère D4 de `plan_check.py`, « D4 inévitable »).
+1. **Grille** : `viridian_forest_xl.txt` **remplace** `tools/plans/viridian_forest.txt` (même nom de fichier qu'avant pour la scène et les tests ; en-tête mis à jour) ; `plan_check.py` : le profil `viridian_forest` prend les valeurs XL (le profil T14 disparaît) ; `plan_aplats.py` : sortie `PLAN_FORET_JADE_v2.png`.
+2. **Données** : `data/npcs/viridian_forest.json` selon §7.2 (`test_viridian_forest_data` compare déjà données et grille).
+3. **Outil** : `tools/build_viridian_forest.gd` selon §7.2 et §7.4 (taille, ancrages, arbres de clairières, lisières, rais, herbes sombres H3 + H5, densité, décalcomanies) ; scène régénérée `game/world/maps/viridian_forest.tscn`.
+4. **Tests** : `test_viridian_forest` (taille 70 × 90, chemin 330–360, H3 + H5 obligatoires, visions, Théo, approches), `test_viridian_forest_life` (cases des objets et des PNJ via la grille), `test_plan_grid` (enveloppe), `test_dense_forest` (lecture de la grille) ; `tools/capture_viridian_forest.sh` (cases).
+5. **Critères d'acceptation** : `plan_check.py` vert ; grille de la scène = grille case par case ; **≤ 3 000 nœuds** (compte imprimé par l'outil) ; `tools/test.sh` vert ; import propre ; captures Mac relues (C1 et tronc, Théo, C2 et souche, H3 et Milo, boucle de la randonneuse, C3 et rai, H5, parvis ; aucun trou dans la forêt, aucune haie régulière, aucun arbre sur le sentier) ; changement de carte Route 2 → forêt mesuré sur Mac (`tools/measure_map_load.gd`) sans dérive notable par rapport au T19.
+6. **Étape 3 — qa-mobile** (S21 ou S24, vraie partie ou départ `viridian_forest`) : traversée **directe chronométrée avec combats** (minimum obligatoire **et** sentier suivi sans éviter), durée d'un combat sauvage relevée (remplace le défaut de 50 s), fps (moyenne ≥ 58) dans C1, H3, C3, H5, parvis, mémoire des textures, temps de changement de carte → validation de Kevin.
+
+**Fait (2026-10-08, branche `j9-foret-xl`)** — critères d'acceptation tenus :
+- **Grille** : XL-1 appliquée (cases (31..32, 50..51) et (30, 51) → forêt ; (30, 50) reste en herbe, 5e case de la vue de Milo) ; `viridian_forest_xl.txt` **remplace** `tools/plans/viridian_forest.txt` (en-tête « avant / après ») ; `plan_check.py` : un seul profil `viridian_forest` (valeurs XL), critère « D4 évitable par les herbes » → **« D4 inévitable »** (même contrôle que Théo : vue sur les deux cases du sentier, première case vue à 3 cases), estimation avec Milo (120 s, défaut) ; **vert** : 338 pas, 12 cases d'herbes obligatoires (H3 7 + H5 5), 1 955 cases praticables, 237 cases d'herbes (H3 56), **traversée directe estimée 8 min 41 s** ; `plan_aplats.py` → `PLAN_FORET_JADE_v2.png`.
+- **Données** : `data/npcs/viridian_forest.json` selon §7.2 (17 cases, deux routines) ; `test_viridian_forest_data` vert sans changement de logique (naturaliste (22..24, 57), Chrysacier (19, 57)).
+- **Outil** (`tools/build_viridian_forest.gd`) : 70 × 90, ancrages du §7.2 ; herbes sombres lues par zone (`DARK_GRASS_ZONES` = positions `herbes_h3`, `herbes_h5`, 152 touffes) ; `DenseForest.plan(..., attempts)` (nouveau paramètre facultatif, défaut 9 000 inchangé pour les autres cartes) à **13 200 tirages** ; **densité selon la distance** (`_thin_far` : à 6 cases ou plus du praticable, un arbre sur trois gardé, × 1,3, aucun garnissage) ; décalcomanies `UNDERGROWTH_PER_STRIP` 0,45, `BORDER_KEEP` **0,2** (premier repli du §7.4, nécessaire) ; rais : C3 (37, 28.5), C1 (45, 82), C2 (28, 61), T5 (50, 31), parvis (27.5, 9) + T4 (20, 42) et T6 (48, 19, rai faible 0,3) ; particules inchangées (C3, C1, C2).
+- **Nœuds : 2 983** (≤ 3 000 ; 1ʳᵉ mesure à densité égale : 3 707, puis 3 111 avec la densité par distance et les décalcomanies à 0,3) : 1 014 arbres + 367 jeunes arbres, 474 touffes, ≈ 1 040 décalcomanies (379 sous-bois, 326 ombres de canopée, ≈ 340 bords et clairières), ≈ 100 autres.
+- **Perf Mac** (`tools/capture_viridian_forest.sh`, 2340 × 1080, une fois chargé) : 112–140 fps, **131–159 appels de dessin** (T19 : 149–175), 173–281 objets, textures 43,7 Mo (processus), **cartes retenues dans la forêt 14,2 Mo** (inchangé). **Changement de carte** (`measure_map_load.gd`, médiane de 5, deux séries) : Jadielle 372 ms, **forêt 294–317 ms (0,79–0,85 × Jadielle ; T19 : 286 ms)**, Route 2 257–273 ms.
+- **Tests** : **`tools/test.sh` vert, 3 322 tests** (1er passage : 3 320 / 3 321, échec isolé de `test_wild_battle` « Parameter "t" is null » sous la charge des autres sessions, sans lien avec la forêt, vert seul deux fois puis au 2e passage complet) ; import propre ; `test_viridian_forest` (19 : 70 × 90, sortie (44..45, 89), porte (28, 5), 338 pas dans 330–360, **H3 et H5 obligatoires** (zones nommées par les positions `herbes`), H1 / H2 / H4 évitables sans détour, **Théo et Milo inévitables** sur la grille et sur la vraie scène avec tous les PNJ, approches sans fermeture), `test_encounter_director` (**H1 à H5**), `test_plan_grid` (enveloppe 70 × 90), `test_viridian_forest_data` (naturaliste) ; `test_viridian_forest_life`, `test_forest_gates`, `test_map_links`, `test_qa_forest_systems`, `test_dense_forest` verts sans changement (raccords des postes : cibles et spawns par nom).
+- **Captures** relues (`build/captures/foret_xl/`) : `entree`, `c1_objet`, `tronc_incline`, `theo`, `h2_cul_de_sac`, `souche`, `h3`, `milo`, `racines`, `randonneuse`, `clairiere_rai`, `h5`, `montee_o5`, `h4`, `poste_nord`, intérieurs, `ensemble`. Aucun trou dans la forêt, aucun arbre sur le sentier, pas d'effet labyrinthe (lacets de longueurs différentes, ressauts) ; Milo visible dans sa niche au-dessus du sentier, H3 à gauche ; rai de C3 entier.
+
+**Écarts** (défauts, règle 4) :
+1. **Arbres des clairières déplacés** par rapport au §7.2 : au nord de C2 (H3 à 3 rangées), de C3 (H5 à 2 rangées) et de la boucle de la randonneuse (sentier à 2 rangées), une cime de 4–5 cases aurait couvert des herbes ou le sentier → `TreeC2West` (19, 56, au-dessus du Chrysacier), `TreeC2NorthEast` (36, 54), `TreeC3West` (29, 27, au-dessus de l'Aspicot), `TreeC3East` (45, 28), `TreeHiker` (49, 44, `tree_a_01` plus bas) ; ronces de C1 (48, 78) (en (47, 78), l'une de leurs cases était praticable).
+2. **Cœur des massifs éclairci** : à 6 cases ou plus du praticable, de grands arbres espacés sur le sous-bois sombre (visible en bord d'écran, ex. `h2_cul_de_sac`) ; se lit comme une forêt profonde, pas comme un trou. À juger sur téléphone.
+3. **Rai de C3** : la forêt au nord de C3 ne fait que 2 rangées ; le haut du rai (additif, au-dessus des cimes) passe sur la bande de forêt et s'éteint au bord de H5 (`h5.png`). Gardé.
+4. Budget juste (2 983 / 3 000) : un ajout de décor dans la forêt demandera le repli suivant (arbres à 6+ cases un sur quatre).
+
+**Procédure de l'étape 3 (qa-mobile, S24 ou S21, bornée à 30–45 min)** — branche `j9-foret-xl` ; départs `viridian_forest` (entrée sud) et **`viridian_forest_north`** (nouveau : devant la porte du poste nord, tourné vers le sud) ; `PerfCounter` visible ; rapport `build/qa/foret_xl_etape3/`.
+1. **Préparation (≈ 3 min)** : `tools/deploy_s24.sh --debug-start viridian_forest` ; taille de l'APK ; chronomètre prêt.
+2. **Traversée directe chronométrée, minimum obligatoire (≈ 12 min)** : chrono au premier pas, arrêt à l'entrée dans le poste nord ; suivre le sentier sans détour, éviter ce qui s'évite (Tom : passer par le nord de C2 ; ne pas entrer dans H1, H2, H4). Relever : durée totale (**cible 7–9 min**, estimée 8 min 41 s), **durée de chaque combat** (Théo, Milo, chaque sauvage : remplace le défaut de 50 s), nombre de rencontres dans H3 (7 cases) et H5 (5 cases), temps intermédiaires entrée → Théo, Théo → Milo, Milo → porte. Au passage : Théo voit le joueur à 3 cases sur la 1re traversée ; **Milo inévitable** (essayer de passer sous lui par les herbes, rangées 50–51 : la forêt bloque ; « ! » à 3 cases, duo Chenipan + Aspicot) ; la porte du poste nord est atteinte.
+3. **Raccord nord (≈ 3 min)** : poste nord (garde « Encore quelques pas… ») → ouverture nord → « ROUTE 2 NORD — À venir » → retour → porte sud du poste → forêt : arrivée en (28, 6) tournée vers le sud, devant la porte.
+4. **fps par zone (≈ 10 min)** : `tools/deploy_s24.sh --no-build --debug-start viridian_forest` puis, à l'arrêt ≈ 10 s et en marchant, fps moyen et creux à **C1** (entrée), **tronc incliné**, **H3**, **C2** (souche, naturaliste), **C3** (rai et particules) ; puis `--debug-start viridian_forest_north` : **parvis** (Éli) et **H5**. Mémoire des textures (`tex=`) dans la forêt. Cible : moyenne ≥ 58, creux ≥ 50.
+5. **Raccord sud et changement de carte (≈ 5 min)** : depuis l'entrée sud, descendre : sortie (44..45, 89) → poste sud (arrivée (4, 2) tournée vers le sud) → Route 2 → revenir dans le poste → forêt (arrivée (44, 89) tournée vers le nord). Relever dans le journal les temps « SceneRouter : … en X ms » Route 2 → poste → forêt et les comparer à une entrée dans Jadielle (≤ 1,5 ×).
+6. **Si le temps le permet (≈ 10 min)** : traversée « sentier suivi sans éviter » (Tom compris), durée ; sinon la noter à faire.
+7. **Au doigt (≈ 2 min)** : effet labyrinthe ou lacets répétitifs ? cœur éclairci des massifs (grands arbres espacés sur le sous-bois sombre, bords d'écran) lisible comme forêt profonde ? rai de C3 sur la bande nord, repères (tronc, souche, rai) repérables ; Milo bien visible dans sa niche avant la détection.
+
+### 7.6 Questions pour Kevin (chantier « Forêt agrandie »)
+
+- **XL-1 — tranchée par Kevin le 2026-10-08 : Milo inévitable** (appliqué à l'étape 2). Question d'origine — combat de Dresseur obligatoire supplémentaire : minimum obligatoire estimé ≈ 6 min 41 s (< 7 min). Recommandation : **Milo inévitable** (≈ 8 min 40 s ; la ligne « D4 évitable par les herbes » du dossier 10 §8 change). Alternatives : Tom inévitable (≈ 8 min 10 s, nord de C2 fermé) ; aucun (≈ 6 min 41 s, mais ≈ 10 min pour qui suit le sentier sans éviter Tom ni Milo).
+- **Dossier 10** : mis à jour le 2026-10-08 (étape 2, à la demande de Kevin) : section « Forêt agrandie » avec avant / après, arbitrage 4, §2, §4, §5 (H5), §8 (Milo inévitable), table des décisions.
+- Défauts posés (règle 4, sans blocage) : H5 = 4–6 cases (5 posées) ; randonneuse sur la 4e traversée ; combat sauvage 50 s dans l'estimation.
+
+## 8. Clôture du J9 (T23, 2026-10-08, branche `j9-t23-cloture`, base `main` à `cab48bd`)
+
+**Le J9 est TERMINÉ** : tranche A (9A.1 à 9A.4) validée sur S24, 9B.1 et 9B.2 validés (QA finale T22 sur S21), forêt agrandie 70 × 90 validée sur captures et fusionnée dans `main`.
+
+### 8.1 Carte de QA retirée, départs rebasés
+
+- **Retirés** : `game/world/maps/qa_forest_systems.tscn`, `tools/build_qa_forest_systems.gd`, `tools/capture_qa_forest.gd`, `data/npcs/qa_forest_systems.json`, `tests/integration/test_qa_forest_systems.gd` (et son `.uid`), l'entrée `qa_forest_systems` des `maps` de `data/encounters/viridian_forest.json`, **`MapCatalog.QA_PREFIX` / `is_qa_map`** (plus aucune carte de QA, plus aucun appelant dans `game/` : les filtres de `test_zone_library` et `test_map_light_profiles` tombent ; un futur besoin le recréera).
+- **Ce que vérifiait `test_qa_forest_systems`, et où c'est vérifié maintenant** : table de la forêt (`test_encounter_library` : `maps` = la forêt seule, aucune table pour l'ancienne carte) ; garde sud et sa réplique automatique (`test_forest_gates` ; **nouveau** : le vrai garde parle de lui-même et pose `poison_unlocked`, `test_forest_systems_together`) ; Dresseurs posés, visions, Théo inévitable, croisements, approches (`test_viridian_forest`, `test_viridian_forest_data`, `test_viridian_forest_life`, sur la vraie scène depuis le T19 / T21) ; « aucune carte de QA livrée » (`test_map_catalog.test_no_qa_map_is_shipped`). Les tests propres à la carte retirée (sortie vers Jadielle, couloir d'une case, gabarit des cases réservées) disparaissent avec elle.
+- **Départs rebasés** (mêmes noms de fichiers, mêmes équipes et Sacs) :
+  - `poison_qa` → **poste sud** (`viridian_forest_gate_south`, `from_route_2`, ↑), `poison_unlocked` absent : le garde parle à l'arrivée ;
+  - `evolution_qa` → **entrée sud de la forêt** (`from_gate_south`, ↑), H1 à quelques pas ;
+  - `trainers_qa`, `trainers_weak_qa` → **devant Théo** : nouveau point d'apparition **`before_theo` (34, 70)**, tourné ←, quatre pas à l'est de sa vue (position `spawn` de `tools/plans/viridian_forest.txt`, `_add_spawns` de `tools/build_viridian_forest.gd`, marqueur ajouté à la main dans `viridian_forest.tscn` pour ne pas régénérer 6 000 lignes d'identifiants : la reconstruction donne le même nœud) ; testé par `test_viridian_forest.test_before_theo_spawn_is_four_steps_from_his_sight`.
+  - **Gardés tels quels** : `poison_ui` (Jadielle, devant la Boutique : Sac, Équipe et Boutique avec deux empoisonnés ; sert à `tools/capture_poison.gd`), `save_v4_qa`, `viridian_forest`, `viridian_forest_north`. **Aucun départ supprimé** : les quatre départs de la carte de QA restent utiles une fois rebasés.
+- **Tests adaptés** : `test_forest_systems_together` (poison + évolution + Dresseurs ensemble, **sur la vraie forêt** : Noé empoisonne, Théo fait évoluer Chenipan avant sa réplique « après », Chenipan empoisonné reste empoisonné ; garde du vrai poste sud), `test_debug_start` (cartes et spawns des départs rebasés), `test_dialogue_data` (liste des cartes), `test_encounter_library`, `test_map_catalog`, `test_zone_library`, `test_map_light_profiles` ; `tools/capture_trainer_spotted.gd` (Théo de la vraie forêt) ; `tools/debug_start/README.md`.
+
+### 8.2 Bandeau du poison pendant le voile de l'autre Pokémon (reporté de la QA) : vrai défaut, corrigé
+
+Le bandeau des messages garde sa dernière phrase jusqu'à la suivante ; le temps POISON (voile + barre) vient **avant** sa phrase. Les deux Pokémon empoisonnés, le voile du second se jouait donc sous « *premier* souffre du poison ! » (et, un seul empoisonné, sous la dernière phrase de l'attaque). Correctif : `BattleDirector._play_poison` vide le bandeau (`BattleHud.clear_message` → `BattleMessageBanner.clear`) avant le voile ; le bandeau reste en place, vide, puis reçoit « X souffre du poison ! ». L'ordre validé au 9A.2 (voile et barre, puis la phrase) ne change pas. Test : `test_battle_director.test_the_previous_line_is_cleared_during_the_poison_veil` (échoue sans le correctif). Captures relues (`build/captures/j9_t23/2340_combat_veil_own.png`, `…_veil_foe.png`, `tools/capture_poison.gd -- --map=route_1 --spawn=from_pallet_w --combat-only`) : bandeau vide pendant les deux voiles. 3 311 tests verts (3 322 − 13 de `test_qa_forest_systems` + 2 nouveaux), import propre. À revoir d'un œil au prochain passage téléphone (bandeau vide ≈ 0,4 s).
+
+### 8.3 Passation au J10 (Argenta, Route 2 nord)
+
+**Porte nord de la forêt.** Aujourd'hui, l'ouverture nord du poste nord (`viridian_forest_gate_north`, cases (4..5, 1), STEP_ON ↑, nœuds `Route2NorthSoonW` / `Route2NorthSoonE`) est un warp « **ROUTE 2 NORD — À venir** » (cible vide, retour au spawn `north_door` (4, 2) tourné ↓). Quand la Route 2 nord existera — comme le J9 l'a fait pour la porte du poste de la Route 2 (`FOREST_GATE_*` de `tools/build_route_2.gd`) :
+1. `tools/build_painted_interiors.gd`, `_forest_gate(&"north")` : les deux entrées `Route2NorthSoon*` prennent la carte de la Route 2 nord (identifiant au choix du J10 ; défaut cohérent avec `route_2` : `route_2_north`) et son spawn d'entrée sud (ex. `from_forest_gate`), regard ↑, **sans** le 8e élément « Route 2 nord » (le libellé « à venir ») ; renommer les nœuds (`ToRoute2NorthW/E`) ; régénérer (`--foret`) puis réimporter.
+2. Route 2 nord : sa sortie sud mène à `viridian_forest_gate_north`, spawn **`north_door`** (existe déjà, (4, 2)), regard ↓ (comme la porte sud du poste sud vers la Route 2 : `from_forest`).
+3. Tests : `test_forest_gates.test_north_gate_links_the_forest_and_route_2_north_coming_soon` devient le raccord réel (cible, spawn, regard) ; `test_map_links` vérifie les deux bouts. Le cache de cartes du `SceneRouter` suit les warps (voisines) : rien à faire.
+4. Zone : `data/world/zones.json` reçoit la Route 2 nord (défaut du dossier 12 : zone à part, « Route 2 », sous-titre « Forêt de Jade — Argenta ») et les cartes d'Argenta dans `pewter_city.maps`.
+5. Le départ `viridian_forest_north` (devant la porte du poste nord) sert à la QA du raccord.
+
+**Drapeau `pewter_arrived`** — **à poser au J10** à la première entrée dans Argenta (dossier 12 §5 : titre « ARGENTA », Grand moment d'arrivée, **aucun dialogue ni cinématique** ; même place que `viridian_arrived` pour Jadielle, sans la scène). Déjà prêt :
+- la **réplique du garde nord « depuis Argenta »** : `data/dialogues/forest_gates.json`, `forest_gate_north_guard`, variante `if: ["pewter_arrived"]` : « La Forêt de Jade mène à Jadielle. / Les jeunes Dresseurs s'y entraînent. » (vérifiée par `test_dialogue_data`) ; avant : « Encore quelques pas vers le nord, / et tu atteindras Argenta. » ;
+- `test_dialogue_data.FUTURE_FLAGS = [&"pewter_arrived"]` (drapeau lu sans être posé) : **le J10 le vide** quand il pose le drapeau.
+
+**Objectif.** « continuer vers le nord. » (`go_north`, `data/story/objectives.json`, `if: ["pokedex_activated"]`) reste jusqu'à Argenta (défaut du J9). Au J10 (dossier 12 §16) : `go_north` reçoit `"unless": ["pewter_arrived"]` et une entrée « obtenir le Badge Roche. » (`if: ["pewter_arrived"]`, `unless: ["badge_boulder"]`) est ajoutée **en tête** de la liste (`ObjectiveLibrary` : la première entrée applicable gagne), puis « continuer vers la Route 3. » après le badge.
+
+**Budget perf et mémoire (état à la clôture).**
+- Forêt : **2 983 nœuds** pour un budget de 3 000 (`test_viridian_forest.test_node_budget`) ; un ajout de décor demande le repli suivant (§7.5, écart 4 : arbres à 6+ cases un sur quatre).
+- Mac (2340 × 1080) : 112–140 fps, 131–159 appels de dessin dans la forêt ; changement de carte forêt 294–317 ms (0,79–0,85 × Jadielle, 372 ms) ; Route 2 257–273 ms.
+- Mémoire des textures : **85–88 Mo dans la forêt sur S21** (QA T22), jugée « pas grave » par Kevin ; 66,9 Mo en combat (QA 9A.2, budget indicatif 64 Mo) ; cartes retenues dans la forêt 14,2 Mo (cache borné à la carte courante et ses voisines, T18). APK ≈ 76 Mo (T10). Argenta + Route 2 nord + intérieurs ajouteront leurs textures : mesurer au premier passage téléphone du J10.
+
+**Reste à mesurer sur téléphone** (forêt agrandie, jamais jouée sur S24/S21 depuis l'agrandissement) — procédure §7.5, étape 3, **30–45 min**, départs `viridian_forest` et `viridian_forest_north` : durée réelle de la traversée directe (cible 7–9 min, estimée 8 min 41 s) et temps intermédiaires ; **durée réelle d'un combat** (Théo, Milo, sauvages : remplace le défaut de 50 s) ; fps moyen et creux par zone (C1, tronc, H3, C2, C3, parvis, H5 ; cible ≥ 58 / ≥ 50) ; raccords nord (poste nord, « À venir ») et sud (poste sud, Route 2) et temps de changement de carte ; bandeau vide pendant le voile du poison (§8.2). À faire au premier passage téléphone, au plus tard avec la première validation S24 du J10.
 

@@ -24,7 +24,7 @@ Déplacement, caméra, collisions, interactions, bâtiments/intérieurs, PNJ, di
 données Pokémon, starter, moteur de combat, première UI de combat. Résultat : prologue jouable
 jusqu'au premier combat.
 
-### Phase 2 — Boucle Pokémon fondamentale (J5) — 🔥 en cours : Route 1
+### Phase 2 — Boucle Pokémon fondamentale (J5) — ✅ terminé
 - **5A** — la carte de la Route 1
 - **5B** — rencontres sauvages (le combat du 4B réutilisé en extérieur, « le monde devient la scène »)
 - **5C** — XP / niveaux / apprentissage de capacités
@@ -36,7 +36,7 @@ jusqu'au premier combat.
 À la fin : **Explorer → rencontrer → combattre → gagner de l'XP → capturer → sauvegarder → continuer.**
 Le cœur de Pokémon fonctionne.
 
-### Phase 3 — Le système joueur (J6) — Menu principal
+### Phase 3 — Le système joueur (J6) — Menu principal — ✅ terminé
 Avant d'étendre Kanto. Chaque entrée du menu devient un vrai système (UI 2026, pas une boîte texte) :
 - **6A Équipe** : Pokémon possédés, PV, niveau, XP, types, capacités, stats, ordre de l'équipe, examen.
 - **6B Sac** : catégories (objets, soins, Poké Balls, CT, objets clés), quantité, description, UTILISER.
@@ -49,13 +49,13 @@ Avant d'étendre Kanto. Chaque entrée du menu devient un vrai système (UI 2026
 - **6F Paramètres** : audio, musique, vibrations, vitesse du texte, accessibilité, commandes,
   perfs. Accessibilité pensée dès ici, pas à la fin.
 
-### Phase 4 — Premier hub (J7) — Jadielle
+### Phase 4 — Premier hub (J7) — Jadielle — ✅ terminé
 - **Centre Pokémon** : soin + animation ; **point de retour après défaite** (dernier Centre utilisé,
   plus systématiquement Maman à partir d'ici).
 - **Boutique** : premiers achats (Poké Balls, Potions, antidotes…).
 - **Économie** : argent, prix, achats, ventes, récompenses des combats de Dresseurs.
 
-### Phase 5 — Route 2 / Forêt de Jade (J8 – J9)
+### Phase 5 — Route 2 / Forêt de Jade (J8 – J9) — ✅ terminé (J8 le 2026-10-07, J9 le 2026-10-08)
 Nouveaux Pokémon, premiers vrais Dresseurs, poison / antidotes, plus d'objets, capture plus
 intéressante, équipe qui se construit, premier apprentissage de nouvelles capacités, premières
 évolutions selon les niveaux.
@@ -69,6 +69,8 @@ intéressante, équipe qui se construit, premier apprentissage de nouvelles capa
 - **Forêt de Jade : vue générale peinte validée** par Kevin (2026-10-07,
   `reference/foret-jade-vue-generale-v1.png`, dossier 10) ; la grille du jeu fait foi pour la
   géométrie.
+- **J9 terminé** (2026-10-08) : forêt agrandie à 70 × 90 (Théo et Milo inévitables), 5 Dresseurs,
+  poison, premières évolutions ; la porte nord du poste nord attend la Route 2 nord (J10).
 
 ### Phase 6 — Argenta + première Arène (J10)
 Ville d'Argenta (musée, habitants, Centre, Boutique, Arène). **Système de badges** : victoire →
@@ -140,11 +142,11 @@ l'histoire principale. À reprendre à la conception de chaque jalon concerné.
 
 ```
 J5  Route 1 + boucle Pokémon
-J6  Menu / Équipe / Sac / Pokédex / Carte / Profil   ← ICI
+J6  Menu / Équipe / Sac / Pokédex / Carte / Profil
 J7  Jadielle + Centre + Boutique + économie
 J8  Route 2
 J9  Forêt de Jade
-J10 Argenta + Arène Pierre + Badge
+J10 Argenta + Arène Pierre + Badge   ← ICI
 J11 Grande passe systèmes (évolutions / CT / statuts / équipe avancée / compagnon)
 J12+ Expansion de Kanto → Ligue → post-game
 ```

@@ -180,6 +180,12 @@ func show_message(text: String, wait_touch: bool = false) -> void:
 	await _banner.show_message(text, wait_touch)
 
 
+## Vide le bandeau des messages s'il est la zone du bas (il reste affiché, sans texte).
+func clear_message() -> void:
+	if _zone == Zone.MESSAGE:
+		_banner.clear()
+
+
 ## Coroutine : fait sortir la zone du bas (grille, capacités, « ‹ », bandeau) et attend sa
 ## sortie ; les cartes et les pastilles restent. Sert au Sac de combat (jalon 5D), qui prend la
 ## place des actions, et au lancer de la Ball, qui se joue sans bandeau.

@@ -1,6 +1,6 @@
 {
 	"viridian_forest_grass": {
-		"maps": ["viridian_forest", "qa_forest_systems"],
+		"maps": ["viridian_forest"],
 		"terrain": "grass",
 		"rate": 25,
 		"ramp": { "from_step": 15, "max_steps": 20 },

@@ -57,8 +57,6 @@ const MAPS: Array[StringName] = [
 	&"player_house_2f", &"player_house_1f", &"rival_house", &"oak_lab", &"pallet_town",
 	&"route_1", &"route_22", &"viridian_city", &"viridian_center", &"viridian_mart",
 	&"route_2",
-	# Jalon 9 (T6, T12) : carte de QA (le garde sud, les cinq Dresseurs).
-	&"qa_forest_systems",
 	# Jalon 9 (T19) : la Forêt de Jade et ses deux postes.
 	&"viridian_forest", &"viridian_forest_gate_south", &"viridian_forest_gate_north",
 	# Jalon 10 (T13) : les intérieurs d'Argenta.
