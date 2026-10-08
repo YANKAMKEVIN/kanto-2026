@@ -1,5 +1,5 @@
 {
-	"map": "qa_forest_systems", "spawn": "poison_start", "facing": "up",
+	"map": "viridian_forest_gate_south", "spawn": "from_route_2", "facing": "up",
 	"flags": [
 		"mom_greeted", "rival_met", "oak_met", "oak_lab_reunion", "starter_offered",
 		"starter_chosen", "taken_charmander", "taken_squirtle", "rival_lab_won",

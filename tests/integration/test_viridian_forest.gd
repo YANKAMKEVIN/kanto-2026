@@ -307,6 +307,28 @@ func test_south_exit_and_north_door_lead_to_the_gates() -> void:
 				assert_has(ENTRANCE, cell, "seule la sortie sud touche le bord")
 
 
+## Clôture du J9 (T23) : le point d'apparition des départs `trainers_qa` / `trainers_weak_qa`
+## (ex-couloir de la carte de QA) est sur le sentier, hors de toute vue, et quatre pas vers
+## l'ouest entrent dans la vue de Théo (au quatrième, pas avant).
+func test_before_theo_spawn_is_four_steps_from_his_sight() -> void:
+	var cell := _map.get_spawn_cell(&"before_theo")
+	assert_eq(cell, _plan.cell_of("before_theo"), "position de la grille")
+	assert_true(_grid.is_free(cell), "case libre")
+	var theo := _map.get_npc(&"scout_theo").get_spec()
+	var sight := func(at: Vector2i) -> int:
+		return TrainerRules.sight_distance(_grid, theo.cell, theo.facing, theo.sight, at)
+	for step: int in range(4):
+		var at := cell + Vector2i.LEFT * step
+		assert_false(_grid.is_solid(at), "sentier en %s" % at)
+		assert_lt(sight.call(at), 1, "hors de la vue de Théo en %s" % at)
+	assert_gt(sight.call(cell + Vector2i.LEFT * 4), 0, "vu au quatrième pas")
+	for npc: Npc in _map.get_npcs():
+		var spec := npc.get_spec()
+		if spec.is_trainer() and spec.id != &"scout_theo":
+			assert_lt(TrainerRules.sight_distance(_grid, spec.cell, spec.facing, spec.sight,
+				cell), 1, "hors de la vue de %s" % spec.id)
+
+
 # --- Critères du §2.7.1 sur la vraie grille ------------------------------------------------
 
 func test_main_path_length_and_width() -> void:

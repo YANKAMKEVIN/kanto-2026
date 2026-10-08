@@ -449,6 +449,8 @@ func _planted_forest() -> Dictionary:
 func _add_spawns(root: Node) -> void:
 	_add_spawn(root, "from_gate_south", _plan.call(&"cell_of", "from_gate_south"))
 	_add_spawn(root, "from_gate_north", _plan.call(&"cell_of", "from_gate_north"))
+	# Départs de débogage `trainers_qa` / `trainers_weak_qa` (clôture du J9, T23).
+	_add_spawn(root, "before_theo", _plan.call(&"cell_of", "before_theo"))
 
 
 func _add_spawn(root: Node, spawn_name: String, cell: Vector2i) -> void:

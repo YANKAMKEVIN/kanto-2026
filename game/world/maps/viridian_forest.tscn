@@ -24829,6 +24829,9 @@ position = Vector2(4272, 8640)
 [node name="from_gate_north" type="Marker2D" parent="Spawns" unique_id=1107811392]
 position = Vector2(2736, 672)
 
+[node name="before_theo" type="Marker2D" parent="Spawns"]
+position = Vector2(3312, 6816)
+
 [node name="Triggers" type="Node2D" parent="." unique_id=1163994663]
 
 [node name="ForestItem3" type="Marker2D" parent="Triggers" unique_id=1739854503]

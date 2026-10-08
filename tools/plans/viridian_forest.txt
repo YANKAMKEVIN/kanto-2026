@@ -134,6 +134,7 @@ warp_sud_e             warp           45,89        libre   # PUSH ↓ → viridi
 from_gate_south        spawn          44,89        libre   # arrivée depuis le poste sud, tournée ↑
 warp_poste_nord        warp           28,5         libre   # porte : STEP_ON ↑ → viridian_forest_gate_north, from_forest
 from_gate_north        spawn          28,6         libre   # retour devant la porte, tourné ↓
+before_theo            spawn          34,70        libre   # départs de QA trainers_qa / trainers_weak_qa (T23) : tourné ←, 4 pas avant la vue de Théo
 scout_theo             dresseur       30,67        bloque  role=D1 facing=down sight=4 trainer=forest_scout_theo  # T1 : alcôve au nord du sentier, vu en (30, 70) ou (30, 71)
 scout_noe              dresseur       6,65         bloque  role=D2 facing=down sight=5 trainer=forest_scout_noe  # niche au nord de H2 : regarde dans les herbes
 youngster_tom          dresseur       26,64        bloque  role=D3 facing=up sight=4 trainer=forest_youngster_tom  # T2, C2, au sud du sentier : contournable par le nord de la clairière

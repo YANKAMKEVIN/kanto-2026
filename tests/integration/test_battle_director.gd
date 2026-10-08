@@ -1766,6 +1766,43 @@ func test_the_players_card_takes_psn_and_the_bar_follows_the_poison() -> void:
 	assert_push_error_count(0)
 
 
+## Clôture du J9 (reporté de la QA T22) : les deux Pokémon empoisonnés, la phrase du premier
+## (« Salamèche souffre du poison ! ») ne reste pas dans le bandeau pendant le voile du second ;
+## le bandeau reste en place, vide, jusqu'à la phrase du second.
+func test_the_previous_line_is_cleared_during_the_poison_veil() -> void:
+	var mine := _map.get_npc(MINE_ID)
+	var foe := _map.get_npc(FOE_ID)
+	await _stage.enter(_player.get_camera(), mine, foe, &"charmander", &"rattata")
+	var set_up := BattleEvent.new(BattleEvent.Kind.SENT_OUT, BattleEvent.SideId.FOE)
+	set_up.pokemon_name = "Rattata"
+	set_up.level = 5
+	set_up.hp = 20
+	set_up.max_hp = 20
+	set_up.status = StatusRules.POISON
+	_hud.get_card(BattleHud.Side.FOE).set_view(BattleViews.card(set_up))
+	await _hud.show_message("Salamèche souffre du poison !")
+	var banner := _hud.get_message_banner()
+	assert_eq(banner.get_text(), "Salamèche souffre du poison !")
+	var event := BattleEvent.new(BattleEvent.Kind.STATUS_DAMAGED, BattleEvent.SideId.FOE)
+	event.pokemon_name = "Rattata"
+	event.status = StatusRules.POISON
+	event.amount = 2
+	event.hp = 18
+	event.max_hp = 20
+	# Vitesse 0 : le voile et la barre sont instantanés ; ce qui est affiché à la fin du temps
+	# POISON est ce qui l'était pendant le voile (aucune phrase n'est posée entre-temps).
+	await _director._play_beat(BattleBeat.new(BattleBeat.Kind.POISON, event))
+	assert_eq(banner.get_text(), "", "aucune phrase pendant le voile de Rattata")
+	assert_eq(_hud.get_zone(), BattleHud.Zone.MESSAGE, "le bandeau reste en place")
+	assert_eq(_hud.get_card(BattleHud.Side.FOE).get_hp_bar().get_shown_hp(), 18)
+	var line := BattleBeat.new(BattleBeat.Kind.MESSAGE, event)
+	line.text = "Rattata souffre du poison !"
+	await _director._play_beat(line)
+	assert_eq(banner.get_text(), "Rattata souffre du poison !", "puis la phrase de Rattata")
+	assert_push_error_count(0)
+	await _stage.exit()
+
+
 ## Durée du temps POISON (temps simulé) : le voile dure 0,35 s ; la barre descend en HP_TWEEN
 ## (0,4 s) en même temps ; la main n'est rendue qu'à la fin des deux, puis le message.
 func test_the_poison_beat_waits_for_the_veil_and_the_bar_together() -> void:

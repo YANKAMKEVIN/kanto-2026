@@ -302,7 +302,7 @@ Défaut (règle 4) : le Dresseur **marche jusqu'à la case voisine** (Rouge/Bleu
 
 ### 2.6 Carte et départs de QA (tranche A)
 
-- `MapCatalog.QA_PREFIX = "qa_"`, `is_qa_map(id)` : les tests qui énumèrent les cartes (`test_zone_library`, `test_map_light_profiles`) les ignorent ; une carte de QA n'appartient à aucune zone (le Pokédex n'y note aucun habitat, la Carte ne la montre pas — tests). Inaccessible en jeu (aucun warp n'y mène) ; seulement par `DebugStart`. **Retirée à la clôture du J9** (T23) avec ses données.
+- `MapCatalog.QA_PREFIX = "qa_"`, `is_qa_map(id)` : les tests qui énumèrent les cartes (`test_zone_library`, `test_map_light_profiles`) les ignorent ; une carte de QA n'appartient à aucune zone (le Pokédex n'y note aucun habitat, la Carte ne la montre pas — tests). Inaccessible en jeu (aucun warp n'y mène) ; seulement par `DebugStart`. **Retirée à la clôture du J9** (T23, fait : §8.1) avec ses données.
 - `tools/build_qa_forest_systems.gd` → `game/world/maps/qa_forest_systems.tscn` (≈ 24 × 18, tuiles provisoires `OverworldTiles`, aucune lumière) :
   - garde sud (sprite générique) au nord du départ : `forest_gate_south_guard` ;
   - hautes herbes 5 × 4 (table de la forêt) ;
@@ -595,6 +595,7 @@ Branche d'intégration `jalon-09` (cette copie) ; une branche par tâche, chacun
 
 #### T23 — architecte : clôture
 - Retirer `qa_forest_systems` (scène, outil, PNJ, `maps` de la table, départs de QA devenus inutiles) ; `etat-projet.md` ; lot de textes ; passation au J10 (porte nord, `pewter_arrived`, réplique du garde nord « depuis Argenta »).
+- **Fait (2026-10-08, branche `j9-t23-cloture`, base `main` à `cab48bd`)** : carte de QA retirée, départs rebasés sur le poste sud et la vraie forêt, bandeau du poison vidé pendant le voile (vrai défaut, corrigé avec un test), lot de textes marqué intégré, passation au J10 : **§8**.
 
 **Parallélisme.** Tout de suite : **T0 ∥ T2**. Après T0 (textes validés) : T1. Après T1 et T2 : **T4 ∥ T6 ∥ T8 ∥ T11** (fichiers disjoints, sauf `battle_director.gd` : T5 et T9 y touchent tous deux → T9 rebasé sur T5, ou l'inverse, jamais en même temps). Puis T5 ∥ T9 ∥ T12 (ui-mobile : un à la fois si une seule session ui-mobile). Une session S24 par sous-jalon (T3, T7, T10, T13, T20, T22). Tranche B : T14 dès le 8.0 validé ; T18 ∥ T15–T17 ; T19 après la fusion du J8.
 
@@ -1118,3 +1119,45 @@ Tâche **constructeur-monde** (Sonnet), sur `j9-foret-xl`, **après la réponse 
 - **XL-1 — tranchée par Kevin le 2026-10-08 : Milo inévitable** (appliqué à l'étape 2). Question d'origine — combat de Dresseur obligatoire supplémentaire : minimum obligatoire estimé ≈ 6 min 41 s (< 7 min). Recommandation : **Milo inévitable** (≈ 8 min 40 s ; la ligne « D4 évitable par les herbes » du dossier 10 §8 change). Alternatives : Tom inévitable (≈ 8 min 10 s, nord de C2 fermé) ; aucun (≈ 6 min 41 s, mais ≈ 10 min pour qui suit le sentier sans éviter Tom ni Milo).
 - **Dossier 10** : mis à jour le 2026-10-08 (étape 2, à la demande de Kevin) : section « Forêt agrandie » avec avant / après, arbitrage 4, §2, §4, §5 (H5), §8 (Milo inévitable), table des décisions.
 - Défauts posés (règle 4, sans blocage) : H5 = 4–6 cases (5 posées) ; randonneuse sur la 4e traversée ; combat sauvage 50 s dans l'estimation.
+
+## 8. Clôture du J9 (T23, 2026-10-08, branche `j9-t23-cloture`, base `main` à `cab48bd`)
+
+**Le J9 est TERMINÉ** : tranche A (9A.1 à 9A.4) validée sur S24, 9B.1 et 9B.2 validés (QA finale T22 sur S21), forêt agrandie 70 × 90 validée sur captures et fusionnée dans `main`.
+
+### 8.1 Carte de QA retirée, départs rebasés
+
+- **Retirés** : `game/world/maps/qa_forest_systems.tscn`, `tools/build_qa_forest_systems.gd`, `tools/capture_qa_forest.gd`, `data/npcs/qa_forest_systems.json`, `tests/integration/test_qa_forest_systems.gd` (et son `.uid`), l'entrée `qa_forest_systems` des `maps` de `data/encounters/viridian_forest.json`, **`MapCatalog.QA_PREFIX` / `is_qa_map`** (plus aucune carte de QA, plus aucun appelant dans `game/` : les filtres de `test_zone_library` et `test_map_light_profiles` tombent ; un futur besoin le recréera).
+- **Ce que vérifiait `test_qa_forest_systems`, et où c'est vérifié maintenant** : table de la forêt (`test_encounter_library` : `maps` = la forêt seule, aucune table pour l'ancienne carte) ; garde sud et sa réplique automatique (`test_forest_gates` ; **nouveau** : le vrai garde parle de lui-même et pose `poison_unlocked`, `test_forest_systems_together`) ; Dresseurs posés, visions, Théo inévitable, croisements, approches (`test_viridian_forest`, `test_viridian_forest_data`, `test_viridian_forest_life`, sur la vraie scène depuis le T19 / T21) ; « aucune carte de QA livrée » (`test_map_catalog.test_no_qa_map_is_shipped`). Les tests propres à la carte retirée (sortie vers Jadielle, couloir d'une case, gabarit des cases réservées) disparaissent avec elle.
+- **Départs rebasés** (mêmes noms de fichiers, mêmes équipes et Sacs) :
+  - `poison_qa` → **poste sud** (`viridian_forest_gate_south`, `from_route_2`, ↑), `poison_unlocked` absent : le garde parle à l'arrivée ;
+  - `evolution_qa` → **entrée sud de la forêt** (`from_gate_south`, ↑), H1 à quelques pas ;
+  - `trainers_qa`, `trainers_weak_qa` → **devant Théo** : nouveau point d'apparition **`before_theo` (34, 70)**, tourné ←, quatre pas à l'est de sa vue (position `spawn` de `tools/plans/viridian_forest.txt`, `_add_spawns` de `tools/build_viridian_forest.gd`, marqueur ajouté à la main dans `viridian_forest.tscn` pour ne pas régénérer 6 000 lignes d'identifiants : la reconstruction donne le même nœud) ; testé par `test_viridian_forest.test_before_theo_spawn_is_four_steps_from_his_sight`.
+  - **Gardés tels quels** : `poison_ui` (Jadielle, devant la Boutique : Sac, Équipe et Boutique avec deux empoisonnés ; sert à `tools/capture_poison.gd`), `save_v4_qa`, `viridian_forest`, `viridian_forest_north`. **Aucun départ supprimé** : les quatre départs de la carte de QA restent utiles une fois rebasés.
+- **Tests adaptés** : `test_forest_systems_together` (poison + évolution + Dresseurs ensemble, **sur la vraie forêt** : Noé empoisonne, Théo fait évoluer Chenipan avant sa réplique « après », Chenipan empoisonné reste empoisonné ; garde du vrai poste sud), `test_debug_start` (cartes et spawns des départs rebasés), `test_dialogue_data` (liste des cartes), `test_encounter_library`, `test_map_catalog`, `test_zone_library`, `test_map_light_profiles` ; `tools/capture_trainer_spotted.gd` (Théo de la vraie forêt) ; `tools/debug_start/README.md`.
+
+### 8.2 Bandeau du poison pendant le voile de l'autre Pokémon (reporté de la QA) : vrai défaut, corrigé
+
+Le bandeau des messages garde sa dernière phrase jusqu'à la suivante ; le temps POISON (voile + barre) vient **avant** sa phrase. Les deux Pokémon empoisonnés, le voile du second se jouait donc sous « *premier* souffre du poison ! » (et, un seul empoisonné, sous la dernière phrase de l'attaque). Correctif : `BattleDirector._play_poison` vide le bandeau (`BattleHud.clear_message` → `BattleMessageBanner.clear`) avant le voile ; le bandeau reste en place, vide, puis reçoit « X souffre du poison ! ». L'ordre validé au 9A.2 (voile et barre, puis la phrase) ne change pas. Test : `test_battle_director.test_the_previous_line_is_cleared_during_the_poison_veil` (échoue sans le correctif). Captures relues (`build/captures/j9_t23/2340_combat_veil_own.png`, `…_veil_foe.png`, `tools/capture_poison.gd -- --map=route_1 --spawn=from_pallet_w --combat-only`) : bandeau vide pendant les deux voiles. 3 311 tests verts (3 322 − 13 de `test_qa_forest_systems` + 2 nouveaux), import propre. À revoir d'un œil au prochain passage téléphone (bandeau vide ≈ 0,4 s).
+
+### 8.3 Passation au J10 (Argenta, Route 2 nord)
+
+**Porte nord de la forêt.** Aujourd'hui, l'ouverture nord du poste nord (`viridian_forest_gate_north`, cases (4..5, 1), STEP_ON ↑, nœuds `Route2NorthSoonW` / `Route2NorthSoonE`) est un warp « **ROUTE 2 NORD — À venir** » (cible vide, retour au spawn `north_door` (4, 2) tourné ↓). Quand la Route 2 nord existera — comme le J9 l'a fait pour la porte du poste de la Route 2 (`FOREST_GATE_*` de `tools/build_route_2.gd`) :
+1. `tools/build_painted_interiors.gd`, `_forest_gate(&"north")` : les deux entrées `Route2NorthSoon*` prennent la carte de la Route 2 nord (identifiant au choix du J10 ; défaut cohérent avec `route_2` : `route_2_north`) et son spawn d'entrée sud (ex. `from_forest_gate`), regard ↑, **sans** le 8e élément « Route 2 nord » (le libellé « à venir ») ; renommer les nœuds (`ToRoute2NorthW/E`) ; régénérer (`--foret`) puis réimporter.
+2. Route 2 nord : sa sortie sud mène à `viridian_forest_gate_north`, spawn **`north_door`** (existe déjà, (4, 2)), regard ↓ (comme la porte sud du poste sud vers la Route 2 : `from_forest`).
+3. Tests : `test_forest_gates.test_north_gate_links_the_forest_and_route_2_north_coming_soon` devient le raccord réel (cible, spawn, regard) ; `test_map_links` vérifie les deux bouts. Le cache de cartes du `SceneRouter` suit les warps (voisines) : rien à faire.
+4. Zone : `data/world/zones.json` reçoit la Route 2 nord (défaut du dossier 12 : zone à part, « Route 2 », sous-titre « Forêt de Jade — Argenta ») et les cartes d'Argenta dans `pewter_city.maps`.
+5. Le départ `viridian_forest_north` (devant la porte du poste nord) sert à la QA du raccord.
+
+**Drapeau `pewter_arrived`** — **à poser au J10** à la première entrée dans Argenta (dossier 12 §5 : titre « ARGENTA », Grand moment d'arrivée, **aucun dialogue ni cinématique** ; même place que `viridian_arrived` pour Jadielle, sans la scène). Déjà prêt :
+- la **réplique du garde nord « depuis Argenta »** : `data/dialogues/forest_gates.json`, `forest_gate_north_guard`, variante `if: ["pewter_arrived"]` : « La Forêt de Jade mène à Jadielle. / Les jeunes Dresseurs s'y entraînent. » (vérifiée par `test_dialogue_data`) ; avant : « Encore quelques pas vers le nord, / et tu atteindras Argenta. » ;
+- `test_dialogue_data.FUTURE_FLAGS = [&"pewter_arrived"]` (drapeau lu sans être posé) : **le J10 le vide** quand il pose le drapeau.
+
+**Objectif.** « continuer vers le nord. » (`go_north`, `data/story/objectives.json`, `if: ["pokedex_activated"]`) reste jusqu'à Argenta (défaut du J9). Au J10 (dossier 12 §16) : `go_north` reçoit `"unless": ["pewter_arrived"]` et une entrée « obtenir le Badge Roche. » (`if: ["pewter_arrived"]`, `unless: ["badge_boulder"]`) est ajoutée **en tête** de la liste (`ObjectiveLibrary` : la première entrée applicable gagne), puis « continuer vers la Route 3. » après le badge.
+
+**Budget perf et mémoire (état à la clôture).**
+- Forêt : **2 983 nœuds** pour un budget de 3 000 (`test_viridian_forest.test_node_budget`) ; un ajout de décor demande le repli suivant (§7.5, écart 4 : arbres à 6+ cases un sur quatre).
+- Mac (2340 × 1080) : 112–140 fps, 131–159 appels de dessin dans la forêt ; changement de carte forêt 294–317 ms (0,79–0,85 × Jadielle, 372 ms) ; Route 2 257–273 ms.
+- Mémoire des textures : **85–88 Mo dans la forêt sur S21** (QA T22), jugée « pas grave » par Kevin ; 66,9 Mo en combat (QA 9A.2, budget indicatif 64 Mo) ; cartes retenues dans la forêt 14,2 Mo (cache borné à la carte courante et ses voisines, T18). APK ≈ 76 Mo (T10). Argenta + Route 2 nord + intérieurs ajouteront leurs textures : mesurer au premier passage téléphone du J10.
+
+**Reste à mesurer sur téléphone** (forêt agrandie, jamais jouée sur S24/S21 depuis l'agrandissement) — procédure §7.5, étape 3, **30–45 min**, départs `viridian_forest` et `viridian_forest_north` : durée réelle de la traversée directe (cible 7–9 min, estimée 8 min 41 s) et temps intermédiaires ; **durée réelle d'un combat** (Théo, Milo, sauvages : remplace le défaut de 50 s) ; fps moyen et creux par zone (C1, tronc, H3, C2, C3, parvis, H5 ; cible ≥ 58 / ≥ 50) ; raccords nord (poste nord, « À venir ») et sud (poste sud, Route 2) et temps de changement de carte ; bandeau vide pendant le voile du poison (§8.2). À faire au premier passage téléphone, au plus tard avec la première validation S24 du J10.
+

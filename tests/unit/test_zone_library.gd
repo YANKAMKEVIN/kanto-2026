@@ -15,8 +15,7 @@ func _map_ids() -> Array[StringName]:
 	var ids: Array[StringName] = []
 	for file: String in DirAccess.get_files_at(MapCatalog.MAPS_DIR):
 		var name := file.trim_suffix(".remap")
-		if name.get_extension() == "tscn" and not MapCatalog.is_qa_map(
-				StringName(name.get_basename())):
+		if name.get_extension() == "tscn":
 			ids.append(StringName(name.get_basename()))
 	return ids
 

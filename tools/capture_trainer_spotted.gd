@@ -1,6 +1,8 @@
 extends SceneTree
 ## Captures du jalon 9 (T12) : le « ! » d'un Dresseur, l'approche, la réplique « avant », puis le
-## Dresseur battu (drapeau posé) qui dit sa réplique « après ».
+## Dresseur battu (drapeau posé) qui dit sa réplique « après ». Depuis la clôture du J9 (T23) :
+## sur la vraie Forêt de Jade (départ `trainers_weak_qa`, spawn `before_theo`, quatre pas à
+## l'ouest de la vue de Scout Théo).
 ##
 ##   godot --path . --resolution 2340x1080 --write-movie build/cap/t12.png --fixed-fps 15 \
 ##     -s res://tools/capture_trainer_spotted.gd -- --out=build/captures/jalon09_t12
@@ -37,12 +39,12 @@ func _start() -> void:
 func _run() -> void:
 	await _seconds(2.0)
 	_player = _boot.call(&"get_player")
-	_theo = _boot.call(&"get_map").call(&"get_npc", &"theo")
+	_theo = _boot.call(&"get_map").call(&"get_npc", &"scout_theo")
 	if _after_only:
 		var flags: Object = root.get_node(^"GameState").get(&"flags")
 		flags.call(&"set_flag", &"beaten_forest_scout_theo")
 		var map: Node = _boot.call(&"get_map")
-		map.call(&"spawn_player_at", _player, Vector2i(16, 9), Vector2i.UP)
+		map.call(&"spawn_player_at", _player, Vector2i(30, 68), Vector2i.UP)
 		await _seconds(0.5)
 		Input.action_press(&"interact")
 		await _seconds(0.2)
