@@ -1,0 +1,16 @@
+{
+	"map": "pewter_city", "spawn": "from_gym", "facing": "up",
+	"flags": [
+		"mom_greeted", "rival_met", "oak_met", "oak_lab_reunion", "starter_offered",
+		"starter_chosen", "taken_bulbasaur", "taken_charmander", "rival_lab_won",
+		"rival_challenged", "rival_battle_done", "rival_left_lab", "viridian_arrived",
+		"got_oak_parcel", "pokedex_activated", "poison_unlocked", "beaten_forest_scout_theo",
+		"pewter_arrived"
+	],
+	"party": [
+		{ "species": "bulbasaur", "level": 12 },
+		{ "species": "pidgey", "level": 10 }
+	],
+	"bag": { "poke_ball": 5, "potion": 3, "antidote": 1 },
+	"money": 3000
+}
