@@ -579,7 +579,7 @@ func _badge(step: CutsceneStep) -> void:
 	if not is_instance_valid(_hud):
 		_step_error("pas de HUD pour la légende du badge « %s »" % step.badge_id)
 		return
-	_hud.show_caption(_badges.badge_name(step.badge_id), UiTokens.BADGE_CAPTION_HOLD)
+	_hud.show_caption(_badges.badge_name(step.badge_id), UiTokens.BADGE_CAPTION_HOLD, true)
 	Haptics.vibrate(UiTokens.HAPTIC_BADGE_MS)
 	await _hud.caption_hidden
 
