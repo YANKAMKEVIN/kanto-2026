@@ -81,8 +81,10 @@ func hide_zone_title() -> void:
 ## Pose [param text] sur le monde, en haut au centre (MAJUSCULES, sans rectangle) : fondu,
 ## tenue CAPTION_HOLD (ou [param hold] s si elle est ≥ 0 : « BADGE ROCHE », BADGE_CAPTION_HOLD),
 ## fondu. Jamais permanente. Indépendante des contrôles.
-func show_caption(text: String, hold: float = -1.0) -> void:
-	_caption.show_caption(text, hold)
+## [param centered] : au centre vertical de l'écran (« BADGE ROCHE »), pour ne pas couvrir
+## le Champion.
+func show_caption(text: String, hold: float = -1.0, centered: bool = false) -> void:
+	_caption.show_caption(text, hold, centered)
 
 
 ## Efface la légende en ANIM_MICRO (changement de carte…) ; émet caption_hidden.

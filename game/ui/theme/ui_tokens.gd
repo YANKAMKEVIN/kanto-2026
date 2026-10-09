@@ -1638,3 +1638,6 @@ const TRAINER_BUBBLE_FADE := 0.16
 ## vibration légère à son apparition. Aucun toast.
 const BADGE_CAPTION_HOLD := 2.0
 const HAPTIC_BADGE_MS := 40
+## Position de « BADGE ROCHE » : centre vertical de l'écran (ancre 0,5), Pierre reste visible
+## en haut de l'Arène (caméra fixe). Les autres légendes restent à CAPTION_TOP.
+const CAPTION_CENTER_ANCHOR := 0.5
