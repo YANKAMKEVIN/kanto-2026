@@ -32,6 +32,7 @@ var _opaque_when_shown: Array[bool] = []
 
 
 func before_each() -> void:
+	_chain_dir = CHAIN_DIR
 	_made.clear()
 	_events.clear()
 	_opaque_when_shown.clear()
@@ -529,14 +530,20 @@ func test_setup_clears_the_coming_soon_presenter() -> void:
 ## ne vaut que pour les cartes chargées depuis le disque, pas pour la fabrique).
 const CHAIN_DIR := "user://test_scene_router_chain/"
 const CHAIN: Array[StringName] = [&"m1", &"m2", &"m3", &"m4"]
+## Même chaîne, M2 intérieure (jalon 10) : dossier à part, pour ne jamais relire une scène de
+## [constant CHAIN_DIR] restée dans le cache des ressources.
+const DOORS_DIR := "user://test_scene_router_doors/"
+
+var _chain_dir: String = CHAIN_DIR
 
 
 ## Enregistre la chaîne : chaque carte a un point « s » et un warp vers chacune de ses
 ## voisines (STEP_ON vers le haut, une case par voisine).
-func _save_chain() -> void:
-	DirAccess.make_dir_recursive_absolute(CHAIN_DIR)
+func _save_chain(interiors: Array[StringName] = []) -> void:
+	DirAccess.make_dir_recursive_absolute(_chain_dir)
 	for i: int in CHAIN.size():
 		var map := _base_map(CHAIN[i], Vector2i(8, 6))
+		map.interior = interiors.has(CHAIN[i])
 		_spawn(map, &"s", Vector2i(1, 4))
 		var column := 2
 		for j: int in [i - 1, i + 1]:
@@ -553,7 +560,7 @@ func _save_chain() -> void:
 
 
 func _chain_path(map_id: StringName) -> String:
-	return MapCatalog.scene_path(map_id, CHAIN_DIR)
+	return MapCatalog.scene_path(map_id, _chain_dir)
 
 
 func _chain_paths(ids: Array[StringName]) -> PackedStringArray:
@@ -573,17 +580,19 @@ func _await_prefetches() -> void:
 			await get_tree().process_frame
 
 
-func _use_chain() -> void:
-	_save_chain()
+func _use_chain(interiors: Array[StringName] = []) -> void:
+	_save_chain(interiors)
 	_router.map_factory = Callable()
-	_router.maps_dir = CHAIN_DIR
+	_router.maps_dir = _chain_dir
+	_router.interior_maps = interiors
 	_router.setup(_world, _player, null)
 
 
 func after_all() -> void:
-	for id: StringName in CHAIN:
-		DirAccess.remove_absolute(_chain_path(id))
-	DirAccess.remove_absolute(CHAIN_DIR)
+	for dir: String in [CHAIN_DIR, DOORS_DIR]:
+		for id: StringName in CHAIN:
+			DirAccess.remove_absolute(MapCatalog.scene_path(id, dir))
+		DirAccess.remove_absolute(dir)
 
 
 func test_cache_keeps_only_the_current_map_and_its_warp_neighbors() -> void:
@@ -656,3 +665,42 @@ func test_an_unused_finished_prefetch_is_released_after_the_next_draw() -> void:
 	await get_tree().process_frame
 	await get_tree().process_frame
 	assert_true(_router._retired.is_empty(), "puis lâchée")
+
+
+# --- Intérieurs non préchargés depuis l'extérieur (jalon 10, mémoire d'Argenta) ------------
+
+func test_an_outdoor_map_neither_prefetches_nor_keeps_its_interiors() -> void:
+	_chain_dir = DOORS_DIR
+	_use_chain([&"m2"])
+	_router.start(&"m1", &"s", Vector2i.UP)
+	assert_eq(_router.get_cached_paths(), _chain_paths([&"m1"]), "M2 intérieure : pas chargée")
+	var loads: int = _router.disk_loads
+	_router.change_map(&"m2", &"s")
+	assert_eq(_router.get_current_map().map_id, &"m2", "l'intérieur se lit sous le rideau")
+	assert_eq(_router.disk_loads - loads, 2, "M2 lue tout de suite, M3 en arrière-plan")
+	assert_eq(_router.get_cached_paths(), _chain_paths([&"m1", &"m2", &"m3"]),
+		"un intérieur précharge toutes ses voisines")
+	await _await_prefetches()
+	_router.change_map(&"m3", &"s")
+	assert_eq(_router.get_cached_paths(), _chain_paths([&"m3", &"m4"]),
+		"de retour dehors, l'intérieur quitte le cache")
+	assert_push_error_count(0)
+
+
+func test_pewter_city_keeps_only_its_route_and_an_interior_keeps_the_city() -> void:
+	_router.map_factory = Callable()
+	_router.setup(_world, _player, null)
+	_router.start(&"pewter_city", &"from_route_2_north_c", Vector2i.UP)
+	var expected := PackedStringArray([MapCatalog.scene_path(&"pewter_city"),
+		MapCatalog.scene_path(&"route_2_north")])
+	expected.sort()
+	assert_eq(_router.get_cached_paths(), expected, "ni les sept intérieurs, ni plus")
+	# Un chargement encore en cours n'est jamais interrompu : on laisse finir la route.
+	await _await_prefetches()
+	_router.change_map(&"pewter_center", &"entrance")
+	assert_eq(_router.get_current_map().map_id, &"pewter_center")
+	expected = PackedStringArray([MapCatalog.scene_path(&"pewter_center"),
+		MapCatalog.scene_path(&"pewter_city")])
+	expected.sort()
+	assert_eq(_router.get_cached_paths(), expected, "le Centre garde Argenta")
+	await _await_prefetches()

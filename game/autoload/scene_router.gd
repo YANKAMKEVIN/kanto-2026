@@ -36,6 +36,11 @@ var coming_soon_enabled: bool = OS.is_debug_build()
 ## il est fini ([ComingSoonScreen.present], branchée par Boot). Vide : aucun écran n'est montré
 ## (tests, outils) et le retour est immédiat. Remise à vide par [method setup].
 var coming_soon_presenter: Callable = Callable()
+## Cartes intérieures ([method MapCatalog.load_interiors]) : une carte **extérieure** ne
+## précharge pas ses voisines intérieures et ne les garde pas en cache (jalon 10 : les sept
+## intérieurs d'Argenta pesaient 32 Mo de textures) ; elles se lisent au disque sous le rideau.
+## Un intérieur précharge toutes ses voisines. Les tests peuvent la remplacer.
+var interior_maps: Array[StringName] = MapCatalog.load_interiors()
 ## Durée du dernier changement de carte (instanciation + placement), en millisecondes.
 var last_change_ms: float = 0.0
 ## Lectures de cartes demandées au disque depuis la création du routeur (chargement direct ou
@@ -50,9 +55,10 @@ var _busy: bool = false
 ## Incrémenté à chaque setup() : une transition lancée avant est abandonnée à sa reprise.
 var _session: int = 0
 ## Scènes de cartes déjà chargées (chemin → PackedScene). **Cache borné** (jalon 9 T18,
-## jalon-09.md §2.8.6) : seulement la carte courante et ses voisines par warps
-## ([method _trim_cache]) ; une [PackedScene] retient ses textures, une carte quittée et sans
-## lien avec la courante est donc rendue à la mémoire. Seules les scènes sont libérées : les
+## jalon-09.md §2.8.6) : seulement la carte courante et ses voisines par warps, sans les
+## intérieurs d'une carte extérieure (jalon 10, [member interior_maps]) ([method _trim_cache]) ;
+## une [PackedScene] retient ses textures, une carte quittée et sans lien avec la courante est
+## donc rendue à la mémoire. Seules les scènes sont libérées : les
 ## cartes instanciées (nœuds) ne viennent jamais de ce cache après coup.
 var _scenes: Dictionary[String, PackedScene] = {}
 ## Chargements en arrière-plan demandés (chemin → vrai) : cartes voisines de la courante.
@@ -305,11 +311,16 @@ func _prefetch_neighbors(map: GameMap) -> void:
 			_prefetching[path] = true
 
 
-## Chemins des scènes où mènent les warps de [param map] (hors destinations « à venir »).
+## Chemins des scènes où mènent les warps de [param map] (hors destinations « à venir », et
+## hors intérieurs, [member interior_maps], si [param map] est extérieure :
+## [member GameMap.interior]).
 func _neighbor_paths(map: GameMap) -> PackedStringArray:
 	var paths := PackedStringArray()
+	var outdoor := not map.interior
 	for warp: Warp in map.get_warps().get_all():
 		if warp.is_coming_soon():
+			continue
+		if outdoor and interior_maps.has(warp.target_map):
 			continue
 		var path := MapCatalog.scene_path(warp.target_map, maps_dir)
 		if not path.is_empty() and not paths.has(path):

@@ -1,6 +1,7 @@
 extends SceneTree
 ## Mesure de la mémoire des textures sur le trajet Bourg Palette → Route 1 → Jadielle → Route 2
-## → poste sud → Forêt de Jade (T19)
+## → poste sud → Forêt de Jade (T19) → poste nord → Route 2 nord → Argenta → Centre → Argenta
+## (jalon 10)
 ## (jalon 9 T18, jalon-09.md §2.8.6) : cache de cartes du SceneRouter **borné** (carte courante
 ## et voisines par warps) contre l'ancien comportement (toute carte chargée gardée pour la
 ## session, émulé ici en retenant chaque scène que le routeur a eue en cache).
@@ -8,6 +9,10 @@ extends SceneTree
 ##   godot --path . --resolution 1170x540 -s res://tools/measure_map_cache.gd
 ##   godot --path . --resolution 1170x540 -s res://tools/measure_map_cache.gd -- --unbounded
 ##   (… -- --shot=build/captures/cache_route_2.png : capture de la dernière carte)
+##   (… -- --all-neighbors : comportement d'avant le jalon 10, intérieurs préchargés depuis
+##   l'extérieur, pour comparer)
+##   (… -- --from=pewter_city : départ direct sur cette étape, processus neuf : le compteur
+##   `tex=` est alors juste, aucune libération avant la mesure)
 ##
 ## Pas en --headless : le pilote factice ne compte aucune texture. Une ligne « [mem] » par étape,
 ## après la fin des préchargements : `cartes=` = textures (RVBA 8 bits, sans mipmaps) des scènes
@@ -24,6 +29,12 @@ const STEPS: Array[Array] = [
 	# Jalon 9 (T19) : la montée dans la Forêt de Jade.
 	[&"viridian_forest_gate_south", &"from_route_2"],
 	[&"viridian_forest", &"from_gate_south"],
+	# Jalon 10 : poste nord, Route 2 nord, Argenta et un aller-retour au Centre.
+	[&"viridian_forest_gate_north", &"from_forest"],
+	[&"route_2_north", &"from_forest_gate"],
+	[&"pewter_city", &"from_route_2_north_c"],
+	[&"pewter_center", &"entrance"],
+	[&"pewter_city", &"from_center"],
 ]
 ## Images attendues après chaque étape (textures envoyées, préchargements finis).
 const SETTLE_FRAMES: int = 20
@@ -46,12 +57,21 @@ func _run() -> void:
 	_router = (load("res://game/autoload/scene_router.gd") as GDScript).new()
 	root.add_child(_router)
 	_router.call(&"setup", world, player, null)
+	if OS.get_cmdline_user_args().has("--all-neighbors"):
+		_router.set(&"interior_maps", [] as Array[StringName])
 	print("[mem] mode=%s" % ("non borné (ancien)" if _unbounded else "borné (T18)"))
 	await _settle()
 	print("[mem] départ tex=%.1f Mo" % _tex_mb())
-	for i: int in STEPS.size():
+	var first := 0
+	for arg: String in OS.get_cmdline_user_args():
+		if arg.begins_with("--from="):
+			for i: int in STEPS.size():
+				if String(STEPS[i][0]) == arg.trim_prefix("--from="):
+					first = i
+					break
+	for i: int in range(first, STEPS.size()):
 		var step: Array = STEPS[i]
-		if i == 0:
+		if i == first:
 			_router.call(&"start", step[0], step[1], Vector2i.UP)
 		else:
 			_router.call(&"change_map", step[0], step[1], Vector2i.UP)
@@ -68,8 +88,9 @@ func _run() -> void:
 					held.append(resource.resource_path)
 		else:
 			held = cached
-		print("[mem] %s cartes=%.1f Mo (%d scènes : %s) tex=%.1f Mo" % [step[0],
-			_scene_textures_mb(held), held.size(), ", ".join(_names(held)), _tex_mb()])
+		print("[mem] %s cartes=%.1f Mo (%d scènes : %s) tex=%.1f Mo changement=%.1f ms" % [
+			step[0], _scene_textures_mb(held), held.size(), ", ".join(_names(held)), _tex_mb(),
+			_router.get(&"last_change_ms")])
 	# Contrôle visuel de la dernière carte (textures intactes après les libérations).
 	for arg: String in OS.get_cmdline_user_args():
 		if arg.begins_with("--shot="):

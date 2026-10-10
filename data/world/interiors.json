@@ -1,0 +1,20 @@
+{
+	"_doc": "Cartes intérieures (racine de scène « interior = true », vérifié par test_map_catalog). Le SceneRouter s'en sert pour le préchargement : une carte extérieure ne précharge pas ses intérieurs voisins, un intérieur précharge toutes ses voisines (jalon 10, mémoire des textures d'Argenta).",
+	"maps": [
+		"oak_lab",
+		"pewter_center",
+		"pewter_gym",
+		"pewter_house_mason",
+		"pewter_house_researcher",
+		"pewter_mart",
+		"pewter_museum",
+		"pewter_museum_science",
+		"player_house_1f",
+		"player_house_2f",
+		"rival_house",
+		"viridian_center",
+		"viridian_forest_gate_north",
+		"viridian_forest_gate_south",
+		"viridian_mart"
+	]
+}
