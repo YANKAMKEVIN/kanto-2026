@@ -4,6 +4,11 @@ Mis à jour : 2026-10-10 (**Ouverture (chantier OUV) : dossier 13 validé par Ke
 
 
 
+## OUV.0 — logique pure de l'ouverture : FAIT (2026-10-10, branche `ouv-logique`, non poussée) — plan : `docs/tech/ouverture.md`
+- **Fichiers neufs uniquement** (aucun fichier existant de `game/`, `data/`, `tests/` touché ; rien de branché, le jeu se comporte comme avant) : `data/opening/` (`names.json`, `title.json`, `oak_intro.json` = textes du §6 mot pour mot), `game/systems/opening/` (`NameRules`, `OpeningNames`, `OpeningFlow`, `OpeningCommit`, `SaveSummary`, `TitleTexts`, `TitleMenuModel`, `IntroScript`, `IntroStep`, `IntroReader`, `OpeningJson`), `tests/unit/opening/` (**127 tests**) + `tests/helpers/crashing_file_system.gd` (panne après chaque écriture du commit : toujours l'ancienne partie intacte ou la nouvelle complète).
+- **Défauts (règle 4)**, détail `ouverture.md` §4 : prénom sans lettre = vide ; échec d'écriture du commit → chambre quand même, sans autosave pour la session, message « unsaved » (texte à relire par Kevin) ; copie `save.previous.json` dès que `save.json` existe ; captures de la carte Continuer seulement si le Pokédex est activé ; durée de lecture estimée ≈ 49 s (Normale), ≈ 62 s (Lente), saisie non comptée.
+- **Prochain, après la fusion du J10** : OUV.1 (sauvegarde v5 `rival_name` + `player_look`, fixture v4 réelle, `OpeningDirector`, garde d'autosave unique dans Boot, écran titre, `SettingsScreen` découplé, splash) — validé seul sur S24.
+
 ## Dossier 13 — Ouverture (chantier « OUV ») : V0 écrite (2026-10-10, branche `docs/dossier-13-ouverture`)
 - Commande de Kevin « Chantier J0 — Ouverture » : splash, écran titre (Continuer · Nouvelle partie · Paramètres), introduction de Chen, prénoms du joueur et du rival, passage à la chambre. **Docs seules, aucun code.** Dossier : `docs/design/dossier-13-ouverture.md`.
 - **V0.1 (2026-10-10)** : revue de ChatGPT intégrée : abandon pendant l'introduction (§3.7, commit en écritures atomiques), prénom du rival ≠ identifiants (§3.5), 60–90 s plafond, priorité artistique (§9.0). Positions recommandées sur A1–A4, A10, A12 (OUV ; option A + modèle prêt pour l'héroïne ; petit-fils ; « ??? » conservé ; confirmation ; première sortie en OUV.3), **non verrouillées tant que Kevin ne les confirme pas**.
