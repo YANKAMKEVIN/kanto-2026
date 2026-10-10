@@ -28,8 +28,11 @@ extends RefCounted
 ## des Pokémon, notes du Pokédex), une seule version pour tout le J6 ; 3 = jalon 7 (argent,
 ## première rencontre sauvage), une seule version pour tout le J7 (jalon-07.md §5.1) ; 4 =
 ## jalon 9 (statut de chaque Pokémon, « status »), une seule version pour tout le J9
-## (jalon-09.md §2.2).
-const VERSION: int = 4
+## (jalon-09.md §2.2) ; 5 = **provisoire** (jalon 11, T1 : identifiant des Pokémon « uid »,
+## compteur « status_turns », compagnon « companion ») — **OUV.1 a réservé la v5** (dossier 13
+## §3.4) : à la fusion d'OUV.1 dans cette branche, le J11 devient la **v6** (pas v5 → v6) et ce
+## fichier n'est ni fusionné ni installé sur la vraie partie avant (dossier 14 §9).
+const VERSION: int = 5
 const DEFAULT_PATH: String = "user://save.json"
 const TEMP_SUFFIX: String = ".tmp"
 const CORRUPT_SUFFIX: String = ".corrupt"
@@ -171,6 +174,11 @@ static func upgrade(content: Dictionary, target: int = VERSION) -> Error:
 				# 3 → 4 (J9) : rien à transformer, un Pokémon sans « status » n'a aucun statut
 				# (Pokemon.from_dict) ; seul le numéro change, pour qu'une build v3 refuse le
 				# fichier au lieu d'effacer les statuts au premier autosave.
+				# J11 (jalon-11.md §2.1) : rien à transformer non plus ; les identifiants manquants
+				# sont attribués au chargement (Party / PokemonStorage, puis
+				# GameState.ensure_unique_uids), le compteur et le compagnon absents valent 0 et
+				# « aucun ». Le numéro change pour qu'une build plus ancienne refuse le fichier au
+				# lieu d'effacer identifiants et compagnon au premier autosave.
 				pass
 		from += 1
 	content[VERSION_KEY] = target

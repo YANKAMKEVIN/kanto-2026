@@ -321,3 +321,32 @@ apeurement seulement si le lanceur agit en premier ; accélération de l'évolut
 ## 7. Questions ouvertes
 
 Aucune décision de game design ouverte : textes du dossier §13 en attente de relecture (T0).
+
+## 8. Fait
+
+### T1 — sauvegarde (2026-10-10, branche `claude/lancement-j11-4pkt2k`, **non fusionnée**)
+
+- `game/pokemon/pokemon_uid.gd` (nouveau) : `PokemonUid.generate()` (16 hexadécimaux, générateur
+  propre, **jamais `GameRng`** : l'aléatoire du jeu n'est pas décalé), `is_valid()`.
+- `Pokemon` : `uid`, `status_turns` (remis à 0 par `heal_full` et `cure_status`), `ensure_uid()` ;
+  `to_dict` / `from_dict` tolérants (uid mal formé → vide + avertissement ; compteur borné à
+  `MAX_STATUS_TURNS` = 7, nul sans statut).
+- `Party.add`, `PokemonStorage.add` et `PokemonStorage.load_array` : identifiant donné à l'entrée
+  (même objet ensuite au Stockage et à l'évolution).
+- `GameState` : `companion_uid` (« companion » dans le fichier ; remis à vide par `new_game`),
+  `ensure_unique_uids()` (équipe puis Stockage, ordre et contenu inchangés, doublon régénéré pour
+  le second), `get_companion()`, `set_companion()` ; compagnon inconnu au chargement → aucun +
+  ligne `[qa]`.
+- `SaveSystem.VERSION = 5` **provisoire** (commentaire dans le fichier) : OUV.1 a réservé la v5 ;
+  à sa fusion, le J11 devient la v6. Le pas de migration ne transforme rien (tout est additif).
+- Tests : `tests/unit/test_save_j11.gd` (18 : format et unicité des identifiants, `GameRng`
+  intact, entrée dans l'équipe / le Stockage, évolution, aller-retour, valeurs mal formées, vraie
+  partie v3 passée en v4 puis migrée : **mêmes Pokémon, même ordre**, Sac, argent, drapeaux,
+  Grands moments, Pokédex identiques ; identifiants stables d'un chargement à l'autre ; vraie partie
+  v2 ; doublon ; version future refusée ; **refus par la build v4 sans écrire** ; compagnon gardé
+  après réordonnancement, gardé K.O., refusé hors équipe, perdu au dépôt, inconnu = aucun) ;
+  `test_save_system` et `test_save_boot` alignés sur `SaveSystem.VERSION` (plus de « 4 » en dur
+  pour la version courante) et sur les trois champs nouveaux.
+- **Reste avant T2 / T3** : fusion d'OUV.1 dans `main` puis dans cette branche, passage en v6
+  (migration v5 → v6), fixture v5 réelle d'OUV, puis relecture adversariale (T2) et QA S24 seule
+  (T3) sur la vraie partie de Kevin.

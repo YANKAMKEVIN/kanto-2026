@@ -9,10 +9,12 @@ const MAX_SIZE: int = 6
 var _members: Array[Pokemon] = []
 
 
-## Ajoute [param pokemon] en fin d'équipe. Faux si l'équipe est pleine (ou null).
+## Ajoute [param pokemon] en fin d'équipe et lui donne un identifiant s'il n'en a pas
+## ([method Pokemon.ensure_uid], J11). Faux si l'équipe est pleine (ou null).
 func add(pokemon: Pokemon) -> bool:
 	if pokemon == null or is_full():
 		return false
+	pokemon.ensure_uid()
 	_members.append(pokemon)
 	return true
 

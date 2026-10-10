@@ -9,11 +9,12 @@ extends RefCounted
 var _pokemon: Array[Pokemon] = []
 
 
-## Ajoute [param pokemon] à la fin (la même instance, PV et PP gardés). Faux s'il est null ou
-## déjà rangé.
+## Ajoute [param pokemon] à la fin (la même instance, PV et PP gardés) et lui donne un
+## identifiant s'il n'en a pas (J11). Faux s'il est null ou déjà rangé.
 func add(pokemon: Pokemon) -> bool:
 	if pokemon == null or _pokemon.has(pokemon):
 		return false
+	pokemon.ensure_uid()
 	_pokemon.append(pokemon)
 	return true
 
@@ -74,5 +75,6 @@ func load_array(entries: Array, data: PokemonData) -> bool:
 			push_error("PokemonStorage : entrée du stockage écartée")
 			ok = false
 			continue
+		pokemon.ensure_uid()
 		_pokemon.append(pokemon)
 	return ok

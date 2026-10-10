@@ -175,16 +175,17 @@ func test_newer_version_is_refused_and_left_untouched() -> void:
 	assert_false(_fs.exists(PATH + ".corrupt"))
 
 
-func test_a_v5_save_is_refused_and_left_untouched() -> void:
-	# Jalon 9 : cette build écrit la v4 ; une v5 (build future) n'est jamais lue ni écrasée.
+func test_a_future_save_is_refused_and_left_untouched() -> void:
+	# Une version plus récente que cette build (build future) n'est jamais lue ni écrasée.
 	var future: Dictionary = JSON.parse_string(FileAccess.get_file_as_string(FIXTURE_V3))
-	future["version"] = 5
+	future["version"] = SaveSystem.VERSION + 1
 	var text := JSON.stringify(future, "\t")
 	(_fs as MemoryFs).files[PATH] = text
 	assert_eq(_save.read(), {})
 	assert_eq(_save.last_status, ERR_INVALID_DATA)
 	assert_eq(_save.read_version, 0, "aucune lecture réussie")
-	assert_true(_save.last_error.contains("5 > 4"), _save.last_error)
+	assert_true(_save.last_error.contains("%d > %d" % [SaveSystem.VERSION + 1, SaveSystem.VERSION]),
+		_save.last_error)
 	assert_eq((_fs as MemoryFs).files[PATH], text, "fichier intact")
 	assert_false(_fs.exists(PATH + ".corrupt"))
 
@@ -193,7 +194,8 @@ func test_the_current_save_is_refused_by_a_build_that_writes_v1() -> void:
 	# Ce que fait un APK du jalon 5 (VERSION = 1) devant la sauvegarde du J9 : refus, intacte.
 	assert_eq(_save.write(_full_state().to_dict()), OK)
 	var written: String = (_fs as MemoryFs).files[PATH]
-	assert_eq(int((JSON.parse_string(written) as Dictionary)["version"]), 4, "écrite en v4")
+	assert_eq(int((JSON.parse_string(written) as Dictionary)["version"]), SaveSystem.VERSION,
+		"écrite en version courante")
 	var old_build := SaveSystem.new(_fs, PATH)
 	old_build.version = 1
 	assert_eq(old_build.read(), {})
@@ -405,7 +407,7 @@ func test_the_real_v1_save_is_migrated_to_the_current_version_on_read() -> void:
 	(_fs as MemoryFs).files[PATH] = FileAccess.get_file_as_string(FIXTURE_V1)
 	var content := _save.read()
 	assert_eq(_save.last_status, OK)
-	assert_eq(int(content["version"]), 4, "migrée en v4")
+	assert_eq(int(content["version"]), SaveSystem.VERSION, "migrée à la version courante")
 	assert_eq(_save.read_version, 1, "lue en v1")
 	assert_eq(content["money"], 3000)
 	assert_eq(content["first_wild_encounter"], {"species": "pidgey", "map": "route_1",
@@ -459,15 +461,19 @@ func test_the_real_v1_save_loads_identically_after_migration() -> void:
 		var expected: Dictionary = party[i].duplicate(true)
 		expected["favorite"] = false
 		expected["status"] = ""
+		expected["status_turns"] = 0.0
+		assert_true(PokemonUid.is_valid(after["party"][i].get("uid")), "identifiant (J11)")
+		expected["uid"] = after["party"][i]["uid"]
 		assert_eq(after["party"][i], expected,
-			"Pokémon %d identique, favori (v2) et statut vide (v4) en plus" % i)
+			"Pokémon %d identique, favori (v2), statut vide (v4), compteur et identifiant (J11) en plus"
+			% i)
 	var dex: Dictionary = before["pokedex"]["entries"].duplicate(true)
 	for species: String in dex:
 		dex[species]["notes"] = []
 	dex["charmander"]["times_seen"] = 1.0
 	assert_eq(after["pokedex"]["entries"], dex, "Pokédex identique, notes en plus, starter vu 1")
-	assert_eq(after.keys().size(), before.keys().size() + 1,
-		"aucun champ perdu (sauf version), argent et première rencontre en plus")
+	assert_eq(after.keys().size(), before.keys().size() + 2,
+		"aucun champ perdu (sauf version), argent, première rencontre et compagnon (J11) en plus")
 
 
 func test_a_migrated_v1_save_is_rewritten_in_v4_and_reads_back_identically() -> void:
@@ -477,7 +483,7 @@ func test_a_migrated_v1_save_is_rewritten_in_v4_and_reads_back_identically() -> 
 	var dict: Dictionary = state.to_dict()
 	assert_eq(_save.write(dict), OK)
 	var written: Dictionary = JSON.parse_string((_fs as MemoryFs).files[PATH])
-	assert_eq(int(written["version"]), 4)
+	assert_eq(int(written["version"]), SaveSystem.VERSION)
 	assert_true((written["bag"] as Dictionary).has("items"), "Sac écrit en v2")
 	var again := _state()
 	assert_true(again.load_dict(_save.read(), _data))
@@ -533,15 +539,18 @@ func _without_v3(content: Dictionary) -> Dictionary:
 	return copy
 
 
-## Le contenu d'une sauvegarde sans ce que la v4 ajoute (pour comparer à la v3) : la version et
-## le statut (« status ») de chaque Pokémon de l'équipe et du stockage.
+## Le contenu d'une sauvegarde sans ce que la v4 et le J11 ajoutent (pour comparer à la v3) : la
+## version, le statut (« status »), le compteur (« status_turns ») et l'identifiant (« uid ») de
+## chaque Pokémon de l'équipe et du stockage, et le compagnon (« companion »).
 func _without_v4(content: Dictionary) -> Dictionary:
 	var copy: Dictionary = _json(content)
 	copy.erase("version")
+	copy.erase("companion")
 	for key: String in ["party", "storage"]:
 		for member: Variant in JsonFields.get_array(copy, key):
 			if member is Dictionary:
-				(member as Dictionary).erase("status")
+				for field: String in ["status", "status_turns", "uid"]:
+					(member as Dictionary).erase(field)
 	return copy
 
 
@@ -551,7 +560,7 @@ func test_the_real_v2_save_is_migrated_to_the_current_version_on_read() -> void:
 	(_fs as MemoryFs).files[PATH] = FileAccess.get_file_as_string(FIXTURE_V2)
 	var content := _save.read()
 	assert_eq(_save.last_status, OK, _save.last_error)
-	assert_eq(int(content["version"]), 4, "migrée en v4")
+	assert_eq(int(content["version"]), SaveSystem.VERSION, "migrée à la version courante")
 	assert_eq(content["money"], 3000, "3 000 ₽ (dossier 09 §17)")
 	assert_eq(content["first_wild_encounter"], {"species": "pidgey", "map": "route_1",
 		"date": "2026-10-02T20:51:16"}, "Roucool : première espèce vue sur la Route 1")
@@ -581,11 +590,11 @@ func test_the_real_v2_save_loads_and_is_rewritten_identically_in_v4() -> void:
 	# statut (vide) de la v4.
 	assert_eq(_save.write(state.to_dict()), OK)
 	var written: Dictionary = JSON.parse_string((_fs as MemoryFs).files[PATH])
-	assert_eq(int(written["version"]), 4)
+	assert_eq(int(written["version"]), SaveSystem.VERSION)
 	assert_eq(written["money"], 3000.0)
 	assert_eq(written["first_wild_encounter"]["species"], "pidgey")
 	assert_eq(_without_v3(written), _without_v3(v2), "tout le reste réécrit à l'identique")
-	assert_eq(written.keys().size(), v2.keys().size() + 2, "aucun champ perdu")
+	assert_eq(written.keys().size(), v2.keys().size() + 3, "aucun champ perdu (+ argent, rencontre, compagnon)")
 	var again := _state()
 	assert_true(again.load_dict(_save.read(), _data))
 	assert_eq(again.to_dict(), state.to_dict(), "aller-retour v4 stable")
@@ -599,7 +608,7 @@ func test_the_real_end_of_j6_save_migrates_to_v4_and_rewrites_identically() -> v
 	(_fs as MemoryFs).files[PATH] = text
 	var content := _save.read()
 	assert_eq(_save.last_status, OK, _save.last_error)
-	assert_eq(int(content["version"]), 4)
+	assert_eq(int(content["version"]), SaveSystem.VERSION)
 	assert_eq(content["money"], 3000)
 	assert_eq(content["first_wild_encounter"], {"species": "pidgey", "map": "route_1",
 		"date": "2026-10-02T20:51:16"}, "Roucool : première espèce vue sur la Route 1")
@@ -616,9 +625,9 @@ func test_the_real_end_of_j6_save_migrates_to_v4_and_rewrites_identically() -> v
 	assert_eq(state.money, 3000)
 	assert_eq(_save.write(state.to_dict()), OK)
 	var written: Dictionary = JSON.parse_string((_fs as MemoryFs).files[PATH])
-	assert_eq(int(written["version"]), 4)
+	assert_eq(int(written["version"]), SaveSystem.VERSION)
 	assert_eq(_without_v3(written), _without_v3(v2), "tout le reste réécrit à l'identique")
-	assert_eq(written.keys().size(), v2.keys().size() + 2, "aucun champ perdu")
+	assert_eq(written.keys().size(), v2.keys().size() + 3, "aucun champ perdu (+ argent, rencontre, compagnon)")
 
 
 func test_v3_round_trip_keeps_money_and_the_first_wild_encounter() -> void:
@@ -649,7 +658,7 @@ func test_the_current_save_is_refused_by_a_j6_build_and_left_untouched() -> void
 	j6_build.version = 2
 	assert_eq(j6_build.read(), {})
 	assert_eq(j6_build.last_status, ERR_INVALID_DATA)
-	assert_true(j6_build.last_error.contains("4 > 2"), j6_build.last_error)
+	assert_true(j6_build.last_error.contains("%d > 2" % SaveSystem.VERSION), j6_build.last_error)
 	assert_eq((_fs as MemoryFs).files[PATH], written, "fichier intact")
 	assert_eq((_fs as MemoryFs).journal.size(), 0, "aucune écriture, aucun renommage")
 	assert_false(_fs.exists(PATH + ".corrupt"))
@@ -681,12 +690,21 @@ func _fixture_v3() -> Dictionary:
 
 func test_upgrade_3_to_4_changes_nothing_but_the_version() -> void:
 	var bare := {"version": 3}
-	assert_eq(SaveSystem.upgrade(bare), OK)
+	assert_eq(SaveSystem.upgrade(bare, 4), OK)
 	assert_eq(bare, {"version": 4}, "aucun champ inventé")
 	var content := {"version": 3, "party": [{"species": "pidgey"}, 7], "storage": "x"}
-	assert_eq(SaveSystem.upgrade(content), OK)
+	assert_eq(SaveSystem.upgrade(content, 4), OK)
 	assert_eq(content, {"version": 4, "party": [{"species": "pidgey"}, 7], "storage": "x"},
 		"aucun « status » ajouté : absent = aucun statut (Pokemon.from_dict)")
+
+
+func test_upgrade_to_the_j11_version_changes_nothing_but_the_version() -> void:
+	# J11 (jalon-11.md §2.1) : identifiants, compteur et compagnon sont des champs additifs ;
+	# rien n'est inventé dans le fichier, le chargement s'en charge (test_save_j11).
+	var content := {"version": 4, "party": [{"species": "pidgey"}], "storage": []}
+	assert_eq(SaveSystem.upgrade(content), OK)
+	assert_eq(content, {"version": SaveSystem.VERSION, "party": [{"species": "pidgey"}],
+		"storage": []}, "aucun champ ajouté")
 
 
 func test_migration_note() -> void:
@@ -701,7 +719,7 @@ func test_the_real_v3_save_is_migrated_to_v4_on_read_without_any_change() -> voi
 	(_fs as MemoryFs).files[PATH] = FileAccess.get_file_as_string(FIXTURE_V3)
 	var content := _save.read()
 	assert_eq(_save.last_status, OK, _save.last_error)
-	assert_eq(int(content["version"]), 4, "migrée en v4")
+	assert_eq(int(content["version"]), SaveSystem.VERSION, "migrée à la version courante")
 	assert_eq(_save.read_version, 3, "lue en v3 : le journal note la migration")
 	assert_eq(_without_v4(content), _without_v4(v3), "rien d'autre ne change")
 	assert_false((_fs as MemoryFs).files.has(PATH + SaveSystem.CORRUPT_SUFFIX))
@@ -716,7 +734,7 @@ func test_the_s24_v3_save_of_kevin_is_migrated_to_v4_and_loads_with_no_status() 
 	(_fs as MemoryFs).files[PATH] = text
 	var content := _save.read()
 	assert_eq(_save.last_status, OK, _save.last_error)
-	assert_eq(int(content["version"]), 4)
+	assert_eq(int(content["version"]), SaveSystem.VERSION)
 	assert_eq(_save.read_version, 3)
 	assert_eq(_without_v4(content), _without_v4(v3 as Dictionary), "rien d'autre ne change")
 	var state := _state()
@@ -751,14 +769,14 @@ func test_the_real_v3_save_loads_with_no_status_and_is_rewritten_identically_in_
 	# Réécrite : tout ce que la v3 avait, à l'identique, plus « status » vide sur chaque Pokémon.
 	assert_eq(_save.write(state.to_dict()), OK)
 	var written: Dictionary = JSON.parse_string((_fs as MemoryFs).files[PATH])
-	assert_eq(int(written["version"]), 4)
+	assert_eq(int(written["version"]), SaveSystem.VERSION)
 	for member: Dictionary in written["party"]:
 		assert_eq(member.get("status"), "", "statut écrit vide")
 	assert_eq(_without_v4(written), _without_v4(v3), "tout le reste réécrit à l'identique")
-	assert_eq(written.keys().size(), v3.keys().size(), "aucun champ perdu ni ajouté")
+	assert_eq(written.keys().size(), v3.keys().size() + 1, "aucun champ perdu ; seul le compagnon (J11) s'ajoute")
 	var again := _state()
 	assert_true(again.load_dict(_save.read(), _data))
-	assert_eq(_save.read_version, 4, "relue en v4 : plus de migration")
+	assert_eq(_save.read_version, SaveSystem.VERSION, "relue à la version courante : plus de migration")
 	assert_eq(again.to_dict(), state.to_dict(), "aller-retour v4 stable")
 
 
@@ -797,7 +815,7 @@ func test_a_v4_save_is_refused_by_a_j7_build_and_left_untouched() -> void:
 	j7_build.version = 3
 	assert_eq(j7_build.read(), {})
 	assert_eq(j7_build.last_status, ERR_INVALID_DATA)
-	assert_true(j7_build.last_error.contains("4 > 3"), j7_build.last_error)
+	assert_true(j7_build.last_error.contains("%d > 3" % SaveSystem.VERSION), j7_build.last_error)
 	assert_eq((_fs as MemoryFs).files[PATH], written, "fichier intact")
 	assert_eq((_fs as MemoryFs).journal.size(), 0, "aucune écriture, aucun renommage")
 	assert_false(_fs.exists(PATH + SaveSystem.CORRUPT_SUFFIX))
