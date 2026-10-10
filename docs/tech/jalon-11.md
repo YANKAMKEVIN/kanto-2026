@@ -355,8 +355,9 @@ Aucune décision de game design ouverte : textes du dossier §13 en attente de r
   (`test_center_heal_on_the_center_registers_it_once`) **fait planter Godot** (signal 11, objet
   libéré pendant l'émission de `animation_finished` de la machine de soin) et arrête la suite ;
   `test_center_heal` (`…_registers_and_saves`) dépasse son délai de dialogue. Sans rapport avec
-  T1 ; la suite a été jouée sans le premier fichier (le reste vert, voir ci-dessous). À revoir sur
-  le Mac avant T2.
+  T1 ; la suite a été jouée sans le premier fichier : **3 610 tests verts** (1 732 d'intégration,
+  1 878 unitaires), seul échec `test_center_heal` (préexistant, ci-dessus). Import propre. À revoir
+  sur le Mac avant T2.
 - **Reste avant T2 / T3** : fusion d'OUV.1 dans `main` puis dans cette branche, passage en v6
   (migration v5 → v6), fixture v5 réelle d'OUV, puis relecture adversariale (T2) et QA S24 seule
   (T3) sur la vraie partie de Kevin.
