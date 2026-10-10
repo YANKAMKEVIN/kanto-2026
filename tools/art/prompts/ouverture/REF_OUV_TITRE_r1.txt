@@ -1,0 +1,19 @@
+MAQUETTE — ÉCRAN TITRE de Kanto 2026 (jeu mobile en paysage), image de référence de direction artistique.
+
+Images jointes :
+IMAGE 1 : la vue générale peinte de BOURG PALETTE, le premier lieu du jeu. C'est LE MONDE et LA LUMIÈRE de l'écran titre : même pinceau, mêmes maisons aux toits rouges, mêmes arbres, même heure dorée. L'écran titre montre un CADRAGE de ce lieu, vu de plus près, à la hauteur du jeu (vue de dessus de trois quarts) : par exemple la place centrale avec son grand arbre, une maison et le laboratoire au fond, quelques fleurs, deux petits Roucool posés près d'une habitante. AUCUN autre lieu, AUCUN décor inventé.
+IMAGE 2 : le logotype du jeu « KANTO 2026 ». Pose-le EXACTEMENT tel quel, en haut à gauche, sans le redessiner ni changer son texte.
+IMAGE 3 : une maquette d'un autre écran du jeu (menu). Elle ne sert QUE pour le STYLE DE L'INTERFACE : panneaux sombres bleu nuit translucides aux coins arrondis, fine bordure claire, texte blanc sans-serif gras, accent jaune doré. N'en reprends NI la composition, NI les personnages, NI le contenu.
+IMAGE 4 : le portrait du héros validé (personnage peint simplifié, casquette rouge et blanche, t-shirt blanc, sac jaune). C'est le SEUL rendu de personnage autorisé : s'il apparaît (buste sur la carte Continuer), il doit être exactement ce personnage, dans ce style peint chibi. Jamais un personnage d'anime.
+
+COMPOSITION (paysage 1536 × 864, proportions d'un téléphone) :
+- Tout l'écran : Bourg Palette en direct, lumineux, net, vivant ; léger assombrissement doux sur le tiers droit pour la lisibilité de l'interface, pas de flou fort.
+- En haut à gauche : le logotype de l'IMAGE 2.
+- Colonne d'actions À DROITE, verticale, avec une marge confortable du bord :
+  1. une GRANDE carte « CONTINUER » (la plus grande, mise en avant par un liseré jaune doré) : à gauche un petit buste du héros de l'IMAGE 4 ; à droite, en texte : « Kevin » (gros), puis « Forêt de Jade », puis « 12 h 43 » avec une petite icône d'horloge, « 1 badge » avec une icône de badge, « 23 capturés » avec une petite icône de Poké Ball ;
+  2. une carte plus petite « NOUVELLE PARTIE » ;
+  3. une carte plus petite « PARAMÈTRES » avec une icône d'engrenage.
+- Libellés en MAJUSCULES sur les boutons, en français, orthographe exacte : CONTINUER, NOUVELLE PARTIE, PARAMÈTRES.
+- Pas de « Appuyez pour commencer », pas d'heure, pas de barre d'état du téléphone, pas de copyright.
+
+INTERDITS : pixel art, rendu 3D, personnages de style anime ou manga, logo officiel Pokémon, autre texte que celui listé, filigrane, signature, cadre de téléphone.

@@ -1,0 +1,14 @@
+LOGO — logotype du jeu « Kanto 2026 », pour l'écran titre et l'image de démarrage.
+
+Une image est jointe : la vue générale peinte de Bourg Palette, le premier lieu du jeu. Elle donne l'UNIVERS et la PALETTE (heure dorée, verts tendres, toits rouges, ciel clair, mer bleue) ; ne reproduis pas la scène.
+
+TEXTE EXACT, sur deux niveaux, orthographe stricte :
+- en grand : « KANTO » (5 lettres : K, A, N, T, O) ;
+- en dessous, plus petit et centré : « 2026 ».
+Aucun autre mot, aucune lettre en plus.
+
+CARACTÈRE : un logotype de jeu d'aventure moderne, chaleureux et lumineux, qui évoque le départ, la nature et la nostalgie d'un premier voyage. Lettres capitales larges et arrondies, légèrement épaisses, couleur crème doré lumineux avec un dégradé subtil vers un or chaud, contour fin bleu nuit profond, très légère profondeur (biseau doux), pas d'effet chromé ni métal brillant. « 2026 » plus fin et espacé, couleur bleu ciel clair ou crème, discret. PLUS SOBRE ET PLUS MODERNE qu'un logo de jeu pour enfants : lettres capitales sans empattement, géométriques, larges et légèrement arrondies aux angles, épaisseur régulière, aucune déformation cartoon. AUCUN élément végétal, aucun fruit, aucune feuille. Seul ornement permis : derrière le mot, un très léger arc de soleil levant doré, fin et discret, qui évoque le départ à l'aube. Le O doit rester un O parfaitement lisible.
+IMPORTANT : ce n'est PAS le logo officiel « Pokémon » : ni sa police jaune à contour bleu, ni sa forme, ni le mot Pokémon, ni Poké Ball, ni personnage.
+
+FORMAT : image paysage 1536 × 1024, logotype centré occupant environ 70 % de la largeur, FOND TRANSPARENT (vrai canal alpha, aucun damier dessiné). Lisible en petit (icône de démarrage) comme en grand.
+INTERDITS : tout autre texte, signature, filigrane, cadre, décor, personnage, pixel art, rendu 3D réaliste.

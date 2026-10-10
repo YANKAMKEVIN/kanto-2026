@@ -1,0 +1,13 @@
+PORTRAIT_CHERCHEUR — portrait en pied d'un vieux chercheur, personnage original d'un jeu d'aventure en 2D peinte.
+
+Deux images sont jointes.
+IMAGE 1 : HEROS_PORTRAIT, le portrait en pied VALIDÉ du héros. C'est l'ANCRE DE STYLE ET DE FORMAT : reproduis EXACTEMENT son rendu (personnage peint simplifié, proportions chibi d'environ 3 têtes, même finesse, même contour fin coloré sans trait noir, même manière de peindre le visage, les yeux, les mains et les plis), son cadrage (personnage entier, de la tête aux pieds, centré, qui occupe presque toute la hauteur), sa pose de trois quarts face et son échelle. Ne reprends PAS le héros lui-même.
+IMAGE 2 : la planche de marche de ce chercheur, déjà utilisée dans le jeu. C'est l'IDENTITÉ du personnage : reprends exactement sa coiffure, ses couleurs et ses vêtements.
+
+PERSONNAGE : un chercheur naturaliste d'une soixantaine d'années, grand-père de quartier, bienveillant, observateur, un peu distrait. Cheveux gris clair en épis vers l'arrière, sourcils sombres épais, yeux bruns, sourire chaleureux. Blouse blanche de laboratoire ouverte, chemise rouge bordeaux, ceinture brune, pantalon beige, chaussures brunes.
+POSE : debout, accueillant, comme s'il accueillait un visiteur : une main légèrement levée paume ouverte à hauteur de poitrine (geste de bienvenue), l'autre main dans la poche de sa blouse ; corps de trois quarts face, regard vers le spectateur. Il est un adulte : un peu plus grand et plus large que le héros, mais avec le même style chibi.
+
+LUMIÈRE NE (neutre) : lumière de milieu de journée, diffuse et blanche, venant légèrement du haut à gauche ; volumes conservés par un ombrage doux ; aucune teinte dorée ou orangée, aucun liseré chaud, aucun halo ; ombres propres neutres, légèrement bleutées.
+
+FORMAT : image portrait 1024 × 1536, FOND TRANSPARENT (vrai canal alpha, aucun damier dessiné, aucun halo ni lueur autour du personnage, aucun sol, aucune ombre portée). Personnage entier, pieds à environ 40 px du bas.
+INTERDITS : texte, logo, signature, cadre, décor, créature, pixel art, 3D, contours noirs épais, style anime aux traits noirs.
