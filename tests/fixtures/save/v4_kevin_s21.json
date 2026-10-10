@@ -1,34 +1,32 @@
 {
 	"bag": {
 		"acquired": {
-			"poke_ball": 3,
-			"potion": 4
+			"oak_parcel": 3,
+			"poke_ball": 4,
+			"potion": 5
 		},
 		"favorites": [
 			"potion"
 		],
-		"items": {
-			"poke_ball": 3,
-			"potion": 1
-		}
+		"items": {}
 	},
 	"cell": [
-		24,
-		10
+		31,
+		23
 	],
 	"discovered_maps": {
 		"oak_lab": "2026-10-02T20:43:04",
 		"pallet_town": "2026-10-02T20:42:45",
 		"player_house_1f": "2026-10-02T20:42:34",
 		"player_house_2f": "2026-10-02T20:42:27",
-		"rival_house": "2026-10-07T11:06:22",
 		"route_1": "2026-10-02T20:51:13",
-		"route_2": "2026-10-07T19:38:33",
-		"route_22": "2026-10-06T21:53:14",
-		"viridian_city": "2026-10-06T21:52:56"
+		"route_22": "2026-10-06T15:55:43",
+		"viridian_center": "2026-10-06T15:33:56",
+		"viridian_city": "2026-10-06T15:27:45",
+		"viridian_mart": "2026-10-06T15:31:24"
 	},
 	"facing": [
-		1,
+		-1,
 		0
 	],
 	"first_wild_encounter": {
@@ -38,20 +36,20 @@
 	},
 	"flags": [
 		"blacked_out_before",
+		"got_oak_parcel",
 		"got_potion_route_1",
-		"got_route_2_item_1",
-		"got_route_2_item_2",
 		"mom_greeted",
 		"oak_lab_reunion",
 		"oak_met",
+		"pokedex_activated",
 		"rival_battle_done",
 		"rival_challenged",
 		"rival_lab_lost",
 		"rival_left_lab",
-		"route_2_hiker_talked",
-		"route_2_youngster_talked",
+		"rival_route22_lost",
 		"starter_chosen",
 		"starter_offered",
+		"storage_terminal_seen",
 		"taken_charmander",
 		"taken_squirtle",
 		"viridian_arrived"
@@ -61,21 +59,11 @@
 			"date": "2026-10-02T20:54:15",
 			"item": "potion",
 			"map": "route_1"
-		},
-		{
-			"date": "2026-10-07T19:39:17",
-			"item": "poke_ball",
-			"map": "route_2"
-		},
-		{
-			"date": "2026-10-07T19:40:55",
-			"item": "potion",
-			"map": "route_2"
 		}
 	],
-	"heal_map": "player_house_1f",
+	"heal_map": "viridian_center",
 	"heal_spawn": "heal",
-	"map": "route_2",
+	"map": "viridian_city",
 	"moments": [
 		{
 			"date": "2026-10-02T20:43:25",
@@ -102,9 +90,18 @@
 			},
 			"map": "route_1",
 			"type": "first_capture"
+		},
+		{
+			"date": "2026-10-06T16:08:53",
+			"details": {
+				"outcome": "loss",
+				"trainer": "rival_route22"
+			},
+			"map": "route_22",
+			"type": "rival_battle"
 		}
 	],
-	"money": 3000,
+	"money": 2100,
 	"party": [
 		{
 			"evs": {
@@ -115,55 +112,10 @@
 				"spd": 0,
 				"spe": 0
 			},
-			"exp": 115,
-			"favorite": false,
-			"gender": "female",
-			"hp": 4,
-			"ivs": {
-				"atk": 24,
-				"def": 29,
-				"hp": 18,
-				"spa": 27,
-				"spd": 7,
-				"spe": 7
-			},
-			"level": 4,
-			"met": {
-				"date": "2026-10-02T20:54:40",
-				"level": 3,
-				"map": "route_1",
-				"origin": "capture",
-				"trainer": "Kevin"
-			},
-			"moves": [
-				{
-					"id": "tackle",
-					"max_pp": 35,
-					"pp": 32
-				},
-				{
-					"id": "tail_whip",
-					"max_pp": 30,
-					"pp": 30
-				}
-			],
-			"nickname": "",
-			"species": "rattata",
-			"status": ""
-		},
-		{
-			"evs": {
-				"atk": 0,
-				"def": 0,
-				"hp": 0,
-				"spa": 0,
-				"spd": 0,
-				"spe": 0
-			},
-			"exp": 322,
+			"exp": 336,
 			"favorite": false,
 			"gender": "male",
-			"hp": 5,
+			"hp": 25,
 			"ivs": {
 				"atk": 1,
 				"def": 13,
@@ -184,12 +136,12 @@
 				{
 					"id": "scratch",
 					"max_pp": 35,
-					"pp": 22
+					"pp": 35
 				},
 				{
 					"id": "growl",
 					"max_pp": 40,
-					"pp": 39
+					"pp": 40
 				}
 			],
 			"nickname": "",
@@ -235,9 +187,99 @@
 			"nickname": "",
 			"species": "pidgey",
 			"status": ""
+		},
+		{
+			"evs": {
+				"atk": 0,
+				"def": 0,
+				"hp": 0,
+				"spa": 0,
+				"spd": 0,
+				"spe": 0
+			},
+			"exp": 62,
+			"favorite": false,
+			"gender": "female",
+			"hp": 15,
+			"ivs": {
+				"atk": 24,
+				"def": 29,
+				"hp": 18,
+				"spa": 27,
+				"spd": 7,
+				"spe": 7
+			},
+			"level": 3,
+			"met": {
+				"date": "2026-10-02T20:54:40",
+				"level": 3,
+				"map": "route_1",
+				"origin": "capture",
+				"trainer": "Kevin"
+			},
+			"moves": [
+				{
+					"id": "tackle",
+					"max_pp": 35,
+					"pp": 35
+				},
+				{
+					"id": "tail_whip",
+					"max_pp": 30,
+					"pp": 30
+				}
+			],
+			"nickname": "",
+			"species": "rattata",
+			"status": ""
+		},
+		{
+			"evs": {
+				"atk": 0,
+				"def": 0,
+				"hp": 0,
+				"spa": 0,
+				"spd": 0,
+				"spe": 0
+			},
+			"exp": 57,
+			"favorite": false,
+			"gender": "male",
+			"hp": 16,
+			"ivs": {
+				"atk": 16,
+				"def": 3,
+				"hp": 30,
+				"spa": 10,
+				"spd": 30,
+				"spe": 18
+			},
+			"level": 3,
+			"met": {
+				"date": "2026-10-06T15:58:26",
+				"level": 3,
+				"map": "route_22",
+				"origin": "capture",
+				"trainer": "Kevin"
+			},
+			"moves": [
+				{
+					"id": "leer",
+					"max_pp": 30,
+					"pp": 30
+				},
+				{
+					"id": "tackle",
+					"max_pp": 35,
+					"pp": 35
+				}
+			],
+			"nickname": "",
+			"species": "nidoran_m",
+			"status": ""
 		}
 	],
-	"play_time": 80079.601448126,
+	"play_time": 84733.9879524633,
 	"player_name": "Kevin",
 	"pokedex": {
 		"entries": {
@@ -256,19 +298,19 @@
 				"times_caught": 1,
 				"times_seen": 1
 			},
-			"nidoran_f": {
-				"caught": false,
-				"first_caught_date": "",
-				"first_caught_map": "",
-				"first_seen_date": "2026-10-07T19:42:15",
-				"first_seen_map": "route_2",
+			"nidoran_m": {
+				"caught": true,
+				"first_caught_date": "2026-10-06T15:58:26",
+				"first_caught_map": "route_22",
+				"first_seen_date": "2026-10-06T15:56:18",
+				"first_seen_map": "route_22",
 				"notes": [
-					"nidoran_f_grass"
+					"nidoran_m_ears"
 				],
 				"seen_maps": [
-					"route_2"
+					"route_22"
 				],
-				"times_caught": 0,
+				"times_caught": 1,
 				"times_seen": 1
 			},
 			"pidgey": {
@@ -282,10 +324,11 @@
 				],
 				"seen_maps": [
 					"route_1",
-					"route_2"
+					"pallet_town",
+					"route_22"
 				],
 				"times_caught": 1,
-				"times_seen": 11
+				"times_seen": 9
 			},
 			"rattata": {
 				"caught": true,
@@ -297,12 +340,10 @@
 					"rattata_hops"
 				],
 				"seen_maps": [
-					"route_1",
-					"route_22",
-					"route_2"
+					"route_1"
 				],
 				"times_caught": 1,
-				"times_seen": 8
+				"times_seen": 7
 			},
 			"squirtle": {
 				"caught": false,
@@ -314,16 +355,17 @@
 					"squirtle_peek"
 				],
 				"seen_maps": [
-					"oak_lab"
+					"oak_lab",
+					"route_22"
 				],
 				"times_caught": 0,
-				"times_seen": 1
+				"times_seen": 2
 			}
 		}
 	},
 	"rng": {
 		"seed": "3492982376",
-		"state": "829516366290229671"
+		"state": "-8268267129758572522"
 	},
 	"started_at": "2026-10-02T20:42:27",
 	"starter": "charmander",

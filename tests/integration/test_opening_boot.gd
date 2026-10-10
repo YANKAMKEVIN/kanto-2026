@@ -18,7 +18,7 @@ const SAVE_PATH := "user://test_ouv1_save.json"
 const PREVIOUS_PATH := "user://test_ouv1_save.previous.json"
 const SETTINGS_PATH := "user://test_ouv1_settings.json"
 ## Partie de Kevin en v4 (dérivée de sa partie S24 du J8, voir test_save_system).
-const FIXTURE_V4 := "res://tests/fixtures/save/v4_kevin_depuis_s24_j8.json"
+const FIXTURE_V4 := "res://tests/fixtures/save/v4_kevin_s21.json"
 const DEBUG_START := "res://tests/fixtures/debug_start/valid.json"
 const ABSENT := "user://test_ouv1_absent.json"
 const DATE := "2026-10-10T09:00:00"

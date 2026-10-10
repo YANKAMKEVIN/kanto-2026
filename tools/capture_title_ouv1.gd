@@ -17,7 +17,7 @@ extends SceneTree
 const MEMORY_FS: String = "res://tests/helpers/memory_file_system.gd"
 const STORE: String = "res://game/systems/settings/settings_store.gd"
 const SAVE: String = "res://game/systems/save/save_system.gd"
-const FIXTURE_V4: String = "res://tests/fixtures/save/v4_kevin_depuis_s24_j8.json"
+const FIXTURE_V4: String = "res://tests/fixtures/save/v4_kevin_s21.json"
 const SAVE_PATH: String = "user://cap_ouv1_save.json"
 const ABSENT: String = "user://cap_ouv1_absent.json"
 

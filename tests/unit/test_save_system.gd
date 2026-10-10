@@ -20,11 +20,8 @@ const FIXTURE_V2_END := "res://tests/fixtures/save/v2_kevin_j6_fin.json"
 ## Jadielle (7, 5), 4 Pokémon, Pokédex activé, 2 100 ₽, 20 h 12 de jeu (jalon-09.md §2.2).
 const FIXTURE_V3 := "res://tests/fixtures/save/v3_kevin_j7_fin.json"
 const FIXTURE_V3_S24 := "res://tests/fixtures/save/v3_kevin_s24.json"
-## Partie de Kevin en v4 (OUV.1) : **dérivée** de la vraie partie S24 du J8 ([constant
-## FIXTURE_V3_S24]), migrée puis réécrite par `GameState.to_dict()` comme le ferait une build du
-## J10 (`tools/make_save_fixture_v4.gd`) ; aucun téléphone n'était branché pour relever la vraie.
-## À remplacer par la vraie sauvegarde du S24 à la validation d'OUV.1.
-const FIXTURE_V4 := "res://tests/fixtures/save/v4_kevin_depuis_s24_j8.json"
+## Fixture v4 : la vraie sauvegarde de Kevin, relevée sur son S21 le 2026-10-10 avant la validation d'OUV.1.
+const FIXTURE_V4 := "res://tests/fixtures/save/v4_kevin_s21.json"
 
 var _fs: SaveFileSystem
 var _save: SaveSystem
