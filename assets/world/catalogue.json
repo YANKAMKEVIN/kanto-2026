@@ -4908,6 +4908,20 @@
     1440,
     960
    ]
+  },
+  "chen_portrait": {
+   "fichier": "res://assets/sprites/characters/painted/chen_portrait.png",
+   "taille": [
+    364,
+    768
+   ]
+  },
+  "rival_portrait": {
+   "fichier": "res://assets/sprites/characters/painted/rival_portrait.png",
+   "taille": [
+    360,
+    768
+   ]
   }
  }
 }
