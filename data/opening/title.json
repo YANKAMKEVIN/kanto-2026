@@ -1,0 +1,19 @@
+{
+	"_note": "Textes de l'écran titre (dossier 13 §5.2 et §5.4, validés par Kevin le 2026-10-10). messages.unsaved est un texte par défaut (règle 4) pour un échec d'écriture de la nouvelle partie (disque plein), à relire par Kevin avec le lot de textes d'OUV.1. Le résumé de la carte de confirmation est composé par TitleMenuModel (prénom · temps de jeu · badges, parties vides omises).",
+	"entries": {
+		"continue": "Continuer",
+		"new_game": "Nouvelle partie",
+		"settings": "Paramètres"
+	},
+	"messages": {
+		"corrupt": "La sauvegarde n'a pas pu être lue. Une copie a été mise de côté.",
+		"newer": "Cette sauvegarde vient d'une version plus récente du jeu. Elle n'a pas été modifiée.",
+		"unsaved": "La partie n'a pas pu être enregistrée. Elle continue sans sauvegarde."
+	},
+	"confirm": {
+		"title": "Une aventure est déjà en cours.",
+		"body": "Commencer une nouvelle partie remplacera cette aventure lorsque tu arriveras dans ta chambre.",
+		"cancel": "Annuler",
+		"confirm": "Nouvelle partie"
+	}
+}
