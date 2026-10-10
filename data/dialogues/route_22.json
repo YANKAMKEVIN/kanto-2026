@@ -13,13 +13,13 @@
 		]
 	},
 	"route22_rival_hesitates": {
-		"speaker": "Rival",
+		"speaker": "{rival}",
 		"pages": [
 			"Tu hésites trop."
 		]
 	},
 	"route22_rival_greet": {
-		"speaker": "Rival",
+		"speaker": "{rival}",
 		"pages": [
 			"Tiens.",
 			"Toi aussi, tu es venu voir jusqu'où cette route mène ?",
@@ -28,7 +28,7 @@
 		]
 	},
 	"route22_rival_won": {
-		"speaker": "Rival",
+		"speaker": "{rival}",
 		"pages": [
 			"…D'accord.",
 			"Tu progresses vite.",
@@ -37,7 +37,7 @@
 		]
 	},
 	"route22_rival_lost": {
-		"speaker": "Rival",
+		"speaker": "{rival}",
 		"pages": [
 			"Tu t'es amélioré.",
 			"Mais pas assez.",

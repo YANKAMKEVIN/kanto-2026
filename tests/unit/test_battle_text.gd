@@ -458,3 +458,19 @@ func test_antidote_used_has_no_hp_line() -> void:
 		"pas de « récupère 0 PV »")
 	var cured := _status_event(K.STATUS_CURED, "Salamèche")
 	assert_eq(_lines(cured), ["Salamèche n'est plus empoisonné."] as Array[String])
+
+
+## Nom du dresseur à jeton (OUV.2, dossier 13 §3.5, A13) : `"name": "{rival}"` affiche le prénom
+## choisi (« Régis veut se battre ! ») ; sans valeur, le nom reste tel quel.
+func test_the_rival_token_in_the_trainer_name_shows_the_chosen_name() -> void:
+	_text.token_values = func() -> Dictionary[StringName, String]:
+		return DialogueTokens.values_for(&"", null, "Kevin", "Régis")
+	var event := _event(K.BATTLE_STARTED, true)
+	event.trainer_name = "{rival}"
+	assert_eq(_lines(event), ["Régis veut se battre !"] as Array[String])
+	event = _event(K.SENT_OUT, true)
+	event.trainer_name = "{rival}"
+	assert_eq(_lines(event), ["Régis envoie Carapuce !"] as Array[String])
+	assert_eq(_text.trainer_display_name("Pierre"), "Pierre", "sans jeton : tel quel")
+	var unnamed := BattleText.new()
+	assert_eq(unnamed.trainer_display_name("{rival}"), "{rival}", "sans valeurs : tel quel")

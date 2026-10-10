@@ -5,7 +5,7 @@ extends RefCounted
 ##
 ## Classe pure. Format :
 ## [codeblock]
-## { "speaker": "Prof. Chen", "yes": "Oui", "no": "Non",
+## { "speaker": "Prof. Chen", "yes": "Oui", "no": "Non", "validate": "Valider",
 ##   "steps": [
 ##     { "type": "stage", "show": "chen", "at": "center" },
 ##     { "type": "stage", "show": "nidorino", "at": "right", "effect": "pokeball" },
@@ -25,8 +25,8 @@ extends RefCounted
 ##    option B) est prévu mais refusé tant que l'option A est retenue (A2) ;
 ##  - un « confirm » suit le prompt qu'il confirme (sans autre prompt entre eux) et contient
 ##    son jeton.
-## Les jetons sont résolus par [method resolve] ([DialogueTokens] n'est pas touché : sa liste
-## blanche est celle des dialogues du monde).
+## Les jetons sont résolus par [method resolve] (mêmes noms que [constant DialogueTokens.PLAYER]
+## et [constant DialogueTokens.RIVAL], mais ici seulement après leur prompt).
 
 const DEFAULT_PATH: String = "res://data/opening/oak_intro.json"
 const TYPE_STAGE: String = "stage"
@@ -51,7 +51,7 @@ const TOKEN_OF: Dictionary[StringName, StringName] = {
 	PROMPT_RIVAL_NAME: TOKEN_RIVAL,
 }
 
-const _ROOT_KEYS: Array[String] = ["_note", "speaker", "yes", "no", "steps"]
+const _ROOT_KEYS: Array[String] = ["_note", "speaker", "yes", "no", "validate", "steps"]
 const _STEP_KEYS: Dictionary[String, Array] = {
 	TYPE_STAGE: ["type", "show", "hide", "at", "effect"],
 	TYPE_PAGE: ["type", "text", "speaker"],
@@ -63,6 +63,8 @@ var speaker: String = ""
 ## Libellés du choix de confirmation.
 var yes_label: String = ""
 var no_label: String = ""
+## Libellé du bouton de l'écran de prénom (dossier 13 §5.5).
+var validate_label: String = ""
 var _steps: Array[IntroStep] = []
 var _errors: PackedStringArray = PackedStringArray()
 
@@ -80,7 +82,7 @@ func add_from_dict(data: Dictionary, source: String = "") -> bool:
 	var errors := PackedStringArray()
 	for key: String in OpeningJson.unknown_keys(data, _ROOT_KEYS):
 		errors.append("%s : clé inconnue « %s »" % [source, key])
-	for key: String in ["speaker", "yes", "no"]:
+	for key: String in ["speaker", "yes", "no", "validate"]:
 		if not OpeningJson.is_text(data.get(key)):
 			errors.append("%s : texte « %s » manquant ou vide" % [source, key])
 	var steps: Array[IntroStep] = []
@@ -96,6 +98,7 @@ func add_from_dict(data: Dictionary, source: String = "") -> bool:
 	speaker = data["speaker"]
 	yes_label = data["yes"]
 	no_label = data["no"]
+	validate_label = data["validate"]
 	_steps = steps
 	return true
 

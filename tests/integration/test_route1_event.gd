@@ -20,12 +20,14 @@ const DIRECTIONS: Dictionary[Vector2i, StringName] = {
 	Vector2i.LEFT: &"move_left", Vector2i.RIGHT: &"move_right",
 }
 const TIMEOUT_MS := 8000
+## Prénom du rival injecté (OUV.2 : l'étiquette « {rival} » des données affiche le prénom).
+const RIVAL := "Régis"
 ## Durée des fondus pendant le test (au lieu d'environ 0,45 s).
 const FADE := 0.05
 const REUNION: Array = [
-	["Rival", "Enfin."],
+	[RIVAL, "Enfin."],
 	["Prof. Chen", "Un peu de patience."],
-	["Rival", "Ça fait une heure que tu dis ça."],
+	[RIVAL, "Ça fait une heure que tu dis ça."],
 	["Prof. Chen", "Et pourtant, tu es toujours là."],
 ]
 const OFFER: Array = [
@@ -59,6 +61,7 @@ func before_each() -> void:
 	_boot.start_map = &"pallet_town"
 	add_child_autofree(_boot)
 	_boot.get_dialogue_runner().chars_per_second = 0.0
+	GameState.rival_name = RIVAL
 	_player = _boot.get_player()
 	_player.moved.connect(func(cell: Vector2i) -> void:
 		if _boot.get_cutscene_director().is_running():

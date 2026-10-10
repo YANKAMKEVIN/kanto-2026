@@ -21,7 +21,8 @@ func _pages(texts: Array[String]) -> Array[DialoguePage]:
 
 func test_known_tokens() -> void:
 	assert_eq(DialogueTokens.FIRST_WILD_SPECIES, &"first_wild_species")
-	assert_eq(DialogueTokens.KNOWN, [&"first_wild_species"] as Array[StringName])
+	assert_eq(DialogueTokens.KNOWN, [&"first_wild_species", &"player", &"rival"]
+		as Array[StringName], "prénoms du joueur et du rival (OUV.2, dossier 13 §3.5)")
 
 
 func test_tokens_in() -> void:
@@ -127,3 +128,41 @@ func test_chen_line_from_the_real_data() -> void:
 	assert_eq(none.size(), pages.size() - 1, "réplique omise")
 	for page: DialoguePage in none:
 		assert_false(page.text.contains("{"), page.text)
+
+
+# --- Prénoms du joueur et du rival (OUV.2, dossier 13 §3.5) ----------------------------------
+
+func _names() -> Dictionary[StringName, String]:
+	return DialogueTokens.values_for(&"", null, "Sacha", "Régis")
+
+
+func test_values_for_carry_the_two_names() -> void:
+	assert_eq(_names(), {&"player": "Sacha", &"rival": "Régis"} as Dictionary[StringName, String])
+	assert_true(DialogueTokens.values_for(&"", null, "", "").is_empty(), "prénom vide : rien")
+	var data := PokemonData.new()
+	data.load_dir()
+	var all := DialogueTokens.values_for(&"pidgey", data, "Red", "Blue")
+	assert_eq(all.size(), 3)
+	assert_eq(all[DialogueTokens.RIVAL], "Blue")
+
+
+func test_resolve_speaker() -> void:
+	assert_eq(DialogueTokens.resolve_speaker("{rival}", _names()), "Régis")
+	assert_eq(DialogueTokens.resolve_speaker("Prof. Chen", _names()), "Prof. Chen")
+	assert_eq(DialogueTokens.resolve_speaker("{rival}", _values()), "",
+		"sans valeur : étiquette cachée")
+
+
+func test_resolve_pages_resolves_the_speaker_and_keeps_the_page() -> void:
+	var page := DialoguePage.new("Hé ! Attends-moi !")
+	page.speaker = "{rival}"
+	var pages: Array[DialoguePage] = [page]
+	assert_true(DialogueTokens.has_tokens(pages), "un locuteur à jeton compte")
+	var resolved := DialogueTokens.resolve_pages(pages, _names())
+	assert_eq(resolved.size(), 1)
+	assert_eq(resolved[0].speaker, "Régis")
+	assert_eq(resolved[0].text, "Hé ! Attends-moi !")
+	assert_eq(page.speaker, "{rival}", "la page des données n'est jamais modifiée")
+	var unnamed := DialogueTokens.resolve_pages(pages, _values())
+	assert_eq(unnamed.size(), 1, "un locuteur sans valeur n'omet pas la page")
+	assert_eq(unnamed[0].speaker, "")

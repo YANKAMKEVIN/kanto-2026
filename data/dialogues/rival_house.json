@@ -1,6 +1,6 @@
 {
 	"rival": {
-		"speaker": "Rival",
+		"speaker": "{rival}",
 		"variants": [
 			{
 				"unless": ["rival_met"],

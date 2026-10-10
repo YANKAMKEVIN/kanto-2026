@@ -387,10 +387,10 @@ func test_starter_flags_are_set_and_read() -> void:
 func test_starter_choice_lines() -> void:
 	var expected: Dictionary[StringName, Array] = {
 		&"oak_starter_reciprocal": ["Prof. Chen", "On dirait que le choix est réciproque."],
-		&"rival_starter_pick": ["Rival", "Alors ce sera toi."],
-		&"rival_starter_smile": ["Rival", "Ça devrait être intéressant."],
-		&"rival_challenge_wait": ["Rival", "Attends."],
-		&"rival_challenge": ["Rival",
+		&"rival_starter_pick": ["{rival}", "Alors ce sera toi."],
+		&"rival_starter_smile": ["{rival}", "Ça devrait être intéressant."],
+		&"rival_challenge_wait": ["{rival}", "Attends."],
+		&"rival_challenge": ["{rival}",
 			"On ne va quand même pas partir sans savoir ce qu'ils savent faire."],
 		&"oak_lab_exit_block": ["Prof. Chen",
 			"Pas si vite. Tu n'as pas encore choisi ton partenaire."],
@@ -428,7 +428,7 @@ func test_waiting_lines_during_and_after_the_choice() -> void:
 	assert_eq(_texts(oak.variants[3]),
 		["Un peu de patience. J'ai quelque chose à vous montrer."] as Array[String])
 	var rival := _library.get_dialogue(&"rival_lab_waiting")
-	assert_eq(rival.speaker, "Rival")
+	assert_eq(rival.speaker, "{rival}")
 	# 4B : la variante répétée « rival_challenged » du 4A est supprimée (2 variantes).
 	assert_eq(rival.variants.size(), 2)
 	assert_eq(rival.variants[0].if_flags, [&"starter_offered"] as Array[StringName])
@@ -564,7 +564,7 @@ func test_texts_are_the_dossier_02_texts_word_for_word() -> void:
 func test_speakers_and_narration() -> void:
 	var expected: Dictionary[StringName, Array] = {
 		&"mom": ["Maman", false], &"mom_wakeup": ["Maman", false],
-		&"rival": ["Rival", false], &"maya": ["Maya", false],
+		&"rival": ["{rival}", false], &"maya": ["Maya", false],
 		&"aoki": ["Mme Aoki", false], &"leo": ["Léo", false], &"haru": ["Haru", false],
 		&"breakfast_table": ["", true], &"rival_kanto_map": ["", true],
 		&"observe_bulbasaur": ["Bulbizarre", true], &"observe_charmander": ["Salamèche", true],
@@ -572,14 +572,14 @@ func test_speakers_and_narration() -> void:
 		&"observe_leo_rattata": ["Rattata", true], &"sign_pallet_town": ["", false],
 		&"oak_route1_call": ["???", false], &"route1_grass_thought": ["", true],
 		&"oak_route1_warning": ["Prof. Chen", false], &"oak_lab_reunion": ["", false],
-		&"oak_lab_waiting": ["Prof. Chen", false], &"rival_lab_waiting": ["Rival", false],
+		&"oak_lab_waiting": ["Prof. Chen", false], &"rival_lab_waiting": ["{rival}", false],
 		&"oak_starter_offer": ["Prof. Chen", false],
-		&"oak_starter_reciprocal": ["Prof. Chen", false], &"rival_starter_pick": ["Rival", false],
-		&"rival_starter_smile": ["Rival", false],
-		&"rival_challenge_wait": ["Rival", false], &"rival_challenge": ["Rival", false],
+		&"oak_starter_reciprocal": ["Prof. Chen", false], &"rival_starter_pick": ["{rival}", false],
+		&"rival_starter_smile": ["{rival}", false],
+		&"rival_challenge_wait": ["{rival}", false], &"rival_challenge": ["{rival}", false],
 		&"oak_lab_exit_block": ["Prof. Chen", false],
-		&"rival_lab_won": ["Rival", false], &"rival_lab_won_leaving": ["Rival", false],
-		&"rival_lab_lost": ["Rival", false], &"oak_after_battle": ["Prof. Chen", false],
+		&"rival_lab_won": ["{rival}", false], &"rival_lab_won_leaving": ["{rival}", false],
+		&"rival_lab_lost": ["{rival}", false], &"oak_after_battle": ["Prof. Chen", false],
 		&"oak_poke_balls_intro": ["Prof. Chen", false], &"oak_poke_balls": ["Prof. Chen", false],
 		&"viridian_courier": ["Livreur", false], &"viridian_lass": ["Dresseuse", false],
 		&"viridian_kid": ["Enfant", false], &"viridian_traveler": ["Voyageur", false],
@@ -589,12 +589,12 @@ func test_speakers_and_narration() -> void:
 		&"oak_parcel_records": ["Prof. Chen", false],
 		&"oak_pokedex_activated": ["Prof. Chen", false], &"oak_parcel_rival": ["", false],
 		&"oak_parcel_rival_dex": ["Prof. Chen", false],
-		&"rival_parcel_return": ["Rival", false], &"rival_parcel_greet": ["Rival", false],
-		&"rival_parcel_leaving": ["Rival", false],
+		&"rival_parcel_return": ["{rival}", false], &"rival_parcel_greet": ["{rival}", false],
+		&"rival_parcel_leaving": ["{rival}", false],
 		&"nurse": ["Infirmière", false], &"nurse_wakeup": ["Infirmière", false],
 		&"route22_youngster_sigh": ["Jeune Dresseur", false],
-		&"route22_rival_hesitates": ["Rival", false], &"route22_rival_greet": ["Rival", false],
-		&"route22_rival_won": ["Rival", false], &"route22_rival_lost": ["Rival", false],
+		&"route22_rival_hesitates": ["{rival}", false], &"route22_rival_greet": ["{rival}", false],
+		&"route22_rival_won": ["{rival}", false], &"route22_rival_lost": ["{rival}", false],
 		# Jalon 8 (dossier 11, T16) : panneaux sans locuteur, comme celui de Bourg Palette.
 		&"route_2_sign": ["", false], &"route_2_forest_sign": ["", false],
 		&"route_2_closed_sign": ["", false], &"route_2_hiker": ["Randonneuse", false],
@@ -646,9 +646,9 @@ func test_maya_after_oak_returns_and_the_lab_reunion() -> void:
 	for page: DialoguePage in reunion:
 		lines.append([page.speaker, page.text])
 	assert_eq(lines, [
-		["Rival", "Enfin."],
+		["{rival}", "Enfin."],
 		["Prof. Chen", "Un peu de patience."],
-		["Rival", "Ça fait une heure que tu dis ça."],
+		["{rival}", "Ça fait une heure que tu dis ça."],
 		["Prof. Chen", "Et pourtant, tu es toujours là."],
 	])
 	assert_eq(reunion[1].turn, {&"oak": &"rival"} as Dictionary[StringName, StringName])
@@ -684,7 +684,7 @@ func test_oak_parcel_lines() -> void:
 	var activated := _library.get_dialogue(&"oak_pokedex_activated").variants[0].pages
 	assert_eq(activated.back().text, "Observe. Explore. Fais-toi ta propre idée du monde.")
 	var rival := _library.get_dialogue(&"oak_parcel_rival").variants[0].pages
-	assert_eq([rival[0].speaker, rival[1].speaker], ["Prof. Chen", "Rival"])
+	assert_eq([rival[0].speaker, rival[1].speaker], ["Prof. Chen", "{rival}"])
 	assert_gt(rival[1].pause, 0.0, "« …On verra. » après une courte pause")
 	# Toute scène lancée par un dialogue existe.
 	var launched := 0

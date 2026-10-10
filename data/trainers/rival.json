@@ -1,6 +1,6 @@
 {
 	"rival_lab": {
-		"name": "Le Rival", "ai": "random",
+		"name": "{rival}", "ai": "random",
 		"can_lose": true, "heal_after": true, "gives_exp": false, "prize_money": 0,
 		"end_message": false, "start_message": false, "bag": false,
 		"team_by_starter": {
@@ -10,7 +10,7 @@
 		}
 	},
 	"rival_route22": {
-		"name": "Le Rival", "ai": "smart",
+		"name": "{rival}", "ai": "smart",
 		"can_lose": false, "heal_after": false, "gives_exp": true,
 		"prize_money": 0, "prize_per_level": 35,
 		"end_message": false, "start_message": true, "bag": true,

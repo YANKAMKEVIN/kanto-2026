@@ -1,7 +1,8 @@
 extends GutTest
-## OpeningDirector (OUV.1) seul, sans Boot : système de fichiers en mémoire, constructeur de partie
-## factice. Ordre des effets (titre fermé avant le commit), une seule construction de la partie,
-## garde d'autosave, chemin de la copie de sécurité.
+## OpeningDirector (OUV.1, OUV.2) seul, sans Boot : système de fichiers en mémoire, constructeur de
+## partie factice. Ordre des effets (titre fermé, introduction, commit **avec les prénoms
+## choisis** avant le rideau, introduction retirée), une seule construction de la partie, garde
+## d'autosave, chemin de la copie de sécurité.
 
 const MemoryFs := preload("res://tests/helpers/memory_file_system.gd")
 const SAVE_PATH := "user://test_director_save.json"
@@ -41,11 +42,27 @@ func _start() -> void:
 		_events.append("resumed %s" % save.get("player_name", "")))
 	_director.new_game_entered.connect(func(warning: String) -> void:
 		_events.append("new_game_entered [%s]" % warning))
+	_director.intro_opened.connect(func() -> void:
+		_events.append("intro_opened (écritures : %d)" % _writes()))
+	_director.intro_closed.connect(func() -> void:
+		_events.append("intro_closed (écritures : %d)" % _writes()))
 	_director.run()
 
 
-func _finish() -> void:
-	await wait_until(func() -> bool: return _director.is_finished(), 5.0)
+## Attend la fin ; une introduction en cours est jouée avec [param player] et [param rival].
+func _finish(player: String = "Kevin", rival: String = "Régis") -> void:
+	var deadline := Time.get_ticks_msec() + 5000
+	while not _director.is_finished() and Time.get_ticks_msec() < deadline:
+		var intro := _director.get_intro()
+		if intro != null and intro.is_running():
+			if intro.is_waiting_for_name():
+				var prompt := intro.get_reader().current().name
+				intro.submit_name(player if prompt == IntroScript.PROMPT_PLAYER_NAME else rival)
+			elif intro.is_waiting_for_choice():
+				intro.answer(true)
+			else:
+				intro.advance()
+		await wait_process_frames(1)
 
 
 func test_previous_path_sits_next_to_the_save() -> void:
@@ -57,9 +74,12 @@ func test_the_title_closes_before_the_commit_and_the_game_is_built_once() -> voi
 	_start()
 	assert_false(_director.autosave_allowed())
 	_director.choose(TitleMenuModel.ENTRY_NEW_GAME)
-	await _finish()
-	assert_eq(_events, ["title_closed (écritures : 0)", "build Kevin Régis (écritures : 0)",
+	await _finish("Sacha", "Gary")
+	assert_eq(_events, ["title_closed (écritures : 0)", "intro_opened (écritures : 0)",
+		"build Sacha Gary (écritures : 0)", "intro_closed (écritures : 1)",
 		"new_game_entered []"] as Array[String])
+	assert_null(_director.get_intro(), "introduction retirée")
+	assert_null(_director.get_intro_stage())
 	assert_eq(_builds, 1)
 	assert_true(_director.autosave_allowed())
 	assert_true(_fs.files.has(SAVE_PATH))
@@ -117,3 +137,16 @@ func test_a_build_failure_is_a_failed_commit() -> void:
 		as Array[String])
 	assert_false(_director.autosave_allowed())
 	assert_false(_fs.files.has(SAVE_PATH))
+
+
+func test_the_introduction_writes_nothing_until_its_last_line() -> void:
+	_start()
+	_director.choose(TitleMenuModel.ENTRY_NEW_GAME)
+	await wait_until(func() -> bool: return _director.get_intro() != null, 5.0)
+	var intro := _director.get_intro()
+	assert_false(_director.autosave_allowed())
+	assert_true(_director.handle_back(), "le retour appartient à l'introduction")
+	assert_eq(_director.get_flow().screen(), OpeningFlow.Screen.INTRO)
+	assert_eq(_writes(), 0)
+	assert_eq(_builds, 0, "rien de construit pendant l'introduction")
+	assert_true(intro.is_running())

@@ -9,11 +9,15 @@ extends Node
 ##    [SaveSystem], comme avant) ; **aucune écriture** ensuite tant que le titre est affiché ;
 ##  - Continuer : rideau, [signal title_closed] (Boot libère le décor), puis [signal resumed] avec
 ##    le dictionnaire lu ;
-##  - Nouvelle partie : confirmation si une sauvegarde valide existe, puis (OUV.1, provisoire :
-##    l'introduction arrive en OUV.2) rideau, [signal title_closed], **commit** ([OpeningCommit] :
-##    copie `save.previous.json`, construction de la partie par le [Callable] de Boot, écriture
-##    atomique) et [signal new_game_entered] ; avec une sauvegarde d'une version plus récente, rien
-##    n'est écrit ;
+##  - Nouvelle partie : confirmation si une sauvegarde valide existe, puis rideau,
+##    [signal title_closed], **introduction du Prof. Chen** (OUV.2 : [signal intro_opened], Boot
+##    pose le labo en mode décor ; [IntroStage] + [IntroPlayer] sur la boîte de dialogue du jeu,
+##    prénoms du joueur et du rival **en mémoire seulement**) ; à la fin de la dernière réplique,
+##    **commit** ([OpeningCommit] : copie `save.previous.json`, construction de la partie par le
+##    [Callable] de Boot **avec les prénoms choisis**, écriture atomique), rideau,
+##    [signal intro_closed] et [signal new_game_entered] ; avec une sauvegarde d'une version plus
+##    récente, rien n'est écrit. Abandon (application tuée) pendant l'introduction : rien n'a été
+##    écrit, l'ancienne sauvegarde est intacte (§3.7) ;
 ##  - Paramètres : le [SettingsScreen] sans « Sauvegarder maintenant » ; chaque réglage changé est
 ##    relayé à Boot ([signal settings_changed]) qui l'écrit dans `settings.json` et l'applique.
 ## [method autosave_allowed] est **la** garde d'autosave de Boot : faux tant que la partie n'est
@@ -22,6 +26,10 @@ extends Node
 ## On quitte le titre (rideau baissé) : le décor doit être libéré, **avant** le commit ou la
 ## reprise.
 signal title_closed
+## Introduction (OUV.2) : rideau baissé, titre retiré ; Boot pose le décor du labo.
+signal intro_opened
+## Fin de l'introduction (après le commit, rideau baissé) : Boot libère le décor du labo.
+signal intro_closed
 ## Continuer : la partie lue au lancement (déjà migrée), à charger dans l'état.
 signal resumed(save: Dictionary)
 ## Nouvelle partie construite (et écrite si permis) : entrer dans la chambre. [param warning] :
@@ -31,6 +39,9 @@ signal new_game_entered(warning: String)
 signal settings_changed(settings: GameSettings)
 
 const TITLE_SCENE: PackedScene = preload("res://game/ui/opening/title_screen.tscn")
+const INTRO_STAGE_SCENE: PackedScene = preload("res://game/ui/opening/intro_stage.tscn")
+## Boîte de dialogue créée par le directeur quand on ne lui en donne pas (tests sans Boot).
+const DIALOGUE_BOX_SCENE: PackedScene = preload("res://game/ui/dialogue/dialogue_box.tscn")
 ## Suffixe de la copie de sécurité d'une nouvelle partie, à côté de la sauvegarde
 ## (`user://save.json` → `user://save.previous.json`, [constant OpeningCommit.PREVIOUS_PATH]).
 const PREVIOUS_SUFFIX: String = ".previous.json"
@@ -60,6 +71,15 @@ var _leaving: bool = false
 var _finished: bool = false
 var _warning: String = ""
 var _last_commit: int = -1
+## Introduction (OUV.2) : la boîte de dialogue du jeu (Boot), la scène et son lecteur.
+var _box: DialogueBox
+var _intro_script := IntroScript.new()
+var _stage: IntroStage
+var _intro: IntroPlayer
+var _backdrop_blur: bool = true
+## Prénoms choisis dans l'introduction (vides : défauts de [OpeningNames]).
+var _player_name: String = ""
+var _rival_name: String = ""
 
 
 ## Branche le directeur avant [method run]. [param save_system] : la sauvegarde (null : aucune,
@@ -75,6 +95,11 @@ func setup(save_system: SaveSystem, build_new_game: Callable, fade: ScreenFade,
 	_device_quality = device_quality
 	_zone_name_of = zone_name_of
 	_badge_flags = badge_flags
+
+
+## Boîte de dialogue de l'introduction (celle du jeu). Sans elle, le directeur crée la sienne.
+func set_dialogue_box(box: DialogueBox) -> void:
+	_box = box
 
 
 ## Lit la sauvegarde, construit le titre et le montre (fondu depuis le noir).
@@ -144,6 +169,10 @@ func confirm(confirmed: bool) -> void:
 func handle_back() -> bool:
 	if _finished or _flow == null:
 		return false
+	if _intro != null:
+		# Introduction : le clavier se ferme, puis rien (§5.5).
+		_intro.handle_back()
+		return true
 	if _leaving:
 		return true
 	match _flow.screen():
@@ -170,6 +199,9 @@ func change_setting(key: StringName, value: Variant) -> void:
 ## Réglages appliqués (Boot, à chaque changement) : main du joueur, flou du fond.
 func apply_settings(settings: GameSettings, backdrop_blur: bool) -> void:
 	_settings = settings
+	_backdrop_blur = backdrop_blur
+	if _stage != null:
+		_stage.set_backdrop_blur(backdrop_blur)
 	if _screen != null:
 		_screen.set_left_handed(settings.left_handed)
 		_screen.set_backdrop_blur(backdrop_blur)
@@ -211,6 +243,16 @@ func get_last_commit() -> int:
 	return _last_commit
 
 
+## Scène de l'introduction (null hors de l'introduction).
+func get_intro_stage() -> IntroStage:
+	return _stage
+
+
+## Lecteur de l'introduction (null hors de l'introduction).
+func get_intro() -> IntroPlayer:
+	return _intro
+
+
 ## Chemin de la copie de sécurité pour la sauvegarde [param save_path].
 static func previous_path_for(save_path: String) -> String:
 	return save_path.get_basename() + PREVIOUS_SUFFIX
@@ -232,12 +274,78 @@ func _confirm_view() -> ChoiceView:
 	return view
 
 
-## OUV.1, provisoire : pas encore d'introduction (OUV.2) ; Nouvelle partie va droit au commit,
-## avec les prénoms par défaut, puis à la chambre.
+## Nouvelle partie : rideau, titre retiré, puis l'introduction (OUV.2) sur le labo en mode décor.
+## Script illisible (données en erreur) : on passe directement au commit avec les prénoms par
+## défaut, comme en OUV.1, plutôt que de bloquer la partie.
 func _play_intro() -> void:
 	await _close_title()
+	if not _intro_script.is_loaded() and not _intro_script.load_file():
+		push_error("Ouverture : introduction illisible, prénoms par défaut")
+		_on_intro_finished("", "")
+		return
+	intro_opened.emit()
+	if _box == null:
+		_box = DIALOGUE_BOX_SCENE.instantiate() as DialogueBox
+		add_child(_box)
+	_stage = INTRO_STAGE_SCENE.instantiate() as IntroStage
+	_stage.speed_scale = speed_scale
+	_stage.reduce_motion = _settings != null and _settings.reduce_motion
+	add_child(_stage)
+	_stage.set_backdrop_blur(_backdrop_blur)
+	_intro = IntroPlayer.new()
+	_intro.name = "IntroPlayer"
+	_intro.chars_per_second = _settings.chars_per_second() if _settings != null \
+		else UiTokens.DIALOG_CHARS_PER_SECOND
+	add_child(_intro)
+	_intro.setup(_intro_script, _names, _stage, _box)
+	_intro.finished.connect(_on_intro_finished)
+	print("Ouverture : introduction du Prof. Chen")
+	if _fade != null:
+		_fade.set_opaque(true)
+		_fade.fade_in(_intro_fade(UiTokens.INTRO_FADE_IN))
+	_intro.start()
+
+
+## Fin de la dernière réplique de Chen (§3.7) : commit **avant** le rideau, avec les prénoms
+## choisis ; puis rideau, introduction retirée, [signal intro_closed], chambre.
+func _on_intro_finished(player_name: String, rival_name: String) -> void:
+	_player_name = player_name
+	_rival_name = rival_name
+	_leaving = true
 	_flow.handle(OpeningFlow.Action.INTRO_FINISHED)
-	_run_effects(_flow.take_effects())
+	var effects := _flow.take_effects()
+	if effects.has(OpeningFlow.Effect.WRITE_NEW_GAME):
+		_commit()
+		effects = _flow.take_effects()
+	if effects.has(OpeningFlow.Effect.WARN_UNSAVED):
+		_warning = _texts.text(TitleTexts.GROUP_MESSAGES, &"unsaved")
+	if _fade != null and _intro != null:
+		await _fade.fade_out(_intro_fade(UiTokens.INTRO_FADE_OUT))
+	_close_intro()
+	if effects.has(OpeningFlow.Effect.ENTER_BEDROOM):
+		if not _built:
+			_build_once()
+		_finished = true
+		new_game_entered.emit(_warning)
+
+
+## Introduction retirée (scène et lecteur), puis [signal intro_closed].
+func _close_intro() -> void:
+	if _intro != null:
+		remove_child(_intro)
+		_intro.queue_free()
+		_intro = null
+	if _stage != null:
+		remove_child(_stage)
+		_stage.queue_free()
+		_stage = null
+	intro_closed.emit()
+
+
+## Durée d'un fondu de l'introduction (« Réduire les animations » : raccourci).
+func _intro_fade(base: float) -> float:
+	var reduced := _settings != null and _settings.reduce_motion
+	return base * speed_scale * (UiTokens.INTRO_REDUCED if reduced else 1.0)
 
 
 ## Continuer : rideau, titre fermé, reprise.
@@ -268,7 +376,8 @@ func _run_effects(effects: Array[OpeningFlow.Effect]) -> void:
 				resumed.emit(_save_content)
 			OpeningFlow.Effect.WRITE_NEW_GAME:
 				# La copie de sécurité (BACKUP_PREVIOUS) fait partie du commit.
-				_write_new_game()
+				_commit()
+				_run_effects(_flow.take_effects())
 				return
 			OpeningFlow.Effect.ENTER_BEDROOM:
 				if not _built:
@@ -277,8 +386,8 @@ func _run_effects(effects: Array[OpeningFlow.Effect]) -> void:
 				new_game_entered.emit(_warning)
 
 
-## Le commit (dossier 13 §3.7), puis la suite du flux selon son résultat.
-func _write_new_game() -> void:
+## Le commit (dossier 13 §3.7) ; le flux passe en DONE (ses effets restent à prendre).
+func _commit() -> void:
 	var ok := false
 	if _save != null:
 		var commit := OpeningCommit.new(_save.fs, _save.path, previous_path_for(_save.path))
@@ -291,13 +400,15 @@ func _write_new_game() -> void:
 				% [OpeningCommit.Result.find_key(_last_commit), commit.last_error])
 	_flow.handle(OpeningFlow.Action.COMMIT_SUCCEEDED if ok
 		else OpeningFlow.Action.COMMIT_FAILED)
-	_run_effects(_flow.take_effects())
 
 
 func _build_once() -> Dictionary:
 	_built = true
 	if not _build_new_game.is_valid():
 		return {}
-	var built: Variant = _build_new_game.call(_names.default_name(OpeningNames.ROLE_PLAYER),
-		_names.default_name(OpeningNames.ROLE_RIVAL))
+	var player_name := _player_name if not _player_name.is_empty() \
+		else _names.default_name(OpeningNames.ROLE_PLAYER)
+	var rival_name := _rival_name if not _rival_name.is_empty() \
+		else _names.default_name(OpeningNames.ROLE_RIVAL)
+	var built: Variant = _build_new_game.call(player_name, rival_name)
 	return built if built is Dictionary else {}

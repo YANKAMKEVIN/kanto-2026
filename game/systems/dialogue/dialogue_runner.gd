@@ -23,7 +23,8 @@ extends Node
 ## Jetons de texte (jalon-07.md §3.6, T18) : les pages sont résolues par [DialogueTokens] au
 ## début du dialogue et au début des pages d'une réponse de choix, avec [member token_values] ;
 ## une page dont un jeton n'a pas de valeur est omise. Toutes omises : comme une variante sans
-## page (pas de boîte).
+## page (pas de boîte). Les jetons du locuteur (`{rival}`, OUV.2) sont résolus de même ; un
+## locuteur sans valeur est caché.
 
 signal dialogue_started(dialogue_id: StringName)
 ## Début d'une page (première comprise), après sa mise en scène : tests, futurs sons.
@@ -181,7 +182,7 @@ func choose(confirmed: bool) -> void:
 	if pages.is_empty():
 		_finish()
 		return
-	_session = DialogueSession.new(pages, _dialogue.speaker, chars_per_second)
+	_session = DialogueSession.new(pages, _default_speaker(), chars_per_second)
 	_begin_page()
 
 
@@ -209,7 +210,7 @@ func _start_session() -> void:
 		_closing = true
 		_finish.call_deferred()
 		return
-	_session = DialogueSession.new(pages, _dialogue.speaker, chars_per_second)
+	_session = DialogueSession.new(pages, _default_speaker(), chars_per_second)
 	if _box != null:
 		_box.open()
 	_begin_page()
@@ -219,12 +220,24 @@ func _start_session() -> void:
 func _resolve_pages(pages: Array[DialoguePage]) -> Array[DialoguePage]:
 	if not DialogueTokens.has_tokens(pages):
 		return pages
+	return DialogueTokens.resolve_pages(pages, _token_values())
+
+
+## Locuteur du dialogue, jetons résolus (`"speaker": "{rival}"`, dossier 13 §3.5).
+func _default_speaker() -> String:
+	var speaker := _dialogue.speaker
+	if DialogueTokens.tokens_in(speaker).is_empty():
+		return speaker
+	return DialogueTokens.resolve_speaker(speaker, _token_values())
+
+
+func _token_values() -> Dictionary[StringName, String]:
 	var values: Dictionary[StringName, String] = {}
 	if token_values.is_valid():
 		var raw: Variant = token_values.call()
 		if raw is Dictionary:
 			values.assign(raw)
-	return DialogueTokens.resolve_pages(pages, values)
+	return values
 
 
 ## Étape 3 : affichage de la page courante et sa mise en scène.

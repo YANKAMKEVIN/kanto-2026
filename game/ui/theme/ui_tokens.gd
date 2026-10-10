@@ -1686,3 +1686,91 @@ const TITLE_FADE_OUT := 0.45
 const TITLE_GAME_FADE_IN := ANIM_FADE_IN
 ## Paramètres depuis le titre : même voile et flou que dans le Menu Dresseur.
 const TITLE_SETTINGS_DIM := MENU_GLASS_DIM
+
+## Introduction du Prof. Chen (OUV.2, dossier 13 §4, §5.5, §9.0 ; composition de
+## reference/ouverture-chen-v1.webp et ouverture-prenom-v1.webp, règle 10). Fond : la vraie carte
+## du labo en mode décor, **très floutée** (même shader que le Menu Dresseur), sous une lumière
+## dorée procédurale (dégradé radial venu de la fenêtre, en haut) et un voile chaud en bas.
+const INTRO_BLUR_RADIUS := 14.0
+const INTRO_BLUR_LOD := 4.0
+const INTRO_DIM := 0.06
+const INTRO_DIM_COLOR := Color(0.16, 0.09, 0.03)
+## Lumière dorée : cœur (haut, vers la fenêtre) → bord transparent ; centre et rayon en part de
+## l'écran.
+const INTRO_GLOW := Color(1.0, 0.86, 0.55, 0.62)
+const INTRO_GLOW_EDGE := Color(1.0, 0.72, 0.36, 0.08)
+const INTRO_GLOW_CENTER := Vector2(0.55, 0.15)
+const INTRO_GLOW_RADIUS := 0.75
+## Voile chaud du bas (sol), sous les portraits : du transparent (milieu) à cette teinte (bas).
+const INTRO_FLOOR_SHADE := Color(0.2, 0.11, 0.04, 0.4)
+const INTRO_FLOOR_CLEAR := Color(0.2, 0.11, 0.04, 0.0)
+## Emplacements des portraits (part de la largeur de l'écran : l'aspect « expand » va de 1920 à
+## 2340 de large) et ligne des pieds (juste au-dessus de la boîte de dialogue).
+const INTRO_SLOT_X: Dictionary[StringName, float] = {
+	&"left": 0.27, &"center": 0.5, &"right": 0.72,
+}
+const INTRO_FEET_Y := 828.0
+## Hauteurs affichées : adulte (Chen, à 1:1 de son portrait de 768 px), enfants (héros, rival :
+## un peu plus petits que Chen), Pokémon (artwork officiel 475 px, marges comprises).
+const INTRO_HEIGHT_ADULT := 768.0
+const INTRO_HEIGHT_CHILD := 700.0
+const INTRO_HEIGHT_POKEMON := 440.0
+## Mouvements de scène (dossier 13 §4) : entrée en fondu et légère montée, sortie en fondu,
+## glissement d'un emplacement à l'autre. « Réduire les animations » : durées × INTRO_REDUCED,
+## sans montée ni glissement (le portrait change de place dans un fondu).
+const INTRO_PORTRAIT_IN := 0.45
+const INTRO_PORTRAIT_OUT := 0.3
+const INTRO_PORTRAIT_MOVE := 0.4
+const INTRO_PORTRAIT_RISE := 28.0
+const INTRO_REDUCED := 0.5
+## Sortie de Poké Ball (procédurale, §9.2) : éclair blanc doré qui grandit et s'éteint, quelques
+## étincelles, puis le Pokémon apparaît ; petite respiration du Pokémon ensuite.
+const INTRO_FLASH := 0.35
+const INTRO_FLASH_SIZE := 420.0
+const INTRO_FLASH_COLOR := Color(1.0, 0.97, 0.84, 0.95)
+const INTRO_FLASH_EDGE := Color(1.0, 0.9, 0.6, 0.0)
+const INTRO_SPARKLES := 8
+const INTRO_SPARKLE_SIZE := 44.0
+const INTRO_SPARKLE_DISTANCE := 240.0
+const INTRO_BREATH := 0.015
+const INTRO_BREATH_TIME := 1.6
+## Fondus d'entrée dans l'introduction (depuis le noir du titre) et de sortie vers la chambre
+## (OUV.3 remplacera la sortie par le rétrécissement et le blanc chaud).
+const INTRO_FADE_IN := TITLE_FADE_IN
+const INTRO_FADE_OUT := TITLE_FADE_OUT
+
+## Écran de prénom (OUV.2, dossier 13 §5.5) : panneau en haut à droite, **entier dans la moitié
+## haute** (le clavier du téléphone couvre le bas en paysage) : champ clair, compteur, aide,
+## pastilles et VALIDER sur une même ligne.
+const NAME_PANEL_WIDTH := 1040
+const NAME_PANEL_PAD := 32
+const NAME_PANEL_GAP := 16
+const NAME_PANEL_BG := TITLE_CARD_BG
+const NAME_PANEL_RADIUS := TITLE_CARD_RADIUS
+const NAME_PANEL_BORDER_WIDTH := TITLE_CARD_FEATURED_BORDER_WIDTH
+const NAME_PANEL_GLOW := TITLE_CARD_GLOW
+const NAME_PANEL_GLOW_SIZE := TITLE_CARD_GLOW_SIZE
+## Champ : clair, texte sombre, liseré ACCENT au focus.
+const NAME_FIELD_HEIGHT := 112
+const NAME_FIELD_FONT := 52
+const NAME_FIELD_PAD_H := 32
+const NAME_FIELD_BG := DIALOG_BG
+const NAME_FIELD_TEXT := DIALOG_TEXT
+const NAME_FIELD_RADIUS := 28
+const NAME_FIELD_FOCUS_WIDTH := 4
+## Compteur « 4 / 10 », dans le champ à droite (discret, gris sur le champ clair).
+const NAME_COUNTER_FONT := FONT_CAPTION
+const NAME_COUNTER_COLOR := Color("#7A8494")
+## Place du compteur au bout du champ (le texte saisi ne passe jamais dessous).
+const NAME_COUNTER_WIDTH := 120
+## Aide (« Lettres, espaces, - et ’ seulement ») : place réservée sous le champ (rien ne bouge
+## quand elle apparaît).
+const NAME_HELP_FONT := FONT_CAPTION
+const NAME_HELP_HEIGHT := 32
+## Pastilles des noms proposés et VALIDER : zones tactiles d'au moins TOUCH_MIN.
+const NAME_CHIP_WIDTH := 200
+const NAME_CHIP_FONT := FONT_BUTTON
+const NAME_CHIP_RADIUS := 64
+const NAME_VALIDATE_WIDTH := 312
+## VALIDER inactif : ACCENT éteint (texte et icône portent aussi l'état : jamais la couleur seule).
+const NAME_VALIDATE_DISABLED_ALPHA := 0.35

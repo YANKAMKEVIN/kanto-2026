@@ -19,6 +19,8 @@ extends Node2D
 ## Dérive : amplitude (pixels, aller-retour autour de [member focus]) et durée d'un aller.
 @export var drift: Vector2 = Vector2(160, 40)
 @export var drift_duration: float = 24.0
+## Agrandissement de la caméra (OUV.2 : le labo, plus étroit que l'écran, le remplit entier).
+@export var zoom: float = 1.0
 
 var _map: GameMap
 var _camera: Camera2D
@@ -40,7 +42,9 @@ func show_map() -> bool:
 	add_child(_map)
 	_camera = Camera2D.new()
 	_camera.name = "TitleCamera"
-	var limits := CameraFraming.limits_for(_map.get_pixel_rect(), get_viewport_rect().size)
+	_camera.zoom = Vector2.ONE * zoom
+	var limits := CameraFraming.limits_for(_map.get_pixel_rect(),
+		get_viewport_rect().size / maxf(zoom, 0.01))
 	_camera.limit_left = limits.position.x
 	_camera.limit_top = limits.position.y
 	_camera.limit_right = limits.end.x

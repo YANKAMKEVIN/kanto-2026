@@ -10,6 +10,9 @@ extends GutTest
 ## - abandon avant le commit : l'ancienne sauvegarde intacte octet pour octet, et au relancement
 ##   le titre redemande la confirmation ;
 ## - un départ de débogage saute le titre.
+## OUV.2 : Nouvelle partie joue l'introduction du Prof. Chen sur le labo en mode décor ; les
+## prénoms choisis n'existent qu'en mémoire jusqu'au commit (abandon à chaque plan : rien
+## d'écrit), puis arrivent dans la chambre, les étiquettes du prologue et le combat.
 
 const MemoryFs := preload("res://tests/helpers/memory_file_system.gd")
 const FixedClock := preload("res://tests/helpers/fixed_clock.gd")
@@ -110,9 +113,47 @@ func _saved() -> Dictionary:
 	return parsed if parsed is Dictionary else {}
 
 
-func _wait_finished() -> void:
-	await wait_until(func() -> bool: return _opening().is_finished(), TIMEOUT)
+## Attend la fin de l'ouverture ; une introduction en cours est jouée jusqu'au bout avec
+## [param player] et [param rival] (réponses « Oui »).
+func _wait_finished(player: String = "Kevin", rival: String = "Régis") -> void:
+	var deadline := Time.get_ticks_msec() + int(TIMEOUT * 1000.0)
+	while not _opening().is_finished() and Time.get_ticks_msec() < deadline:
+		_drive_intro(player, rival)
+		await wait_process_frames(1)
+	assert_true(_opening().is_finished(), "ouverture terminée")
 	await wait_process_frames(2)
+
+
+## Une action de l'introduction (s'il y en a une en cours) : prénom, Oui, ou toucher.
+func _drive_intro(player: String, rival: String) -> void:
+	var intro := _opening().get_intro()
+	if intro == null or not intro.is_running():
+		return
+	if intro.is_waiting_for_name():
+		var prompt := intro.get_reader().current().name
+		intro.submit_name(player if prompt == IntroScript.PROMPT_PLAYER_NAME else rival)
+	elif intro.is_waiting_for_choice():
+		intro.answer(true)
+	else:
+		intro.advance()
+
+
+## Joue l'introduction jusqu'à ce que [param done] soit vrai (ou la fin).
+func _intro_until(done: Callable, player: String = "Kevin", rival: String = "Régis") -> void:
+	var deadline := Time.get_ticks_msec() + int(TIMEOUT * 1000.0)
+	while not done.call() and not _opening().is_finished() \
+			and Time.get_ticks_msec() < deadline:
+		_drive_intro(player, rival)
+		await wait_process_frames(1)
+
+
+## Nouvelle partie (confirmée s'il le faut) jusqu'au début de l'introduction.
+func _start_intro() -> void:
+	_title().get_entry_button(&"new_game").pressed.emit()
+	await wait_process_frames(2)
+	if _title() != null and _title().get_confirm().is_showing():
+		_title().get_confirm().get_confirm_button().pressed.emit()
+	await wait_until(func() -> bool: return _opening().get_intro() != null, TIMEOUT)
 
 
 # --- Sans sauvegarde -----------------------------------------------------------------------
@@ -423,6 +464,142 @@ func test_a_debug_start_skips_the_title() -> void:
 	assert_eq(_boot.get_map().map_id, &"route_1", "départ de débogage appliqué")
 	assert_eq(_save_writes(), [] as Array[String], "sauvegarde ni lue ni écrite")
 	assert_eq(_fs.files[SAVE_PATH], _fixture_text())
+
+
+# --- Introduction du Prof. Chen (OUV.2) -----------------------------------------------------
+
+func test_new_game_plays_the_introduction_on_the_lab_in_decor_mode() -> void:
+	_put_save(_fixture_text())
+	await _launch()
+	_fs.journal.clear()
+	await _start_intro()
+	var backdrop := _boot.get_title_backdrop()
+	assert_not_null(backdrop, "décor de l'introduction")
+	assert_eq(backdrop.get_map().map_id, &"oak_lab", "le vrai labo, flouté par la scène")
+	assert_true(backdrop.get_camera().is_current())
+	assert_null(SceneRouter.get_current_map(), "pas passé par SceneRouter")
+	assert_eq(_map_entered, 0)
+	assert_not_null(_opening().get_intro_stage())
+	assert_eq(_opening().get_flow().screen(), OpeningFlow.Screen.INTRO)
+	assert_false(_boot.get_hud().visible, "HUD caché pendant l'introduction")
+	await _intro_until(func() -> bool: return _boot.get_dialogue_box().is_open())
+	assert_eq(_boot.get_dialogue_box().get_speaker_text(), "Prof. Chen")
+	assert_eq(_boot.get_dialogue_box().get_text(),
+		"Bonjour ! Bienvenue dans le monde des Pokémon !")
+	_boot.notification(Node.NOTIFICATION_APPLICATION_PAUSED)
+	_boot.notification(Node.NOTIFICATION_APPLICATION_RESUMED)
+	_boot.request_autosave("test")
+	await wait_process_frames(5)
+	assert_eq(_save_writes(), [] as Array[String], "rien d'écrit pendant l'introduction")
+	assert_false(_boot._can_write())
+	assert_eq(GameState.play_time, 0.0, "le temps de jeu ne court pas")
+
+
+func test_the_whole_introduction_brings_the_chosen_names_into_the_bedroom() -> void:
+	var old := _fixture_text()
+	_put_save(old)
+	await _launch()
+	await _start_intro()
+	await _wait_finished("Sacha", "gary")
+	assert_eq(_opening().get_last_commit(), OpeningCommit.Result.OK)
+	_assert_in_the_bedroom()
+	assert_null(_opening().get_intro_stage(), "scène retirée")
+	assert_eq(GameState.player_name, "Sacha")
+	assert_eq(GameState.rival_name, "Gary", "prénom normalisé (majuscule)")
+	var saved := _saved()
+	assert_eq(saved["player_name"], "Sacha")
+	assert_eq(saved["rival_name"], "Gary")
+	assert_eq(saved["map"], "player_house_2f")
+	assert_eq(_fs.files[PREVIOUS_PATH], old, "ancienne partie copiée octet pour octet")
+	assert_true(_boot._can_write(), "autosave normal ensuite")
+
+
+func test_the_chosen_names_label_the_prologue_and_the_rival_battle() -> void:
+	await _launch()
+	await _start_intro()
+	await _wait_finished("Red", "Blue")
+	var values := _boot._dialogue_token_values()
+	assert_eq(values[DialogueTokens.PLAYER], "Red")
+	assert_eq(values[DialogueTokens.RIVAL], "Blue")
+	# Une réplique du rival au labo : l'étiquette est le prénom choisi.
+	var runner := _boot.get_dialogue_runner()
+	assert_true(runner.play(&"rival_starter_pick"))
+	await wait_until(func() -> bool: return _boot.get_dialogue_box().is_open(), TIMEOUT)
+	await wait_process_frames(2)
+	assert_eq(_boot.get_dialogue_box().get_speaker_text(), "Blue")
+	# Le combat contre le rival : le nom du dresseur des données est résolu.
+	var trainer := _boot.get_trainer_library().get_trainer(&"rival_lab")
+	assert_eq(trainer.name, "{rival}", "les données gardent le jeton")
+	assert_eq(_boot._texts.trainer_display_name(trainer.name), "Blue")
+
+
+func test_no_reopens_the_name_entry_prefilled() -> void:
+	await _launch()
+	await _start_intro()
+	var intro := _opening().get_intro()
+	await _intro_until(func() -> bool: return intro.is_waiting_for_name())
+	intro.submit_name("Léo")
+	await _intro_until(func() -> bool: return intro.is_waiting_for_choice())
+	_boot.get_dialogue_box().get_choice_cards().get_cancel_button().pressed.emit()
+	await wait_process_frames(2)
+	assert_true(intro.is_waiting_for_name())
+	var entry := _opening().get_intro_stage().get_name_entry()
+	assert_true(entry.is_open())
+	assert_eq(entry.get_text(), "Léo", "champ prérempli")
+
+
+func test_android_back_during_the_introduction_does_nothing() -> void:
+	await _launch()
+	await _start_intro()
+	var intro := _opening().get_intro()
+	await _intro_until(func() -> bool: return intro.is_waiting_for_name())
+	_boot._on_go_back()
+	_boot._on_go_back()
+	await wait_process_frames(2)
+	assert_true(intro.is_waiting_for_name(), "toujours sur l'écran de prénom")
+	assert_true(_opening().is_active(), "jamais de sortie")
+	assert_false(_boot.get_trainer_menu().visible and _boot.get_menu_director().is_open(),
+		"pas de Menu Dresseur")
+
+
+## Abandon (application tuée) à chaque plan du storyboard (§4 plans 2 à 8, §3.7) : rien d'écrit,
+## l'ancienne partie intacte octet pour octet, et au relancement le titre redemande la
+## confirmation.
+func test_killed_at_any_shot_of_the_introduction_writes_nothing() -> void:
+	var old := _fixture_text()
+	# Index d'étape de oak_intro.json où l'on tue l'application : Chen seul, Nidorino, le
+	# joueur, son prénom, la confirmation, le rival, le prénom du rival, la dernière réplique.
+	var shots: Array[int] = [1, 5, 11, 13, 14, 18, 23, 31]
+	for shot: int in shots:
+		_fs = MemoryFs.new()
+		_put_save(old)
+		await _launch()
+		await _start_intro()
+		var intro := _opening().get_intro()
+		await _intro_until(func() -> bool: return intro.get_reader().index() >= shot \
+			and not intro.is_staging(), "Sacha", "Gary")
+		assert_eq(intro.get_reader().index(), shot, "plan %d atteint" % shot)
+		_kill_boot()
+		assert_eq(_fs.files[SAVE_PATH], old, "plan %d : ancienne partie intacte" % shot)
+		assert_eq(_fs.files.keys(), [SAVE_PATH], "plan %d : aucun autre fichier" % shot)
+	await _launch()
+	assert_eq(_title().get_featured(), &"continue", "relancement : Continuer")
+	_title().get_entry_button(&"new_game").pressed.emit()
+	await wait_process_frames(2)
+	assert_true(_title().get_confirm().is_showing(), "nouvelle confirmation")
+
+
+func test_a_second_introduction_after_an_abandon_succeeds() -> void:
+	await _launch()
+	await _start_intro()
+	await _intro_until(func() -> bool: return _opening().get_intro().is_waiting_for_name())
+	_kill_boot()
+	assert_false(_fs.files.has(SAVE_PATH), "rien d'écrit")
+	await _launch()
+	await _start_intro()
+	await _wait_finished("Sacha", "Régis")
+	_assert_in_the_bedroom()
+	assert_eq(_saved()["player_name"], "Sacha")
 
 
 func _assert_in_the_bedroom() -> void:

@@ -64,6 +64,9 @@ extends RefCounted
 ## combat du rival, dont les répliques en tiennent lieu) n'a pas de phrase à la fin ; de
 ## même, sans message de début ([member TrainerData.start_message] faux, décision n° 17 :
 ## « On ne va quand même pas partir… » lance le combat), pas de « … veut se battre ! ».
+## Nom du dresseur (OUV.2, dossier 13 §3.5) : il peut porter un jeton de [DialogueTokens]
+## (`"name": "{rival}"`), résolu avec [member token_values] (posé par Boot) ; sans valeur, le nom
+## reste tel quel.
 
 const DATA_PATH: String = "res://data/battle/messages.json"
 const TEMPLATE_IDS: Array[StringName] = [
@@ -101,6 +104,10 @@ const _STATUS_PREFIXES: Dictionary[BattleEvent.Kind, String] = {
 	BattleEvent.Kind.STATUS_CURED: "status_cured",
 }
 const _VOWELS: String = "AEIOUYÀÂÄÉÈÊËÎÏÔÖÙÛÜaeiouyàâäéèêëîïôöùûü"
+
+## Valeurs des jetons du nom du dresseur (`func() -> Dictionary[StringName, String]`, OUV.2) :
+## Boot y met le prénom du rival. Non valide : aucun jeton résolu.
+var token_values: Callable
 
 var _texts: Dictionary[StringName, String] = {}
 ## Variantes au féminin (modèles qui en ont une).
@@ -330,6 +337,19 @@ func summary_stats(gains: Dictionary[StringName, int]) -> String:
 	return SUMMARY_SEPARATOR.join(parts)
 
 
+## Nom affiché du dresseur : jetons (`{rival}`) résolus par [member token_values] ; un jeton
+## sans valeur laisse le nom tel quel.
+func trainer_display_name(raw: String) -> String:
+	if DialogueTokens.tokens_in(raw).is_empty() or not token_values.is_valid():
+		return raw
+	var values: Dictionary[StringName, String] = {}
+	var given: Variant = token_values.call()
+	if given is Dictionary:
+		values.assign(given)
+	var resolved := DialogueTokens.resolve(raw, values)
+	return raw if resolved.is_empty() else resolved
+
+
 ## « de Salamèche », « d'Évoli » : élision devant une voyelle.
 static func de_name(name: String) -> String:
 	if not name.is_empty() and _VOWELS.contains(name.left(1)):
@@ -352,7 +372,7 @@ func _fill(id: StringName, event: BattleEvent, data: PokemonData,
 		"species": species.name if species != null else String(event.species_id),
 		"de_pokemon": de_name(event.pokemon_name),
 		"move": move.name if move != null else String(event.move_id),
-		"trainer": event.trainer_name,
+		"trainer": trainer_display_name(event.trainer_name),
 		"stat": _stats.get(event.stat, String(event.stat)),
 		"level": event.level,
 		"exp": event.amount,

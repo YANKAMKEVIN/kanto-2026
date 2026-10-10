@@ -19,6 +19,8 @@ const DIRECTIONS: Dictionary[Vector2i, StringName] = {
 	Vector2i.LEFT: &"move_left", Vector2i.RIGHT: &"move_right",
 }
 const TIMEOUT_MS := 8000
+## Prénom du rival injecté (OUV.2 : l'étiquette « {rival} » des données affiche le prénom).
+const RIVAL := "Régis"
 const FADE := 0.05
 const STARTERS: Array[StringName] = [&"bulbasaur", &"charmander", &"squirtle"]
 ## Espèce choisie → [colonne de rencontre, Pokémon du rival, case finale du joueur (il
@@ -34,10 +36,10 @@ const CASES: Dictionary[StringName, Array] = {
 const RIVAL_STOP := Vector2i(7, 7)
 const SCENE_LINES: Array = [
 	["Prof. Chen", "On dirait que le choix est réciproque."],
-	["Rival", "Alors ce sera toi."],
-	["Rival", "Ça devrait être intéressant."],
-	["Rival", "Attends."],
-	["Rival", "On ne va quand même pas partir sans savoir ce qu'ils savent faire."],
+	[RIVAL, "Alors ce sera toi."],
+	[RIVAL, "Ça devrait être intéressant."],
+	[RIVAL, "Attends."],
+	[RIVAL, "On ne va quand même pas partir sans savoir ce qu'ils savent faire."],
 ]
 const NAMES: Dictionary[StringName, String] = {
 	&"bulbasaur": "BULBIZARRE", &"charmander": "SALAMÈCHE", &"squirtle": "CARAPUCE",
@@ -58,6 +60,7 @@ func before_each() -> void:
 	_boot.start_facing = Vector2i.UP
 	add_child_autofree(_boot)
 	_boot.get_dialogue_runner().chars_per_second = 0.0
+	GameState.rival_name = RIVAL
 	_player = _boot.get_player()
 	await wait_process_frames(2)
 	# Combat instantané (le déroulé du combat a ses propres tests) : le choix reste à vitesse

@@ -47,6 +47,12 @@ const EVOLUTION_SCREEN: PackedScene = preload("res://game/ui/evolution/evolution
 ## Temps de jeu : une image ne compte jamais plus que ceci (le retour de l'arrière-plan peut
 ## livrer un très grand delta, qui n'est pas du temps de jeu).
 const MAX_PLAY_TIME_STEP: float = 0.5
+## Décor de l'introduction de Chen (OUV.2, dossier 13 §9.0) : le labo, cadré en son centre
+## (16 × 11 cases ; défaut, règle 4).
+const INTRO_BACKDROP_MAP: StringName = &"oak_lab"
+const INTRO_BACKDROP_FOCUS: Vector2 = Vector2(768, 528)
+## Le labo (1536 px de large) est plus étroit que l'écran (jusqu'à 2340) : agrandi pour le remplir.
+const INTRO_BACKDROP_ZOOM: float = 1.6
 
 @export var start_map: StringName = &"player_house_2f"
 @export var start_spawn: StringName = &"start"
@@ -230,6 +236,8 @@ func _ready() -> void:
 	# Remise du colis (jalon-07.md §3.6.2, T19) : jeton {first_wild_species} des répliques de
 	# Chen, scène lancée par une variante de dialogue (« colis en main »), légende POKÉDEX ACTIVÉ.
 	_runner.token_values = _dialogue_token_values
+	# OUV.2 : prénoms du joueur et du rival (`{player}`, `{rival}`) aussi dans le nom du dresseur.
+	_texts.token_values = _dialogue_token_values
 	_runner.cutscene_requested.connect(_on_cutscene_requested)
 	_cutscenes_node.set_hud(_hud)
 	_cutscenes_node.item_given.connect(_on_item_given)
@@ -757,7 +765,10 @@ func _start_opening() -> void:
 		badge_flags.append(_badges.flag(badge))
 	_opening.setup(save_system, _build_new_game, _fade, _settings, _profile_device_quality(),
 		_zones.zone_name_of, badge_flags)
+	_opening.set_dialogue_box(_dialogue_box)
 	_opening.title_closed.connect(_release_title_backdrop)
+	_opening.intro_opened.connect(_show_intro_backdrop)
+	_opening.intro_closed.connect(_release_title_backdrop)
 	_opening.resumed.connect(_on_opening_resumed)
 	_opening.new_game_entered.connect(_on_opening_new_game)
 	_opening.settings_changed.connect(_on_settings_changed)
@@ -780,7 +791,23 @@ func get_title_backdrop() -> TitleBackdrop:
 	return _title_backdrop
 
 
-## Le titre se ferme (rideau baissé) : le décor est libéré avant le commit ou la reprise.
+## Introduction de Chen (OUV.2, dossier 13 §9.0) : le vrai labo en mode décor, sans dérive, sous
+## sa lumière de jeu ; l'introduction le floute et le dore ([IntroStage]).
+func _show_intro_backdrop() -> void:
+	_release_title_backdrop()
+	_title_backdrop = TitleBackdrop.new()
+	_title_backdrop.name = "IntroBackdrop"
+	_title_backdrop.map_id = INTRO_BACKDROP_MAP
+	_title_backdrop.focus = INTRO_BACKDROP_FOCUS
+	_title_backdrop.drift = Vector2.ZERO
+	_title_backdrop.zoom = INTRO_BACKDROP_ZOOM
+	_world.add_child(_title_backdrop)
+	if _title_backdrop.show_map():
+		_apply_lighting(_title_backdrop.get_map())
+
+
+## Le titre (ou l'introduction) se ferme (rideau baissé) : le décor est libéré avant le commit ou
+## la reprise.
 func _release_title_backdrop() -> void:
 	if _title_backdrop != null:
 		_title_backdrop.release()
@@ -1086,9 +1113,11 @@ func _on_cutscene_started(_cutscene_id: StringName) -> void:
 
 
 ## Valeurs des jetons des dialogues (jalon-07.md §3.6, T19) : lues au début d'un dialogue qui en
-## contient (« Un Roucool… » ; aucune rencontre → la page est omise).
+## contient (« Un Roucool… » ; aucune rencontre → la page est omise) ; prénoms du joueur et du
+## rival (OUV.2), aussi pour les étiquettes et le nom du dresseur en combat.
 func _dialogue_token_values() -> Dictionary[StringName, String]:
-	return DialogueTokens.values_for(GameState.first_wild_species(), _pokemon)
+	return DialogueTokens.values_for(GameState.first_wild_species(), _pokemon,
+		GameState.player_name, GameState.rival_name)
 
 
 ## Une variante de dialogue lance une scène à sa fin (Chen, colis en main → `oak_parcel`). Le
