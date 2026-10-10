@@ -1,0 +1,51 @@
+CONCEPT ART — VUE GÉNÉRALE DE LA ROUTE 3, AU PIED DU MONT SÉLÉNITE (Kanto 2026), image de référence de direction artistique.
+
+Deux images sont jointes.
+
+IMAGE 1 : un PLAN SCHÉMATIQUE en aplats de couleur, vu du dessus, qui donne la COMPOSITION EXACTE à suivre. La route va de l'OUEST (bord gauche, où elle arrive de la ville d'Argenta) vers l'EST (à droite, la montagne).
+Légende du plan :
+- vert très foncé = forêt et bosquets denses infranchissables (y compris les marges de l'image) ;
+- vert moyen = herbe rase praticable, de plus en plus SÈCHE et pâle vers l'est ; points roses = petites fleurs ; groupes de petits disques vert sombre = buissons bas ;
+- beige = chemin de terre battue ; jaune-vert olive = HAUTES HERBES (touffues, plus hautes, où vivent les Pokémon sauvages), quatre zones en blocs nets ;
+- bandes brunes horizontales = REBORDS : petites marches de terre d'une case, qu'on saute vers le sud (deux : une courte au milieu gauche, une plus longue sous le plateau du Centre) ;
+- gris clair semé de cailloux blancs = SOL ROCHEUX praticable (pied de la montagne, végétation rare) ; petites taches grises au bord de la prairie de gauche = affleurements rocheux ;
+- gris-brun, de plus en plus sombre en s'éloignant des passages = la PAROI ET LA MASSE DU MONT SÉLÉNITE (roche en couches, infranchissable) : absente à gauche, elle occupe le haut à partir du tiers de l'image et toute la droite ; la montagne GRANDIT vers l'est ;
+- arc noir dans la paroi, en haut à droite = l'ENTRÉE DE LA GROTTE du Mont Sélénite, une bouche sombre dans la roche, au bout d'un petit chemin ;
+- rectangle rouge et blanc = le CENTRE POKÉMON (toit rouge, porte brune au milieu de sa façade sud) ;
+- petits carrés ocre = panneaux en bois SANS TEXTE ; points rouge et blanc = Poké Balls posées au sol (objets à ramasser).
+Respecte ce plan À LA LETTRE : les deux itinéraires du milieu (un sentier d'herbe au NORD qui fait une grande boucle, un chemin de terre au SUD) qui se séparent après la prairie et se rejoignent avant le pied de la montagne ; les quatre zones de hautes herbes ; les deux rebords ; la petite poche au sud avec sa Poké Ball ; le plateau rocheux du Centre ; le parvis devant la grotte ; la poche au sud-est du parvis avec sa Poké Ball. Le plan ne donne que la composition : son style en aplats ne doit pas apparaître.
+
+RÈGLE ABSOLUE DES CHEMINS : le joueur se déplace case par case, seulement à l'horizontale et à la verticale ; chemins, sentiers et bords des zones suivent une grille : uniquement des segments horizontaux et verticaux à angles droits, AUCUN segment en diagonale ni courbe, aucun escalier.
+RELIEF : le sol praticable est lisible et presque plat ; les SEULS reliefs sont la paroi et la masse de la montagne, les affleurements rocheux, les deux rebords et le petit replat du Centre. Le sentiment de MONTÉE vers l'est se donne par la végétation qui se raréfie, la roche qui affleure de plus en plus et la montagne qui domine, pas par des terrasses.
+
+IMAGE 2 : la vue générale d'Argenta, la ville juste à l'ouest de cette route. Respecte EXACTEMENT son style de rendu : même pinceau, mêmes arbres en masses arrondies, mêmes hautes herbes jaune-vert, même chemin de terre, même saturation, MÊME LUMIÈRE, même roche de la paroi de montagne (couches gris-beige chaud), mêmes personnages ; le CENTRE POKÉMON est exactement le même bâtiment (enseigne identique dans toutes les villes : toit rouge, emblème Poké Ball blanc, grande porte vitrée). Ne reprends PAS sa composition : aucune ville, aucun autre bâtiment.
+
+Format : PAYSAGE 1536 × 1024, vue plongeante sur toute la route, comme le plan.
+
+RENDU (ADN visuel Kanto 2026 v1)
+- Illustration 2D peinte numériquement, dans l'esprit d'un RPG Pokémon moderne au rendu « HD-2D peint » : formes simples, lisibles et arrondies, détails fins mais ordonnés. Ni pixel art, ni 3D, ni photo, ni aquarelle, ni cartoon en aplats. Le feuillage est peint en grandes masses douces.
+- Perspective : vue de dessus de trois quarts, projection oblique frontale, sans point de fuite. Les verticales restent verticales. On voit le dessus des objets et leur face avant (côté sud).
+- Aucun trait noir : contours fins et doux, plus sombres et plus saturés que la couleur locale. Ombres colorées bleu-vert ou violet froid, jamais grises.
+
+AMBIANCE — « la dernière route avant la montagne » : on quitte la sécurité d'Argenta pour de GRANDS ESPACES lumineux qui mènent à l'inconnu.
+- À gauche : une grande prairie ouverte et fleurie, couleurs chaudes dans la continuité d'Argenta, beaucoup de ciel de lumière.
+- Au milieu : les chemins des Dresseurs, herbe plus sèche, bosquets.
+- À droite : le pied de la montagne, sol de pierre, quelques touffes d'herbe rare ; la MASSE DU MONT SÉLÉNITE domine, roche en couches qui passe du gris-beige chaud (comme Argenta) à l'ARDOISE et au GRIS BLEUTÉ froid en s'éloignant ; quelques petits éclats minéraux clairs, bleu-blanc, incrustés dans la roche près de l'entrée de la grotte (la seule touche mystérieuse de l'image).
+- L'entrée de la grotte est une bouche sombre et profonde, mais JAMAIS menaçante : on a envie d'y aller.
+- Lumière de fin d'après-midi douce, chaude à l'ouest, un peu plus fraîche à l'est au pied de la paroi.
+
+VIE (très discrète, personnages petits, aucun ne ressemble au héros à casquette rouge et veste bleue) :
+- un VOYAGEUR adulte (sac de voyage, chapeau) debout dans la prairie de gauche, tourné vers l'est et la montagne ;
+- une RANDONNEUSE (gros sac à dos, bâton) sur le parvis rocheux, à droite du Centre ;
+- trois jeunes Dresseurs aux places de Dresseurs du plan, tournés vers le chemin : un GAMIN (casquette, short) dans le renfoncement au nord du chemin, juste avant les rochers à gauche du milieu ; une FILLETTE (robe simple, petit sac) dans le passage étroit vertical au centre-droit, au nord du chemin de terre ; un SCOUT (chapeau de paille, filet à insectes) en haut du sentier d'herbe du nord.
+Pokémon : un RONDOUDOU (petite boule rose ronde, grands yeux bleus, une boucle de poils sur le front) assis dans l'herbe de la prairie de gauche ; deux PIAFABEC (petits oiseaux bruns au bec court et pointu, crête rouge) : l'un posé sur un rocher au bord du sentier du nord, l'autre sur le parvis rocheux. Aucun autre Pokémon, aucun Pikachu, aucun animal (aucune faune non-Pokémon).
+
+INTERDITS : texte, lettres, chiffres, étiquettes, panneaux lisibles, logo (seul l'emblème Poké Ball sans texte du Centre est permis), signature, filigrane, cadre, interface ; tout bâtiment autre que le Centre ; maison, cabane, clôture, barrière, muret, pont ; eau, rivière, lac, cascade ; escaliers, terrasses ; route goudronnée, véhicule ; arbres orange ou automnaux ; neige ; brouillard, flou de profondeur, vignettage ; pixel art.
+
+L'image doit raconter, sans texte : en sortant d'Argenta, une grande route lumineuse s'ouvre, se divise, se rejoint, et monte vers une montagne immense au pied de laquelle un Centre Pokémon attend, à côté de l'entrée sombre d'une grotte.
+
+CORRECTIONS (2e essai ; le 1er essai était bon sur le style, la composition et le Centre : garde-les) :
+1. Ajoute le GAMIN (casquette, short) dans le petit renfoncement rocheux AU NORD du chemin, juste à DROITE de la grande prairie de gauche (entre la prairie et le premier bosquet), tourné vers le chemin.
+2. Le Dresseur en haut du sentier d'herbe du nord est un SCOUT : CHAPEAU DE PAILLE et FILET À INSECTES bien visibles (pas de casquette).
+3. La MONTAGNE doit dominer davantage et se REFROIDIR vers l'est : à gauche de la masse, la roche gris-beige chaud d'Argenta ; à droite et en haut à droite, ARDOISE et GRIS BLEUTÉ, plus massive, en grandes strates, avec des sommets qui sortent par le bord haut de l'image ; moins de « piliers » arrondis répétés, plus une vraie paroi de montagne.
+4. Le voyageur de la prairie regarde vers la DROITE (la montagne), de profil ou de dos.
