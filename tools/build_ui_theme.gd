@@ -110,6 +110,10 @@ extends SceneTree
 ##     MenuBagTab… (Button ou PanelContainer), MenuArtRim / MenuArtRimPressed / MenuArtRound /
 ##     MenuRoundThumb / MenuStatusDivider (Panel), MenuScreenTitle / MenuScreenCount /
 ##     MenuStatusText / MenuArtTitle / MenuArtCaption / MenuBagTabCaption / MenuTargetsTitle (Label)
+## Écran titre (OUV.1) : TitleCard / TitleCardFeatured (Button, carte de verre ; liseré ACCENT et
+##   halo pour l'entrée mise en avant), TitleDivider (Panel), TitleMessage (PanelContainer),
+##   TitleEntryLabel / TitleContinueTitle / TitleContinueName / TitleContinueZone /
+##   TitleContinueStat / TitleMessageText (Label)
 ## tests/unit/test_ui_theme.gd vérifie que le fichier est à jour avec les tokens.
 
 const TOKENS_PATH: String = "res://game/ui/theme/ui_tokens.gd"
@@ -184,6 +188,7 @@ func _init() -> void:
 	_add_menu_glass(theme, bold, t)
 	_add_menu_mm2(theme, bold, t)
 	_add_champion_card(theme, bold, t)
+	_add_title_screen(theme, bold, t)
 
 	var err := ResourceSaver.save(theme, THEME_PATH)
 	print("ui_theme.tres : ", error_string(err))
@@ -1729,3 +1734,49 @@ func _add_champion_card(theme: Theme, bold: Font, t: GDScript) -> void:
 	theme.set_stylebox(&"panel", &"ChampionCard", card)
 	_add_plain_label(theme, &"ChampionCardName", t.CHAMPION_CARD_NAME_FONT, t.TEXT, bold)
 	_add_plain_label(theme, &"ChampionCardTitle", t.CHAMPION_CARD_TITLE_FONT, t.TEXT_MUTED, null)
+
+
+# --- Écran titre (OUV.1, dossier 13 §5.2) --------------------------------------------------------
+
+
+func _title_card(bg: Color, border: Color, width: int, t: GDScript) -> StyleBoxFlat:
+	var box := _glass(bg, border, t.TITLE_CARD_RADIUS, t)
+	box.set_border_width_all(width)
+	box.set_content_margin(SIDE_LEFT, t.TITLE_CARD_PAD_H)
+	box.set_content_margin(SIDE_RIGHT, t.TITLE_CARD_PAD_H)
+	box.set_content_margin(SIDE_TOP, t.TITLE_CARD_PAD_V)
+	box.set_content_margin(SIDE_BOTTOM, t.TITLE_CARD_PAD_V)
+	box.shadow_color = t.SHADOW
+	box.shadow_size = t.SHADOW_SIZE
+	return box
+
+
+func _add_title_screen(theme: Theme, bold: Font, t: GDScript) -> void:
+	var card := _title_card(t.TITLE_CARD_BG, t.TITLE_CARD_BORDER, t.TITLE_CARD_BORDER_WIDTH, t)
+	var card_on := _title_card(t.TITLE_CARD_PRESSED_BG, t.ACCENT, t.TITLE_CARD_BORDER_WIDTH, t)
+	_add_flat_button(theme, &"TitleCard", card, card_on)
+	var featured := _title_card(t.TITLE_CARD_BG, t.ACCENT, t.TITLE_CARD_FEATURED_BORDER_WIDTH, t)
+	featured.shadow_color = t.TITLE_CARD_GLOW
+	featured.shadow_size = t.TITLE_CARD_GLOW_SIZE
+	var featured_on := featured.duplicate() as StyleBoxFlat
+	featured_on.bg_color = t.TITLE_CARD_PRESSED_BG
+	_add_flat_button(theme, &"TitleCardFeatured", featured, featured_on)
+	_add_plain_label(theme, &"TitleEntryLabel", t.TITLE_ENTRY_FONT, t.TEXT, bold)
+	_add_plain_label(theme, &"TitleContinueTitle", t.TITLE_CONTINUE_TITLE_FONT, t.ACCENT, bold)
+	_add_plain_label(theme, &"TitleContinueName", t.TITLE_CONTINUE_NAME_FONT, t.TEXT, bold)
+	_add_plain_label(theme, &"TitleContinueZone", t.TITLE_CONTINUE_ZONE_FONT, t.TEXT_MUTED, null)
+	_add_plain_label(theme, &"TitleContinueStat", t.TITLE_CONTINUE_STAT_FONT, t.TEXT, null)
+	var divider := StyleBoxFlat.new()
+	divider.bg_color = t.TITLE_CONTINUE_DIVIDER
+	theme.set_type_variation(&"TitleDivider", &"Panel")
+	theme.set_stylebox(&"panel", &"TitleDivider", divider)
+	var message := _panel_style(t.TITLE_MESSAGE_BG, t.RADIUS_SMALL, t)
+	message.border_width_left = t.CHAMPION_CARD_ACCENT_WIDTH
+	message.border_color = t.ACCENT
+	message.set_content_margin(SIDE_LEFT, t.PAD)
+	message.set_content_margin(SIDE_RIGHT, t.PAD)
+	message.set_content_margin(SIDE_TOP, t.GAP)
+	message.set_content_margin(SIDE_BOTTOM, t.GAP)
+	theme.set_type_variation(&"TitleMessage", &"PanelContainer")
+	theme.set_stylebox(&"panel", &"TitleMessage", message)
+	_add_plain_label(theme, &"TitleMessageText", t.TITLE_MESSAGE_FONT, t.TEXT, null)

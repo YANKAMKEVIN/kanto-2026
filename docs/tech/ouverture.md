@@ -56,6 +56,17 @@ Rien n'est ajouté à `GameState` sur `ouv-logique` (fichier du J10). À ajouter
 7. Provisoirement, Nouvelle partie → commit avec les noms par défaut → chambre (l'introduction arrive en OUV.2).
 8. `test_boot.gd` : tests du départ reformulés (« sans ouverture, Boot démarre dans la chambre ») ; nouveaux tests de Boot **en scène courante** avec `memory_file_system` (sans sauvegarde, valide, corrompue, plus récente) et départ de débogage qui saute le titre.
 
+**Fait (2026-10-10, branche `ouv1-demarrage`)** — tâches 1 à 8 codées et testées ; reste la validation S24. Écarts : `OpeningDirector` dans `game/systems/opening/` (pas `game/ui/opening/` : le test de l'UI interdit à `game/ui` la sauvegarde et les données ; même rangement que `MenuDirector`), décor du titre `TitleBackdrop` dans `game/world/` ; fixture v4 **dérivée** de la partie S24 du J8 (aucun téléphone branché), `tests/fixtures/save/v4_kevin_depuis_s24_j8.json` (`tools/make_save_fixture_v4.gd`), à remplacer par la vraie à la validation. Splash et logo détouré : `tools/art/detourer_logo.py` → `assets/ui/opening/`. Captures : `tools/capture_title_ouv1.gd` → `build/captures/ouv1/`. Détail et défauts : `etat-projet.md` (section OUV.1).
+
+**Validation S24 (session seule)** :
+1. **Avant d'installer** l'APK : relever la vraie sauvegarde (`adb -s <série> exec-out run-as dev.kevin.kanto2026 cat files/save.json > build/qa/ouv1/save_v4_kevin.json`), la garder comme fixture v4 ; vérifier qu'aucun `files/debug_start.json` n'est présent (sinon le titre est sauté).
+2. Lancer : splash (logo), puis titre ; Continuer = prénom, lieu, temps, badges (1 après le J10), captures. Journal : `Ouverture : titre (sauvegarde VALID)` et **aucune** ligne « Sauvegarde automatique » tant que le titre est là (mettre en arrière-plan et revenir : toujours rien).
+3. Paramètres depuis le titre : pas de « Sauvegarder maintenant » ; Mode gaucher → colonne à gauche ; ‹ et Retour Android ramènent au titre ; Retour au titre ne quitte pas.
+4. Continuer : la partie reprend au bon endroit ; journal `[qa] sauvegarde v4 → v5` puis un autosave ; `cat files/save.json` contient `"version": 5`, `"rival_name": "Régis"`, `"player_look": "hero"`.
+5. Relancer, Nouvelle partie → confirmation (prénom · temps · badge) ; Annuler, puis Nouvelle partie → **tuer l'application** sur la confirmation (`adb shell am force-stop dev.kevin.kanto2026`) → relancer : Continuer présent, `save.json` identique (comparer avec le relevé), pas de `save.previous.json`.
+6. Nouvelle partie confirmée → chambre, face au sud, sans titre de zone ni dialogue ; `run-as … ls files` montre `save.previous.json` = l'ancienne partie (comparer octet pour octet), `save.json` = nouvelle partie dans `player_house_2f`.
+7. Remettre la vraie partie si Kevin le souhaite : `save.previous.json` → `save.json` (par adb, application arrêtée).
+
 **Critères d'acceptation** : `tools/test.sh` vert, import propre ; captures du titre dans les quatre états ; sur S24 : la vraie partie de Kevin reprend par Continuer (prénom, lieu, temps, badges sur la carte) ; Nouvelle partie confirmée arrive dans la chambre et `save.previous.json` contient l'ancienne partie (adb) ; application tuée sur la confirmation ou avant la chambre → au relancement, l'ancienne partie est intacte ; aucun autosave tant que le titre est affiché (journal adb).
 
 ### OUV.2 — Introduction de Chen (ui-mobile + constructeur-monde pour les portraits ; validation S24)

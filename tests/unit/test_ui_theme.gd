@@ -393,3 +393,23 @@ func test_menu_tokens_respect_touch_rules() -> void:
 	assert_eq(UiTokens.LAYER_MENU, 20)
 	for screen: StringName in MenuRoute.DASHBOARD_ORDER:
 		assert_true(UiTokens.MENU_CARD_TINTS.has(screen), "teinte de %s" % screen)
+
+
+## Écran titre (OUV.1) : cartes de verre, entrée mise en avant au liseré ACCENT, textes.
+func test_title_variations_match_tokens() -> void:
+	var theme := load(THEME_PATH) as Theme
+	assert_eq(theme.get_type_variation_base(&"TitleCard"), &"Button")
+	var card := theme.get_stylebox(&"normal", &"TitleCard") as StyleBoxFlat
+	assert_eq(card.bg_color, UiTokens.TITLE_CARD_BG)
+	assert_eq(card.border_color, UiTokens.TITLE_CARD_BORDER)
+	assert_eq(card.corner_radius_top_left, UiTokens.TITLE_CARD_RADIUS)
+	var featured := theme.get_stylebox(&"normal", &"TitleCardFeatured") as StyleBoxFlat
+	assert_eq(featured.border_color, UiTokens.ACCENT)
+	assert_eq(featured.border_width_left, UiTokens.TITLE_CARD_FEATURED_BORDER_WIDTH)
+	assert_eq(featured.shadow_color, UiTokens.TITLE_CARD_GLOW)
+	assert_eq(theme.get_color(&"font_color", &"TitleContinueTitle"), UiTokens.ACCENT)
+	assert_eq(theme.get_font_size(&"font_size", &"TitleContinueTitle"),
+		UiTokens.TITLE_CONTINUE_TITLE_FONT)
+	assert_eq(theme.get_font_size(&"font_size", &"TitleEntryLabel"), UiTokens.TITLE_ENTRY_FONT)
+	assert_eq(theme.get_type_variation_base(&"TitleMessage"), &"PanelContainer")
+	assert_gte(UiTokens.TITLE_ENTRY_HEIGHT, UiTokens.TOUCH_MIN, "carte ≥ zone tactile minimale")

@@ -1641,3 +1641,48 @@ const HAPTIC_BADGE_MS := 40
 ## Position de « BADGE ROCHE » : centre vertical de l'écran (ancre 0,5), Pierre reste visible
 ## en haut de l'Arène (caméra fixe). Les autres légendes restent à CAPTION_TOP.
 const CAPTION_CENTER_ANCHOR := 0.5
+
+## Écran titre (OUV.1, dossier 13 §5.2 ; composition de reference/ouverture-titre-v1.webp, règle
+## 10 : le décor et le logo de l'image ne font pas foi). Logo en haut à gauche, colonne de cartes
+## à droite (à gauche en mode gaucher, le logo passe alors à droite) ; la vraie carte derrière.
+## Largeur du logo détouré (assets/ui/opening/logo_kanto_2026.png, 1280 × 602 à la source).
+const TITLE_LOGO_WIDTH := 760
+## Colonne d'actions : largeur, écart entre cartes, haut de la colonne (centrée en hauteur sinon).
+const TITLE_COLUMN_WIDTH := 660
+const TITLE_COLUMN_GAP := 20
+## Cartes : verre sombre plus dense que le menu (posées sur un monde lumineux) ; la carte mise en
+## avant (Continuer, ou Nouvelle partie sans sauvegarde) a un liseré ACCENT et un halo doré.
+const TITLE_CARD_BG := Color(0.04, 0.07, 0.11, 0.82)
+const TITLE_CARD_PRESSED_BG := Color(0.12, 0.14, 0.12, 0.9)
+const TITLE_CARD_BORDER := Color(1.0, 1.0, 1.0, 0.22)
+const TITLE_CARD_RADIUS := 26
+const TITLE_CARD_BORDER_WIDTH := 3
+const TITLE_CARD_FEATURED_BORDER_WIDTH := 4
+const TITLE_CARD_GLOW := Color(0.96, 0.77, 0.26, 0.4)
+const TITLE_CARD_GLOW_SIZE := 18
+const TITLE_CARD_PAD_H := 32
+const TITLE_CARD_PAD_V := 24
+## Cartes secondaires (Nouvelle partie, Paramètres) : hauteur (≥ TOUCH_MIN), icône, chevron.
+const TITLE_ENTRY_HEIGHT := 144
+const TITLE_ENTRY_ICON := 72
+const TITLE_ENTRY_FONT := FONT_BUTTON
+const TITLE_CHEVRON := 56
+## Carte Continuer : buste, titre « CONTINUER », prénom, lieu, lignes de résumé (icône + texte).
+const TITLE_CONTINUE_BUST := Vector2(220, 300)
+const TITLE_CONTINUE_TITLE_FONT := 56
+const TITLE_CONTINUE_NAME_FONT := FONT_TITLE
+const TITLE_CONTINUE_ZONE_FONT := FONT_BODY
+const TITLE_CONTINUE_STAT_FONT := FONT_BODY
+const TITLE_CONTINUE_STAT_ICON := 40
+const TITLE_CONTINUE_LINE_GAP := 8
+const TITLE_CONTINUE_DIVIDER := Color(0.36, 0.55, 0.85, 0.7)
+## Message d'état de la sauvegarde (corrompue, plus récente) : sous la colonne, verre sombre.
+const TITLE_MESSAGE_FONT := FONT_CAPTION
+const TITLE_MESSAGE_BG := Color(0.04, 0.07, 0.11, 0.86)
+## Fondus de l'ouverture (dossier 13 §4) : apparition du titre après le splash ; sortie au noir
+## vers la partie (valeur des portes) ; entrée dans la partie.
+const TITLE_FADE_IN := 0.4
+const TITLE_FADE_OUT := 0.45
+const TITLE_GAME_FADE_IN := ANIM_FADE_IN
+## Paramètres depuis le titre : même voile et flou que dans le Menu Dresseur.
+const TITLE_SETTINGS_DIM := MENU_GLASS_DIM

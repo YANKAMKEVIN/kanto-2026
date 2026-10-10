@@ -30,8 +30,10 @@ const SUBTITLE_GRAPHICS: String = "Ajuste la qualité visuelle du jeu."
 ## ([method GraphicsProfile.auto_quality]), écrit « Auto (Élevée) ». [param can_save] : faux
 ## dans une session sans écriture (départ de débogage, sauvegarde d'une version plus récente) ;
 ## « Sauvegarder maintenant » est alors visible mais inactif, avec la raison.
+## [param with_save_now] : faux depuis l'écran titre (OUV.1, dossier 13 §5.3) : il n'y a pas
+## encore de partie, l'action est absente (pas seulement inactive).
 static func build(settings: GameSettings, device_quality: GameSettings.Graphics,
-		can_save: bool) -> SettingsView:
+		can_save: bool, with_save_now: bool = true) -> SettingsView:
 	var view := SettingsView.new()
 	var game := SettingsCategoryView.new(CATEGORY_GAME, "JEU", SUBTITLE_GAME)
 	game.controls.append(_choice(GameSettings.TEXT_SPEED, "Vitesse du texte",
@@ -46,7 +48,8 @@ static func build(settings: GameSettings, device_quality: GameSettings.Graphics,
 	save.label = "Sauvegarder maintenant"
 	save.enabled = can_save
 	save.detail = SAVE_DETAIL_TEXT if can_save else SAVE_DISABLED_TEXT
-	game.controls.append(save)
+	if with_save_now:
+		game.controls.append(save)
 	view.categories.append(game)
 
 	var controls := SettingsCategoryView.new(CATEGORY_CONTROLS, "COMMANDES",
