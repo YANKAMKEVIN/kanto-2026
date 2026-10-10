@@ -1,17 +1,18 @@
 # Dossier 15 — Route 3 et Mont Sélénite (jalon 12)
 
-> **V0.1 consolidée par Claude le 2026-10-10**, à partir de la V1 de ChatGPT (9 arbitrages
-> présélectionnés), de la passe d'alignement de Claude (`passes/j12-v1-alignement.md`,
-> arbitrages B-1 à B-14) et du retour de Kevin du 2026-10-10 (B-1 à B-14 retenus, **B-4, B-7 et
-> B-11 ajustés**). **Pas encore verrouillé** : restent les **derniers arbitrages C-1 à C-8** (§21)
-> et le **lot de textes** (§20). **Aucun code avant validation** ; le code du J12 suit le J11 (§17).
+> **VERROUILLÉ — validé par Kevin le 2026-10-11.** Consolidé par Claude le 2026-10-10 à partir de
+> la V1 de ChatGPT (9 arbitrages présélectionnés), de la passe d'alignement de Claude
+> (`passes/j12-v1-alignement.md`, B-1 à B-14) et du retour de Kevin (B-1 à B-14 retenus, **B-4, B-7
+> et B-11 ajustés**). **C-1 à C-8 retenus** (§21) et **lot de textes §20 validé** le 2026-10-11.
+> Prochaine étape : vues générales peintes + grilles, puis plan `docs/tech/jalon-12.md`. **Code
+> après la clôture du J11** (C-7).
 >
 > **Numérotation** : 13 = ouverture (OUV), 14 = systèmes du J11 (branche
 > `claude/lancement-j11-4pkt2k`) → **15** est le premier numéro libre (vérifié sur toutes les
 > branches le 2026-10-10). Le numéro suit l'ordre de conception, pas celui des jalons.
 >
 > Légende : **[V]** décision de Kevin · **[D]** valeur par défaut technique (règle 4 de
-> `CLAUDE.md`, modifiable sans rouvrir la conception) · **[C-n]** en attente d'arbitrage.
+> `CLAUDE.md`, modifiable sans rouvrir la conception) · **[C-n]** arbitrage du §21 (tranché le 2026-10-11).
 > Origine des règles : **RB** Rouge/Bleu · **G+** génération plus récente · **K26** invention de
 > Kanto 2026.
 
@@ -447,7 +448,7 @@ Avant toute carte : **vue générale peinte** de la Route 3 et du Mont Sélénit
 `tools/plans/`** validées par Kevin (filière des J9 et J10). Les images de la V1 (sites tiers, fan
 art) ne vont pas dans le dépôt.
 
-## 20. Lot de textes — À VALIDER
+## 20. Lot de textes — VALIDÉ par Kevin le 2026-10-11
 
 Conventions des lots précédents : bulles de 2 lignes de ~40 caractères, `/` = bulle suivante,
 `[e]` = forme au féminin du joueur.
@@ -506,19 +507,19 @@ Conventions des lots précédents : bulles de 2 lignes de ~40 caractères, `/` =
 
 ### 20.7 Capacités nouvelles (description)
 41. Vampirisme : « Inflige des dégâts et rend la moitié des dégâts infligés. »
-42. Ligotage : « Enserre l'ennemi plusieurs tours. Il ne peut pas fuir. » [si C-1]
-43. Entrave : « Empêche l'ennemi d'utiliser sa dernière capacité quelques tours. » [si C-2]
-44. Repos : « Le lanceur dort deux tours et récupère tous ses PV. » [si C-3]
-45. Destruction : « Inflige de gros dégâts. Le lanceur est mis K.O. » [si C-3]
+42. Ligotage : « Enserre l'ennemi plusieurs tours. Il ne peut pas fuir. »
+43. Entrave : « Empêche l'ennemi d'utiliser sa dernière capacité quelques tours. »
+44. Repos : « Le lanceur dort deux tours et récupère tous ses PV. »
+45. Destruction : « Inflige de gros dégâts. Le lanceur est mis K.O. »
 46. Messages de combat : drain « {pokemon} récupère des PV ! » · piège « {pokemon} est ligoté[e] ! » / « {pokemon} souffre du Ligotage ! » / « {pokemon} est libéré[e] ! » · Entrave « {move} de {pokemon} est bloquée ! » / « {move} n'est plus bloquée. » · Repos « {pokemon} s'endort et récupère ! »
 
 Les noms d'espèces, de capacités et de Pokédex suivent la nomenclature française officielle ; les
 descriptions de Pokédex des 12 espèces sont écrites au plan (même ton que les 40 existantes) et
 relues avec ce lot.
 
-## 21. Derniers arbitrages (C-1 à C-8)
+## 21. Derniers arbitrages (C-1 à C-8) — toutes les recommandations retenues par Kevin le 2026-10-11
 
-| N° | Question | Recommandation |
+| N° | Question | Décision [V] |
 |---|---|---|
 | **C-1** | **Ligotage** (Abo Nv. 1, sauvage et Rocket) : le piège était reporté par le dossier 14. | **Le créer au J12** (G+ : 4–5 tours, 1/8 des PV par tour, ni fuite ni changement), ce qui débloque aussi Étreinte (Onix) et Danse Flamme. Sinon, Abo garde une capacité qui ne fait que des dégâts. |
 | **C-2** | **Entrave** (Rondoudou Nv. 14, atteint vite) | **Oui**, règle G+ : la dernière capacité de la cible est bloquée **4 tours**. |
@@ -538,7 +539,7 @@ chercheur ; Corde Sortie 550 ₽ à Argenta + 1 au 1F ; Pierre Lune sans ARRÊTE
 modèles Rocket ♂ et ♀ ; départ des Rocket au fondu ; Centre sans Boutique ; sas sans contenu ;
 emplacements des objets.
 
-## Décisions verrouillées (à compléter après C-1 à C-8 et le lot de textes)
+## Décisions verrouillées
 
 | Élément | Décision |
 |---|---|
@@ -553,4 +554,11 @@ emplacements des objets.
 | Compagnon | Visible dans la grotte, masqué dans les goulets, Ball au Centre |
 | Rival | Absent, sans allusion |
 | Navigation | Ni mini-carte, ni GPS, ni flèche ; aucune capacité d'exploration requise |
+| Capacités | Piège (Ligotage, Étreinte, Danse Flamme), Entrave 4 tours, Repos, Destruction, drain créés au J12 ; Métronome reportée |
+| Planches J12 | Rondoudou, Mélofée, Abo, Paras, Nosferapti (vol), Racaillou (marche) ; Roucoups, Nidorino, Nidorina, Rattatac, Rapasdepic en lot parallèle |
+| CT | CT01 Ultimapoing sur un détour de B2F, seule CT du J12 |
+| Grand moment | Un seul, à l'obtention du fossile |
+| Calendrier | Code après la clôture du J11 ; conception, vues générales, grilles et art avant |
+| Prénoms | Gaspard, Hugo, Léa, Sacha, Enzo, Inès, Nolan |
+| Textes | Lot §20 validé (46 entrées) |
 | Validation | 12.0 → 12A → 12B → 12C → 12D |
