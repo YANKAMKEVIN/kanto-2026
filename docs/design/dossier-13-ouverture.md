@@ -1,10 +1,30 @@
 # Dossier 13 — L'ouverture : démarrage, écran titre, introduction du Prof. Chen (chantier « OUV »)
 
-> Commande de Kevin du 2026-10-10 (« Chantier J0 — Ouverture de Kanto 2026 »). **V0 de Claude** : audit de l'existant, architecture proposée, storyboard, écrans, cas limites, assets manquants et **arbitrages à trancher** (section A). **Rien n'est validé**, et **les textes de Chen du §6 sont des propositions**. **Aucune implémentation avant la validation de ce dossier et des références visuelles (§9), ni avant la fusion du J10 dans `main`** (le J10 modifie `boot.gd` et `game_state.gd`, qu'il faudra aussi modifier ici).
+> Commande de Kevin du 2026-10-10 (« Chantier J0 — Ouverture de Kanto 2026 »). **V0.1 de Claude** (V0 du 2026-10-10, revue intégrée le même jour) : audit de l'existant, architecture proposée, storyboard, écrans, cas limites, assets manquants et **arbitrages à trancher** (section A). **Rien n'est validé**, et **les textes de Chen du §6 sont des propositions**. **Aucune implémentation avant la validation de ce dossier et des références visuelles (§9), ni avant la fusion du J10 dans `main`** (le J10 modifie `boot.gd` et `game_state.gd`, qu'il faudra aussi modifier ici).
 
 **Décision créative de Kevin** : on garde l'introduction emblématique du Professeur Chen de Rouge/Bleu, réalisée dans la DA 2D HD peinte de Kanto 2026. Fidèle au déroulé, sans interface rétro pixelisée et sans réécrire le prologue existant.
 
 **Parcours cible** : splash → écran titre (Continuer · Nouvelle partie · Paramètres) → introduction de Chen → présentation du monde → apparence et prénom du joueur → présentation et prénom du rival → transition vers la chambre → prologue existant, inchangé.
+
+## Revue du 2026-10-10 (ChatGPT, transmise par Kevin) — **en attente de la validation de Kevin**
+Positions **recommandées** sur les six premiers arbitrages ; rien n'est verrouillé tant que Kevin ne l'a pas confirmé :
+
+| # | Sujet | Position recommandée |
+|---|---|---|
+| A1 | Nom du chantier | **OUV.1 à OUV.3** ; « J0 » reste le nom des fondations |
+| A2 | Apparence | **Option A** en V1 (le héros actuel), **modèle de données prêt pour une héroïne** sans nouvelle migration (§3.4, §3.6) |
+| A3 | Rival | **Petit-fils de Chen**, comme dans Rouge/Bleu |
+| A4 | « ??? » sur la Route 1 | **Conservé** |
+| A10 | Nouvelle partie | **Confirmation obligatoire** si une sauvegarde existe ; l'ancienne partie reste intacte jusqu'à la fin de l'introduction |
+| A12 | Première sortie | **Incluse en OUV.3** (« Le commencement de toute aventure ») |
+
+Améliorations demandées, **intégrées dans cette V0.1** :
+- **Abandon pendant l'introduction** : garanties explicites et protocole d'écriture détaillé (§3.7).
+- **Prénom du rival ≠ rôle du rival** : trois couches séparées, aucun identifiant technique renommé (§3.5).
+- **Durée** : 60–90 s confirmées comme plafond (§4).
+- **Priorité artistique** : le titre, la scène de Chen et l'écran de prénom appartiennent au même univers visuel que Bourg Palette et le laboratoire (§9.0).
+
+Restent à examiner par Kevin : A5–A9, A11, A13, A14, les textes du §6, le storyboard du §4 et les références du §9.1.
 
 ---
 
@@ -169,7 +189,7 @@ Grâce au garde-fou, **l'immense majorité des tests existants restent inchangé
 
 ### 3.3 Présentation (`game/ui/opening/`)
 - **`title_screen.tscn`** : logo, trois boutons, carte Continuer, message d'état de la sauvegarde.
-- **`intro_stage.tscn`** : un `CanvasLayer` au-dessus du monde. Il contient le fond (dégradé lumineux procédural, aucun asset) et trois emplacements de portrait (gauche, centre, droite) avec des entrées en fondu et une légère montée. Le texte passe par **la `DialogueBox` existante**.
+- **`intro_stage.tscn`** : un `CanvasLayer` au-dessus du monde. Il contient le fond (lumière dorée de Bourg Palette, procédurale, ou labo flouté selon la référence, §9.0) et trois emplacements de portrait (gauche, centre, droite) avec des entrées en fondu et une légère montée. Le texte passe par **la `DialogueBox` existante**.
 - **`name_entry.tscn`** : portrait du personnage nommé, champ texte natif (le clavier Android s'ouvre), pastilles des noms proposés et bouton **Valider**.
 - **`look_choice`** (option B) : réutilise le **choix à deux cartes**, illustré des deux portraits en pied.
 - **Paramètres** : `SettingsScreen` est aujourd'hui intégré à `TrainerMenu`. Il faut l'en **découpler** pour pouvoir l'héberger depuis le titre, sans l'entrée « Sauvegarder maintenant ». C'est un petit refactor à faire en OUV.1, testé.
@@ -180,6 +200,14 @@ Nouveaux champs :
 - `player_look: StringName`, `&"hero"` par défaut ; `&"heroine"` seulement avec l'option B ;
 - en option B, l'accord grammatical se **déduit** de `player_look` par une table dans les données, pas par un second champ.
 
+**Préparer l'héroïne sans la faire (A2, option A)** : `player_look` est créé et sauvegardé **dès la v5**, même s'il vaut toujours `&"hero"`. Ajouter l'héroïne plus tard ne demandera donc **aucune migration** :
+- une nouvelle valeur `&"heroine"` ;
+- ses assets, rangés par apparence (§3.6) ;
+- l'écran de choix (§5.6) ;
+- la syntaxe d'accord des textes (§3.5), qui ne touche pas la sauvegarde.
+
+En V1, `player_look` est lu partout où l'apparence compte, mais n'a qu'une seule valeur possible. Un test vérifie qu'une valeur inconnue chargée depuis une sauvegarde retombe sur `&"hero"` sans erreur.
+
 **Sauvegarde v5** (règle du projet : un nouveau champ fait incrémenter la version) :
 - `upgrade()` de 4 à 5 remplit les valeurs par défaut ;
 - la partie de Kevin reprend donc avec « Kevin », « Régis » et le héros ;
@@ -187,23 +215,57 @@ Nouveaux champs :
 
 ### 3.5 Jetons et étiquettes
 - On ajoute `{player}` et `{rival}` à la liste blanche des jetons.
-- **On les résout aussi dans `speaker`**. Les 19 `"speaker": "Rival"` deviennent `"{rival}"`, et `rival.json` passe de `"name": "Le Rival"` à `"{rival}"` (résolu par `battle_text.gd`).
-- **À coordonner avec le chantier combat** (CB) : `battle_text.gd` est de son ressort.
+- **On les résout aussi dans `speaker`**.
+
+**Prénom du rival ≠ rôle du rival.** Le mot « rival » existe à trois niveaux, et **seul le premier change** :
+
+| Couche | Exemples | Traitement |
+|---|---|---|
+| **1. Nom affiché** (ce que le joueur lit comme nom propre) | les 19 `"speaker": "Rival"` (14 `oak_lab.json`, 4 `route_22.json`, 1 `rival_house.json`) ; `"name": "Le Rival"` ×2 dans `data/trainers/rival.json` (« Le Rival envoie Carapuce ! ») | remplacés par le jeton `{rival}`, **résolu à l'affichage, jamais stocké** |
+| **2. Identifiants techniques** (le rôle dans les systèmes) | id de dresseur `rival`, PNJ et acteur de cinématique `rival`, apparence `rival` (`rival_frames.tres`), drapeaux `rival_battle_done`…, moment `rival_battle`, IA, noms de fichiers, de fonctions et de tests | **inchangés**, aucun renommage |
+| **3. Le mot commun « rival »** dans un texte (le rôle, pas le nom) | titre du grand moment « Combat contre le rival » ; commentaires ; § des dossiers | **inchangé** par défaut ; c'est un rôle, comme « Champion » |
+
+Règles :
+- **Pas de rechercher-remplacer** sur « Rival » : la liste fermée de la couche 1 ci-dessus est la seule modifiée, champ par champ (`speaker`, `name` d'un dresseur).
+- Un **test** interdit le littéral `"Rival"` / `"Le Rival"` comme `speaker` ou nom de dresseur dans `data/`. Un autre vérifie que les identifiants de la couche 2 existent toujours.
+- **Les tests existants** : 65 occurrences de « Le Rival » / « Rival » dans 17 fichiers de `tests/`. Ceux qui lisent les données attendent désormais `{rival}`. Ceux qui vérifient un affichage injectent un nom fixe (« Régis »), sans dépendre d'une sauvegarde.
+- Les commentaires de code qui citent « Le Rival » en exemple (`trainer_data.gd`, `battle_side.gd`, `battle_playback.gd`) et le texte d'aperçu de l'éditeur dans `battle_message_banner.tscn` sont mis à jour ou laissés tels quels, au choix (aucun effet en jeu).
+- Les **Pokémon du rival** n'ont pas de dresseur d'origine affiché : rien à faire.
+- **À coordonner avec le chantier combat** (CB) : la résolution de `{rival}` dans le nom du dresseur passe par `battle_text.gd`, qui est de son ressort.
 - **Option B uniquement** : une syntaxe d'accord `{g:réveillé|réveillée}`, résolue d'après `player_look`, validée au chargement (deux formes exactement). Un test vérifie que la liste des répliques adressées au joueur et accordées (§8.3) est entièrement couverte.
 
 ### 3.6 Apparence
 - `Player.LOOK_SPRITE` (aujourd'hui la constante `&"player"`) devient une valeur lue depuis `GameState.player_look`, résolue par `CharacterLook`.
 - Les autres usages suivent la même clé : `heros_lancer` (combat), `hero_bust` (menu), `player_portrait` (carte).
-- Option A : rien ne change, sauf que le portrait en pied devient un asset nommé par apparence.
+- Option A (V1) : un seul jeu d'assets, mais déjà **rangé et résolu par apparence** (`hero` → les fichiers actuels). L'héroïne n'aura qu'à ajouter les siens sous `heroine`.
 
 ### 3.7 Point de validation (« commit ») : la sécurité des données
-- Pendant toute l'introduction, **rien n'est écrit sur le disque**. Le `GameState` neuf vit en mémoire, et l'autosave est **suspendu** (aucune carte n'est entrée, et l'`OpeningDirector` déclare l'état « non stable »).
-- Au commit, dans cet ordre :
-  1. la sauvegarde existante est copiée dans `save.previous.json` ;
-  2. les noms et l'apparence sont appliqués au `GameState` ;
-  3. `SceneRouter.start(chambre)` est appelé ;
-  4. la première autosave est écrite à l'arrivée (chemin existant, test `test_save_boot` l. 158).
-- **Cas « version plus récente »** : comportement actuel conservé (on joue sans écrire), avec un avertissement sur le titre.
+
+**Garanties** (A10 + revue) :
+1. **Tant que l'introduction n'est pas finie, le disque n'est pas touché.** Aucune écriture de `save.json`, aucun fichier « introduction en cours », aucun drapeau intermédiaire. L'introduction n'a **pas d'état persistant** : elle n'existe qu'en mémoire.
+2. **Quitter à n'importe quel moment avant le commit** (fermer, tuer l'application, panne de batterie, retour au titre) laisse exactement **l'ancienne sauvegarde, intacte**, ou aucune sauvegarde s'il n'y en avait pas. Au relancement : titre, Continuer sur l'ancienne partie, et une Nouvelle partie qui recommence l'introduction **depuis le début**, après une nouvelle confirmation.
+3. **Pas d'état à moitié écrit** : le commit est une suite d'écritures atomiques, chacune sûre si elle est interrompue (ci-dessous).
+
+**Pendant le titre et l'introduction** :
+- L'autosave est **désactivé** (l'`OpeningDirector` déclare l'état « non stable »), y compris au passage en arrière-plan.
+- Le **fond du titre** (Bourg Palette en direct) est chargé en **mode décor** : il ne passe pas par la tenue de compte de `SceneRouter` (`map_entered`, cartes découvertes, autosave d'entrée de carte) et ne modifie pas `GameState`. Le Bourg Palette du titre ne compte donc pas comme visité, et il est libéré avant le commit ou avant Continuer.
+- Les **réglages** modifiés depuis le titre sont écrits dans `settings.json` comme aujourd'hui. Ce fichier est indépendant de la partie et ne crée pas d'état intermédiaire.
+
+**Protocole du commit**, à la fin de la dernière réplique de Chen, **avant** le fondu vers la chambre :
+1. Si `save.json` existe : copie atomique vers `save.previous.json` (`.tmp` → relecture → renommage), qui remplace l'éventuelle copie précédente. *Interruption ici* : `save.json` est encore l'ancienne partie ; tout va bien.
+2. `GameState.new_game()`, puis application du prénom, du rival et de l'apparence. Tout cela se passe en mémoire.
+3. **Écriture atomique immédiate** de la nouvelle partie (`SaveSystem.write`, avec la position dans la chambre, face au sud). On n'attend pas l'autosave d'arrivée. *Interruption avant le renommage* : `save.json` reste l'ancienne partie. *Après* : la nouvelle partie existe et reprendra dans la chambre.
+4. Fondu au blanc, puis `SceneRouter.start(chambre)`. L'autosave normal reprend.
+
+Il n'existe donc que deux états possibles sur le disque, « ancienne partie » ou « nouvelle partie dans la chambre », et jamais d'entre-deux.
+
+**Tests** (système de fichiers en mémoire, `memory_file_system.gd`) :
+- une interruption simulée après chaque étape du commit ;
+- un abandon à chaque plan de l'introduction ;
+- un relancement après abandon, qui vérifie que l'ancienne sauvegarde est identique octet pour octet ;
+- une deuxième introduction complète après un abandon.
+
+**Cas « version plus récente »** : comportement actuel conservé (on joue sans écrire), avec un avertissement sur le titre.
 
 ### 3.8 Ce que l'ouverture ne touche pas
 - Les cartes, le prologue, les cinématiques existantes et le moteur de combat (sauf l'affichage du nom du rival, en coordination avec CB).
@@ -220,7 +282,7 @@ Durées indicatives à la vitesse de texte « Normale ». **♪** marque un poin
 | 0 | **Splash** | logo **Kanto 2026** centré sur fond sombre chaud, image de démarrage native (affichée pendant le chargement réel, sans délai artificiel) | aucune | fondu vers le titre ≈ 0,4 s |
 | 1 | **Titre** | Bourg Palette en direct, à l'heure dorée, caméra qui dérive lentement ; logo en haut à gauche ; à droite, la carte **Continuer** (si sauvegarde), **Nouvelle partie** et **Paramètres** ♪ thème titre | toucher un bouton | fondu au noir ≈ 0,45 s (valeur des portes) |
 | 1b | Confirmation | carte sombre sur le titre flouté (§5.4) | Annuler / Commencer | retour au titre ou fondu |
-| 2 | **Scène de Chen** | le noir s'ouvre sur un **dégradé lumineux** (crème doré → bleu ciel doux, rappel du ciel de Bourg Palette) ; **portrait en pied de Chen** au centre, qui entre en fondu et en légère montée ♪ thème de Chen | toucher = continuer | — |
+| 2 | **Scène de Chen** | le noir s'ouvre sur la **lumière d'heure dorée de Bourg Palette** (ou le labo très flouté, §9.0) ; **portrait en pied de Chen** au centre, qui entre en fondu et en légère montée ♪ thème de Chen | toucher = continuer | — |
 | 3 | Présentation du monde | Chen se décale à gauche ; un **éclair de Poké Ball** à droite, puis **Nidorino** apparaît (artwork, petite respiration) | toucher | Nidorino sort en fondu |
 | 4 | Le joueur | Chen sort ; le **portrait en pied du joueur** entre au centre | option B : choix de l'apparence à deux cartes | fondu enchaîné sur l'autre portrait si on change |
 | 5 | Prénom du joueur | écran de prénom (§5.5) sur la scène ; le portrait reste visible à gauche | saisie ou pastille → Valider → « {player}, c'est bien ça ? » Oui / Non | — |
@@ -229,7 +291,7 @@ Durées indicatives à la vitesse de texte « Normale ». **♪** marque un poin
 | 8 | Envoi | Chen seul, puis le **portrait du joueur** revient au centre pour la dernière réplique | toucher | le portrait **rétrécit vers le centre et se dissout dans la lumière** (clin d'œil au rétrécissement de Rouge/Bleu) → **fondu au blanc chaud** ≈ 0,8 s |
 | 9 | **Chambre** | fondu du blanc vers la chambre, rayon de soleil par la fenêtre ; joueur face au sud ; **aucun titre de zone, aucun texte** ; contrôle rendu à la fin du fondu ; première autosave | prologue existant | — |
 
-Durée totale visée : **≈ 60–90 s**. C'est environ 15 pages de Chen, sans compter la saisie.
+Durée totale visée : **≈ 60–90 s, plafond retenu** (revue du 2026-10-10 : « mémorable, mais rapide » ; les 2–3 min envisagées au départ sont écartées). C'est environ 15 pages de Chen, sans compter la saisie. Si une mesure sur S24 dépasse 90 s, on coupe des pages, pas des plans.
 
 ---
 
@@ -379,12 +441,21 @@ On garde **les temps forts de Rouge/Bleu**, réécrits dans la voix de Chen du d
 
 ## 9. Assets et références visuelles
 
+### 9.0 Priorité artistique (revue du 2026-10-10)
+Le titre, la scène de Chen et l'écran de prénom appartiennent au **même univers visuel que Bourg Palette et le laboratoire existant**. Ils ne doivent pas ressembler à un autre jeu Pokémon : ni le fond blanc de Rouge/Bleu, ni la scène de Rouge Feu, ni l'interface d'un jeu récent.
+
+Concrètement :
+- **Fond de la scène de Chen** : la lumière d'heure dorée de `bourg-palette-vue-generale-v1.png`, pas un studio abstrait. Option à étudier dans la référence : un **intérieur du laboratoire très flouté** en fond (`labo-chen-v1.png`), Chen au premier plan.
+- **Portraits** : peints simplifiés, de la même main que les personnages du monde, sur l'ancre de style (`cahier-art-monde-v0.1.md` §4), lumière neutre éclairée par Godot.
+- **Interface** : le thème 2026 du jeu (skill `ui-theme-2026`, panneaux sombres translucides, la même boîte de dialogue que le prologue), aucune police ni cadre rétro.
+- **Chaque prompt de référence** joint `bourg-palette-vue-generale-v1.png`, `labo-chen-v1.png` et `heros_portrait.png` comme ancres.
+
 ### 9.1 Références visuelles à produire avant l'implémentation (Kevin, avec ChatGPT ; prompts rédigés par Claude sur demande)
 
 | Référence | Contenu attendu |
 |---|---|
 | `ouverture-titre-v1` | écran titre paysage : Bourg Palette à l'heure dorée en fond, logo, colonne de cartes (Continuer détaillée, Nouvelle partie, Paramètres) |
-| `ouverture-chen-v1` | scène d'introduction : dégradé lumineux, Chen en pied, Nidorino, boîte de dialogue sombre en bas |
+| `ouverture-chen-v1` | scène d'introduction : lumière dorée de Bourg Palette (ou labo flouté, §9.0), Chen en pied, Nidorino, boîte de dialogue sombre en bas |
 | `ouverture-prenom-v1` | écran de prénom : portrait, champ, pastilles, Valider, clavier Android ouvert |
 | *(option B)* `ouverture-apparence-v1` | les deux cartes, héros et héroïne |
 
@@ -399,7 +470,7 @@ On garde **les temps forts de Rouge/Bleu**, réécrits dans la voix de Chen du d
 | Portrait en pied du héros | **existe** (`heros_portrait.png`) ; à vérifier sur la scène lumineuse | — | — |
 | Nidorino | **existe** (artwork officiel 033) | — | — |
 | Éclair de Poké Ball | effet procédural (particules), aucun asset | code | — |
-| Fond de la scène de Chen | dégradé procédural / shader, aucun asset | code | — |
+| Fond de la scène de Chen | lumière dorée procédurale (aucun asset) ou flou d'un intérieur du labo existant, selon la référence §9.1 | code | — |
 | *(option B)* **Héroïne complète** | planches marche, attente et course 4 × 4, lancer de dos, portrait en pied, buste du menu, portrait de la carte, toutes calibrées sur `PERSO_P2_PEINT_r1` (128 px, filtre linear) | Codex, **le plus gros lot** | OUV.2 (écran d'apparence) |
 | Musique et sons | — | hors périmètre (arbitrage 14) | — |
 

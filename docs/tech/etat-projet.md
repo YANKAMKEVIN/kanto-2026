@@ -6,6 +6,7 @@ Mis à jour : 2026-10-10 (**Dossier 13 — ouverture (chantier « OUV ») écrit
 
 ## Dossier 13 — Ouverture (chantier « OUV ») : V0 écrite (2026-10-10, branche `docs/dossier-13-ouverture`)
 - Commande de Kevin « Chantier J0 — Ouverture » : splash, écran titre (Continuer · Nouvelle partie · Paramètres), introduction de Chen, prénoms du joueur et du rival, passage à la chambre. **Docs seules, aucun code.** Dossier : `docs/design/dossier-13-ouverture.md`.
+- **V0.1 (2026-10-10)** : revue de ChatGPT intégrée : abandon pendant l'introduction (§3.7, commit en écritures atomiques), prénom du rival ≠ identifiants (§3.5), 60–90 s plafond, priorité artistique (§9.0). Positions recommandées sur A1–A4, A10, A12 (OUV ; option A + modèle prêt pour l'héroïne ; petit-fils ; « ??? » conservé ; confirmation ; première sortie en OUV.3), **non verrouillées tant que Kevin ne les confirme pas**.
 - **En attente de Kevin** : arbitrages A1–A14 (nom « J0 » déjà pris → « OUV » proposé ; apparence A/B/C ; rival petit-fils de Chen ; noms proposés ; écrasement de la sauvegarde ; légende de première sortie…), textes de Chen (§6), références visuelles (§9.1).
 - **Ne gêne ni le J10 ni CB** : implémentation seulement après la fusion du J10 dans `main` (`boot.gd`, `game_state.gd` partagés) ; `battle_text.gd` (nom du rival) à coordonner avec CB. OUV.1 touche la sauvegarde (v5) : validé seul sur S24.
 
