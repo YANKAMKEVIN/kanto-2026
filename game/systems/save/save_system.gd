@@ -28,8 +28,9 @@ extends RefCounted
 ## des Pokémon, notes du Pokédex), une seule version pour tout le J6 ; 3 = jalon 7 (argent,
 ## première rencontre sauvage), une seule version pour tout le J7 (jalon-07.md §5.1) ; 4 =
 ## jalon 9 (statut de chaque Pokémon, « status »), une seule version pour tout le J9
-## (jalon-09.md §2.2).
-const VERSION: int = 4
+## (jalon-09.md §2.2) ; 5 = ouverture OUV.1 (prénom du rival « rival_name », apparence du
+## joueur « player_look » ; docs/tech/ouverture.md §2).
+const VERSION: int = 5
 const DEFAULT_PATH: String = "user://save.json"
 const TEMP_SUFFIX: String = ".tmp"
 const CORRUPT_SUFFIX: String = ".corrupt"
@@ -171,6 +172,9 @@ static func upgrade(content: Dictionary, target: int = VERSION) -> Error:
 				# 3 → 4 (J9) : rien à transformer, un Pokémon sans « status » n'a aucun statut
 				# (Pokemon.from_dict) ; seul le numéro change, pour qu'une build v3 refuse le
 				# fichier au lieu d'effacer les statuts au premier autosave.
+				# 4 → 5 (OUV.1) : rien à transformer, « rival_name » et « player_look » absents
+				# prennent leur défaut (GameState.load_dict : « Régis », le héros) ; le numéro
+				# protège d'une build v4 qui les effacerait.
 				pass
 		from += 1
 	content[VERSION_KEY] = target

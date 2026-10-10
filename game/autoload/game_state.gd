@@ -9,6 +9,7 @@ extends Node
 ## Pokédex, et les faits que le Menu Dresseur du J6 affichera (temps de jeu, début de
 ## l'aventure, zones découvertes, objets trouvés, grands moments, nom du joueur). Jalon 7
 ## (jalon-07.md §3.1, sauvegarde v3) : l'argent et la première espèce sauvage rencontrée.
+## Ouverture (OUV.1, dossier 13 §3.4, sauvegarde v5) : prénom du rival et apparence du joueur.
 ## [method to_dict] / [method load_dict] font l'aller-retour complet ; [SaveSystem] écrit et
 ## lit le fichier ; Boot (tâche S2) décide des moments d'autosave et appelle les
 ## méthodes `record_*` au bon endroit.
@@ -23,6 +24,17 @@ const MOMENT_STARTER: StringName = &"starter"
 const MOMENT_RIVAL_BATTLE: StringName = &"rival_battle"
 const MOMENT_FIRST_CAPTURE: StringName = &"first_capture"
 const DEFAULT_PLAYER_NAME: String = "Kevin"
+## Prénom du rival quand aucune saisie n'a eu lieu (dossier 13, A5 : premier nom proposé ;
+## sauvegardes migrées, départs de débogage, nouvelle partie d'OUV.1) ; égal au défaut de
+## `data/opening/names.json` (testé).
+const DEFAULT_RIVAL_NAME: String = "Régis"
+## Longueur maximale d'un prénom (dossier 13, A7) ; égale à celle de `names.json` (testé).
+const NAME_MAX_LENGTH: int = 10
+## Apparences du joueur connues de cette build (dossier 13 §3.4, A2 option A : le héros seul ;
+## `&"heroine"` s'ajoutera ici sans migration). Une valeur inconnue chargée retombe sur
+## [constant DEFAULT_PLAYER_LOOK].
+const PLAYER_LOOKS: Array[StringName] = [&"hero"]
+const DEFAULT_PLAYER_LOOK: StringName = &"hero"
 const DEFAULT_HEAL_MAP: StringName = &"player_house_1f"
 const DEFAULT_HEAL_SPAWN: StringName = &"heal"
 ## Argent (dossier 09 §10) : 3 000 ₽ pour une nouvelle partie (provisoire) ; plafond de
@@ -62,6 +74,11 @@ var player_cell: Vector2i = Vector2i.ZERO
 var player_facing: Vector2i = Vector2i.DOWN
 ## Nom du joueur (« Kevin » par défaut : pas encore d'écran de nom, dossier 08 §12).
 var player_name: String = DEFAULT_PLAYER_NAME
+## Prénom du rival (sauvegarde v5, dossier 13 §3.4) : toujours un prénom valide ([NameRules]),
+## « Régis » par défaut. Affiché à la place du rôle « Rival » à partir d'OUV.2.
+var rival_name: String = DEFAULT_RIVAL_NAME
+## Apparence du joueur (sauvegarde v5, dossier 13 §3.4, §3.6) : une de [constant PLAYER_LOOKS].
+var player_look: StringName = DEFAULT_PLAYER_LOOK
 ## Temps de jeu en secondes, compté par la scène seulement au premier plan
 ## ([method add_play_time]).
 var play_time: float = 0.0
@@ -101,6 +118,8 @@ func new_game(rng_seed: int = -1) -> void:
 	player_cell = Vector2i.ZERO
 	player_facing = Vector2i.DOWN
 	player_name = DEFAULT_PLAYER_NAME
+	rival_name = DEFAULT_RIVAL_NAME
+	player_look = DEFAULT_PLAYER_LOOK
 	play_time = 0.0
 	started_at = now()
 	discovered_maps.clear()
@@ -235,6 +254,8 @@ func to_dict() -> Dictionary:
 		discovered[String(map)] = discovered_maps[map]
 	return {
 		"player_name": player_name,
+		"rival_name": rival_name,
+		"player_look": String(player_look),
 		"started_at": started_at,
 		"play_time": play_time,
 		"map": String(current_map),
@@ -268,6 +289,8 @@ func load_dict(dict: Dictionary, data: PokemonData) -> bool:
 	player_name = JsonFields.get_string(dict, "player_name", DEFAULT_PLAYER_NAME)
 	if player_name.is_empty():
 		player_name = DEFAULT_PLAYER_NAME
+	rival_name = loaded_rival_name(JsonFields.get_string(dict, "rival_name"))
+	player_look = loaded_player_look(JsonFields.get_id(dict, "player_look"))
 	started_at = JsonFields.get_string(dict, "started_at", started_at)
 	play_time = maxf(JsonFields.get_float(dict, "play_time"), 0.0)
 	current_map = JsonFields.get_id(dict, "map")
@@ -313,6 +336,20 @@ func load_dict(dict: Dictionary, data: PokemonData) -> bool:
 	ok = _load_first_wild_encounter(JsonFields.get_dict(dict, "first_wild_encounter"), data) \
 		and ok
 	return ok
+
+
+## Prénom du rival lu dans une sauvegarde : normalisé ([method NameRules.normalize]) s'il est
+## valide, sinon (absent, vide, trop long, caractère refusé) [constant DEFAULT_RIVAL_NAME].
+static func loaded_rival_name(raw: String) -> String:
+	if not NameRules.is_valid(raw, NAME_MAX_LENGTH):
+		return DEFAULT_RIVAL_NAME
+	return NameRules.normalize(raw)
+
+
+## Apparence lue dans une sauvegarde : une de [constant PLAYER_LOOKS], sinon (absente ou
+## inconnue de cette build) [constant DEFAULT_PLAYER_LOOK], sans erreur.
+static func loaded_player_look(raw: StringName) -> StringName:
+	return raw if PLAYER_LOOKS.has(raw) else DEFAULT_PLAYER_LOOK
 
 
 ## { "species", "map", "date" } : l'espèce doit exister ; sinon rien n'est retenu (faux si une
