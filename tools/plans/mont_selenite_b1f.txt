@@ -1,0 +1,67 @@
+# Mont Sélénite B1F, « les passages inférieurs » — grille fonctionnelle (jalon 12, dossier 15 §5,
+# §8). Même format, même légende que mont_selenite_1f.txt (en-tête). Contrôle :
+# tools/art/plan_check_mont_selenite.py.
+#
+# 40 × 30 cases (enveloppe du dossier ≈ 44 × 36) ; nord en haut.
+# Deux segments séparés par la roche :
+#   - PRINCIPAL : échelle A ↑ (arrivée du 1F) → couloir du GUETTEUR (R1, inévitable : sa vue
+#     couvre les trois cases du couloir, lampes de part et d'autre de sa niche) → salle des
+#     lampes (gravats évitables) → échelle B ↑ vers le secteur nord du 1F. Au sud, galerie de la
+#     FOUILLEUSE (R2, évitable : tranchée, caisses, Potion au fond) ;
+#   - POCHE de l'échelle C ↑ (détour depuis la galerie est du 1F) : éclats, Pierre Lune visible.
+
+PRATICABLES .gjUVE
+
+GRILLE 40 30
+00 ########################################
+01 ####U#########.#########################
+02 ##......######.#########################
+03 ##......#####L.L#####..........#########
+04 ##.................................U####
+05 ##........................o........#####
+06 ##..............................########
+07 ##########..######L#............########
+08 ##########..########...ggggggg..########
+09 ##########..########...ggggggg..########
+10 ##########..########...ggggggg..########
+11 ##########..########.o.ggggggg..########
+12 ##########..########...ggggggg..########
+13 ##########..#########..........#########
+14 ########L#..############################
+15 ####..........RR########################
+16 ###..............#######################
+17 ###..............#######################
+18 ###..............########*#*############
+19 ###.FFFF....gggg.L#######...........####
+20 ###.FFFF....gggg.#######....ggggg....###
+21 ###.FFFF....gggg.######*....ggggg....###
+22 ###.........gggg.#######....ggggg....###
+23 ####............########....ggggg....###
+24 ########################....ggggg....###
+25 ########################....ggggg....###
+26 #########################...........####
+27 ###################################.####
+28 ###################################U####
+29 ########################################
+FIN
+
+# POSITIONS : même format que mont_selenite_1f.txt.
+POSITIONS
+echelle_a            echelle        4,1          libre   paire=A sens=monte vers=mt_moon_1f
+arrivee_a            spawn          4,2          libre   paire=A  # arrivée du 1F, tourné ↓
+echelle_b            echelle        35,4         libre   paire=B sens=monte vers=mt_moon_1f
+arrivee_b            spawn          34,4         libre   paire=B
+echelle_c            echelle        35,28        libre   paire=C sens=monte vers=mt_moon_1f
+arrivee_c            spawn          35,27        libre   paire=C  # goulet d'une case : le compagnon s'y masque
+rocket_guetteur      dresseur       14,1         bloque  role=R1 facing=down sight=5 inevitable=oui trainer=mt_moon_rocket_1  # « Hé, toi ! Ce passage est interdit. » ; vue (14, 2..6)
+rocket_fouilleuse    dresseur       8,20         bloque  role=R2 facing=right sight=2 inevitable=non trainer=mt_moon_rocket_2  # au bord de la tranchée, ne lève la tête qu'au dernier moment
+mt_moon_b1f_item_1   objet_visible  25,20        bloque  role=O2 item=moon_stone  # Pierre Lune visible, sous les éclats de la poche
+mt_moon_b1f_item_2   objet_visible  16,21        bloque  role=O3 item=potion  # Potion au fond de la galerie de la fouilleuse
+gravats_b1f_g1       gravats        26,10        libre   role=G1  # salle des lampes : évitable
+gravats_b1f_g2       gravats        13,20        libre   role=G2  # galerie de la fouilleuse : évitable
+gravats_b1f_g3       gravats        30,22        libre   role=G3  # poche de la Pierre Lune : évitable
+repere_guetteur      repere         13,3;15,3    bloque  role=principal  # deux lampes Rocket encadrent la niche du guetteur
+repere_lampe_salle   repere         18,7         bloque  role=principal  # lampe au débouché de la salle (et 8, 14 vers la fouilleuse)
+repere_tranchee      repere         4..7,19..21  bloque  role=fouille  # tranchée, caisses R (14..15, 15), lampe (17, 19)
+repere_poche         repere         25,18;27,18;23,21  bloque  role=poche  # éclats de Pierre Lune autour de la poche
+FIN

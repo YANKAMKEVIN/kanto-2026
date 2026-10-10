@@ -19,6 +19,10 @@ ombragé, arbres serrés le long du chemin) et ferme visiblement FUTUR A (masse 
 --empiler NORD SUD DX (vue générale d'Argenta, J10) : assemble deux cartes raccordées, NORD au-dessus
 de SUD, SUD décalée de DX colonnes vers l'est (forêt autour) ; la case est réduite pour tenir
 dans le format portrait.
+--mont-selenite [sortie.png] [--annote] (J12, dossier 15) : les trois étages du Mont Sélénite
+empilés (1F, B1F, B2F) → build/art/PLAN_MONT_SELENITE_v1.png ; --annote ajoute
+<sortie>_annote.png (échelles, Dresseurs, objets cachés… : JAMAIS jointe à Codex).
+tools/plans/route_4_sas.txt → build/art/PLAN_ROUTE4_SAS_v1.png (`dessiner_sas`).
 Reproductible : même grille → même image (fleurs tirées avec une graine fixe).
 """
 from __future__ import annotations
@@ -543,15 +547,347 @@ def annoter_foret(grille: Path, plan_png: Path, sortie: Path, largeur: int = 768
 	return sortie
 
 
+# --- Mont Sélénite et sas de la Route 4 (jalon 12, dossier 15) --------------------------------
+# Légende de tools/plans/mont_selenite_*.txt. Ardoise, pierre froide, gris bleuté ; les étages
+# s'assombrissent en descendant (transitions de lumière progressives, dossier 15 §5.1) ; lampes
+# Rocket et puits de jour éclairent le sol autour d'eux ; éclats de Pierre Lune bleu-blanc.
+G_FOND = (24, 25, 31)               # roche autour des étages et bandes de séparation
+G_ETAGES = {
+	# étage : (paroi, sol calme, gravats)
+	"1F": ((66, 68, 80), (132, 134, 140), (150, 128, 98)),
+	"B1F": ((58, 60, 72), (114, 117, 126), (138, 117, 90)),
+	"B2F": ((52, 54, 66), (100, 104, 116), (128, 108, 84)),
+}
+G_GRAVIER = (96, 82, 64)
+G_JOUR = (214, 216, 196)            # puits de jour
+G_DEHORS = (222, 214, 172)          # entrée vers la Route 3 (lumière du dehors)
+G_ROCHER = (82, 84, 96)
+G_ROCHER_BORD = (40, 42, 52)
+G_COLONNE = (92, 92, 106)
+G_ECHELLE = (176, 124, 66)
+G_ECHELLE_BORD = (92, 60, 30)
+G_TROU = (14, 14, 18)
+G_LAMPE = (255, 206, 90)
+G_LUEUR = (232, 192, 116)
+G_CAISSE = (138, 98, 60)
+G_CAISSE_BORD = (70, 48, 28)
+G_R = (214, 36, 36)
+G_FOUILLE = (86, 68, 50)
+G_FOUILLE_TRAIT = (60, 46, 34)
+G_DALLE = (200, 194, 176)
+G_DALLE_BORD = (120, 114, 100)
+G_FOSSILE = (150, 112, 70)
+G_ECLAT = (196, 226, 255)
+G_ECLAT_HALO = (120, 150, 190)
+G_INDICE = (196, 192, 170)
+G_EAU = (36, 62, 94)
+G_EAU_REFLET = (70, 104, 140)
+LAMPE_RAYON = 4.5                  # cases éclairées autour d'une lampe (lueur au sol)
+JOUR_RAYON = 2.5
+G_GRILLES = ("mont_selenite_1f", "mont_selenite_b1f", "mont_selenite_b2f")
+G_NOMS = {"mont_selenite_1f": "1F", "mont_selenite_b1f": "B1F", "mont_selenite_b2f": "B2F"}
+G_BANDE = 2                        # rangées de roche entre deux étages
+
+
+def _sources(plan: Plan, car: str) -> list[tuple[int, int]]:
+	return plan.cells_of(car)
+
+
+def _lueur(c: tuple[int, int], sources: list[tuple[int, int]], rayon: float) -> float:
+	best = 0.0
+	for sx, sy in sources:
+		dist = ((c[0] - sx) ** 2 + (c[1] - sy) ** 2) ** 0.5
+		best = max(best, 1.0 - dist / rayon)
+	return best
+
+
+def _peindre_grotte(d: ImageDraw.ImageDraw, plan: Plan, etage: str, ox: int, oy: int,
+		case: int) -> None:
+	"""Aplats d'un étage de grotte à (ox, oy), 1 case = case px. Objets cachés non dessinés."""
+	paroi, sol, gravats = G_ETAGES[etage]
+	alea = random.Random(GRAINE + len(etage) * 7 + plan.width)
+	lampes = _sources(plan, "L")
+	jour = _sources(plan, "j")
+	k = case / CASE
+
+	def coin(x: int, y: int) -> tuple[int, int]:
+		return ox + x * case, oy + y * case
+
+	def centre(x: int, y: int) -> tuple[float, float]:
+		return ox + (x + 0.5) * case, oy + (y + 0.5) * case
+
+	sol_de = {".": sol, "g": gravats, "j": G_JOUR, "E": G_DEHORS, "U": sol, "V": sol, "o": sol,
+		"K": sol, "R": sol, "x": sol, "S": sol}
+	# 1. Aplats : paroi, sol, gravats ; lueur des lampes et du jour sur le sol.
+	for y, row in enumerate(plan.rows):
+		for x, c in enumerate(row):
+			x0, y0 = coin(x, y)
+			if c in sol_de:
+				fond = sol_de[c]
+				if c not in "jE":
+					t = _lueur((x, y), lampes, LAMPE_RAYON)
+					if t > 0:
+						fond = _melange(fond, G_LUEUR, 0.6 * t)
+					t = _lueur((x, y), jour, JOUR_RAYON)
+					if t > 0:
+						fond = _melange(fond, G_JOUR, 0.45 * t)
+			elif c == "F":
+				fond = G_FOUILLE
+			elif c == "w":
+				fond = G_EAU
+			else:
+				fond = paroi
+			d.rectangle([x0, y0, x0 + case - 1, y0 + case - 1], fill=fond)
+			if c == "g":
+				for _ in range(3):
+					px, py = x0 + alea.uniform(2, case - 3), y0 + alea.uniform(2, case - 3)
+					_disque(d, px, py, alea.uniform(1.2, 2.4) * k * 1.4, G_GRAVIER)
+	# 2. Symboles.
+	for y, row in enumerate(plan.rows):
+		for x, c in enumerate(row):
+			cx, cy = centre(x, y)
+			x0, y0 = coin(x, y)
+			r = case / 2
+			if c == "o":
+				_disque(d, cx, cy, r * 0.8, G_ROCHER, G_ROCHER_BORD)
+			elif c == "x":
+				_disque(d, cx + r * 0.2, cy + r * 0.1, r * 0.32, G_INDICE)
+			elif c == "F":
+				for i in (0.3, 0.6):
+					d.line([x0 + 1, y0 + case * i, x0 + case - 2, y0 + case * i],
+						fill=G_FOUILLE_TRAIT, width=max(1, round(2 * k)))
+			elif c == "w":
+				d.line([x0 + case * 0.2, cy, x0 + case * 0.7, cy], fill=G_EAU_REFLET,
+					width=max(1, round(2 * k)))
+			elif c == "R":
+				d.rectangle([x0 + 1, y0 + 1, x0 + case - 2, y0 + case - 2], fill=G_CAISSE,
+					outline=G_CAISSE_BORD)
+				d.rectangle([cx - r * 0.25, cy - r * 0.4, cx + r * 0.25, cy + r * 0.4], fill=G_R)
+			elif c == "L":
+				_disque(d, cx, cy, r * 0.55, G_LAMPE, G_ECHELLE_BORD)
+			elif c == "*":
+				_disque(d, cx, cy, r * 0.75, G_ECLAT_HALO)
+				d.polygon([(cx, cy - r * 0.8), (cx + r * 0.45, cy), (cx, cy + r * 0.8),
+					(cx - r * 0.45, cy)], fill=G_ECLAT)
+			elif c in "UV":
+				if c == "V":
+					_disque(d, cx, cy, r * 0.95, G_TROU)
+				else:
+					_disque(d, cx, cy, r * 0.95, _melange(sol, G_JOUR, 0.5))
+				for dx in (-0.45, 0.45):
+					d.line([cx + dx * r, y0 + 1, cx + dx * r, y0 + case - 2], fill=G_ECHELLE,
+						width=max(2, round(2 * k)))
+				for i in (0.25, 0.5, 0.75):
+					d.line([cx - 0.45 * r, y0 + case * i, cx + 0.45 * r, y0 + case * i],
+						fill=G_ECHELLE, width=max(1, round(2 * k)))
+	# Colonnes : un bloc arrondi sur chaque composante.
+	for groupe in _composantes(plan, "K"):
+		xs = [x for x, _ in groupe]
+		ys = [y for _, y in groupe]
+		x0, y0 = coin(min(xs), min(ys))
+		x1, y1 = coin(max(xs) + 1, max(ys) + 1)
+		d.rounded_rectangle([x0 - 1, y0 - 1, x1, y1], radius=case * 0.45, fill=G_COLONNE,
+			outline=G_ROCHER_BORD, width=max(1, round(2 * k)))
+	# Dalle des fossiles et fossiles posés dessus.
+	for groupe in _composantes(plan, "S"):
+		xs = [x for x, _ in groupe]
+		ys = [y for _, y in groupe]
+		x0, y0 = coin(min(xs), min(ys))
+		x1, y1 = coin(max(xs) + 1, max(ys) + 1)
+		d.rectangle([x0, y0 + 2, x1 - 1, y1 - 3], fill=G_DALLE, outline=G_DALLE_BORD,
+			width=max(1, round(2 * k)))
+	for p in plan.of_kind("fossile"):
+		cx, cy = centre(*p.cells[0])
+		r = case * 0.36
+		if "dome" in p.attrs.get("item", ""):
+			d.pieslice([cx - r, cy - r, cx + r, cy + r], 180, 360, fill=G_FOSSILE,
+				outline=G_CAISSE_BORD)
+			d.line([cx - r, cy, cx + r, cy], fill=G_CAISSE_BORD, width=max(1, round(2 * k)))
+		else:
+			_disque(d, cx, cy, r, G_FOSSILE, G_CAISSE_BORD)
+			_disque(d, cx + r * 0.2, cy, r * 0.45, G_FOSSILE, G_CAISSE_BORD)
+	# Objets visibles : Poké Balls.
+	for p in plan.of_kind("objet_visible"):
+		cx, cy = centre(*p.cells[0])
+		r = max(4, round(case * 0.3))
+		d.pieslice([cx - r, cy - r, cx + r, cy + r], 180, 360, fill=BALL_ROUGE)
+		d.pieslice([cx - r, cy - r, cx + r, cy + r], 0, 180, fill=BLANC)
+		d.ellipse([cx - r, cy - r, cx + r, cy + r], outline=BALL_BORD, width=1)
+	# Panneau d'entrée.
+	for p in plan.of_kind("panneau"):
+		cx, cy = centre(*p.cells[0])
+		r = case * 0.3
+		d.rectangle([cx - r, cy - r, cx + r, cy + r], fill=PANNEAU, outline=PANNEAU_BORD)
+
+
+def _fonte(taille: int):
+	from PIL import ImageFont
+	for chemin in ("/System/Library/Fonts/Supplemental/Arial.ttf", "DejaVuSans.ttf"):
+		try:
+			return ImageFont.truetype(chemin, taille)
+		except OSError:
+			continue
+	return ImageFont.load_default(size=taille)
+
+
+def _annoter_grotte(img: Image.Image, plans: list[tuple[str, Plan, int, int]], case: int) -> Image.Image:
+	"""Version de RELECTURE (jamais jointe à Codex) : étages, échelles (paire, sens), Dresseurs et
+	lignes de vue, PNJ, objets visibles (O) et cachés (C*), fossiles, zones de gravats, repères."""
+	sys.path.insert(0, str(Path(__file__).parent))
+	from plan_check import FACINGS  # noqa: E402
+	from plan_check_mont_selenite import zones_gravats  # noqa: E402
+	calque = Image.new("RGBA", img.size, (0, 0, 0, 0))
+	d = ImageDraw.Draw(calque)
+	police, petite, grande = _fonte(14), _fonte(11), _fonte(22)
+
+	def etiquette(x: float, y: float, texte: str, couleur, f=police) -> None:
+		box = d.textbbox((x, y), texte, font=f, anchor="mm")
+		d.rectangle([box[0] - 2, box[1] - 1, box[2] + 2, box[3] + 1], fill=(0, 0, 0, 180))
+		d.text((x, y), texte, font=f, fill=couleur, anchor="mm")
+
+	for nom, plan, ox, oy in plans:
+		def centre(c, ox=ox, oy=oy):
+			return ox + (c[0] + 0.5) * case, oy + (c[1] + 0.5) * case
+		etiquette(ox - 30 if ox > 40 else ox + 30, oy + 16, G_NOMS.get(nom, nom),
+			(255, 255, 255, 255), grande)
+		for zone, p in ((z, p) for z in zones_gravats(plan) for p in plan.of_kind("gravats")
+				if p.cells[0] in z):
+			xs = sorted(x for x, _ in zone)
+			ys = sorted(y for _, y in zone)
+			etiquette(*centre((xs[len(xs) // 2], ys[len(ys) // 2])), p.attrs["role"],
+				(255, 220, 160, 255))
+		for p in plan.of_kind("echelle"):
+			fleche = "↑" if p.attrs["sens"] == "monte" else "↓"
+			cx, cy = centre(p.cells[0])
+			etiquette(cx, cy - case * 1.1, f"{p.attrs['paire']}{fleche}", (140, 255, 140, 255))
+		for p in plan.of_kind("dresseur"):
+			c = p.cells[0]
+			if p.attrs.get("facing") and int(p.attrs.get("sight", "0")):
+				fx, fy = FACINGS[p.attrs["facing"]]
+				for kk in range(1, int(p.attrs["sight"]) + 1):
+					x0, y0 = ox + (c[0] + fx * kk) * case, oy + (c[1] + fy * kk) * case
+					d.rectangle([x0, y0, x0 + case - 1, y0 + case - 1], fill=(230, 40, 40, 120))
+			cx, cy = centre(c)
+			d.ellipse([cx - 5, cy - 5, cx + 5, cy + 5], fill=(230, 40, 40, 255),
+				outline=(0, 0, 0, 255))
+			texte = p.attrs["role"] + (" !" if p.attrs.get("inevitable") == "oui" else "")
+			etiquette(cx, cy - case * 1.1, texte, (255, 150, 150, 255))
+			if "apres" in p.attrs:
+				ax, ay = (int(v) for v in p.attrs["apres"].split(","))
+				ex, ey = centre((ax, ay))
+				d.ellipse([ex - 3, ey - 3, ex + 3, ey + 3], outline=(255, 150, 150, 255))
+		for p in plan.of_kind("pnj"):
+			cx, cy = centre(p.cells[0])
+			d.ellipse([cx - 5, cy - 5, cx + 5, cy + 5], fill=(70, 140, 255, 255))
+			etiquette(cx, cy - case * 1.1, "randonneur", (150, 190, 255, 255), petite)
+		for p in plan.of_kind("objet_visible") + plan.of_kind("objet_cache"):
+			cx, cy = centre(p.cells[0])
+			if p.kind == "objet_cache":
+				d.rectangle([cx - 4, cy - 4, cx + 4, cy + 4], fill=(255, 220, 40, 255),
+					outline=(0, 0, 0, 255))
+			etiquette(cx, cy + case * 1.1, f"{p.attrs.get('role', '?')} {p.attrs.get('item', '')}"
+				+ ("*" if p.kind == "objet_cache" else ""), (255, 230, 90, 255), petite)
+		for p in plan.of_kind("repere"):
+			xs = sorted(x for x, _ in p.cells)
+			ys = sorted(y for _, y in p.cells)
+			etiquette(*centre((xs[len(xs) // 2], ys[len(ys) // 2])),
+				p.ident.replace("repere_", "").replace("_", " "), (200, 230, 255, 255), petite)
+	return Image.alpha_composite(img.convert("RGBA"), calque).convert("RGB")
+
+
+def dessiner_mont_selenite(sortie: Path, annote: bool = False) -> list[Path]:
+	"""Les trois étages empilés (1F en haut, B1F, B2F), séparés par une bande de roche, sur fond
+	de roche sombre ; 1024 × 1536. Le sas de la Route 4 a son image à part (dessiner_sas)."""
+	plans = [(n, lire(RACINE / "tools" / "plans" / f"{n}.txt")) for n in G_GRILLES]
+	largeur = max(p.width for _, p in plans)
+	hauteur = sum(p.height for _, p in plans) + G_BANDE * (len(plans) - 1)
+	case = min(CASE, TAILLE[0] // largeur, TAILLE[1] // hauteur)
+	img = Image.new("RGB", TAILLE, G_FOND)
+	d = ImageDraw.Draw(img)
+	oy = (TAILLE[1] - hauteur * case) // 2
+	places = []
+	for nom, plan in plans:
+		ox = (TAILLE[0] - plan.width * case) // 2
+		_peindre_grotte(d, plan, G_NOMS[nom], ox, oy, case)
+		# Lumière du dehors : l'entrée du 1F déborde d'une rangée dans la bande.
+		for x, y in plan.cells_of("E"):
+			d.rectangle([ox + x * case, oy + (y + 1) * case, ox + (x + 1) * case - 1,
+				oy + (y + 2) * case - 1], fill=_melange(G_DEHORS, G_FOND, 0.4))
+		places.append((nom, plan, ox, oy))
+		oy += (plan.height + G_BANDE) * case
+	sortie.parent.mkdir(parents=True, exist_ok=True)
+	img.save(sortie)
+	sorties = [sortie]
+	if annote:
+		chemin = sortie.with_name(sortie.stem + "_annote.png")
+		_annoter_grotte(img, places, case).save(chemin)
+		sorties.append(chemin)
+	return sorties
+
+
+# Sas de la Route 4 (extérieur) : herbe sèche de piémont, paroi du versant, plaine en contrebas.
+S_HERBE = (118, 150, 78)
+S_PAROI = (128, 120, 108)
+S_PAROI_FOND = (104, 98, 90)
+S_PLAINE = (156, 178, 104)
+S_GROTTE = (22, 22, 28)
+S_FOND_CASE = {".": S_HERBE, "=": CHEMIN, "e": CHEMIN, "#": S_PAROI, "D": S_PAROI, "o": S_HERBE,
+	"~": REBORD, "b": S_HERBE}
+
+
+def dessiner_sas(grille: Path, sortie: Path) -> Path:
+	"""Sas de la Route 4 sur 1024 × 1536 : la montagne au-dessus et à l'ouest, la plaine en
+	contrebas au sud, le chemin prolongé vers l'est jusqu'au bord de l'image."""
+	plan = lire(grille)
+	case = min(TAILLE[0] // plan.width, 42)
+	img = Image.new("RGB", TAILLE, S_PAROI_FOND)
+	d = ImageDraw.Draw(img)
+	ox = (TAILLE[0] - plan.width * case) // 2
+	oy = (TAILLE[1] - plan.height * case) // 2
+	d.rectangle([0, oy + plan.height * case, TAILLE[0], TAILLE[1]], fill=S_PLAINE)
+	d.rectangle([ox + plan.width * case, oy + 3 * case, TAILLE[0], oy + plan.height * case],
+		fill=_melange(S_HERBE, S_PLAINE, 0.5))
+	for y, row in enumerate(plan.rows):
+		for x, c in enumerate(row):
+			x0, y0 = ox + x * case, oy + y * case
+			d.rectangle([x0, y0, x0 + case - 1, y0 + case - 1], fill=S_FOND_CASE[c])
+			if c == "~":
+				d.rectangle([x0, y0 + case * 0.6, x0 + case - 1, y0 + case - 1],
+					fill=_melange(REBORD, (0, 0, 0), 0.3))
+			if c == "e":
+				d.rectangle([x0, y0, TAILLE[0], y0 + case - 1], fill=CHEMIN)
+			if c == "o":
+				_disque(d, x0 + case / 2, y0 + case / 2, case * 0.4, PIERRE, PIERRE_BORD)
+			if c == "b":
+				_disque(d, x0 + case / 2, y0 + case / 2, case * 0.55, BUISSON, SOMBRE_BORD)
+	# Bouche de la grotte creusée dans la paroi ouest, ouverte vers l'est (par-dessus le chemin).
+	for x, y in plan.cells_of("D"):
+		x0, y0 = ox + x * case, oy + y * case
+		d.ellipse([x0 - case * 0.5, y0 - case * 0.4, x0 + case * 1.2, y0 + case * 1.4],
+			fill=S_GROTTE, outline=_melange(S_PAROI, (0, 0, 0), 0.4), width=3)
+	for p in plan.of_kind("panneau"):
+		cx, cy = ox + (p.cells[0][0] + 0.5) * case, oy + (p.cells[0][1] + 0.5) * case
+		d.rectangle([cx - 9, cy - 9, cx + 9, cy + 9], fill=PANNEAU, outline=PANNEAU_BORD, width=2)
+	sortie.parent.mkdir(parents=True, exist_ok=True)
+	img.save(sortie)
+	return sortie
+
+
 # Grille → (fonction, sortie par défaut).
 PLANS = {
 	"route_2": (dessiner, "build/art/PLAN_ROUTE2_v1.png"),
 	"viridian_forest": (dessiner_foret, "build/art/PLAN_FORET_JADE_v2.png"),
+	"route_4_sas": (dessiner_sas, "build/art/PLAN_ROUTE4_SAS_v1.png"),
 }
 
 
 def main() -> int:
 	args = [a for a in sys.argv[1:] if not a.startswith("--")]
+	if "--mont-selenite" in sys.argv:
+		sortie = Path(args[0]) if args else RACINE / "build/art/PLAN_MONT_SELENITE_v1.png"
+		for chemin in dessiner_mont_selenite(sortie, "--annote" in sys.argv):
+			print(chemin)
+		return 0
 	if "--empiler" in sys.argv:
 		nord, sud, dx, sortie = args[0], args[1], int(args[2]), Path(args[3])
 		print(dessiner(empiler(lire(Path(nord)), lire(Path(sud)), dx), sortie))
