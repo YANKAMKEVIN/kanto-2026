@@ -368,3 +368,13 @@ Aucune décision de game design ouverte : textes du dossier §13 en attente de r
 planches (gabarit des starters, ancres héros + forme précédente), hauteurs par défaut, intégration
 décrite (manifeste, `preparer.py`, `LOOKS`, `companions.json` au T20). Génération et validation :
 Kevin, sur le Mac. Rien de branché dans le jeu.
+
+### T17 — conception technique du compagnon : écrite (2026-10-10, en avance)
+
+`docs/tech/jalon-11-compagnon.md` : constats du code (le compagnon n'occupe pas la grille ; relais
+`Player.step_started` ; occupation douce consultée par les seules routines de PNJ ; fournisseur
+« compagnon » de `InteractionFinder` ; caché en combat car `BattleStage` montre le monde ; rentre à
+toute scène car les déplacements de scène abandonnent au bout de 2 s), architecture
+(`CompanionRules`, `CompanionTrail` purs, nœud `Companion`, `CompanionController`,
+`companions.json`, `EmoteBubble` extrait avec `♪` et `…`), défauts D-1 à D-8, découpage T19a–T20d,
+tests et risques. Aucun code. Relecture par Fable possible sur demande.
