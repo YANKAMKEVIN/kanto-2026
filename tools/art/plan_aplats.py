@@ -16,6 +16,9 @@ Usage : python3 tools/art/plan_aplats.py [grille.txt] [sortie.png] [--lisiere]
 --lisiere (vue générale, essai 3) : la géométrie ne change pas ; le plan PORTE la transition
 vers la forêt (canopée plus sombre vers le nord, herbe éloignée du chemin rendue en sous-bois
 ombragé, arbres serrés le long du chemin) et ferme visiblement FUTUR A (masse d'arbre dense).
+tools/plans/route_3.txt → build/art/PLAN_ROUTE3_v1.png (J12, `dessiner_route_3`) : PAYSAGE
+1536 × 1024, 1 case = 18 px ; montagne, affleurements, sol rocheux, entrée de grotte, Centre ;
+la case cachée (type « cache ») n'apparaît que sur <sortie>_annote.png (--annote, même taille).
 --empiler NORD SUD DX (vue générale d'Argenta, J10) : assemble deux cartes raccordées, NORD au-dessus
 de SUD, SUD décalée de DX colonnes vers l'est (forêt autour) ; la case est réduite pour tenir
 dans le format portrait.
@@ -543,10 +546,273 @@ def annoter_foret(grille: Path, plan_png: Path, sortie: Path, largeur: int = 768
 	return sortie
 
 
+# --- Route 3 (jalon 12, dossier 15 §3) ------------------------------------------------------
+# Légende de tools/plans/route_3.txt. Format PAYSAGE 1536 × 1024 (Codex le produit, comme les
+# coques d'intérieur de la série 12) : la route fait 82 × 38 cases, elle tient à 18 px par case
+# (1476 × 684) ; en portrait elle tomberait à 12 px par case. Les marges prolongent les cases du
+# bord (forêt, montagne, chemin d'Argenta à l'ouest), sans rien inventer.
+TAILLE_PAYSAGE = (1536, 1024)
+R3_HERBE_SECHE = (128, 150, 74)     # herbe rase de l'est, plus sèche (§7 : herbes qui se raréfient)
+R3_SOL_ROCHEUX = (176, 168, 150)    # o : sol rocheux praticable, pied de la montagne
+R3_AFFLEUREMENT = (150, 143, 132)   # R : affleurements et rochers (bloqués)
+R3_PAROI = (122, 112, 100)          # K : paroi de la montagne
+R3_PAROI_PROFONDE = (98, 90, 84)    # K loin de tout passage : la masse qui monte
+R3_STRATE = (108, 99, 89)
+R3_GROTTE = (28, 26, 34)            # Q : ouverture de la grotte
+R3_GROTTE_BORD = (70, 64, 60)
+R3_FOND = {
+	"T": FORET, ".": HERBE, "=": CHEMIN, "h": HAUTES_HERBES, "v": REBORD, "o": R3_SOL_ROCHEUX,
+	"K": R3_PAROI, "R": R3_AFFLEUREMENT, "x": HERBE, "C": BATIMENTS["C"][0], "D": PORTE,
+	"Q": R3_PAROI,
+}
+R3_HERBE_FIN = 60                   # colonne où l'herbe rase est la plus sèche
+
+
+def _geometrie(plan: Plan, taille: tuple[int, int]) -> tuple[int, int, int]:
+	case = min(CASE, taille[0] // plan.width, taille[1] // plan.height)
+	return case, (taille[0] - plan.width * case) // 2, (taille[1] - plan.height * case) // 2
+
+
+def dessiner_route_3(grille: Path, sortie: Path) -> Path:
+	"""Plan en aplats de la Route 3, paysage 1536 × 1024. Personnages, Pokémon, case cachée et
+	coupes d'itinéraire NON dessinés (le plan est joint à Codex) ; Poké Balls des objets visibles
+	et panneaux dessinés."""
+	plan = lire(grille)
+	case, ox, oy = _geometrie(plan, TAILLE_PAYSAGE)
+	img = Image.new("RGB", TAILLE_PAYSAGE, FORET)
+	d = ImageDraw.Draw(img)
+	alea = random.Random(GRAINE + 3)
+
+	def coin(x: int, y: int) -> tuple[int, int]:
+		return ox + x * case, oy + y * case
+
+	def centre(x: int, y: int) -> tuple[float, float]:
+		return ox + (x + 0.5) * case, oy + (y + 0.5) * case
+
+	def bord(x: int, y: int) -> str:
+		return plan.at(min(max(x, 0), plan.width - 1), min(max(y, 0), plan.height - 1))
+
+	# Profondeur de la paroi : distance (en cases) à la plus proche case non-paroi.
+	paroi = set(plan.cells_of("K"))
+	profondeur: dict[tuple[int, int], int] = {}
+	front = [c for c in paroi if any(
+		0 <= c[0] + dx < plan.width and 0 <= c[1] + dy < plan.height
+		and plan.at(c[0] + dx, c[1] + dy) != "K" for dx, dy in ((1, 0), (-1, 0), (0, 1), (0, -1)))]
+	for c in front:
+		profondeur[c] = 1
+	while front:
+		suivant = []
+		for x, y in front:
+			for dx, dy in ((1, 0), (-1, 0), (0, 1), (0, -1)):
+				n = (x + dx, y + dy)
+				if n in paroi and n not in profondeur:
+					profondeur[n] = profondeur[(x, y)] + 1
+					suivant.append(n)
+		front = suivant
+
+	def couleur(car: str, x: int, y: int):
+		if car == ".":
+			return _melange(HERBE, R3_HERBE_SECHE, min(1.0, max(0.0, x / R3_HERBE_FIN)))
+		if car == "K":
+			p = profondeur.get((min(max(x, 0), plan.width - 1), min(max(y, 0), plan.height - 1)), 6)
+			hors = x < 0 or y < 0 or x >= plan.width or y >= plan.height
+			return _melange(R3_PAROI, R3_PAROI_PROFONDE, 1.0 if hors else min(1.0, (p - 1) / 4))
+		return R3_FOND[car]
+
+	# 1. Aplats, marges comprises (cases virtuelles = case du bord la plus proche).
+	gx0, gy0 = -(ox // case) - 1, -(oy // case) - 1
+	gx1, gy1 = plan.width + (TAILLE_PAYSAGE[0] - ox) // case + 1, \
+		plan.height + (TAILLE_PAYSAGE[1] - oy) // case + 1
+	for y in range(gy0, gy1):
+		for x in range(gx0, gx1):
+			car = bord(x, y)
+			if not (0 <= x < plan.width and 0 <= y < plan.height) and car not in "TKR=":
+				car = "T"
+			x0, y0 = coin(x, y)
+			d.rectangle([x0, y0, x0 + case - 1, y0 + case - 1], fill=couleur(car, x, y))
+
+	# 2. Strates de la paroi (traits horizontaux) et blocs des affleurements.
+	for y in range(gy0, gy1):
+		for x in range(gx0, gx1):
+			car = bord(x, y)
+			x0, y0 = coin(x, y)
+			if car == "K" and (x + 2 * y) % 5 == 0:
+				d.line([x0 + 2, y0 + case // 2, x0 + case - 3, y0 + case // 2], fill=R3_STRATE,
+					width=2)
+			elif car == "R" and alea.random() < 0.45:
+				cx, cy = x0 + case / 2, y0 + case / 2
+				_disque(d, cx + alea.uniform(-3, 3), cy + alea.uniform(-3, 3),
+					alea.uniform(4, 7), PIERRE, PIERRE_BORD)
+
+	# 3. Fleurs dans la prairie de la sortie (aucune à l'est).
+	for y, row in enumerate(plan.rows):
+		for x, c in enumerate(row):
+			part = 0.25 * max(0.0, 1 - x / 24)
+			if c == "." and alea.random() < part:
+				cx, cy = centre(x, y)
+				_disque(d, cx + alea.uniform(-4, 4), cy + alea.uniform(-4, 4), 2, FLEUR)
+
+	# 4. Buissons, rebords (bande sombre en bas de la case : la marche vers le sud).
+	for x, y in plan.cells_of("x"):
+		cx, cy = centre(x, y)
+		_disque(d, cx, cy, case * 0.4, BUISSON, SOMBRE_BORD)
+	for x, y in plan.cells_of("v"):
+		x0, y0 = coin(x, y)
+		d.rectangle([x0, y0, x0 + case - 1, y0 + case // 2], fill=_melange(REBORD, PAROI, 0.3))
+		d.rectangle([x0, y0 + case // 2, x0 + case - 1, y0 + case - 1], fill=REBORD)
+
+	# 5. Centre Pokémon : toit rouge sur les 3/5 hauts de l'emprise, portes.
+	centre_cases = plan.cells_of("C") + plan.cells_of("D")
+	if centre_cases:
+		xs = [x for x, _ in centre_cases]
+		ys = [y for _, y in centre_cases]
+		x0, y0 = coin(min(xs), min(ys))
+		x1, y1 = coin(max(xs) + 1, max(ys) + 1)
+		d.rectangle([x0, y0, x1 - 1, y0 + (y1 - y0) * 3 // 5], fill=BATIMENTS["C"][1])
+		for x, y in plan.cells_of("D"):
+			px0, py0 = coin(x, y)
+			d.rectangle([px0, py0 + case // 4, px0 + case - 1, py0 + case - 1], fill=PORTE)
+
+	# 6. Entrée du Mont Sélénite : ouverture sombre en arche dans la paroi.
+	grotte = plan.cells_of("Q")
+	if grotte:
+		xs = [x for x, _ in grotte]
+		ys = [y for _, y in grotte]
+		x0, y0 = coin(min(xs), min(ys))
+		x1, y1 = coin(max(xs) + 1, max(ys) + 1)
+		d.pieslice([x0 - 2, y0 - case * 0.8, x1 + 1, y1 + case * 0.8], 180, 360, fill=R3_GROTTE,
+			outline=R3_GROTTE_BORD, width=2)
+		d.rectangle([x0 - 2, y0 + case * 0.4, x1 + 1, y1 - 1], fill=R3_GROTTE)
+
+	# 7. Panneaux et objets visibles (la case cachée « cache » n'est JAMAIS dessinée ici).
+	for p in plan.of_kind("panneau"):
+		for x, y in p.cells:
+			cx, cy = centre(x, y)
+			d.rectangle([cx - 5, cy - 5, cx + 5, cy + 5], fill=PANNEAU, outline=PANNEAU_BORD)
+	for p in plan.of_kind("objet_visible"):
+		for x, y in p.cells:
+			cx, cy = centre(x, y)
+			r = 5
+			d.pieslice([cx - r, cy - r, cx + r, cy + r], 180, 360, fill=BALL_ROUGE)
+			d.pieslice([cx - r, cy - r, cx + r, cy + r], 0, 180, fill=BLANC)
+			d.ellipse([cx - r, cy - r, cx + r, cy + r], outline=BALL_BORD, width=1)
+
+	sortie.parent.mkdir(parents=True, exist_ok=True)
+	img.save(sortie)
+	return sortie
+
+
+def annoter_route_3(grille: Path, plan_png: Path, sortie: Path) -> Path:
+	"""Version de RELECTURE de la Route 3 (jamais jointe à Codex) : Dresseurs et lignes de vue,
+	PNJ, objets (la case cachée en jaune, « * »), Pokémon d'ambiance, zones d'herbes, rebords,
+	coupes d'itinéraire, points d'apparition, repères ; même taille que le plan."""
+	from PIL import ImageFont
+	from plan_check import FACINGS, nommer_zones  # noqa: E402
+	plan = lire(grille)
+	img = Image.open(plan_png).convert("RGBA")
+	calque = Image.new("RGBA", img.size, (0, 0, 0, 0))
+	d = ImageDraw.Draw(calque)
+	case, ox, oy = _geometrie(plan, TAILLE_PAYSAGE)
+
+	def fonte(taille: int):
+		for chemin in ("/System/Library/Fonts/Supplemental/Arial.ttf", "DejaVuSans.ttf"):
+			try:
+				return ImageFont.truetype(chemin, taille)
+			except OSError:
+				continue
+		return ImageFont.load_default(size=taille)
+	police, petite = fonte(15), fonte(11)
+
+	def centre(c) -> tuple[float, float]:
+		return ox + (c[0] + 0.5) * case, oy + (c[1] + 0.5) * case
+
+	def etiquette(c, texte: str, couleur, f=police, dx: float = 0, dy: float = -14) -> None:
+		cx, cy = centre(c)
+		box = d.textbbox((cx + dx, cy + dy), texte, font=f, anchor="mm")
+		d.rectangle([box[0] - 2, box[1] - 1, box[2] + 2, box[3] + 1], fill=(0, 0, 0, 170))
+		d.text((cx + dx, cy + dy), texte, font=f, fill=couleur, anchor="mm")
+
+	# Grille fine (repérage des coordonnées) et graduations tous les 5.
+	for x in range(plan.width + 1):
+		d.line([ox + x * case, oy, ox + x * case, oy + plan.height * case],
+			fill=(0, 0, 0, 60 if x % 5 else 130), width=1)
+	for y in range(plan.height + 1):
+		d.line([ox, oy + y * case, ox + plan.width * case, oy + y * case],
+			fill=(0, 0, 0, 60 if y % 5 else 130), width=1)
+	for x in range(0, plan.width, 5):
+		d.text((ox + (x + 0.5) * case, oy - 10), str(x), font=petite, fill=(255, 255, 255, 255),
+			anchor="mm")
+	for y in range(0, plan.height, 5):
+		d.text((ox - 12, oy + (y + 0.5) * case), str(y), font=petite, fill=(255, 255, 255, 255),
+			anchor="mm")
+
+	for p in plan.of_kind("itineraire"):
+		xs = [x for x, _ in p.cells]
+		ys = [y for _, y in p.cells]
+		d.rectangle([ox + min(xs) * case, oy + min(ys) * case, ox + (max(xs) + 1) * case - 1,
+			oy + (max(ys) + 1) * case - 1], outline=(255, 255, 255, 150), width=2)
+		etiquette((min(xs), min(ys)), f"itinéraire {p.attrs.get('role')}", (255, 255, 255, 255),
+			petite, dx=30, dy=-4)
+	for p in plan.of_kind("dresseur"):
+		fx, fy = FACINGS[p.attrs["facing"]]
+		c = p.cells[0]
+		for k in range(1, int(p.attrs["sight"]) + 1):
+			x0, y0 = ox + (c[0] + fx * k) * case, oy + (c[1] + fy * k) * case
+			d.rectangle([x0, y0, x0 + case - 1, y0 + case - 1], fill=(230, 40, 40, 120))
+		cx, cy = centre(c)
+		d.ellipse([cx - 6, cy - 6, cx + 6, cy + 6], fill=(230, 40, 40, 255), outline=(0, 0, 0, 255))
+		etiquette(c, f"{p.attrs.get('role')} {p.ident}", (255, 150, 150, 255))
+	for p in plan.of_kind("pnj"):
+		for c in p.cells:
+			cx, cy = centre(c)
+			d.ellipse([cx - 5, cy - 5, cx + 5, cy + 5], fill=(70, 140, 255, 255),
+				outline=(0, 0, 0, 255))
+		etiquette(p.cells[0], f"{p.attrs.get('role')} {p.ident}", (160, 200, 255, 255))
+	for p in plan.of_kind("objet_visible") + plan.of_kind("cache"):
+		c = p.cells[0]
+		cx, cy = centre(c)
+		if p.kind == "cache":
+			d.rectangle([cx - 5, cy - 5, cx + 5, cy + 5], fill=(255, 220, 40, 255),
+				outline=(0, 0, 0, 255))
+		etiquette(c, f"{p.attrs.get('role')}{'*' if p.kind == 'cache' else ''} "
+			f"{p.attrs.get('item')}", (255, 230, 90, 255), petite, dy=13)
+	for p in plan.of_kind("pokemon"):
+		cx, cy = centre(p.cells[0])
+		d.ellipse([cx - 4, cy - 4, cx + 4, cy + 4], fill=(200, 90, 230, 255), outline=(0, 0, 0, 255))
+		etiquette(p.cells[0], p.ident.split("_")[0], (225, 170, 245, 255), petite, dy=12)
+	for nom, zone in nommer_zones(plan, ("H1", "H2", "H3", "H4")).items():
+		xs = sorted(x for x, _ in zone)
+		ys = sorted(y for _, y in zone)
+		etiquette((xs[len(xs) // 2], ys[len(ys) // 2]), nom, (240, 255, 150, 255), dy=0)
+	rebords = sorted(plan.cells_of("v"))
+	groupes: list[list[tuple[int, int]]] = []
+	for c in rebords:
+		if groupes and groupes[-1][-1] == (c[0] - 1, c[1]):
+			groupes[-1].append(c)
+		else:
+			groupes.append([c])
+	for i, g in enumerate(sorted(groupes, key=lambda g: -g[0][0]), 1):
+		etiquette(g[len(g) // 2], f"L{i} ↓", (255, 210, 160, 255), petite, dy=12)
+	for p in plan.of_kind("spawn"):
+		etiquette(p.cells[0], p.ident, (180, 255, 255, 255), petite, dx=0, dy=12)
+	grotte = plan.cells_of("Q")
+	if grotte:
+		etiquette(grotte[0], "MONT SÉLÉNITE (1F)", (255, 255, 255, 255), dx=case / 2, dy=-22)
+	porte = plan.cells_of("D")
+	if porte:
+		etiquette(porte[0], "CENTRE", (255, 255, 255, 255), dx=case / 2, dy=-40)
+	etiquette((0, 26), "← ARGENTA (51, 25..27)", (255, 255, 255, 255), petite, dx=60, dy=-30)
+	img = Image.alpha_composite(img, calque).convert("RGB")
+	sortie.parent.mkdir(parents=True, exist_ok=True)
+	img.save(sortie)
+	return sortie
+
+
 # Grille → (fonction, sortie par défaut).
 PLANS = {
 	"route_2": (dessiner, "build/art/PLAN_ROUTE2_v1.png"),
 	"viridian_forest": (dessiner_foret, "build/art/PLAN_FORET_JADE_v2.png"),
+	"route_3": (dessiner_route_3, "build/art/PLAN_ROUTE3_v1.png"),
 }
 
 
@@ -565,6 +831,8 @@ def main() -> int:
 		print(fonction(grille, sortie))
 	if fonction is dessiner_foret and "--annote" in sys.argv:
 		print(annoter_foret(grille, sortie, sortie.with_name(sortie.stem + "_annote.png")))
+	if fonction is dessiner_route_3 and "--annote" in sys.argv:
+		print(annoter_route_3(grille, sortie, sortie.with_name(sortie.stem + "_annote.png")))
 	return 0
 
 
