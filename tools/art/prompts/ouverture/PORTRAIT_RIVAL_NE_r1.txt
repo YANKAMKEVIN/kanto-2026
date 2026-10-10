@@ -1,0 +1,13 @@
+PORTRAIT_RIVAL — portrait en pied du rival pour l'introduction de Kanto 2026.
+
+Deux images sont jointes.
+IMAGE 1 : HEROS_PORTRAIT, le portrait en pied VALIDÉ du héros. C'est l'ANCRE DE STYLE ET DE FORMAT : reproduis EXACTEMENT son rendu (personnage peint simplifié, proportions chibi d'environ 3 têtes, même finesse, même contour fin coloré sans trait noir, même manière de peindre le visage, les yeux, les mains et les plis), son cadrage (personnage entier, de la tête aux pieds, centré, qui occupe presque toute la hauteur), sa pose de trois quarts et son échelle. Ne reprends PAS le héros lui-même.
+IMAGE 2 : la planche de marche du rival déjà utilisée dans le jeu. C'est l'IDENTITÉ du personnage : reprends exactement sa coiffure, ses couleurs et ses vêtements.
+
+PERSONNAGE : le rival, un garçon du même âge que le héros, ami d'enfance et petit-fils du Professeur Chen. Compétitif, intelligent, un peu arrogant, mais pas méchant ; il est sûr de lui et « préparé ». Cheveux châtain-roux en épis hérissés, yeux gris sombre, petit sourire en coin assuré. Gilet sans manches violet à capuche ouvert sur un t-shirt noir, petit pendentif argenté, pantalon noir, baskets violettes à semelle blanche, sac à dos noir aux détails violets (on n'en voit que les bretelles).
+POSE : debout, les BRAS CROISÉS sur la poitrine, poids sur une jambe, tête très légèrement inclinée, petit sourire en coin et regard de défi amical vers le spectateur ; corps de trois quarts, tourné dans l'autre sens que le héros (face vers la gauche de l'image). Même taille que le héros.
+
+LUMIÈRE NE (neutre) : lumière de milieu de journée, diffuse et blanche, venant légèrement du haut à gauche ; volumes conservés par un ombrage doux ; aucune teinte dorée ou orangée, aucun liseré chaud, aucun halo ; ombres propres neutres, légèrement bleutées.
+
+FORMAT : image portrait 1024 × 1536, FOND TRANSPARENT (vrai canal alpha, aucun damier dessiné, aucun halo ni lueur autour du personnage, aucun sol, aucune ombre portée). Personnage entier, pieds à environ 40 px du bas.
+INTERDITS : texte, logo, signature, cadre, décor, Pokémon, Poké Ball, pixel art, 3D, contours noirs épais, style anime aux traits noirs.

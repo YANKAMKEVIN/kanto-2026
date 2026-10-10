@@ -1,0 +1,19 @@
+MAQUETTE — INTRODUCTION DU PROFESSEUR CHEN, Kanto 2026 (jeu mobile en paysage), image de référence de direction artistique.
+
+C'est le moment emblématique où le Professeur Chen accueille le joueur dans le monde des Pokémon, avant le début de l'aventure, revisité dans l'univers peint du jeu.
+
+Images jointes :
+IMAGE 1 : la vue générale peinte de BOURG PALETTE. Elle donne LA LUMIÈRE ET LA PALETTE du fond : heure dorée, ciel clair crème et bleu tendre, chaleur douce.
+IMAGE 2 : l'intérieur du LABORATOIRE du Professeur Chen dans le jeu. Il peut servir de FOND, TRÈS FLOUTÉ (comme une profondeur de champ forte : on reconnaît seulement des étagères, des plantes et des fenêtres lumineuses), baigné de la lumière dorée de l'IMAGE 1.
+IMAGE 3 : le portrait en pied du Professeur Chen (personnage peint simplifié). Pose-le tel quel : même personnage, même style, même pose.
+IMAGE 4 : une maquette d'un autre écran du jeu. Elle ne sert QUE pour le STYLE DE L'INTERFACE (panneau sombre bleu nuit translucide aux coins arrondis, fine bordure claire, texte blanc sans-serif). N'en reprends ni la composition, ni les personnages.
+IMAGE 5 : l'artwork officiel de NIDORINO : c'est son IDENTITÉ exacte (forme, couleur, corne, oreilles) ; peins-le dans le même rendu que Chen.
+
+COMPOSITION (paysage 1536 × 864) :
+- Fond : le laboratoire de l'IMAGE 2, très flouté et lumineux, dans une lumière dorée chaude ; un halo de lumière doux derrière les personnages ; l'ensemble reste calme, pas de rayons spectaculaires.
+- Le Professeur Chen de l'IMAGE 3, en pied, un peu à gauche du centre, posé net au premier plan, éclairé par la lumière chaude du fond (léger liseré doré sur les contours).
+- À droite du centre : NIDORINO de l'IMAGE 5, posé au sol, de trois quarts vers Chen, dans le même rendu peint ; quelques petites étincelles lumineuses à côté de lui (il vient de sortir de sa Poké Ball).
+- En bas, sur toute la largeur moins les marges : la BOÎTE DE DIALOGUE du jeu, panneau sombre bleu nuit translucide aux coins arrondis ; en haut à gauche du panneau, une petite étiquette « Prof. Chen » ; le texte en blanc : « Ce monde est peuplé de créatures que l'on appelle Pokémon. » ; une petite flèche › en bas à droite. Orthographe exacte.
+- Les personnages ne sont jamais cachés par la boîte : leurs pieds restent au-dessus d'elle.
+
+INTERDITS : fond blanc uni, studio abstrait, pixel art, 3D, style anime ou manga, portrait dans la boîte de dialogue, logo, autre texte, filigrane, signature, cadre de téléphone.
