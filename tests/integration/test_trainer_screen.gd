@@ -307,3 +307,16 @@ func test_badge_moment_shows_in_the_timeline_with_emblem() -> void:
 	assert_true(texts.has("Argenta · 9 octobre 2026"))
 	var rows := screen.get_moment_rows()
 	assert_eq(rows[rows.size() - 1].get_view().kind, MomentLibrary.BADGE)
+
+
+func test_portrait_never_under_identity_text_with_long_money() -> void:
+	for width: int in WIDTHS:
+		var view := _view()
+		view.money_text = "999 999 ₽"
+		var screen := await _screen_in(width, view)
+		await wait_process_frames(3)
+		var portrait := screen.get_portrait().get_global_rect()
+		for row: Control in [screen._started_row, screen._money_row]:
+			var rect := row.get_global_rect()
+			assert_lte(rect.end.y, portrait.position.y + 0.5,
+				"la ligne d'identité reste au-dessus du portrait (%d)" % width)

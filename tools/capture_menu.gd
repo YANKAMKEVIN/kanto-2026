@@ -415,6 +415,8 @@ func _trainer_scenario(scenario: String) -> void:
 			state.flags.set_flag(&"badge_boulder")
 			state.record_moment(BadgeMoment.TYPE, &"pewter_city",
 				BadgeMoment.details(&"boulder", state.party))
+	if scenario == "trainer_badge":
+		state.money = 999999 # montant long : la ligne d'argent ne passe jamais sous le portrait
 	var unlocks := MenuUnlocks.new(state.flags, state.party)
 	var badges := BadgeLibrary.new()
 	badges.load_file()

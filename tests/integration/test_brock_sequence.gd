@@ -231,10 +231,13 @@ func _objective() -> String:
 
 
 ## Ordre de la victoire : … carte → combat → « Bien joué. » → « BADGE ROCHE » → réplique du badge.
-func _assert_victory_order() -> void:
+func _assert_victory_order(first_fight: bool = true) -> void:
 	var card := _index("card:PIERRE/Champion d'Arène d'Argenta")
-	assert_gt(card, -1, "carte de présentation de Pierre")
-	assert_gt(_index("battle"), card, "la carte avant le combat")
+	if first_fight:
+		assert_gt(card, -1, "carte de présentation de Pierre")
+		assert_gt(_index("battle"), card, "la carte avant le combat")
+	else:
+		assert_eq(card, -1, "pas de carte aux revanches")
 	assert_gt(_index("page:" + WON), _index("battle"))
 	assert_gt(_index("caption:BADGE ROCHE"), _index("page:" + WON), "« BADGE ROCHE » ensuite")
 	assert_gt(_index("page:" + BADGE_LINE), _index("caption:BADGE ROCHE"), "puis la réplique")
@@ -333,7 +336,7 @@ func test_defeat_wakes_at_the_pewter_center_then_resume_without_the_introduction
 	assert_true(await _talk_to_brock(), "second combat")
 	assert_eq(_index("page:" + RESUME), 0, "reprise courte")
 	assert_eq(_index("page:" + INTRO), -1, "pas d'introduction rejouée")
-	_assert_victory_order()
+	_assert_victory_order(false)
 	assert_true(GameState.flags.has_flag(&"badge_boulder"))
 	assert_eq(_badge_moments().size(), 1)
 	assert_eq(_vibrations.count(UiTokens.HAPTIC_BADGE_MS), 1)

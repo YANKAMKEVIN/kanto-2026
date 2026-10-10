@@ -315,6 +315,8 @@ func _build_identity() -> PanelContainer:
 	_started.clip_text = false
 	_money_row = _icon_row(column, ICON_COIN, UiTokens.ACCENT)
 	_money = _money_row.get_child(1) as Label
+	_started_row.item_rect_changed.connect(_place_portrait)
+	_money_row.item_rect_changed.connect(_place_portrait)
 	var spacer := Control.new()
 	spacer.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	spacer.size_flags_vertical = Control.SIZE_EXPAND_FILL
@@ -434,6 +436,7 @@ func _apply(view: TrainerView) -> void:
 	if not view.money_text.is_empty():
 		money = "%s : %s" % [TrainerView.MONEY_LABEL, view.money_text]
 	_set_row(_money_row, _money, money)
+	_place_portrait.call_deferred()
 	_seen_route = view.seen_route
 	_caught_route = view.caught_route
 	_set_link(_seen, view.seen_text)
@@ -604,12 +607,24 @@ func _set_link(button: Button, text: String) -> void:
 	button.visible = not text.is_empty()
 
 
+## Bas des lignes d'identité (nom, date, argent), dans le repère du cadre : le portrait
+## commence sous cette ligne, jamais dessus (montant à 6 chiffres compris).
+func _text_bottom() -> float:
+	var bottom := 0.0
+	for row: Control in [_started_row, _money_row]:
+		if row != null and row.visible:
+			bottom = maxf(bottom, row.global_position.y + row.size.y - _stage.global_position.y)
+	return bottom + UiTokens.GAP
+
+
 ## Portrait : au plus TRAINER_HERO_MAX de haut, posé sur le bas du cadre, bord droit contre lui.
 func _place_portrait() -> void:
 	var texture := _portrait.texture
 	if texture == null:
 		return
-	var height := minf(float(UiTokens.TRAINER_HERO_MAX), _stage.size.y)
+	var free_top := _text_bottom()
+	var height := minf(float(UiTokens.TRAINER_HERO_MAX), _stage.size.y - free_top)
+	height = maxf(height, 0.0)
 	var width := height * texture.get_width() / float(texture.get_height())
 	_portrait.size = Vector2(width, height)
 	_portrait.position = Vector2(_stage.size.x - width + UiTokens.TRAINER_HERO_OFFSET_X,
