@@ -1,0 +1,12 @@
+{
+	"_note": "Prénoms de l'ouverture (dossier 13, arbitrages A5 et A7, validés par Kevin le 2026-10-10). max_length : nombre de caractères au plus. Pour chaque rôle : default = prénom quand aucune saisie n'a eu lieu (départ de débogage, sauvegarde migrée ; le joueur garde « Kevin », GameState.DEFAULT_PLAYER_NAME) ; suggestions = les pastilles de l'écran de prénom, dans l'ordre (1 à 3). Chaque prénom doit être valide et déjà normalisé (NameRules).",
+	"max_length": 10,
+	"player": {
+		"default": "Kevin",
+		"suggestions": ["Red", "Sacha", "Kevin"]
+	},
+	"rival": {
+		"default": "Régis",
+		"suggestions": ["Régis", "Blue", "Gary"]
+	}
+}
