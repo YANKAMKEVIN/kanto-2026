@@ -6,15 +6,20 @@ extends RefCounted
 
 const MAX_SIZE: int = 6
 
+## Vrai pour l'équipe **du joueur** ([member GameState.party]) : chaque Pokémon qui entre reçoit
+## un identifiant ([method Pokemon.ensure_uid], J11). Faux pour les équipes de Dresseurs et les
+## équipes de travail, qui restent reproductibles à l'identique.
+var assigns_uids: bool = false
 var _members: Array[Pokemon] = []
 
 
-## Ajoute [param pokemon] en fin d'équipe et lui donne un identifiant s'il n'en a pas
-## ([method Pokemon.ensure_uid], J11). Faux si l'équipe est pleine (ou null).
+## Ajoute [param pokemon] en fin d'équipe (avec un identifiant s'il n'en a pas, pour l'équipe du
+## joueur : [member assigns_uids]). Faux si l'équipe est pleine (ou null).
 func add(pokemon: Pokemon) -> bool:
 	if pokemon == null or is_full():
 		return false
-	pokemon.ensure_uid()
+	if assigns_uids:
+		pokemon.ensure_uid()
 	_members.append(pokemon)
 	return true
 

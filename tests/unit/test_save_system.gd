@@ -594,7 +594,8 @@ func test_the_real_v2_save_loads_and_is_rewritten_identically_in_v4() -> void:
 	assert_eq(written["money"], 3000.0)
 	assert_eq(written["first_wild_encounter"]["species"], "pidgey")
 	assert_eq(_without_v3(written), _without_v3(v2), "tout le reste réécrit à l'identique")
-	assert_eq(written.keys().size(), v2.keys().size() + 3, "aucun champ perdu (+ argent, rencontre, compagnon)")
+	assert_eq(written.keys().size(), v2.keys().size() + 3,
+		"aucun champ perdu (+ argent, rencontre, compagnon)")
 	var again := _state()
 	assert_true(again.load_dict(_save.read(), _data))
 	assert_eq(again.to_dict(), state.to_dict(), "aller-retour v4 stable")
@@ -627,7 +628,8 @@ func test_the_real_end_of_j6_save_migrates_to_v4_and_rewrites_identically() -> v
 	var written: Dictionary = JSON.parse_string((_fs as MemoryFs).files[PATH])
 	assert_eq(int(written["version"]), SaveSystem.VERSION)
 	assert_eq(_without_v3(written), _without_v3(v2), "tout le reste réécrit à l'identique")
-	assert_eq(written.keys().size(), v2.keys().size() + 3, "aucun champ perdu (+ argent, rencontre, compagnon)")
+	assert_eq(written.keys().size(), v2.keys().size() + 3,
+		"aucun champ perdu (+ argent, rencontre, compagnon)")
 
 
 func test_v3_round_trip_keeps_money_and_the_first_wild_encounter() -> void:
@@ -773,10 +775,12 @@ func test_the_real_v3_save_loads_with_no_status_and_is_rewritten_identically_in_
 	for member: Dictionary in written["party"]:
 		assert_eq(member.get("status"), "", "statut écrit vide")
 	assert_eq(_without_v4(written), _without_v4(v3), "tout le reste réécrit à l'identique")
-	assert_eq(written.keys().size(), v3.keys().size() + 1, "aucun champ perdu ; seul le compagnon (J11) s'ajoute")
+	assert_eq(written.keys().size(), v3.keys().size() + 1,
+		"aucun champ perdu ; seul le compagnon (J11) s'ajoute")
 	var again := _state()
 	assert_true(again.load_dict(_save.read(), _data))
-	assert_eq(_save.read_version, SaveSystem.VERSION, "relue à la version courante : plus de migration")
+	assert_eq(_save.read_version, SaveSystem.VERSION,
+		"relue à la version courante : plus de migration")
 	assert_eq(again.to_dict(), state.to_dict(), "aller-retour v4 stable")
 
 

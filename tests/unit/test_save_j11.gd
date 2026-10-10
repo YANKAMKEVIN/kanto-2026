@@ -168,7 +168,8 @@ func test_a_v4_save_keeps_every_pokemon_in_order_and_gets_uids() -> void:
 	var original := _fixture_v4()
 	var state := _load_through_save(original.duplicate(true))
 	var saved: Dictionary = _json(state.to_dict())
-	assert_eq(_signatures(saved["party"]), _signatures(original["party"]), "même équipe, même ordre")
+	assert_eq(_signatures(saved["party"]), _signatures(original["party"]),
+		"même équipe, même ordre")
 	assert_eq(_signatures(saved["storage"]), _signatures(original["storage"]),
 		"même Stockage, même ordre")
 	var uids := _uids(state)

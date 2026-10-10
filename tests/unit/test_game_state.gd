@@ -309,7 +309,8 @@ func test_to_dict_lists_every_saved_field_and_nothing_else() -> void:
 	# ni statistiques (§16.3 « pas stocké »).
 	var keys: Array = _dated().to_dict().keys()
 	keys.sort()
-	assert_eq(keys, ["bag", "cell", "discovered_maps", "facing", "first_wild_encounter",
+	# J11 : compagnon (« companion »).
+	assert_eq(keys, ["bag", "cell", "companion", "discovered_maps", "facing", "first_wild_encounter",
 		"flags", "found_items", "heal_map", "heal_spawn", "map", "moments", "money", "party",
 		"play_time", "player_name", "pokedex", "rng", "started_at", "starter", "storage"])
 

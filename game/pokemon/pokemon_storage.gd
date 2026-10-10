@@ -6,15 +6,19 @@ extends RefCounted
 ##
 ## [method to_array] / [method load_array] : la sauvegarde (même format que [Party]).
 
+## Vrai pour le Stockage **du joueur** ([member GameState.storage]) : chaque Pokémon rangé
+## reçoit un identifiant ([method Pokemon.ensure_uid], J11) ; faux pour un Stockage de travail.
+var assigns_uids: bool = false
 var _pokemon: Array[Pokemon] = []
 
 
-## Ajoute [param pokemon] à la fin (la même instance, PV et PP gardés) et lui donne un
-## identifiant s'il n'en a pas (J11). Faux s'il est null ou déjà rangé.
+## Ajoute [param pokemon] à la fin (la même instance, PV et PP gardés ; un identifiant s'il n'en
+## a pas, pour le Stockage du joueur : [member assigns_uids]). Faux s'il est null ou déjà rangé.
 func add(pokemon: Pokemon) -> bool:
 	if pokemon == null or _pokemon.has(pokemon):
 		return false
-	pokemon.ensure_uid()
+	if assigns_uids:
+		pokemon.ensure_uid()
 	_pokemon.append(pokemon)
 	return true
 
@@ -75,6 +79,7 @@ func load_array(entries: Array, data: PokemonData) -> bool:
 			push_error("PokemonStorage : entrée du stockage écartée")
 			ok = false
 			continue
-		pokemon.ensure_uid()
+		if assigns_uids:
+			pokemon.ensure_uid()
 		_pokemon.append(pokemon)
 	return ok

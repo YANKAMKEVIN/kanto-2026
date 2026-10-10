@@ -88,6 +88,13 @@ var first_wild_encounter: Dictionary = {}
 var companion_uid: String = ""
 
 
+func _init() -> void:
+	# J11 : l'équipe et le Stockage du joueur donnent un identifiant à chaque Pokémon qui entre
+	# (reposé par [method new_game] sur des instances injectées).
+	party.assigns_uids = true
+	storage.assigns_uids = true
+
+
 ## Nouvelle partie (appelé par Boot au démarrage) : drapeaux baissés, équipe, Sac et Pokédex
 ## vides, pas de starter, aléatoire neuf de graine [param rng_seed] (−1 = graine tirée au
 ## hasard), point de soin remis à la maison familiale, journal vide, aventure commencée
@@ -95,6 +102,9 @@ var companion_uid: String = ""
 func new_game(rng_seed: int = -1) -> void:
 	flags.clear()
 	party.clear()
+	# J11 : l'équipe et le Stockage du joueur donnent un identifiant à chaque Pokémon qui entre.
+	party.assigns_uids = true
+	storage.assigns_uids = true
 	bag.clear()
 	pokedex.clear()
 	storage.clear()

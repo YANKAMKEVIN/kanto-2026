@@ -181,7 +181,11 @@ func test_same_fixture_same_party() -> void:
 		start.load_file(FIXTURES + "valid.json", _data, _items)
 		var state: Node = autofree(GameStateScript.new())
 		start.apply(state, _data)
-		dumps.append(state.party.to_array())
+		var party: Array[Dictionary] = state.party.to_array()
+		# L'identifiant (J11) est tiré à part, hors de la graine.
+		for member: Dictionary in party:
+			member.erase("uid")
+		dumps.append(party)
 	assert_eq(dumps[0], dumps[1], "graine fixée : mêmes IV, même sexe")
 
 

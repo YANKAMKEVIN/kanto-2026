@@ -332,7 +332,9 @@ Aucune décision de game design ouverte : textes du dossier §13 en attente de r
   `to_dict` / `from_dict` tolérants (uid mal formé → vide + avertissement ; compteur borné à
   `MAX_STATUS_TURNS` = 7, nul sans statut).
 - `Party.add`, `PokemonStorage.add` et `PokemonStorage.load_array` : identifiant donné à l'entrée
-  (même objet ensuite au Stockage et à l'évolution).
+  (même objet ensuite au Stockage et à l'évolution), **seulement pour l'équipe et le Stockage du
+  joueur** (`assigns_uids`, posé par `GameState`) : les équipes de Dresseurs et les équipes de
+  travail restent reproductibles à l'identique (tests `test_trainer_library`, `test_trainer_slot_moves`).
 - `GameState` : `companion_uid` (« companion » dans le fichier ; remis à vide par `new_game`),
   `ensure_unique_uids()` (équipe puis Stockage, ordre et contenu inchangés, doublon régénéré pour
   le second), `get_companion()`, `set_companion()` ; compagnon inconnu au chargement → aucun +
@@ -346,7 +348,15 @@ Aucune décision de game design ouverte : textes du dossier §13 en attente de r
   v2 ; doublon ; version future refusée ; **refus par la build v4 sans écrire** ; compagnon gardé
   après réordonnancement, gardé K.O., refusé hors équipe, perdu au dépôt, inconnu = aucun) ;
   `test_save_system` et `test_save_boot` alignés sur `SaveSystem.VERSION` (plus de « 4 » en dur
-  pour la version courante) et sur les trois champs nouveaux.
+  pour la version courante) et sur les trois champs nouveaux ; `test_starter_choice`,
+  `test_debug_start` (identifiant hors de la graine) et `test_game_state` (« companion ») alignés.
+- **Environnement de cette session (conteneur Linux, pas le Mac)** : deux tests échouent **aussi sur
+  `main` propre** (`e80f636`…`29ed036`, vérifié dans une copie séparée) : `test_service_director`
+  (`test_center_heal_on_the_center_registers_it_once`) **fait planter Godot** (signal 11, objet
+  libéré pendant l'émission de `animation_finished` de la machine de soin) et arrête la suite ;
+  `test_center_heal` (`…_registers_and_saves`) dépasse son délai de dialogue. Sans rapport avec
+  T1 ; la suite a été jouée sans le premier fichier (le reste vert, voir ci-dessous). À revoir sur
+  le Mac avant T2.
 - **Reste avant T2 / T3** : fusion d'OUV.1 dans `main` puis dans cette branche, passage en v6
   (migration v5 → v6), fixture v5 réelle d'OUV, puis relecture adversariale (T2) et QA S24 seule
   (T3) sur la vraie partie de Kevin.
