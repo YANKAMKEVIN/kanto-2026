@@ -2,13 +2,13 @@
 
 > V1 de ChatGPT reçue le 2026-10-10 (prompt `prompts/chatgpt-dossier-14-systemes-j11.md`), **8 décisions
 > créatives verrouillées par Kevin** (§1), passe d'alignement de Claude contre `main`, **arbitrages A-1 à
-> A-14 tranchés par Kevin le 2026-10-10** (toutes les recommandations retenues, §12). **Reste à valider :
-> le lot de textes du §13** (aucun texte n'est validé d'office). Plan technique : `docs/tech/jalon-11.md`.
-> Aucun code avant la validation des textes et du plan.
+> A-14 tranchés par Kevin le 2026-10-10** (toutes les recommandations retenues, §12). **Lot de textes du §13 validé par Kevin le 2026-10-10** (avec retouches). Plan technique : `docs/tech/jalon-11.md`,
+> validé sur le principe par Kevin le 2026-10-10 ; **feu vert pour T1 (sauvegarde) seulement**, la suite après la
+> validation S24 de 11.0.
 >
 > **Numérotation** : ex-« dossier 13 », renuméroté **14** le 2026-10-10 sans rien écraser : le numéro 13
 > appartient au chantier d'ouverture (OUV : écran titre, introduction de Chen, noms du joueur et du
-> rival, nouvelle partie), `dossier-13-ouverture.md` sur la branche locale `docs/dossier-13-ouverture`
+> rival, nouvelle partie), `dossier-13-ouverture.md`, fusionné dans `main` le 2026-10-10 (ex-branche `docs/dossier-13-ouverture`
 > (non poussée). Le numéro de dossier suit l'ordre de conception, pas celui des jalons.
 >
 > Légende : **[V]** décision de Kevin · **[D]** valeur par défaut technique (règle 4 de `CLAUDE.md`,
@@ -67,7 +67,7 @@ dans la sauvegarde (A-1) ; un Pokémon K.O. perd son statut (existant pour le po
 Autres valeurs [D] : les capacités de statut suivent la table des types (Cage-Éclair sans effet sur
 Sol) ; les poudres touchent le type Plante (défaut du J9 reconduit) ; une capacité de statut sur une
 cible qui a déjà ce statut : « … est déjà … ! » ; sur une cible qui a un autre statut majeur : « Mais
-cela échoue ! » (texte nouveau, n° 27 du §13).
+ça échoue ! » (texte nouveau, n° 27 du §13).
 
 ### 3.2 Confusion [V A-2]
 
@@ -159,7 +159,7 @@ type ; détail : puissance, précision, PP, description.
 2. **Tour 2** : action verrouillée (le joueur ne choisit rien) ; « {pokemon} encaisse ! ».
 3. **Tour 3** : « {pokemon} riposte ! » → dégâts = **2 × dégâts directs reçus des tours 1 à 3** (avant
    la riposte), au plus les PV restants de la cible ; **ignore types, statistiques, précision et
-   esquive** [D] ; **échoue** si le stock est nul (« Mais cela échoue ! »).
+   esquive** [D] ; **échoue** si le stock est nul (« Mais ça échoue ! »).
 
 Interactions [A-1 n° 3 et D] :
 - **Comptent** : chaque coup des capacités adverses (chaque coup d'un multi-coups).
@@ -262,14 +262,21 @@ Aucune humeur ni amitié cachée : la phrase dépend seulement de faits visibles
   de gel ; **compagnon choisi** ; **identifiant stable de chaque Pokémon** (indispensable : aujourd'hui
   aucun, et le compagnon ne peut pas être « le n° 2 de l'équipe »). Non sauvegardés : visibilité du
   compagnon, réaction en cours, confusion.
-- **État vérifié le 2026-10-10** : `main` est en **v4** (J9) ; **le J10 n'a pas changé le format**
-  (`jalon-10.md` §2.15). **OUV** (`docs/dossier-13-ouverture`, non poussée) touche la nouvelle partie et
-  les noms du joueur et du rival : il peut changer le format lui aussi.
-- **Règle** [D] : le J11 ne fige **aucun numéro** avant le sous-jalon 11.0. Il prend **la version de
-  `main` au moment du 11.0, plus un** ; ses champs sont **additifs, avec valeur par défaut** (absent =
-  aucun compagnon, identifiants attribués au chargement, compteur tiré au premier tour). Si OUV et le
-  J11 changent le format en même temps, **le second fusionné renumérote sa migration** et rejoue le
-  test de migration depuis la version du premier. Jamais deux migrations sous le même numéro.
+- **État vérifié le 2026-10-10 (après la fusion d'OUV.0)** : `main` est en **v4** ; le J10 n'a pas changé
+  le format (`jalon-10.md` §2.15) ; **OUV.1 crée la v5** (`rival_name`, `player_look` : dossier 13 §3.4,
+  `docs/tech/ouverture.md` §2), validé par Kevin et prochain lot du chantier OUV. **Conflit réel** : les
+  deux chantiers veulent la version suivante.
+- **Règle retenue** [D, appliquée de la règle « le second fusionné renumérote »] : OUV a réservé la v5 le
+  premier (dossier validé) → **le J11 écrit la v6** (migration v5 → v6), **par-dessus** la v5 d'OUV. Le
+  code de T1 est écrit dès maintenant avec un numéro provisoire, mais **11.0 n'est ni fusionné ni joué
+  sur le S24 de Kevin avant la fusion d'OUV.1** : jamais deux APK qui écrivent deux « v5 » différentes
+  sur la vraie partie. Si Kevin veut passer le J11 avant OUV.1, c'est OUV qui renumérote (à décider
+  par lui).
+- **Champs additifs, avec valeur par défaut** : absent = aucun compagnon ; `uid` attribué au chargement
+  à chaque Pokémon qui n'en a pas (équipe dans l'ordre, puis Stockage dans l'ordre : **ordre et contenu
+  inchangés**) ; compteur de sommeil absent = tiré au premier tour. Le compagnon est désigné **par
+  `uid`, jamais par sa position** ; il reste choisi quand il rentre dans sa Ball (intérieurs, K.O.,
+  cinématiques) : seule la visibilité change, jamais le choix.
 - Une partie J10 se charge sans perte (Pokémon, objets, badges, drapeaux, Grands moments).
 - **Sous-jalon validé seul sur S24** (règle 1).
 
@@ -279,7 +286,7 @@ Aucune humeur ni amitié cachée : la phrase dépend seulement de faits visibles
 |---|---|---|
 | **J10** | **terminé, fusionné dans `main`** (`e80f636`) | plus de blocage : la remise de la CT34 et les stocks d'Argenta se font sur les fichiers réels ; compatibilités CT des 40 espèces. |
 | **CB.3** | fusionné dans `main` | effets de statut au-dessus des sprites (§3.3) ; Patience et messages passent par le `BattleDirector`. |
-| **OUV** | branche locale non poussée | seule interaction : la version de sauvegarde (§9). Aucun fichier d'OUV touché par le J11. |
+| **OUV** | OUV.0 fusionné ; OUV.1 (sauvegarde v5) à venir | le J11 écrit la **v6** par-dessus ; 11.0 fusionné et joué sur S24 **après** OUV.1 (§9). `game_state.gd` / `save_system.gd` / `boot.gd` partagés : aucun fichier propre à OUV touché par le J11. |
 | **J12** | conception en cours avec ChatGPT | **le J12 dépend du J11** pour : évolutions par pierre (Pierre Lune ; à coder au J12 avant de la rendre obtenable), Destruction / Explosion si des Racaillou ≥ Nv. 21, Antigel si une capacité gèle, planches de compagnon (§8.2). |
 | Roadmap | phase 7 | mise à jour à la clôture (changement de Pokémon du joueur déjà fait ; IA, pierres, dos peints reportés). |
 
@@ -315,24 +322,28 @@ Critères d'acceptation : `docs/tech/jalon-11.md` §4.
 | A-13 | Phrases du compagnon | **≈ 10 génériques**, contextualisées, sans amitié cachée |
 | A-14 | OUV | **Chantier d'ouverture** (écran titre, introduction de Chen, noms, nouvelle partie, sauvegarde) ; branche locale `docs/dossier-13-ouverture` ; ce dossier renuméroté 14 |
 
-## 13. Lot de textes — EN ATTENTE DE KEVIN
+## 13. Lot de textes — VALIDÉ par Kevin le 2026-10-10 (avec retouches)
 
 Conventions des lots J7 et J9 : `{pokemon}` = nom ou surnom, `{move}` capacité, `{n}` nombre ; la forme
-au féminin (`text_f`) est donnée entre crochets ; bulles de 2 lignes de ~40 caractères. **Rien n'est
-validé d'office.**
+au féminin (`text_f`) est donnée entre crochets ; bulles de 2 lignes de ~40 caractères. **Validé par Kevin le 2026-10-10** : tout le lot, avec les
+retouches des n° 1, 2, 21, 25, 27, 33, 45, 50, 51, 54 (intégrées ci-dessous). Les textes déjà verrouillés
+ailleurs (n° 18, 43, 48) restent mot pour mot ; « Mais ça échoue ! » (n° 27) ne sert qu'aux cas
+nouveaux du J11 et ne remplace aucun message existant.
 
 ### 13.1 Paralysie
-1. Infligée : « {pokemon} est paralysé[e] ! Il[Elle] aura du mal à attaquer. »
-2. Ne peut pas agir : « {pokemon} est paralysé[e] ! Il[Elle] ne peut pas attaquer ! »
+1. Infligée : « {pokemon} est paralysé[e] ! »
+2. Ne peut pas agir : « {pokemon} est paralysé[e] ! Impossible d'agir ! »
 3. Déjà : « {pokemon} est déjà paralysé[e] ! »
 4. Soignée : « {pokemon} n'est plus paralysé[e]. »
 
 ### 13.2 Sommeil
 5. Infligé : « {pokemon} s'endort ! »
 6. Dort : « {pokemon} dort profondément. »
-7. Réveil : « {pokemon} se réveille ! »
+7. Réveil **naturel** (fin du compteur, en combat) : « {pokemon} se réveille ! »
 8. Déjà : « {pokemon} est déjà endormi[e] ! »
-9. Soigné (Réveil) : « {pokemon} est réveillé[e]. »
+9. Soigné **par l'objet Réveil** (après « Tu utilises Réveil sur {pokemon}. », en combat ou hors
+   combat) : « {pokemon} est réveillé[e]. » — événement distinct du n° 7 (`STATUS_CURED` et non
+   `WOKE_UP`), jamais affiché pour un réveil spontané.
 
 ### 13.3 Brûlure
 10. Infligée : « {pokemon} est brûlé[e] ! »
@@ -352,16 +363,16 @@ validé d'office.**
 ### 13.6 Confusion
 19. Infligée : « {pokemon} est confus[e] ! »
 20. Test : « {pokemon} est confus[e]… »
-21. Se frappe : « Il[Elle] se blesse dans sa confusion ! »
+21. Se frappe : « {pokemon} se blesse dans sa confusion ! »
 22. Fin : « {pokemon} n'est plus confus[e] ! »
 23. Déjà : « {pokemon} est déjà confus[e] ! »
 
 ### 13.7 Effets de capacités
 24. Multi-coups : « Touché {n} fois ! »
-25. Apeurement : « {pokemon} a peur et ne peut pas attaquer ! »
+25. Apeurement : « {pokemon} a peur ! Impossible d'agir ! »
 26. Puissance : « {pokemon} se concentre ! »
 27. Échec générique (Puissance déjà active, statut sur une cible déjà atteinte d'un autre statut, Patience
-    sans dégâts) : « Mais cela échoue ! » (nouveau)
+    sans dégâts) : « Mais ça échoue ! » (nouveau, cas du J11 seulement)
 
 ### 13.8 Patience
 28. Tour 1 : « {pokemon} se prépare à encaisser ! »
@@ -369,8 +380,9 @@ validé d'office.**
 30. Tour 3 : « {pokemon} riposte ! »
 31. Stock nul : n° 27
 32. Rompue : « La patience de {pokemon} est rompue ! »
-33. Description de la capacité : « Le lanceur encaisse pendant deux tours, puis rend le double des
-    dégâts reçus. »
+33. Description de la capacité : « Encaisse deux tours, puis riposte avec le double des dégâts reçus. »
+    Vérifié contre §6.3 : tours 1 et 2 = encaisser, tour 3 = riposter (les dégâts reçus au tour 3
+    avant la riposte, quand l'adversaire est plus rapide, comptent aussi : c'est toujours « reçus »).
 
 ### 13.9 Remèdes (nom · pluriel · description)
 34. Anti-Para · Anti-Para · « Soigne un Pokémon paralysé. »
@@ -388,7 +400,7 @@ validé d'office.**
 44. Refus en combat (toucher une CT pendant un combat) : « Les CT s'utilisent hors combat. »
 
 ### 13.11 Pierre
-45. Nouvelle partie, juste après « … à l'Arène d'Argenta. » : « Prends aussi ceci. »
+45. Nouvelle partie, juste après « … à l'Arène d'Argenta. » : « Prends ceci aussi. »
 46. « Avec Patience, ton Pokémon encaisse, »
 47. « puis rend les coups au double. »
 48. Partie déjà badgée (dossier 12 §14, déjà validé) : « J'allais oublier. » / « Ceci devrait t'être
@@ -396,11 +408,11 @@ validé d'office.**
 
 ### 13.12 Compagnon
 49. Actions : « FAIRE SORTIR » · « RAPPELER »
-50. Générique : « {pokemon} te regarde, l'air content[e]. »
-51. Générique : « {pokemon} renifle l'air autour de lui[d'elle]. »
+50. Générique : « {pokemon} te regarde, l'air heureux. »
+51. Générique : « {pokemon} renifle l'air. »
 52. Générique : « {pokemon} suit quelque chose des yeux. »
 53. Générique : « {pokemon} s'étire. »
-54. Générique : « {pokemon} semble prêt[e] à repartir. »
+54. Générique : « {pokemon} s'étire doucement. »
 55. PV bas : « {pokemon} a l'air fatigué[e]. »
 56. Statut : « {pokemon} n'a pas l'air dans son assiette. »
 57. Forêt : « {pokemon} écoute les bruits de la forêt. »

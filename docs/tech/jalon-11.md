@@ -6,8 +6,9 @@
 > courte) et **présents dans le monde** (un compagnon choisi qui suit le joueur dehors).
 >
 > **Source de vérité** : `docs/design/dossier-14-systemes-j11.md` (8 décisions et A-1 à A-14 validés
-> par Kevin le 2026-10-10). **Statut du plan : écrit, en attente de Kevin** avec le lot de textes du
-> dossier §13. **Aucune tâche de code ne démarre avant ces deux validations.**
+> par Kevin le 2026-10-10). **Statut : plan validé sur le principe par Kevin le 2026-10-10**, lot de textes
+> du dossier §13 validé avec retouches. **Feu vert pour T1 seulement** ; T2 et la suite après la
+> validation S24 de 11.0. Le J11 reste isolé de CB.3, d'OUV et de la conception du J12.
 >
 > Plan écrit sur `claude/lancement-j11-4pkt2k` depuis `main` à `e80f636` (J10 terminé, fusionné).
 
@@ -73,17 +74,28 @@ après sa fusion dans `jalon-11`.
 
 ### 2.1 Sauvegarde (T1–T3, 11.0)
 
-- `Pokemon.uid: String` (16 caractères hexadécimaux tirés de `GameRng`, unique dans la partie) ;
-  `to_dict` / `from_dict` ; un Pokémon sans `uid` en reçoit un au chargement (migration). Copié tel quel
-  au Stockage et à l'évolution.
+- `Pokemon.uid: String` (16 caractères hexadécimaux, unique dans la partie) ; `to_dict` / `from_dict` ;
+  un Pokémon sans `uid` en reçoit un au chargement, **équipe dans l'ordre puis Stockage dans l'ordre :
+  aucun Pokémon ajouté, retiré ni déplacé** ; un doublon (fichier modifié à la main) est régénéré pour
+  le second. Copié tel quel au Stockage et à l'évolution (même objet `Pokemon`).
 - `Pokemon.status_turns: int` (0 = aucun compteur) : tours de sommeil restants ; gel sans compteur.
-- `GameState.companion_uid: String` (vide = aucun) ; relu tolérant (uid inconnu = vide + journal `[qa]`).
+- `GameState.companion_uid: String` (vide = aucun) ; relu tolérant (uid absent de l'équipe = vide +
+  journal `[qa]`). **Le compagnon est toujours désigné par `uid`, jamais par sa position** :
+  réordonner l'équipe ne le change pas ; rentrer dans sa Ball (intérieur, K.O., cinématique) ne
+  touche pas `companion_uid` (seule la visibilité, calculée, change).
 - `tm34_received` : drapeau d'histoire ordinaire (aucun format).
-- **Version** : relire `SaveSystem.VERSION` sur `main` au démarrage de T1 ; si OUV a fusionné une v5,
-  le J11 écrit **v6**, sinon **v5** (dossier §9). Branche `_upgrade_N_to_N+1` : attribue les `uid`,
-  rien d'autre. Refus par l'APK précédent vérifié octet pour octet (procédure du 9A.1).
-- Tests : aller-retour, migration v4 → J11 sur un fichier réel (`save_v4_qa`), unicité des `uid`
-  après capture, Stockage, évolution ; uid inconnu ; fichier corrompu inchangé.
+- **Version (vérifié au démarrage de T1, 2026-10-10)** : `main` en v4 ; **OUV.1 réserve la v5**
+  (`rival_name`, `player_look`) → **le J11 écrit la v6** (dossier §9). Tant qu'OUV.1 n'est pas dans
+  `main`, la branche de T1 porte un numéro provisoire et **n'est ni fusionnée ni installée sur la
+  vraie partie de Kevin** ; à la fusion d'OUV.1 : fusion de `main`, migration v5 → v6, fixture v5
+  réelle d'OUV, puis T2 et T3. Migration **additive** : le pas du J11 attribue les `uid`, rien
+  d'autre ; tout autre champ absent prend sa valeur par défaut. Refus par l'APK précédent vérifié octet
+  pour octet (procédure du 9A.1).
+- Tests : aller-retour ; migration depuis un fichier v4 réel (`save_v4_qa`) puis depuis la v5 d'OUV :
+  **mêmes Pokémon, même ordre** dans l'équipe et au Stockage, mêmes objets, argent, badges, drapeaux,
+  Grands moments ; `uid` stables d'un chargement à l'autre et uniques après capture, Stockage,
+  évolution ; doublon régénéré ; compagnon gardé après réordonnancement de l'équipe, effacé s'il est
+  déposé ou absent ; uid inconnu ; fichier corrompu inchangé ; version plus récente refusée.
 
 ### 2.2 Statuts (T4–T6, 11A)
 
@@ -110,6 +122,16 @@ après sa fusion dans `jalon-11`.
 - Tests : chaque statut × combat sauvage, Dresseur, changement, K.O., fin de combat, sauvegarde /
   rechargement, capture ; immunités ; graines fixées (`GameRng`) ; **chaque capacité du §4.2**
   avec son effet (table de test pilotée par les données) ; non-régression du poison du J9.
+- **Matrice d'interactions** (ordre des tests d'un tour : sommeil / gel → paralysie → apeurement →
+  confusion → capacité) : endormi **et** confus (le sommeil bloque, la confusion ne baisse pas pendant
+  le sommeil [D]) ; paralysé **et** confus (paralysie testée d'abord : bloqué = pas de test de
+  confusion) ; apeuré quand il est endormi (rien : déjà bloqué, pas de message d'apeurement) ; se
+  frapper dans la confusion pendant un multi-coups (aucun coup) ; multi-coups qui met K.O. au 2e coup
+  (arrêt, « Touché 2 fois ! ») ; multi-coups contre un Pokémon qui gèle ou s'endort entre deux coups
+  (impossible : le statut s'applique après le dernier coup) ; apeurement par le 1er coup d'un
+  multi-coups (une seule chance par capacité [D]) ; changement de Pokémon (confusion et apeurement
+  perdus, statut majeur et compteur gardés) ; réveil naturel (n° 7) **et** Réveil objet (n° 9)
+  distingués par leur événement.
 
 ### 2.3 Présentation des statuts (T7, 11A)
 
@@ -154,8 +176,23 @@ Salamèche Flammèche, Papilusion, Nidoran ♂ Puissance ; remèdes). Retirée �
   dossier §6.3 ; riposte typeless, sans précision, plafonnée aux PV de la cible ; échec à 0.
 - Données : `bide` dans `moves.json` (Normal, physique, PP 10, priorité 0, `effects: [{kind:
   "bide"}]`) ; objet `tm34`.
-- Tests : riposte exacte, multi-coups, stock nul, chaque rupture, adversaire qui change, capture /
-  fuite pendant Patience, sauvegarde après le combat sans trace.
+- **Déroulé exact** (dossier §6.3) :
+
+  | Tour | Lanceur | Stock |
+  |---|---|---|
+  | 1 | choisit Patience (1 PP) → « se prépare à encaisser ! » | 0, puis + coups directs reçus |
+  | 2 | action imposée → « encaisse ! » | + coups directs reçus |
+  | 3 | action imposée → « riposte ! » : 2 × stock (au plus les PV de la cible), ou « Mais ça échoue ! » | + coups reçus **avant** la riposte |
+
+  **Ruptures** (stock perdu, « La patience de {pokemon} est rompue ! », le lanceur redevient libre au
+  tour suivant) : **paralysé au point de ne pas agir** (un tour où la paralysie ne bloque pas laisse
+  Patience continuer) ; **endormi** ou **gelé** ; **K.O.** (pas de message, le K.O. suffit) ;
+  **retiré** (changement volontaire du joueur) ; se frappe dans la confusion ; apeuré. **L'adversaire
+  change de Pokémon** : le stock reste et frappe le nouveau. Fin du combat (capture, fuite) : rien
+  n'est gardé, rien n'est sauvegardé.
+- Tests : riposte exacte, multi-coups, stock nul, **chaque rupture** (paralysie bloquante et non
+  bloquante, sommeil, gel, K.O., retrait, confusion, apeurement), adversaire qui change, adversaire
+  plus rapide au tour 3, capture / fuite pendant Patience, sauvegarde après le combat sans trace.
 
 ### 2.8 Remise par Pierre (T14, 11B)
 
