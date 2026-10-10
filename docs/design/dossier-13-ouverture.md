@@ -453,6 +453,16 @@ Concrètement :
 - **Interface** : le thème 2026 du jeu (skill `ui-theme-2026`, panneaux sombres translucides, la même boîte de dialogue que le prologue), aucune police ni cadre rétro.
 - **Chaque prompt de référence** joint `bourg-palette-vue-generale-v1.png`, `labo-chen-v1.png` et `heros_portrait.png` comme ancres.
 
+### 9.0 bis Références et assets validés (Kevin, 2026-10-10)
+Générés par Codex (prompts `tools/art/prompts/ouverture/`), validés selon les recommandations de Claude :
+- **`reference/ouverture-titre-v1.webp`** : composition de l'écran titre (logo en haut à gauche, grande carte Continuer à liseré doré avec buste, prénom, lieu, temps, badges, captures ; Nouvelle partie ; Paramètres). **Ne fait pas foi** : le décor (camionnette, falaises, bâtiment à emblème Poké Ball : ce n'est pas notre Bourg Palette ; en jeu, le fond est la vraie carte en direct) et le logo (remplacé, ci-dessous).
+- **`reference/ouverture-chen-v1.webp`** : scène de Chen (labo très flouté dans la lumière dorée, Chen en pied à gauche, Nidorino à droite avec des étincelles, boîte de dialogue sombre du jeu, étiquette « Prof. Chen »). **Ne fait pas foi** : Nidorino y est peint ; en jeu, c'est l'artwork officiel (arbitrage A8), et Chen y a le visage jeune du r2 (le r3 est retenu).
+- **`reference/ouverture-prenom-v1.webp`** : écran de prénom (héros à gauche, panneau en haut à droite : titre, champ, compteur, trois pastilles, VALIDER doré ; clavier du téléphone en bas).
+- **Portrait de Chen** : `build/art/PORTRAIT_CHEN_NE_r3.png` (= `VALIDE_PORTRAIT_CHEN.png`), le « r3 âgé ». Le r1 a été refusé par le filtre de Codex (personnage reconnu) ; le r2 avait un visage d'enfant.
+- **Portrait du rival** : `build/art/PORTRAIT_RIVAL_NE_r1.png` (= `VALIDE_PORTRAIT_RIVAL.png`), bras croisés.
+- **Logo** : **r2 retenu** (`build/art/LOGO_KANTO_2026_r2.png` = `VALIDE_LOGO_KANTO_2026.png`) : capitales dorées à empattements doux, contour bleu nuit, « 2026 » bleu clair entre deux filets dorés. Écartés : le r1 (O en forme de fruit avec une pousse, trop « jeu pour enfants ») et le r3 (capitales jaunes à contour bleu et soleil levant, trop proche du logo officiel Pokémon). Le fond sombre lumineux est à détourer pour l'écran titre et l'image de démarrage.
+- Les portraits validés entrent dans `assets/` (via `manifeste.json` et `preparer.py`, détourage du fond) en **OUV.2**, pas avant.
+
 ### 9.1 Références visuelles à produire avant l'implémentation (Kevin, avec ChatGPT ; prompts rédigés par Claude sur demande)
 
 | Référence | Contenu attendu |
