@@ -1,0 +1,22 @@
+MAQUETTE — ÉCRAN DE PRÉNOM de Kanto 2026 (jeu mobile en paysage), image de référence de direction artistique.
+
+Pendant l'introduction, le Professeur Chen demande son prénom au joueur. L'écran reste dans la même scène lumineuse que l'introduction.
+
+Images jointes :
+IMAGE 1 : la vue générale peinte de BOURG PALETTE : lumière dorée et palette.
+IMAGE 2 : l'intérieur du LABORATOIRE du jeu, à utiliser comme FOND TRÈS FLOUTÉ et lumineux.
+IMAGE 3 : le portrait en pied du HÉROS validé (casquette rouge et blanche, t-shirt blanc, jean, sac jaune). Pose-le tel quel, sans le redessiner.
+IMAGE 4 : une maquette d'un autre écran du jeu : seulement pour le STYLE DE L'INTERFACE (panneaux sombres bleu nuit translucides, coins arrondis, fine bordure claire, texte blanc sans-serif gras, accent jaune doré).
+
+COMPOSITION (paysage 1536 × 864) :
+- Fond : laboratoire très flouté, lumière dorée chaude.
+- À gauche (environ un tiers de la largeur) : le HÉROS de l'IMAGE 3, en pied, net, éclairé chaudement.
+- Dans la moitié haute, à droite du héros : un PANNEAU sombre translucide aux coins arrondis qui contient :
+  · une ligne de titre : « Comment t'appelles-tu ? » ;
+  · un CHAMP DE SAISIE large, clair, avec le texte « Kevin » et un curseur, et à droite du champ un petit compteur « 5 / 10 » en gris ;
+  · en dessous, trois PASTILLES arrondies de noms proposés : « Red », « Sacha », « Kevin » (la troisième en surbrillance jaune doré, car choisie) ;
+  · en bas à droite du panneau, un bouton « VALIDER » sur fond jaune doré, texte sombre.
+- Toute la moitié basse de l'écran : le CLAVIER DU TÉLÉPHONE (clavier Android AZERTY français sombre, standard, simple), qui recouvre le bas de la scène.
+- Orthographe exacte de tous les textes, en français.
+
+INTERDITS : clavier dessiné façon jeu rétro (grille de lettres), pixel art, 3D, style anime ou manga, logo, autre texte que celui listé, filigrane, signature, cadre de téléphone.
