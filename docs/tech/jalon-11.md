@@ -361,3 +361,10 @@ Aucune décision de game design ouverte : textes du dossier §13 en attente de r
 - **Reste avant T2 / T3** : fusion d'OUV.1 dans `main` puis dans cette branche, passage en v6
   (migration v5 → v6), fixture v5 réelle d'OUV, puis relecture adversariale (T2) et QA S24 seule
   (T3) sur la vraie partie de Kevin.
+
+### T18 — lot d'art du compagnon : préparé (2026-10-10, en avance, pendant l'attente d'OUV.1)
+
+`tools/art/serie13.py` + fiche `docs/design/fiches-assets/serie-13-compagnon.md` : prompts des cinq
+planches (gabarit des starters, ancres héros + forme précédente), hauteurs par défaut, intégration
+décrite (manifeste, `preparer.py`, `LOOKS`, `companions.json` au T20). Génération et validation :
+Kevin, sur le Mac. Rien de branché dans le jeu.
