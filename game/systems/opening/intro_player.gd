@@ -173,7 +173,8 @@ func _play_current() -> void:
 		_choice_shown = false
 		_show_text(entry)
 		if entry.type == IntroStep.Type.PROMPT:
-			_entry.open(_names.suggestions(_role_of(entry.name)), _names.max_length(),
+			_entry.open(_reader.text(), _names.suggestions(_role_of(entry.name)),
+				_names.max_length(),
 				_reader.prefill(), _script.validate_label)
 		step_started.emit(_reader.index())
 		return

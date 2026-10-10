@@ -146,6 +146,7 @@ func test_the_name_entry_opens_on_the_question_with_the_suggestions() -> void:
 	var entry := _stage.get_name_entry()
 	assert_true(entry.is_open())
 	assert_eq(_box.get_text(), "Comment t'appelles-tu ?", "la question reste dans la boîte")
+	assert_eq(entry.get_title_text(), "Comment t'appelles-tu ?", "et titre le panneau")
 	assert_true(_box.is_open())
 	var chips: Array[String] = []
 	for chip: Button in entry.get_chips():
@@ -262,6 +263,72 @@ func _simulated_duration() -> float:
 		_intro.is_running()])
 	sim.finish()
 	return seconds
+
+
+## Vrais événements d'entrée (QA S21 : aucun toucher n'atteignait le panneau, la boîte de
+## dialogue, ouverte au-dessus, les prenait) : clic envoyé au Viewport au centre du contrôle.
+func _tap(control: Control) -> void:
+	var at := control.get_global_rect().get_center()
+	for pressed: bool in [true, false]:
+		# Téléphone : l'écran tactile, puis la souris émulée depuis le toucher.
+		var touch := InputEventScreenTouch.new()
+		touch.index = 0
+		touch.position = at
+		touch.pressed = pressed
+		get_viewport().push_input(touch, true)
+		var mouse := InputEventMouseButton.new()
+		mouse.button_index = MOUSE_BUTTON_LEFT
+		mouse.position = at
+		mouse.global_position = at
+		mouse.pressed = pressed
+		mouse.button_mask = MOUSE_BUTTON_MASK_LEFT if pressed else 0
+		get_viewport().push_input(mouse, true)
+		await wait_process_frames(1)
+
+
+func test_real_taps_reach_the_name_panel_and_the_choice() -> void:
+	# L'interface de GUT (sous GUT seulement) couvre une partie de l'écran : elle est cachée le
+	# temps du test (un contrôle caché ne reçoit aucun toucher).
+	var hidden: Array[Control] = []
+	for output: Node in get_tree().root.find_children("TestOutput", "Control", true, false):
+		var top := output as Control
+		while top.get_parent() is Control:
+			top = top.get_parent() as Control
+		if top.visible:
+			top.visible = false
+			hidden.append(top)
+	await _real_taps()
+	for top: Control in hidden:
+		top.visible = true
+
+
+func _real_taps() -> void:
+	_start()
+	await _advance_until(func() -> bool: return _intro.is_waiting_for_name())
+	await wait_process_frames(2)
+	assert_true(_box.is_open(), "la boîte reste ouverte derrière le panneau")
+	var entry := _stage.get_name_entry()
+	var line := entry.get_line_edit()
+	line.release_focus()
+	await _tap(line)
+	assert_true(line.has_focus(), "un toucher sur le champ rouvre le clavier")
+	await _tap(entry.get_chips()[1])
+	assert_eq(entry.get_text(), "Sacha", "la pastille reçoit le toucher")
+	await _tap(entry.get_validate_button())
+	await _advance_until(func() -> bool: return _intro.is_waiting_for_choice())
+	await wait_process_frames(12)
+	assert_eq(_intro.get_reader().player_name(), "Sacha", "VALIDER reçoit le toucher")
+	await _tap(_box.get_choice_cards().get_cancel_button())
+	await wait_process_frames(2)
+	assert_true(_intro.is_waiting_for_name(), "« Non » reçoit le toucher")
+	await wait_process_frames(2)
+	await _tap(entry.get_validate_button())
+	await _advance_until(func() -> bool: return _intro.is_waiting_for_choice())
+	await wait_process_frames(12)
+	await _tap(_box.get_choice_cards().get_confirm_button())
+	await wait_process_frames(2)
+	assert_false(_intro.is_waiting_for_choice(), "« Oui » reçoit le toucher")
+	assert_gt(_intro.get_reader().index(), 14, "on continue après la confirmation")
 
 
 func _advance_until(done: Callable) -> void:

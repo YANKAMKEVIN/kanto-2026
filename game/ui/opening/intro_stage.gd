@@ -19,7 +19,8 @@ extends CanvasLayer
 ## « Réduire les animations » ([member reduce_motion]) : durées raccourcies, ni montée, ni
 ## glissement (fondu sur place), ni respiration. [member speed_scale] = 0 : tout est instantané.
 ## Vue pure : elle ne connaît ni le script de l'introduction ni les prénoms.
-## Elle porte aussi l'écran de prénom ([NameEntry]), au-dessus des portraits.
+## Elle porte aussi l'écran de prénom ([NameEntry]), sur un calque au-dessus de la boîte de
+## dialogue (LAYER_NAME_ENTRY).
 
 ## Portraits connus (identifiants de `data/opening/oak_intro.json`) et leur hauteur affichée.
 const TEXTURES: Dictionary[StringName, Texture2D] = {
@@ -66,8 +67,14 @@ func _ready() -> void:
 	_build_backdrop()
 	_portraits_layer = _full_rect("Portraits")
 	_effects_layer = _full_rect("Effects")
+	# L'écran de prénom a son propre calque, **au-dessus** de la boîte de dialogue (ouverte
+	# derrière, son fond plein écran prendrait tous les touchers : QA S21).
+	var entry_layer := CanvasLayer.new()
+	entry_layer.name = "EntryLayer"
+	entry_layer.layer = UiTokens.LAYER_NAME_ENTRY
+	add_child(entry_layer)
 	_name_entry = NAME_ENTRY_SCENE.instantiate() as NameEntry
-	_root.add_child(_name_entry)
+	entry_layer.add_child(_name_entry)
 
 
 ## Montre [param portrait] à l'emplacement [param slot] (`left`, `center`, `right`) : entrée en

@@ -115,7 +115,7 @@ extends SceneTree
 ##   TitleEntryLabel / TitleContinueTitle / TitleContinueName / TitleContinueZone /
 ##   TitleContinueStat / TitleMessageText (Label)
 ## Écran de prénom (OUV.2) : NamePanel (PanelContainer, verre sombre à liseré ACCENT), NameField
-##   (LineEdit clair), NameCounter / NameHelp (Label), NameChip / NameChipSelected (Button,
+##   (LineEdit clair), NameTitle / NameCounter / NameHelp (Label), NameChip / NameChipSelected (Button,
 ##   pastilles), NameValidate (Button ACCENT, éteint quand il est inactif)
 ## tests/unit/test_ui_theme.gd vérifie que le fichier est à jour avec les tokens.
 
@@ -1820,6 +1820,7 @@ func _add_name_entry(theme: Theme, bold: Font, t: GDScript) -> void:
 	theme.set_color(&"selection_color", &"NameField", t.tinted(t.ACCENT, 0.45))
 	theme.set_constant(&"caret_width", &"NameField", 3)
 
+	_add_plain_label(theme, &"NameTitle", t.NAME_TITLE_FONT, t.TEXT, bold)
 	_add_plain_label(theme, &"NameCounter", t.NAME_COUNTER_FONT, t.NAME_COUNTER_COLOR, null)
 	_add_plain_label(theme, &"NameHelp", t.NAME_HELP_FONT, t.ACCENT, null)
 

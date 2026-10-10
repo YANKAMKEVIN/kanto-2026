@@ -91,6 +91,9 @@ const LAYER_WORLD_GRADE := 6
 const LAYER_HUD := 10
 const LAYER_MENU := 20
 const LAYER_DIALOG := 30
+## Écran de prénom de l'introduction (OUV.2) : au-dessus de la boîte de dialogue, qui reste
+## ouverte derrière et prendrait sinon tous les touchers (QA S21).
+const LAYER_NAME_ENTRY := 31
 const LAYER_TRANSITION := 100
 
 # --- Titre de zone ----------------------------------------------------------------------------
@@ -1767,6 +1770,10 @@ const NAME_COUNTER_WIDTH := 120
 ## quand elle apparaît).
 const NAME_HELP_FONT := FONT_CAPTION
 const NAME_HELP_HEIGHT := 32
+## L'aide s'efface d'elle-même après ce délai (ou à la frappe suivante sans caractère refusé).
+const NAME_HELP_HOLD := 3.0
+## Titre du panneau : la question de Chen (le clavier scindé cache la boîte de dialogue).
+const NAME_TITLE_FONT := FONT_TITLE
 ## Pastilles des noms proposés et VALIDER : zones tactiles d'au moins TOUCH_MIN.
 const NAME_CHIP_WIDTH := 200
 const NAME_CHIP_FONT := FONT_BUTTON

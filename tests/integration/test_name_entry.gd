@@ -5,7 +5,9 @@ extends GutTest
 ## Android = fermer le clavier.
 
 const SCENE := preload("res://game/ui/opening/name_entry.tscn")
+const TweenClock := preload("res://tests/helpers/tween_clock.gd")
 const SUGGESTIONS := ["Red", "Sacha", "Kevin"]
+const QUESTION := "Comment t'appelles-tu ?"
 
 var _entry: NameEntry
 var _submitted: Array[String] = []
@@ -16,7 +18,7 @@ func before_each() -> void:
 	_entry = SCENE.instantiate() as NameEntry
 	add_child_autofree(_entry)
 	_entry.submitted.connect(func(raw: String) -> void: _submitted.append(raw))
-	_entry.open(PackedStringArray(SUGGESTIONS), 10, "", "Valider")
+	_entry.open(QUESTION, PackedStringArray(SUGGESTIONS), 10, "", "Valider")
 
 
 func test_opens_empty_with_the_suggestions_and_validate_inactive() -> void:
@@ -30,6 +32,7 @@ func test_opens_empty_with_the_suggestions_and_validate_inactive() -> void:
 	assert_eq(chips, ["Red", "Sacha", "Kevin"] as Array[String])
 	assert_true(_entry.get_validate_button().disabled)
 	assert_eq(_entry.get_validate_button().text, "VALIDER")
+	assert_eq(_entry.get_title_text(), QUESTION, "la question de Chen en titre (QA S21)")
 
 
 func test_native_field_with_max_length_and_virtual_keyboard() -> void:
@@ -94,7 +97,7 @@ func test_validate_and_enter_submit_only_a_valid_name() -> void:
 
 func test_prefill_after_no() -> void:
 	_entry.close()
-	_entry.open(PackedStringArray(SUGGESTIONS), 10, "Régis", "Valider")
+	_entry.open(QUESTION, PackedStringArray(SUGGESTIONS), 10, "Régis", "Valider")
 	assert_eq(_entry.get_text(), "Régis")
 	assert_eq(_entry.get_line_edit().caret_column, 5, "curseur au bout")
 	assert_false(_entry.get_validate_button().disabled)
@@ -127,3 +130,21 @@ func test_closed_entry_ignores_everything() -> void:
 	assert_false(_entry.visible)
 	_entry.get_validate_button().pressed.emit()
 	assert_eq(_submitted, [] as Array[String])
+
+
+## Défaut (QA S21, point 4) : l'aide s'efface d'elle-même après NAME_HELP_HOLD.
+func test_the_help_fades_away_after_a_while() -> void:
+	var clock := TweenClock.new(get_tree())
+	_entry.type_text("Ash9")
+	assert_eq(_entry.get_help_text(), NameRules.INVALID_CHAR_HELP)
+	clock.step(UiTokens.NAME_HELP_HOLD - 0.1)
+	assert_eq(_entry.get_help_text(), NameRules.INVALID_CHAR_HELP, "pas avant le délai")
+	clock.step(0.2)
+	assert_eq(_entry.get_help_text(), "", "effacée après le délai")
+	assert_eq(_entry.get_text(), "Ash")
+	clock.release()
+
+
+func test_the_panel_is_above_the_dialogue_box() -> void:
+	assert_gt(UiTokens.LAYER_NAME_ENTRY, UiTokens.LAYER_DIALOG)
+	assert_lt(UiTokens.LAYER_NAME_ENTRY, UiTokens.LAYER_TRANSITION)

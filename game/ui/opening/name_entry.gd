@@ -10,9 +10,11 @@ extends Control
 ##   compris), limité à `max_length` caractères ; chaque frappe ou collage passe par
 ##   [method NameRules.filter_input] (caractères refusés retirés, tronqué) ;
 ## - compteur discret « 4 / 10 » au bout du champ ;
-## - aide « Lettres, espaces, - et ’ seulement » sous le champ, **seulement** quand la dernière
-##   frappe contenait un caractère refusé (sa place est réservée : rien ne bouge) ; jamais de
-##   pop-up ;
+## - titre : la question de Chen (« Comment t'appelles-tu ? »), lue dans les données — le clavier
+##   scindé du téléphone cache la boîte de dialogue (QA S21, décision de Kevin) ;
+## - aide « Lettres, espaces, - et ’ seulement » sous le champ quand la dernière frappe contenait
+##   un caractère refusé ; elle s'efface à la frappe suivante sans caractère refusé ou après
+##   NAME_HELP_HOLD (sa place est réservée : rien ne bouge) ; jamais de pop-up ;
 ## - pastilles des noms proposés (toucher = remplir le champ) et **VALIDER**, actif seulement si
 ##   [method NameRules.validate] vaut OK.
 ## Vue pure : elle émet [signal submitted] avec la saisie brute (la normalisation est faite par
@@ -27,6 +29,8 @@ var _suggestions: PackedStringArray = PackedStringArray()
 var _open: bool = false
 var _help_shown: bool = false
 var _panel: PanelContainer
+var _title: Label
+var _help_tween: Tween
 var _line: LineEdit
 var _counter: Label
 var _help: Label
@@ -41,11 +45,13 @@ func _ready() -> void:
 	visible = false
 
 
-## Ouvre l'écran : [param suggestions] (les pastilles), [param max_length] caractères au plus,
-## champ prérempli de [param prefill] (retour par « Non »), bouton [param validate_label].
-## Le champ prend le focus : le clavier du téléphone s'ouvre.
-func open(suggestions: PackedStringArray, max_length: int, prefill: String,
+## Ouvre l'écran : [param title] (la question de Chen), [param suggestions] (les pastilles),
+## [param max_length] caractères au plus, champ prérempli de [param prefill] (retour par « Non »),
+## bouton [param validate_label]. Le champ prend le focus : le clavier du téléphone s'ouvre.
+func open(title: String, suggestions: PackedStringArray, max_length: int, prefill: String,
 		validate_label: String) -> void:
+	_title.text = title
+	_title.visible = not title.is_empty()
 	_suggestions = suggestions
 	_max_length = maxi(max_length, 1)
 	_line.max_length = _max_length
@@ -119,6 +125,11 @@ func get_counter_text() -> String:
 	return _counter.text
 
 
+## Titre du panneau (la question de Chen).
+func get_title_text() -> String:
+	return _title.text if _title.visible else ""
+
+
 ## Aide sous le champ ("" quand elle est cachée).
 func get_help_text() -> String:
 	return _help.text
@@ -145,6 +156,12 @@ func _build() -> void:
 	column.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	column.add_theme_constant_override(&"separation", UiTokens.NAME_PANEL_GAP)
 	_panel.add_child(column)
+	_title = Label.new()
+	_title.name = "Title"
+	_title.theme_type_variation = &"NameTitle"
+	_title.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	_title.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	column.add_child(_title)
 	var field := Control.new()
 	field.name = "Field"
 	field.custom_minimum_size.y = UiTokens.NAME_FIELD_HEIGHT
@@ -219,10 +236,27 @@ func _rebuild_chips() -> void:
 func _on_text_changed(raw: String) -> void:
 	var filtered := NameRules.filter_input(raw, _max_length)
 	_help_shown = NameRules.has_invalid_chars(raw)
+	_restart_help_timer()
 	if filtered != raw:
 		var caret := _line.caret_column - (raw.length() - filtered.length())
 		_line.text = filtered
 		_line.caret_column = clampi(caret, 0, filtered.length())
+	_refresh()
+
+
+## L'aide s'efface d'elle-même après NAME_HELP_HOLD (tween : le temps se simule en test).
+func _restart_help_timer() -> void:
+	if _help_tween != null:
+		_help_tween.kill()
+		_help_tween = null
+	if _help_shown and is_inside_tree():
+		_help_tween = create_tween()
+		_help_tween.tween_interval(UiTokens.NAME_HELP_HOLD)
+		_help_tween.tween_callback(_hide_help)
+
+
+func _hide_help() -> void:
+	_help_shown = false
 	_refresh()
 
 
