@@ -1,12 +1,15 @@
 # Dossier 13 — L'ouverture : démarrage, écran titre, introduction du Prof. Chen (chantier « OUV »)
 
-> Commande de Kevin du 2026-10-10 (« Chantier J0 — Ouverture de Kanto 2026 »). **V0.1 de Claude** (V0 du 2026-10-10, revue intégrée le même jour) : audit de l'existant, architecture proposée, storyboard, écrans, cas limites, assets manquants et **arbitrages à trancher** (section A). **Rien n'est validé**, et **les textes de Chen du §6 sont des propositions**. **Aucune implémentation avant la validation de ce dossier et des références visuelles (§9), ni avant la fusion du J10 dans `main`** (le J10 modifie `boot.gd` et `game_state.gd`, qu'il faudra aussi modifier ici).
+> Commande de Kevin du 2026-10-10 (« Chantier J0 — Ouverture de Kanto 2026 »). **V0.1 de Claude** (V0 du 2026-10-10, revue intégrée le même jour) : audit de l'existant, architecture proposée, storyboard, écrans, cas limites, assets manquants et **arbitrages à trancher** (section A). **Validé par Kevin le 2026-10-10** (voir ci-dessous). **Aucune implémentation avant la validation de ce dossier et des références visuelles (§9), ni avant la fusion du J10 dans `main`** (le J10 modifie `boot.gd` et `game_state.gd`, qu'il faudra aussi modifier ici).
 
 **Décision créative de Kevin** : on garde l'introduction emblématique du Professeur Chen de Rouge/Bleu, réalisée dans la DA 2D HD peinte de Kanto 2026. Fidèle au déroulé, sans interface rétro pixelisée et sans réécrire le prologue existant.
 
 **Parcours cible** : splash → écran titre (Continuer · Nouvelle partie · Paramètres) → introduction de Chen → présentation du monde → apparence et prénom du joueur → présentation et prénom du rival → transition vers la chambre → prologue existant, inchangé.
 
-## Revue du 2026-10-10 (ChatGPT, transmise par Kevin) — **en attente de la validation de Kevin**
+## ✅ VALIDÉ PAR KEVIN le 2026-10-10
+Kevin a validé **l'ensemble du dossier V0.1** : les 14 arbitrages selon les recommandations (A2 = **option A**, héros actuel, modèle prêt pour une héroïne), les textes de Chen du §6 (sans petit-fils refusé : version « petit-fils »), le storyboard et les références à produire. **Implémentation du câblage après la fusion du J10** ; le travail sur des fichiers neufs peut commencer avant (voir `etat-projet.md`).
+
+## Revue du 2026-10-10 (ChatGPT, transmise par Kevin)
 Positions **recommandées** sur les six premiers arbitrages ; rien n'est verrouillé tant que Kevin ne l'a pas confirmé :
 
 | # | Sujet | Position recommandée |
