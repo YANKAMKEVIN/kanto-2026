@@ -2,12 +2,14 @@ extends GutTest
 ## PokedexLibrary : data/pokedex/kanto.json (jalon-06.md §3.5 ; Q-5 taille et poids officiels,
 ## descriptions provisoires ; Q-6 une note par espèce rencontrable).
 
-## Formes de base rencontrables (J6 Q-6, + Route 22 au J7, + Forêt de Jade au J9) : une note
-## chacune, débloquée à la première observation. Les évolutions n'en ont pas, même
-## rencontrables (Chrysacier, Coconfort : lot de textes du J9, n° 41, 45, 49).
+## Formes de base rencontrables (J6 Q-6, + Route 22 au J7, + Forêt de Jade au J9, + Dresseurs
+## d'Argenta au J10) : une note chacune, débloquée à la première observation. Les évolutions
+## n'en ont pas, même rencontrables (Chrysacier, Coconfort : lot de textes du J9, n° 41, 45,
+## 49 ; Gravalanch, Grolem, Sablaireau : lot du J10, n° 17, 18, 23).
 const ENCOUNTERABLE: Array[StringName] = [
 	&"bulbasaur", &"charmander", &"squirtle", &"pidgey", &"rattata",
 	&"spearow", &"mankey", &"nidoran_f", &"nidoran_m", &"caterpie", &"weedle", &"pikachu",
+	&"geodude", &"onix", &"sandshrew",
 ]
 
 var _data: PokemonData

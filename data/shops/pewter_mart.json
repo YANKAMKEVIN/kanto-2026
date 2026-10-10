@@ -1,0 +1,9 @@
+{
+	"pewter_mart": {
+		"stock": [
+			{ "item": "poke_ball" },
+			{ "item": "potion" },
+			{ "item": "antidote" }
+		]
+	}
+}

@@ -22,12 +22,18 @@ extends GutTest
 ## Jalon 8 (T4) : objets de la Route 2 — deux visibles (scène lancée par le dialogue du PNJ
 ## « objet », qui le retire : `despawn` → `give found` → `set`), deux cachés (déclencheurs de la
 ## carte, comme la Potion de la Route 1), posés par `tools/build_route_2.gd` (T5).
+## Jalon 10 (T8) : arrivée à Argenta et garde de la Route 3 (déclencheurs d'Argenta, en attente de
+## la carte du T11 : simulés sur les PNJ de son fichier), Potion de la Route 2 nord et scène de
+## Pierre (lancées par le dialogue de leur PNJ) ; étapes `champion_card` et `badge` au T9 (la
+## simulation vérifie le Dresseur et sa carte, le badge et son drapeau).
 
 const MAPS: Array[StringName] = [
 	&"player_house_2f", &"player_house_1f", &"rival_house", &"oak_lab", &"pallet_town",
 	&"route_1", &"viridian_city", &"route_22", &"viridian_mart", &"route_2",
 	# Jalon 9 (T19) : déclencheurs des objets cachés de la forêt.
 	&"viridian_forest",
+	# Jalon 10 (T11) : arrivée à Argenta et verrou du garde de la Route 3.
+	&"pewter_city",
 ]
 ## Jalon 7 (T18) : partie qui revient au labo avec le colis (rival parti après le combat).
 const PARCEL_FLAGS: Array[StringName] = [
@@ -40,6 +46,12 @@ const ROUTE22_FLAGS: Array[StringName] = [
 	&"oak_met", &"oak_lab_reunion", &"starter_offered", &"starter_chosen", &"rival_challenged",
 	&"rival_lab_won", &"rival_battle_done", &"rival_left_lab", &"viridian_arrived",
 	&"got_oak_parcel", &"pokedex_activated",
+]
+## Jalon 10 (T8) : partie qui arrive à Argenta (fin du J9 : poison annoncé, Théo battu).
+const PEWTER_FLAGS: Array[StringName] = [
+	&"oak_met", &"oak_lab_reunion", &"starter_offered", &"starter_chosen", &"rival_challenged",
+	&"rival_lab_won", &"rival_battle_done", &"rival_left_lab", &"viridian_arrived",
+	&"got_oak_parcel", &"pokedex_activated", &"poison_unlocked", &"beaten_forest_scout_theo",
 ]
 ## Paires `taken_*` posées au labo (starter du joueur, puis celui du rival) → Pokémon du rival
 ## présent sur la Route 22 (data/npcs/route_22.json).
@@ -69,6 +81,12 @@ const VARIANT_FLAGS: Dictionary = {
 	&"viridian_forest_item_4": [ROUTE22_FLAGS],
 	&"viridian_forest_item_5": [ROUTE22_FLAGS],
 	&"viridian_forest_item_6": [ROUTE22_FLAGS],
+	# Jalon 10 (T8) : Route 2 nord et Argenta.
+	&"route_2_north_item_1": [PEWTER_FLAGS],
+	&"pewter_arrival": [PEWTER_FLAGS],
+	&"route_3_guard": [PEWTER_FLAGS + [&"pewter_arrived"],
+		PEWTER_FLAGS + [&"pewter_arrived", &"brock_met", &"badge_boulder"]],
+	&"pewter_gym_brock": [PEWTER_FLAGS + [&"pewter_arrived"]],
 }
 ## Scènes jouées par le code (pas de déclencheur) → carte où elles sont jouées.
 ## Jalon 7 (T18) : la scène du colis est lancée par la variante « cutscene » du dialogue de Chen.
@@ -79,9 +97,12 @@ const CODE_PLAYED: Dictionary[StringName, StringName] = {
 	# Jalon 9 (T18) : objets visibles de la Forêt de Jade (PNJ « objet » de son fichier).
 	&"viridian_forest_item_1": &"viridian_forest", &"viridian_forest_item_2": &"viridian_forest",
 	&"viridian_forest_item_5": &"viridian_forest",
+	# Jalon 10 (T8) : Potion de la Route 2 nord (PNJ « objet »), Pierre (son dialogue).
+	&"route_2_north_item_1": &"route_2_north", &"pewter_gym_brock": &"pewter_gym",
 }
 ## Scènes à déclencheur dont la carte n'est pas encore construite → leur carte (simulées sur les
-## PNJ de son fichier). Vidée au T19 du jalon 9 (la forêt existe).
+## PNJ de son fichier). Vidée au T19 du jalon 9 (la forêt existe), puis au T11 du jalon 10 (les
+## deux scènes d'Argenta ont leurs déclencheurs sur la carte).
 const AWAITING_MAP: Dictionary[StringName, StringName] = {}
 
 var _cutscenes: CutsceneLibrary
@@ -90,6 +111,7 @@ var _offer: StarterOffer
 var _pokemon: PokemonData
 var _trainers: TrainerLibrary
 var _items: ItemLibrary
+var _badges: BadgeLibrary
 ## Scène → cartes de ses déclencheurs.
 var _triggered_on: Dictionary[StringName, Array] = {}
 
@@ -107,6 +129,8 @@ func before_all() -> void:
 	_trainers.load_dir()
 	_items = ItemLibrary.new()
 	_items.load_dir()
+	_badges = BadgeLibrary.new()
+	_badges.load_file()
 	for map_id: StringName in MAPS:
 		var map := (load(MapCatalog.scene_path(map_id)) as PackedScene).instantiate()
 		for point: Node in map.get_node(^"Triggers").get_children():
@@ -130,8 +154,10 @@ func test_library_loads_without_error() -> void:
 	assert_true(library.load_dir(), "data/cutscenes/ se charge")
 	assert_eq(library.get_errors().size(), 0, str(library.get_errors()))
 	assert_eq(library.get_ids(), [&"mart_parcel", &"oak_lab_exit", &"oak_parcel",
+		&"pewter_arrival", &"pewter_gym_brock",
 		&"rival_route22", &"route1_grass", &"route_1_potion", &"route_2_item_1",
-		&"route_2_item_2", &"route_2_item_3", &"route_2_item_4", &"starter_chosen",
+		&"route_2_item_2", &"route_2_item_3", &"route_2_item_4", &"route_2_north_item_1",
+		&"route_3_guard", &"starter_chosen",
 		&"viridian_arrival", &"viridian_forest_item_1", &"viridian_forest_item_2",
 		&"viridian_forest_item_3", &"viridian_forest_item_4", &"viridian_forest_item_5",
 		&"viridian_forest_item_6"] as Array[StringName])
@@ -170,6 +196,8 @@ func test_every_trigger_targets_a_scene_and_every_scene_is_triggered() -> void:
 	assert_eq(_triggered_on.get(&"mart_parcel"), [&"viridian_mart"])
 	assert_eq(_triggered_on.get(&"route_2_item_3"), [&"route_2"])
 	assert_eq(_triggered_on.get(&"route_2_item_4"), [&"route_2"])
+	assert_eq(_triggered_on.get(&"pewter_arrival"), [&"pewter_city"])
+	assert_eq(_triggered_on.get(&"route_3_guard"), [&"pewter_city"])
 	assert_eq(_offer.chosen_scene, &"starter_chosen", "scène du choix = CODE_PLAYED")
 	assert_eq(CODE_PLAYED[_offer.chosen_scene], _offer.map_id)
 
@@ -192,6 +220,30 @@ func test_every_trainer_and_item_step_exists() -> void:
 		assert_true(_items.has_item(id), "objet « %s » chargé" % id)
 
 
+## Jalon 10 (T9) : chaque Dresseur présenté par une carte en a une, chaque badge remis existe, et
+## l'étape « badge » d'une scène suit le combat qui lève déjà son drapeau (« win »).
+func test_every_champion_card_and_badge_step_exists() -> void:
+	assert_eq(_cutscenes.get_card_trainer_ids(), [&"pewter_gym_brock"] as Array[StringName])
+	for id: StringName in _cutscenes.get_card_trainer_ids():
+		var trainer := _trainers.get_trainer(id)
+		assert_true(trainer != null and trainer.has_card(), "« %s » a une carte" % id)
+	assert_eq(_cutscenes.get_badge_ids(), [&"boulder"] as Array[StringName])
+	for id: StringName in _cutscenes.get_badge_ids():
+		assert_true(_badges.has_badge(id), "badge « %s » connu" % id)
+	for id: StringName in _cutscenes.get_ids():
+		for variant: CutsceneVariant in _cutscenes.get_cutscene(id).variants:
+			var won: Array[StringName] = []
+			for step: CutsceneStep in variant.steps:
+				if step.kind == CutsceneStep.Kind.BATTLE:
+					won.append_array(step.win_flags)
+				if step.kind == CutsceneStep.Kind.BADGE:
+					var flag := _badges.flag(step.badge_id)
+					assert_true(won.has(flag), "%s : « %s » levé par le combat d'abord" % [id,
+						flag])
+					assert_eq(step.if_flags, [flag] as Array[StringName],
+						"%s : badge remis seulement après la victoire" % id)
+
+
 ## Jalon 5C.5 (décision de Kevin) : la Potion de la Route 1 est un objet **trouvé** dans le
 ## monde ; les 5 Poké Balls de Chen sont **reçues** (pas au journal des objets trouvés).
 ## Jalon 8 : les quatre objets de la Route 2 (dossier 11 §11) sont trouvés eux aussi.
@@ -204,6 +256,7 @@ func test_only_world_items_are_found_items() -> void:
 					found.append("%s:%s" % [id, step.item_id])
 	assert_eq(found, ["route_1_potion:potion", "route_2_item_1:poke_ball",
 		"route_2_item_2:potion", "route_2_item_3:poke_ball", "route_2_item_4:potion",
+		"route_2_north_item_1:potion",
 		"viridian_forest_item_1:antidote", "viridian_forest_item_2:poke_ball",
 		"viridian_forest_item_3:potion", "viridian_forest_item_4:antidote",
 		"viridian_forest_item_5:poke_ball", "viridian_forest_item_6:potion"]
@@ -573,6 +626,14 @@ func _simulate(label: String, variant: CutsceneVariant, start_map: StringName,
 			CutsceneStep.Kind.GIVE:
 				assert_true(_items.has_item(step.item_id), "%s : objet « %s »" % [where,
 					step.item_id])
+			CutsceneStep.Kind.CHAMPION_CARD:
+				var trainer := _trainers.get_trainer(step.trainer_id)
+				assert_true(trainer != null and trainer.has_card(), "%s : carte de « %s »" % [
+					where, step.trainer_id])
+			CutsceneStep.Kind.BADGE:
+				assert_true(_badges.has_badge(step.badge_id), "%s : badge « %s »" % [where,
+					step.badge_id])
+				flags.set_flag(_badges.flag(step.badge_id))
 			CutsceneStep.Kind.TAKE:
 				assert_true(_items.has_item(step.item_id), "%s : objet « %s »" % [where,
 					step.item_id])

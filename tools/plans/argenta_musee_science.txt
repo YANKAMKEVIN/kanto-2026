@@ -1,0 +1,40 @@
+# Musée d'Argenta, salle « science » (pewter_museum_science) — grille fonctionnelle (jalon 10
+# T1, défauts de la règle 4 ; dossier 12 §7). Même enveloppe que la salle principale
+# (INT_MUSEE_COQUE) : l'arche nord y est fermée par la porte du laboratoire (asset
+# int_porte_labo_01, 3 cases : plaque à gauche, double porte à droite). Vérifiée par
+# tools/art/plan_check_argenta.py.
+#
+# Légende :
+#   K mur (bloqué)          . sol (praticable)
+#   L porte du laboratoire, fermée (bloquée) : plaque (6, 2), porte (7..8, 2)
+#   X retour vers la salle principale (praticable : seuil, PUSH ↓)
+#   Y panneau d'exposition « évolution, traces » (bloqué) (2..3, 4)
+#   J vitrine du fragment de journal (bloquée) (11..12, 4)
+#   c chercheur (bloqué) : (4, 6) et (10, 6)
+#   x plante (bloquée)
+#
+# Format : section GRILLE (« NN » + espace + 15 caractères par rangée), puis POSITIONS.
+
+GRILLE 15 10
+00 KKKKKKKKKKKKKKK
+01 KKKKKKKKKKKKKKK
+02 KKKKKKLLLKKKKKK
+03 K.............K
+04 K.YY.......JJ.K
+05 K.............K
+06 K...c.....c...K
+07 Kx...........xK
+08 KKKKKKXXXKKKKKK
+09 KKKKKKKKKKKKKKK
+FIN
+
+POSITIONS
+sortie              warp           6..8,8       libre   # PUSH ↓ → pewter_museum, from_science
+depuis_hall         spawn          7,8          libre   # spawn « from_hall », tourné ↑
+plaque_labo         examen         6,2          libre   # « LABORATOIRE — Personnel autorisé. »
+porte_labo          examen         7..8,2       libre   # « L'accès est réservé aux chercheurs. »
+panneau_expo        examen         2..3,4       libre
+vitrine_journal     examen         11..12,4     libre   # fragment de journal d'expédition
+chercheur           pnj            4,6          bloque  # researcher
+chercheuse          pnj            10,6         bloque  # chercheuse
+FIN

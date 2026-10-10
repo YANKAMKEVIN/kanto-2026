@@ -183,6 +183,7 @@ func _init() -> void:
 	_add_storage_screen(theme, bold, t)
 	_add_menu_glass(theme, bold, t)
 	_add_menu_mm2(theme, bold, t)
+	_add_champion_card(theme, bold, t)
 
 	var err := ResourceSaver.save(theme, THEME_PATH)
 	print("ui_theme.tres : ", error_string(err))
@@ -1713,3 +1714,18 @@ func _add_menu_mm2(theme: Theme, bold: Font, t: GDScript) -> void:
 	var link_pressed := _glass(t.ACCENT, t.ACCENT, t.MENU_GLASS_CARD_RADIUS, t)
 	_add_button_variation(theme, &"TrainerLink", link, link_pressed, bold, t)
 	theme.set_font_size(&"font_size", &"TrainerLink", t.TRAINER_LINK_FONT)
+
+
+## Carte de présentation du Champion (jalon 10, T5) : verre sombre, liseré ACCENT à gauche.
+func _add_champion_card(theme: Theme, bold: Font, t: GDScript) -> void:
+	var card := _panel_style(t.CHAMPION_CARD_BG, t.CHAMPION_CARD_RADIUS, t)
+	card.border_width_left = t.CHAMPION_CARD_ACCENT_WIDTH
+	card.border_color = t.ACCENT
+	card.set_content_margin(SIDE_LEFT, t.CHAMPION_CARD_PAD_H)
+	card.set_content_margin(SIDE_RIGHT, t.CHAMPION_CARD_PAD_H)
+	card.set_content_margin(SIDE_TOP, t.CHAMPION_CARD_PAD_V)
+	card.set_content_margin(SIDE_BOTTOM, t.CHAMPION_CARD_PAD_V)
+	theme.set_type_variation(&"ChampionCard", &"PanelContainer")
+	theme.set_stylebox(&"panel", &"ChampionCard", card)
+	_add_plain_label(theme, &"ChampionCardName", t.CHAMPION_CARD_NAME_FONT, t.TEXT, bold)
+	_add_plain_label(theme, &"ChampionCardTitle", t.CHAMPION_CARD_TITLE_FONT, t.TEXT_MUTED, null)

@@ -492,6 +492,20 @@ func test_show_caption_uppercase_top_center_without_panel() -> void:
 	assert_true(rect.end.y < SCREEN_HEIGHT * 0.3, "en haut")
 
 
+func test_centered_caption_sits_at_vertical_middle_then_others_stay_top() -> void:
+	var caption := _hud.get_caption()
+	_hud.show_caption("BADGE ROCHE", UiTokens.BADGE_CAPTION_HOLD, true)
+	await wait_process_frames(1)
+	var rect := caption.get_global_rect()
+	var root_height := (_hud.get_node(^"Root") as Control).size.y
+	assert_almost_eq(rect.get_center().y, root_height * 0.5, 2.0, "centre vertical")
+	_hud.show_caption(CAPTION_TEXT)
+	await wait_process_frames(1)
+	rect = caption.get_global_rect()
+	assert_almost_eq(rect.position.y, float(UiTokens.CAPTION_TOP), 1.0, "autres : en haut")
+	assert_true(rect.end.y < SCREEN_HEIGHT * 0.3, "en haut")
+
+
 func test_caption_clear_of_zone_title_at_1920_and_2340() -> void:
 	_hud.show_zone_title("Bourg Palette", "Kanto")
 	_hud.show_caption(CAPTION_TEXT)

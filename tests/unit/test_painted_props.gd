@@ -17,14 +17,24 @@ const TRAVERSABLE: Array[StringName] = [&"relief_escalier_01", &"ground_hautes_h
 	&"int_tapis_salon_01", &"int_tapis_plaid_01", &"int_tapis_pokeball_01",
 	&"int_tapis_carreaux_01", &"int_tapis_rouge_01", &"int_tapis_labo_pokeball_01",
 	&"tree_foret_01", &"tree_foret_02", &"tree_foret_03", &"tree_foret_04",
-	&"tree_foret_05", &"tree_foret_06", &"tree_foret_07", &"tree_foret_08"]
+	&"tree_foret_05", &"tree_foret_06", &"tree_foret_07", &"tree_foret_08",
+	# Série 12 (J10) : paroi de montagne (cases `K` bloquées par la carte), porte du
+	# laboratoire du Musée (dans le mur du fond, déjà bloqué).
+	&"relief_paroi_01", &"relief_paroi_02", &"relief_paroi_03", &"relief_paroi_04",
+	&"int_porte_labo_01"]
 const GROUND_LAYER: Array[StringName] = [
 	&"relief_falaise_01", &"relief_escalier_01", &"prop_massif_01", &"relief_muret_01",
 	&"relief_escalier_ville_01",
 	&"ground_champ_01", &"prop_ponton_01", &"relief_escalier_bois_01", &"relief_rebord_01",
 	&"int_tapis_salon_01", &"int_tapis_plaid_01", &"int_tapis_pokeball_01",
 	&"int_tapis_carreaux_01", &"int_tapis_rouge_01", &"int_tapis_labo_pokeball_01",
+	# Série 12 (J10) : paroi ; poste vu du nord (le joueur passe toujours devant).
+	&"relief_paroi_01", &"relief_paroi_02", &"relief_paroi_03", &"relief_paroi_04",
+	&"bldg_poste_foret_nord_01",
 ]
+## Bâtiments sans ombre : le poste de la forêt vu du nord (série 12) continue sous le bord sud
+## de la Route 2 nord, couché dans la couche du sol (fiche `serie-12-argenta.md`).
+const SHADOWLESS_BUILDINGS: Array[String] = ["bldg_poste_foret_nord_01"]
 ## Objets de Bourg Palette, de ses intérieurs et de la Route 1 (DA.0) : tous au catalogue,
 ## chacun avec sa règle et sa scène (assets des scènes du prototype validé).
 const DA0_OBJECTS: Array[StringName] = [
@@ -154,7 +164,7 @@ func test_shadow_textures_exist_and_are_drawn_under_everything() -> void:
 ## ombres peintes dans les images provisoires (Bourg Palette, Route 1, intérieurs).
 func test_only_buildings_have_shadow_nodes() -> void:
 	for id: String in _objects:
-		var building := id.begins_with("bldg_")
+		var building := id.begins_with("bldg_") and not SHADOWLESS_BUILDINGS.has(id)
 		assert_eq(PaintedPropRules.casts_shadows(StringName(id)), building,
 			"%s : règle « shadow »" % id)
 		var prop := _scene(id)
@@ -365,3 +375,78 @@ func test_footprints_of_bourg_palette() -> void:
 	assert_eq(PaintedPropRules.footprint(&"int_escalier_montant_01"),
 		[Vector2i(-1, -1), Vector2i(0, -1)])
 	assert_eq(PaintedPropRules.footprint(&"int_lit_01").size(), 6)
+
+
+## Jalon 10 T10 (série 12, fiche `serie-12-argenta.md`) : emprises = cases de la grille
+## d'Argenta et de la Route 2 nord, portes libres là où la carte pose ses passages.
+func test_footprints_of_pewter_city() -> void:
+	# Musée 12 × 9 (3..14, 31..39), porte (8..9, 39) : ancre (9, 39), pied sur un bord.
+	var museum := PaintedPropRules.footprint(&"bldg_musee_argenta_01")
+	assert_eq(museum.size(), 12 * 9 - 2)
+	assert_eq(PaintedPropRules.open_cells(&"bldg_musee_argenta_01"),
+		[Vector2i(-1, 0), Vector2i(0, 0)])
+	assert_true(museum.has(Vector2i(-6, -8)) and museum.has(Vector2i(5, 0)), "coins du Musée")
+	# Arène 12 × 7 (30..41, 5..11), porte (35..36, 11) : ancre (36, 11).
+	var gym := PaintedPropRules.footprint(&"bldg_arene_argenta_01")
+	assert_eq(gym.size(), 12 * 7 - 2)
+	assert_true(gym.has(Vector2i(-6, -6)) and gym.has(Vector2i(5, 0)), "coins de l'Arène")
+	# Maison 7 × 6, porte au milieu du bas (largeur impaire, pied au milieu de la case).
+	var house := PaintedPropRules.footprint(&"bldg_maison_argenta_01")
+	assert_eq(house.size(), 7 * 6 - 1)
+	assert_false(house.has(Vector2i.ZERO), "porte de la maison")
+	assert_true(house.has(Vector2i(-3, -5)) and house.has(Vector2i(3, 0)))
+	assert_eq(PaintedPropRules.align(&"bldg_maison_argenta_01"), PaintedPropRules.ALIGN_CENTRE)
+	# Poste vu du nord 7 × 3 (12..18, 21..23), ancre (15, 23), porte au bord haut (15, 21).
+	var gate := PaintedPropRules.footprint(&"bldg_poste_foret_nord_01")
+	assert_eq(gate.size(), 7 * 3 - 1)
+	assert_false(gate.has(Vector2i(0, -2)), "porte du poste au bord haut")
+	assert_true(gate.has(Vector2i(0, 0)) and gate.has(Vector2i(-3, -2)))
+	assert_eq(PaintedPropRules.layer(&"bldg_poste_foret_nord_01"),
+		PaintedPropRules.LAYER_GROUND)
+	# Rocher de la place 3 × 3, blocs du tailleur 3 × 2.
+	assert_eq(PaintedPropRules.footprint(&"prop_rocher_place_01").size(), 9)
+	assert_eq(PaintedPropRules.footprint(&"prop_blocs_tailles_01").size(), 6)
+	# Intérieurs : vitrines, panneau et pilier 2 × 1, Pierre Lune 1 × 1, rochers de l'Arène.
+	for id: StringName in [&"int_vitrine_dome_01", &"int_vitrine_nautile_01",
+			&"int_vitrine_journal_01", &"int_panneau_expo_01", &"int_pilier_roche_01"]:
+		assert_eq(PaintedPropRules.footprint(id), [Vector2i(-1, 0), Vector2i(0, 0)], String(id))
+	assert_eq(PaintedPropRules.footprint(&"int_vitrine_pierre_lune_01"), [Vector2i.ZERO])
+	assert_eq(PaintedPropRules.footprint(&"int_rochers_bas_01").size(), 4)
+	assert_eq(PaintedPropRules.footprint(&"int_rochers_bas_02"), [Vector2i.ZERO])
+
+
+## Le seuil peint du poste vu du nord tombe au bas de la case de la porte (règle « origin »).
+func test_north_gate_threshold_lands_on_the_door_cell() -> void:
+	const THRESHOLD_Y := 249.0  # bas du seuil de pierre sous le paillasson, dans l'image
+	var entry: Dictionary = _objects["bldg_poste_foret_nord_01"]
+	var size := Vector2(entry["taille"][0], entry["taille"][1])
+	assert_eq(size, Vector2(672, 579))
+	var foot := PaintedPropRules.foot_position(&"bldg_poste_foret_nord_01", Vector2i(15, 23))
+	var origin := PaintedPropRules.origin(&"bldg_poste_foret_nord_01", size)
+	assert_eq(foot.y - origin.y + THRESHOLD_Y, float(22 * Grid.TILE_SIZE),
+		"seuil au bas de la case (15, 21)")
+	assert_eq(origin.x, size.x / 2.0, "pied centré")
+
+
+## Série 12 : images préparées à la largeur de leur emprise (1 case = 96 px), paroi de
+## 3 cases de haut, enveloppes des pièces aux tailles des grilles.
+func test_pewter_assets_are_prepared_at_scale() -> void:
+	var widths := {"bldg_musee_argenta_01": 12, "bldg_arene_argenta_01": 12,
+		"bldg_maison_argenta_01": 7, "bldg_poste_foret_nord_01": 7, "prop_rocher_place_01": 3,
+		"prop_blocs_tailles_01": 3, "int_vitrine_dome_01": 2, "int_vitrine_nautile_01": 2,
+		"int_vitrine_pierre_lune_01": 1, "int_vitrine_journal_01": 2, "int_porte_labo_01": 3,
+		"int_panneau_expo_01": 2, "int_pilier_roche_01": 2, "int_rochers_bas_01": 2,
+		"int_rochers_bas_02": 1}
+	for id: String in widths:
+		assert_true(_objects.has(id), id)
+		assert_eq(int(_objects[id]["taille"][0]), int(widths[id]) * Grid.TILE_SIZE, id)
+		var cast := id.begins_with("bldg_") and id != "bldg_poste_foret_nord_01"
+		assert_eq(_objects[id].has("ombre"), cast, id + " : ombre portée des bâtiments posés")
+		assert_eq(PaintedPropRules.casts_shadows(StringName(id)), cast, id)
+	for i in range(1, 5):
+		assert_eq(int(_objects["relief_paroi_0%d" % i]["taille"][1]), 288, "paroi de 3 cases")
+	for id: String in ["int_musee_coque", "int_maison_argenta_coque"]:
+		assert_eq(Vector2i(_images[id]["taille"][0], _images[id]["taille"][1]),
+			Vector2i(15 * 96, 10 * 96), id)
+	assert_eq(Vector2i(_images["int_arene_coque"]["taille"][0],
+		_images["int_arene_coque"]["taille"][1]), Vector2i(15 * 96, 11 * 96))

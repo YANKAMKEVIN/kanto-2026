@@ -408,3 +408,79 @@ func test_species_moments_carry_their_dex_number() -> void:
 			assert_eq(moment.dex_number, _data.get_species(moment.species_id).dex)
 			found += 1
 	assert_gt(found, 0)
+
+
+# --- J10 T4 : Grand moment « badge » (dossier 12 §13, jalon-10.md §2.8) ------------------------
+
+
+## Zones d'Argenta en attendant le T8 (zones.json n'a pas encore les cartes d'Argenta).
+func _pewter_zones() -> ZoneLibrary:
+	var zones := ZoneLibrary.new()
+	zones.add_from_dict({"zones": {
+		"pallet_town": {"name": "Bourg Palette", "kind": "town", "maps": ["pallet_town"]},
+		"pewter_city": {"name": "Argenta", "kind": "town",
+			"maps": ["pewter_city", "pewter_gym"]},
+	}})
+	return zones
+
+
+func _record_badge(badge: StringName, date: String) -> void:
+	_at(date)
+	var party: Party = _state.party
+	_state.record_moment(BadgeMoment.TYPE, &"pewter_gym", BadgeMoment.details(badge, party))
+
+
+func test_badge_moment_title_detail_place_in_chronological_order() -> void:
+	_add(&"charmander", Pokemon.Origin.STARTER)
+	var zones := _pewter_zones()
+	_at("2026-10-02T10:00:00")
+	_state.discover_map(&"pallet_town")
+	_at("2026-10-08T09:00:00")
+	_state.discover_map(&"pewter_city")
+	_at("2026-10-09T10:00:00")
+	_state.record_moment(&"first_capture", &"pewter_city", {"species": "rattata"})
+	_record_badge(&"boulder", "2026-10-08T18:00:00")
+	var view := TrainerSummary.build(_state, _data, zones, _moments, _unlocks, _badges())
+	assert_eq(_titles(view), ["Arrivée à Argenta", "Badge Roche", "Première capture"]
+		as Array[String])
+	var badge := view.moments[1]
+	assert_eq(badge.kind, MomentLibrary.BADGE)
+	assert_eq(badge.detail, "Obtenu à Argenta contre Pierre.")
+	assert_eq(badge.place, "Argenta", "nom de la zone, jamais « pewter_gym »")
+	assert_eq(badge.zone_id, &"pewter_city")
+	assert_eq(badge.date_text, "8 octobre 2026")
+	assert_eq(badge.species_id, &"", "le souvenir de l'équipe n'est pas montré au J10")
+	assert_null(badge.route)
+	assert_eq(view.moments[0].detail, "Une ville de pierre, au pied des montagnes.")
+
+
+func test_badge_moment_needs_the_badge_library_and_a_known_badge() -> void:
+	var zones := _pewter_zones()
+	_record_badge(&"boulder", "2026-10-08T18:00:00")
+	_record_badge(&"moon", "2026-10-08T18:01:00")
+	_state.moments.append({"type": "badge", "date": "2026-10-08T18:02:00", "map": "pewter_gym",
+		"details": {"team": []}})
+	_state.moments.append({"type": "badge", "date": "2026-10-08T18:03:00", "map": "pewter_gym",
+		"details": "boulder"})
+	var view := TrainerSummary.build(_state, _data, zones, _moments, _unlocks, _badges())
+	assert_eq(_titles(view), ["Badge Roche"] as Array[String],
+		"badge inconnu, absent ou détails mal formés : moment écarté")
+	assert_false(_all_texts(view).contains("moon"))
+	assert_false(_all_texts(view).contains("{"))
+	view = TrainerSummary.build(_state, _data, zones, _moments, _unlocks)
+	assert_eq(view.moments.size(), 0, "sans BadgeLibrary : aucun moment « badge »")
+
+
+func test_badge_moment_survives_a_save_round_trip() -> void:
+	_add(&"charmander", Pokemon.Origin.STARTER)
+	_record_badge(&"boulder", "2026-10-08T18:00:00")
+	var parsed: Dictionary = JSON.parse_string(JSON.stringify(_state.to_dict()))
+	var loaded: Node = GameStateScript.new()
+	loaded.clock = FixedClock.new("2026-10-09T08:00:00")
+	assert_true(loaded.load_dict(parsed, _data))
+	var unlocks := MenuUnlocks.new(loaded.flags, loaded.party)
+	var view := TrainerSummary.build(loaded, _data, _pewter_zones(), _moments, unlocks,
+		_badges())
+	assert_eq(_titles(view), ["Badge Roche"] as Array[String])
+	assert_eq(view.moments[0].detail, "Obtenu à Argenta contre Pierre.")
+	loaded.free()

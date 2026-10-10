@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Prépare tout l'art validé du monde (séries 01 à 08) pour le jeu.
+"""Prépare tout l'art validé du monde (séries 01 à 12) pour le jeu.
 
 Successeur de preparer_proto.py. Lit `tools/art/manifeste.json` et les images validées de
 `build/art/` (non versionné ; sur le Mac de Kevin, jamais nécessaire au cloud), recadre chaque
@@ -9,7 +9,8 @@ objet sur sa silhouette, le ramène à sa taille en jeu (1 case = 96 px) et écr
     `<id>_contact.png` (alpha seul : RVB blanc, la couleur et l'opacité viennent du jeu) ;
   - la moitié basse des herbes hautes (cache-jambes), et leurs variantes recolorées (herbes
     jaune-vert de la Route 1 : une image de plus, aucune teinte au lancement) ;
-  - les arbres de forêt, découpés dans des planches 2 × 2 (`planches_arbres`) ;
+  - les arbres de forêt, découpés dans des planches 2 × 2 (`planches_arbres`), et les meubles
+    des planches C × L (`planches_objets`, série 12) ;
   - les décalcomanies : bordures (planche 4 × 3) et fleurs (planches 4 × 2) ;
   - les planches de personnages et de Pokémon (4 × 4, via decouper_perso.py) et leurs planches
     d'attente (pieds joints, 4 × 1, via decouper_attente.py) ;
@@ -178,6 +179,48 @@ def _coupe_la_plus_vide(image: Image.Image) -> tuple[int, int]:
     return x, y
 
 
+def _taches(image: Image.Image, reduction: int = 4, part_min: float = 0.02
+            ) -> list[tuple[tuple[int, int, int, int], Image.Image]]:
+    """Éléments séparés d'une planche : composantes connexes de la silhouette (alpha > 32),
+    calculées au quart de la résolution après une dilatation de 4 px (les petits
+    détails détachés restent dans leur élément). Écarte les miettes (moins de `part_min` de la
+    plus grande). Renvoie (boîte en pixels de l'image, masque L de l'élément à pleine taille)."""
+    largeur, hauteur = image.width // reduction, image.height // reduction
+    petit = image.getchannel("A").point(lambda a: 255 if a > 32 else 0)
+    petit = petit.resize((largeur, hauteur), Image.BOX).point(lambda a: 255 if a else 0)
+    petit = petit.filter(ImageFilter.MaxFilter(3))
+    pixels = petit.load()
+    etiquettes = [[0] * largeur for _ in range(hauteur)]
+    composantes: list[list[tuple[int, int]]] = []
+    for y0 in range(hauteur):
+        for x0 in range(largeur):
+            if not pixels[x0, y0] or etiquettes[y0][x0]:
+                continue
+            numero = len(composantes) + 1
+            pile, cases = [(x0, y0)], []
+            etiquettes[y0][x0] = numero
+            while pile:
+                x, y = pile.pop()
+                cases.append((x, y))
+                for vx, vy in ((x + 1, y), (x - 1, y), (x, y + 1), (x, y - 1)):
+                    if (0 <= vx < largeur and 0 <= vy < hauteur and pixels[vx, vy]
+                            and not etiquettes[vy][vx]):
+                        etiquettes[vy][vx] = numero
+                        pile.append((vx, vy))
+            composantes.append(cases)
+    plus_grande = max(len(c) for c in composantes)
+    taches = []
+    for cases in composantes:
+        if len(cases) < part_min * plus_grande:
+            continue
+        masque = Image.new("L", (largeur, hauteur), 0)
+        for x, y in cases:
+            masque.putpixel((x, y), 255)
+        masque = masque.resize(image.size, Image.NEAREST)
+        taches.append((masque.getbbox(), masque))
+    return taches
+
+
 def recolorer(image: Image.Image, reglages: dict) -> Image.Image:
     """Variante de couleur (TSV) : teinte décalée, valeur relevée par un gamma, saturation
     multipliée puis réduite dans les hautes lumières (`lumieres` = [début, fin, force]).
@@ -256,6 +299,32 @@ class Preparateur:
                 taille = (round(arbre.width * hauteur / arbre.height), hauteur)
                 self._objet(ident, planche["dossier"] + ident + ".png",
                             arbre.resize(taille, Image.LANCZOS), False, planche["contact"])
+
+    def planches_objets(self) -> None:
+        """Planches de meubles et d'objets (série 12 : Musée, Arène). Le générateur ne respecte
+        pas la grille demandée (des éléments débordent de leur cellule) : chaque élément est donc
+        une **tache** de la silhouette ([func _taches]), rangée en `lignes` de `colonnes` dans
+        l'ordre de lecture, puis mise à sa largeur en cases (`cases`, une valeur par élément).
+        Ombre de contact préparée, jamais d'ombre portée (mobilier)."""
+        for planche in self.m.get("planches_objets", []):
+            image = Image.open(self.source / planche["source"]).convert("RGBA")
+            colonnes, lignes = planche["colonnes"], planche["lignes"]
+            taches = _taches(image)
+            if len(taches) != colonnes * lignes:
+                raise SystemExit(f"{planche['source']} : {len(taches)} éléments trouvés, "
+                                 f"{colonnes * lignes} attendus")
+            taches.sort(key=lambda tache: tache[0][1] + tache[0][3])
+            ordre = []
+            for ligne in range(lignes):
+                rangee = taches[ligne * colonnes:(ligne + 1) * colonnes]
+                ordre += sorted(rangee, key=lambda tache: tache[0][0] + tache[0][2])
+            for ident, cases, (boite, masque) in zip(planche["ids"], planche["cases"], ordre):
+                element = image.copy()
+                element.putalpha(ImageChops.multiply(image.getchannel("A"), masque))
+                element = _mettre_a_taille(_silhouette(element.crop(boite)), "w", cases,
+                                           self.case)
+                self._objet(ident, planche["dossier"] + ident + ".png", element, False,
+                            planche["contact"])
 
     def hautes_herbes(self) -> None:
         e = self.m["hautes_herbes"]
@@ -485,6 +554,7 @@ def main() -> None:
         return
     p.objets()
     p.planches_arbres()
+    p.planches_objets()
     p.hautes_herbes()
     p.pieces()
     p.decor()

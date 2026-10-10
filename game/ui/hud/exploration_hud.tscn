@@ -8,6 +8,7 @@
 [ext_resource type="PackedScene" path="res://game/ui/components/world_caption.tscn" id="6_caption"]
 [ext_resource type="PackedScene" path="res://game/ui/components/toast.tscn" id="7_toast"]
 [ext_resource type="Script" path="res://game/ui/components/round_button_visual.gd" id="8_visual"]
+[ext_resource type="PackedScene" path="res://game/ui/components/champion_card.tscn" id="10_champion"]
 [ext_resource type="Texture2D" path="res://assets/ui/icons/menu/menu.svg" id="9_menu"]
 
 [node name="ExplorationHud" type="CanvasLayer"]
@@ -35,6 +36,10 @@ unique_name_in_owner = true
 layout_mode = 1
 
 [node name="Toast" parent="Root" instance=ExtResource("7_toast")]
+unique_name_in_owner = true
+layout_mode = 1
+
+[node name="ChampionCard" parent="Root" instance=ExtResource("10_champion")]
 unique_name_in_owner = true
 layout_mode = 1
 

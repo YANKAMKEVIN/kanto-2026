@@ -1,0 +1,63 @@
+{
+	"pewter_city_sign": {
+		"pages": ["ARGENTA"]
+	},
+	"pewter_museum_sign": {
+		"pages": ["MUSÉE D'ARGENTA\nEntrée libre."]
+	},
+	"pewter_gym_sign": {
+		"pages": ["ARÈNE D'ARGENTA\nChampion : Pierre"]
+	},
+	"pewter_stonemason": {
+		"speaker": "Tailleur de pierre",
+		"pages": ["Ici, la roche fait partie de la ville."]
+	},
+	"pewter_kid": {
+		"speaker": "Enfant",
+		"variants": [
+			{
+				"if": ["badge_boulder"],
+				"pages": ["Tu l'as vraiment battu ?!"]
+			},
+			{
+				"pages": ["Pierre connaît tout sur les Pokémon Roche !"]
+			}
+		]
+	},
+	"pewter_visitor": {
+		"speaker": "Visiteuse",
+		"pages": ["Je suis venue pour les fossiles.\nCertains ont des millions d'années."]
+	},
+	"pewter_old_man": {
+		"speaker": "Vieil homme",
+		"pages": ["Par temps clair, on distingue\nles montagnes à l'est."]
+	},
+	"pewter_lass": {
+		"speaker": "Dresseuse",
+		"variants": [
+			{
+				"if": ["badge_boulder"],
+				"pages": ["Alors c'est toi qui l'as battu…\nIl faut que je m'entraîne encore."]
+			},
+			{
+				"pages": ["Je me prépare avant d'affronter Pierre."]
+			}
+		]
+	},
+	"pewter_museum_clerk": {
+		"speaker": "Employé du Musée",
+		"pages": ["Le Musée d'Argenta est ouvert."]
+	},
+	"pewter_route_3_guard": {
+		"speaker": "Garde",
+		"pages": ["Pierre dirige l'Arène d'Argenta."]
+	},
+	"pewter_route_3_guard_rule": {
+		"speaker": "Garde",
+		"pages": ["La Route 3 est réservée aux Dresseurs\nqui ont obtenu le Badge Roche."]
+	},
+	"pewter_route_3_guard_cleared": {
+		"speaker": "Garde",
+		"pages": ["Badge Roche confirmé.\nBonne route !"]
+	}
+}

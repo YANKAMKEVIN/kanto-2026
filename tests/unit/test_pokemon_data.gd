@@ -71,9 +71,11 @@ func test_real_data_loads_without_error() -> void:
 		&"charmeleon", &"charizard", &"squirtle", &"wartortle", &"blastoise",
 		&"caterpie", &"metapod", &"butterfree", &"weedle", &"kakuna", &"beedrill",
 		&"pidgey", &"pidgeotto", &"pidgeot", &"rattata", &"raticate", &"spearow", &"fearow",
-		&"pikachu", &"raichu", &"nidoran_f", &"nidorina", &"nidoqueen", &"nidoran_m", &"nidorino", &"nidoking",
-		&"mankey", &"primeape"] as Array[StringName])
-	assert_eq(_data.get_move_ids().size(), 59, "47 + 12 de la Forêt de Jade (jalon 9)")
+		&"pikachu", &"raichu", &"sandshrew", &"sandslash", &"nidoran_f", &"nidorina",
+		&"nidoqueen", &"nidoran_m", &"nidorino", &"nidoking", &"mankey", &"primeape",
+		&"geodude", &"graveler", &"golem", &"onix"] as Array[StringName])
+	assert_eq(_data.get_move_ids().size(), 66,
+		"47 + 12 de la Forêt de Jade (jalon 9) + 7 d'Argenta (jalon 10)")
 	assert_true(_data.has_move(&"struggle"))
 
 
@@ -124,6 +126,9 @@ func test_real_evolution_chains() -> void:
 		&"caterpie": [&"metapod", 7], &"metapod": [&"butterfree", 10],
 		&"weedle": [&"kakuna", 7], &"kakuna": [&"beedrill", 10],
 		&"pikachu": [&"raichu", &"thunder_stone"],
+		# Argenta (jalon 10, §2.3) : Rouge/Bleu ; Grolem par échange (« ??? » au Pokédex).
+		&"sandshrew": [&"sandslash", 22], &"geodude": [&"graveler", 25],
+		&"graveler": [&"golem", &""],
 	}
 	for id: StringName in _data.get_species_ids():
 		var rules := _data.get_species(id).evolutions
@@ -135,6 +140,8 @@ func test_real_evolution_chains() -> void:
 		if expected[id][1] is int:
 			assert_eq(rules[0].method, EvolutionRule.Method.LEVEL, String(id))
 			assert_eq(rules[0].level, expected[id][1], String(id))
+		elif expected[id][1] == &"":
+			assert_eq(rules[0].method, EvolutionRule.Method.TRADE, String(id))
 		else:
 			assert_eq(rules[0].method, EvolutionRule.Method.ITEM, String(id))
 			assert_eq(rules[0].item, expected[id][1], String(id))
@@ -368,6 +375,8 @@ func test_real_catch_rates_are_the_official_ones() -> void:
 		&"nidoran_m": 235, &"nidorino": 120, &"nidoking": 45,
 		&"caterpie": 255, &"metapod": 120, &"butterfree": 45,
 		&"weedle": 255, &"kakuna": 120, &"beedrill": 45, &"pikachu": 190, &"raichu": 75,
+		&"sandshrew": 255, &"sandslash": 90, &"geodude": 255, &"graveler": 120, &"golem": 45,
+		&"onix": 45,
 	}
 	assert_eq(_data.get_species_ids().size(), expected.size(), "toutes les espèces")
 	for id: StringName in _data.get_species_ids():

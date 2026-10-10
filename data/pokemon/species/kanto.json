@@ -220,6 +220,25 @@
 		"male_ratio": 0.5, "growth_rate": "medium_fast", "base_exp": 218, "catch_rate": 75,
 		"learnset": [[1, "thunder_shock"], [1, "growl"], [1, "thunder_wave"]]
 	},
+	"sandshrew": {
+		"dex": 27, "name": "Sabelette", "types": ["ground"],
+		"base_stats": { "hp": 50, "atk": 75, "def": 85, "spa": 20, "spd": 30, "spe": 40 },
+		"male_ratio": 0.5, "growth_rate": "medium_fast", "base_exp": 60, "catch_rate": 255,
+		"learnset": [
+			[1, "scratch"], [10, "sand_attack"], [17, "slash"], [24, "poison_sting"],
+			[31, "swift"], [38, "fury_swipes"]
+		],
+		"evolutions": [{ "into": "sandslash", "method": "level", "level": 22 }]
+	},
+	"sandslash": {
+		"dex": 28, "name": "Sablaireau", "types": ["ground"],
+		"base_stats": { "hp": 75, "atk": 100, "def": 110, "spa": 45, "spd": 55, "spe": 65 },
+		"male_ratio": 0.5, "growth_rate": "medium_fast", "base_exp": 158, "catch_rate": 90,
+		"learnset": [
+			[1, "scratch"], [1, "sand_attack"], [10, "sand_attack"], [17, "slash"],
+			[27, "poison_sting"], [36, "swift"], [47, "fury_swipes"]
+		]
+	},
 	"nidoran_f": {
 		"dex": 29, "name": "Nidoran♀", "types": ["poison"],
 		"base_stats": { "hp": 55, "atk": 47, "def": 52, "spa": 40, "spd": 40, "spe": 41 },
@@ -297,6 +316,44 @@
 			[1, "scratch"], [1, "leer"], [1, "karate_chop"], [1, "fury_swipes"],
 			[15, "karate_chop"], [21, "fury_swipes"], [27, "focus_energy"], [37, "seismic_toss"],
 			[46, "thrash"]
+		]
+	},
+	"geodude": {
+		"dex": 74, "name": "Racaillou", "types": ["rock", "ground"],
+		"base_stats": { "hp": 40, "atk": 80, "def": 100, "spa": 30, "spd": 30, "spe": 20 },
+		"male_ratio": 0.5, "growth_rate": "medium_slow", "base_exp": 60, "catch_rate": 255,
+		"learnset": [
+			[1, "tackle"], [11, "defense_curl"], [16, "rock_throw"], [21, "self_destruct"],
+			[26, "harden"], [31, "earthquake"], [36, "explosion"]
+		],
+		"evolutions": [{ "into": "graveler", "method": "level", "level": 25 }]
+	},
+	"graveler": {
+		"dex": 75, "name": "Gravalanch", "types": ["rock", "ground"],
+		"base_stats": { "hp": 55, "atk": 95, "def": 115, "spa": 45, "spd": 45, "spe": 35 },
+		"male_ratio": 0.5, "growth_rate": "medium_slow", "base_exp": 137, "catch_rate": 120,
+		"learnset": [
+			[1, "tackle"], [1, "defense_curl"], [11, "defense_curl"], [16, "rock_throw"],
+			[21, "self_destruct"], [29, "harden"], [36, "earthquake"], [43, "explosion"]
+		],
+		"evolutions": [{ "into": "golem", "method": "trade" }]
+	},
+	"golem": {
+		"dex": 76, "name": "Grolem", "types": ["rock", "ground"],
+		"base_stats": { "hp": 80, "atk": 120, "def": 130, "spa": 55, "spd": 65, "spe": 45 },
+		"male_ratio": 0.5, "growth_rate": "medium_slow", "base_exp": 223, "catch_rate": 45,
+		"learnset": [
+			[1, "tackle"], [1, "defense_curl"], [11, "defense_curl"], [16, "rock_throw"],
+			[21, "self_destruct"], [29, "harden"], [36, "earthquake"], [43, "explosion"]
+		]
+	},
+	"onix": {
+		"dex": 95, "name": "Onix", "types": ["rock", "ground"],
+		"base_stats": { "hp": 35, "atk": 45, "def": 160, "spa": 30, "spd": 45, "spe": 70 },
+		"male_ratio": 0.5, "growth_rate": "medium_fast", "base_exp": 77, "catch_rate": 45,
+		"learnset": [
+			[1, "tackle"], [1, "screech"], [15, "bind"], [19, "rock_throw"], [25, "rage"],
+			[33, "slam"], [43, "harden"]
 		]
 	}
 }

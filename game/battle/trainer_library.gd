@@ -21,19 +21,24 @@ extends RefCounted
 ## [member TrainerData.allow_bag]), prize_per_level (0 par défaut, entier ≥ 0 : argent par
 ## niveau du dernier Pokémon, [member TrainerData.prize_per_level] ; exclusif d'un
 ## prize_money > 0).
-## Une équipe compte 1 à 6 Pokémon { species, level }. Les espèces (et les starters de
-## team_by_starter) sont vérifiées contre [PokemonData].
+## Une équipe compte 1 à 6 Pokémon { species, level, moves? }. Les espèces (et les starters
+## de team_by_starter) sont vérifiées contre [PokemonData]. « moves » (facultatif, jalon 10
+## §2.4) : 1 à 4 capacités distinctes connues de [PokemonData], dans l'ordre, sans contrôle
+## « apprenable » ; absent = capacités de Rouge/Bleu au niveau.
+## « card » (facultatif, jalon 10 §2.7) : { "name", "title" }, deux textes non vides, la carte
+## de présentation d'un Champion ([member TrainerData.card_name], [member TrainerData.card_title]).
 
 const DATA_DIR: String = "res://data/trainers/"
 
 const _KEYS: Array[String] = [
 	"name", "ai", "can_lose", "heal_after", "gives_exp", "prize_money", "end_message",
-	"start_message", "team", "team_by_starter", "bag", "prize_per_level",
+	"start_message", "team", "team_by_starter", "bag", "prize_per_level", "card",
 ]
 const _REQUIRED: Array[String] = [
 	"name", "ai", "can_lose", "heal_after", "gives_exp", "prize_money",
 ]
-const _SLOT_KEYS: Array[String] = ["species", "level"]
+const _SLOT_KEYS: Array[String] = ["species", "level", "moves"]
+const _CARD_KEYS: Array[String] = ["name", "title"]
 
 var _pokemon: PokemonData
 var _trainers: Dictionary[StringName, TrainerData] = {}
@@ -126,7 +131,13 @@ func build_team(trainer_id: StringName, player_starter: StringName, rng: GameRng
 		return null
 	var party := Party.new()
 	for slot: TrainerSlot in slots:
-		party.add(PokemonFactory.create(_pokemon, slot.species, slot.level, rng))
+		var pokemon := PokemonFactory.create(_pokemon, slot.species, slot.level, rng)
+		# Même règle que DebugStart._create : on remplace, PP pleins, aucun tirage en plus.
+		if not slot.moves.is_empty():
+			pokemon.moves.clear()
+			for move_id: StringName in slot.moves:
+				pokemon.learn_move(move_id, _pokemon)
+		party.add(pokemon)
 	return party
 
 
@@ -182,11 +193,32 @@ func _parse(value: Variant, where: String) -> TrainerData:
 				trainer.set(key, int(money))
 	if trainer.prize_money > 0 and trainer.prize_per_level > 0:
 		ok = _fail("%s : « prize_money » et « prize_per_level » sont exclusifs" % where)
+	if entry.has("card"):
+		ok = _read_card(entry["card"], trainer, where) and ok
 	if entry.has("team"):
 		ok = _read_team(entry["team"], trainer.team, where + " team") and ok
 	if entry.has("team_by_starter"):
 		ok = _read_teams_by_starter(entry["team_by_starter"], trainer, where) and ok
 	return trainer if ok else null
+
+
+## Lit « card » : { "name", "title" }, deux textes non vides, aucune autre clé.
+func _read_card(value: Variant, trainer: TrainerData, where: String) -> bool:
+	if not value is Dictionary:
+		return _fail("%s : « card » doit être { name, title }" % where)
+	var card: Dictionary = value
+	var ok := true
+	for key: Variant in card:
+		if not _CARD_KEYS.has(str(key)):
+			ok = _fail("%s card : clé inconnue « %s »" % [where, key])
+	for key: String in _CARD_KEYS:
+		var text: Variant = card.get(key)
+		if not text is String or (text as String).strip_edges().is_empty():
+			ok = _fail("%s card : « %s » doit être un texte non vide" % [where, key])
+	if ok:
+		trainer.card_name = card["name"]
+		trainer.card_title = card["title"]
+	return ok
 
 
 func _read_teams_by_starter(value: Variant, trainer: TrainerData, where: String) -> bool:
@@ -233,8 +265,32 @@ func _read_team(value: Variant, into: Array[TrainerSlot], where: String) -> bool
 		var slot := TrainerSlot.new()
 		slot.species = species
 		slot.level = int(level)
+		if entry.has("moves") and not _read_moves(entry["moves"], slot.moves, at):
+			ok = false
+			continue
 		into.append(slot)
 	return ok
+
+
+## Lit « moves » d'un Pokémon : 1 à [constant SpeciesData.MAX_MOVES] identifiants distincts
+## et connus. Faux (rien n'est ajouté) sinon.
+func _read_moves(value: Variant, into: Array[StringName], where: String) -> bool:
+	if not value is Array or (value as Array).is_empty() \
+			or (value as Array).size() > SpeciesData.MAX_MOVES:
+		return _fail("%s : « moves » doit être une liste de 1 à %d capacités" % [where,
+			SpeciesData.MAX_MOVES])
+	var ids: Array[StringName] = []
+	for item: Variant in value:
+		if not item is String:
+			return _fail("%s : « moves » ne contient que des identifiants" % where)
+		var move_id := StringName(item)
+		if not _pokemon.has_move(move_id):
+			return _fail("%s : capacité inconnue « %s »" % [where, move_id])
+		if ids.has(move_id):
+			return _fail("%s : capacité en double « %s »" % [where, move_id])
+		ids.append(move_id)
+	into.assign(ids)
+	return true
 
 
 func _fail(message: String) -> bool:

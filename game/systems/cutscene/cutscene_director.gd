@@ -31,6 +31,11 @@ extends Node
 ## Jalon 9 (jalon-09.md §2.4.3, §2.4.4) : [method play_variant] joue une variante construite en
 ## code (séquence d'un Dresseur, [TrainerEncounter]) avec le même verrou et les mêmes signaux ;
 ## étape « emote » (bulle au-dessus d'un PNJ, [method Npc.show_emote], la scène attend sa fin).
+## Jalon 10 (jalon-10.md §2.7, §2.8) : étape « champion_card » (carte de présentation du Dresseur,
+## [method ExplorationHud.show_champion_card], attendue jusqu'à sa disparition ; Dresseurs branchés
+## par [method set_trainers]) et étape « badge » (drapeau du badge, légende « BADGE ROCHE » tenue
+## [constant UiTokens.BADGE_CAPTION_HOLD] avec une vibration légère, Grand moment « badge » une
+## seule fois par badge ; badges et état de la partie branchés par [method set_badges]).
 
 signal cutscene_started(cutscene_id: StringName)
 ## Début d'une étape (tests, outils de capture).
@@ -109,6 +114,12 @@ var _items: ItemLibrary
 var _hud: ExplorationHud
 ## Réveil après une défaite (jalon 7, étape « wake_up ») : branché par Boot après setup.
 var _recovery: DefeatRecovery
+## Dresseurs (jalon 10, étape « champion_card ») : branchés par Boot après setup.
+var _trainers: TrainerLibrary
+## Badges et état de la partie (jalon 10, étape « badge ») : branchés par Boot après setup.
+## [member _state] : l'autoload GameState en jeu, une instance de game_state.gd en test.
+var _badges: BadgeLibrary
+var _state: Node
 
 
 func _ready() -> void:
@@ -188,6 +199,22 @@ func set_hud(hud: ExplorationHud) -> void:
 ## la scène s'arrête quand même.
 func set_recovery(recovery: DefeatRecovery) -> void:
 	_recovery = recovery
+
+
+## Branche les Dresseurs (jalon-10.md §2.7) : l'étape « champion_card » y lit la carte du
+## Dresseur ([member TrainerData.card_name], [member TrainerData.card_title]) et la pose sur la HUD
+## de [method set_hud]. Sans eux, ou Dresseur sans carte : push_error, étape sautée.
+func set_trainers(trainers: TrainerLibrary) -> void:
+	_trainers = trainers
+
+
+## Branche les badges et l'état de la partie (jalon-10.md §2.8) : l'étape « badge » lève le
+## drapeau du badge, pose sa légende sur la HUD de [method set_hud] et enregistre le Grand moment
+## dans [param state] (l'autoload GameState en jeu, une instance de game_state.gd en test ;
+## null = aucun moment). Sans [param badges], ou badge inconnu : push_error, étape sautée.
+func set_badges(badges: BadgeLibrary, state: Node) -> void:
+	_badges = badges
+	_state = state
 
 
 ## Joue [param cutscene_id]. Faux (et rien ne se passe) si une scène tourne, si
@@ -322,6 +349,10 @@ func _play_step(source_step: CutsceneStep) -> bool:
 			_react(step)
 		CutsceneStep.Kind.EMOTE:
 			await _emote(step)
+		CutsceneStep.Kind.CHAMPION_CARD:
+			await _champion_card(step)
+		CutsceneStep.Kind.BADGE:
+			await _badge(step)
 		_:
 			_step_error("étape « %s » inconnue" % CutsceneStep.kind_name(step.kind))
 	return true
@@ -505,6 +536,51 @@ func _caption(step: CutsceneStep) -> void:
 		_step_error("pas de HUD pour la légende « %s »" % step.text)
 		return
 	_hud.show_caption(step.text)
+	await _hud.caption_hidden
+
+
+## Étape « champion_card » (jalon-10.md §2.7) : la carte du Dresseur (« PIERRE » / « Champion
+## d'Arène d'Argenta ») glisse sur le monde ; la scène reprend quand elle a disparu (fin de sa
+## tenue ou toucher). Sans HUD ni Dresseurs branchés, Dresseur inconnu ou sans carte :
+## push_error, étape sautée.
+func _champion_card(step: CutsceneStep) -> void:
+	if not is_instance_valid(_hud):
+		_step_error("pas de HUD pour la carte de « %s »" % step.trainer_id)
+		return
+	var trainer := _trainers.get_trainer(step.trainer_id) if _trainers != null else null
+	if trainer == null or not trainer.has_card():
+		_step_error("aucune carte de présentation pour « %s »" % step.trainer_id)
+		return
+	_hud.show_champion_card(trainer.card_name, trainer.card_title)
+	await _hud.champion_card_hidden
+
+
+## Étape « badge » (jalon-10.md §2.8 ; dossier 12 §13) : remise du badge [member
+## CutsceneStep.badge_id] après la victoire contre son Champion :
+## 1. son drapeau est levé (déjà levé par le « win » du combat : sans effet) ;
+## 2. le Grand moment « badge » est enregistré avec le souvenir de l'équipe telle qu'elle est
+##    (après le bilan d'XP et l'évolution éventuelle, joués dans le combat), sur la carte
+##    courante, **une seule fois par badge** ([method BadgeMoment.has_badge_moment]) ;
+## 3. sa légende (« BADGE ROCHE ») apparaît sur le monde, tenue [constant
+##    UiTokens.BADGE_CAPTION_HOLD], avec une vibration légère [constant UiTokens.HAPTIC_BADGE_MS]
+##    au début de son apparition ; aucun toast. La scène reprend quand elle a disparu.
+## Badge inconnu ou badges non branchés : push_error, étape sautée. Sans HUD : drapeau et moment
+## quand même, pas de légende (push_error).
+func _badge(step: CutsceneStep) -> void:
+	if _badges == null or not _badges.has_badge(step.badge_id):
+		_step_error("badge inconnu « %s »" % step.badge_id)
+		return
+	if _flags != null:
+		_flags.set_flag(_badges.flag(step.badge_id))
+	if _state != null and not BadgeMoment.has_badge_moment(_state.moments, step.badge_id):
+		var map_id: StringName = _map.map_id if is_instance_valid(_map) else &""
+		_state.record_moment(BadgeMoment.TYPE, map_id,
+			BadgeMoment.details(step.badge_id, _state.party as Party))
+	if not is_instance_valid(_hud):
+		_step_error("pas de HUD pour la légende du badge « %s »" % step.badge_id)
+		return
+	_hud.show_caption(_badges.badge_name(step.badge_id), UiTokens.BADGE_CAPTION_HOLD, true)
+	Haptics.vibrate(UiTokens.HAPTIC_BADGE_MS)
 	await _hud.caption_hidden
 
 

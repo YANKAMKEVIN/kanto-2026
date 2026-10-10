@@ -107,6 +107,10 @@ var species: StringName = &""
 var trainer_id: StringName = &""
 var sight: int = 0
 var before_dialogue: StringName = &""
+## Réplique dite **une fois**, juste après la victoire du joueur (jalon 10, jalon-10.md §2.5 :
+## « D'accord… Tu es prêt. » du Campeur Liam) ; ensuite, [member dialogue]. &"" = la réplique
+## « après » est dite tout de suite (comportement du jalon 9).
+var defeated_dialogue: StringName = &""
 
 
 ## Vrai si l'on peut interagir avec lui (un dialogue est renseigné).

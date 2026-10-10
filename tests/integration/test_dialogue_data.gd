@@ -21,6 +21,9 @@ extends GutTest
 ## Jalon 9 (T11) : répliques des 5 Dresseurs de la Forêt de Jade, mot pour mot depuis les
 ## « Textes verrouillés » du dossier 10 (« « … » / « … » » = une page de deux lignes), locuteur
 ## = nom du Dresseur ; réplique « avant » du bloc « trainer » utilisée comme un dialogue de PNJ.
+## Jalon 10 (T8) : Route 2 nord et Argenta, mot pour mot depuis les « Textes verrouillés » du
+## dossier 12 (même forme que le dossier 10) et le lot de textes du J10 validé le 2026-10-08
+## (panneaux, noms affichés) ; dialogues en attente de leurs cartes ([constant UNUSED_YET]).
 
 const BOX_SCENE := "res://game/ui/dialogue/dialogue_box.tscn"
 const DOSSIER := "res://docs/design/dossier-02-prologue.md"
@@ -34,8 +37,18 @@ const DOSSIER_10 := "res://docs/design/dossier-10-foret-de-jade.md"
 ## Gardes des postes de la Forêt de Jade (T6) : textes vérifiés par un test dédié.
 const GATE_GUARDS: Array[StringName] = [&"forest_gate_north_guard", &"forest_gate_south_guard"]
 ## Dialogues pas encore posés sur une carte (vidée au T19 du jalon 9 : la forêt et ses postes
-## sont dans [constant MAPS]).
-const UNUSED_YET: Array[StringName] = []
+## sont dans [constant MAPS]). Jalon 10 (T8) : tous ceux de la Route 2 nord et d'Argenta, en
+## attente de leurs cartes (T11 Route 2 nord et Argenta, T13 intérieurs, T14 la vie, T17
+## l'Arène ; `pewter_gym_liam_defeated` est lue par la clé « defeated » du bloc « trainer »
+## depuis le T9). À retirer carte par carte en ajoutant la carte à [constant MAPS].
+## T13 : les intérieurs d'Argenta sont dans [constant MAPS] (Musée, maisons, Arène : retirés).
+## T11 : la Route 2 nord et Argenta (extérieur) sont dans [constant MAPS] : liste vide.
+const UNUSED_YET: Array[StringName] = [
+]
+## Jalon 10 : textes verrouillés du dossier 12 (même forme que le dossier 10) et lot de textes du
+## J10 (panneaux, noms affichés), où un retour à la ligne est écrit « \n ».
+const DOSSIER_12 := "res://docs/design/dossier-12-argenta.md"
+const LOT_J10 := "res://docs/design/textes/textes-brouillon-j10.md"
 ## Jalon 8 : textes T1–T16 validés (dossier 11, « Textes à valider ») ; dans son tableau, « / »
 ## marque le retour à la ligne de la bulle et le gras (« ** ») le titre d'un panneau.
 const DOSSIER_11 := "res://docs/design/dossier-11-route-2.md"
@@ -46,6 +59,11 @@ const MAPS: Array[StringName] = [
 	&"route_2",
 	# Jalon 9 (T19) : la Forêt de Jade et ses deux postes.
 	&"viridian_forest", &"viridian_forest_gate_south", &"viridian_forest_gate_north",
+	# Jalon 10 (T13) : les intérieurs d'Argenta.
+	&"pewter_center", &"pewter_mart", &"pewter_museum", &"pewter_museum_science", &"pewter_gym",
+	&"pewter_house_mason", &"pewter_house_researcher",
+	# Jalon 10 (T11) : la Route 2 nord et Argenta (extérieur).
+	&"route_2_north", &"pewter_city",
 ]
 ## Lot de textes validé par Kevin le 2026-10-06 (anciens brouillons : panneau, observations,
 ## soin de Maman, terminal du Stockage, portes de Jadielle…) : source des textes hors dossiers.
@@ -69,6 +87,18 @@ const IDS: Array[StringName] = [
 	&"oak_pokedex_activated", &"oak_route1_call", &"oak_route1_warning", &"oak_starter_offer",
 	&"oak_starter_reciprocal", &"observe_aoki_pidgey", &"observe_bulbasaur",
 	&"observe_charmander", &"observe_leo_rattata", &"observe_squirtle",
+	# Jalon 10 (T8) : Argenta (dossier 12, lot du J10).
+	&"pewter_city_sign", &"pewter_gym_brock", &"pewter_gym_brock_badge", &"pewter_gym_brock_intro",
+	&"pewter_gym_brock_lost", &"pewter_gym_brock_resume", &"pewter_gym_brock_won",
+	&"pewter_gym_guide", &"pewter_gym_liam_after", &"pewter_gym_liam_before",
+	&"pewter_gym_liam_defeated", &"pewter_gym_sign", &"pewter_house_mason_kid",
+	&"pewter_house_mason_partner", &"pewter_house_researcher", &"pewter_kid", &"pewter_lass",
+	&"pewter_museum_clerk", &"pewter_museum_dome", &"pewter_museum_helix", &"pewter_museum_journal",
+	&"pewter_museum_lab_door", &"pewter_museum_lab_sign", &"pewter_museum_moon_stone",
+	&"pewter_museum_researcher", &"pewter_museum_researcher_f", &"pewter_museum_science_panel",
+	&"pewter_museum_sign", &"pewter_old_man", &"pewter_route_3_guard",
+	&"pewter_route_3_guard_cleared", &"pewter_route_3_guard_rule", &"pewter_stonemason",
+	&"pewter_visitor",
 	# DA.2 : le chercheur de Bourg Palette (réplique validée par Kevin, dossier-02 §4).
 	&"researcher",
 	&"rival", &"rival_challenge", &"rival_challenge_wait", &"rival_kanto_map",
@@ -81,7 +111,11 @@ const IDS: Array[StringName] = [
 	# Jalon 8 : la Route 2 (dossier 11, T1 à T11).
 	&"route_2_ball_1", &"route_2_ball_2", &"route_2_closed_gate", &"route_2_closed_sign",
 	&"route_2_dense_tree", &"route_2_forest_sign", &"route_2_hiker", &"route_2_item_3_found",
-	&"route_2_item_4_found", &"route_2_sign", &"route_2_youngster",
+	&"route_2_item_4_found",
+	# Jalon 10 (T8) : la Route 2 nord.
+	&"route_2_north_ball_1", &"route_2_north_mountaineer", &"route_2_north_rockslide",
+	&"route_2_north_sign",
+	&"route_2_sign", &"route_2_youngster",
 	&"sign_pallet_town",
 	&"storage_terminal",
 	&"viridian_courier",
@@ -97,8 +131,8 @@ const IDS: Array[StringName] = [
 ## Jalon 7 : got_oak_parcel, lu par Chen (scène du colis, T18), est levé par la première visite
 ## de la Boutique depuis le T12 (data/cutscenes/viridian_mart.json).
 ## Jalon 9 : `pewter_arrived` (lu par le garde du poste nord) est posé par le J10, à l'arrivée à
-## Argenta.
-const FUTURE_FLAGS: Array[StringName] = [&"pewter_arrived"]
+## Argenta : levé par la scène `pewter_arrival` depuis le T8 du J10.
+const FUTURE_FLAGS: Array[StringName] = []
 var _library: DialogueLibrary
 var _cutscenes: CutsceneLibrary
 var _offer: StarterOffer
@@ -134,6 +168,9 @@ func before_all() -> void:
 			# Jalon 9 : la réplique « avant » d'un Dresseur est jouée par sa séquence, sur sa carte.
 			if spec.is_trainer():
 				_use(spec.before_dialogue, map_id)
+				# Jalon 10 (T9) : la réplique « vaincu », dite par la séquence à la victoire.
+				if not spec.defeated_dialogue.is_empty():
+					_use(spec.defeated_dialogue, map_id)
 		var map := (load(MapCatalog.scene_path(map_id)) as PackedScene).instantiate()
 		for point: Node in map.get_node(^"Interactables").get_children():
 			_use((point as InteractPoint).dialogue_id, map_id)
@@ -222,6 +259,10 @@ func test_every_dialogue_played_by_a_cutscene_exists() -> void:
 		&"oak_parcel_records", &"oak_parcel_rival", &"oak_parcel_rival_dex", &"oak_poke_balls",
 		&"oak_poke_balls_intro", &"oak_pokedex_activated", &"oak_route1_call",
 		&"oak_route1_warning", &"oak_starter_offer", &"oak_starter_reciprocal",
+		# Jalon 10 (T8) : scènes de Pierre et du garde de la Route 3.
+		&"pewter_gym_brock_badge", &"pewter_gym_brock_intro", &"pewter_gym_brock_lost",
+		&"pewter_gym_brock_resume", &"pewter_gym_brock_won", &"pewter_route_3_guard_cleared",
+		&"pewter_route_3_guard_rule",
 		&"rival_challenge", &"rival_challenge_wait", &"rival_lab_lost", &"rival_lab_won",
 		&"rival_lab_won_leaving", &"rival_parcel_greet", &"rival_parcel_leaving",
 		&"rival_parcel_return", &"rival_starter_pick", &"rival_starter_smile",
@@ -304,19 +345,21 @@ func test_every_condition_flag_is_set_somewhere() -> void:
 	assert_true(read_flags.has(&"starter_chosen"), "starter_chosen lu (pensée des herbes)")
 	assert_eq(_library.get_set_flags(),
 		[&"blacked_out_before", &"forest_hiker_talked", &"forest_naturalist_talked",
-			&"mom_greeted", &"poison_unlocked", &"rival_met",
+			&"mom_greeted", &"pewter_researcher_talked", &"poison_unlocked", &"rival_met",
 			&"route_2_hiker_talked", &"route_2_youngster_talked", &"storage_terminal_seen",
 			&"viridian_old_man_talked"]
 		as Array[StringName])
-	assert_eq(_cutscenes.get_set_flags(), [&"got_oak_parcel", &"got_potion_route_1",
+	assert_eq(_cutscenes.get_set_flags(), [&"badge_boulder", &"brock_met", &"got_oak_parcel",
+		&"got_potion_route_1",
 		&"got_route_2_item_1", &"got_route_2_item_2", &"got_route_2_item_3",
-		&"got_route_2_item_4", &"got_viridian_forest_item_1", &"got_viridian_forest_item_2",
+		&"got_route_2_item_4", &"got_route_2_north_item_1", &"got_viridian_forest_item_1",
+		&"got_viridian_forest_item_2",
 		&"got_viridian_forest_item_3", &"got_viridian_forest_item_4",
 		&"got_viridian_forest_item_5", &"got_viridian_forest_item_6", &"oak_lab_reunion",
-		&"oak_met",
+		&"oak_met", &"pewter_arrived",
 		&"pokedex_activated", &"rival_battle_done", &"rival_challenged", &"rival_lab_lost",
 		&"rival_lab_won", &"rival_left_lab", &"rival_route22_lost", &"rival_route22_won",
-		&"starter_chosen", &"starter_offered", &"viridian_arrived"] as Array[StringName])
+		&"route_3_guard_cleared", &"starter_chosen", &"starter_offered", &"viridian_arrived"] as Array[StringName])
 	assert_eq(_used_on.get(&"oak_lab_reunion"), [&"oak_lab"], "joué au labo, après le fondu")
 	assert_eq(_used_on.get(&"oak_starter_offer"), [&"oak_lab"], "joué au labo")
 
@@ -496,6 +539,8 @@ func test_texts_are_the_dossier_02_texts_word_for_word() -> void:
 	var dossier_11 := FileAccess.get_file_as_string(DOSSIER_11).replace("**", "")
 	var valides := FileAccess.get_file_as_string(TEXTES_VALIDES)
 	var dossier_10 := FileAccess.get_file_as_string(DOSSIER_10)
+	var dossier_12 := FileAccess.get_file_as_string(DOSSIER_12)
+	var lot_j10 := FileAccess.get_file_as_string(LOT_J10)
 	for row: Array in _pages():
 		if GATE_GUARDS.has(row[0]):
 			continue
@@ -510,7 +555,9 @@ func test_texts_are_the_dossier_02_texts_word_for_word() -> void:
 			or dossier_11.replace(" / ", " ").contains("| %s |" % text)
 		assert_true(dossier.contains(text) or dossier_07.contains(text)
 			or dossier_09.contains(text) or in_dossier_11 or valides.contains("« %s »" % text)
-			or dossier_10.contains(_as_dossier_10(text)),
+			or dossier_10.contains(_as_dossier_10(text))
+			or dossier_12.contains(_as_dossier_10(text))
+			or lot_j10.contains("| « %s » |" % text.replace("\n", "\\n")),
 			"%s : « %s » dans un dossier de conception" % [row[0], text])
 
 
@@ -648,8 +695,8 @@ func test_oak_parcel_lines() -> void:
 				assert_true(_cutscenes.has_cutscene(variant.cutscene), "%s : scène « %s »" % [
 					id, variant.cutscene])
 	# La scène du colis ; jalon 8 : les deux objets visibles de la Route 2 (PRENDRE) ; jalon 9 :
-	# les trois de la Forêt de Jade.
-	assert_eq(launched, 6, "la scène du colis et les cinq objets au sol")
+	# les trois de la Forêt de Jade ; jalon 10 : la Potion de la Route 2 nord et Pierre.
+	assert_eq(launched, 8, "la scène du colis, six objets au sol et Pierre")
 	# Le jeton n'apparaît que dans la réplique de l'espèce.
 	for row: Array in _pages():
 		var tokens := DialogueTokens.tokens_in(row[1])

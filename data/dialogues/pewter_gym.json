@@ -1,0 +1,64 @@
+{
+	"pewter_gym_guide": {
+		"speaker": "Guide",
+		"variants": [
+			{
+				"if": ["badge_boulder"],
+				"pages": ["Ton premier Badge…\nTu t'en souviendras longtemps."]
+			},
+			{
+				"pages": ["Bienvenue à l'Arène d'Argenta.\nIci, chacun vient avec sa propre stratégie."]
+			}
+		]
+	},
+	"pewter_gym_liam_before": {
+		"speaker": "Campeur Liam",
+		"pages": ["Pour atteindre Pierre, il faudra\nd'abord passer par moi !"]
+	},
+	"pewter_gym_liam_defeated": {
+		"speaker": "Campeur Liam",
+		"pages": ["D'accord… Tu es prêt."]
+	},
+	"pewter_gym_liam_after": {
+		"speaker": "Campeur Liam",
+		"pages": ["Pierre est encore plus solide."]
+	},
+	"pewter_gym_brock": {
+		"speaker": "Pierre",
+		"variants": [
+			{
+				"if": ["badge_boulder"],
+				"pages": [
+					"Un autre Dresseur de Bourg Palette\nest passé récemment.",
+					"Vous avez des façons de combattre\ntrès différentes."
+				]
+			},
+			{
+				"cutscene": "pewter_gym_brock"
+			}
+		]
+	},
+	"pewter_gym_brock_intro": {
+		"speaker": "Pierre",
+		"pages": [
+			"Je suis Pierre, Champion d'Argenta.\nMes Pokémon ont été entraînés pour tenir bon.",
+			"Montre-moi comment tu comptes les faire céder."
+		]
+	},
+	"pewter_gym_brock_resume": {
+		"speaker": "Pierre",
+		"pages": ["Prêt à essayer autrement ?"]
+	},
+	"pewter_gym_brock_won": {
+		"speaker": "Pierre",
+		"pages": ["Bien joué.\nMes Pokémon n'ont pas tenu face aux tiens."]
+	},
+	"pewter_gym_brock_badge": {
+		"speaker": "Pierre",
+		"pages": ["C'est la preuve de ta victoire\nà l'Arène d'Argenta."]
+	},
+	"pewter_gym_brock_lost": {
+		"speaker": "Pierre",
+		"pages": ["Une équipe solide ne suffit pas.\nReviens avec une autre approche."]
+	}
+}

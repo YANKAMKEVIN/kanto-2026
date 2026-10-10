@@ -186,8 +186,11 @@ func test_reduced_motion_speeds_up_animations_but_not_message_holds() -> void:
 	assert_eq(_boot.get_battle_hud().message_hold_scale, 1.0)
 	_boot.get_battle_hud().speed_scale = 0.6
 	assert_eq(_boot.get_battle_hud().get_message_banner().hold_scale, 1.0)
+	assert_true(_boot.get_hud().get_champion_card().reduce_motion,
+		"carte du Champion sans glissé (jalon 10, T9)")
 	_menu.change_setting(GameSettings.REDUCE_MOTION, false)
 	assert_eq(_boot.get_battle_director().speed_scale, 1.0)
+	assert_false(_boot.get_hud().get_champion_card().reduce_motion)
 
 
 func test_reduce_flashes_reaches_the_stage() -> void:

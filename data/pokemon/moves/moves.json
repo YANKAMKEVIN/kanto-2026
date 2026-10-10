@@ -317,6 +317,42 @@
 		"power": 110, "accuracy": 70, "pp": 10, "pending_effects": ["paralysis_30"],
 		"description": "Une foudre violente s'abat sur la cible. Peut la paralyser."
 	},
+	"rock_throw": {
+		"name": "Jet-Pierres", "type": "rock", "category": "physical",
+		"power": 50, "accuracy": 90, "pp": 15,
+		"description": "Le lanceur soulève de petits rochers et les jette sur la cible."
+	},
+	"defense_curl": {
+		"name": "Boul'Armure", "type": "normal", "category": "status",
+		"accuracy": 0, "pp": 40,
+		"effects": [{ "kind": "stat_stage", "stat": "def", "stages": 1, "target": "self" }],
+		"description": "Le lanceur se roule en boule pour se protéger. Augmente sa Défense."
+	},
+	"self_destruct": {
+		"name": "Destruction", "type": "normal", "category": "physical",
+		"power": 200, "accuracy": 100, "pp": 5, "pending_effects": ["self_ko"],
+		"description": "Le lanceur explose et blesse gravement la cible. Il tombe K.O. ensuite."
+	},
+	"earthquake": {
+		"name": "Séisme", "type": "ground", "category": "physical",
+		"power": 100, "accuracy": 100, "pp": 10,
+		"description": "Un violent tremblement de terre secoue le sol et frappe la cible."
+	},
+	"explosion": {
+		"name": "Explosion", "type": "normal", "category": "physical",
+		"power": 250, "accuracy": 100, "pp": 5, "pending_effects": ["self_ko"],
+		"description": "Le lanceur explose dans un souffle terrible. Il tombe K.O. ensuite."
+	},
+	"bind": {
+		"name": "Étreinte", "type": "normal", "category": "physical",
+		"power": 15, "accuracy": 85, "pp": 20, "pending_effects": ["trap"],
+		"description": "Ligote la cible de son long corps et la serre pendant quelques tours."
+	},
+	"slam": {
+		"name": "Souplesse", "type": "normal", "category": "physical",
+		"power": 80, "accuracy": 75, "pp": 20,
+		"description": "Le lanceur frappe la cible de sa longue queue ou de ses lianes."
+	},
 	"struggle": {
 		"name": "Lutte", "type": "normal", "category": "physical",
 		"power": 50, "accuracy": 0, "pp": 1, "typeless": true,

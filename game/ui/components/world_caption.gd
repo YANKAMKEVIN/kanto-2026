@@ -37,9 +37,13 @@ func _ready() -> void:
 
 
 ## Affiche [param caption] (mis en MAJUSCULES) : fondu, tenue, fondu. Déjà visible, le texte
-## change et la tenue repart de zéro, sans nouveau fondu d'apparition sec.
-func show_caption(caption: String) -> void:
+## change et la tenue repart de zéro, sans nouveau fondu d'apparition sec. [param hold] : tenue
+## de cet affichage (s) ; négative = [member hold_duration] (« BADGE ROCHE » : 2 s, jalon 10).
+## [param centered] : posée au centre vertical de l'écran au lieu du haut (« BADGE ROCHE » :
+## en Arène la caméra est fixe et le Champion se tient en haut de la salle).
+func show_caption(caption: String, hold: float = -1.0, centered: bool = false) -> void:
 	text = caption.to_upper()
+	_place(centered)
 	if _tween != null:
 		_tween.kill()
 	if not visible:
@@ -48,9 +52,18 @@ func show_caption(caption: String) -> void:
 	_tween = create_tween().set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
 	_tween.tween_property(self, ^"modulate:a", 1.0, fade_duration)
 	_tween.tween_callback(caption_shown.emit)
-	_tween.tween_interval(hold_duration)
+	_tween.tween_interval(hold if hold >= 0.0 else hold_duration)
 	_tween.tween_property(self, ^"modulate:a", 0.0, fade_duration).set_ease(Tween.EASE_IN)
 	_tween.tween_callback(_on_hidden)
+
+
+func _place(centered: bool) -> void:
+	var middle := UiTokens.CAPTION_CENTER_ANCHOR if centered else 0.0
+	anchor_top = middle
+	anchor_bottom = middle
+	grow_vertical = Control.GROW_DIRECTION_BOTH if centered else Control.GROW_DIRECTION_END
+	offset_top = 0.0 if centered else UiTokens.CAPTION_TOP
+	offset_bottom = 0.0
 
 
 ## Efface la légende en fondu court (changement de carte…) ; émet caption_hidden à la fin.

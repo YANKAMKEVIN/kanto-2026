@@ -3,7 +3,9 @@
 #
 # 30 × 24 cases ; nord en haut. Raccords : nord (14..16, 0) ↔ Argenta (17..19, 43) ;
 # sud : porte du mur nord du poste nord de la forêt (15, 21), STEP_ON ↓ → viridian_forest_gate_north.
-# Le poste est vu de dessus : seul son toit occupe le bas de la carte.
+# Le poste est vu de dessus : seul son toit occupe le bas de la carte, porte au bord HAUT de
+# l'emprise (asset neuf bldg_poste_foret_nord_01, 7 × 3 ; la façade de face de la vue est
+# abandonnée, dossier 12 « Vue générale peinte v1 »). Contrôle : tools/art/plan_check_argenta.py.
 #
 # Légende (en plus de celle de route_2.txt et argenta.txt) :
 #   E éboulis du sentier est, fermé (bloqué ; arbitrage 9)   e sentier peint derrière (bloqué)
@@ -11,7 +13,7 @@
 # Format : section GRILLE (« NN » + espace + 30 caractères par rangée), puis POSITIONS.
 
 GRILLE 30 24
-00 TTTTTTTTTTTTTT===..KKKKKKKKKKK
+00 TTTTTTTTTTTTTT===TTKKKKKKKKKKK
 01 TTT...........===..KKKKKKKKKKK
 02 TTT...........===..KKKKKKKKKKK
 03 TTT......========..KKKKKKKKKKK
@@ -43,8 +45,9 @@ warp_nord_w         warp           14,0         libre   # PUSH ↑ → pewter_ci
 warp_nord_c         warp           15,0         libre
 warp_nord_e         warp           16,0         libre
 porte_poste         warp           15,21        libre   # STEP_ON ↓ → viridian_forest_gate_north
+arrivee_poste       repere         15,20        libre   # spawn from_forest_gate, tourné ↑
 examen_eboulis      examen         24,16..17    libre   # « Des éboulis bloquent le sentier. »
 montagnard          pnj            17,5..7      bloque  # aller-retour lent au bord du chemin
-potion              objet_visible  4,1          bloque  # détour par H2
+potion              objet_visible  4,1          bloque  # petit détour à l'ouest, au-dessus de H2, hors herbes
 panneau_route       panneau        13,19        bloque  # « ROUTE 2 » en sortant du poste
 FIN

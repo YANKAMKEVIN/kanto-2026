@@ -329,3 +329,39 @@ func test_starters_are_painted_with_a_rest_pose() -> void:
 				assert_eq(idle.atlas.resource_path, CharacterLook.POKEMON_PAINTED_DIR + sheet
 					+ "_idle_sheet.png", "%s : planche d'attente" % sprite)
 	assert_true(idle_from_walk.has("salameche"), "Salamèche : attente tirée de la marche")
+
+
+## Jalon 10 T10 (série 12) : Pierre, tailleur, Montagnard, Campeur et guide d'Arène peints, avec
+## leur planche d'attente, à leur hauteur de fiche ; le Racaillou du tailleur au format
+## « Pokémon fixe » (repos et réaction, ni marche ni course).
+func test_pewter_people_and_geodude_are_painted() -> void:
+	var sheets: Dictionary[StringName, Array] = {
+		&"brock": ["pierre", 128], &"stonemason": ["tailleur", 128],
+		&"mountaineer": ["montagnard", 132], &"camper": ["campeur", 112],
+		&"gym_guide": ["guide_arene", 128],
+	}
+	for sprite: StringName in sheets:
+		var look := CharacterLook.resolve(sprite)
+		assert_true(look.painted, String(sprite))
+		assert_eq(look.filter, CanvasItem.TEXTURE_FILTER_LINEAR)
+		var frames := load(look.frames_path) as SpriteFrames
+		assert_not_null(frames, String(sprite))
+		if frames == null:
+			continue
+		for dir: String in ["down", "left", "right", "up"]:
+			var idle := frames.get_frame_texture(StringName("idle_" + dir), 0) as AtlasTexture
+			assert_eq(idle.atlas.resource_path, CharacterLook.PAINTED_DIR
+				+ String(sheets[sprite][0]) + "_idle_sheet.png", "%s : attente %s" % [sprite, dir])
+			var walk := frames.get_frame_texture(StringName("walk_" + dir), 0) as AtlasTexture
+			assert_between(walk.get_size().y, float(sheets[sprite][1]),
+				float(sheets[sprite][1]) + 4.0, "%s : hauteur de fiche" % sprite)
+			assert_false(frames.has_animation(StringName("run_" + dir)), "%s marche" % sprite)
+	var geodude := CharacterLook.resolve(&"pokemon/geodude")
+	assert_true(geodude.painted, "Racaillou peint")
+	var fixed := load(geodude.frames_path) as SpriteFrames
+	assert_not_null(fixed, "Racaillou")
+	if fixed == null:
+		return
+	for dir: String in ["down", "left", "right", "up"]:
+		assert_true(fixed.has_animation(StringName("react_" + dir)), "réaction " + dir)
+		assert_false(fixed.has_animation(StringName("walk_" + dir)), "immobile")

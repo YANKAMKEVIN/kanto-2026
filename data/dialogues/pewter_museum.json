@@ -1,0 +1,45 @@
+{
+	"pewter_museum_dome": {
+		"narration": true,
+		"pages": ["Un fossile extrêmement ancien.\nSa structure reste remarquablement intacte."]
+	},
+	"pewter_museum_helix": {
+		"narration": true,
+		"pages": ["Un fossile provenant d'une ancienne mer."]
+	},
+	"pewter_museum_moon_stone": {
+		"narration": true,
+		"pages": [
+			"Une roche rare trouvée près du Mont Sélénite.\nSa composition intrigue encore les chercheurs."
+		]
+	},
+	"pewter_museum_journal": {
+		"narration": true,
+		"pages": [
+			"Fragment de journal d'expédition.\nOrigine : inconnue.",
+			"Plusieurs pages sont manquantes."
+		]
+	},
+	"pewter_museum_science_panel": {
+		"narration": true,
+		"pages": ["LES POKÉMON ANCIENS\nCe qu'il reste d'eux dort dans la roche."]
+	},
+	"pewter_museum_lab_sign": {
+		"pages": ["LABORATOIRE — Personnel autorisé."]
+	},
+	"pewter_museum_lab_door": {
+		"narration": true,
+		"pages": ["L'accès est réservé aux chercheurs."]
+	},
+	"pewter_museum_researcher": {
+		"speaker": "Chercheur",
+		"pages": [
+			"Les fossiles sont comme des pages\narrachées au passé.",
+			"Certains Pokémon ont changé au fil du temps.\nD'autres semblent presque inchangés."
+		]
+	},
+	"pewter_museum_researcher_f": {
+		"speaker": "Chercheuse",
+		"pages": ["Les fossiles rares attirent parfois\nles collectionneurs."]
+	}
+}

@@ -1,5 +1,16 @@
 [
 	{
+		"id": "go_route_3",
+		"text": "continuer vers la Route 3.",
+		"if": ["badge_boulder"]
+	},
+	{
+		"id": "get_boulder_badge",
+		"text": "obtenir le Badge Roche.",
+		"if": ["pewter_arrived"],
+		"unless": ["badge_boulder"]
+	},
+	{
 		"id": "go_north",
 		"text": "continuer vers le nord.",
 		"if": ["pokedex_activated"]

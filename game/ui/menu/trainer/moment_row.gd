@@ -16,6 +16,7 @@ const ICONS: Dictionary[StringName, Texture2D] = {
 	MomentLibrary.RIVAL_BATTLE: preload("res://assets/ui/icons/trainer/rival.svg"),
 	MomentLibrary.FIRST_CAPTURE: preload("res://assets/ui/icons/poke_ball.svg"),
 	MomentLibrary.ZONE_ARRIVAL: preload("res://assets/ui/icons/menu/map.svg"),
+	MomentLibrary.BADGE: preload("res://assets/ui/icons/trainer/badge_slot.svg"),
 }
 const ICON_DEFAULT: Texture2D = preload("res://assets/ui/icons/menu/map.svg")
 
@@ -111,10 +112,20 @@ func _build_thumb() -> Control:
 		icon.mouse_filter = Control.MOUSE_FILTER_IGNORE
 		icon.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 		icon.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
-		icon.set_anchors_preset(Control.PRESET_CENTER)
 		icon.size = Vector2.ONE * UiTokens.TRAINER_MOMENT_ICON
 		icon.position = (UiTokens.TRAINER_MOMENT_THUMB - icon.size) * 0.5
 		thumb.add_child(icon)
+	if _view.kind == MomentLibrary.BADGE and art.has_image():
+		# Le badge : son emblème (ACCENT) posé sur l'aperçu du lieu, comme l'artwork d'un Pokémon.
+		var emblem := TextureRect.new()
+		emblem.texture = ICONS[MomentLibrary.BADGE]
+		emblem.modulate = UiTokens.ACCENT
+		emblem.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		emblem.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+		emblem.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+		emblem.size = Vector2.ONE * UiTokens.TRAINER_MOMENT_ART
+		emblem.position = UiTokens.TRAINER_MOMENT_THUMB - emblem.size
+		thumb.add_child(emblem)
 	var pokemon := MenuArt.pokemon_thumbnail(_view.dex_number)
 	if pokemon != null:
 		var picture := TextureRect.new()

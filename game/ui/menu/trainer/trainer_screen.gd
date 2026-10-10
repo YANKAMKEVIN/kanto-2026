@@ -15,6 +15,9 @@ extends MenuScreen
 ##   avec la route de la vue.
 ## - Un moment avec route touché : **un** [signal route_requested] avec cette route ; sans route
 ##   (et les badges, l'équipe) : rien.
+## - Un badge **obtenu** touché : bulle de détail (nom, puis ville et Champion) ancrée sous
+##   l'emplacement ; un toucher n'importe où (y compris le même badge) la ferme. Un badge muet
+##   est inerte.
 ## - « ‹ » : [signal back_requested].
 ## Composition (MM.2) : l'écran remonte dans la rangée du × (covers_header) et y pose son « ‹ »
 ## (owns_back), l'icône du Dresseur et « Dresseur » ; bandeau d'état de l'hôte à droite.
@@ -62,6 +65,9 @@ var _scroll: ScrollContainer
 var _moments: VBoxContainer
 var _rows: Array[MomentRow] = []
 var _empty: Label
+var _catcher: Control
+var _bubble: BadgeBubble
+var _bubble_slot: BadgeSlot
 
 
 func _init() -> void:
@@ -105,6 +111,7 @@ func _ready() -> void:
 	_stats_panel.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	side.add_child(_stats_panel)
 	side.add_child(_build_moments())
+	_build_bubble_layer()
 	_built = true
 	if _view != null:
 		_apply(_view)
@@ -157,6 +164,36 @@ func get_team_cards() -> Array[TrainerTeamCard]:
 
 func get_team_panel() -> PanelContainer:
 	return _team_panel
+
+
+## Bulle de détail ouverte (null : fermée).
+func get_open_bubble() -> BadgeBubble:
+	return _bubble if _catcher != null and _catcher.visible else null
+
+
+## Ouvre la bulle de détail de [param slot] (sans effet si le badge n'est pas obtenu).
+func open_badge_detail(slot: BadgeSlot) -> void:
+	if slot == null or not slot.is_touchable() or _catcher == null:
+		return
+	_bubble_slot = slot
+	_bubble.setup(slot.get_view())
+	_catcher.visible = true
+	var rect := slot.get_global_rect()
+	var local := rect.position - _catcher.get_global_rect().position
+	var width := _bubble.size.x
+	var x := clampf(local.x + rect.size.x * 0.5 - width * 0.5, float(UiTokens.SAFE_MARGIN),
+		_catcher.size.x - float(UiTokens.SAFE_MARGIN) - width)
+	var y := local.y + rect.size.y + float(UiTokens.TRAINER_BUBBLE_OFFSET)
+	if y + _bubble.size.y > _catcher.size.y - float(UiTokens.SAFE_MARGIN):
+		y = local.y - float(UiTokens.TRAINER_BUBBLE_OFFSET) - _bubble.size.y
+	_bubble.position = Vector2(x, y)
+	_bubble.appear(speed_scale)
+
+
+func close_badge_detail() -> void:
+	if _catcher != null:
+		_catcher.visible = false
+	_bubble_slot = null
 
 
 ## Lignes de la frise, du plus ancien au plus récent.
@@ -278,6 +315,8 @@ func _build_identity() -> PanelContainer:
 	_started.clip_text = false
 	_money_row = _icon_row(column, ICON_COIN, UiTokens.ACCENT)
 	_money = _money_row.get_child(1) as Label
+	_started_row.item_rect_changed.connect(_place_portrait)
+	_money_row.item_rect_changed.connect(_place_portrait)
 	var spacer := Control.new()
 	spacer.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	spacer.size_flags_vertical = Control.SIZE_EXPAND_FILL
@@ -312,9 +351,32 @@ func _build_badges() -> PanelContainer:
 	column.add_child(grid)
 	for i: int in TrainerView.BADGE_COUNT:
 		var slot := BadgeSlot.new()
+		slot.touched.connect(open_badge_detail)
 		grid.add_child(slot)
 		_slots.append(slot)
 	return panel
+
+
+## Couche de la bulle : un receveur plein écran (un toucher le ferme) et la bulle par-dessus.
+func _build_bubble_layer() -> void:
+	_catcher = Control.new()
+	_catcher.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	_catcher.mouse_filter = Control.MOUSE_FILTER_STOP
+	_catcher.visible = false
+	_catcher.gui_input.connect(_on_catcher_input)
+	add_child(_catcher)
+	_bubble = BadgeBubble.new()
+	_catcher.add_child(_bubble)
+
+
+func _on_catcher_input(event: InputEvent) -> void:
+	var mouse := event as InputEventMouseButton
+	var touch := event as InputEventScreenTouch
+	# Fermée au **relâchement** : l'appui a été avalé ici, il ne peut pas atteindre ce qui est
+	# dessous (un lien de la frise, un autre badge) une fois la bulle partie.
+	if (mouse != null and not mouse.pressed) or (touch != null and not touch.pressed):
+		close_badge_detail()
+	_catcher.accept_event()
 
 
 func _build_team() -> PanelContainer:
@@ -361,6 +423,7 @@ func _build_moments() -> PanelContainer:
 
 
 func _apply(view: TrainerView) -> void:
+	close_badge_detail()
 	_name.text = view.player_name
 	_subtitle.text = view.player_title
 	_subtitle.visible = not view.player_title.is_empty()
@@ -373,6 +436,7 @@ func _apply(view: TrainerView) -> void:
 	if not view.money_text.is_empty():
 		money = "%s : %s" % [TrainerView.MONEY_LABEL, view.money_text]
 	_set_row(_money_row, _money, money)
+	_place_portrait.call_deferred()
 	_seen_route = view.seen_route
 	_caught_route = view.caught_route
 	_set_link(_seen, view.seen_text)
@@ -543,12 +607,24 @@ func _set_link(button: Button, text: String) -> void:
 	button.visible = not text.is_empty()
 
 
+## Bas des lignes d'identité (nom, date, argent), dans le repère du cadre : le portrait
+## commence sous cette ligne, jamais dessus (montant à 6 chiffres compris).
+func _text_bottom() -> float:
+	var bottom := 0.0
+	for row: Control in [_started_row, _money_row]:
+		if row != null and row.visible:
+			bottom = maxf(bottom, row.global_position.y + row.size.y - _stage.global_position.y)
+	return bottom + UiTokens.GAP
+
+
 ## Portrait : au plus TRAINER_HERO_MAX de haut, posé sur le bas du cadre, bord droit contre lui.
 func _place_portrait() -> void:
 	var texture := _portrait.texture
 	if texture == null:
 		return
-	var height := minf(float(UiTokens.TRAINER_HERO_MAX), _stage.size.y)
+	var free_top := _text_bottom()
+	var height := minf(float(UiTokens.TRAINER_HERO_MAX), _stage.size.y - free_top)
+	height = maxf(height, 0.0)
 	var width := height * texture.get_width() / float(texture.get_height())
 	_portrait.size = Vector2(width, height)
 	_portrait.position = Vector2(_stage.size.x - width + UiTokens.TRAINER_HERO_OFFSET_X,

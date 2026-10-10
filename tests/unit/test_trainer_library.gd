@@ -313,7 +313,7 @@ func test_invalid_teams_are_rejected() -> void:
 	var errors := _errors()
 	assert_string_contains(errors, "espèce inconnue « missingno »")
 	assert_string_contains(errors, "« level » doit être un entier de 1 à 100")
-	assert_string_contains(errors, "clé inconnue « moves »")
+	assert_string_contains(errors, "« moves » doit être une liste de 1 à 4")
 	assert_string_contains(errors, "starter inconnu « pikachu »")
 	assert_string_contains(errors, "team_by_starter « sprout » : une équipe de 1 à 6")
 	assert_string_contains(errors, "« c » team : une équipe de 1 à 6")

@@ -11,6 +11,12 @@ extends SceneTree
 ##     Jade (jalon 9 T19, jalon-09.md §2.7.2 : une définition, deux scènes)
 ##
 ##   godot --headless --path . -s res://tools/build_painted_interiors.gd -- --foret
+##   pewter_center, pewter_mart, pewter_museum, pewter_museum_science, pewter_gym,
+##     pewter_house_mason, pewter_house_researcher — intérieurs d'Argenta (jalon 10 T13,
+##     jalon-10.md §2.2) : Centre et Boutique = définitions de Jadielle ; Musée, Arène et maisons
+##     relus sur leur grille (`tools/plans/argenta_*.txt`, « plan »)
+##
+##   godot --headless --path . -s res://tools/build_painted_interiors.gd -- --argenta
 ##   godot --headless --path . -s res://tools/build_painted_interiors.gd   (toutes les pièces)
 ##   godot --headless --path . --import
 ##
@@ -56,6 +62,10 @@ const STEP_ON := 0
 const BOURG := [&"player_house_2f", &"player_house_1f", &"rival_house", &"oak_lab"]
 const JADIELLE := [&"viridian_center", &"viridian_mart"]
 const FORET := [&"viridian_forest_gate_south", &"viridian_forest_gate_north"]
+const ARGENTA := [&"pewter_center", &"pewter_mart", &"pewter_museum", &"pewter_museum_science",
+	&"pewter_gym", &"pewter_house_mason", &"pewter_house_researcher"]
+const PLANS_DIR := "res://tools/plans/"
+const PlanGrid := preload("res://tests/helpers/plan_grid.gd")
 const LOGIC_DIR := "res://tests/fixtures/maps/"
 
 var _rules: GDScript
@@ -69,6 +79,7 @@ func _init() -> void:
 	var rooms: Array[Dictionary] = [_viridian_center(), _viridian_mart(), _player_house_2f(),
 		_player_house_1f(), _rival_house(), _oak_lab(), _forest_gate(&"south"),
 		_forest_gate(&"north")]
+	rooms.append_array(_pewter_rooms())
 	for room: Dictionary in rooms:
 		if not wanted.is_empty() and not wanted.has(room["id"]):
 			continue
@@ -100,6 +111,8 @@ func _wanted_rooms() -> Array:
 			wanted.append_array(JADIELLE)
 		elif arg == "--foret":
 			wanted.append_array(FORET)
+		elif arg == "--argenta":
+			wanted.append_array(ARGENTA)
 		elif arg.begins_with("--rooms="):
 			for id: String in arg.trim_prefix("--rooms=").split(","):
 				wanted.append(StringName(id))
@@ -110,14 +123,22 @@ func _wanted_rooms() -> Array:
 ## de soin à droite du plateau), terminal du Stockage au nord-ouest (EXAMINER face à lui →
 ## `storage_terminal` → l'écran Stockage, T16), deux banquettes, trois plantes ; pas d'escalier ni de Leveinard (arbitrages du dossier).
 func _viridian_center() -> Dictionary:
+	return _pokemon_center(&"viridian_center", "ViridianCenter", "Jadielle",
+		[&"viridian_city", &"from_center"])
+
+
+## Centre Pokémon (même enseigne partout, dossier 12 §8) : la définition du Centre de Jadielle
+## (jalon 7 T8), seuls changent l'identifiant, le nœud racine, le titre et la sortie.
+func _pokemon_center(id: StringName, node: String, title: String, exit_target: Array) \
+		-> Dictionary:
 	return {
-		"id": &"viridian_center", "node": "ViridianCenter", "size": Vector2i(15, 10),
+		"id": id, "node": node, "size": Vector2i(15, 10),
 		"shell": "res://assets/world/interiors/int_centre_coque.png",
-		"title": "Jadielle", "light": &"interior_warm",
+		"title": title, "light": &"interior_warm",
 		# Mur du fond : 3 rangées (prototype) ; derrière le comptoir : l'infirmière seule.
 		"back_rows": 3,
 		"exit": [Vector2i(6, 8), Vector2i(7, 8), Vector2i(8, 8)],
-		"exit_target": [&"viridian_city", &"from_center"],
+		"exit_target": exit_target,
 		"blocked": [Vector2i(5, 3), Vector2i(6, 3), Vector2i(8, 3), Vector2i(9, 3)],
 		"props": [
 			[&"int_centre_comptoir", Vector2i(7, 4), 5.0, "Counter"],
@@ -156,14 +177,24 @@ func _viridian_center() -> Dictionary:
 ## paillasson) → scène `mart_parcel` (data/cutscenes/viridian_mart.json), qui ne se joue que sans
 ## `got_oak_parcel`.
 func _viridian_mart() -> Dictionary:
+	var room := _poke_mart(&"viridian_mart", "ViridianMart", "Jadielle",
+		[&"viridian_city", &"from_mart"])
+	# Rangée d'entrée (5..9, 7), toutes directions : on la traverse forcément en entrant.
+	room["triggers"] = [["ParcelTrigger", Vector2i(5, 7), Vector2i(5, 1), &"mart_parcel"]]
+	return room
+
+
+## Boutique (même enseigne partout, dossier 12 §8) : la définition de la Boutique de Jadielle
+## (jalon 7 T12) sans le déclencheur du colis, propre à Jadielle.
+func _poke_mart(id: StringName, node: String, title: String, exit_target: Array) -> Dictionary:
 	return {
-		"id": &"viridian_mart", "node": "ViridianMart", "size": Vector2i(15, 10),
+		"id": id, "node": node, "size": Vector2i(15, 10),
 		"shell": "res://assets/world/interiors/int_boutique_coque.png",
-		"title": "Jadielle", "light": &"interior_warm",
+		"title": title, "light": &"interior_warm",
 		# Mur du fond : 3 rangées (prototype) ; derrière la caisse : le marchand seul.
 		"back_rows": 3,
 		"exit": [Vector2i(6, 8), Vector2i(7, 8), Vector2i(8, 8)],
-		"exit_target": [&"viridian_city", &"from_mart"],
+		"exit_target": exit_target,
 		"blocked": [Vector2i(5, 3), Vector2i(6, 3), Vector2i(8, 3), Vector2i(9, 3)],
 		"props": [
 			[&"int_boutique_caisse", Vector2i(7, 4), 5.0, "Counter"],
@@ -176,8 +207,6 @@ func _viridian_mart() -> Dictionary:
 		# Parler au marchand par-dessus la caisse (trois cases devant lui, tourné vers le haut).
 		"interactables": [["ClerkCounter", Vector2i(6, 4), Vector2i(3, 1), &"clerk", TALK,
 			Vector2i.UP]],
-		# Rangée d'entrée (5..9, 7), toutes directions : on la traverse forcément en entrant.
-		"triggers": [["ParcelTrigger", Vector2i(5, 7), Vector2i(5, 1), &"mart_parcel"]],
 		"spawns": {"entrance": Vector2i(7, 8), "counter": Vector2i(7, 5)},
 	}
 
@@ -222,18 +251,18 @@ func _forest_gate(side: StringName) -> Dictionary:
 				&"from_gate_south", Vector2i.UP],
 		]
 	else:
-		# Porte nord « à venir » (build de développement) : retour sous l'ouverture, tourné vers
-		# le sud.
+		# Porte nord : la Route 2 nord (J10 T11), devant la porte du poste, tourné vers le nord ;
+		# retour sous l'ouverture (spawn `north_door`), tourné vers le sud.
 		room["spawns"] = {"from_forest": Vector2i(4, 6), "north_door": Vector2i(4, 2)}
 		room["warps"] = [
 			["ToForestW", Vector2i(4, 7), STEP_ON, Vector2i.DOWN, &"viridian_forest",
 				&"from_gate_north", Vector2i.DOWN],
 			["ToForestE", Vector2i(5, 7), STEP_ON, Vector2i.DOWN, &"viridian_forest",
 				&"from_gate_north", Vector2i.DOWN],
-			["Route2NorthSoonW", Vector2i(4, 1), STEP_ON, Vector2i.UP, &"", &"north_door",
-				Vector2i.DOWN, "Route 2 nord"],
-			["Route2NorthSoonE", Vector2i(5, 1), STEP_ON, Vector2i.UP, &"", &"north_door",
-				Vector2i.DOWN, "Route 2 nord"],
+			["ToRoute2NorthW", Vector2i(4, 1), STEP_ON, Vector2i.UP, &"route_2_north",
+				&"from_forest_gate", Vector2i.UP],
+			["ToRoute2NorthE", Vector2i(5, 1), STEP_ON, Vector2i.UP, &"route_2_north",
+				&"from_forest_gate", Vector2i.UP],
 		]
 	return room
 
@@ -427,6 +456,187 @@ func _oak_lab() -> Dictionary:
 	}
 
 
+## Intérieurs d'Argenta (jalon 10 T13, jalon-10.md §2.2, dossier 12 §7, §8, §10, §19). Titre
+## « Argenta » (toast du point de repos), lumière `interior_warm` ; sorties vers `pewter_city`,
+## spawns `from_<carte sans « pewter_ »>` devant les portes de la ville (T11).
+func _pewter_rooms() -> Array[Dictionary]:
+	var rooms: Array[Dictionary] = [
+		_pokemon_center(&"pewter_center", "PewterCenter", "Argenta",
+			[&"pewter_city", &"from_center"]),
+		_poke_mart(&"pewter_mart", "PewterMart", "Argenta", [&"pewter_city", &"from_mart"]),
+		_pewter_museum(), _pewter_museum_science(), _pewter_gym(),
+		_pewter_house(&"pewter_house_mason", "PewterHouseMason", "argenta_maison_tailleur.txt",
+			_mason_furniture(), [
+				[&"int_tapis_plaid_01", Vector2(3.5, 6.0), "RugPlaid"],
+				[&"int_tapis_salon_01", Vector2(11.0, 5.3), "RugLiving"],
+			]),
+		_pewter_house(&"pewter_house_researcher", "PewterHouseResearcher",
+			"argenta_maison_chercheuse.txt", _researcher_furniture(),
+			[[&"int_tapis_rouge_01", Vector2(8.5, 6.2), "RugReading"]]),
+	]
+	return rooms
+
+
+## Passages de sortie d'un intérieur d'Argenta : [param cells] PUSH ↓ → [param target]
+## (`pewter_city` par défaut), [param spawn], tourné vers le sud.
+func _pewter_exits(cells: Array, spawn: StringName, target: StringName = &"pewter_city") \
+		-> Array:
+	var warps: Array = []
+	var index := 0
+	for cell: Vector2i in cells:
+		warps.append(["Exit%d" % index, cell, PUSH, Vector2i.DOWN, target, spawn, Vector2i.DOWN])
+		index += 1
+	return warps
+
+
+## Musée, salle principale (`tools/plans/argenta_musee.txt`) : trois vitrines (Fossile Dôme,
+## Fossile Nautile, Pierre Lune au centre sur son socle), examinées de tous côtés ; arche nord
+## (STEP_ON ↑) vers la salle science ; ambiance silencieuse : personne dans la salle.
+func _pewter_museum() -> Dictionary:
+	var room := {
+		"id": &"pewter_museum", "node": "PewterMuseum", "size": Vector2i(15, 10),
+		"shell": "res://assets/world/interiors/int_musee_coque.png",
+		"title": "Argenta", "light": &"interior_warm",
+		"plan": PLANS_DIR + "argenta_musee.txt", "walkable": ".DX",
+		"props": [
+			[&"int_vitrine_dome_01", Vector2i(3, 4), 4.92, "DomeFossilCase"],
+			[&"int_vitrine_nautile_01", Vector2i(12, 4), 4.92, "HelixFossilCase"],
+			[&"int_vitrine_pierre_lune_01", Vector2i(7, 5), 5.92, "MoonStoneCase"],
+			[&"int_plante", Vector2i(1, 7), 7.85, "PlantSouthWest"],
+			[&"int_plante", Vector2i(13, 7), 7.85, "PlantSouthEast"],
+		],
+		"interactables": [
+			["DomeFossil", Vector2i(2, 4), Vector2i(2, 1), &"pewter_museum_dome", EXAMINE,
+				Vector2i.ZERO],
+			["HelixFossil", Vector2i(11, 4), Vector2i(2, 1), &"pewter_museum_helix", EXAMINE,
+				Vector2i.ZERO],
+			["MoonStone", Vector2i(7, 5), Vector2i.ONE, &"pewter_museum_moon_stone", EXAMINE,
+				Vector2i.ZERO],
+		],
+		"spawns": {"entrance": Vector2i(7, 8), "from_science": Vector2i(7, 3)},
+	}
+	var warps := _pewter_exits([Vector2i(6, 8), Vector2i(7, 8), Vector2i(8, 8)], &"from_museum")
+	for x: int in [6, 7, 8]:
+		warps.append(["ToScience%d" % (x - 6), Vector2i(x, 2), STEP_ON, Vector2i.UP,
+			&"pewter_museum_science", &"from_hall", Vector2i.UP])
+	room["warps"] = warps
+	return room
+
+
+## Musée, salle « science » (`tools/plans/argenta_musee_science.txt`) : même coque ; l'arche
+## nord est fermée par la porte du laboratoire (plaque à gauche, double porte : deux points
+## d'examen, tourné vers le nord) ; panneau d'exposition, vitrine du journal ; deux chercheurs
+## (data/npcs/pewter_museum_science.json). Retour vers la salle principale par le seuil.
+func _pewter_museum_science() -> Dictionary:
+	return {
+		"id": &"pewter_museum_science", "node": "PewterMuseumScience", "size": Vector2i(15, 10),
+		"shell": "res://assets/world/interiors/int_musee_coque.png",
+		"title": "Argenta", "light": &"interior_warm",
+		"plan": PLANS_DIR + "argenta_musee_science.txt", "walkable": ".Xc",
+		"props": [
+			# Porte du laboratoire calée dans l'arche peinte (pied au bas du mur du fond) ; sans
+			# emprise : la rangée 2 est bloquée par la grille.
+			[&"int_porte_labo_01", Vector2i(7, 2), 2.4, "LabDoor"],
+			[&"int_panneau_expo_01", Vector2i(3, 4), 4.92, "ExhibitPanel"],
+			[&"int_vitrine_journal_01", Vector2i(12, 4), 4.92, "JournalCase"],
+			[&"int_plante", Vector2i(1, 7), 7.85, "PlantSouthWest"],
+			[&"int_plante", Vector2i(13, 7), 7.85, "PlantSouthEast"],
+		],
+		"interactables": [
+			["LabSign", Vector2i(6, 2), Vector2i.ONE, &"pewter_museum_lab_sign", EXAMINE,
+				Vector2i.UP],
+			["LabDoorExamine", Vector2i(7, 2), Vector2i(2, 1), &"pewter_museum_lab_door",
+				EXAMINE, Vector2i.UP],
+			["SciencePanel", Vector2i(2, 4), Vector2i(2, 1), &"pewter_museum_science_panel",
+				EXAMINE, Vector2i.ZERO],
+			["Journal", Vector2i(11, 4), Vector2i(2, 1), &"pewter_museum_journal", EXAMINE,
+				Vector2i.ZERO],
+		],
+		"spawns": {"from_hall": Vector2i(7, 8)},
+		"warps": _pewter_exits([Vector2i(6, 8), Vector2i(7, 8), Vector2i(8, 8)],
+			&"from_science", &"pewter_museum"),
+	}
+
+
+## Arène d'Argenta (`tools/plans/argenta_arene.txt`, 15 × 11, la salle entière à l'écran) :
+## deux piliers au fond, quatre rochers bas devant, le bloc central (il arrête la vision de
+## Liam), deux rochers bas de part et d'autre de Pierre sur l'estrade peinte ; Pierre, Liam et le guide = data/npcs/pewter_gym.json
+## (vie et combats : T17).
+func _pewter_gym() -> Dictionary:
+	return {
+		"id": &"pewter_gym", "node": "PewterGym", "size": Vector2i(15, 11),
+		"shell": "res://assets/world/interiors/int_arene_coque.png",
+		"title": "Argenta", "light": &"interior_warm",
+		"plan": PLANS_DIR + "argenta_arene.txt", "walkable": ".XPLG",
+		"props": [
+			[&"int_rochers_bas_02", Vector2i(6, 2), 2.9, "RockStageWest"],
+			[&"int_rochers_bas_02", Vector2i(8, 2), 2.9, "RockStageEast"],
+			[&"int_pilier_roche_01", Vector2i(3, 4), 4.9, "PillarNorthWest"],
+			[&"int_pilier_roche_01", Vector2i(12, 4), 4.9, "PillarNorthEast"],
+			[&"int_rochers_bas_01", Vector2i(9, 7), 7.9, "CentralRocks"],
+			# Devant (rangée 8) : rochers bas plutôt que piliers (3,5 cases de haut, ils cachaient
+			# Liam en (2, 6) et tout le passage ouest) ; même emprise 2 × 1.
+			[&"int_rochers_bas_02", Vector2i(2, 8), 8.9, "RockSouthWestA"],
+			[&"int_rochers_bas_02", Vector2i(3, 8), 8.8, "RockSouthWestB"],
+			[&"int_rochers_bas_02", Vector2i(11, 8), 8.8, "RockSouthEastA"],
+			[&"int_rochers_bas_02", Vector2i(12, 8), 8.9, "RockSouthEastB"],
+		],
+		"spawns": {"entrance": Vector2i(7, 9)},
+		"warps": _pewter_exits([Vector2i(6, 9), Vector2i(7, 9), Vector2i(8, 9)], &"from_gym"),
+	}
+
+
+## Maison d'Argenta (arbitrage 14 : une seule enveloppe, deux mobiliers) : grille
+## `tools/plans/<plan>` (même convention que le Centre), meubles de Bourg Palette posés comme
+## dans les intérieurs de Bourg (rectangle des cases solides), tapis à plat. Sortie vers
+## `pewter_city`, spawn `from_<carte sans « pewter_ »>`.
+func _pewter_house(id: StringName, node: String, plan: String, furniture: Array,
+		rugs: Array) -> Dictionary:
+	return {
+		"id": id, "node": node, "size": Vector2i(15, 10),
+		"shell": "res://assets/world/interiors/int_maison_argenta_coque.png",
+		"title": "Argenta", "light": &"interior_warm",
+		"plan": PLANS_DIR + plan, "walkable": ".Xaec",
+		"furniture": furniture, "rugs": rugs,
+		"spawns": {"entrance": Vector2i(7, 8)},
+		"warps": _pewter_exits([Vector2i(6, 8), Vector2i(7, 8), Vector2i(8, 8)],
+			StringName("from_" + String(id).trim_prefix("pewter_"))),
+	}
+
+
+## Maison du tailleur (`argenta_maison_tailleur.txt`) : cuisine, table à manger, salon.
+func _mason_furniture() -> Array:
+	return [
+		[&"int_frigo_01", Rect2i(1, 3, 1, 1), "Fridge"],
+		[&"int_cuisine_01", Rect2i(2, 3, 3, 1), "Kitchen"],
+		[&"int_cuisiniere_hotte_01", Rect2i(5, 3, 1, 1), "Stove"],
+		[&"int_table_repas_01", Rect2i(2, 5, 3, 2), "DiningTable"],
+		[&"int_canape_01", Rect2i(10, 3, 3, 1), "Sofa"],
+		[&"int_chevet_lampe_01", Rect2i(13, 3, 1, 1), "Lamp"],
+		[&"int_table_basse_01", Rect2i(10, 5, 2, 1), "CoffeeTable"],
+		[&"int_porte_manteau_01", Rect2i(5, 7, 1, 1), "CoatRack"],
+		[&"int_plante", Rect2i(1, 7, 1, 1), "PlantWest"],
+		[&"int_plante", Rect2i(13, 7, 1, 1), "PlantEast"],
+	]
+
+
+## Maison de la chercheuse (`argenta_maison_chercheuse.txt`) : bibliothèque, bureau aux notes,
+## étagère de pierres et de bocaux, pierres posées au sol, table de lecture.
+func _researcher_furniture() -> Array:
+	return [
+		[&"int_grande_etagere_01", Rect2i(1, 2, 2, 2), "BookshelfWest"],
+		[&"int_grande_etagere_01", Rect2i(3, 2, 2, 2), "BookshelfCentre"],
+		[&"int_bureau_chen_01", Rect2i(7, 3, 3, 1), "NotesDesk"],
+		[&"int_chaise_bureau_01", Rect2i(8, 4, 1, 1), "DeskChair"],
+		[&"int_classeur_01", Rect2i(10, 3, 1, 1), "FileCabinet"],
+		[&"int_etagere_labo_01", Rect2i(12, 2, 2, 2), "SpecimenShelf"],
+		[&"int_rochers_bas_02", Rect2i(6, 3, 1, 1), "Stones"],
+		[&"int_table_repas_01", Rect2i(2, 5, 3, 2), "ReadingTable"],
+		[&"int_plante", Rect2i(1, 7, 1, 1), "PlantWest"],
+		[&"int_plante", Rect2i(13, 7, 1, 1), "PlantEast"],
+	]
+
+
 func _build(room: Dictionary) -> Node2D:
 	var size: Vector2i = room["size"]
 	var root := Node2D.new()
@@ -496,6 +706,8 @@ func _build(room: Dictionary) -> Node2D:
 			decor.name = entry[2]
 			decor.position = _world(entry[1])
 			_attach(root, entities, decor)
+	elif room.has("plan"):
+		root.set(&"blocked_cells", _plan_blocked(root, entities, room))
 	elif room.has("floor"):
 		root.set(&"blocked_cells", _walls_around_floor(room))
 	else:
@@ -559,6 +771,41 @@ func _build(room: Dictionary) -> Node2D:
 		point.set(&"cutscene_id", entry[3])
 		_attach(root, root.get_node(^"Triggers"), point)
 	return root
+
+
+## Pièce relue sur sa grille fonctionnelle (« plan », jalon 10 T13) : les caractères de
+## « walkable » sont praticables (sol, passages, cases des PNJ, qui occupent leur case à
+## l'exécution) ; toute autre case est solide. Pose les meubles « furniture » (rectangles, comme
+## Bourg Palette) ; les emprises des objets (« props », règles d'emprise) et des meubles doivent
+## tomber sur des cases solides de la grille (sinon erreur) ; les cases solides qu'ils ne couvrent
+## pas (murs, rangée de la porte du laboratoire…) sont renvoyées pour `blocked_cells`.
+func _plan_blocked(root: Node, entities: Node, room: Dictionary) -> Array[Vector2i]:
+	var size: Vector2i = room["size"]
+	var plan := PlanGrid.new()
+	var blocked: Array[Vector2i] = []
+	if not plan.load_file(room["plan"]) or Vector2i(plan.width, plan.height) != size:
+		push_error("%s : grille %s illisible ou ≠ %s (%s)" % [room["id"], room["plan"], size,
+			plan.error])
+		_errors += 1
+		return blocked
+	var walkable: String = room["walkable"]
+	var covered: Dictionary[Vector2i, String] = {}
+	for entry: Array in room.get("props", []):
+		for cell: Vector2i in _rules.call(&"footprint", entry[0]):
+			covered[entry[1] + cell] = entry[3]
+	for entry: Array in room.get("furniture", []):
+		for cell: Vector2i in _add_furniture(root, entities, entry):
+			covered[cell] = entry[2]
+	for cell: Vector2i in covered:
+		if walkable.contains(plan.at(cell)):
+			push_error("%s/%s : %s praticable dans la grille" % [room["id"], covered[cell], cell])
+			_errors += 1
+	for y in size.y:
+		for x in size.x:
+			var cell := Vector2i(x, y)
+			if not walkable.contains(plan.at(cell)) and not covered.has(cell):
+				blocked.append(cell)
+	return blocked
 
 
 ## Grille logique figée (`tools/dump_map_logic.gd`) : cases solides (« # » et « G »).

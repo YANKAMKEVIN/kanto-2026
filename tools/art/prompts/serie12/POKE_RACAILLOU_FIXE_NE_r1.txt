@@ -1,0 +1,13 @@
+POKE_RACAILLOU_FIXE — planche d'un Pokémon d'ambiance IMMOBILE (il ne marche jamais) : 4 poses.
+Images jointes : PERSO_P2_PEINT_r1 (le héros validé) et POKE_RATTATA_P2_r1 (un petit Pokémon validé) = ancres de style ; REF_AR_RACAILLOU = couleurs et taille relative seulement (minuscule, rendu à NE PAS copier).
+Style : exactement le rendu des ancres : Pokémon peint simplifié, même finesse, même contour fin coloré sans trait noir. Ni pixel art, ni 3D, ni anime aux contours noirs. Formes simples et lisibles pour rester net une fois réduit à environ 56 px de haut.
+LUMIÈRE NE (neutre) : lumière de milieu de journée, diffuse et blanche, venant légèrement du haut à gauche ; volumes conservés par un ombrage doux ; aucune teinte dorée ou orangée, aucun liseré chaud ; ombres propres neutres, légèrement bleutées.
+
+POKÉMON (identique dans les 4 poses, le SEUL Pokémon de l'image) : Racaillou, le Pokémon Roche de Pokémon Rouge/Bleu, fidèle à son design officiel : une ROCHE ronde gris-brun un peu bosselée, SANS jambes, deux bras musclés de pierre aux grosses mains à cinq doigts, épais sourcils de roche au-dessus de petits yeux, bouche déterminée.
+
+PLANCHE : image paysage 1536 × 1024, fond avec une vraie transparence (canal alpha, aucun damier dessiné). UNE seule ligne de 4 poses, de gauche à droite, chaque pose dans une colonne invisible de 384 px de large, bien séparées par du vide, le Pokémon entier dans chaque colonne, à la MÊME ÉCHELLE dans les 4 poses (environ 220 px de haut au repos), la base des 4 poses sur une même ligne horizontale.
+- Pose 1 : au repos, vu de face (tourné vers le bas de l'écran) : posé au sol, les deux mains posées à plat devant lui, calme.
+- Pose 2 : même vue de face, RÉACTION : il SOULÈVE à deux mains au-dessus de sa tête une pierre claire presque aussi grosse que lui, fier (il « travaille » au chantier du tailleur).
+- Pose 3 : au repos, de profil, tourné vers la GAUCHE : posé au sol, les deux mains posées à plat devant lui, calme.
+- Pose 4 : même profil gauche, RÉACTION : il SOULÈVE à deux mains au-dessus de sa tête une pierre claire presque aussi grosse que lui, fier (il « travaille » au chantier du tailleur).
+Vue : la même vue de dessus de trois quarts que le jeu (caméra un peu au-dessus). Pas de sol, pas d'outil, pas de personnage, pas d'ombre au sol, pas de texte, pas de numéros, pas de cadres. Les couleurs, les proportions et le visage doivent être EXACTEMENT les mêmes dans les 4 poses ; seule la posture change entre repos et réaction.

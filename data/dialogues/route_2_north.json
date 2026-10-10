@@ -1,0 +1,24 @@
+{
+	"route_2_north_sign": {
+		"pages": ["ROUTE 2\nForêt de Jade — Argenta"]
+	},
+	"route_2_north_mountaineer": {
+		"speaker": "Montagnard",
+		"variants": [
+			{
+				"if": ["badge_boulder"],
+				"pages": ["C'est le Badge Roche que je vois là ?\nLa Route 3 t'attend, alors."]
+			},
+			{
+				"pages": ["Argenta est juste devant.\nOn voit le Musée depuis la route."]
+			}
+		]
+	},
+	"route_2_north_rockslide": {
+		"narration": true,
+		"pages": ["Des éboulis bloquent le sentier."]
+	},
+	"route_2_north_ball_1": {
+		"cutscene": "route_2_north_item_1"
+	}
+}

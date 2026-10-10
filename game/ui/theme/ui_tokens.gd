@@ -1599,3 +1599,45 @@ const TRAINER_TEAM_LEVEL_FONT := 22
 const TRAINER_MOMENT_THUMB := Vector2(150, 92)
 const TRAINER_MOMENT_THUMB_RADIUS := 12
 const TRAINER_MOMENT_ART := 64
+
+## Carte de présentation du Champion (jalon 10, T5) : « PIERRE » / « Champion d'Arène
+## d'Argenta », posée sur le monde avant le combat. Verre sombre du combat (CB.2), liseré
+## ACCENT à gauche, aucun portrait. Réutilisée pour les 8 Champions.
+const CHAMPION_CARD_BG := DIALOG_PANEL_BG
+const CHAMPION_CARD_RADIUS := RADIUS
+## Liseré ACCENT sur le bord gauche de la carte.
+const CHAMPION_CARD_ACCENT_WIDTH := 10
+const CHAMPION_CARD_PAD_H := 56
+const CHAMPION_CARD_PAD_V := 32
+const CHAMPION_CARD_MIN_WIDTH := 640
+const CHAMPION_CARD_LINE_GAP := 8
+const CHAMPION_CARD_NAME_FONT := FONT_TITLE
+const CHAMPION_CARD_TITLE_FONT := FONT_BODY
+## Centre de la carte : fraction de la hauteur d'écran ; bord gauche à SAFE_MARGIN.
+const CHAMPION_CARD_CENTER_Y := 0.42
+## Entrée glissée depuis la gauche, tenue (un toucher l'abrège), sortie.
+const CHAMPION_CARD_SLIDE_IN := 0.4
+const CHAMPION_CARD_HOLD := 3.0
+const CHAMPION_CARD_SLIDE_OUT := 0.25
+
+## Écran Dresseur, badge obtenu (jalon 10, T6) : bulle de détail ancrée sous l'emplacement
+## (« Badge Roche » / « Argenta — Pierre »), verre sombre du combat, liseré ACCENT en haut.
+const TRAINER_BUBBLE_BG := DIALOG_PANEL_BG
+const TRAINER_BUBBLE_RADIUS := RADIUS_SMALL
+const TRAINER_BUBBLE_PAD_H := 32
+const TRAINER_BUBBLE_PAD_V := 20
+const TRAINER_BUBBLE_MIN_WIDTH := 360
+const TRAINER_BUBBLE_LINE_GAP := 4
+## Écart entre l'emplacement et la bulle ; glissement (px) et durée (s) de l'apparition.
+const TRAINER_BUBBLE_OFFSET := 12
+const TRAINER_BUBBLE_SLIDE := 16
+const TRAINER_BUBBLE_FADE := 0.16
+
+## Remise d'un badge (jalon 10, T9 ; dossier 12 §13, arbitrage 11) : « BADGE ROCHE » par la
+## légende posée sur le monde (WorldCaption, comme « POKÉDEX ACTIVÉ »), tenue courte, et une
+## vibration légère à son apparition. Aucun toast.
+const BADGE_CAPTION_HOLD := 2.0
+const HAPTIC_BADGE_MS := 40
+## Position de « BADGE ROCHE » : centre vertical de l'écran (ancre 0,5), Pierre reste visible
+## en haut de l'Arène (caméra fixe). Les autres légendes restent à CAPTION_TOP.
+const CAPTION_CENTER_ANCHOR := 0.5

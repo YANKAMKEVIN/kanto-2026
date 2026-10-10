@@ -222,3 +222,101 @@ func test_sideways_swipe_from_a_linked_moment_emits_nothing() -> void:
 	TouchFinger.new(screen.get_viewport()).swipe(from, Vector2(120.0, 0.0))
 	await wait_process_frames(2)
 	assert_true(_routes.is_empty(), "un glissement n'est pas un toucher")
+
+
+# --- Badge obtenu (jalon 10, T6) : touchable, bulle de détail, moment dans la frise -------------
+
+func _roche_view() -> TrainerView:
+	var view := _view()
+	var badges := BadgeLibrary.new()
+	badges.load_file()
+	var flags := StoryFlags.new()
+	flags.set_flag(&"badge_boulder")
+	view.badges = badges.slots(flags)
+	var moment := MomentView.new()
+	moment.kind = MomentLibrary.BADGE
+	moment.title = "Badge Roche"
+	moment.detail = "Obtenu à Argenta contre Pierre."
+	moment.place = "Argenta"
+	moment.date_text = "9 octobre 2026"
+	moment.zone_id = &"pewter_city"
+	view.moments.append(moment)
+	return view
+
+
+func test_obtained_badge_is_touchable_others_stay_inert() -> void:
+	var screen := await _screen_in(2340, _roche_view())
+	var slots := screen.get_badge_slots()
+	assert_true(slots[0].is_touchable())
+	assert_gte(slots[0].get_hit().get_global_rect().size.y, float(UiTokens.TOUCH_MIN) - 0.5)
+	for i: int in range(1, 8):
+		assert_false(slots[i].is_touchable(), "badge %d muet = inerte" % i)
+		assert_eq(slots[i].get_text(), "???")
+	screen.open_badge_detail(slots[1])
+	assert_null(screen.get_open_bubble(), "un badge muet n'ouvre rien")
+
+
+func test_touching_obtained_badge_opens_detail_then_closes() -> void:
+	for width: int in WIDTHS:
+		var screen := await _screen_in(width, _roche_view())
+		var slot := screen.get_badge_slots()[0]
+		TouchFinger.new(screen.get_viewport()).tap(slot.get_hit().get_global_rect().get_center())
+		await wait_process_frames(2)
+		var bubble := screen.get_open_bubble()
+		assert_not_null(bubble, "bulle ouverte à %d" % width)
+		assert_eq(bubble.get_name_label().text, "Badge Roche")
+		assert_eq(bubble.get_detail_label().text, "Argenta — Pierre")
+		var rect := bubble.get_global_rect()
+		assert_gte(rect.position.x, float(UiTokens.SAFE_MARGIN) - 0.5)
+		assert_lte(rect.end.x, float(width - UiTokens.SAFE_MARGIN) + 0.5)
+		assert_gte(rect.position.y, float(UiTokens.SAFE_MARGIN) - 0.5)
+		assert_lte(rect.end.y, float(HEIGHT - UiTokens.SAFE_MARGIN) + 0.5)
+		assert_eq(screen.get_open_bubble().get_global_rect().intersects(
+			slot.get_global_rect()), false, "la bulle ne couvre pas l'emplacement")
+		# Second toucher sur le même badge : fermée.
+		TouchFinger.new(screen.get_viewport()).tap(slot.get_hit().get_global_rect().get_center())
+		await wait_process_frames(2)
+		assert_null(screen.get_open_bubble(), "fermée au second toucher")
+		assert_true(_routes.is_empty() and _backs == 0)
+
+
+func test_touch_elsewhere_closes_detail_without_acting() -> void:
+	var screen := await _screen_in(2340, _roche_view())
+	screen.open_badge_detail(screen.get_badge_slots()[0])
+	assert_not_null(screen.get_open_bubble())
+	# Sur la ligne de la frise liée : ferme la bulle, ne suit pas le lien.
+	var hit := screen.get_moment_rows()[0].get_hit()
+	TouchFinger.new(screen.get_viewport()).tap(hit.get_global_rect().get_center())
+	await wait_process_frames(2)
+	assert_null(screen.get_open_bubble())
+	assert_true(_routes.is_empty(), "le toucher n'a fait que fermer")
+
+
+func test_refresh_closes_the_detail() -> void:
+	var screen := await _screen_in(2340, _roche_view())
+	screen.open_badge_detail(screen.get_badge_slots()[0])
+	screen.show_trainer(_roche_view())
+	assert_null(screen.get_open_bubble())
+
+
+func test_badge_moment_shows_in_the_timeline_with_emblem() -> void:
+	var screen := await _screen_in(2340, _roche_view())
+	var texts := screen.get_texts()
+	assert_true(texts.has("Badge Roche"))
+	assert_true(texts.has("Obtenu à Argenta contre Pierre."))
+	assert_true(texts.has("Argenta · 9 octobre 2026"))
+	var rows := screen.get_moment_rows()
+	assert_eq(rows[rows.size() - 1].get_view().kind, MomentLibrary.BADGE)
+
+
+func test_portrait_never_under_identity_text_with_long_money() -> void:
+	for width: int in WIDTHS:
+		var view := _view()
+		view.money_text = "999 999 ₽"
+		var screen := await _screen_in(width, view)
+		await wait_process_frames(3)
+		var portrait := screen.get_portrait().get_global_rect()
+		for row: Control in [screen._started_row, screen._money_row]:
+			var rect := row.get_global_rect()
+			assert_lte(rect.end.y, portrait.position.y + 0.5,
+				"la ligne d'identité reste au-dessus du portrait (%d)" % width)

@@ -1,0 +1,39 @@
+# Musée d'Argenta, salle principale (pewter_museum) — grille fonctionnelle (jalon 10 T1, défauts
+# de la règle 4 ; dossier 12 §7). Même enveloppe peinte que la salle science (INT_MUSEE_COQUE,
+# série 12) : seuls les meubles changent. Convention des intérieurs de
+# tools/build_painted_interiors.gd (15 × 10, mur du fond sur 3 rangées, colonnes 0 et 14,
+# avant-dernière rangée bloquée sauf le paillasson, dernière rangée). Vérifiée par
+# tools/art/plan_check_argenta.py.
+#
+# Légende :
+#   K mur (bloqué)          . sol (praticable)
+#   D ouverture nord vers la salle science (praticable, STEP_ON ↑ ; arche peinte de 3 cases)
+#   X sortie vers Argenta (praticable : paillasson, PUSH ↓ ; porte peinte de 2 cases centrée)
+#   V vitrine (bloquée) : Fossile Dôme (2..3, 4), Fossile Nautile (11..12, 4), Pierre Lune au
+#     centre sur un socle (7, 5), qu'on contourne
+#   x plante (bloquée)
+#
+# Format : section GRILLE (« NN » + espace + 15 caractères par rangée), puis POSITIONS.
+
+GRILLE 15 10
+00 KKKKKKKKKKKKKKK
+01 KKKKKKKKKKKKKKK
+02 KKKKKKDDDKKKKKK
+03 K.............K
+04 K.VV.......VV.K
+05 K......V......K
+06 K.............K
+07 Kx...........xK
+08 KKKKKKXXXKKKKKK
+09 KKKKKKKKKKKKKKK
+FIN
+
+POSITIONS
+vers_science        warp           6..8,2       libre   # STEP_ON ↑ → pewter_museum_science, from_hall
+sortie              warp           6..8,8       libre   # PUSH ↓ → pewter_city, from_museum
+entree              spawn          7,8          libre   # spawn « entrance », tourné ↑
+depuis_science      spawn          7,3          libre   # spawn « from_science », tourné ↓
+vitrine_dome        examen         2..3,4       libre   # examinée depuis la rangée 5, tourné ↑
+vitrine_nautile     examen         11..12,4     libre
+vitrine_pierre_lune examen         7,5          libre
+FIN

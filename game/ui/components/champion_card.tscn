@@ -1,0 +1,37 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://game/ui/components/champion_card.gd" id="1_card"]
+
+[node name="ChampionCard" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("1_card")
+
+[node name="Body" type="PanelContainer" parent="."]
+unique_name_in_owner = true
+layout_mode = 0
+mouse_filter = 2
+theme_type_variation = &"ChampionCard"
+
+[node name="Lines" type="VBoxContainer" parent="Body"]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="NameLabel" type="Label" parent="Body/Lines"]
+unique_name_in_owner = true
+layout_mode = 2
+mouse_filter = 2
+theme_type_variation = &"ChampionCardName"
+text = "PIERRE"
+
+[node name="TitleLabel" type="Label" parent="Body/Lines"]
+unique_name_in_owner = true
+layout_mode = 2
+mouse_filter = 2
+theme_type_variation = &"ChampionCardTitle"
+text = "Champion d'Arène d'Argenta"

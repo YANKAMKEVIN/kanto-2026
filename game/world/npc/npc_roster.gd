@@ -31,8 +31,9 @@ extends RefCounted
 ## { "cells": [[x, y], …], "pause": 1.2, "start": 1, "enter": { "cell": [x, y], "seconds": 8 } },
 ## voir [method _read_route]).
 ## trainer (jalon 9, jalon-09.md §2.4.1) : { "id": dresseur de data/trainers/, "sight": 1..8,
-## "before": dialogue avant le combat } ; exige « facing » écrit et « dialogue » (la réplique
-## « après »), le verbe « talk », et refuse « route », « look », « shy » et « idle_react » (un
+## "before": dialogue avant le combat, "defeated": réplique dite une fois après la victoire du
+## joueur, facultative (jalon 10, jalon-10.md §2.5) } ; exige « facing » écrit et « dialogue »
+## (la réplique « après »), le verbe « talk », et refuse « route », « look », « shy » et « idle_react » (un
 ## Dresseur qui bouge ou se tourne changerait sa vision), voir [method _read_trainer].
 ## Le verbe « meet » (Rencontrer) est refusé : il est posé par le code (jalon 4 §3.5).
 ## Toute autre clé est une erreur. Pas de fichier = aucun PNJ sur la carte (sans erreur).
@@ -50,7 +51,7 @@ const KEYS: Array[String] = [
 	"trainer",
 ]
 ## Clés du bloc « trainer » ([method _read_trainer]).
-const TRAINER_KEYS: Array[String] = ["id", "sight", "before"]
+const TRAINER_KEYS: Array[String] = ["id", "sight", "before", "defeated"]
 ## Clés d'une attente animée « look » ([method _read_look]).
 const LOOK_KEYS: Array[String] = ["facings", "every"]
 ## Clés d'une routine « route » ([method _read_route]).
@@ -232,7 +233,8 @@ static func parse_entry(value: Variant, errors: PackedStringArray) -> NpcSpec:
 	return spec if errors.size() == count else null
 
 
-## Lit le bloc « trainer » (jalon 9) : { "id", "sight" (entier 1..8), "before" } et vérifie
+## Lit le bloc « trainer » (jalon 9) : { "id", "sight" (entier 1..8), "before", "defeated"
+## (facultatif, jalon 10 : réplique dite une fois après la victoire du joueur) } et vérifie
 ## le reste de l'entrée (lue avant) : « facing » écrit, « dialogue » (réplique « après »),
 ## verbe « talk », ni « route », ni « look », ni « shy », ni « idle_react ». Les références
 ## (dresseur, dialogues) sont vérifiées par les tests des données réelles.
@@ -249,6 +251,9 @@ static func _read_trainer(entry: Dictionary, spec: NpcSpec, errors: PackedString
 	for key: String in ["id", "before"]:
 		if not block.get(key) is String or (block.get(key) as String).is_empty():
 			errors.append("« trainer.%s » doit être un identifiant" % key)
+	if block.has("defeated") and (not block["defeated"] is String
+			or (block["defeated"] as String).is_empty()):
+		errors.append("« trainer.defeated » doit être un identifiant")
 	var sight: Variant = block.get("sight")
 	if not (sight is float or sight is int) or float(sight) != floorf(float(sight)) \
 			or int(sight) < TrainerRules.SIGHT_MIN or int(sight) > TrainerRules.SIGHT_MAX:
@@ -268,6 +273,7 @@ static func _read_trainer(entry: Dictionary, spec: NpcSpec, errors: PackedString
 	spec.trainer_id = StringName(block["id"])
 	spec.sight = int(sight)
 	spec.before_dialogue = StringName(block["before"])
+	spec.defeated_dialogue = StringName(block.get("defeated", ""))
 
 
 ## Lit l'attente animée « look » : { "facings": [noms de directions, au moins deux],
