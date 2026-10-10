@@ -157,9 +157,11 @@ Salamèche Flammèche, Papilusion, Nidoran ♂ Puissance ; remèdes). Retirée �
 
 - `ItemData` : catégorie `tm` + champ `teaches: StringName` et `permanent: bool` (jamais décrémenté,
   `price` nul = invendable ; la Boutique refuse la vente d'un objet permanent).
-- Espèces : `tms: Array[StringName]` (identifiants d'objets) dans `kanto.json` pour les 40 espèces
-  (compatibilités de Rouge/Bleu, PokeAPI génération 1 ; script de génération dans `tools/`, données
-  relues). `PokemonData.can_learn_tm(species, item)`.
+- Espèces : compatibilités **déjà générées** (2026-10-10) dans `data/pokemon/tm_compatibility.json`
+  par `tools/gen_tm_compatibility.py` (CSV publics de PokeAPI, Rouge/Bleu, CT 01–50 → capacité,
+  espèce → numéros) pour les 38 espèces ; fichier séparé de `kanto.json` (rien ne le lit avant le
+  11B). `PokemonData.can_learn_tm(species, number)` le lira ; une espèce absente = aucune CT.
+  La capacité `bide` (Patience) et l'objet `tm34` restent à ajouter au T13.
 - Logique `TmTeach.check(pokemon, item) -> { COMPATIBLE, KNOWN, INCOMPATIBLE }` ; apprentissage par
   `MoveLearnPrompt` (oubli, GARDER) ; hors combat seulement.
 - Sac : onglet « CT » visible seulement si une CT est possédée ; carte et détail (§6.2) ; parcours
@@ -257,7 +259,7 @@ avant intégration. Aucune espèce n'entre dans `companions.json` sans sa planch
 | T8 | Remèdes + Boutiques | constructeur-monde | T4 | 11A |
 | T9 | Carte et départ `qa_status` | constructeur-monde | T5 | 11A |
 | T10 | QA S24 11A | qa-mobile | T7–T9 | 11A |
-| T11 | Catégorie CT, objet permanent, vente refusée, compatibilités des 40 espèces | architecte-godot | T10 | 11B |
+| T11 | Catégorie CT, objet permanent, vente refusée, compatibilités des 38 espèces | architecte-godot | T10 | 11B |
 | T12 | Sac « CT » + parcours d'apprentissage | ui-mobile | T11 | 11B |
 | T13 | Patience (verrou d'action, stock, ruptures) | architecte-godot | T11 | 11B |
 | T14 | Remise par Pierre (deux cas) + départs | constructeur-monde | T11 | 11B |
@@ -378,3 +380,9 @@ toute scène car les déplacements de scène abandonnent au bout de 2 s), archit
 (`CompanionRules`, `CompanionTrail` purs, nœud `Companion`, `CompanionController`,
 `companions.json`, `EmoteBubble` extrait avec `♪` et `…`), défauts D-1 à D-8, découpage T19a–T20d,
 tests et risques. Aucun code. Relecture par Fable possible sur demande.
+
+### T11 (partie données) — compatibilités des CT : générées (2026-10-10, en avance)
+
+`data/pokemon/tm_compatibility.json` + `tools/gen_tm_compatibility.py` : les 50 CT de Rouge/Bleu et
+leurs espèces compatibles parmi les 38 du jeu (34 pour la CT34 ; aucune CT pour Chenipan,
+Chrysacier, Aspicot, Coconfort). Source : CSV de PokeAPI (téléchargés hors dépôt). Non lu par le jeu.

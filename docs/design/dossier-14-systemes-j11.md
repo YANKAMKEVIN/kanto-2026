@@ -142,8 +142,10 @@ Pokémon sain. Catégorie SOINS. Boutiques : `data/shops/viridian_mart.json` et 
 ### 6.1 Règles [V 2, A-7]
 
 Objet permanent (quantité 1, jamais consommé), **hors combat seulement**, **non vendable**.
-Compatibilité **par espèce** (donnée de l'espèce, reprise de Rouge/Bleu [D]), pour les **40 espèces**
-des données (dont Racaillou, Gravalanch, Grolem, Onix, Sabelette, Sablaireau du J10). Parcours : Sac →
+Compatibilité **par espèce** (donnée de l'espèce, reprise de Rouge/Bleu [D]), pour les **38 espèces**
+des données (dont Racaillou, Gravalanch, Grolem, Onix, Sabelette, Sablaireau du J10) ; table générée :
+`data/pokemon/tm_compatibility.json` (34 espèces sur 38 peuvent apprendre la CT34 ; Chenipan, Chrysacier,
+Aspicot et Coconfort n'apprennent aucune CT, comme dans Rouge/Bleu). Parcours : Sac →
 **CT** → capacité → l'équipe (COMPATIBLE / DÉJÀ CONNUE / INCOMPATIBLE, toujours visibles) → APPRENDRE →
 si 4 capacités, déroulé « oublier une capacité » existant → GARDER annule. PP pleins pour la capacité
 apprise ; un Pokémon qui la connaît déjà ne peut pas l'apprendre.
@@ -284,7 +286,7 @@ Aucune humeur ni amitié cachée : la phrase dépend seulement de faits visibles
 
 | Avec | État au 2026-10-10 | Conséquence |
 |---|---|---|
-| **J10** | **terminé, fusionné dans `main`** (`e80f636`) | plus de blocage : la remise de la CT34 et les stocks d'Argenta se font sur les fichiers réels ; compatibilités CT des 40 espèces. |
+| **J10** | **terminé, fusionné dans `main`** (`e80f636`) | plus de blocage : la remise de la CT34 et les stocks d'Argenta se font sur les fichiers réels ; compatibilités CT des 38 espèces. |
 | **CB.3** | fusionné dans `main` | effets de statut au-dessus des sprites (§3.3) ; Patience et messages passent par le `BattleDirector`. |
 | **OUV** | OUV.0 fusionné ; OUV.1 (sauvegarde v5) à venir | le J11 écrit la **v6** par-dessus ; 11.0 fusionné et joué sur S24 **après** OUV.1 (§9). `game_state.gd` / `save_system.gd` / `boot.gd` partagés : aucun fichier propre à OUV touché par le J11. |
 | **J12** | conception en cours avec ChatGPT | **le J12 dépend du J11** pour : évolutions par pierre (Pierre Lune ; à coder au J12 avant de la rendre obtenable), Destruction / Explosion si des Racaillou ≥ Nv. 21, Antigel si une capacité gèle, planches de compagnon (§8.2). |
