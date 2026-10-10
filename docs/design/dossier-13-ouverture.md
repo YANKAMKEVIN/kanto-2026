@@ -7,7 +7,7 @@
 **Parcours cible** : splash → écran titre (Continuer · Nouvelle partie · Paramètres) → introduction de Chen → présentation du monde → apparence et prénom du joueur → présentation et prénom du rival → transition vers la chambre → prologue existant, inchangé.
 
 ## ✅ VALIDÉ PAR KEVIN le 2026-10-10
-Kevin a validé **l'ensemble du dossier V0.1** : les 14 arbitrages selon les recommandations (A2 = **option A**, héros actuel, modèle prêt pour une héroïne), les textes de Chen du §6 (sans petit-fils refusé : version « petit-fils »), le storyboard et les références à produire. **Implémentation du câblage après la fusion du J10** ; le travail sur des fichiers neufs peut commencer avant (voir `etat-projet.md`).
+Kevin a validé **l'ensemble du dossier V0.1** : les 14 arbitrages selon les recommandations (A2 = **option A**, héros actuel, modèle prêt pour une héroïne), les textes de Chen du §6 (version « petit-fils »), le storyboard et les références à produire. **Implémentation du câblage après la fusion du J10** ; le travail sur des fichiers neufs peut commencer avant (voir `etat-projet.md`).
 
 ## Revue du 2026-10-10 (ChatGPT, transmise par Kevin)
 Positions **recommandées** sur les six premiers arbitrages ; rien n'est verrouillé tant que Kevin ne l'a pas confirmé :
