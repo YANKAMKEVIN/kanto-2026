@@ -1,4 +1,8 @@
-# Prompt ChatGPT — dossier 13 : la grande passe de systèmes (jalon 11)
+# Prompt ChatGPT — dossier 14 : la grande passe de systèmes (jalon 11)
+
+> **Renuméroté le 2026-10-10** (ex-« dossier 13 ») : le numéro 13 revient au chantier d'ouverture (OUV,
+> `dossier-13-ouverture.md`, branche locale `docs/dossier-13-ouverture`). Le dossier issu de ce prompt est
+> `docs/design/dossier-14-systemes-j11.md`. Le prompt ci-dessous parle encore du « dossier 13 » : texte d'origine conservé.
 
 > Préparé par Claude le 2026-10-10, à coller dans ChatGPT pour concevoir le **jalon 11** de la
 > roadmap : statuts complets, CT, changement de Pokémon enrichi, mise en scène des évolutions et
@@ -72,7 +76,7 @@ Rédige-le en français, en sections numérotées, avec les **textes définitifs
 Colle sa réponse à Claude : il fait la **passe d'alignement** habituelle (contradictions avec
 `vision.md`, la roadmap, les dossiers 04, 05, 08, 09, 10 et 12 et le code réel, systèmes ajoutés en
 douce, coûts techniques et d'art, textes à relire), avec des arbitrages numérotés à trancher, puis il
-écrit `docs/design/dossier-13-systemes.md`. Ensuite seulement : plan technique `docs/tech/jalon-11.md`
+écrit `docs/design/dossier-13-systemes.md` (devenu `dossier-14-systemes-j11.md`). Ensuite seulement : plan technique `docs/tech/jalon-11.md`
 (après la fusion du J10). **La conception du compagnon et de la sauvegarde v5 peut justifier un appel
 à Fable** (`CLAUDE.md`), sur demande de Kevin.
 

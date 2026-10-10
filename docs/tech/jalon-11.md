@@ -1,0 +1,286 @@
+# Jalon 11 — Grande passe de systèmes
+
+> Objectif jouable sur le S24 : **sans zone nouvelle**, les Pokémon deviennent plus stratégiques en
+> combat (paralysie, sommeil, brûlure, gel, confusion, multi-coups, apeurement, Patience), plus faciles
+> à entraîner (CT réutilisables, CT34 remise par Pierre), plus beaux quand ils évoluent (séquence
+> courte) et **présents dans le monde** (un compagnon choisi qui suit le joueur dehors).
+>
+> **Source de vérité** : `docs/design/dossier-14-systemes-j11.md` (8 décisions et A-1 à A-14 validés
+> par Kevin le 2026-10-10). **Statut du plan : écrit, en attente de Kevin** avec le lot de textes du
+> dossier §13. **Aucune tâche de code ne démarre avant ces deux validations.**
+>
+> Plan écrit sur `claude/lancement-j11-4pkt2k` depuis `main` à `e80f636` (J10 terminé, fusionné).
+
+## 0. État des lieux
+
+### 0.1 Ce qui existe (`main` à `e80f636`)
+
+| Besoin | Existant | Fichiers |
+|---|---|---|
+| Statut majeur | un champ `Pokemon.status`, sauvegardé (v4) ; règles du poison seul | `game/pokemon/pokemon.gd`, `game/pokemon/status_rules.gd` |
+| Effets de capacités | `MoveEffect` : `STAT_STAGE`, `RECOIL`, `SEED`, `STATUS` (poison) ; `pending_effects` non joués (32 capacités sur 66) | `game/pokemon/moves/move_effect.gd`, `move_data.gd`, `data/pokemon/moves/moves.json` |
+| Tour de combat | `Battle.submit` → ordre (`_player_goes_second`, `_priority`) → `_execute` → `_apply_effect` → `_end_turn` (Vampigraine, poison) | `game/battle/battle.gd` (731 lignes) |
+| Volatil | Vampigraine seule (sur le `BattleSide`) | `battle.gd`, `battle_side.gd` |
+| Changement du joueur | volontaire et forcé (J7) | `battle_action.gd`, `battle.gd`, `battle_party_panel.*` |
+| IA | `random`, `smart` (meilleur dégât) | `game/battle/battle_ai.gd` |
+| Remèdes | `ItemData.cures`, `ItemUse`, Antidote | `game/items/item_data.gd`, `item_use.gd`, `data/items/items.json` |
+| Sac | catégories `ball, heal, battle, field, key` ; écran à onglets | `item_data.gd`, `game/ui/bag/bag_screen.gd` |
+| Apprendre / oublier | `MoveLearnPrompt`, panneau d'oubli (combat et évolution) | `game/battle/move_learn_prompt.gd`, `game/ui/battle/move_forget_panel.*` |
+| Évolution | logique + directeur + écran (≈ 9 s) | `game/pokemon/evolution/`, `game/systems/evolution/`, `game/ui/evolution/`, `UiTokens.EVOLUTION_*` |
+| Pierre | scène écrite, `badge_boulder`, réplique d'après-badge | `data/dialogues/pewter_gym.json`, `data/cutscenes/pewter_gym.json`, `data/trainers/pewter_gym.json` |
+| Boutiques | Jadielle, Argenta | `data/shops/viridian_mart.json`, `pewter_mart.json` |
+| Monde | grille avec occupants (`GridWorld.occupy`, `can_enter`), `Map.interior`, joueur (`moved`, `facing_changed`), PNJ (`step_finished`, `hopped`), cinématiques, bulle « ! » | `game/world/grid_world.gd`, `map.gd`, `game/player/player.gd`, `game/world/npc/npc.gd`, `game/systems/cutscene/` |
+| Vision des Dresseurs | ligne coupée par tout occupant autre que le joueur | `game/world/npc/trainer_rules.gd` (`sight_distance`) |
+| Planches de Pokémon | 9 espèces repos + marche 4 directions ; 7 « repos + réaction » | `assets/sprites/pokemon/painted/` |
+| Sauvegarde | **v4**, migrations pas à pas, champ absent = défaut ; J10 sans changement de format | `game/systems/save/save_system.gd` |
+| Départs de QA | `tools/debug_start/*.json` (+ README) | `poison_qa`, `evolution_qa`, `learn_move`, `badge_after`… |
+
+### 0.2 Trous
+
+1. `StatusRules` teste `== POISON` partout ; aucun compteur ; le test `test_status_rules.gd` verrouille
+   l'absence de paralysie (à retourner).
+2. Aucun état « action verrouillée » (Patience ; préparera les capacités à deux tours du futur).
+3. Aucun multi-coups (un seul `_execute` = un coup), aucun apeurement (il faut savoir qui agit en second).
+4. Aucun identifiant stable de Pokémon.
+5. Aucune catégorie CT, aucune compatibilité, aucun objet « permanent ».
+6. Aucun suiveur dans le monde (hors pas de cinématique `follow_path`).
+
+## 1. Découpage
+
+### 1.1 Sous-jalons
+
+| Sous-jalon | Contenu | Validation (règle 1) |
+|---|---|---|
+| **11.0** | Sauvegarde : identifiant de Pokémon, compteurs de statut, compagnon choisi, `tm34_received` | **seule** sur S24, vraie partie de Kevin |
+| **11A** | Statuts majeurs, confusion, effets simples, présentation, remèdes | S24, carte de QA `qa_status` (retirée à la clôture) |
+| **11B** | CT, Sac, Patience, remise par Pierre | S24 |
+| **11C** | Évolution courte | S24 (≈ 10 min, peut accompagner 11B si Kevin le veut : deux petits systèmes non risqués) |
+| **11D** | Compagnon + lot d'art de 5 planches | S24 en vraie partie |
+| **Clôture** | QA finale, retrait de `qa_status`, roadmap, passation au J12 | S24 ou S21 |
+
+Ordre : 11.0 → 11A → 11B → 11C → 11D. 11C et la génération du lot d'art (T18) peuvent avancer en
+parallèle de 11A (fichiers disjoints). 11D en dernier : système le plus risqué côté monde.
+**Fable** (sur demande de Kevin, `CLAUDE.md`) : relecture de la conception du compagnon (T19) et de
+la migration 11.0 (T2).
+
+### 1.2 Fichiers partagés (conflits attendus)
+
+`battle.gd`, `battle_director.gd`, `messages.json`, `moves.json`, `items.json`, `UiTokens`,
+`save_system.gd`, `boot.gd`. Une seule tâche à la fois par fichier « chaud » ; les autres partent
+après sa fusion dans `jalon-11`.
+
+## 2. Conception technique
+
+### 2.1 Sauvegarde (T1–T3, 11.0)
+
+- `Pokemon.uid: String` (16 caractères hexadécimaux tirés de `GameRng`, unique dans la partie) ;
+  `to_dict` / `from_dict` ; un Pokémon sans `uid` en reçoit un au chargement (migration). Copié tel quel
+  au Stockage et à l'évolution.
+- `Pokemon.status_turns: int` (0 = aucun compteur) : tours de sommeil restants ; gel sans compteur.
+- `GameState.companion_uid: String` (vide = aucun) ; relu tolérant (uid inconnu = vide + journal `[qa]`).
+- `tm34_received` : drapeau d'histoire ordinaire (aucun format).
+- **Version** : relire `SaveSystem.VERSION` sur `main` au démarrage de T1 ; si OUV a fusionné une v5,
+  le J11 écrit **v6**, sinon **v5** (dossier §9). Branche `_upgrade_N_to_N+1` : attribue les `uid`,
+  rien d'autre. Refus par l'APK précédent vérifié octet pour octet (procédure du 9A.1).
+- Tests : aller-retour, migration v4 → J11 sur un fichier réel (`save_v4_qa`), unicité des `uid`
+  après capture, Stockage, évolution ; uid inconnu ; fichier corrompu inchangé.
+
+### 2.2 Statuts (T4–T6, 11A)
+
+- `StatusRules` devient une table : `PARALYSIS`, `SLEEP`, `BURN`, `FREEZE` + `POISON` ; par statut :
+  immunités de type, multiplicateur de capture, dégâts de fin de tour (fraction), effet sur une
+  statistique (Vitesse ÷ 2, Attaque physique ÷ 2), test « peut agir » (`can_act(pokemon, rng) ->
+  ActCheck { OK, FULLY_PARALYZED, ASLEEP, WOKE_UP, FROZEN, THAWED }`). Valeurs dans
+  `data/battle/status.json` (règle 7) ; logique pure, testable sans scène.
+- `Battle._execute` : test `can_act` avant la capacité ; dégel par une capacité Feu reçue ; ordre
+  d'action avec la Vitesse modifiée ; dégâts physiques de la brûlure dans le calcul de dégâts.
+- `Battle._end_turn` : poison (inchangé), brûlure (1/16).
+- **Confusion** : volatil du `BattleSide` (comme la graine) : `confusion_turns` ; test après `can_act`,
+  33 %, dégâts typeless 40 physiques contre soi ; perdue au changement et à la fin du combat.
+- **Effets** (nouveaux genres de `MoveEffect`, documentés dans `move_effect.gd`) : `status` accepte
+  les 4 statuts ; `confusion` (chance) ; `hits` (`{min, max}` : 2 fixes ou 2–5 avec 3/8, 3/8, 1/8,
+  1/8 [D, moderne]) ; `flinch` (chance, seulement si le lanceur agit en premier) ; `crit_up` (+2
+  étages, échoue si déjà actif) ; `fixed_damage` (`half_hp` / `level`). Chaque capacité du dossier §4.2
+  passe de `pending_effects` à `effects` ; les reportées gardent `pending_effects`.
+- **IA** : `smart` n'utilise pas une capacité de statut sur une cible déjà atteinte (ni confusion sur
+  un confus, ni Puissance active) ; `random` inchangé.
+- **Événements** : `STATUS_INFLICTED/DAMAGED/CURED/UNCHANGED` généralisés au statut (au lieu du poison
+  implicite), `CANT_ACT`, `WOKE_UP`, `THAWED`, `CONFUSED`, `HURT_ITSELF`, `MULTI_HIT`, `FLINCHED`,
+  `FOCUSED`, `FAILED`. Textes du dossier §13 dans `messages.json` (clé par statut, `text_f`).
+- Tests : chaque statut × combat sauvage, Dresseur, changement, K.O., fin de combat, sauvegarde /
+  rechargement, capture ; immunités ; graines fixées (`GameRng`) ; **chaque capacité du §4.2**
+  avec son effet (table de test pilotée par les données) ; non-régression du poison du J9.
+
+### 2.3 Présentation des statuts (T7, 11A)
+
+`StatusView` / `TeamMemberView` / `battle_info_card` : abréviations et pastilles pour les 5 statuts
+(`UiTokens`) ; effets par statut sur le sprite de combat **au-dessus** du matériau de l'artwork (leçon
+du J9 × CB.1) : particules légères (décharges, braises, « z », étoiles), teinte du gel ; « Réduire les
+animations » ; messages dans le bandeau existant. Captures relues pour chaque statut, de face et de dos.
+
+### 2.4 Remèdes (T8, 11A)
+
+`items.json` : `paralyze_heal`, `awakening`, `burn_heal`, `ice_heal` (`cures`, prix, textes §13) ;
+Boutiques de Jadielle et d'Argenta : les trois premiers, **sans condition** (le J11 rend les statuts
+présents partout ; Antigel absent des stocks). Tests : achat, usage exploration / combat, refus.
+
+### 2.5 Carte de QA `qa_status` (T9, 11A)
+
+Petite carte de tuiles provisoires (modèle `qa_forest_systems` du J9) : herbes avec une table forcée
+(Pikachu Cage-Éclair, Papilusion Choc Mental / Para-Spore / Poudre Dodo, Dardargnan Furie, Rattata Croc
+de Mort), un Dresseur `random` et un `smart`, une Boutique de QA ; départ `status_qa` (équipe avec
+Salamèche Flammèche, Papilusion, Nidoran ♂ Puissance ; remèdes). Retirée à la clôture (comme au J9).
+
+### 2.6 CT (T10–T12, 11B)
+
+- `ItemData` : catégorie `tm` + champ `teaches: StringName` et `permanent: bool` (jamais décrémenté,
+  `price` nul = invendable ; la Boutique refuse la vente d'un objet permanent).
+- Espèces : `tms: Array[StringName]` (identifiants d'objets) dans `kanto.json` pour les 40 espèces
+  (compatibilités de Rouge/Bleu, PokeAPI génération 1 ; script de génération dans `tools/`, données
+  relues). `PokemonData.can_learn_tm(species, item)`.
+- Logique `TmTeach.check(pokemon, item) -> { COMPATIBLE, KNOWN, INCOMPATIBLE }` ; apprentissage par
+  `MoveLearnPrompt` (oubli, GARDER) ; hors combat seulement.
+- Sac : onglet « CT » visible seulement si une CT est possédée ; carte et détail (§6.2) ; parcours
+  Sac → CT → liste de l'équipe (`party_picker` existant, états du §13) → APPRENDRE.
+- Tests : catégorie masquée / visible, compatibilités, déjà connue, 4 capacités → oubli / GARDER, CT
+  jamais consommée, vente refusée, refus en combat.
+
+### 2.7 Patience (T13, 11B)
+
+- `BattleSide.locked_move` (état : capacité, tour 1..3, stock) ; `Battle.get_usable_moves` /
+  `is_legal` : action imposée pendant les tours 2 et 3 (l'interface ne propose pas de choix ; le
+  `BattleDirector` soumet l'action verrouillée sans attendre).
+- Stock alimenté par chaque coup direct reçu (`MULTI_HIT` compris) ; exclusions et ruptures du
+  dossier §6.3 ; riposte typeless, sans précision, plafonnée aux PV de la cible ; échec à 0.
+- Données : `bide` dans `moves.json` (Normal, physique, PP 10, priorité 0, `effects: [{kind:
+  "bide"}]`) ; objet `tm34`.
+- Tests : riposte exacte, multi-coups, stock nul, chaque rupture, adversaire qui change, capture /
+  fuite pendant Patience, sauvegarde après le combat sans trace.
+
+### 2.8 Remise par Pierre (T14, 11B)
+
+`pewter_gym.json` (dialogues et cinématique) : branche après le badge (nouvelle partie) et variante
+`if badge_boulder` / `unless tm34_received` en lui reparlant ; pose `tm34_received` ; toast ; objet au
+Sac. Départs : `badge_after` (partie badgée sans CT) et `brock_kevin` (victoire). Tests : une seule
+remise dans les deux cas, rechargement entre les deux répliques, réplique d'après-badge ensuite.
+
+### 2.9 Évolution courte (T15, 11C)
+
+`UiTokens.EVOLUTION_*` : transformation 5,0 → ≈ 2,5 s, présentation et silence resserrés, total ≈ 6 s ;
+`EvolutionScreen` : toucher = ×2 (`Engine` non touché : vitesse des `Tween` de l'écran) ; ARRÊTER
+inchangé. `test_evolution_screen` : durée cible, accélération, annulation, apprentissage après.
+
+### 2.10 Compagnon (T16–T21, 11D)
+
+- **Données** : `data/pokemon/companions.json` : espèce → planche (`frames`), profil d'animation
+  (taille, décalage d'ombre, vol). Seules les espèces listées sont éligibles (aucun repli).
+- **Logique pure** (`game/world/companion/`) :
+  - `CompanionRules` : éligible (espèce listée, Pokémon dans l'équipe), visible (carte d'extérieur, pas
+    K.O., pas de cinématique, case libre), phrase de curiosité (contexte → clé du §13).
+  - `CompanionTrail` : file des cases quittées par le joueur ; prochaine case du compagnon ; échange
+    de places ; rebord ; réinitialisation après un warp (case derrière le joueur si libre).
+- **Nœud** `Companion` (personnage léger, `CharacterLook` + planche) : suit `Player.moved` à la même
+  durée de pas (marche / course) ; saute avec le joueur ; tri en profondeur comme un PNJ ; caché sous
+  les hautes herbes comme le joueur ; éclat de Ball ≈ 0,4 s.
+- **Grille** : le compagnon **n'occupe pas** la grille du joueur ; `GridWorld` gagne une occupation
+  « douce » consultée **par les PNJ seulement** (ils attendent) ; `TrainerRules.sight_distance` et les
+  déclencheurs l'ignorent ; aucune rencontre.
+- **Boot / SceneRouter** : création et rappel aux changements de carte (`Map.interior`), au réveil au
+  Centre, au début / à la fin des cinématiques qui déplacent le joueur (`CutsceneDirector`), au K.O.
+  et à la guérison, à l'évolution (rentre si l'espèce n'est plus éligible), au dépôt au Stockage.
+- **Menu Équipe** : FAIRE SORTIR / RAPPELER sur la fiche (absent si non éligible) ; `MenuDirector`
+  écrit `GameState.companion_uid`.
+- **Réactions** : curiosité (interaction face au compagnon ou toucher), repos (≈ 8 s d'immobilité),
+  enthousiasme (victoire contre un Dresseur, capture, montée de niveau du compagnon, sortie du Centre
+  après un soin) ; bulle du moteur (`Npc.show_emote`, J9) ; aucune humeur.
+- Tests : `CompanionTrail` (couloirs, demi-tour, rebords, impasses, warps), `CompanionRules` (toutes
+  les lignes du tableau §8.3), intégration sur les vraies cartes (Bourg Palette, Route 1, Jadielle,
+  Forêt de Jade, Argenta) : portes, Centre, Dresseur qui voit à travers, PNJ qui attend, herbes sans
+  rencontre, cinématiques du prologue et du rival, fps ≥ 58 dans la forêt.
+
+### 2.11 Lot d'art du compagnon (T18)
+
+5 planches repos + marche 4 directions (Herbizarre, Reptincel, Carabaffe, Pikachu, Papilusion en vol)
+par la chaîne Codex des séries précédentes (`tools/art/`, fiche dans `docs/design/fiches-assets/`),
+même gabarit et même main que `charmander_frames` ; **validation de Kevin sur planche de contact**
+avant intégration. Aucune espèce n'entre dans `companions.json` sans sa planche validée.
+
+## 3. Tâches
+
+| T | Tâche | Agent | Dépend de | Sous-jalon |
+|---|---|---|---|---|
+| T0 | Lot de textes §13 relu par Kevin → `messages.json`, `items.json`, dialogues (intégration à chaque tâche) | — | Kevin | tous |
+| T1 | Sauvegarde : `uid`, `status_turns`, `companion_uid`, migration, tests | architecte-godot (Opus ; Fable sur demande) | plan validé | 11.0 |
+| T2 | Relecture adversariale de la migration (fichiers réels, refus par l'APK précédent) | architecte-godot | T1 | 11.0 |
+| T3 | QA S24 11.0 seule (vraie partie, fermeture forcée, retour) | qa-mobile | T2 | 11.0 |
+| T4 | `StatusRules` + `status.json` + `can_act` + brûlure / paralysie / sommeil / gel dans `Battle` | architecte-godot | T3 | 11A |
+| T5 | Confusion + effets `hits`, `flinch`, `crit_up`, `fixed_damage` ; capacités du §4.2 ; IA `smart` | architecte-godot | T4 | 11A |
+| T6 | Événements et textes de combat (`BattleText`, `messages.json`) | architecte-godot | T5 | 11A |
+| T7 | Présentation des statuts (pastilles, effets sur sprite, réduits) + captures | ui-mobile | T6 | 11A |
+| T8 | Remèdes + Boutiques | constructeur-monde | T4 | 11A |
+| T9 | Carte et départ `qa_status` | constructeur-monde | T5 | 11A |
+| T10 | QA S24 11A | qa-mobile | T7–T9 | 11A |
+| T11 | Catégorie CT, objet permanent, vente refusée, compatibilités des 40 espèces | architecte-godot | T10 | 11B |
+| T12 | Sac « CT » + parcours d'apprentissage | ui-mobile | T11 | 11B |
+| T13 | Patience (verrou d'action, stock, ruptures) | architecte-godot | T11 | 11B |
+| T14 | Remise par Pierre (deux cas) + départs | constructeur-monde | T11 | 11B |
+| T15 | Évolution courte (durées, accélération) | ui-mobile | plan validé (parallèle) | 11C |
+| T16 | QA S24 11B (+ 11C si Kevin le veut) | qa-mobile | T12–T15 | 11B / 11C |
+| T17 | Conception détaillée du compagnon : `CompanionTrail`, `CompanionRules`, occupation douce, points d'accroche Boot (relecture Fable sur demande) | architecte-godot | T10 | 11D |
+| T18 | Lot d'art : 5 planches, planche de contact, validation de Kevin | constructeur-monde (Mac) | plan validé (parallèle) | 11D |
+| T19 | Logique du compagnon + tests | architecte-godot | T17 | 11D |
+| T20 | Nœud, menu Équipe, réactions, intégration sur les vraies cartes | constructeur-monde + ui-mobile | T18, T19 | 11D |
+| T21 | QA S24 11D (vraie partie : routes, villes, forêt, portes, rebords, herbes, Dresseurs, Centre, fps) | qa-mobile | T20 | 11D |
+| T22 | Clôture : QA finale, retrait de `qa_status`, roadmap, passation au J12 | architecte-godot + qa-mobile | T21 | clôture |
+
+## 4. Critères d'acceptation (QA S24)
+
+**11.0** — partie J10 réelle chargée sans perte (équipe, Stockage, Sac, argent, badges, drapeaux,
+Grands moments) ; une seule ligne `[qa]` de migration ; `uid` uniques après capture, Stockage,
+évolution ; deux fermetures forcées sans perte ; l'APK précédent refuse le fichier sans le modifier.
+
+**11A** — chaque statut vu sur le téléphone : infligé, empêche d'agir, fin de tour, fin naturelle
+(réveil, dégel), changement de Pokémon, K.O., après combat (Équipe, tableau de bord), après fermeture
+forcée ; immunités (Pikachu contre Cage-Éclair, Salamèche contre la brûlure) ; capture plus facile ;
+confusion de Papilusion (se frapper, fin, perdue au changement) ; Furie « Touché n fois ! » ; Croc de
+Mort qui apeure ; Puissance ; remèdes en exploration et en combat, refus « Sans effet », Boutiques ;
+lisibilité des pastilles et des effets ; « Réduire les animations » ; poison du J9 inchangé ;
+≥ 55 fps en combat hors transitions.
+
+**11B** — CT34 reçue une fois (nouvelle partie et partie badgée) ; onglet CT absent puis présent ;
+COMPATIBLE / DÉJÀ CONNUE / INCOMPATIBLE ; oubli d'une capacité ; GARDER ; CT toujours là ; vente
+impossible ; refus en combat ; Patience : riposte au double, échec, rupture (changement, sommeil,
+paralysie), adversaire qui change.
+
+**11C** — évolution ≈ 6 s, accélérée au toucher, ARRÊTER et retour Android, apprentissage après,
+fermeture forcée pendant la séquence sans évolution à moitié ; 60 fps.
+
+**11D** — FAIRE SORTIR / RAPPELER ; absent pour une espèce sans planche ; suit en marche et en course,
+rebords, demi-tour (échange), couloirs ; rentre aux portes et ressort ; invisible K.O. puis de retour
+après le Centre ; aucune rencontre ni déclencheur ; un Dresseur voit le joueur « à travers » ; un PNJ
+attend ; cinématiques sans compagnon ; réactions (curiosité, repos, enthousiasme) ; évolution en
+espèce sans planche → rentre ; sauvegarde / reprise avec le compagnon ; ≥ 58 fps dans la Forêt de Jade.
+
+**Clôture** — vraie partie J1 → J10 rejouée sur les points de contrôle (prologue, Route 1, Jadielle,
+forêt, Pierre) sans régression ; `tools/test.sh` vert ; import propre ; carte de QA retirée.
+
+## 5. Risques
+
+| Risque | Parade |
+|---|---|
+| Statuts qui cassent l'équilibrage de Pierre (brûlure de Flammèche, paralysie de Pikachu) | relancer `tools/simulate_brock.gd` (J10) après T5 ; écarts signalés à Kevin, pas corrigés en douce |
+| Migration en concurrence avec OUV | version fixée au T1 d'après `main` ; renumérotation par le second fusionné (dossier §9) |
+| Compagnon qui se coince (couloirs d'une case, warps en bord de carte, cinématiques) | règle « masqué sans case libre » (A-1) ; tests sur toutes les vraies cartes |
+| Performance dans la forêt (nœuds, tri en profondeur) | budget mesuré au T20, comme au J9 |
+| Effets de statut sur l'artwork de l'adversaire | au-dessus du sprite, jamais de matériau remplacé ; test de non-régression du J9 |
+| Lot d'art refusé ou en retard | 11D livrable avec les 9 espèces existantes ; les planches entrent quand elles sont validées |
+
+## 6. Valeurs par défaut
+
+Celles du dossier §14, plus : `uid` 16 hexadécimaux ; répartition 2–5 coups 3/8, 3/8, 1/8, 1/8 ;
+apeurement seulement si le lanceur agit en premier ; accélération de l'évolution par la vitesse des
+`Tween` de l'écran ; carte de QA `qa_status` ; départ `status_qa`.
+
+## 7. Questions ouvertes
+
+Aucune décision de game design ouverte : textes du dossier §13 en attente de relecture (T0).
