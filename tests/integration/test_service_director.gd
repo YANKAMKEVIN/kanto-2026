@@ -98,6 +98,10 @@ func test_center_heal_on_the_center_registers_it_once() -> void:
 	assert_eq(map.get_npc(&"nurse").get_facing(), Vector2i.DOWN, "l'infirmière est revenue")
 	await _services.run_action(&"center_heal")
 	assert_eq(_healed[1], [&"viridian_center", false], "même Centre : rien de changé")
+	# Le rituel rend la main **pendant** l'émission de `animation_finished` de la machine : sans
+	# cette image, le test finit dans cette émission et GUT libère la carte (donc l'AnimationPlayer
+	# qui émet) → plantage de Godot (signal 11), constaté sous Linux headless.
+	await wait_process_frames(1)
 
 
 func test_unknown_and_mapless_actions_are_reported() -> void:
