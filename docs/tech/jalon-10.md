@@ -1,5 +1,7 @@
 # Jalon 10 — Argenta et l'Arène de Pierre
 
+> **TERMINÉ le 2026-10-10** : validé par Kevin (QA finale 10D sur S21), fusionné dans `main`. Bilan et points restants : `etat-projet.md`, section « Jalon 10 ».
+
 > Objectif jouable sur le S24 : **fermer la première grande boucle**. Depuis la porte nord du poste nord de la Forêt de Jade (J9), la **Route 2 nord** (sas court, deux petites zones d'herbes, un Montagnard, une Potion, un sentier fermé par des éboulis), puis **Argenta** : titre « ARGENTA » seul, le Musée visible dès le premier écran, la place au gros rocher, six habitants, le tailleur et son Racaillou, le Centre (point de repos) et la Boutique (Ball, Potion, Antidote), le **Musée** (deux salles, vitrines, journal anonyme, laboratoire fermé), deux maisons, le **garde de la Route 3**, et l'**Arène** : le guide, le Campeur Liam (évitable), **Pierre** (carte de présentation, Racaillou 12 et Onix 14 aux capacités choisies à la main, IA `smart`), la défaite sans réintroduction, puis l'inscription **« BADGE ROCHE »**, le **Grand moment « badge »** avec le souvenir de l'équipe, l'écran Dresseur à jour, l'objectif « continuer vers la Route 3. » et le garde qui se décale.
 >
 > Aucune nouvelle mécanique de combat ; deux ajouts signalés par le dossier : capacités choisies à la main pour un Pokémon de Dresseur, carte de présentation du Champion. **Format de sauvegarde inchangé** (celui du J9, v4).
