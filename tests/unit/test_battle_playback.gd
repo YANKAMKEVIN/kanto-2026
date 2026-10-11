@@ -321,3 +321,28 @@ func test_status_unchanged_is_a_message_only() -> void:
 	event.status = StatusRules.POISON
 	var beats := BattlePlayback.beats(event, _texts, _data)
 	assert_eq(_kinds(beats), [BattleBeat.Kind.MESSAGE] as Array[BattleBeat.Kind])
+
+
+# --- Jalon 11 (T7) ----------------------------------------------------------------------------
+
+func test_confusion_check_says_it_then_shows_the_stars() -> void:
+	var event := _event(BattleEvent.Kind.CONFUSION_CHECK, BattleEvent.SideId.FOE, "Rattata")
+	var beats := BattlePlayback.beats(event, _texts, _data)
+	assert_eq(_kinds(beats), [BattleBeat.Kind.MESSAGE, BattleBeat.Kind.CONFUSION]
+		as Array[BattleBeat.Kind], "« … est confus… », puis les étoiles")
+	assert_eq(beats[1].side, BattleEvent.SideId.FOE)
+
+
+func test_status_ended_and_burn_damage_use_the_status_beats() -> void:
+	var ended := _event(BattleEvent.Kind.STATUS_ENDED, BattleEvent.SideId.PLAYER, "Pikachu")
+	ended.status = StatusRules.SLEEP
+	assert_eq(_kinds(BattlePlayback.beats(ended, _texts, _data)),
+		[BattleBeat.Kind.STATUS_TAG, BattleBeat.Kind.MESSAGE] as Array[BattleBeat.Kind],
+		"l'effet part, puis « … se réveille ! »")
+	var burn := _event(BattleEvent.Kind.STATUS_DAMAGED, BattleEvent.SideId.FOE, "Rattata")
+	burn.status = StatusRules.BURN
+	burn.amount = 1
+	var beats := BattlePlayback.beats(burn, _texts, _data)
+	assert_eq(_kinds(beats), [BattleBeat.Kind.POISON, BattleBeat.Kind.MESSAGE]
+		as Array[BattleBeat.Kind])
+	assert_eq(beats[0].event.status, StatusRules.BURN, "le voile sera orangé")

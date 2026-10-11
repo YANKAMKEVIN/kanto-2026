@@ -42,7 +42,10 @@ extends RefCounted
 ## - STATUS_UNCHANGED : le message seulement.
 ## Jalon 11 : STATUS_ENDED (réveil, dégel) comme STATUS_CURED ; STATUS_PREVENTED et FAILED :
 ## le message seulement. HURT_ITSELF (confusion) : comme RECOIL, la barre puis le message ;
-## les autres événements de la confusion, MULTI_HIT, FLINCHED, FOCUSED : le message seulement.
+## CONFUSION_CHECK : le message (« … est confus… »), puis CONFUSION (étoiles au-dessus de la
+## tête) ; les autres événements de la confusion, MULTI_HIT, FLINCHED, FOCUSED : le message
+## seulement. STATUS_DAMAGED de la brûlure : POISON aussi (voile orangé, [member
+## BattleEvent.status]).
 ## Les phrases viennent de [BattleText] : rien n'est écrit ici.
 
 
@@ -109,6 +112,9 @@ static func beats(event: BattleEvent, texts: BattleText, data: PokemonData,
 		BattleEvent.Kind.STATUS_CURED, BattleEvent.Kind.STATUS_ENDED:
 			result.append(BattleBeat.new(BattleBeat.Kind.STATUS_TAG, event))
 			result.append_array(messages)
+		BattleEvent.Kind.CONFUSION_CHECK:
+			result.append_array(messages)
+			result.append(BattleBeat.new(BattleBeat.Kind.CONFUSION, event))
 		BattleEvent.Kind.WITHDRAWN:
 			result.append_array(messages)
 			result.append(BattleBeat.new(BattleBeat.Kind.WITHDRAW, event))

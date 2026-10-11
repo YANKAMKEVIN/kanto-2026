@@ -1349,6 +1349,8 @@ const STATUS_POISON_TEXT := Color("#E08EDD")
 ## STATUS_VEIL, jusqu'à STATUS_VEIL_AMOUNT au pic, puis revient), durée totale (s) à
 ## speed_scale = 1 ; version douce quand « Réduire les animations » est actif.
 const STATUS_VEIL := Color("#B04CC8")
+## Brûlure (jalon 11) : même voile de fin de tour, teinte orangée.
+const STATUS_BURN_VEIL := Color("#F07A2A")
 const STATUS_VEIL_AMOUNT := 0.6
 const STATUS_VEIL_AMOUNT_REDUCED := 0.3
 const STATUS_VEIL_DURATION := 0.35

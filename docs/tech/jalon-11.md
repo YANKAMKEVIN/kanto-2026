@@ -482,3 +482,60 @@ forcées Pikachu N12, Papilusion N17, Dardargnan N16, Rattata N14. **Non couvert
 `random` et un `smart` dédiés (les Dresseurs existants de la Forêt et d'Argenta servent, départs
 `trainers_qa` et `pewter_gym`). Capture de la Boutique à 5 cartes : `tools/capture_shop_j11.gd`
 (relue : lisible, icône générique des remèdes).
+
+### T7 — présentation des statuts en combat (2026-10-11, 11A)
+
+`game/battle/status_aura.gd` (`StatusAura`) : un nœud par camp, frère du sprite et dessiné juste
+après lui (donc **au-dessus**), qui suit sa boîte visible à chaque image (bonds, coups, K.O.) ;
+**le sprite et son matériau ne sont jamais touchés** (leçon du J9 × CB.1, testée). Aucune image
+nouvelle : décharges jaunes en zigzag (paralysie, une salve de 0,28 s toutes les 1,6 s, côté
+alterné), braises cerclées de rouge sombre qui montent (brûlure), trois « z » qui s'envolent
+(sommeil), copie du sprite recolorée en bleu glacé d'après sa luminance par-dessus
+(`status_ice.gdshader`, gel), trois étoiles qui tournent 0,8 s au-dessus de la tête
+(confusion, nouveau temps `BattleBeat.CONFUSION` après « … est confus… »). Poison : rien de
+permanent (voile de fin de tour existant). Brûlure de fin de tour : même voile, teinte orangée
+(`UiTokens.STATUS_BURN_VEIL`). Le statut se pose à l'envoi (statut du `SENT_OUT`), à
+STATUS_INFLICTED, part à STATUS_CURED / STATUS_ENDED, au K.O. et au reset. « Réduire les
+animations » (`BattleStage.reduce_motion`, branché par `Boot`) coupe particules et étoiles, garde
+la teinte du gel. Pastilles et abréviations : déjà faites au T4 (`StatusView`). Motifs fixes, sans
+tirage. Valeurs par défaut (règle 4) dans `status_aura.gd`. **Non fait** : « respiration
+ralentie » du sommeil (aucune animation de repos n'existe en combat). Captures relues
+(`tools/capture_status_j11.gd`, 2340 × 1080, chaque statut de face — artwork — et de dos —
+sprite provisoire) : lisibles ; rendu provisoire.
+
+### Procédure du T10 (qa-mobile, QA téléphone de 11A, sur le Mac)
+
+Partie de débogage : la vraie sauvegarde n'est ni lue ni écrite (`status_qa` n'a pas
+`autosave`). Branche `claude/lancement-j11-4pkt2k`, `tools/test.sh` vert avant.
+
+1. `tools/deploy_s24.sh --debug-start status_qa` : Route 1, équipe de 6, journal « Départ de
+   débogage … ». Ouvrir l'Équipe : pastilles **BRÛ** (Rattata), **SOM** (Pikachu), **PAR**
+   (Roucool) ; Stockage du Centre de Jadielle hors portée : vérifier GEL au Sac (Antigel refusé
+   sur l'équipe : « Cela n'aurait aucun effet… »).
+2. **Remèdes hors combat** (Sac, SOINS) : Anti-Brûle sur Rattata « Rattata n'est plus brûlé. » ;
+   Réveil sur Pikachu « Pikachu est réveillé. » (jamais « se réveille ! ») ; Anti-Para sur Roucool ;
+   refus sur un Pokémon sain. Capture du Sac et de l'Équipe.
+3. **Combats dans les herbes** (taux 60, quatre espèces forcées) ; à relever pour chaque cas :
+   phrase, carte de PV, effet sur le Pokémon (de face et de dos), capture S24 :
+   - Pikachu : **Cage-Éclair** → « … est paralysé ! », décharges, PAR ; « … est paralysé ! Impossible
+     d'agir ! » au moins une fois ; Salamèche plus lent ;
+   - Papilusion : **Poudre Dodo** (« z », SOM, réveil « … se réveille ! » et action le même tour),
+     **Para-Spore**, **Choc Mental** (confusion : étoiles, « … est confus… », « … se blesse dans sa
+     confusion ! » au moins une fois, « … n'est plus confus ! ») ; statut sur une cible déjà
+     atteinte d'un autre : « Mais ça échoue ! » ;
+   - Dardargnan : **Furie** (« Touché n fois ! »), **Puissance** (puis « Mais ça échoue ! » si
+     répétée) ;
+   - Rattata : **Croc de Mort** (apeurement possible : « … a peur ! Impossible d'agir ! ») ;
+   - de ton côté : **Flammèche** (brûlure 10 % : braises, BRÛ, voile orangé et « … souffre de sa
+     brûlure ! » en fin de tour), **Double Pied** (« Touché 2 fois ! »), **Croc Fatal** (moitié des
+     PV), **Frappe Atlas** (dégâts = niveau), Papilusion contre un sauvage ;
+   - **remèdes en combat** (Sac du combat) sur le Pokémon en jeu et sur un autre ;
+   - **capture** d'un endormi (bonus ×2,5, pas de chiffre à relever, seulement que ça marche).
+4. **Gel** : aucune capacité ne gèle avant la Route 3 ; vérifier seulement l'affichage GEL du
+   Piafabec au Stockage s'il est accessible, sinon noter « non testable » (couvert par les tests).
+5. **Réglage « Réduire les animations »** : particules et étoiles coupées, pastilles et phrases
+   inchangées.
+6. Relancer l'appli sans départ de débogage (`tools/deploy_s24.sh --no-build`) : la vraie partie
+   reprend, intacte.
+7. Rapport `build/qa/jalon11_t10/rapport.md` (verdict par point, captures, journal) → validation de
+   11A par Kevin.

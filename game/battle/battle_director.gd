@@ -540,6 +540,7 @@ func _play_beat(beat: BattleBeat) -> void:
 		BattleBeat.Kind.SEND_OUT:
 			if is_instance_valid(_stage):
 				_stage.show_pokemon(beat.side, beat.event.species_id)
+				_stage.set_status(beat.side, beat.event.status)
 			if is_instance_valid(_hud):
 				_hud.set_card(side, BattleViews.card(beat.event))
 		BattleBeat.Kind.MOVE:
@@ -574,6 +575,9 @@ func _play_beat(beat: BattleBeat) -> void:
 			await _play_poison(beat.event)
 		BattleBeat.Kind.STATUS_TAG:
 			_play_status_tag(beat.event)
+		BattleBeat.Kind.CONFUSION:
+			if is_instance_valid(_stage):
+				await _stage.play_confusion(beat.side)
 		BattleBeat.Kind.FORGET:
 			await _offer_forget(beat.event)
 		BattleBeat.Kind.THROW:
@@ -825,7 +829,7 @@ func _play_poison(event: BattleEvent) -> void:
 	if is_instance_valid(_hud):
 		_hud.clear_message()
 	var veil: Array[bool] = [false]
-	_run_veil(event.side, veil)
+	_run_veil(event.side, veil, event.status)
 	if is_instance_valid(_hud):
 		_hud.play_poison(side)
 		await _hud.animate_hp(side, event.hp, event.max_hp, false)
@@ -834,9 +838,10 @@ func _play_poison(event: BattleEvent) -> void:
 
 
 ## Coroutine lancée sans attente par [method _play_poison] : le voile, puis [param done] vrai.
-func _run_veil(side: BattleEvent.SideId, done: Array[bool]) -> void:
+func _run_veil(side: BattleEvent.SideId, done: Array[bool],
+		status: StringName = StatusRules.POISON) -> void:
 	if is_instance_valid(_stage):
-		await _stage.play_poison(side)
+		await _stage.play_poison(side, status)
 	done[0] = true
 
 
@@ -844,13 +849,15 @@ func _run_veil(side: BattleEvent.SideId, done: Array[bool]) -> void:
 ## de [param event] ; l'Antidote peut soigner un Pokémon de l'équipe qui n'est pas en jeu : alors
 ## aucune carte ne change.
 func _play_status_tag(event: BattleEvent) -> void:
-	if not is_instance_valid(_hud):
-		return
-	var side: BattleHud.Side = _HUD_SIDE[event.side]
+	var status := StatusRules.NONE
 	if event.kind == BattleEvent.Kind.STATUS_INFLICTED:
-		_hud.set_status(side, event.status)
-	elif event.side == BattleEvent.SideId.FOE or _is_in_play(event):
-		_hud.set_status(side, StatusRules.NONE)
+		status = event.status
+	elif event.side != BattleEvent.SideId.FOE and not _is_in_play(event):
+		return
+	if is_instance_valid(_hud):
+		_hud.set_status(_HUD_SIDE[event.side], status)
+	if is_instance_valid(_stage):
+		_stage.set_status(event.side, status)
 
 
 ## Espèce du Pokémon envoyé par [param side] d'après le SENT_OUT de [param events] (&"" si le
