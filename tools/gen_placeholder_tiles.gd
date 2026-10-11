@@ -24,6 +24,8 @@ extends SceneTree
 ##   rangée 10 SHALLOW    eau peu profonde  2  water
 ##   rangée 11 TALL_GRASS hautes herbes     2  tall_grass (jalon 3B)
 ##   rangée 12 LEDGE_DOWN rebord vers le sud 2  ledge=1 (jalon 5)
+##   rangée 13 RUBBLE     gravats de grotte 2  rubble (jalon 12 ; couche de données ajoutée en
+##                                              dernier, rangées précédentes inchangées)
 
 const TILES_SCRIPT: String = "res://game/world/overworld_tiles.gd"
 const T: int = 96
@@ -70,6 +72,7 @@ func _save_tileset() -> void:
 		[_tiles.DATA_TALL_GRASS, TYPE_BOOL],
 		[_tiles.DATA_WATER, TYPE_BOOL],
 		[_tiles.DATA_LEDGE, TYPE_INT],
+		[_tiles.DATA_RUBBLE, TYPE_BOOL],
 	]
 	for i: int in layers.size():
 		tileset.add_custom_data_layer()
@@ -89,6 +92,7 @@ func _save_tileset() -> void:
 			data.set_custom_data(_tiles.DATA_TALL_GRASS, _tiles.is_tall_grass_kind(kind))
 			data.set_custom_data(_tiles.DATA_WATER, _tiles.is_water_kind(kind))
 			data.set_custom_data(_tiles.DATA_LEDGE, _tiles.ledge_of(kind))
+			data.set_custom_data(_tiles.DATA_RUBBLE, _tiles.is_rubble_kind(kind))
 	var err := ResourceSaver.save(tileset, _tiles.TILESET_PATH)
 	print("tileset : ", _tiles.TILESET_PATH, " (", error_string(err), ")")
 
@@ -147,7 +151,23 @@ func _draw_tile(kind_name: String, variant: int) -> Image:
 			_draw_tall_grass(img, variant)
 		"LEDGE_DOWN":
 			_draw_ledge_down(img, variant)
+		"RUBBLE":
+			_draw_rubble(img, variant)
 	return img
+
+
+## Gravats provisoires : sol de grotte gris ardoise, semé de cailloux clairs à ombre portée
+## courte, pour lire « terrain de rencontre » à côté d'un sol calme uni (les cartes de grotte
+## sont peintes : cette tuile ne sert qu'aux cartes provisoires et aux cartes de QA).
+func _draw_rubble(img: Image, variant: int) -> void:
+	_fill_noise(img, Color("#5d6470"), Color("#4a505b"), Color("#6f7782"))
+	for i: int in 16 + variant * 4:
+		var p := Vector2(_rng.randf_range(6, T - 6), _rng.randf_range(6, T - 6))
+		var r := _rng.randf_range(2.5, 6.0)
+		_disc(img, p + Vector2(1.5, 2.0), r, Color(0.08, 0.09, 0.12, 0.55))
+		_disc(img, p, r, Color("#a3a9b2").lerp(Color("#878d97"), _rng.randf()))
+		_disc(img, p - Vector2(r * 0.3, r * 0.35), r * 0.45, Color(1, 1, 1, 0.25))
+	_grid_hint(img)
 
 
 ## Rebord provisoire : herbe rase en haut, petit talus de terre sur la moitié basse avec une
