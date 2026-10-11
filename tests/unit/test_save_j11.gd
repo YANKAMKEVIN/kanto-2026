@@ -13,6 +13,8 @@ const FIXTURE_V3 := "res://tests/fixtures/save/v3_kevin_j7_fin.json"
 const FIXTURE_V2_END := "res://tests/fixtures/save/v2_kevin_j6_fin.json"
 ## Vraie partie de Kevin en v4 (fin du J10, S21, relevée par OUV.1) : la partie qui sera migrée.
 const FIXTURE_V4_S21 := "res://tests/fixtures/save/v4_kevin_s21.json"
+## Vraie partie de Kevin en v5 (S21, relevée avant toute installation au T3 du J11, sha1 1e63980…).
+const FIXTURE_V5_REAL := "res://tests/fixtures/save/v5_kevin.json"
 
 var _fs: SaveFileSystem
 var _save: SaveSystem
@@ -182,7 +184,8 @@ func test_a_malformed_uid_or_counter_is_replaced_never_refused() -> void:
 # --- Migration -----------------------------------------------------------------------------
 
 func test_a_v4_save_keeps_every_pokemon_in_order_and_gets_uids() -> void:
-	for original: Dictionary in [_fixture_v4(), _fixture_v4_with_storage(), _fixture_v5()]:
+	for original: Dictionary in [_fixture_v4(), _fixture_v4_with_storage(), _fixture_v5(),
+			_fixture(FIXTURE_V5_REAL)]:
 		_check_same_pokemon(original)
 
 
@@ -228,6 +231,27 @@ func test_an_ouv_v5_save_keeps_the_rival_name_and_the_look() -> void:
 	var saved: Dictionary = _json(state.to_dict())
 	assert_eq(saved["rival_name"], "Blue")
 	assert_eq(saved["companion"], "")
+
+
+func test_the_real_v5_save_of_kevin_migrates_without_any_other_change() -> void:
+	# T3 (jalon-11.md) : la vraie partie v5 du S21, relue par cette build, réécrite en v6 : hors
+	# « version » et les champs du J11, rien ne change (même vérification que sur le téléphone).
+	var original := _fixture(FIXTURE_V5_REAL)
+	assert_eq(int(original["version"]), 5, "la fixture est bien une v5")
+	var state := _load_through_save(original.duplicate(true))
+	assert_eq(state.rival_name, original["rival_name"], "prénom du rival gardé")
+	var saved: Dictionary = _json(state.to_dict())
+	for key: String in ["party", "storage"]:
+		for member: Dictionary in saved[key]:
+			assert_true(PokemonUid.is_valid(member.get("uid")), "identifiant")
+			assert_eq(member.get("status_turns"), 0.0, "compteur nul")
+			member.erase("uid")
+			member.erase("status_turns")
+	assert_eq(saved["companion"], "", "aucun compagnon")
+	saved.erase("companion")
+	var before: Dictionary = _json(original)
+	before.erase("version")
+	assert_eq(saved, before, "rien d'autre ne change")
 
 
 func test_the_real_v2_save_reaches_the_current_version_with_uids() -> void:
