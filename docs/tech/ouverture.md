@@ -1,5 +1,7 @@
 # Chantier OUV — l'ouverture : plan technique
 
+> **TERMINÉ le 2026-10-11** : OUV.0 à OUV.3 validés par Kevin (QA sur S21) et fusionnés dans `main`.
+
 Conception : `docs/design/dossier-13-ouverture.md` (**validé par Kevin le 2026-10-10** : option A, rival petit-fils de Chen, noms Red · Sacha · Kevin / Régis · Blue · Gary, prénom de 1 à 10 caractères, textes du §6 version « petit-fils »).
 
 Découpage (dossier 13 §10) : **OUV.0** logique pure sur fichiers neufs (fait, avant la fusion du J10) → **OUV.1** démarrage et sauvegarde (validé seul sur S24 : il touche la sauvegarde) → **OUV.2** introduction de Chen → **OUV.3** transitions. OUV.1 à OUV.3 commencent **après la fusion du J10 dans `main`** (`boot.gd`, `game_state.gd`, cinématiques et écran Dresseur sont partagés).
