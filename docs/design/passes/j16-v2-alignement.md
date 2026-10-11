@@ -258,3 +258,27 @@ grandes fenêtres, lumière naturelle, pas de paquebot contemporain.
   - **16D** départ, **validé seul** : arrêt brutal à chaque étape ;
   - **16E** puzzle, Major Bob, badge, CT24 ;
   - **16F** non-régression.
+
+## 8. Réponses de Kevin (2026-10-11) — arbitrages tranchés
+
+| # | Décision |
+|---|---|
+| **G-1** | Contrat d'entrée **validé** tel que proposé, à transmettre aux sessions J13–J15. |
+| **G-2** | **Modèle hybride.** La CS01 débloque Coupe dans le monde dès qu'un Pokémon compatible est dans l'équipe, sans occuper d'emplacement. Elle s'apprend aussi comme une CT réutilisable pour servir en combat, et s'oublie normalement. Le dossier 06 §11 et la décision 5 tiennent tous les deux. **F-2 devient sans objet.** |
+| **G-3** | **Aucune condition de badge** pour Coupe. Le contrat garantit Cascade avant le Passe Bateau. **F-1 devient** : « un Pokémon compatible dans l'équipe ». |
+| **G-4** | Arbuste coupé **définitif** (un drapeau par arbuste). *Écart volontaire à Rouge/Bleu.* |
+| **G-5** | **Arbuste devant l'Arène de Carmin** : posé au J15, coupé au J16. |
+| **G-6** | Anti-blocage **garanti par un test** (Dardargnan, Sabelette, Paras atteignables avant Carmin quel que soit le starter). |
+| **G-7** | Rival n° 4 : **Roucoups, Rattatac, Kadabra, starter évolué** ; niveaux de référence 19 / 16 / 18 / 20, recalés par simulation ; capacités de Kadabra choisies à la main (sans Entrave). |
+| **G-8** | **Puzzle Rouge/Bleu strict** : le premier interrupteur est tiré au hasard, le second est voisin du premier, et **toute erreur remet tout à zéro** (nouveau tirage). *Fidèle à Rouge/Bleu ; F-4 « indices plus lisibles » ne s'applique qu'à la lisibilité des objets à fouiller.* |
+| **G-9** | **≤ 3 espèces nouvelles** au J16 (Abra, Kadabra + au plus une de marin) ; **10 Dresseurs** sur le navire, dont au plus 2 inévitables (rival excepté). |
+| **G-10** | Confirmation à la passerelle, une fois la CS01 obtenue : **PARTIR** / **PAS ENCORE**. Avant la CS01, sortie libre. |
+
+**Valeurs par défaut prises pour G-8 (règle 4, à corriger si besoin)** :
+- les interrupteurs se cachent dans des **objets à fouiller bien lisibles** (poubelles / armoires
+  électriques), sans indice qui désigne le bon ;
+- le tirage se refait **à chaque entrée dans l'Arène** tant que l'énigme n'est pas résolue ;
+- une fois les deux trouvés, la barrière s'ouvre **pour toujours** (drapeau).
+
+**Prochaine étape** : envoyer `docs/design/prompts/chatgpt-dossier-16-ss-anne.md` (bloc des réponses
+rempli) à ChatGPT avec la V2 et cette passe → dossier 16 consolidé → relecture de Claude.

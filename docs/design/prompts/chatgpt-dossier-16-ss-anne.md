@@ -40,7 +40,27 @@ listée ci-dessous.
 
 ## Réponses de Kevin aux arbitrages G-1 à G-10
 
-> *(à remplir : « G-1 : oui » / « G-4 : repousse » / …)*
+Tranchés le 2026-10-11 (détail : passe d'alignement, §8). À appliquer tels quels :
+
+- **G-1** : contrat d'entrée validé. Écris-le mot pour mot au §2 du dossier.
+- **G-2** : **modèle hybride**. La CS01 débloque Coupe dans le monde dès qu'un Pokémon compatible est
+  dans l'équipe, **sans occuper d'emplacement**. Elle s'apprend aussi comme une CT réutilisable pour
+  servir en combat, et s'oublie normalement. F-2 est sans objet.
+- **G-3** : **aucune condition de badge** pour Coupe.
+- **G-4** : arbuste coupé **définitif**.
+- **G-5** : arbuste devant l'Arène de Carmin (posé au J15, coupé au J16).
+- **G-6** : au moins une espèce compatible Coupe capturable avant Carmin quel que soit le starter :
+  c'est déjà le cas (Dardargnan, Sabelette, Paras).
+- **G-7** : rival n° 4 = **Roucoups, Rattatac, Kadabra, starter évolué** (avantage de type), niveaux
+  de référence 19 / 16 / 18 / 20 ; Kadabra sans Entrave.
+- **G-8** : **puzzle Rouge/Bleu strict**. Premier interrupteur tiré au hasard, second voisin, toute
+  erreur remet tout à zéro. Interrupteurs cachés dans des objets à fouiller bien lisibles, sans indice
+  qui désigne le bon ; nouveau tirage à chaque entrée tant que ce n'est pas résolu ; résolu = ouvert
+  pour toujours.
+- **G-9** : au plus **3 espèces nouvelles** (Abra, Kadabra + au plus une de marin) ; **10 Dresseurs**
+  sur le navire, au plus 2 inévitables hors rival.
+- **G-10** : confirmation à la passerelle après la CS01 : **PARTIR** / **PAS ENCORE** ; avant, sortie
+  libre.
 
 ## Ce que j'attends : le dossier 16 complet
 
