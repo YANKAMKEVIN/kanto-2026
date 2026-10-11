@@ -961,6 +961,8 @@ Pépite vendue 5 000 ₽ ; carte de QA retirée ; **vraie partie de Kevin** sas 
 
 ## 7. Questions pour Kevin
 
+> **Réponses de Kevin (2026-10-11) : les trois recommandations retenues** — Q-1 oui (tâches « maintenant » lancées sur `jalon-13`, créée depuis `jalon-12`) ; Q-2 pas de portrait d'Ondine au J13 ; Q-3 annexe A validée.
+
 Le dossier 16 tranche tout le reste ; seules ces trois décisions bloquent.
 
 - **Q-1 — Lancement avant la clôture du J12.** D-16 met le **code** après le J12 et laisse l'art
