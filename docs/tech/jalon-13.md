@@ -764,9 +764,22 @@ et de l'annexe A validée.
   de contact `build/captures/jalon13_assets/` → Kevin. **CA** : images validées ; journal dans la
   fiche ; ni manifeste ni scène.
 
-#### T3 — constructeur-monde (Mac) : décors de combat → **13.0-art** — **maintenant**
+#### T3 — constructeur-monde (Mac) : décors de combat → **13.0-art** — **Fait, à valider par Kevin**
 - `route_4_plaine`, `route_24_pont`, `cerulean_gym_bassin` (§2.18) par la chaîne CB.3. **CA** :
   validés par Kevin sur capture de combat Mac.
+- **Fait** : 3 masters 2340 × 1080 (`assets/battle/decors/<id>_back.webp`, ≈ 0,8–1,0 Mo), recette
+  CB.3 (composition Codex 1846 × 852, 2 tuiles repeintes, couture, réduction ; scores de recalage
+  0,86–0,94, aucune couture visible). Un seul essai (`_r1`) par décor, tous retenus. Prompts :
+  `tools/art/combat_decors/prompts/COMBAT_DECOR_{ROUTE4_PLAINE,ROUTE24_PONT,GYM_AZURIA_BASSIN}_r1.txt`
+  (sans nom de licence ; refs : `combat-v1`, planche des décors, vue générale Route 3 ou Argenta) ;
+  manifeste `tools/art/combat_decors/decors.json`. `data/battle/decors.json` : 3 décors + `places`
+  par défaut `route_4` (sas compris), `route_24`, `cerulean_gym` (les cartes viennent aux T7/T8 ;
+  tests inchangés). Ligne de sol commune (pieds 1559, 540 / 716, 972), pas de calque de premier plan
+  (sol nu dans les coins : choix, comme la Route 3). Captures :
+  `build/captures/jalon13_decors/cb3_<id>_{transition,roucool,capacites}.png`.
+- **À regarder** : Route 24, l'adversaire pose les pieds au bord de la rivière, au pied du pont
+  (le corps recouvre le garde-corps) ; Arène, les bannières portent un emblème rond (motif de
+  ligue générique, repeignable) ; arbre en haut à gauche de la Route 24 sous la carte de PV.
 
 #### T4 — Kevin : lot de textes (annexe A) — **maintenant**
 - **CA** : validé en une passe ; bloque les données (T11, T17), pas le code.

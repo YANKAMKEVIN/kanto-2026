@@ -37,5 +37,32 @@
 		],
 		"taille": [2340, 1080],
 		"qualite": 90
+	},
+	"route_4_plaine": {
+		"composition": "COMBAT_DECOR_ROUTE4_PLAINE_r1.png",
+		"tuiles": [
+			{ "image": "COMBAT_DECOR_ROUTE4_PLAINE_r1_TL.png", "portion": [0, 0, 1000, 852] },
+			{ "image": "COMBAT_DECOR_ROUTE4_PLAINE_r1_TR.png", "portion": [846, 0, 1846, 852] }
+		],
+		"taille": [2340, 1080],
+		"qualite": 90
+	},
+	"route_24_pont": {
+		"composition": "COMBAT_DECOR_ROUTE24_PONT_r1.png",
+		"tuiles": [
+			{ "image": "COMBAT_DECOR_ROUTE24_PONT_r1_TL.png", "portion": [0, 0, 1000, 850] },
+			{ "image": "COMBAT_DECOR_ROUTE24_PONT_r1_TR.png", "portion": [850, 0, 1850, 850] }
+		],
+		"taille": [2340, 1080],
+		"qualite": 90
+	},
+	"cerulean_gym_bassin": {
+		"composition": "COMBAT_DECOR_GYM_AZURIA_BASSIN_r1.png",
+		"tuiles": [
+			{ "image": "COMBAT_DECOR_GYM_AZURIA_BASSIN_r1_TL.png", "portion": [0, 0, 1000, 852] },
+			{ "image": "COMBAT_DECOR_GYM_AZURIA_BASSIN_r1_TR.png", "portion": [846, 0, 1846, 852] }
+		],
+		"taille": [2340, 1080],
+		"qualite": 90
 	}
 }
