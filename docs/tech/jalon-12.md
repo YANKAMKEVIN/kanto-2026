@@ -451,7 +451,7 @@ Branche d'intégration **`jalon-12`** depuis `main` (copie dédiée), une branch
 #### T6 — constructeur-monde (Mac) : intégration de la série 14 — **maintenant**, après T2
 - `serie14.py --manifeste` (entrées **en fin**), `preparer.py --source …` deux fois, règles `PaintedPropRules`, `build_painted_props.gd -- --nouveaux`, `build_character_frames.gd` (4 personnages, ajouts en fin), icônes `preparer_menu.py`. **CA** : second passage de `preparer.py` sans changement ; `test_painted_props` vert ; planche de contrôle relue.
 
-#### T7 — architecte : fondations de carte — **maintenant**
+#### T7 — architecte : fondations de carte — **fait** (2026-10-11, branche `j12-t7-fondations`, §9)
 - `OverworldTiles.Kind.RUBBLE` + donnée `rubble` + TileSet régénéré ; `PaintedGround` : textures réglables (exports `base_texture`, `r_texture`, `g_texture`, défauts = herbe, pavés, chemin : cartes existantes **inchangées**) ; `LightGlow` (+ table des types de halo en données) ; `CaveLibrary` + `data/world/caves.json` ; `tools/cave_map_kit.gd`.
 - Tests : `test_overworld_tiles`, `test_painted_ground` (défauts identiques), `test_light_glow` (réduction des animations), `test_cave_library`. **CA** : tests verts, import propre ; aucune carte existante modifiée (diff nul sur leurs `.tscn`).
 
@@ -608,6 +608,49 @@ Questions telles que posées :
 3. En parallèle : **T3** (planches Pokémon), **T4** (décors de combat), **T7** (fondations de carte), **T10** (outil de simulation) ; Kevin relit l'annexe A (**T5**).
 4. Après T2 et T7 : **T6** (intégration), puis **T8** ∥ **T9** (cartes), captures relues sur Mac.
 5. **À la clôture du J11** : T11 (alignement), puis la chaîne 12.0 → 12A → 12B → 12C → 12D.
+
+---
+
+## 9. Fait
+
+- **T7 — fondations de carte (2026-10-11, branche `j12-t7-fondations`, depuis `jalon-12`)** :
+  - **Gravats** : `OverworldTiles.Kind.RUBBLE` (rangée 13, en fin d'enum), `DATA_RUBBLE`,
+    `is_rubble_kind` ; tuile provisoire (`gen_placeholder_tiles.gd`, sol ardoise semé de cailloux) ;
+    couche de données `rubble` **ajoutée en dernier** à `overworld.tres` **et** à `interior.tres`
+    (`gen_placeholder_interior_tiles.gd` : même ordre de couches, test existant) ; diff des `.tres`
+    limité aux ajouts, rangées 0–12 de l'atlas identiques au pixel ; aucune carte ne pose de gravats
+    (test). **Non lue** par `GridWorld` / `EncounterDirector` (T20).
+  - **`PaintedGround` à textures réglables** : exports `base_texture`, `r_texture`, `g_texture`
+    (nuls = herbe, pavés, chemin), `get_textures()`. Une carte construite sans réglage n'enregistre
+    aucune propriété nouvelle ; aucun `.tscn` de carte modifié. **Preuve au pixel près** :
+    `tools/capture_painted_ground.gd` (sol seul de Jadielle, Argenta, Route 2 sud et nord, forêt,
+    Route 22, Route 1 ; carte entière + détail 1:1) avant / après : écart max **0 / 255** sur les
+    14 images, pour les scènes enregistrées **et** pour un sol reconstruit à neuf (`--fresh`,
+    ce que fera la régénération d'Argenta au T8). Bourg Palette exclu (mer animée).
+  - **`LightGlow`** (`game/world/lighting/light_glow.gd`, `Sprite2D` additif, dégradé radial
+    généré, partagé ; un matériau par type qui vacille, un seul pour les fixes ; `z` absolu 5,
+    au-dessus de `Entities`, sous `Overhead`) + **`LightGlowLibrary`** (pure) +
+    `data/world/light_glows.json` (`lamp` vacille, `shaft`, `shard`, `projector` fixes ;
+    alpha ≤ 0,35 ; `MAX_PER_MAP` = 16). « Réduire les animations » :
+    `LightGlow.set_reduce_motion(enabled)` (statique) coupe le vacillement de tous les halos —
+    **branchement dans `Boot._apply_settings` à faire après le J11** (`boot.gd` est un fichier du
+    J11, §1.2 : T20 ou T21). Aucune `Light2D` dans `game/` (test). Planche de contrôle :
+    `tools/capture_light_glow.gd` (quatre halos, tuile `RUBBLE`, héros sous la lampe).
+  - **`CaveLibrary`** + **`CaveExit`** (`game/world/caves/`, purs) + `data/world/caves.json`
+    (`mt_moon` : 1F, B1F, B2F ; sortie `route_3` / `from_mt_moon_w` / ↓). Chemin par défaut
+    `CaveLibrary.DATA_PATH` (convention des autres bibliothèques, au lieu de `DEFAULT_PATH`).
+    `test_map_catalog` : grottes extérieures absentes de `interiors.json`, sortie avec son point
+    d'apparition — **en attente** (`pending`) tant que T8 / T9 n'ont pas construit les cartes.
+  - **`tools/cave_map_kit.gd`** : grille (`PRATICABLES .gjUVE`), `Ground` logique (`.` `j` `E`
+    `U` `V` → sol, `g` → `RUBBLE`, reste solide), masque (R gravats, G masse `#`), sol peint aux
+    trois textures de la série 14 (échoue proprement tant qu'elles manquent), bande de frontière
+    ardoise, `Glows` + budget, échelles (`ladder_links` : paire, carte, spawn cible, orientation
+    opposée à l'échelle ; `add_ladder` = `STEP_ON` sans direction), `spawn_names` (`_w/_e`,
+    `_n/_c/_s`), objets peints (`add_prop_at`, `add_floor_prop`).
+  - Tests : `test_overworld_tileset` (étendu), `test_interior_tileset` (5 couches),
+    `test_painted_ground`, `test_light_glow`, `test_cave_library`, `test_cave_map_kit`,
+    `test_map_catalog` (étendu). Import propre ; `tools/test.sh` : 3 769 tests, 3 767 verts,
+    2 en attente (grottes, T8 / T9), 0 échec.
 
 ---
 

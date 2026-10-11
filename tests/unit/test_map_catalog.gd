@@ -58,3 +58,45 @@ func _scene_interior(path: String) -> bool:
 		if state.get_node_property_name(0, i) == &"interior":
 			return bool(state.get_node_property_value(0, i))
 	return false
+
+
+## Jalon 12 (T7, docs/tech/jalon-12.md §2.3) : chaque carte de grotte (`data/world/caves.json`)
+## est une scène extérieure (`interior = false`), absente de la liste des intérieurs ; la sortie
+## de la Corde Sortie est une carte qui a son point d'apparition. En attente tant que les cartes
+## du Mont Sélénite et de la Route 3 ne sont pas construites (T8, T9).
+func test_cave_maps_are_outdoor_scenes_not_interiors() -> void:
+	var caves := CaveLibrary.new()
+	assert_true(caves.load_file(), "caves.json lisible")
+	var interiors := MapCatalog.load_interiors()
+	var missing: Array[StringName] = []
+	for map_id: StringName in caves.get_all_maps():
+		assert_false(interiors.has(map_id), "%s : grotte, pas intérieur" % map_id)
+		if not MapCatalog.has_map(map_id):
+			missing.append(map_id)
+			continue
+		assert_false(_scene_interior(MapCatalog.scene_path(map_id)),
+			"%s : interior = false (compagnon visible)" % map_id)
+	if not missing.is_empty():
+		pending("cartes de grotte pas encore construites (T9) : %s" % ", ".join(missing))
+
+
+func test_cave_escape_targets_exist_with_their_spawn() -> void:
+	var caves := CaveLibrary.new()
+	assert_true(caves.load_file(), "caves.json lisible")
+	var missing: Array[StringName] = []
+	for cave: StringName in caves.get_caves():
+		var exit := caves.escape_target(caves.get_maps(cave)[0])
+		assert_not_null(exit, "%s : sortie" % cave)
+		if exit == null:
+			continue
+		if not MapCatalog.has_map(exit.map):
+			missing.append(exit.map)
+			continue
+		assert_false(_scene_interior(MapCatalog.scene_path(exit.map)),
+			"%s : la Corde ramène dehors" % exit.map)
+		var map := (load(MapCatalog.scene_path(exit.map)) as PackedScene).instantiate()
+		assert_not_null(map.get_node_or_null(NodePath("Spawns/%s" % exit.spawn)),
+			"%s : point d'apparition %s" % [exit.map, exit.spawn])
+		map.free()
+	if not missing.is_empty():
+		pending("sortie de grotte pas encore construite (T8) : %s" % ", ".join(missing))

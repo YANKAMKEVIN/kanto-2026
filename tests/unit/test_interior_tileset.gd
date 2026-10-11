@@ -37,7 +37,7 @@ func test_tile_size_is_96() -> void:
 
 func test_same_data_layers_as_overworld_in_same_order() -> void:
 	var overworld := load(OverworldTiles.TILESET_PATH) as TileSet
-	assert_eq(_tileset.get_custom_data_layers_count(), 4)
+	assert_eq(_tileset.get_custom_data_layers_count(), 5, "gravats du jalon 12 compris")
 	assert_eq(_tileset.get_custom_data_layers_count(), overworld.get_custom_data_layers_count())
 	for i: int in overworld.get_custom_data_layers_count():
 		assert_eq(_tileset.get_custom_data_layer_name(i), overworld.get_custom_data_layer_name(i))

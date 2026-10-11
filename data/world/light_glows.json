@@ -1,0 +1,9 @@
+{
+	"_doc": "Halos de lumière légers (LightGlow, docs/tech/jalon-12.md §2.4) : sprites additifs générés (aucun asset, aucune Light2D), posés par les outils de construction des cartes. « radius » en cases (rayon où le halo s'éteint), « alpha » = intensité au centre (≤ 0,35), « flicker » = amplitude du vacillement lent (0 = fixe ; coupé par « Réduire les animations »). Valeurs par défaut du T7, à régler sur capture (T9).",
+	"types": {
+		"lamp": { "color": "#ffb260", "radius": 2.6, "alpha": 0.30, "flicker": 0.18 },
+		"shaft": { "color": "#dce8ff", "radius": 3.2, "alpha": 0.26, "flicker": 0.0 },
+		"shard": { "color": "#a8c8ff", "radius": 1.6, "alpha": 0.22, "flicker": 0.0 },
+		"projector": { "color": "#fff0d8", "radius": 4.2, "alpha": 0.32, "flicker": 0.0 }
+	}
+}
