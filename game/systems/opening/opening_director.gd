@@ -14,8 +14,8 @@ extends Node
 ##    pose le labo en mode décor ; [IntroStage] + [IntroPlayer] sur la boîte de dialogue du jeu,
 ##    prénoms du joueur et du rival **en mémoire seulement**) ; à la fin de la dernière réplique,
 ##    **commit** ([OpeningCommit] : copie `save.previous.json`, construction de la partie par le
-##    [Callable] de Boot **avec les prénoms choisis**, écriture atomique), rideau,
-##    [signal intro_closed] et [signal new_game_entered] ; avec une sauvegarde d'une version plus
+##    [Callable] de Boot **avec les prénoms choisis**, écriture atomique), puis (OUV.3) le
+##    portrait du joueur rétrécit et se dissout, fondu au blanc chaud, [signal intro_closed] et [signal new_game_entered] ; avec une sauvegarde d'une version plus
 ##    récente, rien n'est écrit. Abandon (application tuée) pendant l'introduction : rien n'a été
 ##    écrit, l'ancienne sauvegarde est intacte (§3.7) ;
 ##  - Paramètres : le [SettingsScreen] sans « Sauvegarder maintenant » ; chaque réglage changé est
@@ -80,6 +80,9 @@ var _backdrop_blur: bool = true
 ## Prénoms choisis dans l'introduction (vides : défauts de [OpeningNames]).
 var _player_name: String = ""
 var _rival_name: String = ""
+## Vrai une fois la fin de l'introduction jouée (rideau blanc chaud) : la chambre apparaît depuis
+## le blanc ([method entry_fade_time]).
+var _sent_off: bool = false
 
 
 ## Branche le directeur avant [method run]. [param save_system] : la sauvegarde (null : aucune,
@@ -129,7 +132,7 @@ func run() -> void:
 	print("Ouverture : titre (sauvegarde %s)" % OpeningFlow.SaveStatus.find_key(status))
 	if _fade != null:
 		_fade.set_opaque(true)
-		_fade.fade_in(UiTokens.TITLE_FADE_IN * speed_scale)
+		_fade.fade_in(fade_time(UiTokens.TITLE_FADE_IN))
 
 
 ## Une entrée du titre est touchée.
@@ -302,12 +305,13 @@ func _play_intro() -> void:
 	print("Ouverture : introduction du Prof. Chen")
 	if _fade != null:
 		_fade.set_opaque(true)
-		_fade.fade_in(_intro_fade(UiTokens.INTRO_FADE_IN))
+		_fade.fade_in(fade_time(UiTokens.INTRO_FADE_IN))
 	_intro.start()
 
 
-## Fin de la dernière réplique de Chen (§3.7) : commit **avant** le rideau, avec les prénoms
-## choisis ; puis rideau, introduction retirée, [signal intro_closed], chambre.
+## Fin de la dernière réplique de Chen (§3.7) : commit **avant** toute animation, avec les prénoms
+## choisis ; puis rétrécissement et blanc chaud ([method _send_off], OUV.3), introduction retirée,
+## [signal intro_closed], chambre (Boot la montre en fondu depuis le blanc).
 func _on_intro_finished(player_name: String, rival_name: String) -> void:
 	_player_name = player_name
 	_rival_name = rival_name
@@ -320,7 +324,7 @@ func _on_intro_finished(player_name: String, rival_name: String) -> void:
 	if effects.has(OpeningFlow.Effect.WARN_UNSAVED):
 		_warning = _texts.text(TitleTexts.GROUP_MESSAGES, &"unsaved")
 	if _fade != null and _intro != null:
-		await _fade.fade_out(_intro_fade(UiTokens.INTRO_FADE_OUT))
+		await _send_off()
 	_close_intro()
 	if effects.has(OpeningFlow.Effect.ENTER_BEDROOM):
 		if not _built:
@@ -342,8 +346,32 @@ func _close_intro() -> void:
 	intro_closed.emit()
 
 
-## Durée d'un fondu de l'introduction (« Réduire les animations » : raccourci).
-func _intro_fade(base: float) -> float:
+## Fin de l'introduction (OUV.3, dossier 13 §4 plans 8 et 9), **après** le commit : le portrait
+## du joueur rétrécit et se dissout dans la lumière ([method IntroStage.send_off]) ; au milieu du
+## rétrécissement part le **fondu au blanc chaud** ; rend la main quand le blanc est opaque.
+## « Réduire les animations » : pas de rétrécissement, fondu au blanc direct et raccourci.
+## Rien n'est écrit ici : un abandon pendant l'animation laisse la nouvelle partie (déjà écrite
+## dans la chambre), jamais un entre-deux.
+func _send_off() -> void:
+	_sent_off = true
+	var shrink := _stage.send_off() if _stage != null else 0.0
+	var lead := shrink * UiTokens.INTRO_SEND_OFF_LEAD
+	if lead > 0.0:
+		await create_tween().tween_interval(lead).finished
+	await _fade.fade_out(fade_time(UiTokens.INTRO_WHITE_OUT), UiTokens.INTRO_WHITE)
+
+
+## Durée du fondu d'entrée dans la partie (Boot) : depuis le blanc chaud après l'introduction,
+## depuis le noir après Continuer (ou une introduction illisible).
+func entry_fade_time() -> float:
+	if _sent_off:
+		return fade_time(UiTokens.INTRO_WHITE_IN)
+	return fade_time(UiTokens.TITLE_GAME_FADE_IN)
+
+
+## Durée d'un fondu de l'ouverture : [param base] × [member speed_scale], raccourcie par « Réduire
+## les animations » (× INTRO_REDUCED, dossier 13 §7).
+func fade_time(base: float) -> float:
 	var reduced := _settings != null and _settings.reduce_motion
 	return base * speed_scale * (UiTokens.INTRO_REDUCED if reduced else 1.0)
 
@@ -358,7 +386,7 @@ func _leave_title() -> void:
 func _close_title() -> void:
 	_leaving = true
 	if _fade != null:
-		await _fade.fade_out(UiTokens.TITLE_FADE_OUT * speed_scale)
+		await _fade.fade_out(fade_time(UiTokens.TITLE_FADE_OUT))
 	if _screen != null:
 		remove_child(_screen)
 		_screen.queue_free()

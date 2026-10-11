@@ -31,8 +31,12 @@ func _ready() -> void:
 	_set_alpha(0.0)
 
 
-## Descend le rideau (opacité 1) ; coroutine : await fade.fade_out().
-func fade_out(duration: float = UiTokens.ANIM_FADE_OUT) -> void:
+## Descend le rideau (opacité 1) ; coroutine : await fade.fade_out(). [param color] : teinte du
+## rideau, posée au départ (le noir des portes par défaut ; blanc chaud à la fin de
+## l'introduction, OUV.3). [method fade_in] et [method set_opaque] gardent la teinte courante.
+func fade_out(duration: float = UiTokens.ANIM_FADE_OUT,
+		color: Color = UiTokens.FADE_COLOR) -> void:
+	_curtain.color = color
 	if await _fade_to(1.0, duration):
 		faded_out.emit()
 
@@ -60,6 +64,11 @@ func get_alpha() -> float:
 
 func get_curtain() -> ColorRect:
 	return _curtain
+
+
+## Teinte courante du rideau.
+func get_color() -> Color:
+	return _curtain.color
 
 
 ## Anime l'opacité jusqu'à target ; rend vrai si le fondu est allé au bout, faux s'il a été

@@ -143,3 +143,15 @@ func test_freed_during_fade_does_not_resume() -> void:
 	fade.free()
 	await wait_process_frames(3)
 	assert_engine_error_count(0, "aucune reprise sur une instance libérée")
+
+
+## OUV.3 : rideau blanc chaud à la fin de l'introduction ; le fondu suivant (les portes) repart
+## du noir par défaut, fade_in et set_opaque gardent la teinte.
+func test_fade_out_sets_its_color_and_doors_go_back_to_black() -> void:
+	await _fade.fade_out(0.0, UiTokens.INTRO_WHITE)
+	assert_eq(_fade.get_color(), UiTokens.INTRO_WHITE)
+	_fade.set_opaque(true)
+	await _fade.fade_in(0.0)
+	assert_eq(_fade.get_color(), UiTokens.INTRO_WHITE, "fade_in garde la teinte")
+	await _fade.fade_out(0.0)
+	assert_eq(_fade.get_color(), UiTokens.FADE_COLOR, "les portes : noir")
