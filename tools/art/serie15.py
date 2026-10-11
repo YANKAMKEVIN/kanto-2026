@@ -415,6 +415,43 @@ PLANCHES = [
 		[VELO, RATELIER, VELOS_AZ], LUMIERE_NE, 2),
 ]
 
+## Corrections (T2) : (identifiant de l'image corrigée sans _NE_rN, révision, ancres ajoutées,
+## texte qui remplace la description de la planche d'origine). Le prompt part de la table d'origine.
+CORRECTIONS = {
+	("WORLD_PROP_PONTS_PLANCHE", 2): (
+		"PLANCHE de 8 MODULES DE PONT vus de dessus en trois quarts (un pont de ville en pierre et le "
+		"long pont de bois d'une rivière), dans une image 1536 × 1024 : grille invisible de 4 colonnes × "
+		"2 lignes (cellules de 384 × 512), un module par cellule, centré, à une échelle COMMUNE : 1 case = "
+		"90 px. CHAQUE TABLIER EST UN MODULE RÉPÉTABLE : ses deux extrémités (le haut et le bas pour les "
+		"ponts verticaux, la gauche et la droite pour le pont horizontal) sont coupées DROIT, bord à bord, "
+		"SANS embout, SANS poteau d'angle, SANS chapiteau, de sorte que le module se raccorde sans "
+		"couture avec une copie de lui-même posée à la suite ; les parapets et les longerons vont "
+		"d'un bout à l'autre du module sans interruption.\n"
+		"Ligne 1. Module 1 : TABLIER DE VILLE de 2 cases de large × 4 de long (180 × 360 px), "
+		"traversée du haut vers le bas : dalles de pierre claire calepinées, un parapet bas continu de "
+		"pierre (muret à couvre-joint arrondi, ≈ 22 px d'épaisseur) de chaque côté, vu de dessus. Module 2 : "
+		"TABLIER DE VILLE de 3 cases de large × 4 de long (270 × 360 px), mêmes dalles et mêmes parapets. "
+		"Module 3 : TABLIER DE VILLE pour une traversée de GAUCHE À DROITE, 4 cases de long × 2 de large "
+		"(360 × 180 px, paysage) : mêmes dalles, parapet du haut vu de face (face en pierre visible, ≈ 32 px "
+		"de haut) et parapet du bas vu de dessus (≈ 18 px), continus d'un bout à l'autre. Module 4 : "
+		"TABLIER DE BOIS A, pont de rivière de 2 cases de large × 4 de long (180 × 360 px), traversée du "
+		"haut vers le bas : planches de bois clair perpendiculaires à la traversée, clouées, quelques "
+		"planches un peu plus sombres, un longeron de bois sombre continu de chaque côté (≈ 14 px), aucun "
+		"garde-corps.\n"
+		"Ligne 2. Module 5 : TABLIER DE BOIS B, même gabarit que 4 (180 × 360), planches décalées, deux "
+		"nœuds visibles. Module 6 : TABLIER DE BOIS C, même gabarit, une planche neuve plus claire et un "
+		"petit raccord de fer. Module 7 : GARDE-CORPS de pont de bois, un segment de rambarde en pierre "
+		"claire et bois de 1 case de long (90 px), 0,5 case de haut (≈ 45 px), vu depuis le côté du "
+		"tablier : une lisse de bois sur deux petits balustres de pierre, ses extrémités coupées droit "
+		"pour se raccorder avec lui-même ; posé le long du pont, JAMAIS dessus. Module 8 : PILE de pont, "
+		"un pilier carré de pierre claire à chapiteau plat, 0,5 case de large (≈ 45 px), 1,2 case de haut "
+		"(≈ 108 px), qui sort de l'eau au bord du pont (on voit sa face et un peu de la ligne d'eau "
+		"mouillée à son pied).\n"
+		"Même pierre que les quais joints (blanc-crème) ; bois clair et chaud. Aucun nom, aucune "
+		"inscription.\nFond avec une vraie transparence (canal alpha), aucun sol, aucune eau dessinée "
+		"autour, aucune ombre portée."),
+}
+
 ## Coques : (identifiant, largeur, profondeur, ancres, géométrie, matériaux, vague).
 _BASE_COQUE = ("Vue de dessus en projection oblique frontale : le MUR DU FOND occupe toute la largeur "
 	"en haut, on voit sa face avant ; les murs latéraux gauche et droit ne sont visibles que par leur "
@@ -648,6 +685,12 @@ def _images() -> list[dict]:
 		nom = f"{ident}_NE_r1"
 		ajouter(nom, PROMPTS / f"{nom}.txt", _prompt_texture(ident, ref, description, ancres, valeurs),
 			[f"{ref}.png"] + STYLE + ancres, 2, True, groupe=ident)
+	for (ident, rev), description in CORRECTIONS.items():
+		base = next(t for t in PLANCHES if t[0] == ident)
+		_, refs, _, ancres_, valeurs, _ = base
+		nom = f"{ident}_NE_r{rev}"
+		ajouter(nom, PROMPTS / f"{nom}.txt", _prompt_planche(ident, refs, description, ancres_, valeurs),
+			[f"{r}.png" for r in refs] + ancres_, 3, True, groupe=f"{ident}_r{rev}")
 	return images
 
 
@@ -699,7 +742,7 @@ def ancres() -> None:
 	print("ancres copiées" + (f" ; ABSENTES : {', '.join(manquantes)}" if manquantes else ""))
 
 
-VAGUES = (1, 2)
+VAGUES = (1, 2, 3)
 
 
 def commandes() -> str:
@@ -791,7 +834,7 @@ def manifeste_donnees() -> dict:
 				["prop_pont_ville_01", "prop_pont_ville_03_01", "prop_pont_ville_ew_01",
 					"prop_pont_pepite_tablier_01", "prop_pont_pepite_tablier_02",
 					"prop_pont_pepite_tablier_03", "prop_pont_pepite_garde_corps_01",
-					"prop_pont_pepite_pile_01"], [2, 3, 1, 2, 2, 2, 1, 0.5], 0.0),
+					"prop_pont_pepite_pile_01"], [2, 3, 4, 2, 2, 2, 1, 0.5], 0.0),
 			_planche_objets("WORLD_PROP_VILLE_EAU_PLANCHE_NE", "props", 3, 2,
 				["prop_jardiniere_pierre_01", "prop_jardiniere_pierre_02", "prop_arbre_bac_01",
 					"prop_banc_pierre_01", "prop_lampadaire_quai_01", "prop_bitte_01"],

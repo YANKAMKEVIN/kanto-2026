@@ -775,6 +775,11 @@ et de l'annexe A validée.
 - Trois générations à la fois, corrections en `_r2` ; repli app ChatGPT si Codex refuse ; planche
   de contact `build/captures/jalon13_assets/` → Kevin. **CA** : images validées ; journal dans la
   fiche ; ni manifeste ni scène.
+- **Fait, à valider par Kevin** (2026-10-11, branche `j13-t1`) : 19 images (18 en `_r1`, `ponts` en
+  `_r2`), aucun refus de Codex, aucun emblème rond ni texte ; journal dans la fiche. Planche de
+  contact `build/captures/jalon13_assets/serie15_contact.png`. **Points pour T5** : tabliers de pierre
+  des ponts avec poteaux d'angle (recadrer), bassin peint de l'Arène plus large que 7 cases, icône de
+  la Pépite plus large que sa colonne.
 
 #### T3 — constructeur-monde (Mac) : décors de combat → **13.0-art** — **Fait, à valider par Kevin**
 - `route_4_plaine`, `route_24_pont`, `cerulean_gym_bassin` (§2.18) par la chaîne CB.3. **CA** :
