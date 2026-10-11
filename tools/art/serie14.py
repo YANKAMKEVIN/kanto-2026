@@ -692,27 +692,30 @@ _C = "assets/sprites/characters/painted/"
 
 
 def _sol(ident: str, source: str, contraste: float, couleur: float) -> dict:
+	# « raccord » (T6) : écarts de valeur entre bords opposés résorbés sur 24 px (preparer.py).
 	return {"id": ident, "source": source, "sortie": f"{_W}ground/{ident}.png", "taille": 384,
-		"contraste": contraste, "couleur": couleur}
+		"contraste": contraste, "couleur": couleur, "raccord": 24}
 
 
 ## Entrées du manifeste (T6 seulement, en fin de chaque section). Réglages = défauts (règle 4),
 ## ajustés au T6 sur la planche de contrôle.
 MANIFESTE = {
 	"objets": [
-		{"id": "relief_entree_grotte_01", "source": "WORLD_RELIEF_ENTREE_GROTTE_01_NE_r1.png",
+		{"id": "relief_entree_grotte_01", "source": "WORLD_RELIEF_ENTREE_GROTTE_01_NE_r2.png",
 			"sortie": f"{_W}relief/relief_entree_grotte_01.png", "axe": "w", "cases": 4,
 			"ombre": False, "contact": 0.0},
 		{"id": "prop_mare_grotte_01", "source": "WORLD_PROP_MARE_GROTTE_01_NE_r1.png",
 			"sortie": f"{_W}props/prop_mare_grotte_01.png", "axe": "w", "cases": 4,
 			"ombre": False, "contact": None},
-		{"id": "decal_puits_jour_01", "source": "WORLD_DECAL_PUITS_JOUR_01_NE_r1.png",
+		# T2 : alpha ≈ 0,98 au centre et franges sombres / jaunes au contour (extraction d'alpha
+		# de Codex) → T6 : alpha × 0,55 et bordure floutée, couleurs étalées sous la frange.
+		{"id": "decal_puits_jour_01", "source": "WORLD_DECAL_PUITS_JOUR_01_NE_r2.png",
 			"sortie": f"{_W}ground/decals/decal_puits_jour_01.png", "axe": "w", "cases": 4,
-			"ombre": False, "contact": None},
+			"ombre": False, "contact": None, "alpha": 0.55, "flou_bord": 6},
 	],
 	"sols": [
 		_sol("ground_roche_01", "WORLD_GROUND_ROCHE_01_NE_r1.png", 0.7, 1.0),
-		_sol("ground_grotte_01", "WORLD_GROUND_GROTTE_01_NE_r1.png", 0.6, 1.0),
+		_sol("ground_grotte_01", "WORLD_GROUND_GROTTE_01_NE_r2.png", 0.6, 1.0),
 		_sol("ground_gravats_01", "WORLD_GROUND_GRAVATS_01_NE_r1.png", 0.8, 1.0),
 		_sol("ground_masse_roche_01", "WORLD_GROUND_MASSE_ROCHE_01_NE_r1.png", 0.6, 0.9),
 	],
@@ -748,7 +751,7 @@ MANIFESTE = {
 			"colonnes": 3, "lignes": 1,
 			"ids": ["prop_dalle_01", "prop_fossile_dome_01", "prop_fossile_nautile_01"],
 			"cases": [3, 0.6, 0.6], "contact": 0.1},
-		{"source": "WORLD_PROP_INDICES_PLANCHE_NE_r1.png", "dossier": f"{_W}props/",
+		{"source": "WORLD_PROP_INDICES_PLANCHE_NE_r2.png", "dossier": f"{_W}props/",
 			"colonnes": 2, "lignes": 1,
 			"ids": ["prop_indice_caillou_01", "prop_indice_eclat_01"],
 			"cases": [0.7, 0.6], "contact": 0.2},
@@ -763,11 +766,25 @@ MANIFESTE = {
 		{"id": "chercheur_fossiles", "source": "PNJ_CHERCHEUR_FOSSILES_NE_r1.png",
 			"sortie": f"{_C}chercheur_fossiles_sheet.png", "hauteur": 128},
 	],
+	# La Sbire ♀ creuse (un genou à terre) : ≈ 75 % de la hauteur debout, même échelle que la
+	# marche (« rapport_hauteur ») ; cellule de la hauteur de la marche, calée au pied (T6).
 	"attentes": [
 		{"id": f"{nom}_idle", "source": f"{court}_ATTENTE_r1.png",
-			"sortie": f"{_C}{nom}_idle_sheet.png", "marche": nom}
+			"sortie": f"{_C}{nom}_idle_sheet.png", "marche": nom,
+			**({"rapport_hauteur": 0.75} if nom == "sbire_f" else {})}
 		for nom, court in (("fillette", "FILLETTE"), ("sbire_h", "SBIRE_ROCKET_H"),
 			("sbire_f", "SBIRE_ROCKET_F"), ("chercheur_fossiles", "CHERCHEUR_FOSSILES"))
+	],
+	# Fossiles posés sur la dalle, en « objet fixe » (`object/fossil_dome`, `object/fossil_helix`,
+	# build_character_frames.gd) : mêmes images que les scènes `prop_fossile_*`, recadrées dans
+	# la planche de la dalle (boîtes des taches, marge 8 px), 0,6 case de large environ.
+	"images_objets": [
+		{"id": "fossil_dome", "source": "WORLD_PROP_DALLE_FOSSILES_PLANCHE_NE_r1.png",
+			"recadrage": [876, 588, 1172, 828],
+			"sortie": "assets/sprites/objects/painted/fossil_dome.png", "hauteur": 46},
+		{"id": "fossil_helix", "source": "WORLD_PROP_DALLE_FOSSILES_PLANCHE_NE_r1.png",
+			"recadrage": [1200, 544, 1500, 832],
+			"sortie": "assets/sprites/objects/painted/fossil_helix.png", "hauteur": 55},
 	],
 }
 

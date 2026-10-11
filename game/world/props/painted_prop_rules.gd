@@ -265,6 +265,60 @@ const RULES: Dictionary[StringName, Dictionary] = {
 	&"int_escalier_deco_01": {"width": 3, "depth": 2},
 	&"int_tapis_rouge_01": {"traversable": true, "layer": LAYER_GROUND},
 	&"int_tapis_labo_pokeball_01": {"traversable": true, "layer": LAYER_GROUND},
+	# --- Série 14 : Route 3 et Mont Sélénite (J12 T6, fiche `serie-14-mont-selenite.md`). ---
+	# Entrée de la grotte `Q` (module 4 × 3, ancre (74, 9)) : les deux cases de l'ouverture au
+	# bas de l'emprise restent libres (la carte y pose le passage), le reste est bloqué.
+	&"relief_entree_grotte_01": {"width": 4, "depth": 3,
+		"open": [Vector2i(-1, 0), Vector2i(0, 0)]},
+	# Paroi d'ardoise (4 modules ≈ 5 × 3, comme la série 12) : relief du sol sans emprise, les
+	# cases `K` / `#` sont bloquées par la carte ; les modules se chevauchent.
+	&"relief_paroi_ardoise_01": {"traversable": true, "layer": LAYER_GROUND},
+	&"relief_paroi_ardoise_02": {"traversable": true, "layer": LAYER_GROUND},
+	&"relief_paroi_ardoise_03": {"traversable": true, "layer": LAYER_GROUND},
+	&"relief_paroi_ardoise_04": {"traversable": true, "layer": LAYER_GROUND},
+	# Parois de la grotte (faces, angles, bords, lèvre) : posées sur des cases `#` déjà solides
+	# par `cave_map_kit` (T9), triées au pied dans `Entities` (une face passe devant un
+	# personnage au nord de la masse), sans emprise propre. Pied au milieu d'une case (largeur
+	# impaire : faces 3, bord 1, lèvre 3) ou sur un bord (angles de 2 cases).
+	&"relief_paroi_grotte_01": {"traversable": true, "align": ALIGN_CENTRE},
+	&"relief_paroi_grotte_02": {"traversable": true, "align": ALIGN_CENTRE},
+	&"relief_paroi_grotte_03": {"traversable": true, "align": ALIGN_EDGE},
+	&"relief_paroi_grotte_04": {"traversable": true, "align": ALIGN_EDGE},
+	&"relief_paroi_grotte_05": {"traversable": true, "align": ALIGN_CENTRE},
+	&"relief_paroi_grotte_06": {"traversable": true, "align": ALIGN_CENTRE},
+	# Repères minéraux : colonne du carrefour 2 × 3, colonnes fines, rochers et éclats 1 × 1.
+	&"prop_colonne_grotte_01": {"width": 2, "depth": 3},
+	&"prop_colonne_grotte_02": {"width": 1, "depth": 1},
+	&"prop_rocher_grotte_01": {"width": 1, "depth": 1},
+	&"prop_rocher_grotte_02": {"width": 1, "depth": 1},
+	&"prop_eclats_lune_01": {"width": 1, "depth": 1},
+	&"prop_eclats_lune_02": {"width": 1, "depth": 1},
+	# Mare `w` et puits de jour `j` : à plat dans la couche du sol (la mare est bloquée par la
+	# grille, on marche dans la lumière du puits).
+	&"prop_mare_grotte_01": {"traversable": true, "layer": LAYER_GROUND},
+	&"decal_puits_jour_01": {"traversable": true, "layer": LAYER_GROUND, "material": false},
+	# Camp et indices Rocket : lampe, caisses (1 × 1, empilées 2 × 1), projecteur, outils ;
+	# tranchée de fouille 3 × 3 à plat (couche du sol, cases `F` bloquées).
+	&"prop_lampe_chantier_01": {"width": 1, "depth": 1},
+	&"prop_caisse_r_01": {"width": 1, "depth": 1},
+	&"prop_caisse_r_02": {"width": 2, "depth": 1},
+	&"prop_tranchee_01": {"width": 3, "depth": 3, "layer": LAYER_GROUND},
+	&"prop_projecteur_01": {"width": 1, "depth": 1},
+	&"prop_outils_fouille_01": {"width": 1, "depth": 1},
+	# Échelles : warps « en marchant dessus », le décor ne bloque pas leur case ; couche du sol
+	# (une échelle ne passe jamais devant le personnage qui la prend).
+	&"prop_echelle_descend_01": {"traversable": true, "layer": LAYER_GROUND,
+		"align": ALIGN_CENTRE},
+	&"prop_echelle_monte_01": {"traversable": true, "layer": LAYER_GROUND,
+		"align": ALIGN_CENTRE},
+	# Dalle des fossiles 3 × 1 ; fossiles posés dessus (cases de la dalle, déjà bloquées) : sans
+	# emprise (en jeu, les fossiles choisis sont des objets fixes `object/fossil_*`).
+	&"prop_dalle_01": {"width": 3, "depth": 1},
+	&"prop_fossile_dome_01": {"traversable": true, "align": ALIGN_CENTRE},
+	&"prop_fossile_nautile_01": {"traversable": true, "align": ALIGN_CENTRE},
+	# Indices des objets cachés : la case de l'indice est bloquée (point d'examen).
+	&"prop_indice_caillou_01": {"width": 1, "depth": 1},
+	&"prop_indice_eclat_01": {"width": 1, "depth": 1},
 }
 
 

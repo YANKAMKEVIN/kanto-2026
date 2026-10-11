@@ -8,7 +8,8 @@ fichiers aux **noms stables**, à la taille utile du menu (référence 1080 p de
   - `assets/ui/menu/hero_bust.webp` : le portrait peint du héros, recadré sur sa silhouette,
     720 px de haut (affiché ~640 dans la carte du Dresseur), fond transparent ;
   - `assets/ui/items/<objet>.webp` : icônes peintes des objets (planche 4 × 1 découpée en
-    colonnes de 384 px), recadrées, centrées dans un carré de 256 px (marge 8 px).
+    colonnes de 384 px), recadrées, centrées dans un carré de 256 px (marge 8 px) ; puis les
+    planches suivantes ([constant PLANCHES_OBJETS_SUIVANTES] : série 14, J12).
 Usage : tools/art/preparer_menu.py [--source DOSSIER]
 """
 from __future__ import annotations
@@ -38,6 +39,12 @@ OBJETS_COLONNE = 384
 OBJET_TAILLE = 256
 OBJET_MARGE = 8
 QUALITE = 90
+## Planches d'icônes suivantes (même découpe en bandes), dans l'ordre : (planche, identifiants
+## de la gauche vers la droite). Série 14 (J12 T6) : `serie14.ICONES_IDS`, révision `_r2`
+## (Pierre Lune redessinée) validée par Kevin le 2026-10-11.
+PLANCHES_OBJETS_SUIVANTES = [
+	("UI_OBJETS_J12_PLANCHE_r2.png", ["moon_stone", "escape_rope", "dome_fossil", "helix_fossil"]),
+]
 
 
 def _silhouette(image: Image.Image) -> Image.Image:
@@ -85,9 +92,9 @@ def _bandes(planche: Image.Image, nombre: int) -> list[tuple[int, int]]:
 	return bandes
 
 
-def _objets(source: Path, dossier: Path) -> None:
+def _objets(source: Path, dossier: Path, identifiants: list[str] = OBJETS_IDS) -> None:
 	planche = Image.open(source).convert("RGBA")
-	for (gauche, droite), identifiant in zip(_bandes(planche, len(OBJETS_IDS)), OBJETS_IDS):
+	for (gauche, droite), identifiant in zip(_bandes(planche, len(identifiants)), identifiants):
 		objet = _silhouette(planche.crop((gauche, 0, droite, planche.height)))
 		utile = OBJET_TAILLE - 2 * OBJET_MARGE
 		echelle = utile / max(objet.size)
@@ -111,6 +118,8 @@ def main() -> None:
 		_carte(args.source / fichier, cartes / f"{ecran}.webp")
 	_heros(args.source / HEROS, RACINE / "assets" / "ui" / "menu" / "hero_bust.webp")
 	_objets(args.source / OBJETS, objets)
+	for planche, identifiants in PLANCHES_OBJETS_SUIVANTES:
+		_objets(args.source / planche, objets, identifiants)
 	print("art du menu prêt :", cartes, objets)
 
 
