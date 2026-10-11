@@ -41,6 +41,7 @@ Usage :
   tools/art/serie14.py --commandes             liste les commandes generer.sh du T2 (sans Codex)
   tools/art/serie14.py --planche [sortie.png]  planche de contrôle du kit (sans Codex ;
                                                défaut build/art/MS_KIT_v1.png)
+  tools/art/serie14.py --contact [sortie.png]  planche de contact des images générées (T2)
   tools/art/serie14.py --manifeste             ajoute les entrées de la série 14 en fin de
                                                tools/art/manifeste.json (T6, après la validation
                                                des images par Kevin ; NE PAS lancer avant)
@@ -1012,6 +1013,46 @@ def controle(sortie: Path) -> Path:
 	return sortie
 
 
+def contact(sortie: Path) -> Path:
+	"""Planche de contact des images GÉNÉRÉES (T2, validation 12.0-art) : la dernière révision
+	présente de chaque image (_r3, _r2 puis _r1) sur fond gris moyen, nom et révision dessous.
+	Les conditionnels ne sont pas montrés."""
+	from PIL import ImageDraw, ImageFont
+	cellule, marge, colonnes = 440, 24, 4
+	choisies = []
+	for image in _images():
+		if image["conditionnel"]:
+			continue
+		base = image["nom"].rsplit("_r", 1)[0]
+		for rev in (3, 2, 1):
+			chemin = ART / f"{base}_r{rev}.png"
+			if chemin.exists():
+				choisies.append((f"{base}_r{rev}", chemin))
+				break
+	lignes = (len(choisies) + colonnes - 1) // colonnes
+	feuille = Image.new("RGB", (colonnes * (cellule + marge) + marge,
+		lignes * (cellule + 60 + marge) + marge), (118, 118, 124))
+	dessin = ImageDraw.Draw(feuille)
+	police = ImageFont.load_default()
+	for chemin_police in ("/System/Library/Fonts/Helvetica.ttc", "/Library/Fonts/Arial.ttf"):
+		if Path(chemin_police).exists():
+			police = ImageFont.truetype(chemin_police, 17)
+			break
+	for i, (nom, chemin) in enumerate(choisies):
+		x = marge + (i % colonnes) * (cellule + marge)
+		y = marge + (i // colonnes) * (cellule + 60 + marge)
+		img = Image.open(chemin).convert("RGBA")
+		img.thumbnail((cellule, cellule), Image.LANCZOS)
+		fond = Image.new("RGBA", img.size, (118, 118, 124, 255))
+		fond.alpha_composite(img)
+		feuille.paste(fond.convert("RGB"), (x + (cellule - img.width) // 2, y))
+		dessin.text((x, y + cellule + 8), nom.replace("_NE", ""), fill=(255, 255, 255), font=police)
+	sortie.parent.mkdir(parents=True, exist_ok=True)
+	feuille.save(sortie, optimize=True)
+	print(f"{len(choisies)} images")
+	return sortie
+
+
 if __name__ == "__main__":
 	arguments = sys.argv[1:]
 	if "--prompts" in arguments:
@@ -1023,6 +1064,10 @@ if __name__ == "__main__":
 	elif "--planche" in arguments:
 		autres = [a for a in arguments if a != "--planche"]
 		print(planche(Path(autres[0]) if autres else RACINE / "build" / "art" / "MS_KIT_v1.png"))
+	elif "--contact" in arguments:
+		autres = [a for a in arguments if a != "--contact"]
+		print(contact(Path(autres[0]) if autres else
+			RACINE / "build" / "captures" / "jalon12_assets" / "serie14_contact.png"))
 	elif "--manifeste" in arguments:
 		manifeste()
 	elif "--controle" in arguments:
