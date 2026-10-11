@@ -1,0 +1,24 @@
+WORLD_PROP_MARE_GROTTE_01 — NOUVELLE image : un seul asset de jeu isolé, pas une scène.
+Images jointes : REF_MS_MARE = référence de forme, de matériaux et de couleurs, extraite d'une vue d'ensemble validée (minuscule : n'en copie pas le rendu) : dessine l'élément comme s'il avait été extrait de cette image puis agrandi, avec le même angle, mais avec la finesse des ancres. WORLD_PROP_SOUCHE_01_NE_r1 et WORLD_TREE_A_01_NE_r1 et WORLD_GROUND_GROTTE_01_NE_r1 = ancres de style de la série (rendu peint, contour coloré, finesse, même angle de vue, même lumière neutre). Les vues sont en lumière d'ambiance : l'élément garde la lumière NEUTRE des ancres (le jeu ajoute la lumière lui-même).
+
+ADN VISUEL KANTO 2026 — v1 (à respecter strictement)
+- Rendu : illustration 2D peinte numériquement, dans l'esprit d'un RPG Pokémon moderne au rendu « HD-2D peint » : formes simples, lisibles et arrondies, détails fins mais ordonnés. Ni pixel art, ni 3D, ni photo, ni aquarelle, ni cartoon en aplats.
+- Perspective : vue de dessus de trois quarts, en projection oblique frontale, sans aucun point de fuite. Les verticales restent strictement verticales et les horizontales strictement horizontales. On voit le dessus des objets et leur face avant (côté sud), jamais leurs côtés. Pas de vue isométrique, pas de rotation. Le sol est vu à plat, comme sur un plan.
+- Proportions : légèrement stylisées, trapues et rassurantes. Échelle commune : 1 case de jeu = 1 mètre environ ; un adulte mesure 1,33 case ; une porte simple mesure 1 case de large et 1,5 case de haut.
+- Contours : aucun trait noir. Contour fin et doux, d'une teinte plus sombre et plus saturée que la couleur locale, qui s'efface presque du côté éclairé.
+- Volumes : trois valeurs nettes par matériau (lumière, ombre propre, reflet ambiant), transitions douces, petits accents de lumière sur les arêtes.
+- Matériaux : reconnaissables (bois, pierre, tuile, feuillage, verre) à leur forme et à quelques touches de texture, jamais à une texture photographique.
+- Couleurs : chaudes, lumineuses et saturées sans être fluo. Verts allant du vert-jaune ensoleillé au vert sapin. Ombres colorées tirant vers le bleu-vert ou le violet froid, jamais grises ni noires. Couleurs franches pour les toits.
+- Texture : pinceau net et propre, légère granularité picturale ; pas de bruit, pas de flou, pas de netteté artificielle.
+- Lumière : une seule source, le soleil, en haut à gauche de l'image (la fiche précise la variante).
+- Ombres : aucune ombre portée au sol (le jeu l'ajoute lui-même). Les ombres propres et internes (sous le feuillage, sous un avant-toit) sont peintes.
+- Isolement : un seul objet, entier, centré, sur fond transparent ; rien autour : ni sol, ni herbe, ni décor, ni personnage.
+- Interdits partout : texte, lettres, chiffres, logo (sauf l'emblème demandé), signature, filigrane, cadre, personnage, Pokémon, ombre portée, sol sous l'objet, flou de profondeur, vignettage.
+
+VALEURS DE GROTTE (exception de palette à l'ADN : la montagne est froide) : ardoise, pierre froide et gris bleuté, touches minérales claires ; lumière NEUTRE, diffuse et blanche, venant légèrement du haut à gauche, aucune teinte dorée ni orangée (les lampes et les puits de jour sont ajoutés par le jeu). La lisibilité est DANS LA VALEUR PEINTE : le sol praticable est CLAIR, les faces de paroi sont moyennes à sombres, le dessus des masses rocheuses est TRÈS SOMBRE ; le contraste entre le sol et la paroi reste net (rapport de luminosité d'au moins 2). Aucune ombre portée, aucune flaque de lumière peinte, aucun vignettage.
+
+ASSET : une MARE souterraine du secteur nord du 1F (repère), vue de dessus, À PLAT au niveau du sol : un bassin d'eau calme rectangulaire aux angles arrondis, de 4 cases de large et 3 de profondeur, eau bleu profond presque noire au centre, petites vaguelettes claires peintes en touches, reflets froids ; un bord de roche claire et lisse tout autour, un peu irrégulier. Aucune plante, aucun Pokémon, aucune lumière qui sort de l'eau.
+Format : PNG carré 1024 × 1024 ; l'élément occupe environ 900 px dans sa plus grande dimension, centré. Échelle : 4 cases de large et environ 3 de haut ; un adulte mesure 1,33 case.
+Fond : PNG avec une vraie transparence (canal alpha), aucun damier dessiné. La base de l'objet est une ligne de sol droite et horizontale ; rien sous cette ligne ; aucun sol autour, aucune ombre portée.
+Interdit : personnage, Pokémon, sol, herbe ou pavés autour, texte, lettres, chiffres, ombre portée.
+Interdits de la série : texte, lettres, chiffres, logo (sauf l'emblème demandé), animaux réels ou faune non-Pokémon (oiseaux, chauves-souris réelles, insectes, araignées), Pikachu et tout Pokémon non demandé, personnage qui ressemble au héros (casquette rouge, t-shirt blanc, sac à dos jaune), squelette, os, crâne, toile d'araignée, élément effrayant.
