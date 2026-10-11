@@ -448,7 +448,7 @@ Branche d'intégration **`jalon-12`** depuis `main` (copie dédiée), une branch
 #### T5 — Kevin : lot de textes (annexe A) — **maintenant**
 - **CA** : validé en une passe ; bloque les données de T12 et T18 (pas le code).
 
-#### T6 — constructeur-monde (Mac) : intégration de la série 14 — **maintenant**, après T2
+#### T6 — constructeur-monde (Mac) : intégration de la série 14 — **maintenant**, après T2 — **fait (2026-10-11, `j12-t6-integration`)** : 24 entrées du manifeste, 32 scènes d'objets, 4 apparences + 2 objets fixes, 4 sols, 4 icônes ; second passage sans changement ; détail dans le journal de la fiche
 - `serie14.py --manifeste` (entrées **en fin**), `preparer.py --source …` deux fois, règles `PaintedPropRules`, `build_painted_props.gd -- --nouveaux`, `build_character_frames.gd` (4 personnages, ajouts en fin), icônes `preparer_menu.py`. **CA** : second passage de `preparer.py` sans changement ; `test_painted_props` vert ; planche de contrôle relue.
 
 #### T7 — architecte : fondations de carte — **fait** (2026-10-11, branche `j12-t7-fondations`, §9)

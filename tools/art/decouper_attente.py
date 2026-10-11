@@ -56,8 +56,11 @@ def _hauteur_marche(marche: Image.Image, cellule_l: int, cellule_h: int, ligne: 
 
 
 def decouper(source: str, chemin_marche: str, sortie: str,
-		miroir: str | None = None) -> tuple[int, int]:
-	"""Écrit la planche d'attente ; renvoie la taille d'une cellule."""
+		miroir: str | None = None, rapport_hauteur: float | None = None) -> tuple[int, int]:
+	"""Écrit la planche d'attente ; renvoie la taille d'une cellule. `rapport_hauteur` : pose
+	plus basse que la marche (la Sbire ♀ qui creuse, série 14 : 0,75) ; ses poses de face et de
+	dos prennent cette part de la hauteur de la marche (même échelle de personnage), dans une
+	cellule de la hauteur de la marche, pieds sur le bas (même ancrage)."""
 	marche = Image.open(chemin_marche).convert("RGBA")
 	cellule_l, cellule_h = marche.width // COLONNES, marche.height // 4
 	poses = _poses_bande(Image.open(source).convert("RGBA"))
@@ -70,6 +73,8 @@ def decouper(source: str, chemin_marche: str, sortie: str,
 	rapports = [_hauteur_marche(marche, cellule_l, cellule_h, ligne) / poses[colonne].height
 		for colonne, ligne in ((0, LIGNE_BAS), (3, LIGNE_HAUT))]
 	echelle = sum(rapports) / len(rapports)
+	if rapport_hauteur is not None:
+		echelle *= rapport_hauteur
 	echelle = min(echelle, (cellule_h - 1) / max(p.height for p in poses))
 	reduites = []
 	demi = cellule_l / 2
@@ -95,8 +100,10 @@ def main() -> None:
 	arguments.add_argument("marche")
 	arguments.add_argument("sortie")
 	arguments.add_argument("--miroir", choices=["gauche", "droite"], default=None)
+	arguments.add_argument("--rapport-hauteur", type=float, default=None)
 	options = arguments.parse_args()
-	decouper(options.source, options.marche, options.sortie, options.miroir)
+	decouper(options.source, options.marche, options.sortie, options.miroir,
+		options.rapport_hauteur)
 
 
 if __name__ == "__main__":

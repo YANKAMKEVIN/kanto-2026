@@ -3343,6 +3343,590 @@
      19
     ]
    }
+  },
+  "relief_entree_grotte_01": {
+   "fichier": "res://assets/world/relief/relief_entree_grotte_01.png",
+   "taille": [
+    384,
+    221
+   ],
+   "contact": {
+    "fichier": "res://assets/world/relief/relief_entree_grotte_01_contact.png",
+    "decalage": [
+     -200,
+     17
+    ],
+    "echelle": 2,
+    "taille": [
+     200,
+     11
+    ]
+   }
+  },
+  "prop_mare_grotte_01": {
+   "fichier": "res://assets/world/props/prop_mare_grotte_01.png",
+   "taille": [
+    384,
+    226
+   ]
+  },
+  "decal_puits_jour_01": {
+   "fichier": "res://assets/world/ground/decals/decal_puits_jour_01.png",
+   "taille": [
+    384,
+    250
+   ]
+  },
+  "relief_paroi_ardoise_01": {
+   "fichier": "res://assets/world/relief/relief_paroi_ardoise_01.png",
+   "taille": [
+    479,
+    288
+   ],
+   "contact": {
+    "fichier": "res://assets/world/relief/relief_paroi_ardoise_01_contact.png",
+    "decalage": [
+     -247,
+     17
+    ],
+    "echelle": 2,
+    "taille": [
+     248,
+     11
+    ]
+   }
+  },
+  "relief_paroi_ardoise_02": {
+   "fichier": "res://assets/world/relief/relief_paroi_ardoise_02.png",
+   "taille": [
+    483,
+    288
+   ],
+   "contact": {
+    "fichier": "res://assets/world/relief/relief_paroi_ardoise_02_contact.png",
+    "decalage": [
+     -249,
+     17
+    ],
+    "echelle": 2,
+    "taille": [
+     250,
+     11
+    ]
+   }
+  },
+  "relief_paroi_ardoise_03": {
+   "fichier": "res://assets/world/relief/relief_paroi_ardoise_03.png",
+   "taille": [
+    466,
+    288
+   ],
+   "contact": {
+    "fichier": "res://assets/world/relief/relief_paroi_ardoise_03_contact.png",
+    "decalage": [
+     -241,
+     17
+    ],
+    "echelle": 2,
+    "taille": [
+     241,
+     11
+    ]
+   }
+  },
+  "relief_paroi_ardoise_04": {
+   "fichier": "res://assets/world/relief/relief_paroi_ardoise_04.png",
+   "taille": [
+    462,
+    288
+   ],
+   "contact": {
+    "fichier": "res://assets/world/relief/relief_paroi_ardoise_04_contact.png",
+    "decalage": [
+     -239,
+     17
+    ],
+    "echelle": 2,
+    "taille": [
+     239,
+     11
+    ]
+   }
+  },
+  "relief_paroi_grotte_01": {
+   "fichier": "res://assets/world/relief/relief_paroi_grotte_01.png",
+   "taille": [
+    288,
+    186
+   ],
+   "contact": {
+    "fichier": "res://assets/world/relief/relief_paroi_grotte_01_contact.png",
+    "decalage": [
+     -152,
+     17
+    ],
+    "echelle": 2,
+    "taille": [
+     152,
+     11
+    ]
+   }
+  },
+  "relief_paroi_grotte_02": {
+   "fichier": "res://assets/world/relief/relief_paroi_grotte_02.png",
+   "taille": [
+    288,
+    195
+   ],
+   "contact": {
+    "fichier": "res://assets/world/relief/relief_paroi_grotte_02_contact.png",
+    "decalage": [
+     -152,
+     17
+    ],
+    "echelle": 2,
+    "taille": [
+     152,
+     11
+    ]
+   }
+  },
+  "relief_paroi_grotte_03": {
+   "fichier": "res://assets/world/relief/relief_paroi_grotte_03.png",
+   "taille": [
+    192,
+    198
+   ],
+   "contact": {
+    "fichier": "res://assets/world/relief/relief_paroi_grotte_03_contact.png",
+    "decalage": [
+     -104,
+     17
+    ],
+    "echelle": 2,
+    "taille": [
+     104,
+     11
+    ]
+   }
+  },
+  "relief_paroi_grotte_04": {
+   "fichier": "res://assets/world/relief/relief_paroi_grotte_04.png",
+   "taille": [
+    192,
+    182
+   ],
+   "contact": {
+    "fichier": "res://assets/world/relief/relief_paroi_grotte_04_contact.png",
+    "decalage": [
+     -104,
+     17
+    ],
+    "echelle": 2,
+    "taille": [
+     104,
+     11
+    ]
+   }
+  },
+  "relief_paroi_grotte_05": {
+   "fichier": "res://assets/world/relief/relief_paroi_grotte_05.png",
+   "taille": [
+    96,
+    303
+   ],
+   "contact": {
+    "fichier": "res://assets/world/relief/relief_paroi_grotte_05_contact.png",
+    "decalage": [
+     -56,
+     17
+    ],
+    "echelle": 2,
+    "taille": [
+     56,
+     11
+    ]
+   }
+  },
+  "relief_paroi_grotte_06": {
+   "fichier": "res://assets/world/relief/relief_paroi_grotte_06.png",
+   "taille": [
+    288,
+    81
+   ],
+   "contact": {
+    "fichier": "res://assets/world/relief/relief_paroi_grotte_06_contact.png",
+    "decalage": [
+     -152,
+     17
+    ],
+    "echelle": 2,
+    "taille": [
+     152,
+     11
+    ]
+   }
+  },
+  "prop_colonne_grotte_01": {
+   "fichier": "res://assets/world/props/prop_colonne_grotte_01.png",
+   "taille": [
+    192,
+    217
+   ],
+   "contact": {
+    "fichier": "res://assets/world/props/prop_colonne_grotte_01_contact.png",
+    "decalage": [
+     -104,
+     -15
+    ],
+    "echelle": 2,
+    "taille": [
+     104,
+     27
+    ]
+   }
+  },
+  "prop_colonne_grotte_02": {
+   "fichier": "res://assets/world/props/prop_colonne_grotte_02.png",
+   "taille": [
+    96,
+    174
+   ],
+   "contact": {
+    "fichier": "res://assets/world/props/prop_colonne_grotte_02_contact.png",
+    "decalage": [
+     -56,
+     -8
+    ],
+    "echelle": 2,
+    "taille": [
+     56,
+     23
+    ]
+   }
+  },
+  "prop_rocher_grotte_01": {
+   "fichier": "res://assets/world/props/prop_rocher_grotte_01.png",
+   "taille": [
+    96,
+    76
+   ],
+   "contact": {
+    "fichier": "res://assets/world/props/prop_rocher_grotte_01_contact.png",
+    "decalage": [
+     -56,
+     7
+    ],
+    "echelle": 2,
+    "taille": [
+     56,
+     16
+    ]
+   }
+  },
+  "prop_rocher_grotte_02": {
+   "fichier": "res://assets/world/props/prop_rocher_grotte_02.png",
+   "taille": [
+    96,
+    62
+   ],
+   "contact": {
+    "fichier": "res://assets/world/props/prop_rocher_grotte_02_contact.png",
+    "decalage": [
+     -56,
+     9
+    ],
+    "echelle": 2,
+    "taille": [
+     56,
+     15
+    ]
+   }
+  },
+  "prop_eclats_lune_01": {
+   "fichier": "res://assets/world/props/prop_eclats_lune_01.png",
+   "taille": [
+    96,
+    100
+   ],
+   "contact": {
+    "fichier": "res://assets/world/props/prop_eclats_lune_01_contact.png",
+    "decalage": [
+     -56,
+     3
+    ],
+    "echelle": 2,
+    "taille": [
+     56,
+     18
+    ]
+   }
+  },
+  "prop_eclats_lune_02": {
+   "fichier": "res://assets/world/props/prop_eclats_lune_02.png",
+   "taille": [
+    96,
+    90
+   ],
+   "contact": {
+    "fichier": "res://assets/world/props/prop_eclats_lune_02_contact.png",
+    "decalage": [
+     -56,
+     4
+    ],
+    "echelle": 2,
+    "taille": [
+     56,
+     17
+    ]
+   }
+  },
+  "prop_lampe_chantier_01": {
+   "fichier": "res://assets/world/props/prop_lampe_chantier_01.png",
+   "taille": [
+    96,
+    144
+   ],
+   "contact": {
+    "fichier": "res://assets/world/props/prop_lampe_chantier_01_contact.png",
+    "decalage": [
+     -56,
+     -4
+    ],
+    "echelle": 2,
+    "taille": [
+     56,
+     21
+    ]
+   }
+  },
+  "prop_caisse_r_01": {
+   "fichier": "res://assets/world/props/prop_caisse_r_01.png",
+   "taille": [
+    96,
+    89
+   ],
+   "contact": {
+    "fichier": "res://assets/world/props/prop_caisse_r_01_contact.png",
+    "decalage": [
+     -56,
+     5
+    ],
+    "echelle": 2,
+    "taille": [
+     56,
+     17
+    ]
+   }
+  },
+  "prop_caisse_r_02": {
+   "fichier": "res://assets/world/props/prop_caisse_r_02.png",
+   "taille": [
+    192,
+    182
+   ],
+   "contact": {
+    "fichier": "res://assets/world/props/prop_caisse_r_02_contact.png",
+    "decalage": [
+     -104,
+     -9
+    ],
+    "echelle": 2,
+    "taille": [
+     104,
+     24
+    ]
+   }
+  },
+  "prop_tranchee_01": {
+   "fichier": "res://assets/world/props/prop_tranchee_01.png",
+   "taille": [
+    288,
+    232
+   ],
+   "contact": {
+    "fichier": "res://assets/world/props/prop_tranchee_01_contact.png",
+    "decalage": [
+     -152,
+     -17
+    ],
+    "echelle": 2,
+    "taille": [
+     152,
+     28
+    ]
+   }
+  },
+  "prop_projecteur_01": {
+   "fichier": "res://assets/world/props/prop_projecteur_01.png",
+   "taille": [
+    96,
+    142
+   ],
+   "contact": {
+    "fichier": "res://assets/world/props/prop_projecteur_01_contact.png",
+    "decalage": [
+     -56,
+     -3
+    ],
+    "echelle": 2,
+    "taille": [
+     56,
+     21
+    ]
+   }
+  },
+  "prop_outils_fouille_01": {
+   "fichier": "res://assets/world/props/prop_outils_fouille_01.png",
+   "taille": [
+    96,
+    70
+   ],
+   "contact": {
+    "fichier": "res://assets/world/props/prop_outils_fouille_01_contact.png",
+    "decalage": [
+     -56,
+     8
+    ],
+    "echelle": 2,
+    "taille": [
+     56,
+     15
+    ]
+   }
+  },
+  "prop_echelle_descend_01": {
+   "fichier": "res://assets/world/props/prop_echelle_descend_01.png",
+   "taille": [
+    96,
+    105
+   ],
+   "contact": {
+    "fichier": "res://assets/world/props/prop_echelle_descend_01_contact.png",
+    "decalage": [
+     -56,
+     17
+    ],
+    "echelle": 2,
+    "taille": [
+     56,
+     11
+    ]
+   }
+  },
+  "prop_echelle_monte_01": {
+   "fichier": "res://assets/world/props/prop_echelle_monte_01.png",
+   "taille": [
+    96,
+    191
+   ],
+   "contact": {
+    "fichier": "res://assets/world/props/prop_echelle_monte_01_contact.png",
+    "decalage": [
+     -56,
+     17
+    ],
+    "echelle": 2,
+    "taille": [
+     56,
+     11
+    ]
+   }
+  },
+  "prop_dalle_01": {
+   "fichier": "res://assets/world/props/prop_dalle_01.png",
+   "taille": [
+    288,
+    83
+   ],
+   "contact": {
+    "fichier": "res://assets/world/props/prop_dalle_01_contact.png",
+    "decalage": [
+     -152,
+     10
+    ],
+    "echelle": 2,
+    "taille": [
+     152,
+     14
+    ]
+   }
+  },
+  "prop_fossile_dome_01": {
+   "fichier": "res://assets/world/props/prop_fossile_dome_01.png",
+   "taille": [
+    58,
+    46
+   ],
+   "contact": {
+    "fichier": "res://assets/world/props/prop_fossile_dome_01_contact.png",
+    "decalage": [
+     -37,
+     13
+    ],
+    "echelle": 2,
+    "taille": [
+     37,
+     13
+    ]
+   }
+  },
+  "prop_fossile_nautile_01": {
+   "fichier": "res://assets/world/props/prop_fossile_nautile_01.png",
+   "taille": [
+    58,
+    55
+   ],
+   "contact": {
+    "fichier": "res://assets/world/props/prop_fossile_nautile_01_contact.png",
+    "decalage": [
+     -37,
+     12
+    ],
+    "echelle": 2,
+    "taille": [
+     37,
+     13
+    ]
+   }
+  },
+  "prop_indice_caillou_01": {
+   "fichier": "res://assets/world/props/prop_indice_caillou_01.png",
+   "taille": [
+    67,
+    42
+   ],
+   "contact": {
+    "fichier": "res://assets/world/props/prop_indice_caillou_01_contact.png",
+    "decalage": [
+     -41,
+     10
+    ],
+    "echelle": 2,
+    "taille": [
+     42,
+     14
+    ]
+   }
+  },
+  "prop_indice_eclat_01": {
+   "fichier": "res://assets/world/props/prop_indice_eclat_01.png",
+   "taille": [
+    58,
+    32
+   ],
+   "contact": {
+    "fichier": "res://assets/world/props/prop_indice_eclat_01_contact.png",
+    "decalage": [
+     -37,
+     12
+    ],
+    "echelle": 2,
+    "taille": [
+     37,
+     13
+    ]
+   }
   }
  },
  "personnages": {
@@ -4521,6 +5105,134 @@
     "droite",
     "droite_reaction"
    ]
+  },
+  "fillette": {
+   "fichier": "res://assets/sprites/characters/painted/fillette_sheet.png",
+   "cellule": [
+    68,
+    110
+   ],
+   "hauteur": 108,
+   "colonnes": 4,
+   "lignes": 4,
+   "ordre_lignes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "sbire_h": {
+   "fichier": "res://assets/sprites/characters/painted/sbire_h_sheet.png",
+   "cellule": [
+    76,
+    130
+   ],
+   "hauteur": 128,
+   "colonnes": 4,
+   "lignes": 4,
+   "ordre_lignes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "sbire_f": {
+   "fichier": "res://assets/sprites/characters/painted/sbire_f_sheet.png",
+   "cellule": [
+    72,
+    126
+   ],
+   "hauteur": 124,
+   "colonnes": 4,
+   "lignes": 4,
+   "ordre_lignes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "chercheur_fossiles": {
+   "fichier": "res://assets/sprites/characters/painted/chercheur_fossiles_sheet.png",
+   "cellule": [
+    81,
+    130
+   ],
+   "hauteur": 128,
+   "colonnes": 4,
+   "lignes": 4,
+   "ordre_lignes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "fillette_idle": {
+   "fichier": "res://assets/sprites/characters/painted/fillette_idle_sheet.png",
+   "cellule": [
+    68,
+    110
+   ],
+   "hauteur": 108,
+   "colonnes": 4,
+   "lignes": 1,
+   "ordre_colonnes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "sbire_h_idle": {
+   "fichier": "res://assets/sprites/characters/painted/sbire_h_idle_sheet.png",
+   "cellule": [
+    76,
+    130
+   ],
+   "hauteur": 128,
+   "colonnes": 4,
+   "lignes": 1,
+   "ordre_colonnes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "sbire_f_idle": {
+   "fichier": "res://assets/sprites/characters/painted/sbire_f_idle_sheet.png",
+   "cellule": [
+    78,
+    126
+   ],
+   "hauteur": 124,
+   "colonnes": 4,
+   "lignes": 1,
+   "ordre_colonnes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "chercheur_fossiles_idle": {
+   "fichier": "res://assets/sprites/characters/painted/chercheur_fossiles_idle_sheet.png",
+   "cellule": [
+    83,
+    130
+   ],
+   "hauteur": 128,
+   "colonnes": 4,
+   "lignes": 1,
+   "ordre_colonnes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
   }
  },
  "images": {
@@ -4921,6 +5633,48 @@
    "taille": [
     360,
     768
+   ]
+  },
+  "ground_roche_01": {
+   "fichier": "res://assets/world/ground/ground_roche_01.png",
+   "taille": [
+    384,
+    384
+   ]
+  },
+  "ground_grotte_01": {
+   "fichier": "res://assets/world/ground/ground_grotte_01.png",
+   "taille": [
+    384,
+    384
+   ]
+  },
+  "ground_gravats_01": {
+   "fichier": "res://assets/world/ground/ground_gravats_01.png",
+   "taille": [
+    384,
+    384
+   ]
+  },
+  "ground_masse_roche_01": {
+   "fichier": "res://assets/world/ground/ground_masse_roche_01.png",
+   "taille": [
+    384,
+    384
+   ]
+  },
+  "fossil_dome": {
+   "fichier": "res://assets/sprites/objects/painted/fossil_dome.png",
+   "taille": [
+    58,
+    46
+   ]
+  },
+  "fossil_helix": {
+   "fichier": "res://assets/sprites/objects/painted/fossil_helix.png",
+   "taille": [
+    58,
+    55
    ]
   }
  }
