@@ -123,6 +123,14 @@ static func status_has_effect(move: MoveData, own: Battler, foe: Battler) -> boo
 				if StatusRules.can_inflict(effect.status, foe.pokemon, foe.types) \
 						== StatusRules.Inflict.OK:
 					return true
+			MoveEffect.Kind.CONFUSION:
+				if not foe.is_confused():
+					return true
+			MoveEffect.Kind.CRIT_UP:
+				if not own.focused:
+					return true
+			MoveEffect.Kind.FIXED_DAMAGE:
+				return true
 	return false
 
 

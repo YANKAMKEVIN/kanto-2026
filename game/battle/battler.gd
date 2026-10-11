@@ -17,6 +17,14 @@ var types: Array[StringName] = []
 ## graine. Statut volatil : il disparaît quand le Pokémon quitte le terrain (un nouveau
 ## Battler est créé à chaque envoi).
 var seed_fraction: float = 0.0
+## Confusion (jalon 11, dossier 14 §3.2) : tentatives d'agir encore confuses (1 à 4 à
+## l'application) ; 0 = pas confus. Perdue au changement de Pokémon et à la fin du combat
+## (un nouveau Battler à chaque envoi ; jamais sauvegardée).
+var confusion_turns: int = 0
+## Apeuré ce tour-ci (jalon 11) : il ne pourra pas agir ; remis à faux en fin de tour.
+var flinched: bool = false
+## Puissance (jalon 11) : critique +2 niveaux tant que le Pokémon reste en jeu.
+var focused: bool = false
 var _stages: Dictionary[StringName, int] = {}
 
 @warning_ignore_start("integer_division")
@@ -57,6 +65,11 @@ func effective_stat(stat: StringName, ignore_drops: bool = false,
 	if (ignore_drops and stage < 0) or (ignore_boosts and stage > 0):
 		stage = 0
 	return pokemon.stats.get(stat, 0) * maxi(2, 2 + stage) / maxi(2, 2 - stage)
+
+
+## Vrai si le Pokémon est confus.
+func is_confused() -> bool:
+	return confusion_turns > 0
 
 
 ## Vrai si une graine de Vampigraine est plantée sur ce Pokémon.

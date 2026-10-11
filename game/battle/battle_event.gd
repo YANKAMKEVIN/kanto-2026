@@ -81,6 +81,14 @@ extends RefCounted
 ##   dégel au moment d'agir (le Pokémon agit ensuite) ou dégel par une capacité Feu ;
 ## - FAILED : la capacité [member move_id] du lanceur échoue sans autre effet (« Mais ça
 ##   échoue ! ») — statut sur une cible qui en a déjà un autre, Puissance déjà active…
+## - CONFUSED : le Pokémon devient confus ; CONFUSION_UNCHANGED : capacité de confusion sur un
+##   Pokémon déjà confus ; CONFUSION_CHECK : au moment d'agir, il est confus (« … est
+##   confus… ») ; HURT_ITSELF : il se frappe ([member amount], [member hp]) et n'agit pas ;
+##   CONFUSION_ENDED : il n'est plus confus (puis il agit) ;
+## - MULTI_HIT : après les coups d'une capacité à plusieurs coups, [member amount] = nombre de
+##   coups portés (« Touché 3 fois ! ») ;
+## - FLINCHED : le Pokémon apeuré ne peut pas agir ce tour-ci ;
+## - FOCUSED : Puissance réussie (critique +2 niveaux).
 ## Tous les autres événements sur un Pokémon portent dans [member status] son statut au moment
 ## de l'événement (SENT_OUT : la carte de PV l'affiche dès l'entrée ; FAINTED : toujours vide,
 ## le K.O. efface le statut).
@@ -94,6 +102,8 @@ enum Kind {
 	WITHDRAWN,
 	STATUS_INFLICTED, STATUS_UNCHANGED, STATUS_DAMAGED, STATUS_CURED,
 	STATUS_PREVENTED, STATUS_ENDED, FAILED,
+	CONFUSED, CONFUSION_UNCHANGED, CONFUSION_CHECK, HURT_ITSELF, CONFUSION_ENDED,
+	MULTI_HIT, FLINCHED, FOCUSED,
 }
 enum SideId { PLAYER, FOE }
 

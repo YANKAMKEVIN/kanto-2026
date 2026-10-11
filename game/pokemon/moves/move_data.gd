@@ -80,6 +80,14 @@ func is_damaging() -> bool:
 	return category != Category.STATUS
 
 
+## L'effet HITS de la capacité (plusieurs coups), ou null.
+func hits_effect() -> MoveEffect:
+	for effect: MoveEffect in effects:
+		if effect.kind == MoveEffect.Kind.HITS:
+			return effect
+	return null
+
+
 func never_misses() -> bool:
 	return accuracy == 0
 

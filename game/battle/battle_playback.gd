@@ -41,7 +41,8 @@ extends RefCounted
 ## - STATUS_CURED : STATUS_TAG (l'étiquette part), puis le message ;
 ## - STATUS_UNCHANGED : le message seulement.
 ## Jalon 11 : STATUS_ENDED (réveil, dégel) comme STATUS_CURED ; STATUS_PREVENTED et FAILED :
-## le message seulement.
+## le message seulement. HURT_ITSELF (confusion) : comme RECOIL, la barre puis le message ;
+## les autres événements de la confusion, MULTI_HIT, FLINCHED, FOCUSED : le message seulement.
 ## Les phrases viennent de [BattleText] : rien n'est écrit ici.
 
 
@@ -66,7 +67,7 @@ static func beats(event: BattleEvent, texts: BattleText, data: PokemonData,
 			if move_data != null:
 				move.category = move_data.category
 			result.append(move)
-		BattleEvent.Kind.DAMAGE, BattleEvent.Kind.RECOIL:
+		BattleEvent.Kind.DAMAGE, BattleEvent.Kind.RECOIL, BattleEvent.Kind.HURT_ITSELF:
 			result.append(BattleBeat.new(BattleBeat.Kind.DAMAGE, event))
 			result.append_array(messages)
 		BattleEvent.Kind.STAT_CHANGED:

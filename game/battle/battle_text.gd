@@ -41,7 +41,11 @@ extends RefCounted
 ## Jalon 11 (dossier 14 §13, lot validé le 2026-10-10) : paralysie, sommeil, brûlure, gel avec
 ## les mêmes préfixes, plus STATUS_PREVENTED → « status_prevented_<statut> » (ne peut pas agir)
 ## et STATUS_ENDED → « status_ended_<statut> » (réveil, dégel) ; FAILED → « move_failed »
-## (« Mais ça échoue ! », cas nouveaux du J11 seulement).
+## (« Mais ça échoue ! », cas nouveaux du J11 seulement). Confusion : CONFUSED →
+## « confusion_inflicted », CONFUSION_UNCHANGED → « confusion_unchanged », CONFUSION_CHECK →
+## « confusion_check », HURT_ITSELF → « confusion_hurt », CONFUSION_ENDED → « confusion_ended » ;
+## MULTI_HIT → « multi_hit » ({amount} : coups portés) ; FLINCHED → « flinched » ; FOCUSED →
+## « focused ».
 ## Changement de Pokémon (jalon 7) : WITHDRAWN → « withdrawn » (« Reviens, Salamèche ! ») ; le
 ## Pokémon envoyé reprend « sent_out_player ». Le panneau ÉQUIPE lit, sans événement
 ## ([method get_template]), « switch_reason_active », « switch_reason_fainted » (raisons sur
@@ -99,6 +103,8 @@ const TEMPLATE_IDS: Array[StringName] = [
 	&"status_inflicted_freeze", &"status_unchanged_freeze", &"status_prevented_freeze",
 	&"status_ended_freeze", &"status_cured_freeze",
 	&"move_failed",
+	&"confusion_inflicted", &"confusion_unchanged", &"confusion_check", &"confusion_hurt",
+	&"confusion_ended", &"multi_hit", &"flinched", &"focused",
 	&"evolution_started", &"evolution_finished", &"evolution_cancelled", &"evolution_stop",
 ]
 ## Entre deux gains de statistiques du bilan (« PV +2 · Attaque +1 »).
@@ -296,6 +302,22 @@ func lines(event: BattleEvent, data: PokemonData, trainer: TrainerData = null) \
 				result.append(_fill(&"hp_restored", event, data))
 		BattleEvent.Kind.FAILED:
 			result.append(_fill(&"move_failed", event, data))
+		BattleEvent.Kind.CONFUSED:
+			result.append(_fill(&"confusion_inflicted", event, data))
+		BattleEvent.Kind.CONFUSION_UNCHANGED:
+			result.append(_fill(&"confusion_unchanged", event, data))
+		BattleEvent.Kind.CONFUSION_CHECK:
+			result.append(_fill(&"confusion_check", event, data))
+		BattleEvent.Kind.HURT_ITSELF:
+			result.append(_fill(&"confusion_hurt", event, data))
+		BattleEvent.Kind.CONFUSION_ENDED:
+			result.append(_fill(&"confusion_ended", event, data))
+		BattleEvent.Kind.MULTI_HIT:
+			result.append(_fill(&"multi_hit", event, data))
+		BattleEvent.Kind.FLINCHED:
+			result.append(_fill(&"flinched", event, data))
+		BattleEvent.Kind.FOCUSED:
+			result.append(_fill(&"focused", event, data))
 		BattleEvent.Kind.STATUS_INFLICTED, BattleEvent.Kind.STATUS_UNCHANGED, \
 				BattleEvent.Kind.STATUS_DAMAGED, BattleEvent.Kind.STATUS_CURED, \
 				BattleEvent.Kind.STATUS_PREVENTED, BattleEvent.Kind.STATUS_ENDED:

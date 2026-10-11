@@ -139,6 +139,26 @@
 			"text_f": "{pokemon} n'est plus gelée !"
 		},
 		"move_failed": { "text": "Mais ça échoue !" },
+		"confusion_inflicted": {
+			"text": "{pokemon} est confus !",
+			"text_f": "{pokemon} est confuse !"
+		},
+		"confusion_unchanged": {
+			"text": "{pokemon} est déjà confus !",
+			"text_f": "{pokemon} est déjà confuse !"
+		},
+		"confusion_check": {
+			"text": "{pokemon} est confus…",
+			"text_f": "{pokemon} est confuse…"
+		},
+		"confusion_hurt": { "text": "{pokemon} se blesse dans sa confusion !" },
+		"confusion_ended": {
+			"text": "{pokemon} n'est plus confus !",
+			"text_f": "{pokemon} n'est plus confuse !"
+		},
+		"multi_hit": { "text": "Touché {amount} fois !" },
+		"flinched": { "text": "{pokemon} a peur ! Impossible d'agir !" },
+		"focused": { "text": "{pokemon} se concentre !" },
 		"evolution_started": { "text": "Quoi ? {pokemon} évolue !" },
 		"evolution_finished": { "text": "Félicitations ! {pokemon} a évolué en {species} !" },
 		"evolution_cancelled": { "text": "Hein ? {pokemon} n'évolue plus." },

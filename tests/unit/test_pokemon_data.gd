@@ -474,8 +474,10 @@ func test_poison_moves_are_coded() -> void:
 	var expected := {&"poison_powder": 100, &"poison_sting": 30, &"twineedle": 20}
 	for id: StringName in expected:
 		var move := _data.get_move(id)
-		assert_eq(move.effects.size(), 1, String(id))
-		assert_eq([move.effects[0].kind, move.effects[0].status, move.effects[0].chance],
+		# Jalon 11 : Double-Dard porte aussi ses deux coups (HITS) avant le poison.
+		var status_effect: MoveEffect = move.effects[-1]
+		assert_eq(move.effects.size(), 2 if id == &"twineedle" else 1, String(id))
+		assert_eq([status_effect.kind, status_effect.status, status_effect.chance],
 			[MoveEffect.Kind.STATUS, &"poison", expected[id]], String(id))
 	for id: StringName in _data.get_move_ids():
 		for tag: String in _data.get_move(id).pending_effects:
@@ -605,10 +607,10 @@ func test_route_22_moves_values() -> void:
 		[&"def", -2, MoveEffect.Target.FOE])
 	# Mécaniques absentes du moteur (jalon-07.md §3.7) : la capacité frappe une fois, sans effet.
 	var pending := {
-		&"fury_attack": ["multi_hit"], &"fury_swipes": ["multi_hit"],
-		&"double_kick": ["hits_2"], &"poison_sting": [],
+		&"fury_attack": [], &"fury_swipes": [],
+		&"double_kick": [], &"poison_sting": [],
 		&"thrash": ["rampage"], &"body_slam": [],
-		&"seismic_toss": ["level_damage"], &"horn_drill": ["ohko"],
+		&"seismic_toss": [], &"horn_drill": ["ohko"],
 	}
 	for id: StringName in pending:
 		assert_eq(_data.get_move(id).pending_effects, PackedStringArray(pending[id]),
@@ -705,9 +707,9 @@ func test_forest_moves_values() -> void:
 	var pending := {
 		&"string_shot": [], &"harden": [], &"swift": [],
 		&"thunder_shock": [], &"thunder_wave": [],
-		&"confusion": ["confusion_10"], &"stun_spore": [],
-		&"supersonic": ["confusion"], &"psybeam": ["confusion_10"],
-		&"twineedle": ["hits_2"], &"pin_missile": ["multi_hit"],
+		&"confusion": [], &"stun_spore": [],
+		&"supersonic": [], &"psybeam": [],
+		&"twineedle": [], &"pin_missile": [],
 		&"thunder": [],
 	}
 	for id: StringName in pending:
@@ -720,10 +722,11 @@ func test_moves_without_effect_say_so() -> void:
 	# l'effet n'est pas joué porte « Sans effet dans le moteur actuel. », Poudre Dodo comprise.
 	# Jalon 11 : la mention part avec l'effet (Cage-Éclair, Para-Spore, Poudre Dodo au T4).
 	_data.load_dir()
-	for id: StringName in [&"supersonic"]:
+	for id: StringName in [&"whirlwind", &"mirror_move", &"horn_drill"]:
 		assert_true(_data.get_move(id).description.ends_with(
 			" Sans effet dans le moteur actuel."), String(id))
-	for id: StringName in [&"thunder_wave", &"stun_spore", &"sleep_powder"]:
+	for id: StringName in [&"thunder_wave", &"stun_spore", &"sleep_powder", &"supersonic",
+			&"focus_energy", &"super_fang", &"seismic_toss"]:
 		assert_false(_data.get_move(id).description.contains("Sans effet"), String(id))
 	assert_eq(_data.get_move(&"sleep_powder").description,
 		"Une poudre soporifique qui endort la cible.")
@@ -761,5 +764,6 @@ func test_forest_move_texts_are_the_locked_ones() -> void:
 		assert_true(lot.contains("| « %s » |" % move.name), "%s : nom" % id)
 		# Jalon 11 : « Sans effet dans le moteur actuel. » retiré avec l'effet (décision du J9).
 		var locked := lot.contains("| « %s » |" % move.description) or lot.contains(
-			"| « %s Sans effet dans le moteur actuel. » |" % move.description)
+			"| « %s Sans effet dans le moteur actuel. » |" % move.description) or lot.contains(
+			"| « %s Un seul coup dans le moteur actuel. » |" % move.description)
 		assert_true(locked, "%s : description" % id)

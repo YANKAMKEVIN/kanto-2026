@@ -43,6 +43,11 @@ const _EFFECT_KEYS: Dictionary[MoveEffect.Kind, Array] = {
 	MoveEffect.Kind.RECOIL: ["kind", "fraction"],
 	MoveEffect.Kind.SEED: ["kind", "fraction", "immune_types"],
 	MoveEffect.Kind.STATUS: ["kind", "status", "chance"],
+	MoveEffect.Kind.CONFUSION: ["kind", "chance"],
+	MoveEffect.Kind.HITS: ["kind", "min", "max"],
+	MoveEffect.Kind.FLINCH: ["kind", "chance"],
+	MoveEffect.Kind.CRIT_UP: ["kind"],
+	MoveEffect.Kind.FIXED_DAMAGE: ["kind", "mode"],
 }
 ## Clés d'effet facultatives (toutes les autres de [constant _EFFECT_KEYS] sont obligatoires).
 const _EFFECT_OPTIONAL: Array[String] = ["chance", "immune_types"]
@@ -468,6 +473,25 @@ func _parse_effect(value: Variant, where: String) -> MoveEffect:
 		if entry.has("immune_types"):
 			ok = _read_type_list(entry["immune_types"], effect.immune_types,
 				where + " immune_types") and ok
+		return effect if ok else null
+	if effect.kind == MoveEffect.Kind.HITS:
+		if _read_int(entry.get("min"), 2, 5, where + " min") \
+				and _read_int(entry.get("max"), 2, 5, where + " max") \
+				and int(entry["min"]) <= int(entry["max"]):
+			effect.min_hits = int(entry["min"])
+			effect.max_hits = int(entry["max"])
+			if not effect.min_hits == effect.max_hits and not (effect.min_hits == 2
+					and effect.max_hits == 5):
+				ok = _fail("%s : « min » et « max » valent 2 et 2, ou 2 et 5" % where)
+		else:
+			ok = _fail("%s : « min » ≤ « max », de 2 à 5" % where)
+		return effect if ok else null
+	if effect.kind == MoveEffect.Kind.FIXED_DAMAGE:
+		if entry.get("mode") is String and MoveEffect.FIXED_MODES.has(StringName(entry["mode"])):
+			effect.mode = StringName(entry["mode"])
+		else:
+			ok = _fail("%s : « mode » vaut %s" % [where,
+				", ".join(PackedStringArray(MoveEffect.FIXED_MODES))])
 		return effect if ok else null
 	if effect.kind == MoveEffect.Kind.STATUS:
 		if entry.has("status"):

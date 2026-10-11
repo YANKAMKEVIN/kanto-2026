@@ -87,6 +87,10 @@ enum SwitchCheck { OK, NO_POKEMON, FAINTED, ACTIVE }
 enum Outcome { NONE, WIN, LOSS, FLED, CAUGHT }
 
 const STRUGGLE_ID: StringName = &"struggle"
+## Confusion (jalon 11, dossier 14 §3.2, défauts) : 1 à 4 tours, 33 % de se frapper.
+const CONFUSION_MIN_TURNS: int = 1
+const CONFUSION_MAX_TURNS: int = 4
+const CONFUSION_HIT_CHANCE: int = 33
 
 var _player: BattleSide
 var _foe: BattleSide
@@ -100,6 +104,8 @@ var _turn: int = 0
 var _flee_attempts: int = 0
 ## Pokémon du joueur envoyés contre l'adversaire en jeu (XP, §2.3).
 var _participants: Array[Pokemon] = []
+## Pokémon qui ont déjà tenté d'agir ce tour-ci (apeurement, jalon 11).
+var _acted: Array[Battler] = []
 
 
 ## [param rules] : les règles du combat ([BattleRules]) ; null = comportement du 4B (combat
@@ -263,6 +269,7 @@ func submit(action: BattleAction) -> Array[BattleEvent]:
 			action.move_index if action != null else -99])
 		return events
 	_turn += 1
+	_acted.clear()
 	var started := BattleEvent.new(BattleEvent.Kind.TURN_STARTED, BattleEvent.SideId.PLAYER)
 	started.turn = _turn
 	events.append(started)
@@ -401,6 +408,8 @@ func _finish(outcome: Outcome, events: Array[BattleEvent]) -> void:
 ## Vampigraine puis dégâts du poison ; puis l'adversaire envoie son remplaçant ; un joueur dont
 ## le Pokémon est K.O. devra choisir le sien (REPLACING).
 func _end_turn(events: Array[BattleEvent]) -> void:
+	_player.active.flinched = false
+	_foe.active.flinched = false
 	for side: BattleSide in [_player, _foe]:
 		_drain_seed(side, events)
 		if _state == State.OVER:
@@ -494,6 +503,7 @@ func _execute(side: BattleSide, action: BattleAction, events: Array[BattleEvent]
 	if move == null:
 		push_error("Battle : capacité inconnue « %s »" % move_id)
 		return
+	_acted.append(user)
 	if not _can_act(side, events):
 		return
 	var used := _event(BattleEvent.Kind.MOVE_USED, side)
@@ -506,23 +516,8 @@ func _execute(side: BattleSide, action: BattleAction, events: Array[BattleEvent]
 		used.pp = slot.pp
 	events.append(used)
 	if move.is_damaging():
-		var result := DamageCalc.compute(user, target, move, _data.get_type_chart(), _rng)
-		if not result.hit:
-			_append_missed(side, move_id, events)
+		if not _strike(side, target_side, move, events):
 			return
-		if result.effectiveness == 0.0:
-			var immune := _event(BattleEvent.Kind.NO_EFFECT, target_side)
-			immune.move_id = move_id
-			events.append(immune)
-			return
-		var damage := _event(BattleEvent.Kind.DAMAGE, target_side)
-		damage.move_id = move_id
-		damage.amount = target.pokemon.take_damage(result.amount)
-		damage.hp = target.pokemon.hp
-		damage.effectiveness = result.effectiveness
-		damage.critical = result.critical
-		events.append(damage)
-		_thaw_by_fire(move, target_side, events)
 	elif not DamageCalc.accuracy_check(user, target, move, _rng):
 		_append_missed(side, move_id, events)
 		return
@@ -535,10 +530,14 @@ func _execute(side: BattleSide, action: BattleAction, events: Array[BattleEvent]
 	_check_end(side, events)
 
 
-## Statut du lanceur au moment d'agir ([method StatusRules.check_act]) : réveil ou dégel
-## (STATUS_ENDED, il agit), ou empêchement (STATUS_PREVENTED : faux, rien n'est lancé).
+## Le lanceur peut-il agir ? Dans l'ordre (`jalon-11.md` §2.2) : statut durable
+## ([method StatusRules.check_act] : réveil ou dégel → STATUS_ENDED et il agit ; paralysie
+## totale, sommeil, gel → STATUS_PREVENTED), apeurement (FLINCHED), confusion (CONFUSION_ENDED
+## et il agit ; sinon CONFUSION_CHECK puis 33 % de se frapper : HURT_ITSELF). Faux : rien
+## n'est lancé, aucun PP dépensé. Un Pokémon endormi ne sort pas de sa confusion.
 func _can_act(side: BattleSide, events: Array[BattleEvent]) -> bool:
-	var pokemon := side.active.pokemon
+	var battler := side.active
+	var pokemon := battler.pokemon
 	var status := pokemon.status
 	var act := StatusRules.check_act(pokemon, _rng)
 	if act == StatusRules.Act.WOKE_UP or act == StatusRules.Act.THAWED:
@@ -550,7 +549,81 @@ func _can_act(side: BattleSide, events: Array[BattleEvent]) -> bool:
 		prevented.status = status
 		events.append(prevented)
 		return false
+	if battler.flinched:
+		events.append(_event(BattleEvent.Kind.FLINCHED, side))
+		return false
+	if battler.is_confused():
+		battler.confusion_turns -= 1
+		if battler.confusion_turns == 0:
+			events.append(_event(BattleEvent.Kind.CONFUSION_ENDED, side))
+			return true
+		events.append(_event(BattleEvent.Kind.CONFUSION_CHECK, side))
+		if _rng.roll(100) <= CONFUSION_HIT_CHANCE:
+			var hurt := _event(BattleEvent.Kind.HURT_ITSELF, side)
+			hurt.amount = pokemon.take_damage(DamageCalc.confusion_damage(battler, _rng))
+			hurt.hp = pokemon.hp
+			events.append(hurt)
+			if pokemon.is_fainted():
+				_faint(side, events)
+				_check_end(_foe if side == _player else _player, events)
+			return false
 	return true
+
+
+## Les coups d'une capacité offensive (une capacité HITS en porte plusieurs : précision au
+## premier seulement ; nombre tiré après le premier coup, roll(8) pour 2 à 5 ; arrêt au K.O.).
+## Faux si elle rate ou n'a aucun effet (rien d'autre ne se passe).
+func _strike(side: BattleSide, target_side: BattleSide, move: MoveData,
+		events: Array[BattleEvent]) -> bool:
+	var user := side.active
+	var target := target_side.active
+	var hits_effect := move.hits_effect()
+	var hits := 1
+	var done := 0
+	while done < hits:
+		var result := DamageCalc.compute(user, target, move, _data.get_type_chart(), _rng,
+			done == 0)
+		if done == 0:
+			if not result.hit:
+				_append_missed(side, move.id, events)
+				return false
+			if result.effectiveness == 0.0:
+				var immune := _event(BattleEvent.Kind.NO_EFFECT, target_side)
+				immune.move_id = move.id
+				events.append(immune)
+				return false
+			if hits_effect != null:
+				hits = _hit_count(hits_effect)
+		var damage := _event(BattleEvent.Kind.DAMAGE, target_side)
+		damage.move_id = move.id
+		damage.amount = target.pokemon.take_damage(result.amount)
+		damage.hp = target.pokemon.hp
+		damage.effectiveness = result.effectiveness
+		damage.critical = result.critical
+		events.append(damage)
+		done += 1
+		_thaw_by_fire(move, target_side, events)
+		if target.pokemon.is_fainted():
+			break
+	if hits_effect != null:
+		var multi := _event(BattleEvent.Kind.MULTI_HIT, target_side)
+		multi.move_id = move.id
+		multi.amount = done
+		events.append(multi)
+	return true
+
+
+## Nombre de coups d'un effet HITS : fixe (2 et 2), ou 2 à 5 (roll(8) : 1–3 → 2, 4–6 → 3,
+## 7 → 4, 8 → 5).
+func _hit_count(effect: MoveEffect) -> int:
+	if effect.min_hits == effect.max_hits:
+		return effect.min_hits
+	var draw := _rng.roll(8)
+	if draw <= 3:
+		return 2
+	if draw <= 6:
+		return 3
+	return 4 if draw == 7 else 5
 
 
 ## Une capacité Feu qui touche un Pokémon gelé le dégèle (STATUS_ENDED ; jalon 11).
@@ -606,6 +679,63 @@ func _apply_effect(effect: MoveEffect, move: MoveData, side: BattleSide,
 			events.append(recoil)
 		MoveEffect.Kind.STATUS:
 			_inflict_status(effect, move, target_side, events)
+		MoveEffect.Kind.CONFUSION:
+			_confuse(effect, move, side, target_side, events)
+		MoveEffect.Kind.FLINCH:
+			var target := target_side.active
+			if target.pokemon.is_fainted():
+				return
+			if effect.chance < 100 and _rng.roll(100) > effect.chance:
+				return
+			if not _acted.has(target):
+				target.flinched = true
+		MoveEffect.Kind.CRIT_UP:
+			if side.active.focused:
+				_append_failed(side, move_id, events)
+			else:
+				side.active.focused = true
+				events.append(_event(BattleEvent.Kind.FOCUSED, side))
+		MoveEffect.Kind.FIXED_DAMAGE:
+			var target := target_side.active
+			if target.pokemon.is_fainted():
+				return
+			if not move.typeless \
+					and _data.get_type_chart().multiplier(move.type, target.types) == 0.0:
+				var immune := _event(BattleEvent.Kind.NO_EFFECT, target_side)
+				immune.move_id = move_id
+				events.append(immune)
+				return
+			var amount := side.active.pokemon.level if effect.mode == &"level" \
+				else maxi(floori(target.pokemon.hp / 2.0), 1)
+			var damage := _event(BattleEvent.Kind.DAMAGE, target_side)
+			damage.move_id = move_id
+			damage.amount = target.pokemon.take_damage(amount)
+			damage.hp = target.pokemon.hp
+			events.append(damage)
+		MoveEffect.Kind.HITS:
+			pass
+
+
+## Effet [code]confusion[/code] (jalon 11) sur le Pokémon de [param target_side] : comme un
+## statut (cible K.O. → rien ; chance tirée ; refus annoncé seulement par une capacité de
+## statut : CONFUSION_UNCHANGED), 1 à 4 tours tirés (roll(4)) : CONFUSED.
+func _confuse(effect: MoveEffect, move: MoveData, side: BattleSide, target_side: BattleSide,
+		events: Array[BattleEvent]) -> void:
+	var target := target_side.active
+	if target.pokemon.is_fainted():
+		return
+	if effect.chance < 100 and _rng.roll(100) > effect.chance:
+		return
+	if target.is_confused():
+		if not move.is_damaging():
+			var unchanged := _event(BattleEvent.Kind.CONFUSION_UNCHANGED, target_side)
+			unchanged.move_id = move.id
+			events.append(unchanged)
+		return
+	target.confusion_turns = _rng.range_int(CONFUSION_MIN_TURNS, CONFUSION_MAX_TURNS)
+	var confused := _event(BattleEvent.Kind.CONFUSED, target_side)
+	confused.move_id = move.id
+	events.append(confused)
 
 
 ## Effet [code]status[/code] (jalon 9 §2.1.2) sur le Pokémon de [param target_side]. Capacité
