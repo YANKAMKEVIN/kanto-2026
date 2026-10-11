@@ -8,8 +8,6 @@ extends CanvasLayer
 ## centré en bas).
 
 const BANNER_SCENE: PackedScene = preload("res://game/ui/battle/battle_message_banner.tscn")
-## Voile sur le menu (défaut, règle 4).
-const VEIL := Color(0.0, 0.0, 0.0, 0.55)
 
 var _root: Control
 var _veil: ColorRect
@@ -27,7 +25,8 @@ func _ready() -> void:
 	add_child(_root)
 	_veil = ColorRect.new()
 	_veil.name = "Veil"
-	_veil.color = VEIL
+	# Même voile que l'Équipe (défaut, règle 4).
+	_veil.color = UiTokens.TEAM_SCRIM
 	_veil.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	_veil.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	_root.add_child(_veil)
