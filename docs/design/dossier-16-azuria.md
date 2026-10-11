@@ -161,6 +161,53 @@ conservé. Rien n'en apparaît au J13.
 - **G-4** : Azuria rognée à **56 × 41** (place de 9 à 7 rangées, rue du sud raccourcie, palissade en y 38..39) ; raccords inchangés : ouest rangées 19..21, nord colonnes 31..33 ; Centre à 9 pas, Arène et sortie nord à 50, Boutique 52, vélos 54.
 - **G-5** : quartier du cambriolage au nord-ouest : gardé.
 
+## Vues générales peintes v1 (validées par Kevin le 2026-10-11)
+
+> **Validées telles quelles**, avec deux corrections pour la construction de la Route 4 (la grille gagne) : le rebord est en **roche ardoise** du versant, pas en terre brune, et il est **net, sans planche** au passage du chemin (lecture « on descend, on ne remonte pas », comme la Route 1). Ambiance claire et fraîche d'Azuria, verrière de l'Arène et recruteur cagoulé sans lettre retenus.
+
+> Produites le 2026-10-11 selon la filière du J12 (plan en aplats non annoté + vue d'Argenta comme
+> ancre de style, Codex, sans nom de licence dans les prompts). **Référence de DA et de composition
+> seulement** ; la grille (`tools/plans/`) fait foi pour toute coordonnée, et rien n'est
+> implémenté parce qu'il est sur une image (règle 10).
+
+- **Vues retenues** (`docs/design/reference/`) :
+  - `azuria-vue-generale-v1.png` (essai 6, `tools/art/prompts/CONCEPT_AZURIA_VUE_GENERALE_r6.txt`,
+    plan joint `azuria-plan-v1.png`, ancre `argenta-vue-generale-v1.png`) ;
+  - `route-4-vue-generale-v1.png` (essai 1, `CONCEPT_ROUTE4_VUE_GENERALE_r1.txt`, plan
+    `route-4-plan-v1.png`, ancre `route-3-vue-generale-v1.png`) ;
+  - `route-24-vue-generale-v1.png` (essai 2, `CONCEPT_ROUTE24_VUE_GENERALE_r2.txt`, plan
+    `route-24-plan-v1.png`, ancre : la vue d'Azuria, essai 2, pour l'eau et la pierre).
+  Route 4 et Route 24 sont **deux images** (deux lieux de formes très différentes).
+- **Plans** : `python3 tools/art/plan_aplats.py tools/plans/<carte>.txt` (sans `--annote`, aucun
+  personnage ni case cachée) ; les `_annote` ne sont jamais joints à Codex.
+- **Essais** : Azuria 6 (r1 composition juste ; r2 enfant sur le pont, canal plus large ; r3 pêcheur
+  sans canne et Dresseur sans rouge, mais Boutique sans emblème ; r4 emblème rendu, mais trou dans
+  le toit de la maison cambriolée ; r5 toit intact, mais emblème sur le magasin de vélos ; r6
+  retenu). Route 4 : 1 essai, retenu. Route 24 : 2 essais (r1 recruteur ressemblant à un policier ;
+  r2 retenu, uniforme noir).
+- **Écarts connus avec la grille (la grille gagne)** :
+  - *Azuria* : le canal paraît un peu plus étroit que 4 cases ; l'enfant H2 est au pied sud du pont
+    central et non dessus ; le Jeune Dresseur H6 est plus proche du canal qu'en (36, 21) ; la
+    clôture arrachée du jardin cambriolé est peu lisible (planches visibles, pot renversé) ; le
+    trou dans la clôture est-nord n'est pas peint ; la place est un peu plus petite que 31 × 9 ; le
+    pêcheur est sur le quai ouest un peu plus haut qu'en (25, 14) ; le sentier derrière l'arbre
+    et la clôture à l'est est plus court ; la palissade du sud est une barrière de planches.
+  - *Route 4* : la falaise du versant est peinte en mur de terre brune (la grille dit roche) avec
+    une planche au droit du rebord ; Clara est un peu plus au nord (≈ (42, 14) au lieu de
+    (44, 17)) ; la masse rocheuse est plus petite que sur le plan ; aucune créature visible.
+  - *Route 24* : les cinq Dresseurs du pont sont **presque en file indienne** (le quinconce, une
+    file gauche et une file droite, est à peine lisible sur 2 cases de large) ; le pont est plus
+    court que 25 rangées par rapport à la rivière (proportions de l'image) ; le recruteur est
+    en uniforme noir à cagoule sombre (sans lettre, conformément à D-14) ; le Campeur est
+    au pied du pont, à la place du panneau (le panneau est à côté) ; Ondine est au bord de l'eau
+    à l'est de la place ; le garçon (rival) est dans la niche, mais **rendu en herbe** ; une
+    ombre rectangulaire sombre dans l'eau, à droite du pont, est un défaut de peinture à ignorer.
+- **Points à juger par Kevin** : l'ambiance claire et fraîche d'Azuria (pierre blanc-crème, eau
+  turquoise) face à Argenta ; la verrière de l'Arène ; la discrétion de la maison cambriolée ;
+  la lisibilité du Centre en premier sur l'avenue ; la Grotte Azurée sur son îlot ; la largeur
+  de la rivière et la longueur du pont ; le recruteur ; les teintes de la roche du versant est
+  (ardoise froide) sur la Route 4.
+
 ## 1. Intention
 
 Après la grotte, **la lumière et l'eau**. Le joueur descend du Mont Sélénite vers une plaine, puis
