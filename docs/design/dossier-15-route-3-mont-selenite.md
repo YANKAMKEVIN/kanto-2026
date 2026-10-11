@@ -136,7 +136,7 @@ choisie à la main** (capacités apprises au niveau, comme la forêt).
 | D3 | Scout Sacha | ② chemin nord | oui | Chenipan Nv. 10, Aspicot Nv. 10, Chrysacier Nv. 10 | 120 |
 | D4 | Gamin Enzo | ② chemin sud | oui | Piafabec Nv. 14 | 210 |
 | D5 | Fillette Inès | ② détour | oui | Rondoudou Nv. 14 | 210 |
-| D6 | Scout Nolan | ③ détour | oui | Aspicot Nv. 9, Coconfort Nv. 9, Kakuna Nv. 9 | 108 |
+| D6 | Scout Nolan | ③ détour | oui | Aspicot Nv. 9, Coconfort Nv. 9, Chenipan Nv. 9 [D, 2026-10-11 : « Kakuna » = Coconfort, doublon corrigé] | 108 |
 
 Rouge/Bleu en compte 8 ; 6 suffisent à l'échelle A+ (V1). Modèles peints : Gamin et Scout
 existent ; **Fillette = nouveau modèle** (§16.4).

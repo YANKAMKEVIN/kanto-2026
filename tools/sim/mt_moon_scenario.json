@@ -103,7 +103,7 @@
 			"name": "Scout Nolan", "ai": "random",
 			"can_lose": false, "heal_after": false, "gives_exp": true, "prize_money": 108,
 			"team": [{ "species": "weedle", "level": 9 }, { "species": "kakuna", "level": 9 },
-				{ "species": "kakuna", "level": 9 }]
+				{ "species": "caterpie", "level": 9 }]
 		},
 		"mt_moon_rocket_1": {
 			"name": "Sbire Rocket", "ai": "random",
