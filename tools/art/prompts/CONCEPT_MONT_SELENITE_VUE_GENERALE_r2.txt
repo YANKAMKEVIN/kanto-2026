@@ -1,0 +1,60 @@
+CONCEPT ART — VUE GÉNÉRALE DU MONT SÉLÉNITE, LES TROIS NIVEAUX DE LA GROTTE (Kanto 2026), image de référence de direction artistique.
+
+Deux images sont jointes.
+
+IMAGE 1 : un PLAN SCHÉMATIQUE en aplats de couleur, vu du dessus, qui donne la COMPOSITION EXACTE à suivre. Il montre TROIS NIVEAUX d'une même grotte, empilés de haut en bas comme trois cartes séparées : en haut le NIVEAU 1 (galeries d'entrée, le plus grand), au milieu le NIVEAU -1 (passages inférieurs), en bas le NIVEAU -2 (la chambre des fossiles). Chaque niveau est un bloc de roche dans lequel sont creusées des galeries ; les bandes presque noires entre les blocs sont de la roche pleine qui SÉPARE les niveaux (ce ne sont pas des passages).
+Légende du plan :
+- gris ardoise foncé = ROCHE ET PAROIS infranchissables ;
+- gris clair = SOL DE GROTTE praticable (pierre lisse, calme) ;
+- brun moucheté = zones de GRAVATS (éboulis, cailloux, sol accidenté : là vivent les Pokémon sauvages ; elles ont des bords nets) ;
+- carré blanc-jaune entouré d'un halo, au niveau 1 = des PUITS DE JOUR : la lumière du dehors tombe par une ouverture du plafond (un en bas au centre, juste au-dessus de l'entrée ; un autre dans la salle du haut) ;
+- petit rectangle beige tout en bas du niveau 1 = l'ENTRÉE de la grotte, avec la lumière du dehors ;
+- petites échelles brunes = ÉCHELLES de bois qui descendent par un trou ou montent vers un autre niveau ;
+- points orange cerclés d'une lueur chaude = LAMPES DE CHANTIER posées au sol (dans le niveau -1 et le niveau -2 ; une seule, abandonnée, au niveau 1) ;
+- petits carrés rouges = CAISSES de bois marquées d'un R rouge ;
+- rectangles bruns striés = TRANCHÉES DE FOUILLE (sol creusé, outils) ;
+- losanges bleu-blanc = ÉCLATS DE PIERRE LUNE incrustés dans la paroi, qui luisent faiblement ;
+- gros rectangle gris arrondi au centre du niveau 1 et quatre disques gris au niveau -2 = COLONNES de roche massives (repères) ;
+- petits disques sombres = rochers isolés et stalagmites ;
+- rectangle bleu sombre en haut à droite du niveau 1 = une petite MARE souterraine ;
+- au niveau -2, en bas : la CHAMBRE DES FOSSILES, une salle allongée éclairée par deux PROJECTEURS de chantier (carrés clairs avec halo) ; au centre, une DALLE de pierre claire sur laquelle reposent deux FOSSILES (une coquille en spirale et une carapace en dôme) ; un couloir balisé de lampes y descend depuis la salle aux colonnes ;
+- points rouge et blanc = Poké Balls posées au sol ; minuscules cailloux clairs = simples cailloux.
+Respecte ce plan À LA LETTRE : forme de chaque salle et de chaque galerie, place des échelles, des zones de gravats, des puits de jour, des lampes, des caisses, des tranchées, des colonnes, de la mare et de la chambre des fossiles. Le plan ne donne que la composition : son style en aplats ne doit pas apparaître.
+
+RÈGLE ABSOLUE DES PASSAGES : le joueur se déplace case par case, seulement à l'horizontale et à la verticale ; galeries et salles ont donc des bords qui suivent une grille : segments horizontaux et verticaux à angles droits, AUCUNE galerie en diagonale ni en courbe. Les parois peuvent être irrégulières et rocheuses EN SURFACE, mais le sol praticable garde des bords droits et lisibles.
+RELIEF : le sol de chaque niveau est PLAT ; on change de niveau seulement par les échelles.
+
+IMAGE 2 : la vue générale d'Argenta, une ville du même jeu au pied de cette montagne. Respecte EXACTEMENT son style de rendu : même pinceau, même saturation, même finesse de détail, même traitement de la ROCHE de sa paroi de montagne (couches, arêtes adoucies), mêmes personnages. Ne reprends RIEN de sa composition : ni ville, ni bâtiment, ni arbre, ni herbe.
+
+Format : PORTRAIT 1024 × 1536, vue plongeante sur les trois niveaux, comme le plan.
+
+RENDU (ADN visuel Kanto 2026 v1)
+- Illustration 2D peinte numériquement, dans l'esprit d'un RPG Pokémon moderne au rendu « HD-2D peint » : formes simples, lisibles et arrondies, détails fins mais ordonnés. Ni pixel art, ni 3D, ni photo, ni aquarelle, ni cartoon en aplats.
+- Perspective : vue de dessus de trois quarts, projection oblique frontale, sans point de fuite. Les verticales restent verticales. On voit le dessus des objets et leur face avant (côté sud) ; les parois nord des galeries montrent leur face rocheuse.
+- Aucun trait noir : contours fins et doux. Ombres colorées bleu-violet froid, jamais grises ni noires.
+
+AMBIANCE — « l'inconnu » : le premier vrai donjon du jeu. Silence, pierre froide, lumière rare. Mystérieux et un peu inquiétant, JAMAIS effrayant ni illisible.
+- Palette : ARDOISE, pierre froide, GRIS BLEUTÉ, violet très sourd dans les ombres ; touches de minéraux clairs (éclats de Pierre Lune bleu-blanc, qui luisent doucement). Pas de filtre uniforme.
+- LISIBILITÉ AVANT TOUT : le sol praticable est nettement plus clair que la roche ; on distingue chaque galerie et chaque salle sans effort. Sombre mais jamais illisible.
+- Les niveaux S'ASSOMBRISSENT en descendant :
+  · niveau 1 : le plus clair ; colonnes de lumière douce et légèrement chaude qui tombent des puits de jour ; on sent encore le dehors ;
+  · niveau -1 : plus sombre et plus froid ; la seule lumière chaude vient des LAMPES DE CHANTIER, petits cercles de lumière orangée au sol : c'est la trace d'une présence humaine suspecte ;
+  · niveau -2 : le plus profond ; la chambre des fossiles est violemment éclairée par les deux projecteurs de chantier (lumière blanche un peu crue), le reste du niveau baigne dans le bleu sombre.
+- Les gravats sont des zones de sol encombré de cailloux et de petits éboulis, brun-gris, bien délimitées.
+- Indices humains : au niveau 1, un petit camp abandonné (caisses marquées R, lampe éteinte, traces de fouille) ; aux niveaux -1 et -2, caisses, lampes, tranchées : un chantier clandestin organisé, pas une base militaire.
+
+VIE (très discrète, personnages petits, aucun ne ressemble au héros à casquette rouge et veste bleue) :
+- niveau 1 : un RANDONNEUR (gros sac à dos, lampe frontale) près du puits de jour du bas ;
+- niveau -1 : un membre de la TEAM ROCKET qui monte la garde dans le couloir du haut, près des lampes ; une autre, occupée à creuser dans la tranchée de gauche ;
+- niveau -2 : un troisième membre de la Team Rocket dans le couloir balisé qui descend vers la chambre ; dans la chambre, à gauche, un CHERCHEUR (veste de terrain à poches, lunettes, lampe frontale, sacoche) près de l'échelle.
+- TEAM ROCKET : uniforme noir sobre et moderne, ajusté, un grand R ROUGE sur la poitrine, casquette noire, gants et bottes gris ; silhouettes reconnaissables mais crédibles : ni soldats réalistes, ni caricatures.
+Pokémon : deux NOSFERAPTI (chauve-souris Pokémon bleues aux ailes violettes, sans yeux, grande bouche) en vol au niveau 1 ; un RACAILLOU (rocher gris rond à deux bras musclés, sans jambes) sur des gravats du niveau 1 ; un PARAS (petit Pokémon orange en forme d'insecte portant deux champignons rouges tachetés sur le dos) sur des gravats du niveau -1 ; une MÉLOFÉE (petit Pokémon rose et rond, oreilles pointues à bout brun, petites ailes) près des éclats de Pierre Lune de la galerie de droite du niveau 1. Aucun autre Pokémon, aucun Pikachu, aucun animal (aucune faune non-Pokémon).
+
+INTERDITS : texte, lettres, chiffres, étiquettes, panneaux lisibles, logo (seul le R rouge des uniformes et des caisses est permis), signature, filigrane, cadre, interface ; ciel, arbres, herbe verte, bâtiment ; lave, cristaux géants, champignons géants lumineux, décor féerique ; rivière, cascade (seule la petite mare du niveau 1 est permise) ; galeries courbes ou en diagonale ; brouillard épais, flou de profondeur, vignettage noir ; ambiance d'horreur ; pixel art.
+
+L'image doit raconter, sans texte : une grande grotte qu'on explore niveau après niveau, de plus en plus profonde et sombre, où quelqu'un fouille en secret, jusqu'à une chambre éclairée où reposent deux fossiles.
+
+CORRECTIONS (2e essai ; le 1er essai était excellent sur la composition, la lumière et la lisibilité : garde-les à l'identique autant que possible) :
+1. Les trois membres de la Team Rocket portent TOUS la même tenue : uniforme noir, R rouge, CASQUETTE NOIRE qui cache les cheveux ; cheveux courts et sombres. AUCUNE chevelure rose, rouge, violette ou longue et voyante : ce sont des sbires anonymes, pas des personnages célèbres.
+2. L'ENTRÉE du niveau 1 (en bas au centre) est un simple passage plat vers la lumière du dehors : AUCUNE marche, AUCUN escalier.
+3. Le RANDONNEUR est dans la salle du BAS du niveau 1, à droite du puits de jour, pas dans le camp de gauche (le camp abandonné reste vide de personnage).

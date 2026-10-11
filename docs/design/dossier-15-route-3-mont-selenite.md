@@ -44,6 +44,37 @@
 | B-13 | **Pas de vendeur de Magicarpe** | [V] |
 | B-14 | Validation S24 : **12.0 → 12A → 12B → 12C → 12D** | [V] |
 
+## Vues générales peintes v1 et grilles (validées par Kevin le 2026-10-11)
+
+- **Grilles (autorité de la géométrie ; en cas de contradiction, la grille gagne)** :
+  `tools/plans/route_3.txt` (82 × 38), `mont_selenite_1f.txt` (60 × 46), `mont_selenite_b1f.txt`
+  (40 × 30), `mont_selenite_b2f.txt` (50 × 38), `route_4_sas.txt` (24 × 14). Contrôles :
+  `tools/art/plan_check_route_3.py` (via `plan_check.py`) et `tools/art/plan_check_mont_selenite.py`
+  (les trois étages et le sas reliés par les échelles). Les étages sont **plus petits que les
+  enveloppes du §5.1** (grotte dense à repères) [D, validé].
+- **Plans** : `reference/route-3-plan-v1.png`, `reference/mont-selenite-plan-v1.png` (trois étages
+  empilés, 1F en haut), `reference/route-4-sas-plan-v1.png`
+  (`tools/art/plan_aplats.py tools/plans/route_3.txt …`, `--mont-selenite`, `tools/plans/route_4_sas.txt`).
+- **Vues = référence DA et ambiance** : `reference/route-3-vue-generale-v1.png` (essai 2,
+  `tools/art/prompts/CONCEPT_ROUTE3_VUE_GENERALE_r2.txt`) et `reference/mont-selenite-vue-generale-v1.png`
+  (essai 2, `CONCEPT_MONT_SELENITE_VUE_GENERALE_r2.txt`), ancre de style : la vue d'Argenta.
+- **Mesures** : Route 3, chemin principal 93 pas (≈ 5 min 46 s avec Hugo et Léa), 8 cases d'herbes
+  obligatoires ; Mont Sélénite, parcours 206 pas et 4 échelles (≈ 10 min avec R1, R3 et le
+  chercheur), 8 cases de gravats obligatoires, 96 % en couloirs calmes, retour à l'entrée possible
+  de partout.
+- **Décisions de Kevin (2026-10-11)** : D3 et D4 restent **contournables sur leur propre chemin**
+  (sinon un troisième combat obligatoire, contraire à B-8) ; **une Potion en B1F** (au fond de la
+  galerie de la fouilleuse) ; le chercheur est inévitable parce qu'il **occupe le seul passage**
+  vers l'échelle de sortie (combat lancé par la scène, il se range ensuite). Pierre Lune visible en
+  B1F (poche de l'échelle C), R1 à 10 cases de l'échelle A (pas vu dès l'arrivée).
+- **Écarts des vues à ne pas reproduire** : Route 3 — la montagne reste beige chaud (la cible est
+  le passage à l'**ardoise et au gris bleuté** vers l'est, §7), la Fillette est sur le plateau du
+  Centre (elle garde le goulet de la jonction). Mont Sélénite — le randonneur est dans la galerie
+  est (il est dans la salle du bas, près du puits de jour). Aucun élément n'est implémenté parce
+  qu'il est sur une image (règle 10).
+- Deux essais par vue (essai 1 : Gamin absent, Scout sans chapeau de paille ; une Sbire aux
+  cheveux roses rappelant un personnage connu, entrée de grotte en escalier). **Essais 2 retenus.**
+
 ## 1. Intention
 
 Après le Badge Roche, le joueur quitte la sécurité d'Argenta, traverse une grande route ouverte
