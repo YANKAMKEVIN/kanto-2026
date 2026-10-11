@@ -1,0 +1,127 @@
+# Route 24 — grille fonctionnelle (jalon 13, dossier 16 §7, §8, §11–§13, §19 ; préparée le
+# 2026-10-11 pour la vue générale peinte). Source UNIQUE de la géométrie : plan en aplats
+# (tools/art/plan_aplats.py), vue générale peinte, puis outil de construction et tests du J13 (13B,
+# 13C). Un changement de composition se fait ICI d'abord, puis plan, puis image. Contrôle :
+# tools/art/plan_check.py (profil route_24, tools/art/plan_check_azuria.py).
+#
+# 56 × 62 cases (défaut : la largeur d'Azuria, mêmes colonnes) ; nord en haut ; x = colonne 0..55,
+# y = rangée 0..61. Raccord SUD : (31..33, 61) ↔ sortie nord d'Azuria (31..33, 0). Le canal
+# d'Azuria (eau x 26..29) descend de la rivière : mêmes colonnes. Raccord EST : (55, 6..8) →
+# « ROUTE 25 — À venir » (coming_soon ; en release, bord simplement bloqué).
+#
+# De bas en haut (sud → nord) :
+#   ① y 54..61 — LE COULOIR ET LE GOULET : couloir de 3 cases (x 31..33) depuis Azuria ; goulet
+#      y 54..56 entre forêt ; le RIVAL en (36, 55), au fond d'une niche de 3 cases (34..36, 55),
+#      tourné vers l'ouest (vers le goulet et la ville), vue de 5 cases (x 31..35) : elle couvre
+#      TOUTE la largeur du goulet, à ≥ 3 cases (modèle de Théo : la niche est en retrait). Combat
+#      inévitable. Pas d'autre route : le canal (x 26..29) et la forêt ferment les côtés.
+#   ② y 45..53 — LE PIED DU PONT : place pavée (x 30..41) ; ONDINE sur la berge, en (37, 46),
+#      tournée vers le pont, au-delà du rival (inaccessible avant le combat) ; panneau « PONT
+#      PÉPITE » en (33, 45), qui ferme la voie droite du tablier : on entre sur le pont par la
+#      seule file ouest (32, 44).
+#   ③ y 20..44 — LE PONT PÉPITE : tablier de 2 cases (x 32..33), 25 rangées. CINQ Dresseurs P1..P5
+#      et le recruteur RC, EN QUINCONCE (file ouest, file est, alternées, une rangée sur quatre),
+#      tous tournés vers le sud, vue de 3 cases. Chaque file est coupée par le corps du suivant :
+#      le joueur est forcé de changer de file, donc d'entrer dans la vue du suivant (première case
+#      vue à 3 cases) ; chacun est inévitable, et aucune approche ne coince le joueur (la case
+#      voisine de la file libre reste ouverte). Le recruteur, au bout nord, est le sixième maillon :
+#      on entre dans sa vue en passant P5 (« il entre dans la vue une fois P5 battu », §12).
+#   ④ y 2..19 — L'ESPACE NORD : rive nord et prairie ; route x 32..33 puis y 6..8 vers l'est ;
+#      hautes herbes H1 (ouest) et H2 (est), évitables ; Potion visible ; Antidote caché ; aucun
+#      Dresseur ; raccord est « ROUTE 25 — À venir ».
+# Règles d'art : angles droits, nature dense et objets rares, tablier de 2 cases.
+#
+# Légende (en plus de celle d'azuria.txt) :
+#   T forêt (bloquée)  . herbe rase  = chemin  h hautes herbes  p pavé  w eau (JAMAIS praticable)
+#   B pont (tablier, praticable)  x buissons (bloqués)  G arbre repère  n banc (bloqué)
+#   e raccord est (bord de carte ; coming_soon)
+#
+# Format : ligne PRATICABLES, section GRILLE (« NN » + espace + 56 caractères), puis POSITIONS.
+
+PRATICABLES .=hpBe
+
+GRILLE 56 62
+00 TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+01 TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+02 TTTTTTTTTTTTTTTTT...................TTTTT..............T
+03 TTTTTTTTTTTTTTTTT...G...............TTTTT..............T
+04 TTTTTTTTTTTTTTTTT...........G.......TTTTT.G...x........T
+05 TTTTTTTTTTTT...........................................T
+06 TTTTTTTTTTTT..........x.........=======================e
+07 TTTTTTTTTTTT....................=======================e
+08 TTTTTTTTTTTT.....G..............=======================e
+09 TTTTTTTTTTTT....................==.....................T
+10 TTTTTTTTTTTT......hhhhhhh.......==...............G.....T
+11 TTTTTTTTTTTT......hhhhhhh.......==......hhhhhhh........T
+12 TTTTTTTTTTTT......hhhhhhh.TTTT..==......hhhhhhh...TTTTTT
+13 TTTTTTTTTTTT......hhhhhhh.TTTT..==......hhhhhhh...TTTTTT
+14 TTTTTTTTTTTT......hhhhhhh.TTTT..==......hhhhhhh...TTTTTT
+15 TTTTTTTTTTTTTTTT..........TTTT..==......hhhhhhh...TTTTTT
+16 TTTTTTTTTTTTTTTT................==................TTTTTT
+17 TTTTTTTTTTTTTTTT..........x.....==..........TTT........T
+18 TTTTTTTTTTTTTTTT................==..........TTT........T
+19 TTTTTTTTTTTTTTTT................==..........TTT........T
+20 wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwBBwwwwwwwwwwwwwwwwwwwwww
+21 wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwBBwwwwwwwwwwwwwwwwwwwwww
+22 wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwBBwwwwwwwwwwwwwwwwwwwwww
+23 wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwBBwwwwwwwwwwwwwwwwwwwwww
+24 wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwBBwwwwwwwwwwwwwwwwwwwwww
+25 wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwBBwwwwwwwwwwwwwwwwwwwwww
+26 wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwBBwwwwwwwwwwwwwwwwwwwwww
+27 wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwBBwwwwwwwwwwwwwwwwwwwwww
+28 wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwBBwwwwwwwwwwwwwwwwwwwwww
+29 wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwBBwwwwwwwwwwwwwwwwwwwwww
+30 wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwBBwwwwwwwwwwwwwwwwwwwwww
+31 wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwBBwwwwwwwwwwwwwwwwwwwwww
+32 wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwBBwwwwwwwwwwwwwwwwwwwwww
+33 wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwBBwwwwwwwwwwwwwwwwwwwwww
+34 wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwBBwwwwwwwwwwwwwwwwwwwwww
+35 wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwBBwwwwwwwwwwwwwwwwwwwwww
+36 wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwBBwwwwwwwwwwwwwwwwwwwwww
+37 wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwBBwwwwwwwwwwwwwwwwwwwwww
+38 wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwBBwwwwwwwwwwwwwwwwwwwwww
+39 wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwBBwwwwwwwwwwwwwwwwwwwwww
+40 wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwBBwwwwwwwwwwwwwwwwwwwwww
+41 wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwBBwwwwwwwwwwwwwwwwwwwwww
+42 wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwBBwwwwwwwwwwwwwwwwwwwwww
+43 wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwBBwwwwwwwwwwwwwwwwwwwwww
+44 wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwBBwwwwwwwwwwwwwwwwwwwwww
+45 TTTTTTTTTTTTTTTTTTTTTTTTTTwwwwppppppppppppTTTTTTTTTTTTTT
+46 TTTTTTTTTTTTTTTTTTTTTTTTTTwwwwppppppppppppTTTTTTTTTTTTTT
+47 TTTTTTTTTTTTTTTTTTTTTTTTTTwwwwppppppppppppTTTTTTTTTTTTTT
+48 TTTTTTTTTTTTTTTTTTTTTTTTTTwwwwppppppppppGpTTTTTTTTTTTTTT
+49 TTTTTTTTTTTTTTTTTTTTTTTTTTwwwwppppppppppppTTTTTTTTTTTTTT
+50 TTTTTTTTTTTTTTTTTTTTTTTTTTwwwwppppppppppppTTTTTTTTTTTTTT
+51 TTTTTTTTTTTTTTTTTTTTTTTTTTwwwwppppppppppppTTTTTTTTTTTTTT
+52 TTTTTTTTTTTTTTTTTTTTTTTTTTwwwwppppppppnpppTTTTTTTTTTTTTT
+53 TTTTTTTTTTTTTTTTTTTTTTTTTTwwwwppppppppppppTTTTTTTTTTTTTT
+54 TTTTTTTTTTTTTTTTTTTTTTTTTTwwwwT===TTTTTTTTTTTTTTTTTTTTTT
+55 TTTTTTTTTTTTTTTTTTTTTTTTTTwwwwT===...TTTTTTTTTTTTTTTTTTT
+56 TTTTTTTTTTTTTTTTTTTTTTTTTTwwwwT===TTTTTTTTTTTTTTTTTTTTTT
+57 TTTTTTTTTTTTTTTTTTTTTTTTTTwwwwT===TTTTTTTTTTTTTTTTTTTTTT
+58 TTTTTTTTTTTTTTTTTTTTTTTTTTwwwwT===TTTTTTTTTTTTTTTTTTTTTT
+59 TTTTTTTTTTTTTTTTTTTTTTTTTTwwwwT===TTTTTTTTTTTTTTTTTTTTTT
+60 TTTTTTTTTTTTTTTTTTTTTTTTTTwwwwT===TTTTTTTTTTTTTTTTTTTTTT
+61 TTTTTTTTTTTTTTTTTTTTTTTTTTwwwwT===TTTTTTTTTTTTTTTTTTTTTT
+FIN
+
+# POSITIONS (défauts du 2026-10-11, ajustables au plan du J13). Trainers et espèces : dossier 16
+# §7, §9, §11, §12 ; identifiants de data/trainers à créer au 13B / 13C.
+POSITIONS
+warp_sud             warp           31..33,61    libre   # PUSH ↓ → cerulean_city, from_route_24 (Azuria (31..33, 0))
+from_cerulean        spawn          31..33,61    libre   # arrivée d'Azuria, tournée ↑
+raccord_est          warp           55,6..8      libre   coming_soon=route_25  # « ROUTE 25 — À venir » (développement)
+rival                dresseur       36,55        bloque  role=R facing=left sight=5 trainer=route_24_rival  # rival n° 3 ; niche en retrait ; vue x 31..35 ; inévitable ; part vers la ville (fondu) après la victoire
+ondine               pnj            37,46        bloque  role=O facing=left  # Ondine sur la berge, tournée vers le pont ; inaccessible avant le rival
+panneau_pont         panneau        33,45        bloque  # « PONT PÉPITE » / « Cinq Dresseurs. Une récompense. », lu depuis (33, 46) ↑ ; ferme la file est à l'entrée du tablier
+p1_timeo             dresseur       32,41        bloque  role=P1 facing=down sight=3 trainer=route_24_scout_timeo  # Scout, 4 Pokémon Nv. 10, 120 ₽ ; file ouest
+p2_alice             dresseur       33,37        bloque  role=P2 facing=down sight=3 trainer=route_24_lass_alice  # Jeune Dresseuse, Roucool, Mystherbe, Chétiflor Nv. 12, 180 ₽ ; file est
+p3_malo              dresseur       32,33        bloque  role=P3 facing=down sight=3 trainer=route_24_youngster_malo  # Gamin, Sabelette + Abo Nv. 14, 210 ₽ ; file ouest
+p4_romane            dresseur       33,29        bloque  role=P4 facing=down sight=3 trainer=route_24_lass_romane  # Jeune Dresseuse, Nidoran ♀ + ♂ Nv. 16, 240 ₽ ; file est
+p5_ethan             dresseur       32,25        bloque  role=P5 facing=down sight=3 trainer=route_24_camper_ethan  # Campeur, Férosinge Nv. 18, 360 ₽ ; file ouest
+recruteur            dresseur       33,21        bloque  role=RC facing=down sight=3 trainer=route_24_rocket_recruiter  # Sbire Rocket, Abo 15 + Nosferapti 15, 450 ₽ ; scène de la Pépite ; barre le bout nord
+route_24_item_1      objet_visible  44,3         bloque  role=O1 item=potion  # espace nord, derrière le recruteur
+route_24_hidden_1    cache          16,6         bloque  role=O2 item=antidote indice=souche  # Antidote : souche d'une autre teinte, à l'ouest de la prairie
+herbes_h1            herbes         21,12        libre   role=H1  # prairie ouest (évitable)
+herbes_h2            herbes         43,13        libre   role=H2  # prairie est (évitable)
+FIN

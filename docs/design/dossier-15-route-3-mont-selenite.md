@@ -358,6 +358,7 @@ Vérification demandée par Kevin : le J11 distingue **carte d'extérieur** (com
   objet** [D].
 - **Raccord est** : « AZURIA — À venir » (mécanisme `show_coming_soon` des jalons précédents).
 - **Retour** : par la grotte (l'échelle reste praticable dans les deux sens).
+- *(2026-10-11 : la Route 4 du J13, qui prolonge ce sas, est décrite au dossier 16 §3.)*
 - **Réservé au J13** (ne rien poser au J12) : la Route 4 proprement dite (rebords à sens unique,
   Dresseurs, herbes, objets), Azuria, Pont Pépite, rival n° 3. Le J13 pourra **remplacer** le sas
   par la vraie Route 4 en gardant son point d'arrivée.
