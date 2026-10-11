@@ -146,7 +146,16 @@ J6  Menu / Équipe / Sac / Pokédex / Carte / Profil
 J7  Jadielle + Centre + Boutique + économie
 J8  Route 2
 J9  Forêt de Jade
-J10 Argenta + Arène Pierre + Badge   ← ICI
+J10 Argenta + Arène Pierre + Badge
 J11 Grande passe systèmes (évolutions / CT / statuts / équipe avancée / compagnon)
-J12+ Expansion de Kanto → Ligue → post-game
+J12 Route 3 + Mont Sélénite (dossier 15)
+J13 Route 4 + Azuria + Ondine + rival n° 3 + Pont Pépite (dossier 16)
+J14 Route 25 + Cap d'Azuria + Léo + cambriolage (dossier 17)
+J15 Route 5 + Pension + souterrain + Route 6 + Carmin-sur-Mer (dossier 18)
+J16 S.S. Anne + rival n° 4 + Coupe
+J17 Major Bob + Badge Foudre
+J18+ Suite de Kanto → Ligue → post-game
 ```
+
+J11 à J15 sont conçus et développés **en parallèle**, une session par jalon (2026-10-11) ;
+l'intégration d'un jalon attend seulement les systèmes qu'elle utilise.

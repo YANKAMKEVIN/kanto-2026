@@ -1,5 +1,7 @@
 # J15 — En route vers Carmin-sur-Mer : passe d'alignement de la V2 (ChatGPT)
 
+> **Tranché le 2026-10-11 : toutes les recommandations retenues par Kevin** (V-1 à V-4, F-1 à F-16) ; consolidé dans `../dossier-18-carmin-sur-mer.md`. Le §8 (J16) est un avis ponctuel : le J16 est conçu dans sa propre session.
+
 > Claude, 2026-10-11. J'ai relu la V2 contre `vision.md`, `roadmap.md`, les dossiers 06, 09, 11, 12
 > et 15, le dossier 14 et le code du J11 (branche `origin/claude/lancement-j11-4pkt2k`), le plan
 > `docs/tech/jalon-12.md`, les passes du J13 (`docs/dossier-16-j13` à `4c89696`, D-1 à D-16 **pas
