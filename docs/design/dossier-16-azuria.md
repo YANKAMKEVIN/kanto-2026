@@ -64,7 +64,7 @@
 **Décision pour le J14** [V, 2026-10-11] : l'épisode historique de Léo, transformé en Pokémon, est
 conservé. Rien n'en apparaît au J13.
 
-## Grilles v1 (à valider par Kevin)
+## Grilles v1 (validées par Kevin le 2026-10-11)
 
 > **Produites le 2026-10-11, avant la vue générale peinte** (filière des J9, J10 et J12). La grille
 > fait foi pour la géométrie ; en cas de contradiction avec ce dossier sur une coordonnée, la
@@ -75,7 +75,7 @@ conservé. Rien n'en apparaît au J13.
   | Carte | Fichier | Taille | Cases praticables |
   |---|---|---|---|
   | Route 4 | `route_4.txt` | 64 × 24 | 731 (48 %) |
-  | Azuria | `azuria.txt` | 56 × 46 | 808 (31 %), 243 d'eau |
+  | Azuria | `azuria.txt` | 56 × 41 (rognée, G-4) | 743 (32 %), 243 d'eau |
   | Route 24 | `route_24.txt` | 56 × 62 | 852 (25 %) |
   | Arène d'Azuria | `azuria_arene.txt` | 17 × 13 | |
   | Magasin de vélos | `azuria_velos.txt` | 15 × 10 | enveloppe réutilisée |
@@ -153,22 +153,13 @@ conservé. Rien n'en apparaît au J13.
 - **Intérieurs** : vélos, 4 vélos exposés, comptoir et vendeur au bout ; maison, canapé, aquarium,
   cuisine, habitante devant le canapé.
 
-**À regarder avec l'œil de Kevin** :
+**Validation de Kevin (2026-10-11), G-1 à G-5** :
 
-1. **Le rebord est l'unique descente** (dossier §3.1, validé) : après Azuria, plus aucun retour à
-   pied vers Argenta ni le Mont Sélénite (Route 4 coupée par le rebord). La grille applique le
-   dossier ; confirmer que c'est voulu (le réveil après une défaite avant le Centre d'Azuria
-   ramène déjà au Centre de la Route 3, §19).
-2. **Rival « tourné vers la ville »** : pour que sa vue couvre tout le goulet à ≥ 3 cases (modèle
-   de Théo), il se tient dans une niche en retrait, tourné vers l'**ouest** (le goulet), pas vers
-   le sud.
-3. **Le pont fait 25 rangées** (≈ 14 min de bout en bout avec les combats par défaut) : c'est la
-   longueur qu'exigent cinq Dresseurs inévitables sur un tablier de 2 cases ; on peut le raccourcir
-   en passant à un Dresseur par 3 rangées (vue de 2 cases, première case vue à 2 au lieu de 3).
-4. **Densité d'Azuria** : 31 % de cases praticables, de grandes masses de forêt au sud-ouest et au
-   sud-est ; on peut rogner la carte (≈ 56 × 40) sans rien changer d'autre.
-5. **Quartier du cambriolage au nord-ouest**, loin de la place : l'indice est trouvé en suivant la
-   rue du nord depuis l'avenue (première rue après le Centre).
+- **G-1** : rebord unique, sans retour à pied vers Argenta ni le Mont Sélénite : gardé.
+- **G-2** : rival en niche, tourné vers l'ouest (le goulet) : gardé.
+- **G-3** : pont de 25 rangées (≈ 14 min de bout en bout) : gardé.
+- **G-4** : Azuria rognée à **56 × 41** (place de 9 à 7 rangées, rue du sud raccourcie, palissade en y 38..39) ; raccords inchangés : ouest rangées 19..21, nord colonnes 31..33 ; Centre à 9 pas, Arène et sortie nord à 50, Boutique 52, vélos 54.
+- **G-5** : quartier du cambriolage au nord-ouest : gardé.
 
 ## 1. Intention
 

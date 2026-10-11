@@ -4,7 +4,7 @@
 # composition se fait ICI d'abord, puis plan, puis image. Contrôle : tools/art/plan_check.py
 # (profil azuria, tools/art/plan_check_azuria.py).
 #
-# 56 × 46 cases (défaut du dossier, §4.1, §22) ; nord en haut ; x = colonne 0..55, y = rangée 0..45.
+# 56 × 41 cases (rogné de 56 × 46 le 2026-10-11, G-4 : moins de forêt vide) ; nord en haut ; x = colonne 0..55, y = rangée 0..40.
 # Raccords : OUEST (0, 19..21) ↔ Route 4 (63, 19..21) (mêmes rangées, aucun décalage) ; NORD
 # (31..33, 0) ↔ Route 24 (31..33, 61) (mêmes colonnes). Est (Route 9) et sud (Route 5) FERMÉS, sans
 # aucune promesse : arbre + clôture à l'est, palissade de chantier au sud (§4.2, D-12).
@@ -19,7 +19,7 @@
 #     de l'Arène (x 40..41) et le pont ouest sur le canal vertical (y 8..9), 2 de large.
 #   - AVENUE D'ARRIVÉE (y 19..21, x 0..17) : le CENTRE (x 5..12, y 12..18, porte (8..9, 18)) est
 #     le PREMIER bâtiment, avant toute bifurcation (la première rue part en x 14..16). Elle débouche
-#     sur la place (x 18..48, y 19..29), puis les quais, le pont central et la sortie nord.
+#     sur la place (x 18..48, y 19..27), puis les quais, le pont central et la sortie nord.
 #   - L'ARÈNE (x 35..46, y 3..9, porte (40..41, 9)) est de l'AUTRE côté du canal, plus loin : on
 #     y va par le pont central ou le pont de l'Arène.
 #   - Quartier nord-ouest (rue x 14..16 puis ruelle y 10..11) : maison CAMBRIOLÉE (x 7..13, porte
@@ -28,7 +28,7 @@
 #     (5, 1)) ; le TROU dans la clôture du fond, côté est (14, 3), est impraticable (haie derrière) ;
 #     maison ouverte (x 16..22, porte (19, 9)).
 #   - Sud : rue x 31..33 (Boutique à l'ouest, magasin de vélos à l'est, portes sur la ruelle
-#     y 38..39), fermée par la palissade de chantier (y 42..43).
+#     y 36..37), fermée par la palissade de chantier (y 38..39).
 # Emprises de bâtiments (comme Argenta, dossier 12 / jalon 10 T1) : toute l'image, bloquée ;
 # Centre C et Boutique O = 8 × 7 réutilisés (porte = 4e et 5e colonnes du bas) ; Arène Z = 12 × 7 ;
 # magasin de vélos V = 8 × 7 (neuf) ; maisons M et m = 7 × 6 (porte = 4e colonne du bas).
@@ -49,7 +49,7 @@
 
 PRATICABLES .=pqBD
 
-GRILLE 56 46
+GRILLE 56 41
 00 TTTTTTTTTTTTTTTTTTTTTTTTTTwwwwx===xTTTTTTTTTTTTTTwwwwwww
 01 TTT...cccccccccxTTTTTTTTTTwwwwx===xTTTTTTTTTTTTTTwwwwwww
 02 TTT...cjjjjjjjcxTTTTTTTTTTwwwwx===xTTTTTTTTTTTTTTwwwwwww
@@ -76,26 +76,21 @@ GRILLE 56 46
 23 TTTTTTTTTTTTTTTTTTpGppppppnpppppppppppnpppppppppp====taa
 24 TTTTTTTTTTTTTTTTTTppppppppppppppppppppppppppppppp====caa
 25 TTTTTTTTTTTTTTTTTTpppppppppppppppppppppppppppppppxxxxTTT
-26 TTTTTTTTTTTTTTTTTTpppppppppppppppppppppppppppppppTTTTTTT
+26 TTTTTTTTTTTTTTTTTTpGpppppppppppppppppppppppppppGpTTTTTTT
 27 TTTTTTTTTTTTTTTTTTpppppppppppppppppppppppppppppppTTTTTTT
-28 TTTTTTTTTTTTTTTTTTpGpppppppppppppppppppppppppppGpTTTTTTT
-29 TTTTTTTTTTTTTTTTTTpppppppppppppppppppppppppppppppTTTTTTT
-30 TTTTTTTTTTTTTTTTTTxxxxxxxxxxxxx===xxxxxxxxxxxxxxxTTTTTTT
+28 TTTTTTTTTTTTTTTTTTxxxxxxxxxxxxx===xxxxxxxxxxxxxxxTTTTTTT
+29 TTTTTTTTTTTTTTTTTTTTTTOOOOOOOOT===TVVVVVVVVTTTTTTTTTTTTT
+30 TTTTTTTTTTTTTTTTTTTTTTOOOOOOOOT===TVVVVVVVVTTTTTTTTTTTTT
 31 TTTTTTTTTTTTTTTTTTTTTTOOOOOOOOT===TVVVVVVVVTTTTTTTTTTTTT
 32 TTTTTTTTTTTTTTTTTTTTTTOOOOOOOOT===TVVVVVVVVTTTTTTTTTTTTT
 33 TTTTTTTTTTTTTTTTTTTTTTOOOOOOOOT===TVVVVVVVVTTTTTTTTTTTTT
 34 TTTTTTTTTTTTTTTTTTTTTTOOOOOOOOT===TVVVVVVVVTTTTTTTTTTTTT
-35 TTTTTTTTTTTTTTTTTTTTTTOOOOOOOOT===TVVVVVVVVTTTTTTTTTTTTT
-36 TTTTTTTTTTTTTTTTTTTTTTOOOOOOOOT===TVVVVVVVVTTTTTTTTTTTTT
-37 TTTTTTTTTTTTTTTTTTTTTTOOODDOOOT===TVVVDDVVVTTTTTTTTTTTTT
-38 TTTTTTTTTTTTTTTTTTTTTT======================TTTTTTTTTTTT
-39 TTTTTTTTTTTTTTTTTTTTTT======================TTTTTTTTTTTT
-40 TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT===TTTTTTTTTTTTTTTTTTTTTT
-41 TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT===TTTTTTTTTTTTTTTTTTTTTT
-42 TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTsssssTTTTTTTTTTTTTTTTTTTTT
-43 TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTsssssTTTTTTTTTTTTTTTTTTTTT
-44 TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTaaaTTTTTTTTTTTTTTTTTTTTTT
-45 TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTaaaTTTTTTTTTTTTTTTTTTTTTT
+35 TTTTTTTTTTTTTTTTTTTTTTOOODDOOOT===TVVVDDVVVTTTTTTTTTTTTT
+36 TTTTTTTTTTTTTTTTTTTTTT======================TTTTTTTTTTTT
+37 TTTTTTTTTTTTTTTTTTTTTT======================TTTTTTTTTTTT
+38 TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTsssssTTTTTTTTTTTTTTTTTTTTT
+39 TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTsssssTTTTTTTTTTTTTTTTTTTTT
+40 TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTaaaTTTTTTTTTTTTTTTTTTTTTT
 FIN
 
 # POSITIONS (défauts du 2026-10-11, ajustables au plan du J13) — une ligne par élément :
@@ -108,8 +103,8 @@ from_route_4         spawn          0,19..21     libre   # arrivée de la Route 
 warp_nord            warp           31..33,0     libre   # PUSH ↑ → route_24, from_cerulean (Route 24 (31..33, 61))
 from_route_24        spawn          31..33,0     libre   # arrivée de la Route 24, tournée ↓
 porte_centre         warp           8..9,18      libre   # STEP_ON ↑ → cerulean_center (les deux cases « open »)
-porte_boutique       warp           25..26,37    libre   # STEP_ON ↑ → cerulean_mart
-porte_velos          warp           38..39,37    libre   # STEP_ON ↑ → cerulean_bike_shop
+porte_boutique       warp           25..26,35    libre   # STEP_ON ↑ → cerulean_mart
+porte_velos          warp           38..39,35    libre   # STEP_ON ↑ → cerulean_bike_shop
 porte_arene          warp           40..41,9     libre   # STEP_ON ↑ → cerulean_gym
 porte_maison         warp           19,9         libre   # STEP_ON ↑ → cerulean_house (maison ouverte)
 porte_cambriolee     examen         10,9         bloque  # porte fermée : « Un ruban interdit l'entrée. », lue depuis (10, 10) ; aucun warp
@@ -117,7 +112,7 @@ cloture_arrachee     examen         6,1          bloque  # « La clôture a ét�
 trou_cloture         indice         14,3         bloque  # trou dans la clôture du fond-est : on devine un passage vers l'est (Route 9 au J14), impraticable
 pot_renverse         decor          9,2          bloque  # pot renversé dans le jardin clos (visible, hors d'atteinte)
 barriere_est         examen         53,22..24    bloque  # arbre + clôture : « On ne passe pas par là pour l'instant. » (texte 17) ; AUCUN warp, AUCUNE promesse
-barriere_sud         examen         30..34,42    bloque  # palissade de chantier : même réplique ; AUCUN warp
+barriere_sud         examen         30..34,38    bloque  # palissade de chantier : même réplique ; AUCUN warp
 grotte_azuree        repere         51..54,3..6  bloque  role=vue  # la Grotte Azurée au loin, au-delà de l'eau : aucun accès, ni garde ni réplique
 h1_pecheur           pnj            25,14        bloque  role=H1 facing=right  # pêcheur sans canne, assis sur le quai ouest (quai de 3 cases)
 h2_enfant            pnj            31,16        bloque  role=H2 facing=right  # enfant qui regarde l'eau, sur le pont central (reste 2 cases libres)

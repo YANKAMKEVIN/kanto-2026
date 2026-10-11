@@ -45,7 +45,7 @@ RACINE = Path(__file__).resolve().parents[2]
 PLANS = RACINE / "tools" / "plans"
 Case = tuple[int, int]
 
-TAILLES = {"route_4": (64, 24), "azuria": (56, 46), "route_24": (56, 62),
+TAILLES = {"route_4": (64, 24), "azuria": (56, 41), "route_24": (56, 62),
 	"azuria_arene": (17, 13), "azuria_velos": (15, 10), "azuria_maison": (15, 10)}
 DETECTION_MIN = 3                  # première case vue à ≥ 3 cases (≥ 2 libres entre eux)
 SOL = set(".=")                    # sol où poser un personnage ou un objet
@@ -538,7 +538,7 @@ def verifier_azuria(chemin: Path) -> bool:
 		"la sortie nord reste joignable par un autre pont (ouest puis promenade) si le pont "
 		"central est occupé")
 	axe = nord[1][0]
-	place_y = max(y for y in range(plan.height) if plan.at(axe, y) == "p" and y < 30)
+	place_y = max(y for y in range(plan.height) if plan.at(axe, y) == "p" and y < 28)
 	colonne = [(axe, y) for y in range(0, place_y + 1)]
 	r.critere(all(carte.libre(c) for c in colonne),
 		f"sortie nord visible depuis la place : colonne x {axe}, de la place (y {place_y}) à "
@@ -555,7 +555,7 @@ def verifier_azuria(chemin: Path) -> bool:
 	warps_ferme = [p.ident for p in plan.of_kind("warp")
 		if any(c[0] >= plan.width - 3 or c[1] >= plan.height - 3 for c in p.cells)]
 	r.critere(len(arbre) == 1 and len(palissade) >= 5 and acces_est and acces_sud
-		and not warps_ferme and plan.at(54, 23) == "a" and plan.at(32, 44) == "a",
+		and not warps_ferme and plan.at(54, 23) == "a" and plan.at(32, 40) == "a",
 		"est : arbre + clôture, sentier peint derrière ; sud : palissade de chantier ; les deux "
 		f"routes y mènent et s'arrêtent là ; AUCUN warp ni promesse {warps_ferme}")
 
