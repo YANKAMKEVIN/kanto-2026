@@ -1,0 +1,40 @@
+# Route 4, sas de sortie du Mont Sélénite — grille fonctionnelle (jalon 12, dossier 15 §14).
+# Carte EXTÉRIEURE, au pied du versant est. Contrôle : tools/art/plan_check_mont_selenite.py.
+#
+# 24 × 14 cases (défaut du dossier) ; nord en haut. Sortie de grotte dans la paroi ouest (2, 6),
+# reliée à l'échelle de sortie de B2F (paire S) ; chemin vers l'est ; raccord est (23, 6..7) :
+# « AZURIA — À venir » (show_coming_soon). Aucun Dresseur, aucune herbe haute, aucun objet. Le
+# J13 pourra remplacer le sas par la vraie Route 4 en gardant le point d'arrivée (3, 6).
+#
+# Légende :
+#   # paroi du versant (bloquée)     . herbe rase     = chemin de terre
+#   D sortie de grotte (STEP_ON ← vers B2F)          e raccord est (bord de carte)
+#   o rocher (bloqué)                ~ rebord du versant, vue sur la plaine (bloqué)
+#   b buissons et blocs de lisière (bloqués) : ferment l'est hors du raccord
+
+PRATICABLES .=De
+
+GRILLE 24 14
+00 ########################
+01 ########################
+02 ########################
+03 ########...........o...b
+04 ########.o.............b
+05 ###....................b
+06 ##D====================e
+07 ###====================e
+08 ###....................b
+09 ###....................b
+10 ######..........o......b
+11 ######.................b
+12 ###~~~~~~~~~~~~~~~~~~~~~
+13 ###~~~~~~~~~~~~~~~~~~~~~
+FIN
+
+POSITIONS
+sortie_grotte        echelle        2,6          libre   paire=S sens=descend vers=mt_moon_b2f  # bouche de la grotte : fondu, arrivée en bas de l'échelle de sortie
+from_mt_moon         spawn          3,6          libre   paire=S  # arrivée depuis B2F, tourné →
+raccord_est          warp           23,6..7      libre   coming_soon=azuria  # « AZURIA — À venir »
+panneau_route_4      panneau        6,5          bloque  # « ROUTE 4 » / « Mont Sélénite ← → Azuria »
+repere_plaine        repere         3..23,12..13 bloque  role=vue  # rebord du versant : la plaine en contrebas
+FIN

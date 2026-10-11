@@ -22,8 +22,12 @@ Zones H1, H2, H3 = composantes connexes de hautes herbes, du sud au nord.
 test_viridian_forest) : voir `verifier_foret`. Grille agrandie le 2026-10-08 (profil
 `FORET_PROFILS` : 70 × 90, 330 à 360 pas, H3 et H5 obligatoires, Théo et Milo inévitables).
 
+**Route 3** (`route_3.txt`, jalon 12, dossier 15 §3) : `verifier_route_3`, dans
+`plan_check_route_3.py` (raccord sur Argenta, Centre, grotte, D1 et D2 inévitables, deux
+itinéraires, rebords, herbes obligatoires, objet caché « cache », durée de traversée).
+
 Usage : python3 tools/art/plan_check.py [grille.txt ...]   (code 1 si un critère échoue)
-        sans argument : toutes les grilles connues (Route 2, Forêt de Jade).
+        sans argument : toutes les grilles connues (Route 2, Forêt de Jade, Route 3).
 """
 from __future__ import annotations
 
@@ -595,7 +599,15 @@ def verifier_foret(chemin: Path) -> bool:
 	return ok
 
 
-VERIFICATEURS = {"route_2": verifier_route_2, "viridian_forest": verifier_foret}
+def verifier_route_3(chemin: Path) -> bool:
+	"""Route 3 (jalon 12, dossier 15 §3) : profil dans `plan_check_route_3.py` (import tardif,
+	ce module importe celui-ci)."""
+	from plan_check_route_3 import verifier_route_3 as verifier
+	return verifier(chemin)
+
+
+VERIFICATEURS = {"route_2": verifier_route_2, "viridian_forest": verifier_foret,
+	"route_3": verifier_route_3}
 
 
 def main() -> int:
