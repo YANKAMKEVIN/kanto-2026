@@ -758,6 +758,18 @@ et de l'annexe A validée.
 - Dépend : grilles `j13-grilles` et vues générales validées par Kevin. **CA** : chaque élément visible
   des vues a un asset (réutilisé, varié, nouveau) ou est abandonné explicitement ; aucun fichier de la
   liste §1.2 touché.
+- **Fait** (2026-10-11, branche `j13-t1`) : fiche `serie-15-azuria.md`, `tools/art/serie15.py`
+  (`--prompts` `--refs` `--ancres` `--commandes` `--planche` `--contact` `--manifeste` non lancé
+  `--controle`), 24 prompts versionnés, planche `build/art/AZ_KIT_v1.png` relue. **19 images
+  nouvelles** (+ 3 conditionnels : `DALLES_CLAIRES`, `NAGEUSE`, `HABITANTE` ; **pas** de portrait
+  d'Ondine, Q-2), au lieu de ≈ 22 : `INT_MAISON_AZURIA_PLANCHE` abandonnée (mobilier existant),
+  planches fusionnées ; **ajout** `REBORD_ARDOISE_PLANCHE` (correction Route 4). Modèles d'habitants :
+  H1 / maison `old_man`, H2 `kid`, H3 / H5 `lass`, H4 `guard`, H6 `youngster`. Quais alignés sur
+  `QUAY_PIECES` sans écart de rôle (profondeurs à 43 / 16 / 20 / 40 px au lieu de 30 / 14 / 18 / 30 :
+  à corriger au T5 dans les provisoires). **À signaler aux T7 / T8** : `place_bridges` ne prend
+  qu'un tablier par sens (ponts de 2 et de 3 de large, variantes du Pont Pépite) ; berges naturelles
+  de la Route 24 = autre jeu de pièces pour `place_quays` ; écart vue / consigne (margelle de pierre
+  de la vue, berges naturelles ici).
 
 #### T2 — constructeur-monde (Mac, Codex) : série 15 → **13.0-art** — **maintenant**, après T1
 - Trois générations à la fois, corrections en `_r2` ; repli app ChatGPT si Codex refuse ; planche
