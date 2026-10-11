@@ -36,6 +36,8 @@ var _starter: StringName = STARTER
 var _pass: String = "full"
 var _starters: Array[StringName] = [&"rattata", &"charmander", &"charmander@2.0", &"venusaur"]
 var _preload: bool = true
+## Aperçu d'un décor sans carte (J12 T4) : --decor=<id> le pose comme décor de la Route 1.
+var _decor_id: StringName = &""
 
 
 func _init() -> void:
@@ -52,6 +54,8 @@ func _init() -> void:
 			_starters.clear()
 			for id: String in arg.trim_prefix("--starters=").split(","):
 				_starters.append(StringName(id))
+		elif arg.begins_with("--decor="):
+			_decor_id = StringName(arg.trim_prefix("--decor="))
 		elif arg == "--no-preload":
 			_preload = false
 	process_frame.connect(_start, CONNECT_ONE_SHOT)
@@ -74,7 +78,9 @@ func _start() -> void:
 	var explo: CanvasLayer = _boot.call(&"get_hud")
 	explo.call(&"hide_interact")
 	await _frames(20)
-	if _pass == "poses":
+	if _decor_id != &"":
+		await _decor_preview()
+	elif _pass == "poses":
 		await _poses()
 	elif _pass == "evolution":
 		await _evolution()
@@ -392,6 +398,42 @@ func _fallback() -> void:
 	await _flee("")
 
 
+# --- Aperçu d'un décor (J12 T4) ---------------------------------------------------------
+
+## Le décor [member _decor_id] (lu dans decors.json) tient lieu de décor de la carte de départ :
+## aucune carte n'est branchée. Petit, moyen et grand Pokémon sur la ligne de sol.
+func _decor_preview() -> void:
+	var data: Dictionary = JSON.parse_string(
+		FileAccess.get_file_as_string("res://data/battle/decors.json"))
+	data["places"] = {String(_place): [{"decor": String(_decor_id)}]}
+	var catalog := BattleDecorCatalog.new()
+	catalog.read(data)
+	_stage.call(&"set_decor_catalog", catalog)
+	await _frames(10)
+	_encounter(&"pidgey", 3)
+	await _until(func() -> bool: return _stage.call(&"is_active"), 300)
+	await _frames(6)
+	await _shot("transition")
+	await _wait_zone(1)
+	await _frames(12)
+	await _shot("roucool")
+	_hud.emit_signal(&"action_selected", &"attack")
+	await _wait_zone(2)
+	await _frames(12)
+	await _shot("capacites")
+	await _flee("")
+	_encounter(&"rattata", 3)
+	await _wait_zone(1)
+	await _frames(12)
+	await _shot("rattata")
+	await _flee("")
+	_encounter(&"charizard", 5)
+	await _wait_zone(1)
+	await _frames(12)
+	await _shot("dracaufeu")
+	await _flee("")
+
+
 # --- Outils ----------------------------------------------------------------------------
 
 func _encounter(species: StringName, level: int) -> void:
@@ -432,7 +474,8 @@ func _shot(name: String) -> void:
 	paused = true
 	for i: int in 6:
 		await process_frame
-	var path := _out_dir.path_join("cb3_%s_%s.png" % [_place, name])
+	var path := _out_dir.path_join("cb3_%s_%s.png" % [
+		_decor_id if _decor_id != &"" else _place, name])
 	DirAccess.make_dir_recursive_absolute(_out_dir)
 	var ball: Sprite2D = _stage.call(&"get_ball") if _stage != null else null
 	if ball != null:

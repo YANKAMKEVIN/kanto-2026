@@ -10,5 +10,32 @@
 		"degagement": [0.17, 0.80, 0.955, 0.03],
 		"taille": [2340, 1080],
 		"qualite": 90
+	},
+	"route_3_roche": {
+		"composition": "COMBAT_DECOR_ROUTE3_r1a.png",
+		"tuiles": [
+			{ "image": "COMBAT_DECOR_ROUTE3_r1a_TL.png", "portion": [0, 0, 1000, 852] },
+			{ "image": "COMBAT_DECOR_ROUTE3_r1a_TR.png", "portion": [846, 0, 1846, 852] }
+		],
+		"taille": [2340, 1080],
+		"qualite": 90
+	},
+	"mt_moon_galerie": {
+		"composition": "COMBAT_DECOR_GALERIE_r1a.png",
+		"tuiles": [
+			{ "image": "COMBAT_DECOR_GALERIE_r1a_TL.png", "portion": [0, 0, 1000, 853] },
+			{ "image": "COMBAT_DECOR_GALERIE_r1a_TR.png", "portion": [844, 0, 1844, 853] }
+		],
+		"taille": [2340, 1080],
+		"qualite": 90
+	},
+	"mt_moon_chambre": {
+		"composition": "COMBAT_DECOR_CHAMBRE_r1a.png",
+		"tuiles": [
+			{ "image": "COMBAT_DECOR_CHAMBRE_r1a_TL.png", "portion": [0, 0, 1000, 851] },
+			{ "image": "COMBAT_DECOR_CHAMBRE_r1a_TR.png", "portion": [849, 0, 1849, 851] }
+		],
+		"taille": [2340, 1080],
+		"qualite": 90
 	}
 }
