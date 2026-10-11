@@ -1159,6 +1159,11 @@ def main() -> int:
 		print(dessiner(empiler(lire(Path(nord)), lire(Path(sud)), dx), sortie))
 		return 0
 	grille = Path(args[0]) if len(args) > 0 else RACINE / "tools/plans/route_2.txt"
+	if grille.stem in ("route_6", "vermilion_city"):
+		# Jalon 15 : module dédié (Route 6 et Carmin-sur-Mer), sorties dans build/plans/.
+		import plan_aplats_carmin
+		return plan_aplats_carmin.main_pour(grille, Path(args[1]) if len(args) > 1 else None,
+			"--annote" in sys.argv)
 	fonction, defaut = PLANS.get(grille.stem, PLANS["route_2"])
 	sortie = Path(args[1]) if len(args) > 1 else RACINE / defaut
 	if fonction is dessiner:
