@@ -431,7 +431,7 @@ Branche d'intégration **`jalon-12`** depuis `main` (copie dédiée), une branch
 
 #### T0 — architecte : plan (fait)
 
-#### T1 — architecte : kit d'assets (série 14) — **maintenant**
+#### T1 — architecte : kit d'assets (série 14) — **maintenant** — **fait (2026-10-11, `j12-t1-kit`)** : 23 images + 3 conditionnels, fiche `docs/design/fiches-assets/serie-14-mont-selenite.md`
 - Fiche `docs/design/fiches-assets/serie-14-mont-selenite.md` (une fiche par asset du §1.4 C : taille, emprise, couche, ombre, références recadrées `REF_R3_*` / `REF_MS_*`) ; `tools/art/serie14.py` (`--prompts`, `--refs`, `--commandes`, `--planche`, `--manifeste` **préparé, non lancé**, `--controle`) ; prompts d'attente des 4 personnages ; planche `build/art/MS_KIT_v1.png` (1 case = 48 px, héros à l'échelle).
 - **CA** : chaque élément visible des deux vues validées a un asset (réutilisé, varié, nouveau) ou est abandonné explicitement ; aucun fichier de la liste §1.2 touché.
 
