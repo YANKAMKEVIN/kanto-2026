@@ -61,7 +61,8 @@ func test_water_is_solid_bridges_and_quays_are_walkable() -> void:
 								"%s %s : jamais praticable" % [path, cell])
 					"B":
 						counts["B"] += 1
-						assert_true(grid.can_enter(cell, Vector2i.UP), "%s %s : pont" % [path, cell])
+						assert_true(grid.can_enter(cell, Vector2i.UP),
+							"%s %s : pont" % [path, cell])
 						assert_false(grid.is_water(cell), "%s %s : pont sec" % [path, cell])
 					"q":
 						assert_false(grid.is_solid(cell), "%s %s : quai" % [path, cell])
