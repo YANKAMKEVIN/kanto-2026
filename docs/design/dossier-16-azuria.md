@@ -161,7 +161,9 @@ conservé. Rien n'en apparaît au J13.
 - **G-4** : Azuria rognée à **56 × 41** (place de 9 à 7 rangées, rue du sud raccourcie, palissade en y 38..39) ; raccords inchangés : ouest rangées 19..21, nord colonnes 31..33 ; Centre à 9 pas, Arène et sortie nord à 50, Boutique 52, vélos 54.
 - **G-5** : quartier du cambriolage au nord-ouest : gardé.
 
-## Vues générales peintes v1 (à valider par Kevin)
+## Vues générales peintes v1 (validées par Kevin le 2026-10-11)
+
+> **Validées telles quelles**, avec deux corrections pour la construction de la Route 4 (la grille gagne) : le rebord est en **roche ardoise** du versant, pas en terre brune, et il est **net, sans planche** au passage du chemin (lecture « on descend, on ne remonte pas », comme la Route 1). Ambiance claire et fraîche d'Azuria, verrière de l'Arène et recruteur cagoulé sans lettre retenus.
 
 > Produites le 2026-10-11 selon la filière du J12 (plan en aplats non annoté + vue d'Argenta comme
 > ancre de style, Codex, sans nom de licence dans les prompts). **Référence de DA et de composition
