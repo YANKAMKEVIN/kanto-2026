@@ -14,6 +14,9 @@
 > pour ne pas les confondre avec les D-1 à D-16 du J13. Mes arbitrages sont numérotés **E-1 à E-15**
 > (§5) : on y répond par numéro.
 >
+> **Tranché par Kevin le 2026-10-11 : toutes les recommandations E-1 à E-15 et V-1 à V-3 sont
+> retenues.** Consolidation : `docs/design/dossier-17-cap-azuria.md`.
+>
 > Origine des règles : **RB** = Rouge/Bleu, **G+** = génération plus récente, **K26** = invention
 > de Kanto 2026.
 
