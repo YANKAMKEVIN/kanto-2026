@@ -355,7 +355,7 @@
 	},
 	"bide": {
 		"name": "Patience", "type": "normal", "category": "status",
-		"accuracy": 0, "pp": 10, "pending_effects": ["bide"],
+		"accuracy": 0, "pp": 10, "effects": [{ "kind": "bide" }],
 		"description": "Encaisse deux tours, puis riposte avec le double des dégâts reçus."
 	},
 	"struggle": {

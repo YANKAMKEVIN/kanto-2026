@@ -552,3 +552,23 @@ accepté pour une CT, comme un objet clé) ; contexte : exploration seulement ; 
 (Patience, statut sans puissance, précision 0, 10 PP, `pending_effects: ["bide"]` jusqu'au T13,
 description n° 33) et objet `tm34` (« CT34 — Patience », n° 39, féminin). Aucune CT n'est encore
 obtenable (T14). Test du J10 « pas de Patience » adapté (elle arrive au J11).
+
+### T13 — Patience (2026-10-11, 11B)
+
+`MoveEffect.Kind.BIDE` (`bide` : `effects: [{kind: "bide"}]`). État du `Battler` (`bide_stage`,
+`bide_slot`, `bide_stock` ; perdu au changement, au K.O., en fin de combat, jamais sauvegardé).
+Tour 1 : MOVE_USED (1 PP) puis BIDE_STARTED ; tours 2 et 3 : action imposée
+(`Battle.get_locked_move()`, seule action légale ; le `BattleDirector` la soumet sans afficher la
+grille ; l'adversaire en Patience joue sans tirage d'IA), sans MOVE_USED ni PP : BIDE_STORING, puis
+BIDE_UNLEASHED et un DAMAGE « bide » de 2 × les coups directs reçus depuis la préparation (au plus
+les PV de la cible, sans type ni précision), ou FAILED à vide. Comptent : chaque DAMAGE d'une
+capacité adverse (multi-coups, dégâts fixes, riposte adverse) ; ne comptent pas : poison, brûlure,
+graine, recul, confusion. Ruptures (BIDE_BROKEN, puis le joueur est libre) : paralysie totale,
+sommeil ou gel (même réveillé / dégelé ce tour-là [D]), apeurement, se frapper dans la confusion ;
+K.O. : silencieux. L'adversaire qui change garde le stock (le stock est sur le lanceur). Textes
+n° 28 à 32 (`messages.json`). Mise en scène : élan physique après « … riposte ! ». IA `smart` : ne
+la choisit jamais (aucun effet « utile »). Tests : `test_battle_bide` (déroulé, coups du tour 3,
+échec, quatre ruptures, paralysie non bloquante, adversaire en Patience, rien de sauvegardé).
+Non testé automatiquement : le retrait volontaire pendant Patience (impossible : action imposée)
+et un adversaire qui change pendant la Patience (aucune IA ne change de Pokémon) ; soumission
+automatique du directeur couverte par la QA.

@@ -346,3 +346,12 @@ func test_status_ended_and_burn_damage_use_the_status_beats() -> void:
 	assert_eq(_kinds(beats), [BattleBeat.Kind.POISON, BattleBeat.Kind.MESSAGE]
 		as Array[BattleBeat.Kind])
 	assert_eq(beats[0].event.status, StatusRules.BURN, "le voile sera orangé")
+
+
+func test_bide_riposte_lunges_after_its_line() -> void:
+	var event := _event(BattleEvent.Kind.BIDE_UNLEASHED, BattleEvent.SideId.PLAYER, "Salamèche")
+	var beats := BattlePlayback.beats(event, _texts, _data)
+	assert_eq(_kinds(beats), [BattleBeat.Kind.MESSAGE, BattleBeat.Kind.MOVE]
+		as Array[BattleBeat.Kind])
+	assert_eq(beats[0].text, "Salamèche riposte !")
+	assert_eq(beats[1].category, MoveData.Category.PHYSICAL)

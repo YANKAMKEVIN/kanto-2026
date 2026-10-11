@@ -248,7 +248,10 @@ func run_request(request: BattleRequest, map: GameMap) -> int:
 		if _battle.needs_replacement():
 			await _play_events(_battle.replace(await _choose_party(true)), trainer)
 			continue
-		var action := await _choose_action(actions, can_flee)
+		# Patience (CT34, jalon 11) : tours 2 et 3 imposés, le joueur ne choisit rien.
+		var locked := _battle.get_locked_move()
+		var action := BattleAction.move(locked) if locked != Battle.NO_LOCK \
+			else await _choose_action(actions, can_flee)
 		if _battle.get_state() != Battle.State.CHOOSING:
 			break
 		# Une Ball ou une Potion quitte le Sac une seule fois, avant d'être jouée.

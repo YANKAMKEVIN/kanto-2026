@@ -31,9 +31,12 @@ extends RefCounted
 ## capacité frappe de [member min_hits] à [member max_hits] fois (2 à 5 : 3/8, 3/8, 1/8, 1/8).
 ## FLINCH : apeure la cible si elle n'a pas encore agi ce tour-ci. CRIT_UP : critique +2 niveaux
 ## pour le lanceur (Puissance). FIXED_DAMAGE : dégâts fixes, moitié des PV de la cible
-## (« half_hp », Croc Fatal) ou niveau du lanceur (« level », Frappe Atlas).
+## (« half_hp », Croc Fatal) ou niveau du lanceur (« level », Frappe Atlas). BIDE : Patience
+## (CT34, dossier 14 §6.3) : le lanceur encaisse deux tours, puis riposte ([Battle]).
 
-enum Kind { STAT_STAGE, RECOIL, SEED, STATUS, CONFUSION, HITS, FLINCH, CRIT_UP, FIXED_DAMAGE }
+enum Kind {
+	STAT_STAGE, RECOIL, SEED, STATUS, CONFUSION, HITS, FLINCH, CRIT_UP, FIXED_DAMAGE, BIDE,
+}
 enum Target { SELF, FOE }
 
 ## Noms des sortes dans les données.
@@ -41,6 +44,7 @@ const KIND_NAMES: Dictionary[String, Kind] = {
 	"stat_stage": Kind.STAT_STAGE, "recoil": Kind.RECOIL, "seed": Kind.SEED,
 	"status": Kind.STATUS, "confusion": Kind.CONFUSION, "hits": Kind.HITS,
 	"flinch": Kind.FLINCH, "crit_up": Kind.CRIT_UP, "fixed_damage": Kind.FIXED_DAMAGE,
+	"bide": Kind.BIDE,
 }
 ## Modes de FIXED_DAMAGE.
 const FIXED_MODES: Array[StringName] = [&"half_hp", &"level"]

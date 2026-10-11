@@ -87,6 +87,10 @@ enum SwitchCheck { OK, NO_POKEMON, FAINTED, ACTIVE }
 enum Outcome { NONE, WIN, LOSS, FLED, CAUGHT }
 
 const STRUGGLE_ID: StringName = &"struggle"
+## Patience (CT34, jalon 11) : capacité dont la riposte est un DAMAGE de ce nom.
+const BIDE_ID: StringName = &"bide"
+## Pas de capacité imposée ([method get_locked_move]).
+const NO_LOCK: int = -1
 ## Confusion (jalon 11, dossier 14 §3.2, défauts) : 1 à 4 tours, 33 % de se frapper.
 const CONFUSION_MIN_TURNS: int = 1
 const CONFUSION_MAX_TURNS: int = 4
@@ -176,10 +180,23 @@ func get_usable_moves() -> Array[int]:
 	return _player.active.usable_moves()
 
 
-## Vrai si [param action] est permise au joueur maintenant.
+## Emplacement de la capacité imposée au Pokémon du joueur (Patience, tours 2 et 3 : le joueur
+## ne choisit rien, la présentation soumet [code]BattleAction.move(index)[/code] sans attendre),
+## ou [constant NO_LOCK].
+func get_locked_move() -> int:
+	if _player.active == null or not _player.active.is_biding():
+		return NO_LOCK
+	return _player.active.bide_slot
+
+
+## Vrai si [param action] est permise au joueur maintenant. Pendant une Patience, seule l'action
+## imposée l'est ([method get_locked_move]).
 func is_legal(action: BattleAction) -> bool:
 	if _state != State.CHOOSING or action == null:
 		return false
+	var locked := get_locked_move()
+	if locked != NO_LOCK:
+		return action.kind == BattleAction.Kind.MOVE and action.move_index == locked
 	if action.kind == BattleAction.Kind.RUN:
 		return _rules != null and _rules.can_flee
 	if action.is_heal():
@@ -285,7 +302,7 @@ func submit(action: BattleAction) -> Array[BattleEvent]:
 	if action.kind == BattleAction.Kind.ITEM:
 		_throw_ball(action.item_id, events)
 		return events
-	var foe_action := _foe.ai.choose(_foe, _player, _rng, _data)
+	var foe_action := _foe_action()
 	var order: Array[BattleSide] = [_player, _foe]
 	if _player_goes_second(action, foe_action):
 		order = [_foe, _player]
@@ -385,13 +402,20 @@ func _is_legal_heal(action: BattleAction) -> bool:
 ## Tour où seul l'adversaire agit (fuite ratée, Pokémon libéré, soin) : son IA choisit, il joue,
 ## puis la fin de tour.
 func _foe_turn_alone(events: Array[BattleEvent]) -> void:
-	var foe_action := _foe.ai.choose(_foe, _player, _rng, _data)
+	var foe_action := _foe_action()
 	if _foe.active.pokemon.is_fainted():
 		return
 	_execute(_foe, foe_action, events)
 	if _state == State.OVER:
 		return
 	_end_turn(events)
+
+
+## Action de l'adversaire : imposée pendant sa Patience (aucun tirage), sinon celle de son IA.
+func _foe_action() -> BattleAction:
+	if _foe.active != null and _foe.active.is_biding():
+		return BattleAction.move(_foe.active.bide_slot)
+	return _foe.ai.choose(_foe, _player, _rng, _data)
 
 
 ## Fin du combat sur [param outcome] : BATTLE_ENDED, plus aucun choix.
@@ -504,7 +528,14 @@ func _execute(side: BattleSide, action: BattleAction, events: Array[BattleEvent]
 		push_error("Battle : capacité inconnue « %s »" % move_id)
 		return
 	_acted.append(user)
-	if not _can_act(side, events):
+	# Patience : s'endormir ou geler la rompt, même si le Pokémon se réveille ou dégèle ici.
+	var bide_frozen := user.is_biding() and (user.pokemon.status == StatusRules.SLEEP
+		or user.pokemon.status == StatusRules.FREEZE)
+	if not _can_act(side, events) or bide_frozen:
+		_break_bide(side, events)
+		return
+	if user.is_biding():
+		_continue_bide(side, target_side, events)
 		return
 	var used := _event(BattleEvent.Kind.MOVE_USED, side)
 	used.move_id = move_id
@@ -570,6 +601,53 @@ func _can_act(side: BattleSide, events: Array[BattleEvent]) -> bool:
 	return true
 
 
+## Patience (CT34, dossier 14 §6.3) : tours 2 et 3 de l'action imposée, sans MOVE_USED ni PP.
+## Tour 2 : BIDE_STORING. Tour 3 : BIDE_UNLEASHED, puis 2 × les dégâts directs reçus depuis la
+## préparation, au plus les PV de la cible (sans type, statistiques ni précision : un DAMAGE
+## « bide »), ou FAILED si rien n'a été reçu.
+func _continue_bide(side: BattleSide, target_side: BattleSide, events: Array[BattleEvent]) -> void:
+	var user := side.active
+	if user.bide_stage == 1:
+		user.bide_stage = 2
+		events.append(_event(BattleEvent.Kind.BIDE_STORING, side))
+		return
+	events.append(_event(BattleEvent.Kind.BIDE_UNLEASHED, side))
+	var stock := user.bide_stock
+	user.clear_bide()
+	var target := target_side.active
+	if stock <= 0 or target.pokemon.is_fainted():
+		_append_failed(side, BIDE_ID, events)
+		return
+	var damage := _event(BattleEvent.Kind.DAMAGE, target_side)
+	damage.move_id = BIDE_ID
+	damage.amount = target.pokemon.take_damage(mini(2 * stock, target.pokemon.hp))
+	damage.hp = target.pokemon.hp
+	events.append(damage)
+	_record_hit(target_side, damage.amount)
+	if target.pokemon.is_fainted():
+		_faint(target_side, events)
+	_check_end(side, events)
+
+
+## Rupture de la Patience du Pokémon de [param side] (s'il en avait une) : BIDE_BROKEN, sauf
+## s'il est K.O. (le K.O. suffit) ; le stock est perdu.
+func _break_bide(side: BattleSide, events: Array[BattleEvent]) -> void:
+	var user := side.active
+	if user == null or not user.is_biding():
+		return
+	user.clear_bide()
+	if not user.pokemon.is_fainted():
+		events.append(_event(BattleEvent.Kind.BIDE_BROKEN, side))
+
+
+## Coup direct d'une capacité adverse reçu par le Pokémon de [param target_side] : compté dans
+## sa Patience s'il en a une (poison, brûlure, graine, recul, confusion n'y passent pas).
+func _record_hit(target_side: BattleSide, amount: int) -> void:
+	var target := target_side.active
+	if target != null and target.is_biding():
+		target.bide_stock += amount
+
+
 ## Les coups d'une capacité offensive (une capacité HITS en porte plusieurs : précision au
 ## premier seulement ; nombre tiré après le premier coup, roll(8) pour 2 à 5 ; arrêt au K.O.).
 ## Faux si elle rate ou n'a aucun effet (rien d'autre ne se passe).
@@ -601,6 +679,7 @@ func _strike(side: BattleSide, target_side: BattleSide, move: MoveData,
 		damage.effectiveness = result.effectiveness
 		damage.critical = result.critical
 		events.append(damage)
+		_record_hit(target_side, damage.amount)
 		done += 1
 		_thaw_by_fire(move, target_side, events)
 		if target.pokemon.is_fainted():
@@ -712,8 +791,15 @@ func _apply_effect(effect: MoveEffect, move: MoveData, side: BattleSide,
 			damage.amount = target.pokemon.take_damage(amount)
 			damage.hp = target.pokemon.hp
 			events.append(damage)
+			_record_hit(target_side, damage.amount)
 		MoveEffect.Kind.HITS:
 			pass
+		MoveEffect.Kind.BIDE:
+			var user := side.active
+			user.clear_bide()
+			user.bide_stage = 1
+			user.bide_slot = user.pokemon.move_index(move_id)
+			events.append(_event(BattleEvent.Kind.BIDE_STARTED, side))
 
 
 ## Effet [code]confusion[/code] (jalon 11) sur le Pokémon de [param target_side] : comme un

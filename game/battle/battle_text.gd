@@ -45,7 +45,9 @@ extends RefCounted
 ## « confusion_inflicted », CONFUSION_UNCHANGED → « confusion_unchanged », CONFUSION_CHECK →
 ## « confusion_check », HURT_ITSELF → « confusion_hurt », CONFUSION_ENDED → « confusion_ended » ;
 ## MULTI_HIT → « multi_hit » ({amount} : coups portés) ; FLINCHED → « flinched » ; FOCUSED →
-## « focused ».
+## « focused ». Patience (n° 28 à 32) : BIDE_STARTED → « bide_started », BIDE_STORING →
+## « bide_storing », BIDE_UNLEASHED → « bide_unleashed », BIDE_BROKEN → « bide_broken » (riposte
+## à vide : FAILED, « Mais ça échoue ! »).
 ## Changement de Pokémon (jalon 7) : WITHDRAWN → « withdrawn » (« Reviens, Salamèche ! ») ; le
 ## Pokémon envoyé reprend « sent_out_player ». Le panneau ÉQUIPE lit, sans événement
 ## ([method get_template]), « switch_reason_active », « switch_reason_fainted » (raisons sur
@@ -105,6 +107,7 @@ const TEMPLATE_IDS: Array[StringName] = [
 	&"move_failed",
 	&"confusion_inflicted", &"confusion_unchanged", &"confusion_check", &"confusion_hurt",
 	&"confusion_ended", &"multi_hit", &"flinched", &"focused",
+	&"bide_started", &"bide_storing", &"bide_unleashed", &"bide_broken",
 	&"evolution_started", &"evolution_finished", &"evolution_cancelled", &"evolution_stop",
 ]
 ## Entre deux gains de statistiques du bilan (« PV +2 · Attaque +1 »).
@@ -318,6 +321,14 @@ func lines(event: BattleEvent, data: PokemonData, trainer: TrainerData = null) \
 			result.append(_fill(&"flinched", event, data))
 		BattleEvent.Kind.FOCUSED:
 			result.append(_fill(&"focused", event, data))
+		BattleEvent.Kind.BIDE_STARTED:
+			result.append(_fill(&"bide_started", event, data))
+		BattleEvent.Kind.BIDE_STORING:
+			result.append(_fill(&"bide_storing", event, data))
+		BattleEvent.Kind.BIDE_UNLEASHED:
+			result.append(_fill(&"bide_unleashed", event, data))
+		BattleEvent.Kind.BIDE_BROKEN:
+			result.append(_fill(&"bide_broken", event, data))
 		BattleEvent.Kind.STATUS_INFLICTED, BattleEvent.Kind.STATUS_UNCHANGED, \
 				BattleEvent.Kind.STATUS_DAMAGED, BattleEvent.Kind.STATUS_CURED, \
 				BattleEvent.Kind.STATUS_PREVENTED, BattleEvent.Kind.STATUS_ENDED:

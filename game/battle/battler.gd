@@ -25,6 +25,13 @@ var confusion_turns: int = 0
 var flinched: bool = false
 ## Puissance (jalon 11) : critique +2 niveaux tant que le Pokémon reste en jeu.
 var focused: bool = false
+## Patience (jalon 11, CT34, dossier 14 §6.3) : tour de Patience déjà joué (0 = pas de Patience,
+## 1 = s'est préparé, 2 = a encaissé ; la riposte vient au tour suivant), emplacement de la
+## capacité (action imposée) et dégâts directs reçus depuis la préparation. Perdu au changement,
+## au K.O. et à la fin du combat (jamais sauvegardé).
+var bide_stage: int = 0
+var bide_slot: int = -1
+var bide_stock: int = 0
 var _stages: Dictionary[StringName, int] = {}
 
 @warning_ignore_start("integer_division")
@@ -65,6 +72,18 @@ func effective_stat(stat: StringName, ignore_drops: bool = false,
 	if (ignore_drops and stage < 0) or (ignore_boosts and stage > 0):
 		stage = 0
 	return pokemon.stats.get(stat, 0) * maxi(2, 2 + stage) / maxi(2, 2 - stage)
+
+
+## Vrai si le Pokémon est en pleine Patience (son action est imposée).
+func is_biding() -> bool:
+	return bide_stage > 0
+
+
+## Oublie la Patience en cours (riposte, rupture).
+func clear_bide() -> void:
+	bide_stage = 0
+	bide_slot = -1
+	bide_stock = 0
 
 
 ## Vrai si le Pokémon est confus.

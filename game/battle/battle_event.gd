@@ -89,6 +89,11 @@ extends RefCounted
 ##   coups portés (« Touché 3 fois ! ») ;
 ## - FLINCHED : le Pokémon apeuré ne peut pas agir ce tour-ci ;
 ## - FOCUSED : Puissance réussie (critique +2 niveaux).
+## Patience (CT34, dossier 14 §6.3) : BIDE_STARTED (tour 1, après MOVE_USED : « se prépare à
+## encaisser ! »), BIDE_STORING (tour 2, sans MOVE_USED : « encaisse ! »), BIDE_UNLEASHED
+## (tour 3, sans MOVE_USED : « riposte ! », puis DAMAGE de [member move_id] « bide » ou FAILED
+## si rien n'a été reçu), BIDE_BROKEN (« La patience de … est rompue ! » : paralysie totale,
+## sommeil, gel, apeurement, se frapper dans la confusion).
 ## Tous les autres événements sur un Pokémon portent dans [member status] son statut au moment
 ## de l'événement (SENT_OUT : la carte de PV l'affiche dès l'entrée ; FAINTED : toujours vide,
 ## le K.O. efface le statut).
@@ -104,6 +109,7 @@ enum Kind {
 	STATUS_PREVENTED, STATUS_ENDED, FAILED,
 	CONFUSED, CONFUSION_UNCHANGED, CONFUSION_CHECK, HURT_ITSELF, CONFUSION_ENDED,
 	MULTI_HIT, FLINCHED, FOCUSED,
+	BIDE_STARTED, BIDE_STORING, BIDE_UNLEASHED, BIDE_BROKEN,
 }
 enum SideId { PLAYER, FOE }
 
