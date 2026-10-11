@@ -60,6 +60,9 @@
 		"pewter_house_mason": "interior_warm",
 		"pewter_house_researcher": "interior_warm",
 		"route_2_north": "golden_hour",
-		"pewter_city": "golden_hour"
+		"pewter_city": "golden_hour",
+		"route_3": "golden_hour",
+		"mt_moon_center": "interior_warm",
+		"route_4": "golden_hour"
 	}
 }

@@ -126,7 +126,9 @@ func test_south_edge_leads_to_route_2_north() -> void:
 		assert_eq(_map.get_spawn_cell(StringName("from_route_2_north_" + suffixes[i])), cell)
 
 
-func test_east_exit_is_route_3_coming_soon() -> void:
+## Jalon 12 T8 (jalon-12.md §2.1, §2.17) : la sortie est mène à la vraie Route 3 (jusqu'au J11 :
+## « ROUTE 3 — À venir ») ; les spawns d'arrivée depuis la Route 3 sont sur les mêmes cases.
+func test_east_exit_leads_to_route_3() -> void:
 	var suffixes := ["n", "c", "s"]
 	for i: int in EAST.size():
 		var cell: Vector2i = EAST[i]
@@ -134,11 +136,11 @@ func test_east_exit_is_route_3_coming_soon() -> void:
 		assert_not_null(warp, "sortie est %s" % cell)
 		if warp == null:
 			continue
-		assert_true(warp.is_coming_soon())
-		assert_eq(warp.coming_soon, "Route 3")
-		assert_eq(warp.target_spawn, StringName("from_route_3_" + suffixes[i]))
-		assert_eq(_map.get_spawn_cell(warp.target_spawn), cell, "retour sur la case de sortie")
-		assert_eq(warp.facing, Vector2i.LEFT, "retour tourné vers l'ouest")
+		assert_false(warp.is_coming_soon())
+		assert_eq([warp.target_map, warp.target_spawn, warp.facing], [&"route_3",
+			StringName("from_pewter_" + suffixes[i]), Vector2i.RIGHT])
+		assert_eq(_map.get_spawn_cell(StringName("from_route_3_" + suffixes[i])), cell,
+			"arrivée de la Route 3 sur la case de sortie")
 
 
 func test_building_doors_lead_inside_or_to_coming_soon() -> void:

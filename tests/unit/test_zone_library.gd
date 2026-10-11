@@ -165,10 +165,14 @@ func test_service_catalog_and_the_services_of_viridian() -> void:
 	assert_eq(_zones.service_name(&"casino"), "")
 	# Jalon 7 T4 : seuls les services de Jadielle, découverts sur leur carte (l'Arène en
 	# entrant dans la ville, le Centre et la Boutique en y entrant). Jalon 10 : ceux d'Argenta
-	# (test_pewter_data).
+	# (test_pewter_data). Jalon 12 T8 : le Centre du Mont Sélénite (zone `mt_moon`).
 	for id: StringName in _zones.get_ids():
-		if id != &"viridian_city" and id != &"pewter_city":
+		if not id in [&"viridian_city", &"pewter_city", &"mt_moon"]:
 			assert_true(_zones.get_zone(id).services.is_empty(), "%s : aucun service" % id)
+	var mt_moon := _zones.get_zone(&"mt_moon").services
+	assert_eq(mt_moon.size(), 1, "Mont Sélénite : le Centre seul (sans Boutique)")
+	if mt_moon.size() == 1:
+		assert_eq([mt_moon[0].id, mt_moon[0].found_on], [&"pokemon_center", &"mt_moon_center"])
 	var found: Dictionary = {}
 	for service: ZoneService in _zones.get_zone(&"viridian_city").services:
 		found[service.id] = service.found_on

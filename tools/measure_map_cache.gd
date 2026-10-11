@@ -1,7 +1,7 @@
 extends SceneTree
 ## Mesure de la mémoire des textures sur le trajet Bourg Palette → Route 1 → Jadielle → Route 2
 ## → poste sud → Forêt de Jade (T19) → poste nord → Route 2 nord → Argenta → Centre → Argenta
-## (jalon 10)
+## (jalon 10) → Route 3 → Centre du Mont Sélénite → Route 3 → sas de la Route 4 (jalon 12)
 ## (jalon 9 T18, jalon-09.md §2.8.6) : cache de cartes du SceneRouter **borné** (carte courante
 ## et voisines par warps) contre l'ancien comportement (toute carte chargée gardée pour la
 ## session, émulé ici en retenant chaque scène que le routeur a eue en cache).
@@ -35,6 +35,12 @@ const STEPS: Array[Array] = [
 	[&"pewter_city", &"from_route_2_north_c"],
 	[&"pewter_center", &"entrance"],
 	[&"pewter_city", &"from_center"],
+	# Jalon 12 (T8) : la Route 3, le Centre du Mont Sélénite, le sas de la Route 4 (atteint
+	# par la grotte dans le jeu ; ici directement, les étages arrivent au T9).
+	[&"route_3", &"from_pewter_c"],
+	[&"mt_moon_center", &"entrance"],
+	[&"route_3", &"from_center_e"],
+	[&"route_4", &"from_mt_moon"],
 ]
 ## Images attendues après chaque étape (textures envoyées, préchargements finis).
 const SETTLE_FRAMES: int = 20

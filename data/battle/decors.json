@@ -42,6 +42,9 @@
 	"places": {
 		"route_1": [
 			{ "decor": "route_1_chemin" }
+		],
+		"route_3": [
+			{ "decor": "route_3_roche" }
 		]
 	}
 }

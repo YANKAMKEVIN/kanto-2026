@@ -13,8 +13,9 @@ extends SceneTree
 ## dessin et de la mémoire des textures toutes les 30 images ; `--boot` : la vraie scène
 ## `game/boot.tscn` (HUD, titre de zone, garde, scènes) avec le départ `--start=` (défaut
 ## `pewter`) puis le joueur posé sur `--cell` ; `--interact` (avec `--boot`) : « interagir »
-## après 10 images ; `--flags=a,b` (avec `--boot`) : drapeaux levés avant de poser le joueur.
-## Série complète : `tools/capture_pewter.sh`. 2340 × 1080 : `override.cfg` temporaire à la
+## après 10 images ; `--flags=a,b` (avec `--boot`) : drapeaux levés avant de poser le joueur ;
+## `--hold=right` (avec `--boot`) : direction maintenue après 10 images (poussée contre un bord
+## de carte, jalon 12 T8). Série complète : `tools/capture_pewter.sh`. 2340 × 1080 : `override.cfg` temporaire à la
 ## racine (taille de fenêtre), retiré après.
 
 const TILE: int = 96
@@ -95,6 +96,11 @@ func _setup_boot() -> void:
 	if _args.has("steps"):
 		var step: PackedStringArray = String(_args["steps"]).split(":")
 		_walk(player, _direction(step[0]), int(step[1]))
+	if _args.has("hold"):
+		# Direction maintenue (vraie entrée `move_*`) : poussée contre un bord de carte (J12 T8).
+		for i in 10:
+			await process_frame
+		Input.action_press(StringName("move_" + String(_args["hold"])))
 	if _args.has("interact"):
 		for i in 10:
 			await process_frame
