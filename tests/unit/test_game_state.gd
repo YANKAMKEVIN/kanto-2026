@@ -310,8 +310,8 @@ func test_to_dict_lists_every_saved_field_and_nothing_else() -> void:
 	# ni statistiques (§16.3 « pas stocké »).
 	var keys: Array = _dated().to_dict().keys()
 	keys.sort()
-	# v5 (OUV.1, ouverture.md §2) : prénom du rival et apparence du joueur.
-	assert_eq(keys, ["bag", "cell", "discovered_maps", "facing", "first_wild_encounter",
+	# v5 (OUV.1, ouverture.md §2) : prénom du rival et apparence du joueur ; v6 (J11) : compagnon.
+	assert_eq(keys, ["bag", "cell", "companion", "discovered_maps", "facing", "first_wild_encounter",
 		"flags", "found_items", "heal_map", "heal_spawn", "map", "moments", "money", "party",
 		"play_time", "player_look", "player_name", "pokedex", "rival_name", "rng", "started_at",
 		"starter", "storage"])

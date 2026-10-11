@@ -129,6 +129,14 @@ func _without_status(saved: Dictionary) -> Dictionary:
 			if member is Dictionary:
 				assert_eq((member as Dictionary).get("status"), "", "statut écrit vide")
 				(member as Dictionary).erase("status")
+				# J11 (v5 provisoire) : compteur nul et identifiant attribué au chargement.
+				assert_eq((member as Dictionary).get("status_turns"), 0.0, "compteur écrit nul")
+				(member as Dictionary).erase("status_turns")
+				assert_true(PokemonUid.is_valid((member as Dictionary).get("uid")), "identifiant")
+				(member as Dictionary).erase("uid")
+	# J11 : aucun compagnon au départ.
+	assert_eq(copy.get("companion"), "", "aucun compagnon")
+	copy.erase("companion")
 	return copy
 
 
@@ -266,7 +274,7 @@ func test_the_real_v1_save_resumes_then_is_rewritten_in_v4() -> void:
 	_boot.notification(Node.NOTIFICATION_APPLICATION_PAUSED)
 	var saved := _saved()
 	assert_eq(int(saved.get("version", 0)), SaveSystem.VERSION,
-		"réécrite à la version courante (v5 depuis OUV.1)")
+		"réécrite à la version courante (v6 depuis le J11)")
 	assert_eq(_bag_items(saved), {"poke_ball": 3.0, "potion": 1.0}, "Sac v2")
 	assert_eq(saved.get("money"), 3000.0, "3 000 ₽")
 	assert_eq(saved.get("map"), "route_1")
@@ -317,7 +325,7 @@ func test_the_real_v2_save_resumes_then_is_rewritten_in_v4() -> void:
 	_boot.notification(Node.NOTIFICATION_APPLICATION_PAUSED)
 	var saved := _saved()
 	assert_eq(int(saved.get("version", 0)), SaveSystem.VERSION,
-		"réécrite à la version courante (v5 depuis OUV.1)")
+		"réécrite à la version courante (v6 depuis le J11)")
 	assert_eq(saved.get("money"), 3000.0)
 	assert_eq(saved.get("first_wild_encounter"), {"species": "pidgey", "map": "route_1",
 		"date": "2026-10-02T20:51:16"})
@@ -365,7 +373,7 @@ func test_the_real_end_of_j6_save_resumes_then_is_rewritten_in_v4() -> void:
 	_boot.notification(Node.NOTIFICATION_APPLICATION_PAUSED)
 	var saved := _saved()
 	assert_eq(int(saved.get("version", 0)), SaveSystem.VERSION,
-		"réécrite à la version courante (v5 depuis OUV.1)")
+		"réécrite à la version courante (v6 depuis le J11)")
 	assert_eq(saved.get("money"), 3000.0)
 	assert_eq(saved.get("first_wild_encounter"), {"species": "pidgey", "map": "route_1",
 		"date": "2026-10-02T20:51:16"})
@@ -434,7 +442,7 @@ func test_the_real_v3_save_resumes_then_is_rewritten_in_v4() -> void:
 	_boot.notification(Node.NOTIFICATION_APPLICATION_PAUSED)
 	var saved := _saved()
 	assert_eq(int(saved.get("version", 0)), SaveSystem.VERSION,
-		"réécrite à la version courante (v5 depuis OUV.1)")
+		"réécrite à la version courante (v6 depuis le J11)")
 	var before := v3.duplicate(true)
 	var after := _without_status(saved)
 	for key: String in ["version", "play_time"]:

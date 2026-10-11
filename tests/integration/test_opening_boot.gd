@@ -244,8 +244,10 @@ func test_continue_resumes_the_save_where_it_was() -> void:
 	assert_eq(GameState.player_look, &"hero")
 	assert_true(_boot.get_hud().visible)
 	assert_true(_boot._can_write(), "autosave normal")
-	await wait_until(func() -> bool: return int(_saved().get("version", 0)) == 5, TIMEOUT)
-	assert_eq(int(_saved()["version"]), 5, "premier autosave : la partie passe en v5")
+	await wait_until(func() -> bool: return int(_saved().get("version", 0)) == SaveSystem.VERSION,
+		TIMEOUT)
+	assert_eq(int(_saved()["version"]), SaveSystem.VERSION,
+		"premier autosave : la partie passe à la version courante (v6 depuis le J11)")
 	assert_false(_fs.files.has(PREVIOUS_PATH), "Continuer ne fait aucune copie")
 
 
