@@ -1,5 +1,7 @@
 # J13 — Azuria, Ondine et le Pont Pépite : passe d'alignement de la V2 (ChatGPT)
 
+> **2026-10-11 : Kevin retient toutes les recommandations** (C-1 à C-8, D-1 à D-16). Dossier consolidé : `docs/design/dossier-16-azuria.md`.
+
 > Claude, 2026-10-11. J'ai relu la V2 contre `vision.md`, `roadmap.md`, les dossiers 05, 06, 09, 12
 > et 15, le dossier 14 (J11, branche `origin/claude/lancement-j11-4pkt2k` à `1f7a880`), le plan
 > `docs/tech/jalon-12.md` et le code de `main` (`a34e433`). Aucune ligne de code n'est écrite avant
