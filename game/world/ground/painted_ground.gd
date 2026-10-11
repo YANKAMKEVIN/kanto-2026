@@ -13,6 +13,11 @@ extends Node2D
 ## toutes les cartes peintes jusqu'au J11, qui n'enregistrent aucune de ces propriétés). La Route 3
 ## y met le sol rocheux, le Mont Sélénite ses trois sols (`tools/cave_map_kit.gd`). Toutes les
 ## textures d'un même sol ont la même taille (uniform `texture_size` du shader).
+## **Eau réglable** (jalon 13 T6, docs/tech/jalon-13.md §2.3) : [member water_texture] (nulle =
+## la mer de Bourg Palette), [member foam_strength] (écume, défaut = la mer), [member square_shore]
+## (canaux à angles droits : l'eau couvre exactement ses cases ; les quais sont posés par-dessus,
+## `tools/cerulean_map_kit.gd`). Aux défauts, rien n'est réglé dans le matériau : les cartes
+## d'avant le J13 n'enregistrent aucune de ces propriétés et se dessinent au pixel près pareil.
 
 const SHADER: Shader = preload("res://game/world/lighting/shaders/ground_blend.gdshader")
 const GRASS_TEXTURE: String = "res://assets/world/ground/ground_herbe_01.png"
@@ -20,6 +25,9 @@ const PAVING_TEXTURE: String = "res://assets/world/ground/ground_paves_01.png"
 const PATH_TEXTURE: String = "res://assets/world/ground/ground_chemin_01.png"
 const SAND_TEXTURE: String = "res://assets/world/ground/ground_sable_01.png"
 const WATER_TEXTURE: String = "res://assets/world/ground/ground_eau_01.png"
+## Force de l'écume par défaut (celle de la mer de Bourg Palette ; défaut de l'uniform
+## `foam_strength` du shader).
+const DEFAULT_FOAM_STRENGTH: float = 0.8
 
 ## Taille en cases (celle de la carte).
 @export var size: Vector2i = Vector2i(16, 16):
@@ -52,6 +60,23 @@ const WATER_TEXTURE: String = "res://assets/world/ground/ground_eau_01.png"
 	set(value):
 		g_texture = value
 		_update_textures()
+## Texture de l'eau du rivage (dessinée à sa propre échelle) ; nulle = mer
+## ([constant WATER_TEXTURE]). Sans [member shore_mask], sans effet.
+@export var water_texture: Texture2D:
+	set(value):
+		water_texture = value
+		_update_material()
+## Force de l'écume au bord de l'eau (0 = aucune : quais des canaux).
+@export_range(0.0, 1.0, 0.05) var foam_strength: float = DEFAULT_FOAM_STRENGTH:
+	set(value):
+		foam_strength = value
+		_update_material()
+## Rivage à angles droits : l'eau couvre exactement les cases d'eau du masque, sans bruit ni
+## frange (canaux ; faux = rivage naturel de la mer).
+@export var square_shore: bool = false:
+	set(value):
+		square_shore = value
+		_update_material()
 
 
 func _init() -> void:
@@ -89,7 +114,15 @@ func _update_material() -> void:
 	shader_material.set_shader_parameter(&"shore_mask", shore_mask)
 	if shore_mask != null and shader_material.get_shader_parameter(&"sand_texture") == null:
 		shader_material.set_shader_parameter(&"sand_texture", load(SAND_TEXTURE))
-		shader_material.set_shader_parameter(&"water_texture", load(WATER_TEXTURE))
+	if shore_mask != null:
+		shader_material.set_shader_parameter(&"water_texture",
+			water_texture if water_texture != null else load(WATER_TEXTURE))
+	shader_material.set_shader_parameter(&"water_texture_size",
+		float(water_texture.get_width()) if water_texture != null else null)
+	# Aux défauts, aucun réglage : l'uniform garde la valeur du shader.
+	shader_material.set_shader_parameter(&"foam_strength",
+		null if is_equal_approx(foam_strength, DEFAULT_FOAM_STRENGTH) else foam_strength)
+	shader_material.set_shader_parameter(&"square_shore", true if square_shore else null)
 
 
 ## Pose les trois textures (réglées ou par défaut). Une carte enregistrée sans réglage garde le

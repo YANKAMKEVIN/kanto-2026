@@ -1,0 +1,22 @@
+# Carte d'essai du kit des canaux (jalon 13 T6, tools/cerulean_map_kit.gd) : canal en L de
+# 3 cases de large (vertical x 8..10 depuis le bord nord, horizontal y 4..6 jusqu'au bord est),
+# quais de 2 cases, un pont nord-sud (x 16..17) et un pont est-ouest (y 1..2). 24 × 11 cases :
+# tient en entier dans un écran de S24 (≈ 24 × 11 cases). Ni carte du jeu ni grille de design.
+#
+# Légende (celle d'azuria.txt) : T forêt  . herbe  = chemin  q quai  B pont  w eau
+
+PRATICABLES .=qB
+
+GRILLE 24 11
+00 TT....qqwwwqq...........
+01 TT....qqBBBqq...........
+02 TT....qqBBBqqqqqqqqqqqqq
+03 TT....qqwwwqqqqqqqqqqqqq
+04 TT....qqwwwwwwwwBBwwwwww
+05 TT....qqwwwwwwwwBBwwwwww
+06 TT....qqwwwwwwwwBBwwwwww
+07 TT....qqqqqqqqqqqqqqqqqq
+08 TT....qqqqqqqqqqqqqqqqqq
+09 TT....==================
+10 TTTTTTTTTTTTTTTTTTTTTTTT
+FIN

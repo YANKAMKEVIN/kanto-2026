@@ -8,6 +8,8 @@ extends RefCounted
 ## **Rivage** (DA.2, Bourg Palette) : un second masque, facultatif ([method build_shore] :
 ## R = sable, G = eau), intégré à la scène ([member PaintedGround.shore_mask]) ; une carte sans
 ## plage ni mer n'en a pas.
+## **Rivage sans sable** (jalon 13 T6, canaux d'Azuria, rivière de la Route 24) :
+## [method build_water] (G = eau seule ; les bords sont des quais ou des berges posés par-dessus).
 
 enum Kind { GRASS, PAVING, PATH, SAND, WATER }
 
@@ -51,6 +53,12 @@ static func build_shore(size: Vector2i, sand: Variant, water: Variant = []) -> I
 		if _inside(size, cell):
 			image.set_pixelv(cell, Color(image.get_pixelv(cell).r, 1.0, 0.0))
 	return image
+
+
+## Masque de rivage **sans sable** d'une carte de [param size] cases : canal vert = eau
+## ([param water] : cases → vrai), canal rouge vide (aucune plage). Hors carte : ignoré.
+static func build_water(size: Vector2i, water: Variant) -> Image:
+	return build_shore(size, [], water)
 
 
 ## Nature du rivage de [param cell] d'après [param shore] ([method build_shore]) : eau, sable,

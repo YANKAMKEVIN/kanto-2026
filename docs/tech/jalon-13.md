@@ -776,11 +776,56 @@ et de l'annexe A validée.
   `build_character_frames.gd` (Ondine, Nageur ; en fin), icône Pépite (`preparer_menu.py`). **CA** :
   second passage sans changement ; `test_painted_props` vert ; planche de contrôle relue.
 
-#### T6 — architecte : fondations de l'eau — **maintenant**
+#### T6 — architecte : fondations de l'eau — **fait** (2026-10-11, branche `j13-t6`)
 - §2.3 : `PaintedGround.water_texture`, `foam_strength` (uniform), rivage sans sable ;
   `tools/cerulean_map_kit.gd`. Tests `test_painted_ground`, `test_ground_mask`. **CA** : tests verts,
   import propre ; diff nul sur les `.tscn` existants (Bourg Palette comprise) ; capture d'essai
   (canal en L sur une carte de test) relue.
+- **Fait** :
+  - `ground_blend.gdshader` : uniforms `foam_strength` (0,8, l'ancienne constante),
+    `water_texture_size` (384 : l'eau garde sa propre échelle, × 1,5 comme la mer) et
+    `square_shore` (faux). `square_shore` est un **ajout au §2.3** : avec le masque filtré (1 px =
+    1 case) et le bruit, le bord de l'eau ondule de ± 15 px et arrondit les angles ; vrai = l'eau
+    couvre **exactement** ses cases (`texelFetch`), sans bruit ni frange — seul moyen d'avoir des
+    canaux à angles droits sous des quais.
+  - `PaintedGround` : exports `water_texture` (nul = `ground_eau_01`), `foam_strength`,
+    `square_shore` ; aux défauts **rien n'est réglé** dans le matériau (uniforms à la valeur du
+    shader) ; `water_texture_size` suit la largeur d'une eau réglée.
+  - `GroundMask.build_water(size, eau)` : rivage sans sable (= `build_shore(size, [], eau)`).
+  - `tools/pewter_map_kit.gd` : deux extractions **sans effet** (`add_ground_with(mask, …)`,
+    `_skips_border_decal(cell)`) ; Argenta et Route 2 nord reconstruites : seules différences
+    (hors `unique_id`) = trois lignes `shader_parameter/… = null` des nouveaux uniforms (comme au
+    J12 T7) ; reconstruction **non commitée**.
+  - `tools/cerulean_map_kit.gd` (hérite de la boîte d'Argenta) : praticables lus dans la grille ;
+    `w` → `WATER`, `B` → `BOARDWALK`, `q` → `COBBLE` + pavés du masque [D] ; eau sans sable, à
+    angles droits, écume 0, texture `ground_eau_canal_01` ; `place_quays()` (modules dans les cases
+    d'eau le long de toute frontière eau / sol, étendues bout à bout, pièce d'angle quand le sol
+    n'est qu'en diagonale ; erreur si un module touche une case praticable) ; `bridge_rects()` /
+    `place_bridges({ns, ew})` (rectangles pleins, sens de traversée, tablier en modules répétés) ;
+    graine des quais fixe ; pas de décalcomanie sur l'eau. `add_ground_in_memory()` : carte
+    d'essai sans fichier. `allow_placeholders` (essais et tests seulement) : provisoires
+    **générés en mémoire** (« PROVISOIRE <id> »), rien dans `assets/` ; sans lui, chaque image
+    manquante de la série 15 est une erreur.
+  - Tests : `test_painted_ground` (+ 6 : défauts = mer, défaut du shader, réglages, ordre de
+    chargement, enregistrement, Bourg Palette inchangée), `test_ground_mask` (3),
+    `test_cerulean_map_kit` (10, carte d'essai + vraies grilles d'Azuria et de la Route 24 :
+    eau jamais praticable, ponts et quais praticables, 3 ponts à Azuria, Pont Pépite 2 × 25 `ns`,
+    tous les bords couverts, aucune case praticable sous un quai, graines).
+  - **Preuve au pixel près** : `tools/capture_painted_ground.gd --shore` (Bourg Palette ajouté, à
+    lancer avec `--fixed-fps 60` : `TIME` reproductible) : 16 images, écart **0 / 255** avant /
+    après, scènes enregistrées et `--fresh`. Aucun `.tscn` existant modifié.
+  - Capture d'essai : `tools/capture_cerulean_kit.gd` → `build/captures/j13_t6/canal_essai.png`
+    (2340 × 1080, grille `tests/fixtures/maps/canal_essai.txt`, canal en L, deux ponts, héros sur
+    le pont) relue.
+- **Défauts pris** [D] : rôles des modules `relief_quai_01/02` (sol au nord, face), `03` (sol au
+  sud, lèvre), `04` (côtés, miroir à l'est), `05` (angle, miroirs), `06` (escalier, posé par
+  l'outil de la carte) — **à aligner sur la fiche série 15 (T1) au T5** (`QUAY_PIECES`) ; module
+  long de `round(longueur / 96)` cases, profondeur = celle de l'image ; quais = pavés du masque ;
+  tablier à la largeur exacte du pont ; eau provisoire = mer éclaircie.
+- **Pour T7 / T8** : l'outil donne les tabliers (`{&"ns": id, &"ew": id}`) ; `K` (îlot d'Azuria)
+  tombe dans `cliff_cells` (paroi) : ne pas appeler `place_paroi` sans l'écarter ; le bord de la
+  carte prolonge l'eau (aucun quai contre lui) ; la Route 24 (berges, pas de quais) appellera
+  `place_quays` avec d'autres pièces ou pas du tout.
 
 #### T7 — constructeur-monde : Azuria et ses intérieurs (sans PNJ) — **maintenant**, après T5, T6 et la T8 du J12
 - §2.1, §2.3, §2.5 (cartes), §2.6 (carte) ; cases des PNJ, objets, déclencheurs **réservées** d'après

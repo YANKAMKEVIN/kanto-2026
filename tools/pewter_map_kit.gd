@@ -142,11 +142,19 @@ func add_ground(mask_path: String, undergrowth: Dictionary) -> bool:
 			return false
 	if not ResourceLoader.exists(mask_path):
 		return false
+	add_ground_with(load(mask_path), undergrowth)
+	return true
+
+
+## Ce que fait [method add_ground] une fois le masque prêt : sol peint au masque [param mask]
+## (fichier importé, ou image en mémoire pour une carte d'essai), sous-bois, décalcomanies,
+## `Entities`, couche haute, groupes. Renvoie le sol peint.
+func add_ground_with(mask: Texture2D, undergrowth: Dictionary) -> Node2D:
 	var painted := Node2D.new()
 	painted.set_script(load("res://game/world/ground/painted_ground.gd"))
 	painted.name = "PaintedGround"
 	painted.set(&"size", size)
-	painted.set(&"mask", load(mask_path))
+	painted.set(&"mask", mask)
 	attach(root, painted)
 	var floor_script := load("res://game/world/ground/forest_floor.gd") as GDScript
 	attach(root, floor_script.call(&"create", size, undergrowth) as Node)
@@ -168,7 +176,7 @@ func add_ground(mask_path: String, undergrowth: Dictionary) -> bool:
 		var node := Node2D.new()
 		node.name = group
 		attach(root, node)
-	return true
+	return painted
 
 
 ## Sous-bois par défaut : forêt pleine, et sous la paroi (les jours entre les modules de rochers
@@ -370,7 +378,7 @@ func place_border_decals(seed_value: int, keep: float = 1.0) -> void:
 	var kept: Array[Dictionary] = []
 	for entry: Dictionary in raw:
 		var cell := Vector2i((entry["position"] as Vector2) / TILE)
-		if forest_cells.has(cell) or cliff_cells.has(cell):
+		if _skips_border_decal(cell):
 			continue
 		if String(entry["texture"]).contains("decal_pave") and paved_cells.is_empty():
 			continue
@@ -378,6 +386,12 @@ func place_border_decals(seed_value: int, keep: float = 1.0) -> void:
 			continue
 		kept.append(entry)
 	script.call(&"place", kept, decals, root)
+
+
+## Vrai si aucune décalcomanie de bordure ne va sur [param cell] (forêt, paroi ; une boîte à
+## outils dérivée en ajoute : eau et ponts, `tools/cerulean_map_kit.gd`).
+func _skips_border_decal(cell: Vector2i) -> bool:
+	return forest_cells.has(cell) or cliff_cells.has(cell)
 
 
 ## Touffes et fleurs sur l'herbe rase (`.`) : [param attempts] tirages, fleurs rares et
