@@ -588,3 +588,44 @@ une seule CT34), données des dialogues et scènes (textes mot pour mot contre l
 Pas de test de rechargement entre deux répliques : le drapeau et l'objet sont posés dans la même
 scène, sauvegardée à sa fin (une fermeture en pleine scène rejoue la remise, jamais deux CT : le
 Sac n'est écrit qu'à la fin).
+
+### T12 — Sac « CT » et apprentissage (2026-10-11, 11B)
+
+`BagQuery` : onglet `tm` (« CT », n° 38) entre AVENTURE et OBJETS CLÉS, absent sans CT ; carte sans
+quantité (`BagEntryView.permanent`), bouton APPRENDRE (n° 42), détail « Normal · Puissance — ·
+Précision — · PP 10 » puis la description (`BagQuery.tm_detail`) ; en combat : inutilisable, mention
+n° 44, jamais affichée dans le Sac du combat ; absente du Sac ouvert depuis l'Équipe. Choix du
+Pokémon : COMPATIBLE / INCOMPATIBLE / DÉJÀ CONNUE (n° 41) affichés pour tous
+(`PartyTargetView.show_reason`), seul COMPATIBLE se touche ; titres « CT34 — Patience — à quel
+Pokémon ? » / « Apprendre à… » [D]. `MenuDirector.use_item_on` d'une CT : signal
+`tm_learn_requested` (rien n'est consommé) ; Boot ouvre `TmLearnOverlay` (voile au-dessus du menu,
+bandeau et hôte des panneaux) et joue `MoveLearnPrompt.teach` (« … apprend … ! » n° 43, ou l'offre
+d'oubli existante, GARDER / NE PAS APPRENDRE), puis `finish_tm_learn` (choix rafraîchi, autosave à la
+fermeture si appris). Légende de l'onglet « Des capacités à enseigner à tes Pokémon. » et icône
+générique [D]. Tests : `test_bag_tm` (unitaires), `test_tm_learn` (vrai Boot : place libre ; quatre
+capacités → panneau d'oubli → NE PAS APPRENDRE). Captures relues (`tools/capture_tm_j11.gd`) :
+lisibles ; **reporté (rendu)** : nom de la CT tronqué sur la carte (« CT34 — Pati… »), icône
+générique.
+
+### Procédure du T16 (qa-mobile, QA téléphone de 11B, sur le Mac)
+
+Départs de débogage seulement (la vraie sauvegarde n'est ni lue ni écrite). `tools/test.sh` vert.
+
+1. `tools/deploy_s24.sh --debug-start badge_after` (Arène d'Argenta, badge obtenu, pas de CT) :
+   parler à Pierre → « J'allais oublier. » / « Ceci devrait t'être utile. », toast « CT34 — Patience »
+   / « obtenue », « Avec Patience, ton Pokémon encaisse, / puis rend les coups au double. » ; lui
+   reparler → l'allusion au rival (plus de remise). Capture du toast.
+2. Sac : onglet **CT** présent (absent sur un départ sans CT, par ex. `pewter`), carte, détail
+   (type, puissance, précision, PP, description), APPRENDRE. Choix : Salamèche, Papilusion et Roucool
+   tous **COMPATIBLE** dans ce départ (Rouge/Bleu) ; INCOMPATIBLE (Chenipan, Aspicot…) est couvert
+   par les tests, ou par une capture d'un Chenipan en forêt si Kevin le souhaite. Salamèche → « Salamèche apprend Patience ! » ; la CT reste au Sac ; Salamèche passe à
+   DÉJÀ CONNUE. Avec quatre capacités : panneau d'oubli, NE PAS APPRENDRE → rien ne change ; oublier
+   une capacité → « … oublie … et apprend Patience ! ». Captures.
+3. Combat sauvage (Route 2 nord, sortie nord d'Argenta) : Patience → « se prépare à encaisser ! » ;
+   aux tours 2 et 3 **aucun choix proposé** ; « encaisse ! », puis « riposte ! » et le double des
+   dégâts reçus (ou « Mais ça échoue ! » sans coup reçu) ; paralysie / sommeil / confusion si l'occasion
+   se présente : « La patience de … est rompue ! ».
+4. Boutique : la CT n'apparaît pas dans VENDRE.
+5. Pierre dans une nouvelle partie (départ `brock_charmander` / `brock_squirtle`, victoire) :
+   « Prends ceci aussi. » juste après « C'est la preuve de ta victoire / à l'Arène d'Argenta. ».
+6. Rapport `build/qa/jalon11_t16/rapport.md` → validation de 11B par Kevin.

@@ -79,8 +79,9 @@ func set_target(target: PartyTargetView) -> void:
 	_hp_bar.set_hp(member.hp, member.max_hp)
 	_hp_text.text = BattleInfoCard.HP_FORMAT % [member.hp, member.max_hp]
 	_thumb.texture = MenuArt.pokemon_thumbnail(member.dex_number)
-	_reason.text = "" if target.usable else target.reason
-	_reason.visible = not target.usable and not target.reason.is_empty()
+	var shows_reason := not target.usable or target.show_reason
+	_reason.text = target.reason if shows_reason else ""
+	_reason.visible = shows_reason and not target.reason.is_empty()
 	_chevron.visible = target.usable
 	theme_type_variation = _row_variation if target.usable else _row_off_variation
 	normal_variation = theme_type_variation
