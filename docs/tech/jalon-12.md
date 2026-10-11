@@ -587,9 +587,11 @@ Branche d'intégration **`jalon-12`** depuis `main` (copie dédiée), une branch
 
 ---
 
-## 7. Questions pour Kevin
+## 7. Questions pour Kevin — tranchées le 2026-10-11 (toutes les recommandations retenues)
 
-Vraies questions (une valeur par défaut permet de continuer) :
+**Décisions de Kevin (2026-10-11)** : **Q-1 oui** (T1–T4, T6–T10 lancés avant la clôture du J11, sur `jalon-12` non fusionnée) ; **Q-2 oui** (EXAMINER face à l'indice, sans scintillement ni son) ; **Q-3 : lot de l'annexe A validé**.
+
+Questions telles que posées :
 
 - **Q-1 — Lancement avant la clôture du J11.** C-7 met le **code** après le J11 et laisse l'art avancer. Ce plan fait partir aussi, sur la branche `jalon-12` non fusionnée, les **cartes sans combat** (Route 3, Centre, sas, trois étages : décor, lumière, échelles, gravats peints), leurs outils et des fondations de carte qui ne touchent ni au combat, ni à la sauvegarde, ni aux fichiers du J11 (§1.2 : T1–T4, T6–T10). *Recommandation : oui — c'est ce qui permet de juger la lisibilité de la grotte sur captures bien avant 12B ; rien de cela n'entre dans `main` avant la fin du J12.*
 - **Q-2 — Objets cachés et bouton contextuel.** Sur téléphone, on n'interagit qu'avec le bouton contextuel, qui n'apparaît que face à quelque chose d'examinable ; face à l'indice (caillou, éclat), il affichera donc EXAMINER — ce qui révèle l'objet à qui s'arrête devant. *Recommandation : l'accepter (rien ne s'affiche avant d'être face à l'indice, aucun scintillement, aucun son : c'est le décor qui guide, le bouton ne fait que confirmer).* Alternatives : rendre examinables d'autres cailloux sans objet (leurres, textes en plus) ; ou une règle d'interface nouvelle (bouton « INTERAGIR » toujours visible), qui change l'interface du jeu entier.
@@ -599,7 +601,7 @@ Vraies questions (une valeur par défaut permet de continuer) :
 
 ---
 
-## 8. Premières tâches à lancer maintenant (si Q-1 est accepté)
+## 8. Premières tâches à lancer maintenant (Q-1 accepté le 2026-10-11)
 
 1. Créer **`jalon-12` depuis `main`** dans une copie dédiée.
 2. **T1** (architecte) : kit de la série 14 → **T2** (Mac, Codex) → planche de contact pour Kevin.
@@ -609,7 +611,7 @@ Vraies questions (une valeur par défaut permet de continuer) :
 
 ---
 
-## Annexe A — Textes à valider (Q-3)
+## Annexe A — Textes VALIDÉS par Kevin le 2026-10-11 (Q-3)
 
 Conventions des lots précédents : bulles de 2 lignes de ~40 caractères, `[e]` = forme au féminin du Pokémon (`text_f`). Ton du Pokédex : carnet de terrain, ce qui s'observe, aucun secret dévoilé.
 
