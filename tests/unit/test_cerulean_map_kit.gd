@@ -10,7 +10,7 @@ const Kit := preload("res://tools/cerulean_map_kit.gd")
 const ESSAI: String = "res://tests/fixtures/maps/canal_essai.txt"
 const GRIDS: Dictionary[String, Vector2i] = {
 	"res://tests/fixtures/maps/canal_essai.txt": Vector2i(24, 11),
-	"res://tools/plans/azuria.txt": Vector2i(56, 46),
+	"res://tools/plans/azuria.txt": Vector2i(56, 41),
 	"res://tools/plans/route_24.txt": Vector2i(56, 62),
 }
 
