@@ -57,6 +57,11 @@ const RESULT_FORMAT: String = "+%d PV — %s %d/%d"
 ## le 2026-10-07), par statut : masculin, puis féminin (Pokémon femelle).
 const STATUS_CURED_FORMATS: Dictionary[StringName, Array] = {
 	StatusRules.POISON: ["%s n'est plus empoisonné.", "%s n'est plus empoisonnée."],
+	# Jalon 11 (dossier 14 §13, n° 4, 9, 13, 16).
+	StatusRules.PARALYSIS: ["%s n'est plus paralysé.", "%s n'est plus paralysée."],
+	StatusRules.SLEEP: ["%s est réveillé.", "%s est réveillée."],
+	StatusRules.BURN: ["%s n'est plus brûlé.", "%s n'est plus brûlée."],
+	StatusRules.FREEZE: ["%s n'est plus gelé !", "%s n'est plus gelée !"],
 }
 ## Sac sans objet (Q-2) ; depuis la fiche Équipe, aucun objet à donner.
 const EMPTY_TEXT: String = "Ton Sac est vide."

@@ -57,8 +57,8 @@
 	"sleep_powder": {
 		"name": "Poudre Dodo", "type": "grass", "category": "status",
 		"accuracy": 75, "pp": 15,
-		"pending_effects": ["sleep"],
-		"description": "Une poudre soporifique qui endort la cible. Sans effet dans le moteur actuel."
+		"effects": [{ "kind": "status", "status": "sleep" }],
+		"description": "Une poudre soporifique qui endort la cible."
 	},
 	"vine_whip": {
 		"name": "Fouet Lianes", "type": "grass", "category": "physical",
@@ -79,13 +79,13 @@
 	"ember": {
 		"name": "Flammèche", "type": "fire", "category": "special",
 		"power": 40, "accuracy": 100, "pp": 25,
-		"pending_effects": ["burn_10"],
+		"effects": [{ "kind": "status", "status": "burn", "chance": 10 }],
 		"description": "De petites flammes frappent la cible. Peut la brûler."
 	},
 	"flamethrower": {
 		"name": "Lance-Flammes", "type": "fire", "category": "special",
 		"power": 90, "accuracy": 100, "pp": 15,
-		"pending_effects": ["burn_10"],
+		"effects": [{ "kind": "status", "status": "burn", "chance": 10 }],
 		"description": "Un torrent de flammes s'abat sur la cible. Peut la brûler."
 	},
 	"fire_spin": {
@@ -251,7 +251,7 @@
 	},
 	"body_slam": {
 		"name": "Plaquage", "type": "normal", "category": "physical",
-		"power": 85, "accuracy": 100, "pp": 15, "pending_effects": ["paralysis_30"],
+		"power": 85, "accuracy": 100, "pp": 15, "effects": [{ "kind": "status", "status": "paralysis", "chance": 30 }],
 		"description": "Le lanceur se jette de tout son poids sur la cible. Peut la paralyser."
 	},
 	"string_shot": {
@@ -268,13 +268,13 @@
 	},
 	"thunder_shock": {
 		"name": "Éclair", "type": "electric", "category": "special",
-		"power": 40, "accuracy": 100, "pp": 30, "pending_effects": ["paralysis_10"],
+		"power": 40, "accuracy": 100, "pp": 30, "effects": [{ "kind": "status", "status": "paralysis", "chance": 10 }],
 		"description": "Une décharge électrique frappe la cible. Peut la paralyser."
 	},
 	"thunder_wave": {
 		"name": "Cage-Éclair", "type": "electric", "category": "status",
-		"accuracy": 90, "pp": 20, "pending_effects": ["paralysis"],
-		"description": "Une faible onde électrique paralyse la cible. Sans effet dans le moteur actuel."
+		"accuracy": 90, "pp": 20, "effects": [{ "kind": "status", "status": "paralysis" }],
+		"description": "Une faible onde électrique paralyse la cible."
 	},
 	"confusion": {
 		"name": "Choc Mental", "type": "psychic", "category": "special",
@@ -283,8 +283,8 @@
 	},
 	"stun_spore": {
 		"name": "Para-Spore", "type": "grass", "category": "status",
-		"accuracy": 75, "pp": 30, "pending_effects": ["paralysis"],
-		"description": "Une poudre qui engourdit et paralyse la cible. Sans effet dans le moteur actuel."
+		"accuracy": 75, "pp": 30, "effects": [{ "kind": "status", "status": "paralysis" }],
+		"description": "Une poudre qui engourdit et paralyse la cible."
 	},
 	"supersonic": {
 		"name": "Ultrason", "type": "normal", "category": "status",
@@ -314,7 +314,7 @@
 	},
 	"thunder": {
 		"name": "Fatal-Foudre", "type": "electric", "category": "special",
-		"power": 110, "accuracy": 70, "pp": 10, "pending_effects": ["paralysis_30"],
+		"power": 110, "accuracy": 70, "pp": 10, "effects": [{ "kind": "status", "status": "paralysis", "chance": 30 }],
 		"description": "Une foudre violente s'abat sur la cible. Peut la paralyser."
 	},
 	"rock_throw": {

@@ -185,8 +185,10 @@ func test_status_move_useless_at_the_bound() -> void:
 	var seeder := _smart_side(&"bulbasaur", [&"leech_seed"], [&"grass"])
 	foe.active.seed_fraction = 0.125
 	assert_eq(_score(&"leech_seed", seeder, foe), 0.0, "déjà une graine")
-	assert_eq(_score(&"sleep_powder", seeder, foe), 0.0,
-		"effet que le moteur ne gère pas encore (sommeil : J11)")
+	assert_eq(_score(&"supersonic", seeder, foe), 0.0,
+		"effet que le moteur ne gère pas encore (confusion : T5 du J11)")
+	foe.active.pokemon.status = StatusRules.SLEEP
+	assert_eq(_score(&"sleep_powder", seeder, foe), 0.0, "cible déjà endormie (J11)")
 
 
 ## Règle 4 : sous ⅓ de ses PV, plus aucune capacité de statut.

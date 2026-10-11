@@ -10,7 +10,8 @@ extends RefCounted
 ## aléatoire ⌊× (85..100) / 100⌋, bonus de type (STAB) ×1,5, efficacité ; chaque étape
 ## arrondie vers le bas, minimum 1 si l'efficacité n'est pas nulle. Physique : Attaque /
 ## Défense ; spéciale : Attaque Spéciale / Défense Spéciale. Un critique ignore les baisses
-## de l'attaquant et les hausses du défenseur.
+## de l'attaquant et les hausses du défenseur. Un attaquant brûlé inflige moitié moins de dégâts
+## physiques (jalon 11, après l'efficacité, au moins 1).
 
 @warning_ignore_start("integer_division")
 
@@ -40,6 +41,9 @@ static func compute(attacker: Battler, defender: Battler, move: MoveData, chart:
 	if not move.typeless and attacker.types.has(move.type):
 		damage = damage * 3 / 2
 	damage = floori(damage * result.effectiveness)
+	# Brûlure (jalon 11, [StatusRules]) : dégâts physiques du lanceur brûlé ÷ 2.
+	if physical and StatusRules.halves_physical(attacker.pokemon.status):
+		damage = damage / 2
 	result.amount = maxi(damage, 1)
 	return result
 

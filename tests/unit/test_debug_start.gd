@@ -531,12 +531,12 @@ func test_status_marks_a_member() -> void:
 func test_status_must_be_a_known_status() -> void:
 	var start := DebugStart.new()
 	assert_false(start.add_from_dict({ "party": [
-		{ "species": "charmander", "level": 9, "status": "paralysis" },
+		{ "species": "charmander", "level": 9, "status": "toxic" },
 		{ "species": "pidgey", "level": 7, "status": 3 },
 	] }, _data, _items, "s"))
 	var errors := "\n".join(start.get_errors())
-	assert_string_contains(errors, "s party 1 : « status » est vide ou l'un de : poison")
-	assert_string_contains(errors, "s party 2 : « status » est vide ou l'un de : poison")
+	assert_string_contains(errors, "s party 1 : « status » est vide ou l'un de : poison, paralysis, sleep, burn, freeze")
+	assert_string_contains(errors, "s party 2 : « status » est vide ou l'un de : poison, paralysis, sleep, burn, freeze")
 	assert_eq(start.party.size(), 0, "tout ou rien")
 	assert_push_error_count(2)
 

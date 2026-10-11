@@ -298,7 +298,7 @@ func test_cures() -> void:
 	var cases := {
 		"a": [{"category": "heal"}, "un soin a « heal_amount » ou « cures »"],
 		"b": [{"cures": []}, "« cures » doit être une liste non vide"],
-		"c": [{"cures": ["paralysis"]}, "« cures » doit être une liste non vide"],
+		"c": [{"cures": ["toxic"]}, "« cures » doit être une liste non vide"],
 		"d": [{"cures": ["poison", "poison"]}, "sans doublon"],
 		"e": [{"cures": "poison"}, "« cures » doit être une liste non vide"],
 		"f": [{"category": "ball", "catch_bonus": 1}, "« cures » est réservé aux soins"],

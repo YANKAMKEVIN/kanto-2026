@@ -32,6 +32,16 @@ extends RefCounted
 ## ([method _faint]). Capture : [method StatusRules.catch_bonus] de la cible. Antidote :
 ## ITEM_USED puis STATUS_CURED ([method ItemUse.cure]).
 ##
+## Statuts du J11 (`jalon-11.md` §2.2, dossier 14 §3.1, [StatusRules]) : avant de lancer sa
+## capacité, chaque Pokémon passe [method StatusRules.check_act] — réveil ou dégel
+## (STATUS_ENDED, il agit), ou empêchement (STATUS_PREVENTED : paralysie totale, sommeil, gel ;
+## aucun PP dépensé). Tirages : roll(100) pour un Pokémon paralysé ou gelé, avant ceux de sa
+## capacité ; roll(3) pour la durée du sommeil quand il est infligé. Vitesse ÷ 2 d'un Pokémon
+## paralysé pour l'ordre ; brûlure : 1/16 en fin de tour (avec le poison, même place) et
+## dégâts physiques ÷ 2 ([DamageCalc]). Une capacité Feu qui touche un Pokémon gelé le dégèle.
+## Capacité de statut sans effet sur le type de la cible (Cage-Éclair sur Sol) : NO_EFFECT ;
+## sur une cible qui a déjà un autre statut : FAILED (« Mais ça échoue ! »).
+##
 ## XP (jalon 5 §2.3, Q23, Q24) : seulement si [member BattleRules.gives_exp] (règles nulles :
 ## pas d'XP, comme le combat du rival du 4B). Les [b]participants[/b] sont les Pokémon du
 ## joueur envoyés contre l'adversaire en jeu (liste remise à zéro quand l'adversaire change).
@@ -450,11 +460,18 @@ func _player_goes_second(player_action: BattleAction, foe_action: BattleAction) 
 	var foe_priority := _priority(_foe, foe_action)
 	if player_priority != foe_priority:
 		return foe_priority > player_priority
-	var player_speed := _player.active.effective_stat(&"spe")
-	var foe_speed := _foe.active.effective_stat(&"spe")
+	var player_speed := _speed(_player)
+	var foe_speed := _speed(_foe)
 	if player_speed != foe_speed:
 		return foe_speed > player_speed
 	return _rng.roll(2) == 2
+
+
+## Vitesse effective du Pokémon en jeu de [param side] pour l'ordre d'action : niveaux de
+## statistiques compris, ÷ 2 s'il est paralysé (jalon 11, [StatusRules]).
+func _speed(side: BattleSide) -> int:
+	return floori(side.active.effective_stat(&"spe")
+		* StatusRules.speed_multiplier(side.active.pokemon.status))
 
 
 func _priority(side: BattleSide, action: BattleAction) -> int:
@@ -476,6 +493,8 @@ func _execute(side: BattleSide, action: BattleAction, events: Array[BattleEvent]
 	var move := _data.get_move(move_id)
 	if move == null:
 		push_error("Battle : capacité inconnue « %s »" % move_id)
+		return
+	if not _can_act(side, events):
 		return
 	var used := _event(BattleEvent.Kind.MOVE_USED, side)
 	used.move_id = move_id
@@ -503,6 +522,7 @@ func _execute(side: BattleSide, action: BattleAction, events: Array[BattleEvent]
 		damage.effectiveness = result.effectiveness
 		damage.critical = result.critical
 		events.append(damage)
+		_thaw_by_fire(move, target_side, events)
 	elif not DamageCalc.accuracy_check(user, target, move, _rng):
 		_append_missed(side, move_id, events)
 		return
@@ -513,6 +533,36 @@ func _execute(side: BattleSide, action: BattleAction, events: Array[BattleEvent]
 	if user.pokemon.is_fainted():
 		_faint(side, events)
 	_check_end(side, events)
+
+
+## Statut du lanceur au moment d'agir ([method StatusRules.check_act]) : réveil ou dégel
+## (STATUS_ENDED, il agit), ou empêchement (STATUS_PREVENTED : faux, rien n'est lancé).
+func _can_act(side: BattleSide, events: Array[BattleEvent]) -> bool:
+	var pokemon := side.active.pokemon
+	var status := pokemon.status
+	var act := StatusRules.check_act(pokemon, _rng)
+	if act == StatusRules.Act.WOKE_UP or act == StatusRules.Act.THAWED:
+		var ended := _event(BattleEvent.Kind.STATUS_ENDED, side)
+		ended.status = status
+		events.append(ended)
+	elif StatusRules.prevents_action(act):
+		var prevented := _event(BattleEvent.Kind.STATUS_PREVENTED, side)
+		prevented.status = status
+		events.append(prevented)
+		return false
+	return true
+
+
+## Une capacité Feu qui touche un Pokémon gelé le dégèle (STATUS_ENDED ; jalon 11).
+func _thaw_by_fire(move: MoveData, target_side: BattleSide, events: Array[BattleEvent]) -> void:
+	var target := target_side.active.pokemon
+	if move.typeless or move.type != &"fire" or target.is_fainted() \
+			or target.status != StatusRules.FREEZE:
+		return
+	target.cure_status()
+	var ended := _event(BattleEvent.Kind.STATUS_ENDED, target_side)
+	ended.status = StatusRules.FREEZE
+	events.append(ended)
 
 
 func _apply_effect(effect: MoveEffect, move: MoveData, side: BattleSide,
@@ -570,9 +620,16 @@ func _inflict_status(effect: MoveEffect, move: MoveData, target_side: BattleSide
 		return
 	if effect.chance < 100 and _rng.roll(100) > effect.chance:
 		return
+	# Capacité de statut sans effet sur le type de la cible (Cage-Éclair sur Sol, jalon 11 [D]).
+	if not move.is_damaging() and not move.typeless \
+			and _data.get_type_chart().multiplier(move.type, target.types) == 0.0:
+		var no_effect := _event(BattleEvent.Kind.NO_EFFECT, target_side)
+		no_effect.move_id = move.id
+		events.append(no_effect)
+		return
 	var check := StatusRules.can_inflict(effect.status, target.pokemon, target.types)
 	if check == StatusRules.Inflict.OK:
-		target.pokemon.status = effect.status
+		StatusRules.apply(effect.status, target.pokemon, _rng)
 		var inflicted := _event(BattleEvent.Kind.STATUS_INFLICTED, target_side)
 		inflicted.status = effect.status
 		events.append(inflicted)
@@ -583,11 +640,20 @@ func _inflict_status(effect: MoveEffect, move: MoveData, target_side: BattleSide
 		var immune := _event(BattleEvent.Kind.NO_EFFECT, target_side)
 		immune.move_id = move.id
 		events.append(immune)
-	elif check == StatusRules.Inflict.ALREADY:
+	elif check == StatusRules.Inflict.ALREADY and target.pokemon.status == effect.status:
 		var unchanged := _event(BattleEvent.Kind.STATUS_UNCHANGED, target_side)
 		unchanged.move_id = move.id
 		unchanged.status = target.pokemon.status
 		events.append(unchanged)
+	elif check == StatusRules.Inflict.ALREADY:
+		_append_failed(_foe if target_side == _player else _player, move.id, events)
+
+
+## La capacité [param move_id] du lanceur ([param side]) échoue : FAILED (« Mais ça échoue ! »).
+func _append_failed(side: BattleSide, move_id: StringName, events: Array[BattleEvent]) -> void:
+	var failed := _event(BattleEvent.Kind.FAILED, side)
+	failed.move_id = move_id
+	events.append(failed)
 
 
 func _append_missed(side: BattleSide, move_id: StringName, events: Array[BattleEvent]) -> void:

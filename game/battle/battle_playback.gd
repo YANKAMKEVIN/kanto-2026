@@ -40,6 +40,8 @@ extends RefCounted
 ## - STATUS_DAMAGED : POISON (voile violet et barre de PV ensemble), puis le message ;
 ## - STATUS_CURED : STATUS_TAG (l'étiquette part), puis le message ;
 ## - STATUS_UNCHANGED : le message seulement.
+## Jalon 11 : STATUS_ENDED (réveil, dégel) comme STATUS_CURED ; STATUS_PREVENTED et FAILED :
+## le message seulement.
 ## Les phrases viennent de [BattleText] : rien n'est écrit ici.
 
 
@@ -103,7 +105,7 @@ static func beats(event: BattleEvent, texts: BattleText, data: PokemonData,
 		BattleEvent.Kind.STATUS_DAMAGED:
 			result.append(BattleBeat.new(BattleBeat.Kind.POISON, event))
 			result.append_array(messages)
-		BattleEvent.Kind.STATUS_CURED:
+		BattleEvent.Kind.STATUS_CURED, BattleEvent.Kind.STATUS_ENDED:
 			result.append(BattleBeat.new(BattleBeat.Kind.STATUS_TAG, event))
 			result.append_array(messages)
 		BattleEvent.Kind.WITHDRAWN:

@@ -38,6 +38,10 @@ extends RefCounted
 ## STATUS_CURED → « status_inflicted_<statut> », « status_unchanged_<statut> »,
 ## « status_damaged_<statut> », « status_cured_<statut> » ([member BattleEvent.status] ; pas de
 ## phrase pour un statut sans modèle). Immunité : NO_EFFECT (« no_effect »).
+## Jalon 11 (dossier 14 §13, lot validé le 2026-10-10) : paralysie, sommeil, brûlure, gel avec
+## les mêmes préfixes, plus STATUS_PREVENTED → « status_prevented_<statut> » (ne peut pas agir)
+## et STATUS_ENDED → « status_ended_<statut> » (réveil, dégel) ; FAILED → « move_failed »
+## (« Mais ça échoue ! », cas nouveaux du J11 seulement).
 ## Changement de Pokémon (jalon 7) : WITHDRAWN → « withdrawn » (« Reviens, Salamèche ! ») ; le
 ## Pokémon envoyé reprend « sent_out_player ». Le panneau ÉQUIPE lit, sans événement
 ## ([method get_template]), « switch_reason_active », « switch_reason_fainted » (raisons sur
@@ -86,6 +90,15 @@ const TEMPLATE_IDS: Array[StringName] = [
 	&"summary_exp", &"summary_level", &"summary_stat", &"summary_continue",
 	&"status_inflicted_poison", &"status_unchanged_poison", &"status_damaged_poison",
 	&"status_cured_poison",
+	&"status_inflicted_paralysis", &"status_unchanged_paralysis", &"status_prevented_paralysis",
+	&"status_cured_paralysis",
+	&"status_inflicted_sleep", &"status_unchanged_sleep", &"status_prevented_sleep",
+	&"status_ended_sleep", &"status_cured_sleep",
+	&"status_inflicted_burn", &"status_unchanged_burn", &"status_damaged_burn",
+	&"status_cured_burn",
+	&"status_inflicted_freeze", &"status_unchanged_freeze", &"status_prevented_freeze",
+	&"status_ended_freeze", &"status_cured_freeze",
+	&"move_failed",
 	&"evolution_started", &"evolution_finished", &"evolution_cancelled", &"evolution_stop",
 ]
 ## Entre deux gains de statistiques du bilan (« PV +2 · Attaque +1 »).
@@ -102,6 +115,8 @@ const _STATUS_PREFIXES: Dictionary[BattleEvent.Kind, String] = {
 	BattleEvent.Kind.STATUS_UNCHANGED: "status_unchanged",
 	BattleEvent.Kind.STATUS_DAMAGED: "status_damaged",
 	BattleEvent.Kind.STATUS_CURED: "status_cured",
+	BattleEvent.Kind.STATUS_PREVENTED: "status_prevented",
+	BattleEvent.Kind.STATUS_ENDED: "status_ended",
 }
 const _VOWELS: String = "AEIOUYÀÂÄÉÈÊËÎÏÔÖÙÛÜaeiouyàâäéèêëîïôöùûü"
 
@@ -279,8 +294,11 @@ func lines(event: BattleEvent, data: PokemonData, trainer: TrainerData = null) \
 			result.append(_fill(&"item_used", event, data))
 			if event.amount > 0:
 				result.append(_fill(&"hp_restored", event, data))
+		BattleEvent.Kind.FAILED:
+			result.append(_fill(&"move_failed", event, data))
 		BattleEvent.Kind.STATUS_INFLICTED, BattleEvent.Kind.STATUS_UNCHANGED, \
-				BattleEvent.Kind.STATUS_DAMAGED, BattleEvent.Kind.STATUS_CURED:
+				BattleEvent.Kind.STATUS_DAMAGED, BattleEvent.Kind.STATUS_CURED, \
+				BattleEvent.Kind.STATUS_PREVENTED, BattleEvent.Kind.STATUS_ENDED:
 			var id := StringName("%s_%s" % [_STATUS_PREFIXES[event.kind], event.status])
 			if _texts.has(id):
 				result.append(_fill(id, event, data))
