@@ -1,5 +1,7 @@
 # Dossier 16 — Route 4, Azuria, Ondine et le Pont Pépite (jalon 13)
 
+> **VERROUILLÉ — validé par Kevin le 2026-10-11** (arbitrages, lot de textes §21, valeurs par défaut §22).
+
 > **Consolidé par Claude le 2026-10-11**, à partir de trois sources :
 > - la V2 de Kevin avec ChatGPT (`passes/j13-v2-chatgpt.md` : 9 arbitrages créatifs, C-1 à C-8) ;
 > - la passe d'alignement de Claude (`passes/j13-v2-alignement.md`, D-1 à D-16) ;
@@ -551,7 +553,7 @@ Avant toute carte, Kevin valide les **grilles `tools/plans/`** (Route 4, Azuria,
 et la **vue générale peinte** (filière des J9, J10 et J12). Les images de la V2 ne vont pas dans
 le dépôt.
 
-## 21. Lot de textes — À VALIDER par Kevin
+## 21. Lot de textes — VALIDÉ par Kevin le 2026-10-11
 
 > **Numérotés pour une réponse groupée** (« 12 : … »). Les répliques sont courtes. Le rival est
 > sobre et compétitif ; Ondine est directe et chaleureuse ; le recruteur est poli et un peu trop
@@ -678,7 +680,7 @@ le dépôt.
     Ortide, Chétiflor, Boustiflor) et zones : rédigées dans l'annexe du plan `jalon-13.md`, comme
     l'annexe A du J12.
 
-## 22. Valeurs par défaut (règle 4)
+## 22. Valeurs par défaut (règle 4) — validées par Kevin le 2026-10-11
 
 - **Enveloppes** : Route 4 ≈ 64 × 24, Azuria ≈ 56 × 46, Arène ≈ 17 × 13, pont 2 cases de large.
 - **Ville** : 3 ponts ; Route 4 avec 2–3 zones d'herbes ; espace nord avec 2 zones d'herbes.
