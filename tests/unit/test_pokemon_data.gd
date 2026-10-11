@@ -74,8 +74,8 @@ func test_real_data_loads_without_error() -> void:
 		&"pikachu", &"raichu", &"sandshrew", &"sandslash", &"nidoran_f", &"nidorina",
 		&"nidoqueen", &"nidoran_m", &"nidorino", &"nidoking", &"mankey", &"primeape",
 		&"geodude", &"graveler", &"golem", &"onix"] as Array[StringName])
-	assert_eq(_data.get_move_ids().size(), 66,
-		"47 + 12 de la Forêt de Jade (jalon 9) + 7 d'Argenta (jalon 10)")
+	assert_eq(_data.get_move_ids().size(), 67,
+		"47 + 12 de la Forêt de Jade (jalon 9) + 7 d'Argenta (jalon 10) + Patience (J11)")
 	assert_true(_data.has_move(&"struggle"))
 
 

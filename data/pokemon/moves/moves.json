@@ -353,6 +353,11 @@
 		"power": 80, "accuracy": 75, "pp": 20,
 		"description": "Le lanceur frappe la cible de sa longue queue ou de ses lianes."
 	},
+	"bide": {
+		"name": "Patience", "type": "normal", "category": "status",
+		"accuracy": 0, "pp": 10, "pending_effects": ["bide"],
+		"description": "Encaisse deux tours, puis riposte avec le double des dégâts reçus."
+	},
 	"struggle": {
 		"name": "Lutte", "type": "normal", "category": "physical",
 		"power": 50, "accuracy": 0, "pp": 1, "typeless": true,

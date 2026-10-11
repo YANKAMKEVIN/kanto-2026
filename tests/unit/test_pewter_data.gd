@@ -136,9 +136,10 @@ func test_new_move_texts_are_the_validated_lot() -> void:
 		assert_true(_lot.contains("| « %s » |" % move.name), "%s : nom" % id)
 		assert_true(_lot.contains("| « %s » |" % move.description), "%s : description" % id)
 		assert_false(move.draft, String(id))
-	# Note A1 : ni « Patience », ni « Ligotage », ni « Autodestruction ».
-	for id: StringName in [&"bide", &"wrap"]:
-		assert_false(_data.has_move(id), String(id))
+	# Note A1 : ni « Ligotage », ni « Autodestruction ». « Patience » (bide) arrive au J11 avec la
+	# CT34 (dossier 14 §6.3), pas avec le J10.
+	assert_false(_data.has_move(&"wrap"))
+	assert_eq(_data.get_move(&"bide").name, "Patience")
 
 
 # --- Pokédex ----------------------------------------------------------------------------

@@ -5,8 +5,8 @@ Dossier 14 §6.1 : compatibilité **par espèce**, reprise de Rouge/Bleu (valeur
 Source : les CSV publics de PokeAPI (dépôt PokeAPI/pokeapi, `data/v2/csv/`) : `pokemon_moves.csv`,
 `moves.csv`, `pokemon.csv`, `machines.csv`, `version_groups.csv`, `pokemon_move_methods.csv`.
 Écrit `data/pokemon/tm_compatibility.json` (CT 01–50 → capacité, espèce → numéros de CT), pour
-**toutes** les espèces de `data/pokemon/species/kanto.json`. Rien dans le jeu ne lit encore ce
-fichier : il sera branché au lot CT (11B, `jalon-11.md` §2.6).
+**toutes** les espèces de `data/pokemon/species/kanto.json`. Lu par `PokemonData`
+(`can_learn_tm`, lot CT 11B, `jalon-11.md` §2.6).
 
 Usage : python3 -I tools/gen_tm_compatibility.py DOSSIER_DES_CSV
   (télécharger les six CSV dans un dossier neuf, par ex. avec curl depuis
@@ -62,8 +62,8 @@ def main() -> None:
 			compat[espece].add(numero)
 	resultat = {
 		"_doc": ("Compatibilités des CT (Rouge/Bleu, dossier 14 §6.1), générées par "
-			"tools/gen_tm_compatibility.py depuis les CSV de PokeAPI ; pas encore lues par le jeu "
-			"(lot 11B). « tms » : numéro de CT → capacité (identifiants du jeu). « species » : "
+			"tools/gen_tm_compatibility.py depuis les CSV de PokeAPI ; lues par PokemonData "
+			"(jalon 11, lot 11B). « tms » : numéro de CT → capacité (identifiants du jeu). « species » : "
 			"espèce → numéros de CT compatibles (vide = aucune CT, comme Chenipan ou Aspicot). "
 			"Seule la CT34 (Patience, « bide ») existe au J11 ; les autres CT arrivent avec leur "
 			"capacité et leur lieu."),

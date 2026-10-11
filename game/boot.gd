@@ -215,6 +215,7 @@ func _ready() -> void:
 	_trainers.load_dir()
 	_texts.load_file()
 	_items.load_dir()
+	_items.check_moves(_pokemon)
 	_battle_director.setup(_pokemon, _trainers, _texts, _battle_stage, _battle_hud, _player,
 		GameState, _items)
 	# CB.1 : artwork officiel de l'adversaire (numéro) et tailles réelles (Pokédex).

@@ -34,6 +34,11 @@
 		"category": "heal", "cures": ["freeze"], "price": 250,
 		"description": "Dégèle un Pokémon gelé."
 	},
+	"tm34": {
+		"name": "CT34 — Patience", "plural": "CT34 — Patience", "feminine": true,
+		"category": "tm", "tm": 34, "teaches": "bide",
+		"description": "Encaisse deux tours, puis riposte avec le double des dégâts reçus."
+	},
 	"oak_parcel": {
 		"name": "Colis pour Chen", "plural": "Colis pour Chen", "feminine": false,
 		"category": "key",

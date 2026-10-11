@@ -539,3 +539,16 @@ Partie de débogage : la vraie sauvegarde n'est ni lue ni écrite (`status_qa` n
    reprend, intacte.
 7. Rapport `build/qa/jalon11_t10/rapport.md` (verdict par point, captures, journal) → validation de
    11A par Kevin.
+
+### T11 — CT : catégorie, objet permanent, compatibilités (2026-10-11, 11B)
+
+`ItemData.Category.TM` (« tm », en fin d'enum : rien à migrer) ; champs `tm_number`, `teaches` ;
+`is_tm()`, `is_permanent()` (CT : jamais consommée par un usage), `is_sellable()` faux (aucun prix
+accepté pour une CT, comme un objet clé) ; contexte : exploration seulement ; `quantity_text` sans
+« ×1 ». `ItemLibrary` : clés `tm` (1 à 50, unique) et `teaches`, `check_moves(data)` (branché dans
+`Boot`), `get_tm(numéro)`. `PokemonData` lit `tm_compatibility.json` (`can_learn_tm`, `tm_move`).
+`TmTeach` (pur) : `check` → COMPATIBLE / DÉJÀ CONNUE / INCOMPATIBLE (« déjà connue » d'abord),
+`teach` → LEARNED / NEEDS_FORGET / INVALID, ne touche jamais au Sac. Données : capacité `bide`
+(Patience, statut sans puissance, précision 0, 10 PP, `pending_effects: ["bide"]` jusqu'au T13,
+description n° 33) et objet `tm34` (« CT34 — Patience », n° 39, féminin). Aucune CT n'est encore
+obtenable (T14). Test du J10 « pas de Patience » adapté (elle arrive au J11).
