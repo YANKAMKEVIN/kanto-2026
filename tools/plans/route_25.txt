@@ -82,7 +82,7 @@ d1                  dresseur       18,10        bloque  role=D1 facing=down sigh
 d2                  dresseur       45,10        bloque  role=D2 facing=down sight=5  # Montagnard ; inévitable (goulet de la corniche)
 d3                  dresseur       31,6         bloque  role=D3 facing=left sight=3  # Fillette ; terrasse nord, facultative
 d4                  dresseur       38,19        bloque  role=D4 facing=up sight=2  # Montagnard ; plage, facultatif (ne voit pas le chemin)
-d5                  dresseur       63,10        bloque  role=D5 facing=up sight=3  # Scout ; garde H4, facultatif
+d5                  dresseur       63,10        bloque  role=D5 facing=up sight=3  # Jeune Dresseur (Jr. Trainer ♂, RB) ; garde H4, facultatif
 d6                  dresseur       73,17        bloque  role=D6 facing=left sight=4  # Gamin ; garde la poche du sud-est, facultatif
 promeneur           pnj            14,10        bloque  role=P1 facing=right  # regarde vers l'est : « Le Cap, là-bas. »
 pecheur             pnj            66,16        bloque  role=P2 facing=down  # face à la mer, sans canne (pas de pêche) : « Léo vit tout au bout. »

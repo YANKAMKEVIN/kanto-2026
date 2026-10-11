@@ -100,21 +100,40 @@ D'accord avec les huit. Deux demandent une précision, aucun n'est à rouvrir.
     rare) : aucune Mélofée n'est posée dans le décor (`jalon-12.md` §0.2 n° 16). Le Mélofée de Léo
     sera donc le **premier Mélofée visible dans le monde**. Il n'y a pas de confusion possible avec
     un sauvage ; on le distingue par la mise en scène et le nom affiché. → **E-4**.
-11. **Le J14 ajoute des espèces.**
-    - Pool sauvage de la Route 25 : proche de celui de la Route 24 (Mystherbe / Chétiflor, Roucool,
-      chenilles et cocons, Abra), à auditer au plan ; il dépend de D-8 du J13.
-    - Dresseurs RB de la Route 25 : Montagnards (Machoc, Racaillou, Onix), Gamins, Fillettes,
-      Scout, à recompter au plan.
-    - Espèces nouvelles possibles : **Abra, Kadabra, Machoc** (et Mackogneur, si on le rend
-      atteignable). Aucun dos peint n'existe (dette du J12 et du J13).
+11. **Le J14 ajoute des espèces.** Données RB vérifiées dans le désassemblage `pret/pokered`
+    (`data/wild/maps/Route25.asm`, `data/maps/objects/Route25.asm`, `data/trainers/parties.asm`) :
+    - **Sauvages de la Route 25** (taux 15, plus bas que la Route 24 à 25) : Rouge = Aspicot 8,
+      Coconfort 9, Roucool 13, **Mystherbe** 12–14, **Abra** 10 et 12, Chrysacier 7, Chenipan 8 ;
+      Bleu = la même chose avec **Chétiflor** à la place de Mystherbe. Même pool que la Route 24 :
+      il dépend de D-8 du J13.
+    - **9 Dresseurs dans RB** (la V2 en garde 5 à 7) :
+
+      | Classe RB | Équipe RB |
+      |---|---|
+      | Gamin | Rattata, Piafabec (Nv. 15) |
+      | Gamin | **Ramoloss** (Nv. 17) |
+      | Gamin | Abo, Sabelette (Nv. 14) |
+      | Jeune Dresseur (Jr. Trainer ♂) | Rattata, Abo (Nv. 14) |
+      | Fillette | Nidoran ♂, Nidoran ♀ (Nv. 15) |
+      | Fillette | Mystherbe, Roucool, Mystherbe (Nv. 13) |
+      | Montagnard | **Machoc**, Racaillou (Nv. 15) |
+      | Montagnard | Racaillou ×3, **Machoc** (Nv. 13) |
+      | Montagnard | Onix (Nv. 17) |
+
+    - Espèces nouvelles possibles : **Abra, Kadabra, Machoc, Ramoloss** (et Mackogneur ou
+      Flagadoss s'ils devenaient atteignables : non au J14). Aucun dos peint n'existe (dette du
+      J12 et du J13).
 
     → **E-5**.
 12. **Sauvegarde : rien de nouveau.** Tout tient dans `flags` (Léo, machine, poursuite, Rocket,
     sortie sud), `bag` (Passe Bateau, objet de Léo, CT28) et `moments`. Le J11 écrit la v6 ; ni le
     J12, ni le J13, ni le J14 ne changent le format. L'**état « sous terre »** est volatil, comme
     tous les états de combat : il n'est jamais écrit.
-13. **Objets de la Route 25 dans RB** : la **CT19 Frappe Atlas** au sol (à auditer). Frappe Atlas a
-    des dégâts fixes, effet **accepté par le J11** (A-3). Elle est compatible si 11B est fusionné.
+13. **Objets de la Route 25 dans RB** : la **CT19 Frappe Atlas** au sol (vérifié), et deux objets
+    cachés, **Huile** et **Élixir**, qui rendent des PP. **Les PP ne se restaurent pas par objet**
+    dans Kanto 2026 (aucun objet de ce type dans `items.json`) : défaut, deux objets cachés
+    existants à la place. Frappe Atlas inflige des dégâts fixes, effet **accepté par le J11**
+    (A-3) ; elle est compatible si 11B est fusionné.
 14. **Raccord sud (Route 5).** Le J15 est conçu en parallèle (avant-projet V1 : Route 5, Pension,
     souterrain, Route 6, Carmin-sur-Mer). Le J14 doit lui **passer le relais** comme le J12 l'a fait
     au J13 :
@@ -172,7 +191,7 @@ D'accord avec les huit. Deux demandent une précision, aucun n'est à rouvrir.
 | **E-2** | Léo et le stockage | **Léo n'est pas l'inventeur du stockage.** Il travaille sur la **téléportation de la matière** (sa machine) ; il peut dire, au plus, qu'il « a aidé Chen sur les transferts ». Le récit du dossier 09 reste vrai. *K26.* |
 | **E-3** | Abra | **Au J14, sur la Route 25, rare.** Avec **la fuite adverse** (nouvelle, petite : un sauvage qui connaît Téléport la lance au premier tour et le combat finit, « {pokemon} s'est téléporté ! »). Elle rend Abra difficile, comme dans RB. **Évolution par échange : règle à décider maintenant**, car Kadabra est atteignable au J14. Trois options pour Kadabra, Machopeur, Gravalanche et Spectrum : **(a)** un **objet d'évolution unique** (rare, à nommer), passant par le parcours de la Pierre Lune du J12 ; **(b)** un **PNJ** (maison d'échange d'Azuria) qui « échange puis rend » le Pokémon ; **(c)** une évolution **par niveau**. **Reco : (a)**, la moins chère, la seule qui garde un geste. Sans décision : Kadabra reste au J14 sans évolution, et Abra est reporté. |
 | **E-4** | Apparence de Léo-Mélofée | **Même planche que le Mélofée du J12**, sans accessoire (RB). Le nom affiché dans les dialogues est « Mélofée » à la première réplique, puis « Léo » une fois qu'il s'est présenté. Il **parle** ; aucun cri ni combat. Alternative : un accessoire (lunettes) = un asset de plus. |
-| **E-5** | Espèces nouvelles | **Abra, Kadabra, Machoc** (Montagnards de RB), données et face ; dos provisoires selon la dette J12/J13. Mackogneur **non atteignable** au J14 (pas de Machoc assez haut, et c'est une évolution par échange de Machopeur : E-3). Alternative à coût nul : Dresseurs avec des espèces existantes, sans Abra. |
+| **E-5** | Espèces nouvelles | **Abra, Kadabra, Machoc** (Montagnards de RB), données et face ; dos provisoires selon la dette J12/J13. **Ramoloss écarté** : le Gamin de RB qui l'utilise disparaît, puisqu'on passe de 9 à 6 Dresseurs. Machopeur et Mackogneur **non atteignables** au J14 (Machoc est de Dresseur seulement). Alternative à coût nul : Dresseurs avec des espèces existantes, sans Abra. |
 | **E-6** | Objet supplémentaire de Léo | **Super Bonbon (×1)** si tu acceptes le coût du §2 point 7. **Alternative moins chère : une CT** (le parcours CT existe après 11B). Par exemple **CT30 Téléport**, qui fait un clin d'œil à la machine, mais qui est **sans effet** en combat de Dresseur. Ou **rien de plus** (RB). Je recommande le Super Bonbon : utile, modeste, et son parcours resservira. |
 | **E-7** | Tunnel en combat : règles | **RB** : Sol, puissance **100**, précision 100, 10 PP. **Tour 1** : « {pokemon} creuse un trou ! », le sprite disparaît. **Tour 2** : frappe, action verrouillée. **Sous terre, toute attaque adverse échoue** (« {pokemon} évite l'attaque ! »). Les dégâts de fin de tour (poison, brûlure, Vampigraine) s'appliquent. **Immunité Vol** déjà dans `types.json` : le tour 2 « n'affecte pas ». Séisme ne double pas (G+), car il est hors de portée avant longtemps. |
 | **E-8** | Tunnel : interruptions | Défauts G+, simples : **sommeil, gel, paralysie totale, confusion qui frappe, apeurement** au tour 1 → rien ne se passe, le Pokémon reste en surface. Au tour 2, s'il est endormi ou gelé entre-temps → il **remonte sans frapper**. **Pas de changement de Pokémon** pendant le tour verrouillé (comme Patience). **Capture** : une Ball sur un sauvage sous terre **échoue** (« Impossible de viser ! »), mais aucun sauvage du J14 ne connaît Tunnel. L'IA `smart` peut choisir Tunnel ; **aucun adversaire du J14 ne le connaît**. Mécanisme écrit **général** (« charge puis frappe », avec ou sans invulnérabilité) pour Lance-Soleil, Coud'Krâne et Vol. |
