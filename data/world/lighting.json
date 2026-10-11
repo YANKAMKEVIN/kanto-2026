@@ -35,6 +35,42 @@
 			"cast_shadow": { "color": "#10202a", "alpha": 0.22, "length": 0.26, "skew_deg": -45.0 },
 			"contact": { "color": "#141c26", "alpha": 0.66 },
 			"wind": 2.5
+		},
+		"cave_1f": {
+			"grade": {
+				"shadows": [0.86, 0.90, 1.0],
+				"midtones": [0.92, 0.95, 1.0],
+				"highlights": [0.93, 0.95, 1.0],
+				"strength": 1.0
+			},
+			"sun_direction": [-0.7, -0.7],
+			"rim": { "color": "#c4d4ff", "strength": 0.14, "width": 3.0 },
+			"contact": { "color": "#0c1220", "alpha": 0.62 },
+			"wind": 0.0
+		},
+		"cave_b1f": {
+			"grade": {
+				"shadows": [0.76, 0.80, 0.92],
+				"midtones": [0.86, 0.88, 0.95],
+				"highlights": [0.87, 0.88, 0.94],
+				"strength": 1.0
+			},
+			"sun_direction": [-0.7, -0.7],
+			"rim": { "color": "#b4c2e8", "strength": 0.1, "width": 3.0 },
+			"contact": { "color": "#0a0e1a", "alpha": 0.62 },
+			"wind": 0.0
+		},
+		"cave_b2f": {
+			"grade": {
+				"shadows": [0.76, 0.80, 0.92],
+				"midtones": [0.86, 0.88, 0.95],
+				"highlights": [0.87, 0.88, 0.94],
+				"strength": 1.0
+			},
+			"sun_direction": [-0.7, -0.7],
+			"rim": { "color": "#b4c2e8", "strength": 0.1, "width": 3.0 },
+			"contact": { "color": "#0a0e1a", "alpha": 0.62 },
+			"wind": 0.0
 		}
 	},
 	"maps": {
@@ -60,6 +96,9 @@
 		"pewter_house_mason": "interior_warm",
 		"pewter_house_researcher": "interior_warm",
 		"route_2_north": "golden_hour",
-		"pewter_city": "golden_hour"
+		"pewter_city": "golden_hour",
+		"mt_moon_1f": "cave_1f",
+		"mt_moon_b1f": "cave_b1f",
+		"mt_moon_b2f": "cave_b2f"
 	}
 }

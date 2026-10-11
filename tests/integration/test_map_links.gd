@@ -16,11 +16,14 @@ const MAP_IDS: Array[StringName] = [
 	&"pewter_house_mason", &"pewter_house_researcher",
 	# Jalon 10 (T11) : la Route 2 nord et Argenta (intérieurs « à venir » jusqu'au T13).
 	&"route_2_north", &"pewter_city",
+	# Jalon 12 (T9) : les trois étages du Mont Sélénite.
+	&"mt_moon_1f", &"mt_moon_b1f", &"mt_moon_b2f",
 ]
 ## Cartes construites par une autre tâche en parallèle (jalon 7 : la Route 22, T22 ; jalon 10 :
 ## Argenta, T11, pendant les intérieurs du T13) : un warp qui y mène est vérifié seulement si la
 ## carte existe déjà (sinon le test le signale).
-const PARALLEL_MAPS: Array[StringName] = [&"route_22"]
+## Jalon 12 : la Route 3 et le sas de la Route 4 (T8) pendant le Mont Sélénite (T9).
+const PARALLEL_MAPS: Array[StringName] = [&"route_22", &"route_3", &"route_4"]
 const DIRECTIONS: Array[Vector2i] = [Vector2i.UP, Vector2i.DOWN, Vector2i.LEFT, Vector2i.RIGHT]
 
 var _maps: Dictionary = {}

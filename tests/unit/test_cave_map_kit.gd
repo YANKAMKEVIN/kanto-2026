@@ -88,10 +88,32 @@ func test_ground_needs_the_series_14_textures() -> void:
 		and ResourceLoader.exists(CaveKit.RUBBLE_TEXTURE) \
 		and ResourceLoader.exists(CaveKit.MASS_TEXTURE)
 	if ready:
-		pending("textures de la série 14 présentes : couvert par test_mt_moon_maps (T9)")
+		# T9 : textures de la série 14 présentes, masque du 1F importé (tools/build_mt_moon.gd).
+		assert_true(kit.add_ground("res://assets/world/maps/mt_moon_1f_ground.png"),
+			"sol peint de la grotte : %s" % kit.errors)
+		var painted: Node = kit.root.get_node(^"PaintedGround")
+		assert_eq(painted.get(&"base_texture").resource_path, CaveKit.FLOOR_TEXTURE)
+		assert_eq(painted.get(&"r_texture").resource_path, CaveKit.RUBBLE_TEXTURE)
+		assert_eq(painted.get(&"g_texture").resource_path, CaveKit.MASS_TEXTURE)
 	else:
 		assert_false(kit.add_ground("res://build/test_cave_mask.png"))
 		assert_string_contains(" ".join(kit.errors), "texture de grotte absente")
+	kit.discard()
+
+
+func test_walls_follow_the_grid() -> void:
+	# Faces au-dessus d'une galerie, bords à l'est / ouest, lèvres au nord ; jamais de module
+	# sur un repère pris dans la paroi (lampes du couloir du gardien, B2F).
+	var kit := _kit(&"mt_moon_b2f")
+	kit.make_root("Floor", &"mt_moon_b2f", "Mont Sélénite", &"")
+	assert_true(kit.is_embedded(Vector2i(24, 20)), "lampe du couloir prise dans la paroi")
+	assert_true(kit.is_wall(Vector2i(24, 20)))
+	assert_false(kit.is_side_cell(Vector2i(24, 20)), "aucun module sur la lampe")
+	assert_true(kit.is_side_cell(Vector2i(24, 21)), "bord ouest du couloir")
+	assert_true(kit.is_face_cell(Vector2i(20, 27)), "face nord de la chambre")
+	assert_true(kit.is_lip_cell(Vector2i(20, 36)), "lèvre sud de la chambre")
+	assert_false(kit.is_embedded(Vector2i(20, 30)), "projecteur dans la chambre : sur le sol")
+	assert_true(kit.mass_cells.has(Vector2i(24, 20)), "masse peinte sous la lampe")
 	kit.discard()
 
 

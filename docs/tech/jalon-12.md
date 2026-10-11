@@ -460,7 +460,7 @@ Branche d'intégration **`jalon-12`** depuis `main` (copie dédiée), une branch
 - Tests : `test_route_3` (grille de la scène = grille du plan ; critères de `plan_check_route_3.py` sur la vraie scène : D1/D2 inévitables par géométrie, rebords, raccords ; nœuds ≤ 3 000), `test_route_4`, `test_mt_moon_center`, `test_map_links`, `test_map_catalog`, `test_coming_soon` (sas), `test_map_light_profiles`, `test_pewter_city` (diff limité aux warps) ; captures `tools/capture_route_3.gd` (sortie, embranchement, pied de la montagne, Centre, entrée) relues contre la vue ; `[perf]` Mac et mémoire.
 - **CA** : tests verts, captures 2340 × 1080 relues ; budget de nœuds tenu.
 
-#### T9 — constructeur-monde : Mont Sélénite 1F / B1F / B2F — **maintenant**, après T6, T7
+#### T9 — constructeur-monde : Mont Sélénite 1F / B1F / B2F — **maintenant**, après T6, T7 — **fait (2026-10-11, `j12-t9-mont-selenite`)** : trois étages construits, lumière, échelles ; repli « à venir » vers la Route 3 et le sas tant que le T8 n'est pas fusionné ; détail au §9
 - §2.1, §2.2, §2.4 ; `tools/build_mt_moon.gd` ; gravats en tuiles `RUBBLE` ; halos ; profils `cave_*` ; décors `mt_moon_galerie` / `_chambre`.
 - Tests : `test_mt_moon_maps` (grilles, échelles, graphe connexe, retour à l'entrée de partout, cases `g` = tuiles `RUBBLE`, goulets d'une case listés pour le compagnon, nœuds ≤ 3 000) ; captures + `luminance_grotte.py` (§2.4).
 - **CA** : tests verts ; seuils de luminance tenus ; captures relues contre la vue (repères reconnaissables sans carte).
@@ -613,6 +613,48 @@ Questions telles que posées :
 ---
 
 ## 9. Fait
+
+- **T9 — Mont Sélénite 1F / B1F / B2F (2026-10-11, branche `j12-t9-mont-selenite`, depuis
+  `jalon-12`)** :
+  - **Outil** `tools/build_mt_moon.gd -- --etage=1f|b1f|b2f|tous` (deux passes masque / scène,
+    graines fixes) sur `tools/cave_map_kit.gd`, étendu : `place_walls` (parois en modules
+    d'après la grille : **faces** 3 × 2 sur les cases `#` au-dessus d'une galerie, coupées à
+    une case si la paroi est mince ; **bords latéraux** une tranche de 96 px par case — chapeau
+    en haut, pied en bas, milieu entre les deux — ; **lèvres** au nord des masses ; jamais sur
+    une galerie, découpe `region_rect`), `is_embedded` (repère bloqué pris dans la paroi :
+    masse peinte dessous, pas de module, le repère se voit — lampes du couloir du gardien,
+    indices au fond d'une niche), `add_sprite` (objet réduit à son `Sprite2D` : ses réglages
+    propres sont enregistrés, ceux d'un enfant d'instance étaient perdus). Les éclats `*`
+    comptent comme masse (texture G).
+  - **Cartes** `mt_moon_1f` (292 nœuds, 8 halos), `mt_moon_b1f` (179, 8), `mt_moon_b2f`
+    (207, 13) ; masques `assets/world/maps/mt_moon_*_ground.png`. Repères : colonne du
+    carrefour, colonnes de B2F, rochers, éclats (un halo par groupe), lampes de chantier,
+    projecteurs de la chambre (les deux du milieu braqués sur la dalle : halo entre eux et
+    elle), caisses R, tranchées (celle de B1F étirée à 4 cases), mare, puits de jour (décal +
+    halo), dalle et **fossiles posés sur la dalle** (pied relevé de 30 px), indices `x`,
+    panneau de l'entrée (décor ; son texte au T21). Échelles : décor au sol + warp `STEP_ON`
+    sans direction ; **échelle C (B1F)** : l'image montante ramenée à 128 px dans sa case (le
+    trou au plafond débordait sur la case d'arrivée). Entrée 1F → `route_3` /
+    `from_mt_moon_w|e`, sortie B2F → `route_4` / `from_mt_moon` : **repli « à venir »** tant
+    que ces cartes manquent (retour sur l'arrivée) ; `test_mt_moon_maps` exige de relancer
+    l'outil quand elles existent.
+  - **Données** : `lighting.json` (`cave_1f` > `cave_b1f` = `cave_b2f` : étalonnage froid,
+    liseré froid faible, aucune ombre portée, ombres de contact, vent 0), `zones.json`
+    (`mt_moon` : trois étages, sous-titre et description de l'annexe A), `decors.json`
+    (`mt_moon_galerie` sur les trois étages, `mt_moon_chambre` sur B2F (14, 19) → (37, 35)).
+  - **Mesures (Mac)** : `tools/capture_mt_moon.sh` (2340 × 1080, fiche de caméra par vue) +
+    `tools/art/luminance_grotte.py` : sol 0,22–0,37 (luminance relative WCAG), rapport
+    sol / paroi 4,4–9,1 sur les 15 vues 1:1 (seuils 0,22 et 2,0 tenus) ; contraste du héros
+    (moyenne pixel par pixel) 2,8–3,5 contre 4,4 dans la Forêt de Jade (sol clair : à juger
+    sur téléphone). fps Mac 115–120 (plafond), 19–28 appels de dessin. Mémoire
+    « carte + voisines » (`measure_map_cache.gd -- --route=mt_moon`) : 6,2 Mo (≤ 64 : pas de
+    repli). Chargement (`measure_map_load.gd`, médiane) : 1F 284 ms, B1F 132 ms, B2F 136 ms,
+    Jadielle 933 ms.
+  - Tests : `test_mt_moon_maps` (nouveau), `test_cave_map_kit` (parois, sol peint effectif),
+    `test_map_catalog` (grottes effectives), `test_map_links` (étages ; Route 3 et sas en
+    parallèle), `test_overworld_tileset` (grottes exclues), `test_lighting_library`. Import propre ;
+    `tools/test.sh` : 3 797 tests, 3 794 verts, 3 en attente (entrée vers la Route 3, sortie
+    vers le sas, sortie de la Corde : T8), 0 échec.
 
 - **T7 — fondations de carte (2026-10-11, branche `j12-t7-fondations`, depuis `jalon-12`)** :
   - **Gravats** : `OverworldTiles.Kind.RUBBLE` (rangée 13, en fin d'enum), `DATA_RUBBLE`,

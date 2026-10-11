@@ -54,7 +54,13 @@
 			"description": "Une ville entre pierre et montagne, au pied des reliefs de l'est."
 		},
 		"route_3": { "name": "Route 3", "kind": "route", "maps": [] },
-		"mt_moon": { "name": "Mont Sélénite", "kind": "place", "maps": [] },
+		"mt_moon": {
+			"name": "Mont Sélénite",
+			"kind": "place",
+			"maps": ["mt_moon_1f", "mt_moon_b1f", "mt_moon_b2f"],
+			"subtitle": "Route 3 — Route 4",
+			"description": "Une montagne creusée de galeries sombres et silencieuses. On dit que des pierres y sont tombées du ciel, autrefois."
+		},
 		"route_4": { "name": "Route 4", "kind": "route", "maps": [] },
 		"cerulean_city": { "name": "Azuria", "kind": "town", "maps": [] },
 		"vermilion_city": { "name": "Carmin-sur-Mer", "kind": "town", "maps": [] },

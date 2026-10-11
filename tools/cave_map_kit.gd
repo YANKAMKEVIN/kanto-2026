@@ -35,6 +35,26 @@ const Z_DECALS: int = -1
 const WALKABLE: String = ".gjUVE"
 const RUBBLE_MARK: String = "g"
 const MASS_MARK: String = "#"
+## Cases de **paroi** (T9) : la masse `#` et les éclats `*` incrustés dans la roche (texture de
+## la masse sous eux, faces et bords posés autour). Les autres repères bloqués (`K` `o` `L` `R`
+## `F` `S` `w` `x`) sont posés sur le sol de la galerie : les parois se dessinent autour d'eux.
+const WALL_MARKS: String = "#*"
+## Modules de paroi de la série 14 (fiche `serie-14-mont-selenite.md`) : faces (bord sud d'une
+## masse, 3 × 2 avec la bande du dessus), bord latéral (1 × 3), lèvre nord (3 × 1).
+const WALL_FACES: Array[String] = ["relief_paroi_grotte_01", "relief_paroi_grotte_02"]
+const WALL_SIDE: String = "relief_paroi_grotte_05"
+const WALL_LIP: String = "relief_paroi_grotte_06"
+## Largeur d'un module de face ou de lèvre (cases) ; hauteur d'un tronçon de bord latéral.
+const WALL_SPAN: int = 3
+## Face d'une paroi d'une seule case d'épaisseur (galerie au nord et au sud) : on ne garde que
+## le bas du module (pixels), la bande du dessus déborderait sur la galerie du nord.
+const THIN_FACE_HEIGHT: int = 104
+## Tranches du bord latéral.
+const SIDE_TOP: int = 0
+const SIDE_MIDDLE: int = 1
+const SIDE_BOTTOM: int = 2
+## Variation de valeur des modules (± part), graine de la carte.
+const WALL_VALUE_JITTER: float = 0.04
 ## Sols de la grotte (série 14, T6) : sol calme (fond), gravats (canal R), masse rocheuse
 ## (canal G). Même taille pour les trois (uniform `texture_size` du shader).
 const FLOOR_TEXTURE: String = "res://assets/world/ground/ground_grotte_01.png"
@@ -207,7 +227,7 @@ func _paint_logic(layer: TileMapLayer) -> void:
 			layer.set_cell(cell, tiles.SOURCE_ID, tiles.atlas_coords(kind, variant))
 			if mark == RUBBLE_MARK:
 				rubble_cells[cell] = true
-			elif mark == MASS_MARK:
+			elif WALL_MARKS.contains(mark) or is_embedded(cell):
 				mass_cells[cell] = true
 			elif WALKABLE.contains(mark):
 				floor_cells[cell] = true
@@ -412,6 +432,20 @@ func add_prop_at(parent: Node, id: String, cell: Vector2i, node_name: String) ->
 	return add_prop(parent, id, foot, node_name)
 
 
+## `Sprite2D` seul (un nœud, pas une instance) à l'image et au matériau de l'objet peint
+## [param id], pied en [param foot] : ses réglages propres (découpe, miroir, décalage) sont
+## enregistrés avec la carte (ceux d'un enfant d'instance seraient perdus).
+func add_sprite(parent: Node, id: String, foot: Vector2, node_name: String) -> Sprite2D:
+	var model := scene(id).instantiate()
+	var sprite := (model.get_node(^"Sprite") as Sprite2D).duplicate() as Sprite2D
+	model.free()
+	sprite.name = node_name
+	sprite.unique_name_in_owner = false
+	sprite.position = (foot + sprite.position).round()
+	attach(parent, sprite)
+	return sprite
+
+
 ## Décor posé **sur une case praticable** (échelle, puits de jour) : sans emprise, la case
 ## reste praticable (couche du sol, sous les personnages).
 func add_floor_prop(id: String, cell: Vector2i, node_name: String) -> Node2D:
@@ -419,6 +453,205 @@ func add_floor_prop(id: String, cell: Vector2i, node_name: String) -> Node2D:
 		node_name)
 	prop.set(&"footprint", [] as Array[Vector2i])
 	return prop
+
+
+# --- Parois (T9) --------------------------------------------------------------------------
+
+
+## Vrai si [param cell] est de la paroi ([constant WALL_MARKS]) ou un repère **pris dans la
+## paroi** ([method is_embedded]) ; hors de la carte = paroi.
+func is_wall(cell: Vector2i) -> bool:
+	if not _in_bounds(cell):
+		return true
+	return is_mass(cell) or is_embedded(cell)
+
+
+## Masse rocheuse (`#`, éclats `*`) : la seule paroi qui reçoit des modules.
+func is_mass(cell: Vector2i) -> bool:
+	return not _in_bounds(cell) or WALL_MARKS.contains(plan.call(&"at", cell))
+
+
+## Repère bloqué (lampe, indice, caisse…) **pris dans la paroi** : masse au nord et au sud, ou à
+## l'est et à l'ouest (lampes du couloir du gardien, indices au fond d'une niche). Compté comme
+## paroi pour dessiner les bords autour de lui, sans module sur sa case (le repère s'y voit).
+func is_embedded(cell: Vector2i) -> bool:
+	if not _in_bounds(cell):
+		return false
+	var mark: String = plan.call(&"at", cell)
+	if WALKABLE.contains(mark) or WALL_MARKS.contains(mark):
+		return false
+	return (is_mass(cell + Vector2i.UP) and is_mass(cell + Vector2i.DOWN)) \
+		or (is_mass(cell + Vector2i.LEFT) and is_mass(cell + Vector2i.RIGHT))
+
+
+func _in_bounds(cell: Vector2i) -> bool:
+	return cell.x >= 0 and cell.y >= 0 and cell.x < size.x and cell.y < size.y
+
+
+## Case de **face** : masse (`#`) dont la voisine sud est une galerie (bord sud d'une masse).
+func is_face_cell(cell: Vector2i) -> bool:
+	return _takes_module(cell) and not is_wall(cell + Vector2i.DOWN)
+
+
+## Case de **bord latéral** : masse (pas une face) dont une voisine est ou ouest est une galerie.
+func is_side_cell(cell: Vector2i) -> bool:
+	return _takes_module(cell) and not is_face_cell(cell) \
+		and (not is_wall(cell + Vector2i.LEFT) or not is_wall(cell + Vector2i.RIGHT))
+
+
+## Case de **lèvre** : masse (pas une face) dont la voisine nord est une galerie.
+func is_lip_cell(cell: Vector2i) -> bool:
+	return _takes_module(cell) and not is_face_cell(cell) and not is_wall(cell + Vector2i.UP)
+
+
+## Seules les cases `#` reçoivent un module : les éclats `*` et les repères pris dans la paroi
+## laissent une niche (masse peinte) où leur objet se voit.
+func _takes_module(cell: Vector2i) -> bool:
+	return _in_bounds(cell) and plan.call(&"at", cell) == MASS_MARK
+
+
+## Parois en modules d'après la grille (fiche de la série 14) : une **face** sur chaque case de
+## paroi au-dessus d'une galerie (débord d'une case vers le haut sur la masse, coupé si la paroi
+## n'a qu'une case d'épaisseur), un **bord latéral** le long des galeries à l'est et à l'ouest,
+## une **lèvre** au bord nord des masses. Faces et bords dans `Entities` (triés aux pieds : une
+## face passe devant un personnage au nord d'elle), lèvres dans la couche du sol. Un module ne
+## couvre jamais une case de galerie (découpé par `region_rect` aux bouts des étendues).
+## Renvoie (faces, bords, lèvres).
+func place_walls(seed_value: int) -> Vector3i:
+	var wall_rng := RandomNumberGenerator.new()
+	wall_rng.seed = seed_value
+	var faces := 0
+	var lips := 0
+	for y: int in size.y:
+		for run: Vector2i in _row_runs(y, is_face_cell):
+			for piece: Vector2i in _pieces(run):
+				var tall := true
+				for x: int in range(piece.x, piece.x + piece.y):
+					tall = tall and _takes_module(Vector2i(x, y - 1))
+				var id: String = WALL_FACES[wall_rng.randi_range(0, WALL_FACES.size() - 1)]
+				var foot := Vector2((piece.x + piece.y / 2.0) * TILE, (y + 1) * TILE)
+				var prop := _wall_module(entities, id, foot, piece.y * TILE,
+					-1 if tall else THIN_FACE_HEIGHT, false, "Face%03d" % faces, wall_rng)
+				prop.flip_h = wall_rng.randf() < 0.5
+				faces += 1
+		for run: Vector2i in _row_runs(y, is_lip_cell):
+			for piece: Vector2i in _pieces(run):
+				var model_height := _texture_of(WALL_LIP).get_height()
+				var foot := Vector2((piece.x + piece.y / 2.0) * TILE, y * TILE + model_height)
+				var prop := _wall_module(decals, WALL_LIP, foot, piece.y * TILE, -1, false,
+					"Lip%03d" % lips, wall_rng)
+				prop.flip_h = wall_rng.randf() < 0.5
+				lips += 1
+	# Bords latéraux : un module par case (tranche de l'image) : le haut de l'étendue garde le
+	# chapeau du module, le bas son pied, les cases du milieu une tranche du milieu (bande
+	# continue, sans « piliers empilés »).
+	var sides := 0
+	for x: int in size.x:
+		for run: Vector2i in _column_runs(x, is_side_cell):
+			for y: int in range(run.x, run.y + 1):
+				var cell := Vector2i(x, y)
+				var part := SIDE_MIDDLE
+				if y == run.y:
+					part = SIDE_BOTTOM
+				elif y == run.x:
+					part = SIDE_TOP
+				var prop := _side_slice(cell, part, "Side%03d" % sides, wall_rng)
+				var floor_left := not is_wall(cell + Vector2i.LEFT)
+				var floor_right := not is_wall(cell + Vector2i.RIGHT)
+				prop.flip_h = floor_left and not floor_right
+				sides += 1
+	return Vector3i(faces, sides, lips)
+
+
+## Tranche d'une case du bord latéral sur [param cell] : [param part] = haut (chapeau), milieu
+## ou bas (pied) de l'image.
+func _side_slice(cell: Vector2i, part: int, node_name: String,
+		wall_rng: RandomNumberGenerator) -> Sprite2D:
+	var foot := Vector2((cell.x + 0.5) * TILE, (cell.y + 1) * TILE)
+	var sprite := add_sprite(entities, WALL_SIDE, foot, node_name)
+	var image_size := sprite.texture.get_size()
+	var y0 := 0.0
+	if part == SIDE_MIDDLE:
+		y0 = floorf((image_size.y - TILE) / 2.0)
+	elif part == SIDE_BOTTOM:
+		y0 = image_size.y - TILE
+	sprite.region_enabled = true
+	sprite.region_rect = Rect2(0.0, y0, image_size.x, TILE)
+	sprite.offset = Vector2(-image_size.x / 2.0, -TILE)
+	var value := 1.0 + wall_rng.randf_range(-WALL_VALUE_JITTER, WALL_VALUE_JITTER)
+	sprite.modulate = Color(value, value, value)
+	return sprite
+
+
+## Module de paroi au pied [param foot] : [param width] pixels du milieu de l'image (toute
+## l'image si elle n'est pas plus large), [param height] pixels du bas (−1 : toute la hauteur) ou
+## du haut ([param from_top]).
+func _wall_module(parent: Node, id: String, foot: Vector2, width: int, height: int,
+		from_top: bool, node_name: String, wall_rng: RandomNumberGenerator) -> Sprite2D:
+	var sprite := add_sprite(parent, id, foot, node_name)
+	var image_size := sprite.texture.get_size()
+	var w := minf(float(width), image_size.x)
+	var h := image_size.y if height < 0 else minf(float(height), image_size.y)
+	if w < image_size.x or h < image_size.y:
+		sprite.region_enabled = true
+		var y0 := 0.0 if from_top else image_size.y - h
+		sprite.region_rect = Rect2((image_size.x - w) / 2.0, y0, w, h)
+		sprite.offset = Vector2(-w / 2.0, -h)
+	var value := 1.0 + wall_rng.randf_range(-WALL_VALUE_JITTER, WALL_VALUE_JITTER)
+	sprite.modulate = Color(value, value, value)
+	return sprite
+
+
+func _texture_of(id: String) -> Texture2D:
+	var model := scene(id).instantiate()
+	var texture := (model.get_node(^"Sprite") as Sprite2D).texture
+	model.free()
+	return texture
+
+
+## Étendues [début, fin] (colonnes incluses) de la rangée [param y] où [param test] est vrai.
+func _row_runs(y: int, test: Callable) -> Array[Vector2i]:
+	var runs: Array[Vector2i] = []
+	var start := -1
+	for x: int in size.x + 1:
+		var inside := x < size.x and bool(test.call(Vector2i(x, y)))
+		if inside and start < 0:
+			start = x
+		elif not inside and start >= 0:
+			runs.append(Vector2i(start, x - 1))
+			start = -1
+	return runs
+
+
+## Étendues [début, fin] (rangées incluses) de la colonne [param x] où [param test] est vrai.
+func _column_runs(x: int, test: Callable) -> Array[Vector2i]:
+	var runs: Array[Vector2i] = []
+	var start := -1
+	for y: int in size.y + 1:
+		var inside := y < size.y and bool(test.call(Vector2i(x, y)))
+		if inside and start < 0:
+			start = y
+		elif not inside and start >= 0:
+			runs.append(Vector2i(start, y - 1))
+			start = -1
+	return runs
+
+
+## Découpe d'une étendue en modules de [constant WALL_SPAN] cases : (début, largeur). Le dernier
+## recouvre le précédent pour finir au bout ; une étendue plus courte = un module découpé.
+func _pieces(run: Vector2i) -> Array[Vector2i]:
+	var pieces: Array[Vector2i] = []
+	var length := run.y - run.x + 1
+	if length < WALL_SPAN:
+		pieces.append(Vector2i(run.x, length))
+		return pieces
+	var left := run.x
+	while left + WALL_SPAN <= run.y + 1:
+		pieces.append(Vector2i(left, WALL_SPAN))
+		left += WALL_SPAN
+	if left <= run.y:
+		pieces.append(Vector2i(run.y + 1 - WALL_SPAN, WALL_SPAN))
+	return pieces
 
 
 # --- Fin ----------------------------------------------------------------------------------
