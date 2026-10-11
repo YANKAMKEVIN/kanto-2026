@@ -1,0 +1,27 @@
+DÉCOR DE COMBAT — ARÈNE D'AZURIA, PISCINE D'ENTRAÎNEMENT (Kanto 2026). Image de PRODUCTION : le fond peint d'un écran de combat Pokémon sur smartphone en paysage. AUCUN Pokémon, AUCUN personnage, AUCUNE interface, AUCUN texte.
+
+Images jointes.
+IMAGE 1 : un écran de combat de référence. Reprends sa VUE (caméra à hauteur d'yeux, légèrement plongeante, horizon dans le tiers haut, grand sol dégagé au centre), sa profondeur et sa qualité de peinture. Ne reprends PAS : les Pokémon, les cartes, les boutons, la rivière, le pont, le coucher de soleil orange.
+IMAGE 2 : une planche d'intention de décors de combat (guide de facture).
+IMAGE 3 : la vue générale d'Argenta (pierre claire, ambiance de ville ; sert seulement de guide de facture et de pierre).
+Ce décor est INTÉRIEUR : au lieu de l'horizon d'un paysage, un fond de salle.
+
+FORMAT : paysage très large, rapport 2,17 : 1 (comme 2340 × 1080), la plus grande résolution possible, OPAQUE, cadrage plein, sans bord.
+
+LIEU : l'intérieur lumineux et élégant d'une piscine d'entraînement : une grande verrière cintrée à armature fine blanche laisse entrer la lumière dorée du soir ; murs de pierre claire et de carreaux bleu-vert ; gradins légers en pierre blanche ; un plongeoir au loin. Le GRAND BASSIN d'eau turquoise limpide est au fond, ses reflets ondulent sur le mur ; au premier plan, un large CHEMIN SEC de dalles de pierre claire (beige rosé, joints fins) longe le bassin.
+
+COMPOSITION (fractions depuis le coin haut gauche) :
+- Le haut (0 à 38 %) : verrière et mur de fond calmes ; la base du mur, ligne de fond de salle vers 36 %. Bassin d'eau turquoise de 36 à 50 % de la hauteur sur toute la largeur, bord franc en pierre claire.
+- De 50 % de la hauteur jusqu'en bas : GRAND SOL SEC DÉGAGÉ et PLAT en dalles de pierre claire, très lisible, où deux créatures pourront se faire face.
+- Point A (x 67 %, y 58 %) : sol nu, plat et bien lisible, une créature y posera les pieds. Rien de haut dans un rayon de 12 % de la largeur autour.
+- Point B (x 31 %, y 97 %) : sol plat et nu, une grande créature vue de dos y sera au premier plan. Rien de haut autour.
+- ZONE CALME en HAUT À GAUCHE (de 0 à 50 % de la largeur, de 0 à 45 % de la hauteur) : peu de détails et peu de contraste, valeurs simples.
+- ZONE CALME en BAS À DROITE (de 50 à 100 % de la largeur, de 55 à 100 % de la hauteur) : sol simple, presque sans objet, valeurs moyennes, sans contraste fort.
+- Les deux coins du bas restent du SOL nu : pas de buisson ni de gros objet en gros plan.
+- Les 9 % de gauche et de droite de l'image ne contiennent rien d'important (ils seront rognés sur certains écrans).
+
+LUMIÈRE : lumière dorée de golden hour traversant la verrière en faisceaux doux depuis le haut à gauche, reflets d'eau ondulants (caustiques) sur le mur et les dalles, ombres douces ; ambiance claire et aérée, jamais sombre.
+
+RENDU (ADN visuel Kanto 2026) : illustration 2D peinte numériquement, RPG Pokémon moderne « HD-2D peint », formes simples, lisibles et arrondies, grandes masses douces (jamais en petits points ni en pixels), aucun trait noir (contours fins et doux plus sombres que la couleur), couleurs riches sans être fluo. Netteté partout (aucun flou de profondeur, pas de vignettage). Perspective à hauteur d'yeux, un peu plongeante, le sol recule nettement vers l'horizon.
+
+INTERDITS : Pokémon, animal, personnage, nageur, silhouette, texte, lettres, chiffres, panneau lisible, logo, signature, filigrane, cadre, interface, mobilier encombrant, pixel art, flou, vignettage.

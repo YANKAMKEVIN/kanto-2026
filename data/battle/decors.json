@@ -37,11 +37,47 @@
 			"foe_feet": [1559, 540],
 			"player_feet": [716, 972],
 			"horizon": 360
+		},
+		"route_4_plaine": {
+			"zone": "route_4",
+			"variant": "plaine",
+			"back": "res://assets/battle/decors/route_4_plaine_back.webp",
+			"size": [2340, 1080],
+			"foe_feet": [1559, 540],
+			"player_feet": [716, 972],
+			"horizon": 290
+		},
+		"route_24_pont": {
+			"zone": "route_24",
+			"variant": "pont",
+			"back": "res://assets/battle/decors/route_24_pont_back.webp",
+			"size": [2340, 1080],
+			"foe_feet": [1559, 540],
+			"player_feet": [716, 972],
+			"horizon": 300
+		},
+		"cerulean_gym_bassin": {
+			"zone": "cerulean_gym",
+			"variant": "bassin",
+			"back": "res://assets/battle/decors/cerulean_gym_bassin_back.webp",
+			"size": [2340, 1080],
+			"foe_feet": [1559, 540],
+			"player_feet": [716, 972],
+			"horizon": 385
 		}
 	},
 	"places": {
 		"route_1": [
 			{ "decor": "route_1_chemin" }
+		],
+		"route_4": [
+			{ "decor": "route_4_plaine" }
+		],
+		"route_24": [
+			{ "decor": "route_24_pont" }
+		],
+		"cerulean_gym": [
+			{ "decor": "cerulean_gym_bassin" }
 		]
 	}
 }
