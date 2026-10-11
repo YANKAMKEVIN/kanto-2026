@@ -5,6 +5,9 @@ extends GutTest
 ## d'autosave, chemin de la copie de sécurité.
 
 const MemoryFs := preload("res://tests/helpers/memory_file_system.gd")
+const TweenClock := preload("res://tests/helpers/tween_clock.gd")
+const FADE_SCENE := preload("res://game/ui/components/screen_fade.tscn")
+const STAGE_SCENE := preload("res://game/ui/opening/intro_stage.tscn")
 const SAVE_PATH := "user://test_director_save.json"
 
 var _fs: MemoryFs
@@ -150,3 +153,42 @@ func test_the_introduction_writes_nothing_until_its_last_line() -> void:
 	assert_eq(_writes(), 0)
 	assert_eq(_builds, 0, "rien de construit pendant l'introduction")
 	assert_true(intro.is_running())
+
+
+## OUV.3 (dossier 13 §4 plan 8, §7) : rétrécissement, puis fondu au blanc chaud parti au milieu ;
+## « Réduire les animations » : fondu au blanc direct et raccourci. Durées au pas près.
+func test_the_send_off_fades_to_warm_white_on_time() -> void:
+	for reduce: bool in [false, true]:
+		var fade := FADE_SCENE.instantiate() as ScreenFade
+		add_child_autofree(fade)
+		var settings := GameSettings.new()
+		settings.reduce_motion = reduce
+		var director := OpeningDirector.new()
+		director.speed_scale = 1.0
+		add_child_autofree(director)
+		director.setup(null, _build, fade, settings, GameSettings.Graphics.HIGH, Callable(),
+			[] as Array[StringName])
+		var stage := STAGE_SCENE.instantiate() as IntroStage
+		stage.speed_scale = 0.0
+		stage.reduce_motion = reduce
+		add_child_autofree(stage)
+		stage.show_portrait(&"player", &"center")
+		stage.speed_scale = 1.0
+		director._stage = stage
+		assert_almost_eq(director.entry_fade_time(), UiTokens.TITLE_GAME_FADE_IN
+			* (UiTokens.INTRO_REDUCED if reduce else 1.0), 0.001, "avant : depuis le noir")
+		var clock := TweenClock.new(get_tree())
+		director._send_off()
+		var scale := UiTokens.INTRO_REDUCED if reduce else 1.0
+		var lead := 0.0 if reduce else UiTokens.INTRO_SEND_OFF * UiTokens.INTRO_SEND_OFF_LEAD
+		var steps := clock.run_until(func() -> bool: return fade.is_opaque(), 5.0)
+		var expected := _steps(lead) + _steps(UiTokens.INTRO_WHITE_OUT * scale)
+		assert_between(steps, expected, expected + 1, "blanc opaque (réduit : %s)" % reduce)
+		assert_eq(fade.get_color(), UiTokens.INTRO_WHITE, "blanc chaud")
+		assert_almost_eq(director.entry_fade_time(), UiTokens.INTRO_WHITE_IN * scale, 0.001,
+			"la chambre apparaît depuis le blanc")
+		clock.release()
+
+
+func _steps(seconds: float) -> int:
+	return int(ceil(seconds / TweenClock.STEP - 0.001))

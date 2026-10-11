@@ -2,8 +2,9 @@ extends GutTest
 ## Déroulé d'ouverture (jalon 2 §2.6, §4.2–4.4, T5) avec la vraie scène Boot et l'autoload
 ## SceneRouter, entrées injectées (Input.action_press) et images du moteur :
 ## chambre → escalier → rez-de-chaussée → tapis → Bourg Palette en (36, 9) face au sud,
-## titre « Bourg Palette / Kanto » affiché une fois ; rentrer puis ressortir n'en affiche
-## pas d'autre.
+## titre « Bourg Palette » affiché une fois, avec la légende de la toute première sortie
+## (OUV.3 : « Le commencement de toute aventure » au lieu de « Kanto ») ; rentrer puis ressortir
+## n'en affiche pas d'autre.
 ## Jalon 3A (T3) : à la première descente, Maman parle d'elle-même (le joueur ne bouge pas,
 ## même move_down tenu) ; on avance le dialogue avec `interact`. En revenant, lui parler
 ## donne sa seconde réplique.
@@ -155,8 +156,12 @@ func test_bedroom_to_stairs_to_ground_floor_to_pallet_town() -> void:
 	await _walk_through(Vector2i.DOWN)
 	assert_eq(_last_arrival(), [&"pallet_town", Vector2i(36, 9), Vector2i.DOWN])
 	assert_eq(_boot.get_map().map_id, &"pallet_town")
-	assert_eq(_titles, [["Bourg Palette", "Kanto"]] as Array[Array], "titre affiché une fois")
+	assert_eq(_titles, [["Bourg Palette", "Le commencement de toute aventure"]] as Array[Array],
+		"titre affiché une fois, légende de la première sortie")
 	assert_true(_boot.get_hud().get_zone_title().is_showing())
+	assert_eq(_boot.get_hud().get_zone_title().get_zone_name_text(), "BOURG PALETTE")
+	assert_eq(_boot.get_hud().get_zone_title().get_region_text(),
+		"Le commencement de toute aventure")
 
 
 func test_reentering_and_leaving_again_shows_no_second_title() -> void:

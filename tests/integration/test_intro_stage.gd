@@ -95,6 +95,42 @@ func test_reduced_motion_shortens_without_rise_or_slide() -> void:
 	clock.release()
 
 
+## OUV.3 (dossier 13 §4 plan 8) : le portrait du joueur rétrécit vers son centre en blanchissant,
+## s'efface, un halo chaud grandit à sa place ; durée au pas près.
+func test_send_off_shrinks_the_player_into_the_light() -> void:
+	_make()
+	var clock := TweenClock.new(get_tree())
+	_stage.show_portrait(&"player", &"center")
+	clock.run_until(func() -> bool: return not _stage.is_animating(), 2.0)
+	var picture := _stage.get_holder(&"player").get_node(^"Picture") as TextureRect
+	var time := _stage.send_off()
+	assert_almost_eq(time, UiTokens.INTRO_SEND_OFF, 0.001)
+	assert_eq(picture.pivot_offset, picture.size * 0.5, "rétrécit vers son centre")
+	assert_true(_stage.is_animating())
+	var steps := clock.run_until(func() -> bool: return not _stage.is_animating(), 2.0)
+	var expected := int(ceil(UiTokens.INTRO_SEND_OFF / TweenClock.STEP))
+	assert_between(steps, expected, expected + 1, "durée du rétrécissement (pas)")
+	assert_almost_eq(picture.scale.x, UiTokens.INTRO_SEND_OFF_SCALE, 0.001, "tout petit")
+	assert_eq(picture.modulate.a, 0.0, "dissous")
+	assert_gt(picture.modulate.r, 1.0, "blanchi par la lumière")
+	var halo := _stage.find_child("SendOffHalo", true, false)
+	assert_not_null(halo, "halo de lumière à sa place")
+	clock.release()
+
+
+func test_send_off_with_reduced_motion_is_not_animated() -> void:
+	_make(1.0, true)
+	var clock := TweenClock.new(get_tree())
+	_stage.show_portrait(&"player", &"center")
+	clock.run_until(func() -> bool: return not _stage.is_animating(), 2.0)
+	var picture := _stage.get_holder(&"player").get_node(^"Picture") as TextureRect
+	assert_eq(_stage.send_off(), 0.0, "fondu direct, pas de rétrécissement")
+	assert_eq(picture.scale, Vector2.ONE)
+	assert_false(_stage.is_animating())
+	assert_null(_stage.find_child("SendOffHalo", true, false))
+	clock.release()
+
+
 func test_instant_stage_for_tests() -> void:
 	_make(0.0)
 	assert_eq(_stage.show_portrait(&"rival", &"center"), 0.0)

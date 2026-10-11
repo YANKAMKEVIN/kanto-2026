@@ -119,6 +119,53 @@ func hide_portrait(portrait: StringName) -> float:
 	return time
 
 
+## Fin de l'introduction (OUV.3, dossier 13 §4 plan 8) : chaque portrait sur la scène (le joueur
+## seul, au centre, pour « Allez… en route ! ») **rétrécit vers son centre et se dissout dans la
+## lumière** : il blanchit et s'efface pendant qu'un halo chaud grandit à sa place. Clin d'œil au
+## rétrécissement de Rouge/Bleu. « Réduire les animations » (ou [member speed_scale] nul) : rien
+## n'est animé, le fondu au blanc suit directement. Rend la durée (secondes, 0 sans animation).
+func send_off() -> float:
+	if reduce_motion or speed_scale <= 0.0 or _holders.is_empty():
+		return 0.0
+	var time := _time(UiTokens.INTRO_SEND_OFF)
+	for portrait: StringName in _holders.keys():
+		var holder := _holders[portrait]
+		var picture := holder.get_node(^"Picture") as TextureRect
+		if portrait == &"nidorino" and _breath != null:
+			_breath.kill()
+			_breath = null
+		_kill_tween(portrait)
+		holder.modulate.a = 1.0
+		# Pivot au centre de l'image : elle rétrécit vers son cœur, pas vers ses pieds.
+		picture.pivot_offset = picture.size * 0.5
+		var tween := _new_tween(portrait).set_parallel(true)
+		tween.tween_property(picture, ^"scale", Vector2.ONE * UiTokens.INTRO_SEND_OFF_SCALE,
+			time).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN)
+		tween.tween_property(picture, ^"modulate", UiTokens.INTRO_SEND_OFF_GLOW, time) \
+			.set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN)
+		_halo(holder, picture, time)
+	return time
+
+
+## Halo chaud qui grandit au cœur du portrait qui se dissout ([method send_off]).
+func _halo(holder: Control, picture: TextureRect, time: float) -> void:
+	var spot := Control.new()
+	spot.name = "SendOffHalo"
+	spot.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_effects_layer.add_child(spot)
+	_place(spot, holder.anchor_left)
+	var halo := _effect_sprite(UiTokens.INTRO_SEND_OFF_HALO)
+	spot.add_child(halo)
+	halo.position = picture.position + picture.size * 0.5 - halo.size * 0.5
+	halo.pivot_offset = halo.size * 0.5
+	halo.scale = Vector2.ONE * 0.1
+	halo.modulate.a = 0.0
+	var tween := create_tween().set_parallel(true).set_trans(Tween.TRANS_SINE) \
+		.set_ease(Tween.EASE_OUT)
+	tween.tween_property(halo, ^"scale", Vector2.ONE, time)
+	tween.tween_property(halo, ^"modulate:a", 1.0, time * 0.5)
+
+
 ## Portraits sur la scène (portrait → emplacement).
 func get_on_stage() -> Dictionary[StringName, StringName]:
 	return _slots.duplicate()

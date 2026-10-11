@@ -53,6 +53,8 @@ const INTRO_BACKDROP_MAP: StringName = &"oak_lab"
 const INTRO_BACKDROP_FOCUS: Vector2 = Vector2(768, 528)
 ## Le labo (1536 px de large) est plus étroit que l'écran (jusqu'à 2340) : agrandi pour le remplir.
 const INTRO_BACKDROP_ZOOM: float = 1.6
+## Raison de blocage du joueur pendant le fondu d'arrivée dans la chambre (OUV.3).
+const OPENING_ARRIVAL: StringName = &"opening_arrival"
 
 @export var start_map: StringName = &"player_house_2f"
 @export var start_spawn: StringName = &"start"
@@ -88,6 +90,10 @@ var _settings := GameSettings.new()
 var _profile: GraphicsProfile
 var _player: Player
 var _announcer := ZoneAnnouncer.new()
+## Légende de la toute première sortie (OUV.3) et carte quittée par la transition en cours (&"" :
+## démarrage, reprise).
+var _first_exit := FirstExitCaption.new()
+var _arrival_from: StringName = &""
 var _library := DialogueLibrary.new()
 var _cutscenes := CutsceneLibrary.new()
 var _pokemon := PokemonData.new()
@@ -282,6 +288,7 @@ func _ready() -> void:
 	# Menu Dresseur (jalon 6, T4) : le directeur pilote la pile et la pause ; l'écran
 	# (TrainerMenu) est relié après la fusion du T3 (jalon-06.md §6.6).
 	_zones.load_file()
+	_first_exit.load_file()
 	_objectives.load_file()
 	_unlocks = MenuUnlocks.new(GameState.flags, GameState.party)
 	# Stockage (jalon-07.md §6.9, T16) : seulement dans un Centre (carte courante, relue à chaque
@@ -854,25 +861,35 @@ func _on_opening_resumed(save: Dictionary) -> void:
 	_finish_opening()
 
 
-## Nouvelle partie (OUV.1, provisoire : sans introduction) : la chambre, face au sud, sans titre
-## de zone ni dialogue, exactement comme le départ d'avant l'ouverture. [param warning] : la
-## partie n'a pas pu être écrite (elle continue sans sauvegarde).
+## Nouvelle partie : la chambre, face au sud, sans titre de zone ni dialogue (dossier 13 §4
+## plan 9). Elle apparaît en fondu depuis le blanc chaud de la fin de l'introduction (OUV.3) ;
+## le joueur et les contrôles ne sont rendus **qu'à la fin du fondu** (la première autosave suit,
+## partie stable). [param warning] : la partie n'a pas pu être écrite (elle continue sans
+## sauvegarde).
 func _on_opening_new_game(warning: String) -> void:
+	# Bloqué avant la pose de la chambre : map_entered (synchrone) le trouve déjà immobile.
+	_player.set_input_enabled(false, OPENING_ARRIVAL)
 	SceneRouter.start(start_map, start_spawn, start_facing)
-	_finish_opening()
+	await _finish_opening(false)
+	_hud.visible = true
+	_player.set_input_enabled(true, OPENING_ARRIVAL)
+	_refresh_controls()
 	if not warning.is_empty():
 		_hud.show_toast(warning, "")
 
 
-## La partie a démarré après le titre : HUD rendu, faits rafraîchis, « Sauvegarder maintenant »
-## selon la garde, rideau levé.
-func _finish_opening() -> void:
-	_hud.visible = true
+## La partie a démarré après le titre (coroutine, rend la main à la fin du fondu) : HUD rendu
+## tout de suite si [param show_hud] (Continuer ; sinon par l'appelant), faits rafraîchis,
+## « Sauvegarder maintenant » selon la garde, rideau levé (depuis le blanc chaud après
+## l'introduction, durées raccourcies par « Réduire les animations » :
+## [method OpeningDirector.entry_fade_time]).
+func _finish_opening(show_hud: bool = true) -> void:
+	_hud.visible = show_hud
 	_finish_start()
 	_menu.set_settings(_settings, _profile_device_quality(), _can_write())
 	_refresh_controls()
 	_fade.set_opaque(true)
-	_fade.fade_in(UiTokens.TITLE_GAME_FADE_IN * opening_speed_scale)
+	await _fade.fade_in(_opening.entry_fade_time())
 
 
 ## Ouvre la vraie sauvegarde si aucune n'a été injectée et que Boot est la scène principale.
@@ -1004,6 +1021,7 @@ func _current_map_id() -> StringName:
 
 
 func _on_transition_started(_target_map: StringName) -> void:
+	_arrival_from = _current_map_id()
 	_hud.hide_zone_title()
 	_hud.hide_caption()
 
@@ -1039,12 +1057,17 @@ func _apply_lighting(map: GameMap) -> void:
 
 
 ## Arrivée sur une carte (écran visible) : zone découverte, autosave demandé, titre de zone.
+## Toute première sortie de la maison (OUV.3) : la légende remplace la région, déduite des
+## cartes découvertes **avant** de marquer celle-ci.
 func _on_map_entered(map: GameMap) -> void:
+	var region := _first_exit.subtitle_for(map.map_id, _arrival_from, GameState.discovered_maps,
+		map.region)
+	_arrival_from = &""
 	GameState.discover_map(map.map_id)
 	request_autosave("changement de carte")
 	if _announcer.should_announce(map.display_name, map.interior):
-		_hud.show_zone_title(map.display_name, map.region)
-		zone_announced.emit(map.display_name, map.region)
+		_hud.show_zone_title(map.display_name, region)
+		zone_announced.emit(map.display_name, region)
 
 
 func _on_target_changed(kind: int) -> void:

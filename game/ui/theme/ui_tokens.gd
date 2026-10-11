@@ -1737,10 +1737,23 @@ const INTRO_SPARKLE_SIZE := 44.0
 const INTRO_SPARKLE_DISTANCE := 240.0
 const INTRO_BREATH := 0.015
 const INTRO_BREATH_TIME := 1.6
-## Fondus d'entrée dans l'introduction (depuis le noir du titre) et de sortie vers la chambre
-## (OUV.3 remplacera la sortie par le rétrécissement et le blanc chaud).
+## Fondu d'entrée dans l'introduction (depuis le noir du titre).
 const INTRO_FADE_IN := TITLE_FADE_IN
-const INTRO_FADE_OUT := TITLE_FADE_OUT
+## Fin de l'introduction (OUV.3, dossier 13 §4 plans 8 et 9) : après « Allez… en route ! », le
+## portrait du joueur **rétrécit vers son centre et se dissout dans la lumière** (il blanchit et
+## s'efface, un halo chaud grandit à sa place) ; le **fondu au blanc chaud** part au milieu du
+## rétrécissement ([constant INTRO_SEND_OFF_LEAD], part de [constant INTRO_SEND_OFF]) ; la chambre
+## apparaît ensuite en fondu depuis le blanc. « Réduire les animations » : pas de rétrécissement,
+## fondus × INTRO_REDUCED (défauts, règle 4).
+const INTRO_SEND_OFF := 0.7
+const INTRO_SEND_OFF_LEAD := 0.5
+const INTRO_SEND_OFF_SCALE := 0.08
+## Teinte du portrait qui se dissout (au-delà de 1 : il blanchit avant de s'effacer).
+const INTRO_SEND_OFF_GLOW := Color(2.4, 2.2, 1.8, 0.0)
+const INTRO_SEND_OFF_HALO := 640.0
+const INTRO_WHITE := Color(1.0, 0.96, 0.87)
+const INTRO_WHITE_OUT := 0.8
+const INTRO_WHITE_IN := 0.8
 
 ## Écran de prénom (OUV.2, dossier 13 §5.5) : panneau en haut à droite, **entier dans la moitié
 ## haute** (le clavier du téléphone couvre le bas en paysage) : champ clair, compteur, aide,

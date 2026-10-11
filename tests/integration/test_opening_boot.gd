@@ -13,8 +13,13 @@ extends GutTest
 ## OUV.2 : Nouvelle partie joue l'introduction du Prof. Chen sur le labo en mode décor ; les
 ## prénoms choisis n'existent qu'en mémoire jusqu'au commit (abandon à chaque plan : rien
 ## d'écrit), puis arrivent dans la chambre, les étiquettes du prologue et le combat.
+## OUV.3 : fin de l'introduction (commit, puis rétrécissement et blanc chaud, chambre depuis le
+## blanc, contrôle rendu à la fin du fondu ; abandon pendant l'animation = nouvelle partie
+## complète), légende de la toute première sortie (nouvelle partie oui ; seconde sortie, Continuer,
+## partie qui connaît déjà Bourg Palette, départ de débogage : non), réduction des animations.
 
 const MemoryFs := preload("res://tests/helpers/memory_file_system.gd")
+const TweenClock := preload("res://tests/helpers/tween_clock.gd")
 const FixedClock := preload("res://tests/helpers/fixed_clock.gd")
 const BOOT_SCENE := preload("res://game/boot.tscn")
 const SAVE_PATH := "user://test_ouv1_save.json"
@@ -27,6 +32,9 @@ const ABSENT := "user://test_ouv1_absent.json"
 const DATE := "2026-10-10T09:00:00"
 const TIMEOUT := 10.0
 const BEDROOM_CELL := Vector2i(3, 4)
+## Index de « Allez… en route ! » dans oak_intro.json.
+const LAST_LINE := 31
+const LEGEND := "Le commencement de toute aventure"
 
 var _fs: MemoryFs
 var _boot: Boot
@@ -626,3 +634,301 @@ func test_the_boot_splash_is_the_kanto_logo() -> void:
 	var bg: Color = ProjectSettings.get_setting("application/boot_splash/bg_color")
 	assert_lt(bg.get_luminance(), 0.1, "fond sombre")
 	assert_gt(bg.r, bg.b, "et chaud")
+
+
+# --- Transitions (OUV.3) -------------------------------------------------------------------
+
+## Introduction (instantanée) jusqu'à la dernière réplique écrite en entier ; la fin se joue
+## ensuite à vitesse réelle (durées en temps simulé par l'appelant).
+func _to_last_line(player: String = "Sacha", rival: String = "Gary") -> IntroPlayer:
+	await _start_intro()
+	var intro := _opening().get_intro()
+	await _intro_until(func() -> bool: return intro.get_reader().index() >= LAST_LINE \
+		and not intro.is_staging() and intro.is_text_complete(), player, rival)
+	assert_eq(intro.get_reader().index(), LAST_LINE, "dernière réplique")
+	_opening().speed_scale = 1.0
+	_opening().get_intro_stage().speed_scale = 1.0
+	return intro
+
+
+## État de la fin de l'introduction à un instant donné.
+func _shot() -> Dictionary:
+	var fade := _boot.get_fade()
+	var stage := _opening().get_intro_stage()
+	var holder := stage.get_holder(&"player") if stage != null else null
+	var map := SceneRouter.get_current_map()
+	return {
+		"alpha": fade.get_alpha(), "white": fade.get_color() == UiTokens.INTRO_WHITE,
+		"stage": stage != null,
+		"scale": (holder.get_node(^"Picture") as Control).scale.x if holder != null else -1.0,
+		"map": map.map_id if is_instance_valid(map) else &"",
+		"free": _boot.get_player().is_input_enabled() and _boot.get_hud().visible,
+		"hud": _boot.get_hud().visible, "input": _boot.get_player().is_input_enabled(),
+		"saved": str(_saved().get("map", "")) if _fs.files.has(SAVE_PATH) else "",
+		"writes": _save_writes().size(),
+	}
+
+
+## Fin de l'introduction pas à pas (TweenClock) depuis « Allez… en route ! » : un instantané par
+## pas, jusqu'au contrôle rendu dans la chambre (ou jusqu'à ce que [param stop] rende vrai pour
+## un instantané).
+func _play_ending(intro: IntroPlayer, stop: Callable = Callable()) -> Array[Dictionary]:
+	var clock := TweenClock.new(get_tree())
+	var shots: Array[Dictionary] = []
+	intro.advance()
+	var deadline := Time.get_ticks_msec() + int(TIMEOUT * 1000.0)
+	while Time.get_ticks_msec() < deadline:
+		clock.step()
+		await get_tree().process_frame
+		var shot := _shot()
+		shots.append(shot)
+		if stop.is_valid() and stop.call(shot):
+			break
+		if shot["free"] and shot["map"] == &"player_house_2f":
+			break
+	clock.release()
+	return shots
+
+
+func _first(shots: Array[Dictionary], test: Callable) -> int:
+	for i: int in shots.size():
+		if test.call(shots[i]):
+			return i
+	return -1
+
+
+func test_the_ending_commits_then_shrinks_into_warm_white_then_shows_the_bedroom() -> void:
+	var old := _fixture_text()
+	_put_save(old)
+	await _launch()
+	var intro := await _to_last_line()
+	_fs.journal.clear()
+	var closed_on: Array[Dictionary] = []
+	_opening().intro_closed.connect(func() -> void: closed_on.append(_shot()))
+	var entered_on: Array[Dictionary] = []
+	SceneRouter.map_entered.connect(func(_map: GameMap) -> void: entered_on.append(_shot()),
+		CONNECT_ONE_SHOT)
+	var shots := await _play_ending(intro)
+	var shrinking := _first(shots, func(s: Dictionary) -> bool:
+		return s["scale"] > 0.0 and s["scale"] < 1.0)
+	var white := _first(shots, func(s: Dictionary) -> bool:
+		return s["white"] and s["alpha"] >= 1.0)
+	var bedroom := _first(shots, func(s: Dictionary) -> bool:
+		return s["map"] == &"player_house_2f")
+	assert_gt(shrinking, -1, "le portrait du joueur rétrécit")
+	assert_gt(white, shrinking, "puis fondu au blanc chaud")
+	assert_gte(bedroom, white, "puis la chambre")
+	# Commit d'abord : la nouvelle partie est sur le disque avant toute animation.
+	assert_eq(shots[shrinking]["saved"], "player_house_2f", "commit avant le rétrécissement")
+	assert_eq(_fs.files[PREVIOUS_PATH], old)
+	var commit_writes: int = shots[shrinking]["writes"]
+	assert_gt(commit_writes, 0)
+	for i: int in range(shrinking, shots.size() - 1):
+		assert_eq(shots[i]["writes"], commit_writes, "aucune écriture pendant l'animation")
+	# Rideau blanc opaque quand l'introduction est retirée ; la chambre apparaît sous le blanc
+	# (SceneRouter.start lève le rideau, Boot le repose opaque dans le même appel : l'image
+	# suivante part du blanc).
+	assert_eq(closed_on.size(), 1)
+	if closed_on.size() == 1:
+		assert_true(closed_on[0]["white"] and closed_on[0]["alpha"] >= 1.0, "blanc opaque")
+	assert_true(shots[bedroom]["white"] and shots[bedroom]["alpha"] > 0.9,
+		"première image de la chambre : sous le blanc")
+	assert_eq(entered_on.size(), 1)
+	if entered_on.size() == 1:
+		assert_false(entered_on[0]["input"], "joueur bloqué à l'arrivée")
+		assert_false(entered_on[0]["hud"], "contrôles cachés à l'arrivée")
+	# Fondu depuis le blanc, contrôle rendu à la fin (au pas près).
+	for i: int in range(bedroom, shots.size() - 1):
+		assert_false(shots[i]["free"], "pas de contrôle pendant le fondu (pas %d)" % i)
+		assert_false(shots[i]["hud"])
+		assert_true(shots[i]["white"], "le rideau reste blanc chaud")
+	var last: Dictionary = shots.back()
+	assert_true(last["free"] and last["hud"], "contrôle rendu")
+	assert_eq(last["alpha"], 0.0, "fondu fini")
+	var expected := int(ceil(UiTokens.INTRO_WHITE_IN / TweenClock.STEP))
+	assert_between(shots.size() - 1 - bedroom, expected - 1, expected + 1,
+		"fondu depuis le blanc ≈ %.1f s (pas)" % UiTokens.INTRO_WHITE_IN)
+	_assert_in_the_bedroom()
+	assert_false(_boot.get_hud().get_zone_title().is_showing(), "aucun titre de zone")
+	assert_false(_boot.get_dialogue_runner().is_running(), "aucun texte")
+	# Première autosave une fois la partie stable.
+	await wait_until(func() -> bool: return _save_writes().size() > commit_writes, TIMEOUT)
+	assert_gt(_save_writes().size(), commit_writes, "première autosave après le fondu")
+	assert_eq(_saved()["player_name"], "Sacha")
+
+
+## Abandon (application tuée) à chaque moment de la fin : boîte qui se ferme (avant le commit :
+## l'ancienne partie intacte), rétrécissement, blanc qui monte, chambre sous le blanc, fondu vers
+## la chambre (après le commit : la nouvelle partie complète dans la chambre, l'ancienne dans
+## save.previous.json). Jamais d'entre-deux.
+func test_killed_during_the_ending_leaves_one_whole_game() -> void:
+	var old := _fixture_text()
+	var moments: Dictionary[String, Callable] = {
+		"boîte qui se ferme": func(s: Dictionary) -> bool:
+			return s["scale"] == 1.0 and s["saved"] != "player_house_2f",
+		"rétrécissement": func(s: Dictionary) -> bool:
+			return s["scale"] > 0.0 and s["scale"] < 0.6,
+		"blanc qui monte": func(s: Dictionary) -> bool:
+			return s["white"] and s["alpha"] > 0.3 and s["alpha"] < 1.0 and s["stage"],
+		"chambre sous le blanc": func(s: Dictionary) -> bool:
+			return s["map"] == &"player_house_2f" and s["alpha"] >= 1.0,
+		"fondu vers la chambre": func(s: Dictionary) -> bool:
+			return s["map"] == &"player_house_2f" and s["alpha"] > 0.0 and s["alpha"] < 0.5,
+	}
+	for moment: String in moments:
+		_fs = MemoryFs.new()
+		_put_save(old)
+		await _launch()
+		var intro := await _to_last_line("Red", "Blue")
+		var shots := await _play_ending(intro, moments[moment])
+		assert_true(moments[moment].call(shots.back()), "%s : atteint" % moment)
+		assert_false(shots.back()["free"], "%s : encore dans la transition" % moment)
+		_kill_boot()
+		if moment == "boîte qui se ferme":
+			assert_eq(_fs.files[SAVE_PATH], old, "%s : ancienne partie intacte" % moment)
+			assert_eq(_fs.files.keys(), [SAVE_PATH], "%s : aucun autre fichier" % moment)
+			continue
+		var saved := _saved()
+		assert_eq(_fs.files[PREVIOUS_PATH], old, "%s : ancienne partie en copie" % moment)
+		assert_eq(saved.get("map"), "player_house_2f", "%s : nouvelle partie" % moment)
+		assert_eq(saved.get("player_name"), "Red")
+		assert_eq(saved.get("rival_name"), "Blue")
+		var files: Array = _fs.files.keys()
+		files.sort()
+		assert_eq(files, [SAVE_PATH, PREVIOUS_PATH], "%s : aucun autre fichier" % moment)
+	await _launch()
+	assert_eq(_title().get_featured(), &"continue", "relancement : Continuer")
+	assert_eq(_opening().get_model().summary.player_name, "Red")
+
+
+func test_reduced_motion_ending_is_a_short_white_fade_without_shrink() -> void:
+	await _launch()
+	_boot.get_settings().reduce_motion = true
+	var intro := await _to_last_line()
+	assert_true(_opening().get_intro_stage().reduce_motion, "portraits sans montée")
+	var shots := await _play_ending(intro)
+	assert_eq(_first(shots, func(s: Dictionary) -> bool:
+		return s["scale"] > 0.0 and s["scale"] < 1.0), -1, "pas de rétrécissement animé")
+	var bedroom := _first(shots, func(s: Dictionary) -> bool:
+		return s["map"] == &"player_house_2f")
+	assert_gt(bedroom, -1)
+	if bedroom < 0:
+		return
+	assert_true(shots[bedroom]["white"], "fondu au blanc direct")
+	var expected := int(ceil(UiTokens.INTRO_WHITE_IN * UiTokens.INTRO_REDUCED / TweenClock.STEP))
+	assert_between(shots.size() - 1 - bedroom, expected - 1, expected + 1, "fondu raccourci")
+	assert_true(shots.back()["free"])
+	_assert_in_the_bedroom()
+
+
+func test_reduced_motion_stops_the_title_camera_drift() -> void:
+	await _launch()
+	assert_true(_boot.get_title_backdrop().is_drifting(), "dérive lente au titre")
+	var settings := _boot.get_settings()
+	settings.reduce_motion = true
+	_boot._apply_settings(settings)
+	assert_false(_boot.get_title_backdrop().is_drifting(), "Réduire les animations : immobile")
+
+
+func test_the_opening_fades_are_shortened_by_reduced_motion() -> void:
+	await _launch()
+	var director := _opening()
+	director.speed_scale = 1.0
+	assert_almost_eq(director.fade_time(UiTokens.TITLE_FADE_OUT), UiTokens.TITLE_FADE_OUT, 0.001)
+	assert_almost_eq(director.entry_fade_time(), UiTokens.TITLE_GAME_FADE_IN, 0.001,
+		"Continuer : depuis le noir")
+	_boot.get_settings().reduce_motion = true
+	for base: float in [UiTokens.TITLE_FADE_IN, UiTokens.TITLE_FADE_OUT, UiTokens.INTRO_FADE_IN,
+			UiTokens.INTRO_WHITE_OUT, UiTokens.INTRO_WHITE_IN]:
+		assert_almost_eq(director.fade_time(base), base * UiTokens.INTRO_REDUCED, 0.001)
+
+
+# --- Légende de la toute première sortie (OUV.3) -------------------------------------------
+
+## Sort de la chambre par l'escalier puis la porte (SceneRouter, comme les vrais passages).
+func _leave_the_house() -> void:
+	await SceneRouter.change_map(&"player_house_1f", &"stairs")
+	await SceneRouter.change_map(&"pallet_town", &"player_house_door")
+
+
+func _zone_title() -> ZoneTitle:
+	return _boot.get_hud().get_zone_title()
+
+
+func test_the_first_exit_of_a_new_game_shows_the_legend() -> void:
+	_put_save(_fixture_text())
+	await _launch()
+	await _start_intro()
+	await _wait_finished()
+	assert_false(GameState.discovered_maps.has(&"pallet_town"))
+	await _leave_the_house()
+	assert_eq(_boot.get_map().map_id, &"pallet_town")
+	assert_true(_zone_title().is_showing())
+	assert_eq(_zone_title().get_zone_name_text(), "BOURG PALETTE")
+	assert_eq(_zone_title().get_region_text(), LEGEND, "au lieu de « Kanto »")
+	assert_true(GameState.discovered_maps.has(&"pallet_town"), "découvert ensuite")
+	# Route 1 puis retour : Bourg Palette est connu, le sous-titre habituel revient.
+	await SceneRouter.change_map(&"route_1", &"from_pallet_w")
+	await SceneRouter.change_map(&"pallet_town", &"player_house_door")
+	assert_true(_zone_title().is_showing())
+	assert_eq(_zone_title().get_region_text(), "Kanto", "seconde arrivée : plus de légende")
+	# Seconde sortie de la maison (après un passage ailleurs, pour que le titre s'affiche).
+	await SceneRouter.change_map(&"route_1", &"from_pallet_w")
+	await SceneRouter.change_map(&"player_house_1f", &"entrance")
+	await SceneRouter.change_map(&"pallet_town", &"player_house_door")
+	assert_true(_zone_title().is_showing())
+	assert_eq(_zone_title().get_region_text(), "Kanto", "seconde sortie de la maison")
+
+
+func test_continue_never_shows_the_legend() -> void:
+	# Partie (v4) qui a déjà découvert Bourg Palette, reprise sur la place même.
+	var v4: Dictionary = JSON.parse_string(_fixture_text())
+	assert_true((v4["discovered_maps"] as Dictionary).has("pallet_town"))
+	v4["map"] = "pallet_town"
+	v4["cell"] = [36, 10]
+	_put_save(JSON.stringify(v4))
+	await _launch()
+	_title().get_entry_button(&"continue").pressed.emit()
+	await _wait_finished()
+	assert_eq(_boot.get_map().map_id, &"pallet_town")
+	assert_ne(_zone_title().get_region_text(), LEGEND, "reprise : jamais de légende")
+	await SceneRouter.change_map(&"player_house_1f", &"entrance")
+	await SceneRouter.change_map(&"pallet_town", &"player_house_door")
+	assert_ne(_zone_title().get_region_text(), LEGEND, "Bourg Palette déjà découvert")
+
+
+func test_an_existing_game_that_knows_pallet_town_exits_without_the_legend() -> void:
+	var v4: Dictionary = JSON.parse_string(_fixture_text())
+	v4["map"] = "player_house_1f"
+	v4["cell"] = [7, 7]
+	_put_save(JSON.stringify(v4))
+	await _launch()
+	_title().get_entry_button(&"continue").pressed.emit()
+	await _wait_finished()
+	assert_eq(_boot.get_map().map_id, &"player_house_1f")
+	await SceneRouter.change_map(&"pallet_town", &"player_house_door")
+	assert_true(_zone_title().is_showing())
+	assert_eq(_zone_title().get_region_text(), "Kanto")
+
+
+func test_a_resume_on_a_never_discovered_pallet_town_shows_no_legend() -> void:
+	# Cas limite (partie sans Bourg Palette parmi les cartes découvertes) : reprise sur la place,
+	# aucune carte quittée, donc pas de légende.
+	var v4: Dictionary = JSON.parse_string(_fixture_text())
+	(v4["discovered_maps"] as Dictionary).erase("pallet_town")
+	v4["map"] = "pallet_town"
+	v4["cell"] = [36, 10]
+	_put_save(JSON.stringify(v4))
+	await _launch()
+	_title().get_entry_button(&"continue").pressed.emit()
+	await _wait_finished()
+	assert_eq(_boot.get_map().map_id, &"pallet_town")
+	assert_ne(_zone_title().get_region_text(), LEGEND)
+
+
+func test_a_debug_start_shows_no_legend_on_its_way_into_pallet_town() -> void:
+	await _launch(DEBUG_START)
+	assert_eq(_boot.get_map().map_id, &"route_1")
+	await SceneRouter.change_map(&"pallet_town", &"from_route_1_w")
+	assert_true(_zone_title().is_showing())
+	assert_eq(_zone_title().get_region_text(), "Kanto", "arrivée par la Route 1")
