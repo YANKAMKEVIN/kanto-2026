@@ -49,6 +49,8 @@ const UNUSED_YET: Array[StringName] = [
 ## J10 (panneaux, noms affichés), où un retour à la ligne est écrit « \n ».
 const DOSSIER_12 := "res://docs/design/dossier-12-argenta.md"
 const LOT_J10 := "res://docs/design/textes/textes-brouillon-j10.md"
+## Jalon 11 : textes du §13 (« « … » » par ligne).
+const DOSSIER_14 := "res://docs/design/dossier-14-systemes-j11.md"
 ## Jalon 8 : textes T1–T16 validés (dossier 11, « Textes à valider ») ; dans son tableau, « / »
 ## marque le retour à la ligne de la bulle et le gras (« ** ») le titre d'un panneau.
 const DOSSIER_11 := "res://docs/design/dossier-11-route-2.md"
@@ -89,7 +91,8 @@ const IDS: Array[StringName] = [
 	&"observe_charmander", &"observe_leo_rattata", &"observe_squirtle",
 	# Jalon 10 (T8) : Argenta (dossier 12, lot du J10).
 	&"pewter_city_sign", &"pewter_gym_brock", &"pewter_gym_brock_badge", &"pewter_gym_brock_intro",
-	&"pewter_gym_brock_lost", &"pewter_gym_brock_resume", &"pewter_gym_brock_won",
+	&"pewter_gym_brock_lost", &"pewter_gym_brock_resume", &"pewter_gym_brock_tm",
+	&"pewter_gym_brock_tm_late", &"pewter_gym_brock_tm_use", &"pewter_gym_brock_won",
 	&"pewter_gym_guide", &"pewter_gym_liam_after", &"pewter_gym_liam_before",
 	&"pewter_gym_liam_defeated", &"pewter_gym_sign", &"pewter_house_mason_kid",
 	&"pewter_house_mason_partner", &"pewter_house_researcher", &"pewter_kid", &"pewter_lass",
@@ -261,7 +264,10 @@ func test_every_dialogue_played_by_a_cutscene_exists() -> void:
 		&"oak_route1_warning", &"oak_starter_offer", &"oak_starter_reciprocal",
 		# Jalon 10 (T8) : scènes de Pierre et du garde de la Route 3.
 		&"pewter_gym_brock_badge", &"pewter_gym_brock_intro", &"pewter_gym_brock_lost",
-		&"pewter_gym_brock_resume", &"pewter_gym_brock_won", &"pewter_route_3_guard_cleared",
+		&"pewter_gym_brock_resume",
+		# Jalon 11 (T14) : remise de la CT34.
+		&"pewter_gym_brock_tm", &"pewter_gym_brock_tm_late", &"pewter_gym_brock_tm_use",
+		&"pewter_gym_brock_won", &"pewter_route_3_guard_cleared",
 		&"pewter_route_3_guard_rule",
 		&"rival_challenge", &"rival_challenge_wait", &"rival_lab_lost", &"rival_lab_won",
 		&"rival_lab_won_leaving", &"rival_parcel_greet", &"rival_parcel_leaving",
@@ -359,7 +365,8 @@ func test_every_condition_flag_is_set_somewhere() -> void:
 		&"oak_met", &"pewter_arrived",
 		&"pokedex_activated", &"rival_battle_done", &"rival_challenged", &"rival_lab_lost",
 		&"rival_lab_won", &"rival_left_lab", &"rival_route22_lost", &"rival_route22_won",
-		&"route_3_guard_cleared", &"starter_chosen", &"starter_offered", &"viridian_arrived"] as Array[StringName])
+		&"route_3_guard_cleared", &"starter_chosen", &"starter_offered", &"tm34_received",
+		&"viridian_arrived"] as Array[StringName])
 	assert_eq(_used_on.get(&"oak_lab_reunion"), [&"oak_lab"], "joué au labo, après le fondu")
 	assert_eq(_used_on.get(&"oak_starter_offer"), [&"oak_lab"], "joué au labo")
 
@@ -541,6 +548,7 @@ func test_texts_are_the_dossier_02_texts_word_for_word() -> void:
 	var dossier_10 := FileAccess.get_file_as_string(DOSSIER_10)
 	var dossier_12 := FileAccess.get_file_as_string(DOSSIER_12)
 	var lot_j10 := FileAccess.get_file_as_string(LOT_J10)
+	var dossier_14 := FileAccess.get_file_as_string(DOSSIER_14)
 	for row: Array in _pages():
 		if GATE_GUARDS.has(row[0]):
 			continue
@@ -557,8 +565,18 @@ func test_texts_are_the_dossier_02_texts_word_for_word() -> void:
 			or dossier_09.contains(text) or in_dossier_11 or valides.contains("« %s »" % text)
 			or dossier_10.contains(_as_dossier_10(text))
 			or dossier_12.contains(_as_dossier_10(text))
-			or lot_j10.contains("| « %s » |" % text.replace("\n", "\\n")),
+			or lot_j10.contains("| « %s » |" % text.replace("\n", "\\n"))
+			or _each_line_quoted(dossier_14, text),
 			"%s : « %s » dans un dossier de conception" % [row[0], text])
+
+
+## Vrai si chaque ligne de [param text] figure entre guillemets dans [param dossier] (dossier 14 :
+## une réplique par numéro, « Avec Patience, ton Pokémon encaisse, » puis « puis rend… »).
+func _each_line_quoted(dossier: String, text: String) -> bool:
+	for line: String in text.split("\n"):
+		if not dossier.contains("« %s »" % line):
+			return false
+	return true
 
 
 func test_speakers_and_narration() -> void:
@@ -696,7 +714,8 @@ func test_oak_parcel_lines() -> void:
 					id, variant.cutscene])
 	# La scène du colis ; jalon 8 : les deux objets visibles de la Route 2 (PRENDRE) ; jalon 9 :
 	# les trois de la Forêt de Jade ; jalon 10 : la Potion de la Route 2 nord et Pierre.
-	assert_eq(launched, 8, "la scène du colis, six objets au sol et Pierre")
+	# Jalon 11 : la remise tardive de la CT34 par Pierre.
+	assert_eq(launched, 9, "la scène du colis, six objets au sol, Pierre et sa CT34")
 	# Le jeton n'apparaît que dans la réplique de l'espèce.
 	for row: Array in _pages():
 		var tokens := DialogueTokens.tokens_in(row[1])

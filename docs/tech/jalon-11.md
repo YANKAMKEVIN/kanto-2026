@@ -572,3 +572,19 @@ la choisit jamais (aucun effet « utile »). Tests : `test_battle_bide` (déroul
 Non testé automatiquement : le retrait volontaire pendant Patience (impossible : action imposée)
 et un adversaire qui change pendant la Patience (aucune IA ne change de Pokémon) ; soumission
 automatique du directeur couverte par la QA.
+
+### T14 — remise de la CT34 par Pierre (2026-10-11, 11B)
+
+`data/dialogues/pewter_gym.json` : `pewter_gym_brock_tm` (n° 45), `pewter_gym_brock_tm_late`
+(n° 48), `pewter_gym_brock_tm_use` (n° 46 et 47 sur une page, deux lignes) ; nouvelle variante de
+`pewter_gym_brock` (`if badge_boulder`, `unless tm34_received` → scène
+`pewter_gym_brock_tm_late`), placée avant l'allusion au rival. `data/cutscenes/pewter_gym.json` :
+après « C'est la preuve de ta victoire… », « Prends ceci aussi. » → `give tm34` → n° 46–47 →
+`set tm34_received` (étapes conditionnées : une seule remise) ; scène `pewter_gym_brock_tm_late`
+(face, n° 48, give, n° 46–47, set). Toast d'une CT : « CT34 — Patience » / « obtenue » (n° 40,
+`ItemData.added_text`). Tests : `test_brock_sequence` (victoire : remise après la réplique du
+badge ; partie badgée `badge_after` : remise en lui reparlant, toast, puis l'allusion au rival,
+une seule CT34), données des dialogues et scènes (textes mot pour mot contre le dossier 14).
+Pas de test de rechargement entre deux répliques : le drapeau et l'objet sont posés dans la même
+scène, sauvegardée à sa fin (une fermeture en pleine scène rejoue la remise, jamais deux CT : le
+Sac n'est écrit qu'à la fin).

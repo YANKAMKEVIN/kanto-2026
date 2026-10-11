@@ -14,8 +14,28 @@
 					{ "dialogue": "pewter_gym_brock_won", "if": ["badge_boulder"] },
 					{ "badge": "boulder", "if": ["badge_boulder"] },
 					{ "dialogue": "pewter_gym_brock_badge", "if": ["badge_boulder"] },
+					{ "dialogue": "pewter_gym_brock_tm", "if": ["badge_boulder"],
+						"unless": ["tm34_received"] },
+					{ "give": "tm34", "count": 1, "if": ["badge_boulder"],
+						"unless": ["tm34_received"] },
+					{ "dialogue": "pewter_gym_brock_tm_use", "if": ["badge_boulder"],
+						"unless": ["tm34_received"] },
+					{ "set": ["tm34_received"], "if": ["badge_boulder"] },
 					{ "dialogue": "pewter_gym_brock_lost", "unless": ["badge_boulder"] },
 					{ "wake_up": true, "unless": ["badge_boulder"] }
+				]
+			}
+		]
+	},
+	"pewter_gym_brock_tm_late": {
+		"variants": [
+			{
+				"steps": [
+					{ "face": "brock", "to": "player" },
+					{ "dialogue": "pewter_gym_brock_tm_late" },
+					{ "give": "tm34", "count": 1 },
+					{ "dialogue": "pewter_gym_brock_tm_use" },
+					{ "set": ["tm34_received"] }
 				]
 			}
 		]

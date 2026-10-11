@@ -32,6 +32,8 @@ const ADDED_SUFFIX := " au Sac"
 ## Toast d'un objet clé (dossier 09 §19 : « COLIS POUR CHEN — ajouté aux objets clés »).
 const KEY_ADDED_BASE := "ajouté"
 const KEY_ADDED_SUFFIX := " aux objets clés"
+## Toast d'une CT (dossier 14 §13, n° 40 : « CT34 — Patience obtenue »).
+const TM_ADDED_BASE := "obtenu"
 
 var id: StringName = &""
 ## Nom au singulier (« Poké Ball ») et au pluriel (« Poké Balls »).
@@ -133,6 +135,8 @@ func added_text(count: int) -> String:
 	var agreement := ("e" if feminine else "") + ("s" if count > 1 else "")
 	if is_key():
 		return KEY_ADDED_BASE + agreement + KEY_ADDED_SUFFIX
+	if is_tm():
+		return TM_ADDED_BASE + agreement
 	return ADDED_BASE + agreement + ADDED_SUFFIX
 
 

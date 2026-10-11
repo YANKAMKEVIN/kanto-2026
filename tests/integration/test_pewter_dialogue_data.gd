@@ -104,7 +104,8 @@ func test_only_who_can_know_reacts_to_the_badge() -> void:
 		for variant: DialogueVariant in _dialogues.get_dialogue(id).variants:
 			if variant.if_flags.has(&"badge_boulder"):
 				reacting.append(id)
-	assert_eq(reacting, [&"pewter_gym_brock", &"pewter_gym_guide", &"pewter_kid",
+	# Jalon 11 : Pierre a deux variantes « badge » (remise tardive de la CT34, puis l'allusion).
+	assert_eq(reacting, [&"pewter_gym_brock", &"pewter_gym_brock", &"pewter_gym_guide", &"pewter_kid",
 		&"pewter_lass", &"route_2_north_mountaineer"] as Array[StringName])
 	var flags := StoryFlags.new()
 	var kid := _dialogues.get_dialogue(&"pewter_kid")
@@ -121,6 +122,9 @@ func test_brock_talks_through_his_scene_until_the_badge() -> void:
 	assert_eq(before.cutscene, &"pewter_gym_brock")
 	assert_true(before.pages.is_empty(), "la scène porte l'introduction")
 	flags.set_flag(&"badge_boulder")
+	# Jalon 11 (dossier 14 §6.4) : une partie badgée sans la CT34 la reçoit d'abord.
+	assert_eq(brock.pick(flags).cutscene, &"pewter_gym_brock_tm_late")
+	flags.set_flag(&"tm34_received")
 	assert_eq(_texts(brock.pick(flags)), ["Un autre Dresseur de Bourg Palette\nest passé récemment.",
 		"Vous avez des façons de combattre\ntrès différentes."] as Array[String])
 	# Scène : introduction la première fois, reprise ensuite (brock_met), combat qui lève le badge,
@@ -132,7 +136,8 @@ func test_brock_talks_through_his_scene_until_the_badge() -> void:
 	for step: CutsceneStep in scene.variants[0].steps:
 		kinds.append(CutsceneStep.kind_name(step.kind))
 	assert_eq(kinds, [&"face", &"dialogue", &"dialogue", &"champion_card", &"set", &"battle",
-		&"wait", &"dialogue", &"badge", &"dialogue", &"dialogue", &"wake_up"] as Array[StringName])
+		&"wait", &"dialogue", &"badge", &"dialogue", &"dialogue", &"give", &"dialogue", &"set",
+		&"dialogue", &"wake_up"] as Array[StringName])
 	var steps := scene.variants[0].steps
 	assert_eq([steps[1].dialogue_id, steps[1].unless_flags],
 		[&"pewter_gym_brock_intro", [&"brock_met"] as Array[StringName]])
@@ -150,7 +155,26 @@ func test_brock_talks_through_his_scene_until_the_badge() -> void:
 	assert_eq([steps[8].badge_id, steps[8].if_flags],
 		[&"boulder", [&"badge_boulder"] as Array[StringName]])
 	assert_eq(steps[9].dialogue_id, &"pewter_gym_brock_badge")
-	assert_eq(steps[10].dialogue_id, &"pewter_gym_brock_lost")
+	# Jalon 11 (dossier 14 §6.4, textes n° 45 à 47) : remise de la CT34, une seule fois.
+	for i: int in [10, 11, 12]:
+		assert_eq([steps[i].if_flags, steps[i].unless_flags], [[&"badge_boulder"] as Array[StringName],
+			[&"tm34_received"] as Array[StringName]], "étape %d" % i)
+	assert_eq([steps[10].dialogue_id, steps[11].item_id, steps[12].dialogue_id],
+		[&"pewter_gym_brock_tm", &"tm34", &"pewter_gym_brock_tm_use"])
+	assert_eq([steps[13].flags, steps[13].if_flags], [[&"tm34_received"] as Array[StringName],
+		[&"badge_boulder"] as Array[StringName]])
+	assert_eq(steps[14].dialogue_id, &"pewter_gym_brock_lost")
+	var late := _cutscenes.get_cutscene(&"pewter_gym_brock_tm_late")
+	var late_kinds: Array[StringName] = []
+	for step: CutsceneStep in late.variants[0].steps:
+		late_kinds.append(CutsceneStep.kind_name(step.kind))
+	assert_eq(late_kinds, [&"face", &"dialogue", &"give", &"dialogue", &"set"] as Array[StringName])
+	assert_eq(_texts(_dialogues.get_dialogue(&"pewter_gym_brock_tm").pick(flags)),
+		["Prends ceci aussi."] as Array[String])
+	assert_eq(_texts(_dialogues.get_dialogue(&"pewter_gym_brock_tm_late").pick(flags)),
+		["J'allais oublier.", "Ceci devrait t'être utile."] as Array[String])
+	assert_eq(_texts(_dialogues.get_dialogue(&"pewter_gym_brock_tm_use").pick(flags)),
+		["Avec Patience, ton Pokémon encaisse,\npuis rend les coups au double."] as Array[String])
 
 
 func test_liam_has_three_lines() -> void:
