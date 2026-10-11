@@ -981,6 +981,8 @@ func _apply_debug_start() -> bool:
 		return false
 	start.apply(GameState, _pokemon)
 	_debug_start_autosave = start.autosave
+	if not start.wild.is_empty():
+		_encounter_library.override_grass(start.map, start.wild, debug_start_path)
 	if not start.map.is_empty():
 		start_map = start.map
 		start_spawn = start.spawn

@@ -468,3 +468,17 @@ N18 72 → 80,5 %. Kevin à l'arrivée (route + Liam, 5 Potions) : 0 → 2 %. Bu
 inchangés (± 1,5 point). Grille Onix (Racaillou 10/10) Kevin 5 Potions : 8,5 → 23,5 %. Liam
 (Salamèche seul) : 34,5 → 44 %. **Signalé à Kevin, rien de corrigé** (risque noté au §7) :
 Pierre reste un mur pour Salamèche sous N15, ce qui reste l'intention du dossier 12.
+
+### T9 — QA des statuts : départ `status_qa` (2026-10-11, 11A) — **écart au plan §2.5**
+
+Pas de carte `qa_status` (défaut, règle 4) : à construire puis retirer à la clôture comme au J9,
+pour un seul usage. À la place, deux clés de `DebugStart` (débogage seul, jamais sauvegardées) :
+`wild` (table d'herbes forcée sur la carte de départ, `EncounterLibrary.override_grass`, appliquée
+par `Boot`) et `status_turns` par membre (sommeil seul). Départ `tools/debug_start/status_qa.json`
+sur la Route 1 (détail dans `tools/debug_start/README.md`) : une équipe qui lance brûlure,
+confusion, Para-Spore, Poudre Dodo, Puissance, Double Pied, Croc Fatal, Frappe Atlas ; trois
+membres déjà brûlé / endormi 3 tours / paralysé, un gelé au Stockage ; tous les remèdes ; herbes
+forcées Pikachu N12, Papilusion N17, Dardargnan N16, Rattata N14. **Non couverts** : un Dresseur
+`random` et un `smart` dédiés (les Dresseurs existants de la Forêt et d'Argenta servent, départs
+`trainers_qa` et `pewter_gym`). Capture de la Boutique à 5 cartes : `tools/capture_shop_j11.gd`
+(relue : lisible, icône générique des remèdes).
