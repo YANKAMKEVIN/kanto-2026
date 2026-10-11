@@ -1,0 +1,125 @@
+# Route 5 — grille fonctionnelle (jalon 15, dossier 18 §3, §4.1, §7, §11 ; préparée le 2026-10-11
+# pour la vue générale peinte). Source UNIQUE de la géométrie : plan en aplats
+# (tools/art/plan_aplats_j15.py), vue générale peinte, puis outil de construction et tests du 15A.
+# Un changement de composition se fait ICI d'abord, puis plan, puis image. Contrôle :
+# tools/art/plan_check_j15.py (profil verifier_route_5).
+#
+# 42 × 62 cases (enveloppe du dossier, §3.1) ; nord en haut ; x = colonne 0..41, y = rangée 0..61.
+# Raccord nord : (19..21, 0) ↔ Azuria (sortie sud du J14, spawn from_cerulean côté Azuria).
+# Aucune sortie sud : la route se termine au carrefour (poste de garde + entrée du souterrain).
+# Angles droits uniquement ; chemins d'au moins 2 cases de large (compagnon du J11) : ici 3.
+#
+# Trois séquences (§3.1), du nord au sud :
+#   ① y 0..19 — L'ARRIVÉE : chemin large entre deux prairies, bloc d'herbes H1 à l'est (évitable),
+#      bosquet à l'ouest, Super Potion visible au bord ouest.
+#   ② y 20..37 — LA PENSION : bâtiment au toit chaud (7 × 6) à l'est du chemin, porte au sud
+#      (parvis de chemin), JARDIN CLOS à l'est du bâtiment (clôture 7 × 10, fleurs, aucun Pokémon),
+#      visible depuis le chemin sans flèche ; promeneuse devant la clôture ; petit bois à l'ouest
+#      (Antidote caché au pied du bois).
+#   ③ y 38..58 — LE CARREFOUR : herbes H2 à l'est du chemin ; branche est → poste de garde de
+#      Safrania (7 × 4, porte au sud, FERMÉ : l'intérieur renvoie le joueur) ; branche ouest →
+#      bâtiment d'entrée du souterrain (7 × 4, porte au sud, escalier). Voyageur au carrefour.
+# Aucun Dresseur (RB). Retour vers Azuria possible depuis tout point.
+#
+# Légende (en plus de celle de route_2.txt) :
+#   T forêt et bois (bloqués)           . herbe rase                 = chemin de terre
+#   h hautes herbes                     c clôture (bloquée)          j jardin clos de la Pension
+#   W Pension Pokémon (emprise 7 × 6, bloquée)                       (fleurs, bloqué, inatteignable)
+#   D porte de la Pension (praticable, STEP_ON ↑ → intérieur, case terminale)
+#   P poste de garde (emprise 7 × 4, bloquée)   G porte du poste (STEP_ON ↑ → poste, terminale)
+#   U bâtiment d'entrée du souterrain (emprise 7 × 4, bloquée)
+#   E porte de l'entrée du souterrain (STEP_ON ↑ → underground_path, terminale)
+#
+# Format : ligne PRATICABLES, section GRILLE (« NN » + espace + 42 caractères), puis POSITIONS.
+
+PRATICABLES .=hDGE
+
+GRILLE 42 62
+00 TTTTTTTTTTTTTTTTTTT===TTTTTTTTTTTTTTTTTTTT
+01 TTTTTTTTTTTTTTTTTTT===TTTTTTTTTTTTTTTTTTTT
+02 TTTTTTTTTTTTTTTTTTT===TTTTTTTTTTTTTTTTTTTT
+03 TTTTTTTTTTTTTTT....===....TTTTTTTTTTTTTTTT
+04 TTTTTTTTTTTTTTT....===....TTTTTTTTTTTTTTTT
+05 TTTTTTTTTTTTTTT....===....TTTTTTTTTTTTTTTT
+06 TTTTTTTTTTTT.......===........TTTTTTTTTTTT
+07 TTTTTTTTTTTT.......===........TTTTTTTTTTTT
+08 TTTTTTTTTTTT.......===.hhhhh..TTTTTTTTTTTT
+09 TTTTTTTTTTTT.......===.hhhhh..TTTTTTTTTTTT
+10 TTTTTTTTTTTT.......===.hhhhh..TTTTTTTTTTTT
+11 TTTTTTTTTTTT.......===.hhhhh..TTTTTTTTTTTT
+12 TTTTTTTTTTTT.......===.hhhhh..TTTTTTTTTTTT
+13 TTTTTTTTTTTT.......===.hhhhh..TTTTTTTTTTTT
+14 TTTTTTTTTTTT.......===........TTTTTTTTTTTT
+15 TTTTTTTTTTTTTTT....===........TTTTTTTTTTTT
+16 TTTTTTTTTTTTTTT....===........TTTTTTTTTTTT
+17 TTTTTTTTTTTTTTT....===........TTTTTTTTTTTT
+18 TTTTTTTTTTTT.......===........TTTTTTTTTTTT
+19 TTTTTTTTTTTT.......===........TTTTTTTTTTTT
+20 TTTTTTTTTTTTTTTT...===...TTTTTTTTTTTTTTTTT
+21 TTTTTTTTTTTTTTTT...===...TTTTTTTTTTTTTTTTT
+22 TTTTTTTTTTTT.......===..WWWWWWWccccccc...T
+23 TTTTTTTTTTTT.......===..WWWWWWWcjjjjjc...T
+24 TTTTTTTTTTTT.......===..WWWWWWWcjjjjjc...T
+25 TTTTTTTTTTTT..TTTT.===..WWWWWWWcjjjjjc...T
+26 TTTTTTTTTTTT..TTTT.===..WWWWWWWcjjjjjc...T
+27 TTTTTTTTTTTT..TTTT.===..WWWDWWWcjjjjjc...T
+28 TTTTTTTTTTTT..TTTT.==========..cjjjjjc...T
+29 TTTTTTTTTTTT..TTTT.==========..cjjjjjc...T
+30 TTTTTTTTTTTT..TTTT.===.........cjjjjjc...T
+31 TTTTTTTTTTTT.......===.........ccccccc...T
+32 TTTTTTTTTTTT.......===...................T
+33 TTTTTTTTTTTT.......===...................T
+34 TTTTTTTTTTTT.......===...................T
+35 TTTTTTTTTTTT.......===...................T
+36 TTTTTTTTTTTTTTTT...===...TTTTTTTTTTTTTTTTT
+37 TTTTTTTTTTTTTTTT...===...TTTTTTTTTTTTTTTTT
+38 TTTTTTTTTTT........===.................TTT
+39 TTTTTTTTTTT........===..hhhhhh.........TTT
+40 TTTTTTTTTTT........===..hhhhhh.........TTT
+41 TTTTTTTTTTT........===..hhhhhh.PPPPPPP.TTT
+42 TTTTTTTTTTT........===..hhhhhh.PPPPPPP.TTT
+43 TTTTTTTTTTT........===..hhhhhh.PPPPPPP.TTT
+44 TTTTTTTTTTT........===..hhhhhh.PPPGPPP.TTT
+45 TTTTTTTTTTT........===...........===...TTT
+46 TTTTTTTTTTT........=================...TTT
+47 TTTTTT.............=================...TTT
+48 TTTTTT.............===.................TTT
+49 TTTTTT..TTTTT......===.................TTT
+50 TTTTTT..TTTTT......===.................TTT
+51 TTTTTT..TTTTT......===.................TTT
+52 TTTTTT.............===.................TTT
+53 TTTTTT..UUUUUUU....===.................TTT
+54 TTTTTT..UUUUUUU....===.................TTT
+55 TTTTTT..UUUUUUU....===.................TTT
+56 TTTTTT..UUUEUUU....===.................TTT
+57 TTTTTT....============.................TTT
+58 TTTTTT....============.................TTT
+59 TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+60 TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+61 TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+FIN
+
+# POSITIONS (défauts du 2026-10-11, ajustables au plan du 15A) — une ligne par élément :
+#   identifiant  type  cases  bloque|libre  [cle=valeur ...]  # commentaire
+# Types : ceux de route_3.txt. « cache » : objet caché du J12 (case bloquée, signalée par le décor,
+# attribut indice), jamais dessinée sur le plan joint à Codex (seulement en --annote).
+POSITIONS
+warp_nord           warp           19..21,0     libre   # PUSH ↑ → cerulean_city, raccord sud (J14)
+from_cerulean       spawn          19..21,0     libre   # arrivée d'Azuria, tournée ↓
+pension_porte       warp           27,27        libre   # STEP_ON ↑ → pension (intérieur 15 × 10, gardien old_man)
+from_pension        spawn          27,28        libre   # sortie de la Pension, tournée ↓
+poste_porte         warp           34,44        libre   # STEP_ON ↑ → route_5_gate_safrania (poste 10 × 8, fermé)
+from_poste          spawn          34,45        libre   # sortie du poste, tournée ↓
+souterrain_entree   warp           11,56        libre   # STEP_ON ↑ → route_5_underground_gate (10 × 8, escalier) puis underground_path
+from_souterrain     spawn          11,57        libre   # sortie du bâtiment d'entrée, tournée ↓
+promeneuse          pnj            30,30        bloque  role=P1 facing=right  # devant la clôture du jardin : parle de la Pension
+voyageur            pnj            23,48        bloque  role=P2 facing=left  # revient de Safrania fermée ; indique le souterrain
+route_5_item_1      objet_visible  13,12        bloque  role=O1 item=super_potion  # bord ouest de la prairie de l'arrivée
+route_5_hidden_1    cache          16,31        bloque  role=O2 item=antidote indice=tronc  # Antidote : tronc couché d'une autre teinte, au pied du petit bois (EXAMINER depuis (16, 32))
+panneau_route       panneau        22,5         bloque  # « ROUTE 5 » / « Azuria ← → Carmin-sur-Mer », lu depuis (21, 5) →
+panneau_pension     panneau        23,30        bloque  # « PENSION POKÉMON », lu depuis (23, 29) ↓
+panneau_carrefour   panneau        22,50        bloque  # « SAFRANIA → / PASSAGE SOUTERRAIN ← », lu depuis (21, 50) →
+herbes_h1           herbes         25,10        libre   role=H1  # bloc de l'arrivée (évitable)
+herbes_h2           herbes         26,41        libre   role=H2  # bloc du carrefour (évitable)
+jardin_pension      repere         32..36,23..30 bloque role=jardin  # fleurs ; clos par la clôture (31..37, 22..31)
+FIN
