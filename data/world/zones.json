@@ -59,7 +59,7 @@
 			"description": "Une longue route qui monte d'Argenta vers la montagne, entre prairies, bosquets et rochers. Au loin, le Mont Sélénite grandit à chaque pas."
 		},
 		"mt_moon": {
-			"name": "Mont Sélénite", "kind": "place", "maps": ["mt_moon_center"],
+			"name": "Mont Sélénite", "kind": "place", "maps": ["mt_moon_center", "mt_moon_1f", "mt_moon_b1f", "mt_moon_b2f"],
 			"subtitle": "Route 3 — Route 4",
 			"services": [
 				{ "id": "pokemon_center", "found_on": "mt_moon_center" }

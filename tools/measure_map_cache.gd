@@ -11,6 +11,7 @@ extends SceneTree
 ##   (… -- --shot=build/captures/cache_route_2.png : capture de la dernière carte)
 ##   (… -- --all-neighbors : comportement d'avant le jalon 10, intérieurs préchargés depuis
 ##   l'extérieur, pour comparer)
+##   (… -- --route=mt_moon : la descente du Mont Sélénite, jalon 12)
 ##   (… -- --from=pewter_city : départ direct sur cette étape, processus neuf : le compteur
 ##   `tex=` est alors juste, aucune libération avant la mesure)
 ##
@@ -42,6 +43,15 @@ const STEPS: Array[Array] = [
 	[&"route_3", &"from_center_e"],
 	[&"route_4", &"from_mt_moon"],
 ]
+## Jalon 12 (T9, §2.21) : la descente du Mont Sélénite (`-- --route=mt_moon`) : entrée du 1F,
+## échelle A vers B1F, échelle B vers le secteur nord du 1F, échelle D vers B2F. Tant que la
+## Route 3 et le sas (T8) n'existent pas, leurs passages sont « à venir » (rien à précharger).
+const MT_MOON_STEPS: Array[Array] = [
+	[&"mt_moon_1f", &"from_route_3_w"],
+	[&"mt_moon_b1f", &"arrivee_a"],
+	[&"mt_moon_1f", &"arrivee_b"],
+	[&"mt_moon_b2f", &"arrivee_d"],
+]
 ## Images attendues après chaque étape (textures envoyées, préchargements finis).
 const SETTLE_FRAMES: int = 20
 
@@ -68,15 +78,18 @@ func _run() -> void:
 	print("[mem] mode=%s" % ("non borné (ancien)" if _unbounded else "borné (T18)"))
 	await _settle()
 	print("[mem] départ tex=%.1f Mo" % _tex_mb())
+	var steps: Array[Array] = STEPS
+	if OS.get_cmdline_user_args().has("--route=mt_moon"):
+		steps = MT_MOON_STEPS
 	var first := 0
 	for arg: String in OS.get_cmdline_user_args():
 		if arg.begins_with("--from="):
-			for i: int in STEPS.size():
-				if String(STEPS[i][0]) == arg.trim_prefix("--from="):
+			for i: int in steps.size():
+				if String(steps[i][0]) == arg.trim_prefix("--from="):
 					first = i
 					break
-	for i: int in range(first, STEPS.size()):
-		var step: Array = STEPS[i]
+	for i: int in range(first, steps.size()):
+		var step: Array = steps[i]
 		if i == first:
 			_router.call(&"start", step[0], step[1], Vector2i.UP)
 		else:
