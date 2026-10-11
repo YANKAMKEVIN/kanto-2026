@@ -1,0 +1,46 @@
+# Maison de Léo, Cap d'Azuria (bill_house) — grille fonctionnelle (jalon 14, BROUILLON du
+# 2026-10-11, défauts de la règle 4 ; V2 §3 et passe j14-v2-alignement.md E-12). Convention des
+# intérieurs de tools/build_painted_interiors.gd (voir argenta_maison_tailleur.txt).
+# Un petit laboratoire excentrique : deux cabines de téléportation reliées par un module, une
+# console entre les deux, un écran de diagnostic ; le reste est la maison d'un passionné
+# (bibliothèques, bureau encombré, lit). Le compagnon rentre dans sa Ball en entrant (J11).
+#
+# Déroulé (E-12, guidé et linéaire) : écran E (EXAMINER depuis (5, 4) ↑) → module m
+# (EXAMINER depuis (10, 4) ↑) → Léo-Mélofée entre dans la cabine A (marche jusqu'à (3, 5),
+# disparaît) → console C (EXAMINER depuis (7..8, 4) ↑) → effet de la machine → Léo humain
+# sort de la cabine B (apparaît en (12, 5)).
+#
+# Légende :
+#   K mur (bloqué)          . sol (praticable)
+#   X sortie vers le Cap (praticable : paillasson, PUSH ↓)
+#   A cabine de départ (2 × 2) (2..3, 3..4)      B cabine d'arrivée (2 × 2) (12..13, 3..4)
+#   E écran de diagnostic contre le mur (5, 3)   C console (7..8, 3)
+#   m module de téléportation (tuyaux, boîtier) contre le mur (10, 3)
+#   b bibliothèques (1, 6..7) et (14, 6..7)      N bureau encombré (5..7, 7) et sa chaise (6, 8)
+#   L lit (12..13, 7..8)    x plante (1, 9)
+#
+# Format : section GRILLE (« NN » + espace + 16 caractères par rangée), puis POSITIONS.
+
+GRILLE 16 11
+00 KKKKKKKKKKKKKKKK
+01 KKKKKKKKKKKKKKKK
+02 KKKKKKKKKKKKKKKK
+03 KKAA.E.CC.m.BBKK
+04 KKAA........BBKK
+05 K..............K
+06 Kb............bK
+07 Kb...NNN....LLbK
+08 K.....N.....LL.K
+09 Kx.............K
+10 KKKKKKKXXKKKKKKK
+FIN
+
+POSITIONS
+sortie              warp           7..8,10      libre   # PUSH ↓ → route_25, from_bill_house
+entree              spawn          7..8,10      libre   # spawn « from_route_25 », tourné ↑
+leo_melofee         pnj            6,6          bloque  # Léo transformé (planche Mélofée du J12, E-4) ; jusqu'à `bill_restored`
+leo                 pnj            12,5         bloque  # Léo humain, à partir de `bill_restored` (devant la cabine B)
+ecran               interactif     5,3          bloque  role=M1  # EXAMINER depuis (5, 4) ↑
+module              interactif     10,3         bloque  role=M2  # EXAMINER depuis (10, 4) ↑
+console             interactif     7..8,3       bloque  role=M3  # EXAMINER depuis (7..8, 4) ↑ ; active la machine quand Léo est dans la cabine
+FIN

@@ -26,8 +26,12 @@ test_viridian_forest) : voir `verifier_foret`. Grille agrandie le 2026-10-08 (pr
 `plan_check_route_3.py` (raccord sur Argenta, Centre, grotte, D1 et D2 inévitables, deux
 itinéraires, rebords, herbes obligatoires, objet caché « cache », durée de traversée).
 
+**Route 25** (`route_25.txt`, jalon 14, brouillon) : `verifier_route_25`, dans
+`plan_check_route_25.py` (raccord ouest, maison de Léo, D1 et D2 inévitables, H3 obligatoire,
+rebord de la terrasse, largeur du chemin, durée de traversée).
+
 Usage : python3 tools/art/plan_check.py [grille.txt ...]   (code 1 si un critère échoue)
-        sans argument : toutes les grilles connues (Route 2, Forêt de Jade, Route 3).
+        sans argument : toutes les grilles connues (Route 2, Forêt de Jade, Route 3, Route 25).
 """
 from __future__ import annotations
 
@@ -606,8 +610,14 @@ def verifier_route_3(chemin: Path) -> bool:
 	return verifier(chemin)
 
 
+def verifier_route_25(chemin: Path) -> bool:
+	"""Route 25 et Cap d'Azuria (jalon 14, brouillon) : profil dans `plan_check_route_25.py`."""
+	from plan_check_route_25 import verifier_route_25 as verifier
+	return verifier(chemin)
+
+
 VERIFICATEURS = {"route_2": verifier_route_2, "viridian_forest": verifier_foret,
-	"route_3": verifier_route_3}
+	"route_3": verifier_route_3, "route_25": verifier_route_25}
 
 
 def main() -> int:

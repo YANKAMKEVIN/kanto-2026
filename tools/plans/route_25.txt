@@ -1,0 +1,101 @@
+# Route 25 et Cap d'Azuria — grille fonctionnelle (jalon 14, V2 de Kevin et passe
+# docs/design/passes/j14-v2-alignement.md §3 ; BROUILLON du 2026-10-11, défauts de la règle 4,
+# préparé pour la vue générale peinte AVANT la validation du dossier 17 : équipes, objets et
+# textes restent à fixer par la consolidation). Source UNIQUE de la géométrie : plan en aplats
+# (tools/art/plan_aplats.py), vue générale peinte, puis outil de construction du J14. Un
+# changement de composition se fait ICI d'abord. Contrôle : tools/art/plan_check.py (profil
+# verifier_route_25, tools/art/plan_check_route_25.py).
+#
+# 80 × 28 cases ; nord en haut ; x = colonne 0..79, y = rangée 0..27. Une seule carte `route_25`
+# (le Cap en est la pointe est), comme la Route 3 porte le parvis du Mont Sélénite.
+# Raccord ouest : (0, 13..15) ↔ fin de la Route 24 nord (J13, C-7) : le J13 aligne son bord est
+# sur ces trois rangées (relais, comme le sas de la Route 4 au J12). Est : la maison de Léo
+# (porte (71..72, 11), STEP_ON ↑ → intérieur `bill_house`, grille bill_house.txt).
+# Pas de Surf ni de pêche : la mer (w) et le rivage rocheux (R) sont des obstacles (J13 D-12).
+#
+# Trois séquences, d'ouest en est :
+#   ① x 0..19 — LA SORTIE DE LA ROUTE 24 : prairie, H1 dans une poche au nord (évitable),
+#      goulet de D1 (x 16..19, y 13..15) entre deux masses de rochers : D1 inévitable (alcôve
+#      au nord du goulet, (18, 10..12)).
+#   ② x 20..55 — LA CORNICHE : chemin côtier de 3 cases entre la forêt (nord) et la mer (sud),
+#      dont le sépare une seule rangée de rochers. Terrasse nord (D3, H2, objet O1) ouverte à l'ouest ; rebord L1 (27..33, 11) : on en
+#      redescend sans revenir sur ses pas. Crique de sable au sud (D4, objet O2). Goulet de D2
+#      (x 44..47) : D2 inévitable. H3 (x 50..53) : obligatoire, 4 pas, juste avant le Cap.
+#   ③ x 56..79 — LE CAP D'AZURIA : pointe herbeuse fermée par la falaise au nord et la mer à
+#      l'est et au sud. Poche nord-ouest (H4, D5), maison de Léo au fond, entre deux massifs de
+#      fleurs ; poche du sud-est au bord de l'eau (D6, objet O3) ; objet caché O4.
+# 6 Dresseurs (V2 : 5 à 7, majorité facultative) : D1 et D2 inévitables, D3 à D6 facultatifs.
+#
+# Légende (en plus de celle de route_3.txt) :
+#   K falaise (bloquée)              T forêt et bosquets (bloqués)   . herbe rase
+#   = chemin de terre                h hautes herbes                 v rebord (sauté vers le sud)
+#   R rochers et rivage rocheux (bloqués)                            x buissons bas (bloqués)
+#   s sable de la plage (praticable) w mer (bloquée)                 f massif de fleurs (bloqué)
+#   M maison de Léo (8 × 6, emprise bloquée)
+#   D porte de la maison (praticable, STEP_ON ↑ ; 4e et 5e colonnes de la rangée du bas)
+#
+# Format : ligne PRATICABLES, section GRILLE (« NN » + espace + 80 caractères), puis POSITIONS.
+
+PRATICABLES .=hvsD
+
+GRILLE 80 28
+00 KKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKK
+01 KKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKK
+02 TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKK
+03 TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTKKKKKKKKKKKKKKKKKKKKKKKw
+04 TTTT.........TTTRRRRTTTTTTTTTTTTTTTTTTTTTTTTRRRRTTTTTTTTT.......TTT...........Rw
+05 TTTThhhhhhh..TTTRRRRTTTTT.........TTTTTTTTTTRRRRTTTTTTTTThhhhhhhTTff..........Rw
+06 TTTThhhhhhh..TTTRRRRTTTTThhhhhh...TTTTTTTTTTRRRRTTTTTTTTThhhhhhhTTffMMMMMMMMffRw
+07 T...hhhhhhh..TTTRRRRTTT..hhhhhh...TTTTTTTTTTRRRRTTTTTTTTThhhhhhh..ffMMMMMMMMffRw
+08 T...hhhhhhh.....RRRRTTT..hhhhhh...TTTTTTTTTTRRRRTTTTTTTTThhhhhhh....MMMMMMMMffRw
+09 T...............RRRRTTT...........TTTTTTTTTTRRRRTTTTTTTT.hhhhhhh....MMMMMMMMffRw
+10 T...............RR.RTTT...........TTTTTTTTTTR.RRTTTTTTTT............MMMMMMMM..Rw
+11 T...............RR.RTTT....vvvvvvvTTTTTTTTTTR.RRTTTTTTTT............MMMDDMMM..Rw
+12 T...............TT.TTTT...........TTTTTTTTTTT.TTTTTTTTTT..............====....Rw
+13 ==================================================hhhh========================Rw
+14 ==================================================hhhh========================Rw
+15 ==================================================hhhh========================Rw
+16 T...............RRRRRRRRRRRRRRRRRRRRsssssssRRRRRRRRRRRRR......................Rw
+17 Txx.............RRRRwwwwwwwwwwwwwRsssssssssRwwwwwwwwwwwR......................Rw
+18 Txx.............RRRRwwwwwwwwwwwwwRsssssssssRwwwwwwwwwwwRxxxxxxx...............Rw
+19 Txx.............RRRRwwwwwwwwwwwwwRsssssssssRwwwwwwwwwwwRxxxxxxx...............Rw
+20 TRRRRRRRRRRRRRRRRRRRwwwwwwwwwwwwwRsssssssRRRwwwwwwwwwwwRxxxxxxxRRRR...........Rw
+21 TRRRRRRRRRRRRRRRRRRRwwwwwwwwwwwwwRRRRRRRRRRRwwwwwwwwwwwRxxxxxxxRRRR...........Rw
+22 wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwRRRRRRRRRRRRRRRRRRRRRRRw
+23 wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww
+24 wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww
+25 wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww
+26 wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww
+27 wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww
+FIN
+
+# POSITIONS (défauts du 2026-10-11, ajustables au dossier 17 et au plan du J14) :
+#   identifiant  type  cases  bloque|libre  [cle=valeur ...]  # commentaire
+# Types de route_3.txt. Dresseurs : rôles et classes de RB (passe §2 point 11), équipes au
+# dossier 17 ; identifiants de data/trainers à créer au J14.
+POSITIONS
+warp_ouest          warp           0,13..15     libre   # PUSH ← → route_24, from_route_25 (relais J13)
+from_route_24       spawn          0,13..15     libre   # arrivée de la Route 24, tournée →
+porte_leo           warp           71..72,11    libre   # STEP_ON ↑ → bill_house, from_route_25
+from_bill_house     spawn          71..72,12    libre   # sortie de la maison, tournée ↓
+d1                  dresseur       18,10        bloque  role=D1 facing=down sight=5  # Gamin ; inévitable (goulet de la sortie)
+d2                  dresseur       45,10        bloque  role=D2 facing=down sight=5  # Montagnard ; inévitable (goulet de la corniche)
+d3                  dresseur       31,6         bloque  role=D3 facing=left sight=3  # Fillette ; terrasse nord, facultative
+d4                  dresseur       38,19        bloque  role=D4 facing=up sight=2  # Montagnard ; plage, facultatif (ne voit pas le chemin)
+d5                  dresseur       63,10        bloque  role=D5 facing=up sight=3  # Scout ; garde H4, facultatif
+d6                  dresseur       73,17        bloque  role=D6 facing=left sight=4  # Gamin ; garde la poche du sud-est, facultatif
+promeneur           pnj            14,10        bloque  role=P1 facing=right  # regarde vers l'est : « Le Cap, là-bas. »
+pecheur             pnj            66,16        bloque  role=P2 facing=down  # face à la mer, sans canne (pas de pêche) : « Léo vit tout au bout. »
+route_25_item_1     objet_visible  33,5         bloque  role=O1 item=tm19  # fond de la terrasse ; CT19 Frappe Atlas (RB) si 11B, sinon défaut au dossier
+route_25_item_2     objet_visible  35,19        bloque  role=O2 item=potion  # fond de la crique
+route_25_item_3     objet_visible  77,21        bloque  role=O3 item=poke_ball  # pointe du sud-est
+route_25_hidden_1   cache          64,20        bloque  role=O4 item=potion indice=coquillage  # rocher au coquillage, interagi depuis (64, 19) ↓
+roucool_1           pokemon        33,18        bloque  shy=fly  # sur les rochers, au bord de la plage
+roucool_2           pokemon        62,18        bloque  shy=fly  # sur les buissons du Cap
+panneau_ouest       panneau        3,12         bloque  # « ROUTE 25 » / « Azuria ← → Cap d'Azuria », lu depuis (3, 13) ↑
+panneau_cap         panneau        69,12        bloque  # « CAP D'AZURIA » / « Maison de Léo », lu depuis (69, 13) ↑
+herbes_h1           herbes         5,6          libre   role=H1  # poche nord de la sortie (évitable)
+herbes_h2           herbes         27,7         libre   role=H2  # terrasse nord (évitable)
+herbes_h3           herbes         51,14        libre   role=H3  # avant le Cap (obligatoire)
+herbes_h4           herbes         60,7         libre   role=H4  # poche nord-ouest du Cap (évitable)
+FIN
