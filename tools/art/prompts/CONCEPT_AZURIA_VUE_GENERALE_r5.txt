@@ -1,0 +1,60 @@
+CONCEPT ART — VUE GÉNÉRALE D'AZURIA, LA VILLE DES CANAUX (Kanto 2026), image de référence de direction artistique.
+
+Deux images sont jointes.
+
+IMAGE 1 : un PLAN SCHÉMATIQUE en aplats de couleur, vu du dessus, qui donne la COMPOSITION EXACTE à suivre. Le NORD est en haut. La ville est entourée de forêt dense (les marges de l'image).
+Légende du plan :
+- vert très foncé = forêt dense infranchissable ; vert moyen = herbe rase ; rangées de petits disques vert sombre = HAIES de buissons taillées ; disques verts plus clairs = arbres isolés (le pied est en bas du disque) ;
+- beige = rue de terre battue claire ; beige-gris à carreaux = PLACE et RUES PAVÉES de pierre claire ; blanc cassé à carreaux = QUAIS en pierre claire qui bordent l'eau ;
+- BLEU = EAU : un CANAL en forme de L, de 4 cases de large, qui descend verticalement du bord haut (au centre-gauche) puis tourne à angle droit vers l'EST pour s'ouvrir sur une grande BAIE à droite ; l'eau n'a que des bords droits ;
+- trois PONTS de pierre claire à garde-corps bas qui traversent le canal : un sur le canal vertical en haut (petit), puis DEUX sur le canal horizontal : un large au centre (3 cases) et un plus étroit à droite ;
+- rectangle ROUGE et blanc = le CENTRE DE SOINS (toit rouge, porte brune au milieu de sa façade sud), à gauche, au bord de la rue d'arrivée ; rectangle BLEU et blanc = la BOUTIQUE (toit bleu) en bas à gauche de la rue du sud ; rectangle ORANGE et crème = le MAGASIN DE VÉLOS (toit orange, grande vitrine) en bas à droite de la rue du sud ; grand rectangle TURQUOISE et blanc en haut à droite = l'ARÈNE (grande piscine couverte) ; rectangles à toit brun-rouille = MAISONS ; les petits rectangles bruns sont les PORTES, toujours sur la façade sud ;
+- la MAISON du coin nord-ouest (toit brun foncé, jardin clos par une CLÔTURE de bois brun) est la MAISON CAMBRIOLÉE : une croix jaune sur sa porte = un RUBAN de police ; au coin nord-ouest du jardin, la clôture du fond est ARRACHÉE (planches couchées dans l'herbe) ; une planche clouée sur une fenêtre ; un pot renversé dans le jardin ; au coin est du fond, un trou dans la clôture donnant sur une haie ;
+- en haut à droite, dans la baie, un petit ÎLOT rocheux gris avec une bouche de grotte sombre : la GROTTE AZURÉE, lointaine, inaccessible ;
+- en haut au centre, un chemin de terre qui sort par le bord haut entre deux haies : la SORTIE NORD (vers un grand pont, hors image) ; à gauche, la rue pavée de l'avenue sort par le bord gauche : la route d'arrivée ;
+- à droite de la place, un chemin de terre fermé par un arbre et une clôture basse, sentier peint qui se perd derrière : sortie condamnée à l'est ; tout en bas, une PALISSADE de chantier en planches brunes qui barre la rue du sud, avec un sentier qui se devine derrière ;
+- petits traits bruns sur fond vert = BANCS ; petits carrés ocre = panneaux en bois SANS TEXTE.
+Respecte ce plan À LA LETTRE : position et taille de chaque bâtiment, des quais, des trois ponts, du canal en L et de la baie, de la grande place, des haies, des sorties. Le plan ne donne que la composition : son style en aplats ne doit pas apparaître.
+
+RÈGLE ABSOLUE : le joueur se déplace case par case, seulement à l'horizontale et à la verticale ; rues, quais, ponts, canaux, bords de la place et des jardins suivent une grille : uniquement des segments horizontaux et verticaux à angles droits, AUCUN segment en diagonale ni courbe, aucun escalier. Les quais ont tous au moins deux cases de large. Le sol de la ville est plat.
+
+IMAGE 2 : la vue générale d'Argenta, la ville juste au nord-ouest. Respecte EXACTEMENT son style de rendu : même pinceau, mêmes arbres en masses arrondies, mêmes haies, même chemin de terre, même pavage de pierre claire, même saturation, MÊME LUMIÈRE, mêmes personnages ; le CENTRE DE SOINS et la BOUTIQUE sont exactement les mêmes bâtiments qu'à Argenta (enseignes identiques dans toutes les villes : toit rouge avec emblème rond blanc pour le Centre, toit bleu pour la Boutique, grande porte vitrée). Ne reprends PAS sa composition : ni montagne, ni musée, ni place d'Argenta.
+
+Format : PAYSAGE 1536 × 1024, vue plongeante sur toute la ville, comme le plan.
+
+RENDU (ADN visuel Kanto 2026 v1)
+- Illustration 2D peinte numériquement, dans l'esprit d'un RPG de créatures moderne au rendu « HD-2D peint » : formes simples, lisibles et arrondies, détails fins mais ordonnés. Ni pixel art, ni 3D, ni photo, ni aquarelle, ni cartoon en aplats. Le feuillage est peint en grandes masses douces.
+- Perspective : vue de dessus de trois quarts, projection oblique frontale, sans point de fuite. Les verticales restent verticales. On voit le dessus des objets et leur face avant (côté sud).
+- Aucun trait noir : contours fins et doux, plus sombres et plus saturés que la couleur locale. Ombres colorées bleu-vert ou violet froid, jamais grises.
+
+IDENTITÉ D'AZURIA : « la ville claire et d'eau où l'on a envie de flâner ». Après la grotte, la LUMIÈRE et l'EAU : un soulagement. Plus claire, plus fraîche et plus aérée qu'Argenta.
+- Palette : pierre très claire blanc-crème pour les quais et les ponts, eau d'un bleu-turquoise limpide avec de petits reflets du ciel doré et quelques rides horizontales douces, murs clairs, toits de tuiles chaudes (rouille, rouge, orange) sur les maisons, toit bleu pour la Boutique ; verts frais ; touches de fleurs discrètes dans les jardins et sur les quais. Nature dense, objets rares : pas de bric-à-brac.
+- Les quais sont de pierre claire taillée, avec une fine margelle ; les ponts sont de pierre claire, plats, à garde-corps bas ; l'eau est calme, sans vagues, avec peut-être deux ou trois nénuphars.
+- L'ARÈNE : le bâtiment le plus élégant de la ville ; murs de pierre claire, grande VERRIÈRE sur le toit en turquoise translucide qui laisse deviner une piscine, large porte double au centre de sa façade sud, un parvis dallé devant elle bordé de deux bancs. Sans aucun texte ni symbole écrit.
+- Le MAGASIN DE VÉLOS : façade crème, toit orange, grande vitrine où l'on devine deux ou trois vélos ; deux vélos posés devant la porte.
+- La MAISON CAMBRIOLÉE : discrète, pas dramatique : une maison normale dont la clôture du jardin est arrachée au coin nord-ouest (quelques planches couchées), une planche clouée sur une fenêtre, un pot renversé, un ruban jaune et noir tendu devant la porte. Pas de désordre excessif, pas de sang, pas de fumée.
+- La GROTTE AZURÉE sur son petit îlot rocheux dans la baie : lointaine, mystérieuse, de la roche grise bleutée avec une bouche sombre, des reflets turquoise ; aucun pont ni ponton qui y mène.
+- Lumière de fin d'après-midi, dorée, ombres longues et douces vers le nord-ouest ; reflets chauds sur l'eau.
+
+VIE (très discrète, personnages petits, aucun ne ressemble au héros à casquette rouge et veste bleue) :
+- un PÊCHEUR assis sur le quai ouest, sans canne, les jambes vers l'eau ; un ENFANT sur le pont central, qui regarde l'eau ;
+- un POLICIER (uniforme sobre bleu foncé, képi) devant la porte de la maison cambriolée, et une VOISINE (tablier) devant la maison voisine ;
+- une NAGEUSE (maillot, serviette sur l'épaule) sur le parvis de l'Arène ;
+- un JEUNE DRESSEUR (casquette) sur la place, côté nord, tourné vers le nord.
+Aucune créature visible, aucun animal, aucun oiseau, aucun poisson. Aucun bateau.
+
+INTERDITS : texte, lettres, chiffres, étiquettes, panneaux lisibles, logo (seul l'emblème rond blanc sans texte du Centre est permis), signature, filigrane, cadre, interface ; tout bâtiment absent du plan ; escaliers, terrasses ; route goudronnée, véhicule en mouvement ; arbres orange ou automnaux ; neige ; brouillard, flou de profondeur, vignettage ; pixel art.
+
+L'image doit raconter, sans texte : on arrive par une rue d'où l'on voit tout de suite le Centre aux toits rouges, puis une ville claire de pierre et d'eau s'ouvre, traversée de canaux à ponts, avec une élégante arène au-delà de l'eau, une maison au ruban jaune dans un coin tranquille, et au large, sur un îlot, l'entrée d'une grotte mystérieuse.
+
+CORRECTIONS (2e essai ; le 1er essai était très bon sur le style, la composition, les bâtiments, la maison cambriolée et la grotte : garde-les à l'identique) :
+1. L'ENFANT qui regarde l'eau doit être bien visible SUR LE PONT CENTRAL (le large, au milieu du canal horizontal), à son bord nord, tourné vers l'est ; le pont central est libre sinon (aucune autre silhouette).
+2. Le JEUNE DRESSEUR (casquette) se tient sur la place, côté NORD, à droite de l'avenue, à mi-chemin entre le pont central et le pont de droite, tourné vers le haut de l'image ; c'est un autre personnage que le pêcheur.
+3. Le CANAL a bien QUATRE cases de large (plus large qu'au 1er essai) sur tout son parcours, vertical puis horizontal, et se jette dans la baie ; les quais le bordent des deux côtés.
+4. Le PÊCHEUR est assis sur le quai OUEST du canal vertical, à gauche de l'eau, juste au-dessus de l'avenue ; le POLICIER est bien à côté de la porte de la maison cambriolée.
+
+CORRECTIONS (3e essai ; le 2e essai est excellent : garde TOUT à l'identique — composition, bâtiments, maison cambriolée, verrière, ponts, îlot, lumière — sauf ces deux personnages) :
+5. Le PÊCHEUR ne tient AUCUNE canne à pêche, aucune ligne, aucun bâton : il est assis sur le quai, chapeau de paille, les deux mains posées sur ses genoux, les jambes vers l'eau, il regarde simplement l'eau.
+6. Le JEUNE DRESSEUR de la place porte une CASQUETTE BLEU MARINE et un gilet vert olive sur une chemise claire, un pantalon brun : AUCUN rouge ni blanc sur lui (il ne doit pas ressembler au héros à casquette rouge).
+7. (4e essai ; le 3e essai est excellent, garde-le à l'identique SAUF ceci :) La BOUTIQUE (toit bleu, en bas à gauche de la rue du sud) doit être EXACTEMENT la même que celle d'Argenta : toit bleu à pans coupés, emblème rond blanc en relief sur la façade au-dessus de la grande porte vitrée, auvent rayé, bacs de fleurs ; elle ne doit pas ressembler à une simple maison. Le MAGASIN DE VÉLOS garde sa grande vitrine, son toit orange et ses vélos devant la porte.
+8. (5e essai ; le 4e essai est excellent, garde-le à l'identique SAUF ceci :) le TOIT de la maison cambriolée est INTACT et sans aucun trou (les seuls indices sont la clôture arrachée, la planche clouée sur la fenêtre, le pot renversé et le ruban jaune) ; le PÊCHEUR est assis sur le quai OUEST du canal vertical, plus BAS qu'au 4e essai : au sud du petit pont de gauche, à mi-hauteur entre ce pont et l'avenue.

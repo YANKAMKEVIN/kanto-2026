@@ -1,0 +1,40 @@
+CONCEPT ART — VUE GÉNÉRALE DE LA ROUTE 4, DU VERSANT EST DU MONT SÉLÉNITE À LA PLAINE (Kanto 2026), image de référence de direction artistique.
+
+Deux images sont jointes.
+
+IMAGE 1 : un PLAN SCHÉMATIQUE en aplats de couleur, vu du dessus, qui donne la COMPOSITION EXACTE à suivre. La route va de l'OUEST (bord gauche : la sortie de la grotte du Mont Sélénite) vers l'EST (bord droit : la ville d'Azuria, hors image).
+Légende du plan :
+- vert très foncé = forêt dense infranchissable (y compris tout le bas de l'image et la grande masse à l'est) ; vert moyen = herbe rase praticable ; points roses = petites fleurs ; disques vert sombre = buissons bas ; carrés vert très foncé isolés dans l'herbe = petits bosquets denses ;
+- gris-brun uni en haut à gauche = la MASSE ROCHEUSE du Mont Sélénite vue de son versant est (roche en couches, infranchissable), qui occupe tout le haut jusqu'au tiers de la largeur environ et déborde plus loin au nord ; elle descend jusqu'au bord gauche ;
+- cercle noir sur le bord gauche = la BOUCHE de la grotte (la sortie du Mont Sélénite), sombre et profonde, au bout du chemin ;
+- beige = chemin de terre battue : il part de la grotte vers l'est en ligne droite, fait un coude à angle droit vers le sud, descend le long d'une paroi, traverse un rebord, puis tourne vers l'est et file droit jusqu'au bord droit de l'image ;
+- bande gris foncé horizontale en dessous du plateau = la FALAISE du versant : un petit mur de roche de deux cases de haut qui sépare le plateau d'en haut de la plaine d'en bas, infranchissable ; une bande BRUNE à droite de la falaise (au niveau du chemin) = le REBORD : une marche de terre d'une case, que le joueur saute vers le sud (seule descente) ;
+- petits disques gris clair = ROCHERS ; petit carré ocre = panneau en bois SANS TEXTE (au bord du chemin à l'ouest) ; point rouge et blanc = une balle (objet à ramasser) au fond de la poche de la plaine ouest ;
+- jaune-vert olive = HAUTES HERBES (touffues, plus hautes, où vivent les créatures sauvages), trois zones en blocs nets : deux au nord de la route (une à gauche du centre, une à droite) et une qui traverse le chemin entre deux murs de forêt (la route passe dedans, encadrée de forêt de chaque côté) ; deux colonnes d'arbres isolées au milieu du plateau (rangées de buissons) forment des haies verticales.
+Respecte ce plan À LA LETTRE : la masse rocheuse, le chemin du plateau avec son coude, la haie de buissons, la falaise, le rebord, la grande poche d'herbe au sud-ouest avec ses bosquets et sa balle, les trois zones de hautes herbes, les deux murs de forêt qui encadrent la route à l'est, l'abondance de forêt autour. Le plan ne donne que la composition : son style en aplats ne doit pas apparaître.
+
+RÈGLE ABSOLUE DES CHEMINS : le joueur se déplace case par case, seulement à l'horizontale et à la verticale ; chemins, bords des zones, bords de la falaise suivent une grille : uniquement des segments horizontaux et verticaux à angles droits, AUCUN segment en diagonale ni courbe, aucun escalier.
+RELIEF : le sol praticable est presque plat ; les SEULS reliefs sont la masse rocheuse, la falaise du versant et le rebord d'une case, plus quelques rochers.
+
+IMAGE 2 : la vue générale de la Route 3, la route de l'autre côté du Mont Sélénite. Respecte EXACTEMENT son style de rendu : même pinceau, mêmes arbres en masses arrondies, mêmes hautes herbes jaune-vert, même chemin de terre, même saturation, MÊME LUMIÈRE, même roche en couches de la montagne (traitée dans le même esprit), même bouche de grotte, mêmes personnages. Ne reprends PAS sa composition : ni centre de soins, ni bâtiment, ni sentiers.
+
+Format : PAYSAGE 1536 × 1024, vue plongeante sur toute la route, comme le plan.
+
+RENDU (ADN visuel Kanto 2026 v1)
+- Illustration 2D peinte numériquement, dans l'esprit d'un RPG de créatures moderne au rendu « HD-2D peint » : formes simples, lisibles et arrondies, détails fins mais ordonnés. Ni pixel art, ni 3D, ni photo, ni aquarelle, ni cartoon en aplats. Le feuillage est peint en grandes masses douces.
+- Perspective : vue de dessus de trois quarts, projection oblique frontale, sans point de fuite. Les verticales restent verticales. On voit le dessus des objets et leur face avant (côté sud).
+- Aucun trait noir : contours fins et doux, plus sombres et plus saturés que la couleur locale. Ombres colorées bleu-vert ou violet froid, jamais grises.
+
+AMBIANCE — « après la grotte, la lumière » : on ressort de la montagne dans un grand espace ouvert et lumineux, et la route descend vers une plaine fleurie.
+- À gauche et en haut : la masse du Mont Sélénite, roche en couches gris ARDOISE et BLEUTÉ froid (c'est son versant est, plus frais), quelques minuscules éclats bleu-blanc incrustés dans la roche près de la bouche de la grotte ; la bouche est sombre et profonde mais jamais menaçante.
+- Le plateau (haut) : herbe courte, quelques rochers, deux haies de buissons ; puis la falaise basse et le rebord ; en bas, une grande plaine d'herbe tendre, fleurie, aérée, beaucoup de lumière : la couleur devient plus chaude et plus claire en allant vers l'est, comme une promesse de ville.
+- Nature dense, objets rares : la forêt entoure tout, les clairières sont nettes.
+- Lumière de fin d'après-midi dorée, ombres longues et douces vers le nord-ouest, chaude sur la plaine, plus fraîche au pied de la roche.
+
+VIE (très discrète, personnages petits, aucun ne ressemble au héros à casquette rouge et veste bleue) :
+- une JEUNE DRESSEUSE (jupe, chemisier clair, cheveux attachés) debout dans la plaine, côté droit, au nord de la route, juste à gauche du mur de forêt de l'est, tournée vers le sud et le chemin ; aucun autre personnage.
+Aucune créature visible, aucun animal, aucun oiseau.
+
+INTERDITS : texte, lettres, chiffres, étiquettes, panneaux lisibles, logo, signature, filigrane, cadre, interface ; tout bâtiment, maison, cabane, pont, clôture, barrière ; eau, rivière, lac ; escaliers, terrasses ; route goudronnée, véhicule ; arbres orange ou automnaux ; neige ; brouillard, flou de profondeur, vignettage ; pixel art.
+
+L'image doit raconter, sans texte : on sort de la grotte par une bouche sombre, un sentier suit la montagne puis saute une marche vers une grande plaine lumineuse, où une route traverse les hautes herbes en direction de l'est.
