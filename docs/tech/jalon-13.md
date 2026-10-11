@@ -764,7 +764,7 @@ et de l'annexe A validée.
   de contact `build/captures/jalon13_assets/` → Kevin. **CA** : images validées ; journal dans la
   fiche ; ni manifeste ni scène.
 
-#### T3 — constructeur-monde (Mac) : décors de combat → **13.0-art** — **Fait, à valider par Kevin**
+#### T3 — constructeur-monde (Mac) : décors de combat → **13.0-art** — **Fait, validé par Kevin le 2026-10-11**
 - `route_4_plaine`, `route_24_pont`, `cerulean_gym_bassin` (§2.18) par la chaîne CB.3. **CA** :
   validés par Kevin sur capture de combat Mac.
 - **Fait** : 3 masters 2340 × 1080 (`assets/battle/decors/<id>_back.webp`, ≈ 0,8–1,0 Mo), recette
@@ -777,7 +777,11 @@ et de l'annexe A validée.
   tests inchangés). Ligne de sol commune (pieds 1559, 540 / 716, 972), pas de calque de premier plan
   (sol nu dans les coins : choix, comme la Route 3). Captures :
   `build/captures/jalon13_decors/cb3_<id>_{transition,roucool,capacites}.png`.
-- **À regarder** : Route 24, l'adversaire pose les pieds au bord de la rivière, au pied du pont
+- **Validation (Kevin, 2026-10-11)** : `route_4_plaine` et `route_24_pont` validés ; `cerulean_gym_bassin`
+  validé, bannières repeintes : l'emblème rond (Poké Ball) devient trois vagues stylisées
+  (bannières et médaillons de la verrière), par retouche de la composition (`..._GYM_AZURIA_BASSIN_r2`,
+  le reste identique) puis tuiles repeintes, même chaîne CB.3.
+- **Regardé à la livraison** : Route 24, l'adversaire pose les pieds au bord de la rivière, au pied du pont
   (le corps recouvre le garde-corps) ; Arène, les bannières portent un emblème rond (motif de
   ligue générique, repeignable) ; arbre en haut à gauche de la Route 24 sous la carte de PV.
 
