@@ -1,0 +1,15 @@
+{
+	"version": 1,
+	"description": "Fixture du test de simulate_mt_moon.gd : équipe sans starter face à un rival.",
+	"teams": [{ "name": "Sans starter", "members": [{ "species": "charmander", "level": 12 }] }],
+	"tables": {},
+	"trainers": {
+		"t9_rival": {
+			"name": "{rival}", "ai": "smart", "can_lose": false, "heal_after": false,
+			"gives_exp": true, "prize_money": 0, "prize_per_level": 35,
+			"team_by_starter": { "charmander": [{ "species": "weedle", "level": 3 }] }
+		}
+	},
+	"steps": [{ "label": "Rival", "trainer": "t9_rival", "optional": 3 }],
+	"variants": [{ "name": "x", "player": "attentif", "optional": "a" }]
+}

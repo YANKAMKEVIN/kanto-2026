@@ -802,6 +802,28 @@ et de l'annexe A validée.
 - `tools/sim/cerulean_scenario.json` (Route 4, Clara, Lucas, Diane, rival × 3 starters, Ondine, P1–P5,
   recruteur ; variantes « directe », « avec Route 24 nord ») ; `--valider` passe (étapes manquantes
   signalées). Lancé au T20.
+- **Fait** (branche `j13-t9`). `tools/sim/cerulean_scenario.json` : 3 équipes de départ (sortie
+  estimée du Mont Sélénite, §2.22 : Reptincel / Herbizarre / Carabaffe 19 + Roucool 16, Férosinge
+  16, Papilusion 15 [D], à remplacer au T20 par `--save`), tables `route_4_grass` et
+  `route_24_grass` (§2.14), 11 Dresseurs aux identifiants des futures données (`route_4_clara`
+  165 ₽ [D], `cerulean_gym_lucas`, `cerulean_gym_diane`, `rival_cerulean` à `team_by_starter`,
+  `cerulean_gym_misty`, `route_24_timeo` … `route_24_ethan`, `nugget_rocket`), 25 étapes : Route 4
+  H2 (4 cases, grille), Centre, rival, Centre, Ondine ; groupes `detours` (H1/H3 8 cases, Clara,
+  Lucas, Diane + Centre), `route_24_nord` (P1–P5, recruteur, herbes du nord 40 cases [D], Centre,
+  **avant** Ondine), `pont_apres_ondine` (Centre, P1–P5, recruteur **après** Ondine) ; 5 variantes
+  (directe / avec Route 24 nord, avec ou sans détours et Potions, naïf).
+- **Outil du J12 généralisé au minimum** (`simulate_mt_moon.gd`, J12 inchangé) : `title`
+  facultatif ; `starter` **par équipe** (sinon celui du scénario ou de la sauvegarde) pour les
+  Dresseurs à `team_by_starter` (erreur si une équipe n'en a pas) ; `optional` d'une étape = `true`
+  (groupe « détour », format du J12) **ou un nom de groupe** ; `optional` d'une variante = `true`
+  (tous) **ou une liste de groupes** ; rival affiché contre chaque starter.
+- **`--valider` aujourd'hui** : code 3, 22 éléments sautés (absents : `bellsprout`, `ekans`,
+  `goldeen`, `horsea`, `jigglypuff`, `oddish`, `paras`, `shellder`, `starmie`, `staryu`, `zubat` ;
+  `bubble_beam`) ; rival complet. **Pas de `switch`** dans le scénario (clé refusée par
+  `TrainerLibrary` avant le T12) : au T20, l'ajouter au rival et à Ondine, ou lancer `--donnees`.
+- Tests : `tests/integration/test_simulate_cerulean.gd` (vrai scénario valide ; rival × 3 ; groupes
+  et starter par équipe sur `tests/fixtures/sim/cerulean_groups.json` ; refus sur
+  `cerulean_no_starter.json`) ; `test_simulate_mt_moon` inchangé et vert.
 
 #### T10 — architecte : alignement — **après la clôture du J12**
 - Fusionner `main` (J11 + J12) dans `jalon-13` ; réaligner §0, §2.9, §2.11, §2.13, §2.15, §2.19 sur le
