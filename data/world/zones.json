@@ -53,9 +53,24 @@
 			],
 			"description": "Une ville entre pierre et montagne, au pied des reliefs de l'est."
 		},
-		"route_3": { "name": "Route 3", "kind": "route", "maps": [] },
-		"mt_moon": { "name": "Mont Sélénite", "kind": "place", "maps": [] },
-		"route_4": { "name": "Route 4", "kind": "route", "maps": [] },
+		"route_3": {
+			"name": "Route 3", "kind": "route", "maps": ["route_3"],
+			"subtitle": "Argenta — Mont Sélénite",
+			"description": "Une longue route qui monte d'Argenta vers la montagne, entre prairies, bosquets et rochers. Au loin, le Mont Sélénite grandit à chaque pas."
+		},
+		"mt_moon": {
+			"name": "Mont Sélénite", "kind": "place", "maps": ["mt_moon_center"],
+			"subtitle": "Route 3 — Route 4",
+			"services": [
+				{ "id": "pokemon_center", "found_on": "mt_moon_center" }
+			],
+			"description": "Une montagne creusée de galeries sombres et silencieuses. On dit que des pierres y sont tombées du ciel, autrefois."
+		},
+		"route_4": {
+			"name": "Route 4", "kind": "route", "maps": ["route_4"],
+			"subtitle": "Mont Sélénite — Azuria",
+			"description": "Le versant est du Mont Sélénite. La route descend vers la plaine, en direction d'Azuria."
+		},
 		"cerulean_city": { "name": "Azuria", "kind": "town", "maps": [] },
 		"vermilion_city": { "name": "Carmin-sur-Mer", "kind": "town", "maps": [] },
 		"lavender_town": { "name": "Lavanville", "kind": "town", "maps": [] },

@@ -691,8 +691,9 @@ func test_pewter_city_keeps_only_its_route_and_an_interior_keeps_the_city() -> v
 	_router.map_factory = Callable()
 	_router.setup(_world, _player, null)
 	_router.start(&"pewter_city", &"from_route_2_north_c", Vector2i.UP)
+	# Jalon 12 (T8) : la sortie est mène à la Route 3, voisine extérieure préchargée.
 	var expected := PackedStringArray([MapCatalog.scene_path(&"pewter_city"),
-		MapCatalog.scene_path(&"route_2_north")])
+		MapCatalog.scene_path(&"route_2_north"), MapCatalog.scene_path(&"route_3")])
 	expected.sort()
 	assert_eq(_router.get_cached_paths(), expected, "ni les sept intérieurs, ni plus")
 	# Un chargement encore en cours n'est jamais interrompu : on laisse finir la route.

@@ -7111,27 +7111,27 @@ position = Vector2(4944, 2496)
 script = ExtResource("61_e352m")
 trigger = 1
 direction = Vector2i(1, 0)
-target_spawn = &"from_route_3_n"
-arrival_facing = Vector2i(-1, 0)
-coming_soon = "Route 3"
+target_map = &"route_3"
+target_spawn = &"from_pewter_n"
+arrival_facing = Vector2i(1, 0)
 
 [node name="Route3C" type="Marker2D" parent="Warps" unique_id=630750475]
 position = Vector2(4944, 2592)
 script = ExtResource("61_e352m")
 trigger = 1
 direction = Vector2i(1, 0)
-target_spawn = &"from_route_3_c"
-arrival_facing = Vector2i(-1, 0)
-coming_soon = "Route 3"
+target_map = &"route_3"
+target_spawn = &"from_pewter_c"
+arrival_facing = Vector2i(1, 0)
 
 [node name="Route3S" type="Marker2D" parent="Warps" unique_id=431560923]
 position = Vector2(4944, 2688)
 script = ExtResource("61_e352m")
 trigger = 1
 direction = Vector2i(1, 0)
-target_spawn = &"from_route_3_s"
-arrival_facing = Vector2i(-1, 0)
-coming_soon = "Route 3"
+target_map = &"route_3"
+target_spawn = &"from_pewter_s"
+arrival_facing = Vector2i(1, 0)
 
 [node name="DoorMuseumW" type="Marker2D" parent="Warps" unique_id=84718601]
 position = Vector2(816, 3840)

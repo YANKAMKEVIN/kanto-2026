@@ -17,6 +17,9 @@ extends SceneTree
 ##     relus sur leur grille (`tools/plans/argenta_*.txt`, « plan »)
 ##
 ##   godot --headless --path . -s res://tools/build_painted_interiors.gd -- --argenta
+##   mt_moon_center — le Centre Pokémon du Mont Sélénite (jalon 12 T8, jalon-12.md §2.14) :
+##     définition commune des Centres, sans Boutique ; sortie vers la Route 3 (`from_center_e`)
+##   godot --headless --path . -s res://tools/build_painted_interiors.gd -- --rooms=mt_moon_center
 ##   godot --headless --path . -s res://tools/build_painted_interiors.gd   (toutes les pièces)
 ##   godot --headless --path . --import
 ##
@@ -80,6 +83,8 @@ func _init() -> void:
 		_player_house_1f(), _rival_house(), _oak_lab(), _forest_gate(&"south"),
 		_forest_gate(&"north")]
 	rooms.append_array(_pewter_rooms())
+	rooms.append(_pokemon_center(&"mt_moon_center", "MtMoonCenter", "Mont Sélénite",
+		[&"route_3", &"from_center_e"]))
 	for room: Dictionary in rooms:
 		if not wanted.is_empty() and not wanted.has(room["id"]):
 			continue
