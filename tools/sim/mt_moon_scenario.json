@@ -1,0 +1,157 @@
+{
+	"version": 1,
+	"description": "Route 3 et Mont Sélénite (jalon 12, dossier 15 §3.2, §3.3, §6, §8.3, §9). Équipes et adversaires recopiés du dossier ; étapes et cases obligatoires lues dans les grilles validées (plan_check_route_3.py : 8 cases d'herbes, H2 ou H3 puis H4 ; plan_check_mont_selenite.py : 8 cases de gravats, 1F-G1 3 et B2F-G1 5). Équipes « naturelles » = défauts (règle 4), à remplacer par la sauvegarde de Kevin au T26 (--save).",
+	"seeds": 500,
+	"heal_at_start": true,
+	"teams": [
+		{
+			"name": "Salamèche 15, Férosinge 15, Roucool 13",
+			"members": [
+				{ "species": "charmander", "level": 15 },
+				{ "species": "mankey", "level": 15 },
+				{ "species": "pidgey", "level": 13 }
+			]
+		},
+		{
+			"name": "Bulbizarre 15, Roucool 13",
+			"members": [
+				{ "species": "bulbasaur", "level": 15 },
+				{ "species": "pidgey", "level": 13 }
+			]
+		},
+		{
+			"name": "Carapuce 15, Roucool 13, Papilusion 12",
+			"members": [
+				{ "species": "squirtle", "level": 15 },
+				{ "species": "pidgey", "level": 13 },
+				{ "species": "butterfree", "level": 12,
+					"moves": ["tackle", "string_shot", "harden", "confusion"] }
+			]
+		}
+	],
+	"tables": {
+		"route_3_grass": {
+			"maps": ["route_3"], "terrain": "grass", "rate": 25,
+			"ramp": { "from_step": 15, "max_steps": 20 },
+			"slots": [
+				{ "species": "spearow", "levels": [8, 10], "weight": 35 },
+				{ "species": "rattata", "levels": [8, 9], "weight": 25 },
+				{ "species": "sandshrew", "levels": [8, 10], "weight": 15 },
+				{ "species": "ekans", "levels": [8, 10], "weight": 15 },
+				{ "species": "jigglypuff", "levels": [7, 9], "weight": 10 }
+			]
+		},
+		"mt_moon_1f_rubble": {
+			"maps": ["mt_moon_1f"], "terrain": "rubble", "rate": 25,
+			"ramp": { "from_step": 15, "max_steps": 20 },
+			"slots": [
+				{ "species": "zubat", "levels": [8, 10], "weight": 55 },
+				{ "species": "geodude", "levels": [8, 10], "weight": 30 },
+				{ "species": "paras", "levels": [8, 10], "weight": 13 },
+				{ "species": "clefairy", "levels": [9, 9], "weight": 2 }
+			]
+		},
+		"mt_moon_b1f_rubble": {
+			"maps": ["mt_moon_b1f"], "terrain": "rubble", "rate": 25,
+			"ramp": { "from_step": 15, "max_steps": 20 },
+			"slots": [
+				{ "species": "zubat", "levels": [9, 11], "weight": 50 },
+				{ "species": "geodude", "levels": [9, 11], "weight": 30 },
+				{ "species": "paras", "levels": [10, 11], "weight": 16 },
+				{ "species": "clefairy", "levels": [10, 10], "weight": 4 }
+			]
+		},
+		"mt_moon_b2f_rubble": {
+			"maps": ["mt_moon_b2f"], "terrain": "rubble", "rate": 25,
+			"ramp": { "from_step": 15, "max_steps": 20 },
+			"slots": [
+				{ "species": "zubat", "levels": [10, 12], "weight": 45 },
+				{ "species": "geodude", "levels": [10, 12], "weight": 30 },
+				{ "species": "paras", "levels": [10, 12], "weight": 19 },
+				{ "species": "clefairy", "levels": [10, 12], "weight": 6 }
+			]
+		}
+	},
+	"trainers": {
+		"route_3_hugo": {
+			"name": "Gamin Hugo", "ai": "random",
+			"can_lose": false, "heal_after": false, "gives_exp": true, "prize_money": 150,
+			"team": [{ "species": "rattata", "level": 10 }, { "species": "ekans", "level": 10 }]
+		},
+		"route_3_lea": {
+			"name": "Fillette Léa", "ai": "random",
+			"can_lose": false, "heal_after": false, "gives_exp": true, "prize_money": 135,
+			"team": [{ "species": "pidgey", "level": 9 }, { "species": "nidoran_f", "level": 9 }]
+		},
+		"route_3_sacha": {
+			"name": "Scout Sacha", "ai": "random",
+			"can_lose": false, "heal_after": false, "gives_exp": true, "prize_money": 120,
+			"team": [{ "species": "caterpie", "level": 10 }, { "species": "weedle", "level": 10 },
+				{ "species": "metapod", "level": 10 }]
+		},
+		"route_3_enzo": {
+			"name": "Gamin Enzo", "ai": "random",
+			"can_lose": false, "heal_after": false, "gives_exp": true, "prize_money": 210,
+			"team": [{ "species": "spearow", "level": 14 }]
+		},
+		"route_3_ines": {
+			"name": "Fillette Inès", "ai": "random",
+			"can_lose": false, "heal_after": false, "gives_exp": true, "prize_money": 210,
+			"team": [{ "species": "jigglypuff", "level": 14 }]
+		},
+		"route_3_nolan": {
+			"name": "Scout Nolan", "ai": "random",
+			"can_lose": false, "heal_after": false, "gives_exp": true, "prize_money": 108,
+			"team": [{ "species": "weedle", "level": 9 }, { "species": "kakuna", "level": 9 },
+				{ "species": "kakuna", "level": 9 }]
+		},
+		"mt_moon_rocket_1": {
+			"name": "Sbire Rocket", "ai": "random",
+			"can_lose": false, "heal_after": false, "gives_exp": true, "prize_money": 330,
+			"team": [{ "species": "rattata", "level": 11 }, { "species": "zubat", "level": 11 }]
+		},
+		"mt_moon_rocket_2": {
+			"name": "Sbire Rocket", "ai": "random",
+			"can_lose": false, "heal_after": false, "gives_exp": true, "prize_money": 360,
+			"team": [{ "species": "ekans", "level": 12 }, { "species": "sandshrew", "level": 12 }]
+		},
+		"mt_moon_rocket_3": {
+			"name": "Sbire Rocket", "ai": "smart",
+			"can_lose": false, "heal_after": false, "gives_exp": true, "prize_money": 450,
+			"team": [{ "species": "zubat", "level": 13 }, { "species": "ekans", "level": 13 },
+				{ "species": "raticate", "level": 15 }]
+		},
+		"mt_moon_researcher": {
+			"name": "Chercheur Gaspard", "ai": "smart",
+			"can_lose": false, "heal_after": false, "gives_exp": true, "prize_money": 325,
+			"team": [{ "species": "voltorb", "level": 13 }, { "species": "koffing", "level": 13 }]
+		}
+	},
+	"steps": [
+		{ "label": "D1 Gamin Hugo (sortie)", "trainer": "route_3_hugo" },
+		{ "label": "Route 3 : H2 ou H3 (4 cases)", "wild": "route_3_grass", "cells": 4 },
+		{ "label": "D4 Gamin Enzo (chemin sud)", "trainer": "route_3_enzo", "optional": true },
+		{ "label": "D5 Fillette Inès (détour)", "trainer": "route_3_ines", "optional": true },
+		{ "label": "D2 Fillette Léa (jonction)", "trainer": "route_3_lea" },
+		{ "label": "Route 3 : H4 (4 cases)", "wild": "route_3_grass", "cells": 4 },
+		{ "label": "D6 Scout Nolan (détour)", "trainer": "route_3_nolan", "optional": true },
+		{ "label": "Centre du Mont Sélénite", "center": true },
+		{ "label": "1F : gravats 1F-G1 (3 cases)", "wild": "mt_moon_1f_rubble", "cells": 3 },
+		{ "label": "R1 Sbire guetteur (B1F)", "trainer": "mt_moon_rocket_1" },
+		{ "label": "R2 Sbire fouilleuse (B1F)", "trainer": "mt_moon_rocket_2", "optional": true },
+		{ "label": "B2F : gravats B2F-G1 (5 cases)", "wild": "mt_moon_b2f_rubble", "cells": 5 },
+		{ "label": "R3 Sbire gardien (B2F)", "trainer": "mt_moon_rocket_3" },
+		{ "label": "Chercheur Gaspard (B2F)", "trainer": "mt_moon_researcher" }
+	],
+	"variants": [
+		{ "name": "attentif, sans soins", "player": "attentif", "center": false },
+		{ "name": "attentif, Centre", "player": "attentif", "center": true },
+		{ "name": "attentif, Centre, 3 Potions, 1 Antidote, fuite sous 1/4",
+			"player": "attentif", "center": true, "items": { "potion": 3, "antidote": 1 },
+			"flee_below": 0.25 },
+		{ "name": "attentif, Centre, 3 Potions, 1 Antidote, détours (D4, D5, D6, R2)",
+			"player": "attentif", "center": true, "items": { "potion": 3, "antidote": 1 },
+			"optional": true },
+		{ "name": "naïf, Centre", "player": "naif", "center": true }
+	]
+}

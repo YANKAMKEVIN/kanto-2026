@@ -1,0 +1,8 @@
+{
+	"version": 1,
+	"teams": [{ "name": "A", "members": [{ "species": "charmander", "level": 0 }] }],
+	"tables": {},
+	"trainers": {},
+	"steps": [{ "label": "Sans table", "wild": "unknown_table", "cells": 1 }],
+	"variants": [{ "name": "x", "player": "prudent", "typo": true }]
+}
