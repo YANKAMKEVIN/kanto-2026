@@ -23,8 +23,9 @@ extends RefCounted
 ## « cutscene » (identifiant de scène). L'ancienne clé « heal »: true vaut « action »: "heal".
 ## « pages » peut manquer (ou être vide) si la variante a une « action » ou une « cutscene » ;
 ## jamais avec un « choice » (sa dernière page est la question).
-## Jetons de texte (jalon 7 §3.6, T18) : `{nom}` dans le texte d'une page, seulement ceux de
-## [constant DialogueTokens.KNOWN] ; toute autre accolade est une erreur. La question d'un
+## Jetons de texte (jalon 7 §3.6, T18) : `{nom}` dans le texte d'une page **et dans
+## « speaker »** (`{rival}`, OUV.2), seulement ceux de [constant DialogueTokens.KNOWN] ; toute
+## autre accolade est une erreur. La question d'un
 ## choix n'a pas de jeton (elle ne peut pas être omise).
 ## Une entrée invalide est écartée, l'erreur est signalée ([method get_errors], push_error).
 
@@ -156,6 +157,7 @@ func _parse_dialogue(value: Variant, where: String) -> Dialogue:
 	if entry.has("speaker"):
 		ok = _read_string(entry["speaker"], where + " speaker") and ok
 		dialogue.speaker = str(entry["speaker"])
+		ok = _check_tokens(dialogue.speaker, where + " speaker") and ok
 	if entry.has("narration"):
 		ok = _read_bool(entry["narration"], where + " narration") and ok
 		dialogue.narration = entry["narration"] is bool and entry["narration"]
@@ -313,6 +315,7 @@ func _parse_page(value: Variant, where: String) -> DialoguePage:
 	if entry.has("speaker"):
 		ok = _read_string(entry["speaker"], where + " speaker") and ok
 		page.speaker = str(entry["speaker"])
+		ok = _check_tokens(page.speaker, where + " speaker") and ok
 	if entry.has("pause"):
 		var pause: Variant = entry["pause"]
 		if not (pause is float or pause is int) or float(pause) < 0.0:

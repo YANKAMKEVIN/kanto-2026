@@ -1,8 +1,9 @@
 {
-	"_note": "Introduction du Prof. Chen (dossier 13 §4 storyboard et §6 textes, version « petit-fils », validés par Kevin le 2026-10-10 ; option A : pas de choix d'apparence). Étapes : stage (show + at, ou hide ; effect « pokeball » pour une sortie de Poké Ball), page (text, speaker facultatif), prompt (name : player_name | rival_name ; text = question de Chen qui reste affichée au-dessus de l'écran de prénom), confirm (name : le prompt qu'il confirme ; « no » y ramène, champ prérempli). Jetons : {player} et {rival}, seulement après leur prompt. Voir IntroScript.",
+	"_note": "Introduction du Prof. Chen (dossier 13 §4 storyboard et §6 textes, version « petit-fils », validés par Kevin le 2026-10-10 ; option A : pas de choix d'apparence). Étapes : stage (show + at, ou hide ; effect « pokeball » pour une sortie de Poké Ball), page (text, speaker facultatif), prompt (name : player_name | rival_name ; text = question de Chen qui reste affichée au-dessus de l'écran de prénom), confirm (name : le prompt qu'il confirme ; « no » y ramène, champ prérempli). Jetons : {player} et {rival}, seulement après leur prompt. « validate » : bouton de l'écran de prénom (§5.5). Voir IntroScript.",
 	"speaker": "Prof. Chen",
 	"yes": "Oui",
 	"no": "Non",
+	"validate": "Valider",
 	"steps": [
 		{ "type": "stage", "show": "chen", "at": "center" },
 		{ "type": "page", "text": "Bonjour ! Bienvenue dans le monde des Pokémon !" },

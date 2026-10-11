@@ -1,7 +1,9 @@
 extends GutTest
-## Boot (jalon 2 §2.1) : démarre dans la chambre du joueur, au spawn « start » face au sud,
-## sans titre de zone ni écran titre ; caméra encadrée selon CameraFraming ; câblage du
-## routeur de scènes (autoload) et du rideau.
+## Boot (jalon 2 §2.1) **sans ouverture** : instancié hors de la scène courante (tests, outils de
+## capture), il démarre dans la chambre du joueur, au spawn « start » face au sud, sans titre de
+## zone ni écran titre ; caméra encadrée selon CameraFraming ; câblage du routeur de scènes
+## (autoload) et du rideau. L'ouverture (OUV.1 : écran titre, Boot en scène courante) est
+## couverte par test_opening_boot.gd.
 
 const START_CELL := Vector2i(3, 4)
 const ACTIONS: Array[StringName] = [
@@ -31,7 +33,8 @@ func test_scene_router_is_autoload() -> void:
 	assert_not_null(get_tree().root.get_node_or_null(^"SceneRouter"))
 
 
-func test_starts_in_bedroom_at_start_facing_south() -> void:
+func test_without_opening_boot_starts_in_the_bedroom_facing_south() -> void:
+	assert_null(_boot.get_opening(), "hors scène courante : pas d'ouverture")
 	var map := _boot.get_map()
 	assert_not_null(map)
 	assert_eq(map.map_id, &"player_house_2f")
@@ -87,9 +90,12 @@ func test_start_settings_choose_map_and_spawn() -> void:
 	assert_true(boot.get_hud().get_zone_title().is_showing())
 
 
-func test_no_title_screen() -> void:
+func test_without_opening_no_title_screen() -> void:
+	assert_null(_boot.get_opening())
+	assert_null(_boot.get_title_backdrop())
 	for child: Node in _boot.get_children():
 		assert_false(child is Control, "pas d'écran titre : %s" % child.name)
+		assert_false(child is TitleScreen, "pas d'écran titre : %s" % child.name)
 
 
 # --- Jalon 3A (T3) : dialogues et interactions ------------------------------------------

@@ -91,6 +91,9 @@ const LAYER_WORLD_GRADE := 6
 const LAYER_HUD := 10
 const LAYER_MENU := 20
 const LAYER_DIALOG := 30
+## Écran de prénom de l'introduction (OUV.2) : au-dessus de la boîte de dialogue, qui reste
+## ouverte derrière et prendrait sinon tous les touchers (QA S21).
+const LAYER_NAME_ENTRY := 31
 const LAYER_TRANSITION := 100
 
 # --- Titre de zone ----------------------------------------------------------------------------
@@ -1641,3 +1644,140 @@ const HAPTIC_BADGE_MS := 40
 ## Position de « BADGE ROCHE » : centre vertical de l'écran (ancre 0,5), Pierre reste visible
 ## en haut de l'Arène (caméra fixe). Les autres légendes restent à CAPTION_TOP.
 const CAPTION_CENTER_ANCHOR := 0.5
+
+## Écran titre (OUV.1, dossier 13 §5.2 ; composition de reference/ouverture-titre-v1.webp, règle
+## 10 : le décor et le logo de l'image ne font pas foi). Logo en haut à gauche, colonne de cartes
+## à droite (à gauche en mode gaucher, le logo passe alors à droite) ; la vraie carte derrière.
+## Largeur du logo détouré (assets/ui/opening/logo_kanto_2026.png, 1280 × 602 à la source).
+const TITLE_LOGO_WIDTH := 760
+## Colonne d'actions : largeur, écart entre cartes, haut de la colonne (centrée en hauteur sinon).
+const TITLE_COLUMN_WIDTH := 660
+const TITLE_COLUMN_GAP := 20
+## Cartes : verre sombre plus dense que le menu (posées sur un monde lumineux) ; la carte mise en
+## avant (Continuer, ou Nouvelle partie sans sauvegarde) a un liseré ACCENT et un halo doré.
+const TITLE_CARD_BG := Color(0.04, 0.07, 0.11, 0.82)
+const TITLE_CARD_PRESSED_BG := Color(0.12, 0.14, 0.12, 0.9)
+const TITLE_CARD_BORDER := Color(1.0, 1.0, 1.0, 0.22)
+const TITLE_CARD_RADIUS := 26
+const TITLE_CARD_BORDER_WIDTH := 3
+const TITLE_CARD_FEATURED_BORDER_WIDTH := 4
+const TITLE_CARD_GLOW := Color(0.96, 0.77, 0.26, 0.4)
+const TITLE_CARD_GLOW_SIZE := 18
+const TITLE_CARD_PAD_H := 32
+const TITLE_CARD_PAD_V := 24
+## Cartes secondaires (Nouvelle partie, Paramètres) : hauteur (≥ TOUCH_MIN), icône, chevron.
+const TITLE_ENTRY_HEIGHT := 144
+const TITLE_ENTRY_ICON := 72
+const TITLE_ENTRY_FONT := FONT_BUTTON
+const TITLE_CHEVRON := 56
+## Carte Continuer : buste, titre « CONTINUER », prénom, lieu, lignes de résumé (icône + texte).
+const TITLE_CONTINUE_BUST := Vector2(220, 300)
+const TITLE_CONTINUE_TITLE_FONT := 56
+const TITLE_CONTINUE_NAME_FONT := FONT_TITLE
+const TITLE_CONTINUE_ZONE_FONT := FONT_BODY
+const TITLE_CONTINUE_STAT_FONT := FONT_BODY
+const TITLE_CONTINUE_STAT_ICON := 40
+const TITLE_CONTINUE_LINE_GAP := 8
+const TITLE_CONTINUE_DIVIDER := Color(0.36, 0.55, 0.85, 0.7)
+## Message d'état de la sauvegarde (corrompue, plus récente) : sous la colonne, verre sombre.
+const TITLE_MESSAGE_FONT := FONT_CAPTION
+const TITLE_MESSAGE_BG := Color(0.04, 0.07, 0.11, 0.86)
+## Fondus de l'ouverture (dossier 13 §4) : apparition du titre après le splash ; sortie au noir
+## vers la partie (valeur des portes) ; entrée dans la partie.
+const TITLE_FADE_IN := 0.4
+const TITLE_FADE_OUT := 0.45
+const TITLE_GAME_FADE_IN := ANIM_FADE_IN
+## Paramètres depuis le titre : même voile et flou que dans le Menu Dresseur.
+const TITLE_SETTINGS_DIM := MENU_GLASS_DIM
+
+## Introduction du Prof. Chen (OUV.2, dossier 13 §4, §5.5, §9.0 ; composition de
+## reference/ouverture-chen-v1.webp et ouverture-prenom-v1.webp, règle 10). Fond : la vraie carte
+## du labo en mode décor, **très floutée** (même shader que le Menu Dresseur), sous une lumière
+## dorée procédurale (dégradé radial venu de la fenêtre, en haut) et un voile chaud en bas.
+const INTRO_BLUR_RADIUS := 14.0
+const INTRO_BLUR_LOD := 4.0
+const INTRO_DIM := 0.06
+const INTRO_DIM_COLOR := Color(0.16, 0.09, 0.03)
+## Lumière dorée : cœur (haut, vers la fenêtre) → bord transparent ; centre et rayon en part de
+## l'écran.
+const INTRO_GLOW := Color(1.0, 0.86, 0.55, 0.62)
+const INTRO_GLOW_EDGE := Color(1.0, 0.72, 0.36, 0.08)
+const INTRO_GLOW_CENTER := Vector2(0.55, 0.15)
+const INTRO_GLOW_RADIUS := 0.75
+## Voile chaud du bas (sol), sous les portraits : du transparent (milieu) à cette teinte (bas).
+const INTRO_FLOOR_SHADE := Color(0.2, 0.11, 0.04, 0.4)
+const INTRO_FLOOR_CLEAR := Color(0.2, 0.11, 0.04, 0.0)
+## Emplacements des portraits (part de la largeur de l'écran : l'aspect « expand » va de 1920 à
+## 2340 de large) et ligne des pieds (juste au-dessus de la boîte de dialogue).
+const INTRO_SLOT_X: Dictionary[StringName, float] = {
+	&"left": 0.27, &"center": 0.5, &"right": 0.72,
+}
+const INTRO_FEET_Y := 828.0
+## Hauteurs affichées : adulte (Chen, à 1:1 de son portrait de 768 px), enfants (héros, rival :
+## un peu plus petits que Chen), Pokémon (artwork officiel 475 px, marges comprises).
+const INTRO_HEIGHT_ADULT := 768.0
+const INTRO_HEIGHT_CHILD := 700.0
+const INTRO_HEIGHT_POKEMON := 440.0
+## Mouvements de scène (dossier 13 §4) : entrée en fondu et légère montée, sortie en fondu,
+## glissement d'un emplacement à l'autre. « Réduire les animations » : durées × INTRO_REDUCED,
+## sans montée ni glissement (le portrait change de place dans un fondu).
+const INTRO_PORTRAIT_IN := 0.45
+const INTRO_PORTRAIT_OUT := 0.3
+const INTRO_PORTRAIT_MOVE := 0.4
+const INTRO_PORTRAIT_RISE := 28.0
+const INTRO_REDUCED := 0.5
+## Sortie de Poké Ball (procédurale, §9.2) : éclair blanc doré qui grandit et s'éteint, quelques
+## étincelles, puis le Pokémon apparaît ; petite respiration du Pokémon ensuite.
+const INTRO_FLASH := 0.35
+const INTRO_FLASH_SIZE := 420.0
+const INTRO_FLASH_COLOR := Color(1.0, 0.97, 0.84, 0.95)
+const INTRO_FLASH_EDGE := Color(1.0, 0.9, 0.6, 0.0)
+const INTRO_SPARKLES := 8
+const INTRO_SPARKLE_SIZE := 44.0
+const INTRO_SPARKLE_DISTANCE := 240.0
+const INTRO_BREATH := 0.015
+const INTRO_BREATH_TIME := 1.6
+## Fondus d'entrée dans l'introduction (depuis le noir du titre) et de sortie vers la chambre
+## (OUV.3 remplacera la sortie par le rétrécissement et le blanc chaud).
+const INTRO_FADE_IN := TITLE_FADE_IN
+const INTRO_FADE_OUT := TITLE_FADE_OUT
+
+## Écran de prénom (OUV.2, dossier 13 §5.5) : panneau en haut à droite, **entier dans la moitié
+## haute** (le clavier du téléphone couvre le bas en paysage) : champ clair, compteur, aide,
+## pastilles et VALIDER sur une même ligne.
+const NAME_PANEL_WIDTH := 1040
+const NAME_PANEL_PAD := 32
+const NAME_PANEL_GAP := 16
+const NAME_PANEL_BG := TITLE_CARD_BG
+const NAME_PANEL_RADIUS := TITLE_CARD_RADIUS
+const NAME_PANEL_BORDER_WIDTH := TITLE_CARD_FEATURED_BORDER_WIDTH
+const NAME_PANEL_GLOW := TITLE_CARD_GLOW
+const NAME_PANEL_GLOW_SIZE := TITLE_CARD_GLOW_SIZE
+## Champ : clair, texte sombre, liseré ACCENT au focus.
+const NAME_FIELD_HEIGHT := 112
+const NAME_FIELD_FONT := 52
+const NAME_FIELD_PAD_H := 32
+const NAME_FIELD_BG := DIALOG_BG
+const NAME_FIELD_TEXT := DIALOG_TEXT
+const NAME_FIELD_RADIUS := 28
+const NAME_FIELD_FOCUS_WIDTH := 4
+## Compteur « 4 / 10 », dans le champ à droite (discret, gris sur le champ clair).
+const NAME_COUNTER_FONT := FONT_CAPTION
+const NAME_COUNTER_COLOR := Color("#7A8494")
+## Place du compteur au bout du champ (le texte saisi ne passe jamais dessous).
+const NAME_COUNTER_WIDTH := 120
+## Aide (« Lettres, espaces, - et ’ seulement ») : place réservée sous le champ (rien ne bouge
+## quand elle apparaît).
+const NAME_HELP_FONT := FONT_CAPTION
+const NAME_HELP_HEIGHT := 32
+## L'aide s'efface d'elle-même après ce délai (ou à la frappe suivante sans caractère refusé).
+const NAME_HELP_HOLD := 3.0
+## Titre du panneau : la question de Chen (le clavier scindé cache la boîte de dialogue).
+const NAME_TITLE_FONT := FONT_TITLE
+## Pastilles des noms proposés et VALIDER : zones tactiles d'au moins TOUCH_MIN.
+const NAME_CHIP_WIDTH := 200
+const NAME_CHIP_FONT := FONT_BUTTON
+const NAME_CHIP_RADIUS := 64
+const NAME_VALIDATE_WIDTH := 312
+## VALIDER inactif : ACCENT éteint (texte et icône portent aussi l'état : jamais la couleur seule).
+const NAME_VALIDATE_DISABLED_ALPHA := 0.35

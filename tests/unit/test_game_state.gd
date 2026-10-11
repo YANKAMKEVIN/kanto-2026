@@ -6,6 +6,7 @@ extends GutTest
 
 const SCRIPT_PATH := "res://game/autoload/game_state.gd"
 const FixedClock := preload("res://tests/helpers/fixed_clock.gd")
+const GameStateScript := preload("res://game/autoload/game_state.gd")
 
 
 func _make() -> Node:
@@ -309,10 +310,32 @@ func test_to_dict_lists_every_saved_field_and_nothing_else() -> void:
 	# ni statistiques (§16.3 « pas stocké »).
 	var keys: Array = _dated().to_dict().keys()
 	keys.sort()
-	# J11 : compagnon (« companion »).
+	# v5 (OUV.1, ouverture.md §2) : prénom du rival et apparence du joueur ; v6 (J11) : compagnon.
 	assert_eq(keys, ["bag", "cell", "companion", "discovered_maps", "facing", "first_wild_encounter",
 		"flags", "found_items", "heal_map", "heal_spawn", "map", "moments", "money", "party",
-		"play_time", "player_name", "pokedex", "rng", "started_at", "starter", "storage"])
+		"play_time", "player_look", "player_name", "pokedex", "rival_name", "rng", "started_at",
+		"starter", "storage"])
+
+
+# --- Sauvegarde v5 : prénom du rival et apparence (OUV.1) ---------------------------------
+
+func test_default_names_and_max_length_match_the_opening_data() -> void:
+	var names := OpeningNames.new()
+	assert_true(names.load_file(), str(names.get_errors()))
+	assert_eq(GameStateScript.DEFAULT_PLAYER_NAME, names.default_name(OpeningNames.ROLE_PLAYER))
+	assert_eq(GameStateScript.DEFAULT_RIVAL_NAME, names.default_name(OpeningNames.ROLE_RIVAL))
+	assert_eq(GameStateScript.NAME_MAX_LENGTH, names.max_length())
+
+
+func test_a_new_game_has_the_default_rival_and_the_hero() -> void:
+	var state := _dated()
+	assert_eq(state.rival_name, "Régis")
+	assert_eq(state.player_look, &"hero")
+	state.rival_name = "Blue"
+	state.new_game()
+	assert_eq(state.rival_name, "Régis", "remis au défaut")
+	assert_eq(state.player_look, &"hero")
+	assert_eq(GameStateScript.PLAYER_LOOKS, [&"hero"] as Array[StringName], "option A : le héros")
 
 
 func test_starts_with_an_empty_storage_and_new_game_empties_it() -> void:

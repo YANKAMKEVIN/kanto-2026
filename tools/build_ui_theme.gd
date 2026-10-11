@@ -110,6 +110,13 @@ extends SceneTree
 ##     MenuBagTab… (Button ou PanelContainer), MenuArtRim / MenuArtRimPressed / MenuArtRound /
 ##     MenuRoundThumb / MenuStatusDivider (Panel), MenuScreenTitle / MenuScreenCount /
 ##     MenuStatusText / MenuArtTitle / MenuArtCaption / MenuBagTabCaption / MenuTargetsTitle (Label)
+## Écran titre (OUV.1) : TitleCard / TitleCardFeatured (Button, carte de verre ; liseré ACCENT et
+##   halo pour l'entrée mise en avant), TitleDivider (Panel), TitleMessage (PanelContainer),
+##   TitleEntryLabel / TitleContinueTitle / TitleContinueName / TitleContinueZone /
+##   TitleContinueStat / TitleMessageText (Label)
+## Écran de prénom (OUV.2) : NamePanel (PanelContainer, verre sombre à liseré ACCENT), NameField
+##   (LineEdit clair), NameTitle / NameCounter / NameHelp (Label), NameChip / NameChipSelected (Button,
+##   pastilles), NameValidate (Button ACCENT, éteint quand il est inactif)
 ## tests/unit/test_ui_theme.gd vérifie que le fichier est à jour avec les tokens.
 
 const TOKENS_PATH: String = "res://game/ui/theme/ui_tokens.gd"
@@ -184,6 +191,8 @@ func _init() -> void:
 	_add_menu_glass(theme, bold, t)
 	_add_menu_mm2(theme, bold, t)
 	_add_champion_card(theme, bold, t)
+	_add_title_screen(theme, bold, t)
+	_add_name_entry(theme, bold, t)
 
 	var err := ResourceSaver.save(theme, THEME_PATH)
 	print("ui_theme.tres : ", error_string(err))
@@ -1729,3 +1738,116 @@ func _add_champion_card(theme: Theme, bold: Font, t: GDScript) -> void:
 	theme.set_stylebox(&"panel", &"ChampionCard", card)
 	_add_plain_label(theme, &"ChampionCardName", t.CHAMPION_CARD_NAME_FONT, t.TEXT, bold)
 	_add_plain_label(theme, &"ChampionCardTitle", t.CHAMPION_CARD_TITLE_FONT, t.TEXT_MUTED, null)
+
+
+# --- Écran titre (OUV.1, dossier 13 §5.2) --------------------------------------------------------
+
+
+func _title_card(bg: Color, border: Color, width: int, t: GDScript) -> StyleBoxFlat:
+	var box := _glass(bg, border, t.TITLE_CARD_RADIUS, t)
+	box.set_border_width_all(width)
+	box.set_content_margin(SIDE_LEFT, t.TITLE_CARD_PAD_H)
+	box.set_content_margin(SIDE_RIGHT, t.TITLE_CARD_PAD_H)
+	box.set_content_margin(SIDE_TOP, t.TITLE_CARD_PAD_V)
+	box.set_content_margin(SIDE_BOTTOM, t.TITLE_CARD_PAD_V)
+	box.shadow_color = t.SHADOW
+	box.shadow_size = t.SHADOW_SIZE
+	return box
+
+
+func _add_title_screen(theme: Theme, bold: Font, t: GDScript) -> void:
+	var card := _title_card(t.TITLE_CARD_BG, t.TITLE_CARD_BORDER, t.TITLE_CARD_BORDER_WIDTH, t)
+	var card_on := _title_card(t.TITLE_CARD_PRESSED_BG, t.ACCENT, t.TITLE_CARD_BORDER_WIDTH, t)
+	_add_flat_button(theme, &"TitleCard", card, card_on)
+	var featured := _title_card(t.TITLE_CARD_BG, t.ACCENT, t.TITLE_CARD_FEATURED_BORDER_WIDTH, t)
+	featured.shadow_color = t.TITLE_CARD_GLOW
+	featured.shadow_size = t.TITLE_CARD_GLOW_SIZE
+	var featured_on := featured.duplicate() as StyleBoxFlat
+	featured_on.bg_color = t.TITLE_CARD_PRESSED_BG
+	_add_flat_button(theme, &"TitleCardFeatured", featured, featured_on)
+	_add_plain_label(theme, &"TitleEntryLabel", t.TITLE_ENTRY_FONT, t.TEXT, bold)
+	_add_plain_label(theme, &"TitleContinueTitle", t.TITLE_CONTINUE_TITLE_FONT, t.ACCENT, bold)
+	_add_plain_label(theme, &"TitleContinueName", t.TITLE_CONTINUE_NAME_FONT, t.TEXT, bold)
+	_add_plain_label(theme, &"TitleContinueZone", t.TITLE_CONTINUE_ZONE_FONT, t.TEXT_MUTED, null)
+	_add_plain_label(theme, &"TitleContinueStat", t.TITLE_CONTINUE_STAT_FONT, t.TEXT, null)
+	var divider := StyleBoxFlat.new()
+	divider.bg_color = t.TITLE_CONTINUE_DIVIDER
+	theme.set_type_variation(&"TitleDivider", &"Panel")
+	theme.set_stylebox(&"panel", &"TitleDivider", divider)
+	var message := _panel_style(t.TITLE_MESSAGE_BG, t.RADIUS_SMALL, t)
+	message.border_width_left = t.CHAMPION_CARD_ACCENT_WIDTH
+	message.border_color = t.ACCENT
+	message.set_content_margin(SIDE_LEFT, t.PAD)
+	message.set_content_margin(SIDE_RIGHT, t.PAD)
+	message.set_content_margin(SIDE_TOP, t.GAP)
+	message.set_content_margin(SIDE_BOTTOM, t.GAP)
+	theme.set_type_variation(&"TitleMessage", &"PanelContainer")
+	theme.set_stylebox(&"panel", &"TitleMessage", message)
+	_add_plain_label(theme, &"TitleMessageText", t.TITLE_MESSAGE_FONT, t.TEXT, null)
+
+
+# --- Écran de prénom (OUV.2) ------------------------------------------------------------------
+
+
+func _add_name_entry(theme: Theme, bold: Font, t: GDScript) -> void:
+	var panel := _glass(t.NAME_PANEL_BG, t.ACCENT, t.NAME_PANEL_RADIUS, t)
+	panel.set_border_width_all(t.NAME_PANEL_BORDER_WIDTH)
+	panel.shadow_color = t.NAME_PANEL_GLOW
+	panel.shadow_size = t.NAME_PANEL_GLOW_SIZE
+	panel.set_content_margin_all(t.NAME_PANEL_PAD)
+	theme.set_type_variation(&"NamePanel", &"PanelContainer")
+	theme.set_stylebox(&"panel", &"NamePanel", panel)
+
+	var field := StyleBoxFlat.new()
+	field.bg_color = t.NAME_FIELD_BG
+	field.set_corner_radius_all(t.NAME_FIELD_RADIUS)
+	field.anti_aliasing = true
+	field.set_content_margin(SIDE_LEFT, t.NAME_FIELD_PAD_H)
+	field.set_content_margin(SIDE_RIGHT, t.NAME_FIELD_PAD_H + t.NAME_COUNTER_WIDTH)
+	var focus := field.duplicate() as StyleBoxFlat
+	focus.bg_color = Color(0, 0, 0, 0)
+	focus.border_color = t.ACCENT
+	focus.set_border_width_all(t.NAME_FIELD_FOCUS_WIDTH)
+	theme.set_type_variation(&"NameField", &"LineEdit")
+	theme.set_stylebox(&"normal", &"NameField", field)
+	theme.set_stylebox(&"read_only", &"NameField", field)
+	theme.set_stylebox(&"focus", &"NameField", focus)
+	theme.set_font(&"font", &"NameField", bold)
+	theme.set_font_size(&"font_size", &"NameField", t.NAME_FIELD_FONT)
+	theme.set_color(&"font_color", &"NameField", t.NAME_FIELD_TEXT)
+	theme.set_color(&"font_placeholder_color", &"NameField", t.NAME_COUNTER_COLOR)
+	theme.set_color(&"caret_color", &"NameField", t.NAME_FIELD_TEXT)
+	theme.set_color(&"selection_color", &"NameField", t.tinted(t.ACCENT, 0.45))
+	theme.set_constant(&"caret_width", &"NameField", 3)
+
+	_add_plain_label(theme, &"NameTitle", t.NAME_TITLE_FONT, t.TEXT, bold)
+	_add_plain_label(theme, &"NameCounter", t.NAME_COUNTER_FONT, t.NAME_COUNTER_COLOR, null)
+	_add_plain_label(theme, &"NameHelp", t.NAME_HELP_FONT, t.ACCENT, null)
+
+	var chip := _glass(t.BUTTON_BG, t.PANEL_BORDER, t.NAME_CHIP_RADIUS, t)
+	chip.set_border_width_all(t.BORDER_WIDTH)
+	var chip_on := _glass(t.ACCENT, t.ACCENT, t.NAME_CHIP_RADIUS, t)
+	for type: StringName in [&"NameChip", &"NameChipSelected"]:
+		var normal := chip if type == &"NameChip" else chip_on
+		_add_flat_button(theme, type, normal, chip_on)
+		theme.set_font(&"font", type, bold)
+		theme.set_font_size(&"font_size", type, t.NAME_CHIP_FONT)
+		var text: Color = t.TEXT if type == &"NameChip" else t.ACCENT_TEXT
+		for state: StringName in [&"font_color", &"font_hover_color", &"font_focus_color"]:
+			theme.set_color(state, type, text)
+		for state: StringName in [&"font_pressed_color", &"font_hover_pressed_color"]:
+			theme.set_color(state, type, t.ACCENT_TEXT)
+
+	var validate := _glass(t.ACCENT, t.ACCENT, t.NAME_CHIP_RADIUS, t)
+	var validate_on := _glass(t.ACCENT_PRESSED, t.ACCENT_PRESSED, t.NAME_CHIP_RADIUS, t)
+	var validate_off := _glass(t.tinted(t.ACCENT, t.NAME_VALIDATE_DISABLED_ALPHA),
+		t.tinted(t.ACCENT, t.NAME_VALIDATE_DISABLED_ALPHA), t.NAME_CHIP_RADIUS, t)
+	_add_flat_button(theme, &"NameValidate", validate, validate_on)
+	theme.set_stylebox(&"disabled", &"NameValidate", validate_off)
+	theme.set_font(&"font", &"NameValidate", bold)
+	theme.set_font_size(&"font_size", &"NameValidate", t.FONT_BUTTON)
+	for state: StringName in [&"font_color", &"font_hover_color", &"font_focus_color",
+			&"font_pressed_color", &"font_hover_pressed_color"]:
+		theme.set_color(state, &"NameValidate", t.ACCENT_TEXT)
+	theme.set_color(&"font_disabled_color", &"NameValidate",
+		t.tinted(t.ACCENT_TEXT, t.NAME_VALIDATE_DISABLED_ALPHA * 2.0))

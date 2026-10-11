@@ -26,6 +26,14 @@ extends Node
 ## n'est jamais écrasée). Boot enregistre aussi les faits du §16.3 (Pokédex daté, starter,
 ## combat du rival, objets trouvés, zones découvertes, temps de jeu).
 ##
+## Ouverture (OUV.1, dossier 13 §3.1, §3.7) : **seulement quand Boot est la scène principale
+## lancée par le moteur, sans départ de débogage**, le démarrage passe par l'[OpeningDirector] :
+## écran titre sur Bourg Palette en mode décor ([TitleBackdrop]), Continuer / Nouvelle partie /
+## Paramètres. Rien n'est écrit tant qu'il est affiché : **tout** autosave passe par la seule garde
+## [method _can_write] (`_opening == null or _opening.autosave_allowed()`). Sous GUT et dans les
+## outils de capture (Boot hors scène courante), le démarrage est inchangé : sauvegarde injectée
+## reprise, ou nouvelle partie dans la chambre.
+##
 ## Menu Dresseur (jalon 6, T4) : Boot est en mode ALWAYS (le temps de jeu et l'autosave
 ## continuent menu ouvert, Q-21) et tous ses enfants sont PAUSABLE sauf [MenuDirector] : le
 ## directeur met l'arbre en pause à l'ouverture. Ouverture par l'action `menu` ou le retour
@@ -39,6 +47,12 @@ const EVOLUTION_SCREEN: PackedScene = preload("res://game/ui/evolution/evolution
 ## Temps de jeu : une image ne compte jamais plus que ceci (le retour de l'arrière-plan peut
 ## livrer un très grand delta, qui n'est pas du temps de jeu).
 const MAX_PLAY_TIME_STEP: float = 0.5
+## Décor de l'introduction de Chen (OUV.2, dossier 13 §9.0) : le labo, cadré en son centre
+## (16 × 11 cases ; défaut, règle 4).
+const INTRO_BACKDROP_MAP: StringName = &"oak_lab"
+const INTRO_BACKDROP_FOCUS: Vector2 = Vector2(768, 528)
+## Le labo (1536 px de large) est plus étroit que l'écran (jusqu'à 2340) : agrandi pour le remplir.
+const INTRO_BACKDROP_ZOOM: float = 1.6
 
 @export var start_map: StringName = &"player_house_2f"
 @export var start_spawn: StringName = &"start"
@@ -67,6 +81,8 @@ var settings_store: SettingsStore = null
 ## Appareil pour « Auto » ([method GraphicsProfile.current_device]) ; vide : l'appareil réel
 ## (tests : injecter une description).
 var device: Dictionary = {}
+## Durées de l'ouverture multipliées (fondus, écrans ; 0 = instantané, tests et captures).
+var opening_speed_scale: float = 1.0
 
 var _settings := GameSettings.new()
 var _profile: GraphicsProfile
@@ -121,6 +137,10 @@ var _save_pending: bool = false
 var _save_reason: String = ""
 ## Faux quand l'application est en arrière-plan ou a perdu le focus (temps de jeu arrêté).
 var _in_foreground: bool = true
+## Ouverture (OUV.1) : null hors scène principale ou avec un départ de débogage.
+var _opening: OpeningDirector = null
+## Bourg Palette en mode décor derrière le titre (libéré en quittant le titre).
+var _title_backdrop: TitleBackdrop = null
 
 @onready var _world: Node2D = %World
 @onready var _hud: ExplorationHud = %ExplorationHud
@@ -216,6 +236,8 @@ func _ready() -> void:
 	# Remise du colis (jalon-07.md §3.6.2, T19) : jeton {first_wild_species} des répliques de
 	# Chen, scène lancée par une variante de dialogue (« colis en main »), légende POKÉDEX ACTIVÉ.
 	_runner.token_values = _dialogue_token_values
+	# OUV.2 : prénoms du joueur et du rival (`{player}`, `{rival}`) aussi dans le nom du dresseur.
+	_texts.token_values = _dialogue_token_values
 	_runner.cutscene_requested.connect(_on_cutscene_requested)
 	_cutscenes_node.set_hud(_hud)
 	_cutscenes_node.item_given.connect(_on_item_given)
@@ -376,9 +398,9 @@ func _ready() -> void:
 
 
 func _process(delta: float) -> void:
-	if _in_foreground:
+	if _in_foreground and not _is_opening_active():
 		GameState.add_play_time(minf(delta, MAX_PLAY_TIME_STEP))
-	if _save_pending and is_stable():
+	if _save_pending and _can_write() and is_stable():
 		_write_save(_save_reason)
 	if not _dex_toasts.is_empty():
 		_show_next_dex_toast()
@@ -405,7 +427,10 @@ func _notification(what: int) -> void:
 ## refermé le choix du Pokémon du Sac s'il est ouvert).
 func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed(&"menu") and not event.is_echo():
-		if _menu.is_open():
+		if _is_opening_active():
+			# Écran titre (Mac) : comme le retour Android.
+			_opening.handle_back()
+		elif _menu.is_open():
 			# Le choix du Pokémon du Sac se referme d'abord (retour d'un niveau).
 			if not _screen_back():
 				_menu.close()
@@ -614,6 +639,9 @@ func _can_open_menu() -> bool:
 ## immédiate puis ouverture du menu ; pendant un dialogue, une scène, un combat ou une
 ## transition, ignoré.
 func _on_go_back() -> void:
+	# Ouverture (OUV.1) : Paramètres ou confirmation refermés ; au titre, rien (§5.2).
+	if _opening != null and _opening.handle_back():
+		return
 	# Bilan de fin de combat affiché : retour = le fermer (demande n° 1).
 	if _battle_director.handle_back():
 		return
@@ -683,13 +711,21 @@ func request_autosave(reason: String) -> void:
 ## la sauvegarde), sinon reprise de la sauvegarde si elle se charge, sinon nouvelle partie sur
 ## [member start_map] / [member start_spawn].
 func _start_game() -> void:
-	_start_game_state()
+	if _start_game_state():
+		_finish_start()
+
+
+## Fin commune du démarrage (partie en place).
+func _finish_start() -> void:
 	# Parties existantes : notes débloquées sans bruit (jalon-06.md §6.9, point 4).
 	PokedexNotes.refresh(GameState.pokedex, _dex, GameState.flags)
 	_dex_toasts.clear()
 
 
-func _start_game_state() -> void:
+## Vrai si la partie est en place ; faux si l'ouverture est montrée (la partie démarrera à son
+## signal : [method _on_opening_resumed], [method _on_opening_new_game]). Ordre : départ de
+## débogage (inchangé), Boot hors scène courante (tests, outils : inchangé), sinon l'ouverture.
+func _start_game_state() -> bool:
 	if _apply_debug_start():
 		if _debug_start_autosave:
 			_open_save_system()
@@ -697,11 +733,146 @@ func _start_game_state() -> void:
 			print("Départ de débogage : la sauvegarde n'est pas lue, elle sera REMPLACÉE.")
 		else:
 			print("Départ de débogage : la sauvegarde n'est ni lue ni écrite.")
+	elif get_tree().current_scene == self:
+		_open_save_system()
+		_start_opening()
+		return false
 	else:
 		_open_save_system()
 		if save_system != null and _load_save() and _resume():
-			return
+			return true
 	SceneRouter.start(start_map, start_spawn, start_facing)
+	return true
+
+
+## L'ouverture (OUV.1) : Bourg Palette en mode décor sous le titre, le directeur lit la sauvegarde
+## et montre le titre. Le HUD d'exploration est caché jusqu'au démarrage de la partie.
+func _start_opening() -> void:
+	_autosave_enabled = save_system != null
+	_hud.visible = false
+	_title_backdrop = TitleBackdrop.new()
+	_title_backdrop.name = "TitleBackdrop"
+	_world.add_child(_title_backdrop)
+	_title_backdrop.set_reduce_motion(_settings.reduce_motion)
+	_title_backdrop.show_map()
+	_opening = OpeningDirector.new()
+	_opening.name = "OpeningDirector"
+	_opening.process_mode = Node.PROCESS_MODE_PAUSABLE
+	_opening.speed_scale = opening_speed_scale
+	add_child(_opening)
+	var badge_flags: Array[StringName] = []
+	for badge: StringName in _badges.ids():
+		badge_flags.append(_badges.flag(badge))
+	_opening.setup(save_system, _build_new_game, _fade, _settings, _profile_device_quality(),
+		_zones.zone_name_of, badge_flags)
+	_opening.set_dialogue_box(_dialogue_box)
+	_opening.title_closed.connect(_release_title_backdrop)
+	_opening.intro_opened.connect(_show_intro_backdrop)
+	_opening.intro_closed.connect(_release_title_backdrop)
+	_opening.resumed.connect(_on_opening_resumed)
+	_opening.new_game_entered.connect(_on_opening_new_game)
+	_opening.settings_changed.connect(_on_settings_changed)
+	_opening.apply_settings(_settings, _profile.menu_blur)
+	_opening.run()
+
+
+## Vrai tant que l'écran titre occupe le jeu (avant la reprise ou la chambre).
+func _is_opening_active() -> bool:
+	return _opening != null and _opening.is_active()
+
+
+## Directeur de l'ouverture (null hors scène principale ou avec un départ de débogage).
+func get_opening() -> OpeningDirector:
+	return _opening
+
+
+## Décor du titre (null une fois le titre quitté, ou sans ouverture).
+func get_title_backdrop() -> TitleBackdrop:
+	return _title_backdrop
+
+
+## Introduction de Chen (OUV.2, dossier 13 §9.0) : le vrai labo en mode décor, sans dérive, sous
+## sa lumière de jeu ; l'introduction le floute et le dore ([IntroStage]).
+func _show_intro_backdrop() -> void:
+	_release_title_backdrop()
+	_title_backdrop = TitleBackdrop.new()
+	_title_backdrop.name = "IntroBackdrop"
+	_title_backdrop.map_id = INTRO_BACKDROP_MAP
+	_title_backdrop.focus = INTRO_BACKDROP_FOCUS
+	_title_backdrop.drift = Vector2.ZERO
+	_title_backdrop.zoom = INTRO_BACKDROP_ZOOM
+	_world.add_child(_title_backdrop)
+	if _title_backdrop.show_map():
+		_apply_lighting(_title_backdrop.get_map())
+
+
+## Le titre (ou l'introduction) se ferme (rideau baissé) : le décor est libéré avant le commit ou
+## la reprise.
+func _release_title_backdrop() -> void:
+	if _title_backdrop != null:
+		_title_backdrop.release()
+		_title_backdrop = null
+
+
+## Nouvelle partie de l'ouverture (constructeur du commit, dossier 13 §3.7 étape 2) : partie
+## neuve en mémoire, prénoms (vides : défauts), héros, joueur dans la chambre face au sud ; rend
+## le dictionnaire à écrire.
+func _build_new_game(player_name: String, rival_name: String) -> Dictionary:
+	GameState.new_game()
+	if not player_name.is_empty():
+		GameState.player_name = player_name
+	if not rival_name.is_empty():
+		GameState.rival_name = rival_name
+	GameState.player_look = GameState.DEFAULT_PLAYER_LOOK
+	GameState.set_player_location(start_map, _spawn_cell(start_map, start_spawn), start_facing)
+	return GameState.to_dict()
+
+
+## Case du point d'apparition [param spawn] de [param map_id], lue dans la scène de la carte
+## (instanciée hors de l'arbre, puis libérée) ; (-1, -1) si elle manque.
+func _spawn_cell(map_id: StringName, spawn: StringName) -> Vector2i:
+	var path := MapCatalog.scene_path(map_id)
+	var packed := load(path) as PackedScene if ResourceLoader.exists(path) else null
+	var map := packed.instantiate() as GameMap if packed != null else null
+	if map == null:
+		return Vector2i(-1, -1)
+	var cell := map.get_spawn_cell(spawn) if map.has_spawn(spawn) else Vector2i(-1, -1)
+	map.free()
+	return cell
+
+
+## Continuer : la partie lue au lancement est chargée et reprise là où elle était.
+func _on_opening_resumed(save: Dictionary) -> void:
+	if not GameState.load_dict(save, _pokemon):
+		_keep_rejected_save()
+	_resumed = true
+	print("Sauvegarde chargée : %s %s (temps de jeu %d s)" % [GameState.current_map,
+		GameState.player_cell, int(GameState.play_time)])
+	_log_loaded_save()
+	if not _resume():
+		SceneRouter.start(start_map, start_spawn, start_facing)
+	_finish_opening()
+
+
+## Nouvelle partie (OUV.1, provisoire : sans introduction) : la chambre, face au sud, sans titre
+## de zone ni dialogue, exactement comme le départ d'avant l'ouverture. [param warning] : la
+## partie n'a pas pu être écrite (elle continue sans sauvegarde).
+func _on_opening_new_game(warning: String) -> void:
+	SceneRouter.start(start_map, start_spawn, start_facing)
+	_finish_opening()
+	if not warning.is_empty():
+		_hud.show_toast(warning, "")
+
+
+## La partie a démarré après le titre : HUD rendu, faits rafraîchis, « Sauvegarder maintenant »
+## selon la garde, rideau levé.
+func _finish_opening() -> void:
+	_hud.visible = true
+	_finish_start()
+	_menu.set_settings(_settings, _profile_device_quality(), _can_write())
+	_refresh_controls()
+	_fade.set_opaque(true)
+	_fade.fade_in(UiTokens.TITLE_GAME_FADE_IN * opening_speed_scale)
 
 
 ## Ouvre la vraie sauvegarde si aucune n'a été injectée et que Boot est la scène principale.
@@ -801,13 +972,20 @@ func _apply_debug_start() -> bool:
 	return true
 
 
+## **La** garde de toute écriture de la sauvegarde par Boot (entrée de carte, fin de scène, de
+## combat, de capture, soins, réveil, retour, arrière-plan, « Sauvegarder maintenant ») : session
+## avec écriture, et ouverture absente ou terminée sur une partie stable sur le disque
+## ([method OpeningDirector.autosave_allowed], OUV.1).
 func _can_write() -> bool:
-	return _autosave_enabled and save_system != null
+	return _autosave_enabled and save_system != null \
+		and (_opening == null or _opening.autosave_allowed())
 
 
 ## Écrit la sauvegarde : position du joueur poussée dans GameState, puis écriture atomique.
 func _write_save(reason: String) -> Error:
 	_save_pending = false
+	if not _can_write():
+		return ERR_UNAVAILABLE
 	var map := SceneRouter.get_current_map()
 	if not is_instance_valid(map) or not is_instance_valid(_player):
 		return ERR_UNAVAILABLE
@@ -935,9 +1113,11 @@ func _on_cutscene_started(_cutscene_id: StringName) -> void:
 
 
 ## Valeurs des jetons des dialogues (jalon-07.md §3.6, T19) : lues au début d'un dialogue qui en
-## contient (« Un Roucool… » ; aucune rencontre → la page est omise).
+## contient (« Un Roucool… » ; aucune rencontre → la page est omise) ; prénoms du joueur et du
+## rival (OUV.2), aussi pour les étiquettes et le nom du dresseur en combat.
 func _dialogue_token_values() -> Dictionary[StringName, String]:
-	return DialogueTokens.values_for(GameState.first_wild_species(), _pokemon)
+	return DialogueTokens.values_for(GameState.first_wild_species(), _pokemon,
+		GameState.player_name, GameState.rival_name)
 
 
 ## Une variante de dialogue lance une scène à sa fin (Chen, colis en main → `oak_parcel`). Le
@@ -1104,7 +1284,8 @@ func _show_next_dex_toast() -> void:
 ## Contrôles visibles seulement hors dialogue, hors scène, hors fiche du starter et hors
 ## combat : pendant une scène ou un combat, ils restent cachés entre deux dialogues.
 func _refresh_controls() -> void:
-	_hud.set_controls_visible(not _menu.is_open() and not _runner.is_running() and not _cutscenes_node.is_running()
+	_hud.set_controls_visible(not _is_opening_active() and not _menu.is_open()
+		and not _runner.is_running() and not _cutscenes_node.is_running()
 		and not _starter_choice.is_sheet_open() and not _battle_director.is_running()
 		and not _encounters.is_running())
 
@@ -1165,6 +1346,11 @@ func _apply_settings(s: GameSettings) -> void:
 		_menu_screen.call(&"set_backdrop_blur", _profile.menu_blur)
 	_battle_stage.backdrop_blur = not _profile.reduced_effects
 	_lighting.set_reduced_effects(_profile.reduced_effects)
+	# Écran titre (OUV.1) : main du joueur, flou des Paramètres, dérive du décor.
+	if _opening != null:
+		_opening.apply_settings(s, _profile.menu_blur)
+	if _title_backdrop != null:
+		_title_backdrop.set_reduce_motion(s.reduce_motion)
 
 
 ## « Sauvegarder maintenant » : écrit la sauvegarde et affiche le résultat dans l'écran.

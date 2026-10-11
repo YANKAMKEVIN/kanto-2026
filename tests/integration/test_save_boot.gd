@@ -273,7 +273,8 @@ func test_the_real_v1_save_resumes_then_is_rewritten_in_v4() -> void:
 	assert_gte(GameState.play_time, 1616.0, "temps de jeu repris")
 	_boot.notification(Node.NOTIFICATION_APPLICATION_PAUSED)
 	var saved := _saved()
-	assert_eq(int(saved.get("version", 0)), SaveSystem.VERSION, "réécrite en version courante")
+	assert_eq(int(saved.get("version", 0)), SaveSystem.VERSION,
+		"réécrite à la version courante (v6 depuis le J11)")
 	assert_eq(_bag_items(saved), {"poke_ball": 3.0, "potion": 1.0}, "Sac v2")
 	assert_eq(saved.get("money"), 3000.0, "3 000 ₽")
 	assert_eq(saved.get("map"), "route_1")
@@ -323,7 +324,8 @@ func test_the_real_v2_save_resumes_then_is_rewritten_in_v4() -> void:
 	assert_gte(GameState.play_time, 3732.0, "temps de jeu repris")
 	_boot.notification(Node.NOTIFICATION_APPLICATION_PAUSED)
 	var saved := _saved()
-	assert_eq(int(saved.get("version", 0)), SaveSystem.VERSION, "réécrite en version courante")
+	assert_eq(int(saved.get("version", 0)), SaveSystem.VERSION,
+		"réécrite à la version courante (v6 depuis le J11)")
 	assert_eq(saved.get("money"), 3000.0)
 	assert_eq(saved.get("first_wild_encounter"), {"species": "pidgey", "map": "route_1",
 		"date": "2026-10-02T20:51:16"})
@@ -344,7 +346,8 @@ func test_the_real_v2_save_resumes_then_is_rewritten_in_v4() -> void:
 		["squirtle_peek"]], "notes débloquées au chargement, comme au J6")
 	for key: String in before:
 		assert_eq(after.get(key), before[key], "champ « %s » identique" % key)
-	assert_eq(after.keys().size(), before.keys().size(), "aucun champ perdu ni ajouté")
+	assert_eq(after.keys().size(), before.keys().size() + 2,
+		"aucun champ perdu ; prénom du rival et apparence (v5) en plus")
 	assert_false(_fs.files.has(SAVE_PATH + SaveSystem.CORRUPT_SUFFIX), "rien d'écarté")
 	assert_push_error_count(0)
 
@@ -369,7 +372,8 @@ func test_the_real_end_of_j6_save_resumes_then_is_rewritten_in_v4() -> void:
 	assert_gte(GameState.play_time, 50250.0, "temps de jeu repris")
 	_boot.notification(Node.NOTIFICATION_APPLICATION_PAUSED)
 	var saved := _saved()
-	assert_eq(int(saved.get("version", 0)), SaveSystem.VERSION, "réécrite en version courante")
+	assert_eq(int(saved.get("version", 0)), SaveSystem.VERSION,
+		"réécrite à la version courante (v6 depuis le J11)")
 	assert_eq(saved.get("money"), 3000.0)
 	assert_eq(saved.get("first_wild_encounter"), {"species": "pidgey", "map": "route_1",
 		"date": "2026-10-02T20:51:16"})
@@ -380,7 +384,8 @@ func test_the_real_end_of_j6_save_resumes_then_is_rewritten_in_v4() -> void:
 		after.erase(key)
 	for key: String in before:
 		assert_eq(after.get(key), before[key], "champ « %s » identique" % key)
-	assert_eq(after.keys().size(), before.keys().size(), "aucun champ perdu ni ajouté")
+	assert_eq(after.keys().size(), before.keys().size() + 2,
+		"aucun champ perdu ; prénom du rival et apparence (v5) en plus")
 	assert_false(_fs.files.has(SAVE_PATH + SaveSystem.CORRUPT_SUFFIX), "rien d'écarté")
 	assert_push_error_count(0)
 
@@ -436,7 +441,8 @@ func test_the_real_v3_save_resumes_then_is_rewritten_in_v4() -> void:
 	assert_gte(GameState.play_time, 72722.0, "temps de jeu repris")
 	_boot.notification(Node.NOTIFICATION_APPLICATION_PAUSED)
 	var saved := _saved()
-	assert_eq(int(saved.get("version", 0)), SaveSystem.VERSION, "réécrite en version courante")
+	assert_eq(int(saved.get("version", 0)), SaveSystem.VERSION,
+		"réécrite à la version courante (v6 depuis le J11)")
 	var before := v3.duplicate(true)
 	var after := _without_status(saved)
 	for key: String in ["version", "play_time"]:
@@ -444,7 +450,8 @@ func test_the_real_v3_save_resumes_then_is_rewritten_in_v4() -> void:
 		after.erase(key)
 	for key: String in before:
 		assert_eq(after.get(key), before[key], "champ « %s » identique" % key)
-	assert_eq(after.keys().size(), before.keys().size(), "aucun champ perdu ni ajouté")
+	assert_eq(after.keys().size(), before.keys().size() + 2,
+		"aucun champ perdu ; prénom du rival et apparence (v5) en plus")
 	assert_false(_fs.files.has(SAVE_PATH + ".rejected"), "rien d'écarté")
 	assert_false(_fs.files.has(SAVE_PATH + SaveSystem.CORRUPT_SUFFIX))
 	assert_push_error_count(0)
@@ -460,7 +467,8 @@ func test_a_poisoned_member_is_resumed_poisoned_and_saved_again() -> void:
 	_fs.journal.clear()
 	await _start_boot()
 	assert_true(_boot.has_resumed())
-	assert_eq(_save.read_version, SaveSystem.VERSION, "déjà à la version courante : pas de migration")
+	assert_eq(_save.read_version, SaveSystem.VERSION,
+		"déjà à la version courante : pas de ligne de migration")
 	assert_eq(GameState.party.get_lead().status, StatusRules.POISON, "statut relu")
 	assert_eq(GameState.party.get_lead().hp, 5, "aucun dégât au chargement")
 	_boot.notification(Node.NOTIFICATION_APPLICATION_PAUSED)

@@ -1,0 +1,123 @@
+# Route 3 — grille fonctionnelle (jalon 12, dossier 15 §3, §4, §12 ; préparée le 2026-10-11 pour la
+# vue générale peinte). Source UNIQUE de la géométrie : plan en aplats (tools/art/plan_aplats.py),
+# vue générale peinte, puis outil de construction et tests du J12 (12A). Un changement de
+# composition se fait ICI d'abord, puis plan, puis image. Contrôle : tools/art/plan_check.py
+# (profil verifier_route_3, tools/art/plan_check_route_3.py).
+#
+# 82 × 38 cases (enveloppe du dossier, §3.1) ; nord en haut ; x = colonne 0..81, y = rangée 0..37.
+# Raccord ouest : (0, 25..27) ↔ Argenta (51, 25..27) (rue de sortie est d'Argenta, garde en
+# (48, 24) : mêmes rangées, aucun décalage vertical). Est : le Mont Sélénite (entrée (73..74, 9),
+# STEP_ON ↑ → mt_moon_1f) et le Centre Pokémon (porte (61..62, 11), STEP_ON ↑ → intérieur
+# « Mont Sélénite »).
+#
+# Trois séquences (§3.1), d'ouest en est :
+#   ① x 0..22 — LA SORTIE : grande prairie ouverte (vue sur la montagne au nord-est), H1 au sud du
+#      chemin (évitable), goulet de Hugo (x 18..22, y 25..27) entre un affleurement et la forêt :
+#      D1 inévitable (alcôve au nord du goulet).
+#   ② x 23..53 — LES CHEMINS DES DRESSEURS : replat de l'embranchement (x 23..31) ; itinéraire NORD
+#      (sentier d'herbe rase : H2 puis D3) et itinéraire SUD (chemin de terre : H3 puis D4), qui
+#      se rejoignent à la jonction (x 42..49, y 17..22) ; goulet de Léa (x 50..53, y 19..21) : D2
+#      inévitable. Détour de D5 : poche au sud de l'itinéraire sud (Poké Ball).
+#      Rebord L2 (30..31, 20) : sentier de retour depuis la jonction (Réveil caché), saut vers le
+#      replat.
+#   ③ x 54..81 — LE PIED DE LA MONTAGNE : sol rocheux ; couloir au pied du plateau (y 19..22) avec
+#      H4 obligatoire (x 55..58), montée (x 65..67) vers le plateau du Centre (x 57..64, y 12..17)
+#      et le parvis de la grotte (x 65..77, y 10..16), entrée du Mont Sélénite dans la paroi.
+#      Rebord L1 (59..64, 18) : saut du plateau dans le couloir (retour sans repasser par la
+#      montée). Détour de D6 : poche au sud-est du parvis (Anti-Para).
+# Masse de la montagne (K) : rangées 0..1 vers x 30, 0..3 vers x 40, 0..9 au-dessus du parvis,
+# toute la hauteur au bord est (x 78..81) et au sud-est : elle grandit vers l'est.
+#
+# Légende (en plus de celle de route_2.txt et argenta.txt) :
+#   T forêt et bosquets (bloqués)        . herbe rase            = chemin de terre
+#   h hautes herbes                      v rebord (sauté vers le sud ; ne se monte pas)
+#   o sol rocheux praticable (pied de la montagne, végétation rare)
+#   K paroi de la montagne (bloquée)     R affleurements et rochers (bloqués)
+#   x buissons bas (bloqués)
+#   C Centre Pokémon (bldg_centre_01 réutilisé, 8 × 7 comme à Argenta, emprise bloquée)
+#   D porte du Centre (praticable, STEP_ON ↑ ; 4e et 5e colonnes de la rangée du bas)
+#   Q entrée du Mont Sélénite : ouverture dans la paroi (praticable, STEP_ON ↑)
+#
+# Format : ligne PRATICABLES, section GRILLE (« NN » + espace + 82 caractères), puis POSITIONS.
+
+PRATICABLES .=hvoDQ
+
+GRILLE 82 38
+00 TTTTTTTTTTTTTTTTTTTTTTTTTTTTTKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKK
+01 TTTTTTTTTTTTTTTTTTTTTTTTTTTTTKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKK
+02 TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKK
+03 TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKK
+04 TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKK
+05 TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTRRRRRRTKKKKKKKKRRRRCCCCCCCCKKKKKKKKKKKKKKKK
+06 TTTTTTTTTTTTTTTTTTTTTTTT.....................TTTTTRRRRRRRRCCCCCCCCKKKKKKKKKKKKKKKK
+07 TTTTTTTTTTTTTTTTTTTTTTTT.....................TTTTTRRRRRRRRCCCCCCCCKKKKKKKKKKKKKKKK
+08 TTTTTTTTTTTTTTTTTTTTTTTT.....................TTTTTRRRRRRRRCCCCCCCCKKKKKKKKKKKKKKKK
+09 TTTTTTTTTTTTTTTTTTTTTTTT.....................TTTTTRRRRRRRRCCCCCCCCKKKKKKKQQKKKKKKK
+10 TTTTTTTTTTTTTTTTTTTTTTTT.....................TTTTTRRRRRRRRCCCCCCCCooooooo==oooKKKK
+11 TTTTTTTTTTTTTTTTTTTTTTTT...TTTTTTTTTTTTTTT...RRRRRRRRRRRRRCCCDDCCCooooooo==oooKKKK
+12 TTTTTTTTTTTTTTTTTTTTTTTT...TTTTTTTTTTTTTTT...RRRRRRRRRRRRoooo==oooooooooo==oooKKKK
+13 TTTTTTTTTTTTTTTTTTTTTTTThhhTTTTTTTTTTTTTTT...RRRRRRRRRRRRoooo==============oooKKKK
+14 TRRR............RRTTTTTThhhTTTTTTTTTTTTTTT...RRRRRRRRRRRRoooooooooooooRRRoooooKKKK
+15 TRRR............RRTTTTTThhhTTTTTTTTTTTTTTT...RRRRRRRRRRRRoooooooooooooRRRoooooKKKK
+16 TR................TTTTTThhhTTTTTTTTTTTTTTT...RRRRRR.RRRRRoooooooooooooRRRoooooKKKK
+17 T.................TTTTTThhhTTTTTTTTTTTTTTT........R.RRRRRooooooooo==RRRRRRooooKKKK
+18 T.................RRRRRT...TTT....................R.RRRRRRRvvvvvvo==RRRRRRooooKKKK
+19 T.................RRRRRT...TTT.........................hhhh.......==RRRRRRooooKKKK
+20 T.................RRRRRT...TTTvvTTTTTTTTTT..===========hhhh=========RRRRRRooooKKKK
+21 T.................RRRRR.........TTTTTTTTTT..===========hhhh=========RRRRRRooooKKKK
+22 T.................RR.RR.........TTTTTTTTTT..==....RRRR.hhhh.........RRRRRRooooKKKK
+23 T.................RR.RR.........TTTTTTTTTTT.==.TTTRRRRRRRRRRRRRRRRRRRRRRRRooooKKKK
+24 T.................RR.RR.........TTTTTTTTTTT.==.TTTRRRRRRRRRRRRRRRRRRRRRRKKKKKKKKKK
+25 =======================......TTTTTTTTTTTTTT.==.TTTTTTTTTTTTTTTTTTTRRRRRRKKKKKKKKKK
+26 =============================TTTTTTTTTTTTTT.==.TTTTTTTTTTTTTTTTTTTRRRRRRKKKKKKKKKK
+27 =============================TTTTTTTTTTTTTT.==.TTTTTTTTTTTTTTTTTTTRRRRRRKKKKKKKKKK
+28 T.................TTTTT....==.hhhh..........==.TTTTTTTTTTTTTTTTTTTRRRRRRKKKKKKKKKK
+29 T....hhhhhhh......TTTTT....==.hhhh..........==.TTTTTTTTTTTTTTTTTTTRRRRRRKKKKKKKKKK
+30 Txx..hhhhhhh......TTTTT....===hhhh=========.==.TTTTTTTTTTTTTTTTTTTKKKKKKKKKKKKKKKK
+31 Txx..hhhhhhh..xxxxTTTTT....===hhhh=========.==.TTTTTTTTTTTTTTTTTTTKKKKKKKKKKKKKKKK
+32 Txx..hhhhhhh..xxxxTTTTT.......hhhh.............TTTTTTTTTTTTTTTTTTTKKKKKKKKKKKKKKKK
+33 TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT..TTTTTTTTTTTTTTTTTTTTTTTTKKKKKKKKKKKKKKKK
+34 TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTxx.......TTTTTTTTTTTTTTTTTTTTTTTTKKKKKKKKKKKKKKKK
+35 TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT.........TTTTTTTTTTTTTTTTTTTTTTTTKKKKKKKKKKKKKKKK
+36 TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT.........TTTTTTTTTTTTTTTTTTTTTTTTKKKKKKKKKKKKKKKK
+37 TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTKKKKKKKKKKKKKKKK
+FIN
+
+# POSITIONS (défauts du 2026-10-11, ajustables au plan du J12) — une ligne par élément :
+#   identifiant  type  cases  bloque|libre  [cle=valeur ...]  # commentaire
+# Types : ceux de viridian_forest.txt, plus « cache » : objet caché du J12 (dossier 15 §12, B-10),
+# case signalée discrètement par le décor (attribut indice), bloquée ; on l'INTERAGIT de face
+# depuis une case voisine. Jamais dessinée sur le plan joint à Codex (seulement en --annote).
+# « itineraire » : coupe d'un des deux chemins de ② (role=nord / sud), pour plan_check.
+# Dresseurs : équipes du §3.2 en commentaire ; identifiants de data/trainers à créer au 12A.
+POSITIONS
+warp_ouest          warp           0,25..27     libre   # PUSH ← → pewter_city, from_route_3
+from_pewter         spawn          0,25..27     libre   # arrivée d'Argenta, tournée →
+porte_centre        warp           61..62,11    libre   # STEP_ON ↑ → mt_moon_center (les deux cases « open »)
+from_center         spawn          61..62,12    libre   # sortie du Centre, tournée ↓
+entree_grotte       warp           73..74,9     libre   # STEP_ON ↑ → mt_moon_1f
+from_mt_moon        spawn          73..74,10    libre   # sortie de la grotte et Corde Sortie (§11), tournée ↓
+hugo                dresseur       20,22        bloque  role=D1 facing=down sight=5 trainer=route_3_youngster_hugo  # Gamin, Rattata 10 + Abo 10, 150 ₽ ; inévitable
+lea                 dresseur       51,16        bloque  role=D2 facing=down sight=5 trainer=route_3_lass_lea  # Fillette, Roucool 9 + Nidoran ♀ 9, 135 ₽ ; inévitable
+sacha               dresseur       33,6         bloque  role=D3 facing=down sight=3 trainer=route_3_scout_sacha  # Scout, Chenipan 10 + Aspicot 10 + Chrysacier 10, 120 ₽ ; contournable par y 10
+enzo                dresseur       38,32        bloque  role=D4 facing=up sight=3 trainer=route_3_youngster_enzo  # Gamin, Piafabec 14, 210 ₽ ; contournable par y 28
+ines                dresseur       41,35        bloque  role=D5 facing=left sight=4 trainer=route_3_lass_ines  # Fillette, Rondoudou 14, 210 ₽ ; garde la poche du sud
+nolan               dresseur       77,17        bloque  role=D6 facing=left sight=3 trainer=route_3_scout_nolan  # Scout, Aspicot 9 + Coconfort 9 + Kakuna 9, 108 ₽ ; garde la poche du sud-est
+voyageur            pnj            15,16        bloque  role=P1 facing=right  # « Le Mont Sélénite, là-bas. » ; face à la montagne
+randonneuse         pnj            68,12        bloque  role=P2 facing=left  # « Je reviens de la grotte. » ; sur le parvis
+route_3_item_1      objet_visible  34,36        bloque  role=O1 item=poke_ball  # fond de la poche d'Inès
+route_3_item_2      objet_visible  57,14        bloque  role=O2 item=potion  # bout ouest du plateau du Centre, au pied de la paroi
+route_3_item_3      objet_visible  77,23        bloque  role=O3 item=paralyze_heal  # fond de la poche de Nolan (Anti-Para)
+route_3_hidden_1    cache          36,18        bloque  role=O4 item=awakening indice=caillou  # Réveil : caillou d'une autre teinte, sentier du rebord L2
+piafabec_1          pokemon        40,5         bloque  shy=fly  # sur l'affleurement au-dessus de l'itinéraire nord
+piafabec_2          pokemon        71,14        bloque  shy=fly  # sur le rocher du parvis
+rondoudou           pokemon        4,19         bloque  shy=notice  # prairie de la sortie (planche du J12, C-4)
+panneau_ouest       panneau        3,24         bloque  # « ROUTE 3 » / « Argenta ← → Mont Sélénite », lu depuis (3, 25) ↑
+panneau_centre      panneau        64,12        bloque  # « CENTRE POKÉMON » / « Mont Sélénite », lu depuis (64, 13) ↑
+herbes_h1           herbes         8,30         libre   role=H1  # prairie de la sortie (évitable)
+herbes_h2           herbes         25,15        libre   role=H2  # itinéraire nord (obligatoire sur ce chemin)
+herbes_h3           herbes         31,30        libre   role=H3  # itinéraire sud (obligatoire sur ce chemin)
+herbes_h4           herbes         56,20        libre   role=H4  # pied de la montagne (obligatoire)
+itineraire_nord     itineraire     27..41,6..10  libre  role=nord  # coupe de l'itinéraire nord (D3)
+itineraire_sud      itineraire     34..42,28..32 libre  role=sud  # coupe de l'itinéraire sud (D4)
+FIN

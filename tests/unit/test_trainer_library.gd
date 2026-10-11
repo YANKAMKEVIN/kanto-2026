@@ -38,7 +38,7 @@ func test_real_rival_lab_loads() -> void:
 	assert_true(library.load_dir())
 	assert_eq(library.get_errors().size(), 0)
 	var rival := library.get_trainer(&"rival_lab")
-	assert_eq(rival.name, "Le Rival")
+	assert_eq(rival.name, "{rival}", "prénom résolu à l'affichage (OUV.2)")
 	assert_eq(rival.ai, &"random")
 	assert_true(rival.can_lose)
 	assert_true(rival.heal_after)
@@ -85,7 +85,7 @@ func test_real_rival_route22() -> void:
 	assert_true(library.load_dir())
 	var rival := library.get_trainer(&"rival_route22")
 	assert_not_null(rival)
-	assert_eq(rival.name, "Le Rival")
+	assert_eq(rival.name, "{rival}", "prénom résolu à l'affichage (OUV.2)")
 	assert_eq(rival.ai, BattleAI.SMART)
 	assert_eq(rival.make_ai().kind, BattleAI.SMART)
 	assert_false(rival.can_lose, "défaite = retour au point de repos")
@@ -94,7 +94,7 @@ func test_real_rival_route22() -> void:
 	assert_eq(rival.prize_money, 0)
 	assert_eq(rival.prize_per_level, 35)
 	assert_true(rival.allow_bag)
-	assert_true(rival.start_message, "« Le Rival veut se battre ! »")
+	assert_true(rival.start_message, "« {rival} veut se battre ! »")
 	assert_false(rival.end_message)
 	var advantaged := {&"bulbasaur": &"charmander", &"charmander": &"squirtle",
 		&"squirtle": &"bulbasaur"}

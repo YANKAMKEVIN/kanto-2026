@@ -20,6 +20,8 @@ const FIXTURE_V2_END := "res://tests/fixtures/save/v2_kevin_j6_fin.json"
 ## Jadielle (7, 5), 4 Pokémon, Pokédex activé, 2 100 ₽, 20 h 12 de jeu (jalon-09.md §2.2).
 const FIXTURE_V3 := "res://tests/fixtures/save/v3_kevin_j7_fin.json"
 const FIXTURE_V3_S24 := "res://tests/fixtures/save/v3_kevin_s24.json"
+## Fixture v4 : la vraie sauvegarde de Kevin, relevée sur son S21 le 2026-10-10 avant la validation d'OUV.1.
+const FIXTURE_V4 := "res://tests/fixtures/save/v4_kevin_s21.json"
 
 var _fs: SaveFileSystem
 var _save: SaveSystem
@@ -175,8 +177,8 @@ func test_newer_version_is_refused_and_left_untouched() -> void:
 	assert_false(_fs.exists(PATH + ".corrupt"))
 
 
-func test_a_future_save_is_refused_and_left_untouched() -> void:
-	# Une version plus récente que cette build (build future) n'est jamais lue ni écrasée.
+func test_a_save_from_a_future_build_is_refused_and_left_untouched() -> void:
+	# Cette build écrit la v6 (J11) ; une v7 (build future) n'est jamais lue ni écrasée.
 	var future: Dictionary = JSON.parse_string(FileAccess.get_file_as_string(FIXTURE_V3))
 	future["version"] = SaveSystem.VERSION + 1
 	var text := JSON.stringify(future, "\t")
@@ -184,8 +186,8 @@ func test_a_future_save_is_refused_and_left_untouched() -> void:
 	assert_eq(_save.read(), {})
 	assert_eq(_save.last_status, ERR_INVALID_DATA)
 	assert_eq(_save.read_version, 0, "aucune lecture réussie")
-	assert_true(_save.last_error.contains("%d > %d" % [SaveSystem.VERSION + 1, SaveSystem.VERSION]),
-		_save.last_error)
+	assert_true(_save.last_error.contains("%d > %d" % [SaveSystem.VERSION + 1,
+		SaveSystem.VERSION]), _save.last_error)
 	assert_eq((_fs as MemoryFs).files[PATH], text, "fichier intact")
 	assert_false(_fs.exists(PATH + ".corrupt"))
 
@@ -195,7 +197,7 @@ func test_the_current_save_is_refused_by_a_build_that_writes_v1() -> void:
 	assert_eq(_save.write(_full_state().to_dict()), OK)
 	var written: String = (_fs as MemoryFs).files[PATH]
 	assert_eq(int((JSON.parse_string(written) as Dictionary)["version"]), SaveSystem.VERSION,
-		"écrite en version courante")
+		"écrite à la version courante")
 	var old_build := SaveSystem.new(_fs, PATH)
 	old_build.version = 1
 	assert_eq(old_build.read(), {})
@@ -472,8 +474,8 @@ func test_the_real_v1_save_loads_identically_after_migration() -> void:
 		dex[species]["notes"] = []
 	dex["charmander"]["times_seen"] = 1.0
 	assert_eq(after["pokedex"]["entries"], dex, "Pokédex identique, notes en plus, starter vu 1")
-	assert_eq(after.keys().size(), before.keys().size() + 2,
-		"aucun champ perdu (sauf version), argent, première rencontre et compagnon (J11) en plus")
+	assert_eq(after.keys().size(), before.keys().size() + 4,
+		"aucun champ perdu ; argent, rencontre, rival, apparence et compagnon en plus")
 
 
 func test_a_migrated_v1_save_is_rewritten_in_v4_and_reads_back_identically() -> void:
@@ -539,12 +541,15 @@ func _without_v3(content: Dictionary) -> Dictionary:
 	return copy
 
 
-## Le contenu d'une sauvegarde sans ce que la v4 et le J11 ajoutent (pour comparer à la v3) : la
-## version, le statut (« status »), le compteur (« status_turns ») et l'identifiant (« uid ») de
-## chaque Pokémon de l'équipe et du stockage, et le compagnon (« companion »).
+## Le contenu d'une sauvegarde sans ce que la v4, la v5 et la v6 ajoutent (pour comparer à la
+## v3) : la version, le statut (« status »), le compteur (« status_turns ») et l'identifiant
+## (« uid ») de chaque Pokémon de l'équipe et du stockage, le prénom du rival et l'apparence du
+## joueur (v5, OUV.1), le compagnon (v6, J11).
 func _without_v4(content: Dictionary) -> Dictionary:
 	var copy: Dictionary = _json(content)
 	copy.erase("version")
+	copy.erase("rival_name")
+	copy.erase("player_look")
 	copy.erase("companion")
 	for key: String in ["party", "storage"]:
 		for member: Variant in JsonFields.get_array(copy, key):
@@ -594,8 +599,7 @@ func test_the_real_v2_save_loads_and_is_rewritten_identically_in_v4() -> void:
 	assert_eq(written["money"], 3000.0)
 	assert_eq(written["first_wild_encounter"]["species"], "pidgey")
 	assert_eq(_without_v3(written), _without_v3(v2), "tout le reste réécrit à l'identique")
-	assert_eq(written.keys().size(), v2.keys().size() + 3,
-		"aucun champ perdu (+ argent, rencontre, compagnon)")
+	assert_eq(written.keys().size(), v2.keys().size() + 5, "aucun champ perdu (v3, v5 et v6 en plus)")
 	var again := _state()
 	assert_true(again.load_dict(_save.read(), _data))
 	assert_eq(again.to_dict(), state.to_dict(), "aller-retour v4 stable")
@@ -628,8 +632,7 @@ func test_the_real_end_of_j6_save_migrates_to_v4_and_rewrites_identically() -> v
 	var written: Dictionary = JSON.parse_string((_fs as MemoryFs).files[PATH])
 	assert_eq(int(written["version"]), SaveSystem.VERSION)
 	assert_eq(_without_v3(written), _without_v3(v2), "tout le reste réécrit à l'identique")
-	assert_eq(written.keys().size(), v2.keys().size() + 3,
-		"aucun champ perdu (+ argent, rencontre, compagnon)")
+	assert_eq(written.keys().size(), v2.keys().size() + 5, "aucun champ perdu (v3, v5 et v6 en plus)")
 
 
 func test_v3_round_trip_keeps_money_and_the_first_wild_encounter() -> void:
@@ -660,7 +663,8 @@ func test_the_current_save_is_refused_by_a_j6_build_and_left_untouched() -> void
 	j6_build.version = 2
 	assert_eq(j6_build.read(), {})
 	assert_eq(j6_build.last_status, ERR_INVALID_DATA)
-	assert_true(j6_build.last_error.contains("%d > 2" % SaveSystem.VERSION), j6_build.last_error)
+	assert_true(j6_build.last_error.contains("%d > 2" % SaveSystem.VERSION),
+		j6_build.last_error)
 	assert_eq((_fs as MemoryFs).files[PATH], written, "fichier intact")
 	assert_eq((_fs as MemoryFs).journal.size(), 0, "aucune écriture, aucun renommage")
 	assert_false(_fs.exists(PATH + ".corrupt"))
@@ -775,12 +779,11 @@ func test_the_real_v3_save_loads_with_no_status_and_is_rewritten_identically_in_
 	for member: Dictionary in written["party"]:
 		assert_eq(member.get("status"), "", "statut écrit vide")
 	assert_eq(_without_v4(written), _without_v4(v3), "tout le reste réécrit à l'identique")
-	assert_eq(written.keys().size(), v3.keys().size() + 1,
-		"aucun champ perdu ; seul le compagnon (J11) s'ajoute")
+	assert_eq(written.keys().size(), v3.keys().size() + 3,
+		"aucun champ perdu ; prénom du rival, apparence (v5) et compagnon (v6) en plus")
 	var again := _state()
 	assert_true(again.load_dict(_save.read(), _data))
-	assert_eq(_save.read_version, SaveSystem.VERSION,
-		"relue à la version courante : plus de migration")
+	assert_eq(_save.read_version, SaveSystem.VERSION, "relue à la version courante : plus de migration")
 	assert_eq(again.to_dict(), state.to_dict(), "aller-retour v4 stable")
 
 
@@ -819,7 +822,8 @@ func test_a_v4_save_is_refused_by_a_j7_build_and_left_untouched() -> void:
 	j7_build.version = 3
 	assert_eq(j7_build.read(), {})
 	assert_eq(j7_build.last_status, ERR_INVALID_DATA)
-	assert_true(j7_build.last_error.contains("%d > 3" % SaveSystem.VERSION), j7_build.last_error)
+	assert_true(j7_build.last_error.contains("%d > 3" % SaveSystem.VERSION),
+		j7_build.last_error)
 	assert_eq((_fs as MemoryFs).files[PATH], written, "fichier intact")
 	assert_eq((_fs as MemoryFs).journal.size(), 0, "aucune écriture, aucun renommage")
 	assert_false(_fs.exists(PATH + SaveSystem.CORRUPT_SUFFIX))
@@ -836,6 +840,123 @@ func test_a_v4_save_with_an_unknown_status_loads_without_it() -> void:
 	assert_eq(loaded.party.get_lead().status, StatusRules.NONE)
 	assert_push_warning_count(1)
 	assert_push_error_count(0)
+
+
+# --- Sauvegarde v5 (OUV.1, docs/tech/ouverture.md §2) ----------------------------------------
+
+func _fixture_v4() -> Dictionary:
+	var parsed: Variant = JSON.parse_string(FileAccess.get_file_as_string(FIXTURE_V4))
+	assert_true(parsed is Dictionary, "fixture v4 lisible")
+	return parsed if parsed is Dictionary else {}
+
+
+func test_upgrade_4_to_5_changes_nothing_but_the_version() -> void:
+	var bare := {"version": 4}
+	assert_eq(SaveSystem.upgrade(bare, 5), OK)
+	assert_eq(bare, {"version": 5}, "aucun champ inventé : les défauts viennent de load_dict")
+	assert_eq(SaveSystem.VERSION, 6, "v6 depuis le J11 (par-dessus la v5 d'OUV.1)")
+	assert_eq(SaveSystem.migration_note(4, 5), "sauvegarde v4 → v5")
+
+
+func test_the_v4_save_of_kevin_is_migrated_to_v5_without_any_change() -> void:
+	var v4 := _fixture_v4()
+	assert_eq(int(v4["version"]), 4, "la fixture est bien une v4")
+	assert_false(v4.has("rival_name"), "pas encore de prénom du rival en v4")
+	assert_false(v4.has("player_look"))
+	(_fs as MemoryFs).files[PATH] = FileAccess.get_file_as_string(FIXTURE_V4)
+	var content := _save.read()
+	assert_eq(_save.last_status, OK, _save.last_error)
+	assert_eq(int(content["version"]), SaveSystem.VERSION, "migrée à la version courante")
+	assert_eq(_save.read_version, 4, "lue en v4 : le journal note la migration")
+	var expected: Dictionary = v4.duplicate(true)
+	expected["version"] = SaveSystem.VERSION
+	assert_eq(_json(content), _json(expected), "rien d'autre ne change")
+
+
+func test_the_v4_save_of_kevin_resumes_with_kevin_regis_and_the_hero() -> void:
+	var v4 := _fixture_v4()
+	(_fs as MemoryFs).files[PATH] = FileAccess.get_file_as_string(FIXTURE_V4)
+	var state := _state()
+	assert_true(state.load_dict(_save.read(), _data), "rien d'écarté")
+	assert_eq(state.player_name, "Kevin")
+	assert_eq(state.rival_name, "Régis")
+	assert_eq(state.player_look, &"hero")
+	assert_eq(state.current_map, StringName(v4["map"]))
+	assert_eq(state.play_time, float(v4["play_time"]))
+	# Réécrite à la version courante : tout ce que la v4 avait, à l'identique, plus les champs
+	# de la v5 (rival, apparence) et de la v6 (compagnon, compteur et identifiant des Pokémon).
+	assert_eq(_save.write(state.to_dict()), OK)
+	var written: Dictionary = JSON.parse_string((_fs as MemoryFs).files[PATH])
+	assert_eq(int(written["version"]), SaveSystem.VERSION)
+	assert_eq(written["rival_name"], "Régis")
+	assert_eq(written["player_look"], "hero")
+	assert_eq(written["companion"], "")
+	var rest: Dictionary = _without_v4(written)
+	var before: Dictionary = _without_v4(v4)
+	assert_eq(rest, before, "tout le reste réécrit à l'identique")
+	var again := _state()
+	assert_true(again.load_dict(_save.read(), _data))
+	assert_eq(_save.read_version, SaveSystem.VERSION,
+		"relue à la version courante : plus de migration")
+	assert_eq(again.to_dict(), state.to_dict(), "aller-retour stable")
+
+
+func test_a_v5_save_is_refused_by_a_j10_build_and_left_untouched() -> void:
+	# Ce que fait l'APK du J10 (VERSION = 4) devant la sauvegarde d'OUV.1 : refus, intacte ; il ne
+	# la lit jamais, donc n'efface jamais le prénom du rival.
+	var state := _full_state()
+	state.rival_name = "Blue"
+	assert_eq(_save.write(state.to_dict()), OK)
+	var written: String = (_fs as MemoryFs).files[PATH]
+	(_fs as MemoryFs).journal.clear()
+	var j10_build := SaveSystem.new(_fs, PATH)
+	j10_build.version = 4
+	assert_eq(j10_build.read(), {})
+	assert_eq(j10_build.last_status, ERR_INVALID_DATA)
+	assert_true(j10_build.last_error.contains("%d > 4" % SaveSystem.VERSION),
+		j10_build.last_error)
+	assert_eq((_fs as MemoryFs).files[PATH], written, "fichier intact")
+	assert_eq((_fs as MemoryFs).journal.size(), 0, "aucune écriture, aucun renommage")
+
+
+func test_v5_round_trip_keeps_the_rival_name_and_the_look() -> void:
+	var original := _full_state()
+	original.rival_name = "Gary"
+	var before: Dictionary = original.to_dict()
+	assert_eq(before["rival_name"], "Gary")
+	assert_eq(before["player_look"], "hero")
+	assert_eq(_save.write(before), OK)
+	var loaded := _state()
+	assert_true(loaded.load_dict(_save.read(), _data))
+	assert_eq(loaded.rival_name, "Gary")
+	assert_eq(loaded.player_look, &"hero")
+	assert_eq(loaded.to_dict(), before)
+
+
+func test_an_invalid_rival_name_falls_back_to_the_default() -> void:
+	for raw: Variant in ["", "   ", "R2-D2", "Abcdefghijk", "🔥", 42, null]:
+		var dict: Dictionary = _full_state().to_dict()
+		dict["rival_name"] = raw
+		var loaded := _state()
+		assert_true(loaded.load_dict(dict, _data), "rien d'écarté pour %s" % [raw])
+		assert_eq(loaded.rival_name, "Régis", "« %s » → défaut" % [raw])
+	var dict: Dictionary = _full_state().to_dict()
+	dict["rival_name"] = "  jean  luc "
+	var loaded := _state()
+	assert_true(loaded.load_dict(dict, _data))
+	assert_eq(loaded.rival_name, "Jean luc", "un prénom valide est normalisé")
+	assert_push_error_count(0)
+
+
+func test_an_unknown_look_falls_back_to_the_hero_without_error() -> void:
+	for raw: Variant in ["heroine", "", 7, "HERO"]:
+		var dict: Dictionary = _full_state().to_dict()
+		dict["player_look"] = raw
+		var loaded := _state()
+		assert_true(loaded.load_dict(dict, _data), "rien d'écarté pour %s" % [raw])
+		assert_eq(loaded.player_look, &"hero")
+	assert_push_error_count(0)
+	assert_push_warning_count(0)
 
 
 # --- Rattrapage de la première espèce sauvage (§5.1) -----------------------------------------

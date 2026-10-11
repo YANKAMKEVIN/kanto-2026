@@ -1,0 +1,74 @@
+# Mont Sélénite B2F, « la chambre des fossiles » — grille fonctionnelle (jalon 12, dossier 15
+# §5, §8, §9, §21 C-5). Même format, même légende que mont_selenite_1f.txt (en-tête). Contrôle :
+# tools/art/plan_check_mont_selenite.py.
+#
+# 50 × 38 cases (enveloppe du dossier ≈ 56 × 42) ; nord en haut.
+# Échelle D ↑ (arrivée du 1F, nord-est) → SALLE DES COLONNES (quatre colonnes ; niche est de la
+# Pierre Lune cachée) ; détour ouest vers la salle des ÉCLATS (CT01) ; au sud, gravats
+# obligatoires puis COULOIR DES LAMPES du GARDIEN (R3, inévitable, scène) → CHAMBRE DES FOSSILES
+# (projecteurs, caisses, dalle) → le CHERCHEUR garde le goulet ouest (inévitable, combat lancé
+# par la scène après R3) → échelle de sortie ↑ vers le sas de la Route 4.
+
+PRATICABLES .gjUVE
+
+GRILLE 50 38
+00 ##################################################
+01 ##################################################
+02 ##############################################U###
+03 #####*#*#################################.......##
+04 ####......##########............########........##
+05 ###........########..............#######........##
+06 ##*........########.............................##
+07 ###........########.............................##
+08 ###..ggggg.............K....K...................##
+09 ###..ggggg.......................########......###
+10 ###..ggggg.########..............#################
+11 ###..ggggg.########..............#################
+12 ###..ggggg.########....K....K.......x#############
+13 ####......#########.................##############
+14 ###################..gggggggggg..#################
+15 ###################..gggggggggg.##################
+16 ####################.gggggggggg.##################
+17 #######################gggggg#####################
+18 #######################gggggg#####################
+19 #########################..#######################
+20 ########################L..L######################
+21 #########################..#######################
+22 #########################..#######################
+23 #########################..#######################
+24 #########################.....####################
+25 #########################..#######################
+26 ########################L..L######################
+27 ###############L#########..########L##############
+28 ###############.....................##############
+29 ###########U##...................RR..#############
+30 ##########...#......L.........L...R..#############
+31 ##########..............SSS..........#############
+32 ##########...#.......................#############
+33 ##############..R....................#############
+34 #############L.......................L############
+35 ###############.....................##############
+36 ##################################################
+37 ##################################################
+FIN
+
+# POSITIONS : même format que mont_selenite_1f.txt.
+POSITIONS
+echelle_d            echelle        46,2         libre   paire=D sens=monte vers=mt_moon_1f
+arrivee_d            spawn          46,3         libre   paire=D  # arrivée du 1F, tourné ↓
+echelle_sortie       echelle        11,29        libre   paire=S sens=monte vers=route_4  # échelle de sortie : sas de la Route 4
+arrivee_s            spawn          11,30        libre   paire=S  # retour depuis le sas
+rocket_gardien       dresseur       29,24        bloque  role=R3 facing=left sight=4 inevitable=oui scene=oui trainer=mt_moon_rocket_3  # niche est du couloir des lampes ; vue (28..25, 24)
+chercheur            dresseur       13,31        bloque  role=chercheur facing=right sight=0 inevitable=oui scene=oui apres=15,30 trainer=mt_moon_researcher  # garde le goulet de l'échelle de sortie ; après le partage, se range en (15, 30)
+fossile_dome         fossile        24,31        bloque  item=dome_fossil  # sur la dalle (24..26, 31) ; on choisit en faisant face depuis (24, 32) ou (24, 30)
+fossile_nautile      fossile        26,31        bloque  item=helix_fossil
+mt_moon_b2f_item_1   objet_visible  4,5          bloque  role=O4 item=tm01  # CT01 Ultimapoing, fond de la salle des éclats (détour, C-5)
+mt_moon_b2f_hidden_1 objet_cache    35,12        libre   role=C2 item=moon_stone  # Pierre Lune cachée : niche est, éclat isolé (36, 12)
+gravats_b2f_g1       gravats        25,15        libre   role=G1  # bas de la salle des colonnes et bande : obligatoire (5 cases)
+gravats_b2f_g2       gravats        7,10         libre   role=G2  # salle des éclats : évitable par le nord
+repere_colonnes      repere         23,8;28,8;23,12;28,12  bloque  role=colonnes  # quatre colonnes en carré
+repere_eclats_ct     repere         2,6;5,3;7,3  bloque  role=ct  # éclats de la salle de la CT
+repere_couloir       repere         24,20;27,20;24,26;27,26  bloque  role=couloir  # lampes Rocket qui balisent le couloir du gardien
+repere_chambre       repere         15,27;35,27;13,34;37,34;20,30;30,30  bloque  role=chambre  # projecteurs : quatre aux coins, deux braqués sur la dalle
+camp_rocket          repere         33..34,29;34,30;16,33  bloque  role=chambre  # caisses marquées d'un R (restent après le départ)
+FIN

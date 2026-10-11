@@ -386,3 +386,59 @@ tests et risques. Aucun code. Relecture par Fable possible sur demande.
 `data/pokemon/tm_compatibility.json` + `tools/gen_tm_compatibility.py` : les 50 CT de Rouge/Bleu et
 leurs espèces compatibles parmi les 38 du jeu (34 pour la CT34 ; aucune CT pour Chenipan,
 Chrysacier, Aspicot, Coconfort). Source : CSV de PokeAPI (téléchargés hors dépôt). Non lu par le jeu.
+
+### T1 rebasé sur OUV.1 → v6 (2026-10-11)
+
+`main` (OUV.1 et OUV.2 validés, v5 = `rival_name` + `player_look` ; dossier 15 du J12) fusionné
+dans la branche. Conflits résolus en gardant les deux côtés : `save_system.gd` (**`VERSION = 6`**,
+historique « 6 = J11 », pas 5 → 6 qui ne transforme rien), `game_state.gd` (fonctions d'OUV et du
+J11), tests de sauvegarde (comptes de champs : v5 + v6). `test_save_j11` part maintenant de la
+**vraie partie v4 du S21** (`tests/fixtures/save/v4_kevin_s21.json`, relevée par OUV.1) et d'une
+**v5 d'OUV** (la même, avec prénom du rival et apparence) : mêmes Pokémon, même ordre, prénom du
+rival gardé, refus par la build d'OUV (v5) sans écrire. Il n'existe pas encore de **vraie** v5 dans
+le dépôt : elle sera relevée sur le téléphone à l'étape 1 du T3 et ajoutée en fixture.
+
+### T2 — relecture adversariale de la migration (2026-10-11)
+
+Points vérifiés (code et tests) :
+1. **Additif** : le pas 5 → 6 ne touche pas au fichier ; tout champ nouveau a un défaut au
+   chargement ; un champ inconnu est ignoré ; rien ne plante sur un `uid` mal formé, un compteur
+   hors bornes, un compagnon inconnu (tests).
+2. **Ordre et contenu** : `Party.load_array` / `PokemonStorage.load_array` gardent l'ordre ;
+   `ensure_unique_uids` ne retire ni ne déplace rien (tests sur trois parties réelles).
+3. **Aléatoire du jeu intact** : identifiants tirés hors de `GameRng` ; équipes de Dresseurs et de
+   travail sans identifiant (reproductibilité des combats et des départs vérifiée par les tests).
+4. **Commit d'OUV** (`OpeningCommit`, nouvelle partie écrite en écritures atomiques) : passe par
+   `GameState.to_dict`, donc écrit la v6 avec `companion` vide ; ses tests restent verts.
+5. **Risque réel trouvé : la cohabitation avec OUV.3.** Une fois la vraie partie migrée en v6, toute
+   APK construite depuis `main` **sans** le J11 (les sessions d'OUV.3) la refusera (« version plus
+   récente ») et jouera **sans sauvegarder**. Parade, dans la procédure du T3 : sauvegarde de
+   sécurité v5 avant, **restauration de la v5 après** la validation, tant que le J11 n'est pas
+   fusionné dans `main`. Après la fusion de 11.0 dans `main`, plus de restauration (toutes les
+   APK écrivent la v6).
+
+### Procédure du T3 (qa-mobile, téléphone qui porte la vraie partie, 11.0 validé seul)
+
+Variables et règles de la procédure du J9 (`jalon-09.md` §6.2) : `PKG`, `ADB`, `S`, dossier
+`build/qa/jalon11_t3/`, **jamais `adb uninstall`**, lecture / écriture par `run-as`.
+
+0. **APK v5 de référence** : construire l'APK de `main` (OUV, v5) dans une copie dédiée →
+   `build/qa/jalon11_t3/kanto2026-v5.apk`.
+1. **Relevé de la vraie partie** : `save_v5_kevin_avant.json` (`"version": 5`) ; copie en
+   `tests/fixtures/save/v5_kevin.json` (fixture réelle, test de migration doublé par l'architecte).
+   Répétition sur le Mac avec la branche du J11 : une ligne `[qa] sauvegarde v5 → v6`, aucune erreur.
+2. **Migration sur le téléphone** : `tools/deploy_s24.sh` (branche du J11). Attendus : une ligne
+   `[qa] sauvegarde v5 → v6` ; reprise intacte (carte, case, équipe et ordre, PV, Sac, argent,
+   badge, prénom du rival, titre « Continuer »). Relever `save_v6_kevin_apres.json` : `"version": 6`,
+   chaque Pokémon a un `uid` de 16 hexadécimaux, tous différents, `"status_turns": 0`,
+   `"companion": ""` ; **rien d'autre ne change** hors `version`, `play_time` :
+   `python3 -c "import json;a=json.load(open('save_v5_kevin_avant.json'));b=json.load(open('save_v6_kevin_apres.json'));[m.pop(k) for x in ('party','storage') for m in b[x] for k in ('uid','status_turns')];b.pop('companion');[d.pop(k) for d in (a,b) for k in ('version','play_time')];print('IDENTIQUE' if a==b else 'DIFF')"`.
+   Deux fermetures forcées + relances : aucune ligne de migration, **mêmes `uid`** dans le fichier.
+3. **Refus par la build v5** : `adb install -r -d build/qa/jalon11_t3/kanto2026-v5.apk`, lancer :
+   avertissement « version plus récente » sur le titre, partie jouée sans sauvegarde ; le fichier
+   reste **identique octet pour octet** (`cmp`) ; aucun `.corrupt`.
+4. **Restauration** (tant que 11.0 n'est pas dans `main`) : réinstaller l'APK v5 de référence et
+   écrire `save_v5_kevin_avant.json` dans `files/save.json` ; relancer : reprise identique à
+   l'étape 1. **Ne jamais laisser une v6 sur le téléphone** pendant qu'OUV.3 se teste.
+5. Rapport `build/qa/jalon11_t3/rapport.md` (verdict par étape, fichiers, journal, captures) →
+   **validation de Kevin** ; puis fusion de 11.0 dans `main` (accord de Kevin) avant tout lot suivant.

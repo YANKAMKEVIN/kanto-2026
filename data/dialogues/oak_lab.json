@@ -37,9 +37,9 @@
 	},
 	"oak_lab_reunion": {
 		"pages": [
-			{ "speaker": "Rival", "text": "Enfin." },
+			{ "speaker": "{rival}", "text": "Enfin." },
 			{ "speaker": "Prof. Chen", "text": "Un peu de patience.", "turn": { "oak": "rival" } },
-			{ "speaker": "Rival", "text": "Ça fait une heure que tu dis ça.", "turn": { "rival": "oak" } },
+			{ "speaker": "{rival}", "text": "Ça fait une heure que tu dis ça.", "turn": { "rival": "oak" } },
 			{ "speaker": "Prof. Chen", "text": "Et pourtant, tu es toujours là." }
 		]
 	},
@@ -57,23 +57,23 @@
 		"pages": ["On dirait que le choix est réciproque."]
 	},
 	"rival_starter_pick": {
-		"speaker": "Rival",
+		"speaker": "{rival}",
 		"pages": ["Alors ce sera toi."]
 	},
 	"rival_starter_smile": {
-		"speaker": "Rival",
+		"speaker": "{rival}",
 		"pages": ["Ça devrait être intéressant."]
 	},
 	"rival_challenge_wait": {
-		"speaker": "Rival",
+		"speaker": "{rival}",
 		"pages": ["Attends."]
 	},
 	"rival_challenge": {
-		"speaker": "Rival",
+		"speaker": "{rival}",
 		"pages": ["On ne va quand même pas partir sans savoir ce qu'ils savent faire."]
 	},
 	"rival_lab_won": {
-		"speaker": "Rival",
+		"speaker": "{rival}",
 		"pages": [
 			"...Pas mal.",
 			{ "text": "On a encore du travail.", "turn": { "rival": "down" } },
@@ -81,11 +81,11 @@
 		]
 	},
 	"rival_lab_won_leaving": {
-		"speaker": "Rival",
+		"speaker": "{rival}",
 		"pages": ["Essaie de ne pas trop prendre de retard."]
 	},
 	"rival_lab_lost": {
-		"speaker": "Rival",
+		"speaker": "{rival}",
 		"pages": [
 			"Pas mal pour un premier combat.",
 			{ "text": "Mais je t'avais prévenu : j'étais prêt.", "pause": 0.8 },
@@ -159,11 +159,11 @@
 		]
 	},
 	"rival_parcel_return": {
-		"speaker": "Rival",
+		"speaker": "{rival}",
 		"pages": ["Professeur ! Je suis revenu."]
 	},
 	"rival_parcel_greet": {
-		"speaker": "Rival",
+		"speaker": "{rival}",
 		"pages": ["Tiens. T'es déjà revenu, toi aussi ?"]
 	},
 	"oak_parcel_rival_dex": {
@@ -175,18 +175,18 @@
 	"oak_parcel_rival": {
 		"pages": [
 			{ "speaker": "Prof. Chen", "text": "Et toi… apprends à regarder au-delà de la victoire.", "turn": { "oak": "rival" } },
-			{ "speaker": "Rival", "text": "…On verra.", "pause": 0.8 }
+			{ "speaker": "{rival}", "text": "…On verra.", "pause": 0.8 }
 		]
 	},
 	"rival_parcel_leaving": {
-		"speaker": "Rival",
+		"speaker": "{rival}",
 		"pages": [
 			{ "text": "Pas mal.", "turn": { "rival": "down" } },
 			{ "text": "Mais ne t'imagine pas que je vais t'attendre.", "turn": { "rival": "player" } }
 		]
 	},
 	"rival_lab_waiting": {
-		"speaker": "Rival",
+		"speaker": "{rival}",
 		"variants": [
 			{
 				"if": ["starter_offered"],

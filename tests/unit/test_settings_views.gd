@@ -122,3 +122,17 @@ func test_every_category_has_a_section_subtitle() -> void:
 		subtitles.append(category.subtitle)
 	assert_eq(_build().category(SettingsViews.CATEGORY_CONTROLS).subtitle,
 		SettingsViews.SUBTITLE_CONTROLS)
+
+
+## OUV.1 (dossier 13 §5.3) : depuis l'écran titre, les mêmes catégories et réglages, sans
+## « Sauvegarder maintenant » (absent, pas seulement inactif).
+func test_without_save_now_for_the_title() -> void:
+	var view := SettingsViews.build(GameSettings.new(), GameSettings.Graphics.HIGH, false, false)
+	var keys: Array[StringName] = []
+	for category: SettingsCategoryView in view.categories:
+		for item: SettingControlView in category.controls:
+			keys.append(item.key)
+	assert_false(keys.has(SettingsViews.SAVE_NOW))
+	assert_eq(keys.size(), GameSettings.KEYS.size(), "tous les réglages, rien d'autre")
+	assert_eq(view.categories.size(), _build().categories.size(), "mêmes catégories")
+	assert_false(view.category(SettingsViews.CATEGORY_GAME).controls.is_empty())

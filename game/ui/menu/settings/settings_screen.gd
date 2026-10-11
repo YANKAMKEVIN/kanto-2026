@@ -18,7 +18,10 @@ extends MenuScreen
 ## - Action « Sauvegarder maintenant » active : un [signal save_now_requested] ; inactive : rien
 ##   (sa raison est écrite dans la ligne). Le résultat arrive par [method show_save_result].
 ## - « ‹ » : [signal back_requested].
-## Placement : rempli par [TrainerMenu] (en-tête compris, covers_header), marges de SAFE_MARGIN.
+## Placement : rempli par son hôte (en-tête compris, covers_header), marges de SAFE_MARGIN. Il ne
+## connaît pas son hôte (OUV.1, dossier 13 §5.3) : le Menu Dresseur ([TrainerMenu]) et l'écran
+## titre ([TitleScreen], sans « Sauvegarder maintenant » : vue construite sans l'action) le posent
+## dans une zone aux mêmes marges (haut à MENU_BODY_TOP) sur leur fond flouté.
 
 ## Un réglage change : [param value] est la valeur du réglage (booléen, entier d'enum, flottant).
 signal setting_changed(key: StringName, value: Variant)

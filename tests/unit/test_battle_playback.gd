@@ -13,6 +13,9 @@ func before_all() -> void:
 	_data.load_dir()
 	_texts = BattleText.new()
 	_texts.load_file()
+	# Le nom des données est « {rival} » (OUV.2) : un prénom fixe est injecté.
+	_texts.token_values = func() -> Dictionary[StringName, String]:
+		return DialogueTokens.values_for(&"", null, "Kevin", "Régis")
 	_trainers = TrainerLibrary.new(_data)
 	_trainers.load_dir()
 
@@ -171,11 +174,11 @@ func test_whole_rival_battle_for_each_starter() -> void:
 			events.append_array(battle.submit(BattleAction.move(0)))
 		var beats := BattlePlayback.beats_for_log(events, _texts, _data, rival)
 		var kinds := _kinds(beats)
-		# Décision n° 17 (Q-K) : pas de « Le Rival veut se battre ! » (start_message faux).
+		# Décision n° 17 (Q-K) : pas de « Régis veut se battre ! » (start_message faux).
 		assert_eq(kinds.slice(0, 4), [BattleBeat.Kind.MESSAGE,
 			BattleBeat.Kind.SEND_OUT, BattleBeat.Kind.MESSAGE, BattleBeat.Kind.SEND_OUT]
 			as Array[BattleBeat.Kind], "%s : ouverture" % starter)
-		assert_string_contains(beats[0].text, "Le Rival envoie ")
+		assert_string_contains(beats[0].text, "Régis envoie ")
 		assert_string_starts_with(beats[2].text, "En avant, ")
 		var seen: Dictionary[BattleEvent, bool] = {}
 		for beat: BattleBeat in beats:

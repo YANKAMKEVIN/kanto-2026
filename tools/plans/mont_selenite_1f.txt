@@ -1,0 +1,118 @@
+# Mont Sélénite 1F, « les galeries d'entrée » — grille fonctionnelle (jalon 12, dossier 15 §5,
+# préparée le 2026-10-11 pour la vue générale peinte, filière des J9–J10). Source UNIQUE de la
+# géométrie : plan en aplats (tools/art/plan_aplats.py --mont-selenite), contrôle
+# (tools/art/plan_check_mont_selenite.py, qui relie les trois étages et le sas par les échelles)
+# et, plus tard, outil de construction de la carte. Un changement de composition se fait ICI d'abord.
+#
+# 60 × 46 cases (enveloppe du dossier ≈ 68 × 54, réduite : grotte dense à repères, voir le
+# contrôle) ; nord en haut ; x = colonne 0..59, y = rangée 0..45.
+# Entrée : (29..30, 45), vers la Route 3 (la Corde Sortie ramène devant, tourné vers le sud).
+# Trois secteurs qui ne se touchent pas : HALL (puits de jour) → CARREFOUR de la colonne, d'où
+# partent la galerie OUEST (camp abandonné, échelle A ↓ vers B1F) et la galerie EST des éclats
+# (détour, échelle C ↓ vers la poche de la Pierre Lune en B1F) ; le secteur NORD (fissure, mare)
+# n'est atteint que par l'échelle B depuis B1F et mène à l'échelle D ↓ vers B2F.
+#
+# Légende (grotte, commune aux trois étages) :
+#   # paroi rocheuse (bloquée)              . sol de grotte calme (aucune rencontre)
+#   g gravats (praticables, terrain de rencontre)    j puits de jour (sol calme éclairé, 1F)
+#   o rocher isolé (bloqué)                 K colonne rocheuse (repère, bloquée)
+#   V échelle qui descend   U échelle qui monte   (passages : fondu comme une porte ; la paire
+#     est donnée par l'attribut paire= de la position « echelle », l'arrivée par le « spawn »
+#     de même paire sur l'autre étage)
+#   E entrée depuis la Route 3 (praticable, bord de carte)
+#   L lampe de chantier Rocket (bloquée ; 1F : la lampe abandonnée)   R caisse marquée d'un R
+#   F zone de fouille, tranchée (bloquée)   S dalle des fossiles (B2F, bloquée)
+#   * éclat de Pierre Lune incrusté dans la paroi (repère, bloqué)
+#   x indice discret d'objet caché : caillou clair, éclat (bloqué, contre la case de l'objet)
+#   w mare souterraine (bloquée)
+# Personnages, objets, objets cachés, échelles, zones de gravats (G1..) et repères nommés sont
+# dans POSITIONS (attributs role=, facing=, sight=, paire=…), pas dans la grille.
+#
+# Format : ligne PRATICABLES, section GRILLE (« NN » + espace + 60 caractères), puis POSITIONS.
+
+PRATICABLES .gjUVE
+
+GRILLE 60 46
+00 ############################################################
+01 ############################################################
+02 ###############################V############################
+03 ##############################..........................####
+04 #############################..................wwww......###
+05 #############################......o...........wwww......###
+06 #############################........gggggggg..wwww......###
+07 #############################........gggggggg............###
+08 #############################...jj...gggggggg............V##
+09 #######V#####################...jj...gggggggg............###
+10 ######...####################........gggggggg.......o....###
+11 ######...####################........gggggggg............###
+12 #######.#######################......gggggggg..........#####
+13 ####.......#################################################
+14 ###.RR....L.################################################
+15 ###.R.......################################################
+16 ###.........################################################
+17 ###.........################################################
+18 ###.........##################################..........####
+19 ###.........################################.............x##
+20 ###.........################################.............###
+21 ###.....o...###ggg#####..............#######.............###
+22 ###.........###ggg###...o..............#####.............###
+23 ###............ggg.............................ggggggg...###
+24 ###............ggg...........KK................ggggggg...###
+25 ###............ggg...........KK........#####...ggggggg...###
+26 ###............ggg...........KK........#####...ggggggg...###
+27 ###.FFF.....###ggg###..................#####...ggggggg...###
+28 ###.FFF.....###ggg###.............o....#####...ggggggg...###
+29 ###.FFF.....##########................######...ggggggg...###
+30 ####.......###########................#####*...ggggggg...*##
+31 ####.......##################..#############...ggggggg...*##
+32 #############################..#############...ggggggg...###
+33 #############################..#############...ggggggg...###
+34 #############################..#############.............###
+35 #############################..#############.o...........###
+36 ########################............########.............###
+37 ######################................######.............###
+38 ######################..o.............#######...........####
+39 ######################......jjjj......############...#######
+40 ######################......jjjj......###########*...*######
+41 ######################......jjjj......#############V########
+42 ######################.............o..######################
+43 #######################..............#######################
+44 #######################..............#######################
+45 #############################EE#############################
+FIN
+
+# POSITIONS — une ligne par élément :
+#   identifiant  type  cases  bloque|libre  [cle=valeur ...]  # commentaire
+# Types : warp, spawn, echelle (paire=, sens=monte|descend, vers=carte), dresseur, pnj,
+# objet_visible, objet_cache, examen, panneau, fossile, gravats (une case d'une zone : role=Gn),
+# repere. Attributs des Dresseurs : role, facing, sight, trainer, inevitable=oui|non,
+# scene=oui (combat lancé par une scène), apres=x,y (case libérée après le combat).
+# Objets : drapeaux got_<identifiant> ; item = identifiant de data/items (indicatif).
+POSITIONS
+entree               warp           29..30,45    libre   vers=route_3  # STEP_ON ↓ → route_3, from_mt_moon
+from_route_3         spawn          29..30,44    libre   # arrivée depuis la Route 3, tourné ↑
+echelle_a            echelle        7,9          libre   paire=A sens=descend vers=mt_moon_b1f  # au bout du goulet de la galerie ouest
+arrivee_a            spawn          7,10         libre   paire=A  # retour depuis B1F, tourné ↓
+echelle_c            echelle        51,41        libre   paire=C sens=descend vers=mt_moon_b1f  # détour : sous les éclats de la galerie est
+arrivee_c            spawn          51,40        libre   paire=C
+echelle_b            echelle        31,2         libre   paire=B sens=descend vers=mt_moon_b1f  # secteur nord (on y arrive en remontant de B1F)
+arrivee_b            spawn          31,3         libre   paire=B
+echelle_d            echelle        57,8         libre   paire=D sens=descend vers=mt_moon_b2f  # fond est du secteur nord
+arrivee_d            spawn          56,8         libre   paire=D
+panneau_entree       panneau        26,43        bloque  # « MONT SÉLÉNITE » / « Galeries non éclairées. Prudence. »
+hiker                pnj            34,38        bloque  facing=left  # randonneur : « Des gens en noir fouillent plus bas. »
+caisse_r             examen         4,14         bloque  # caisses marquées d'un R (4..5, 14), (4, 15) : « Elle est vide. »
+lampe_abandonnee     examen         10,14        bloque  # « Une lampe de chantier. Encore tiède. »
+traces_fouille       repere         4..6,27..29  bloque  # tranchée rebouchée à moitié (indice sans personnage)
+mt_moon_1f_item_1    objet_visible  9,29         bloque  role=O1 item=escape_rope  # Corde Sortie au sol, près des traces de fouille
+mt_moon_1f_hidden_1  objet_cache    56,19        libre   role=C1 item=awakening  # Réveil : coin nord-est de la galerie est, caillou clair (57, 19)
+gravats_1f_g1        gravats        16,24        libre   role=G1  # bande de la branche ouest : obligatoire (3 cases)
+gravats_1f_g2        gravats        50,28        libre   role=G2  # galerie est : évitable par les bords
+gravats_1f_g3        gravats        40,8         libre   role=G3  # secteur nord : évitable par le nord
+repere_puits         repere         28..31,39..41  libre  role=hall  # puits de jour du hall d'entrée
+repere_colonne       repere         29..30,24..26  bloque role=carrefour  # colonne au centre du carrefour : ouest = échelle A, est = éclats
+repere_camp          repere         4..5,14..15  bloque  role=ouest  # camp abandonné : caisses R et lampe
+repere_eclats        repere         57,30..31    bloque  role=est  # éclats de Pierre Lune dans la paroi est (et 49, 40 ; 53, 40 ; 43, 30)
+repere_fissure       repere         32..33,8..9  libre   role=nord  # fissure de jour du secteur nord
+repere_mare          repere         47..50,4..6  bloque  role=nord  # mare souterraine
+FIN

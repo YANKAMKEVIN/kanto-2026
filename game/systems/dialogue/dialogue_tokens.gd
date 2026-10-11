@@ -9,12 +9,21 @@ extends RefCounted
 ## Le [DialogueRunner] résout les pages au début du dialogue (et au début des pages d'une
 ## réponse de choix) avec les valeurs de [member DialogueRunner.token_values] ; Boot les
 ## construit par [method values_for].
+## **Locuteur** (OUV.2, dossier 13 §3.5) : les jetons sont aussi permis et résolus dans
+## « speaker » (`"speaker": "{rival}"` : le prénom choisi, jamais stocké dans les données) ; un
+## locuteur dont un jeton n'a pas de valeur est **caché** (la page, elle, reste) :
+## [method resolve_speaker].
 
 ## Première espèce sauvage rencontrée **en combat** (GameState.first_wild_species, jalon 7 T0) :
 ## son nom affiché (« Roucool »). Jamais un Pokémon d'habitant ni seulement observé.
 const FIRST_WILD_SPECIES: StringName = &"first_wild_species"
+## Prénom du joueur (GameState.player_name, dossier 13 §3.5).
+const PLAYER: StringName = &"player"
+## Prénom du rival (GameState.rival_name) : le **nom affiché** du rival, jamais son rôle ni ses
+## identifiants techniques (dossier 13 §3.5, couche 1).
+const RIVAL: StringName = &"rival"
 ## Jetons permis dans les données.
-const KNOWN: Array[StringName] = [FIRST_WILD_SPECIES]
+const KNOWN: Array[StringName] = [FIRST_WILD_SPECIES, PLAYER, RIVAL]
 const _NAME_CHARS: String = "abcdefghijklmnopqrstuvwxyz_"
 
 
@@ -57,38 +66,52 @@ static func resolve(text: String, values: Dictionary[StringName, String]) -> Str
 	return result
 
 
-## Pages de [param pages] prêtes à jouer : jetons résolus (copie de la page), pages dont un
-## jeton manque omises. Sans aucun jeton, renvoie [param pages] elle-même (aucune copie).
+## Locuteur [param speaker] avec ses jetons remplacés ; "" (étiquette cachée) si l'un d'eux n'a
+## pas de valeur. Sans jeton : tel quel.
+static func resolve_speaker(speaker: String, values: Dictionary[StringName, String]) -> String:
+	return resolve(speaker, values)
+
+
+## Pages de [param pages] prêtes à jouer : jetons résolus dans le texte et le locuteur (copie de
+## la page), pages dont un jeton du **texte** manque omises (un locuteur sans valeur est caché).
+## Sans aucun jeton, renvoie [param pages] elle-même (aucune copie).
 static func resolve_pages(pages: Array[DialoguePage],
 		values: Dictionary[StringName, String]) -> Array[DialoguePage]:
 	if not has_tokens(pages):
 		return pages
 	var resolved: Array[DialoguePage] = []
 	for page: DialoguePage in pages:
-		if tokens_in(page.text).is_empty():
+		if tokens_in(page.text).is_empty() and tokens_in(page.speaker).is_empty():
 			resolved.append(page)
 			continue
 		var text := resolve(page.text, values)
 		if text.is_empty():
 			continue
-		resolved.append(_copy_with_text(page, text))
+		var copy := _copy_with_text(page, text)
+		copy.speaker = resolve_speaker(page.speaker, values)
+		resolved.append(copy)
 	return resolved
 
 
-## Vrai si une page de [param pages] contient un jeton.
+## Vrai si une page de [param pages] contient un jeton (texte ou locuteur).
 static func has_tokens(pages: Array[DialoguePage]) -> bool:
 	for page: DialoguePage in pages:
-		if not tokens_in(page.text).is_empty():
+		if not tokens_in(page.text).is_empty() or not tokens_in(page.speaker).is_empty():
 			return true
 	return false
 
 
 ## Valeurs des jetons pour une partie (Boot : `values_for(GameState.first_wild_species(),
-## pokemon_data)`). [param first_wild_species] vide ou espèce inconnue : pas de valeur (la page
-## qui la cite est omise).
-static func values_for(first_wild_species: StringName,
-		data: PokemonData) -> Dictionary[StringName, String]:
+## pokemon_data, GameState.player_name, GameState.rival_name)`). [param first_wild_species] vide
+## ou espèce inconnue : pas de valeur (la page qui la cite est omise) ; prénom vide : pas de
+## valeur non plus.
+static func values_for(first_wild_species: StringName, data: PokemonData,
+		player_name: String = "", rival_name: String = "") -> Dictionary[StringName, String]:
 	var values: Dictionary[StringName, String] = {}
+	if not player_name.is_empty():
+		values[PLAYER] = player_name
+	if not rival_name.is_empty():
+		values[RIVAL] = rival_name
 	if first_wild_species.is_empty() or data == null:
 		return values
 	var species := data.get_species(first_wild_species)

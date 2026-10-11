@@ -37,7 +37,7 @@ func before_all() -> void:
 ## Petit script valide, modifiable par chaque test.
 func _minimal() -> Dictionary:
 	return {
-		"speaker": "Prof. Chen", "yes": "Oui", "no": "Non",
+		"speaker": "Prof. Chen", "yes": "Oui", "no": "Non", "validate": "Valider",
 		"steps": [
 			{"type": "stage", "show": "chen", "at": "center"},
 			{"type": "page", "text": "Bonjour !"},
@@ -94,6 +94,7 @@ func test_real_script_speaker_and_labels() -> void:
 	assert_eq(_intro.speaker, "Prof. Chen")
 	assert_eq(_intro.yes_label, "Oui")
 	assert_eq(_intro.no_label, "Non")
+	assert_eq(_intro.validate_label, "Valider", "bouton de l'écran de prénom (§5.5)")
 	for i: int in _intro.size():
 		if _intro.step(i).type != T.STAGE:
 			assert_eq(_intro.step(i).speaker, "Prof. Chen")
@@ -171,7 +172,7 @@ func test_unknown_keys() -> void:
 
 
 func test_missing_root_texts() -> void:
-	for key: String in ["speaker", "yes", "no", "steps"]:
+	for key: String in ["speaker", "yes", "no", "validate", "steps"]:
 		var data := _minimal()
 		data.erase(key)
 		_rejects(data, key)

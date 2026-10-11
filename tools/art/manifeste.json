@@ -1833,6 +1833,20 @@
    "sortie": "assets/sprites/characters/painted/heros_portrait.png",
    "hauteur": 768,
    "note": "portrait en pied (ecran Dresseur, carte) ; remplace assets/ui/map/player_portrait.png"
+  },
+  {
+   "id": "chen_portrait",
+   "source": "VALIDE_PORTRAIT_CHEN.png",
+   "sortie": "assets/sprites/characters/painted/chen_portrait.png",
+   "hauteur": 768,
+   "note": "portrait en pied de l'introduction (OUV.2, dossier 13 9.0 bis) ; source = PORTRAIT_CHEN_NE_r3.png, valide par Kevin le 2026-10-10 ; fond deja transparent a la source"
+  },
+  {
+   "id": "rival_portrait",
+   "source": "VALIDE_PORTRAIT_RIVAL.png",
+   "sortie": "assets/sprites/characters/painted/rival_portrait.png",
+   "hauteur": 768,
+   "note": "portrait en pied de l'introduction, bras croises (OUV.2, dossier 13 9.0 bis) ; source = PORTRAIT_RIVAL_NE_r1.png, valide par Kevin le 2026-10-10"
   }
  ],
  "attentes": [

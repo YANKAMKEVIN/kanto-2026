@@ -395,6 +395,22 @@ func test_unknown_or_malformed_tokens_are_rejected() -> void:
 	assert_string_contains(errors, "accolade hors d'un jeton")
 
 
+## Locuteur à jeton (OUV.2, dossier 13 §3.5) : `{rival}` permis dans « speaker », au niveau du
+## dialogue et de la page ; un jeton inconnu y est refusé.
+func test_tokens_in_the_speaker() -> void:
+	assert_true(_library.add_from_dict({"r": {"speaker": "{rival}", "pages": [
+		"Hé !", {"text": "Ah.", "speaker": "{player}"}]}}, "test"), str(_library.get_errors()))
+	var dialogue := _library.get_dialogue(&"r")
+	assert_eq(dialogue.speaker, "{rival}", "gardé tel quel (résolu au moment de jouer)")
+	assert_eq(dialogue.variants[0].pages[1].speaker, "{player}")
+	assert_false(_library.add_from_dict({"s": {"speaker": "{rivl}", "pages": ["x"]}}, "test"))
+	assert_false(_library.add_from_dict({"t": {"pages": [{"text": "x", "speaker": "{Rival}"}]}},
+		"test"))
+	assert_push_error_count(2)
+	var errors := "\n".join(_library.get_errors())
+	assert_string_contains(errors, "jeton inconnu « {rivl} »")
+
+
 func test_tokens_are_checked_in_the_answer_pages_of_a_choice() -> void:
 	assert_false(_library.add_from_dict({"nurse": {"pages": ["Je soigne ?"], "choice": {
 		"confirm": "OUI", "cancel": "NON", "confirm_pages": ["Voilà, {nobody}."]}}}, "test"))

@@ -11,6 +11,8 @@ const PATH := "user://test/save.json"
 const FIXTURE_V3 := "res://tests/fixtures/save/v3_kevin_j7_fin.json"
 ## Vraie partie de Kevin en v2 (fin de J6, 13 h 57) : relue jusqu'à la version courante.
 const FIXTURE_V2_END := "res://tests/fixtures/save/v2_kevin_j6_fin.json"
+## Vraie partie de Kevin en v4 (fin du J10, S21, relevée par OUV.1) : la partie qui sera migrée.
+const FIXTURE_V4_S21 := "res://tests/fixtures/save/v4_kevin_s21.json"
 
 var _fs: SaveFileSystem
 var _save: SaveSystem
@@ -42,9 +44,24 @@ func _fixture(path: String) -> Dictionary:
 
 ## La vraie partie v3 telle que la build du J9 l'écrit en v4 (le pas 3 → 4 ne transforme rien).
 func _fixture_v4() -> Dictionary:
+	var content := _fixture(FIXTURE_V4_S21)
+	assert_eq(int(content["version"]), 4)
+	return content
+
+
+## La vraie partie v3 telle que la build du J9 l'écrit en v4 (Stockage non vide).
+func _fixture_v4_with_storage() -> Dictionary:
 	var content := _fixture(FIXTURE_V3)
 	assert_eq(SaveSystem.upgrade(content, 4), OK)
-	assert_eq(int(content["version"]), 4)
+	return content
+
+
+## La vraie partie du S21 telle qu'OUV.1 l'écrit en v5 (prénom du rival choisi, apparence).
+func _fixture_v5() -> Dictionary:
+	var content := _fixture_v4()
+	content["version"] = 5
+	content["rival_name"] = "Blue"
+	content["player_look"] = "hero"
 	return content
 
 
@@ -165,7 +182,11 @@ func test_a_malformed_uid_or_counter_is_replaced_never_refused() -> void:
 # --- Migration -----------------------------------------------------------------------------
 
 func test_a_v4_save_keeps_every_pokemon_in_order_and_gets_uids() -> void:
-	var original := _fixture_v4()
+	for original: Dictionary in [_fixture_v4(), _fixture_v4_with_storage(), _fixture_v5()]:
+		_check_same_pokemon(original)
+
+
+func _check_same_pokemon(original: Dictionary) -> void:
 	var state := _load_through_save(original.duplicate(true))
 	var saved: Dictionary = _json(state.to_dict())
 	assert_eq(_signatures(saved["party"]), _signatures(original["party"]),
@@ -198,6 +219,15 @@ func test_uids_are_stable_from_one_load_to_the_next() -> void:
 	var again := _state()
 	assert_true(again.load_dict(_save.read(), _data))
 	assert_eq(_uids(again), first, "mêmes identifiants, même ordre")
+
+
+func test_an_ouv_v5_save_keeps_the_rival_name_and_the_look() -> void:
+	var state := _load_through_save(_fixture_v5())
+	assert_eq(state.rival_name, "Blue", "prénom du rival (v5) gardé")
+	assert_eq(state.player_look, &"hero")
+	var saved: Dictionary = _json(state.to_dict())
+	assert_eq(saved["rival_name"], "Blue")
+	assert_eq(saved["companion"], "")
 
 
 func test_the_real_v2_save_reaches_the_current_version_with_uids() -> void:
@@ -233,9 +263,9 @@ func test_the_previous_build_refuses_a_j11_save_without_writing_it() -> void:
 	assert_eq(_save.write(state.to_dict()), OK)
 	var text: String = (_fs as MemoryFs).files[PATH]
 	var old_build := SaveSystem.new(_fs, PATH)
-	old_build.version = 4
+	old_build.version = 5
 	assert_eq(old_build.read(), {})
-	assert_eq(old_build.last_status, ERR_INVALID_DATA, "la build du J9 / J10 refuse")
+	assert_eq(old_build.last_status, ERR_INVALID_DATA, "la build d'OUV (v5) refuse")
 	assert_eq((_fs as MemoryFs).files[PATH], text, "fichier identique octet pour octet")
 
 
