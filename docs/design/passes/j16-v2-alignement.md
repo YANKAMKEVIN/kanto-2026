@@ -7,11 +7,17 @@
 > verrouillée (§2 n° 1). Les arbitrages proposés par la V2 restent **F-1 à F-6** ; les miens sont
 > numérotés **G-1 à G-10** pour éviter toute collision. À répondre par numéro, puis à transmettre à
 > ChatGPT avec la V2 pour la consolidation.
+>
+> **Révision r2 (2026-10-11, précision de Kevin)** : J11 à J15 avancent **en parallèle** dans d'autres
+> sessions ; ici on ne traite **que le J16**, sans attendre. Le §0 ne bloque donc rien : il liste les
+> **hypothèses d'entrée** à recouper avec ces sessions. Faits Rouge/Bleu vérifiés sur les CSV publics
+> de PokeAPI (groupe de versions `red-blue`), comme `tools/gen_tm_compatibility.py`.
 
-## 0. Constat préalable : le J16 est conçu avant trois jalons qui n'existent pas
+## 0. Hypothèses d'entrée (J13–J15 en cours en parallèle)
 
-Aucun dossier ni plan ne définit le J13, le J14 ou le J15. Le dossier 15 réserve seulement au J13
-« Route 4, Azuria, Pont Pépite, rival n° 3 ». La V2 suppose pourtant que ces jalons livrent :
+Aucun dossier J13–J15 n'est encore poussé sur une branche du dépôt (vérifié sur toutes les branches
+distantes le 2026-10-11). Le dossier 15 réserve au J13 « Route 4, Azuria, Pont Pépite, rival n° 3 ».
+La V2 suppose que ces jalons livrent :
 
 | Ce que le J16 attend | Jalon supposé | État réel |
 |---|---|---|
@@ -22,10 +28,9 @@ Aucun dossier ni plan ne définit le J13, le J14 ou le J15. Le dossier 15 réser
 | Carmin-sur-Mer : ville, Centre, quai, navire visible, Arène | J15 | zone `vermilion_city` vide dans `zones.json` |
 | Espèces capturables entre Azuria et Carmin | J13–J15 | rien |
 
-Concevoir le J16 maintenant est conforme à la règle 6 (le dossier suivant se prépare pendant le jalon
-en cours). Mais tout ce qui touche à ces entrées ne peut pas être **verrouillé** sans elles → G-1.
-Rappel C-7 : le code du J16 passera après la clôture du J11, du J12 et des jalons qui le séparent du
-J16. Le J16 est donc un dossier de long terme, pas un chantier proche.
+Le J16 avance sans les attendre : il **écrit ces hypothèses noir sur blanc** (contrat d'entrée, G-1)
+et les sessions J13–J15 les reprennent ou les contestent. Rien du J16 n'est bloqué. Seul le code
+suit C-7 : un seul jalon à la fois dans le moteur de combat et la sauvegarde.
 
 ## 1. Les 6 décisions et les arbitrages F-1 à F-6
 
@@ -52,11 +57,17 @@ J16. Le J16 est donc un dossier de long terme, pas un chantier proche.
    « CS occupant des capacités : **non** ». La V2 (décision 5, F-1, F-2) revient au modèle de
    Rouge/Bleu. Seul toi peux rouvrir ce point → G-2.
 2. **Carapuce ne peut pas apprendre Coupe** dans Rouge/Bleu, et Pikachu non plus. Un joueur sans espèce
-   compatible est bloqué devant l'Arène (Rouge/Bleu : arbuste devant la porte). Les espèces
-   compatibles déjà prévues : lignées Bulbizarre et Salamèche, **Sabelette** (sauvage Route 3, B-5 du
-   J12), **Paras** (Mont Sélénite, J12). Il faut une règle anti-blocage vérifiée par test → G-6.
-   La liste exacte se tirera de PokeAPI en étendant `tools/gen_tm_compatibility.py` aux CS : il exclut
-   aujourd'hui les numéros ≥ 101.
+   compatible est bloqué devant l'Arène (Rouge/Bleu : arbuste devant la porte).
+
+   **Compatibles Coupe dans Rouge/Bleu (vérifié)** : Bulbizarre, Herbizarre, Florizarre, Salamèche,
+   Reptincel, Dracaufeu, **Dardargnan**, Sabelette, Sablaireau, Mystherbe, Ortide, Rafflesia, Paras,
+   Parasect, Chétiflor, Boustiflor, Empiflor, Tentacool, Tentacruel, Canarticho, Krabby, Krabboss,
+   Excelangue, Saquedeneu, Insécateur, Scarabrute, Mew.
+
+   **Le risque est déjà presque couvert.** Dardargnan (Aspicot de la forêt, évolution N10, J9), Sabelette
+   (sauvage Route 3, B-5 du J12) et Paras (Mont Sélénite, J12) sont tous atteignables avant Carmin, quel
+   que soit le starter. G-6 se réduit à un **test** qui le garantit. Il faut quand même étendre
+   `tools/gen_tm_compatibility.py` aux CS : il exclut aujourd'hui les numéros ≥ 101.
 3. **La condition de badge est une règle cachée.** Le dossier 12 a supprimé tout effet mécanique des
    badges. Si l'ordre J13 → J14 garantit Cascade avant le Passe Bateau, la vérification ne sert à rien.
    S'il ne le garantit pas, le joueur peut obtenir une CS qu'il ne peut pas utiliser : c'est le piège
@@ -77,6 +88,14 @@ J16. Le J16 est donc un dossier de long terme, pas un chantier proche.
    Roucoups 19, Rattatac 16, Kadabra 18, starter évolué 20. **Rattatac est imposé** par le dossier 06 §6 :
    le tournant de Lavanville repose sur la disparition du Rattata ou Rattatac de son équipe, il doit donc
    y être avant. Abra et Kadabra sont absents des données. → G-7.
+
+   **Capacités naturelles (vérifié)** :
+   - Abra : **Téléport seul**, à tout niveau. Rouge/Bleu : l'Abra du rival n° 3 ne fait que ça.
+   - Kadabra N18 : Choc Mental, **Entrave**, Téléport. Le J12 a écarté Entrave comme mécanique nouvelle
+     (B-6).
+
+   Il faut donc des **capacités choisies à la main** (le bloc `moves` existe déjà, comme pour Pierre),
+   ou bien créer Entrave et un Téléport qui échoue en combat de Dresseur.
 7. **Rival : un Grand moment « victoire comme défaite »** (roadmap) n'a pas été pensé pour un combat
    qu'on recommence. Petite question, valeur par défaut au §6.
 8. **IA du rival.** Le dossier 09 §14 prévoit qu'il change de Pokémon « plus tard », mais le dossier 14
@@ -86,13 +105,18 @@ J16. Le J16 est donc un dossier de long terme, pas un chantier proche.
    - La paralysie arrive avec le J11 (11A).
    - **Sonicboom** = 20 dégâts fixes. Le plan 11A ne prévoit que `half_hp` et `level` : il manque une
      valeur fixe (une ligne de plus).
-   - **Tonnerre** est à créer (95, paralysie 10 %).
-   - **Destruction** (`self_ko`) n'est planifié nulle part : Voltorbe ne doit pas l'avoir.
+   - **Tonnerre** est à créer : **90 / 100 % / 15 PP, paralysie 10 %**. Le projet suit les **valeurs
+     actuelles**, pas celles de la génération 1 (Fatal-Foudre y vaut 110, Morsure est Ténèbres). La
+     « génération de référence » de la V2 s'entend donc ainsi ; Rouge/Bleu donnait 95.
+   - **Destruction** (`self_ko`) n'est planifié nulle part. Voltorbe ne l'apprend qu'au N22 (vérifié),
+     donc il ne l'a pas au N21. **Si la simulation monte son niveau, ses capacités seront choisies à la
+     main.**
 
-   Capacités Rouge/Bleu (à confirmer à la consolidation) :
-   - Voltorbe : Charge, Grincement, Sonicboom ;
-   - Pikachu : Éclair, Rugissement, Cage-Éclair, Vive-Attaque ;
-   - Raichu : Éclair, Rugissement, Tonnerre.
+   Capacités naturelles au niveau de référence (vérifié) :
+   - Voltorbe N21 : Charge, Grincement, Sonicboom ;
+   - Pikachu N18 : Rugissement, Éclair, Cage-Éclair, Vive-Attaque ;
+   - Raichu N24 : Rugissement, Éclair, Cage-Éclair, plus **Tonnerre** imposé par sa fiche de Dresseur
+     (Rouge/Bleu ; à recouper à la consolidation, PokeAPI ne publie pas les équipes de Dresseurs).
 
    Les Dresseurs de l'Arène de Rouge/Bleu (Gentleman, Rockeur, Marin) restent à confirmer.
 10. **Puzzle = mécanique nouvelle.** Il n'existe ni interrupteur, ni poubelle, ni état d'énigme.
@@ -139,9 +163,12 @@ J16. Le J16 est donc un dossier de long terme, pas un chantier proche.
 16. **Images de la V2** (art officiel Let's Go) : ambiance seulement, **à ne pas mettre dans le dépôt**.
     La filière reste la même : vue générale peinte + grilles `tools/plans/*.txt` validées par toi
     avant toute carte.
-17. **Numérotation.** Le dossier suit l'ordre de conception (dossier 15, en-tête), donc le J16 prendra le
-    **16** s'il est consolidé en premier. Les dossiers J13–J15, conçus après, prendront 17, 18, 19 :
-    c'est permis, mais à noter dans leur en-tête. Kit d'art : **série 15**.
+17. **Numérotation : risque de collision entre sessions.** Le numéro suit l'ordre de conception
+    (dossier 15, en-tête), et le premier libre est le **16**. Mais J13, J14 et J15 sont conçus **en même
+    temps** ailleurs et viseront peut-être le même numéro, ainsi que la série d'art 15.
+    **Défaut (règle 4)** : chaque dossier prend son numéro **au moment du push**, après vérification de
+    toutes les branches distantes. Le premier poussé garde le 16, et les autres se renumérotent avant
+    fusion. Même règle pour les séries d'art.
 
 ## 3. Coûts techniques à connaître (pas des décisions)
 
@@ -162,19 +189,19 @@ J16. Le J16 est donc un dossier de long terme, pas un chantier proche.
 - **Navire** : 6 à 8 cartes intérieures de taille moyenne, budget ≤ 3 000 nœuds chacune ; mémoire =
   carte + voisines. Le navire doit exister **dans la carte de Carmin** en deux états (amarré / parti),
   par un objet conditionné à un drapeau.
-- **Combat** : Sonicboom en valeur fixe, Tonnerre, Coupe (Normal, 50, 95 %, 30 PP) : données
-  seulement une fois 11A fusionné.
+- **Combat** : Sonicboom (20 dégâts fixes, 90 %, 20 PP), Tonnerre (90, 100 %, 15 PP), Coupe (Normal,
+  50, 95 %, 30 PP, valeurs vérifiées). Ce sont des données seulement, une fois 11A fusionné.
 
 ## 4. Arbitrages à trancher (G-1 à G-10)
 
 | # | Question | Recommandation |
 |---|---|---|
-| **G-1** | Comment verrouiller un J16 qui dépend de J13–J15 inexistants ? | **Le dossier 16 se consolide maintenant, avec un « contrat d'entrée »** que J13–J15 devront respecter : `badge_cascade` obtenu avant le Passe Bateau ; objet clé `ss_ticket` ; Carmin avec Centre, quai, navire amarré et arbuste devant l'Arène ; rival n° 3 avec Rattata et Abra ; une espèce compatible Coupe garantie (G-6). **Le plan technique `jalon-16.md` attend les dossiers J13–J15.** Le donneur du Passe Bateau sera nommé au J14 (pas « Léo »). |
+| **G-1** | Contrat d'entrée avec les sessions J13–J15 | **À valider tel quel, puis à transmettre à ces sessions** : `badge_cascade` obtenu avant le Passe Bateau ; objet clé `ss_ticket` (« Passe Bateau ») ; Carmin avec Centre, quai, navire amarré et **arbuste devant l'Arène** (G-5) ; rival n° 3 avec Rattata et Abra (G-7) ; donneur du Passe Bateau nommé autrement que « Léo ». Le J16 n'attend rien : en cas d'écart, c'est le contrat qui se corrige. |
 | **G-2** | Modèle de Coupe (contradiction avec le dossier 06 §11) | **C, hybride.** (A) Dossier 06 strict : la CS débloque Coupe dans le monde, utilisable si l'équipe compte un Pokémon compatible, et rien en combat. (B) Rouge/Bleu (V2) : capacité apprise, emplacement occupé, oubli interdit. (C) **La CS débloque Coupe dans le monde**, comme en A, sans emplacement ; **et** elle s'utilise comme une CT réutilisable pour l'apprendre en combat si on le veut, oubliable normalement. C respecte le dossier 06 et la décision 5, et ne demande ni capacité protégée ni Maître des capacités. F-2 devient sans objet. *Écart volontaire à Rouge/Bleu.* |
 | **G-3** | Condition de badge pour Coupe ? | **Aucune** si G-1 garantit Cascade avant le Passe Bateau : pas de règle cachée (dossier 12). Sinon, garder Cascade (Rouge/Bleu) avec une réplique claire du Pokémon qui ne peut pas encore couper. |
 | **G-4** | Arbuste coupé : repousse ou définitif ? | **Définitif** (drapeau par arbuste) : aucun blocage possible, « le monde se souvient ». *Écart volontaire* (Rouge/Bleu : repousse en quittant la carte). |
 | **G-5** | Arbuste devant l'Arène de Carmin ? | **Oui** (Rouge/Bleu) : donne à Coupe un usage immédiat et impose l'ordre navire → Arène sans garde ni texte d'excuse. Posé au J15, coupé au J16. |
-| **G-6** | Garantie anti-blocage | **Règle testée** : quel que soit le starter, au moins une espèce compatible Coupe est capturable avant Carmin (aujourd'hui Sabelette, Route 3 ; Paras, Mont Sélénite). L'arbuste explique ce qui manque (« Il faudrait un Pokémon capable de couper »). Le Centre de Carmin donne accès au stockage. |
+| **G-6** | Garantie anti-blocage | **Règle testée** : quel que soit le starter, au moins une espèce compatible Coupe est capturable avant Carmin. C'est déjà le cas : Dardargnan (forêt), Sabelette (Route 3), Paras (Mont Sélénite). L'arbuste explique ce qui manque (« Il faudrait un Pokémon capable de couper »), et le Centre de Carmin donne accès au stockage. |
 | **G-7** | Équipe du rival n° 4 | **Structure Rouge/Bleu** : Roucoups, Rattatac, Kadabra, starter évolué (avantage de type), soit **4 Pokémon** comme la V2. Niveaux de référence 19 / 16 / 18 / 20, recalés par simulation. Kadabra suppose un Abra au n° 3 (J13). IA `smart`. |
 | **G-8** | Règle du puzzle | **Sans hasard ni remise à zéro.** Le premier interrupteur est désigné par un indice du décor (câble, étincelle). Le second est voisin, révélé par une étincelle quand le premier est trouvé. Une erreur ne coûte rien ; l'énigme résolue reste résolue (drapeau). *Écart volontaire* (Rouge/Bleu : position tirée au sort, remise à zéro à chaque erreur). |
 | **G-9** | Budget d'espèces nouvelles au J16 | **≤ 3 espèces nouvelles** (Abra, Kadabra + au plus une de marin, par exemple Machoc ou Tentacool, si le J13–J15 ne l'apporte pas). Les Dresseurs du navire puisent dans les espèces déjà présentes à la fin du J15. Nombre de Dresseurs : **10**, dont **2 inévitables** au plus (le rival excepté). |
