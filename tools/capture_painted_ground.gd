@@ -12,7 +12,9 @@ extends SceneTree
 ## affiche l'écart maximal par canal (0 = identique au pixel près) et quitte avec le code 1 si
 ## une image diffère. `--fresh` : sol **reconstruit** comme le fait un outil de construction
 ## (`PaintedGround.new()`, même taille et même masque, textures par défaut) au lieu du nœud
-## enregistré dans la scène. Bourg Palette est exclu : sa mer ondule (`TIME`).
+## enregistré dans la scène. Bourg Palette est exclu : sa mer ondule (`TIME`) ; `--shore` l'ajoute
+## (jalon 13 T6 : eau et écume réglables), à lancer avec `--fixed-fps 60` pour que `TIME` soit le
+## même d'une exécution à l'autre (même nombre d'images avant chaque rendu).
 
 const MAPS: Array[StringName] = [
 	&"viridian_city", &"pewter_city", &"route_2", &"route_2_north", &"viridian_forest",
@@ -23,6 +25,7 @@ const VIEW := Vector2i(1170, 540)
 var _out: String = "build/pg"
 var _reference: String = ""
 var _fresh: bool = false
+var _maps: Array[StringName] = MAPS.duplicate()
 
 
 func _initialize() -> void:
@@ -33,13 +36,15 @@ func _initialize() -> void:
 			_reference = arg.get_slice("=", 1)
 		elif arg == "--fresh":
 			_fresh = true
+		elif arg == "--shore":
+			_maps.append(&"pallet_town")
 	_run.call_deferred()
 
 
 func _run() -> void:
 	DirAccess.make_dir_recursive_absolute(ProjectSettings.globalize_path("res://" + _out))
 	var different := 0
-	for map_id: StringName in MAPS:
+	for map_id: StringName in _maps:
 		for detail: bool in [false, true]:
 			var image := await _render(map_id, detail)
 			if image == null:
@@ -71,6 +76,7 @@ func _render(map_id: StringName, detail: bool) -> Image:
 			as Node2D
 		rebuilt.set(&"size", ground.get(&"size"))
 		rebuilt.set(&"mask", ground.get(&"mask"))
+		rebuilt.set(&"shore_mask", ground.get(&"shore_mask"))
 		ground.free()
 		ground = rebuilt
 	var viewport := SubViewport.new()
