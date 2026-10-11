@@ -18,8 +18,8 @@ func test_real_data_loads_without_error() -> void:
 	assert_true(_library.load_dir(), "data/items/ se charge")
 	assert_eq(_library.get_errors().size(), 0, str(_library.get_errors()))
 	# Jalon 5 : la Potion cachée de la Route 1 (catégorie « heal », ramassée seulement).
-	assert_eq(_library.get_ids(), [&"antidote", &"oak_parcel", &"poke_ball", &"potion"] \
-		as Array[StringName])
+	assert_eq(_library.get_ids(), [&"antidote", &"awakening", &"burn_heal", &"ice_heal", &"oak_parcel",
+		&"paralyze_heal", &"poke_ball", &"potion"] as Array[StringName])
 	var ball := _library.get_item(&"poke_ball")
 	assert_eq(ball.name, "Poké Ball")
 	assert_eq(ball.plural, "Poké Balls")
@@ -35,7 +35,8 @@ func test_real_data_loads_without_error() -> void:
 	assert_eq(potion.heal_amount, 20, "jalon 6 : la Potion rend 20 PV")
 	assert_eq(ball.heal_amount, 0)
 	assert_eq(_library.get_ids_in_data_order(),
-		[&"poke_ball", &"potion", &"antidote", &"oak_parcel"] as Array[StringName])
+		[&"poke_ball", &"potion", &"antidote", &"paralyze_heal", &"awakening", &"burn_heal", &"ice_heal",
+		&"oak_parcel"] as Array[StringName])
 	assert_eq([ball.order, potion.order], [0, 1])
 
 
@@ -325,3 +326,23 @@ func test_real_antidote() -> void:
 	assert_false(antidote.draft)
 	assert_eq(antidote.added_text(1), "Ajouté au Sac", "toast « Antidote ×1 — Ajouté au Sac »")
 	assert_eq(antidote.quantity_text(1), "Antidote ×1")
+
+
+func test_real_j11_remedies() -> void:
+	assert_true(_library.load_dir())
+	# Dossier 14 §3.4 et textes n° 34 à 37 du §13 (validés le 2026-10-10) ; prix de Rouge/Bleu.
+	var rows: Array = []
+	for id: StringName in [&"paralyze_heal", &"awakening", &"burn_heal", &"ice_heal"]:
+		var item := _library.get_item(id)
+		rows.append([item.name, item.plural, item.cures, item.price, item.description,
+			item.category, item.heal_amount, item.draft])
+	assert_eq(rows, [
+		["Anti-Para", "Anti-Para", [&"paralysis"] as Array[StringName], 200,
+			"Soigne un Pokémon paralysé.", ItemData.Category.HEAL, 0, false],
+		["Réveil", "Réveils", [&"sleep"] as Array[StringName], 250,
+			"Réveille un Pokémon endormi.", ItemData.Category.HEAL, 0, false],
+		["Anti-Brûle", "Anti-Brûle", [&"burn"] as Array[StringName], 250,
+			"Soigne un Pokémon brûlé.", ItemData.Category.HEAL, 0, false],
+		["Antigel", "Antigels", [&"freeze"] as Array[StringName], 250,
+			"Dégèle un Pokémon gelé.", ItemData.Category.HEAL, 0, false],
+	])

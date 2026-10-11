@@ -231,12 +231,13 @@ func test_pewter_mart_stock() -> void:
 	assert_not_null(mart)
 	if mart == null:
 		return
-	assert_eq(mart.item_ids(), [&"poke_ball", &"potion", &"antidote"] as Array[StringName])
+	assert_eq(mart.item_ids(), [&"poke_ball", &"potion", &"antidote", &"paralyze_heal", &"awakening", &"burn_heal"] \
+		as Array[StringName], "dossier 12 §8, remèdes du J11 (dossier 14 §3.4)")
 	assert_eq(ShopRules.stock(mart, StoryFlags.new()), mart.item_ids(), "sans condition")
 	var prices: Array[int] = []
 	for item_id: StringName in mart.item_ids():
 		prices.append(_items.get_item(item_id).price)
-	assert_eq(prices, [200, 300, 100] as Array[int], "dossier 12 §8")
+	assert_eq(prices, [200, 300, 100, 200, 250, 250] as Array[int], "dossier 12 §8, dossier 14 §3.4")
 
 
 func test_route_2_north_table_is_route_2_one_level_higher() -> void:

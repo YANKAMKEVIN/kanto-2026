@@ -442,3 +442,29 @@ Variables et règles de la procédure du J9 (`jalon-09.md` §6.2) : `PKG`, `ADB`
    l'étape 1. **Ne jamais laisser une v6 sur le téléphone** pendant qu'OUV.3 se teste.
 5. Rapport `build/qa/jalon11_t3/rapport.md` (verdict par étape, fichiers, journal, captures) →
    **validation de Kevin** ; puis fusion de 11.0 dans `main` (accord de Kevin) avant tout lot suivant.
+
+### T4–T6 — statuts majeurs, confusion, effets simples, textes (2026-10-11, 11A)
+
+Détail dans `etat-projet.md` (entrées du 2026-10-11). Capacités encore en attente
+(`pending_effects`) : Hurlement, Lance-Soleil, Coud'Krâne, Danse Flamme, Ligotage, Frénésie,
+Mimique, Mania, Empal'Korne, Destruction, Explosion (hors J11, dossier 14 §4.3).
+
+### T8 — remèdes et Boutiques (2026-10-11, 11A)
+
+`data/items/items.json` : Anti-Para (200 ₽), Réveil (250 ₽, « Réveils »), Anti-Brûle (250 ₽),
+Antigel (250 ₽, « Antigels », **pas en vente**) — textes n° 34 à 37 du §13, catégorie SOINS, icône
+générique du Sac (pas d'art). Stock de Jadielle et d'Argenta : les trois premiers après l'Antidote,
+sans condition (dossier 14 §3.4). Textes de soin hors combat : n° 4, 9, 13, 16 (`BagQuery`), testés
+(le Réveil donne « est réveillé[e]. », jamais « se réveille ! »). La liste de la Boutique de Jadielle
+passe de 2 à 5 cartes et défile (le test des marges ne compte que la partie visible des cartes).
+
+### Équilibrage de Pierre après T5 (`tools/simulate_brock.gd`, 200 graines, `main` à 906566a contre J11)
+
+Seul écart notable : **Salamèche gagne des chances contre Pierre**, très probablement par la
+brûlure de Flammèche (10 %), qui divise par deux les dégâts physiques d'Onix (Charge, Jet-Pierres)
+et lui retire 1/16 de PV par tour. Victoires de Salamèche seul selon son niveau :
+N12 0 → 3,5 % · N14 0,5 → 6 % · N15 0,5 → 12,5 % · N16 21,5 → 47,5 % · N17 46 → 60 % ·
+N18 72 → 80,5 %. Kevin à l'arrivée (route + Liam, 5 Potions) : 0 → 2 %. Bulbizarre et Carapuce :
+inchangés (± 1,5 point). Grille Onix (Racaillou 10/10) Kevin 5 Potions : 8,5 → 23,5 %. Liam
+(Salamèche seul) : 34,5 → 44 %. **Signalé à Kevin, rien de corrigé** (risque noté au §7) :
+Pierre reste un mur pour Salamèche sous N15, ce qui reste l'intention du dossier 12.
