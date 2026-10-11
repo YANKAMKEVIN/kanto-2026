@@ -23,7 +23,11 @@ extends SceneTree
 ## - « trainer » : le joueur attentif met en tête son meilleur Pokémon contre le premier
 ##   adversaire (ordre rétabli après) ;
 ## - « center » : soin complet, seulement si la variante a « center » ;
-## - « optional » : étape jouée seulement si la variante a « optional » (détours, évitables).
+## - « optional » : étape jouée seulement si la variante la demande (détours, évitables) ;
+##   true = groupe « détour », ou un texte = nom du groupe (jalon 13 : « route_24_nord »…).
+##   Variante : « optional » true (tous les groupes) ou liste de groupes.
+## « title » (facultatif) : titre du rapport. Équipe : « starter » (facultatif ; sinon celui du
+## scénario ou de la sauvegarde) choisit l'équipe des Dresseurs à « team_by_starter » (rival).
 ## Une défaite (équipe entière K.O.) arrête la partie : le jeu renverrait au Centre, la reprise
 ## n'est pas simulée. Aucune capture, aucun changement volontaire de Pokémon.
 ##
@@ -80,9 +84,9 @@ const TERRAINS: Array[String] = ["grass", "rubble"]
 const POLICIES: Array[String] = ["naif", "attentif"]
 ## Ordre des IV d'un membre d'équipe (« ivs » : 6 entiers) = SpeciesData.STATS.
 const STAT_KEYS: Array[String] = ["hp", "atk", "def", "spa", "spd", "spe"]
-const TOP_KEYS: Array[String] = ["version", "description", "seeds", "heal_at_start", "starter",
-	"teams", "tables", "trainers", "steps", "variants"]
-const TEAM_KEYS: Array[String] = ["name", "members"]
+const TOP_KEYS: Array[String] = ["version", "title", "description", "seeds", "heal_at_start",
+	"starter", "teams", "tables", "trainers", "steps", "variants"]
+const TEAM_KEYS: Array[String] = ["name", "members", "starter"]
 const MEMBER_KEYS: Array[String] = ["species", "level", "moves", "ivs"]
 const TABLE_KEYS: Array[String] = ["maps", "terrain", "rate", "ramp", "slots"]
 const SLOT_KEYS: Array[String] = ["species", "levels", "weight"]
@@ -94,6 +98,9 @@ const VARIANT_KEYS: Array[String] = ["name", "player", "center", "items", "flee_
 const HEAL_OUTSIDE_BELOW: float = 0.5
 ## Valeur d'une quantité d'objet qui renvoie au Sac de la sauvegarde (`--save`).
 const FROM_BAG: String = "sac"
+## Groupe d'une étape « optional » : true (format du J12).
+const DEFAULT_GROUP: String = "détour"
+const DEFAULT_TITLE: String = "Équilibrage de la Route 3 et du Mont Sélénite (jalon 12)"
 
 var _scenario_path: String = DEFAULT_SCENARIO
 var _save_path: String = ""
@@ -104,6 +111,9 @@ var _team_filter: String = ""
 var _variant_filter: String = ""
 var _heal_at_start: bool = true
 var _starter: StringName = &""
+var _title: String = DEFAULT_TITLE
+## Starter de l'équipe de la partie en cours (Dresseurs à « team_by_starter »).
+var _play_starter: StringName = &""
 
 var _data: RefCounted
 var _chart: RefCounted
@@ -134,10 +144,12 @@ var _table_info: Dictionary = {}
 ## Dresseurs du scénario : identifiant → texte d'absence (vide = utilisable).
 var _trainer_skip: Dictionary = {}
 var _trainer_species: Dictionary = {}
-## Étapes : { label, kind (wild, trainer, center), id, cells, count, optional, skip, source,
+## Étapes : { label, kind (wild, trainer, center), id, cells, count, optional (groupe, vide =
+## obligatoire), skip, source,
 ## table (EncounterTable), library (TrainerLibrary) }.
 var _steps: Array[Dictionary] = []
-## Variantes : { name, player, center, items ({objet: quantité}), flee_below, optional, skip }.
+## Variantes : { name, player, center, items ({objet: quantité}), flee_below, optional (true :
+## tous les groupes ; sinon liste de groupes), skip }.
 var _variants: Array[Dictionary] = []
 ## Objets du Sac de la sauvegarde (`--save`).
 var _save_bag: Dictionary = {}
@@ -172,7 +184,7 @@ func _run() -> int:
 		for error: String in _errors:
 			print("  ERREUR " + error)
 		return EXIT_ERROR
-	print("=== Équilibrage de la Route 3 et du Mont Sélénite (jalon 12) ===")
+	print("=== %s ===" % _title)
 	print("Scénario : %s" % _scenario_path)
 	if scenario.has("description"):
 		print(str(scenario["description"]))
@@ -277,11 +289,31 @@ func _parse_scenario(scenario: Dictionary) -> void:
 			_error("scénario : « heal_at_start » vaut true ou false")
 	if scenario.has("starter"):
 		_starter = StringName(str(scenario["starter"]))
+	if scenario.has("title"):
+		_title = _text(scenario, "title", "scénario")
 	_parse_teams(scenario.get("teams", []))
 	_parse_tables(scenario.get("tables", {}))
 	_parse_trainers(scenario.get("trainers", {}))
 	_parse_steps(scenario.get("steps"))
 	_parse_variants(scenario.get("variants"))
+	_check_starters()
+
+
+## Un Dresseur à « team_by_starter » du parcours exige le starter de chaque équipe.
+func _check_starters() -> void:
+	var by_starter := PackedStringArray()
+	for step: Dictionary in _steps:
+		if step.get("kind") != "trainer" or not step.has("library"):
+			continue
+		var trainer: RefCounted = step["library"].get_trainer(StringName(step["id"]))
+		if not trainer.team_by_starter.is_empty():
+			by_starter.append(str(step["id"]))
+	if by_starter.is_empty() or not _starter.is_empty():
+		return
+	for team: Dictionary in _teams:
+		if StringName(team.get("starter", &"")).is_empty() and not team["save"]:
+			_error("équipe « %s » : « starter » requis (Dresseurs à team_by_starter : %s)" % [
+				team["name"], ", ".join(by_starter)])
 
 
 func _parse_teams(value: Variant) -> void:
@@ -303,8 +335,11 @@ func _parse_teams(value: Variant) -> void:
 		var missing := { "species": [], "moves": [] }
 		for j: int in (members as Array).size():
 			_check_member(members[j], "%s membre %d" % [where, j + 1], missing)
+		var starter := ""
+		if entry.has("starter"):
+			starter = _text(entry, "starter", where)
 		_teams.append({ "name": name, "members": members, "save": false,
-			"skip": _missing_text(missing) })
+			"skip": _missing_text(missing), "starter": StringName(starter) })
 
 
 func _check_member(value: Variant, where: String, missing: Dictionary) -> void:
@@ -459,13 +494,17 @@ func _parse_steps(value: Variant) -> void:
 			_error("%s : un objet est attendu" % where)
 			continue
 		_check_keys(entry, STEP_KEYS, where)
-		var step := { "label": _text(entry, "label", where), "optional": false, "skip": "",
+		var step := { "label": _text(entry, "label", where), "optional": "", "skip": "",
 			"source": "scénario", "cells": 0, "count": 0, "id": "" }
+		step["optional"] = ""
 		if entry.has("optional"):
-			if entry["optional"] is bool:
-				step["optional"] = entry["optional"]
+			var group: Variant = entry["optional"]
+			if group is bool:
+				step["optional"] = DEFAULT_GROUP if group else ""
+			elif group is String and not (group as String).strip_edges().is_empty():
+				step["optional"] = group
 			else:
-				_error("%s : « optional » vaut true ou false" % where)
+				_error("%s : « optional » vaut true, false ou un nom de groupe" % where)
 		var kinds := 0
 		for kind: String in ["wild", "trainer", "center"]:
 			kinds += 1 if entry.has(kind) else 0
@@ -541,12 +580,21 @@ func _parse_variants(value: Variant) -> void:
 		if not POLICIES.has(player):
 			_error("%s : « player » vaut %s" % [where, ", ".join(PackedStringArray(POLICIES))])
 		variant["player"] = player
-		for key: String in ["center", "optional"]:
-			if entry.has(key):
-				if entry[key] is bool:
-					variant[key] = entry[key]
-				else:
-					_error("%s : « %s » vaut true ou false" % [where, key])
+		if entry.has("center"):
+			if entry["center"] is bool:
+				variant["center"] = entry["center"]
+			else:
+				_error("%s : « center » vaut true ou false" % where)
+		if entry.has("optional"):
+			var groups: Variant = entry["optional"]
+			var ok: bool = groups is bool or groups is Array
+			if groups is Array:
+				for group: Variant in groups:
+					ok = ok and group is String and not (group as String).is_empty()
+			if ok:
+				variant["optional"] = groups
+			else:
+				_error("%s : « optional » vaut true, false ou une liste de groupes" % where)
 		if entry.has("flee_below"):
 			var flee: Variant = entry["flee_below"]
 			if (flee is int or flee is float) and float(flee) >= 0.0 and float(flee) <= 1.0:
@@ -610,7 +658,7 @@ func _read_save() -> void:
 	if _starter.is_empty():
 		_starter = StringName(str(parsed.get("starter", "")))
 	_teams.append({ "name": "Partie de Kevin (sauvegarde)", "members": members, "save": true,
-		"skip": _missing_text(missing) })
+		"skip": _missing_text(missing), "starter": StringName(str(parsed.get("starter", ""))) })
 
 
 # --- Affichage du scénario ----------------------------------------------------------------
@@ -655,7 +703,7 @@ func _print_scenario() -> void:
 				step["count"]]
 		elif step["kind"] == "trainer":
 			what = str(step["id"])
-		var flags := " [détour]" if step["optional"] else ""
+		var flags := (" [%s]" % step["optional"]) if not str(step["optional"]).is_empty() else ""
 		if step["source"] == "données":
 			flags += " [données]"
 		if not str(step["skip"]).is_empty():
@@ -667,10 +715,12 @@ func _print_scenario() -> void:
 		if not str(variant["skip"]).is_empty():
 			_skip_line("variante « %s »" % variant["name"], variant["skip"])
 			continue
+		var groups: Variant = variant["optional"]
+		var detours := ("oui" if groups else "non") if groups is bool \
+			else ("non" if (groups as Array).is_empty() else ", ".join(PackedStringArray(groups)))
 		print("  %s : joueur %s, Centre %s, objets %s, fuite sous %.2f, détours %s" % [
 			variant["name"], variant["player"], "oui" if variant["center"] else "non",
-			_items_text(variant["items"]), variant["flee_below"],
-			"oui" if variant["optional"] else "non"])
+			_items_text(variant["items"]), variant["flee_below"], detours])
 
 
 func _skip_line(what: String, reason: String) -> void:
@@ -757,9 +807,12 @@ func _play(team: Dictionary, variant: Dictionary, seed_value: int, stats: Array[
 		party.heal_all()
 	var bag := _start_bag(variant)
 	_quiet_steps = 0
+	_play_starter = team.get("starter", &"")
+	if _play_starter.is_empty():
+		_play_starter = _starter
 	for i: int in _steps.size():
 		var step: Dictionary = _steps[i]
-		if not str(step["skip"]).is_empty() or (step["optional"] and not variant["optional"]):
+		if not str(step["skip"]).is_empty() or not _step_played(step, variant):
 			continue
 		if step["kind"] == "center" and not variant["center"]:
 			continue
@@ -800,6 +853,15 @@ func _play(team: Dictionary, variant: Dictionary, seed_value: int, stats: Array[
 		totals["evolved"][j] += 1 if pokemon.species_id != start_species[j] else 0
 
 
+## Vrai si [param step] est obligatoire ou si son groupe est demandé par [param variant].
+func _step_played(step: Dictionary, variant: Dictionary) -> bool:
+	var group := str(step["optional"])
+	if group.is_empty():
+		return true
+	var groups: Variant = variant["optional"]
+	return groups if groups is bool else (groups as Array).has(group)
+
+
 ## Étape « wild » : renvoie vrai si l'équipe entière est K.O.
 func _wild_step(step: Dictionary, party: RefCounted, rng: RefCounted, variant: Dictionary,
 		bag: Dictionary, s: Dictionary) -> bool:
@@ -838,7 +900,7 @@ func _trainer_step(step: Dictionary, party: RefCounted, rng: RefCounted, variant
 	var library: RefCounted = step["library"]
 	var id := StringName(step["id"])
 	var trainer: RefCounted = library.get_trainer(id)
-	var foes: RefCounted = library.build_team(id, _starter, rng)
+	var foes: RefCounted = library.build_team(id, _play_starter, rng)
 	if variant["player"] == "attentif":
 		_put_first(party, _best_against(party, foes.get_at(0)))
 	var player: RefCounted = _side_script.new(party, true)
@@ -1186,8 +1248,16 @@ func _party_text(party: RefCounted) -> String:
 
 func _trainer_text(library: RefCounted, id: StringName) -> String:
 	var trainer: RefCounted = library.get_trainer(id)
-	return "%s, IA %s, %d ₽ : %s" % [trainer.name, trainer.ai, trainer.prize_money,
-		_party_text(library.build_team(id, _starter, _rng_script.new(0)))]
+	var prize := "%d ₽" % trainer.prize_money if trainer.prize_per_level == 0 \
+		else "%d ₽ × niveau" % trainer.prize_per_level
+	var head := "%s, IA %s, %s" % [trainer.name, trainer.ai, prize]
+	if trainer.team_by_starter.is_empty():
+		return "%s : %s" % [head, _party_text(library.build_team(id, &"", _rng_script.new(0)))]
+	var parts := PackedStringArray()
+	for starter: StringName in trainer.team_by_starter:
+		parts.append("contre %s : %s" % [_name(starter),
+			_party_text(library.build_team(id, starter, _rng_script.new(0)))])
+	return "%s ; %s" % [head, " ; ".join(parts)]
 
 
 func _items_text(items: Dictionary) -> String:

@@ -1,0 +1,199 @@
+{
+	"version": 1,
+	"title": "Équilibrage de la Route 4, d'Azuria, du rival n° 3, d'Ondine et du Pont Pépite (jalon 13)",
+	"description": "Jalon 13 T9, lancé au T20 (dossier 16 §3.2, §7.2, §9.3, §9.4, §11.2, §12, §13 ; plan jalon-13 §2.12, §2.14, §2.22). Équipes et adversaires recopiés du dossier et du plan (identifiants des futures données : --donnees les remplace). Cases obligatoires lues dans les grilles validées (plan_check_azuria.py : Route 4 H2 = 4 cases ; herbes de la Route 24 nord évitables). Équipes de départ = sortie estimée du Mont Sélénite (plan §2.22 : meneur Nv. 19, J12 minimal), défauts (règle 4) à remplacer au T20 par la sauvegarde de Kevin (--save). Groupes d'étapes : « detours » (Clara, herbes H1/H3, Lucas, Diane), « route_24_nord » (pont, recruteur et herbes du nord AVANT Ondine), « pont_apres_ondine » (pont et recruteur APRÈS Ondine). Sans « switch » (IA qui change, T12) : à ajouter aux Dresseurs du rival et d'Ondine au T20, ou --donnees.",
+	"seeds": 500,
+	"heal_at_start": true,
+	"teams": [
+		{
+			"name": "Reptincel 19, Férosinge 16, Roucool 16",
+			"starter": "charmander",
+			"members": [
+				{ "species": "charmeleon", "level": 19 },
+				{ "species": "mankey", "level": 16 },
+				{ "species": "pidgey", "level": 16 }
+			]
+		},
+		{
+			"name": "Herbizarre 19, Roucool 16",
+			"starter": "bulbasaur",
+			"members": [
+				{ "species": "ivysaur", "level": 19 },
+				{ "species": "pidgey", "level": 16 }
+			]
+		},
+		{
+			"name": "Carabaffe 19, Roucool 16, Papilusion 15",
+			"starter": "squirtle",
+			"members": [
+				{ "species": "wartortle", "level": 19 },
+				{ "species": "pidgey", "level": 16 },
+				{ "species": "butterfree", "level": 15,
+					"moves": ["tackle", "harden", "confusion", "poison_powder"] }
+			]
+		}
+	],
+	"tables": {
+		"route_4_grass": {
+			"maps": ["route_4"], "terrain": "grass", "rate": 25,
+			"ramp": { "from_step": 15, "max_steps": 20 },
+			"slots": [
+				{ "species": "rattata", "levels": [8, 12], "weight": 30 },
+				{ "species": "spearow", "levels": [8, 12], "weight": 30 },
+				{ "species": "ekans", "levels": [10, 12], "weight": 15 },
+				{ "species": "sandshrew", "levels": [10, 12], "weight": 15 },
+				{ "species": "mankey", "levels": [10, 13], "weight": 10 }
+			]
+		},
+		"route_24_grass": {
+			"maps": ["route_24"], "terrain": "grass", "rate": 25,
+			"ramp": { "from_step": 15, "max_steps": 20 },
+			"slots": [
+				{ "species": "oddish", "levels": [12, 14], "weight": 25 },
+				{ "species": "bellsprout", "levels": [12, 14], "weight": 25 },
+				{ "species": "pidgey", "levels": [12, 13], "weight": 15 },
+				{ "species": "caterpie", "levels": [7, 8], "weight": 10 },
+				{ "species": "weedle", "levels": [7, 8], "weight": 10 },
+				{ "species": "metapod", "levels": [8, 9], "weight": 7 },
+				{ "species": "kakuna", "levels": [8, 9], "weight": 8 }
+			]
+		}
+	},
+	"trainers": {
+		"route_4_clara": {
+			"name": "Jeune Dresseuse Clara", "ai": "random",
+			"can_lose": false, "heal_after": false, "gives_exp": true, "prize_money": 165,
+			"team": [{ "species": "paras", "level": 11 }, { "species": "jigglypuff", "level": 11 }]
+		},
+		"cerulean_gym_lucas": {
+			"name": "Nageur Lucas", "ai": "random",
+			"can_lose": false, "heal_after": false, "gives_exp": true, "prize_money": 80,
+			"team": [{ "species": "horsea", "level": 16 }, { "species": "shellder", "level": 16 }]
+		},
+		"cerulean_gym_diane": {
+			"name": "Jeune Dresseuse Diane", "ai": "random",
+			"can_lose": false, "heal_after": false, "gives_exp": true, "prize_money": 285,
+			"team": [{ "species": "goldeen", "level": 19 }]
+		},
+		"rival_cerulean": {
+			"name": "{rival}", "ai": "smart",
+			"can_lose": false, "heal_after": false, "gives_exp": true,
+			"prize_money": 0, "prize_per_level": 35, "bag": true,
+			"team_by_starter": {
+				"bulbasaur": [
+					{ "species": "pidgeotto", "level": 18 }, { "species": "rattata", "level": 15 },
+					{ "species": "charmeleon", "level": 17 }
+				],
+				"charmander": [
+					{ "species": "pidgeotto", "level": 18 }, { "species": "rattata", "level": 15 },
+					{ "species": "wartortle", "level": 17 }
+				],
+				"squirtle": [
+					{ "species": "pidgeotto", "level": 18 }, { "species": "rattata", "level": 15 },
+					{ "species": "ivysaur", "level": 17 }
+				]
+			}
+		},
+		"cerulean_gym_misty": {
+			"name": "Ondine", "ai": "smart",
+			"can_lose": false, "heal_after": false, "gives_exp": true, "prize_money": 2100,
+			"team": [
+				{ "species": "staryu", "level": 18, "moves": ["tackle", "water_gun"] },
+				{ "species": "starmie", "level": 21,
+					"moves": ["tackle", "water_gun", "harden", "bubble_beam"] }
+			]
+		},
+		"route_24_timeo": {
+			"name": "Scout Timéo", "ai": "random",
+			"can_lose": false, "heal_after": false, "gives_exp": true, "prize_money": 120,
+			"team": [{ "species": "caterpie", "level": 10 }, { "species": "weedle", "level": 10 },
+				{ "species": "metapod", "level": 10 }, { "species": "kakuna", "level": 10 }]
+		},
+		"route_24_alice": {
+			"name": "Jeune Dresseuse Alice", "ai": "random",
+			"can_lose": false, "heal_after": false, "gives_exp": true, "prize_money": 180,
+			"team": [{ "species": "pidgey", "level": 12 }, { "species": "oddish", "level": 12 },
+				{ "species": "bellsprout", "level": 12 }]
+		},
+		"route_24_malo": {
+			"name": "Gamin Malo", "ai": "random",
+			"can_lose": false, "heal_after": false, "gives_exp": true, "prize_money": 210,
+			"team": [{ "species": "sandshrew", "level": 14 }, { "species": "ekans", "level": 14 }]
+		},
+		"route_24_romane": {
+			"name": "Jeune Dresseuse Romane", "ai": "random",
+			"can_lose": false, "heal_after": false, "gives_exp": true, "prize_money": 240,
+			"team": [{ "species": "nidoran_f", "level": 16 }, { "species": "nidoran_m", "level": 16 }]
+		},
+		"route_24_ethan": {
+			"name": "Campeur Ethan", "ai": "random",
+			"can_lose": false, "heal_after": false, "gives_exp": true, "prize_money": 360,
+			"team": [{ "species": "mankey", "level": 18 }]
+		},
+		"nugget_rocket": {
+			"name": "Sbire Rocket", "ai": "smart",
+			"can_lose": false, "heal_after": false, "gives_exp": true, "prize_money": 450,
+			"team": [{ "species": "ekans", "level": 15 }, { "species": "zubat", "level": 15 }]
+		}
+	},
+	"steps": [
+		{ "label": "Route 4 : H2 (4 cases)", "wild": "route_4_grass", "cells": 4 },
+		{ "label": "Route 4 : H1 et H3 (8 cases)", "wild": "route_4_grass", "cells": 8,
+			"optional": "detours" },
+		{ "label": "Jeune Dresseuse Clara (Route 4)", "trainer": "route_4_clara",
+			"optional": "detours" },
+		{ "label": "Centre d'Azuria (arrivée)", "center": true },
+		{ "label": "A1 Nageur Lucas (Arène)", "trainer": "cerulean_gym_lucas",
+			"optional": "detours" },
+		{ "label": "A2 Jeune Dresseuse Diane (Arène)", "trainer": "cerulean_gym_diane",
+			"optional": "detours" },
+		{ "label": "Centre d'Azuria (après l'Arène)", "center": true, "optional": "detours" },
+		{ "label": "Rival n° 3 (Route 24)", "trainer": "rival_cerulean" },
+		{ "label": "Centre d'Azuria (après le rival)", "center": true },
+		{ "label": "P1 Scout Timéo (avant Ondine)", "trainer": "route_24_timeo",
+			"optional": "route_24_nord" },
+		{ "label": "P2 Jeune Dresseuse Alice (avant Ondine)", "trainer": "route_24_alice",
+			"optional": "route_24_nord" },
+		{ "label": "P3 Gamin Malo (avant Ondine)", "trainer": "route_24_malo",
+			"optional": "route_24_nord" },
+		{ "label": "P4 Jeune Dresseuse Romane (avant Ondine)", "trainer": "route_24_romane",
+			"optional": "route_24_nord" },
+		{ "label": "P5 Campeur Ethan (avant Ondine)", "trainer": "route_24_ethan",
+			"optional": "route_24_nord" },
+		{ "label": "Recruteur Rocket (avant Ondine)", "trainer": "nugget_rocket",
+			"optional": "route_24_nord" },
+		{ "label": "Route 24 nord : herbes (40 cases)", "wild": "route_24_grass", "cells": 40,
+			"optional": "route_24_nord" },
+		{ "label": "Centre d'Azuria (après le pont)", "center": true,
+			"optional": "route_24_nord" },
+		{ "label": "Ondine (Arène d'Azuria)", "trainer": "cerulean_gym_misty" },
+		{ "label": "Centre d'Azuria (après Ondine)", "center": true,
+			"optional": "pont_apres_ondine" },
+		{ "label": "P1 Scout Timéo (après Ondine)", "trainer": "route_24_timeo",
+			"optional": "pont_apres_ondine" },
+		{ "label": "P2 Jeune Dresseuse Alice (après Ondine)", "trainer": "route_24_alice",
+			"optional": "pont_apres_ondine" },
+		{ "label": "P3 Gamin Malo (après Ondine)", "trainer": "route_24_malo",
+			"optional": "pont_apres_ondine" },
+		{ "label": "P4 Jeune Dresseuse Romane (après Ondine)", "trainer": "route_24_romane",
+			"optional": "pont_apres_ondine" },
+		{ "label": "P5 Campeur Ethan (après Ondine)", "trainer": "route_24_ethan",
+			"optional": "pont_apres_ondine" },
+		{ "label": "Recruteur Rocket (après Ondine)", "trainer": "nugget_rocket",
+			"optional": "pont_apres_ondine" }
+	],
+	"variants": [
+		{ "name": "directe, attentif, Centre", "player": "attentif", "center": true,
+			"optional": ["pont_apres_ondine"] },
+		{ "name": "directe, attentif, Centre, 3 Potions, 1 Antidote, détours (Clara, H1/H3, Lucas, Diane)",
+			"player": "attentif", "center": true, "items": { "potion": 3, "antidote": 1 },
+			"optional": ["detours", "pont_apres_ondine"] },
+		{ "name": "avec Route 24 nord, attentif, Centre",
+			"player": "attentif", "center": true, "optional": ["route_24_nord"] },
+		{ "name": "avec Route 24 nord, attentif, Centre, 3 Potions, 1 Antidote, détours",
+			"player": "attentif", "center": true, "items": { "potion": 3, "antidote": 1 },
+			"optional": ["detours", "route_24_nord"] },
+		{ "name": "directe, naïf, Centre", "player": "naif", "center": true,
+			"optional": ["pont_apres_ondine"] }
+	]
+}
