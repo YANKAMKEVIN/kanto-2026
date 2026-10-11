@@ -563,7 +563,7 @@ Aucune planche de monde n'est exigée : **pas de FAIRE SORTIR sans planche**, r�
 |---|---|---|---|
 | **Bulles d'O** | Staross, CT11 | 65, Vitesse −1 (10 %) | **donnée nouvelle**, effet existant |
 | Vol-Vie | Mystherbe 1 | 20, drain ½ | donnée ; **drain du J12** |
-| Acide | Mystherbe 24, Ortide 28, Chétiflor 26 (atteignables en montant le niveau) | 40, Défense −1 (10 %) | donnée, effet existant |
+| Acide | Mystherbe 24, Ortide 28, Chétiflor 26 (atteignables en montant le niveau) | 40, Défense Spéciale −1 (10 %, version du J12) | donnée, effet existant |
 | Ligotage | Chétiflor 13 | piège | **J12** |
 | Ultrason | Poissirène 19 | confusion | **J11** (11A) |
 | Poudre Toxik, Para-Spore, Poudre Dodo | Mystherbe 15/17/19, Chétiflor 15/18/21 | statuts | existants / **J11** |
