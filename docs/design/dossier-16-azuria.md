@@ -64,6 +64,112 @@
 **Décision pour le J14** [V, 2026-10-11] : l'épisode historique de Léo, transformé en Pokémon, est
 conservé. Rien n'en apparaît au J13.
 
+## Grilles v1 (à valider par Kevin)
+
+> **Produites le 2026-10-11, avant la vue générale peinte** (filière des J9, J10 et J12). La grille
+> fait foi pour la géométrie ; en cas de contradiction avec ce dossier sur une coordonnée, la
+> grille gagne. Aucun code du jeu : seulement les grilles et leurs outils de contrôle.
+
+- **Grilles** (`tools/plans/`) :
+
+  | Carte | Fichier | Taille | Cases praticables |
+  |---|---|---|---|
+  | Route 4 | `route_4.txt` | 64 × 24 | 731 (48 %) |
+  | Azuria | `azuria.txt` | 56 × 46 | 808 (31 %), 243 d'eau |
+  | Route 24 | `route_24.txt` | 56 × 62 | 852 (25 %) |
+  | Arène d'Azuria | `azuria_arene.txt` | 17 × 13 | |
+  | Magasin de vélos | `azuria_velos.txt` | 15 × 10 | enveloppe réutilisée |
+  | Maison ouverte | `azuria_maison.txt` | 15 × 10 | enveloppe réutilisée |
+
+- **Contrôles** : `python3 tools/art/plan_check.py` (les neuf grilles, anciennes comprises, sont
+  conformes ; module `tools/art/plan_check_azuria.py`, branché dans `plan_check.py`). Il vérifie :
+  - **sas** : la Route 4 recopie `route_4_sas.txt` case pour case (seule différence : le raccord
+    « AZURIA — À venir » (23, 6..7) devient un chemin) ; sortie de grotte (2, 6), arrivée
+    `from_mt_moon` (3, 6), panneau (6, 5) à l'identique ; les 164 cases praticables du sas restent
+    praticables et mènent toutes au raccord est (test de reprise du §17) ;
+  - **raccords** : Route 4 est ↔ Azuria ouest, rangées 19..21 ; Azuria nord ↔ Route 24 sud,
+    colonnes 31..33 ; le canal d'Azuria (eau, colonnes 26..29) descend de la Route 24 ; cartes
+    fermées partout ailleurs ;
+  - **rebord** : une seule bande (28..33, 12), saut vers le sud seulement, ne se monte pas ;
+    c'est l'**unique descente** (sans lui, le raccord est est inatteignable) et, de la plaine,
+    aucune case du sas n'est atteignable ;
+  - **eau et ponts** : l'eau n'est jamais praticable ; canal en L (4 de large, vertical x 26..29
+    puis horizontal y 15..18 jusqu'à la baie) ; aucun canal ni pont en diagonale ; 3 ponts
+    rectangulaires, ≥ 2 de large (central 3, les deux autres 2) ; quais ≥ 2 de large, PNJ
+    compris ;
+  - **Centre** : premier bâtiment de l'avenue (porte atteinte en **9 pas**), l'avenue n'a ni
+    rue latérale ni autre porte jusqu'à la colonne 10 (première rue en x 14), avant tout autre
+    bâtiment, pont ou sortie ; Arène et sortie nord de l'autre côté du canal ; sortie nord
+    visible depuis la place (colonne x 32, 30 cases libres alignées) ;
+  - **fermetures sans promesse** (arbre + clôture à l'est, palissade au sud : aucun warp), Grotte
+    Azurée hors d'atteinte, maison cambriolée (porte fermée sans warp, trou impraticable, jardin
+    clos inaccessible, policier devant), 6 habitants, emprises des bâtiments ;
+  - **Route 24** : rival inévitable (vue sur toute la largeur du goulet, première case vue à
+    3 cases) ; Ondine inaccessible avant lui ; **P1..P5 et recruteur inévitables**, chacun vu à
+    3 cases ; aucune approche ne coince le joueur ; l'espace nord n'est atteint qu'après le
+    recruteur ; herbes évitables ; Potion visible, Antidote caché (type `cache`) ;
+  - **Arène** : Ondine atteignable (15 pas), Nageur et Jeune Dresseuse évitables séparément et
+    ensemble, bassin jamais praticable.
+- **Mesures** : Route 4, **72 pas** de l'arrivée (3, 6) au raccord est (≈ 1 min 11 s avec les
+  4 cases d'herbes obligatoires) ; Azuria, entrée → Centre 9 pas, → Arène 50, → sortie nord 50,
+  → Boutique 54, → magasin de vélos 56 ; Route 24, raccord sud → rival 6 pas, → pied du pont 16,
+  → rive nord 48, → raccord est **82 pas** (≈ **14 min** avec le rival, la scène d'Ondine, les
+  cinq Dresseurs et le recruteur, durées de combat par défaut).
+- **Plans** (`python3 tools/art/plan_aplats.py tools/plans/<carte>.txt --annote`, paysage
+  1536 × 1024, non versionnés dans `build/art/`) : `PLAN_ROUTE4_v1.png`, `PLAN_AZURIA_v1.png`,
+  `PLAN_ROUTE24_v1.png`, `PLAN_AZURIA_ARENE_v1.png` et leurs `_annote.png` (relecture seulement :
+  Dresseurs, lignes de vue, PNJ, objets, case cachée, examens ; jamais joints à Codex). Après
+  validation, copie dans `reference/` comme au J12.
+
+**Valeurs par défaut prises (règle 4, à corriger sans rouvrir la conception)** :
+
+- **Route 4** : plateau prolongé jusqu'à x 35, chemin descendant en x 30..31 vers un rebord de
+  6 cases (x 28..33) ; falaise bloquée « ~ » en x 3..27 ; la haie de buissons de la colonne 23 du
+  sas est gardée (l'ouverture de 2 cases reste le raccord d'origine) ; Poké Ball dans la poche
+  ouest sous le versant (21, 20) ; Clara en (44, 17), vue de 3 cases vers le sud, évitable par
+  les rangées 21 et 22 ; H1 et H3 évitables, **H2 sur la rue entre deux murs d'arbres : 4 cases
+  obligatoires**.
+- **Azuria** : le canal s'ouvre à l'est sur une baie (x 49..55) avec un îlot où se voit la Grotte
+  Azurée ; Arène x 35..46 (porte (40..41, 9)) ; le pont central (x 31..33) est dans l'axe place →
+  sortie nord ; quai ouest de 3 cases (le pêcheur H1 y est assis) ; belvédère en cul-de-sac à
+  l'est de l'Arène ; Boutique et magasin de vélos au sud, sur une rue qui finit à la palissade.
+- **Cambriolage** : maison cambriolée et maison ouverte côte à côte (H3 devant la seconde) ;
+  clôture du fond arrachée au coin nord-ouest du jardin, examinée depuis une bande d'herbe ; trou
+  dans la clôture du fond, côté est, impraticable (haie derrière).
+- **Texte 17** (« On ne passe pas par là pour l'instant. ») : porté par un point d'examen sur
+  l'arbre et sur la palissade (`barriere_est`, `barriere_sud`), pas par un septième habitant.
+- **Route 24** : 56 × 62 (largeur d'Azuria, mêmes colonnes) ; pont de 25 rangées, les cinq
+  Dresseurs et le recruteur **en quinconce** (rangées 41, 37, 33, 29, 25, 21 ; files ouest, est,
+  alternées), tous tournés vers le sud, vue de 3 cases ; le panneau (33, 45) ferme la file est à
+  l'entrée du tablier, ce qui rend P1 inévitable ; chaque corps coupe une file, donc on entre dans
+  la vue du suivant ; le recruteur est le sixième maillon (on entre dans sa vue en passant P5) ;
+  rival en (36, 55), au fond d'une niche de 3 cases en retrait du goulet (vue x 31..35) ;
+  Ondine en (37, 46), tournée vers le pont ; espace nord avec H1 (ouest) et H2 (est), Potion
+  (44, 3), Antidote caché (16, 6), raccord est (55, 6..8) `coming_soon`.
+- **Arène** : bassin 7 × 5, chemin du nord sur deux rangées, Lucas (2, 5) et Diane (14, 7) sur les
+  deux chemins latéraux, vue de 3 cases le long du chemin (chacun garde une file, les deux sont
+  évitables ensemble), Ondine (8, 3), guide (6, 10), plongeoir contre le mur du fond ; salle plus
+  haute que l'écran (13 > 11,25 rangées : la caméra suit en hauteur).
+- **Intérieurs** : vélos, 4 vélos exposés, comptoir et vendeur au bout ; maison, canapé, aquarium,
+  cuisine, habitante devant le canapé.
+
+**À regarder avec l'œil de Kevin** :
+
+1. **Le rebord est l'unique descente** (dossier §3.1, validé) : après Azuria, plus aucun retour à
+   pied vers Argenta ni le Mont Sélénite (Route 4 coupée par le rebord). La grille applique le
+   dossier ; confirmer que c'est voulu (le réveil après une défaite avant le Centre d'Azuria
+   ramène déjà au Centre de la Route 3, §19).
+2. **Rival « tourné vers la ville »** : pour que sa vue couvre tout le goulet à ≥ 3 cases (modèle
+   de Théo), il se tient dans une niche en retrait, tourné vers l'**ouest** (le goulet), pas vers
+   le sud.
+3. **Le pont fait 25 rangées** (≈ 14 min de bout en bout avec les combats par défaut) : c'est la
+   longueur qu'exigent cinq Dresseurs inévitables sur un tablier de 2 cases ; on peut le raccourcir
+   en passant à un Dresseur par 3 rangées (vue de 2 cases, première case vue à 2 au lieu de 3).
+4. **Densité d'Azuria** : 31 % de cases praticables, de grandes masses de forêt au sud-ouest et au
+   sud-est ; on peut rogner la carte (≈ 56 × 40) sans rien changer d'autre.
+5. **Quartier du cambriolage au nord-ouest**, loin de la place : l'indice est trouvé en suivant la
+   rue du nord depuis l'avenue (première rue après le Centre).
+
 ## 1. Intention
 
 Après la grotte, **la lumière et l'eau**. Le joueur descend du Mont Sélénite vers une plaine, puis

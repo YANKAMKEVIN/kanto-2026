@@ -26,6 +26,11 @@ dans le format portrait.
 empilés (1F, B1F, B2F) → build/art/PLAN_MONT_SELENITE_v1.png ; --annote ajoute
 <sortie>_annote.png (échelles, Dresseurs, objets cachés… : JAMAIS jointe à Codex).
 tools/plans/route_4_sas.txt → build/art/PLAN_ROUTE4_SAS_v1.png (`dessiner_sas`).
+tools/plans/route_4.txt, azuria.txt, route_24.txt, azuria_arene.txt (J13, dossier 16) →
+build/art/PLAN_ROUTE4_v1.png, PLAN_AZURIA_v1.png, PLAN_ROUTE24_v1.png, PLAN_AZURIA_ARENE_v1.png
+(`dessiner_j13`, PAYSAGE 1536 × 1024) ; --annote ajoute <sortie>_annote.png (`annoter_j13` :
+Dresseurs et lignes de vue, PNJ, objets, cases cachées, examens, zones d'herbes… JAMAIS jointe à
+Codex ; les plans seuls ne montrent ni personnage, ni case cachée, ni indice).
 Reproductible : même grille → même image (fleurs tirées avec une graine fixe).
 """
 from __future__ import annotations
@@ -1138,12 +1143,431 @@ def annoter_route_3(grille: Path, plan_png: Path, sortie: Path) -> Path:
 	return sortie
 
 
+# --- Jalon 13 : Route 4, Azuria, Route 24, Arène d'Azuria (dossier 16) -----------------------
+# Format PAYSAGE 1536 × 1024 comme la Route 3. Les marges prolongent les cases du bord (forêt,
+# eau, chemin vers la carte voisine). Personnages, cases cachées, indices et examens NON dessinés
+# sur le plan (joint à Codex) ; panneaux, Poké Balls et objets visibles dessinés.
+J_EAU = (82, 150, 192)
+J_EAU_CREUX = (64, 130, 176)
+J_EAU_REFLET = (150, 200, 226)
+J_QUAI = (228, 224, 210)
+J_QUAI_BORD = (186, 180, 164)
+J_PONT = (203, 192, 170)
+J_PONT_BORD = (112, 100, 84)
+J_PAVE = (214, 202, 178)
+J_JARDIN = (98, 142, 70)
+J_PALISSADE = (156, 126, 76)
+J_PALISSADE_BORD = (96, 72, 40)
+J_CLOTURE = (140, 100, 62)
+J_RUBAN = (236, 200, 40)
+J_PLATEAU = _melange(S_HERBE, HERBE, 0.35)      # Route 4 : herbe sèche du plateau
+J_PLAINE = _melange(S_HERBE, HERBE, 0.8)        # Route 4 : plaine, plus verte
+J_FALAISE = (104, 84, 62)
+J_ARENE_SOL = (200, 210, 212)
+J_ARENE_SOL_BORD = (170, 184, 190)
+J_ARENE_MUR = (62, 74, 92)
+J_ARENE_EAU = (70, 168, 214)
+J_ARENE_EAU_REFLET = (160, 220, 240)
+J_ARENE_DALLE = (236, 226, 160)
+J_ARENE_PLONGEOIR = (232, 232, 236)
+J_BAT = {                                          # (mur, toit)
+	"C": BATIMENTS["C"], "O": BATIMENTS["O"], "m": BATIMENTS["m"],
+	"Z": ((222, 232, 234), (52, 140, 168)),        # Arène d'Azuria : pierre claire, toit bleu-vert
+	"V": ((232, 220, 196), (214, 132, 52)),        # magasin de vélos : toit orange
+	"M": ((210, 196, 172), (116, 88, 70)),         # maison cambriolée : toit sombre
+}
+J_CARTES = {                                       # case maximale (px) par carte
+	"route_4": 24, "azuria": 24, "route_24": 24, "azuria_arene": 64,
+}
+J_EXTENSION = {"=": "=", "p": "p", "e": "=", "w": "w", "#": "#", "K": "K", "a": "a", "~": "#"}
+
+
+def _geom_j13(plan: Plan, stem: str) -> tuple[int, int, int]:
+	case = min(J_CARTES[stem], TAILLE_PAYSAGE[0] // plan.width, TAILLE_PAYSAGE[1] // plan.height)
+	return case, (TAILLE_PAYSAGE[0] - plan.width * case) // 2, \
+		(TAILLE_PAYSAGE[1] - plan.height * case) // 2
+
+
+def _fond_j13(stem: str, plan: Plan, car: str, x: int, y: int):
+	if stem == "azuria_arene":
+		return {"K": J_ARENE_MUR, "W": J_ARENE_EAU, "X": J_ARENE_DALLE}.get(car, J_ARENE_SOL)
+	if car == "w":
+		return J_EAU
+	if car == "q":
+		return J_QUAI
+	if car == "B":
+		return J_PONT
+	if car == "p":
+		return J_PAVE
+	if car in "=e":
+		return CHEMIN
+	if car == "h":
+		return HAUTES_HERBES
+	if car == "T":
+		return FORET
+	if car in "#":
+		return S_PAROI if stem == "route_4" else PAROI
+	if car == "~":
+		return _melange(S_PAROI, (44, 40, 36), 0.45)
+	if car == "v":
+		return REBORD
+	if car == "K":
+		return PAROI
+	if car == "a":
+		return SENTIER_FERME
+	if car == "j":
+		return J_JARDIN
+	if car == "s":
+		return J_PALISSADE
+	if car in BATIMENTS or car in J_BAT:
+		return J_BAT.get(car, BATIMENTS.get(car))[0]
+	if car in "fy":
+		return J_BAT["M"][0] if car == "f" else HERBE
+	if car == "A":
+		return PAROI
+	if car == "D":
+		return PORTE
+	if car == ".":
+		if stem == "route_4":
+			return J_PLAINE if y >= 13 else J_PLATEAU
+		return HERBE
+	return HERBE
+
+
+def dessiner_j13(grille: Path, sortie: Path) -> Path:
+	"""Plan en aplats de la Route 4, d'Azuria, de la Route 24 ou de l'Arène d'Azuria, paysage
+	1536 × 1024. Personnages, cases cachées, indices et examens NON dessinés."""
+	plan = lire(grille)
+	stem = Path(grille).stem
+	case, ox, oy = _geom_j13(plan, stem)
+	interieur = stem == "azuria_arene"
+	img = Image.new("RGB", TAILLE_PAYSAGE, J_ARENE_MUR if interieur else FORET)
+	d = ImageDraw.Draw(img)
+	alea = random.Random(GRAINE + 13)
+
+	def coin(x: int, y: int) -> tuple[int, int]:
+		return ox + x * case, oy + y * case
+
+	def centre(x: int, y: int) -> tuple[float, float]:
+		return ox + (x + 0.5) * case, oy + (y + 0.5) * case
+
+	def bord(x: int, y: int) -> str:
+		return plan.at(min(max(x, 0), plan.width - 1), min(max(y, 0), plan.height - 1))
+
+	def car_de(x: int, y: int) -> str:
+		car = bord(x, y)
+		if 0 <= x < plan.width and 0 <= y < plan.height:
+			return car
+		return J_EXTENSION.get(car, "T")
+
+	# 1. Aplats, marges comprises.
+	gx0, gy0 = (0, 0) if interieur else (-(ox // case) - 1, -(oy // case) - 1)
+	gx1 = plan.width if interieur else plan.width + (TAILLE_PAYSAGE[0] - ox) // case + 1
+	gy1 = plan.height if interieur else plan.height + (TAILLE_PAYSAGE[1] - oy) // case + 1
+	for y in range(gy0, gy1):
+		for x in range(gx0, gx1):
+			car = car_de(x, y)
+			x0, y0 = coin(x, y)
+			d.rectangle([x0, y0, x0 + case - 1, y0 + case - 1], fill=_fond_j13(stem, plan, car, x, y))
+			if car == "q":
+				d.rectangle([x0, y0, x0 + case - 1, y0 + case - 1], outline=J_QUAI_BORD)
+			elif car == "p" and stem == "azuria":
+				d.rectangle([x0, y0, x0 + case - 1, y0 + case - 1],
+					outline=_melange(J_PAVE, (0, 0, 0), 0.08))
+			elif car == "w" and alea.random() < 0.10:
+				cx, cy = x0 + case / 2, y0 + case / 2
+				d.line([cx - case * 0.3, cy, cx + case * 0.3, cy], fill=J_EAU_REFLET, width=1)
+			elif car == "v":
+				d.rectangle([x0, y0, x0 + case - 1, y0 + case // 2],
+					fill=_melange(REBORD, PAROI, 0.3))
+			elif car == "~":
+				d.rectangle([x0, y0 + case // 2, x0 + case - 1, y0 + case - 1],
+					fill=_melange(S_PAROI, (30, 27, 24), 0.6))
+
+	if interieur:
+		for y in range(plan.height):
+			for x in range(plan.width):
+				if plan.at(x, y) in ".OJNGX":
+					x0, y0 = coin(x, y)
+					d.rectangle([x0, y0, x0 + case - 1, y0 + case - 1], outline=J_ARENE_SOL_BORD)
+				if plan.at(x, y) == "W" and (x + y) % 3 == 0:
+					cx, cy = centre(x, y)
+					d.line([cx - case * 0.3, cy, cx + case * 0.3, cy], fill=J_ARENE_EAU_REFLET, width=2)
+		bx = [x for x, _ in plan.cells_of("W")]
+		by = [y for _, y in plan.cells_of("W")]
+		x0, y0 = coin(min(bx), min(by))
+		x1, y1 = coin(max(bx) + 1, max(by) + 1)
+		d.rectangle([x0 - 4, y0 - 4, x1 + 3, y1 + 3], outline=(240, 244, 246), width=4)
+		for x, y in plan.cells_of("P"):
+			px0, py0 = coin(x, y)
+			d.rectangle([px0 + 4, py0 + case // 3, px0 + case - 5, py0 + case * 2 // 3],
+				fill=J_ARENE_PLONGEOIR, outline=(150, 150, 160))
+		# lignes de couloirs de nage dans le bassin
+		for x in range(min(bx) + 1, max(bx) + 1, 2):
+			px0, _ = coin(x, 0)
+			d.line([px0, y0 + 6, px0, y1 - 6], fill=J_ARENE_EAU_REFLET, width=2)
+		for x, y in plan.cells_of("X"):
+			px0, py0 = coin(x, y)
+			d.rectangle([px0 + 3, py0 + 3, px0 + case - 4, py0 + case - 4], outline=(150, 130, 70),
+				width=2)
+		sortie.parent.mkdir(parents=True, exist_ok=True)
+		img.save(sortie)
+		return sortie
+
+	# 2. Reliefs et bâtiments.
+	for x, y in plan.cells_of("v"):
+		x0, y0 = coin(x, y)
+		d.rectangle([x0, y0 + case // 2, x0 + case - 1, y0 + case - 1], fill=REBORD)
+	for x, y in plan.cells_of("o") + plan.cells_of("x") + plan.cells_of("b"):
+		cx, cy = centre(x, y)
+		car = plan.at(x, y)
+		if car == "o":
+			_disque(d, cx + alea.uniform(-2, 2), cy + alea.uniform(-2, 2), case * 0.36, PIERRE, PIERRE_BORD)
+		else:
+			_disque(d, cx, cy, case * 0.42, BUISSON, SOMBRE_BORD)
+	for x, y in plan.cells_of("T"):
+		if (x * 7 + y * 3) % 5 == 0:
+			cx, cy = centre(x, y)
+			_disque(d, cx, cy, case * 0.45, _melange(FORET, (0, 0, 0), 0.12))
+	for x, y in plan.cells_of("G") + plan.cells_of("t"):
+		cx, cy = centre(x, y)
+		_disque(d, cx, cy - case * 0.4, case * 0.8, ARBRE, ARBRE_BORD)
+	for x, y in plan.cells_of("n"):
+		cx, cy = centre(x, y)
+		d.rectangle([cx - case * 0.4, cy - case * 0.15, cx + case * 0.4, cy + case * 0.15],
+			fill=BANC)
+	for x, y in plan.cells_of("c"):
+		cx, cy = centre(x, y)
+		voisins_c = [(dx, dy) for dx, dy in ((1, 0), (-1, 0), (0, 1), (0, -1))
+			if 0 <= x + dx < plan.width and 0 <= y + dy < plan.height
+			and plan.at(x + dx, y + dy) in "cy"]
+		d.rectangle(coin(x, y) + (coin(x, y)[0] + case - 1, coin(x, y)[1] + case - 1), fill=HERBE)
+		if not voisins_c:
+			d.line([cx, cy - case * 0.3, cx, cy + case * 0.3], fill=J_CLOTURE, width=3)
+		for dx, dy in voisins_c:
+			d.line([cx, cy, cx + dx * case / 2, cy + dy * case / 2], fill=J_CLOTURE, width=3)
+	for x, y in plan.cells_of("y"):
+		cx, cy = centre(x, y)
+		d.rectangle(coin(x, y) + (coin(x, y)[0] + case - 1, coin(x, y)[1] + case - 1), fill=HERBE)
+		d.line([cx, cy - case * 0.3, cx, cy - case * 0.1], fill=J_CLOTURE, width=3)
+		d.line([cx, cy + case * 0.1, cx, cy + case * 0.3], fill=J_CLOTURE, width=3)
+	for x, y in plan.cells_of("s"):
+		x0, y0 = coin(x, y)
+		d.rectangle([x0, y0 + 2, x0 + case - 1, y0 + case - 3], fill=J_PALISSADE,
+			outline=J_PALISSADE_BORD)
+		d.line([x0 + case // 2, y0 + 2, x0 + case // 2, y0 + case - 3], fill=J_PALISSADE_BORD)
+	for x, y in plan.cells_of("B"):
+		x0, y0 = coin(x, y)
+		d.line([x0 + 1, y0 + case // 2, x0 + case - 2, y0 + case // 2], fill=J_PONT_BORD, width=1)
+	for pont in _composantes(plan, "B"):
+		xs = [x for x, _ in pont]
+		ys = [y for _, y in pont]
+		x0, y0 = coin(min(xs), min(ys))
+		x1, y1 = coin(max(xs) + 1, max(ys) + 1)
+		if max(ys) - min(ys) >= max(xs) - min(xs):      # tablier vertical : garde-corps à gauche et à droite
+			d.rectangle([x0 - 3, y0, x0 + 1, y1 - 1], fill=J_PONT_BORD)
+			d.rectangle([x1 - 2, y0, x1 + 2, y1 - 1], fill=J_PONT_BORD)
+		else:
+			d.rectangle([x0, y0 - 3, x1 - 1, y0 + 1], fill=J_PONT_BORD)
+			d.rectangle([x0, y1 - 2, x1 - 1, y1 + 2], fill=J_PONT_BORD)
+	# bâtiments : toit sur les 3/5 hauts de l'emprise, portes
+	for car in "CMOZVm":
+		cases = plan.cells_of(car) + (plan.cells_of("f") if car == "M" else [])
+		for groupe in _composantes_cases(cases):
+			xs = [x for x, _ in groupe]
+			ys = [y for _, y in groupe]
+			x0, y0 = coin(min(xs), min(ys))
+			x1, y1 = coin(max(xs) + 1, max(ys) + 1)
+			d.rectangle([x0, y0, x1 - 1, y0 + (y1 - y0) * 3 // 5], fill=J_BAT[car][1])
+			d.rectangle([x0, y0, x1 - 1, y1 - 1], outline=_melange(J_BAT[car][1], (0, 0, 0), 0.35))
+	for x, y in plan.cells_of("D") + plan.cells_of("f"):
+		if any(0 <= x + dx < plan.width and plan.at(x + dx, y) in "CMOZVm" for dx in (-1, 1)) \
+				or plan.at(x, y) == "f":
+			x0, y0 = coin(x, y)
+			d.rectangle([x0 + case // 5, y0 + case // 4, x0 + case - case // 5 - 1, y0 + case - 1],
+				fill=PORTE)
+			if plan.at(x, y) == "f":                       # porte fermée : ruban de chantier
+				d.line([x0 + 2, y0 + case // 4, x0 + case - 3, y0 + case - 2], fill=J_RUBAN, width=3)
+				d.line([x0 + case - 3, y0 + case // 4, x0 + 2, y0 + case - 2], fill=J_RUBAN, width=3)
+	# grotte de la Route 4 et Grotte Azurée
+	for x, y in plan.cells_of("D"):
+		if stem == "route_4":
+			x0, y0 = coin(x, y)
+			d.ellipse([x0 - case * 0.5, y0 - case * 0.4, x0 + case * 1.2, y0 + case * 1.4],
+				fill=S_GROTTE, outline=_melange(S_PAROI, (0, 0, 0), 0.4), width=3)
+	for x, y in plan.cells_of("A"):
+		x0, y0 = coin(x, y)
+		d.pieslice([x0 - 1, y0 - case * 0.6, x0 + case, y0 + case * 0.9], 180, 360, fill=S_GROTTE)
+		d.rectangle([x0 - 1, y0 + case * 0.15, x0 + case, y0 + case - 1], fill=S_GROTTE)
+	# 3. Panneaux et objets visibles (la case cachée « cache » n'est JAMAIS dessinée ici).
+	for p in plan.of_kind("panneau"):
+		for x, y in p.cells:
+			cx, cy = centre(x, y)
+			d.rectangle([cx - 5, cy - 5, cx + 5, cy + 5], fill=PANNEAU, outline=PANNEAU_BORD)
+	for p in plan.of_kind("objet_visible"):
+		for x, y in p.cells:
+			cx, cy = centre(x, y)
+			r = 5
+			d.pieslice([cx - r, cy - r, cx + r, cy + r], 180, 360, fill=BALL_ROUGE)
+			d.pieslice([cx - r, cy - r, cx + r, cy + r], 0, 180, fill=BLANC)
+			d.ellipse([cx - r, cy - r, cx + r, cy + r], outline=BALL_BORD, width=1)
+	sortie.parent.mkdir(parents=True, exist_ok=True)
+	img.save(sortie)
+	return sortie
+
+
+def _composantes_cases(cases) -> list[list[tuple[int, int]]]:
+	reste, groupes = set(cases), []
+	while reste:
+		germe = reste.pop()
+		groupe, pile = [germe], [germe]
+		while pile:
+			x, y = pile.pop()
+			for dx, dy in ((1, 0), (-1, 0), (0, 1), (0, -1)):
+				n = (x + dx, y + dy)
+				if n in reste:
+					reste.remove(n)
+					groupe.append(n)
+					pile.append(n)
+		groupes.append(groupe)
+	return groupes
+
+
+def annoter_j13(grille: Path, plan_png: Path, sortie: Path) -> Path:
+	"""Version de RELECTURE (jamais jointe à Codex) : Dresseurs et lignes de vue, PNJ, objets (la
+	case cachée en jaune, « * »), examens, indices, repères, zones d'herbes, rebords, points
+	d'apparition et warps ; même taille que le plan."""
+	from PIL import ImageFont
+	from plan_check import FACINGS, nommer_zones  # noqa: E402
+	plan = lire(grille)
+	stem = Path(grille).stem
+	img = Image.open(plan_png).convert("RGBA")
+	calque = Image.new("RGBA", img.size, (0, 0, 0, 0))
+	d = ImageDraw.Draw(calque)
+	case, ox, oy = _geom_j13(plan, stem)
+
+	def fonte(taille: int):
+		for chemin in ("/System/Library/Fonts/Supplemental/Arial.ttf", "DejaVuSans.ttf"):
+			try:
+				return ImageFont.truetype(chemin, taille)
+			except OSError:
+				continue
+		return ImageFont.load_default(size=taille)
+	gros = max(10, min(15, case // 2 + 3))
+	police, petite = fonte(gros), fonte(max(9, gros - 3))
+	rayon = max(3, case // 4)
+
+	def centre(c) -> tuple[float, float]:
+		return ox + (c[0] + 0.5) * case, oy + (c[1] + 0.5) * case
+
+	def etiquette(c, texte: str, couleur, f=police, dx: float = 0, dy: float = -14) -> None:
+		cx, cy = centre(c)
+		box = d.textbbox((cx + dx, cy + dy), texte, font=f, anchor="mm")
+		d.rectangle([box[0] - 2, box[1] - 1, box[2] + 2, box[3] + 1], fill=(0, 0, 0, 170))
+		d.text((cx + dx, cy + dy), texte, font=f, fill=couleur, anchor="mm")
+
+	pas_grille = 5 if stem != "azuria_arene" else 1
+	for x in range(plan.width + 1):
+		d.line([ox + x * case, oy, ox + x * case, oy + plan.height * case],
+			fill=(0, 0, 0, 55 if x % pas_grille else 130), width=1)
+	for y in range(plan.height + 1):
+		d.line([ox, oy + y * case, ox + plan.width * case, oy + y * case],
+			fill=(0, 0, 0, 55 if y % pas_grille else 130), width=1)
+	for x in range(0, plan.width, pas_grille):
+		d.text((ox + (x + 0.5) * case, oy - 9), str(x), font=petite, fill=(255, 255, 255, 255),
+			anchor="mm")
+	for y in range(0, plan.height, pas_grille):
+		d.text((ox - 12, oy + (y + 0.5) * case), str(y), font=petite, fill=(255, 255, 255, 255),
+			anchor="mm")
+
+	for p in plan.of_kind("warp") + plan.of_kind("spawn"):
+		for c in p.cells:
+			x0, y0 = ox + c[0] * case, oy + c[1] * case
+			d.rectangle([x0 + 1, y0 + 1, x0 + case - 2, y0 + case - 2],
+				outline=(60, 255, 120, 255) if p.kind == "warp" else (120, 220, 255, 255), width=2)
+	for p in plan.of_kind("dresseur"):
+		fx, fy = FACINGS[p.attrs["facing"]]
+		c = p.cells[0]
+		for k in range(1, int(p.attrs["sight"]) + 1):
+			x0, y0 = ox + (c[0] + fx * k) * case, oy + (c[1] + fy * k) * case
+			d.rectangle([x0, y0, x0 + case - 1, y0 + case - 1], fill=(230, 40, 40, 110))
+		cx, cy = centre(c)
+		d.ellipse([cx - rayon, cy - rayon, cx + rayon, cy + rayon], fill=(230, 40, 40, 255),
+			outline=(0, 0, 0, 255))
+		etiquette(c, f"{p.attrs.get('role')}", (255, 150, 150, 255), petite, dy=-case * 0.7)
+	for p in plan.of_kind("pnj"):
+		for c in p.cells:
+			cx, cy = centre(c)
+			d.ellipse([cx - rayon, cy - rayon, cx + rayon, cy + rayon], fill=(70, 140, 255, 255),
+				outline=(0, 0, 0, 255))
+		etiquette(p.cells[0], f"{p.attrs.get('role', p.ident)}", (160, 200, 255, 255), petite,
+			dy=-case * 0.7)
+	for p in plan.of_kind("objet_visible") + plan.of_kind("cache"):
+		c = p.cells[0]
+		cx, cy = centre(c)
+		if p.kind == "cache":
+			d.rectangle([cx - rayon, cy - rayon, cx + rayon, cy + rayon], fill=(255, 220, 40, 255),
+				outline=(0, 0, 0, 255))
+		etiquette(c, f"{p.attrs.get('role')}{'*' if p.kind == 'cache' else ''} "
+			f"{p.attrs.get('item')}", (255, 230, 90, 255), petite, dy=case * 0.8)
+	for p in plan.of_kind("examen") + plan.of_kind("indice") + plan.of_kind("decor"):
+		for c in p.cells[:1]:
+			cx, cy = centre(c)
+			d.polygon([(cx, cy - rayon), (cx + rayon, cy), (cx, cy + rayon), (cx - rayon, cy)],
+				fill=(255, 120, 230, 255), outline=(0, 0, 0, 255))
+			etiquette(c, p.ident.split("_")[0], (255, 170, 240, 255), petite, dy=case * 0.8)
+	for p in plan.of_kind("repere"):
+		etiquette(p.cells[0], p.ident.split("_")[0], (230, 230, 230, 255), petite, dy=case * 0.8)
+	zones = {}
+	try:
+		zones = nommer_zones(plan, ("H1", "H2", "H3"))
+	except Exception:
+		zones = {}
+	for nom, zone in zones.items():
+		xs = sorted(x for x, _ in zone)
+		ys = sorted(y for _, y in zone)
+		etiquette((xs[len(xs) // 2], ys[len(ys) // 2]), nom, (240, 255, 150, 255), dy=0)
+	for c in plan.cells_of("v")[:1]:
+		etiquette(c, "REBORD ↓ (saut vers le sud)", (255, 210, 160, 255), petite, dy=-case * 0.9,
+			dx=case * 2)
+	if stem == "azuria":
+		etiquette((9, 18), "CENTRE", (255, 255, 255, 255), dy=-case * 1.2)
+		etiquette((26, 37), "BOUTIQUE", (255, 255, 255, 255), dy=-case * 1.2)
+		etiquette((39, 37), "VÉLOS", (255, 255, 255, 255), dy=-case * 1.2)
+		etiquette((41, 9), "ARÈNE", (255, 255, 255, 255), dy=-case * 1.2)
+		etiquette((10, 9), "CAMBRIOLÉE", (255, 255, 255, 255), dy=-case * 1.2)
+		etiquette((19, 9), "MAISON", (255, 255, 255, 255), dy=-case * 1.2)
+		etiquette((32, 16), "PONT CENTRAL", (255, 255, 255, 255), dy=-case * 0.2, dx=case * 4)
+		etiquette((27, 8), "PONT OUEST", (255, 255, 255, 255), dy=-case * 0.9, dx=0)
+		etiquette((40, 16), "PONT ARÈNE", (255, 255, 255, 255), dy=-case * 0.2, dx=case * 3)
+		etiquette((32, 0), "↑ ROUTE 24", (255, 255, 255, 255), dy=case * 1.0)
+		etiquette((0, 20), "← ROUTE 4", (255, 255, 255, 255), dy=case * 1.4, dx=case * 2)
+		etiquette((52, 23), "ROUTE 9 fermée", (255, 255, 255, 255), petite, dy=case * 1.2)
+		etiquette((32, 42), "ROUTE 5 fermée", (255, 255, 255, 255), petite, dy=-case * 1.0)
+	if stem == "route_4":
+		etiquette((2, 6), "MONT SÉLÉNITE", (255, 255, 255, 255), dy=-case * 1.3, dx=case * 2)
+		etiquette((62, 20), "AZURIA →", (255, 255, 255, 255), dy=-case * 1.6, dx=-case * 2)
+		etiquette((47, 20), "H2 (4 cases)", (240, 255, 150, 255), petite, dy=case * 1.4)
+	if stem == "route_24":
+		etiquette((32, 61), "↓ AZURIA", (255, 255, 255, 255), dy=-case * 1.2)
+		etiquette((55, 7), "ROUTE 25 →", (255, 255, 255, 255), dy=-case * 1.4, dx=-case * 2)
+		etiquette((32, 32), "PONT PÉPITE", (255, 255, 255, 255), dy=0, dx=case * 4)
+	img = Image.alpha_composite(img, calque).convert("RGB")
+	sortie.parent.mkdir(parents=True, exist_ok=True)
+	img.save(sortie)
+	return sortie
+
+
 # Grille → (fonction, sortie par défaut).
 PLANS = {
 	"route_2": (dessiner, "build/art/PLAN_ROUTE2_v1.png"),
 	"viridian_forest": (dessiner_foret, "build/art/PLAN_FORET_JADE_v2.png"),
 	"route_3": (dessiner_route_3, "build/art/PLAN_ROUTE3_v1.png"),
 	"route_4_sas": (dessiner_sas, "build/art/PLAN_ROUTE4_SAS_v1.png"),
+	"route_4": (dessiner_j13, "build/art/PLAN_ROUTE4_v1.png"),
+	"azuria": (dessiner_j13, "build/art/PLAN_AZURIA_v1.png"),
+	"route_24": (dessiner_j13, "build/art/PLAN_ROUTE24_v1.png"),
+	"azuria_arene": (dessiner_j13, "build/art/PLAN_AZURIA_ARENE_v1.png"),
 }
 
 
@@ -1169,6 +1593,8 @@ def main() -> int:
 		print(annoter_foret(grille, sortie, sortie.with_name(sortie.stem + "_annote.png")))
 	if fonction is dessiner_route_3 and "--annote" in sys.argv:
 		print(annoter_route_3(grille, sortie, sortie.with_name(sortie.stem + "_annote.png")))
+	if fonction is dessiner_j13 and "--annote" in sys.argv:
+		print(annoter_j13(grille, sortie, sortie.with_name(sortie.stem + "_annote.png")))
 	return 0
 
 
