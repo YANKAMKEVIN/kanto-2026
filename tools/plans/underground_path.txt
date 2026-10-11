@@ -76,7 +76,7 @@ alcove_2            alcove         10..12,9..11 libre   role=A2 ouvre=sud   # pi
 alcove_3            alcove         21..23,19..21 libre  role=A3 ouvre=ouest  # banc de pierre
 renflement          repere         8..14,14     libre   role=renflement  # élargit S2 d'une rangée
 passant             pnj            11,14        bloque  role=P1 facing=up  # respiration, indice discret sur l'alcôve voisine
-underground_hidden_1 cache         11,9         bloque  role=O1 item=full_heal indice=pierre_desellee  # Guérison, EXAMINER depuis (11, 10) tourné ↑
+underground_hidden_1 cache         11,9         bloque  role=O1 item=full_restore indice=pierre_desellee  # Guérison, EXAMINER depuis (11, 10) tourné ↑
 stele_1             repere         7,6          bloque  role=decor
 banc_3              repere         23,20        bloque  role=decor
 applique_1          repere         2,8;5,2      bloque  role=lampe  # appliques sur la paroi ouest de S1

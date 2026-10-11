@@ -364,9 +364,9 @@ def verifier_souterrain(chemin: Path) -> bool:
 	fond = any(c in a_.cells for a_ in alcoves)
 	acces = [x for x in _acces(m, p) if x in dist]
 	critere(fond and plan.at(*c) == "n" and p.bloque and "indice" in p.attrs and acces
-		and p.attrs.get("item") == "full_heal",
+		and p.attrs.get("item") == "full_restore",
 		f"{p.ident} {c} : pierre descellée « n » (case bloquée) au fond d'une alcôve, Guérison "
-		f"(full_heal), indice {p.attrs.get('indice')}, atteignable de face depuis {acces}")
+		f"(full_restore), indice {p.attrs.get('indice')}, atteignable de face depuis {acces}")
 	critere(m.libre(c) is False, "la pierre descellée ne se traverse pas")
 	diag = _diagonales(plan, m)
 	critere(not diag, f"angles droits : aucun contact en diagonale seule {diag[:3] if diag else ''}")
