@@ -57,10 +57,10 @@
 		"qualite": 90
 	},
 	"cerulean_gym_bassin": {
-		"composition": "COMBAT_DECOR_GYM_AZURIA_BASSIN_r1.png",
+		"composition": "COMBAT_DECOR_GYM_AZURIA_BASSIN_r2.png",
 		"tuiles": [
-			{ "image": "COMBAT_DECOR_GYM_AZURIA_BASSIN_r1_TL.png", "portion": [0, 0, 1000, 852] },
-			{ "image": "COMBAT_DECOR_GYM_AZURIA_BASSIN_r1_TR.png", "portion": [846, 0, 1846, 852] }
+			{ "image": "COMBAT_DECOR_GYM_AZURIA_BASSIN_r2_TL.png", "portion": [0, 0, 1000, 852] },
+			{ "image": "COMBAT_DECOR_GYM_AZURIA_BASSIN_r2_TR.png", "portion": [846, 0, 1846, 852] }
 		],
 		"taille": [2340, 1080],
 		"qualite": 90
