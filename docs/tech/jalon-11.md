@@ -466,7 +466,7 @@ et lui retire 1/16 de PV par tour. Victoires de Salamèche seul selon son niveau
 N12 0 → 3,5 % · N14 0,5 → 6 % · N15 0,5 → 12,5 % · N16 21,5 → 47,5 % · N17 46 → 60 % ·
 N18 72 → 80,5 %. Kevin à l'arrivée (route + Liam, 5 Potions) : 0 → 2 %. Bulbizarre et Carapuce :
 inchangés (± 1,5 point). Grille Onix (Racaillou 10/10) Kevin 5 Potions : 8,5 → 23,5 %. Liam
-(Salamèche seul) : 34,5 → 44 %. **Signalé à Kevin, rien de corrigé** (risque noté au §7) :
+(Salamèche seul) : 34,5 → 44 %. **Signalé à Kevin, rien de corrigé ; décision de Kevin (2026-10-11) : « garde comme ça »** (risque noté au §7) :
 Pierre reste un mur pour Salamèche sous N15, ce qui reste l'intention du dossier 12.
 
 ### T9 — QA des statuts : départ `status_qa` (2026-10-11, 11A) — **écart au plan §2.5**
