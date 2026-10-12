@@ -11,6 +11,8 @@ Route 5 (profil `verifier_route_5`) :
   - Pension (7 × 6, porte au bas), jardin clos (clôture fermée, fleurs inatteignables, visible
     depuis le chemin), poste de garde (7 × 4) et bâtiment du souterrain (7 × 4) : emprises exactes ;
   - arrivée → Pension, poste, souterrain ; retour vers Azuria depuis chacun ; ordre ①②③ ;
+  - v2 : le chemin serpente (2 à 3 décalages latéraux nets, segments de 3 cases), antenne de
+    détour facultatif vers le petit bois ;
   - chemins d'au moins 2 cases de large (fenêtres 2 × 2) jusqu'aux trois portes ;
   - hautes herbes : H1 et H2, blocs rectangulaires nets, évitables (distance inchangée) ;
   - aucun Dresseur ; 2 PNJ ; 1 objet visible, 1 caché (case bloquée, indice, atteignable) ;
@@ -196,6 +198,31 @@ def verifier_route_5(chemin: Path) -> bool:
 	critere(max(d_p, d_g, d_e) < INF, f"arrivée → Pension {d_p} pas, → poste {d_g} pas, "
 		f"→ souterrain {d_e} pas")
 	critere(d_p < d_g and d_p < d_e, "ordre ① ② ③ : la Pension avant le carrefour")
+
+	# 3 bis. Le chemin serpente (v2) : segments de 3 cases de large, décalages nets de ≥ 3 cases.
+	debuts = []
+	for y in range(0, 57):
+		run = [x for x in range(plan.width) if plan.at(x, y) == "="]
+		if run and len(run) == 3 and run[-1] - run[0] == 2:
+			if not debuts or debuts[-1][1] != run[0]:
+				debuts.append((y, run[0]))
+	decalages = [(a[1], b[1]) for a, b in zip(debuts, debuts[1:]) if abs(a[1] - b[1]) >= 3]
+	critere(2 <= len(decalages) <= 3 and len(decalages) == len(debuts) - 1,
+		f"le chemin serpente : {len(decalages)} décalages latéraux nets {decalages} (2 à 3, "
+		"angles droits)")
+	cx = lambda y: [x for x in range(plan.width) if plan.at(x, y) == "="]  # noqa: E731
+	critere(all(len(cx(y)) >= 3 for y in range(0, 57)),
+		"largeur du chemin d'au moins 3 cases du raccord au carrefour (y 0..56)")
+	# Détour facultatif vers le petit bois : antenne de chemin qui ne mène à aucune porte.
+	cache = plan.of_kind("cache")[0].cells[0]
+	sans_antenne = m.sans({(x, y) for (x, y) in plan.cells_of("=") if x < 19 and 32 <= y <= 33})
+	d_sans = sans_antenne.distances(entree)
+	critere(all(d_sans.get(c, INF) < INF for c in (porte_p, porte_g, porte_e)),
+		"détour facultatif : l'antenne du petit bois n'est sur le trajet d'aucune porte")
+	antenne = sorted(c for c in plan.cells_of("=") if c[0] < 19 and 32 <= c[1] <= 33)
+	critere(len(antenne) >= 12 and abs(cache[1] - antenne[0][1]) <= 2,
+		f"antenne de chemin de {len(antenne)} cases ({antenne[0]}..{antenne[-1]}) au pied du "
+		f"bois, objet caché {cache} à côté")
 
 	# 4. Retour vers Azuria.
 	for nom_p, spawn in (("Pension", "from_pension"), ("poste", "from_poste"),

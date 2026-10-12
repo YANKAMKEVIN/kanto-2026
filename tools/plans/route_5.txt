@@ -1,22 +1,30 @@
-# Route 5 — grille fonctionnelle (jalon 15, dossier 18 §3, §4.1, §7, §11 ; préparée le 2026-10-11
-# pour la vue générale peinte). Source UNIQUE de la géométrie : plan en aplats
-# (tools/art/plan_aplats_j15.py), vue générale peinte, puis outil de construction et tests du 15A.
-# Un changement de composition se fait ICI d'abord, puis plan, puis image. Contrôle :
-# tools/art/plan_check_j15.py (profil verifier_route_5).
+# Route 5 — grille fonctionnelle, VERSION 2 (jalon 15, dossier 18 §3, §4.1, §7, §11, §13.1 ;
+# v1 du 2026-10-11, v2 du 2026-10-12 : le chemin serpente, fini l'effet couloir). Source UNIQUE de
+# la géométrie : plan en aplats (tools/art/plan_aplats_j15.py), vue générale peinte, puis outil de
+# construction et tests du 15A. Un changement de composition se fait ICI d'abord, puis plan, puis
+# image. Contrôle : tools/art/plan_check_j15.py (profil verifier_route_5).
 #
 # 42 × 62 cases (enveloppe du dossier, §3.1) ; nord en haut ; x = colonne 0..41, y = rangée 0..61.
 # Raccord nord : (19..21, 0) ↔ Azuria (sortie sud du J14, spawn from_cerulean côté Azuria).
 # Aucune sortie sud : la route se termine au carrefour (poste de garde + entrée du souterrain).
 # Angles droits uniquement ; chemins d'au moins 2 cases de large (compagnon du J11) : ici 3.
 #
+# LE CHEMIN SERPENTE : trois décalages latéraux nets (aucune diagonale), de 3 cases de large :
+#   A  x 19..21, y 0..9   → décalage OUEST (rangées 10-11, x 13..21) →
+#   B  x 13..15, y 12..19 → décalage EST (rangées 20-21, x 13..21) →
+#   C  x 19..21, y 22..37 (la Pension) → décalage EST (rangées 38-39, x 19..27) →
+#   D  x 25..27, y 40..58 (le carrefour) ; branche est y 46-47, branche ouest y 57-58.
+# Entre les bras, de la forêt dense (le « S » x 18..21, y 12..19 ; les bosquets du carrefour).
+#
 # Trois séquences (§3.1), du nord au sud :
-#   ① y 0..19 — L'ARRIVÉE : chemin large entre deux prairies, bloc d'herbes H1 à l'est (évitable),
-#      bosquet à l'ouest, Super Potion visible au bord ouest.
-#   ② y 20..37 — LA PENSION : bâtiment au toit chaud (7 × 6) à l'est du chemin, porte au sud
+#   ① y 0..21 — L'ARRIVÉE : chemin entre deux prairies, bloc d'herbes H1 à l'est (évitable, hors
+#      du chemin), bras B à l'ouest dans un couloir de forêt, Super Potion au bord ouest.
+#   ② y 22..37 — LA PENSION : bâtiment au toit chaud (7 × 6) à l'est du chemin, porte au sud
 #      (parvis de chemin), JARDIN CLOS à l'est du bâtiment (clôture 7 × 10, fleurs, aucun Pokémon),
-#      visible depuis le chemin sans flèche ; promeneuse devant la clôture ; petit bois à l'ouest
-#      (Antidote caché au pied du bois).
-#   ③ y 38..58 — LE CARREFOUR : herbes H2 à l'est du chemin ; branche est → poste de garde de
+#      visible depuis le chemin sans flèche ; promeneuse devant la clôture ; petit bois à
+#      l'ouest : DÉTOUR FACULTATIF par l'antenne de chemin y 32-33 (x 12..18), Antidote caché au
+#      pied du bois (16, 31).
+#   ③ y 38..58 — LE CARREFOUR : herbes H2 à l'est du bras D ; branche est → poste de garde de
 #      Safrania (7 × 4, porte au sud, FERMÉ : l'intérieur renvoie le joueur) ; branche ouest →
 #      bâtiment d'entrée du souterrain (7 × 4, porte au sud, escalier). Voyageur au carrefour.
 # Aucun Dresseur (RB). Retour vers Azuria possible depuis tout point.
@@ -41,25 +49,25 @@ GRILLE 42 62
 03 TTTTTTTTTTTTTTT....===....TTTTTTTTTTTTTTTT
 04 TTTTTTTTTTTTTTT....===....TTTTTTTTTTTTTTTT
 05 TTTTTTTTTTTTTTT....===....TTTTTTTTTTTTTTTT
-06 TTTTTTTTTTTT.......===........TTTTTTTTTTTT
-07 TTTTTTTTTTTT.......===........TTTTTTTTTTTT
-08 TTTTTTTTTTTT.......===.hhhhh..TTTTTTTTTTTT
-09 TTTTTTTTTTTT.......===.hhhhh..TTTTTTTTTTTT
-10 TTTTTTTTTTTT.......===.hhhhh..TTTTTTTTTTTT
-11 TTTTTTTTTTTT.......===.hhhhh..TTTTTTTTTTTT
-12 TTTTTTTTTTTT.......===.hhhhh..TTTTTTTTTTTT
-13 TTTTTTTTTTTT.......===.hhhhh..TTTTTTTTTTTT
-14 TTTTTTTTTTTT.......===........TTTTTTTTTTTT
-15 TTTTTTTTTTTTTTT....===........TTTTTTTTTTTT
-16 TTTTTTTTTTTTTTT....===........TTTTTTTTTTTT
-17 TTTTTTTTTTTTTTT....===........TTTTTTTTTTTT
-18 TTTTTTTTTTTT.......===........TTTTTTTTTTTT
-19 TTTTTTTTTTTT.......===........TTTTTTTTTTTT
-20 TTTTTTTTTTTTTTTT...===...TTTTTTTTTTTTTTTTT
-21 TTTTTTTTTTTTTTTT...===...TTTTTTTTTTTTTTTTT
+06 TTTTTTTTTTTTTTTT...===........TTTTTTTTTTTT
+07 TTTTTTTTTTTTTTTT...===........TTTTTTTTTTTT
+08 TTTTTTTTTTTTT......===..hhhhh.TTTTTTTTTTTT
+09 TTTTTTTTTTTTT......===..hhhhh.TTTTTTTTTTTT
+10 TTTTTTTTTTT..=========..hhhhh.TTTTTTTTTTTT
+11 TTTTTTTTTTT..=========..hhhhh.TTTTTTTTTTTT
+12 TTTTTTTTTTT..===..TTTT..hhhhh.TTTTTTTTTTTT
+13 TTTTTTTTTTT..===..TTTT..hhhhh.TTTTTTTTTTTT
+14 TTTTTTTTTTT..===..TTTT........TTTTTTTTTTTT
+15 TTTTTTTTTTT..===..TTTT........TTTTTTTTTTTT
+16 TTTTTTTTTTT..===..TTTTTTTTTTTTTTTTTTTTTTTT
+17 TTTTTTTTTTT..===..TTTTTTTTTTTTTTTTTTTTTTTT
+18 TTTTTTTTTTT..===..TTTTTTTTTTTTTTTTTTTTTTTT
+19 TTTTTTTTTTT..===..TTTTTTTTTTTTTTTTTTTTTTTT
+20 TTTTTTTTTTT..=========...TTTTTTTTTTTTTTTTT
+21 TTTTTTTTTTT..=========...TTTTTTTTTTTTTTTTT
 22 TTTTTTTTTTTT.......===..WWWWWWWccccccc...T
 23 TTTTTTTTTTTT.......===..WWWWWWWcjjjjjc...T
-24 TTTTTTTTTTTT.......===..WWWWWWWcjjjjjc...T
+24 TTTTTTTTTTTT..TTTT.===..WWWWWWWcjjjjjc...T
 25 TTTTTTTTTTTT..TTTT.===..WWWWWWWcjjjjjc...T
 26 TTTTTTTTTTTT..TTTT.===..WWWWWWWcjjjjjc...T
 27 TTTTTTTTTTTT..TTTT.===..WWWDWWWcjjjjjc...T
@@ -67,33 +75,33 @@ GRILLE 42 62
 29 TTTTTTTTTTTT..TTTT.==========..cjjjjjc...T
 30 TTTTTTTTTTTT..TTTT.===.........cjjjjjc...T
 31 TTTTTTTTTTTT.......===.........ccccccc...T
-32 TTTTTTTTTTTT.......===...................T
-33 TTTTTTTTTTTT.......===...................T
+32 TTTTTTTTTTTT==========...................T
+33 TTTTTTTTTTTT==========...................T
 34 TTTTTTTTTTTT.......===...................T
 35 TTTTTTTTTTTT.......===...................T
 36 TTTTTTTTTTTTTTTT...===...TTTTTTTTTTTTTTTTT
 37 TTTTTTTTTTTTTTTT...===...TTTTTTTTTTTTTTTTT
-38 TTTTTTTTTTT........===.................TTT
-39 TTTTTTTTTTT........===..hhhhhh.........TTT
-40 TTTTTTTTTTT........===..hhhhhh.........TTT
-41 TTTTTTTTTTT........===..hhhhhh.PPPPPPP.TTT
-42 TTTTTTTTTTT........===..hhhhhh.PPPPPPP.TTT
-43 TTTTTTTTTTT........===..hhhhhh.PPPPPPP.TTT
-44 TTTTTTTTTTT........===..hhhhhh.PPPGPPP.TTT
-45 TTTTTTTTTTT........===...........===...TTT
-46 TTTTTTTTTTT........=================...TTT
-47 TTTTTT.............=================...TTT
-48 TTTTTT.............===.................TTT
-49 TTTTTT..TTTTT......===.................TTT
-50 TTTTTT..TTTTT......===.................TTT
-51 TTTTTT..TTTTT......===.................TTT
-52 TTTTTT.............===.................TTT
-53 TTTTTT..UUUUUUU....===.................TTT
-54 TTTTTT..UUUUUUU....===.................TTT
-55 TTTTTT..UUUUUUU....===.................TTT
-56 TTTTTT..UUUEUUU....===.................TTT
-57 TTTTTT....============.................TTT
-58 TTTTTT....============.................TTT
+38 TTTTTTTTTTT........=========...........TTT
+39 TTTTTTTTTTT........=========...........TTT
+40 TTTTTTTTTTTTTTTTTT.......===...........TTT
+41 TTTTTTTTTTTTTTTTTTTTTTTT.===...PPPPPPP.TTT
+42 TTTTTTTTTTTTTTTTTTTTTTTT.===...PPPPPPP.TTT
+43 TTTTTTTTTTTTTTTTTTTTTTTT.===...PPPPPPP.TTT
+44 TTTTTTTTTTTTTTTTTTTTTTTT.===...PPPGPPP.TTT
+45 TTTTTTTTTTTTTTTTTTTTTTTT.===.....===...TTT
+46 TTTTTTTTTTT.......TTTTTT.===========...TTT
+47 TTTTTT...................===========...TTT
+48 TTTTTT....TTTT...........===...........TTT
+49 TTTTTT....TTTT...........===..hhhhhh...TTT
+50 TTTTTT....TTTT...........===..hhhhhh...TTT
+51 TTTTTT....TTTT...........===..hhhhhh...TTT
+52 TTTTTT...................===..hhhhhh...TTT
+53 TTTTTT..UUUUUUU..........===..hhhhhh...TTT
+54 TTTTTT..UUUUUUU..........===...........TTT
+55 TTTTTT..UUUUUUU..........===TTTTTTTTTTTTTT
+56 TTTTTT..UUUEUUU..........===TTTTTTTTTTTTTT
+57 TTTTTT....==================TTTTTTTTTTTTTT
+58 TTTTTT....==================TTTTTTTTTTTTTT
 59 TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 60 TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 61 TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
@@ -113,13 +121,13 @@ from_poste          spawn          34,45        libre   # sortie du poste, tourn
 souterrain_entree   warp           11,56        libre   # STEP_ON ↑ → route_5_underground_gate (10 × 8, escalier) puis underground_path
 from_souterrain     spawn          11,57        libre   # sortie du bâtiment d'entrée, tournée ↓
 promeneuse          pnj            30,30        bloque  role=P1 facing=right  # devant la clôture du jardin : parle de la Pension
-voyageur            pnj            23,48        bloque  role=P2 facing=left  # revient de Safrania fermée ; indique le souterrain
-route_5_item_1      objet_visible  13,12        bloque  role=O1 item=super_potion  # bord ouest de la prairie de l'arrivée
-route_5_hidden_1    cache          16,31        bloque  role=O2 item=antidote indice=tronc  # Antidote : tronc couché d'une autre teinte, au pied du petit bois (EXAMINER depuis (16, 32))
+voyageur            pnj            24,48        bloque  role=P2 facing=right  # revient de Safrania fermée ; indique le souterrain
+route_5_item_1      objet_visible  11,15        bloque  role=O1 item=super_potion  # bord ouest de la prairie du premier décalage
+route_5_hidden_1    cache          16,31        bloque  role=O2 item=antidote indice=tronc  # Antidote : tronc couché d'une autre teinte, au pied du petit bois, au bout du détour (EXAMINER depuis (16, 32))
 panneau_route       panneau        22,5         bloque  # « ROUTE 5 » / « Azuria ← → Carmin-sur-Mer », lu depuis (21, 5) →
 panneau_pension     panneau        23,30        bloque  # « PENSION POKÉMON », lu depuis (23, 29) ↓
-panneau_carrefour   panneau        22,50        bloque  # « SAFRANIA → / PASSAGE SOUTERRAIN ← », lu depuis (21, 50) →
+panneau_carrefour   panneau        28,48        bloque  # « SAFRANIA → / PASSAGE SOUTERRAIN ← », lu depuis (27, 48) →
 herbes_h1           herbes         25,10        libre   role=H1  # bloc de l'arrivée (évitable)
-herbes_h2           herbes         26,41        libre   role=H2  # bloc du carrefour (évitable)
+herbes_h2           herbes         32,51        libre   role=H2  # bloc du carrefour (évitable)
 jardin_pension      repere         32..36,23..30 bloque role=jardin  # fleurs ; clos par la clôture (31..37, 22..31)
 FIN

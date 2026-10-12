@@ -114,8 +114,9 @@ def dessiner_route_5(plan: Plan, sortie: Path, annote: bool = False) -> Path:
 		etiq((11, 54), "SOUTERRAIN", (255, 255, 255), -34, -4)
 		etiq((34, 26), "jardin clos", (60, 20, 40), -30, -8)
 		etiq((20, 0), "AZURIA", (255, 255, 255), -24, 4, gros)
-		etiq((13, 46), "① arrivée y0-19  ② Pension y20-37  ③ carrefour y38-58", (255, 255, 255),
-			-120, 0)
+		etiq((13, 34), "détour facultatif", (255, 255, 255), -10, -2)
+		etiq((22, 17), "① arrivée y0-21  ② Pension y22-37  ③ carrefour y38-58", (255, 255, 255),
+			8, 0)
 		for y in range(0, plan.height, 10):
 			d.text((2, marge + y * case), str(y), fill=(255, 255, 255), font=police)
 		for x in range(0, plan.width, 10):
@@ -206,8 +207,8 @@ def main() -> int:
 	r5 = lire(RACINE / "tools/plans/route_5.txt")
 	sou = lire(RACINE / "tools/plans/underground_path.txt")
 	for chemin in (
-		dessiner_route_5(r5, sortie / "PLAN_ROUTE5_v1.png"),
-		dessiner_route_5(r5, sortie / "PLAN_ROUTE5_v1_annote.png", True),
+		dessiner_route_5(r5, sortie / "PLAN_ROUTE5_v2.png"),
+		dessiner_route_5(r5, sortie / "PLAN_ROUTE5_v2_annote.png", True),
 		dessiner_souterrain(sou, sortie / "PLAN_SOUTERRAIN_v1.png"),
 		dessiner_souterrain(sou, sortie / "PLAN_SOUTERRAIN_v1_annote.png", True),
 	):

@@ -330,7 +330,7 @@ Les grilles font foi pour la géométrie (contrôles verts : `tools/art/plan_che
 
 | Carte | Grille | Taille | Remarque |
 |---|---|---|---|
-| Route 5 | `tools/plans/route_5.txt` | 42 × 62 | **v2 à faire** : le chemin descend tout droit, effet couloir ; le faire serpenter à angles droits, avec un détour vers le petit bois |
+| Route 5 | `tools/plans/route_5.txt` | 42 × 62 | **v2 faite (2026-10-12), à valider** : le chemin serpente à angles droits (3 décalages), avec un détour vers le petit bois |
 | Souterrain | `tools/plans/underground_path.txt` | 26 × 30 | 40 pas, 2 coudes, 3 alcôves, Guérison en A2 |
 | Route 6 | `tools/plans/route_6.txt` | 42 × 56 | Chloé inévitable au goulet, 68 pas |
 | Carmin | `tools/plans/vermilion_city.txt` | 64 × 43 | quai dans la carte ; le S.S. Anne se découvre en descendant vers le quai (la cheminée au-dessus des toits relève de la peinture) |
