@@ -44,6 +44,15 @@ const GATE_GUARDS: Array[StringName] = [&"forest_gate_north_guard", &"forest_gat
 ## T13 : les intérieurs d'Argenta sont dans [constant MAPS] (Musée, maisons, Arène : retirés).
 ## T11 : la Route 2 nord et Argenta (extérieur) sont dans [constant MAPS] : liste vide.
 const UNUSED_YET: Array[StringName] = [
+	# Jalon 15 (T12) : Dresseurs de la Route 6, posés avec la carte (T14, T15).
+	&"route_6_camper_gabin_after", &"route_6_camper_gabin_before",
+	&"route_6_camper_gabin_defeated", &"route_6_camper_mathis_after",
+	&"route_6_camper_mathis_before", &"route_6_camper_mathis_defeated",
+	&"route_6_lass_chloe_after", &"route_6_lass_chloe_before", &"route_6_lass_chloe_defeated",
+	&"route_6_lass_manon_after", &"route_6_lass_manon_before", &"route_6_lass_manon_defeated",
+	&"route_6_scout_axel_after", &"route_6_scout_axel_before", &"route_6_scout_axel_defeated",
+	&"route_6_scout_basile_after", &"route_6_scout_basile_before",
+	&"route_6_scout_basile_defeated",
 ]
 ## Jalon 10 : textes verrouillés du dossier 12 (même forme que le dossier 10) et lot de textes du
 ## J10 (panneaux, noms affichés), où un retour à la ligne est écrit « \n ».
@@ -54,6 +63,8 @@ const DOSSIER_14 := "res://docs/design/dossier-14-systemes-j11.md"
 ## Jalon 8 : textes T1–T16 validés (dossier 11, « Textes à valider ») ; dans son tableau, « / »
 ## marque le retour à la ligne de la bulle et le gras (« ** ») le titre d'un panneau.
 const DOSSIER_11 := "res://docs/design/dossier-11-route-2.md"
+## Jalon 15 : lot de textes validé du dossier 18 (§15, 2026-10-12).
+const DOSSIER_18 := "res://docs/design/dossier-18-carmin-sur-mer.md"
 const _DOSSIER_TOKENS: Dictionary[String, String] = {"{first_wild_species}": "{espèce}"}
 const MAPS: Array[StringName] = [
 	&"player_house_2f", &"player_house_1f", &"rival_house", &"oak_lab", &"pallet_town",
@@ -119,6 +130,15 @@ const IDS: Array[StringName] = [
 	&"route_2_north_ball_1", &"route_2_north_mountaineer", &"route_2_north_rockslide",
 	&"route_2_north_sign",
 	&"route_2_sign", &"route_2_youngster",
+	# Jalon 15 (T12) : Dresseurs de la Route 6 (dossier 18 §15.5).
+	&"route_6_camper_gabin_after", &"route_6_camper_gabin_before",
+	&"route_6_camper_gabin_defeated", &"route_6_camper_mathis_after",
+	&"route_6_camper_mathis_before", &"route_6_camper_mathis_defeated",
+	&"route_6_lass_chloe_after", &"route_6_lass_chloe_before", &"route_6_lass_chloe_defeated",
+	&"route_6_lass_manon_after", &"route_6_lass_manon_before", &"route_6_lass_manon_defeated",
+	&"route_6_scout_axel_after", &"route_6_scout_axel_before", &"route_6_scout_axel_defeated",
+	&"route_6_scout_basile_after", &"route_6_scout_basile_before",
+	&"route_6_scout_basile_defeated",
 	&"sign_pallet_town",
 	&"storage_terminal",
 	&"viridian_courier",
@@ -549,6 +569,7 @@ func test_texts_are_the_dossier_02_texts_word_for_word() -> void:
 	var dossier_12 := FileAccess.get_file_as_string(DOSSIER_12)
 	var lot_j10 := FileAccess.get_file_as_string(LOT_J10)
 	var dossier_14 := FileAccess.get_file_as_string(DOSSIER_14)
+	var dossier_18 := FileAccess.get_file_as_string(DOSSIER_18)
 	for row: Array in _pages():
 		if GATE_GUARDS.has(row[0]):
 			continue
@@ -566,7 +587,8 @@ func test_texts_are_the_dossier_02_texts_word_for_word() -> void:
 			or dossier_10.contains(_as_dossier_10(text))
 			or dossier_12.contains(_as_dossier_10(text))
 			or lot_j10.contains("| « %s » |" % text.replace("\n", "\\n"))
-			or _each_line_quoted(dossier_14, text),
+			or _each_line_quoted(dossier_14, text)
+			or _in_dossier_18(dossier_18, text),
 			"%s : « %s » dans un dossier de conception" % [row[0], text])
 
 
@@ -577,6 +599,17 @@ func _each_line_quoted(dossier: String, text: String) -> bool:
 		if not dossier.contains("« %s »" % line):
 			return false
 	return true
+
+
+## Jalon 15 : vrai si [param text] (retours à la ligne de la bulle remplacés par des espaces) est
+## dans une réplique « … » du lot validé du dossier 18 (§15 : une réplique longue peut tenir sur
+## plusieurs pages, coupées entre deux phrases ; test_vermilion_data vérifie la réplique entière).
+func _in_dossier_18(dossier: String, text: String) -> bool:
+	var flat := text.replace("\n", " ")
+	for quote: RegExMatch in RegEx.create_from_string("« (.+?) »").search_all(dossier):
+		if quote.get_string(1).contains(flat):
+			return true
+	return false
 
 
 func test_speakers_and_narration() -> void:

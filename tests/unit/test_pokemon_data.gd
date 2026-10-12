@@ -72,10 +72,14 @@ func test_real_data_loads_without_error() -> void:
 		&"caterpie", &"metapod", &"butterfree", &"weedle", &"kakuna", &"beedrill",
 		&"pidgey", &"pidgeotto", &"pidgeot", &"rattata", &"raticate", &"spearow", &"fearow",
 		&"pikachu", &"raichu", &"sandshrew", &"sandslash", &"nidoran_f", &"nidorina",
-		&"nidoqueen", &"nidoran_m", &"nidorino", &"nidoking", &"mankey", &"primeape",
+		&"nidoqueen", &"nidoran_m", &"nidorino", &"nidoking",
+		# Jalon 15 (T12) : Miaouss et Persan (kanto_vermilion.json).
+		&"meowth", &"persian",
+		&"mankey", &"primeape",
 		&"geodude", &"graveler", &"golem", &"onix"] as Array[StringName])
-	assert_eq(_data.get_move_ids().size(), 67,
-		"47 + 12 de la Forêt de Jade (jalon 9) + 7 d'Argenta (jalon 10) + Patience (J11)")
+	assert_eq(_data.get_move_ids().size(), 68,
+		"47 + 12 de la Forêt de Jade (jalon 9) + 7 d'Argenta (jalon 10) + Patience (J11)"
+		+ " + Jackpot (J15)")
 	assert_true(_data.has_move(&"struggle"))
 
 
@@ -129,6 +133,8 @@ func test_real_evolution_chains() -> void:
 		# Argenta (jalon 10, §2.3) : Rouge/Bleu ; Grolem par échange (« ??? » au Pokédex).
 		&"sandshrew": [&"sandslash", 22], &"geodude": [&"graveler", 25],
 		&"graveler": [&"golem", &""],
+		# Carmin-sur-Mer (jalon 15, §2.7.1) : Rouge/Bleu.
+		&"meowth": [&"persian", 28],
 	}
 	for id: StringName in _data.get_species_ids():
 		var rules := _data.get_species(id).evolutions
@@ -381,6 +387,8 @@ func test_real_catch_rates_are_the_official_ones() -> void:
 		&"weedle": 255, &"kakuna": 120, &"beedrill": 45, &"pikachu": 190, &"raichu": 75,
 		&"sandshrew": 255, &"sandslash": 90, &"geodude": 255, &"graveler": 120, &"golem": 45,
 		&"onix": 45,
+		# Jalon 15 (T12).
+		&"meowth": 255, &"persian": 90,
 	}
 	assert_eq(_data.get_species_ids().size(), expected.size(), "toutes les espèces")
 	for id: StringName in _data.get_species_ids():
