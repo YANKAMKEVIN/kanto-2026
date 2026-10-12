@@ -692,3 +692,22 @@ ou d'un saut, jamais hors du chemin du joueur). **Rien n'est encore branché au 
 - Tests : relais des trois genres de pas (`test_player`), routine qui attend puis repart
   (`test_npc_routine_hold`), occupation douce (`test_grid_world`), cible et appui face à un faux
   compagnon (`test_interaction_controller`). Rien n'utilise encore ces points (T20b–c).
+
+### T20b — nœud du compagnon (2026-10-12, 11D)
+
+`game/world/companion/companion.gd` (`Companion`, construit en code, ≤ 6 nœuds : sprite, ombre,
+devant de touffe, bulle) : planche **peinte** seule (`set_species` refuse une planche absente,
+aucun substitut) ; `move(step)` glisse sur la durée du pas du joueur (marche 0,27, course 0,16,
+saut 0,40), demi-cycle de `walk_<dir>` (course : animation accélérée, D-3), saut de rebord en arc
+de 48 px ; apparition (`Step.appear`) à la fin du pas ; `appear()` / `withdraw()` : éclat de Ball
+0,4 s (grandit / rétrécit dans un blanc), 0,15 s en simple fondu avec « Réduire les animations »
+(D-6) ; `hop()` (12 px, 0,25 s) ; bulles par `EmoteBubble` (`game/world/emote_bubble.gd`, même
+logique et mêmes jetons que la bulle « ! » des Dresseurs) avec deux icônes SVG d'interface
+nouvelles (`emote_note.svg` « ♪ », `emote_dots.svg` « … »). Devant de touffe : la bande d'herbe de
+la carte **coupée à 45 % de la hauteur du Pokémon** [D] (la bande du joueur cachait un petit
+Pokémon tout entier). En vol (`flying`) : sprite levé de 28 px, pas de devant de touffe.
+**Écart à la conception** : la bulle des PNJ n'est pas encore refactorisée vers `EmoteBubble`
+(même logique dupliquée, à reprendre sans risque plus tard). Tests : `test_companion_node`
+(planche peinte seule, 6 nœuds, aucune case occupée, durées marche / course, arc du saut, herbes,
+apparition en fin de pas, éclat et sa version réduite, bulles, saut de joie). Captures relues
+(`tools/capture_companion_j11.gd`, Route 1 : derrière le joueur, bulle « ♪ », dans les herbes).
