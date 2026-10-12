@@ -800,6 +800,11 @@ et de l'annexe A validée.
 #### T2 — constructeur-monde (Mac, Codex) : série 16 → **14.0-art** — **maintenant**, après T1
 - Génération (trois à la fois, corrections en `_r2`) ; repli app ChatGPT si Codex refuse ;
   planche de contact `build/captures/jalon14_assets/` → Kevin. **CA** : images validées.
+- **Fait (2026-10-12, branche `j14-t1`)** : 7 images générées en `_r1`, sans reprise (Codex), relues
+  contre la fiche ; planche `build/captures/jalon14_assets/serie16_contact.png` (non versionnée).
+  Écarts à valider par Kevin : Léo humain lit plus « jeune » que 25 ans (proportions chibi de la
+  main du projet) ; rivage : fine ligne d'eau claire au pied des blocs, un peu d'écume possible
+  (`_r2` « ni écume » si refusé) ; cabine : anneau bleu lumineux au sol (pas de halo extérieur).
 
 #### T3 — Kevin : annexe A — **maintenant**
 - **CA** : validée en une passe ; bloque les données concernées (T5, T16, T17), pas le code.
