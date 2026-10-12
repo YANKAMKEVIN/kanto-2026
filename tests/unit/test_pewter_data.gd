@@ -136,9 +136,11 @@ func test_new_move_texts_are_the_validated_lot() -> void:
 		assert_true(_lot.contains("| « %s » |" % move.name), "%s : nom" % id)
 		assert_true(_lot.contains("| « %s » |" % move.description), "%s : description" % id)
 		assert_false(move.draft, String(id))
-	# Note A1 : ni « Ligotage », ni « Autodestruction ». « Patience » (bide) arrive au J11 avec la
-	# CT34 (dossier 14 §6.3), pas avec le J10.
-	assert_false(_data.has_move(&"wrap"))
+	# Note A1 : ni « Ligotage », ni « Autodestruction » pour Onix (Étreinte). « Ligotage » (wrap)
+	# existe depuis le jalon 13 (Chétiflor, données du J12 avancées) : jamais chez Onix.
+	# « Patience » (bide) arrive au J11 avec la CT34 (dossier 14 §6.3), pas avec le J10.
+	for entry: Array in _data.get_species(&"onix").learnset:
+		assert_ne(entry[1], &"wrap", "Onix : Étreinte, pas Ligotage")
 	assert_eq(_data.get_move(&"bide").name, "Patience")
 
 

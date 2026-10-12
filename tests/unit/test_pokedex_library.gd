@@ -10,6 +10,8 @@ const ENCOUNTERABLE: Array[StringName] = [
 	&"bulbasaur", &"charmander", &"squirtle", &"pidgey", &"rattata",
 	&"spearow", &"mankey", &"nidoran_f", &"nidoran_m", &"caterpie", &"weedle", &"pikachu",
 	&"geodude", &"onix", &"sandshrew",
+	# Jalon 13 (annexe A de jalon-13.md, validée le 2026-10-11) : les six formes de base.
+	&"staryu", &"horsea", &"shellder", &"goldeen", &"oddish", &"bellsprout",
 ]
 
 var _data: PokemonData
