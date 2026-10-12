@@ -1,7 +1,7 @@
 # Route 25 et Cap d'Azuria — grille fonctionnelle (jalon 14, V2 de Kevin et passe
-# docs/design/passes/j14-v2-alignement.md §3 ; BROUILLON du 2026-10-11, défauts de la règle 4,
-# préparé pour la vue générale peinte AVANT la validation du dossier 17 : équipes, objets et
-# textes restent à fixer par la consolidation). Source UNIQUE de la géométrie : plan en aplats
+# docs/design/passes/j14-v2-alignement.md §3) ; VALIDÉE le 2026-10-11, dossier 17 verrouillé le
+# 2026-10-12 (équipes, objets et textes : dossier-17-cap-azuria.md ; POSITIONS = défauts).
+# Kit d'art : série 16 (tools/art/serie16.py, fiche docs/design/fiches-assets/serie-16-cap-azuria.md). Source UNIQUE de la géométrie : plan en aplats
 # (tools/art/plan_aplats.py), vue générale peinte, puis outil de construction du J14. Un
 # changement de composition se fait ICI d'abord. Contrôle : tools/art/plan_check.py (profil
 # verifier_route_25, tools/art/plan_check_route_25.py).

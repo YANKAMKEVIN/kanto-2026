@@ -786,6 +786,16 @@ et de l'annexe A validée.
   deux grilles mis à jour (commentaires).
 - **CA** : chaque élément des deux vues a un asset (réutilisé, varié, nouveau) ou est abandonné
   explicitement ; aucune case de grille changée.
+- **Fait (2026-10-12, branche `j14-t1`)** : `tools/art/serie16.py` (`--prompts`, `--refs`,
+  `--ancres`, `--commandes`, `--planche`, `--contact`, `--manifeste` non lancé, `--controle`),
+  9 prompts (`tools/art/prompts/serie16/`, `attente/prompts/LEO_HUMAIN_ATTENTE.txt`,
+  `combat_decors/prompts/COMBAT_DECOR_ROUTE25_COTE_r1.txt`), 24 recadrages `REF_R25_*` /
+  `REF_LEO_*`, planche `build/art/R25_KIT_v1.png` relue, fiche
+  `docs/design/fiches-assets/serie-16-cap-azuria.md`, en-têtes des deux grilles (commentaires ;
+  `plan_check_route_25.py` conforme). **7 images** au lieu de ≈ 11 [D] : coquillage et clôture
+  réparée dans la planche du rivage, bureau dans la planche de Léo (+ bibliothèque de côté), deux
+  icônes sur une planche, barrière de police → conditionnel (croisillon de la série 15) ; look
+  `bill` (le look `leo` est Nils).
 
 #### T2 — constructeur-monde (Mac, Codex) : série 16 → **14.0-art** — **maintenant**, après T1
 - Génération (trois à la fois, corrections en `_r2`) ; repli app ChatGPT si Codex refuse ;
