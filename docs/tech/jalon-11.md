@@ -629,3 +629,18 @@ Départs de débogage seulement (la vraie sauvegarde n'est ni lue ni écrite). `
 5. Pierre dans une nouvelle partie (départ `brock_charmander` / `brock_squirtle`, victoire) :
    « Prends ceci aussi. » juste après « C'est la preuve de ta victoire / à l'Arène d'Argenta. ».
 6. Rapport `build/qa/jalon11_t16/rapport.md` → validation de 11B par Kevin.
+
+### T15 — évolution courte (2026-10-12, 11C)
+
+Jetons `UiTokens.EVOLUTION_*` : transformation 5,0 → **2,5 s**, entrée 0,7 → 0,6, silence 0,4 → 0,3,
+blanc en 0,4 s, bascules 0,45 → 0,045 s (≈ 20 bascules, toujours de plus en plus vite) ; total sans
+lecture **5,9 s** (au lieu de 8,5). `EvolutionScreen.rush()` : un toucher pendant la présentation,
+la transformation ou la révélation (hors bouton ARRÊTER) joue le reste ×2 (`EVOLUTION_RUSH`, vitesse
+des Tween de l'écran, rayons et poussières compris) ; retour à ×1 dès que la consigne « Touchez
+l'écran pour continuer » paraît, et à chaque nouvelle évolution. ARRÊTER et le retour Android
+inchangés ; « Réduire les animations » inchangé ; textes, logique (`Evolution`, `EvolutionDirector`)
+et Pokédex inchangés ; aucun écran de statistiques (A-9). Le blanc est remis à zéro quand la
+consigne paraît (dernier pas du fondu). Tests : `test_evolution_screen` (durée ≈ 6 s, bascules,
+toucher ×2 mesuré en temps simulé — `TweenClock.speed_of` —, ARRÊTER sans accélérer, remise à ×1
+d'une évolution à l'autre ; tests du J9 adaptés au nouveau tempo). `tools/capture_evolution.gd`
+recalé sur le nouveau tempo ; captures relues (11 images, `--fixed-fps 30`).

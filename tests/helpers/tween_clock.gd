@@ -16,6 +16,11 @@ extends RefCounted
 
 const STEP := 1.0 / 60.0
 
+## Vitesse d'un tween, que Tween n'expose pas (facultatif) : rend un facteur pour un tween, 1 par
+## défaut. Sert à l'écran d'évolution accéléré au toucher (jalon 11, [method
+## EvolutionScreen.tween_speed]).
+var speed_of: Callable = Callable()
+
 var _tree: SceneTree
 ## Tweens existants à la création : laissés au moteur (temps réel).
 var _ignored: Array[Tween] = []
@@ -36,7 +41,8 @@ func step(seconds: float = STEP) -> void:
 		if not tween.is_valid():
 			continue
 		tween.set_speed_scale(1.0)
-		tween.custom_step(seconds)
+		var factor := float(speed_of.call(tween)) if speed_of.is_valid() else 1.0
+		tween.custom_step(seconds * factor)
 		if tween.is_valid():
 			tween.set_speed_scale(0.0)
 	_adopt()
