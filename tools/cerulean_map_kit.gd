@@ -166,8 +166,9 @@ func build_water_mask() -> Image:
 
 
 ## [method add_ground] de la boîte d'Argenta, puis l'eau sur le sol peint.
-func add_ground(mask_path: String, undergrowth: Dictionary) -> bool:
-	if not super(mask_path, undergrowth):
+func add_ground(mask_path: String, undergrowth: Dictionary,
+		mask_hook: Callable = Callable()) -> bool:
+	if not super(mask_path, undergrowth, mask_hook):
 		return false
 	_add_water(root.get_node(^"PaintedGround"))
 	return true
