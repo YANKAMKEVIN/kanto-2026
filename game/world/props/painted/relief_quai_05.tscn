@@ -1,0 +1,16 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://game/world/props/prop.gd" id="1_6b3mg"]
+[ext_resource type="Material" path="res://game/world/lighting/materials/world_object.tres" id="2_ni6ds"]
+[ext_resource type="Texture2D" path="res://assets/world/relief/relief_quai_05.png" id="3_e6blj"]
+
+[node name="ReliefQuai05" type="Node2D" unique_id=1202826809]
+script = ExtResource("1_6b3mg")
+footprint = Array[Vector2i]([])
+
+[node name="Sprite" type="Sprite2D" parent="." unique_id=2004496907]
+unique_name_in_owner = true
+material = ExtResource("2_ni6ds")
+texture = ExtResource("3_e6blj")
+centered = false
+offset = Vector2(-20, -51)

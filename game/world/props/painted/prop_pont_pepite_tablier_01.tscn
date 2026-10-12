@@ -1,0 +1,16 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://game/world/props/prop.gd" id="1_dekg7"]
+[ext_resource type="Material" path="res://game/world/lighting/materials/world_object.tres" id="2_ib5he"]
+[ext_resource type="Texture2D" path="res://assets/world/props/prop_pont_pepite_tablier_01.png" id="3_4fx7t"]
+
+[node name="PropPontPepiteTablier01" type="Node2D" unique_id=1807941449]
+script = ExtResource("1_dekg7")
+footprint = Array[Vector2i]([])
+
+[node name="Sprite" type="Sprite2D" parent="." unique_id=1949113571]
+unique_name_in_owner = true
+material = ExtResource("2_ib5he")
+texture = ExtResource("3_4fx7t")
+centered = false
+offset = Vector2(-96, -438)

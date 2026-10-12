@@ -21,11 +21,11 @@ extends "res://tools/pewter_map_kit.gd"
 ##   modules répétés dans le sens de la traversée, dans `GroundDecals` (au-dessus du sol et des
 ##   quais, sous les personnages).
 ##
-## **Art de la série 15 pas encore livré** (T2, T5) : `ground_eau_canal_01`, `relief_quai_*`,
-## tabliers de pont. Sans lui, [member errors] dit ce qui manque. [member allow_placeholders]
-## (cartes d'essai et tests seulement, jamais un outil de carte) remplace chaque image absente
-## par un **provisoire généré en mémoire** (nommé « PROVISOIRE <id> », jamais écrit dans
-## `assets/`).
+## **Art de la série 15 livré au T5** (`ground_eau_canal_01`, `relief_quai_01..06`, tabliers de
+## pont) : les cartes d'Azuria et de la Route 24 utilisent les vrais modules ; [member errors]
+## dit ce qui manque. [member allow_placeholders] (cartes d'essai et tests seulement, jamais un
+## outil de carte) remplace une image absente par un **provisoire généré en mémoire** (nommé
+## « PROVISOIRE <id> », aux dimensions des vrais modules, jamais écrit dans `assets/`).
 ##
 ## Utilisé par `load("res://tools/cerulean_map_kit.gd").new(...)`, comme la boîte d'Argenta.
 
@@ -44,8 +44,8 @@ const CORNERS: Dictionary[StringName, Vector2i] = {
 	&"nw": Vector2i(-1, -1), &"ne": Vector2i(1, -1), &"sw": Vector2i(-1, 1),
 	&"se": Vector2i(1, 1),
 }
-## Pièces de quai par position (côté du sol vu depuis la case d'eau) [D, à aligner sur la fiche
-## de la série 15 au T1 / T5] : identifiants (variantes tirées à la graine) et miroirs.
+## Pièces de quai par position (côté du sol vu depuis la case d'eau), **alignées sur la fiche de la
+## série 15 (T1) et sur les vrais modules (T5)** : identifiants (variantes tirées à la graine) et miroirs.
 ## `n` = sol au nord (face du mur vue de face), `s` = sol au sud (lèvre du quai), `w` / `e` =
 ## bords latéraux (une image, miroir), angles = pièce de coin (sol en diagonale seulement).
 ## `relief_quai_06` (escalier de quai) n'est jamais posé d'office : l'outil de la carte le place.
@@ -59,11 +59,13 @@ const QUAY_PIECES: Dictionary[StringName, Dictionary] = {
 	&"sw": {"ids": ["relief_quai_05"], "flip_h": false, "flip_v": true},
 	&"se": {"ids": ["relief_quai_05"], "flip_h": true, "flip_v": true},
 }
-## Tailles des provisoires (pixels) : longueur d'un module le long du bord × profondeur dans
-## l'eau ; angle = carré.
-const PLACEHOLDER_QUAY_LENGTH: int = 192
-const PLACEHOLDER_QUAY_DEPTH: Dictionary[StringName, int] = {
-	&"n": 30, &"s": 14, &"w": 18, &"e": 18, &"corner": 30,
+## Tailles des provisoires (pixels) = celles des **vrais modules** de la série 15 (T5, mesurées
+## sur `assets/world/relief/relief_quai_0N.png` : n 192 × 69 / 71, s 192 × 30, w 20 × 112,
+## angle 40 × 51) : un module de côté `n` / `s` mesure 192 px le long du bord (2 cases), un module
+## `w` / `e` 112 px (1 case, `round(112 / 96)`). Largeur × hauteur de l'image.
+const PLACEHOLDER_QUAY_SIZE: Dictionary[StringName, Vector2i] = {
+	&"n": Vector2i(192, 70), &"s": Vector2i(192, 30), &"w": Vector2i(20, 112),
+	&"e": Vector2i(20, 112), &"corner": Vector2i(40, 51),
 }
 ## Couleurs des provisoires : pierre claire du quai, ligne d'eau, bois du tablier.
 const PLACEHOLDER_STONE: Color = Color(0.83, 0.80, 0.73)
@@ -472,10 +474,7 @@ func _piece_material(id: String) -> Material:
 func _placeholder_quay(id: String, role: StringName) -> Texture2D:
 	var horizontal := role == &"n" or role == &"s"
 	var corner := CORNERS.has(role)
-	var depth: int = PLACEHOLDER_QUAY_DEPTH[&"corner" if corner else role]
-	var image_size := Vector2i(depth, depth) if corner \
-		else (Vector2i(PLACEHOLDER_QUAY_LENGTH, depth) if horizontal
-			else Vector2i(depth, PLACEHOLDER_QUAY_LENGTH))
+	var image_size: Vector2i = PLACEHOLDER_QUAY_SIZE[&"corner" if corner else role]
 	var image := Image.create(image_size.x, image_size.y, false, Image.FORMAT_RGBA8)
 	image.fill(PLACEHOLDER_STONE)
 	var wet := 4

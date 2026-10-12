@@ -368,9 +368,11 @@ class Preparateur:
             image = Image.open(self.source / planche["source"]).convert("RGBA")
             colonnes, lignes = planche["colonnes"], planche["lignes"]
             taches = _taches(image)
-            if len(taches) != colonnes * lignes:
+            # Nombre d'éléments = celui des identifiants (une planche 3 × 2 peut n'en porter
+            # que 5 : cellule vide, série 15).
+            if len(taches) != len(planche["ids"]):
                 raise SystemExit(f"{planche['source']} : {len(taches)} éléments trouvés, "
-                                 f"{colonnes * lignes} attendus")
+                                 f"{len(planche['ids'])} attendus")
             taches.sort(key=lambda tache: tache[0][1] + tache[0][3])
             ordre = []
             for ligne in range(lignes):

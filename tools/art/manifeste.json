@@ -1344,6 +1344,33 @@
    "contact": null,
    "alpha": 0.55,
    "flou_bord": 6
+  },
+  {
+   "id": "bldg_arene_azuria_01",
+   "source": "WORLD_BLDG_ARENE_AZURIA_01_NE_r1.png",
+   "sortie": "assets/world/buildings/bldg_arene_azuria_01.png",
+   "axe": "w",
+   "cases": 12,
+   "ombre": true,
+   "contact": 0.12
+  },
+  {
+   "id": "bldg_velos_01",
+   "source": "WORLD_BLDG_VELOS_01_NE_r1.png",
+   "sortie": "assets/world/buildings/bldg_velos_01.png",
+   "axe": "w",
+   "cases": 8,
+   "ombre": true,
+   "contact": 0.12
+  },
+  {
+   "id": "relief_grotte_azuree_01",
+   "source": "WORLD_RELIEF_GROTTE_AZUREE_01_NE_r1.png",
+   "sortie": "assets/world/relief/relief_grotte_azuree_01.png",
+   "axe": "w",
+   "cases": 4,
+   "ombre": false,
+   "contact": null
   }
  ],
  "hautes_herbes": {
@@ -1458,6 +1485,15 @@
     15,
     10
    ]
+  },
+  {
+   "id": "int_arene_azuria_coque",
+   "source": "INT_ARENE_AZURIA_COQUE_NE_r2.png",
+   "sortie": "assets/world/interiors/int_arene_azuria_coque.png",
+   "cases": [
+    17,
+    13
+   ]
   }
  ],
  "decor": [
@@ -1542,6 +1578,15 @@
    "taille": 384,
    "contraste": 0.6,
    "couleur": 0.9,
+   "raccord": 24
+  },
+  {
+   "id": "ground_eau_canal_01",
+   "source": "WORLD_GROUND_EAU_CANAL_01_NE_r1.png",
+   "sortie": "assets/world/ground/ground_eau_canal_01.png",
+   "taille": 384,
+   "contraste": 1.0,
+   "couleur": 1.0,
    "raccord": 24
   }
  ],
@@ -1855,6 +1900,24 @@
    "source": "PNJ_CHERCHEUR_FOSSILES_NE_r1.png",
    "sortie": "assets/sprites/characters/painted/chercheur_fossiles_sheet.png",
    "hauteur": 128
+  },
+  {
+   "id": "ondine",
+   "source": "PNJ_ONDINE_NE_r1.png",
+   "sortie": "assets/sprites/characters/painted/ondine_sheet.png",
+   "hauteur": 128
+  },
+  {
+   "id": "nageur",
+   "source": "PNJ_NAGEUR_NE_r1.png",
+   "sortie": "assets/sprites/characters/painted/nageur_sheet.png",
+   "hauteur": 128
+  },
+  {
+   "id": "nageuse",
+   "source": "PNJ_NAGEUSE_NE_r1.png",
+   "sortie": "assets/sprites/characters/painted/nageuse_sheet.png",
+   "hauteur": 128
   }
  ],
  "pokemon": [
@@ -2162,6 +2225,24 @@
    "source": "CHERCHEUR_FOSSILES_ATTENTE_r1.png",
    "sortie": "assets/sprites/characters/painted/chercheur_fossiles_idle_sheet.png",
    "marche": "chercheur_fossiles"
+  },
+  {
+   "id": "ondine_idle",
+   "source": "ONDINE_ATTENTE_r1.png",
+   "sortie": "assets/sprites/characters/painted/ondine_idle_sheet.png",
+   "marche": "ondine"
+  },
+  {
+   "id": "nageur_idle",
+   "source": "NAGEUR_ATTENTE_r1.png",
+   "sortie": "assets/sprites/characters/painted/nageur_idle_sheet.png",
+   "marche": "nageur"
+  },
+  {
+   "id": "nageuse_idle",
+   "source": "NAGEUSE_ATTENTE_r1.png",
+   "sortie": "assets/sprites/characters/painted/nageuse_idle_sheet.png",
+   "marche": "nageuse"
   }
  ],
  "images_objets": [
@@ -2389,6 +2470,193 @@
    "cases": [
     0.7,
     0.6
+   ],
+   "contact": 0.2
+  },
+  {
+   "source": "WORLD_RELIEF_QUAI_PLANCHE_NE_r1.png",
+   "dossier": "assets/world/relief/",
+   "colonnes": 3,
+   "lignes": 2,
+   "ids": [
+    "relief_quai_01",
+    "relief_quai_02",
+    "relief_quai_03",
+    "relief_quai_04",
+    "relief_quai_05",
+    "relief_quai_06"
+   ],
+   "cases": [
+    2,
+    2,
+    2,
+    0.21,
+    0.42,
+    2
+   ],
+   "contact": 0.0
+  },
+  {
+   "source": "WORLD_RELIEF_BERGE_PLANCHE_NE_r1.png",
+   "dossier": "assets/world/relief/",
+   "colonnes": 3,
+   "lignes": 2,
+   "ids": [
+    "relief_berge_01",
+    "relief_berge_02",
+    "relief_berge_03",
+    "relief_berge_04",
+    "relief_berge_05",
+    "prop_roseaux_01"
+   ],
+   "cases": [
+    2,
+    2,
+    2,
+    0.21,
+    0.42,
+    1
+   ],
+   "contact": 0.0
+  },
+  {
+   "source": "WORLD_PROP_PONTS_PLANCHE_NE_r3.png",
+   "dossier": "assets/world/props/",
+   "colonnes": 4,
+   "lignes": 2,
+   "ids": [
+    "prop_pont_ville_01",
+    "prop_pont_ville_03_01",
+    "prop_pont_ville_ew_01",
+    "prop_pont_pepite_tablier_01",
+    "prop_pont_pepite_tablier_02",
+    "prop_pont_pepite_tablier_03",
+    "prop_pont_pepite_garde_corps_01",
+    "prop_pont_pepite_pile_01"
+   ],
+   "cases": [
+    2,
+    3,
+    4,
+    2,
+    2,
+    2,
+    1,
+    0.5
+   ],
+   "contact": 0.0
+  },
+  {
+   "source": "WORLD_PROP_VILLE_EAU_PLANCHE_NE_r1.png",
+   "dossier": "assets/world/props/",
+   "colonnes": 3,
+   "lignes": 2,
+   "ids": [
+    "prop_jardiniere_pierre_01",
+    "prop_jardiniere_pierre_02",
+    "prop_arbre_bac_01",
+    "prop_banc_pierre_01",
+    "prop_lampadaire_quai_01",
+    "prop_bitte_01"
+   ],
+   "cases": [
+    1,
+    1,
+    1,
+    2,
+    0.45,
+    0.5
+   ],
+   "contact": 0.15
+  },
+  {
+   "source": "WORLD_PROP_CAMBRIOLAGE_PLANCHE_NE_r1.png",
+   "dossier": "assets/world/props/",
+   "colonnes": 3,
+   "lignes": 2,
+   "ids": [
+    "prop_cloture_arrachee_01",
+    "prop_porte_condamnee_01",
+    "prop_pot_renverse_01",
+    "prop_cloture_trou_01",
+    "prop_ruban_01"
+   ],
+   "cases": [
+    3,
+    1,
+    1,
+    1,
+    2
+   ],
+   "contact": 0.1
+  },
+  {
+   "source": "WORLD_PROP_FERMETURES_PLANCHE_NE_r1.png",
+   "dossier": "assets/world/props/",
+   "colonnes": 3,
+   "lignes": 1,
+   "ids": [
+    "prop_palissade_chantier_01",
+    "prop_palissade_chantier_02",
+    "prop_barriere_croisillon_01"
+   ],
+   "cases": [
+    3,
+    3,
+    2
+   ],
+   "contact": 0.1
+  },
+  {
+   "source": "WORLD_RELIEF_REBORD_ARDOISE_PLANCHE_NE_r1.png",
+   "dossier": "assets/world/relief/",
+   "colonnes": 3,
+   "lignes": 1,
+   "ids": [
+    "relief_rebord_ardoise_01",
+    "relief_falaise_ardoise_01",
+    "relief_falaise_ardoise_02"
+   ],
+   "cases": [
+    1.5,
+    3.4,
+    3.4
+   ],
+   "contact": 0.0
+  },
+  {
+   "source": "INT_ARENE_AZURIA_PLANCHE_NE_r1.png",
+   "dossier": "assets/world/interiors/",
+   "colonnes": 3,
+   "lignes": 1,
+   "ids": [
+    "int_plongeoir_01",
+    "int_banc_piscine_01",
+    "int_porte_bouees_01"
+   ],
+   "cases": [
+    2,
+    2,
+    1
+   ],
+   "contact": 0.2
+  },
+  {
+   "source": "INT_VELOS_PLANCHE_NE_r1.png",
+   "dossier": "assets/world/interiors/",
+   "colonnes": 2,
+   "lignes": 2,
+   "ids": [
+    "int_velo_expose_01",
+    "int_velo_expose_02",
+    "int_velo_expose_03",
+    "int_etagere_casques_01"
+   ],
+   "cases": [
+    2,
+    2,
+    2,
+    4
    ],
    "contact": 0.2
   }

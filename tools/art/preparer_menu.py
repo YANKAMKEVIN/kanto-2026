@@ -44,6 +44,8 @@ QUALITE = 90
 ## (Pierre Lune redessinée) validée par Kevin le 2026-10-11.
 PLANCHES_OBJETS_SUIVANTES = [
 	("UI_OBJETS_J12_PLANCHE_r2.png", ["moon_stone", "escape_rope", "dome_fossil", "helix_fossil"]),
+	# Série 15 (J13 T5) : la Pépite, recadrée dans sa colonne (`serie15.py --retouches`, _r3).
+	("UI_OBJETS_J13_PLANCHE_r3.png", ["nugget"]),
 ]
 
 

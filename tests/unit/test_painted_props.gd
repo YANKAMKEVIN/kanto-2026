@@ -29,7 +29,16 @@ const TRAVERSABLE: Array[StringName] = [&"relief_escalier_01", &"ground_hautes_h
 	&"relief_paroi_grotte_03", &"relief_paroi_grotte_04", &"relief_paroi_grotte_05",
 	&"relief_paroi_grotte_06", &"prop_mare_grotte_01", &"decal_puits_jour_01",
 	&"prop_echelle_descend_01", &"prop_echelle_monte_01", &"prop_fossile_dome_01",
-	&"prop_fossile_nautile_01"]
+	&"prop_fossile_nautile_01",
+	# Série 15 (J13) : îlot, quais, berges, tabliers de pont, rebord et versant d'ardoise (cases
+	# d'eau ou bloquées par la carte).
+	&"relief_grotte_azuree_01", &"relief_quai_01", &"relief_quai_02", &"relief_quai_03",
+	&"relief_quai_04", &"relief_quai_05", &"relief_quai_06", &"relief_berge_01",
+	&"relief_berge_02", &"relief_berge_03", &"relief_berge_04", &"relief_berge_05",
+	&"prop_pont_ville_01", &"prop_pont_ville_03_01", &"prop_pont_ville_ew_01",
+	&"prop_pont_pepite_tablier_01", &"prop_pont_pepite_tablier_02",
+	&"prop_pont_pepite_tablier_03", &"relief_rebord_ardoise_01",
+	&"relief_falaise_ardoise_01", &"relief_falaise_ardoise_02"]
 const GROUND_LAYER: Array[StringName] = [
 	&"relief_falaise_01", &"relief_escalier_01", &"prop_massif_01", &"relief_muret_01",
 	&"relief_escalier_ville_01",
@@ -43,6 +52,14 @@ const GROUND_LAYER: Array[StringName] = [
 	&"relief_paroi_ardoise_01", &"relief_paroi_ardoise_02", &"relief_paroi_ardoise_03",
 	&"relief_paroi_ardoise_04", &"prop_mare_grotte_01", &"decal_puits_jour_01",
 	&"prop_tranchee_01", &"prop_echelle_descend_01", &"prop_echelle_monte_01",
+	# Série 15 (J13) : tout le relief à plat (îlot, quais, berges, tabliers, ardoise).
+	&"relief_grotte_azuree_01", &"relief_quai_01", &"relief_quai_02", &"relief_quai_03",
+	&"relief_quai_04", &"relief_quai_05", &"relief_quai_06", &"relief_berge_01",
+	&"relief_berge_02", &"relief_berge_03", &"relief_berge_04", &"relief_berge_05",
+	&"prop_pont_ville_01", &"prop_pont_ville_03_01", &"prop_pont_ville_ew_01",
+	&"prop_pont_pepite_tablier_01", &"prop_pont_pepite_tablier_02",
+	&"prop_pont_pepite_tablier_03", &"relief_rebord_ardoise_01",
+	&"relief_falaise_ardoise_01", &"relief_falaise_ardoise_02",
 ]
 ## Bâtiments sans ombre : le poste de la forêt vu du nord (série 12) continue sous le bord sud
 ## de la Route 2 nord, couché dans la couche du sol (fiche `serie-12-argenta.md`).

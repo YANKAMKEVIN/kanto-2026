@@ -95,6 +95,11 @@ const LOOKS: Dictionary = {
 	"sbire_h": [CHARACTERS_DIR, "rocket_grunt_m", ""],
 	"sbire_f": [CHARACTERS_DIR, "rocket_grunt_f", ""],
 	"chercheur_fossiles": [CHARACTERS_DIR, "fossil_researcher", ""],
+	# J13 (série 15, Azuria) : Ondine, Nageur Lucas, Nageuse (H5, `swimmer_f`), avec leur
+	# planche d'attente.
+	"ondine": [CHARACTERS_DIR, "misty", ""],
+	"nageur": [CHARACTERS_DIR, "swimmer", ""],
+	"nageuse": [CHARACTERS_DIR, "swimmer_f", ""],
 }
 ## Pokémon fixes (genre « Pokémon fixe », jalon 9 §2.8.5) : feuille 6 × 1 du catalogue
 ## (« personnages ») → identifiant de données. Ils ne marchent jamais.

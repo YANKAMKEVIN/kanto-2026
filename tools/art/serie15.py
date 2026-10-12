@@ -36,6 +36,7 @@ Usage :
   tools/art/serie15.py --commandes             liste les commandes generer.sh (sans Codex)
   tools/art/serie15.py --planche [sortie.png]  planche de contrôle du kit (défaut build/art/AZ_KIT_v1.png)
   tools/art/serie15.py --contact [sortie.png]  planche de contact des images générées (T2)
+  tools/art/serie15.py --retouches             T5 : ponts de pierre sans poteaux d'angle, Pépite dans sa colonne (_r3)
   tools/art/serie15.py --manifeste             ajoute les entrées en fin de manifeste.json (T5 ;
                                                NE PAS lancer avant la validation des images)
   tools/art/serie15.py --controle [sortie.png] planche des assets PRÉPARÉS à l'échelle du jeu (T5)
@@ -452,6 +453,35 @@ CORRECTIONS = {
 		"autour, aucune ombre portée."),
 }
 
+CORRECTIONS[("INT_ARENE_AZURIA_COQUE", 2)] = (
+	"Format : PNG paysage 1536 × 1024, opaque ; la pièce fait 17 cases de large × 13 de profondeur "
+	"(1 case ≈ 90 px de large, ≈ 79 px de haut). CORRECTION de la salle jointe INT_ARENE_AZURIA_COQUE_NE_r1 : "
+	"même salle, mêmes murs, même verrière, mêmes matériaux, même sortie, MAIS LE BASSIN EST TROP LARGE : "
+	"le nouveau bassin, MARGELLE COMPRISE, occupe EXACTEMENT 7 cases de large × 5 de profondeur, soit un "
+	"rectangle de 632 × 394 px dont le bord gauche est à x = 452 (29 % de la largeur), le bord droit à "
+	"x = 1084 (71 %), le bord haut à y = 315 (31 % de la hauteur) et le bord bas à y = 709 (69 %) : "
+	"le bassin est donc nettement plus étroit que dans l'image jointe (qui mesure environ 765 px de "
+	"large) et il laisse 5 cases de chemin sec de chaque côté (colonnes 1 à 4 et 12 à 16 entièrement "
+	"en dalles). Le bassin est centré sur la salle, bordé d'une margelle de pierre claire de 0,3 case, "
+	"EAU turquoise limpide STATIQUE (reflets peints, quelques éclats clairs, trois lignes de bassin bleu "
+	"marine au fond). Murs : mur du fond = paroi de pierre claire (2 cases du haut) percée de hautes "
+	"fenêtres de verre bleuté ; murs latéraux = bandes de 2 cases à gauche et à droite (gradins légers de "
+	"deux marches de pierre claire, SYMÉTRIQUES entre gauche et droite) ; mur du bas = deux rangées de "
+	"pierre interrompues au milieu par la SORTIE : une ouverture de 3 cases (≈ 270 px) centrée, avec un "
+	"paillasson de pierre bleu pâle, sans emblème. Tout le sol sec est un dallage de pierre claire "
+	"LIBRE et VIDE (aucun meuble, aucun plongeoir : ils sont ajoutés séparément).")
+CORRECTIONS[("UI_OBJETS_J13_PLANCHE", 2)] = (
+	"PLANCHE d'UNE icône d'objet peinte pour le Sac, dans une image 1536 × 1024 divisée en quatre "
+	"colonnes invisibles de 384 px : l'icône est dans la PREMIÈRE colonne (x de 0 à 384), CENTRÉE dans "
+	"cette colonne, de 260 px de large au plus et 260 px de haut au plus, avec au moins 60 px de marge "
+	"vide de chaque côté (elle ne touche ni ne dépasse le bord de la colonne) ; les trois autres colonnes "
+	"restent VIDES (transparentes), dans le style EXACT de la planche jointe MENU_OBJETS_PLANCHE (même "
+	"rendu, même angle de trois quarts, même lumière) : la PÉPITE, une grosse pépite d'or brut "
+	"irrégulière, arrondie et bosselée, jaune doré chaud avec des reflets clairs et de petites veines "
+	"brun-ocre, quelques fines facettes brillantes, posée de trois quarts ; sans pièce, sans lingot. "
+	"AUCUN halo, AUCUNE lueur, AUCUNE étincelle, AUCUN dégradé autour : l'objet est net, avec seulement son "
+	"contour fin, sur un fond entièrement transparent (canal alpha, aucune ombre).")
+
 ## Coques : (identifiant, largeur, profondeur, ancres, géométrie, matériaux, vague).
 _BASE_COQUE = ("Vue de dessus en projection oblique frontale : le MUR DU FOND occupe toute la largeur "
 	"en haut, on voit sa face avant ; les murs latéraux gauche et droit ne sont visibles que par leur "
@@ -686,11 +716,26 @@ def _images() -> list[dict]:
 		ajouter(nom, PROMPTS / f"{nom}.txt", _prompt_texture(ident, ref, description, ancres, valeurs),
 			[f"{ref}.png"] + STYLE + ancres, 2, True, groupe=ident)
 	for (ident, rev), description in CORRECTIONS.items():
-		base = next(t for t in PLANCHES if t[0] == ident)
-		_, refs, _, ancres_, valeurs, _ = base
-		nom = f"{ident}_NE_r{rev}"
-		ajouter(nom, PROMPTS / f"{nom}.txt", _prompt_planche(ident, refs, description, ancres_, valeurs),
-			[f"{r}.png" for r in refs] + ancres_, 3, True, groupe=f"{ident}_r{rev}")
+		nom = f"{ident}_NE_r{rev}" if not ident.startswith("UI_") else f"{ident}_r{rev}"
+		precedent = (f"{ident}_NE_r{rev - 1}" if not ident.startswith("UI_") else f"{ident}_r{rev - 1}")
+		groupe = f"{ident}_r{rev}"
+		base = next((t for t in PLANCHES if t[0] == ident), None)
+		if base is not None:
+			_, refs, _, ancres_, valeurs, _ = base
+			ajouter(nom, PROMPTS / f"{nom}.txt", _prompt_planche(ident, refs, description, ancres_,
+				valeurs), [f"{r}.png" for r in refs] + ancres_, 3, True, groupe=groupe)
+			continue
+		coque = next((t for t in COQUES if t[0] == ident), None)
+		if coque is not None:
+			_, _, _, ancres_, _, materiaux, _ = coque
+			ajouter(nom, PROMPTS / f"{nom}.txt", _prompt_coque(ident, description, materiaux,
+				[f"{precedent}.png"] + ancres_), [f"{precedent}.png"] + ancres_, 3, True,
+				groupe=groupe)
+			continue
+		ident_ui, _, ancres_ui, _ = UI
+		ajouter(nom, PROMPTS / f"{nom}.txt", _prompt_ui(ident, description,
+			"PNG paysage 1536 × 1024, fond TRANSPARENT (canal alpha)"), list(ancres_ui), 3, True,
+			groupe=groupe)
 	return images
 
 
@@ -781,6 +826,57 @@ def generer(choix: set[str]) -> None:
 				print(ligne, flush=True)
 
 
+# --- Retouches (T5) : recadrage de la partie médiane des tabliers de pierre ----------------
+
+## Tabliers de pierre nord-sud de `WORLD_PROP_PONTS_PLANCHE_NE_r2` : (cellule x0, x1, ordonnées
+## de coupe [haut, bas] dans la partie médiane, entre les poteaux d'angle). Les coupes tombent sur
+## un joint de dalles ; un parapet coupé reste un bloc de longueur normale une fois raccordé.
+DECKS_PIERRE = [(0, 384, 172, 325), (384, 720, 178, 341)]
+LONGUEUR_MODULE_CASES = 2
+
+
+def retoucher_ponts() -> Path:
+	"""`PONTS_PLANCHE_NE_r3` = r2 dont les deux tabliers de pierre nord-sud n'ont plus de poteau
+	d'angle : on garde leur partie médiane (un parapet continu de chaque côté), remise à la
+	longueur de `LONGUEUR_MODULE_CASES` cases à l'échelle de préparation (largeur = cases du
+	manifeste), de sorte que le module se raccorde à lui-même. Reproductible : les autres
+	modules sont recopiés tels quels."""
+	import numpy as np
+	source = Image.open(ART / "WORLD_PROP_PONTS_PLANCHE_NE_r2.png").convert("RGBA")
+	sortie = source.copy()
+	alpha = np.array(source.getchannel("A")) > 32
+	largeurs = {0: 2, 1: 3}  # cases de largeur de chaque tablier (manifeste)
+	for indice, (x0, x1, haut, bas) in enumerate(DECKS_PIERRE):
+		zone = alpha[:490, x0:x1]
+		ys, xs = np.where(zone)
+		gauche, droite = int(xs.min()) + x0, int(xs.max()) + 1 + x0
+		sortie.paste((0, 0, 0, 0), (x0, 0, x1, 500))
+		morceau = source.crop((gauche, haut, droite, bas))
+		longueur = round((droite - gauche) * LONGUEUR_MODULE_CASES / largeurs[indice])
+		morceau = morceau.resize((droite - gauche, longueur), Image.LANCZOS)
+		sortie.alpha_composite(morceau, (gauche, 256 - longueur // 2))
+	chemin = ART / "WORLD_PROP_PONTS_PLANCHE_NE_r3.png"
+	sortie.save(chemin)
+	return chemin
+
+
+def retoucher_pepite() -> Path:
+	"""`UI_OBJETS_J13_PLANCHE_r3` = r2 dont la Pépite est remise **dans sa colonne** de 384 px :
+	silhouette recadrée (alpha > 32), réduite à 260 px au plus, centrée dans la colonne de
+	gauche ; couleurs écrites seulement sous l'alpha (le halo doré des pixels transparents du
+	générateur est effacé), les trois autres colonnes restent vides."""
+	source = Image.open(ART / "UI_OBJETS_J13_PLANCHE_r2.png").convert("RGBA")
+	masque = source.getchannel("A").point(lambda a: 255 if a > 32 else 0)
+	objet = source.crop(masque.getbbox())
+	echelle = 260 / max(objet.size)
+	objet = objet.resize((round(objet.width * echelle), round(objet.height * echelle)), Image.LANCZOS)
+	sortie = Image.new("RGBA", source.size, (0, 0, 0, 0))
+	sortie.alpha_composite(objet, ((384 - objet.width) // 2, (source.height - objet.height) // 2))
+	chemin = ART / "UI_OBJETS_J13_PLANCHE_r3.png"
+	sortie.save(chemin)
+	return chemin
+
+
 # --- Manifeste (T5) ---------------------------------------------------------------------
 
 _W = "assets/world/"
@@ -863,12 +959,16 @@ def manifeste_donnees() -> dict:
 				"hauteur": 128},
 			{"id": "nageur", "source": _revision("PNJ_NAGEUR_NE"), "sortie": f"{_C}nageur_sheet.png",
 				"hauteur": 128},
+			{"id": "nageuse", "source": _revision("PNJ_NAGEUSE_NE"), "sortie": f"{_C}nageuse_sheet.png",
+				"hauteur": 128},
 		],
 		"attentes": [
 			{"id": "ondine_idle", "source": _revision("ONDINE_ATTENTE"),
 				"sortie": f"{_C}ondine_idle_sheet.png", "marche": "ondine"},
 			{"id": "nageur_idle", "source": _revision("NAGEUR_ATTENTE"),
 				"sortie": f"{_C}nageur_idle_sheet.png", "marche": "nageur"},
+			{"id": "nageuse_idle", "source": _revision("NAGEUSE_ATTENTE"),
+				"sortie": f"{_C}nageuse_idle_sheet.png", "marche": "nageuse"},
 		],
 	}
 
@@ -876,7 +976,8 @@ def manifeste_donnees() -> dict:
 ## Icône du Sac (T5, `preparer_menu.py` : planche d'une icône en 4 colonnes) → `assets/ui/items/nugget.webp`.
 ICONES_IDS = ["nugget"]
 ## Planches de personnages préparées : (planche, identifiant de données, hauteur de fiche).
-PERSONNAGES_JEU = [("ondine", "misty", 128), ("nageur", "swimmer", 128)]
+PERSONNAGES_JEU = [("ondine", "misty", 128), ("nageur", "swimmer", 128),
+	("nageuse", "swimmer_f", 128)]
 
 
 def _cle(entree: dict) -> str:
@@ -1083,7 +1184,7 @@ def controle(sortie: Path) -> Path:
 		*[x for nom, ident, h in PERSONNAGES_JEU for x in _present(f"{_C}{nom}_sheet.png",
 			f"{nom} ({ident}) {h} px\nmarche",
 			lambda r: _cellules(r, 4, 4, [(0, 0), (1, 1), (1, 2), (0, 3)]))],
-		*[x for nom, _ in PERSONNAGES_JEU for x in _present(f"{_C}{nom}_idle_sheet.png",
+		*[x for nom, _, _ in PERSONNAGES_JEU for x in _present(f"{_C}{nom}_idle_sheet.png",
 			f"{nom}_idle\nattente", lambda r: _cellules(r, 4, 1, [(n, 0) for n in range(4)]))],
 	], (110, 90, 40))
 	p.section("5. ICÔNE DU SAC (256 px)", [
@@ -1151,6 +1252,9 @@ if __name__ == "__main__":
 		autres = [a for a in arguments if a != "--contact"]
 		print(contact(Path(autres[0]) if autres else
 			RACINE / "build" / "captures" / "jalon13_assets" / "serie15_contact.png"))
+	elif "--retouches" in arguments:
+		print(retoucher_ponts())
+		print(retoucher_pepite())
 	elif "--manifeste" in arguments:
 		manifeste()
 	elif "--controle" in arguments:

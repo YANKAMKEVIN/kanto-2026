@@ -319,6 +319,83 @@ const RULES: Dictionary[StringName, Dictionary] = {
 	# Indices des objets cachés : la case de l'indice est bloquée (point d'examen).
 	&"prop_indice_caillou_01": {"width": 1, "depth": 1},
 	&"prop_indice_eclat_01": {"width": 1, "depth": 1},
+	# --- Série 15 : Route 4, Azuria, Route 24 (J13 T5, fiche `serie-15-azuria.md`). ---
+	# Arène (12 × 7, porte (40..41, 9)) et magasin de vélos (8 × 7, porte (38..39, 35)) :
+	# emprise = toute l'image, les deux cases de la porte restent libres au bas.
+	&"bldg_arene_azuria_01": {"shadow": true, "width": 12, "depth": 7, "fade": true,
+		"open": [Vector2i(-1, 0), Vector2i(0, 0)]},
+	&"bldg_velos_01": {"shadow": true, "width": 8, "depth": 7, "fade": true,
+		"open": [Vector2i(-1, 0), Vector2i(0, 0)]},
+	# Îlot de la Grotte Azurée : à plat sur l'eau (couche du sol), les cases `K` et `A` sont
+	# bloquées par la carte.
+	&"relief_grotte_azuree_01": {"traversable": true, "layer": LAYER_GROUND,
+		"align": ALIGN_EDGE},
+	# Quais et berges : modules posés **dans les cases d'eau** (déjà solides) par
+	# `cerulean_map_kit`, dans la couche du sol ; 06 = escalier de quai posé à la main.
+	&"relief_quai_01": {"traversable": true, "layer": LAYER_GROUND, "align": ALIGN_EDGE},
+	&"relief_quai_02": {"traversable": true, "layer": LAYER_GROUND, "align": ALIGN_EDGE},
+	&"relief_quai_03": {"traversable": true, "layer": LAYER_GROUND, "align": ALIGN_EDGE},
+	&"relief_quai_04": {"traversable": true, "layer": LAYER_GROUND, "align": ALIGN_CENTRE},
+	&"relief_quai_05": {"traversable": true, "layer": LAYER_GROUND, "align": ALIGN_CENTRE},
+	&"relief_quai_06": {"traversable": true, "layer": LAYER_GROUND, "align": ALIGN_EDGE},
+	&"relief_berge_01": {"traversable": true, "layer": LAYER_GROUND, "align": ALIGN_EDGE},
+	&"relief_berge_02": {"traversable": true, "layer": LAYER_GROUND, "align": ALIGN_EDGE},
+	&"relief_berge_03": {"traversable": true, "layer": LAYER_GROUND, "align": ALIGN_EDGE},
+	&"relief_berge_04": {"traversable": true, "layer": LAYER_GROUND, "align": ALIGN_CENTRE},
+	&"relief_berge_05": {"traversable": true, "layer": LAYER_GROUND, "align": ALIGN_CENTRE},
+	# Touffe de roseaux isolée dans l'eau (1 × 1, case d'eau).
+	&"prop_roseaux_01": {"width": 1, "depth": 1},
+	# Tabliers de pont (cases `B`, praticables) : à plat, sous les personnages. Ville : 2, 3 de
+	# large (nord-sud) et est-ouest ; Pont Pépite : 3 variantes de 2 de large.
+	&"prop_pont_ville_01": {"traversable": true, "layer": LAYER_GROUND, "align": ALIGN_EDGE},
+	&"prop_pont_ville_03_01": {"traversable": true, "layer": LAYER_GROUND,
+		"align": ALIGN_CENTRE},
+	&"prop_pont_ville_ew_01": {"traversable": true, "layer": LAYER_GROUND,
+		"align": ALIGN_EDGE},
+	&"prop_pont_pepite_tablier_01": {"traversable": true, "layer": LAYER_GROUND,
+		"align": ALIGN_EDGE},
+	&"prop_pont_pepite_tablier_02": {"traversable": true, "layer": LAYER_GROUND,
+		"align": ALIGN_EDGE},
+	&"prop_pont_pepite_tablier_03": {"traversable": true, "layer": LAYER_GROUND,
+		"align": ALIGN_EDGE},
+	# Garde-corps et piles du Pont Pépite : posés dans les cases d'eau qui flanquent le tablier
+	# (jamais sur une case praticable), triés au pied.
+	&"prop_pont_pepite_garde_corps_01": {"width": 1, "depth": 1},
+	&"prop_pont_pepite_pile_01": {"width": 1, "depth": 1},
+	# Mobilier de ville d'eau.
+	&"prop_jardiniere_pierre_01": {"width": 1, "depth": 1},
+	&"prop_jardiniere_pierre_02": {"width": 1, "depth": 1},
+	&"prop_arbre_bac_01": {"width": 1, "depth": 1, "fade": true},
+	&"prop_banc_pierre_01": {"width": 2, "depth": 1},
+	&"prop_lampadaire_quai_01": {"width": 1, "depth": 1},
+	&"prop_bitte_01": {"width": 1, "depth": 1},
+	# Cambriolage : clôture arrachée 3 × 1, porte condamnée posée sur la façade (case `f` déjà
+	# bloquée), pot renversé, trou dans la clôture, ruban 2 × 1.
+	&"prop_cloture_arrachee_01": {"width": 3, "depth": 1},
+	&"prop_porte_condamnee_01": {"width": 1, "depth": 1},
+	&"prop_pot_renverse_01": {"width": 1, "depth": 1},
+	&"prop_cloture_trou_01": {"width": 1, "depth": 1},
+	&"prop_ruban_01": {"width": 2, "depth": 1},
+	# Fermetures : palissade de chantier 3 × 1 (×2), barrière à croisillon 2 × 1.
+	&"prop_palissade_chantier_01": {"width": 3, "depth": 1},
+	&"prop_palissade_chantier_02": {"width": 3, "depth": 1},
+	&"prop_barriere_croisillon_01": {"width": 2, "depth": 1},
+	# Route 4 : rebord et versant en roche ardoise (cases du rebord / `~` bloquées par la carte).
+	&"relief_rebord_ardoise_01": {"traversable": true, "layer": LAYER_GROUND,
+		"align": ALIGN_CENTRE},
+	&"relief_falaise_ardoise_01": {"traversable": true, "layer": LAYER_GROUND,
+		"align": ALIGN_CENTRE},
+	&"relief_falaise_ardoise_02": {"traversable": true, "layer": LAYER_GROUND,
+		"align": ALIGN_CENTRE},
+	# Intérieurs : plongeoir 2 × 1 contre le mur du fond, banc de piscine 2 × 1, porte-bouées,
+	# vélos exposés 2 × 1, étagère de casques 4 × 1.
+	&"int_plongeoir_01": {"width": 2, "depth": 1},
+	&"int_banc_piscine_01": {"width": 2, "depth": 1},
+	&"int_porte_bouees_01": {"width": 1, "depth": 1},
+	&"int_velo_expose_01": {"width": 2, "depth": 1},
+	&"int_velo_expose_02": {"width": 2, "depth": 1},
+	&"int_velo_expose_03": {"width": 2, "depth": 1},
+	&"int_etagere_casques_01": {"width": 4, "depth": 1},
 }
 
 
