@@ -86,6 +86,13 @@ func clear_bide() -> void:
 	bide_stock = 0
 
 
+## Vrai si le Pokémon ne peut pas quitter le terrain de lui-même (tour forcé) : Patience
+## (jalon 11). Le piège du J12 (Ligotage, Claquoir) devra s'ajouter ici. Lu par l'IA qui change
+## de Pokémon ([AiSwitchRule], jalon 13).
+func is_locked() -> bool:
+	return is_biding()
+
+
 ## Vrai si le Pokémon est confus.
 func is_confused() -> bool:
 	return confusion_turns > 0

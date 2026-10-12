@@ -49,7 +49,8 @@ extends RefCounted
 ## « bide_storing », BIDE_UNLEASHED → « bide_unleashed », BIDE_BROKEN → « bide_broken » (riposte
 ## à vide : FAILED, « Mais ça échoue ! »).
 ## Changement de Pokémon (jalon 7) : WITHDRAWN → « withdrawn » (« Reviens, Salamèche ! ») ; le
-## Pokémon envoyé reprend « sent_out_player ». Le panneau ÉQUIPE lit, sans événement
+## Pokémon envoyé reprend « sent_out_player ». Côté adverse (jalon 13, IA qui change, §21 n° 60) :
+## « withdrawn_foe » (« {trainer} rappelle {pokemon} ! »), puis « sent_out_foe ». Le panneau ÉQUIPE lit, sans événement
 ## ([method get_template]), « switch_reason_active », « switch_reason_fainted » (raisons sur
 ## les cartes) et « replace_prompt » (son titre après un K.O.).
 ## Argent (jalon 7) : « prize_won » ({money} : somme formatée, « 280 ₽ ») ne vient pas d'un
@@ -92,7 +93,7 @@ const TEMPLATE_IDS: Array[StringName] = [
 	&"item_used", &"hp_restored", &"prize_won",
 	&"forget_confirm_title", &"forget_confirm_detail", &"forget_confirm_yes",
 	&"forget_confirm_no",
-	&"withdrawn", &"switch_reason_active", &"switch_reason_fainted", &"replace_prompt",
+	&"withdrawn", &"withdrawn_foe", &"switch_reason_active", &"switch_reason_fainted", &"replace_prompt",
 	&"summary_exp", &"summary_level", &"summary_stat", &"summary_continue",
 	&"status_inflicted_poison", &"status_unchanged_poison", &"status_damaged_poison",
 	&"status_cured_poison",
@@ -298,7 +299,8 @@ func lines(event: BattleEvent, data: PokemonData, trainer: TrainerData = null) \
 		BattleEvent.Kind.BROKE_FREE:
 			result.append(_fill(&"broke_free", event, data))
 		BattleEvent.Kind.WITHDRAWN:
-			result.append(_fill(&"withdrawn", event, data))
+			result.append(_fill(&"withdrawn_foe" if event.side == BattleEvent.SideId.FOE
+				else &"withdrawn", event, data))
 		BattleEvent.Kind.ITEM_USED:
 			result.append(_fill(&"item_used", event, data))
 			if event.amount > 0:

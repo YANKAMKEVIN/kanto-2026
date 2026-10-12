@@ -948,15 +948,46 @@ et de l'annexe A validée.
 - §2.15 (9 espèces, 8 capacités, Pokédex, CT, `tm11`, `nugget`, sprites provisoires). **CA** : tests
   verts ; aucune carte touchée.
 
-#### T12 — architecte : IA qui change de Pokémon — après T11
+#### T12 — architecte : IA qui change de Pokémon — **fait** (2026-10-12, branche `j13-t12`)
 - §2.11 (règle, IA, `Battle`, texte, `TrainerData.switch`). **CA** : tests verts ; `simulate_brock.gd`
   identique ; Pierre et le rival n° 2 inchangés.
+- **Fait** : `game/battle/ai_switch_rule.gd` (`AiSwitchRule.pick` / `is_in_danger` / `is_weak_to` /
+  `is_better_placed`, `STAY = -1`, aucun tirage) ; `Battler.is_locked()` (Patience aujourd'hui :
+  **le piège du J12 devra s'y ajouter**, il n'existe pas encore sur `jalon-13`) ; `BattleAI`
+  (`can_switch`, `has_switched()`, 2e paramètre du constructeur) ; `TrainerData.can_switch` + clé
+  `switch` (booléen, facultative) dans `TrainerLibrary` ; `Battle` : `_foe_action` (changement
+  refusé si combat sauvage, place K.O. ou active → `push_error` et capacité), `_foe_switch`
+  (WITHDRAWN adverse avec `trainer_name`, puis SENT_OUT) dans `submit` (avant les capacités, le
+  joueur agit seul ensuite) et `_foe_turn_alone` ; `messages.json` += `withdrawn_foe`
+  « {trainer} rappelle {pokemon} ! » (n° 60), choisi par camp dans `BattleText`.
+- Statuts au changement (code réel du J11) : statut durable et compteur de sommeil sur `Pokemon`
+  (gardés) ; confusion, Patience, Puissance, graine, niveaux sur `Battler` (perdus).
+- Tests : `test_ai_switch_rule` (11), `test_battle_foe_switch` (6), `test_battle_ai` (+4),
+  `test_trainer_library` (+4), `test_battle_text` (+1), `test_battle_playback` (+1). Aucun
+  Dresseur réel n'a `switch` (Ondine et le rival n° 3 au T19).
 
-#### T13 — ui-mobile : rappel adverse à l'écran — après T12
+#### T13 — ui-mobile : rappel adverse à l'écran — **fait** (2026-10-12, branche `j13-t12`, par l'architecte)
 - §2.11 (présentation) ; captures relues (rappel, envoi, carte). **CA** : `game/ui/battle/` et
   `battle_director.gd` seuls touchés.
+- **Fait** : le beat WITHDRAW existant joue déjà côté adverse (carte adverse sortie,
+  `BattleStage.play_withdraw(FOE)` : rougit, rétrécit, s'efface ; puis « {trainer} envoie … » et
+  l'entrée habituelle). Écart au CA : `battle_stage.gd` touché pour « Réduire les animations »
+  (`play_withdraw` sans rétrécissement, fondu seul, joueur et adversaire) ; `battle_director.gd` :
+  commentaire seulement. Aucune image nouvelle.
+- Tests : `test_battle_stage` (+2 : rappel adverse puis entrée du suivant à sa taille ; sans
+  rétrécissement en animations réduites, au pas près), `test_battle_switch_director` (+1 : vrai
+  directeur, une fois, phrase n° 60, sprite et carte sortis, carte et sprite du nouveau).
+- Captures (Mac, 2340 × 1080, relues) : `tools/capture_foe_switch_j13.gd` (`--reduce` pour la
+  variante) → `build/captures/jalon13_t13/` (`rappel_message`, `rappel_10/11` en cours,
+  `envoi`, `apres_changement`, `reduit_*`). Dresseur d'essai construit en mémoire (Salamèche puis
+  Roucool contre Carapuce), aucune donnée ajoutée.
 
-#### T14 — constructeur-monde : carte `qa_switch_j13` + départ `switch_qa` — après T12
+#### T14 — constructeur-monde : carte `qa_switch_j13` + départ `switch_qa` — après T12 **et T11**
+- **Pas fait au T12** (2026-10-12) : la carte attend les espèces du T11 (Stari, Staross,
+  Mystherbe, Chétiflor, absentes de `jalon-13`) et ses Dresseurs d'essai seraient des données
+  `data/trainers/qa_*.json` à retirer au T22. En attendant, l'essai sur Mac passe par
+  `tools/capture_foe_switch_j13.gd` (Dresseur en mémoire). La clé `switch` est prête dans
+  `TrainerLibrary`.
 #### T15 — qa-mobile : **session 13.0** → Kevin
 - Départ `switch_qa` : changement adverse vu (message n° 60, animation, une fois au plus, jamais
   piégé ni en Patience, jamais pour le témoin), 9 espèces au Pokédex, Vol-Vie, Bulles d'O, Acide.

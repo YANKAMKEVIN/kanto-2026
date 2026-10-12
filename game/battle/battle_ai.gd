@@ -19,6 +19,11 @@ extends RefCounted
 ##    a qu'une). Toutes inutiles : tirage parmi toutes. Sans PP : Lutte, aucun tirage.
 ## Sans [PokemonData] ([param data] nul dans [method choose]), « smart » se comporte comme
 ## « random ».
+##
+## [b]Changement de Pokémon[/b] (jalon 13, dossier 16 §14) : si [member can_switch] (donnée
+## « switch » du Dresseur), [method choose] demande d'abord à [AiSwitchRule] s'il faut changer ;
+## oui → [code]BattleAction.switch_to(place)[/code], au plus une fois par combat (une IA par
+## combat). Aucun tirage : sans « switch », mêmes choix et mêmes tirages qu'avant.
 
 const RANDOM: StringName = &"random"
 const SMART: StringName = &"smart"
@@ -36,12 +41,18 @@ const STATUS_SCORE: float = 40.0
 const STAB: float = 1.5
 
 var kind: StringName = RANDOM
+## L'IA peut rappeler son Pokémon (donnée « switch » du Dresseur, [TrainerData]) ; jamais en
+## combat sauvage (IA par défaut).
+var can_switch: bool = false
 ## « smart » : capacités de statut choisies, par Pokémon (identifiant d'instance) puis capacité.
 var _status_uses: Dictionary[int, Dictionary] = {}
+## Le changement de ce combat a déjà eu lieu.
+var _switched: bool = false
 
 
-func _init(ai_kind: StringName = RANDOM) -> void:
+func _init(ai_kind: StringName = RANDOM, ai_can_switch: bool = false) -> void:
 	kind = ai_kind
+	can_switch = ai_can_switch
 
 
 static func is_known(ai_kind: StringName) -> bool:
@@ -52,6 +63,11 @@ static func is_known(ai_kind: StringName) -> bool:
 ## (null : comportement « random », quel que soit [member kind]).
 func choose(own: BattleSide, foe: BattleSide, rng: GameRng,
 		data: PokemonData = null) -> BattleAction:
+	if can_switch and not _switched and data != null and foe != null and foe.active != null:
+		var index := AiSwitchRule.pick(own, foe.active, data.get_type_chart(), data)
+		if index != AiSwitchRule.STAY:
+			_switched = true
+			return BattleAction.switch_to(index)
 	var usable := own.active.usable_moves()
 	if usable.is_empty():
 		return BattleAction.move(BattleAction.STRUGGLE)
@@ -63,6 +79,11 @@ func choose(own: BattleSide, foe: BattleSide, rng: GameRng,
 		var uses := _uses_of(own.active.pokemon)
 		uses[move.id] = int(uses.get(move.id, 0)) + 1
 	return BattleAction.move(index)
+
+
+## Vrai si l'IA a déjà changé de Pokémon dans ce combat.
+func has_switched() -> bool:
+	return _switched
 
 
 ## Nombre de fois où « smart » a choisi la capacité [param move_id] pour [param pokemon] dans

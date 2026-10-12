@@ -34,6 +34,9 @@ var end_message: bool = true
 ## lieu (décision de Kevin n° 17, Q-K, jalon-04.md §8). Vrai par défaut pour les autres
 ## Dresseurs (même mécanique que [member end_message]).
 var start_message: bool = true
+## L'IA peut changer de Pokémon une fois par combat (jalon 13, dossier 16 §14 : Ondine et le
+## rival n° 3) ; donnée « switch », faux par défaut.
+var can_switch: bool = false
 ## Équipe fixe (vide si l'équipe dépend du starter du joueur).
 var team: Array[TrainerSlot] = []
 ## Équipe selon le starter du joueur (combats du rival, comme Rouge/Bleu).
@@ -72,4 +75,4 @@ func has_card() -> bool:
 
 ## IA du dresseur.
 func make_ai() -> BattleAI:
-	return BattleAI.new(ai)
+	return BattleAI.new(ai, can_switch)

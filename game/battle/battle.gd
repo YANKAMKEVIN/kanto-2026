@@ -78,6 +78,14 @@ extends RefCounted
 ## passe en [constant State.REPLACING] (l'adversaire, lui, envoie [method Party.first_able]) ;
 ## le joueur choisit par [method replace] (SENT_OUT, puis de nouveau CHOOSING ; ni retour, ni
 ## fuite). L'ordre de l'équipe ne change jamais.
+##
+## Changement de l'adversaire (jalon 13, dossier 16 §14, [AiSwitchRule]) : quand son IA rend
+## [code]BattleAction.switch_to(index)[/code] (Dresseur « switch », au plus une fois), il passe
+## avant les capacités : WITHDRAWN (camp adverse, nom du Dresseur), SENT_OUT du nouveau ; le
+## Dresseur ne lance rien ce tour (tour consommé), le joueur agit contre le nouveau, puis la fin
+## de tour. Le rappelé garde PV et statut (objet [Pokemon]) et perd ce que porte son [Battler]
+## (niveaux, confusion, graine, Puissance, Patience) ; les participants (XP) repartent du
+## Pokémon du joueur en jeu. Aucun tirage propre ; jamais pendant une action imposée.
 
 ## REPLACING (jalon 7) : le Pokémon du joueur est K.O., il doit en choisir un autre
 ## ([method replace]) ; ajouté en fin d'enum.
@@ -303,6 +311,13 @@ func submit(action: BattleAction) -> Array[BattleEvent]:
 		_throw_ball(action.item_id, events)
 		return events
 	var foe_action := _foe_action()
+	if foe_action.kind == BattleAction.Kind.SWITCH:
+		_foe_switch(foe_action.target, events)
+		_execute(_player, action, events)
+		if _state == State.OVER:
+			return events
+		_end_turn(events)
+		return events
 	var order: Array[BattleSide] = [_player, _foe]
 	if _player_goes_second(action, foe_action):
 		order = [_foe, _player]
@@ -405,6 +420,10 @@ func _foe_turn_alone(events: Array[BattleEvent]) -> void:
 	var foe_action := _foe_action()
 	if _foe.active.pokemon.is_fainted():
 		return
+	if foe_action.kind == BattleAction.Kind.SWITCH:
+		_foe_switch(foe_action.target, events)
+		_end_turn(events)
+		return
 	_execute(_foe, foe_action, events)
 	if _state == State.OVER:
 		return
@@ -412,10 +431,33 @@ func _foe_turn_alone(events: Array[BattleEvent]) -> void:
 
 
 ## Action de l'adversaire : imposée pendant sa Patience (aucun tirage), sinon celle de son IA.
+## Un changement que le moteur refuse (combat sauvage, place invalide) est remplacé par une
+## capacité (l'IA ne change plus).
 func _foe_action() -> BattleAction:
 	if _foe.active != null and _foe.active.is_biding():
 		return BattleAction.move(_foe.active.bide_slot)
-	return _foe.ai.choose(_foe, _player, _rng, _data)
+	var action := _foe.ai.choose(_foe, _player, _rng, _data)
+	if action.kind == BattleAction.Kind.SWITCH and not _foe_can_switch_to(action.target):
+		push_error("Battle : changement adverse refusé (place %d)" % action.target)
+		return _foe.ai.choose(_foe, _player, _rng, _data)
+	return action
+
+
+## Le Dresseur adverse peut-il envoyer le Pokémon [param party_index] ? Jamais en combat
+## sauvage ; ni le Pokémon en jeu, ni un K.O.
+func _foe_can_switch_to(party_index: int) -> bool:
+	var pokemon := _foe.party.get_at(party_index)
+	return not _foe.trainer_name.is_empty() and (_rules == null or not _rules.wild) \
+		and pokemon != null and not pokemon.is_fainted() and pokemon != _foe.active.pokemon
+
+
+## Changement de l'adversaire (joué avant les capacités) : WITHDRAWN (« {trainer} rappelle … »),
+## puis SENT_OUT du Pokémon [param party_index].
+func _foe_switch(party_index: int, events: Array[BattleEvent]) -> void:
+	var withdrawn := _event(BattleEvent.Kind.WITHDRAWN, _foe)
+	withdrawn.trainer_name = _foe.trainer_name
+	events.append(withdrawn)
+	_send_out(_foe, events, _foe.party.get_at(party_index))
 
 
 ## Fin du combat sur [param outcome] : BATTLE_ENDED, plus aucun choix.

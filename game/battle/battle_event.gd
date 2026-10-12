@@ -64,7 +64,9 @@ extends RefCounted
 ## Changement de Pokémon (jalon 7), juste après TURN_STARTED (ou sans tour : remplacement
 ## après un K.O., [method Battle.replace]) :
 ## - WITHDRAWN : le Pokémon du joueur en jeu est rappelé (« Reviens, … ! ») ; suit le SENT_OUT
-##   du Pokémon envoyé, puis (changement volontaire) l'adversaire joue son tour.
+##   du Pokémon envoyé, puis (changement volontaire) l'adversaire joue son tour. Côté adverse
+##   (jalon 13, IA qui change) : [member trainer_name] porte le Dresseur (« … rappelle … ! ») ;
+##   suit le SENT_OUT adverse, puis l'action du joueur.
 ## Statuts durables (jalon 9 §2.1.3, le poison seul) ; [member status] = le statut concerné :
 ## - STATUS_INFLICTED : le Pokémon touché reçoit [member status] (Poudre Toxik, Dard-Venin) ;
 ## - STATUS_UNCHANGED : capacité de statut sur un Pokémon qui a déjà ce même [member status]

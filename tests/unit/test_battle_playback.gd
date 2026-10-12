@@ -355,3 +355,19 @@ func test_bide_riposte_lunges_after_its_line() -> void:
 		as Array[BattleBeat.Kind])
 	assert_eq(beats[0].text, "Salamèche riposte !")
 	assert_eq(beats[1].category, MoveData.Category.PHYSICAL)
+
+
+## Jalon 13 : le rappel par l'IA, « {trainer} rappelle {pokemon} ! » puis WITHDRAW côté adverse,
+## puis l'envoi habituel.
+func test_foe_withdraw_message_then_withdraw_then_send_out() -> void:
+	var withdrawn := _event(BattleEvent.Kind.WITHDRAWN, BattleEvent.SideId.FOE, "Salamèche")
+	withdrawn.trainer_name = "Ondine"
+	var sent := _event(BattleEvent.Kind.SENT_OUT, BattleEvent.SideId.FOE, "Roucool")
+	sent.trainer_name = "Ondine"
+	var beats := BattlePlayback.beats_for_log([withdrawn, sent] as Array[BattleEvent], _texts,
+		_data)
+	assert_eq(_kinds(beats), [BattleBeat.Kind.MESSAGE, BattleBeat.Kind.WITHDRAW,
+		BattleBeat.Kind.MESSAGE, BattleBeat.Kind.SEND_OUT] as Array[BattleBeat.Kind])
+	assert_eq(_messages(beats), ["Ondine rappelle Salamèche !", "Ondine envoie Roucool !"]
+		as Array[String])
+	assert_eq(beats[1].side, BattleEvent.SideId.FOE)
