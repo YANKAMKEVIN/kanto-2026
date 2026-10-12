@@ -30,6 +30,9 @@ itinéraires, rebords, herbes obligatoires, objet caché « cache », durée de 
 `azuria_velos.txt`, `azuria_maison.txt` → `plan_check_azuria.py` (recouvrement exact du sas, raccords
 entre cartes, rebord unique, eau et ponts, Centre premier bâtiment, rival, Ondine, pont Pépite).
 
+**Azuria après J14** (variante `J14` de `azuria.txt`, jalon 14 T20a) : `plan_check_azuria_j14.py`,
+lancé à part (jardin, impasse, poursuite, vue du Rocket, aucune case coincée, sortie sud).
+
 **Route 25** (`route_25.txt`, jalon 14) : `verifier_route_25`, dans `plan_check_route_25.py`
 (raccord ouest, maison de Léo, D1 et D2 inévitables, H3 obligatoire, rebord de la terrasse,
 largeur du chemin, durée de traversée).
