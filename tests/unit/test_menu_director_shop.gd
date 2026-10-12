@@ -68,7 +68,8 @@ func test_the_shop_opens_alone_without_a_dashboard() -> void:
 	var ids: Array[StringName] = []
 	for entry: ShopEntryView in view.entries:
 		ids.append(entry.item_id)
-	assert_eq(ids, [&"poke_ball", &"potion"] as Array[StringName], "stock du dossier 09 §9")
+	assert_eq(ids, [&"poke_ball", &"potion", &"paralyze_heal", &"awakening", &"burn_heal"] as Array[StringName],
+		"stock du dossier 09 §9, remèdes du J11 (dossier 14 §3.4)")
 	assert_eq(_placeholders.size(), 0)
 
 

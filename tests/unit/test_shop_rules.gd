@@ -222,13 +222,13 @@ func _scripts(dir: String) -> Array[String]:
 
 func test_the_antidote_is_sold_only_once_poison_is_unlocked() -> void:
 	var antidote := _items.get_item(&"antidote")
-	assert_eq(ShopRules.stock(_mart, _state.flags), [&"poke_ball", &"potion"] \
-		as Array[StringName], "avant le garde sud : le stock du J7")
+	assert_eq(ShopRules.stock(_mart, _state.flags), [&"poke_ball", &"potion", &"paralyze_heal", &"awakening", &"burn_heal"] \
+		as Array[StringName], "avant le garde sud : le stock du J7 et les remèdes du J11")
 	var before := _snapshot()
 	assert_eq(ShopRules.buy(_state, _mart, antidote, 1), ShopRules.Status.NOT_SOLD_HERE)
 	assert_eq(_snapshot(), before)
 	_state.flags.set_flag(&"poison_unlocked")
-	assert_eq(ShopRules.stock(_mart, _state.flags), [&"poke_ball", &"potion", &"antidote"] \
+	assert_eq(ShopRules.stock(_mart, _state.flags), [&"poke_ball", &"potion", &"antidote", &"paralyze_heal", &"awakening", &"burn_heal"] \
 		as Array[StringName], "après la Potion")
 	var money: int = _state.money
 	assert_eq(ShopRules.buy(_state, _mart, antidote, 2), ShopRules.Status.OK)

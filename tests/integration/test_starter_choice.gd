@@ -351,6 +351,9 @@ func test_same_seed_same_starter() -> void:
 	await _play_scene_to_end()
 	var first := _party().get_lead().to_dict()
 	var twin := PokemonFactory.create(_data, &"bulbasaur", 5, GameRng.new(SEED))
+	# L'identifiant (J11) est tiré à part, hors de la graine : seul lui diffère.
+	assert_true(PokemonUid.is_valid(first["uid"]), "identifiant donné en rejoignant l'équipe")
+	first["uid"] = ""
 	assert_eq(first, twin.to_dict(), "graine fixe → même Pokémon")
 
 

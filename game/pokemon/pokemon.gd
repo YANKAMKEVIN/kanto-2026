@@ -25,6 +25,8 @@ enum LearnResult {
 const GENDER_NAMES: Dictionary[String, Gender] = {
 	"none": Gender.NONE, "male": Gender.MALE, "female": Gender.FEMALE,
 }
+## Borne de [member status_turns] relue d'une sauvegarde (fichier retouché à la main).
+const MAX_STATUS_TURNS: int = 7
 const ORIGIN_NAMES: Dictionary[String, Origin] = {
 	"unknown": Origin.UNKNOWN, "starter": Origin.STARTER, "capture": Origin.CAPTURE,
 }
@@ -58,6 +60,21 @@ var favorite: bool = false
 ## aucun. Persiste après le combat, sauvegardé (v4) ; effacé par [method heal_full] (Centre,
 ## Maman, réveil après défaite) et par [method cure_status] (objet qui le soigne).
 var status: StringName = StatusRules.NONE
+## Tours restants du statut (jalon 11 : le sommeil, compteur tiré à l'application) ; 0 = aucun
+## compteur. Gardé au changement de Pokémon, après le combat et dans la sauvegarde (dossier 14
+## §3.1, A-1) ; remis à 0 avec le statut ([method heal_full], [method cure_status]).
+var status_turns: int = 0
+## Identifiant stable ([PokemonUid]) ; vide tant que le Pokémon n'appartient pas au joueur.
+## Attribué à l'entrée dans l'équipe ou le Stockage ([method ensure_uid]) et gardé à vie (même
+## objet au Stockage et à l'évolution). Désigne le compagnon (jalon 11), jamais une position.
+var uid: String = ""
+
+
+## Donne un identifiant ([PokemonUid]) au Pokémon s'il n'en a pas ; rend l'identifiant.
+func ensure_uid() -> String:
+	if uid.is_empty():
+		uid = PokemonUid.generate()
+	return uid
 
 
 ## Nom affiché : le surnom, sinon le nom de l'espèce.
@@ -87,6 +104,7 @@ func take_damage(amount: int) -> int:
 func heal_full() -> void:
 	hp = max_hp()
 	status = StatusRules.NONE
+	status_turns = 0
 	for slot: MoveSlot in moves:
 		slot.restore()
 
@@ -114,6 +132,7 @@ func has_status(id: StringName) -> bool:
 func cure_status() -> StringName:
 	var cured := status
 	status = StatusRules.NONE
+	status_turns = 0
 	return cured
 
 
@@ -220,6 +239,8 @@ func to_dict() -> Dictionary:
 		},
 		"favorite": favorite,
 		"status": String(status),
+		"status_turns": status_turns,
+		"uid": uid,
 	}
 
 
@@ -274,6 +295,17 @@ static func from_dict(dict: Dictionary, data: PokemonData) -> Pokemon:
 		pokemon.status = StringName(raw_status)
 	elif not (raw_status is String and (raw_status as String).is_empty()):
 		push_warning("Pokemon.from_dict : statut inconnu « %s » ignoré" % str(raw_status))
+	# Compteur du statut (J11) : absent d'une sauvegarde plus ancienne → 0 ; sans statut → 0.
+	if pokemon.status != StatusRules.NONE:
+		pokemon.status_turns = clampi(JsonFields.get_int(dict, "status_turns"), 0,
+			MAX_STATUS_TURNS)
+	# Identifiant (J11) : absent ou mal formé → vide ; l'équipe ou le Stockage en donnent un neuf
+	# au chargement ([method ensure_uid]), sans changer ni l'ordre ni le contenu.
+	var raw_uid: Variant = dict.get("uid", "")
+	if PokemonUid.is_valid(raw_uid):
+		pokemon.uid = raw_uid
+	elif not (raw_uid is String and (raw_uid as String).is_empty()):
+		push_warning("Pokemon.from_dict : identifiant mal formé « %s » remplacé" % str(raw_uid))
 	return pokemon
 
 
