@@ -51,6 +51,10 @@ extends RefCounted
 ## il se réveille à sa première tentative d'agir). « wild » : table d'herbes **forcée sur la
 ## carte de départ** pour la session (même format qu'une table de `data/encounters/` sans
 ## « maps » ni « terrain » : { "rate", "slots", "ramp" }) ; exige « map » ; jamais sauvegardée.
+## Jalon 15 (T2, sauvegarde v7) : « daycare » : le Pokémon gardé à la Pension, même format qu'un
+## membre de l'équipe plus « pending_exp » (entier ≥ 0, XP en attente, bornée au plafond du
+## niveau 100 ; absent : 0), par exemple { "species": "rattata", "level": 10,
+## "pending_exp": 500 } ; « capturé » au Pokédex ; niveau au dépôt = son niveau.
 
 const USER_PATH: String = "user://debug_start.json"
 const FACINGS: Dictionary[String, Vector2i] = {
@@ -62,7 +66,7 @@ const MAX_STORAGE: int = 60
 const MAX_MONEY: int = 999_999
 
 const _KEYS: Array[String] = ["map", "spawn", "facing", "seed", "flags", "party", "bag",
-	"favorites", "money", "storage", "autosave", "wild"]
+	"favorites", "money", "storage", "autosave", "wild", "daycare"]
 const _MEMBER_KEYS: Array[String] = ["species", "level", "moves", "exp_to_next", "hp",
 	"favorite", "status", "status_turns"]
 
@@ -86,6 +90,8 @@ var storage: Array[Dictionary] = []
 var autosave: bool = false
 ## Table d'herbes forcée sur [member map] (vide = celle des données), déjà validée.
 var wild: Dictionary = {}
+## Pokémon de la Pension (même forme que [member party], plus « pending_exp ») ; vide = aucun.
+var daycare: Dictionary = {}
 var _errors: PackedStringArray = PackedStringArray()
 
 
@@ -213,6 +219,11 @@ func add_from_dict(dict: Dictionary, data: PokemonData, items: ItemLibrary,
 				for error: String in check.get_errors():
 					_errors.append(error)
 				ok = false
+	var new_daycare: Dictionary = {}
+	if dict.has("daycare"):
+		new_daycare = _parse_daycare(dict["daycare"], data, "%s daycare" % source)
+		if new_daycare.is_empty():
+			ok = false
 	if not ok:
 		return false
 	map = new_map
@@ -227,6 +238,7 @@ func add_from_dict(dict: Dictionary, data: PokemonData, items: ItemLibrary,
 	storage = new_storage
 	autosave = new_autosave
 	wild = new_wild
+	daycare = new_daycare
 	return true
 
 
@@ -252,6 +264,13 @@ func apply(state: Object, data: PokemonData) -> void:
 		state.bag.set_favorite(id, true)
 	if money >= 0:
 		state.money = money
+	if not daycare.is_empty():
+		var kept := _create(daycare, state, data)
+		kept.ensure_uid()
+		state.daycare.put(kept, data)
+		state.daycare.pending_exp = mini(daycare["pending_exp"], state.daycare.exp_room)
+		state.pokedex.mark_caught(kept.species_id)
+		state.ensure_unique_uids()
 
 
 ## Un Pokémon d'après un membre validé (capacités, XP, PV).
@@ -282,8 +301,10 @@ func describe() -> String:
 		var status: StringName = member.get("status", StatusRules.NONE)
 		members.append("%s N%d%s" % [member["species"], member["level"],
 			"" if status.is_empty() else " (%s)" % status])
-	return "%s/%s, %s%s" % [map if not map.is_empty() else &"(défaut)", spawn,
-		", ".join(members), " (remplace la sauvegarde)" if autosave else ""]
+	var kept := "" if daycare.is_empty() else ", Pension : %s N%d + %d XP" % [
+		daycare["species"], daycare["level"], daycare["pending_exp"]]
+	return "%s/%s, %s%s%s" % [map if not map.is_empty() else &"(défaut)", spawn,
+		", ".join(members), kept, " (remplace la sauvegarde)" if autosave else ""]
 
 
 func get_errors() -> PackedStringArray:
@@ -367,6 +388,23 @@ func _parse_member(value: Variant, data: PokemonData, where: String) -> Dictiona
 		return {}
 	return { "species": species_id, "level": level, "moves": moves, "exp_to_next": to_next,
 		"hp": hp, "favorite": favorite, "status": status, "status_turns": status_turns }
+
+
+## « daycare » : un membre ([method _parse_member]) plus « pending_exp » ; {} si invalide.
+func _parse_daycare(value: Variant, data: PokemonData, where: String) -> Dictionary:
+	if not value is Dictionary:
+		return _empty_fail("%s : un objet est attendu" % where)
+	var entry := (value as Dictionary).duplicate()
+	var pending := 0
+	if entry.has("pending_exp"):
+		if not _is_int(entry["pending_exp"]) or int(entry["pending_exp"]) < 0:
+			return _empty_fail("%s : « pending_exp » est un entier positif ou nul" % where)
+		pending = int(entry["pending_exp"])
+		entry.erase("pending_exp")
+	var member := _parse_member(entry, data, where)
+	if not member.is_empty():
+		member["pending_exp"] = pending
+	return member
 
 
 static func _is_text(value: Variant) -> bool:

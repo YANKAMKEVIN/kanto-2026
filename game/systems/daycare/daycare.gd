@@ -17,10 +17,11 @@ extends RefCounted
 ## [signal Player.bumped]) n'émet pas `moved` et ne compte donc pas. Le relais appellera
 ## [method add_steps] avec le [DaycareConfig] chargé.
 ##
-## **Sauvegarde (v7, non branchée ici)** : [method to_dict] / [method from_dict] sont prêts, mais
-## ni `GameState` ni `SaveSystem` ne les appellent encore. Le branchement viendra en **v7**, après
-## la fusion de la v6 du J11 : champ `daycare` de `GameState`, migration v6 → v7 (Pension vide),
-## Pension incluse dans `GameState.ensure_unique_uids()` et effacement du compagnon déposé (J11).
+## **Sauvegarde (v7, J15 T2)** : [method to_dict] / [method from_dict] sont appelés par
+## `GameState` (champ « daycare ») ; migration v6 → v7 sans transformation (Pension vide) ;
+## Pension incluse dans `GameState.ensure_unique_uids()` ; un compagnon déposé n'est plus
+## compagnon (`GameState.get_companion` ne cherche que dans l'équipe). L'uid du Pokémon déposé
+## est posé au dépôt par le directeur (T4, `ensure_uid`) et au chargement s'il manque.
 
 ## Le Pokémon gardé, ou null (Pension vide).
 var pokemon: Pokemon = null
@@ -85,7 +86,8 @@ func levels_gained(data: PokemonData) -> int:
 	return level_after(data) - pokemon.level if not is_empty() else 0
 
 
-## État prêt pour le JSON (sauvegarde v7, non branchée) : objet vide si la Pension est vide.
+## État prêt pour le JSON (sauvegarde v7, champ « daycare ») : objet vide si la Pension est
+## vide.
 func to_dict() -> Dictionary:
 	if is_empty():
 		return {}
@@ -97,8 +99,8 @@ func to_dict() -> Dictionary:
 
 
 ## Pension écrite par [method to_dict]. Objet vide (ou sans « pokemon ») → Pension vide ; null
-## (push_error) si le Pokémon est invalide : l'appelant (v7) décidera quoi en faire, rien n'est
-## perdu en silence. XP en attente bornée à [0, plafond] ; niveau au dépôt absent ou invalide →
+## (push_error) si le Pokémon est invalide : GameState vide alors la Pension et signale le
+## refus (Boot garde l'original en `save.json.rejected`), rien n'est perdu en silence. XP en attente bornée à [0, plafond] ; niveau au dépôt absent ou invalide →
 ## niveau actuel.
 static func from_dict(dict: Dictionary, data: PokemonData) -> Daycare:
 	var daycare := Daycare.new()

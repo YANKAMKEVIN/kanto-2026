@@ -950,6 +950,12 @@ func _log_loaded_save() -> void:
 			if members[i].status != StatusRules.NONE:
 				print("[qa] statut relu : %s (%s %d) %s" % [members[i].display_name(_pokemon),
 					where, i + 1, members[i].status])
+	# J15 (v7) : Pension relue (session 15.0).
+	if not GameState.daycare.is_empty():
+		var kept: Pokemon = GameState.daycare.pokemon
+		print("[qa] pension relue : %s N%d (dépôt N%d), %d XP en attente, uid %s" % [
+			kept.display_name(_pokemon), kept.level, GameState.daycare.deposit_level,
+			GameState.daycare.pending_exp, kept.uid])
 
 
 ## Une entrée de la sauvegarde a été écartée au chargement (Pokémon, objet ou espèce inconnus

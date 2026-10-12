@@ -10,6 +10,7 @@ extends Node
 ## l'aventure, zones découvertes, objets trouvés, grands moments, nom du joueur). Jalon 7
 ## (jalon-07.md §3.1, sauvegarde v3) : l'argent et la première espèce sauvage rencontrée.
 ## Ouverture (OUV.1, dossier 13 §3.4, sauvegarde v5) : prénom du rival et apparence du joueur.
+## Jalon 15 (jalon-15.md §2.6, sauvegarde v7) : la Pension ([member daycare]).
 ## [method to_dict] / [method load_dict] font l'aller-retour complet ; [SaveSystem] écrit et
 ## lit le fichier ; Boot (tâche S2) décide des moments d'autosave et appelle les
 ## méthodes `record_*` au bon endroit.
@@ -103,6 +104,13 @@ var first_wild_encounter: Dictionary = {}
 ## place : réordonner l'équipe ne le change pas, et rentrer dans sa Ball (intérieur, K.O.,
 ## cinématique) ne le touche pas (seule la visibilité, calculée, change).
 var companion_uid: String = ""
+## Pension Pokémon (jalon 15, sauvegarde v7) : un Pokémon gardé au plus, son XP en attente et
+## son niveau au dépôt ([Daycare] ; règles dans [DaycareRules]). **Remplacée** par
+## [method new_game] et [method load_dict] : la relire ici à chaque usage, ne pas la garder.
+## Son Pokémon n'est ni dans l'équipe ni au Stockage, mais a un identifiant unique parmi eux
+## ([method ensure_unique_uids]) et n'est jamais compagnon ([method get_companion] ne cherche
+## que dans l'équipe).
+var daycare: Daycare = Daycare.new()
 
 
 func _init() -> void:
@@ -143,6 +151,7 @@ func new_game(rng_seed: int = -1) -> void:
 	money = STARTING_MONEY
 	first_wild_encounter = {}
 	companion_uid = ""
+	daycare = Daycare.new()
 
 
 # --- Faits (§16.3), appelés par la scène (tâche S2) ------------------------------------
@@ -292,6 +301,7 @@ func to_dict() -> Dictionary:
 		"money": money,
 		"first_wild_encounter": first_wild_encounter.duplicate(),
 		"companion": companion_uid,
+		"daycare": daycare.to_dict(),
 	}
 
 
@@ -323,6 +333,7 @@ func load_dict(dict: Dictionary, data: PokemonData) -> bool:
 	starter_species = JsonFields.get_id(dict, "starter")
 	ok = party.load_array(JsonFields.get_array(dict, "party"), data) and ok
 	ok = storage.load_array(JsonFields.get_array(dict, "storage"), data) and ok
+	ok = _load_daycare(dict, data) and ok
 	ensure_unique_uids()
 	ok = bag.load_dict(JsonFields.get_dict(dict, "bag")) and ok
 	ok = pokedex.from_dict(JsonFields.get_dict(dict, "pokedex")) and ok
@@ -354,7 +365,8 @@ func load_dict(dict: Dictionary, data: PokemonData) -> bool:
 	ok = _load_first_wild_encounter(JsonFields.get_dict(dict, "first_wild_encounter"), data) \
 		and ok
 	# Compagnon (J11) : absent d'une sauvegarde plus ancienne → aucun ; un identifiant qui ne
-	# désigne aucun Pokémon de l'équipe (fichier retouché) → aucun, sans refus.
+	# désigne aucun Pokémon de l'équipe (fichier retouché, ou Pokémon déposé à la Pension, J15)
+	# → aucun, sans refus.
 	companion_uid = JsonFields.get_string(dict, "companion")
 	if not companion_uid.is_empty() and get_companion() == null:
 		print("[qa] compagnon « %s » absent de l'équipe : aucun compagnon" % companion_uid)
@@ -378,14 +390,16 @@ static func loaded_player_look(raw: StringName) -> StringName:
 
 # --- Identifiants et compagnon (jalon 11) --------------------------------------------
 
-## Donne un identifiant à chaque Pokémon de l'équipe puis du Stockage qui n'en a pas, et en
-## redonne un neuf au second d'un doublon. Ni l'ordre ni le contenu ne changent. Rend le
-## nombre d'identifiants attribués.
+## Donne un identifiant à chaque Pokémon de l'équipe, du Stockage puis de la Pension (J15) qui
+## n'en a pas, et en redonne un neuf au second d'un doublon (dans cet ordre). Ni l'ordre ni le
+## contenu ne changent. Rend le nombre d'identifiants attribués.
 func ensure_unique_uids() -> int:
 	var seen: Dictionary[String, bool] = {}
 	var assigned := 0
 	var members: Array[Pokemon] = party.get_all()
 	members.append_array(storage.get_all())
+	if not daycare.is_empty():
+		members.append(daycare.pokemon)
 	for pokemon: Pokemon in members:
 		if pokemon.uid.is_empty() or seen.has(pokemon.uid):
 			pokemon.uid = ""
@@ -417,6 +431,24 @@ func set_companion(pokemon: Pokemon) -> bool:
 	if party.index_of(pokemon) < 0:
 		return false
 	companion_uid = pokemon.ensure_uid()
+	return true
+
+
+## Pension (J15, sauvegarde v7) : absente (sauvegarde ≤ v6) ou vide → Pension vide. Pokémon
+## invalide ([method Daycare.from_dict] rend null) ou champ qui n'est pas un objet → Pension
+## vide **et** faux : Boot copie alors l'original en `save.json.rejected` avant tout autosave
+## (rien n'est perdu en silence, jalon-15.md §2.6).
+func _load_daycare(dict: Dictionary, data: PokemonData) -> bool:
+	var raw: Variant = dict.get("daycare")
+	if raw == null:
+		return true
+	if not raw is Dictionary:
+		push_error("GameState : Pension mal formée (pas un objet), Pension vide")
+		return false
+	var loaded := Daycare.from_dict(raw, data)
+	if loaded == null:
+		return false
+	daycare = loaded
 	return true
 
 
