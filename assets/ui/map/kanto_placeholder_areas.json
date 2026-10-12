@@ -24,6 +24,8 @@
 		"route_23": {"area": [455, 85, 45, 290]},
 		"indigo_plateau": {"area": [300, 25, 160, 55]},
 		"route_21": {"area": [790, 705, 60, 55]},
-		"cinnabar_island": {"area": [690, 760, 300, 190]}
+		"cinnabar_island": {"area": [690, 760, 300, 190]},
+		"route_25": {"area": [1215, 100, 120, 30]},
+		"cerulean_cape": {"area": [1335, 40, 85, 60]}
 	}
 }

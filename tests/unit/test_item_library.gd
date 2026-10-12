@@ -19,7 +19,8 @@ func test_real_data_loads_without_error() -> void:
 	assert_eq(_library.get_errors().size(), 0, str(_library.get_errors()))
 	# Jalon 5 : la Potion cachée de la Route 1 (catégorie « heal », ramassée seulement).
 	assert_eq(_library.get_ids(), [&"antidote", &"awakening", &"burn_heal", &"ice_heal", &"oak_parcel",
-		&"paralyze_heal", &"poke_ball", &"potion", &"tm34"] as Array[StringName])
+		&"paralyze_heal", &"poke_ball", &"potion", &"rare_candy", &"ss_ticket", &"tm19", &"tm28",
+		&"tm34"] as Array[StringName])
 	var ball := _library.get_item(&"poke_ball")
 	assert_eq(ball.name, "Poké Ball")
 	assert_eq(ball.plural, "Poké Balls")
@@ -36,7 +37,8 @@ func test_real_data_loads_without_error() -> void:
 	assert_eq(ball.heal_amount, 0)
 	assert_eq(_library.get_ids_in_data_order(),
 		[&"poke_ball", &"potion", &"antidote", &"paralyze_heal", &"awakening", &"burn_heal", &"ice_heal",
-		&"tm34", &"oak_parcel"] as Array[StringName])
+		&"tm34", &"oak_parcel", &"tm19", &"tm28", &"ss_ticket", &"rare_candy"]
+		as Array[StringName], "fichiers dans l'ordre alphabétique (items_j14.json après)")
 	assert_eq([ball.order, potion.order], [0, 1])
 
 
@@ -346,3 +348,28 @@ func test_real_j11_remedies() -> void:
 		["Antigel", "Antigels", [&"freeze"] as Array[StringName], 250,
 			"Dégèle un Pokémon gelé.", ItemData.Category.HEAL, 0, false],
 	])
+
+
+## Jalon 14 (T5, jalon-14.md §2.6 et §2.10) : Passe Bateau (objet clé) et Super Bonbon (AVENTURE,
+## jamais vendu, sans usage avant T18b) ; textes n° 58 et 59 du dossier 17.
+func test_real_j14_ticket_and_rare_candy() -> void:
+	assert_true(_library.load_dir(), "\n".join(_library.get_errors()))
+	var ticket := _library.get_item(&"ss_ticket")
+	assert_eq([ticket.name, ticket.category, ticket.price],
+		["Passe Bateau", ItemData.Category.KEY, 0])
+	assert_eq(ticket.description,
+		"Une invitation pour le S.S. Anne, le paquebot qui fait escale à Carmin-sur-Mer.")
+	assert_true(ticket.is_key())
+	assert_false(ticket.is_sellable())
+	assert_eq(ticket.contexts(), [] as Array[StringName], "aucun bouton UTILISER au J14")
+	assert_eq(ticket.quantity_text(1), "PASSE BATEAU")
+	assert_eq(ticket.added_text(1), "ajouté aux objets clés")
+	var candy := _library.get_item(&"rare_candy")
+	assert_eq([candy.name, candy.plural, candy.feminine, candy.category, candy.price],
+		["Super Bonbon", "Super Bonbons", false, ItemData.Category.FIELD, 0])
+	assert_eq(candy.description, "Un bonbon plein d'énergie. Fait monter un Pokémon d'un niveau.")
+	assert_false(candy.is_sellable(), "jamais vendu au J14")
+	assert_eq(candy.contexts(), [ItemData.CONTEXT_FIELD] as Array[StringName], "pas en combat")
+	assert_eq(candy.added_text(1), "Ajouté au Sac")
+	for item: ItemData in [ticket, candy]:
+		assert_false(item.draft, "%s : texte validé (dossier 17 §15)" % item.name)

@@ -1,0 +1,27 @@
+{
+	"abra": {
+		"dex": 63, "name": "Abra", "types": ["psychic"],
+		"base_stats": { "hp": 25, "atk": 20, "def": 15, "spa": 105, "spd": 55, "spe": 90 },
+		"male_ratio": 0.75, "growth_rate": "medium_slow", "base_exp": 62, "catch_rate": 200,
+		"learnset": [[1, "teleport"]],
+		"evolutions": [{ "into": "kadabra", "method": "level", "level": 16 }]
+	},
+	"kadabra": {
+		"dex": 64, "name": "Kadabra", "types": ["psychic"],
+		"base_stats": { "hp": 40, "atk": 35, "def": 30, "spa": 120, "spd": 70, "spe": 105 },
+		"male_ratio": 0.75, "growth_rate": "medium_slow", "base_exp": 140, "catch_rate": 100,
+		"learnset": [
+			[1, "teleport"], [1, "confusion"], [16, "confusion"], [27, "psybeam"],
+			[38, "psychic"], [42, "reflect"]
+		]
+	},
+	"machop": {
+		"dex": 66, "name": "Machoc", "types": ["fighting"],
+		"base_stats": { "hp": 70, "atk": 80, "def": 50, "spa": 35, "spd": 35, "spe": 35 },
+		"male_ratio": 0.75, "growth_rate": "medium_slow", "base_exp": 61, "catch_rate": 180,
+		"learnset": [
+			[1, "karate_chop"], [20, "low_kick"], [25, "leer"], [32, "focus_energy"],
+			[39, "seismic_toss"], [46, "submission"]
+		]
+	}
+}

@@ -82,6 +82,18 @@
 		"route_21": { "name": "Route 21", "kind": "sea_route", "maps": [] },
 		"cinnabar_island": { "name": "Cramois'Île", "kind": "town", "maps": [] },
 		"route_23": { "name": "Route 23", "kind": "route", "maps": [] },
-		"indigo_plateau": { "name": "Plateau Indigo", "kind": "place", "maps": [] }
+		"indigo_plateau": { "name": "Plateau Indigo", "kind": "place", "maps": [] },
+		"route_25": {
+			"name": "Route 25", "kind": "route", "maps": [],
+			"subtitle": "Azuria — Cap d'Azuria",
+			"description": "Un chemin côtier qui longe la mer vers l'est, entre falaises et criques. Tout au bout, une maison isolée sur la pointe.",
+			"draft": true
+		},
+		"cerulean_cape": {
+			"name": "Cap d'Azuria", "kind": "place", "maps": [],
+			"subtitle": "Route 25",
+			"description": "La pointe la plus avancée de la côte. Un chercheur un peu à part y vit seul, entouré de ses machines.",
+			"draft": true
+		}
 	}
 }
