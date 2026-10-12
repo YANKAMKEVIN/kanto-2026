@@ -29,12 +29,15 @@ extends RefCounted
 ## de présentation d'un Champion ([member TrainerData.card_name], [member TrainerData.card_title]).
 ## « switch » (facultatif, jalon 13, dossier 16 §14) : true = l'IA peut changer de Pokémon une
 ## fois par combat ([member TrainerData.can_switch], [AiSwitchRule]) ; false par défaut.
+## « moment » (facultatif, jalon 13 §2.8) : seule valeur admise "win" = Grand moment du rival
+## écrit à la victoire seulement ([member TrainerData.moment_on_win], [RivalMoment]).
 
 const DATA_DIR: String = "res://data/trainers/"
 
 const _KEYS: Array[String] = [
 	"name", "ai", "can_lose", "heal_after", "gives_exp", "prize_money", "end_message",
 	"start_message", "team", "team_by_starter", "bag", "prize_per_level", "card", "switch",
+	"moment",
 ]
 const _REQUIRED: Array[String] = [
 	"name", "ai", "can_lose", "heal_after", "gives_exp", "prize_money",
@@ -190,6 +193,11 @@ func _parse(value: Variant, where: String) -> TrainerData:
 			trainer.can_switch = entry["switch"]
 		else:
 			ok = _fail("%s : « switch » vaut true ou false" % where)
+	if entry.has("moment"):
+		if entry["moment"] is String and entry["moment"] == "win":
+			trainer.moment_on_win = true
+		else:
+			ok = _fail("%s : « moment » vaut \"win\"" % where)
 	for key: String in ["prize_money", "prize_per_level"]:
 		if entry.has(key):
 			var money: Variant = entry[key]

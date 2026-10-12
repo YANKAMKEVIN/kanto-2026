@@ -12,7 +12,9 @@ extends RefCounted
 ## - BALL (CAPTURE) : se lance en combat sauvage ;
 ## - HEAL (SOINS) : se donne à un Pokémon de l'équipe, en exploration et en combat ;
 ## - BATTLE (COMBAT) : en combat seulement (« Utilisable en combat » hors combat) ;
-## - FIELD (AVENTURE) : en exploration seulement ;
+## - FIELD (AVENTURE) : en exploration seulement, **et seulement s'il a un usage**
+##   ([member field_use]) : sans usage (la Pépite, jalon 13 §2.13), aucun contexte, donc pas de
+##   bouton UTILISER ;
 ## - KEY (OBJETS CLÉS) : jamais « utilisé », jamais vendu ni jeté ;
 ## - TM (CT, jalon 11, dossier 14 §6) : enseigne [member teaches] à un Pokémon compatible, hors
 ##   combat seulement ; **permanente** (jamais consommée, une seule dans le Sac) ; jamais vendue.
@@ -63,6 +65,11 @@ var teaches: StringName = &""
 ## Rang dans les données (0, 1, 2… dans l'ordre de lecture des fichiers) : ordre « pertinence »
 ## du Sac hors combat. Posé par [ItemLibrary].
 var order: int = 0
+## Usage d'exploration d'un objet AVENTURE (jalon-12.md §2.6 : « escape_rope »,
+## « evolution_stone ») ; &"" = aucun (la Pépite). **Lu par le J12** (clé « field_use » de
+## [ItemLibrary], T20) : le J13 n'en pose que la condition « UTILISER seulement si usage »
+## (jalon-13.md §0.4, repli §0.3), toujours vide en attendant.
+var field_use: StringName = &""
 
 
 ## Identifiant de la catégorie dans les fichiers (&"ball", &"heal"…) : onglet du Sac.
@@ -71,7 +78,7 @@ func category_id() -> StringName:
 
 
 ## Contextes où l'objet sert (jalon-06.md §3.4), déduits de sa catégorie : un objet clé n'en a
-## aucun.
+## aucun, un objet AVENTURE sans [member field_use] non plus.
 func contexts() -> Array[StringName]:
 	match category:
 		Category.BALL:
@@ -81,6 +88,8 @@ func contexts() -> Array[StringName]:
 		Category.BATTLE:
 			return [CONTEXT_WILD_BATTLE, CONTEXT_TRAINER_BATTLE]
 		Category.FIELD:
+			if field_use.is_empty():
+				return []
 			return [CONTEXT_FIELD]
 		Category.TM:
 			return [CONTEXT_FIELD]

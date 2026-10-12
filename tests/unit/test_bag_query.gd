@@ -124,7 +124,9 @@ func test_in_the_field_everything_is_listed_with_a_note_when_unusable() -> void:
 	assert_true(by_id[&"potion"].usable)
 	assert_true(by_id[&"potion"].targets_pokemon)
 	assert_eq(by_id[&"potion"].note, "")
-	assert_true(by_id[&"repel"].usable, "AVENTURE : en exploration")
+	# Jalon 13 §2.13 : un objet AVENTURE sans usage (field_use vide) n'a pas de UTILISER.
+	assert_false(by_id[&"repel"].usable, "AVENTURE sans usage : consultable, sans bouton")
+	assert_eq(by_id[&"repel"].note, "", "ni mention de combat")
 	for id: StringName in [&"x_attack", &"poke_ball", &"great_ball"]:
 		assert_false(by_id[id].usable, String(id))
 		assert_eq(by_id[id].note, "Utilisable en combat", String(id))
@@ -410,3 +412,26 @@ func test_j11_remedies_result_texts() -> void:
 		assert_eq(BagQuery.result_text(ItemUse.apply(_bag, items.get_item(id), wrong,
 			BagQuery.CONTEXT_FIELD), "Salamèche"), "Sans effet", "%s ne soigne pas le poison" % id)
 		assert_eq(wrong.status, StatusRules.POISON)
+
+
+# --- AVENTURE : UTILISER seulement si l'objet a un usage (jalon-13.md §0.4, §2.13, T16) -------
+
+func test_field_item_is_usable_only_with_a_field_use() -> void:
+	var items := ItemLibrary.new()
+	assert_true(items.add_from_dict({
+		"nugget": _item("Pépite", "field", {"price": 10000}),
+		"rope": _item("Corde", "field"),
+	}, "test"), str(items.get_errors()))
+	# Le J12 (T20) lira « field_use » dans les données ; ici, posé à la main.
+	items.get_item(&"rope").field_use = &"escape_rope"
+	_bag.add(&"nugget", 1)
+	_bag.add(&"rope", 1)
+	var by_id := _by_id(BagQuery.entries(_bag, items, BagQuery.CONTEXT_FIELD))
+	assert_false(by_id[&"nugget"].usable, "Pépite : pas de UTILISER")
+	assert_true(by_id[&"nugget"].is_listed(), "mais listée sous AVENTURE")
+	assert_eq(by_id[&"nugget"].category_id, &"field")
+	assert_eq(by_id[&"nugget"].note, "")
+	assert_true(by_id[&"rope"].usable, "un objet AVENTURE avec un usage garde UTILISER")
+	for context: StringName in [BagQuery.CONTEXT_WILD_BATTLE, BagQuery.CONTEXT_TRAINER_BATTLE]:
+		for view: BagEntryView in BagQuery.entries(_bag, items, context):
+			assert_false(view.is_displayable(), "jamais en combat : %s" % view.item_id)

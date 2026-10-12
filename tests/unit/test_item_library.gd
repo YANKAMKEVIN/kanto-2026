@@ -198,7 +198,8 @@ func test_contexts_follow_the_category() -> void:
 		ItemData.Category.BALL: [&"wild_battle"],
 		ItemData.Category.HEAL: [&"field", &"wild_battle", &"trainer_battle"],
 		ItemData.Category.BATTLE: [&"wild_battle", &"trainer_battle"],
-		ItemData.Category.FIELD: [&"field"],
+		# Jalon 13 §2.13 : AVENTURE sans usage (la Pépite) n'a aucun contexte.
+		ItemData.Category.FIELD: [],
 		ItemData.Category.KEY: [],
 	}
 	for category: ItemData.Category in expected:
@@ -206,6 +207,10 @@ func test_contexts_follow_the_category() -> void:
 		var contexts: Array = []
 		contexts.assign(item.contexts())
 		assert_eq(contexts, expected[category], ItemData.CATEGORY_NAMES[category])
+	item.category = ItemData.Category.FIELD
+	item.field_use = &"escape_rope"
+	assert_eq(item.contexts(), [&"field"] as Array[StringName], "AVENTURE avec un usage")
+	item.field_use = &""
 	item.category = ItemData.Category.BALL
 	assert_true(item.usable_in(ItemData.CONTEXT_WILD_BATTLE))
 	assert_false(item.usable_in(ItemData.CONTEXT_TRAINER_BATTLE), "pas de Ball contre un dresseur")

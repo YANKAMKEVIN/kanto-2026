@@ -1077,6 +1077,32 @@ et de l'annexe A validée.
 #### T16 — architecte : briques du monde — après T10
 - §2.8 (`RivalMoment`, `moment: "win"`), §2.9 (`next`), §2.13 (`confirm_set` / `cancel_set`).
   **CA** : tests verts ; rivaux n° 1 et n° 2, Pierre, Sbires et fossiles du J12 inchangés.
+- **Fait le 2026-10-12** (branche `j13-t16`, sur `jalon-13` sans le code « combat et données » du
+  J12) :
+  - §2.8 : `RivalMoment` (`game/systems/menu/rival_moment.gd`, pur : `should_record`,
+    `has_rival_moment`, `details`) ; `TrainerData.moment_on_win` (clé `"moment"`, seule valeur
+    `"win"`, refus sinon) ; `Boot._on_battle_finished` passe par la règle (doublon refusé pour
+    **tous** les rivaux, Pierre jamais) ; **`"moment": "win"` posé sur `rival_cerulean`** (donnée
+    du §2.7, il ne reste au T19 que `switch: true`).
+  - §2.9 : clé de scène `next` (`Cutscene.next`, `CutsceneLibrary.get_next`,
+    `check_next_references` à la fin de `load_dir` : scène inconnue ou elle-même → scène
+    écartée) ; `Boot._on_cutscene_finished` : suite → `_write_save("entre deux scènes")` tout de
+    suite puis `play(next)` (rien si aucune variante) ; partie **pas stable** à la fin (réveil
+    après défaite, transition) → pas d'enchaînement, autosave ordinaire [D].
+  - §2.13 : `DialogueChoice.confirm_set` / `cancel_set` (listes non vides, compatibles avec
+    `confirm_action`) ; levés **dès `DialogueRunner.choose`**, avant la fermeture ;
+    `DialogueLibrary.get_set_flags` les compte. **`confirm_cutscene` n'est pas posé** (J12 T23) :
+    les clés sont indépendantes, la fusion du J12 n'ajoute qu'une clé sœur.
+  - Pépite (repli §0.4) : `ItemData.field_use` (en fin de champs, **jamais lu des données au
+    J13** : la clé `field_use` de `ItemLibrary`, ses valeurs et `FieldItemRules` sont au J12 T20) ;
+    `ItemData.contexts()` : AVENTURE sans `field_use` → aucun contexte → pas d'UTILISER, aucune
+    mention. **À la fusion du J12** : garder sa lecture de `field_use` ; si le J12 a mis sa
+    condition ailleurs (`BagQuery`), retirer l'une des deux.
+  - Tests : `test_rival_moment` (nouveau), `test_cutscene_chain` (nouveau, Boot réel : scènes
+    de test ; T19 y ajoute les vraies), `test_trainer_library`, `test_cutscene_library`,
+    `test_dialogue_library`, `test_dialogue_runner`, `test_bag_query` (Repousse de test sans
+    usage : plus d'UTILISER), `test_item_library` (contextes d'AVENTURE),
+    `test_cerulean_data`.
 
 #### T17 — constructeur-monde : la vie de la Route 4 et d'Azuria (13A) — après T11, T7, T8
 - §2.2 (vie), §2.4, §2.5, §2.6 (Dresseurs et guide), §2.14 (Route 4), §2.16 (`get_cascade_badge`),

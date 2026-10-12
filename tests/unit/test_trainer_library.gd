@@ -355,3 +355,35 @@ func test_real_trainers_do_not_switch_yet() -> void:
 	for id: StringName in library.get_ids():
 		if not String(id).begins_with("qa_"):
 			assert_false(library.get_trainer(id).can_switch, String(id))
+
+
+# --- « moment » (jalon 13 §2.8, Grand moment du rival à la victoire) ---------------------
+
+func test_moment_defaults_to_any_outcome() -> void:
+	assert_true(_library.add_from_dict({"t": _valid_entry()}), _errors())
+	assert_false(_library.get_trainer(&"t").moment_on_win)
+
+
+func test_moment_win_is_read() -> void:
+	var entry := _valid_entry()
+	entry["moment"] = "win"
+	assert_true(_library.add_from_dict({"t": entry}), _errors())
+	assert_true(_library.get_trainer(&"t").moment_on_win)
+
+
+func test_moment_accepts_only_win() -> void:
+	for value: Variant in ["loss", "", true, ["win"]]:
+		var entry := _valid_entry()
+		entry["moment"] = value
+		assert_false(_library.add_from_dict({"t_%s" % str(value): entry}), str(value))
+	assert_push_error_count(4)
+	assert_string_contains(_errors(), "« moment » vaut \"win\"")
+
+
+## Seul le rival n° 3 a « moment »: "win" ; les rivaux n° 1 et n° 2 gardent un moment par
+## combat, victoire comme défaite.
+func test_real_rivals_moment_rule() -> void:
+	var library := TrainerLibrary.new(_data)
+	assert_true(library.load_dir())
+	for id: StringName in library.get_ids():
+		assert_eq(library.get_trainer(id).moment_on_win, id == &"rival_cerulean", String(id))

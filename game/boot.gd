@@ -1158,9 +1158,20 @@ func _on_cutscene_requested(cutscene_id: StringName) -> void:
 			% cutscene_id)
 
 
-func _on_cutscene_finished(_cutscene_id: StringName) -> void:
+## Fin d'une scène : autosave demandé. Si la scène a une suite (clé « next », jalon-13.md
+## §2.9), la sauvegarde est écrite **tout de suite** (partie stable), puis la suite est jouée si
+## une de ses variantes s'applique (sinon rien). Une seule fois par fin de scène : la suite
+## n'enchaîne à son tour que si elle a elle-même « next ». Partie pas stable (réveil après une
+## défaite, transition) : pas d'enchaînement, l'autosave ordinaire s'en charge.
+func _on_cutscene_finished(cutscene_id: StringName) -> void:
 	_refresh_controls()
-	request_autosave("fin de scène")
+	var next := _cutscenes.get_next(cutscene_id)
+	if next.is_empty() or not is_stable():
+		request_autosave("fin de scène")
+		return
+	if _can_write():
+		_write_save("entre deux scènes")
+	_cutscenes_node.play(next)
 
 
 func _on_battle_state_changed() -> void:
@@ -1196,19 +1207,18 @@ func _on_battle_event(event: BattleEvent) -> void:
 
 
 ## Fin d'un combat de dresseur : grand moment « combat contre le rival » (le rival est le
-## dresseur dont l'équipe dépend du starter du joueur, comme dans Rouge/Bleu), puis autosave
+## dresseur dont l'équipe dépend du starter du joueur, comme dans Rouge/Bleu ; un seul par
+## rival, [RivalMoment]), puis autosave
 ## (écrit à la fin de la scène qui contient le combat). Les sauvages passent par
 ## [method _on_encounter_finished].
 func _on_battle_finished(trainer_id: StringName, outcome: int) -> void:
 	if trainer_id.is_empty():
 		return
 	var trainer := _trainers.get_trainer(trainer_id) if _trainers != null else null
-	if trainer != null and not trainer.team_by_starter.is_empty():
-		var outcome_name: Variant = Battle.Outcome.find_key(outcome)
-		GameState.record_moment(GameState.MOMENT_RIVAL_BATTLE, _current_map_id(), {
-			"trainer": String(trainer_id),
-			"outcome": String(outcome_name).to_lower() if outcome_name != null else "",
-		})
+	# Un seul moment par rival, à la victoire seulement si la donnée le dit (§2.8).
+	if RivalMoment.should_record(trainer, outcome, GameState.moments):
+		GameState.record_moment(GameState.MOMENT_RIVAL_BATTLE, _current_map_id(),
+			RivalMoment.details(trainer_id, outcome))
 	request_autosave("fin de combat")
 
 

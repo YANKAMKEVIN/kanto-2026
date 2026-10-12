@@ -37,6 +37,9 @@ var start_message: bool = true
 ## L'IA peut changer de Pokémon une fois par combat (jalon 13, dossier 16 §14 : Ondine et le
 ## rival n° 3) ; donnée « switch », faux par défaut.
 var can_switch: bool = false
+## Grand moment « rival » écrit **seulement à la victoire** (jalon 13 §2.8 : combat obligatoire
+## et rejouable, rival n° 3) ; donnée « moment »: "win". Faux = toute issue ([RivalMoment]).
+var moment_on_win: bool = false
 ## Équipe fixe (vide si l'équipe dépend du starter du joueur).
 var team: Array[TrainerSlot] = []
 ## Équipe selon le starter du joueur (combats du rival, comme Rouge/Bleu).

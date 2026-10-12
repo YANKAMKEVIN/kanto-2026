@@ -236,6 +236,8 @@ func test_nugget() -> void:
 	assert_true(nugget.is_sellable())
 	assert_eq(nugget.sell_price(), 5000, "§2.5 : vendue 5 000 ₽")
 	assert_false(nugget.targets_pokemon())
+	assert_eq(nugget.field_use, &"", "§2.13 : aucun usage")
+	assert_false(nugget.usable_in(ItemData.CONTEXT_FIELD), "pas de bouton UTILISER (T16)")
 	assert_eq(nugget.quantity_text(1), "Pépite ×1")
 	assert_eq(nugget.added_text(1), "Ajoutée au Sac")
 	# « Sans UTILISER » (dossier 16 §17) : la condition `field_use` du J12 (T20) n'est pas
@@ -264,6 +266,7 @@ func test_rival_cerulean() -> void:
 		["{rival}", BattleAI.SMART, false, false, true])
 	assert_eq([rival.prize_money, rival.prize_per_level, rival.prize_for(17)], [0, 35, 595])
 	assert_eq([rival.start_message, rival.end_message, rival.allow_bag], [true, false, true])
+	assert_true(rival.moment_on_win, "§2.8 : Grand moment à la victoire seulement (T16)")
 	var expected := {&"bulbasaur": &"charmeleon", &"charmander": &"wartortle",
 		&"squirtle": &"ivysaur"}
 	for starter: StringName in expected:

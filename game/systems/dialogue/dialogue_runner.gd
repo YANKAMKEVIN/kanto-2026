@@ -16,6 +16,8 @@ extends Node
 ##   ouverte et [signal choice_requested] est émis ; le lecteur n'avance plus jusqu'à
 ##   [method choose]. Confirmer : l'action du choix est attendue (boîte ouverte, joueur bloqué),
 ##   puis les pages de confirmation ; annuler : les pages d'annulation. Puis la fin normale.
+##   Les drapeaux du bouton choisi (« confirm_set » / « cancel_set », jalon 13) sont levés dès
+##   [method choose].
 ## - **action** : jouée à la fin, boîte fermée, **avant** que le joueur soit rendu.
 ##   `heal` émet [signal heal_requested] (moment du jalon 5 inchangé : après avoir rendu le
 ##   joueur) ; les autres sont attendues par [member action_handler].
@@ -172,6 +174,10 @@ func choose(confirmed: bool) -> void:
 	_awaiting_choice = false
 	_choice_done = true
 	var choice := _variant.choice
+	# Drapeaux du bouton choisi (jalon-13.md §2.13), levés tout de suite, avant la fermeture.
+	if _flags != null:
+		for flag: StringName in choice.confirm_set if confirmed else choice.cancel_set:
+			_flags.set_flag(flag)
 	if confirmed and not choice.confirm_action.is_empty():
 		_in_action = true
 		await _run_action(choice.confirm_action)
