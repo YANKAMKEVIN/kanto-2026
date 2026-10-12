@@ -96,8 +96,11 @@ func test_ground_draws_canal_water_square_without_foam() -> void:
 	assert_true(ground.square_shore, "angles droits")
 	assert_eq(ground.foam_strength, 0.0, "aucune écume contre un quai")
 	assert_not_null(ground.water_texture)
-	assert_string_contains(ground.water_texture.resource_name, "PROVISOIRE",
-		"texture de canal provisoire tant que la série 15 n'est pas livrée")
+	# Série 15 livrée (T5) : la vraie texture de canal ; provisoire seulement si elle manque.
+	if ResourceLoader.exists(Kit.CANAL_WATER_TEXTURE):
+		assert_eq(ground.water_texture.resource_path, Kit.CANAL_WATER_TEXTURE)
+	else:
+		assert_string_contains(ground.water_texture.resource_name, "PROVISOIRE")
 	var material := ground.get_shader_material()
 	assert_eq(material.get_shader_parameter(&"water_texture"), ground.water_texture)
 	root.free()
@@ -205,7 +208,7 @@ func test_same_seeds_same_quays() -> void:
 	assert_eq(placed[0], placed[1])
 
 
-func test_missing_series_15_art_is_an_error_without_placeholders() -> void:
+func test_missing_art_is_an_error_without_placeholders() -> void:
 	var kit: RefCounted = Kit.new(ESSAI, GRIDS[ESSAI], 1, 2, 3)
 	var root: Node2D = kit.call(&"make_root", "Essai", &"canal_essai", "Essai", "", &"", "")
 	kit.call(&"add_ground_in_memory", {})
@@ -217,7 +220,9 @@ func test_missing_series_15_art_is_an_error_without_placeholders() -> void:
 	if not ResourceLoader.exists(Kit.PROPS + "relief_quai_01.tscn"):
 		assert_string_contains(errors, "relief_quai_01")
 	assert_string_contains(errors, "tablier de pont absent", "aucun tablier choisi")
-	assert_eq((kit.get(&"quay_pieces") as Array).size(), 0, "rien posé sans image")
+	# Quais : posés avec les vrais modules (série 15, T5) ; rien sans image.
+	var has_quays := ResourceLoader.exists(Kit.PROPS + "relief_quai_01.tscn")
+	assert_eq((kit.get(&"quay_pieces") as Array).size() > 0, has_quays)
 	root.free()
 
 

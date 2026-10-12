@@ -1,7 +1,7 @@
 extends SceneTree
 ## Capture d'essai du kit des canaux (jalon 13 T6, `tools/cerulean_map_kit.gd`) : la carte
 ## `tests/fixtures/maps/canal_essai.txt` (canal en L, quais, deux ponts) construite en mémoire
-## avec les **provisoires** de la série 15 (rien n'est écrit dans `assets/` ni `game/`), rendue
+## avec les **vrais modules** de la série 15 (T5 ; les provisoires ne servent que si une image manque) (rien n'est écrit dans `assets/` ni `game/`), rendue
 ## à 1:1 dans un écran de S24 (2340 × 1080), héros posé sur le pont nord-sud pour l'échelle.
 ##
 ##   godot --path . --fixed-fps 60 -s res://tools/capture_cerulean_kit.gd -- \
@@ -31,7 +31,8 @@ func _run() -> void:
 	var map: Node2D = kit.call(&"make_root", "CanalEssai", &"canal_essai", "Essai", "", &"", "")
 	kit.call(&"add_ground_in_memory", {})
 	var quays: int = kit.call(&"place_quays")
-	var decks: int = kit.call(&"place_bridges", {})
+	var decks: int = kit.call(&"place_bridges",
+		{&"ns": "prop_pont_ville_01", &"ew": "prop_pont_ville_ew_01"})
 	print("quais : %d modules ; tabliers : %d ; erreurs : %s" % [quays, decks, kit.get(&"errors")])
 	var viewport := SubViewport.new()
 	viewport.size = VIEW

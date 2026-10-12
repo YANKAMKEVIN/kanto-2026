@@ -781,6 +781,16 @@ et de l'annexe A validée.
   des ponts avec poteaux d'angle (recadrer), bassin peint de l'Arène plus large que 7 cases, icône de
   la Pépite plus large que sa colonne.
 
+- **Corrections au T5** (2026-10-12, branche `j13-t5`, validation de Kevin avec S-1 à S-5) : **Nageuse**
+  générée (`PNJ_NAGEUSE_NE_r1`, `NAGEUSE_ATTENTE_r1`, un essai chacune, relues : même main, tenue
+  conforme) ; **coque de l'Arène** `_r2` (Codex, prompt à coordonnées en pixels : bassin 650 × 355 px
+  margelle comprise ≈ 7,2 × 4,5 cases, centré, au lieu de ≈ 8,5 ; les gradins restent des murets
+  symétriques) ; **ponts** `_r3` : recadrage de la partie médiane des deux tabliers de pierre
+  nord-sud (`serie15.py --retouches`, coupes sur un joint de dalles, tuilage vérifié sur 3 répétitions :
+  parapets continus, plus de poteau d'angle) ; **Pépite** `_r3` : recadrée et centrée dans sa colonne
+  (le « halo » n'était que dans les pixels transparents : alpha propre). Planche de contact :
+  `build/captures/jalon13_assets/serie15_corrections.png`.
+
 #### T3 — constructeur-monde (Mac) : décors de combat → **13.0-art** — **Fait, validé par Kevin le 2026-10-11**
 - `route_4_plaine`, `route_24_pont`, `cerulean_gym_bassin` (§2.18) par la chaîne CB.3. **CA** :
   validés par Kevin sur capture de combat Mac.
@@ -809,6 +819,31 @@ et de l'annexe A validée.
 - `serie15.py --manifeste` (entrées en fin), `preparer.py` deux fois, règles de décor, scènes d'objets,
   `build_character_frames.gd` (Ondine, Nageur ; en fin), icône Pépite (`preparer_menu.py`). **CA** :
   second passage sans changement ; `test_painted_props` vert ; planche de contrôle relue.
+- **Fait** (2026-10-12, branche `j13-t5`) : `serie15.py --manifeste` (20 entrées en fin, Nageuse
+  comprise), `preparer.py` lancé **deux fois** (second passage : empreintes md5 de tout `assets/`
+  identiques ; aucun asset existant modifié, seul `catalogue.json` s'allonge), `preparer_menu.py`
+  (Pépite en fin de `PLANCHES_OBJETS_SUIVANTES`, source `_r3`), 49 scènes d'objets, 49 règles
+  d'emprise (`painted_prop_rules.gd`), apparences `misty`, `swimmer`, `swimmer_f`
+  (`build_character_frames.gd`, en fin). `preparer.py` : une planche peut porter moins d'éléments que
+  `colonnes × lignes` (le contrôle porte sur `ids` : planche du cambriolage, 5 sur 6). Planche de
+  contrôle in-game : `build/captures/jalon13_assets/serie15_controle.png`. Capture du kit avec les
+  vrais modules : `build/captures/j13_t5/canal_essai.png`.
+  - **`QUAY_PIECES` aligné** : rôles inchangés ; provisoires de `cerulean_map_kit.gd` aux dimensions
+    réelles (n 192 × 70, s 192 × 30, w / e 20 × 112, angle 40 × 51) ; un module `w` / `e` mesure 1 case
+    (112 px) et non 2.
+  - **Défauts [D]** : emprises de la fiche ; `relief_*` (quais, berges, ardoise, îlot) et tabliers de
+    pont traversables dans la couche du sol (cases d'eau ou bloquées par la carte) ; garde-corps, pile,
+    roseaux, bitte, lampadaire, jardinières : 1 × 1 dans `Entities` (T7 / T8 les posent dans des cases
+    d'eau ou bloquées) ; `prop_roseaux_01` est rangé dans `assets/world/relief/` (même planche que les
+    berges). Source Chenipan fixe absente de tous les dossiers `build/art` (hors série) : passage de
+    `preparer.py` par un lanceur qui ignore l'entrée sans source ; à retrouver.
+  - **Pour T7 / T8** : `place_bridges` ne prend qu'un tablier par sens (pont de 3 de large : passer
+    `prop_pont_ville_03_01`, d'où une extension d'outil à prévoir : un identifiant par pont ; Pont
+    Pépite : variantes `_01` à `_03` à alterner pour éviter 25 rangées identiques) ; les tabliers sont
+    étirés à la largeur exacte du pont (le module de ville mesure 2 cases de long, le de bois ≈ 4,5
+    arrondi à 5) ; berges de la Route 24 = jeu de pièces `relief_berge_01..05` à passer à
+    `place_quays` (constante à paramétrer), pied du pont en `relief_quai_*`.
+
 
 #### T6 — architecte : fondations de l'eau — **fait** (2026-10-11, branche `j13-t6`)
 - §2.3 : `PaintedGround.water_texture`, `foam_strength` (uniform), rivage sans sable ;
