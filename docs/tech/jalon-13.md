@@ -911,6 +911,29 @@ et de l'annexe A validée.
 - Tests : `test_route_4` (réécrit), `test_route_4_resume`, `test_route_24` (vues du rival et des
   cinq Dresseurs lues sur la grille, pont 2 cases, raccords, nœuds) ; captures.
 - **CA** : tests verts ; reprise du sas verte sur **toutes** ses cases praticables.
+- **Fait** (2026-10-12, branche `j13-t8`) :
+  - `tools/build_route_4.gd` **réécrit** (grille `route_4.txt`, 64 × 24, identifiant, `from_mt_moon`
+    (3, 6), échelle B2F inchangés) : falaises d'ardoise du versant (`~`, 7 modules), rebord `v` en
+    4 modules `relief_rebord_ardoise_01` **nets, sans planche**, forêt serrée, hautes herbes, rochers
+    et buissons ; raccord est (63, 19..21) → `cerulean_city` / `from_route_4_n|c|s` (retour
+    `from_cerulean_n|c|s`). **Cases de Clara, de la Poké Ball et des herbes réservées** (rien de
+    vivant, ni déclencheur `route_4_reached` : il vient avec le T28 du J12). 1 131 nœuds.
+  - `tools/build_route_24.gd` (nouveau, sur `cerulean_map_kit.gd`) : 56 × 62, eau de canal, **berges
+    naturelles** `relief_berge_01..05` (89 modules, berges + quais) via `place_quays` paramétré,
+    quais de pierre seulement autour de la place pavée, Pont Pépite : tablier de 2 cases en 5
+    modules qui alternent `tablier_01..03` (recouvrement de 10 px), piles aux deux têtes, roseaux,
+    arbres repères, banc, panneau. Sortie sud (31..33, 61) → `cerulean_city` /
+    `from_route_24_w|c|e` ; est (55, 6..8) → « ROUTE 25 — À venir ». 1 149 nœuds.
+  - `cerulean_map_kit.gd` (ajouts rétro-compatibles, Azuria inchangée) : `quay_sets` (tables de
+    pièces par nature du sol), `place_bridges` accepte une **liste** de tabliers par sens,
+    `deck_overlap`.
+  - Catalogues (entrées en fin de liste) : zone `route_24` (`zones.json`, aire dans
+    `kanto_placeholder_areas.json`, scène de Pokédex « prairie »), `lighting.json` ; `test_map_links`
+    (`route_24` ; `cerulean_city` en carte parallèle jusqu'à l'intégration de la T7).
+  - Tests : `test_route_4` (réécrit), `test_route_4_resume` (toutes les cases du sas : sauvegarde v6
+    écrite / relue / rechargée, même case praticable ; 10 cases par le vrai Boot), `test_route_24`,
+    `test_coming_soon` déplacé sur la Route 24.
+  - Captures : `build/captures/j13_t8/` (2340 × 1080).
 
 #### T9 — architecte : scénario de simulation — **maintenant**
 - `tools/sim/cerulean_scenario.json` (Route 4, Clara, Lucas, Diane, rival × 3 starters, Ondine, P1–P5,

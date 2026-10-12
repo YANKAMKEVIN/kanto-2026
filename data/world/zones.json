@@ -82,6 +82,11 @@
 		"route_21": { "name": "Route 21", "kind": "sea_route", "maps": [] },
 		"cinnabar_island": { "name": "Cramois'Île", "kind": "town", "maps": [] },
 		"route_23": { "name": "Route 23", "kind": "route", "maps": [] },
-		"indigo_plateau": { "name": "Plateau Indigo", "kind": "place", "maps": [] }
+		"indigo_plateau": { "name": "Plateau Indigo", "kind": "place", "maps": [] },
+		"route_24": {
+			"name": "Route 24", "kind": "route", "maps": ["route_24"],
+			"subtitle": "Le Pont Pépite",
+			"description": "Au nord d'Azuria, un long pont franchit la rivière. Au-delà, une prairie tranquille où l'herbe pousse haut."
+		}
 	}
 }

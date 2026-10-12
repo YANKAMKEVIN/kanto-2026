@@ -20,12 +20,17 @@ const MAP_IDS: Array[StringName] = [
 	&"route_3", &"mt_moon_center", &"route_4",
 	# Jalon 12 (T9) : les trois étages du Mont Sélénite.
 	&"mt_moon_1f", &"mt_moon_b1f", &"mt_moon_b2f",
+	# Jalon 13 (T8) : la Route 24 (la Route 4 est devenue la vraie Route 4, même identifiant).
+	&"route_24",
 ]
 ## Cartes construites par une autre tâche en parallèle (jalon 7 : la Route 22, T22 ; jalon 10 :
 ## Argenta, T11, pendant les intérieurs du T13) : un warp qui y mène est vérifié seulement si la
 ## carte existe déjà (sinon le test le signale).
 ## Jalon 12 : Route 3, sas (T8) et étages du Mont Sélénite (T9) sont tous construits.
-const PARALLEL_MAPS: Array[StringName] = [&"route_22"]
+## Jalon 13 : Azuria (T7, en parallèle de la T8) : les raccords de la Route 4 et de la Route 24
+## y mènent ; leur existence et leurs spawns `from_route_4_*` / `from_route_24_*` sont vérifiés dès
+## qu'elle est construite (retirer `cerulean_city` d'ici à l'intégration de la T7).
+const PARALLEL_MAPS: Array[StringName] = [&"route_22", &"cerulean_city"]
 const DIRECTIONS: Array[Vector2i] = [Vector2i.UP, Vector2i.DOWN, Vector2i.LEFT, Vector2i.RIGHT]
 
 var _maps: Dictionary = {}
@@ -110,7 +115,7 @@ func test_every_coming_soon_warp_returns_to_a_walkable_spawn_of_its_own_map() ->
 			var back := map.get_spawn_cell(warp.target_spawn)
 			assert_false(map.get_grid().is_solid(back), "%s : retour praticable" % label)
 			assert_ne(warp.facing, Vector2i.ZERO, "%s : orientation au retour" % label)
-	assert_gt(found, 0, "au moins le raccord est du sas de la Route 4 (Azuria)")
+	assert_gt(found, 0, "au moins le raccord est de la Route 24 (Route 25)")
 
 
 ## Warp de [param map] qui ramène à [param origin] depuis [param arrival] : sur la case

@@ -79,6 +79,13 @@ var allow_placeholders: bool = false
 var water_cells: Dictionary = {}
 var bridge_cells: Dictionary = {}
 var quay_cells: Dictionary = {}
+## Pièces propres à certaines frontières (jalon 13 T8 : berges naturelles de la Route 24, quais de
+## pierre au pied du pont) : caractère de la grille de la case de **sol** → table de la forme de
+## [constant QUAY_PIECES]. Vide (défaut) : [constant QUAY_PIECES] partout (Azuria, inchangée).
+var quay_sets: Dictionary = {}
+## Recouvrement (pixels) de chaque module de tablier avec le précédent, dans le sens de la
+## traversée : cache le bord transparent des images (Pont Pépite, T8). 0 : aucun (défaut).
+var deck_overlap: float = 0.0
 ## Modules posés par [method place_quays] : {"id", "side", "rect" (pixels), "node"}.
 var quay_pieces: Array[Dictionary] = []
 ## Ponts trouvés par [method bridge_rects] puis posés : {"rect" (cases), "axis" (&"ns" | &"ew")}.
@@ -221,7 +228,8 @@ func _canal_texture() -> Texture2D:
 func place_quays() -> int:
 	for side: StringName in SIDES:
 		for run: Dictionary in quay_runs(side):
-			_fill_run(side, run)
+			for part: Dictionary in _split_run(side, run):
+				_fill_run(side, part)
 	for corner: StringName in CORNERS:
 		for cell: Vector2i in corner_cells(corner):
 			_place_corner(corner, cell)
@@ -263,13 +271,49 @@ func corner_cells(corner: StringName) -> Array[Vector2i]:
 	return cells
 
 
+## Clé de la table de pièces de la case de sol [param land] : son caractère de la grille si
+## [member quay_sets] le prévoit, sinon vide ([constant QUAY_PIECES]).
+func _table_key(land: Vector2i) -> String:
+	var mark: String = plan.call(&"at", land)
+	return mark if quay_sets.has(mark) else ""
+
+
+## Table de pièces de la case de sol [param land].
+func _table_for(land: Vector2i) -> Dictionary:
+	var key := _table_key(land)
+	return quay_sets[key] if not key.is_empty() else QUAY_PIECES
+
+
+## Coupe une étendue là où la table de pièces change (sol d'une autre nature) ; chaque morceau
+## porte sa `table`. Sans [member quay_sets] : l'étendue entière, [constant QUAY_PIECES].
+func _split_run(side: StringName, run: Dictionary) -> Array[Dictionary]:
+	var offset: Vector2i = SIDES[side]
+	var horizontal := offset.y != 0
+	var parts: Array[Dictionary] = []
+	var from: int = run["from"]
+	for i: int in range(run["from"], run["to"] + 1):
+		var cell := Vector2i(i, run["line"]) if horizontal else Vector2i(run["line"], i)
+		var key := _table_key(cell + offset)
+		var last: bool = i == run["to"]
+		if not last:
+			var next := Vector2i(i + 1, run["line"]) if horizontal \
+				else Vector2i(run["line"], i + 1)
+			last = _table_key(next + offset) != key
+		if last:
+			parts.append({"line": run["line"], "from": from, "to": i,
+				"table": _table_for(cell + offset)})
+			from = i + 1
+	return parts
+
+
 func _fill_run(side: StringName, run: Dictionary) -> void:
 	var horizontal := (SIDES[side] as Vector2i).y != 0
+	var table: Dictionary = run.get("table", QUAY_PIECES)
 	var from: int = run["from"]
 	var to: int = run["to"]
 	var at := from
 	while at <= to:
-		var id := _pick(side)
+		var id := _pick(side, table)
 		var texture := _piece_texture(id, side)
 		if texture == null:
 			return
@@ -281,7 +325,8 @@ func _fill_run(side: StringName, run: Dictionary) -> void:
 			# si l'étendue est plus courte que lui.
 			count = mini(cells, to - from + 1)
 			at = to + 1 - count
-		_place_piece(id, side, _edge_rect(side, run["line"], at, count, texture), texture)
+		_place_piece(id, side, _edge_rect(side, run["line"], at, count, texture), texture,
+			table)
 		at += count
 
 
@@ -301,7 +346,8 @@ func _edge_rect(side: StringName, line: int, at: int, count: int, texture: Textu
 
 
 func _place_corner(corner: StringName, cell: Vector2i) -> void:
-	var id := _pick(corner)
+	var table := _table_for(cell + (CORNERS[corner] as Vector2i))
+	var id := _pick(corner, table)
 	var texture := _piece_texture(id, corner)
 	if texture == null:
 		return
@@ -312,17 +358,18 @@ func _place_corner(corner: StringName, cell: Vector2i) -> void:
 		origin.x += TILE - piece.x
 	if offset.y > 0:
 		origin.y += TILE - piece.y
-	_place_piece(id, corner, Rect2(origin, piece), texture)
+	_place_piece(id, corner, Rect2(origin, piece), texture, table)
 
 
-func _pick(role: StringName) -> String:
-	var ids: Array = QUAY_PIECES[role]["ids"]
+func _pick(role: StringName, table: Dictionary = QUAY_PIECES) -> String:
+	var ids: Array = table[role]["ids"]
 	return ids[_quay_rng.randi_range(0, ids.size() - 1)]
 
 
 ## Un `Sprite2D` (un nœud) qui remplit exactement [param rect] ; erreur si le rectangle couvre
 ## une case praticable.
-func _place_piece(id: String, role: StringName, rect: Rect2, texture: Texture2D) -> void:
+func _place_piece(id: String, role: StringName, rect: Rect2, texture: Texture2D,
+		table: Dictionary = QUAY_PIECES) -> void:
 	var node_name := "Quai%03d" % quay_pieces.size()
 	for cell: Vector2i in cells_of_rect(rect):
 		if is_walkable(cell):
@@ -334,8 +381,8 @@ func _place_piece(id: String, role: StringName, rect: Rect2, texture: Texture2D)
 	sprite.centered = false
 	sprite.position = rect.position
 	sprite.scale = rect.size / Vector2(texture.get_size())
-	sprite.flip_h = QUAY_PIECES[role]["flip_h"]
-	sprite.flip_v = QUAY_PIECES[role]["flip_v"]
+	sprite.flip_h = table[role]["flip_h"]
+	sprite.flip_v = table[role]["flip_v"]
 	attach(decals, sprite)
 	quay_pieces.append({"id": id, "side": role, "rect": rect, "node": sprite})
 
@@ -394,17 +441,29 @@ func bridge_rects() -> Array[Dictionary]:
 
 ## Tablier de chaque pont : modules [param decks] (`{&"ns": id, &"ew": id}`) répétés dans le
 ## sens de la traversée (dernier aligné sur le bout), à la largeur exacte du pont, dans
-## `GroundDecals` après les quais. Renvoie le nombre de modules.
+## `GroundDecals` après les quais. Une valeur peut être **une liste** d'identifiants (variantes,
+## alternées de module en module : Pont Pépite, jalon 13 T8). Renvoie le nombre de modules.
 func place_bridges(decks: Dictionary) -> int:
 	bridges = bridge_rects()
 	var count := 0
 	for index: int in bridges.size():
 		var rect: Rect2i = bridges[index]["rect"]
 		var axis: StringName = bridges[index]["axis"]
-		var id: String = decks.get(axis, "")
-		var texture := _deck_texture(id, axis, rect)
-		if texture == null:
+		var choice: Variant = decks.get(axis, "")
+		var variants: Array = choice if choice is Array else [choice]
+		if variants.is_empty():
+			variants = [""]
+		var ids: Array[String] = []
+		var textures: Array[Texture2D] = []
+		for variant: Variant in variants:
+			var variant_texture := _deck_texture(String(variant), axis, rect)
+			if variant_texture != null:
+				ids.append(String(variant))
+				textures.append(variant_texture)
+		if textures.is_empty():
 			continue
+		var texture: Texture2D = textures[0]
+		var module := 0
 		var ns := axis == &"ns"
 		var span := rect.size.y if ns else rect.size.x
 		var along := texture.get_height() if ns else texture.get_width()
@@ -415,15 +474,26 @@ func place_bridges(decks: Dictionary) -> int:
 			var first := at if at + cells <= span else span - cells
 			var area := Rect2i(rect.position + (Vector2i(0, first) if ns else Vector2i(first, 0)),
 				Vector2i(rect.size.x, cells) if ns else Vector2i(cells, rect.size.y))
+			var variant := module % textures.size()
 			var sprite := Sprite2D.new()
 			sprite.name = "Pont%02d_%02d" % [index, at]
-			sprite.texture = texture
-			sprite.material = _piece_material(id)
+			sprite.texture = textures[variant]
+			sprite.material = _piece_material(ids[variant])
 			sprite.centered = false
-			sprite.position = Vector2(area.position * TILE)
-			sprite.scale = Vector2(area.size * TILE) / Vector2(texture.get_size())
+			var origin := Vector2(area.position * TILE)
+			var extent := Vector2(area.size * TILE)
+			if module > 0 and deck_overlap > 0.0:
+				if ns:
+					origin.y -= deck_overlap
+					extent.y += deck_overlap
+				else:
+					origin.x -= deck_overlap
+					extent.x += deck_overlap
+			sprite.position = origin
+			sprite.scale = extent / Vector2(textures[variant].get_size())
 			attach(decals, sprite)
 			count += 1
+			module += 1
 			at += step
 	return count
 
