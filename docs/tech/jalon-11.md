@@ -745,3 +745,21 @@ apparition en fin de pas, éclat et sa version réduite, bulles, saut de joie). 
   dépôt qui effacent le choix, réglage), `test_team_screen` (bouton dans la vedette, aspect, zones
   tactiles et mots entiers à 1920 et 2340), `test_dialogue_data`, `test_dialogue_tokens`.
   Captures : `tools/capture_companion_t20c.gd`.
+
+### T20d — compagnon sur les vraies cartes (2026-10-12, 11D)
+
+- Relevé des cartes : de l'eau seulement à **Bourg Palette** (l'étang, phrase n° 59) ; rebords sur
+  les Routes 1 et 2 ; intérieurs = maisons, labo, Centres, Boutiques, Musée, Arène, postes de la
+  forêt (le compagnon y rentre).
+- Rien à corriger dans le code du T20c : portes (rentre au fondu, ressort derrière le joueur ou au
+  premier pas quand la porte est derrière lui), rebords (il attend au-dessus, saute au pas suivant,
+  jamais posé sur le rebord), défi d'un Dresseur de la forêt (scène → il rentre, aucune case
+  tenue), reprise d'une sauvegarde avec un compagnon, budget de 6 nœuds.
+- Départ de débogage **`companion_qa`** (nouvelle clé `companion` de `DebugStart` : place dans
+  l'équipe) pour la QA T21 : Jadielle devant le Centre ; Salamèche N15 à 1 XP du N16 (compagnon ;
+  évolue au premier combat gagné), Rattata K.O., Nidoran ♂ empoisonné, Nidoran ♀ à 4 PV
+  (« fatiguée »), Chenipan (aucun bouton). Parcours de QA dans `tools/debug_start/README.md`.
+- Tests : `test_companion_world` (vrai Boot : porte du Centre de Jadielle, phrases ville / forêt /
+  étang, rebord de la Route 1, Théo repère le joueur, reprise de sauvegarde, nœuds),
+  `test_debug_start` (départ et clé `companion`). Captures relues
+  (`tools/capture_companion_t20d.gd` : Jadielle, forêt, bulle et phrase, étang, saut du rebord).
