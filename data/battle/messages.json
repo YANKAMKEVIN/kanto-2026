@@ -78,6 +78,91 @@
 			"text": "{pokemon} n'est plus empoisonné.",
 			"text_f": "{pokemon} n'est plus empoisonnée."
 		},
+		"status_inflicted_paralysis": {
+			"text": "{pokemon} est paralysé !",
+			"text_f": "{pokemon} est paralysée !"
+		},
+		"status_prevented_paralysis": {
+			"text": "{pokemon} est paralysé ! Impossible d'agir !",
+			"text_f": "{pokemon} est paralysée ! Impossible d'agir !"
+		},
+		"status_unchanged_paralysis": {
+			"text": "{pokemon} est déjà paralysé !",
+			"text_f": "{pokemon} est déjà paralysée !"
+		},
+		"status_cured_paralysis": {
+			"text": "{pokemon} n'est plus paralysé.",
+			"text_f": "{pokemon} n'est plus paralysée."
+		},
+		"status_inflicted_sleep": { "text": "{pokemon} s'endort !" },
+		"status_prevented_sleep": { "text": "{pokemon} dort profondément." },
+		"status_ended_sleep": { "text": "{pokemon} se réveille !" },
+		"status_unchanged_sleep": {
+			"text": "{pokemon} est déjà endormi !",
+			"text_f": "{pokemon} est déjà endormie !"
+		},
+		"status_cured_sleep": {
+			"text": "{pokemon} est réveillé.",
+			"text_f": "{pokemon} est réveillée."
+		},
+		"status_inflicted_burn": {
+			"text": "{pokemon} est brûlé !",
+			"text_f": "{pokemon} est brûlée !"
+		},
+		"status_damaged_burn": { "text": "{pokemon} souffre de sa brûlure !" },
+		"status_unchanged_burn": {
+			"text": "{pokemon} est déjà brûlé !",
+			"text_f": "{pokemon} est déjà brûlée !"
+		},
+		"status_cured_burn": {
+			"text": "{pokemon} n'est plus brûlé.",
+			"text_f": "{pokemon} n'est plus brûlée."
+		},
+		"status_inflicted_freeze": {
+			"text": "{pokemon} est gelé !",
+			"text_f": "{pokemon} est gelée !"
+		},
+		"status_prevented_freeze": {
+			"text": "{pokemon} est gelé ! Il ne peut pas bouger !",
+			"text_f": "{pokemon} est gelée ! Elle ne peut pas bouger !"
+		},
+		"status_ended_freeze": {
+			"text": "{pokemon} n'est plus gelé !",
+			"text_f": "{pokemon} n'est plus gelée !"
+		},
+		"status_unchanged_freeze": {
+			"text": "{pokemon} est déjà gelé !",
+			"text_f": "{pokemon} est déjà gelée !"
+		},
+		"status_cured_freeze": {
+			"text": "{pokemon} n'est plus gelé !",
+			"text_f": "{pokemon} n'est plus gelée !"
+		},
+		"move_failed": { "text": "Mais ça échoue !" },
+		"confusion_inflicted": {
+			"text": "{pokemon} est confus !",
+			"text_f": "{pokemon} est confuse !"
+		},
+		"confusion_unchanged": {
+			"text": "{pokemon} est déjà confus !",
+			"text_f": "{pokemon} est déjà confuse !"
+		},
+		"confusion_check": {
+			"text": "{pokemon} est confus…",
+			"text_f": "{pokemon} est confuse…"
+		},
+		"confusion_hurt": { "text": "{pokemon} se blesse dans sa confusion !" },
+		"confusion_ended": {
+			"text": "{pokemon} n'est plus confus !",
+			"text_f": "{pokemon} n'est plus confuse !"
+		},
+		"multi_hit": { "text": "Touché {amount} fois !" },
+		"flinched": { "text": "{pokemon} a peur ! Impossible d'agir !" },
+		"focused": { "text": "{pokemon} se concentre !" },
+		"bide_started": { "text": "{pokemon} se prépare à encaisser !" },
+		"bide_storing": { "text": "{pokemon} encaisse !" },
+		"bide_unleashed": { "text": "{pokemon} riposte !" },
+		"bide_broken": { "text": "La patience de {pokemon} est rompue !" },
 		"evolution_started": { "text": "Quoi ? {pokemon} évolue !" },
 		"evolution_finished": { "text": "Félicitations ! {pokemon} a évolué en {species} !" },
 		"evolution_cancelled": { "text": "Hein ? {pokemon} n'évolue plus." },

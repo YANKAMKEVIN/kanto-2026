@@ -20,15 +20,34 @@ extends RefCounted
 ## [constant StatusRules.KNOWN]) ; immunités et « déjà un statut » : [StatusRules]. Sur une
 ## capacité de statut (Poudre Toxik), un refus est annoncé (NO_EFFECT, STATUS_UNCHANGED) ; en
 ## effet secondaire d'une attaque (Dard-Venin, [member chance] < 100), il est silencieux.
+## Jalon 11 (`jalon-11.md` §2.2, dossier 14 §3.2 et §4) :
+## [codeblock]
+## { "kind": "confusion" }                  { "kind": "confusion", "chance": 10 }
+## { "kind": "hits", "min": 2, "max": 2 }    { "kind": "hits", "min": 2, "max": 5 }
+## { "kind": "flinch", "chance": 30 }        { "kind": "crit_up" }
+## { "kind": "fixed_damage", "mode": "half_hp" }   { "kind": "fixed_damage", "mode": "level" }
+## [/codeblock]
+## CONFUSION : rend la cible confuse (état temporaire du [Battler], 1 à 4 tours). HITS : la
+## capacité frappe de [member min_hits] à [member max_hits] fois (2 à 5 : 3/8, 3/8, 1/8, 1/8).
+## FLINCH : apeure la cible si elle n'a pas encore agi ce tour-ci. CRIT_UP : critique +2 niveaux
+## pour le lanceur (Puissance). FIXED_DAMAGE : dégâts fixes, moitié des PV de la cible
+## (« half_hp », Croc Fatal) ou niveau du lanceur (« level », Frappe Atlas). BIDE : Patience
+## (CT34, dossier 14 §6.3) : le lanceur encaisse deux tours, puis riposte ([Battle]).
 
-enum Kind { STAT_STAGE, RECOIL, SEED, STATUS }
+enum Kind {
+	STAT_STAGE, RECOIL, SEED, STATUS, CONFUSION, HITS, FLINCH, CRIT_UP, FIXED_DAMAGE, BIDE,
+}
 enum Target { SELF, FOE }
 
 ## Noms des sortes dans les données.
 const KIND_NAMES: Dictionary[String, Kind] = {
 	"stat_stage": Kind.STAT_STAGE, "recoil": Kind.RECOIL, "seed": Kind.SEED,
-	"status": Kind.STATUS,
+	"status": Kind.STATUS, "confusion": Kind.CONFUSION, "hits": Kind.HITS,
+	"flinch": Kind.FLINCH, "crit_up": Kind.CRIT_UP, "fixed_damage": Kind.FIXED_DAMAGE,
+	"bide": Kind.BIDE,
 }
+## Modes de FIXED_DAMAGE.
+const FIXED_MODES: Array[StringName] = [&"half_hp", &"level"]
 const TARGET_NAMES: Dictionary[String, Target] = {"self": Target.SELF, "foe": Target.FOE}
 ## Statistiques qui ont un niveau en combat (−6..+6) ; « acc » précision, « eva » esquive.
 const STAGE_STATS: Array[StringName] = [&"atk", &"def", &"spa", &"spd", &"spe", &"acc", &"eva"]
@@ -40,7 +59,8 @@ var stat: StringName = &""
 var stages: int = 0
 ## STAT_STAGE : qui la subit (le lanceur ou la cible).
 var target: Target = Target.FOE
-## STAT_STAGE, STATUS : chance en % (100 = toujours ; sinon un tirage 1..100 ≤ chance).
+## STAT_STAGE, STATUS, CONFUSION, FLINCH : chance en % (100 = toujours ; sinon un tirage
+## 1..100 ≤ chance).
 var chance: int = 100
 ## RECOIL : fraction des PV max du lanceur perdue après l'attaque (Lutte : 0,25).
 ## SEED : fraction des PV max de la cible drainée à chaque fin de tour (Vampigraine : ⅛).
@@ -49,3 +69,8 @@ var fraction: float = 0.0
 var immune_types: Array[StringName] = []
 ## STATUS : statut infligé à la cible ([constant StatusRules.KNOWN]).
 var status: StringName = &""
+## HITS : nombre de coups (2 et 2 : deux coups ; 2 et 5 : de deux à cinq).
+var min_hits: int = 1
+var max_hits: int = 1
+## FIXED_DAMAGE : « half_hp » ou « level » ([constant FIXED_MODES]).
+var mode: StringName = &""

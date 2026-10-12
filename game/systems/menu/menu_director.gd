@@ -77,6 +77,10 @@ signal storage_shown(view: StorageView)
 signal storage_refused(place: int, index: int, text: String)
 ## LIBÉRER permis : la confirmation (LIBÉRER / ANNULER) est à montrer.
 signal storage_release_asked(view: ChoiceView, place: int, index: int)
+## CT (jalon 11, T12) : le Pokémon [param index] apprend la capacité de [param item_id] ; Boot
+## joue le déroulé « apprendre / oublier » par-dessus le menu, puis rappelle
+## [method finish_tm_learn].
+signal tm_learn_requested(index: int, item_id: StringName)
 
 var _state: Object
 var _data: PokemonData
@@ -432,6 +436,12 @@ func use_item_on(item_id: StringName, index: int) -> bool:
 	var pokemon: Pokemon = _state.party.get_at(index)
 	if item == null or pokemon == null:
 		return false
+	if item.is_tm():
+		# CT : jamais consommée ; un Pokémon non COMPATIBLE est déjà refusé par le choix.
+		if TmTeach.check(pokemon, item, _data) != TmTeach.Check.COMPATIBLE:
+			return false
+		tm_learn_requested.emit(index, item_id)
+		return true
 	var result := ItemUse.apply(_state.bag, item, pokemon, _bag_context)
 	_repeat_item = item_id
 	_repeat_index = index
@@ -444,6 +454,21 @@ func use_item_on(item_id: StringName, index: int) -> bool:
 			_data, index))
 	_emit_bag()
 	return result.is_ok()
+
+
+## Fin du déroulé d'une CT ([signal tm_learn_requested]) : la partie a changé si la capacité a
+## été apprise (autosave à la fermeture) ; le choix du Pokémon et le Sac sont réémis (le Pokémon
+## passe à « DÉJÀ CONNUE »).
+func finish_tm_learn(index: int, item_id: StringName, learned: bool) -> void:
+	if _state == null or _items == null:
+		return
+	if learned:
+		mark_changed()
+	var item := _items.get_item(item_id)
+	if item != null:
+		bag_targets_shown.emit(BagQuery.targets(_state.party, _state.bag, item, _bag_context,
+			_data, index))
+	_emit_bag()
 
 
 ## UTILISER À NOUVEAU : même objet, même Pokémon.

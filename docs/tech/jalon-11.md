@@ -442,3 +442,190 @@ Variables et règles de la procédure du J9 (`jalon-09.md` §6.2) : `PKG`, `ADB`
    l'étape 1. **Ne jamais laisser une v6 sur le téléphone** pendant qu'OUV.3 se teste.
 5. Rapport `build/qa/jalon11_t3/rapport.md` (verdict par étape, fichiers, journal, captures) →
    **validation de Kevin** ; puis fusion de 11.0 dans `main` (accord de Kevin) avant tout lot suivant.
+
+### T4–T6 — statuts majeurs, confusion, effets simples, textes (2026-10-11, 11A)
+
+Détail dans `etat-projet.md` (entrées du 2026-10-11). Capacités encore en attente
+(`pending_effects`) : Hurlement, Lance-Soleil, Coud'Krâne, Danse Flamme, Ligotage, Frénésie,
+Mimique, Mania, Empal'Korne, Destruction, Explosion (hors J11, dossier 14 §4.3).
+
+### T8 — remèdes et Boutiques (2026-10-11, 11A)
+
+`data/items/items.json` : Anti-Para (200 ₽), Réveil (250 ₽, « Réveils »), Anti-Brûle (250 ₽),
+Antigel (250 ₽, « Antigels », **pas en vente**) — textes n° 34 à 37 du §13, catégorie SOINS, icône
+générique du Sac (pas d'art). Stock de Jadielle et d'Argenta : les trois premiers après l'Antidote,
+sans condition (dossier 14 §3.4). Textes de soin hors combat : n° 4, 9, 13, 16 (`BagQuery`), testés
+(le Réveil donne « est réveillé[e]. », jamais « se réveille ! »). La liste de la Boutique de Jadielle
+passe de 2 à 5 cartes et défile (le test des marges ne compte que la partie visible des cartes).
+
+### Équilibrage de Pierre après T5 (`tools/simulate_brock.gd`, 200 graines, `main` à 906566a contre J11)
+
+Seul écart notable : **Salamèche gagne des chances contre Pierre**, très probablement par la
+brûlure de Flammèche (10 %), qui divise par deux les dégâts physiques d'Onix (Charge, Jet-Pierres)
+et lui retire 1/16 de PV par tour. Victoires de Salamèche seul selon son niveau :
+N12 0 → 3,5 % · N14 0,5 → 6 % · N15 0,5 → 12,5 % · N16 21,5 → 47,5 % · N17 46 → 60 % ·
+N18 72 → 80,5 %. Kevin à l'arrivée (route + Liam, 5 Potions) : 0 → 2 %. Bulbizarre et Carapuce :
+inchangés (± 1,5 point). Grille Onix (Racaillou 10/10) Kevin 5 Potions : 8,5 → 23,5 %. Liam
+(Salamèche seul) : 34,5 → 44 %. **Signalé à Kevin, rien de corrigé ; décision de Kevin (2026-10-11) : « garde comme ça »** (risque noté au §7) :
+Pierre reste un mur pour Salamèche sous N15, ce qui reste l'intention du dossier 12.
+
+### T9 — QA des statuts : départ `status_qa` (2026-10-11, 11A) — **écart au plan §2.5**
+
+Pas de carte `qa_status` (défaut, règle 4) : à construire puis retirer à la clôture comme au J9,
+pour un seul usage. À la place, deux clés de `DebugStart` (débogage seul, jamais sauvegardées) :
+`wild` (table d'herbes forcée sur la carte de départ, `EncounterLibrary.override_grass`, appliquée
+par `Boot`) et `status_turns` par membre (sommeil seul). Départ `tools/debug_start/status_qa.json`
+sur la Route 1 (détail dans `tools/debug_start/README.md`) : une équipe qui lance brûlure,
+confusion, Para-Spore, Poudre Dodo, Puissance, Double Pied, Croc Fatal, Frappe Atlas ; trois
+membres déjà brûlé / endormi 3 tours / paralysé, un gelé au Stockage ; tous les remèdes ; herbes
+forcées Pikachu N12, Papilusion N17, Dardargnan N16, Rattata N14. **Non couverts** : un Dresseur
+`random` et un `smart` dédiés (les Dresseurs existants de la Forêt et d'Argenta servent, départs
+`trainers_qa` et `pewter_gym`). Capture de la Boutique à 5 cartes : `tools/capture_shop_j11.gd`
+(relue : lisible, icône générique des remèdes).
+
+### T7 — présentation des statuts en combat (2026-10-11, 11A)
+
+`game/battle/status_aura.gd` (`StatusAura`) : un nœud par camp, frère du sprite et dessiné juste
+après lui (donc **au-dessus**), qui suit sa boîte visible à chaque image (bonds, coups, K.O.) ;
+**le sprite et son matériau ne sont jamais touchés** (leçon du J9 × CB.1, testée). Aucune image
+nouvelle : décharges jaunes en zigzag (paralysie, une salve de 0,28 s toutes les 1,6 s, côté
+alterné), braises cerclées de rouge sombre qui montent (brûlure), trois « z » qui s'envolent
+(sommeil), copie du sprite recolorée en bleu glacé d'après sa luminance par-dessus
+(`status_ice.gdshader`, gel), trois étoiles qui tournent 0,8 s au-dessus de la tête
+(confusion, nouveau temps `BattleBeat.CONFUSION` après « … est confus… »). Poison : rien de
+permanent (voile de fin de tour existant). Brûlure de fin de tour : même voile, teinte orangée
+(`UiTokens.STATUS_BURN_VEIL`). Le statut se pose à l'envoi (statut du `SENT_OUT`), à
+STATUS_INFLICTED, part à STATUS_CURED / STATUS_ENDED, au K.O. et au reset. « Réduire les
+animations » (`BattleStage.reduce_motion`, branché par `Boot`) coupe particules et étoiles, garde
+la teinte du gel. Pastilles et abréviations : déjà faites au T4 (`StatusView`). Motifs fixes, sans
+tirage. Valeurs par défaut (règle 4) dans `status_aura.gd`. **Non fait** : « respiration
+ralentie » du sommeil (aucune animation de repos n'existe en combat). Captures relues
+(`tools/capture_status_j11.gd`, 2340 × 1080, chaque statut de face — artwork — et de dos —
+sprite provisoire) : lisibles ; rendu provisoire.
+
+### Procédure du T10 (qa-mobile, QA téléphone de 11A, sur le Mac)
+
+Partie de débogage : la vraie sauvegarde n'est ni lue ni écrite (`status_qa` n'a pas
+`autosave`). Branche `claude/lancement-j11-4pkt2k`, `tools/test.sh` vert avant.
+
+1. `tools/deploy_s24.sh --debug-start status_qa` : Route 1, équipe de 6, journal « Départ de
+   débogage … ». Ouvrir l'Équipe : pastilles **BRÛ** (Rattata), **SOM** (Pikachu), **PAR**
+   (Roucool) ; Stockage du Centre de Jadielle hors portée : vérifier GEL au Sac (Antigel refusé
+   sur l'équipe : « Cela n'aurait aucun effet… »).
+2. **Remèdes hors combat** (Sac, SOINS) : Anti-Brûle sur Rattata « Rattata n'est plus brûlé. » ;
+   Réveil sur Pikachu « Pikachu est réveillé. » (jamais « se réveille ! ») ; Anti-Para sur Roucool ;
+   refus sur un Pokémon sain. Capture du Sac et de l'Équipe.
+3. **Combats dans les herbes** (taux 60, quatre espèces forcées) ; à relever pour chaque cas :
+   phrase, carte de PV, effet sur le Pokémon (de face et de dos), capture S24 :
+   - Pikachu : **Cage-Éclair** → « … est paralysé ! », décharges, PAR ; « … est paralysé ! Impossible
+     d'agir ! » au moins une fois ; Salamèche plus lent ;
+   - Papilusion : **Poudre Dodo** (« z », SOM, réveil « … se réveille ! » et action le même tour),
+     **Para-Spore**, **Choc Mental** (confusion : étoiles, « … est confus… », « … se blesse dans sa
+     confusion ! » au moins une fois, « … n'est plus confus ! ») ; statut sur une cible déjà
+     atteinte d'un autre : « Mais ça échoue ! » ;
+   - Dardargnan : **Furie** (« Touché n fois ! »), **Puissance** (puis « Mais ça échoue ! » si
+     répétée) ;
+   - Rattata : **Croc de Mort** (apeurement possible : « … a peur ! Impossible d'agir ! ») ;
+   - de ton côté : **Flammèche** (brûlure 10 % : braises, BRÛ, voile orangé et « … souffre de sa
+     brûlure ! » en fin de tour), **Double Pied** (« Touché 2 fois ! »), **Croc Fatal** (moitié des
+     PV), **Frappe Atlas** (dégâts = niveau), Papilusion contre un sauvage ;
+   - **remèdes en combat** (Sac du combat) sur le Pokémon en jeu et sur un autre ;
+   - **capture** d'un endormi (bonus ×2,5, pas de chiffre à relever, seulement que ça marche).
+4. **Gel** : aucune capacité ne gèle avant la Route 3 ; vérifier seulement l'affichage GEL du
+   Piafabec au Stockage s'il est accessible, sinon noter « non testable » (couvert par les tests).
+5. **Réglage « Réduire les animations »** : particules et étoiles coupées, pastilles et phrases
+   inchangées.
+6. Relancer l'appli sans départ de débogage (`tools/deploy_s24.sh --no-build`) : la vraie partie
+   reprend, intacte.
+7. Rapport `build/qa/jalon11_t10/rapport.md` (verdict par point, captures, journal) → validation de
+   11A par Kevin.
+
+### T11 — CT : catégorie, objet permanent, compatibilités (2026-10-11, 11B)
+
+`ItemData.Category.TM` (« tm », en fin d'enum : rien à migrer) ; champs `tm_number`, `teaches` ;
+`is_tm()`, `is_permanent()` (CT : jamais consommée par un usage), `is_sellable()` faux (aucun prix
+accepté pour une CT, comme un objet clé) ; contexte : exploration seulement ; `quantity_text` sans
+« ×1 ». `ItemLibrary` : clés `tm` (1 à 50, unique) et `teaches`, `check_moves(data)` (branché dans
+`Boot`), `get_tm(numéro)`. `PokemonData` lit `tm_compatibility.json` (`can_learn_tm`, `tm_move`).
+`TmTeach` (pur) : `check` → COMPATIBLE / DÉJÀ CONNUE / INCOMPATIBLE (« déjà connue » d'abord),
+`teach` → LEARNED / NEEDS_FORGET / INVALID, ne touche jamais au Sac. Données : capacité `bide`
+(Patience, statut sans puissance, précision 0, 10 PP, `pending_effects: ["bide"]` jusqu'au T13,
+description n° 33) et objet `tm34` (« CT34 — Patience », n° 39, féminin). Aucune CT n'est encore
+obtenable (T14). Test du J10 « pas de Patience » adapté (elle arrive au J11).
+
+### T13 — Patience (2026-10-11, 11B)
+
+`MoveEffect.Kind.BIDE` (`bide` : `effects: [{kind: "bide"}]`). État du `Battler` (`bide_stage`,
+`bide_slot`, `bide_stock` ; perdu au changement, au K.O., en fin de combat, jamais sauvegardé).
+Tour 1 : MOVE_USED (1 PP) puis BIDE_STARTED ; tours 2 et 3 : action imposée
+(`Battle.get_locked_move()`, seule action légale ; le `BattleDirector` la soumet sans afficher la
+grille ; l'adversaire en Patience joue sans tirage d'IA), sans MOVE_USED ni PP : BIDE_STORING, puis
+BIDE_UNLEASHED et un DAMAGE « bide » de 2 × les coups directs reçus depuis la préparation (au plus
+les PV de la cible, sans type ni précision), ou FAILED à vide. Comptent : chaque DAMAGE d'une
+capacité adverse (multi-coups, dégâts fixes, riposte adverse) ; ne comptent pas : poison, brûlure,
+graine, recul, confusion. Ruptures (BIDE_BROKEN, puis le joueur est libre) : paralysie totale,
+sommeil ou gel (même réveillé / dégelé ce tour-là [D]), apeurement, se frapper dans la confusion ;
+K.O. : silencieux. L'adversaire qui change garde le stock (le stock est sur le lanceur). Textes
+n° 28 à 32 (`messages.json`). Mise en scène : élan physique après « … riposte ! ». IA `smart` : ne
+la choisit jamais (aucun effet « utile »). Tests : `test_battle_bide` (déroulé, coups du tour 3,
+échec, quatre ruptures, paralysie non bloquante, adversaire en Patience, rien de sauvegardé).
+Non testé automatiquement : le retrait volontaire pendant Patience (impossible : action imposée)
+et un adversaire qui change pendant la Patience (aucune IA ne change de Pokémon) ; soumission
+automatique du directeur couverte par la QA.
+
+### T14 — remise de la CT34 par Pierre (2026-10-11, 11B)
+
+`data/dialogues/pewter_gym.json` : `pewter_gym_brock_tm` (n° 45), `pewter_gym_brock_tm_late`
+(n° 48), `pewter_gym_brock_tm_use` (n° 46 et 47 sur une page, deux lignes) ; nouvelle variante de
+`pewter_gym_brock` (`if badge_boulder`, `unless tm34_received` → scène
+`pewter_gym_brock_tm_late`), placée avant l'allusion au rival. `data/cutscenes/pewter_gym.json` :
+après « C'est la preuve de ta victoire… », « Prends ceci aussi. » → `give tm34` → n° 46–47 →
+`set tm34_received` (étapes conditionnées : une seule remise) ; scène `pewter_gym_brock_tm_late`
+(face, n° 48, give, n° 46–47, set). Toast d'une CT : « CT34 — Patience » / « obtenue » (n° 40,
+`ItemData.added_text`). Tests : `test_brock_sequence` (victoire : remise après la réplique du
+badge ; partie badgée `badge_after` : remise en lui reparlant, toast, puis l'allusion au rival,
+une seule CT34), données des dialogues et scènes (textes mot pour mot contre le dossier 14).
+Pas de test de rechargement entre deux répliques : le drapeau et l'objet sont posés dans la même
+scène, sauvegardée à sa fin (une fermeture en pleine scène rejoue la remise, jamais deux CT : le
+Sac n'est écrit qu'à la fin).
+
+### T12 — Sac « CT » et apprentissage (2026-10-11, 11B)
+
+`BagQuery` : onglet `tm` (« CT », n° 38) entre AVENTURE et OBJETS CLÉS, absent sans CT ; carte sans
+quantité (`BagEntryView.permanent`), bouton APPRENDRE (n° 42), détail « Normal · Puissance — ·
+Précision — · PP 10 » puis la description (`BagQuery.tm_detail`) ; en combat : inutilisable, mention
+n° 44, jamais affichée dans le Sac du combat ; absente du Sac ouvert depuis l'Équipe. Choix du
+Pokémon : COMPATIBLE / INCOMPATIBLE / DÉJÀ CONNUE (n° 41) affichés pour tous
+(`PartyTargetView.show_reason`), seul COMPATIBLE se touche ; titres « CT34 — Patience — à quel
+Pokémon ? » / « Apprendre à… » [D]. `MenuDirector.use_item_on` d'une CT : signal
+`tm_learn_requested` (rien n'est consommé) ; Boot ouvre `TmLearnOverlay` (voile au-dessus du menu,
+bandeau et hôte des panneaux) et joue `MoveLearnPrompt.teach` (« … apprend … ! » n° 43, ou l'offre
+d'oubli existante, GARDER / NE PAS APPRENDRE), puis `finish_tm_learn` (choix rafraîchi, autosave à la
+fermeture si appris). Légende de l'onglet « Des capacités à enseigner à tes Pokémon. » et icône
+générique [D]. Tests : `test_bag_tm` (unitaires), `test_tm_learn` (vrai Boot : place libre ; quatre
+capacités → panneau d'oubli → NE PAS APPRENDRE). Captures relues (`tools/capture_tm_j11.gd`) :
+lisibles ; **reporté (rendu)** : nom de la CT tronqué sur la carte (« CT34 — Pati… »), icône
+générique.
+
+### Procédure du T16 (qa-mobile, QA téléphone de 11B, sur le Mac)
+
+Départs de débogage seulement (la vraie sauvegarde n'est ni lue ni écrite). `tools/test.sh` vert.
+
+1. `tools/deploy_s24.sh --debug-start badge_after` (Arène d'Argenta, badge obtenu, pas de CT) :
+   parler à Pierre → « J'allais oublier. » / « Ceci devrait t'être utile. », toast « CT34 — Patience »
+   / « obtenue », « Avec Patience, ton Pokémon encaisse, / puis rend les coups au double. » ; lui
+   reparler → l'allusion au rival (plus de remise). Capture du toast.
+2. Sac : onglet **CT** présent (absent sur un départ sans CT, par ex. `pewter`), carte, détail
+   (type, puissance, précision, PP, description), APPRENDRE. Choix : Salamèche, Papilusion et Roucool
+   tous **COMPATIBLE** dans ce départ (Rouge/Bleu) ; INCOMPATIBLE (Chenipan, Aspicot…) est couvert
+   par les tests, ou par une capture d'un Chenipan en forêt si Kevin le souhaite. Salamèche → « Salamèche apprend Patience ! » ; la CT reste au Sac ; Salamèche passe à
+   DÉJÀ CONNUE. Avec quatre capacités : panneau d'oubli, NE PAS APPRENDRE → rien ne change ; oublier
+   une capacité → « … oublie … et apprend Patience ! ». Captures.
+3. Combat sauvage (Route 2 nord, sortie nord d'Argenta) : Patience → « se prépare à encaisser ! » ;
+   aux tours 2 et 3 **aucun choix proposé** ; « encaisse ! », puis « riposte ! » et le double des
+   dégâts reçus (ou « Mais ça échoue ! » sans coup reçu) ; paralysie / sommeil / confusion si l'occasion
+   se présente : « La patience de … est rompue ! ».
+4. Boutique : la CT n'apparaît pas dans VENDRE.
+5. Pierre dans une nouvelle partie (départ `brock_charmander` / `brock_squirtle`, victoire) :
+   « Prends ceci aussi. » juste après « C'est la preuve de ta victoire / à l'Arène d'Argenta. ».
+6. Rapport `build/qa/jalon11_t16/rapport.md` → validation de 11B par Kevin.

@@ -832,7 +832,7 @@ func test_a_v4_save_is_refused_by_a_j7_build_and_left_untouched() -> void:
 func test_a_v4_save_with_an_unknown_status_loads_without_it() -> void:
 	# Fichier retouché ou statut d'une build future en v4 : le Pokémon est gardé, sans statut.
 	var dict: Dictionary = _full_state().to_dict()
-	dict["party"][0]["status"] = "paralysis"
+	dict["party"][0]["status"] = "toxic"
 	assert_eq(_save.write(dict), OK)
 	var loaded := _state()
 	assert_true(loaded.load_dict(_save.read(), _data), "rien d'écarté")

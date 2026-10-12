@@ -1,5 +1,5 @@
 {
-	"_doc": "Compatibilités des CT (Rouge/Bleu, dossier 14 §6.1), générées par tools/gen_tm_compatibility.py depuis les CSV de PokeAPI ; pas encore lues par le jeu (lot 11B). « tms » : numéro de CT → capacité (identifiants du jeu). « species » : espèce → numéros de CT compatibles (vide = aucune CT, comme Chenipan ou Aspicot). Seule la CT34 (Patience, « bide ») existe au J11 ; les autres CT arrivent avec leur capacité et leur lieu.",
+	"_doc": "Compatibilités des CT (Rouge/Bleu, dossier 14 §6.1), générées par tools/gen_tm_compatibility.py depuis les CSV de PokeAPI ; lues par PokemonData (jalon 11, lot 11B). « tms » : numéro de CT → capacité (identifiants du jeu). « species » : espèce → numéros de CT compatibles (vide = aucune CT, comme Chenipan ou Aspicot). Seule la CT34 (Patience, « bide ») existe au J11 ; les autres CT arrivent avec leur capacité et leur lieu.",
 	"tms": {
 		"01": "mega_punch",
 		"02": "razor_wind",

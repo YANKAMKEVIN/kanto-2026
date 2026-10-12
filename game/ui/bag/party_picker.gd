@@ -26,9 +26,13 @@ signal back_requested
 const CANCEL_TEXT := "ANNULER"
 ## Titre du choix compact, dans le panneau de l'objet du Sac (maquette ; l'objet est au-dessus).
 const COMPACT_TITLE := "Utiliser sur…"
+## Jalon 11, défaut (règle 4) : titre compact pour une CT.
+const COMPACT_PERMANENT_TITLE := "Apprendre à…"
 const CLOSE_ICON: Texture2D = preload("res://assets/ui/icons/menu/close.svg")
 ## « Utiliser Potion ×7 sur… » (texte d'interface).
 const TITLE_FORMAT := "%s  %s  —  sur quel Pokémon ?"
+## Jalon 11, défaut (règle 4) : titre d'une CT (pas de quantité, on l'apprend « à » un Pokémon).
+const PERMANENT_TITLE_FORMAT := "%s  —  à quel Pokémon ?"
 const BACK_ICON: Texture2D = preload("res://assets/ui/icons/battle/back.svg")
 
 ## Le refus s'écrit dans le titre du choix (combat). Faux : l'hôte l'affiche (UseResultBar du Sac).
@@ -61,8 +65,12 @@ func show_targets(view: PartyPickerView) -> void:
 	_view = view
 	_heal_generation += 1
 	_healing = 0
-	_title.text = COMPACT_TITLE if _compact \
-		else TITLE_FORMAT % [view.item_name, "×%d" % view.quantity]
+	if _compact:
+		_title.text = COMPACT_PERMANENT_TITLE if view.permanent else COMPACT_TITLE
+	elif view.permanent:
+		_title.text = PERMANENT_TITLE_FORMAT % view.item_name
+	else:
+		_title.text = TITLE_FORMAT % [view.item_name, "×%d" % view.quantity]
 	_title.remove_theme_color_override(&"font_color")
 	for card: PartyTargetCard in _cards:
 		_grid.remove_child(card)

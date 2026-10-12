@@ -12,6 +12,11 @@ extends RefCounted
 const STATUS_FAINTED: String = "K.O."
 ## Statut « PSN » (poison, jalon 9) : toujours un texte, jamais une icône seule.
 const STATUS_POISON: String = "PSN"
+## Statuts du J11 (dossier 08 §2 : abréviations réservées ; dossier 14 §3.3).
+const STATUS_PARALYSIS: String = "PAR"
+const STATUS_SLEEP: String = "SOM"
+const STATUS_BURN: String = "BRÛ"
+const STATUS_FREEZE: String = "GEL"
 
 ## Place dans l'équipe (0 = Pokémon de tête).
 var party_index: int = 0

@@ -375,3 +375,38 @@ func test_antidote_result_text_agrees_with_the_pokemon() -> void:
 	var again := ItemUse.apply(_bag, antidote, female, BagQuery.CONTEXT_FIELD)
 	assert_eq(BagQuery.result_text(again, "Nidoran♀"), "Sans effet")
 	assert_eq(_bag.count_of(&"antidote"), 1, "le refus ne consomme rien")
+
+
+func test_j11_remedies_result_texts() -> void:
+	# Dossier 14 §13, n° 4, 9, 13 et 16 : le Réveil donne « est réveillé[e]. », jamais
+	# « se réveille ! » (réveil naturel, en combat seulement).
+	var items := ItemLibrary.new()
+	assert_true(items.add_from_dict({
+		"paralyze_heal": _item("Anti-Para", "heal", {"cures": ["paralysis"]}),
+		"awakening": _item("Réveil", "heal", {"cures": ["sleep"]}),
+		"burn_heal": _item("Anti-Brûle", "heal", {"cures": ["burn"]}),
+		"ice_heal": _item("Antigel", "heal", {"cures": ["freeze"]}),
+	}, "test"), str(items.get_errors()))
+	var cases := {
+		&"paralyze_heal": [StatusRules.PARALYSIS, "n'est plus paralysé.", "n'est plus paralysée."],
+		&"awakening": [StatusRules.SLEEP, "est réveillé.", "est réveillée."],
+		&"burn_heal": [StatusRules.BURN, "n'est plus brûlé.", "n'est plus brûlée."],
+		&"ice_heal": [StatusRules.FREEZE, "n'est plus gelé !", "n'est plus gelée !"],
+	}
+	for id: StringName in cases:
+		_bag.add(id, 3)
+		var male := _mon(18)
+		male.status = cases[id][0]
+		var result := ItemUse.apply(_bag, items.get_item(id), male, BagQuery.CONTEXT_FIELD)
+		assert_eq(BagQuery.result_text(result, "Salamèche"), "Salamèche " + cases[id][1], id)
+		assert_eq(male.status, StatusRules.NONE, id)
+		var female := _mon(18)
+		female.gender = Pokemon.Gender.FEMALE
+		female.status = cases[id][0]
+		result = ItemUse.apply(_bag, items.get_item(id), female, BagQuery.CONTEXT_FIELD)
+		assert_eq(BagQuery.result_text(result, "Nidoran♀"), "Nidoran♀ " + cases[id][2], id)
+		var wrong := _mon(18)
+		wrong.status = StatusRules.POISON
+		assert_eq(BagQuery.result_text(ItemUse.apply(_bag, items.get_item(id), wrong,
+			BagQuery.CONTEXT_FIELD), "Salamèche"), "Sans effet", "%s ne soigne pas le poison" % id)
+		assert_eq(wrong.status, StatusRules.POISON)

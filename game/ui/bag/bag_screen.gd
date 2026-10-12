@@ -51,6 +51,7 @@ const CATEGORY_TITLES: Dictionary[StringName, String] = {
 	&"ball": "Capture",
 	&"battle": "Combat",
 	&"field": "Aventure",
+	&"tm": "CT",
 	&"key": "Objets clés",
 }
 const CATEGORY_CAPTIONS: Dictionary[StringName, String] = {
@@ -59,6 +60,8 @@ const CATEGORY_CAPTIONS: Dictionary[StringName, String] = {
 	&"ball": "Pour attraper les Pokémon sauvages.",
 	&"battle": "Objets pour les combats.",
 	&"field": "Objets utiles en exploration.",
+	# Jalon 11, défaut (règle 4) : légende de l'onglet CT.
+	&"tm": "Des capacités à enseigner à tes Pokémon.",
 	&"key": "Objets importants.",
 }
 ## Icône peinte d'une catégorie (l'objet qui la représente) ; sinon CATEGORY_ICONS.
@@ -84,6 +87,7 @@ const CATEGORY_ICONS: Dictionary[StringName, Texture2D] = {
 	&"ball": preload("res://assets/ui/icons/items/poke_ball.svg"),
 	&"battle": preload("res://assets/ui/icons/bag/battle.svg"),
 	&"field": preload("res://assets/ui/icons/battle/bag.svg"),
+	&"tm": preload("res://assets/ui/icons/battle/bag.svg"),
 	&"key": preload("res://assets/ui/icons/bag/key.svg"),
 }
 

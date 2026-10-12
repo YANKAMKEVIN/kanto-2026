@@ -19,6 +19,7 @@ const TrainerSeed := preload("res://tests/helpers/trainer_seed.gd")
 const BOOT_SCENE := preload("res://game/boot.tscn")
 const SQUIRTLE_START := "res://tools/debug_start/brock_squirtle.json"
 const WEAK_START := "res://tools/debug_start/brock_weak.json"
+const BADGE_AFTER_START := "res://tools/debug_start/badge_after.json"
 const SAVE_PATH := "user://test_brock_sequence_save.json"
 const GYM := &"pewter_gym"
 const DATE := "2026-10-08T18:00:00"
@@ -37,6 +38,10 @@ const WON := "Bien joué.\nMes Pokémon n'ont pas tenu face aux tiens."
 const BADGE_LINE := "C'est la preuve de ta victoire\nà l'Arène d'Argenta."
 const LOST := "Une équipe solide ne suffit pas.\nReviens avec une autre approche."
 const RIVAL_HINT := "Un autre Dresseur de Bourg Palette\nest passé récemment."
+## Jalon 11 (dossier 14 §13, n° 45 à 48) : remise de la CT34.
+const TM_GIVE := "Prends ceci aussi."
+const TM_LATE := "J'allais oublier."
+const TM_USE := "Avec Patience, ton Pokémon encaisse,\npuis rend les coups au double."
 
 var _fs: MemoryFs
 var _boot: Boot
@@ -242,6 +247,11 @@ func _assert_victory_order(first_fight: bool = true) -> void:
 	assert_gt(_index("caption:BADGE ROCHE"), _index("page:" + WON), "« BADGE ROCHE » ensuite")
 	assert_gt(_index("page:" + BADGE_LINE), _index("caption:BADGE ROCHE"), "puis la réplique")
 	assert_eq(_index("page:" + LOST), -1, "pas de réplique de défaite")
+	# Jalon 11 (T14) : la CT34 juste après la réplique du badge, une seule fois.
+	assert_gt(_index("page:" + TM_GIVE), _index("page:" + BADGE_LINE), "« Prends ceci aussi. »")
+	assert_gt(_index("page:" + TM_USE), _index("page:" + TM_GIVE))
+	assert_eq(GameState.bag.count_of(&"tm34"), 1, "CT34 au Sac")
+	assert_true(GameState.flags.has_flag(&"tm34_received"))
 
 
 func test_victory_in_the_gym_badge_moment_objective_and_save() -> void:
@@ -340,4 +350,47 @@ func test_defeat_wakes_at_the_pewter_center_then_resume_without_the_introduction
 	assert_true(GameState.flags.has_flag(&"badge_boulder"))
 	assert_eq(_badge_moments().size(), 1)
 	assert_eq(_vibrations.count(UiTokens.HAPTIC_BADGE_MS), 1)
+	assert_push_error_count(0)
+
+
+## Jalon 11 (T14, dossier 14 §6.4) : une partie déjà badgée avant le J11 reçoit la CT34 en lui
+## reparlant (« J'allais oublier. »), une seule fois ; ensuite, l'allusion au rival revient.
+func test_a_badged_game_gets_the_tm_once_by_talking_again() -> void:
+	await _start(BADGE_AFTER_START)
+	assert_false(GameState.flags.has_flag(&"tm34_received"))
+	await _walk(Vector2i.UP, TALK_CELL)
+	_player.face(Vector2i.UP)
+	var director := _boot.get_cutscene_director()
+	var box := _boot.get_dialogue_box()
+	var toast := _boot.get_hud().get_toast()
+	var toasts: Array[String] = []
+	Input.action_press(&"interact")
+	await wait_process_frames(2)
+	Input.action_release(&"interact")
+	assert_eq(director.get_cutscene_id(), &"pewter_gym_brock_tm_late")
+	var deadline := Time.get_ticks_msec() + SCENE_TIMEOUT_MS
+	while director.is_running() and Time.get_ticks_msec() < deadline:
+		await wait_process_frames(1)
+		if box.is_open():
+			var page := "page:" + box.get_text()
+			if _events.is_empty() or _events.back() != page:
+				_events.append(page)
+			box.advance_requested.emit()
+		var shown := "%s / %s" % [toast.get_title_text(), toast.get_detail_text()]
+		if toast.visible and not toasts.has(shown):
+			toasts.append(shown)
+	await wait_process_frames(3)
+	assert_eq(_events, ["page:" + TM_LATE, "page:Ceci devrait t'être utile.", "page:" + TM_USE])
+	assert_eq(GameState.bag.count_of(&"tm34"), 1)
+	assert_true(GameState.flags.has_flag(&"tm34_received"))
+	assert_eq(toasts, ["CT34 — Patience / obtenue"], "texte n° 40")
+	# Lui reparler : plus de remise, l'allusion au rival du J10.
+	_player.face(Vector2i.UP)
+	Input.action_press(&"interact")
+	await wait_process_frames(2)
+	Input.action_release(&"interact")
+	await wait_process_frames(2)
+	assert_eq(box.get_text(), RIVAL_HINT)
+	assert_false(director.is_running())
+	assert_eq(GameState.bag.count_of(&"tm34"), 1, "une seule CT34")
 	assert_push_error_count(0)
