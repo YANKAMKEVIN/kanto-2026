@@ -816,8 +816,8 @@ func test_j14_species_values_and_red_blue_learnsets() -> void:
 func test_j14_moves() -> void:
 	_data.load_dir()
 	var rows := {
-		&"teleport": ["Téléport", &"psychic", MoveData.Category.STATUS, 0, 0, 20, ["teleport"]],
-		&"dig": ["Tunnel", &"ground", MoveData.Category.PHYSICAL, 100, 100, 10, ["charge"]],
+		&"teleport": ["Téléport", &"psychic", MoveData.Category.STATUS, 0, 0, 20, []],
+		&"dig": ["Tunnel", &"ground", MoveData.Category.PHYSICAL, 100, 100, 10, []],
 		&"low_kick": ["Balayage", &"fighting", MoveData.Category.PHYSICAL, 50, 90, 20, []],
 		&"submission": ["Sacrifice", &"fighting", MoveData.Category.PHYSICAL, 80, 80, 25,
 			["recoil_damage"]],
@@ -833,6 +833,11 @@ func test_j14_moves() -> void:
 		assert_eq(move.priority, 0, "%s : priorité 0 (Rouge/Bleu, plan §2.5)" % id)
 	assert_eq(_data.get_move(&"dig").description, "Le Pokémon creuse au premier tour et frappe"
 		+ " au second. Sous terre, il évite les attaques.", "n° 60")
+	var dig := _data.get_move(&"dig").effects
+	assert_eq([dig.size(), dig[0].kind, dig[0].texts, dig[0].invulnerable],
+		[1, MoveEffect.Kind.CHARGE, &"dig", true], "Tunnel : effet « charge » (T7)")
+	var teleport := _data.get_move(&"teleport").effects
+	assert_eq([teleport.size(), teleport[0].kind], [1, MoveEffect.Kind.TELEPORT])
 	var kick := _data.get_move(&"low_kick").effects
 	assert_eq([kick[0].kind, kick[0].chance], [MoveEffect.Kind.FLINCH, 30])
 	var psychic := _data.get_move(&"psychic").effects

@@ -1,12 +1,13 @@
 {
 	"teleport": {
 		"name": "Téléport", "type": "psychic", "category": "status",
-		"accuracy": 0, "pp": 20, "pending_effects": ["teleport"],
+		"accuracy": 0, "pp": 20, "effects": [{ "kind": "teleport" }],
 		"description": "Le lanceur se téléporte ailleurs. Permet de fuir un Pokémon sauvage."
 	},
 	"dig": {
 		"name": "Tunnel", "type": "ground", "category": "physical",
-		"power": 100, "accuracy": 100, "pp": 10, "pending_effects": ["charge"],
+		"power": 100, "accuracy": 100, "pp": 10,
+		"effects": [{ "kind": "charge", "texts": "dig", "invulnerable": true }],
 		"description": "Le Pokémon creuse au premier tour et frappe au second. Sous terre, il évite les attaques."
 	},
 	"low_kick": {
