@@ -1,10 +1,13 @@
 # Dossier 17 — Le mystère du Cap d'Azuria (jalon 14)
 
+> **VERROUILLÉ le 2026-10-12** : Kevin valide les textes du §15 tels que proposés (« on va avec tes
+> reco »).
+>
 > V0.1, 2026-10-11. Consolidation de la V2 de Kevin (`passes/j14-v2-chatgpt.md`) et de la passe
 > d'alignement (`passes/j14-v2-alignement.md`). **Kevin a retenu toutes les recommandations
 > E-1 à E-15 et V-1 à V-3** (2026-10-11). Les petites valeurs laissées ouvertes par ces
 > recommandations ont reçu un **défaut (règle 4)**, marqué **[D]**.
-> **Textes : §15, à valider en un seul lot avant le code.**
+> **Textes : §15, validés le 2026-10-12.**
 >
 > Origine des règles : **RB** = Rouge/Bleu, **G+** = génération plus récente, **K26** = invention
 > de Kanto 2026. Code après la clôture du J13 ; conception, grilles et art en parallèle.
@@ -378,7 +381,7 @@ jamais sauvegardé.
 | Super Bonbon sur un Pokémon niveau 100 | « Sans effet », l'objet n'est pas consommé |
 | Joueur au sud avant le J15 | Raccord « ROUTE 5 — À venir » (bord bloqué en release) |
 
-## 15. Textes à valider (un seul lot)
+## 15. Textes VALIDÉS par Kevin le 2026-10-12
 
 > Ton des dossiers précédents : phrases courtes, aucune ironie envers le joueur. {joueur} = prénom
 > du joueur. Numérotés pour les retours (« 12 : … »).
