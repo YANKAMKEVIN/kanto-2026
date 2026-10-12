@@ -805,7 +805,7 @@ et de l'annexe A validée.
 #### T6 — architecte : briques de monde — **maintenant**
 - §2.8 (`FlagGate` + `GameMap.apply_flag_gates` + Boot, `moved`, `one_in`, type de halo `hint`).
 - **CA** : tests verts ; cartes existantes inchangées (diff nul sur leurs `.tscn`).
-- **Fait (2026-10-12, branche `j14-t6`)** : `FlagGate` (`game/world/flag_gate.gd`, groupe
+- **Fait (2026-10-12, commit `1c3119c`, branche `j14-t6`)** : `FlagGate` (`game/world/flag_gate.gd`, groupe
   `flag_gate`, visuel seulement), `GameMap.apply_flag_gates` (appelée par `refresh_npcs`, puis
   par Boot à chaque `flag_changed`) ; clé `moved` (`NpcSpec.placed_for`, `MOVED_KEYS`, refusée
   avec `trainer`, `route` et dans une étape `spawn`) ; `refresh_npcs` recrée à l'arrivée un PNJ
@@ -840,7 +840,7 @@ et de l'annexe A validée.
 
 #### T12 — architecte : étape `flash` — **maintenant**
 - §2.7. **CA** : tests verts ; capture Mac du flash et de sa version réduite.
-- **Fait (2026-10-12, branche `j14-t6`)** : `CutsceneStep.Kind.FLASH` / `"flash"` **en fin
+- **Fait (2026-10-12, commit `1c3119c`, branche `j14-t6`)** : `CutsceneStep.Kind.FLASH` / `"flash"` **en fin
   d'enum** (l'étape `moment` du J12 T23 n'existe sur aucune branche locale) : **à la fusion du
   J12, `FLASH` passe après `MOMENT`**, dans `Kind`, `TYPE_KEYS` et `_EXTRA_KEYS` (garder les
   deux, `[]` pour `flash`) ; `CutsceneDirector._flash` + signal `flash_started(count)` ;
