@@ -1796,3 +1796,20 @@ const NAME_CHIP_RADIUS := 64
 const NAME_VALIDATE_WIDTH := 312
 ## VALIDER inactif : ACCENT éteint (texte et icône portent aussi l'état : jamais la couleur seule).
 const NAME_VALIDATE_DISABLED_ALPHA := 0.35
+
+# --- Étape de scène « flash » (jalon 14, jalon-14.md §2.7 ; défauts §6) --------------------
+## Éclair plein écran de la machine de Léo ([ScreenFlash]) : blanc bleuté.
+const FLASH_COLOR := Color("#e6f0ff")
+## Éclair normal : opacité au plus fort, montée, tenue, descente (0,4 s en tout).
+const FLASH_ALPHA := 0.9
+const FLASH_RISE := 0.08
+const FLASH_HOLD := 0.08
+const FLASH_FALL := 0.24
+## Écart entre deux éclairs.
+const FLASH_GAP := 0.2
+## « Réduire les animations » ou « Réduire les flashs » : fondu doux, opacité au plus fort et
+## durée totale (moitié montée, moitié descente).
+const FLASH_REDUCED_ALPHA := 0.35
+const FLASH_REDUCED_DURATION := 0.6
+## Vibration légère au début de chaque éclair (si les vibrations sont permises).
+const HAPTIC_FLASH_MS := 25

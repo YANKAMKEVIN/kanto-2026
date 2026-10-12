@@ -22,18 +22,24 @@ func _type(color: Variant = "#ffffff", radius: Variant = 2.0, alpha: Variant = 0
 
 # --- Données ---------------------------------------------------------------------------
 
-func test_real_data_has_the_four_types_within_bounds() -> void:
+func test_real_data_has_the_five_types_within_bounds() -> void:
 	var library := LightGlowLibrary.new()
 	assert_true(library.load_file(), "data/world/light_glows.json valide")
 	assert_eq(library.get_errors().size(), 0)
-	assert_eq(library.get_ids(), [&"lamp", &"shaft", &"shard", &"projector"] as Array[StringName])
+	assert_eq(library.get_ids(), [&"lamp", &"shaft", &"shard", &"projector", &"hint"]
+		as Array[StringName], "« hint » du jalon 14 en fin")
 	for id: StringName in library.get_ids():
 		var type := library.get_type(id)
 		assert_gt(type.alpha, 0.0)
 		assert_lte(type.alpha, LightGlowLibrary.ALPHA_MAX, "%s : alpha ≤ 0,35" % id)
 		assert_gt(type.radius, 0.0)
-	# Seules les lampes de chantier vacillent (plan §2.4).
+	# Seules les lampes de chantier vacillent (plan §2.4), et la lueur d'aide du J14 (§2.8).
 	assert_gt(library.get_type(&"lamp").flicker, 0.0)
+	var hint := library.get_type(&"hint")
+	assert_eq(hint.color, Color.html("#e6f0ff"))
+	assert_almost_eq(hint.radius, 1.3, 0.001)
+	assert_almost_eq(hint.alpha, 0.22, 0.001)
+	assert_almost_eq(hint.flicker, 0.12, 0.001)
 	for id: StringName in [&"shaft", &"shard", &"projector"]:
 		assert_eq(library.get_type(id).flicker, 0.0, "%s : fixe" % id)
 

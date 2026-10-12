@@ -17,6 +17,7 @@ extends CanvasLayer
 ## et contextuel au coin bas-gauche, bouton Menu inchangé en haut à droite),
 ## [method set_joystick_style] (taille, opacité), [method set_button_scale] (courir et
 ## contextuel ; le bouton Menu garde sa taille). Tout reste dans SAFE_MARGIN.
+## Jalon 14 : éclairs plein écran ([method flash], [ScreenFlash], au-dessus du reste du HUD).
 
 ## Le titre de zone vient de disparaître (fin de son maintien ou hide_zone_title()).
 signal title_hidden
@@ -32,6 +33,7 @@ signal menu_requested
 @onready var _toast: Toast = %Toast
 @onready var _champion_card: ChampionCard = %ChampionCard
 @onready var _joystick: TouchJoystick = %VirtualJoystick
+@onready var _flash: ScreenFlash = %ScreenFlash
 const MOVE_ACTIONS: Array[StringName] = [&"move_up", &"move_down", &"move_left", &"move_right"]
 
 ## Verbe demandé pour le bouton contextuel (&"" = aucun) ; affiché si les contrôles le sont.
@@ -85,6 +87,21 @@ func hide_zone_title() -> void:
 ## le Champion.
 func show_caption(text: String, hold: float = -1.0, centered: bool = false) -> void:
 	_caption.show_caption(text, hold, centered)
+
+
+## Éclairs plein écran de l'étape de scène « flash » (jalon-14.md §2.7) ; coroutine :
+## await hud.flash(2). Au-dessus de tout le HUD, sans bloquer le toucher.
+func flash(count: int) -> void:
+	await _flash.play(count)
+
+
+## Éclairs adoucis (« Réduire les animations » ou « Réduire les flashs », posé par Boot).
+func set_flash_reduced(enabled: bool) -> void:
+	_flash.reduced = enabled
+
+
+func get_screen_flash() -> ScreenFlash:
+	return _flash
 
 
 ## Efface la légende en ANIM_MICRO (changement de carte…) ; émet caption_hidden.

@@ -245,6 +245,8 @@ func _ready() -> void:
 	# Remise du colis (jalon-07.md §3.6.2, T19) : jeton {first_wild_species} des répliques de
 	# Chen, scène lancée par une variante de dialogue (« colis en main »), légende POKÉDEX ACTIVÉ.
 	_runner.token_values = _dialogue_token_values
+	# Variantes « une fois sur N » (jalon 14) : l'aléatoire de la partie courante.
+	_runner.rng_source = func() -> GameRng: return GameState.rng
 	# OUV.2 : prénoms du joueur et du rival (`{player}`, `{rival}`) aussi dans le nom du dresseur.
 	_texts.token_values = _dialogue_token_values
 	_runner.cutscene_requested.connect(_on_cutscene_requested)
@@ -1307,9 +1309,13 @@ func _on_pokedex_recorded(species: StringName, map: StringName, first_seen: bool
 	_queue_dex_toast(species, kind)
 
 
-## Un drapeau d'histoire a changé : notes de toutes les espèces ; un toast par espèce
-## concernée, sauf à l'activation du Pokédex (tout apparaît d'un coup, sans rafale).
+## Un drapeau d'histoire a changé : décor de la carte qui suit les drapeaux (FlagGate,
+## jalon 14) ; notes de toutes les espèces ; un toast par espèce concernée, sauf à
+## l'activation du Pokédex (tout apparaît d'un coup, sans rafale).
 func _on_flag_changed(flag: StringName, _value: bool) -> void:
+	var map := SceneRouter.get_current_map()
+	if is_instance_valid(map):
+		map.apply_flag_gates(GameState.flags)
 	var fresh := PokedexNotes.refresh(GameState.pokedex, _dex, GameState.flags)
 	if flag == StoryFlags.POKEDEX_ACTIVATED:
 		return
@@ -1387,6 +1393,10 @@ func _apply_settings(s: GameSettings) -> void:
 	_services.reduce_motion = s.reduce_motion
 	# Carte du Champion (jalon 10, T5) : sans glissé, un fondu court.
 	_hud.get_champion_card().reduce_motion = s.reduce_motion
+	# Étape « flash » (jalon 14) : adoucie par l'un ou l'autre réglage ; halos (lueur « hint »
+	# chez Léo) sans vacillement.
+	_hud.set_flash_reduced(s.reduce_motion or s.reduce_flashes)
+	LightGlow.set_reduce_motion(s.reduce_motion)
 	_menu_screen.speed_scale = s.menu_speed_scale()
 	Haptics.enabled = s.haptics
 	UiPrefs.apply(s)
