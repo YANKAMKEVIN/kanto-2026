@@ -3,16 +3,16 @@
 
 Godot garde la dernière occurrence d'une clé sans rien signaler : une fusion de branches qui
 ajoute deux fois la même entrée (ex. une capacité créée par deux jalons) passerait inaperçue.
-Usage : python3 tools/check_json_keys.py [dossier]  (défaut : data)
+Usage : python3 tools/check_json_keys.py [dossier…]  (défaut : data et assets)
 """
 import collections
 import glob
 import json
 import sys
 
-racine = sys.argv[1] if len(sys.argv) > 1 else "data"
+racines = sys.argv[1:] or ["data", "assets"]
 erreurs = []
-for chemin in sorted(glob.glob(f"{racine}/**/*.json", recursive=True)):
+for chemin in sorted(c for r in racines for c in glob.glob(f"{r}/**/*.json", recursive=True)):
 	def verifier(paires, chemin=chemin):
 		compte = collections.Counter(k for k, _ in paires)
 		erreurs.extend(f"{chemin} : clé « {k} » × {n}" for k, n in compte.items() if n > 1)

@@ -76,7 +76,7 @@
 			"description": "Une ville claire traversée de canaux, entre la montagne et le cap. Partout, on entend l'eau couler."
 		},
 		"route_24": {
-			"name": "Route 24", "kind": "route", "maps": [],
+			"name": "Route 24", "kind": "route", "maps": ["route_24"],
 			"subtitle": "Le Pont Pépite",
 			"description": "Au nord d'Azuria, un long pont franchit la rivière. Au-delà, une prairie tranquille où l'herbe pousse haut."
 		},
