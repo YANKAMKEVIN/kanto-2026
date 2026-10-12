@@ -31,6 +31,8 @@ build/art/PLAN_ROUTE4_v1.png, PLAN_AZURIA_v1.png, PLAN_ROUTE24_v1.png, PLAN_AZUR
 (`dessiner_j13`, PAYSAGE 1536 × 1024) ; --annote ajoute <sortie>_annote.png (`annoter_j13` :
 Dresseurs et lignes de vue, PNJ, objets, cases cachées, examens, zones d'herbes… JAMAIS jointe à
 Codex ; les plans seuls ne montrent ni personnage, ni case cachée, ni indice).
+tools/plans/route_25.txt → build/art/PLAN_ROUTE25_v1.png (J14, `dessiner_route_25`) : PAYSAGE,
+mer, rivage, falaise, plage, maison de Léo ; --annote comme la Route 3.
 Reproductible : même grille → même image (fleurs tirées avec une graine fixe).
 """
 from __future__ import annotations
@@ -1134,9 +1136,14 @@ def annoter_route_3(grille: Path, plan_png: Path, sortie: Path) -> Path:
 	if grotte:
 		etiquette(grotte[0], "MONT SÉLÉNITE (1F)", (255, 255, 255, 255), dx=case / 2, dy=-22)
 	porte = plan.cells_of("D")
+	route_25 = grille.stem == "route_25"
 	if porte:
-		etiquette(porte[0], "CENTRE", (255, 255, 255, 255), dx=case / 2, dy=-40)
-	etiquette((0, 26), "← ARGENTA (51, 25..27)", (255, 255, 255, 255), petite, dx=60, dy=-30)
+		etiquette(porte[0], "MAISON DE LÉO" if route_25 else "CENTRE", (255, 255, 255, 255),
+			dx=case / 2, dy=-40)
+	if route_25:
+		etiquette((0, 14), "← ROUTE 24", (255, 255, 255, 255), petite, dx=60, dy=-30)
+	else:
+		etiquette((0, 26), "← ARGENTA (51, 25..27)", (255, 255, 255, 255), petite, dx=60, dy=-30)
 	img = Image.alpha_composite(img, calque).convert("RGB")
 	sortie.parent.mkdir(parents=True, exist_ok=True)
 	img.save(sortie)
@@ -1558,6 +1565,132 @@ def annoter_j13(grille: Path, plan_png: Path, sortie: Path) -> Path:
 	return sortie
 
 
+# Légende de tools/plans/route_25.txt (jalon 14, brouillon). PAYSAGE 1536 × 1024 comme la Route 3 :
+# 80 × 32 cases à 19 px. Mer au sud et à l'est, rivage rocheux, falaise au nord, plage, maison de
+# Léo (toit bleu-gris, distinct du Centre), massifs de fleurs. Les marges prolongent les cases du
+# bord (mer, falaise, forêt), sans rien inventer.
+R25_MER = (52, 120, 170)
+R25_MER_PROFONDE = (34, 88, 140)
+R25_RIVAGE = (150, 143, 132)        # R : rochers et rivage rocheux (bloqués)
+R25_FALAISE = (132, 120, 104)       # K : falaise
+R25_SABLE = (226, 210, 160)         # s : plage
+R25_MASSIF = (205, 120, 160)        # f : massif de fleurs (bloqué)
+R25_MAISON_MUR = (215, 205, 185)
+R25_MAISON_TOIT = (80, 105, 140)
+R25_FOND = {
+	"T": FORET, ".": HERBE, "=": CHEMIN, "h": HAUTES_HERBES, "v": REBORD, "s": R25_SABLE,
+	"K": R25_FALAISE, "R": R25_RIVAGE, "x": HERBE, "w": R25_MER, "f": HERBE,
+	"M": R25_MAISON_MUR, "D": PORTE,
+}
+
+
+def dessiner_route_25(grille: Path, sortie: Path) -> Path:
+	"""Plan en aplats de la Route 25 et du Cap d'Azuria, paysage 1536 × 1024. Personnages,
+	Pokémon et case cachée NON dessinés (le plan est joint à Codex) ; Poké Balls des objets
+	visibles et panneaux dessinés."""
+	plan = lire(grille)
+	case, ox, oy = _geometrie(plan, TAILLE_PAYSAGE)
+	img = Image.new("RGB", TAILLE_PAYSAGE, R25_MER)
+	d = ImageDraw.Draw(img)
+	alea = random.Random(GRAINE + 25)
+
+	def coin(x: int, y: int) -> tuple[int, int]:
+		return ox + x * case, oy + y * case
+
+	def centre(x: int, y: int) -> tuple[float, float]:
+		return ox + (x + 0.5) * case, oy + (y + 0.5) * case
+
+	def bord(x: int, y: int) -> str:
+		return plan.at(min(max(x, 0), plan.width - 1), min(max(y, 0), plan.height - 1))
+
+	mer = set(plan.cells_of("w"))
+
+	def couleur(car: str, x: int, y: int):
+		if car == "w":
+			# La mer fonce en s'éloignant du rivage (distance au bord praticable approchée).
+			loin = min([abs(y - 24), abs(x - 78)] if x < plan.width and y < plan.height else [8])
+			return _melange(R25_MER, R25_MER_PROFONDE, min(1.0, max(0.0, (loin - 1) / 6)))
+		return R25_FOND[car]
+
+	# 1. Aplats, marges comprises (cases virtuelles = case du bord la plus proche).
+	gx0, gy0 = -(ox // case) - 1, -(oy // case) - 1
+	gx1, gy1 = plan.width + (TAILLE_PAYSAGE[0] - ox) // case + 1, \
+		plan.height + (TAILLE_PAYSAGE[1] - oy) // case + 1
+	for y in range(gy0, gy1):
+		for x in range(gx0, gx1):
+			car = bord(x, y)
+			if not (0 <= x < plan.width and 0 <= y < plan.height) and car not in "TKRw=":
+				car = "T"
+			x0, y0 = coin(x, y)
+			d.rectangle([x0, y0, x0 + case - 1, y0 + case - 1], fill=couleur(car, x, y))
+
+	# 2. Strates de la falaise, galets du rivage, écume au bord de la mer.
+	for y in range(gy0, gy1):
+		for x in range(gx0, gx1):
+			car = bord(x, y)
+			x0, y0 = coin(x, y)
+			if car == "K" and (x + 2 * y) % 5 == 0:
+				d.line([x0 + 2, y0 + case // 2, x0 + case - 3, y0 + case // 2], fill=R3_STRATE,
+					width=2)
+			elif car == "R" and alea.random() < 0.45:
+				cx, cy = x0 + case / 2, y0 + case / 2
+				_disque(d, cx + alea.uniform(-3, 3), cy + alea.uniform(-3, 3),
+					alea.uniform(4, 7), PIERRE, PIERRE_BORD)
+	for x, y in mer:
+		if any(bord(x + dx, y + dy) == "R" for dx, dy in ((0, -1), (-1, 0))):
+			x0, y0 = coin(x, y)
+			d.line([x0, y0 + 2, x0 + case - 1, y0 + 2], fill=BLANC, width=2)
+
+	# 3. Fleurs : quelques-unes dans l'herbe, massifs denses autour de la maison.
+	for y, row in enumerate(plan.rows):
+		for x, c in enumerate(row):
+			if c == "." and alea.random() < (0.22 if x >= 56 else 0.08):
+				cx, cy = centre(x, y)
+				_disque(d, cx + alea.uniform(-4, 4), cy + alea.uniform(-4, 4), 2, FLEUR)
+			elif c == "f":
+				for _ in range(4):
+					cx, cy = centre(x, y)
+					_disque(d, cx + alea.uniform(-6, 6), cy + alea.uniform(-6, 6), 3, R25_MASSIF)
+
+	# 4. Buissons, rebords.
+	for x, y in plan.cells_of("x"):
+		cx, cy = centre(x, y)
+		_disque(d, cx, cy, case * 0.4, BUISSON, SOMBRE_BORD)
+	for x, y in plan.cells_of("v"):
+		x0, y0 = coin(x, y)
+		d.rectangle([x0, y0, x0 + case - 1, y0 + case // 2], fill=_melange(REBORD, PAROI, 0.3))
+		d.rectangle([x0, y0 + case // 2, x0 + case - 1, y0 + case - 1], fill=REBORD)
+
+	# 5. Maison de Léo : toit sur les 3/5 hauts de l'emprise, porte.
+	maison = plan.cells_of("M") + plan.cells_of("D")
+	if maison:
+		xs = [x for x, _ in maison]
+		ys = [y for _, y in maison]
+		x0, y0 = coin(min(xs), min(ys))
+		x1, y1 = coin(max(xs) + 1, max(ys) + 1)
+		d.rectangle([x0, y0, x1 - 1, y0 + (y1 - y0) * 3 // 5], fill=R25_MAISON_TOIT)
+		for x, y in plan.cells_of("D"):
+			px0, py0 = coin(x, y)
+			d.rectangle([px0, py0 + case // 4, px0 + case - 1, py0 + case - 1], fill=PORTE)
+
+	# 6. Panneaux et objets visibles (la case cachée « cache » n'est JAMAIS dessinée ici).
+	for p in plan.of_kind("panneau"):
+		for x, y in p.cells:
+			cx, cy = centre(x, y)
+			d.rectangle([cx - 5, cy - 5, cx + 5, cy + 5], fill=PANNEAU, outline=PANNEAU_BORD)
+	for p in plan.of_kind("objet_visible"):
+		for x, y in p.cells:
+			cx, cy = centre(x, y)
+			r = 5
+			d.pieslice([cx - r, cy - r, cx + r, cy + r], 180, 360, fill=BALL_ROUGE)
+			d.pieslice([cx - r, cy - r, cx + r, cy + r], 0, 180, fill=BLANC)
+			d.ellipse([cx - r, cy - r, cx + r, cy + r], outline=BALL_BORD, width=1)
+
+	sortie.parent.mkdir(parents=True, exist_ok=True)
+	img.save(sortie)
+	return sortie
+
+
 # Grille → (fonction, sortie par défaut).
 PLANS = {
 	"route_2": (dessiner, "build/art/PLAN_ROUTE2_v1.png"),
@@ -1568,6 +1701,7 @@ PLANS = {
 	"azuria": (dessiner_j13, "build/art/PLAN_AZURIA_v1.png"),
 	"route_24": (dessiner_j13, "build/art/PLAN_ROUTE24_v1.png"),
 	"azuria_arene": (dessiner_j13, "build/art/PLAN_AZURIA_ARENE_v1.png"),
+	"route_25": (dessiner_route_25, "build/art/PLAN_ROUTE25_v1.png"),
 }
 
 
@@ -1591,7 +1725,7 @@ def main() -> int:
 		print(fonction(grille, sortie))
 	if fonction is dessiner_foret and "--annote" in sys.argv:
 		print(annoter_foret(grille, sortie, sortie.with_name(sortie.stem + "_annote.png")))
-	if fonction is dessiner_route_3 and "--annote" in sys.argv:
+	if fonction in (dessiner_route_3, dessiner_route_25) and "--annote" in sys.argv:
 		print(annoter_route_3(grille, sortie, sortie.with_name(sortie.stem + "_annote.png")))
 	if fonction is dessiner_j13 and "--annote" in sys.argv:
 		print(annoter_j13(grille, sortie, sortie.with_name(sortie.stem + "_annote.png")))
