@@ -644,3 +644,18 @@ consigne paraît (dernier pas du fondu). Tests : `test_evolution_screen` (durée
 toucher ×2 mesuré en temps simulé — `TweenClock.speed_of` —, ARRÊTER sans accélérer, remise à ×1
 d'une évolution à l'autre ; tests du J9 adaptés au nouveau tempo). `tools/capture_evolution.gd`
 recalé sur le nouveau tempo ; captures relues (11 images, `--fixed-fps 30`).
+
+### Procédure de QA de 11C (qa-mobile, téléphone, sur le Mac)
+
+Départ de débogage seulement (la vraie sauvegarde n'est ni lue ni écrite). `tools/test.sh` vert.
+
+1. `tools/deploy_s24.sh --debug-start evolution_qa` (entrée sud de la Forêt de Jade ; Chenipan et
+   Aspicot à 1 XP du N7, Chrysacier à 1 XP du N10). Mettre Chenipan en tête, gagner un combat :
+   après le bilan, « Quoi ? Chenipan évolue ! » → transformation → « Félicitations ! … » en
+   **environ 6 s** sans toucher (chronométrer). Ressenti : la scène reste lisible, pas précipitée.
+2. Même chose avec Aspicot, en **touchant l'écran** pendant la transformation : la suite se joue
+   deux fois plus vite ; la consigne « Touchez l'écran pour continuer » attend ensuite normalement.
+3. ARRÊTER pendant la transformation (Chrysacier) : « Hein ? … n'évolue plus. » ; le retour
+   Android fait de même. Un toucher sur ARRÊTER arrête, il n'accélère pas.
+4. Paramètres → « Réduire les animations » : séquence encore plus courte, sans saut.
+5. Rapport `build/qa/jalon11_t11c/rapport.md` (chrono, captures, ressenti) → validation de 11C.
