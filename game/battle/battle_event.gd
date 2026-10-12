@@ -100,7 +100,9 @@ extends RefCounted
 ## MOVE_USED sans PP ; sprite rendu, pas de phrase), CHARGE_BROKEN (tour 2 : « remonte à la
 ## surface. », rien n'est frappé ; sprite rendu), DODGED (sur la cible invulnérable : « évite
 ## l'attaque ! »), BALL_BLOCKED (sur le sauvage invulnérable, à la place de BALL_THROWN :
-## « Impossible de viser ! » ; [member item_id], [member item_name]).
+## « Impossible de viser ! » ; [member item_id], [member item_name]), TELEPORTED (le lanceur
+## s'en va : suit BATTLE_ENDED, FLED ou FOE_FLED), NOTHING_HAPPENED (Téléport contre un
+## Dresseur : « Mais rien ne se passe ! »).
 ## Tous les autres événements sur un Pokémon portent dans [member status] son statut au moment
 ## de l'événement (SENT_OUT : la carte de PV l'affiche dès l'entrée ; FAINTED : toujours vide,
 ## le K.O. efface le statut).
@@ -118,6 +120,7 @@ enum Kind {
 	MULTI_HIT, FLINCHED, FOCUSED,
 	BIDE_STARTED, BIDE_STORING, BIDE_UNLEASHED, BIDE_BROKEN,
 	CHARGE_STARTED, CHARGE_RELEASED, CHARGE_BROKEN, DODGED, BALL_BLOCKED,
+	TELEPORTED, NOTHING_HAPPENED,
 }
 enum SideId { PLAYER, FOE }
 

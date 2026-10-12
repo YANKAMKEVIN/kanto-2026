@@ -35,17 +35,17 @@ extends RefCounted
 ## (CT34, dossier 14 §6.3) : le lanceur encaisse deux tours, puis riposte ([Battle]).
 ## Jalon 14 (`jalon-14.md` §2.3, §2.5 ; dossier 17 §7, §8.1) :
 ## [codeblock]
-## { "kind": "charge", "texts": "dig", "invulnerable": true }
+## { "kind": "charge", "texts": "dig", "invulnerable": true }   { "kind": "teleport" }
 ## [/codeblock]
 ## CHARGE : « charge puis frappe » (Tunnel) : la capacité offensive se charge au premier tour
 ## (aucun dégât), puis frappe au second sans dépenser de PP, action imposée ([ChargeRules]).
 ## [member texts] choisit les messages (« charge_<texts>_start », « charge_<texts>_broken » de
 ## `messages.json`) ; [member invulnerable] (faux par défaut) : sous terre, le lanceur évite
-## toute capacité qui le vise.
+## toute capacité qui le vise. TELEPORT : Téléport, fuite d'un combat sauvage ([Battle]).
 
 enum Kind {
 	STAT_STAGE, RECOIL, SEED, STATUS, CONFUSION, HITS, FLINCH, CRIT_UP, FIXED_DAMAGE, BIDE,
-	CHARGE,
+	CHARGE, TELEPORT,
 }
 enum Target { SELF, FOE }
 
@@ -55,7 +55,7 @@ const KIND_NAMES: Dictionary[String, Kind] = {
 	"status": Kind.STATUS, "confusion": Kind.CONFUSION, "hits": Kind.HITS,
 	"flinch": Kind.FLINCH, "crit_up": Kind.CRIT_UP, "fixed_damage": Kind.FIXED_DAMAGE,
 	"bide": Kind.BIDE,
-	"charge": Kind.CHARGE,
+	"charge": Kind.CHARGE, "teleport": Kind.TELEPORT,
 }
 ## Modes de FIXED_DAMAGE.
 const FIXED_MODES: Array[StringName] = [&"half_hp", &"level"]

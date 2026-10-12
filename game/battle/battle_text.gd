@@ -51,7 +51,8 @@ extends RefCounted
 ## Jalon 14 (dossier 17 §15, n° 52 à 57) : CHARGE_STARTED → « charge_<texts>_start » et
 ## CHARGE_BROKEN → « charge_<texts>_broken » ([member MoveEffect.texts] de l'effet CHARGE de la
 ## capacité [member BattleEvent.move_id] ; pas de phrase sans modèle) ; CHARGE_RELEASED : pas de
-## phrase (le MOVE_USED suit) ; DODGED → « dodged » ; BALL_BLOCKED → « ball_blocked ».
+## phrase (le MOVE_USED suit) ; DODGED → « dodged » ; BALL_BLOCKED → « ball_blocked » ;
+## TELEPORTED → « teleported » ; NOTHING_HAPPENED → « nothing_happened ».
 ## Changement de Pokémon (jalon 7) : WITHDRAWN → « withdrawn » (« Reviens, Salamèche ! ») ; le
 ## Pokémon envoyé reprend « sent_out_player ». Le panneau ÉQUIPE lit, sans événement
 ## ([method get_template]), « switch_reason_active », « switch_reason_fainted » (raisons sur
@@ -113,7 +114,8 @@ const TEMPLATE_IDS: Array[StringName] = [
 	&"confusion_ended", &"multi_hit", &"flinched", &"focused",
 	&"bide_started", &"bide_storing", &"bide_unleashed", &"bide_broken",
 	&"evolution_started", &"evolution_finished", &"evolution_cancelled", &"evolution_stop",
-	&"charge_dig_start", &"charge_dig_broken", &"dodged", &"ball_blocked",
+	&"charge_dig_start", &"charge_dig_broken", &"dodged", &"ball_blocked", &"teleported",
+	&"nothing_happened",
 ]
 ## Entre deux gains de statistiques du bilan (« PV +2 · Attaque +1 »).
 const SUMMARY_SEPARATOR: String = " · "
@@ -342,6 +344,10 @@ func lines(event: BattleEvent, data: PokemonData, trainer: TrainerData = null) \
 			result.append(_fill(&"dodged", event, data))
 		BattleEvent.Kind.BALL_BLOCKED:
 			result.append(_fill(&"ball_blocked", event, data))
+		BattleEvent.Kind.TELEPORTED:
+			result.append(_fill(&"teleported", event, data))
+		BattleEvent.Kind.NOTHING_HAPPENED:
+			result.append(_fill(&"nothing_happened", event, data))
 		BattleEvent.Kind.STATUS_INFLICTED, BattleEvent.Kind.STATUS_UNCHANGED, \
 				BattleEvent.Kind.STATUS_DAMAGED, BattleEvent.Kind.STATUS_CURED, \
 				BattleEvent.Kind.STATUS_PREVENTED, BattleEvent.Kind.STATUS_ENDED:

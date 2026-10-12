@@ -65,7 +65,7 @@ func test_targets_foe() -> void:
 	for id: StringName in [&"tackle", &"seismic_toss", &"super_fang", &"growl",
 			&"poison_powder", &"leech_seed", &"supersonic", &"sleep_powder", &"thunder_wave"]:
 		assert_true(ChargeRules.targets_foe(_data.get_move(id)), String(id))
-	for id: StringName in [&"harden", &"focus_energy", &"bide", &"growth"]:
+	for id: StringName in [&"harden", &"focus_energy", &"bide", &"growth", &"teleport"]:
 		assert_false(ChargeRules.targets_foe(_data.get_move(id)), String(id))
 	assert_false(ChargeRules.targets_foe(null))
 

@@ -85,13 +85,17 @@ extends RefCounted
 ## sans PP, puis la frappe ordinaire — ou CHARGE_BROKEN si le Pokémon ne peut pas agir ou était
 ## endormi ou gelé. Invulnérable (Tunnel) : toute capacité qui le vise donne DODGED (PP dépensé),
 ## la riposte de Patience aussi ; une Ball donne BALL_BLOCKED (l'adversaire joue son tour).
+## Téléport (jalon 14 §2.5) : contre un Dresseur, NOTHING_HAPPENED ; en combat sauvage,
+## TELEPORTED puis BATTLE_ENDED ([constant Outcome.FLED] pour le joueur,
+## [constant Outcome.FOE_FLED] pour le sauvage : ni XP, ni capture).
 
 ## REPLACING (jalon 7) : le Pokémon du joueur est K.O., il doit en choisir un autre
 ## ([method replace]) ; ajouté en fin d'enum.
 enum State { READY, CHOOSING, OVER, REPLACING }
 ## Réponse de [method check_switch] : OK, ou la raison du refus.
 enum SwitchCheck { OK, NO_POKEMON, FAINTED, ACTIVE }
-enum Outcome { NONE, WIN, LOSS, FLED, CAUGHT }
+## FOE_FLED (jalon 14) : le Pokémon sauvage s'est enfui (Téléport) ; ajouté en fin d'enum.
+enum Outcome { NONE, WIN, LOSS, FLED, CAUGHT, FOE_FLED }
 
 const STRUGGLE_ID: StringName = &"struggle"
 ## Patience (CT34, jalon 11) : capacité dont la riposte est un DAMAGE de ce nom.
@@ -823,6 +827,8 @@ func _apply_effect(effect: MoveEffect, move: MoveData, side: BattleSide,
 			user.bide_stage = 1
 			user.bide_slot = user.pokemon.move_index(move_id)
 			events.append(_event(BattleEvent.Kind.BIDE_STARTED, side))
+		MoveEffect.Kind.TELEPORT:
+			_teleport(side, events)
 
 
 ## Effet [code]confusion[/code] (jalon 11) sur le Pokémon de [param target_side] : comme un
@@ -1037,7 +1043,7 @@ func _pokemon_event(kind: BattleEvent.Kind, side_id: BattleEvent.SideId,
 	return event
 
 
-# --- Jalon 14 : « charge puis frappe » ([ChargeRules]) --------------------------
+# --- Jalon 14 : « charge puis frappe » ([ChargeRules]) et Téléport --------------------------
 
 ## Tour 1 d'une capacité CHARGE (après MOVE_USED, PP dépensé) : la charge commence
 ## (CHARGE_STARTED, invulnérable si l'effet le dit), aucun dégât. Faux si [param move] n'a pas
@@ -1105,3 +1111,13 @@ func _ball_blocked(item: ItemData, events: Array[BattleEvent]) -> bool:
 	_foe_turn_alone(events)
 	return true
 
+
+## Téléport (après MOVE_USED) : contre un Dresseur, NOTHING_HAPPENED ; en combat sauvage,
+## TELEPORTED puis la fin du combat (FLED pour le joueur, FOE_FLED pour le sauvage). Un lanceur
+## piégé (J12) échouera (« Mais ça échoue ! ») : à brancher à la fusion du piège.
+func _teleport(side: BattleSide, events: Array[BattleEvent]) -> void:
+	if _rules == null or not _rules.wild:
+		events.append(_event(BattleEvent.Kind.NOTHING_HAPPENED, side))
+		return
+	events.append(_event(BattleEvent.Kind.TELEPORTED, side))
+	_finish(Outcome.FLED if side == _player else Outcome.FOE_FLED, events)

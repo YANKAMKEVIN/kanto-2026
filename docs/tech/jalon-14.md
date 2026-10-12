@@ -815,6 +815,10 @@ et de l'annexe A validée.
 
 #### T8 — architecte : Téléport — **maintenant**, après T7
 - §2.5. **CA** : tests verts ; rencontres sauvages inchangées hors Téléport.
+- **Fait** (2026-10-12, branche `j14-t7`, commit « J14 T8 ») : `MoveEffect.Kind.TELEPORT`,
+  `Outcome.FOE_FLED`, `TELEPORTED` / `NOTHING_HAPPENED` (n° 56, 57) ; `test_battle_teleport` +
+  `test_encounter_director` (FOE_FLED). Le lanceur **piégé** (« Mais ça échoue ! ») reste à
+  brancher dans `Battle._teleport` à la fusion du piège du J12 (T13), qui n'existe pas encore.
 
 #### T9 — ui-mobile : présentation de combat — après T7, T8
 - Sprite caché au CHARGE_STARTED, rendu au CHARGE_RELEASED / CHARGE_BROKEN (fondu court,

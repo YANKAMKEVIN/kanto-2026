@@ -54,6 +54,7 @@ const _EFFECT_KEYS: Dictionary[MoveEffect.Kind, Array] = {
 	MoveEffect.Kind.FIXED_DAMAGE: ["kind", "mode"],
 	MoveEffect.Kind.BIDE: ["kind"],
 	MoveEffect.Kind.CHARGE: ["kind", "texts", "invulnerable"],
+	MoveEffect.Kind.TELEPORT: ["kind"],
 }
 ## Clés d'effet facultatives (toutes les autres de [constant _EFFECT_KEYS] sont obligatoires).
 const _EFFECT_OPTIONAL: Array[String] = ["chance", "immune_types", "invulnerable"]

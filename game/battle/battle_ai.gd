@@ -79,7 +79,8 @@ func times_used(pokemon: Pokemon, move_id: StringName) -> int:
 ## [param times_used] ≥ [constant STATUS_MAX_USES], ou si aucun de ses effets ne peut plus rien
 ## changer (niveau déjà au bout, graine déjà plantée ou cible immunisée, statut déjà présent ou
 ## cible immunisée, effet que le moteur ne gère pas encore). Les capacités de statut ignorent les types (comme le moteur).
-## Une capacité « charge puis frappe » (jalon 14) vaut × [constant CHARGE_FACTOR].
+## Une capacité « charge puis frappe » (jalon 14) vaut × [constant CHARGE_FACTOR] ; Téléport
+## n'a aucun effet utile ici : 0 (jamais choisi en combat de Dresseur).
 static func score_move(move: MoveData, own: Battler, foe: Battler, chart: TypeChart,
 		times_used: int) -> float:
 	if move == null:
