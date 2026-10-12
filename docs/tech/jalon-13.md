@@ -1128,6 +1128,7 @@ et de l'annexe A validée.
     `test_cerulean_data`.
 
 #### T17 — constructeur-monde : la vie de la Route 4 et d'Azuria (13A) — après T11, T7, T8
+- **Relecture des captures de T8 (Claude, 2026-10-12)** : au pied du Pont Pépite, le panneau (33, 45) est rendu comme un grand abri de bois posé **sur la tête du pont** : on croit le passage fermé. À corriger avec la vie de la Route 24 : panneau de taille normale, à côté de la tête du pont (la case reste bloquée, la file est toujours fermée). Rebord de la Route 4 fin mais lisible (chemin coupé net) : à juger sur S24.
 - §2.2 (vie), §2.4, §2.5, §2.6 (Dresseurs et guide), §2.14 (Route 4), §2.16 (`get_cascade_badge`),
   zone et Grand moment d'arrivée, départs `route_4`, `cerulean_city`. Tests `test_route_4_life`,
   `test_cerulean_life`, `test_cerulean_gym_trainers`, `test_shop_sell`. **CA** : tests verts, captures.
