@@ -27,12 +27,14 @@ extends RefCounted
 ## « apprenable » ; absent = capacités de Rouge/Bleu au niveau.
 ## « card » (facultatif, jalon 10 §2.7) : { "name", "title" }, deux textes non vides, la carte
 ## de présentation d'un Champion ([member TrainerData.card_name], [member TrainerData.card_title]).
+## « switch » (facultatif, jalon 13, dossier 16 §14) : true = l'IA peut changer de Pokémon une
+## fois par combat ([member TrainerData.can_switch], [AiSwitchRule]) ; false par défaut.
 
 const DATA_DIR: String = "res://data/trainers/"
 
 const _KEYS: Array[String] = [
 	"name", "ai", "can_lose", "heal_after", "gives_exp", "prize_money", "end_message",
-	"start_message", "team", "team_by_starter", "bag", "prize_per_level", "card",
+	"start_message", "team", "team_by_starter", "bag", "prize_per_level", "card", "switch",
 ]
 const _REQUIRED: Array[String] = [
 	"name", "ai", "can_lose", "heal_after", "gives_exp", "prize_money",
@@ -183,6 +185,11 @@ func _parse(value: Variant, where: String) -> TrainerData:
 			trainer.allow_bag = entry["bag"]
 		else:
 			ok = _fail("%s : « bag » vaut true ou false" % where)
+	if entry.has("switch"):
+		if entry["switch"] is bool:
+			trainer.can_switch = entry["switch"]
+		else:
+			ok = _fail("%s : « switch » vaut true ou false" % where)
 	for key: String in ["prize_money", "prize_per_level"]:
 		if entry.has(key):
 			var money: Variant = entry[key]

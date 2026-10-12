@@ -318,3 +318,40 @@ func test_invalid_teams_are_rejected() -> void:
 	assert_string_contains(errors, "team_by_starter « sprout » : une équipe de 1 à 6")
 	assert_string_contains(errors, "« c » team : une équipe de 1 à 6")
 	assert_eq(_library.get_ids().size(), 0)
+
+
+# --- « switch » (jalon 13, IA qui change de Pokémon) ------------------------------------
+
+func test_switch_defaults_to_false() -> void:
+	assert_true(_library.add_from_dict({"t": _valid_entry()}), _errors())
+	var trainer := _library.get_trainer(&"t")
+	assert_false(trainer.can_switch)
+	assert_false(trainer.make_ai().can_switch)
+
+
+func test_switch_is_read_and_given_to_the_ai() -> void:
+	var entry := _valid_entry()
+	entry["ai"] = "smart"
+	entry["switch"] = true
+	assert_true(_library.add_from_dict({"t": entry}), _errors())
+	var ai := _library.get_trainer(&"t").make_ai()
+	assert_true(ai.can_switch)
+	assert_eq(ai.kind, BattleAI.SMART)
+	assert_false(ai.has_switched())
+
+
+func test_switch_is_validated() -> void:
+	var entry := _valid_entry()
+	entry["switch"] = "oui"
+	assert_false(_library.add_from_dict({"t": entry}))
+	assert_push_error_count(1)
+	assert_string_contains(_errors(), "« switch » vaut true ou false")
+
+
+## Aucun Dresseur actuel ne change de Pokémon (Ondine et le rival n° 3 viendront au T19).
+func test_real_trainers_do_not_switch_yet() -> void:
+	var library := TrainerLibrary.new(_data)
+	assert_true(library.load_dir())
+	for id: StringName in library.get_ids():
+		if not String(id).begins_with("qa_"):
+			assert_false(library.get_trainer(id).can_switch, String(id))

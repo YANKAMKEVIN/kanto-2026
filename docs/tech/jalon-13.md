@@ -913,9 +913,23 @@ et de l'annexe A validée.
 - §2.15 (9 espèces, 8 capacités, Pokédex, CT, `tm11`, `nugget`, sprites provisoires). **CA** : tests
   verts ; aucune carte touchée.
 
-#### T12 — architecte : IA qui change de Pokémon — après T11
+#### T12 — architecte : IA qui change de Pokémon — **fait** (2026-10-12, branche `j13-t12`)
 - §2.11 (règle, IA, `Battle`, texte, `TrainerData.switch`). **CA** : tests verts ; `simulate_brock.gd`
   identique ; Pierre et le rival n° 2 inchangés.
+- **Fait** : `game/battle/ai_switch_rule.gd` (`AiSwitchRule.pick` / `is_in_danger` / `is_weak_to` /
+  `is_better_placed`, `STAY = -1`, aucun tirage) ; `Battler.is_locked()` (Patience aujourd'hui :
+  **le piège du J12 devra s'y ajouter**, il n'existe pas encore sur `jalon-13`) ; `BattleAI`
+  (`can_switch`, `has_switched()`, 2e paramètre du constructeur) ; `TrainerData.can_switch` + clé
+  `switch` (booléen, facultative) dans `TrainerLibrary` ; `Battle` : `_foe_action` (changement
+  refusé si combat sauvage, place K.O. ou active → `push_error` et capacité), `_foe_switch`
+  (WITHDRAWN adverse avec `trainer_name`, puis SENT_OUT) dans `submit` (avant les capacités, le
+  joueur agit seul ensuite) et `_foe_turn_alone` ; `messages.json` += `withdrawn_foe`
+  « {trainer} rappelle {pokemon} ! » (n° 60), choisi par camp dans `BattleText`.
+- Statuts au changement (code réel du J11) : statut durable et compteur de sommeil sur `Pokemon`
+  (gardés) ; confusion, Patience, Puissance, graine, niveaux sur `Battler` (perdus).
+- Tests : `test_ai_switch_rule` (11), `test_battle_foe_switch` (6), `test_battle_ai` (+4),
+  `test_trainer_library` (+4), `test_battle_text` (+1), `test_battle_playback` (+1). Aucun
+  Dresseur réel n'a `switch` (Ondine et le rival n° 3 au T19).
 
 #### T13 — ui-mobile : rappel adverse à l'écran — après T12
 - §2.11 (présentation) ; captures relues (rappel, envoi, carte). **CA** : `game/ui/battle/` et

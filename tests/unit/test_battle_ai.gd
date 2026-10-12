@@ -261,3 +261,70 @@ func test_poison_powder_is_useless_on_a_poisoned_or_immune_target() -> void:
 	for types: Array[StringName] in [bug_poison, steel]:
 		var immune := _smart_side(&"weedle", [&"tackle"], types)
 		assert_false(BattleAI.status_has_effect(move, own.active, immune.active), str(types))
+
+
+# --- Changement de Pokémon (jalon 13, dossier 16 §14) -----------------------------------
+
+## Camp adverse Salamèche puis Roucool (Nv. 10, capacités de Rouge/Bleu), IA [param kind].
+func _switch_side(kind: StringName, can_switch: bool) -> BattleSide:
+	var party := Party.new()
+	party.add(PokemonFactory.create(_data, &"charmander", 10, ScriptedRng.new(IV_0)))
+	party.add(PokemonFactory.create(_data, &"pidgey", 10, ScriptedRng.new(IV_0)))
+	var side := BattleSide.new(party, false, "Ondine", BattleAI.new(kind, can_switch))
+	side.send_out(party.get_lead(), _data)
+	return side
+
+
+## Pokémon du joueur : Carapuce (Eau), qui frappe Salamèche à ×2.
+func _water_side() -> BattleSide:
+	return _smart_side(&"squirtle", [&"tackle"], [&"water"])
+
+
+func test_switch_only_when_the_trainer_may() -> void:
+	for kind: StringName in BattleAI.KINDS:
+		var side := _switch_side(kind, false)
+		var action := side.ai.choose(side, _water_side(), ScriptedRng.new([1, 1, 1]), _data)
+		assert_eq(action.kind, BattleAction.Kind.MOVE, "%s sans « switch »" % kind)
+		assert_false(side.ai.has_switched())
+
+
+func test_switch_at_most_once_per_battle() -> void:
+	var side := _switch_side(BattleAI.SMART, true)
+	var water := _water_side()
+	var rng := ScriptedRng.new([])
+	var action := side.ai.choose(side, water, rng, _data)
+	assert_eq(action.kind, BattleAction.Kind.SWITCH)
+	assert_eq(action.target, 1, "Roucool")
+	assert_eq(rng.calls, 0, "le changement ne tire rien")
+	assert_true(side.ai.has_switched())
+	# Les conditions durent (Salamèche de nouveau en jeu) : plus jamais de changement.
+	rng.push([1, 1, 1, 1])
+	for i: int in 3:
+		assert_eq(side.ai.choose(side, water, rng, _data).kind, BattleAction.Kind.MOVE)
+
+
+func test_no_switch_during_bide_or_without_data() -> void:
+	var side := _switch_side(BattleAI.SMART, true)
+	side.active.bide_stage = 1
+	var rng := ScriptedRng.new([1, 1])
+	assert_eq(side.ai.choose(side, _water_side(), rng, _data).kind, BattleAction.Kind.MOVE)
+	assert_false(side.ai.has_switched(), "Patience : jamais")
+	side.active.clear_bide()
+	assert_eq(side.ai.choose(side, _water_side(), rng, null).kind, BattleAction.Kind.MOVE)
+	assert_false(side.ai.has_switched(), "sans données : jamais")
+
+
+## Sans danger, « switch » ne change ni les choix ni les tirages.
+func test_switch_option_keeps_choices_and_draws_otherwise() -> void:
+	var neutral := _smart_side(&"pidgey", [&"tackle"], [&"normal", &"flying"])
+	for kind: StringName in BattleAI.KINDS:
+		var with_rng := GameRng.new(7)
+		var without_rng := GameRng.new(7)
+		var with_side := _switch_side(kind, true)
+		var without_side := _switch_side(kind, false)
+		for i: int in 20:
+			var a := with_side.ai.choose(with_side, neutral, with_rng, _data)
+			var b := without_side.ai.choose(without_side, neutral, without_rng, _data)
+			assert_eq([a.kind, a.move_index], [b.kind, b.move_index], "%s, tour %d" % [kind, i])
+		assert_eq(with_rng.roll(1000), without_rng.roll(1000), "mêmes tirages")
+		assert_false(with_side.ai.has_switched())
