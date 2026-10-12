@@ -25,5 +25,25 @@
 				{ "species": "pidgey", "level": 7 }, { "species": "bulbasaur", "level": 8 }
 			]
 		}
+	},
+	"rival_cerulean": {
+		"name": "{rival}", "ai": "smart",
+		"can_lose": false, "heal_after": false, "gives_exp": true,
+		"prize_money": 0, "prize_per_level": 35,
+		"end_message": false, "start_message": true, "bag": true,
+		"team_by_starter": {
+			"bulbasaur": [
+				{ "species": "pidgeotto", "level": 18 }, { "species": "rattata", "level": 15 },
+				{ "species": "charmeleon", "level": 17 }
+			],
+			"charmander": [
+				{ "species": "pidgeotto", "level": 18 }, { "species": "rattata", "level": 15 },
+				{ "species": "wartortle", "level": 17 }
+			],
+			"squirtle": [
+				{ "species": "pidgeotto", "level": 18 }, { "species": "rattata", "level": 15 },
+				{ "species": "ivysaur", "level": 17 }
+			]
+		}
 	}
 }

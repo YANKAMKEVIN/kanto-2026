@@ -177,6 +177,18 @@
 			"height": 1.4, "weight": 62.0,
 			"description": "On l'entend marteler le sol bien avant de l'apercevoir. Sa queue épaisse peut renverser un arbre."
 		},
+		"oddish": {
+			"height": 0.5, "weight": 5.4,
+			"description": "Le jour, il s'enfouit dans la terre et ne laisse dépasser que ses feuilles. La nuit, il se met à marcher.",
+			"notes": [
+				{ "id": "oddish_path", "unlock": { "seen": 1 },
+				  "text": "Une touffe de feuilles au milieu du chemin, qui n'y était pas la veille : c'est souvent lui." }
+			]
+		},
+		"gloom": {
+			"height": 0.8, "weight": 8.6,
+			"description": "Une odeur âcre flotte autour de lui. Le nectar collant qui coule de sa bouche fait fuir presque tout le monde."
+		},
 		"mankey": {
 			"height": 0.5, "weight": 28.0,
 			"description": "Il passe en un instant du calme à la colère. Mieux vaut ne pas le fixer quand il se met à trépigner.",
@@ -188,6 +200,18 @@
 		"primeape": {
 			"height": 1.0, "weight": 32.0,
 			"description": "Quand il s'emporte, plus rien ne l'arrête. Il poursuit longtemps ce qui l'a contrarié."
+		},
+		"bellsprout": {
+			"height": 0.7, "weight": 4.0,
+			"description": "Son corps fin comme une tige plie au vent sans jamais se rompre. Il attrape ce qui passe avec ses longues lianes.",
+			"notes": [
+				{ "id": "bellsprout_sway", "unlock": { "seen": 1 },
+				  "text": "Il se balance doucement au bord des herbes, puis se fige net dès qu'on approche." }
+			]
+		},
+		"weepinbell": {
+			"height": 1.0, "weight": 6.4,
+			"description": "Il se suspend aux branches par le crochet de sa tige. Le liquide qu'il garde dans sa bouche ronge presque tout."
 		},
 		"geodude": {
 			"height": 0.4, "weight": 20.0,
@@ -205,6 +229,14 @@
 			"height": 1.4, "weight": 300.0,
 			"description": "Sa carapace de pierre ne craint presque rien. Une fois l'an, dit-on, il s'en défait et laisse une coque vide derrière lui."
 		},
+		"shellder": {
+			"height": 0.3, "weight": 4.0,
+			"description": "Sa coquille épaisse se referme d'un coup sec au moindre danger. Quand il se croit seul, il laisse dépasser sa longue langue.",
+			"notes": [
+				{ "id": "shellder_sand", "unlock": { "seen": 1 },
+				  "text": "Au fond des canaux, il reste à moitié enfoui dans le sable, la coquille entrouverte." }
+			]
+		},
 		"onix": {
 			"height": 8.8, "weight": 210.0,
 			"description": "Il creuse la terre en se tordant à grande vitesse. Les tunnels qu'il laisse servent ensuite de terrier à d'autres Pokémon.",
@@ -212,6 +244,34 @@
 				{ "id": "onix_rumble", "unlock": { "seen": 1 },
 				  "text": "Un grondement sourd sous les pieds, puis plus rien : un Onix vient de passer, quelque part sous la roche." }
 			]
+		},
+		"horsea": {
+			"height": 0.4, "weight": 8.0,
+			"description": "Il nage bien droit et s'accroche aux algues avec sa queue quand le courant forcit. Menacé, il crache un nuage d'encre noire.",
+			"notes": [
+				{ "id": "horsea_surface", "unlock": { "seen": 1 },
+				  "text": "On le voit parfois flotter immobile juste sous la surface, comme s'il guettait quelque chose." }
+			]
+		},
+		"goldeen": {
+			"height": 0.6, "weight": 15.0,
+			"description": "Ses nageoires ondulent comme un voile dans le courant. Sa corne fend l'eau quand il remonte la rivière.",
+			"notes": [
+				{ "id": "goldeen_spring", "unlock": { "seen": 1 },
+				  "text": "Au printemps, ils remontent le courant en bancs et sautent par-dessus les petites chutes." }
+			]
+		},
+		"staryu": {
+			"height": 0.8, "weight": 34.5,
+			"description": "Le cœur rouge de son corps brille faiblement dans le noir. Les nuits calmes, on le voit scintiller au bord de l'eau comme une étoile tombée.",
+			"notes": [
+				{ "id": "staryu_quays", "unlock": { "seen": 1 },
+				  "text": "Il se colle aux pierres des quais quand l'eau est tranquille, et disparaît au premier remous." }
+			]
+		},
+		"starmie": {
+			"height": 1.1, "weight": 80.0,
+			"description": "Son joyau central change de couleur selon la lumière. Il nage en tournant sur lui-même, si vite qu'on le perd des yeux."
 		}
 	}
 }

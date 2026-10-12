@@ -1,0 +1,28 @@
+{
+	"route_24_timeo": {
+		"name": "Scout Timéo", "ai": "random",
+		"can_lose": false, "heal_after": false, "gives_exp": true, "prize_money": 120,
+		"team": [
+			{ "species": "caterpie", "level": 10 }, { "species": "weedle", "level": 10 },
+			{ "species": "metapod", "level": 10 }, { "species": "kakuna", "level": 10 }
+		]
+	},
+	"route_24_alice": {
+		"name": "Jeune Dresseuse Alice", "ai": "random",
+		"can_lose": false, "heal_after": false, "gives_exp": true, "prize_money": 180,
+		"team": [
+			{ "species": "pidgey", "level": 12 }, { "species": "oddish", "level": 12 },
+			{ "species": "bellsprout", "level": 12 }
+		]
+	},
+	"route_24_romane": {
+		"name": "Jeune Dresseuse Romane", "ai": "random",
+		"can_lose": false, "heal_after": false, "gives_exp": true, "prize_money": 240,
+		"team": [{ "species": "nidoran_f", "level": 16 }, { "species": "nidoran_m", "level": 16 }]
+	},
+	"route_24_ethan": {
+		"name": "Campeur Ethan", "ai": "random",
+		"can_lose": false, "heal_after": false, "gives_exp": true, "prize_money": 360,
+		"team": [{ "species": "mankey", "level": 18 }]
+	}
+}

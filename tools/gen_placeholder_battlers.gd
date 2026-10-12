@@ -5,7 +5,9 @@ extends SceneTree
 ## huit espèces de la Forêt de Jade (jalon-09.md §2.5 : Chenipan → Papilusion, Aspicot →
 ## Dardargnan, Pikachu, Raichu ; les évolutions aussi, puisqu'elles naissent en combat) et des
 ## trois espèces des Dresseurs d'Argenta (jalon-10.md §2.3 : Sabelette, Racaillou, Onix ; en
-## face, l'adversaire est l'artwork officiel, ces sprites ne servent que de repli et de dos).
+## face, l'adversaire est l'artwork officiel, ces sprites ne servent que de repli et de dos) et
+## des treize du jalon 13 (rival n° 3 : Roucoups, Herbizarre, Reptincel, Carabaffe ; Azuria :
+## Stari, Staross, Hypotrempe, Kokiyas, Poissirène, Mystherbe, Ortide, Chétiflor, Boustiflor).
 ## Pixel art 64 × 64 natif, affiché en NEAREST par le BattleStage (×4 de dos, ×3 de face) :
 ##   assets/sprites/pokemon/placeholder/<espèce>_front.png   (vue de face : l'adversaire)
 ##   assets/sprites/pokemon/placeholder/<espèce>_back.png    (vue de dos : le Pokémon du joueur)
@@ -25,6 +27,11 @@ const SPECIES: Array[String] = [
 	"spearow", "mankey", "nidoran_f", "nidoran_m",
 	"caterpie", "metapod", "butterfree", "weedle", "kakuna", "beedrill", "pikachu", "raichu",
 	"sandshrew", "geodude", "onix",
+	# Jalon 13 (jalon-13.md §1.4, §2.15) : formes intermédiaires de l'équipe du rival n° 3 et
+	# les neuf espèces d'Azuria (Dresseurs, Route 24, évolutions par niveau).
+	"pidgeotto", "ivysaur", "charmeleon", "wartortle",
+	"staryu", "starmie", "horsea", "shellder", "goldeen",
+	"oddish", "gloom", "bellsprout", "weepinbell",
 ]
 const OUTLINE := Color("#1c1c28")
 const EYE := Color("#1c1c28")
@@ -722,6 +729,241 @@ func _draw_onix(img: Image, back: bool) -> void:
 	_r(img, 19, 12, 6, 2, WHITE)
 	_r(img, 21, 12, 2, 2, EYE)
 	_r(img, 18, 18, 14, 2, rock.darkened(0.5))
+
+
+# --- Jalon 13 : outils ------------------------------------------------------------
+
+## Polygone plein (étoiles de Stari et Staross, feuilles, coquille).
+func _poly(img: Image, points: PackedVector2Array, c: Color) -> void:
+	var box := Rect2(points[0], Vector2.ZERO)
+	for point: Vector2 in points:
+		box = box.expand(point)
+	for yy: int in range(int(box.position.y), int(box.end.y) + 1):
+		for xx: int in range(int(box.position.x), int(box.end.x) + 1):
+			if Geometry2D.is_point_in_polygon(Vector2(xx + 0.5, yy + 0.5), points):
+				_px(img, xx, yy, c)
+
+
+## Étoile à cinq branches de centre [param c], rayons [param outer] et [param inner], tournée
+## de [param turn] radians.
+func _star(img: Image, c: Vector2, outer: float, inner: float, col: Color,
+		turn: float = 0.0) -> void:
+	var points := PackedVector2Array()
+	for i: int in 10:
+		var radius := outer if i % 2 == 0 else inner
+		var angle := -PI / 2.0 + turn + i * PI / 5.0
+		points.append(c + Vector2(cos(angle), sin(angle)) * radius)
+	_poly(img, points, col)
+
+
+## Rapproche toutes les couleurs déjà peintes de [param col] (forme évoluée d'un dessin
+## existant, avant le contour).
+func _tint(img: Image, col: Color, amount: float) -> void:
+	for y: int in _h:
+		for x: int in _w:
+			var c := img.get_pixel(x, y)
+			if c.a > 0.0 and c != WHITE and c != EYE:
+				img.set_pixel(x, y, c.lerp(col, amount))
+
+
+## Feuille en losange de [param a] (attache) à [param b] (pointe), demi-largeur [param w].
+func _leaf(img: Image, a: Vector2, b: Vector2, w: float, c: Color) -> void:
+	var n := (b - a).orthogonal().normalized() * w
+	var mid := a.lerp(b, 0.45)
+	_poly(img, PackedVector2Array([a, mid + n, b, mid - n]), c)
+	_line(img, a, a.lerp(b, 0.8), c.darkened(0.3))
+
+
+# --- Roucoups, Herbizarre, Reptincel, Carabaffe (rival n° 3) ----------------------
+
+func _draw_pidgeotto(img: Image, back: bool) -> void:
+	_draw_pidgey(img, back)
+	var crest := Color("#d04a30")
+	var gold := Color("#f0c040")
+	for i: int in 4:
+		_line(img, Vector2(30 + i, 12), Vector2(40 + i * 3, 0 + i), crest if i < 2 else gold, 2)
+	_e(img, 32, 58, 10, 4, Color("#8a5a30"))
+
+
+func _draw_ivysaur(img: Image, back: bool) -> void:
+	_draw_bulbasaur(img, back)
+	_tint(img, Color("#3f8a8a"), 0.18)
+	var bud := Color("#e070a0")
+	if back:
+		_e(img, 32, 30, 8, 7, bud, true)
+		_r(img, 31, 23, 2, 6, bud.darkened(0.3))
+		return
+	_e(img, 32, 10, 8, 7, bud, true)
+	_leaf(img, Vector2(26, 16), Vector2(8, 10), 4, Color("#3a7a38"))
+	_leaf(img, Vector2(38, 16), Vector2(56, 10), 4, Color("#3a7a38"))
+
+
+func _draw_charmeleon(img: Image, back: bool) -> void:
+	_draw_charmander(img, back)
+	_tint(img, Color("#c0302a"), 0.45)
+	_line(img, Vector2(32, 10), Vector2(36, 2), Color("#a02a24"), 3)
+
+
+func _draw_wartortle(img: Image, back: bool) -> void:
+	_draw_squirtle(img, back)
+	_tint(img, Color("#5a6ad8"), 0.3)
+	var fur := Color("#e8f0ff")
+	for side: int in [-1, 1]:
+		_e(img, 32 + side * 15, 7, 5, 7, fur)
+	_e(img, 54 if not back else 10, 56, 7, 5, fur)
+
+
+# --- Stari, Staross ---------------------------------------------------------------
+
+func _draw_staryu(img: Image, back: bool) -> void:
+	var body := Color("#c0904a")
+	_star(img, Vector2(32, 36), 27, 11, body)
+	_star(img, Vector2(32, 36), 21, 8, body.lightened(0.12))
+	var gem := Color("#e03040") if not back else Color("#c0904a").darkened(0.25)
+	_e(img, 32, 36, 6, 6, gem, true)
+	if not back:
+		_e(img, 30, 34, 2, 2, Color("#ffd0d0"))
+
+
+func _draw_starmie(img: Image, back: bool) -> void:
+	var body := Color("#8a5ab8")
+	_star(img, Vector2(32, 34), 29, 12, body.darkened(0.25), PI / 5.0)
+	_star(img, Vector2(32, 34), 25, 10, body)
+	_star(img, Vector2(32, 34), 19, 7, body.lightened(0.15))
+	_e(img, 32, 34, 7, 7, Color("#f0c040") if back else Color("#e03050"), true)
+	if not back:
+		_e(img, 30, 32, 2, 2, WHITE)
+
+
+# --- Hypotrempe, Kokiyas, Poissirène ----------------------------------------------
+
+func _draw_horsea(img: Image, back: bool) -> void:
+	var skin := Color("#6ab0e0")
+	var belly := Color("#f0e0a0")
+	var dir := 1 if back else -1
+	# Queue enroulée en bas, corps vertical, tête et museau tubulaire, nageoire dorsale.
+	_e(img, 32 - dir * 6, 55, 7, 6, skin, true)
+	_e(img, 32 - dir * 6, 55, 3, 3, skin.darkened(0.3))
+	_e(img, 32, 40, 11, 15, skin, true)
+	if not back:
+		_r(img, 28, 32, 7, 18, belly)
+		for y: int in [36, 41, 46]:
+			_r(img, 28, y, 7, 1, belly.darkened(0.2))
+	_leaf(img, Vector2(32 - dir * 9, 36), Vector2(32 - dir * 20, 30), 4, Color("#e8e8f8"))
+	_e(img, 32, 20, 11, 10, skin, true)
+	_r(img, 32 + dir * 8, 18, 10, 4, skin.darkened(0.08))
+	_r(img, 32 + dir * 17, 17, 2, 6, skin.darkened(0.3))
+	for i: int in 3:
+		_line(img, Vector2(28 + i * 4, 11), Vector2(26 + i * 4, 4), skin.darkened(0.15), 2)
+	if not back:
+		_eye(img, 24, 16, Color("#2a2a30"))
+
+
+func _draw_shellder(img: Image, back: bool) -> void:
+	var shell := Color("#8a6ab8")
+	var spike := Color("#6a4a98")
+	# Coquille en éventail (côtes), pointes sur le bord ; de face, l'intérieur sombre et la
+	# langue.
+	for side: int in [-1, 1]:
+		for i: int in 3:
+			_line(img, Vector2(32 + side * (14 + i * 6), 30 + i * 8),
+				Vector2(32 + side * (24 + i * 4), 26 + i * 9), spike, 3)
+	_e(img, 32, 42, 24, 19, shell, true)
+	for i: int in range(-3, 4):
+		_line(img, Vector2(32, 58), Vector2(32 + i * 7, 25), shell.darkened(0.2))
+	if back:
+		return
+	_e(img, 32, 44, 15, 10, Color("#2a2030"))
+	_eye(img, 23, 39, Color("#2a2a30"))
+	_eye(img, 37, 39, Color("#2a2a30"))
+	_e(img, 32, 52, 6, 3, Color("#e05878"))
+
+
+func _draw_goldeen(img: Image, back: bool) -> void:
+	var body := Color("#f4f0ec")
+	var orange := Color("#f07a30")
+	var dir := 1 if back else -1
+	# Poisson de profil : queue en voile, corps blanc à taches orange, corne, nageoires.
+	_leaf(img, Vector2(32 - dir * 16, 40), Vector2(32 - dir * 30, 28), 7, orange.lightened(0.2))
+	_leaf(img, Vector2(32 - dir * 16, 40), Vector2(32 - dir * 30, 54), 7, orange.lightened(0.2))
+	_e(img, 32, 40, 20, 14, body, true)
+	_e(img, 28, 34, 6, 5, orange)
+	_e(img, 38, 45, 5, 4, orange)
+	_leaf(img, Vector2(32, 28), Vector2(32 - dir * 6, 14), 5, orange)
+	_leaf(img, Vector2(30, 52), Vector2(30 - dir * 4, 61), 4, orange)
+	_line(img, Vector2(32 + dir * 18, 36), Vector2(32 + dir * 28, 26), Color("#e8d8b0"), 3)
+	if not back:
+		_eye(img, 16, 34, Color("#2a6a8a"))
+		_r(img, 12, 42, 5, 2, Color("#e05878"))
+
+
+# --- Mystherbe, Ortide, Chétiflor, Boustiflor -------------------------------------
+
+func _draw_oddish(img: Image, back: bool) -> void:
+	_draw_weed(img, back, Color("#4a5ab0"), Color("#4aa040"), false)
+
+
+func _draw_gloom(img: Image, back: bool) -> void:
+	_draw_weed(img, back, Color("#3a4a98"), Color("#3a8a38"), true)
+
+
+## Corps rond et bleu, bouquet de feuilles sur la tête ; [param evolved] = Ortide (fleur rouge,
+## bouche baveuse).
+func _draw_weed(img: Image, back: bool, body: Color, leaf: Color, evolved: bool) -> void:
+	var tips: Array[Vector2] = [Vector2(8, 10), Vector2(20, 2), Vector2(32, 0), Vector2(44, 2),
+		Vector2(56, 10)]
+	if evolved:
+		for tip: Vector2 in tips:
+			_leaf(img, Vector2(32, 28), tip + Vector2(0, 6), 6, Color("#c03a30"))
+		_e(img, 32, 24, 6, 4, Color("#e8a040"))
+	else:
+		for tip: Vector2 in tips:
+			_leaf(img, Vector2(32, 26), tip, 5, leaf)
+	_r(img, 21, 55, 8, 7, body.darkened(0.2))
+	_r(img, 35, 55, 8, 7, body.darkened(0.2))
+	_e(img, 32, 43, 17, 15, body, true)
+	if back:
+		return
+	_e(img, 25, 40, 3, 3, Color("#e03040"))
+	_e(img, 39, 40, 3, 3, Color("#e03040"))
+	_r(img, 28, 48, 8, 2, body.darkened(0.45))
+	if evolved:
+		_r(img, 29, 50, 2, 5, Color("#d8d0f0"))
+
+
+func _draw_bellsprout(img: Image, back: bool) -> void:
+	var stem := Color("#5aa040")
+	var bell := Color("#f0d040")
+	# Tige fine, deux feuilles en bras, racines en pieds, tête en cloche jaune.
+	_line(img, Vector2(32, 30), Vector2(32, 58), stem, 3)
+	_line(img, Vector2(32, 58), Vector2(24, 62), stem.darkened(0.2), 2)
+	_line(img, Vector2(32, 58), Vector2(40, 62), stem.darkened(0.2), 2)
+	_leaf(img, Vector2(32, 44), Vector2(14, 38), 5, stem.lightened(0.1))
+	_leaf(img, Vector2(32, 44), Vector2(50, 38), 5, stem.lightened(0.1))
+	_e(img, 32, 20, 14, 12, bell, true)
+	_line(img, Vector2(32, 8), Vector2(36, 2), stem.darkened(0.2), 2)
+	if back:
+		return
+	_e(img, 24, 24, 6, 4, Color("#e07858"))
+	_eye(img, 33, 14, Color("#2a2a30"))
+
+
+func _draw_weepinbell(img: Image, back: bool) -> void:
+	var bell := Color("#e8c838")
+	var leaf := Color("#4a9a40")
+	# Grosse cloche suspendue à un crochet, deux feuilles, bouche large.
+	_line(img, Vector2(32, 2), Vector2(32, 10), Color("#7a5a30"), 3)
+	_line(img, Vector2(32, 2), Vector2(38, 4), Color("#7a5a30"), 2)
+	_leaf(img, Vector2(18, 34), Vector2(4, 50), 6, leaf)
+	_leaf(img, Vector2(46, 34), Vector2(60, 50), 6, leaf)
+	_e(img, 32, 36, 20, 24, bell, true)
+	if back:
+		_r(img, 22, 30, 20, 2, bell.darkened(0.3))
+		return
+	_e(img, 32, 46, 12, 7, Color("#e07858"))
+	_e(img, 32, 47, 9, 4, Color("#a03a30"))
+	_eye(img, 22, 24, Color("#2a2a30"))
+	_eye(img, 37, 24, Color("#2a2a30"))
 
 
 # --- Ombre ------------------------------------------------------------------------

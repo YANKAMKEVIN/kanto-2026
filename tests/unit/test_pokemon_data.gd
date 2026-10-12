@@ -72,10 +72,14 @@ func test_real_data_loads_without_error() -> void:
 		&"caterpie", &"metapod", &"butterfree", &"weedle", &"kakuna", &"beedrill",
 		&"pidgey", &"pidgeotto", &"pidgeot", &"rattata", &"raticate", &"spearow", &"fearow",
 		&"pikachu", &"raichu", &"sandshrew", &"sandslash", &"nidoran_f", &"nidorina",
-		&"nidoqueen", &"nidoran_m", &"nidorino", &"nidoking", &"mankey", &"primeape",
-		&"geodude", &"graveler", &"golem", &"onix"] as Array[StringName])
-	assert_eq(_data.get_move_ids().size(), 67,
-		"47 + 12 de la Forêt de Jade (jalon 9) + 7 d'Argenta (jalon 10) + Patience (J11)")
+		&"nidoqueen", &"nidoran_m", &"nidorino", &"nidoking", &"oddish", &"gloom", &"mankey",
+		&"primeape", &"bellsprout", &"weepinbell", &"geodude", &"graveler", &"golem",
+		&"shellder", &"onix", &"horsea", &"goldeen", &"staryu", &"starmie"]
+		as Array[StringName])
+	assert_eq(_data.get_move_ids().size(), 80,
+		"47 + 12 de la Forêt de Jade (jalon 9) + 7 d'Argenta (jalon 10) + Patience (J11)"
+		+ " + 13 du jalon 13 (dont 5 du J12 avancées : acid, wrap, smokescreen, minimize,"
+		+ " light_screen)")
 	assert_true(_data.has_move(&"struggle"))
 
 
@@ -129,6 +133,10 @@ func test_real_evolution_chains() -> void:
 		# Argenta (jalon 10, §2.3) : Rouge/Bleu ; Grolem par échange (« ??? » au Pokédex).
 		&"sandshrew": [&"sandslash", 22], &"geodude": [&"graveler", 25],
 		&"graveler": [&"golem", &""],
+		# Azuria (jalon 13, §2.15) : seules les évolutions par niveau vers une espèce présente ;
+		# Ortide et Boustiflor (Pierre Plante), Stari (Pierre Eau), Hypotrempe et Poissirène
+		# (formes absentes) n'en déclarent pas.
+		&"oddish": [&"gloom", 21], &"bellsprout": [&"weepinbell", 21],
 	}
 	for id: StringName in _data.get_species_ids():
 		var rules := _data.get_species(id).evolutions
@@ -381,6 +389,9 @@ func test_real_catch_rates_are_the_official_ones() -> void:
 		&"weedle": 255, &"kakuna": 120, &"beedrill": 45, &"pikachu": 190, &"raichu": 75,
 		&"sandshrew": 255, &"sandslash": 90, &"geodude": 255, &"graveler": 120, &"golem": 45,
 		&"onix": 45,
+		# Jalon 13 (Azuria).
+		&"oddish": 255, &"gloom": 120, &"bellsprout": 255, &"weepinbell": 120,
+		&"shellder": 190, &"horsea": 225, &"goldeen": 225, &"staryu": 225, &"starmie": 60,
 	}
 	assert_eq(_data.get_species_ids().size(), expected.size(), "toutes les espèces")
 	for id: StringName in _data.get_species_ids():
