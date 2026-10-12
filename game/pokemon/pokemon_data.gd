@@ -5,7 +5,10 @@ extends RefCounted
 ## Classe pure. [method load_dir] lit, sous la racine :
 ## - `types.json` : table des types ([TypeChart]) ;
 ## - tous les `.json` de `species/` : objets « identifiant → espèce » ([SpeciesData]) ;
-## - tous les `.json` de `moves/` : objets « identifiant → capacité » ([MoveData]).
+## - tous les `.json` de `moves/` : objets « identifiant → capacité » ([MoveData]) ;
+## - `tm_compatibility.json` (jalon 11, facultatif) : CT de Rouge/Bleu (« tms » : numéro → capacité)
+##   et CT compatibles de chaque espèce (« species » : espèce → numéros), générées par
+##   `tools/gen_tm_compatibility.py` ([method can_learn_tm]). Une espèce absente : aucune CT.
 ## Les identifiants sont uniques dans tout un dossier, les numéros de Pokédex aussi.
 ## Validation stricte, comme [DialogueLibrary] : clé inconnue, clé obligatoire absente,
 ## valeur hors bornes, identifiant en double, JSON illisible (avec la ligne). Puis
@@ -17,6 +20,7 @@ const DATA_DIR: String = "res://data/pokemon/"
 const TYPES_FILE: String = "types.json"
 const SPECIES_DIR: String = "species"
 const MOVES_DIR: String = "moves"
+const TM_FILE: String = "tm_compatibility.json"
 
 const _SPECIES_KEYS: Array[String] = [
 	"dex", "name", "types", "base_stats", "male_ratio", "growth_rate", "base_exp", "catch_rate",
@@ -43,6 +47,12 @@ const _EFFECT_KEYS: Dictionary[MoveEffect.Kind, Array] = {
 	MoveEffect.Kind.RECOIL: ["kind", "fraction"],
 	MoveEffect.Kind.SEED: ["kind", "fraction", "immune_types"],
 	MoveEffect.Kind.STATUS: ["kind", "status", "chance"],
+	MoveEffect.Kind.CONFUSION: ["kind", "chance"],
+	MoveEffect.Kind.HITS: ["kind", "min", "max"],
+	MoveEffect.Kind.FLINCH: ["kind", "chance"],
+	MoveEffect.Kind.CRIT_UP: ["kind"],
+	MoveEffect.Kind.FIXED_DAMAGE: ["kind", "mode"],
+	MoveEffect.Kind.BIDE: ["kind"],
 }
 ## Clés d'effet facultatives (toutes les autres de [constant _EFFECT_KEYS] sont obligatoires).
 const _EFFECT_OPTIONAL: Array[String] = ["chance", "immune_types"]
@@ -51,6 +61,10 @@ var _chart: TypeChart = TypeChart.new()
 var _species: Dictionary[StringName, SpeciesData] = {}
 var _moves: Dictionary[StringName, MoveData] = {}
 var _errors: PackedStringArray = PackedStringArray()
+## CT de Rouge/Bleu : numéro → capacité (identifiant ; la capacité peut ne pas exister encore).
+var _tm_moves: Dictionary[int, StringName] = {}
+## Espèce → numéros des CT qu'elle peut apprendre.
+var _tm_species: Dictionary[StringName, Array] = {}
 
 
 ## Charge la table des types, les capacités puis les espèces sous [param root], et vérifie
@@ -59,7 +73,65 @@ func load_dir(root: String = DATA_DIR) -> bool:
 	var ok := load_types(root.path_join(TYPES_FILE))
 	ok = _load_folder(root.path_join(MOVES_DIR), load_moves_file) and ok
 	ok = _load_folder(root.path_join(SPECIES_DIR), load_species_file) and ok
+	if FileAccess.file_exists(root.path_join(TM_FILE)):
+		ok = load_tm_file(root.path_join(TM_FILE)) and ok
 	return check_references() and ok
+
+
+## Lit les compatibilités des CT (après les espèces). Faux si une erreur a été signalée.
+func load_tm_file(path: String) -> bool:
+	var data: Variant = _read_json(path, "CT")
+	return data != null and add_tm_from_dict(data, path)
+
+
+## Compatibilités des CT d'un objet déjà lu : { "tms": { "34": "bide" }, "species": { "pidgey":
+## [34] } } (« _doc » ignorée). Espèces inconnues, numéros hors de 1 à 50 : erreurs.
+func add_tm_from_dict(data: Dictionary, source: String = "") -> bool:
+	var ok := true
+	for key: Variant in data:
+		if not ["_doc", "tms", "species"].has(str(key)):
+			ok = _fail("%s : clé inconnue « %s »" % [source, key])
+	var tms: Variant = data.get("tms", {})
+	if not tms is Dictionary:
+		return _fail("%s : « tms » doit être un objet { numéro: capacité }" % source)
+	for key: Variant in tms:
+		var number := str(key).to_int()
+		if not str(key).is_valid_int() or number < 1 or number > 50 \
+				or not tms[key] is String or (tms[key] as String).is_empty():
+			ok = _fail("%s : CT « %s » invalide (numéro de 1 à 50 → capacité)" % [source, key])
+			continue
+		_tm_moves[number] = StringName(tms[key])
+	var species: Variant = data.get("species", {})
+	if not species is Dictionary:
+		return _fail("%s : « species » doit être un objet { espèce: [numéros] }" % source)
+	for key: Variant in species:
+		var id := StringName(str(key))
+		if not _species.has(id):
+			ok = _fail("%s : espèce inconnue « %s »" % [source, id])
+			continue
+		var numbers: Array[int] = []
+		var valid: bool = species[key] is Array
+		if valid:
+			for number: Variant in species[key]:
+				if not JsonFields.is_int(number) or not _tm_moves.has(int(number)):
+					valid = false
+					break
+				numbers.append(int(number))
+		if not valid:
+			ok = _fail("%s espèce « %s » : liste de numéros de CT connus attendue" % [source, id])
+			continue
+		_tm_species[id] = numbers
+	return ok
+
+
+## Vrai si [param species] peut apprendre la CT numéro [param number] (Rouge/Bleu).
+func can_learn_tm(species: StringName, number: int) -> bool:
+	return (_tm_species.get(species, []) as Array).has(number)
+
+
+## Capacité de la CT numéro [param number] (&"" si inconnue).
+func tm_move(number: int) -> StringName:
+	return _tm_moves.get(number, &"")
 
 
 ## Charge la table des types (ses erreurs rejoignent [method get_errors]).
@@ -468,6 +540,25 @@ func _parse_effect(value: Variant, where: String) -> MoveEffect:
 		if entry.has("immune_types"):
 			ok = _read_type_list(entry["immune_types"], effect.immune_types,
 				where + " immune_types") and ok
+		return effect if ok else null
+	if effect.kind == MoveEffect.Kind.HITS:
+		if _read_int(entry.get("min"), 2, 5, where + " min") \
+				and _read_int(entry.get("max"), 2, 5, where + " max") \
+				and int(entry["min"]) <= int(entry["max"]):
+			effect.min_hits = int(entry["min"])
+			effect.max_hits = int(entry["max"])
+			if not effect.min_hits == effect.max_hits and not (effect.min_hits == 2
+					and effect.max_hits == 5):
+				ok = _fail("%s : « min » et « max » valent 2 et 2, ou 2 et 5" % where)
+		else:
+			ok = _fail("%s : « min » ≤ « max », de 2 à 5" % where)
+		return effect if ok else null
+	if effect.kind == MoveEffect.Kind.FIXED_DAMAGE:
+		if entry.get("mode") is String and MoveEffect.FIXED_MODES.has(StringName(entry["mode"])):
+			effect.mode = StringName(entry["mode"])
+		else:
+			ok = _fail("%s : « mode » vaut %s" % [where,
+				", ".join(PackedStringArray(MoveEffect.FIXED_MODES))])
 		return effect if ok else null
 	if effect.kind == MoveEffect.Kind.STATUS:
 		if entry.has("status"):

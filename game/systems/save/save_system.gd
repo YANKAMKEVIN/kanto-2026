@@ -29,8 +29,10 @@ extends RefCounted
 ## première rencontre sauvage), une seule version pour tout le J7 (jalon-07.md §5.1) ; 4 =
 ## jalon 9 (statut de chaque Pokémon, « status »), une seule version pour tout le J9
 ## (jalon-09.md §2.2) ; 5 = ouverture OUV.1 (prénom du rival « rival_name », apparence du
-## joueur « player_look » ; docs/tech/ouverture.md §2).
-const VERSION: int = 5
+## joueur « player_look » ; docs/tech/ouverture.md §2) ; 6 = jalon 11, T1 (identifiant
+## des Pokémon « uid », compteur « status_turns », compagnon « companion » ; dossier 14 §9,
+## jalon-11.md §2.1), par-dessus la v5 d'OUV.1.
+const VERSION: int = 6
 const DEFAULT_PATH: String = "user://save.json"
 const TEMP_SUFFIX: String = ".tmp"
 const CORRUPT_SUFFIX: String = ".corrupt"
@@ -175,6 +177,11 @@ static func upgrade(content: Dictionary, target: int = VERSION) -> Error:
 				# 4 → 5 (OUV.1) : rien à transformer, « rival_name » et « player_look » absents
 				# prennent leur défaut (GameState.load_dict : « Régis », le héros) ; le numéro
 				# protège d'une build v4 qui les effacerait.
+				# 5 → 6 (J11, jalon-11.md §2.1) : rien à transformer non plus ; les identifiants
+				# manquants sont attribués au chargement (Party / PokemonStorage, puis
+				# GameState.ensure_unique_uids), le compteur et le compagnon absents valent 0 et
+				# « aucun ». Le numéro protège d'une build v5 qui effacerait identifiants et
+				# compagnon au premier autosave.
 				pass
 		from += 1
 	content[VERSION_KEY] = target

@@ -8,6 +8,8 @@ var item_id: StringName = &""
 ## Nom de l'objet au singulier (« Potion ») et quantité restante (l'écran écrit « ×3 »).
 var item_name: String = ""
 var quantity: int = 0
+## Objet permanent (CT) : le titre n'affiche pas de quantité.
+var permanent: bool = false
 ## Un par membre de l'équipe, dans l'ordre (0 = Pokémon de tête).
 var targets: Array[PartyTargetView] = []
 ## Membre mis en avant (UTILISER À NOUVEAU : le même Pokémon) ; −1 = aucun.

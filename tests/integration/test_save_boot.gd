@@ -129,6 +129,14 @@ func _without_status(saved: Dictionary) -> Dictionary:
 			if member is Dictionary:
 				assert_eq((member as Dictionary).get("status"), "", "statut écrit vide")
 				(member as Dictionary).erase("status")
+				# J11 (v5 provisoire) : compteur nul et identifiant attribué au chargement.
+				assert_eq((member as Dictionary).get("status_turns"), 0.0, "compteur écrit nul")
+				(member as Dictionary).erase("status_turns")
+				assert_true(PokemonUid.is_valid((member as Dictionary).get("uid")), "identifiant")
+				(member as Dictionary).erase("uid")
+	# J11 : aucun compagnon au départ.
+	assert_eq(copy.get("companion"), "", "aucun compagnon")
+	copy.erase("companion")
 	return copy
 
 
@@ -266,7 +274,7 @@ func test_the_real_v1_save_resumes_then_is_rewritten_in_v4() -> void:
 	_boot.notification(Node.NOTIFICATION_APPLICATION_PAUSED)
 	var saved := _saved()
 	assert_eq(int(saved.get("version", 0)), SaveSystem.VERSION,
-		"réécrite à la version courante (v5 depuis OUV.1)")
+		"réécrite à la version courante (v6 depuis le J11)")
 	assert_eq(_bag_items(saved), {"poke_ball": 3.0, "potion": 1.0}, "Sac v2")
 	assert_eq(saved.get("money"), 3000.0, "3 000 ₽")
 	assert_eq(saved.get("map"), "route_1")
@@ -317,7 +325,7 @@ func test_the_real_v2_save_resumes_then_is_rewritten_in_v4() -> void:
 	_boot.notification(Node.NOTIFICATION_APPLICATION_PAUSED)
 	var saved := _saved()
 	assert_eq(int(saved.get("version", 0)), SaveSystem.VERSION,
-		"réécrite à la version courante (v5 depuis OUV.1)")
+		"réécrite à la version courante (v6 depuis le J11)")
 	assert_eq(saved.get("money"), 3000.0)
 	assert_eq(saved.get("first_wild_encounter"), {"species": "pidgey", "map": "route_1",
 		"date": "2026-10-02T20:51:16"})
@@ -365,7 +373,7 @@ func test_the_real_end_of_j6_save_resumes_then_is_rewritten_in_v4() -> void:
 	_boot.notification(Node.NOTIFICATION_APPLICATION_PAUSED)
 	var saved := _saved()
 	assert_eq(int(saved.get("version", 0)), SaveSystem.VERSION,
-		"réécrite à la version courante (v5 depuis OUV.1)")
+		"réécrite à la version courante (v6 depuis le J11)")
 	assert_eq(saved.get("money"), 3000.0)
 	assert_eq(saved.get("first_wild_encounter"), {"species": "pidgey", "map": "route_1",
 		"date": "2026-10-02T20:51:16"})
@@ -434,7 +442,7 @@ func test_the_real_v3_save_resumes_then_is_rewritten_in_v4() -> void:
 	_boot.notification(Node.NOTIFICATION_APPLICATION_PAUSED)
 	var saved := _saved()
 	assert_eq(int(saved.get("version", 0)), SaveSystem.VERSION,
-		"réécrite à la version courante (v5 depuis OUV.1)")
+		"réécrite à la version courante (v6 depuis le J11)")
 	var before := v3.duplicate(true)
 	var after := _without_status(saved)
 	for key: String in ["version", "play_time"]:
@@ -532,6 +540,27 @@ func test_a_corrupt_save_is_set_aside_then_the_new_game_is_saved_normally() -> v
 		"fichier corrompu mis de côté, jamais détruit")
 	assert_eq(_writes(), 1, "la nouvelle partie est sauvegardée")
 	assert_eq(_saved().get("map"), "player_house_2f")
+	assert_push_error_count(0)
+
+
+## Départ `status_qa` (J11, T9) : la table d'herbes forcée remplace celle de la Route 1 pour la
+## session, statuts et compteur de sommeil posés, rien d'écrit.
+func test_the_status_qa_start_forces_the_route_1_table() -> void:
+	_boot = BOOT_SCENE.instantiate() as Boot
+	_boot.save_system = _save
+	_boot.force_debug_start = true
+	_boot.debug_start_path = "res://tools/debug_start/status_qa.json"
+	add_child_autofree(_boot)
+	_player = _boot.get_player()
+	await wait_process_frames(3)
+	assert_eq(_boot.get_map().map_id, &"route_1")
+	var table := _boot.get_encounter_library().get_table(&"route_1")
+	assert_eq(table.slots.size(), 4)
+	assert_eq(table.slots[0].species, &"pikachu")
+	assert_eq(GameState.party.get_at(4).status, StatusRules.SLEEP)
+	assert_eq(GameState.party.get_at(4).status_turns, 3)
+	assert_false(_boot.is_autosave_enabled())
+	assert_eq(_fs.journal.size(), 0, "rien d'écrit")
 	assert_push_error_count(0)
 
 

@@ -26,11 +26,13 @@ const CATEGORY_LABELS: Dictionary[StringName, String] = {
 	&"ball": "CAPTURE",
 	&"battle": "COMBAT",
 	&"field": "AVENTURE",
+	&"tm": "CT",
 	&"key": "OBJETS CLÉS",
 }
 ## Verbe de l'action selon la catégorie ; UTILISER pour le reste.
 const ACTION_LABELS: Dictionary[StringName, String] = {
 	&"ball": "LANCER",
+	&"tm": "APPRENDRE",
 }
 const DEFAULT_ACTION := "UTILISER"
 
@@ -50,6 +52,8 @@ var note: String = ""
 ## Vrai si l'objet se donne à un Pokémon (UTILISER ouvre le choix du Pokémon, PartyPicker) ;
 ## faux pour une Ball (LANCER, sans choix) ou un objet sans action.
 var targets_pokemon: bool = false
+## Objet permanent (CT, jalon 11) : une seule fois dans le Sac, jamais de « ×1 ».
+var permanent: bool = false
 ## Verbe du bouton d'action (« LANCER ») ; la catégorie en donne un par défaut.
 var action_label: String = ""
 ## Illustration ; null = celle de [method icon_for].
@@ -82,9 +86,9 @@ func is_listed() -> bool:
 		and quantity >= 1
 
 
-## « ×12 ».
+## « ×12 » ; rien pour un objet permanent (CT).
 func quantity_text() -> String:
-	return "×%d" % quantity
+	return "" if permanent else "×%d" % quantity
 
 
 ## Illustration à montrer : la sienne, sinon celle de l'objet, sinon l'illustration neutre.

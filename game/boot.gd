@@ -138,6 +138,8 @@ var _autosave_enabled: bool = false
 var _resumed: bool = false
 ## Le départ de débogage appliqué demande l'autosave ([member DebugStart.autosave]).
 var _debug_start_autosave: bool = false
+## Voile de l'apprentissage d'une CT depuis le Sac (jalon 11), créé au premier besoin.
+var _tm_overlay: TmLearnOverlay
 ## Autosave demandé, en attente d'un état stable, et sa raison (journal).
 var _save_pending: bool = false
 var _save_reason: String = ""
@@ -215,6 +217,7 @@ func _ready() -> void:
 	_trainers.load_dir()
 	_texts.load_file()
 	_items.load_dir()
+	_items.check_moves(_pokemon)
 	_battle_director.setup(_pokemon, _trainers, _texts, _battle_stage, _battle_hud, _player,
 		GameState, _items)
 	# CB.1 : artwork officiel de l'adversaire (numéro) et tailles réelles (Pokédex).
@@ -341,6 +344,8 @@ func _ready() -> void:
 		_menu_screen.bag_use_requested.connect(_menu.request_item_use)
 		_menu_screen.bag_target_chosen.connect(_menu.use_item_on)
 		_menu_screen.bag_repeat_requested.connect(_menu.repeat_item_use)
+		# Jalon 11 (T12) : apprendre une CT par-dessus le menu.
+		_menu.tm_learn_requested.connect(_on_tm_learn_requested)
 	# Pokédex (T16) : relié dès que l'écran porte l'interface du §6.9 (PokedexScreen du T15).
 	if _menu_screen.has_signal(&"pokedex_species_opened"):
 		_menu.pokedex_shown.connect(_menu_screen.show_pokedex)
@@ -981,6 +986,8 @@ func _apply_debug_start() -> bool:
 		return false
 	start.apply(GameState, _pokemon)
 	_debug_start_autosave = start.autosave
+	if not start.wild.is_empty():
+		_encounter_library.override_grass(start.map, start.wild, debug_start_path)
 	if not start.map.is_empty():
 		start_map = start.map
 		start_spawn = start.spawn
@@ -1238,6 +1245,31 @@ func _on_item_found(item_id: StringName, _count: int) -> void:
 
 ## Objet donné par une scène (étape « give ») : toast en haut de l'écran, sans rien bloquer
 ## (jalon-04.md §14.6). L'accord (« Poké Balls ×5 » / « Ajoutées au Sac ») vient de l'objet.
+## Jalon 11 (T12) : le Pokémon [param index] apprend la capacité de la CT [param item_id] par le
+## déroulé partagé avec le combat et l'évolution ([MoveLearnPrompt.teach]), sur un voile au-dessus
+## du menu ([TmLearnOverlay]) ; la CT reste au Sac.
+func _on_tm_learn_requested(index: int, item_id: StringName) -> void:
+	var item := _items.get_item(item_id)
+	var pokemon: Pokemon = GameState.party.get_at(index)
+	if item == null or pokemon == null:
+		return
+	if _tm_overlay == null:
+		_tm_overlay = TmLearnOverlay.new()
+		_tm_overlay.name = "TmLearnOverlay"
+		add_child(_tm_overlay)
+	_tm_overlay.open()
+	var prompt := _battle_director.get_move_learn_prompt()
+	var learned := await prompt.teach(pokemon, index, item.teaches,
+		_tm_overlay.get_message_banner(), _tm_overlay.get_prompt_host())
+	prompt.release()
+	_tm_overlay.close()
+	_menu.finish_tm_learn(index, item_id, learned)
+
+
+func get_tm_learn_overlay() -> TmLearnOverlay:
+	return _tm_overlay
+
+
 func _on_item_given(item_id: StringName, count: int) -> void:
 	var item := _items.get_item(item_id)
 	if item == null:
@@ -1349,6 +1381,7 @@ func _apply_settings(s: GameSettings) -> void:
 	_battle_director.confirm_forget = s.confirm_actions
 	_battle_hud.message_hold_scale = 1.0
 	_battle_stage.reduce_flashes = s.reduce_flashes
+	_battle_stage.reduce_motion = s.reduce_motion
 	if _evolution_screen != null:
 		_evolution_screen.reduce_flashes = s.reduce_flashes
 	_services.reduce_motion = s.reduce_motion
