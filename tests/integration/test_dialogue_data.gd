@@ -45,6 +45,12 @@ const GATE_GUARDS: Array[StringName] = [&"forest_gate_north_guard", &"forest_gat
 ## T11 : la Route 2 nord et Argenta (extérieur) sont dans [constant MAPS] : liste vide.
 const UNUSED_YET: Array[StringName] = [
 ]
+## Jalon 11 (T20c) : phrases jouées par le contrôleur du compagnon (ni PNJ, ni point, ni scène).
+const PLAYED_BY_COMPANION: Array[StringName] = [
+	&"companion_city", &"companion_forest", &"companion_happy", &"companion_sniff",
+	&"companion_stretch", &"companion_stretch_soft", &"companion_tired", &"companion_tired_f",
+	&"companion_unwell", &"companion_watch", &"companion_water",
+]
 ## Jalon 10 : textes verrouillés du dossier 12 (même forme que le dossier 10) et lot de textes du
 ## J10 (panneaux, noms affichés), où un retour à la ligne est écrit « \n ».
 const DOSSIER_12 := "res://docs/design/dossier-12-argenta.md"
@@ -75,7 +81,12 @@ const TEXTES_VALIDES := "res://docs/design/textes/textes-brouillon-j7.md"
 ## (4A, T1) la proposition du Prof. Chen ; (4A, T3) le choix et la sortie empêchée.
 const IDS: Array[StringName] = [
 	&"aoki", &"breakfast_table", &"clerk", &"clerk_parcel",
-	&"clerk_parcel_hello", &"forest_gate_north_guard", &"forest_gate_south_guard",
+	&"clerk_parcel_hello",
+	# Jalon 11 (T20c) : phrases du compagnon (dossier 14 §13.12).
+	&"companion_city", &"companion_forest", &"companion_happy", &"companion_sniff",
+	&"companion_stretch", &"companion_stretch_soft", &"companion_tired", &"companion_tired_f",
+	&"companion_unwell", &"companion_watch", &"companion_water",
+	&"forest_gate_north_guard", &"forest_gate_south_guard",
 	&"forest_hiker", &"forest_naturalist",
 	&"forest_scout_eli_after", &"forest_scout_eli_before", &"forest_scout_milo_after",
 	&"forest_scout_milo_before", &"forest_scout_noe_after", &"forest_scout_noe_before",
@@ -248,7 +259,7 @@ func test_every_used_dialogue_exists() -> void:
 func test_every_dialogue_is_used() -> void:
 	var played := _cutscenes.get_dialogue_ids()
 	for id: StringName in _library.get_ids():
-		if UNUSED_YET.has(id):
+		if UNUSED_YET.has(id) or PLAYED_BY_COMPANION.has(id):
 			continue
 		assert_true(_used_on.has(id) or played.has(id),
 			"dialogue « %s » utilisé par un PNJ, un point ou une scène" % id)
@@ -549,6 +560,8 @@ func test_texts_are_the_dossier_02_texts_word_for_word() -> void:
 	var dossier_12 := FileAccess.get_file_as_string(DOSSIER_12)
 	var lot_j10 := FileAccess.get_file_as_string(LOT_J10)
 	var dossier_14 := FileAccess.get_file_as_string(DOSSIER_14)
+	# Formes accordées « fatigué[e] » (n° 55) : masculin et féminin.
+	dossier_14 += dossier_14.replace("[e]", "") + dossier_14.replace("[e]", "e")
 	for row: Array in _pages():
 		if GATE_GUARDS.has(row[0]):
 			continue
@@ -716,10 +729,16 @@ func test_oak_parcel_lines() -> void:
 	# les trois de la Forêt de Jade ; jalon 10 : la Potion de la Route 2 nord et Pierre.
 	# Jalon 11 : la remise tardive de la CT34 par Pierre.
 	assert_eq(launched, 9, "la scène du colis, six objets au sol, Pierre et sa CT34")
-	# Le jeton n'apparaît que dans la réplique de l'espèce.
+	# Le jeton n'apparaît que dans la réplique de l'espèce (et « {pokemon} » dans les phrases du
+	# compagnon, J11).
 	for row: Array in _pages():
 		var tokens := DialogueTokens.tokens_in(row[1])
-		assert_eq(not tokens.is_empty(), row[1] == records[2].text, "%s : jeton" % row[0])
+		var expected: Array[StringName] = []
+		if row[1] == records[2].text:
+			expected = [DialogueTokens.FIRST_WILD_SPECIES]
+		elif PLAYED_BY_COMPANION.has(row[0]):
+			expected = [DialogueTokens.POKEMON]
+		assert_eq(tokens, expected, "%s : jeton" % row[0])
 
 
 
@@ -802,3 +821,23 @@ func test_forest_gate_guards_say_the_locked_lines() -> void:
 	assert_true(south.variants[1].set_flags.is_empty())
 	# Garde du nord : la variante d'Argenta attend le drapeau du J10.
 	assert_eq(north.variants[0].if_flags, [&"pewter_arrived"] as Array[StringName])
+
+
+## Jalon 11 (T20c) : chaque phrase que le compagnon peut choisir existe (et sa forme féminine),
+## en narration (style « observer »), sans locuteur.
+func test_companion_lines_exist_as_narration() -> void:
+	var lines: Array[StringName] = [CompanionRules.LINE_TIRED, CompanionRules.LINE_UNWELL,
+		CompanionRules.LINE_WATER]
+	lines.append_array(CompanionRules.CONTEXT_LINES.values())
+	lines.append_array(CompanionRules.GENERIC_LINES)
+	for line: StringName in CompanionController.FEMININE_LINES:
+		lines.append(StringName(String(line) + CompanionController.FEMININE_SUFFIX))
+	for line: StringName in lines:
+		assert_true(PLAYED_BY_COMPANION.has(line), "%s : listée" % line)
+		var dialogue := _library.get_dialogue(line)
+		assert_not_null(dialogue, "%s : définie" % line)
+		if dialogue != null:
+			assert_eq(dialogue.speaker, "", "%s : sans locuteur" % line)
+			assert_true(dialogue.narration, "%s : narration" % line)
+			assert_true(dialogue.variants[0].pages[0].text.begins_with("{pokemon} "), line)
+	assert_eq(lines.size(), PLAYED_BY_COMPANION.size())

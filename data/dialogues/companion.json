@@ -1,0 +1,46 @@
+{
+	"companion_happy": {
+		"narration": true,
+		"pages": ["{pokemon} te regarde, l'air heureux."]
+	},
+	"companion_sniff": {
+		"narration": true,
+		"pages": ["{pokemon} renifle l'air."]
+	},
+	"companion_watch": {
+		"narration": true,
+		"pages": ["{pokemon} suit quelque chose des yeux."]
+	},
+	"companion_stretch": {
+		"narration": true,
+		"pages": ["{pokemon} s'étire."]
+	},
+	"companion_stretch_soft": {
+		"narration": true,
+		"pages": ["{pokemon} s'étire doucement."]
+	},
+	"companion_tired": {
+		"narration": true,
+		"pages": ["{pokemon} a l'air fatigué."]
+	},
+	"companion_tired_f": {
+		"narration": true,
+		"pages": ["{pokemon} a l'air fatiguée."]
+	},
+	"companion_unwell": {
+		"narration": true,
+		"pages": ["{pokemon} n'a pas l'air dans son assiette."]
+	},
+	"companion_forest": {
+		"narration": true,
+		"pages": ["{pokemon} écoute les bruits de la forêt."]
+	},
+	"companion_city": {
+		"narration": true,
+		"pages": ["{pokemon} observe les passants."]
+	},
+	"companion_water": {
+		"narration": true,
+		"pages": ["{pokemon} regarde l'eau."]
+	}
+}

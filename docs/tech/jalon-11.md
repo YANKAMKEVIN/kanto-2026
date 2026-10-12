@@ -711,3 +711,37 @@ Pokémon tout entier). En vol (`flying`) : sprite levé de 28 px, pas de devant 
 (planche peinte seule, 6 nœuds, aucune case occupée, durées marche / course, arc du saut, herbes,
 apparition en fin de pas, éclat et sa version réduite, bulles, saut de joie). Captures relues
 (`tools/capture_companion_j11.gd`, Route 1 : derrière le joueur, bulle « ♪ », dans les herbes).
+
+### T20c — compagnon branché au jeu (2026-10-12, 11D)
+
+- `game/world/companion/companion_controller.gd` (`CompanionController`, enfant de Boot,
+  pausable) : seul à connaître le jeu autour du compagnon. Boot lui relaie transition (rentre
+  pendant le fondu), nouvelle carte (le nœud passe sous ses `Entities`, même image que le
+  `queue_free` de l'ancienne), arrivée (ressort derrière le joueur, sinon au premier pas), scène
+  (rentre au début, ressort à la fin, D-2), combat (caché, D-1 ; à la fin : espèce mise à jour
+  après une évolution, réapparition sur place sans éclat, K.O. → caché et case rendue), fermeture
+  du menu (`refresh` : FAIRE SORTIR / RAPPELER, dépôt, Potion sur un K.O.), réglage « Réduire les
+  animations ». Choix effacé **en silence** quand le Pokémon quitte l'équipe ou évolue en espèce
+  sans planche (A-11).
+- Réactions : curiosité (fournisseur de l'`InteractionController` ; il se tourne vers le joueur,
+  bulle « ♪ » ou « … » si PV bas / statut, phrase jouée par Boot en narration) ; repos (après 8 s
+  immobile : gauche, droite, joueur, toutes les 6 s) [D] ; enthousiasme en attente (victoire
+  contre un Dresseur, capture, niveau gagné par le compagnon pendant un combat, soin au Centre),
+  joué une fois à son retour visible (petit saut + « ♪ »).
+- Phrases n° 50 à 59 : `data/dialogues/companion.json` (narration, jeton `{pokemon}` =
+  `DialogueTokens.POKEMON`, nom ou surnom du compagnon ; n° 55 accordé : `companion_tired` /
+  `companion_tired_f`). `test_dialogue_data` : mot pour mot avec le dossier 14 (formes « [e] »),
+  liste `PLAYED_BY_COMPANION` (jouées par le code, ni PNJ ni scène).
+- Équipe : **FAIRE SORTIR** / **RAPPELER** (n° 49 ; RAPPELER en aspect « activé », comme RETIRER
+  FAVORI), même chemin que FAVORI (`TeamScreen.companion_toggled` →
+  `TrainerMenu.team_companion_toggled` → `MenuDirector.toggle_companion`) ;
+  `PokemonSheetView.companion_action` (NONE / SEND_OUT / RECALL) par `TeamViews.companion_action` ;
+  **aucun bouton** pour une espèce sans planche. **Placement [D]** : au bout de la ligne du nom de
+  la vedette (`PokemonShowcase.add_name_action`) — en quatrième action de la fiche, les mots se
+  coupaient (« UTILISE R UN ») ; sur une ligne à part, la section Évolution était écrasée. Défaut
+  [D] : un Pokémon K.O. peut être choisi (invisible jusqu'à sa guérison, §8.3).
+- Tests : `test_companion_controller` (vrai Boot, Route 1 : boutons, suivi et occupation douce,
+  phrase avec le nom, scène, combat et « ♪ » après une victoire, K.O., évolution en Reptincel et
+  dépôt qui effacent le choix, réglage), `test_team_screen` (bouton dans la vedette, aspect, zones
+  tactiles et mots entiers à 1920 et 2340), `test_dialogue_data`, `test_dialogue_tokens`.
+  Captures : `tools/capture_companion_t20c.gd`.
