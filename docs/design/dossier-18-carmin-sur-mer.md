@@ -1,11 +1,10 @@
 # Dossier 18 — Route 5, passage souterrain, Route 6 et Carmin-sur-Mer (jalon 15)
 
-> **V0.1 — consolidé par Claude le 2026-10-11.** Sources : V2 de Kevin avec ChatGPT
+> **VERROUILLÉ — validé par Kevin le 2026-10-12** (« on va avec tes reco ») : lot de textes §15, défaut d'évolution à la Pension (§4.2), grilles v1 (§13.1, Route 5 à retravailler). Consolidé par Claude le 2026-10-11. Sources : V2 de Kevin avec ChatGPT
 > (`passes/j15-v2-chatgpt.md`, 6 décisions verrouillées), passe d'alignement de Claude
 > (`passes/j15-v2-alignement.md`, V-1 à V-4 et F-1 à F-16), et réponses de Kevin du 2026-10-11 :
 > **toutes les recommandations sont retenues** (F-2 « rendu quand même », F-3 « évolution proposée
 > au retrait », F-7 « ordre officiel neutre » confirmés un par un).
-> **Reste à valider : le lot de textes §15.**
 >
 > **Numérotation** : 16 = J13 et 17 = J14 (réservés) → **18**.
 >
@@ -129,7 +128,7 @@ au comptoir (modèle `old_man`). Le jardin est un décor : **aucun Pokémon visi
 | Prix | **100 ₽ + 100 ₽ par niveau gagné**. |
 | Argent insuffisant | **Le Pokémon est rendu et tout l'argent du joueur est pris** (*K26*). Un Pokémon n'est jamais bloqué. |
 | Équipe pleine | Retrait refusé jusqu'à ce qu'une place se libère. |
-| Retrait | XP appliquée → **chaque capacité due, dans l'ordre**, avec l'écran « veut apprendre… oublier ? » (refuser = non apprise) → **évolution proposée** si le seuil est atteint (annulable) → **soin complet** (PV, statut). |
+| Retrait | XP appliquée → **chaque capacité due, dans l'ordre**, avec l'écran « veut apprendre… oublier ? » (refuser = non apprise) → **évolution proposée** si le seuil est atteint **et qu'au moins un niveau a été gagné à la Pension** (même règle qu'en fin de combat ; annulable) → **soin complet** (PV, statut, PP). |
 | Compagnon | Déposer le compagnon l'efface ; le joueur en choisit un autre (règle du J11). |
 | Pokédex, Grands moments | Rien ne change. Aucun Grand moment pour la Pension. |
 | Sauvegarde | Pokémon déposé, XP en attente et niveau au dépôt sauvegardés : **nouvelle version** (v7 après la v6 du J11). |
@@ -324,6 +323,18 @@ systèmes qu'elle utilise :
 - J12 : objets cachés, évolution hors combat ;
 - J14 : raccord sud d'Azuria, Passe Bateau.
 
+### 13.1 Grilles v1 (validées par Kevin le 2026-10-12)
+
+Les grilles font foi pour la géométrie (contrôles verts : `tools/art/plan_check_j15.py`,
+`plan_check_carmin.py`) :
+
+| Carte | Grille | Taille | Remarque |
+|---|---|---|---|
+| Route 5 | `tools/plans/route_5.txt` | 42 × 62 | **v2 à faire** : le chemin descend tout droit, effet couloir ; le faire serpenter à angles droits, avec un détour vers le petit bois |
+| Souterrain | `tools/plans/underground_path.txt` | 26 × 30 | 40 pas, 2 coudes, 3 alcôves, Guérison en A2 |
+| Route 6 | `tools/plans/route_6.txt` | 42 × 56 | Chloé inévitable au goulet, 68 pas |
+| Carmin | `tools/plans/vermilion_city.txt` | 64 × 43 | quai dans la carte ; le S.S. Anne se découvre en descendant vers le quai (la cheminée au-dessus des toits relève de la peinture) |
+
 ## 14. Cas limites (à couvrir au plan)
 
 - Déposer le compagnon.
@@ -338,7 +349,7 @@ systèmes qu'elle utilise :
 - Partie v6 chargée par une build v7 (migration) et partie v7 lue par une build v6 (refus).
 - Arrivée à Carmin sans Passe Bateau, puis avec.
 
-## 15. Lot de textes — À VALIDER
+## 15. Lot de textes — VALIDÉ par Kevin le 2026-10-12
 
 ### 15.1 Pension
 
@@ -372,7 +383,7 @@ systèmes qu'elle utilise :
 | T-21 | Promeneuse, Route 5 | « Le jardin de la Pension est le plus beau de la région. Les Pokémon y sont bien. » |
 | T-22 | Voyageur, carrefour | « Je voulais aller à Safrania, mais les gardes ne laissent passer personne. » / « Tant pis, je descends vers la mer. » |
 | T-23 | Pêcheur de l'étang | « Pas de canne aujourd'hui. Je regarde l'eau, c'est déjà bien. » / « À Carmin, il y a un vrai pêcheur. Un drôle de type. » |
-| T-24 | 6 Dresseurs | Avant / défaite / après : une réplique de chaque, ton léger. À écrire au plan, dans ce ton. |
+| T-24 | 6 Dresseurs | Voir §15.5 (écrits dans le ton validé, relisibles au plan). |
 
 ### 15.3 Carmin-sur-Mer
 
@@ -402,6 +413,17 @@ systèmes qu'elle utilise :
 | T-41 | Persan (Pokédex) | « Élégant et rapide. Le joyau de son front s'illumine quand il est sur ses gardes. » |
 | T-42 | Objectifs | « Rejoindre Carmin-sur-Mer, au sud. » / « Explorer Carmin-sur-Mer. » |
 
+### 15.5 Dresseurs de la Route 6 (T-24)
+
+| # | Dresseur | Avant | Défaite | Après |
+|---|---|---|---|---|
+| T-24a | Chloé | « Tu sors du souterrain ? Mes Roucool t'attendaient ! » | « Trois contre un, et j'ai quand même perdu… » | « Carmin est tout au bout. Tu sentiras la mer avant de la voir. » |
+| T-24b | Lucas | « Chloé a fini ? À mon tour ! » | « D'accord, d'accord. Tu es fort. » | « On attend le S.S. Anne. Il paraît qu'il y a des Dresseurs du monde entier à bord. » |
+| T-24c | Axel | « Les herbes d'ici sont pleines d'insectes. Les miens sont les meilleurs ! » | « Mes Aspicot ont besoin de repos. » | « Un jour, ils évolueront tous. Tu verras. » |
+| T-24d | Mathis | « Mon Carapuce s'entraîne au bord de l'eau. Il est prêt ! » | « Il a fait de son mieux. » | « Je l'ai choisi parce qu'il me ressemble : têtu. » |
+| T-24e | Manon | « Mathis a perdu ? Alors je vais le venger ! » | « Ah… pas de vengeance aujourd'hui. » | « Mon Pikachu adore l'étang. Il ne se baigne jamais, mais il regarde. » |
+| T-24f | Timéo | « D'ici, on voit tout le port. Et toi, tu vas voir mon Papilusion ! » | « Il vole mieux qu'il ne se bat… » | « Regarde ce bateau. Un jour, je partirai avec lui. » |
+
 ## 16. Valeurs par défaut (règle 4)
 
 Enveloppes de cartes (Route 5 ≈ 42 × 62, souterrain ≤ 50 cases, Route 6 ≈ 42 × 56,
@@ -424,4 +446,4 @@ l'effet RB ; marin et docker en nouveaux modèles ; objectifs du tableau de bord
 | Fan Club, Pêcheur | Présents ; Bon pour Vélo et Canne reportés à leurs systèmes |
 | Exclus | Échanges, courrier, Route 11, vélo, pêche |
 | Validation | 15.0 (Pension seule) → 15A → 15B |
-| Textes | Lot §15 à valider |
+| Textes | Lot §15 validé (2026-10-12) |
