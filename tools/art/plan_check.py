@@ -606,8 +606,21 @@ def verifier_route_3(chemin: Path) -> bool:
 	return verifier(chemin)
 
 
+def verifier_route_6(chemin: Path) -> bool:
+	"""Route 6 (jalon 15, dossier 18 §6) : profil dans `plan_check_carmin.py`."""
+	from plan_check_carmin import verifier_route_6 as verifier
+	return verifier(chemin)
+
+
+def verifier_vermilion_city(chemin: Path) -> bool:
+	"""Carmin-sur-Mer (jalon 15, dossier 18 §8) : profil dans `plan_check_carmin.py`."""
+	from plan_check_carmin import verifier_vermilion_city as verifier
+	return verifier(chemin)
+
+
 VERIFICATEURS = {"route_2": verifier_route_2, "viridian_forest": verifier_foret,
-	"route_3": verifier_route_3}
+	"route_3": verifier_route_3, "route_6": verifier_route_6,
+	"vermilion_city": verifier_vermilion_city}
 
 
 def main() -> int:
