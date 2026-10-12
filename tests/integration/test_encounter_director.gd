@@ -556,3 +556,15 @@ func test_without_recovery_a_defeat_still_heals_and_goes_home_silently() -> void
 	assert_eq(_router.changes, [[&"player_house_1f", &"heal", Vector2i.UP]] as Array[Array])
 	assert_eq(_state.party.get_lead().hp, _state.party.get_lead().max_hp())
 	assert_eq(woke[0], 1)
+
+
+## Jalon 14 T8 (`jalon-14.md` §2.5) : un sauvage qui se téléporte (FOE_FLED) termine la
+## rencontre proprement, sans défaite : ni soin, ni retour au point de repos, contrôle rendu.
+func test_a_foe_that_teleports_away_ends_the_encounter_cleanly() -> void:
+	_fake.outcome = Battle.Outcome.FOE_FLED
+	var woke := await _lose_once()
+	assert_eq(_finished, [Battle.Outcome.FOE_FLED] as Array[int])
+	assert_eq(_router.changes, [] as Array[Array], "aucun retour au point de repos")
+	assert_eq(woke[0], 0)
+	assert_true(_player.is_input_enabled(), "contrôle rendu")
+	assert_false(_director.is_running())

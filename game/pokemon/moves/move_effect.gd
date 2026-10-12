@@ -33,9 +33,19 @@ extends RefCounted
 ## pour le lanceur (Puissance). FIXED_DAMAGE : dégâts fixes, moitié des PV de la cible
 ## (« half_hp », Croc Fatal) ou niveau du lanceur (« level », Frappe Atlas). BIDE : Patience
 ## (CT34, dossier 14 §6.3) : le lanceur encaisse deux tours, puis riposte ([Battle]).
+## Jalon 14 (`jalon-14.md` §2.3, §2.5 ; dossier 17 §7, §8.1) :
+## [codeblock]
+## { "kind": "charge", "texts": "dig", "invulnerable": true }   { "kind": "teleport" }
+## [/codeblock]
+## CHARGE : « charge puis frappe » (Tunnel) : la capacité offensive se charge au premier tour
+## (aucun dégât), puis frappe au second sans dépenser de PP, action imposée ([ChargeRules]).
+## [member texts] choisit les messages (« charge_<texts>_start », « charge_<texts>_broken » de
+## `messages.json`) ; [member invulnerable] (faux par défaut) : sous terre, le lanceur évite
+## toute capacité qui le vise. TELEPORT : Téléport, fuite d'un combat sauvage ([Battle]).
 
 enum Kind {
 	STAT_STAGE, RECOIL, SEED, STATUS, CONFUSION, HITS, FLINCH, CRIT_UP, FIXED_DAMAGE, BIDE,
+	CHARGE, TELEPORT,
 }
 enum Target { SELF, FOE }
 
@@ -45,6 +55,7 @@ const KIND_NAMES: Dictionary[String, Kind] = {
 	"status": Kind.STATUS, "confusion": Kind.CONFUSION, "hits": Kind.HITS,
 	"flinch": Kind.FLINCH, "crit_up": Kind.CRIT_UP, "fixed_damage": Kind.FIXED_DAMAGE,
 	"bide": Kind.BIDE,
+	"charge": Kind.CHARGE, "teleport": Kind.TELEPORT,
 }
 ## Modes de FIXED_DAMAGE.
 const FIXED_MODES: Array[StringName] = [&"half_hp", &"level"]
@@ -74,3 +85,7 @@ var min_hits: int = 1
 var max_hits: int = 1
 ## FIXED_DAMAGE : « half_hp » ou « level » ([constant FIXED_MODES]).
 var mode: StringName = &""
+## CHARGE : suffixe des messages du tour de charge (« dig » → « charge_dig_start »).
+var texts: StringName = &""
+## CHARGE : le lanceur est invulnérable pendant la charge (Tunnel ; pas Lance-Soleil).
+var invulnerable: bool = false

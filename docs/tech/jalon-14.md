@@ -847,9 +847,17 @@ et de l'annexe A validée.
 
 #### T7 — architecte : moteur « charge puis frappe » + Tunnel — **maintenant**
 - §2.3. **CA** : tests verts ; Pierre et le rival inchangés ; `simulate_brock.gd` identique.
+- **Fait** (2026-10-12, branche `j14-t7`, commit « J14 T7 ») : `charge_rules.gd`, 5 points
+  d'accroche dans `battle.gd`, `test_charge_rules` + `test_battle_charge` ; `dig` testé par la
+  fixture `tests/fixtures/pokemon/j14_charge/` tant que T5 n'a pas livré `moves_j14.json` (à la
+  fusion : remplacer `pending_effects: ["charge"]` de `dig` par l'effet du §2.3).
 
 #### T8 — architecte : Téléport — **maintenant**, après T7
 - §2.5. **CA** : tests verts ; rencontres sauvages inchangées hors Téléport.
+- **Fait** (2026-10-12, branche `j14-t7`, commit « J14 T8 ») : `MoveEffect.Kind.TELEPORT`,
+  `Outcome.FOE_FLED`, `TELEPORTED` / `NOTHING_HAPPENED` (n° 56, 57) ; `test_battle_teleport` +
+  `test_encounter_director` (FOE_FLED). Le lanceur **piégé** (« Mais ça échoue ! ») reste à
+  brancher dans `Battle._teleport` à la fusion du piège du J12 (T13), qui n'existe pas encore.
 
 #### T9 — ui-mobile : présentation de combat — après T7, T8
 - Sprite caché au CHARGE_STARTED, rendu au CHARGE_RELEASED / CHARGE_BROKEN (fondu court,

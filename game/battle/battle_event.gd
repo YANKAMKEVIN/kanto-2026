@@ -94,6 +94,15 @@ extends RefCounted
 ## (tour 3, sans MOVE_USED : « riposte ! », puis DAMAGE de [member move_id] « bide » ou FAILED
 ## si rien n'a été reçu), BIDE_BROKEN (« La patience de … est rompue ! » : paralysie totale,
 ## sommeil, gel, apeurement, se frapper dans la confusion).
+## Jalon 14 (`jalon-14.md` §2.3, §2.5) : CHARGE_STARTED (tour 1, après MOVE_USED : « creuse un
+## trou ! » ; [member move_id] = la capacité chargée, dont l'effet choisit le message ; la
+## présentation cache le sprite si l'effet est invulnérable), CHARGE_RELEASED (tour 2, avant le
+## MOVE_USED sans PP ; sprite rendu, pas de phrase), CHARGE_BROKEN (tour 2 : « remonte à la
+## surface. », rien n'est frappé ; sprite rendu), DODGED (sur la cible invulnérable : « évite
+## l'attaque ! »), BALL_BLOCKED (sur le sauvage invulnérable, à la place de BALL_THROWN :
+## « Impossible de viser ! » ; [member item_id], [member item_name]), TELEPORTED (le lanceur
+## s'en va : suit BATTLE_ENDED, FLED ou FOE_FLED), NOTHING_HAPPENED (Téléport contre un
+## Dresseur : « Mais rien ne se passe ! »).
 ## Tous les autres événements sur un Pokémon portent dans [member status] son statut au moment
 ## de l'événement (SENT_OUT : la carte de PV l'affiche dès l'entrée ; FAINTED : toujours vide,
 ## le K.O. efface le statut).
@@ -110,6 +119,8 @@ enum Kind {
 	CONFUSED, CONFUSION_UNCHANGED, CONFUSION_CHECK, HURT_ITSELF, CONFUSION_ENDED,
 	MULTI_HIT, FLINCHED, FOCUSED,
 	BIDE_STARTED, BIDE_STORING, BIDE_UNLEASHED, BIDE_BROKEN,
+	CHARGE_STARTED, CHARGE_RELEASED, CHARGE_BROKEN, DODGED, BALL_BLOCKED,
+	TELEPORTED, NOTHING_HAPPENED,
 }
 enum SideId { PLAYER, FOE }
 

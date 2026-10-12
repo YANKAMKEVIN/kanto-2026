@@ -88,6 +88,14 @@ func hits_effect() -> MoveEffect:
 	return null
 
 
+## L'effet CHARGE de la capacité (« charge puis frappe », jalon 14), ou null.
+func charge_effect() -> MoveEffect:
+	for effect: MoveEffect in effects:
+		if effect.kind == MoveEffect.Kind.CHARGE:
+			return effect
+	return null
+
+
 func never_misses() -> bool:
 	return accuracy == 0
 
