@@ -599,7 +599,8 @@ func _play_beat(beat: BattleBeat) -> void:
 			if is_instance_valid(_hud) and _is_in_play(beat.event):
 				await _hud.animate_hp(side, beat.event.hp, beat.event.max_hp, false)
 		BattleBeat.Kind.WITHDRAW:
-			# La carte est déjà sortie (panneau ÉQUIPE) ; le SEND_OUT suivant ramène la nouvelle.
+			# Joueur : la carte est déjà sortie (panneau ÉQUIPE). Adversaire (jalon 13, IA qui
+			# change) : sa carte sort ici. Le SEND_OUT suivant ramène la nouvelle.
 			if is_instance_valid(_hud):
 				_hud.hide_card(side)
 			if is_instance_valid(_stage):
