@@ -277,7 +277,15 @@ J13 ; défauts, contrôle étendu `plan_check_azuria_j14.py`) :
 | Trou (14, 3) | `y` bloqué | praticable (le passage) ; examinable (n° 29) depuis (13, 3) tourné → |
 | Impasse (15..21, 2..3) | forêt, haie | praticable : **7 cases de long, 2 de large**, fermée à l'est par la forêt (x 22) |
 | Porte cambriolée (10, 9) | `f` + examen | porte praticable + warp STEP_ON ↑ → `cerulean_burgled_house` ; ruban sur la case jusqu'à la victoire |
-| Sortie sud (31..33, 38..40) | palissade `s`, sentier peint `a` | chemin praticable ; raccord (31..33, 40) PUSH ↓ `coming_soon` « Route 5 » ; spawns `from_route_5_w|c|e` (31..33, 40) |
+| Sortie sud (31..33, 38..40) | palissade `s`, sentier peint `a` | chemin praticable ; raccord (31..33, 40) PUSH ↓ `coming_soon` « Route 5 » ; spawns `from_route_5_w|c|e` (31..33, 40) ; (30, 38..39) et (34, 38..39) → forêt |
+
+**Forme (T20a)** : variante `J14` **en fin de** `tools/plans/azuria.txt` (sections
+`PRATICABLES_J14`, `GRILLE_J14` = 6 rangées remplacées, `POSITIONS_J14`), lue par
+`lire(chemin, "J14")` (`plan_grille.py`) et `load_file(chemin, "J14")` (`plan_grid.gd`) ; sans
+variante, la grille et les positions du J13 se lisent comme avant (contrôle du J13 et plan du J13
+inchangés). Légende ajoutée : `J` jardin ouvert, `Y` trou praticable. Plan :
+`plan_aplats.py tools/plans/azuria.txt --variante J14 --annote` →
+`build/art/PLAN_AZURIA_J14_v1(_annote).png`.
 
 Critères du contrôle : impasse ≥ 6 cases, seul accès par le trou ; jardin accessible depuis la
 rue ; **aucune case du jardin ni de l'impasse ne devient jamais bloquée** (pas de piège après
@@ -677,7 +685,11 @@ Grille : §1.3. Données nouvelles dans `data/dialogues/cerulean_rocket.json` et
   38) et (33, 38), tous `unless cerulean_rocket_beaten` ; parler avant → n° 40. Après la
   victoire, dans la même visite : déclencheur (31..33, 37), pas vers ↓, ou parler → scène
   `cerulean_south_guard` (`if cerulean_rocket_beaten`) : n° 41 → `move` vers le nord → `despawn`
-  du policier et des deux barrières. Aux visites suivantes : absents.
+  du policier et des deux barrières, puis `set cerulean_south_guard_left`. **[D] T20a** : barrage
+  `unless cerulean_south_guard_left` (et non `unless cerulean_rocket_beaten`) et scène `if
+  cerulean_rocket_beaten unless cerulean_south_guard_left` : sinon, aux visites suivantes, la bande
+  relancerait n° 41 sans policier (un `EventTrigger` n'a pas de condition). Conséquence : qui
+  quitte Azuria sans passer au sud retrouve le policier, qui annonce la réouverture et part.
 - **Habitants** : variantes `if cerulean_rocket_beaten` en tête des dialogues du pêcheur H1 →
   n° 38 et de la voisine H3 → n° 39 [D].
 - **Raccord sud** : `coming_soon = "Route 5"` (développement ; bord bloqué en release).
@@ -732,7 +744,7 @@ forme ou quand on ajoute un champ. Inventaire, champ par champ de `GameState.to_
 
 | Ce que le J14 mémorise | Champ existant | Forme |
 |---|---|---|
-| `bill_met`, `bill_screen_checked`, `bill_module_checked`, `bill_in_cabin`, `bill_restored`, `got_ss_ticket`, `got_bill_rare_candy`, `cerulean_rocket_spotted`, `cerulean_rocket_beaten`, `lost_cerulean_rocket`, `got_tm28`, `beaten_route_25_*`, `got_route_25_*` | `flags` | inchangée |
+| `bill_met`, `bill_screen_checked`, `bill_module_checked`, `bill_in_cabin`, `bill_restored`, `got_ss_ticket`, `got_bill_rare_candy`, `cerulean_rocket_spotted`, `cerulean_rocket_beaten`, `lost_cerulean_rocket`, `cerulean_south_guard_left`, `got_tm28`, `beaten_route_25_*`, `got_route_25_*` | `flags` | inchangée |
 | Passe Bateau, Super Bonbon, CT28, CT19, Potions, Ball | `bag` | inchangée |
 | Objets trouvés O1–O4 | `found_items` | inchangée |
 | Grand moment `bill_restored` | `moments` (`{type, date, map, details}`) | inchangée |
@@ -865,6 +877,12 @@ et de l'annexe A validée.
 #### T20a — architecte : grille d'Azuria du J14 — **maintenant**
 - §1.3 : rangées modifiées et bloc `POSITIONS` « J14 » dans `tools/plans/azuria.txt` (sur
   `jalon-14`) ; `tools/art/plan_check_azuria_j14.py`. **CA** : contrôle conforme.
+- **Fait (2026-10-12, branche `j14-t20a`)** : variante `J14` en fin d'`azuria.txt` (base du J13
+  intacte, son contrôle et son plan inchangés) ; lecteurs Python et GDScript étendus
+  (`lire(..., "J14")`, `PlanGrid.load_file(..., "J14")`, 3 tests dans `test_plan_grid`) ;
+  `plan_check_azuria_j14.py` conforme (24 critères, 6 mutations détectées) ; plan annoté
+  `build/art/PLAN_AZURIA_J14_v1_annote.png` relu. Défaut : drapeau `cerulean_south_guard_left`
+  (§2.12). Pour T20b : `build_cerulean_city.gd` lit la grille avec la variante `J14`.
 
 #### T20b — constructeur-monde : Azuria du J14 (14C) — après fusion de **J13 T7 et T17** (+ **J12 T12**)
 - §2.12 ; régénération d'Azuria par `build_cerulean_city.gd` ; intérieur

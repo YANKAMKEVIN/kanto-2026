@@ -31,6 +31,9 @@ build/art/PLAN_ROUTE4_v1.png, PLAN_AZURIA_v1.png, PLAN_ROUTE24_v1.png, PLAN_AZUR
 (`dessiner_j13`, PAYSAGE 1536 × 1024) ; --annote ajoute <sortie>_annote.png (`annoter_j13` :
 Dresseurs et lignes de vue, PNJ, objets, cases cachées, examens, zones d'herbes… JAMAIS jointe à
 Codex ; les plans seuls ne montrent ni personnage, ni case cachée, ni indice).
+--variante J14 (J14 T20a) : tools/plans/azuria.txt lue avec sa variante « après J14 »
+(`lire(grille, "J14")`) → build/art/PLAN_AZURIA_J14_v1.png ; jardin ouvert « J », trou praticable
+« Y » ; --annote ajoute les bandes de déclenchement et les conditions (if / unless) des positions.
 tools/plans/route_25.txt → build/art/PLAN_ROUTE25_v1.png (J14, `dessiner_route_25`) : PAYSAGE,
 mer, rivage, falaise, plage, maison de Léo ; --annote comme la Route 3.
 Reproductible : même grille → même image (fleurs tirées avec une graine fixe).
@@ -1224,11 +1227,13 @@ def _fond_j13(stem: str, plan: Plan, car: str, x: int, y: int):
 		return SENTIER_FERME
 	if car == "j":
 		return J_JARDIN
+	if car == "J":                                  # jardin ouvert (variante J14)
+		return _melange(J_JARDIN, HERBE, 0.45)
 	if car == "s":
 		return J_PALISSADE
 	if car in BATIMENTS or car in J_BAT:
 		return J_BAT.get(car, BATIMENTS.get(car))[0]
-	if car in "fy":
+	if car in "fyY":
 		return J_BAT["M"][0] if car == "f" else HERBE
 	if car == "A":
 		return PAROI
@@ -1241,10 +1246,11 @@ def _fond_j13(stem: str, plan: Plan, car: str, x: int, y: int):
 	return HERBE
 
 
-def dessiner_j13(grille: Path, sortie: Path) -> Path:
+def dessiner_j13(grille: Path, sortie: Path, variante: str | None = None) -> Path:
 	"""Plan en aplats de la Route 4, d'Azuria, de la Route 24 ou de l'Arène d'Azuria, paysage
-	1536 × 1024. Personnages, cases cachées, indices et examens NON dessinés."""
-	plan = lire(grille)
+	1536 × 1024. Personnages, cases cachées, indices et examens NON dessinés. `variante` : grille
+	lue avec cette variante (Azuria « J14 »)."""
+	plan = lire(grille, variante)
 	stem = Path(grille).stem
 	case, ox, oy = _geom_j13(plan, stem)
 	interieur = stem == "azuria_arene"
@@ -1347,13 +1353,13 @@ def dessiner_j13(grille: Path, sortie: Path) -> Path:
 		cx, cy = centre(x, y)
 		voisins_c = [(dx, dy) for dx, dy in ((1, 0), (-1, 0), (0, 1), (0, -1))
 			if 0 <= x + dx < plan.width and 0 <= y + dy < plan.height
-			and plan.at(x + dx, y + dy) in "cy"]
+			and plan.at(x + dx, y + dy) in "cyY"]
 		d.rectangle(coin(x, y) + (coin(x, y)[0] + case - 1, coin(x, y)[1] + case - 1), fill=HERBE)
 		if not voisins_c:
 			d.line([cx, cy - case * 0.3, cx, cy + case * 0.3], fill=J_CLOTURE, width=3)
 		for dx, dy in voisins_c:
 			d.line([cx, cy, cx + dx * case / 2, cy + dy * case / 2], fill=J_CLOTURE, width=3)
-	for x, y in plan.cells_of("y"):
+	for x, y in plan.cells_of("y") + plan.cells_of("Y"):
 		cx, cy = centre(x, y)
 		d.rectangle(coin(x, y) + (coin(x, y)[0] + case - 1, coin(x, y)[1] + case - 1), fill=HERBE)
 		d.line([cx, cy - case * 0.3, cx, cy - case * 0.1], fill=J_CLOTURE, width=3)
@@ -1440,13 +1446,14 @@ def _composantes_cases(cases) -> list[list[tuple[int, int]]]:
 	return groupes
 
 
-def annoter_j13(grille: Path, plan_png: Path, sortie: Path) -> Path:
+def annoter_j13(grille: Path, plan_png: Path, sortie: Path, variante: str | None = None) -> Path:
 	"""Version de RELECTURE (jamais jointe à Codex) : Dresseurs et lignes de vue, PNJ, objets (la
 	case cachée en jaune, « * »), examens, indices, repères, zones d'herbes, rebords, points
-	d'apparition et warps ; même taille que le plan."""
+	d'apparition et warps ; même taille que le plan. Variante (J14) : bandes de déclenchement
+	(orange, flèche du sens du pas) et conditions des positions (« si » / « sauf »)."""
 	from PIL import ImageFont
 	from plan_check import FACINGS, nommer_zones  # noqa: E402
-	plan = lire(grille)
+	plan = lire(grille, variante)
 	stem = Path(grille).stem
 	img = Image.open(plan_png).convert("RGBA")
 	calque = Image.new("RGBA", img.size, (0, 0, 0, 0))
@@ -1502,13 +1509,33 @@ def annoter_j13(grille: Path, plan_png: Path, sortie: Path) -> Path:
 		d.ellipse([cx - rayon, cy - rayon, cx + rayon, cy + rayon], fill=(230, 40, 40, 255),
 			outline=(0, 0, 0, 255))
 		etiquette(c, f"{p.attrs.get('role')}", (255, 150, 150, 255), petite, dy=-case * 0.7)
+	courts = {"cerulean_rocket_spotted": "repéré", "cerulean_rocket_beaten": "battu",
+		"cerulean_south_guard_left": "sud ouvert"}
+
+	def condition(p) -> str:
+		texte = []
+		for cle, mot in (("if", "si"), ("unless", "sauf")):
+			drapeaux = [courts.get(f, f) for f in p.attrs.get(cle, "").split(",") if f]
+			if drapeaux:
+				texte.append(f"{mot} {'+'.join(drapeaux)}")
+		return f" ({', '.join(texte)})" if texte else ""
+	fleches = {"right": "→", "left": "←", "up": "↑", "down": "↓"}
+	for p in plan.of_kind("declencheur"):
+		for c in p.cells:
+			x0, y0 = ox + c[0] * case, oy + c[1] * case
+			d.rectangle([x0, y0, x0 + case - 1, y0 + case - 1], fill=(255, 150, 30, 120),
+				outline=(255, 150, 30, 255), width=2)
+			d.text(centre(c), fleches.get(p.attrs.get("dir", ""), "·"), font=police,
+				fill=(255, 255, 255, 255), anchor="mm")
 	for p in plan.of_kind("pnj"):
 		for c in p.cells:
 			cx, cy = centre(c)
-			d.ellipse([cx - rayon, cy - rayon, cx + rayon, cy + rayon], fill=(70, 140, 255, 255),
+			d.ellipse([cx - rayon, cy - rayon, cx + rayon, cy + rayon],
+				fill=(70, 140, 255, 255) if not condition(p) else (150, 110, 255, 255),
 				outline=(0, 0, 0, 255))
-		etiquette(p.cells[0], f"{p.attrs.get('role', p.ident)}", (160, 200, 255, 255), petite,
-			dy=-case * 0.7)
+		if not condition(p):
+			etiquette(p.cells[0], f"{p.attrs.get('role', p.ident)}", (160, 200, 255, 255), petite,
+				dy=-case * 0.7)
 	for p in plan.of_kind("objet_visible") + plan.of_kind("cache"):
 		c = p.cells[0]
 		cx, cy = centre(c)
@@ -1550,7 +1577,25 @@ def annoter_j13(grille: Path, plan_png: Path, sortie: Path) -> Path:
 		etiquette((32, 0), "↑ ROUTE 24", (255, 255, 255, 255), dy=case * 1.0)
 		etiquette((0, 20), "← ROUTE 4", (255, 255, 255, 255), dy=case * 1.4, dx=case * 2)
 		etiquette((52, 23), "ROUTE 9 fermée", (255, 255, 255, 255), petite, dy=case * 1.2)
-		etiquette((32, 42), "ROUTE 5 fermée", (255, 255, 255, 255), petite, dy=-case * 1.0)
+		if variante:
+			etiquette((32, 40), "↓ ROUTE 5 — À venir", (255, 255, 255, 255), petite, dx=case * 4,
+				dy=0)
+			# légende des éléments conditionnels (variante), dans la forêt vide du sud-ouest
+			lignes = [f"{p.ident}{condition(p)}" for p in plan.positions.values() if condition(p)]
+			for k, texte in enumerate(lignes):
+				d.text((ox + case, oy + (30 + k) * case), texte, font=petite,
+					fill=(255, 255, 255, 255))
+			# PNJ conditionnels : étiquette au-dessus, au-dessous si un voisin à gauche en a une
+			poses: set[tuple[int, int]] = set()
+			for p in sorted(plan.of_kind("pnj"), key=lambda p: p.cells[0]):
+				if condition(p):
+					x, y = p.cells[0]
+					dessous = any((x - k, y) in poses for k in (1, 2))
+					etiquette(p.cells[0], p.ident.split("_")[0], (200, 180, 255, 255), petite,
+						dy=case * 0.8 if dessous else -case * 0.7)
+					poses.add((x, y))
+		else:
+			etiquette((32, 42), "ROUTE 5 fermée", (255, 255, 255, 255), petite, dy=-case * 1.0)
 	if stem == "route_4":
 		etiquette((2, 6), "MONT SÉLÉNITE", (255, 255, 255, 255), dy=-case * 1.3, dx=case * 2)
 		etiquette((62, 20), "AZURIA →", (255, 255, 255, 255), dy=-case * 1.6, dx=-case * 2)
@@ -1716,9 +1761,21 @@ def main() -> int:
 		nord, sud, dx, sortie = args[0], args[1], int(args[2]), Path(args[3])
 		print(dessiner(empiler(lire(Path(nord)), lire(Path(sud)), dx), sortie))
 		return 0
+	variante = None
+	if "--variante" in sys.argv:
+		variante = sys.argv[sys.argv.index("--variante") + 1]
+		args.remove(variante)
 	grille = Path(args[0]) if len(args) > 0 else RACINE / "tools/plans/route_2.txt"
 	fonction, defaut = PLANS.get(grille.stem, PLANS["route_2"])
+	if variante:
+		defaut = defaut.replace("_v1.png", f"_{variante}_v1.png")
 	sortie = Path(args[1]) if len(args) > 1 else RACINE / defaut
+	if fonction is dessiner_j13:
+		print(dessiner_j13(grille, sortie, variante))
+		if "--annote" in sys.argv:
+			print(annoter_j13(grille, sortie, sortie.with_name(sortie.stem + "_annote.png"),
+				variante))
+		return 0
 	if fonction is dessiner:
 		print(dessiner(grille, sortie, "--lisiere" in sys.argv))
 	else:
