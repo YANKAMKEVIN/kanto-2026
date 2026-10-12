@@ -877,7 +877,7 @@ et de l'annexe A validée.
 #### T20a — architecte : grille d'Azuria du J14 — **maintenant**
 - §1.3 : rangées modifiées et bloc `POSITIONS` « J14 » dans `tools/plans/azuria.txt` (sur
   `jalon-14`) ; `tools/art/plan_check_azuria_j14.py`. **CA** : contrôle conforme.
-- **Fait (2026-10-12, branche `j14-t20a`)** : variante `J14` en fin d'`azuria.txt` (base du J13
+- **Fait (2026-10-12, commit `923269f`, branche `j14-t20a`)** : variante `J14` en fin d'`azuria.txt` (base du J13
   intacte, son contrôle et son plan inchangés) ; lecteurs Python et GDScript étendus
   (`lire(..., "J14")`, `PlanGrid.load_file(..., "J14")`, 3 tests dans `test_plan_grid`) ;
   `plan_check_azuria_j14.py` conforme (24 critères, 6 mutations détectées) ; plan annoté
