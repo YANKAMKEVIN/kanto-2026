@@ -659,3 +659,18 @@ Départ de débogage seulement (la vraie sauvegarde n'est ni lue ni écrite). `t
    Android fait de même. Un toucher sur ARRÊTER arrête, il n'accélère pas.
 4. Paramètres → « Réduire les animations » : séquence encore plus courte, sans saut.
 5. Rapport `build/qa/jalon11_t11c/rapport.md` (chrono, captures, ressenti) → validation de 11C.
+
+### T19 — logique du compagnon (2026-10-12, 11D, sans art ni scène)
+
+`data/pokemon/companions.json` (9 espèces éligibles, contextes forêt / ville) ; `CompanionCatalog`
+(validation stricte, `is_eligible_species`, `sprite_of`, `is_flying`, `context_of`) ;
+`CompanionRules` (pur : éligibilité, table de visibilité, `clear_reason` — K.O. garde le choix,
+départ de l'équipe ou évolution non éligible l'effacent —, phrase de curiosité dans l'ordre PV bas /
+statut / eau à 2 cases / contexte / 5 génériques sans répétition, tirage fourni hors `GameRng`) ;
+`CompanionTrail` (pur : suit la case quittée, genre du pas précédent — saut de rebord rejoué —,
+vitesse du pas courant, échange de places, placement derrière le joueur ou apparition au premier
+pas). Identifiants des phrases (`companion_happy`… `companion_water`) : les dialogues arrivent au
+T20c (`data/dialogues/companion.json`, textes n° 50 à 59). Tests : `test_companion_logic` (catalogue
+et vraies planches repos + marche × 4, visibilité, effacement, phrases, couloir, virage, échange,
+rebords simple et double, arrivée sans case, marche aléatoire de 300 pas : jamais à plus d'un pas
+ou d'un saut, jamais hors du chemin du joueur). **Rien n'est encore branché au jeu** (T20).
