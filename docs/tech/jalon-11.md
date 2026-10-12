@@ -674,3 +674,21 @@ T20c (`data/dialogues/companion.json`, textes n° 50 à 59). Tests : `test_compa
 et vraies planches repos + marche × 4, visibilité, effacement, phrases, couloir, virage, échange,
 rebords simple et double, arrivée sans case, marche aléatoire de 300 pas : jamais à plus d'un pas
 ou d'un saut, jamais hors du chemin du joueur). **Rien n'est encore branché au jeu** (T20).
+
+### T20a — points d'accroche du compagnon dans le monde (2026-10-12, 11D)
+
+- `Player.step_started(from, to, kind)` : relais de `GridMover.step_started` (« walk », « run »,
+  « jump » pour un saut de rebord), pas scriptés compris ; pivot et poussée contre un mur : rien.
+- `GridWorld.soft_hold(cell, entity)` / `soft_release(entity)` / `is_soft_held(cell)` : occupation
+  **douce**, une case par entité ; `can_enter`, `get_step_target`, `is_free`, `find_path`, les scènes,
+  les Dresseurs et les interactions l'ignorent.
+- `Npc._advance_route` : une case tenue doucement se traite comme une case prise (il se tourne et
+  attend) ; `_try_leave_building` attend aussi. Les déplacements de scène ne la voient pas (D-2 :
+  le compagnon rentre de toute façon pendant une scène).
+- `InteractionFinder.find(…, companion)` : fournisseur facultatif
+  (`get_interaction_at(cell) -> Interaction`), consulté après les occupants et avant les points
+  fixes ; `InteractionController.set_companion(provider)` et signal `companion_talked` (l'appui ne
+  joue aucun dialogue : la curiosité est jouée par le contrôleur du compagnon, T20c).
+- Tests : relais des trois genres de pas (`test_player`), routine qui attend puis repart
+  (`test_npc_routine_hold`), occupation douce (`test_grid_world`), cible et appui face à un faux
+  compagnon (`test_interaction_controller`). Rien n'utilise encore ces points (T20b–c).
