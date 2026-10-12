@@ -1086,12 +1086,22 @@ et de l'annexe A validée.
   `envoi`, `apres_changement`, `reduit_*`). Dresseur d'essai construit en mémoire (Salamèche puis
   Roucool contre Carapuce), aucune donnée ajoutée.
 
-#### T14 — constructeur-monde : carte `qa_switch_j13` + départ `switch_qa` — après T12 **et T11**
-- **Pas fait au T12** (2026-10-12) : la carte attend les espèces du T11 (Stari, Staross,
-  Mystherbe, Chétiflor, absentes de `jalon-13`) et ses Dresseurs d'essai seraient des données
-  `data/trainers/qa_*.json` à retirer au T22. En attendant, l'essai sur Mac passe par
-  `tools/capture_foe_switch_j13.gd` (Dresseur en mémoire). La clé `switch` est prête dans
-  `TrainerLibrary`.
+#### T14 — constructeur-monde : carte `qa_switch_j13` + départ `switch_qa` — après T12 **et T11** — **FAIT** (2026-10-12)
+- Carte 24 × 16 (`tools/build_qa_switch_j13.gd` → `game/world/maps/qa_switch_j13.tscn`), inaccessible
+  en jeu (sortie sud vers le Centre de Jadielle). Trois Dresseurs en ligne (couloirs de vue de
+  5 cases, séparés) : **Rival d'essai** (Salamèche avec Patience, puis Roucool, `switch`, par
+  faiblesse contre Carapuce), **Ondine d'essai** (Stari puis Staross, `switch`, à 25 % des PV),
+  **Témoin** (même équipe, **sans** `switch`). Hautes herbes à l'ouest, table forcée
+  (Mystherbe Nv. 24, Chétiflor Nv. 21).
+- Départ `tools/debug_start/switch_qa.json` : Carapuce, Pikachu, Bulbizarre, Salamèche Nv. 20,
+  Mystherbe Nv. 24 (Vol-Vie `absorb`, Acide), Staross Nv. 22 (Bulles d'O), **9 espèces au
+  Stockage** (Pokédex), 10 Potions. Spawns `switch_start`, `lane_rival|misty|witness`.
+- `MapCatalog.is_qa_map` (préfixe `qa_`) rétabli ; tests de zones et de lumière l'ignorent.
+- Tests : `tests/integration/test_qa_switch_j13.gd`. Captures : `tools/capture_qa_switch_j13.gd` →
+  `build/captures/jalon13_t14/` (carte, rappel, envoi, après changement : relues).
+- Limites : « piégé » (Ligotage) pas jouable tant que `trap` n'existe pas (J12 T13) ; Vol-Vie
+  sans effet de drain tant que `drain` manque.
+- **À retirer au T22** : voir la fiche T22.
 #### T15 — qa-mobile : **session 13.0** → Kevin
 - Départ `switch_qa` : changement adverse vu (message n° 60, animation, une fois au plus, jamais
   piégé ni en Patience, jamais pour le témoin), 9 espèces au Pokédex, Vol-Vie, Bulles d'O, Acide.
@@ -1155,7 +1165,11 @@ et de l'annexe A validée.
 
 #### T22 — constructeur-monde : Pont Pépite, recruteur, Route 24 nord, fin (13C) — après T19
 - §2.12, §2.13, §2.14 (nord), §2.16 (deux entrées) ; **retrait de `qa_switch_j13`** et de son départ ;
-  README des départs. Tests `test_nugget_bridge`, `test_nugget_rocket`, `test_route_24_life`,
+  README des départs. **Fichiers `qa_*` du T14 à retirer** : `game/world/maps/qa_switch_j13.tscn`,
+  `tools/build_qa_switch_j13.gd`, `tools/capture_qa_switch_j13.gd`, `data/npcs/`, `data/dialogues/`
+  et `data/trainers/qa_switch_j13.json`, `tools/debug_start/switch_qa.json` (+ ligne du README),
+  `tests/integration/test_qa_switch_j13.gd` ; garder `MapCatalog.is_qa_map` (ou le retirer avec
+  ses tests si plus aucun appelant). Tests `test_nugget_bridge`, `test_nugget_rocket`, `test_route_24_life`,
   `test_hidden_items` (Route 24), `test_objective_library`.
 
 #### T23 — qa-mobile : **QA finale 13C** → Kevin, fusion

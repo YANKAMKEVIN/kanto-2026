@@ -1,0 +1,26 @@
+{
+	"qa_switch_rival_before": {
+		"speaker": "Rival d'essai",
+		"pages": ["QA : je change de Pokémon (une fois).\nMets Carapuce en tête."]
+	},
+	"qa_switch_rival_after": {
+		"speaker": "Rival d'essai",
+		"pages": ["QA : combat terminé."]
+	},
+	"qa_switch_misty_before": {
+		"speaker": "Ondine d'essai",
+		"pages": ["QA : je change quand Stari est à 25 % des PV."]
+	},
+	"qa_switch_misty_after": {
+		"speaker": "Ondine d'essai",
+		"pages": ["QA : combat terminé."]
+	},
+	"qa_switch_witness_before": {
+		"speaker": "Témoin d'essai",
+		"pages": ["QA : même équipe, sans « switch ».\nJe ne change jamais."]
+	},
+	"qa_switch_witness_after": {
+		"speaker": "Témoin d'essai",
+		"pages": ["QA : combat terminé."]
+	}
+}

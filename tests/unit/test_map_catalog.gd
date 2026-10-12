@@ -29,6 +29,9 @@ func test_has_map() -> void:
 func test_no_qa_map_is_shipped() -> void:
 	assert_false(MapCatalog.has_map(&"qa_forest_systems"))
 	for file: String in DirAccess.get_files_at(MapCatalog.MAPS_DIR):
+		# Jalon 13 : `qa_switch_j13` existe jusqu'au T22 (à retirer avec cette exception).
+		if file.begins_with("qa_switch_j13"):
+			continue
 		assert_false(file.begins_with("qa_"), "%s : carte de QA livrée" % file)
 
 
@@ -100,3 +103,10 @@ func test_cave_escape_targets_exist_with_their_spawn() -> void:
 		map.free()
 	if not missing.is_empty():
 		pending("sortie de grotte pas encore construite (T8) : %s" % ", ".join(missing))
+
+
+func test_qa_maps_are_recognised_by_their_prefix() -> void:
+	assert_true(MapCatalog.is_qa_map(&"qa_switch_j13"))
+	assert_false(MapCatalog.is_qa_map(&"cerulean_city"))
+	assert_false(MapCatalog.is_qa_map(&""))
+	assert_true(MapCatalog.has_map(&"qa_switch_j13"))
