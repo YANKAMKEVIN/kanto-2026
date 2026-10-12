@@ -147,23 +147,19 @@ func test_three_bridges_with_their_own_decks() -> void:
 
 
 func test_west_and_north_edges_lead_to_the_routes() -> void:
-	for cell: Vector2i in WEST:
-		var warp := _map.get_warps().find_on_push(cell, Vector2i.LEFT)
-		assert_not_null(warp, "raccord ouest %s" % cell)
-		if warp != null:
-			assert_false(warp.is_coming_soon())
-			assert_eq([warp.target_map, warp.target_spawn, warp.facing],
-				[&"route_4", &"from_cerulean", Vector2i.LEFT])
-	for cell: Vector2i in NORTH:
-		var warp := _map.get_warps().find_on_push(cell, Vector2i.UP)
-		assert_not_null(warp, "raccord nord %s" % cell)
-		if warp != null:
-			assert_eq([warp.target_map, warp.target_spawn, warp.facing],
-				[&"route_24", &"from_cerulean", Vector2i.UP])
-	assert_eq(_map.get_spawn_cell(&"from_route_4"), Vector2i(0, 20))
-	assert_eq(_map.get_spawn_cell(&"from_route_24"), Vector2i(32, 0))
 	for i: int in 3:
-		assert_eq(_map.get_spawn_cell(StringName("from_route_4_" + ["w", "c", "e"][i])), WEST[i])
+		var west := _map.get_warps().find_on_push(WEST[i], Vector2i.LEFT)
+		assert_not_null(west, "raccord ouest %s" % WEST[i])
+		if west != null:
+			assert_false(west.is_coming_soon())
+			assert_eq([west.target_map, west.target_spawn, west.facing],
+				[&"route_4", StringName("from_cerulean_" + ["n", "c", "s"][i]), Vector2i.LEFT])
+		assert_eq(_map.get_spawn_cell(StringName("from_route_4_" + ["n", "c", "s"][i])), WEST[i])
+		var north := _map.get_warps().find_on_push(NORTH[i], Vector2i.UP)
+		assert_not_null(north, "raccord nord %s" % NORTH[i])
+		if north != null:
+			assert_eq([north.target_map, north.target_spawn, north.facing],
+				[&"route_24", StringName("from_cerulean_" + ["w", "c", "e"][i]), Vector2i.UP])
 		assert_eq(_map.get_spawn_cell(StringName("from_route_24_" + ["w", "c", "e"][i])),
 			NORTH[i])
 

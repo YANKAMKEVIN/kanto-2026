@@ -49,7 +49,7 @@ func test_compatibilities_of_rouge_bleu() -> void:
 	for id: StringName in _data.get_species_ids():
 		if _data.can_learn_tm(id, 34):
 			count += 1
-	assert_eq(count, 34, "34 espèces sur 38 (dossier 14 §6.1)")
+	assert_eq(count, 43, "43 espèces sur 47 (dossier 14 §6.1 ; + 9 du jalon 13)")
 
 
 func test_check_and_teach() -> void:

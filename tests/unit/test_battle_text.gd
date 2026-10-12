@@ -474,3 +474,11 @@ func test_the_rival_token_in_the_trainer_name_shows_the_chosen_name() -> void:
 	assert_eq(_text.trainer_display_name("Pierre"), "Pierre", "sans jeton : tel quel")
 	var unnamed := BattleText.new()
 	assert_eq(unnamed.trainer_display_name("{rival}"), "{rival}", "sans valeurs : tel quel")
+
+
+# --- Rappel (jalon 7) et rappel par l'IA (jalon 13, §21 n° 60) --------------------------
+
+func test_withdrawn_text_depends_on_the_side() -> void:
+	assert_eq(_lines(_event(K.WITHDRAWN)), ["Reviens, Carapuce !"] as Array[String])
+	assert_eq(_lines(_event(K.WITHDRAWN, true, "Stari")),
+		["Le Rival rappelle Stari !"] as Array[String])

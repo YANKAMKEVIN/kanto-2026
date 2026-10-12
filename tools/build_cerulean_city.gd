@@ -22,9 +22,9 @@ extends SceneTree
 ## - Image : sol peint (masque R = pavés et quais, G = chemins, jardin clos et sentiers peints),
 ##   eau claire des canaux dans la passe du sol (`cerulean_map_kit.gd`), quais en modules, tabliers
 ##   de pont par pont (un identifiant chacun), forêt serrée, bâtiments, mobilier de ville.
-## - Passages : trois warps PUSH ← à l'ouest (0, 19..21) → `route_4` / `from_cerulean`, trois
-##   PUSH ↑ au nord (31..33, 0) → `route_24` / `from_cerulean` (grille : un seul nom de spawn par
-##   raccord ; `from_route_4`, `from_route_24` ici, plus des alias `_w/_c/_e`), portes STEP_ON ↑
+## - Passages : trois warps PUSH ← à l'ouest (0, 19..21) → `route_4` / `from_cerulean_n|c|s` (arrivée
+##   ici : `from_route_4_n|c|s`), trois PUSH ↑ au nord (31..33, 0) → `route_24` /
+##   `from_cerulean_w|c|e` (arrivée ici : `from_route_24_w|c|e`), portes STEP_ON ↑
 ##   des cinq bâtiments ouverts. Est et sud : fermés **sans warp**.
 
 const Kit := preload("res://tools/cerulean_map_kit.gd")
@@ -52,12 +52,11 @@ const DECKS: Dictionary = {
 	Vector2i(26, 8): "prop_pont_ville_ew_01",
 }
 
-## Raccords : [nœud, case, spawn d'arrivée ici, carte, spawn de l'autre carte, direction].
+## Raccords (noms posés par la T8) : Route 4 (rangées n / c / s) et Route 24 (colonnes w / c / e).
 const WEST_CELLS: Array[Vector2i] = [Vector2i(0, 19), Vector2i(0, 20), Vector2i(0, 21)]
 const NORTH_CELLS: Array[Vector2i] = [Vector2i(31, 0), Vector2i(32, 0), Vector2i(33, 0)]
-## Spawns d'arrivée (grille : `from_route_4` ← 0,19..21 ; `from_route_24` ← 31..33,0) : le nom de
-## la grille sur la rangée du milieu, plus un alias par rangée (`_w` / `_c` / `_e`).
-const ALIASES: Array[String] = ["w", "c", "e"]
+const WEST_SUFFIXES: Array[String] = ["n", "c", "s"]
+const NORTH_SUFFIXES: Array[String] = ["w", "c", "e"]
 
 ## Bâtiments : [objet, case d'ancrage, nom du nœud, position des portes dans la grille,
 ## intérieur, spawn d'ici (devant la porte, tourné ↓), libellé « à venir »].
@@ -188,15 +187,15 @@ func _prepare_cells() -> void:
 
 func _add_passages() -> void:
 	for i: int in WEST_CELLS.size():
-		_kit.call(&"add_warp", "Route4" + ALIASES[i].to_upper(), WEST_CELLS[i], Kit.PUSH,
-			Vector2i.LEFT, &"route_4", &"from_cerulean", Vector2i.LEFT)
-		_kit.call(&"add_spawn", "from_route_4_" + ALIASES[i], WEST_CELLS[i])
-	_kit.call(&"add_spawn", "from_route_4", WEST_CELLS[1])
+		_kit.call(&"add_warp", "Route4" + WEST_SUFFIXES[i].to_upper(), WEST_CELLS[i], Kit.PUSH,
+			Vector2i.LEFT, &"route_4", StringName("from_cerulean_" + WEST_SUFFIXES[i]),
+			Vector2i.LEFT)
+		_kit.call(&"add_spawn", "from_route_4_" + WEST_SUFFIXES[i], WEST_CELLS[i])
 	for i: int in NORTH_CELLS.size():
-		_kit.call(&"add_warp", "Route24" + ALIASES[i].to_upper(), NORTH_CELLS[i], Kit.PUSH,
-			Vector2i.UP, &"route_24", &"from_cerulean", Vector2i.UP)
-		_kit.call(&"add_spawn", "from_route_24_" + ALIASES[i], NORTH_CELLS[i])
-	_kit.call(&"add_spawn", "from_route_24", NORTH_CELLS[1])
+		_kit.call(&"add_warp", "Route24" + NORTH_SUFFIXES[i].to_upper(), NORTH_CELLS[i],
+			Kit.PUSH, Vector2i.UP, &"route_24", StringName("from_cerulean_" + NORTH_SUFFIXES[i]),
+			Vector2i.UP)
+		_kit.call(&"add_spawn", "from_route_24_" + NORTH_SUFFIXES[i], NORTH_CELLS[i])
 	for entry: Array in BUILDINGS:
 		var doors: Array = _plan().call(&"cells_at", entry[3])
 		var front: Vector2i = (doors[-1] as Vector2i) + Vector2i.DOWN

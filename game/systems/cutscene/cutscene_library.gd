@@ -86,6 +86,10 @@ extends RefCounted
 ## - badge : identifiant de badge (data/badges.json, « boulder »).
 ## Ni l'un ni l'autre n'est vérifié ici (tests de données : [method get_card_trainer_ids],
 ## [method get_badge_ids]).
+## Jalon 13 (jalon-13.md §2.9) : clé de **scène** « next » (texte non vide, à côté de
+## « variants » ou des clés d'une variante unique) = scène enchaînée à la fin de celle-ci
+## ([member Cutscene.next]). Après [method load_dir], chaque « next » doit nommer une scène
+## connue, autre que la scène elle-même ([method check_next_references]).
 ## Acteur = « player », identifiant d'un PNJ de la carte courante, ou **alias** « $nom »
 ## (forme $[a-z_]+, [method CutsceneStep.is_alias]) : PNJ choisi par le code qui lance la
 ## scène (CutsceneDirector.play(id, alias)), résolu au début de chaque étape. Les alias
@@ -97,7 +101,7 @@ extends RefCounted
 
 const DATA_DIR: String = "res://data/cutscenes/"
 
-const _SCENE_KEYS: Array[String] = ["variants"]
+const _SCENE_KEYS: Array[String] = ["variants", "next"]
 const _VARIANT_KEYS: Array[String] = ["if", "unless", "steps"]
 ## Clés permises en plus de la clé de type, par type (ordre de CutsceneStep.Kind).
 const _EXTRA_KEYS: Array[Array] = [
@@ -126,7 +130,28 @@ func load_dir(dir: String = DATA_DIR) -> bool:
 	for file: String in sorted:
 		if file.get_extension() == "json":
 			ok = load_file(dir.path_join(file)) and ok
+	return check_next_references() and ok
+
+
+## Vérifie que chaque « next » nomme une scène connue, autre que la scène elle-même. Une scène
+## dont la suite est invalide est écartée (erreur signalée). Faux si une erreur a été signalée.
+func check_next_references() -> bool:
+	var ok := true
+	for id: StringName in get_ids():
+		var cutscene := _cutscenes[id]
+		if cutscene.next.is_empty():
+			continue
+		if cutscene.next == id or not _cutscenes.has(cutscene.next):
+			ok = _fail("%s « %s » : « next » vaut « %s », scène inconnue ou elle-même"
+				% [cutscene.source, id, cutscene.next])
+			_cutscenes.erase(id)
 	return ok
+
+
+## Scène enchaînée à la fin de [param id] (&"" si aucune ou si [param id] est inconnue).
+func get_next(id: StringName) -> StringName:
+	var cutscene := get_cutscene(id)
+	return cutscene.next if cutscene != null else &""
 
 
 ## Charge un fichier JSON. Faux si le fichier est illisible ou contient une erreur.
@@ -284,6 +309,12 @@ func _parse_cutscene(value: Variant, where: String) -> Cutscene:
 	var entry: Dictionary = value
 	var cutscene := Cutscene.new()
 	var ok := _check_keys(entry, _SCENE_KEYS + _VARIANT_KEYS, where)
+	if entry.has("next"):
+		var next_value: Variant = entry["next"]
+		if not next_value is String or (next_value as String).strip_edges().is_empty():
+			ok = _fail("%s : « next » doit être un identifiant de scène non vide" % where)
+		else:
+			cutscene.next = StringName((next_value as String).strip_edges())
 	var raw_variants: Array = []
 	if entry.has("variants"):
 		for key: String in _VARIANT_KEYS:

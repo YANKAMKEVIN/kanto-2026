@@ -58,6 +58,7 @@
 		"hp_restored": { "text": "{pokemon} récupère {amount} PV." },
 		"prize_won": { "text": "Tu remportes {money}." },
 		"withdrawn": { "text": "Reviens, {pokemon} !" },
+		"withdrawn_foe": { "text": "{trainer} rappelle {pokemon} !" },
 		"switch_reason_active": { "text": "Déjà au combat" },
 		"switch_reason_fainted": { "text": "Ne peut plus combattre" },
 		"replace_prompt": { "text": "Qui envoyer au combat ?" },

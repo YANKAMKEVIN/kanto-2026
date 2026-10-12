@@ -20,14 +20,12 @@ const MAP_IDS: Array[StringName] = [
 	&"route_3", &"mt_moon_center", &"route_4",
 	# Jalon 12 (T9) : les trois étages du Mont Sélénite.
 	&"mt_moon_1f", &"mt_moon_b1f", &"mt_moon_b2f",
-	# Jalon 13 (T7) : Azuria et ses intérieurs (raccords vers les Routes 4 et 24 : voir
-	# AWAITING_T8).
+	# Jalon 13 (T7) : Azuria et ses intérieurs.
 	&"cerulean_city", &"cerulean_center", &"cerulean_mart", &"cerulean_gym",
 	&"cerulean_bike_shop", &"cerulean_house",
+	# Jalon 13 (T8) : la Route 24 (la Route 4 est devenue la vraie Route 4, même identifiant).
+	&"route_24",
 ]
-## Jalon 13 : raccords d'Azuria vers les cartes de la T8 (parallèle) : [carte, spawn] attendus,
-## vérifiés seulement quand la carte et son spawn existent (sinon en attente, documenté).
-const AWAITING_T8: Array = [[&"route_4", &"from_cerulean"], [&"route_24", &"from_cerulean"]]
 ## Cartes construites par une autre tâche en parallèle (jalon 7 : la Route 22, T22 ; jalon 10 :
 ## Argenta, T11, pendant les intérieurs du T13) : un warp qui y mène est vérifié seulement si la
 ## carte existe déjà (sinon le test le signale).
@@ -51,21 +49,6 @@ func after_all() -> void:
 	for map: GameMap in _maps.values():
 		map.free()
 	_maps.clear()
-
-
-func _awaits_t8(warp: Warp) -> bool:
-	for pair: Array in AWAITING_T8:
-		if warp.target_map != pair[0] or warp.target_spawn != pair[1]:
-			continue
-		var scene := load(MapCatalog.scene_path(warp.target_map)) as PackedScene \
-			if MapCatalog.has_map(warp.target_map) else null
-		if scene == null:
-			return true
-		var other := scene.instantiate() as GameMap
-		var missing := not other.has_spawn(warp.target_spawn)
-		other.free()
-		return missing
-	return false
 
 
 func _warp_count_in_scene(map: GameMap) -> int:
@@ -94,10 +77,6 @@ func test_every_warp_targets_existing_map_and_walkable_spawn() -> void:
 		for warp: Warp in (_maps[map_id] as GameMap).get_warps().get_all():
 			if warp.is_coming_soon():
 				continue  # destination « à venir » : voir le test dédié
-			if _awaits_t8(warp):
-				gut.p("%s %s → %s/%s : en attente de la T8 (Route 4 / Route 24)" % [map_id,
-					warp.cell, warp.target_map, warp.target_spawn])
-				continue
 			var label := "%s %s → %s/%s" % [map_id, warp.cell, warp.target_map, warp.target_spawn]
 			if PARALLEL_MAPS.has(warp.target_map) and not MapCatalog.has_map(warp.target_map):
 				gut.p("%s : carte « %s » pas encore construite (tâche parallèle)" % [label,
@@ -136,7 +115,7 @@ func test_every_coming_soon_warp_returns_to_a_walkable_spawn_of_its_own_map() ->
 			var back := map.get_spawn_cell(warp.target_spawn)
 			assert_false(map.get_grid().is_solid(back), "%s : retour praticable" % label)
 			assert_ne(warp.facing, Vector2i.ZERO, "%s : orientation au retour" % label)
-	assert_gt(found, 0, "au moins le raccord est du sas de la Route 4 (Azuria)")
+	assert_gt(found, 0, "au moins le raccord est de la Route 24 (Route 25)")
 
 
 ## Warp de [param map] qui ramène à [param origin] depuis [param arrival] : sur la case
@@ -158,7 +137,7 @@ func test_every_warp_is_reversible_on_the_spot() -> void:
 	for map_id: StringName in _maps:
 		for warp: Warp in (_maps[map_id] as GameMap).get_warps().get_all():
 			var target := _maps.get(warp.target_map) as GameMap
-			if target == null or warp.is_coming_soon() or _awaits_t8(warp):
+			if target == null or warp.is_coming_soon():
 				continue
 			var arrival := target.get_spawn_cell(warp.target_spawn)
 			var back := _return_warp(target, arrival, map_id)
@@ -243,14 +222,3 @@ func test_no_trigger_on_a_step_on_warp() -> void:
 				shared += 1
 	assert_eq(shared, 1, "seul partage : le tapis de sortie du labo (warp PUSH)")
 	assert_push_error_count(0)
-
-
-## Jalon 13 : les raccords croisés d'Azuria ↔ Route 4 / Route 24 attendent la T8 (carte et spawn
-## `from_cerulean`) ; en attente documentée tant qu'ils manquent.
-func test_azuria_cross_links_wait_for_t8() -> void:
-	var waiting: Array[String] = []
-	for warp: Warp in (_maps[&"cerulean_city"] as GameMap).get_warps().get_all():
-		if _awaits_t8(warp):
-			waiting.append("%s/%s" % [warp.target_map, warp.target_spawn])
-	if not waiting.is_empty():
-		pending("raccords d'Azuria en attente de la T8 : %s" % ", ".join(waiting))

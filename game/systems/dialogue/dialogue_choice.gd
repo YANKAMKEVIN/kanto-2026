@@ -15,6 +15,10 @@ extends RefCounted
 ## Le lecteur ([DialogueRunner]) joue, si le joueur confirme, [member confirm_action] (attendue)
 ## puis [member confirm_pages] ; sinon [member cancel_pages]. Une liste vide = le dialogue se
 ## termine tout de suite.
+## Jalon 13 (jalon-13.md §2.13) : « confirm_set » / « cancel_set » (listes non vides de
+## drapeaux, compatibles avec « confirm_action ») sont levés dès que le joueur a choisi, avant la
+## fermeture : dans une scène, les étapes suivantes les lisent (conditions évaluées à
+## l'exécution).
 
 ## Libellé de la carte de l'action (« SOIGNER »).
 var confirm_label: String = ""
@@ -23,6 +27,10 @@ var cancel_label: String = ""
 ## Action jouée si le joueur confirme (&"" = aucune), avant [member confirm_pages] :
 ## une de [constant DialogueLibrary.ACTIONS].
 var confirm_action: StringName = &""
+## Drapeaux levés si le joueur confirme (« confirm_set »).
+var confirm_set: Array[StringName] = []
+## Drapeaux levés s'il renonce (« cancel_set »).
+var cancel_set: Array[StringName] = []
 var confirm_pages: Array[DialoguePage] = []
 var cancel_pages: Array[DialoguePage] = []
 

@@ -352,3 +352,56 @@ func test_team_stays_dimmed_with_a_single_pokemon() -> void:
 	assert_false(seen.is_empty())
 	assert_false(seen.has(true), "ÉQUIPE atténué")
 	assert_null(_director.get_party_panel(), "aucun panneau ouvert")
+
+
+# --- Rappel par l'IA (jalon 13, dossier 16 §14) ------------------------------------------
+
+## Ondine d'essai (« switch ») : Salamèche craint Carapuce, elle le rappelle une fois au premier
+## tour ; « Ondine rappelle Salamèche ! », le sprite quitte la scène, puis Roucool entre avec sa
+## carte. Le joueur attaque jusqu'à la victoire.
+func test_foe_trainer_recalls_once_with_its_line_sprite_and_card() -> void:
+	var party := Party.new()
+	party.add(_mon(&"squirtle", 12))
+	_state.party = party
+	_state.starter_species = &"squirtle"
+	_state.rng = GameRng.new(7)
+	var trainer := TrainerData.new()
+	trainer.id = &"qa_switch_test"
+	trainer.name = "Ondine"
+	trainer.ai = BattleAI.SMART
+	trainer.can_switch = true
+	trainer.gives_exp = false
+	var foes := Party.new()
+	foes.add(_mon(&"charmander", 5))
+	foes.add(_mon(&"pidgey", 5))
+	var request := BattleRequest.trainer_battle(trainer, foes)
+	var seen := {"sprite_hidden": false, "card_hidden": false, "after": ""}
+	_director.event_played.connect(func(e: BattleEvent) -> void:
+		# Émis après les temps de l'événement : le rappel vient d'être joué.
+		if e.kind == K.WITHDRAWN and e.side == BattleEvent.SideId.FOE:
+			seen["sprite_hidden"] = not _stage.get_sprite(BattleEvent.SideId.FOE).visible
+			seen["card_hidden"] = not _hud.get_card(BattleHud.Side.FOE).is_shown())
+	var step := func(battle: Battle, _panel: BattlePartyPanel) -> void:
+		if battle.get_state() != Battle.State.CHOOSING:
+			return
+		var foe_card := _hud.get_card(BattleHud.Side.FOE)
+		if seen["after"] == "" and battle.get_foe_side().active.pokemon.species_id == &"pidgey":
+			seen["after"] = "%s|%s|%s" % [foe_card.get_name_text(), foe_card.is_shown(),
+				_stage.get_sprite(BattleEvent.SideId.FOE).visible]
+		match _hud.get_zone():
+			BattleHud.Zone.ACTIONS:
+				_hud.action_selected.emit(ActionGrid.ATTACK)
+			BattleHud.Zone.MOVES:
+				_hud.move_selected.emit(0)
+	var report := await _drive(request, step)
+	assert_eq(report["outcome"], Battle.Outcome.WIN)
+	var kinds := _kinds(report["events"])
+	assert_eq(kinds.count(["WITHDRAWN", "FOE"]), 1, "un seul rappel")
+	var at := kinds.find(["WITHDRAWN", "FOE"])
+	assert_eq(kinds.slice(at, at + 3), [["WITHDRAWN", "FOE"], ["SENT_OUT", "FOE"],
+		["MOVE_USED", "PLAYER"]])
+	assert_eq(Array(_texts.lines(report["events"][at], _data)), ["Ondine rappelle Salamèche !"])
+	assert_true(seen["sprite_hidden"], "le rappelé a quitté la scène avant l'envoi")
+	assert_true(seen["card_hidden"], "sa carte est sortie")
+	assert_eq(seen["after"], "ROUCOOL|true|true", "carte et sprite du nouveau")
+	assert_push_error_count(0)

@@ -108,6 +108,7 @@
 		"cerulean_mart": "interior_warm",
 		"cerulean_gym": "interior_warm",
 		"cerulean_bike_shop": "interior_warm",
-		"cerulean_house": "interior_warm"
+		"cerulean_house": "interior_warm",
+		"route_24": "golden_hour"
 	}
 }
