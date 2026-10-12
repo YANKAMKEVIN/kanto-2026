@@ -1,0 +1,8 @@
+{
+	"pay_day": {
+		"name": "Jackpot", "type": "normal", "category": "physical",
+		"power": 40, "accuracy": 100, "pp": 20,
+		"pending_effects": ["pay_day"],
+		"description": "Des pièces s'éparpillent sur l'adversaire. On les ramasse après un combat gagné."
+	}
+}

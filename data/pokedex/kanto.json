@@ -212,6 +212,14 @@
 				{ "id": "onix_rumble", "unlock": { "seen": 1 },
 				  "text": "Un grondement sourd sous les pieds, puis plus rien : un Onix vient de passer, quelque part sous la roche." }
 			]
+		},
+		"meowth": {
+			"height": 0.4, "weight": 4.2,
+			"description": "Il adore ce qui brille. La nuit, il rôde dans les rues à la recherche de pièces."
+		},
+		"persian": {
+			"height": 1.0, "weight": 32.0,
+			"description": "Élégant et rapide. Le joyau de son front s'illumine quand il est sur ses gardes."
 		}
 	}
 }

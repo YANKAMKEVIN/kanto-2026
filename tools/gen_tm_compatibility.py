@@ -5,7 +5,8 @@ Dossier 14 §6.1 : compatibilité **par espèce**, reprise de Rouge/Bleu (valeur
 Source : les CSV publics de PokeAPI (dépôt PokeAPI/pokeapi, `data/v2/csv/`) : `pokemon_moves.csv`,
 `moves.csv`, `pokemon.csv`, `machines.csv`, `version_groups.csv`, `pokemon_move_methods.csv`.
 Écrit `data/pokemon/tm_compatibility.json` (CT 01–50 → capacité, espèce → numéros de CT), pour
-**toutes** les espèces de `data/pokemon/species/kanto.json`. Lu par `PokemonData`
+**toutes** les espèces des fichiers `data/pokemon/species/*.json` (ordre alphabétique des
+fichiers, comme `PokemonData` ; J15 : `kanto_vermilion.json`). Lu par `PokemonData`
 (`can_learn_tm`, lot CT 11B, `jalon-11.md` §2.6).
 
 Usage : python3 -I tools/gen_tm_compatibility.py DOSSIER_DES_CSV
@@ -20,7 +21,7 @@ import sys
 from pathlib import Path
 
 RACINE = Path(__file__).resolve().parents[1]
-ESPECES = RACINE / "data/pokemon/species/kanto.json"
+ESPECES = RACINE / "data/pokemon/species"
 SORTIE = RACINE / "data/pokemon/tm_compatibility.json"
 GROUPE = "red-blue"
 METHODE = "machine"
@@ -50,8 +51,10 @@ def main() -> None:
 			ct_par_capacite[ligne["move_id"]] = numero
 			tms[f"{numero:02d}"] = capacites[ligne["move_id"]]
 	assert len(tms) == 50, f"50 CT attendues, {len(tms)} trouvées"
-	contenu = json.loads(ESPECES.read_text(encoding="utf-8"))
-	especes = contenu.get("species", contenu)
+	especes: dict[str, object] = {}
+	for fichier in sorted(ESPECES.glob("*.json")):
+		contenu = json.loads(fichier.read_text(encoding="utf-8"))
+		especes.update(contenu.get("species", contenu))
 	compat: dict[str, set[int]] = {espece: set() for espece in especes}
 	for ligne in _lire(dossier, "pokemon_moves"):
 		if ligne["version_group_id"] != groupe or ligne["pokemon_move_method_id"] != methode:

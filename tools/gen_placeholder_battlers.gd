@@ -5,7 +5,8 @@ extends SceneTree
 ## huit espèces de la Forêt de Jade (jalon-09.md §2.5 : Chenipan → Papilusion, Aspicot →
 ## Dardargnan, Pikachu, Raichu ; les évolutions aussi, puisqu'elles naissent en combat) et des
 ## trois espèces des Dresseurs d'Argenta (jalon-10.md §2.3 : Sabelette, Racaillou, Onix ; en
-## face, l'adversaire est l'artwork officiel, ces sprites ne servent que de repli et de dos).
+## face, l'adversaire est l'artwork officiel, ces sprites ne servent que de repli et de dos),
+## puis Rattatac (Campeur Gabin), Miaouss et Persan (jalon-15.md §2.7.1).
 ## Pixel art 64 × 64 natif, affiché en NEAREST par le BattleStage (×4 de dos, ×3 de face) :
 ##   assets/sprites/pokemon/placeholder/<espèce>_front.png   (vue de face : l'adversaire)
 ##   assets/sprites/pokemon/placeholder/<espèce>_back.png    (vue de dos : le Pokémon du joueur)
@@ -25,6 +26,7 @@ const SPECIES: Array[String] = [
 	"spearow", "mankey", "nidoran_f", "nidoran_m",
 	"caterpie", "metapod", "butterfree", "weedle", "kakuna", "beedrill", "pikachu", "raichu",
 	"sandshrew", "geodude", "onix",
+	"raticate", "meowth", "persian",
 ]
 const OUTLINE := Color("#1c1c28")
 const EYE := Color("#1c1c28")
@@ -722,6 +724,89 @@ func _draw_onix(img: Image, back: bool) -> void:
 	_r(img, 19, 12, 6, 2, WHITE)
 	_r(img, 21, 12, 2, 2, EYE)
 	_r(img, 18, 18, 14, 2, rock.darkened(0.5))
+
+
+# --- Rattatac (J15 : Campeur Gabin de la Route 6) ----------------------------------
+
+## Rattata plus massif, brun clair, grandes moustaches et incisives bien visibles.
+func _draw_raticate(img: Image, back: bool) -> void:
+	var fur := Color("#b88850")
+	var belly := Color("#f0e0c0")
+	var ear := Color("#e0a0b0")
+	var tail := Color("#9a7040")
+	if back:
+		_line(img, Vector2(46, 56), Vector2(62, 44), tail, 3)
+		_e(img, 32, 45, 22, 16, fur, true)
+		_r(img, 16, 54, 9, 8, fur.darkened(0.15))
+		_r(img, 39, 54, 9, 8, fur.darkened(0.15))
+		_e(img, 32, 23, 17, 13, fur, true)
+		_e(img, 17, 12, 6, 7, fur)
+		_e(img, 47, 12, 6, 7, fur)
+		return
+	_line(img, Vector2(46, 57), Vector2(62, 48), tail, 3)
+	_e(img, 32, 46, 22, 16, fur, true)
+	_e(img, 32, 50, 13, 11, belly)
+	_r(img, 18, 56, 9, 6, fur.darkened(0.12))
+	_r(img, 37, 56, 9, 6, fur.darkened(0.12))
+	_e(img, 32, 24, 18, 15, fur, true)
+	_e(img, 32, 30, 11, 8, belly)
+	_e(img, 16, 12, 7, 8, fur)
+	_e(img, 48, 12, 7, 8, fur)
+	_e(img, 16, 12, 3, 4, ear)
+	_e(img, 48, 12, 3, 4, ear)
+	_eye(img, 21, 18, Color("#2a2a2a"))
+	_eye(img, 38, 18, Color("#2a2a2a"))
+	_r(img, 30, 29, 4, 2, Color("#7a3a20"))
+	_r(img, 28, 32, 3, 5, WHITE)
+	_r(img, 33, 32, 3, 5, WHITE)
+	_line(img, Vector2(23, 30), Vector2(6, 26), WHITE)
+	_line(img, Vector2(23, 32), Vector2(6, 33), WHITE)
+	_line(img, Vector2(41, 30), Vector2(58, 26), WHITE)
+	_line(img, Vector2(41, 32), Vector2(58, 33), WHITE)
+
+
+# --- Miaouss et Persan (J15) ------------------------------------------------------
+
+func _draw_meowth(img: Image, back: bool) -> void:
+	_draw_cat(img, back, Color("#f0deb0"), Color("#c8a060"), Color("#e8c040"), 0.0)
+
+
+func _draw_persian(img: Image, back: bool) -> void:
+	_draw_cat(img, back, Color("#f0dca0"), Color("#d8b880"), Color("#e04040"), 1.0)
+
+
+## Chat assis, queue relevée, pièce (ou joyau) au front. [param size] : 0 = Miaouss, 1 = Persan
+## (corps plus allongé, oreilles plus hautes).
+func _draw_cat(img: Image, back: bool, fur: Color, ear: Color, charm: Color,
+		size: float) -> void:
+	var body_rx := 15.0 + 5.0 * size
+	var ear_h := 8.0 + 3.0 * size
+	if back:
+		_line(img, Vector2(44, 56), Vector2(56, 40), fur.darkened(0.1), 3)
+		_line(img, Vector2(56, 40), Vector2(52, 30), fur.darkened(0.1), 3)
+		_e(img, 32, 46, body_rx, 15, fur, true)
+		_r(img, 21, 54, 8, 8, fur.darkened(0.15))
+		_r(img, 35, 54, 8, 8, fur.darkened(0.15))
+		_e(img, 32, 24, 16, 13, fur, true)
+		_e(img, 21, 12, 5, ear_h, ear.darkened(0.2))
+		_e(img, 43, 12, 5, ear_h, ear.darkened(0.2))
+		return
+	_line(img, Vector2(44, 57), Vector2(57, 44), fur.darkened(0.1), 3)
+	_line(img, Vector2(57, 44), Vector2(54, 33), fur.darkened(0.1), 3)
+	_e(img, 32, 47, body_rx, 15, fur, true)
+	_r(img, 21, 56, 8, 6, fur.darkened(0.12))
+	_r(img, 35, 56, 8, 6, fur.darkened(0.12))
+	_e(img, 32, 24, 17, 14, fur, true)
+	_e(img, 20, 11, 5, ear_h, fur)
+	_e(img, 44, 11, 5, ear_h, fur)
+	_e(img, 20, 12, 2, ear_h - 3.0, ear.darkened(0.3))
+	_e(img, 44, 12, 2, ear_h - 3.0, ear.darkened(0.3))
+	_e(img, 32, 13, 4, 4, charm, true)
+	_eye(img, 21, 20, Color("#3a7a3a"))
+	_eye(img, 38, 20, Color("#3a7a3a"))
+	_r(img, 30, 30, 4, 2, Color("#c06070"))
+	_line(img, Vector2(24, 31), Vector2(9, 28), fur.darkened(0.4))
+	_line(img, Vector2(40, 31), Vector2(55, 28), fur.darkened(0.4))
 
 
 # --- Ombre ------------------------------------------------------------------------
