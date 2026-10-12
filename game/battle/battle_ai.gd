@@ -34,6 +34,8 @@ const LOW_HP_RATIO: float = 1.0 / 3.0
 const STATUS_SCORE: float = 40.0
 ## Bonus de type (STAB).
 const STAB: float = 1.5
+## « Charge puis frappe » (jalon 14, Tunnel) : deux tours pour un coup, note × 0,5 [D].
+const CHARGE_FACTOR: float = 0.5
 
 var kind: StringName = RANDOM
 ## « smart » : capacités de statut choisies, par Pokémon (identifiant d'instance) puis capacité.
@@ -77,6 +79,7 @@ func times_used(pokemon: Pokemon, move_id: StringName) -> int:
 ## [param times_used] ≥ [constant STATUS_MAX_USES], ou si aucun de ses effets ne peut plus rien
 ## changer (niveau déjà au bout, graine déjà plantée ou cible immunisée, statut déjà présent ou
 ## cible immunisée, effet que le moteur ne gère pas encore). Les capacités de statut ignorent les types (comme le moteur).
+## Une capacité « charge puis frappe » (jalon 14) vaut × [constant CHARGE_FACTOR].
 static func score_move(move: MoveData, own: Battler, foe: Battler, chart: TypeChart,
 		times_used: int) -> float:
 	if move == null:
@@ -85,7 +88,8 @@ static func score_move(move: MoveData, own: Battler, foe: Battler, chart: TypeCh
 	if move.is_damaging():
 		var effectiveness := effectiveness_of(move, foe, chart)
 		var stab := STAB if not move.typeless and own.types.has(move.type) else 1.0
-		return move.power * stab * effectiveness * accuracy
+		var charge := CHARGE_FACTOR if move.charge_effect() != null else 1.0
+		return move.power * stab * effectiveness * accuracy * charge
 	if is_low(own) or times_used >= STATUS_MAX_USES or not status_has_effect(move, own, foe):
 		return 0.0
 	return STATUS_SCORE * accuracy

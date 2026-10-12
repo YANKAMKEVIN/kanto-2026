@@ -166,7 +166,11 @@
 		"evolution_started": { "text": "Quoi ? {pokemon} évolue !" },
 		"evolution_finished": { "text": "Félicitations ! {pokemon} a évolué en {species} !" },
 		"evolution_cancelled": { "text": "Hein ? {pokemon} n'évolue plus." },
-		"evolution_stop": { "text": "ARRÊTER" }
+		"evolution_stop": { "text": "ARRÊTER" },
+		"charge_dig_start": { "text": "{pokemon} creuse un trou !" },
+		"charge_dig_broken": { "text": "{pokemon} remonte à la surface." },
+		"dodged": { "text": "{pokemon} évite l'attaque !" },
+		"ball_blocked": { "text": "Impossible de viser !" }
 	},
 	"stats": {
 		"atk": "L'Attaque", "def": "La Défense", "spa": "L'Attaque Spéciale",

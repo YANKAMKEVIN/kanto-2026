@@ -48,6 +48,10 @@ extends RefCounted
 ## « focused ». Patience (n° 28 à 32) : BIDE_STARTED → « bide_started », BIDE_STORING →
 ## « bide_storing », BIDE_UNLEASHED → « bide_unleashed », BIDE_BROKEN → « bide_broken » (riposte
 ## à vide : FAILED, « Mais ça échoue ! »).
+## Jalon 14 (dossier 17 §15, n° 52 à 57) : CHARGE_STARTED → « charge_<texts>_start » et
+## CHARGE_BROKEN → « charge_<texts>_broken » ([member MoveEffect.texts] de l'effet CHARGE de la
+## capacité [member BattleEvent.move_id] ; pas de phrase sans modèle) ; CHARGE_RELEASED : pas de
+## phrase (le MOVE_USED suit) ; DODGED → « dodged » ; BALL_BLOCKED → « ball_blocked ».
 ## Changement de Pokémon (jalon 7) : WITHDRAWN → « withdrawn » (« Reviens, Salamèche ! ») ; le
 ## Pokémon envoyé reprend « sent_out_player ». Le panneau ÉQUIPE lit, sans événement
 ## ([method get_template]), « switch_reason_active », « switch_reason_fainted » (raisons sur
@@ -109,6 +113,7 @@ const TEMPLATE_IDS: Array[StringName] = [
 	&"confusion_ended", &"multi_hit", &"flinched", &"focused",
 	&"bide_started", &"bide_storing", &"bide_unleashed", &"bide_broken",
 	&"evolution_started", &"evolution_finished", &"evolution_cancelled", &"evolution_stop",
+	&"charge_dig_start", &"charge_dig_broken", &"dodged", &"ball_blocked",
 ]
 ## Entre deux gains de statistiques du bilan (« PV +2 · Attaque +1 »).
 const SUMMARY_SEPARATOR: String = " · "
@@ -329,6 +334,14 @@ func lines(event: BattleEvent, data: PokemonData, trainer: TrainerData = null) \
 			result.append(_fill(&"bide_unleashed", event, data))
 		BattleEvent.Kind.BIDE_BROKEN:
 			result.append(_fill(&"bide_broken", event, data))
+		BattleEvent.Kind.CHARGE_STARTED, BattleEvent.Kind.CHARGE_BROKEN:
+			var charge_id := _charge_template(event, data)
+			if _texts.has(charge_id):
+				result.append(_fill(charge_id, event, data))
+		BattleEvent.Kind.DODGED:
+			result.append(_fill(&"dodged", event, data))
+		BattleEvent.Kind.BALL_BLOCKED:
+			result.append(_fill(&"ball_blocked", event, data))
 		BattleEvent.Kind.STATUS_INFLICTED, BattleEvent.Kind.STATUS_UNCHANGED, \
 				BattleEvent.Kind.STATUS_DAMAGED, BattleEvent.Kind.STATUS_CURED, \
 				BattleEvent.Kind.STATUS_PREVENTED, BattleEvent.Kind.STATUS_ENDED:
@@ -431,6 +444,17 @@ func _fill(id: StringName, event: BattleEvent, data: PokemonData,
 		"item": event.item_name,
 		"amount": event.amount,
 	})
+
+
+## « charge_<texts>_start » ou « _broken » pour un événement de charge (jalon 14), ou &"" si la
+## capacité n'a pas d'effet CHARGE.
+func _charge_template(event: BattleEvent, data: PokemonData) -> StringName:
+	var move := data.get_move(event.move_id)
+	var effect := move.charge_effect() if move != null else null
+	if effect == null:
+		return &""
+	var suffix := "start" if event.kind == BattleEvent.Kind.CHARGE_STARTED else "broken"
+	return StringName("charge_%s_%s" % [effect.texts, suffix])
 
 
 func _parse_template(value: Variant, id: StringName, texts: Dictionary[StringName, String],

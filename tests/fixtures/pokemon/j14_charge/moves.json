@@ -1,0 +1,8 @@
+{
+	"dig": {
+		"name": "Tunnel", "type": "ground", "category": "physical",
+		"power": 100, "accuracy": 100, "pp": 10,
+		"effects": [{ "kind": "charge", "texts": "dig", "invulnerable": true }],
+		"description": "Le Pokémon creuse au premier tour et frappe au second. Sous terre, il évite les attaques."
+	}
+}
