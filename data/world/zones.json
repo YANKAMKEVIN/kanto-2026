@@ -86,14 +86,12 @@
 		"route_25": {
 			"name": "Route 25", "kind": "route", "maps": [],
 			"subtitle": "Azuria — Cap d'Azuria",
-			"description": "Un chemin côtier qui longe la mer vers l'est, entre falaises et criques. Tout au bout, une maison isolée sur la pointe.",
-			"draft": true
+			"description": "Un chemin côtier qui longe la mer vers l'est, entre falaises et criques. Tout au bout, une maison isolée sur la pointe."
 		},
 		"cerulean_cape": {
 			"name": "Cap d'Azuria", "kind": "place", "maps": [],
 			"subtitle": "Route 25",
-			"description": "La pointe la plus avancée de la côte. Un chercheur un peu à part y vit seul, entouré de ses machines.",
-			"draft": true
+			"description": "La pointe la plus avancée de la côte. Un chercheur un peu à part y vit seul, entouré de ses machines."
 		}
 	}
 }

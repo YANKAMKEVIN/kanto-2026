@@ -3,11 +3,6 @@ extends GutTest
 ## références croisées (jalon 4 §2.1, §3.2 et décisions de Kevin du §8).
 
 const FIXTURES := "res://tests/fixtures/pokemon/"
-## Capacités dont la description attend la validation de Kevin (jalon 14, annexe A du plan,
-## T3) : marquées « draft » ; à retirer d'ici, et « draft » des données, une fois validées.
-const AWAITING_TEXTS: Array[StringName] = [
-	&"teleport", &"low_kick", &"submission", &"psychic", &"reflect",
-]
 
 ## Valeurs de Rouge/Bleu (PokeAPI, groupe de versions red-blue), statistiques et rendement
 ## d'XP modernes comme les espèces déjà présentes : [dex, nom, types, PV, Att, Déf, Att. Spé.,
@@ -215,9 +210,6 @@ func test_every_real_move_has_a_validated_description() -> void:
 	for id: StringName in _data.get_move_ids():
 		var move := _data.get_move(id)
 		assert_false(move.description.is_empty(), String(id))
-		if AWAITING_TEXTS.has(id):
-			assert_true(move.draft, "%s : description en attente de Kevin" % id)
-			continue
 		assert_false(move.draft, "%s : description validé par Kevin le 2026-10-06" % id)
 
 

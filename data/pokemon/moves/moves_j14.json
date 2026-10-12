@@ -1,7 +1,7 @@
 {
 	"teleport": {
 		"name": "Téléport", "type": "psychic", "category": "status",
-		"accuracy": 0, "pp": 20, "pending_effects": ["teleport"], "draft": true,
+		"accuracy": 0, "pp": 20, "pending_effects": ["teleport"],
 		"description": "Le lanceur se téléporte ailleurs. Permet de fuir un Pokémon sauvage."
 	},
 	"dig": {
@@ -12,24 +12,22 @@
 	"low_kick": {
 		"name": "Balayage", "type": "fighting", "category": "physical",
 		"power": 50, "accuracy": 90, "pp": 20, "effects": [{ "kind": "flinch", "chance": 30 }],
-		"draft": true,
 		"description": "Un coup de pied bas. Peut apeurer la cible."
 	},
 	"submission": {
 		"name": "Sacrifice", "type": "fighting", "category": "physical",
-		"power": 80, "accuracy": 80, "pp": 25, "pending_effects": ["recoil_damage"], "draft": true,
+		"power": 80, "accuracy": 80, "pp": 25, "pending_effects": ["recoil_damage"],
 		"description": "Une charge violente qui blesse aussi le lanceur. Sans effet dans le moteur actuel."
 	},
 	"psychic": {
 		"name": "Psyko", "type": "psychic", "category": "special",
 		"power": 90, "accuracy": 100, "pp": 10,
 		"effects": [{ "kind": "stat_stage", "stat": "spd", "stages": -1, "target": "foe", "chance": 10 }],
-		"draft": true,
 		"description": "Une puissante onde psychique. Peut baisser la Défense Spéciale de la cible."
 	},
 	"reflect": {
 		"name": "Protection", "type": "psychic", "category": "status",
-		"accuracy": 0, "pp": 20, "pending_effects": ["reflect"], "draft": true,
+		"accuracy": 0, "pp": 20, "pending_effects": ["reflect"],
 		"description": "Un mur de lumière qui réduit les dégâts physiques reçus. Sans effet dans le moteur actuel."
 	}
 }
