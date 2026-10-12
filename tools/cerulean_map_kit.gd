@@ -394,14 +394,16 @@ func bridge_rects() -> Array[Dictionary]:
 
 ## Tablier de chaque pont : modules [param decks] (`{&"ns": id, &"ew": id}`) répétés dans le
 ## sens de la traversée (dernier aligné sur le bout), à la largeur exacte du pont, dans
-## `GroundDecals` après les quais. Renvoie le nombre de modules.
+## `GroundDecals` après les quais. Une clé `Vector2i` (case du coin nord-ouest du pont) donne le
+## module d'**un** pont (largeurs différentes : Azuria, 2 et 3 de large). Renvoie le nombre de
+## modules.
 func place_bridges(decks: Dictionary) -> int:
 	bridges = bridge_rects()
 	var count := 0
 	for index: int in bridges.size():
 		var rect: Rect2i = bridges[index]["rect"]
 		var axis: StringName = bridges[index]["axis"]
-		var id: String = decks.get(axis, "")
+		var id: String = decks.get(rect.position, decks.get(axis, ""))
 		var texture := _deck_texture(id, axis, rect)
 		if texture == null:
 			continue

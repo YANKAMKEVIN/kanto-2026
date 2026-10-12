@@ -100,7 +100,8 @@ func test_the_exit_shows_the_coming_soon_screen_then_returns_facing_west() -> vo
 	assert_true(zones.is_empty(), "aucun titre de zone")
 	assert_false(_boot.get_hud().get_caption().is_showing())
 	assert_false(GameState.discovered_maps.has(&"cerulean_city"), "aucune carte découverte")
-	assert_false(MapCatalog.has_map(&"cerulean_city"), "Azuria n'existe pas encore (J13)")
+	# Jalon 13 T7 : Azuria existe (carte construite) ; le raccord « à venir » du sas disparaît avec
+	# la Route 4 réécrite (T8).
 	assert_push_error_count(0)
 
 

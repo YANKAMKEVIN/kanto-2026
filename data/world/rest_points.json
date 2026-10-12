@@ -12,6 +12,9 @@
 		},
 		"mt_moon_center": {
 			"spawn": "heal", "facing": "up", "wakeup_dialogue": "nurse_wakeup", "registers": true
+		},
+		"cerulean_center": {
+			"spawn": "heal", "facing": "up", "wakeup_dialogue": "nurse_wakeup", "registers": true
 		}
 	}
 }
