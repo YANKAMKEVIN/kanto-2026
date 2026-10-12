@@ -73,9 +73,11 @@ func test_real_data_loads_without_error() -> void:
 		&"pidgey", &"pidgeotto", &"pidgeot", &"rattata", &"raticate", &"spearow", &"fearow",
 		&"pikachu", &"raichu", &"sandshrew", &"sandslash", &"nidoran_f", &"nidorina",
 		&"nidoqueen", &"nidoran_m", &"nidorino", &"nidoking", &"mankey", &"primeape",
+		&"abra", &"kadabra", &"machop",
 		&"geodude", &"graveler", &"golem", &"onix"] as Array[StringName])
-	assert_eq(_data.get_move_ids().size(), 67,
-		"47 + 12 de la Forêt de Jade (jalon 9) + 7 d'Argenta (jalon 10) + Patience (J11)")
+	assert_eq(_data.get_move_ids().size(), 73,
+		"47 + 12 de la Forêt de Jade (jalon 9) + 7 d'Argenta (jalon 10) + Patience (J11)"
+		+ " + 6 du Cap d'Azuria (jalon 14)")
 	assert_true(_data.has_move(&"struggle"))
 
 
@@ -129,6 +131,9 @@ func test_real_evolution_chains() -> void:
 		# Argenta (jalon 10, §2.3) : Rouge/Bleu ; Grolem par échange (« ??? » au Pokédex).
 		&"sandshrew": [&"sandslash", 22], &"geodude": [&"graveler", 25],
 		&"graveler": [&"golem", &""],
+		# Cap d'Azuria (jalon 14, §2.13) : Kadabra (Cordon d'échange, sans source) et Machoc
+		# (Machopeur absent) n'en déclarent pas.
+		&"abra": [&"kadabra", 16],
 	}
 	for id: StringName in _data.get_species_ids():
 		var rules := _data.get_species(id).evolutions
@@ -381,6 +386,8 @@ func test_real_catch_rates_are_the_official_ones() -> void:
 		&"weedle": 255, &"kakuna": 120, &"beedrill": 45, &"pikachu": 190, &"raichu": 75,
 		&"sandshrew": 255, &"sandslash": 90, &"geodude": 255, &"graveler": 120, &"golem": 45,
 		&"onix": 45,
+		# Jalon 14 (Cap d'Azuria).
+		&"abra": 200, &"kadabra": 100, &"machop": 180,
 	}
 	assert_eq(_data.get_species_ids().size(), expected.size(), "toutes les espèces")
 	for id: StringName in _data.get_species_ids():
@@ -767,3 +774,67 @@ func test_forest_move_texts_are_the_locked_ones() -> void:
 			"| « %s Sans effet dans le moteur actuel. » |" % move.description) or lot.contains(
 			"| « %s Un seul coup dans le moteur actuel. » |" % move.description)
 		assert_true(locked, "%s : description" % id)
+
+
+# --- Cap d'Azuria (jalon 14, T5, jalon-14.md §2.13) ---------------------------------------------
+
+func test_j14_species_values_and_red_blue_learnsets() -> void:
+	_data.load_dir()
+	assert_eq(_data.get_errors().size(), 0, _errors())
+	var expected := {
+		&"abra": [63, "Abra", [&"psychic"], 25, 20, 15, 105, 55, 90, 62],
+		&"kadabra": [64, "Kadabra", [&"psychic"], 40, 35, 30, 120, 70, 105, 140],
+		&"machop": [66, "Machoc", [&"fighting"], 70, 80, 50, 35, 35, 35, 61],
+	}
+	for id: StringName in expected:
+		var row: Array = expected[id]
+		var species := _data.get_species(id)
+		assert_eq(species.source, "res://data/pokemon/species/kanto_j14.json", String(id))
+		assert_eq([species.dex, species.name], [row[0], row[1]], String(id))
+		assert_eq(species.types, Array(row[2], TYPE_STRING_NAME, "", null), String(id))
+		assert_eq([species.base_stats[&"hp"], species.base_stats[&"atk"],
+			species.base_stats[&"def"], species.base_stats[&"spa"], species.base_stats[&"spd"],
+			species.base_stats[&"spe"]], row.slice(3, 9), String(id))
+		assert_eq(species.base_exp, row[9], String(id))
+		assert_eq(species.male_ratio, 0.75, String(id))
+		assert_eq(species.growth_rate, ExpCurve.Rate.MEDIUM_SLOW, String(id))
+	# Rouge/Bleu (pret/pokered) ; Entrave (J12) et Soin (J13) entreront dans la table de
+	# Kadabra à l'alignement (T23).
+	assert_eq(_data.get_species(&"abra").moves_at(15), [&"teleport"] as Array[StringName])
+	assert_eq(_data.get_species(&"kadabra").moves_at(16), [&"teleport", &"confusion"]
+		as Array[StringName])
+	assert_eq(_data.get_species(&"kadabra").moves_learned_at(38), [&"psychic"]
+		as Array[StringName])
+	assert_eq(_data.get_species(&"machop").moves_at(15), [&"karate_chop"] as Array[StringName],
+		"Machoc 15 : Poing Karaté seul (défaut du plan §0.2 n° 4)")
+	assert_eq(_data.get_species(&"machop").moves_learned_at(20), [&"low_kick"]
+		as Array[StringName])
+	assert_eq(_data.get_species(&"machop").moves_learned_at(46), [&"submission"]
+		as Array[StringName])
+
+
+func test_j14_moves() -> void:
+	_data.load_dir()
+	var rows := {
+		&"teleport": ["Téléport", &"psychic", MoveData.Category.STATUS, 0, 0, 20, ["teleport"]],
+		&"dig": ["Tunnel", &"ground", MoveData.Category.PHYSICAL, 100, 100, 10, ["charge"]],
+		&"low_kick": ["Balayage", &"fighting", MoveData.Category.PHYSICAL, 50, 90, 20, []],
+		&"submission": ["Sacrifice", &"fighting", MoveData.Category.PHYSICAL, 80, 80, 25,
+			["recoil_damage"]],
+		&"psychic": ["Psyko", &"psychic", MoveData.Category.SPECIAL, 90, 100, 10, []],
+		&"reflect": ["Protection", &"psychic", MoveData.Category.STATUS, 0, 0, 20, ["reflect"]],
+	}
+	for id: StringName in rows:
+		var row: Array = rows[id]
+		var move := _data.get_move(id)
+		assert_eq([move.name, move.type, move.category, move.power, move.accuracy, move.pp],
+			row.slice(0, 6), String(id))
+		assert_eq(move.pending_effects, PackedStringArray(row[6]), String(id))
+		assert_eq(move.priority, 0, "%s : priorité 0 (Rouge/Bleu, plan §2.5)" % id)
+	assert_eq(_data.get_move(&"dig").description, "Le Pokémon creuse au premier tour et frappe"
+		+ " au second. Sous terre, il évite les attaques.", "n° 60")
+	var kick := _data.get_move(&"low_kick").effects
+	assert_eq([kick[0].kind, kick[0].chance], [MoveEffect.Kind.FLINCH, 30])
+	var psychic := _data.get_move(&"psychic").effects
+	assert_eq([psychic[0].kind, psychic[0].stat, psychic[0].stages, psychic[0].target,
+		psychic[0].chance], [MoveEffect.Kind.STAT_STAGE, &"spd", -1, MoveEffect.Target.FOE, 10])

@@ -35,7 +35,7 @@ const PAINTED: Array[StringName] = [
 	&"aoki", &"leo", &"haru", &"researcher", &"pokemon/pidgey", &"pokemon/rattata",
 ]
 ## Les quatre routines (dossier 01).
-const ROUTINES: Array[StringName] = [&"aoki", &"haru", &"leo", &"researcher"]
+const ROUTINES: Array[StringName] = [&"aoki", &"haru", &"nils", &"researcher"]
 ## Cases du prologue : Chen part de (24, 13), remonte les colonnes 23–24 jusqu'aux herbes,
 ## puis redescend 8 pas avec le joueur.
 const PROLOGUE := Rect2i(22, 3, 4, 11)
@@ -285,11 +285,11 @@ func test_routines_are_valid_and_clear_of_the_prologue() -> void:
 	if talk != null:
 		assert_eq(talk.variants.size(), 1, "une seule réplique")
 		assert_eq(talk.variants[0].pages.size(), 2)
-	# Léo et son Rattata : même boucle, le Rattata un pas derrière.
-	var leo := roster.get_spec(&"leo")
-	var rattata := roster.get_spec(&"leo_rattata")
-	assert_eq(leo.route_cells, rattata.route_cells)
-	assert_eq((rattata.route_start + 1) % rattata.route_cells.size(), leo.route_start)
+	# Nils et son Rattata : même boucle, le Rattata un pas derrière.
+	var nils := roster.get_spec(&"nils")
+	var rattata := roster.get_spec(&"nils_rattata")
+	assert_eq(nils.route_cells, rattata.route_cells)
+	assert_eq((rattata.route_start + 1) % rattata.route_cells.size(), nils.route_start)
 
 
 func test_routines_wait_for_the_player() -> void:

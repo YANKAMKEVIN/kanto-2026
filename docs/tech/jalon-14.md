@@ -823,11 +823,26 @@ et de l'annexe A validée.
 
 #### T4 — constructeur-monde : Nils — **maintenant**
 - §2.14. **CA** : `test_dialogue_data` vert ; « Nils » affiché à Bourg Palette (capture Mac).
+- **Fait (2026-10-12, `c597a91`, branche `j14-t5`)** : identifiants, dialogue, `react` ; tests
+  sur données réelles alignés (`test_dialogue_data`, `test_npc_placement`,
+  `test_pallet_town_painted`) ; capture `tools/capture_nils_j14.gd` →
+  `build/captures/jalon14_t4/nils_dialogue.png` relue ; apparence `leo` gardée.
 
 #### T5 — architecte : données 14.0 — **maintenant**
 - §2.13, §2.4 (CT, `dig` en attente), §2.10 (objets, moment `bill_restored` dans
   `moments.json` seulement si `MomentLibrary` l'accepte, sinon au T17), Dresseurs D1–D4, zones et
   rectangles de la Carte. **CA** : tests verts ; aucune carte touchée.
+- **Fait (2026-10-12, `e42926d` + `207fe9f`, branche `j14-t5`)** : 3 espèces, 6 capacités
+  (Soin **non recréé** : il existe sur `jalon-13`, J13 T11 → absent de la table de Kadabra jusqu'au
+  T23, comme Entrave), 4 objets, 3 fiches de Pokédex, CT régénérées (`gen_tm_compatibility.py` lit
+  tout `species/`), D1–D4, zones `route_25` et `cerulean_cape` (cartes vides jusqu'au T14),
+  rectangles de la Carte, sprites provisoires. Textes de l'annexe A (5 capacités, 2 zones) repris
+  tels quels **sans** `draft` (refusé par `test_no_draft_in_data`) : **à valider par Kevin (T3)**.
+  Moment `bill_restored` → T17 (`MomentLibrary.TYPES` ne l'a pas) ; rencontres, répliques des
+  Dresseurs, objectifs → T16.
+  **À noter pour le T14** : `test_zone_library` exige `display_name` = nom de la zone ; la maison
+  de Léo (zone « Cap d'Azuria ») ne peut donc pas s'afficher « Maison de Léo » (§2.1) sans
+  changer ce test.
 
 #### T6 — architecte : briques de monde — **maintenant**
 - §2.8 (`FlagGate` + `GameMap.apply_flag_gates` + Boot, `moved`, `one_in`, type de halo `hint`).
@@ -910,6 +925,8 @@ et de l'annexe A validée.
 
 #### T18a — architecte : `RareCandy` — **maintenant**
 - §2.6 (règle pure, tests). **CA** : tests verts.
+- **Fait (2026-10-12, `4107b50`, branche `j14-t5`)** : `game/items/rare_candy.gd`,
+  `test_rare_candy` (13 tests) ; aucun branchement au Sac.
 
 #### T18b — architecte puis ui-mobile : Super Bonbon dans le Sac — après fusion de **J12 T20, T23, T24**
 - §2.6 (parcours, overlay, évolution) ; départ `rare_candy_qa` ; captures.
