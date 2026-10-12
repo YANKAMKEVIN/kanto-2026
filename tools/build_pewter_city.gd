@@ -24,8 +24,8 @@ extends SceneTree
 ##   buissons, panneaux, pots de fleurs et caisses contre le Centre et la Boutique (variation
 ##   du plan §1.4 A, sur leurs emprises).
 ## - Passages : trois warps PUSH ↓ vers la Route 2 nord (14..16, 0) ; sortie est (51, 25..27)
-##   PUSH → « ROUTE 3 — À venir » (build de développement ; le garde la ferme avant le badge,
-##   T14) ; portes STEP_ON ↑ du Musée, de l'Arène, du Centre, de la Boutique et des maisons vers
+##   PUSH → la Route 3, `from_pewter_n|c|s`, tournée → (jalon 12 T8 ; jusqu'au J11 : « ROUTE 3 —
+##   À venir ») ; le garde la ferme avant le badge (T14), inchangé ; portes STEP_ON ↑ du Musée, de l'Arène, du Centre, de la Boutique et des maisons vers
 ##   leurs intérieurs (T13) — **tant qu'un intérieur n'existe pas, sa porte est une destination
 ##   « à venir »** (retour devant la porte, tourné ↓) : relancer l'outil au T13.
 ## - Déclencheurs : arrivée silencieuse (17..19, 42) ↑ (`pewter_arrival`, pose `pewter_arrived`) ;
@@ -54,13 +54,13 @@ const SOUTH_EXITS: Array = [
 	["Route2NorthC", Vector2i(18, 43), &"from_pewter_c", "from_route_2_north_c"],
 	["Route2NorthE", Vector2i(19, 43), &"from_pewter_e", "from_route_2_north_e"],
 ]
-## Sortie est (51, 25..27) : « ROUTE 3 — À venir » ; retour sur la case même, tourné ←.
+## Sortie est (51, 25..27) → la Route 3 (jalon 12 T8, jalon-12.md §2.1, §2.17) : [nœud, case,
+## spawn d'ici (arrivée de la Route 3, tourné ←), spawn de la Route 3 (tourné →)].
 const EAST_EXITS: Array = [
-	["Route3N", Vector2i(51, 25), "from_route_3_n"],
-	["Route3C", Vector2i(51, 26), "from_route_3_c"],
-	["Route3S", Vector2i(51, 27), "from_route_3_s"],
+	["Route3N", Vector2i(51, 25), "from_route_3_n", &"from_pewter_n"],
+	["Route3C", Vector2i(51, 26), "from_route_3_c", &"from_pewter_c"],
+	["Route3S", Vector2i(51, 27), "from_route_3_s", &"from_pewter_s"],
 ]
-const ROUTE_3_SOON: String = "Route 3"
 
 ## Bâtiments : [objet, case d'ancrage, nom du nœud, position des portes dans la grille,
 ## intérieur, spawn d'ici (devant la porte, tourné ↓), libellé « à venir »].
@@ -177,11 +177,19 @@ func _init() -> void:
 		quit(1)
 		return
 	var counts := Vector2i(entities.get_child_count(), decals.get_child_count())
-	var result: Vector2i = _kit.call(&"save", OUT_PATH)
+	var result: Vector2i = _kit.call(&"save", _out_path())
 	print("pewter_city : %s (%d entités, %d au sol dont %d modules de paroi, forêt %d → %d, "
 		% [error_string(result.x), counts.x, counts.y, modules, forest.x, forest.y]
 		+ "%d nœuds)" % result.y)
 	quit(0 if result.x == OK else 1)
+
+
+## Scène écrite : [constant OUT_PATH], ou `--out=<res://…>` (vérification du diff, T8 du J12).
+func _out_path() -> String:
+	for arg: String in OS.get_cmdline_user_args():
+		if arg.begins_with("--out="):
+			return arg.trim_prefix("--out=")
+	return OUT_PATH
 
 
 func _plan() -> Object:
@@ -199,8 +207,8 @@ func _add_passages() -> void:
 			entry[2], Vector2i.DOWN)
 	for entry: Array in EAST_EXITS:
 		_kit.call(&"add_spawn", entry[2], entry[1])
-		_kit.call(&"add_warp", entry[0], entry[1], Kit.PUSH, Vector2i.RIGHT, &"",
-			StringName(entry[2]), Vector2i.LEFT, ROUTE_3_SOON)
+		_kit.call(&"add_warp", entry[0], entry[1], Kit.PUSH, Vector2i.RIGHT, &"route_3",
+			entry[3], Vector2i.RIGHT)
 	for entry: Array in BUILDINGS:
 		var doors: Array = _plan().call(&"cells_at", entry[3])
 		var front: Vector2i = (doors[-1] as Vector2i) + Vector2i.DOWN

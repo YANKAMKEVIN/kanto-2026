@@ -73,6 +73,18 @@ var tall_grass_cells: Dictionary = {}
 var cliff_cells: Dictionary = {}
 ## Erreurs de construction (emprise sur une case praticable…) : l'outil échoue s'il y en a.
 var errors: PackedStringArray = []
+## Réglages de la grille (jalon 12 T8, Route 3 et sas ; défauts = cartes du J10, inchangées) :
+## cases praticables, caractères de paroi (modules [method place_paroi]), caractères peints au
+## canal rouge du masque (sol rocheux `o` de la Route 3) — [method set_marks] avant
+## [method make_root].
+var walkable: String = WALKABLE
+var cliff_marks: String = "K"
+var rock_marks: String = ""
+## Cases réservées aux PNJ, Pokémon et objets d'une carte dont le fichier de PNJ n'existe pas
+## encore (positions `bloque` de la grille) : la forêt s'en écarte comme pour un PNJ ; objets au
+## sol à part (buissons écartés).
+var reserved_cells: Array[Vector2i] = []
+var reserved_balls: Array[Vector2i] = []
 
 var _scenes: Dictionary = {}
 var _models: Dictionary = {}
@@ -88,7 +100,7 @@ func _init(plan_path: String, map_size: Vector2i, seed_value: int, decor_seed: i
 	if not plan.call(&"load_file", plan_path):
 		errors.append("grille illisible : %s" % plan.get(&"error"))
 		return
-	plan.set(&"walkable", WALKABLE)
+	plan.set(&"walkable", walkable)
 	if Vector2i(plan.get(&"width"), plan.get(&"height")) != size:
 		errors.append("la grille n'est pas de %s cases" % size)
 	tiles = load("res://game/world/overworld_tiles.gd")
@@ -96,6 +108,15 @@ func _init(plan_path: String, map_size: Vector2i, seed_value: int, decor_seed: i
 	forest_script = load("res://game/world/forest/dense_forest.gd")
 	rng.seed = seed_value
 	decor_rng.seed = decor_seed
+
+
+## Règle les caractères de la grille (voir [member walkable], [member cliff_marks],
+## [member rock_marks]).
+func set_marks(walkable_marks: String, cliffs: String, rocks: String) -> void:
+	walkable = walkable_marks
+	cliff_marks = cliffs
+	rock_marks = rocks
+	plan.set(&"walkable", walkable)
 
 
 ## Racine `GameMap` (métadonnées), couches logiques invisibles (`Ground` rempli d'après la
@@ -125,9 +146,14 @@ func make_root(node_name: String, map_id: StringName, display_name: String, regi
 ## de paroi), sous-bois [param undergrowth] (case → valeur), décalcomanies, `Entities`, couche
 ## haute, groupes. Faux tant que le masque n'est pas importé (relancer l'outil après
 ## `--import`).
-func add_ground(mask_path: String, undergrowth: Dictionary) -> bool:
+## [param mask_hook] (facultatif, `func(image: Image) -> void`) retouche le masque avant
+## l'écriture (Route 3 : valeurs du sol rocheux variées pour casser la répétition).
+func add_ground(mask_path: String, undergrowth: Dictionary,
+		mask_hook: Callable = Callable()) -> bool:
 	var script := load("res://game/world/ground/ground_mask.gd") as GDScript
 	var image: Image = script.call(&"build", size, paved_cells, path_cells)
+	if mask_hook.is_valid():
+		mask_hook.call(image)
 	var absolute := ProjectSettings.globalize_path(mask_path)
 	DirAccess.make_dir_recursive_absolute(absolute.get_base_dir())
 	var before := PackedByteArray()
@@ -194,9 +220,9 @@ func forest_undergrowth() -> Dictionary:
 
 
 func _kind_of(mark: String) -> int:
-	if WALKABLE.contains(mark):
+	if walkable.contains(mark):
 		match mark:
-			"=", "D":
+			"=", "D", "Q":
 				return tiles.Kind.DIRT
 			"p":
 				return tiles.Kind.COBBLE
@@ -205,7 +231,7 @@ func _kind_of(mark: String) -> int:
 			"v":
 				return tiles.Kind.LEDGE_DOWN
 		return tiles.Kind.GRASS
-	if mark == "K":
+	if cliff_marks.contains(mark):
 		return tiles.Kind.CLIFF
 	return tiles.Kind.FOREST
 
@@ -225,12 +251,14 @@ func _paint_logic(layer: TileMapLayer) -> void:
 					forest_cells[cell] = true
 				"h":
 					tall_grass_cells[cell] = true
-				"=", "D", "e":
+				"=", "D", "e", "Q":
 					path_cells[cell] = true
 				"p":
 					paved_cells[cell] = true
-				"K":
-					cliff_cells[cell] = true
+			if cliff_marks.contains(mark):
+				cliff_cells[cell] = true
+			if not rock_marks.is_empty() and rock_marks.contains(mark):
+				paved_cells[cell] = true
 	# Un banc (`n`) posé sur la place garde les pavés sous lui (au moins trois voisines pavées).
 	for cell: Vector2i in plan.call(&"cells_of", "n"):
 		var paved := 0
@@ -380,7 +408,8 @@ func place_border_decals(seed_value: int, keep: float = 1.0) -> void:
 		var cell := Vector2i((entry["position"] as Vector2) / TILE)
 		if _skips_border_decal(cell):
 			continue
-		if String(entry["texture"]).contains("decal_pave") and paved_cells.is_empty():
+		if String(entry["texture"]).contains("decal_pave") \
+				and (paved_cells.is_empty() or not rock_marks.is_empty()):
 			continue
 		if decor_rng.randf() >= keep:
 			continue
@@ -435,7 +464,10 @@ func place_tall_grass() -> void:
 ## Chaque module est posé là où il couvre le moins de cases praticables (il peut déborder sur la
 ## forêt ou hors de la carte, jamais sur une case où l'on marche). Dessinés du fond vers l'avant.
 ## Renvoie le nombre de modules.
-func place_paroi(seed_value: int) -> int:
+## [param style] (facultatif, jalon 12 : ardoise vers l'est) : `func(column: float) -> Dictionary`
+## { "faces": Array[String], "mass": String, "slope": String, "tint": Color } d'après la colonne
+## du milieu du module ; sans lui, la paroi de la série 12 partout (cartes du J10 inchangées).
+func place_paroi(seed_value: int, style: Callable = Callable()) -> int:
 	var paroi_rng := RandomNumberGenerator.new()
 	paroi_rng.seed = seed_value
 	var placed: Array[Dictionary] = []
@@ -470,22 +502,32 @@ func place_paroi(seed_value: int) -> int:
 				front = _is_foot_run(Vector2i(maxi(best, run.x), mini(best + PAROI_WIDTH - 1,
 					run.y)), row)
 				var id: String
+				var faces: Array[String] = PAROI_FACES.duplicate()
+				var mass: String = PAROI_MASS
+				var slope: String = PAROI_SLOPE
+				var tint := Color.WHITE
+				if style.is_valid():
+					var look: Dictionary = style.call(best + PAROI_WIDTH / 2.0)
+					faces.assign(look["faces"])
+					mass = look["mass"]
+					slope = look["slope"]
+					tint = look["tint"]
 				var mirrored := paroi_rng.randf() < 0.5
 				var open_left := is_walkable(Vector2i(run.x - 1, row))
 				var open_right := is_walkable(Vector2i(run.y + 1, row))
 				if i == 0 and open_left and front:
-					id = PAROI_SLOPE
+					id = slope
 					mirrored = false
 				elif i == lefts.size() - 1 and open_right and front:
-					id = PAROI_SLOPE
+					id = slope
 					mirrored = true
 				elif front:
-					id = PAROI_FACES[paroi_rng.randi_range(0, PAROI_FACES.size() - 1)]
+					id = faces[paroi_rng.randi_range(0, faces.size() - 1)]
 				else:
-					id = PAROI_MASS if paroi_rng.randf() < 0.6 \
-						else PAROI_FACES[paroi_rng.randi_range(0, PAROI_FACES.size() - 1)]
+					id = mass if paroi_rng.randf() < 0.6 \
+						else faces[paroi_rng.randi_range(0, faces.size() - 1)]
 				placed.append({"id": id, "left": best, "row": row, "flip": mirrored,
-					"front": front})
+					"front": front, "tint": tint})
 				for x: int in range(best, best + PAROI_WIDTH):
 					for y: int in range(row - PAROI_ROWS + 1, row + 1):
 						covered[Vector2i(x, y)] = true
@@ -504,8 +546,11 @@ func place_paroi(seed_value: int) -> int:
 			float(int(entry["row"]) + 1) * TILE)
 		var prop := add_prop(decals, String(entry["id"]), foot, "Paroi%02d" % index)
 		flip(prop, entry["flip"])
+		var tint: Color = entry["tint"]
 		if not entry["front"]:
-			prop.modulate = Color(PAROI_BACK_VALUE, PAROI_BACK_VALUE, PAROI_BACK_VALUE)
+			prop.modulate = Color(PAROI_BACK_VALUE, PAROI_BACK_VALUE, PAROI_BACK_VALUE) * tint
+		elif tint != Color.WHITE:
+			prop.modulate = tint
 		index += 1
 	return placed.size()
 
@@ -585,7 +630,7 @@ func place_forest(seed_value: int, landmarks: Array[Vector2], taken: Dictionary)
 		seed_value, shade)
 	var cleared := _clear_around_npcs(raw, planted, landmarks, seed_value)
 	var kept: Array[Dictionary] = forest_script.call(&"cull_hidden", cleared,
-		plan.call(&"cells_of", WALKABLE), size)
+		plan.call(&"cells_of", walkable), size)
 	forest_script.call(&"place_sprites", kept, entities, root)
 	return Vector2i(raw.size(), kept.size())
 
@@ -606,6 +651,7 @@ func npc_cells() -> Array[Vector2i]:
 		if entry.has("route"):
 			for cell: Array in entry["route"]["cells"]:
 				cells.append(Vector2i(int(cell[0]), int(cell[1])))
+	cells.append_array(reserved_cells)
 	return cells
 
 
@@ -616,6 +662,7 @@ func _ball_cells() -> Array[Vector2i]:
 		var entry: Dictionary = roster[key]
 		if entry.get("verb", "") == "take":
 			cells.append(Vector2i(int(entry["cell"][0]), int(entry["cell"][1])))
+	cells.append_array(reserved_balls)
 	return cells
 
 

@@ -1,0 +1,16 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://game/world/props/prop.gd" id="1_jwk55"]
+[ext_resource type="Material" path="res://game/world/lighting/materials/world_object.tres" id="2_d4pbd"]
+[ext_resource type="Texture2D" path="res://assets/world/props/prop_caisse_r_02.png" id="3_7urg2"]
+
+[node name="PropCaisseR02" type="Node2D" unique_id=132350970]
+script = ExtResource("1_jwk55")
+footprint = Array[Vector2i]([Vector2i(-1, 0), Vector2i(0, 0)])
+
+[node name="Sprite" type="Sprite2D" parent="." unique_id=966103772]
+unique_name_in_owner = true
+material = ExtResource("2_d4pbd")
+texture = ExtResource("3_7urg2")
+centered = false
+offset = Vector2(-96, -182)

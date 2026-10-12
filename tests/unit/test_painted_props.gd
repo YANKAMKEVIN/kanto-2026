@@ -21,7 +21,15 @@ const TRAVERSABLE: Array[StringName] = [&"relief_escalier_01", &"ground_hautes_h
 	# Série 12 (J10) : paroi de montagne (cases `K` bloquées par la carte), porte du
 	# laboratoire du Musée (dans le mur du fond, déjà bloqué).
 	&"relief_paroi_01", &"relief_paroi_02", &"relief_paroi_03", &"relief_paroi_04",
-	&"int_porte_labo_01"]
+	&"int_porte_labo_01",
+	# Série 14 (J12) : parois d'ardoise et de grotte (cases bloquées par la carte), mare et
+	# puits à plat, échelles (warps), fossiles posés sur la dalle.
+	&"relief_paroi_ardoise_01", &"relief_paroi_ardoise_02", &"relief_paroi_ardoise_03",
+	&"relief_paroi_ardoise_04", &"relief_paroi_grotte_01", &"relief_paroi_grotte_02",
+	&"relief_paroi_grotte_03", &"relief_paroi_grotte_04", &"relief_paroi_grotte_05",
+	&"relief_paroi_grotte_06", &"prop_mare_grotte_01", &"decal_puits_jour_01",
+	&"prop_echelle_descend_01", &"prop_echelle_monte_01", &"prop_fossile_dome_01",
+	&"prop_fossile_nautile_01"]
 const GROUND_LAYER: Array[StringName] = [
 	&"relief_falaise_01", &"relief_escalier_01", &"prop_massif_01", &"relief_muret_01",
 	&"relief_escalier_ville_01",
@@ -31,6 +39,10 @@ const GROUND_LAYER: Array[StringName] = [
 	# Série 12 (J10) : paroi ; poste vu du nord (le joueur passe toujours devant).
 	&"relief_paroi_01", &"relief_paroi_02", &"relief_paroi_03", &"relief_paroi_04",
 	&"bldg_poste_foret_nord_01",
+	# Série 14 (J12) : paroi d'ardoise, mare, puits de jour, tranchée, échelles.
+	&"relief_paroi_ardoise_01", &"relief_paroi_ardoise_02", &"relief_paroi_ardoise_03",
+	&"relief_paroi_ardoise_04", &"prop_mare_grotte_01", &"decal_puits_jour_01",
+	&"prop_tranchee_01", &"prop_echelle_descend_01", &"prop_echelle_monte_01",
 ]
 ## Bâtiments sans ombre : le poste de la forêt vu du nord (série 12) continue sous le bord sud
 ## de la Route 2 nord, couché dans la couche du sol (fiche `serie-12-argenta.md`).

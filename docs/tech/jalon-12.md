@@ -146,7 +146,7 @@ rencontre ≤ 2 s), `dossier-05-combat.md`, `dossier-08-menu-dresseur.md` (Sac, 
 | T5 Lot de textes (annexe A) → Kevin | architecte | **fait dans ce plan** ; validation de Kevin | docs |
 | T6 Intégration de la série 14 (manifeste, `preparer.py`, règles, scènes d'objets, looks) | constructeur-monde (Mac) | **maintenant** (après T2) | entrées en fin de fichier |
 | T7 Fondations de carte : `Kind.RUBBLE` + tuile, `PaintedGround` à textures réglables, `LightGlow`, `CaveLibrary` + `caves.json`, outil commun `cave_map_kit.gd` | architecte | **maintenant** | `overworld_tiles.gd`, `gen_placeholder_tiles.gd`, `painted_ground.gd` : hors J11 ; le reste est nouveau |
-| T8 Cartes Route 3, Centre, sas, raccord d'Argenta (sans PNJ, sans rencontres) | constructeur-monde | **maintenant** (après T6, T7) | scènes et outils nouveaux ; `build_pewter_city.gd`, `build_painted_interiors.gd`, `lighting.json`, `zones.json`, `interiors.json`, `rest_points.json`, `decors.json`, `test_map_links`, `test_coming_soon` : hors J11 |
+| T8 Cartes Route 3, Centre, sas, raccord d'Argenta (sans PNJ, sans rencontres) | constructeur-monde | **fait** (2026-10-11, §9) | scènes et outils nouveaux ; `build_pewter_city.gd`, `build_painted_interiors.gd`, `lighting.json`, `zones.json`, `interiors.json`, `rest_points.json`, `decors.json`, `test_map_links`, `test_coming_soon` : hors J11 |
 | T9 Cartes du Mont Sélénite (3 étages, échelles, gravats peints, lumière) | constructeur-monde | **maintenant** (après T6, T7) | idem ; les cases `g` sont des tuiles `RUBBLE`, **lues** seulement au T20 |
 | T10 Équilibrage préparé (outil de simulation, sans données) | architecte | **maintenant** | `tools/simulate_mt_moon.gd` (nouveau) ; lancé au T26 |
 | T11 et suivantes | — | **après la clôture du J11** | moteur, données, Sac, sauvegarde |
@@ -448,7 +448,7 @@ Branche d'intégration **`jalon-12`** depuis `main` (copie dédiée), une branch
 #### T5 — Kevin : lot de textes (annexe A) — **maintenant**
 - **CA** : validé en une passe ; bloque les données de T12 et T18 (pas le code).
 
-#### T6 — constructeur-monde (Mac) : intégration de la série 14 — **maintenant**, après T2
+#### T6 — constructeur-monde (Mac) : intégration de la série 14 — **maintenant**, après T2 — **fait (2026-10-11, `j12-t6-integration`)** : 24 entrées du manifeste, 32 scènes d'objets, 4 apparences + 2 objets fixes, 4 sols, 4 icônes ; second passage sans changement ; détail dans le journal de la fiche
 - `serie14.py --manifeste` (entrées **en fin**), `preparer.py --source …` deux fois, règles `PaintedPropRules`, `build_painted_props.gd -- --nouveaux`, `build_character_frames.gd` (4 personnages, ajouts en fin), icônes `preparer_menu.py`. **CA** : second passage de `preparer.py` sans changement ; `test_painted_props` vert ; planche de contrôle relue.
 
 #### T7 — architecte : fondations de carte — **fait** (2026-10-11, branche `j12-t7-fondations`, §9)
@@ -460,7 +460,7 @@ Branche d'intégration **`jalon-12`** depuis `main` (copie dédiée), une branch
 - Tests : `test_route_3` (grille de la scène = grille du plan ; critères de `plan_check_route_3.py` sur la vraie scène : D1/D2 inévitables par géométrie, rebords, raccords ; nœuds ≤ 3 000), `test_route_4`, `test_mt_moon_center`, `test_map_links`, `test_map_catalog`, `test_coming_soon` (sas), `test_map_light_profiles`, `test_pewter_city` (diff limité aux warps) ; captures `tools/capture_route_3.gd` (sortie, embranchement, pied de la montagne, Centre, entrée) relues contre la vue ; `[perf]` Mac et mémoire.
 - **CA** : tests verts, captures 2340 × 1080 relues ; budget de nœuds tenu.
 
-#### T9 — constructeur-monde : Mont Sélénite 1F / B1F / B2F — **maintenant**, après T6, T7
+#### T9 — constructeur-monde : Mont Sélénite 1F / B1F / B2F — **maintenant**, après T6, T7 — **fait (2026-10-11, `j12-t9-mont-selenite`)** : trois étages construits, lumière, échelles ; repli « à venir » vers la Route 3 et le sas tant que le T8 n'est pas fusionné ; détail au §9
 - §2.1, §2.2, §2.4 ; `tools/build_mt_moon.gd` ; gravats en tuiles `RUBBLE` ; halos ; profils `cave_*` ; décors `mt_moon_galerie` / `_chambre`.
 - Tests : `test_mt_moon_maps` (grilles, échelles, graphe connexe, retour à l'entrée de partout, cases `g` = tuiles `RUBBLE`, goulets d'une case listés pour le compagnon, nœuds ≤ 3 000) ; captures + `luminance_grotte.py` (§2.4).
 - **CA** : tests verts ; seuils de luminance tenus ; captures relues contre la vue (repères reconnaissables sans carte).
@@ -614,6 +614,48 @@ Questions telles que posées :
 
 ## 9. Fait
 
+- **T9 — Mont Sélénite 1F / B1F / B2F (2026-10-11, branche `j12-t9-mont-selenite`, depuis
+  `jalon-12`)** :
+  - **Outil** `tools/build_mt_moon.gd -- --etage=1f|b1f|b2f|tous` (deux passes masque / scène,
+    graines fixes) sur `tools/cave_map_kit.gd`, étendu : `place_walls` (parois en modules
+    d'après la grille : **faces** 3 × 2 sur les cases `#` au-dessus d'une galerie, coupées à
+    une case si la paroi est mince ; **bords latéraux** une tranche de 96 px par case — chapeau
+    en haut, pied en bas, milieu entre les deux — ; **lèvres** au nord des masses ; jamais sur
+    une galerie, découpe `region_rect`), `is_embedded` (repère bloqué pris dans la paroi :
+    masse peinte dessous, pas de module, le repère se voit — lampes du couloir du gardien,
+    indices au fond d'une niche), `add_sprite` (objet réduit à son `Sprite2D` : ses réglages
+    propres sont enregistrés, ceux d'un enfant d'instance étaient perdus). Les éclats `*`
+    comptent comme masse (texture G).
+  - **Cartes** `mt_moon_1f` (292 nœuds, 8 halos), `mt_moon_b1f` (179, 8), `mt_moon_b2f`
+    (207, 13) ; masques `assets/world/maps/mt_moon_*_ground.png`. Repères : colonne du
+    carrefour, colonnes de B2F, rochers, éclats (un halo par groupe), lampes de chantier,
+    projecteurs de la chambre (les deux du milieu braqués sur la dalle : halo entre eux et
+    elle), caisses R, tranchées (celle de B1F étirée à 4 cases), mare, puits de jour (décal +
+    halo), dalle et **fossiles posés sur la dalle** (pied relevé de 30 px), indices `x`,
+    panneau de l'entrée (décor ; son texte au T21). Échelles : décor au sol + warp `STEP_ON`
+    sans direction ; **échelle C (B1F)** : l'image montante ramenée à 128 px dans sa case (le
+    trou au plafond débordait sur la case d'arrivée). Entrée 1F → `route_3` /
+    `from_mt_moon_w|e`, sortie B2F → `route_4` / `from_mt_moon` : **repli « à venir »** tant
+    que ces cartes manquent (retour sur l'arrivée) ; `test_mt_moon_maps` exige de relancer
+    l'outil quand elles existent.
+  - **Données** : `lighting.json` (`cave_1f` > `cave_b1f` = `cave_b2f` : étalonnage froid,
+    liseré froid faible, aucune ombre portée, ombres de contact, vent 0), `zones.json`
+    (`mt_moon` : trois étages, sous-titre et description de l'annexe A), `decors.json`
+    (`mt_moon_galerie` sur les trois étages, `mt_moon_chambre` sur B2F (14, 19) → (37, 35)).
+  - **Mesures (Mac)** : `tools/capture_mt_moon.sh` (2340 × 1080, fiche de caméra par vue) +
+    `tools/art/luminance_grotte.py` : sol 0,22–0,37 (luminance relative WCAG), rapport
+    sol / paroi 4,4–9,1 sur les 15 vues 1:1 (seuils 0,22 et 2,0 tenus) ; contraste du héros
+    (moyenne pixel par pixel) 2,8–3,5 contre 4,4 dans la Forêt de Jade (sol clair : à juger
+    sur téléphone). fps Mac 115–120 (plafond), 19–28 appels de dessin. Mémoire
+    « carte + voisines » (`measure_map_cache.gd -- --route=mt_moon`) : 6,2 Mo (≤ 64 : pas de
+    repli). Chargement (`measure_map_load.gd`, médiane) : 1F 284 ms, B1F 132 ms, B2F 136 ms,
+    Jadielle 933 ms.
+  - Tests : `test_mt_moon_maps` (nouveau), `test_cave_map_kit` (parois, sol peint effectif),
+    `test_map_catalog` (grottes effectives), `test_map_links` (étages ; Route 3 et sas en
+    parallèle), `test_overworld_tileset` (grottes exclues), `test_lighting_library`. Import propre ;
+    `tools/test.sh` : 3 797 tests, 3 794 verts, 3 en attente (entrée vers la Route 3, sortie
+    vers le sas, sortie de la Corde : T8), 0 échec.
+
 - **T7 — fondations de carte (2026-10-11, branche `j12-t7-fondations`, depuis `jalon-12`)** :
   - **Gravats** : `OverworldTiles.Kind.RUBBLE` (rangée 13, en fin d'enum), `DATA_RUBBLE`,
     `is_rubble_kind` ; tuile provisoire (`gen_placeholder_tiles.gd`, sol ardoise semé de cailloux) ;
@@ -652,6 +694,58 @@ Questions telles que posées :
     `test_painted_ground`, `test_light_glow`, `test_cave_library`, `test_cave_map_kit`,
     `test_map_catalog` (étendu). Import propre ; `tools/test.sh` : 3 769 tests, 3 767 verts,
     2 en attente (grottes, T8 / T9), 0 échec.
+
+- **T8 — cartes Route 3, Centre du Mont Sélénite, sas de la Route 4, raccord d'Argenta (2026-10-11,
+  branche `j12-t8-route-3`, depuis `jalon-12`)** — sans PNJ, sans rencontres, sans déclencheurs :
+  - **`tools/build_route_3.gd`** → `route_3` (82 × 38, grille `route_3.txt` lue telle quelle,
+    praticables `.=hvoDQ`) : sol peint avec le canal rouge = `ground_roche_01` (texture à 1:1,
+    `paving_scale` 1,0) ; **répétition cassée** par le masque (16 % de cases `o` à 0,47 : l'herbe
+    perce, 16 % + bords à 0,62 ; roche qui affleure sur la prairie de l'est, R ≤ 0,42 ; R 0,25 sur
+    les chemins qui bordent la roche, sans bande d'herbe) et par 150 décalcomanies (cailloux
+    `prop_pierres_01`, touffes sèches, terre grisée). Paroi en modules : **série 12 à l'ouest,
+    ardoise (série 14) dès la colonne 44**, teinte de plus en plus froide de x 36 au bord est
+    (× (0,84 ; 0,90 ; 1,0)) ; les deux grands affleurements `R` collés à la montagne (≥ 40 cases)
+    sont de la paroi, les petits des rochers (grande pierre, rochers ; celui du goulet de Hugo posé
+    à la main), assombris et bleutés vers l'est, sol rocheux dessous. Forêt serrée de plus en plus
+    sèche vers l'est, fleurs de plus en plus rares (aucune après x 50), rebords L1 / L2, hautes
+    herbes, Centre (`bldg_centre_01`, ancre (62, 11)), entrée du Mont Sélénite
+    (`relief_entree_grotte_01`, ancre (74, 9)), deux panneaux (décor seul). **Cases réservées**
+    (Dresseurs, PNJ, Pokémon, objets, caché) : la forêt s'en écarte comme pour un PNJ.
+    Passages : (0, 25..27) PUSH ← Argenta ; Centre (61..62, 11) STEP_ON ↑ ; grotte (73..74, 9)
+    STEP_ON ↑ → `mt_moon_1f` / `from_route_3_w|e` ; spawns `from_pewter_n|c|s`,
+    `from_center_w|e`, `from_mt_moon_w|e`.
+  - **`tools/build_route_4.gd`** → `route_4` (sas 24 × 14) : paroi d'ardoise, bouche de la grotte
+    (l'entrée × 0,62, couche du sol), rochers bleutés, lisière buissons / rochers, rebord du versant
+    (`relief_falaise_01`), panneau (décor) ; bouche (2, 6) STEP_ON ← → `mt_moon_b2f` /
+    `arrivee_s` ↓ ; raccord est (23, 6..7) PUSH → « Azuria » à venir, retour `from_cerulean_n|s`
+    tourné ← ; arrivée `from_mt_moon` (3, 6).
+  - **`mt_moon_center`** : `_pokemon_center` (définition commune), titre « Mont Sélénite », sortie →
+    `route_3` / `from_center_e` (`build_painted_interiors.gd -- --rooms=mt_moon_center`).
+  - **Argenta** : sortie est → `route_3` / `from_pewter_n|c|s` tournée → ; scène **éditée sur les
+    trois `WarpPoint` seulement** (`unique_id` gardés, diff de 18 lignes) et outil mis à jour ; la
+    régénération (`build_pewter_city.gd -- --out=…`) donne la même scène, ids normalisés (diff
+    vide). Garde inchangé. **`pewter_map_kit.gd`** : réglages `set_marks` (praticables, paroi,
+    roche), `reserved_cells`, crochet du masque, style de paroi par colonne — défauts inchangés :
+    Argenta et Route 2 nord reconstruites à l'identique (diff normalisé vide).
+  - Données : `zones.json` (route_3, mt_moon = Centre + service `pokemon_center`, route_4 ;
+    sous-titres et descriptions de l'annexe A ; les étages s'ajoutent au T9), `interiors.json`,
+    `rest_points.json`, `lighting.json`, `decors.json` (`places` : `route_3` → `route_3_roche`).
+  - Repli des cartes du T9 : les warps visent `mt_moon_1f` / `mt_moon_b2f` directement ;
+    `test_map_links` les tient en « cartes parallèles » (vérifiées dès qu'elles existent) ; le
+    préchargement ignore une scène absente. Avant la fusion du T9, entrer dans la grotte ne mène
+    nulle part (branche seule).
+  - Mesures (Mac) : **2 030 nœuds** (Route 3), 356 (sas) ; 117–120 i/s (vsync) aux trois points de
+    la Route 3 et au sas ; lecture + entrée **236 ms** (Jadielle 405, Argenta 323 ; sas 110,
+    Centre 62) ; changement Argenta → Route 3 préchargé 14 ms ; mémoire « carte + voisines »
+    Route 3 **28,8 Mo** (Argenta + Route 3 ; 1F à ajouter au T9), Argenta 30,5 Mo (+ Route 3),
+    Centre 19,0 Mo, sas 6,9 Mo. Chemin principal 93 pas, 8 cases d'herbes obligatoires.
+  - Tests : `test_route_3` (19), `test_route_4` (8), `test_mt_moon_center` (4) ; `test_map_links`,
+    `test_coming_soon` (sas « AZURIA — À venir »), `test_pewter_city`, `test_pewter_badge` (après
+    le badge, la sortie est charge la Route 3 en (0, 26) et le bord ouest ramène en (51, 26)),
+    `test_scene_router` (Argenta précharge la Route 3), `test_zone_library` (service du Mont
+    Sélénite). Suite : 3 814 tests, 3 812 verts, 2 en attente (T9), seul l'intermittent connu
+    `test_rival_route22` vu une fois. Captures `tools/capture_route_3.sh` → `build/captures/jalon12_t8/`
+    (`capture_pewter.gd` : option `--hold=`).
 
 ---
 

@@ -215,10 +215,14 @@ func test_other_kinds_are_not_rubble() -> void:
 
 func test_existing_maps_have_no_rubble_tile() -> void:
 	# Aucune carte existante ne pose de gravats : leurs données logiques sont inchangées.
+	# Jalon 12 (T9) : sauf les grottes (`caves.json`), dont les gravats sont vérifiés par
+	# `test_mt_moon_maps`.
+	var caves := CaveLibrary.new()
+	assert_true(caves.load_file())
 	var maps := DirAccess.get_files_at(MapCatalog.MAPS_DIR)
 	var checked := 0
 	for file: String in maps:
-		if not file.ends_with(".tscn"):
+		if not file.ends_with(".tscn") or caves.is_cave(StringName(file.get_basename())):
 			continue
 		var text := FileAccess.get_file_as_string(MapCatalog.MAPS_DIR.path_join(file))
 		if not text.contains(OverworldTiles.TILESET_PATH):

@@ -70,6 +70,19 @@
 		"route_1": [
 			{ "decor": "route_1_chemin" }
 		],
+		"route_3": [
+			{ "decor": "route_3_roche" }
+		],
+		"mt_moon_1f": [
+			{ "decor": "mt_moon_galerie" }
+		],
+		"mt_moon_b1f": [
+			{ "decor": "mt_moon_galerie" }
+		],
+		"mt_moon_b2f": [
+			{ "decor": "mt_moon_chambre", "cells": [14, 19, 24, 17] },
+			{ "decor": "mt_moon_galerie" }
+		],
 		"route_4": [
 			{ "decor": "route_4_plaine" }
 		],

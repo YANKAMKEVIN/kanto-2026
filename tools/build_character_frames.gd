@@ -88,6 +88,13 @@ const LOOKS: Dictionary = {
 	"bulbizarre": [POKEMON_DIR, "bulbasaur", ""],
 	"salameche": [POKEMON_DIR, "charmander", ""],
 	"carapuce": [POKEMON_DIR, "squirtle", ""],
+	# J12 (série 14, Route 3 et Mont Sélénite) : Fillette, Sbires ♂ et ♀ (attente « creuse »,
+	# plus basse, calée au pied dans une cellule de la hauteur de la marche), chercheur de
+	# fossiles, avec leur planche d'attente.
+	"fillette": [CHARACTERS_DIR, "lass_young", ""],
+	"sbire_h": [CHARACTERS_DIR, "rocket_grunt_m", ""],
+	"sbire_f": [CHARACTERS_DIR, "rocket_grunt_f", ""],
+	"chercheur_fossiles": [CHARACTERS_DIR, "fossil_researcher", ""],
 }
 ## Pokémon fixes (genre « Pokémon fixe », jalon 9 §2.8.5) : feuille 6 × 1 du catalogue
 ## (« personnages ») → identifiant de données. Ils ne marchent jamais.
@@ -108,6 +115,9 @@ const REACT_DURATIONS: Array[float] = [0.15, 0.6, 0.15]
 ## Objets fixes : image (catalogue, « images ») → identifiant de données (`object/<id>`).
 const FIXED_OBJECTS: Dictionary = {
 	"poke_ball_ground": "poke_ball_ground",
+	# J12 (série 14) : les deux fossiles posés sur la dalle du Mont Sélénite.
+	"fossil_dome": "fossil_dome",
+	"fossil_helix": "fossil_helix",
 }
 ## Planches lues seulement comme planche de course d'une autre.
 const RUN_ONLY: Array[String] = ["heros_run", "enfant_run", "rattata_run", "chen_run"]
