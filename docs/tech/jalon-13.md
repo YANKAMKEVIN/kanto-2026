@@ -141,6 +141,13 @@ pas livré.** Écarts avec ce que le plan supposait :
 
 ### 0.5 Ce qui attend réellement le J12 (dépendances, sans implémentation à sa place)
 
+> **Décision de Claude (2026-10-12, défaut technique)** : les 5 capacités du J12 reprises par T11
+> (`acid`, `wrap`, `smokescreen`, `minimize`, `light_screen`, définitions et textes du J12 à l'identique)
+> **restent** dans `moves.json` pour que les apprentissages RB du J13 soient complets. **À chaque fusion
+> de `jalon-12` dans `jalon-13`** : garder les entrées du J12, retirer les nôtres, puis vérifier qu'aucun
+> fichier de données n'a de clé en double (Godot garderait la dernière sans rien dire) :
+> `python3 tools/check_json_keys.py`.
+
 - **Espèces** `ekans`, `zubat`, `paras`, `jigglypuff` → Dresseurs à ajouter tels quels :
   `route_4_clara` (`data/trainers/route_4.json` : « Jeune Dresseuse Clara », `random`, 165 ₽,
   Paras 11, Rondoudou 11), `route_24_malo` (dans `route_24.json` : « Gamin Malo », `random`,
