@@ -36,6 +36,8 @@ extends Node
 ## par [method set_trainers]) et étape « badge » (drapeau du badge, légende « BADGE ROCHE » tenue
 ## [constant UiTokens.BADGE_CAPTION_HOLD] avec une vibration légère, Grand moment « badge » une
 ## seule fois par badge ; badges et état de la partie branchés par [method set_badges]).
+## Jalon 14 (jalon-14.md §2.7) : étape « flash » (éclairs plein écran de la HUD, attendus ;
+## [signal flash_started] pour le son).
 
 signal cutscene_started(cutscene_id: StringName)
 ## Début d'une étape (tests, outils de capture).
@@ -48,6 +50,9 @@ signal item_given(item_id: StringName, count: int)
 ## de l'étape, jalon 5C.5) : Boot l'inscrit au journal des objets trouvés. Émis après
 ## [signal item_given].
 signal item_found(item_id: StringName, count: int)
+## Une étape « flash » commence ([param count] éclairs, jalon 14) : point d'accroche du son de
+## la machine (aucun son au J14).
+signal flash_started(count: int)
 ## Fin d'une étape « wait » (interne).
 signal _wait_elapsed
 ## Fin d'une étape « move » (interne).
@@ -353,6 +358,8 @@ func _play_step(source_step: CutsceneStep) -> bool:
 			await _champion_card(step)
 		CutsceneStep.Kind.BADGE:
 			await _badge(step)
+		CutsceneStep.Kind.FLASH:
+			await _flash(step)
 		_:
 			_step_error("étape « %s » inconnue" % CutsceneStep.kind_name(step.kind))
 	return true
@@ -582,6 +589,18 @@ func _badge(step: CutsceneStep) -> void:
 	_hud.show_caption(_badges.badge_name(step.badge_id), UiTokens.BADGE_CAPTION_HOLD, true)
 	Haptics.vibrate(UiTokens.HAPTIC_BADGE_MS)
 	await _hud.caption_hidden
+
+
+## Étape « flash » (jalon-14.md §2.7, la machine de Léo) : [member CutsceneStep.count] éclairs
+## plein écran par la HUD ([method ExplorationHud.flash] : vibration légère au début de chacun,
+## version adoucie selon les réglages) ; la scène reprend à la fin du dernier.
+## [signal flash_started] est émis au début. Sans HUD : push_error, étape sautée.
+func _flash(step: CutsceneStep) -> void:
+	if not is_instance_valid(_hud):
+		_step_error("pas de HUD pour l'étape « flash »")
+		return
+	flash_started.emit(step.count)
+	await _hud.flash(step.count)
 
 
 ## Étape « take » (jalon 7, le colis remis à Chen) : retire [member CutsceneStep.count] objets

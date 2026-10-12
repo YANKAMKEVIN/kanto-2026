@@ -1,0 +1,6 @@
+{
+	"oak": { "cell": [8, 4], "facing": "down", "sprite": "oak" },
+	"rocket": { "cell": [13, 2], "facing": "up", "sprite": "rival",
+		"unless": ["rocket_beaten"],
+		"moved": { "if": ["rocket_spotted"], "cell": [16, 3], "facing": "left" } }
+}

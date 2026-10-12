@@ -55,6 +55,10 @@ var action_handler: Callable
 ## lues seulement si une page à jouer contient un jeton. Non valide : aucune valeur (les pages à
 ## jeton sont omises). Posé par [Boot] (T19) : [method DialogueTokens.values_for].
 var token_values: Callable
+## Aléatoire des variantes à tirage (« one_in », jalon 14) : `func() -> GameRng`, lu à chaque
+## [method play] (la partie chargée remplace son aléatoire). Non valide : ces variantes sont
+## sautées. Posé par [Boot] (GameState.rng).
+var rng_source: Callable
 
 var _library: DialogueLibrary
 var _flags: StoryFlags
@@ -126,7 +130,7 @@ func play(dialogue_id: StringName, npc: Npc = null, map: GameMap = null,
 	if dialogue == null:
 		push_error("DialogueRunner : dialogue inconnu « %s »" % dialogue_id)
 		return false
-	var variant := dialogue.pick(_flags)
+	var variant := dialogue.pick(_flags, _rng())
 	if variant == null:
 		push_error("DialogueRunner : aucune variante de « %s » ne s'applique" % dialogue_id)
 		return false
@@ -155,7 +159,8 @@ func is_running() -> bool:
 	return _running
 
 
-## Vrai si la variante qui s'appliquerait maintenant à [param dialogue_id] est « auto ».
+## Vrai si la variante qui s'appliquerait maintenant à [param dialogue_id] est « auto » (sans
+## tirage : une variante « one_in » n'est jamais « auto »).
 func has_auto_variant(dialogue_id: StringName) -> bool:
 	var dialogue := _library.get_dialogue(dialogue_id) if _library != null else null
 	if dialogue == null:
@@ -376,3 +381,10 @@ func _on_advance_requested() -> void:
 	if Engine.get_process_frames() == _play_frame:
 		return
 	_advance()
+
+
+## Aléatoire des tirages « one_in » ([member rng_source]), ou null.
+func _rng() -> GameRng:
+	if not rng_source.is_valid():
+		return null
+	return rng_source.call() as GameRng

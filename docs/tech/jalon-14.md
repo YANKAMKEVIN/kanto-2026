@@ -820,6 +820,18 @@ et de l'annexe A validée.
 #### T6 — architecte : briques de monde — **maintenant**
 - §2.8 (`FlagGate` + `GameMap.apply_flag_gates` + Boot, `moved`, `one_in`, type de halo `hint`).
 - **CA** : tests verts ; cartes existantes inchangées (diff nul sur leurs `.tscn`).
+- **Fait (2026-10-12, commit `1c3119c`, branche `j14-t6`)** : `FlagGate` (`game/world/flag_gate.gd`, groupe
+  `flag_gate`, visuel seulement), `GameMap.apply_flag_gates` (appelée par `refresh_npcs`, puis
+  par Boot à chaque `flag_changed`) ; clé `moved` (`NpcSpec.placed_for`, `MOVED_KEYS`, refusée
+  avec `trainer`, `route` et dans une étape `spawn`) ; `refresh_npcs` recrée à l'arrivée un PNJ
+  qui n'est pas à sa place, jamais pendant la visite ; `one_in` (`DialogueVariant.one_in`,
+  `Dialogue.pick(flags, rng)`, `DialogueRunner.rng_source` posé par Boot sur `GameState.rng`,
+  refusé avec `auto`) ; type `hint` en fin de `light_glows.json` ; Boot coupe aussi le
+  vacillement des halos avec « Réduire les animations » (`LightGlow.set_reduce_motion`, jamais
+  appelé jusque-là). Tests dans des fichiers nouveaux (`test_flag_gate`, `test_npc_moved`,
+  `test_dialogue_one_in`, `test_world_bricks_j14`) plutôt que dans `test_npc_roster`,
+  `test_game_map`, `test_dialogue_runner` (moins de conflits avec J12 / J13). Aucune `.tscn` de
+  carte touchée.
 
 #### T7 — architecte : moteur « charge puis frappe » + Tunnel — **maintenant**
 - §2.3. **CA** : tests verts ; Pierre et le rival inchangés ; `simulate_brock.gd` identique.
@@ -843,6 +855,17 @@ et de l'annexe A validée.
 
 #### T12 — architecte : étape `flash` — **maintenant**
 - §2.7. **CA** : tests verts ; capture Mac du flash et de sa version réduite.
+- **Fait (2026-10-12, commit `1c3119c`, branche `j14-t6`)** : `CutsceneStep.Kind.FLASH` / `"flash"` **en fin
+  d'enum** (l'étape `moment` du J12 T23 n'existe sur aucune branche locale) : **à la fusion du
+  J12, `FLASH` passe après `MOMENT`**, dans `Kind`, `TYPE_KEYS` et `_EXTRA_KEYS` (garder les
+  deux, `[]` pour `flash`) ; `CutsceneDirector._flash` + signal `flash_started(count)` ;
+  `ScreenFlash` (`game/ui/components/screen_flash.gd`, dernier enfant de `Root` dans
+  `exploration_hud.tscn` : au-dessus du HUD, sous le rideau, toucher non bloqué),
+  `ExplorationHud.flash(count)`, `set_flash_reduced` (Boot : `reduce_motion or
+  reduce_flashes`) ; jetons `FLASH_*`, `HAPTIC_FLASH_MS` (25 ms) en fin de `ui_tokens.gd`.
+  Captures Mac relues (`build/captures/jalon14_t12/` : `avant`, `flash_normal`,
+  `flash_reduit`). Tests `test_cutscene_flash`, `test_screen_flash`,
+  `test_cutscene_director_flash`.
 
 #### T13 — constructeur-monde (Mac) : intégration série 16 — **maintenant**, après T2
 - `serie16.py --manifeste` (en fin), `preparer.py` deux fois, règles de décor, scènes
