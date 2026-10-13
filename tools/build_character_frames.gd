@@ -92,6 +92,10 @@ const LOOKS: Dictionary = {
 	"herbizarre": [POKEMON_DIR, "ivysaur", ""],
 	"carabaffe": [POKEMON_DIR, "wartortle", ""],
 	"papilusion": [POKEMON_DIR, "butterfree", ""],
+	# Pikachu : planche obtenue à la main par Kevin (ChatGPT, Codex refuse), validée le 2026-10-13.
+	"pikachu": [POKEMON_DIR, "pikachu", ""],
+	# Reptincel : idem (ChatGPT sans image jointe, sinon refus), validé le 2026-10-13.
+	"reptincel": [POKEMON_DIR, "charmeleon", ""],
 }
 ## Pokémon fixes (genre « Pokémon fixe », jalon 9 §2.8.5) : feuille 6 × 1 du catalogue
 ## (« personnages ») → identifiant de données. Ils ne marchent jamais.
@@ -130,6 +134,8 @@ const IDLE_FROM_WALK := {
 	"herbizarre": {"down": 0, "left": 3, "right": 2, "up": 2},
 	"carabaffe": {"down": 0, "left": 3, "right": 3, "up": 0},
 	"papilusion": {"down": 0, "left": 0, "right": 0, "up": 0},
+	"pikachu": {"down": 0, "left": 1, "right": 3, "up": 0},
+	"reptincel": {"down": 3, "left": 2, "right": 2, "up": 2},
 }
 
 var _errors: int = 0

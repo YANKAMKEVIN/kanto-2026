@@ -52,7 +52,7 @@ SERIE = [
 		"forme d'ailerons duveteux bleu pâle, longue queue duveteuse blanc bleuté enroulée. Allure vive "
 		"et sûre d'elle.",
 		"marche debout en 4 images, petits pas dynamiques, queue duveteuse qui ondule", False),
-	("POKE_PIKACHU", "pikachu", 52, "POKE_RATTATA_P2_r1.png",
+	("POKE_PIKACHU", "pikachu", 60, "POKE_RATTATA_P2_r1.png",
 		"Pikachu, de Pokémon Rouge/Bleu, fidèle à son design officiel : petit rongeur jaune vif et "
 		"rond, longues oreilles pointues au bout noir, joues rouges rondes, deux bandes brunes sur le "
 		"dos, queue en forme d'éclair brune à la base. Allure joyeuse et curieuse.",
