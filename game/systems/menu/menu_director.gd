@@ -81,6 +81,10 @@ signal storage_release_asked(view: ChoiceView, place: int, index: int)
 ## joue le déroulé « apprendre / oublier » par-dessus le menu, puis rappelle
 ## [method finish_tm_learn].
 signal tm_learn_requested(index: int, item_id: StringName)
+## Objet AVENTURE sans cible (jalon 12, T20 : la Corde Sortie) accepté ici
+## ([method FieldItemRules.check] = OK) : Boot ferme le menu, retire l'objet, raconte et agit.
+## Rien n'est consommé par le menu.
+signal field_item_requested(item_id: StringName)
 
 var _state: Object
 var _data: PokemonData
@@ -118,6 +122,9 @@ var _shop_id: StringName = &""
 var _shop_mode: StringName = ShopViews.MODE_BUY
 ## Pokémon sélectionné dans le Stockage (de session, jamais sauvegardé).
 var _storage_selection: StorageSelection = StorageSelection.new()
+## Grottes de Kanto et carte courante (jalon 12, T20 : Corde Sortie) ; null / vide = aucune.
+var _caves: CaveLibrary
+var _current_map: Callable = Callable()
 
 
 func _init() -> void:
@@ -446,6 +453,8 @@ func set_bag_sort(sort: int) -> void:
 func request_item_use(item_id: StringName) -> void:
 	if _state == null or _items == null:
 		return
+	if _use_targetless_item(item_id):
+		return
 	if _bag_context == BagQuery.CONTEXT_TEAM and _bag_target >= 0:
 		use_item_on(item_id, _bag_target)
 		return
@@ -683,3 +692,28 @@ func _on_closed() -> void:
 	_storage_selection = StorageSelection.new()
 	get_tree().paused = false
 	menu_closed.emit(changed)
+
+
+## Grottes (jalon 12, T20) et carte courante ([param current_map] : `func() -> StringName`) :
+## la Corde Sortie ne sert que dans une grotte ([FieldItemRules]).
+func set_caves(caves: CaveLibrary, current_map: Callable) -> void:
+	_caves = caves
+	_current_map = current_map
+
+
+## UTILISER d'un objet AVENTURE sans cible (jalon 12, T20 : la Corde Sortie). Faux si l'objet
+## n'en est pas un (le parcours habituel continue). Refus → le bandeau du Sac dit pourquoi, rien
+## ne change ; accepté → [signal field_item_requested] (Boot ferme le menu et agit).
+func _use_targetless_item(item_id: StringName) -> bool:
+	var item := _items.get_item(item_id)
+	if not FieldItemRules.is_targetless(item):
+		return false
+	if not _state.bag.has(item_id):
+		return true
+	var map_id: StringName = _current_map.call() if _current_map.is_valid() else &""
+	var check := FieldItemRules.check(item, map_id, _caves)
+	if check != FieldItemRules.Check.OK:
+		bag_result_shown.emit(BagQuery.field_refusal_text(check), false)
+		return true
+	field_item_requested.emit(item_id)
+	return true

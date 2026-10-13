@@ -1,5 +1,5 @@
 {
-	"_doc": "Compagnon Pokémon (jalon 11, dossier 14 §8, docs/tech/jalon-11-compagnon.md §2.1). « species » : les espèces éligibles (une planche d'exploration repos + marche en 4 directions VALIDÉE, aucun substitut) → leur apparence (« sprite », comme les PNJ : pokemon/<espèce>) ; « flying » (facultatif) : en vol (ombre au sol, pas de devant de touffe). « contexts » : carte → contexte de la phrase de curiosité (forest, city) ; absente = générique (D-7).",
+	"_doc": "Compagnon Pokémon (jalon 11, dossier 14 §8, docs/tech/jalon-11-compagnon.md §2.1). « species » : les espèces éligibles (une planche d'exploration repos + marche en 4 directions VALIDÉE, aucun substitut) → leur apparence (« sprite », comme les PNJ : pokemon/<espèce>) ; « flying » (facultatif) : en vol (ombre au sol, pas de devant de touffe). « contexts » : carte → contexte de la phrase de curiosité (forest, city, cave) ; absente = générique (D-7).",
 	"species": {
 		"bulbasaur": { "sprite": "pokemon/bulbasaur" },
 		"charmander": { "sprite": "pokemon/charmander" },
@@ -17,6 +17,9 @@
 	"contexts": {
 		"viridian_forest": "forest",
 		"viridian_city": "city",
-		"pewter_city": "city"
+		"pewter_city": "city",
+		"mt_moon_1f": "cave",
+		"mt_moon_b1f": "cave",
+		"mt_moon_b2f": "cave"
 	}
 }

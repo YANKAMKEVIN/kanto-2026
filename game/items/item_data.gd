@@ -34,6 +34,11 @@ const KEY_ADDED_BASE := "ajouté"
 const KEY_ADDED_SUFFIX := " aux objets clés"
 ## Toast d'une CT (dossier 14 §13, n° 40 : « CT34 — Patience obtenue »).
 const TM_ADDED_BASE := "obtenu"
+## Usages d'un objet AVENTURE (jalon 12, T20 ; [member field_use]) : la Corde Sortie (sans cible,
+## [FieldItemRules]) et la pierre d'évolution (un Pokémon cible, T23). Ajouts en fin.
+const FIELD_USE_ESCAPE_ROPE: StringName = &"escape_rope"
+const FIELD_USE_EVOLUTION_STONE: StringName = &"evolution_stone"
+const FIELD_USES: Array[StringName] = [FIELD_USE_ESCAPE_ROPE, FIELD_USE_EVOLUTION_STONE]
 
 var id: StringName = &""
 ## Nom au singulier (« Poké Ball ») et au pluriel (« Poké Balls »).
@@ -63,6 +68,10 @@ var teaches: StringName = &""
 ## Rang dans les données (0, 1, 2… dans l'ordre de lecture des fichiers) : ordre « pertinence »
 ## du Sac hors combat. Posé par [ItemLibrary].
 var order: int = 0
+## Usage en exploration d'un objet AVENTURE (jalon 12, T20 ; [constant FIELD_USES]) : &"" =
+## aucun (l'objet se consulte, sans bouton UTILISER). Clé « field_use » des données, réservée à
+## la catégorie AVENTURE.
+var field_use: StringName = &""
 
 
 ## Identifiant de la catégorie dans les fichiers (&"ball", &"heal"…) : onglet du Sac.
@@ -155,3 +164,8 @@ func is_sellable() -> bool:
 ## ne se vend pas.
 func sell_price() -> int:
 	return floori(price / 2.0) if is_sellable() else 0
+
+
+## Vrai si l'objet a un usage en exploration (jalon 12 : UTILISER d'un objet AVENTURE).
+func has_field_use() -> bool:
+	return category == Category.FIELD and not field_use.is_empty()

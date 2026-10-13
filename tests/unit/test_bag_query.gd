@@ -124,7 +124,9 @@ func test_in_the_field_everything_is_listed_with_a_note_when_unusable() -> void:
 	assert_true(by_id[&"potion"].usable)
 	assert_true(by_id[&"potion"].targets_pokemon)
 	assert_eq(by_id[&"potion"].note, "")
-	assert_true(by_id[&"repel"].usable, "AVENTURE : en exploration")
+	# Jalon 12 (T20) : un objet AVENTURE sans « field_use » se consulte, sans UTILISER.
+	assert_false(by_id[&"repel"].usable, "AVENTURE sans usage d'exploration : pas de bouton")
+	assert_eq(by_id[&"repel"].note, "", "et aucune mention")
 	for id: StringName in [&"x_attack", &"poke_ball", &"great_ball"]:
 		assert_false(by_id[id].usable, String(id))
 		assert_eq(by_id[id].note, "Utilisable en combat", String(id))

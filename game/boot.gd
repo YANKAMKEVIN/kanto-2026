@@ -55,6 +55,9 @@ const INTRO_BACKDROP_FOCUS: Vector2 = Vector2(768, 528)
 const INTRO_BACKDROP_ZOOM: float = 1.6
 ## Raison de blocage du joueur pendant le fondu d'arrivée dans la chambre (OUV.3).
 const OPENING_ARRIVAL: StringName = &"opening_arrival"
+## Narration de la Corde Sortie (jalon 12, dossier 15 §20 n° 33) :
+## `data/dialogues/field_items.json`.
+const ESCAPE_ROPE_DIALOGUE: StringName = &"escape_rope_used"
 
 @export var start_map: StringName = &"player_house_2f"
 @export var start_spawn: StringName = &"start"
@@ -153,6 +156,8 @@ var _in_foreground: bool = true
 var _opening: OpeningDirector = null
 ## Bourg Palette en mode décor derrière le titre (libéré en quittant le titre).
 var _title_backdrop: TitleBackdrop = null
+## Grottes de Kanto (jalon 12, T20 : Corde Sortie, `data/world/caves.json`).
+var _caves := CaveLibrary.new()
 
 @onready var _world: Node2D = %World
 @onready var _hud: ExplorationHud = %ExplorationHud
@@ -323,6 +328,7 @@ func _ready() -> void:
 	_menu.menu_opened.connect(_on_menu_opened)
 	_menu.menu_closed.connect(_on_menu_closed)
 	_setup_companion()
+	_setup_caves()
 	# L'écran (jalon-06.md §6.6) : ouverture et vue dans la même frame, sans await (un fondu
 	# coupé laisse une coroutine non reprise).
 	_menu.menu_opened.connect(_menu_screen.open_animated)
@@ -995,7 +1001,8 @@ func _apply_debug_start() -> bool:
 	start.apply(GameState, _pokemon)
 	_debug_start_autosave = start.autosave
 	if not start.wild.is_empty():
-		_encounter_library.override_grass(start.map, start.wild, debug_start_path)
+		_encounter_library.override_table(start.map, start.wild_terrain, start.wild,
+			debug_start_path)
 	if not start.map.is_empty():
 		start_map = start.map
 		start_spawn = start.spawn
@@ -1431,6 +1438,8 @@ func _apply_settings(s: GameSettings) -> void:
 		_evolution_screen.reduce_flashes = s.reduce_flashes
 	_services.reduce_motion = s.reduce_motion
 	_companion.set_reduce_motion(s.reduce_motion)
+	# Halos des grottes (jalon 12, T7 / T20) : vacillement des lampes coupé.
+	LightGlow.set_reduce_motion(s.reduce_motion)
 	# Carte du Champion (jalon 10, T5) : sans glissé, un fondu court.
 	_hud.get_champion_card().reduce_motion = s.reduce_motion
 	_menu_screen.speed_scale = s.menu_speed_scale()
@@ -1462,3 +1471,36 @@ func _on_save_requested() -> void:
 		var error := _write_save("menu")
 		text = SettingsViews.save_result_text(error, Time.get_datetime_dict_from_system())
 	_menu.show_save_result(text)
+
+
+# --- Jalon 12 (T20) : grottes et Corde Sortie -----------------------------------------------
+
+## Grottes (`data/world/caves.json`) et UTILISER d'un objet AVENTURE sans cible (la Corde
+## Sortie) : le Sac la refuse hors grotte, sinon Boot la joue ([method _on_field_item_requested]).
+func _setup_caves() -> void:
+	if not _caves.load_file():
+		for error: String in _caves.get_errors():
+			push_error("Boot : %s" % error)
+	_menu.set_caves(_caves, _current_map_id)
+	_menu.field_item_requested.connect(_on_field_item_requested)
+
+
+func get_caves() -> CaveLibrary:
+	return _caves
+
+
+## Corde Sortie acceptée par le Sac (jalon 12, dossier 15 §11, `jalon-12.md` §2.6) : menu fermé,
+## « Tu utilises la Corde Sortie. », puis la Corde est retirée **dans la même image** que le
+## départ du fondu vers l'entrée de la grotte (comme une porte) — aucune image stable entre les
+## deux : l'autosave suivant est celui de l'arrivée (position et Sac ensemble) ; une fermeture
+## pendant le fondu laisse la sauvegarde d'avant, Corde comprise. Ni soin ni point de repos.
+func _on_field_item_requested(item_id: StringName) -> void:
+	var item := _items.get_item(item_id)
+	var exit := FieldItemRules.escape_target(_current_map_id(), _caves)
+	if item == null or exit == null or not GameState.bag.has(item_id):
+		return
+	_menu.close()
+	if _runner.play(ESCAPE_ROPE_DIALOGUE, null, SceneRouter.get_current_map()):
+		await _runner.dialogue_finished
+	GameState.bag.remove(item_id, 1)
+	SceneRouter.change_map(exit.map, exit.spawn, exit.facing)

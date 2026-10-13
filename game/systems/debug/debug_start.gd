@@ -54,6 +54,9 @@ extends RefCounted
 ## Jalon 11 (T20d, QA du compagnon) : « companion » : place dans l'équipe (0 = premier) du
 ## Pokémon choisi comme compagnon ; une espèce sans planche est effacée au premier rafraîchissement
 ## (comme en jeu, A-11).
+## Jalon 12 (T20, gravats) : « wild » accepte une clé « terrain » facultative
+## ([constant EncounterTable.TERRAINS], « grass » par défaut) : `"terrain": "rubble"` force la
+## table des gravats de la carte (grotte) au lieu de celle des herbes.
 
 const USER_PATH: String = "user://debug_start.json"
 const FACINGS: Dictionary[String, Vector2i] = {
@@ -91,6 +94,8 @@ var autosave: bool = false
 var wild: Dictionary = {}
 ## Place du compagnon dans l'équipe (-1 = aucun).
 var companion: int = -1
+## Terrain de la table forcée [member wild] (jalon 12, T20 : clé « terrain » de « wild »).
+var wild_terrain: StringName = &"grass"
 var _errors: PackedStringArray = PackedStringArray()
 
 
@@ -208,13 +213,18 @@ func add_from_dict(dict: Dictionary, data: PokemonData, items: ItemLibrary,
 		else:
 			new_autosave = dict["autosave"]
 	var new_wild: Dictionary = {}
+	var new_wild_terrain: StringName = &"grass"
 	if dict.has("wild"):
 		if not dict["wild"] is Dictionary or new_map.is_empty():
 			ok = _fail("%s : « wild » est une table d'herbes, avec « map »" % source)
 		else:
-			new_wild = dict["wild"]
+			new_wild = (dict["wild"] as Dictionary).duplicate()
+			if new_wild.has("terrain"):
+				new_wild_terrain = StringName(str(new_wild["terrain"]))
+				new_wild.erase("terrain")
 			var check := EncounterLibrary.new(data)
-			if not check.override_grass(new_map, new_wild, source + " « wild »"):
+			if not check.override_table(new_map, new_wild_terrain, new_wild,
+					source + " « wild »"):
 				for error: String in check.get_errors():
 					_errors.append(error)
 				ok = false
@@ -240,6 +250,7 @@ func add_from_dict(dict: Dictionary, data: PokemonData, items: ItemLibrary,
 	storage = new_storage
 	autosave = new_autosave
 	wild = new_wild
+	wild_terrain = new_wild_terrain
 	companion = new_companion
 	return true
 

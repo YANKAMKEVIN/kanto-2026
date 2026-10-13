@@ -47,16 +47,21 @@ const UNUSED_YET: Array[StringName] = [
 ]
 ## Jalon 11 (T20c) : phrases jouées par le contrôleur du compagnon (ni PNJ, ni point, ni scène).
 const PLAYED_BY_COMPANION: Array[StringName] = [
-	&"companion_city", &"companion_forest", &"companion_happy", &"companion_sniff",
-	&"companion_stretch", &"companion_stretch_soft", &"companion_tired", &"companion_tired_f",
-	&"companion_unwell", &"companion_watch", &"companion_water",
+	&"companion_cave", &"companion_city", &"companion_forest", &"companion_happy",
+	&"companion_sniff", &"companion_stretch", &"companion_stretch_soft", &"companion_tired",
+	&"companion_tired_f", &"companion_unwell", &"companion_watch", &"companion_water",
 ]
+## Jalon 12 (T20) : phrases jouées par Boot (ni PNJ, ni point, ni scène) : la Corde Sortie
+## ([constant Boot.ESCAPE_ROPE_DIALOGUE], dossier 15 §20 n° 33).
+const PLAYED_BY_BOOT: Array[StringName] = [&"escape_rope_used"]
 ## Jalon 10 : textes verrouillés du dossier 12 (même forme que le dossier 10) et lot de textes du
 ## J10 (panneaux, noms affichés), où un retour à la ligne est écrit « \n ».
 const DOSSIER_12 := "res://docs/design/dossier-12-argenta.md"
 const LOT_J10 := "res://docs/design/textes/textes-brouillon-j10.md"
 ## Jalon 11 : textes du §13 (« « … » » par ligne).
 const DOSSIER_14 := "res://docs/design/dossier-14-systemes-j11.md"
+## Jalon 12 : lot de textes du §20 du dossier 15 (« n. Libellé : « … » »).
+const DOSSIER_15 := "res://docs/design/dossier-15-route-3-mont-selenite.md"
 ## Jalon 8 : textes T1–T16 validés (dossier 11, « Textes à valider ») ; dans son tableau, « / »
 ## marque le retour à la ligne de la bulle et le gras (« ** ») le titre d'un panneau.
 const DOSSIER_11 := "res://docs/design/dossier-11-route-2.md"
@@ -82,10 +87,12 @@ const TEXTES_VALIDES := "res://docs/design/textes/textes-brouillon-j7.md"
 const IDS: Array[StringName] = [
 	&"aoki", &"breakfast_table", &"clerk", &"clerk_parcel",
 	&"clerk_parcel_hello",
-	# Jalon 11 (T20c) : phrases du compagnon (dossier 14 §13.12).
-	&"companion_city", &"companion_forest", &"companion_happy", &"companion_sniff",
-	&"companion_stretch", &"companion_stretch_soft", &"companion_tired", &"companion_tired_f",
-	&"companion_unwell", &"companion_watch", &"companion_water",
+	# Jalon 11 (T20c) : phrases du compagnon (dossier 14 §13.12) ; grotte (jalon 12, T20).
+	&"companion_cave", &"companion_city", &"companion_forest", &"companion_happy",
+	&"companion_sniff", &"companion_stretch", &"companion_stretch_soft", &"companion_tired",
+	&"companion_tired_f", &"companion_unwell", &"companion_watch", &"companion_water",
+	# Jalon 12 (T20) : narration de la Corde Sortie, jouée par Boot.
+	&"escape_rope_used",
 	&"forest_gate_north_guard", &"forest_gate_south_guard",
 	&"forest_hiker", &"forest_naturalist",
 	&"forest_scout_eli_after", &"forest_scout_eli_before", &"forest_scout_milo_after",
@@ -259,7 +266,7 @@ func test_every_used_dialogue_exists() -> void:
 func test_every_dialogue_is_used() -> void:
 	var played := _cutscenes.get_dialogue_ids()
 	for id: StringName in _library.get_ids():
-		if UNUSED_YET.has(id) or PLAYED_BY_COMPANION.has(id):
+		if UNUSED_YET.has(id) or PLAYED_BY_COMPANION.has(id) or PLAYED_BY_BOOT.has(id):
 			continue
 		assert_true(_used_on.has(id) or played.has(id),
 			"dialogue « %s » utilisé par un PNJ, un point ou une scène" % id)
@@ -560,6 +567,7 @@ func test_texts_are_the_dossier_02_texts_word_for_word() -> void:
 	var dossier_12 := FileAccess.get_file_as_string(DOSSIER_12)
 	var lot_j10 := FileAccess.get_file_as_string(LOT_J10)
 	var dossier_14 := FileAccess.get_file_as_string(DOSSIER_14)
+	var dossier_15 := FileAccess.get_file_as_string(DOSSIER_15)
 	# Formes accordées « fatigué[e] » (n° 55) : masculin et féminin.
 	dossier_14 += dossier_14.replace("[e]", "") + dossier_14.replace("[e]", "e")
 	for row: Array in _pages():
@@ -579,7 +587,8 @@ func test_texts_are_the_dossier_02_texts_word_for_word() -> void:
 			or dossier_10.contains(_as_dossier_10(text))
 			or dossier_12.contains(_as_dossier_10(text))
 			or lot_j10.contains("| « %s » |" % text.replace("\n", "\\n"))
-			or _each_line_quoted(dossier_14, text),
+			or _each_line_quoted(dossier_14, text)
+			or dossier_15.contains(" : « %s »" % text),
 			"%s : « %s » dans un dossier de conception" % [row[0], text])
 
 
