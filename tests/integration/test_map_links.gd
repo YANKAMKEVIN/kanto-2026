@@ -20,6 +20,8 @@ const MAP_IDS: Array[StringName] = [
 	&"route_3", &"mt_moon_center", &"route_4",
 	# Jalon 12 (T9) : les trois étages du Mont Sélénite.
 	&"mt_moon_1f", &"mt_moon_b1f", &"mt_moon_b2f",
+	# Jalon 14 (T14) : la Route 25 et la maison de Léo (raccord ouest « à venir » jusqu'au T15).
+	&"route_25", &"bill_house",
 ]
 ## Cartes construites par une autre tâche en parallèle (jalon 7 : la Route 22, T22 ; jalon 10 :
 ## Argenta, T11, pendant les intérieurs du T13) : un warp qui y mène est vérifié seulement si la

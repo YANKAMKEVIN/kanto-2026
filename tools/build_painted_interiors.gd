@@ -20,6 +20,10 @@ extends SceneTree
 ##   mt_moon_center — le Centre Pokémon du Mont Sélénite (jalon 12 T8, jalon-12.md §2.14) :
 ##     définition commune des Centres, sans Boutique ; sortie vers la Route 3 (`from_center_e`)
 ##   godot --headless --path . -s res://tools/build_painted_interiors.gd -- --rooms=mt_moon_center
+##   bill_house — la maison de Léo au Cap d'Azuria (jalon 14 T14, jalon-14.md §2.1) : relue sur sa
+##     grille (`tools/plans/bill_house.txt`, « plan »), sans PNJ (T17) ; affichée « Cap d'Azuria »
+##     (nom de sa zone, `test_zone_library`)
+##   godot --headless --path . -s res://tools/build_painted_interiors.gd -- --rooms=bill_house
 ##   godot --headless --path . -s res://tools/build_painted_interiors.gd   (toutes les pièces)
 ##   godot --headless --path . --import
 ##
@@ -83,6 +87,7 @@ func _init() -> void:
 		_player_house_1f(), _rival_house(), _oak_lab(), _forest_gate(&"south"),
 		_forest_gate(&"north")]
 	rooms.append_array(_pewter_rooms())
+	rooms.append(_bill_house())
 	rooms.append(_pokemon_center(&"mt_moon_center", "MtMoonCenter", "Mont Sélénite",
 		[&"route_3", &"from_center_e"]))
 	for room: Dictionary in rooms:
@@ -482,6 +487,45 @@ func _pewter_rooms() -> Array[Dictionary]:
 	return rooms
 
 
+
+## Maison de Léo, au Cap d'Azuria (`tools/plans/bill_house.txt`, 16 × 11) : deux cabines de
+## téléportation (la seconde en miroir ; machine et armoire occupent 3 cases de large, l'armoire
+## dans le mur latéral `K`), écran, console, module, bureau encombré et sa chaise, deux
+## bibliothèques (la seconde en miroir), lit, plante. Sortie : le paillasson (7..8, 10), PUSH ↓.
+## Aucun PNJ (Léo-Mélofée et Léo humain : T17).
+func _bill_house() -> Dictionary:
+	return {
+		"id": &"bill_house", "node": "BillHouse", "size": Vector2i(16, 11),
+		"shell": "res://assets/world/interiors/int_maison_leo_coque.png",
+		"title": "Cap d'Azuria", "light": &"interior_warm",
+		"plan": PLANS_DIR + "bill_house.txt", "walkable": ".X",
+		"furniture": [
+			[&"int_cabine_teleport_01", Rect2i(1, 3, 3, 2), "CabinA", [Vector2i(1, 3),
+				Vector2i(2, 3), Vector2i(3, 3), Vector2i(1, 4), Vector2i(2, 4), Vector2i(3, 4)]],
+			[&"int_cabine_teleport_01", Rect2i(12, 3, 3, 2), "CabinB", [Vector2i(12, 3),
+				Vector2i(13, 3), Vector2i(14, 3), Vector2i(12, 4), Vector2i(13, 4),
+				Vector2i(14, 4)], true],
+			[&"int_ecran_diagnostic_01", Rect2i(5, 3, 1, 1), "Screen"],
+			[&"int_console_leo_01", Rect2i(7, 3, 2, 1), "Console"],
+			[&"int_module_leo_01", Rect2i(10, 3, 1, 1), "Module"],
+			[&"int_bibliotheque_cote_01", Rect2i(1, 6, 1, 2), "BookshelfWest"],
+			[&"int_bibliotheque_cote_01", Rect2i(14, 6, 1, 2), "BookshelfEast", [Vector2i(14, 6),
+				Vector2i(14, 7)], true],
+			[&"int_bureau_leo_01", Rect2i(5, 7, 3, 1), "Desk"],
+			[&"int_chaise_bureau_01", Rect2i(6, 8, 1, 1), "DeskChair"],
+			[&"int_lit_01", Rect2i(12, 7, 2, 2), "Bed"],
+			[&"int_plante", Rect2i(1, 9, 1, 1), "Plant"],
+		],
+		"rugs": [[&"int_tapis_carreaux_01", Vector2(6.5, 7.8), "RugDesk"]],
+		"spawns": {"from_route_25": Vector2i(7, 10)},
+		"warps": [
+			["Exit0", Vector2i(7, 10), PUSH, Vector2i.DOWN, &"route_25", &"from_bill_house_w",
+				Vector2i.DOWN],
+			["Exit1", Vector2i(8, 10), PUSH, Vector2i.DOWN, &"route_25", &"from_bill_house_e",
+				Vector2i.DOWN],
+		],
+	}
+
 ## Passages de sortie d'un intérieur d'Argenta : [param cells] PUSH ↓ → [param target]
 ## (`pewter_city` par défaut), [param spawn], tourné vers le sud.
 func _pewter_exits(cells: Array, spawn: StringName, target: StringName = &"pewter_city") \
@@ -830,7 +874,7 @@ func _read_logic(path: String, size: Vector2i) -> Dictionary[Vector2i, bool]:
 
 
 ## Meuble de Bourg Palette : [identifiant, rectangle des cases solides, nœud, (cases solides
-## explicites)]. Pied au milieu du bas du rectangle ; emprise écrite dans l'instance (relative
+## explicites), (miroir)]. Pied au milieu du bas du rectangle ; emprise écrite dans l'instance (relative
 ## à la case d'ancrage, celle qui contient le pied). Renvoie les cases solides.
 func _add_furniture(root: Node, parent: Node, entry: Array) -> Array[Vector2i]:
 	var id: StringName = entry[0]
@@ -848,6 +892,8 @@ func _add_furniture(root: Node, parent: Node, entry: Array) -> Array[Vector2i]:
 		as Node2D
 	prop.name = entry[2]
 	prop.position = Vector2((rect.position.x + rect.size.x / 2.0) * TILE, rect.end.y * TILE)
+	if entry.size() > 4 and bool(entry[4]):
+		(prop.get_node(^"Sprite") as Sprite2D).flip_h = true
 	var anchor := Vector2i(floori(prop.position.x / TILE), ceili(prop.position.y / TILE) - 1)
 	var footprint: Array[Vector2i] = []
 	for cell: Vector2i in cells:

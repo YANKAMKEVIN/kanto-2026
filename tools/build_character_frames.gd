@@ -100,6 +100,10 @@ const LOOKS: Dictionary = {
 	"ondine": [CHARACTERS_DIR, "misty", ""],
 	"nageur": [CHARACTERS_DIR, "swimmer", ""],
 	"nageuse": [CHARACTERS_DIR, "swimmer_f", ""],
+	# J14 (série 16, Cap d'Azuria) : Léo humain (look `bill`, 128 px, avec sa planche d'attente) et
+	# Mélofée (look `pokemon/clefairy`, planche d'attente absente : pose de marche posée).
+	"leo_humain": [CHARACTERS_DIR, "bill", ""],
+	"melofee": [POKEMON_DIR, "clefairy", ""],
 }
 ## Pokémon fixes (genre « Pokémon fixe », jalon 9 §2.8.5) : feuille 6 × 1 du catalogue
 ## (« personnages ») → identifiant de données. Ils ne marchent jamais.
@@ -136,6 +140,7 @@ const IDLE_COLUMNS := {"down": 0, "left": 1, "right": 2, "up": 3}
 ## (colonne 1) ; de dos, colonne 0 (les deux pieds posés).
 const IDLE_FROM_WALK := {
 	"salameche": {"down": 0, "left": 3, "right": 1, "up": 0},
+	"melofee": {"down": 0, "left": 3, "right": 1, "up": 0},
 }
 
 var _errors: int = 0

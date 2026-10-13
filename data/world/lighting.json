@@ -102,6 +102,8 @@
 		"route_4": "golden_hour",
 		"mt_moon_1f": "cave_1f",
 		"mt_moon_b1f": "cave_b1f",
-		"mt_moon_b2f": "cave_b2f"
+		"mt_moon_b2f": "cave_b2f",
+		"route_25": "golden_hour",
+		"bill_house": "interior_warm"
 	}
 }
