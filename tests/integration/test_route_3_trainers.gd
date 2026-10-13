@@ -175,7 +175,12 @@ func test_real_sight_is_the_grid_sight_and_stays_clear() -> void:
 		var real := _real_sight(spec)
 		var planned := _planned_sight(id)
 		assert_eq(real.size(), spec.sight, "%s : vue dégagée" % id)
-		assert_eq(real.keys(), planned.keys(), "%s : vue réelle = vue de la grille" % id)
+		# Mêmes cases, quel que soit l'ordre (balayage ligne à ligne / depuis le Dresseur).
+		var real_cells: Array = real.keys()
+		var planned_cells: Array = planned.keys()
+		real_cells.sort()
+		planned_cells.sort()
+		assert_eq(real_cells, planned_cells, "%s : vue réelle = vue de la grille" % id)
 		for npc: Npc in _map.get_npcs():
 			assert_false(real.has(npc.get_cell()), "%s sur la vue de %s" % [npc.get_id(), id])
 
@@ -291,8 +296,11 @@ func _walk(direction: Vector2i, until: Vector2i) -> void:
 			action = &"move_down"
 		Vector2i.LEFT:
 			action = &"move_left"
+	# Relâcher pendant le dernier pas (case de départ + direction = arrivée) : la touche encore
+	# enfoncée à l'arrivée enchaînerait un pas de trop (comme _walk_to de test_rival_route22).
 	Input.action_press(action)
-	await wait_until(func() -> bool: return _player.get_cell() == until, TIMEOUT)
+	await wait_until(func() -> bool: return _player.get_cell() == until \
+		or (_player.is_moving() and _player.get_cell() + direction == until), TIMEOUT)
 	Input.action_release(action)
 	await wait_until(func() -> bool: return not _player.is_moving(), TIMEOUT)
 
