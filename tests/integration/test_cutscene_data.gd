@@ -36,6 +36,8 @@ const MAPS: Array[StringName] = [
 	&"pewter_city",
 	# Jalon 12 (T18) : première entrée sur la Route 3.
 	&"route_3",
+	# Jalon 12 (T25) : scène du chercheur au bas du couloir des lampes (B2F).
+	&"mt_moon_b2f",
 ]
 ## Jalon 7 (T18) : partie qui revient au labo avec le colis (rival parti après le combat).
 const PARCEL_FLAGS: Array[StringName] = [
@@ -61,6 +63,15 @@ const ROUTE3_FLAGS: Array[StringName] = [
 	&"rival_lab_won", &"rival_battle_done", &"rival_left_lab", &"viridian_arrived",
 	&"got_oak_parcel", &"pokedex_activated", &"poison_unlocked", &"beaten_forest_scout_theo",
 	&"pewter_arrived", &"brock_met", &"badge_boulder", &"route_3_guard_cleared",
+]
+## Jalon 12 (T25) : partie badgée au Mont Sélénite, le gardien R3 battu (scène du chercheur),
+## puis le chercheur battu (choix du fossile).
+const R3_FLAGS: Array[StringName] = [
+	&"oak_met", &"oak_lab_reunion", &"starter_offered", &"starter_chosen", &"rival_challenged",
+	&"rival_lab_won", &"rival_battle_done", &"rival_left_lab", &"viridian_arrived",
+	&"got_oak_parcel", &"pokedex_activated", &"poison_unlocked", &"beaten_forest_scout_theo",
+	&"pewter_arrived", &"brock_met", &"badge_boulder", &"route_3_guard_cleared",
+	&"route_3_entered", &"beaten_mt_moon_rocket_3",
 ]
 ## Paires `taken_*` posées au labo (starter du joueur, puis celui du rival) → Pokémon du rival
 ## présent sur la Route 22 (data/npcs/route_22.json).
@@ -109,6 +120,14 @@ const VARIANT_FLAGS: Dictionary = {
 	&"mt_moon_1f_item_1": [PEWTER_FLAGS + [&"pewter_arrived", &"brock_met", &"badge_boulder"]],
 	&"mt_moon_1f_hidden_1": [PEWTER_FLAGS + [&"pewter_arrived", &"brock_met", &"badge_boulder"]],
 	&"mt_moon_b1f_item_2": [PEWTER_FLAGS + [&"pewter_arrived", &"brock_met", &"badge_boulder"]],
+	# Jalon 12 (T25) : Pierre Lune visible (B1F), CT01 et Pierre Lune cachée (B2F), chercheur,
+	# choix du fossile.
+	&"mt_moon_b1f_item_1": [PEWTER_FLAGS + [&"pewter_arrived", &"brock_met", &"badge_boulder"]],
+	&"mt_moon_b2f_item_1": [R3_FLAGS],
+	&"mt_moon_b2f_hidden_1": [R3_FLAGS],
+	&"mt_moon_researcher": [R3_FLAGS],
+	&"mt_moon_fossil_dome": [R3_FLAGS + [&"beaten_mt_moon_researcher"]],
+	&"mt_moon_fossil_helix": [R3_FLAGS + [&"beaten_mt_moon_researcher"]],
 }
 ## Scènes jouées par le code (pas de déclencheur) → carte où elles sont jouées.
 ## Jalon 7 (T18) : la scène du colis est lancée par la variante « cutscene » du dialogue de Chen.
@@ -130,6 +149,11 @@ const CODE_PLAYED: Dictionary[StringName, StringName] = {
 	# Jalon 12 (T21) : Corde et Potion (PNJ « objet »), Réveil caché (point d'examen de l'indice).
 	&"mt_moon_1f_item_1": &"mt_moon_1f", &"mt_moon_1f_hidden_1": &"mt_moon_1f",
 	&"mt_moon_b1f_item_2": &"mt_moon_b1f",
+	# Jalon 12 (T25) : Pierre Lune et CT01 (PNJ « objet »), Pierre Lune cachée (point d'examen),
+	# choix du fossile (confirmation « confirm_cutscene » du dialogue d'un fossile).
+	&"mt_moon_b1f_item_1": &"mt_moon_b1f", &"mt_moon_b2f_item_1": &"mt_moon_b2f",
+	&"mt_moon_b2f_hidden_1": &"mt_moon_b2f",
+	&"mt_moon_fossil_dome": &"mt_moon_b2f", &"mt_moon_fossil_helix": &"mt_moon_b2f",
 }
 ## Scènes à déclencheur dont la carte n'est pas encore construite → leur carte (simulées sur les
 ## PNJ de son fichier). Vidée au T19 du jalon 9 (la forêt existe), puis au T11 du jalon 10 (les
@@ -185,7 +209,9 @@ func test_library_loads_without_error() -> void:
 	assert_true(library.load_dir(), "data/cutscenes/ se charge")
 	assert_eq(library.get_errors().size(), 0, str(library.get_errors()))
 	assert_eq(library.get_ids(), [&"mart_parcel", &"mt_moon_1f_hidden_1", &"mt_moon_1f_item_1",
-		&"mt_moon_b1f_item_2", &"oak_lab_exit", &"oak_parcel",
+		&"mt_moon_b1f_item_1", &"mt_moon_b1f_item_2", &"mt_moon_b2f_hidden_1",
+		&"mt_moon_b2f_item_1", &"mt_moon_fossil_dome", &"mt_moon_fossil_helix",
+		&"mt_moon_researcher", &"oak_lab_exit", &"oak_parcel",
 		&"pewter_arrival", &"pewter_gym_brock", &"pewter_gym_brock_tm_late",
 		&"rival_route22", &"route1_grass", &"route_1_potion", &"route_2_item_1",
 		&"route_2_item_2", &"route_2_item_3", &"route_2_item_4", &"route_2_north_item_1",
@@ -232,6 +258,7 @@ func test_every_trigger_targets_a_scene_and_every_scene_is_triggered() -> void:
 	assert_eq(_triggered_on.get(&"pewter_arrival"), [&"pewter_city"])
 	assert_eq(_triggered_on.get(&"route_3_guard"), [&"pewter_city"])
 	assert_eq(_triggered_on.get(&"route_3_entered"), [&"route_3"])
+	assert_eq(_triggered_on.get(&"mt_moon_researcher"), [&"mt_moon_b2f"])
 	assert_eq(_offer.chosen_scene, &"starter_chosen", "scène du choix = CODE_PLAYED")
 	assert_eq(CODE_PLAYED[_offer.chosen_scene], _offer.map_id)
 
@@ -289,7 +316,8 @@ func test_only_world_items_are_found_items() -> void:
 				if step.kind == CutsceneStep.Kind.GIVE and step.found:
 					found.append("%s:%s" % [id, step.item_id])
 	assert_eq(found, ["mt_moon_1f_hidden_1:awakening", "mt_moon_1f_item_1:escape_rope",
-		"mt_moon_b1f_item_2:potion", "route_1_potion:potion", "route_2_item_1:poke_ball",
+		"mt_moon_b1f_item_1:moon_stone", "mt_moon_b1f_item_2:potion",
+		"mt_moon_b2f_hidden_1:moon_stone", "mt_moon_b2f_item_1:tm01", "route_1_potion:potion", "route_2_item_1:poke_ball",
 		"route_2_item_2:potion", "route_2_item_3:poke_ball", "route_2_item_4:potion",
 		"route_2_north_item_1:potion",
 		"route_3_hidden_1:awakening", "route_3_item_1:poke_ball", "route_3_item_2:potion",

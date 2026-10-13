@@ -779,9 +779,12 @@ MANIFESTE = {
 	# build_character_frames.gd) : mêmes images que les scènes `prop_fossile_*`, recadrées dans
 	# la planche de la dalle (boîtes des taches, marge 8 px), 0,6 case de large environ.
 	"images_objets": [
-		{"id": "fossil_dome", "source": "WORLD_PROP_DALLE_FOSSILES_PLANCHE_NE_r1.png",
-			"recadrage": [876, 588, 1172, 828],
-			"sortie": "assets/sprites/objects/painted/fossil_dome.png", "hauteur": 46},
+		# T25 (décision de Kevin du 2026-10-13) : le Fossile Dôme de la planche (« panier tressé »)
+		# est remplacé par une image seule refaite d'après l'icône validée (UI_OBJETS_J12_PLANCHE_r3,
+		# carapace à arête centrale) ; prompt `WORLD_PROP_FOSSILE_DOME_01_NE_r1.txt` (écrit à la
+		# main, hors des tables ci-dessus).
+		{"id": "fossil_dome", "source": "WORLD_PROP_FOSSILE_DOME_01_NE_r1.png",
+			"sortie": "assets/sprites/objects/painted/fossil_dome.png", "hauteur": 44},
 		{"id": "fossil_helix", "source": "WORLD_PROP_DALLE_FOSSILES_PLANCHE_NE_r1.png",
 			"recadrage": [1200, 544, 1500, 832],
 			"sortie": "assets/sprites/objects/painted/fossil_helix.png", "hauteur": 55},

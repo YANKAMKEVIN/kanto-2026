@@ -1,4 +1,29 @@
 {
+	"rocket_guetteur": {
+		"cell": [14, 1], "facing": "down", "sprite": "rocket_grunt_m",
+		"dialogue": "mt_moon_rocket_1_defeated",
+		"unless": ["beaten_mt_moon_rocket_1"],
+		"trainer": {
+			"id": "mt_moon_rocket_1", "sight": 5, "before": "mt_moon_rocket_1_before",
+			"defeated": "mt_moon_rocket_1_defeated", "rematch": "mt_moon_rocket_1_rematch",
+			"leave": []
+		}
+	},
+	"rocket_fouilleuse": {
+		"cell": [8, 20], "facing": "right", "sprite": "rocket_grunt_f",
+		"dialogue": "mt_moon_rocket_2_defeated",
+		"unless": ["beaten_mt_moon_rocket_2"],
+		"trainer": {
+			"id": "mt_moon_rocket_2", "sight": 2, "before": "mt_moon_rocket_2_before",
+			"defeated": "mt_moon_rocket_2_defeated", "rematch": "mt_moon_rocket_2_rematch",
+			"leave": [[0, -2], [-4, -2]]
+		}
+	},
+	"mt_moon_b1f_ball_1": {
+		"cell": [25, 20], "facing": "down", "sprite": "object/poke_ball_ground",
+		"dialogue": "mt_moon_b1f_ball_1", "verb": "take", "turn_to_player": false,
+		"unless": ["got_mt_moon_b1f_item_1"]
+	},
 	"mt_moon_b1f_ball_2": {
 		"cell": [16, 21], "facing": "down", "sprite": "object/poke_ball_ground",
 		"dialogue": "mt_moon_b1f_ball_2", "verb": "take", "turn_to_player": false,

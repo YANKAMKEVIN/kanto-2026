@@ -33,5 +33,101 @@
 				]
 			}
 		]
+	},
+	"mt_moon_b1f_item_1": {
+		"variants": [
+			{
+				"unless": ["got_mt_moon_b1f_item_1"],
+				"steps": [
+					{ "despawn": "mt_moon_b1f_ball_1" },
+					{ "give": "moon_stone", "count": 1, "found": true },
+					{ "set": ["got_mt_moon_b1f_item_1"] }
+				]
+			}
+		]
+	},
+	"mt_moon_b2f_item_1": {
+		"variants": [
+			{
+				"unless": ["got_mt_moon_b2f_item_1"],
+				"steps": [
+					{ "despawn": "mt_moon_b2f_ball_1" },
+					{ "give": "tm01", "count": 1, "found": true },
+					{ "set": ["got_mt_moon_b2f_item_1"] }
+				]
+			}
+		]
+	},
+	"mt_moon_b2f_hidden_1": {
+		"variants": [
+			{
+				"unless": ["got_mt_moon_b2f_hidden_1"],
+				"steps": [
+					{ "give": "moon_stone", "count": 1, "found": true },
+					{ "set": ["got_mt_moon_b2f_hidden_1"] }
+				]
+			}
+		]
+	},
+	"mt_moon_researcher": {
+		"variants": [
+			{
+				"if": ["beaten_mt_moon_rocket_3"],
+				"unless": ["beaten_mt_moon_researcher"],
+				"steps": [
+					{ "emote": "mt_moon_researcher", "kind": "exclamation" },
+					{ "wait": 0.3 },
+					{ "move": "mt_moon_researcher", "to": { "near": "player",
+						"offsets": [[0, 1], [-1, 1], [1, 1], [-1, 0], [1, 0]] } },
+					{ "face": "player", "to": "mt_moon_researcher" },
+					{ "face": "mt_moon_researcher", "to": "player" },
+					{ "dialogue": "mt_moon_researcher_before",
+						"unless": ["lost_mt_moon_researcher"] },
+					{ "dialogue": "mt_moon_researcher_rematch",
+						"if": ["lost_mt_moon_researcher"] },
+					{ "battle": "mt_moon_researcher", "win": ["beaten_mt_moon_researcher"],
+						"lose": ["lost_mt_moon_researcher"] },
+					{ "dialogue": "mt_moon_researcher_defeated",
+						"if": ["beaten_mt_moon_researcher"] },
+					{ "dialogue": "mt_moon_researcher_share",
+						"if": ["beaten_mt_moon_researcher"] },
+					{ "move": "mt_moon_researcher", "to": [15, 30],
+						"if": ["beaten_mt_moon_researcher"] },
+					{ "face": "mt_moon_researcher", "to": "right",
+						"if": ["beaten_mt_moon_researcher"] },
+					{ "wake_up": true, "unless": ["beaten_mt_moon_researcher"] }
+				]
+			}
+		]
+	},
+	"mt_moon_fossil_dome": {
+		"variants": [
+			{
+				"unless": ["mt_moon_fossil_chosen"],
+				"steps": [
+					{ "despawn": "fossile_dome" },
+					{ "despawn": "fossile_nautile" },
+					{ "give": "dome_fossil", "count": 1 },
+					{ "set": ["mt_moon_fossil_chosen", "mt_moon_got_dome_fossil"] },
+					{ "dialogue": "mt_moon_researcher_chosen" },
+					{ "moment": "fossil", "details": { "item": "dome_fossil" } }
+				]
+			}
+		]
+	},
+	"mt_moon_fossil_helix": {
+		"variants": [
+			{
+				"unless": ["mt_moon_fossil_chosen"],
+				"steps": [
+					{ "despawn": "fossile_nautile" },
+					{ "despawn": "fossile_dome" },
+					{ "give": "helix_fossil", "count": 1 },
+					{ "set": ["mt_moon_fossil_chosen", "mt_moon_got_helix_fossil"] },
+					{ "dialogue": "mt_moon_researcher_chosen" },
+					{ "moment": "fossil", "details": { "item": "helix_fossil" } }
+				]
+			}
+		]
 	}
 }

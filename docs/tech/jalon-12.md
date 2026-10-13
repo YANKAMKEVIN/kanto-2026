@@ -741,7 +741,7 @@ fichier commun). Dès T12 fusionné : **T13 ∥ T20** (combat contre grotte, auc
 #### T24 — ui-mobile : Sac et écran d'évolution — après T23 — **fait (2026-10-13, `j12-t24-sac-evolution`, §9)**
 - UTILISER des objets AVENTURE (seulement avec `field_use`), sélecteur COMPATIBLE / INCOMPATIBLE pour la pierre (`show_reason`), bandeau de refus de la Corde, écran d'évolution sans ARRÊTER, ligne de la frise `fossil` ; captures.
 
-#### T25 — constructeur-monde : Team Rocket, chercheur, fossiles, Pierres Lune, CT01 (12C) — après T17, T21, T23
+#### T25 — constructeur-monde : Team Rocket, chercheur, fossiles, Pierres Lune, CT01 (12C) — après T17, T21, T23 — **fait (2026-10-14, `j12-t25-rocket`, §9)**
 - **Décision de Kevin (2026-10-13)** : refaire le **Fossile Dôme posé sur la dalle** (`object/fossil_dome`, planche `WORLD_PROP_DALLE_FOSSILES_PLANCHE`, encore en « panier tressé ») d'après l'icône du Sac validée (`UI_OBJETS_J12_PLANCHE_r3` : carapace de pierre à arête centrale), pour que la dalle et le Sac correspondent.
 - §2.11–§2.13 ; Pierre Lune visible (B1F) et cachée (B2F), CT01 ; départ `mt_moon_fossil`, `moon_stone_qa`. Tests `test_mt_moon_rocket`, `test_mt_moon_fossil`, `test_moon_stone`, `test_save_j12`.
 
@@ -880,6 +880,69 @@ Questions telles que posées :
   seulement pour un objet `obtained`) et frise (`MomentView.item_id`, `MomentRow._item_icon`, sans
   teinte ACCENT, repli sur `key.svg`). Tests : `test_toast`, `test_trainer_screen`. Captures :
   `build/captures/jalon12_icone/09_fossil_toast.png`, `10_trainer_fossil.png`.
+- **T25 — Team Rocket, chercheur, fossiles, Pierres Lune, CT01 (12C) (2026-10-14,
+  constructeur-monde, branche `j12-t25-rocket` depuis `jalon-12` à `1297a07`)** — §2.7, §2.8,
+  §2.11–§2.13, §2.22 ; aucun nom figé changé, aucune version de sauvegarde (v6) :
+  - **Sbires** (`data/npcs/mt_moon_b1f.json`, `mt_moon_b2f.json`, cases / orientations / visions
+    des grilles, `unless beaten_<id>`) : R1 `rocket_guetteur` (14, 1) ↓ 5, `rocket_grunt_m`,
+    `leave: []` (fondu sur place) ; R2 `rocket_fouilleuse` (8, 20) → 2, `rocket_grunt_f` (attente =
+    planche « creuse »), `leave: [[0, -2], [-4, -2]]` (8, 18) puis (4, 18) au bord de la tranchée ;
+    R3 `rocket_gardien` (29, 24) ← 4, `rocket_grunt_m`, `leave: [[0, 0]]` (retour à sa niche),
+    « avant » = les 3 bulles du n° 18 ; « vaincu » et « reprise » (n° 16–18), locuteur « Sbire
+    Rocket ». Décor de combat « chambre » vérifié en combat réel (R3).
+  - **Chercheur** : `mt_moon_researcher` (13, 31) → `unless beaten_mt_moon_researcher`, et
+    `mt_moon_researcher_after` (15, 30) → `if beaten…` (modèle du garde d'Argenta et
+    `route_3_guard_aside`) ; déclencheur `ResearcherTrigger` (25..26, 27), pas ↓ (outil
+    `build_mt_moon.gd`, constante `RESEARCHER_TRIGGER`) ; scène `mt_moon_researcher` (`if
+    beaten_mt_moon_rocket_3`) : « ! », `move near player`, faces, n° 20 (`unless lost_…`) / n° 25
+    (`if lost_…`), `battle` (`win beaten_…`, `lose lost_…`), n° 21, n° 22, `move` vers (15, 30),
+    `face right`, `wake_up` sinon. Ensuite : `mt_moon_researcher_talk` (n° 22 avant le choix,
+    n° 26 après).
+  - **Fossiles** : PNJ objets fixes `fossile_dome` (24, 31) et `fossile_nautile` (26, 31), `lift`
+    30 (posés sur la dalle), verbe **`examine`** (EXAMINER ; `NpcRoster` accepte maintenant
+    `examine` en plus de talk / observe / take), `unless mt_moon_fossil_chosen` ; dialogues
+    `mt_moon_fossil_dome` / `_helix` (narration, « Prendre le Fossile Dôme ? », OUI / NON,
+    `confirm_cutscene`, `cancel_pages: []`) ; scènes : `despawn` des deux → `give` (toast
+    « Fossile Dôme » / « obtenu ») → `set [mt_moon_fossil_chosen, mt_moon_got_<fossile>]` → n° 24 →
+    `moment fossil { item }`. Les sprites de décor des fossiles sont retirés de la carte (la dalle
+    reste un décor).
+  - **Fossile Dôme refait** (décision de Kevin du 2026-10-13) : image seule
+    `build/art/WORLD_PROP_FOSSILE_DOME_01_NE_r1.png` (Codex, `tools/art/generer.sh`, ancres
+    `UI_OBJETS_J12_PLANCHE_r3` + `WORLD_PROP_DALLE_FOSSILES_PLANCHE_NE_r1` ; prompt versionné
+    `tools/art/prompts/serie14/WORLD_PROP_FOSSILE_DOME_01_NE_r1.txt`) : carapace de pierre ocre à
+    arête centrale, lignes gravées, bourrelet ; manifeste (`images_objets.fossil_dome` : nouvelle
+    source, sans recadrage, hauteur 44) et `serie14.py` alignés, préparation limitée à cette
+    entrée → `assets/sprites/objects/painted/fossil_dome.png` 60 × 44 (le `.tres` ne change pas).
+    `prop_fossile_dome_01` (planche de la dalle) n'est plus utilisé par aucune carte.
+  - **Objets** : Pierre Lune visible (B1F (25, 20), `mt_moon_b1f_ball_1`), CT01 (B2F (4, 5),
+    `mt_moon_b2f_ball_1`, toast « CT01 — Ultimapoing » / « obtenue »), Pierre Lune cachée (B2F,
+    `HIDDEN_ITEMS += mt_moon_b2f_hidden_1` : EXAMINER sur l'éclat (36, 12) depuis (35, 12)).
+  - **Départs** : `mt_moon_weak` (B1F, Salamèche N4 : défaite contre R1 → reprise),
+    `mt_moon_fossil` (B2F au pied de l'échelle de sortie, chercheur battu, choix à faire),
+    `moon_stone_qa` (Centre, 2 Pierres Lune, Nidorina, Nidorino, Mélofée, Rondoudou) ; README.
+  - **Tests** (nouveaux) : `test_mt_moon_rocket` (7 : grilles, R1 / R3 inévitables et R2 évitable
+    sur la vraie scène avec ses PNJ, textes, Boot : « Hé, toi ! » → départ → absent au
+    rechargement, défaite → réveil → « Encore toi ? Demi-tour. », R2 qui creuse puis part, R3 trois
+    bulles + décor « chambre » + absent au rechargement), `test_mt_moon_fossil` (5 : rien avant R3,
+    méprise / combat / partage / rangé + rechargement, défaite → reprise n° 25, NON puis OUI Dôme
+    définitif avec rechargements, OUI Nautile), `test_mt_moon_items` (4 : Pierre Lune visible, CT01,
+    Pierre Lune cachée, départs 12C), `test_save_j12` (3 : v6 inchangée, partie au B2F, choix du
+    fossile et Grand moment). Retouchés : `test_dialogue_data` (B2F, ids, reprises, scènes de
+    choix, formes masculines « [e] » / « [se] » et « {fossil} » du §20), `test_cutscene_data`,
+    `test_npc_roster` (verbe `examine`). `test_moon_stone` (T23) couvre l'évolution par pierre.
+  - Captures (Mac, 2340 × 1080) : `tools/capture_mt_moon_t25.gd` → `build/captures/jalon12_t25/`
+    (r1_poste, r1_hey, r2_creuse, pierre_lune_b1f, r3_bulle_1, r3_bulle_3, r3_combat,
+    chercheur_meprise, chercheur_partage, dalle, choix_question, toast_fossile, chercheur_choisi,
+    dalle_vide, cache_b2f, ct01, dresseur_frise), relues.
+  - **Valeurs par défaut (règle 4)** : formes au masculin (« gamin curieux », « Tu es revenu ? » :
+    héros seul en V1, OUV A2) ; fossiles visibles sur la dalle dès l'arrivée (seulement `unless
+    mt_moon_fossil_chosen`, au lieu de `if beaten_mt_moon_researcher` : la chambre n'est
+    accessible qu'après le chercheur, et le décor du T9 les montrait déjà) ; pas d'étape « face
+    chercheur → joueur » dans la scène du choix (l'identifiant du chercheur diffère avant et après
+    un rechargement ; il est déjà tourné vers la dalle) ; examinables aussi de côté (23, 31) /
+    (27, 31) ; chemin de départ de R2 ; pause 0,3 s après le « ! » du chercheur ; `lift` 30 des
+    fossiles ; Fossile Dôme 44 px de haut.
+  - Import propre ; `tools/test.sh` : **4 205 tests, 4 205 verts** (326 scripts, 169 749 assertions, 872 s).
 
 - **T23 — moteur de l'événement et de la pierre (2026-10-13, architecte, branche
   `j12-t23-evenement` depuis `jalon-12` à `2732b45`)** — §2.9, §2.13, §0.4 n° 7, 9, 10 ; aucun
