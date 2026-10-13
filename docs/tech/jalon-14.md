@@ -962,6 +962,7 @@ et de l'annexe A validée.
 
 #### T17 — constructeur-monde : scène de Léo (14A) — **maintenant**, après T5, T6, T12, T14
 - §2.9, §2.10 ; moment par J12 T23 (repli : ajouté au T23) ; départs `bill_house`, `bill_after`.
+- **Fait (2026-10-13, branche `j14-t17`)** : `data/npcs|dialogues|cutscenes/bill_house.json` (textes n° 1 à 27, A-8 mot pour mot ; scènes `bill_house_enter`, `bill_screen`, `bill_module`, `bill_machine`), points d'examen écran / module / console, déclencheur d'entrée (↑ seulement) et trois lueurs `hint` (FlagGate) posés par `build_painted_interiors.gd` (`bill_house.tscn` régénéré), objectifs n° 67–68 (+ « rejoindre le Cap d'Azuria. »), `MomentLibrary.BILL_RESTORED` + texte n° 69, départ `bill_after`. Tests `test_bill_house` (7 : déroulé, ordre forcé, sortie/retour, fermeture pendant l'effet, récompenses uniques, Passe Bateau sans usage, variantes), maps, données, objectifs, moments. Captures : `build/captures/jalon14_t17/` (`tools/capture_bill_house.gd`). **Replis/défauts** : Grand moment non enregistré (étape `moment` du J12 T23 absente : une ligne `moment bill_restored` avant le `set` final de `bill_machine` à l'alignement) ; Mélofée en (6, 5) et non (6, 6) (le bureau la cache) ; pas de point d'examen sur la cabine A (une variante vide ferait un bouton EXAMINER sans effet ; n° 11 joué à l'entrée) ; lueur `hint` discrète sur le bois clair (à juger sur S24) ; page n° 2 en « Mélofée », n° 3–6 en « Léo ».
 
 #### T18a — architecte : `RareCandy` — **maintenant**
 - §2.6 (règle pure, tests). **CA** : tests verts.

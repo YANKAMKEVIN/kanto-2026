@@ -40,7 +40,13 @@ const FIRST_CAPTURE: StringName = &"first_capture"
 const ZONE_ARRIVAL: StringName = &"zone_arrival"
 ## Badge obtenu (J10, dossier 12 §13 ; détails : [BadgeMoment]).
 const BADGE: StringName = BadgeMoment.TYPE
-const TYPES: Array[StringName] = [STARTER, RIVAL_BATTLE, FIRST_CAPTURE, ZONE_ARRIVAL, BADGE]
+## Léo redevenu humain (J14, dossier 17 §13 : `bill_restored`, texte n° 69 ; lieu = zone de la
+## carte du moment, « Cap d'Azuria »). Écrit une seule fois par l'étape de scène « moment » (J12
+## T23, branchée à l'alignement suivant : jalon-14.md §0.3).
+const BILL_RESTORED: StringName = &"bill_restored"
+const TYPES: Array[StringName] = [
+	STARTER, RIVAL_BATTLE, FIRST_CAPTURE, ZONE_ARRIVAL, BADGE, BILL_RESTORED,
+]
 
 const MARK_ZONE: String = "{zone}"
 const MARK_SPECIES: String = "{species}"
@@ -59,6 +65,7 @@ const _MARKS: Dictionary[StringName, Array] = {
 	FIRST_CAPTURE: [MARK_ZONE, MARK_SPECIES],
 	ZONE_ARRIVAL: [MARK_ZONE],
 	BADGE: [MARK_ZONE, MARK_BADGE, MARK_CITY, MARK_LEADER],
+	BILL_RESTORED: [MARK_ZONE],
 }
 
 var _texts: Dictionary[StringName, MomentTextData] = {}
