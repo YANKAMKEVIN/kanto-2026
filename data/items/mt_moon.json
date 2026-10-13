@@ -6,17 +6,17 @@
 	},
 	"moon_stone": {
 		"name": "Pierre Lune", "plural": "Pierres Lune", "feminine": true,
-		"category": "field",
+		"category": "field", "field_use": "evolution_stone",
 		"description": "Une pierre étrange. Fait évoluer certains Pokémon."
 	},
 	"dome_fossil": {
 		"name": "Fossile Dôme", "plural": "Fossiles Dôme", "feminine": false,
-		"category": "key",
+		"category": "key", "obtained": true,
 		"description": "Fossile d'un Pokémon ancien à la carapace en dôme."
 	},
 	"helix_fossil": {
 		"name": "Fossile Nautile", "plural": "Fossiles Nautile", "feminine": false,
-		"category": "key",
+		"category": "key", "obtained": true,
 		"description": "Fossile d'un Pokémon ancien à la coquille en spirale."
 	},
 	"tm01": {

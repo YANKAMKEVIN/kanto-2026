@@ -85,6 +85,10 @@ signal tm_learn_requested(index: int, item_id: StringName)
 ## ([method FieldItemRules.check] = OK) : Boot ferme le menu, retire l'objet, raconte et agit.
 ## Rien n'est consommé par le menu.
 signal field_item_requested(item_id: StringName)
+## Pierre d'évolution (jalon 12, T23 ; `jalon-12.md` §2.9) utilisée sur le Pokémon COMPATIBLE
+## [param index] : Boot ferme le menu et joue [method EvolutionDirector.play_item] ; la pierre
+## est retirée par Boot au moment exact de l'évolution. Rien n'est consommé par le menu.
+signal evolution_item_requested(index: int, item_id: StringName)
 
 var _state: Object
 var _data: PokemonData
@@ -480,6 +484,13 @@ func use_item_on(item_id: StringName, index: int) -> bool:
 			return false
 		tm_learn_requested.emit(index, item_id)
 		return true
+	if StoneUse.is_stone(item):
+		# Pierre (jalon 12) : un Pokémon INCOMPATIBLE est déjà refusé par le choix.
+		if not _state.bag.has(item_id) \
+				or StoneUse.check(pokemon, item_id, _data) != StoneUse.Check.COMPATIBLE:
+			return false
+		evolution_item_requested.emit(index, item_id)
+		return true
 	var result := ItemUse.apply(_state.bag, item, pokemon, _bag_context)
 	_repeat_item = item_id
 	_repeat_index = index
@@ -661,7 +672,7 @@ func _on_route_shown(route: MenuRoute) -> void:
 			open_zone(map_view.selected)
 	elif route.screen == MenuRoute.TRAINER:
 		trainer_shown.emit(TrainerSummary.build(_state, _data, _zones, _moments, _unlocks,
-			_badge_library()))
+			_badge_library(), _items))
 	elif route.screen == MenuRoute.SETTINGS and _settings != null:
 		_emit_settings()
 	elif route.screen == MenuRoute.SHOP and _shops != null and _items != null \

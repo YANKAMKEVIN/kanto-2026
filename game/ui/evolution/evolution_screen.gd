@@ -181,7 +181,8 @@ func present(view: EvolutionView) -> void:
 ## s'interrompt aussitôt. Rend [code]false[/code] arrivée à son terme.
 func transform() -> bool:
 	_transforming = true
-	_show_stop(true)
+	# Jalon 12 (T23) : une évolution non annulable (pierre) n'offre pas ARRÊTER.
+	_show_stop(is_cancellable())
 	var time := UiTokens.EVOLUTION_TRANSFORM * speed_scale
 	if time <= 0.0:
 		_apply_progress(1.0)
@@ -269,7 +270,8 @@ func close() -> void:
 
 
 ## Retour Android pendant l'écran : pendant [method transform], arrête la transformation
-## (comme ARRÊTER) ; ailleurs, sans effet. Vrai tant que l'écran est ouvert (le geste ne passe
+## (comme ARRÊTER), sauf pour une évolution non annulable (pierre, jalon 12) ; ailleurs, sans
+## effet. Vrai tant que l'écran est ouvert (le geste ne passe
 ## jamais à ce qui est dessous).
 func handle_back() -> bool:
 	if _transforming:
@@ -397,9 +399,10 @@ func _end_transformation() -> void:
 	_transformation_ended.emit()
 
 
-## ARRÊTER ou retour Android pendant la transformation : elle s'interrompt aussitôt.
+## ARRÊTER ou retour Android pendant la transformation : elle s'interrompt aussitôt (jamais
+## pour une évolution non annulable).
 func _request_cancel() -> void:
-	if not _transforming or _cancel_requested:
+	if not _transforming or _cancel_requested or not is_cancellable():
 		return
 	_cancel_requested = true
 	_stop.disabled = true
@@ -972,3 +975,9 @@ static func _faded(color: Color, alpha: float) -> Color:
 	var faded := color
 	faded.a = alpha
 	return faded
+
+
+## L'évolution présentée peut être arrêtée (jalon 12, T23 : faux pour une pierre,
+## [member EvolutionView.cancellable]) ; vrai sans vue.
+func is_cancellable() -> bool:
+	return _view == null or _view.cancellable

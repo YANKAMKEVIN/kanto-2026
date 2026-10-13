@@ -26,12 +26,14 @@ extends RefCounted
 ## Jalon 12 (T20) : « field_use » facultatif ([constant ItemData.FIELD_USES]), réservé aux objets
 ## AVENTURE (« field ») : la Corde Sortie (« escape_rope »), une pierre d'évolution
 ## (« evolution_stone », T23).
+## Jalon 12 (T23) : « obtained » facultatif (booléen) : toast « obtenu » d'une CT
+## ([member ItemData.obtained], les fossiles).
 
 const DATA_DIR: String = "res://data/items/"
 
 const _KEYS: Array[String] = [
 	"name", "plural", "feminine", "category", "catch_bonus", "heal_amount", "cures",
-	"description", "draft", "price", "tm", "teaches", "field_use",
+	"description", "draft", "price", "tm", "teaches", "field_use", "obtained",
 ]
 ## Numéros des CT de Rouge/Bleu (dossier 14 §6.1).
 const TM_MIN: int = 1
@@ -205,6 +207,11 @@ func _parse_item(value: Variant, where: String) -> ItemData:
 				ok = _fail("%s : « %s » est réservé aux CT" % [where, key])
 	if entry.has("field_use"):
 		ok = _read_field_use(entry["field_use"], item, where) and ok
+	if entry.has("obtained"):
+		if entry["obtained"] is bool:
+			item.obtained = entry["obtained"]
+		else:
+			ok = _fail("%s : « obtained » vaut true ou false" % where)
 	if entry.has("price"):
 		var price: Variant = entry["price"]
 		if not JsonFields.is_int(price) or int(price) < 0:

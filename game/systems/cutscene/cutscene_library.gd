@@ -86,6 +86,10 @@ extends RefCounted
 ## - badge : identifiant de badge (data/badges.json, « boulder »).
 ## Ni l'un ni l'autre n'est vérifié ici (tests de données : [method get_card_trainer_ids],
 ## [method get_badge_ids]).
+## Jalon 12 (`jalon-12.md` §2.13, T23) :
+## - moment : type de Grand moment ([constant MomentLibrary.TYPES] sauf « zone_arrival », déduit
+##   des cartes), avec « details » facultatif : objet { clé: texte non vide } (« fossil » :
+##   [code]{ "moment": "fossil", "details": { "item": "dome_fossil" } }[/code]).
 ## Acteur = « player », identifiant d'un PNJ de la carte courante, ou **alias** « $nom »
 ## (forme $[a-z_]+, [method CutsceneStep.is_alias]) : PNJ choisi par le code qui lance la
 ## scène (CutsceneDirector.play(id, alias)), résolu au début de chaque étape. Les alias
@@ -105,7 +109,7 @@ const _EXTRA_KEYS: Array[Array] = [
 	["path", "to", "run", "follower", "keep_facing", "optional", "background"],
 	["at", "facing"], ["to"],
 	["to"], [], ["player_pokemon", "foe_pokemon", "win", "lose"], ["count", "found"],
-	[], ["count"], [], [], [], ["kind"], [], [],
+	[], ["count"], [], [], [], ["kind"], [], [], ["details"],
 ]
 ## Conditions permises sur toute étape sauf spawn.
 const _CONDITION_KEYS: Array[String] = ["if", "unless"]
@@ -445,6 +449,8 @@ func _parse_step(value: Variant, where: String) -> CutsceneStep:
 		CutsceneStep.Kind.BADGE:
 			ok = _read_id(main, where + " badge", func(v: StringName) -> void:
 				step.badge_id = v) and ok
+		CutsceneStep.Kind.MOMENT:
+			ok = _parse_moment(entry, step, where) and ok
 	return step if ok else null
 
 
@@ -667,3 +673,28 @@ static func _sorted_keys(found: Dictionary) -> Array[StringName]:
 	result.assign(found.keys())
 	result.sort_custom(func(a: StringName, b: StringName) -> bool: return String(a) < String(b))
 	return result
+
+
+## moment (jalon 12, T23) : type connu de [MomentLibrary] (pas l'arrivée dans une zone, déduite
+## des cartes découvertes), « details » facultatif { clé: texte non vide }.
+func _parse_moment(entry: Dictionary, step: CutsceneStep, where: String) -> bool:
+	var ok := true
+	var type: Variant = entry["moment"]
+	if not type is String or not MomentLibrary.TYPES.has(StringName(type)) \
+			or StringName(type) == MomentLibrary.ZONE_ARRIVAL:
+		ok = _fail("%s : « moment » vaut un type de MomentLibrary (sauf « %s »)" % [where,
+			MomentLibrary.ZONE_ARRIVAL])
+	else:
+		step.moment_type = StringName(type)
+	if not entry.has("details"):
+		return ok
+	var details: Variant = entry["details"]
+	if not details is Dictionary:
+		return _fail("%s : « details » doit être un objet { clé: texte }" % where)
+	for key: Variant in details:
+		var value: Variant = (details as Dictionary)[key]
+		if not value is String or (value as String).strip_edges().is_empty():
+			ok = _fail("%s : « details » « %s » doit être un texte non vide" % [where, key])
+		else:
+			step.moment_details[str(key)] = value
+	return ok

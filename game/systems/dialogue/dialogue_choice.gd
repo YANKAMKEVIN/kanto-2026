@@ -27,6 +27,12 @@ var confirm_pages: Array[DialoguePage] = []
 var cancel_pages: Array[DialoguePage] = []
 
 
+## Scène lancée si le joueur confirme (jalon 12, T23 ; &"" = aucune) : à la fermeture du
+## dialogue, après [member confirm_pages], par [signal DialogueRunner.cutscene_requested]
+## (« Prendre le Fossile Dôme ? » OUI → la scène du fossile). Exclusive de [member confirm_action].
+var confirm_cutscene: StringName = &""
+
+
 ## Vue des deux cartes, [param question] en titre (texte de la dernière page de la variante).
 func to_view(question: String) -> ChoiceView:
 	return ChoiceView.new(question, confirm_label, cancel_label)
