@@ -882,6 +882,7 @@ et de l'annexe A validée.
   en fin).
 
 #### T10 — constructeur-monde : carte `qa_charge_j14` + départs `charge_qa`, `teleport_qa` — après T8
+- **Fait (2026-10-13, branche `j14-t10`)** : `tools/build_qa_charge_j14.gd` → `game/world/maps/qa_charge_j14.tscn` (24 × 14, 3 Dresseurs `smart` : Tunnel, Poudre Dodo, Onde de Choc ; `data/trainers/` et `data/npcs/qa_charge_j14.json`, dialogues de la forêt réutilisés) ; départs `charge_qa`, `teleport_qa` (README) ; `MapCatalog.is_qa_map` (zones) ; test `test_qa_charge_j14`. `teleport_qa` sur la carte de QA (Route 25 absente) ; **T24 retire** carte, données, départs, `tools/capture_qa_charge.gd` et vide `QA_MAPS_SHIPPED` (`test_map_catalog`). Captures : `build/captures/jalon14_t10*/`.
 
 #### T11 — qa-mobile : **session 14B** (S24 seul) → Kevin
 - Tunnel (deux tours, sprite, esquive, poison sous terre, interruptions, Vol, verrou), IA d'essai qui creuse, Téléport (Abra qui fuit, Ball d'entrée, Abra endormi capturé,
