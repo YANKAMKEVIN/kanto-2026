@@ -875,6 +875,12 @@ Questions telles que posées :
   - **Captures** : `tools/capture_moon_stone_t24.gd` → `build/captures/jalon12_t24/` (01 Sac
     AVENTURE … 10 frise), relues.
 
+- **Icône du fossile (2026-10-14, `j12-icone-fossile`, décision de Kevin, option A)** : toast
+  (`Boot._on_item_given` → `ExplorationHud.show_toast(..., icon)`, icône peinte `MenuArt.item_icon`
+  seulement pour un objet `obtained`) et frise (`MomentView.item_id`, `MomentRow._item_icon`, sans
+  teinte ACCENT, repli sur `key.svg`). Tests : `test_toast`, `test_trainer_screen`. Captures :
+  `build/captures/jalon12_icone/09_fossil_toast.png`, `10_trainer_fossil.png`.
+
 - **T23 — moteur de l'événement et de la pierre (2026-10-13, architecte, branche
   `j12-t23-evenement` depuis `jalon-12` à `2732b45`)** — §2.9, §2.13, §0.4 n° 7, 9, 10 ; aucun
   contenu de carte (T25), aucun nom figé changé :

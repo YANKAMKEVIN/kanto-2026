@@ -324,7 +324,7 @@ func test_portrait_never_under_identity_text_with_long_money() -> void:
 
 # --- Jalon 12 (T24) : ligne « fossile » de la frise ----------------------------------------
 
-func _fossil_view(zone: StringName) -> TrainerView:
+func _fossil_view(zone: StringName, item: StringName = &"") -> TrainerView:
 	var view := _view(true, 0)
 	var moment := MomentView.new()
 	moment.kind = MomentLibrary.FOSSIL
@@ -333,8 +333,21 @@ func _fossil_view(zone: StringName) -> TrainerView:
 	moment.place = "Mont Sélénite"
 	moment.date_text = "13 octobre 2026"
 	moment.zone_id = zone
+	moment.item_id = item
 	view.moments.append(moment)
 	return view
+
+
+func test_fossil_moment_uses_the_painted_icon_of_the_item() -> void:
+	for item: StringName in [&"dome_fossil", &"helix_fossil"]:
+		var painted: Texture2D = load("res://assets/ui/items/%s.webp" % item)
+		for zone: StringName in [&"mt_moon", &""]:
+			var screen := await _screen_in(2340, _fossil_view(zone, item))
+			assert_eq(screen.get_moment_rows()[0].get_icon(), painted,
+				"%s (zone « %s »)" % [item, zone])
+	var key: Texture2D = load("res://assets/ui/icons/bag/key.svg")
+	var fallback := await _screen_in(2340, _fossil_view(&"", &"objet_sans_icone"))
+	assert_eq(fallback.get_moment_rows()[0].get_icon(), key, "repli : objets clés")
 
 
 func test_fossil_moment_shows_validated_texts_and_the_key_item_icon() -> void:
