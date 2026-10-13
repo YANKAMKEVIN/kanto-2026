@@ -144,6 +144,10 @@ var _tm_overlay: TmLearnOverlay
 ## la demande, elle commence à la fin de son dialogue.
 var _daycare: DaycareDirector
 var _pending_daycare: bool = false
+## Compagnon (jalon 11, 11D) : espèces éligibles et contrôleur (nœud créé tout de suite pour
+## recevoir les réglages).
+var _companions := CompanionCatalog.new()
+var _companion := CompanionController.new()
 ## Autosave demandé, en attente d'un état stable, et sa raison (journal).
 var _save_pending: bool = false
 var _save_reason: String = ""
@@ -332,6 +336,7 @@ func _ready() -> void:
 	_menu.set_shops(_shops)
 	_menu.menu_opened.connect(_on_menu_opened)
 	_menu.menu_closed.connect(_on_menu_closed)
+	_setup_companion()
 	# L'écran (jalon-06.md §6.6) : ouverture et vue dans la même frame, sans await (un fondu
 	# coupé laisse une coroutine non reprise).
 	_menu.menu_opened.connect(_menu_screen.open_animated)
@@ -346,6 +351,7 @@ func _ready() -> void:
 		_menu.team_shown.connect(_menu_screen.show_team)
 		_menu_screen.team_member_moved.connect(_menu.move_member)
 		_menu_screen.team_favorite_toggled.connect(_menu.toggle_favorite)
+		_menu_screen.team_companion_toggled.connect(_menu.toggle_companion)
 		_menu_screen.team_member_selected.connect(_menu.select_member)
 	# Sac (T12) : relié dès que l'écran porte l'interface du §6.8 (BagScreen du T11).
 	if _menu_screen.has_signal(&"bag_use_requested"):
@@ -713,6 +719,8 @@ func _on_menu_opened() -> void:
 ## Le menu se ferme (pause levée) : le monde reprend, les contrôles reviennent ; autosave
 ## seulement si l'état a changé.
 func _on_menu_closed(changed: bool) -> void:
+	# Compagnon : FAIRE SORTIR / RAPPELER, dépôt, Potion sur un K.O. (sortie ou rentrée).
+	_companion.refresh()
 	_refresh_controls()
 	if changed:
 		request_autosave("menu")
@@ -1056,6 +1064,7 @@ func _current_map_id() -> StringName:
 
 
 func _on_transition_started(_target_map: StringName) -> void:
+	_companion.on_transition_started()
 	_arrival_from = _current_map_id()
 	_hud.hide_zone_title()
 	_hud.hide_caption()
@@ -1076,8 +1085,35 @@ func _on_map_changed(map: GameMap) -> void:
 	_services.set_map(map)
 	_daycare.set_map(map)
 	_recovery.set_map(map)
+	_companion.on_map_changed(map)
 	# Décor de combat de la carte chargé en tâche de fond (correctif QA S24 du CB.3).
 	_battle_stage.prepare_place(map.map_id)
+
+
+## Compagnon (jalon 11, 11D ; `docs/tech/jalon-11-compagnon.md`) : espèces éligibles (Équipe :
+## FAIRE SORTIR / RAPPELER), contrôleur branché sur le joueur, l'interaction (curiosité) et la
+## boîte de dialogue ; Boot lui relaie cartes, transitions, scènes, combats et menu.
+func _setup_companion() -> void:
+	_companions.load_file()
+	for error: String in _companions.get_errors():
+		push_error("Compagnon : %s" % error)
+	_companion.process_mode = Node.PROCESS_MODE_PAUSABLE
+	add_child(_companion)
+	_companion.setup(GameState, _companions, _pokemon, _player)
+	_companion.line_requested.connect(_on_companion_line)
+	_interactions.set_companion(_companion)
+	_interactions.companion_talked.connect(_companion.talk)
+	_battle_director.battle_started.connect(_companion.on_battle_started.unbind(1))
+	_menu.set_companions(_companions)
+
+
+func get_companion_controller() -> CompanionController:
+	return _companion
+
+
+## Le joueur a parlé au compagnon : sa phrase (narration, jeton « {pokemon} »).
+func _on_companion_line(dialogue_id: StringName) -> void:
+	_runner.play(dialogue_id, null, SceneRouter.get_current_map())
 
 
 ## Profil de lumière de [param map] ([member GameMap.light_profile]) ; vide ou inconnu :
@@ -1100,6 +1136,7 @@ func _on_map_entered(map: GameMap) -> void:
 		map.region)
 	_arrival_from = &""
 	GameState.discover_map(map.map_id)
+	_companion.on_map_entered(map)
 	request_autosave("changement de carte")
 	if _announcer.should_announce(map.display_name, map.interior):
 		_hud.show_zone_title(map.display_name, region)
@@ -1161,7 +1198,9 @@ func _on_daycare_requested() -> void:
 
 
 ## Dépôt fait : écriture tout de suite (quitter avant l'autosave ne perd rien), comme au soin.
+## Le compagnon déposé (choix effacé par le directeur) rentre tout de suite (J11, 11D).
 func _on_daycare_deposited() -> void:
+	_companion.refresh()
 	if _can_write() and not SceneRouter.is_transitioning():
 		_write_save("pension, dépôt")
 	else:
@@ -1170,6 +1209,7 @@ func _on_daycare_deposited() -> void:
 
 ## Conversation finie (joueur rendu) : contrôles ; après un retrait, **une seule** écriture.
 func _on_daycare_finished(withdrew: bool) -> void:
+	_companion.refresh()
 	_refresh_controls()
 	if not withdrew:
 		return
@@ -1190,6 +1230,7 @@ func _on_heal_requested() -> void:
 ## partie ne peut plus rien perdre), comme au réveil ; le toast du point de repos attend la fin
 ## du dialogue (après « Voilà. Tout le monde est en pleine forme. »), une fois par changement.
 func _on_center_healed(map_id: StringName, registered: bool) -> void:
+	_companion.note_joy()
 	if registered:
 		_rest_toast = _rest_points.registered_toast(_zones.zone_name_of(map_id))
 	if _can_write() and not SceneRouter.is_transitioning():
@@ -1199,6 +1240,7 @@ func _on_center_healed(map_id: StringName, registered: bool) -> void:
 
 
 func _on_cutscene_started(_cutscene_id: StringName) -> void:
+	_companion.on_cutscene_started()
 	_refresh_controls()
 
 
@@ -1206,9 +1248,12 @@ func _on_cutscene_started(_cutscene_id: StringName) -> void:
 ## contient (« Un Roucool… » ; aucune rencontre → la page est omise) ; prénoms du joueur et du
 ## rival (OUV.2), aussi pour les étiquettes et le nom du dresseur en combat.
 func _dialogue_token_values() -> Dictionary[StringName, String]:
+	var companion := GameState.get_companion()
 	var values := DialogueTokens.values_for(GameState.first_wild_species(), _pokemon,
-		GameState.player_name, GameState.rival_name)
-	# Pension (J15) : {pokemon}, {levels}, {price}, seulement pendant sa conversation.
+		GameState.player_name, GameState.rival_name,
+		companion.display_name(_pokemon) if companion != null else "")
+	# Pension (J15) : {pokemon}, {levels}, {price}, seulement pendant sa conversation ; son
+	# {pokemon} (le Pokémon gardé ou rendu) passe alors avant celui du compagnon (J11).
 	if _daycare != null:
 		values.merge(_daycare.token_values(), true)
 	return values
@@ -1223,6 +1268,7 @@ func _on_cutscene_requested(cutscene_id: StringName) -> void:
 
 
 func _on_cutscene_finished(_cutscene_id: StringName) -> void:
+	_companion.on_cutscene_finished()
 	_refresh_controls()
 	request_autosave("fin de scène")
 
@@ -1264,6 +1310,8 @@ func _on_battle_event(event: BattleEvent) -> void:
 ## (écrit à la fin de la scène qui contient le combat). Les sauvages passent par
 ## [method _on_encounter_finished].
 func _on_battle_finished(trainer_id: StringName, outcome: int) -> void:
+	# Compagnon : réapparaît (espèce après évolution) ; enthousiasme si victoire de Dresseur.
+	_companion.on_battle_finished(not trainer_id.is_empty() and outcome == Battle.Outcome.WIN)
 	if trainer_id.is_empty():
 		return
 	var trainer := _trainers.get_trainer(trainer_id) if _trainers != null else null
@@ -1297,6 +1345,7 @@ func _on_woke_up_after_defeat() -> void:
 ## Pokémon sauvage capturé et rangé (équipe ou stockage, jalon 5D) : autosave demandé, écrit à
 ## la première image stable (après la carte de capture et la fin de la rencontre).
 func _on_pokemon_caught() -> void:
+	_companion.note_joy()
 	request_autosave("capture")
 
 
@@ -1454,6 +1503,7 @@ func _apply_settings(s: GameSettings) -> void:
 	if _evolution_screen != null:
 		_evolution_screen.reduce_flashes = s.reduce_flashes
 	_services.reduce_motion = s.reduce_motion
+	_companion.set_reduce_motion(s.reduce_motion)
 	# Carte du Champion (jalon 10, T5) : sans glissé, un fondu court.
 	_hud.get_champion_card().reduce_motion = s.reduce_motion
 	_menu_screen.speed_scale = s.menu_speed_scale()

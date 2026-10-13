@@ -72,12 +72,12 @@ intéressante, équipe qui se construit, premier apprentissage de nouvelles capa
 - **J9 terminé** (2026-10-08) : forêt agrandie à 70 × 90 (Théo et Milo inévitables), 5 Dresseurs,
   poison, premières évolutions ; la porte nord du poste nord attend la Route 2 nord (J10).
 
-### Phase 6 — Argenta + première Arène (J10)
+### Phase 6 — Argenta + première Arène (J10) — ✅ terminé (2026-10-10)
 Ville d'Argenta (musée, habitants, Centre, Boutique, Arène). **Système de badges** : victoire →
 Badge Roche → profil dresseur mis à jour, progression narrative, réactions des PNJ. Première grande
 boucle longue : Bourg Palette → routes → captures → ville → préparation → Arène → badge.
 
-### Phase 7 — Systèmes avancés Pokémon (J11) — grande passe avant d'étendre Kanto
+### Phase 7 — Systèmes avancés Pokémon (J11) — grande passe avant d'étendre Kanto — ✅ terminé (2026-10-13)
 - **Évolutions** : la logique et une séquence propre existent depuis le J9 ; ici, présentation
   enrichie (montée de niveau → « Salamèche évolue ! », animation 2026,
   annulation possible, nouvelles stats, Pokédex).
@@ -88,6 +88,11 @@ boucle longue : Bourg Palette → routes → captures → ville → préparation
 - **Compagnon Pokémon** : sortir de sa Ball et suivre le joueur, proprement (comportements par
   espèce, vitesse, obstacles, intérieurs, réactions, animations, rappel automatique, interactions).
   Pas un sprite collé derrière le joueur.
+- **J11 terminé** (2026-10-13) : sauvegarde v6 (identifiant de Pokémon, compagnon), paralysie,
+  sommeil, brûlure, gel, confusion et effets simples (multi-coups, apeurement…), remèdes, CT et
+  CT34 Patience remise par Pierre, évolution courte (≈ 6 s, accélérable), compagnon qui suit le
+  joueur dehors ; **lot d'art partiel** : 3 planches sur 5 (Herbizarre, Carabaffe, Papilusion),
+  Reptincel et Pikachu en attente (12 espèces éligibles).
 
 ### Phase 8 — Kanto devient un monde (J12+)
 Les systèmes principaux existent : on produit le contenu. Mont Sélénite, Azuria (Léo), Carmin-sur-Mer
@@ -148,7 +153,7 @@ J8  Route 2
 J9  Forêt de Jade
 J10 Argenta + Arène Pierre + Badge
 J11 Grande passe systèmes (évolutions / CT / statuts / équipe avancée / compagnon)
-J12 Route 3 + Mont Sélénite (dossier 15)
+J12 Route 3 + Mont Sélénite (dossier 15)   ← ICI
 J13 Route 4 + Azuria + Ondine + rival n° 3 + Pont Pépite (dossier 16)
 J14 Route 25 + Cap d'Azuria + Léo + cambriolage (dossier 17)
 J15 Route 5 + Pension + souterrain + Route 6 + Carmin-sur-Mer (dossier 18)

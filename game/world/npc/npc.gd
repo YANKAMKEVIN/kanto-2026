@@ -885,6 +885,13 @@ func _advance_route() -> void:
 		_route_index = target_index
 		_route_wait = _route_pause
 		return
+	# Jalon 11 : la case tenue par le compagnon (occupation douce) se traite comme une case prise.
+	var target := _grid.get_step_target(get_cell(), direction, self) if _grid != null \
+		else get_cell()
+	if _grid != null and target != get_cell() and _grid.is_soft_held(target):
+		face(direction)
+		_route_wait = _route_pause
+		return
 	if step(direction):
 		_route_index = target_index
 	else:
@@ -923,7 +930,7 @@ func _try_leave_building() -> void:
 	var grid := _inside_grid
 	if grid == null:
 		return
-	if grid.get_occupant(_cell) != null:
+	if grid.get_occupant(_cell) != null or grid.is_soft_held(_cell):
 		_inside_tween = create_tween()
 		_inside_tween.tween_interval(ENTER_RETRY_DELAY)
 		_inside_tween.tween_callback(_try_leave_building)
