@@ -45,6 +45,9 @@ Ensuite, même chaîne que pour une image Codex.
 **Constat du 2026-10-13** : ChatGPT a aussi refusé tant que les images d'ancre étaient jointes ; Reptincel
 a été obtenu **sans image jointe** (prompt seul), rendu un peu plus doux mais validé par Kevin.
 
+**Règle (Kevin, 2026-10-13)** : toujours essayer d'abord **avec** les images jointes (meilleure tenue du
+style) ; seulement en cas de refus, refaire **sans** image jointe.
+
 ## Après la génération
 
 1. Relire chaque planche (16 poses identiques, aucune pose qui déborde, transparence réelle,
