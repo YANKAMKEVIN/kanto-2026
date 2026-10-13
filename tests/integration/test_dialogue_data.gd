@@ -200,7 +200,7 @@ func before_all() -> void:
 		map.free()
 	# Jalon 7 (T18) : scène lancée par un dialogue (variante « cutscene ») sur les cartes où ce
 	# dialogue est joué (la scène du colis, en parlant à Chen).
-	for id: StringName in _library.get_ids():
+	for id: StringName in _real_ids():
 		for variant: DialogueVariant in _library.get_dialogue(id).variants:
 			if not variant.cutscene.is_empty():
 				for map_id: StringName in (_used_on.get(id, []) as Array).duplicate():
@@ -239,7 +239,7 @@ func _use(dialogue: StringName, map_id: StringName) -> void:
 ## Toutes les pages de toutes les variantes : [id, texte, page].
 func _pages() -> Array[Array]:
 	var pages: Array[Array] = []
-	for id: StringName in _library.get_ids():
+	for id: StringName in _real_ids():
 		for variant: DialogueVariant in _library.get_dialogue(id).variants:
 			for page: DialoguePage in variant.pages:
 				pages.append([id, page.text, page, variant])
@@ -254,7 +254,7 @@ func test_library_loads_without_error() -> void:
 	var library := DialogueLibrary.new()
 	assert_true(library.load_dir(), "data/dialogues/ se charge")
 	assert_eq(library.get_errors().size(), 0, str(library.get_errors()))
-	assert_eq(library.get_ids(), IDS)
+	assert_eq(_without_qa(library.get_ids()), IDS)
 
 
 func test_every_used_dialogue_exists() -> void:
@@ -265,7 +265,7 @@ func test_every_used_dialogue_exists() -> void:
 
 func test_every_dialogue_is_used() -> void:
 	var played := _cutscenes.get_dialogue_ids()
-	for id: StringName in _library.get_ids():
+	for id: StringName in _real_ids():
 		if UNUSED_YET.has(id) or PLAYED_BY_COMPANION.has(id) or PLAYED_BY_BOOT.has(id):
 			continue
 		assert_true(_used_on.has(id) or played.has(id),
@@ -525,7 +525,7 @@ func test_oak_starter_offer_four_lines_and_looks() -> void:
 
 
 func test_mom_first_variant_is_automatic_and_only_hers() -> void:
-	for id: StringName in _library.get_ids():
+	for id: StringName in _real_ids():
 		for variant: DialogueVariant in _library.get_dialogue(id).variants:
 			# Maman, et le garde du poste sud à son premier passage (jalon 9, Q-4).
 			var first_of: Array[StringName] = [&"mom", &"forest_gate_south_guard"]
@@ -535,7 +535,7 @@ func test_mom_first_variant_is_automatic_and_only_hers() -> void:
 
 ## Lot de textes validé par Kevin le 2026-10-06 : plus aucun dialogue ni variante provisoire.
 func test_no_dialogue_nor_variant_is_draft() -> void:
-	for id: StringName in _library.get_ids():
+	for id: StringName in _real_ids():
 		var dialogue := _library.get_dialogue(id)
 		assert_false(dialogue.draft, String(id))
 		for i: int in dialogue.variants.size():
@@ -550,7 +550,7 @@ func test_mom_heal_variant() -> void:
 	assert_false(heal.auto, "jamais automatique")
 	assert_eq(heal.pages.size(), 2, "courte")
 	# Seule cette variante soigne (le réveil après défaite soigne par la défaite, pas par le texte).
-	for id: StringName in _library.get_ids():
+	for id: StringName in _real_ids():
 		for variant: DialogueVariant in _library.get_dialogue(id).variants:
 			assert_eq(variant.action == &"heal", variant == heal, "%s : « heal »" % id)
 
@@ -728,7 +728,7 @@ func test_oak_parcel_lines() -> void:
 	assert_gt(rival[1].pause, 0.0, "« …On verra. » après une courte pause")
 	# Toute scène lancée par un dialogue existe.
 	var launched := 0
-	for id: StringName in _library.get_ids():
+	for id: StringName in _real_ids():
 		for variant: DialogueVariant in _library.get_dialogue(id).variants:
 			if not variant.cutscene.is_empty():
 				launched += 1
@@ -850,3 +850,16 @@ func test_companion_lines_exist_as_narration() -> void:
 			assert_true(dialogue.narration, "%s : narration" % line)
 			assert_true(dialogue.variants[0].pages[0].text.begins_with("{pokemon} "), line)
 	assert_eq(lines.size(), PLAYED_BY_COMPANION.size())
+
+
+## Dialogues sans ceux de la carte de QA (`qa_*`, jalon 13 T14, retirés au T22).
+func _real_ids() -> Array[StringName]:
+	return _without_qa(_library.get_ids())
+
+
+func _without_qa(ids: Array[StringName]) -> Array[StringName]:
+	var result: Array[StringName] = []
+	for id: StringName in ids:
+		if not MapCatalog.is_qa_map(id):
+			result.append(id)
+	return result
