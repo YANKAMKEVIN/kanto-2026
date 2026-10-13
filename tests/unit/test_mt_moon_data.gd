@@ -40,7 +40,7 @@ const SPECIES := {
 ## En attente du moteur (T13) : drain, trap, disable, rest, fixed_value. Reportés (mention « Sans
 ## effet dans le moteur actuel. ») : metronome, haze, light_screen, recoil_damage.
 const MOVES := {
-	&"leech_life": [&"bug", MoveData.Category.PHYSICAL, 80, 100, 10, ["drain"]],
+	&"leech_life": [&"bug", MoveData.Category.PHYSICAL, 20, 100, 15, ["drain"]],
 	&"wrap": [&"normal", MoveData.Category.PHYSICAL, 15, 90, 20, ["trap"]],
 	&"disable": [&"normal", MoveData.Category.STATUS, 0, 100, 20, ["disable"]],
 	&"rest": [&"psychic", MoveData.Category.STATUS, 0, 0, 5, ["rest"]],

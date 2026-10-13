@@ -1,7 +1,7 @@
 {
 	"leech_life": {
 		"name": "Vampirisme", "type": "bug", "category": "physical",
-		"power": 80, "accuracy": 100, "pp": 10, "pending_effects": ["drain"],
+		"power": 20, "accuracy": 100, "pp": 15, "pending_effects": ["drain"],
 		"description": "Inflige des dégâts et rend la moitié des dégâts infligés."
 	},
 	"wrap": {
