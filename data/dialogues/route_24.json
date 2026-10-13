@@ -1,0 +1,8 @@
+{
+	"route_24_bridge_sign": {
+		"pages": ["PONT PÉPITE\nCinq Dresseurs. Une récompense."]
+	},
+	"route_24_ball_1": {
+		"cutscene": "route_24_item_1"
+	}
+}

@@ -84,8 +84,25 @@ const QUAY_STAIRS := Vector2(36.0, 15.0)
 
 ## Cases des arbres en bac (`G`) et bancs (`n`).
 const BENCH_SCALE: float = 0.55
-## Panneaux : [position de la grille, nœud] — décor seul (lecture : T17).
-const SIGNS: Array = [["panneau_ville", "SignCity"], ["panneau_arene", "SignGym"]]
+## Panneaux : [position de la grille, nœud, dialogue, orientation exigée] (T17).
+const SIGNS: Array = [
+	["panneau_ville", "SignCity", &"cerulean_city_sign", Vector2i.UP],
+	["panneau_arene", "SignGym", &"cerulean_gym_sign", Vector2i.UP],
+]
+## Examens (T17, dossier 16 §6, §4.2) : [position de la grille, nœud, dialogue, orientation
+## exigée] ; taille et ancre déduites de la grille. Aucun marqueur, aucun objectif : le
+## décor seul porte l'indice.
+const EXAMS: Array = [
+	["porte_cambriolee", "BurgledDoor", &"cerulean_burgled_door", Vector2i.UP],
+	["cloture_arrachee", "TornFence", &"cerulean_torn_fence", Vector2i.RIGHT],
+	["barriere_est", "EastBarrier", &"cerulean_closed_exit", Vector2i.RIGHT],
+	["barriere_sud", "SouthBarrier", &"cerulean_closed_exit", Vector2i.DOWN],
+]
+## Arrivée à Azuria : déclencheurs silencieux [position de la grille, nœud, direction].
+const ARRIVALS: Array = [
+	["arrivee_ouest", "ArrivalWest", Vector2i.RIGHT],
+	["arrivee_nord", "ArrivalNorth", Vector2i.DOWN],
+]
 ## Haies et buissons des cases `x`.
 const BUSH_IDS: Array[String] = [
 	"prop_buisson_a_01_bourg", "prop_buisson_b_01_bourg", "prop_buisson_c_01_bourg",
@@ -122,6 +139,7 @@ func _init() -> void:
 	var entities: Node2D = _kit.get(&"entities")
 	var decals: Node2D = _kit.get(&"decals")
 	_add_passages()
+	_add_life()
 
 	_kit.call(&"place_border_decals", SEED)
 	_kit.call(&"place_meadow", MEADOW_ATTEMPTS, MEADOW_FLOWER_CHANCE, FLOWERS)
@@ -212,6 +230,29 @@ func _add_passages() -> void:
 			else:
 				_kit.call(&"add_warp", node, door, Kit.STEP_ON, Vector2i.UP, &"",
 					StringName(entry[5]), Vector2i.DOWN, entry[6])
+
+
+## Vie d'Azuria (T17) : panneaux, examens, déclencheurs d'arrivée.
+func _add_life() -> void:
+	for entry: Array in SIGNS:
+		_kit.call(&"add_interactable", entry[1], _cell(entry[0]), Vector2i.ONE, entry[3],
+			entry[2])
+	for entry: Array in EXAMS:
+		var box := _box(entry[0])
+		_kit.call(&"add_interactable", entry[1], box[0], box[1], entry[3], entry[2])
+	for entry: Array in ARRIVALS:
+		var box := _box(entry[0])
+		_kit.call(&"add_trigger", entry[1], box[0], box[1], entry[2], &"cerulean_arrival")
+
+
+## Rectangle d'une position de la grille : [ancre (bas-gauche), taille].
+func _box(id: String) -> Array:
+	var low := Vector2i(1 << 20, -1)
+	var high := Vector2i(-1, 1 << 20)
+	for cell: Vector2i in _plan().call(&"cells_at", id):
+		low = Vector2i(mini(low.x, cell.x), maxi(low.y, cell.y))
+		high = Vector2i(maxi(high.x, cell.x), mini(high.y, cell.y))
+	return [low, Vector2i(high.x - low.x + 1, low.y - high.y + 1)]
 
 
 ## Relief du sol (sous les personnages) : îlot de la Grotte Azurée, escalier de quai.

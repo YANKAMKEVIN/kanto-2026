@@ -132,7 +132,10 @@ func test_east_edge_leads_to_azuria_one_spawn_per_row() -> void:
 func test_everything_walkable_is_reachable_and_closed() -> void:
 	var dist := GridPaths.distances(_grid, [ARRIVAL])
 	for cell: Vector2i in _plan.cells_of(_plan.walkable):
-		if not _plan.cells_at("panneau_route_4").has(cell) and _plan.at(cell) != "v":
+		if cell == _plan.cell_of("route_4_item_1"):
+			# La Poké Ball (T17) occupe sa case ; on la ramasse depuis une case voisine.
+			assert_true(dist.has(cell + Vector2i.UP), "Poké Ball : case voisine atteignable")
+		elif not _plan.cells_at("panneau_route_4").has(cell) and _plan.at(cell) != "v":
 			assert_true(dist.has(cell), "%s atteignable" % cell)
 	for cell: Vector2i in dist:
 		assert_true(_plan.is_walkable(cell), "%s fermé par la grille" % cell)
@@ -187,13 +190,17 @@ func test_clara_is_avoidable_by_rows_21_and_22_and_her_cell_is_reserved() -> voi
 	var goal: Array[Vector2i] = [EAST[0], EAST[1], EAST[2]]
 	assert_eq(GridPaths.min_crossed(_terrain, [ARRIVAL], goal, counted), 0, "Clara évitable")
 	assert_false(_grid.is_solid(clara), "personne n'y est encore (T17)")
-	assert_false(_grid.is_solid(_plan.cell_of("route_4_item_1")), "ni objet (T17)")
+	assert_false(_grid.is_solid(_plan.cell_of("route_4_item_1")), "la Poké Ball est un PNJ-objet")
 
 
 func test_nothing_lives_here_yet() -> void:
 	assert_eq(_map.get_node(^"Triggers").get_child_count(), 0, "déclencheur du J12 T28")
 	assert_eq(_map.get_node(^"Interactables").get_child_count(), 0)
-	assert_false(FileAccess.file_exists("res://data/npcs/route_4.json"), "aucun PNJ ni objet")
+	var roster := NpcRoster.load_for_map(&"route_4")
+	var ids: Array[String] = []
+	for spec: NpcSpec in roster.get_all():
+		ids.append(String(spec.id))
+	assert_eq(ids, ["route_4_ball_1"] as Array[String], "la Poké Ball seule (Clara : J12)")
 	assert_not_null(_map.get_node_or_null(^"Entities/SignRoute4"), "panneau (décor)")
 	assert_not_null(_map.get_node_or_null(^"GroundDecals/CaveMouth"), "bouche de la grotte")
 	# Cases réservées : aucune forêt, aucun buisson, aucun décor solide sur Clara, la Poké Ball et

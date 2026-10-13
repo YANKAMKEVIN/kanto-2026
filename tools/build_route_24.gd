@@ -41,6 +41,9 @@ const MAP_ID: StringName = &"route_24"
 const DISPLAY_NAME: String = "Route 24"
 ## Sous-titre porté par la carte (zone `route_24`, §21 n° 56).
 const REGION: String = "Le Pont Pépite"
+## Panneau du pied du pont : taille réduite (le plein format coiffait la tête du pont) ; borne.
+const SIGN_SCALE: float = 0.7
+const POST_SCALE: float = 1.0
 const WALKABLE: String = ".=hpBe"
 const RESERVED_KINDS: Array[String] = ["dresseur", "pnj", "pokemon", "objet_visible", "cache"]
 const BALL_KINDS: Array[String] = ["objet_visible", "cache"]
@@ -220,7 +223,18 @@ func _place_props(entities: Node2D) -> void:
 		index += 1
 		bench.scale = Vector2(BENCH_SCALE, BENCH_SCALE)
 		_kit.call(&"clear_footprint", bench)
-	_kit.call(&"add_prop_at", entities, "prop_panneau_01", _cell("panneau_pont"), "SignPont")
+	# T17 : le panneau est posé **à côté** de la tête du pont (34, 45), à taille réduite ; la borne
+	# de la case (33, 45) ferme la file est (case bloquée, décor seul).
+	var sign_cells: Array = _plan().call(&"cells_at", "panneau_pont")
+	var sign_cell: Vector2i = sign_cells[-1]
+	var board: Node2D = _kit.call(&"add_prop_at", entities, "prop_panneau_01", sign_cell,
+		"SignPont")
+	board.scale = Vector2(SIGN_SCALE, SIGN_SCALE)
+	var post: Node2D = _kit.call(&"add_prop_at", entities, "prop_bitte_01", sign_cells[0],
+		"BridgePost")
+	post.scale = Vector2(POST_SCALE, POST_SCALE)
+	_kit.call(&"add_interactable", "SignPontRead", sign_cell, Vector2i.ONE, Vector2i.UP,
+		&"route_24_bridge_sign")
 	var decor: RandomNumberGenerator = _kit.get(&"decor_rng")
 	var tint: Color = _kit.call(&"forest_tint")
 	var chosen: Dictionary = {}

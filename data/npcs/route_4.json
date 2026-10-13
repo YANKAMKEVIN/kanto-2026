@@ -1,0 +1,7 @@
+{
+	"route_4_ball_1": {
+		"cell": [21, 20], "facing": "down", "sprite": "object/poke_ball_ground",
+		"dialogue": "route_4_ball_1", "verb": "take", "turn_to_player": false,
+		"unless": ["got_route_4_poke_ball"]
+	}
+}

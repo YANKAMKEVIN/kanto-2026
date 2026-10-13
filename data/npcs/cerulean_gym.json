@@ -1,0 +1,22 @@
+{
+	"swimmer_lucas": {
+		"cell": [2, 5], "facing": "down", "sprite": "swimmer",
+		"dialogue": "cerulean_gym_lucas_after",
+		"trainer": {
+			"id": "cerulean_gym_lucas", "sight": 3, "before": "cerulean_gym_lucas_before",
+			"defeated": "cerulean_gym_lucas_after"
+		}
+	},
+	"lass_diane": {
+		"cell": [14, 7], "facing": "up", "sprite": "lass",
+		"dialogue": "cerulean_gym_diane_after",
+		"trainer": {
+			"id": "cerulean_gym_diane", "sight": 3, "before": "cerulean_gym_diane_before",
+			"defeated": "cerulean_gym_diane_after"
+		}
+	},
+	"gym_guide": {
+		"cell": [6, 10], "facing": "right", "sprite": "gym_guide",
+		"dialogue": "cerulean_gym_guide"
+	}
+}

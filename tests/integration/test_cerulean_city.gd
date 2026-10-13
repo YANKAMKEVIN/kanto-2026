@@ -6,7 +6,7 @@ extends GutTest
 ## ouverts, sorties est et sud fermées **sans warp**, Centre premier bâtiment de l'avenue, tous
 ## les lieux atteignables (les ponts sont nécessaires), cases réservées (PNJ, examens), objets
 ## peints sur des cases bloquées, quais hors des cases praticables, budget de nœuds.
-## Sans PNJ ni déclencheur : T17.
+## Vie (PNJ, examens, arrivée) : `test_cerulean_life`.
 
 const PlanGrid := preload("res://tests/helpers/plan_grid.gd")
 const GridPaths := preload("res://tests/helpers/grid_paths.gd")
@@ -115,7 +115,9 @@ func test_water_is_solid_and_seen_by_the_companion_bridges_are_walkable() -> voi
 			assert_false(_grid.can_enter(cell, side), "eau %s jamais praticable" % cell)
 	assert_gt(water, 200)
 	for cell: Vector2i in _plan.cells_of("B"):
-		assert_true(_grid.can_enter(cell, Vector2i.UP), "pont %s" % cell)
+		# Le terrain est praticable ; l'enfant H2 (T17) occupe une case du pont central.
+		assert_true(_grid.can_enter(cell, Vector2i.UP) or cell == _plan.cell_of("h2_enfant"),
+			"pont %s" % cell)
 		assert_false(_grid.is_water(cell))
 	for cell: Vector2i in _plan.cells_of("q"):
 		assert_false(_grid.is_solid(cell), "quai %s" % cell)
@@ -197,8 +199,10 @@ func test_east_and_south_are_closed_without_any_warp() -> void:
 	for warp: Warp in _map.get_warps().get_all():
 		assert_true(warp.cell.x < SIZE.x - 1 and warp.cell.y < SIZE.y - 2,
 			"aucun warp à l'est ni au sud (%s)" % warp.cell)
-	assert_eq(_map.get_triggers().size(), 0, "aucun déclencheur avant le T17")
-	assert_eq(_map.get_interactions().size(), 0, "aucune interaction avant le T17")
+	# T17 : deux déclencheurs d'arrivée (ouest 3 cases, nord 3 cases) ; deux panneaux et quatre
+	# examens (porte, clôture, barrière est × 3, barrière sud × 5).
+	assert_eq(_map.get_triggers().size(), 6, "arrivée : 3 cases à l'ouest, 3 au nord")
+	assert_eq(_map.get_interactions().size(), 2 + 1 + 1 + 3 + 5, "panneaux et examens")
 
 
 func test_reserved_cells_are_free_or_blocked_as_planned() -> void:

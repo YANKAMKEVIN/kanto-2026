@@ -113,7 +113,7 @@ from_cerulean        spawn          31..33,61    libre   # arrivée d'Azuria, to
 raccord_est          warp           55,6..8      libre   coming_soon=route_25  # « ROUTE 25 — À venir » (développement)
 rival                dresseur       36,55        bloque  role=R facing=left sight=5 trainer=route_24_rival  # rival n° 3 ; niche en retrait ; vue x 31..35 ; inévitable ; part vers la ville (fondu) après la victoire
 ondine               pnj            37,46        bloque  role=O facing=left  # Ondine sur la berge, tournée vers le pont ; inaccessible avant le rival
-panneau_pont         panneau        33,45        bloque  # « PONT PÉPITE » / « Cinq Dresseurs. Une récompense. », lu depuis (33, 46) ↑ ; ferme la file est à l'entrée du tablier
+panneau_pont         panneau        33..34,45    bloque  # (33, 45) : borne qui FERME la file est à l'entrée du tablier (décor seul) ; (34, 45) : le panneau « PONT PÉPITE » / « Cinq Dresseurs. Une récompense. » (taille normale, à côté de la tête du pont), lu depuis (34, 46) ↑ — corrigé au T17 : le panneau n'est plus posé sur le tablier
 p1_timeo             dresseur       32,41        bloque  role=P1 facing=down sight=3 trainer=route_24_scout_timeo  # Scout, 4 Pokémon Nv. 10, 120 ₽ ; file ouest
 p2_alice             dresseur       33,37        bloque  role=P2 facing=down sight=3 trainer=route_24_lass_alice  # Jeune Dresseuse, Roucool, Mystherbe, Chétiflor Nv. 12, 180 ₽ ; file est
 p3_malo              dresseur       32,33        bloque  role=P3 facing=down sight=3 trainer=route_24_youngster_malo  # Gamin, Sabelette + Abo Nv. 14, 210 ₽ ; file ouest

@@ -51,6 +51,8 @@ const DOSSIER_12 := "res://docs/design/dossier-12-argenta.md"
 const LOT_J10 := "res://docs/design/textes/textes-brouillon-j10.md"
 ## Jalon 11 : textes du §13 (« « … » » par ligne).
 const DOSSIER_14 := "res://docs/design/dossier-14-systemes-j11.md"
+## Jalon 13 : lot de textes du dossier 16 §21 (« « … » / « … » » par numéro, lignes repliées).
+const DOSSIER_16 := "res://docs/design/dossier-16-azuria.md"
 ## Jalon 8 : textes T1–T16 validés (dossier 11, « Textes à valider ») ; dans son tableau, « / »
 ## marque le retour à la ligne de la bulle et le gras (« ** ») le titre d'un panneau.
 const DOSSIER_11 := "res://docs/design/dossier-11-route-2.md"
@@ -66,6 +68,9 @@ const MAPS: Array[StringName] = [
 	&"pewter_house_mason", &"pewter_house_researcher",
 	# Jalon 10 (T11) : la Route 2 nord et Argenta (extérieur).
 	&"route_2_north", &"pewter_city",
+	# Jalon 13 (T17) : Routes 4 et 24, Azuria et ses intérieurs.
+	&"route_4", &"route_24", &"cerulean_city", &"cerulean_center", &"cerulean_mart",
+	&"cerulean_gym", &"cerulean_bike_shop", &"cerulean_house",
 ]
 ## Lot de textes validé par Kevin le 2026-10-06 (anciens brouillons : panneau, observations,
 ## soin de Maman, terminal du Stockage, portes de Jadielle…) : source des textes hors dossiers.
@@ -75,7 +80,31 @@ const TEXTES_VALIDES := "res://docs/design/textes/textes-brouillon-j7.md"
 ## (4A, T1) la proposition du Prof. Chen ; (4A, T3) le choix et la sortie empêchée.
 const IDS: Array[StringName] = [
 	&"aoki", &"breakfast_table", &"clerk", &"clerk_parcel",
-	&"clerk_parcel_hello", &"forest_gate_north_guard", &"forest_gate_south_guard",
+	&"clerk_parcel_hello",
+	# Jalon 13 (T17) : Azuria, Route 4 et Route 24 (dossier 16 §21).
+	&"cerulean_bike_clerk",
+	&"cerulean_burgled_door",
+	&"cerulean_city_sign",
+	&"cerulean_closed_exit",
+	&"cerulean_gym_diane_after",
+	&"cerulean_gym_diane_before",
+	&"cerulean_gym_guide",
+	&"cerulean_gym_lucas_after",
+	&"cerulean_gym_lucas_before",
+	&"cerulean_gym_sign",
+	&"cerulean_h1_fisher",
+	&"cerulean_h2_kid",
+	&"cerulean_h3_neighbor",
+	&"cerulean_h4_policeman",
+	&"cerulean_h5_swimmer",
+	&"cerulean_h6_trainer",
+	&"cerulean_h7_resident",
+	&"cerulean_house_resident",
+	&"cerulean_torn_fence",
+	&"route_24_ball_1",
+	&"route_24_bridge_sign",
+	&"route_4_ball_1",
+	&"forest_gate_north_guard", &"forest_gate_south_guard",
 	&"forest_hiker", &"forest_naturalist",
 	&"forest_scout_eli_after", &"forest_scout_eli_before", &"forest_scout_milo_after",
 	&"forest_scout_milo_before", &"forest_scout_noe_after", &"forest_scout_noe_before",
@@ -135,7 +164,9 @@ const IDS: Array[StringName] = [
 ## de la Boutique depuis le T12 (data/cutscenes/viridian_mart.json).
 ## Jalon 9 : `pewter_arrived` (lu par le garde du poste nord) est posé par le J10, à l'arrivée à
 ## Argenta : levé par la scène `pewter_arrival` depuis le T8 du J10.
-const FUTURE_FLAGS: Array[StringName] = []
+## Jalon 13 (T17) : `badge_cascade` (T19) et `misty_invited` (T19) sont lus par la Nageuse et le
+## guide d'Azuria avant que leur scène existe.
+const FUTURE_FLAGS: Array[StringName] = [&"badge_cascade", &"misty_invited"]
 var _library: DialogueLibrary
 var _cutscenes: CutsceneLibrary
 var _offer: StarterOffer
@@ -236,7 +267,12 @@ func test_library_loads_without_error() -> void:
 	var library := DialogueLibrary.new()
 	assert_true(library.load_dir(), "data/dialogues/ se charge")
 	assert_eq(library.get_errors().size(), 0, str(library.get_errors()))
-	assert_eq(_without_qa(library.get_ids()), IDS)
+	# Les identifiants sont comparés triés (la liste IDS est groupée par jalon).
+	var found := _without_qa(library.get_ids())
+	found.sort()
+	var expected := IDS.duplicate()
+	expected.sort()
+	assert_eq(found, expected)
 
 
 func test_every_used_dialogue_exists() -> void:
@@ -350,15 +386,16 @@ func test_every_condition_flag_is_set_somewhere() -> void:
 		assert_false(set_flags.has(flag), "« %s » : levé par un jalon futur" % flag)
 	assert_true(read_flags.has(&"starter_chosen"), "starter_chosen lu (pensée des herbes)")
 	assert_eq(_library.get_set_flags(),
-		[&"blacked_out_before", &"forest_hiker_talked", &"forest_naturalist_talked",
+		[&"blacked_out_before", &"cerulean_neighbor_talked", &"forest_hiker_talked", &"forest_naturalist_talked",
 			&"mom_greeted", &"pewter_researcher_talked", &"poison_unlocked", &"rival_met",
 			&"route_2_hiker_talked", &"route_2_youngster_talked", &"storage_terminal_seen",
 			&"viridian_old_man_talked"]
 		as Array[StringName])
-	assert_eq(_cutscenes.get_set_flags(), [&"badge_boulder", &"brock_met", &"got_oak_parcel",
-		&"got_potion_route_1",
+	assert_eq(_cutscenes.get_set_flags(), [&"badge_boulder", &"brock_met", &"cerulean_reached",
+		&"got_oak_parcel", &"got_potion_route_1", &"got_route_24_potion",
 		&"got_route_2_item_1", &"got_route_2_item_2", &"got_route_2_item_3",
-		&"got_route_2_item_4", &"got_route_2_north_item_1", &"got_viridian_forest_item_1",
+		&"got_route_2_item_4", &"got_route_2_north_item_1", &"got_route_4_poke_ball",
+		&"got_viridian_forest_item_1",
 		&"got_viridian_forest_item_2",
 		&"got_viridian_forest_item_3", &"got_viridian_forest_item_4",
 		&"got_viridian_forest_item_5", &"got_viridian_forest_item_6", &"oak_lab_reunion",
@@ -549,6 +586,8 @@ func test_texts_are_the_dossier_02_texts_word_for_word() -> void:
 	var dossier_12 := FileAccess.get_file_as_string(DOSSIER_12)
 	var lot_j10 := FileAccess.get_file_as_string(LOT_J10)
 	var dossier_14 := FileAccess.get_file_as_string(DOSSIER_14)
+	var dossier_16 := FileAccess.get_file_as_string(DOSSIER_16).replace("\n    ", " ") \
+		.replace("\n   ", " ")
 	for row: Array in _pages():
 		if GATE_GUARDS.has(row[0]):
 			continue
@@ -566,7 +605,8 @@ func test_texts_are_the_dossier_02_texts_word_for_word() -> void:
 			or dossier_10.contains(_as_dossier_10(text))
 			or dossier_12.contains(_as_dossier_10(text))
 			or lot_j10.contains("| « %s » |" % text.replace("\n", "\\n"))
-			or _each_line_quoted(dossier_14, text),
+			or _each_line_quoted(dossier_14, text)
+			or _each_line_quoted(dossier_16, text),
 			"%s : « %s » dans un dossier de conception" % [row[0], text])
 
 
@@ -714,8 +754,9 @@ func test_oak_parcel_lines() -> void:
 					id, variant.cutscene])
 	# La scène du colis ; jalon 8 : les deux objets visibles de la Route 2 (PRENDRE) ; jalon 9 :
 	# les trois de la Forêt de Jade ; jalon 10 : la Potion de la Route 2 nord et Pierre.
-	# Jalon 11 : la remise tardive de la CT34 par Pierre.
-	assert_eq(launched, 9, "la scène du colis, six objets au sol, Pierre et sa CT34")
+	# Jalon 11 : la remise tardive de la CT34 par Pierre. Jalon 13 : la Poké Ball de la Route 4 et
+	# la Potion de la Route 24.
+	assert_eq(launched, 11, "la scène du colis, huit objets au sol, Pierre et sa CT34")
 	# Le jeton n'apparaît que dans la réplique de l'espèce.
 	for row: Array in _pages():
 		var tokens := DialogueTokens.tokens_in(row[1])

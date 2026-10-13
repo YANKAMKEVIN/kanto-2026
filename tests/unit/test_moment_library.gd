@@ -38,8 +38,11 @@ func test_real_data_q14_route_1_is_the_departure_from_pallet_town() -> void:
 	var library := MomentLibrary.new()
 	library.load_file()
 	assert_eq(library.get_zone_text(&"route_1").title, "Départ de Bourg Palette")
-	assert_eq(library.get_zone_text(&"cerulean_city"), library.get_text(&"zone_arrival"),
+	assert_eq(library.get_zone_text(&"vermilion_city"), library.get_text(&"zone_arrival"),
 		"sans texte propre : le texte général")
+	# Jalon 13 (T17) : Azuria a son texte (annexe A.4 du plan).
+	assert_eq(library.get_zone_text(&"cerulean_city").title, "Arrivée à Azuria")
+	assert_eq(library.get_zone_text(&"cerulean_city").detail, "Une ville d'eau et de lumière.")
 	assert_eq(library.outcome_text(&"win").is_empty(), false)
 	assert_eq(library.outcome_text(&"loss").is_empty(), false)
 	assert_eq(library.outcome_text(&"fled"), "", "issue inconnue : pas de texte")
