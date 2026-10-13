@@ -122,8 +122,9 @@ func _input(event: InputEvent) -> void:
 	if touch == null or not touch.pressed:
 		return
 	if not _waiting_touch:
-		# Toucher pendant la séquence (hors ARRÊTER) : elle se joue ×2 (jalon 11).
-		if _rushable and not _stop.get_global_rect().has_point(touch.position):
+		# Toucher pendant la séquence (hors ARRÊTER) : elle se joue ×2 (jalon 11). Seul un ARRÊTER
+		# affiché garde sa zone : sans lui (pierre, jalon 12 ; présentation), tout l'écran accélère.
+		if _rushable and not _covers_stop(touch.position):
 			rush()
 		return
 	get_viewport().set_input_as_handled()
@@ -414,7 +415,7 @@ func _request_cancel() -> void:
 
 
 func _on_stop_pressed() -> void:
-	if not _transforming:
+	if not _transforming or not is_cancellable():
 		return
 	Haptics.vibrate(UiTokens.HAPTIC_TAP_MS)
 	_request_cancel()
@@ -637,6 +638,12 @@ func _hide_hint() -> void:
 	_kill_hint()
 	_hint.visible = false
 	_hint.modulate.a = 0.0
+
+
+## Vrai si [param point] tombe sur ARRÊTER **affiché** (visible et pas encore en fondu de sortie
+## après un toucher) : seule zone où un toucher n'accélère pas la séquence.
+func _covers_stop(point: Vector2) -> bool:
+	return _stop.visible and is_cancellable() and _stop.get_global_rect().has_point(point)
 
 
 func _kill_hint() -> void:
