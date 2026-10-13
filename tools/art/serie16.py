@@ -678,6 +678,10 @@ def manifeste_donnees() -> dict:
 			{"id": "int_maison_leo_coque", "source": _revision("INT_MAISON_LEO_COQUE_NE"),
 				"sortie": f"{_W}interiors/int_maison_leo_coque.png", "cases": [16, 11]},
 		],
+		"pokemon": [
+			{"id": "melofee", "source": "POKE_MELOFEE_NE_r1.png",
+				"sortie": "assets/sprites/pokemon/painted/melofee_sheet.png", "hauteur": 52},
+		],
 		"personnages": [
 			{"id": "leo_humain", "source": _revision("PNJ_LEO_HUMAIN_NE"),
 				"sortie": f"{_C}leo_humain_sheet.png", "hauteur": 128},

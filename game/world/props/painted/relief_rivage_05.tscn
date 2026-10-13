@@ -1,0 +1,16 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://game/world/props/prop.gd" id="1_bebty"]
+[ext_resource type="Material" path="res://game/world/lighting/materials/world_object.tres" id="2_txm88"]
+[ext_resource type="Texture2D" path="res://assets/world/relief/relief_rivage_05.png" id="3_812se"]
+
+[node name="ReliefRivage05" type="Node2D" unique_id=1755460044]
+script = ExtResource("1_bebty")
+footprint = Array[Vector2i]([])
+
+[node name="Sprite" type="Sprite2D" parent="." unique_id=1371311788]
+unique_name_in_owner = true
+material = ExtResource("2_txm88")
+texture = ExtResource("3_812se")
+centered = false
+offset = Vector2(-48, -108)
