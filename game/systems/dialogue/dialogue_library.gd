@@ -26,13 +26,17 @@ extends RefCounted
 ## Jetons de texte (jalon 7 §3.6, T18) : `{nom}` dans le texte d'une page **et dans
 ## « speaker »** (`{rival}`, OUV.2), seulement ceux de [constant DialogueTokens.KNOWN] ; toute
 ## autre accolade est une erreur. La question d'un
-## choix n'a pas de jeton (elle ne peut pas être omise).
+## choix n'a pas de jeton (elle ne peut pas être omise), sauf les jetons « de contexte » de la
+## Pension ([constant DialogueTokens.CONTEXT], J15).
 ## Une entrée invalide est écartée, l'erreur est signalée ([method get_errors], push_error).
 
 const DATA_DIR: String = "res://data/dialogues/"
 ## Actions de fin de variante ou de choix (jalon-07.md §3.3, §6.2) : soin de Maman, soin du
 ## Centre (rituel, point de repos), Boutique, Stockage.
-const ACTIONS: Array[StringName] = [&"heal", &"center_heal", &"open_shop", &"open_storage"]
+## Pension (J15, jalon-15.md §2.5.2) : `open_daycare`, le gardien (variante sans page).
+const ACTIONS: Array[StringName] = [
+	&"heal", &"center_heal", &"open_shop", &"open_storage", &"open_daycare",
+]
 
 const _DIALOGUE_KEYS: Array[String] = ["speaker", "narration", "draft", "variants"]
 const _VARIANT_KEYS: Array[String] = [
@@ -202,7 +206,7 @@ func _parse_variant(value: Variant, where: String) -> DialogueVariant:
 			return null
 		ok = pages_ok and ok
 	if variant.choice != null and not variant.pages.is_empty() \
-			and not DialogueTokens.tokens_in(variant.pages.back().text).is_empty():
+			and not _question_tokens_ok(variant.pages.back().text):
 		ok = _fail("%s : la question d'un choix (dernière page) n'a pas de jeton" % where)
 	ok = _read_flags(entry, "if", variant.if_flags, where) and ok
 	ok = _read_flags(entry, "unless", variant.unless_flags, where) and ok
@@ -345,6 +349,15 @@ func _check_tokens(text: String, where: String) -> bool:
 			ok = _fail("%s : jeton inconnu « {%s} » (attendu : %s)" % [where, token,
 				DialogueTokens.KNOWN])
 	return ok
+
+
+## La question d'un choix ne peut pas être omise : aucun jeton, sauf ceux « de contexte »
+## ([constant DialogueTokens.CONTEXT], toujours fournis par le directeur de la Pension, J15).
+static func _question_tokens_ok(text: String) -> bool:
+	for token: StringName in DialogueTokens.tokens_in(text):
+		if not DialogueTokens.CONTEXT.has(token):
+			return false
+	return true
 
 
 ## « turn » : objet non vide { acteur: cible }, textes non vides. Qu'une cible qui n'est ni une

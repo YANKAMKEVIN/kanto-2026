@@ -199,7 +199,9 @@ func test_max_sell() -> void:
 ## Dossier 09 §10 : aucune perte d'argent à la défaite — rien hors de la Boutique ne débite
 ## l'argent : seules la Boutique (ShopRules) et GameState touchent à `money`.
 func test_only_the_shop_spends_money() -> void:
-	var allowed := ["res://game/autoload/game_state.gd", "res://game/systems/shop/shop_rules.gd"]
+	# J15 (jalon-15.md §2.5.3) : la Pension débite le prix du retrait.
+	var allowed := ["res://game/autoload/game_state.gd", "res://game/systems/shop/shop_rules.gd",
+		"res://game/systems/daycare/daycare_director.gd"]
 	for path: String in _scripts("res://game"):
 		if allowed.has(path):
 			continue

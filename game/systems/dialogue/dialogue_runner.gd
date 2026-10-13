@@ -37,6 +37,9 @@ signal heal_requested
 ## Le choix de la variante attend le joueur (la boîte garde la question) : [param view] porte la
 ## question en titre et les deux libellés. Câblé par [Boot] vers [method DialogueBox.show_choice].
 signal choice_requested(view: ChoiceView)
+## Le joueur a répondu au choix ([method choose]) ; émis avant l'action et les pages de la
+## réponse. Lu par le [DaycareDirector] (J15) pour enchaîner ses répliques.
+signal choice_made(confirmed: bool)
 ## La variante se termine par une scène : émis une fois, juste après [signal dialogue_finished]
 ## (joueur rendu ; la scène pose son propre verrou). Câblé par [Boot] vers [CutsceneDirector].
 signal cutscene_requested(cutscene_id: StringName)
@@ -171,6 +174,7 @@ func choose(confirmed: bool) -> void:
 		return
 	_awaiting_choice = false
 	_choice_done = true
+	choice_made.emit(confirmed)
 	var choice := _variant.choice
 	if confirmed and not choice.confirm_action.is_empty():
 		_in_action = true

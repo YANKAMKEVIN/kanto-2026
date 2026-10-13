@@ -53,6 +53,8 @@ const UNUSED_YET: Array[StringName] = [
 	&"route_6_scout_axel_after", &"route_6_scout_axel_before", &"route_6_scout_axel_defeated",
 	&"route_6_scout_basile_after", &"route_6_scout_basile_before",
 	&"route_6_scout_basile_defeated",
+	# Jalon 15 (T4) : le gardien de la Pension, posé par la carte de QA (T6) puis la Route 5 (T15).
+	&"daycare_keeper",
 ]
 ## Jalon 10 : textes verrouillés du dossier 12 (même forme que le dossier 10) et lot de textes du
 ## J10 (panneaux, noms affichés), où un retour à la ligne est écrit « \n ».
@@ -60,6 +62,8 @@ const DOSSIER_12 := "res://docs/design/dossier-12-argenta.md"
 const LOT_J10 := "res://docs/design/textes/textes-brouillon-j10.md"
 ## Jalon 11 : textes du §13 (« « … » » par ligne).
 const DOSSIER_14 := "res://docs/design/dossier-14-systemes-j11.md"
+## Jalon 15 : textes validés du §15 (« … » par page ; jetons écrits tels quels).
+const DOSSIER_18 := "res://docs/design/dossier-18-carmin-sur-mer.md"
 ## Jalon 8 : textes T1–T16 validés (dossier 11, « Textes à valider ») ; dans son tableau, « / »
 ## marque le retour à la ligne de la bulle et le gras (« ** ») le titre d'un panneau.
 const DOSSIER_11 := "res://docs/design/dossier-11-route-2.md"
@@ -86,7 +90,12 @@ const TEXTES_VALIDES := "res://docs/design/textes/textes-brouillon-j7.md"
 ## (4A, T1) la proposition du Prof. Chen ; (4A, T3) le choix et la sortie empêchée.
 const IDS: Array[StringName] = [
 	&"aoki", &"breakfast_table", &"clerk", &"clerk_parcel",
-	&"clerk_parcel_hello", &"forest_gate_north_guard", &"forest_gate_south_guard",
+	&"clerk_parcel_hello",
+	# Jalon 15 (T4) : la Pension (dossier 18 §15.1).
+	&"daycare_after", &"daycare_deposited", &"daycare_keeper", &"daycare_last_able",
+	&"daycare_offer", &"daycare_party_full", &"daycare_pick", &"daycare_returned",
+	&"daycare_returned_short", &"daycare_visit", &"daycare_visit_levels",
+	&"forest_gate_north_guard", &"forest_gate_south_guard",
 	&"forest_hiker", &"forest_naturalist",
 	&"forest_scout_eli_after", &"forest_scout_eli_before", &"forest_scout_milo_after",
 	&"forest_scout_milo_before", &"forest_scout_noe_after", &"forest_scout_noe_before",
@@ -182,6 +191,9 @@ func before_all() -> void:
 	rest_points.load_file()
 	for rest_map: StringName in rest_points.get_maps():
 		_use(rest_points.get_point(rest_map).wakeup_dialogue, rest_map)
+	# Jalon 15 (T4) : répliques de la Pension, jouées par le DaycareDirector (code).
+	for daycare_line: StringName in DaycareLines.PLAYED_BY_DIRECTOR:
+		_use(daycare_line, &"route_5_daycare")
 	for map_id: StringName in MAPS:
 		_npc_ids[map_id] = []
 		for spec: NpcSpec in NpcRoster.load_for_map(map_id).get_all():
@@ -588,7 +600,8 @@ func test_texts_are_the_dossier_02_texts_word_for_word() -> void:
 			or dossier_12.contains(_as_dossier_10(text))
 			or lot_j10.contains("| « %s » |" % text.replace("\n", "\\n"))
 			or _each_line_quoted(dossier_14, text)
-			or _in_dossier_18(dossier_18, text),
+			or _in_dossier_18(dossier_18, text)
+			or dossier_18.contains("« %s »" % row[1]),
 			"%s : « %s » dans un dossier de conception" % [row[0], text])
 
 
@@ -749,10 +762,16 @@ func test_oak_parcel_lines() -> void:
 	# les trois de la Forêt de Jade ; jalon 10 : la Potion de la Route 2 nord et Pierre.
 	# Jalon 11 : la remise tardive de la CT34 par Pierre.
 	assert_eq(launched, 9, "la scène du colis, six objets au sol, Pierre et sa CT34")
-	# Le jeton n'apparaît que dans la réplique de l'espèce.
+	# Le jeton de l'espèce n'apparaît que dans sa réplique (J15 : ceux de la Pension à part).
 	for row: Array in _pages():
 		var tokens := DialogueTokens.tokens_in(row[1])
-		assert_eq(not tokens.is_empty(), row[1] == records[2].text, "%s : jeton" % row[0])
+		assert_eq(tokens.has(DialogueTokens.FIRST_WILD_SPECIES), row[1] == records[2].text,
+			"%s : jeton" % row[0])
+		for token: StringName in tokens:
+			assert_true(token == DialogueTokens.FIRST_WILD_SPECIES
+				or (DialogueTokens.CONTEXT.has(token)
+				and String(row[0]).begins_with("daycare_")),
+				"%s : jeton {%s} à sa place" % [row[0], token])
 
 
 
