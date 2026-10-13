@@ -1327,6 +1327,17 @@ niveaux) pour la simulation (T20) et la QA de reprise du sas (T18).
 
 ---
 
+## 7 bis. Contrat de sortie du J13 (ce que les jalons suivants peuvent supposer)
+
+> Rédigé le 2026-10-13 après le contrat d'entrée du J16 transmis par Kevin
+> (`docs/design/passes/j16-v2-alignement.md` §4 G-1 et §8, branche `ccr-fa255d49-wvvacc`, non modifiée ici).
+
+| Élément | Ce que le J13 livre | Écart avec le contrat du J16 |
+|---|---|---|
+| Badge Cascade | drapeau `badge_cascade` (déjà déclaré dans `data/badges.json`), posé par l'étape `badge` existante | aucun |
+| Rival n° 3 (`rival_cerulean`) | Roucoups Nv. 18, **Rattata** Nv. 15, starter évolué Nv. 17 (avantage de type) ; `moment: "win"`, `switch: true` (T19) | **pas d'Abra** : arbitrage **D-6** validé par Kevin le 2026-10-11 (Abra n'aurait que Téléport ; il pourra arriver directement en **Kadabra** plus tard, comme au S.S. Anne de Rouge/Bleu) ; Abra et la règle des évolutions par échange sont reportés au J14 (**D-9**). Selon sa propre règle, c'est le contrat du J16 qui se corrige. |
+| Rattata du rival | présent dès le combat n° 3, avant Lavanville (dossier 06 §6) | aucun |
+
 ## 8. Premières tâches à lancer maintenant (si Q-1 est accepté)
 
 1. Attendre la validation des **grilles** (`j13-grilles`) et des **vues générales** par Kevin.
