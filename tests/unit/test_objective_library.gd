@@ -14,8 +14,8 @@ func test_real_data_loads_without_error() -> void:
 	var library := ObjectiveLibrary.new()
 	assert_true(library.load_file(), "\n".join(library.get_errors()))
 	assert_eq(library.get_errors().size(), 0)
-	assert_eq(library.get_ids(), [&"go_route_3", &"get_boulder_badge", &"go_north",
-		&"deliver_parcel", &"reach_viridian"] as Array[StringName])
+	assert_eq(library.get_ids(), [&"ss_anne", &"help_bill", &"go_cerulean_cape",
+		&"go_route_3", &"get_boulder_badge", &"go_north", &"deliver_parcel", &"reach_viridian"] as Array[StringName])
 
 
 ## Convention homogène (décision de Kevin du 2026-10-05) : tout texte d'objectif finit par un
@@ -57,7 +57,8 @@ func test_q4_nothing_before_the_rival_battle_then_reach_viridian() -> void:
 ## (data/cutscenes/oak_lab.json).
 ## Jalon 10 (T8) : `pewter_arrived` (scène `pewter_arrival`) et `badge_boulder` (victoire de la
 ## scène `pewter_gym_brock`) sont levés par les données : retirés de la liste.
-const _PENDING_FLAGS: Array[StringName] = [&"viridian_arrived"]
+## Jalon 14 (T17) : `beaten_nugget_rocket` (Pont Pépite, J12) est levé par le jalon 12.
+const _PENDING_FLAGS: Array[StringName] = [&"viridian_arrived", &"beaten_nugget_rocket"]
 
 
 ## Jalon 10 (dossier 12 §16, jalon-10.md §2.10) : « continuer vers le nord. » jusqu'à Argenta,
@@ -188,3 +189,24 @@ func test_missing_file_and_wrong_root() -> void:
 	assert_false(library.load_file(path))
 	assert_push_error("une liste d'objectifs est attendue")
 	DirAccess.remove_absolute(path)
+
+
+## Jalon 14 (dossier 17 §15 n° 66 à 68, jalon-14.md §2.10) : « rejoindre le Cap d'Azuria. »
+## après le Pont Pépite, « aider Léo. » après sa rencontre, « le S.S. Anne fait escale… » après
+## le Passe Bateau ; en tête de liste, devant « continuer vers la Route 3. ».
+func test_bill_objectives_in_order() -> void:
+	var library := ObjectiveLibrary.new()
+	library.load_file()
+	var flags := StoryFlags.new()
+	flags.set_flag(&"badge_boulder")
+	assert_eq(library.current_id(flags), &"go_route_3")
+	flags.set_flag(&"beaten_nugget_rocket")
+	assert_eq(library.current(flags), "rejoindre le Cap d'Azuria.")
+	flags.set_flag(&"bill_met")
+	assert_eq(library.current(flags), "aider Léo.")
+	flags.set_flag(&"bill_restored")
+	assert_eq(library.current_id(flags), &"go_route_3", "Léo aidé : l'objectif s'efface")
+	flags.set_flag(&"got_ss_ticket")
+	assert_eq(library.current(flags), "le S.S. Anne fait escale à Carmin-sur-Mer.")
+	for id: StringName in [&"ss_anne", &"help_bill", &"go_cerulean_cape"]:
+		assert_false(library.is_draft(id), "texte validé (dossier 17 §15)")

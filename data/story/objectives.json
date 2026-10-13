@@ -1,5 +1,22 @@
 [
 	{
+		"id": "ss_anne",
+		"text": "le S.S. Anne fait escale à Carmin-sur-Mer.",
+		"if": ["got_ss_ticket"]
+	},
+	{
+		"id": "help_bill",
+		"text": "aider Léo.",
+		"if": ["bill_met"],
+		"unless": ["bill_restored"]
+	},
+	{
+		"id": "go_cerulean_cape",
+		"text": "rejoindre le Cap d'Azuria.",
+		"if": ["beaten_nugget_rocket"],
+		"unless": ["bill_met"]
+	},
+	{
 		"id": "go_route_3",
 		"text": "continuer vers la Route 3.",
 		"if": ["badge_boulder"]

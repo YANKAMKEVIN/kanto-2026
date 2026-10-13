@@ -492,7 +492,7 @@ func _pewter_rooms() -> Array[Dictionary]:
 ## téléportation (la seconde en miroir ; machine et armoire occupent 3 cases de large, l'armoire
 ## dans le mur latéral `K`), écran, console, module, bureau encombré et sa chaise, deux
 ## bibliothèques (la seconde en miroir), lit, plante. Sortie : le paillasson (7..8, 10), PUSH ↓.
-## Aucun PNJ (Léo-Mélofée et Léo humain : T17).
+## Léo-Mélofée et Léo humain : `data/npcs/bill_house.json` (T17).
 func _bill_house() -> Dictionary:
 	return {
 		"id": &"bill_house", "node": "BillHouse", "size": Vector2i(16, 11),
@@ -523,6 +523,25 @@ func _bill_house() -> Dictionary:
 				Vector2i.DOWN],
 			["Exit1", Vector2i(8, 10), PUSH, Vector2i.DOWN, &"route_25", &"from_bill_house_e",
 				Vector2i.DOWN],
+		],
+		# T17 : les trois objets EXAMINER (depuis la case au sud, tournés vers le nord), le
+		# premier pas depuis le paillasson (scène d'entrée) et la lueur « hint » de l'objet
+		# attendu (FlagGate : écran après `bill_met`, module après l'écran, console quand Léo est
+		# dans la cabine).
+		"interactables": [
+			["ScreenPoint", Vector2i(5, 3), Vector2i(1, 1), &"bill_screen", EXAMINE, Vector2i.UP],
+			["ModulePoint", Vector2i(10, 3), Vector2i(1, 1), &"bill_module", EXAMINE,
+				Vector2i.UP],
+			["ConsolePoint", Vector2i(7, 3), Vector2i(2, 1), &"bill_console", EXAMINE,
+				Vector2i.UP],
+		],
+		"triggers": [["EntryTrigger", Vector2i(7, 9), Vector2i(2, 1), &"bill_house_enter",
+			Vector2i.UP]],
+		"gates": [
+			["HintScreen", [&"bill_met"], [&"bill_screen_checked"], &"hint", Vector2(528, 340)],
+			["HintModule", [&"bill_screen_checked"], [&"bill_module_checked"], &"hint",
+				Vector2(1008, 340)],
+			["HintConsole", [&"bill_in_cabin"], [&"bill_restored"], &"hint", Vector2(768, 340)],
 		],
 	}
 
@@ -818,7 +837,29 @@ func _build(room: Dictionary) -> Node2D:
 		point.position = _world(entry[1])
 		point.set(&"size", entry[2])
 		point.set(&"cutscene_id", entry[3])
+		if entry.size() > 4:
+			point.set(&"direction", entry[4])
 		_attach(root, root.get_node(^"Triggers"), point)
+	# Décor qui suit les drapeaux (jalon 14) : [nœud, if, unless, type de halo, centre en pixels].
+	var gate_script: GDScript = load("res://game/world/flag_gate.gd")
+	var glow_script: GDScript = load("res://game/world/lighting/light_glow.gd")
+	for entry: Array in room.get("gates", []):
+		var gate := Node2D.new()
+		gate.set_script(gate_script)
+		gate.name = entry[0]
+		var if_flags: Array[StringName] = []
+		if_flags.assign(entry[1])
+		var unless_flags: Array[StringName] = []
+		unless_flags.assign(entry[2])
+		gate.set(&"if_flags", if_flags)
+		gate.set(&"unless_flags", unless_flags)
+		_attach(root, root, gate)
+		var glow := Sprite2D.new()
+		glow.set_script(glow_script)
+		glow.name = "Glow"
+		glow.set(&"glow_type", entry[3])
+		glow.position = entry[4]
+		_attach(root, gate, glow)
 	return root
 
 

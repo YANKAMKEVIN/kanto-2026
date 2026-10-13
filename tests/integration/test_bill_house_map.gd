@@ -4,7 +4,7 @@ extends GutTest
 ## enveloppe 16 × 11, **cases solides = grille** `tools/plans/bill_house.txt` (meubles,
 ## cabines A et B, console, écran, module, bibliothèques, bureau, lit), sortie sur le
 ## paillasson et arrivée tournée vers le nord, meubles posés sur les cases de la grille,
-## aucun PNJ (T17). Les points d'examen des trois machines viennent au T17.
+## PNJ, points d'examen, déclencheur et lueurs du T17.
 
 const PlanGrid := preload("res://tests/helpers/plan_grid.gd")
 const PLAN_PATH := "res://tools/plans/bill_house.txt"
@@ -108,11 +108,39 @@ func test_machine_cells_are_all_covered() -> void:
 			assert_true(covered.has(cell), "« %s » %s sans meuble" % [mark, cell])
 
 
-func test_no_life_yet() -> void:
-	assert_eq(_map.get_node(^"Triggers").get_child_count(), 0)
-	assert_eq(_map.get_node(^"Interactables").get_child_count(), 0, "examens au T17")
-	for child: Node in _map.get_entities().get_children():
-		assert_false(child is Npc, "%s : aucun PNJ au T14" % child.name)
+## T17 : trois points d'examen (écran, module, console) tournés vers le nord depuis la case au
+## sud, un déclencheur d'entrée (premier pas vers le nord depuis le paillasson), trois lueurs.
+func test_examine_points_entry_trigger_and_hints() -> void:
+	var interactions := _map.get_interactions()
+	var expected := {
+		Vector2i(5, 3): &"bill_screen", Vector2i(10, 3): &"bill_module",
+		Vector2i(7, 3): &"bill_console", Vector2i(8, 3): &"bill_console",
+	}
+	for cell: Vector2i in expected:
+		var found := interactions.find(cell, Vector2i.UP)
+		assert_not_null(found, "examen en %s" % cell)
+		if found != null:
+			assert_eq([found.kind, found.dialogue_id], [Interaction.Kind.EXAMINE, expected[cell]])
+		assert_null(interactions.find(cell, Vector2i.DOWN), "pas de dos au mur %s" % cell)
+	for cell: Vector2i in [Vector2i(7, 9), Vector2i(8, 9)]:
+		assert_not_null(_map.get_triggers().find_on_step(cell, Vector2i.UP), "entrée %s" % cell)
+		assert_null(_map.get_triggers().find_on_step(cell, Vector2i.DOWN), "pas en sortant %s" % cell)
+	var gates := get_tree().get_nodes_in_group(FlagGate.GROUP).filter(
+		func(node: Node) -> bool: return _map.is_ancestor_of(node))
+	assert_eq(gates.size(), 3, "lueurs de l'écran, du module et de la console")
+	for gate: FlagGate in gates:
+		assert_true((gate.get_child(0) as LightGlow).is_lit(), "type « hint » : %s" % gate.name)
+
+
+func test_the_two_npcs_of_the_house_are_in_the_roster() -> void:
+	var roster := NpcRoster.load_for_map(&"bill_house")
+	assert_eq(roster.get_errors().size(), 0, str(roster.get_errors()))
+	var clefairy := roster.get_spec(&"bill_clefairy")
+	var bill := roster.get_spec(&"bill")
+	assert_eq(clefairy.cell, Vector2i(6, 5), "un cran au nord de la grille (6, 6) : le bureau la cache")
+	assert_eq(bill.cell, Vector2i(12, 5))
+	assert_eq(clefairy.unless_flags, [&"bill_in_cabin"] as Array[StringName])
+	assert_eq(bill.if_flags, [&"bill_restored"] as Array[StringName])
 
 
 func test_every_floor_cell_is_reachable_from_the_entrance() -> void:

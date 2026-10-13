@@ -34,6 +34,8 @@ const MAPS: Array[StringName] = [
 	&"viridian_forest",
 	# Jalon 10 (T11) : arrivée à Argenta et verrou du garde de la Route 3.
 	&"pewter_city",
+	# Jalon 14 (T17) : l'entrée de la maison de Léo.
+	&"bill_house",
 ]
 ## Jalon 7 (T18) : partie qui revient au labo avec le colis (rival parti après le combat).
 const PARCEL_FLAGS: Array[StringName] = [
@@ -90,6 +92,11 @@ const VARIANT_FLAGS: Dictionary = {
 	# Jalon 11 (T14) : remise tardive de la CT34 (partie déjà badgée).
 	&"pewter_gym_brock_tm_late": [PEWTER_FLAGS + [&"pewter_arrived", &"brock_met",
 		&"badge_boulder"]],
+	# Jalon 14 (T17) : la maison de Léo (entrée : avant la rencontre, puis Léo dans la cabine).
+	&"bill_house_enter": [PEWTER_FLAGS, PEWTER_FLAGS + [&"bill_met", &"bill_in_cabin"]],
+	&"bill_screen": [PEWTER_FLAGS + [&"bill_met"]],
+	&"bill_module": [PEWTER_FLAGS + [&"bill_met", &"bill_screen_checked"]],
+	&"bill_machine": [PEWTER_FLAGS + [&"bill_met", &"bill_screen_checked", &"bill_in_cabin"]],
 }
 ## Scènes jouées par le code (pas de déclencheur) → carte où elles sont jouées.
 ## Jalon 7 (T18) : la scène du colis est lancée par la variante « cutscene » du dialogue de Chen.
@@ -104,6 +111,8 @@ const CODE_PLAYED: Dictionary[StringName, StringName] = {
 	&"route_2_north_item_1": &"route_2_north", &"pewter_gym_brock": &"pewter_gym",
 	# Jalon 11 (T14) : remise tardive de la CT34 (dialogue de Pierre).
 	&"pewter_gym_brock_tm_late": &"pewter_gym",
+	# Jalon 14 (T17) : les trois objets de Léo (dialogue de l'écran, du module, de la console).
+	&"bill_screen": &"bill_house", &"bill_module": &"bill_house", &"bill_machine": &"bill_house",
 }
 ## Scènes à déclencheur dont la carte n'est pas encore construite → leur carte (simulées sur les
 ## PNJ de son fichier). Vidée au T19 du jalon 9 (la forêt existe), puis au T11 du jalon 10 (les
@@ -158,14 +167,22 @@ func test_library_loads_without_error() -> void:
 	var library := CutsceneLibrary.new()
 	assert_true(library.load_dir(), "data/cutscenes/ se charge")
 	assert_eq(library.get_errors().size(), 0, str(library.get_errors()))
-	assert_eq(library.get_ids(), [&"mart_parcel", &"oak_lab_exit", &"oak_parcel",
+	assert_eq(library.get_ids(), _sorted([&"bill_house_enter", &"bill_machine", &"bill_module",
+		&"bill_screen", &"mart_parcel", &"oak_lab_exit", &"oak_parcel",
 		&"pewter_arrival", &"pewter_gym_brock", &"pewter_gym_brock_tm_late",
 		&"rival_route22", &"route1_grass", &"route_1_potion", &"route_2_item_1",
 		&"route_2_item_2", &"route_2_item_3", &"route_2_item_4", &"route_2_north_item_1",
 		&"route_3_guard", &"starter_chosen",
 		&"viridian_arrival", &"viridian_forest_item_1", &"viridian_forest_item_2",
 		&"viridian_forest_item_3", &"viridian_forest_item_4", &"viridian_forest_item_5",
-		&"viridian_forest_item_6"] as Array[StringName])
+		&"viridian_forest_item_6"]))
+
+
+func _sorted(values: Array) -> Array[StringName]:
+	var result: Array[StringName] = []
+	result.assign(values)
+	result.sort_custom(func(a: StringName, b: StringName) -> bool: return String(a) < String(b))
+	return result
 
 
 func test_route1_grass_ends_with_the_starter_offer() -> void:

@@ -51,6 +51,10 @@ const DOSSIER_12 := "res://docs/design/dossier-12-argenta.md"
 const LOT_J10 := "res://docs/design/textes/textes-brouillon-j10.md"
 ## Jalon 11 : textes du §13 (« « … » » par ligne).
 const DOSSIER_14 := "res://docs/design/dossier-14-systemes-j11.md"
+## Jalon 14 (T17) : textes validés du dossier 17 §15 (« {joueur} » = jeton {player}) et annexe A
+## du plan (A-8, console après le retour de Léo).
+const DOSSIER_17 := "res://docs/design/dossier-17-cap-azuria.md"
+const PLAN_J14 := "res://docs/tech/jalon-14.md"
 ## Jalon 8 : textes T1–T16 validés (dossier 11, « Textes à valider ») ; dans son tableau, « / »
 ## marque le retour à la ligne de la bulle et le gras (« ** ») le titre d'un panneau.
 const DOSSIER_11 := "res://docs/design/dossier-11-route-2.md"
@@ -66,6 +70,8 @@ const MAPS: Array[StringName] = [
 	&"pewter_house_mason", &"pewter_house_researcher",
 	# Jalon 10 (T11) : la Route 2 nord et Argenta (extérieur).
 	&"route_2_north", &"pewter_city",
+	# Jalon 14 (T17) : la maison de Léo.
+	&"bill_house",
 ]
 ## Lot de textes validé par Kevin le 2026-10-06 (anciens brouillons : panneau, observations,
 ## soin de Maman, terminal du Stockage, portes de Jadielle…) : source des textes hors dossiers.
@@ -129,13 +135,32 @@ const IDS: Array[StringName] = [
 	&"viridian_kid",
 	&"viridian_lass", &"viridian_old_man", &"viridian_traveler",
 ]
+## Jalon 14 (T17, dossier 17 §15 n° 1 à 27) : dialogues de la maison de Léo, ajoutés aux autres.
+const IDS_J14_BILL: Array[StringName] = [
+	&"bill", &"bill_candy_offer", &"bill_clefairy", &"bill_console", &"bill_give_candy",
+	&"bill_give_ticket", &"bill_greet", &"bill_module", &"bill_module_next", &"bill_ready",
+	&"bill_screen", &"bill_screen_next", &"bill_ss_anne", &"bill_thanks",
+]
+## Dialogues joués par les scènes de la maison de Léo.
+const PLAYED_J14_BILL: Array[StringName] = [
+	&"bill_candy_offer", &"bill_give_candy", &"bill_give_ticket", &"bill_greet",
+	&"bill_module_next", &"bill_ready", &"bill_screen_next", &"bill_ss_anne", &"bill_thanks",
+]
+## Drapeaux levés par les dialogues et les scènes de la maison de Léo.
+const SET_J14_BILL_DIALOGUES: Array[StringName] = [&"bill_met"]
+const SET_J14_BILL_CUTSCENES: Array[StringName] = [
+	&"bill_in_cabin", &"bill_module_checked", &"bill_restored", &"bill_screen_checked",
+	&"got_bill_rare_candy", &"got_ss_ticket",
+]
 ## Plus aucun drapeau futur au 4B : rival_battle_done est levé par la scène du combat
 ## (jalon-04.md §14.5, §14.8), quelle que soit l'issue.
 ## Jalon 7 : got_oak_parcel, lu par Chen (scène du colis, T18), est levé par la première visite
 ## de la Boutique depuis le T12 (data/cutscenes/viridian_mart.json).
 ## Jalon 9 : `pewter_arrived` (lu par le garde du poste nord) est posé par le J10, à l'arrivée à
 ## Argenta : levé par la scène `pewter_arrival` depuis le T8 du J10.
-const FUTURE_FLAGS: Array[StringName] = []
+## Jalon 14 (T17) : `cerulean_rocket_beaten` (lu par Léo) est levé par la scène du Rocket
+## d'Azuria (T20b).
+const FUTURE_FLAGS: Array[StringName] = [&"cerulean_rocket_beaten"]
 var _library: DialogueLibrary
 var _cutscenes: CutsceneLibrary
 var _offer: StarterOffer
@@ -232,11 +257,18 @@ func _pages() -> Array[Array]:
 	return pages
 
 
+func _sorted(values: Array) -> Array[StringName]:
+	var result: Array[StringName] = []
+	result.assign(values)
+	result.sort_custom(func(a: StringName, b: StringName) -> bool: return String(a) < String(b))
+	return result
+
+
 func test_library_loads_without_error() -> void:
 	var library := DialogueLibrary.new()
 	assert_true(library.load_dir(), "data/dialogues/ se charge")
 	assert_eq(library.get_errors().size(), 0, str(library.get_errors()))
-	assert_eq(library.get_ids(), IDS)
+	assert_eq(library.get_ids(), _sorted(IDS + IDS_J14_BILL))
 
 
 func test_every_used_dialogue_exists() -> void:
@@ -257,7 +289,7 @@ func test_every_dialogue_is_used() -> void:
 func test_every_dialogue_played_by_a_cutscene_exists() -> void:
 	assert_eq(_cutscenes.get_errors().size(), 0, str(_cutscenes.get_errors()))
 	var played := _cutscenes.get_dialogue_ids()
-	assert_eq(played, [&"clerk_parcel", &"clerk_parcel_hello",
+	assert_eq(played, _sorted([&"clerk_parcel", &"clerk_parcel_hello",
 		&"oak_after_battle", &"oak_lab_exit_block", &"oak_lab_reunion",
 		&"oak_parcel_records", &"oak_parcel_rival", &"oak_parcel_rival_dex", &"oak_poke_balls",
 		&"oak_poke_balls_intro", &"oak_pokedex_activated", &"oak_route1_call",
@@ -276,8 +308,7 @@ func test_every_dialogue_played_by_a_cutscene_exists() -> void:
 		&"route22_rival_lost", &"route22_rival_won", &"route22_youngster_sigh",
 		&"route_1_potion_found", &"route_2_item_3_found", &"route_2_item_4_found",
 		&"viridian_forest_item_3_found", &"viridian_forest_item_4_found",
-		&"viridian_forest_item_6_found"]
-		as Array[StringName])
+		&"viridian_forest_item_6_found"] + PLAYED_J14_BILL))
 	for id: StringName in played:
 		assert_true(_library.has_dialogue(id), "dialogue « %s » défini" % id)
 		if UNUSED_YET.has(id):
@@ -350,12 +381,11 @@ func test_every_condition_flag_is_set_somewhere() -> void:
 		assert_false(set_flags.has(flag), "« %s » : levé par un jalon futur" % flag)
 	assert_true(read_flags.has(&"starter_chosen"), "starter_chosen lu (pensée des herbes)")
 	assert_eq(_library.get_set_flags(),
-		[&"blacked_out_before", &"forest_hiker_talked", &"forest_naturalist_talked",
+		_sorted([&"blacked_out_before", &"forest_hiker_talked", &"forest_naturalist_talked",
 			&"mom_greeted", &"pewter_researcher_talked", &"poison_unlocked", &"rival_met",
 			&"route_2_hiker_talked", &"route_2_youngster_talked", &"storage_terminal_seen",
-			&"viridian_old_man_talked"]
-		as Array[StringName])
-	assert_eq(_cutscenes.get_set_flags(), [&"badge_boulder", &"brock_met", &"got_oak_parcel",
+			&"viridian_old_man_talked"] + SET_J14_BILL_DIALOGUES))
+	assert_eq(_cutscenes.get_set_flags(), _sorted([&"badge_boulder", &"brock_met", &"got_oak_parcel",
 		&"got_potion_route_1",
 		&"got_route_2_item_1", &"got_route_2_item_2", &"got_route_2_item_3",
 		&"got_route_2_item_4", &"got_route_2_north_item_1", &"got_viridian_forest_item_1",
@@ -366,7 +396,7 @@ func test_every_condition_flag_is_set_somewhere() -> void:
 		&"pokedex_activated", &"rival_battle_done", &"rival_challenged", &"rival_lab_lost",
 		&"rival_lab_won", &"rival_left_lab", &"rival_route22_lost", &"rival_route22_won",
 		&"route_3_guard_cleared", &"starter_chosen", &"starter_offered", &"tm34_received",
-		&"viridian_arrived"] as Array[StringName])
+		&"viridian_arrived"] + SET_J14_BILL_CUTSCENES))
 	assert_eq(_used_on.get(&"oak_lab_reunion"), [&"oak_lab"], "joué au labo, après le fondu")
 	assert_eq(_used_on.get(&"oak_starter_offer"), [&"oak_lab"], "joué au labo")
 
@@ -549,6 +579,8 @@ func test_texts_are_the_dossier_02_texts_word_for_word() -> void:
 	var dossier_12 := FileAccess.get_file_as_string(DOSSIER_12)
 	var lot_j10 := FileAccess.get_file_as_string(LOT_J10)
 	var dossier_14 := FileAccess.get_file_as_string(DOSSIER_14)
+	var dossier_17 := FileAccess.get_file_as_string(DOSSIER_17) \
+		+ FileAccess.get_file_as_string(PLAN_J14).replace("\n  ", " ")
 	for row: Array in _pages():
 		if GATE_GUARDS.has(row[0]):
 			continue
@@ -566,7 +598,8 @@ func test_texts_are_the_dossier_02_texts_word_for_word() -> void:
 			or dossier_10.contains(_as_dossier_10(text))
 			or dossier_12.contains(_as_dossier_10(text))
 			or lot_j10.contains("| « %s » |" % text.replace("\n", "\\n"))
-			or _each_line_quoted(dossier_14, text),
+			or _each_line_quoted(dossier_14, text)
+			or dossier_17.contains("« %s »" % text.replace("{player}", "{joueur}")),
 			"%s : « %s » dans un dossier de conception" % [row[0], text])
 
 
@@ -715,9 +748,12 @@ func test_oak_parcel_lines() -> void:
 	# La scène du colis ; jalon 8 : les deux objets visibles de la Route 2 (PRENDRE) ; jalon 9 :
 	# les trois de la Forêt de Jade ; jalon 10 : la Potion de la Route 2 nord et Pierre.
 	# Jalon 11 : la remise tardive de la CT34 par Pierre.
-	assert_eq(launched, 9, "la scène du colis, six objets au sol, Pierre et sa CT34")
+	# Jalon 14 (T17) : l'écran, le module et la console de Léo.
+	assert_eq(launched, 12, "colis, six objets au sol, Pierre et sa CT34, écran, module, console")
 	# Le jeton n'apparaît que dans la réplique de l'espèce.
 	for row: Array in _pages():
+		if IDS_J14_BILL.has(row[0]):
+			continue # {player} de Léo (dossier 17 §15) : testé dans test_bill_house
 		var tokens := DialogueTokens.tokens_in(row[1])
 		assert_eq(not tokens.is_empty(), row[1] == records[2].text, "%s : jeton" % row[0])
 

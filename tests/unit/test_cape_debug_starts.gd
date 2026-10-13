@@ -9,6 +9,7 @@ const STARTS := {
 	"route_25": [&"route_25", &"from_route_24_c", Vector2i.RIGHT],
 	"route_25_cape": [&"route_25", &"from_bill_house_w", Vector2i.UP],
 	"bill_house": [&"bill_house", &"from_route_25", Vector2i.UP],
+	"bill_after": [&"bill_house", &"from_route_25", Vector2i.UP],
 }
 
 var _data: PokemonData
