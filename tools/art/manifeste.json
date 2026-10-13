@@ -1817,6 +1817,36 @@
    "source": "POKE_CARAPUCE_NE_r1.png",
    "sortie": "assets/sprites/pokemon/painted/carapuce_sheet.png",
    "hauteur": 60
+  },
+  {
+   "id": "herbizarre",
+   "source": "POKE_HERBIZARRE_NE_r1.png",
+   "sortie": "assets/sprites/pokemon/painted/herbizarre_sheet.png",
+   "hauteur": 66
+  },
+  {
+   "id": "carabaffe",
+   "source": "POKE_CARABAFFE_NE_r1.png",
+   "sortie": "assets/sprites/pokemon/painted/carabaffe_sheet.png",
+   "hauteur": 68
+  },
+  {
+   "id": "papilusion",
+   "source": "POKE_PAPILUSION_NE_r1.png",
+   "sortie": "assets/sprites/pokemon/painted/papilusion_sheet.png",
+   "hauteur": 70
+  },
+  {
+   "id": "pikachu",
+   "source": "POKE_PIKACHU_NE_r1.png",
+   "sortie": "assets/sprites/pokemon/painted/pikachu_sheet.png",
+   "hauteur": 60
+  },
+  {
+   "id": "reptincel",
+   "source": "POKE_REPTINCEL_NE_r1.png",
+   "sortie": "assets/sprites/pokemon/painted/reptincel_sheet.png",
+   "hauteur": 72
   }
  ],
  "heros_images": [

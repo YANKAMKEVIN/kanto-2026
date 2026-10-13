@@ -1,0 +1,24 @@
+{
+	"_doc": "Compagnon Pokémon (jalon 11, dossier 14 §8, docs/tech/jalon-11-compagnon.md §2.1). « species » : les espèces éligibles (une planche d'exploration repos + marche en 4 directions VALIDÉE, aucun substitut) → leur apparence (« sprite », comme les PNJ : pokemon/<espèce>) ; « flying » (facultatif) : en vol (ombre au sol, pas de devant de touffe). « contexts » : carte → contexte de la phrase de curiosité (forest, city) ; absente = générique (D-7).",
+	"species": {
+		"bulbasaur": { "sprite": "pokemon/bulbasaur" },
+		"charmander": { "sprite": "pokemon/charmander" },
+		"squirtle": { "sprite": "pokemon/squirtle" },
+		"pidgey": { "sprite": "pokemon/pidgey" },
+		"rattata": { "sprite": "pokemon/rattata" },
+		"spearow": { "sprite": "pokemon/spearow" },
+		"mankey": { "sprite": "pokemon/mankey" },
+		"nidoran_f": { "sprite": "pokemon/nidoran_f" },
+		"nidoran_m": { "sprite": "pokemon/nidoran_m" },
+		"ivysaur": { "sprite": "pokemon/ivysaur" },
+		"wartortle": { "sprite": "pokemon/wartortle" },
+		"butterfree": { "sprite": "pokemon/butterfree", "flying": true },
+		"pikachu": { "sprite": "pokemon/pikachu" },
+		"charmeleon": { "sprite": "pokemon/charmeleon" }
+	},
+	"contexts": {
+		"viridian_forest": "forest",
+		"viridian_city": "city",
+		"pewter_city": "city"
+	}
+}

@@ -88,6 +88,14 @@ const LOOKS: Dictionary = {
 	"bulbizarre": [POKEMON_DIR, "bulbasaur", ""],
 	"salameche": [POKEMON_DIR, "charmander", ""],
 	"carapuce": [POKEMON_DIR, "squirtle", ""],
+	# J11 (série 13, T18) : planches du compagnon validées par Kevin, sans planche d'attente.
+	"herbizarre": [POKEMON_DIR, "ivysaur", ""],
+	"carabaffe": [POKEMON_DIR, "wartortle", ""],
+	"papilusion": [POKEMON_DIR, "butterfree", ""],
+	# Pikachu : planche obtenue à la main par Kevin (ChatGPT, Codex refuse), validée le 2026-10-13.
+	"pikachu": [POKEMON_DIR, "pikachu", ""],
+	# Reptincel : idem (ChatGPT sans image jointe, sinon refus), validé le 2026-10-13.
+	"reptincel": [POKEMON_DIR, "charmeleon", ""],
 }
 ## Pokémon fixes (genre « Pokémon fixe », jalon 9 §2.8.5) : feuille 6 × 1 du catalogue
 ## (« personnages ») → identifiant de données. Ils ne marchent jamais.
@@ -121,6 +129,13 @@ const IDLE_COLUMNS := {"down": 0, "left": 1, "right": 2, "up": 3}
 ## (colonne 1) ; de dos, colonne 0 (les deux pieds posés).
 const IDLE_FROM_WALK := {
 	"salameche": {"down": 0, "left": 3, "right": 1, "up": 0},
+	# Série 13 (T18), à l'œil : Herbizarre et Carabaffe, les pattes les plus rapprochées ;
+	# Papilusion (en vol), les ailes ouvertes (colonne 0) dans toutes les directions.
+	"herbizarre": {"down": 0, "left": 3, "right": 2, "up": 2},
+	"carabaffe": {"down": 0, "left": 3, "right": 3, "up": 0},
+	"papilusion": {"down": 0, "left": 0, "right": 0, "up": 0},
+	"pikachu": {"down": 0, "left": 1, "right": 3, "up": 0},
+	"reptincel": {"down": 3, "left": 2, "right": 2, "up": 2},
 }
 
 var _errors: int = 0

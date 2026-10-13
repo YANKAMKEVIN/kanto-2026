@@ -55,6 +55,9 @@ extends RefCounted
 ## membre de l'équipe plus « pending_exp » (entier ≥ 0, XP en attente, bornée au plafond du
 ## niveau 100 ; absent : 0), par exemple { "species": "rattata", "level": 10,
 ## "pending_exp": 500 } ; « capturé » au Pokédex ; niveau au dépôt = son niveau.
+## Jalon 11 (T20d, QA du compagnon) : « companion » : place dans l'équipe (0 = premier) du
+## Pokémon choisi comme compagnon ; une espèce sans planche est effacée au premier rafraîchissement
+## (comme en jeu, A-11).
 
 const USER_PATH: String = "user://debug_start.json"
 const FACINGS: Dictionary[String, Vector2i] = {
@@ -66,7 +69,7 @@ const MAX_STORAGE: int = 60
 const MAX_MONEY: int = 999_999
 
 const _KEYS: Array[String] = ["map", "spawn", "facing", "seed", "flags", "party", "bag",
-	"favorites", "money", "storage", "autosave", "wild", "daycare"]
+	"favorites", "money", "storage", "autosave", "wild", "daycare", "companion"]
 const _MEMBER_KEYS: Array[String] = ["species", "level", "moves", "exp_to_next", "hp",
 	"favorite", "status", "status_turns"]
 
@@ -92,6 +95,8 @@ var autosave: bool = false
 var wild: Dictionary = {}
 ## Pokémon de la Pension (même forme que [member party], plus « pending_exp ») ; vide = aucun.
 var daycare: Dictionary = {}
+## Place du compagnon dans l'équipe (-1 = aucun).
+var companion: int = -1
 var _errors: PackedStringArray = PackedStringArray()
 
 
@@ -224,6 +229,14 @@ func add_from_dict(dict: Dictionary, data: PokemonData, items: ItemLibrary,
 		new_daycare = _parse_daycare(dict["daycare"], data, "%s daycare" % source)
 		if new_daycare.is_empty():
 			ok = false
+	var new_companion := -1
+	if dict.has("companion"):
+		if not _is_int(dict["companion"]) or int(dict["companion"]) < 0 \
+				or int(dict["companion"]) >= new_party.size():
+			ok = _fail("%s : « companion » est une place de l'équipe (0 à %d)" % [source,
+				maxi(new_party.size() - 1, 0)])
+		else:
+			new_companion = int(dict["companion"])
 	if not ok:
 		return false
 	map = new_map
@@ -239,6 +252,7 @@ func add_from_dict(dict: Dictionary, data: PokemonData, items: ItemLibrary,
 	autosave = new_autosave
 	wild = new_wild
 	daycare = new_daycare
+	companion = new_companion
 	return true
 
 
@@ -271,6 +285,8 @@ func apply(state: Object, data: PokemonData) -> void:
 		state.daycare.pending_exp = mini(daycare["pending_exp"], state.daycare.exp_room)
 		state.pokedex.mark_caught(kept.species_id)
 		state.ensure_unique_uids()
+	if companion >= 0:
+		state.set_companion(state.party.get_at(companion))
 
 
 ## Un Pokémon d'après un membre validé (capacités, XP, PV).

@@ -51,3 +51,29 @@ func test_map_releases_routines_when_the_player_arrives() -> void:
 	map.spawn_player(player, &"start", Vector2i.DOWN)
 	assert_false(haru.is_routine_held(), "joueur arrivé")
 	assert_false(map.get_npc(&"aoki_pidgey_1").is_routine_held(), "sans routine : rien à retenir")
+
+
+## Jalon 11 : une routine attend la case tenue doucement par le compagnon, puis repart quand elle
+## est rendue ; l'accès des pas, lui, ignore cette occupation.
+func test_a_routine_waits_for_the_companion_cell_then_goes_on() -> void:
+	var grid := GridWorld.new(Vector2i(8, 8))
+	var npc := _walker(grid)
+	var companion := Node.new()
+	add_child_autofree(companion)
+	grid.soft_hold(CELL + Vector2i.RIGHT, companion)
+	assert_true(grid.can_enter(CELL + Vector2i.RIGHT, Vector2i.RIGHT), "l'accès l'ignore")
+	npc.set_routine_held(false)
+	var sim := FrameSim.new(get_tree(), [npc])
+	for i in 60:
+		await sim.frame()
+	assert_eq(npc.get_cell(), CELL, "il attend")
+	assert_false(npc.is_moving())
+	grid.soft_release(companion)
+	var moved := false
+	for i in 60:
+		await sim.frame()
+		if npc.is_moving() or npc.get_cell() != CELL:
+			moved = true
+			break
+	sim.finish()
+	assert_true(moved, "case rendue : la boucle reprend")

@@ -31,6 +31,7 @@ var _shadow: Control
 var _halo: TextureRect
 var _sprite: TextureRect
 var _name: Label
+var _name_row: HBoxContainer
 var _gender: TextureRect
 var _favorite: PanelContainer
 var _favorite_label: Label
@@ -103,6 +104,17 @@ func get_sprite() -> TextureRect:
 ## Taille réelle de l'image à l'écran.
 func get_sprite_shown_size() -> Vector2:
 	return _sprite.size * _sprite.scale
+
+
+## Pose [param action] au bout de la ligne du nom, calée à droite (Équipe : FAIRE SORTIR /
+## RAPPELER, jalon 11).
+func add_name_action(action: Control) -> void:
+	var spacer := Control.new()
+	spacer.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	spacer.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	_name_row.add_child(spacer)
+	action.size_flags_vertical = Control.SIZE_SHRINK_CENTER
+	_name_row.add_child(action)
 
 
 func get_name_text() -> String:
@@ -238,6 +250,7 @@ func _build() -> void:
 	_sprite_box.add_child(_sprite)
 
 	var name_row := HBoxContainer.new()
+	_name_row = name_row
 	name_row.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	name_row.add_theme_constant_override(&"separation", UiTokens.GAP)
 	add_child(name_row)
