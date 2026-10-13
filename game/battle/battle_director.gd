@@ -598,6 +598,15 @@ func _play_beat(beat: BattleBeat) -> void:
 				_show_own_card()
 			if is_instance_valid(_hud) and _is_in_play(beat.event):
 				await _hud.animate_hp(side, beat.event.hp, beat.event.max_hp, false)
+		BattleBeat.Kind.BURROW:
+			if is_instance_valid(_stage):
+				await _stage.play_burrow(beat.side)
+		BattleBeat.Kind.SURFACE:
+			if is_instance_valid(_stage):
+				await _stage.play_surface(beat.side)
+		BattleBeat.Kind.VANISH:
+			if is_instance_valid(_stage):
+				await _stage.play_vanish(beat.side)
 		BattleBeat.Kind.WITHDRAW:
 			# La carte est déjà sortie (panneau ÉQUIPE) ; le SEND_OUT suivant ramène la nouvelle.
 			if is_instance_valid(_hud):

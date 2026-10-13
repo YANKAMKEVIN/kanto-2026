@@ -112,6 +112,16 @@ const FAINT_DURATION: float = 0.45
 const WITHDRAW_TINT := Color(1.6, 0.45, 0.45, 0.0)
 const WITHDRAW_SCALE: float = 0.2
 const WITHDRAW_DURATION: float = 0.35
+## Jalon 14 : Tunnel (le Pokémon s'enfonce / remonte) et Téléport (scintille puis s'efface).
+const BURROW_DROP: float = 56.0
+const BURROW_DURATION: float = 0.30
+const SURFACE_DURATION: float = 0.30
+const VANISH_BLINKS: int = 3
+const VANISH_BLINK: float = 0.06
+const VANISH_DURATION: float = 0.25
+const VANISH_GLOW := Color(2.2, 2.2, 2.2, 1.0)
+## « Réduire les animations » : simple fondu, sans mouvement ni scintillement.
+const REDUCED_FADE: float = 0.15
 ## Capture (jalon 5D, jalon-05.md §3.10, storyboard combat-capture-v1) : le dresseur de dos
 ## entre en bas à gauche, la Ball part de sa main en arc, le Pokémon sauvage est absorbé dans un
 ## éclat rouge, la Ball tombe dans l'herbe (ombre au sol), tremble 0 à 3 fois, puis éclat doré
@@ -219,6 +229,7 @@ var _world_modulate: Dictionary[BattleEvent.SideId, Color] = {}
 var _species: Dictionary[BattleEvent.SideId, StringName] = {}
 ## Côtés K.O. : leur sprite reste caché jusqu'à la sortie.
 var _fainted: Dictionary[BattleEvent.SideId, bool] = {}
+var _buried: Dictionary[BattleEvent.SideId, bool] = {}
 var _anchors: Dictionary = {}
 ## Image de chaque côté : boîte visible (px de la texture, pieds au bas-centre) et échelle.
 var _boxes: Dictionary[BattleEvent.SideId, Rect2] = {}
@@ -698,6 +709,85 @@ func play_withdraw(side: BattleEvent.SideId) -> void:
 	_species.erase(side)
 
 
+## Vrai si le Pokémon de [param side] est sous terre (Tunnel : sprite caché).
+func is_buried(side: BattleEvent.SideId) -> bool:
+	return _buried.get(side, false)
+
+
+## Coroutine : Tunnel, tour 1. Le Pokémon de [param side] s'enfonce dans le sol en s'effaçant
+## (ombre comprise), puis reste caché jusqu'à [method play_surface]. « Réduire les animations » :
+## fondu seul.
+func play_burrow(side: BattleEvent.SideId) -> void:
+	var sprite := _sprites[side]
+	if not _active or not sprite.visible:
+		return
+	var duration := REDUCED_FADE if reduce_motion else BURROW_DURATION
+	var tween := _new_tween()
+	tween.set_parallel(true)
+	if not reduce_motion:
+		tween.tween_property(sprite, ^"position", _anchor(side) + Vector2(0, BURROW_DROP),
+			duration).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN)
+	tween.tween_property(sprite, ^"modulate:a", 0.0, duration)
+	tween.tween_property(_shadows[side], ^"modulate:a", 0.0, duration)
+	await _play(tween)
+	_buried[side] = true
+	sprite.visible = false
+	_shadows[side].visible = false
+
+
+## Coroutine : Tunnel, tour 2 (charge libérée ou rompue). Le Pokémon remonte à son ancre.
+## Sans effet s'il n'est pas sous terre (charge visible : rien ne change).
+func play_surface(side: BattleEvent.SideId) -> void:
+	if not _active or not is_buried(side):
+		return
+	_buried.erase(side)
+	var sprite := _sprites[side]
+	var feet := _anchor(side)
+	var duration := REDUCED_FADE if reduce_motion else SURFACE_DURATION
+	sprite.visible = true
+	_shadows[side].visible = true
+	_place(side, feet if reduce_motion else feet + Vector2(0, BURROW_DROP), _anchor_scale(side))
+	_shadows[side].position = feet
+	sprite.modulate = Color(1, 1, 1, 0)
+	_shadows[side].modulate = Color(1, 1, 1, 0)
+	var tween := _new_tween()
+	tween.set_parallel(true)
+	if not reduce_motion:
+		tween.tween_property(sprite, ^"position", feet, duration) \
+			.set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
+	tween.tween_property(sprite, ^"modulate", Color.WHITE, duration)
+	tween.tween_property(_shadows[side], ^"modulate", Color.WHITE, duration)
+	await _play(tween)
+
+
+## Coroutine : Téléport. Le Pokémon de [param side] scintille puis s'efface (ombre comprise) et
+## reste caché (le combat se termine). « Réduire les animations » ou « Réduire les flashs » :
+## pas de scintillement ; la première : fondu court.
+func play_vanish(side: BattleEvent.SideId) -> void:
+	var sprite := _sprites[side]
+	if not _active or not sprite.visible:
+		return
+	var tween := _new_tween()
+	if reduce_motion or reduce_flashes:
+		var duration := REDUCED_FADE if reduce_motion else VANISH_DURATION
+		tween.set_parallel(true)
+		tween.tween_property(sprite, ^"modulate:a", 0.0, duration)
+		tween.tween_property(_shadows[side], ^"modulate:a", 0.0, duration)
+	else:
+		for i: int in VANISH_BLINKS:
+			tween.tween_property(sprite, ^"modulate", VANISH_GLOW, VANISH_BLINK)
+			tween.tween_property(sprite, ^"modulate", Color(1, 1, 1, 0.35), VANISH_BLINK)
+		tween.tween_property(sprite, ^"modulate", VANISH_GLOW, VANISH_BLINK)
+		tween.set_parallel(true)
+		tween.tween_property(sprite, ^"modulate:a", 0.0, VANISH_DURATION)
+		tween.tween_property(_shadows[side], ^"modulate:a", 0.0, VANISH_DURATION)
+	await _play(tween)
+	sprite.visible = false
+	_shadows[side].visible = false
+	_species.erase(side)
+	set_status(side, StatusRules.NONE)
+
+
 ## Coroutine (~1,5 s) : le dresseur lance la Ball sur le Pokémon sauvage (jalon 5D). Il entre
 ## dans le cadrage (de dos, en bas à gauche), la Ball part de sa main en arc, le Pokémon est
 ## absorbé dans un éclat rouge, puis la Ball tombe dans l'herbe, où elle reste (ombre au sol)
@@ -1086,6 +1176,7 @@ func _apply_reset() -> void:
 	_world_modulate.clear()
 	_species.clear()
 	_fainted.clear()
+	_buried.clear()
 	_boxes.clear()
 	_scales.clear()
 	_arena = Rect2()
