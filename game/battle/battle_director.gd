@@ -604,6 +604,10 @@ func _play_beat(beat: BattleBeat) -> void:
 				_hud.hide_card(side)
 			if is_instance_valid(_stage):
 				await _stage.play_withdraw(beat.side)
+		BattleBeat.Kind.HP:
+			# Jalon 12 : drain d'une attaque, Repos (la barre seule, sans coup).
+			if is_instance_valid(_hud):
+				await _hud.animate_hp(side, beat.event.hp, beat.event.max_hp, false)
 		BattleBeat.Kind.RELEASE:
 			if is_instance_valid(_stage):
 				await _stage.play_break_free()
@@ -853,7 +857,7 @@ func _run_veil(side: BattleEvent.SideId, done: Array[bool],
 ## aucune carte ne change.
 func _play_status_tag(event: BattleEvent) -> void:
 	var status := StatusRules.NONE
-	if event.kind == BattleEvent.Kind.STATUS_INFLICTED:
+	if event.kind == BattleEvent.Kind.STATUS_INFLICTED or event.kind == BattleEvent.Kind.RESTED:
 		status = event.status
 	elif event.side != BattleEvent.SideId.FOE and not _is_in_play(event):
 		return

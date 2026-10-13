@@ -37,13 +37,14 @@ const SPECIES := {
 		ExpCurve.Rate.MEDIUM_FAST, 190],
 }
 ## Capacités du J12 : [type, catégorie, puissance, précision, PP, effets en attente].
-## En attente du moteur (T13) : drain, trap, disable, rest, fixed_value. Reportés (mention « Sans
-## effet dans le moteur actuel. ») : metronome, haze, light_screen, recoil_damage.
+## Activés au T13 (genres drain, trap, disable, rest, fixed_damage « value ») : plus rien en
+## attente. Reportés (mention « Sans effet dans le moteur actuel. ») : metronome, haze,
+## light_screen, recoil_damage.
 const MOVES := {
-	&"leech_life": [&"bug", MoveData.Category.PHYSICAL, 20, 100, 15, ["drain"]],
-	&"wrap": [&"normal", MoveData.Category.PHYSICAL, 15, 90, 20, ["trap"]],
-	&"disable": [&"normal", MoveData.Category.STATUS, 0, 100, 20, ["disable"]],
-	&"rest": [&"psychic", MoveData.Category.STATUS, 0, 0, 5, ["rest"]],
+	&"leech_life": [&"bug", MoveData.Category.PHYSICAL, 20, 100, 15, []],
+	&"wrap": [&"normal", MoveData.Category.PHYSICAL, 15, 90, 20, []],
+	&"disable": [&"normal", MoveData.Category.STATUS, 0, 100, 20, []],
+	&"rest": [&"psychic", MoveData.Category.STATUS, 0, 0, 5, []],
 	&"sing": [&"normal", MoveData.Category.STATUS, 0, 55, 15, []],
 	&"spore": [&"grass", MoveData.Category.STATUS, 0, 100, 15, []],
 	&"confuse_ray": [&"ghost", MoveData.Category.STATUS, 0, 100, 10, []],
@@ -56,7 +57,7 @@ const MOVES := {
 	&"smokescreen": [&"normal", MoveData.Category.STATUS, 0, 100, 20, []],
 	&"minimize": [&"normal", MoveData.Category.STATUS, 0, 0, 10, []],
 	&"mega_punch": [&"normal", MoveData.Category.PHYSICAL, 80, 85, 20, []],
-	&"sonic_boom": [&"normal", MoveData.Category.STATUS, 0, 90, 20, ["fixed_value"]],
+	&"sonic_boom": [&"normal", MoveData.Category.STATUS, 0, 90, 20, []],
 	&"metronome": [&"normal", MoveData.Category.STATUS, 0, 0, 10, ["metronome"]],
 	&"haze": [&"ice", MoveData.Category.STATUS, 0, 0, 30, ["haze"]],
 	&"light_screen": [&"psychic", MoveData.Category.STATUS, 0, 0, 30, ["light_screen"]],
@@ -177,14 +178,20 @@ func test_moves_reuse_the_j11_effect_kinds() -> void:
 	assert_eq([smoke.stat, smoke.stages, smoke.target], [&"acc", -1, MoveEffect.Target.FOE])
 	var mini: MoveEffect = _data.get_move(&"minimize").effects[0]
 	assert_eq([mini.stat, mini.stages, mini.target], [&"eva", 1, MoveEffect.Target.SELF])
-	for id: StringName in [&"leech_life", &"wrap", &"disable", &"rest", &"sonic_boom",
-			&"metronome", &"haze", &"light_screen", &"double_edge", &"pound", &"mega_punch"]:
-		assert_eq(_data.get_move(id).effects.size(), 0, "%s : rien de codé au T12" % id)
-	# Capacités existantes activées au T13 : toujours en attente.
-	for id: StringName in [&"bind", &"fire_spin"]:
-		assert_eq(_data.get_move(id).pending_effects, PackedStringArray(["trap"]), String(id))
-	for id: StringName in [&"self_destruct", &"explosion"]:
-		assert_eq(_data.get_move(id).pending_effects, PackedStringArray(["self_ko"]), String(id))
+	for id: StringName in [&"metronome", &"haze", &"light_screen", &"double_edge", &"pound",
+			&"mega_punch"]:
+		assert_eq(_data.get_move(id).effects.size(), 0, "%s : rien de codé" % id)
+	# Activées au T13 (genres du J12) : un seul effet chacune, plus rien en attente.
+	var kinds := {&"leech_life": MoveEffect.Kind.DRAIN, &"wrap": MoveEffect.Kind.TRAP,
+		&"bind": MoveEffect.Kind.TRAP, &"fire_spin": MoveEffect.Kind.TRAP,
+		&"disable": MoveEffect.Kind.DISABLE, &"rest": MoveEffect.Kind.REST,
+		&"self_destruct": MoveEffect.Kind.SELF_KO, &"explosion": MoveEffect.Kind.SELF_KO,
+		&"sonic_boom": MoveEffect.Kind.FIXED_DAMAGE}
+	for id: StringName in kinds:
+		var move := _data.get_move(id)
+		assert_eq(move.effects.size(), 1, String(id))
+		assert_eq(move.effects[0].kind, kinds[id], String(id))
+		assert_eq(move.pending_effects.size(), 0, String(id))
 
 
 func test_move_texts_are_the_validated_ones() -> void:

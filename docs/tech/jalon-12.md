@@ -230,6 +230,30 @@ aucune ne touche au game design.
     - « jamais posé sur un warp » (n° 6) se lit **« jamais sur un warp `STEP_ON` »** : un bord de
       carte `PUSH` est une case ordinaire (le J11 y pose le compagnon derrière le joueur au départ
       de la Route 1 ; `get_at(c).is_empty()` cassait `test_companion_controller`).
+15. **Moteur du T13 (2026-10-13) : lectures retenues** (règle 4, aucune n'est du game design) :
+    - **Piège** : la durée tirée (4–5) est le nombre de **pertes de fin de tour**, tour du
+      Ligotage compris ; TRAP_ENDED suit la dernière perte, dans la même fin de tour (le Pokémon
+      choisit librement au tour suivant). Le lanceur qui quitte le terrain (changement, K.O.)
+      libère sa cible **sans phrase** (`_send_out`, ou à la fin de tour si le lanceur est K.O.).
+      Phrases par capacité : clé de données `messages` (`MoveEffect.TRAP_MESSAGES = [wrap, bind,
+      fire_spin]`, en fin de liste pour les J13–J15) → modèles `trap_<famille>_started` et
+      `trap_<famille>_damaged` ; libération commune `trap_ended`.
+    - **Entrave** : le décompte de 4 fins de tour **compte celle de l'Entrave** (la capacité est
+      bloquée pendant les trois choix suivants si la cible a déjà agi ce tour-là, quatre sinon).
+      Si la cible avait **déjà choisi** la capacité dans le tour où elle est bloquée (lanceur plus
+      rapide), elle ne la lance pas : **MOVE_DISABLED** de nouveau (« {move} de {pokemon} est
+      bloquée ! », texte validé), sans PP. Lutte ne pose pas de « dernière capacité » (Entrave
+      échoue ensuite).
+    - **Destruction** : le lanceur passe à 0 PV (**SELF_KO**, sans phrase) **avant** le FAINTED
+      de la cible, pour qu'il ne reçoive pas d'XP ; puis FAINTED cible, FAINTED lanceur.
+    - **Repos** : `StatusRules.apply_rest(pokemon) -> bool` (faux = échec), constante
+      `REST_SLEEP_TURNS = 2` ; la confusion n'est pas soignée (seul le statut durable l'est).
+    - **IA `smart`** : la règle existante « aucune capacité de statut sous ⅓ des PV » s'applique
+      aussi à Repos (inchangée) — à revoir au T26 si un Dresseur l'a.
+    - **Présentation minimale** (sinon les barres de PV mentiraient jusqu'au T14) :
+      `BattleBeat.Kind.HP` (fin d'enum : la barre seule), `BattlePlayback` (DRAINED_HP → HP ;
+      RESTED → HP, STATUS_TAG ; TRAP_DAMAGED et SELF_KO → DAMAGE), `BattleDirector` (le temps HP ;
+      l'étiquette « DOR » posée par RESTED). Rien d'autre de l'interface (T14).
 
 ---
 
@@ -662,7 +686,7 @@ fichier commun). Dès T12 fusionné : **T13 ∥ T20** (combat contre grotte, auc
 - §2.19 (12 espèces dans `kanto_mt_moon.json`, Pokédex, sprites provisoires, compatibilités CT régénérées), §2.10 (21 capacités dans `moves/mt_moon.json` : les genres nouveaux en `pending_effects` — `drain`, `trap`, `disable`, `rest`, `fixed_value` — activés au T13 ; les 5 déjà copiées par le J13 à l'identique ; description de Destruction remplacée, n° 45), objets dans `data/items/mt_moon.json` (`escape_rope`, `moon_stone`, `dome_fossil`, `helix_fossil` — sans `field_use` ni `obtained`, champs créés aux T20 / T23 — et `tm01`), Pokédex (annexe A). Fichiers : données seulement + `gen_placeholder_battlers.gd` + tests de données.
 - **CA** : tests verts ; aucune carte touchée ; `--valider` de `tools/simulate_mt_moon.gd` ne signale plus d'espèce manquante (code 0 ou seulement des capacités en attente).
 
-#### T13 — architecte : moteur de combat — après T12
+#### T13 — architecte : moteur de combat — après T12 — **fait (2026-10-13, `j12-t13-combat`, §9)**
 - §2.10 (moteur, IA, événements, textes ; alignement §0.4 n° 1–3, 8, 11) : `move_effect.gd`, `pokemon_data.gd` (`_EFFECT_KEYS`), `battler.gd`, `battle.gd`, `battle_ai.gd`, `battle_event.gd`, `battle_text.gd`, `status_rules.gd` (`apply_rest`), `messages.json` ; activation (retrait des `pending_effects`) de `leech_life`, `wrap`, `bind`, `fire_spin`, `disable`, `rest`, `self_destruct`, `explosion`, `sonic_boom`.
 - **CA** : tests verts ; Pierre et le rival inchangés (`test_brock_sequence`, `test_rival_route22` — instable connu sous charge, relancé seul : §0.4 n° 12) ; `tools/simulate_brock.gd` relancé : résultats identiques à la référence du J11 (`jalon-11.md` §8, « Équilibrage de Pierre ») — l'équipe de Pierre a ses capacités fixées (pas d'Étreinte ni de Destruction) ; statuts du J11 et Patience inchangés.
 
@@ -773,7 +797,7 @@ fichier commun). Dès T12 fusionné : **T13 ∥ T20** (combat contre grotte, auc
 | Sbires | départ : cases `leave` relatives au poste (0 à 4, chemin calculé) puis fondu 0,2 s, sur place si `[]` ou injoignable ; `leave` exige `unless beaten_<id>` ; reprise par `lost_<id>` (posé seulement si `rematch` existe) |
 | Chercheur | déclencheur au bas du couloir (25..26, 27) ; s'approche du joueur ; se range en (15, 30) |
 | Fossiles | deux objets sur la dalle, choix par EXAMINER ; toast « <fossile> » / « obtenu » par le champ d'objet `obtained` (forme des CT) ; drapeaux `mt_moon_fossil_chosen`, `mt_moon_got_<fossile>` |
-| Effets de capacités | drain ½ (≥ 1) ; piège 4–5 tours, ⅛, après poison et Vampigraine ; Entrave 4 tours, échec sans capacité précédente ; Repos : `status_turns = 2` sans tirage (`StatusRules.apply_rest`), manque 2 tours ; Destruction : K.O. même en ratant, double K.O. perdu par le lanceur ; IA `smart` : Destruction à ≤ ¼ PV ; volatils sur le `Battler` ; Entrave filtrée dans `Battler.usable_moves()` ; fuite et changement refusés quand piégé **sans tour perdu** (G+) ; Sonicboom : `fixed_damage` mode `value`, 20 |
+| Effets de capacités | drain ½ (≥ 1) ; piège 4–5 tours, ⅛, après poison et Vampigraine ; Entrave 4 tours, échec sans capacité précédente ; Repos : `status_turns = 2` sans tirage (`StatusRules.apply_rest`), manque 2 tours ; Destruction : K.O. même en ratant, double K.O. perdu par le lanceur ; IA `smart` : Destruction à ≤ ¼ PV ; volatils sur le `Battler` ; Entrave filtrée dans `Battler.usable_moves()` ; fuite et changement refusés quand piégé **sans tour perdu** (G+) ; Sonicboom : `fixed_damage` mode `value`, 20 ; T13 : durée du piège = nombre de pertes (libéré juste après la dernière, sans phrase si le lanceur part), décompte d'Entrave tour de l'Entrave compris, capacité bloquée dans le tour même → MOVE_DISABLED (§0.4 n° 15) |
 | Carte de QA | `qa_moves_j12` sur le modèle de `qa_switch_j13` (J13), herbes forcées par `wild`, sans gravats ; `MapCatalog.is_qa_map` repris du J13 |
 | Compagnon (alignement T11) | contexte `cave` ajouté aux deux constantes du J11 ; jamais posé sur un warp à l'arrivée (Callable du contrôleur) |
 | Mesures téléphone | référence J11 (Route 1, marche + combat) relevée dans chaque session du J12 sur le même téléphone |
@@ -813,6 +837,63 @@ Questions telles que posées :
 
 ## 9. Fait
 
+- **T13 — moteur de combat du J12 (2026-10-13, architecte, branche `j12-t13-combat` depuis
+  `jalon-12` à `ac3e0ad`)** — §2.10, alignement §0.4 n° 1–3, 8, 11 ; lectures du §0.4 n° 15 :
+  - **Genres** (`MoveEffect.Kind`, **en fin d'enum, dans l'ordre figé**) `DRAIN TRAP DISABLE REST
+    SELF_KO` ; `FIXED_MODES += value` ; champs `min_turns`, `max_turns`, `messages`, `amount` ;
+    `TRAP_MESSAGES`. `PokemonData` : clés obligatoires (`drain` : `fraction` ; `trap` : `turns`
+    [min, max] 1..8, `fraction`, `messages` ; `disable` : `turns` 1..8 ; `rest`, `self_ko` :
+    aucune) ; `amount` (1..999) obligatoire pour `value`, refusé pour les autres modes.
+    `MoveData.effect_of(kind)` (fin de fichier). `StatusRules.apply_rest`, `REST_SLEEP_TURNS`.
+  - **Volatils** sur le `Battler` : `trap_turns`, `trap_move`, `trap_fraction`, `trap_source`,
+    `last_move_slot`, `disabled_slot`, `disabled_turns` ; `is_trapped()`, `clear_trap()`,
+    `has_disabled_move()`, `clear_disable()` ; `usable_moves()` exclut la capacité bloquée (choix
+    du joueur, `is_legal`, IA `random` et `smart` d'un coup).
+  - **`Battle`** (points d'accroche courts, fonctions en fin de fichier) : `is_legal` refuse RUN et
+    SWITCH quand le joueur est piégé (`replace` permis) ; `_execute` : Entrave avant `_can_act`,
+    `last_move_slot` à MOVE_USED, SELF_KO sur les trois sorties (raté, sans effet, touché) ;
+    `_strike` compte les dégâts portés (drain) ; fin de tour : graine, statut, **piège**,
+    **Entrave**, pour chaque camp ; `_send_out` libère la cible du lanceur sortant ; Sonicboom
+    = `amount`. Événements (fin d'enum, après `BIDE_BROKEN`) : `DRAINED_HP`, `TRAPPED`,
+    `TRAP_DAMAGED`, `TRAP_ENDED`, `MOVE_DISABLED`, `DISABLE_ENDED`, `RESTED`, `SELF_KO`.
+  - **IA `smart`** : `status_has_effect` (Entrave seulement si elle prendrait ; Repos seulement
+    blessé et éveillé), `damaging_is_sensible` (pas de piège sur une cible piégée ; Destruction /
+    Explosion à ≤ ¼ PV, `SELF_KO_HP_RATIO`).
+  - **Textes** (`messages.json`, en fin de `templates`, mot pour mot du §20 n° 46 et de
+    l'annexe A.4) : `drain_hp`, `trap_wrap_*`, `trap_bind_*`, `trap_fire_spin_*`
+    (`started` / `damaged`, avec `text_f`), `trap_ended`, `move_disabled`, `disable_ended`,
+    `rested` ; sans événement, pour le T14 : **`switch_reason_trapped`** (« Impossible de
+    changer ») et **`move_disabled_label`** (« BLOQUÉE »).
+  - **Données** : `leech_life` (drain ½), `wrap` / `bind` / `fire_spin` (piège [4, 5], ⅛,
+    familles `wrap` / `bind` / `fire_spin`), `disable` (4), `rest`, `self_destruct` /
+    `explosion` (`self_ko`), `sonic_boom` (`fixed_damage` `value` 20) : **plus aucun
+    `pending_effects` du J12** ; reportés inchangés (`metronome`, `haze`, `light_screen`,
+    `double_edge`). **J13** : sa copie de `wrap` (encore `pending_effects: ["trap"]`) disparaît à
+    sa fusion (sa règle, §1.2 n° 4).
+  - **API pour le T14** : `Battle.get_disabled_move() -> int` (emplacement bloqué du Pokémon du
+    joueur, ou `Battle.NO_LOCK`), `Battle.is_player_trapped() -> bool` (raison
+    `switch_reason_trapped` sur les cartes de l'équipe ; fuite : `flee_failed` affiché **sans
+    soumettre** ; `can_flee()` reste vrai en sauvage — le bouton FUITE ne disparaît pas),
+    `BattleText.get_template(&"move_disabled_label")`. Aujourd'hui, une fuite ou un changement
+    refusés sont rejetés par `submit` (`push_error`, aucun tour joué) puis la grille revient :
+    aucun blocage, mais pas de message tant que le T14 n'est pas là.
+  - **Tests** (47 nouveaux dans 7 fichiers + 2 fichiers retouchés, graines fixées par `ScriptedRng`) :
+    `test_battle_drain` (5), `test_battle_trap` (11 : 4 et 5 tours, ⅛, refus sans tour perdu,
+    ordre graine → poison → piège, lanceur rappelé ou K.O., remplacement forcé, capture, K.O.
+    par le piège, textes par capacité), `test_battle_disable` (6 : 4 fins de tour, échecs, Patience,
+    même tour, seule capacité → Lutte, perdue au changement), `test_battle_rest` (5 : PV pleins,
+    2 tours exacts, statut remplacé, Réveil), `test_battle_self_ko` (7 : double K.O. final perdu
+    par le lanceur dans les deux sens, Explosion, raté, cible debout, endormi, double K.O. en
+    cours de combat, aucune XP), `test_battle_ai_j12` (6), `test_battle_moves_j12` (7 : table
+    pilotée par les données, refus de données, Sonicboom, textes validés, temps de mise en
+    scène) ; outil `tests/helpers/battle_kit_j12.gd`. `test_mt_moon_data`, `test_pewter_data` :
+    effets attendus au lieu des `pending_effects`.
+  - **Non-régression** : suite complète **avant les tests nouveaux** : 3 997 / 3 997 verts (J11 :
+    statuts, Patience ; poison du J9 ; `test_brock_sequence`, `test_rival_route22`) ;
+    `simulate_mt_moon.gd --valider` : code 0, rien de sauté (et `--seeds 20` joué sans erreur avec
+    les effets réels) ; `simulate_brock.gd --seeds 200` : sortie **identique octet pour octet** à
+    celle de `jalon-12` avant le T13 (même machine, mêmes graines). Import propre ;
+    `tools/test.sh` : **4 044 tests, 4 044 verts** (300 scripts, 781 s).
 - **T20 — moteur de la grotte (2026-10-13, architecte, branche `j12-t20-grotte` depuis `jalon-12`
   à `ac3e0ad`)** — aucun fichier de `battle/` touché (T13 en parallèle) ; ajouts en fin :
   - **Gravats (§2.5)** : `GridWorld.set_rubble` / `is_rubble` (bit 5, informatif comme les

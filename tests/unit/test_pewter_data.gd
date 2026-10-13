@@ -31,10 +31,10 @@ const ARGENTA_SPECIES := {
 const ARGENTA_MOVES := {
 	&"rock_throw": [&"rock", MoveData.Category.PHYSICAL, 50, 90, 15, []],
 	&"defense_curl": [&"normal", MoveData.Category.STATUS, 0, 0, 40, []],
-	&"self_destruct": [&"normal", MoveData.Category.PHYSICAL, 200, 100, 5, ["self_ko"]],
+	&"self_destruct": [&"normal", MoveData.Category.PHYSICAL, 200, 100, 5, []],
 	&"earthquake": [&"ground", MoveData.Category.PHYSICAL, 100, 100, 10, []],
-	&"explosion": [&"normal", MoveData.Category.PHYSICAL, 250, 100, 5, ["self_ko"]],
-	&"bind": [&"normal", MoveData.Category.PHYSICAL, 15, 85, 20, ["trap"]],
+	&"explosion": [&"normal", MoveData.Category.PHYSICAL, 250, 100, 5, []],
+	&"bind": [&"normal", MoveData.Category.PHYSICAL, 15, 85, 20, []],
 	&"slam": [&"normal", MoveData.Category.PHYSICAL, 80, 75, 20, []],
 }
 ## Drapeaux de la fin du J9 portés par les départs du J10.

@@ -65,6 +65,8 @@ const SLEEP_MIN_TURNS: int = 1
 const SLEEP_MAX_TURNS: int = 3
 ## Vitesse d'un Pokémon paralysé (multiplicateur).
 const PARALYSIS_SPEED: float = 0.5
+## Repos (jalon 12) : compteur de sommeil posé sans tirage (deux tentatives manquées).
+const REST_SLEEP_TURNS: int = 2
 
 
 ## Vrai si [param id] est un statut connu ([constant NONE] n'en est pas un).
@@ -169,3 +171,19 @@ static func catch_bonus(status: StringName) -> float:
 	if is_known(status):
 		return 1.5
 	return 1.0
+
+
+## Repos (jalon 12, `jalon-12.md` §0.4 n° 1) : faux si [param pokemon] a déjà tous ses PV ou dort
+## déjà (rien ne change : la capacité échoue). Sinon, statut soigné, PV pleins, puis sommeil
+## **sans tirage** avec [constant REST_SLEEP_TURNS] au compteur : il manque exactement deux
+## tentatives d'agir et agit à la troisième ([method check_act]). Ne passe pas par
+## [method can_inflict] (qui refuserait : il soigne d'abord).
+static func apply_rest(pokemon: Pokemon) -> bool:
+	if pokemon == null or pokemon.is_fainted() or pokemon.status == SLEEP \
+			or pokemon.hp >= pokemon.max_hp():
+		return false
+	pokemon.cure_status()
+	pokemon.hp = pokemon.max_hp()
+	pokemon.status = SLEEP
+	pokemon.status_turns = REST_SLEEP_TURNS
+	return true

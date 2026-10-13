@@ -1,22 +1,23 @@
 {
 	"leech_life": {
 		"name": "Vampirisme", "type": "bug", "category": "physical",
-		"power": 20, "accuracy": 100, "pp": 15, "pending_effects": ["drain"],
+		"power": 20, "accuracy": 100, "pp": 15, "effects": [{ "kind": "drain", "fraction": 0.5 }],
 		"description": "Inflige des dégâts et rend la moitié des dégâts infligés."
 	},
 	"wrap": {
 		"name": "Ligotage", "type": "normal", "category": "physical",
-		"power": 15, "accuracy": 90, "pp": 20, "pending_effects": ["trap"],
+		"power": 15, "accuracy": 90, "pp": 20,
+		"effects": [{ "kind": "trap", "turns": [4, 5], "fraction": 0.125, "messages": "wrap" }],
 		"description": "Enserre l'ennemi plusieurs tours. Il ne peut pas fuir."
 	},
 	"disable": {
 		"name": "Entrave", "type": "normal", "category": "status",
-		"accuracy": 100, "pp": 20, "pending_effects": ["disable"],
+		"accuracy": 100, "pp": 20, "effects": [{ "kind": "disable", "turns": 4 }],
 		"description": "Empêche l'ennemi d'utiliser sa dernière capacité quelques tours."
 	},
 	"rest": {
 		"name": "Repos", "type": "psychic", "category": "status",
-		"accuracy": 0, "pp": 5, "pending_effects": ["rest"],
+		"accuracy": 0, "pp": 5, "effects": [{ "kind": "rest" }],
 		"description": "Le lanceur dort deux tours et récupère tous ses PV."
 	},
 	"sing": {
@@ -86,7 +87,8 @@
 	},
 	"sonic_boom": {
 		"name": "Sonicboom", "type": "normal", "category": "status",
-		"accuracy": 90, "pp": 20, "pending_effects": ["fixed_value"],
+		"accuracy": 90, "pp": 20,
+		"effects": [{ "kind": "fixed_damage", "mode": "value", "amount": 20 }],
 		"description": "Une onde de choc qui inflige toujours les mêmes dégâts."
 	},
 	"metronome": {
