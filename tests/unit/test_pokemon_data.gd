@@ -71,11 +71,14 @@ func test_real_data_loads_without_error() -> void:
 		&"charmeleon", &"charizard", &"squirtle", &"wartortle", &"blastoise",
 		&"caterpie", &"metapod", &"butterfree", &"weedle", &"kakuna", &"beedrill",
 		&"pidgey", &"pidgeotto", &"pidgeot", &"rattata", &"raticate", &"spearow", &"fearow",
-		&"pikachu", &"raichu", &"sandshrew", &"sandslash", &"nidoran_f", &"nidorina",
-		&"nidoqueen", &"nidoran_m", &"nidorino", &"nidoking", &"mankey", &"primeape",
-		&"geodude", &"graveler", &"golem", &"onix"] as Array[StringName])
-	assert_eq(_data.get_move_ids().size(), 67,
-		"47 + 12 de la Forêt de Jade (jalon 9) + 7 d'Argenta (jalon 10) + Patience (J11)")
+		&"ekans", &"arbok", &"pikachu", &"raichu", &"sandshrew", &"sandslash", &"nidoran_f",
+		&"nidorina", &"nidoqueen", &"nidoran_m", &"nidorino", &"nidoking", &"clefairy",
+		&"clefable", &"jigglypuff", &"wigglytuff", &"zubat", &"golbat", &"paras", &"parasect",
+		&"mankey", &"primeape", &"geodude", &"graveler", &"golem", &"onix", &"voltorb",
+		&"koffing"] as Array[StringName])
+	assert_eq(_data.get_move_ids().size(), 88,
+		"47 + 12 de la Forêt de Jade (jalon 9) + 7 d'Argenta (jalon 10) + Patience (J11) "
+		+ "+ 21 du Mont Sélénite (jalon 12)")
 	assert_true(_data.has_move(&"struggle"))
 
 
@@ -129,6 +132,10 @@ func test_real_evolution_chains() -> void:
 		# Argenta (jalon 10, §2.3) : Rouge/Bleu ; Grolem par échange (« ??? » au Pokédex).
 		&"sandshrew": [&"sandslash", 22], &"geodude": [&"graveler", 25],
 		&"graveler": [&"golem", &""],
+		# Route 3 et Mont Sélénite (jalon 12, §2.19) : Rouge/Bleu ; Mélofée et Rondoudou par la
+		# Pierre Lune.
+		&"ekans": [&"arbok", 22], &"zubat": [&"golbat", 22], &"paras": [&"parasect", 24],
+		&"clefairy": [&"clefable", &"moon_stone"], &"jigglypuff": [&"wigglytuff", &"moon_stone"],
 	}
 	for id: StringName in _data.get_species_ids():
 		var rules := _data.get_species(id).evolutions
@@ -381,6 +388,10 @@ func test_real_catch_rates_are_the_official_ones() -> void:
 		&"weedle": 255, &"kakuna": 120, &"beedrill": 45, &"pikachu": 190, &"raichu": 75,
 		&"sandshrew": 255, &"sandslash": 90, &"geodude": 255, &"graveler": 120, &"golem": 45,
 		&"onix": 45,
+		# Jalon 12.
+		&"ekans": 255, &"arbok": 90, &"clefairy": 150, &"clefable": 25, &"jigglypuff": 170,
+		&"wigglytuff": 50, &"zubat": 255, &"golbat": 90, &"paras": 190, &"parasect": 75,
+		&"voltorb": 190, &"koffing": 190,
 	}
 	assert_eq(_data.get_species_ids().size(), expected.size(), "toutes les espèces")
 	for id: StringName in _data.get_species_ids():

@@ -331,7 +331,7 @@
 	"self_destruct": {
 		"name": "Destruction", "type": "normal", "category": "physical",
 		"power": 200, "accuracy": 100, "pp": 5, "pending_effects": ["self_ko"],
-		"description": "Le lanceur explose et blesse gravement la cible. Il tombe K.O. ensuite."
+		"description": "Inflige de gros dégâts. Le lanceur est mis K.O."
 	},
 	"earthquake": {
 		"name": "Séisme", "type": "ground", "category": "physical",

@@ -134,11 +134,15 @@ func test_new_move_texts_are_the_validated_lot() -> void:
 		assert_eq(move.name, names[id], String(id))
 		assert_true(_lot.contains("`%s` · `name` | " % id), String(id))
 		assert_true(_lot.contains("| « %s » |" % move.name), "%s : nom" % id)
+		if id == &"self_destruct":
+			# Jalon 12 (T12) : description remplacée par le texte validé du dossier 15 §20 n° 45.
+			assert_eq(move.description, "Inflige de gros dégâts. Le lanceur est mis K.O.")
+			continue
 		assert_true(_lot.contains("| « %s » |" % move.description), "%s : description" % id)
 		assert_false(move.draft, String(id))
-	# Note A1 : ni « Ligotage », ni « Autodestruction ». « Patience » (bide) arrive au J11 avec la
-	# CT34 (dossier 14 §6.3), pas avec le J10.
-	assert_false(_data.has_move(&"wrap"))
+	# Note A1 : ni « Ligotage », ni « Autodestruction » au J10. « Patience » (bide) arrive au J11
+	# avec la CT34 (dossier 14 §6.3) ; Ligotage au J12 (Abo, data/pokemon/moves/mt_moon.json).
+	assert_eq(_data.get_move(&"wrap").source, "res://data/pokemon/moves/mt_moon.json")
 	assert_eq(_data.get_move(&"bide").name, "Patience")
 
 
