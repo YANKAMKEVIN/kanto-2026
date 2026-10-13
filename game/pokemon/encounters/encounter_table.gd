@@ -20,8 +20,10 @@ extends RefCounted
 ## Le tirage de taux est [b]toujours[/b] fait, même quand le taux effectif vaut déjà 256
 ## (un seul roll(256) par pas : le flux de hasard garde le même rythme).
 
-## Terrains connus (eau et grotte plus tard).
-const TERRAINS: Array[StringName] = [&"grass"]
+## Terrains connus (eau plus tard). « rubble » (gravats des grottes, jalon 12) : accepté dans
+## les données depuis le T12 (`data/encounters/mt_moon.json`) ; [EncounterDirector] ne le lit
+## qu'à partir du T20 (`jalon-12.md` §2.5) : jusque-là, ces tables ne déclenchent rien.
+const TERRAINS: Array[StringName] = [&"grass", &"rubble"]
 ## Dénominateur du taux de rencontre (le taux est « rate / 256 par pas »).
 const RATE_DEN: int = 256
 

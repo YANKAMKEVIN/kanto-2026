@@ -628,7 +628,7 @@ fichier commun). Dès T12 fusionné : **T13 ∥ T20** (combat contre grotte, auc
 **T18** (constructeur-monde, dès que T17 l'est aussi). T23 attend T20 (mêmes fichiers :
 `item_data.gd`, `item_library.gd`, `menu_director.gd`, `bag_query.gd`, `boot.gd`).
 
-#### T12 — architecte : données — après T11 (T5 validé) — **à lancer**
+#### T12 — architecte : données — après T11 (T5 validé) — **fait (2026-10-13, `j12-t12-donnees`, §9)**
 - §2.19 (12 espèces dans `kanto_mt_moon.json`, Pokédex, sprites provisoires, compatibilités CT régénérées), §2.10 (21 capacités dans `moves/mt_moon.json` : les genres nouveaux en `pending_effects` — `drain`, `trap`, `disable`, `rest`, `fixed_value` — activés au T13 ; les 5 déjà copiées par le J13 à l'identique ; description de Destruction remplacée, n° 45), objets dans `data/items/mt_moon.json` (`escape_rope`, `moon_stone`, `dome_fossil`, `helix_fossil` — sans `field_use` ni `obtained`, champs créés aux T20 / T23 — et `tm01`), Pokédex (annexe A). Fichiers : données seulement + `gen_placeholder_battlers.gd` + tests de données.
 - **CA** : tests verts ; aucune carte touchée ; `--valider` de `tools/simulate_mt_moon.gd` ne signale plus d'espèce manquante (code 0 ou seulement des capacités en attente).
 
@@ -655,7 +655,7 @@ fichier commun). Dès T12 fusionné : **T13 ∥ T20** (combat contre grotte, auc
 - Vraie partie depuis Argenta (badge) : garde, Route 3 entière, D1/D2 inévitables, D3–D6, Rondoudou, Réveil caché (bouton, toast, absent ensuite), Centre (soin, toast « Mont Sélénite », point de repos), fps / mémoire (avec la référence Route 1, §2.21) / durée de traversée.
 
 #### T20 — architecte : moteur de la grotte — après T12 (∥ T13, T17)
-- §2.5 (grille, directeur, `RubbleBurst`, `override_table` + `terrain` de la clé `wild`), §2.6 (Corde : `field_use`, `FieldItemRules`, `field_item_requested`, `BagQuery`), §2.2 (placement du compagnon hors warp dans `CompanionController`), §2.3 (`cave` dans `CompanionCatalog.CONTEXTS` et `CompanionRules.CONTEXT_LINES`), §2.4 (`LightGlow.set_reduce_motion` branché dans `Boot._apply_settings`). Fichiers : `game/pokemon/encounters/*`, `grid_world.gd`, `map.gd`, `item_data.gd`, `item_library.gd`, `field_item_rules.gd`, `menu_director.gd`, `bag_query.gd`, `boot.gd`, `debug_start.gd`, `companion_*.gd`, `game/world/rubble/*`. **CA** : tests verts ; herbes et compagnon du J11 inchangés.
+- §2.5 (grille, directeur, `RubbleBurst`, `override_table` + `terrain` de la clé `wild` ; `EncounterTable.TERRAINS` et les tables `mt_moon.json` faits au T12), §2.6 (Corde : `field_use`, `FieldItemRules`, `field_item_requested`, `BagQuery`), §2.2 (placement du compagnon hors warp dans `CompanionController`), §2.3 (`cave` dans `CompanionCatalog.CONTEXTS` et `CompanionRules.CONTEXT_LINES`), §2.4 (`LightGlow.set_reduce_motion` branché dans `Boot._apply_settings`). Fichiers : `game/pokemon/encounters/*`, `grid_world.gd`, `map.gd`, `item_data.gd`, `item_library.gd`, `field_item_rules.gd`, `menu_director.gd`, `bag_query.gd`, `boot.gd`, `debug_start.gd`, `companion_*.gd`, `game/world/rubble/*`. **CA** : tests verts ; herbes et compagnon du J11 inchangés.
 
 #### T21 — constructeur-monde (+ ui-mobile en relecture) : la vie de la grotte (12B) — après T20, T12 (T9, T3 faits)
 - Rencontres `mt_moon.json`, randonneur, panneau, caisses et lampe (examens), Corde au sol, stock d'Argenta, intégration des **11 planches** de T3 (manifeste, `LOOKS`, `companions.json` : espèces + `contexts` → `cave` ; conflit possible avec `j11-pikachu-compagnon`, garder les deux côtés), phrase « grotte » (`companion.json`), départs `mt_moon_*`, `escape_rope_qa`. Tests `test_mt_moon_life`, `test_escape_rope`, `test_hidden_items` (1F, B2F sans contenu de 12C). **CA** : tests verts, captures.
@@ -781,6 +781,63 @@ Questions telles que posées :
 ---
 
 ## 9. Fait
+
+- **T12 — données du J12 (2026-10-13, architecte, branche `j12-t12-donnees` depuis `jalon-12`
+  à `e079176`)** — données, outils de génération et tests ; aucun moteur, aucune carte, aucun PNJ :
+  - **12 espèces** `data/pokemon/species/kanto_mt_moon.json` (PokeAPI : statistiques, taux de
+    capture et rendement d'XP actuels, types modernes — Mélofée / Mélodelfe Fée, Rondoudou /
+    Grodoudou Normal/Fée —, croissance « medium » → `medium_fast` comme les autres, Voltorbe
+    asexué `-1`, apprentissages `red-blue`) ; évolutions Abo / Nosferapti 22, Paras 24, Mélofée et
+    Rondoudou `item moon_stone` ; Voltorbe et Smogo sans évolution (Électrode, Smogogo absents).
+    → **50 espèces**.
+  - **21 capacités** `data/pokemon/moves/mt_moon.json` (valeurs actuelles, descriptions de
+    l'annexe A.2 et du §20 n° 41–44 mot pour mot) : genres du J11 réutilisés tels quels (`sing`,
+    `spore` sommeil ; `glare` paralysie ; `confuse_ray` confusion ; `double_slap` 2–5 coups ;
+    `smog` 40 %, `sludge` 30 % poison ; `acid`, `smokescreen`, `minimize` étages) ; **en attente du
+    T13** par `pending_effects` : `leech_life` [`drain`], `wrap` [`trap`], `disable` [`disable`],
+    `rest` [`rest`], `sonic_boom` [`fixed_value`] — **sans** la mention « Sans effet dans le moteur
+    actuel. » (convention vérifiée : la mention ne figure que dans les textes validés des effets
+    reportés au-delà du J12 ; les textes §20 n° 41–44 et A.2 de Sonicboom ne l'ont pas et le T13
+    les active) ; reportés avec la mention : `metronome`, `haze`, `light_screen`, `double_edge`
+    [`recoil_damage`]. Les 5 copiées par le J13 (`acid`, `wrap`, `smokescreen`, `minimize`,
+    `light_screen`) **à l'identique**. `moves.json` : description de Destruction = §20 n° 45 ;
+    `bind`, `fire_spin`, `self_destruct`, `explosion` gardent leur `pending_effects` (T13).
+    → 88 capacités.
+  - **Identifiant `double_slap`** (Torgnoles), pas `doubleslap` comme écrit au §2.10 : convention
+    des identifiants PokeAPI (`self_destruct`, `sonic_boom`, `double_edge`, liste des CT générée).
+    Aucun plan des J13–J15 ne le cite (vérifié).
+  - **Objets** `data/items/mt_moon.json` : `escape_rope` (AVENTURE, 550 ₽), `moon_stone`
+    (AVENTURE, jamais vendue), `dome_fossil`, `helix_fossil` (objets clés), `tm01` (CT01 —
+    Ultimapoing, `mega_punch`) ; sans `field_use` ni `obtained` (T20 / T23). Stock d'Argenta non
+    touché (T21).
+  - **Pokédex** : 12 fiches + 7 notes (annexe A.1, mot pour mot), ajoutées **en fin** de
+    `data/pokedex/kanto.json` ; notes `jigglypuff_balloon`, `ekans_sunbath`, `zubat_ceiling`,
+    `paras_dig`, `clefairy_shards`, `voltorb_machines`, `koffing_air`.
+  - **Dresseurs** `data/trainers/route_3.json` (`route_3_hugo`, `_lea`, `_sacha`, `_enzo`,
+    `_ines`, `_nolan` : identifiants du scénario du T10, pour `--donnees`) et
+    `data/trainers/mt_moon.json` (`mt_moon_rocket_1/2/3`, `mt_moon_researcher`) : équipes et ₽ du
+    dossier §3.2, §8.3, §9, Nolan = Aspicot, Coconfort, Chenipan N9 ; capacités apprises au niveau.
+    Aucun bloc `trainer` de PNJ (T18, T25).
+  - **Rencontres** `data/encounters/route_3.json` (`route_3_grass`, §3.3) et
+    `data/encounters/mt_moon.json` (trois tables `rubble`, §6) ; taux 25, rampe 15 → 20.
+    **`EncounterTable.TERRAINS` += `rubble`** (une ligne, en fin) pour que la bibliothèque accepte
+    ces tables ; `EncounterDirector` ne lit toujours que les herbes : les tables de gravats ne
+    déclenchent rien avant le **T20** (qui n'a donc plus à toucher `TERRAINS`). La table des herbes
+    de la Route 3 est active dès maintenant sur les hautes herbes posées au T8.
+  - **CT** : `tools/gen_tm_compatibility.py` lit désormais **tous** les `species/*.json` (tri par
+    numéro de Pokédex) ; `tm_compatibility.json` régénéré (50 espèces, CT34 : 46, CT01 : Mélofée,
+    Mélodelfe, Rondoudou, Grodoudou et les compatibles existants).
+  - **Sprites provisoires** de face / dos : `gen_placeholder_battlers.gd` étendu (ajouts en fin)
+    aux 12 espèces **et à Rattatac** (Sbire R3 : exigé par `test_battle_stage`) ; les 20 sprites
+    existants régénérés au bit près (aucun diff).
+  - `tools/simulate_mt_moon.gd -- --valider` : **code 0** (rien de sauté), aussi avec `--donnees`.
+  - Tests : `test_mt_moon_data` (nouveau : espèces, évolutions, apprentissages, capacités et
+    attentes, textes contre l'annexe A et le §20, objets, Pokédex, Dresseurs, tables, CT, sprites) ;
+    listes exhaustives mises à jour dans `test_pokemon_data`, `test_tm`, `test_item_library`,
+    `test_encounter_library`, `test_pokedex_library`, `test_pewter_data` (Ligotage existe,
+    description de Destruction).
+  - Import propre ; `tools/test.sh` : **3 969 tests, 3 969 verts**, 0 en attente, 0 échec
+    (289 scripts, 158 925 assertions, 779 s).
 
 - **T11 — alignement sur le J11 livré (2026-10-13, architecte, branche `j12-t11-alignement`
   depuis `jalon-12` à `1a3cad5`)** — documentation seulement (aucun fichier de `game/`, `data/`,

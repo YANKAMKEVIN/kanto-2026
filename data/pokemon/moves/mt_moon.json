@@ -1,0 +1,112 @@
+{
+	"leech_life": {
+		"name": "Vampirisme", "type": "bug", "category": "physical",
+		"power": 80, "accuracy": 100, "pp": 10, "pending_effects": ["drain"],
+		"description": "Inflige des dégâts et rend la moitié des dégâts infligés."
+	},
+	"wrap": {
+		"name": "Ligotage", "type": "normal", "category": "physical",
+		"power": 15, "accuracy": 90, "pp": 20, "pending_effects": ["trap"],
+		"description": "Enserre l'ennemi plusieurs tours. Il ne peut pas fuir."
+	},
+	"disable": {
+		"name": "Entrave", "type": "normal", "category": "status",
+		"accuracy": 100, "pp": 20, "pending_effects": ["disable"],
+		"description": "Empêche l'ennemi d'utiliser sa dernière capacité quelques tours."
+	},
+	"rest": {
+		"name": "Repos", "type": "psychic", "category": "status",
+		"accuracy": 0, "pp": 5, "pending_effects": ["rest"],
+		"description": "Le lanceur dort deux tours et récupère tous ses PV."
+	},
+	"sing": {
+		"name": "Berceuse", "type": "normal", "category": "status",
+		"accuracy": 55, "pp": 15, "effects": [{ "kind": "status", "status": "sleep" }],
+		"description": "Une douce mélodie qui endort la cible."
+	},
+	"spore": {
+		"name": "Spore", "type": "grass", "category": "status",
+		"accuracy": 100, "pp": 15, "effects": [{ "kind": "status", "status": "sleep" }],
+		"description": "Un nuage de spores qui endort la cible à coup sûr."
+	},
+	"confuse_ray": {
+		"name": "Onde Folie", "type": "ghost", "category": "status",
+		"accuracy": 100, "pp": 10, "effects": [{ "kind": "confusion" }],
+		"description": "Un rayon sinistre qui rend la cible confuse."
+	},
+	"glare": {
+		"name": "Regard Médusant", "type": "normal", "category": "status",
+		"accuracy": 100, "pp": 30, "effects": [{ "kind": "status", "status": "paralysis" }],
+		"description": "Un regard terrifiant qui paralyse la cible."
+	},
+	"double_slap": {
+		"name": "Torgnoles", "type": "normal", "category": "physical",
+		"power": 15, "accuracy": 85, "pp": 10, "effects": [{ "kind": "hits", "min": 2, "max": 5 }],
+		"description": "Gifle la cible de deux à cinq fois d'affilée."
+	},
+	"pound": {
+		"name": "Écras'Face", "type": "normal", "category": "physical",
+		"power": 40, "accuracy": 100, "pp": 35,
+		"description": "Frappe la cible avec la paume ou la queue."
+	},
+	"smog": {
+		"name": "Purédpois", "type": "poison", "category": "special",
+		"power": 30, "accuracy": 70, "pp": 20,
+		"effects": [{ "kind": "status", "status": "poison", "chance": 40 }],
+		"description": "Un gaz toxique qui peut empoisonner la cible."
+	},
+	"sludge": {
+		"name": "Détritus", "type": "poison", "category": "special",
+		"power": 65, "accuracy": 100, "pp": 20,
+		"effects": [{ "kind": "status", "status": "poison", "chance": 30 }],
+		"description": "Projette des boues toxiques qui peuvent empoisonner la cible."
+	},
+	"acid": {
+		"name": "Acide", "type": "poison", "category": "special",
+		"power": 40, "accuracy": 100, "pp": 30,
+		"effects": [{ "kind": "stat_stage", "stat": "spd", "stages": -1, "target": "foe", "chance": 10 }],
+		"description": "Asperge la cible d'acide. Peut baisser sa Défense Spéciale."
+	},
+	"smokescreen": {
+		"name": "Brouillard", "type": "normal", "category": "status",
+		"accuracy": 100, "pp": 20,
+		"effects": [{ "kind": "stat_stage", "stat": "acc", "stages": -1, "target": "foe" }],
+		"description": "Un nuage de fumée qui baisse la Précision de la cible."
+	},
+	"minimize": {
+		"name": "Lilliput", "type": "normal", "category": "status",
+		"accuracy": 0, "pp": 10,
+		"effects": [{ "kind": "stat_stage", "stat": "eva", "stages": 1, "target": "self" }],
+		"description": "Le lanceur rapetisse pour augmenter son Esquive."
+	},
+	"mega_punch": {
+		"name": "Ultimapoing", "type": "normal", "category": "physical",
+		"power": 80, "accuracy": 85, "pp": 20,
+		"description": "Un coup de poing d'une force incroyable."
+	},
+	"sonic_boom": {
+		"name": "Sonicboom", "type": "normal", "category": "status",
+		"accuracy": 90, "pp": 20, "pending_effects": ["fixed_value"],
+		"description": "Une onde de choc qui inflige toujours les mêmes dégâts."
+	},
+	"metronome": {
+		"name": "Métronome", "type": "normal", "category": "status",
+		"accuracy": 0, "pp": 10, "pending_effects": ["metronome"],
+		"description": "Agite un doigt pour utiliser une capacité au hasard. Sans effet dans le moteur actuel."
+	},
+	"haze": {
+		"name": "Buée Noire", "type": "ice", "category": "status",
+		"accuracy": 0, "pp": 30, "pending_effects": ["haze"],
+		"description": "Annule les changements de statistiques de tous les Pokémon. Sans effet dans le moteur actuel."
+	},
+	"light_screen": {
+		"name": "Mur Lumière", "type": "psychic", "category": "status",
+		"accuracy": 0, "pp": 30, "pending_effects": ["light_screen"],
+		"description": "Un mur de lumière qui réduit les dégâts spéciaux reçus. Sans effet dans le moteur actuel."
+	},
+	"double_edge": {
+		"name": "Damoclès", "type": "normal", "category": "physical",
+		"power": 120, "accuracy": 100, "pp": 15, "pending_effects": ["recoil_damage"],
+		"description": "Une charge téméraire qui blesse aussi le lanceur. Sans effet dans le moteur actuel."
+	}
+}
