@@ -737,7 +737,7 @@ fichier commun). Dès T12 fusionné : **T13 ∥ T20** (combat contre grotte, auc
 #### T23 — architecte : moteur de l'événement et de la pierre — après T20 (mêmes fichiers) — **fait (2026-10-13, `j12-t23-evenement`, §9)**
 - §2.9 (`StoneUse`, `evolution_item_requested`, `play_item`, `cancellable` dans le candidat et la vue, `evolution_applied`, retrait de la pierre par Boot ; `field_use` de `moon_stone`), §2.13 (`confirm_cutscene`, étape `moment`, type `fossil`, champ `obtained` + données des fossiles). **CA** : tests verts ; évolutions de fin de combat inchangées (ARRÊTER, retour Android) ; toast des CT inchangé.
 
-#### T24 — ui-mobile : Sac et écran d'évolution — après T23
+#### T24 — ui-mobile : Sac et écran d'évolution — après T23 — **fait (2026-10-13, `j12-t24-sac-evolution`, §9)**
 - UTILISER des objets AVENTURE (seulement avec `field_use`), sélecteur COMPATIBLE / INCOMPATIBLE pour la pierre (`show_reason`), bandeau de refus de la Corde, écran d'évolution sans ARRÊTER, ligne de la frise `fossil` ; captures.
 
 #### T25 — constructeur-monde : Team Rocket, chercheur, fossiles, Pierres Lune, CT01 (12C) — après T17, T21, T23
@@ -853,6 +853,26 @@ Questions telles que posées :
 ---
 
 ## 9. Fait
+
+- **T24 — Sac et écran d'évolution (2026-10-13, ui-mobile, branche `j12-t24-sac-evolution` depuis
+  `jalon-12` à `3def8f5`)** — §2.6, §2.9, §2.13 (interface) :
+  - **Écran d'évolution sans ARRÊTER** : `EvolutionScreen._covers_stop(point)` — seul un ARRÊTER
+    affiché (visible, vue annulable) exclut sa zone du « toucher pour accélérer » ; pour une pierre,
+    tout l'écran accélère (présentation, transformation, révélation) ; `_on_stop_pressed` ignoré si
+    la vue n'est pas annulable (ni vibration ni annulation) ; retour Android déjà sans effet (T23).
+    Évolutions de combat inchangées (ARRÊTER, sa zone, retour Android).
+  - **Frise** : `MomentRow.ICONS[fossil]` = icône des objets clés (`assets/ui/icons/bag/key.svg`),
+    `EMBLEM_KINDS` (badge, fossile) : emblème ACCENT sur l'aperçu du lieu s'il existe, sinon icône
+    seule (cas du Mont Sélénite) ; `get_icon()`.
+  - **Vérifiés sans code nouveau** (captures) : Sac AVENTURE (UTILISER seulement avec `field_use`),
+    refus de la Corde dans le bandeau, sélecteur COMPATIBLE / INCOMPATIBLE (`show_reason`), toast
+    « Fossile Dôme » / « obtenu ».
+  - **Tests** : `test_evolution_screen` (+4 : pas de zone morte pour une pierre pendant la
+    transformation et la présentation, retour et appui fantôme sans effet, zone d'ARRÊTER gardée en
+    combat), `test_trainer_screen` (+1 : ligne fossile, textes validés, icône des objets clés avec et
+    sans aperçu, sans lien).
+  - **Captures** : `tools/capture_moon_stone_t24.gd` → `build/captures/jalon12_t24/` (01 Sac
+    AVENTURE … 10 frise), relues.
 
 - **T23 — moteur de l'événement et de la pierre (2026-10-13, architecte, branche
   `j12-t23-evenement` depuis `jalon-12` à `2732b45`)** — §2.9, §2.13, §0.4 n° 7, 9, 10 ; aucun

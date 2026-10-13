@@ -17,12 +17,17 @@ const ICONS: Dictionary[StringName, Texture2D] = {
 	MomentLibrary.FIRST_CAPTURE: preload("res://assets/ui/icons/poke_ball.svg"),
 	MomentLibrary.ZONE_ARRIVAL: preload("res://assets/ui/icons/menu/map.svg"),
 	MomentLibrary.BADGE: preload("res://assets/ui/icons/trainer/badge_slot.svg"),
+	# Jalon 12 (T24) : le fossile prend l'icône des objets clés (celle de l'onglet du Sac).
+	MomentLibrary.FOSSIL: preload("res://assets/ui/icons/bag/key.svg"),
 }
+## Moments dont l'icône est posée en emblème (ACCENT) sur l'aperçu du lieu quand il existe.
+const EMBLEM_KINDS: Array[StringName] = [MomentLibrary.BADGE, MomentLibrary.FOSSIL]
 const ICON_DEFAULT: Texture2D = preload("res://assets/ui/icons/menu/map.svg")
 
 var _view: MomentView
 var _texts: PackedStringArray = PackedStringArray()
 var _hit: Button
+var _icon: Texture2D
 
 
 func _init(view: MomentView = null, first: bool = true, last: bool = true) -> void:
@@ -51,6 +56,12 @@ func get_hit() -> Button:
 
 func get_view() -> MomentView:
 	return _view
+
+
+## Icône du type affichée (seule sur la vignette, ou en emblème sur l'aperçu du lieu) ; null si
+## aucune (moment sans emblème posé sur un aperçu).
+func get_icon() -> Texture2D:
+	return _icon
 
 
 ## Vrai si la ligne a un lien (une route de la vue).
@@ -108,6 +119,7 @@ func _build_thumb() -> Control:
 	if not art.has_image():
 		var icon := TextureRect.new()
 		icon.texture = ICONS.get(_view.kind, ICON_DEFAULT)
+		_icon = icon.texture
 		icon.modulate = UiTokens.ACCENT
 		icon.mouse_filter = Control.MOUSE_FILTER_IGNORE
 		icon.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
@@ -115,10 +127,12 @@ func _build_thumb() -> Control:
 		icon.size = Vector2.ONE * UiTokens.TRAINER_MOMENT_ICON
 		icon.position = (UiTokens.TRAINER_MOMENT_THUMB - icon.size) * 0.5
 		thumb.add_child(icon)
-	if _view.kind == MomentLibrary.BADGE and art.has_image():
-		# Le badge : son emblème (ACCENT) posé sur l'aperçu du lieu, comme l'artwork d'un Pokémon.
+	if EMBLEM_KINDS.has(_view.kind) and art.has_image():
+		# Le badge, le fossile : leur emblème (ACCENT) posé sur l'aperçu du lieu, comme l'artwork
+		# d'un Pokémon.
 		var emblem := TextureRect.new()
-		emblem.texture = ICONS[MomentLibrary.BADGE]
+		emblem.texture = ICONS[_view.kind]
+		_icon = emblem.texture
 		emblem.modulate = UiTokens.ACCENT
 		emblem.mouse_filter = Control.MOUSE_FILTER_IGNORE
 		emblem.expand_mode = TextureRect.EXPAND_IGNORE_SIZE

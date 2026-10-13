@@ -320,3 +320,33 @@ func test_portrait_never_under_identity_text_with_long_money() -> void:
 			var rect := row.get_global_rect()
 			assert_lte(rect.end.y, portrait.position.y + 0.5,
 				"la ligne d'identité reste au-dessus du portrait (%d)" % width)
+
+
+# --- Jalon 12 (T24) : ligne « fossile » de la frise ----------------------------------------
+
+func _fossil_view(zone: StringName) -> TrainerView:
+	var view := _view(true, 0)
+	var moment := MomentView.new()
+	moment.kind = MomentLibrary.FOSSIL
+	moment.title = "La Team Rocket repoussée"
+	moment.detail = "Fossile Dôme obtenu."
+	moment.place = "Mont Sélénite"
+	moment.date_text = "13 octobre 2026"
+	moment.zone_id = zone
+	view.moments.append(moment)
+	return view
+
+
+func test_fossil_moment_shows_validated_texts_and_the_key_item_icon() -> void:
+	var key: Texture2D = load("res://assets/ui/icons/bag/key.svg")
+	for zone: StringName in [&"mt_moon", &""]:
+		var screen := await _screen_in(2340, _fossil_view(zone))
+		var texts := screen.get_texts()
+		assert_true(texts.has("La Team Rocket repoussée"))
+		assert_true(texts.has("Fossile Dôme obtenu."))
+		assert_true(texts.has("Mont Sélénite · 13 octobre 2026"))
+		var rows := screen.get_moment_rows()
+		assert_eq(rows.size(), 1)
+		assert_eq(rows[0].get_view().kind, MomentLibrary.FOSSIL)
+		assert_eq(rows[0].get_icon(), key, "icône des objets clés (zone « %s »)" % zone)
+		assert_false(rows[0].is_linked(), "sans lien")
