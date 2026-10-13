@@ -41,7 +41,7 @@
 | F-13 | Lieux gardés / exclus (§9.2) | [V] |
 | F-14 | Boutique : stock d'Azuria + Super Potion | [V] |
 | F-15 | Validation 15.0 (Pension seule) → 15A → 15B | [V] |
-| F-16 | Roadmap mise à jour (ordre J12 → J17) | [V] |
+| F-16 | Roadmap mise à jour (ordre J12 → J16) | [V] |
 
 ## 1. Intention
 
@@ -65,8 +65,8 @@ AZURIA (sortie sud, J14) ─▶ ROUTE 5 ─┬─▶ poste nord ─▶ SAFRANIA 
                                                                     └─ est : ROUTE 11 (« À venir »)
 ```
 
-Hors périmètre : intérieur du S.S. Anne, rival n° 4 et Coupe (J16) ; combat de Major Bob et
-Badge Foudre (J17) ; Safrania ; Route 11 et Grotte Taupiqueur ; vélo ; pêche ; échanges.
+Hors périmètre : intérieur du S.S. Anne, rival n° 4, Coupe, combat de Major Bob et Badge Foudre
+(J16) ; Safrania ; Route 11 et Grotte Taupiqueur ; vélo ; pêche ; échanges.
 
 ## 3. Route 5
 
@@ -299,8 +299,8 @@ de Miaouss si le compagnon l'exige (à voir au plan).
 - **Pension** : champ `daycare` (Pokémon, XP en attente, niveau au dépôt) → **sauvegarde v7**, avec
   sa migration et ses tests. C'est le **seul** changement de format du J15.
 - **Point de repos** : Centre de Carmin (mécanisme existant).
-- **Relais** : reçu du J14 (`route_5`, arrivée `from_cerulean`) ; passé au J16 (quai, passerelle)
-  et au J17 (arbre et Arène).
+- **Relais** : reçu du J14 (`route_5`, arrivée `from_cerulean`) ; passé au J16 (quai, passerelle,
+  navire, arbuste et Arène), voir §17.
 
 ## 12. Objectifs du tableau de bord [D]
 
@@ -430,6 +430,25 @@ Enveloppes de cartes (Route 5 ≈ 42 × 62, souterrain ≤ 50 cases, Route 6 ≈
 Carmin ≤ 64 × 48) ; poids et niveaux des rencontres ; prénoms et emplacements des Dresseurs ;
 récompense de Jeune Dresseuse 20 ; objets des routes ; catégorie du souterrain ; Jackpot avec
 l'effet RB ; marin et docker en nouveaux modèles ; objectifs du tableau de bord.
+
+## 17. Contrat d'entrée du J16 (reçu de Kevin le 2026-10-13)
+
+Le J16 (S.S. Anne **et** Major Bob, dossier 16, branche `ccr-fa255d49-wvvacc`, passe
+`j16-v2-alignement.md` §4 G-1 et §8) suppose que le J15 livre :
+
+| Attendu du J16 | Réponse du J15 |
+|---|---|
+| Centre Pokémon à Carmin, point de retour après une défaite à bord, Stockage accessible | **Conforme** (§8.2). |
+| Quai avec passerelle ; S.S. Anne amarré, visible, inaccessible au J15 ; passerelle = point d'entrée du J16 | **Conforme** (§8.3 ; grille : embarquement (31..32, 27), marin (31, 26)). |
+| Navire = **objet conditionné à un drapeau**, pour disparaître après le départ | **Ajouté** : le S.S. Anne est un objet de décor séparé, absent si `ss_anne_departed` [D, nom à confirmer avec le J16]. |
+| **Arbuste coupable** devant la porte de l'Arène, fermé, texte du type « Un petit arbre bloque l'entrée », sans autre promesse ; coupé au J16 | **Ajouté** : l'arbuste (49..50, 10) est un objet retiré par le drapeau `cut_vermilion_gym_bush` [D, nom à confirmer avec le J16], examinable (T-29). Aucune mécanique de coupe au J15. |
+| Aucun autre arbuste coupable posé sans le signaler | **Conforme** : le J15 n'en pose aucun autre. |
+| Anti-blocage : Dardargnan, Sabelette, Paras capturables avant Carmin | **Conforme** : le J15 ne retire aucune espèce. |
+| Numérotation au moment du push | Dossier **18** libre sur toutes les branches distantes au 2026-10-13 ; série d'art du J15 numérotée au push (prochaine libre, pas « 17 » d'office). |
+
+**Point signalé à Kevin** : T-32 (« Major Bob dit que les vrais challengers trouveront un moyen. »)
+est une réplique d'habitant, pas le texte de l'arbuste ; elle suggère sans rien promettre. Gardée
+telle que validée, sauf avis contraire.
 
 ## Décisions verrouillées
 

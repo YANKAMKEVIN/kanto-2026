@@ -241,7 +241,7 @@ Les grilles font foi (règle 10) ; leurs `POSITIONS` sont des défauts « ajusta
 5. **Déclencheurs** [D] : `route_5_entered` sur la rangée 1 de la Route 5 (19..21, 1), toute
    direction ; `vermilion_reached` sur (30..32, 1) de Carmin.
 
-### 1.4 Kit d'assets : série 17 (méthode des J8–J12)
+### 1.4 Kit d'assets : série « 17 » provisoire (numéro définitif pris au push, contrat du J16 ; méthode des J8–J12)
 
 Numéro **17** [D] (14 = J12, 15 = J13, 16 réservé au J14 ; « le second fusionné renumérote »).
 Consigne de Kevin : le plus petit kit modulaire qui donne la **sensation** des vues générales
@@ -589,8 +589,11 @@ Roucool et Rattata (planches existantes).
 
 - **Marin** (31, 26) tourné ↓ : T-26, **sans condition** (identique avec ou sans `ss_ticket` ; la
   variante du J16 remplacera la réplique). Cordage (32, 26) bloqué. Embarquement inatteignable.
-- **Arbre** (49..50, 10) : décor bloquant + `InteractPoint` EXAMINER T-29 (existant) ; aucun
-  drapeau ; le J16/J17 (Coupe) le retirera.
+- **Arbuste** (49..50, 10) : objet bloquant **retiré par le drapeau `cut_vermilion_gym_bush`** (contrat
+  du J16, dossier 18 §17 ; nom à confirmer avec le J16) + `InteractPoint` EXAMINER T-29 ; aucune
+  mécanique de coupe au J15 : le J16 le coupera.
+- **S.S. Anne** : objet de décor **séparé**, absent si `ss_anne_departed` (contrat du J16), pour que le
+  J16 le fasse disparaître après le départ.
 - **Route 11** : `coming_soon`, retour sur la case.
 
 ### 2.10 Compagnon (T20, B : après 11D)
