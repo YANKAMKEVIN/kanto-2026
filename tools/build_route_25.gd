@@ -25,9 +25,10 @@ extends SceneTree
 ##   À venir »** tant que la Route 24 nord du J13 n'est pas fusionnée, T15) ; porte de la maison
 ##   (71..72, 11) STEP_ON ↑ → `bill_house` / `from_route_25`. Spawns `from_route_24_n|c|s`,
 ##   `from_bill_house_w|e`.
-## - **Sans PNJ, sans rencontres, sans déclencheurs** (T16, T17) : les cases des Dresseurs, PNJ,
-##   Pokémon d'ambiance, objets et de l'indice sont **réservées** (la forêt s'en écarte comme pour
-##   un PNJ ; rien n'y est posé). Fichier de PNJ `data/npcs/route_25.json` lu s'il existe.
+## - **Vie (T16)** : PNJ, Dresseurs, objets et Pokémon d'ambiance viennent de
+##   `data/npcs/route_25.json` ; les cases de la grille sont **réservées** (la forêt s'en écarte
+##   comme pour un PNJ). Panneaux et rocher au coquillage = points d'examen ; coquillage posé sur
+##   le rocher (64, 20). Rencontres : `data/encounters/route_25.json`. Pas de déclencheurs.
 
 const Kit := preload("res://tools/coast_map_kit.gd")
 const PLAN_PATH: String = "res://tools/plans/route_25.txt"
@@ -64,7 +65,16 @@ const HOUSE_MAP: StringName = &"bill_house"
 const HOUSE_SPAWN: StringName = &"from_route_25"
 const RESERVED_KINDS: Array[String] = ["dresseur", "pnj", "pokemon", "objet_visible", "cache"]
 const BALL_KINDS: Array[String] = ["objet_visible", "cache"]
-const SIGNS: Array = [["panneau_ouest", "SignWest"], ["panneau_cap", "SignCape"]]
+## Panneaux : [position, nœud du décor, dialogue]. Lus depuis la case au sud, tournés vers le nord.
+const SIGNS: Array = [
+	["panneau_ouest", "SignWest", &"route_25_sign_west"],
+	["panneau_cap", "SignCape", &"route_25_sign_cape"],
+]
+## Objet caché O4 (T16) : coquillage posé sur le rocher `R`, examiné depuis la case au nord
+## (tourné vers le sud). Le point d'examen n'a pas encore de condition (J12 T17 : `unless_flags`) :
+## la scène et le dialogue gardent la mémoire (`got_route_25_hidden_1`).
+const HIDDEN_ITEM: String = "route_25_hidden_1"
+const HIDDEN_CLUE_ID: String = "prop_indice_coquillage_01"
 
 const BUSH_IDS: Array[String] = [
 	"prop_buisson_a_01_bourg", "prop_buisson_b_01_bourg", "prop_buisson_c_01_bourg",
@@ -107,6 +117,7 @@ func _init() -> void:
 	var entities: Node2D = _kit.get(&"entities")
 	var decals: Node2D = _kit.get(&"decals")
 	_add_passages()
+	_add_examine_points()
 
 	_kit.call(&"place_border_decals", SEED)
 	_kit.call(&"place_meadow", MEADOW_ATTEMPTS, FLOWER_CHANCE, FLOWERS)
@@ -116,6 +127,7 @@ func _init() -> void:
 	_kit.call(&"add_prop_at", entities, "bldg_maison_leo_01", HOUSE_ANCHOR, "LeoHouse")
 	for entry: Array in SIGNS:
 		_kit.call(&"add_prop_at", entities, "prop_panneau_01", _cell(entry[0]), entry[1])
+	_kit.call(&"add_prop_at", entities, HIDDEN_CLUE_ID, _cell(HIDDEN_ITEM), "ShellClue")
 	_place_bushes(entities)
 	_place_flower_beds(entities)
 	_place_sea_rocks(entities)
@@ -180,6 +192,15 @@ func _add_passages() -> void:
 		_kit.call(&"add_spawn", entry[2], (entry[1] as Vector2i) + Vector2i.DOWN)
 		_kit.call(&"add_warp", entry[0], entry[1], Kit.STEP_ON, Vector2i.UP, HOUSE_MAP,
 			HOUSE_SPAWN, Vector2i.UP)
+
+
+## Panneaux (EXAMINER depuis le sud) et rocher au coquillage (depuis le nord).
+func _add_examine_points() -> void:
+	for entry: Array in SIGNS:
+		_kit.call(&"add_interactable", String(entry[1]) + "Point", _cell(entry[0]), Vector2i.ONE,
+			Vector2i.UP, entry[2])
+	_kit.call(&"add_interactable", "ShellPoint", _cell(HIDDEN_ITEM), Vector2i.ONE,
+		Vector2i.DOWN, StringName(HIDDEN_ITEM))
 
 
 # --- Décor --------------------------------------------------------------------------------

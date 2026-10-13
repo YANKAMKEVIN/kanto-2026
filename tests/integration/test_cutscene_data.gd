@@ -85,6 +85,9 @@ const VARIANT_FLAGS: Dictionary = {
 	&"viridian_forest_item_6": [ROUTE22_FLAGS],
 	# Jalon 10 (T8) : Route 2 nord et Argenta.
 	&"route_2_north_item_1": [PEWTER_FLAGS],
+	# Jalon 14 (T16) : les 3 objets visibles et l'objet caché de la Route 25.
+	&"route_25_item_1": [PEWTER_FLAGS], &"route_25_item_2": [PEWTER_FLAGS],
+	&"route_25_item_3": [PEWTER_FLAGS], &"route_25_hidden_1": [PEWTER_FLAGS],
 	&"pewter_arrival": [PEWTER_FLAGS],
 	&"route_3_guard": [PEWTER_FLAGS + [&"pewter_arrived"],
 		PEWTER_FLAGS + [&"pewter_arrived", &"brock_met", &"badge_boulder"]],
@@ -109,6 +112,9 @@ const CODE_PLAYED: Dictionary[StringName, StringName] = {
 	&"viridian_forest_item_5": &"viridian_forest",
 	# Jalon 10 (T8) : Potion de la Route 2 nord (PNJ « objet »), Pierre (son dialogue).
 	&"route_2_north_item_1": &"route_2_north", &"pewter_gym_brock": &"pewter_gym",
+	# Jalon 14 (T16) : objets de la Route 25 (PNJ « objet » et point d'examen du coquillage).
+	&"route_25_item_1": &"route_25", &"route_25_item_2": &"route_25",
+	&"route_25_item_3": &"route_25", &"route_25_hidden_1": &"route_25",
 	# Jalon 11 (T14) : remise tardive de la CT34 (dialogue de Pierre).
 	&"pewter_gym_brock_tm_late": &"pewter_gym",
 	# Jalon 14 (T17) : les trois objets de Léo (dialogue de l'écran, du module, de la console).
@@ -170,7 +176,8 @@ func test_library_loads_without_error() -> void:
 	assert_eq(library.get_ids(), _sorted([&"bill_house_enter", &"bill_machine", &"bill_module",
 		&"bill_screen", &"mart_parcel", &"oak_lab_exit", &"oak_parcel",
 		&"pewter_arrival", &"pewter_gym_brock", &"pewter_gym_brock_tm_late",
-		&"rival_route22", &"route1_grass", &"route_1_potion", &"route_2_item_1",
+		&"rival_route22", &"route1_grass", &"route_1_potion", &"route_25_hidden_1", &"route_25_item_1",
+		&"route_25_item_2", &"route_25_item_3", &"route_2_item_1",
 		&"route_2_item_2", &"route_2_item_3", &"route_2_item_4", &"route_2_north_item_1",
 		&"route_3_guard", &"starter_chosen",
 		&"viridian_arrival", &"viridian_forest_item_1", &"viridian_forest_item_2",
@@ -276,7 +283,9 @@ func test_only_world_items_are_found_items() -> void:
 			for step: CutsceneStep in variant.steps:
 				if step.kind == CutsceneStep.Kind.GIVE and step.found:
 					found.append("%s:%s" % [id, step.item_id])
-	assert_eq(found, ["route_1_potion:potion", "route_2_item_1:poke_ball",
+	assert_eq(found, ["route_1_potion:potion", "route_25_hidden_1:potion",
+		"route_25_item_1:tm19", "route_25_item_2:potion", "route_25_item_3:poke_ball",
+		"route_2_item_1:poke_ball",
 		"route_2_item_2:potion", "route_2_item_3:poke_ball", "route_2_item_4:potion",
 		"route_2_north_item_1:potion",
 		"viridian_forest_item_1:antidote", "viridian_forest_item_2:poke_ball",

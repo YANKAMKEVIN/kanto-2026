@@ -57,7 +57,7 @@ func test_q4_nothing_before_the_rival_battle_then_reach_viridian() -> void:
 ## (data/cutscenes/oak_lab.json).
 ## Jalon 10 (T8) : `pewter_arrived` (scène `pewter_arrival`) et `badge_boulder` (victoire de la
 ## scène `pewter_gym_brock`) sont levés par les données : retirés de la liste.
-## Jalon 14 (T17) : `beaten_nugget_rocket` (Pont Pépite, J12) est levé par le jalon 12.
+## Jalon 14 : `beaten_nugget_rocket` (Sbire du Pont Pépite, J13) n'est pas encore fusionné.
 const _PENDING_FLAGS: Array[StringName] = [&"viridian_arrived", &"beaten_nugget_rocket"]
 
 

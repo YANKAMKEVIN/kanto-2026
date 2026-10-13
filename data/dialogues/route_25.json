@@ -1,0 +1,167 @@
+{
+	"route_25_sign_west": {
+		"pages": [
+			"ROUTE 25\nAzuria ← → Cap d'Azuria"
+		]
+	},
+	"route_25_sign_cape": {
+		"pages": [
+			"CAP D'AZURIA\nMaison de Léo. Sonnez fort."
+		]
+	},
+	"route_25_traveler": {
+		"speaker": "Promeneur",
+		"pages": [
+			"Le Cap, là-bas.\nUn drôle de type y vit.",
+			"Des fois, sa maison\nfait des étincelles."
+		]
+	},
+	"route_25_old_man": {
+		"speaker": "Vieil homme",
+		"pages": [
+			"La mer est calme ce soir.\nLéo vit tout au bout.",
+			"Il ne sort pas beaucoup."
+		]
+	},
+	"route_25_youngster_jules_before": {
+		"speaker": "Gamin Jules",
+		"pages": [
+			"La route est à moi !"
+		]
+	},
+	"route_25_youngster_jules_defeated": {
+		"speaker": "Gamin Jules",
+		"pages": [
+			"Déjà fini ?!"
+		]
+	},
+	"route_25_youngster_jules_after": {
+		"speaker": "Gamin Jules",
+		"pages": [
+			"Je m'entraîne ici tous les jours.\nPas assez, faut croire."
+		]
+	},
+	"route_25_hiker_gaston_before": {
+		"speaker": "Montagnard Gaston",
+		"pages": [
+			"Mes Pokémon ont des muscles\nde montagne !"
+		]
+	},
+	"route_25_hiker_gaston_defeated": {
+		"speaker": "Montagnard Gaston",
+		"pages": [
+			"Ho ho ! Belle poigne !"
+		]
+	},
+	"route_25_hiker_gaston_after": {
+		"speaker": "Montagnard Gaston",
+		"pages": [
+			"Je redescends des falaises.",
+			"Le Cap est juste après\nles hautes herbes."
+		]
+	},
+	"route_25_lass_zoe_before": {
+		"speaker": "Fillette Zoé",
+		"pages": [
+			"Tu as vu mes Nidoran ?\nIls sont mignons, mais ils piquent !"
+		]
+	},
+	"route_25_lass_zoe_defeated": {
+		"speaker": "Fillette Zoé",
+		"pages": [
+			"Aïe…"
+		]
+	},
+	"route_25_lass_zoe_after": {
+		"speaker": "Fillette Zoé",
+		"pages": [
+			"Ils boudent un peu.\nÇa va leur passer."
+		]
+	},
+	"route_25_hiker_bernard_before": {
+		"speaker": "Montagnard Bernard",
+		"pages": [
+			"Je cherche des pierres sur la plage.",
+			"Et toi, tu cherches\nla bagarre ?"
+		]
+	},
+	"route_25_hiker_bernard_defeated": {
+		"speaker": "Montagnard Bernard",
+		"pages": [
+			"Solide comme un roc,\nton équipe !"
+		]
+	},
+	"route_25_hiker_bernard_after": {
+		"speaker": "Montagnard Bernard",
+		"pages": [
+			"Onix adore le sable.\nIl s'y roule pendant des heures."
+		]
+	},
+	"route_25_jr_trainer_adam_before": {
+		"speaker": "Jeune Dresseur Adam",
+		"pages": [
+			"Ces hautes herbes, c'est mon\nterrain d'entraînement !"
+		]
+	},
+	"route_25_jr_trainer_adam_defeated": {
+		"speaker": "Jeune Dresseur Adam",
+		"pages": [
+			"Bien joué."
+		]
+	},
+	"route_25_jr_trainer_adam_after": {
+		"speaker": "Jeune Dresseur Adam",
+		"pages": [
+			"Il y a des Abra ici.",
+			"Ils disparaissent dès\nqu'on les approche."
+		]
+	},
+	"route_25_youngster_yanis_before": {
+		"speaker": "Gamin Yanis",
+		"pages": [
+			"Tu ne passeras pas sans combattre !",
+			"Enfin… si, mais combats\nquand même !"
+		]
+	},
+	"route_25_youngster_yanis_defeated": {
+		"speaker": "Gamin Yanis",
+		"pages": [
+			"Oh non !"
+		]
+	},
+	"route_25_youngster_yanis_after": {
+		"speaker": "Gamin Yanis",
+		"pages": [
+			"J'aime bien regarder la mer\ndepuis ici."
+		]
+	},
+	"route_25_item_1": {
+		"cutscene": "route_25_item_1"
+	},
+	"route_25_item_2": {
+		"cutscene": "route_25_item_2"
+	},
+	"route_25_item_3": {
+		"cutscene": "route_25_item_3"
+	},
+	"route_25_hidden_1": {
+		"variants": [
+			{
+				"unless": ["got_route_25_hidden_1"],
+				"cutscene": "route_25_hidden_1"
+			},
+			{
+				"pages": [
+					"Il n'y a plus rien\nsous ce coquillage."
+				]
+			}
+		],
+		"narration": true
+	},
+	"route_25_hidden_1_found": {
+		"narration": true,
+		"pages": [
+			"Quelque chose est caché\nsous ce coquillage."
+		]
+	}
+}

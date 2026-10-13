@@ -959,6 +959,12 @@ et de l'annexe A validée.
 #### T16 — constructeur-monde : vie de la Route 25 (14A) — **maintenant**, après T5, T14
 - §2.11 ; D5, D6 au T23 (J12 T12) ; O4 par point d'examen (J12 T17, repli) ; table de repli
   jusqu'à J13 T11 ; objectifs ; départs `route_25`, `route_25_cape`, `teleport_qa`.
+- **Fait (2026-10-13, branche `j14-t16`)** : `data/{npcs,dialogues,cutscenes,encounters}/route_25.json`,
+  D1 à D4, promeneur, vieil homme, 2 Roucool, O1 à O3, panneaux et O4 (coquillage + point d'examen,
+  `build_route_25.gd` relancé), objectif `go_cerulean_cape` en tête. **Replis** : D5, D6 non placés
+  (Abo ; répliques n° 50–51 déjà dans les dialogues, listées « en attente » dans le test) ; O4 sans
+  `unless_flags` (2e examen : « Il n'y a plus rien sous ce coquillage. », texte par défaut à valider) ;
+  table Roucool 38 / Chenipan 27. Tests : `test_route_25_trainers`, `test_route_25_life` ; suite 4126/4126.
 
 #### T17 — constructeur-monde : scène de Léo (14A) — **maintenant**, après T5, T6, T12, T14
 - §2.9, §2.10 ; moment par J12 T23 (repli : ajouté au T23) ; départs `bill_house`, `bill_after`.

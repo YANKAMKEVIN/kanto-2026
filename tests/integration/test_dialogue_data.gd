@@ -44,7 +44,14 @@ const GATE_GUARDS: Array[StringName] = [&"forest_gate_north_guard", &"forest_gat
 ## T13 : les intérieurs d'Argenta sont dans [constant MAPS] (Musée, maisons, Arène : retirés).
 ## T11 : la Route 2 nord et Argenta (extérieur) sont dans [constant MAPS] : liste vide.
 const UNUSED_YET: Array[StringName] = [
+	# Jalon 14 (T16) : répliques de D5 et D6 (n° 50, 51), posées avant Abo (J12 T12, T23 du J14).
+	&"route_25_jr_trainer_adam_before", &"route_25_jr_trainer_adam_defeated",
+	&"route_25_jr_trainer_adam_after", &"route_25_youngster_yanis_before",
+	&"route_25_youngster_yanis_defeated", &"route_25_youngster_yanis_after",
 ]
+## Jalon 14 (T16) : textes par défaut de l'objet caché de la Route 25, absents du §15 du dossier 17
+## (à valider par Kevin) : exemptés du contrôle « mot pour mot ».
+const UNVALIDATED: Array[StringName] = [&"route_25_hidden_1", &"route_25_hidden_1_found"]
 ## Jalon 10 : textes verrouillés du dossier 12 (même forme que le dossier 10) et lot de textes du
 ## J10 (panneaux, noms affichés), où un retour à la ligne est écrit « \n ».
 const DOSSIER_12 := "res://docs/design/dossier-12-argenta.md"
@@ -72,6 +79,8 @@ const MAPS: Array[StringName] = [
 	&"route_2_north", &"pewter_city",
 	# Jalon 14 (T17) : la maison de Léo.
 	&"bill_house",
+	# Jalon 14 (T16) : la Route 25.
+	&"route_25",
 ]
 ## Lot de textes validé par Kevin le 2026-10-06 (anciens brouillons : panneau, observations,
 ## soin de Maman, terminal du Stockage, portes de Jadielle…) : source des textes hors dossiers.
@@ -117,6 +126,18 @@ const IDS: Array[StringName] = [
 	&"route22_rival_greet", &"route22_rival_hesitates", &"route22_rival_lost",
 	&"route22_rival_won", &"route22_youngster_sigh",
 	&"route_1_potion_found", &"route_1_traveler", &"route_22_traveler",
+	# Jalon 14 (T16) : la Route 25 (dossier 17 §15 n° 42 à 51 ; D5 et D6 : en attente d'Abo).
+	&"route_25_hidden_1", &"route_25_hidden_1_found", &"route_25_hiker_bernard_after",
+	&"route_25_hiker_bernard_before", &"route_25_hiker_bernard_defeated",
+	&"route_25_hiker_gaston_after", &"route_25_hiker_gaston_before",
+	&"route_25_hiker_gaston_defeated", &"route_25_item_1", &"route_25_item_2", &"route_25_item_3",
+	&"route_25_jr_trainer_adam_after", &"route_25_jr_trainer_adam_before",
+	&"route_25_jr_trainer_adam_defeated", &"route_25_lass_zoe_after", &"route_25_lass_zoe_before",
+	&"route_25_lass_zoe_defeated", &"route_25_old_man", &"route_25_sign_cape",
+	&"route_25_sign_west", &"route_25_traveler", &"route_25_youngster_jules_after",
+	&"route_25_youngster_jules_before", &"route_25_youngster_jules_defeated",
+	&"route_25_youngster_yanis_after", &"route_25_youngster_yanis_before",
+	&"route_25_youngster_yanis_defeated",
 	# Jalon 8 : la Route 2 (dossier 11, T1 à T11).
 	&"route_2_ball_1", &"route_2_ball_2", &"route_2_closed_gate", &"route_2_closed_sign",
 	&"route_2_dense_tree", &"route_2_forest_sign", &"route_2_hiker", &"route_2_item_3_found",
@@ -306,7 +327,8 @@ func test_every_dialogue_played_by_a_cutscene_exists() -> void:
 		&"rival_parcel_return", &"rival_starter_pick", &"rival_starter_smile",
 		&"route1_grass_thought", &"route22_rival_greet", &"route22_rival_hesitates",
 		&"route22_rival_lost", &"route22_rival_won", &"route22_youngster_sigh",
-		&"route_1_potion_found", &"route_2_item_3_found", &"route_2_item_4_found",
+		&"route_1_potion_found", &"route_25_hidden_1_found", &"route_2_item_3_found",
+		&"route_2_item_4_found",
 		&"viridian_forest_item_3_found", &"viridian_forest_item_4_found",
 		&"viridian_forest_item_6_found"] + PLAYED_J14_BILL))
 	for id: StringName in played:
@@ -386,7 +408,8 @@ func test_every_condition_flag_is_set_somewhere() -> void:
 			&"route_2_hiker_talked", &"route_2_youngster_talked", &"storage_terminal_seen",
 			&"viridian_old_man_talked"] + SET_J14_BILL_DIALOGUES))
 	assert_eq(_cutscenes.get_set_flags(), _sorted([&"badge_boulder", &"brock_met", &"got_oak_parcel",
-		&"got_potion_route_1",
+		&"got_potion_route_1", &"got_route_25_hidden_1", &"got_route_25_item_1",
+		&"got_route_25_item_2", &"got_route_25_item_3",
 		&"got_route_2_item_1", &"got_route_2_item_2", &"got_route_2_item_3",
 		&"got_route_2_item_4", &"got_route_2_north_item_1", &"got_viridian_forest_item_1",
 		&"got_viridian_forest_item_2",
@@ -582,7 +605,7 @@ func test_texts_are_the_dossier_02_texts_word_for_word() -> void:
 	var dossier_17 := FileAccess.get_file_as_string(DOSSIER_17) \
 		+ FileAccess.get_file_as_string(PLAN_J14).replace("\n  ", " ")
 	for row: Array in _pages():
-		if GATE_GUARDS.has(row[0]):
+		if GATE_GUARDS.has(row[0]) or UNVALIDATED.has(row[0]):
 			continue
 		var text: String = row[1]
 		for token: String in _DOSSIER_TOKENS:
@@ -599,7 +622,9 @@ func test_texts_are_the_dossier_02_texts_word_for_word() -> void:
 			or dossier_12.contains(_as_dossier_10(text))
 			or lot_j10.contains("| « %s » |" % text.replace("\n", "\\n"))
 			or _each_line_quoted(dossier_14, text)
-			or dossier_17.contains("« %s »" % text.replace("{player}", "{joueur}")),
+			or dossier_17.contains("« %s »" % text.replace("{player}", "{joueur}"))
+			or dossier_17.contains(text.replace("\n", " "))
+			or dossier_17.contains(text.replace("\n", " — ")),
 			"%s : « %s » dans un dossier de conception" % [row[0], text])
 
 
@@ -748,8 +773,9 @@ func test_oak_parcel_lines() -> void:
 	# La scène du colis ; jalon 8 : les deux objets visibles de la Route 2 (PRENDRE) ; jalon 9 :
 	# les trois de la Forêt de Jade ; jalon 10 : la Potion de la Route 2 nord et Pierre.
 	# Jalon 11 : la remise tardive de la CT34 par Pierre.
-	# Jalon 14 (T17) : l'écran, le module et la console de Léo.
-	assert_eq(launched, 12, "colis, six objets au sol, Pierre et sa CT34, écran, module, console")
+	# Jalon 14 : l'écran, le module et la console de Léo (T17), quatre objets de la Route 25 (T16).
+	assert_eq(launched, 16,
+		"colis, six objets au sol, Pierre et sa CT34, écran, module, console, objets de la Route 25")
 	# Le jeton n'apparaît que dans la réplique de l'espèce.
 	for row: Array in _pages():
 		if IDS_J14_BILL.has(row[0]):
