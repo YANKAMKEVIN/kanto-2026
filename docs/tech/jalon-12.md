@@ -713,6 +713,7 @@ fichier commun). Dès T12 fusionné : **T13 ∥ T20** (combat contre grotte, auc
 - §2.22 (modèle `qa_switch_j13` du J13, `MapCatalog.is_qa_map` repris mot pour mot). **CA** : tests verts (`test_qa_moves_j12` sur le modèle de `test_qa_switch_j13`) ; capture relue.
 
 #### T16 — qa-mobile : **session 12.0** → Kevin
+- **VALIDÉ par Kevin le 2026-10-13** (session partielle ; non vus reportés en 12A / 12B, voir `etat-projet.md`).
 - Départ `moves_qa` : chaque effet vu (drain, piège et ses refus, Entrave et sa fin, Repos et réveil, Destruction, double K.O., Sonicboom), messages lisibles, IA ; espèces dans le Pokédex ; mesure de référence Route 1 (§2.21). **CA** : rapport `build/qa/jalon12_t16/` ; validation de Kevin.
 
 #### T17 — architecte : briques du monde — après T11 (∥ T12) — **fait (2026-10-13, `j12-t17-monde`)** : détail au §9
