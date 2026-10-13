@@ -709,7 +709,7 @@ fichier commun). Dès T12 fusionné : **T13 ∥ T20** (combat contre grotte, auc
 #### T14 — ui-mobile : interface de combat — après T13 (∥ T15)
 - §2.10 (interface) : carte de capacité « BLOQUÉE » grisée et non touchable (`Battle.get_disabled_move()`), raison « Impossible de changer » sur les cartes de l'équipe (`Battle.is_player_trapped()`), fuite refusée affichée sans action (`flee_failed`), icône **Fée** (`TypeBadge.ICONS`, nouvelle icône SVG). **CA** : captures relues (capacité bloquée, ligoté, Fée) ; `game/ui/battle/`, `game/ui/components/type_badge.gd`, `battle_director.gd` (refus avant soumission) et `ui_tokens.gd` (fin de fichier) seuls touchés.
 
-#### T15 — constructeur-monde : carte `qa_moves_j12` + départ — après T13 (∥ T14)
+#### T15 — constructeur-monde : carte `qa_moves_j12` + départ — après T13 (∥ T14) — **fait (2026-10-13, `j12-t15-qa`, §9)**
 - §2.22 (modèle `qa_switch_j13` du J13, `MapCatalog.is_qa_map` repris mot pour mot). **CA** : tests verts (`test_qa_moves_j12` sur le modèle de `test_qa_switch_j13`) ; capture relue.
 
 #### T16 — qa-mobile : **session 12.0** → Kevin
@@ -852,6 +852,39 @@ Questions telles que posées :
 ---
 
 ## 9. Fait
+
+- **T15 — carte `qa_moves_j12` et départs de la session 12.0 (2026-10-13, constructeur-monde,
+  branche `j12-t15-qa` depuis `jalon-12` à `b7d6d88`)** — §2.22, modèle `qa_switch_j13`
+  (`3d58fe6`) :
+  - Outil `tools/build_qa_moves_j12.gd` (copie de `build_qa_switch_j13.gd`) → carte 24 × 16,
+    tuiles provisoires, sans lumière ni gravats : hautes herbes x 1..6, y 10..13 ; Dresseur
+    d'essai `qa_moves_smart` (`smart`) en (11, 3), vision 5 vers le bas ; spawns `moves_start`
+    (11, 12) et `lane_smart` (11, 9) ; sortie sud (10..12, 14) → `pewter_city` / `from_center`.
+    Données `data/{npcs,trainers,dialogues}/qa_moves_j12.json`.
+  - `MapCatalog.QA_PREFIX` / `is_qa_map` **repris mot pour mot** du J13 (commentaire compris) ;
+    `test_dialogue_data` (`_real_ids` / `_without_qa`), `test_zone_library`,
+    `test_map_light_profiles` : mêmes retouches que le J13 ; exception datée
+    `qa_moves_j12` dans `test_no_qa_map_is_shipped` (conflit d'une ligne attendu à la fusion du
+    J13 : garder les deux exceptions).
+  - Départs `moves_qa` (Racaillou N21, Abo N20, Rondoudou N29, Nosferapti N22 ; 9 espèces du J12
+    au Stockage → 12 au Pokédex ; remèdes, Potions, Balls ; table forcée Nosferapti / Abo /
+    Rondoudou / Racaillou / Voltorbe) et **`moves_qa_solo`** (ajout [D] : Racaillou seul, pour
+    le double K.O. final sans avoir à mettre K.O. trois Pokémon). Capacités : **toutes apprises
+    au niveau** (Rouge/Bleu), la clé `moves` ne fixe que l'ordre ; seule exception, Berceuse du
+    Rondoudou du Dresseur (niveau 1).
+  - **Défaut [D]** : Rondoudou du Dresseur = Berceuse, Entrave, Boul'Armure, Repos (aucune attaque) :
+    avec Écras'Face (60 avec le bonus de type) l'IA `smart` ne choisirait jamais Repos (40) ; avec
+    seulement Entrave / Repos, tout devient « inutile » à PV pleins et Repos est tiré au hasard.
+  - Test `test_qa_moves_j12` (19) : carte, Dresseur, départs, et **partie scriptée** par le vrai
+    moteur avec les Pokémon du départ (graines fixes) : drain, Onde Folie, piège (pertes,
+    libération), piège subi (fuite et changement refusés, puis permis), Sonicboom 20 PV,
+    Entrave (jamais relancée par l'adversaire) et sa fin, Repos (échec à PV pleins, PV pleins,
+    2 tours perdus), Destruction, double K.O. perdu, IA `smart` (Destruction sous ¼, jamais à PV
+    pleins ; Repos blessé, jamais à PV pleins).
+  - Captures `tools/capture_qa_moves_j12.gd` (`--flow=trainer|wild`) →
+    `build/captures/jalon12_t15/` (carte, Destruction, K.O., ligoté), relues.
+  - **Retrait au T28** : carte, outil, outil de capture, données `qa_moves_j12`, les deux départs,
+    `test_qa_moves_j12`, exception de `test_no_qa_map_is_shipped`.
 
 - **T14 — interface de combat du J12 (2026-10-13, ui-mobile, branche `j12-t14-interface` depuis
   `jalon-12` à `b7d6d88`)** — §2.10 (interface), annexe A.4 ; écarts et défauts : §0.4 n° 16.

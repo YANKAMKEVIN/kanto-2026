@@ -1,0 +1,12 @@
+{
+	"qa_moves_smart": {
+		"name": "Dresseur d'essai", "ai": "smart",
+		"can_lose": false, "heal_after": false, "gives_exp": true, "prize_money": 100,
+		"team": [
+			{ "species": "geodude", "level": 21,
+				"moves": ["tackle", "defense_curl", "rock_throw", "self_destruct"] },
+			{ "species": "jigglypuff", "level": 29,
+				"moves": ["sing", "disable", "defense_curl", "rest"] }
+		]
+	}
+}

@@ -7,6 +7,10 @@ extends RefCounted
 ## (routeur au moment du passage, test de cohérence des cartes à l'avance).
 
 const MAPS_DIR: String = "res://game/world/maps/"
+## Préfixe des cartes de QA : aucune zone, ni la Carte ni le Pokédex, aucun passage n'y mène
+## (départs de débogage seulement). Les tests qui énumèrent les cartes du jeu les ignorent
+## ([method is_qa_map]). Jalon 13 : `qa_switch_j13` (retirée au T22).
+const QA_PREFIX: String = "qa_"
 ## Liste des cartes intérieures (préchargement du SceneRouter, jalon 10).
 const INTERIORS_PATH: String = "res://data/world/interiors.json"
 
@@ -16,6 +20,11 @@ static func scene_path(map_id: StringName, dir: String = MAPS_DIR) -> String:
 	if map_id.is_empty():
 		return ""
 	return dir.path_join(String(map_id) + ".tscn")
+
+
+## Vrai si c'est une carte de QA (identifiant préfixé de [constant QA_PREFIX]).
+static func is_qa_map(map_id: StringName) -> bool:
+	return String(map_id).begins_with(QA_PREFIX)
 
 
 ## Vrai si la scène de la carte existe.
