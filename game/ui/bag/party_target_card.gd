@@ -262,8 +262,8 @@ func _build() -> void:
 	hp_row.add_child(_hp_text)
 
 	_reason = _label(&"PickerReason")
-	_reason.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
-	_reason.clip_text = true
+	# Une raison longue (Pension : « Tu dois garder au moins un Pokémon… ») passe à la ligne.
+	_reason.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	_reason.visible = false
 	info.add_child(_reason)
 

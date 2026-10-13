@@ -148,6 +148,8 @@ var _pending_daycare: bool = false
 ## recevoir les réglages).
 var _companions := CompanionCatalog.new()
 var _companion := CompanionController.new()
+## Écran de la Pension (J15 T5) : choix du dépôt, bandeau et hôte des capacités du retrait.
+var _daycare_overlay: DaycareOverlay
 ## Autosave demandé, en attente d'un état stable, et sa raison (journal).
 var _save_pending: bool = false
 var _save_reason: String = ""
@@ -256,6 +258,13 @@ func _ready() -> void:
 	add_child(_daycare)
 	_daycare.setup(GameState, _player, _runner, _library, _pokemon, DaycareConfig.load_default())
 	_daycare.set_learning(_battle_director.get_move_learn_prompt(), _evolutions)
+	_daycare_overlay = DaycareOverlay.new()
+	_daycare_overlay.name = "DaycareOverlay"
+	_daycare_overlay.process_mode = Node.PROCESS_MODE_PAUSABLE
+	add_child(_daycare_overlay)
+	_daycare_overlay.attach(_daycare,
+		func(view: DaycarePickView) -> PartyPickerView: return view.to_picker_view(_pokemon))
+	_daycare.overlay = _daycare_overlay
 	_daycare.deposited.connect(_on_daycare_deposited.unbind(1))
 	_daycare.finished.connect(_on_daycare_finished)
 	_services.daycare_requested.connect(_on_daycare_requested)
@@ -582,7 +591,11 @@ func get_evolution_director() -> EvolutionDirector:
 	return _evolutions
 
 
-## Pension (J15).
+## Pension (J15) : écran du dépôt et des capacités.
+func get_daycare_overlay() -> DaycareOverlay:
+	return _daycare_overlay
+
+
 func get_daycare_director() -> DaycareDirector:
 	return _daycare
 
@@ -1170,8 +1183,6 @@ func _on_dialogue_finished(_dialogue_id: StringName) -> void:
 			push_error("Boot : le Stockage ne s'ouvre pas sur « %s »" % _current_map_id())
 	elif _pending_daycare:
 		_pending_daycare = false
-		if _daycare.overlay == null:
-			_daycare.overlay = _ensure_tm_overlay()
 		_daycare.run()
 
 
