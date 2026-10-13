@@ -196,13 +196,13 @@ suit C-7 : un seul jalon à la fois dans le moteur de combat et la sauvegarde.
 
 | # | Question | Recommandation |
 |---|---|---|
-| **G-1** | Contrat d'entrée avec les sessions J13–J15 | **À valider tel quel, puis à transmettre à ces sessions** : `badge_cascade` obtenu avant le Passe Bateau ; objet clé `ss_ticket` (« Passe Bateau ») ; Carmin avec Centre, quai, navire amarré et **arbuste devant l'Arène** (G-5) ; rival n° 3 avec Rattata et Abra (G-7) ; donneur du Passe Bateau nommé autrement que « Léo ». Le J16 n'attend rien : en cas d'écart, c'est le contrat qui se corrige. |
+| **G-1** | Contrat d'entrée avec les sessions J13–J15 | **À valider tel quel, puis à transmettre à ces sessions** : `badge_cascade` obtenu avant le Passe Bateau ; objet clé `ss_ticket` (« Passe Bateau ») ; Carmin avec Centre, quai, navire amarré et **arbuste devant l'Arène** (G-5) ; rival n° 3 avec Rattata (G-7 ; **pas d'Abra**, correction du 2026-10-13 ci-dessous) ; donneur du Passe Bateau nommé autrement que « Léo ». Le J16 n'attend rien : en cas d'écart, c'est le contrat qui se corrige. |
 | **G-2** | Modèle de Coupe (contradiction avec le dossier 06 §11) | **C, hybride.** (A) Dossier 06 strict : la CS débloque Coupe dans le monde, utilisable si l'équipe compte un Pokémon compatible, et rien en combat. (B) Rouge/Bleu (V2) : capacité apprise, emplacement occupé, oubli interdit. (C) **La CS débloque Coupe dans le monde**, comme en A, sans emplacement ; **et** elle s'utilise comme une CT réutilisable pour l'apprendre en combat si on le veut, oubliable normalement. C respecte le dossier 06 et la décision 5, et ne demande ni capacité protégée ni Maître des capacités. F-2 devient sans objet. *Écart volontaire à Rouge/Bleu.* |
 | **G-3** | Condition de badge pour Coupe ? | **Aucune** si G-1 garantit Cascade avant le Passe Bateau : pas de règle cachée (dossier 12). Sinon, garder Cascade (Rouge/Bleu) avec une réplique claire du Pokémon qui ne peut pas encore couper. |
 | **G-4** | Arbuste coupé : repousse ou définitif ? | **Définitif** (drapeau par arbuste) : aucun blocage possible, « le monde se souvient ». *Écart volontaire* (Rouge/Bleu : repousse en quittant la carte). |
 | **G-5** | Arbuste devant l'Arène de Carmin ? | **Oui** (Rouge/Bleu) : donne à Coupe un usage immédiat et impose l'ordre navire → Arène sans garde ni texte d'excuse. Posé au J15, coupé au J16. |
 | **G-6** | Garantie anti-blocage | **Règle testée** : quel que soit le starter, au moins une espèce compatible Coupe est capturable avant Carmin. C'est déjà le cas : Dardargnan (forêt), Sabelette (Route 3), Paras (Mont Sélénite). L'arbuste explique ce qui manque (« Il faudrait un Pokémon capable de couper »), et le Centre de Carmin donne accès au stockage. |
-| **G-7** | Équipe du rival n° 4 | **Structure Rouge/Bleu** : Roucoups, Rattatac, Kadabra, starter évolué (avantage de type), soit **4 Pokémon** comme la V2. Niveaux de référence 19 / 16 / 18 / 20, recalés par simulation. Kadabra suppose un Abra au n° 3 (J13). IA `smart`. |
+| **G-7** | Équipe du rival n° 4 | **Structure Rouge/Bleu** : Roucoups, Rattatac, Kadabra, starter évolué (avantage de type), soit **4 Pokémon** comme la V2. Niveaux de référence 19 / 16 / 18 / 20, recalés par simulation. ~~Kadabra suppose un Abra au n° 3 (J13).~~ Kadabra arrive **directement** au n° 4 (correction du 2026-10-13 ci-dessous). IA `smart`. |
 | **G-8** | Règle du puzzle | **Sans hasard ni remise à zéro.** Le premier interrupteur est désigné par un indice du décor (câble, étincelle). Le second est voisin, révélé par une étincelle quand le premier est trouvé. Une erreur ne coûte rien ; l'énigme résolue reste résolue (drapeau). *Écart volontaire* (Rouge/Bleu : position tirée au sort, remise à zéro à chaque erreur). |
 | **G-9** | Budget d'espèces nouvelles au J16 | **≤ 3 espèces nouvelles** (Abra, Kadabra + au plus une de marin, par exemple Machoc ou Tentacool, si le J13–J15 ne l'apporte pas). Les Dresseurs du navire puisent dans les espèces déjà présentes à la fin du J15. Nombre de Dresseurs : **10**, dont **2 inévitables** au plus (le rival excepté). |
 | **G-10** | Que dit la confirmation de départ ? | Une phrase du marin à la passerelle, **une seule fois par tentative de sortie** une fois la CS01 obtenue : le navire part et on ne pourra plus remonter, avec les cartes **PARTIR** / **PAS ENCORE**. Avant la CS01, la sortie est libre, sans question. Textes à écrire par la consolidation. |
@@ -263,7 +263,7 @@ grandes fenêtres, lumière naturelle, pas de paquebot contemporain.
 
 | # | Décision |
 |---|---|
-| **G-1** | Contrat d'entrée **validé** tel que proposé, à transmettre aux sessions J13–J15. |
+| **G-1** | Contrat d'entrée **validé** tel que proposé, à transmettre aux sessions J13–J15. **Corrigé le 2026-10-13** (voir ci-dessous) : pas d'Abra au rival n° 3. |
 | **G-2** | **Modèle hybride.** La CS01 débloque Coupe dans le monde dès qu'un Pokémon compatible est dans l'équipe, sans occuper d'emplacement. Elle s'apprend aussi comme une CT réutilisable pour servir en combat, et s'oublie normalement. Le dossier 06 §11 et la décision 5 tiennent tous les deux. **F-2 devient sans objet.** |
 | **G-3** | **Aucune condition de badge** pour Coupe. Le contrat garantit Cascade avant le Passe Bateau. **F-1 devient** : « un Pokémon compatible dans l'équipe ». |
 | **G-4** | Arbuste coupé **définitif** (un drapeau par arbuste). *Écart volontaire à Rouge/Bleu.* |
@@ -273,6 +273,23 @@ grandes fenêtres, lumière naturelle, pas de paquebot contemporain.
 | **G-8** | **Puzzle Rouge/Bleu strict** : le premier interrupteur est tiré au hasard, le second est voisin du premier, et **toute erreur remet tout à zéro** (nouveau tirage). *Fidèle à Rouge/Bleu ; F-4 « indices plus lisibles » ne s'applique qu'à la lisibilité des objets à fouiller.* |
 | **G-9** | **≤ 3 espèces nouvelles** au J16 (Abra, Kadabra + au plus une de marin) ; **10 Dresseurs** sur le navire, dont au plus 2 inévitables (rival excepté). |
 | **G-10** | Confirmation à la passerelle, une fois la CS01 obtenue : **PARTIR** / **PAS ENCORE**. Avant la CS01, sortie libre. |
+
+**Correction du contrat d'entrée (Kevin, 2026-10-13, demandée depuis la session du J13)** :
+- Le J13 garde son arbitrage **D-6** (validé par Kevin le 2026-10-11) : le rival n° 3 (Pont Pépite) a
+  **Roucoups Nv. 18, Rattata Nv. 15, starter évolué Nv. 17**, **sans Abra** (un Abra n'aurait que
+  Téléport, inutile en combat de Dresseur, contraire à « le rival progresse »). Le J13 reporte Abra et
+  la règle des évolutions par échange au J14 (**D-9**).
+- Conséquence pour le J16 : **Kadabra arrive directement** dans l'équipe du rival n° 4 (il l'a attrapé
+  et fait évoluer entre Azuria et Carmin, comme au S.S. Anne de Rouge/Bleu). G-7 inchangé sur le fond
+  (Roucoups, Rattatac, Kadabra, starter évolué ; Kadabra sans Entrave, capacités choisies à la main).
+- G-9 : le budget « Abra, Kadabra » reste valable ; Abra n'est à créer au J16 que si le J14 ne l'a pas
+  déjà apporté (données et Pokédex d'Abra nécessaires pour Kadabra).
+- Reste conforme : `badge_cascade` (J13) et le **Rattata** du rival présent dès le n° 3, avant
+  Lavanville.
+- Contrat de sortie du J13 : `docs/tech/jalon-13.md` §7 bis (branche `jalon-13`).
+- **Numéro de dossier** : `dossier-16-azuria.md` est déjà pris par le J13 (branches
+  `docs/dossier-16-j13` et `jalon-13`, depuis le 2026-10-11) ; le dossier du J16 doit prendre un autre
+  numéro libre au moment de sa création.
 
 **Valeurs par défaut prises pour G-8 (règle 4, à corriger si besoin)** :
 - les interrupteurs se cachent dans des **objets à fouiller bien lisibles** (poubelles / armoires
