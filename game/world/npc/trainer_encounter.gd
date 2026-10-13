@@ -16,6 +16,15 @@ extends RefCounted
 ## 7. sinon (défaite du joueur), réveil au dernier point de repos : rien n'est retiré, le
 ##    Dresseur n'est pas battu et redéfiera (dossier 10 §15).
 ## Défié à la parole (distance 0) : ni « ! » ni approche, étapes 3 à 7.
+## Jalon 12 (jalon-12.md §2.11), deux clés facultatives du bloc « trainer » ; sans elles, la
+## séquence est **identique** à celle des jalons 9 et 10 :
+## - réplique de reprise ([member NpcSpec.rematch_dialogue]) : l'étape 4 devient deux étapes
+##   conditionnelles — « avant » `unless lost_<id>`, « reprise » `if lost_<id>` (conditions
+##   évaluées au moment de jouer) — et la défaite du joueur lève `lost_<id>` ;
+## - départ ([member NpcSpec.leaves]) : après la réplique de l'étape 6, et seulement s'il est
+##   battu, il marche vers chaque case de [method NpcSpec.get_leave_path_cells] (chemin
+##   calculé) puis s'efface (« despawn », fondu). L'entrée de données porte
+##   `unless beaten_<id>` : il n'est plus là au retour.
 
 ## Bulle de l'étape 1.
 const EXCLAMATION: StringName = &"exclamation"
@@ -66,12 +75,16 @@ static func build(npc_id: StringName, spec: NpcSpec, distance: int) -> CutsceneV
 	var battle := _step(CutsceneStep.Kind.BATTLE)
 	battle.trainer_id = spec.trainer_id
 	battle.win_flags = [beaten]
+	if spec.has_rematch():
+		_add_rematch(spec, before, battle, steps)
 	steps.append(battle)
 	var after := _step(CutsceneStep.Kind.DIALOGUE)
 	after.dialogue_id = spec.dialogue if spec.defeated_dialogue.is_empty() \
 		else spec.defeated_dialogue
 	after.if_flags = [beaten]
 	steps.append(after)
+	if spec.leaves:
+		_add_leave(npc_id, spec, steps)
 	var wake_up := _step(CutsceneStep.Kind.WAKE_UP)
 	wake_up.unless_flags = [beaten]
 	steps.append(wake_up)
@@ -83,3 +96,30 @@ static func _step(kind: CutsceneStep.Kind, actor: StringName = &"") -> CutsceneS
 	step.kind = kind
 	step.actor = actor
 	return step
+
+
+## Jalon 12 : réplique de reprise, ajoutée juste après « avant » (dans [param steps]) :
+## « avant » n'est dite que sans `lost_<id>`, « reprise » seulement avec ; la défaite lève
+## `lost_<id>` ([param battle], ajouté ensuite par l'appelant).
+static func _add_rematch(spec: NpcSpec, before: CutsceneStep, battle: CutsceneStep,
+		steps: Array[CutsceneStep]) -> void:
+	var lost := TrainerRules.lost_flag(spec.trainer_id)
+	before.unless_flags = [lost]
+	battle.lose_flags = [lost]
+	var rematch := _step(CutsceneStep.Kind.DIALOGUE)
+	rematch.dialogue_id = spec.rematch_dialogue
+	rematch.if_flags = [lost]
+	steps.append(rematch)
+
+
+## Jalon 12 : départ du Dresseur battu (marche vers ses cases, puis fondu de sortie).
+static func _add_leave(npc_id: StringName, spec: NpcSpec, steps: Array[CutsceneStep]) -> void:
+	var beaten := TrainerRules.beaten_flag(spec.trainer_id)
+	for cell: Vector2i in spec.get_leave_path_cells():
+		var walk := _step(CutsceneStep.Kind.MOVE, npc_id)
+		walk.cell = cell
+		walk.if_flags = [beaten]
+		steps.append(walk)
+	var despawn := _step(CutsceneStep.Kind.DESPAWN, npc_id)
+	despawn.if_flags = [beaten]
+	steps.append(despawn)

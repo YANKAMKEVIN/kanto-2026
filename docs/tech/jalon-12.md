@@ -202,6 +202,15 @@ aucune ne touche au game design.
     une référence J11 de la même session et du même téléphone** (§2.21) ; l'instabilité connue
     n'est pas une régression du J12 (relance seule, comme au T8).
 
+13. **Forme de `leave` (T17, 2026-10-13).** Le §2.11 disait « liste de cases (chemin relatif, 0 à
+    4 pas) ». Un chemin en **directions** depuis la case où le Dresseur s'arrête ne permet pas à R3
+    de « rentrer dans sa niche » : le nombre de pas de retour dépend de la distance à laquelle il a
+    vu le joueur. → `leave` = 0 à 4 **cases relatives à sa case de départ** (`NpcSpec.cell`), une
+    étape `move` à destination (`cell`, chemin calculé par `GridWorld.find_path`) par case, puis
+    `despawn`. Nom de clé figé inchangé ; aucune autre session ne l'utilise encore (vérifié sur
+    `jalon-13/14/15`). `lost_<id>` n'est levé que pour un Dresseur qui a `rematch` (compatibilité
+    stricte : la défaite contre un Dresseur du J9–J10 ne laisse toujours aucune trace).
+
 ---
 
 ## 1. Découpage
@@ -481,6 +490,7 @@ Modèle du J8 (PNJ `object/poke_ball_ground`, verbe PRENDRE, scène `despawn` �
 - **Bloc `trainer` étendu** (`NpcSpec`, `NpcRoster`, `TrainerEncounter.build`), deux clés facultatives — sans elles, la séquence du J9/J10 est **identique** (tests des Dresseurs de la forêt et de Liam inchangés) :
   - **`rematch`** : réplique dite à la place de « avant » si `lost_<id>` est levé ; l'étape `battle` reçoit `lose_flags = [lost_<id>]` (seulement si `rematch` existe). `TrainerEncounter.build(npc_id, spec, distance)` ne voit pas les drapeaux : il pose **deux** étapes `dialogue`, « avant » avec `unless_flags = [lost_<id>]` et « reprise » avec `if_flags = [lost_<id>]` (conditions d'étape existantes, J4B, évaluées au moment de jouer) ; clés ajoutées **en fin** de `NpcRoster.TRAINER_KEYS` (le J14 ajoute `moved` à une autre liste de `npc_spec.gd`) ;
   - **`leave`** : liste de cases (chemin relatif, 0 à 4 pas) ; après la réplique « vaincu » (`defeated`, J10) : `move` sur ce chemin puis `despawn` (fondu 0,2 s) ; chemin vide = s'efface sur place. L'entrée de PNJ porte `unless: [beaten_<id>]` (absent au rechargement).
+    **Forme livrée (T17, §0.4 n° 13)** : `"leave": [[dx, dy], …]` = 0 à 4 cases **relatives à la case de départ** du Dresseur (chaque composante dans ±8, case absolue ≥ 0), chacune rejointe par un `move` à destination (`cell`, chemin calculé) : `[[0, 0]]` = retour à son poste quelle que soit la distance de l'approche (R3 → sa niche) ; `[]` = fondu sur place (R1) ; une case injoignable = étape sautée (`push_error` du directeur), le fondu a lieu quand même. Le lecteur **refuse** `leave` sans `"unless": ["beaten_<id>"]` dans l'entrée.
 - **Sbires** : R1 (14, 1) ↓, vision 5, `before` « Hé, toi !… », `defeated` « Tch… Je préviens les autres. », `rematch` « Encore toi ? Demi-tour. », `leave` vide (niche) ; R2 (8, 20) →, vision 2, apparence `sbire_f` en attente « creuse », `leave` vers la tranchée ; R3 (29, 24) ←, vision 4, `before` = les 3 bulles du §20 n° 18, `defeated`, `rematch`, `leave` vers la niche (29, 24) → effacé ; décor de combat « chambre » (§2.18).
 - **Défaite du joueur** : réveil au dernier Centre (`wake_up`, existant) ; le Sbire reste ; reprise par `rematch`.
 - **Tests** : `test_trainer_encounter` (rematch, leave, absent, compatibilité ascendante), `test_npc_roster` ; intégration `test_route_3_trainers` (D1, D2 inévitables et D3–D6 évitables sur la **vraie scène avec ses PNJ**, recherche de chemin hors des lignes de vue), `test_mt_moon_rocket` (R1, R3 inévitables, R2 évitable ; départ puis absence au rechargement ; défaite → reprise).
@@ -645,7 +655,7 @@ fichier commun). Dès T12 fusionné : **T13 ∥ T20** (combat contre grotte, auc
 #### T16 — qa-mobile : **session 12.0** → Kevin
 - Départ `moves_qa` : chaque effet vu (drain, piège et ses refus, Entrave et sa fin, Repos et réveil, Destruction, double K.O., Sonicboom), messages lisibles, IA ; espèces dans le Pokédex ; mesure de référence Route 1 (§2.21). **CA** : rapport `build/qa/jalon12_t16/` ; validation de Kevin.
 
-#### T17 — architecte : briques du monde — après T11 (∥ T12) — **à lancer**
+#### T17 — architecte : briques du monde — après T11 (∥ T12) — **fait (2026-10-13, `j12-t17-monde`)** : détail au §9
 - §2.8 (`unless_flags` : `interact_point.gd`, `interaction.gd`, `interaction_controller.gd`), §2.11 (`rematch`, `leave`, `lost_<id>` : `npc_spec.gd`, `npc_roster.gd`, `trainer_encounter.gd`). **CA** : tests verts ; Dresseurs du J9 et du J10 inchangés (`test_trainer_encounter`, Dresseurs de la forêt, Liam).
 
 #### T18 — constructeur-monde : la vie de la Route 3 (12A) — après T12, T17 (T8 fait)
@@ -740,7 +750,7 @@ fichier commun). Dès T12 fusionné : **T13 ∥ T20** (combat contre grotte, auc
 | Corde Sortie | AVENTURE, 550 ₽ à Argenta sans condition, 1 au 1F ; vers `route_3` / `from_mt_moon_w` tourné ↓ ; refus dans le bandeau du Sac |
 | Pierre Lune | AVENTURE (« OBJETS » n'existe pas), jamais vendue ; K.O. compatible ; retour au monde après l'évolution ; `StoneUse.Check` à deux états ; `cancellable` vrai par défaut ; pierre retirée par Boot dans `evolution_applied` |
 | Objets cachés | point d'examen sur la case-indice, disparaît une fois trouvé ; aucune phrase, toast standard ; EXAMINER face à l'indice (Q-2) |
-| Sbires | départ : chemin `leave` puis fondu 0,2 s, sur place si impossible ; reprise par `lost_<id>` |
+| Sbires | départ : cases `leave` relatives au poste (0 à 4, chemin calculé) puis fondu 0,2 s, sur place si `[]` ou injoignable ; `leave` exige `unless beaten_<id>` ; reprise par `lost_<id>` (posé seulement si `rematch` existe) |
 | Chercheur | déclencheur au bas du couloir (25..26, 27) ; s'approche du joueur ; se range en (15, 30) |
 | Fossiles | deux objets sur la dalle, choix par EXAMINER ; toast « <fossile> » / « obtenu » par le champ d'objet `obtained` (forme des CT) ; drapeaux `mt_moon_fossil_chosen`, `mt_moon_got_<fossile>` |
 | Effets de capacités | drain ½ (≥ 1) ; piège 4–5 tours, ⅛, après poison et Vampigraine ; Entrave 4 tours, échec sans capacité précédente ; Repos : `status_turns = 2` sans tirage (`StatusRules.apply_rest`), manque 2 tours ; Destruction : K.O. même en ratant, double K.O. perdu par le lanceur ; IA `smart` : Destruction à ≤ ¼ PV ; volatils sur le `Battler` ; Entrave filtrée dans `Battler.usable_moves()` ; fuite et changement refusés quand piégé **sans tour perdu** (G+) ; Sonicboom : `fixed_damage` mode `value`, 20 |
@@ -783,6 +793,36 @@ Questions telles que posées :
 
 ## 9. Fait
 
+- **T17 — briques du monde (2026-10-13, architecte, branche `j12-t17-monde` depuis `jalon-12` à
+  `e079176`)** — code pur, aucun fichier de données du jeu touché (T12 en parallèle) :
+  - **Objets cachés (§2.8)** : `InteractPoint.unless_flags: Array[StringName]` (export en fin),
+    recopié (copie indépendante) dans `Interaction.unless_flags` par `to_interactions()` ;
+    `Interaction.is_available(flags: StoryFlags) -> bool` (sans allocation ; null ou liste vide =
+    disponible) ; `InteractionController._process` écarte une cible indisponible (bouton masqué).
+    `InteractionFinder` et `InteractionTable` inchangés. Q-2 appliqué : EXAMINER face à l'indice,
+    rien d'autre.
+  - **Dresseurs (§2.11)** : `NpcRoster.TRAINER_KEYS += ["rematch", "leave"]` (en fin) ;
+    `NpcSpec.rematch_dialogue`, `leave_cells: Array[Vector2i]`, `leaves: bool`,
+    `LEAVE_STEPS_MAX = 4`, `has_rematch()`, `get_leave_path_cells()` ;
+    `NpcRoster._read_trainer_j12` (appelé en fin de `_read_trainer`) et `NpcRoster.is_offset` ;
+    `TrainerRules.LOST_PREFIX`, `lost_flag(id)` ; `TrainerEncounter.build` : avec `rematch`,
+    « avant » `unless lost_<id>` + « reprise » `if lost_<id>` + `lose_flags = [lost_<id>]` ; avec
+    `leave`, après la réplique « vaincu » : un `move` à destination par case puis `despawn`, tous
+    `if beaten_<id>`. Forme de `leave` : §0.4 n° 13.
+  - **Compatibilité ascendante prouvée** : `test_trainer_encounter`, `test_npc_roster`,
+    `test_trainer_watcher`, Dresseurs de la forêt, Liam, Pierre **non modifiés et verts** ; test
+    nouveau qui reconstruit **tous** les Dresseurs de `data/npcs/` (distances 0, 1, vision) et
+    vérifie la séquence du J9–J10 exacte, sans `lost_`, « avant » sans condition.
+  - **Tests** (28 nouveaux) : `tests/unit/test_interaction_unless.gd` (5),
+    `tests/unit/test_trainer_rematch_leave.gd` (13), `tests/integration/test_hidden_item_point.gd`
+    (5 : vrai contrôleur, joueur, DialogueRunner ; quatre côtés, dos / côté, examiné → drapeau →
+    plus de cible, rechargé), `tests/integration/test_trainer_rematch_leave.gd` (5 : vrai
+    `TrainerWatcher` + `CutsceneDirector` ; marche réelle case par case puis fondu, absent au
+    rechargement, défaite → reprise, fondu sur place, témoin J9) ; fixture
+    `tests/fixtures/npcs/rocket_map.json`. Le test sur **Boot réel** (`test_hidden_items`) reste au
+    T18 / T21 avec les vraies caches, comme le plan le prévoit.
+  - Import propre ; `tools/test.sh` : **3 984 tests, 3 984 verts** (292 scripts, 156 430
+    assertions, 800 s).
 - **T12 — données du J12 (2026-10-13, architecte, branche `j12-t12-donnees` depuis `jalon-12`
   à `e079176`)** — données, outils de génération et tests ; aucun moteur, aucune carte, aucun PNJ :
   - **12 espèces** `data/pokemon/species/kanto_mt_moon.json` (PokeAPI : statistiques, taux de
