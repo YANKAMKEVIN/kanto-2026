@@ -254,6 +254,22 @@ aucune ne touche au game design.
       `BattleBeat.Kind.HP` (fin d'enum : la barre seule), `BattlePlayback` (DRAINED_HP → HP ;
       RESTED → HP, STATUS_TAG ; TRAP_DAMAGED et SELF_KO → DAMAGE), `BattleDirector` (le temps HP ;
       l'étiquette « DOR » posée par RESTED). Rien d'autre de l'interface (T14).
+16. **Interface du T14 (2026-10-13) : écarts et défauts** (règle 4) :
+    - **Fichiers** : en plus de ceux cités par la tâche, `game/battle/battle_views.gd` (la raison
+      « piégé » est calculée là où sont déjà les autres raisons, `party()` ; fonction nouvelle en
+      fin, `player_moves()`) et `battle_move_view.gd` (`blocked`, `blocked_text`, en fin).
+      **Aucun accesseur ajouté à `Battle`** (`get_disabled_move`, `is_player_trapped` suffisent).
+    - **Carte bloquée** : fond gris neutre `MOVE_CARD_BLOCKED_BG` (pas la teinte du type), liseré
+      `MOVE_CARD_BLOCKED_BORDER`, atténuation `MOVE_CARD_DISABLED` (comme une carte sans PP),
+      **cadenas** (`assets/ui/icons/battle/lock.svg`) à la place de l'icône du type, « BLOQUÉE »
+      en gras blanc à la place de la puissance ; nom, PP (blancs) et pastille du type restent ;
+      inerte au toucher, à la pression longue (pas de fiche) et au clavier.
+    - **Piégé** : les cartes envoyables portent « Impossible de changer » (ENVOYER caché, pied rouge
+      au toucher, tremblement : comportement existant des refus) ; le remplacement après un K.O.
+      n'est pas concerné. FUITE : « Impossible de fuir ! » dans le bandeau (tenue normale), aucune
+      action soumise, la grille revient ; aucune vibration de refus (défaut).
+    - **Icône Fée** : `assets/ui/icons/types/fairy.svg`, étincelle à quatre branches et deux
+      petites, blanche pleine comme les 14 autres ; utilisée partout via `TypeBadge.ICONS`.
 
 ---
 
@@ -837,6 +853,31 @@ Questions telles que posées :
 
 ## 9. Fait
 
+- **T14 — interface de combat du J12 (2026-10-13, ui-mobile, branche `j12-t14-interface` depuis
+  `jalon-12` à `b7d6d88`)** — §2.10 (interface), annexe A.4 ; écarts et défauts : §0.4 n° 16.
+  - **Entrave** : `BattleMoveView.blocked` / `blocked_text` ; `BattleViews.player_moves(battle,
+    data, texts)` marque l'emplacement de `Battle.get_disabled_move()` (« BLOQUÉE »,
+    `move_disabled_label`) ; `MoveCard` grisée, cadenas, inerte (`is_blocked()`) ; `MoveGrid` la
+    saute au clavier. Le directeur appelle `player_moves`.
+  - **Piège** : `BattleViews.party` → « Impossible de changer » (`switch_reason_trapped`) sur
+    les cartes envoyables si `Battle.is_player_trapped()` (hors remplacement) ;
+    `BattleDirector._choose_action` : FUITE piégé → `flee_failed` dans le bandeau, **rien de
+    soumis** (plus de `push_error` de `submit`), la grille revient.
+  - **Fée** : `TypeBadge.ICONS[&"fairy"]` (`assets/ui/icons/types/fairy.svg`) : pastilles de
+    combat (cartes de capacité, ÉQUIPE), Équipe et Pokédex.
+  - Jetons en fin de `ui_tokens.gd` : `MOVE_CARD_BLOCKED_BG`, `MOVE_CARD_BLOCKED_BORDER`,
+    `MOVE_CARD_BLOCKED_TEXT`.
+  - **Tests** (14 nouveaux, 3 fichiers) : `test_battle_views_j12` (5 : textes validés, équipe
+    libre inchangée, piégé, remplacement après K.O. libre, capacité bloquée),
+    `test_battle_ui_j12` (8 : carte grisée / cadenas / « BLOQUÉE » / PP non rouges, toucher et
+    pression longue sans effet, clavier, carte débloquée au show suivant, icône Fée, pastille
+    FÉE, carte d'une capacité Fée, types des 10 espèces du J12), `test_battle_director_j12`
+    (1 : vrai directeur, FUITE piégé = bandeau « Impossible de fuir ! » sans tour ni erreur,
+    ÉQUIPE « Impossible de changer », capacité bloquée grisée puis l'autre jouée).
+  - **Captures** (2340 × 1080, `tools/capture_combat_t14.gd`, relues) :
+    `build/captures/jalon12_t14/2340_{blocked_move,flee_refused,team_trapped,team_refused,
+    menu_team,dex_sheet}.png`.
+  - Import propre ; `tools/test.sh` : **4 099 tests, 4 099 verts** (310 scripts, 794 s).
 - **T13 — moteur de combat du J12 (2026-10-13, architecte, branche `j12-t13-combat` depuis
   `jalon-12` à `ac3e0ad`)** — §2.10, alignement §0.4 n° 1–3, 8, 11 ; lectures du §0.4 n° 15 :
   - **Genres** (`MoveEffect.Kind`, **en fin d'enum, dans l'ordre figé**) `DRAIN TRAP DISABLE REST

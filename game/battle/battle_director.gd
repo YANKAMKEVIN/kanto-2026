@@ -355,7 +355,9 @@ func get_forget_panel() -> MoveForgetPanel:
 
 ## Coroutine : propose [param actions] (grille), attend le choix du joueur, renvoie l'action à
 ## soumettre. ATTAQUER sans PP → Lutte directement (règle des jeux) ; sinon les capacités,
-## « ‹ » revient. FUITE (si [param can_flee], sauvage) → une action de fuite ([BattleAction.run]).
+## « ‹ » revient (la capacité bloquée par Entrave est grisée, inerte). FUITE (si
+## [param can_flee], sauvage) → une action de fuite ([BattleAction.run]) ; piégé : « Impossible de
+## fuir ! » dans le bandeau, sans rien soumettre, puis la grille revient.
 ## SAC (si la grille le permet et qu'une Ball ou un soin est utilisable) → le Sac de combat :
 ## une Ball choisie → [BattleAction.ball], un soin → [BattleAction.heal] ; « ‹ » revient ici
 ## sans rien consommer. ÉQUIPE (si la grille le permet) → le panneau ÉQUIPE : ENVOYER →
@@ -365,6 +367,11 @@ func _choose_action(actions: Dictionary[StringName, bool], can_flee: bool) -> Ba
 		_hud.show_actions(actions)
 		var action: StringName = await _hud.action_selected
 		if action == ActionGrid.RUN and can_flee:
+			# Piégé (jalon 12) : « Impossible de fuir ! », rien n'est soumis, aucun tour perdu.
+			if _battle.is_player_trapped():
+				await _hud.show_message(_texts.get_template(&"flee_failed") if _texts != null
+					else "")
+				continue
 			return BattleAction.run()
 		if action == ActionGrid.BAG and actions.get(ActionGrid.BAG, false) \
 				and (_battle.can_use_balls() or _battle.can_use_heal_items()):
@@ -384,8 +391,7 @@ func _choose_action(actions: Dictionary[StringName, bool], can_flee: bool) -> Ba
 		var usable := _battle.get_usable_moves()
 		if usable.is_empty():
 			return BattleAction.move(BattleAction.STRUGGLE)
-		var lead := _battle.get_player_side().active.pokemon
-		_hud.show_moves(BattleViews.moves(lead, _data))
+		_hud.show_moves(BattleViews.player_moves(_battle, _data, _texts))
 		var index := await _await_move_or_back()
 		if index < 0:
 			continue
