@@ -1,0 +1,7 @@
+{
+	"mt_moon_b1f_ball_2": {
+		"cell": [16, 21], "facing": "down", "sprite": "object/poke_ball_ground",
+		"dialogue": "mt_moon_b1f_ball_2", "verb": "take", "turn_to_player": false,
+		"unless": ["got_mt_moon_b1f_item_2"]
+	}
+}

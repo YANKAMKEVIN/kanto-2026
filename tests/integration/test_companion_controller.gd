@@ -150,9 +150,9 @@ func test_a_fainted_companion_stays_chosen_but_hidden() -> void:
 
 func test_choice_cleared_silently_when_deposited_or_evolved_into_a_species_without_sheet() -> void:
 	await _send_out_and_step()
-	# Évolution en espèce sans planche (Reptincel avant le lot d'art) : rentre en silence.
+	# Évolution en espèce sans planche (Dracaufeu) : rentre en silence.
 	_companion.on_battle_started()
-	_lead.species_id = &"charmeleon"
+	_lead.species_id = &"charizard"
 	_companion.on_battle_finished(false)
 	assert_eq(GameState.companion_uid, "", "choix effacé (A-11)")
 	assert_false(_companion.is_shown())

@@ -77,6 +77,8 @@ const MAPS: Array[StringName] = [
 	&"pewter_house_mason", &"pewter_house_researcher",
 	# Jalon 10 (T11) : la Route 2 nord et Argenta (extérieur).
 	&"route_2_north", &"pewter_city",
+	# Jalon 12 (T21) : le Mont Sélénite (1F, B1F ; B2F au T25).
+	&"mt_moon_1f", &"mt_moon_b1f",
 ]
 ## Lot de textes validé par Kevin le 2026-10-06 (anciens brouillons : panneau, observations,
 ## soin de Maman, terminal du Stockage, portes de Jadielle…) : source des textes hors dossiers.
@@ -100,7 +102,11 @@ const IDS: Array[StringName] = [
 	&"forest_scout_theo_after", &"forest_scout_theo_before", &"forest_youngster_tom_after",
 	&"forest_youngster_tom_before",
 	&"haru", &"leo", &"maya", &"mom",
-	&"mom_wakeup", &"nurse", &"nurse_wakeup",
+	&"mom_wakeup",
+	# Jalon 12 (T21) : la vie du Mont Sélénite (dossier 15 §20 n° 12–15, objets).
+	&"mt_moon_1f_ball_1", &"mt_moon_1f_crate", &"mt_moon_1f_hidden_1", &"mt_moon_1f_hiker",
+	&"mt_moon_1f_lamp", &"mt_moon_1f_sign", &"mt_moon_b1f_ball_2",
+	&"nurse", &"nurse_wakeup",
 	&"oak_after_battle",
 	&"oak_lab_exit_block", &"oak_lab_reunion", &"oak_lab_waiting", &"oak_parcel_records",
 	&"oak_parcel_rival", &"oak_parcel_rival_dex", &"oak_poke_balls", &"oak_poke_balls_intro",
@@ -373,8 +379,9 @@ func test_every_condition_flag_is_set_somewhere() -> void:
 			&"route_2_hiker_talked", &"route_2_youngster_talked", &"storage_terminal_seen",
 			&"viridian_old_man_talked"]
 		as Array[StringName])
-	assert_eq(_cutscenes.get_set_flags(), [&"badge_boulder", &"brock_met", &"got_oak_parcel",
-		&"got_potion_route_1",
+	assert_eq(_cutscenes.get_set_flags(), [&"badge_boulder", &"brock_met",
+		&"got_mt_moon_1f_hidden_1", &"got_mt_moon_1f_item_1", &"got_mt_moon_b1f_item_2",
+		&"got_oak_parcel", &"got_potion_route_1",
 		&"got_route_2_item_1", &"got_route_2_item_2", &"got_route_2_item_3",
 		&"got_route_2_item_4", &"got_route_2_north_item_1", &"got_viridian_forest_item_1",
 		&"got_viridian_forest_item_2",
@@ -588,7 +595,9 @@ func test_texts_are_the_dossier_02_texts_word_for_word() -> void:
 			or dossier_12.contains(_as_dossier_10(text))
 			or lot_j10.contains("| « %s » |" % text.replace("\n", "\\n"))
 			or _each_line_quoted(dossier_14, text)
-			or dossier_15.contains(" : « %s »" % text),
+			or dossier_15.contains(" : « %s »" % text)
+			# J12 (T21) : bulles suivantes (« / ») et panneaux sur deux lignes du §20.
+			or _each_line_quoted(dossier_15, text),
 			"%s : « %s » dans un dossier de conception" % [row[0], text])
 
 
@@ -641,6 +650,9 @@ func test_speakers_and_narration() -> void:
 		&"route_2_youngster": ["Jeune Dresseur", false], &"route_2_dense_tree": ["", true],
 		&"route_2_closed_gate": ["", true], &"route_2_item_3_found": ["", true],
 		&"route_2_item_4_found": ["", true],
+		# Jalon 12 (T21) : panneau sans locuteur, examens du camp en narration.
+		&"mt_moon_1f_sign": ["", false], &"mt_moon_1f_crate": ["", true],
+		&"mt_moon_1f_lamp": ["", true], &"mt_moon_1f_hiker": ["Randonneur", false],
 	}
 	for id: StringName in expected:
 		var dialogue := _library.get_dialogue(id)
@@ -736,8 +748,10 @@ func test_oak_parcel_lines() -> void:
 					id, variant.cutscene])
 	# La scène du colis ; jalon 8 : les deux objets visibles de la Route 2 (PRENDRE) ; jalon 9 :
 	# les trois de la Forêt de Jade ; jalon 10 : la Potion de la Route 2 nord et Pierre.
-	# Jalon 11 : la remise tardive de la CT34 par Pierre.
-	assert_eq(launched, 9, "la scène du colis, six objets au sol, Pierre et sa CT34")
+	# Jalon 11 : la remise tardive de la CT34 par Pierre. Jalon 12 (T21) : la Corde Sortie et
+	# la Potion au sol du Mont Sélénite, le Réveil caché (examen de l'indice).
+	assert_eq(launched, 12,
+		"la scène du colis, huit objets au sol, un caché, Pierre et sa CT34")
 	# Le jeton n'apparaît que dans la réplique de l'espèce (et « {pokemon} » dans les phrases du
 	# compagnon, J11).
 	for row: Array in _pages():
