@@ -28,6 +28,11 @@
 		"variants": [
 			{
 				"if": ["badge_boulder"],
+				"unless": ["tm34_received"],
+				"cutscene": "pewter_gym_brock_tm_late"
+			},
+			{
+				"if": ["badge_boulder"],
 				"pages": [
 					"Un autre Dresseur de Bourg Palette\nest passé récemment.",
 					"Vous avez des façons de combattre\ntrès différentes."
@@ -60,5 +65,17 @@
 	"pewter_gym_brock_lost": {
 		"speaker": "Pierre",
 		"pages": ["Une équipe solide ne suffit pas.\nReviens avec une autre approche."]
+	},
+	"pewter_gym_brock_tm": {
+		"speaker": "Pierre",
+		"pages": ["Prends ceci aussi."]
+	},
+	"pewter_gym_brock_tm_late": {
+		"speaker": "Pierre",
+		"pages": ["J'allais oublier.", "Ceci devrait t'être utile."]
+	},
+	"pewter_gym_brock_tm_use": {
+		"speaker": "Pierre",
+		"pages": ["Avec Patience, ton Pokémon encaisse,\npuis rend les coups au double."]
 	}
 }

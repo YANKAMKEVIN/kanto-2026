@@ -77,6 +77,10 @@ signal storage_shown(view: StorageView)
 signal storage_refused(place: int, index: int, text: String)
 ## LIBÉRER permis : la confirmation (LIBÉRER / ANNULER) est à montrer.
 signal storage_release_asked(view: ChoiceView, place: int, index: int)
+## CT (jalon 11, T12) : le Pokémon [param index] apprend la capacité de [param item_id] ; Boot
+## joue le déroulé « apprendre / oublier » par-dessus le menu, puis rappelle
+## [method finish_tm_learn].
+signal tm_learn_requested(index: int, item_id: StringName)
 
 var _state: Object
 var _data: PokemonData
@@ -107,6 +111,8 @@ var _settings: GameSettings
 var _device_quality: GameSettings.Graphics = GameSettings.Graphics.HIGH
 var _can_save: bool = false
 var _shops: ShopLibrary
+## Espèces éligibles au compagnon (jalon 11) ; null = aucun bouton FAIRE SORTIR.
+var _companions: CompanionCatalog
 ## Boutique affichée et son onglet (de session).
 var _shop_id: StringName = &""
 var _shop_mode: StringName = ShopViews.MODE_BUY
@@ -381,6 +387,33 @@ func toggle_favorite(index: int) -> bool:
 	return true
 
 
+## Espèces éligibles au compagnon (jalon 11, Boot) : bouton FAIRE SORTIR / RAPPELER de l'Équipe.
+func set_companions(catalog: CompanionCatalog) -> void:
+	_companions = catalog
+
+
+## FAIRE SORTIR / RAPPELER (jalon 11, dossier 14 §8.1) sur le Pokémon [param index] : le
+## compagnon actuel est rappelé (aucun compagnon) ; un autre Pokémon éligible devient le
+## compagnon (un seul). Faux si la place n'existe pas ou si l'espèce n'est pas éligible. Le
+## monde suit à la fermeture du menu (sortie ou rentrée dans la Ball).
+func toggle_companion(index: int) -> bool:
+	if _state == null:
+		return false
+	var pokemon: Pokemon = _state.party.get_at(index)
+	if pokemon == null:
+		return false
+	match TeamViews.companion_action(pokemon, _companions, _state.get(&"companion_uid")):
+		PokemonSheetView.CompanionAction.RECALL:
+			_state.call(&"set_companion", null)
+		PokemonSheetView.CompanionAction.SEND_OUT:
+			_state.call(&"set_companion", pokemon)
+		_:
+			return false
+	mark_changed()
+	_emit_team()
+	return true
+
+
 ## Retient le Pokémon sélectionné de l'Équipe (informatif : l'écran change de fiche seul).
 func select_member(index: int) -> void:
 	if _state != null:
@@ -432,6 +465,12 @@ func use_item_on(item_id: StringName, index: int) -> bool:
 	var pokemon: Pokemon = _state.party.get_at(index)
 	if item == null or pokemon == null:
 		return false
+	if item.is_tm():
+		# CT : jamais consommée ; un Pokémon non COMPATIBLE est déjà refusé par le choix.
+		if TmTeach.check(pokemon, item, _data) != TmTeach.Check.COMPATIBLE:
+			return false
+		tm_learn_requested.emit(index, item_id)
+		return true
 	var result := ItemUse.apply(_state.bag, item, pokemon, _bag_context)
 	_repeat_item = item_id
 	_repeat_index = index
@@ -444,6 +483,21 @@ func use_item_on(item_id: StringName, index: int) -> bool:
 			_data, index))
 	_emit_bag()
 	return result.is_ok()
+
+
+## Fin du déroulé d'une CT ([signal tm_learn_requested]) : la partie a changé si la capacité a
+## été apprise (autosave à la fermeture) ; le choix du Pokémon et le Sac sont réémis (le Pokémon
+## passe à « DÉJÀ CONNUE »).
+func finish_tm_learn(index: int, item_id: StringName, learned: bool) -> void:
+	if _state == null or _items == null:
+		return
+	if learned:
+		mark_changed()
+	var item := _items.get_item(item_id)
+	if item != null:
+		bag_targets_shown.emit(BagQuery.targets(_state.party, _state.bag, item, _bag_context,
+			_data, index))
+	_emit_bag()
 
 
 ## UTILISER À NOUVEAU : même objet, même Pokémon.
@@ -562,7 +616,8 @@ func _emit_settings() -> void:
 
 
 func _emit_team() -> void:
-	var view := TeamViews.build(_state.party, _data, _zones, _state.pokedex, _unlocks)
+	var view := TeamViews.build(_state.party, _data, _zones, _state.pokedex, _unlocks,
+		_companions, _state.get(&"companion_uid"))
 	_team_selected = TeamViews.clamp_selection(_team_selected, view.size())
 	team_shown.emit(view, _team_selected)
 

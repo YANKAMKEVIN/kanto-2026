@@ -535,6 +535,94 @@ func test_poison_veil_is_softer_when_flashes_are_reduced() -> void:
 	_stage.speed_scale = 0.0
 
 
+# --- Effets de statut (jalon 11, T7) ----------------------------------------------------------
+
+## Chaque effet se pose au-dessus du sprite, sans toucher à son matériau ni à sa teinte (leçon du
+## J9 × CB.1) ; le gel copie le sprite teinté par-dessus.
+func test_status_effects_sit_above_the_sprite_without_touching_it() -> void:
+	await _enter()
+	for side: BattleEvent.SideId in [PLAYER_SIDE, FOE_SIDE]:
+		var sprite := _stage.get_sprite(side)
+		var material := sprite.material
+		var aura := _stage.get_status_aura(side)
+		assert_not_null(aura)
+		assert_eq(aura.get_parent(), sprite.get_parent())
+		assert_gt(aura.get_index(), sprite.get_index(), "dessiné après le sprite : au-dessus")
+		var rect := aura.get_target_rect()
+		var expected := _stage.get_sprite_rect(side)
+		assert_lt(rect.position.distance_to(expected.position), 8.0,
+			"l'effet suit la boîte visible du sprite (offset arrondi)")
+		assert_lt(rect.size.distance_to(expected.size), 1.0)
+		for status: StringName in StatusRules.KNOWN:
+			_stage.set_status(side, status)
+			await wait_process_frames(1)
+			assert_eq(aura.get_status(), status)
+			assert_eq(aura.is_ice_shown(), status == StatusRules.FREEZE, String(status))
+			assert_eq(sprite.material, material, "%s : matériau du sprite intact" % status)
+			assert_eq(sprite.modulate, Color.WHITE, "%s : teinte du sprite intacte" % status)
+		_stage.set_status(side, StatusRules.NONE)
+		await wait_process_frames(1)
+		assert_false(aura.is_ice_shown())
+
+
+func test_freeze_tint_follows_the_sprite_and_stays_with_reduced_motion() -> void:
+	await _enter()
+	_stage.reduce_motion = true
+	_stage.set_status(FOE_SIDE, StatusRules.FREEZE)
+	await wait_process_frames(1)
+	var aura := _stage.get_status_aura(FOE_SIDE)
+	assert_true(aura.reduce_motion)
+	assert_true(aura.is_ice_shown(), "« Réduire les animations » garde la teinte")
+	var ice := aura.get_node(^"Ice") as Sprite2D
+	var sprite := _stage.get_sprite(FOE_SIDE)
+	assert_eq([ice.texture, ice.position, ice.scale, ice.offset],
+		[sprite.texture, sprite.position, sprite.scale, sprite.offset])
+	await aura.play_confusion()
+	assert_false(aura.is_confusion_shown(), "pas d'étoiles avec « Réduire les animations »")
+
+
+func test_confusion_stars_play_then_clear() -> void:
+	await _enter()
+	_stage.speed_scale = 1.0
+	var aura := _stage.get_status_aura(PLAYER_SIDE)
+	var done: Array[bool] = [false]
+	var runner := func() -> void:
+		await _stage.play_confusion(PLAYER_SIDE)
+		done[0] = true
+	runner.call()
+	await wait_process_frames(2)
+	assert_true(aura.is_confusion_shown())
+	await wait_until(func() -> bool: return done[0], 3.0)
+	assert_false(aura.is_confusion_shown())
+	_stage.speed_scale = 0.0
+
+
+func test_faint_and_reset_clear_the_status_effect() -> void:
+	await _enter()
+	_stage.set_status(FOE_SIDE, StatusRules.SLEEP)
+	await _stage.play_faint(FOE_SIDE)
+	assert_eq(_stage.get_status_aura(FOE_SIDE).get_status(), StatusRules.NONE, "K.O.")
+	_stage.set_status(PLAYER_SIDE, StatusRules.BURN)
+	_stage.reset()
+	assert_eq(_stage.get_status_aura(PLAYER_SIDE).get_status(), StatusRules.NONE, "reset")
+
+
+func test_burn_veil_is_orange() -> void:
+	await _enter()
+	_stage.speed_scale = 1.0
+	var sprite := _stage.get_sprite(PLAYER_SIDE)
+	var clock := TweenClock.new(get_tree())
+	var runner := func() -> void: await _stage.play_poison(PLAYER_SIDE, StatusRules.BURN)
+	runner.call()
+	clock.step()
+	assert_eq((sprite.material as ShaderMaterial).get_shader_parameter(&"tint"),
+		UiTokens.STATUS_BURN_VEIL)
+	assert_gt(UiTokens.STATUS_BURN_VEIL.r, UiTokens.STATUS_BURN_VEIL.b, "orangé")
+	clock.run_until(func() -> bool: return false, 0.5)
+	clock.release()
+	_stage.speed_scale = 0.0
+
+
 # --- Réglages (jalon-06.md §6.12, T29) -------------------------------------------------------
 
 func test_backdrop_blur_can_be_cut_and_restored() -> void:

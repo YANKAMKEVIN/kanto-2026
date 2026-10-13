@@ -28,14 +28,18 @@ const EXP_REMAINING_FORMAT: String = "%s XP avant le niveau suivant"
 
 ## Vue de l'équipe [param party] : membres et fiches, dans l'ordre. [param zones] peut être
 ## null (lieux de l'Histoire vides) ; [param unlocks] décide de la révélation de l'évolution.
+## Jalon 11 : [param companions] (espèces éligibles, null = aucune) et [param companion_uid]
+## (le compagnon actuel) donnent le bouton FAIRE SORTIR / RAPPELER de chaque fiche.
 static func build(party: Party, data: PokemonData, zones: ZoneLibrary, pokedex: Pokedex,
-		unlocks: MenuUnlocks) -> TeamView:
+		unlocks: MenuUnlocks, companions: CompanionCatalog = null,
+		companion_uid: String = "") -> TeamView:
 	var view := TeamView.new()
 	var visible := unlocks != null and unlocks.pokedex_visible()
 	view.storage_available = unlocks != null and unlocks.storage_available()
 	var members := party.get_all()
 	for i: int in members.size():
 		var pokemon_sheet := sheet(members[i], i, data, zones, pokedex, visible)
+		pokemon_sheet.companion_action = companion_action(members[i], companions, companion_uid)
 		view.members.append(pokemon_sheet.member)
 		view.sheets.append(pokemon_sheet)
 	return view
@@ -64,6 +68,18 @@ static func sheet(pokemon: Pokemon, index: int, data: PokemonData, zones: ZoneLi
 	view.evolution = EvolutionReveal.chain(pokemon.species_id, data, pokedex, pokedex_visible)
 	view.evolution_text = EvolutionReveal.text(view.evolution)
 	return view
+
+
+## Bouton du compagnon pour [param pokemon] : RAPPELER s'il est le compagnon actuel, FAIRE SORTIR
+## si son espèce est éligible, rien sinon (pas de bouton grisé, A-11). Un Pokémon K.O. peut être
+## choisi : il reste invisible jusqu'à sa guérison (§8.3).
+static func companion_action(pokemon: Pokemon, companions: CompanionCatalog,
+		companion_uid: String) -> PokemonSheetView.CompanionAction:
+	if not companion_uid.is_empty() and pokemon.uid == companion_uid:
+		return PokemonSheetView.CompanionAction.RECALL
+	if companions != null and CompanionRules.is_eligible(pokemon, companions):
+		return PokemonSheetView.CompanionAction.SEND_OUT
+	return PokemonSheetView.CompanionAction.NONE
 
 
 ## Les six statistiques de [param pokemon] (PV = PV max), jauges relatives à la plus haute.

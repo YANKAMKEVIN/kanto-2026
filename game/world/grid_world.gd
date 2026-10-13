@@ -28,6 +28,10 @@ const _PATH_DIRECTIONS: Array[Vector2i] = [
 var _size: Vector2i
 var _flags: PackedByteArray = PackedByteArray()
 var _occupants: Dictionary[Vector2i, Object] = {}
+## Occupation **douce** (jalon 11, compagnon) : case → entité. Seules les routines des PNJ la
+## consultent ([method is_soft_held]) ; l'accès, les pas, les scènes, les Dresseurs et les
+## interactions l'ignorent (`docs/tech/jalon-11-compagnon.md` §2.5).
+var _soft: Dictionary[Vector2i, Object] = {}
 
 
 func _init(map_size: Vector2i) -> void:
@@ -139,6 +143,32 @@ func occupy(cell: Vector2i, entity: Object) -> bool:
 func release(cell: Vector2i, entity: Object) -> void:
 	if get_occupant(cell) == entity:
 		_occupants.erase(cell)
+
+
+## Tient doucement [param cell] pour [param entity] (le compagnon, sa case d'arrivée) : la case
+## qu'elle tenait est rendue. Une routine de PNJ attend une case tenue ; rien d'autre n'en tient
+## compte.
+func soft_hold(cell: Vector2i, entity: Object) -> void:
+	soft_release(entity)
+	if entity != null and is_in_bounds(cell):
+		_soft[cell] = entity
+
+
+## Rend la case tenue doucement par [param entity] (rappel, carte quittée).
+func soft_release(entity: Object) -> void:
+	for cell: Vector2i in _soft.keys():
+		if _soft[cell] == entity:
+			_soft.erase(cell)
+
+
+## Vrai si [param cell] est tenue doucement par une entité encore valide.
+func is_soft_held(cell: Vector2i) -> bool:
+	if not _soft.has(cell):
+		return false
+	if not is_instance_valid(_soft[cell]):
+		_soft.erase(cell)
+		return false
+	return true
 
 
 ## Déplace l'occupation d'une entité d'une case à une autre.

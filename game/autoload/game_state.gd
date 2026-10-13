@@ -98,6 +98,18 @@ var money: int = STARTING_MONEY
 ## ([method record_wild_encounter]) ; une partie v2 la reçoit de la migration
 ## ([method SaveSystem._upgrade_2_to_3], date parfois approchée).
 var first_wild_encounter: Dictionary = {}
+## Compagnon choisi (jalon 11, dossier 14 §8–9) : identifiant ([member Pokemon.uid]) d'un
+## Pokémon de l'équipe ; vide = aucun (état de départ). Toujours un identifiant, jamais une
+## place : réordonner l'équipe ne le change pas, et rentrer dans sa Ball (intérieur, K.O.,
+## cinématique) ne le touche pas (seule la visibilité, calculée, change).
+var companion_uid: String = ""
+
+
+func _init() -> void:
+	# J11 : l'équipe et le Stockage du joueur donnent un identifiant à chaque Pokémon qui entre
+	# (reposé par [method new_game] sur des instances injectées).
+	party.assigns_uids = true
+	storage.assigns_uids = true
 
 
 ## Nouvelle partie (appelé par Boot au démarrage) : drapeaux baissés, équipe, Sac et Pokédex
@@ -107,6 +119,9 @@ var first_wild_encounter: Dictionary = {}
 func new_game(rng_seed: int = -1) -> void:
 	flags.clear()
 	party.clear()
+	# J11 : l'équipe et le Stockage du joueur donnent un identifiant à chaque Pokémon qui entre.
+	party.assigns_uids = true
+	storage.assigns_uids = true
 	bag.clear()
 	pokedex.clear()
 	storage.clear()
@@ -127,6 +142,7 @@ func new_game(rng_seed: int = -1) -> void:
 	moments.clear()
 	money = STARTING_MONEY
 	first_wild_encounter = {}
+	companion_uid = ""
 
 
 # --- Faits (§16.3), appelés par la scène (tâche S2) ------------------------------------
@@ -275,6 +291,7 @@ func to_dict() -> Dictionary:
 		"moments": moments.duplicate(true),
 		"money": money,
 		"first_wild_encounter": first_wild_encounter.duplicate(),
+		"companion": companion_uid,
 	}
 
 
@@ -306,6 +323,7 @@ func load_dict(dict: Dictionary, data: PokemonData) -> bool:
 	starter_species = JsonFields.get_id(dict, "starter")
 	ok = party.load_array(JsonFields.get_array(dict, "party"), data) and ok
 	ok = storage.load_array(JsonFields.get_array(dict, "storage"), data) and ok
+	ensure_unique_uids()
 	ok = bag.load_dict(JsonFields.get_dict(dict, "bag")) and ok
 	ok = pokedex.from_dict(JsonFields.get_dict(dict, "pokedex")) and ok
 	flags.load_array(JsonFields.get_array(dict, "flags"))
@@ -335,6 +353,12 @@ func load_dict(dict: Dictionary, data: PokemonData) -> bool:
 	money = clampi(JsonFields.get_int(dict, "money", STARTING_MONEY), 0, MONEY_MAX)
 	ok = _load_first_wild_encounter(JsonFields.get_dict(dict, "first_wild_encounter"), data) \
 		and ok
+	# Compagnon (J11) : absent d'une sauvegarde plus ancienne → aucun ; un identifiant qui ne
+	# désigne aucun Pokémon de l'équipe (fichier retouché) → aucun, sans refus.
+	companion_uid = JsonFields.get_string(dict, "companion")
+	if not companion_uid.is_empty() and get_companion() == null:
+		print("[qa] compagnon « %s » absent de l'équipe : aucun compagnon" % companion_uid)
+		companion_uid = ""
 	return ok
 
 
@@ -350,6 +374,50 @@ static func loaded_rival_name(raw: String) -> String:
 ## inconnue de cette build) [constant DEFAULT_PLAYER_LOOK], sans erreur.
 static func loaded_player_look(raw: StringName) -> StringName:
 	return raw if PLAYER_LOOKS.has(raw) else DEFAULT_PLAYER_LOOK
+
+
+# --- Identifiants et compagnon (jalon 11) --------------------------------------------
+
+## Donne un identifiant à chaque Pokémon de l'équipe puis du Stockage qui n'en a pas, et en
+## redonne un neuf au second d'un doublon. Ni l'ordre ni le contenu ne changent. Rend le
+## nombre d'identifiants attribués.
+func ensure_unique_uids() -> int:
+	var seen: Dictionary[String, bool] = {}
+	var assigned := 0
+	var members: Array[Pokemon] = party.get_all()
+	members.append_array(storage.get_all())
+	for pokemon: Pokemon in members:
+		if pokemon.uid.is_empty() or seen.has(pokemon.uid):
+			pokemon.uid = ""
+			pokemon.ensure_uid()
+			while seen.has(pokemon.uid):
+				pokemon.uid = PokemonUid.generate()
+			assigned += 1
+		seen[pokemon.uid] = true
+	return assigned
+
+
+## Le Pokémon de l'équipe désigné par [member companion_uid], ou null (aucun compagnon, ou le
+## Pokémon n'est plus dans l'équipe).
+func get_companion() -> Pokemon:
+	if companion_uid.is_empty():
+		return null
+	for pokemon: Pokemon in party.get_all():
+		if pokemon.uid == companion_uid:
+			return pokemon
+	return null
+
+
+## Choisit [param pokemon] comme compagnon (null = aucun). Faux, sans rien changer, s'il n'est
+## pas dans l'équipe. L'éligibilité de l'espèce (planche validée) est la règle du 11D.
+func set_companion(pokemon: Pokemon) -> bool:
+	if pokemon == null:
+		companion_uid = ""
+		return true
+	if party.index_of(pokemon) < 0:
+		return false
+	companion_uid = pokemon.ensure_uid()
+	return true
 
 
 ## { "species", "map", "date" } : l'espèce doit exister ; sinon rien n'est retenu (faux si une

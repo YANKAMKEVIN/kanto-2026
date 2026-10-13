@@ -50,7 +50,8 @@ func test_buy_tab() -> void:
 	assert_eq(view.modes, [&"buy", &"sell"] as Array[StringName])
 	assert_eq(view.mode_labels, PackedStringArray(["ACHETER", "VENDRE"]))
 	assert_eq(view.money_text, _money("3 000"))
-	assert_eq(_ids(view), [&"poke_ball", &"potion"] as Array[StringName], "ordre du stock")
+	assert_eq(_ids(view), [&"poke_ball", &"potion", &"paralyze_heal", &"awakening", &"burn_heal"] as Array[StringName],
+		"ordre du stock")
 	assert_eq(view.empty_text, "")
 	var ball := view.entry(&"poke_ball")
 	assert_eq(ball.name, "Poké Ball")

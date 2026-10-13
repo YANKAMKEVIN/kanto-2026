@@ -32,6 +32,10 @@ var evolution: Array[EvolutionStageView] = []
 ## La même chose en une ligne (« Salamèche → Reptincel → ??? » ; « ??? » avant l'activation
 ## du Pokédex) ; l'écran la préfixe de « Évolution : ». "" = pas de section.
 var evolution_text: String = ""
+## Compagnon (jalon 11, dossier 14 §8.1) : bouton FAIRE SORTIR (espèce éligible, pas le
+## compagnon), RAPPELER (le compagnon actuel) ou rien (espèce sans planche, A-11).
+enum CompanionAction { NONE, SEND_OUT, RECALL }
+var companion_action: CompanionAction = CompanionAction.NONE
 
 
 ## Vue affichable : un membre valide, au moins un type, six statistiques, une capacité, une

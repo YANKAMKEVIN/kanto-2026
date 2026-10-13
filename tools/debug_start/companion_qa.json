@@ -1,0 +1,20 @@
+{
+	"map": "viridian_city", "spawn": "from_center", "facing": "down",
+	"flags": [
+		"mom_greeted", "rival_met", "oak_met", "oak_lab_reunion", "starter_offered",
+		"starter_chosen", "taken_charmander", "taken_squirtle", "rival_lab_won",
+		"rival_challenged", "rival_battle_done", "rival_left_lab", "viridian_arrived",
+		"got_oak_parcel", "pokedex_activated", "poison_unlocked"
+	],
+	"party": [
+		{ "species": "charmander", "level": 15, "exp_to_next": 1 },
+		{ "species": "pidgey", "level": 12 },
+		{ "species": "rattata", "level": 10, "hp": 0 },
+		{ "species": "nidoran_m", "level": 11, "status": "poison" },
+		{ "species": "nidoran_f", "level": 9, "hp": 4 },
+		{ "species": "caterpie", "level": 6 }
+	],
+	"companion": 0,
+	"bag": { "poke_ball": 10, "potion": 10, "antidote": 3 },
+	"money": 3000
+}

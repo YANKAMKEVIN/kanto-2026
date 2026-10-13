@@ -402,3 +402,20 @@ func test_tall_grass_is_independent_of_solid_water_and_ledge() -> void:
 	_world.set_ledge(cell, GridWorld.Ledge.DOWN)
 	assert_true(_world.is_tall_grass(cell), "l'herbe survit à l'eau et au rebord")
 	assert_eq(_world.get_ledge(cell), GridWorld.Ledge.DOWN, "le rebord n'est pas écrasé")
+
+
+func test_soft_hold_is_one_cell_per_entity_and_ignored_by_access() -> void:
+	var grid := GridWorld.new(Vector2i(5, 5))
+	var holder := RefCounted.new()
+	grid.soft_hold(Vector2i(1, 1), holder)
+	assert_true(grid.is_soft_held(Vector2i(1, 1)))
+	grid.soft_hold(Vector2i(2, 1), holder)
+	assert_false(grid.is_soft_held(Vector2i(1, 1)), "une seule case par entité")
+	assert_true(grid.is_soft_held(Vector2i(2, 1)))
+	assert_true(grid.can_enter(Vector2i(2, 1), Vector2i.RIGHT), "les pas l'ignorent")
+	assert_true(grid.is_free(Vector2i(2, 1)), "les scènes aussi")
+	assert_false(grid.is_occupied(Vector2i(2, 1)))
+	grid.soft_release(holder)
+	assert_false(grid.is_soft_held(Vector2i(2, 1)))
+	grid.soft_hold(Vector2i(9, 9), holder)
+	assert_false(grid.is_soft_held(Vector2i(9, 9)), "hors carte : rien")

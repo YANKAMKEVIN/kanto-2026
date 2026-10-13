@@ -5233,6 +5233,54 @@
     "droite",
     "haut"
    ]
+  },
+  "herbizarre": {
+   "fichier": "res://assets/sprites/pokemon/painted/herbizarre_sheet.png",
+   "cellule": [
+    68,
+    68
+   ],
+   "hauteur": 66,
+   "colonnes": 4,
+   "lignes": 4,
+   "ordre_lignes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "carabaffe": {
+   "fichier": "res://assets/sprites/pokemon/painted/carabaffe_sheet.png",
+   "cellule": [
+    62,
+    70
+   ],
+   "hauteur": 68,
+   "colonnes": 4,
+   "lignes": 4,
+   "ordre_lignes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "papilusion": {
+   "fichier": "res://assets/sprites/pokemon/painted/papilusion_sheet.png",
+   "cellule": [
+    72,
+    72
+   ],
+   "hauteur": 70,
+   "colonnes": 4,
+   "lignes": 4,
+   "ordre_lignes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
   }
  },
  "images": {

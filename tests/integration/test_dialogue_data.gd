@@ -45,10 +45,18 @@ const GATE_GUARDS: Array[StringName] = [&"forest_gate_north_guard", &"forest_gat
 ## T11 : la Route 2 nord et Argenta (extérieur) sont dans [constant MAPS] : liste vide.
 const UNUSED_YET: Array[StringName] = [
 ]
+## Jalon 11 (T20c) : phrases jouées par le contrôleur du compagnon (ni PNJ, ni point, ni scène).
+const PLAYED_BY_COMPANION: Array[StringName] = [
+	&"companion_city", &"companion_forest", &"companion_happy", &"companion_sniff",
+	&"companion_stretch", &"companion_stretch_soft", &"companion_tired", &"companion_tired_f",
+	&"companion_unwell", &"companion_watch", &"companion_water",
+]
 ## Jalon 10 : textes verrouillés du dossier 12 (même forme que le dossier 10) et lot de textes du
 ## J10 (panneaux, noms affichés), où un retour à la ligne est écrit « \n ».
 const DOSSIER_12 := "res://docs/design/dossier-12-argenta.md"
 const LOT_J10 := "res://docs/design/textes/textes-brouillon-j10.md"
+## Jalon 11 : textes du §13 (« « … » » par ligne).
+const DOSSIER_14 := "res://docs/design/dossier-14-systemes-j11.md"
 ## Jalon 8 : textes T1–T16 validés (dossier 11, « Textes à valider ») ; dans son tableau, « / »
 ## marque le retour à la ligne de la bulle et le gras (« ** ») le titre d'un panneau.
 const DOSSIER_11 := "res://docs/design/dossier-11-route-2.md"
@@ -73,7 +81,12 @@ const TEXTES_VALIDES := "res://docs/design/textes/textes-brouillon-j7.md"
 ## (4A, T1) la proposition du Prof. Chen ; (4A, T3) le choix et la sortie empêchée.
 const IDS: Array[StringName] = [
 	&"aoki", &"breakfast_table", &"clerk", &"clerk_parcel",
-	&"clerk_parcel_hello", &"forest_gate_north_guard", &"forest_gate_south_guard",
+	&"clerk_parcel_hello",
+	# Jalon 11 (T20c) : phrases du compagnon (dossier 14 §13.12).
+	&"companion_city", &"companion_forest", &"companion_happy", &"companion_sniff",
+	&"companion_stretch", &"companion_stretch_soft", &"companion_tired", &"companion_tired_f",
+	&"companion_unwell", &"companion_watch", &"companion_water",
+	&"forest_gate_north_guard", &"forest_gate_south_guard",
 	&"forest_hiker", &"forest_naturalist",
 	&"forest_scout_eli_after", &"forest_scout_eli_before", &"forest_scout_milo_after",
 	&"forest_scout_milo_before", &"forest_scout_noe_after", &"forest_scout_noe_before",
@@ -89,7 +102,8 @@ const IDS: Array[StringName] = [
 	&"observe_charmander", &"observe_leo_rattata", &"observe_squirtle",
 	# Jalon 10 (T8) : Argenta (dossier 12, lot du J10).
 	&"pewter_city_sign", &"pewter_gym_brock", &"pewter_gym_brock_badge", &"pewter_gym_brock_intro",
-	&"pewter_gym_brock_lost", &"pewter_gym_brock_resume", &"pewter_gym_brock_won",
+	&"pewter_gym_brock_lost", &"pewter_gym_brock_resume", &"pewter_gym_brock_tm",
+	&"pewter_gym_brock_tm_late", &"pewter_gym_brock_tm_use", &"pewter_gym_brock_won",
 	&"pewter_gym_guide", &"pewter_gym_liam_after", &"pewter_gym_liam_before",
 	&"pewter_gym_liam_defeated", &"pewter_gym_sign", &"pewter_house_mason_kid",
 	&"pewter_house_mason_partner", &"pewter_house_researcher", &"pewter_kid", &"pewter_lass",
@@ -245,7 +259,7 @@ func test_every_used_dialogue_exists() -> void:
 func test_every_dialogue_is_used() -> void:
 	var played := _cutscenes.get_dialogue_ids()
 	for id: StringName in _library.get_ids():
-		if UNUSED_YET.has(id):
+		if UNUSED_YET.has(id) or PLAYED_BY_COMPANION.has(id):
 			continue
 		assert_true(_used_on.has(id) or played.has(id),
 			"dialogue « %s » utilisé par un PNJ, un point ou une scène" % id)
@@ -261,7 +275,10 @@ func test_every_dialogue_played_by_a_cutscene_exists() -> void:
 		&"oak_route1_warning", &"oak_starter_offer", &"oak_starter_reciprocal",
 		# Jalon 10 (T8) : scènes de Pierre et du garde de la Route 3.
 		&"pewter_gym_brock_badge", &"pewter_gym_brock_intro", &"pewter_gym_brock_lost",
-		&"pewter_gym_brock_resume", &"pewter_gym_brock_won", &"pewter_route_3_guard_cleared",
+		&"pewter_gym_brock_resume",
+		# Jalon 11 (T14) : remise de la CT34.
+		&"pewter_gym_brock_tm", &"pewter_gym_brock_tm_late", &"pewter_gym_brock_tm_use",
+		&"pewter_gym_brock_won", &"pewter_route_3_guard_cleared",
 		&"pewter_route_3_guard_rule",
 		&"rival_challenge", &"rival_challenge_wait", &"rival_lab_lost", &"rival_lab_won",
 		&"rival_lab_won_leaving", &"rival_parcel_greet", &"rival_parcel_leaving",
@@ -359,7 +376,8 @@ func test_every_condition_flag_is_set_somewhere() -> void:
 		&"oak_met", &"pewter_arrived",
 		&"pokedex_activated", &"rival_battle_done", &"rival_challenged", &"rival_lab_lost",
 		&"rival_lab_won", &"rival_left_lab", &"rival_route22_lost", &"rival_route22_won",
-		&"route_3_guard_cleared", &"starter_chosen", &"starter_offered", &"viridian_arrived"] as Array[StringName])
+		&"route_3_guard_cleared", &"starter_chosen", &"starter_offered", &"tm34_received",
+		&"viridian_arrived"] as Array[StringName])
 	assert_eq(_used_on.get(&"oak_lab_reunion"), [&"oak_lab"], "joué au labo, après le fondu")
 	assert_eq(_used_on.get(&"oak_starter_offer"), [&"oak_lab"], "joué au labo")
 
@@ -541,6 +559,9 @@ func test_texts_are_the_dossier_02_texts_word_for_word() -> void:
 	var dossier_10 := FileAccess.get_file_as_string(DOSSIER_10)
 	var dossier_12 := FileAccess.get_file_as_string(DOSSIER_12)
 	var lot_j10 := FileAccess.get_file_as_string(LOT_J10)
+	var dossier_14 := FileAccess.get_file_as_string(DOSSIER_14)
+	# Formes accordées « fatigué[e] » (n° 55) : masculin et féminin.
+	dossier_14 += dossier_14.replace("[e]", "") + dossier_14.replace("[e]", "e")
 	for row: Array in _pages():
 		if GATE_GUARDS.has(row[0]):
 			continue
@@ -557,8 +578,18 @@ func test_texts_are_the_dossier_02_texts_word_for_word() -> void:
 			or dossier_09.contains(text) or in_dossier_11 or valides.contains("« %s »" % text)
 			or dossier_10.contains(_as_dossier_10(text))
 			or dossier_12.contains(_as_dossier_10(text))
-			or lot_j10.contains("| « %s » |" % text.replace("\n", "\\n")),
+			or lot_j10.contains("| « %s » |" % text.replace("\n", "\\n"))
+			or _each_line_quoted(dossier_14, text),
 			"%s : « %s » dans un dossier de conception" % [row[0], text])
+
+
+## Vrai si chaque ligne de [param text] figure entre guillemets dans [param dossier] (dossier 14 :
+## une réplique par numéro, « Avec Patience, ton Pokémon encaisse, » puis « puis rend… »).
+func _each_line_quoted(dossier: String, text: String) -> bool:
+	for line: String in text.split("\n"):
+		if not dossier.contains("« %s »" % line):
+			return false
+	return true
 
 
 func test_speakers_and_narration() -> void:
@@ -696,11 +727,18 @@ func test_oak_parcel_lines() -> void:
 					id, variant.cutscene])
 	# La scène du colis ; jalon 8 : les deux objets visibles de la Route 2 (PRENDRE) ; jalon 9 :
 	# les trois de la Forêt de Jade ; jalon 10 : la Potion de la Route 2 nord et Pierre.
-	assert_eq(launched, 8, "la scène du colis, six objets au sol et Pierre")
-	# Le jeton n'apparaît que dans la réplique de l'espèce.
+	# Jalon 11 : la remise tardive de la CT34 par Pierre.
+	assert_eq(launched, 9, "la scène du colis, six objets au sol, Pierre et sa CT34")
+	# Le jeton n'apparaît que dans la réplique de l'espèce (et « {pokemon} » dans les phrases du
+	# compagnon, J11).
 	for row: Array in _pages():
 		var tokens := DialogueTokens.tokens_in(row[1])
-		assert_eq(not tokens.is_empty(), row[1] == records[2].text, "%s : jeton" % row[0])
+		var expected: Array[StringName] = []
+		if row[1] == records[2].text:
+			expected = [DialogueTokens.FIRST_WILD_SPECIES]
+		elif PLAYED_BY_COMPANION.has(row[0]):
+			expected = [DialogueTokens.POKEMON]
+		assert_eq(tokens, expected, "%s : jeton" % row[0])
 
 
 
@@ -783,3 +821,23 @@ func test_forest_gate_guards_say_the_locked_lines() -> void:
 	assert_true(south.variants[1].set_flags.is_empty())
 	# Garde du nord : la variante d'Argenta attend le drapeau du J10.
 	assert_eq(north.variants[0].if_flags, [&"pewter_arrived"] as Array[StringName])
+
+
+## Jalon 11 (T20c) : chaque phrase que le compagnon peut choisir existe (et sa forme féminine),
+## en narration (style « observer »), sans locuteur.
+func test_companion_lines_exist_as_narration() -> void:
+	var lines: Array[StringName] = [CompanionRules.LINE_TIRED, CompanionRules.LINE_UNWELL,
+		CompanionRules.LINE_WATER]
+	lines.append_array(CompanionRules.CONTEXT_LINES.values())
+	lines.append_array(CompanionRules.GENERIC_LINES)
+	for line: StringName in CompanionController.FEMININE_LINES:
+		lines.append(StringName(String(line) + CompanionController.FEMININE_SUFFIX))
+	for line: StringName in lines:
+		assert_true(PLAYED_BY_COMPANION.has(line), "%s : listée" % line)
+		var dialogue := _library.get_dialogue(line)
+		assert_not_null(dialogue, "%s : définie" % line)
+		if dialogue != null:
+			assert_eq(dialogue.speaker, "", "%s : sans locuteur" % line)
+			assert_true(dialogue.narration, "%s : narration" % line)
+			assert_true(dialogue.variants[0].pages[0].text.begins_with("{pokemon} "), line)
+	assert_eq(lines.size(), PLAYED_BY_COMPANION.size())
