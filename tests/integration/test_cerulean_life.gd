@@ -286,11 +286,12 @@ func test_only_the_swimmer_and_the_guide_react_to_the_badge() -> void:
 		"res://data/dialogues/cerulean_city.json"))
 	for id: String in data:
 		for variant: Variant in (data[id] as Dictionary).get("variants", []):
-			if ((variant as Dictionary).get("if", []) as Array).has("badge_cascade"):
+			if ((variant as Dictionary).get("if", []) as Array).has("badge_cascade") \
+					and not aware.has(id):
 				aware.append(id)
 	aware.sort()
-	assert_eq(aware, ["cerulean_gym_guide", "cerulean_h5_swimmer"] as Array[String],
-		"arbitrage 6 du dossier 12 : ne réagit que ce qui peut le savoir")
+	assert_eq(aware, ["cerulean_gym_guide", "cerulean_gym_misty", "cerulean_h5_swimmer"]
+		as Array[String], "arbitrage 6 du dossier 12 : ne réagit que ce qui peut le savoir (+ Ondine, T19)")
 
 
 # --- Cambriolage, sorties fermées, panneaux ------------------------------------------------------

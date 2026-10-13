@@ -18,5 +18,9 @@
 	"gym_guide": {
 		"cell": [6, 10], "facing": "right", "sprite": "gym_guide",
 		"dialogue": "cerulean_gym_guide"
+	},
+	"misty": {
+		"cell": [8, 3], "facing": "down", "sprite": "misty", "dialogue": "cerulean_gym_misty",
+		"if": ["misty_invited"]
 	}
 }

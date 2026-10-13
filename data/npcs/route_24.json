@@ -3,5 +3,13 @@
 		"cell": [44, 3], "facing": "down", "sprite": "object/poke_ball_ground",
 		"dialogue": "route_24_ball_1", "verb": "take", "turn_to_player": false,
 		"unless": ["got_route_24_potion"]
+	},
+	"rival_cerulean": {
+		"cell": [36, 55], "facing": "left", "sprite": "rival",
+		"unless": ["rival_cerulean_won"]
+	},
+	"misty_bridge": {
+		"cell": [37, 46], "facing": "left", "sprite": "misty", "dialogue": "misty_bridge",
+		"unless": ["misty_invited"]
 	}
 }

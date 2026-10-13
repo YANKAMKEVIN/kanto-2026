@@ -10,5 +10,71 @@
 				]
 			}
 		]
+	},
+	"route_24_rival": {
+		"next": "route_24_misty",
+		"variants": [
+			{
+				"unless": ["rival_cerulean_won"],
+				"steps": [
+					{ "emote": "rival_cerulean", "kind": "exclamation" },
+					{ "move": "player", "to": [32, 55] },
+					{
+						"move": "rival_cerulean",
+						"to": { "near": "player", "offsets": [[1, 0]] }
+					},
+					{ "face": "rival_cerulean", "to": "player" },
+					{ "face": "player", "to": "rival_cerulean" },
+					{
+						"dialogue": "rival_cerulean_intro",
+						"unless": ["rival_cerulean_lost_once"]
+					},
+					{
+						"dialogue": "rival_cerulean_resume",
+						"if": ["rival_cerulean_lost_once"],
+						"unless": ["rival_cerulean_retried"]
+					},
+					{
+						"dialogue": "rival_cerulean_resume_again",
+						"if": ["rival_cerulean_retried"]
+					},
+					{ "set": ["rival_cerulean_retried"], "if": ["rival_cerulean_lost_once"] },
+					{
+						"battle": "rival_cerulean",
+						"win": ["rival_cerulean_won"],
+						"lose": ["rival_cerulean_lost_once"]
+					},
+					{ "wait": 0.6, "if": ["rival_cerulean_won"] },
+					{ "dialogue": "rival_cerulean_won", "if": ["rival_cerulean_won"] },
+					{ "move": "rival_cerulean", "to": [33, 60], "if": ["rival_cerulean_won"] },
+					{ "despawn": "rival_cerulean", "if": ["rival_cerulean_won"] },
+					{ "dialogue": "rival_cerulean_lost", "unless": ["rival_cerulean_won"] },
+					{ "wake_up": true, "unless": ["rival_cerulean_won"] }
+				]
+			}
+		]
+	},
+	"route_24_misty": {
+		"variants": [
+			{
+				"if": ["rival_cerulean_won"],
+				"unless": ["misty_invited"],
+				"steps": [
+					{
+						"move": "misty_bridge",
+						"to": {
+							"near": "player",
+							"offsets": [[0, -1], [1, -1], [-1, -1], [1, 0], [-1, 0], [0, 1]]
+						}
+					},
+					{ "face": "misty_bridge", "to": "player" },
+					{ "face": "player", "to": "misty_bridge" },
+					{ "dialogue": "misty_bridge_invite" },
+					{ "move": "misty_bridge", "to": [33, 60] },
+					{ "despawn": "misty_bridge" },
+					{ "set": ["misty_invited"] }
+				]
+			}
+		]
 	}
 }

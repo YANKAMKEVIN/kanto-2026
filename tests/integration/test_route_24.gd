@@ -177,7 +177,11 @@ func test_banks_and_quays_never_cover_a_walkable_cell() -> void:
 func test_the_whole_map_is_reachable_and_closed_from_azuria() -> void:
 	var dist := GridPaths.distances(_grid, SOUTH)
 	var sign: Array[Vector2i] = _plan.cells_at("panneau_pont")
+	# T19 : le rival n° 3 et Ondine occupent leur case (PNJ) ; on les atteint par le voisinage.
+	var people: Array[Vector2i] = [_plan.cell_of("rival"), _plan.cell_of("ondine")]
 	for cell: Vector2i in _plan.cells_of(_plan.walkable):
+		if people.has(cell):
+			continue
 		if cell == _plan.cell_of("route_24_item_1"):
 			# La Potion (T17) occupe sa case ; on la ramasse depuis une case voisine.
 			assert_true(dist.has(cell + Vector2i.DOWN), "Potion : case voisine atteignable")
@@ -295,12 +299,14 @@ func test_the_pre_bridge_places_are_reserved_free_of_props() -> void:
 			assert_false(_grid.is_solid(cell), "indice : case libre pour le point d'examen")
 		assert_true(_plan.is_walkable(cell), "%s : case praticable de la grille" % id)
 		assert_false(_grid.is_solid(cell), "%s : libre (rien de vivant avant T17 / T19)" % id)
-	assert_eq(_map.get_node(^"Triggers").get_child_count(), 0)
+	# T19 : deux déclencheurs (vue du rival, reprise d'Ondine à l'entrée de la place).
+	assert_eq(_map.get_node(^"Triggers").get_child_count(), 2)
 	assert_eq(_map.get_node(^"Interactables").get_child_count(), 1, "le panneau du pont (T17)")
 	var ids: Array[String] = []
 	for spec: NpcSpec in NpcRoster.load_for_map(&"route_24").get_all():
 		ids.append(String(spec.id))
-	assert_eq(ids, ["route_24_ball_1"] as Array[String], "la Potion seule (T19, T22 : le reste)")
+	assert_eq(ids, ["route_24_ball_1", "rival_cerulean", "misty_bridge"] as Array[String],
+		"la Potion, le rival n° 3 et Ondine (T19 ; T22 : le reste)")
 
 
 func test_north_tall_grass_is_avoidable() -> void:

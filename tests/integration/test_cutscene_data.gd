@@ -36,6 +36,8 @@ const MAPS: Array[StringName] = [
 	&"pewter_city",
 	# Jalon 13 (T17) : arrivée à Azuria (déclencheurs ouest et nord).
 	&"cerulean_city",
+	# Jalon 13 (T19) : déclencheurs du rival n° 3 et de la reprise d'Ondine.
+	&"route_24",
 ]
 ## Jalon 7 (T18) : partie qui revient au labo avec le colis (rival parti après le combat).
 const PARCEL_FLAGS: Array[StringName] = [
@@ -90,6 +92,12 @@ const VARIANT_FLAGS: Dictionary = {
 	&"cerulean_arrival": [PEWTER_FLAGS],
 	&"route_4_item_1": [PEWTER_FLAGS],
 	&"route_24_item_1": [PEWTER_FLAGS],
+	# Jalon 13 (T19) : rival n° 3, scène d'Ondine au pont, Ondine à l'Arène (+ rattrapage).
+	&"route_24_rival": [PEWTER_FLAGS],
+	&"route_24_misty": [PEWTER_FLAGS + [&"rival_cerulean_won"]],
+	&"cerulean_gym_misty": [PEWTER_FLAGS + [&"rival_cerulean_won", &"misty_invited"]],
+	&"cerulean_gym_misty_tm_late": [PEWTER_FLAGS + [&"rival_cerulean_won", &"misty_invited",
+		&"badge_cascade"]],
 	&"route_3_guard": [PEWTER_FLAGS + [&"pewter_arrived"],
 		PEWTER_FLAGS + [&"pewter_arrived", &"brock_met", &"badge_boulder"]],
 	&"pewter_gym_brock": [PEWTER_FLAGS + [&"pewter_arrived"]],
@@ -112,6 +120,8 @@ const CODE_PLAYED: Dictionary[StringName, StringName] = {
 	&"pewter_gym_brock_tm_late": &"pewter_gym",
 	# Jalon 13 (T17) : objets visibles des Routes 4 et 24 (PNJ « objet »).
 	&"route_4_item_1": &"route_4", &"route_24_item_1": &"route_24",
+	# Jalon 13 (T19) : Ondine, par son dialogue (scène de l'Arène et rattrapage de la CT11).
+	&"cerulean_gym_misty": &"cerulean_gym", &"cerulean_gym_misty_tm_late": &"cerulean_gym",
 }
 ## Scènes à déclencheur dont la carte n'est pas encore construite → leur carte (simulées sur les
 ## PNJ de son fichier). Vidée au T19 du jalon 9 (la forêt existe), puis au T11 du jalon 10 (les
@@ -166,10 +176,11 @@ func test_library_loads_without_error() -> void:
 	var library := CutsceneLibrary.new()
 	assert_true(library.load_dir(), "data/cutscenes/ se charge")
 	assert_eq(library.get_errors().size(), 0, str(library.get_errors()))
-	assert_eq(library.get_ids(), [&"cerulean_arrival", &"mart_parcel", &"oak_lab_exit",
+	assert_eq(library.get_ids(), [&"cerulean_arrival", &"cerulean_gym_misty",
+		&"cerulean_gym_misty_tm_late", &"mart_parcel", &"oak_lab_exit",
 		&"oak_parcel", &"pewter_arrival", &"pewter_gym_brock", &"pewter_gym_brock_tm_late",
 		&"rival_route22", &"route1_grass", &"route_1_potion", &"route_24_item_1",
-		&"route_2_item_1",
+		&"route_24_misty", &"route_24_rival", &"route_2_item_1",
 		&"route_2_item_2", &"route_2_item_3", &"route_2_item_4", &"route_2_north_item_1",
 		&"route_3_guard", &"route_4_item_1", &"starter_chosen",
 		&"viridian_arrival", &"viridian_forest_item_1", &"viridian_forest_item_2",
@@ -237,11 +248,11 @@ func test_every_trainer_and_item_step_exists() -> void:
 ## Jalon 10 (T9) : chaque Dresseur présenté par une carte en a une, chaque badge remis existe, et
 ## l'étape « badge » d'une scène suit le combat qui lève déjà son drapeau (« win »).
 func test_every_champion_card_and_badge_step_exists() -> void:
-	assert_eq(_cutscenes.get_card_trainer_ids(), [&"pewter_gym_brock"] as Array[StringName])
+	assert_eq(_cutscenes.get_card_trainer_ids(), [&"cerulean_gym_misty", &"pewter_gym_brock"] as Array[StringName])
 	for id: StringName in _cutscenes.get_card_trainer_ids():
 		var trainer := _trainers.get_trainer(id)
 		assert_true(trainer != null and trainer.has_card(), "« %s » a une carte" % id)
-	assert_eq(_cutscenes.get_badge_ids(), [&"boulder"] as Array[StringName])
+	assert_eq(_cutscenes.get_badge_ids(), [&"boulder", &"cascade"] as Array[StringName])
 	for id: StringName in _cutscenes.get_badge_ids():
 		assert_true(_badges.has_badge(id), "badge « %s » connu" % id)
 	for id: StringName in _cutscenes.get_ids():
