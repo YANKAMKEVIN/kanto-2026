@@ -47,6 +47,10 @@ extends RefCounted
 ## Jalon 11 : STATUS_TAG pose aussi l'effet du statut sur le Pokémon ([StatusAura]) ; POISON
 ## sert aussi à la brûlure (voile orangé) ; CONFUSION : étoiles au-dessus du Pokémon confus de
 ## [member side], au moment du test (après « … est confus… »).
+## Jalon 14 (Tunnel, Téléport) :
+## - BURROW : le Pokémon de [member side] s'enfonce dans le sol et disparaît (ombre comprise) ;
+## - SURFACE : il remonte (charge libérée ou rompue) ;
+## - VANISH : il scintille puis s'efface (Téléport) ; « Réduire les animations » : fondus courts.
 ## Jalon 7 (changement de Pokémon) :
 ## - WITHDRAW : le Pokémon du joueur est rappelé dans sa Poké Ball (il rétrécit dans un éclat
 ##   rouge), sa carte et les pastilles sortent ; le SEND_OUT du suivant les ramène.
@@ -58,6 +62,7 @@ enum Kind {
 	WITHDRAW,
 	POISON, STATUS_TAG,
 	CONFUSION,
+	BURROW, SURFACE, VANISH,
 }
 
 var kind: Kind = Kind.MESSAGE

@@ -880,6 +880,18 @@ et de l'annexe A validée.
   aucune carte de capacité nouvelle (le tour 2 passe seul, présentation du J11). Captures relues.
 - **CA** : `game/battle/battle_stage.gd` et `game/ui/battle/` seuls touchés (+ `ui_tokens.gd`
   en fin).
+- **Fait** (2026-10-12, branche `j14-t9`, commit « J14 T9 ») : `BattleBeat.Kind` `BURROW` / `SURFACE` /
+  `VANISH` (`BattlePlayback` : message puis BURROW si l'effet est invulnérable ; SURFACE sans
+  phrase à CHARGE_RELEASED, avant le message à CHARGE_BROKEN ; VANISH avant le message
+  « s'est téléporté ! » ; DODGED, BALL_BLOCKED, NOTHING_HAPPENED : message seul, aucun THROW) ;
+  `BattleStage.play_burrow` / `play_surface` / `play_vanish` / `is_buried`. Tour verrouillé :
+  le directeur ne demande aucun choix (aucun changement, vérifié par test). Défauts (règle 4) :
+  s'enfonce de 56 px en 0,30 s (cubique), remonte en 0,30 s ; Téléport : 3 scintillements de
+  0,06 s puis fondu 0,25 s ; « Réduire les animations » : fondu de 0,15 s sans mouvement (et non
+  « immédiat », demande de Kevin) ; « Réduire les flashs » : pas de scintillement. Constantes dans
+  `battle_stage.gd` (aucun jeton UI touché). Tests : `test_battle_playback_charge`,
+  `test_battle_stage_charge`, `test_battle_director_charge` ; outil de capture
+  `tools/capture_charge.gd`. Abra n'est pas encore en données : Roucool en doublure.
 
 #### T10 — constructeur-monde : carte `qa_charge_j14` + départs `charge_qa`, `teleport_qa` — après T8
 
