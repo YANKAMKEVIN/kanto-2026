@@ -734,7 +734,7 @@ fichier commun). Dès T12 fusionné : **T13 ∥ T20** (combat contre grotte, auc
 #### T22 — qa-mobile : **session 12B** → Kevin — après T21 et la validation de 12A
 - Lisibilité **luminosité par défaut**, repères, échelles, gravats (rencontres, intro), couloirs calmes, Corde (refus dehors, retour devant l'entrée, Sac), compagnon (galeries, goulets, échelles : jamais posé sur l'échelle), halos coupés par « Réduire les animations », sauvegarde / reprise dans chaque étage, fps, mémoire.
 
-#### T23 — architecte : moteur de l'événement et de la pierre — après T20 (mêmes fichiers)
+#### T23 — architecte : moteur de l'événement et de la pierre — après T20 (mêmes fichiers) — **fait (2026-10-13, `j12-t23-evenement`, §9)**
 - §2.9 (`StoneUse`, `evolution_item_requested`, `play_item`, `cancellable` dans le candidat et la vue, `evolution_applied`, retrait de la pierre par Boot ; `field_use` de `moon_stone`), §2.13 (`confirm_cutscene`, étape `moment`, type `fossil`, champ `obtained` + données des fossiles). **CA** : tests verts ; évolutions de fin de combat inchangées (ARRÊTER, retour Android) ; toast des CT inchangé.
 
 #### T24 — ui-mobile : Sac et écran d'évolution — après T23
@@ -853,6 +853,62 @@ Questions telles que posées :
 ---
 
 ## 9. Fait
+
+- **T23 — moteur de l'événement et de la pierre (2026-10-13, architecte, branche
+  `j12-t23-evenement` depuis `jalon-12` à `2732b45`)** — §2.9, §2.13, §0.4 n° 7, 9, 10 ; aucun
+  contenu de carte (T25), aucun nom figé changé :
+  - **Pierre** : `moon_stone` a `field_use: "evolution_stone"` (UTILISER) ; règle pure `StoneUse`
+    (`game/pokemon/evolution/stone_use.gd` : `Check { COMPATIBLE, INCOMPATIBLE }`, `LABELS` = ceux
+    des CT, `is_stone`, `target`, `check(pokemon, item_id, data)`, `candidate(party, index,
+    item_id, data)` → candidat non annulable, K.O. compatible) ; `BagQuery` : `targets_pokemon`
+    vrai et choix du Pokémon `_stone_targets` (`show_reason` toujours, INCOMPATIBLE non
+    choisissable, quantité affichée) ; `MenuDirector.use_item_on` → signal nouveau
+    **`evolution_item_requested(index, item_id)`** (rien consommé par le menu).
+  - **Évolution** : `EvolutionCandidate.cancellable` (vrai par défaut) et `item_id` ;
+    `EvolutionView.cancellable` ; **`EvolutionDirector.play_item(candidate, party, item_id)`**
+    (copie non annulable, `play` d'un candidat) ; signal **`evolution_applied(party_index, into)`**
+    émis juste après `Evolution.evolve` + Pokédex, avant `reveal`, jamais si annulée ; le directeur
+    ignore une réponse « annulée » d'un candidat non annulable. `EvolutionScreen` (minimum
+    fonctionnel) : `is_cancellable()`, ARRÊTER non montré et `_request_cancel` refusé si la vue
+    n'est pas annulable (retour Android consommé sans effet) ; **le rendu de l'écran sans ARRÊTER
+    reste au T24**.
+  - **Boot** : `_setup_evolution_items` ; `_on_evolution_item_requested` (menu fermé, joueur bloqué
+    `Boot.EVOLUTION_ITEM`, contrôles cachés, vitesse = celle du combat, `play_item`, puis compagnon
+    `refresh()`, autosave « évolution ») ; `_on_evolution_applied` retire la pierre (une fois,
+    `_stone_item`). Retour Android : relayé par `BattleDirector.handle_back` (existant, vrai pendant
+    toute évolution). Joueur bloqué → `is_stable()` faux pendant la séquence : une fermeture reprend
+    avant l'évolution, pierre comprise.
+  - **Choix → scène** : `DialogueChoice.confirm_cutscene` (clé `"confirm_cutscene"` en fin de
+    `_CHOICE_KEYS`, exclusive de `confirm_action`) ; `DialogueRunner` : `cutscene_requested` après
+    `dialogue_finished` si OUI (pages de confirmation d'abord), rien si NON.
+  - **Étape `moment`** : `CutsceneStep.Kind.MOMENT` (après `BADGE`), clé `"moment"`, `"details"`
+    facultatif `{ clé: texte non vide }`, type de `MomentLibrary.TYPES` sauf `zone_arrival` ;
+    `CutsceneDirector._moment` : `record_moment(type, carte, details)` une fois par type et détails
+    (`CutsceneDirector.has_moment`, comparaison en texte, tient après rechargement) ; l'état vient
+    de `set_badges(_, state)` (déjà branché par Boot).
+  - **Moment `fossil`** : `MomentLibrary.FOSSIL` en fin de `TYPES`, `MARK_FOSSIL` `{fossil}`,
+    `DETAIL_ITEM` `"item"` ; `data/trainer/moments.json` : « La Team Rocket repoussée » /
+    « {fossil} obtenu. » (annexe A.5) ; `TrainerSummary.build/moment_views(…, items)` (paramètre
+    facultatif en fin ; `MenuDirector` passe ses objets) : nom du fossile lu dans `ItemLibrary`,
+    moment ignoré sans objets ou objet inconnu.
+  - **Objets** : champ `ItemData.obtained` (clé `"obtained"`, booléen facultatif) → toast
+    « <nom> » / « obtenu[e] » ; `dome_fossil` et `helix_fossil` (déjà en données au T12, descriptions
+    n° 28–29 vérifiées) ont `obtained: true`. Toasts des CT et du Colis inchangés.
+  - **Tests** (fichiers nouveaux) : `test_stone_use`, `test_item_obtained`, `test_moment_fossil`
+    (unitaires) ; `test_evolution_director_stone`, `test_dialogue_confirm_cutscene`,
+    `test_cutscene_director_moment`, `test_moon_stone` (Boot réel : 4 espèces, 4 pierres ;
+    incompatible refusé ; pierre retirée dans l'appel même ; sauvegarde d'avant pendant la séquence,
+    autosave à la fin, relue par une nouvelle session ; retour Android pendant la transformation
+    sans effet). Retouchés : `test_field_item_rules` (la Pierre Lune a maintenant UTILISER),
+    `test_moment_library` (`_valid()` + `fossil`).
+  - **Pour T24 (ui-mobile)** : le Sac affiche déjà UTILISER et le choix COMPATIBLE / INCOMPATIBLE
+    par le contrat existant (`PartyPickerView`, `show_reason`) — à vérifier en capture ;
+    `EvolutionView.cancellable` / `EvolutionScreen.is_cancellable()` pour l'écran sans ARRÊTER
+    (le bouton caché garde sa zone hors du « toucher pour accélérer » : à revoir) ; ligne de la frise
+    `MomentView.kind == &"fossil"` (icône des objets clés).
+  - **Pour T25 (constructeur-monde)** : dialogue `mt_moon_fossil_dome` / `_helix` (choix OUI / NON,
+    `confirm_cutscene`, `cancel_pages: []`) ; scènes avec `{ "moment": "fossil", "details":
+    { "item": "dome_fossil" } }` ; `give dome_fossil` donne le toast « Fossile Dôme » / « obtenu ».
 
 - **T18 — la vie de la Route 3 (12A) et du Centre du Mont Sélénite (2026-10-13, constructeur-monde,
   branche `j12-t18-route-3-vie` depuis `jalon-12` à `610a7bb`)** — §1.3, §2.7, §2.8, §2.11, §2.14,

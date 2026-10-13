@@ -161,8 +161,9 @@ static func view(bag: Bag, items: ItemLibrary, context: StringName,
 
 
 ## Choix du Pokémon pour [param item] (UTILISER) : toute l'équipe, chaque membre utilisable ou
-## avec sa raison ([method ItemUse.check], Sac compris). [param selected] : membre mis en avant
-## (UTILISER À NOUVEAU), −1 = aucun.
+## avec sa raison ([method ItemUse.check], Sac compris) ; une CT ou une pierre d'évolution
+## (jalon 12) : la raison toujours visible ([method _stone_targets]). [param selected] : membre
+## mis en avant (UTILISER À NOUVEAU), −1 = aucun.
 static func targets(party: Party, bag: Bag, item: ItemData, context: StringName,
 		data: PokemonData, selected: int = -1) -> PartyPickerView:
 	var picker := PartyPickerView.new()
@@ -183,6 +184,9 @@ static func targets(party: Party, bag: Bag, item: ItemData, context: StringName,
 				state == TmTeach.Check.COMPATIBLE, TmTeach.LABELS[state])
 			target_view.show_reason = true
 			picker.targets.append(target_view)
+		return picker
+	if StoneUse.is_stone(item):
+		_stone_targets(picker, members, item, data)
 		return picker
 	for i: int in members.size():
 		var check := ItemUse.check(bag, item, members[i], context)
@@ -235,6 +239,9 @@ static func _entry(bag: Bag, item: ItemData, context: StringName,
 	if item.category == ItemData.Category.FIELD and not item.has_field_use():
 		# Jalon 12 (T20) : un objet AVENTURE sans usage se consulte, sans UTILISER.
 		view.usable = false
+	if StoneUse.is_stone(item):
+		# Jalon 12 (T23) : UTILISER ouvre le choix du Pokémon (COMPATIBLE / INCOMPATIBLE).
+		view.targets_pokemon = true
 	if item.is_tm():
 		# CT : APPRENDRE ouvre le choix du Pokémon ; hors combat seulement (n° 44) ; permanente,
 		# donc sans quantité.
@@ -327,3 +334,17 @@ static func _relevance_rank(item: ItemData, context: StringName) -> int:
 ## (jalon 12, dossier 15 §20 n° 34) ; vide pour OK.
 static func field_refusal_text(check: FieldItemRules.Check) -> String:
 	return "" if check == FieldItemRules.Check.OK else FIELD_REFUSAL_TEXT
+
+
+## Pierre d'évolution (jalon 12, T23 ; `jalon-12.md` §2.9) : chaque membre COMPATIBLE
+## (choisissable) ou INCOMPATIBLE (non choisissable), libellé toujours visible
+## ([member PartyTargetView.show_reason]) ; un Pokémon K.O. reste COMPATIBLE. La pierre n'est pas
+## permanente (la quantité s'affiche).
+static func _stone_targets(picker: PartyPickerView, members: Array[Pokemon], item: ItemData,
+		data: PokemonData) -> void:
+	for i: int in members.size():
+		var state := StoneUse.check(members[i], item.id, data)
+		var target_view := PartyTargetView.new(DashboardViews.member(members[i], i, data),
+			state == StoneUse.Check.COMPATIBLE, StoneUse.LABELS[state])
+		target_view.show_reason = true
+		picker.targets.append(target_view)
