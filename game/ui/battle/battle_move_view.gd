@@ -25,6 +25,11 @@ var power: int = 0
 var accuracy: int = 0
 ## Description de la fiche (texte fourni tel quel).
 var description: String = ""
+## Bloquée (Entrave, jalon 12) : carte grisée, inerte, [member blocked_text] à la place de la
+## puissance.
+var blocked: bool = false
+## Libellé de la carte bloquée (« BLOQUÉE », fourni par celui qui pilote).
+var blocked_text: String = ""
 
 
 func _init(
@@ -49,6 +54,6 @@ func is_valid() -> bool:
 		and pp >= 0 and pp <= max_pp
 
 
-## Encore des PP : la carte peut être choisie.
+## Encore des PP et pas bloquée : la carte peut être choisie.
 func is_usable() -> bool:
-	return pp > 0
+	return pp > 0 and not blocked
