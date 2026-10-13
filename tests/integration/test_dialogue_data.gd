@@ -77,6 +77,8 @@ const MAPS: Array[StringName] = [
 	&"pewter_house_mason", &"pewter_house_researcher",
 	# Jalon 10 (T11) : la Route 2 nord et Argenta (extérieur).
 	&"route_2_north", &"pewter_city",
+	# Jalon 12 (T18) : la Route 3 et le Centre du Mont Sélénite.
+	&"route_3", &"mt_moon_center",
 	# Jalon 12 (T21) : le Mont Sélénite (1F, B1F ; B2F au T25).
 	&"mt_moon_1f", &"mt_moon_b1f",
 ]
@@ -143,6 +145,13 @@ const IDS: Array[StringName] = [
 	&"route_2_north_ball_1", &"route_2_north_mountaineer", &"route_2_north_rockslide",
 	&"route_2_north_sign",
 	&"route_2_sign", &"route_2_youngster",
+	# Jalon 12 (T18) : la vie de la Route 3 (dossier 15 §20 n° 1–11, panneaux, objets).
+	&"route_3_enzo_after", &"route_3_enzo_before", &"route_3_hidden_1", &"route_3_hiker",
+	&"route_3_hugo_after", &"route_3_hugo_before", &"route_3_ines_after", &"route_3_ines_before",
+	&"route_3_item_1", &"route_3_item_2", &"route_3_item_3", &"route_3_lea_after",
+	&"route_3_lea_before", &"route_3_nolan_after", &"route_3_nolan_before",
+	&"route_3_sacha_after", &"route_3_sacha_before", &"route_3_sign_center",
+	&"route_3_sign_west", &"route_3_traveler",
 	&"sign_pallet_town",
 	&"storage_terminal",
 	&"viridian_courier",
@@ -383,14 +392,16 @@ func test_every_condition_flag_is_set_somewhere() -> void:
 		&"got_mt_moon_1f_hidden_1", &"got_mt_moon_1f_item_1", &"got_mt_moon_b1f_item_2",
 		&"got_oak_parcel", &"got_potion_route_1",
 		&"got_route_2_item_1", &"got_route_2_item_2", &"got_route_2_item_3",
-		&"got_route_2_item_4", &"got_route_2_north_item_1", &"got_viridian_forest_item_1",
+		&"got_route_2_item_4", &"got_route_2_north_item_1", &"got_route_3_hidden_1",
+		&"got_route_3_item_1", &"got_route_3_item_2", &"got_route_3_item_3",
+		&"got_viridian_forest_item_1",
 		&"got_viridian_forest_item_2",
 		&"got_viridian_forest_item_3", &"got_viridian_forest_item_4",
 		&"got_viridian_forest_item_5", &"got_viridian_forest_item_6", &"oak_lab_reunion",
 		&"oak_met", &"pewter_arrived",
 		&"pokedex_activated", &"rival_battle_done", &"rival_challenged", &"rival_lab_lost",
 		&"rival_lab_won", &"rival_left_lab", &"rival_route22_lost", &"rival_route22_won",
-		&"route_3_guard_cleared", &"starter_chosen", &"starter_offered", &"tm34_received",
+		&"route_3_entered", &"route_3_guard_cleared", &"starter_chosen", &"starter_offered", &"tm34_received",
 		&"viridian_arrived"] as Array[StringName])
 	assert_eq(_used_on.get(&"oak_lab_reunion"), [&"oak_lab"], "joué au labo, après le fondu")
 	assert_eq(_used_on.get(&"oak_starter_offer"), [&"oak_lab"], "joué au labo")
@@ -597,7 +608,10 @@ func test_texts_are_the_dossier_02_texts_word_for_word() -> void:
 			or _each_line_quoted(dossier_14, text)
 			or dossier_15.contains(" : « %s »" % text)
 			# J12 (T21) : bulles suivantes (« / ») et panneaux sur deux lignes du §20.
-			or _each_line_quoted(dossier_15, text),
+			or _each_line_quoted(dossier_15, text)
+			# J12 (T18) : une réplique du §20 coupée en deux lignes dans sa bulle (retour à la
+			# ligne de mise en page) : la bulle entière est une citation du dossier.
+			or dossier_15.contains("« %s »" % text.replace("\n", " ")),
 			"%s : « %s » dans un dossier de conception" % [row[0], text])
 
 
@@ -653,6 +667,9 @@ func test_speakers_and_narration() -> void:
 		# Jalon 12 (T21) : panneau sans locuteur, examens du camp en narration.
 		&"mt_moon_1f_sign": ["", false], &"mt_moon_1f_crate": ["", true],
 		&"mt_moon_1f_lamp": ["", true], &"mt_moon_1f_hiker": ["Randonneur", false],
+		# Jalon 12 (T18) : panneaux de la Route 3 sans locuteur.
+		&"route_3_sign_west": ["", false], &"route_3_sign_center": ["", false],
+		&"route_3_traveler": ["Voyageur", false], &"route_3_hiker": ["Randonneuse", false],
 	}
 	for id: StringName in expected:
 		var dialogue := _library.get_dialogue(id)
@@ -749,9 +766,10 @@ func test_oak_parcel_lines() -> void:
 	# La scène du colis ; jalon 8 : les deux objets visibles de la Route 2 (PRENDRE) ; jalon 9 :
 	# les trois de la Forêt de Jade ; jalon 10 : la Potion de la Route 2 nord et Pierre.
 	# Jalon 11 : la remise tardive de la CT34 par Pierre. Jalon 12 (T21) : la Corde Sortie et
-	# la Potion au sol du Mont Sélénite, le Réveil caché (examen de l'indice).
-	assert_eq(launched, 12,
-		"la scène du colis, huit objets au sol, un caché, Pierre et sa CT34")
+	# la Potion au sol du Mont Sélénite, le Réveil caché (examen de l'indice). Jalon 12 (T18) :
+	# les trois objets au sol de la Route 3 et son objet caché.
+	assert_eq(launched, 16,
+		"la scène du colis, onze objets au sol, deux cachés, Pierre et sa CT34")
 	# Le jeton n'apparaît que dans la réplique de l'espèce (et « {pokemon} » dans les phrases du
 	# compagnon, J11).
 	for row: Array in _pages():
