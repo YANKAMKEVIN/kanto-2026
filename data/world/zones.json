@@ -72,7 +72,16 @@
 			"description": "Le versant est du Mont Sélénite. La route descend vers la plaine, en direction d'Azuria."
 		},
 		"cerulean_city": {
-			"name": "Azuria", "kind": "town", "maps": [],
+			"name": "Azuria", "kind": "town",
+			"maps": [
+				"cerulean_city", "cerulean_center", "cerulean_mart", "cerulean_gym",
+				"cerulean_bike_shop", "cerulean_house"
+			],
+			"services": [
+				{ "id": "pokemon_center", "found_on": "cerulean_center" },
+				{ "id": "poke_mart", "found_on": "cerulean_mart" },
+				{ "id": "gym", "found_on": "cerulean_gym" }
+			],
 			"description": "Une ville claire traversée de canaux, entre la montagne et le cap. Partout, on entend l'eau couler."
 		},
 		"route_24": {

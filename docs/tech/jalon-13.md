@@ -953,6 +953,33 @@ et de l'annexe A validée.
   `test_map_links`, `test_map_catalog`, `test_zone_library` ; captures 2340 × 1080 (arrivée, place,
   canal, Arène, sortie nord) relues contre la vue ; `[perf]` et mémoire.
 - **CA** : tests verts ; captures relues ; budgets tenus.
+- **Fait** (2026-10-12, branche `j13-t7`) :
+  - Outils : `tools/build_cerulean_city.gd` (Azuria 56 × 41, 1 546 nœuds, 498 entités, 68 modules de quai,
+    5 modules de tablier) ; intérieurs dans `build_painted_interiors.gd` (`--azuria` : Centre et
+    Boutique = définitions de Jadielle, Arène 17 × 13, magasin de vélos, maison ; meubles réduits à la
+    grille via une échelle facultative des entrées `furniture`) ; `cerulean_map_kit.place_bridges` :
+    clé `Vector2i` (coin nord-ouest) = tablier d'**un** pont (central `prop_pont_ville_03_01`, Arène
+    `_01`, ouest `_ew_01`). Îlot `K` / `A` ajouté aux cases d'eau du kit (l'eau passe dessous, aucun
+    quai ne le longe) sans `cliff_marks`.
+  - Raccords (noms de la T8) : ouest → `route_4` / `from_cerulean_n|c|s` (PUSH ←, arrivées
+    `from_route_4_n|c|s`), nord → `route_24` / `from_cerulean_w|c|e` (PUSH ↑, arrivées
+    `from_route_24_w|c|e`) ; `test_map_links` couvre les allers et retours réels.
+  - Catalogues (entrées en fin) : `zones.json` (`cerulean_city` : 6 cartes, 3 services),
+    `lighting.json`, `rest_points.json`, `interiors.json`. Tests : `test_cerulean_city` (13),
+    `test_cerulean_interiors` (8), `test_map_links`, `test_zone_library` (Azuria autorisée à avoir des
+    services), `test_coming_soon` (assertion « Azuria n'existe pas » retirée).
+  - Rien de vivant : PNJ, examens, panneaux lisibles, déclencheurs = T17 (cases réservées, forêt écartée
+    des habitants). Décor seul posé : porte condamnée, pot, trou, clôture arrachée, palissade, panneaux.
+  - Captures 2340 × 1080 relues : `build/captures/jalon13_t7/az_*.png` (arrivée, avenue, place,
+    canal, pont ouest, Arène, quartier nord-ouest, sortie nord, boutique et vélos, sortie est, baie,
+    ensemble) et `int_{arene,velos,maison,centre}.png` ; `tools/capture_cerulean.sh`.
+  - `[perf]` (machine chargée, load ≈ 10 ; premières images = chargement exclues) : 91–120 fps stables
+    (plafond d'affichage 120), 60 à 206 appels de dessin, texture 45 Mo ; mémoire « carte + voisines »
+    à mesurer quand les Routes 4 et 24 existent.
+  - Défauts [D] : maison cambriolée = image de la maison ouverte teintée ; bancs `n` = banc de pierre
+    réduit ; arbres en bac sur les `G` ; barrière est = clôture verticale + arbre sur la case `t` ;
+    banc de piscine non posé (aucune case libre dans la grille) ; vélo D partiellement caché par la
+    plante (1, 7) (grille).
 
 #### T8 — constructeur-monde : Route 4 et Route 24 (sans PNJ) — **maintenant**, après T5, T6 et la T8 du J12
 - §2.2 (carte, **test de reprise du sas**), §2.14 (carte), §2.18 ; `build_route_4.gd` réécrit,

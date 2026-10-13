@@ -167,8 +167,9 @@ func test_service_catalog_and_the_services_of_viridian() -> void:
 	# Jalon 7 T4 : seuls les services de Jadielle, découverts sur leur carte (l'Arène en
 	# entrant dans la ville, le Centre et la Boutique en y entrant). Jalon 10 : ceux d'Argenta
 	# (test_pewter_data). Jalon 12 T8 : le Centre du Mont Sélénite (zone `mt_moon`).
+	# Jalon 13 T7 : Azuria.
 	for id: StringName in _zones.get_ids():
-		if not id in [&"viridian_city", &"pewter_city", &"mt_moon"]:
+		if not id in [&"viridian_city", &"pewter_city", &"mt_moon", &"cerulean_city"]:
 			assert_true(_zones.get_zone(id).services.is_empty(), "%s : aucun service" % id)
 	var mt_moon := _zones.get_zone(&"mt_moon").services
 	assert_eq(mt_moon.size(), 1, "Mont Sélénite : le Centre seul (sans Boutique)")
