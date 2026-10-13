@@ -53,8 +53,6 @@ const UNUSED_YET: Array[StringName] = [
 	&"route_6_scout_axel_after", &"route_6_scout_axel_before", &"route_6_scout_axel_defeated",
 	&"route_6_scout_basile_after", &"route_6_scout_basile_before",
 	&"route_6_scout_basile_defeated",
-	# Jalon 15 (T4) : le gardien de la Pension, posé par la carte de QA (T6) puis la Route 5 (T15).
-	&"daycare_keeper",
 ]
 ## Jalon 11 (T20c) : phrases jouées par le contrôleur du compagnon (ni PNJ, ni point, ni scène).
 const PLAYED_BY_COMPANION: Array[StringName] = [
@@ -85,6 +83,8 @@ const MAPS: Array[StringName] = [
 	&"pewter_house_mason", &"pewter_house_researcher",
 	# Jalon 10 (T11) : la Route 2 nord et Argenta (extérieur).
 	&"route_2_north", &"pewter_city",
+	# Jalon 15 (T6) : carte de QA provisoire de la Pension (retirée au T23).
+	&"qa_daycare",
 ]
 ## Lot de textes validé par Kevin le 2026-10-06 (anciens brouillons : panneau, observations,
 ## soin de Maman, terminal du Stockage, portes de Jadielle…) : source des textes hors dossiers.

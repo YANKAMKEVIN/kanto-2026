@@ -60,6 +60,7 @@
 		"pewter_house_mason": "interior_warm",
 		"pewter_house_researcher": "interior_warm",
 		"route_2_north": "golden_hour",
-		"pewter_city": "golden_hour"
+		"pewter_city": "golden_hour",
+		"qa_daycare": "interior_warm"
 	}
 }

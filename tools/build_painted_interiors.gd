@@ -64,6 +64,8 @@ const JADIELLE := [&"viridian_center", &"viridian_mart"]
 const FORET := [&"viridian_forest_gate_south", &"viridian_forest_gate_north"]
 const ARGENTA := [&"pewter_center", &"pewter_mart", &"pewter_museum", &"pewter_museum_science",
 	&"pewter_gym", &"pewter_house_mason", &"pewter_house_researcher"]
+## Carte de QA PROVISOIRE du jalon 15 (T6) : retirée à la clôture (T23).
+const QA := [&"qa_daycare"]
 const PLANS_DIR := "res://tools/plans/"
 const PlanGrid := preload("res://tests/helpers/plan_grid.gd")
 const LOGIC_DIR := "res://tests/fixtures/maps/"
@@ -80,6 +82,7 @@ func _init() -> void:
 		_player_house_1f(), _rival_house(), _oak_lab(), _forest_gate(&"south"),
 		_forest_gate(&"north")]
 	rooms.append_array(_pewter_rooms())
+	rooms.append(_qa_daycare())
 	for room: Dictionary in rooms:
 		if not wanted.is_empty() and not wanted.has(room["id"]):
 			continue
@@ -111,6 +114,8 @@ func _wanted_rooms() -> Array:
 			wanted.append_array(JADIELLE)
 		elif arg == "--foret":
 			wanted.append_array(FORET)
+		elif arg == "--qa":
+			wanted.append_array(QA)
 		elif arg == "--argenta":
 			wanted.append_array(ARGENTA)
 		elif arg.begins_with("--rooms="):
@@ -168,6 +173,28 @@ func _pokemon_center(id: StringName, node: String, title: String, exit_target: A
 		"spawns": {"entrance": Vector2i(7, 8), "heal": Vector2i(7, 5),
 			"terminal": Vector2i(1, 4)},
 	}
+
+
+## CARTE DE QA PROVISOIRE (jalon 15 T6, jalon-15.md §2.12 ; retirée à la clôture, T23) : la
+## Pension testable avant la Route 5. Enveloppe du Centre (réutilisée), comptoir du gardien au
+## milieu (on lui parle par-dessus, tourné vers le haut), le reste de la salle sert de parcours
+## pour accumuler des pas (tour de la salle : ≈ 30 cases). Pas d'herbe (aucune rencontre).
+## Sortie : Jadielle, devant le Centre.
+func _qa_daycare() -> Dictionary:
+	var room := _pokemon_center(&"qa_daycare", "QaDaycare", "Jadielle",
+		[&"viridian_city", &"from_center"])
+	room["props"] = [
+		[&"int_centre_comptoir", Vector2i(7, 4), 5.0, "Counter"],
+		[&"int_plante", Vector2i(2, 3), 3.4, "PlantNorthWest"],
+		[&"int_plante", Vector2i(12, 3), 3.4, "PlantNorthEast"],
+		[&"int_plante", Vector2i(1, 8), 8.8, "PlantSouthWest"],
+		[&"int_plante", Vector2i(13, 8), 8.8, "PlantSouthEast"],
+	]
+	room.erase("machine")
+	room["interactables"] = [["KeeperCounter", Vector2i(6, 4), Vector2i(3, 1),
+		&"daycare_keeper", TALK, Vector2i.UP]]
+	room["spawns"] = {"entrance": Vector2i(7, 8), "counter": Vector2i(7, 5)}
+	return room
 
 
 ## Boutique de Jadielle (dossier 09 §4, §9 ; prototype validé) : la caisse au milieu (le

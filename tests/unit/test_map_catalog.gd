@@ -29,6 +29,9 @@ func test_has_map() -> void:
 func test_no_qa_map_is_shipped() -> void:
 	assert_false(MapCatalog.has_map(&"qa_forest_systems"))
 	for file: String in DirAccess.get_files_at(MapCatalog.MAPS_DIR):
+		# Jalon 15 (T6) : `qa_daycare` est PROVISOIRE, à retirer au T23 avec cette exception.
+		if file.begins_with("qa_daycare"):
+			continue
 		assert_false(file.begins_with("qa_"), "%s : carte de QA livrée" % file)
 
 
