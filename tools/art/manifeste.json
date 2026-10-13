@@ -1941,6 +1941,18 @@
    "source": "POKE_PAPILUSION_NE_r1.png",
    "sortie": "assets/sprites/pokemon/painted/papilusion_sheet.png",
    "hauteur": 70
+  },
+  {
+   "id": "pikachu",
+   "source": "POKE_PIKACHU_NE_r1.png",
+   "sortie": "assets/sprites/pokemon/painted/pikachu_sheet.png",
+   "hauteur": 60
+  },
+  {
+   "id": "reptincel",
+   "source": "POKE_REPTINCEL_NE_r1.png",
+   "sortie": "assets/sprites/pokemon/painted/reptincel_sheet.png",
+   "hauteur": 72
   }
  ],
  "heros_images": [

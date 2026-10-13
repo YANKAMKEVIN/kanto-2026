@@ -400,6 +400,24 @@ l'app ChatGPT (prompts prêts : `build/qa/jalon11_t18/prompt_POKE_*.txt`, sur le
 - Vérifié : import sans erreur, suite complète 3 847 tests verts, captures sur la Route 1 (vrai
   Boot, suivi derrière le joueur, ombre de Papilusion) : `build/captures/jalon11_t18/`.
 
+### T18 bis — Pikachu et Reptincel ajoutés au lot (2026-10-13, après la clôture)
+
+Planches obtenues à la main par Kevin dans l'app ChatGPT (Codex refuse ; ChatGPT refuse aussi dès
+qu'on joint les images d'ancre : Reptincel fait **sans image jointe**), **validées par Kevin**. Le
+rendu est un peu plus doux que les planches Codex (contour plus fin), acceptable à l'échelle du jeu.
+- **Pikachu** : hauteur **60 px** [D] au lieu de 52 : la découpe met à l'échelle la pose la plus
+  haute, ici la vue de face où la queue en éclair dépasse de la tête ; à 52 px le corps faisait
+  ≈ 30 px, plus petit que Rattata (`build/qa/jalon11_t18/contact_pikachu_52_60.png`).
+  `IDLE_FROM_WALK` [D] : bas 0, gauche 1, droite 3, haut 0.
+- **Reptincel** : 72 px (fiche), un peu plus grand que Salamèche (`contact_reptincel.png`).
+  `IDLE_FROM_WALK` [D] : bas 3, gauche 2, droite 2, haut 2. Conséquence en jeu : un Salamèche
+  compagnon qui évolue **reste** compagnon ; le cas « évolution en espèce sans planche » des tests
+  passe à Dracaufeu (`test_companion_logic`, `test_companion_controller`) ; `companion_qa`
+  (README) à jour.
+- `companions.json` : **14 espèces** (les 9 de départ + les 5 de la série 13) ; lot A-10 complet.
+  Captures Route 1 (suivi, bouton FAIRE SORTIR) relues :
+  `build/captures/jalon11_t18/serie13_route1_suivi.png`.
+
 ### T17 — conception technique du compagnon : écrite (2026-10-10, en avance)
 
 `docs/tech/jalon-11-compagnon.md` : constats du code (le compagnon n'occupe pas la grille ; relais

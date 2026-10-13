@@ -12,7 +12,9 @@
 		"nidoran_m": { "sprite": "pokemon/nidoran_m" },
 		"ivysaur": { "sprite": "pokemon/ivysaur" },
 		"wartortle": { "sprite": "pokemon/wartortle" },
-		"butterfree": { "sprite": "pokemon/butterfree", "flying": true }
+		"butterfree": { "sprite": "pokemon/butterfree", "flying": true },
+		"pikachu": { "sprite": "pokemon/pikachu" },
+		"charmeleon": { "sprite": "pokemon/charmeleon" }
 	},
 	"contexts": {
 		"viridian_forest": "forest",

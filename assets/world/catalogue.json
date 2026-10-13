@@ -5281,6 +5281,38 @@
     "droite",
     "haut"
    ]
+  },
+  "pikachu": {
+   "fichier": "res://assets/sprites/pokemon/painted/pikachu_sheet.png",
+   "cellule": [
+    54,
+    62
+   ],
+   "hauteur": 60,
+   "colonnes": 4,
+   "lignes": 4,
+   "ordre_lignes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "reptincel": {
+   "fichier": "res://assets/sprites/pokemon/painted/reptincel_sheet.png",
+   "cellule": [
+    65,
+    74
+   ],
+   "hauteur": 72,
+   "colonnes": 4,
+   "lignes": 4,
+   "ordre_lignes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
   }
  },
  "images": {
