@@ -140,6 +140,10 @@ var _resumed: bool = false
 var _debug_start_autosave: bool = false
 ## Voile de l'apprentissage d'une CT depuis le Sac (jalon 11), créé au premier besoin.
 var _tm_overlay: TmLearnOverlay
+## Pension (J15, jalon-15.md §2.5) : directeur (pas, conversation) ; le gardien (`open_daycare`)
+## la demande, elle commence à la fin de son dialogue.
+var _daycare: DaycareDirector
+var _pending_daycare: bool = false
 ## Autosave demandé, en attente d'un état stable, et sa raison (journal).
 var _save_pending: bool = false
 var _save_reason: String = ""
@@ -241,6 +245,16 @@ func _ready() -> void:
 	add_child(_evolution_screen)
 	_evolution_screen.reduce_flashes = _settings.reduce_flashes
 	_evolutions.set_screen(_evolution_screen)
+	# Pension (J15, jalon-15.md §2.5) : compteur de pas sur le joueur, conversation du gardien.
+	_daycare = DaycareDirector.new()
+	_daycare.name = "DaycareDirector"
+	_daycare.process_mode = Node.PROCESS_MODE_PAUSABLE
+	add_child(_daycare)
+	_daycare.setup(GameState, _player, _runner, _library, _pokemon, DaycareConfig.load_default())
+	_daycare.set_learning(_battle_director.get_move_learn_prompt(), _evolutions)
+	_daycare.deposited.connect(_on_daycare_deposited.unbind(1))
+	_daycare.finished.connect(_on_daycare_finished)
+	_services.daycare_requested.connect(_on_daycare_requested)
 	_cutscenes_node.set_inventory(GameState.bag, _items)
 	# Remise du colis (jalon-07.md §3.6.2, T19) : jeton {first_wild_species} des répliques de
 	# Chen, scène lancée par une variante de dialogue (« colis en main »), légende POKÉDEX ACTIVÉ.
@@ -562,6 +576,11 @@ func get_evolution_director() -> EvolutionDirector:
 	return _evolutions
 
 
+## Pension (J15).
+func get_daycare_director() -> DaycareDirector:
+	return _daycare
+
+
 func get_battle_stage() -> BattleStage:
 	return _battle_stage
 
@@ -659,6 +678,9 @@ func _on_go_back() -> void:
 		return
 	# Un choix à deux cartes dans un dialogue (SOIGNER / PAS MAINTENANT) : retour = annuler.
 	if _dialogue_box.cancel_choice():
+		return
+	# Pension (J15) : écran du dépôt = ANNULER ; le reste de la conversation avale le geste.
+	if _daycare.handle_back():
 		return
 	if _menu.is_open() and _screen_back():
 		return
@@ -1052,6 +1074,7 @@ func _on_map_changed(map: GameMap) -> void:
 	_trainer_watcher.set_map(map)
 	_encounters.set_map(map)
 	_services.set_map(map)
+	_daycare.set_map(map)
 	_recovery.set_map(map)
 	# Décor de combat de la carte chargé en tâche de fond (correctif QA S24 du CB.3).
 	_battle_stage.prepare_place(map.map_id)
@@ -1108,6 +1131,11 @@ func _on_dialogue_finished(_dialogue_id: StringName) -> void:
 		_pending_storage = false
 		if not _menu.open(MenuRoute.storage(), true):
 			push_error("Boot : le Stockage ne s'ouvre pas sur « %s »" % _current_map_id())
+	elif _pending_daycare:
+		_pending_daycare = false
+		if _daycare.overlay == null:
+			_daycare.overlay = _ensure_tm_overlay()
+		_daycare.run()
 
 
 ## « open_shop » (le marchand, jalon-07.md §6.10) : la Boutique s'ouvre en écran seul dès la fin
@@ -1123,6 +1151,32 @@ func _on_shop_requested(shop_id: StringName) -> void:
 ## seul dès la fin du dialogue ; retour = fermer, autosave à la fermeture s'il a changé.
 func _on_storage_requested() -> void:
 	_pending_storage = true
+
+
+# --- Pension (J15, jalon-15.md §2.5.3) ----------------------------------------------------------
+
+## « open_daycare » (le gardien) : la conversation de la Pension commence à la fin du dialogue.
+func _on_daycare_requested() -> void:
+	_pending_daycare = true
+
+
+## Dépôt fait : écriture tout de suite (quitter avant l'autosave ne perd rien), comme au soin.
+func _on_daycare_deposited() -> void:
+	if _can_write() and not SceneRouter.is_transitioning():
+		_write_save("pension, dépôt")
+	else:
+		request_autosave("pension, dépôt")
+
+
+## Conversation finie (joueur rendu) : contrôles ; après un retrait, **une seule** écriture.
+func _on_daycare_finished(withdrew: bool) -> void:
+	_refresh_controls()
+	if not withdrew:
+		return
+	if _can_write() and not SceneRouter.is_transitioning():
+		_write_save("pension, retrait")
+	else:
+		request_autosave("pension, retrait")
 
 
 ## Soin demandé par un dialogue « heal » (jalon 5 §3.11, Maman) : l'équipe est soignée (PV et
@@ -1152,8 +1206,12 @@ func _on_cutscene_started(_cutscene_id: StringName) -> void:
 ## contient (« Un Roucool… » ; aucune rencontre → la page est omise) ; prénoms du joueur et du
 ## rival (OUV.2), aussi pour les étiquettes et le nom du dresseur en combat.
 func _dialogue_token_values() -> Dictionary[StringName, String]:
-	return DialogueTokens.values_for(GameState.first_wild_species(), _pokemon,
+	var values := DialogueTokens.values_for(GameState.first_wild_species(), _pokemon,
 		GameState.player_name, GameState.rival_name)
+	# Pension (J15) : {pokemon}, {levels}, {price}, seulement pendant sa conversation.
+	if _daycare != null:
+		values.merge(_daycare.token_values(), true)
+	return values
 
 
 ## Une variante de dialogue lance une scène à sa fin (Chen, colis en main → `oak_parcel`). Le
@@ -1259,11 +1317,7 @@ func _on_tm_learn_requested(index: int, item_id: StringName) -> void:
 	var pokemon: Pokemon = GameState.party.get_at(index)
 	if item == null or pokemon == null:
 		return
-	if _tm_overlay == null:
-		_tm_overlay = TmLearnOverlay.new()
-		_tm_overlay.name = "TmLearnOverlay"
-		add_child(_tm_overlay)
-	_tm_overlay.open()
+	_ensure_tm_overlay().open()
 	var prompt := _battle_director.get_move_learn_prompt()
 	var learned := await prompt.teach(pokemon, index, item.teaches,
 		_tm_overlay.get_message_banner(), _tm_overlay.get_prompt_host())
@@ -1273,6 +1327,15 @@ func _on_tm_learn_requested(index: int, item_id: StringName) -> void:
 
 
 func get_tm_learn_overlay() -> TmLearnOverlay:
+	return _tm_overlay
+
+
+## Le voile des capacités hors combat (CT du Sac, Pension), créé au premier besoin.
+func _ensure_tm_overlay() -> TmLearnOverlay:
+	if _tm_overlay == null:
+		_tm_overlay = TmLearnOverlay.new()
+		_tm_overlay.name = "TmLearnOverlay"
+		add_child(_tm_overlay)
 	return _tm_overlay
 
 
@@ -1348,7 +1411,7 @@ func _refresh_controls() -> void:
 	_hud.set_controls_visible(not _is_opening_active() and not _menu.is_open()
 		and not _runner.is_running() and not _cutscenes_node.is_running()
 		and not _starter_choice.is_sheet_open() and not _battle_director.is_running()
-		and not _encounters.is_running())
+		and not _encounters.is_running() and not (_daycare != null and _daycare.is_running()))
 
 
 ## Lit les réglages (fichier de l'appareil, indépendant de la sauvegarde et du départ de
