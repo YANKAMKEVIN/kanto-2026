@@ -371,6 +371,29 @@ planches (gabarit des starters, ancres héros + forme précédente), hauteurs pa
 décrite (manifeste, `preparer.py`, `LOOKS`, `companions.json` au T20). Génération et validation :
 Kevin, sur le Mac. Rien de branché dans le jeu.
 
+### T18 — lot d'art du compagnon : fait (2026-10-13, Mac) — 3 espèces sur 5
+
+Génération Codex (`tools/art/serie13.py`) : **Herbizarre, Carabaffe, Papilusion** produits du
+premier coup ; **Reptincel et Pikachu refusés deux fois** (« bloqué par le système de sécurité de
+l'outil »), comme le Salamèche de la série 09. Planche de contact (héros, Salamèche, Bulbizarre
+et les trois, à l'échelle du jeu ; `build/qa/jalon11_t18/`) → **validée par Kevin le 2026-10-13**.
+Reptincel et Pikachu restent **hors du lot** (A-11, aucun substitut) jusqu'à leurs planches par
+l'app ChatGPT (prompts prêts : `build/qa/jalon11_t18/prompt_POKE_*.txt`, sur le Mac).
+
+- Manifeste : `herbizarre` 66 px, `carabaffe` 68 px, `papilusion` 70 px (cellules 68 × 68,
+  62 × 70, 72 × 72) ; `serie13.py --manifeste` n'ajoute plus une espèce sans planche source et
+  insère dans le texte du fichier (le reste du manifeste garde sa mise en forme ; idempotent).
+- `LOOKS` : `ivysaur`, `wartortle`, `butterfree` ; pas de planche d'attente → `IDLE_FROM_WALK`
+  choisi à l'œil [D] : Herbizarre bas 0 / gauche 3 / droite 2 / haut 2, Carabaffe 0 / 3 / 3 / 0,
+  Papilusion ailes ouvertes (colonne 0) partout.
+- `companions.json` : 12 espèces éligibles (`butterfree` en `"flying": true`) ;
+  `test_companion_logic` à jour (liste, vol, Reptincel non éligible).
+- Papilusion : dans la source, ses pattes touchent la ligne des pieds (au lieu de ≈ 70 px
+  au-dessus) ; sans effet en jeu, la découpe recadre chaque pose et le moteur le lève de
+  `FLY_HEIGHT` (28 px) avec une ombre au sol (vérifié sur capture).
+- Vérifié : import sans erreur, suite complète 3 847 tests verts, captures sur la Route 1 (vrai
+  Boot, suivi derrière le joueur, ombre de Papilusion) : `build/captures/jalon11_t18/`.
+
 ### T17 — conception technique du compagnon : écrite (2026-10-10, en avance)
 
 `docs/tech/jalon-11-compagnon.md` : constats du code (le compagnon n'occupe pas la grille ; relais

@@ -9,7 +9,10 @@
 		"spearow": { "sprite": "pokemon/spearow" },
 		"mankey": { "sprite": "pokemon/mankey" },
 		"nidoran_f": { "sprite": "pokemon/nidoran_f" },
-		"nidoran_m": { "sprite": "pokemon/nidoran_m" }
+		"nidoran_m": { "sprite": "pokemon/nidoran_m" },
+		"ivysaur": { "sprite": "pokemon/ivysaur" },
+		"wartortle": { "sprite": "pokemon/wartortle" },
+		"butterfree": { "sprite": "pokemon/butterfree", "flying": true }
 	},
 	"contexts": {
 		"viridian_forest": "forest",

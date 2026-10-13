@@ -26,10 +26,14 @@ func _mon(species: StringName, level: int = 10) -> Pokemon:
 
 # --- Catalogue (T19a) --------------------------------------------------------------------------
 
-func test_the_nine_eligible_species_of_the_dossier() -> void:
-	assert_eq(_catalog.get_species_ids(), [&"bulbasaur", &"charmander", &"mankey", &"nidoran_f",
-		&"nidoran_m", &"pidgey", &"rattata", &"spearow", &"squirtle"] as Array[StringName],
-		"dossier 14 §8.2 : 9 espèces aujourd'hui")
+func test_the_twelve_eligible_species_of_the_dossier() -> void:
+	assert_eq(_catalog.get_species_ids(), [&"bulbasaur", &"butterfree", &"charmander", &"ivysaur",
+		&"mankey", &"nidoran_f", &"nidoran_m", &"pidgey", &"rattata", &"spearow", &"squirtle",
+		&"wartortle"] as Array[StringName],
+		"dossier 14 §8.2 : les 9 de départ + série 13 validée (Reptincel, Pikachu : pas de planche)")
+	assert_true(_catalog.is_flying(&"butterfree"), "Papilusion en vol")
+	assert_false(_catalog.is_flying(&"ivysaur"))
+	assert_false(_catalog.is_eligible_species(&"charmeleon"), "refusé par Codex : hors du lot (A-11)")
 	assert_false(_catalog.is_eligible_species(&"caterpie"), "pas de planche de marche")
 	assert_false(_catalog.is_eligible_species(&"geodude"))
 	assert_eq(_catalog.context_of(&"viridian_forest"), &"forest")
