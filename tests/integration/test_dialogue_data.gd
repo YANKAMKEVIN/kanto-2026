@@ -67,8 +67,6 @@ const DOSSIER_18 := "res://docs/design/dossier-18-carmin-sur-mer.md"
 ## Jalon 8 : textes T1–T16 validés (dossier 11, « Textes à valider ») ; dans son tableau, « / »
 ## marque le retour à la ligne de la bulle et le gras (« ** ») le titre d'un panneau.
 const DOSSIER_11 := "res://docs/design/dossier-11-route-2.md"
-## Jalon 15 : lot de textes validé du dossier 18 (§15, 2026-10-12).
-const DOSSIER_18 := "res://docs/design/dossier-18-carmin-sur-mer.md"
 const _DOSSIER_TOKENS: Dictionary[String, String] = {"{first_wild_species}": "{espèce}"}
 const MAPS: Array[StringName] = [
 	&"player_house_2f", &"player_house_1f", &"rival_house", &"oak_lab", &"pallet_town",
