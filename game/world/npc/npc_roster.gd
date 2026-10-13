@@ -13,7 +13,8 @@ extends RefCounted
 ## }
 ## [/codeblock]
 ## Clés : cell (obligatoire), sprite (obligatoire), facing (down), dialogue (aucun),
-## verb (talk | observe | take ; take = objet visible au sol, jalon 8), turn_to_player (true),
+## verb (talk | observe | take | examine ; take = objet visible au sol, jalon 8 ; examine = objet
+## fixe qu'on examine, jalon 12 : les fossiles de la dalle), turn_to_player (true),
 ## keep_facing (false), lift (0 pixel),
 ## hop_style (calm | eager | playful : style de saut, jalon 4 ; aucun par défaut),
 ## shy ({ action: fly | flee | notice | hide, radius: 1..4 } : réaction d'ambiance, jalon 5 ;
@@ -181,8 +182,8 @@ static func parse_entry(value: Variant, errors: PackedStringArray) -> NpcSpec:
 	if entry.has("verb"):
 		var verb := Interaction.kind_from_name(str(entry["verb"]))
 		if verb != Interaction.Kind.TALK and verb != Interaction.Kind.OBSERVE \
-				and verb != Interaction.Kind.TAKE:
-			errors.append("« verb » vaut talk, observe ou take")
+				and verb != Interaction.Kind.TAKE and verb != Interaction.Kind.EXAMINE:
+			errors.append("« verb » vaut talk, observe, take ou examine")
 		else:
 			spec.verb = verb as Interaction.Kind
 	for key: String in ["turn_to_player", "keep_facing"]:

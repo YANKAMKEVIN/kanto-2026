@@ -13,7 +13,8 @@ extends SceneTree
 ##   parois en modules (faces, bords latéraux, lèvres : [method CaveKit.place_walls]), repères
 ##   (colonnes `K`, rochers `o`, éclats de Pierre Lune `*`, mare `w`, lampes `L` — projecteurs
 ##   dans la chambre de B2F —, caisses `R`, tranchées `F`, dalle `S` et ses deux fossiles posés
-##   dessus, indices `x`, puits de jour `j`), échelles `U` / `V`, panneau de l'entrée.
+##   dessus (PNJ objets depuis le T25), indices `x`, puits de jour `j`), échelles `U` / `V`,
+##   panneau de l'entrée ; déclencheur de la scène du chercheur (B2F, T25).
 ## - **Halos** [LightGlow] (≤ 16 par étage) : lampes, puits de jour et entrée (1F), éclats,
 ##   projecteurs. Profils `cave_1f` > `cave_b1f` = `cave_b2f` (`data/world/lighting.json`).
 ## - Passages : échelles `STEP_ON` sans direction vers le point d'apparition de même paire
@@ -69,10 +70,14 @@ const EXAMINABLES: Dictionary = {
 	"lampe_abandonnee": &"mt_moon_1f_lamp",
 }
 const EXAMINE_ALL_OF: String = "R"
-## Objets cachés posés par cet outil (T21 ; la Pierre Lune cachée de B2F arrive au T25) :
+## Objets cachés posés par cet outil (T21 ; la Pierre Lune cachée de B2F au T25) :
 ## position `objet_cache` = dialogue (drapeau `got_<id>`).
-const HIDDEN_ITEMS: Array[String] = ["mt_moon_1f_hidden_1"]
+const HIDDEN_ITEMS: Array[String] = ["mt_moon_1f_hidden_1", "mt_moon_b2f_hidden_1"]
 const CLUE_MARK: String = "x"
+## Scène du chercheur (T25, `jalon-12.md` §1.3 n° 5, §2.12) : déclencheur au bas du couloir des
+## lampes (seul accès à la chambre), pas vers le bas ; ses variantes ne jouent qu'après R3.
+const RESEARCHER_TRIGGER: Array = [&"mt_moon_b2f", Vector2i(25, 27), Vector2i(2, 1),
+	&"mt_moon_researcher"]
 
 var _kit: Object
 var _floor_key: String = ""
@@ -119,6 +124,9 @@ func _build(key: String) -> int:
 	_place_examinables()
 	if map_id == &"mt_moon_1f":
 		_place_entrance()
+	if map_id == RESEARCHER_TRIGGER[0]:
+		_kit.call(&"add_trigger", "ResearcherTrigger", RESEARCHER_TRIGGER[1],
+			RESEARCHER_TRIGGER[2], Vector2i.DOWN, RESEARCHER_TRIGGER[3])
 	if not _errors().is_empty():
 		push_error("build_mt_moon %s :\n%s" % [key, "\n".join(_errors())])
 		_kit.call(&"discard")
@@ -206,17 +214,12 @@ func _place_landmarks() -> void:
 	# Mare `w` (4 × 3) : à plat, centrée sur la zone.
 	for block: Rect2i in _blocks("w"):
 		_floor_decor(decals, "prop_mare_grotte_01", block, "Pool")
-	# Dalle `S` (3 × 1) et les deux fossiles posés dessus (images des objets officiels ; au
-	# T25 ils deviennent les objets fixes `object/fossil_*` que l'on choisit).
+	# Dalle `S` (3 × 1). Les deux fossiles posés dessus sont, depuis le T25, des PNJ objets
+	# fixes (`data/npcs/mt_moon_b2f.json` : `object/fossil_dome`, `object/fossil_helix`, relevés
+	# de « lift » = [constant FOSSIL_RAISE]) que l'on examine et choisit ; plus de décor ici.
 	for block: Rect2i in _blocks("S"):
 		var anchor := Vector2i(block.position.x + 1, block.position.y)
 		_kit.call(&"add_prop_at", entities, "prop_dalle_01", anchor, "FossilSlab")
-		for entry: Array in [["fossile_dome", "prop_fossile_dome_01", "FossilDome"],
-				["fossile_nautile", "prop_fossile_nautile_01", "FossilHelix"]]:
-			var cell: Vector2i = _plan().call(&"cell_of", entry[0])
-			var fossil: Sprite2D = _kit.call(&"add_sprite", entities, entry[1],
-				Vector2((cell.x + 0.5) * TILE, (cell.y + 1) * TILE + 1.0), entry[2])
-			fossil.offset.y -= FOSSIL_RAISE
 	# Indices des objets cachés `x` : un petit éclat clair, sans halo (discret, B-10).
 	index = 0
 	for cell: Vector2i in _plan().call(&"cells_of", "x"):

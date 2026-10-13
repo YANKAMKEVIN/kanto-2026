@@ -74,7 +74,7 @@ func test_invalid_entries_are_rejected() -> void:
 		"negative": {"cell": [-1, 2], "sprite": "x"},
 		"no_sprite": {"cell": [1, 2]},
 		"bad_facing": {"cell": [1, 2], "sprite": "x", "facing": "north"},
-		"bad_verb": {"cell": [1, 2], "sprite": "x", "verb": "examine"},
+		"bad_verb": {"cell": [1, 2], "sprite": "x", "verb": "smell"},
 		"typo": {"cell": [1, 2], "sprite": "x", "dialog": "mom"},
 		"bad_bool": {"cell": [1, 2], "sprite": "x", "turn_to_player": "no"},
 		"bad_lift": {"cell": [1, 2], "sprite": "x", "lift": -4},
@@ -87,7 +87,7 @@ func test_invalid_entries_are_rejected() -> void:
 	assert_eq(roster.size(), 0)
 	assert_eq(roster.get_errors().size(), 13)
 	var errors := "\n".join(roster.get_errors())
-	assert_string_contains(errors, "« meet_verb » : « verb » vaut talk, observe ou take")
+	assert_string_contains(errors, "« meet_verb » : « verb » vaut talk, observe, take ou examine")
 	assert_string_contains(errors, "« hop_style » vaut calm, eager, playful")
 
 

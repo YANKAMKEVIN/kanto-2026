@@ -79,8 +79,8 @@ const MAPS: Array[StringName] = [
 	&"route_2_north", &"pewter_city",
 	# Jalon 12 (T18) : la Route 3 et le Centre du Mont Sélénite.
 	&"route_3", &"mt_moon_center",
-	# Jalon 12 (T21) : le Mont Sélénite (1F, B1F ; B2F au T25).
-	&"mt_moon_1f", &"mt_moon_b1f",
+	# Jalon 12 (T21) : le Mont Sélénite (1F, B1F) ; B2F au T25 (Rocket, chercheur, fossiles).
+	&"mt_moon_1f", &"mt_moon_b1f", &"mt_moon_b2f",
 ]
 ## Lot de textes validé par Kevin le 2026-10-06 (anciens brouillons : panneau, observations,
 ## soin de Maman, terminal du Stockage, portes de Jadielle…) : source des textes hors dossiers.
@@ -107,7 +107,15 @@ const IDS: Array[StringName] = [
 	&"mom_wakeup",
 	# Jalon 12 (T21) : la vie du Mont Sélénite (dossier 15 §20 n° 12–15, objets).
 	&"mt_moon_1f_ball_1", &"mt_moon_1f_crate", &"mt_moon_1f_hidden_1", &"mt_moon_1f_hiker",
-	&"mt_moon_1f_lamp", &"mt_moon_1f_sign", &"mt_moon_b1f_ball_2",
+	&"mt_moon_1f_lamp", &"mt_moon_1f_sign", &"mt_moon_b1f_ball_1", &"mt_moon_b1f_ball_2",
+	# Jalon 12 (T25) : Team Rocket, chercheur, fossiles, CT01, Pierre Lune cachée (§20 n° 16–26).
+	&"mt_moon_b2f_ball_1", &"mt_moon_b2f_hidden_1", &"mt_moon_fossil_dome",
+	&"mt_moon_fossil_helix", &"mt_moon_researcher_before", &"mt_moon_researcher_chosen",
+	&"mt_moon_researcher_defeated", &"mt_moon_researcher_guard", &"mt_moon_researcher_rematch",
+	&"mt_moon_researcher_share", &"mt_moon_researcher_talk", &"mt_moon_rocket_1_before",
+	&"mt_moon_rocket_1_defeated", &"mt_moon_rocket_1_rematch", &"mt_moon_rocket_2_before",
+	&"mt_moon_rocket_2_defeated", &"mt_moon_rocket_2_rematch", &"mt_moon_rocket_3_before",
+	&"mt_moon_rocket_3_defeated", &"mt_moon_rocket_3_rematch",
 	&"nurse", &"nurse_wakeup",
 	&"oak_after_battle",
 	&"oak_lab_exit_block", &"oak_lab_reunion", &"oak_lab_waiting", &"oak_parcel_records",
@@ -207,6 +215,9 @@ func before_all() -> void:
 				# Jalon 10 (T9) : la réplique « vaincu », dite par la séquence à la victoire.
 				if not spec.defeated_dialogue.is_empty():
 					_use(spec.defeated_dialogue, map_id)
+				# Jalon 12 (T25) : la réplique de reprise, dite par la séquence après une défaite.
+				if spec.has_rematch():
+					_use(spec.rematch_dialogue, map_id)
 		var map := (load(MapCatalog.scene_path(map_id)) as PackedScene).instantiate()
 		for point: Node in map.get_node(^"Interactables").get_children():
 			_use((point as InteractPoint).dialogue_id, map_id)
@@ -220,6 +231,11 @@ func before_all() -> void:
 			if not variant.cutscene.is_empty():
 				for map_id: StringName in (_used_on.get(id, []) as Array).duplicate():
 					_use_cutscene(variant.cutscene, map_id)
+			# Jalon 12 (T25) : scène lancée par le OUI d'un choix (« confirm_cutscene » : le
+			# choix du fossile).
+			if variant.choice != null and not variant.choice.confirm_cutscene.is_empty():
+				for map_id: StringName in (_used_on.get(id, []) as Array).duplicate():
+					_use_cutscene(variant.choice.confirm_cutscene, map_id)
 
 
 ## Dialogues joués par les étapes de la scène [param cutscene_id], sur la carte de son
@@ -291,6 +307,10 @@ func test_every_dialogue_played_by_a_cutscene_exists() -> void:
 	assert_eq(_cutscenes.get_errors().size(), 0, str(_cutscenes.get_errors()))
 	var played := _cutscenes.get_dialogue_ids()
 	assert_eq(played, [&"clerk_parcel", &"clerk_parcel_hello",
+		# Jalon 12 (T25) : scène du chercheur et choix du fossile.
+		&"mt_moon_researcher_before", &"mt_moon_researcher_chosen",
+		&"mt_moon_researcher_defeated", &"mt_moon_researcher_rematch",
+		&"mt_moon_researcher_share",
 		&"oak_after_battle", &"oak_lab_exit_block", &"oak_lab_reunion",
 		&"oak_parcel_records", &"oak_parcel_rival", &"oak_parcel_rival_dex", &"oak_poke_balls",
 		&"oak_poke_balls_intro", &"oak_pokedex_activated", &"oak_route1_call",
@@ -375,6 +395,9 @@ func test_every_condition_flag_is_set_somewhere() -> void:
 	for map_id: StringName in MAPS:
 		for spec: NpcSpec in NpcRoster.load_for_map(map_id).get_all():
 			read_flags.append_array(spec.if_flags + spec.unless_flags)
+			# Jalon 12 (T25) : `beaten_<id>` d'un Dresseur est levé par sa séquence (victoire).
+			if spec.is_trainer():
+				set_flags.append(TrainerRules.beaten_flag(spec.trainer_id))
 	for flag: StringName in read_flags:
 		if FUTURE_FLAGS.has(flag):
 			continue
@@ -388,8 +411,10 @@ func test_every_condition_flag_is_set_somewhere() -> void:
 			&"route_2_hiker_talked", &"route_2_youngster_talked", &"storage_terminal_seen",
 			&"viridian_old_man_talked"]
 		as Array[StringName])
-	assert_eq(_cutscenes.get_set_flags(), [&"badge_boulder", &"brock_met",
-		&"got_mt_moon_1f_hidden_1", &"got_mt_moon_1f_item_1", &"got_mt_moon_b1f_item_2",
+	assert_eq(_cutscenes.get_set_flags(), [&"badge_boulder", &"beaten_mt_moon_researcher",
+		&"brock_met",
+		&"got_mt_moon_1f_hidden_1", &"got_mt_moon_1f_item_1", &"got_mt_moon_b1f_item_1",
+		&"got_mt_moon_b1f_item_2", &"got_mt_moon_b2f_hidden_1", &"got_mt_moon_b2f_item_1",
 		&"got_oak_parcel", &"got_potion_route_1",
 		&"got_route_2_item_1", &"got_route_2_item_2", &"got_route_2_item_3",
 		&"got_route_2_item_4", &"got_route_2_north_item_1", &"got_route_3_hidden_1",
@@ -397,7 +422,9 @@ func test_every_condition_flag_is_set_somewhere() -> void:
 		&"got_viridian_forest_item_1",
 		&"got_viridian_forest_item_2",
 		&"got_viridian_forest_item_3", &"got_viridian_forest_item_4",
-		&"got_viridian_forest_item_5", &"got_viridian_forest_item_6", &"oak_lab_reunion",
+		&"got_viridian_forest_item_5", &"got_viridian_forest_item_6",
+		&"lost_mt_moon_researcher", &"mt_moon_fossil_chosen", &"mt_moon_got_dome_fossil",
+		&"mt_moon_got_helix_fossil", &"oak_lab_reunion",
 		&"oak_met", &"pewter_arrived",
 		&"pokedex_activated", &"rival_battle_done", &"rival_challenged", &"rival_lab_lost",
 		&"rival_lab_won", &"rival_left_lab", &"rival_route22_lost", &"rival_route22_won",
@@ -588,6 +615,11 @@ func test_texts_are_the_dossier_02_texts_word_for_word() -> void:
 	var dossier_15 := FileAccess.get_file_as_string(DOSSIER_15)
 	# Formes accordées « fatigué[e] » (n° 55) : masculin et féminin.
 	dossier_14 += dossier_14.replace("[e]", "") + dossier_14.replace("[e]", "e")
+	# J12 (T25) : formes au masculin du héros actuel (« revenu[e] », « gamin[e] curieux[se] ») et
+	# question du choix écrite par fossile (« Prendre le {fossil} ? », §20 n° 23).
+	dossier_15 += dossier_15.replace("[e]", "").replace("[se]", "") \
+		+ dossier_15.replace("{fossil}", "Fossile Dôme") \
+		+ dossier_15.replace("{fossil}", "Fossile Nautile")
 	for row: Array in _pages():
 		if GATE_GUARDS.has(row[0]):
 			continue
@@ -670,6 +702,13 @@ func test_speakers_and_narration() -> void:
 		# Jalon 12 (T18) : panneaux de la Route 3 sans locuteur.
 		&"route_3_sign_west": ["", false], &"route_3_sign_center": ["", false],
 		&"route_3_traveler": ["Voyageur", false], &"route_3_hiker": ["Randonneuse", false],
+		# Jalon 12 (T25) : Sbires (§20 n° 19), chercheur, question du fossile en narration.
+		&"mt_moon_rocket_1_before": ["Sbire Rocket", false],
+		&"mt_moon_rocket_2_before": ["Sbire Rocket", false],
+		&"mt_moon_rocket_3_before": ["Sbire Rocket", false],
+		&"mt_moon_researcher_before": ["Chercheur Gaspard", false],
+		&"mt_moon_researcher_talk": ["Chercheur Gaspard", false],
+		&"mt_moon_fossil_dome": ["", true], &"mt_moon_fossil_helix": ["", true],
 	}
 	for id: StringName in expected:
 		var dialogue := _library.get_dialogue(id)
@@ -767,9 +806,10 @@ func test_oak_parcel_lines() -> void:
 	# les trois de la Forêt de Jade ; jalon 10 : la Potion de la Route 2 nord et Pierre.
 	# Jalon 11 : la remise tardive de la CT34 par Pierre. Jalon 12 (T21) : la Corde Sortie et
 	# la Potion au sol du Mont Sélénite, le Réveil caché (examen de l'indice). Jalon 12 (T18) :
-	# les trois objets au sol de la Route 3 et son objet caché.
-	assert_eq(launched, 16,
-		"la scène du colis, onze objets au sol, deux cachés, Pierre et sa CT34")
+	# les trois objets au sol de la Route 3 et son objet caché. Jalon 12 (T25) : la Pierre Lune
+	# (B1F) et la CT01 (B2F) au sol, la Pierre Lune cachée (B2F).
+	assert_eq(launched, 19,
+		"la scène du colis, treize objets au sol, trois cachés, Pierre et sa CT34")
 	# Le jeton n'apparaît que dans la réplique de l'espèce (et « {pokemon} » dans les phrases du
 	# compagnon, J11).
 	for row: Array in _pages():
