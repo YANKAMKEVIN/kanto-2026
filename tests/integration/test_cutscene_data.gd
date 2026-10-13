@@ -90,6 +90,10 @@ const VARIANT_FLAGS: Dictionary = {
 	# Jalon 11 (T14) : remise tardive de la CT34 (partie déjà badgée).
 	&"pewter_gym_brock_tm_late": [PEWTER_FLAGS + [&"pewter_arrived", &"brock_met",
 		&"badge_boulder"]],
+	# Jalon 12 (T21) : objets du Mont Sélénite (partie badgée).
+	&"mt_moon_1f_item_1": [PEWTER_FLAGS + [&"pewter_arrived", &"brock_met", &"badge_boulder"]],
+	&"mt_moon_1f_hidden_1": [PEWTER_FLAGS + [&"pewter_arrived", &"brock_met", &"badge_boulder"]],
+	&"mt_moon_b1f_item_2": [PEWTER_FLAGS + [&"pewter_arrived", &"brock_met", &"badge_boulder"]],
 }
 ## Scènes jouées par le code (pas de déclencheur) → carte où elles sont jouées.
 ## Jalon 7 (T18) : la scène du colis est lancée par la variante « cutscene » du dialogue de Chen.
@@ -104,6 +108,9 @@ const CODE_PLAYED: Dictionary[StringName, StringName] = {
 	&"route_2_north_item_1": &"route_2_north", &"pewter_gym_brock": &"pewter_gym",
 	# Jalon 11 (T14) : remise tardive de la CT34 (dialogue de Pierre).
 	&"pewter_gym_brock_tm_late": &"pewter_gym",
+	# Jalon 12 (T21) : Corde et Potion (PNJ « objet »), Réveil caché (point d'examen de l'indice).
+	&"mt_moon_1f_item_1": &"mt_moon_1f", &"mt_moon_1f_hidden_1": &"mt_moon_1f",
+	&"mt_moon_b1f_item_2": &"mt_moon_b1f",
 }
 ## Scènes à déclencheur dont la carte n'est pas encore construite → leur carte (simulées sur les
 ## PNJ de son fichier). Vidée au T19 du jalon 9 (la forêt existe), puis au T11 du jalon 10 (les
@@ -158,7 +165,8 @@ func test_library_loads_without_error() -> void:
 	var library := CutsceneLibrary.new()
 	assert_true(library.load_dir(), "data/cutscenes/ se charge")
 	assert_eq(library.get_errors().size(), 0, str(library.get_errors()))
-	assert_eq(library.get_ids(), [&"mart_parcel", &"oak_lab_exit", &"oak_parcel",
+	assert_eq(library.get_ids(), [&"mart_parcel", &"mt_moon_1f_hidden_1", &"mt_moon_1f_item_1",
+		&"mt_moon_b1f_item_2", &"oak_lab_exit", &"oak_parcel",
 		&"pewter_arrival", &"pewter_gym_brock", &"pewter_gym_brock_tm_late",
 		&"rival_route22", &"route1_grass", &"route_1_potion", &"route_2_item_1",
 		&"route_2_item_2", &"route_2_item_3", &"route_2_item_4", &"route_2_north_item_1",
@@ -259,7 +267,8 @@ func test_only_world_items_are_found_items() -> void:
 			for step: CutsceneStep in variant.steps:
 				if step.kind == CutsceneStep.Kind.GIVE and step.found:
 					found.append("%s:%s" % [id, step.item_id])
-	assert_eq(found, ["route_1_potion:potion", "route_2_item_1:poke_ball",
+	assert_eq(found, ["mt_moon_1f_hidden_1:awakening", "mt_moon_1f_item_1:escape_rope",
+		"mt_moon_b1f_item_2:potion", "route_1_potion:potion", "route_2_item_1:poke_ball",
 		"route_2_item_2:potion", "route_2_item_3:poke_ball", "route_2_item_4:potion",
 		"route_2_north_item_1:potion",
 		"viridian_forest_item_1:antidote", "viridian_forest_item_2:poke_ball",

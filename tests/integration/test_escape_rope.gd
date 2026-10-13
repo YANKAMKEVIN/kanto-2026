@@ -18,7 +18,7 @@ const EXIT_CELL := Vector2i(73, 10)
 ## Drapeaux d'une partie au Mont Sélénite (prologue fait, badge, un Dresseur battu, un objet
 ## ramassé).
 const FLAGS: Array[StringName] = [&"mom_greeted", &"starter_chosen", &"rival_battle_done",
-	&"rival_challenged", &"pewter_badge", &"beaten_route_3_hugo", &"got_mt_moon_1f_rope"]
+	&"rival_challenged", &"pewter_badge", &"beaten_route_3_hugo", &"got_mt_moon_1f_item_1"]
 
 var _boot: Boot
 var _fades: Array[float] = []

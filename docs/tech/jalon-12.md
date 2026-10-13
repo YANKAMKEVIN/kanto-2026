@@ -727,7 +727,7 @@ fichier commun). Dès T12 fusionné : **T13 ∥ T20** (combat contre grotte, auc
 #### T20 — architecte : moteur de la grotte — après T12 (∥ T13, T17) — **fait (2026-10-13, `j12-t20-grotte`, §9)**
 - §2.5 (grille, directeur, `RubbleBurst`, `override_table` + `terrain` de la clé `wild` ; `EncounterTable.TERRAINS` et les tables `mt_moon.json` faits au T12), §2.6 (Corde : `field_use`, `FieldItemRules`, `field_item_requested`, `BagQuery`), §2.2 (placement du compagnon hors warp dans `CompanionController`), §2.3 (`cave` dans `CompanionCatalog.CONTEXTS` et `CompanionRules.CONTEXT_LINES`), §2.4 (`LightGlow.set_reduce_motion` branché dans `Boot._apply_settings`). Fichiers : `game/pokemon/encounters/*`, `grid_world.gd`, `map.gd`, `item_data.gd`, `item_library.gd`, `field_item_rules.gd`, `menu_director.gd`, `bag_query.gd`, `boot.gd`, `debug_start.gd`, `companion_*.gd`, `game/world/rubble/*`. **CA** : tests verts ; herbes et compagnon du J11 inchangés.
 
-#### T21 — constructeur-monde (+ ui-mobile en relecture) : la vie de la grotte (12B) — après T20, T12 (T9, T3 faits)
+#### T21 — constructeur-monde (+ ui-mobile en relecture) : la vie de la grotte (12B) — après T20, T12 (T9, T3 faits) — **fait (2026-10-13, `j12-t21-grotte-vie`, §9)**
 - Rencontres `mt_moon.json`, randonneur, panneau, caisses et lampe (examens), Corde au sol, stock d'Argenta, intégration des **11 planches** de T3 (manifeste, `LOOKS`, `companions.json` : espèces + `contexts` → `cave` ; conflit possible avec `j11-pikachu-compagnon`, garder les deux côtés), phrase « grotte » (`companion.json`), départs `mt_moon_*`, `escape_rope_qa`. Tests `test_mt_moon_life`, `test_escape_rope`, `test_hidden_items` (1F, B2F sans contenu de 12C). **CA** : tests verts, captures.
 
 #### T22 — qa-mobile : **session 12B** → Kevin — après T21 et la validation de 12A
@@ -852,6 +852,57 @@ Questions telles que posées :
 ---
 
 ## 9. Fait
+
+- **T21 — la vie de la grotte, 12B (2026-10-13, constructeur-monde, branche `j12-t21-grotte-vie`
+  depuis `jalon-12` à `610a7bb`, + `origin/main` à `3a62287` fusionné d'abord : Pikachu et
+  Reptincel au compagnon, §1.2 n° 1)** — sans la Team Rocket ni le chercheur (T25) :
+  - **Carte 1F** (`tools/build_mt_moon.gd`, `_place_examinables`, régénérée ; B1F et B2F
+    inchangés) : points d'examen du panneau d'entrée (26, 43) « MONT SÉLÉNITE » / « Galeries non
+    éclairées. Prudence. » (n° 12, panneau sur deux lignes comme ceux du J10), des **trois** caisses
+    R du camp (4..5, 14), (4, 15) (n° 13) et de la lampe abandonnée (10, 14) (n° 14) ; **Réveil
+    caché** : point EXAMINER sur l'indice `x` (57, 19), `unless_flags = [got_mt_moon_1f_hidden_1]`
+    (constante `HIDDEN_ITEMS` ; la Pierre Lune cachée de B2F s'y ajoute au T25). Les traces de
+    fouille restent un repère muet.
+  - **Données** : `data/npcs/mt_moon_1f.json` (randonneur `mountaineer` (34, 38) ←, Ball de la
+    Corde Sortie (9, 29)), `data/npcs/mt_moon_b1f.json` (Ball de la Potion (16, 21) — le T25 y
+    ajoute R1, R2 et la Pierre Lune), `data/dialogues/mt_moon.json` (n° 12–15, locuteur
+    « Randonneur »), `data/cutscenes/mt_moon.json` (`despawn` → `give … found` → `set
+    got_<position>` ; caché : `give found` + `set`, toast seul). Rencontres (`mt_moon.json`),
+    stock d'Argenta et phrase « grotte » : déjà faits (T12, T20).
+  - **Planches du T3 au compagnon** : manifeste (11 entrées en fin de `pokemon`, sources de
+    `build/art/` : Nidorina `_r2`, Rapasdepic `_r2`, Mélofée `_r1` du prompt `_r1b`), préparées
+    seules (`preparer.Preparateur.personnages` sur ces 11 entrées : catalogue en ajouts seuls,
+    aucune autre planche réécrite), `LOOKS` (11, en fin), `build_character_frames.gd` relancé (55
+    apparences, aucun `.tres` existant modifié) ; `companions.json` : 25 espèces (ajouts en fin :
+    jigglypuff, clefairy, ekans, paras, zubat **en vol**, geodude, pidgeotto, nidorino, nidorina,
+    raticate, fearow). **Racaillou** : planche de marche `racaillou_marche` → `geodude_walk`
+    (`"sprite": "pokemon/geodude_walk"`), le Racaillou fixe du tailleur garde `geodude` et ses
+    réactions. Attente = colonne 0 de la marche (vérifiée à l'œil, aucune `IDLE_FROM_WALK`).
+  - **Départs** : `mt_moon_1f` (entrée, Rondoudou compagnon, `wild` gravats à la table réelle au
+    taux 60), `mt_moon_b1f` (avant R1, Nosferapti), `mt_moon_b2f` (avant R3, Racaillou),
+    `escape_rope_qa` (1F galerie ouest, 3 Cordes, Abo) ; README complété.
+  - **Tests** : `test_mt_moon_life` (nouveau, Boot réel, 8 : randonneur, panneau / caisses /
+    lampe, Corde au sol et absente au rechargement, Potion du B1F, Réveil caché — rien de côté ni
+    de dos, EXAMINER de face, toast « Réveil ×1 », journal, plus de cible ensuite ni après
+    rechargement —, rencontre sur les vrais gravats G1 et pas sur le sol calme, compagnons de la
+    série 14, reprise d'une partie quittée dans chaque étage) ; listes mises à jour :
+    `test_dialogue_data` (`IDS`, `MAPS` += 1F, B1F ; textes du §20 sur plusieurs bulles acceptés
+    ligne à ligne ; 12 scènes lancées par un dialogue ; drapeaux), `test_cutscene_data` (scènes,
+    variantes, jouées par le code, objets trouvés), `test_companion_logic` (25 espèces),
+    `test_escape_rope` (drapeau réel `got_mt_moon_1f_item_1`). Le test « objets cachés » sur
+    Boot réel est dans `test_mt_moon_life` (le nom `test_hidden_items` est pris par le T18 en
+    parallèle).
+  - Captures (Mac, 2340 × 1080) : `tools/capture_mt_moon_t21.gd` → `build/captures/jalon12_t21/`
+    (`compagnon_rondoudou`, `randonneur`, `camp`, `camp_caisse`, `corde_au_sol`, `cache_indice`,
+    `cache_trouve`, `compagnon_nosferapti`, `potion_b1f`), relues.
+  - **Valeurs par défaut (règle 4)** : caisses examinables sur leurs trois cases ; panneau en une
+    bulle de deux lignes ; randonneur immobile tourné ← (grille) ; équipes des départs (Reptincel
+    N18, Rondoudou N14, Nosferapti N12, Roucoups N18, Racaillou N12) ; taux 60 des gravats du
+    départ `mt_moon_1f`.
+  - **À voir sur téléphone (12B)** : l'indice du Réveil (57, 19) est pris dans le bord de paroi
+    (`is_embedded`, T9) : il se lit à peine (voulu « discret », B-10) ; Rondoudou (48 px) et Paras
+    (40 px) petits à côté du héros.
+  - Import propre ; `tools/test.sh` : **4 126 tests, 4 126 verts** (312 scripts, 167 665 assertions, 832 s).
 
 - **T15 — carte `qa_moves_j12` et départs de la session 12.0 (2026-10-13, constructeur-monde,
   branche `j12-t15-qa` depuis `jalon-12` à `b7d6d88`)** — §2.22, modèle `qa_switch_j13`

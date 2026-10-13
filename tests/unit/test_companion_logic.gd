@@ -26,16 +26,23 @@ func _mon(species: StringName, level: int = 10) -> Pokemon:
 
 # --- Catalogue (T19a) --------------------------------------------------------------------------
 
-func test_the_fourteen_eligible_species_of_the_dossier() -> void:
+func test_the_twenty_five_eligible_species_of_the_dossier() -> void:
 	assert_eq(_catalog.get_species_ids(), [&"bulbasaur", &"butterfree", &"charmander",
-		&"charmeleon", &"ivysaur", &"mankey", &"nidoran_f", &"nidoran_m", &"pidgey", &"pikachu",
-		&"rattata", &"spearow", &"squirtle", &"wartortle"] as Array[StringName],
-		"dossier 14 §8.2 : les 9 de départ + les 5 de la série 13 validée")
+		&"charmeleon", &"clefairy", &"ekans", &"fearow", &"geodude", &"ivysaur", &"jigglypuff",
+		&"mankey", &"nidoran_f", &"nidoran_m", &"nidorina", &"nidorino", &"paras", &"pidgeotto",
+		&"pidgey", &"pikachu", &"raticate", &"rattata", &"spearow", &"squirtle", &"wartortle",
+		&"zubat"] as Array[StringName],
+		"dossier 14 §8.2 : les 9 de départ + les 5 de la série 13 + les 11 de la série 14 (J12 T21)")
+	assert_true(_catalog.is_flying(&"zubat"), "Nosferapti en vol (J12 T21)")
+	assert_false(_catalog.is_flying(&"jigglypuff"))
+	assert_eq(_catalog.sprite_of(&"geodude"), &"pokemon/geodude_walk",
+		"Racaillou qui marche, pas le Racaillou fixe du tailleur")
+	assert_false(_catalog.is_eligible_species(&"golbat"), "pas de planche (A-11)")
 	assert_true(_catalog.is_flying(&"butterfree"), "Papilusion en vol")
 	assert_false(_catalog.is_flying(&"ivysaur"))
 	assert_false(_catalog.is_eligible_species(&"charizard"), "pas de planche : hors du lot (A-11)")
 	assert_false(_catalog.is_eligible_species(&"caterpie"), "pas de planche de marche")
-	assert_false(_catalog.is_eligible_species(&"geodude"))
+	assert_false(_catalog.is_eligible_species(&"onix"))
 	assert_eq(_catalog.context_of(&"viridian_forest"), &"forest")
 	assert_eq(_catalog.context_of(&"pewter_city"), &"city")
 	assert_eq(_catalog.context_of(&"pallet_town"), &"", "Bourg Palette : générique (D-7)")

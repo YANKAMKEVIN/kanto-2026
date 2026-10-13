@@ -1,0 +1,26 @@
+{
+	"mt_moon_1f_sign": {
+		"pages": ["MONT SÉLÉNITE\nGaleries non éclairées. Prudence."]
+	},
+	"mt_moon_1f_crate": {
+		"narration": true,
+		"pages": ["Une caisse marquée d'un R rouge.", "Elle est vide."]
+	},
+	"mt_moon_1f_lamp": {
+		"narration": true,
+		"pages": ["Une lampe de chantier. Encore tiède."]
+	},
+	"mt_moon_1f_hiker": {
+		"speaker": "Randonneur",
+		"pages": ["Des gens en noir fouillent plus bas.", "Je préfère ne pas savoir pourquoi."]
+	},
+	"mt_moon_1f_ball_1": {
+		"cutscene": "mt_moon_1f_item_1"
+	},
+	"mt_moon_1f_hidden_1": {
+		"cutscene": "mt_moon_1f_hidden_1"
+	},
+	"mt_moon_b1f_ball_2": {
+		"cutscene": "mt_moon_b1f_item_2"
+	}
+}

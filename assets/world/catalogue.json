@@ -5313,6 +5313,182 @@
     "droite",
     "haut"
    ]
+  },
+  "rondoudou": {
+   "fichier": "res://assets/sprites/pokemon/painted/rondoudou_sheet.png",
+   "cellule": [
+    53,
+    50
+   ],
+   "hauteur": 48,
+   "colonnes": 4,
+   "lignes": 4,
+   "ordre_lignes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "melofee": {
+   "fichier": "res://assets/sprites/pokemon/painted/melofee_sheet.png",
+   "cellule": [
+    57,
+    54
+   ],
+   "hauteur": 52,
+   "colonnes": 4,
+   "lignes": 4,
+   "ordre_lignes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "abo": {
+   "fichier": "res://assets/sprites/pokemon/painted/abo_sheet.png",
+   "cellule": [
+    47,
+    62
+   ],
+   "hauteur": 60,
+   "colonnes": 4,
+   "lignes": 4,
+   "ordre_lignes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "paras": {
+   "fichier": "res://assets/sprites/pokemon/painted/paras_sheet.png",
+   "cellule": [
+    50,
+    42
+   ],
+   "hauteur": 40,
+   "colonnes": 4,
+   "lignes": 4,
+   "ordre_lignes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "nosferapti": {
+   "fichier": "res://assets/sprites/pokemon/painted/nosferapti_sheet.png",
+   "cellule": [
+    60,
+    48
+   ],
+   "hauteur": 46,
+   "colonnes": 4,
+   "lignes": 4,
+   "ordre_lignes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "racaillou_marche": {
+   "fichier": "res://assets/sprites/pokemon/painted/racaillou_marche_sheet.png",
+   "cellule": [
+    76,
+    58
+   ],
+   "hauteur": 56,
+   "colonnes": 4,
+   "lignes": 4,
+   "ordre_lignes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "roucoups": {
+   "fichier": "res://assets/sprites/pokemon/painted/roucoups_sheet.png",
+   "cellule": [
+    65,
+    62
+   ],
+   "hauteur": 60,
+   "colonnes": 4,
+   "lignes": 4,
+   "ordre_lignes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "nidorino": {
+   "fichier": "res://assets/sprites/pokemon/painted/nidorino_sheet.png",
+   "cellule": [
+    65,
+    60
+   ],
+   "hauteur": 58,
+   "colonnes": 4,
+   "lignes": 4,
+   "ordre_lignes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "nidorina": {
+   "fichier": "res://assets/sprites/pokemon/painted/nidorina_sheet.png",
+   "cellule": [
+    72,
+    68
+   ],
+   "hauteur": 66,
+   "colonnes": 4,
+   "lignes": 4,
+   "ordre_lignes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "rattatac": {
+   "fichier": "res://assets/sprites/pokemon/painted/rattatac_sheet.png",
+   "cellule": [
+    60,
+    68
+   ],
+   "hauteur": 66,
+   "colonnes": 4,
+   "lignes": 4,
+   "ordre_lignes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "rapasdepic": {
+   "fichier": "res://assets/sprites/pokemon/painted/rapasdepic_sheet.png",
+   "cellule": [
+    88,
+    88
+   ],
+   "hauteur": 86,
+   "colonnes": 4,
+   "lignes": 4,
+   "ordre_lignes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
   }
  },
  "images": {

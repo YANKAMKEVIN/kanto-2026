@@ -1,0 +1,37 @@
+{
+	"mt_moon_1f_item_1": {
+		"variants": [
+			{
+				"unless": ["got_mt_moon_1f_item_1"],
+				"steps": [
+					{ "despawn": "mt_moon_1f_ball_1" },
+					{ "give": "escape_rope", "count": 1, "found": true },
+					{ "set": ["got_mt_moon_1f_item_1"] }
+				]
+			}
+		]
+	},
+	"mt_moon_1f_hidden_1": {
+		"variants": [
+			{
+				"unless": ["got_mt_moon_1f_hidden_1"],
+				"steps": [
+					{ "give": "awakening", "count": 1, "found": true },
+					{ "set": ["got_mt_moon_1f_hidden_1"] }
+				]
+			}
+		]
+	},
+	"mt_moon_b1f_item_2": {
+		"variants": [
+			{
+				"unless": ["got_mt_moon_b1f_item_2"],
+				"steps": [
+					{ "despawn": "mt_moon_b1f_ball_2" },
+					{ "give": "potion", "count": 1, "found": true },
+					{ "set": ["got_mt_moon_b1f_item_2"] }
+				]
+			}
+		]
+	}
+}

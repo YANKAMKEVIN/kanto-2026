@@ -22,8 +22,12 @@ extends SceneTree
 ##   (`from_mt_moon`). **Repli** tant que la Route 3 ou le sas (T8, en parallèle) n'existent pas :
 ##   destination « à venir » (build de développement) et retour sur la case d'arrivée ; relancer
 ##   l'outil une fois le T8 fusionné (`test_mt_moon_maps` le signale).
-## - Rien de vivant (PNJ, objets, examens, rencontres : T18, T21, T25). Racine **extérieure**
-##   (`interior = false`) : la catégorie grotte est dans `data/world/caves.json`.
+## - Points d'examen (T21, `jalon-12.md` §2.7–§2.8, dossier 15 §20 n° 12–14) : panneau de
+##   l'entrée, caisses marquées d'un R et lampe abandonnée du camp (1F) ; objet caché « face à un
+##   indice » : point EXAMINER sur la case-indice `x` voisine de la position `objet_cache`, qui
+##   disparaît une fois l'objet trouvé (`unless_flags = [got_<id>]`). PNJ et objets visibles :
+##   `data/npcs/mt_moon_*.json` (T21, T25). Racine **extérieure** (`interior = false`) : la
+##   catégorie grotte est dans `data/world/caves.json`.
 
 const Kit := preload("res://tools/cave_map_kit.gd")
 const MAPS_DIR: String = "res://game/world/maps/"
@@ -57,6 +61,18 @@ const FOSSIL_RAISE: float = 30.0
 ## (trou au plafond + échelle, 191 px) déborderait sur la case d'arrivée ; elle est ramenée dans
 ## sa case (hauteur en pixels) pour qu'on ne lise pas l'échelle sur la case voisine.
 const SHORT_LADDER_HEIGHT: float = 128.0
+## Points d'examen (T21) : position de la grille → dialogue. Une position dont la case porte un
+## repère `R` couvre toutes les cases `R` de l'étage (la pile de caisses du camp).
+const EXAMINABLES: Dictionary = {
+	"panneau_entree": &"mt_moon_1f_sign",
+	"caisse_r": &"mt_moon_1f_crate",
+	"lampe_abandonnee": &"mt_moon_1f_lamp",
+}
+const EXAMINE_ALL_OF: String = "R"
+## Objets cachés posés par cet outil (T21 ; la Pierre Lune cachée de B2F arrive au T25) :
+## position `objet_cache` = dialogue (drapeau `got_<id>`).
+const HIDDEN_ITEMS: Array[String] = ["mt_moon_1f_hidden_1"]
+const CLUE_MARK: String = "x"
 
 var _kit: Object
 var _floor_key: String = ""
@@ -100,6 +116,7 @@ func _build(key: String) -> int:
 	var walls: Vector3i = _kit.call(&"place_walls", spec[4] + 7)
 	_place_landmarks()
 	_place_ladders(map_id)
+	_place_examinables()
 	if map_id == &"mt_moon_1f":
 		_place_entrance()
 	if not _errors().is_empty():
@@ -307,6 +324,49 @@ func _row_blocks(mark: String) -> Array[Rect2i]:
 		else:
 			blocks.append(Rect2i(cell, Vector2i.ONE))
 	return blocks
+
+
+# --- Points d'examen et objets cachés (T21) ----------------------------------------------
+
+
+func _place_examinables() -> void:
+	var positions: Dictionary = _plan().get(&"positions")
+	for id: String in EXAMINABLES:
+		if not positions.has(id):
+			continue
+		var cells: Array = _plan().call(&"cells_at", id)
+		if _plan().call(&"at", cells[0]) == EXAMINE_ALL_OF:
+			cells = _plan().call(&"cells_of", EXAMINE_ALL_OF)
+		var index := 0
+		for cell: Vector2i in cells:
+			var node_name := "Examine_%s" % id if cells.size() == 1 \
+				else "Examine_%s_%d" % [id, index]
+			_kit.call(&"add_interactable", node_name, cell, Vector2i.ONE, Vector2i.ZERO,
+				EXAMINABLES[id])
+			index += 1
+	for id: String in HIDDEN_ITEMS:
+		if not positions.has(id):
+			continue
+		var clue := _clue_of(_plan().call(&"cell_of", id))
+		if clue == Vector2i(-1, -1):
+			var errors := _errors()
+			errors.append("%s : aucun indice « %s » voisin" % [id, CLUE_MARK])
+			_kit.set(&"errors", errors)
+			continue
+		var node_name := "Hidden_%s" % id
+		_kit.call(&"add_interactable", node_name, clue, Vector2i.ONE, Vector2i.ZERO,
+			StringName(id))
+		var points := (_kit.get(&"root") as Node).get_node(^"Interactables")
+		points.get_node(NodePath(node_name)).set(&"unless_flags",
+			[StringName("got_" + id)] as Array[StringName])
+
+
+## Case-indice `x` voisine de la case où l'on se tient (`jalon-12.md` §1.3 n° 1).
+func _clue_of(stand: Vector2i) -> Vector2i:
+	for step: Vector2i in [Vector2i.RIGHT, Vector2i.LEFT, Vector2i.UP, Vector2i.DOWN]:
+		if _plan().call(&"at", stand + step) == CLUE_MARK:
+			return stand + step
+	return Vector2i(-1, -1)
 
 
 # --- Échelles, entrée, sortie -------------------------------------------------------------

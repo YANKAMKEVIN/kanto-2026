@@ -103,6 +103,20 @@ const LOOKS: Dictionary = {
 	"sbire_h": [CHARACTERS_DIR, "rocket_grunt_m", ""],
 	"sbire_f": [CHARACTERS_DIR, "rocket_grunt_f", ""],
 	"chercheur_fossiles": [CHARACTERS_DIR, "fossil_researcher", ""],
+	# J12 T21 (série 14, planches du T3) : compagnon, sans planche d'attente (colonne 0 de la
+	# marche, vérifiée à l'œil : pose posée dans les quatre directions). Racaillou qui marche :
+	# `geodude_walk` (le Racaillou fixe du tailleur garde `geodude`, avec ses réactions).
+	"rondoudou": [POKEMON_DIR, "jigglypuff", ""],
+	"melofee": [POKEMON_DIR, "clefairy", ""],
+	"abo": [POKEMON_DIR, "ekans", ""],
+	"paras": [POKEMON_DIR, "paras", ""],
+	"nosferapti": [POKEMON_DIR, "zubat", ""],
+	"racaillou_marche": [POKEMON_DIR, "geodude_walk", ""],
+	"roucoups": [POKEMON_DIR, "pidgeotto", ""],
+	"nidorino": [POKEMON_DIR, "nidorino", ""],
+	"nidorina": [POKEMON_DIR, "nidorina", ""],
+	"rattatac": [POKEMON_DIR, "raticate", ""],
+	"rapasdepic": [POKEMON_DIR, "fearow", ""],
 }
 ## Pokémon fixes (genre « Pokémon fixe », jalon 9 §2.8.5) : feuille 6 × 1 du catalogue
 ## (« personnages ») → identifiant de données. Ils ne marchent jamais.
