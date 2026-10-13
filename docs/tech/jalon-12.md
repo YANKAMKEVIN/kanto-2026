@@ -670,6 +670,7 @@ fichier commun). Dès T12 fusionné : **T13 ∥ T20** (combat contre grotte, auc
 - UTILISER des objets AVENTURE (seulement avec `field_use`), sélecteur COMPATIBLE / INCOMPATIBLE pour la pierre (`show_reason`), bandeau de refus de la Corde, écran d'évolution sans ARRÊTER, ligne de la frise `fossil` ; captures.
 
 #### T25 — constructeur-monde : Team Rocket, chercheur, fossiles, Pierres Lune, CT01 (12C) — après T17, T21, T23
+- **Décision de Kevin (2026-10-13)** : refaire le **Fossile Dôme posé sur la dalle** (`object/fossil_dome`, planche `WORLD_PROP_DALLE_FOSSILES_PLANCHE`, encore en « panier tressé ») d'après l'icône du Sac validée (`UI_OBJETS_J12_PLANCHE_r3` : carapace de pierre à arête centrale), pour que la dalle et le Sac correspondent.
 - §2.11–§2.13 ; Pierre Lune visible (B1F) et cachée (B2F), CT01 ; départ `mt_moon_fossil`, `moon_stone_qa`. Tests `test_mt_moon_rocket`, `test_mt_moon_fossil`, `test_moon_stone`, `test_save_j12`.
 
 #### T26 — architecte : équilibrage — après T25
