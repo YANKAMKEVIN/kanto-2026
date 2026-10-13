@@ -287,8 +287,11 @@ func _place_and_show(burst: bool) -> void:
 		return
 	_update_choice()
 	var grid := _map.get_grid()
+	# Jalon 12 (T20) : jamais posé sur un passage où l'on marche (échelle, porte) ; sinon au
+	# premier pas. Un bord de carte (PUSH) reste une case ordinaire.
+	var warps := _map.get_warps()
 	var cell := _trail.place_after_arrival(_player.get_cell(), _player.get_facing(),
-		func(c: Vector2i) -> bool: return grid.is_free(c))
+		func(c: Vector2i) -> bool: return grid.is_free(c) and not _is_step_passage(warps, c))
 	if cell == CompanionTrail.NONE:
 		_node.visible = false
 		grid.soft_release(_node)
@@ -339,3 +342,14 @@ func _near_water() -> bool:
 			if grid.is_in_bounds(cell) and grid.is_water(cell):
 				cells.append(cell)
 	return CompanionRules.is_near_water(center, cells)
+
+
+## Jalon 12 (T20) : vrai si [param cell] porte un passage déclenché en y marchant (échelle, porte :
+## [constant Warp.Trigger.STEP_ON]) ; le compagnon n'y est jamais posé à l'arrivée.
+static func _is_step_passage(warps: WarpTable, cell: Vector2i) -> bool:
+	if warps == null:
+		return false
+	for warp: Warp in warps.get_at(cell):
+		if warp.trigger == Warp.Trigger.STEP_ON:
+			return true
+	return false

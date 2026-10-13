@@ -42,5 +42,9 @@
 	"companion_water": {
 		"narration": true,
 		"pages": ["{pokemon} regarde l'eau."]
+	},
+	"companion_cave": {
+		"narration": true,
+		"pages": ["{pokemon} écoute l'écho de ses pas."]
 	}
 }

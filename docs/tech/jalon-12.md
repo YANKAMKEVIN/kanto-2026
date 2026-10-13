@@ -211,6 +211,26 @@ aucune ne touche au game design.
     `jalon-13/14/15`). `lost_<id>` n'est levé que pour un Dresseur qui a `rematch` (compatibilité
     stricte : la défaite contre un Dresseur du J9–J10 ne laisse toujours aucune trace).
 
+14. **Moteur de la grotte (T20, 2026-10-13)** — décisions techniques, aucun nom figé changé :
+    - la phrase `companion_cave` et les `contexts` des trois étages (`companions.json`) sont
+      posés **au T20**, pas au T21 : `test_dialogue_data` exige une phrase pour chaque valeur de
+      `CompanionRules.CONTEXT_LINES`. Le T21 n'a plus que les espèces des planches à ajouter ;
+    - la narration « Tu utilises la Corde Sortie. » est un dialogue de données
+      (`escape_rope_used`, `data/dialogues/field_items.json`) joué par Boot
+      (`Boot.ESCAPE_ROPE_DIALOGUE`) ; le refus est un texte d'interface (`BagQuery`), comme les
+      autres raisons du Sac ;
+    - la Corde est retirée **par Boot**, dans l'image où part le fondu (jamais par le menu) :
+      aucune image stable entre les deux, donc aucun autosave « grotte sans Corde » ;
+    - un objet AVENTURE sans `field_use` n'a pas UTILISER (`BagQuery._entry`) : la Pierre Lune
+      se consulte sans bouton jusqu'au T23 ;
+    - le signal d'accroche du son est sur l'`EncounterDirector` (`rubble_sound_requested`, à côté
+      de `cry_requested`) plutôt que sur `RubbleBurst`, nœud éphémère ;
+    - la clé `wild` sépare `terrain` de la table (`DebugStart.wild` reste la table seule,
+      `DebugStart.wild_terrain` le terrain) ;
+    - « jamais posé sur un warp » (n° 6) se lit **« jamais sur un warp `STEP_ON` »** : un bord de
+      carte `PUSH` est une case ordinaire (le J11 y pose le compagnon derrière le joueur au départ
+      de la Route 1 ; `get_at(c).is_empty()` cassait `test_companion_controller`).
+
 ---
 
 ## 1. Découpage
@@ -664,7 +684,7 @@ fichier commun). Dès T12 fusionné : **T13 ∥ T20** (combat contre grotte, auc
 #### T19 — qa-mobile : **session 12A** → Kevin — après T18 et la validation de 12.0
 - Vraie partie depuis Argenta (badge) : garde, Route 3 entière, D1/D2 inévitables, D3–D6, Rondoudou, Réveil caché (bouton, toast, absent ensuite), Centre (soin, toast « Mont Sélénite », point de repos), fps / mémoire (avec la référence Route 1, §2.21) / durée de traversée.
 
-#### T20 — architecte : moteur de la grotte — après T12 (∥ T13, T17)
+#### T20 — architecte : moteur de la grotte — après T12 (∥ T13, T17) — **fait (2026-10-13, `j12-t20-grotte`, §9)**
 - §2.5 (grille, directeur, `RubbleBurst`, `override_table` + `terrain` de la clé `wild` ; `EncounterTable.TERRAINS` et les tables `mt_moon.json` faits au T12), §2.6 (Corde : `field_use`, `FieldItemRules`, `field_item_requested`, `BagQuery`), §2.2 (placement du compagnon hors warp dans `CompanionController`), §2.3 (`cave` dans `CompanionCatalog.CONTEXTS` et `CompanionRules.CONTEXT_LINES`), §2.4 (`LightGlow.set_reduce_motion` branché dans `Boot._apply_settings`). Fichiers : `game/pokemon/encounters/*`, `grid_world.gd`, `map.gd`, `item_data.gd`, `item_library.gd`, `field_item_rules.gd`, `menu_director.gd`, `bag_query.gd`, `boot.gd`, `debug_start.gd`, `companion_*.gd`, `game/world/rubble/*`. **CA** : tests verts ; herbes et compagnon du J11 inchangés.
 
 #### T21 — constructeur-monde (+ ui-mobile en relecture) : la vie de la grotte (12B) — après T20, T12 (T9, T3 faits)
@@ -792,6 +812,68 @@ Questions telles que posées :
 ---
 
 ## 9. Fait
+
+- **T20 — moteur de la grotte (2026-10-13, architecte, branche `j12-t20-grotte` depuis `jalon-12`
+  à `ac3e0ad`)** — aucun fichier de `battle/` touché (T13 en parallèle) ; ajouts en fin :
+  - **Gravats (§2.5)** : `GridWorld.set_rubble` / `is_rubble` (bit 5, informatif comme les
+    herbes) ; `GameMap._read_layer` lit la donnée `rubble`. `EncounterDirector.terrain_at(cell)`
+    (herbes → `grass`, gravats → `rubble`, sinon `&""`) choisit la table et l'intro ; même taux,
+    même rampe, **un seul compteur** de pas calmes ; aucun tirage sur le sol calme. Intro
+    « éboulis » : `RubbleBurst` (`game/world/rubble/`, modèle `GrassRustle`, 7 cailloux + 3
+    bouffées de poussière en `Polygon2D`, **0,6 s**, `Tween`), signal d'accroche
+    `EncounterDirector.rubble_sound_requested` (aucun son), puis **demi-tour** du héros
+    (`face(-facing)`), puis combat ; origine = la case du joueur. Débogage :
+    `EncounterLibrary.override_table(map, terrain, entry)` (`override_grass` en est le cas
+    « herbes », identifiant inchangé) ; clé `wild` de `DebugStart` : `"terrain"` facultatif
+    (`DebugStart.wild_terrain`, défaut `grass`), README des départs complété.
+  - **Corde Sortie (§2.6)** : `ItemData.field_use` (en fin), constantes `FIELD_USE_ESCAPE_ROPE`,
+    `FIELD_USE_EVOLUTION_STONE`, `FIELD_USES`, `has_field_use()` ; `ItemLibrary` lit
+    `field_use` (réservé à AVENTURE, valeur connue) ; `escape_rope` porte `field_use` ;
+    `FieldItemRules` (`game/items/field_item_rules.gd`, pur : `check` → `OK / NOT_HERE /
+    NOT_FIELD_USE`, `escape_target`, `is_targetless`) ; `BagQuery` : un objet AVENTURE **sans**
+    `field_use` n'a plus UTILISER (la Pierre Lune se consulte jusqu'au T23),
+    `FIELD_REFUSAL_TEXT` / `field_refusal_text` ; `MenuDirector.set_caves(caves, current_map)`,
+    signal **`field_item_requested(item_id)`**, UTILISER d'un objet sans cible (jamais le choix
+    du Pokémon) : refus → bandeau « Impossible de l'utiliser ici. », rien ne change ; accepté →
+    Boot (`_setup_caves`, `_on_field_item_requested`) ferme le menu, narration « Tu utilises la
+    Corde Sortie. » (dialogue `escape_rope_used`, `data/dialogues/field_items.json`), puis
+    retire la Corde **dans la même image** que `SceneRouter.change_map(route_3,
+    from_mt_moon_w, ↓)` : l'autosave suivant est celui de l'arrivée ; une fermeture pendant le
+    fondu laisse la sauvegarde d'avant (Corde comprise, dans la grotte). Ni soin ni point de
+    repos. Boutique d'Argenta : `escape_rope` en fin de stock (550 ₽, sans condition).
+  - **Compagnon (§2.2, §2.3)** : `CompanionCatalog.CONTEXTS += cave`,
+    `CompanionRules.CONTEXT_LINES[cave] = companion_cave` ; **jamais posé sur un passage** à
+    l'arrivée (le Callable de `CompanionController._place_and_show` refuse aussi une case qui
+    porte un warp `STEP_ON` — échelle, porte — par `_is_step_passage`, en fin de fichier ;
+    `CompanionTrail` inchangé) ; masqué dans les goulets : règle du J11, inchangée.
+  - **« Réduire les animations » (§2.4)** : `LightGlow.set_reduce_motion(s.reduce_motion)` dans
+    `Boot._apply_settings`, à côté du compagnon.
+  - **Fait en avance sur le T21 (§0.4 n° 14)** : phrase `companion_cave` (§20 n° 40) dans
+    `data/dialogues/companion.json` et `contexts` des trois étages → `cave` dans
+    `companions.json` (le test des phrases du compagnon exige que chaque contexte ait sa phrase) ;
+    stock d'Argenta (demandé avec T20).
+  - **Tests** (nouveaux fichiers) : `test_grid_world_rubble` (drapeau ; vrais étages : gravats =
+    cases `g` ; aucun ailleurs), `test_encounter_override_table` (table forcée par terrain, clé
+    `terrain` du départ), `test_field_item_rules` (données, règle pure, Sac, directeur du menu),
+    `test_rubble_burst` (0,6 s au pas près, `TweenClock`), `test_encounter_director_rubble`
+    (gravats → table et éboulis, origine sous les pieds, son, demi-tour ; sol calme sans tirage ;
+    herbes inchangées ; compteur commun ; sans table ; durée de l'intro au pas près),
+    `test_escape_rope` (**Boot réel** : refus Route 3 / Argenta / Centre ; 1F, B1F, B2F après
+    l'événement → (73, 10) ↓, une Corde de moins, ni soin ni point de repos, drapeaux et objets
+    gardés, sauvegarde d'avant à l'écran noir, arrivée écrite ensuite ; dernière Corde),
+    `test_companion_cave` (**Boot réel** : visible, phrase « grotte », jamais sur une échelle
+    aux trois arrivées A / B / D puis sorti au premier pas sur la case quittée, rentré au Centre,
+    ne déclenche aucune rencontre de gravats, halos figés par « Réduire les animations ») ;
+    listes mises à jour : `test_dialogue_data` (`IDS`, `PLAYED_BY_COMPANION`, `PLAYED_BY_BOOT`,
+    textes du §20 du dossier 15 acceptés), `test_pewter_data` (stock d'Argenta), `test_bag_query`
+    (l'objet AVENTURE de fixture, sans `field_use`, n'a plus UTILISER : changement voulu).
+  - Captures (Mac, 1170 × 540) : `tools/capture_cave_t20.gd` → `build/captures/jalon12_t20/`
+    (`galerie_compagnon`, `echelle_arrivee`, `echelle_premier_pas`, `eboulis_1`, `eboulis_2`,
+    `eboulis_demi_tour`), relues.
+  - Valeurs par défaut (règle 4) : éboulis 0,6 s, 7 cailloux bruns (#8a7458 / #4a3f35, rayon
+    12 px, 64 px parcourus), 3 bouffées de poussière (14 → 50 px) ; demi-tour sans pause.
+  - Import propre ; `tools/test.sh` : **4 038 tests, 4 038 verts** (300 scripts, 165 807
+    assertions, 1 038 s).
 
 - **T17 — briques du monde (2026-10-13, architecte, branche `j12-t17-monde` depuis `jalon-12` à
   `e079176`)** — code pur, aucun fichier de données du jeu touché (T12 en parallèle) :

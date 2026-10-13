@@ -1,7 +1,7 @@
 {
 	"escape_rope": {
 		"name": "Corde Sortie", "plural": "Cordes Sortie", "feminine": true,
-		"category": "field", "price": 550,
+		"category": "field", "price": 550, "field_use": "escape_rope",
 		"description": "Ramène à l'entrée de la grotte."
 	},
 	"moon_stone": {

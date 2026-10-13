@@ -8,6 +8,10 @@ Le jeu lit `user://debug_start.json` seulement si :
 - `Boot` est la **scène principale** lancée par le moteur (jamais sous GUT ni dans un outil) ;
 - le fichier **existe**.
 
+Clé **`wild`** (J11) : table forcée sur la carte de départ pour la session. **J12 (T20)** : elle
+accepte `"terrain": "rubble"` pour forcer les **gravats** d'un étage du Mont Sélénite (défaut :
+`"grass"`, les herbes) ; ex. `"wild": { "terrain": "rubble", "rate": 200, "slots": [ … ] }`.
+
 ## Sur le S24 (APK debug)
 
 ```bash
