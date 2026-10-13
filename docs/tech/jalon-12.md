@@ -723,6 +723,7 @@ fichier commun). Dès T12 fusionné : **T13 ∥ T20** (combat contre grotte, auc
 - PNJ, Dresseurs, Pokémon d'ambiance, objets visibles et caché, panneaux, rencontres, déclencheur `route_3_entered`, objectifs, Centre (PNJ), départs `route_3`, `mt_moon_center`. Tests `test_route_3_life`, `test_route_3_trainers`, `test_hidden_items` (Route 3). **CA** : tests verts, captures relues.
 
 #### T19 — qa-mobile : **session 12A** → Kevin — après T18 et la validation de 12.0
+- **VALIDÉ par Kevin le 2026-10-14** (session partielle ; bugs et non vus : voir `etat-projet.md`).
 - Vraie partie depuis Argenta (badge) : garde, Route 3 entière, D1/D2 inévitables, D3–D6, Rondoudou, Réveil caché (bouton, toast, absent ensuite), Centre (soin, toast « Mont Sélénite », point de repos), fps / mémoire (avec la référence Route 1, §2.21) / durée de traversée.
 
 #### T20 — architecte : moteur de la grotte — après T12 (∥ T13, T17) — **fait (2026-10-13, `j12-t20-grotte`, §9)**
