@@ -185,3 +185,23 @@ func test_rivals_one_and_two_keep_one_moment_per_battle_without_duplicates() -> 
 	assert_eq(_rival_moments("rival_route22").size(), 1, "jamais deux")
 	battles.battle_finished.emit(&"pewter_gym_brock", Battle.Outcome.WIN)
 	assert_eq(GameState.moments.size(), 2, "Pierre n'est pas un rival")
+
+
+# --- Les vraies scènes du rival n° 3 et d'Ondine (T19) -----------------------------------------
+
+func test_the_real_scenes_are_chained_once_and_never_in_a_loop() -> void:
+	await _start()
+	var library := _boot.get_cutscene_library()
+	assert_eq(library.get_next(&"route_24_rival"), &"route_24_misty", "rival → Ondine")
+	assert_eq(library.get_next(&"route_24_misty"), &"", "Ondine n'enchaîne rien")
+	assert_true(library.check_next_references())
+
+
+func test_the_misty_scene_does_not_play_unless_the_rival_is_beaten() -> void:
+	await _start()
+	var director := _boot.get_cutscene_director()
+	assert_false(director.play(&"route_24_misty"), "rival pas battu : aucune variante")
+	GameState.flags.set_flag(&"rival_cerulean_won")
+	GameState.flags.set_flag(&"misty_invited")
+	assert_false(director.play(&"route_24_misty"), "déjà invitée : désarmée")
+	assert_false(director.is_running())

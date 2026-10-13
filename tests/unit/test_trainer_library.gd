@@ -348,13 +348,14 @@ func test_switch_is_validated() -> void:
 	assert_string_contains(_errors(), "« switch » vaut true ou false")
 
 
-## Aucun Dresseur actuel ne change de Pokémon (Ondine et le rival n° 3 viendront au T19).
-func test_real_trainers_do_not_switch_yet() -> void:
+## Seuls Ondine et le rival n° 3 changent de Pokémon (T19) ; ni Pierre ni les autres.
+func test_only_misty_and_the_third_rival_switch() -> void:
 	var library := TrainerLibrary.new(_data)
 	assert_true(library.load_dir())
+	var switching: Array[StringName] = [&"cerulean_gym_misty", &"rival_cerulean"]
 	for id: StringName in library.get_ids():
 		if not String(id).begins_with("qa_"):
-			assert_false(library.get_trainer(id).can_switch, String(id))
+			assert_eq(library.get_trainer(id).can_switch, switching.has(id), String(id))
 
 
 # --- « moment » (jalon 13 §2.8, Grand moment du rival à la victoire) ---------------------

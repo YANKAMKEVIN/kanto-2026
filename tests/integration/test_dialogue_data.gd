@@ -103,6 +103,13 @@ const IDS: Array[StringName] = [
 	&"cerulean_torn_fence",
 	&"route_24_ball_1",
 	&"route_24_bridge_sign",
+	# Jalon 13 (T19) : le rival n° 3, Ondine au pont et à l'Arène.
+	&"rival_cerulean_intro", &"rival_cerulean_lost", &"rival_cerulean_resume",
+	&"rival_cerulean_resume_again", &"rival_cerulean_won", &"misty_bridge",
+	&"misty_bridge_invite", &"cerulean_gym_misty", &"cerulean_gym_misty_intro",
+	&"cerulean_gym_misty_lost", &"cerulean_gym_misty_resume", &"cerulean_gym_misty_won",
+	&"cerulean_gym_misty_badge", &"cerulean_gym_misty_tm", &"cerulean_gym_misty_tm_use",
+	&"cerulean_gym_misty_tm_late",
 	&"route_4_ball_1",
 	&"forest_gate_north_guard", &"forest_gate_south_guard",
 	&"forest_hiker", &"forest_naturalist",
@@ -164,9 +171,9 @@ const IDS: Array[StringName] = [
 ## de la Boutique depuis le T12 (data/cutscenes/viridian_mart.json).
 ## Jalon 9 : `pewter_arrived` (lu par le garde du poste nord) est posé par le J10, à l'arrivée à
 ## Argenta : levé par la scène `pewter_arrival` depuis le T8 du J10.
-## Jalon 13 (T17) : `badge_cascade` (T19) et `misty_invited` (T19) sont lus par la Nageuse et le
-## guide d'Azuria avant que leur scène existe.
-const FUTURE_FLAGS: Array[StringName] = [&"badge_cascade", &"misty_invited"]
+## Jalon 13 (T19) : `badge_cascade` et `misty_invited` sont désormais levés par les scènes d'Ondine ;
+## `beaten_nugget_rocket` (lu par la réplique n° 41 b d'Ondine) est levé au T22 (recruteur).
+const FUTURE_FLAGS: Array[StringName] = [&"beaten_nugget_rocket"]
 var _library: DialogueLibrary
 var _cutscenes: CutsceneLibrary
 var _offer: StarterOffer
@@ -293,7 +300,14 @@ func test_every_dialogue_is_used() -> void:
 func test_every_dialogue_played_by_a_cutscene_exists() -> void:
 	assert_eq(_cutscenes.get_errors().size(), 0, str(_cutscenes.get_errors()))
 	var played := _cutscenes.get_dialogue_ids()
-	assert_eq(played, [&"clerk_parcel", &"clerk_parcel_hello",
+	assert_eq(played, [
+		# Jalon 13 (T19) : Ondine à l'Arène.
+		&"cerulean_gym_misty_badge", &"cerulean_gym_misty_intro", &"cerulean_gym_misty_lost",
+		&"cerulean_gym_misty_resume", &"cerulean_gym_misty_tm", &"cerulean_gym_misty_tm_late",
+		&"cerulean_gym_misty_tm_use", &"cerulean_gym_misty_won",
+		&"clerk_parcel", &"clerk_parcel_hello",
+		# Jalon 13 (T19) : Ondine au pont.
+		&"misty_bridge_invite",
 		&"oak_after_battle", &"oak_lab_exit_block", &"oak_lab_reunion",
 		&"oak_parcel_records", &"oak_parcel_rival", &"oak_parcel_rival_dex", &"oak_poke_balls",
 		&"oak_poke_balls_intro", &"oak_pokedex_activated", &"oak_route1_call",
@@ -305,6 +319,9 @@ func test_every_dialogue_played_by_a_cutscene_exists() -> void:
 		&"pewter_gym_brock_tm", &"pewter_gym_brock_tm_late", &"pewter_gym_brock_tm_use",
 		&"pewter_gym_brock_won", &"pewter_route_3_guard_cleared",
 		&"pewter_route_3_guard_rule",
+		# Jalon 13 (T19) : le rival n° 3.
+		&"rival_cerulean_intro", &"rival_cerulean_lost", &"rival_cerulean_resume",
+		&"rival_cerulean_resume_again", &"rival_cerulean_won",
 		&"rival_challenge", &"rival_challenge_wait", &"rival_lab_lost", &"rival_lab_won",
 		&"rival_lab_won_leaving", &"rival_parcel_greet", &"rival_parcel_leaving",
 		&"rival_parcel_return", &"rival_starter_pick", &"rival_starter_smile",
@@ -391,19 +408,18 @@ func test_every_condition_flag_is_set_somewhere() -> void:
 			&"route_2_hiker_talked", &"route_2_youngster_talked", &"storage_terminal_seen",
 			&"viridian_old_man_talked"]
 		as Array[StringName])
-	assert_eq(_cutscenes.get_set_flags(), [&"badge_boulder", &"brock_met", &"cerulean_reached",
-		&"got_oak_parcel", &"got_potion_route_1", &"got_route_24_potion",
-		&"got_route_2_item_1", &"got_route_2_item_2", &"got_route_2_item_3",
-		&"got_route_2_item_4", &"got_route_2_north_item_1", &"got_route_4_poke_ball",
-		&"got_viridian_forest_item_1",
-		&"got_viridian_forest_item_2",
-		&"got_viridian_forest_item_3", &"got_viridian_forest_item_4",
-		&"got_viridian_forest_item_5", &"got_viridian_forest_item_6", &"oak_lab_reunion",
-		&"oak_met", &"pewter_arrived",
-		&"pokedex_activated", &"rival_battle_done", &"rival_challenged", &"rival_lab_lost",
-		&"rival_lab_won", &"rival_left_lab", &"rival_route22_lost", &"rival_route22_won",
-		&"route_3_guard_cleared", &"starter_chosen", &"starter_offered", &"tm34_received",
-		&"viridian_arrived"] as Array[StringName])
+	assert_eq(_cutscenes.get_set_flags(), [
+		&"badge_boulder", &"badge_cascade", &"brock_met", &"cerulean_reached", &"got_oak_parcel",
+		&"got_potion_route_1", &"got_route_24_potion", &"got_route_2_item_1", &"got_route_2_item_2",
+		&"got_route_2_item_3", &"got_route_2_item_4", &"got_route_2_north_item_1",
+		&"got_route_4_poke_ball", &"got_viridian_forest_item_1", &"got_viridian_forest_item_2",
+		&"got_viridian_forest_item_3", &"got_viridian_forest_item_4", &"got_viridian_forest_item_5",
+		&"got_viridian_forest_item_6", &"misty_invited", &"misty_met", &"oak_lab_reunion",
+		&"oak_met", &"pewter_arrived", &"pokedex_activated", &"rival_battle_done",
+		&"rival_cerulean_lost_once", &"rival_cerulean_retried", &"rival_cerulean_won",
+		&"rival_challenged", &"rival_lab_lost", &"rival_lab_won", &"rival_left_lab",
+		&"rival_route22_lost", &"rival_route22_won", &"route_3_guard_cleared", &"starter_chosen",
+		&"starter_offered", &"tm11_received", &"tm34_received", &"viridian_arrived"] as Array[StringName])
 	assert_eq(_used_on.get(&"oak_lab_reunion"), [&"oak_lab"], "joué au labo, après le fondu")
 	assert_eq(_used_on.get(&"oak_starter_offer"), [&"oak_lab"], "joué au labo")
 
@@ -756,7 +772,8 @@ func test_oak_parcel_lines() -> void:
 	# les trois de la Forêt de Jade ; jalon 10 : la Potion de la Route 2 nord et Pierre.
 	# Jalon 11 : la remise tardive de la CT34 par Pierre. Jalon 13 : la Poké Ball de la Route 4 et
 	# la Potion de la Route 24.
-	assert_eq(launched, 11, "la scène du colis, huit objets au sol, Pierre et sa CT34")
+	assert_eq(launched, 14, "la scène du colis, huit objets au sol, Pierre et sa CT34, Ondine (pont, "
+		+ "Arène et rattrapage)")
 	# Le jeton n'apparaît que dans la réplique de l'espèce.
 	for row: Array in _pages():
 		var tokens := DialogueTokens.tokens_in(row[1])

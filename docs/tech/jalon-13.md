@@ -1208,6 +1208,30 @@ et de l'annexe A validée.
 - §2.7, §2.9, §2.10 ; départs `rival_cerulean`, `rival_cerulean_weak`, `misty_pending`,
   `cerulean_gym`, `cascade_no_tm`. Tests `test_rival_cerulean`, `test_route_24_misty`,
   `test_cutscene_chain`, `test_misty_sequence`, `test_save_j13`. **CA** : tests verts, captures.
+- **Fait** (2026-10-13, branche `j13-t19`) :
+  - **Données** : `switch: true` sur `rival_cerulean` (`moment: "win"` déjà là) et `cerulean_gym_misty` ;
+    `data/cutscenes/route_24.json` (`route_24_rival` avec `next: route_24_misty`, `route_24_misty`),
+    `data/cutscenes/cerulean_gym.json` (`cerulean_gym_misty`, `cerulean_gym_misty_tm_late`) ; PNJ
+    `rival_cerulean` (36, 55) et `misty_bridge` (37, 46) sur la Route 24, `misty` (8, 3) à l'Arène
+    (`if misty_invited`) ; dialogues n° 28–41 mot pour mot (§21) ; carte `route_24` : deux
+    `EventTriggerPoint` (`RivalView` : rangée 55, x 31..35, ZERO ; `MistyResume` : rangée 53, x 31..33),
+    ajoutés à la main dans le `.tscn` (la reconstruction réécrit ~6 000 lignes d'identifiants) et à
+    `tools/build_route_24.gd` (`_add_triggers`) ; départs `rival_cerulean`, `rival_cerulean_weak`,
+    `misty_pending`, `cerulean_gym`, `cascade_no_tm` (+ README).
+  - **Choix** [D] : la scène du rival commence par `move player` vers (32, 55) (centre du couloir) pour
+    qu'il ne soit jamais sur (33, 55), seule case qui ferme la niche : sinon le rival, boîté, ne pourrait
+    pas partir vers la ville ; le rival vient en (33, 55), repart vers (33, 60) puis `despawn`. Défaite :
+    les répliques « défaite » sont conditionnées par `unless rival_cerulean_won` (et non par
+    `rival_cerulean_lost_once`, déjà levé aux retours). Carte de Championne sans portrait (Q-2).
+  - **Tests** : `test_rival_cerulean` (5), `test_route_24_misty` (4), `test_misty_sequence` (6),
+    `test_save_j13` (5, aucune nouvelle version : 6), `test_cutscene_chain` (+2) ; mis à jour :
+    `test_cutscene_data`, `test_dialogue_data`, `test_route_24`, `test_route_2`, `test_cerulean_life`,
+    `test_trainer_library`, `test_rival_name_layers` (24 étiquettes {rival}).
+  - Captures (Mac, 2340 × 1080, relues) : `build/captures/j13_t19/` (`tools/capture_rival_misty_j13.gd`,
+    `--mode=rival|gym`) : rival (`rival_01_emote`, `02_approche`, `04_rappel` = changement de Pokémon),
+    Ondine au pont (`misty_01..03`), Arène (`gym_03_carte`, `07_badge_legende`, `10_ct_toast`,
+    `11_ct_explication`).
+  - Réserve : `beaten_nugget_rocket` (réplique n° 41 b) n'est levé qu'au T22.
 
 #### T20 — architecte : équilibrage — après T19
 - §2.22 : simulation ; **information pour Kevin**, aucune donnée changée sans lui.

@@ -1,0 +1,54 @@
+{
+	"cerulean_gym_misty": {
+		"variants": [
+			{
+				"unless": ["badge_cascade"],
+				"steps": [
+					{ "face": "misty", "to": "player" },
+					{ "dialogue": "cerulean_gym_misty_intro", "unless": ["misty_met"] },
+					{ "dialogue": "cerulean_gym_misty_resume", "if": ["misty_met"] },
+					{ "champion_card": "cerulean_gym_misty", "unless": ["misty_met"] },
+					{ "set": ["misty_met"] },
+					{ "battle": "cerulean_gym_misty", "win": ["badge_cascade"] },
+					{ "wait": 0.6, "if": ["badge_cascade"] },
+					{ "dialogue": "cerulean_gym_misty_won", "if": ["badge_cascade"] },
+					{ "badge": "cascade", "if": ["badge_cascade"] },
+					{ "dialogue": "cerulean_gym_misty_badge", "if": ["badge_cascade"] },
+					{
+						"dialogue": "cerulean_gym_misty_tm",
+						"if": ["badge_cascade"],
+						"unless": ["tm11_received"]
+					},
+					{
+						"give": "tm11",
+						"count": 1,
+						"if": ["badge_cascade"],
+						"unless": ["tm11_received"]
+					},
+					{
+						"dialogue": "cerulean_gym_misty_tm_use",
+						"if": ["badge_cascade"],
+						"unless": ["tm11_received"]
+					},
+					{ "set": ["tm11_received"], "if": ["badge_cascade"] },
+					{ "dialogue": "cerulean_gym_misty_lost", "unless": ["badge_cascade"] },
+					{ "wake_up": true, "unless": ["badge_cascade"] }
+				]
+			}
+		]
+	},
+	"cerulean_gym_misty_tm_late": {
+		"variants": [
+			{
+				"steps": [
+					{ "face": "misty", "to": "player" },
+					{ "dialogue": "cerulean_gym_misty_tm_late" },
+					{ "dialogue": "cerulean_gym_misty_tm" },
+					{ "give": "tm11", "count": 1 },
+					{ "dialogue": "cerulean_gym_misty_tm_use" },
+					{ "set": ["tm11_received"] }
+				]
+			}
+		]
+	}
+}

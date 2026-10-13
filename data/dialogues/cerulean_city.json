@@ -124,5 +124,47 @@
 	"cerulean_gym_diane_after": {
 		"speaker": "Jeune Dresseuse Diane",
 		"pages": ["…Sauf aujourd'hui."]
-	}
+	},
+	"cerulean_gym_misty": {
+		"speaker": "Ondine",
+		"variants": [
+			{
+				"if": ["badge_cascade"],
+				"unless": ["tm11_received"],
+				"cutscene": "cerulean_gym_misty_tm_late"
+			},
+			{
+				"if": ["badge_cascade", "beaten_nugget_rocket"],
+				"pages": ["Tu as fait le pont ? Alors tu sais ce qu'il vaut."]
+			},
+			{ "if": ["badge_cascade"], "pages": ["Le pont t'a déjà vu passer ?"] },
+			{ "cutscene": "cerulean_gym_misty" }
+		]
+	},
+	"cerulean_gym_misty_intro": {
+		"speaker": "Ondine",
+		"pages": [
+			"Te voilà.",
+			"Ici, l'eau ne pardonne pas l'hésitation.",
+			"Voyons si tu tiens le rythme !"
+		]
+	},
+	"cerulean_gym_misty_lost": {
+		"speaker": "Ondine",
+		"pages": ["L'eau t'a emporté, cette fois.", "Reviens quand tu seras prêt."]
+	},
+	"cerulean_gym_misty_resume": { "speaker": "Ondine", "pages": ["Prêt à replonger ?"] },
+	"cerulean_gym_misty_won": { "speaker": "Ondine", "pages": ["…Bien joué.", "Tu as gardé la tête hors de l'eau."] },
+	"cerulean_gym_misty_badge": {
+		"speaker": "Ondine",
+		"pages": ["Voici le Badge Cascade.", "Il prouve que tu as tenu tête à la Championne d'Azuria."]
+	},
+	"cerulean_gym_misty_tm": { "speaker": "Ondine", "pages": ["Prends aussi ceci."] },
+	"cerulean_gym_misty_tm_use": {
+		"speaker": "Ondine",
+		"pages": [
+			"C'est la CT11, Bulles d'O. Un Pokémon qui l'apprend la garde, et tu peux t'en resservir."
+		]
+	},
+	"cerulean_gym_misty_tm_late": { "speaker": "Ondine", "pages": ["J'allais oublier."] }
 }

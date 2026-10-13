@@ -65,6 +65,7 @@
 [ext_resource type="Texture2D" path="res://assets/world/props/prop_buisson_a_01_bourg.png" id="63_uiq7x"]
 [ext_resource type="Script" path="res://game/world/warp_point.gd" id="64_h52g8"]
 [ext_resource type="Script" path="res://game/world/interactions/interact_point.gd" id="65_xad6i"]
+[ext_resource type="Script" path="res://game/world/triggers/event_trigger_point.gd" id="66_qtgju"]
 
 [sub_resource type="Image" id="Image_8ufk7"]
 data = {
@@ -8401,3 +8402,15 @@ position = Vector2(5328, 768)
 position = Vector2(5328, 864)
 
 [node name="Triggers" type="Node2D" parent="." unique_id=933964094]
+
+[node name="RivalView" type="Marker2D" parent="Triggers" unique_id=1374586637]
+position = Vector2(3024, 5376)
+script = ExtResource("66_qtgju")
+cutscene_id = &"route_24_rival"
+size = Vector2i(5, 1)
+
+[node name="MistyResume" type="Marker2D" parent="Triggers" unique_id=34300278]
+position = Vector2(3024, 5184)
+script = ExtResource("66_qtgju")
+cutscene_id = &"route_24_misty"
+size = Vector2i(3, 1)

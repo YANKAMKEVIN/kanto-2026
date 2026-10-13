@@ -44,6 +44,10 @@ const REGION: String = "Le Pont Pépite"
 ## Panneau du pied du pont : taille réduite (le plein format coiffait la tête du pont) ; borne.
 const SIGN_SCALE: float = 0.7
 const POST_SCALE: float = 1.0
+## T19 : déclencheurs du rival n° 3 (toute sa vue : rangée 55, x 31..35, `direction` ZERO) et de la
+## reprise de la scène d'Ondine (entrée de la place, rangée 53, x 31..33). [nœud, ancre, taille].
+const RIVAL_VIEW: Array = ["RivalView", Vector2i(31, 55), Vector2i(5, 1)]
+const MISTY_RESUME: Array = ["MistyResume", Vector2i(31, 53), Vector2i(3, 1)]
 const WALKABLE: String = ".=hpBe"
 const RESERVED_KINDS: Array[String] = ["dresseur", "pnj", "pokemon", "objet_visible", "cache"]
 const BALL_KINDS: Array[String] = ["objet_visible", "cache"]
@@ -137,6 +141,7 @@ func _init() -> void:
 	var entities: Node2D = _kit.get(&"entities")
 	var decals: Node2D = _kit.get(&"decals")
 	_add_passages()
+	_add_triggers()
 
 	_kit.call(&"place_border_decals", SEED)
 	_kit.call(&"place_meadow", MEADOW_ATTEMPTS, MEADOW_FLOWER_CHANCE, FLOWERS)
@@ -205,6 +210,14 @@ func _add_passages() -> void:
 		_kit.call(&"add_spawn", entry[2], entry[1])
 		_kit.call(&"add_warp", entry[0], entry[1], Kit.PUSH, Vector2i.RIGHT, &"",
 			StringName(entry[2]), Vector2i.LEFT, ROUTE_25_SOON)
+
+
+## Déclencheurs de scène (T19) : aucune condition ici, les variantes des scènes décident.
+func _add_triggers() -> void:
+	_kit.call(&"add_trigger", RIVAL_VIEW[0], RIVAL_VIEW[1], RIVAL_VIEW[2], Vector2i.ZERO,
+		&"route_24_rival")
+	_kit.call(&"add_trigger", MISTY_RESUME[0], MISTY_RESUME[1], MISTY_RESUME[2], Vector2i.ZERO,
+		&"route_24_misty")
 
 
 func _place_props(entities: Node2D) -> void:
