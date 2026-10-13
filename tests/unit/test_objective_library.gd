@@ -14,7 +14,8 @@ func test_real_data_loads_without_error() -> void:
 	var library := ObjectiveLibrary.new()
 	assert_true(library.load_file(), "\n".join(library.get_errors()))
 	assert_eq(library.get_errors().size(), 0)
-	assert_eq(library.get_ids(), [&"go_route_3", &"get_boulder_badge", &"go_north",
+	assert_eq(library.get_ids(), [&"explore_cerulean", &"cross_nugget_bridge",
+		&"get_cascade_badge", &"go_route_3", &"get_boulder_badge", &"go_north",
 		&"deliver_parcel", &"reach_viridian"] as Array[StringName])
 
 
@@ -57,7 +58,10 @@ func test_q4_nothing_before_the_rival_battle_then_reach_viridian() -> void:
 ## (data/cutscenes/oak_lab.json).
 ## Jalon 10 (T8) : `pewter_arrived` (scène `pewter_arrival`) et `badge_boulder` (victoire de la
 ## scène `pewter_gym_brock`) sont levés par les données : retirés de la liste.
-const _PENDING_FLAGS: Array[StringName] = [&"viridian_arrived"]
+## Jalon 13 (T17) : `badge_cascade` (T19) et `beaten_nugget_rocket` (T22) ne sont pas encore
+## levés ; `cerulean_reached` l'est par la scène `cerulean_arrival`.
+const _PENDING_FLAGS: Array[StringName] = [&"viridian_arrived", &"badge_cascade",
+	&"beaten_nugget_rocket"]
 
 
 ## Jalon 10 (dossier 12 §16, jalon-10.md §2.10) : « continuer vers le nord. » jusqu'à Argenta,
@@ -81,6 +85,33 @@ func test_j10_north_then_boulder_badge_then_route_3() -> void:
 	assert_false(library.is_draft(&"go_route_3"), "texte verrouillé (dossier 12)")
 	flags.set_flag(&"pewter_arrived", false)
 	assert_eq(library.current_id(flags), &"go_route_3", "le badge passe en tête")
+
+
+## Jalon 13 (dossier 16 §18, jalon-13.md §2.16, textes 61 à 63) : les quatre états d'Azuria, et le
+## pont fait avant le badge (l'objectif reste « obtenir le Badge Cascade. »).
+func test_j13_cerulean_states() -> void:
+	var library := ObjectiveLibrary.new()
+	library.load_file()
+	var flags := StoryFlags.new()
+	for flag: StringName in [&"rival_battle_done", &"viridian_arrived", &"got_oak_parcel",
+			StoryFlags.POKEDEX_ACTIVATED, &"pewter_arrived", &"badge_boulder"]:
+		flags.set_flag(flag)
+	assert_eq(library.current_id(flags), &"go_route_3", "avant Azuria : le J10 (le J12 passe devant)")
+	flags.set_flag(&"cerulean_reached")
+	assert_eq(library.current(flags), "obtenir le Badge Cascade.")
+	assert_eq(library.current_id(flags), &"get_cascade_badge")
+	# Le pont fait avant le badge : rien ne change.
+	flags.set_flag(&"beaten_nugget_rocket")
+	assert_eq(library.current_id(flags), &"get_cascade_badge", "pont avant badge")
+	flags.set_flag(&"beaten_nugget_rocket", false)
+	flags.set_flag(&"badge_cascade")
+	assert_eq(library.current(flags), "traverser le Pont Pépite.")
+	assert_eq(library.current_id(flags), &"cross_nugget_bridge")
+	flags.set_flag(&"beaten_nugget_rocket")
+	assert_eq(library.current(flags), "explorer les environs d'Azuria.")
+	assert_eq(library.current_id(flags), &"explore_cerulean")
+	for id: StringName in [&"get_cascade_badge", &"cross_nugget_bridge", &"explore_cerulean"]:
+		assert_false(library.is_draft(id), "texte validé le 2026-10-11")
 
 
 ## Jalon 7 (dossier 09 §4, §19) : le colis en main → « remettre le colis au Professeur

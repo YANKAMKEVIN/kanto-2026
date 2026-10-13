@@ -1,0 +1,128 @@
+{
+	"cerulean_city_sign": {
+		"pages": ["AZURIA\nUne ville bordée d'eau, entre la montagne et le cap."]
+	},
+	"cerulean_gym_sign": {
+		"pages": ["ARÈNE D'AZURIA\nChampionne : Ondine — La sirène au caractère bien trempé"]
+	},
+	"cerulean_h1_fisher": {
+		"speaker": "Pêcheur",
+		"pages": [
+			"Pas de canne aujourd'hui.",
+			"Je viens juste regarder l'eau. Ça suffit parfois."
+		]
+	},
+	"cerulean_h2_kid": {
+		"speaker": "Enfant",
+		"pages": ["Il y a des Pokémon sous le pont !", "…Je crois."]
+	},
+	"cerulean_h3_neighbor": {
+		"speaker": "Voisine",
+		"variants": [
+			{
+				"unless": ["cerulean_neighbor_talked"],
+				"set": ["cerulean_neighbor_talked"],
+				"pages": [
+					"Ils sont entrés chez mon voisin en pleine nuit.",
+					"Le matin, on a vu un homme en noir partir par l'arrière."
+				]
+			},
+			{
+				"pages": ["Ici, on ne fermait jamais nos portes."]
+			}
+		]
+	},
+	"cerulean_h4_policeman": {
+		"speaker": "Policier",
+		"pages": ["Circulez. L'enquête est en cours."]
+	},
+	"cerulean_h5_swimmer": {
+		"speaker": "Nageuse",
+		"variants": [
+			{
+				"if": ["badge_cascade"],
+				"pages": ["Le Badge Cascade !", "Ondine ne le donne pas à n'importe qui."]
+			},
+			{
+				"pages": [
+					"Je m'entraîne à l'Arène tous les matins.",
+					"Ondine ? Elle n'est jamais là quand il y a des défis sur le pont."
+				]
+			}
+		]
+	},
+	"cerulean_h6_trainer": {
+		"speaker": "Jeune Dresseur",
+		"pages": [
+			"Le Pont Pépite, au nord ? Cinq Dresseurs à la suite.",
+			"Je me suis arrêté au troisième."
+		]
+	},
+	"cerulean_h7_resident": {
+		"speaker": "Habitant",
+		"pages": ["On ne passe pas par là pour l'instant."]
+	},
+	"cerulean_closed_exit": {
+		"narration": true,
+		"pages": ["On ne passe pas par là pour l'instant."]
+	},
+	"cerulean_burgled_door": {
+		"narration": true,
+		"pages": ["Un ruban interdit l'entrée."]
+	},
+	"cerulean_torn_fence": {
+		"narration": true,
+		"pages": ["La clôture a été arrachée."]
+	},
+	"cerulean_house_resident": {
+		"speaker": "Habitante",
+		"pages": [
+			"Toute l'eau d'Azuria descend du nord.",
+			"Quand le soleil tape sur les canaux, la ville entière devient bleue."
+		]
+	},
+	"cerulean_bike_clerk": {
+		"speaker": "Vendeur",
+		"pages": [
+			"Bienvenue ! Les meilleurs vélos de Kanto.",
+			"Celui-ci ? 1 000 000 ₽.",
+			"…Reviens quand tu veux. Pour regarder."
+		]
+	},
+	"cerulean_gym_guide": {
+		"speaker": "Guide",
+		"variants": [
+			{
+				"if": ["badge_cascade"],
+				"pages": ["Le Badge Cascade ! Je savais qu'elle t'apprécierait."]
+			},
+			{
+				"if": ["misty_invited"],
+				"pages": ["Ondine t'attend au fond du bassin. Bonne chance !"]
+			},
+			{
+				"pages": [
+					"Bienvenue à l'Arène d'Azuria !",
+					"Ondine ? Elle est partie voir les défis du pont, au nord.",
+					"Elle aime repérer les Dresseurs avant qu'ils viennent frapper à sa porte."
+				]
+			}
+		]
+	},
+	"cerulean_gym_lucas_before": {
+		"speaker": "Nageur Lucas",
+		"pages": ["On s'entraîne même quand Ondine n'est pas là !"]
+	},
+	"cerulean_gym_lucas_after": {
+		"speaker": "Nageur Lucas",
+		"pages": ["Bon… Je retourne faire des longueurs."]
+	},
+	"cerulean_gym_diane_before": {
+		"speaker": "Jeune Dresseuse Diane",
+		"pages": ["Ondine m'a appris une chose : ne jamais reculer."]
+	},
+	"cerulean_gym_diane_after": {
+		"speaker": "Jeune Dresseuse Diane",
+		"pages": ["…Sauf aujourd'hui."]
+	}
+}

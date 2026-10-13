@@ -1,0 +1,13 @@
+{
+	"cerulean_mart": {
+		"stock": [
+			{ "item": "poke_ball" },
+			{ "item": "potion" },
+			{ "item": "antidote" },
+			{ "item": "paralyze_heal" },
+			{ "item": "awakening" },
+			{ "item": "ice_heal" },
+			{ "item": "burn_heal" }
+		]
+	}
+}

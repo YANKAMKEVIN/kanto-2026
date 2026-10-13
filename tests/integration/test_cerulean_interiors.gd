@@ -136,10 +136,16 @@ func test_cerulean_center_is_a_rest_point_named_azuria() -> void:
 		"Point de repos enregistré — Azuria")
 
 
-func test_rooms_have_no_npcs_before_t17() -> void:
+func test_rooms_have_their_people_on_the_reserved_cells() -> void:
+	# T17 : chaque PNJ de data/npcs/<salle>.json est sur une case praticable de la grille ; Ondine
+	# (T19) n'y est pas encore.
 	for id: StringName in ROOMS:
-		for child: Node in (_maps[id] as GameMap).get_entities().get_children():
-			assert_false(child is Npc, "%s : %s" % [id, child.name])
+		var roster := NpcRoster.load_for_map(id)
+		var map: GameMap = _maps[id]
+		for spec: NpcSpec in roster.get_all():
+			assert_false(map.get_grid().is_solid(spec.cell), "%s : %s sur une case libre"
+				% [id, spec.id])
+		assert_null(map.get_npc(&"misty"), "%s : Ondine attend le T19" % id)
 
 
 func test_gym_pool_is_blocked_and_the_paths_are_dry() -> void:

@@ -178,7 +178,10 @@ func test_the_whole_map_is_reachable_and_closed_from_azuria() -> void:
 	var dist := GridPaths.distances(_grid, SOUTH)
 	var sign: Array[Vector2i] = _plan.cells_at("panneau_pont")
 	for cell: Vector2i in _plan.cells_of(_plan.walkable):
-		if not sign.has(cell):
+		if cell == _plan.cell_of("route_24_item_1"):
+			# La Potion (T17) occupe sa case ; on la ramasse depuis une case voisine.
+			assert_true(dist.has(cell + Vector2i.DOWN), "Potion : case voisine atteignable")
+		elif not sign.has(cell):
 			assert_true(dist.has(cell), "%s atteignable" % cell)
 	for cell: Vector2i in dist:
 		assert_true(_plan.is_walkable(cell), "%s fermé par la grille" % cell)
@@ -274,7 +277,14 @@ func test_each_bridge_trainer_is_unavoidable_and_never_traps_the_player() -> voi
 func test_the_sign_closes_the_east_file_at_the_bridge_head() -> void:
 	var sign := _plan.cell_of("panneau_pont")
 	assert_eq(sign, Vector2i(33, 45))
-	assert_true(_grid.is_solid(sign), "panneau solide")
+	assert_eq(_plan.cells_at("panneau_pont"), [Vector2i(33, 45), Vector2i(34, 45)] as Array[Vector2i])
+	assert_true(_grid.is_solid(sign), "borne solide")
+	assert_true(_grid.is_solid(Vector2i(34, 45)), "panneau solide")
+	# T17 : le panneau est de taille normale, à côté de la tête du pont (jamais sur le tablier).
+	var board := _map.get_node(^"Entities/SignPont") as Node2D
+	assert_lt(board.scale.x, 1.0, "panneau réduit")
+	assert_eq(Grid.world_to_cell(board.position + Vector2(0.0, -1.0)), Vector2i(34, 45))
+	assert_not_null(_map.get_node_or_null(^"Entities/BridgePost"), "borne de la file est")
 	assert_false(_grid.is_solid(Vector2i(32, 45)), "on entre par la file ouest (32, 44)")
 
 
@@ -286,8 +296,11 @@ func test_the_pre_bridge_places_are_reserved_free_of_props() -> void:
 		assert_true(_plan.is_walkable(cell), "%s : case praticable de la grille" % id)
 		assert_false(_grid.is_solid(cell), "%s : libre (rien de vivant avant T17 / T19)" % id)
 	assert_eq(_map.get_node(^"Triggers").get_child_count(), 0)
-	assert_eq(_map.get_node(^"Interactables").get_child_count(), 0)
-	assert_false(FileAccess.file_exists("res://data/npcs/route_24.json"), "aucun PNJ")
+	assert_eq(_map.get_node(^"Interactables").get_child_count(), 1, "le panneau du pont (T17)")
+	var ids: Array[String] = []
+	for spec: NpcSpec in NpcRoster.load_for_map(&"route_24").get_all():
+		ids.append(String(spec.id))
+	assert_eq(ids, ["route_24_ball_1"] as Array[String], "la Potion seule (T19, T22 : le reste)")
 
 
 func test_north_tall_grass_is_avoidable() -> void:

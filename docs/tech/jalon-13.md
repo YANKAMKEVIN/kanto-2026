@@ -1169,6 +1169,34 @@ et de l'annexe A validée.
 - §2.2 (vie), §2.4, §2.5, §2.6 (Dresseurs et guide), §2.14 (Route 4), §2.16 (`get_cascade_badge`),
   zone et Grand moment d'arrivée, départs `route_4`, `cerulean_city`. Tests `test_route_4_life`,
   `test_cerulean_life`, `test_cerulean_gym_trainers`, `test_shop_sell`. **CA** : tests verts, captures.
+- **Fait** (2026-10-13, branche `j13-t17`) :
+  - **Azuria** : 7 habitants (`data/npcs/cerulean_city.json` : H1–H6 + **H7**, l'habitant de la sortie est
+    fermée, n° 17, ajouté à la grille ; `plan_check_azuria.py` accepte H7) ; modèles `haru`, `kid`, `aoki`,
+    `guard`, `swimmer_f` (H5), `youngster`, `old_man` ; H3 garde la mémoire `cerulean_neighbor_talked`
+    (n° 9 puis n° 10) ; seule H5 réagit au badge (`badge_cascade`) ; examens porte (n° 12), clôture arrachée
+    (n° 13), barrières est et sud (n° 17, sans warp) ; panneaux ville (n° 6) et Arène (n° 20) ; planche,
+    pot, trou : décor seul. Arrivée : déclencheurs silencieux ouest (1, 19..21) et nord (31..33, 1) →
+    `cerulean_arrival` (`cerulean_reached`), titre de zone par la carte, Grand moment
+    `zone_arrivals.cerulean_city` (annexe A.4). `tools/build_cerulean_city.gd` : `_add_life`.
+  - **Intérieurs** : Centre (infirmière, point de repos existant), Boutique (`data/shops/cerulean_mart.json`,
+    stock D-13 sans Repousse), vélos (vendeur, n° 19, aucun achat), maison (n° 18), Arène (Lucas, Diane,
+    guide à trois états : n° 21–23, 24–27 ; Ondine absente, T19).
+  - **Routes** : Poké Ball de la Route 4 (`got_route_4_poke_ball`) et Potion de la Route 24
+    (`got_route_24_potion`) ; rencontres `route_4_grass` / `route_24_grass` déjà branchées (T11).
+  - **Panneau du Pont Pépite corrigé** : le panneau « PONT PÉPITE » (n° 42) est en (34, 45), échelle 0,7,
+    **à côté** de la tête du pont ; la case (33, 45) reste bloquée (borne, décor seul) et ferme la file est ;
+    `panneau_pont` = deux cases dans la grille (`route_24.txt`).
+  - **Objectifs** (n° 61–63) en tête de `objectives.json` ; départs `route_4` et `cerulean_city`.
+  - **Tests** : `test_route_4_life`, `test_cerulean_life`, `test_cerulean_gym_trainers`, `test_shop_sell`,
+    `test_objective_library` (quatre états + pont avant badge) ; `test_route_4`, `test_route_24`,
+    `test_cerulean_city`, `test_cerulean_interiors` mis à jour (PNJ posés).
+  - **En attente (hors T17, documenté)** : **Clara** (Paras, Rondoudou : J12 T12) — case (44, 17) réservée,
+    ni Dresseur `route_4_lass_clara` ni PNJ ; **Abo** absent de `route_4_grass` ; **Corde Sortie** absente de
+    la Boutique (objet du J12) ; **Antidote caché** de la Route 24 (16, 6) : mécanique `unless_flags` des
+    objets cachés = J12 T17, **non créée** (drapeau `got_route_24_antidote`, indice « souche ») ; panneau et
+    déclencheur `route_4_reached` de la Route 4 = J12 T28 ; panneau « CENTRE POKÉMON » = enseigne du
+    bâtiment (aucun panneau séparé, aucune position dans la grille).
+  - Captures : `build/captures/j13_t17/` (`tools/capture_cerulean_life.sh`, `capture_cerulean_shop.gd`).
 
 #### T18 — qa-mobile : **session 13A** → Kevin
 - Partie sauvegardée **dans le sas** (vraie partie du J12 ou départ) rechargée → même case ; rebord
