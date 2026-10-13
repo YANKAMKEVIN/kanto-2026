@@ -14,7 +14,8 @@ func test_real_data_loads_without_error() -> void:
 	var library := ObjectiveLibrary.new()
 	assert_true(library.load_file(), "\n".join(library.get_errors()))
 	assert_eq(library.get_errors().size(), 0)
-	assert_eq(library.get_ids(), [&"go_route_3", &"get_boulder_badge", &"go_north",
+	assert_eq(library.get_ids(), [&"go_cerulean_cape", &"go_route_3",
+		&"get_boulder_badge", &"go_north",
 		&"deliver_parcel", &"reach_viridian"] as Array[StringName])
 
 
@@ -57,7 +58,11 @@ func test_q4_nothing_before_the_rival_battle_then_reach_viridian() -> void:
 ## (data/cutscenes/oak_lab.json).
 ## Jalon 10 (T8) : `pewter_arrived` (scène `pewter_arrival`) et `badge_boulder` (victoire de la
 ## scène `pewter_gym_brock`) sont levés par les données : retirés de la liste.
-const _PENDING_FLAGS: Array[StringName] = [&"viridian_arrived"]
+## Jalon 14 : `beaten_nugget_rocket` (Sbire du Pont Pépite, J13) et `bill_met` (scène de Léo, T17)
+## ne sont pas encore fusionnés dans cette branche.
+const _PENDING_FLAGS: Array[StringName] = [
+	&"viridian_arrived", &"beaten_nugget_rocket", &"bill_met"
+]
 
 
 ## Jalon 10 (dossier 12 §16, jalon-10.md §2.10) : « continuer vers le nord. » jusqu'à Argenta,

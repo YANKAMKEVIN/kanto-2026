@@ -6,7 +6,8 @@ extends GutTest
 ## `tools/art/plan_check_route_25.py` refaits sur la vraie grille (positions `bloque` en plus,
 ## porte terminale) : D1 / D2 inévitables par géométrie, D3 à D6 évitables, H3 incontournable,
 ## rebord, chemin ; cases réservées (T16, T17) libres de tout décor ; rivage rocheux ; budget de
-## nœuds. Sans PNJ, sans rencontres, sans déclencheurs.
+## nœuds. Sans déclencheurs ; la vie (PNJ, objets, rencontres) : `test_route_25_trainers`,
+## `test_route_25_life`.
 
 const PlanGrid := preload("res://tests/helpers/plan_grid.gd")
 const GridPaths := preload("res://tests/helpers/grid_paths.gd")
@@ -197,9 +198,10 @@ func test_leo_door_leads_into_the_house() -> void:
 	assert_eq(_map.get_warps().size(), 5, "trois raccords ouest et deux portes")
 
 
-func test_no_life_yet() -> void:
-	assert_eq(_map.get_node(^"Triggers").get_child_count(), 0, "déclencheurs au T16")
-	assert_eq(_map.get_node(^"Interactables").get_child_count(), 0, "points d'examen au T16")
+func test_no_trigger_and_three_examine_points() -> void:
+	assert_eq(_map.get_node(^"Triggers").get_child_count(), 0, "aucun déclencheur")
+	assert_eq(_map.get_node(^"Interactables").get_child_count(), 3,
+		"deux panneaux et le rocher au coquillage (T16)")
 
 
 # --- Critères (plan_check_route_25.py) ---------------------------------------------------

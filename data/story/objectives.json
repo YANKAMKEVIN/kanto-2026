@@ -1,5 +1,11 @@
 [
 	{
+		"id": "go_cerulean_cape",
+		"text": "rejoindre le Cap d'Azuria.",
+		"if": ["beaten_nugget_rocket"],
+		"unless": ["bill_met"]
+	},
+	{
 		"id": "go_route_3",
 		"text": "continuer vers la Route 3.",
 		"if": ["badge_boulder"]
