@@ -6,6 +6,8 @@ extends SceneTree
 ## Dardargnan, Pikachu, Raichu ; les évolutions aussi, puisqu'elles naissent en combat) et des
 ## trois espèces des Dresseurs d'Argenta (jalon-10.md §2.3 : Sabelette, Racaillou, Onix ; en
 ## face, l'adversaire est l'artwork officiel, ces sprites ne servent que de repli et de dos).
+## Correctif QA 12A : toutes les évolutions des espèces des données (Reptincel…), test
+## `test_battle_art.gd` (chaque espèce des données a sa face et son dos).
 ## Pixel art 64 × 64 natif, affiché en NEAREST par le BattleStage (×4 de dos, ×3 de face) :
 ##   assets/sprites/pokemon/placeholder/<espèce>_front.png   (vue de face : l'adversaire)
 ##   assets/sprites/pokemon/placeholder/<espèce>_back.png    (vue de dos : le Pokémon du joueur)
@@ -29,6 +31,12 @@ const SPECIES: Array[String] = [
 	# Rattatac (Sbire R3). Ajouts en fin ; les sprites existants ne changent pas.
 	"jigglypuff", "wigglytuff", "ekans", "arbok", "zubat", "golbat", "paras", "parasect",
 	"clefairy", "clefable", "voltorb", "koffing", "raticate",
+	# Correctif QA 12A (S24) : toutes les évolutions atteignables des espèces des données (le
+	# joueur peut les avoir en tête : Reptincel au N16, etc.), dessinées sur la silhouette de leur
+	# forme de base (recolorée) avec un trait distinctif. Ajouts en fin ; rien d'autre ne change.
+	"ivysaur", "venusaur", "charmeleon", "charizard", "wartortle", "blastoise",
+	"pidgeotto", "pidgeot", "fearow", "sandslash", "nidorina", "nidoqueen", "nidorino",
+	"nidoking", "primeape", "graveler", "golem",
 ]
 const OUTLINE := Color("#1c1c28")
 const EYE := Color("#1c1c28")
@@ -964,6 +972,195 @@ func _draw_raticate(img: Image, back: bool) -> void:
 	_r(img, 33, 33, 3, 6, WHITE)
 	_line(img, Vector2(24, 31), Vector2(9, 27), OUTLINE)
 	_line(img, Vector2(40, 31), Vector2(55, 27), OUTLINE)
+
+
+# --- Évolutions (correctif QA 12A) -------------------------------------------------
+
+## Dessine la forme de base [param base] (de face ou de dos) sur un calque, recolore ses pixels
+## colorés (teinte + [param hue], saturation × [param sat], assombris de [param dark] ; le blanc,
+## le noir et les gris gardent leur valeur), puis le pose sur [param img] (par-dessus ce qui y est
+## déjà dessiné : ailes, carapace dorsale…).
+func _base(img: Image, back: bool, base: String, hue: float, sat: float = 1.0,
+		dark: float = 0.0) -> void:
+	var layer := Image.create_empty(SIZE, SIZE, false, Image.FORMAT_RGBA8)
+	layer.fill(Color(0, 0, 0, 0))
+	call("_draw_" + base, layer, back)
+	for y: int in SIZE:
+		for x: int in SIZE:
+			var c := layer.get_pixel(x, y)
+			if c.a <= 0.0 or c.s < 0.15:
+				continue
+			var shifted := Color.from_hsv(fposmod(c.h + hue, 1.0), clampf(c.s * sat, 0.0, 1.0),
+				c.v, c.a)
+			layer.set_pixel(x, y, shifted.darkened(dark))
+	img.blend_rect(layer, Rect2i(0, 0, SIZE, SIZE), Vector2i.ZERO)
+
+
+## Herbizarre : Bulbizarre plus sombre, bouton rose au sommet du bulbe.
+func _draw_ivysaur(img: Image, back: bool) -> void:
+	_base(img, back, "bulbasaur", 0.0, 1.0, 0.08)
+	var bud := Color("#e070a0")
+	var c := Vector2(32, 22) if back else Vector2(32, 8)
+	_e(img, c.x, c.y, 5, 5, bud, true)
+	_line(img, Vector2(c.x - 4, c.y + 4), Vector2(c.x - 8, c.y + 1), Color("#3a7a38"), 2)
+	_line(img, Vector2(c.x + 4, c.y + 4), Vector2(c.x + 8, c.y + 1), Color("#3a7a38"), 2)
+
+
+## Florizarre : Bulbizarre bleu-vert sombre, grande fleur rose à cœur jaune sur le dos.
+func _draw_venusaur(img: Image, back: bool) -> void:
+	_base(img, back, "bulbasaur", -0.03, 1.0, 0.15)
+	var petal := Color("#e86a8a")
+	var c := Vector2(32, 22) if back else Vector2(32, 9)
+	for side: int in [-1, 1]:
+		_e(img, c.x + side * 10, c.y, 9, 4, petal, true)
+	_e(img, c.x, c.y - 4, 6, 4, petal, true)
+	_e(img, c.x, c.y, 4, 3, Color("#f0d040"))
+
+
+## Reptincel : Salamèche rouge sombre, corne vers l'arrière de la tête.
+func _draw_charmeleon(img: Image, back: bool) -> void:
+	_base(img, back, "charmander", -0.04, 1.1, 0.12)
+	var skin := Color("#c8442c")
+	if back:
+		_line(img, Vector2(32, 10), Vector2(32, 3), skin, 3)
+	else:
+		_line(img, Vector2(40, 10), Vector2(47, 3), skin, 3)
+
+
+## Dracaufeu : Salamèche orange, grandes ailes bleu-vert déployées, deux cornes.
+func _draw_charizard(img: Image, back: bool) -> void:
+	var wing := Color("#3a8aa0")
+	for side: int in [-1, 1]:
+		_e(img, 32 + side * 19, 28, 11, 15, wing, true)
+		_line(img, Vector2(32 + side * 10, 30), Vector2(32 + side * 29, 14), wing.darkened(0.3), 2)
+	_base(img, back, "charmander", 0.01, 1.0, 0.0)
+	var skin := Color("#f08a3a")
+	for side: int in [-1, 1]:
+		_line(img, Vector2(32 + side * 8, 10), Vector2(32 + side * 11, 3), skin, 3)
+
+
+## Carabaffe : Carapuce bleu lavande, oreilles et queue en plumes blanches.
+func _draw_wartortle(img: Image, back: bool) -> void:
+	var fur := Color("#e8eef8")
+	for side: int in [-1, 1]:
+		_e(img, 32 + side * 16, 9, 4, 8, fur, true)
+	_e(img, 54, 54, 7, 7, fur, true)
+	_base(img, back, "squirtle", 0.06, 1.0, 0.1)
+
+
+## Tortank : Carapuce bleu foncé, deux canons gris sortant de la carapace.
+func _draw_blastoise(img: Image, back: bool) -> void:
+	_base(img, back, "squirtle", 0.05, 1.1, 0.22)
+	var steel := Color("#9aa0aa")
+	for side: int in [-1, 1]:
+		var x := 32 + side * 14 - 4
+		_r(img, x, 24, 9, 6, steel)
+		_r(img, x, 24, 9, 2, steel.lightened(0.2))
+		_r(img, x + 3, 25, 3, 3, OUTLINE)
+
+
+## Roucoups : Roucool, longue crête rouge et jaune.
+func _draw_pidgeotto(img: Image, back: bool) -> void:
+	_base(img, back, "pidgey", 0.0, 1.0, 0.05)
+	_line(img, Vector2(31, 12), Vector2(42, 2), Color("#d84030"), 3)
+	_line(img, Vector2(33, 13), Vector2(45, 6), Color("#f0c040"), 2)
+
+
+## Roucarnage : Roucool plus clair, très longue crête rouge et jaune retombant dans le dos.
+func _draw_pidgeot(img: Image, back: bool) -> void:
+	_base(img, back, "pidgey", 0.01, 1.1)
+	_line(img, Vector2(31, 12), Vector2(46, 2), Color("#d84030"), 4)
+	_line(img, Vector2(46, 2), Vector2(58, 14), Color("#d84030"), 3)
+	_line(img, Vector2(34, 13), Vector2(48, 6), Color("#f0c040"), 2)
+	_line(img, Vector2(48, 6), Vector2(57, 20), Color("#f0c040"), 2)
+
+
+## Rapasdepic : Piafabec brun foncé, long bec effilé, crête rouge.
+func _draw_fearow(img: Image, back: bool) -> void:
+	_base(img, back, "spearow", 0.02, 0.9, 0.08)
+	var beak := Color("#e8a8a0")
+	if not back:
+		_line(img, Vector2(32, 28), Vector2(32, 42), beak, 3)
+	_e(img, 32, 9, 6, 4, Color("#c03a2a"), true)
+
+
+## Sablaireau : Sabelette brun, épines brunes sur tout le dos.
+func _draw_sandslash(img: Image, back: bool) -> void:
+	var spike := Color("#8a5a2a")
+	for i: int in 7:
+		var a := lerpf(-2.4, -0.7, float(i) / 6.0)
+		var base := Vector2(32, 34)
+		_line(img, base + Vector2(cos(a), sin(a)) * 12.0, base + Vector2(cos(a), sin(a)) * 24.0,
+			spike, 3)
+	_base(img, back, "sandshrew", -0.02, 1.0, 0.12)
+	if back:
+		for i: int in 5:
+			_line(img, Vector2(20 + i * 6, 34), Vector2(22 + i * 6, 26), spike, 2)
+
+
+## Nidorina : Nidoran ♀ bleu plus clair et plus vert.
+func _draw_nidorina(img: Image, back: bool) -> void:
+	_base(img, back, "nidoran_f", -0.04, 1.0, 0.05)
+
+
+## Nidoqueen : Nidoran ♀ bleu sombre, plastron crème.
+func _draw_nidoqueen(img: Image, back: bool) -> void:
+	_base(img, back, "nidoran_f", 0.0, 1.1, 0.22)
+	if not back:
+		_e(img, 32, 48, 11, 8, Color("#e8d8a8"), true)
+
+
+## Nidorino : Nidoran ♂ violet plus soutenu, corne plus longue.
+func _draw_nidorino(img: Image, back: bool) -> void:
+	_base(img, back, "nidoran_m", 0.02, 1.15, 0.08)
+	if not back:
+		_line(img, Vector2(32, 20), Vector2(32, 5), Color("#f0e6f4"), 3)
+
+
+## Nidoking : Nidoran ♂ violet sombre, plastron crème, grande corne.
+func _draw_nidoking(img: Image, back: bool) -> void:
+	_base(img, back, "nidoran_m", 0.04, 1.2, 0.2)
+	if back:
+		_line(img, Vector2(32, 18), Vector2(32, 6), Color("#f0e6f4"), 3)
+		return
+	_e(img, 32, 48, 11, 8, Color("#e8d8a8"), true)
+	_line(img, Vector2(32, 20), Vector2(32, 3), Color("#f0e6f4"), 4)
+
+
+## Colossinge : Férosinge plus clair, menottes grises aux poignets.
+func _draw_primeape(img: Image, back: bool) -> void:
+	_base(img, back, "mankey", 0.0)
+	var steel := Color("#a0a4ac")
+	var y := 38 if back else 36
+	for side: int in [-1, 1]:
+		_r(img, 32 + side * 22 - 4, y + 3, 8, 3, steel)
+
+
+## Gravalanch : Racaillou plus massif et brun, deux bras de plus en bas.
+func _draw_graveler(img: Image, back: bool) -> void:
+	var rock := Color("#8a8070")
+	for side: int in [-1, 1]:
+		_line(img, Vector2(32 + side * 12, 50), Vector2(32 + side * 22, 58), rock, 5)
+		_e(img, 32 + side * 23, 58, 5, 4, rock, true)
+	_base(img, back, "geodude", 0.0, 1.5, 0.08)
+	_e(img, 32, 24, 10, 6, rock, true)
+
+
+## Grolem : carapace rocheuse vert-brun autour d'une tête grise.
+func _draw_golem(img: Image, back: bool) -> void:
+	var shell := Color("#8a8a5a")
+	_e(img, 32, 42, 24, 20, shell, true)
+	for p: Vector2i in [Vector2i(16, 34), Vector2i(46, 30), Vector2i(24, 52), Vector2i(42, 52)]:
+		_e(img, p.x, p.y, 4, 3, shell.darkened(0.25))
+	if back:
+		_e(img, 32, 24, 10, 8, shell.lightened(0.1), true)
+		return
+	_e(img, 32, 38, 12, 10, Color("#c8b0a0"), true)
+	_r(img, 25, 35, 4, 4, WHITE)
+	_r(img, 35, 35, 4, 4, WHITE)
+	_r(img, 26, 36, 2, 3, EYE)
+	_r(img, 36, 36, 2, 3, EYE)
+	_r(img, 28, 43, 8, 2, Color("#7a5a4a"))
 
 
 # --- Ombre ------------------------------------------------------------------------
