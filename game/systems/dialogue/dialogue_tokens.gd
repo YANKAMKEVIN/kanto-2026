@@ -22,8 +22,11 @@ const PLAYER: StringName = &"player"
 ## Prénom du rival (GameState.rival_name) : le **nom affiché** du rival, jamais son rôle ni ses
 ## identifiants techniques (dossier 13 §3.5, couche 1).
 const RIVAL: StringName = &"rival"
+## Nom affiché du compagnon (jalon 11, phrases de curiosité n° 50 à 59 : « {pokemon} renifle
+## l'air. ») ; sans compagnon, pas de valeur.
+const POKEMON: StringName = &"pokemon"
 ## Jetons permis dans les données.
-const KNOWN: Array[StringName] = [FIRST_WILD_SPECIES, PLAYER, RIVAL]
+const KNOWN: Array[StringName] = [FIRST_WILD_SPECIES, PLAYER, RIVAL, POKEMON]
 const _NAME_CHARS: String = "abcdefghijklmnopqrstuvwxyz_"
 
 
@@ -106,8 +109,11 @@ static func has_tokens(pages: Array[DialoguePage]) -> bool:
 ## ou espèce inconnue : pas de valeur (la page qui la cite est omise) ; prénom vide : pas de
 ## valeur non plus.
 static func values_for(first_wild_species: StringName, data: PokemonData,
-		player_name: String = "", rival_name: String = "") -> Dictionary[StringName, String]:
+		player_name: String = "", rival_name: String = "",
+		companion_name: String = "") -> Dictionary[StringName, String]:
 	var values: Dictionary[StringName, String] = {}
+	if not companion_name.is_empty():
+		values[POKEMON] = companion_name
 	if not player_name.is_empty():
 		values[PLAYER] = player_name
 	if not rival_name.is_empty():

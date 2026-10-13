@@ -96,18 +96,27 @@ La deuxième image jointe ({ancre.removesuffix('.png')}) est un autre Pokémon d
 
 
 def _manifeste() -> None:
+	"""Ajoute les entrées en fin de la liste « pokemon », dans le texte du fichier (le reste du
+	manifeste garde sa mise en forme) ; une espèce sans planche source est laissée hors du lot."""
 	chemin = ICI / "manifeste.json"
-	contenu = json.loads(chemin.read_text())
-	liste = contenu["pokemon"]
-	existants = {e.get("id") for e in liste if isinstance(e, dict)}
-	ajouts = 0
+	texte = chemin.read_text()
+	existants = {e.get("id") for e in json.loads(texte)["pokemon"] if isinstance(e, dict)}
+	bloc, ajouts = "", 0
 	for identifiant, ident, hauteur, *_ in SERIE:
 		if ident in existants:
 			continue
-		liste.append({"id": ident, "source": f"{identifiant}_NE_r1.png",
-			"sortie": f"assets/sprites/pokemon/painted/{ident}_sheet.png", "hauteur": hauteur})
+		if not (ART / f"{identifiant}_NE_r1.png").exists():  # refusée ou pas encore produite
+			print(f"manifeste : {ident} sans planche, laissé hors du lot (A-11)")
+			continue
+		bloc += (f',\n  {{\n   "id": "{ident}",\n   "source": "{identifiant}_NE_r1.png",\n'
+			f'   "sortie": "assets/sprites/pokemon/painted/{ident}_sheet.png",\n'
+			f'   "hauteur": {hauteur}\n  }}')
 		ajouts += 1
-	chemin.write_text(json.dumps(contenu, ensure_ascii=False, indent=1) + "\n")
+	if bloc:
+		fin = texte.index("\n ],", texte.index('\n "pokemon": ['))
+		texte = texte[:fin] + bloc + texte[fin:]
+		json.loads(texte)  # garde-fou : le fichier reste du JSON valide
+		chemin.write_text(texte)
 	print(f"manifeste : {ajouts} entrée(s) ajoutée(s)")
 
 

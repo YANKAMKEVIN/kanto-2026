@@ -51,6 +51,9 @@ extends RefCounted
 ## il se réveille à sa première tentative d'agir). « wild » : table d'herbes **forcée sur la
 ## carte de départ** pour la session (même format qu'une table de `data/encounters/` sans
 ## « maps » ni « terrain » : { "rate", "slots", "ramp" }) ; exige « map » ; jamais sauvegardée.
+## Jalon 11 (T20d, QA du compagnon) : « companion » : place dans l'équipe (0 = premier) du
+## Pokémon choisi comme compagnon ; une espèce sans planche est effacée au premier rafraîchissement
+## (comme en jeu, A-11).
 
 const USER_PATH: String = "user://debug_start.json"
 const FACINGS: Dictionary[String, Vector2i] = {
@@ -62,7 +65,7 @@ const MAX_STORAGE: int = 60
 const MAX_MONEY: int = 999_999
 
 const _KEYS: Array[String] = ["map", "spawn", "facing", "seed", "flags", "party", "bag",
-	"favorites", "money", "storage", "autosave", "wild"]
+	"favorites", "money", "storage", "autosave", "wild", "companion"]
 const _MEMBER_KEYS: Array[String] = ["species", "level", "moves", "exp_to_next", "hp",
 	"favorite", "status", "status_turns"]
 
@@ -86,6 +89,8 @@ var storage: Array[Dictionary] = []
 var autosave: bool = false
 ## Table d'herbes forcée sur [member map] (vide = celle des données), déjà validée.
 var wild: Dictionary = {}
+## Place du compagnon dans l'équipe (-1 = aucun).
+var companion: int = -1
 var _errors: PackedStringArray = PackedStringArray()
 
 
@@ -213,6 +218,14 @@ func add_from_dict(dict: Dictionary, data: PokemonData, items: ItemLibrary,
 				for error: String in check.get_errors():
 					_errors.append(error)
 				ok = false
+	var new_companion := -1
+	if dict.has("companion"):
+		if not _is_int(dict["companion"]) or int(dict["companion"]) < 0 \
+				or int(dict["companion"]) >= new_party.size():
+			ok = _fail("%s : « companion » est une place de l'équipe (0 à %d)" % [source,
+				maxi(new_party.size() - 1, 0)])
+		else:
+			new_companion = int(dict["companion"])
 	if not ok:
 		return false
 	map = new_map
@@ -227,6 +240,7 @@ func add_from_dict(dict: Dictionary, data: PokemonData, items: ItemLibrary,
 	storage = new_storage
 	autosave = new_autosave
 	wild = new_wild
+	companion = new_companion
 	return true
 
 
@@ -252,6 +266,8 @@ func apply(state: Object, data: PokemonData) -> void:
 		state.bag.set_favorite(id, true)
 	if money >= 0:
 		state.money = money
+	if companion >= 0:
+		state.set_companion(state.party.get_at(companion))
 
 
 ## Un Pokémon d'après un membre validé (capacités, XP, PV).

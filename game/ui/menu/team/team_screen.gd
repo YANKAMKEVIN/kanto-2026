@@ -25,6 +25,8 @@ signal member_selected(index: int)
 signal member_moved(from: int, to: int)
 ## FAVORI touché sur le Pokémon [param index].
 signal favorite_toggled(index: int)
+## FAIRE SORTIR / RAPPELER touché sur le Pokémon [param index] (jalon 11).
+signal companion_toggled(index: int)
 ## UTILISER UN OBJET touché sur le Pokémon [param index] (lien croisé vers le Sac, 6B).
 signal use_item_requested(index: int)
 
@@ -35,6 +37,9 @@ const MOVE_TEXT := "DÉPLACER"
 const CANCEL_TEXT := "ANNULER"
 const FAVORITE_ON_TEXT := "RETIRER FAVORI"
 const FAVORITE_OFF_TEXT := "MARQUER FAVORI"
+## Compagnon (jalon 11, dossier 14 §13.12 n° 49).
+const COMPANION_OUT_TEXT := "FAIRE SORTIR"
+const COMPANION_RECALL_TEXT := "RAPPELER"
 const TITLE_TEXT := "Équipe"
 const COUNT_FORMAT := "%d/%d"
 const MOVE_HINT_FORMAT := "Choisis où placer %s"
@@ -72,6 +77,7 @@ var _sheet: PokemonSheet
 var _use: Button
 var _move: Button
 var _favorite: Button
+var _companion: Button
 var _overlay: Control
 var _move_sheet: MoveDetailSheet
 
@@ -191,6 +197,11 @@ func get_favorite_button() -> Button:
 	return _favorite
 
 
+## FAIRE SORTIR / RAPPELER (caché pour une espèce non éligible).
+func get_companion_button() -> Button:
+	return _companion
+
+
 func get_caption_text() -> String:
 	return _caption.text
 
@@ -306,6 +317,15 @@ func _build_center(parent: Control) -> void:
 	_showcase = PokemonShowcase.new()
 	_showcase.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	parent.add_child(_showcase)
+	# Compagnon (jalon 11) : au bout de la ligne du nom de la vedette (la fiche n'a plus la place
+	# d'une quatrième action : mots coupés sur une ligne, Évolution écrasée sur deux) ; absent (et
+	# non grisé) pour une espèce sans planche (A-11).
+	_companion = _action(COMPANION_OUT_TEXT, BALL_ICON)
+	_companion.autowrap_mode = TextServer.AUTOWRAP_OFF
+	_companion.size_flags_horizontal = Control.SIZE_SHRINK_END
+	_companion.visible = false
+	_companion.pressed.connect(_on_companion_pressed)
+	_showcase.add_name_action(_companion)
 
 
 func _build_sheet(parent: Control) -> void:
@@ -381,6 +401,7 @@ func _refresh(switched: bool) -> void:
 		_showcase.show_sheet(sheet_view, switched)
 		_sheet.show_sheet(sheet_view)
 		_update_favorite_button(sheet_view.member.favorite)
+		_update_companion_button(sheet_view.companion_action)
 	_update_move_ui()
 	_update_looks()
 
@@ -389,6 +410,13 @@ func _update_favorite_button(favorite: bool) -> void:
 	_favorite.theme_type_variation = &"MenuActionOn" if favorite else &"MenuAction"
 	_favorite.icon = STAR_ON_ICON if favorite else STAR_OFF_ICON
 	_favorite.text = FAVORITE_ON_TEXT if favorite else FAVORITE_OFF_TEXT
+
+
+func _update_companion_button(action: PokemonSheetView.CompanionAction) -> void:
+	var recall := action == PokemonSheetView.CompanionAction.RECALL
+	_companion.visible = action != PokemonSheetView.CompanionAction.NONE
+	_companion.theme_type_variation = &"MenuActionOn" if recall else &"MenuAction"
+	_companion.text = COMPANION_RECALL_TEXT if recall else COMPANION_OUT_TEXT
 
 
 func _update_move_ui() -> void:
@@ -597,6 +625,13 @@ func _on_favorite_pressed() -> void:
 		return
 	Haptics.vibrate(UiTokens.HAPTIC_TAP_MS)
 	favorite_toggled.emit(_selected)
+
+
+func _on_companion_pressed() -> void:
+	if _view == null or _view.size() == 0:
+		return
+	Haptics.vibrate(UiTokens.HAPTIC_TAP_MS)
+	companion_toggled.emit(_selected)
 
 
 func _on_tab_changed(_tab: int) -> void:
