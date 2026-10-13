@@ -94,6 +94,24 @@ extends RefCounted
 ## (tour 3, sans MOVE_USED : « riposte ! », puis DAMAGE de [member move_id] « bide » ou FAILED
 ## si rien n'a été reçu), BIDE_BROKEN (« La patience de … est rompue ! » : paralysie totale,
 ## sommeil, gel, apeurement, se frapper dans la confusion).
+## Jalon 12 (`jalon-12.md` §2.10, dossier 15 §20 n° 46) :
+## - DRAINED_HP : après les dégâts d'une capacité de drain (Vampirisme), le lanceur récupère
+##   [member amount] PV ([member hp] d'après) ; absent si ses PV étaient pleins (distinct de
+##   DRAINED, la Vampigraine) ;
+## - TRAPPED : la cible est piégée par [member move_id] (Ligotage, Étreinte, Danse Flamme) ;
+## - TRAP_DAMAGED : fin de tour, le Pokémon piégé perd [member amount] PV ([member hp]) à cause de
+##   [member move_id] ; un K.O. suit le chemin habituel ;
+## - TRAP_ENDED : le Pokémon est libéré de [member move_id] (fin du compteur) ; aucun événement
+##   quand le lanceur quitte le terrain ou tombe ;
+## - MOVE_DISABLED : la capacité [member move_id] du Pokémon est bloquée (Entrave réussie) ; aussi
+##   quand il tente, dans le tour même où elle vient d'être bloquée, la capacité choisie avant
+##   (rien n'est lancé, aucun PP) ;
+## - DISABLE_ENDED : fin de tour, [member move_id] n'est plus bloquée ;
+## - RESTED : Repos, le lanceur a [member hp] PV (pleins, [member amount] rendus) et dort
+##   ([member status]) ;
+## - SELF_KO : Destruction, Explosion : le lanceur perd ses [member amount] derniers PV
+##   ([member hp] = 0) après les effets de sa capacité ; suivent le FAINTED de la cible (si elle
+##   tombe) puis le sien. Pas de phrase (« … est K.O. ! » est celle du FAINTED).
 ## Tous les autres événements sur un Pokémon portent dans [member status] son statut au moment
 ## de l'événement (SENT_OUT : la carte de PV l'affiche dès l'entrée ; FAINTED : toujours vide,
 ## le K.O. efface le statut).
@@ -110,6 +128,7 @@ enum Kind {
 	CONFUSED, CONFUSION_UNCHANGED, CONFUSION_CHECK, HURT_ITSELF, CONFUSION_ENDED,
 	MULTI_HIT, FLINCHED, FOCUSED,
 	BIDE_STARTED, BIDE_STORING, BIDE_UNLEASHED, BIDE_BROKEN,
+	DRAINED_HP, TRAPPED, TRAP_DAMAGED, TRAP_ENDED, MOVE_DISABLED, DISABLE_ENDED, RESTED, SELF_KO,
 }
 enum SideId { PLAYER, FOE }
 
