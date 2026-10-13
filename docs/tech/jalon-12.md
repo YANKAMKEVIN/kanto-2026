@@ -718,7 +718,7 @@ fichier commun). Dès T12 fusionné : **T13 ∥ T20** (combat contre grotte, auc
 #### T17 — architecte : briques du monde — après T11 (∥ T12) — **fait (2026-10-13, `j12-t17-monde`)** : détail au §9
 - §2.8 (`unless_flags` : `interact_point.gd`, `interaction.gd`, `interaction_controller.gd`), §2.11 (`rematch`, `leave`, `lost_<id>` : `npc_spec.gd`, `npc_roster.gd`, `trainer_encounter.gd`). **CA** : tests verts ; Dresseurs du J9 et du J10 inchangés (`test_trainer_encounter`, Dresseurs de la forêt, Liam).
 
-#### T18 — constructeur-monde : la vie de la Route 3 (12A) — après T12, T17 (T8 fait)
+#### T18 — constructeur-monde : la vie de la Route 3 (12A) — après T12, T17 (T8 fait) — **fait (2026-10-13, `j12-t18-route-3-vie`, §9)**
 - PNJ, Dresseurs, Pokémon d'ambiance, objets visibles et caché, panneaux, rencontres, déclencheur `route_3_entered`, objectifs, Centre (PNJ), départs `route_3`, `mt_moon_center`. Tests `test_route_3_life`, `test_route_3_trainers`, `test_hidden_items` (Route 3). **CA** : tests verts, captures relues.
 
 #### T19 — qa-mobile : **session 12A** → Kevin — après T18 et la validation de 12.0
@@ -852,6 +852,33 @@ Questions telles que posées :
 ---
 
 ## 9. Fait
+
+- **T18 — la vie de la Route 3 (12A) et du Centre du Mont Sélénite (2026-10-13, constructeur-monde,
+  branche `j12-t18-route-3-vie` depuis `jalon-12` à `610a7bb`)** — §1.3, §2.7, §2.8, §2.11, §2.14,
+  §2.16, §2.22 :
+  - **PNJ** `data/npcs/route_3.json` : Hugo (20, 22) ↓ 5, Léa (51, 16) ↓ 5 (alcôve au nord du goulet
+    de la jonction), Sacha (33, 6) ↓ 3, Enzo (38, 32) ↑ 3, Inès (41, 35) ← 4, Nolan (77, 17) ← 3 ;
+    bloc `trainer` sans `rematch` ni `leave` (séquence J9 inchangée) ; voyageur (15, 16) →,
+    randonneuse (68, 12) ← ; objets O1–O3 (modèle J8) ; Piafabec (40, 5) et (71, 14), `fly`,
+    `lift` 48. Rondoudou d'ambiance **non posé** (pas de planche intégrée ; T21).
+  - **Textes** `data/dialogues/route_3.json` (§20 n° 1–10), scènes `data/cutscenes/route_3.json` :
+    objets (`despawn` → `give found` → `set got_<id>`), **Réveil caché** (`give awakening found` →
+    `set got_route_3_hidden_1`, toast seul), `route_3_entered` (silencieux, une fois).
+  - **Outil** `build_route_3.gd` : panneaux examinables de face (↑), indice `prop_indice_caillou_01`
+    dans `GroundDecals` sur (36, 18) + `InteractPoint` de tous côtés, `unless_flags`, déclencheur
+    (1, 25..27) ; scène régénérée (comparaison normalisée : ajouts seuls, 2 036 nœuds).
+  - **Centre** : `data/npcs/mt_moon_center.json` (infirmière (7, 3)) ; Stockage et point de repos
+    déjà posés au T8. **Objectifs** : `go_cerulean`, `cross_mt_moon` en tête (`route_4_reached`
+    en attente du T28 dans `test_objective_library`).
+  - **Départs** `route_3`, `mt_moon_center` (README).
+  - **Tests** : `test_route_3_trainers` (vraie scène + PNJ : vues = grille, D1/D2 inévitables vers
+    le Centre et la grotte, D3–D6 évitables seuls et ensemble, arrêt à toute distance, données §3.2
+    et §20 ; Boot : Hugo voit le joueur, Léa battue dit « après »), `test_route_3_life` (objets
+    O1–O3 avec rechargement, panneaux, voyageur, randonneuse, entrée → objectif, Piafabec, Centre :
+    soin → « Point de repos enregistré — Mont Sélénite »), `test_hidden_items` (Route 3 : quatre
+    côtés, toast seul, Sac, journal, drapeau, plus de cible ensuite et après rechargement ; 1F et
+    B2F au T21 / T25) ; retouchés `test_route_3`, `test_cutscene_data`, `test_objective_library`.
+  - Captures `build/captures/jalon12_t18/t18_*.png` (`tools/capture_route_3.sh … t18_`).
 
 - **T15 — carte `qa_moves_j12` et départs de la session 12.0 (2026-10-13, constructeur-monde,
   branche `j12-t15-qa` depuis `jalon-12` à `b7d6d88`)** — §2.22, modèle `qa_switch_j13`
