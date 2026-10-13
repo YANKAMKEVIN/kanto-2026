@@ -139,7 +139,7 @@ func _on_pick_requested(view: DaycarePickView) -> void:
 func _talk() -> void:
 	assert_true(_runner.play(DaycareLines.KEEPER, null, _boot.get_map()), "le gardien parle")
 	var box := _boot.get_dialogue_box()
-	var overlay := _boot.get_tm_learn_overlay()
+	var overlay := _boot.get_daycare_overlay()
 	var prompt := _boot.get_battle_director().get_move_learn_prompt()
 	var deadline := Time.get_ticks_msec() + int(TIMEOUT * 1000)
 	while (_runner.is_running() or _daycare.is_running()) and Time.get_ticks_msec() < deadline:
@@ -149,7 +149,7 @@ func _talk() -> void:
 			(cards.get_confirm_button() if yes else cards.get_cancel_button()).pressed.emit()
 		elif box.is_open() and not _runner.is_awaiting_choice():
 			box.advance_requested.emit()
-		overlay = _boot.get_tm_learn_overlay()
+		overlay = _boot.get_daycare_overlay()
 		if overlay != null and overlay.is_open() and overlay.get_message_banner().is_waiting():
 			_banners.append(overlay.get_message_banner().get_text())
 			overlay.get_message_banner().skip()
