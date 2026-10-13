@@ -1,0 +1,102 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://game/world/map.gd" id="1_8splc"]
+[ext_resource type="Texture2D" path="res://assets/world/interiors/int_maison_leo_coque.png" id="2_cmqax"]
+[ext_resource type="PackedScene" path="res://game/world/props/painted/int_tapis_carreaux_01.tscn" id="3_ri30f"]
+[ext_resource type="PackedScene" path="res://game/world/props/painted/int_cabine_teleport_01.tscn" id="4_enci4"]
+[ext_resource type="PackedScene" path="res://game/world/props/painted/int_ecran_diagnostic_01.tscn" id="5_f3fxo"]
+[ext_resource type="PackedScene" path="res://game/world/props/painted/int_console_leo_01.tscn" id="6_7ikso"]
+[ext_resource type="PackedScene" path="res://game/world/props/painted/int_module_leo_01.tscn" id="7_1o568"]
+[ext_resource type="PackedScene" path="res://game/world/props/painted/int_bibliotheque_cote_01.tscn" id="8_2d40n"]
+[ext_resource type="PackedScene" path="res://game/world/props/painted/int_bureau_leo_01.tscn" id="9_wpc1b"]
+[ext_resource type="PackedScene" path="res://game/world/props/painted/int_chaise_bureau_01.tscn" id="10_ypx2f"]
+[ext_resource type="PackedScene" path="res://game/world/props/painted/int_lit_01.tscn" id="11_6e4qj"]
+[ext_resource type="PackedScene" path="res://game/world/props/painted/int_plante.tscn" id="12_vsne7"]
+[ext_resource type="Script" path="res://game/world/warp_point.gd" id="13_3cqas"]
+
+[node name="BillHouse" type="Node2D" unique_id=1193838698]
+script = ExtResource("1_8splc")
+map_id = &"bill_house"
+display_name = "Cap d'Azuria"
+size = Vector2i(16, 11)
+blocked_cells = Array[Vector2i]([Vector2i(0, 0), Vector2i(1, 0), Vector2i(2, 0), Vector2i(3, 0), Vector2i(4, 0), Vector2i(5, 0), Vector2i(6, 0), Vector2i(7, 0), Vector2i(8, 0), Vector2i(9, 0), Vector2i(10, 0), Vector2i(11, 0), Vector2i(12, 0), Vector2i(13, 0), Vector2i(14, 0), Vector2i(15, 0), Vector2i(0, 1), Vector2i(1, 1), Vector2i(2, 1), Vector2i(3, 1), Vector2i(4, 1), Vector2i(5, 1), Vector2i(6, 1), Vector2i(7, 1), Vector2i(8, 1), Vector2i(9, 1), Vector2i(10, 1), Vector2i(11, 1), Vector2i(12, 1), Vector2i(13, 1), Vector2i(14, 1), Vector2i(15, 1), Vector2i(0, 2), Vector2i(1, 2), Vector2i(2, 2), Vector2i(3, 2), Vector2i(4, 2), Vector2i(5, 2), Vector2i(6, 2), Vector2i(7, 2), Vector2i(8, 2), Vector2i(9, 2), Vector2i(10, 2), Vector2i(11, 2), Vector2i(12, 2), Vector2i(13, 2), Vector2i(14, 2), Vector2i(15, 2), Vector2i(0, 3), Vector2i(15, 3), Vector2i(0, 4), Vector2i(15, 4), Vector2i(0, 5), Vector2i(15, 5), Vector2i(0, 6), Vector2i(15, 6), Vector2i(0, 7), Vector2i(15, 7), Vector2i(0, 8), Vector2i(15, 8), Vector2i(0, 9), Vector2i(15, 9), Vector2i(0, 10), Vector2i(1, 10), Vector2i(2, 10), Vector2i(3, 10), Vector2i(4, 10), Vector2i(5, 10), Vector2i(6, 10), Vector2i(9, 10), Vector2i(10, 10), Vector2i(11, 10), Vector2i(12, 10), Vector2i(13, 10), Vector2i(14, 10), Vector2i(15, 10)])
+interior = true
+light_profile = &"interior_warm"
+
+[node name="Shell" type="Sprite2D" parent="." unique_id=943592543]
+z_index = -3
+texture = ExtResource("2_cmqax")
+centered = false
+
+[node name="GroundDecals" type="Node2D" parent="." unique_id=65584017]
+z_index = -1
+
+[node name="RugDesk" parent="GroundDecals" unique_id=922419931 instance=ExtResource("3_ri30f")]
+position = Vector2(624, 807)
+
+[node name="Entities" type="Node2D" parent="." unique_id=1754780305]
+unique_name_in_owner = true
+y_sort_enabled = true
+
+[node name="CabinA" parent="Entities" unique_id=1953595386 instance=ExtResource("4_enci4")]
+position = Vector2(240, 480)
+
+[node name="CabinB" parent="Entities" unique_id=1963299684 instance=ExtResource("4_enci4")]
+position = Vector2(1296, 480)
+
+[node name="Screen" parent="Entities" unique_id=132044163 instance=ExtResource("5_f3fxo")]
+position = Vector2(528, 384)
+
+[node name="Console" parent="Entities" unique_id=495486940 instance=ExtResource("6_7ikso")]
+position = Vector2(768, 384)
+
+[node name="Module" parent="Entities" unique_id=199072188 instance=ExtResource("7_1o568")]
+position = Vector2(1008, 384)
+
+[node name="BookshelfWest" parent="Entities" unique_id=2103312691 instance=ExtResource("8_2d40n")]
+position = Vector2(144, 768)
+
+[node name="BookshelfEast" parent="Entities" unique_id=1807791424 instance=ExtResource("8_2d40n")]
+position = Vector2(1392, 768)
+
+[node name="Desk" parent="Entities" unique_id=137061970 instance=ExtResource("9_wpc1b")]
+position = Vector2(624, 768)
+
+[node name="DeskChair" parent="Entities" unique_id=1531559301 instance=ExtResource("10_ypx2f")]
+position = Vector2(624, 864)
+
+[node name="Bed" parent="Entities" unique_id=309113351 instance=ExtResource("11_6e4qj")]
+position = Vector2(1248, 864)
+footprint = Array[Vector2i]([Vector2i(-1, -1), Vector2i(0, -1), Vector2i(-1, 0), Vector2i(0, 0)])
+
+[node name="Plant" parent="Entities" unique_id=1145806697 instance=ExtResource("12_vsne7")]
+position = Vector2(144, 960)
+
+[node name="Warps" type="Node2D" parent="." unique_id=379650356]
+
+[node name="Exit0" type="Marker2D" parent="Warps" unique_id=333318256]
+position = Vector2(720, 1056)
+script = ExtResource("13_3cqas")
+trigger = 1
+direction = Vector2i(0, 1)
+target_map = &"route_25"
+target_spawn = &"from_bill_house_w"
+arrival_facing = Vector2i(0, 1)
+
+[node name="Exit1" type="Marker2D" parent="Warps" unique_id=901594650]
+position = Vector2(816, 1056)
+script = ExtResource("13_3cqas")
+trigger = 1
+direction = Vector2i(0, 1)
+target_map = &"route_25"
+target_spawn = &"from_bill_house_e"
+arrival_facing = Vector2i(0, 1)
+
+[node name="Interactables" type="Node2D" parent="." unique_id=2099448068]
+
+[node name="Spawns" type="Node2D" parent="." unique_id=1868465560]
+
+[node name="from_route_25" type="Marker2D" parent="Spawns" unique_id=1401492657]
+position = Vector2(720, 1056)
+
+[node name="Triggers" type="Node2D" parent="." unique_id=2066920088]

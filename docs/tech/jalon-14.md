@@ -907,11 +907,38 @@ et de l'annexe A validée.
   d'objets, looks `bill`, objets `police_barrier` et `police_tape` (image de la série 15),
   icônes ; **Mélofée** en look `pokemon/clefairy` si absente (noté pour le J12).
 - **CA** : second passage de `preparer.py` sans changement ; `test_painted_props` vert.
+- **Fait (2026-10-13, commit `305951f`, branche `j14-t13`)** : `serie16.py --manifeste` (8 entrées,
+  Mélofée comprise : `melofee`, source `POKE_MELOFEE_NE_r1` du checkout principal, absente de toutes
+  les branches), `preparer.py` lancé **deux fois** (second passage : empreintes md5 de tout `assets/`
+  identiques ; seul `catalogue.json` s'allonge), `preparer_menu.py` (`ss_ticket`, `rare_candy`),
+  15 scènes d'objets, règles d'emprise, looks `leo_humain` (→ `bill`) et `melofee` (→
+  `pokemon/clefairy`, attente = colonnes de marche de Salamèche). Les halos des fonds sont retirés par
+  le détourage (planche de contrôle `build/captures/jalon14_assets/serie16_controle.png` relue).
+  Sources : les images de `j14-t1/build/art` + le checkout principal (liens dans `build/src`).
+  - **Reportés** : `police_barrier` (conditionnel, jamais généré) et `police_tape` (image de la
+    série 15, J13 pas fusionnée) → T20b.
+  - Tests : `test_serie16_assets` (nouveau), listes de `test_painted_props` étendues.
 
 #### T14 — constructeur-monde : cartes `route_25` et `bill_house` (sans PNJ) — **maintenant**, après T13
 - §2.1, §2.2 ; raccord ouest provisoire « ROUTE 24 — À venir » ; `lighting`, `zones`,
   `interiors.json`. Tests `test_route_25`, `test_coast_map_kit`, `test_bill_house_map`,
   `test_map_catalog`, `test_map_links` ; captures 2340 × 1080 relues contre les vues ; nœuds.
+- **Fait (2026-10-13, branche `j14-t13`)** : `tools/coast_map_kit.gd` (étend `cerulean_map_kit.gd` :
+  mer de Bourg Palette à angles droits, sable `s` au canal rouge du masque de rivage, rivage rocheux
+  `relief_rivage_*` sur les `R` au contact de la mer, piliers en paroi série 12), `tools/build_route_25.gd`
+  (80 × 28, **1 317 nœuds**, 107 modules de rivage, 61 de paroi), `bill_house` dans
+  `build_painted_interiors.gd` (16 × 11, relue sur sa grille ; 11 meubles, un miroir pour la cabine B et
+  la bibliothèque est), raccord ouest provisoire « Route 24 — À venir » (spawns `from_route_24_n|c|s`),
+  porte ↔ intérieur, `zones.json` / `lighting.json` / `interiors.json`, départs `route_25`,
+  `route_25_cape`, `bill_house`. Tests : `test_route_25`, `test_bill_house_map`, `test_coast_map_kit`
+  (décompte des rôles de `R` = celui de la fiche : 72 + 3 + 3, 26, 8, 2 + 2, 102), `test_cape_debug_starts`,
+  `test_map_links` étendu. Captures : `build/captures/j14_t14/`.
+  - **Défauts [D]** : `R` loin de l'eau = bloc plein `relief_rivage_06` (répétition visible sur les
+    rangées épaisses : à reprendre en DA) ; piliers (composantes de ≥ 12 `R` sans voisin de rivage) =
+    paroi ; massifs `f` = une hortensie par case ; 10 rochers de mer posés à la main ; bibliothèque
+    est en miroir ; lit (3 cases de profondeur) posé sur 2 × 2 cases de la grille (la tête déborde
+    d'une demi-case vers le nord) ; une seule arrivée `from_route_25` en (7, 10) ; `display_name` de
+    la maison = « Cap d'Azuria » (zone). PNJ, objets, indice (coquillage), herbes et rencontres : T16, T17.
 
 #### T15 — constructeur-monde : raccord Route 24 ↔ 25 — après fusion de **J13 T8**
 - §2.1. **CA** : aller-retour sur les trois rangées ; `test_map_links`.
