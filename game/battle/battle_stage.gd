@@ -1125,8 +1125,9 @@ func _set_texture(side: BattleEvent.SideId) -> void:
 	var texture: Texture2D = image["texture"]
 	var official: bool = image["official"]
 	var box: Rect2 = image["box"]
-	if texture == null:
-		push_warning("BattleStage : sprite de combat absent « %s »" % sprite_path(species, back))
+	if texture == null or (back and official):
+		push_warning("BattleStage : sprite de combat absent « %s »%s" % [sprite_path(species, back),
+			" (repli : artwork officiel)" if texture != null else ""])
 	var sprite := _sprites[side]
 	sprite.texture = texture
 	sprite.centered = false

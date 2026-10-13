@@ -119,6 +119,28 @@ func test_appearing_happens_at_the_end_of_the_step_with_a_ball_burst() -> void:
 	clock.release()
 
 
+## Correctif QA 12A : le joueur qui marche sans s'arrêter enchaîne son pas suivant avant la fin
+## de l'apparition (même image, avant le _process du compagnon) ; elle n'est pas perdue : il
+## sort sur la case quittée et la quitte aussitôt ; visible avant step_finished (enthousiasme).
+func test_a_chained_step_does_not_lose_a_pending_appearance() -> void:
+	_companion.visible = false
+	var visible_at_signal: Array[bool] = []
+	_companion.step_finished.connect(func(_cell: Vector2i) -> void:
+		visible_at_signal.append(_companion.visible))
+	_companion.move(_step(CompanionTrail.NONE, Vector2i(5, 6), CompanionTrail.WALK,
+		CompanionTrail.WALK, true))
+	_run(Grid.WALK_STEP_DURATION - FRAME)
+	assert_false(_companion.visible, "pas encore sorti")
+	_companion.move(_step(Vector2i(5, 6), Vector2i(5, 5), CompanionTrail.WALK,
+		CompanionTrail.WALK))
+	assert_true(_companion.visible, "sorti de sa Ball au pas enchaîné")
+	assert_eq(visible_at_signal, [true], "visible quand la fin de l'apparition est annoncée")
+	assert_true(_companion.is_moving(), "et il marche aussitôt")
+	_run(Grid.WALK_STEP_DURATION + FRAME)
+	assert_eq(_companion.get_cell(), Vector2i(5, 5))
+	assert_true(_companion.visible)
+
+
 func test_withdraw_shrinks_then_hides_and_reduced_motion_only_fades() -> void:
 	var clock := TweenClock.new(get_tree())
 	var done: Array[bool] = [false]

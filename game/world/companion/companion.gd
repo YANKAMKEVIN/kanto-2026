@@ -171,7 +171,13 @@ func face(direction: Vector2i) -> void:
 
 ## Joue le déplacement [param step] du [CompanionTrail] (durée selon son genre de pas). Une
 ## apparition ([member CompanionTrail.Step.appear]) se fait à la fin du pas, avec l'éclat.
+## Un nouveau pas qui arrive **avant** la fin d'une apparition en attente (le joueur qui marche
+## sans s'arrêter enchaîne son pas suivant dans la même image, avant le [method _process] du
+## compagnon) la fait d'abord : il sort de sa Ball et marche aussitôt (correctif QA 12A ; il
+## restait invisible jusqu'au prochain [method CompanionController.refresh]).
 func move(step: CompanionTrail.Step) -> void:
+	if _appear_pending and not step.appear:
+		_finish_step()
 	var duration := pace_duration(step.pace)
 	if step.appear:
 		_stop_step()
@@ -308,9 +314,11 @@ func _finish_step() -> void:
 	_play_idle()
 	_update_grass()
 	set_process(false)
-	step_finished.emit(_cell)
+	# Visible avant le signal (correctif QA 12A) : l'enthousiasme en attente, relié à ce signal
+	# par le contrôleur, se joue à l'apparition au lieu d'être perdu.
 	if appearing:
 		appear()
+	step_finished.emit(_cell)
 
 
 func _stop_step() -> void:
