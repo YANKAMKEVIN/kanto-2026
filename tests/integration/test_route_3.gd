@@ -7,7 +7,8 @@ extends GutTest
 ## en plus ; portes terminales) : D1 / D2 inévitables par géométrie, D3–D6 évitables, deux
 ## itinéraires, rebords, hautes herbes, longueur du chemin principal ; cases réservées au T18
 ## libres de tout décor ; montagne qui passe à l'ardoise vers l'est ; budget de nœuds.
-## Sans PNJ, sans rencontres, sans déclencheurs (T18).
+## La vie (PNJ, objets, caché, panneaux, déclencheur) : `test_route_3_life`,
+## `test_route_3_trainers`, `test_hidden_items` (T18).
 
 const PlanGrid := preload("res://tests/helpers/plan_grid.gd")
 const GridPaths := preload("res://tests/helpers/grid_paths.gd")
@@ -145,7 +146,7 @@ func test_battle_decor_is_the_rocky_route() -> void:
 
 func test_scene_grid_is_the_functional_grid() -> void:
 	var signs: Array[Vector2i] = _plan.cells_at("panneau_ouest") + _plan.cells_at(
-		"panneau_centre")
+		"panneau_centre") + _plan.cells_at("route_3_hidden_1")
 	var mismatches := 0
 	for y: int in SIZE.y:
 		for x: int in SIZE.x:
@@ -211,9 +212,10 @@ func test_escape_rope_lands_in_front_of_the_cave() -> void:
 	assert_false(_grid.is_solid(_map.get_spawn_cell(exit.spawn)))
 
 
-func test_no_life_yet() -> void:
-	assert_eq(_map.get_node(^"Triggers").get_child_count(), 0, "déclencheurs au T18")
-	assert_eq(_map.get_node(^"Interactables").get_child_count(), 0, "points d'examen au T18")
+## T18 : deux panneaux, un objet caché, un déclencheur (le détail : `test_route_3_life`).
+func test_life_points_only() -> void:
+	assert_eq(_map.get_node(^"Triggers").get_child_count(), 1, "route_3_entered")
+	assert_eq(_map.get_node(^"Interactables").get_child_count(), 3, "2 panneaux + 1 caché")
 
 
 # --- Critères (plan_check_route_3.py) ----------------------------------------------------
@@ -307,7 +309,7 @@ func _props() -> Array[WorldProp]:
 
 func test_props_never_block_a_walkable_cell() -> void:
 	var signs: Array[Vector2i] = _plan.cells_at("panneau_ouest") + _plan.cells_at(
-		"panneau_centre")
+		"panneau_centre") + _plan.cells_at("route_3_hidden_1")
 	for prop: WorldProp in _props():
 		for cell: Vector2i in prop.get_solid_cells():
 			assert_true(not _plan.is_walkable(cell) or signs.has(cell),
@@ -324,7 +326,12 @@ func test_reserved_cells_stay_free_for_the_t18() -> void:
 	assert_eq(reserved.size(), 15, "6 Dresseurs, 2 PNJ, 3 Pokémon, 3 objets, 1 caché")
 	# Les Piafabec d'ambiance se posent sur leur rocher (« sur l'affleurement ») : seuls les
 	# Dresseurs, PNJ et objets veulent une case sans décor.
+	var clue := _plan.cell_of("route_3_hidden_1")
 	for prop: WorldProp in _props():
+		# L'indice de l'objet caché (T18) est posé sur sa case : c'est elle qu'on examine.
+		if prop.name == &"HiddenClue1":
+			assert_eq(prop.get_solid_cells(), [clue] as Array[Vector2i], "indice sur sa case")
+			continue
 		for cell: Vector2i in prop.get_solid_cells():
 			var perch := _plan.at(cell) in ["R", "K"]
 			assert_false(reserved.has(cell) and not perch,

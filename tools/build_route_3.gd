@@ -23,15 +23,19 @@ extends SceneTree
 ##   plus froide vers l'est ; les deux grands affleurements `R` collés à la montagne sont de la
 ##   paroi, les petits des rochers (grande pierre, rochers) assombris et bleutés vers l'est ;
 ##   buissons, rebords, touffes de hautes herbes, Centre Pokémon (`bldg_centre_01`), entrée du
-##   Mont Sélénite (`relief_entree_grotte_01`), panneaux (décor seul ; points d'examen au T18),
+##   Mont Sélénite (`relief_entree_grotte_01`), panneaux et leurs points d'examen (T18),
 ##   touffes et fleurs de plus en plus rares vers l'est, cailloux et touffes sèches sur la roche.
 ## - Passages : trois warps PUSH ← vers Argenta (0, 25..27) ; porte du Centre (61..62, 11)
 ##   STEP_ON ↑ → `mt_moon_center` ; entrée de la grotte (73..74, 9) STEP_ON ↑ → `mt_moon_1f` /
 ##   `from_route_3_w|e` (carte du T9, construite en parallèle). Spawns `from_pewter_n|c|s`,
 ##   `from_center_w|e`, `from_mt_moon_w|e` (sortie de la grotte et Corde Sortie).
-## - **Sans PNJ, sans rencontres, sans déclencheurs** (T18) : les cases des Dresseurs, PNJ,
-##   Pokémon d'ambiance, objets et de l'objet caché sont **réservées** (la forêt s'en écarte comme
-##   pour un PNJ ; rien n'y est posé). Fichier de PNJ `data/npcs/route_3.json` lu s'il existe.
+## - Les cases des Dresseurs, PNJ, Pokémon d'ambiance, objets et de l'objet caché sont
+##   **réservées** (la forêt s'en écarte comme pour un PNJ). Les PNJ viennent de
+##   `data/npcs/route_3.json` (T18), lu par la carte au chargement.
+## - Vie (T18, jalon-12.md §1.3, §2.8) : points d'examen des deux panneaux (lus de face, ↑) ;
+##   **objet caché** : indice `prop_indice_caillou_01` sur la case de la position `cache` (bloquée,
+##   couche du sol) et point d'examen de tous côtés, `unless_flags = [got_<id>]` ; déclencheur
+##   `route_3_entered` sur (1, 25..27), toute direction.
 
 const Kit := preload("res://tools/pewter_map_kit.gd")
 const PLAN_PATH: String = "res://tools/plans/route_3.txt"
@@ -71,8 +75,19 @@ const CAVE_ANCHOR := Vector2i(74, 9)
 ## Types de positions de la grille dont la case est réservée (PNJ et objets du T18).
 const RESERVED_KINDS: Array[String] = ["dresseur", "pnj", "pokemon", "objet_visible", "cache"]
 const BALL_KINDS: Array[String] = ["objet_visible", "cache"]
-## Panneaux (décor ; leur point d'examen arrive avec leurs textes, T18).
-const SIGNS: Array = [["panneau_ouest", "SignWest"], ["panneau_centre", "SignCenter"]]
+## Panneaux : [position de la grille, nœud, dialogue, orientation exigée] (dossier 15 §20 n° 3,
+## 4 ; lus depuis la case au sud, tourné ↑).
+const SIGNS: Array = [
+	["panneau_ouest", "SignWest", &"route_3_sign_west", Vector2i.UP],
+	["panneau_centre", "SignCenter", &"route_3_sign_center", Vector2i.UP],
+]
+## Objets cachés : [position `cache` de la grille, nœud de l'indice, objet peint de l'indice].
+const HIDDEN: Array = [["route_3_hidden_1", "HiddenClue1", "prop_indice_caillou_01"]]
+## Déclencheur silencieux de la première entrée (jalon-12.md §1.3 n° 5) : colonne 1, rangées
+## 25..27, toute direction.
+const ENTERED_ANCHOR := Vector2i(1, 27)
+const ENTERED_SIZE := Vector2i(1, 3)
+const ENTERED_CUTSCENE: StringName = &"route_3_entered"
 
 ## Paroi : série 12 (beige) à l'ouest, ardoise (série 14) à partir de cette colonne (milieu du
 ## module) ; teinte de plus en plus froide de [constant COOL_FROM_X] au bord est.
@@ -179,6 +194,7 @@ func _init() -> void:
 	_kit.call(&"add_prop_at", entities, "relief_entree_grotte_01", CAVE_ANCHOR, "MtMoonEntrance")
 	for entry: Array in SIGNS:
 		_kit.call(&"add_prop_at", entities, "prop_panneau_01", _cell(entry[0]), entry[1])
+	_add_life(decals)
 	_place_ledges(decals)
 	var rocks := _place_boulders(entities)
 	_place_bushes(entities)
@@ -222,6 +238,25 @@ func _reserve_positions() -> void:
 			balls.append_array(positions[id]["cells"])
 	_kit.set(&"reserved_cells", cells)
 	_kit.set(&"reserved_balls", balls)
+
+
+## Points d'examen des panneaux, objets cachés (indice + point conditionnel), déclencheur
+## d'entrée (T18).
+func _add_life(decals: Node2D) -> void:
+	for entry: Array in SIGNS:
+		_kit.call(&"add_interactable", entry[1], _cell(entry[0]), Vector2i.ONE, entry[3],
+			entry[2])
+	for entry: Array in HIDDEN:
+		var id: String = entry[0]
+		var clue := _cell(id)
+		_kit.call(&"add_prop_at", decals, entry[2], clue, entry[1])
+		_kit.call(&"add_interactable", "Hidden" + entry[1].trim_prefix("HiddenClue"), clue,
+			Vector2i.ONE, Vector2i.ZERO, StringName(id))
+		var point: Node = _kit.get(&"root").get_node(^"Interactables").get_child(-1)
+		var unless: Array[StringName] = [StringName("got_" + id)]
+		point.set(&"unless_flags", unless)
+	_kit.call(&"add_trigger", "Route3Entered", ENTERED_ANCHOR, ENTERED_SIZE, Vector2i.ZERO,
+		ENTERED_CUTSCENE)
 
 
 func _add_passages() -> void:

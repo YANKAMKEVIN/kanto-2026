@@ -1,0 +1,79 @@
+{
+	"route_3_sign_west": {
+		"pages": ["ROUTE 3\nArgenta ← → Mont Sélénite"]
+	},
+	"route_3_sign_center": {
+		"pages": ["CENTRE POKÉMON\nMont Sélénite"]
+	},
+	"route_3_traveler": {
+		"speaker": "Voyageur",
+		"pages": [
+			"Le Mont Sélénite, là-bas.",
+			"On dit que des pierres sont tombées\ndu ciel, autrefois."
+		]
+	},
+	"route_3_hiker": {
+		"speaker": "Randonneuse",
+		"pages": ["Je reviens de la grotte.", "Il fait noir, là-dedans.\nGarde tes Potions."]
+	},
+	"route_3_hugo_before": {
+		"speaker": "Gamin Hugo",
+		"pages": ["Tu viens d'Argenta ?\nMontre-moi ton badge !"]
+	},
+	"route_3_hugo_after": {
+		"speaker": "Gamin Hugo",
+		"pages": ["D'accord… il est mérité."]
+	},
+	"route_3_lea_before": {
+		"speaker": "Fillette Léa",
+		"pages": ["Mes Pokémon adorent cette route !"]
+	},
+	"route_3_lea_after": {
+		"speaker": "Fillette Léa",
+		"pages": ["On s'est bien amusés quand même."]
+	},
+	"route_3_sacha_before": {
+		"speaker": "Scout Sacha",
+		"pages": ["Mon filet est plein,\nmon équipe aussi !"]
+	},
+	"route_3_sacha_after": {
+		"speaker": "Scout Sacha",
+		"pages": ["Je retourne chercher des insectes."]
+	},
+	"route_3_enzo_before": {
+		"speaker": "Gamin Enzo",
+		"pages": ["Un seul Pokémon, mais le meilleur !"]
+	},
+	"route_3_enzo_after": {
+		"speaker": "Gamin Enzo",
+		"pages": ["Il lui faut plus d'entraînement…"]
+	},
+	"route_3_ines_before": {
+		"speaker": "Fillette Inès",
+		"pages": ["Mon Rondoudou chante très bien,\ntu sais !"]
+	},
+	"route_3_ines_after": {
+		"speaker": "Fillette Inès",
+		"pages": ["Il chantera encore mieux\nla prochaine fois."]
+	},
+	"route_3_nolan_before": {
+		"speaker": "Scout Nolan",
+		"pages": ["Les insectes de la montagne\nsont coriaces !"]
+	},
+	"route_3_nolan_after": {
+		"speaker": "Scout Nolan",
+		"pages": ["Les tiens aussi, apparemment."]
+	},
+	"route_3_item_1": {
+		"cutscene": "route_3_item_1"
+	},
+	"route_3_item_2": {
+		"cutscene": "route_3_item_2"
+	},
+	"route_3_item_3": {
+		"cutscene": "route_3_item_3"
+	},
+	"route_3_hidden_1": {
+		"cutscene": "route_3_hidden_1"
+	}
+}

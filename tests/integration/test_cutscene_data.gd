@@ -34,6 +34,8 @@ const MAPS: Array[StringName] = [
 	&"viridian_forest",
 	# Jalon 10 (T11) : arrivée à Argenta et verrou du garde de la Route 3.
 	&"pewter_city",
+	# Jalon 12 (T18) : première entrée sur la Route 3.
+	&"route_3",
 ]
 ## Jalon 7 (T18) : partie qui revient au labo avec le colis (rival parti après le combat).
 const PARCEL_FLAGS: Array[StringName] = [
@@ -52,6 +54,13 @@ const PEWTER_FLAGS: Array[StringName] = [
 	&"oak_met", &"oak_lab_reunion", &"starter_offered", &"starter_chosen", &"rival_challenged",
 	&"rival_lab_won", &"rival_battle_done", &"rival_left_lab", &"viridian_arrived",
 	&"got_oak_parcel", &"pokedex_activated", &"poison_unlocked", &"beaten_forest_scout_theo",
+]
+## Jalon 12 (T18) : partie qui arrive sur la Route 3 (Badge Roche, garde décalé).
+const ROUTE3_FLAGS: Array[StringName] = [
+	&"oak_met", &"oak_lab_reunion", &"starter_offered", &"starter_chosen", &"rival_challenged",
+	&"rival_lab_won", &"rival_battle_done", &"rival_left_lab", &"viridian_arrived",
+	&"got_oak_parcel", &"pokedex_activated", &"poison_unlocked", &"beaten_forest_scout_theo",
+	&"pewter_arrived", &"brock_met", &"badge_boulder", &"route_3_guard_cleared",
 ]
 ## Paires `taken_*` posées au labo (starter du joueur, puis celui du rival) → Pokémon du rival
 ## présent sur la Route 22 (data/npcs/route_22.json).
@@ -90,6 +99,12 @@ const VARIANT_FLAGS: Dictionary = {
 	# Jalon 11 (T14) : remise tardive de la CT34 (partie déjà badgée).
 	&"pewter_gym_brock_tm_late": [PEWTER_FLAGS + [&"pewter_arrived", &"brock_met",
 		&"badge_boulder"]],
+	# Jalon 12 (T18) : Route 3 (entrée, trois objets visibles, Réveil caché).
+	&"route_3_entered": [ROUTE3_FLAGS],
+	&"route_3_item_1": [ROUTE3_FLAGS],
+	&"route_3_item_2": [ROUTE3_FLAGS],
+	&"route_3_item_3": [ROUTE3_FLAGS],
+	&"route_3_hidden_1": [ROUTE3_FLAGS],
 }
 ## Scènes jouées par le code (pas de déclencheur) → carte où elles sont jouées.
 ## Jalon 7 (T18) : la scène du colis est lancée par la variante « cutscene » du dialogue de Chen.
@@ -104,6 +119,10 @@ const CODE_PLAYED: Dictionary[StringName, StringName] = {
 	&"route_2_north_item_1": &"route_2_north", &"pewter_gym_brock": &"pewter_gym",
 	# Jalon 11 (T14) : remise tardive de la CT34 (dialogue de Pierre).
 	&"pewter_gym_brock_tm_late": &"pewter_gym",
+	# Jalon 12 (T18) : objets visibles de la Route 3 (PNJ « objet ») et Réveil caché (point
+	# d'examen de l'indice, `unless_flags`).
+	&"route_3_item_1": &"route_3", &"route_3_item_2": &"route_3", &"route_3_item_3": &"route_3",
+	&"route_3_hidden_1": &"route_3",
 }
 ## Scènes à déclencheur dont la carte n'est pas encore construite → leur carte (simulées sur les
 ## PNJ de son fichier). Vidée au T19 du jalon 9 (la forêt existe), puis au T11 du jalon 10 (les
@@ -162,7 +181,8 @@ func test_library_loads_without_error() -> void:
 		&"pewter_arrival", &"pewter_gym_brock", &"pewter_gym_brock_tm_late",
 		&"rival_route22", &"route1_grass", &"route_1_potion", &"route_2_item_1",
 		&"route_2_item_2", &"route_2_item_3", &"route_2_item_4", &"route_2_north_item_1",
-		&"route_3_guard", &"starter_chosen",
+		&"route_3_entered", &"route_3_guard", &"route_3_hidden_1", &"route_3_item_1",
+		&"route_3_item_2", &"route_3_item_3", &"starter_chosen",
 		&"viridian_arrival", &"viridian_forest_item_1", &"viridian_forest_item_2",
 		&"viridian_forest_item_3", &"viridian_forest_item_4", &"viridian_forest_item_5",
 		&"viridian_forest_item_6"] as Array[StringName])
@@ -203,6 +223,7 @@ func test_every_trigger_targets_a_scene_and_every_scene_is_triggered() -> void:
 	assert_eq(_triggered_on.get(&"route_2_item_4"), [&"route_2"])
 	assert_eq(_triggered_on.get(&"pewter_arrival"), [&"pewter_city"])
 	assert_eq(_triggered_on.get(&"route_3_guard"), [&"pewter_city"])
+	assert_eq(_triggered_on.get(&"route_3_entered"), [&"route_3"])
 	assert_eq(_offer.chosen_scene, &"starter_chosen", "scène du choix = CODE_PLAYED")
 	assert_eq(CODE_PLAYED[_offer.chosen_scene], _offer.map_id)
 
@@ -262,6 +283,8 @@ func test_only_world_items_are_found_items() -> void:
 	assert_eq(found, ["route_1_potion:potion", "route_2_item_1:poke_ball",
 		"route_2_item_2:potion", "route_2_item_3:poke_ball", "route_2_item_4:potion",
 		"route_2_north_item_1:potion",
+		"route_3_hidden_1:awakening", "route_3_item_1:poke_ball", "route_3_item_2:potion",
+		"route_3_item_3:paralyze_heal",
 		"viridian_forest_item_1:antidote", "viridian_forest_item_2:poke_ball",
 		"viridian_forest_item_3:potion", "viridian_forest_item_4:antidote",
 		"viridian_forest_item_5:poke_ball", "viridian_forest_item_6:potion"]

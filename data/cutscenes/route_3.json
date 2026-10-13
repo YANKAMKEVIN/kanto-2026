@@ -1,0 +1,59 @@
+{
+	"route_3_entered": {
+		"variants": [
+			{
+				"unless": ["route_3_entered"],
+				"steps": [
+					{ "set": ["route_3_entered"] }
+				]
+			}
+		]
+	},
+	"route_3_item_1": {
+		"variants": [
+			{
+				"unless": ["got_route_3_item_1"],
+				"steps": [
+					{ "despawn": "route_3_item_1" },
+					{ "give": "poke_ball", "count": 1, "found": true },
+					{ "set": ["got_route_3_item_1"] }
+				]
+			}
+		]
+	},
+	"route_3_item_2": {
+		"variants": [
+			{
+				"unless": ["got_route_3_item_2"],
+				"steps": [
+					{ "despawn": "route_3_item_2" },
+					{ "give": "potion", "count": 1, "found": true },
+					{ "set": ["got_route_3_item_2"] }
+				]
+			}
+		]
+	},
+	"route_3_item_3": {
+		"variants": [
+			{
+				"unless": ["got_route_3_item_3"],
+				"steps": [
+					{ "despawn": "route_3_item_3" },
+					{ "give": "paralyze_heal", "count": 1, "found": true },
+					{ "set": ["got_route_3_item_3"] }
+				]
+			}
+		]
+	},
+	"route_3_hidden_1": {
+		"variants": [
+			{
+				"unless": ["got_route_3_hidden_1"],
+				"steps": [
+					{ "give": "awakening", "count": 1, "found": true },
+					{ "set": ["got_route_3_hidden_1"] }
+				]
+			}
+		]
+	}
+}
