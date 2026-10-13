@@ -1,6 +1,7 @@
 extends SceneTree
 ## Équilibrage de la Route 3 et du Mont Sélénite (jalon 12 T10, lancé au T26 ; dossier 15 §3.2,
-## §3.3, §6, §8.3, §9). Information pour Kevin, pas un seuil ; aucune donnée n'est changée.
+## §3.3, §6, §8.3, §9). Information pour Kevin, pas un seuil ; aucune donnée n'est changée
+## (résultats et ajustements du T26 : `docs/tech/jalon-12.md` §9).
 ##
 ## Modèle : `tools/simulate_brock.gd` (J10). Tout passe par le vrai moteur ([Battle], règles
 ## sauvage / Dresseur, XP, niveaux et capacités gagnés en combat, évolutions de fin de combat),
@@ -24,8 +25,12 @@ extends SceneTree
 ##   adversaire (ordre rétabli après) ;
 ## - « center » : soin complet, seulement si la variante a « center » ;
 ## - « optional » : étape jouée seulement si la variante a « optional » (détours, évitables).
-## Une défaite (équipe entière K.O.) arrête la partie : le jeu renverrait au Centre, la reprise
-## n'est pas simulée. Aucune capture, aucun changement volontaire de Pokémon.
+## Une défaite (équipe entière K.O.) arrête la partie, sauf si la variante a « retries » (T26) :
+## réveil au dernier Centre passé (soin complet ; Sac, niveaux et Dresseurs battus gardés) et
+## reprise à l'étape qui le suit, au plus « retries » fois ; le rapport donne alors l'arrivée
+## après 0, 1… défaites (les statistiques d'étape ne comptent que la première tentative).
+## En combat sauvage, un joueur ligoté (piège) ne tente pas de fuir. Aucune capture, aucun
+## changement volontaire de Pokémon.
 ##
 ## [b]Joueurs[/b] : « naif » (une capacité offensive au hasard, remplaçant = le suivant, aucun
 ## objet) ; « attentif » (capacités de l'IA `smart`, remplaçant le mieux placé, Potion en
@@ -47,6 +52,7 @@ extends SceneTree
 ##   godot --headless --path . -s res://tools/simulate_mt_moon.gd -- --scenario <fichier.json>
 ##   godot --headless --path . -s res://tools/simulate_mt_moon.gd -- --equipe <texte>
 ##   godot --headless --path . -s res://tools/simulate_mt_moon.gd -- --variante <texte>
+##   godot --headless --path . -s res://tools/simulate_mt_moon.gd -- --trace <texte>
 ##
 ## `--valider` : lit et vérifie le scénario, l'affiche, puis s'arrête (aucun combat).
 ## `--save` : ajoute l'équipe d'une sauvegarde (clé « party ») ; une variante peut alors
@@ -54,6 +60,8 @@ extends SceneTree
 ## et les tables présents dans `data/` (même identifiant de Dresseur ; même carte et même
 ## terrain de table) remplacent ceux du scénario (T26 : vérifier les vraies données).
 ## `--equipe`, `--variante` : seulement les équipes / variantes dont le nom contient ce texte.
+## `--trace` (T26) : déroulé, phrase par phrase, des combats des étapes dont le nom contient ce
+## texte, pour les [constant TRACE_SEEDS] premières graines de chaque ligne.
 ##
 ## Codes de sortie : [constant EXIT_OK] tout est simulé (ou valide) ; [constant EXIT_ERROR]
 ## scénario, données ou arguments invalides ; [constant EXIT_SKIPPED] simulé (ou validé) en
@@ -75,6 +83,9 @@ const REPLACING: int = 3
 const WIN: int = 1
 const LOSS: int = 2
 const FLED: int = 3
+## BattleEvent.Kind (`--trace`).
+const BATTLE_EVENT_SENT_OUT: int = 1
+const BATTLE_EVENT_DAMAGE: int = 5
 ## Terrains de rencontre acceptés par le scénario (« rubble » arrive dans le moteur au T20).
 const TERRAINS: Array[String] = ["grass", "rubble"]
 const POLICIES: Array[String] = ["naif", "attentif"]
@@ -89,9 +100,11 @@ const SLOT_KEYS: Array[String] = ["species", "levels", "weight"]
 const STEP_KEYS: Array[String] = ["label", "wild", "cells", "count", "trainer", "center",
 	"optional"]
 const VARIANT_KEYS: Array[String] = ["name", "player", "center", "items", "flee_below",
-	"optional"]
+	"optional", "retries"]
 ## Joueur attentif, hors combat : Potions tant que les PV sont sous cette part du maximum.
 const HEAL_OUTSIDE_BELOW: float = 0.5
+## `--trace` : nombre de graines dont les combats sont racontés, par ligne.
+const TRACE_SEEDS: int = 3
 ## Valeur d'une quantité d'objet qui renvoie au Sac de la sauvegarde (`--save`).
 const FROM_BAG: String = "sac"
 
@@ -104,6 +117,10 @@ var _team_filter: String = ""
 var _variant_filter: String = ""
 var _heal_at_start: bool = true
 var _starter: StringName = &""
+var _trace_filter: String = ""
+## Vrai pendant une étape racontée (`--trace`) ; [member _text] : phrases du combat.
+var _tracing: bool = false
+var _battle_text: RefCounted
 
 var _data: RefCounted
 var _chart: RefCounted
@@ -137,7 +154,8 @@ var _trainer_species: Dictionary = {}
 ## Étapes : { label, kind (wild, trainer, center), id, cells, count, optional, skip, source,
 ## table (EncounterTable), library (TrainerLibrary) }.
 var _steps: Array[Dictionary] = []
-## Variantes : { name, player, center, items ({objet: quantité}), flee_below, optional, skip }.
+## Variantes : { name, player, center, items ({objet: quantité}), flee_below, optional,
+## retries, skip }.
 var _variants: Array[Dictionary] = []
 ## Objets du Sac de la sauvegarde (`--save`).
 var _save_bag: Dictionary = {}
@@ -195,7 +213,7 @@ func _read_args() -> bool:
 				_validate_only = true
 			"--donnees":
 				_use_data = true
-			"--scenario", "--save", "--seeds", "--equipe", "--variante":
+			"--scenario", "--save", "--seeds", "--equipe", "--variante", "--trace":
 				if value.is_empty():
 					push_error("%s attend une valeur" % arg)
 					return false
@@ -211,6 +229,8 @@ func _read_args() -> bool:
 						_team_filter = value
 					"--variante":
 						_variant_filter = value
+					"--trace":
+						_trace_filter = value
 			_:
 				push_error("argument inconnu : %s" % arg)
 				return false
@@ -233,6 +253,8 @@ func _load_game() -> bool:
 		push_error("objets, Dresseurs ou rencontres de data/ invalides")
 		return false
 	_factory = load("res://game/pokemon/pokemon_factory.gd")
+	_battle_text = load("res://game/battle/battle_text.gd").new()
+	_battle_text.load_file()
 	_party_script = load("res://game/pokemon/party.gd")
 	_pokemon_script = load("res://game/pokemon/pokemon.gd")
 	_side_script = load("res://game/battle/battle_side.gd")
@@ -536,7 +558,8 @@ func _parse_variants(value: Variant) -> void:
 			continue
 		_check_keys(entry, VARIANT_KEYS, where)
 		var variant := { "name": _text(entry, "name", where), "player": "attentif",
-			"center": false, "items": {}, "flee_below": 0.0, "optional": false, "skip": "" }
+			"center": false, "items": {}, "flee_below": 0.0, "optional": false, "retries": 0,
+			"skip": "" }
 		var player := str(entry.get("player", "attentif"))
 		if not POLICIES.has(player):
 			_error("%s : « player » vaut %s" % [where, ", ".join(PackedStringArray(POLICIES))])
@@ -553,6 +576,11 @@ func _parse_variants(value: Variant) -> void:
 				variant["flee_below"] = float(flee)
 			else:
 				_error("%s : « flee_below » doit être un nombre de 0 à 1" % where)
+		if entry.has("retries"):
+			if _is_int(entry["retries"]) and int(entry["retries"]) >= 0:
+				variant["retries"] = int(entry["retries"])
+			else:
+				_error("%s : « retries » doit être un entier ≥ 0" % where)
 		variant["skip"] = _parse_items(entry.get("items", {}), variant["items"], where)
 		_variants.append(variant)
 
@@ -667,10 +695,10 @@ func _print_scenario() -> void:
 		if not str(variant["skip"]).is_empty():
 			_skip_line("variante « %s »" % variant["name"], variant["skip"])
 			continue
-		print("  %s : joueur %s, Centre %s, objets %s, fuite sous %.2f, détours %s" % [
-			variant["name"], variant["player"], "oui" if variant["center"] else "non",
+		print("  %s : joueur %s, Centre %s, objets %s, fuite sous %.2f, détours %s, reprises %d"
+			% [variant["name"], variant["player"], "oui" if variant["center"] else "non",
 			_items_text(variant["items"]), variant["flee_below"],
-			"oui" if variant["optional"] else "non"])
+			"oui" if variant["optional"] else "non", variant["retries"]])
 
 
 func _skip_line(what: String, reason: String) -> void:
@@ -699,10 +727,9 @@ func _simulate() -> void:
 func _report(team: Dictionary, variant: Dictionary) -> void:
 	var stats: Array[Dictionary] = []
 	for step: Dictionary in _steps:
-		stats.append({ "reached": 0, "battles": 0, "wins": 0, "fled": 0, "defeats": 0,
-			"turns": 0, "kos": 0, "hp": 0.0, "level": 0.0, "items": {}, "unfinished": 0 })
+		stats.append(_blank_stats())
 	var totals := { "end": 0, "hp": 0.0, "kos": 0, "items": {}, "levels": [], "evolved": [],
-		"names": [] }
+		"names": [], "after_defeats": {} }
 	for seed_value: int in _seeds:
 		_play(team, variant, seed_value, stats, totals)
 	print("")
@@ -717,6 +744,12 @@ func _report(team: Dictionary, variant: Dictionary) -> void:
 		_used_text(totals["items"], _seeds),
 		("%.0f %%" % (100.0 * totals["hp"] / totals["end"])) if totals["end"] > 0 else "—"])
 	print("  défaites : %s" % ("aucune" if defeats.is_empty() else ", ".join(defeats)))
+	if int(variant["retries"]) > 0 and variant["center"]:
+		var parts := PackedStringArray()
+		for n: int in int(variant["retries"]) + 1:
+			parts.append("%d défaite(s) %.1f %%" % [n,
+				100.0 * int(totals["after_defeats"].get(n, 0)) / _seeds])
+		print("  avec reprises au Centre : arrivée après %s" % ", ".join(parts))
 	for i: int in _steps.size():
 		var s: Dictionary = stats[i]
 		var reached: int = s["reached"]
@@ -757,24 +790,49 @@ func _play(team: Dictionary, variant: Dictionary, seed_value: int, stats: Array[
 		party.heal_all()
 	var bag := _start_bag(variant)
 	_quiet_steps = 0
-	for i: int in _steps.size():
+	# Reprises (T26, « retries ») : après une défaite, réveil au dernier Centre (soin) et
+	# reprise à l'étape qui le suit ; les Dresseurs battus sont partis. Les statistiques
+	# d'étape ne comptent que la première tentative.
+	var defeats := 0
+	var restart := 0
+	var beaten: Dictionary = {}
+	var i := 0
+	while i < _steps.size():
 		var step: Dictionary = _steps[i]
+		i += 1
 		if not str(step["skip"]).is_empty() or (step["optional"] and not variant["optional"]):
 			continue
 		if step["kind"] == "center" and not variant["center"]:
 			continue
-		var s: Dictionary = stats[i]
+		if beaten.has(i - 1):
+			continue
+		if defeats > 0:
+			_tracing = false
+			var retry_lost := _play_step(step, party, rng, variant, bag, _blank_stats())
+			if step["kind"] == "center":
+				restart = i
+			elif step["kind"] == "trainer" and not retry_lost:
+				beaten[i - 1] = true
+			if retry_lost:
+				defeats += 1
+				if defeats > int(variant["retries"]):
+					return
+				party.heal_all()
+				i = restart
+			continue
+		var s: Dictionary = stats[i - 1]
 		s["reached"] += 1
+		_tracing = not _trace_filter.is_empty() and seed_value < TRACE_SEEDS \
+			and str(step["label"]).contains(_trace_filter)
+		if _tracing:
+			print("  >>> graine %d, %s : %s" % [seed_value, step["label"], _party_text(party)])
 		var before := bag.duplicate()
 		var fainted := _fainted(party)
-		var lost := false
-		match step["kind"]:
-			"center":
-				party.heal_all()
-			"wild":
-				lost = _wild_step(step, party, rng, variant, bag, s)
-			"trainer":
-				lost = _trainer_step(step, party, rng, variant, bag, s)
+		var lost := _play_step(step, party, rng, variant, bag, s)
+		if step["kind"] == "center":
+			restart = i
+		elif step["kind"] == "trainer" and not lost:
+			beaten[i - 1] = true
 		var kos := maxi(_fainted(party) - fainted, 0)
 		s["kos"] += kos
 		totals["kos"] += kos
@@ -786,7 +844,14 @@ func _play(team: Dictionary, variant: Dictionary, seed_value: int, stats: Array[
 		s["level"] += _mean_level(party)
 		if lost:
 			s["defeats"] += 1
-			return
+			defeats = 1
+			if int(variant["retries"]) == 0 or not variant["center"]:
+				return
+			party.heal_all()
+			i = restart
+	totals["after_defeats"][defeats] = int(totals["after_defeats"].get(defeats, 0)) + 1
+	if defeats > 0:
+		return
 	totals["end"] += 1
 	totals["hp"] += _hp_share(party)
 	if (totals["levels"] as Array).is_empty():
@@ -798,6 +863,25 @@ func _play(team: Dictionary, variant: Dictionary, seed_value: int, stats: Array[
 		var pokemon: RefCounted = start[j]
 		totals["levels"][j] += pokemon.level
 		totals["evolved"][j] += 1 if pokemon.species_id != start_species[j] else 0
+
+
+## Joue une étape ; vrai si l'équipe entière est K.O.
+func _play_step(step: Dictionary, party: RefCounted, rng: RefCounted, variant: Dictionary,
+		bag: Dictionary, s: Dictionary) -> bool:
+	match step["kind"]:
+		"center":
+			party.heal_all()
+		"wild":
+			return _wild_step(step, party, rng, variant, bag, s)
+		"trainer":
+			return _trainer_step(step, party, rng, variant, bag, s)
+	return false
+
+
+## Compteurs d'une étape (une tentative).
+func _blank_stats() -> Dictionary:
+	return { "reached": 0, "battles": 0, "wins": 0, "fled": 0, "defeats": 0, "turns": 0,
+		"kos": 0, "hp": 0.0, "level": 0.0, "items": {}, "unfinished": 0 }
 
 
 ## Étape « wild » : renvoie vrai si l'équipe entière est K.O.
@@ -827,7 +911,7 @@ func _wild_battle(encounter: RefCounted, party: RefCounted, rng: RefCounted,
 	var foe: RefCounted = _side_script.new(foes, false, "")
 	var battle: RefCounted = _battle_script.new(player, foe, _data, rng,
 		_rules_script.for_wild(_items))
-	battle.start()
+	_trace(battle.start())
 	return _after_battle(_fight(battle, player, foe, rng, variant, bag, true), party, variant,
 		bag, s)
 
@@ -845,7 +929,7 @@ func _trainer_step(step: Dictionary, party: RefCounted, rng: RefCounted, variant
 	var foe: RefCounted = _side_script.new(foes, false, trainer.name, _ai_script.new(trainer.ai))
 	var battle: RefCounted = _battle_script.new(player, foe, _data, rng,
 		_rules_script.for_trainer(trainer, _items))
-	battle.start()
+	_trace(battle.start())
 	var result := _fight(battle, player, foe, rng, variant, bag, false)
 	_restore_order(party)
 	return _after_battle(result, party, variant, bag, s)
@@ -883,12 +967,15 @@ func _fight(battle: RefCounted, player: RefCounted, foe: RefCounted, rng: RefCou
 		if battle.get_state() == REPLACING:
 			var next: RefCounted = _best_against(party, foe.active.pokemon) if careful \
 				else party.first_able()
-			battle.replace(party.index_of(next))
+			_trace(battle.replace(party.index_of(next)))
 			continue
 		var active: RefCounted = player.active.pokemon
 		var action: RefCounted = null
 		if flee_below > 0.0 and float(active.hp) / active.max_hp() < flee_below:
 			action = _action_script.run()
+			# Ligoté (piège, J12) : la fuite est refusée avant le tour ; on se bat.
+			if not battle.is_legal(action):
+				action = null
 		if action == null and careful:
 			action = _heal_action(battle, player, foe, bag)
 		if action == null:
@@ -896,9 +983,23 @@ func _fight(battle: RefCounted, player: RefCounted, foe: RefCounted, rng: RefCou
 				else _naive_move(battle, active, rng)
 		if action.is_heal():
 			bag[action.item_id] = int(bag[action.item_id]) - 1
-		if battle.submit(action).is_empty():
+		var events: Array = battle.submit(action)
+		if events.is_empty():
 			break
+		_trace(events)
 	return [battle.get_outcome(), battle.get_turn()]
+
+
+## `--trace` : les phrases des événements, si l'étape est racontée.
+func _trace(events: Array) -> void:
+	if not _tracing:
+		return
+	for event: RefCounted in events:
+		var hp := ""
+		if event.max_hp > 0 and event.kind in [BATTLE_EVENT_DAMAGE, BATTLE_EVENT_SENT_OUT]:
+			hp = " [%d/%d]" % [event.hp, event.max_hp]
+		for line: String in _battle_text.lines(event, _data):
+			print("      " + line + hp)
 
 
 ## Joueur naïf : une capacité offensive au hasard parmi celles qui ont des PP (sinon n'importe

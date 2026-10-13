@@ -260,7 +260,7 @@ deux premiers, **`smart`** pour le final [D] ; capacités apprises au niveau.
 |---|---|---|---|---|---|
 | R1 | **Le guetteur** : surveille le bas d'une échelle | B1F | selon la grille [D : oui] | Rattata Nv. 11, Nosferapti Nv. 11 | 330 |
 | R2 | **La fouilleuse** : occupée à creuser, ne lève la tête qu'au dernier moment | B1F | non | Abo Nv. 12, Sabelette Nv. 12 | 360 |
-| R3 | **Le gardien** : sécurise l'accès à la chambre des fossiles | B2F | **oui** [V B-8] | Nosferapti Nv. 13, Abo Nv. 13, Rattatac Nv. 15 | 450 |
+| R3 | **Le gardien** : sécurise l'accès à la chambre des fossiles | B2F | **oui** [V B-8] | Nosferapti Nv. 13, Abo Nv. 13, Rattatac Nv. 13 [D, T26 2026-10-14 : 15 → 13, Croc de Mort en IA `smart` faisait de R3 un mur] | 390 |
 
 Modèles peints : **un homme, une femme** [D], réutilisés ; R3 se distingue par sa pose et sa place
 (pas de tenue de chef).
@@ -285,7 +285,7 @@ Modèles peints : **un homme, une femme** [D], réutilisés ; R3 se distingue pa
   vers l'échelle de sortie** : combat **inévitable** [V B-8].
 - **Ordre** [V B-9] : R3 vaincu et parti → le chercheur sort de l'ombre, **te prend pour un des
   leurs** (sa méfiance découle de la scène précédente) → combat → il reconnaît son erreur → partage.
-- Équipe [V B-6, niveaux D] : **Voltorbe Nv. 13, Smogo Nv. 13** ; IA `smart` ; base 25 → 325 ₽.
+- Équipe [V B-6, niveaux D] : **Voltorbe Nv. 12, Smogo Nv. 12** [D, T26 2026-10-14 : 13 → 12] ; IA `smart` ; base 25 → 300 ₽.
 - **Choix du fossile** : les deux fossiles posés sur une dalle ; le joueur **interagit avec l'un** →
   « Prendre le Fossile Dôme ? » **OUI / NON** ; OUI → objet clé, toast, le chercheur prend l'autre.
   NON → rien, on peut regarder l'autre. **Définitif** [V-6] : aucun moyen d'obtenir le second dans

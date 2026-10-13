@@ -137,10 +137,10 @@ func test_learnsets_are_red_blue() -> void:
 	for id: StringName in expected:
 		assert_eq(_data.get_species(id).learnset, expected[id], String(id))
 	assert_eq(_data.get_species(&"arbok").learnset[5], [27, &"glare"])
-	# Le chercheur : Charge, Grincement et Purédpois seulement (dossier 15 §16.2).
-	assert_eq(_data.get_species(&"voltorb").moves_at(13), [&"tackle", &"screech"]
+	# Le chercheur (N12 depuis le T26) : Charge, Grincement et Purédpois seulement (§16.2).
+	assert_eq(_data.get_species(&"voltorb").moves_at(12), [&"tackle", &"screech"]
 		as Array[StringName])
-	assert_eq(_data.get_species(&"koffing").moves_at(13), [&"tackle", &"smog"]
+	assert_eq(_data.get_species(&"koffing").moves_at(12), [&"tackle", &"smog"]
 		as Array[StringName])
 
 
@@ -317,10 +317,11 @@ func test_trainers() -> void:
 			[[&"rattata", 11], [&"zubat", 11]]],
 		&"mt_moon_rocket_2": ["Sbire Rocket", BattleAI.RANDOM, 360,
 			[[&"ekans", 12], [&"sandshrew", 12]]],
-		&"mt_moon_rocket_3": ["Sbire Rocket", BattleAI.SMART, 450,
-			[[&"zubat", 13], [&"ekans", 13], [&"raticate", 15]]],
-		&"mt_moon_researcher": ["Chercheur Gaspard", BattleAI.SMART, 325,
-			[[&"voltorb", 13], [&"koffing", 13]]],
+		# T26 (équilibrage, valeurs [D]) : Rattatac 15 → 13 (390 ₽), Gaspard 13 → 12 (300 ₽).
+		&"mt_moon_rocket_3": ["Sbire Rocket", BattleAI.SMART, 390,
+			[[&"zubat", 13], [&"ekans", 13], [&"raticate", 13]]],
+		&"mt_moon_researcher": ["Chercheur Gaspard", BattleAI.SMART, 300,
+			[[&"voltorb", 12], [&"koffing", 12]]],
 	}
 	for id: StringName in expected:
 		var trainer := trainers.get_trainer(id)

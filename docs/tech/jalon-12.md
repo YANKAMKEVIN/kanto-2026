@@ -745,8 +745,9 @@ fichier commun). Dès T12 fusionné : **T13 ∥ T20** (combat contre grotte, auc
 - **Décision de Kevin (2026-10-13)** : refaire le **Fossile Dôme posé sur la dalle** (`object/fossil_dome`, planche `WORLD_PROP_DALLE_FOSSILES_PLANCHE`, encore en « panier tressé ») d'après l'icône du Sac validée (`UI_OBJETS_J12_PLANCHE_r3` : carapace de pierre à arête centrale), pour que la dalle et le Sac correspondent.
 - §2.11–§2.13 ; Pierre Lune visible (B1F) et cachée (B2F), CT01 ; départ `mt_moon_fossil`, `moon_stone_qa`. Tests `test_mt_moon_rocket`, `test_mt_moon_fossil`, `test_moon_stone`, `test_save_j12`.
 
-#### T26 — architecte : équilibrage — après T25
+#### T26 — architecte : équilibrage — après T25 — **fait (2026-10-14, `j12-t26-equilibrage`, §9)**
 - `simulate_mt_moon.gd -- --donnees --save <partie de Kevin>` : taux de victoire et durées (R1 ≈ 100 s, R3 ≈ 150 s, chercheur ≈ 130 s estimés par la grille) ; **information pour Kevin**, aucune donnée changée sans lui. **À fournir par Kevin** : sa sauvegarde v6 de fin de J11.
+- **Réalisé sans la sauvegarde** (non fournie) sur des équipes « naturelles » par défaut, avec une cible par défaut (règle 4) et des ajustements limités aux valeurs [D] du dossier (demande de la session) : **Rattatac de R3 N15 → N13, Voltorbe et Smogo du chercheur N13 → N12** ; détail et chiffres au §9.
 
 #### T27 — qa-mobile : **session 12C** → Kevin — après T24, T25 et la validation de 12B
 - R1 (« Hé, toi ! »), R2, R3 (3 bulles, décor de la chambre), départs et absence au retour, défaite → reprise, chercheur (méprise, combat, partage), choix NON puis OUI (définitif), toast « … obtenu », Grand moment dans l'écran Dresseur, Pierre Lune visible et cachée, évolution sans ARRÊTER, CT01, reprise après fermeture à chaque étape.
@@ -824,6 +825,7 @@ fichier commun). Dès T12 fusionné : **T13 ∥ T20** (combat contre grotte, auc
 | Déclencheurs | `route_3_entered` (1, 25..27) ; `route_4_reached` (4, 5..9) |
 | Budgets | ≤ 3 000 nœuds ; moyenne ≥ 58 fps, creux ≥ 50 ; mémoire « carte + voisines » ≤ 64 Mo, sinon préchargement réduit ; changement de carte ≤ 1,5 × Jadielle |
 | Sauvegarde | version de `main` après le J11 (**v6**, vérifiée au T11), aucune nouvelle |
+| Équilibrage (T26) | cible : joueur attentif (Centre + 3 Potions) au bout sans défaite ≥ 85 %, aucun combat > 40 % de défaites ; naïf : une défaite admise ; équipes de fin de J11 = starter évolué N16 + Roucool N14 + Papilusion N12 (+ Férosinge N15 côté Salamèche) ; R3 : Rattatac **N13** (390 ₽), chercheur : Voltorbe et Smogo **N12** (300 ₽), IA `smart` gardée |
 
 ---
 
@@ -854,6 +856,74 @@ Questions telles que posées :
 ---
 
 ## 9. Fait
+
+- **T26 — équilibrage de la Route 3 et du Mont Sélénite (2026-10-14, architecte, branche
+  `j12-t26-equilibrage` depuis `jalon-12` à `bdfc49a`)** — `tools/simulate_mt_moon.gd --donnees
+  --seeds 500` (≈ 35 s ; rapports `build/sim/t26_avant.txt`, `t26_apres.txt`, essais
+  `build/sim/t26/`, non versionnés).
+  - **Sans la sauvegarde de Kevin** (non fournie) : équipes « naturelles » par défaut (règle 4),
+    réécrites dans `tools/sim/mt_moon_scenario.json`. **Fin de J11 réaliste** (3 premières) :
+    Pierre battu, starter évolué au N16, Roucool N14, Papilusion N12 (Choc Mental) — et, côté
+    Salamèche, le **Férosinge N15** dont la préparation du J10 a montré qu'il fallait pour battre
+    Pierre (`etat-projet.md`, 2026-10-09). Le J11 n'ajoute aucune zone : ces niveaux sont ceux
+    d'après Pierre. **Bas de fourchette** (3 suivantes, l'ancien jeu du T10) : starter N15 non
+    évolué ; « Bulbizarre 15, Roucool 13 » (deux Pokémon) gardé comme cas extrême, **hors cible**.
+  - **Cible (défaut, règle 4)** : joueur « attentif » avec Centre et ses Potions (variante « 3
+    Potions, 1 Antidote, fuite sous ¼ ») au bout **sans défaite ≥ 85 %**, aucun combat isolé
+    **> 40 %** de défaites pour lui ; joueur « naïf » : **une défaite admise** (rôle du Centre).
+  - **Constat (avant)** : la Route 3, le 1F, R1 et les gravats sont faciles (≥ 90 % des PV après
+    chaque étape, 0 défaite) ; **R3 est un mur** : 55–99 % de défaites pour un joueur attentif
+    avec Potions, toutes équipes. Cause (déroulé `--trace R3`) : avec l'IA `smart`, **Rattatac N15
+    lance Croc de Mort (80, STAB) à chaque tour**, plus rapide que toute l'équipe ; un coup met
+    Férosinge K.O., deux Roucool, après les Groz'Yeux d'Abo. Le chercheur, juste après (sans
+    Centre), achève les équipes vidées.
+  - **Essais** (valeurs [D] seulement : niveaux ±1–2, IA des Sbires et du chercheur), joueur
+    attentif avec Potions, Reptincel / Herbizarre / Carabaffe : R3 `random` seule 89 / 47 / 75 % ;
+    Rattatac N14 `smart` 69 / 17 / 52 % ; N14 `random` 97 / 73 / 86 % ; N14 `random` + chercheur
+    N12 98 / 84 / 92 % ; N14 + Nosferapti et Abo N12 + chercheur N12 99 / 84 / 94 % ; **Rattatac N13
+    `smart` 100 / 85 / 98 %** ; **N13 + chercheur N12 : 100 / 94 / 99,6 %** (retenu) ; N13 `random`
+    100 / 96 / 99,8 %. Rattatac garde Croc de Mort jusqu'au N14 (appris au N14) : au N14, l'IA
+    `smart` en fait un mur, l'IA `random` seule ne suffit pas pour Herbizarre.
+  - **Ajustements retenus** (`data/trainers/mt_moon.json`, scénario, `test_mt_moon_data`) :
+    **R3 : Rattatac N15 → N13** (récompense 450 → 390 ₽, règle « base 30 × niveau du dernier ») ;
+    **chercheur : Voltorbe et Smogo N13 → N12** (325 → 300 ₽, base 25). IA `smart` gardée pour
+    les deux, espèces et capacités inchangées (Rattatac N13 : Charge, Mimi-Queue, Vive-Attaque ;
+    **plus de Croc de Mort**). R3 reste le combat le plus coûteux du parcours (≈ 1 K.O., 1,5
+    Potion, 50–70 % des PV après).
+  - **Résultats** (500 graines ; « R3 / Ch » = défaites parmi les parties qui atteignent le combat ;
+    naïf : arrivée sans défaite / après une défaite, reprise au Centre) :
+
+    | Équipe | Attentif + Potions avant → après | R3 / Ch avant → après | Attentif sans Potion avant → après | Naïf (0 / 1 défaite) avant → après |
+    |---|---|---|---|---|
+    | Reptincel 16, Férosinge 15, Roucool 14, Papilusion 12 | 42,2 → **100 %** | 55 / 6 → 0 / 0 | 39,4 → 99,6 % | 31 / 41 → **98 / 2** |
+    | Herbizarre 16, Roucool 14, Papilusion 12 | 4,2 → **94,0 %** | 86 / 70 → 0,6 / 5 | 2,2 → 80,4 % | 0 / 1 → **9 / 59** |
+    | Carabaffe 16, Roucool 14, Papilusion 12 | 17,4 → **99,6 %** | 62 / 54 → 0,4 / 0 | 3,4 → 97,6 % | 1 / 5 → **53 / 44** |
+    | Salamèche 15, Férosinge 15, Roucool 13 | 12,0 → **94,6 %** | 82 / 35 → 1 / 4 | 5,4 → 81,6 % | 2 / 27 → **71 / 28** |
+    | Carapuce 15, Roucool 13, Papilusion 12 | 3,8 → **96,4 %** | 86 / 73 → 0,4 / 3 | 1,0 → 78,6 % | 0 / 2 → **23 / 63** |
+    | Bulbizarre 15, Roucool 13 (hors cible) | 0 → 11,0 % | 99 / 100 → 62 / 71 | 0 → 0 % | 0 / 0 → 0 / 0 |
+
+    Avec les détours (D4, D5, D6, R2) : 100 / 84,8 / 98,8 / 98,0 / 92,4 % (Herbizarre juste sous
+    la cible : 6 % R3, 10 % chercheur). Hors R3 et chercheur, aucune étape ne dépasse 0,2 % de défaites (toutes
+    variantes, hors équipe à deux Pokémon).
+  - **Hors cible, information pour Kevin** : (1) un naïf **Herbizarre** perd deux fois ou plus
+    dans 32 % des parties (R3 54 %, chercheur 81 % : Fouet Lianes résisté par Smogo, Charge au
+    hasard) ; Carapuce N15 naïf 15 % ; (2) une équipe de **deux Pokémon** ne passe pas R3
+    (62 % de défaites même attentif) ; (3) le simulateur ne fait que les cases d'herbes et de
+    gravats obligatoires (8 + 8) : la Route 3 et la grotte n'usent presque pas l'équipe ; le
+    « défi par l'enchaînement » n'apparaît qu'en B2F (R3 puis le chercheur, sans Centre).
+  - **IA `smart` et Repos** (« aucune capacité de statut sous ⅓ des PV », `BattleAI.LOW_HP_RATIO`,
+    qui interdit Repos là où il serait utile) : **sans effet au J12** — aucun Dresseur n'a Repos
+    (Rondoudou l'apprend au N29 ; Inès a un Rondoudou N14 en IA `random`) ; R3 et le chercheur
+    n'ont que Ultrason, Groz'Yeux, Grincement comme capacités de statut, pour lesquelles la règle
+    est voulue. À revoir quand un Dresseur `smart` aura Repos (Grodoudou, Mélodelfe, Ronflex…).
+  - **Outil** (`tools/simulate_mt_moon.gd`) : option `--trace <texte>` (déroulé des combats des
+    étapes nommées, 3 premières graines) ; clé de variante `retries` (reprise au dernier Centre
+    après une défaite, Dresseurs battus partis, arrivée après 0 / 1… défaites) ; **correctif** :
+    le joueur ligoté (Ligotage d'un Abo sauvage) ne tente plus de fuir (la fuite refusée cassait
+    le combat : « action refusée », « non terminés »). Scénario de démonstration : variante naïve
+    à une reprise ; test `test_retries_and_trace` (`tests/integration/test_simulate_mt_moon.gd`).
+  - **Non mesurées** : les durées en secondes (R1 ≈ 100 s…) — l'outil compte des tours : R1 ≈ 4,7,
+    R3 ≈ 9,6–10,8, chercheur ≈ 5–8 tours par combat (après).
 
 - **T24 — Sac et écran d'évolution (2026-10-13, ui-mobile, branche `j12-t24-sac-evolution` depuis
   `jalon-12` à `3def8f5`)** — §2.6, §2.9, §2.13 (interface) :
