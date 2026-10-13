@@ -1,0 +1,17 @@
+{
+	"trainer_dig": {
+		"cell": [15, 3], "facing": "left", "sprite": "hiker",
+		"dialogue": "forest_scout_theo_after",
+		"trainer": { "id": "qa_charge_dig", "sight": 4, "before": "forest_scout_theo_before" }
+	},
+	"trainer_sleep": {
+		"cell": [15, 6], "facing": "left", "sprite": "scout",
+		"dialogue": "forest_scout_noe_after",
+		"trainer": { "id": "qa_charge_sleep", "sight": 4, "before": "forest_scout_noe_before" }
+	},
+	"trainer_para": {
+		"cell": [15, 9], "facing": "left", "sprite": "youngster",
+		"dialogue": "forest_youngster_tom_after",
+		"trainer": { "id": "qa_charge_para", "sight": 4, "before": "forest_youngster_tom_before" }
+	}
+}

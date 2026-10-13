@@ -9,6 +9,9 @@ extends RefCounted
 const MAPS_DIR: String = "res://game/world/maps/"
 ## Liste des cartes intérieures (préchargement du SceneRouter, jalon 10).
 const INTERIORS_PATH: String = "res://data/world/interiors.json"
+## Préfixe des cartes de QA : hors zones, hors Carte et Pokédex, aucun passage n'y mène (départs
+## de débogage seulement). Les tests qui énumèrent les cartes du jeu les ignorent.
+const QA_PREFIX: String = "qa_"
 
 
 ## Chemin de la scène d'une carte ("" pour un identifiant vide).
@@ -38,3 +41,8 @@ static func load_interiors(path: String = INTERIORS_PATH) -> Array[StringName]:
 	for id: Variant in (data as Dictionary)["maps"]:
 		ids.append(StringName(str(id)))
 	return ids
+
+
+## Vrai si c'est une carte de QA (identifiant préfixé de [constant QA_PREFIX]).
+static func is_qa_map(map_id: StringName) -> bool:
+	return String(map_id).begins_with(QA_PREFIX)

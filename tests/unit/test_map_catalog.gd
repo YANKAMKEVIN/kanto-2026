@@ -25,11 +25,22 @@ func test_has_map() -> void:
 	assert_false(MapCatalog.has_map(&"does_not_exist"))
 
 
-## Clôture du jalon 9 (T23) : la carte de QA des systèmes est retirée, aucune autre ne reste.
-func test_no_qa_map_is_shipped() -> void:
+## Cartes de QA encore livrées : `qa_charge_j14` (J14 T10), retirée au T24 avec ses départs
+## (alors : vider cette liste).
+const QA_MAPS_SHIPPED: Array[String] = ["qa_charge_j14.tscn"]
+
+
+func test_only_planned_qa_maps_are_shipped() -> void:
 	assert_false(MapCatalog.has_map(&"qa_forest_systems"))
 	for file: String in DirAccess.get_files_at(MapCatalog.MAPS_DIR):
-		assert_false(file.begins_with("qa_"), "%s : carte de QA livrée" % file)
+		if file.begins_with("qa_"):
+			assert_true(QA_MAPS_SHIPPED.has(file), "%s : carte de QA non prévue" % file)
+
+
+func test_qa_maps_are_recognised_by_their_prefix() -> void:
+	assert_true(MapCatalog.is_qa_map(&"qa_charge_j14"))
+	assert_false(MapCatalog.is_qa_map(&"pallet_town"))
+	assert_false(MapCatalog.is_qa_map(&""))
 
 
 ## Jalon 10 : la liste des intérieurs (préchargement du SceneRouter) suit les scènes.
