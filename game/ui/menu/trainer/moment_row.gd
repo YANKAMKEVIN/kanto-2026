@@ -118,9 +118,11 @@ func _build_thumb() -> Control:
 	thumb.add_child(art)
 	if not art.has_image():
 		var icon := TextureRect.new()
-		icon.texture = ICONS.get(_view.kind, ICON_DEFAULT)
+		var painted := _item_icon()
+		icon.texture = painted if painted != null else ICONS.get(_view.kind, ICON_DEFAULT)
 		_icon = icon.texture
-		icon.modulate = UiTokens.ACCENT
+		# Icône peinte d'un objet : ses couleurs, sans teinte ACCENT.
+		icon.modulate = Color.WHITE if painted != null else UiTokens.ACCENT
 		icon.mouse_filter = Control.MOUSE_FILTER_IGNORE
 		icon.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 		icon.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
@@ -131,9 +133,10 @@ func _build_thumb() -> Control:
 		# Le badge, le fossile : leur emblème (ACCENT) posé sur l'aperçu du lieu, comme l'artwork
 		# d'un Pokémon.
 		var emblem := TextureRect.new()
-		emblem.texture = ICONS[_view.kind]
+		var painted := _item_icon()
+		emblem.texture = painted if painted != null else ICONS[_view.kind]
 		_icon = emblem.texture
-		emblem.modulate = UiTokens.ACCENT
+		emblem.modulate = Color.WHITE if painted != null else UiTokens.ACCENT
 		emblem.mouse_filter = Control.MOUSE_FILTER_IGNORE
 		emblem.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 		emblem.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
@@ -151,6 +154,14 @@ func _build_thumb() -> Control:
 		picture.position = UiTokens.TRAINER_MOMENT_THUMB - picture.size
 		thumb.add_child(picture)
 	return thumb
+
+
+## Icône peinte de l'objet du moment (le fossile obtenu) ; null s'il n'y en a pas (repli sur
+## l'icône du type).
+func _item_icon() -> Texture2D:
+	if _view.item_id.is_empty():
+		return null
+	return MenuArt.item_icon(_view.item_id)
 
 
 func _add_text(parent: Control, text: String, variation: StringName) -> void:

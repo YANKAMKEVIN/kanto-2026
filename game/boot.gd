@@ -1332,7 +1332,9 @@ func _on_item_given(item_id: StringName, count: int) -> void:
 	var item := _items.get_item(item_id)
 	if item == null:
 		return
-	_hud.show_toast(item.quantity_text(count), item.added_text(count))
+	# Un objet « obtenu » (fossile) : son icône peinte du Sac, sinon l'icône générique.
+	var icon: Texture2D = MenuArt.item_icon(item_id) if item.obtained else null
+	_hud.show_toast(item.quantity_text(count), item.added_text(count), icon)
 
 
 ## Retour de l'écran : la confirmation de vente de la Boutique, la confirmation ou le menu « ⋯ »

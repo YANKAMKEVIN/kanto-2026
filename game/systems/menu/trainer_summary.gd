@@ -224,6 +224,8 @@ static func _record_view(record: Dictionary, state: Object, data: PokemonData,
 	var view := _view(type, text, marks)
 	if view == null:
 		return null
+	if type == MomentLibrary.FOSSIL:
+		view.item_id = StringName(str(details.get(MomentLibrary.DETAIL_ITEM, "")))
 	view.place = place
 	view.zone_id = zone
 	view.date = str(record.get("date", ""))
