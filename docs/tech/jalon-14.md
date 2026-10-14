@@ -1006,7 +1006,7 @@ et de l'annexe A validée.
 #### T20b — constructeur-monde : Azuria du J14 (14C) — après fusion de **J13 T7 et T17** (+ **J12 T12**)
 - §2.12 ; régénération d'Azuria par `build_cerulean_city.gd` ; intérieur
   `cerulean_burgled_house` ; départs `cerulean_garden`, `cerulean_rocket_weak`, `cerulean_after`.
-- **Fait (2026-10-14, branche `j14-t20b`)** : `build_cerulean_city.gd` lit la variante `J14`
+- **Fait (2026-10-14, `93b74200`, branche `j14-t20b`)** : `build_cerulean_city.gd` lit la variante `J14`
   (paramètre `plan_variant` des kits `pewter_map_kit` / `cerulean_map_kit`), `J` et `Y` praticables,
   arbre dense (22, 3), trois bandes (`RocketChase`, `RocketFight`, `SouthGuard`), porte (10, 9) → `cerulean_burgled_house`
   (`tools/plans/azuria_maison_cambriolee.txt`, victime `naturalist` en (3, 5)), raccord sud
