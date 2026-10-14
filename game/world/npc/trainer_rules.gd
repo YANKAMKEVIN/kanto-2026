@@ -16,6 +16,9 @@ const SIGHT_MAX: int = 8
 const BEATEN_PREFIX: String = "beaten_"
 ## Pas de joueur en vue ([method sight_distance]).
 const NOT_SEEN: int = -1
+## Jalon 12 (jalon-12.md §2.11) : préfixe du drapeau « le joueur a perdu contre lui » (réplique
+## de reprise ; levé seulement pour un Dresseur qui a une réplique « rematch »).
+const LOST_PREFIX: String = "lost_"
 
 
 ## Drapeau levé quand le joueur a battu [param trainer_id] : `beaten_<id>`.
@@ -55,3 +58,8 @@ static func approach_path(facing: Vector2i, distance: int) -> Array[Vector2i]:
 	for i: int in maxi(distance - 1, 0):
 		path.append(facing)
 	return path
+
+
+## Jalon 12 : drapeau levé quand le joueur a perdu contre [param trainer_id] : `lost_<id>`.
+static func lost_flag(trainer_id: StringName) -> StringName:
+	return StringName(LOST_PREFIX + String(trainer_id))

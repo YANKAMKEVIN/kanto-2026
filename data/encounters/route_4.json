@@ -1,0 +1,15 @@
+{
+	"route_4_grass": {
+		"maps": ["route_4"],
+		"terrain": "grass",
+		"rate": 25,
+		"ramp": { "from_step": 15, "max_steps": 20 },
+		"slots": [
+			{ "species": "rattata", "levels": [8, 12], "weight": 30 },
+			{ "species": "spearow", "levels": [8, 12], "weight": 30 },
+			{ "species": "ekans", "levels": [10, 12], "weight": 15 },
+			{ "species": "sandshrew", "levels": [10, 12], "weight": 15 },
+			{ "species": "mankey", "levels": [10, 13], "weight": 10 }
+		]
+	}
+}

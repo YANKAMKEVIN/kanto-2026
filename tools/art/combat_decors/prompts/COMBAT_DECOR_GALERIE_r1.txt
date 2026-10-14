@@ -1,0 +1,30 @@
+DÉCOR DE COMBAT — GALERIE DU MONT SÉLÉNITE (Kanto 2026). Image de PRODUCTION : le fond peint d'un écran de combat Pokémon sur smartphone en paysage, À L'INTÉRIEUR d'une grotte. AUCUN Pokémon, AUCUN personnage, AUCUNE interface, AUCUN texte.
+
+Trois images sont jointes.
+IMAGE 1 : un écran de combat de référence. Reprends sa VUE (caméra à hauteur d'yeux, légèrement plongeante, grand sol dégagé au centre), sa profondeur et sa qualité de peinture. Ne reprends PAS : les Pokémon, les cartes, les boutons, la rivière, le pont, le ciel.
+IMAGE 2 : une planche d'intention de décors de combat ; prends la dernière case (« Argenta — intérieur de l'Arène de Pierre », roche en blocs, sol de poussière, lumière tombant d'en haut) comme guide de la facture d'une salle de roche. Ne reprends PAS sa teinte orange : ici la roche est froide.
+IMAGE 3 : la vue générale (de dessus) du Mont Sélénite : galeries de pierre claire poussiéreuse, parois d'ardoise sombre, cristaux bleu pâle de Pierre Lune, gravats, lampes de chantier. Tu vois ce lieu à hauteur d'yeux.
+
+FORMAT : paysage très large, rapport 2,17 : 1 (comme 2340 × 1080), la plus grande résolution possible, OPAQUE, cadrage plein, sans bord.
+
+LIEU : une galerie de grotte large et basse de plafond. Parois et plafond en ARDOISE et gris bleuté (blocs de roche en strates, arêtes douces, quelques stalactites), SOL de gravats et de poussière de pierre gris clair à gris bleuté avec cailloux, dalles brisées et gravillons. ÉCLATS DE PIERRE LUNE discrets : quelques cristaux bleu pâle laiteux qui affleurent dans les parois et au pied des rochers (peu nombreux, petits, jamais des gemmes géantes). LISIBLE : la scène n'est JAMAIS noire ; une lueur froide diffuse (reflets de cristaux, lumière lointaine) éclaire le sol central, les parois restent bleu ardoise moyen (valeurs sombres mais détaillées, pas de noir pur). Aucune lampe de chantier, aucune caisse, aucun outil, aucune trace humaine.
+
+COMPOSITION (positions en fractions de la largeur et de la hauteur de l'image, depuis le coin haut gauche) — à respecter précisément :
+- Fond (30 à 36 % de la hauteur) : la galerie s'enfonce vers un fond de roche et un passage sombre mais lisible, au centre-gauche, avec une lueur froide lointaine ; piliers et parois à gauche et à droite qui se resserrent.
+- De 40 % de la hauteur jusqu'en bas : un GRAND SOL DÉGAGÉ et PLAT de poussière et de gravats fins, gris clair bleuté, où deux créatures pourront se faire face.
+- Point A (x 67 %, y 50 %) : sol plat et lisible, clair, une créature y posera les pieds. Rien de haut dans un rayon de 12 % de la largeur autour ; derrière lui seulement la paroi lointaine.
+- Point B (x 31 %, y 97 %) : sol plat de poussière et de gravier fin, une grande créature vue de dos y sera au premier plan. Rien de haut autour.
+- Plan moyen (35 à 48 % de la hauteur) : de gros blocs d'ardoise et un pilier de roche sur les côtés, quelques cristaux de Pierre Lune au pied de la paroi de droite, des éboulis.
+- ZONE CALME en HAUT À GAUCHE (de 0 à 50 % de la largeur, de 0 à 45 % de la hauteur) : peu de détails et peu de contraste, valeurs simples (paroi lisse sombre mais lisible).
+- ZONE CALME en BAS À DROITE (de 50 à 100 % de la largeur, de 55 à 100 % de la hauteur) : sol simple, presque sans objet, valeurs moyennes, sans contraste fort.
+- Les deux coins du bas restent du SOL nu : pas de gros rocher en gros plan.
+- Les 9 % de gauche et de droite de l'image ne contiennent rien d'important (ils seront rognés sur certains écrans).
+
+SOL : poussière et gravats gris bleutés variés (zones plus claires et plus sombres, cailloux, dalles fendues, traînées de sable fin), jamais une surface uniforme ; plus clair que les parois.
+
+PERSPECTIVE : à hauteur d'yeux, un peu plongeante ; le sol recule nettement vers le fond. Netteté partout (aucun flou de profondeur, pas de vignettage).
+
+RENDU (ADN visuel Kanto 2026) : illustration 2D peinte numériquement, RPG Pokémon moderne « HD-2D peint », formes simples, lisibles et arrondies, grandes masses douces (jamais en petits points ni en pixels), aucun trait noir (contours fins et doux plus sombres que la couleur), couleurs riches sans être fluo.
+LUMIÈRE : lumière FROIDE et diffuse, bleutée, venant du haut à gauche et des cristaux ; ombres douces bleu nuit (jamais noires) ; sol nettement plus clair que les parois ; contraste modéré.
+
+INTERDITS : Pokémon, animal, chauve-souris, personnage, silhouette, texte, lettres, chiffres, logo, signature, filigrane, cadre, interface, ciel, soleil, végétation, caisse, lampe, outil, échelle, eau, noir pur, pixel art, flou, vignettage.

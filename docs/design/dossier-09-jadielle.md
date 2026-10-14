@@ -193,7 +193,7 @@ La Route 2 est au J8. Dans la version de développement seulement, la sortie nor
 
 ## 15. Victoire, défaite et mémoire
 
-- Victoire : répliques du rival (§19). Défaite : retour au point de repos (§7) ; **le résultat est accepté par l'histoire**.
+- Victoire : répliques du rival (§19). Défaite : retour au point de repos (§7) ; **le résultat est accepté par l'histoire**. *(Exception assumée au J13 : le rival n° 3 doit être vaincu, combat rejouable ; dossier 16 §7.)*
 - **Trois états enregistrés : pas affronté, gagné, perdu** (drapeaux). Ils pourront faire varier de petites répliques futures (« Ne prends pas trop confiance à cause de la Route 22. » / « Tu veux vraiment recommencer après la Route 22 ? »). **Jamais trois branches narratives** : ce sont des variations de mémoire du monde.
 
 ---

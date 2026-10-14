@@ -15,6 +15,10 @@ extends Marker2D
 @export var size: Vector2i = Vector2i.ONE
 ## Orientation exigée du joueur (ZERO = de tous côtés).
 @export var facing: Vector2i = Vector2i.ZERO
+## Jalon 12 (jalon-12.md §2.8, objets cachés « face à un indice ») : le point n'est plus une
+## cible dès qu'un de ces drapeaux est levé (`got_<id>` : l'objet est trouvé, le bouton
+## EXAMINER disparaît). Vide = toujours une cible. Recopié dans chaque [Interaction].
+@export var unless_flags: Array[StringName] = []
 
 
 ## Case d'ancrage (bas-gauche), déduite de la position.
@@ -37,5 +41,7 @@ func get_cells() -> Array[Vector2i]:
 func to_interactions() -> Array[Interaction]:
 	var result: Array[Interaction] = []
 	for cell: Vector2i in get_cells():
-		result.append(Interaction.new(kind, cell, dialogue_id, facing, null))
+		var interaction := Interaction.new(kind, cell, dialogue_id, facing, null)
+		interaction.unless_flags = unless_flags.duplicate()
+		result.append(interaction)
 	return result

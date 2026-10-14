@@ -17,6 +17,8 @@ extends Node
 ## Jalon 9 (jalon-09.md §2.4.5) : parler à un Dresseur pas encore battu ne joue aucun dialogue :
 ## l'appui émet [signal challenge_requested] ([TrainerWatcher] joue le défi), même anti-rebond ;
 ## battu, il dit sa réplique « après » (son dialogue). Drapeaux : [method set_story_flags].
+## Jalon 12 (jalon-12.md §2.8) : une cible dont un drapeau « unless » est levé
+## ([method Interaction.is_available] : objet caché déjà trouvé) n'est pas retenue — pas de bouton.
 
 ## Cible devant le joueur : kind = [enum Interaction.Kind], ou [constant NO_TARGET].
 signal target_changed(kind: int)
@@ -60,6 +62,8 @@ func _process(_delta: float) -> void:
 	if _can_target():
 		target = InteractionFinder.find(_map.get_grid(), _map.get_interactions(),
 			_player.get_cell(), _player.get_facing(), _companion)
+		if target != null and not target.is_available(_flags):
+			target = null  # jalon 12 : objet caché déjà trouvé (drapeau « unless » levé)
 	_set_target(target)
 	if _wait_release:
 		if Input.is_action_pressed(_INTERACT):

@@ -1,0 +1,7 @@
+{
+	"route_4_clara": {
+		"name": "Jeune Dresseuse Clara", "ai": "random",
+		"can_lose": false, "heal_after": false, "gives_exp": true, "prize_money": 165,
+		"team": [{ "species": "paras", "level": 11 }, { "species": "jigglypuff", "level": 11 }]
+	}
+}

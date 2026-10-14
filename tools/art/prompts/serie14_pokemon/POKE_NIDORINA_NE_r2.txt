@@ -1,0 +1,16 @@
+POKE_NIDORINA — planche d'animation d'un Pokémon du monde (compagnon du héros).
+Style : exactement le rendu de la première planche jointe (le héros du jeu) : Pokémon peint simplifié, même finesse, même contour fin coloré sans trait noir, même manière de peindre les volumes. Ni pixel art, ni 3D, ni anime aux contours noirs.
+LUMIÈRE NE (neutre) : lumière de milieu de journée, diffuse et blanche, venant légèrement du haut à gauche ; volumes conservés par un ombrage doux ; aucune teinte dorée ou orangée, aucun liseré chaud ; ombres propres neutres, légèrement bleutées.
+
+POKÉMON (identique dans toutes les images) : Nidorina, l'évolution de Nidoran femelle dans Pokémon Rouge/Bleu, fidèle à son design officiel : quadrupède NETTEMENT plus grande, plus trapue et plus massive que Nidoran femelle (corps environ 1,4 fois plus gros, pattes courtes et fortes), bleu soutenu et plus foncé (bleu franc, pas bleu pâle), ventre crème, taches foncées sur le dos et les flancs, rangée de piquants dorsaux nets, une corne courte sur le front, oreilles plus petites et plus rondes que celles de Nidoran, gros yeux rouges, deux petits crocs, queue épaisse à pointe. Allure posée et maternelle.
+
+PLANCHE D'ANIMATION (spritesheet) : image portrait 1024 × 1536, fond avec une vraie transparence (canal alpha, aucun damier dessiné). Grille invisible de 4 colonnes × 4 lignes ; chaque cellule fait 256 × 384 px et contient UNE pose du Pokémon, entier, centré horizontalement, les pieds posés sur la même ligne horizontale à 60 px du bas de la cellule, à la même taille dans toutes les cellules (environ 170 px de haut). Aucune pose ne déborde de sa cellule.
+- Ligne 1 : de face (vers le bas de l'écran).
+- Ligne 2 : de profil, vers la gauche.
+- Ligne 3 : de profil, vers la droite.
+- Ligne 4 : de dos (vers le haut de l'écran).
+- Colonnes : marche à quatre pattes en 4 images, pas posés, oreilles et queue qui bougent.
+Vue : la même vue de dessus de trois quarts que le jeu (caméra un peu au-dessus, on voit un peu le dessus du Pokémon). Pas de perspective, pas d'ombre au sol, pas de sol, pas de texte, pas de numéros, pas de cadres autour des cellules.
+Les couleurs, les proportions et la tête doivent être EXACTEMENT les mêmes dans les 16 poses.
+
+La deuxième image jointe (POKE_NIDORAN_F_NE_r1) est un autre Pokémon du jeu, déjà validé : même rendu, même finesse, même gabarit de planche ; garde ses proportions comme repère de taille et de style (ce Pokémon-ci est nettement plus grand, plus trapu et d'un bleu plus soutenu).

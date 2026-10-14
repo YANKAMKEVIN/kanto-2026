@@ -1,5 +1,33 @@
 [
 	{
+		"id": "explore_cerulean",
+		"text": "explorer les environs d'Azuria.",
+		"if": ["badge_cascade", "beaten_nugget_rocket"]
+	},
+	{
+		"id": "cross_nugget_bridge",
+		"text": "traverser le Pont Pépite.",
+		"if": ["badge_cascade"],
+		"unless": ["beaten_nugget_rocket"]
+	},
+	{
+		"id": "get_cascade_badge",
+		"text": "obtenir le Badge Cascade.",
+		"if": ["cerulean_reached"],
+		"unless": ["badge_cascade"]
+	},
+	{
+		"id": "go_cerulean",
+		"text": "continuer vers Azuria.",
+		"if": ["route_4_reached"]
+	},
+	{
+		"id": "cross_mt_moon",
+		"text": "traverser le Mont Sélénite.",
+		"if": ["route_3_entered"],
+		"unless": ["route_4_reached"]
+	},
+	{
 		"id": "go_route_3",
 		"text": "continuer vers la Route 3.",
 		"if": ["badge_boulder"]

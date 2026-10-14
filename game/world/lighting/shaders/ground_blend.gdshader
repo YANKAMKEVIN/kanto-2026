@@ -7,6 +7,11 @@
 // Rivage (DA.2, facultatif : has_shore) : second masque (R sable, G eau) ; sable puis mer par
 // dessus, frange d'écume claire au bord de l'eau, eau qui ondule doucement (repris de
 // proto/da_jadielle/sol_bourg.gdshader, mêmes seuils).
+// Eau réglable (jalon 13 T6) : water_texture choisie par la carte (PaintedGround), à sa propre
+// échelle (water_texture_size) ; force de l'écume (foam_strength, 0,8 = la mer de
+// Bourg Palette) ; rivage à angles droits (square_shore : l'eau couvre exactement ses cases, sans
+// bruit ni frange ; canaux d'Azuria, dont les bords sont des quais posés par-dessus).
+// Défauts = rendu d'avant le J13.
 shader_type canvas_item;
 
 uniform sampler2D grass_texture : repeat_enable, filter_linear_mipmap;
@@ -24,6 +29,10 @@ uniform sampler2D shore_mask : filter_linear;
 uniform sampler2D sand_texture : repeat_enable, filter_linear_mipmap;
 uniform sampler2D water_texture : repeat_enable, filter_linear_mipmap;
 uniform vec4 foam_color : source_color = vec4(0.95, 0.97, 0.98, 1.0);
+// Côté de la texture d'eau, en pixels (réglé par PaintedGround pour une eau autre que la mer).
+uniform float water_texture_size = 384.0;
+uniform float foam_strength = 0.8;
+uniform bool square_shore = false;
 
 varying vec2 world;
 
@@ -68,12 +77,17 @@ void fragment() {
 		c = mix(c, texture(sand_texture, world / texture_size).rgb, smoothstep(0.45, 0.55, v_sand));
 		float v_water = s.g + n * 0.5
 			+ (noise(world * 0.03 + vec2(TIME * 0.15, 0.0)) - 0.5) * 0.08;
+		if (square_shore) {
+			ivec2 cell = clamp(ivec2(floor(world / tile_size)), ivec2(0), ivec2(cells) - 1);
+			v_water = texelFetch(shore_mask, cell, 0).g;
+		}
 		vec2 swell = vec2(sin(TIME * 0.4 + world.y * 0.01), cos(TIME * 0.3 + world.x * 0.008))
 			* 6.0;
-		vec3 water = texture(water_texture, (world + swell) / (texture_size * 1.5)).rgb;
+		// Période de l'eau = sa propre taille × 1,5 (mer de 384 px : 576, comme avant le J13).
+		vec3 water = texture(water_texture, (world + swell) / (water_texture_size * 1.5)).rgb;
 		float foam = smoothstep(0.42, 0.5, v_water) * (1.0 - smoothstep(0.5, 0.62, v_water));
 		c = mix(c, water, smoothstep(0.5, 0.56, v_water));
-		c = mix(c, foam_color.rgb, foam * 0.8);
+		c = mix(c, foam_color.rgb, foam * foam_strength);
 	}
 	COLOR = vec4(c, 1.0);
 }

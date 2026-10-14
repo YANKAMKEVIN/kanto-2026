@@ -1,0 +1,52 @@
+# Arène d'Azuria (cerulean_gym) — grille fonctionnelle (jalon 13, dossier 16 §9 ; préparée le
+# 2026-10-11). Source de la géométrie de la salle : coque de l'intérieur (verrière, gradins légers,
+# plongeoir), outil des intérieurs, critères de test_cerulean_gym. Vérifiée par
+# tools/art/plan_check.py (profil azuria_arene, tools/art/plan_check_azuria.py).
+#
+# 17 × 13 cases (défaut du dossier, §9.1, §22) : une PISCINE d'entraînement élégante. Un bassin
+# central (7 × 5, bloqué) est entouré de CHEMINS SECS : chemin du nord (y 2..3, deux rangées),
+# chemins latéraux (x 2..4 et x 12..14), chemin du sud (y 9..10). Ni puzzle, ni nage, ni courant.
+# La salle est plus haute que l'écran (13 > 11,25 rangées) : la caméra suit le joueur en hauteur.
+#
+# Légende :
+#   K mur (bloqué : fond sur 2 rangées, parois sur 2 colonnes, bas sur 2 rangées ; sortie sur
+#     l'avant-dernière rangée, convention des intérieurs)   . sol sec (praticable)
+#   W bassin (eau, JAMAIS praticable)   P plongeoir (bloqué)
+#   O Ondine, au fond nord, au bord du bassin (présente à la condition misty_invited ; avant, sa
+#     place est vide)   N Nageur Lucas   J Jeune Dresseuse Diane   G guide d'Arène
+#   X sortie (praticable : la dalle dans l'ouverture du mur du bas, PUSH ↓)
+#
+# Les deux Dresseurs sont combattables dès l'arrivée (C-1) ET ÉVITABLES (défaut) : chacun garde une
+# file de son chemin latéral (vue de 3 cases le long du chemin), les deux autres files restent
+# libres ; on peut aussi les éviter tous deux ensemble. Chemin entrée → Ondine : voir le contrôle.
+#
+# Format : section GRILLE (« NN » + espace + 17 caractères par rangée), puis POSITIONS.
+
+PRATICABLES .X
+
+GRILLE 17 13
+00 KKKKKKKKKKKKKKKKK
+01 KKKKKKKKKKKKKKKKK
+02 KK..........PP.KK
+03 KK......O......KK
+04 KK...WWWWWWW...KK
+05 KKN..WWWWWWW...KK
+06 KK...WWWWWWW...KK
+07 KK...WWWWWWW..JKK
+08 KK...WWWWWWW...KK
+09 KK.............KK
+10 KK....G........KK
+11 KKKKKKKXXXKKKKKKK
+12 KKKKKKKKKKKKKKKKK
+FIN
+
+# POSITIONS (défauts du 2026-10-11)
+POSITIONS
+ondine              pnj            8,3          bloque  role=O facing=down condition=misty_invited  # au fond nord, au bord du bassin ; scène azuria_gym_misty
+parler_ondine       repere         7,3          libre   # on lui parle d'ici, tourné →
+lucas               dresseur       2,5          bloque  role=A1 facing=down sight=3 trainer=cerulean_gym_swimmer_lucas  # Nageur, Hypotrempe 16 + Kokiyas 16, 80 ₽ ; garde la file ouest du chemin ouest
+diane               dresseur       14,7         bloque  role=A2 facing=up sight=3 trainer=cerulean_gym_lass_diane  # Jeune Dresseuse, Poissirène 19, 285 ₽ ; garde la file est du chemin est
+guide               pnj            6,10         bloque  role=G facing=right  # guide d'Arène, à côté de l'entrée
+sortie              warp           7..9,11      libre   # PUSH ↓ → cerulean_city, from_gym
+entree              spawn          8,11         libre   # spawn « entrance » (sur la dalle), tourné ↑
+FIN

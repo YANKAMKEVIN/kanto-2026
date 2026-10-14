@@ -448,3 +448,38 @@ func test_context_tokens_are_allowed_in_the_question_of_a_choice() -> void:
 	assert_false(_library.add_from_dict({"mixed": {"pages": ["{player}, {price} ₽ ?"],
 		"choice": {"confirm": "OUI", "cancel": "NON"}}}, "test"), "un jeton hors contexte")
 	assert_push_error("la question d'un choix (dernière page) n'a pas de jeton")
+# --- Choix qui pose un drapeau (jalon-13.md §2.13, T16) --------------------------------------
+
+func test_choice_flags_are_read_and_listed_as_set() -> void:
+	assert_true(_library.add_from_dict({"recruit": {"pages": ["Tu nous rejoins ?"],
+		"choice": {"confirm": "OUI", "cancel": "NON", "confirm_set": ["recruit_yes"],
+			"cancel_set": ["recruit_no", "recruit_refused"], "confirm_action": "heal"}}},
+		"test"), "compatible avec confirm_action")
+	var choice := _library.get_dialogue(&"recruit").variants[0].choice
+	assert_eq(choice.confirm_set, [&"recruit_yes"] as Array[StringName])
+	assert_eq(choice.cancel_set, [&"recruit_no", &"recruit_refused"] as Array[StringName])
+	assert_eq(_library.get_set_flags(),
+		[&"recruit_no", &"recruit_refused", &"recruit_yes"] as Array[StringName],
+		"drapeaux du choix comptés comme levés (tests de données)")
+
+
+func test_choice_without_flags_has_empty_lists() -> void:
+	assert_true(_library.add_from_dict({"q": {"pages": ["Sûr ?"],
+		"choice": {"confirm": "OUI", "cancel": "NON"}}}, "test"))
+	var choice := _library.get_dialogue(&"q").variants[0].choice
+	assert_true(choice.confirm_set.is_empty())
+	assert_true(choice.cancel_set.is_empty())
+
+
+func test_invalid_choice_flags_are_rejected() -> void:
+	var bad: Array = [
+		{"confirm": "OUI", "cancel": "NON", "confirm_set": []},
+		{"confirm": "OUI", "cancel": "NON", "cancel_set": "recruit_no"},
+		{"confirm": "OUI", "cancel": "NON", "confirm_set": [""]},
+		{"confirm": "OUI", "cancel": "NON", "cancel_set": [3]},
+	]
+	for i: int in bad.size():
+		assert_false(_library.add_from_dict({"bad_%d" % i: {"pages": ["?"], "choice": bad[i]}},
+			"test"), str(bad[i]))
+	assert_push_error_count(bad.size())
+	assert_eq(_library.size(), 0)

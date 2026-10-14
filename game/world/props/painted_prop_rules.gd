@@ -265,6 +265,137 @@ const RULES: Dictionary[StringName, Dictionary] = {
 	&"int_escalier_deco_01": {"width": 3, "depth": 2},
 	&"int_tapis_rouge_01": {"traversable": true, "layer": LAYER_GROUND},
 	&"int_tapis_labo_pokeball_01": {"traversable": true, "layer": LAYER_GROUND},
+	# --- Série 14 : Route 3 et Mont Sélénite (J12 T6, fiche `serie-14-mont-selenite.md`). ---
+	# Entrée de la grotte `Q` (module 4 × 3, ancre (74, 9)) : les deux cases de l'ouverture au
+	# bas de l'emprise restent libres (la carte y pose le passage), le reste est bloqué.
+	&"relief_entree_grotte_01": {"width": 4, "depth": 3,
+		"open": [Vector2i(-1, 0), Vector2i(0, 0)]},
+	# Paroi d'ardoise (4 modules ≈ 5 × 3, comme la série 12) : relief du sol sans emprise, les
+	# cases `K` / `#` sont bloquées par la carte ; les modules se chevauchent.
+	&"relief_paroi_ardoise_01": {"traversable": true, "layer": LAYER_GROUND},
+	&"relief_paroi_ardoise_02": {"traversable": true, "layer": LAYER_GROUND},
+	&"relief_paroi_ardoise_03": {"traversable": true, "layer": LAYER_GROUND},
+	&"relief_paroi_ardoise_04": {"traversable": true, "layer": LAYER_GROUND},
+	# Parois de la grotte (faces, angles, bords, lèvre) : posées sur des cases `#` déjà solides
+	# par `cave_map_kit` (T9), triées au pied dans `Entities` (une face passe devant un
+	# personnage au nord de la masse), sans emprise propre. Pied au milieu d'une case (largeur
+	# impaire : faces 3, bord 1, lèvre 3) ou sur un bord (angles de 2 cases).
+	&"relief_paroi_grotte_01": {"traversable": true, "align": ALIGN_CENTRE},
+	&"relief_paroi_grotte_02": {"traversable": true, "align": ALIGN_CENTRE},
+	&"relief_paroi_grotte_03": {"traversable": true, "align": ALIGN_EDGE},
+	&"relief_paroi_grotte_04": {"traversable": true, "align": ALIGN_EDGE},
+	&"relief_paroi_grotte_05": {"traversable": true, "align": ALIGN_CENTRE},
+	&"relief_paroi_grotte_06": {"traversable": true, "align": ALIGN_CENTRE},
+	# Repères minéraux : colonne du carrefour 2 × 3, colonnes fines, rochers et éclats 1 × 1.
+	&"prop_colonne_grotte_01": {"width": 2, "depth": 3},
+	&"prop_colonne_grotte_02": {"width": 1, "depth": 1},
+	&"prop_rocher_grotte_01": {"width": 1, "depth": 1},
+	&"prop_rocher_grotte_02": {"width": 1, "depth": 1},
+	&"prop_eclats_lune_01": {"width": 1, "depth": 1},
+	&"prop_eclats_lune_02": {"width": 1, "depth": 1},
+	# Mare `w` et puits de jour `j` : à plat dans la couche du sol (la mare est bloquée par la
+	# grille, on marche dans la lumière du puits).
+	&"prop_mare_grotte_01": {"traversable": true, "layer": LAYER_GROUND},
+	&"decal_puits_jour_01": {"traversable": true, "layer": LAYER_GROUND, "material": false},
+	# Camp et indices Rocket : lampe, caisses (1 × 1, empilées 2 × 1), projecteur, outils ;
+	# tranchée de fouille 3 × 3 à plat (couche du sol, cases `F` bloquées).
+	&"prop_lampe_chantier_01": {"width": 1, "depth": 1},
+	&"prop_caisse_r_01": {"width": 1, "depth": 1},
+	&"prop_caisse_r_02": {"width": 2, "depth": 1},
+	&"prop_tranchee_01": {"width": 3, "depth": 3, "layer": LAYER_GROUND},
+	&"prop_projecteur_01": {"width": 1, "depth": 1},
+	&"prop_outils_fouille_01": {"width": 1, "depth": 1},
+	# Échelles : warps « en marchant dessus », le décor ne bloque pas leur case ; couche du sol
+	# (une échelle ne passe jamais devant le personnage qui la prend).
+	&"prop_echelle_descend_01": {"traversable": true, "layer": LAYER_GROUND,
+		"align": ALIGN_CENTRE},
+	&"prop_echelle_monte_01": {"traversable": true, "layer": LAYER_GROUND,
+		"align": ALIGN_CENTRE},
+	# Dalle des fossiles 3 × 1 ; fossiles posés dessus (cases de la dalle, déjà bloquées) : sans
+	# emprise (en jeu, les fossiles choisis sont des objets fixes `object/fossil_*`).
+	&"prop_dalle_01": {"width": 3, "depth": 1},
+	&"prop_fossile_dome_01": {"traversable": true, "align": ALIGN_CENTRE},
+	&"prop_fossile_nautile_01": {"traversable": true, "align": ALIGN_CENTRE},
+	# Indices des objets cachés : la case de l'indice est bloquée (point d'examen).
+	&"prop_indice_caillou_01": {"width": 1, "depth": 1},
+	&"prop_indice_eclat_01": {"width": 1, "depth": 1},
+	# --- Série 15 : Route 4, Azuria, Route 24 (J13 T5, fiche `serie-15-azuria.md`). ---
+	# Arène (12 × 7, porte (40..41, 9)) et magasin de vélos (8 × 7, porte (38..39, 35)) :
+	# emprise = toute l'image, les deux cases de la porte restent libres au bas.
+	&"bldg_arene_azuria_01": {"shadow": true, "width": 12, "depth": 7, "fade": true,
+		"open": [Vector2i(-1, 0), Vector2i(0, 0)]},
+	&"bldg_velos_01": {"shadow": true, "width": 8, "depth": 7, "fade": true,
+		"open": [Vector2i(-1, 0), Vector2i(0, 0)]},
+	# Îlot de la Grotte Azurée : à plat sur l'eau (couche du sol), les cases `K` et `A` sont
+	# bloquées par la carte.
+	&"relief_grotte_azuree_01": {"traversable": true, "layer": LAYER_GROUND,
+		"align": ALIGN_EDGE},
+	# Quais et berges : modules posés **dans les cases d'eau** (déjà solides) par
+	# `cerulean_map_kit`, dans la couche du sol ; 06 = escalier de quai posé à la main.
+	&"relief_quai_01": {"traversable": true, "layer": LAYER_GROUND, "align": ALIGN_EDGE},
+	&"relief_quai_02": {"traversable": true, "layer": LAYER_GROUND, "align": ALIGN_EDGE},
+	&"relief_quai_03": {"traversable": true, "layer": LAYER_GROUND, "align": ALIGN_EDGE},
+	&"relief_quai_04": {"traversable": true, "layer": LAYER_GROUND, "align": ALIGN_CENTRE},
+	&"relief_quai_05": {"traversable": true, "layer": LAYER_GROUND, "align": ALIGN_CENTRE},
+	&"relief_quai_06": {"traversable": true, "layer": LAYER_GROUND, "align": ALIGN_EDGE},
+	&"relief_berge_01": {"traversable": true, "layer": LAYER_GROUND, "align": ALIGN_EDGE},
+	&"relief_berge_02": {"traversable": true, "layer": LAYER_GROUND, "align": ALIGN_EDGE},
+	&"relief_berge_03": {"traversable": true, "layer": LAYER_GROUND, "align": ALIGN_EDGE},
+	&"relief_berge_04": {"traversable": true, "layer": LAYER_GROUND, "align": ALIGN_CENTRE},
+	&"relief_berge_05": {"traversable": true, "layer": LAYER_GROUND, "align": ALIGN_CENTRE},
+	# Touffe de roseaux isolée dans l'eau (1 × 1, case d'eau).
+	&"prop_roseaux_01": {"width": 1, "depth": 1},
+	# Tabliers de pont (cases `B`, praticables) : à plat, sous les personnages. Ville : 2, 3 de
+	# large (nord-sud) et est-ouest ; Pont Pépite : 3 variantes de 2 de large.
+	&"prop_pont_ville_01": {"traversable": true, "layer": LAYER_GROUND, "align": ALIGN_EDGE},
+	&"prop_pont_ville_03_01": {"traversable": true, "layer": LAYER_GROUND,
+		"align": ALIGN_CENTRE},
+	&"prop_pont_ville_ew_01": {"traversable": true, "layer": LAYER_GROUND,
+		"align": ALIGN_EDGE},
+	&"prop_pont_pepite_tablier_01": {"traversable": true, "layer": LAYER_GROUND,
+		"align": ALIGN_EDGE},
+	&"prop_pont_pepite_tablier_02": {"traversable": true, "layer": LAYER_GROUND,
+		"align": ALIGN_EDGE},
+	&"prop_pont_pepite_tablier_03": {"traversable": true, "layer": LAYER_GROUND,
+		"align": ALIGN_EDGE},
+	# Garde-corps et piles du Pont Pépite : posés dans les cases d'eau qui flanquent le tablier
+	# (jamais sur une case praticable), triés au pied.
+	&"prop_pont_pepite_garde_corps_01": {"width": 1, "depth": 1},
+	&"prop_pont_pepite_pile_01": {"width": 1, "depth": 1},
+	# Mobilier de ville d'eau.
+	&"prop_jardiniere_pierre_01": {"width": 1, "depth": 1},
+	&"prop_jardiniere_pierre_02": {"width": 1, "depth": 1},
+	&"prop_arbre_bac_01": {"width": 1, "depth": 1, "fade": true},
+	&"prop_banc_pierre_01": {"width": 2, "depth": 1},
+	&"prop_lampadaire_quai_01": {"width": 1, "depth": 1},
+	&"prop_bitte_01": {"width": 1, "depth": 1},
+	# Cambriolage : clôture arrachée 3 × 1, porte condamnée posée sur la façade (case `f` déjà
+	# bloquée), pot renversé, trou dans la clôture, ruban 2 × 1.
+	&"prop_cloture_arrachee_01": {"width": 3, "depth": 1},
+	&"prop_porte_condamnee_01": {"width": 1, "depth": 1},
+	&"prop_pot_renverse_01": {"width": 1, "depth": 1},
+	&"prop_cloture_trou_01": {"width": 1, "depth": 1},
+	&"prop_ruban_01": {"width": 2, "depth": 1},
+	# Fermetures : palissade de chantier 3 × 1 (×2), barrière à croisillon 2 × 1.
+	&"prop_palissade_chantier_01": {"width": 3, "depth": 1},
+	&"prop_palissade_chantier_02": {"width": 3, "depth": 1},
+	&"prop_barriere_croisillon_01": {"width": 2, "depth": 1},
+	# Route 4 : rebord et versant en roche ardoise (cases du rebord / `~` bloquées par la carte).
+	&"relief_rebord_ardoise_01": {"traversable": true, "layer": LAYER_GROUND,
+		"align": ALIGN_CENTRE},
+	&"relief_falaise_ardoise_01": {"traversable": true, "layer": LAYER_GROUND,
+		"align": ALIGN_CENTRE},
+	&"relief_falaise_ardoise_02": {"traversable": true, "layer": LAYER_GROUND,
+		"align": ALIGN_CENTRE},
+	# Intérieurs : plongeoir 2 × 1 contre le mur du fond, banc de piscine 2 × 1, porte-bouées,
+	# vélos exposés 2 × 1, étagère de casques 4 × 1.
+	&"int_plongeoir_01": {"width": 2, "depth": 1},
+	&"int_banc_piscine_01": {"width": 2, "depth": 1},
+	&"int_porte_bouees_01": {"width": 1, "depth": 1},
+	&"int_velo_expose_01": {"width": 2, "depth": 1},
+	&"int_velo_expose_02": {"width": 2, "depth": 1},
+	&"int_velo_expose_03": {"width": 2, "depth": 1},
+	&"int_etagere_casques_01": {"width": 4, "depth": 1},
 }
 
 

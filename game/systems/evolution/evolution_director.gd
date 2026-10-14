@@ -14,6 +14,10 @@ extends Node
 ## dans le bandeau de l'écran. Rien n'est écrit sur disque ici : une application tuée pendant
 ## l'écran reprend à la dernière sauvegarde (l'autosave suit [signal BattleDirector.battle_finished]).
 ##
+## Jalon 12 (T23, `jalon-12.md` §2.9) : [method play_item] joue une évolution par pierre, hors
+## combat, **non annulable** ([member EvolutionCandidate.cancellable] faux : ni ARRÊTER ni retour
+## Android) ; [signal evolution_applied] est émis au moment exact où l'évolution est appliquée.
+##
 ## Sans écran ([method set_screen] jamais appelé : tests, outils), l'évolution est appliquée sans
 ## attendre et les capacités sont apprises s'il reste une place (sinon rien ne change : aucun
 ## choix n'est fait à la place du joueur). Il ne lit aucun autoload : GameState arrive par
@@ -23,6 +27,11 @@ extends Node
 signal evolution_started(party_index: int, into: StringName)
 ## Une évolution est terminée, capacités comprises ; [param cancelled] : arrêtée par le joueur.
 signal evolution_finished(party_index: int, into: StringName, cancelled: bool)
+## L'évolution vient d'être appliquée aux données (jalon 12, T23) : émis **dans le même appel**
+## que [method Evolution.evolve], avant la révélation et les capacités ; jamais pour une
+## évolution annulée. Boot y retire la pierre d'une [method play_item] (même image : jamais une
+## pierre consommée sans évolution, ni l'inverse).
+signal evolution_applied(party_index: int, into: StringName)
 
 ## Relayé à l'écran avant chaque ouverture (0 = instantané, tests).
 var speed_scale: float = 1.0
@@ -108,12 +117,14 @@ func _play_one(candidate: EvolutionCandidate, party: Party, screen: EvolutionScr
 	var cancelled := false
 	if screen != null:
 		await screen.present(view)
-		cancelled = await screen.transform()
+		# Non annulable (pierre) : l'écran n'offre pas l'arrêt ; une réponse contraire est ignorée.
+		cancelled = await screen.transform() and candidate.cancellable
 	var moves: Array[StringName] = []
 	if not cancelled:
 		moves = Evolution.evolve(pokemon, candidate.into, _data)
 		if _state != null:
 			_state.record_evolved(candidate.into)
+		evolution_applied.emit(candidate.party_index, candidate.into)
 	_log(view, cancelled)
 	if screen != null:
 		if cancelled:
@@ -138,6 +149,7 @@ func make_view(candidate: EvolutionCandidate, pokemon: Pokemon) -> EvolutionView
 	view.into_name = into.name if into != null else String(candidate.into)
 	view.from_dex = from.dex if from != null else 0
 	view.into_dex = into.dex if into != null else 0
+	view.cancellable = candidate.cancellable
 	if _texts != null:
 		# Le nom est celui d'avant l'évolution ; {species} lit l'espèce de l'événement.
 		var event := BattleEvent.new(BattleEvent.Kind.BATTLE_STARTED, BattleEvent.SideId.PLAYER)
@@ -172,3 +184,19 @@ static func _log(view: EvolutionView, cancelled: bool) -> void:
 		return
 	print("[qa] évolution %s → %s (%s)" % [view.from_name, view.into_name,
 		"annulée" if cancelled else "faite"])
+
+
+## Coroutine (jalon 12, T23 ; `jalon-12.md` §2.9) : évolution par objet hors combat — la pierre
+## [param item_id] utilisée depuis le Sac sur [param candidate] ([method StoneUse.candidate]).
+## Comme [method play] d'un seul candidat, mais **non annulable** (ni ARRÊTER, ni retour
+## Android) ; le candidat est recopié avec [param item_id]. L'objet n'est pas touché ici : c'est
+## l'écouteur de [signal evolution_applied] (Boot) qui le retire.
+func play_item(candidate: EvolutionCandidate, party: Party, item_id: StringName) -> void:
+	if candidate == null:
+		return
+	var stone := EvolutionCandidate.new(candidate.party_index, candidate.from_species,
+		candidate.into)
+	stone.cancellable = false
+	stone.item_id = item_id
+	var list: Array[EvolutionCandidate] = [stone]
+	await play(list, party)

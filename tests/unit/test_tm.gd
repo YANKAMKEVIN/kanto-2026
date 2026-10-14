@@ -50,7 +50,8 @@ func test_compatibilities_of_rouge_bleu() -> void:
 		if _data.can_learn_tm(id, 34):
 			count += 1
 	# Jalon 15 (T12) : Miaouss et Persan, compatibles (Rouge/Bleu).
-	assert_eq(count, 36, "36 espèces sur 40 (dossier 14 §6.1)")
+	assert_eq(count, 57, "57 espèces sur 61 (dossier 14 §6.1 ; + 12 du jalon 12, + 9 du jalon"
+		+ " 13, + 2 du jalon 15)")
 
 
 func test_check_and_teach() -> void:

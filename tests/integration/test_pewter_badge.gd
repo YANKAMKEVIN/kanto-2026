@@ -8,7 +8,8 @@ extends GutTest
 ## - au premier passage à Argenta : « Badge Roche confirmé. / Bonne route ! », le garde fait un
 ##   pas de côté vers (48, 23), `route_3_guard_cleared`, le joueur reste libre sur place ;
 ## - deuxième passage : plus de scène (le garde ne le dit qu'une fois) ; la sortie est mène à
-##   « ROUTE 3 — À venir » (l'écran provisoire), puis rend la main sur la même case ;
+##   la vraie Route 3, en (0, 26) tourné vers l'est (jalon 12 T8, jalon-12.md §2.17 ; jusqu'au
+##   J11 : « ROUTE 3 — À venir »), et le bord ouest de la Route 3 ramène sur la case de sortie ;
 ## - sauvegarde et rechargement : le garde est toujours décalé, jamais en double, le drapeau et le
 ##   Grand moment sont relus ;
 ## - écran Dresseur : le Badge Roche, les sept autres en silhouette.
@@ -32,6 +33,8 @@ const GUARD_ASIDE := Vector2i(48, 23)
 const LOCK_CELL := Vector2i(48, 26)
 const BEFORE_LOCK := Vector2i(47, 26)
 const EXIT_CELL := Vector2i(51, 26)
+const ROUTE_3 := &"route_3"
+const ROUTE_3_ARRIVAL := Vector2i(0, 26)
 const CLEARED := "Badge Roche confirmé.\nBonne route !"
 
 var _fs: MemoryFs
@@ -238,18 +241,22 @@ func test_the_badge_from_the_gym_to_the_east_exit_and_the_reload() -> void:
 	assert_eq(map.get_npc(&"route_3_guard").get_cell(), GUARD_ASIDE, "toujours décalé")
 	assert_true(_player.is_input_enabled())
 
-	# La sortie est : « ROUTE 3 — À venir », puis retour sur la même case.
-	var soon := _boot.get_coming_soon_screen()
-	soon.fade_duration = 0.01
-	soon.hold_duration = 0.01
+	# La sortie est : la Route 3 (J12 T8), puis retour par son bord ouest sur la même case.
+	await _walk(Vector2i.RIGHT, EXIT_CELL)
 	Input.action_press(&"move_right")
-	await wait_until(func() -> bool: return soon.is_showing(), TIMEOUT)
+	await wait_until(func() -> bool: return _boot.get_map().map_id == ROUTE_3, TIMEOUT)
 	Input.action_release(&"move_right")
-	assert_eq(soon.get_label().text, "ROUTE 3 — À venir")
-	await wait_until(func() -> bool: return not soon.is_showing(), TIMEOUT)
 	await wait_until(func() -> bool: return not SceneRouter.is_transitioning(), TIMEOUT)
-	assert_eq(_boot.get_map().map_id, CITY, "toujours à Argenta")
+	assert_false(_boot.get_coming_soon_screen().is_showing(), "plus d'écran « à venir »")
+	assert_eq(_player.get_cell(), ROUTE_3_ARRIVAL, "Route 3, rangée du milieu")
+	assert_eq(_player.get_facing(), Vector2i.RIGHT, "tourné vers l'est")
+	assert_true(_player.is_input_enabled())
+	Input.action_press(&"move_left")
+	await wait_until(func() -> bool: return _boot.get_map().map_id == CITY, TIMEOUT)
+	Input.action_release(&"move_left")
+	await wait_until(func() -> bool: return not SceneRouter.is_transitioning(), TIMEOUT)
 	assert_eq(_player.get_cell(), EXIT_CELL, "retour sur la case de sortie")
+	assert_eq(_player.get_facing(), Vector2i.LEFT)
 	assert_true(_player.is_input_enabled())
 
 	# Sauvegarde puis rechargement : garde décalé, jamais en double, tout relu.

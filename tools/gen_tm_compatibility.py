@@ -5,8 +5,9 @@ Dossier 14 §6.1 : compatibilité **par espèce**, reprise de Rouge/Bleu (valeur
 Source : les CSV publics de PokeAPI (dépôt PokeAPI/pokeapi, `data/v2/csv/`) : `pokemon_moves.csv`,
 `moves.csv`, `pokemon.csv`, `machines.csv`, `version_groups.csv`, `pokemon_move_methods.csv`.
 Écrit `data/pokemon/tm_compatibility.json` (CT 01–50 → capacité, espèce → numéros de CT), pour
-**toutes** les espèces des fichiers `data/pokemon/species/*.json` (ordre alphabétique des
-fichiers, comme `PokemonData` ; J15 : `kanto_vermilion.json`). Lu par `PokemonData`
+**toutes** les espèces des fichiers `data/pokemon/species/*.json` (jalon 12 : `kanto.json` et
+`kanto_mt_moon.json` ; J15 : `kanto_vermilion.json` ; les fichiers à part des jalons suivants aussi), par numéro de Pokédex.
+Fichier **généré** : en cas de conflit de fusion, le régénérer, ne jamais le fusionner à la main. Lu par `PokemonData`
 (`can_learn_tm`, lot CT 11B, `jalon-11.md` §2.6).
 
 Usage : python3 -I tools/gen_tm_compatibility.py DOSSIER_DES_CSV
@@ -51,10 +52,11 @@ def main() -> None:
 			ct_par_capacite[ligne["move_id"]] = numero
 			tms[f"{numero:02d}"] = capacites[ligne["move_id"]]
 	assert len(tms) == 50, f"50 CT attendues, {len(tms)} trouvées"
-	especes: dict[str, object] = {}
+	toutes: dict[str, dict] = {}
 	for fichier in sorted(ESPECES.glob("*.json")):
 		contenu = json.loads(fichier.read_text(encoding="utf-8"))
-		especes.update(contenu.get("species", contenu))
+		toutes.update(contenu.get("species", contenu))
+	especes = sorted(toutes, key=lambda espece: toutes[espece]["dex"])
 	compat: dict[str, set[int]] = {espece: set() for espece in especes}
 	for ligne in _lire(dossier, "pokemon_moves"):
 		if ligne["version_group_id"] != groupe or ligne["pokemon_move_method_id"] != methode:
@@ -68,8 +70,9 @@ def main() -> None:
 			"tools/gen_tm_compatibility.py depuis les CSV de PokeAPI ; lues par PokemonData "
 			"(jalon 11, lot 11B). « tms » : numéro de CT → capacité (identifiants du jeu). « species » : "
 			"espèce → numéros de CT compatibles (vide = aucune CT, comme Chenipan ou Aspicot). "
-			"Seule la CT34 (Patience, « bide ») existe au J11 ; les autres CT arrivent avec leur "
-			"capacité et leur lieu."),
+			"Objets CT existants : CT34 (Patience, « bide », J11) et CT01 (Ultimapoing, « mega_punch », "
+			"J12) ; les autres CT arrivent avec leur capacité et leur lieu. Fichier généré : le "
+			"régénérer après une fusion, jamais le fusionner à la main."),
 		"tms": dict(sorted(tms.items())),
 		"species": {espece: sorted(compat[espece]) for espece in especes},
 	}

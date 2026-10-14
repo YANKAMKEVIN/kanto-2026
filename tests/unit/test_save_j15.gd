@@ -11,6 +11,9 @@ const PATH := "user://test/save.json"
 ## Vraie partie de Kevin en v6 (S21, relevée après la QA du T16 du J11, sha1 6a4868a…) :
 ## 4 Pokémon, Jadielle.
 const FIXTURE_V6_REAL := "res://tests/fixtures/save/v6_kevin.json"
+## Vraie partie v6 de Kevin relevée sur le S21 le 2026-10-14 (clôture du J12, relue aussi par
+## `test_save_kevin_j12`).
+const FIXTURE_V6_S21 := "res://tests/fixtures/save/v6_kevin_s21.json"
 const TOOL_START := "res://tools/debug_start/daycare_v7_qa.json"
 
 var _fs: SaveFileSystem
@@ -145,6 +148,27 @@ func test_the_real_v6_save_of_kevin_migrates_to_v7_without_any_other_change() ->
 	var before: Dictionary = original.duplicate(true)
 	before.erase("version")
 	assert_eq(saved, before, "rien d'autre ne change (uid, compagnon, équipe, Sac, drapeaux…)")
+
+
+## Fusion du J12 dans le J15 : la partie réelle du S21 (2026-10-14) passe en v7 et la seule
+## clé ajoutée est « daycare » (vide), à la lecture comme à l'écriture.
+func test_the_real_v6_s21_save_of_kevin_gains_only_an_empty_daycare() -> void:
+	var original := _fixture(FIXTURE_V6_S21)
+	assert_eq(int(original["version"]), 6, "la fixture est bien une v6")
+	assert_false(original.has("daycare"), "pas encore de Pension en v6")
+	var state := _load_through_save(original.duplicate(true))
+	assert_eq(_save.read_version, 6, "lue comme une v6")
+	assert_true(state.daycare.is_empty(), "Pension vide")
+	var written := _written(state)
+	assert_eq(int(written["version"]), 7, "réécrite en v7")
+	var added: Array = written.keys().filter(func(key: Variant) -> bool:
+		return not original.has(key))
+	assert_eq(added, ["daycare"], "une seule clé nouvelle")
+	assert_eq(written["daycare"], {}, "Pension vide écrite")
+	var expected: Dictionary = original.duplicate(true)
+	expected["version"] = 7
+	expected["daycare"] = {}
+	assert_eq(written, JSON.parse_string(JSON.stringify(expected)), "rien d'autre ne change (équipe, uid, Sac, drapeaux, position…)")
 
 
 func test_the_real_v6_save_keeps_its_uids() -> void:

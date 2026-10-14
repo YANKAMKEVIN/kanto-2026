@@ -1,0 +1,29 @@
+DÉCOR DE COMBAT — CHAMBRE DES FOSSILES, MONT SÉLÉNITE (Kanto 2026). Image de PRODUCTION : le fond peint d'un écran de combat Pokémon sur smartphone en paysage, dans une chambre de grotte aménagée en chantier. AUCUN Pokémon, AUCUN personnage, AUCUNE interface, AUCUN texte.
+
+Trois images sont jointes.
+IMAGE 1 : un écran de combat de référence. Reprends sa VUE (caméra à hauteur d'yeux, légèrement plongeante, grand sol dégagé au centre), sa profondeur et sa qualité de peinture. Ne reprends PAS : les Pokémon, les cartes, les boutons, la rivière, le pont, le ciel.
+IMAGE 2 : une planche d'intention de décors de combat ; prends la dernière case (« Argenta — intérieur de l'Arène de Pierre », roche en blocs, faisceaux de lumière tombant d'en haut, sol de poussière) comme guide de la facture d'une salle de roche éclairée. Ne reprends PAS sa teinte orange.
+IMAGE 3 : la vue générale (de dessus) du Mont Sélénite ; l'étage du bas montre la chambre des fossiles : dalle de pierre claire, projecteurs de chantier sur trépieds, caisses rouges marquées d'un R, parois sombres bleu ardoise.
+
+FORMAT : paysage très large, rapport 2,17 : 1 (comme 2340 × 1080), la plus grande résolution possible, OPAQUE, cadrage plein, sans bord.
+
+LIEU : la chambre où la Team Rocket fouille des fossiles, aménagée comme un chantier. Parois d'ardoise bleu sombre tout autour (blocs de roche, plafond bas), SOL de pierre claire et de poussière, quelques dalles plates. Deux PROJECTEURS DE CHANTIER sur trépieds métalliques gris, allumés, dirigés vers le centre de la chambre, qui y créent une LUMIÈRE BLANCHE UN PEU CRUE (blanc légèrement bleuté, pas jaune) ; bleu sombre autour, dans les parois et les coins. Deux ou trois CAISSES en bois rouge sombre avec un grand R blanc peint sur la face (le R est le seul signe graphique autorisé), empilées à distance, à droite et au fond ; quelques câbles au sol dans les coins, un tas de gravats avec une pelle plantée, une bâche. Pas de fossile visible, pas de Pokémon, pas de personnage. Jamais noir : les parois restent bleu nuit détaillé, le centre du sol est clair et net.
+
+COMPOSITION (positions en fractions de la largeur et de la hauteur de l'image, depuis le coin haut gauche) — à respecter précisément :
+- Fond (30 à 36 % de la hauteur) : la paroi du fond de la chambre en roche bleu ardoise, deux projecteurs sur trépied de part et d'autre (x 22 % et x 78 %), caisses marquées R à droite du fond (x 80 à 90 %), un tas de gravats avec une pelle à gauche (x 8 à 18 %).
+- De 40 % de la hauteur jusqu'en bas : un GRAND SOL DÉGAGÉ et PLAT de pierre claire et de poussière, éclairé de blanc cru au centre, où deux créatures pourront se faire face.
+- Point A (x 67 %, y 50 %) : sol plat, clair et lisible, en pleine lumière des projecteurs. Rien de haut dans un rayon de 12 % de la largeur autour.
+- Point B (x 31 %, y 97 %) : sol plat de pierre et de poussière, une grande créature vue de dos y sera au premier plan. Rien de haut autour.
+- ZONE CALME en HAUT À GAUCHE (de 0 à 50 % de la largeur, de 0 à 45 % de la hauteur) : peu de détails et peu de contraste, valeurs simples (paroi lisse bleu sombre mais lisible, aucun projecteur éblouissant dans cette zone hormis celui à x 22 % qui reste doux).
+- ZONE CALME en BAS À DROITE (de 50 à 100 % de la largeur, de 55 à 100 % de la hauteur) : sol simple, presque sans objet, valeurs moyennes, sans contraste fort.
+- Les deux coins du bas restent du SOL nu : ni caisse, ni câble, ni rocher en gros plan.
+- Les 9 % de gauche et de droite de l'image ne contiennent rien d'important (ils seront rognés sur certains écrans).
+
+SOL : dalles et poussière de pierre variées, traces effacées, jamais uniforme ; aucun câble ni objet dans la zone centrale.
+
+PERSPECTIVE : à hauteur d'yeux, un peu plongeante ; le sol recule nettement vers le fond. Netteté partout (aucun flou de profondeur, pas de vignettage).
+
+RENDU (ADN visuel Kanto 2026) : illustration 2D peinte numériquement, RPG Pokémon moderne « HD-2D peint », formes simples, lisibles et arrondies, grandes masses douces (jamais en petits points ni en pixels), aucun trait noir (contours fins et doux plus sombres que la couleur), couleurs riches sans être fluo.
+LUMIÈRE : projecteurs de chantier blancs et un peu crus au centre, formant de grandes taches de lumière douce sur le sol (pas de faisceaux volumétriques épais) ; BLEU SOMBRE tout autour (parois, plafond, coins) mais lisible ; ombres bleu nuit, jamais noires.
+
+INTERDITS : Pokémon, fossile, animal, personnage, silhouette, texte (hormis la lettre R blanche sur les caisses), chiffres, logo, signature, filigrane, cadre, interface, ciel, soleil, végétation, flammes, eau, noir pur, pixel art, flou, vignettage.

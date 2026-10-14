@@ -12,6 +12,9 @@ extends PanelContainer
 ##   jamais tapped.
 ## Seule la souris compte (émulée depuis le toucher sur le téléphone, réelle sur Mac) : un
 ## toucher n'est jamais compté deux fois. Vide ou sans PP, la carte est inerte.
+## Bloquée par Entrave (jalon 12, T14) : grisée (fond neutre, sans la teinte du type), cadenas à
+## la place de l'icône du type, « BLOQUÉE » à la place de la puissance, inerte (même pas la
+## fiche de pression longue) ; la pastille du type reste lisible.
 
 signal pressed_down
 signal tapped
@@ -27,6 +30,8 @@ const STATUS_TEXT := "Statut"
 const NO_VALUE := "—"
 ## Icône neutre (anneau, comme NORMAL sur la référence) pour un type sans icône.
 const GENERIC_ICON: Texture2D = preload("res://assets/ui/icons/types/normal.svg")
+## Cadenas d'une capacité bloquée (Entrave, jalon 12).
+const BLOCKED_ICON: Texture2D = preload("res://assets/ui/icons/battle/lock.svg")
 
 ## Vrai : la carte réagit même à 0 PP et n'est jamais atténuée (panneau d'oubli : on peut
 ## oublier une capacité sans PP). Les PP à 0 restent en rouge.
@@ -125,9 +130,14 @@ func is_empty() -> bool:
 	return _view == null
 
 
-## Une capacité avec des PP (ou ignore_pp) : elle réagit au toucher.
+## Une capacité avec des PP (ou ignore_pp), non bloquée : elle réagit au toucher.
 func is_usable() -> bool:
-	return _view != null and (ignore_pp or _view.is_usable())
+	return _view != null and not _view.blocked and (ignore_pp or _view.is_usable())
+
+
+## Capacité bloquée par Entrave (grisée, « BLOQUÉE », inerte).
+func is_blocked() -> bool:
+	return _view != null and _view.blocked
 
 
 ## Le doigt est posé sur la carte.
@@ -168,13 +178,21 @@ func _apply() -> void:
 	if not empty:
 		_name_label.text = _view.display_name.to_upper()
 		_pp_value.text = PP_FORMAT % [_view.pp, _view.max_pp]
-		if _view.is_usable():
+		if _view.pp > 0:
 			_pp_value.remove_theme_color_override(&"font_color")
 		else:
 			_pp_value.add_theme_color_override(&"font_color", UiTokens.MOVE_PP_EMPTY)
 		_power.text = power_text(_view)
 		_badge.set_type(_view.type_id, _view.type_name)
 		_icon.texture = TypeBadge.ICONS.get(_view.type_id, GENERIC_ICON)
+		# Bloquée : « BLOQUÉE » en gras (style des PP), à la place de la puissance.
+		_power.theme_type_variation = &"MoveCardPp" if _view.blocked else &"MoveCardPower"
+		if _view.blocked:
+			_power.text = _view.blocked_text
+			_power.add_theme_color_override(&"font_color", UiTokens.MOVE_CARD_BLOCKED_TEXT)
+			_icon.texture = BLOCKED_ICON
+		else:
+			_power.remove_theme_color_override(&"font_color")
 	_apply_style()
 
 
@@ -195,7 +213,10 @@ func _apply_style() -> void:
 	var style := (get_theme_stylebox(&"panel") as StyleBoxFlat).duplicate() as StyleBoxFlat
 	var type_color: Color = UiTokens.TYPE_COLORS.get(_view.type_id, UiTokens.TYPE_COLOR_UNKNOWN)
 	style.bg_color = UiTokens.PANEL_BG.lerp(type_color, UiTokens.MOVE_CARD_TINT)
-	if not _selected:
+	if _view.blocked:
+		style.bg_color = UiTokens.MOVE_CARD_BLOCKED_BG
+		style.border_color = UiTokens.MOVE_CARD_BLOCKED_BORDER
+	elif not _selected:
 		var border := type_color
 		border.a = UiTokens.MOVE_CARD_BORDER_ALPHA
 		style.border_color = border

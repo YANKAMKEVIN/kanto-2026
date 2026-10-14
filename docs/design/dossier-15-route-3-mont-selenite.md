@@ -136,7 +136,7 @@ choisie à la main** (capacités apprises au niveau, comme la forêt).
 | D3 | Scout Sacha | ② chemin nord | oui | Chenipan Nv. 10, Aspicot Nv. 10, Chrysacier Nv. 10 | 120 |
 | D4 | Gamin Enzo | ② chemin sud | oui | Piafabec Nv. 14 | 210 |
 | D5 | Fillette Inès | ② détour | oui | Rondoudou Nv. 14 | 210 |
-| D6 | Scout Nolan | ③ détour | oui | Aspicot Nv. 9, Coconfort Nv. 9, Kakuna Nv. 9 | 108 |
+| D6 | Scout Nolan | ③ détour | oui | Aspicot Nv. 9, Coconfort Nv. 9, Chenipan Nv. 9 [D, 2026-10-11 : « Kakuna » = Coconfort, doublon corrigé] | 108 |
 
 Rouge/Bleu en compte 8 ; 6 suffisent à l'échelle A+ (V1). Modèles peints : Gamin et Scout
 existent ; **Fillette = nouveau modèle** (§16.4).
@@ -260,7 +260,7 @@ deux premiers, **`smart`** pour le final [D] ; capacités apprises au niveau.
 |---|---|---|---|---|---|
 | R1 | **Le guetteur** : surveille le bas d'une échelle | B1F | selon la grille [D : oui] | Rattata Nv. 11, Nosferapti Nv. 11 | 330 |
 | R2 | **La fouilleuse** : occupée à creuser, ne lève la tête qu'au dernier moment | B1F | non | Abo Nv. 12, Sabelette Nv. 12 | 360 |
-| R3 | **Le gardien** : sécurise l'accès à la chambre des fossiles | B2F | **oui** [V B-8] | Nosferapti Nv. 13, Abo Nv. 13, Rattatac Nv. 15 | 450 |
+| R3 | **Le gardien** : sécurise l'accès à la chambre des fossiles | B2F | **oui** [V B-8] | Nosferapti Nv. 13, Abo Nv. 13, Rattatac Nv. 13 [D, T26 2026-10-14 : 15 → 13, Croc de Mort en IA `smart` faisait de R3 un mur] | 390 |
 
 Modèles peints : **un homme, une femme** [D], réutilisés ; R3 se distingue par sa pose et sa place
 (pas de tenue de chef).
@@ -285,7 +285,7 @@ Modèles peints : **un homme, une femme** [D], réutilisés ; R3 se distingue pa
   vers l'échelle de sortie** : combat **inévitable** [V B-8].
 - **Ordre** [V B-9] : R3 vaincu et parti → le chercheur sort de l'ombre, **te prend pour un des
   leurs** (sa méfiance découle de la scène précédente) → combat → il reconnaît son erreur → partage.
-- Équipe [V B-6, niveaux D] : **Voltorbe Nv. 13, Smogo Nv. 13** ; IA `smart` ; base 25 → 325 ₽.
+- Équipe [V B-6, niveaux D] : **Voltorbe Nv. 12, Smogo Nv. 12** [D, T26 2026-10-14 : 13 → 12] ; IA `smart` ; base 25 → 300 ₽.
 - **Choix du fossile** : les deux fossiles posés sur une dalle ; le joueur **interagit avec l'un** →
   « Prendre le Fossile Dôme ? » **OUI / NON** ; OUI → objet clé, toast, le chercheur prend l'autre.
   NON → rien, on peut regarder l'autre. **Définitif** [V-6] : aucun moyen d'obtenir le second dans
@@ -293,7 +293,10 @@ Modèles peints : **un homme, une femme** [D], réutilisés ; R3 se distingue pa
 - Les fossiles vont dans les **objets clés** ; aucune indication sur leur résurrection [D] ;
   **Amonita et Kabuto non implémentés**.
 - Défaite contre le chercheur : réveil au dernier Centre ; il reprend sa garde, réplique de reprise.
-- Après le partage, le chercheur reste dans la chambre (une réplique) [D].
+- Après le partage, le chercheur reste dans la chambre (une réplique) [D] : il se range en **(15, 30)**,
+  tourné vers la dalle [D] ; case vérifiée le 2026-10-14 (grille et vraie scène) : elle ne coupe aucun
+  passage — la salle de l'échelle de sortie reste reliée au reste de la grotte par le goulet
+  (13..14, 31), juste au sud — et n'est ni sur un passage ni sur une case d'examen.
 - **Grand moment** à l'obtention du fossile [C-6].
 
 ## 10. Pierre Lune et évolutions par pierre [V B-1, B-2 ; dossier 14 A-5]
@@ -358,6 +361,7 @@ Vérification demandée par Kevin : le J11 distingue **carte d'extérieur** (com
   objet** [D].
 - **Raccord est** : « AZURIA — À venir » (mécanisme `show_coming_soon` des jalons précédents).
 - **Retour** : par la grotte (l'échelle reste praticable dans les deux sens).
+- *(2026-10-11 : la Route 4 du J13, qui prolonge ce sas, est décrite au dossier 16 §3.)*
 - **Réservé au J13** (ne rien poser au J12) : la Route 4 proprement dite (rebords à sens unique,
   Dresseurs, herbes, objets), Azuria, Pont Pépite, rival n° 3. Le J13 pourra **remplacer** le sas
   par la vraie Route 4 en gardant son point d'arrivée.

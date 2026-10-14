@@ -1,0 +1,41 @@
+CONCEPT ART — VUE GÉNÉRALE DE LA ROUTE 24 ET DU PONT PÉPITE (Kanto 2026), image de référence de direction artistique.
+
+Deux images sont jointes.
+
+IMAGE 1 : un PLAN SCHÉMATIQUE en aplats de couleur, vu du dessus, qui donne la COMPOSITION EXACTE à suivre. Le NORD est en haut ; la ville d'Azuria est au sud, hors image (en bas).
+Légende du plan :
+- vert très foncé = forêt dense infranchissable (y compris les marges de l'image, en haut et en bas) ; vert moyen = herbe rase praticable ; jaune-vert olive = HAUTES HERBES (touffues, plus hautes, où vivent les créatures sauvages), deux zones en blocs nets dans la prairie du nord ; disques verts = arbres isolés ; petits disques vert sombre = buissons bas ; carrés vert très foncé = petits bosquets denses ;
+- BLEU = EAU : une LARGE RIVIÈRE qui traverse toute l'image d'un bord à l'autre, de gauche à droite, au milieu, calme, bords droits ; en bas à gauche de la berge sud, un étroit CANAL qui monte du bord bas jusqu'à la rivière (c'est le canal de la ville d'Azuria) ;
+- bande étroite beige-gris à traverses, verticale, qui traverse toute la rivière du bord sud au bord nord = le PONT PÉPITE : un long pont plat de 2 cases de large (environ 25 cases de long), en pierre claire et planches, avec garde-corps bas continus et piles dans l'eau ;
+- grand rectangle beige-gris clair au pied du pont, sur la berge sud = la PLACE PAVÉE de pierre claire (le pied du pont), avec un arbre isolé, un banc (trait brun sur vert) et un petit carré ocre = panneau en bois SANS TEXTE à l'entrée du pont ;
+- chemin beige qui descend du bas de la place vers le bord bas de l'image, étroit (3 cases), entre forêt : la route d'Azuria ; un petit renfoncement herbeux à droite de ce chemin, juste sous la place (une niche) ;
+- au nord de la rivière : la prairie du bout du pont, bordée de forêt ; le pont débouche sur un chemin beige qui monte puis tourne à angle droit vers l'EST et sort par le bord droit de l'image (vers la route suivante, fermée dans ce jeu) ; point rouge et blanc = une balle (objet à ramasser) en haut à droite de la prairie.
+Respecte ce plan À LA LETTRE : la rivière pleine largeur, le pont long et étroit, la place pavée à son pied avec le canal à gauche, la prairie du nord avec ses deux blocs de hautes herbes, le chemin qui tourne vers l'est. Le plan ne donne que la composition : son style en aplats ne doit pas apparaître.
+
+RÈGLE ABSOLUE : le joueur se déplace case par case ; rives, quais, pont, chemins et bords des zones suivent une grille : uniquement des segments horizontaux et verticaux à angles droits, AUCUN segment en diagonale ni courbe, aucun escalier. Les berges sont droites (talus de pierre ou d'herbe taillée), l'eau n'est jamais praticable.
+
+IMAGE 2 : la vue générale d'Azuria, la ville toute proche (au sud). Respecte EXACTEMENT son style de rendu : même pinceau, même eau turquoise limpide avec petites rides, même pierre claire des quais et des ponts, mêmes arbres en masses arrondies, mêmes haies, même chemin de terre, même saturation, MÊME LUMIÈRE, mêmes personnages. Ne reprends PAS sa composition : aucun bâtiment, aucune ville.
+
+Format : PAYSAGE 1536 × 1024, vue plongeante sur toute la zone, comme le plan.
+
+RENDU (ADN visuel Kanto 2026 v1)
+- Illustration 2D peinte numériquement, dans l'esprit d'un RPG de créatures moderne au rendu « HD-2D peint » : formes simples, lisibles et arrondies, détails fins mais ordonnés. Ni pixel art, ni 3D, ni photo, ni aquarelle, ni cartoon en aplats. Le feuillage est peint en grandes masses douces.
+- Perspective : vue de dessus de trois quarts, projection oblique frontale, sans point de fuite. Les verticales restent verticales. On voit le dessus des objets et leur face avant (côté sud). Le pont est vu presque de dessus : son tablier, ses garde-corps, ses piles dans l'eau.
+- Aucun trait noir : contours fins et doux, plus sombres et plus saturés que la couleur locale. Ombres colorées bleu-vert ou violet froid, jamais grises.
+
+AMBIANCE — « l'élan » : une très large rivière claire et lumineuse, et au-dessus un long pont étroit qui invite à avancer ; au sud la place du pied du pont, au nord une prairie ouverte et tranquille. La rivière occupe le tiers central de l'image, turquoise limpide, reflets dorés du ciel, rides horizontales douces, calme.
+- La place du pied du pont : dalles de pierre claire, un arbre, un banc.
+- La prairie du nord : herbe tendre, fleurs discrètes, deux touffes de hautes herbes, trois ou quatre arbres, quelques buissons ; nature dense autour, objets rares.
+- Lumière de fin d'après-midi dorée, ombres longues et douces vers le nord-ouest.
+
+VIE (personnages petits mais lisibles, aucun ne ressemble au héros à casquette rouge et veste bleue) :
+- sur la place du pied du pont, côté est, au bord de l'eau, tournée vers le pont : une JEUNE CHAMPIONNE (cheveux roux relevés en petite queue de cheval sur le côté, débardeur jaune, short bleu, bretelles) ;
+- au fond de la niche, à droite du chemin juste sous la place, tourné vers l'ouest, vers le chemin : un JEUNE GARÇON aux cheveux bruns ébouriffés, tee-shirt noir, gilet violet, pantalon sombre, sac à dos noir, sûr de lui ;
+- SUR LE PONT, en quinconce (un à gauche du tablier, le suivant à droite, en alternance), tous tournés vers le sud, séparés par environ trois à quatre cases : cinq Dresseurs : un SCOUT (chapeau de paille, filet à insectes), une JEUNE DRESSEUSE (robe simple), un GAMIN (casquette, short), une autre JEUNE DRESSEUSE (jupe, cheveux attachés), un CAMPEUR (chapeau de feutre, sac à dos) ;
+- à l'extrémité NORD du pont, sur la berge, debout, barrant le chemin, tourné vers le sud : un RECRUTEUR en uniforme entièrement NOIR, casquette noire, gants, silhouette droite et polie, sans aucun texte ni lettre ni logo ;
+- aucun autre personnage.
+Aucune créature visible, aucun animal, aucun oiseau, aucun poisson. Aucun bateau.
+
+INTERDITS : texte, lettres, chiffres, étiquettes, panneaux lisibles, logo, signature, filigrane, cadre, interface ; tout bâtiment, cabane, ville ; second pont ; escaliers, terrasses ; route goudronnée, véhicule ; arbres orange ou automnaux ; neige ; brouillard, flou de profondeur, vignettage ; pixel art.
+
+L'image doit raconter, sans texte : au bout d'un couloir de forêt, une grande place donne sur une large rivière claire que traverse un long pont étroit, gardé de loin en loin par des silhouettes, et qui mène à une prairie paisible.

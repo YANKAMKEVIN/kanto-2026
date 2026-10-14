@@ -1,0 +1,34 @@
+# Magasin de vélos d'Azuria (cerulean_bike_shop) — grille fonctionnelle (jalon 13, dossier 16 §4.3,
+# D-11 ; préparée le 2026-10-11). Enveloppe réutilisée 15 × 10 (même coque que les maisons
+# d'Argenta, convention des intérieurs de tools/build_painted_interiors.gd : mur du fond sur 3
+# rangées, colonnes 0 et 14, sortie sur l'avant-dernière rangée) ; mobilier propre. Un vendeur,
+# trois vélos exposés au fond, un quatrième à l'écart. AUCUN achat possible, aucun objet remis.
+#
+# Légende :
+#   K mur (bloqué)          . sol (praticable)
+#   X sortie vers Azuria (praticable : paillasson, PUSH ↓)
+#   b vélo exposé (2 × 1, bloqué)   C comptoir (9..11, 4)   E étagère de casques (9..12, 3)
+#   v vendeur (12, 4), au bout du comptoir     x plante (1, 7), (13, 7)
+#
+# Format : section GRILLE (« NN » + espace + 15 caractères par rangée), puis POSITIONS.
+
+PRATICABLES .X
+
+GRILLE 15 10
+00 KKKKKKKKKKKKKKK
+01 KKKKKKKKKKKKKKK
+02 KKKKKKKKKKKKKKK
+03 Kbb.bb.bbEEEE.K
+04 K........CCCv.K
+05 K.............K
+06 Kbb...........K
+07 Kx...........xK
+08 KKKKKKXXXKKKKKK
+09 KKKKKKKKKKKKKKK
+FIN
+
+POSITIONS
+sortie              warp           6..8,8       libre   # PUSH ↓ → cerulean_city, from_bike_shop
+entree              spawn          7,8          libre   # spawn « entrance », tourné ↑
+vendeur             pnj            12,4         bloque  role=V facing=left  # « Bienvenue ! Les meilleurs vélos de Kanto. » / « Celui-ci ? 1 000 000 ₽. » ; on lui parle depuis (12, 5) ou (13, 4)
+FIN

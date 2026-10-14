@@ -70,18 +70,22 @@ extends RefCounted
 ## - [constant Kind.BADGE] : remise du badge [member badge_id] (`data/badges.json`) : drapeau du
 ##   badge, légende « BADGE ROCHE » (tenue courte) avec une vibration légère, Grand moment
 ##   « badge » (une seule fois par badge) ; la scène attend la fin de la légende.
+## Jalon 12 (`jalon-12.md` §2.13, T23), choix du fossile :
+## - [constant Kind.MOMENT] : Grand moment de type [member moment_type] ([constant
+##   MomentLibrary.TYPES], « fossil ») avec [member moment_details] (« item » : le fossile),
+##   enregistré sur la carte courante **une seule fois** par type et détails ; rien d'affiché.
 
 ## Nouvelles valeurs en fin d'enum (ordre de [constant TYPE_KEYS]).
 enum Kind {
 	WAIT, DIALOGUE, FACE, SET_FLAGS, SPAWN, MOVE, CHANGE_MAP, HOP, LEAN, DESPAWN, BATTLE, GIVE,
-	CAPTION, TAKE, SCARE, WAKE_UP, REACT, EMOTE, CHAMPION_CARD, BADGE,
+	CAPTION, TAKE, SCARE, WAKE_UP, REACT, EMOTE, CHAMPION_CARD, BADGE, MOMENT,
 }
 
 ## Clé de type de chaque étape dans les fichiers, dans l'ordre de [enum Kind].
 const TYPE_KEYS: Array[String] = [
 	"wait", "dialogue", "face", "set", "spawn", "move", "change_map", "hop", "lean",
 	"despawn", "battle", "give", "caption", "take", "scare", "wake_up", "react", "emote",
-	"champion_card", "badge",
+	"champion_card", "badge", "moment",
 ]
 ## Bulles d'une étape « emote » (clé « kind ») : le « ! » du Dresseur qui repère le joueur.
 const EMOTE_KINDS: Array[StringName] = [&"exclamation"]
@@ -128,6 +132,9 @@ var text: String = ""
 var emote: StringName = &""
 ## Étape « badge » : badge remis (identifiant de `data/badges.json`, « boulder »).
 var badge_id: StringName = &""
+## Étape « moment » (jalon 12) : type du Grand moment et ses détails (clés et valeurs texte).
+var moment_type: StringName = &""
+var moment_details: Dictionary = {}
 ## Conditions de l'étape (toutes levées / aucune levée), vides = toujours jouée.
 var if_flags: Array[StringName] = []
 var unless_flags: Array[StringName] = []
@@ -215,6 +222,8 @@ func copy() -> CutsceneStep:
 	other.text = text
 	other.emote = emote
 	other.badge_id = badge_id
+	other.moment_type = moment_type
+	other.moment_details = moment_details.duplicate()
 	other.if_flags = if_flags.duplicate()
 	other.unless_flags = unless_flags.duplicate()
 	return other

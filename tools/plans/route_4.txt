@@ -1,0 +1,81 @@
+# Route 4 — grille fonctionnelle (jalon 13, dossier 16 §3 ; préparée le 2026-10-11 pour la vue
+# générale peinte). Source UNIQUE de la géométrie : plan en aplats (tools/art/plan_aplats.py), vue
+# générale peinte, puis outil de construction et tests du J13 (13A). Un changement de composition
+# se fait ICI d'abord, puis plan, puis image. Contrôle : tools/art/plan_check.py (profil route_4,
+# tools/art/plan_check_azuria.py).
+#
+# 64 × 24 cases (défaut du dossier, §3.1, §22) ; nord en haut ; x = colonne 0..63, y = rangée 0..23.
+# Extrémité OUEST = le sas du J12 (tools/plans/route_4_sas.txt, 24 × 14), RECOPIÉ case pour case en
+# x 0..23, y 0..13 : sortie de grotte (2, 6), arrivée « from_mt_moon » (3, 6), panneau (6, 5), mêmes
+# coordonnées. Seules différences : le raccord « AZURIA — À venir » (23, 6..7) devient un chemin
+# qui continue (les deux cases ne sont plus un bord de carte), et les deux rangées « ~ » du bas
+# se prolongent vers l'est. Une partie sauvegardée sur n'importe quelle case praticable du sas
+# retombe sur la même case, praticable ; le contrôle le vérifie.
+# Raccord EST : (63, 19..21) ↔ Azuria (0, 19..21) (rue d'arrivée ; mêmes rangées, aucun décalage).
+#
+# Trois temps, d'ouest en est :
+#   ① x 0..35, y 0..11 — LE PLATEAU : le sas, puis le chemin longe le versant jusqu'à x 30..31, où
+#      il descend vers le rebord ; plateau fermé à l'est (forêt).
+#   ② (28..33, 12) — LE REBORD : saut vers le SUD uniquement (palier (28..33, 13)). C'est l'UNIQUE
+#      descente : on ne remonte pas vers la grotte par la route (RB, dossier 16 §3.1). Après un
+#      K.O. en plaine, le réveil se fait au Centre de la Route 3 (§19) : retour par le Mont
+#      Sélénite, qui ramène au plateau.
+#   ③ x 3..63, y 13..22 — LA PLAINE : chemin x 30..31 puis rue y 19..21 jusqu'à Azuria ; poche
+#      ouest sous le versant (Poké Ball) ; trois zones de hautes herbes (H1 et H3 au nord du chemin,
+#      évitables ; H2 sur la rue, entre deux murs d'arbres : 4 cases obligatoires) ; Jeune
+#      Dresseuse Clara au nord de la rue, évitable (rangées 21 ou 22 hors de sa vue).
+# Règles d'art : angles droits, nature dense et objets rares, un seul relief (le rebord).
+#
+# Légende (en plus de celle de route_4_sas.txt) :
+#   # paroi du versant (bloquée)    T forêt et bosquets (bloqués)    . herbe rase    = chemin
+#   h hautes herbes                 v rebord (sauté vers le sud ; ne se monte pas)
+#   ~ falaise du versant (bloquée)  o rocher (bloqué)                b buissons (bloqués)
+#   D sortie de grotte (STEP_ON ←, vers B2F)      e raccord est (bord de carte, vers Azuria)
+#
+# Format : ligne PRATICABLES, section GRILLE (« NN » + espace + 64 caractères), puis POSITIONS.
+
+PRATICABLES .=hvDe
+
+GRILLE 64 24
+00 ##############################################TTTTTTTTTTTTTTTTTT
+01 ##############################################TTTTTTTTTTTTTTTTTT
+02 ##############################################TTTTTTTTTTTTTTTTTT
+03 ########...........o...b............TTTTTTTTTTTTTTTTTTTTTTTTTTTT
+04 ########.o.............b...o........TTTTTTTTTTTTTTTTTTTTTTTTTTTT
+05 ###....................b.........o..TTTTTTTTTTTTTTTTTTTTTTTTTTTT
+06 ##D=============================....TTTTTTTTTTTTTTTTTTTTTTTTTTTT
+07 ###=============================....TTTTTTTTTTTTTTTTTTTTTTTTTTTT
+08 ###....................b......==....TTTTTTTTTTTTTTTTTTTTTTTTTTTT
+09 ###....................b......==..o.TTTTTTTTTTTTTTTTTTTTTTTTTTTT
+10 ######..........o......b..o...==....TTTTTTTTTTTTTTTTTTTTTTTTTTTT
+11 ######.................b......==....TTTTTTTTTTTTTTTTTTTTTTTTTTTT
+12 ###~~~~~~~~~~~~~~~~~~~~~~~~~vvvvvvTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+13 ###~~~~~~~~~~~~~~~~~~~~~~~~~..==..TTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+14 TTT...........................==....hhhhhh.....TTTT..hhhhhh.TTTT
+15 TTT..TTT...o......o....TTT....==....hhhhhh.b...TTTT..hhhhhh.TTTT
+16 TTT..TTT...............TTT....==....hhhhhh.....TTTT..hhhhhh.TTTT
+17 TTT...........TTT.............==.bb............TTTT.........TTTT
+18 TTT...........TTT.............==..TT...........TTTT........TTTTT
+19 TTT.....................o.....=================hhhh============e
+20 TTT.o...TT.................TT.=================hhhh============e
+21 TTT.....TT...o.............TT.=================hhhh============e
+22 TTT.................bb.....TT......b...........TTTT.TTTTTTTTTTTT
+23 TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+FIN
+
+# POSITIONS (défauts du 2026-10-11, ajustables au plan du J13) — une ligne par élément :
+#   identifiant  type  cases  bloque|libre  [cle=valeur ...]  # commentaire
+# Les trois premières lignes reprennent le sas (route_4_sas.txt) à l'identique.
+POSITIONS
+sortie_grotte        echelle        2,6          libre   paire=S sens=descend vers=mt_moon_b2f  # bouche de la grotte : fondu, arrivée en bas de l'échelle de sortie
+from_mt_moon         spawn          3,6          libre   paire=S  # arrivée depuis B2F, tournée →
+panneau_route_4      panneau        6,5          bloque  # « ROUTE 4 » / « Mont Sélénite ← → Azuria » (inchangé, J12)
+repere_versant       repere         3..27,12..13 bloque  role=vue  # falaise du versant : la plaine en contrebas
+raccord_est          warp           63,19..21    libre   # PUSH → → cerulean_city, from_route_4 (« AZURIA — À venir » supprimé)
+from_cerulean        spawn          63,19..21    libre   # arrivée d'Azuria, tournée ←
+clara                dresseur       44,17        bloque  role=D1 facing=down sight=3 trainer=route_4_clara  # Jeune Dresseuse, Paras 11 + Rondoudou 11 ; évitable par les rangées 21-22
+route_4_item_1       objet_visible  21,20        bloque  role=O1 item=poke_ball  # fond de la poche ouest, visible depuis le palier
+herbes_h1            herbes         38,15        libre   role=H1  # nord de la rue (évitable)
+herbes_h2            herbes         48,20        libre   role=H2  # sur la rue (obligatoire, 4 cases)
+herbes_h3            herbes         55,15        libre   role=H3  # nord de la rue (évitable)
+FIN

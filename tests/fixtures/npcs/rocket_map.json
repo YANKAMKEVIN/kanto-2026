@@ -1,0 +1,22 @@
+{
+	"guard": {
+		"cell": [5, 2], "facing": "down", "sprite": "scout", "dialogue": "guard_after",
+		"unless": ["beaten_test_rocket_guard"],
+		"trainer": {
+			"id": "test_rocket_guard", "sight": 4, "before": "guard_before",
+			"defeated": "guard_defeated", "rematch": "guard_rematch", "leave": [[0, 0], [3, 0]]
+		}
+	},
+	"lookout": {
+		"cell": [12, 8], "facing": "left", "sprite": "scout", "dialogue": "lookout_after",
+		"unless": ["beaten_test_rocket_lookout"],
+		"trainer": {
+			"id": "test_rocket_lookout", "sight": 2, "before": "lookout_before",
+			"defeated": "lookout_defeated", "leave": []
+		}
+	},
+	"scout": {
+		"cell": [15, 2], "facing": "down", "sprite": "scout", "dialogue": "scout_after",
+		"trainer": { "id": "test_scout", "sight": 3, "before": "scout_before" }
+	}
+}
