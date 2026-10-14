@@ -330,14 +330,22 @@ Les grilles font foi pour la géométrie (contrôles verts : `tools/art/plan_che
 
 | Zone | Grille (fait foi) | Plan | Vue générale (DA) |
 |---|---|---|---|
-| Route 5 | `tools/plans/route_5.txt` v2, 42 × 62 (chemin qui serpente, détour vers le petit bois) | `reference/route-5-plan-v2.png` | à produire |
+| Route 5 | `tools/plans/route_5.txt` v2, 42 × 62 (chemin qui serpente, détour vers le petit bois) | `reference/route-5-plan-v2.png` | `reference/route-5-vue-generale-v1.png` |
 | Souterrain | `tools/plans/underground_path.txt`, 26 × 30, 40 pas | `reference/souterrain-plan-v1.png` | `reference/souterrain-vue-generale-v1.png` |
 | Route 6 | `tools/plans/route_6.txt`, 42 × 56 | `reference/route-6-plan-v1.png` | `reference/route-6-vue-generale-v1.png` |
 | Carmin | `tools/plans/vermilion_city.txt`, 64 × 43, quai dans la carte | `reference/carmin-plan-v1.png` | `reference/carmin-vue-generale-v1.png` |
 
 Écarts des vues à **ne pas reproduire** : Route 6, peu d'air marin (la carte peut en ajouter dans
 la lisière) ; Carmin, navire un peu court, d'allure de ferry (la grille donne 29 × 7) ; vues sans
-personnages ni Pokémon (choix de Kevin, 2026-10-14).
+personnages ni Pokémon (choix de Kevin, 2026-10-14). Route 5 : Pension, petit bois et détour peints 2 à 3 cases trop haut, bande de forêt du bas trop épaisse (la grille fait foi).
+
+### 13.2 Décisions de Kevin du 2026-10-14 (« on va avec tes reco »)
+
+- Vue générale de la Route 5 validée (essai r2).
+- **Gardien de la Pension = modèle existant `old_man`** (pas de personnage nouveau).
+- **Grue du port** et **vue lointaine du port** depuis le belvédère de la Route 6 : gardées, jugées sur la capture de la carte.
+- **Maisons 1 et 2 de Carmin identiques** (maison d'Argenta), comme sur la vue ; second modèle seulement si la répétition se voit.
+- **Le souterrain apparaît sur la Carte** du Menu Dresseur : un petit rectangle sous Safrania.
 
 ## 14. Cas limites (à couvrir au plan)
 
