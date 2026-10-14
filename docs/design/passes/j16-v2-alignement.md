@@ -299,3 +299,33 @@ grandes fenêtres, lumière naturelle, pas de paquebot contemporain.
 
 **Prochaine étape** : envoyer `docs/design/prompts/chatgpt-dossier-16-ss-anne.md` (bloc des réponses
 rempli) à ChatGPT avec la V2 et cette passe → dossier 16 consolidé → relecture de Claude.
+
+**Correction du contrat d'entrée (Kevin, 2026-10-14, demandée depuis la session du J14)** :
+- **Badge Cascade avant le Passe Bateau : non garanti.** La Route 25 (Léo, Passe Bateau) s'ouvre
+  après la victoire contre le rival n° 3 et le passage du recruteur du Pont Pépite, comme dans
+  Rouge/Bleu ; Ondine n'est pas obligatoire avant, et les deux histoires du J14 se font dans
+  n'importe quel ordre (`dossier-17-cap-azuria.md` §1, §5, §18, E-11, V-3, branche `jalon-14`).
+- **G-3 retranché par Kevin le 2026-10-14 : Coupe exige le Badge Cascade** (Rouge/Bleu).
+  - Sans le badge, le Pokémon compatible refuse de couper. La réplique de l'arbuste le dit
+    clairement, sans choix : par exemple « Il faudrait le Badge d'Azuria pour que [Pokémon] ose
+    couper. », texte à écrire à la consolidation.
+  - Le navire reste accessible sans le badge, et la CS01 peut être obtenue avant Ondine.
+  - **Ondine passe donc toujours avant Major Bob.** Cet ordre est imposé par l'arbuste de l'Arène
+    (G-5), pas par un garde.
+  - **F-1 redevient** : « Badge Cascade **et** un Pokémon compatible dans l'équipe ».
+  - Le contrôle se fait dans la fonction logique de l'arbuste (`can_cut(party, bag, flags)` lit
+    `badge_cascade`), pas comme un bonus caché du badge.
+- **Nom du donneur du Passe Bateau : « Léo »** (nom officiel de Bill). C'est l'enfant de Bourg
+  Palette qui devient **« Nils »** (`dossier-17` E-1, validé le 2026-10-11 ; données et dossier 02 mis
+  à jour par le J14). L'exigence « pas Léo » sort du contrat.
+- **Conforme** : objet clé `ss_ticket`, « Passe Bateau », catégorie `key`, jamais consommé (testé au
+  J14).
+- **Rival n° 3 réel** : les niveaux font foi dans `docs/tech/jalon-13-equilibrage.md`, sur `main`.
+  Le dossier 16 du J13 (§ rival) et la correction du 2026-10-13 ci-dessus ne donnent pas les mêmes
+  niveaux ; le rival n° 4 se recalera de toute façon par simulation (G-7).
+- **Numéros pris** : 16 = J13 (Azuria), 17 = J14 (Cap Azuria). Le dossier du J16 prendra le premier
+  numéro libre au moment du push (J15 en cours).
+- **Systèmes désormais disponibles** (J11 et J12 terminés, `CLAUDE.md`) : statuts complets dont la
+  paralysie, CT réutilisables avec compatibilités, évolution courte, compagnon. Les §2 n° 9 et §3
+  restent valables pour ce qui manque encore : Sonicboom à valeur fixe, Tonnerre, Coupe, CS, arbuste,
+  choix → scène.

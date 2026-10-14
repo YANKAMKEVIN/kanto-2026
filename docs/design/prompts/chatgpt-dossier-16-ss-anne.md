@@ -4,7 +4,7 @@
 > arbitrages G-1 à G-10 de `docs/design/passes/j16-v2-alignement.md`. Joindre la V2 de ChatGPT et la
 > passe d'alignement. Le texte entre les deux lignes est le prompt ; **remplacer le bloc
 > « Réponses de Kevin »** avant de l'envoyer. Numéro de dossier : le premier libre au moment du push
-> (passe, §2 n° 17).
+> (passe, §2 n° 17) : 16 et 17 sont déjà pris par le J13 et le J14.
 
 ---
 
@@ -46,7 +46,7 @@ Tranchés le 2026-10-11 (détail : passe d'alignement, §8). À appliquer tels q
 - **G-2** : **modèle hybride**. La CS01 débloque Coupe dans le monde dès qu'un Pokémon compatible est
   dans l'équipe, **sans occuper d'emplacement**. Elle s'apprend aussi comme une CT réutilisable pour
   servir en combat, et s'oublie normalement. F-2 est sans objet.
-- **G-3** : **aucune condition de badge** pour Coupe.
+- **G-3** (retranché le 2026-10-14) : **Coupe exige le Badge Cascade** (Rouge/Bleu), car le J14 ne garantit pas Ondine avant le Passe Bateau. Sans le badge, le Pokémon compatible refuse de couper : l'arbuste le dit, sans choix. Le navire et la CS01 restent accessibles avant Ondine. Donne le texte exact.
 - **G-4** : arbuste coupé **définitif**.
 - **G-5** : arbuste devant l'Arène de Carmin (posé au J15, coupé au J16).
 - **G-6** : au moins une espèce compatible Coupe capturable avant Carmin quel que soit le starter :
@@ -66,7 +66,7 @@ Tranchés le 2026-10-11 (détail : passe d'alignement, §8). À appliquer tels q
 
 1. **Intention** en deux phrases.
 2. **Contrat d'entrée** (G-1) mot pour mot : ce que J13–J15 doivent livrer (drapeaux, objets,
-   cartes, rival n° 3 = Roucoups, Rattata, starter évolué, **sans Abra** (correction du 2026-10-13), nom du donneur du Passe Bateau).
+   cartes, rival n° 3 = Roucoups, Rattata, starter évolué, **sans Abra** (correction du 2026-10-13), donneur du Passe Bateau = **Léo** (nom officiel de Bill ; l'enfant de Bourg Palette s'appelle désormais Nils), Badge Cascade **non garanti** avant le Passe Bateau).
 3. **Plans fonctionnels ASCII** de chaque carte : navire (une carte par espace + cabines),
    passerelle et quai de Carmin, Arène. Pour chacune : taille en cases (1 case ≈ 1 m, écran ≈ 24 × 11
    cases), portes et escaliers, cases des Dresseurs et leur regard, objets visibles et cachés,
