@@ -1,0 +1,54 @@
+{
+ "map": "route_24",
+ "spawn": "bridge_foot",
+ "facing": "up",
+ "flags": [
+  "mom_greeted",
+  "rival_met",
+  "oak_met",
+  "oak_lab_reunion",
+  "starter_offered",
+  "starter_chosen",
+  "taken_charmander",
+  "taken_squirtle",
+  "rival_lab_won",
+  "rival_challenged",
+  "rival_battle_done",
+  "rival_left_lab",
+  "viridian_arrived",
+  "got_oak_parcel",
+  "pokedex_activated",
+  "poison_unlocked",
+  "beaten_forest_scout_theo",
+  "pewter_arrived",
+  "brock_met",
+  "badge_boulder",
+  "tm34_received",
+  "cerulean_reached",
+  "rival_cerulean_won",
+  "misty_invited",
+  "misty_met",
+  "badge_cascade",
+  "tm11_received"
+ ],
+ "party": [
+  {
+   "species": "charmeleon",
+   "level": 26
+  },
+  {
+   "species": "butterfree",
+   "level": 22
+  },
+  {
+   "species": "pidgeotto",
+   "level": 22
+  }
+ ],
+ "bag": {
+  "poke_ball": 5,
+  "potion": 5,
+  "antidote": 1
+ },
+ "money": 5000
+}

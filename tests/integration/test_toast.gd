@@ -41,6 +41,14 @@ func test_title_detail_and_icon_shown() -> void:
 	assert_signal_emitted_with_parameters(_toast, "toast_shown", [TITLE, DETAIL])
 
 
+func test_custom_icon_then_back_to_default() -> void:
+	var dome: Texture2D = load("res://assets/ui/items/dome_fossil.webp")
+	_toast.show_toast("Fossile Dôme", "obtenu", dome)
+	assert_eq(_toast.get_icon(), dome, "icône de l'objet")
+	_toast.show_toast(TITLE, DETAIL)
+	assert_eq(_toast.get_icon(), Toast.DEFAULT_ICON, "retour à la Poké Ball")
+
+
 func test_styles_from_theme() -> void:
 	var box := _toast.get_body().get_theme_stylebox(&"panel") as StyleBoxFlat
 	assert_eq(box.bg_color, UiTokens.TOAST_BG)

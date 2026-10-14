@@ -86,6 +86,14 @@ extends RefCounted
 ## - badge : identifiant de badge (data/badges.json, « boulder »).
 ## Ni l'un ni l'autre n'est vérifié ici (tests de données : [method get_card_trainer_ids],
 ## [method get_badge_ids]).
+## Jalon 12 (`jalon-12.md` §2.13, T23) :
+## - moment : type de Grand moment ([constant MomentLibrary.TYPES] sauf « zone_arrival », déduit
+##   des cartes), avec « details » facultatif : objet { clé: texte non vide } (« fossil » :
+##   [code]{ "moment": "fossil", "details": { "item": "dome_fossil" } }[/code]).
+## Jalon 13 (jalon-13.md §2.9) : clé de **scène** « next » (texte non vide, à côté de
+## « variants » ou des clés d'une variante unique) = scène enchaînée à la fin de celle-ci
+## ([member Cutscene.next]). Après [method load_dir], chaque « next » doit nommer une scène
+## connue, autre que la scène elle-même ([method check_next_references]).
 ## Jalon 14 (jalon-14.md §2.7) :
 ## - flash : nombre entier d'éclairs ≥ 1 (`{ "flash": 1 }`).
 ## Acteur = « player », identifiant d'un PNJ de la carte courante, ou **alias** « $nom »
@@ -99,7 +107,7 @@ extends RefCounted
 
 const DATA_DIR: String = "res://data/cutscenes/"
 
-const _SCENE_KEYS: Array[String] = ["variants"]
+const _SCENE_KEYS: Array[String] = ["variants", "next"]
 const _VARIANT_KEYS: Array[String] = ["if", "unless", "steps"]
 ## Clés permises en plus de la clé de type, par type (ordre de CutsceneStep.Kind).
 const _EXTRA_KEYS: Array[Array] = [
@@ -107,7 +115,7 @@ const _EXTRA_KEYS: Array[Array] = [
 	["path", "to", "run", "follower", "keep_facing", "optional", "background"],
 	["at", "facing"], ["to"],
 	["to"], [], ["player_pokemon", "foe_pokemon", "win", "lose"], ["count", "found"],
-	[], ["count"], [], [], [], ["kind"], [], [],
+	[], ["count"], [], [], [], ["kind"], [], [], ["details"],
 	[],
 ]
 ## Conditions permises sur toute étape sauf spawn.
@@ -129,7 +137,28 @@ func load_dir(dir: String = DATA_DIR) -> bool:
 	for file: String in sorted:
 		if file.get_extension() == "json":
 			ok = load_file(dir.path_join(file)) and ok
+	return check_next_references() and ok
+
+
+## Vérifie que chaque « next » nomme une scène connue, autre que la scène elle-même. Une scène
+## dont la suite est invalide est écartée (erreur signalée). Faux si une erreur a été signalée.
+func check_next_references() -> bool:
+	var ok := true
+	for id: StringName in get_ids():
+		var cutscene := _cutscenes[id]
+		if cutscene.next.is_empty():
+			continue
+		if cutscene.next == id or not _cutscenes.has(cutscene.next):
+			ok = _fail("%s « %s » : « next » vaut « %s », scène inconnue ou elle-même"
+				% [cutscene.source, id, cutscene.next])
+			_cutscenes.erase(id)
 	return ok
+
+
+## Scène enchaînée à la fin de [param id] (&"" si aucune ou si [param id] est inconnue).
+func get_next(id: StringName) -> StringName:
+	var cutscene := get_cutscene(id)
+	return cutscene.next if cutscene != null else &""
 
 
 ## Charge un fichier JSON. Faux si le fichier est illisible ou contient une erreur.
@@ -287,6 +316,12 @@ func _parse_cutscene(value: Variant, where: String) -> Cutscene:
 	var entry: Dictionary = value
 	var cutscene := Cutscene.new()
 	var ok := _check_keys(entry, _SCENE_KEYS + _VARIANT_KEYS, where)
+	if entry.has("next"):
+		var next_value: Variant = entry["next"]
+		if not next_value is String or (next_value as String).strip_edges().is_empty():
+			ok = _fail("%s : « next » doit être un identifiant de scène non vide" % where)
+		else:
+			cutscene.next = StringName((next_value as String).strip_edges())
 	var raw_variants: Array = []
 	if entry.has("variants"):
 		for key: String in _VARIANT_KEYS:
@@ -448,6 +483,8 @@ func _parse_step(value: Variant, where: String) -> CutsceneStep:
 		CutsceneStep.Kind.BADGE:
 			ok = _read_id(main, where + " badge", func(v: StringName) -> void:
 				step.badge_id = v) and ok
+		CutsceneStep.Kind.MOMENT:
+			ok = _parse_moment(entry, step, where) and ok
 		CutsceneStep.Kind.FLASH:
 			if not (main is float or main is int) or float(main) != floorf(float(main)) \
 					or int(main) < 1:
@@ -676,3 +713,28 @@ static func _sorted_keys(found: Dictionary) -> Array[StringName]:
 	result.assign(found.keys())
 	result.sort_custom(func(a: StringName, b: StringName) -> bool: return String(a) < String(b))
 	return result
+
+
+## moment (jalon 12, T23) : type connu de [MomentLibrary] (pas l'arrivée dans une zone, déduite
+## des cartes découvertes), « details » facultatif { clé: texte non vide }.
+func _parse_moment(entry: Dictionary, step: CutsceneStep, where: String) -> bool:
+	var ok := true
+	var type: Variant = entry["moment"]
+	if not type is String or not MomentLibrary.TYPES.has(StringName(type)) \
+			or StringName(type) == MomentLibrary.ZONE_ARRIVAL:
+		ok = _fail("%s : « moment » vaut un type de MomentLibrary (sauf « %s »)" % [where,
+			MomentLibrary.ZONE_ARRIVAL])
+	else:
+		step.moment_type = StringName(type)
+	if not entry.has("details"):
+		return ok
+	var details: Variant = entry["details"]
+	if not details is Dictionary:
+		return _fail("%s : « details » doit être un objet { clé: texte }" % where)
+	for key: Variant in details:
+		var value: Variant = (details as Dictionary)[key]
+		if not value is String or (value as String).strip_edges().is_empty():
+			ok = _fail("%s : « details » « %s » doit être un texte non vide" % [where, key])
+		else:
+			step.moment_details[str(key)] = value
+	return ok

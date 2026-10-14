@@ -10,7 +10,8 @@ const MAPS_DIR: String = "res://game/world/maps/"
 ## Liste des cartes intérieures (préchargement du SceneRouter, jalon 10).
 const INTERIORS_PATH: String = "res://data/world/interiors.json"
 ## Préfixe des cartes de QA : hors zones, hors Carte et Pokédex, aucun passage n'y mène (départs
-## de débogage seulement). Les tests qui énumèrent les cartes du jeu les ignorent.
+## de débogage seulement). Les tests qui énumèrent les cartes du jeu les ignorent. Jalon 13 :
+## `qa_switch_j13` retirée au T22 ; jalon 14 : `qa_charge_j14` (retirée au T24).
 const QA_PREFIX: String = "qa_"
 
 

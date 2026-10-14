@@ -1,5 +1,5 @@
 extends SceneTree
-## Captures de l'écran d'évolution (jalon 9, T9) avec la vraie scène Boot : son
+## Captures de l'écran d'évolution (jalon 9, T9 ; instants recalés au J11, évolution courte ≈ 6 s) avec la vraie scène Boot : son
 ## EvolutionDirector et son EvolutionScreen, à vitesse réelle, sur la Route 1 sous le voile du
 ## combat. Chenipan N7 → Chrysacier (Armure apprise), puis une évolution annulée (retour
 ## Android), puis une offre d'oubli (quatre capacités).
@@ -65,15 +65,15 @@ func _evolve() -> void:
 	await _shot("01_ouverture")
 	await _seconds(1.45)
 	await _shot("02_debut")
-	await _seconds(1.3)
+	await _seconds(0.8)
 	await _shot("03_silhouette")
-	await _seconds(3.2)
+	await _seconds(1.7)
 	await _shot("04_transformation")
-	await _seconds(0.85)
-	await _shot("05_flash")
 	await _seconds(0.4)
+	await _shot("05_flash")
+	await _seconds(0.35)
 	await _shot("06_silence")
-	await _seconds(0.45)
+	await _seconds(0.35)
 	await _shot("07_revelation")
 	await _seconds(1.3)
 	await _shot("08_fin")
@@ -86,7 +86,7 @@ func _evolve() -> void:
 ## Annulée par le retour Android au milieu de la transformation.
 func _cancel() -> void:
 	_play(_party([]))
-	await _seconds(2.0 + 2.4)
+	await _seconds(2.0 + 1.2)
 	_director.call(&"handle_back")
 	await _seconds(1.2)
 	await _shot("10_annulation")
@@ -96,7 +96,7 @@ func _cancel() -> void:
 ## Quatre capacités : Armure passe par le panneau d'oubli, dans l'écran.
 func _forget() -> void:
 	_play(_party([&"growl", &"scratch"]))
-	await _seconds(2.0 + 5.0 + 2.0)
+	await _seconds(2.0 + 2.5 + 2.0)
 	_touch()
 	await _seconds(2.0)
 	await _shot("11_oubli")

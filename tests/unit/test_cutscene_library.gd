@@ -688,3 +688,48 @@ func test_invalid_emote_steps() -> void:
 			"emote : identifiant attendu", "clé inconnue « to »"]:
 		assert_string_contains(errors, expected)
 	assert_push_error_count(bad.size(), "une erreur par étape")
+
+
+# --- Enchaînement « next » (jalon-13.md §2.9, T16) -------------------------------------------
+
+func test_next_is_read_beside_variants_or_in_the_single_variant_form() -> void:
+	assert_true(_library.add_from_dict({
+		"first": {"next": "second", "variants": [{"steps": [{"wait": 0}]}]},
+		"second": {"next": "third", "unless": ["done"], "steps": [{"set": ["done"]}]},
+		"third": {"steps": [{"wait": 0}]},
+	}, "test"))
+	assert_true(_library.check_next_references(), "références connues")
+	assert_eq(_library.get_next(&"first"), &"second")
+	assert_eq(_library.get_next(&"second"), &"third")
+	assert_eq(_library.get_cutscene(&"second").variants[0].unless_flags,
+		[&"done"] as Array[StringName], "la forme courte garde ses conditions")
+	assert_eq(_library.get_next(&"third"), &"", "pas de suite")
+	assert_eq(_library.get_next(&"unknown"), &"", "scène inconnue : pas de suite")
+
+
+func test_bad_next_is_rejected() -> void:
+	for value: Variant in ["", "  ", 3, ["second"]]:
+		assert_false(_library.add_from_dict({"s": {"next": value, "steps": [{"wait": 0}]}},
+			"test"), str(value))
+	assert_eq(_library.size(), 0)
+	assert_push_error_count(4)
+
+
+func test_next_must_name_another_known_scene() -> void:
+	assert_true(_library.add_from_dict({
+		"to_nowhere": {"next": "missing", "steps": [{"wait": 0}]},
+		"to_itself": {"next": "to_itself", "steps": [{"wait": 0}]},
+		"fine": {"next": "target", "steps": [{"wait": 0}]},
+		"target": {"steps": [{"wait": 0}]},
+	}, "test"), "références vérifiées après le chargement de tout le dossier")
+	assert_false(_library.check_next_references())
+	assert_push_error_count(2)
+	assert_false(_library.has_cutscene(&"to_nowhere"), "scène écartée")
+	assert_false(_library.has_cutscene(&"to_itself"), "pas de boucle sur elle-même")
+	assert_true(_library.has_cutscene(&"fine"))
+	assert_string_contains("\n".join(_library.get_errors()), "« next » vaut « missing »")
+
+
+func test_real_cutscenes_have_valid_next_references() -> void:
+	var library := CutsceneLibrary.new()
+	assert_true(library.load_dir(), "\n".join(library.get_errors()))

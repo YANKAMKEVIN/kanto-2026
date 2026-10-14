@@ -597,16 +597,18 @@ def verifier_azuria(chemin: Path) -> bool:
 	r.critere(abs(voisine[0] - plan.cells_of("m")[0][0]) <= 8 and abs(voisine[1] - porte_f[1]) <= 3,
 		f"voisine H3 {voisine} devant sa maison, à côté de la maison cambriolée")
 
-	# 9. Habitants H1..H6, panneaux, spawns.
+	# 9. Habitants H1..H6 (+ H7, T17 : près de la sortie est fermée, texte 17), panneaux, spawns.
 	roles = sorted(habitants)
-	r.critere(roles == ["H1", "H2", "H3", "H4", "H5", "H6"], f"6 habitants H1..H6 : {roles}")
+	r.critere(roles == ["H1", "H2", "H3", "H4", "H5", "H6", "H7"],
+		f"7 habitants H1..H7 (H7 près de la sortie fermée) : {roles}")
 	fautes: list[str] = []
 	places = {"H1": lambda c: plan.at(*c) == "q" and c[0] < 26,
 		"H2": lambda c: plan.at(*c) == "B",
 		"H3": lambda c: plan.at(*c) == "=" and c[1] == 10,
 		"H4": lambda c: plan.at(*c) == "=" and c[1] == 10,
 		"H5": lambda c: plan.at(*c) == "p" and c[0] > 34 and c[1] <= 12,
-		"H6": lambda c: plan.at(*c) == "p" and c[1] <= 22 and c[0] > 30}
+		"H6": lambda c: plan.at(*c) == "p" and c[1] <= 22 and c[0] > 30,
+		"H7": lambda c: plan.at(*c) == "=" and c[0] >= 49}
 	devant_portes = {_decale(c, (0, 1)) for c in portes if c in dist}
 	for role, p in habitants.items():
 		c = p.cells[0]

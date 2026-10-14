@@ -30,6 +30,8 @@ extends CanvasLayer
 ## combat). Chaque attente minutée est un Tween (temps simulé dans les tests) ; l'attente d'un
 ## toucher n'a pas de durée. Rien n'est écrit dans la partie par l'écran, aucun texte de jeu
 ## n'y est composé : tout vient de [EvolutionView].
+## Jalon 11 (dossier 14 §7) : séquence courte (≈ 6 s, jetons EVOLUTION_*) ; toucher l'écran de la
+## présentation à la consigne la joue ×2 ([method rush]) ; ARRÊTER reste un bouton à part.
 
 ## Fin d'une transformation (au terme, ou arrêtée) : reprend [method transform].
 signal _transformation_ended
@@ -57,6 +59,12 @@ var speed_scale: float = 1.0
 var reduce_flashes: bool = false
 
 var _open: bool = false
+## Jalon 11 (dossier 14 §7) : vitesse de la séquence (1, puis EVOLUTION_RUSH après un toucher) ;
+## [member _rushable] : un toucher peut encore l'accélérer (de la présentation à la consigne).
+var _rush: float = 1.0
+var _rushable: bool = false
+var _tweens: Array[Tween] = []
+var _white_tween: Tween
 var _transforming: bool = false
 var _cancel_requested: bool = false
 
@@ -105,15 +113,19 @@ func _ready() -> void:
 
 
 func _process(delta: float) -> void:
-	_rays.rotation = fposmod(_rays.rotation + _ray_spin * delta, TAU)
+	_rays.rotation = fposmod(_rays.rotation + _ray_spin * _rush * delta, TAU)
 	_make_room(delta)
 
 
 func _input(event: InputEvent) -> void:
-	if not _waiting_touch:
-		return
 	var touch := event as InputEventScreenTouch
 	if touch == null or not touch.pressed:
+		return
+	if not _waiting_touch:
+		# Toucher pendant la séquence (hors ARRÊTER) : elle se joue ×2 (jalon 11). Seul un ARRÊTER
+		# affiché garde sa zone : sans lui (pierre, jalon 12 ; présentation), tout l'écran accélère.
+		if _rushable and not _covers_stop(touch.position):
+			rush()
 		return
 	get_viewport().set_input_as_handled()
 	if not _touch_armed:
@@ -142,6 +154,8 @@ func open() -> void:
 ## chaque évolution, après [method open].
 func present(view: EvolutionView) -> void:
 	_cancel_requested = false
+	_rush = 1.0
+	_rushable = true
 	_view = view
 	_touch_armed = false
 	_hide_banner()
@@ -168,12 +182,13 @@ func present(view: EvolutionView) -> void:
 ## s'interrompt aussitôt. Rend [code]false[/code] arrivée à son terme.
 func transform() -> bool:
 	_transforming = true
-	_show_stop(true)
+	# Jalon 12 (T23) : une évolution non annulable (pierre) n'offre pas ARRÊTER.
+	_show_stop(is_cancellable())
 	var time := UiTokens.EVOLUTION_TRANSFORM * speed_scale
 	if time <= 0.0:
 		_apply_progress(1.0)
 	else:
-		_progress = create_tween()
+		_progress = _tween()
 		_progress.tween_method(_apply_progress, 0.0, 1.0, time)
 		_progress.tween_callback(_end_transformation)
 		await _transformation_ended
@@ -256,7 +271,8 @@ func close() -> void:
 
 
 ## Retour Android pendant l'écran : pendant [method transform], arrête la transformation
-## (comme ARRÊTER) ; ailleurs, sans effet. Vrai tant que l'écran est ouvert (le geste ne passe
+## (comme ARRÊTER), sauf pour une évolution non annulable (pierre, jalon 12) ; ailleurs, sans
+## effet. Vrai tant que l'écran est ouvert (le geste ne passe
 ## jamais à ce qui est dessous).
 func handle_back() -> bool:
 	if _transforming:
@@ -377,16 +393,17 @@ func _apply_progress(p: float) -> void:
 	_glow.scale = Vector2.ONE * lerpf(1.0, GLOW_GROW, lift)
 	_rays.modulate.a = UiTokens.EVOLUTION_RAY_ALPHA_PEAK * p
 	_ray_spin = lerpf(UiTokens.EVOLUTION_RAY_SPIN, UiTokens.EVOLUTION_RAY_SPIN_PEAK, lift)
-	_motes.speed_scale = lerpf(1.0, UiTokens.EVOLUTION_MOTE_RUSH, lift)
+	_motes.speed_scale = lerpf(1.0, UiTokens.EVOLUTION_MOTE_RUSH, lift) * _rush
 
 
 func _end_transformation() -> void:
 	_transformation_ended.emit()
 
 
-## ARRÊTER ou retour Android pendant la transformation : elle s'interrompt aussitôt.
+## ARRÊTER ou retour Android pendant la transformation : elle s'interrompt aussitôt (jamais
+## pour une évolution non annulable).
 func _request_cancel() -> void:
-	if not _transforming or _cancel_requested:
+	if not _transforming or _cancel_requested or not is_cancellable():
 		return
 	_cancel_requested = true
 	_stop.disabled = true
@@ -398,7 +415,7 @@ func _request_cancel() -> void:
 
 
 func _on_stop_pressed() -> void:
-	if not _transforming:
+	if not _transforming or not is_cancellable():
 		return
 	Haptics.vibrate(UiTokens.HAPTIC_TAP_MS)
 	_request_cancel()
@@ -456,8 +473,49 @@ func _cancelled_text() -> String:
 
 ## Fin de la phrase : le toucher sera pris, la consigne apparaît.
 func _arm_touch() -> void:
+	_rushable = false
+	_rush = 1.0
+	# Révélation et retour finissent en couleurs pleines quand la consigne paraît (le fondu du
+	# blanc dure autant que la phrase : il peut lui manquer un dernier pas).
+	if _white_tween != null and _white_tween.is_valid():
+		_white_tween.kill()
+	_set_white(0.0)
 	_touch_armed = true
 	_show_hint()
+
+
+## Joue le reste de la séquence ×EVOLUTION_RUSH (toucher pendant la présentation, la
+## transformation ou la révélation ; jalon 11, dossier 14 §7). ARRÊTER reste un bouton à part.
+## Sans effet hors de ces phases ou déjà accéléré.
+func rush() -> void:
+	if not _rushable or _rush > 1.0:
+		return
+	_rush = UiTokens.EVOLUTION_RUSH
+	for tween: Tween in _tweens:
+		if tween.is_valid():
+			tween.set_speed_scale(_rush)
+	if _motes != null:
+		_motes.speed_scale *= _rush
+
+
+## Vitesse donnée à [param tween] par l'écran (×2 s'il a été accéléré) ; 1 pour un autre
+## (tests : Tween n'expose pas sa vitesse).
+func tween_speed(tween: Tween) -> float:
+	return _rush if _tweens.has(tween) else 1.0
+
+
+## Vrai si la séquence est accélérée.
+func is_rushed() -> bool:
+	return _rush > 1.0
+
+
+## Tween de l'écran, à la vitesse courante (×2 après un toucher).
+func _tween() -> Tween:
+	var tween := create_tween()
+	tween.set_speed_scale(_rush)
+	_tweens = _tweens.filter(func(t: Tween) -> bool: return t.is_valid())
+	_tweens.append(tween)
+	return tween
 
 
 ## Coroutine : attend un toucher (rien à vitesse 0 : tests).
@@ -505,7 +563,7 @@ func _play(steps: Array) -> void:
 			if step is Callable:
 				(step as Callable).call()
 		return
-	_timeline = create_tween()
+	_timeline = _tween()
 	for step: Variant in steps:
 		if step is Callable:
 			_timeline.tween_callback(step as Callable)
@@ -522,7 +580,7 @@ func _anim(target: Object, property: NodePath, value: Variant, duration: float,
 	if time <= 0.0:
 		target.set_indexed(property, value)
 		return
-	var tween := create_tween().set_trans(trans).set_ease(ease)
+	var tween := _tween().set_trans(trans).set_ease(ease)
 	if delay > 0.0:
 		tween.tween_interval(delay * speed_scale)
 	tween.tween_property(target, property, value, time)
@@ -533,7 +591,10 @@ func _anim_white(value: float, duration: float) -> void:
 	if time <= 0.0:
 		_set_white(value)
 		return
-	create_tween().set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT) \
+	if _white_tween != null and _white_tween.is_valid():
+		_white_tween.kill()
+	_white_tween = _tween()
+	_white_tween.set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT) \
 		.tween_method(_set_white, _white, value, time)
 
 
@@ -559,7 +620,7 @@ func _show_hint() -> void:
 		_hint.modulate.a = 1.0
 		return
 	_hint.modulate.a = 0.0
-	_hint_tween = create_tween().set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
+	_hint_tween = _tween().set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
 	_hint_tween.tween_property(_hint, ^"modulate:a", 1.0, UiTokens.EVOLUTION_HINT_IN * speed_scale)
 	_hint_tween.tween_callback(_pulse_hint)
 
@@ -567,7 +628,7 @@ func _show_hint() -> void:
 ## La consigne respire tant qu'elle est là (sans fin, sans rien attendre).
 func _pulse_hint() -> void:
 	var half := UiTokens.EVOLUTION_HINT_PERIOD * 0.5 * maxf(speed_scale, 0.5)
-	_hint_tween = create_tween().set_loops().set_trans(Tween.TRANS_SINE) \
+	_hint_tween = _tween().set_loops().set_trans(Tween.TRANS_SINE) \
 		.set_ease(Tween.EASE_IN_OUT)
 	_hint_tween.tween_property(_hint, ^"modulate:a", UiTokens.EVOLUTION_HINT_DIM, half)
 	_hint_tween.tween_property(_hint, ^"modulate:a", 1.0, half)
@@ -577,6 +638,12 @@ func _hide_hint() -> void:
 	_kill_hint()
 	_hint.visible = false
 	_hint.modulate.a = 0.0
+
+
+## Vrai si [param point] tombe sur ARRÊTER **affiché** (visible et pas encore en fondu de sortie
+## après un toucher) : seule zone où un toucher n'accélère pas la séquence.
+func _covers_stop(point: Vector2) -> bool:
+	return _stop.visible and is_cancellable() and _stop.get_global_rect().has_point(point)
 
 
 func _kill_hint() -> void:
@@ -597,7 +664,7 @@ func _show_stop(on: bool) -> void:
 			_stop.modulate.a = 1.0
 			return
 		_stop.modulate.a = 0.0
-		_stop_tween = create_tween().set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
+		_stop_tween = _tween().set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
 		_stop_tween.tween_property(_stop, ^"modulate:a", 1.0,
 			UiTokens.EVOLUTION_STOP_IN * speed_scale)
 		return
@@ -605,7 +672,7 @@ func _show_stop(on: bool) -> void:
 	if speed_scale <= 0.0 or not _stop.visible:
 		_stop.visible = false
 		return
-	_stop_tween = create_tween().set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN)
+	_stop_tween = _tween().set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN)
 	_stop_tween.tween_property(_stop, ^"modulate:a", 0.0, UiTokens.EVOLUTION_STOP_OUT * speed_scale)
 	_stop_tween.tween_callback(_stop.hide)
 
@@ -915,3 +982,9 @@ static func _faded(color: Color, alpha: float) -> Color:
 	var faded := color
 	faded.a = alpha
 	return faded
+
+
+## L'évolution présentée peut être arrêtée (jalon 12, T23 : faux pour une pierre,
+## [member EvolutionView.cancellable]) ; vrai sans vue.
+func is_cancellable() -> bool:
+	return _view == null or _view.cancellable

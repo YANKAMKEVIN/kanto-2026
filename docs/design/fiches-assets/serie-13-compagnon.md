@@ -25,7 +25,7 @@ tools/art/serie13.py POKE_PIKACHU POKE_PAPILUSION       # Codex, une partie
 | `POKE_HERBIZARRE` | `ivysaur` | `POKE_BULBIZARRE_NE_r1` | marche à quatre pattes, pas lourds | 66 px |
 | `POKE_REPTINCEL` | `charmeleon` | `POKE_SALAMECHE_NE_r4` | marche debout, flamme qui balance | 72 px |
 | `POKE_CARABAFFE` | `wartortle` | `POKE_CARAPUCE_NE_r1` | marche debout, queue qui ondule | 68 px |
-| `POKE_PIKACHU` | `pikachu` | `POKE_RATTATA_P2_r1` | trot à quatre pattes, petits bonds | 52 px |
+| `POKE_PIKACHU` | `pikachu` | `POKE_RATTATA_P2_r1` | trot à quatre pattes, petits bonds | 60 px (52 à l'origine : la queue de la vue de face fixe l'échelle, corps trop petit ; validé par Kevin le 2026-10-13) |
 | `POKE_PAPILUSION` | `butterfree` | `POKE_ROUCOOL_NE_r1` | **vol sur place**, ailes qui battent | 70 px |
 
 Toujours joint en premier : `PERSO_P2_PEINT_r1` (le héros validé, ancre de style).
@@ -36,11 +36,17 @@ Hauteurs = valeurs par défaut (règle 4), dans l'échelle des existants (Salam�
 touche le sol) ; le moteur posera une ombre au sol sous lui (11D). Les 4 colonnes sont un cycle
 de battement d'ailes, qui sert aussi d'attente.
 
-## Si Codex refuse (cas du Salamèche, série 09)
+## Si Codex refuse (cas du Salamèche, série 09 ; Reptincel et Pikachu, série 13)
 
 Coller le prompt affiché par `--texte` dans l'app ChatGPT, avec les **deux images** citées
 (héros + ancre de forme), et enregistrer le résultat sous `build/art/<IDENTIFIANT>_NE_r1.png`.
 Ensuite, même chaîne que pour une image Codex.
+
+**Constat du 2026-10-13** : ChatGPT a aussi refusé tant que les images d'ancre étaient jointes ; Reptincel
+a été obtenu **sans image jointe** (prompt seul), rendu un peu plus doux mais validé par Kevin.
+
+**Règle (Kevin, 2026-10-13)** : toujours essayer d'abord **avec** les images jointes (meilleure tenue du
+style) ; seulement en cas de refus, refaire **sans** image jointe.
 
 ## Après la génération
 

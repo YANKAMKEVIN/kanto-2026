@@ -28,3 +28,7 @@ var cancelled_text: String = ""
 var stop_label: String = ""
 ## Consigne des moments qui attendent un toucher (« Touchez l'écran pour continuer »).
 var continue_text: String = ""
+## Le joueur peut arrêter la transformation (jalon 12, T23 ; recopié de
+## [member EvolutionCandidate.cancellable]) : faux pour une pierre → l'écran ne montre pas
+## [member stop_label] et le retour Android est sans effet ([method EvolutionScreen.transform]).
+var cancellable: bool = true

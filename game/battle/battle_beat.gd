@@ -47,6 +47,8 @@ extends RefCounted
 ## Jalon 11 : STATUS_TAG pose aussi l'effet du statut sur le Pokémon ([StatusAura]) ; POISON
 ## sert aussi à la brûlure (voile orangé) ; CONFUSION : étoiles au-dessus du Pokémon confus de
 ## [member side], au moment du test (après « … est confus… »).
+## Jalon 12 : HP — la barre de PV du Pokémon de [member side] va à [member BattleEvent.hp]
+## ([member BattleEvent.max_hp]) sans coup ni voile (drain d'une attaque, Repos).
 ## Jalon 14 (Tunnel, Téléport) :
 ## - BURROW : le Pokémon de [member side] s'enfonce dans le sol et disparaît (ombre comprise) ;
 ## - SURFACE : il remonte (charge libérée ou rompue) ;
@@ -62,6 +64,7 @@ enum Kind {
 	WITHDRAW,
 	POISON, STATUS_TAG,
 	CONFUSION,
+	HP,
 	BURROW, SURFACE, VANISH,
 }
 

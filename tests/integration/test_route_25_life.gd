@@ -364,11 +364,14 @@ func test_objective_n66_until_leo_is_met() -> void:
 	var library := ObjectiveLibrary.new()
 	assert_true(library.load_file(), "\n".join(library.get_errors()))
 	var flags := StoryFlags.new()
-	for flag: StringName in [&"pokedex_activated", &"pewter_arrived", &"badge_boulder"]:
+	for flag: StringName in [&"pokedex_activated", &"pewter_arrived", &"badge_boulder",
+			&"route_4_reached", &"cerulean_reached"]:
 		flags.set_flag(flag)
-	assert_eq(library.current_id(flags), &"go_route_3")
+	assert_eq(library.current_id(flags), &"get_cascade_badge")
 	flags.set_flag(&"beaten_nugget_rocket")
-	assert_eq(library.current_id(flags), &"go_cerulean_cape", "après le Pont Pépite")
+	assert_eq(library.current_id(flags), &"get_cascade_badge", "pont avant badge (J13)")
+	flags.set_flag(&"badge_cascade")
+	assert_eq(library.current_id(flags), &"go_cerulean_cape", "après le Pont Pépite et le badge")
 	assert_eq(library.current(flags), "rejoindre le Cap d'Azuria.")
 	flags.set_flag(&"bill_met")
 	assert_eq(library.current_id(flags), &"help_bill", "Léo rencontré : « aider Léo » (T17) remplace la ligne")

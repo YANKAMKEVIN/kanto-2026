@@ -19,8 +19,8 @@ func _map_ids() -> Array[StringName]:
 	var ids: Array[StringName] = []
 	for file: String in DirAccess.get_files_at(MapCatalog.MAPS_DIR):
 		var name := file.trim_suffix(".remap")
-		if name.get_extension() == "tscn" \
-				and not MapCatalog.is_qa_map(StringName(name.get_basename())):
+		if name.get_extension() == "tscn" and not MapCatalog.is_qa_map(
+				StringName(name.get_basename())):
 			ids.append(StringName(name.get_basename()))
 	return ids
 
@@ -39,7 +39,7 @@ func _root_property(map_id: StringName, property: StringName) -> Variant:
 func test_real_data_loads_without_error() -> void:
 	assert_true(_zones.load_file(), "\n".join(_zones.get_errors()))
 	assert_eq(_zones.get_errors().size(), 0)
-	assert_eq(_zones.size(), 24)
+	assert_eq(_zones.size(), 25, "Route 24 (jalon 13), Route 25 et Cap d'Azuria (jalon 14)")
 
 
 func test_every_map_belongs_to_exactly_one_zone() -> void:
@@ -167,8 +167,9 @@ func test_service_catalog_and_the_services_of_viridian() -> void:
 	# Jalon 7 T4 : seuls les services de Jadielle, découverts sur leur carte (l'Arène en
 	# entrant dans la ville, le Centre et la Boutique en y entrant). Jalon 10 : ceux d'Argenta
 	# (test_pewter_data). Jalon 12 T8 : le Centre du Mont Sélénite (zone `mt_moon`).
+	# Jalon 13 T7 : Azuria.
 	for id: StringName in _zones.get_ids():
-		if not id in [&"viridian_city", &"pewter_city", &"mt_moon"]:
+		if not id in [&"viridian_city", &"pewter_city", &"mt_moon", &"cerulean_city"]:
 			assert_true(_zones.get_zone(id).services.is_empty(), "%s : aucun service" % id)
 	var mt_moon := _zones.get_zone(&"mt_moon").services
 	assert_eq(mt_moon.size(), 1, "Mont Sélénite : le Centre seul (sans Boutique)")

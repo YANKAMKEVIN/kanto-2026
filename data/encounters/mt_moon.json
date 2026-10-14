@@ -1,0 +1,38 @@
+{
+	"mt_moon_1f_rubble": {
+		"maps": ["mt_moon_1f"],
+		"terrain": "rubble",
+		"rate": 25,
+		"ramp": { "from_step": 15, "max_steps": 20 },
+		"slots": [
+			{ "species": "zubat", "levels": [8, 10], "weight": 55 },
+			{ "species": "geodude", "levels": [8, 10], "weight": 30 },
+			{ "species": "paras", "levels": [8, 10], "weight": 13 },
+			{ "species": "clefairy", "levels": [9, 9], "weight": 2 }
+		]
+	},
+	"mt_moon_b1f_rubble": {
+		"maps": ["mt_moon_b1f"],
+		"terrain": "rubble",
+		"rate": 25,
+		"ramp": { "from_step": 15, "max_steps": 20 },
+		"slots": [
+			{ "species": "zubat", "levels": [9, 11], "weight": 50 },
+			{ "species": "geodude", "levels": [9, 11], "weight": 30 },
+			{ "species": "paras", "levels": [10, 11], "weight": 16 },
+			{ "species": "clefairy", "levels": [10, 10], "weight": 4 }
+		]
+	},
+	"mt_moon_b2f_rubble": {
+		"maps": ["mt_moon_b2f"],
+		"terrain": "rubble",
+		"rate": 25,
+		"ramp": { "from_step": 15, "max_steps": 20 },
+		"slots": [
+			{ "species": "zubat", "levels": [10, 12], "weight": 45 },
+			{ "species": "geodude", "levels": [10, 12], "weight": 30 },
+			{ "species": "paras", "levels": [10, 12], "weight": 19 },
+			{ "species": "clefairy", "levels": [10, 12], "weight": 6 }
+		]
+	}
+}

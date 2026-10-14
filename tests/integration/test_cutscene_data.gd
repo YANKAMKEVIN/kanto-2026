@@ -34,6 +34,16 @@ const MAPS: Array[StringName] = [
 	&"viridian_forest",
 	# Jalon 10 (T11) : arrivée à Argenta et verrou du garde de la Route 3.
 	&"pewter_city",
+	# Jalon 13 (T17) : arrivée à Azuria (déclencheurs ouest et nord).
+	&"cerulean_city",
+	# Jalon 13 (T19) : déclencheurs du rival n° 3 et de la reprise d'Ondine.
+	&"route_24",
+	# Jalon 12 (T18) : première entrée sur la Route 3.
+	&"route_3",
+	# Jalon 12 (T25) : scène du chercheur au bas du couloir des lampes (B2F).
+	&"mt_moon_b2f",
+	# Jalon 12 (T28) : arrivée dans le sas de la Route 4.
+	&"route_4",
 	# Jalon 14 (T17) : l'entrée de la maison de Léo.
 	&"bill_house",
 ]
@@ -54,6 +64,22 @@ const PEWTER_FLAGS: Array[StringName] = [
 	&"oak_met", &"oak_lab_reunion", &"starter_offered", &"starter_chosen", &"rival_challenged",
 	&"rival_lab_won", &"rival_battle_done", &"rival_left_lab", &"viridian_arrived",
 	&"got_oak_parcel", &"pokedex_activated", &"poison_unlocked", &"beaten_forest_scout_theo",
+]
+## Jalon 12 (T18) : partie qui arrive sur la Route 3 (Badge Roche, garde décalé).
+const ROUTE3_FLAGS: Array[StringName] = [
+	&"oak_met", &"oak_lab_reunion", &"starter_offered", &"starter_chosen", &"rival_challenged",
+	&"rival_lab_won", &"rival_battle_done", &"rival_left_lab", &"viridian_arrived",
+	&"got_oak_parcel", &"pokedex_activated", &"poison_unlocked", &"beaten_forest_scout_theo",
+	&"pewter_arrived", &"brock_met", &"badge_boulder", &"route_3_guard_cleared",
+]
+## Jalon 12 (T25) : partie badgée au Mont Sélénite, le gardien R3 battu (scène du chercheur),
+## puis le chercheur battu (choix du fossile).
+const R3_FLAGS: Array[StringName] = [
+	&"oak_met", &"oak_lab_reunion", &"starter_offered", &"starter_chosen", &"rival_challenged",
+	&"rival_lab_won", &"rival_battle_done", &"rival_left_lab", &"viridian_arrived",
+	&"got_oak_parcel", &"pokedex_activated", &"poison_unlocked", &"beaten_forest_scout_theo",
+	&"pewter_arrived", &"brock_met", &"badge_boulder", &"route_3_guard_cleared",
+	&"route_3_entered", &"beaten_mt_moon_rocket_3",
 ]
 ## Paires `taken_*` posées au labo (starter du joueur, puis celui du rival) → Pokémon du rival
 ## présent sur la Route 22 (data/npcs/route_22.json).
@@ -89,12 +115,45 @@ const VARIANT_FLAGS: Dictionary = {
 	&"route_25_item_1": [PEWTER_FLAGS], &"route_25_item_2": [PEWTER_FLAGS],
 	&"route_25_item_3": [PEWTER_FLAGS], &"route_25_hidden_1": [PEWTER_FLAGS],
 	&"pewter_arrival": [PEWTER_FLAGS],
+	# Jalon 13 (T17) : arrivée à Azuria, Poké Ball de la Route 4, Potion de la Route 24.
+	&"cerulean_arrival": [PEWTER_FLAGS],
+	&"route_4_item_1": [PEWTER_FLAGS],
+	&"route_24_item_1": [PEWTER_FLAGS],
+	# Jalon 13 (T22) : Antidote caché de la Route 24 ; recruteur (première rencontre, reprise).
+	&"route_24_antidote": [PEWTER_FLAGS],
+	&"route_24_rocket": [PEWTER_FLAGS, PEWTER_FLAGS + [&"got_nugget"]],
+	# Jalon 13 (T19) : rival n° 3, scène d'Ondine au pont, Ondine à l'Arène (+ rattrapage).
+	&"route_24_rival": [PEWTER_FLAGS],
+	&"route_24_misty": [PEWTER_FLAGS + [&"rival_cerulean_won"]],
+	&"cerulean_gym_misty": [PEWTER_FLAGS + [&"rival_cerulean_won", &"misty_invited"]],
+	&"cerulean_gym_misty_tm_late": [PEWTER_FLAGS + [&"rival_cerulean_won", &"misty_invited",
+		&"badge_cascade"]],
 	&"route_3_guard": [PEWTER_FLAGS + [&"pewter_arrived"],
 		PEWTER_FLAGS + [&"pewter_arrived", &"brock_met", &"badge_boulder"]],
 	&"pewter_gym_brock": [PEWTER_FLAGS + [&"pewter_arrived"]],
 	# Jalon 11 (T14) : remise tardive de la CT34 (partie déjà badgée).
 	&"pewter_gym_brock_tm_late": [PEWTER_FLAGS + [&"pewter_arrived", &"brock_met",
 		&"badge_boulder"]],
+	# Jalon 12 (T18) : Route 3 (entrée, trois objets visibles, Réveil caché).
+	&"route_3_entered": [ROUTE3_FLAGS],
+	&"route_3_item_1": [ROUTE3_FLAGS],
+	&"route_3_item_2": [ROUTE3_FLAGS],
+	&"route_3_item_3": [ROUTE3_FLAGS],
+	&"route_3_hidden_1": [ROUTE3_FLAGS],
+	# Jalon 12 (T28) : arrivée dans le sas de la Route 4.
+	&"route_4_reached": [R3_FLAGS + [&"beaten_mt_moon_researcher", &"mt_moon_fossil_chosen"]],
+	# Jalon 12 (T21) : objets du Mont Sélénite (partie badgée).
+	&"mt_moon_1f_item_1": [PEWTER_FLAGS + [&"pewter_arrived", &"brock_met", &"badge_boulder"]],
+	&"mt_moon_1f_hidden_1": [PEWTER_FLAGS + [&"pewter_arrived", &"brock_met", &"badge_boulder"]],
+	&"mt_moon_b1f_item_2": [PEWTER_FLAGS + [&"pewter_arrived", &"brock_met", &"badge_boulder"]],
+	# Jalon 12 (T25) : Pierre Lune visible (B1F), CT01 et Pierre Lune cachée (B2F), chercheur,
+	# choix du fossile.
+	&"mt_moon_b1f_item_1": [PEWTER_FLAGS + [&"pewter_arrived", &"brock_met", &"badge_boulder"]],
+	&"mt_moon_b2f_item_1": [R3_FLAGS],
+	&"mt_moon_b2f_hidden_1": [R3_FLAGS],
+	&"mt_moon_researcher": [R3_FLAGS],
+	&"mt_moon_fossil_dome": [R3_FLAGS + [&"beaten_mt_moon_researcher"]],
+	&"mt_moon_fossil_helix": [R3_FLAGS + [&"beaten_mt_moon_researcher"]],
 	# Jalon 14 (T17) : la maison de Léo (entrée : avant la rencontre, puis Léo dans la cabine).
 	&"bill_house_enter": [PEWTER_FLAGS, PEWTER_FLAGS + [&"bill_met", &"bill_in_cabin"]],
 	&"bill_screen": [PEWTER_FLAGS + [&"bill_met"]],
@@ -117,6 +176,24 @@ const CODE_PLAYED: Dictionary[StringName, StringName] = {
 	&"route_25_item_3": &"route_25", &"route_25_hidden_1": &"route_25",
 	# Jalon 11 (T14) : remise tardive de la CT34 (dialogue de Pierre).
 	&"pewter_gym_brock_tm_late": &"pewter_gym",
+	# Jalon 13 (T17) : objets visibles des Routes 4 et 24 (PNJ « objet »).
+	&"route_4_item_1": &"route_4", &"route_24_item_1": &"route_24",
+	# Jalon 13 (T22) : Antidote caché (point d'examen de la souche).
+	&"route_24_antidote": &"route_24",
+	# Jalon 13 (T19) : Ondine, par son dialogue (scène de l'Arène et rattrapage de la CT11).
+	&"cerulean_gym_misty": &"cerulean_gym", &"cerulean_gym_misty_tm_late": &"cerulean_gym",
+	# Jalon 12 (T18) : objets visibles de la Route 3 (PNJ « objet ») et Réveil caché (point
+	# d'examen de l'indice, `unless_flags`).
+	&"route_3_item_1": &"route_3", &"route_3_item_2": &"route_3", &"route_3_item_3": &"route_3",
+	&"route_3_hidden_1": &"route_3",
+	# Jalon 12 (T21) : Corde et Potion (PNJ « objet »), Réveil caché (point d'examen de l'indice).
+	&"mt_moon_1f_item_1": &"mt_moon_1f", &"mt_moon_1f_hidden_1": &"mt_moon_1f",
+	&"mt_moon_b1f_item_2": &"mt_moon_b1f",
+	# Jalon 12 (T25) : Pierre Lune et CT01 (PNJ « objet »), Pierre Lune cachée (point d'examen),
+	# choix du fossile (confirmation « confirm_cutscene » du dialogue d'un fossile).
+	&"mt_moon_b1f_item_1": &"mt_moon_b1f", &"mt_moon_b2f_item_1": &"mt_moon_b2f",
+	&"mt_moon_b2f_hidden_1": &"mt_moon_b2f",
+	&"mt_moon_fossil_dome": &"mt_moon_b2f", &"mt_moon_fossil_helix": &"mt_moon_b2f",
 	# Jalon 14 (T17) : les trois objets de Léo (dialogue de l'écran, du module, de la console).
 	&"bill_screen": &"bill_house", &"bill_module": &"bill_house", &"bill_machine": &"bill_house",
 }
@@ -174,12 +251,19 @@ func test_library_loads_without_error() -> void:
 	assert_true(library.load_dir(), "data/cutscenes/ se charge")
 	assert_eq(library.get_errors().size(), 0, str(library.get_errors()))
 	assert_eq(library.get_ids(), _sorted([&"bill_house_enter", &"bill_machine", &"bill_module",
-		&"bill_screen", &"mart_parcel", &"oak_lab_exit", &"oak_parcel",
-		&"pewter_arrival", &"pewter_gym_brock", &"pewter_gym_brock_tm_late",
-		&"rival_route22", &"route1_grass", &"route_1_potion", &"route_25_hidden_1", &"route_25_item_1",
-		&"route_25_item_2", &"route_25_item_3", &"route_2_item_1",
-		&"route_2_item_2", &"route_2_item_3", &"route_2_item_4", &"route_2_north_item_1",
-		&"route_3_guard", &"starter_chosen",
+		&"bill_screen", &"cerulean_arrival", &"cerulean_gym_misty",
+		&"cerulean_gym_misty_tm_late", &"mart_parcel", &"mt_moon_1f_hidden_1", &"mt_moon_1f_item_1",
+		&"mt_moon_b1f_item_1", &"mt_moon_b1f_item_2", &"mt_moon_b2f_hidden_1",
+		&"mt_moon_b2f_item_1", &"mt_moon_fossil_dome", &"mt_moon_fossil_helix",
+		&"mt_moon_researcher", &"oak_lab_exit", &"oak_parcel", &"pewter_arrival",
+		&"pewter_gym_brock", &"pewter_gym_brock_tm_late", &"rival_route22", &"route1_grass",
+		&"route_1_potion", &"route_24_antidote", &"route_24_item_1", &"route_24_misty",
+		&"route_24_rival", &"route_24_rocket", &"route_25_hidden_1", &"route_25_item_1",
+		&"route_25_item_2", &"route_25_item_3",
+		&"route_2_item_1", &"route_2_item_2", &"route_2_item_3", &"route_2_item_4",
+		&"route_2_north_item_1", &"route_3_entered", &"route_3_guard", &"route_3_hidden_1",
+		&"route_3_item_1", &"route_3_item_2", &"route_3_item_3", &"route_4_item_1",
+		&"route_4_reached", &"starter_chosen",
 		&"viridian_arrival", &"viridian_forest_item_1", &"viridian_forest_item_2",
 		&"viridian_forest_item_3", &"viridian_forest_item_4", &"viridian_forest_item_5",
 		&"viridian_forest_item_6"]))
@@ -227,6 +311,9 @@ func test_every_trigger_targets_a_scene_and_every_scene_is_triggered() -> void:
 	assert_eq(_triggered_on.get(&"route_2_item_4"), [&"route_2"])
 	assert_eq(_triggered_on.get(&"pewter_arrival"), [&"pewter_city"])
 	assert_eq(_triggered_on.get(&"route_3_guard"), [&"pewter_city"])
+	assert_eq(_triggered_on.get(&"route_3_entered"), [&"route_3"])
+	assert_eq(_triggered_on.get(&"route_4_reached"), [&"route_4"])
+	assert_eq(_triggered_on.get(&"mt_moon_researcher"), [&"mt_moon_b2f"])
 	assert_eq(_offer.chosen_scene, &"starter_chosen", "scène du choix = CODE_PLAYED")
 	assert_eq(CODE_PLAYED[_offer.chosen_scene], _offer.map_id)
 
@@ -252,11 +339,11 @@ func test_every_trainer_and_item_step_exists() -> void:
 ## Jalon 10 (T9) : chaque Dresseur présenté par une carte en a une, chaque badge remis existe, et
 ## l'étape « badge » d'une scène suit le combat qui lève déjà son drapeau (« win »).
 func test_every_champion_card_and_badge_step_exists() -> void:
-	assert_eq(_cutscenes.get_card_trainer_ids(), [&"pewter_gym_brock"] as Array[StringName])
+	assert_eq(_cutscenes.get_card_trainer_ids(), [&"cerulean_gym_misty", &"pewter_gym_brock"] as Array[StringName])
 	for id: StringName in _cutscenes.get_card_trainer_ids():
 		var trainer := _trainers.get_trainer(id)
 		assert_true(trainer != null and trainer.has_card(), "« %s » a une carte" % id)
-	assert_eq(_cutscenes.get_badge_ids(), [&"boulder"] as Array[StringName])
+	assert_eq(_cutscenes.get_badge_ids(), [&"boulder", &"cascade"] as Array[StringName])
 	for id: StringName in _cutscenes.get_badge_ids():
 		assert_true(_badges.has_badge(id), "badge « %s » connu" % id)
 	for id: StringName in _cutscenes.get_ids():
@@ -283,11 +370,15 @@ func test_only_world_items_are_found_items() -> void:
 			for step: CutsceneStep in variant.steps:
 				if step.kind == CutsceneStep.Kind.GIVE and step.found:
 					found.append("%s:%s" % [id, step.item_id])
-	assert_eq(found, ["route_1_potion:potion", "route_25_hidden_1:potion",
+	assert_eq(found, ["mt_moon_1f_hidden_1:awakening", "mt_moon_1f_item_1:escape_rope",
+		"mt_moon_b1f_item_1:moon_stone", "mt_moon_b1f_item_2:potion",
+		"mt_moon_b2f_hidden_1:moon_stone", "mt_moon_b2f_item_1:tm01", "route_1_potion:potion",
+		"route_24_antidote:antidote", "route_24_item_1:potion", "route_25_hidden_1:potion",
 		"route_25_item_1:tm19", "route_25_item_2:potion", "route_25_item_3:poke_ball",
-		"route_2_item_1:poke_ball",
-		"route_2_item_2:potion", "route_2_item_3:poke_ball", "route_2_item_4:potion",
-		"route_2_north_item_1:potion",
+		"route_2_item_1:poke_ball", "route_2_item_2:potion",
+		"route_2_item_3:poke_ball", "route_2_item_4:potion", "route_2_north_item_1:potion",
+		"route_3_hidden_1:awakening", "route_3_item_1:poke_ball", "route_3_item_2:potion",
+		"route_3_item_3:paralyze_heal", "route_4_item_1:poke_ball",
 		"viridian_forest_item_1:antidote", "viridian_forest_item_2:poke_ball",
 		"viridian_forest_item_3:potion", "viridian_forest_item_4:antidote",
 		"viridian_forest_item_5:poke_ball", "viridian_forest_item_6:potion"]

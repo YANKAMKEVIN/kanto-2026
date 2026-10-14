@@ -31,10 +31,10 @@ const ARGENTA_SPECIES := {
 const ARGENTA_MOVES := {
 	&"rock_throw": [&"rock", MoveData.Category.PHYSICAL, 50, 90, 15, []],
 	&"defense_curl": [&"normal", MoveData.Category.STATUS, 0, 0, 40, []],
-	&"self_destruct": [&"normal", MoveData.Category.PHYSICAL, 200, 100, 5, ["self_ko"]],
+	&"self_destruct": [&"normal", MoveData.Category.PHYSICAL, 200, 100, 5, []],
 	&"earthquake": [&"ground", MoveData.Category.PHYSICAL, 100, 100, 10, []],
-	&"explosion": [&"normal", MoveData.Category.PHYSICAL, 250, 100, 5, ["self_ko"]],
-	&"bind": [&"normal", MoveData.Category.PHYSICAL, 15, 85, 20, ["trap"]],
+	&"explosion": [&"normal", MoveData.Category.PHYSICAL, 250, 100, 5, []],
+	&"bind": [&"normal", MoveData.Category.PHYSICAL, 15, 85, 20, []],
 	&"slam": [&"normal", MoveData.Category.PHYSICAL, 80, 75, 20, []],
 }
 ## Drapeaux de la fin du J9 portés par les départs du J10.
@@ -134,11 +134,18 @@ func test_new_move_texts_are_the_validated_lot() -> void:
 		assert_eq(move.name, names[id], String(id))
 		assert_true(_lot.contains("`%s` · `name` | " % id), String(id))
 		assert_true(_lot.contains("| « %s » |" % move.name), "%s : nom" % id)
+		if id == &"self_destruct":
+			# Jalon 12 (T12) : description remplacée par le texte validé du dossier 15 §20 n° 45.
+			assert_eq(move.description, "Inflige de gros dégâts. Le lanceur est mis K.O.")
+			continue
 		assert_true(_lot.contains("| « %s » |" % move.description), "%s : description" % id)
 		assert_false(move.draft, String(id))
-	# Note A1 : ni « Ligotage », ni « Autodestruction ». « Patience » (bide) arrive au J11 avec la
-	# CT34 (dossier 14 §6.3), pas avec le J10.
-	assert_false(_data.has_move(&"wrap"))
+	# Note A1 : ni « Ligotage », ni « Autodestruction » au J10. « Patience » (bide) arrive au J11
+	# avec la CT34 (dossier 14 §6.3) ; Ligotage au J12 (Abo, data/pokemon/moves/mt_moon.json).
+	assert_eq(_data.get_move(&"wrap").source, "res://data/pokemon/moves/mt_moon.json")
+	# Ligotage existe donc (Abo, Chétiflor au J13), mais jamais chez Onix (Étreinte).
+	for entry: Array in _data.get_species(&"onix").learnset:
+		assert_ne(entry[1], &"wrap", "Onix : Étreinte, pas Ligotage")
 	assert_eq(_data.get_move(&"bide").name, "Patience")
 
 
@@ -232,13 +239,15 @@ func test_pewter_mart_stock() -> void:
 	assert_not_null(mart)
 	if mart == null:
 		return
-	assert_eq(mart.item_ids(), [&"poke_ball", &"potion", &"antidote", &"paralyze_heal", &"awakening", &"burn_heal"] \
-		as Array[StringName], "dossier 12 §8, remèdes du J11 (dossier 14 §3.4)")
+	assert_eq(mart.item_ids(), [&"poke_ball", &"potion", &"antidote", &"paralyze_heal",
+		&"awakening", &"burn_heal", &"escape_rope"] as Array[StringName],
+		"dossier 12 §8, remèdes du J11 (dossier 14 §3.4), Corde Sortie (dossier 15 §11)")
 	assert_eq(ShopRules.stock(mart, StoryFlags.new()), mart.item_ids(), "sans condition")
 	var prices: Array[int] = []
 	for item_id: StringName in mart.item_ids():
 		prices.append(_items.get_item(item_id).price)
-	assert_eq(prices, [200, 300, 100, 200, 250, 250] as Array[int], "dossier 12 §8, dossier 14 §3.4")
+	assert_eq(prices, [200, 300, 100, 200, 250, 250, 550] as Array[int],
+		"dossier 12 §8, dossier 14 §3.4, dossier 15 §11 (550 ₽)")
 
 
 func test_route_2_north_table_is_route_2_one_level_higher() -> void:

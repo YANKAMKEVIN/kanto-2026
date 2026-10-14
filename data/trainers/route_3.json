@@ -1,0 +1,38 @@
+{
+	"route_3_hugo": {
+		"name": "Gamin Hugo", "ai": "random",
+		"can_lose": false, "heal_after": false, "gives_exp": true, "prize_money": 150,
+		"team": [{ "species": "rattata", "level": 10 }, { "species": "ekans", "level": 10 }]
+	},
+	"route_3_lea": {
+		"name": "Fillette Léa", "ai": "random",
+		"can_lose": false, "heal_after": false, "gives_exp": true, "prize_money": 135,
+		"team": [{ "species": "pidgey", "level": 9 }, { "species": "nidoran_f", "level": 9 }]
+	},
+	"route_3_sacha": {
+		"name": "Scout Sacha", "ai": "random",
+		"can_lose": false, "heal_after": false, "gives_exp": true, "prize_money": 120,
+		"team": [
+			{ "species": "caterpie", "level": 10 }, { "species": "weedle", "level": 10 },
+			{ "species": "metapod", "level": 10 }
+		]
+	},
+	"route_3_enzo": {
+		"name": "Gamin Enzo", "ai": "random",
+		"can_lose": false, "heal_after": false, "gives_exp": true, "prize_money": 210,
+		"team": [{ "species": "spearow", "level": 14 }]
+	},
+	"route_3_ines": {
+		"name": "Fillette Inès", "ai": "random",
+		"can_lose": false, "heal_after": false, "gives_exp": true, "prize_money": 210,
+		"team": [{ "species": "jigglypuff", "level": 14 }]
+	},
+	"route_3_nolan": {
+		"name": "Scout Nolan", "ai": "random",
+		"can_lose": false, "heal_after": false, "gives_exp": true, "prize_money": 108,
+		"team": [
+			{ "species": "weedle", "level": 9 }, { "species": "kakuna", "level": 9 },
+			{ "species": "caterpie", "level": 9 }
+		]
+	}
+}

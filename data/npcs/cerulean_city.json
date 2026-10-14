@@ -1,0 +1,26 @@
+{
+	"h1_fisher": {
+		"cell": [25, 14], "facing": "right", "sprite": "haru", "dialogue": "cerulean_h1_fisher"
+	},
+	"h2_kid": {
+		"cell": [31, 16], "facing": "right", "sprite": "kid", "dialogue": "cerulean_h2_kid",
+		"look": { "facings": ["right", "down", "right", "up"], "every": 3.5 }
+	},
+	"h3_neighbor": {
+		"cell": [21, 10], "facing": "left", "sprite": "aoki", "dialogue": "cerulean_h3_neighbor"
+	},
+	"h4_policeman": {
+		"cell": [11, 10], "facing": "left", "sprite": "guard", "dialogue": "cerulean_h4_policeman",
+		"keep_facing": true
+	},
+	"h5_swimmer": {
+		"cell": [37, 11], "facing": "down", "sprite": "swimmer_f", "dialogue": "cerulean_h5_swimmer"
+	},
+	"h6_trainer": {
+		"cell": [36, 21], "facing": "up", "sprite": "youngster", "dialogue": "cerulean_h6_trainer",
+		"look": { "facings": ["up", "left", "up", "right"], "every": 4.0 }
+	},
+	"h7_resident": {
+		"cell": [51, 22], "facing": "right", "sprite": "old_man", "dialogue": "cerulean_h7_resident"
+	}
+}

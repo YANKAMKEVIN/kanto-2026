@@ -90,15 +90,15 @@ func test_breaks_charge() -> void:
 
 func test_battler_lock_reads_bide_or_charge() -> void:
 	var battler := _battler()
-	assert_false(battler.is_locked())
+	assert_false(battler.is_action_locked())
 	assert_eq(battler.locked_slot(), -1)
 	battler.charge_slot = 2
 	battler.invulnerable = true
 	assert_true(battler.is_charging())
-	assert_true(battler.is_locked())
+	assert_true(battler.is_action_locked())
 	assert_eq(battler.locked_slot(), 2)
 	battler.clear_charge()
-	assert_false(battler.is_locked())
+	assert_false(battler.is_action_locked())
 	assert_false(battler.invulnerable)
 	battler.bide_stage = 1
 	battler.bide_slot = 1

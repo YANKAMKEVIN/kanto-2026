@@ -72,12 +72,12 @@ intéressante, équipe qui se construit, premier apprentissage de nouvelles capa
 - **J9 terminé** (2026-10-08) : forêt agrandie à 70 × 90 (Théo et Milo inévitables), 5 Dresseurs,
   poison, premières évolutions ; la porte nord du poste nord attend la Route 2 nord (J10).
 
-### Phase 6 — Argenta + première Arène (J10)
+### Phase 6 — Argenta + première Arène (J10) — ✅ terminé (2026-10-10)
 Ville d'Argenta (musée, habitants, Centre, Boutique, Arène). **Système de badges** : victoire →
 Badge Roche → profil dresseur mis à jour, progression narrative, réactions des PNJ. Première grande
 boucle longue : Bourg Palette → routes → captures → ville → préparation → Arène → badge.
 
-### Phase 7 — Systèmes avancés Pokémon (J11) — grande passe avant d'étendre Kanto
+### Phase 7 — Systèmes avancés Pokémon (J11) — grande passe avant d'étendre Kanto — ✅ terminé (2026-10-13)
 - **Évolutions** : la logique et une séquence propre existent depuis le J9 ; ici, présentation
   enrichie (montée de niveau → « Salamèche évolue ! », animation 2026,
   annulation possible, nouvelles stats, Pokédex).
@@ -88,8 +88,19 @@ boucle longue : Bourg Palette → routes → captures → ville → préparation
 - **Compagnon Pokémon** : sortir de sa Ball et suivre le joueur, proprement (comportements par
   espèce, vitesse, obstacles, intérieurs, réactions, animations, rappel automatique, interactions).
   Pas un sprite collé derrière le joueur.
+- **J11 terminé** (2026-10-13) : sauvegarde v6 (identifiant de Pokémon, compagnon), paralysie,
+  sommeil, brûlure, gel, confusion et effets simples (multi-coups, apeurement…), remèdes, CT et
+  CT34 Patience remise par Pierre, évolution courte (≈ 6 s, accélérable), compagnon qui suit le
+  joueur dehors ; **lot d'art partiel** : 3 planches sur 5 (Herbizarre, Carabaffe, Papilusion),
+  Reptincel et Pikachu en attente (12 espèces éligibles).
 
 ### Phase 8 — Kanto devient un monde (J12+)
+- **J12 terminé** (2026-10-14, après validation de Kevin) : Route 3 (six Dresseurs, objet
+  caché), Centre du Mont Sélénite, Mont Sélénite sur trois étages (gravats, échelles, lumière
+  rare, Corde Sortie), Team Rocket (trois Sbires qui partent après leur défaite), chercheur
+  Gaspard et choix définitif d'un fossile (Grand moment), Pierre Lune et évolution par pierre,
+  CT01, sas de la Route 4 ; moteur : drain, piège, Entrave, Repos, Destruction ; sauvegarde
+  inchangée (v6).
 Les systèmes principaux existent : on produit le contenu. Mont Sélénite, Azuria (Léo), Carmin-sur-Mer
 (Major Bob), Océane, Lavanville, Céladopole (Erika), Team Rocket, Safrania (Morgane), Parmanie (Koga),
 Cramois'Île (Auguste), Jadielle finale (Giovanni), Route Victoire, Ligue.
@@ -122,7 +133,7 @@ l'histoire principale. À reprendre à la conception de chaque jalon concerné.
 |---|---|---|
 | 1 | Laboratoire de Chen — Bourg Palette | fait (J4) ; dossier 02 |
 | 2 | Route 22 — près de Jadielle | prévu au J7B ; dossier 09 §13–15 (rencontre facultative) |
-| 3 | Azuria / Pont Pépite | J13 ; dossier 16 §7 : **victoire obligatoire**, rejouable après défaite ; Roucoups, Rattata, starter évolué |
+| 3 | Azuria / Pont Pépite | **fait (J13, 2026-10-14)** ; dossier 16 §7 : **victoire obligatoire**, rejouable après défaite ; Roucoups, Rattata, starter évolué |
 | 4 | S.S. Anne — Carmin-sur-Mer | à concevoir |
 | 5 | Tour Pokémon — Lavanville | à concevoir ; tournant du rival déjà posé au dossier 06 §6 |
 | 6 | Sylphe SARL — Safrania | à concevoir |
@@ -148,7 +159,9 @@ J6  Menu / Équipe / Sac / Pokédex / Carte / Profil
 J7  Jadielle + Centre + Boutique + économie
 J8  Route 2
 J9  Forêt de Jade
-J10 Argenta + Arène Pierre + Badge   ← ICI
+J10 Argenta + Arène Pierre + Badge
 J11 Grande passe systèmes (évolutions / CT / statuts / équipe avancée / compagnon)
-J12+ Expansion de Kanto → Ligue → post-game
+J12 Route 3 + Mont Sélénite   ✅
+J13 Azuria + Ondine + Pont Pépite   ✅
+J14+ Expansion de Kanto → Ligue → post-game   ← ICI
 ```

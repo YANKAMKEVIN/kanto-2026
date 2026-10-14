@@ -1,0 +1,19 @@
+{
+	"map": "mt_moon_1f", "spawn": "arrivee_a", "facing": "down",
+	"flags": [
+		"mom_greeted", "rival_met", "oak_met", "oak_lab_reunion", "starter_offered",
+		"starter_chosen", "taken_charmander", "taken_squirtle", "rival_lab_won",
+		"rival_challenged", "rival_battle_done", "rival_left_lab", "viridian_arrived",
+		"got_oak_parcel", "pokedex_activated", "poison_unlocked", "beaten_forest_scout_theo",
+		"pewter_arrived", "beaten_pewter_gym_liam", "brock_met", "badge_boulder",
+		"route_3_entered", "beaten_route_3_hugo", "beaten_route_3_lea"
+	],
+	"party": [
+		{ "species": "charmeleon", "level": 18, "hp": 20 },
+		{ "species": "ekans", "level": 12 },
+		{ "species": "pidgeotto", "level": 17 }
+	],
+	"companion": 1,
+	"bag": { "poke_ball": 10, "potion": 3, "escape_rope": 3 },
+	"money": 3000
+}

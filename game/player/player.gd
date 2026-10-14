@@ -11,6 +11,9 @@ extends Node2D
 ## joueur est libre quand plus aucune raison n'est active (docs/tech/jalon-03.md §2.8).
 
 signal moved(cell: Vector2i)
+## Un pas commence (jalon 11, relais de [signal GridMover.step_started] pour le compagnon) :
+## [param kind] = &"walk", &"run" ou &"jump" (saut de rebord, deux cases). Pas scriptés compris.
+signal step_started(from_cell: Vector2i, to_cell: Vector2i, kind: StringName)
 signal facing_changed(direction: Vector2i)
 signal bumped(direction: Vector2i)
 ## Petite réaction de surprise ([method react], scènes) : tests, futurs sons.
@@ -106,6 +109,7 @@ func enter_map(grid: GridWorld, cell: Vector2i, facing: Vector2i, bounds: Rect2i
 		_mover.facing_changed.disconnect(_on_facing_changed)
 		_mover.step_finished.disconnect(_on_step_finished)
 		_mover.bumped.disconnect(_on_bumped)
+		_mover.step_started.disconnect(_on_step_started)
 		_grid.release(_mover.get_cell(), self)
 		_grid.release(_mover.get_target_cell(), self)
 	_grid = grid
@@ -114,6 +118,7 @@ func enter_map(grid: GridWorld, cell: Vector2i, facing: Vector2i, bounds: Rect2i
 	_mover.facing_changed.connect(_on_facing_changed)
 	_mover.step_finished.connect(_on_step_finished)
 	_mover.bumped.connect(_on_bumped)
+	_mover.step_started.connect(_on_step_started)
 	if not _mover.place(cell, facing):
 		push_error("Player : impossible d'apparaître en %s" % cell)
 	_input.reset()
@@ -350,6 +355,12 @@ func _on_viewport_size_changed() -> void:
 
 func _on_facing_changed(direction: Vector2i) -> void:
 	facing_changed.emit(direction)
+
+
+func _on_step_started(from_cell: Vector2i, to_cell: Vector2i, running: bool) -> void:
+	var distance := absi(to_cell.x - from_cell.x) + absi(to_cell.y - from_cell.y)
+	var kind := &"jump" if distance > 1 else (&"run" if running else &"walk")
+	step_started.emit(from_cell, to_cell, kind)
 
 
 func _on_step_finished(cell: Vector2i) -> void:

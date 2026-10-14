@@ -20,6 +20,10 @@
 			"title": "{badge}",
 			"detail": "Obtenu à {city} contre {leader}."
 		},
+		"fossil": {
+			"title": "La Team Rocket repoussée",
+			"detail": "{fossil} obtenu."
+		},
 		"bill_restored": {
 			"title": "Léo a retrouvé forme humaine",
 			"detail": ""
@@ -41,6 +45,10 @@
 		"pewter_city": {
 			"title": "Arrivée à Argenta",
 			"detail": "Une ville de pierre, au pied des montagnes."
+		},
+		"cerulean_city": {
+			"title": "Arrivée à Azuria",
+			"detail": "Une ville d'eau et de lumière."
 		}
 	}
 }

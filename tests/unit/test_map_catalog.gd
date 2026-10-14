@@ -26,12 +26,15 @@ func test_has_map() -> void:
 
 
 ## Cartes de QA encore livrées : `qa_charge_j14` (J14 T10), retirée au T24 avec ses départs
-## (alors : vider cette liste).
+## (alors : vider cette liste). Clôture du jalon 9 (T23) : la carte de QA des systèmes est
+## retirée ; jalon 12 (T28) : `qa_moves_j12` ; jalon 13 (T22) : `qa_switch_j13`.
 const QA_MAPS_SHIPPED: Array[String] = ["qa_charge_j14.tscn"]
 
 
 func test_only_planned_qa_maps_are_shipped() -> void:
 	assert_false(MapCatalog.has_map(&"qa_forest_systems"))
+	assert_false(MapCatalog.has_map(&"qa_moves_j12"))
+	assert_false(MapCatalog.has_map(&"qa_switch_j13"))
 	for file: String in DirAccess.get_files_at(MapCatalog.MAPS_DIR):
 		if file.begins_with("qa_"):
 			assert_true(QA_MAPS_SHIPPED.has(file), "%s : carte de QA non prévue" % file)
@@ -40,6 +43,13 @@ func test_only_planned_qa_maps_are_shipped() -> void:
 func test_qa_maps_are_recognised_by_their_prefix() -> void:
 	assert_true(MapCatalog.is_qa_map(&"qa_charge_j14"))
 	assert_false(MapCatalog.is_qa_map(&"pallet_town"))
+	assert_false(MapCatalog.is_qa_map(&""))
+
+
+## `is_qa_map` reste après le T28 du J12 (le prochain jalon qui aura une carte de QA s'en servira).
+func test_is_qa_map_reads_the_prefix() -> void:
+	assert_true(MapCatalog.is_qa_map(&"qa_moves_j12"))
+	assert_false(MapCatalog.is_qa_map(&"mt_moon_1f"))
 	assert_false(MapCatalog.is_qa_map(&""))
 
 
@@ -111,3 +121,10 @@ func test_cave_escape_targets_exist_with_their_spawn() -> void:
 		map.free()
 	if not missing.is_empty():
 		pending("sortie de grotte pas encore construite (T8) : %s" % ", ".join(missing))
+
+
+func test_j13_qa_map_is_recognised_and_removed() -> void:
+	assert_true(MapCatalog.is_qa_map(&"qa_switch_j13"))
+	assert_false(MapCatalog.is_qa_map(&"cerulean_city"))
+	assert_false(MapCatalog.is_qa_map(&""))
+	assert_false(MapCatalog.has_map(&"qa_switch_j13"), "retirée au T22")

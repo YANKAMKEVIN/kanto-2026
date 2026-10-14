@@ -38,9 +38,9 @@
 		},
 		"cave_1f": {
 			"grade": {
-				"shadows": [0.86, 0.90, 1.0],
-				"midtones": [0.92, 0.95, 1.0],
-				"highlights": [0.93, 0.95, 1.0],
+				"shadows": [0.90, 0.94, 1.0],
+				"midtones": [0.97, 0.99, 1.0],
+				"highlights": [0.98, 0.99, 1.0],
 				"strength": 1.0
 			},
 			"sun_direction": [-0.7, -0.7],
@@ -50,9 +50,9 @@
 		},
 		"cave_b1f": {
 			"grade": {
-				"shadows": [0.76, 0.80, 0.92],
-				"midtones": [0.86, 0.88, 0.95],
-				"highlights": [0.87, 0.88, 0.94],
+				"shadows": [0.84, 0.88, 0.98],
+				"midtones": [0.95, 0.97, 1.0],
+				"highlights": [0.96, 0.97, 1.0],
 				"strength": 1.0
 			},
 			"sun_direction": [-0.7, -0.7],
@@ -62,9 +62,9 @@
 		},
 		"cave_b2f": {
 			"grade": {
-				"shadows": [0.76, 0.80, 0.92],
-				"midtones": [0.86, 0.88, 0.95],
-				"highlights": [0.87, 0.88, 0.94],
+				"shadows": [0.84, 0.88, 0.98],
+				"midtones": [0.95, 0.97, 1.0],
+				"highlights": [0.96, 0.97, 1.0],
 				"strength": 1.0
 			},
 			"sun_direction": [-0.7, -0.7],
@@ -103,6 +103,13 @@
 		"mt_moon_1f": "cave_1f",
 		"mt_moon_b1f": "cave_b1f",
 		"mt_moon_b2f": "cave_b2f",
+		"cerulean_city": "golden_hour",
+		"cerulean_center": "interior_warm",
+		"cerulean_mart": "interior_warm",
+		"cerulean_gym": "interior_warm",
+		"cerulean_bike_shop": "interior_warm",
+		"cerulean_house": "interior_warm",
+		"route_24": "golden_hour",
 		"route_25": "golden_hour",
 		"bill_house": "interior_warm"
 	}

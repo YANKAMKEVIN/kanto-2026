@@ -20,6 +20,11 @@ const MAP_IDS: Array[StringName] = [
 	&"route_3", &"mt_moon_center", &"route_4",
 	# Jalon 12 (T9) : les trois étages du Mont Sélénite.
 	&"mt_moon_1f", &"mt_moon_b1f", &"mt_moon_b2f",
+	# Jalon 13 (T7) : Azuria et ses intérieurs.
+	&"cerulean_city", &"cerulean_center", &"cerulean_mart", &"cerulean_gym",
+	&"cerulean_bike_shop", &"cerulean_house",
+	# Jalon 13 (T8) : la Route 24 (la Route 4 est devenue la vraie Route 4, même identifiant).
+	&"route_24",
 	# Jalon 14 (T14) : la Route 25 et la maison de Léo (raccord ouest « à venir » jusqu'au T15).
 	&"route_25", &"bill_house",
 ]
@@ -112,7 +117,7 @@ func test_every_coming_soon_warp_returns_to_a_walkable_spawn_of_its_own_map() ->
 			var back := map.get_spawn_cell(warp.target_spawn)
 			assert_false(map.get_grid().is_solid(back), "%s : retour praticable" % label)
 			assert_ne(warp.facing, Vector2i.ZERO, "%s : orientation au retour" % label)
-	assert_gt(found, 0, "au moins le raccord est du sas de la Route 4 (Azuria)")
+	assert_gt(found, 0, "au moins le raccord est de la Route 24 (Route 25)")
 
 
 ## Warp de [param map] qui ramène à [param origin] depuis [param arrival] : sur la case

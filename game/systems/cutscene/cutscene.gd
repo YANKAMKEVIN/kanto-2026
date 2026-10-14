@@ -11,6 +11,9 @@ var id: StringName = &""
 ## Fichier d'origine (messages d'erreur).
 var source: String = ""
 var variants: Array[CutsceneVariant] = []
+## Scène enchaînée à la fin de celle-ci (jalon 13 §2.9, clé « next ») ; &"" = aucune. Boot
+## écrit la sauvegarde entre les deux, puis joue la suivante si une de ses variantes s'applique.
+var next: StringName = &""
 
 
 ## Première variante qui s'applique à [param flags], ou null si aucune.
