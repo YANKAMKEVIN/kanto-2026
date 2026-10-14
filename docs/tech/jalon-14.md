@@ -685,7 +685,7 @@ Grille : §1.3. Données nouvelles dans `data/dialogues/cerulean_rocket.json` et
   38) et (33, 38), tous `unless cerulean_rocket_beaten` ; parler avant → n° 40. Après la
   victoire, dans la même visite : déclencheur (31..33, 37), pas vers ↓, ou parler → scène
   `cerulean_south_guard` (`if cerulean_rocket_beaten`) : n° 41 → `move` vers le nord → `despawn`
-  du policier et des deux barrières, puis `set cerulean_south_guard_left`. **[D] T20a** : barrage
+  du policier et des deux barrières, puis `set cerulean_south_guard_left`. **[D] T20a, validé par Kevin le 2026-10-14** : barrage
   `unless cerulean_south_guard_left` (et non `unless cerulean_rocket_beaten`) et scène `if
   cerulean_rocket_beaten unless cerulean_south_guard_left` : sinon, aux visites suivantes, la bande
   relancerait n° 41 sans policier (un `EventTrigger` n'a pas de condition). Conséquence : qui
@@ -1136,7 +1136,7 @@ objectif n° 68 en minuscule ; `dossier-11-route-2.md` cite encore « Scout Léo
 
 ---
 
-## Annexe A — Textes À VALIDER par Kevin (non couverts par le §15)
+## Annexe A — Textes VALIDÉS par Kevin le 2026-10-14 (non couverts par le §15)
 
 Conventions des lots précédents : phrases courtes ; « Sans effet dans le moteur actuel. » pour un
 effet en attente (convention du J12) ; `{pokemon}`, `{player}`.
