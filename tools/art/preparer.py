@@ -241,6 +241,61 @@ def recolorer(image: Image.Image, reglages: dict) -> Image.Image:
     return sortie
 
 
+def _flou_gaussien(tableau, sigma: float, enroule: bool = False):
+    """Flou gaussien séparable d'un tableau numpy (H × L [× canaux]) ; `enroule` : bords
+    raccordés (texture répétée), sinon prolongés."""
+    import numpy as np
+    rayon = max(1, int(sigma * 3))
+    noyau = np.exp(-0.5 * (np.arange(-rayon, rayon + 1) / sigma) ** 2)
+    noyau /= noyau.sum()
+    mode = "wrap" if enroule else "edge"
+    for axe in (0, 1):
+        largeurs = [(0, 0)] * tableau.ndim
+        largeurs[axe] = (rayon, rayon)
+        etendu = np.pad(tableau, largeurs, mode=mode)
+        tableau = np.apply_along_axis(lambda v: np.convolve(v, noyau, mode="valid"), axe, etendu)
+    return tableau
+
+
+def raccorder(image: Image.Image, bande: int) -> Image.Image:
+    """Texture répétée (série 14, T6) : l'écart de valeur entre deux bords opposés (lissé le
+    long du bord, σ 6 px : seules les différences de teinte et de lumière, pas le détail) est
+    réparti sur `bande` px de chaque côté (rampe en cosinus) ; les deux bords se rejoignent
+    à la moyenne. Le motif n'est pas déplacé."""
+    import numpy as np
+    a = np.asarray(image.convert("RGB")).astype(np.float64)
+    hauteur, largeur = a.shape[:2]
+    poids = 0.5 * (1.0 + np.cos(np.pi * np.arange(bande) / bande))
+    # Bords gauche / droit (écart par rangée), puis haut / bas (écart par colonne).
+    ecart = _flou_gaussien((a[:, 0, :] - a[:, -1, :])[:, None, :], 6.0, True)[:, 0, :]
+    for x in range(min(bande, largeur // 2)):
+        a[:, x, :] -= ecart / 2 * poids[x]
+        a[:, largeur - 1 - x, :] += ecart / 2 * poids[x]
+    ecart = _flou_gaussien((a[0, :, :] - a[-1, :, :])[None, :, :], 6.0, True)[0, :, :]
+    for y in range(min(bande, hauteur // 2)):
+        a[y, :, :] -= ecart / 2 * poids[y]
+        a[hauteur - 1 - y, :, :] += ecart / 2 * poids[y]
+    return Image.fromarray(np.clip(np.rint(a), 0, 255).astype(np.uint8), "RGB")
+
+
+def adoucir(image: Image.Image, facteur: float, flou: float) -> Image.Image:
+    """Décalcomanie de lumière (puits de jour, série 14, T6) : bordure floutée de `flou` px
+    (alpha flouté ; couleurs moyennées pondérées par l'alpha, ce qui efface les franges
+    sombres ou colorées laissées par l'extraction d'alpha), puis alpha × `facteur`."""
+    import numpy as np
+    a = np.asarray(image.convert("RGBA")).astype(np.float64)
+    rgb, alpha = a[:, :, :3], a[:, :, 3:] / 255.0
+    if flou > 0:
+        large = 3.0 * flou
+        couleur = _flou_gaussien(rgb * alpha, large) / np.maximum(
+            _flou_gaussien(alpha, large), 1e-4)
+        rgb = np.where(alpha > 0.9, rgb, couleur)
+        alpha = _flou_gaussien(alpha, flou)
+    alpha = alpha * facteur
+    sortie = np.concatenate([rgb, alpha * 255.0], axis=2)
+    return Image.fromarray(np.clip(np.rint(sortie), 0, 255).astype(np.uint8), "RGBA")
+
+
 def _ecrire(image: Image.Image, chemin: Path) -> None:
     chemin.parent.mkdir(parents=True, exist_ok=True)
     image.save(chemin, optimize=True)
@@ -263,6 +318,8 @@ class Preparateur:
         for e in self.m["objets"]:
             image = _recadrer(Image.open(self.source / e["source"]).convert("RGBA"), e)
             image = _mettre_a_taille(_silhouette(image), e["axe"], e["cases"], self.case)
+            if "alpha" in e or "flou_bord" in e:
+                image = adoucir(image, e.get("alpha", 1.0), e.get("flou_bord", 0))
             self._objet(e["id"], e["sortie"], image, e["ombre"], e["contact"])
 
     def _objet(self, ident: str, sortie: str, image: Image.Image, ombre: bool,
@@ -311,9 +368,11 @@ class Preparateur:
             image = Image.open(self.source / planche["source"]).convert("RGBA")
             colonnes, lignes = planche["colonnes"], planche["lignes"]
             taches = _taches(image)
-            if len(taches) != colonnes * lignes:
+            # Nombre d'éléments = celui des identifiants (une planche 3 × 2 peut n'en porter
+            # que 5 : cellule vide, série 15).
+            if len(taches) != len(planche["ids"]):
                 raise SystemExit(f"{planche['source']} : {len(taches)} éléments trouvés, "
-                                 f"{colonnes * lignes} attendus")
+                                 f"{len(planche['ids'])} attendus")
             taches.sort(key=lambda tache: tache[0][1] + tache[0][3])
             ordre = []
             for ligne in range(lignes):
@@ -376,6 +435,8 @@ class Preparateur:
             if e["couleur"] != 1.0:
                 # Terre trop orangée à la génération : ramenée vers l'ocre clair.
                 image = ImageEnhance.Color(image).enhance(e["couleur"])
+            if e.get("raccord"):
+                image = raccorder(image, e["raccord"])
             _ecrire(image, self._sortie(e["sortie"]))
             self.catalogue["images"][e["id"]] = {"fichier": self._res(e["sortie"]),
                                                  "taille": list(image.size)}
@@ -447,7 +508,7 @@ class Preparateur:
             sortie = self._sortie(e["sortie"])
             largeur, hauteur = _attente().decouper(
                 str(self.source / e["source"]), str(RACINE / marche["fichier"][6:]),
-                str(sortie), e.get("miroir"))
+                str(sortie), e.get("miroir"), e.get("rapport_hauteur"))
             self.catalogue["personnages"][e["id"]] = {
                 "fichier": self._res(e["sortie"]), "cellule": [largeur, hauteur],
                 "hauteur": marche["hauteur"], "colonnes": 4, "lignes": 1,

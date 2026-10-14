@@ -17,6 +17,34 @@ var types: Array[StringName] = []
 ## graine. Statut volatil : il disparaît quand le Pokémon quitte le terrain (un nouveau
 ## Battler est créé à chaque envoi).
 var seed_fraction: float = 0.0
+## Confusion (jalon 11, dossier 14 §3.2) : tentatives d'agir encore confuses (1 à 4 à
+## l'application) ; 0 = pas confus. Perdue au changement de Pokémon et à la fin du combat
+## (un nouveau Battler à chaque envoi ; jamais sauvegardée).
+var confusion_turns: int = 0
+## Apeuré ce tour-ci (jalon 11) : il ne pourra pas agir ; remis à faux en fin de tour.
+var flinched: bool = false
+## Puissance (jalon 11) : critique +2 niveaux tant que le Pokémon reste en jeu.
+var focused: bool = false
+## Patience (jalon 11, CT34, dossier 14 §6.3) : tour de Patience déjà joué (0 = pas de Patience,
+## 1 = s'est préparé, 2 = a encaissé ; la riposte vient au tour suivant), emplacement de la
+## capacité (action imposée) et dégâts directs reçus depuis la préparation. Perdu au changement,
+## au K.O. et à la fin du combat (jamais sauvegardé).
+var bide_stage: int = 0
+var bide_slot: int = -1
+var bide_stock: int = 0
+## Piège (jalon 12, Ligotage, Étreinte, Danse Flamme) : fins de tour encore à subir (0 = libre),
+## capacité qui le retient (phrases par capacité), part des PV max perdue par tour, et le
+## [Battler] lanceur : le piège finit quand il quitte le terrain. Perdu au changement, au K.O. et
+## à la fin du combat (jamais sauvegardé).
+var trap_turns: int = 0
+var trap_move: StringName = &""
+var trap_fraction: float = 0.0
+var trap_source: Battler = null
+## Entrave (jalon 12) : emplacement de la dernière capacité lancée (posé à MOVE_USED ; −1 = aucune
+## encore, ou Lutte), emplacement bloqué (−1 = aucun) et fins de tour restantes.
+var last_move_slot: int = -1
+var disabled_slot: int = -1
+var disabled_turns: int = 0
 var _stages: Dictionary[StringName, int] = {}
 
 @warning_ignore_start("integer_division")
@@ -59,6 +87,30 @@ func effective_stat(stat: StringName, ignore_drops: bool = false,
 	return pokemon.stats.get(stat, 0) * maxi(2, 2 + stage) / maxi(2, 2 - stage)
 
 
+## Vrai si le Pokémon est en pleine Patience (son action est imposée).
+func is_biding() -> bool:
+	return bide_stage > 0
+
+
+## Oublie la Patience en cours (riposte, rupture).
+func clear_bide() -> void:
+	bide_stage = 0
+	bide_slot = -1
+	bide_stock = 0
+
+
+## Vrai si le Pokémon ne peut pas quitter le terrain de lui-même : tour forcé de Patience
+## (jalon 11) ou piège (Ligotage, Claquoir… jalon 12, [method is_trapped]). Lu par l'IA qui
+## change de Pokémon ([AiSwitchRule], jalon 13).
+func is_locked() -> bool:
+	return is_biding() or is_trapped()
+
+
+## Vrai si le Pokémon est confus.
+func is_confused() -> bool:
+	return confusion_turns > 0
+
+
 ## Vrai si une graine de Vampigraine est plantée sur ce Pokémon.
 func is_seeded() -> bool:
 	return seed_fraction > 0.0
@@ -72,11 +124,12 @@ func has_any_type(type_ids: Array[StringName]) -> bool:
 	return false
 
 
-## Indices des capacités qui ont encore des PP (vide = Lutte).
+## Indices des capacités qui ont encore des PP, sauf celle que bloque une Entrave (jalon 12) ;
+## vide = Lutte.
 func usable_moves() -> Array[int]:
 	var result: Array[int] = []
 	for i: int in pokemon.moves.size():
-		if pokemon.moves[i].pp > 0:
+		if pokemon.moves[i].pp > 0 and i != disabled_slot:
 			result.append(i)
 	return result
 
@@ -90,3 +143,27 @@ static func stage_multiplier(stage: int) -> float:
 static func accuracy_multiplier(stage: int) -> float:
 	var net := clampi(stage, STAGE_MIN, STAGE_MAX)
 	return float(maxi(3, 3 + net)) / float(maxi(3, 3 - net))
+
+
+## Vrai si le Pokémon est piégé (Ligotage…) : ni fuite ni changement (jalon 12).
+func is_trapped() -> bool:
+	return trap_turns > 0
+
+
+## Libère le Pokémon de son piège.
+func clear_trap() -> void:
+	trap_turns = 0
+	trap_move = &""
+	trap_fraction = 0.0
+	trap_source = null
+
+
+## Vrai si une capacité du Pokémon est bloquée par une Entrave (jalon 12).
+func has_disabled_move() -> bool:
+	return disabled_slot >= 0
+
+
+## Lève l'Entrave.
+func clear_disable() -> void:
+	disabled_slot = -1
+	disabled_turns = 0

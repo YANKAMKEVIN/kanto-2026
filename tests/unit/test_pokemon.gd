@@ -311,7 +311,7 @@ func test_missing_status_means_none_without_warning() -> void:
 
 func test_unknown_or_malformed_status_is_dropped_with_a_warning_never_refused() -> void:
 	var dict := _create(&"charmander", 9).to_dict()
-	for odd: Variant in ["paralysis", 3, null, ["poison"]]:
+	for odd: Variant in ["toxic", 3, null, ["poison"]]:
 		dict["status"] = odd
 		var copy := Pokemon.from_dict(dict, _data)
 		assert_not_null(copy, "statut %s : le Pokémon est gardé" % [odd])

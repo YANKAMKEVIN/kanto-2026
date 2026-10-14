@@ -76,3 +76,35 @@ static func count_nodes(node: Node) -> int:
 	for child: Node in node.get_children():
 		total += count_nodes(child)
 	return total
+
+
+## Cases libres de [param grid] (ni solides, ni eau, sans occupant autre que [param mover])
+## qu'on n'atteint pas à pied depuis [param start] **avec les occupants en place** (PNJ, objets,
+## Dresseurs à leur case du moment). Sans rebord, le graphe est non orienté : une liste vide dit
+## que tout point libre relie [param start] dans les deux sens (jalon 12, correctif du chercheur).
+static func cut_off(grid: GridWorld, start: Vector2i, mover: Object = null) -> Array[Vector2i]:
+	var reached := grid.find_reachable(start, mover)
+	var missing: Array[Vector2i] = []
+	var size := grid.get_size()
+	for y: int in size.y:
+		for x: int in size.x:
+			var cell := Vector2i(x, y)
+			if grid.is_free(cell, mover) and not grid.is_water(cell) and not reached.has(cell):
+				missing.append(cell)
+	return missing
+
+
+## Cases que les **occupants** (PNJ, Dresseurs, objets) coupent de [param start] : atteignables
+## sur le seul relief de [param grid], plus atteignables avec les occupants en place (cases
+## occupées exclues). Les parties d'une carte reliées seulement par d'autres cartes (échelles)
+## n'y figurent pas : elles sont hors d'atteinte dans les deux cas.
+static func cut_by_occupants(grid: GridWorld, start: Vector2i,
+		mover: Object = null) -> Array[Vector2i]:
+	var bare := relief(grid, grid.get_size()).find_reachable(start)
+	var reached := grid.find_reachable(start, mover)
+	var missing: Array[Vector2i] = []
+	for cell: Vector2i in bare:
+		if grid.is_free(cell, mover) and not reached.has(cell):
+			missing.append(cell)
+	missing.sort()
+	return missing

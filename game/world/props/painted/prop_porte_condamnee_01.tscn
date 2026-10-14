@@ -1,0 +1,15 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://game/world/props/prop.gd" id="1_f4r3m"]
+[ext_resource type="Material" path="res://game/world/lighting/materials/world_object.tres" id="2_ejbyu"]
+[ext_resource type="Texture2D" path="res://assets/world/props/prop_porte_condamnee_01.png" id="3_rwm00"]
+
+[node name="PropPorteCondamnee01" type="Node2D" unique_id=189507669]
+script = ExtResource("1_f4r3m")
+
+[node name="Sprite" type="Sprite2D" parent="." unique_id=1959293307]
+unique_name_in_owner = true
+material = ExtResource("2_ejbyu")
+texture = ExtResource("3_rwm00")
+centered = false
+offset = Vector2(-48, -141)

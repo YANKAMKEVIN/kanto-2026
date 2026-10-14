@@ -44,6 +44,11 @@ extends RefCounted
 ## - STATUS_TAG : l'étiquette « PSN » de la carte du Pokémon concerné apparaît (STATUS_INFLICTED :
 ##   [member BattleEvent.status] sur [member side]) ou disparaît (STATUS_CURED : le Pokémon
 ##   [member BattleEvent.party_index], seulement s'il est en jeu) ; instantané, sans attente.
+## Jalon 11 : STATUS_TAG pose aussi l'effet du statut sur le Pokémon ([StatusAura]) ; POISON
+## sert aussi à la brûlure (voile orangé) ; CONFUSION : étoiles au-dessus du Pokémon confus de
+## [member side], au moment du test (après « … est confus… »).
+## Jalon 12 : HP — la barre de PV du Pokémon de [member side] va à [member BattleEvent.hp]
+## ([member BattleEvent.max_hp]) sans coup ni voile (drain d'une attaque, Repos).
 ## Jalon 7 (changement de Pokémon) :
 ## - WITHDRAW : le Pokémon du joueur est rappelé dans sa Poké Ball (il rétrécit dans un éclat
 ##   rouge), sa carte et les pastilles sortent ; le SEND_OUT du suivant les ramène.
@@ -54,6 +59,8 @@ enum Kind {
 	HEAL,
 	WITHDRAW,
 	POISON, STATUS_TAG,
+	CONFUSION,
+	HP,
 }
 
 var kind: Kind = Kind.MESSAGE

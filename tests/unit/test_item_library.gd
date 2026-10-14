@@ -18,7 +18,10 @@ func test_real_data_loads_without_error() -> void:
 	assert_true(_library.load_dir(), "data/items/ se charge")
 	assert_eq(_library.get_errors().size(), 0, str(_library.get_errors()))
 	# Jalon 5 : la Potion cachée de la Route 1 (catégorie « heal », ramassée seulement).
-	assert_eq(_library.get_ids(), [&"antidote", &"oak_parcel", &"poke_ball", &"potion"] \
+	# Jalon 12 : data/items/mt_moon.json (Corde Sortie, Pierre Lune, fossiles, CT01).
+	assert_eq(_library.get_ids(), [&"antidote", &"awakening", &"burn_heal", &"dome_fossil",
+		&"escape_rope", &"helix_fossil", &"ice_heal", &"moon_stone", &"nugget", &"oak_parcel",
+		&"paralyze_heal", &"poke_ball", &"potion", &"tm01", &"tm11", &"tm34"]
 		as Array[StringName])
 	var ball := _library.get_item(&"poke_ball")
 	assert_eq(ball.name, "Poké Ball")
@@ -35,7 +38,9 @@ func test_real_data_loads_without_error() -> void:
 	assert_eq(potion.heal_amount, 20, "jalon 6 : la Potion rend 20 PV")
 	assert_eq(ball.heal_amount, 0)
 	assert_eq(_library.get_ids_in_data_order(),
-		[&"poke_ball", &"potion", &"antidote", &"oak_parcel"] as Array[StringName])
+		[&"poke_ball", &"potion", &"antidote", &"paralyze_heal", &"awakening", &"burn_heal", &"ice_heal",
+		&"nugget", &"tm11", &"tm34", &"oak_parcel", &"escape_rope", &"moon_stone", &"dome_fossil",
+		&"helix_fossil", &"tm01"] as Array[StringName])
 	assert_eq([ball.order, potion.order], [0, 1])
 
 
@@ -154,7 +159,7 @@ func _with(base: Dictionary, changes: Dictionary) -> Dictionary:
 
 
 func test_new_categories_are_read_at_the_end_of_the_enum() -> void:
-	assert_eq(ItemData.CATEGORY_NAMES, ["ball", "heal", "battle", "field", "key"]
+	assert_eq(ItemData.CATEGORY_NAMES, ["ball", "heal", "battle", "field", "key", "tm"]
 		as Array[String])
 	var plain := _with(BALL, {"catch_bonus": null})
 	assert_true(_library.add_from_dict({
@@ -196,7 +201,8 @@ func test_contexts_follow_the_category() -> void:
 		ItemData.Category.BALL: [&"wild_battle"],
 		ItemData.Category.HEAL: [&"field", &"wild_battle", &"trainer_battle"],
 		ItemData.Category.BATTLE: [&"wild_battle", &"trainer_battle"],
-		ItemData.Category.FIELD: [&"field"],
+		# Jalon 13 §2.13 : AVENTURE sans usage (la Pépite) n'a aucun contexte.
+		ItemData.Category.FIELD: [],
 		ItemData.Category.KEY: [],
 	}
 	for category: ItemData.Category in expected:
@@ -204,6 +210,10 @@ func test_contexts_follow_the_category() -> void:
 		var contexts: Array = []
 		contexts.assign(item.contexts())
 		assert_eq(contexts, expected[category], ItemData.CATEGORY_NAMES[category])
+	item.category = ItemData.Category.FIELD
+	item.field_use = &"escape_rope"
+	assert_eq(item.contexts(), [&"field"] as Array[StringName], "AVENTURE avec un usage")
+	item.field_use = &""
 	item.category = ItemData.Category.BALL
 	assert_true(item.usable_in(ItemData.CONTEXT_WILD_BATTLE))
 	assert_false(item.usable_in(ItemData.CONTEXT_TRAINER_BATTLE), "pas de Ball contre un dresseur")
@@ -279,7 +289,7 @@ func test_invalid_prices_are_rejected() -> void:
 	assert_push_error_count(4)
 	var errors := "\n".join(_library.get_errors())
 	assert_string_contains(errors, "« price » doit être un entier ≥ 0")
-	assert_string_contains(errors, "un objet clé n'a pas de prix")
+	assert_string_contains(errors, "un objet clé ou une CT n'a pas de prix")
 
 
 ## Jalon 9 : un soin rend des PV et / ou soigne des statuts (« cures »).
@@ -298,7 +308,7 @@ func test_cures() -> void:
 	var cases := {
 		"a": [{"category": "heal"}, "un soin a « heal_amount » ou « cures »"],
 		"b": [{"cures": []}, "« cures » doit être une liste non vide"],
-		"c": [{"cures": ["paralysis"]}, "« cures » doit être une liste non vide"],
+		"c": [{"cures": ["toxic"]}, "« cures » doit être une liste non vide"],
 		"d": [{"cures": ["poison", "poison"]}, "sans doublon"],
 		"e": [{"cures": "poison"}, "« cures » doit être une liste non vide"],
 		"f": [{"category": "ball", "catch_bonus": 1}, "« cures » est réservé aux soins"],
@@ -325,3 +335,23 @@ func test_real_antidote() -> void:
 	assert_false(antidote.draft)
 	assert_eq(antidote.added_text(1), "Ajouté au Sac", "toast « Antidote ×1 — Ajouté au Sac »")
 	assert_eq(antidote.quantity_text(1), "Antidote ×1")
+
+
+func test_real_j11_remedies() -> void:
+	assert_true(_library.load_dir())
+	# Dossier 14 §3.4 et textes n° 34 à 37 du §13 (validés le 2026-10-10) ; prix de Rouge/Bleu.
+	var rows: Array = []
+	for id: StringName in [&"paralyze_heal", &"awakening", &"burn_heal", &"ice_heal"]:
+		var item := _library.get_item(id)
+		rows.append([item.name, item.plural, item.cures, item.price, item.description,
+			item.category, item.heal_amount, item.draft])
+	assert_eq(rows, [
+		["Anti-Para", "Anti-Para", [&"paralysis"] as Array[StringName], 200,
+			"Soigne un Pokémon paralysé.", ItemData.Category.HEAL, 0, false],
+		["Réveil", "Réveils", [&"sleep"] as Array[StringName], 250,
+			"Réveille un Pokémon endormi.", ItemData.Category.HEAL, 0, false],
+		["Anti-Brûle", "Anti-Brûle", [&"burn"] as Array[StringName], 250,
+			"Soigne un Pokémon brûlé.", ItemData.Category.HEAL, 0, false],
+		["Antigel", "Antigels", [&"freeze"] as Array[StringName], 250,
+			"Dégèle un Pokémon gelé.", ItemData.Category.HEAL, 0, false],
+	])

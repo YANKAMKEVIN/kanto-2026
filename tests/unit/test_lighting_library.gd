@@ -33,8 +33,9 @@ func _add(entry: Variant, id: String = "p") -> LightProfile:
 
 func test_real_file_loads_without_error() -> void:
 	assert_true(_library.load_file(), str(_library.get_errors()))
-	assert_eq(_library.get_ids(), [&"golden_hour", &"interior_warm", &"forest"]
-		as Array[StringName])
+	# Jalon 12 (T9) : les trois profils de grotte du Mont Sélénite.
+	assert_eq(_library.get_ids(), [&"golden_hour", &"interior_warm", &"forest", &"cave_1f",
+		&"cave_b1f", &"cave_b2f"] as Array[StringName])
 	assert_eq(LightingLibrary.DATA_PATH, "res://data/world/lighting.json")
 
 

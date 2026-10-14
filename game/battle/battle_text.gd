@@ -38,8 +38,19 @@ extends RefCounted
 ## STATUS_CURED → « status_inflicted_<statut> », « status_unchanged_<statut> »,
 ## « status_damaged_<statut> », « status_cured_<statut> » ([member BattleEvent.status] ; pas de
 ## phrase pour un statut sans modèle). Immunité : NO_EFFECT (« no_effect »).
+## Jalon 11 (dossier 14 §13, lot validé le 2026-10-10) : paralysie, sommeil, brûlure, gel avec
+## les mêmes préfixes, plus STATUS_PREVENTED → « status_prevented_<statut> » (ne peut pas agir)
+## et STATUS_ENDED → « status_ended_<statut> » (réveil, dégel) ; FAILED → « move_failed »
+## (« Mais ça échoue ! », cas nouveaux du J11 seulement). Confusion : CONFUSED →
+## « confusion_inflicted », CONFUSION_UNCHANGED → « confusion_unchanged », CONFUSION_CHECK →
+## « confusion_check », HURT_ITSELF → « confusion_hurt », CONFUSION_ENDED → « confusion_ended » ;
+## MULTI_HIT → « multi_hit » ({amount} : coups portés) ; FLINCHED → « flinched » ; FOCUSED →
+## « focused ». Patience (n° 28 à 32) : BIDE_STARTED → « bide_started », BIDE_STORING →
+## « bide_storing », BIDE_UNLEASHED → « bide_unleashed », BIDE_BROKEN → « bide_broken » (riposte
+## à vide : FAILED, « Mais ça échoue ! »).
 ## Changement de Pokémon (jalon 7) : WITHDRAWN → « withdrawn » (« Reviens, Salamèche ! ») ; le
-## Pokémon envoyé reprend « sent_out_player ». Le panneau ÉQUIPE lit, sans événement
+## Pokémon envoyé reprend « sent_out_player ». Côté adverse (jalon 13, IA qui change, §21 n° 60) :
+## « withdrawn_foe » (« {trainer} rappelle {pokemon} ! »), puis « sent_out_foe ». Le panneau ÉQUIPE lit, sans événement
 ## ([method get_template]), « switch_reason_active », « switch_reason_fainted » (raisons sur
 ## les cartes) et « replace_prompt » (son titre après un K.O.).
 ## Argent (jalon 7) : « prize_won » ({money} : somme formatée, « 280 ₽ ») ne vient pas d'un
@@ -64,6 +75,16 @@ extends RefCounted
 ## combat du rival, dont les répliques en tiennent lieu) n'a pas de phrase à la fin ; de
 ## même, sans message de début ([member TrainerData.start_message] faux, décision n° 17 :
 ## « On ne va quand même pas partir… » lance le combat), pas de « … veut se battre ! ».
+## Jalon 12 (dossier 15 §20 n° 46, annexe A.4 de `jalon-12.md`) : DRAINED_HP → « drain_hp » ;
+## TRAPPED et TRAP_DAMAGED → « trap_<famille>_started » et « trap_<famille>_damaged », la famille
+## étant [member MoveEffect.messages] de l'effet TRAP de [member BattleEvent.move_id] (Ligotage
+## « wrap », Étreinte « bind », Danse Flamme « fire_spin », Claquoir « clamp » au jalon 13) ;
+## TRAP_ENDED → « trap_ended » ;
+## MOVE_DISABLED → « move_disabled », DISABLE_ENDED → « disable_ended » ({move} : la capacité
+## bloquée) ; RESTED → « rested » ; SELF_KO : pas de phrase (celle du FAINTED suit). Sans
+## événement ([method get_template], T14) : « switch_reason_trapped » (raison sur les cartes de
+## l'équipe : « Impossible de changer ») et « move_disabled_label » (carte de capacité :
+## « BLOQUÉE »).
 ## Nom du dresseur (OUV.2, dossier 13 §3.5) : il peut porter un jeton de [DialogueTokens]
 ## (`"name": "{rival}"`), résolu avec [member token_values] (posé par Boot) ; sans valeur, le nom
 ## reste tel quel.
@@ -82,11 +103,28 @@ const TEMPLATE_IDS: Array[StringName] = [
 	&"item_used", &"hp_restored", &"prize_won",
 	&"forget_confirm_title", &"forget_confirm_detail", &"forget_confirm_yes",
 	&"forget_confirm_no",
-	&"withdrawn", &"switch_reason_active", &"switch_reason_fainted", &"replace_prompt",
+	&"withdrawn", &"withdrawn_foe", &"switch_reason_active", &"switch_reason_fainted", &"replace_prompt",
 	&"summary_exp", &"summary_level", &"summary_stat", &"summary_continue",
 	&"status_inflicted_poison", &"status_unchanged_poison", &"status_damaged_poison",
 	&"status_cured_poison",
+	&"status_inflicted_paralysis", &"status_unchanged_paralysis", &"status_prevented_paralysis",
+	&"status_cured_paralysis",
+	&"status_inflicted_sleep", &"status_unchanged_sleep", &"status_prevented_sleep",
+	&"status_ended_sleep", &"status_cured_sleep",
+	&"status_inflicted_burn", &"status_unchanged_burn", &"status_damaged_burn",
+	&"status_cured_burn",
+	&"status_inflicted_freeze", &"status_unchanged_freeze", &"status_prevented_freeze",
+	&"status_ended_freeze", &"status_cured_freeze",
+	&"move_failed",
+	&"confusion_inflicted", &"confusion_unchanged", &"confusion_check", &"confusion_hurt",
+	&"confusion_ended", &"multi_hit", &"flinched", &"focused",
+	&"bide_started", &"bide_storing", &"bide_unleashed", &"bide_broken",
 	&"evolution_started", &"evolution_finished", &"evolution_cancelled", &"evolution_stop",
+	&"drain_hp", &"trap_wrap_started", &"trap_wrap_damaged", &"trap_bind_started",
+	&"trap_bind_damaged", &"trap_fire_spin_started", &"trap_fire_spin_damaged",
+	&"trap_clamp_started", &"trap_clamp_damaged", &"trap_ended",
+	&"move_disabled", &"disable_ended", &"rested", &"switch_reason_trapped",
+	&"move_disabled_label",
 ]
 ## Entre deux gains de statistiques du bilan (« PV +2 · Attaque +1 »).
 const SUMMARY_SEPARATOR: String = " · "
@@ -102,6 +140,8 @@ const _STATUS_PREFIXES: Dictionary[BattleEvent.Kind, String] = {
 	BattleEvent.Kind.STATUS_UNCHANGED: "status_unchanged",
 	BattleEvent.Kind.STATUS_DAMAGED: "status_damaged",
 	BattleEvent.Kind.STATUS_CURED: "status_cured",
+	BattleEvent.Kind.STATUS_PREVENTED: "status_prevented",
+	BattleEvent.Kind.STATUS_ENDED: "status_ended",
 }
 const _VOWELS: String = "AEIOUYÀÂÄÉÈÊËÎÏÔÖÙÛÜaeiouyàâäéèêëîïôöùûü"
 
@@ -274,13 +314,47 @@ func lines(event: BattleEvent, data: PokemonData, trainer: TrainerData = null) \
 		BattleEvent.Kind.BROKE_FREE:
 			result.append(_fill(&"broke_free", event, data))
 		BattleEvent.Kind.WITHDRAWN:
-			result.append(_fill(&"withdrawn", event, data))
+			result.append(_fill(&"withdrawn_foe" if event.side == BattleEvent.SideId.FOE
+				else &"withdrawn", event, data))
 		BattleEvent.Kind.ITEM_USED:
 			result.append(_fill(&"item_used", event, data))
 			if event.amount > 0:
 				result.append(_fill(&"hp_restored", event, data))
+		BattleEvent.Kind.FAILED:
+			result.append(_fill(&"move_failed", event, data))
+		BattleEvent.Kind.CONFUSED:
+			result.append(_fill(&"confusion_inflicted", event, data))
+		BattleEvent.Kind.CONFUSION_UNCHANGED:
+			result.append(_fill(&"confusion_unchanged", event, data))
+		BattleEvent.Kind.CONFUSION_CHECK:
+			result.append(_fill(&"confusion_check", event, data))
+		BattleEvent.Kind.HURT_ITSELF:
+			result.append(_fill(&"confusion_hurt", event, data))
+		BattleEvent.Kind.CONFUSION_ENDED:
+			result.append(_fill(&"confusion_ended", event, data))
+		BattleEvent.Kind.MULTI_HIT:
+			result.append(_fill(&"multi_hit", event, data))
+		BattleEvent.Kind.FLINCHED:
+			result.append(_fill(&"flinched", event, data))
+		BattleEvent.Kind.FOCUSED:
+			result.append(_fill(&"focused", event, data))
+		BattleEvent.Kind.BIDE_STARTED:
+			result.append(_fill(&"bide_started", event, data))
+		BattleEvent.Kind.BIDE_STORING:
+			result.append(_fill(&"bide_storing", event, data))
+		BattleEvent.Kind.BIDE_UNLEASHED:
+			result.append(_fill(&"bide_unleashed", event, data))
+		BattleEvent.Kind.BIDE_BROKEN:
+			result.append(_fill(&"bide_broken", event, data))
+		BattleEvent.Kind.DRAINED_HP, BattleEvent.Kind.TRAPPED, BattleEvent.Kind.TRAP_DAMAGED, \
+				BattleEvent.Kind.TRAP_ENDED, BattleEvent.Kind.MOVE_DISABLED, \
+				BattleEvent.Kind.DISABLE_ENDED, BattleEvent.Kind.RESTED:
+			var id := _template_j12(event, data)
+			if _texts.has(id):
+				result.append(_fill(id, event, data))
 		BattleEvent.Kind.STATUS_INFLICTED, BattleEvent.Kind.STATUS_UNCHANGED, \
-				BattleEvent.Kind.STATUS_DAMAGED, BattleEvent.Kind.STATUS_CURED:
+				BattleEvent.Kind.STATUS_DAMAGED, BattleEvent.Kind.STATUS_CURED, \
+				BattleEvent.Kind.STATUS_PREVENTED, BattleEvent.Kind.STATUS_ENDED:
 			var id := StringName("%s_%s" % [_STATUS_PREFIXES[event.kind], event.status])
 			if _texts.has(id):
 				result.append(_fill(id, event, data))
@@ -425,3 +499,26 @@ func _fail(message: String) -> bool:
 	_errors.append(full)
 	push_error(full)
 	return false
+
+
+## Modèle d'un événement du jalon 12 (&"" : aucun).
+func _template_j12(event: BattleEvent, data: PokemonData) -> StringName:
+	match event.kind:
+		BattleEvent.Kind.DRAINED_HP:
+			return &"drain_hp"
+		BattleEvent.Kind.TRAP_ENDED:
+			return &"trap_ended"
+		BattleEvent.Kind.MOVE_DISABLED:
+			return &"move_disabled"
+		BattleEvent.Kind.DISABLE_ENDED:
+			return &"disable_ended"
+		BattleEvent.Kind.RESTED:
+			return &"rested"
+		BattleEvent.Kind.TRAPPED, BattleEvent.Kind.TRAP_DAMAGED:
+			var move := data.get_move(event.move_id)
+			var trap := move.effect_of(MoveEffect.Kind.TRAP) if move != null else null
+			if trap == null:
+				return &""
+			var stage := "started" if event.kind == BattleEvent.Kind.TRAPPED else "damaged"
+			return StringName("trap_%s_%s" % [trap.messages, stage])
+	return &""

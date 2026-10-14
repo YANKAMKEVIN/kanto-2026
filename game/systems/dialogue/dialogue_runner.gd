@@ -16,10 +16,13 @@ extends Node
 ##   ouverte et [signal choice_requested] est émis ; le lecteur n'avance plus jusqu'à
 ##   [method choose]. Confirmer : l'action du choix est attendue (boîte ouverte, joueur bloqué),
 ##   puis les pages de confirmation ; annuler : les pages d'annulation. Puis la fin normale.
+##   Les drapeaux du bouton choisi (« confirm_set » / « cancel_set », jalon 13) sont levés dès
+##   [method choose].
 ## - **action** : jouée à la fin, boîte fermée, **avant** que le joueur soit rendu.
 ##   `heal` émet [signal heal_requested] (moment du jalon 5 inchangé : après avoir rendu le
 ##   joueur) ; les autres sont attendues par [member action_handler].
-## - **scène** : [signal cutscene_requested] juste après [signal dialogue_finished].
+## - **scène** : [signal cutscene_requested] juste après [signal dialogue_finished] ; aussi
+##   après un choix confirmé dont [member DialogueChoice.confirm_cutscene] est posé (jalon 12).
 ## Jetons de texte (jalon-07.md §3.6, T18) : les pages sont résolues par [DialogueTokens] au
 ## début du dialogue et au début des pages d'une réponse de choix, avec [member token_values] ;
 ## une page dont un jeton n'a pas de valeur est omise. Toutes omises : comme une variante sans
@@ -75,6 +78,8 @@ var _play_frame: int = -1
 var _awaiting_choice: bool = false
 ## Le choix a été fait (les pages jouées sont celles de sa réponse).
 var _choice_done: bool = false
+## Réponse du choix : OUI (jalon 12, T23 : la scène [member DialogueChoice.confirm_cutscene]).
+var _confirmed: bool = false
 ## Une action du choix est en cours (rien n'avance).
 var _in_action: bool = false
 
@@ -139,6 +144,7 @@ func play(dialogue_id: StringName, npc: Npc = null, map: GameMap = null,
 	_session = null
 	_awaiting_choice = false
 	_choice_done = false
+	_confirmed = false
 	_in_action = false
 	_delay_left = maxf(delay, 0.0)
 	_play_frame = Engine.get_process_frames()
@@ -171,7 +177,12 @@ func choose(confirmed: bool) -> void:
 		return
 	_awaiting_choice = false
 	_choice_done = true
+	_confirmed = confirmed
 	var choice := _variant.choice
+	# Drapeaux du bouton choisi (jalon-13.md §2.13), levés tout de suite, avant la fermeture.
+	if _flags != null:
+		for flag: StringName in choice.confirm_set if confirmed else choice.cancel_set:
+			_flags.set_flag(flag)
 	if confirmed and not choice.confirm_action.is_empty():
 		_in_action = true
 		await _run_action(choice.confirm_action)
@@ -346,6 +357,8 @@ func _finish() -> void:
 	var dialogue := _dialogue
 	var action := _variant.action
 	var cutscene := _variant.cutscene
+	if _confirmed and _variant.choice != null and not _variant.choice.confirm_cutscene.is_empty():
+		cutscene = _variant.choice.confirm_cutscene
 	if _flags != null:
 		for flag: StringName in _variant.set_flags:
 			_flags.set_flag(flag)
@@ -362,6 +375,7 @@ func _finish() -> void:
 	_session = null
 	_awaiting_choice = false
 	_choice_done = false
+	_confirmed = false
 	_npc = null
 	_map = null
 	set_process(false)

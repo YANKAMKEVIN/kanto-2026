@@ -531,12 +531,12 @@ func test_status_marks_a_member() -> void:
 func test_status_must_be_a_known_status() -> void:
 	var start := DebugStart.new()
 	assert_false(start.add_from_dict({ "party": [
-		{ "species": "charmander", "level": 9, "status": "paralysis" },
+		{ "species": "charmander", "level": 9, "status": "toxic" },
 		{ "species": "pidgey", "level": 7, "status": 3 },
 	] }, _data, _items, "s"))
 	var errors := "\n".join(start.get_errors())
-	assert_string_contains(errors, "s party 1 : « status » est vide ou l'un de : poison")
-	assert_string_contains(errors, "s party 2 : « status » est vide ou l'un de : poison")
+	assert_string_contains(errors, "s party 1 : « status » est vide ou l'un de : poison, paralysis, sleep, burn, freeze")
+	assert_string_contains(errors, "s party 2 : « status » est vide ou l'un de : poison, paralysis, sleep, burn, freeze")
 	assert_eq(start.party.size(), 0, "tout ou rien")
 	assert_push_error_count(2)
 
@@ -643,3 +643,94 @@ func test_shipped_trainers_qa_starts() -> void:
 	assert_eq(strong.bag.get(&"potion"), 5)
 	assert_eq(strong.bag.get(&"antidote"), 1, "1 Antidote (objet du T4, ajouté à l'intégration)")
 	assert_true(weak.bag.is_empty(), "sans Sac")
+
+
+# --- Jalon 11 (T9) : QA des statuts -------------------------------------------------------
+
+func test_shipped_status_qa_start() -> void:
+	var start := _load_qa_start("status_qa", &"route_1")
+	assert_eq([start.spawn, start.facing], [&"from_pallet_w", Vector2i.UP])
+	assert_true(start.flags.has(&"poison_unlocked"))
+	assert_eq(_party_summary(start), [[&"charmander", 18, &""], [&"butterfree", 17, &""],
+		[&"nidoran_m", 16, &""], [&"rattata", 16, &"burn"], [&"pikachu", 14, &"sleep"],
+		[&"pidgey", 12, &"paralysis"]])
+	var state: Node = autofree(GameStateScript.new())
+	start.apply(state, _data)
+	assert_eq(state.party.get_at(4).status_turns, 3, "Pikachu dort encore 3 tours")
+	assert_eq(state.storage.get_all()[0].status, StatusRules.FREEZE, "un gelé au Stockage")
+	var moves: Array[StringName] = []
+	moves.assign(state.party.get_at(1).moves.map(func(m: MoveSlot) -> StringName: return m.move_id))
+	assert_eq(moves, [&"confusion", &"poison_powder", &"stun_spore", &"sleep_powder"],
+		"Papilusion N17 : ses capacités de Rouge/Bleu au niveau")
+	for id: StringName in [&"antidote", &"paralyze_heal", &"awakening", &"burn_heal", &"ice_heal"]:
+		assert_gt(int(start.bag.get(id, 0)), 0, "%s dans le Sac" % id)
+	# Table d'herbes forcée sur la Route 1.
+	var library := EncounterLibrary.new(_data)
+	assert_true(library.load_dir())
+	assert_true(library.override_grass(start.map, start.wild, "status_qa"))
+	var species: Array[StringName] = []
+	for slot: EncounterSlot in library.get_table(&"route_1").slots:
+		species.append(slot.species)
+	assert_eq(species, [&"pikachu", &"butterfree", &"beedrill", &"rattata"])
+
+
+func test_wild_and_status_turns_are_validated() -> void:
+	var base := {"party": [{"species": "pikachu", "level": 5}]}
+	var wild := {"rate": 30, "slots": [{"species": "pikachu", "levels": [3, 4], "weight": 1}]}
+	var cases: Array = [
+		[{"wild": wild}, "avec « map »"],
+		[{"map": "route_1", "spawn": "from_pallet_w", "wild": {"rate": 30}}, "obligatoire"],
+		[{"map": "route_1", "spawn": "from_pallet_w",
+			"wild": {"maps": ["route_1"], "rate": 30, "slots": wild["slots"]}}, "ni « maps »"],
+		[{"party": [{"species": "pikachu", "level": 5, "status_turns": 2}]}, "status_turns"],
+		[{"party": [{"species": "pikachu", "level": 5, "status": "sleep", "status_turns": 9}]},
+			"status_turns"],
+	]
+	for entry: Array in cases:
+		var dict: Dictionary = base.duplicate(true)
+		dict.merge(entry[0], true)
+		var start := DebugStart.new()
+		assert_false(start.add_from_dict(dict, _data, _items, "t"), str(entry[0]))
+		assert_string_contains("\n".join(start.get_errors()), entry[1])
+	assert_push_error_count(cases.size(), "une erreur par cas")
+	var ok := DebugStart.new()
+	var good: Dictionary = base.duplicate(true)
+	good.merge({"map": "route_1", "spawn": "from_pallet_w", "wild": wild}, true)
+	assert_true(ok.add_from_dict(good, _data, _items, "t"), "\n".join(ok.get_errors()))
+	assert_eq(ok.wild, wild)
+
+
+func test_override_grass_replaces_only_that_map() -> void:
+	var library := EncounterLibrary.new(_data)
+	assert_true(library.load_dir())
+	var route_2_before := library.get_table(&"route_2")
+	assert_true(library.override_grass(&"route_1", {"rate": 200,
+		"slots": [{"species": "pikachu", "levels": [9, 9], "weight": 1}]}, "t"))
+	assert_eq(library.get_table(&"route_1").rate, 200)
+	assert_eq(library.get_table(&"route_2"), route_2_before, "les autres cartes gardent la leur")
+
+
+# --- Jalon 11 (T20d) : QA du compagnon ----------------------------------------------------
+
+func test_shipped_companion_qa_start() -> void:
+	var start := _load_qa_start("companion_qa", &"viridian_city")
+	assert_eq(start.companion, 0)
+	var state: Node = autofree(GameStateScript.new())
+	start.apply(state, _data)
+	assert_eq(state.get_companion(), state.party.get_at(0), "Salamèche, compagnon")
+	assert_eq(state.party.get_at(2).hp, 0, "Rattata K.O.")
+	assert_eq(state.party.get_at(3).status, StatusRules.POISON)
+	assert_eq(state.party.get_at(4).gender, Pokemon.Gender.FEMALE, "Nidoran ♀ : « fatiguée »")
+
+
+func test_companion_must_be_a_party_place() -> void:
+	for value: Variant in [-1, 1, "0", 0.5]:
+		var start := DebugStart.new()
+		assert_false(start.add_from_dict({"party": [{"species": "pikachu", "level": 5}],
+			"companion": value}, _data, _items, "t"), str(value))
+		assert_string_contains("\n".join(start.get_errors()), "companion")
+	assert_push_error_count(4, "une erreur par cas")
+	var none := DebugStart.new()
+	assert_true(none.add_from_dict({"party": [{"species": "pikachu", "level": 5}]}, _data,
+		_items, "t"))
+	assert_eq(none.companion, -1, "absent : aucun compagnon")

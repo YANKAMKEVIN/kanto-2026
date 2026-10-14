@@ -57,8 +57,8 @@
 	"sleep_powder": {
 		"name": "Poudre Dodo", "type": "grass", "category": "status",
 		"accuracy": 75, "pp": 15,
-		"pending_effects": ["sleep"],
-		"description": "Une poudre soporifique qui endort la cible. Sans effet dans le moteur actuel."
+		"effects": [{ "kind": "status", "status": "sleep" }],
+		"description": "Une poudre soporifique qui endort la cible."
 	},
 	"vine_whip": {
 		"name": "Fouet Lianes", "type": "grass", "category": "physical",
@@ -79,19 +79,19 @@
 	"ember": {
 		"name": "Flammèche", "type": "fire", "category": "special",
 		"power": 40, "accuracy": 100, "pp": 25,
-		"pending_effects": ["burn_10"],
+		"effects": [{ "kind": "status", "status": "burn", "chance": 10 }],
 		"description": "De petites flammes frappent la cible. Peut la brûler."
 	},
 	"flamethrower": {
 		"name": "Lance-Flammes", "type": "fire", "category": "special",
 		"power": 90, "accuracy": 100, "pp": 15,
-		"pending_effects": ["burn_10"],
+		"effects": [{ "kind": "status", "status": "burn", "chance": 10 }],
 		"description": "Un torrent de flammes s'abat sur la cible. Peut la brûler."
 	},
 	"fire_spin": {
 		"name": "Danse Flamme", "type": "fire", "category": "special",
 		"power": 35, "accuracy": 85, "pp": 15,
-		"pending_effects": ["trap"],
+		"effects": [{ "kind": "trap", "turns": [4, 5], "fraction": 0.125, "messages": "fire_spin" }],
 		"description": "Enferme la cible dans un tourbillon de feu pendant quelques tours."
 	},
 	"rage": {
@@ -121,7 +121,7 @@
 	"bite": {
 		"name": "Morsure", "type": "dark", "category": "physical",
 		"power": 60, "accuracy": 100, "pp": 25,
-		"pending_effects": ["flinch_30"],
+		"effects": [{ "kind": "flinch", "chance": 30 }],
 		"description": "Mord la cible de ses crocs acérés. Peut l'apeurer."
 	},
 	"skull_bash": {
@@ -174,18 +174,18 @@
 	},
 	"hyper_fang": {
 		"name": "Croc de Mort", "type": "normal", "category": "physical",
-		"power": 80, "accuracy": 90, "pp": 15, "pending_effects": ["flinch_10"],
+		"power": 80, "accuracy": 90, "pp": 15, "effects": [{ "kind": "flinch", "chance": 10 }],
 		"description": "Mord violemment la cible de ses incisives. Peut l'apeurer."
 	},
 	"focus_energy": {
 		"name": "Puissance", "type": "normal", "category": "status",
-		"accuracy": 0, "pp": 30, "pending_effects": ["crit_up"],
-		"description": "Le lanceur prend une profonde inspiration. Sans effet dans le moteur actuel."
+		"accuracy": 0, "pp": 30, "effects": [{ "kind": "crit_up" }],
+		"description": "Le lanceur prend une profonde inspiration."
 	},
 	"super_fang": {
 		"name": "Croc Fatal", "type": "normal", "category": "status",
-		"accuracy": 90, "pp": 10, "pending_effects": ["half_hp"],
-		"description": "Mord la cible pour lui retirer la moitié de ses PV. Sans effet dans le moteur actuel."
+		"accuracy": 90, "pp": 10, "effects": [{ "kind": "fixed_damage", "mode": "half_hp" }],
+		"description": "Mord la cible pour lui retirer la moitié de ses PV."
 	},
 	"peck": {
 		"name": "Picpic", "type": "flying", "category": "physical",
@@ -194,8 +194,8 @@
 	},
 	"fury_attack": {
 		"name": "Furie", "type": "normal", "category": "physical",
-		"power": 15, "accuracy": 85, "pp": 20, "pending_effects": ["multi_hit"],
-		"description": "Frappe la cible de deux à cinq coups de corne ou de bec. Un seul coup dans le moteur actuel."
+		"power": 15, "accuracy": 85, "pp": 20, "effects": [{ "kind": "hits", "min": 2, "max": 5 }],
+		"description": "Frappe la cible de deux à cinq coups de corne ou de bec."
 	},
 	"drill_peck": {
 		"name": "Bec Vrille", "type": "flying", "category": "physical",
@@ -209,13 +209,13 @@
 	},
 	"fury_swipes": {
 		"name": "Combo-Griffe", "type": "normal", "category": "physical",
-		"power": 18, "accuracy": 80, "pp": 15, "pending_effects": ["multi_hit"],
-		"description": "Griffe la cible de deux à cinq coups rapides. Un seul coup dans le moteur actuel."
+		"power": 18, "accuracy": 80, "pp": 15, "effects": [{ "kind": "hits", "min": 2, "max": 5 }],
+		"description": "Griffe la cible de deux à cinq coups rapides."
 	},
 	"seismic_toss": {
 		"name": "Frappe Atlas", "type": "fighting", "category": "status",
-		"accuracy": 100, "pp": 20, "pending_effects": ["level_damage"],
-		"description": "Projette la cible au sol. Sans effet dans le moteur actuel."
+		"accuracy": 100, "pp": 20, "effects": [{ "kind": "fixed_damage", "mode": "level" }],
+		"description": "Projette la cible au sol."
 	},
 	"thrash": {
 		"name": "Mania", "type": "normal", "category": "physical",
@@ -236,8 +236,8 @@
 	},
 	"double_kick": {
 		"name": "Double Pied", "type": "fighting", "category": "physical",
-		"power": 30, "accuracy": 100, "pp": 30, "pending_effects": ["hits_2"],
-		"description": "Deux coups de pied rapides. Un seul coup dans le moteur actuel."
+		"power": 30, "accuracy": 100, "pp": 30, "effects": [{ "kind": "hits", "min": 2, "max": 2 }],
+		"description": "Deux coups de pied rapides."
 	},
 	"horn_attack": {
 		"name": "Koud'Korne", "type": "normal", "category": "physical",
@@ -251,7 +251,7 @@
 	},
 	"body_slam": {
 		"name": "Plaquage", "type": "normal", "category": "physical",
-		"power": 85, "accuracy": 100, "pp": 15, "pending_effects": ["paralysis_30"],
+		"power": 85, "accuracy": 100, "pp": 15, "effects": [{ "kind": "status", "status": "paralysis", "chance": 30 }],
 		"description": "Le lanceur se jette de tout son poids sur la cible. Peut la paralyser."
 	},
 	"string_shot": {
@@ -268,44 +268,44 @@
 	},
 	"thunder_shock": {
 		"name": "Éclair", "type": "electric", "category": "special",
-		"power": 40, "accuracy": 100, "pp": 30, "pending_effects": ["paralysis_10"],
+		"power": 40, "accuracy": 100, "pp": 30, "effects": [{ "kind": "status", "status": "paralysis", "chance": 10 }],
 		"description": "Une décharge électrique frappe la cible. Peut la paralyser."
 	},
 	"thunder_wave": {
 		"name": "Cage-Éclair", "type": "electric", "category": "status",
-		"accuracy": 90, "pp": 20, "pending_effects": ["paralysis"],
-		"description": "Une faible onde électrique paralyse la cible. Sans effet dans le moteur actuel."
+		"accuracy": 90, "pp": 20, "effects": [{ "kind": "status", "status": "paralysis" }],
+		"description": "Une faible onde électrique paralyse la cible."
 	},
 	"confusion": {
 		"name": "Choc Mental", "type": "psychic", "category": "special",
-		"power": 50, "accuracy": 100, "pp": 25, "pending_effects": ["confusion_10"],
+		"power": 50, "accuracy": 100, "pp": 25, "effects": [{ "kind": "confusion", "chance": 10 }],
 		"description": "Une faible vague psychique frappe la cible. Peut la rendre confuse."
 	},
 	"stun_spore": {
 		"name": "Para-Spore", "type": "grass", "category": "status",
-		"accuracy": 75, "pp": 30, "pending_effects": ["paralysis"],
-		"description": "Une poudre qui engourdit et paralyse la cible. Sans effet dans le moteur actuel."
+		"accuracy": 75, "pp": 30, "effects": [{ "kind": "status", "status": "paralysis" }],
+		"description": "Une poudre qui engourdit et paralyse la cible."
 	},
 	"supersonic": {
 		"name": "Ultrason", "type": "normal", "category": "status",
-		"accuracy": 55, "pp": 20, "pending_effects": ["confusion"],
-		"description": "Des ondes étranges rendent la cible confuse. Sans effet dans le moteur actuel."
+		"accuracy": 55, "pp": 20, "effects": [{ "kind": "confusion" }],
+		"description": "Des ondes étranges rendent la cible confuse."
 	},
 	"psybeam": {
 		"name": "Rafale Psy", "type": "psychic", "category": "special",
-		"power": 65, "accuracy": 100, "pp": 20, "pending_effects": ["confusion_10"],
+		"power": 65, "accuracy": 100, "pp": 20, "effects": [{ "kind": "confusion", "chance": 10 }],
 		"description": "Un étrange rayon psychique frappe la cible. Peut la rendre confuse."
 	},
 	"twineedle": {
 		"name": "Double-Dard", "type": "bug", "category": "physical",
-		"power": 25, "accuracy": 100, "pp": 20, "pending_effects": ["hits_2"],
-		"effects": [{ "kind": "status", "status": "poison", "chance": 20 }],
-		"description": "Deux coups de dard venimeux. Peut empoisonner la cible. Un seul coup dans le moteur actuel."
+		"power": 25, "accuracy": 100, "pp": 20,
+		"effects": [{ "kind": "hits", "min": 2, "max": 2 }, { "kind": "status", "status": "poison", "chance": 20 }],
+		"description": "Deux coups de dard venimeux. Peut empoisonner la cible."
 	},
 	"pin_missile": {
 		"name": "Dard-Nuée", "type": "bug", "category": "physical",
-		"power": 25, "accuracy": 95, "pp": 20, "pending_effects": ["multi_hit"],
-		"description": "Lance deux à cinq dards pointus sur la cible. Un seul coup dans le moteur actuel."
+		"power": 25, "accuracy": 95, "pp": 20, "effects": [{ "kind": "hits", "min": 2, "max": 5 }],
+		"description": "Lance deux à cinq dards pointus sur la cible."
 	},
 	"swift": {
 		"name": "Météores", "type": "normal", "category": "special",
@@ -314,7 +314,7 @@
 	},
 	"thunder": {
 		"name": "Fatal-Foudre", "type": "electric", "category": "special",
-		"power": 110, "accuracy": 70, "pp": 10, "pending_effects": ["paralysis_30"],
+		"power": 110, "accuracy": 70, "pp": 10, "effects": [{ "kind": "status", "status": "paralysis", "chance": 30 }],
 		"description": "Une foudre violente s'abat sur la cible. Peut la paralyser."
 	},
 	"rock_throw": {
@@ -330,8 +330,8 @@
 	},
 	"self_destruct": {
 		"name": "Destruction", "type": "normal", "category": "physical",
-		"power": 200, "accuracy": 100, "pp": 5, "pending_effects": ["self_ko"],
-		"description": "Le lanceur explose et blesse gravement la cible. Il tombe K.O. ensuite."
+		"power": 200, "accuracy": 100, "pp": 5, "effects": [{ "kind": "self_ko" }],
+		"description": "Inflige de gros dégâts. Le lanceur est mis K.O."
 	},
 	"earthquake": {
 		"name": "Séisme", "type": "ground", "category": "physical",
@@ -340,18 +340,68 @@
 	},
 	"explosion": {
 		"name": "Explosion", "type": "normal", "category": "physical",
-		"power": 250, "accuracy": 100, "pp": 5, "pending_effects": ["self_ko"],
+		"power": 250, "accuracy": 100, "pp": 5, "effects": [{ "kind": "self_ko" }],
 		"description": "Le lanceur explose dans un souffle terrible. Il tombe K.O. ensuite."
 	},
 	"bind": {
 		"name": "Étreinte", "type": "normal", "category": "physical",
-		"power": 15, "accuracy": 85, "pp": 20, "pending_effects": ["trap"],
+		"power": 15, "accuracy": 85, "pp": 20,
+		"effects": [{ "kind": "trap", "turns": [4, 5], "fraction": 0.125, "messages": "bind" }],
 		"description": "Ligote la cible de son long corps et la serre pendant quelques tours."
 	},
 	"slam": {
 		"name": "Souplesse", "type": "normal", "category": "physical",
 		"power": 80, "accuracy": 75, "pp": 20,
 		"description": "Le lanceur frappe la cible de sa longue queue ou de ses lianes."
+	},
+	"bide": {
+		"name": "Patience", "type": "normal", "category": "status",
+		"accuracy": 0, "pp": 10, "effects": [{ "kind": "bide" }],
+		"description": "Encaisse deux tours, puis riposte avec le double des dégâts reçus."
+	},
+	"bubble_beam": {
+		"name": "Bulles d'O", "type": "water", "category": "special",
+		"power": 65, "accuracy": 100, "pp": 20,
+		"effects": [{ "kind": "stat_stage", "stat": "spe", "stages": -1, "target": "foe", "chance": 10 }],
+		"description": "Projette des bulles avec force. Peut baisser la Vitesse."
+	},
+	"absorb": {
+		"name": "Vol-Vie", "type": "grass", "category": "special",
+		"power": 20, "accuracy": 100, "pp": 25, "effects": [{ "kind": "drain", "fraction": 0.5 }],
+		"description": "Aspire l'énergie de la cible. Le lanceur récupère la moitié des dégâts infligés."
+	},
+	"recover": {
+		"name": "Soin", "type": "normal", "category": "status",
+		"accuracy": 0, "pp": 5, "pending_effects": ["heal_half"],
+		"description": "Le lanceur récupère la moitié de ses PV. Sans effet dans le moteur actuel."
+	},
+	"clamp": {
+		"name": "Claquoir", "type": "water", "category": "physical",
+		"power": 35, "accuracy": 85, "pp": 15,
+		"effects": [{ "kind": "trap", "turns": [4, 5], "fraction": 0.125, "messages": "clamp" }],
+		"description": "La cible est prise entre deux coquilles pendant quelques tours."
+	},
+	"aurora_beam": {
+		"name": "Onde Boréale", "type": "ice", "category": "special",
+		"power": 65, "accuracy": 100, "pp": 20,
+		"effects": [{ "kind": "stat_stage", "stat": "atk", "stages": -1, "target": "foe", "chance": 10 }],
+		"description": "Un rayon aux couleurs de l'aurore frappe la cible. Peut baisser son Attaque."
+	},
+	"ice_beam": {
+		"name": "Laser Glace", "type": "ice", "category": "special",
+		"power": 90, "accuracy": 100, "pp": 10,
+		"effects": [{ "kind": "status", "status": "freeze", "chance": 10 }],
+		"description": "Un rayon glacé frappe la cible. Peut la geler."
+	},
+	"waterfall": {
+		"name": "Cascade", "type": "water", "category": "physical",
+		"power": 80, "accuracy": 100, "pp": 15, "effects": [{ "kind": "flinch", "chance": 20 }],
+		"description": "Le lanceur fonce sur la cible dans une gerbe d'eau. Peut l'apeurer."
+	},
+	"petal_dance": {
+		"name": "Danse Fleur", "type": "grass", "category": "special",
+		"power": 120, "accuracy": 100, "pp": 10, "pending_effects": ["rampage"],
+		"description": "Le lanceur attaque dans une pluie de pétales. Sans effet dans le moteur actuel."
 	},
 	"struggle": {
 		"name": "Lutte", "type": "normal", "category": "physical",

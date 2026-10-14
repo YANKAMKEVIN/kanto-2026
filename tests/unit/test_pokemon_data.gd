@@ -71,11 +71,16 @@ func test_real_data_loads_without_error() -> void:
 		&"charmeleon", &"charizard", &"squirtle", &"wartortle", &"blastoise",
 		&"caterpie", &"metapod", &"butterfree", &"weedle", &"kakuna", &"beedrill",
 		&"pidgey", &"pidgeotto", &"pidgeot", &"rattata", &"raticate", &"spearow", &"fearow",
-		&"pikachu", &"raichu", &"sandshrew", &"sandslash", &"nidoran_f", &"nidorina",
-		&"nidoqueen", &"nidoran_m", &"nidorino", &"nidoking", &"mankey", &"primeape",
-		&"geodude", &"graveler", &"golem", &"onix"] as Array[StringName])
-	assert_eq(_data.get_move_ids().size(), 66,
-		"47 + 12 de la Forêt de Jade (jalon 9) + 7 d'Argenta (jalon 10)")
+		&"ekans", &"arbok", &"pikachu", &"raichu", &"sandshrew", &"sandslash", &"nidoran_f",
+		&"nidorina", &"nidoqueen", &"nidoran_m", &"nidorino", &"nidoking", &"clefairy",
+		&"clefable", &"jigglypuff", &"wigglytuff", &"zubat", &"golbat", &"oddish", &"gloom",
+		&"paras", &"parasect", &"mankey", &"primeape", &"bellsprout", &"weepinbell",
+		&"geodude", &"graveler", &"golem", &"shellder", &"onix", &"voltorb", &"koffing",
+		&"horsea", &"goldeen", &"staryu", &"starmie"] as Array[StringName])
+	assert_eq(_data.get_move_ids().size(), 96,
+		"47 + 12 de la Forêt de Jade (jalon 9) + 7 d'Argenta (jalon 10) + Patience (J11) "
+		+ "+ 21 du Mont Sélénite (jalon 12) + 8 du jalon 13 (les 5 du J12 qu'il reprenait : "
+		+ "entrées du J12)")
 	assert_true(_data.has_move(&"struggle"))
 
 
@@ -129,6 +134,14 @@ func test_real_evolution_chains() -> void:
 		# Argenta (jalon 10, §2.3) : Rouge/Bleu ; Grolem par échange (« ??? » au Pokédex).
 		&"sandshrew": [&"sandslash", 22], &"geodude": [&"graveler", 25],
 		&"graveler": [&"golem", &""],
+		# Route 3 et Mont Sélénite (jalon 12, §2.19) : Rouge/Bleu ; Mélofée et Rondoudou par la
+		# Pierre Lune.
+		&"ekans": [&"arbok", 22], &"zubat": [&"golbat", 22], &"paras": [&"parasect", 24],
+		&"clefairy": [&"clefable", &"moon_stone"], &"jigglypuff": [&"wigglytuff", &"moon_stone"],
+		# Azuria (jalon 13, §2.15) : seules les évolutions par niveau vers une espèce présente ;
+		# Ortide et Boustiflor (Pierre Plante), Stari (Pierre Eau), Hypotrempe et Poissirène
+		# (formes absentes) n'en déclarent pas.
+		&"oddish": [&"gloom", 21], &"bellsprout": [&"weepinbell", 21],
 	}
 	for id: StringName in _data.get_species_ids():
 		var rules := _data.get_species(id).evolutions
@@ -193,7 +206,11 @@ func test_real_move_values() -> void:
 	assert_true(struggle.never_misses())
 	assert_eq(struggle.effects[0].kind, MoveEffect.Kind.RECOIL)
 	assert_eq(struggle.effects[0].fraction, 0.25)
-	assert_eq(_data.get_move(&"ember").pending_effects, PackedStringArray(["burn_10"]))
+	# Jalon 11 : la brûlure de Flammèche est jouée (10 %).
+	var ember := _data.get_move(&"ember")
+	assert_eq(ember.pending_effects, PackedStringArray([]))
+	assert_eq([ember.effects[0].kind, ember.effects[0].status, ember.effects[0].chance],
+		[MoveEffect.Kind.STATUS, &"burn", 10])
 
 
 func test_every_real_move_has_a_validated_description() -> void:
@@ -377,6 +394,13 @@ func test_real_catch_rates_are_the_official_ones() -> void:
 		&"weedle": 255, &"kakuna": 120, &"beedrill": 45, &"pikachu": 190, &"raichu": 75,
 		&"sandshrew": 255, &"sandslash": 90, &"geodude": 255, &"graveler": 120, &"golem": 45,
 		&"onix": 45,
+		# Jalon 12.
+		&"ekans": 255, &"arbok": 90, &"clefairy": 150, &"clefable": 25, &"jigglypuff": 170,
+		&"wigglytuff": 50, &"zubat": 255, &"golbat": 90, &"paras": 190, &"parasect": 75,
+		&"voltorb": 190, &"koffing": 190,
+		# Jalon 13 (Azuria).
+		&"oddish": 255, &"gloom": 120, &"bellsprout": 255, &"weepinbell": 120,
+		&"shellder": 190, &"horsea": 225, &"goldeen": 225, &"staryu": 225, &"starmie": 60,
 	}
 	assert_eq(_data.get_species_ids().size(), expected.size(), "toutes les espèces")
 	for id: StringName in _data.get_species_ids():
@@ -470,8 +494,10 @@ func test_poison_moves_are_coded() -> void:
 	var expected := {&"poison_powder": 100, &"poison_sting": 30, &"twineedle": 20}
 	for id: StringName in expected:
 		var move := _data.get_move(id)
-		assert_eq(move.effects.size(), 1, String(id))
-		assert_eq([move.effects[0].kind, move.effects[0].status, move.effects[0].chance],
+		# Jalon 11 : Double-Dard porte aussi ses deux coups (HITS) avant le poison.
+		var status_effect: MoveEffect = move.effects[-1]
+		assert_eq(move.effects.size(), 2 if id == &"twineedle" else 1, String(id))
+		assert_eq([status_effect.kind, status_effect.status, status_effect.chance],
 			[MoveEffect.Kind.STATUS, &"poison", expected[id]], String(id))
 	for id: StringName in _data.get_move_ids():
 		for tag: String in _data.get_move(id).pending_effects:
@@ -483,7 +509,7 @@ func test_invalid_status_effects_are_rejected() -> void:
 		"status": "poison" }), "ok"), "chance facultative")
 	var cases: Dictionary = {
 		"a": [{ "kind": "status" }, "« status » est obligatoire"],
-		"b": [{ "kind": "status", "status": "paralysis" }, "« status » vaut poison"],
+		"b": [{ "kind": "status", "status": "toxic" }, "« status » vaut poison"],
 		"c": [{ "kind": "status", "status": "poison", "chance": 0 }, "chance"],
 		"d": [{ "kind": "status", "status": "poison", "fraction": 0.5 },
 			"clé inconnue « fraction »"],
@@ -601,10 +627,10 @@ func test_route_22_moves_values() -> void:
 		[&"def", -2, MoveEffect.Target.FOE])
 	# Mécaniques absentes du moteur (jalon-07.md §3.7) : la capacité frappe une fois, sans effet.
 	var pending := {
-		&"fury_attack": ["multi_hit"], &"fury_swipes": ["multi_hit"],
-		&"double_kick": ["hits_2"], &"poison_sting": [],
-		&"thrash": ["rampage"], &"body_slam": ["paralysis_30"],
-		&"seismic_toss": ["level_damage"], &"horn_drill": ["ohko"],
+		&"fury_attack": [], &"fury_swipes": [],
+		&"double_kick": [], &"poison_sting": [],
+		&"thrash": ["rampage"], &"body_slam": [],
+		&"seismic_toss": [], &"horn_drill": ["ohko"],
 	}
 	for id: StringName in pending:
 		assert_eq(_data.get_move(id).pending_effects, PackedStringArray(pending[id]),
@@ -700,11 +726,11 @@ func test_forest_moves_values() -> void:
 	# tard ; le poison de Double-Dard est réel depuis le T4 (avec Dard-Venin et Poudre Toxik).
 	var pending := {
 		&"string_shot": [], &"harden": [], &"swift": [],
-		&"thunder_shock": ["paralysis_10"], &"thunder_wave": ["paralysis"],
-		&"confusion": ["confusion_10"], &"stun_spore": ["paralysis"],
-		&"supersonic": ["confusion"], &"psybeam": ["confusion_10"],
-		&"twineedle": ["hits_2"], &"pin_missile": ["multi_hit"],
-		&"thunder": ["paralysis_30"],
+		&"thunder_shock": [], &"thunder_wave": [],
+		&"confusion": [], &"stun_spore": [],
+		&"supersonic": [], &"psybeam": [],
+		&"twineedle": [], &"pin_missile": [],
+		&"thunder": [],
 	}
 	for id: StringName in pending:
 		assert_eq(_data.get_move(id).pending_effects, PackedStringArray(pending[id]),
@@ -714,20 +740,25 @@ func test_forest_moves_values() -> void:
 func test_moves_without_effect_say_so() -> void:
 	# Lot de textes du jalon 9 (verrouillé le 2026-10-07) : toute capacité de statut dont
 	# l'effet n'est pas joué porte « Sans effet dans le moteur actuel. », Poudre Dodo comprise.
+	# Jalon 11 : la mention part avec l'effet (Cage-Éclair, Para-Spore, Poudre Dodo au T4).
 	_data.load_dir()
-	for id: StringName in [&"thunder_wave", &"stun_spore", &"supersonic", &"sleep_powder"]:
+	for id: StringName in [&"whirlwind", &"mirror_move", &"horn_drill"]:
 		assert_true(_data.get_move(id).description.ends_with(
 			" Sans effet dans le moteur actuel."), String(id))
+	for id: StringName in [&"thunder_wave", &"stun_spore", &"sleep_powder", &"supersonic",
+			&"focus_energy", &"super_fang", &"seismic_toss"]:
+		assert_false(_data.get_move(id).description.contains("Sans effet"), String(id))
 	assert_eq(_data.get_move(&"sleep_powder").description,
-		"Une poudre soporifique qui endort la cible. Sans effet dans le moteur actuel.")
+		"Une poudre soporifique qui endort la cible.")
 
 
-func test_forest_wild_moves_only_wait_for_paralysis() -> void:
+func test_forest_wild_moves_have_all_their_effects() -> void:
 	# Invariant de jouabilité adapté à la forêt : aux niveaux des rencontres (§6 du dossier 10)
 	# et des Dresseurs, le seul effet encore absent est la paralysie d'Éclair (J11, limite
 	# connue) ; le poison de Dard-Venin est joué depuis le T4, les dégâts aussi.
 	_data.load_dir()
-	var allowed: Dictionary = {&"thunder_shock": "paralysis_10"}
+	# Jalon 11 : la paralysie d'Éclair est jouée ; plus aucun effet absent dans la forêt.
+	var allowed: Dictionary = {}
 	for pair: Array in [[&"caterpie", 7], [&"weedle", 6], [&"metapod", 7], [&"kakuna", 7],
 			[&"pikachu", 5]]:
 		for move_id: StringName in _data.get_species(pair[0]).moves_at(pair[1]):
@@ -751,4 +782,8 @@ func test_forest_move_texts_are_the_locked_ones() -> void:
 		var move := _data.get_move(id)
 		assert_true(lot.contains("`%s` · `name` | " % id), String(id))
 		assert_true(lot.contains("| « %s » |" % move.name), "%s : nom" % id)
-		assert_true(lot.contains("| « %s » |" % move.description), "%s : description" % id)
+		# Jalon 11 : « Sans effet dans le moteur actuel. » retiré avec l'effet (décision du J9).
+		var locked := lot.contains("| « %s » |" % move.description) or lot.contains(
+			"| « %s Sans effet dans le moteur actuel. » |" % move.description) or lot.contains(
+			"| « %s Un seul coup dans le moteur actuel. » |" % move.description)
+		assert_true(locked, "%s : description" % id)

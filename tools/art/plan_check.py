@@ -26,8 +26,12 @@ test_viridian_forest) : voir `verifier_foret`. Grille agrandie le 2026-10-08 (pr
 `plan_check_route_3.py` (raccord sur Argenta, Centre, grotte, D1 et D2 inévitables, deux
 itinéraires, rebords, herbes obligatoires, objet caché « cache », durée de traversée).
 
+**Jalon 13** (dossier 16) : `route_4.txt`, `azuria.txt`, `route_24.txt`, `azuria_arene.txt`,
+`azuria_velos.txt`, `azuria_maison.txt` → `plan_check_azuria.py` (recouvrement exact du sas, raccords
+entre cartes, rebord unique, eau et ponts, Centre premier bâtiment, rival, Ondine, pont Pépite).
+
 Usage : python3 tools/art/plan_check.py [grille.txt ...]   (code 1 si un critère échoue)
-        sans argument : toutes les grilles connues (Route 2, Forêt de Jade, Route 3).
+        sans argument : toutes les grilles connues (Route 2, Forêt de Jade, Route 3, J13).
 """
 from __future__ import annotations
 
@@ -606,8 +610,18 @@ def verifier_route_3(chemin: Path) -> bool:
 	return verifier(chemin)
 
 
+def _azuria(nom: str):
+	"""Grilles du jalon 13 : profils dans `plan_check_azuria.py` (import tardif, comme la Route 3)."""
+	def verifier(chemin: Path) -> bool:
+		import plan_check_azuria
+		return plan_check_azuria.VERIFICATEURS[nom](chemin)
+	return verifier
+
+
 VERIFICATEURS = {"route_2": verifier_route_2, "viridian_forest": verifier_foret,
-	"route_3": verifier_route_3}
+	"route_3": verifier_route_3,
+	**{n: _azuria(n) for n in ("route_4", "azuria", "route_24", "azuria_arene", "azuria_velos",
+		"azuria_maison")}}
 
 
 def main() -> int:

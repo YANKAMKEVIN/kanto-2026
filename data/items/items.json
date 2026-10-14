@@ -14,6 +14,41 @@
 		"category": "heal", "cures": ["poison"], "price": 100,
 		"description": "Soigne un Pokémon empoisonné."
 	},
+	"paralyze_heal": {
+		"name": "Anti-Para", "plural": "Anti-Para", "feminine": false,
+		"category": "heal", "cures": ["paralysis"], "price": 200,
+		"description": "Soigne un Pokémon paralysé."
+	},
+	"awakening": {
+		"name": "Réveil", "plural": "Réveils", "feminine": false,
+		"category": "heal", "cures": ["sleep"], "price": 250,
+		"description": "Réveille un Pokémon endormi."
+	},
+	"burn_heal": {
+		"name": "Anti-Brûle", "plural": "Anti-Brûle", "feminine": false,
+		"category": "heal", "cures": ["burn"], "price": 250,
+		"description": "Soigne un Pokémon brûlé."
+	},
+	"ice_heal": {
+		"name": "Antigel", "plural": "Antigels", "feminine": false,
+		"category": "heal", "cures": ["freeze"], "price": 250,
+		"description": "Dégèle un Pokémon gelé."
+	},
+	"nugget": {
+		"name": "Pépite", "plural": "Pépites", "feminine": true,
+		"category": "field", "price": 10000,
+		"description": "Une pépite d'or pur. Elle ne sert à rien… sauf à être vendue très cher."
+	},
+	"tm11": {
+		"name": "CT11 — Bulles d'O", "plural": "CT11 — Bulles d'O", "feminine": true,
+		"category": "tm", "tm": 11, "teaches": "bubble_beam",
+		"description": "Projette des bulles avec force. Peut baisser la Vitesse."
+	},
+	"tm34": {
+		"name": "CT34 — Patience", "plural": "CT34 — Patience", "feminine": true,
+		"category": "tm", "tm": 34, "teaches": "bide",
+		"description": "Encaisse deux tours, puis riposte avec le double des dégâts reçus."
+	},
 	"oak_parcel": {
 		"name": "Colis pour Chen", "plural": "Colis pour Chen", "feminine": false,
 		"category": "key",

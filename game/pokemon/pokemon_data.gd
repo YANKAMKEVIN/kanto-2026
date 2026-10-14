@@ -5,7 +5,10 @@ extends RefCounted
 ## Classe pure. [method load_dir] lit, sous la racine :
 ## - `types.json` : table des types ([TypeChart]) ;
 ## - tous les `.json` de `species/` : objets « identifiant → espèce » ([SpeciesData]) ;
-## - tous les `.json` de `moves/` : objets « identifiant → capacité » ([MoveData]).
+## - tous les `.json` de `moves/` : objets « identifiant → capacité » ([MoveData]) ;
+## - `tm_compatibility.json` (jalon 11, facultatif) : CT de Rouge/Bleu (« tms » : numéro → capacité)
+##   et CT compatibles de chaque espèce (« species » : espèce → numéros), générées par
+##   `tools/gen_tm_compatibility.py` ([method can_learn_tm]). Une espèce absente : aucune CT.
 ## Les identifiants sont uniques dans tout un dossier, les numéros de Pokédex aussi.
 ## Validation stricte, comme [DialogueLibrary] : clé inconnue, clé obligatoire absente,
 ## valeur hors bornes, identifiant en double, JSON illisible (avec la ligne). Puis
@@ -17,6 +20,7 @@ const DATA_DIR: String = "res://data/pokemon/"
 const TYPES_FILE: String = "types.json"
 const SPECIES_DIR: String = "species"
 const MOVES_DIR: String = "moves"
+const TM_FILE: String = "tm_compatibility.json"
 
 const _SPECIES_KEYS: Array[String] = [
 	"dex", "name", "types", "base_stats", "male_ratio", "growth_rate", "base_exp", "catch_rate",
@@ -43,14 +47,33 @@ const _EFFECT_KEYS: Dictionary[MoveEffect.Kind, Array] = {
 	MoveEffect.Kind.RECOIL: ["kind", "fraction"],
 	MoveEffect.Kind.SEED: ["kind", "fraction", "immune_types"],
 	MoveEffect.Kind.STATUS: ["kind", "status", "chance"],
+	MoveEffect.Kind.CONFUSION: ["kind", "chance"],
+	MoveEffect.Kind.HITS: ["kind", "min", "max"],
+	MoveEffect.Kind.FLINCH: ["kind", "chance"],
+	MoveEffect.Kind.CRIT_UP: ["kind"],
+	MoveEffect.Kind.FIXED_DAMAGE: ["kind", "mode", "amount"],
+	MoveEffect.Kind.BIDE: ["kind"],
+	MoveEffect.Kind.DRAIN: ["kind", "fraction"],
+	MoveEffect.Kind.TRAP: ["kind", "turns", "fraction", "messages"],
+	MoveEffect.Kind.DISABLE: ["kind", "turns"],
+	MoveEffect.Kind.REST: ["kind"],
+	MoveEffect.Kind.SELF_KO: ["kind"],
 }
 ## Clés d'effet facultatives (toutes les autres de [constant _EFFECT_KEYS] sont obligatoires).
-const _EFFECT_OPTIONAL: Array[String] = ["chance", "immune_types"]
+## « amount » : obligatoire pour FIXED_DAMAGE « value » seulement ([method _parse_effect]).
+const _EFFECT_OPTIONAL: Array[String] = ["chance", "immune_types", "amount"]
+## Bornes des nombres de tours de TRAP et DISABLE, et des dégâts de FIXED_DAMAGE « value ».
+const _EFFECT_MAX_TURNS: int = 8
+const _FIXED_VALUE_MAX: int = 999
 
 var _chart: TypeChart = TypeChart.new()
 var _species: Dictionary[StringName, SpeciesData] = {}
 var _moves: Dictionary[StringName, MoveData] = {}
 var _errors: PackedStringArray = PackedStringArray()
+## CT de Rouge/Bleu : numéro → capacité (identifiant ; la capacité peut ne pas exister encore).
+var _tm_moves: Dictionary[int, StringName] = {}
+## Espèce → numéros des CT qu'elle peut apprendre.
+var _tm_species: Dictionary[StringName, Array] = {}
 
 
 ## Charge la table des types, les capacités puis les espèces sous [param root], et vérifie
@@ -59,7 +82,65 @@ func load_dir(root: String = DATA_DIR) -> bool:
 	var ok := load_types(root.path_join(TYPES_FILE))
 	ok = _load_folder(root.path_join(MOVES_DIR), load_moves_file) and ok
 	ok = _load_folder(root.path_join(SPECIES_DIR), load_species_file) and ok
+	if FileAccess.file_exists(root.path_join(TM_FILE)):
+		ok = load_tm_file(root.path_join(TM_FILE)) and ok
 	return check_references() and ok
+
+
+## Lit les compatibilités des CT (après les espèces). Faux si une erreur a été signalée.
+func load_tm_file(path: String) -> bool:
+	var data: Variant = _read_json(path, "CT")
+	return data != null and add_tm_from_dict(data, path)
+
+
+## Compatibilités des CT d'un objet déjà lu : { "tms": { "34": "bide" }, "species": { "pidgey":
+## [34] } } (« _doc » ignorée). Espèces inconnues, numéros hors de 1 à 50 : erreurs.
+func add_tm_from_dict(data: Dictionary, source: String = "") -> bool:
+	var ok := true
+	for key: Variant in data:
+		if not ["_doc", "tms", "species"].has(str(key)):
+			ok = _fail("%s : clé inconnue « %s »" % [source, key])
+	var tms: Variant = data.get("tms", {})
+	if not tms is Dictionary:
+		return _fail("%s : « tms » doit être un objet { numéro: capacité }" % source)
+	for key: Variant in tms:
+		var number := str(key).to_int()
+		if not str(key).is_valid_int() or number < 1 or number > 50 \
+				or not tms[key] is String or (tms[key] as String).is_empty():
+			ok = _fail("%s : CT « %s » invalide (numéro de 1 à 50 → capacité)" % [source, key])
+			continue
+		_tm_moves[number] = StringName(tms[key])
+	var species: Variant = data.get("species", {})
+	if not species is Dictionary:
+		return _fail("%s : « species » doit être un objet { espèce: [numéros] }" % source)
+	for key: Variant in species:
+		var id := StringName(str(key))
+		if not _species.has(id):
+			ok = _fail("%s : espèce inconnue « %s »" % [source, id])
+			continue
+		var numbers: Array[int] = []
+		var valid: bool = species[key] is Array
+		if valid:
+			for number: Variant in species[key]:
+				if not JsonFields.is_int(number) or not _tm_moves.has(int(number)):
+					valid = false
+					break
+				numbers.append(int(number))
+		if not valid:
+			ok = _fail("%s espèce « %s » : liste de numéros de CT connus attendue" % [source, id])
+			continue
+		_tm_species[id] = numbers
+	return ok
+
+
+## Vrai si [param species] peut apprendre la CT numéro [param number] (Rouge/Bleu).
+func can_learn_tm(species: StringName, number: int) -> bool:
+	return (_tm_species.get(species, []) as Array).has(number)
+
+
+## Capacité de la CT numéro [param number] (&"" si inconnue).
+func tm_move(number: int) -> StringName:
+	return _tm_moves.get(number, &"")
 
 
 ## Charge la table des types (ses erreurs rejoignent [method get_errors]).
@@ -458,6 +539,9 @@ func _parse_effect(value: Variant, where: String) -> MoveEffect:
 	for key: String in _EFFECT_OPTIONAL:
 		required.erase(key)
 	var ok := _check_keys(entry, allowed, required, where)
+	if effect.kind in [MoveEffect.Kind.DRAIN, MoveEffect.Kind.TRAP, MoveEffect.Kind.DISABLE,
+			MoveEffect.Kind.REST, MoveEffect.Kind.SELF_KO]:
+		return effect if _read_effect_j12(entry, effect, where) and ok else null
 	if effect.kind == MoveEffect.Kind.RECOIL or effect.kind == MoveEffect.Kind.SEED:
 		if entry.has("fraction"):
 			var fraction: Variant = entry["fraction"]
@@ -468,6 +552,26 @@ func _parse_effect(value: Variant, where: String) -> MoveEffect:
 		if entry.has("immune_types"):
 			ok = _read_type_list(entry["immune_types"], effect.immune_types,
 				where + " immune_types") and ok
+		return effect if ok else null
+	if effect.kind == MoveEffect.Kind.HITS:
+		if _read_int(entry.get("min"), 2, 5, where + " min") \
+				and _read_int(entry.get("max"), 2, 5, where + " max") \
+				and int(entry["min"]) <= int(entry["max"]):
+			effect.min_hits = int(entry["min"])
+			effect.max_hits = int(entry["max"])
+			if not effect.min_hits == effect.max_hits and not (effect.min_hits == 2
+					and effect.max_hits == 5):
+				ok = _fail("%s : « min » et « max » valent 2 et 2, ou 2 et 5" % where)
+		else:
+			ok = _fail("%s : « min » ≤ « max », de 2 à 5" % where)
+		return effect if ok else null
+	if effect.kind == MoveEffect.Kind.FIXED_DAMAGE:
+		if entry.get("mode") is String and MoveEffect.FIXED_MODES.has(StringName(entry["mode"])):
+			effect.mode = StringName(entry["mode"])
+		else:
+			ok = _fail("%s : « mode » vaut %s" % [where,
+				", ".join(PackedStringArray(MoveEffect.FIXED_MODES))])
+		ok = _read_fixed_amount(entry, effect, where) and ok
 		return effect if ok else null
 	if effect.kind == MoveEffect.Kind.STATUS:
 		if entry.has("status"):
@@ -588,3 +692,55 @@ func _fail(message: String) -> bool:
 func _null_fail(message: String) -> Variant:
 	_fail(message)
 	return null
+
+
+# --- Effets du jalon 12 (`jalon-12.md` §2.10) ------------------------------------------
+
+## Valeurs de DRAIN (fraction), TRAP (turns [min, max], fraction, messages), DISABLE (turns) ;
+## REST et SELF_KO n'en ont aucune. Les clés ont déjà été vérifiées.
+func _read_effect_j12(entry: Dictionary, effect: MoveEffect, where: String) -> bool:
+	var ok := true
+	if entry.has("fraction"):
+		var fraction: Variant = entry["fraction"]
+		if not _is_number(fraction) or float(fraction) <= 0.0 or float(fraction) > 1.0:
+			ok = _fail("%s : « fraction » doit être un nombre de 0 (exclu) à 1" % where)
+		else:
+			effect.fraction = float(fraction)
+	if effect.kind == MoveEffect.Kind.DISABLE and entry.has("turns"):
+		if _read_int(entry["turns"], 1, _EFFECT_MAX_TURNS, where + " turns"):
+			effect.min_turns = int(entry["turns"])
+			effect.max_turns = effect.min_turns
+		else:
+			ok = false
+	if effect.kind == MoveEffect.Kind.TRAP and entry.has("turns"):
+		var turns: Variant = entry["turns"]
+		if turns is Array and (turns as Array).size() == 2 \
+				and _read_int(turns[0], 1, _EFFECT_MAX_TURNS, where + " turns") \
+				and _read_int(turns[1], 1, _EFFECT_MAX_TURNS, where + " turns") \
+				and int(turns[0]) <= int(turns[1]):
+			effect.min_turns = int(turns[0])
+			effect.max_turns = int(turns[1])
+		else:
+			ok = _fail("%s : « turns » vaut [min, max], de 1 à %d" % [where, _EFFECT_MAX_TURNS])
+	if effect.kind == MoveEffect.Kind.TRAP and entry.has("messages"):
+		var family: Variant = entry["messages"]
+		if family is String and MoveEffect.TRAP_MESSAGES.has(StringName(family)):
+			effect.messages = StringName(family)
+		else:
+			ok = _fail("%s : « messages » vaut %s" % [where,
+				", ".join(PackedStringArray(MoveEffect.TRAP_MESSAGES))])
+	return ok
+
+
+## FIXED_DAMAGE : « amount » obligatoire en mode « value » (dégâts, 1 à 999), refusé sinon.
+func _read_fixed_amount(entry: Dictionary, effect: MoveEffect, where: String) -> bool:
+	if effect.mode != &"value":
+		if entry.has("amount"):
+			return _fail("%s : « amount » seulement pour le mode « value »" % where)
+		return true
+	if not entry.has("amount"):
+		return _fail("%s : « amount » est obligatoire pour le mode « value »" % where)
+	if not _read_int(entry["amount"], 1, _FIXED_VALUE_MAX, where + " amount"):
+		return false
+	effect.amount = int(entry["amount"])
+	return true

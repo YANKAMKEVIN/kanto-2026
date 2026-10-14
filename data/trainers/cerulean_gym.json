@@ -1,0 +1,25 @@
+{
+	"cerulean_gym_lucas": {
+		"name": "Nageur Lucas", "ai": "random",
+		"can_lose": false, "heal_after": false, "gives_exp": true, "prize_money": 80,
+		"team": [{ "species": "horsea", "level": 16 }, { "species": "shellder", "level": 16 }]
+	},
+	"cerulean_gym_diane": {
+		"name": "Jeune Dresseuse Diane", "ai": "random",
+		"can_lose": false, "heal_after": false, "gives_exp": true, "prize_money": 285,
+		"team": [{ "species": "goldeen", "level": 19 }]
+	},
+	"cerulean_gym_misty": {
+		"name": "Ondine", "ai": "smart",
+		"can_lose": false, "heal_after": false, "gives_exp": true, "prize_money": 2100,
+		"start_message": false, "end_message": true, "bag": true, "switch": true,
+		"card": { "name": "ONDINE", "title": "Championne d'Arène d'Azuria" },
+		"team": [
+			{ "species": "staryu", "level": 18, "moves": ["tackle", "water_gun"] },
+			{
+				"species": "starmie", "level": 19,
+				"moves": ["tackle", "water_gun", "harden", "bubble_beam"]
+			}
+		]
+	}
+}

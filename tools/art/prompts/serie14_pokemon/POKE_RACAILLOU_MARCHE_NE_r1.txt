@@ -1,0 +1,16 @@
+POKE_RACAILLOU_MARCHE — planche d'animation d'un Pokémon du monde (compagnon du héros).
+Style : exactement le rendu de la première planche jointe (le héros du jeu) : Pokémon peint simplifié, même finesse, même contour fin coloré sans trait noir, même manière de peindre les volumes. Ni pixel art, ni 3D, ni anime aux contours noirs.
+LUMIÈRE NE (neutre) : lumière de milieu de journée, diffuse et blanche, venant légèrement du haut à gauche ; volumes conservés par un ombrage doux ; aucune teinte dorée ou orangée, aucun liseré chaud ; ombres propres neutres, légèrement bleutées.
+
+POKÉMON (identique dans toutes les images) : Racaillou, de Pokémon Rouge/Bleu, EXACTEMENT le même que sur la planche jointe (déjà validé : tête-rocher gris, sourcils froncés, deux bras puissants, pas de jambes). Il avance en se traînant sur ses bras, bras posés au sol.
+
+PLANCHE D'ANIMATION (spritesheet) : image portrait 1024 × 1536, fond avec une vraie transparence (canal alpha, aucun damier dessiné). Grille invisible de 4 colonnes × 4 lignes ; chaque cellule fait 256 × 384 px et contient UNE pose du Pokémon, entier, centré horizontalement, les pieds posés sur la même ligne horizontale à 60 px du bas de la cellule, à la même taille dans toutes les cellules (environ 170 px de haut). Aucune pose ne déborde de sa cellule.
+- Ligne 1 : de face (vers le bas de l'écran).
+- Ligne 2 : de profil, vers la gauche.
+- Ligne 3 : de profil, vers la droite.
+- Ligne 4 : de dos (vers le haut de l'écran).
+- Colonnes : avance en se traînant sur ses bras en 4 images (un bras puis l'autre se pose devant, le corps se soulève un peu et retombe).
+Vue : la même vue de dessus de trois quarts que le jeu (caméra un peu au-dessus, on voit un peu le dessus du Pokémon). Pas de perspective, pas d'ombre au sol, pas de sol, pas de texte, pas de numéros, pas de cadres autour des cellules.
+Les couleurs, les proportions et la tête doivent être EXACTEMENT les mêmes dans les 16 poses.
+
+La deuxième image jointe (POKE_RACAILLOU_FIXE_NE_r1) est un autre Pokémon du jeu, déjà validé : même rendu, même finesse ; garde ses proportions comme repère de taille et de style (ce Pokémon-ci est de taille comparable). Attention : cette deuxième image est une planche de poses fixes, PAS le gabarit : respecte la grille 4 × 4 décrite ci-dessus.

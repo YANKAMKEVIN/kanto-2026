@@ -9,8 +9,9 @@ extends RefCounted
 ## Contextes : [constant CONTEXT_FIELD] (menu en exploration), [constant CONTEXT_TEAM] (depuis
 ## la fiche Équipe : les objets qui se donnent à un Pokémon, SOINS d'abord),
 ## [constant CONTEXT_WILD_BATTLE], [constant CONTEXT_TRAINER_BATTLE].
-## Onglets ([method categories]) : FAVORIS (si non vide), SOINS, CAPTURE, COMBAT, AVENTURE,
-## OBJETS CLÉS ; **un onglet vide n'apparaît pas** (rien d'annoncé d'avance).
+## Onglets ([method categories]) : FAVORIS (si non vide), SOINS, CAPTURE, COMBAT, AVENTURE, CT
+## (jalon 11), OBJETS CLÉS ; **un onglet vide n'apparaît pas** (rien d'annoncé d'avance : l'onglet
+## CT reste absent tant que le joueur n'a aucune CT, dossier 14 §6.2).
 ## Tris ([enum Sort]) : pertinence (combat sauvage : Balls puis soins ; ailleurs, l'ordre des
 ## données), nom, quantité (la plus grande d'abord), récents (obtenus le plus récemment
 ## d'abord, Q-12 : [method Bag.acquired_rank]).
@@ -28,7 +29,10 @@ const CONTEXT_TRAINER_BATTLE: StringName = ItemData.CONTEXT_TRAINER_BATTLE
 ## Onglet des favoris (pas une catégorie de données).
 const FAVORITES: StringName = &"favorites"
 ## Ordre des onglets après FAVORIS (identifiants de [constant ItemData.CATEGORY_NAMES]).
-const CATEGORY_ORDER: Array[StringName] = [&"heal", &"ball", &"battle", &"field", &"key"]
+const CATEGORY_ORDER: Array[StringName] = [&"heal", &"ball", &"battle", &"field", &"tm", &"key"]
+## Détail d'une CT (dossier 14 §6.2) : type, puissance, précision, PP, puis la description.
+const TM_DETAIL_FORMAT: String = "%s · Puissance %s · Précision %s · PP %d\n%s"
+const NO_VALUE: String = "—"
 ## Noms des tris, dans l'ordre de [enum Sort].
 const SORT_LABELS: Array[String] = ["Pertinence", "Nom", "Quantité", "Récents"]
 ## Mention d'un objet de combat consulté hors combat (dossier 08 §3).
@@ -57,10 +61,17 @@ const RESULT_FORMAT: String = "+%d PV — %s %d/%d"
 ## le 2026-10-07), par statut : masculin, puis féminin (Pokémon femelle).
 const STATUS_CURED_FORMATS: Dictionary[StringName, Array] = {
 	StatusRules.POISON: ["%s n'est plus empoisonné.", "%s n'est plus empoisonnée."],
+	# Jalon 11 (dossier 14 §13, n° 4, 9, 13, 16).
+	StatusRules.PARALYSIS: ["%s n'est plus paralysé.", "%s n'est plus paralysée."],
+	StatusRules.SLEEP: ["%s est réveillé.", "%s est réveillée."],
+	StatusRules.BURN: ["%s n'est plus brûlé.", "%s n'est plus brûlée."],
+	StatusRules.FREEZE: ["%s n'est plus gelé !", "%s n'est plus gelée !"],
 }
 ## Sac sans objet (Q-2) ; depuis la fiche Équipe, aucun objet à donner.
 const EMPTY_TEXT: String = "Ton Sac est vide."
 const EMPTY_TEAM_TEXT: String = "Aucun soin dans ton Sac."
+## Objet AVENTURE refusé ici (jalon 12, dossier 15 §20 n° 34 : la Corde Sortie hors grotte).
+const FIELD_REFUSAL_TEXT: String = "Impossible de l'utiliser ici."
 
 
 ## Objets du Sac vus de [param context], triés selon [param sort] : une vue par objet présent
@@ -68,7 +79,8 @@ const EMPTY_TEAM_TEXT: String = "Aucun soin dans ton Sac."
 ## ([constant CONTEXT_TEAM]), seuls les objets qui se donnent à un Pokémon ; si
 ## [param target] est donné, chacun est utilisable **sur lui** ou porte la raison.
 static func entries(bag: Bag, items: ItemLibrary, context: StringName,
-		sort: Sort = Sort.RELEVANCE, target: Pokemon = null) -> Array[BagEntryView]:
+		sort: Sort = Sort.RELEVANCE, target: Pokemon = null,
+		data: PokemonData = null) -> Array[BagEntryView]:
 	var views: Array[BagEntryView] = []
 	if bag == null or items == null:
 		return views
@@ -83,7 +95,7 @@ static func entries(bag: Bag, items: ItemLibrary, context: StringName,
 		found.append(item)
 	found.sort_custom(_comparator(bag, context, sort))
 	for item: ItemData in found:
-		views.append(_entry(bag, item, context, target))
+		views.append(_entry(bag, item, context, target, data))
 	return views
 
 
@@ -139,7 +151,7 @@ static func view(bag: Bag, items: ItemLibrary, context: StringName,
 		result.target_index = target_index
 		result.target_name = target.display_name(data) if data != null \
 			else String(target.species_id)
-	result.entries = entries(bag, items, context, sort, target)
+	result.entries = entries(bag, items, context, sort, target, data)
 	result.favorites = _favorites(result.entries, bag, sort)
 	result.categories = categories(result.entries)
 	result.start_category = start_category(context, last_category, result.categories)
@@ -149,8 +161,9 @@ static func view(bag: Bag, items: ItemLibrary, context: StringName,
 
 
 ## Choix du Pokémon pour [param item] (UTILISER) : toute l'équipe, chaque membre utilisable ou
-## avec sa raison ([method ItemUse.check], Sac compris). [param selected] : membre mis en avant
-## (UTILISER À NOUVEAU), −1 = aucun.
+## avec sa raison ([method ItemUse.check], Sac compris) ; une CT ou une pierre d'évolution
+## (jalon 12) : la raison toujours visible ([method _stone_targets]). [param selected] : membre
+## mis en avant (UTILISER À NOUVEAU), −1 = aucun.
 static func targets(party: Party, bag: Bag, item: ItemData, context: StringName,
 		data: PokemonData, selected: int = -1) -> PartyPickerView:
 	var picker := PartyPickerView.new()
@@ -162,6 +175,19 @@ static func targets(party: Party, bag: Bag, item: ItemData, context: StringName,
 	if party == null:
 		return picker
 	var members := party.get_all()
+	if item != null and item.is_tm():
+		picker.permanent = true
+		# CT (dossier 14 §6.1) : COMPATIBLE / DÉJÀ CONNUE / INCOMPATIBLE, toujours visibles.
+		for i: int in members.size():
+			var state := TmTeach.check(members[i], item, data)
+			var target_view := PartyTargetView.new(DashboardViews.member(members[i], i, data),
+				state == TmTeach.Check.COMPATIBLE, TmTeach.LABELS[state])
+			target_view.show_reason = true
+			picker.targets.append(target_view)
+		return picker
+	if StoneUse.is_stone(item):
+		_stone_targets(picker, members, item, data)
+		return picker
 	for i: int in members.size():
 		var check := ItemUse.check(bag, item, members[i], context)
 		var mon_name := members[i].display_name(data)
@@ -204,12 +230,24 @@ static func can_repeat(result: ItemUseResult) -> bool:
 
 ## Vue d'un objet : nom au singulier, quantité, catégorie, favori, utilisable ici, mention.
 static func _entry(bag: Bag, item: ItemData, context: StringName,
-		target: Pokemon) -> BagEntryView:
+		target: Pokemon, data: PokemonData = null) -> BagEntryView:
 	var rules := ItemUse.rule_context(context)
 	var view := BagEntryView.new(item.id, item.name, bag.count_of(item.id), item.description,
 		item.category_id(), item.usable_in(rules))
 	view.favorite = bag.is_favorite(item.id)
 	view.targets_pokemon = item.targets_pokemon()
+	if StoneUse.is_stone(item):
+		# Jalon 12 (T23) : UTILISER ouvre le choix du Pokémon (COMPATIBLE / INCOMPATIBLE).
+		view.targets_pokemon = true
+	if item.is_tm():
+		# CT : APPRENDRE ouvre le choix du Pokémon ; hors combat seulement (n° 44) ; permanente,
+		# donc sans quantité.
+		view.targets_pokemon = true
+		view.permanent = true
+		view.description = tm_detail(item, data)
+		if not view.usable:
+			view.note = TmTeach.IN_BATTLE_TEXT
+		return view
 	if context == CONTEXT_TEAM and target != null:
 		var check := ItemUse.check_target(item, target, context)
 		view.usable = check == ItemUse.Check.OK
@@ -218,6 +256,18 @@ static func _entry(bag: Bag, item: ItemData, context: StringName,
 			and (item.usable_in(CONTEXT_WILD_BATTLE) or item.usable_in(CONTEXT_TRAINER_BATTLE)):
 		view.note = BATTLE_NOTE
 	return view
+
+
+## Détail d'une CT : « Normal · Puissance — · Précision — · PP 10 », puis la description de
+## l'objet ; sans données, la description seule.
+static func tm_detail(item: ItemData, data: PokemonData) -> String:
+	var move := data.get_move(item.teaches) if data != null else null
+	if move == null:
+		return item.description
+	var type_name := data.get_type_chart().get_type_name(move.type)
+	var power := str(move.power) if move.power > 0 else NO_VALUE
+	var accuracy := ("%d %%" % move.accuracy) if move.accuracy > 0 else NO_VALUE
+	return TM_DETAIL_FORMAT % [type_name, power, accuracy, move.pp, item.description]
 
 
 ## Vrai si [param item] se donne à un Pokémon en exploration (fiche Équipe).
@@ -275,3 +325,23 @@ static func _relevance_rank(item: ItemData, context: StringName) -> int:
 		ItemData.Category.HEAL:
 			return 1
 	return 2
+
+
+## Refus d'un objet AVENTURE ([method FieldItemRules.check]) : « Impossible de l'utiliser ici. »
+## (jalon 12, dossier 15 §20 n° 34) ; vide pour OK.
+static func field_refusal_text(check: FieldItemRules.Check) -> String:
+	return "" if check == FieldItemRules.Check.OK else FIELD_REFUSAL_TEXT
+
+
+## Pierre d'évolution (jalon 12, T23 ; `jalon-12.md` §2.9) : chaque membre COMPATIBLE
+## (choisissable) ou INCOMPATIBLE (non choisissable), libellé toujours visible
+## ([member PartyTargetView.show_reason]) ; un Pokémon K.O. reste COMPATIBLE. La pierre n'est pas
+## permanente (la quantité s'affiche).
+static func _stone_targets(picker: PartyPickerView, members: Array[Pokemon], item: ItemData,
+		data: PokemonData) -> void:
+	for i: int in members.size():
+		var state := StoneUse.check(members[i], item.id, data)
+		var target_view := PartyTargetView.new(DashboardViews.member(members[i], i, data),
+			state == StoneUse.Check.COMPATIBLE, StoneUse.LABELS[state])
+		target_view.show_reason = true
+		picker.targets.append(target_view)

@@ -11,6 +11,9 @@ var reason: String = ""
 ## Phrase de refus complète (« Roucool a déjà tous ses PV. »), vide si utilisable ou non fournie ;
 ## champ ajouté au 6B (rétrocompatible : à défaut, [member reason] sert).
 var refusal: String = ""
+## Jalon 11 (CT) : [member reason] est affichée même si le Pokémon est utilisable
+## (« COMPATIBLE », dossier 14 §6.1 : les trois états toujours visibles).
+var show_reason: bool = false
 
 
 func _init(target_member: TeamMemberView = null, can_use: bool = false,

@@ -124,7 +124,9 @@ func test_in_the_field_everything_is_listed_with_a_note_when_unusable() -> void:
 	assert_true(by_id[&"potion"].usable)
 	assert_true(by_id[&"potion"].targets_pokemon)
 	assert_eq(by_id[&"potion"].note, "")
-	assert_true(by_id[&"repel"].usable, "AVENTURE : en exploration")
+	# Jalon 12 (T20) : un objet AVENTURE sans « field_use » se consulte, sans UTILISER.
+	assert_false(by_id[&"repel"].usable, "AVENTURE sans usage d'exploration : pas de bouton")
+	assert_eq(by_id[&"repel"].note, "", "et aucune mention")
 	for id: StringName in [&"x_attack", &"poke_ball", &"great_ball"]:
 		assert_false(by_id[id].usable, String(id))
 		assert_eq(by_id[id].note, "Utilisable en combat", String(id))
@@ -375,3 +377,61 @@ func test_antidote_result_text_agrees_with_the_pokemon() -> void:
 	var again := ItemUse.apply(_bag, antidote, female, BagQuery.CONTEXT_FIELD)
 	assert_eq(BagQuery.result_text(again, "Nidoran♀"), "Sans effet")
 	assert_eq(_bag.count_of(&"antidote"), 1, "le refus ne consomme rien")
+
+
+func test_j11_remedies_result_texts() -> void:
+	# Dossier 14 §13, n° 4, 9, 13 et 16 : le Réveil donne « est réveillé[e]. », jamais
+	# « se réveille ! » (réveil naturel, en combat seulement).
+	var items := ItemLibrary.new()
+	assert_true(items.add_from_dict({
+		"paralyze_heal": _item("Anti-Para", "heal", {"cures": ["paralysis"]}),
+		"awakening": _item("Réveil", "heal", {"cures": ["sleep"]}),
+		"burn_heal": _item("Anti-Brûle", "heal", {"cures": ["burn"]}),
+		"ice_heal": _item("Antigel", "heal", {"cures": ["freeze"]}),
+	}, "test"), str(items.get_errors()))
+	var cases := {
+		&"paralyze_heal": [StatusRules.PARALYSIS, "n'est plus paralysé.", "n'est plus paralysée."],
+		&"awakening": [StatusRules.SLEEP, "est réveillé.", "est réveillée."],
+		&"burn_heal": [StatusRules.BURN, "n'est plus brûlé.", "n'est plus brûlée."],
+		&"ice_heal": [StatusRules.FREEZE, "n'est plus gelé !", "n'est plus gelée !"],
+	}
+	for id: StringName in cases:
+		_bag.add(id, 3)
+		var male := _mon(18)
+		male.status = cases[id][0]
+		var result := ItemUse.apply(_bag, items.get_item(id), male, BagQuery.CONTEXT_FIELD)
+		assert_eq(BagQuery.result_text(result, "Salamèche"), "Salamèche " + cases[id][1], id)
+		assert_eq(male.status, StatusRules.NONE, id)
+		var female := _mon(18)
+		female.gender = Pokemon.Gender.FEMALE
+		female.status = cases[id][0]
+		result = ItemUse.apply(_bag, items.get_item(id), female, BagQuery.CONTEXT_FIELD)
+		assert_eq(BagQuery.result_text(result, "Nidoran♀"), "Nidoran♀ " + cases[id][2], id)
+		var wrong := _mon(18)
+		wrong.status = StatusRules.POISON
+		assert_eq(BagQuery.result_text(ItemUse.apply(_bag, items.get_item(id), wrong,
+			BagQuery.CONTEXT_FIELD), "Salamèche"), "Sans effet", "%s ne soigne pas le poison" % id)
+		assert_eq(wrong.status, StatusRules.POISON)
+
+
+# --- AVENTURE : UTILISER seulement si l'objet a un usage (jalon-13.md §0.4, §2.13, T16) -------
+
+func test_field_item_is_usable_only_with_a_field_use() -> void:
+	var items := ItemLibrary.new()
+	assert_true(items.add_from_dict({
+		"nugget": _item("Pépite", "field", {"price": 10000}),
+		"rope": _item("Corde", "field"),
+	}, "test"), str(items.get_errors()))
+	# Le J12 (T20) lira « field_use » dans les données ; ici, posé à la main.
+	items.get_item(&"rope").field_use = &"escape_rope"
+	_bag.add(&"nugget", 1)
+	_bag.add(&"rope", 1)
+	var by_id := _by_id(BagQuery.entries(_bag, items, BagQuery.CONTEXT_FIELD))
+	assert_false(by_id[&"nugget"].usable, "Pépite : pas de UTILISER")
+	assert_true(by_id[&"nugget"].is_listed(), "mais listée sous AVENTURE")
+	assert_eq(by_id[&"nugget"].category_id, &"field")
+	assert_eq(by_id[&"nugget"].note, "")
+	assert_true(by_id[&"rope"].usable, "un objet AVENTURE avec un usage garde UTILISER")
+	for context: StringName in [BagQuery.CONTEXT_WILD_BATTLE, BagQuery.CONTEXT_TRAINER_BATTLE]:
+		for view: BagEntryView in BagQuery.entries(_bag, items, context):
+			assert_false(view.is_displayable(), "jamais en combat : %s" % view.item_id)

@@ -88,6 +88,40 @@ const LOOKS: Dictionary = {
 	"bulbizarre": [POKEMON_DIR, "bulbasaur", ""],
 	"salameche": [POKEMON_DIR, "charmander", ""],
 	"carapuce": [POKEMON_DIR, "squirtle", ""],
+	# J11 (série 13, T18) : planches du compagnon validées par Kevin, sans planche d'attente.
+	"herbizarre": [POKEMON_DIR, "ivysaur", ""],
+	"carabaffe": [POKEMON_DIR, "wartortle", ""],
+	"papilusion": [POKEMON_DIR, "butterfree", ""],
+	# Pikachu : planche obtenue à la main par Kevin (ChatGPT, Codex refuse), validée le 2026-10-13.
+	"pikachu": [POKEMON_DIR, "pikachu", ""],
+	# Reptincel : idem (ChatGPT sans image jointe, sinon refus), validé le 2026-10-13.
+	"reptincel": [POKEMON_DIR, "charmeleon", ""],
+	# J12 (série 14, Route 3 et Mont Sélénite) : Fillette, Sbires ♂ et ♀ (attente « creuse »,
+	# plus basse, calée au pied dans une cellule de la hauteur de la marche), chercheur de
+	# fossiles, avec leur planche d'attente.
+	"fillette": [CHARACTERS_DIR, "lass_young", ""],
+	"sbire_h": [CHARACTERS_DIR, "rocket_grunt_m", ""],
+	"sbire_f": [CHARACTERS_DIR, "rocket_grunt_f", ""],
+	"chercheur_fossiles": [CHARACTERS_DIR, "fossil_researcher", ""],
+	# J13 (série 15, Azuria) : Ondine, Nageur Lucas, Nageuse (H5, `swimmer_f`), avec leur
+	# planche d'attente.
+	"ondine": [CHARACTERS_DIR, "misty", ""],
+	"nageur": [CHARACTERS_DIR, "swimmer", ""],
+	"nageuse": [CHARACTERS_DIR, "swimmer_f", ""],
+	# J12 T21 (série 14, planches du T3) : compagnon, sans planche d'attente (colonne 0 de la
+	# marche, vérifiée à l'œil : pose posée dans les quatre directions). Racaillou qui marche :
+	# `geodude_walk` (le Racaillou fixe du tailleur garde `geodude`, avec ses réactions).
+	"rondoudou": [POKEMON_DIR, "jigglypuff", ""],
+	"melofee": [POKEMON_DIR, "clefairy", ""],
+	"abo": [POKEMON_DIR, "ekans", ""],
+	"paras": [POKEMON_DIR, "paras", ""],
+	"nosferapti": [POKEMON_DIR, "zubat", ""],
+	"racaillou_marche": [POKEMON_DIR, "geodude_walk", ""],
+	"roucoups": [POKEMON_DIR, "pidgeotto", ""],
+	"nidorino": [POKEMON_DIR, "nidorino", ""],
+	"nidorina": [POKEMON_DIR, "nidorina", ""],
+	"rattatac": [POKEMON_DIR, "raticate", ""],
+	"rapasdepic": [POKEMON_DIR, "fearow", ""],
 }
 ## Pokémon fixes (genre « Pokémon fixe », jalon 9 §2.8.5) : feuille 6 × 1 du catalogue
 ## (« personnages ») → identifiant de données. Ils ne marchent jamais.
@@ -108,6 +142,9 @@ const REACT_DURATIONS: Array[float] = [0.15, 0.6, 0.15]
 ## Objets fixes : image (catalogue, « images ») → identifiant de données (`object/<id>`).
 const FIXED_OBJECTS: Dictionary = {
 	"poke_ball_ground": "poke_ball_ground",
+	# J12 (série 14) : les deux fossiles posés sur la dalle du Mont Sélénite.
+	"fossil_dome": "fossil_dome",
+	"fossil_helix": "fossil_helix",
 }
 ## Planches lues seulement comme planche de course d'une autre.
 const RUN_ONLY: Array[String] = ["heros_run", "enfant_run", "rattata_run", "chen_run"]
@@ -121,6 +158,13 @@ const IDLE_COLUMNS := {"down": 0, "left": 1, "right": 2, "up": 3}
 ## (colonne 1) ; de dos, colonne 0 (les deux pieds posés).
 const IDLE_FROM_WALK := {
 	"salameche": {"down": 0, "left": 3, "right": 1, "up": 0},
+	# Série 13 (T18), à l'œil : Herbizarre et Carabaffe, les pattes les plus rapprochées ;
+	# Papilusion (en vol), les ailes ouvertes (colonne 0) dans toutes les directions.
+	"herbizarre": {"down": 0, "left": 3, "right": 2, "up": 2},
+	"carabaffe": {"down": 0, "left": 3, "right": 3, "up": 0},
+	"papilusion": {"down": 0, "left": 0, "right": 0, "up": 0},
+	"pikachu": {"down": 0, "left": 1, "right": 3, "up": 0},
+	"reptincel": {"down": 3, "left": 2, "right": 2, "up": 2},
 }
 
 var _errors: int = 0

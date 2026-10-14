@@ -40,6 +40,17 @@ extends RefCounted
 ## - STATUS_DAMAGED : POISON (voile violet et barre de PV ensemble), puis le message ;
 ## - STATUS_CURED : STATUS_TAG (l'étiquette part), puis le message ;
 ## - STATUS_UNCHANGED : le message seulement.
+## Jalon 11 : STATUS_ENDED (réveil, dégel) comme STATUS_CURED ; STATUS_PREVENTED et FAILED :
+## le message seulement. HURT_ITSELF (confusion) : comme RECOIL, la barre puis le message ;
+## CONFUSION_CHECK : le message (« … est confus… »), puis CONFUSION (étoiles au-dessus de la
+## tête) ; les autres événements de la confusion, MULTI_HIT, FLINCHED, FOCUSED : le message
+## seulement. Patience : BIDE_UNLEASHED → le message, puis MOVE (élan physique) avant le DAMAGE
+## de la riposte ; les autres événements de Patience : le message seulement. STATUS_DAMAGED de la brûlure : POISON aussi (voile orangé, [member
+## BattleEvent.status]).
+## Jalon 12 : DRAINED_HP → HP (la barre du lanceur remonte), puis le message ; RESTED → HP, puis
+## STATUS_TAG (« DOR » se pose), puis le message ; TRAP_DAMAGED → DAMAGE (coup et barre), puis le
+## message ; SELF_KO → DAMAGE (la barre du lanceur tombe à zéro ; le FAINTED suit) ; TRAPPED,
+## TRAP_ENDED, MOVE_DISABLED, DISABLE_ENDED : le message seulement.
 ## Les phrases viennent de [BattleText] : rien n'est écrit ici.
 
 
@@ -64,7 +75,7 @@ static func beats(event: BattleEvent, texts: BattleText, data: PokemonData,
 			if move_data != null:
 				move.category = move_data.category
 			result.append(move)
-		BattleEvent.Kind.DAMAGE, BattleEvent.Kind.RECOIL:
+		BattleEvent.Kind.DAMAGE, BattleEvent.Kind.RECOIL, BattleEvent.Kind.HURT_ITSELF:
 			result.append(BattleBeat.new(BattleBeat.Kind.DAMAGE, event))
 			result.append_array(messages)
 		BattleEvent.Kind.STAT_CHANGED:
@@ -103,12 +114,31 @@ static func beats(event: BattleEvent, texts: BattleText, data: PokemonData,
 		BattleEvent.Kind.STATUS_DAMAGED:
 			result.append(BattleBeat.new(BattleBeat.Kind.POISON, event))
 			result.append_array(messages)
-		BattleEvent.Kind.STATUS_CURED:
+		BattleEvent.Kind.STATUS_CURED, BattleEvent.Kind.STATUS_ENDED:
 			result.append(BattleBeat.new(BattleBeat.Kind.STATUS_TAG, event))
 			result.append_array(messages)
+		BattleEvent.Kind.BIDE_UNLEASHED:
+			# Patience, tour 3 : « … riposte ! », puis l'élan d'une attaque physique.
+			result.append_array(messages)
+			var lunge := BattleBeat.new(BattleBeat.Kind.MOVE, event)
+			lunge.category = MoveData.Category.PHYSICAL
+			result.append(lunge)
+		BattleEvent.Kind.CONFUSION_CHECK:
+			result.append_array(messages)
+			result.append(BattleBeat.new(BattleBeat.Kind.CONFUSION, event))
 		BattleEvent.Kind.WITHDRAWN:
 			result.append_array(messages)
 			result.append(BattleBeat.new(BattleBeat.Kind.WITHDRAW, event))
+		BattleEvent.Kind.DRAINED_HP:
+			result.append(BattleBeat.new(BattleBeat.Kind.HP, event))
+			result.append_array(messages)
+		BattleEvent.Kind.RESTED:
+			result.append(BattleBeat.new(BattleBeat.Kind.HP, event))
+			result.append(BattleBeat.new(BattleBeat.Kind.STATUS_TAG, event))
+			result.append_array(messages)
+		BattleEvent.Kind.TRAP_DAMAGED, BattleEvent.Kind.SELF_KO:
+			result.append(BattleBeat.new(BattleBeat.Kind.DAMAGE, event))
+			result.append_array(messages)
 		_:
 			result.append_array(messages)
 	return result

@@ -85,7 +85,7 @@ func test_buy_view_texts_and_money() -> void:
 	assert_eq(screen.get_mode(), ShopViews.MODE_BUY)
 	assert_eq(screen.get_title_text(), "ACHETER")
 	assert_eq(screen.get_money_text(), MenuFormat.money(3000))
-	assert_eq(screen.get_cards().size(), 2)
+	assert_eq(screen.get_cards().size(), 5, "Poké Ball, Potion et les trois remèdes du J11")
 	assert_eq(screen.get_selected_id(), &"poke_ball", "première carte sélectionnée")
 	assert_eq(screen.get_detail_owned(), "DANS LE SAC : 3")
 	assert_eq(screen.get_card_price_text(&"potion"), MenuFormat.money(300))
@@ -279,8 +279,17 @@ func test_touch_targets_and_margins() -> void:
 		var screen := menu.get_shop()
 		var controls := screen.get_touch_controls()
 		assert_gt(controls.size(), 6)
+		var scroll := screen.get_scroll()
+		var scroll_rect := scroll.get_global_rect()
+		assert_lte(scroll_rect.end.y, HEIGHT - UiTokens.SAFE_MARGIN + 0.5, "liste dans la marge")
 		for control: Control in controls:
 			var rect := control.get_global_rect()
+			if scroll.is_ancestor_of(control):
+				# Carte de la liste : coupée par le défilement (J11 : 5 articles), on ne
+				# touche que sa partie visible.
+				rect = rect.intersection(scroll_rect)
+				if rect.size.y < UiTokens.TOUCH_MIN - 0.5:
+					continue
 			assert_gte(rect.size.y, UiTokens.TOUCH_MIN - 0.5, "zone ≥ 128 (%s)" % control.name)
 			assert_gte(rect.position.x, UiTokens.SAFE_MARGIN - 0.5)
 			assert_lte(rect.end.x, width - UiTokens.SAFE_MARGIN + 0.5)

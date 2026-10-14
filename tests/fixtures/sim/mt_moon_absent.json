@@ -1,0 +1,42 @@
+{
+	"version": 1,
+	"description": "Fixture du test de simulate_mt_moon.gd : identifiants qui n'existeront jamais.",
+	"seeds": 2,
+	"teams": [
+		{ "name": "Équipe valide", "members": [{ "species": "charmander", "level": 15 }] },
+		{ "name": "Équipe sans capacité",
+			"members": [{ "species": "pidgey", "level": 13, "moves": ["t10_absent_move"] }] }
+	],
+	"tables": {
+		"absent_grass": {
+			"maps": ["route_3"], "terrain": "grass", "rate": 25,
+			"slots": [{ "species": "t10_absent_species", "levels": [8, 10], "weight": 1 }]
+		},
+		"known_rubble": {
+			"maps": ["mt_moon_1f"], "terrain": "rubble", "rate": 25,
+			"slots": [{ "species": "geodude", "levels": [8, 10], "weight": 1 }]
+		}
+	},
+	"trainers": {
+		"absent_trainer": {
+			"name": "Sbire Rocket", "ai": "random", "can_lose": false, "heal_after": false,
+			"gives_exp": true, "prize_money": 330,
+			"team": [{ "species": "t10_absent_species", "level": 11 }]
+		},
+		"known_trainer": {
+			"name": "Fillette Léa", "ai": "random", "can_lose": false, "heal_after": false,
+			"gives_exp": true, "prize_money": 135,
+			"team": [{ "species": "pidgey", "level": 9 }]
+		}
+	},
+	"steps": [
+		{ "label": "Herbes absentes", "wild": "absent_grass", "cells": 4 },
+		{ "label": "Sbire absent", "trainer": "absent_trainer" },
+		{ "label": "Fillette Léa", "trainer": "known_trainer" },
+		{ "label": "Gravats", "wild": "known_rubble", "count": 1 }
+	],
+	"variants": [
+		{ "name": "attentif, Centre", "player": "attentif", "center": true },
+		{ "name": "objet absent", "player": "attentif", "items": { "t10_absent_item": 1 } }
+	]
+}

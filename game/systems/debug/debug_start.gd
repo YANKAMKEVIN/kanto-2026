@@ -46,6 +46,17 @@ extends RefCounted
 ## actif pour la session et **remplace `user://save.json`** (QA de la sauvegarde : relire le
 ## statut après une fermeture forcée, départ `save_v4_qa`). Sans cette clé, un départ de
 ## débogage ne lit ni n'écrit jamais la sauvegarde.
+## Jalon 11 (T9, QA des statuts) : « status_turns » sur un membre : tours de sommeil restants
+## (0 à [constant Pokemon.MAX_STATUS_TURNS], avec « status » = « sleep » seulement ; absent : 0,
+## il se réveille à sa première tentative d'agir). « wild » : table d'herbes **forcée sur la
+## carte de départ** pour la session (même format qu'une table de `data/encounters/` sans
+## « maps » ni « terrain » : { "rate", "slots", "ramp" }) ; exige « map » ; jamais sauvegardée.
+## Jalon 11 (T20d, QA du compagnon) : « companion » : place dans l'équipe (0 = premier) du
+## Pokémon choisi comme compagnon ; une espèce sans planche est effacée au premier rafraîchissement
+## (comme en jeu, A-11).
+## Jalon 12 (T20, gravats) : « wild » accepte une clé « terrain » facultative
+## ([constant EncounterTable.TERRAINS], « grass » par défaut) : `"terrain": "rubble"` force la
+## table des gravats de la carte (grotte) au lieu de celle des herbes.
 
 const USER_PATH: String = "user://debug_start.json"
 const FACINGS: Dictionary[String, Vector2i] = {
@@ -57,9 +68,9 @@ const MAX_STORAGE: int = 60
 const MAX_MONEY: int = 999_999
 
 const _KEYS: Array[String] = ["map", "spawn", "facing", "seed", "flags", "party", "bag",
-	"favorites", "money", "storage", "autosave"]
+	"favorites", "money", "storage", "autosave", "wild", "companion"]
 const _MEMBER_KEYS: Array[String] = ["species", "level", "moves", "exp_to_next", "hp",
-	"favorite", "status"]
+	"favorite", "status", "status_turns"]
 
 ## Carte et point d'apparition de départ (&"" = départ par défaut de Boot).
 var map: StringName = &""
@@ -79,6 +90,12 @@ var money: int = -1
 var storage: Array[Dictionary] = []
 ## Vrai : le départ remplace la sauvegarde (autosave actif, voir l'en-tête).
 var autosave: bool = false
+## Table d'herbes forcée sur [member map] (vide = celle des données), déjà validée.
+var wild: Dictionary = {}
+## Place du compagnon dans l'équipe (-1 = aucun).
+var companion: int = -1
+## Terrain de la table forcée [member wild] (jalon 12, T20 : clé « terrain » de « wild »).
+var wild_terrain: StringName = &"grass"
 var _errors: PackedStringArray = PackedStringArray()
 
 
@@ -195,6 +212,30 @@ func add_from_dict(dict: Dictionary, data: PokemonData, items: ItemLibrary,
 			ok = _fail("%s : « autosave » est un booléen" % source)
 		else:
 			new_autosave = dict["autosave"]
+	var new_wild: Dictionary = {}
+	var new_wild_terrain: StringName = &"grass"
+	if dict.has("wild"):
+		if not dict["wild"] is Dictionary or new_map.is_empty():
+			ok = _fail("%s : « wild » est une table d'herbes, avec « map »" % source)
+		else:
+			new_wild = (dict["wild"] as Dictionary).duplicate()
+			if new_wild.has("terrain"):
+				new_wild_terrain = StringName(str(new_wild["terrain"]))
+				new_wild.erase("terrain")
+			var check := EncounterLibrary.new(data)
+			if not check.override_table(new_map, new_wild_terrain, new_wild,
+					source + " « wild »"):
+				for error: String in check.get_errors():
+					_errors.append(error)
+				ok = false
+	var new_companion := -1
+	if dict.has("companion"):
+		if not _is_int(dict["companion"]) or int(dict["companion"]) < 0 \
+				or int(dict["companion"]) >= new_party.size():
+			ok = _fail("%s : « companion » est une place de l'équipe (0 à %d)" % [source,
+				maxi(new_party.size() - 1, 0)])
+		else:
+			new_companion = int(dict["companion"])
 	if not ok:
 		return false
 	map = new_map
@@ -208,6 +249,9 @@ func add_from_dict(dict: Dictionary, data: PokemonData, items: ItemLibrary,
 	money = new_money
 	storage = new_storage
 	autosave = new_autosave
+	wild = new_wild
+	wild_terrain = new_wild_terrain
+	companion = new_companion
 	return true
 
 
@@ -233,6 +277,8 @@ func apply(state: Object, data: PokemonData) -> void:
 		state.bag.set_favorite(id, true)
 	if money >= 0:
 		state.money = money
+	if companion >= 0:
+		state.set_companion(state.party.get_at(companion))
 
 
 ## Un Pokémon d'après un membre validé (capacités, XP, PV).
@@ -252,6 +298,7 @@ static func _create(member: Dictionary, state: Object, data: PokemonData) -> Pok
 		pokemon.hp = mini(hp, pokemon.max_hp())
 	pokemon.favorite = bool(member.get("favorite", false))
 	pokemon.status = member.get("status", StatusRules.NONE)
+	pokemon.status_turns = member.get("status_turns", 0)
 	return pokemon
 
 
@@ -334,10 +381,19 @@ func _parse_member(value: Variant, data: PokemonData, where: String) -> Dictiona
 				", ".join(PackedStringArray(StatusRules.KNOWN))])
 		else:
 			status = StringName(raw_status)
+	var status_turns := 0
+	if entry.has("status_turns"):
+		if not _is_int(entry["status_turns"]) or int(entry["status_turns"]) < 0 \
+				or int(entry["status_turns"]) > Pokemon.MAX_STATUS_TURNS \
+				or status != StatusRules.SLEEP:
+			ok = _fail("%s : « status_turns » est un entier de 0 à %d, avec « status » = sleep"
+				% [where, Pokemon.MAX_STATUS_TURNS])
+		else:
+			status_turns = int(entry["status_turns"])
 	if not ok:
 		return {}
 	return { "species": species_id, "level": level, "moves": moves, "exp_to_next": to_next,
-		"hp": hp, "favorite": favorite, "status": status }
+		"hp": hp, "favorite": favorite, "status": status, "status_turns": status_turns }
 
 
 static func _is_text(value: Variant) -> bool:

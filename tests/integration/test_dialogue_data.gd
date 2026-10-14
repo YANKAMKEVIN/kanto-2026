@@ -45,14 +45,30 @@ const GATE_GUARDS: Array[StringName] = [&"forest_gate_north_guard", &"forest_gat
 ## T11 : la Route 2 nord et Argenta (extérieur) sont dans [constant MAPS] : liste vide.
 const UNUSED_YET: Array[StringName] = [
 ]
+## Jalon 11 (T20c) : phrases jouées par le contrôleur du compagnon (ni PNJ, ni point, ni scène).
+const PLAYED_BY_COMPANION: Array[StringName] = [
+	&"companion_cave", &"companion_city", &"companion_forest", &"companion_happy",
+	&"companion_sniff", &"companion_stretch", &"companion_stretch_soft", &"companion_tired",
+	&"companion_tired_f", &"companion_unwell", &"companion_watch", &"companion_water",
+]
+## Jalon 12 (T20) : phrases jouées par Boot (ni PNJ, ni point, ni scène) : la Corde Sortie
+## ([constant Boot.ESCAPE_ROPE_DIALOGUE], dossier 15 §20 n° 33).
+const PLAYED_BY_BOOT: Array[StringName] = [&"escape_rope_used"]
 ## Jalon 10 : textes verrouillés du dossier 12 (même forme que le dossier 10) et lot de textes du
 ## J10 (panneaux, noms affichés), où un retour à la ligne est écrit « \n ».
 const DOSSIER_12 := "res://docs/design/dossier-12-argenta.md"
 const LOT_J10 := "res://docs/design/textes/textes-brouillon-j10.md"
+## Jalon 11 : textes du §13 (« « … » » par ligne).
+const DOSSIER_14 := "res://docs/design/dossier-14-systemes-j11.md"
+## Jalon 13 : lot de textes du dossier 16 §21 (« « … » / « … » » par numéro, lignes repliées).
+const DOSSIER_16 := "res://docs/design/dossier-16-azuria.md"
+## Jalon 12 : lot de textes du §20 du dossier 15 (« n. Libellé : « … » »).
+const DOSSIER_15 := "res://docs/design/dossier-15-route-3-mont-selenite.md"
 ## Jalon 8 : textes T1–T16 validés (dossier 11, « Textes à valider ») ; dans son tableau, « / »
 ## marque le retour à la ligne de la bulle et le gras (« ** ») le titre d'un panneau.
 const DOSSIER_11 := "res://docs/design/dossier-11-route-2.md"
-const _DOSSIER_TOKENS: Dictionary[String, String] = {"{first_wild_species}": "{espèce}"}
+const _DOSSIER_TOKENS: Dictionary[String, String] = {"{first_wild_species}": "{espèce}",
+	"{player}": "{joueur}"}
 const MAPS: Array[StringName] = [
 	&"player_house_2f", &"player_house_1f", &"rival_house", &"oak_lab", &"pallet_town",
 	&"route_1", &"route_22", &"viridian_city", &"viridian_center", &"viridian_mart",
@@ -64,6 +80,14 @@ const MAPS: Array[StringName] = [
 	&"pewter_house_mason", &"pewter_house_researcher",
 	# Jalon 10 (T11) : la Route 2 nord et Argenta (extérieur).
 	&"route_2_north", &"pewter_city",
+	# Jalon 12 (T18) : la Route 3 et le Centre du Mont Sélénite.
+	&"route_3", &"mt_moon_center",
+	# Jalon 12 (T21) : le Mont Sélénite (1F, B1F) ; B2F au T25 (Rocket, chercheur, fossiles).
+	&"mt_moon_1f", &"mt_moon_b1f", &"mt_moon_b2f",
+	# Jalon 13 (T17) : Routes 4 (panneau du sas du J12 T28 compris) et 24, Azuria et ses
+	# intérieurs.
+	&"route_4", &"route_24", &"cerulean_city", &"cerulean_center", &"cerulean_mart",
+	&"cerulean_gym", &"cerulean_bike_shop", &"cerulean_house",
 ]
 ## Lot de textes validé par Kevin le 2026-10-06 (anciens brouillons : panneau, observations,
 ## soin de Maman, terminal du Stockage, portes de Jadielle…) : source des textes hors dossiers.
@@ -73,14 +97,71 @@ const TEXTES_VALIDES := "res://docs/design/textes/textes-brouillon-j7.md"
 ## (4A, T1) la proposition du Prof. Chen ; (4A, T3) le choix et la sortie empêchée.
 const IDS: Array[StringName] = [
 	&"aoki", &"breakfast_table", &"clerk", &"clerk_parcel",
-	&"clerk_parcel_hello", &"forest_gate_north_guard", &"forest_gate_south_guard",
+	&"clerk_parcel_hello",
+	# Jalon 13 (T17) : Azuria, Route 4 et Route 24 (dossier 16 §21).
+	&"cerulean_bike_clerk",
+	&"cerulean_burgled_door",
+	&"cerulean_city_sign",
+	&"cerulean_closed_exit",
+	&"cerulean_gym_diane_after",
+	&"cerulean_gym_diane_before",
+	&"cerulean_gym_guide",
+	&"cerulean_gym_lucas_after",
+	&"cerulean_gym_lucas_before",
+	&"cerulean_gym_sign",
+	&"cerulean_h1_fisher",
+	&"cerulean_h2_kid",
+	&"cerulean_h3_neighbor",
+	&"cerulean_h4_policeman",
+	&"cerulean_h5_swimmer",
+	&"cerulean_h6_trainer",
+	&"cerulean_h7_resident",
+	&"cerulean_house_resident",
+	&"cerulean_torn_fence",
+	&"route_24_ball_1",
+	&"route_24_bridge_sign",
+	# Jalon 13 (T17) : Clara. (T22) : les cinq Dresseurs du pont, le recruteur, l'Antidote caché.
+	&"route_4_clara_before", &"route_4_clara_defeated", &"route_4_clara_after",
+	&"route_24_timeo_before", &"route_24_timeo_after", &"route_24_alice_before",
+	&"route_24_alice_after", &"route_24_malo_before", &"route_24_malo_after",
+	&"route_24_romane_before", &"route_24_romane_after", &"route_24_ethan_before",
+	&"route_24_ethan_after", &"nugget_rocket", &"nugget_rocket_welcome", &"nugget_rocket_given",
+	&"nugget_rocket_offer", &"nugget_rocket_yes", &"nugget_rocket_no", &"nugget_rocket_beaten",
+	&"nugget_rocket_lost", &"nugget_rocket_resume", &"route_24_antidote",
+	# Jalon 13 (T19) : le rival n° 3, Ondine au pont et à l'Arène.
+	&"rival_cerulean_intro", &"rival_cerulean_lost", &"rival_cerulean_resume",
+	&"rival_cerulean_resume_again", &"rival_cerulean_won", &"misty_bridge",
+	&"misty_bridge_invite", &"cerulean_gym_misty", &"cerulean_gym_misty_intro",
+	&"cerulean_gym_misty_lost", &"cerulean_gym_misty_resume", &"cerulean_gym_misty_won",
+	&"cerulean_gym_misty_badge", &"cerulean_gym_misty_tm", &"cerulean_gym_misty_tm_use",
+	&"cerulean_gym_misty_tm_late",
+	&"route_4_ball_1",
+	# Jalon 11 (T20c) : phrases du compagnon (dossier 14 §13.12) ; grotte (jalon 12, T20).
+	&"companion_cave", &"companion_city", &"companion_forest", &"companion_happy",
+	&"companion_sniff", &"companion_stretch", &"companion_stretch_soft", &"companion_tired",
+	&"companion_tired_f", &"companion_unwell", &"companion_watch", &"companion_water",
+	# Jalon 12 (T20) : narration de la Corde Sortie, jouée par Boot.
+	&"escape_rope_used",
+	&"forest_gate_north_guard", &"forest_gate_south_guard",
 	&"forest_hiker", &"forest_naturalist",
 	&"forest_scout_eli_after", &"forest_scout_eli_before", &"forest_scout_milo_after",
 	&"forest_scout_milo_before", &"forest_scout_noe_after", &"forest_scout_noe_before",
 	&"forest_scout_theo_after", &"forest_scout_theo_before", &"forest_youngster_tom_after",
 	&"forest_youngster_tom_before",
 	&"haru", &"leo", &"maya", &"mom",
-	&"mom_wakeup", &"nurse", &"nurse_wakeup",
+	&"mom_wakeup",
+	# Jalon 12 (T21) : la vie du Mont Sélénite (dossier 15 §20 n° 12–15, objets).
+	&"mt_moon_1f_ball_1", &"mt_moon_1f_crate", &"mt_moon_1f_hidden_1", &"mt_moon_1f_hiker",
+	&"mt_moon_1f_lamp", &"mt_moon_1f_sign", &"mt_moon_b1f_ball_1", &"mt_moon_b1f_ball_2",
+	# Jalon 12 (T25) : Team Rocket, chercheur, fossiles, CT01, Pierre Lune cachée (§20 n° 16–26).
+	&"mt_moon_b2f_ball_1", &"mt_moon_b2f_hidden_1", &"mt_moon_fossil_dome",
+	&"mt_moon_fossil_helix", &"mt_moon_researcher_before", &"mt_moon_researcher_chosen",
+	&"mt_moon_researcher_defeated", &"mt_moon_researcher_guard", &"mt_moon_researcher_rematch",
+	&"mt_moon_researcher_share", &"mt_moon_researcher_talk", &"mt_moon_rocket_1_before",
+	&"mt_moon_rocket_1_defeated", &"mt_moon_rocket_1_rematch", &"mt_moon_rocket_2_before",
+	&"mt_moon_rocket_2_defeated", &"mt_moon_rocket_2_rematch", &"mt_moon_rocket_3_before",
+	&"mt_moon_rocket_3_defeated", &"mt_moon_rocket_3_rematch",
+	&"nurse", &"nurse_wakeup",
 	&"oak_after_battle",
 	&"oak_lab_exit_block", &"oak_lab_reunion", &"oak_lab_waiting", &"oak_parcel_records",
 	&"oak_parcel_rival", &"oak_parcel_rival_dex", &"oak_poke_balls", &"oak_poke_balls_intro",
@@ -89,7 +170,8 @@ const IDS: Array[StringName] = [
 	&"observe_charmander", &"observe_leo_rattata", &"observe_squirtle",
 	# Jalon 10 (T8) : Argenta (dossier 12, lot du J10).
 	&"pewter_city_sign", &"pewter_gym_brock", &"pewter_gym_brock_badge", &"pewter_gym_brock_intro",
-	&"pewter_gym_brock_lost", &"pewter_gym_brock_resume", &"pewter_gym_brock_won",
+	&"pewter_gym_brock_lost", &"pewter_gym_brock_resume", &"pewter_gym_brock_tm",
+	&"pewter_gym_brock_tm_late", &"pewter_gym_brock_tm_use", &"pewter_gym_brock_won",
 	&"pewter_gym_guide", &"pewter_gym_liam_after", &"pewter_gym_liam_before",
 	&"pewter_gym_liam_defeated", &"pewter_gym_sign", &"pewter_house_mason_kid",
 	&"pewter_house_mason_partner", &"pewter_house_researcher", &"pewter_kid", &"pewter_lass",
@@ -116,6 +198,15 @@ const IDS: Array[StringName] = [
 	&"route_2_north_ball_1", &"route_2_north_mountaineer", &"route_2_north_rockslide",
 	&"route_2_north_sign",
 	&"route_2_sign", &"route_2_youngster",
+	# Jalon 12 (T18) : la vie de la Route 3 (dossier 15 §20 n° 1–11, panneaux, objets).
+	&"route_3_enzo_after", &"route_3_enzo_before", &"route_3_hidden_1", &"route_3_hiker",
+	&"route_3_hugo_after", &"route_3_hugo_before", &"route_3_ines_after", &"route_3_ines_before",
+	&"route_3_item_1", &"route_3_item_2", &"route_3_item_3", &"route_3_lea_after",
+	&"route_3_lea_before", &"route_3_nolan_after", &"route_3_nolan_before",
+	&"route_3_sacha_after", &"route_3_sacha_before", &"route_3_sign_center",
+	&"route_3_sign_west", &"route_3_traveler",
+	# Jalon 12 (T28) : le panneau du sas de la Route 4 (dossier 15 §20 n° 36).
+	&"route_4_sign",
 	&"sign_pallet_town",
 	&"storage_terminal",
 	&"viridian_courier",
@@ -132,6 +223,9 @@ const IDS: Array[StringName] = [
 ## de la Boutique depuis le T12 (data/cutscenes/viridian_mart.json).
 ## Jalon 9 : `pewter_arrived` (lu par le garde du poste nord) est posé par le J10, à l'arrivée à
 ## Argenta : levé par la scène `pewter_arrival` depuis le T8 du J10.
+## Jalon 13 (T19) : `badge_cascade` et `misty_invited` sont désormais levés par les scènes d'Ondine ;
+## `beaten_nugget_rocket` (lu par la réplique n° 41 b d'Ondine) est levé au T22 (recruteur) :
+## plus aucun drapeau futur.
 const FUTURE_FLAGS: Array[StringName] = []
 var _library: DialogueLibrary
 var _cutscenes: CutsceneLibrary
@@ -171,6 +265,9 @@ func before_all() -> void:
 				# Jalon 10 (T9) : la réplique « vaincu », dite par la séquence à la victoire.
 				if not spec.defeated_dialogue.is_empty():
 					_use(spec.defeated_dialogue, map_id)
+				# Jalon 12 (T25) : la réplique de reprise, dite par la séquence après une défaite.
+				if spec.has_rematch():
+					_use(spec.rematch_dialogue, map_id)
 		var map := (load(MapCatalog.scene_path(map_id)) as PackedScene).instantiate()
 		for point: Node in map.get_node(^"Interactables").get_children():
 			_use((point as InteractPoint).dialogue_id, map_id)
@@ -179,11 +276,16 @@ func before_all() -> void:
 		map.free()
 	# Jalon 7 (T18) : scène lancée par un dialogue (variante « cutscene ») sur les cartes où ce
 	# dialogue est joué (la scène du colis, en parlant à Chen).
-	for id: StringName in _library.get_ids():
+	for id: StringName in _real_ids():
 		for variant: DialogueVariant in _library.get_dialogue(id).variants:
 			if not variant.cutscene.is_empty():
 				for map_id: StringName in (_used_on.get(id, []) as Array).duplicate():
 					_use_cutscene(variant.cutscene, map_id)
+			# Jalon 12 (T25) : scène lancée par le OUI d'un choix (« confirm_cutscene » : le
+			# choix du fossile).
+			if variant.choice != null and not variant.choice.confirm_cutscene.is_empty():
+				for map_id: StringName in (_used_on.get(id, []) as Array).duplicate():
+					_use_cutscene(variant.choice.confirm_cutscene, map_id)
 
 
 ## Dialogues joués par les étapes de la scène [param cutscene_id], sur la carte de son
@@ -218,7 +320,7 @@ func _use(dialogue: StringName, map_id: StringName) -> void:
 ## Toutes les pages de toutes les variantes : [id, texte, page].
 func _pages() -> Array[Array]:
 	var pages: Array[Array] = []
-	for id: StringName in _library.get_ids():
+	for id: StringName in _real_ids():
 		for variant: DialogueVariant in _library.get_dialogue(id).variants:
 			for page: DialoguePage in variant.pages:
 				pages.append([id, page.text, page, variant])
@@ -233,7 +335,12 @@ func test_library_loads_without_error() -> void:
 	var library := DialogueLibrary.new()
 	assert_true(library.load_dir(), "data/dialogues/ se charge")
 	assert_eq(library.get_errors().size(), 0, str(library.get_errors()))
-	assert_eq(library.get_ids(), IDS)
+	# Les identifiants sont comparés triés (la liste IDS est groupée par jalon).
+	var found := _without_qa(library.get_ids())
+	found.sort()
+	var expected := IDS.duplicate()
+	expected.sort()
+	assert_eq(found, expected)
 
 
 func test_every_used_dialogue_exists() -> void:
@@ -244,8 +351,8 @@ func test_every_used_dialogue_exists() -> void:
 
 func test_every_dialogue_is_used() -> void:
 	var played := _cutscenes.get_dialogue_ids()
-	for id: StringName in _library.get_ids():
-		if UNUSED_YET.has(id):
+	for id: StringName in _real_ids():
+		if UNUSED_YET.has(id) or PLAYED_BY_COMPANION.has(id) or PLAYED_BY_BOOT.has(id):
 			continue
 		assert_true(_used_on.has(id) or played.has(id),
 			"dialogue « %s » utilisé par un PNJ, un point ou une scène" % id)
@@ -254,15 +361,36 @@ func test_every_dialogue_is_used() -> void:
 func test_every_dialogue_played_by_a_cutscene_exists() -> void:
 	assert_eq(_cutscenes.get_errors().size(), 0, str(_cutscenes.get_errors()))
 	var played := _cutscenes.get_dialogue_ids()
-	assert_eq(played, [&"clerk_parcel", &"clerk_parcel_hello",
+	assert_eq(played, [
+		# Jalon 13 (T19) : Ondine à l'Arène.
+		&"cerulean_gym_misty_badge", &"cerulean_gym_misty_intro", &"cerulean_gym_misty_lost",
+		&"cerulean_gym_misty_resume", &"cerulean_gym_misty_tm", &"cerulean_gym_misty_tm_late",
+		&"cerulean_gym_misty_tm_use", &"cerulean_gym_misty_won",
+		&"clerk_parcel", &"clerk_parcel_hello",
+		# Jalon 13 (T19) : Ondine au pont.
+		&"misty_bridge_invite",
+		# Jalon 12 (T25) : scène du chercheur et choix du fossile.
+		&"mt_moon_researcher_before", &"mt_moon_researcher_chosen",
+		&"mt_moon_researcher_defeated", &"mt_moon_researcher_rematch",
+		&"mt_moon_researcher_share",
+		# Jalon 13 (T22) : le recruteur Rocket.
+		&"nugget_rocket_beaten", &"nugget_rocket_given", &"nugget_rocket_lost",
+		&"nugget_rocket_no", &"nugget_rocket_offer", &"nugget_rocket_resume",
+		&"nugget_rocket_welcome", &"nugget_rocket_yes",
 		&"oak_after_battle", &"oak_lab_exit_block", &"oak_lab_reunion",
 		&"oak_parcel_records", &"oak_parcel_rival", &"oak_parcel_rival_dex", &"oak_poke_balls",
 		&"oak_poke_balls_intro", &"oak_pokedex_activated", &"oak_route1_call",
 		&"oak_route1_warning", &"oak_starter_offer", &"oak_starter_reciprocal",
 		# Jalon 10 (T8) : scènes de Pierre et du garde de la Route 3.
 		&"pewter_gym_brock_badge", &"pewter_gym_brock_intro", &"pewter_gym_brock_lost",
-		&"pewter_gym_brock_resume", &"pewter_gym_brock_won", &"pewter_route_3_guard_cleared",
+		&"pewter_gym_brock_resume",
+		# Jalon 11 (T14) : remise de la CT34.
+		&"pewter_gym_brock_tm", &"pewter_gym_brock_tm_late", &"pewter_gym_brock_tm_use",
+		&"pewter_gym_brock_won", &"pewter_route_3_guard_cleared",
 		&"pewter_route_3_guard_rule",
+		# Jalon 13 (T19) : le rival n° 3.
+		&"rival_cerulean_intro", &"rival_cerulean_lost", &"rival_cerulean_resume",
+		&"rival_cerulean_resume_again", &"rival_cerulean_won",
 		&"rival_challenge", &"rival_challenge_wait", &"rival_lab_lost", &"rival_lab_won",
 		&"rival_lab_won_leaving", &"rival_parcel_greet", &"rival_parcel_leaving",
 		&"rival_parcel_return", &"rival_starter_pick", &"rival_starter_smile",
@@ -336,6 +464,9 @@ func test_every_condition_flag_is_set_somewhere() -> void:
 	for map_id: StringName in MAPS:
 		for spec: NpcSpec in NpcRoster.load_for_map(map_id).get_all():
 			read_flags.append_array(spec.if_flags + spec.unless_flags)
+			# Jalon 12 (T25) : `beaten_<id>` d'un Dresseur est levé par sa séquence (victoire).
+			if spec.is_trainer():
+				set_flags.append(TrainerRules.beaten_flag(spec.trainer_id))
 	for flag: StringName in read_flags:
 		if FUTURE_FLAGS.has(flag):
 			continue
@@ -344,22 +475,29 @@ func test_every_condition_flag_is_set_somewhere() -> void:
 		assert_false(set_flags.has(flag), "« %s » : levé par un jalon futur" % flag)
 	assert_true(read_flags.has(&"starter_chosen"), "starter_chosen lu (pensée des herbes)")
 	assert_eq(_library.get_set_flags(),
-		[&"blacked_out_before", &"forest_hiker_talked", &"forest_naturalist_talked",
-			&"mom_greeted", &"pewter_researcher_talked", &"poison_unlocked", &"rival_met",
+		[&"blacked_out_before", &"cerulean_neighbor_talked", &"forest_hiker_talked", &"forest_naturalist_talked",
+			&"mom_greeted", &"nugget_rocket_yes", &"pewter_researcher_talked", &"poison_unlocked", &"rival_met",
 			&"route_2_hiker_talked", &"route_2_youngster_talked", &"storage_terminal_seen",
 			&"viridian_old_man_talked"]
 		as Array[StringName])
-	assert_eq(_cutscenes.get_set_flags(), [&"badge_boulder", &"brock_met", &"got_oak_parcel",
-		&"got_potion_route_1",
-		&"got_route_2_item_1", &"got_route_2_item_2", &"got_route_2_item_3",
-		&"got_route_2_item_4", &"got_route_2_north_item_1", &"got_viridian_forest_item_1",
-		&"got_viridian_forest_item_2",
-		&"got_viridian_forest_item_3", &"got_viridian_forest_item_4",
-		&"got_viridian_forest_item_5", &"got_viridian_forest_item_6", &"oak_lab_reunion",
-		&"oak_met", &"pewter_arrived",
-		&"pokedex_activated", &"rival_battle_done", &"rival_challenged", &"rival_lab_lost",
+	assert_eq(_cutscenes.get_set_flags(), [&"badge_boulder", &"badge_cascade",
+		&"beaten_mt_moon_researcher", &"beaten_nugget_rocket", &"brock_met", &"cerulean_reached", &"got_mt_moon_1f_hidden_1",
+		&"got_mt_moon_1f_item_1", &"got_mt_moon_b1f_item_1", &"got_mt_moon_b1f_item_2",
+		&"got_mt_moon_b2f_hidden_1", &"got_mt_moon_b2f_item_1", &"got_nugget", &"got_oak_parcel",
+		&"got_potion_route_1", &"got_route_24_antidote", &"got_route_24_potion", &"got_route_2_item_1", &"got_route_2_item_2",
+		&"got_route_2_item_3", &"got_route_2_item_4", &"got_route_2_north_item_1",
+		&"got_route_3_hidden_1", &"got_route_3_item_1", &"got_route_3_item_2",
+		&"got_route_3_item_3", &"got_route_4_poke_ball", &"got_viridian_forest_item_1",
+		&"got_viridian_forest_item_2", &"got_viridian_forest_item_3", &"got_viridian_forest_item_4",
+		&"got_viridian_forest_item_5", &"got_viridian_forest_item_6", &"lost_mt_moon_researcher",
+		&"misty_invited", &"misty_met", &"mt_moon_fossil_chosen", &"mt_moon_got_dome_fossil",
+		&"mt_moon_got_helix_fossil", &"oak_lab_reunion", &"oak_met", &"pewter_arrived",
+		&"pokedex_activated", &"rival_battle_done", &"rival_cerulean_lost_once",
+		&"rival_cerulean_retried", &"rival_cerulean_won", &"rival_challenged", &"rival_lab_lost",
 		&"rival_lab_won", &"rival_left_lab", &"rival_route22_lost", &"rival_route22_won",
-		&"route_3_guard_cleared", &"starter_chosen", &"starter_offered", &"viridian_arrived"] as Array[StringName])
+		&"route_3_entered", &"route_3_guard_cleared", &"route_4_reached", &"starter_chosen",
+		&"starter_offered", &"tm11_received", &"tm34_received", &"viridian_arrived"]
+		as Array[StringName])
 	assert_eq(_used_on.get(&"oak_lab_reunion"), [&"oak_lab"], "joué au labo, après le fondu")
 	assert_eq(_used_on.get(&"oak_starter_offer"), [&"oak_lab"], "joué au labo")
 
@@ -500,7 +638,7 @@ func test_oak_starter_offer_four_lines_and_looks() -> void:
 
 
 func test_mom_first_variant_is_automatic_and_only_hers() -> void:
-	for id: StringName in _library.get_ids():
+	for id: StringName in _real_ids():
 		for variant: DialogueVariant in _library.get_dialogue(id).variants:
 			# Maman, et le garde du poste sud à son premier passage (jalon 9, Q-4).
 			var first_of: Array[StringName] = [&"mom", &"forest_gate_south_guard"]
@@ -510,7 +648,7 @@ func test_mom_first_variant_is_automatic_and_only_hers() -> void:
 
 ## Lot de textes validé par Kevin le 2026-10-06 : plus aucun dialogue ni variante provisoire.
 func test_no_dialogue_nor_variant_is_draft() -> void:
-	for id: StringName in _library.get_ids():
+	for id: StringName in _real_ids():
 		var dialogue := _library.get_dialogue(id)
 		assert_false(dialogue.draft, String(id))
 		for i: int in dialogue.variants.size():
@@ -525,7 +663,7 @@ func test_mom_heal_variant() -> void:
 	assert_false(heal.auto, "jamais automatique")
 	assert_eq(heal.pages.size(), 2, "courte")
 	# Seule cette variante soigne (le réveil après défaite soigne par la défaite, pas par le texte).
-	for id: StringName in _library.get_ids():
+	for id: StringName in _real_ids():
 		for variant: DialogueVariant in _library.get_dialogue(id).variants:
 			assert_eq(variant.action == &"heal", variant == heal, "%s : « heal »" % id)
 
@@ -541,6 +679,17 @@ func test_texts_are_the_dossier_02_texts_word_for_word() -> void:
 	var dossier_10 := FileAccess.get_file_as_string(DOSSIER_10)
 	var dossier_12 := FileAccess.get_file_as_string(DOSSIER_12)
 	var lot_j10 := FileAccess.get_file_as_string(LOT_J10)
+	var dossier_14 := FileAccess.get_file_as_string(DOSSIER_14)
+	var dossier_16 := FileAccess.get_file_as_string(DOSSIER_16).replace("\n    ", " ") \
+		.replace("\n   ", " ")
+	var dossier_15 := FileAccess.get_file_as_string(DOSSIER_15)
+	# Formes accordées « fatigué[e] » (n° 55) : masculin et féminin.
+	dossier_14 += dossier_14.replace("[e]", "") + dossier_14.replace("[e]", "e")
+	# J12 (T25) : formes au masculin du héros actuel (« revenu[e] », « gamin[e] curieux[se] ») et
+	# question du choix écrite par fossile (« Prendre le {fossil} ? », §20 n° 23).
+	dossier_15 += dossier_15.replace("[e]", "").replace("[se]", "") \
+		+ dossier_15.replace("{fossil}", "Fossile Dôme") \
+		+ dossier_15.replace("{fossil}", "Fossile Nautile")
 	for row: Array in _pages():
 		if GATE_GUARDS.has(row[0]):
 			continue
@@ -557,8 +706,25 @@ func test_texts_are_the_dossier_02_texts_word_for_word() -> void:
 			or dossier_09.contains(text) or in_dossier_11 or valides.contains("« %s »" % text)
 			or dossier_10.contains(_as_dossier_10(text))
 			or dossier_12.contains(_as_dossier_10(text))
-			or lot_j10.contains("| « %s » |" % text.replace("\n", "\\n")),
+			or lot_j10.contains("| « %s » |" % text.replace("\n", "\\n"))
+			or _each_line_quoted(dossier_14, text)
+			or _each_line_quoted(dossier_16, text)
+			or dossier_15.contains(" : « %s »" % text)
+			# J12 (T21) : bulles suivantes (« / ») et panneaux sur deux lignes du §20.
+			or _each_line_quoted(dossier_15, text)
+			# J12 (T18) : une réplique du §20 coupée en deux lignes dans sa bulle (retour à la
+			# ligne de mise en page) : la bulle entière est une citation du dossier.
+			or dossier_15.contains("« %s »" % text.replace("\n", " ")),
 			"%s : « %s » dans un dossier de conception" % [row[0], text])
+
+
+## Vrai si chaque ligne de [param text] figure entre guillemets dans [param dossier] (dossier 14 :
+## une réplique par numéro, « Avec Patience, ton Pokémon encaisse, » puis « puis rend… »).
+func _each_line_quoted(dossier: String, text: String) -> bool:
+	for line: String in text.split("\n"):
+		if not dossier.contains("« %s »" % line):
+			return false
+	return true
 
 
 func test_speakers_and_narration() -> void:
@@ -601,6 +767,19 @@ func test_speakers_and_narration() -> void:
 		&"route_2_youngster": ["Jeune Dresseur", false], &"route_2_dense_tree": ["", true],
 		&"route_2_closed_gate": ["", true], &"route_2_item_3_found": ["", true],
 		&"route_2_item_4_found": ["", true],
+		# Jalon 12 (T21) : panneau sans locuteur, examens du camp en narration.
+		&"mt_moon_1f_sign": ["", false], &"mt_moon_1f_crate": ["", true],
+		&"mt_moon_1f_lamp": ["", true], &"mt_moon_1f_hiker": ["Randonneur", false],
+		# Jalon 12 (T18) : panneaux de la Route 3 sans locuteur.
+		&"route_3_sign_west": ["", false], &"route_3_sign_center": ["", false],
+		&"route_3_traveler": ["Voyageur", false], &"route_3_hiker": ["Randonneuse", false],
+		# Jalon 12 (T25) : Sbires (§20 n° 19), chercheur, question du fossile en narration.
+		&"mt_moon_rocket_1_before": ["Sbire Rocket", false],
+		&"mt_moon_rocket_2_before": ["Sbire Rocket", false],
+		&"mt_moon_rocket_3_before": ["Sbire Rocket", false],
+		&"mt_moon_researcher_before": ["Chercheur Gaspard", false],
+		&"mt_moon_researcher_talk": ["Chercheur Gaspard", false],
+		&"mt_moon_fossil_dome": ["", true], &"mt_moon_fossil_helix": ["", true],
 	}
 	for id: StringName in expected:
 		var dialogue := _library.get_dialogue(id)
@@ -688,7 +867,7 @@ func test_oak_parcel_lines() -> void:
 	assert_gt(rival[1].pause, 0.0, "« …On verra. » après une courte pause")
 	# Toute scène lancée par un dialogue existe.
 	var launched := 0
-	for id: StringName in _library.get_ids():
+	for id: StringName in _real_ids():
 		for variant: DialogueVariant in _library.get_dialogue(id).variants:
 			if not variant.cutscene.is_empty():
 				launched += 1
@@ -696,11 +875,26 @@ func test_oak_parcel_lines() -> void:
 					id, variant.cutscene])
 	# La scène du colis ; jalon 8 : les deux objets visibles de la Route 2 (PRENDRE) ; jalon 9 :
 	# les trois de la Forêt de Jade ; jalon 10 : la Potion de la Route 2 nord et Pierre.
-	assert_eq(launched, 8, "la scène du colis, six objets au sol et Pierre")
-	# Le jeton n'apparaît que dans la réplique de l'espèce.
+	# Jalon 11 : la remise tardive de la CT34 par Pierre. Jalon 12 (T21) : la Corde Sortie et
+	# la Potion au sol du Mont Sélénite, le Réveil caché (examen de l'indice). Jalon 12 (T18) :
+	# les trois objets au sol de la Route 3 et son objet caché. Jalon 12 (T25) : la Pierre Lune
+	# (B1F) et la CT01 (B2F) au sol, la Pierre Lune cachée (B2F). Jalon 13 : la Poké Ball de la
+	# Route 4, la Potion de la Route 24, Ondine (pont, Arène et rattrapage), l'Antidote caché et le
+	# recruteur (T22).
+	assert_eq(launched, 26, "la scène du colis, quinze objets au sol, trois cachés, Pierre et "
+		+ "sa CT34, Ondine (pont, Arène et rattrapage)")
+	# Le jeton n'apparaît que dans la réplique de l'espèce (et « {pokemon} » dans les phrases du
+	# compagnon, J11).
 	for row: Array in _pages():
 		var tokens := DialogueTokens.tokens_in(row[1])
-		assert_eq(not tokens.is_empty(), row[1] == records[2].text, "%s : jeton" % row[0])
+		var expected: Array[StringName] = []
+		if row[1] == records[2].text:
+			expected = [DialogueTokens.FIRST_WILD_SPECIES]
+		elif PLAYED_BY_COMPANION.has(row[0]):
+			expected = [DialogueTokens.POKEMON]
+		elif row[0] == &"nugget_rocket_given":
+			expected = [DialogueTokens.PLAYER]
+		assert_eq(tokens, expected, "%s : jeton" % row[0])
 
 
 
@@ -783,3 +977,36 @@ func test_forest_gate_guards_say_the_locked_lines() -> void:
 	assert_true(south.variants[1].set_flags.is_empty())
 	# Garde du nord : la variante d'Argenta attend le drapeau du J10.
 	assert_eq(north.variants[0].if_flags, [&"pewter_arrived"] as Array[StringName])
+
+
+## Jalon 11 (T20c) : chaque phrase que le compagnon peut choisir existe (et sa forme féminine),
+## en narration (style « observer »), sans locuteur.
+func test_companion_lines_exist_as_narration() -> void:
+	var lines: Array[StringName] = [CompanionRules.LINE_TIRED, CompanionRules.LINE_UNWELL,
+		CompanionRules.LINE_WATER]
+	lines.append_array(CompanionRules.CONTEXT_LINES.values())
+	lines.append_array(CompanionRules.GENERIC_LINES)
+	for line: StringName in CompanionController.FEMININE_LINES:
+		lines.append(StringName(String(line) + CompanionController.FEMININE_SUFFIX))
+	for line: StringName in lines:
+		assert_true(PLAYED_BY_COMPANION.has(line), "%s : listée" % line)
+		var dialogue := _library.get_dialogue(line)
+		assert_not_null(dialogue, "%s : définie" % line)
+		if dialogue != null:
+			assert_eq(dialogue.speaker, "", "%s : sans locuteur" % line)
+			assert_true(dialogue.narration, "%s : narration" % line)
+			assert_true(dialogue.variants[0].pages[0].text.begins_with("{pokemon} "), line)
+	assert_eq(lines.size(), PLAYED_BY_COMPANION.size())
+
+
+## Dialogues sans ceux de la carte de QA (`qa_*`, jalon 13 T14, retirés au T22).
+func _real_ids() -> Array[StringName]:
+	return _without_qa(_library.get_ids())
+
+
+func _without_qa(ids: Array[StringName]) -> Array[StringName]:
+	var result: Array[StringName] = []
+	for id: StringName in ids:
+		if not MapCatalog.is_qa_map(id):
+			result.append(id)
+	return result

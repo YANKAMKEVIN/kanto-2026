@@ -1,0 +1,37 @@
+{
+	"map": "route_1", "spawn": "from_pallet_w", "facing": "up",
+	"flags": [
+		"mom_greeted", "rival_met", "oak_met", "oak_lab_reunion", "starter_offered",
+		"starter_chosen", "taken_charmander", "taken_squirtle", "rival_lab_won",
+		"rival_challenged", "rival_battle_done", "rival_left_lab", "viridian_arrived",
+		"got_oak_parcel", "pokedex_activated", "poison_unlocked"
+	],
+	"party": [
+		{ "species": "charmander", "level": 18 },
+		{ "species": "butterfree", "level": 17 },
+		{ "species": "nidoran_m", "level": 16,
+			"moves": ["focus_energy", "double_kick", "horn_attack", "poison_sting"] },
+		{ "species": "rattata", "level": 16, "status": "burn",
+			"moves": ["hyper_fang", "super_fang", "quick_attack", "tackle"] },
+		{ "species": "pikachu", "level": 14, "status": "sleep", "status_turns": 3 },
+		{ "species": "pidgey", "level": 12, "status": "paralysis",
+			"moves": ["seismic_toss", "gust", "sand_attack", "quick_attack"] }
+	],
+	"storage": [
+		{ "species": "spearow", "level": 10, "status": "freeze" }
+	],
+	"bag": {
+		"potion": 10, "poke_ball": 5, "antidote": 3, "paralyze_heal": 3, "awakening": 3,
+		"burn_heal": 3, "ice_heal": 2
+	},
+	"money": 5000,
+	"wild": {
+		"rate": 60,
+		"slots": [
+			{ "species": "pikachu", "levels": [12, 12], "weight": 25 },
+			{ "species": "butterfree", "levels": [17, 17], "weight": 25 },
+			{ "species": "beedrill", "levels": [16, 16], "weight": 25 },
+			{ "species": "rattata", "levels": [14, 14], "weight": 25 }
+		]
+	}
+}

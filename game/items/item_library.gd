@@ -20,13 +20,24 @@ extends RefCounted
 ## draft facultative (texte à relire par Kevin) ; price facultatif (entier ≥ 0, ₽ ; 0 ou absent =
 ## pas en vente), refusé non nul pour un objet clé (« key »). Toute clé inconnue est une erreur ; une
 ## entrée invalide est écartée ([method get_errors], push_error).
+## Jalon 11 : une CT (« tm ») a « tm » (numéro de 1 à 50, unique) et « teaches » (identifiant de
+## capacité, vérifié contre les données Pokémon par [method check_moves]) ; ces deux clés sont
+## refusées ailleurs ; une CT n'a pas de prix (jamais vendue, dossier 14 §6.1).
+## Jalon 12 (T20) : « field_use » facultatif ([constant ItemData.FIELD_USES]), réservé aux objets
+## AVENTURE (« field ») : la Corde Sortie (« escape_rope »), une pierre d'évolution
+## (« evolution_stone », T23).
+## Jalon 12 (T23) : « obtained » facultatif (booléen) : toast « obtenu » d'une CT
+## ([member ItemData.obtained], les fossiles).
 
 const DATA_DIR: String = "res://data/items/"
 
 const _KEYS: Array[String] = [
 	"name", "plural", "feminine", "category", "catch_bonus", "heal_amount", "cures",
-	"description", "draft", "price",
+	"description", "draft", "price", "tm", "teaches", "field_use", "obtained",
 ]
+## Numéros des CT de Rouge/Bleu (dossier 14 §6.1).
+const TM_MIN: int = 1
+const TM_MAX: int = 50
 const _REQUIRED: Array[String] = ["name", "plural", "feminine", "category", "description"]
 
 var _items: Dictionary[StringName, ItemData] = {}
@@ -175,15 +186,63 @@ func _parse_item(value: Variant, where: String) -> ItemData:
 		for key: String in ["heal_amount", "cures"]:
 			if entry.has(key):
 				ok = _fail("%s : « %s » est réservé aux soins" % [where, key])
+	if item.category == ItemData.Category.TM:
+		var number: Variant = entry.get("tm")
+		var teaches: Variant = entry.get("teaches")
+		if not JsonFields.is_int(number) or int(number) < TM_MIN or int(number) > TM_MAX:
+			ok = _fail("%s : « tm » doit être un numéro de %d à %d pour une CT" % [where, TM_MIN,
+				TM_MAX])
+		elif _tm_taken(int(number)) != &"":
+			ok = _fail("%s : CT%02d déjà définie par « %s »" % [where, int(number),
+				_tm_taken(int(number))])
+		else:
+			item.tm_number = int(number)
+		if not teaches is String or (teaches as String).is_empty():
+			ok = _fail("%s : « teaches » doit être un identifiant de capacité pour une CT" % where)
+		else:
+			item.teaches = StringName(teaches)
+	else:
+		for key: String in ["tm", "teaches"]:
+			if entry.has(key):
+				ok = _fail("%s : « %s » est réservé aux CT" % [where, key])
+	if entry.has("field_use"):
+		ok = _read_field_use(entry["field_use"], item, where) and ok
+	if entry.has("obtained"):
+		if entry["obtained"] is bool:
+			item.obtained = entry["obtained"]
+		else:
+			ok = _fail("%s : « obtained » vaut true ou false" % where)
 	if entry.has("price"):
 		var price: Variant = entry["price"]
 		if not JsonFields.is_int(price) or int(price) < 0:
 			ok = _fail("%s : « price » doit être un entier ≥ 0 (₽)" % where)
-		elif item.category == ItemData.Category.KEY and int(price) > 0:
-			ok = _fail("%s : un objet clé n'a pas de prix" % where)
+		elif (item.is_key() or item.is_permanent()) and int(price) > 0:
+			ok = _fail("%s : un objet clé ou une CT n'a pas de prix" % where)
 		else:
 			item.price = int(price)
 	return item if ok else null
+
+
+## CT : chaque capacité enseignée existe dans [param data]. Faux (erreur signalée) sinon.
+func check_moves(data: PokemonData) -> bool:
+	var ok := true
+	for item: ItemData in _items.values():
+		if item.is_tm() and not data.has_move(item.teaches):
+			ok = _fail("%s « %s » : capacité inconnue « %s »" % [item.source, item.id,
+				item.teaches])
+	return ok
+
+
+## CT de numéro [param number] déjà chargée (son identifiant), ou &"".
+func get_tm(number: int) -> StringName:
+	return _tm_taken(number)
+
+
+func _tm_taken(number: int) -> StringName:
+	for item: ItemData in _items.values():
+		if item.is_tm() and item.tm_number == number:
+			return item.id
+	return &""
 
 
 ## Statuts soignés : liste non vide de statuts connus, sans doublon.
@@ -198,6 +257,17 @@ func _read_cures(value: Variant, item: ItemData, where: String) -> bool:
 			item.cures.clear()
 			return _fail(message)
 		item.cures.append(StringName(status))
+	return true
+
+
+## Usage en exploration (jalon 12) : un des [constant ItemData.FIELD_USES], objet AVENTURE seul.
+func _read_field_use(value: Variant, item: ItemData, where: String) -> bool:
+	if item.category != ItemData.Category.FIELD:
+		return _fail("%s : « field_use » est réservé aux objets AVENTURE (field)" % where)
+	if not value is String or not ItemData.FIELD_USES.has(StringName(value)):
+		return _fail("%s : « field_use » vaut %s" % [where,
+			", ".join(PackedStringArray(ItemData.FIELD_USES))])
+	item.field_use = StringName(value)
 	return true
 
 

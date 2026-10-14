@@ -10,11 +10,87 @@
 			"foe_feet": [1559, 540],
 			"player_feet": [716, 972],
 			"horizon": 404
+		},
+		"route_3_roche": {
+			"zone": "route_3",
+			"variant": "roche",
+			"back": "res://assets/battle/decors/route_3_roche_back.webp",
+			"size": [2340, 1080],
+			"foe_feet": [1559, 540],
+			"player_feet": [716, 972],
+			"horizon": 470
+		},
+		"mt_moon_galerie": {
+			"zone": "mt_moon",
+			"variant": "galerie",
+			"back": "res://assets/battle/decors/mt_moon_galerie_back.webp",
+			"size": [2340, 1080],
+			"foe_feet": [1559, 540],
+			"player_feet": [716, 972],
+			"horizon": 390
+		},
+		"mt_moon_chambre": {
+			"zone": "mt_moon",
+			"variant": "chambre",
+			"back": "res://assets/battle/decors/mt_moon_chambre_back.webp",
+			"size": [2340, 1080],
+			"foe_feet": [1559, 540],
+			"player_feet": [716, 972],
+			"horizon": 360
+		},
+		"route_4_plaine": {
+			"zone": "route_4",
+			"variant": "plaine",
+			"back": "res://assets/battle/decors/route_4_plaine_back.webp",
+			"size": [2340, 1080],
+			"foe_feet": [1559, 540],
+			"player_feet": [716, 972],
+			"horizon": 290
+		},
+		"route_24_pont": {
+			"zone": "route_24",
+			"variant": "pont",
+			"back": "res://assets/battle/decors/route_24_pont_back.webp",
+			"size": [2340, 1080],
+			"foe_feet": [1559, 540],
+			"player_feet": [716, 972],
+			"horizon": 300
+		},
+		"cerulean_gym_bassin": {
+			"zone": "cerulean_gym",
+			"variant": "bassin",
+			"back": "res://assets/battle/decors/cerulean_gym_bassin_back.webp",
+			"size": [2340, 1080],
+			"foe_feet": [1559, 540],
+			"player_feet": [716, 972],
+			"horizon": 385
 		}
 	},
 	"places": {
 		"route_1": [
 			{ "decor": "route_1_chemin" }
+		],
+		"route_3": [
+			{ "decor": "route_3_roche" }
+		],
+		"mt_moon_1f": [
+			{ "decor": "mt_moon_galerie" }
+		],
+		"mt_moon_b1f": [
+			{ "decor": "mt_moon_galerie" }
+		],
+		"mt_moon_b2f": [
+			{ "decor": "mt_moon_chambre", "cells": [14, 19, 24, 17] },
+			{ "decor": "mt_moon_galerie" }
+		],
+		"route_4": [
+			{ "decor": "route_4_plaine" }
+		],
+		"route_24": [
+			{ "decor": "route_24_pont" }
+		],
+		"cerulean_gym": [
+			{ "decor": "cerulean_gym_bassin" }
 		]
 	}
 }

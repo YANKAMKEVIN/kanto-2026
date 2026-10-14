@@ -64,16 +64,56 @@ extends RefCounted
 ## Changement de Pokémon (jalon 7), juste après TURN_STARTED (ou sans tour : remplacement
 ## après un K.O., [method Battle.replace]) :
 ## - WITHDRAWN : le Pokémon du joueur en jeu est rappelé (« Reviens, … ! ») ; suit le SENT_OUT
-##   du Pokémon envoyé, puis (changement volontaire) l'adversaire joue son tour.
+##   du Pokémon envoyé, puis (changement volontaire) l'adversaire joue son tour. Côté adverse
+##   (jalon 13, IA qui change) : [member trainer_name] porte le Dresseur (« … rappelle … ! ») ;
+##   suit le SENT_OUT adverse, puis l'action du joueur.
 ## Statuts durables (jalon 9 §2.1.3, le poison seul) ; [member status] = le statut concerné :
 ## - STATUS_INFLICTED : le Pokémon touché reçoit [member status] (Poudre Toxik, Dard-Venin) ;
-## - STATUS_UNCHANGED : capacité de statut sur un Pokémon qui a déjà [member status] (rien ne
-##   change ; une immunité de type donne NO_EFFECT) ;
+## - STATUS_UNCHANGED : capacité de statut sur un Pokémon qui a déjà ce même [member status]
+##   (rien ne change ; un autre statut donne FAILED, une immunité de type NO_EFFECT) ;
 ## - STATUS_DAMAGED : fin de tour, le Pokémon perd [member amount] PV à cause de
 ##   [member status] ([member hp], [member max_hp] d'après) ; un K.O. suit le chemin habituel
 ##   (FAINTED, XP, BATTLE_ENDED ou remplacement) ;
 ## - STATUS_CURED : juste après ITEM_USED (Antidote), le Pokémon [member party_index] n'a plus
 ##   [member status] (le statut [b]effacé[/b], pas l'état d'après).
+## Jalon 11 (statuts complets, `jalon-11.md` §2.2) :
+## - STATUS_PREVENTED : le Pokémon ne peut pas agir ce tour-ci à cause de [member status]
+##   (paralysie totale, sommeil, gel) ; aucune capacité n'est lancée, aucun PP dépensé ;
+## - STATUS_ENDED : [member status] (le statut [b]fini[/b]) s'arrête de lui-même : réveil,
+##   dégel au moment d'agir (le Pokémon agit ensuite) ou dégel par une capacité Feu ;
+## - FAILED : la capacité [member move_id] du lanceur échoue sans autre effet (« Mais ça
+##   échoue ! ») — statut sur une cible qui en a déjà un autre, Puissance déjà active…
+## - CONFUSED : le Pokémon devient confus ; CONFUSION_UNCHANGED : capacité de confusion sur un
+##   Pokémon déjà confus ; CONFUSION_CHECK : au moment d'agir, il est confus (« … est
+##   confus… ») ; HURT_ITSELF : il se frappe ([member amount], [member hp]) et n'agit pas ;
+##   CONFUSION_ENDED : il n'est plus confus (puis il agit) ;
+## - MULTI_HIT : après les coups d'une capacité à plusieurs coups, [member amount] = nombre de
+##   coups portés (« Touché 3 fois ! ») ;
+## - FLINCHED : le Pokémon apeuré ne peut pas agir ce tour-ci ;
+## - FOCUSED : Puissance réussie (critique +2 niveaux).
+## Patience (CT34, dossier 14 §6.3) : BIDE_STARTED (tour 1, après MOVE_USED : « se prépare à
+## encaisser ! »), BIDE_STORING (tour 2, sans MOVE_USED : « encaisse ! »), BIDE_UNLEASHED
+## (tour 3, sans MOVE_USED : « riposte ! », puis DAMAGE de [member move_id] « bide » ou FAILED
+## si rien n'a été reçu), BIDE_BROKEN (« La patience de … est rompue ! » : paralysie totale,
+## sommeil, gel, apeurement, se frapper dans la confusion).
+## Jalon 12 (`jalon-12.md` §2.10, dossier 15 §20 n° 46) :
+## - DRAINED_HP : après les dégâts d'une capacité de drain (Vampirisme), le lanceur récupère
+##   [member amount] PV ([member hp] d'après) ; absent si ses PV étaient pleins (distinct de
+##   DRAINED, la Vampigraine) ;
+## - TRAPPED : la cible est piégée par [member move_id] (Ligotage, Étreinte, Danse Flamme) ;
+## - TRAP_DAMAGED : fin de tour, le Pokémon piégé perd [member amount] PV ([member hp]) à cause de
+##   [member move_id] ; un K.O. suit le chemin habituel ;
+## - TRAP_ENDED : le Pokémon est libéré de [member move_id] (fin du compteur) ; aucun événement
+##   quand le lanceur quitte le terrain ou tombe ;
+## - MOVE_DISABLED : la capacité [member move_id] du Pokémon est bloquée (Entrave réussie) ; aussi
+##   quand il tente, dans le tour même où elle vient d'être bloquée, la capacité choisie avant
+##   (rien n'est lancé, aucun PP) ;
+## - DISABLE_ENDED : fin de tour, [member move_id] n'est plus bloquée ;
+## - RESTED : Repos, le lanceur a [member hp] PV (pleins, [member amount] rendus) et dort
+##   ([member status]) ;
+## - SELF_KO : Destruction, Explosion : le lanceur perd ses [member amount] derniers PV
+##   ([member hp] = 0) après les effets de sa capacité ; suivent le FAINTED de la cible (si elle
+##   tombe) puis le sien. Pas de phrase (« … est K.O. ! » est celle du FAINTED).
 ## Tous les autres événements sur un Pokémon portent dans [member status] son statut au moment
 ## de l'événement (SENT_OUT : la carte de PV l'affiche dès l'entrée ; FAINTED : toujours vide,
 ## le K.O. efface le statut).
@@ -86,6 +126,11 @@ enum Kind {
 	ITEM_USED,
 	WITHDRAWN,
 	STATUS_INFLICTED, STATUS_UNCHANGED, STATUS_DAMAGED, STATUS_CURED,
+	STATUS_PREVENTED, STATUS_ENDED, FAILED,
+	CONFUSED, CONFUSION_UNCHANGED, CONFUSION_CHECK, HURT_ITSELF, CONFUSION_ENDED,
+	MULTI_HIT, FLINCHED, FOCUSED,
+	BIDE_STARTED, BIDE_STORING, BIDE_UNLEASHED, BIDE_BROKEN,
+	DRAINED_HP, TRAPPED, TRAP_DAMAGED, TRAP_ENDED, MOVE_DISABLED, DISABLE_ENDED, RESTED, SELF_KO,
 }
 enum SideId { PLAYER, FOE }
 

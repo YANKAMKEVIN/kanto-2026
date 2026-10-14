@@ -11,6 +11,7 @@ const FORBIDDEN: Array[String] = ["Rival", "Le Rival", "rival", "le rival"]
 ## Liste fermée de la couche 1 (§3.5) : locuteurs `{rival}` par fichier, noms de dresseur.
 const SPEAKERS_BY_FILE: Dictionary[String, int] = {
 	"oak_lab.json": 14, "route_22.json": 4, "rival_house.json": 1,
+	"route_24.json": 5,
 }
 const RIVAL_TRAINERS: Array[String] = ["rival_lab", "rival_route22"]
 
@@ -37,7 +38,7 @@ func test_the_closed_list_of_speakers_uses_the_rival_token() -> void:
 		var count := _values_of(_read(DIALOGUES_DIR + file), "speaker").count(RIVAL_TOKEN)
 		assert_eq(count, SPEAKERS_BY_FILE.get(file, 0), "%s : locuteurs {rival}" % file)
 		total += count
-	assert_eq(total, 19, "19 étiquettes du rival (§3.5), pas une de plus")
+	assert_eq(total, 24, "19 étiquettes du rival (§3.5) + 5 du rival n° 3 (J13 T19), pas une de plus")
 
 
 func test_the_rival_trainers_are_named_by_the_token() -> void:

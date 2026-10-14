@@ -55,6 +55,10 @@ texture_region_size = Vector2i(96, 96)
 0:12/0/custom_data_3 = 1
 1:12/0 = 0
 1:12/0/custom_data_3 = 1
+0:13/0 = 0
+0:13/0/custom_data_4 = true
+1:13/0 = 0
+1:13/0/custom_data_4 = true
 
 [resource]
 tile_size = Vector2i(96, 96)
@@ -66,4 +70,6 @@ custom_data_layer_2/name = "water"
 custom_data_layer_2/type = 1
 custom_data_layer_3/name = "ledge"
 custom_data_layer_3/type = 2
+custom_data_layer_4/name = "rubble"
+custom_data_layer_4/type = 1
 sources/0 = SubResource("TileSetAtlasSource_hplnn")

@@ -1,0 +1,2493 @@
+{
+	"version": 1,
+	"title": "Seuils du rival n° 3 et d'Ondine (jalon 13 T20)",
+	"description": "Jalon 13 T20 : un combat par partie (équipe soignée, 3 Potions), sans reprise : taux de victoire au premier essai p (tentatives moyennes ≈ 1/p, rien ne change entre deux essais). Échelle de niveaux par starter (meneur N, Férosinge N-2, Roucool/Roucoups N-3, Papilusion N-5, ou Mystherbe N-4, ou espèces de la partie de Kevin : Roucool N-3, Nidoran♂ et Rattata N-5) contre le rival et Ondine tels que dans data/ et contre des réglages de comparaison (rival : sans changement, IA random (qui change, comme les autres réglages sauf « sans changement »), Roucoups N16, Roucool N16, starter évolué N15, IA random et Roucoups N16, contre Bulbizarre seul : Roucoups N16 et Reptincel N15 avec ou sans IA random ; Ondine : sans changement, IA random, Staross N19, Staross sans Bulles d'O — Charge, Pistolet à O, Armure —, les deux). Information pour Kevin : aucune donnée de jeu n'est changée. Suite du T20 (IA smart gardée) : rival (b) 16/14/16, (c) 17/15/16 ; Ondine (a) Staross 20, (c) Météores au lieu de Bulles d'O, (d) Stari 17, Staross 19 sans Bulles d'O ; joueur naïf (sans objet) sur tous les réglages. Contre Bulbizarre seul, avec (b) pour les deux autres : (e) Roucool 16, Rattata 14, Reptincel 16 ; (f) Roucoups 15, Rattata 14, Reptincel 15 ; (g) Roucool 15, Rattata 14, Reptincel 15 ; (h) Roucool 15, Rattata 14, Salamèche 15 ; (i) Roucool 14, Rattata 13, Reptincel 15.",
+	"seeds": 1000,
+	"heal_at_start": true,
+	"teams": [
+		{
+			"name": "Reptincel 18, Férosinge 16, Roucool 15, Papilusion 13",
+			"starter": "charmander",
+			"members": [
+				{
+					"species": "charmeleon",
+					"level": 18
+				},
+				{
+					"species": "mankey",
+					"level": 16
+				},
+				{
+					"species": "pidgey",
+					"level": 15
+				},
+				{
+					"species": "butterfree",
+					"level": 13,
+					"moves": [
+						"tackle",
+						"string_shot",
+						"harden",
+						"confusion"
+					]
+				}
+			]
+		},
+		{
+			"name": "Reptincel 20, Férosinge 18, Roucool 17, Papilusion 15",
+			"starter": "charmander",
+			"members": [
+				{
+					"species": "charmeleon",
+					"level": 20
+				},
+				{
+					"species": "mankey",
+					"level": 18
+				},
+				{
+					"species": "pidgey",
+					"level": 17
+				},
+				{
+					"species": "butterfree",
+					"level": 15,
+					"moves": [
+						"tackle",
+						"string_shot",
+						"harden",
+						"confusion"
+					]
+				}
+			]
+		},
+		{
+			"name": "Reptincel 22, Férosinge 20, Roucoups 19, Papilusion 17",
+			"starter": "charmander",
+			"members": [
+				{
+					"species": "charmeleon",
+					"level": 22
+				},
+				{
+					"species": "mankey",
+					"level": 20
+				},
+				{
+					"species": "pidgeotto",
+					"level": 19
+				},
+				{
+					"species": "butterfree",
+					"level": 17,
+					"moves": [
+						"tackle",
+						"string_shot",
+						"harden",
+						"confusion"
+					]
+				}
+			]
+		},
+		{
+			"name": "Reptincel 24, Férosinge 22, Roucoups 21, Papilusion 19",
+			"starter": "charmander",
+			"members": [
+				{
+					"species": "charmeleon",
+					"level": 24
+				},
+				{
+					"species": "mankey",
+					"level": 22
+				},
+				{
+					"species": "pidgeotto",
+					"level": 21
+				},
+				{
+					"species": "butterfree",
+					"level": 19,
+					"moves": [
+						"tackle",
+						"string_shot",
+						"harden",
+						"confusion"
+					]
+				}
+			]
+		},
+		{
+			"name": "Reptincel 18, Férosinge 16, Roucool 15, Mystherbe 14",
+			"starter": "charmander",
+			"members": [
+				{
+					"species": "charmeleon",
+					"level": 18
+				},
+				{
+					"species": "mankey",
+					"level": 16
+				},
+				{
+					"species": "pidgey",
+					"level": 15
+				},
+				{
+					"species": "oddish",
+					"level": 14
+				}
+			]
+		},
+		{
+			"name": "Reptincel 20, Férosinge 18, Roucool 17, Mystherbe 16",
+			"starter": "charmander",
+			"members": [
+				{
+					"species": "charmeleon",
+					"level": 20
+				},
+				{
+					"species": "mankey",
+					"level": 18
+				},
+				{
+					"species": "pidgey",
+					"level": 17
+				},
+				{
+					"species": "oddish",
+					"level": 16
+				}
+			]
+		},
+		{
+			"name": "Reptincel 22, Férosinge 20, Roucoups 19, Mystherbe 18",
+			"starter": "charmander",
+			"members": [
+				{
+					"species": "charmeleon",
+					"level": 22
+				},
+				{
+					"species": "mankey",
+					"level": 20
+				},
+				{
+					"species": "pidgeotto",
+					"level": 19
+				},
+				{
+					"species": "oddish",
+					"level": 18
+				}
+			]
+		},
+		{
+			"name": "Reptincel 24, Férosinge 22, Roucoups 21, Mystherbe 20",
+			"starter": "charmander",
+			"members": [
+				{
+					"species": "charmeleon",
+					"level": 24
+				},
+				{
+					"species": "mankey",
+					"level": 22
+				},
+				{
+					"species": "pidgeotto",
+					"level": 21
+				},
+				{
+					"species": "oddish",
+					"level": 20
+				}
+			]
+		},
+		{
+			"name": "Kevin : Reptincel 18, Roucool 15, Nidoran♂ 13, Rattata 13",
+			"starter": "charmander",
+			"members": [
+				{
+					"species": "charmeleon",
+					"level": 18
+				},
+				{
+					"species": "pidgey",
+					"level": 15
+				},
+				{
+					"species": "nidoran_m",
+					"level": 13
+				},
+				{
+					"species": "rattata",
+					"level": 13
+				}
+			]
+		},
+		{
+			"name": "Kevin : Reptincel 20, Roucool 17, Nidoran♂ 15, Rattata 15",
+			"starter": "charmander",
+			"members": [
+				{
+					"species": "charmeleon",
+					"level": 20
+				},
+				{
+					"species": "pidgey",
+					"level": 17
+				},
+				{
+					"species": "nidoran_m",
+					"level": 15
+				},
+				{
+					"species": "rattata",
+					"level": 15
+				}
+			]
+		},
+		{
+			"name": "Kevin : Reptincel 22, Roucoups 19, Nidorino 17, Rattata 17",
+			"starter": "charmander",
+			"members": [
+				{
+					"species": "charmeleon",
+					"level": 22
+				},
+				{
+					"species": "pidgeotto",
+					"level": 19
+				},
+				{
+					"species": "nidorino",
+					"level": 17
+				},
+				{
+					"species": "rattata",
+					"level": 17
+				}
+			]
+		},
+		{
+			"name": "Kevin : Reptincel 24, Roucoups 21, Nidorino 19, Rattata 19",
+			"starter": "charmander",
+			"members": [
+				{
+					"species": "charmeleon",
+					"level": 24
+				},
+				{
+					"species": "pidgeotto",
+					"level": 21
+				},
+				{
+					"species": "nidorino",
+					"level": 19
+				},
+				{
+					"species": "rattata",
+					"level": 19
+				}
+			]
+		},
+		{
+			"name": "Herbizarre 18, Roucool 15, Papilusion 13",
+			"starter": "bulbasaur",
+			"members": [
+				{
+					"species": "ivysaur",
+					"level": 18
+				},
+				{
+					"species": "pidgey",
+					"level": 15
+				},
+				{
+					"species": "butterfree",
+					"level": 13,
+					"moves": [
+						"tackle",
+						"string_shot",
+						"harden",
+						"confusion"
+					]
+				}
+			]
+		},
+		{
+			"name": "Herbizarre 20, Roucool 17, Papilusion 15",
+			"starter": "bulbasaur",
+			"members": [
+				{
+					"species": "ivysaur",
+					"level": 20
+				},
+				{
+					"species": "pidgey",
+					"level": 17
+				},
+				{
+					"species": "butterfree",
+					"level": 15,
+					"moves": [
+						"tackle",
+						"string_shot",
+						"harden",
+						"confusion"
+					]
+				}
+			]
+		},
+		{
+			"name": "Herbizarre 22, Roucoups 19, Papilusion 17",
+			"starter": "bulbasaur",
+			"members": [
+				{
+					"species": "ivysaur",
+					"level": 22
+				},
+				{
+					"species": "pidgeotto",
+					"level": 19
+				},
+				{
+					"species": "butterfree",
+					"level": 17,
+					"moves": [
+						"tackle",
+						"string_shot",
+						"harden",
+						"confusion"
+					]
+				}
+			]
+		},
+		{
+			"name": "Herbizarre 24, Roucoups 21, Papilusion 19",
+			"starter": "bulbasaur",
+			"members": [
+				{
+					"species": "ivysaur",
+					"level": 24
+				},
+				{
+					"species": "pidgeotto",
+					"level": 21
+				},
+				{
+					"species": "butterfree",
+					"level": 19,
+					"moves": [
+						"tackle",
+						"string_shot",
+						"harden",
+						"confusion"
+					]
+				}
+			]
+		},
+		{
+			"name": "Carabaffe 18, Roucool 15, Papilusion 13",
+			"starter": "squirtle",
+			"members": [
+				{
+					"species": "wartortle",
+					"level": 18
+				},
+				{
+					"species": "pidgey",
+					"level": 15
+				},
+				{
+					"species": "butterfree",
+					"level": 13,
+					"moves": [
+						"tackle",
+						"string_shot",
+						"harden",
+						"confusion"
+					]
+				}
+			]
+		},
+		{
+			"name": "Carabaffe 20, Roucool 17, Papilusion 15",
+			"starter": "squirtle",
+			"members": [
+				{
+					"species": "wartortle",
+					"level": 20
+				},
+				{
+					"species": "pidgey",
+					"level": 17
+				},
+				{
+					"species": "butterfree",
+					"level": 15,
+					"moves": [
+						"tackle",
+						"string_shot",
+						"harden",
+						"confusion"
+					]
+				}
+			]
+		},
+		{
+			"name": "Carabaffe 22, Roucoups 19, Papilusion 17",
+			"starter": "squirtle",
+			"members": [
+				{
+					"species": "wartortle",
+					"level": 22
+				},
+				{
+					"species": "pidgeotto",
+					"level": 19
+				},
+				{
+					"species": "butterfree",
+					"level": 17,
+					"moves": [
+						"tackle",
+						"string_shot",
+						"harden",
+						"confusion"
+					]
+				}
+			]
+		},
+		{
+			"name": "Carabaffe 24, Roucoups 21, Papilusion 19",
+			"starter": "squirtle",
+			"members": [
+				{
+					"species": "wartortle",
+					"level": 24
+				},
+				{
+					"species": "pidgeotto",
+					"level": 21
+				},
+				{
+					"species": "butterfree",
+					"level": 19,
+					"moves": [
+						"tackle",
+						"string_shot",
+						"harden",
+						"confusion"
+					]
+				}
+			]
+		}
+	],
+	"tables": {},
+	"trainers": {
+		"rival_donnees": {
+			"name": "{rival}",
+			"ai": "smart",
+			"switch": true,
+			"can_lose": false,
+			"heal_after": false,
+			"gives_exp": true,
+			"prize_money": 0,
+			"prize_per_level": 35,
+			"team_by_starter": {
+				"bulbasaur": [
+					{
+						"species": "pidgeotto",
+						"level": 18
+					},
+					{
+						"species": "rattata",
+						"level": 15
+					},
+					{
+						"species": "charmeleon",
+						"level": 17
+					}
+				],
+				"charmander": [
+					{
+						"species": "pidgeotto",
+						"level": 18
+					},
+					{
+						"species": "rattata",
+						"level": 15
+					},
+					{
+						"species": "wartortle",
+						"level": 17
+					}
+				],
+				"squirtle": [
+					{
+						"species": "pidgeotto",
+						"level": 18
+					},
+					{
+						"species": "rattata",
+						"level": 15
+					},
+					{
+						"species": "ivysaur",
+						"level": 17
+					}
+				]
+			}
+		},
+		"rival_sans_switch": {
+			"name": "{rival}",
+			"ai": "smart",
+			"switch": false,
+			"can_lose": false,
+			"heal_after": false,
+			"gives_exp": true,
+			"prize_money": 0,
+			"prize_per_level": 35,
+			"team_by_starter": {
+				"bulbasaur": [
+					{
+						"species": "pidgeotto",
+						"level": 18
+					},
+					{
+						"species": "rattata",
+						"level": 15
+					},
+					{
+						"species": "charmeleon",
+						"level": 17
+					}
+				],
+				"charmander": [
+					{
+						"species": "pidgeotto",
+						"level": 18
+					},
+					{
+						"species": "rattata",
+						"level": 15
+					},
+					{
+						"species": "wartortle",
+						"level": 17
+					}
+				],
+				"squirtle": [
+					{
+						"species": "pidgeotto",
+						"level": 18
+					},
+					{
+						"species": "rattata",
+						"level": 15
+					},
+					{
+						"species": "ivysaur",
+						"level": 17
+					}
+				]
+			}
+		},
+		"rival_roucoups_16": {
+			"name": "{rival}",
+			"ai": "smart",
+			"switch": true,
+			"can_lose": false,
+			"heal_after": false,
+			"gives_exp": true,
+			"prize_money": 0,
+			"prize_per_level": 35,
+			"team_by_starter": {
+				"bulbasaur": [
+					{
+						"species": "pidgeotto",
+						"level": 16
+					},
+					{
+						"species": "rattata",
+						"level": 15
+					},
+					{
+						"species": "charmeleon",
+						"level": 17
+					}
+				],
+				"charmander": [
+					{
+						"species": "pidgeotto",
+						"level": 16
+					},
+					{
+						"species": "rattata",
+						"level": 15
+					},
+					{
+						"species": "wartortle",
+						"level": 17
+					}
+				],
+				"squirtle": [
+					{
+						"species": "pidgeotto",
+						"level": 16
+					},
+					{
+						"species": "rattata",
+						"level": 15
+					},
+					{
+						"species": "ivysaur",
+						"level": 17
+					}
+				]
+			}
+		},
+		"ondine_donnees": {
+			"name": "Ondine",
+			"ai": "smart",
+			"switch": true,
+			"can_lose": false,
+			"heal_after": false,
+			"gives_exp": true,
+			"prize_money": 2100,
+			"team": [
+				{
+					"species": "staryu",
+					"level": 18,
+					"moves": [
+						"tackle",
+						"water_gun"
+					]
+				},
+				{
+					"species": "starmie",
+					"level": 21,
+					"moves": [
+						"tackle",
+						"water_gun",
+						"harden",
+						"bubble_beam"
+					]
+				}
+			]
+		},
+		"ondine_sans_switch": {
+			"name": "Ondine",
+			"ai": "smart",
+			"switch": false,
+			"can_lose": false,
+			"heal_after": false,
+			"gives_exp": true,
+			"prize_money": 2100,
+			"team": [
+				{
+					"species": "staryu",
+					"level": 18,
+					"moves": [
+						"tackle",
+						"water_gun"
+					]
+				},
+				{
+					"species": "starmie",
+					"level": 21,
+					"moves": [
+						"tackle",
+						"water_gun",
+						"harden",
+						"bubble_beam"
+					]
+				}
+			]
+		},
+		"ondine_staross_19": {
+			"name": "Ondine",
+			"ai": "smart",
+			"switch": true,
+			"can_lose": false,
+			"heal_after": false,
+			"gives_exp": true,
+			"prize_money": 2100,
+			"team": [
+				{
+					"species": "staryu",
+					"level": 18,
+					"moves": [
+						"tackle",
+						"water_gun"
+					]
+				},
+				{
+					"species": "starmie",
+					"level": 19,
+					"moves": [
+						"tackle",
+						"water_gun",
+						"harden",
+						"bubble_beam"
+					]
+				}
+			]
+		},
+		"ondine_sans_bulles": {
+			"name": "Ondine",
+			"ai": "smart",
+			"switch": true,
+			"can_lose": false,
+			"heal_after": false,
+			"gives_exp": true,
+			"prize_money": 2100,
+			"team": [
+				{
+					"species": "staryu",
+					"level": 18,
+					"moves": [
+						"tackle",
+						"water_gun"
+					]
+				},
+				{
+					"species": "starmie",
+					"level": 21,
+					"moves": [
+						"tackle",
+						"water_gun",
+						"harden"
+					]
+				}
+			]
+		},
+		"rival_ia_random": {
+			"name": "{rival}",
+			"ai": "random",
+			"switch": true,
+			"can_lose": false,
+			"heal_after": false,
+			"gives_exp": true,
+			"prize_money": 0,
+			"prize_per_level": 35,
+			"team_by_starter": {
+				"bulbasaur": [
+					{
+						"species": "pidgeotto",
+						"level": 18
+					},
+					{
+						"species": "rattata",
+						"level": 15
+					},
+					{
+						"species": "charmeleon",
+						"level": 17
+					}
+				],
+				"charmander": [
+					{
+						"species": "pidgeotto",
+						"level": 18
+					},
+					{
+						"species": "rattata",
+						"level": 15
+					},
+					{
+						"species": "wartortle",
+						"level": 17
+					}
+				],
+				"squirtle": [
+					{
+						"species": "pidgeotto",
+						"level": 18
+					},
+					{
+						"species": "rattata",
+						"level": 15
+					},
+					{
+						"species": "ivysaur",
+						"level": 17
+					}
+				]
+			}
+		},
+		"rival_roucool_16": {
+			"name": "{rival}",
+			"ai": "smart",
+			"switch": true,
+			"can_lose": false,
+			"heal_after": false,
+			"gives_exp": true,
+			"prize_money": 0,
+			"prize_per_level": 35,
+			"team_by_starter": {
+				"bulbasaur": [
+					{
+						"species": "pidgey",
+						"level": 16
+					},
+					{
+						"species": "rattata",
+						"level": 15
+					},
+					{
+						"species": "charmeleon",
+						"level": 17
+					}
+				],
+				"charmander": [
+					{
+						"species": "pidgey",
+						"level": 16
+					},
+					{
+						"species": "rattata",
+						"level": 15
+					},
+					{
+						"species": "wartortle",
+						"level": 17
+					}
+				],
+				"squirtle": [
+					{
+						"species": "pidgey",
+						"level": 16
+					},
+					{
+						"species": "rattata",
+						"level": 15
+					},
+					{
+						"species": "ivysaur",
+						"level": 17
+					}
+				]
+			}
+		},
+		"rival_starter_15": {
+			"name": "{rival}",
+			"ai": "smart",
+			"switch": true,
+			"can_lose": false,
+			"heal_after": false,
+			"gives_exp": true,
+			"prize_money": 0,
+			"prize_per_level": 35,
+			"team_by_starter": {
+				"bulbasaur": [
+					{
+						"species": "pidgeotto",
+						"level": 18
+					},
+					{
+						"species": "rattata",
+						"level": 15
+					},
+					{
+						"species": "charmeleon",
+						"level": 15
+					}
+				],
+				"charmander": [
+					{
+						"species": "pidgeotto",
+						"level": 18
+					},
+					{
+						"species": "rattata",
+						"level": 15
+					},
+					{
+						"species": "wartortle",
+						"level": 15
+					}
+				],
+				"squirtle": [
+					{
+						"species": "pidgeotto",
+						"level": 18
+					},
+					{
+						"species": "rattata",
+						"level": 15
+					},
+					{
+						"species": "ivysaur",
+						"level": 15
+					}
+				]
+			}
+		},
+		"ondine_staross_19_sans_bulles": {
+			"name": "Ondine",
+			"ai": "smart",
+			"switch": true,
+			"can_lose": false,
+			"heal_after": false,
+			"gives_exp": true,
+			"prize_money": 2100,
+			"team": [
+				{
+					"species": "staryu",
+					"level": 18,
+					"moves": [
+						"tackle",
+						"water_gun"
+					]
+				},
+				{
+					"species": "starmie",
+					"level": 19,
+					"moves": [
+						"tackle",
+						"water_gun",
+						"harden"
+					]
+				}
+			]
+		},
+		"ondine_ia_random": {
+			"name": "Ondine",
+			"ai": "random",
+			"switch": true,
+			"can_lose": false,
+			"heal_after": false,
+			"gives_exp": true,
+			"prize_money": 2100,
+			"team": [
+				{
+					"species": "staryu",
+					"level": 18,
+					"moves": [
+						"tackle",
+						"water_gun"
+					]
+				},
+				{
+					"species": "starmie",
+					"level": 21,
+					"moves": [
+						"tackle",
+						"water_gun",
+						"harden",
+						"bubble_beam"
+					]
+				}
+			]
+		},
+		"rival_ia_random_roucoups_16": {
+			"name": "{rival}",
+			"ai": "random",
+			"switch": true,
+			"can_lose": false,
+			"heal_after": false,
+			"gives_exp": true,
+			"prize_money": 0,
+			"prize_per_level": 35,
+			"team_by_starter": {
+				"bulbasaur": [
+					{
+						"species": "pidgeotto",
+						"level": 16
+					},
+					{
+						"species": "rattata",
+						"level": 15
+					},
+					{
+						"species": "charmeleon",
+						"level": 17
+					}
+				],
+				"charmander": [
+					{
+						"species": "pidgeotto",
+						"level": 16
+					},
+					{
+						"species": "rattata",
+						"level": 15
+					},
+					{
+						"species": "wartortle",
+						"level": 17
+					}
+				],
+				"squirtle": [
+					{
+						"species": "pidgeotto",
+						"level": 16
+					},
+					{
+						"species": "rattata",
+						"level": 15
+					},
+					{
+						"species": "ivysaur",
+						"level": 17
+					}
+				]
+			}
+		},
+		"rival_bulbizarre_allege": {
+			"name": "{rival}",
+			"ai": "smart",
+			"switch": true,
+			"can_lose": false,
+			"heal_after": false,
+			"gives_exp": true,
+			"prize_money": 0,
+			"prize_per_level": 35,
+			"team_by_starter": {
+				"bulbasaur": [
+					{
+						"species": "pidgeotto",
+						"level": 16
+					},
+					{
+						"species": "rattata",
+						"level": 15
+					},
+					{
+						"species": "charmeleon",
+						"level": 15
+					}
+				],
+				"charmander": [
+					{
+						"species": "pidgeotto",
+						"level": 18
+					},
+					{
+						"species": "rattata",
+						"level": 15
+					},
+					{
+						"species": "wartortle",
+						"level": 17
+					}
+				],
+				"squirtle": [
+					{
+						"species": "pidgeotto",
+						"level": 18
+					},
+					{
+						"species": "rattata",
+						"level": 15
+					},
+					{
+						"species": "ivysaur",
+						"level": 17
+					}
+				]
+			}
+		},
+		"rival_bulbizarre_allege_random": {
+			"name": "{rival}",
+			"ai": "random",
+			"switch": true,
+			"can_lose": false,
+			"heal_after": false,
+			"gives_exp": true,
+			"prize_money": 0,
+			"prize_per_level": 35,
+			"team_by_starter": {
+				"bulbasaur": [
+					{
+						"species": "pidgeotto",
+						"level": 16
+					},
+					{
+						"species": "rattata",
+						"level": 15
+					},
+					{
+						"species": "charmeleon",
+						"level": 15
+					}
+				],
+				"charmander": [
+					{
+						"species": "pidgeotto",
+						"level": 18
+					},
+					{
+						"species": "rattata",
+						"level": 15
+					},
+					{
+						"species": "wartortle",
+						"level": 17
+					}
+				],
+				"squirtle": [
+					{
+						"species": "pidgeotto",
+						"level": 18
+					},
+					{
+						"species": "rattata",
+						"level": 15
+					},
+					{
+						"species": "ivysaur",
+						"level": 17
+					}
+				]
+			}
+		},
+		"rival_b_16_14_16": {
+			"name": "{rival}",
+			"ai": "smart",
+			"switch": true,
+			"can_lose": false,
+			"heal_after": false,
+			"gives_exp": true,
+			"prize_money": 0,
+			"prize_per_level": 35,
+			"team_by_starter": {
+				"bulbasaur": [
+					{
+						"species": "pidgeotto",
+						"level": 16
+					},
+					{
+						"species": "rattata",
+						"level": 14
+					},
+					{
+						"species": "charmeleon",
+						"level": 16
+					}
+				],
+				"charmander": [
+					{
+						"species": "pidgeotto",
+						"level": 16
+					},
+					{
+						"species": "rattata",
+						"level": 14
+					},
+					{
+						"species": "wartortle",
+						"level": 16
+					}
+				],
+				"squirtle": [
+					{
+						"species": "pidgeotto",
+						"level": 16
+					},
+					{
+						"species": "rattata",
+						"level": 14
+					},
+					{
+						"species": "ivysaur",
+						"level": 16
+					}
+				]
+			}
+		},
+		"rival_c_17_15_16": {
+			"name": "{rival}",
+			"ai": "smart",
+			"switch": true,
+			"can_lose": false,
+			"heal_after": false,
+			"gives_exp": true,
+			"prize_money": 0,
+			"prize_per_level": 35,
+			"team_by_starter": {
+				"bulbasaur": [
+					{
+						"species": "pidgeotto",
+						"level": 17
+					},
+					{
+						"species": "rattata",
+						"level": 15
+					},
+					{
+						"species": "charmeleon",
+						"level": 16
+					}
+				],
+				"charmander": [
+					{
+						"species": "pidgeotto",
+						"level": 17
+					},
+					{
+						"species": "rattata",
+						"level": 15
+					},
+					{
+						"species": "wartortle",
+						"level": 16
+					}
+				],
+				"squirtle": [
+					{
+						"species": "pidgeotto",
+						"level": 17
+					},
+					{
+						"species": "rattata",
+						"level": 15
+					},
+					{
+						"species": "ivysaur",
+						"level": 16
+					}
+				]
+			}
+		},
+		"ondine_a_staross_20": {
+			"name": "Ondine",
+			"ai": "smart",
+			"switch": true,
+			"can_lose": false,
+			"heal_after": false,
+			"gives_exp": true,
+			"prize_money": 2100,
+			"team": [
+				{
+					"species": "staryu",
+					"level": 18,
+					"moves": [
+						"tackle",
+						"water_gun"
+					]
+				},
+				{
+					"species": "starmie",
+					"level": 20,
+					"moves": [
+						"tackle",
+						"water_gun",
+						"harden",
+						"bubble_beam"
+					]
+				}
+			]
+		},
+		"ondine_c_meteores": {
+			"name": "Ondine",
+			"ai": "smart",
+			"switch": true,
+			"can_lose": false,
+			"heal_after": false,
+			"gives_exp": true,
+			"prize_money": 2100,
+			"team": [
+				{
+					"species": "staryu",
+					"level": 18,
+					"moves": [
+						"tackle",
+						"water_gun"
+					]
+				},
+				{
+					"species": "starmie",
+					"level": 21,
+					"moves": [
+						"tackle",
+						"water_gun",
+						"harden",
+						"swift"
+					]
+				}
+			]
+		},
+		"ondine_d_17_19_sans_bulles": {
+			"name": "Ondine",
+			"ai": "smart",
+			"switch": true,
+			"can_lose": false,
+			"heal_after": false,
+			"gives_exp": true,
+			"prize_money": 2100,
+			"team": [
+				{
+					"species": "staryu",
+					"level": 17,
+					"moves": [
+						"tackle",
+						"water_gun"
+					]
+				},
+				{
+					"species": "starmie",
+					"level": 19,
+					"moves": [
+						"tackle",
+						"water_gun",
+						"harden"
+					]
+				}
+			]
+		},
+		"rival_e_bulbi_roucool16": {
+			"name": "{rival}",
+			"ai": "smart",
+			"switch": true,
+			"can_lose": false,
+			"heal_after": false,
+			"gives_exp": true,
+			"prize_money": 0,
+			"prize_per_level": 35,
+			"team_by_starter": {
+				"bulbasaur": [
+					{
+						"species": "pidgey",
+						"level": 16
+					},
+					{
+						"species": "rattata",
+						"level": 14
+					},
+					{
+						"species": "charmeleon",
+						"level": 16
+					}
+				],
+				"charmander": [
+					{
+						"species": "pidgeotto",
+						"level": 16
+					},
+					{
+						"species": "rattata",
+						"level": 14
+					},
+					{
+						"species": "wartortle",
+						"level": 16
+					}
+				],
+				"squirtle": [
+					{
+						"species": "pidgeotto",
+						"level": 16
+					},
+					{
+						"species": "rattata",
+						"level": 14
+					},
+					{
+						"species": "ivysaur",
+						"level": 16
+					}
+				]
+			}
+		},
+		"rival_f_bulbi_15_14_15": {
+			"name": "{rival}",
+			"ai": "smart",
+			"switch": true,
+			"can_lose": false,
+			"heal_after": false,
+			"gives_exp": true,
+			"prize_money": 0,
+			"prize_per_level": 35,
+			"team_by_starter": {
+				"bulbasaur": [
+					{
+						"species": "pidgeotto",
+						"level": 15
+					},
+					{
+						"species": "rattata",
+						"level": 14
+					},
+					{
+						"species": "charmeleon",
+						"level": 15
+					}
+				],
+				"charmander": [
+					{
+						"species": "pidgeotto",
+						"level": 16
+					},
+					{
+						"species": "rattata",
+						"level": 14
+					},
+					{
+						"species": "wartortle",
+						"level": 16
+					}
+				],
+				"squirtle": [
+					{
+						"species": "pidgeotto",
+						"level": 16
+					},
+					{
+						"species": "rattata",
+						"level": 14
+					},
+					{
+						"species": "ivysaur",
+						"level": 16
+					}
+				]
+			}
+		},
+		"rival_g_bulbi_roucool15": {
+			"name": "{rival}",
+			"ai": "smart",
+			"switch": true,
+			"can_lose": false,
+			"heal_after": false,
+			"gives_exp": true,
+			"prize_money": 0,
+			"prize_per_level": 35,
+			"team_by_starter": {
+				"bulbasaur": [
+					{
+						"species": "pidgey",
+						"level": 15
+					},
+					{
+						"species": "rattata",
+						"level": 14
+					},
+					{
+						"species": "charmeleon",
+						"level": 15
+					}
+				],
+				"charmander": [
+					{
+						"species": "pidgeotto",
+						"level": 16
+					},
+					{
+						"species": "rattata",
+						"level": 14
+					},
+					{
+						"species": "wartortle",
+						"level": 16
+					}
+				],
+				"squirtle": [
+					{
+						"species": "pidgeotto",
+						"level": 16
+					},
+					{
+						"species": "rattata",
+						"level": 14
+					},
+					{
+						"species": "ivysaur",
+						"level": 16
+					}
+				]
+			}
+		},
+		"rival_i_bulbi_14_13_15": {
+			"name": "{rival}",
+			"ai": "smart",
+			"switch": true,
+			"can_lose": false,
+			"heal_after": false,
+			"gives_exp": true,
+			"prize_money": 0,
+			"prize_per_level": 35,
+			"team_by_starter": {
+				"bulbasaur": [
+					{
+						"species": "pidgey",
+						"level": 14
+					},
+					{
+						"species": "rattata",
+						"level": 13
+					},
+					{
+						"species": "charmeleon",
+						"level": 15
+					}
+				],
+				"charmander": [
+					{
+						"species": "pidgeotto",
+						"level": 16
+					},
+					{
+						"species": "rattata",
+						"level": 14
+					},
+					{
+						"species": "wartortle",
+						"level": 16
+					}
+				],
+				"squirtle": [
+					{
+						"species": "pidgeotto",
+						"level": 16
+					},
+					{
+						"species": "rattata",
+						"level": 14
+					},
+					{
+						"species": "ivysaur",
+						"level": 16
+					}
+				]
+			}
+		},
+		"rival_h_bulbi_salameche15": {
+			"name": "{rival}",
+			"ai": "smart",
+			"switch": true,
+			"can_lose": false,
+			"heal_after": false,
+			"gives_exp": true,
+			"prize_money": 0,
+			"prize_per_level": 35,
+			"team_by_starter": {
+				"bulbasaur": [
+					{
+						"species": "pidgey",
+						"level": 15
+					},
+					{
+						"species": "rattata",
+						"level": 14
+					},
+					{
+						"species": "charmander",
+						"level": 15
+					}
+				],
+				"charmander": [
+					{
+						"species": "pidgeotto",
+						"level": 16
+					},
+					{
+						"species": "rattata",
+						"level": 14
+					},
+					{
+						"species": "wartortle",
+						"level": 16
+					}
+				],
+				"squirtle": [
+					{
+						"species": "pidgeotto",
+						"level": 16
+					},
+					{
+						"species": "rattata",
+						"level": 14
+					},
+					{
+						"species": "ivysaur",
+						"level": 16
+					}
+				]
+			}
+		}
+	},
+	"steps": [
+		{
+			"label": "Rival n° 3 (données : smart, switch)",
+			"trainer": "rival_donnees",
+			"optional": "rival"
+		},
+		{
+			"label": "Rival n° 3 sans changement",
+			"trainer": "rival_sans_switch",
+			"optional": "rival_sans_switch"
+		},
+		{
+			"label": "Rival n° 3, Roucoups N16",
+			"trainer": "rival_roucoups_16",
+			"optional": "rival_roucoups_16"
+		},
+		{
+			"label": "Rival n° 3, IA random (qui change)",
+			"trainer": "rival_ia_random",
+			"optional": "rival_ia_random"
+		},
+		{
+			"label": "Rival n° 3, Roucool N16 au lieu de Roucoups N18",
+			"trainer": "rival_roucool_16",
+			"optional": "rival_roucool_16"
+		},
+		{
+			"label": "Rival n° 3, starter évolué N15",
+			"trainer": "rival_starter_15",
+			"optional": "rival_starter_15"
+		},
+		{
+			"label": "Rival n° 3, IA random, Roucoups N16",
+			"trainer": "rival_ia_random_roucoups_16",
+			"optional": "rival_ia_random_roucoups_16"
+		},
+		{
+			"label": "Rival n° 3, contre Bulbizarre : Roucoups N16, Reptincel N15",
+			"trainer": "rival_bulbizarre_allege",
+			"optional": "rival_bulbizarre_allege"
+		},
+		{
+			"label": "Rival n° 3, contre Bulbizarre : Roucoups N16, Reptincel N15, IA random",
+			"trainer": "rival_bulbizarre_allege_random",
+			"optional": "rival_bulbizarre_allege_random"
+		},
+		{
+			"label": "Ondine (données : smart, switch)",
+			"trainer": "ondine_donnees",
+			"optional": "ondine"
+		},
+		{
+			"label": "Ondine sans changement",
+			"trainer": "ondine_sans_switch",
+			"optional": "ondine_sans_switch"
+		},
+		{
+			"label": "Ondine, Staross N19",
+			"trainer": "ondine_staross_19",
+			"optional": "ondine_staross_19"
+		},
+		{
+			"label": "Ondine, Staross sans Bulles d'O",
+			"trainer": "ondine_sans_bulles",
+			"optional": "ondine_sans_bulles"
+		},
+		{
+			"label": "Ondine, Staross N19 sans Bulles d'O",
+			"trainer": "ondine_staross_19_sans_bulles",
+			"optional": "ondine_staross_19_sans_bulles"
+		},
+		{
+			"label": "Ondine, IA random (qui change)",
+			"trainer": "ondine_ia_random",
+			"optional": "ondine_ia_random"
+		},
+		{
+			"label": "Rival n° 3 (b) : Roucoups 16, Rattata 14, starter 16",
+			"trainer": "rival_b_16_14_16",
+			"optional": "rival_b_16_14_16"
+		},
+		{
+			"label": "Rival n° 3 (c) : Roucoups 17, Rattata 15, starter 16",
+			"trainer": "rival_c_17_15_16",
+			"optional": "rival_c_17_15_16"
+		},
+		{
+			"label": "Ondine (a) : Stari 18, Staross 20",
+			"trainer": "ondine_a_staross_20",
+			"optional": "ondine_a_staross_20"
+		},
+		{
+			"label": "Ondine (c) : Staross 21, Météores au lieu de Bulles d'O",
+			"trainer": "ondine_c_meteores",
+			"optional": "ondine_c_meteores"
+		},
+		{
+			"label": "Ondine (d) : Stari 17, Staross 19 sans Bulles d'O",
+			"trainer": "ondine_d_17_19_sans_bulles",
+			"optional": "ondine_d_17_19_sans_bulles"
+		},
+		{
+			"label": "Rival n° 3 (b), contre Bulbizarre : Roucool 16, Rattata 14, Reptincel 16",
+			"trainer": "rival_e_bulbi_roucool16",
+			"optional": "rival_e_bulbi_roucool16"
+		},
+		{
+			"label": "Rival n° 3 (b), contre Bulbizarre : Roucoups 15, Rattata 14, Reptincel 15",
+			"trainer": "rival_f_bulbi_15_14_15",
+			"optional": "rival_f_bulbi_15_14_15"
+		},
+		{
+			"label": "Rival n° 3 (b), contre Bulbizarre : Roucool 15, Rattata 14, Reptincel 15",
+			"trainer": "rival_g_bulbi_roucool15",
+			"optional": "rival_g_bulbi_roucool15"
+		},
+		{
+			"label": "Rival n° 3 (b), contre Bulbizarre : Roucool 15, Rattata 14, Salamèche 15 (non évolué)",
+			"trainer": "rival_h_bulbi_salameche15",
+			"optional": "rival_h_bulbi_salameche15"
+		},
+		{
+			"label": "Rival n° 3 (b), contre Bulbizarre : Roucool 14, Rattata 13, Reptincel 15",
+			"trainer": "rival_i_bulbi_14_13_15",
+			"optional": "rival_i_bulbi_14_13_15"
+		}
+	],
+	"variants": [
+		{
+			"name": "attentif, 3 Potions : rival",
+			"player": "attentif",
+			"center": true,
+			"items": {
+				"potion": 3
+			},
+			"optional": [
+				"rival"
+			]
+		},
+		{
+			"name": "attentif, 3 Potions : rival_sans_switch",
+			"player": "attentif",
+			"center": true,
+			"items": {
+				"potion": 3
+			},
+			"optional": [
+				"rival_sans_switch"
+			]
+		},
+		{
+			"name": "attentif, 3 Potions : rival_roucoups_16",
+			"player": "attentif",
+			"center": true,
+			"items": {
+				"potion": 3
+			},
+			"optional": [
+				"rival_roucoups_16"
+			]
+		},
+		{
+			"name": "attentif, 3 Potions : rival_ia_random",
+			"player": "attentif",
+			"center": true,
+			"items": {
+				"potion": 3
+			},
+			"optional": [
+				"rival_ia_random"
+			]
+		},
+		{
+			"name": "attentif, 3 Potions : rival_roucool_16",
+			"player": "attentif",
+			"center": true,
+			"items": {
+				"potion": 3
+			},
+			"optional": [
+				"rival_roucool_16"
+			]
+		},
+		{
+			"name": "attentif, 3 Potions : rival_starter_15",
+			"player": "attentif",
+			"center": true,
+			"items": {
+				"potion": 3
+			},
+			"optional": [
+				"rival_starter_15"
+			]
+		},
+		{
+			"name": "attentif, 3 Potions : rival_ia_random_roucoups_16",
+			"player": "attentif",
+			"center": true,
+			"items": {
+				"potion": 3
+			},
+			"optional": [
+				"rival_ia_random_roucoups_16"
+			]
+		},
+		{
+			"name": "attentif, 3 Potions : rival_bulbizarre_allege",
+			"player": "attentif",
+			"center": true,
+			"items": {
+				"potion": 3
+			},
+			"optional": [
+				"rival_bulbizarre_allege"
+			]
+		},
+		{
+			"name": "attentif, 3 Potions : rival_bulbizarre_allege_random",
+			"player": "attentif",
+			"center": true,
+			"items": {
+				"potion": 3
+			},
+			"optional": [
+				"rival_bulbizarre_allege_random"
+			]
+		},
+		{
+			"name": "attentif, 3 Potions : ondine",
+			"player": "attentif",
+			"center": true,
+			"items": {
+				"potion": 3
+			},
+			"optional": [
+				"ondine"
+			]
+		},
+		{
+			"name": "attentif, 3 Potions : ondine_sans_switch",
+			"player": "attentif",
+			"center": true,
+			"items": {
+				"potion": 3
+			},
+			"optional": [
+				"ondine_sans_switch"
+			]
+		},
+		{
+			"name": "attentif, 3 Potions : ondine_staross_19",
+			"player": "attentif",
+			"center": true,
+			"items": {
+				"potion": 3
+			},
+			"optional": [
+				"ondine_staross_19"
+			]
+		},
+		{
+			"name": "attentif, 3 Potions : ondine_sans_bulles",
+			"player": "attentif",
+			"center": true,
+			"items": {
+				"potion": 3
+			},
+			"optional": [
+				"ondine_sans_bulles"
+			]
+		},
+		{
+			"name": "attentif, 3 Potions : ondine_staross_19_sans_bulles",
+			"player": "attentif",
+			"center": true,
+			"items": {
+				"potion": 3
+			},
+			"optional": [
+				"ondine_staross_19_sans_bulles"
+			]
+		},
+		{
+			"name": "attentif, 3 Potions : ondine_ia_random",
+			"player": "attentif",
+			"center": true,
+			"items": {
+				"potion": 3
+			},
+			"optional": [
+				"ondine_ia_random"
+			]
+		},
+		{
+			"name": "attentif, 3 Potions : rival_b_16_14_16",
+			"player": "attentif",
+			"center": true,
+			"items": {
+				"potion": 3
+			},
+			"optional": [
+				"rival_b_16_14_16"
+			]
+		},
+		{
+			"name": "attentif, 3 Potions : rival_c_17_15_16",
+			"player": "attentif",
+			"center": true,
+			"items": {
+				"potion": 3
+			},
+			"optional": [
+				"rival_c_17_15_16"
+			]
+		},
+		{
+			"name": "attentif, 3 Potions : ondine_a_staross_20",
+			"player": "attentif",
+			"center": true,
+			"items": {
+				"potion": 3
+			},
+			"optional": [
+				"ondine_a_staross_20"
+			]
+		},
+		{
+			"name": "attentif, 3 Potions : ondine_c_meteores",
+			"player": "attentif",
+			"center": true,
+			"items": {
+				"potion": 3
+			},
+			"optional": [
+				"ondine_c_meteores"
+			]
+		},
+		{
+			"name": "attentif, 3 Potions : ondine_d_17_19_sans_bulles",
+			"player": "attentif",
+			"center": true,
+			"items": {
+				"potion": 3
+			},
+			"optional": [
+				"ondine_d_17_19_sans_bulles"
+			]
+		},
+		{
+			"name": "attentif, 3 Potions : rival_e_bulbi_roucool16",
+			"player": "attentif",
+			"center": true,
+			"items": {
+				"potion": 3
+			},
+			"optional": [
+				"rival_e_bulbi_roucool16"
+			]
+		},
+		{
+			"name": "attentif, 3 Potions : rival_f_bulbi_15_14_15",
+			"player": "attentif",
+			"center": true,
+			"items": {
+				"potion": 3
+			},
+			"optional": [
+				"rival_f_bulbi_15_14_15"
+			]
+		},
+		{
+			"name": "attentif, 3 Potions : rival_g_bulbi_roucool15",
+			"player": "attentif",
+			"center": true,
+			"items": {
+				"potion": 3
+			},
+			"optional": [
+				"rival_g_bulbi_roucool15"
+			]
+		},
+		{
+			"name": "attentif, 3 Potions : rival_h_bulbi_salameche15",
+			"player": "attentif",
+			"center": true,
+			"items": {
+				"potion": 3
+			},
+			"optional": [
+				"rival_h_bulbi_salameche15"
+			]
+		},
+		{
+			"name": "attentif, 3 Potions : rival_i_bulbi_14_13_15",
+			"player": "attentif",
+			"center": true,
+			"items": {
+				"potion": 3
+			},
+			"optional": [
+				"rival_i_bulbi_14_13_15"
+			]
+		},
+		{
+			"name": "expert, 3 Potions : rival",
+			"player": "expert",
+			"center": true,
+			"items": {
+				"potion": 3
+			},
+			"optional": [
+				"rival"
+			]
+		},
+		{
+			"name": "expert, 3 Potions : rival_sans_switch",
+			"player": "expert",
+			"center": true,
+			"items": {
+				"potion": 3
+			},
+			"optional": [
+				"rival_sans_switch"
+			]
+		},
+		{
+			"name": "expert, 3 Potions : rival_roucoups_16",
+			"player": "expert",
+			"center": true,
+			"items": {
+				"potion": 3
+			},
+			"optional": [
+				"rival_roucoups_16"
+			]
+		},
+		{
+			"name": "expert, 3 Potions : rival_ia_random",
+			"player": "expert",
+			"center": true,
+			"items": {
+				"potion": 3
+			},
+			"optional": [
+				"rival_ia_random"
+			]
+		},
+		{
+			"name": "expert, 3 Potions : rival_roucool_16",
+			"player": "expert",
+			"center": true,
+			"items": {
+				"potion": 3
+			},
+			"optional": [
+				"rival_roucool_16"
+			]
+		},
+		{
+			"name": "expert, 3 Potions : rival_starter_15",
+			"player": "expert",
+			"center": true,
+			"items": {
+				"potion": 3
+			},
+			"optional": [
+				"rival_starter_15"
+			]
+		},
+		{
+			"name": "expert, 3 Potions : rival_ia_random_roucoups_16",
+			"player": "expert",
+			"center": true,
+			"items": {
+				"potion": 3
+			},
+			"optional": [
+				"rival_ia_random_roucoups_16"
+			]
+		},
+		{
+			"name": "expert, 3 Potions : rival_bulbizarre_allege",
+			"player": "expert",
+			"center": true,
+			"items": {
+				"potion": 3
+			},
+			"optional": [
+				"rival_bulbizarre_allege"
+			]
+		},
+		{
+			"name": "expert, 3 Potions : rival_bulbizarre_allege_random",
+			"player": "expert",
+			"center": true,
+			"items": {
+				"potion": 3
+			},
+			"optional": [
+				"rival_bulbizarre_allege_random"
+			]
+		},
+		{
+			"name": "expert, 3 Potions : ondine",
+			"player": "expert",
+			"center": true,
+			"items": {
+				"potion": 3
+			},
+			"optional": [
+				"ondine"
+			]
+		},
+		{
+			"name": "expert, 3 Potions : ondine_sans_switch",
+			"player": "expert",
+			"center": true,
+			"items": {
+				"potion": 3
+			},
+			"optional": [
+				"ondine_sans_switch"
+			]
+		},
+		{
+			"name": "expert, 3 Potions : ondine_staross_19",
+			"player": "expert",
+			"center": true,
+			"items": {
+				"potion": 3
+			},
+			"optional": [
+				"ondine_staross_19"
+			]
+		},
+		{
+			"name": "expert, 3 Potions : ondine_sans_bulles",
+			"player": "expert",
+			"center": true,
+			"items": {
+				"potion": 3
+			},
+			"optional": [
+				"ondine_sans_bulles"
+			]
+		},
+		{
+			"name": "expert, 3 Potions : ondine_staross_19_sans_bulles",
+			"player": "expert",
+			"center": true,
+			"items": {
+				"potion": 3
+			},
+			"optional": [
+				"ondine_staross_19_sans_bulles"
+			]
+		},
+		{
+			"name": "expert, 3 Potions : ondine_ia_random",
+			"player": "expert",
+			"center": true,
+			"items": {
+				"potion": 3
+			},
+			"optional": [
+				"ondine_ia_random"
+			]
+		},
+		{
+			"name": "expert, 3 Potions : rival_b_16_14_16",
+			"player": "expert",
+			"center": true,
+			"items": {
+				"potion": 3
+			},
+			"optional": [
+				"rival_b_16_14_16"
+			]
+		},
+		{
+			"name": "expert, 3 Potions : rival_c_17_15_16",
+			"player": "expert",
+			"center": true,
+			"items": {
+				"potion": 3
+			},
+			"optional": [
+				"rival_c_17_15_16"
+			]
+		},
+		{
+			"name": "expert, 3 Potions : ondine_a_staross_20",
+			"player": "expert",
+			"center": true,
+			"items": {
+				"potion": 3
+			},
+			"optional": [
+				"ondine_a_staross_20"
+			]
+		},
+		{
+			"name": "expert, 3 Potions : ondine_c_meteores",
+			"player": "expert",
+			"center": true,
+			"items": {
+				"potion": 3
+			},
+			"optional": [
+				"ondine_c_meteores"
+			]
+		},
+		{
+			"name": "expert, 3 Potions : ondine_d_17_19_sans_bulles",
+			"player": "expert",
+			"center": true,
+			"items": {
+				"potion": 3
+			},
+			"optional": [
+				"ondine_d_17_19_sans_bulles"
+			]
+		},
+		{
+			"name": "expert, 3 Potions : rival_e_bulbi_roucool16",
+			"player": "expert",
+			"center": true,
+			"items": {
+				"potion": 3
+			},
+			"optional": [
+				"rival_e_bulbi_roucool16"
+			]
+		},
+		{
+			"name": "expert, 3 Potions : rival_f_bulbi_15_14_15",
+			"player": "expert",
+			"center": true,
+			"items": {
+				"potion": 3
+			},
+			"optional": [
+				"rival_f_bulbi_15_14_15"
+			]
+		},
+		{
+			"name": "expert, 3 Potions : rival_g_bulbi_roucool15",
+			"player": "expert",
+			"center": true,
+			"items": {
+				"potion": 3
+			},
+			"optional": [
+				"rival_g_bulbi_roucool15"
+			]
+		},
+		{
+			"name": "expert, 3 Potions : rival_h_bulbi_salameche15",
+			"player": "expert",
+			"center": true,
+			"items": {
+				"potion": 3
+			},
+			"optional": [
+				"rival_h_bulbi_salameche15"
+			]
+		},
+		{
+			"name": "expert, 3 Potions : rival_i_bulbi_14_13_15",
+			"player": "expert",
+			"center": true,
+			"items": {
+				"potion": 3
+			},
+			"optional": [
+				"rival_i_bulbi_14_13_15"
+			]
+		},
+		{
+			"name": "naïf : rival",
+			"player": "naif",
+			"center": true,
+			"optional": [
+				"rival"
+			]
+		},
+		{
+			"name": "naïf : rival_sans_switch",
+			"player": "naif",
+			"center": true,
+			"optional": [
+				"rival_sans_switch"
+			]
+		},
+		{
+			"name": "naïf : rival_roucoups_16",
+			"player": "naif",
+			"center": true,
+			"optional": [
+				"rival_roucoups_16"
+			]
+		},
+		{
+			"name": "naïf : rival_ia_random",
+			"player": "naif",
+			"center": true,
+			"optional": [
+				"rival_ia_random"
+			]
+		},
+		{
+			"name": "naïf : rival_roucool_16",
+			"player": "naif",
+			"center": true,
+			"optional": [
+				"rival_roucool_16"
+			]
+		},
+		{
+			"name": "naïf : rival_starter_15",
+			"player": "naif",
+			"center": true,
+			"optional": [
+				"rival_starter_15"
+			]
+		},
+		{
+			"name": "naïf : rival_ia_random_roucoups_16",
+			"player": "naif",
+			"center": true,
+			"optional": [
+				"rival_ia_random_roucoups_16"
+			]
+		},
+		{
+			"name": "naïf : rival_bulbizarre_allege",
+			"player": "naif",
+			"center": true,
+			"optional": [
+				"rival_bulbizarre_allege"
+			]
+		},
+		{
+			"name": "naïf : rival_bulbizarre_allege_random",
+			"player": "naif",
+			"center": true,
+			"optional": [
+				"rival_bulbizarre_allege_random"
+			]
+		},
+		{
+			"name": "naïf : ondine",
+			"player": "naif",
+			"center": true,
+			"optional": [
+				"ondine"
+			]
+		},
+		{
+			"name": "naïf : ondine_sans_switch",
+			"player": "naif",
+			"center": true,
+			"optional": [
+				"ondine_sans_switch"
+			]
+		},
+		{
+			"name": "naïf : ondine_staross_19",
+			"player": "naif",
+			"center": true,
+			"optional": [
+				"ondine_staross_19"
+			]
+		},
+		{
+			"name": "naïf : ondine_sans_bulles",
+			"player": "naif",
+			"center": true,
+			"optional": [
+				"ondine_sans_bulles"
+			]
+		},
+		{
+			"name": "naïf : ondine_staross_19_sans_bulles",
+			"player": "naif",
+			"center": true,
+			"optional": [
+				"ondine_staross_19_sans_bulles"
+			]
+		},
+		{
+			"name": "naïf : ondine_ia_random",
+			"player": "naif",
+			"center": true,
+			"optional": [
+				"ondine_ia_random"
+			]
+		},
+		{
+			"name": "naïf : rival_b_16_14_16",
+			"player": "naif",
+			"center": true,
+			"optional": [
+				"rival_b_16_14_16"
+			]
+		},
+		{
+			"name": "naïf : rival_c_17_15_16",
+			"player": "naif",
+			"center": true,
+			"optional": [
+				"rival_c_17_15_16"
+			]
+		},
+		{
+			"name": "naïf : ondine_a_staross_20",
+			"player": "naif",
+			"center": true,
+			"optional": [
+				"ondine_a_staross_20"
+			]
+		},
+		{
+			"name": "naïf : ondine_c_meteores",
+			"player": "naif",
+			"center": true,
+			"optional": [
+				"ondine_c_meteores"
+			]
+		},
+		{
+			"name": "naïf : ondine_d_17_19_sans_bulles",
+			"player": "naif",
+			"center": true,
+			"optional": [
+				"ondine_d_17_19_sans_bulles"
+			]
+		},
+		{
+			"name": "naïf : rival_e_bulbi_roucool16",
+			"player": "naif",
+			"center": true,
+			"optional": [
+				"rival_e_bulbi_roucool16"
+			]
+		},
+		{
+			"name": "naïf : rival_f_bulbi_15_14_15",
+			"player": "naif",
+			"center": true,
+			"optional": [
+				"rival_f_bulbi_15_14_15"
+			]
+		},
+		{
+			"name": "naïf : rival_g_bulbi_roucool15",
+			"player": "naif",
+			"center": true,
+			"optional": [
+				"rival_g_bulbi_roucool15"
+			]
+		},
+		{
+			"name": "naïf : rival_h_bulbi_salameche15",
+			"player": "naif",
+			"center": true,
+			"optional": [
+				"rival_h_bulbi_salameche15"
+			]
+		},
+		{
+			"name": "naïf : rival_i_bulbi_14_13_15",
+			"player": "naif",
+			"center": true,
+			"optional": [
+				"rival_i_bulbi_14_13_15"
+			]
+		}
+	]
+}

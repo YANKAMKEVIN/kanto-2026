@@ -543,6 +543,27 @@ func test_a_corrupt_save_is_set_aside_then_the_new_game_is_saved_normally() -> v
 	assert_push_error_count(0)
 
 
+## Départ `status_qa` (J11, T9) : la table d'herbes forcée remplace celle de la Route 1 pour la
+## session, statuts et compteur de sommeil posés, rien d'écrit.
+func test_the_status_qa_start_forces_the_route_1_table() -> void:
+	_boot = BOOT_SCENE.instantiate() as Boot
+	_boot.save_system = _save
+	_boot.force_debug_start = true
+	_boot.debug_start_path = "res://tools/debug_start/status_qa.json"
+	add_child_autofree(_boot)
+	_player = _boot.get_player()
+	await wait_process_frames(3)
+	assert_eq(_boot.get_map().map_id, &"route_1")
+	var table := _boot.get_encounter_library().get_table(&"route_1")
+	assert_eq(table.slots.size(), 4)
+	assert_eq(table.slots[0].species, &"pikachu")
+	assert_eq(GameState.party.get_at(4).status, StatusRules.SLEEP)
+	assert_eq(GameState.party.get_at(4).status_turns, 3)
+	assert_false(_boot.is_autosave_enabled())
+	assert_eq(_fs.journal.size(), 0, "rien d'écrit")
+	assert_push_error_count(0)
+
+
 func test_a_debug_start_neither_reads_nor_writes_the_save() -> void:
 	_write_saved_game(&"oak_lab", Vector2i(5, 8), Vector2i.UP)
 	var before: String = _fs.files[SAVE_PATH]

@@ -26,6 +26,10 @@ enum Kind {
 	## Rebord sautable vers le sud (jalon 5, raccourci de retour). Praticable (non solide),
 	## donnée `ledge` = bas ([constant GridWorld.Ledge.DOWN]) ; en fin d'enum.
 	LEDGE_DOWN,
+	## Gravats de grotte (jalon 12, dossier 15 §6) : praticables, terrain de rencontre
+	## « gravats » (donnée `rubble`, lue par la grille et le directeur des rencontres au T20) ;
+	## en fin d'enum.
+	RUBBLE,
 }
 
 const TEXTURE_PATH: String = "res://assets/tiles/placeholder/overworld_atlas.png"
@@ -37,6 +41,8 @@ const DATA_SOLID: StringName = &"solid"
 const DATA_TALL_GRASS: StringName = &"tall_grass"
 const DATA_WATER: StringName = &"water"
 const DATA_LEDGE: StringName = &"ledge"
+## Gravats (jalon 12) : couche ajoutée **en dernier** au TileSet.
+const DATA_RUBBLE: StringName = &"rubble"
 
 ## Nombre de variantes par type (colonnes 0..n-1 de sa rangée).
 const VARIANTS: Dictionary[Kind, int] = {
@@ -53,6 +59,7 @@ const VARIANTS: Dictionary[Kind, int] = {
 	Kind.SHALLOW: 2,
 	Kind.TALL_GRASS: 2,
 	Kind.LEDGE_DOWN: 2,
+	Kind.RUBBLE: 2,
 }
 
 ## Types infranchissables (sol de forêt, falaise, culture).
@@ -61,6 +68,8 @@ const SOLID_KINDS: Array[Kind] = [Kind.FOREST, Kind.CLIFF, Kind.CROP]
 const WATER_KINDS: Array[Kind] = [Kind.WATER, Kind.SHALLOW]
 ## Types de hautes herbes (praticables, donnée `tall_grass` ; rencontres au jalon 5).
 const TALL_GRASS_KINDS: Array[Kind] = [Kind.TALL_GRASS]
+## Types de gravats (praticables, donnée `rubble` ; rencontres de grotte au jalon 12).
+const RUBBLE_KINDS: Array[Kind] = [Kind.RUBBLE]
 ## Direction de rebord par type (donnée `ledge`, valeurs de [enum GridWorld.Ledge] : 1 = bas).
 ## Les autres types valent 0 (aucun rebord).
 const LEDGE_KINDS: Dictionary[Kind, int] = {
@@ -89,6 +98,10 @@ static func is_water_kind(kind: Kind) -> bool:
 
 static func is_tall_grass_kind(kind: Kind) -> bool:
 	return kind in TALL_GRASS_KINDS
+
+
+static func is_rubble_kind(kind: Kind) -> bool:
+	return kind in RUBBLE_KINDS
 
 
 ## Donnée `ledge` d'un type (valeur de [enum GridWorld.Ledge] : 0 aucun, 1 bas, 2 gauche,

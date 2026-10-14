@@ -1,0 +1,16 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://game/world/props/prop.gd" id="1_6gvul"]
+[ext_resource type="Material" path="res://game/world/lighting/materials/world_object.tres" id="2_yui1o"]
+[ext_resource type="Texture2D" path="res://assets/world/props/prop_pont_ville_03_01.png" id="3_hv3wd"]
+
+[node name="PropPontVille0301" type="Node2D" unique_id=410115009]
+script = ExtResource("1_6gvul")
+footprint = Array[Vector2i]([])
+
+[node name="Sprite" type="Sprite2D" parent="." unique_id=1091460118]
+unique_name_in_owner = true
+material = ExtResource("2_yui1o")
+texture = ExtResource("3_hv3wd")
+centered = false
+offset = Vector2(-144, -198)

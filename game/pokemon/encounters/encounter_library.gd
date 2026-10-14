@@ -24,6 +24,7 @@ extends RefCounted
 const DATA_DIR: String = "res://data/encounters/"
 
 const _KEYS: Array[String] = ["maps", "terrain", "rate", "slots"]
+const _GRASS: StringName = &"grass"
 const _OPTIONAL_KEYS: Array[String] = ["ramp"]
 const _RAMP_KEYS: Array[String] = ["from_step", "max_steps"]
 const _SLOT_KEYS: Array[String] = ["species", "levels", "weight"]
@@ -102,6 +103,39 @@ func get_table(map_id: StringName, terrain: StringName = &"grass") -> EncounterT
 
 func has_table(map_id: StringName, terrain: StringName = &"grass") -> bool:
 	return _by_map.has(_map_key(map_id, terrain))
+
+
+## Débogage (départ de débogage, clé « wild ») : remplace la table d'herbes de [param map_id]
+## par [param entry] (une table sans « maps » ni « terrain » : « rate », « slots », « ramp »).
+## Faux (erreur signalée) si la table est invalide : rien ne change. Cas « herbes » de
+## [method override_table] (jalon 12, T20).
+func override_grass(map_id: StringName, entry: Dictionary, source: String = "") -> bool:
+	return override_table(map_id, _GRASS, entry, source)
+
+
+## Débogage (jalon 12, T20) : remplace la table de [param map_id] sur [param terrain]
+## ([constant EncounterTable.TERRAINS]) par [param entry] (sans « maps » ni « terrain »).
+## Faux (erreur signalée) si le terrain est inconnu ou la table invalide : rien ne change.
+func override_table(map_id: StringName, terrain: StringName, entry: Dictionary,
+		source: String = "") -> bool:
+	if not EncounterTable.TERRAINS.has(terrain):
+		return _fail("%s : terrain inconnu « %s » (%s)" % [source, terrain,
+			", ".join(PackedStringArray(EncounterTable.TERRAINS))])
+	var full := entry.duplicate()
+	if full.has("maps") or full.has("terrain"):
+		return _fail("%s : ni « maps » ni « terrain » dans une table forcée" % source)
+	full["maps"] = [String(map_id)]
+	full["terrain"] = String(terrain)
+	var table := _parse_table(full, source)
+	if table == null:
+		return false
+	# Herbes : identifiant d'avant le T20 (« debug_<carte> ») ; autres terrains suffixés.
+	var suffix := "" if terrain == _GRASS else "_%s" % terrain
+	table.id = StringName("debug_%s%s" % [map_id, suffix])
+	table.source = source
+	_tables[table.id] = table
+	_by_map[_map_key(map_id, terrain)] = table.id
+	return true
 
 
 ## Identifiants des tables, triés.

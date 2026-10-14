@@ -3,7 +3,11 @@
 		"stock": [
 			{ "item": "poke_ball" },
 			{ "item": "potion" },
-			{ "item": "antidote" }
+			{ "item": "antidote" },
+			{ "item": "paralyze_heal" },
+			{ "item": "awakening" },
+			{ "item": "burn_heal" },
+			{ "item": "escape_rope" }
 		]
 	}
 }

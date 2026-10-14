@@ -32,7 +32,7 @@ func before_each() -> void:
 
 ## Vraie vue d'Équipe (TeamViews) ; le troisième est K.O. si [param ko].
 func _view(count: int = 3, favorite: bool = false, ko: bool = true,
-		activated: bool = true) -> TeamView:
+		activated: bool = true, companion: int = -1) -> TeamView:
 	var state: Node = GameStateScript.new()
 	state.new_game(7)
 	var specs: Array = [[&"charmander", 14], [&"pidgey", 12], [&"rattata", 10],
@@ -48,7 +48,13 @@ func _view(count: int = 3, favorite: bool = false, ko: bool = true,
 		state.pokedex.mark_seen(&"charmeleon")
 		state.flags.set_flag(StoryFlags.POKEDEX_ACTIVATED)
 	var unlocks := MenuUnlocks.new(state.flags, state.party)
-	var view := TeamViews.build(state.party, _data, _zones, state.pokedex, unlocks)
+	var catalog: CompanionCatalog = null
+	if companion >= 0:
+		catalog = CompanionCatalog.new()
+		catalog.load_file()
+		state.set_companion(state.party.get_at(companion))
+	var view := TeamViews.build(state.party, _data, _zones, state.pokedex, unlocks, catalog,
+		state.companion_uid)
 	state.free()
 	return view
 
@@ -336,3 +342,71 @@ func test_slot_texts() -> void:
 	assert_eq(slot.get_name_text(), "Salamèche")
 	assert_eq(slot.get_level_text(), "Nv. 14")
 	assert_string_contains(slot.get_hp_text(), " / ")
+
+
+## Nombre de lignes du texte de [param button] à sa largeur : un mot coupé ajoute une ligne.
+func _lines_of(button: Button) -> int:
+	var font := button.get_theme_font(&"font")
+	var font_size := button.get_theme_font_size(&"font_size")
+	var room := button.size.x - button.get_theme_stylebox(&"normal").get_minimum_size().x
+	if button.icon != null:
+		room -= button.icon.get_width() + button.get_theme_constant(&"h_separation")
+	var lines := 1
+	var line_width := 0.0
+	var space := font.get_string_size(" ", HORIZONTAL_ALIGNMENT_LEFT, -1, font_size).x
+	for word: String in button.text.split(" "):
+		var w := font.get_string_size(word, HORIZONTAL_ALIGNMENT_LEFT, -1, font_size).x
+		if w > room:
+			return 99
+		if line_width > 0.0 and line_width + space + w > room:
+			lines += 1
+			line_width = w
+		else:
+			line_width += (space if line_width > 0.0 else 0.0) + w
+	return lines
+
+
+## Jalon 11 (T20c) : FAIRE SORTIR / RAPPELER, au bout de la ligne du nom de la vedette
+## (même chemin que FAVORI) ; RAPPELER sur le compagnon actuel (aspect « activé »), rien pour une
+## espèce sans planche ; les actions tiennent dans la fiche, en zones tactiles, mots entiers.
+func test_companion_button_send_out_recall_and_fit() -> void:
+	for width: int in WIDTHS:
+		var view := _view(3, false, false, true, 1)
+		var menu := await _menu_in(width, view, 0)
+		var team := menu.get_team()
+		var toggled: Array[int] = []
+		team.companion_toggled.connect(func(i: int) -> void: toggled.append(i))
+		var button := team.get_companion_button()
+		assert_true(button.visible, "%d : Salamèche, éligible" % width)
+		assert_eq(button.text, TeamScreen.COMPANION_OUT_TEXT)
+		assert_eq(button.theme_type_variation, &"MenuAction")
+		var screen := Rect2(Vector2.ZERO, Vector2(width, HEIGHT))
+		var panel := team.get_use_button().get_parent().get_parent().get_parent() as Control
+		assert_true(screen.encloses(panel.get_global_rect()), "%d : la fiche tient" % width)
+		assert_true(screen.encloses(button.get_global_rect()), "%d : bouton à l'écran" % width)
+		assert_false(button.get_global_rect().intersects(panel.get_global_rect()),
+			"%d : hors de la fiche (dans la vedette)" % width)
+		assert_lte(button.get_global_rect().end.x, panel.get_global_rect().position.x,
+			"%d : à gauche de la fiche" % width)
+		for action: Button in [team.get_use_button(), team.get_move_button(),
+				team.get_favorite_button()]:
+			var rect := action.get_global_rect()
+			assert_gte(rect.size.y, float(UiTokens.TOUCH_MIN), "%d : %s, hauteur" % [width,
+				action.text])
+			assert_true(panel.get_global_rect().encloses(rect), "%d : %s dans la fiche" % [width,
+				action.text])
+			assert_lte(_lines_of(action), 2, "%d : %s, mots entiers" % [width, action.text])
+		assert_gte(button.size.y, float(UiTokens.TOUCH_MIN), "%d : bouton tactile" % width)
+		assert_gte(button.size.x, button.get_combined_minimum_size().x, "%d : texte entier" % width)
+		button.pressed.emit()
+		assert_eq(toggled, [0])
+		team._select(1)
+		await wait_frames(1)
+		assert_eq(button.text, TeamScreen.COMPANION_RECALL_TEXT, "Roucool : le compagnon")
+		assert_eq(button.theme_type_variation, &"MenuActionOn")
+		team._select(2)
+		await wait_frames(1)
+		assert_true(button.visible, "Rattata : éligible")
+		menu.show_team(_view(3, false, false, true, -1), 0)
+		await wait_frames(1)
+		assert_false(button.visible, "sans catalogue : aucun bouton")

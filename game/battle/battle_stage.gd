@@ -17,7 +17,8 @@ extends CanvasLayer
 ## qu'il vient vers l'avant-plan, jamais sur place (consigne de Kevin n° 17).
 ## Sortie (~0,6 s) : l'inverse ; PNJ réaffichés, caméra (zoom, position, limites, décalage)
 ## rendue à l'identique.
-## Tout est en Tween (rien dans _process) ; [member speed_scale] = 0 rend tout instantané.
+## Tout est en Tween (rien dans _process ; seuls les [StatusAura] du J11 animent leurs
+## particules à chaque image) ; [member speed_scale] = 0 rend tout instantané.
 ##
 ## **Décor peint (CB.3)** : si le lieu du déclenchement ([method set_place]) a un décor dans
 ## `data/battle/decors.json` ([BattleDecorCatalog]), la carte n'est plus recadrée : la caméra
@@ -186,6 +187,12 @@ const WILD_DECOR_DURATION: float = 0.7
 var speed_scale: float = 1.0
 ## Accessibilité : pas de clignotement ni d'éclair vif (voir [constant REDUCED_HIT_DIM]).
 var reduce_flashes: bool = false
+## « Réduire les animations » (jalon 11) : effets de statut sans particules ([StatusAura]).
+var reduce_motion: bool = false:
+	set(value):
+		reduce_motion = value
+		for aura: StatusAura in _auras.values():
+			aura.reduce_motion = value
 ## Flou du fond du combat ; coupé en profil Économie.
 var backdrop_blur: bool = true:
 	set(value):
@@ -237,6 +244,8 @@ var _decor_back: Sprite2D
 var _decor_front: Sprite2D
 ## Images du décor par défaut de la carte courante, préchargées en tâche de fond.
 var _decor_cache := BattleDecorCache.new()
+## Effets de statut au-dessus de chaque sprite (jalon 11, T7).
+var _auras: Dictionary[BattleEvent.SideId, StatusAura] = {}
 
 @onready var _backdrop: ColorRect = %Backdrop
 @onready var _flash: ColorRect = %Flash
@@ -258,6 +267,7 @@ func _ready() -> void:
 	material.set_shader_parameter(&"vignette", VIGNETTE)
 	_build_shadows()
 	_build_decor()
+	_build_auras()
 	_artwork_material = ShaderMaterial.new()
 	_artwork_material.shader = ARTWORK_SHADER
 	# Voile du poison au repos (play_poison en voile une copie).
@@ -582,7 +592,7 @@ func play_hit(side: BattleEvent.SideId, critical: bool) -> void:
 ## [constant UiTokens.STATUS_VEIL_DURATION] au total, moitié à l'aller), sans déplacement ni
 ## clignotement. [member reduce_flashes] : voile plus léger. Artwork officiel (CB.1) : le voile
 ## passe par une copie de son matériau étalonné, rendu au sprite ensuite.
-func play_poison(side: BattleEvent.SideId) -> void:
+func play_poison(side: BattleEvent.SideId, status: StringName = StatusRules.POISON) -> void:
 	if not _active:
 		return
 	var sprite := _sprites[side]
@@ -596,7 +606,8 @@ func play_poison(side: BattleEvent.SideId) -> void:
 	else:
 		material = ShaderMaterial.new()
 		material.shader = STATUS_VEIL_SHADER
-	material.set_shader_parameter(&"tint", UiTokens.STATUS_VEIL)
+	material.set_shader_parameter(&"tint", UiTokens.STATUS_BURN_VEIL \
+		if status == StatusRules.BURN else UiTokens.STATUS_VEIL)
 	material.set_shader_parameter(&"amount", 0.0)
 	sprite.material = material
 	var tween := _new_tween()
@@ -608,6 +619,27 @@ func play_poison(side: BattleEvent.SideId) -> void:
 	if is_instance_valid(sprite) and sprite.material == material:
 		sprite.material = previous
 	_rest(side)
+
+
+## Statut montré sur le Pokémon de [param side] (jalon 11 : décharges, braises, « z », gel ;
+## [constant StatusRules.NONE] retire l'effet). Sans effet sur le sprite ni son matériau.
+func set_status(side: BattleEvent.SideId, status: StringName) -> void:
+	if _auras.has(side):
+		_auras[side].speed_scale = speed_scale
+		_auras[side].set_status(status)
+
+
+## Effet de statut de [param side] (tests, captures).
+func get_status_aura(side: BattleEvent.SideId) -> StatusAura:
+	return _auras.get(side)
+
+
+## Coroutine : étoiles de confusion au-dessus du Pokémon de [param side] (au moment du test).
+func play_confusion(side: BattleEvent.SideId) -> void:
+	if not _active or not _auras.has(side):
+		return
+	_auras[side].speed_scale = speed_scale
+	await _auras[side].play_confusion()
 
 
 ## Coroutine : effet de statistique sur le Pokémon de [param side] (teinte chaude et petit
@@ -642,21 +674,25 @@ func play_faint(side: BattleEvent.SideId) -> void:
 	tween.tween_property(_shadows[side], ^"modulate:a", 0.0, FAINT_DURATION)
 	await _play(tween)
 	_fainted[side] = true
+	set_status(side, StatusRules.NONE)
 	sprite.visible = false
 	_shadows[side].visible = false
 
 
 ## Coroutine : le Pokémon de [param side] est rappelé (jalon 7) : il rougit, rétrécit vers ses
 ## pieds et s'efface, ombre comprise ; il est ensuite caché ([method show_pokemon] fera entrer le
-## suivant). Sans effet hors combat ou s'il n'est pas affiché.
+## suivant). Même mouvement pour l'adversaire (jalon 13 : un Dresseur rappelle son Pokémon).
+## « Réduire les animations » ([member reduce_motion]) : ni rétrécissement, seulement le fondu
+## rouge. Sans effet hors combat ou s'il n'est pas affiché.
 func play_withdraw(side: BattleEvent.SideId) -> void:
 	var sprite := _sprites[side]
 	if not _active or not sprite.visible:
 		return
 	var tween := _new_tween()
 	tween.set_parallel(true)
-	tween.tween_property(sprite, ^"scale", sprite.scale * WITHDRAW_SCALE, WITHDRAW_DURATION) \
-		.set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN)
+	if not reduce_motion:
+		tween.tween_property(sprite, ^"scale", sprite.scale * WITHDRAW_SCALE, WITHDRAW_DURATION) \
+			.set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN)
 	tween.tween_property(sprite, ^"modulate", WITHDRAW_TINT, WITHDRAW_DURATION)
 	tween.tween_property(_shadows[side], ^"modulate:a", 0.0, WITHDRAW_DURATION)
 	await _play(tween)
@@ -1072,6 +1108,8 @@ func _apply_reset() -> void:
 		_sprites[side].modulate = Color.WHITE
 		_shadows[side].visible = false
 		_shadows[side].modulate = Color.WHITE
+	for aura: StatusAura in _auras.values():
+		aura.set_status(StatusRules.NONE)
 
 
 func _prepare_sprite(side: BattleEvent.SideId) -> void:
@@ -1090,8 +1128,9 @@ func _set_texture(side: BattleEvent.SideId) -> void:
 	var texture: Texture2D = image["texture"]
 	var official: bool = image["official"]
 	var box: Rect2 = image["box"]
-	if texture == null:
-		push_warning("BattleStage : sprite de combat absent « %s »" % sprite_path(species, back))
+	if texture == null or (back and official):
+		push_warning("BattleStage : sprite de combat absent « %s »%s" % [sprite_path(species, back),
+			" (repli : artwork officiel)" if texture != null else ""])
 	var sprite := _sprites[side]
 	sprite.texture = texture
 	sprite.centered = false
@@ -1105,6 +1144,8 @@ func _set_texture(side: BattleEvent.SideId) -> void:
 	_scales[side] = scale
 	if official:
 		_artwork_material.set_shader_parameter(&"texels_per_pixel", 1.0 / scale)
+	if _auras.has(side):
+		_auras[side].set_box(box)
 
 
 ## Boîte visible de l'image de [param side] (px de la texture).
@@ -1291,6 +1332,18 @@ func _build_capture_props() -> void:
 
 
 ## Ombres au sol des deux Pokémon : ellipse douce partagée, teintée par le lieu.
+## Un [StatusAura] par camp, juste au-dessus de son sprite (même parent, ordre de dessin).
+func _build_auras() -> void:
+	for side: BattleEvent.SideId in _sprites:
+		var sprite := _sprites[side]
+		var aura := StatusAura.new()
+		aura.name = StringName("%sStatusAura" % BattleEvent.SideId.find_key(side).capitalize())
+		aura.setup(sprite)
+		aura.reduce_motion = reduce_motion
+		sprite.add_sibling(aura)
+		_auras[side] = aura
+
+
 func _build_shadows() -> void:
 	var gradient := Gradient.new()
 	gradient.set_color(0, Color(1, 1, 1, 1))

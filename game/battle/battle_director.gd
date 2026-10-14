@@ -248,7 +248,10 @@ func run_request(request: BattleRequest, map: GameMap) -> int:
 		if _battle.needs_replacement():
 			await _play_events(_battle.replace(await _choose_party(true)), trainer)
 			continue
-		var action := await _choose_action(actions, can_flee)
+		# Patience (CT34, jalon 11) : tours 2 et 3 imposés, le joueur ne choisit rien.
+		var locked := _battle.get_locked_move()
+		var action := BattleAction.move(locked) if locked != Battle.NO_LOCK \
+			else await _choose_action(actions, can_flee)
 		if _battle.get_state() != Battle.State.CHOOSING:
 			break
 		# Une Ball ou une Potion quitte le Sac une seule fois, avant d'être jouée.
@@ -352,7 +355,9 @@ func get_forget_panel() -> MoveForgetPanel:
 
 ## Coroutine : propose [param actions] (grille), attend le choix du joueur, renvoie l'action à
 ## soumettre. ATTAQUER sans PP → Lutte directement (règle des jeux) ; sinon les capacités,
-## « ‹ » revient. FUITE (si [param can_flee], sauvage) → une action de fuite ([BattleAction.run]).
+## « ‹ » revient (la capacité bloquée par Entrave est grisée, inerte). FUITE (si
+## [param can_flee], sauvage) → une action de fuite ([BattleAction.run]) ; piégé : « Impossible de
+## fuir ! » dans le bandeau, sans rien soumettre, puis la grille revient.
 ## SAC (si la grille le permet et qu'une Ball ou un soin est utilisable) → le Sac de combat :
 ## une Ball choisie → [BattleAction.ball], un soin → [BattleAction.heal] ; « ‹ » revient ici
 ## sans rien consommer. ÉQUIPE (si la grille le permet) → le panneau ÉQUIPE : ENVOYER →
@@ -362,6 +367,11 @@ func _choose_action(actions: Dictionary[StringName, bool], can_flee: bool) -> Ba
 		_hud.show_actions(actions)
 		var action: StringName = await _hud.action_selected
 		if action == ActionGrid.RUN and can_flee:
+			# Piégé (jalon 12) : « Impossible de fuir ! », rien n'est soumis, aucun tour perdu.
+			if _battle.is_player_trapped():
+				await _hud.show_message(_texts.get_template(&"flee_failed") if _texts != null
+					else "")
+				continue
 			return BattleAction.run()
 		if action == ActionGrid.BAG and actions.get(ActionGrid.BAG, false) \
 				and (_battle.can_use_balls() or _battle.can_use_heal_items()):
@@ -381,8 +391,7 @@ func _choose_action(actions: Dictionary[StringName, bool], can_flee: bool) -> Ba
 		var usable := _battle.get_usable_moves()
 		if usable.is_empty():
 			return BattleAction.move(BattleAction.STRUGGLE)
-		var lead := _battle.get_player_side().active.pokemon
-		_hud.show_moves(BattleViews.moves(lead, _data))
+		_hud.show_moves(BattleViews.player_moves(_battle, _data, _texts))
 		var index := await _await_move_or_back()
 		if index < 0:
 			continue
@@ -540,6 +549,7 @@ func _play_beat(beat: BattleBeat) -> void:
 		BattleBeat.Kind.SEND_OUT:
 			if is_instance_valid(_stage):
 				_stage.show_pokemon(beat.side, beat.event.species_id)
+				_stage.set_status(beat.side, beat.event.status)
 			if is_instance_valid(_hud):
 				_hud.set_card(side, BattleViews.card(beat.event))
 		BattleBeat.Kind.MOVE:
@@ -574,6 +584,9 @@ func _play_beat(beat: BattleBeat) -> void:
 			await _play_poison(beat.event)
 		BattleBeat.Kind.STATUS_TAG:
 			_play_status_tag(beat.event)
+		BattleBeat.Kind.CONFUSION:
+			if is_instance_valid(_stage):
+				await _stage.play_confusion(beat.side)
 		BattleBeat.Kind.FORGET:
 			await _offer_forget(beat.event)
 		BattleBeat.Kind.THROW:
@@ -592,11 +605,16 @@ func _play_beat(beat: BattleBeat) -> void:
 			if is_instance_valid(_hud) and _is_in_play(beat.event):
 				await _hud.animate_hp(side, beat.event.hp, beat.event.max_hp, false)
 		BattleBeat.Kind.WITHDRAW:
-			# La carte est déjà sortie (panneau ÉQUIPE) ; le SEND_OUT suivant ramène la nouvelle.
+			# Joueur : la carte est déjà sortie (panneau ÉQUIPE). Adversaire (jalon 13, IA qui
+			# change) : sa carte sort ici. Le SEND_OUT suivant ramène la nouvelle.
 			if is_instance_valid(_hud):
 				_hud.hide_card(side)
 			if is_instance_valid(_stage):
 				await _stage.play_withdraw(beat.side)
+		BattleBeat.Kind.HP:
+			# Jalon 12 : drain d'une attaque, Repos (la barre seule, sans coup).
+			if is_instance_valid(_hud):
+				await _hud.animate_hp(side, beat.event.hp, beat.event.max_hp, false)
 		BattleBeat.Kind.RELEASE:
 			if is_instance_valid(_stage):
 				await _stage.play_break_free()
@@ -825,7 +843,7 @@ func _play_poison(event: BattleEvent) -> void:
 	if is_instance_valid(_hud):
 		_hud.clear_message()
 	var veil: Array[bool] = [false]
-	_run_veil(event.side, veil)
+	_run_veil(event.side, veil, event.status)
 	if is_instance_valid(_hud):
 		_hud.play_poison(side)
 		await _hud.animate_hp(side, event.hp, event.max_hp, false)
@@ -834,9 +852,10 @@ func _play_poison(event: BattleEvent) -> void:
 
 
 ## Coroutine lancée sans attente par [method _play_poison] : le voile, puis [param done] vrai.
-func _run_veil(side: BattleEvent.SideId, done: Array[bool]) -> void:
+func _run_veil(side: BattleEvent.SideId, done: Array[bool],
+		status: StringName = StatusRules.POISON) -> void:
 	if is_instance_valid(_stage):
-		await _stage.play_poison(side)
+		await _stage.play_poison(side, status)
 	done[0] = true
 
 
@@ -844,13 +863,15 @@ func _run_veil(side: BattleEvent.SideId, done: Array[bool]) -> void:
 ## de [param event] ; l'Antidote peut soigner un Pokémon de l'équipe qui n'est pas en jeu : alors
 ## aucune carte ne change.
 func _play_status_tag(event: BattleEvent) -> void:
-	if not is_instance_valid(_hud):
+	var status := StatusRules.NONE
+	if event.kind == BattleEvent.Kind.STATUS_INFLICTED or event.kind == BattleEvent.Kind.RESTED:
+		status = event.status
+	elif event.side != BattleEvent.SideId.FOE and not _is_in_play(event):
 		return
-	var side: BattleHud.Side = _HUD_SIDE[event.side]
-	if event.kind == BattleEvent.Kind.STATUS_INFLICTED:
-		_hud.set_status(side, event.status)
-	elif event.side == BattleEvent.SideId.FOE or _is_in_play(event):
-		_hud.set_status(side, StatusRules.NONE)
+	if is_instance_valid(_hud):
+		_hud.set_status(_HUD_SIDE[event.side], status)
+	if is_instance_valid(_stage):
+		_stage.set_status(event.side, status)
 
 
 ## Espèce du Pokémon envoyé par [param side] d'après le SENT_OUT de [param events] (&"" si le

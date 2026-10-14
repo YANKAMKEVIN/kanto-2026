@@ -55,6 +55,11 @@ const INTRO_BACKDROP_FOCUS: Vector2 = Vector2(768, 528)
 const INTRO_BACKDROP_ZOOM: float = 1.6
 ## Raison de blocage du joueur pendant le fondu d'arrivée dans la chambre (OUV.3).
 const OPENING_ARRIVAL: StringName = &"opening_arrival"
+## Narration de la Corde Sortie (jalon 12, dossier 15 §20 n° 33) :
+## `data/dialogues/field_items.json`.
+const ESCAPE_ROPE_DIALOGUE: StringName = &"escape_rope_used"
+## Raison de blocage du joueur pendant une évolution par pierre hors combat (jalon 12, T23).
+const EVOLUTION_ITEM: StringName = &"evolution_item"
 
 @export var start_map: StringName = &"player_house_2f"
 @export var start_spawn: StringName = &"start"
@@ -138,6 +143,12 @@ var _autosave_enabled: bool = false
 var _resumed: bool = false
 ## Le départ de débogage appliqué demande l'autosave ([member DebugStart.autosave]).
 var _debug_start_autosave: bool = false
+## Voile de l'apprentissage d'une CT depuis le Sac (jalon 11), créé au premier besoin.
+var _tm_overlay: TmLearnOverlay
+## Compagnon (jalon 11, 11D) : espèces éligibles et contrôleur (nœud créé tout de suite pour
+## recevoir les réglages).
+var _companions := CompanionCatalog.new()
+var _companion := CompanionController.new()
 ## Autosave demandé, en attente d'un état stable, et sa raison (journal).
 var _save_pending: bool = false
 var _save_reason: String = ""
@@ -147,6 +158,11 @@ var _in_foreground: bool = true
 var _opening: OpeningDirector = null
 ## Bourg Palette en mode décor derrière le titre (libéré en quittant le titre).
 var _title_backdrop: TitleBackdrop = null
+## Grottes de Kanto (jalon 12, T20 : Corde Sortie, `data/world/caves.json`).
+var _caves := CaveLibrary.new()
+## Pierre en cours d'utilisation (jalon 12, T23) : retirée du Sac à
+## [signal EvolutionDirector.evolution_applied], une seule fois ; &"" sinon.
+var _stone_item: StringName = &""
 
 @onready var _world: Node2D = %World
 @onready var _hud: ExplorationHud = %ExplorationHud
@@ -215,6 +231,7 @@ func _ready() -> void:
 	_trainers.load_dir()
 	_texts.load_file()
 	_items.load_dir()
+	_items.check_moves(_pokemon)
 	_battle_director.setup(_pokemon, _trainers, _texts, _battle_stage, _battle_hud, _player,
 		GameState, _items)
 	# CB.1 : artwork officiel de l'adversaire (numéro) et tailles réelles (Pokédex).
@@ -315,6 +332,9 @@ func _ready() -> void:
 	_menu.set_shops(_shops)
 	_menu.menu_opened.connect(_on_menu_opened)
 	_menu.menu_closed.connect(_on_menu_closed)
+	_setup_companion()
+	_setup_caves()
+	_setup_evolution_items()
 	# L'écran (jalon-06.md §6.6) : ouverture et vue dans la même frame, sans await (un fondu
 	# coupé laisse une coroutine non reprise).
 	_menu.menu_opened.connect(_menu_screen.open_animated)
@@ -329,6 +349,7 @@ func _ready() -> void:
 		_menu.team_shown.connect(_menu_screen.show_team)
 		_menu_screen.team_member_moved.connect(_menu.move_member)
 		_menu_screen.team_favorite_toggled.connect(_menu.toggle_favorite)
+		_menu_screen.team_companion_toggled.connect(_menu.toggle_companion)
 		_menu_screen.team_member_selected.connect(_menu.select_member)
 	# Sac (T12) : relié dès que l'écran porte l'interface du §6.8 (BagScreen du T11).
 	if _menu_screen.has_signal(&"bag_use_requested"):
@@ -341,6 +362,8 @@ func _ready() -> void:
 		_menu_screen.bag_use_requested.connect(_menu.request_item_use)
 		_menu_screen.bag_target_chosen.connect(_menu.use_item_on)
 		_menu_screen.bag_repeat_requested.connect(_menu.repeat_item_use)
+		# Jalon 11 (T12) : apprendre une CT par-dessus le menu.
+		_menu.tm_learn_requested.connect(_on_tm_learn_requested)
 	# Pokédex (T16) : relié dès que l'écran porte l'interface du §6.9 (PokedexScreen du T15).
 	if _menu_screen.has_signal(&"pokedex_species_opened"):
 		_menu.pokedex_shown.connect(_menu_screen.show_pokedex)
@@ -400,6 +423,7 @@ func _ready() -> void:
 	SceneRouter.map_entered.connect(_on_map_entered)
 	SceneRouter.map_entered.connect(_interactions.on_map_entered)
 	SceneRouter.map_entered.connect(_starter_choice.on_map_entered)
+	SceneRouter.coming_soon_finished.connect(_on_coming_soon_finished)
 	_start_game()
 	_menu.set_settings(_settings, _profile_device_quality(), _can_write())
 
@@ -457,6 +481,7 @@ func _exit_tree() -> void:
 		[SceneRouter.map_entered, _on_map_entered],
 		[SceneRouter.map_entered, _interactions.on_map_entered],
 		[SceneRouter.map_entered, _starter_choice.on_map_entered],
+		[SceneRouter.coming_soon_finished, _on_coming_soon_finished],
 	]
 	for link: Array in links:
 		var sig: Signal = link[0]
@@ -686,6 +711,8 @@ func _on_menu_opened() -> void:
 ## Le menu se ferme (pause levée) : le monde reprend, les contrôles reviennent ; autosave
 ## seulement si l'état a changé.
 func _on_menu_closed(changed: bool) -> void:
+	# Compagnon : FAIRE SORTIR / RAPPELER, dépôt, Potion sur un K.O. (sortie ou rentrée).
+	_companion.refresh()
 	_refresh_controls()
 	if changed:
 		request_autosave("menu")
@@ -981,6 +1008,9 @@ func _apply_debug_start() -> bool:
 		return false
 	start.apply(GameState, _pokemon)
 	_debug_start_autosave = start.autosave
+	if not start.wild.is_empty():
+		_encounter_library.override_table(start.map, start.wild_terrain, start.wild,
+			debug_start_path)
 	if not start.map.is_empty():
 		start_map = start.map
 		start_spawn = start.spawn
@@ -1021,9 +1051,18 @@ func _current_map_id() -> StringName:
 
 
 func _on_transition_started(_target_map: StringName) -> void:
+	_companion.on_transition_started()
 	_arrival_from = _current_map_id()
 	_hud.hide_zone_title()
 	_hud.hide_caption()
+
+
+## Fin de l'écran « à venir » (même carte, aucun [signal SceneRouter.map_entered]) : ferme la
+## transition ouverte par [method _on_transition_started] (QA finale 12D : le compagnon restait
+## caché jusqu'au changement de carte suivant).
+func _on_coming_soon_finished(_map: GameMap) -> void:
+	_arrival_from = &""
+	_companion.on_transition_finished()
 
 
 ## Écran noir (ou démarrage) : présence des PNJ selon les drapeaux de la partie d'abord
@@ -1040,8 +1079,35 @@ func _on_map_changed(map: GameMap) -> void:
 	_encounters.set_map(map)
 	_services.set_map(map)
 	_recovery.set_map(map)
+	_companion.on_map_changed(map)
 	# Décor de combat de la carte chargé en tâche de fond (correctif QA S24 du CB.3).
 	_battle_stage.prepare_place(map.map_id)
+
+
+## Compagnon (jalon 11, 11D ; `docs/tech/jalon-11-compagnon.md`) : espèces éligibles (Équipe :
+## FAIRE SORTIR / RAPPELER), contrôleur branché sur le joueur, l'interaction (curiosité) et la
+## boîte de dialogue ; Boot lui relaie cartes, transitions, scènes, combats et menu.
+func _setup_companion() -> void:
+	_companions.load_file()
+	for error: String in _companions.get_errors():
+		push_error("Compagnon : %s" % error)
+	_companion.process_mode = Node.PROCESS_MODE_PAUSABLE
+	add_child(_companion)
+	_companion.setup(GameState, _companions, _pokemon, _player)
+	_companion.line_requested.connect(_on_companion_line)
+	_interactions.set_companion(_companion)
+	_interactions.companion_talked.connect(_companion.talk)
+	_battle_director.battle_started.connect(_companion.on_battle_started.unbind(1))
+	_menu.set_companions(_companions)
+
+
+func get_companion_controller() -> CompanionController:
+	return _companion
+
+
+## Le joueur a parlé au compagnon : sa phrase (narration, jeton « {pokemon} »).
+func _on_companion_line(dialogue_id: StringName) -> void:
+	_runner.play(dialogue_id, null, SceneRouter.get_current_map())
 
 
 ## Profil de lumière de [param map] ([member GameMap.light_profile]) ; vide ou inconnu :
@@ -1064,6 +1130,7 @@ func _on_map_entered(map: GameMap) -> void:
 		map.region)
 	_arrival_from = &""
 	GameState.discover_map(map.map_id)
+	_companion.on_map_entered(map)
 	request_autosave("changement de carte")
 	if _announcer.should_announce(map.display_name, map.interior):
 		_hud.show_zone_title(map.display_name, region)
@@ -1123,6 +1190,7 @@ func _on_heal_requested() -> void:
 ## partie ne peut plus rien perdre), comme au réveil ; le toast du point de repos attend la fin
 ## du dialogue (après « Voilà. Tout le monde est en pleine forme. »), une fois par changement.
 func _on_center_healed(map_id: StringName, registered: bool) -> void:
+	_companion.note_joy()
 	if registered:
 		_rest_toast = _rest_points.registered_toast(_zones.zone_name_of(map_id))
 	if _can_write() and not SceneRouter.is_transitioning():
@@ -1132,6 +1200,7 @@ func _on_center_healed(map_id: StringName, registered: bool) -> void:
 
 
 func _on_cutscene_started(_cutscene_id: StringName) -> void:
+	_companion.on_cutscene_started()
 	_refresh_controls()
 
 
@@ -1139,8 +1208,10 @@ func _on_cutscene_started(_cutscene_id: StringName) -> void:
 ## contient (« Un Roucool… » ; aucune rencontre → la page est omise) ; prénoms du joueur et du
 ## rival (OUV.2), aussi pour les étiquettes et le nom du dresseur en combat.
 func _dialogue_token_values() -> Dictionary[StringName, String]:
+	var companion := GameState.get_companion()
 	return DialogueTokens.values_for(GameState.first_wild_species(), _pokemon,
-		GameState.player_name, GameState.rival_name)
+		GameState.player_name, GameState.rival_name,
+		companion.display_name(_pokemon) if companion != null else "")
 
 
 ## Une variante de dialogue lance une scène à sa fin (Chen, colis en main → `oak_parcel`). Le
@@ -1151,9 +1222,21 @@ func _on_cutscene_requested(cutscene_id: StringName) -> void:
 			% cutscene_id)
 
 
-func _on_cutscene_finished(_cutscene_id: StringName) -> void:
+## Fin d'une scène : autosave demandé. Si la scène a une suite (clé « next », jalon-13.md
+## §2.9), la sauvegarde est écrite **tout de suite** (partie stable), puis la suite est jouée si
+## une de ses variantes s'applique (sinon rien). Une seule fois par fin de scène : la suite
+## n'enchaîne à son tour que si elle a elle-même « next ». Partie pas stable (réveil après une
+## défaite, transition) : pas d'enchaînement, l'autosave ordinaire s'en charge.
+func _on_cutscene_finished(cutscene_id: StringName) -> void:
+	_companion.on_cutscene_finished()
 	_refresh_controls()
-	request_autosave("fin de scène")
+	var next := _cutscenes.get_next(cutscene_id)
+	if next.is_empty() or not is_stable():
+		request_autosave("fin de scène")
+		return
+	if _can_write():
+		_write_save("entre deux scènes")
+	_cutscenes_node.play(next)
 
 
 func _on_battle_state_changed() -> void:
@@ -1189,19 +1272,20 @@ func _on_battle_event(event: BattleEvent) -> void:
 
 
 ## Fin d'un combat de dresseur : grand moment « combat contre le rival » (le rival est le
-## dresseur dont l'équipe dépend du starter du joueur, comme dans Rouge/Bleu), puis autosave
+## dresseur dont l'équipe dépend du starter du joueur, comme dans Rouge/Bleu ; un seul par
+## rival, [RivalMoment]), puis autosave
 ## (écrit à la fin de la scène qui contient le combat). Les sauvages passent par
 ## [method _on_encounter_finished].
 func _on_battle_finished(trainer_id: StringName, outcome: int) -> void:
+	# Compagnon : réapparaît (espèce après évolution) ; enthousiasme si victoire de Dresseur.
+	_companion.on_battle_finished(not trainer_id.is_empty() and outcome == Battle.Outcome.WIN)
 	if trainer_id.is_empty():
 		return
 	var trainer := _trainers.get_trainer(trainer_id) if _trainers != null else null
-	if trainer != null and not trainer.team_by_starter.is_empty():
-		var outcome_name: Variant = Battle.Outcome.find_key(outcome)
-		GameState.record_moment(GameState.MOMENT_RIVAL_BATTLE, _current_map_id(), {
-			"trainer": String(trainer_id),
-			"outcome": String(outcome_name).to_lower() if outcome_name != null else "",
-		})
+	# Un seul moment par rival, à la victoire seulement si la donnée le dit (§2.8).
+	if RivalMoment.should_record(trainer, outcome, GameState.moments):
+		GameState.record_moment(GameState.MOMENT_RIVAL_BATTLE, _current_map_id(),
+			RivalMoment.details(trainer_id, outcome))
 	request_autosave("fin de combat")
 
 
@@ -1226,6 +1310,7 @@ func _on_woke_up_after_defeat() -> void:
 ## Pokémon sauvage capturé et rangé (équipe ou stockage, jalon 5D) : autosave demandé, écrit à
 ## la première image stable (après la carte de capture et la fin de la rencontre).
 func _on_pokemon_caught() -> void:
+	_companion.note_joy()
 	request_autosave("capture")
 
 
@@ -1238,11 +1323,38 @@ func _on_item_found(item_id: StringName, _count: int) -> void:
 
 ## Objet donné par une scène (étape « give ») : toast en haut de l'écran, sans rien bloquer
 ## (jalon-04.md §14.6). L'accord (« Poké Balls ×5 » / « Ajoutées au Sac ») vient de l'objet.
+## Jalon 11 (T12) : le Pokémon [param index] apprend la capacité de la CT [param item_id] par le
+## déroulé partagé avec le combat et l'évolution ([MoveLearnPrompt.teach]), sur un voile au-dessus
+## du menu ([TmLearnOverlay]) ; la CT reste au Sac.
+func _on_tm_learn_requested(index: int, item_id: StringName) -> void:
+	var item := _items.get_item(item_id)
+	var pokemon: Pokemon = GameState.party.get_at(index)
+	if item == null or pokemon == null:
+		return
+	if _tm_overlay == null:
+		_tm_overlay = TmLearnOverlay.new()
+		_tm_overlay.name = "TmLearnOverlay"
+		add_child(_tm_overlay)
+	_tm_overlay.open()
+	var prompt := _battle_director.get_move_learn_prompt()
+	var learned := await prompt.teach(pokemon, index, item.teaches,
+		_tm_overlay.get_message_banner(), _tm_overlay.get_prompt_host())
+	prompt.release()
+	_tm_overlay.close()
+	_menu.finish_tm_learn(index, item_id, learned)
+
+
+func get_tm_learn_overlay() -> TmLearnOverlay:
+	return _tm_overlay
+
+
 func _on_item_given(item_id: StringName, count: int) -> void:
 	var item := _items.get_item(item_id)
 	if item == null:
 		return
-	_hud.show_toast(item.quantity_text(count), item.added_text(count))
+	# Un objet « obtenu » (fossile) : son icône peinte du Sac, sinon l'icône générique.
+	var icon: Texture2D = MenuArt.item_icon(item_id) if item.obtained else null
+	_hud.show_toast(item.quantity_text(count), item.added_text(count), icon)
 
 
 ## Retour de l'écran : la confirmation de vente de la Boutique, la confirmation ou le menu « ⋯ »
@@ -1310,7 +1422,7 @@ func _refresh_controls() -> void:
 	_hud.set_controls_visible(not _is_opening_active() and not _menu.is_open()
 		and not _runner.is_running() and not _cutscenes_node.is_running()
 		and not _starter_choice.is_sheet_open() and not _battle_director.is_running()
-		and not _encounters.is_running())
+		and not _encounters.is_running() and not _player.is_blocked_by(EVOLUTION_ITEM))
 
 
 ## Lit les réglages (fichier de l'appareil, indépendant de la sauvegarde et du départ de
@@ -1349,9 +1461,13 @@ func _apply_settings(s: GameSettings) -> void:
 	_battle_director.confirm_forget = s.confirm_actions
 	_battle_hud.message_hold_scale = 1.0
 	_battle_stage.reduce_flashes = s.reduce_flashes
+	_battle_stage.reduce_motion = s.reduce_motion
 	if _evolution_screen != null:
 		_evolution_screen.reduce_flashes = s.reduce_flashes
 	_services.reduce_motion = s.reduce_motion
+	_companion.set_reduce_motion(s.reduce_motion)
+	# Halos des grottes (jalon 12, T7 / T20) : vacillement des lampes coupé.
+	LightGlow.set_reduce_motion(s.reduce_motion)
 	# Carte du Champion (jalon 10, T5) : sans glissé, un fondu court.
 	_hud.get_champion_card().reduce_motion = s.reduce_motion
 	_menu_screen.speed_scale = s.menu_speed_scale()
@@ -1383,3 +1499,78 @@ func _on_save_requested() -> void:
 		var error := _write_save("menu")
 		text = SettingsViews.save_result_text(error, Time.get_datetime_dict_from_system())
 	_menu.show_save_result(text)
+
+
+# --- Jalon 12 (T20) : grottes et Corde Sortie -----------------------------------------------
+
+## Grottes (`data/world/caves.json`) et UTILISER d'un objet AVENTURE sans cible (la Corde
+## Sortie) : le Sac la refuse hors grotte, sinon Boot la joue ([method _on_field_item_requested]).
+func _setup_caves() -> void:
+	if not _caves.load_file():
+		for error: String in _caves.get_errors():
+			push_error("Boot : %s" % error)
+	_menu.set_caves(_caves, _current_map_id)
+	_menu.field_item_requested.connect(_on_field_item_requested)
+
+
+func get_caves() -> CaveLibrary:
+	return _caves
+
+
+## Corde Sortie acceptée par le Sac (jalon 12, dossier 15 §11, `jalon-12.md` §2.6) : menu fermé,
+## « Tu utilises la Corde Sortie. », puis la Corde est retirée **dans la même image** que le
+## départ du fondu vers l'entrée de la grotte (comme une porte) — aucune image stable entre les
+## deux : l'autosave suivant est celui de l'arrivée (position et Sac ensemble) ; une fermeture
+## pendant le fondu laisse la sauvegarde d'avant, Corde comprise. Ni soin ni point de repos.
+func _on_field_item_requested(item_id: StringName) -> void:
+	var item := _items.get_item(item_id)
+	var exit := FieldItemRules.escape_target(_current_map_id(), _caves)
+	if item == null or exit == null or not GameState.bag.has(item_id):
+		return
+	_menu.close()
+	if _runner.play(ESCAPE_ROPE_DIALOGUE, null, SceneRouter.get_current_map()):
+		await _runner.dialogue_finished
+	GameState.bag.remove(item_id, 1)
+	SceneRouter.change_map(exit.map, exit.spawn, exit.facing)
+
+
+# --- Jalon 12 (T23) : évolution par pierre hors combat ------------------------------------
+
+## Sac → pierre → UTILISER → Pokémon COMPATIBLE ([signal MenuDirector.evolution_item_requested]) ;
+## la pierre est retirée à [signal EvolutionDirector.evolution_applied].
+func _setup_evolution_items() -> void:
+	_menu.evolution_item_requested.connect(_on_evolution_item_requested)
+	_evolutions.evolution_applied.connect(_on_evolution_applied)
+
+
+## Pierre utilisée sur le Pokémon [param index] (`jalon-12.md` §2.9) : menu fermé, joueur et
+## contrôles bloqués, [method EvolutionDirector.play_item] (non annulable) ; la pierre quitte le
+## Sac **dans l'appel même** où l'évolution est appliquée ([method _on_evolution_applied]). Aucune
+## image stable pendant la séquence (le joueur est bloqué) : une fermeture de l'application
+## reprend à la sauvegarde d'avant, pierre comprise. Fin : retour au monde, compagnon mis à jour
+## (rentre en silence si sa nouvelle espèce n'est pas éligible), autosave.
+func _on_evolution_item_requested(index: int, item_id: StringName) -> void:
+	var candidate := StoneUse.candidate(GameState.party, index, item_id, _pokemon)
+	if candidate == null or not GameState.bag.has(item_id) or _evolutions.is_playing():
+		return
+	_menu.close()
+	_player.set_input_enabled(false, EVOLUTION_ITEM)
+	_refresh_controls()
+	_stone_item = item_id
+	_evolutions.speed_scale = _battle_director.speed_scale
+	await _evolutions.play_item(candidate, GameState.party, item_id)
+	_stone_item = &""
+	if is_instance_valid(_player):
+		_player.set_input_enabled(true, EVOLUTION_ITEM)
+	_companion.refresh()
+	_refresh_controls()
+	request_autosave("évolution")
+
+
+## L'évolution vient d'être appliquée : la pierre en cours quitte le Sac (une seule fois).
+func _on_evolution_applied(_party_index: int, _into: StringName) -> void:
+	if _stone_item.is_empty():
+		return
+	if not GameState.bag.remove(_stone_item, 1):
+		push_error("Boot : la pierre « %s » n'est plus dans le Sac" % _stone_item)
+	_stone_item = &""

@@ -19,16 +19,17 @@ func test_real_data_loads_without_error() -> void:
 	assert_true(_library.load_dir(), "\n".join(_library.get_errors()))
 	assert_true(_library.check_references(_items), "\n".join(_library.get_errors()))
 	assert_eq(_library.get_errors().size(), 0)
-	assert_eq(_library.get_ids(), [&"pewter_mart", &"viridian_mart"] as Array[StringName],
-		"jalon 10 : la Boutique d'Argenta (test_pewter_data)")
+	assert_eq(_library.get_ids(), [&"cerulean_mart", &"pewter_mart", &"viridian_mart"]
+		as Array[StringName], "jalon 10 : Argenta (test_pewter_data) ; jalon 13 : Azuria")
 	var mart := _library.get_shop(&"viridian_mart")
 	assert_eq(mart.id, &"viridian_mart")
 	assert_eq(mart.source, "res://data/shops/viridian_mart.json")
 	# Dossier 09 §9 : stock initial Poké Ball, Potion (ordre des données, §13) ; jalon 9 :
 	# l'Antidote après la Potion, seulement une fois le poison annoncé (« poison_unlocked »).
-	assert_eq(mart.item_ids(), [&"poke_ball", &"potion", &"antidote"] as Array[StringName])
-	assert_eq(ShopRules.stock(mart, StoryFlags.new()), [&"poke_ball", &"potion"] \
-		as Array[StringName], "sans drapeau : le stock du J7")
+	assert_eq(mart.item_ids(), [&"poke_ball", &"potion", &"antidote", &"paralyze_heal", &"awakening", &"burn_heal"] \
+		as Array[StringName])
+	assert_eq(ShopRules.stock(mart, StoryFlags.new()), [&"poke_ball", &"potion", &"paralyze_heal", &"awakening", &"burn_heal"] \
+		as Array[StringName], "sans drapeau : le stock du J7 et les remèdes du J11")
 	var flags := StoryFlags.new()
 	flags.set_flag(&"poison_unlocked")
 	assert_eq(ShopRules.stock(mart, flags), mart.item_ids(), "poison annoncé : l'Antidote")

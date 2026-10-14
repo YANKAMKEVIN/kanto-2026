@@ -298,6 +298,26 @@
 			[8, "horn_attack"], [14, "poison_sting"], [23, "thrash"]
 		]
 	},
+	"oddish": {
+		"dex": 43, "name": "Mystherbe", "types": ["grass", "poison"],
+		"base_stats": { "hp": 45, "atk": 50, "def": 55, "spa": 75, "spd": 65, "spe": 30 },
+		"male_ratio": 0.5, "growth_rate": "medium_slow", "base_exp": 64, "catch_rate": 255,
+		"learnset": [
+			[1, "absorb"], [15, "poison_powder"], [17, "stun_spore"], [19, "sleep_powder"],
+			[24, "acid"], [33, "petal_dance"], [46, "solar_beam"]
+		],
+		"evolutions": [{ "into": "gloom", "method": "level", "level": 21 }]
+	},
+	"gloom": {
+		"dex": 44, "name": "Ortide", "types": ["grass", "poison"],
+		"base_stats": { "hp": 60, "atk": 65, "def": 70, "spa": 85, "spd": 75, "spe": 40 },
+		"male_ratio": 0.5, "growth_rate": "medium_slow", "base_exp": 138, "catch_rate": 120,
+		"learnset": [
+			[1, "absorb"], [1, "poison_powder"], [1, "stun_spore"], [15, "poison_powder"],
+			[17, "stun_spore"], [19, "sleep_powder"], [28, "acid"], [38, "petal_dance"],
+			[52, "solar_beam"]
+		]
+	},
 	"mankey": {
 		"dex": 56, "name": "Férosinge", "types": ["fighting"],
 		"base_stats": { "hp": 40, "atk": 80, "def": 35, "spa": 35, "spd": 45, "spe": 70 },
@@ -316,6 +336,27 @@
 			[1, "scratch"], [1, "leer"], [1, "karate_chop"], [1, "fury_swipes"],
 			[15, "karate_chop"], [21, "fury_swipes"], [27, "focus_energy"], [37, "seismic_toss"],
 			[46, "thrash"]
+		]
+	},
+	"bellsprout": {
+		"dex": 69, "name": "Chétiflor", "types": ["grass", "poison"],
+		"base_stats": { "hp": 50, "atk": 75, "def": 35, "spa": 70, "spd": 30, "spe": 40 },
+		"male_ratio": 0.5, "growth_rate": "medium_slow", "base_exp": 60, "catch_rate": 255,
+		"learnset": [
+			[1, "vine_whip"], [1, "growth"], [13, "wrap"], [15, "poison_powder"],
+			[18, "sleep_powder"], [21, "stun_spore"], [26, "acid"], [33, "razor_leaf"],
+			[42, "slam"]
+		],
+		"evolutions": [{ "into": "weepinbell", "method": "level", "level": 21 }]
+	},
+	"weepinbell": {
+		"dex": 70, "name": "Boustiflor", "types": ["grass", "poison"],
+		"base_stats": { "hp": 65, "atk": 90, "def": 50, "spa": 85, "spd": 45, "spe": 55 },
+		"male_ratio": 0.5, "growth_rate": "medium_slow", "base_exp": 137, "catch_rate": 120,
+		"learnset": [
+			[1, "vine_whip"], [1, "growth"], [1, "wrap"], [13, "wrap"], [15, "poison_powder"],
+			[18, "sleep_powder"], [23, "stun_spore"], [29, "acid"], [38, "razor_leaf"],
+			[49, "slam"]
 		]
 	},
 	"geodude": {
@@ -347,6 +388,15 @@
 			[21, "self_destruct"], [29, "harden"], [36, "earthquake"], [43, "explosion"]
 		]
 	},
+	"shellder": {
+		"dex": 90, "name": "Kokiyas", "types": ["water"],
+		"base_stats": { "hp": 30, "atk": 65, "def": 100, "spa": 45, "spd": 25, "spe": 40 },
+		"male_ratio": 0.5, "growth_rate": "slow", "base_exp": 61, "catch_rate": 190,
+		"learnset": [
+			[1, "tackle"], [1, "withdraw"], [18, "supersonic"], [23, "clamp"],
+			[30, "aurora_beam"], [39, "leer"], [50, "ice_beam"]
+		]
+	},
 	"onix": {
 		"dex": 95, "name": "Onix", "types": ["rock", "ground"],
 		"base_stats": { "hp": 35, "atk": 45, "def": 160, "spa": 30, "spd": 45, "spe": 70 },
@@ -354,6 +404,41 @@
 		"learnset": [
 			[1, "tackle"], [1, "screech"], [15, "bind"], [19, "rock_throw"], [25, "rage"],
 			[33, "slam"], [43, "harden"]
+		]
+	},
+	"horsea": {
+		"dex": 116, "name": "Hypotrempe", "types": ["water"],
+		"base_stats": { "hp": 30, "atk": 40, "def": 70, "spa": 70, "spd": 25, "spe": 60 },
+		"male_ratio": 0.5, "growth_rate": "medium_fast", "base_exp": 59, "catch_rate": 225,
+		"learnset": [
+			[1, "bubble"], [19, "smokescreen"], [24, "leer"], [30, "water_gun"],
+			[37, "agility"], [45, "hydro_pump"]
+		]
+	},
+	"goldeen": {
+		"dex": 118, "name": "Poissirène", "types": ["water"],
+		"base_stats": { "hp": 45, "atk": 67, "def": 60, "spa": 35, "spd": 50, "spe": 63 },
+		"male_ratio": 0.5, "growth_rate": "medium_fast", "base_exp": 64, "catch_rate": 225,
+		"learnset": [
+			[1, "peck"], [1, "tail_whip"], [19, "supersonic"], [24, "horn_attack"],
+			[30, "fury_attack"], [37, "waterfall"], [45, "horn_drill"], [54, "agility"]
+		]
+	},
+	"staryu": {
+		"dex": 120, "name": "Stari", "types": ["water"],
+		"base_stats": { "hp": 30, "atk": 45, "def": 55, "spa": 70, "spd": 55, "spe": 85 },
+		"male_ratio": -1, "growth_rate": "slow", "base_exp": 68, "catch_rate": 225,
+		"learnset": [
+			[1, "tackle"], [17, "water_gun"], [22, "harden"], [27, "recover"], [32, "swift"],
+			[37, "minimize"], [42, "light_screen"], [47, "hydro_pump"]
+		]
+	},
+	"starmie": {
+		"dex": 121, "name": "Staross", "types": ["water", "psychic"],
+		"base_stats": { "hp": 60, "atk": 75, "def": 85, "spa": 100, "spd": 85, "spe": 115 },
+		"male_ratio": -1, "growth_rate": "slow", "base_exp": 182, "catch_rate": 60,
+		"learnset": [
+			[1, "tackle"], [1, "water_gun"], [1, "harden"]
 		]
 	}
 }

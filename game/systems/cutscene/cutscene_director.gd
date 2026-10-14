@@ -36,6 +36,8 @@ extends Node
 ## par [method set_trainers]) et étape « badge » (drapeau du badge, légende « BADGE ROCHE » tenue
 ## [constant UiTokens.BADGE_CAPTION_HOLD] avec une vibration légère, Grand moment « badge » une
 ## seule fois par badge ; badges et état de la partie branchés par [method set_badges]).
+## Jalon 12 (`jalon-12.md` §2.13, T23) : étape « moment » (Grand moment enregistré une seule fois
+## par type et détails, dans l'état de la partie de [method set_badges] ; rien d'affiché).
 
 signal cutscene_started(cutscene_id: StringName)
 ## Début d'une étape (tests, outils de capture).
@@ -353,6 +355,8 @@ func _play_step(source_step: CutsceneStep) -> bool:
 			await _champion_card(step)
 		CutsceneStep.Kind.BADGE:
 			await _badge(step)
+		CutsceneStep.Kind.MOMENT:
+			_moment(step)
 		_:
 			_step_error("étape « %s » inconnue" % CutsceneStep.kind_name(step.kind))
 	return true
@@ -973,3 +977,40 @@ func _on_player_moved(cell: Vector2i) -> void:
 	var trigger := _map.get_triggers().find_on_step(cell, _player.get_facing())
 	if trigger != null:
 		play(trigger.cutscene_id)
+
+
+## Étape « moment » (jalon 12, T23 ; `jalon-12.md` §2.13) : Grand moment [member
+## CutsceneStep.moment_type] avec [member CutsceneStep.moment_details] sur la carte courante
+## ([code]GameState.record_moment[/code]), **une seule fois** par type et détails
+## ([method has_moment]) : rejouer la scène n'en ajoute pas un second. Sans état de la partie
+## ([method set_badges]) : push_error, étape sautée.
+func _moment(step: CutsceneStep) -> void:
+	if _state == null:
+		_step_error("pas d'état de la partie pour le moment « %s »" % step.moment_type)
+		return
+	if has_moment(_state.moments, step.moment_type, step.moment_details):
+		return
+	var map_id: StringName = _map.map_id if is_instance_valid(_map) else &""
+	_state.record_moment(step.moment_type, map_id, step.moment_details)
+
+
+## Vrai si [param moments] (GameState.moments) contient un moment de [param type] dont les
+## détails ont exactement les clés de [param details], aux mêmes valeurs (comparées en texte :
+## une sauvegarde relue rend des chaînes).
+static func has_moment(moments: Array[Dictionary], type: StringName,
+		details: Dictionary) -> bool:
+	for moment: Dictionary in moments:
+		if str(moment.get("type", "")) != String(type):
+			continue
+		var recorded: Variant = moment.get("details")
+		if not recorded is Dictionary or (recorded as Dictionary).size() != details.size():
+			continue
+		var same := true
+		for key: Variant in details:
+			var other: Dictionary = recorded
+			if not other.has(str(key)) or str(other[str(key)]) != str(details[key]):
+				same = false
+				break
+		if same:
+			return true
+	return false

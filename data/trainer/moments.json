@@ -19,6 +19,10 @@
 		"badge": {
 			"title": "{badge}",
 			"detail": "Obtenu à {city} contre {leader}."
+		},
+		"fossil": {
+			"title": "La Team Rocket repoussée",
+			"detail": "{fossil} obtenu."
 		}
 	},
 	"outcomes": {
@@ -37,6 +41,10 @@
 		"pewter_city": {
 			"title": "Arrivée à Argenta",
 			"detail": "Une ville de pierre, au pied des montagnes."
+		},
+		"cerulean_city": {
+			"title": "Arrivée à Azuria",
+			"detail": "Une ville d'eau et de lumière."
 		}
 	}
 }

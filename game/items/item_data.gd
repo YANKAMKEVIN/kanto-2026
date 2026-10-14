@@ -12,12 +12,16 @@ extends RefCounted
 ## - BALL (CAPTURE) : se lance en combat sauvage ;
 ## - HEAL (SOINS) : se donne à un Pokémon de l'équipe, en exploration et en combat ;
 ## - BATTLE (COMBAT) : en combat seulement (« Utilisable en combat » hors combat) ;
-## - FIELD (AVENTURE) : en exploration seulement ;
-## - KEY (OBJETS CLÉS) : jamais « utilisé », jamais vendu ni jeté.
-enum Category { BALL, HEAL, BATTLE, FIELD, KEY }
+## - FIELD (AVENTURE) : en exploration seulement, **et seulement s'il a un usage**
+##   ([member field_use]) : sans usage (la Pépite, jalon 13 §2.13), aucun contexte, donc pas de
+##   bouton UTILISER ;
+## - KEY (OBJETS CLÉS) : jamais « utilisé », jamais vendu ni jeté ;
+## - TM (CT, jalon 11, dossier 14 §6) : enseigne [member teaches] à un Pokémon compatible, hors
+##   combat seulement ; **permanente** (jamais consommée, une seule dans le Sac) ; jamais vendue.
+enum Category { BALL, HEAL, BATTLE, FIELD, KEY, TM }
 
 ## Nom de chaque catégorie dans les fichiers, dans l'ordre de [enum Category].
-const CATEGORY_NAMES: Array[String] = ["ball", "heal", "battle", "field", "key"]
+const CATEGORY_NAMES: Array[String] = ["ball", "heal", "battle", "field", "key", "tm"]
 ## Contextes d'usage (jalon-06.md §3.4) : exploration (menu, fiche Équipe comprise), combat
 ## sauvage, combat de dresseur. Mêmes valeurs que [constant MenuRoute.BAG_CONTEXT_FIELD] et
 ## que les contextes de [BagQuery].
@@ -30,6 +34,13 @@ const ADDED_SUFFIX := " au Sac"
 ## Toast d'un objet clé (dossier 09 §19 : « COLIS POUR CHEN — ajouté aux objets clés »).
 const KEY_ADDED_BASE := "ajouté"
 const KEY_ADDED_SUFFIX := " aux objets clés"
+## Toast d'une CT (dossier 14 §13, n° 40 : « CT34 — Patience obtenue »).
+const TM_ADDED_BASE := "obtenu"
+## Usages d'un objet AVENTURE (jalon 12, T20 ; [member field_use]) : la Corde Sortie (sans cible,
+## [FieldItemRules]) et la pierre d'évolution (un Pokémon cible, T23). Ajouts en fin.
+const FIELD_USE_ESCAPE_ROPE: StringName = &"escape_rope"
+const FIELD_USE_EVOLUTION_STONE: StringName = &"evolution_stone"
+const FIELD_USES: Array[StringName] = [FIELD_USE_ESCAPE_ROPE, FIELD_USE_EVOLUTION_STONE]
 
 var id: StringName = &""
 ## Nom au singulier (« Poké Ball ») et au pluriel (« Poké Balls »).
@@ -53,9 +64,22 @@ var source: String = ""
 ## Prix d'achat en ₽ (dossier 09 §10, jalon-07.md §3.4) ; 0 = jamais vendu en Boutique ni
 ## repris. Un objet clé n'a jamais de prix ([ItemLibrary] le refuse).
 var price: int = 0
+## CT (catégorie TM) : numéro (1 à 50, « CT34 ») et capacité enseignée ; 0 et &"" ailleurs.
+var tm_number: int = 0
+var teaches: StringName = &""
 ## Rang dans les données (0, 1, 2… dans l'ordre de lecture des fichiers) : ordre « pertinence »
 ## du Sac hors combat. Posé par [ItemLibrary].
 var order: int = 0
+## Usage en exploration d'un objet AVENTURE (jalon 12, T20 ; [constant FIELD_USES]) : &"" =
+## aucun (l'objet se consulte, sans bouton UTILISER). Clé « field_use » des données, réservée à
+## la catégorie AVENTURE. Sans usage (la Pépite, jalon 13), [method contexts] est vide : c'est la
+## seule condition qui retire UTILISER (le Sac et [ItemUse] la lisent par [method usable_in]).
+var field_use: StringName = &""
+## Toast « obtenu » (jalon 12, T23 ; `jalon-12.md` §0.4 n° 7) : vrai → le toast d'ajout est celui
+## d'une CT, nom en casse normale puis « obtenu[e] » (les fossiles, dossier 15 §20 n° 27 :
+## « Fossile Dôme » / « obtenu ») au lieu de « ajouté aux objets clés ». Clé « obtained » des
+## données, facultative (faux par défaut).
+var obtained: bool = false
 
 
 ## Identifiant de la catégorie dans les fichiers (&"ball", &"heal"…) : onglet du Sac.
@@ -64,7 +88,7 @@ func category_id() -> StringName:
 
 
 ## Contextes où l'objet sert (jalon-06.md §3.4), déduits de sa catégorie : un objet clé n'en a
-## aucun.
+## aucun, un objet AVENTURE sans [member field_use] non plus.
 func contexts() -> Array[StringName]:
 	match category:
 		Category.BALL:
@@ -74,6 +98,10 @@ func contexts() -> Array[StringName]:
 		Category.BATTLE:
 			return [CONTEXT_WILD_BATTLE, CONTEXT_TRAINER_BATTLE]
 		Category.FIELD:
+			if field_use.is_empty():
+				return []
+			return [CONTEXT_FIELD]
+		Category.TM:
 			return [CONTEXT_FIELD]
 	return []
 
@@ -95,25 +123,42 @@ func cures_status(status: StringName) -> bool:
 	return status != StatusRules.NONE and cures.has(status)
 
 
+## CT (jalon 11) : enseigne une capacité ([member teaches]).
+func is_tm() -> bool:
+	return category == Category.TM
+
+
+## Objet permanent (les CT) : jamais consommé par un usage, une seule fois dans le Sac.
+func is_permanent() -> bool:
+	return category == Category.TM
+
+
 ## Nom accordé à [param count] : singulier pour 1, pluriel au-delà.
 func name_for(count: int) -> String:
 	return name if count <= 1 else plural
 
 
 ## « Poké Balls ×5 », « Poké Ball ×1 » ; un objet clé, unique, n'a que son nom en capitales
-## (« COLIS POUR CHEN », dossier 09 §19).
+## (« COLIS POUR CHEN », dossier 09 §19) ; une CT ou un objet [member obtained], son nom tel quel.
 func quantity_text(count: int) -> String:
+	if is_tm() or obtained:
+		return name
 	if is_key():
 		return name.to_upper()
 	return "%s ×%d" % [name_for(count), count]
 
 
 ## « Ajoutée au Sac », « Ajoutées au Sac », « Ajouté au Sac »… accordé au genre du nom et à
-## [param count] ; un objet clé : « ajouté aux objets clés » (dossier 09 §19).
+## [param count] ; un objet clé : « ajouté aux objets clés » (dossier 09 §19) ; une CT ou un objet
+## [member obtained] : « obtenu[e] ».
 func added_text(count: int) -> String:
 	var agreement := ("e" if feminine else "") + ("s" if count > 1 else "")
+	if obtained:
+		return TM_ADDED_BASE + agreement
 	if is_key():
 		return KEY_ADDED_BASE + agreement + KEY_ADDED_SUFFIX
+	if is_tm():
+		return TM_ADDED_BASE + agreement
 	return ADDED_BASE + agreement + ADDED_SUFFIX
 
 
@@ -122,12 +167,18 @@ func is_key() -> bool:
 	return category == Category.KEY
 
 
-## Vrai si la Boutique peut reprendre l'objet : il a un prix et ce n'est pas un objet clé.
+## Vrai si la Boutique peut reprendre l'objet : il a un prix et n'est pas permanent (objet clé,
+## CT).
 func is_sellable() -> bool:
-	return price > 0 and not is_key()
+	return price > 0 and not is_key() and not is_permanent()
 
 
 ## Prix de reprise en ₽ : la moitié du prix, arrondie en dessous (Rouge/Bleu) ; 0 si l'objet
 ## ne se vend pas.
 func sell_price() -> int:
 	return floori(price / 2.0) if is_sellable() else 0
+
+
+## Vrai si l'objet a un usage en exploration (jalon 12 : UTILISER d'un objet AVENTURE).
+func has_field_use() -> bool:
+	return category == Category.FIELD and not field_use.is_empty()

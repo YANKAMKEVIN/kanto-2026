@@ -6,7 +6,8 @@ extends PanelContainer
 ## TYPE_COLORS, pour la couleur et l'icône) et le nom à afficher (« Feu »). Un type sans
 ## icône n'affiche que son nom ; un type sans couleur prend TYPE_COLOR_UNKNOWN.
 
-## Icônes disponibles (CB.2 : Électrik et huit autres ; Dragon, Ténèbres, Acier, Fée : icône neutre).
+## Icônes disponibles (CB.2 : Électrik et huit autres ; Fée au jalon 12, T14 ; Dragon, Ténèbres,
+## Acier : icône neutre).
 const ICONS: Dictionary[StringName, Texture2D] = {
 	&"normal": preload("res://assets/ui/icons/types/normal.svg"),
 	&"grass": preload("res://assets/ui/icons/types/grass.svg"),
@@ -22,6 +23,7 @@ const ICONS: Dictionary[StringName, Texture2D] = {
 	&"psychic": preload("res://assets/ui/icons/types/psychic.svg"),
 	&"ghost": preload("res://assets/ui/icons/types/ghost.svg"),
 	&"fighting": preload("res://assets/ui/icons/types/fighting.svg"),
+	&"fairy": preload("res://assets/ui/icons/types/fairy.svg"),
 }
 
 var _type_id: StringName = &""
