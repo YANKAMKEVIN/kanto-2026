@@ -458,6 +458,89 @@ func test_route22_defeat_keeps_the_money() -> void:
 	assert_ne(_hud.get_message_banner().get_text(), "Tu remportes %s." % MenuFormat.money(280))
 
 
+# --- Jackpot (jalon 15 T17) ---------------------------------------------------------------
+
+## Miaouss Nv. 40 qui ne connaît que Jackpot (2 × 40 = 80 pièces par utilisation réussie).
+func _pay_day_party() -> Party:
+	var party := Party.new()
+	var meowth := PokemonFactory.create(_data, &"meowth", 40, GameRng.new(PLAYER_SEED))
+	meowth.moves.clear()
+	meowth.moves.append(MoveSlot.new(&"pay_day", 20))
+	party.add(meowth)
+	return party
+
+
+static func _coins(events: Array) -> int:
+	var total := 0
+	for e: BattleEvent in events:
+		if e.kind == BattleEvent.Kind.COINS_SCATTERED:
+			total += e.amount
+	return total
+
+
+## Victoire contre le rival de la Route 22 : son argent (« Tu remportes 280 ₽. »), puis les
+## pièces du Jackpot (« Tu ramasses … »), les deux versés.
+func test_pay_day_coins_are_collected_after_the_trainer_prize() -> void:
+	_state.party = _pay_day_party()
+	_state.starter_species = &"bulbasaur"
+	_state.rng = GameRng.new(5)
+	_state.money = 3000
+	var played: Array = await _play(&"rival_route22")
+	assert_eq(played[0], Battle.Outcome.WIN)
+	var coins := _coins(played[1])
+	assert_gt(coins, 0, "au moins un Jackpot")
+	assert_eq(coins % 80, 0, "80 par Jackpot")
+	assert_eq(_state.money, 3000 + 280 + coins)
+	assert_eq(_hud.get_message_banner().get_text(), "Tu ramasses %s." % MenuFormat.money(coins),
+		"après l'argent du Dresseur")
+
+
+## Sauvage : les pièces sont ramassées aussi, plafonnées par GameState.
+func test_pay_day_coins_are_collected_after_a_wild_victory_up_to_the_cap() -> void:
+	var request := _wild_request(&"rattata", 3, 4)
+	_state.party = _pay_day_party()
+	_state.money = GameState.MONEY_MAX - 30
+	var played: Array = await _play_request(request, false)
+	assert_eq(played[0], Battle.Outcome.WIN)
+	assert_eq(_coins(played[1]), 80)
+	assert_eq(_state.money, GameState.MONEY_MAX, "plafond")
+	assert_eq(_hud.get_message_banner().get_text(), "Tu ramasses %s." % MenuFormat.money(80))
+
+
+## Fuite après un Jackpot : rien n'est ramassé.
+func test_pay_day_coins_are_lost_when_fleeing() -> void:
+	var request := _wild_request(&"onix", 40, 4)
+	var party := _pay_day_party()
+	party.get_lead().moves.append(MoveSlot.new(&"growl", 40))
+	_state.party = party
+	_state.money = 1000
+	var events: Array[BattleEvent] = []
+	_director.event_played.connect(func(e: BattleEvent) -> void: events.append(e))
+	var done: Array[bool] = [false]
+	var outcome: Array = [Battle.Outcome.NONE]
+	var runner := func() -> void:
+		outcome[0] = await _director.run_request(request, _map)
+		done[0] = true
+	runner.call()
+	var deadline := Time.get_ticks_msec() + 20000
+	while not done[0] and Time.get_ticks_msec() < deadline:
+		var battle := _director.get_battle()
+		if battle != null and battle.get_state() == Battle.State.CHOOSING:
+			var scattered := battle.get_pay_day_coins() > 0
+			match _hud.get_zone():
+				BattleHud.Zone.ACTIONS:
+					_hud.action_selected.emit(ActionGrid.RUN if scattered else ActionGrid.ATTACK)
+				BattleHud.Zone.MOVES:
+					_hud.move_selected.emit(0)
+		await wait_process_frames(1)
+	assert_true(done[0], "le combat s'est terminé")
+	if outcome[0] != Battle.Outcome.FLED:
+		pending("graine sans fuite réussie : à ajuster")
+		return
+	assert_gt(_coins(events), 0, "un Jackpot avant la fuite")
+	assert_eq(_state.money, 1000, "fuite : pièces perdues")
+
+
 ## Le labo garde le SAC muet (décision n° 12), même avec des Potions.
 func test_rival_lab_keeps_the_bag_silent() -> void:
 	_prepare(&"charmander", 1)

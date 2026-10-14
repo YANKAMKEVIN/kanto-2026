@@ -87,18 +87,21 @@ func test_tm_compatibility_was_regenerated() -> void:
 	assert_true(_data.can_learn_tm(&"persian", 15))
 
 
-# --- Jackpot (donnée seulement) ---------------------------------------------------------
+# --- Jackpot ---------------------------------------------------------------------------
 
-func test_pay_day_is_data_with_its_effect_pending() -> void:
+func test_pay_day_carries_its_coins_effect() -> void:
 	var move := _data.get_move(&"pay_day")
 	assert_not_null(move)
 	if move == null:
 		return
 	assert_eq([move.name, move.type, move.category, move.power, move.accuracy, move.pp],
 		["Jackpot", &"normal", MoveData.Category.PHYSICAL, 40, 100, 20])
-	# T17 (après le J12) remplace pending_effects par { kind: coins, per_level: 2 }.
-	assert_eq(move.pending_effects, PackedStringArray(["pay_day"]))
-	assert_eq(move.effects.size(), 0, "aucun effet moteur avant le T17")
+	# T17 : l'effet { kind: coins, per_level: 2 } remplace pending_effects.
+	assert_eq(move.pending_effects, PackedStringArray())
+	var coins := move.effect_of(MoveEffect.Kind.COINS)
+	assert_not_null(coins, "effet COINS")
+	if coins != null:
+		assert_eq(coins.per_level, PayDayPurse.RB_PER_LEVEL, "2 × niveau (Rouge/Bleu)")
 	assert_true(_validated("T-39").has(move.description), "description T-39")
 
 

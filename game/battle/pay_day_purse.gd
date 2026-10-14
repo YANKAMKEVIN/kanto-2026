@@ -37,6 +37,9 @@ func total() -> int:
 ## Pièces ramassées pour l'issue [param outcome] ([enum Battle.Outcome]) : le total après une
 ## victoire ou une capture, 0 sinon.
 func collected(outcome: int) -> int:
-	if outcome == Battle.Outcome.WIN or outcome == Battle.Outcome.CAUGHT:
-		return _total
-	return 0
+	return _total if is_collected(outcome) else 0
+
+
+## Vrai si les pièces sont ramassées à l'issue [param outcome] : victoire ou capture [D].
+static func is_collected(outcome: int) -> bool:
+	return outcome == Battle.Outcome.WIN or outcome == Battle.Outcome.CAUGHT

@@ -114,6 +114,10 @@ extends RefCounted
 ## - SELF_KO : Destruction, Explosion : le lanceur perd ses [member amount] derniers PV
 ##   ([member hp] = 0) après les effets de sa capacité ; suivent le FAINTED de la cible (si elle
 ##   tombe) puis le sien. Pas de phrase (« … est K.O. ! » est celle du FAINTED).
+## Jalon 15 (`jalon-15.md` §2.7.3) :
+## - COINS_SCATTERED : Jackpot réussi du joueur (camp PLAYER, le lanceur), juste après ses
+##   dégâts ; [member amount] = pièces éparpillées par ce Jackpot (niveau × « per_level »). Le
+##   Jackpot de l'adversaire n'en émet aucun (il ne rapporte rien au joueur).
 ## Tous les autres événements sur un Pokémon portent dans [member status] son statut au moment
 ## de l'événement (SENT_OUT : la carte de PV l'affiche dès l'entrée ; FAINTED : toujours vide,
 ## le K.O. efface le statut).
@@ -131,6 +135,7 @@ enum Kind {
 	MULTI_HIT, FLINCHED, FOCUSED,
 	BIDE_STARTED, BIDE_STORING, BIDE_UNLEASHED, BIDE_BROKEN,
 	DRAINED_HP, TRAPPED, TRAP_DAMAGED, TRAP_ENDED, MOVE_DISABLED, DISABLE_ENDED, RESTED, SELF_KO,
+	COINS_SCATTERED,
 }
 enum SideId { PLAYER, FOE }
 

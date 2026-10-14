@@ -95,6 +95,10 @@ extends RefCounted
 ## lanceur perd si les deux derniers Pokémon tombent ensemble), Sonicboom (dégâts fixes
 ## « value »). Tirages ajoutés : range_int des tours du piège, après ceux des dégâts. Fin de tour,
 ## pour chaque camp (le joueur d'abord) : graine, statut, piège, Entrave.
+## Jackpot (jalon 15, `jalon-15.md` §2.7.3) : effet COINS, après les dégâts d'un coup réussi du
+## joueur (même si la cible tombe) : COINS_SCATTERED, pièces ajoutées à la bourse du combat
+## ([PayDayPurse], [method get_pay_day_coins]) ; celui de l'adversaire ne fait rien. Le moteur
+## ne verse rien : [BattleConclusion] décide selon l'issue. Aucun tirage propre.
 
 ## REPLACING (jalon 7) : le Pokémon du joueur est K.O., il doit en choisir un autre
 ## ([method replace]) ; ajouté en fin d'enum.
@@ -129,6 +133,8 @@ var _participants: Array[Pokemon] = []
 var _acted: Array[Battler] = []
 ## Dégâts portés par la dernière capacité offensive ([method _strike]) : drain (jalon 12).
 var _strike_damage: int = 0
+## Pièces du Jackpot éparpillées par le joueur pendant ce combat (jalon 15).
+var _purse: PayDayPurse = PayDayPurse.new()
 
 
 ## [param rules] : les règles du combat ([BattleRules]) ; null = comportement du 4B (combat
@@ -169,6 +175,12 @@ func get_player_side() -> BattleSide:
 
 func get_foe_side() -> BattleSide:
 	return _foe
+
+
+## Pièces du Jackpot éparpillées par le joueur depuis le début du combat (versées ou non selon
+## l'issue : [method BattleConclusion.resolve]).
+func get_pay_day_coins() -> int:
+	return _purse.total()
 
 
 ## Participants actuels : Pokémon du joueur envoyés contre l'adversaire en jeu (copie).
@@ -880,6 +892,8 @@ func _apply_effect(effect: MoveEffect, move: MoveData, side: BattleSide,
 			_rest(move, side, events)
 		MoveEffect.Kind.SELF_KO:
 			pass
+		MoveEffect.Kind.COINS:
+			_scatter_coins(effect, side, events)
 
 
 ## Effet [code]confusion[/code] (jalon 11) sur le Pokémon de [param target_side] : comme un
@@ -1268,3 +1282,14 @@ func _self_ko(move: MoveData, side: BattleSide, target_side: BattleSide,
 	_faint(side, events)
 	_check_end(target_side, events)
 	return true
+
+
+## Jackpot (jalon 15) : pièces de [param effect] éparpillées par le lanceur de [param side] ;
+## seulement celles du joueur (COINS_SCATTERED, [member BattleEvent.amount]).
+func _scatter_coins(effect: MoveEffect, side: BattleSide, events: Array[BattleEvent]) -> void:
+	var amount := _purse.add(side.active.pokemon.level, effect.per_level, side == _player)
+	if amount <= 0:
+		return
+	var scattered := _event(BattleEvent.Kind.COINS_SCATTERED, side)
+	scattered.amount = amount
+	events.append(scattered)

@@ -48,10 +48,15 @@ extends RefCounted
 ## statut, récupère tous ses PV et dort deux tours ([method StatusRules.apply_rest]). SELF_KO : le
 ## lanceur tombe K.O. après sa capacité (Destruction, Explosion). FIXED_DAMAGE « value » : dégâts
 ## fixes [member amount] (Sonicboom).
+## Jalon 15 (`jalon-15.md` §2.7.3, dossier 18 §10.2) : [code]{ "kind": "coins", "per_level": 2 }
+## [/code]. COINS (Jackpot) : chaque utilisation réussie **du camp du joueur** éparpille
+## [member per_level] × niveau du lanceur pièces ([PayDayPurse]), ramassées à la fin d'un combat
+## gagné ou d'une capture ([BattleConclusion]) ; le Jackpot de l'adversaire ne rapporte rien.
 
 enum Kind {
 	STAT_STAGE, RECOIL, SEED, STATUS, CONFUSION, HITS, FLINCH, CRIT_UP, FIXED_DAMAGE, BIDE,
 	DRAIN, TRAP, DISABLE, REST, SELF_KO,
+	COINS,
 }
 enum Target { SELF, FOE }
 
@@ -63,6 +68,7 @@ const KIND_NAMES: Dictionary[String, Kind] = {
 	"bide": Kind.BIDE,
 	"drain": Kind.DRAIN, "trap": Kind.TRAP, "disable": Kind.DISABLE, "rest": Kind.REST,
 	"self_ko": Kind.SELF_KO,
+	"coins": Kind.COINS,
 }
 ## Modes de FIXED_DAMAGE.
 const FIXED_MODES: Array[StringName] = [&"half_hp", &"level", &"value"]
@@ -104,3 +110,5 @@ var max_turns: int = 0
 var messages: StringName = &""
 ## FIXED_DAMAGE « value » : dégâts infligés.
 var amount: int = 0
+## COINS : pièces par niveau du lanceur (Rouge/Bleu : 2, [constant PayDayPurse.RB_PER_LEVEL]).
+var per_level: int = 0
