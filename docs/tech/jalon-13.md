@@ -1289,7 +1289,11 @@ et de l'annexe A validée.
     au N17–18. **Ondine** : Bulbizarre ≈ 90 % ; **Salamèche et Carapuce 0 %** aux niveaux
     d'arrivée, même après la Route 24 nord (Carapuce : N22 ; Salamèche : Mystherbe et N22). Pont :
     ≈ 27 tours, usure sans blocage.
-  - Recommandations (Kevin tranche : Q-T20-1 à 3) : rival en IA `random` + Roucoups N16
+  - **Recommandation finale, IA `smart` gardée** (§5 bis du rapport, dossier 09 §14) : rival
+    (b) Roucoups 16, Rattata 14, starter 16, et contre Bulbizarre (h) Roucool 15, Rattata 14,
+    Salamèche 15 (≥ 76 % au N18 pour chaque starter) ; Ondine (b) Staross N19 (N20 : 49–84 %,
+    N22 : ≥ 97 %, Salamèche avec Mystherbe). Kevin tranche (Q-T20-1 à 3).
+  - Première passe (rappel, écartée : contredit `smart`) : rival en IA `random` + Roucoups N16
     (Herbizarre 18 / 20 : 54–73 / 93–98 %) ; Ondine en IA `random` (Carabaffe 20 : 52–69 %,
     Reptincel 20 + Mystherbe 16 : 92–95 %) ; garder le pont, la Route 4 et l'Arène.
   - Outil (`tools/simulate_mt_moon.gd`) : l'IA des Dresseurs à `switch` change de Pokémon comme en
