@@ -134,16 +134,16 @@
 			"prize_money": 0, "prize_per_level": 35, "bag": true,
 			"team_by_starter": {
 				"bulbasaur": [
-					{ "species": "pidgeotto", "level": 18 }, { "species": "rattata", "level": 15 },
-					{ "species": "charmeleon", "level": 17 }
+					{ "species": "pidgey", "level": 15 }, { "species": "rattata", "level": 14 },
+					{ "species": "charmeleon", "level": 15 }
 				],
 				"charmander": [
-					{ "species": "pidgeotto", "level": 18 }, { "species": "rattata", "level": 15 },
-					{ "species": "wartortle", "level": 17 }
+					{ "species": "pidgeotto", "level": 16 }, { "species": "rattata", "level": 14 },
+					{ "species": "wartortle", "level": 16 }
 				],
 				"squirtle": [
-					{ "species": "pidgeotto", "level": 18 }, { "species": "rattata", "level": 15 },
-					{ "species": "ivysaur", "level": 17 }
+					{ "species": "pidgeotto", "level": 16 }, { "species": "rattata", "level": 14 },
+					{ "species": "ivysaur", "level": 16 }
 				]
 			}
 		},
@@ -152,7 +152,7 @@
 			"can_lose": false, "heal_after": false, "gives_exp": true, "prize_money": 2100,
 			"team": [
 				{ "species": "staryu", "level": 18, "moves": ["tackle", "water_gun"] },
-				{ "species": "starmie", "level": 21,
+				{ "species": "starmie", "level": 19,
 					"moves": ["tackle", "water_gun", "harden", "bubble_beam"] }
 			]
 		},

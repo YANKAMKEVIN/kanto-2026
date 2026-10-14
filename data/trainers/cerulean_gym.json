@@ -17,7 +17,7 @@
 		"team": [
 			{ "species": "staryu", "level": 18, "moves": ["tackle", "water_gun"] },
 			{
-				"species": "starmie", "level": 21,
+				"species": "starmie", "level": 19,
 				"moves": ["tackle", "water_gun", "harden", "bubble_beam"]
 			}
 		]

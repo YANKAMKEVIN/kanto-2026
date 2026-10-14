@@ -369,9 +369,11 @@ Capacités apprises au niveau.
 
 | Starter du joueur | Équipe du rival (ordre d'envoi) |
 |---|---|
-| Bulbizarre | Roucoups Nv. 18, Rattata Nv. 15, **Reptincel** Nv. 17 |
-| Salamèche | Roucoups Nv. 18, Rattata Nv. 15, **Carabaffe** Nv. 17 |
-| Carapuce | Roucoups Nv. 18, Rattata Nv. 15, **Herbizarre** Nv. 17 |
+| Bulbizarre | Roucool Nv. 15, Rattata Nv. 14, **Reptincel** Nv. 15 |
+| Salamèche | Roucoups Nv. 16, Rattata Nv. 14, **Carabaffe** Nv. 16 |
+| Carapuce | Roucoups Nv. 16, Rattata Nv. 14, **Herbizarre** Nv. 16 |
+
+> **Niveaux validés par Kevin le 2026-10-14** après la simulation T20 (`docs/tech/jalon-13-equilibrage.md` §5 bis, E-1 et E-2 option g) : IA `smart` et changement gardés ; contre Bulbizarre, le rival garde un Reptincel évolué mais plus bas (mur doux : un peu d'entraînement sur la Route 4). Principe : le rival obligatoire se bat au niveau du chemin ; Ondine peut demander un peu d'entraînement.
 
 - Ce sont les **niveaux de base RB**, à recaler au plan avec l'outil de simulation du J12.
 - **Le Rattata entre ici dans l'équipe** et prépare le tournant de Lavanville (dossier 06 §6).
@@ -453,7 +455,9 @@ central est entouré de **chemins secs** ; plongeoir, gradins légers, verrière
   | Pokémon | Capacités |
   |---|---|
   | Stari Nv. 18 | Charge, Pistolet à O |
-  | Staross Nv. 21 | Charge, Pistolet à O, Armure, Bulles d'O |
+  | Staross Nv. 19 | Charge, Pistolet à O, Armure, Bulles d'O |
+
+  (Staross Nv. 19 au lieu de 21 : validé par Kevin le 2026-10-14, T20 E-3 option b.)
 
 - **Leçon** (dossier 06 §3) :
   - **composition d'équipe** : deux Pokémon rapides et offensifs ;
@@ -849,7 +853,7 @@ le dépôt.
 |---|---|
 | Périmètre | Route 4 + Azuria + Arène + Route 24 (pont, espace nord) ; Route 25, Léo, cambriolage résolu au J14 |
 | Rival n° 3 | Au pied du pont, inévitable, **victoire obligatoire**, rejouable ; Roucoups, Rattata, starter évolué ; un seul Grand moment, à la victoire |
-| Ondine | Au pont avant le rival, invite le joueur après sa victoire ; Stari 18, Staross 21 ; change de Pokémon une fois au plus |
+| Ondine | Au pont avant le rival, invite le joueur après sa victoire ; Stari 18, Staross 19 (T20) ; change de Pokémon une fois au plus |
 | Arène | Ouverte dès l'arrivée ; deux Dresseurs combattables ; ni puzzle ni nage |
 | Badge Cascade | Inscription, Grand moment, aucun bonus caché ; CT11 Bulles d'O |
 | Pont Pépite | 5 Dresseurs inévitables, gardés battus ; recruteur : Pépite, choix sans branche, combat |

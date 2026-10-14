@@ -3,8 +3,9 @@ extends GutTest
 ## n° 28 à 32), avec la vraie scène Boot, la vraie carte, la vraie scène `route_24_rival`, l'autoload
 ## SceneRouter (fondus raccourcis), le combat instantané et une sauvegarde en mémoire :
 ## - la vue est inévitable (aucun chemin du couloir d'Azuria à la place du pont hors de ses cases) ;
-## - l'équipe selon le starter (Roucoups 18, Rattata 15, évolution 17), IA `smart` avec `switch`,
-##   595 ₽, `moment: "win"` ;
+## - l'équipe selon le starter (Roucoups 16, Rattata 14, évolution 16 ; contre Bulbizarre : Roucool 15,
+##   Rattata 14, Reptincel 15), IA `smart` avec `switch`,
+##   35 ₽ × dernier niveau, `moment: "win"` (niveaux validés par Kevin le 2026-10-14, T20) ;
 ## - première rencontre : « ! », il vient au joueur, n° 28 puis combat ; défaite → n° 29, réveil au
 ##   dernier Centre, rival toujours là, aucun argent perdu ; retour → n° 30 sans introduction ;
 ##   deuxième défaite puis retour → n° 31 ; victoire → n° 32, départ, absent au rechargement ;
@@ -220,11 +221,13 @@ func test_the_team_follows_the_starter_and_the_trainer_is_smart_with_switch() ->
 			continue
 		var all := team.get_all()
 		assert_eq(all.size(), 3, "trois Pokémon, pas d'Abra (D-6)")
-		assert_eq([all[0].species_id, all[0].level], [&"pidgeotto", 18])
-		assert_eq([all[1].species_id, all[1].level], [&"rattata", 15])
-		assert_eq([all[2].species_id, all[2].level], [expected[starter], 17])
+		var first: Array = [&"pidgey", 15] if starter == &"bulbasaur" else [&"pidgeotto", 16]
+		var last_level := 15 if starter == &"bulbasaur" else 16
+		assert_eq([all[0].species_id, all[0].level], first)
+		assert_eq([all[1].species_id, all[1].level], [&"rattata", 14])
+		assert_eq([all[2].species_id, all[2].level], [expected[starter], last_level])
 		assert_true(all.all(func(p: Pokemon) -> bool: return p.species_id != &"abra"))
-		assert_eq(trainer.prize_per_level * all[all.size() - 1].level, 595, "35 × 17")
+		assert_eq(trainer.prize_per_level * all[all.size() - 1].level, 35 * last_level)
 
 
 ## Le changement de Pokémon (T12) joué avec les vraies données : Roucoups craint l'Électrik, le
@@ -338,7 +341,7 @@ func test_first_meeting_defeats_resumes_and_victory_with_a_single_moment() -> vo
 	_assert_lines(WIN_LINES, true, "victoire")
 	_assert_lines(LOST_LINES, false, "victoire")
 	assert_true(GameState.flags.has_flag(&"rival_cerulean_won"))
-	assert_eq(GameState.money, before + 595, "35 × Nv. 17")
+	assert_eq(GameState.money, before + 560, "35 × Nv. 16 (T20)")
 	var moments := _rival_moments()
 	assert_eq(moments.size(), 1, "exactement un Grand moment")
 	if moments.size() == 1:
