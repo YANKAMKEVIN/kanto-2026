@@ -15,7 +15,10 @@
 > - **RB** : Rouge/Bleu.
 > - **K26** : invention de Kanto 2026.
 >
-> **Textes** : le §15 est **à valider en un seul lot**. Pas d'implémentation avant cette validation.
+> **Textes** : le lot du §15 est **validé par Kevin (2026-10-14)**.
+>
+> **Grilles v1** : validées par Kevin (2026-10-14), avec leurs trois choix (recul du SPECTRE au
+> nord, rival rendu inévitable en murant (14..15, 4), murs dans la grille comme les grottes).
 >
 > **Étages** : « 2F » = 1er étage = « 2e niveau » de la V2. Les cartes s'appellent
 > `pokemon_tower_1f` à `pokemon_tower_7f`.
@@ -401,7 +404,7 @@ Rien de nouveau au J19.
 
 | Sous-jalon | Contenu | Validation |
 |---|---|---|
-| **19.0** | Grilles `tools/plans/pokemon_tower_2f.txt` à `6f.txt` (**v1 faites le 2026-10-14**, contrôle `tools/art/plan_check_tour_pokemon.py` OK, à valider par Kevin) et leur contrôle, vues peintes, données (espèces, capacités, Exorcistes, rival), lot d'art | Kevin valide les grilles et les vues, comme aux jalons précédents |
+| **19.0** | Grilles `tools/plans/pokemon_tower_2f.txt` à `6f.txt` (**v1 validées par Kevin le 2026-10-14**, contrôle `tools/art/plan_check_tour_pokemon.py` OK) et leur contrôle, vues peintes, données (espèces, capacités, Exorcistes, rival), lot d'art | Kevin valide les grilles et les vues, comme aux jalons précédents |
 | **19A** | **Mode spectre** complet : rencontres `floor`, combat SPECTRE, combat scripté, retour en arrière. Exorcistes et combats contre Fantominus et Spectrum. Départ de débogage `tower_ghost_qa`. | S24 |
 | **19B** | Cartes 2F à 6F, gardienne, rival n° 5, zone purifiée, blocage du 6F, objets, variantes de Lavanville, panneau, rumeur. **QA de bout en bout** (départ `tower_qa`) et tests de sauvegarde. | S24 |
 
@@ -411,7 +414,7 @@ Rien de nouveau au J19.
 
 **Le code commence après la clôture du J18** (C-7).
 
-## 15. Lot de textes — À VALIDER
+## 15. Lot de textes — VALIDÉ par Kevin le 2026-10-14
 
 > Textes proposés par Claude, conformes au dossier 06 §6 pour le rival. Ton : sobre, respectueux.
 > `{rival}`, `{player}`, `{pokemon}` sont des jetons.
