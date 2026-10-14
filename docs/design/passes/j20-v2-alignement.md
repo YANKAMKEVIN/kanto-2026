@@ -11,6 +11,9 @@
 > objets, les scripts et les équipes. « **Vérifié** » renvoie à ces deux sources ; tout le reste est
 > signalé « à recouper ».
 >
+> **2026-10-14 : Kevin retient toutes les recommandations (H-1 à H-14).** Dossier consolidé :
+> `docs/design/dossier-23-celadopole.md`.
+>
 > Les 7 décisions de la V2 restent telles quelles. Je n'en rouvre aucune ; deux demandent une
 > précision (n° 2 et n° 6). Mes arbitrages sont numérotés **H-1 à H-14** (§5). Réponds par numéro ;
 > je consolide ensuite le dossier.
@@ -52,7 +55,7 @@ combat et dans la sauvegarde.
 |---|---|---|
 | Route 8 (Lavanville → poste ouest de Safrania) | **9 Dresseurs** : 3 Intellos, 2 Joueurs, 4 Fillettes, dont un trio côte à côte. Le passage souterrain s'ouvre au nord-ouest. | La V2 en propose 6 à 8 : valeur par défaut **7**, et le trio réduit à un duo. |
 | Sauvages Route 8 (Rouge ∪ Bleu) | Roucool 18–20, Férosinge / Miaouss 18–20, Abo / Sabelette 17–19, **Caninos / Goupix 15–18** | Le projet fusionne les deux versions (Route 3 : Abo **et** Sabelette). Je garde cette règle. |
-| Souterrain 7–8 | **Aucune rencontre, aucun Dresseur, 2 objets cachés.** Deux petits bâtiments d'entrée. | « Découverte facultative » de la V2 = ces 2 objets cachés. Le moteur n'a pas d'objet caché générique (à confirmer au plan). |
+| Souterrain 7–8 | **Aucune rencontre, aucun Dresseur, 2 objets cachés.** Deux petits bâtiments d'entrée. | « Découverte facultative » de la V2 = ces 2 objets cachés. Les objets cachés existent déjà (Route 3, J12 ; Route 24, J13) : rien à créer. |
 | Route 7 | **Aucun Dresseur.** Poste de garde vers Safrania, entrée du souterrain. | Sauvages : Roucool 19–22, Mystherbe / Chétiflor 19–22, Férosinge / Miaouss 17–20, Caninos / Goupix 18–20. |
 | Postes de Safrania | RB : les gardes ont soif ; **une boisson du toit du grand magasin ouvre les quatre postes**. RFVF : le **Thé** de la vieille dame de la Résidence. | La « Maison liée au Thé » de la V2 vient de RFVF, pas de RB (H-5). |
 
@@ -115,9 +118,9 @@ l'objet** (`silph_scope` dans le Sac), et non un drapeau posé par un événemen
    - l'Arène, le Casino, le Coin à lots, le restaurant, la maison du chef et l'hôtel ;
    - 5 cartes pour le repaire (4 sous-sols et l'ascenseur).
 
-   Le J13 (Azuria) en comptait 7. Le moteur ne gère encore **ni ascenseur, ni dalles, ni objet
-   caché générique, ni don de Pokémon** hors starter : je n'ai trouvé aucun de ces mécanismes sur
-   `main` ni sur `jalon-15`. Ce sont 4 mécaniques nouvelles → H-2.
+   Le J13 (Azuria) en comptait 7. Le moteur ne gère encore **ni ascenseur, ni dalles, ni don de Pokémon** hors starter :
+   je n'ai trouvé aucun de ces mécanismes sur `main` ni sur `jalon-15`. Ce sont 3 mécaniques
+   nouvelles → H-2. (Correction du 2026-10-14 : les objets cachés existent déjà, Route 3 du J12.)
 2. **Dimensions.** RB Céladopole fait **50 × 36** cases, et RB Azuria 40 × 36. Azuria a été produite
    en 56 × 41. Le même rapport donne **environ 70 × 46** pour Céladopole, au lieu de 110 × 80. Elle
    reste la plus grande ville du jeu à ce stade → H-3.
@@ -200,7 +203,7 @@ l'objet** (`silph_scope` dans le Sac), et non un drapeau posé par un événemen
 | **H-11** | Giovanni | Défaite → dernier Centre et nouvel essai (V2) ; IA `smart` ; niveaux RB 25 / 24 / 29 en référence, puis simulation | Oui, comme la V2. Il ne dit pas qu'il est Champion de Jadielle : la révélation reste à Jadielle (dossier 06). |
 | **H-12** | Casino | A : salle visible, machines éteintes ou en décor, PNJ · B : salle fermée sauf la zone de l'affiche | **A**. Machines **en décor** (non interactives, ou un texte neutre), sans aucun mot sur les jetons. |
 | **H-13** | Sauvages des Routes 7 et 8 | Union Rouge + Bleu (règle des Routes 3 et 4) · une seule version | **Union**. Caninos et Goupix sont nouveaux, Miaouss arrive au J15. |
-| **H-14** | Objets cachés | A : on les crée (souterrain, ville, repaire) · B : objets visibles seulement | **A**, avec une lueur discrète au contact. La « découverte facultative » du souterrain repose dessus. |
+| **H-14** | Objets cachés | A : on en place (souterrain, ville, repaire), avec le mécanisme existant du J12 · B : objets visibles seulement | **A**. La « découverte facultative » du souterrain repose dessus. |
 
 ## 6. Suite
 
