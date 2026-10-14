@@ -172,3 +172,9 @@ Pas d'Arène, de rival ni de Team Rocket au J17. Cave sans Flash, lisible avec l
 remise une fois, sur la condition « 10 espèces possédées ». Ronflex infranchissable jusqu'au futur
 jalon de la Poké Flûte. Retour Carmin ↔ Route 2 possible à tout moment par la Cave. Pas de mini-carte,
 d'isométrie ni de pixel art. Données dans des fichiers, logique testable sans scène.
+
+## 9. Réponses de Kevin (2026-10-14) — arbitrages tranchés
+
+**H-1 à H-17 : toutes les recommandations validées telles quelles.** Les valeurs par défaut du §6
+tiennent. Consolidation directe par Claude dans `../dossier-20-chemins-retrouves.md` (pas de passage
+par ChatGPT : la V2 demandait « le dossier complet après validation »).
