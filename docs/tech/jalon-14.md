@@ -1372,3 +1372,8 @@ du Super Bonbon, barrage après une sortie d'Azuria. Carte de QA retirée (T24) 
   `sbire_h`), décor aléatoire d'Azuria retiré par le changement de grille, enfoncement de Tunnel
   discret, rivage `relief_rivage_06` répété sur les rangées épaisses, lueur `hint` discrète sur le
   bois clair, D5 en apparence `camper` (faute de « Jeune Dresseur »).
+
+## Décision de Kevin du 2026-10-15 (après la clôture)
+
+- Rocket d'Azuria : **laissé tel quel** (Machoc 17, Nosferapti 17), fidèle à Rouge/Bleu ; la proposition
+  de durcissement de T21 (N19–20) n'est pas retenue.
