@@ -162,7 +162,8 @@ static func view(bag: Bag, items: ItemLibrary, context: StringName,
 
 ## Choix du Pokémon pour [param item] (UTILISER) : toute l'équipe, chaque membre utilisable ou
 ## avec sa raison ([method ItemUse.check], Sac compris) ; une CT ou une pierre d'évolution
-## (jalon 12) : la raison toujours visible ([method _stone_targets]). [param selected] : membre
+## (jalon 12) : la raison toujours visible ([method _stone_targets]) ; un Super Bonbon (jalon 14) :
+## [method _candy_targets]. [param selected] : membre
 ## mis en avant (UTILISER À NOUVEAU), −1 = aucun.
 static func targets(party: Party, bag: Bag, item: ItemData, context: StringName,
 		data: PokemonData, selected: int = -1) -> PartyPickerView:
@@ -187,6 +188,9 @@ static func targets(party: Party, bag: Bag, item: ItemData, context: StringName,
 		return picker
 	if StoneUse.is_stone(item):
 		_stone_targets(picker, members, item, data)
+		return picker
+	if RareCandy.is_candy(item):
+		_candy_targets(picker, members, bag, item, data)
 		return picker
 	for i: int in members.size():
 		var check := ItemUse.check(bag, item, members[i], context)
@@ -236,8 +240,9 @@ static func _entry(bag: Bag, item: ItemData, context: StringName,
 		item.category_id(), item.usable_in(rules))
 	view.favorite = bag.is_favorite(item.id)
 	view.targets_pokemon = item.targets_pokemon()
-	if StoneUse.is_stone(item):
-		# Jalon 12 (T23) : UTILISER ouvre le choix du Pokémon (COMPATIBLE / INCOMPATIBLE).
+	if StoneUse.is_stone(item) or RareCandy.is_candy(item):
+		# Jalon 12 (T23) : UTILISER ouvre le choix du Pokémon (COMPATIBLE / INCOMPATIBLE) ; jalon 14
+		# (T18b) : le Super Bonbon aussi (niveau 100, K.O. refusés).
 		view.targets_pokemon = true
 	if item.is_tm():
 		# CT : APPRENDRE ouvre le choix du Pokémon ; hors combat seulement (n° 44) ; permanente,
@@ -345,3 +350,18 @@ static func _stone_targets(picker: PartyPickerView, members: Array[Pokemon], ite
 			state == StoneUse.Check.COMPATIBLE, StoneUse.LABELS[state])
 		target_view.show_reason = true
 		picker.targets.append(target_view)
+
+
+## Super Bonbon (jalon 14, T18b ; `jalon-14.md` §2.6) : chaque membre choisissable si
+## [method RareCandy.check] vaut OK ; sinon la raison et la phrase de refus des soins (« Sans
+## effet » au niveau 100, « Ce Pokémon est K.O. » ; plus de bonbon : « Il n'en reste plus »), rien
+## n'est consommé.
+static func _candy_targets(picker: PartyPickerView, members: Array[Pokemon], bag: Bag,
+		item: ItemData, data: PokemonData) -> void:
+	var in_bag := bag != null and bag.has(item.id)
+	for i: int in members.size():
+		var check := RareCandy.item_use_check(RareCandy.check(members[i])) if in_bag \
+			else ItemUse.Check.NOT_IN_BAG
+		var mon_name := members[i].display_name(data)
+		picker.targets.append(PartyTargetView.new(DashboardViews.member(members[i], i, data),
+			check == ItemUse.Check.OK, reason_text(check), refusal_text(check, mon_name)))

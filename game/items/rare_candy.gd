@@ -15,6 +15,24 @@ extends RefCounted
 enum Check { OK, MAX_LEVEL, FAINTED }
 
 
+## Vrai si [param item] est un Super Bonbon (jalon 14, T18b : [member ItemData.field_use] =
+## [constant ItemData.FIELD_USE_RARE_CANDY]) : UTILISER ouvre le choix du Pokémon.
+static func is_candy(item: ItemData) -> bool:
+	return item != null and item.has_field_use() \
+		and item.field_use == ItemData.FIELD_USE_RARE_CANDY
+
+
+## Le refus de [ItemUse] qui dit la même chose que [param check] (raisons et phrases du Sac, celles
+## des soins : « Sans effet », « Ce Pokémon est K.O. ») ; OK pour OK.
+static func item_use_check(check: Check) -> ItemUse.Check:
+	match check:
+		Check.MAX_LEVEL:
+			return ItemUse.Check.NO_EFFECT
+		Check.FAINTED:
+			return ItemUse.Check.FAINTED
+	return ItemUse.Check.OK
+
+
 ## État de [param pokemon] face au Super Bonbon (null : FAINTED, rien n'est possible). Le
 ## niveau 100 passe avant le K.O. (aucun effet possible dans les deux cas).
 static func check(pokemon: Pokemon) -> Check:

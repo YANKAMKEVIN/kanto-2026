@@ -361,7 +361,7 @@ func test_real_j11_remedies() -> void:
 
 
 ## Jalon 14 (T5, jalon-14.md §2.6 et §2.10) : Passe Bateau (objet clé) et Super Bonbon (AVENTURE,
-## jamais vendu, sans usage avant T18b) ; textes n° 58 et 59 du dossier 17.
+## jamais vendu ; UTILISER hors combat depuis le T18b) ; textes n° 58 et 59 du dossier 17.
 func test_real_j14_ticket_and_rare_candy() -> void:
 	assert_true(_library.load_dir(), "\n".join(_library.get_errors()))
 	var ticket := _library.get_item(&"ss_ticket")
@@ -379,8 +379,10 @@ func test_real_j14_ticket_and_rare_candy() -> void:
 		["Super Bonbon", "Super Bonbons", false, ItemData.Category.FIELD, 0])
 	assert_eq(candy.description, "Un bonbon plein d'énergie. Fait monter un Pokémon d'un niveau.")
 	assert_false(candy.is_sellable(), "jamais vendu au J14")
-	# Sans « field_use » (J12 T20) jusqu'au T18b : visible au Sac, sans UTILISER (repli §0.3).
-	assert_eq(candy.contexts(), [] as Array[StringName], "ni en combat, ni UTILISER avant T18b")
+	# T18b : « field_use » rare_candy, UTILISER en exploration seulement (jamais en combat).
+	assert_eq(candy.field_use, ItemData.FIELD_USE_RARE_CANDY)
+	assert_eq(candy.contexts(), [ItemData.CONTEXT_FIELD] as Array[StringName],
+		"UTILISER hors combat, jamais en combat")
 	assert_eq(candy.added_text(1), "Ajouté au Sac")
 	for item: ItemData in [ticket, candy]:
 		assert_false(item.draft, "%s : texte validé (dossier 17 §15)" % item.name)
