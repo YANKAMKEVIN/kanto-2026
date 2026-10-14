@@ -33,6 +33,11 @@
 > (7F). Dans cette passe, **« 2F » = 2e niveau de la V2 = 1er étage**. Les identifiants de cartes
 > suivent RB : `pokemon_tower_1f` à `pokemon_tower_7f`.
 
+> **Réponses de Kevin (2026-10-14)** : K-1 à K-20 **acceptés tels que recommandés**. Consolidation :
+> `docs/design/dossier-22-tour-pokemon.md`. Correctif : les variantes du rival n° 5 sont données
+> au dossier 22 §7.3 (vérifiées dans `parties.asm` : Reptincel avec Noeunoeuf et Léviator,
+> Carabaffe avec Caninos et Noeunoeuf, Herbizarre avec Léviator et Caninos).
+
 ## 0. Contrat d'entrée (J16 à J18 en parallèle, J20 en aval)
 
 Aucun de ces jalons n'est codé. Le J19 ne les attend pas pour sa conception, mais il **écrit ce qu'il
