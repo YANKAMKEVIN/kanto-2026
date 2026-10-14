@@ -14,6 +14,15 @@ chaque vue la **luminance relative** moyenne (WCAG : sRGB linéarisé, 0,2126 R 
 
 Seuils [D] : sol ≥ 0,22, sol / paroi ≥ 2,0. Les vues d'ensemble (zoom ≠ 1) sont ignorées.
 
+Passe « lumière rare » (2026-10-14) : la grotte est volontairement sombre loin des sources ; les
+seuils portent désormais sur le sol **près du joueur** (cases praticables à ≤ 2,5 cases de lui)
+et **près des repères** (sol calme seul, les gravats sont plus sombres par nature ; ≤ 2 cases d'une lampe ou d'un projecteur `L`, d'un puits `j`, d'un éclat
+`*`, d'une échelle `U` / `V`, de l'entrée `E`) : chacun ≥ 0,22 et ≥ 2,0 × la paroi. La moyenne de
+toute la vue (« sol ») reste donnée pour information. **Écart centre / pourtour** : sol calme
+loin des parois (aucune masse à ≤ 2 cases) ou près d'une source, contre sol au pied des parois
+(masse voisine, 8 voisins, loin des sources) : rapport des moyennes ≥ 1,25 quand les deux
+existent dans la vue. Contraste du héros ≥ 3,0 (vues `heros_*`).
+
 Contraste du héros (facultatif) : si `<nom>_vide.png` existe (même vue sans joueur,
 `--noplayer --aim=…`), les pixels qui changent dans la boîte du sprite sont le héros ; rapport de
 contraste WCAG moyen, pixel par pixel, entre le héros et le sol qu'il recouvre (à comparer à la
@@ -44,6 +53,13 @@ SOL = set(".gjUVE")
 PAROI = set("#*")
 SEUIL_SOL = 0.22
 SEUIL_RAPPORT = 2.0
+SEUIL_HEROS = 3.0
+SEUIL_ECART = 1.25
+REPERES = set("LjUVE*")
+RAYON_JOUEUR = 2.5
+RAYON_REPERE = 2.0
+RAYON_SOURCE = 2.0
+SOURCES = set("Lj*E")
 # Boîte du sprite du héros autour de sa case (pixels du monde) : 128 px de haut, pied au bas.
 HEROS_LARGEUR = 96
 HEROS_HAUTEUR = 136
@@ -103,6 +119,7 @@ def mesurer(png: Path, fiche: dict) -> dict | None:
 	if joueur:
 		cache = {joueur, (joueur[0], joueur[1] - 1)}
 	sol, calme, gravats, paroi, masse = [], [], [], [], []
+	par_case = {}
 	for y in range(plan.height):
 		for x in range(plan.width):
 			x0 = round(x * tuile - ox)
@@ -114,6 +131,7 @@ def mesurer(png: Path, fiche: dict) -> dict | None:
 				continue
 			valeur = moyenne_case(image, (x0, y0, x0 + tuile, y0 + tuile))
 			if marque in SOL:
+				par_case[(x, y)] = valeur
 				sol.append(valeur)
 				(gravats if marque == "g" else calme).append(valeur)
 			elif marque in PAROI:
@@ -131,12 +149,54 @@ def mesurer(png: Path, fiche: dict) -> dict | None:
 		"sol_10e_centile": round(sombre, 4), "paroi": moy(paroi), "masse": moy(masse),
 	}
 	resultat["rapport"] = round(resultat["sol"] / max(resultat["paroi"], 1e-6), 2)
-	resultat["ok"] = resultat["sol"] >= SEUIL_SOL and resultat["rapport"] >= SEUIL_RAPPORT
+	reperes = [(x, y) for y in range(plan.height) for x in range(plan.width)
+		if plan.rows[y][x] in REPERES]
+	sources = [c for c in reperes if plan.rows[c[1]][c[0]] in SOURCES]
+
+	def pres(centres, rayon):
+		# Sol calme seulement : les gravats (texture plus sombre par nature, déjà 0,16–0,19
+		# avant la passe) sont donnés à part (« gravats »).
+		return [v for (x, y), v in par_case.items() if plan.rows[y][x] != "g"
+			and any((x - cx) ** 2 + (y - cy) ** 2 <= rayon * rayon for cx, cy in centres)]
+
+	proche = pres([joueur], RAYON_JOUEUR) if joueur else []
+	pres_reperes = pres(reperes, RAYON_REPERE)
+	centre, pourtour = [], []
+	for (x, y), v in par_case.items():
+		if plan.rows[y][x] == "g":
+			continue
+		eclaire = any(abs(x - cx) <= RAYON_SOURCE and abs(y - cy) <= RAYON_SOURCE
+			for cx, cy in sources)
+		pied = any(_masse(plan, x + dx, y + dy) for dx in (-1, 0, 1) for dy in (-1, 0, 1))
+		loin = not any(_masse(plan, x + dx, y + dy) for dx in range(-2, 3) for dy in range(-2, 3))
+		if loin or eclaire:
+			centre.append(v)
+		elif pied:
+			pourtour.append(v)
+	resultat["sol_joueur"] = moy(proche)
+	resultat["sol_reperes"] = moy(pres_reperes)
+	resultat["centre"] = moy(centre)
+	resultat["pourtour"] = moy(pourtour)
+	resultat["ecart"] = round(resultat["centre"] / max(resultat["pourtour"], 1e-6), 2) \
+		if centre and pourtour else None
+	proches = [v for v in (resultat["sol_joueur"], resultat["sol_reperes"]) if v is not None]
+	plancher = min(proches) if proches else resultat["sol"]
+	resultat["rapport_proche"] = round(plancher / max(resultat["paroi"], 1e-6), 2)
+	resultat["ok"] = plancher >= SEUIL_SOL and resultat["rapport_proche"] >= SEUIL_RAPPORT \
+		and (resultat["ecart"] is None or resultat["ecart"] >= SEUIL_ECART)
 	vide = png.with_name(png.stem + "_vide.png")
 	if joueur and vide.exists():
 		resultat["contraste_heros"] = contraste_heros(image, Image.open(vide).convert("RGB"),
 			joueur, tuile, ox, oy)
+		if resultat["contraste_heros"] is not None:
+			resultat["ok"] = resultat["ok"] and resultat["contraste_heros"] >= SEUIL_HEROS
 	return resultat
+
+
+def _masse(plan, x: int, y: int) -> bool:
+	if not (0 <= x < plan.width and 0 <= y < plan.height):
+		return True
+	return plan.rows[y][x] in PAROI
 
 
 def contraste_heros(image, vide, joueur, tuile, ox, oy) -> float | None:
@@ -174,18 +234,22 @@ def main() -> int:
 		if mesure:
 			resultats.append(mesure)
 	echec = False
-	print(f"{'vue':16} {'sol':>6} {'calme':>6} {'grav.':>6} {'p10':>6} {'paroi':>6} "
-		f"{'masse':>6} {'rapp.':>6} {'héros':>6}")
+	print(f"{'vue':16} {'sol':>6} {'joueur':>6} {'repère':>6} {'centre':>6} {'pourt.':>6} "
+		f"{'écart':>6} {'paroi':>6} {'rapp.':>6} {'héros':>6}")
 	for r in resultats:
 		heros = r.get("contraste_heros")
 		if r.get("comparaison"):
 			print(f"{r['vue']:16} (comparaison, {r['carte']}) contraste du héros : {heros}")
 			continue
 		echec = echec or not r["ok"]
-		print(f"{r['vue']:16} {r['sol']:6.3f} {r['sol_calme'] or 0:6.3f} {r['gravats'] or 0:6.3f} "
-			f"{r['sol_10e_centile']:6.3f} {r['paroi']:6.3f} {r['masse'] or 0:6.3f} "
-			f"{r['rapport']:6.2f} {heros if heros else '—':>6} {'OK' if r['ok'] else 'ÉCHEC'}")
-	print(f"seuils : sol ≥ {SEUIL_SOL}, sol / paroi ≥ {SEUIL_RAPPORT}")
+		def f(v, n=3):
+			return f"{v:6.{n}f}" if v is not None else f"{'—':>6}"
+		print(f"{r['vue']:16} {f(r['sol'])} {f(r['sol_joueur'])} {f(r['sol_reperes'])} "
+			f"{f(r['centre'])} {f(r['pourtour'])} {f(r['ecart'], 2)} {f(r['paroi'])} "
+			f"{f(r['rapport_proche'], 2)} {heros if heros else '—':>6} "
+			f"{'OK' if r['ok'] else 'ÉCHEC'}")
+	print(f"seuils : sol près du joueur et des repères ≥ {SEUIL_SOL}, ce sol / paroi ≥ "
+		f"{SEUIL_RAPPORT}, centre / pourtour ≥ {SEUIL_ECART}, héros ≥ {SEUIL_HEROS}")
 	if args.json:
 		args.json.write_text(json.dumps(resultats, indent="\t", ensure_ascii=False))
 	return 1 if echec or not resultats else 0
