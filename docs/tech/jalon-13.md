@@ -1133,6 +1133,16 @@ et de l'annexe A validée.
 - Départ `switch_qa` : changement adverse vu (message n° 60, animation, une fois au plus, jamais
   piégé ni en Patience, jamais pour le témoin), 9 espèces au Pokédex, Vol-Vie, Bulles d'O, Acide.
   **CA** : rapport `build/qa/jalon13_t15/` ; validation de Kevin.
+- **Fait le 2026-10-14 (S21, ~35 min, branche `j13-t15-qa`)** : rapport `build/qa/jalon13_t15/`
+  (`RESUME.txt`, captures, `perf_*.txt`). Tests 4124/4124, import propre, APK 123 Mo, aucun crash.
+  **OK** : rappel adverse vu (« … rappelle Stari ! » puis « envoie Staross ! », Ondine d'essai ; idem Rival
+  Salamèche → Roucool), une seule fois par combat (retour du rappelé sans 2e changement), jamais pour le
+  Témoin (Stari à ~20 % PV, KO direct), les 9 espèces au Pokédex (13 captures), Acide, Vol-Vie et Bulles d'O
+  lancés. **Vol-Vie** : aucun drain visible (45/56 avant et après), attendu. **Non vérifié sur téléphone** :
+  « jamais pendant Patience » : Salamèche est rappelé dès le tour 1, avant d'avoir joué Patience (tests
+  seulement). fps : 59,9 en moyenne, creux à 53 à l'entrée du combat. Sauvegarde de Kevin copiée avant,
+  intacte après (sha256 identiques) : le départ de débogage ne la lit ni ne l'écrit. L'APK J13 reste installé
+  sur le S21.
 
 #### T16 — architecte : briques du monde — après T10
 - §2.8 (`RivalMoment`, `moment: "win"`), §2.9 (`next`), §2.13 (`confirm_set` / `cancel_set`).
