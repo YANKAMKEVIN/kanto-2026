@@ -1283,6 +1283,15 @@ et de l'annexe A validée.
   **un seul** Grand moment ; Ondine au pont, invitation, départ ; **fermeture forcée** entre les deux
   scènes → reprise ; Arène : guide, Ondine (carte, changement de Pokémon), défaite → reprise n° 36,
   victoire → « BADGE CASCADE », écran Dresseur, CT11 (Sac CT, apprentissage) ; rattrapage.
+- **Fait le 2026-10-14 (S21, ~45 min, branche `j13-t21-qa`)** : rapport `build/qa/jalon13_t21/`
+  (`RESUME.txt`, captures). Tests 4458/4458, import propre, APK 140 Mo, aucun crash, 59,5 fps de moyenne.
+  **OK** : rival inévitable (« ! », recentrage lisible), défaite → réveil → n° 30 puis « Te revoilà »,
+  victoire → départ + **un seul** Grand moment, rival qui change de Pokémon, Ondine au pont, **reprise
+  après fermeture forcée**, Arène (guide, carte sans portrait, Stari → Staross), défaite → « Prêt à
+  replonger ? », victoire → bilan → « BADGE CASCADE » → CT11 (Sac CT, Carapuce apprend Bulles d'O),
+  écran Dresseur (Roche + Cascade), rattrapage `cascade_no_tm`. **Non vérifié** : n° 31 ; argent après
+  défaite ; « jamais pendant Patience » (aucun rappel adverse provoqué). Vers Kevin : Staross 21 écrase
+  une équipe 22/20/20 (T20). Sauvegarde de Kevin restaurée (sha256 identiques).
 
 #### T22 — constructeur-monde : Pont Pépite, recruteur, Route 24 nord, fin (13C) — après T19
 - §2.12, §2.13, §2.14 (nord), §2.16 (deux entrées) ; **retrait de `qa_switch_j13`** et de son départ ;
