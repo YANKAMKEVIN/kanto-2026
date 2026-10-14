@@ -870,7 +870,7 @@ finale.
 
 ---
 
-## Annexe A — Textes à valider (brouillons, Q-1)
+## Annexe A — Textes VALIDÉS par Kevin le 2026-10-14 (Q-1)
 
 Conventions des lots précédents : bulles de 2 lignes de ~40 caractères, ton léger.
 

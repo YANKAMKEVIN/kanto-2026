@@ -323,17 +323,21 @@ systèmes qu'elle utilise :
 - J12 : objets cachés, évolution hors combat ;
 - J14 : raccord sud d'Azuria, Passe Bateau.
 
-### 13.1 Grilles v1 (validées par Kevin le 2026-10-12)
+### 13.1 Grilles et vues générales (validées par Kevin le 2026-10-12 et le 2026-10-14)
 
 Les grilles font foi pour la géométrie (contrôles verts : `tools/art/plan_check_j15.py`,
-`plan_check_carmin.py`) :
+`plan_check_carmin.py`) ; les vues générales peintes donnent la DA (règle 10 de `CLAUDE.md`).
 
-| Carte | Grille | Taille | Remarque |
+| Zone | Grille (fait foi) | Plan | Vue générale (DA) |
 |---|---|---|---|
-| Route 5 | `tools/plans/route_5.txt` | 42 × 62 | **v2 faite (2026-10-12), à valider** : le chemin serpente à angles droits (3 décalages), avec un détour vers le petit bois |
-| Souterrain | `tools/plans/underground_path.txt` | 26 × 30 | 40 pas, 2 coudes, 3 alcôves, Guérison en A2 |
-| Route 6 | `tools/plans/route_6.txt` | 42 × 56 | Chloé inévitable au goulet, 68 pas |
-| Carmin | `tools/plans/vermilion_city.txt` | 64 × 43 | quai dans la carte ; le S.S. Anne se découvre en descendant vers le quai (la cheminée au-dessus des toits relève de la peinture) |
+| Route 5 | `tools/plans/route_5.txt` v2, 42 × 62 (chemin qui serpente, détour vers le petit bois) | `reference/route-5-plan-v2.png` | à produire |
+| Souterrain | `tools/plans/underground_path.txt`, 26 × 30, 40 pas | `reference/souterrain-plan-v1.png` | `reference/souterrain-vue-generale-v1.png` |
+| Route 6 | `tools/plans/route_6.txt`, 42 × 56 | `reference/route-6-plan-v1.png` | `reference/route-6-vue-generale-v1.png` |
+| Carmin | `tools/plans/vermilion_city.txt`, 64 × 43, quai dans la carte | `reference/carmin-plan-v1.png` | `reference/carmin-vue-generale-v1.png` |
+
+Écarts des vues à **ne pas reproduire** : Route 6, peu d'air marin (la carte peut en ajouter dans
+la lisière) ; Carmin, navire un peu court, d'allure de ferry (la grille donne 29 × 7) ; vues sans
+personnages ni Pokémon (choix de Kevin, 2026-10-14).
 
 ## 14. Cas limites (à couvrir au plan)
 
