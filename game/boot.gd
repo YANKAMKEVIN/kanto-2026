@@ -1472,14 +1472,13 @@ func _apply_settings(s: GameSettings) -> void:
 		_evolution_screen.reduce_flashes = s.reduce_flashes
 	_services.reduce_motion = s.reduce_motion
 	_companion.set_reduce_motion(s.reduce_motion)
-	# Halos des grottes (jalon 12, T7 / T20) : vacillement des lampes coupé.
+	# Halos des grottes (jalon 12, T7 / T20) et lueur « hint » chez Léo (jalon 14) : vacillement
+	# coupé.
 	LightGlow.set_reduce_motion(s.reduce_motion)
 	# Carte du Champion (jalon 10, T5) : sans glissé, un fondu court.
 	_hud.get_champion_card().reduce_motion = s.reduce_motion
-	# Étape « flash » (jalon 14) : adoucie par l'un ou l'autre réglage ; halos (lueur « hint »
-	# chez Léo) sans vacillement.
+	# Étape « flash » (jalon 14) : adoucie par l'un ou l'autre réglage.
 	_hud.set_flash_reduced(s.reduce_motion or s.reduce_flashes)
-	LightGlow.set_reduce_motion(s.reduce_motion)
 	_menu_screen.speed_scale = s.menu_speed_scale()
 	Haptics.enabled = s.haptics
 	UiPrefs.apply(s)
