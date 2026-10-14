@@ -11,8 +11,8 @@ extends GutTest
 ## - fermeture pendant l'effet : scène rejouée en entier, objets une seule fois, drapeaux levés
 ##   ensemble à la fin ;
 ## - récompenses uniques, variantes de Léo (tirage `one_in`, « Rocket pas battu »).
-## Le Grand moment `bill_restored` n'est pas enregistré ici : l'étape de scène « moment » (J12 T23)
-## n'existe pas encore sur la branche (repli du plan, §0.3).
+## - Grand moment `bill_restored` (n° 69) : étape « moment » du J12 T23, juste avant le « set »
+##   final ; une seule fois, même si la scène est rejouée après une fermeture (T23 du J14).
 
 const FixedClock := preload("res://tests/helpers/fixed_clock.gd")
 const MemoryFs := preload("res://tests/helpers/memory_file_system.gd")
@@ -308,6 +308,9 @@ func test_full_scene_in_order_with_rewards_hints_and_objectives() -> void:
 	assert_eq(GameState.bag.count_of(&"rare_candy"), candy + 1, "Super Bonbon")
 	for flag: StringName in [&"bill_restored", &"got_ss_ticket", &"got_bill_rare_candy"]:
 		assert_true(_flag(flag), String(flag))
+	assert_eq(_bill_moments(), 1, "Grand moment n° 69 enregistré")
+	var moment: Dictionary = GameState.moments.back()
+	assert_eq(str(moment.get("map", "")), "bill_house", "au Cap d'Azuria (zone de la maison)")
 	var leo := map.get_npc(&"bill")
 	assert_not_null(leo, "Léo humain")
 	if leo != null:
@@ -424,8 +427,18 @@ func test_closing_during_the_machine_replays_the_whole_scene_and_gives_once() ->
 	assert_eq(GameState.bag.count_of(&"rare_candy"), 1, "Super Bonbon une seule fois")
 	for flag: StringName in [&"bill_restored", &"got_ss_ticket", &"got_bill_rare_candy"]:
 		assert_true(_flag(flag), String(flag))
+	assert_eq(_bill_moments(), 1, "Grand moment une seule fois")
 	assert_not_null(_boot.get_map().get_npc(&"bill"))
 	assert_push_error_count(0)
+
+
+## Nombre de Grands moments « bill_restored » de la partie.
+func _bill_moments() -> int:
+	var count := 0
+	for moment: Dictionary in GameState.moments:
+		if str(moment.get("type", "")) == String(MomentLibrary.BILL_RESTORED):
+			count += 1
+	return count
 
 
 func _make_data() -> PokemonData:
