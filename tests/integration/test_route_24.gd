@@ -100,7 +100,8 @@ func test_battle_decor_is_the_bridge() -> void:
 
 
 func test_scene_grid_is_the_functional_grid() -> void:
-	var sign: Array[Vector2i] = _plan.cells_at("panneau_pont")
+	var sign: Array[Vector2i] = _plan.cells_at("panneau_pont") \
+		+ _plan.cells_at("route_24_hidden_1")
 	var mismatches := 0
 	for y: int in SIZE.y:
 		for x: int in SIZE.x:
@@ -179,12 +180,18 @@ func test_the_whole_map_is_reachable_and_closed_from_azuria() -> void:
 	var sign: Array[Vector2i] = _plan.cells_at("panneau_pont")
 	# T19 : le rival n° 3 et Ondine occupent leur case (PNJ) ; on les atteint par le voisinage.
 	var people: Array[Vector2i] = [_plan.cell_of("rival"), _plan.cell_of("ondine")]
+	# T22 : les cinq Dresseurs et le recruteur occupent aussi leur case.
+	for id: String in TRAINERS:
+		people.append(_plan.cell_of(id))
 	for cell: Vector2i in _plan.cells_of(_plan.walkable):
 		if people.has(cell):
 			continue
 		if cell == _plan.cell_of("route_24_item_1"):
 			# La Potion (T17) occupe sa case ; on la ramasse depuis une case voisine.
 			assert_true(dist.has(cell + Vector2i.DOWN), "Potion : case voisine atteignable")
+		elif cell == _plan.cell_of("route_24_hidden_1"):
+			# L'indice (T22) bloque sa case ; on l'examine depuis une case voisine.
+			assert_true(dist.has(cell + Vector2i.DOWN), "indice : case voisine atteignable")
 		elif not sign.has(cell):
 			assert_true(dist.has(cell), "%s atteignable" % cell)
 	for cell: Vector2i in dist:
@@ -295,18 +302,21 @@ func test_the_sign_closes_the_east_file_at_the_bridge_head() -> void:
 func test_the_pre_bridge_places_are_reserved_free_of_props() -> void:
 	for id: String in ["rival", "ondine", "route_24_item_1", "route_24_hidden_1"] + TRAINERS:
 		var cell := _plan.cell_of(id)
-		if id == "route_24_hidden_1":
-			assert_false(_grid.is_solid(cell), "indice : case libre pour le point d'examen")
 		assert_true(_plan.is_walkable(cell), "%s : case praticable de la grille" % id)
-		assert_false(_grid.is_solid(cell), "%s : libre (rien de vivant avant T17 / T19)" % id)
-	# T19 : deux déclencheurs (vue du rival, reprise d'Ondine à l'entrée de la place).
-	assert_eq(_map.get_node(^"Triggers").get_child_count(), 2)
-	assert_eq(_map.get_node(^"Interactables").get_child_count(), 1, "le panneau du pont (T17)")
+		if id == "route_24_hidden_1":
+			assert_true(_grid.is_solid(cell), "T22 : la souche de l'Antidote bloque sa case")
+		else:
+			assert_false(_grid.is_solid(cell), "%s : libre (les PNJ se posent au jeu)" % id)
+	# T19 : vue du rival, reprise d'Ondine ; T22 : le recruteur.
+	assert_eq(_map.get_node(^"Triggers").get_child_count(), 3)
+	assert_eq(_map.get_node(^"Interactables").get_child_count(), 2,
+		"le panneau du pont (T17) et l'indice de l'Antidote (T22)")
 	var ids: Array[String] = []
 	for spec: NpcSpec in NpcRoster.load_for_map(&"route_24").get_all():
 		ids.append(String(spec.id))
-	assert_eq(ids, ["route_24_ball_1", "rival_cerulean", "misty_bridge"] as Array[String],
-		"la Potion, le rival n° 3 et Ondine (T19 ; T22 : le reste)")
+	assert_eq(ids, ["route_24_ball_1", "rival_cerulean", "misty_bridge", "route_24_timeo",
+		"route_24_alice", "route_24_malo", "route_24_romane", "route_24_ethan", "nugget_rocket"]
+		as Array[String], "la Potion, le rival, Ondine (T19), les cinq Dresseurs et le recruteur (T22)")
 
 
 func test_north_tall_grass_is_avoidable() -> void:
@@ -326,7 +336,8 @@ func test_north_tall_grass_is_avoidable() -> void:
 
 
 func test_props_never_block_a_walkable_cell() -> void:
-	var sign: Array[Vector2i] = _plan.cells_at("panneau_pont")
+	var sign: Array[Vector2i] = _plan.cells_at("panneau_pont") \
+		+ _plan.cells_at("route_24_hidden_1")
 	for layer: NodePath in [^"Entities", ^"GroundDecals"]:
 		for child: Node in _map.get_node(layer).get_children():
 			var prop := child as WorldProp
