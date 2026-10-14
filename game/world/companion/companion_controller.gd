@@ -126,6 +126,13 @@ func on_map_changed(map: GameMap) -> void:
 
 ## Arrivée sur la carte (fin du fondu) : il ressort derrière le joueur s'il le peut.
 func on_map_entered(_map_entered: GameMap) -> void:
+	on_transition_finished()
+
+
+## Transition close sans changement de carte (écran « à venir », [signal
+## SceneRouter.coming_soon_finished]) : il ressort derrière le joueur s'il le peut (sinon au
+## premier pas), comme à l'arrivée sur une carte.
+func on_transition_finished() -> void:
 	_in_transition = false
 	_place_and_show(true)
 

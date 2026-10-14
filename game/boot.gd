@@ -423,6 +423,7 @@ func _ready() -> void:
 	SceneRouter.map_entered.connect(_on_map_entered)
 	SceneRouter.map_entered.connect(_interactions.on_map_entered)
 	SceneRouter.map_entered.connect(_starter_choice.on_map_entered)
+	SceneRouter.coming_soon_finished.connect(_on_coming_soon_finished)
 	_start_game()
 	_menu.set_settings(_settings, _profile_device_quality(), _can_write())
 
@@ -480,6 +481,7 @@ func _exit_tree() -> void:
 		[SceneRouter.map_entered, _on_map_entered],
 		[SceneRouter.map_entered, _interactions.on_map_entered],
 		[SceneRouter.map_entered, _starter_choice.on_map_entered],
+		[SceneRouter.coming_soon_finished, _on_coming_soon_finished],
 	]
 	for link: Array in links:
 		var sig: Signal = link[0]
@@ -1053,6 +1055,14 @@ func _on_transition_started(_target_map: StringName) -> void:
 	_arrival_from = _current_map_id()
 	_hud.hide_zone_title()
 	_hud.hide_caption()
+
+
+## Fin de l'écran « à venir » (même carte, aucun [signal SceneRouter.map_entered]) : ferme la
+## transition ouverte par [method _on_transition_started] (QA finale 12D : le compagnon restait
+## caché jusqu'au changement de carte suivant).
+func _on_coming_soon_finished(_map: GameMap) -> void:
+	_arrival_from = &""
+	_companion.on_transition_finished()
 
 
 ## Écran noir (ou démarrage) : présence des PNJ selon les drapeaux de la partie d'abord

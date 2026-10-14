@@ -469,6 +469,9 @@ func test_coming_soon_shows_the_screen_then_returns_without_changing_map() -> vo
 	assert_false(_fade.is_opaque())
 	assert_eq(_events, ["transition_started:"] as Array[String],
 		"ni map_changed ni map_entered : pas de titre de zone, pas de zone découverte")
+	# QA finale 12D : la transition ouverte est fermée (le compagnon ressort), carte inchangée.
+	assert_signal_emit_count(_router, "coming_soon_finished", 1)
+	assert_signal_emitted_with_parameters(_router, "coming_soon_finished", [map_c])
 	assert_push_error_count(0)
 
 
