@@ -95,6 +95,12 @@ boucle longue : Bourg Palette → routes → captures → ville → préparation
   Reptincel et Pikachu en attente (12 espèces éligibles).
 
 ### Phase 8 — Kanto devient un monde (J12+)
+- **J12 terminé** (2026-10-14, après validation de Kevin) : Route 3 (six Dresseurs, objet
+  caché), Centre du Mont Sélénite, Mont Sélénite sur trois étages (gravats, échelles, lumière
+  rare, Corde Sortie), Team Rocket (trois Sbires qui partent après leur défaite), chercheur
+  Gaspard et choix définitif d'un fossile (Grand moment), Pierre Lune et évolution par pierre,
+  CT01, sas de la Route 4 ; moteur : drain, piège, Entrave, Repos, Destruction ; sauvegarde
+  inchangée (v6).
 Les systèmes principaux existent : on produit le contenu. Mont Sélénite, Azuria (Léo), Carmin-sur-Mer
 (Major Bob), Océane, Lavanville, Céladopole (Erika), Team Rocket, Safrania (Morgane), Parmanie (Koga),
 Cramois'Île (Auguste), Jadielle finale (Giovanni), Route Victoire, Ligue.
@@ -155,6 +161,7 @@ J8  Route 2
 J9  Forêt de Jade
 J10 Argenta + Arène Pierre + Badge
 J11 Grande passe systèmes (évolutions / CT / statuts / équipe avancée / compagnon)
-J12 Route 3 + Mont Sélénite   ← ICI
-J13+ Expansion de Kanto → Ligue → post-game
+J12 Route 3 + Mont Sélénite   ✅
+J13 Azuria   ← ICI
+J14+ Expansion de Kanto → Ligue → post-game
 ```

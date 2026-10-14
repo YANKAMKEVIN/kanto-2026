@@ -70,14 +70,15 @@ var _prefetching: Dictionary[String, bool] = {}
 ## Préchargements devenus inutiles, gardés encore [constant RETIRE_FRAMES] images
 ## ([method _trim_cache]) : un chargement en arrière-plan laisse l'initialisation de ses textures
 ## dans la file du RenderingServer ; libérer la ressource avant que la file soit vidée
-## initialiserait une texture déjà libérée (« Parameter "t" is null »).
+## initialiserait une texture déjà libérée. (La cause de l'erreur intermittente « Parameter "t"
+## is null » des tests était ailleurs : le rendu factice du headless, [BackgroundLoader].)
 var _retired: Array[Resource] = []
 
 
 func _exit_tree() -> void:
 	# Récupère les chargements en arrière-plan encore en attente (sinon fuite à la sortie).
 	for path: String in _prefetching:
-		ResourceLoader.load_threaded_get(path)
+		BackgroundLoader.fetch(path)
 	_prefetching.clear()
 	_scenes.clear()
 	_retired.clear()
@@ -289,7 +290,7 @@ func _instantiate(map_id: StringName) -> GameMap:
 	if packed == null and _prefetching.has(path):
 		# Déjà en chargement en arrière-plan : on récupère (attente si pas fini).
 		_prefetching.erase(path)
-		packed = ResourceLoader.load_threaded_get(path) as PackedScene
+		packed = BackgroundLoader.fetch(path) as PackedScene
 		if packed != null:
 			_scenes[path] = packed
 	if packed == null:
@@ -311,7 +312,7 @@ func _prefetch_neighbors(map: GameMap) -> void:
 	for path: String in _neighbor_paths(map):
 		if _scenes.has(path) or _prefetching.has(path) or not ResourceLoader.exists(path):
 			continue
-		if ResourceLoader.load_threaded_request(path, "PackedScene") == OK:
+		if BackgroundLoader.request(path, "PackedScene") == OK:
 			disk_loads += 1
 			_prefetching[path] = true
 
@@ -349,10 +350,10 @@ func _trim_cache(map: GameMap) -> void:
 	for path: String in _prefetching.keys():
 		if keep.has(path):
 			continue
-		if ResourceLoader.load_threaded_get_status(path) \
+		if BackgroundLoader.status(path) \
 				== ResourceLoader.THREAD_LOAD_IN_PROGRESS:
 			continue
-		var resource := ResourceLoader.load_threaded_get(path)
+		var resource := BackgroundLoader.fetch(path)
 		_prefetching.erase(path)
 		if resource != null:
 			_retire(resource)
