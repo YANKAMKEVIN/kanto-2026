@@ -20,7 +20,8 @@ extends SceneTree
 ##   mt_moon_center — le Centre Pokémon du Mont Sélénite (jalon 12 T8, jalon-12.md §2.14) :
 ##     définition commune des Centres, sans Boutique ; sortie vers la Route 3 (`from_center_e`)
 ##   godot --headless --path . -s res://tools/build_painted_interiors.gd -- --rooms=mt_moon_center
-##   cerulean_center, cerulean_mart, cerulean_gym, cerulean_bike_shop, cerulean_house — intérieurs
+##   cerulean_center, cerulean_mart, cerulean_gym, cerulean_bike_shop, cerulean_house,
+##   cerulean_burgled_house (J14 T20b) — intérieurs
 ##     d'Azuria (jalon 13 T7, jalon-13.md §2.1, §2.5, §2.6) : Centre et Boutique = définitions
 ##     de Jadielle ; Arène, magasin de vélos et maison relus sur leur grille
 ##     (`tools/plans/azuria_*.txt`) ; **sans PNJ** (T17)
@@ -77,7 +78,7 @@ const FORET := [&"viridian_forest_gate_south", &"viridian_forest_gate_north"]
 const ARGENTA := [&"pewter_center", &"pewter_mart", &"pewter_museum", &"pewter_museum_science",
 	&"pewter_gym", &"pewter_house_mason", &"pewter_house_researcher"]
 const AZURIA := [&"cerulean_center", &"cerulean_mart", &"cerulean_gym", &"cerulean_bike_shop",
-	&"cerulean_house"]
+	&"cerulean_house", &"cerulean_burgled_house"]
 const PLANS_DIR := "res://tools/plans/"
 const PlanGrid := preload("res://tests/helpers/plan_grid.gd")
 const LOGIC_DIR := "res://tests/fixtures/maps/"
@@ -724,7 +725,7 @@ func _cerulean_rooms() -> Array[Dictionary]:
 		_pokemon_center(&"cerulean_center", "CeruleanCenter", "Azuria",
 			[&"cerulean_city", &"from_center"]),
 		_poke_mart(&"cerulean_mart", "CeruleanMart", "Azuria", [&"cerulean_city", &"from_mart"]),
-		_cerulean_gym(), _cerulean_bike_shop(), _cerulean_house(),
+		_cerulean_gym(), _cerulean_bike_shop(), _cerulean_house(), _cerulean_burgled_house(),
 	]
 	return rooms
 
@@ -801,6 +802,34 @@ func _cerulean_house() -> Dictionary:
 		"spawns": {"entrance": Vector2i(7, 8)},
 		"warps": _pewter_exits([Vector2i(6, 8), Vector2i(7, 8), Vector2i(8, 8)], &"from_house",
 			&"cerulean_city"),
+	}
+
+
+## Maison cambriolée (`tools/plans/azuria_maison_cambriolee.txt`, 15 × 10, même enveloppe ;
+## jalon 14 T20b) : salon un peu en désordre (canapé, étagère, télévision, commode, table basse
+## décalée, sac de voyage) ; la victime (`v`) remercie le joueur après le Rocket.
+func _cerulean_burgled_house() -> Dictionary:
+	return {
+		"id": &"cerulean_burgled_house", "node": "CeruleanBurgledHouse",
+		"size": Vector2i(15, 10),
+		"shell": "res://assets/world/interiors/int_maison_argenta_coque.png",
+		"title": "Azuria", "light": &"interior_warm",
+		"plan": PLANS_DIR + "azuria_maison_cambriolee.txt", "walkable": ".Xv",
+		"furniture": [
+			[&"int_canape_01", Rect2i(1, 3, 3, 1), "Sofa"],
+			[&"int_petite_etagere_01", Rect2i(5, 3, 1, 1), "Shelf"],
+			[&"int_tele_01", Rect2i(7, 3, 2, 1), "Television"],
+			[&"int_commode_01", Rect2i(10, 3, 2, 1), "Dresser"],
+			[&"int_chevet_lampe_01", Rect2i(13, 3, 1, 1), "Lamp"],
+			[&"int_table_basse_01", Rect2i(6, 5, 2, 1), "CoffeeTable"],
+			[&"int_sac_voyage_01", Rect2i(11, 6, 1, 1), "TravelBag"],
+			[&"int_plante", Rect2i(1, 7, 1, 1), "PlantWest"],
+			[&"int_plante", Rect2i(13, 7, 1, 1), "PlantEast"],
+		],
+		"rugs": [[&"int_tapis_salon_01", Vector2(5.0, 6.0), "RugLiving"]],
+		"spawns": {"entrance": Vector2i(7, 8)},
+		"warps": _pewter_exits([Vector2i(6, 8), Vector2i(7, 8), Vector2i(8, 8)],
+			&"from_burgled_house", &"cerulean_city"),
 	}
 
 

@@ -75,7 +75,7 @@
 			"name": "Azuria", "kind": "town",
 			"maps": [
 				"cerulean_city", "cerulean_center", "cerulean_mart", "cerulean_gym",
-				"cerulean_bike_shop", "cerulean_house"
+				"cerulean_bike_shop", "cerulean_house", "cerulean_burgled_house"
 			],
 			"services": [
 				{ "id": "pokemon_center", "found_on": "cerulean_center" },

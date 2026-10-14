@@ -1,0 +1,65 @@
+{
+	"cerulean_rocket_chase": {
+		"variants": [
+			{
+				"unless": ["cerulean_rocket_spotted"],
+				"steps": [
+					{ "set": ["cerulean_rocket_spotted"] },
+					{ "emote": "cerulean_rocket", "kind": "exclamation" },
+					{ "face": "cerulean_rocket", "to": "player" },
+					{ "dialogue": "cerulean_rocket_spotted" },
+					{ "move": "cerulean_rocket", "to": [21, 3] },
+					{ "face": "cerulean_rocket", "to": "left" }
+				]
+			}
+		]
+	},
+	"cerulean_rocket_fight": {
+		"variants": [
+			{
+				"if": ["cerulean_rocket_spotted"],
+				"unless": ["cerulean_rocket_beaten"],
+				"steps": [
+					{ "move": "cerulean_rocket", "to": { "near": "player",
+						"offsets": [[1, 0], [0, -1], [0, 1]] }, "optional": true },
+					{ "face": "cerulean_rocket", "to": "player" },
+					{ "face": "player", "to": "cerulean_rocket" },
+					{ "dialogue": "cerulean_rocket_before", "unless": ["lost_cerulean_rocket"] },
+					{ "dialogue": "cerulean_rocket_resume", "if": ["lost_cerulean_rocket"] },
+					{ "battle": "cerulean_rocket", "win": ["cerulean_rocket_beaten"],
+						"lose": ["lost_cerulean_rocket"] },
+					{ "wait": 0.6, "if": ["cerulean_rocket_beaten"] },
+					{ "dialogue": "cerulean_rocket_beaten", "if": ["cerulean_rocket_beaten"] },
+					{ "give": "tm28", "count": 1, "if": ["cerulean_rocket_beaten"],
+						"unless": ["got_tm28"] },
+					{ "dialogue": "cerulean_rocket_tm", "if": ["cerulean_rocket_beaten"],
+						"unless": ["got_tm28"] },
+					{ "set": ["got_tm28"], "if": ["cerulean_rocket_beaten"] },
+					{ "dialogue": "cerulean_rocket_leaving", "if": ["cerulean_rocket_beaten"] },
+					{ "move": "cerulean_rocket", "to": [14, 3], "if": ["cerulean_rocket_beaten"] },
+					{ "despawn": "cerulean_rocket", "if": ["cerulean_rocket_beaten"] },
+					{ "despawn": "h4_policeman", "if": ["cerulean_rocket_beaten"] },
+					{ "despawn": "cerulean_police_tape", "if": ["cerulean_rocket_beaten"] },
+					{ "wake_up": true, "unless": ["cerulean_rocket_beaten"] }
+				]
+			}
+		]
+	},
+	"cerulean_south_guard": {
+		"variants": [
+			{
+				"if": ["cerulean_rocket_beaten"],
+				"unless": ["cerulean_south_guard_left"],
+				"steps": [
+					{ "face": "cerulean_south_guard", "to": "player" },
+					{ "dialogue": "cerulean_south_guard_leaving" },
+					{ "despawn": "cerulean_barrier_w" },
+					{ "despawn": "cerulean_barrier_e" },
+					{ "move": "cerulean_south_guard", "to": [30, 36] },
+					{ "despawn": "cerulean_south_guard" },
+					{ "set": ["cerulean_south_guard_left"] }
+				]
+			}
+		]
+	}
+}

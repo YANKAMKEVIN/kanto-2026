@@ -159,6 +159,10 @@ const VARIANT_FLAGS: Dictionary = {
 	&"bill_screen": [PEWTER_FLAGS + [&"bill_met"]],
 	&"bill_module": [PEWTER_FLAGS + [&"bill_met", &"bill_screen_checked"]],
 	&"bill_machine": [PEWTER_FLAGS + [&"bill_met", &"bill_screen_checked", &"bill_in_cabin"]],
+	# Jalon 14 (T20b) : poursuite, combat du Rocket d'Azuria, barrage sud.
+	&"cerulean_rocket_chase": [PEWTER_FLAGS],
+	&"cerulean_rocket_fight": [PEWTER_FLAGS + [&"cerulean_rocket_spotted"]],
+	&"cerulean_south_guard": [PEWTER_FLAGS + [&"cerulean_rocket_beaten"]],
 }
 ## Scènes jouées par le code (pas de déclencheur) → carte où elles sont jouées.
 ## Jalon 7 (T18) : la scène du colis est lancée par la variante « cutscene » du dialogue de Chen.
@@ -252,6 +256,7 @@ func test_library_loads_without_error() -> void:
 	assert_eq(library.get_errors().size(), 0, str(library.get_errors()))
 	assert_eq(library.get_ids(), _sorted([&"bill_house_enter", &"bill_machine", &"bill_module",
 		&"bill_screen", &"cerulean_arrival", &"cerulean_gym_misty",
+		&"cerulean_rocket_chase", &"cerulean_rocket_fight", &"cerulean_south_guard",
 		&"cerulean_gym_misty_tm_late", &"mart_parcel", &"mt_moon_1f_hidden_1", &"mt_moon_1f_item_1",
 		&"mt_moon_b1f_item_1", &"mt_moon_b1f_item_2", &"mt_moon_b2f_hidden_1",
 		&"mt_moon_b2f_item_1", &"mt_moon_fossil_dome", &"mt_moon_fossil_helix",
