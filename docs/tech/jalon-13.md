@@ -1364,6 +1364,15 @@ et de l'annexe A validée.
   - Captures : `build/captures/j13_t22/` (`tools/capture_nugget_j13.gd`).
 
 #### T23 — qa-mobile : **QA finale 13C** → Kevin, fusion
+- **Fait le 2026-10-14 (S21, ~55 min, branche `j13-t23-qa`)** : rapport `build/qa/jalon13_t23/` (`RESUME.txt`, captures). Tests 4466/4466,
+  import propre, APK 125 Mo, aucun crash, **60 fps** (creux 60, 19 relevés), textures 86 Mo (> budget J7 64 Mo, sans ralentissement). **OK** : sas rechargé
+  (save relue), pont (P1 inévitable, défaite au milieu : battus gardés, argent intact), recruteur OUI (Pépite, Abo N15) puis NON sur une autre
+  partie (Pépite une seule fois, défaite → reprise sans choix), cinq Dresseurs, Antidote caché (toast, second examen vide), « ROUTE 25 — À venir »,
+  vente de la Pépite (5 000 ₽), rival côté Bulbizarre : Roucool Nv 15. **Argent après défaite : intact** (3 000 → 3 000). **Non vérifiés à
+  l'écran** : réplique n° 31, niveaux Roucoups 16 / Rattata 14 / Reptincel 15 (confirmés dans les données), « jamais pendant Patience » (piège non
+  confirmé ; couvert par `AiSwitchRule` et ses tests). Le parcours Ondine / Arène / badge n'a pas été rejoué (validé au T21). Une partie des
+  captures du début de session n'a pas été relue visuellement (limite d'images) : points établis par `save.json`. Sauvegarde de Kevin restaurée
+  (sha256 identiques). En attente de la validation de Kevin avant fusion.
 - **Décision de Kevin (2026-10-14)** : la vraie partie du S21 est à Jadielle → QA finale par **départs de débogage enchaînés** (sas → Route 4 → Azuria → rival → Ondine → pont → vente de la Pépite) sur une partie neuve, avec relecture d'une sauvegarde de chaque étape par l'APK final ; partie réelle de Kevin sauvegardée puis restaurée.
 - Pont (cinq inévitables, défaite au milieu), recruteur (OUI puis, sur une autre partie, NON ; Pépite ;
   défaite → reprise sans choix), espace nord, Antidote caché, « ROUTE 25 — À venir » ; **vraie partie
