@@ -1,9 +1,37 @@
 {
 	"version": 1,
-	"description": "Route 3 et Mont Sélénite (jalon 12, dossier 15 §3.2, §3.3, §6, §8.3, §9). Équipes et adversaires recopiés du dossier ; étapes et cases obligatoires lues dans les grilles validées (plan_check_route_3.py : 8 cases d'herbes, H2 ou H3 puis H4 ; plan_check_mont_selenite.py : 8 cases de gravats, 1F-G1 3 et B2F-G1 5). Équipes « naturelles » = défauts (règle 4), à remplacer par la sauvegarde de Kevin au T26 (--save).",
+	"description": "Route 3 et Mont Sélénite (jalon 12, dossier 15 §3.2, §3.3, §6, §8.3, §9). Équipes et adversaires recopiés du dossier ; étapes et cases obligatoires lues dans les grilles validées (plan_check_route_3.py : 8 cases d'herbes, H2 ou H3 puis H4 ; plan_check_mont_selenite.py : 8 cases de gravats, 1F-G1 3 et B2F-G1 5). Équipes « naturelles » = défauts (règle 4 ; T26, sans sauvegarde de Kevin) : les trois premières = fin du J11 réaliste (Pierre battu, starter évolué au N16, Férosinge N15 de la préparation du J10), les trois suivantes = bas de fourchette (starter N15 non évolué ; deux Pokémon seulement pour Bulbizarre). R3 et chercheur : valeurs du T26 (Rattatac N13, Voltorbe et Smogo N12).",
 	"seeds": 500,
 	"heal_at_start": true,
 	"teams": [
+		{
+			"name": "Reptincel 16, Férosinge 15, Roucool 14, Papilusion 12",
+			"members": [
+				{ "species": "charmeleon", "level": 16 },
+				{ "species": "mankey", "level": 15 },
+				{ "species": "pidgey", "level": 14 },
+				{ "species": "butterfree", "level": 12,
+					"moves": ["tackle", "string_shot", "harden", "confusion"] }
+			]
+		},
+		{
+			"name": "Herbizarre 16, Roucool 14, Papilusion 12",
+			"members": [
+				{ "species": "ivysaur", "level": 16 },
+				{ "species": "pidgey", "level": 14 },
+				{ "species": "butterfree", "level": 12,
+					"moves": ["tackle", "string_shot", "harden", "confusion"] }
+			]
+		},
+		{
+			"name": "Carabaffe 16, Roucool 14, Papilusion 12",
+			"members": [
+				{ "species": "wartortle", "level": 16 },
+				{ "species": "pidgey", "level": 14 },
+				{ "species": "butterfree", "level": 12,
+					"moves": ["tackle", "string_shot", "harden", "confusion"] }
+			]
+		},
 		{
 			"name": "Salamèche 15, Férosinge 15, Roucool 13",
 			"members": [
@@ -117,14 +145,14 @@
 		},
 		"mt_moon_rocket_3": {
 			"name": "Sbire Rocket", "ai": "smart",
-			"can_lose": false, "heal_after": false, "gives_exp": true, "prize_money": 450,
+			"can_lose": false, "heal_after": false, "gives_exp": true, "prize_money": 390,
 			"team": [{ "species": "zubat", "level": 13 }, { "species": "ekans", "level": 13 },
-				{ "species": "raticate", "level": 15 }]
+				{ "species": "raticate", "level": 13 }]
 		},
 		"mt_moon_researcher": {
 			"name": "Chercheur Gaspard", "ai": "smart",
-			"can_lose": false, "heal_after": false, "gives_exp": true, "prize_money": 325,
-			"team": [{ "species": "voltorb", "level": 13 }, { "species": "koffing", "level": 13 }]
+			"can_lose": false, "heal_after": false, "gives_exp": true, "prize_money": 300,
+			"team": [{ "species": "voltorb", "level": 12 }, { "species": "koffing", "level": 12 }]
 		}
 	},
 	"steps": [
@@ -152,6 +180,6 @@
 		{ "name": "attentif, Centre, 3 Potions, 1 Antidote, détours (D4, D5, D6, R2)",
 			"player": "attentif", "center": true, "items": { "potion": 3, "antidote": 1 },
 			"optional": true },
-		{ "name": "naïf, Centre", "player": "naif", "center": true }
+		{ "name": "naïf, Centre, 1 reprise", "player": "naif", "center": true, "retries": 1 }
 	]
 }

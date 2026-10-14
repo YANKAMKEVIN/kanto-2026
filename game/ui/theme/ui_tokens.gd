@@ -1360,7 +1360,9 @@ const HAPTIC_STATUS_MS := 20
 # --- Écran d'évolution (jalon 9, jalon-09.md §2.3.3 ; dossier 04 §7 : 8 à 12 s) --------------
 # Défauts (règle 4). Durées en secondes, multipliées par EvolutionScreen.speed_scale (0 = tests ;
 # « Réduire les animations » : facteur du combat). Total hors lecture des textes : OPEN +
-# PRESENT + TRANSFORM + FLASH + SILENCE + REVEAL = 0,5 + 1,5 + 5 + 0,3 + 0,4 + 0,8 = 8,5 s.
+# PRESENT + TRANSFORM + FLASH + SILENCE + REVEAL = 0,5 + 1,5 + 2,5 + 0,3 + 0,3 + 0,8 = 5,9 s
+# (jalon 11, dossier 14 §7 : évolution courte ≈ 6 s, au lieu de 8,5 s ; surtout la transformation).
+# Toucher l'écran pendant la séquence la joue ×EVOLUTION_RUSH (EvolutionScreen).
 
 ## Calque : au-dessus de l'interface de combat (LAYER_BATTLE_HUD), sous les transitions.
 const LAYER_EVOLUTION := 24
@@ -1369,17 +1371,17 @@ const EVOLUTION_OPEN := 0.5
 ## L'ancienne espèce au centre et « Quoi ? X évolue ! », sans toucher.
 const EVOLUTION_PRESENT := 1.5
 ## Dans PRESENT : le Pokémon monte en fondu, la phrase suit.
-const EVOLUTION_ENTER := 0.7
+const EVOLUTION_ENTER := 0.6
 const EVOLUTION_ENTER_RISE := 36.0
 const EVOLUTION_TEXT_DELAY := 0.35
 ## Deuxième évolution du même écran : l'espèce précédente s'efface d'abord (dans PRESENT).
 const EVOLUTION_SWITCH_OUT := 0.25
 ## Transformation (ARRÊTER visible) ; couleurs → silhouette blanche en son début.
-const EVOLUTION_TRANSFORM := 5.0
-const EVOLUTION_TO_SILHOUETTE := 0.6
+const EVOLUTION_TRANSFORM := 2.5
+const EVOLUTION_TO_SILHOUETTE := 0.4
 ## Intervalle entre deux silhouettes, au début et à la fin (elles alternent en accélérant).
-const EVOLUTION_SWAP_START := 0.7
-const EVOLUTION_SWAP_END := 0.07
+const EVOLUTION_SWAP_START := 0.45
+const EVOLUTION_SWAP_END := 0.045
 ## Petit grossissement à chaque bascule de silhouette (fraction de la taille).
 const EVOLUTION_SWAP_POP := 0.06
 ## Flash : montée puis retombée (total FLASH), opacité au sommet ; « Réduire les flashs ».
@@ -1388,11 +1390,13 @@ const EVOLUTION_FLASH_RISE := 0.08
 const EVOLUTION_FLASH_ALPHA := 0.95
 const EVOLUTION_FLASH_REDUCED_ALPHA := 0.3
 ## Silence : la nouvelle silhouette, immobile, avant les couleurs.
-const EVOLUTION_SILENCE := 0.4
+const EVOLUTION_SILENCE := 0.3
 ## Révélation : silhouette → couleurs, halo doré, onde ; nom puis phrase.
 const EVOLUTION_REVEAL := 0.8
 const EVOLUTION_NAME_DELAY := 0.2
 const EVOLUTION_LINE_DELAY := 0.45
+## Jalon 11 [D] : vitesse de la séquence après un toucher (×2), jusqu'à la consigne de toucher.
+const EVOLUTION_RUSH := 2.0
 ## Annulée : retour aux couleurs de l'ancienne espèce.
 const EVOLUTION_REVERT := 0.6
 ## Apparition et disparition d'une phrase ; montée du texte.
@@ -1796,3 +1800,12 @@ const NAME_CHIP_RADIUS := 64
 const NAME_VALIDATE_WIDTH := 312
 ## VALIDER inactif : ACCENT éteint (texte et icône portent aussi l'état : jamais la couleur seule).
 const NAME_VALIDATE_DISABLED_ALPHA := 0.35
+
+# --- Combat du jalon 12 (T14) : Entrave ------------------------------------------------------
+
+## Carte d'une capacité bloquée (Entrave) : fond gris neutre (sans la teinte du type), liseré
+## discret ; atténuée en plus par MOVE_CARD_DISABLED (inerte, comme une carte sans PP).
+const MOVE_CARD_BLOCKED_BG := Color(0.17, 0.19, 0.22, 0.90)
+const MOVE_CARD_BLOCKED_BORDER := Color(1, 1, 1, 0.16)
+## « BLOQUÉE » (style des PP, en gras) : blanc, lisible malgré l'atténuation.
+const MOVE_CARD_BLOCKED_TEXT := TEXT

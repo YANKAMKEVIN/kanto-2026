@@ -24,6 +24,9 @@ var dialogue_id: StringName = &""
 var facing: Vector2i = Vector2i.ZERO
 ## Entité à l'origine (PNJ, Pokémon) ; null pour un point fixe.
 var source: Object = null
+## Jalon 12 (jalon-12.md §2.8) : la cible disparaît dès qu'un de ces drapeaux est levé
+## ([method is_available]) ; vide = toujours disponible. Recopié d'un [InteractPoint].
+var unless_flags: Array[StringName] = []
 
 
 func _init(
@@ -84,3 +87,12 @@ static func kind_from_name(value: String) -> int:
 		"take":
 			return Kind.TAKE
 	return -1
+
+
+## Jalon 12 (jalon-12.md §2.8) : vrai si aucun drapeau de [member unless_flags] n'est levé
+## dans [param flags] (null = nouvelle partie, aucun drapeau : toujours disponible). Aucune
+## allocation : appelable à chaque image.
+func is_available(flags: StoryFlags) -> bool:
+	if unless_flags.is_empty() or flags == null:
+		return true
+	return flags.has_none(unless_flags)

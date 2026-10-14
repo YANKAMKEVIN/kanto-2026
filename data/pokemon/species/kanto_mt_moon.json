@@ -1,0 +1,113 @@
+{
+	"ekans": {
+		"dex": 23, "name": "Abo", "types": ["poison"],
+		"base_stats": { "hp": 35, "atk": 60, "def": 44, "spa": 40, "spd": 54, "spe": 55 },
+		"male_ratio": 0.5, "growth_rate": "medium_fast", "base_exp": 58, "catch_rate": 255,
+		"learnset": [
+			[1, "wrap"], [1, "leer"], [10, "poison_sting"], [17, "bite"], [24, "glare"],
+			[31, "screech"], [38, "acid"]
+		],
+		"evolutions": [{ "into": "arbok", "method": "level", "level": 22 }]
+	},
+	"arbok": {
+		"dex": 24, "name": "Arbok", "types": ["poison"],
+		"base_stats": { "hp": 60, "atk": 95, "def": 69, "spa": 65, "spd": 79, "spe": 80 },
+		"male_ratio": 0.5, "growth_rate": "medium_fast", "base_exp": 157, "catch_rate": 90,
+		"learnset": [
+			[1, "wrap"], [1, "leer"], [1, "poison_sting"], [10, "poison_sting"], [17, "bite"],
+			[27, "glare"], [36, "screech"], [47, "acid"]
+		]
+	},
+	"clefairy": {
+		"dex": 35, "name": "Mélofée", "types": ["fairy"],
+		"base_stats": { "hp": 70, "atk": 45, "def": 48, "spa": 60, "spd": 65, "spe": 35 },
+		"male_ratio": 0.25, "growth_rate": "fast", "base_exp": 113, "catch_rate": 150,
+		"learnset": [
+			[1, "pound"], [1, "growl"], [13, "sing"], [18, "double_slap"], [24, "minimize"],
+			[31, "metronome"], [39, "defense_curl"], [48, "light_screen"]
+		],
+		"evolutions": [{ "into": "clefable", "method": "item", "item": "moon_stone" }]
+	},
+	"clefable": {
+		"dex": 36, "name": "Mélodelfe", "types": ["fairy"],
+		"base_stats": { "hp": 95, "atk": 70, "def": 73, "spa": 95, "spd": 90, "spe": 60 },
+		"male_ratio": 0.25, "growth_rate": "fast", "base_exp": 217, "catch_rate": 25,
+		"learnset": [
+			[1, "sing"], [1, "double_slap"], [1, "minimize"], [1, "metronome"]
+		]
+	},
+	"jigglypuff": {
+		"dex": 39, "name": "Rondoudou", "types": ["normal", "fairy"],
+		"base_stats": { "hp": 115, "atk": 45, "def": 20, "spa": 45, "spd": 25, "spe": 20 },
+		"male_ratio": 0.25, "growth_rate": "fast", "base_exp": 95, "catch_rate": 170,
+		"learnset": [
+			[1, "sing"], [9, "pound"], [14, "disable"], [19, "defense_curl"],
+			[24, "double_slap"], [29, "rest"], [34, "body_slam"], [39, "double_edge"]
+		],
+		"evolutions": [{ "into": "wigglytuff", "method": "item", "item": "moon_stone" }]
+	},
+	"wigglytuff": {
+		"dex": 40, "name": "Grodoudou", "types": ["normal", "fairy"],
+		"base_stats": { "hp": 140, "atk": 70, "def": 45, "spa": 85, "spd": 50, "spe": 45 },
+		"male_ratio": 0.25, "growth_rate": "fast", "base_exp": 196, "catch_rate": 50,
+		"learnset": [
+			[1, "sing"], [1, "disable"], [1, "defense_curl"], [1, "double_slap"]
+		]
+	},
+	"zubat": {
+		"dex": 41, "name": "Nosferapti", "types": ["poison", "flying"],
+		"base_stats": { "hp": 40, "atk": 45, "def": 35, "spa": 30, "spd": 40, "spe": 55 },
+		"male_ratio": 0.5, "growth_rate": "medium_fast", "base_exp": 49, "catch_rate": 255,
+		"learnset": [
+			[1, "leech_life"], [10, "supersonic"], [15, "bite"], [21, "confuse_ray"],
+			[28, "wing_attack"], [36, "haze"]
+		],
+		"evolutions": [{ "into": "golbat", "method": "level", "level": 22 }]
+	},
+	"golbat": {
+		"dex": 42, "name": "Nosferalto", "types": ["poison", "flying"],
+		"base_stats": { "hp": 75, "atk": 80, "def": 70, "spa": 65, "spd": 75, "spe": 90 },
+		"male_ratio": 0.5, "growth_rate": "medium_fast", "base_exp": 159, "catch_rate": 90,
+		"learnset": [
+			[1, "leech_life"], [1, "screech"], [1, "bite"], [10, "supersonic"], [15, "bite"],
+			[21, "confuse_ray"], [32, "wing_attack"], [43, "haze"]
+		]
+	},
+	"paras": {
+		"dex": 46, "name": "Paras", "types": ["bug", "grass"],
+		"base_stats": { "hp": 35, "atk": 70, "def": 55, "spa": 45, "spd": 55, "spe": 25 },
+		"male_ratio": 0.5, "growth_rate": "medium_fast", "base_exp": 57, "catch_rate": 190,
+		"learnset": [
+			[1, "scratch"], [13, "stun_spore"], [20, "leech_life"], [27, "spore"],
+			[34, "slash"], [41, "growth"]
+		],
+		"evolutions": [{ "into": "parasect", "method": "level", "level": 24 }]
+	},
+	"parasect": {
+		"dex": 47, "name": "Parasect", "types": ["bug", "grass"],
+		"base_stats": { "hp": 60, "atk": 95, "def": 80, "spa": 60, "spd": 80, "spe": 30 },
+		"male_ratio": 0.5, "growth_rate": "medium_fast", "base_exp": 142, "catch_rate": 75,
+		"learnset": [
+			[1, "scratch"], [1, "stun_spore"], [1, "leech_life"], [13, "stun_spore"],
+			[20, "leech_life"], [30, "spore"], [39, "slash"], [48, "growth"]
+		]
+	},
+	"voltorb": {
+		"dex": 100, "name": "Voltorbe", "types": ["electric"],
+		"base_stats": { "hp": 40, "atk": 30, "def": 50, "spa": 55, "spd": 55, "spe": 100 },
+		"male_ratio": -1, "growth_rate": "medium_fast", "base_exp": 66, "catch_rate": 190,
+		"learnset": [
+			[1, "tackle"], [1, "screech"], [17, "sonic_boom"], [22, "self_destruct"],
+			[29, "light_screen"], [36, "swift"], [43, "explosion"]
+		]
+	},
+	"koffing": {
+		"dex": 109, "name": "Smogo", "types": ["poison"],
+		"base_stats": { "hp": 40, "atk": 65, "def": 95, "spa": 60, "spd": 45, "spe": 35 },
+		"male_ratio": 0.5, "growth_rate": "medium_fast", "base_exp": 68, "catch_rate": 190,
+		"learnset": [
+			[1, "tackle"], [1, "smog"], [32, "sludge"], [37, "smokescreen"],
+			[40, "self_destruct"], [45, "haze"], [48, "explosion"]
+		]
+	}
+}

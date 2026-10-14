@@ -708,3 +708,29 @@ func test_override_grass_replaces_only_that_map() -> void:
 		"slots": [{"species": "pikachu", "levels": [9, 9], "weight": 1}]}, "t"))
 	assert_eq(library.get_table(&"route_1").rate, 200)
 	assert_eq(library.get_table(&"route_2"), route_2_before, "les autres cartes gardent la leur")
+
+
+# --- Jalon 11 (T20d) : QA du compagnon ----------------------------------------------------
+
+func test_shipped_companion_qa_start() -> void:
+	var start := _load_qa_start("companion_qa", &"viridian_city")
+	assert_eq(start.companion, 0)
+	var state: Node = autofree(GameStateScript.new())
+	start.apply(state, _data)
+	assert_eq(state.get_companion(), state.party.get_at(0), "Salamèche, compagnon")
+	assert_eq(state.party.get_at(2).hp, 0, "Rattata K.O.")
+	assert_eq(state.party.get_at(3).status, StatusRules.POISON)
+	assert_eq(state.party.get_at(4).gender, Pokemon.Gender.FEMALE, "Nidoran ♀ : « fatiguée »")
+
+
+func test_companion_must_be_a_party_place() -> void:
+	for value: Variant in [-1, 1, "0", 0.5]:
+		var start := DebugStart.new()
+		assert_false(start.add_from_dict({"party": [{"species": "pikachu", "level": 5}],
+			"companion": value}, _data, _items, "t"), str(value))
+		assert_string_contains("\n".join(start.get_errors()), "companion")
+	assert_push_error_count(4, "une erreur par cas")
+	var none := DebugStart.new()
+	assert_true(none.add_from_dict({"party": [{"species": "pikachu", "level": 5}]}, _data,
+		_items, "t"))
+	assert_eq(none.companion, -1, "absent : aucun compagnon")

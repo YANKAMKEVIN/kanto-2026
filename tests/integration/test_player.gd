@@ -457,3 +457,33 @@ func test_ledge_jump_lifts_sprite_over_two_cells_shadow_grounded() -> void:
 	assert_eq(_player.get_cell(), Vector2i(1, 6), "atterrit deux cases plus bas")
 	assert_false(_player.is_jumping())
 	assert_almost_eq(sprite.position.y, 0.0, 0.1, "sprite reposé après l'atterrissage")
+
+
+## Jalon 11 (compagnon) : chaque pas qui commence est relayé avec son genre (marche, course,
+## saut de rebord) ; un pivot ou une poussée contre un mur ne sont pas des pas.
+func test_step_started_is_relayed_with_its_kind() -> void:
+	var steps: Array = []
+	_player.step_started.connect(func(from: Vector2i, to: Vector2i, kind: StringName) -> void:
+		steps.append([from, to, kind]))
+	_player.face(Vector2i.RIGHT)
+	Input.action_press(&"move_right")
+	_player._process(FRAME)
+	_settle()
+	Input.action_press(&"move_right")
+	Input.action_press(&"run")
+	_player._process(FRAME)
+	_settle()
+	_grid.set_ledge(Vector2i(3, 5), GridWorld.Ledge.DOWN)
+	_player.face(Vector2i.DOWN)
+	Input.action_press(&"move_down")
+	_player._process(FRAME)
+	_settle()
+	assert_eq(steps, [[START, START + Vector2i.RIGHT, &"walk"],
+		[START + Vector2i.RIGHT, START + Vector2i(2, 0), &"run"],
+		[Vector2i(3, 4), Vector2i(3, 6), &"jump"]])
+	_grid.set_solid(Vector2i(3, 7))
+	_player.face(Vector2i.DOWN)
+	Input.action_press(&"move_down")
+	_simulate(0.5)
+	_settle()
+	assert_eq(steps.size(), 3, "poussée contre un mur : aucun pas")

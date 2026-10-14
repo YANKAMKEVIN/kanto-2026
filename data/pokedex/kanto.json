@@ -272,6 +272,82 @@
 		"starmie": {
 			"height": 1.1, "weight": 80.0,
 			"description": "Son joyau central change de couleur selon la lumière. Il nage en tournant sur lui-même, si vite qu'on le perd des yeux."
+		},
+		"jigglypuff": {
+			"height": 0.5, "weight": 5.5,
+			"description": "Ses grands yeux ronds fixent quiconque l'approche. Sa berceuse est si douce que ceux qui l'écoutent finissent par s'endormir.",
+			"notes": [
+				{ "id": "jigglypuff_balloon", "unlock": { "seen": 1 },
+				  "text": "Il gonfle son corps comme un ballon avant de chanter. On le trouve là où le vent porte loin sa voix." }
+			]
+		},
+		"wigglytuff": {
+			"height": 1.0, "weight": 12.0,
+			"description": "Son pelage est si fin et si doux qu'on s'y enfonce comme dans un nuage. Il se gonfle d'air quand on le contrarie."
+		},
+		"ekans": {
+			"height": 2.0, "weight": 6.9,
+			"description": "Il se faufile sans bruit entre les herbes sèches et les pierres chaudes. Il s'enroule autour de sa proie et ne la lâche plus.",
+			"notes": [
+				{ "id": "ekans_sunbath", "unlock": { "seen": 1 },
+				  "text": "Au matin, il se chauffe au soleil sur les rochers plats, immobile, avant de disparaître dans une fente." }
+			]
+		},
+		"arbok": {
+			"height": 3.5, "weight": 65.0,
+			"description": "Le motif de son ventre ressemble à un visage menaçant. Il le déploie pour effrayer ce qui s'approche de trop près."
+		},
+		"zubat": {
+			"height": 0.8, "weight": 7.5,
+			"description": "Il n'a pas d'yeux et se repère grâce aux ultrasons qu'il émet sans cesse. Il ne quitte les grottes qu'à la nuit tombée.",
+			"notes": [
+				{ "id": "zubat_ceiling", "unlock": { "seen": 1 },
+				  "text": "Au plafond des galeries, ils dorment serrés les uns contre les autres. Un bruit suffit à les faire tous s'envoler." }
+			]
+		},
+		"golbat": {
+			"height": 1.6, "weight": 55.0,
+			"description": "Ses crocs creux lui permettent de boire très vite. Après un repas, il vole lourdement et se pose dans un coin sombre."
+		},
+		"paras": {
+			"height": 0.3, "weight": 5.4,
+			"description": "Les champignons qui poussent sur son dos tirent leur force de lui. Il vit dans les recoins humides où rien d'autre ne pousse.",
+			"notes": [
+				{ "id": "paras_dig", "unlock": { "seen": 1 },
+				  "text": "On le voit gratter le sol des galeries avec ses pinces, à la recherche de racines." }
+			]
+		},
+		"parasect": {
+			"height": 1.0, "weight": 29.5,
+			"description": "Le champignon a pris le dessus sur son hôte. Il recherche l'ombre et l'humidité, et répand des spores au moindre contact."
+		},
+		"clefairy": {
+			"height": 0.6, "weight": 7.5,
+			"description": "On l'aperçoit rarement, et presque toujours par nuit claire. Les gens des montagnes racontent qu'il danse au clair de lune.",
+			"notes": [
+				{ "id": "clefairy_shards", "unlock": { "seen": 1 },
+				  "text": "Là où il est passé, on trouve parfois de fins éclats de pierre brillante." }
+			]
+		},
+		"clefable": {
+			"height": 1.3, "weight": 40.0,
+			"description": "Il est si discret qu'on ne le voit presque jamais. Ses grandes oreilles entendent une épingle tomber de très loin."
+		},
+		"voltorb": {
+			"height": 0.5, "weight": 10.4,
+			"description": "On le confond facilement avec une Poké Ball. Chargé d'électricité, il peut éclater au moindre choc.",
+			"notes": [
+				{ "id": "voltorb_machines", "unlock": { "seen": 1 },
+				  "text": "Il apparaît près des installations électriques et des lieux où l'on travaille avec des machines." }
+			]
+		},
+		"koffing": {
+			"height": 0.6, "weight": 1.0,
+			"description": "Son corps mince est rempli de gaz toxiques. Il flotte au ras du sol en dégageant une odeur âcre.",
+			"notes": [
+				{ "id": "koffing_air", "unlock": { "seen": 1 },
+				  "text": "Là où il s'attarde, l'air devient lourd et piquant. On le sent avant de le voir." }
+			]
 		}
 	}
 }

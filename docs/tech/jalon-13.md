@@ -164,6 +164,37 @@ pas livré.** Écarts avec ce que le plan supposait :
 - Aucune autre dépendance bloquante : rival, Ondine, Lucas, Diane, P1, P2, P4, P5, CT11, Pépite et
   la table de la Route 24 sont complets.
 
+> **Fusion de `jalon-12` (2732b45) dans le J13 (2026-10-13, branche `j13-fusion-j12`)** : ce qui
+> attendait le J12 est **livré** ; la liste ci-dessus est historique.
+> - **Doublons retirés** : `acid`, `wrap`, `smokescreen`, `minimize`, `light_screen` = entrées du
+>   J12 (`moves/mt_moon.json`) ; plus aucune clé en double (`check_json_keys.py`). 96 capacités.
+> - **Effets branchés** : Vol-Vie `drain` ½ ; Claquoir `trap` [4, 5], 1/8, famille de phrases
+>   **`clamp`** ajoutée (`MoveEffect.TRAP_MESSAGES`, `BattleText.TEMPLATE_IDS`, `messages.json` :
+>   textes de l'annexe A.3) ; Ligotage = celui du J12. Restent en attente : Soin, Danse Fleur,
+>   Mur Lumière.
+> - **IA qui change** : `Battler.is_locked()` = Patience **ou piège** (`is_trapped()`), testé.
+> - **`field_use`** : lecture du J12 ; **une seule condition** retire UTILISER, celle du J13 dans
+>   `ItemData.contexts()` (AVENTURE sans usage = aucun contexte, lue par le Sac et `ItemUse`) ; la
+>   condition en double du J12 dans `BagQuery._entry` est retirée. Pépite sans UTILISER.
+> - **Données posées** (pas encore sur les cartes : Clara au T17, Malo et le recruteur au T22) :
+>   `data/trainers/route_4.json` (`route_4_clara`), `route_24_malo` et `nugget_rocket` dans
+>   `route_24.json` ; Abo dans `route_4_grass` (3ᵉ, 10–12, poids 15). `test_cerulean_data` inversé.
+> - **CT** : `tm_compatibility.json` régénéré (59 espèces ; CT34 : 55, CT01 : 19, CT11 : 18).
+> - **`--valider`** (`cerulean_scenario.json`) : **code 0, rien de sauté**.
+> - **Fusion de `main` (J12 terminé, 2b2745f) dans la foulée** : `confirm_cutscene` du J12 arrive
+>   (`_CHOICE_KEYS` : `confirm_cutscene` puis `confirm_set`, `cancel_set`) ; vie du sas gardée
+>   sur la vraie Route 4 (`build_route_4.gd` : panneau `route_4_sign` lu de face en (6, 5),
+>   **déclencheur `route_4_reached` (4, 5..9)**, mêmes cases que le sas) ; `test_route_4` garde nos
+>   tests et reprend ceux du panneau et du déclencheur ; la vie du sas du J12 est rejouée sur la
+>   vraie carte (`test_route_4_sas_life.gd`, l'ancien `test_route_4_life` du J12) ; départ
+>   `route_4` = celui du J12 (fin réelle du Mont Sélénite) ; `test_no_qa_map_is_shipped` : seule
+>   l'exception `qa_switch_j13` (T22) ; sprites provisoires des formes du rival = ceux du
+>   correctif QA 12A (nos 4 dessins en double retirés) ; outil de simulation : groupes, `starter`
+>   par équipe et `title` (J13) + `retries`, `--trace` (J12). Les spawns `from_cerulean_n|s` du
+>   sas ne sont plus référencés par aucune donnée (les sauvegardes gardent une case, pas un spawn).
+> - **Reste** : Antidote caché de la Route 24 nord (brique J12 livrée, T22) ; poser Clara (T17),
+>   Malo et le recruteur (T22) sur les cartes.
+
 ---
 
 ## 1. Découpage

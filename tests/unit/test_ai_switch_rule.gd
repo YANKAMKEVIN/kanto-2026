@@ -123,6 +123,13 @@ func test_locked_or_fainted_active_stays() -> void:
 	assert_true(side.active.is_locked())
 	assert_eq(AiSwitchRule.pick(side, _player(&"squirtle"), _chart, _data), STAY, "Patience")
 	side.active.clear_bide()
+	assert_false(side.active.is_locked())
+	# Jalon 12 : piégé (Ligotage…), il ne change pas non plus.
+	side.active.trap_turns = 2
+	side.active.trap_move = &"wrap"
+	assert_true(side.active.is_locked())
+	assert_eq(AiSwitchRule.pick(side, _player(&"squirtle"), _chart, _data), STAY, "piégé")
+	side.active.clear_trap()
 	side.active.pokemon.hp = 0
 	assert_eq(AiSwitchRule.pick(side, _player(&"squirtle"), _chart, _data), STAY, "K.O.")
 

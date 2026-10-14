@@ -40,10 +40,10 @@ OBJET_TAILLE = 256
 OBJET_MARGE = 8
 QUALITE = 90
 ## Planches d'icônes suivantes (même découpe en bandes), dans l'ordre : (planche, identifiants
-## de la gauche vers la droite). Série 14 (J12 T6) : `serie14.ICONES_IDS`, révision `_r2`
+## de la gauche vers la droite). Série 14 (J12 T6) : `serie14.ICONES_IDS`, révision `_r3` (Fossile Dôme refait, 2026-10-13)
 ## (Pierre Lune redessinée) validée par Kevin le 2026-10-11.
 PLANCHES_OBJETS_SUIVANTES = [
-	("UI_OBJETS_J12_PLANCHE_r2.png", ["moon_stone", "escape_rope", "dome_fossil", "helix_fossil"]),
+	("UI_OBJETS_J12_PLANCHE_r3.png", ["moon_stone", "escape_rope", "dome_fossil", "helix_fossil"]),
 	# Série 15 (J13 T5) : la Pépite, recadrée dans sa colonne (`serie15.py --retouches`, _r3).
 	("UI_OBJETS_J13_PLANCHE_r3.png", ["nugget"]),
 ]

@@ -6,6 +6,7 @@ extends GutTest
 ## spawn par rangée), rebord à sens unique vers le sud (unique descente, ne se monte pas), trois
 ## zones d'herbes (H1 et H3 évitables, H2 obligatoire sur 4 cases), Dresseuse et objet **absents**
 ## mais leurs cases réservées (T17), rebord et versant en roche ardoise, budget de nœuds.
+## Vie du sas gardée (J12 T28) : panneau examinable et déclencheur `route_4_reached` (4, 5..9).
 ## La reprise du sas : `test_route_4_resume`.
 
 const PlanGrid := preload("res://tests/helpers/plan_grid.gd")
@@ -194,8 +195,8 @@ func test_clara_is_avoidable_by_rows_21_and_22_and_her_cell_is_reserved() -> voi
 
 
 func test_nothing_lives_here_yet() -> void:
-	assert_eq(_map.get_node(^"Triggers").get_child_count(), 0, "déclencheur du J12 T28")
-	assert_eq(_map.get_node(^"Interactables").get_child_count(), 0)
+	assert_eq(_map.get_node(^"Triggers").get_child_count(), 1, "route_4_reached (J12 T28)")
+	assert_eq(_map.get_node(^"Interactables").get_child_count(), 1, "panneau (J12 T28)")
 	var roster := NpcRoster.load_for_map(&"route_4")
 	var ids: Array[String] = []
 	for spec: NpcSpec in roster.get_all():
@@ -254,3 +255,36 @@ func test_node_budget() -> void:
 	var count := GridPaths.count_nodes(_map)
 	gut.p("route_4 : %d nœuds" % count)
 	assert_lte(count, NODE_BUDGET)
+
+
+## T28 (§2.15, dossier 15 §20 n° 36) : panneau lu de face, depuis la case au sud.
+func test_sign_is_read_from_the_south() -> void:
+	var point := _map.get_node(^"Interactables").get_child(0) as InteractPoint
+	assert_not_null(point)
+	if point == null:
+		return
+	assert_eq(point.get_cells(), _plan.cells_at("panneau_route_4"))
+	assert_eq(point.dialogue_id, &"route_4_sign")
+	assert_eq(point.facing, Vector2i.UP)
+	var dialogues := DialogueLibrary.new()
+	assert_true(dialogues.load_dir())
+	assert_true(dialogues.has_dialogue(&"route_4_sign"))
+
+
+## T28 (§1.3 n° 5) : `route_4_reached` couvre toute la largeur du sas (colonne 4, rangées 5..9),
+## toute direction ; au nord et au sud, la paroi.
+func test_reached_trigger_spans_the_whole_sas() -> void:
+	var trigger := _map.get_node(^"Triggers").get_child(0) as EventTriggerPoint
+	assert_not_null(trigger)
+	if trigger == null:
+		return
+	assert_eq(trigger.cutscene_id, &"route_4_reached")
+	assert_eq(trigger.direction, Vector2i.ZERO, "toute direction")
+	var cells := trigger.get_cells()
+	assert_eq(cells.size(), 5)
+	for y: int in range(5, 10):
+		assert_true(cells.has(Vector2i(4, y)), "(4, %d) couverte" % y)
+		assert_false(_grid.is_solid(Vector2i(4, y)), "(4, %d) praticable" % y)
+	assert_true(_grid.is_solid(Vector2i(4, 4)), "paroi au nord")
+	assert_true(_grid.is_solid(Vector2i(4, 10)), "paroi au sud")
+	assert_false(cells.has(ARRIVAL), "l'arrivée n'est pas couverte : un pas vers l'est")

@@ -2,7 +2,8 @@ class_name MoveGrid
 extends BattleWidget
 ## Grille des capacités (combat-capacites-v1) : remplace la grille d'actions après ATTAQUER.
 ## Quatre emplacements en 2 × 2 sur un bandeau sombre translucide, en bas à droite ; un
-## emplacement vide si moins de 4 capacités ; une carte sans PP est atténuée et inerte.
+## emplacement vide si moins de 4 capacités ; une carte sans PP est atténuée et inerte, comme
+## celle que bloque Entrave (grisée, « BLOQUÉE », jalon 12).
 ##
 ## Gestes (dossier 05 §7, jalon 4 Q16) :
 ## - toucher une carte = move_selected(index), une seule fois : la grille se tait ensuite

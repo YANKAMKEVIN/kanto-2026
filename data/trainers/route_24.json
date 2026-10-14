@@ -15,6 +15,11 @@
 			{ "species": "bellsprout", "level": 12 }
 		]
 	},
+	"route_24_malo": {
+		"name": "Gamin Malo", "ai": "random",
+		"can_lose": false, "heal_after": false, "gives_exp": true, "prize_money": 210,
+		"team": [{ "species": "sandshrew", "level": 14 }, { "species": "ekans", "level": 14 }]
+	},
 	"route_24_romane": {
 		"name": "Jeune Dresseuse Romane", "ai": "random",
 		"can_lose": false, "heal_after": false, "gives_exp": true, "prize_money": 240,
@@ -24,5 +29,10 @@
 		"name": "Campeur Ethan", "ai": "random",
 		"can_lose": false, "heal_after": false, "gives_exp": true, "prize_money": 360,
 		"team": [{ "species": "mankey", "level": 18 }]
+	},
+	"nugget_rocket": {
+		"name": "Sbire Rocket", "ai": "smart",
+		"can_lose": false, "heal_after": false, "gives_exp": true, "prize_money": 450,
+		"team": [{ "species": "ekans", "level": 15 }, { "species": "zubat", "level": 15 }]
 	}
 }

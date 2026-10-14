@@ -37,6 +37,8 @@ const IDLE_REACT_MAX: float = 120.0
 const LOOK_EVERY_DEFAULT: float = 3.5
 const LOOK_EVERY_MIN: float = 0.5
 const LOOK_EVERY_MAX: float = 120.0
+## Jalon 12 : nombre maximal d'étapes de marche du départ d'un Dresseur ([member leave_cells]).
+const LEAVE_STEPS_MAX: int = 4
 
 ## Identifiant unique sur la carte (cible des indications « react » des dialogues).
 var id: StringName = &""
@@ -111,6 +113,19 @@ var before_dialogue: StringName = &""
 ## « D'accord… Tu es prêt. » du Campeur Liam) ; ensuite, [member dialogue]. &"" = la réplique
 ## « après » est dite tout de suite (comportement du jalon 9).
 var defeated_dialogue: StringName = &""
+## Jalon 12 (jalon-12.md §2.11) : réplique de **reprise**, dite à la place de
+## [member before_dialogue] quand le joueur a déjà perdu contre ce Dresseur (drapeau
+## `lost_<id>`, [method TrainerRules.lost_flag], levé par la défaite). &"" = pas de reprise :
+## « avant » à chaque fois, aucun drapeau de défaite (comportement des jalons 9 et 10).
+var rematch_dialogue: StringName = &""
+## Jalon 12 (jalon-12.md §2.11) : **départ** après la réplique « vaincu » — étapes de marche,
+## cases **relatives à sa case de départ** [member cell] (0 à
+## [constant LEAVE_STEPS_MAX] ; chacune rejointe par un chemin calculé), puis fondu de sortie.
+## Liste vide = il s'efface sur place. Sans effet si [member leaves] est faux.
+var leave_cells: Array[Vector2i] = []
+## Vrai si le bloc « trainer » a une clé « leave » (même vide) : il quitte la carte après sa
+## défaite et l'entrée porte « unless »: [beaten_<id>] (absent ensuite).
+var leaves: bool = false
 
 
 ## Vrai si l'on peut interagir avec lui (un dialogue est renseigné).
@@ -171,3 +186,16 @@ func make_interaction(at_cell: Vector2i, source: Object) -> Interaction:
 ## Vrai si c'est un Dresseur qui voit le joueur et le défie (jalon 9, bloc « trainer »).
 func is_trainer() -> bool:
 	return not trainer_id.is_empty()
+
+
+## Jalon 12 : vrai si le Dresseur a une réplique de reprise (et mémorise ses victoires).
+func has_rematch() -> bool:
+	return is_trainer() and not rematch_dialogue.is_empty()
+
+
+## Jalon 12 : cases absolues de son départ ([member leave_cells] depuis [member cell]).
+func get_leave_path_cells() -> Array[Vector2i]:
+	var cells: Array[Vector2i] = []
+	for offset: Vector2i in leave_cells:
+		cells.append(cell + offset)
+	return cells

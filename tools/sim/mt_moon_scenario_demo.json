@@ -74,6 +74,6 @@
 		{ "name": "attentif, Centre, 3 Potions, 1 Antidote, fuite sous 1/4",
 			"player": "attentif", "center": true, "items": { "potion": 3, "antidote": 1 },
 			"flee_below": 0.25 },
-		{ "name": "naïf, Centre", "player": "naif", "center": true }
+		{ "name": "naïf, Centre, 1 reprise", "player": "naif", "center": true, "retries": 1 }
 	]
 }

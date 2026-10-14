@@ -25,6 +25,22 @@ func test_demo_scenario_runs_to_the_end() -> void:
 	assert_true(run[1].contains("rien n'a été sauté (code 0)"), "fin absente")
 
 
+## T26 : reprises au Centre après une défaite (« retries ») et déroulé des combats (`--trace`).
+func test_retries_and_trace() -> void:
+	var run := _run(["--scenario", DEMO, "--seeds", "2", "--variante", "reprise", "--trace",
+		"R1"])
+	var out: String = run[1]
+	assert_eq(run[0], EXIT_OK, out.right(2000))
+	assert_false(out.contains("SCRIPT ERROR"), "erreur de script dans l'outil")
+	assert_true(out.contains("--- Salamèche 15, Férosinge 15, Roucool 13 | naïf, Centre, "
+		+ "1 reprise"), out)
+	assert_true(out.contains("avec reprises au Centre : arrivée après 0 défaite(s) "), out)
+	assert_true(out.contains(", 1 défaite(s) "), out)
+	assert_true(out.contains(">>> graine 0, R1 Sbire guetteur (B1F)"), out)
+	assert_true(out.contains("Sbire Rocket veut se battre !"), "déroulé absent")
+	assert_false(out.contains(">>> graine 2,"), "seules les premières graines sont racontées")
+
+
 func test_absent_ids_are_skipped_with_a_distinct_code() -> void:
 	var run := _run(["--scenario", ABSENT])
 	var out: String = run[1]

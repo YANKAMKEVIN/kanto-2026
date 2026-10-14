@@ -1,4 +1,7 @@
 {
+	"route_4_sign": {
+		"pages": ["ROUTE 4\nMont Sélénite ← → Azuria"]
+	},
 	"route_4_ball_1": {
 		"cutscene": "route_4_item_1"
 	}

@@ -19,6 +19,9 @@ const _LEDGE_MASK: int = 0b1100
 ## informatif (rencontres, sprite « jambes dans l'herbe ») : il n'entre dans aucune règle
 ## de déplacement (can_enter, get_step_target, is_free l'ignorent).
 const _FLAG_TALL_GRASS: int = 16
+## Gravats (jalon 12, T20) : bit 5. Informatif comme les hautes herbes (rencontres de grotte,
+## [EncounterDirector]) : n'entre dans aucune règle de déplacement.
+const _FLAG_RUBBLE: int = 32
 
 ## Ordre d'exploration de [method find_path] (chemins reproductibles).
 const _PATH_DIRECTIONS: Array[Vector2i] = [
@@ -28,6 +31,10 @@ const _PATH_DIRECTIONS: Array[Vector2i] = [
 var _size: Vector2i
 var _flags: PackedByteArray = PackedByteArray()
 var _occupants: Dictionary[Vector2i, Object] = {}
+## Occupation **douce** (jalon 11, compagnon) : case → entité. Seules les routines des PNJ la
+## consultent ([method is_soft_held]) ; l'accès, les pas, les scènes, les Dresseurs et les
+## interactions l'ignorent (`docs/tech/jalon-11-compagnon.md` §2.5).
+var _soft: Dictionary[Vector2i, Object] = {}
 
 
 func _init(map_size: Vector2i) -> void:
@@ -85,6 +92,16 @@ func is_tall_grass(cell: Vector2i) -> bool:
 	return _has_flag(cell, _FLAG_TALL_GRASS)
 
 
+## Marque une case de gravats (jalon 12, donnée de tuile `rubble`) ou la libère. Renvoie false
+## si hors carte. Comme les hautes herbes, n'influe sur aucune règle de déplacement.
+func set_rubble(cell: Vector2i, rubble: bool = true) -> bool:
+	return _set_flag(cell, _FLAG_RUBBLE, rubble)
+
+
+func is_rubble(cell: Vector2i) -> bool:
+	return _has_flag(cell, _FLAG_RUBBLE)
+
+
 ## Pose un rebord sur une case. Renvoie false si hors carte.
 func set_ledge(cell: Vector2i, ledge: Ledge) -> bool:
 	if not is_in_bounds(cell):
@@ -139,6 +156,32 @@ func occupy(cell: Vector2i, entity: Object) -> bool:
 func release(cell: Vector2i, entity: Object) -> void:
 	if get_occupant(cell) == entity:
 		_occupants.erase(cell)
+
+
+## Tient doucement [param cell] pour [param entity] (le compagnon, sa case d'arrivée) : la case
+## qu'elle tenait est rendue. Une routine de PNJ attend une case tenue ; rien d'autre n'en tient
+## compte.
+func soft_hold(cell: Vector2i, entity: Object) -> void:
+	soft_release(entity)
+	if entity != null and is_in_bounds(cell):
+		_soft[cell] = entity
+
+
+## Rend la case tenue doucement par [param entity] (rappel, carte quittée).
+func soft_release(entity: Object) -> void:
+	for cell: Vector2i in _soft.keys():
+		if _soft[cell] == entity:
+			_soft.erase(cell)
+
+
+## Vrai si [param cell] est tenue doucement par une entité encore valide.
+func is_soft_held(cell: Vector2i) -> bool:
+	if not _soft.has(cell):
+		return false
+	if not is_instance_valid(_soft[cell]):
+		_soft.erase(cell)
+		return false
+	return true
 
 
 ## Déplace l'occupation d'une entité d'une case à une autre.

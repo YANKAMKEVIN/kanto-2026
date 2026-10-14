@@ -20,14 +20,16 @@ extends SceneTree
 ## - Image : sol peint (roche au pied de la paroi, qui cède à l'herbe vers l'est du plateau ;
 ##   chemin), paroi d'ardoise (série 14, froide) en modules, bouche de la grotte, versant `~` en
 ##   falaises d'ardoise (`relief_falaise_ardoise_01/02`), rebord en modules `relief_rebord_ardoise_01`,
-##   forêt serrée, rochers bleutés et buissons des cases `o` et `b`, panneau (décor ; texte au
-##   T28 du J12), touffes, hautes herbes jaune-vert.
+##   forêt serrée, rochers bleutés et buissons des cases `o` et `b`, panneau, touffes, hautes herbes jaune-vert.
 ## - Passages : bouche (2, 6) STEP_ON ← → `mt_moon_b2f` / `arrivee_s` ; raccord est (63, 19..21)
 ##   PUSH → vers Azuria (`cerulean_city`, spawns `from_route_4_n|c|s`, tournée →), retour sur les
 ##   spawns `from_cerulean_n|c|s` de cette carte, tournés ←. Plus de « AZURIA — À venir ».
 ## - Cases des PNJ (Clara), de l'objet (Poké Ball), des herbes : **réservées** d'après les
-##   positions de la grille (la forêt s'en écarte) ; rien de vivant ici (T17 : Dresseuse, objet,
-##   table `route_4_grass`, déclencheur `route_4_reached` du J12 T28).
+##   positions de la grille (la forêt s'en écarte) ; la vie (Dresseuse, objet,
+##   table `route_4_grass`) vient des données du T17.
+## - Vie du sas (J12 T28, gardée à la fusion de `main`) : panneau examinable de face (↑ depuis
+##   (6, 6)) → dialogue `route_4_sign` ; déclencheur silencieux `route_4_reached` sur (4, 5..9),
+##   toute direction (objectif « continuer vers Azuria. »).
 
 const Kit := preload("res://tools/pewter_map_kit.gd")
 const PLAN_PATH: String = "res://tools/plans/route_4.txt"
@@ -61,6 +63,11 @@ const EAST_EXITS: Array = [
 	["CeruleanC", Vector2i(63, 20), "from_cerulean_c", &"from_route_4_c"],
 	["CeruleanS", Vector2i(63, 21), "from_cerulean_s", &"from_route_4_s"],
 ]
+const SIGN_DIALOGUE: StringName = &"route_4_sign"
+## Déclencheur `route_4_reached` (J12 T28) : ancre bas-gauche (4, 9), 1 × 5 cases → (4, 5..9).
+const REACHED_ANCHOR := Vector2i(4, 9)
+const REACHED_SIZE := Vector2i(1, 5)
+const REACHED_CUTSCENE: StringName = &"route_4_reached"
 ## Bouche de la grotte : l'entrée de la Route 3 réduite, centrée sur la case `D`, au sol (sous
 ## le joueur qui y entre par l'est).
 const MOUTH_SCALE: float = 0.62
@@ -139,6 +146,7 @@ func _init() -> void:
 	_kit.call(&"place_tall_grass")
 	var feet: Array[Vector2] = []
 	var forest: Vector2i = _kit.call(&"place_forest", FOREST_SEED, feet, {})
+	_add_life()
 
 	var errors: PackedStringArray = _kit.get(&"errors")
 	if not errors.is_empty():
@@ -189,6 +197,14 @@ func _add_passages() -> void:
 		_kit.call(&"add_spawn", entry[2], entry[1])
 		_kit.call(&"add_warp", entry[0], entry[1], Kit.PUSH, Vector2i.RIGHT, EAST_MAP,
 			StringName(entry[3]), Vector2i.RIGHT)
+
+
+## Point d'examen du panneau (lu de face) et déclencheur silencieux de l'objectif (T28).
+func _add_life() -> void:
+	_kit.call(&"add_interactable", "SignRoute4Read", _plan().call(&"cell_of", "panneau_route_4"),
+		Vector2i.ONE, Vector2i.UP, SIGN_DIALOGUE)
+	_kit.call(&"add_trigger", "Route4Reached", REACHED_ANCHOR, REACHED_SIZE, Vector2i.ZERO,
+		REACHED_CUTSCENE)
 
 
 ## Roche au pied de la paroi qui cède à l'herbe vers l'est (plateau seulement ; graine fixe).

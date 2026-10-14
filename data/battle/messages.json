@@ -167,7 +167,37 @@
 		"evolution_started": { "text": "Quoi ? {pokemon} évolue !" },
 		"evolution_finished": { "text": "Félicitations ! {pokemon} a évolué en {species} !" },
 		"evolution_cancelled": { "text": "Hein ? {pokemon} n'évolue plus." },
-		"evolution_stop": { "text": "ARRÊTER" }
+		"evolution_stop": { "text": "ARRÊTER" },
+		"drain_hp": { "text": "{pokemon} récupère des PV !" },
+		"trap_wrap_started": {
+			"text": "{pokemon} est ligoté !",
+			"text_f": "{pokemon} est ligotée !"
+		},
+		"trap_wrap_damaged": { "text": "{pokemon} souffre du Ligotage !" },
+		"trap_bind_started": {
+			"text": "{pokemon} est pris dans l'Étreinte !",
+			"text_f": "{pokemon} est prise dans l'Étreinte !"
+		},
+		"trap_bind_damaged": { "text": "{pokemon} souffre de l'Étreinte !" },
+		"trap_fire_spin_started": {
+			"text": "{pokemon} est pris dans un tourbillon de flammes !",
+			"text_f": "{pokemon} est prise dans un tourbillon de flammes !"
+		},
+		"trap_fire_spin_damaged": { "text": "{pokemon} souffre de la Danse Flamme !" },
+		"trap_clamp_started": {
+			"text": "{pokemon} est pris dans le Claquoir !",
+			"text_f": "{pokemon} est prise dans le Claquoir !"
+		},
+		"trap_clamp_damaged": { "text": "{pokemon} souffre du Claquoir !" },
+		"trap_ended": {
+			"text": "{pokemon} est libéré !",
+			"text_f": "{pokemon} est libérée !"
+		},
+		"move_disabled": { "text": "{move} de {pokemon} est bloquée !" },
+		"disable_ended": { "text": "{move} n'est plus bloquée." },
+		"rested": { "text": "{pokemon} s'endort et récupère !" },
+		"switch_reason_trapped": { "text": "Impossible de changer" },
+		"move_disabled_label": { "text": "BLOQUÉE" }
 	},
 	"stats": {
 		"atk": "L'Attaque", "def": "La Défense", "spa": "L'Attaque Spéciale",

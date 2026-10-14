@@ -203,8 +203,8 @@ func test_the_wild_table_is_wired_to_the_map() -> void:
 	var species: Array[StringName] = []
 	for slot: Variant in table.slots:
 		species.append(slot.species)
-	assert_eq(species, [&"rattata", &"spearow", &"sandshrew", &"mankey"] as Array[StringName],
-		"Abo (J12 T12) rejoindra la table avec l'espèce")
+	assert_eq(species, [&"rattata", &"spearow", &"ekans", &"sandshrew", &"mankey"]
+		as Array[StringName], "Abo (J12) dans la table depuis la fusion")
 	assert_eq(table.rate, 25)
 	await _start(&"route_4", &"from_mt_moon", Vector2i(38, 15), Vector2i.DOWN, "route_4")
 	assert_true(_boot.get_map().get_grid().is_tall_grass(Vector2i(38, 15)), "hautes herbes (H1)")
@@ -224,17 +224,18 @@ func test_the_ledge_is_crossed_one_way_only() -> void:
 			"versant fermé en x = %d" % x)
 
 
-func test_clara_waits_for_the_species_of_the_j12() -> void:
+func test_clara_has_her_data_but_waits_for_her_placement() -> void:
 	var plan := PlanGrid.new()
 	assert_true(plan.load_file("res://tools/plans/route_4.txt"), plan.error)
 	assert_eq(plan.cell_of("clara"), Vector2i(44, 17), "case réservée")
 	await _start(&"route_4", &"from_mt_moon", Vector2i(44, 20), Vector2i.UP, "route_4")
 	var map := _boot.get_map()
-	assert_null(map.get_npc(&"clara"), "Clara n'est pas posée (Paras, Rondoudou : J12)")
-	assert_false(_boot.get_pokemon_data().has_species(&"paras"), "espèce du J12 absente")
+	assert_null(map.get_npc(&"clara"), "Clara n'est pas encore posée sur la carte (T17)")
+	assert_true(_boot.get_pokemon_data().has_species(&"paras"), "espèce du J12 livrée")
 	var trainers := TrainerLibrary.new(_boot.get_pokemon_data())
 	assert_true(trainers.load_dir())
-	assert_false(trainers.has_trainer(&"route_4_lass_clara"), "Dresseuse à créer avec le J12")
+	assert_eq(plan.attr("clara", "trainer"), "route_4_clara")
+	assert_true(trainers.has_trainer(&"route_4_clara"), "données posées à la fusion du J12")
 	assert_eq(map.get_npcs().size(), 1, "la Poké Ball seule")
 	_player.set_input_enabled(true, &"test")
 	# La rue (rangées 19..21) se traverse sans combat.

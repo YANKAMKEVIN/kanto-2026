@@ -36,6 +36,11 @@ const KEY_ADDED_BASE := "ajouté"
 const KEY_ADDED_SUFFIX := " aux objets clés"
 ## Toast d'une CT (dossier 14 §13, n° 40 : « CT34 — Patience obtenue »).
 const TM_ADDED_BASE := "obtenu"
+## Usages d'un objet AVENTURE (jalon 12, T20 ; [member field_use]) : la Corde Sortie (sans cible,
+## [FieldItemRules]) et la pierre d'évolution (un Pokémon cible, T23). Ajouts en fin.
+const FIELD_USE_ESCAPE_ROPE: StringName = &"escape_rope"
+const FIELD_USE_EVOLUTION_STONE: StringName = &"evolution_stone"
+const FIELD_USES: Array[StringName] = [FIELD_USE_ESCAPE_ROPE, FIELD_USE_EVOLUTION_STONE]
 
 var id: StringName = &""
 ## Nom au singulier (« Poké Ball ») et au pluriel (« Poké Balls »).
@@ -65,11 +70,16 @@ var teaches: StringName = &""
 ## Rang dans les données (0, 1, 2… dans l'ordre de lecture des fichiers) : ordre « pertinence »
 ## du Sac hors combat. Posé par [ItemLibrary].
 var order: int = 0
-## Usage d'exploration d'un objet AVENTURE (jalon-12.md §2.6 : « escape_rope »,
-## « evolution_stone ») ; &"" = aucun (la Pépite). **Lu par le J12** (clé « field_use » de
-## [ItemLibrary], T20) : le J13 n'en pose que la condition « UTILISER seulement si usage »
-## (jalon-13.md §0.4, repli §0.3), toujours vide en attendant.
+## Usage en exploration d'un objet AVENTURE (jalon 12, T20 ; [constant FIELD_USES]) : &"" =
+## aucun (l'objet se consulte, sans bouton UTILISER). Clé « field_use » des données, réservée à
+## la catégorie AVENTURE. Sans usage (la Pépite, jalon 13), [method contexts] est vide : c'est la
+## seule condition qui retire UTILISER (le Sac et [ItemUse] la lisent par [method usable_in]).
 var field_use: StringName = &""
+## Toast « obtenu » (jalon 12, T23 ; `jalon-12.md` §0.4 n° 7) : vrai → le toast d'ajout est celui
+## d'une CT, nom en casse normale puis « obtenu[e] » (les fossiles, dossier 15 §20 n° 27 :
+## « Fossile Dôme » / « obtenu ») au lieu de « ajouté aux objets clés ». Clé « obtained » des
+## données, facultative (faux par défaut).
+var obtained: bool = false
 
 
 ## Identifiant de la catégorie dans les fichiers (&"ball", &"heal"…) : onglet du Sac.
@@ -129,19 +139,22 @@ func name_for(count: int) -> String:
 
 
 ## « Poké Balls ×5 », « Poké Ball ×1 » ; un objet clé, unique, n'a que son nom en capitales
-## (« COLIS POUR CHEN », dossier 09 §19).
+## (« COLIS POUR CHEN », dossier 09 §19) ; une CT ou un objet [member obtained], son nom tel quel.
 func quantity_text(count: int) -> String:
+	if is_tm() or obtained:
+		return name
 	if is_key():
 		return name.to_upper()
-	if is_tm():
-		return name
 	return "%s ×%d" % [name_for(count), count]
 
 
 ## « Ajoutée au Sac », « Ajoutées au Sac », « Ajouté au Sac »… accordé au genre du nom et à
-## [param count] ; un objet clé : « ajouté aux objets clés » (dossier 09 §19).
+## [param count] ; un objet clé : « ajouté aux objets clés » (dossier 09 §19) ; une CT ou un objet
+## [member obtained] : « obtenu[e] ».
 func added_text(count: int) -> String:
 	var agreement := ("e" if feminine else "") + ("s" if count > 1 else "")
+	if obtained:
+		return TM_ADDED_BASE + agreement
 	if is_key():
 		return KEY_ADDED_BASE + agreement + KEY_ADDED_SUFFIX
 	if is_tm():
@@ -164,3 +177,8 @@ func is_sellable() -> bool:
 ## ne se vend pas.
 func sell_price() -> int:
 	return floori(price / 2.0) if is_sellable() else 0
+
+
+## Vrai si l'objet a un usage en exploration (jalon 12 : UTILISER d'un objet AVENTURE).
+func has_field_use() -> bool:
+	return category == Category.FIELD and not field_use.is_empty()

@@ -6,7 +6,8 @@
 			{ "item": "antidote" },
 			{ "item": "paralyze_heal" },
 			{ "item": "awakening" },
-			{ "item": "burn_heal" }
+			{ "item": "burn_heal" },
+			{ "item": "escape_rope" }
 		]
 	}
 }

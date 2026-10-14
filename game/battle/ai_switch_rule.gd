@@ -10,7 +10,7 @@ extends RefCounted
 ## - [b]Meilleure posture[/b] : ni K.O. ni en jeu, PV > 50 % (50 % pile = non), aucune faiblesse.
 ##   Plusieurs candidats : le premier dans l'ordre de l'équipe.
 ## - [b]Jamais[/b] : Pokémon actif K.O. ou en tour forcé ([method Battler.is_locked] : Patience,
-##   piège quand il existera), ou aucun candidat.
+##   piège du jalon 12), ou aucun candidat.
 
 const DANGER_HP_RATIO: float = 0.25
 const SAFE_HP_RATIO: float = 0.5

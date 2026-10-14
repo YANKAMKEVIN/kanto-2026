@@ -18,8 +18,10 @@ func test_real_data_loads_without_error() -> void:
 	assert_true(_library.load_dir(), "data/items/ se charge")
 	assert_eq(_library.get_errors().size(), 0, str(_library.get_errors()))
 	# Jalon 5 : la Potion cachée de la Route 1 (catégorie « heal », ramassée seulement).
-	assert_eq(_library.get_ids(), [&"antidote", &"awakening", &"burn_heal", &"ice_heal", &"nugget",
-		&"oak_parcel", &"paralyze_heal", &"poke_ball", &"potion", &"tm11", &"tm34"]
+	# Jalon 12 : data/items/mt_moon.json (Corde Sortie, Pierre Lune, fossiles, CT01).
+	assert_eq(_library.get_ids(), [&"antidote", &"awakening", &"burn_heal", &"dome_fossil",
+		&"escape_rope", &"helix_fossil", &"ice_heal", &"moon_stone", &"nugget", &"oak_parcel",
+		&"paralyze_heal", &"poke_ball", &"potion", &"tm01", &"tm11", &"tm34"]
 		as Array[StringName])
 	var ball := _library.get_item(&"poke_ball")
 	assert_eq(ball.name, "Poké Ball")
@@ -37,7 +39,8 @@ func test_real_data_loads_without_error() -> void:
 	assert_eq(ball.heal_amount, 0)
 	assert_eq(_library.get_ids_in_data_order(),
 		[&"poke_ball", &"potion", &"antidote", &"paralyze_heal", &"awakening", &"burn_heal", &"ice_heal",
-		&"nugget", &"tm11", &"tm34", &"oak_parcel"] as Array[StringName])
+		&"nugget", &"tm11", &"tm34", &"oak_parcel", &"escape_rope", &"moon_stone", &"dome_fossil",
+		&"helix_fossil", &"tm01"] as Array[StringName])
 	assert_eq([ball.order, potion.order], [0, 1])
 
 

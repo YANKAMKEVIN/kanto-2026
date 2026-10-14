@@ -1986,6 +1986,107 @@
    "source": "POKE_CARAPUCE_NE_r1.png",
    "sortie": "assets/sprites/pokemon/painted/carapuce_sheet.png",
    "hauteur": 60
+  },
+  {
+   "id": "herbizarre",
+   "source": "POKE_HERBIZARRE_NE_r1.png",
+   "sortie": "assets/sprites/pokemon/painted/herbizarre_sheet.png",
+   "hauteur": 66
+  },
+  {
+   "id": "carabaffe",
+   "source": "POKE_CARABAFFE_NE_r1.png",
+   "sortie": "assets/sprites/pokemon/painted/carabaffe_sheet.png",
+   "hauteur": 68
+  },
+  {
+   "id": "papilusion",
+   "source": "POKE_PAPILUSION_NE_r1.png",
+   "sortie": "assets/sprites/pokemon/painted/papilusion_sheet.png",
+   "hauteur": 70
+  },
+  {
+   "id": "pikachu",
+   "source": "POKE_PIKACHU_NE_r1.png",
+   "sortie": "assets/sprites/pokemon/painted/pikachu_sheet.png",
+   "hauteur": 60
+  },
+  {
+   "id": "reptincel",
+   "source": "POKE_REPTINCEL_NE_r1.png",
+   "sortie": "assets/sprites/pokemon/painted/reptincel_sheet.png",
+   "hauteur": 72
+  },
+  {
+   "id": "rondoudou",
+   "source": "POKE_RONDOUDOU_NE_r1.png",
+   "sortie": "assets/sprites/pokemon/painted/rondoudou_sheet.png",
+   "hauteur": 48
+  },
+  {
+   "id": "melofee",
+   "source": "POKE_MELOFEE_NE_r1.png",
+   "sortie": "assets/sprites/pokemon/painted/melofee_sheet.png",
+   "hauteur": 52,
+   "note": "prompt _r1b (sans nom de licence, refus du filtre de Codex), serie 14 T3"
+  },
+  {
+   "id": "abo",
+   "source": "POKE_ABO_NE_r1.png",
+   "sortie": "assets/sprites/pokemon/painted/abo_sheet.png",
+   "hauteur": 60
+  },
+  {
+   "id": "paras",
+   "source": "POKE_PARAS_NE_r1.png",
+   "sortie": "assets/sprites/pokemon/painted/paras_sheet.png",
+   "hauteur": 40
+  },
+  {
+   "id": "nosferapti",
+   "source": "POKE_NOSFERAPTI_NE_r1.png",
+   "sortie": "assets/sprites/pokemon/painted/nosferapti_sheet.png",
+   "hauteur": 46,
+   "note": "en vol (ombre au sol posee par le moteur, comme Papilusion)"
+  },
+  {
+   "id": "racaillou_marche",
+   "source": "POKE_RACAILLOU_MARCHE_NE_r1.png",
+   "sortie": "assets/sprites/pokemon/painted/racaillou_marche_sheet.png",
+   "hauteur": 56,
+   "note": "planche de marche du compagnon ; le Racaillou fixe du tailleur (pokemon_fixes, racaillou) reste a part"
+  },
+  {
+   "id": "roucoups",
+   "source": "POKE_ROUCOUPS_NE_r1.png",
+   "sortie": "assets/sprites/pokemon/painted/roucoups_sheet.png",
+   "hauteur": 60
+  },
+  {
+   "id": "nidorino",
+   "source": "POKE_NIDORINO_NE_r1.png",
+   "sortie": "assets/sprites/pokemon/painted/nidorino_sheet.png",
+   "hauteur": 58
+  },
+  {
+   "id": "nidorina",
+   "source": "POKE_NIDORINA_NE_r2.png",
+   "sortie": "assets/sprites/pokemon/painted/nidorina_sheet.png",
+   "hauteur": 66,
+   "note": "r2 (r1 trop proche de Nidoran F), prompt _r2b"
+  },
+  {
+   "id": "rattatac",
+   "source": "POKE_RATTATAC_NE_r1.png",
+   "sortie": "assets/sprites/pokemon/painted/rattatac_sheet.png",
+   "hauteur": 66
+  },
+  {
+   "id": "rapasdepic",
+   "source": "POKE_RAPASDEPIC_NE_r2.png",
+   "sortie": "assets/sprites/pokemon/painted/rapasdepic_sheet.png",
+   "hauteur": 86,
+   "note": "r2 = r1 reechelonne a 86 px (r1 plus petit que Piafabec)"
   }
  ],
  "heros_images": [
@@ -2261,15 +2362,9 @@
   },
   {
    "id": "fossil_dome",
-   "source": "WORLD_PROP_DALLE_FOSSILES_PLANCHE_NE_r1.png",
-   "recadrage": [
-    876,
-    588,
-    1172,
-    828
-   ],
+   "source": "WORLD_PROP_FOSSILE_DOME_01_NE_r1.png",
    "sortie": "assets/sprites/objects/painted/fossil_dome.png",
-   "hauteur": 46
+   "hauteur": 44
   },
   {
    "id": "fossil_helix",

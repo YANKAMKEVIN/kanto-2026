@@ -171,7 +171,8 @@ func test_arrival_raises_the_flag_sets_the_objective_and_records_the_moment_once
 	assert_false(GameState.flags.has_flag(&"cerulean_reached"))
 	var objectives := ObjectiveLibrary.new()
 	assert_true(objectives.load_file())
-	assert_eq(objectives.current(GameState.flags), "continuer vers la Route 3.", "avant Azuria")
+	# Départ `route_4` du J12 : Mont Sélénite fini, posé hors du déclencheur `route_4_reached`.
+	assert_eq(objectives.current(GameState.flags), "traverser le Mont Sélénite.", "avant Azuria")
 	Input.action_press(&"move_right")
 	await wait_until(func() -> bool: return _boot.get_map().map_id == CITY, TIMEOUT)
 	Input.action_release(&"move_right")
