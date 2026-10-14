@@ -1006,6 +1006,25 @@ et de l'annexe A validée.
 #### T20b — constructeur-monde : Azuria du J14 (14C) — après fusion de **J13 T7 et T17** (+ **J12 T12**)
 - §2.12 ; régénération d'Azuria par `build_cerulean_city.gd` ; intérieur
   `cerulean_burgled_house` ; départs `cerulean_garden`, `cerulean_rocket_weak`, `cerulean_after`.
+- **Fait (2026-10-14, branche `j14-t20b`)** : `build_cerulean_city.gd` lit la variante `J14`
+  (paramètre `plan_variant` des kits `pewter_map_kit` / `cerulean_map_kit`), `J` et `Y` praticables,
+  arbre dense (22, 3), trois bandes (`RocketChase`, `RocketFight`, `SouthGuard`), porte (10, 9) → `cerulean_burgled_house`
+  (`tools/plans/azuria_maison_cambriolee.txt`, victime `naturalist` en (3, 5)), raccord sud
+  « Route 5 » (`from_route_5_w|c|e`), planche clouée et porte condamnée en `FlagGate`,
+  `tools/build_police_objects.gd` (`object/police_tape`, `police_barrier` + `police_barrier_e` : moitiés
+  de la barrière à croisillon de la série 15) ; données `cerulean_rocket.json` (dialogues n° 29 à 37, 40, 41 ;
+  scènes `cerulean_rocket_chase`, `cerulean_rocket_fight`, `cerulean_south_guard`), PNJ du Rocket, du ruban, du
+  barrage, habitants n° 38 / 39 ; départs `cerulean_garden`, `cerulean_rocket_weak`, `cerulean_after`.
+  Tests : `test_cerulean_garden`, `test_cerulean_rocket`, `test_cerulean_south`, `test_cerulean_city` (J14),
+  `test_cerulean_life`, `test_cerulean_interiors`, `test_coming_soon` et `test_companion_coming_soon`
+  (déplacés sur « ROUTE 5 — À venir »), listes de `test_dialogue_data` / `test_cutscene_data` / `test_map_links`.
+  Captures : `build/captures/jalon14_t20b/` (`tools/capture_cerulean_j14.sh`).
+  - **Défauts [D]** : le Rocket **marche vite** (pas de `run`) : `sbire_h` n'a pas de planche de course
+    (`test_npc_gait` l'exige) ; drapeau `cerulean_victim_thanked` (n° 36 puis 37) ; victime `naturalist` ;
+    la décoration aléatoire d'Azuria (forêt, touffes, buissons) est retirée au sort par le changement de grille
+    (graine inchangée) : le logique est identique hors des cases du §1.3, la décoration est un autre tirage ;
+    la clôture blanche verticale (14, 1..5) est l'asset J13 d'origine ; le policier du sud part vers (30, 36)
+    après avoir fait retirer les barrières.
 
 #### T21 — architecte : équilibrage — après T16, T20b
 - `simulate_mt_moon.gd` + scénario `tools/sim/route_25_scenario.json` (D1, D2, Rocket, combats

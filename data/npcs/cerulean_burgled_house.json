@@ -1,0 +1,5 @@
+{
+	"victim": {
+		"cell": [3, 5], "facing": "right", "sprite": "naturalist", "dialogue": "cerulean_victim"
+	}
+}

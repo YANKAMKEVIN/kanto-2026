@@ -7,9 +7,19 @@
 	},
 	"cerulean_h1_fisher": {
 		"speaker": "Pêcheur",
-		"pages": [
-			"Pas de canne aujourd'hui.",
-			"Je viens juste regarder l'eau. Ça suffit parfois."
+		"variants": [
+			{
+				"if": ["cerulean_rocket_beaten"],
+				"pages": [
+					"Le voleur s'est enfui par le jardin, paraît-il. On n'a plus revu personne en noir."
+				]
+			},
+			{
+				"pages": [
+					"Pas de canne aujourd'hui.",
+					"Je viens juste regarder l'eau. Ça suffit parfois."
+				]
+			}
 		]
 	},
 	"cerulean_h2_kid": {
@@ -19,6 +29,10 @@
 	"cerulean_h3_neighbor": {
 		"speaker": "Voisine",
 		"variants": [
+			{
+				"if": ["cerulean_rocket_beaten"],
+				"pages": ["La police est partie. On peut de nouveau aller vers le sud !"]
+			},
 			{
 				"unless": ["cerulean_neighbor_talked"],
 				"set": ["cerulean_neighbor_talked"],

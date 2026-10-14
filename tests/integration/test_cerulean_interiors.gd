@@ -19,6 +19,10 @@ const ROOMS := {
 		[&"cerulean_city", &"from_bike_shop"], "azuria_velos.txt", ".Xv"],
 	&"cerulean_house": [Vector2i(15, 10), [Vector2i(6, 8), Vector2i(7, 8), Vector2i(8, 8)],
 		[&"cerulean_city", &"from_house"], "azuria_maison.txt", ".Xh"],
+	# Jalon 14 (T20b) : la maison cambriolée (même enveloppe, victime en (3, 5)).
+	&"cerulean_burgled_house": [Vector2i(15, 10),
+		[Vector2i(6, 8), Vector2i(7, 8), Vector2i(8, 8)],
+		[&"cerulean_city", &"from_burgled_house"], "azuria_maison_cambriolee.txt", ".Xv"],
 }
 
 var _maps: Dictionary = {}
@@ -176,3 +180,22 @@ func test_bike_shop_and_house_furniture() -> void:
 	var house: GameMap = _maps[&"cerulean_house"]
 	var dist_h := GridPaths.distances(_terrain(house), [house.get_spawn_cell(&"entrance")])
 	assert_true(dist_h.has(Vector2i(4, 5)), "l'habitante est accessible")
+
+
+func test_burgled_house_victim_is_reachable_and_has_her_two_lines() -> void:
+	var house: GameMap = _maps[&"cerulean_burgled_house"]
+	var dist := GridPaths.distances(_terrain(house), [house.get_spawn_cell(&"entrance")])
+	assert_true(dist.has(Vector2i(4, 5)), "on parle à la victime depuis (4, 5)")
+	var spec := NpcRoster.load_for_map(&"cerulean_burgled_house").get_spec(&"victim")
+	assert_not_null(spec)
+	assert_eq(spec.cell, Vector2i(3, 5))
+	var dialogues := DialogueLibrary.new()
+	assert_true(dialogues.load_dir())
+	var flags := StoryFlags.new()
+	var first := dialogues.get_dialogue(&"cerulean_victim").pick(flags)
+	assert_eq(first.pages[0].text, "Il avait pris ma CT28 ! Garde-la, tu l'as bien mérité. Et merci.",
+		"n° 36")
+	for flag: StringName in first.set_flags:
+		flags.set_flag(flag)
+	assert_eq(dialogues.get_dialogue(&"cerulean_victim").pick(flags).pages[0].text,
+		"J'ai fait réparer le mur. Plus personne ne passera par le jardin.", "n° 37")

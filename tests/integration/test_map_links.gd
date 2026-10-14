@@ -23,6 +23,8 @@ const MAP_IDS: Array[StringName] = [
 	# Jalon 13 (T7) : Azuria et ses intérieurs.
 	&"cerulean_city", &"cerulean_center", &"cerulean_mart", &"cerulean_gym",
 	&"cerulean_bike_shop", &"cerulean_house",
+	# Jalon 14 (T20b) : la maison cambriolée.
+	&"cerulean_burgled_house",
 	# Jalon 13 (T8) : la Route 24 (la Route 4 est devenue la vraie Route 4, même identifiant).
 	&"route_24",
 	# Jalon 14 (T14) : la Route 25 et la maison de Léo (raccord ouest vers la Route 24 au T15).
@@ -117,9 +119,9 @@ func test_every_coming_soon_warp_returns_to_a_walkable_spawn_of_its_own_map() ->
 			var back := map.get_spawn_cell(warp.target_spawn)
 			assert_false(map.get_grid().is_solid(back), "%s : retour praticable" % label)
 			assert_ne(warp.facing, Vector2i.ZERO, "%s : orientation au retour" % label)
-	# Jalon 14 T15 : le dernier « à venir » (Route 24 ↔ Route 25) est devenu un vrai raccord ;
-	# le suivant arrive au T20b (« ROUTE 5 — À venir », sud d'Azuria) : aucun aujourd'hui.
-	assert_eq(found, 0, "aucun « à venir » entre le T15 et le T20b du J14")
+	# Jalon 14 T20b : le seul « à venir » est le sud d'Azuria (« ROUTE 5 », trois cases) ;
+	# la Route 5 arrive au J15.
+	assert_eq(found, 3, "« ROUTE 5 — À venir » : trois cases du bord sud d'Azuria")
 
 
 ## Warp de [param map] qui ramène à [param origin] depuis [param arrival] : sur la case
@@ -132,9 +134,16 @@ func _return_warp(map: GameMap, arrival: Vector2i, origin: StringName) -> Warp:
 		var next := arrival + direction
 		var warp := map.get_warps().find_on_step(next, direction)
 		if warp != null and warp.target_map == origin \
-				and map.get_grid().get_step_target(arrival, direction) == next:
+				and (map.get_grid().get_step_target(arrival, direction) == next
+					or _blocked_only_by_a_character(map, next)):
 			return warp
 	return null
+
+
+## Porte condamnée par un personnage (le ruban d'Azuria, J14) : la case est praticable, un PNJ
+## l'occupe tant que le Rocket n'est pas battu.
+func _blocked_only_by_a_character(map: GameMap, cell: Vector2i) -> bool:
+	return map.get_grid().is_occupied(cell) and not map.get_grid().is_solid(cell)
 
 
 func test_every_warp_is_reversible_on_the_spot() -> void:

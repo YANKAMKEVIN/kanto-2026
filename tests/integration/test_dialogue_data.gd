@@ -95,7 +95,7 @@ const MAPS: Array[StringName] = [
 	# Jalon 13 (T17) : Routes 4 (panneau du sas du J12 T28 compris) et 24, Azuria et ses
 	# intérieurs.
 	&"route_4", &"route_24", &"cerulean_city", &"cerulean_center", &"cerulean_mart",
-	&"cerulean_gym", &"cerulean_bike_shop", &"cerulean_house",
+	&"cerulean_gym", &"cerulean_bike_shop", &"cerulean_house", &"cerulean_burgled_house",
 	# Jalon 14 (T17) : la maison de Léo.
 	&"bill_house",
 	# Jalon 14 (T16) : la Route 25.
@@ -247,6 +247,24 @@ const IDS_J14_BILL: Array[StringName] = [
 	&"bill_give_ticket", &"bill_greet", &"bill_module", &"bill_module_next", &"bill_ready",
 	&"bill_screen", &"bill_screen_next", &"bill_ss_anne", &"bill_thanks",
 ]
+## Jalon 14 (T20b, dossier 17 §15 n° 29 à 41) : le Rocket d'Azuria, la victime, le barrage sud.
+const IDS_J14_ROCKET: Array[StringName] = [
+	&"cerulean_fence_hole", &"cerulean_rocket", &"cerulean_rocket_beaten",
+	&"cerulean_rocket_before", &"cerulean_rocket_leaving", &"cerulean_rocket_resume",
+	&"cerulean_rocket_spotted", &"cerulean_rocket_tm", &"cerulean_south_guard",
+	&"cerulean_south_guard_leaving", &"cerulean_victim",
+]
+## Dialogues joués par les scènes du Rocket et du barrage.
+const PLAYED_J14_ROCKET: Array[StringName] = [
+	&"cerulean_rocket_beaten", &"cerulean_rocket_before", &"cerulean_rocket_leaving",
+	&"cerulean_rocket_resume", &"cerulean_rocket_spotted", &"cerulean_rocket_tm",
+	&"cerulean_south_guard_leaving",
+]
+const SET_J14_ROCKET_DIALOGUES: Array[StringName] = [&"cerulean_victim_thanked"]
+const SET_J14_ROCKET_CUTSCENES: Array[StringName] = [
+	&"cerulean_rocket_beaten", &"cerulean_rocket_spotted", &"cerulean_south_guard_left",
+	&"got_tm28", &"lost_cerulean_rocket",
+]
 ## Dialogues joués par les scènes de la maison de Léo.
 const PLAYED_J14_BILL: Array[StringName] = [
 	&"bill_candy_offer", &"bill_give_candy", &"bill_give_ticket", &"bill_greet",
@@ -269,7 +287,8 @@ const SET_J14_BILL_CUTSCENES: Array[StringName] = [
 ## plus aucun drapeau futur.
 ## Jalon 14 (T17) : `cerulean_rocket_beaten` (lu par Léo) est levé par la scène du Rocket
 ## d'Azuria (T20b).
-const FUTURE_FLAGS: Array[StringName] = [&"cerulean_rocket_beaten"]
+## T20b : levé (scène du combat), plus aucun drapeau futur.
+const FUTURE_FLAGS: Array[StringName] = []
 var _library: DialogueLibrary
 var _cutscenes: CutsceneLibrary
 var _offer: StarterOffer
@@ -388,7 +407,7 @@ func test_library_loads_without_error() -> void:
 	# Les identifiants sont comparés triés (la liste IDS est groupée par jalon).
 	var found := _without_qa(library.get_ids())
 	found.sort()
-	var expected := IDS + IDS_J14_BILL
+	var expected := IDS + IDS_J14_BILL + IDS_J14_ROCKET
 	expected.sort()
 	assert_eq(found, expected)
 
@@ -449,7 +468,7 @@ func test_every_dialogue_played_by_a_cutscene_exists() -> void:
 		&"route_1_potion_found", &"route_25_hidden_1_found", &"route_2_item_3_found",
 		&"route_2_item_4_found",
 		&"viridian_forest_item_3_found", &"viridian_forest_item_4_found",
-		&"viridian_forest_item_6_found"] + PLAYED_J14_BILL))
+		&"viridian_forest_item_6_found"] + PLAYED_J14_BILL + PLAYED_J14_ROCKET))
 	for id: StringName in played:
 		assert_true(_library.has_dialogue(id), "dialogue « %s » défini" % id)
 		if UNUSED_YET.has(id):
@@ -528,7 +547,7 @@ func test_every_condition_flag_is_set_somewhere() -> void:
 		_sorted([&"blacked_out_before", &"cerulean_neighbor_talked", &"forest_hiker_talked", &"forest_naturalist_talked",
 			&"mom_greeted", &"nugget_rocket_yes", &"pewter_researcher_talked", &"poison_unlocked", &"rival_met",
 			&"route_2_hiker_talked", &"route_2_youngster_talked", &"storage_terminal_seen",
-			&"viridian_old_man_talked"] + SET_J14_BILL_DIALOGUES))
+			&"viridian_old_man_talked"] + SET_J14_BILL_DIALOGUES + SET_J14_ROCKET_DIALOGUES))
 	assert_eq(_cutscenes.get_set_flags(), _sorted([&"badge_boulder", &"badge_cascade",
 		&"beaten_mt_moon_researcher", &"beaten_nugget_rocket", &"brock_met", &"cerulean_reached", &"got_mt_moon_1f_hidden_1",
 		&"got_mt_moon_1f_item_1", &"got_mt_moon_b1f_item_1", &"got_mt_moon_b1f_item_2",
@@ -548,7 +567,7 @@ func test_every_condition_flag_is_set_somewhere() -> void:
 		&"rival_lab_won", &"rival_left_lab", &"rival_route22_lost", &"rival_route22_won",
 		&"route_3_entered", &"route_3_guard_cleared", &"route_4_reached", &"starter_chosen",
 		&"starter_offered", &"tm11_received", &"tm34_received", &"viridian_arrived"]
-		+ SET_J14_BILL_CUTSCENES))
+		+ SET_J14_BILL_CUTSCENES + SET_J14_ROCKET_CUTSCENES))
 	assert_eq(_used_on.get(&"oak_lab_reunion"), [&"oak_lab"], "joué au labo, après le fondu")
 	assert_eq(_used_on.get(&"oak_starter_offer"), [&"oak_lab"], "joué au labo")
 
@@ -939,12 +958,15 @@ func test_oak_parcel_lines() -> void:
 	# Route 4, la Potion de la Route 24, Ondine (pont, Arène et rattrapage), l'Antidote caché et le
 	# recruteur (T22). Jalon 14 : l'écran, le module et la console de Léo (T17), quatre objets de
 	# la Route 25 (T16).
-	assert_eq(launched, 33, "la scène du colis, quinze objets au sol, trois cachés, Pierre et "
+	assert_eq(launched, 36, "la scène du colis, quinze objets au sol, trois cachés, Pierre et "
 		+ "sa CT34, Ondine (pont, Arène et rattrapage), écran, module, console, objets de la "
-		+ "Route 25")
+		+ "Route 25, le Rocket d'Azuria (2) et le barrage sud")
 	# Le jeton n'apparaît que dans la réplique de l'espèce (et « {pokemon} » dans les phrases du
 	# compagnon, J11).
 	for row: Array in _pages():
+		if row[0] == &"cerulean_rocket_tm":
+			assert_eq(DialogueTokens.tokens_in(row[1]), [DialogueTokens.PLAYER] as Array[StringName])
+			continue
 		if IDS_J14_BILL.has(row[0]):
 			continue # {player} de Léo (dossier 17 §15) : testé dans test_bill_house
 		var tokens := DialogueTokens.tokens_in(row[1])
