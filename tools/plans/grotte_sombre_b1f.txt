@@ -1,0 +1,103 @@
+# Grotte Sombre B1F, « le cœur » — grille fonctionnelle (jalon 18, dossier 21 §5, §13.1).
+# Même format, même légende que grotte_sombre_1f.txt (en-tête). Contrôle :
+# tools/art/plan_check_grotte_sombre.py.
+#
+# 48 × 38 cases (1824 ; enveloppe du dossier ≈ 48 × 36) ; nord en haut.
+# Arrivée de l'échelle A (44, 2) au nord-est → corridor ouest (gravats ; alcôve de la PAROI FENDUE,
+# filet de jour) → SALLE DE LA GRANDE COLONNE (on la contourne ; Super Potion au pied) → sortie
+# sud-ouest (gravats) → SALLE DE LA FLAQUE (Elsa, facultative, dans le coin sud-ouest) → on la
+# traverse vers l'est → PASSAGE ÉTROIT (1 case × 6, Marcel, inévitable) → antichambre des RACINES
+# (Super Potion cachée) → échelle B (44, 34) ↑ vers le 1F sud. Le chemin fait un S : ouest par la
+# grande salle, puis est par la salle de la flaque.
+# Échelles à l'aplomb du 1F (mêmes coordonnées).
+#
+# Légende (grotte, commune aux deux étages ; celle du Mont Sélénite, plus quelques repères) :
+#   # paroi rocheuse (bloquée)              . sol de grotte calme (aucune rencontre)
+#   g gravats (praticables, terrain de rencontre)    j sol éclairé : lumière du dehors (1F) ou
+#     filet de jour (B1F), sol calme
+#   o rocher isolé (bloqué)                 K colonne rocheuse (repère, bloquée)
+#   V échelle qui descend (1F)   U échelle qui monte (B1F) : posées dans la paroi, une case au
+#     bord du sol ; la paire est donnée par paire= de la position « echelle », l'arrivée par le
+#     « spawn » de même paire sur l'autre étage
+#   E entrée nord (Route 10)   e sortie sud (Route 10, secteur sud) : praticables, bord de carte
+#   w flaque (eau peu profonde, bloquante)  f paroi fendue d'où tombe le filet de jour (bloquée)
+#   r racines qui percent le plafond (bloquées)
+# Personnages, objets, échelles, halos (« halo » : LightGlow fixe), zones de gravats (G1..) et
+# repères nommés sont dans POSITIONS (attributs role=, facing=, sight=, paire=…), pas dans la
+# grille. Les « branche » déclarent le bout de chaque embranchement (contrôlé : ≤ 15 pas, finit
+# sur un objet, un Dresseur facultatif ou une vue).
+#
+# Format : ligne PRATICABLES, section GRILLE (« NN » + espace + L caractères), puis POSITIONS.
+#   identifiant  type  cases  bloque|libre  [cle=valeur ...]  # commentaire
+
+PRATICABLES .gjUVEe
+
+GRILLE 48 38
+00 ################################################
+01 ################################f###############
+02 ###############################...##########U###
+03 ###############################jjj##...........#
+04 ###############################jjj##...........#
+05 ##############....................gg...........#
+06 ##############....................gg...........#
+07 ##############..........ggggg#######...........#
+08 ##############..........ggggg#######...........#
+09 ##############..o............#######...........#
+10 ##############...............###################
+11 ##############............o..###################
+12 ##############o....KKKKK.....###################
+13 ##############.....KKKKK.....###################
+14 ##############.....KKKKK.....###################
+15 ##############.....KKKKK.....###################
+16 ##############.ggg.KKKKK.....###################
+17 ##############.ggg.KKKKK.....###################
+18 ##############.ggg...........###################
+19 ##############.ggg.......ggg.###################
+20 ##############...........ggg.###################
+21 ##############...o.......ggg.###################
+22 ##############...............###################
+23 ###############gg###############################
+24 ###############gg###############################
+25 ###############gg###############################
+26 ############..........o............#############
+27 ############.................o.....#############
+28 ############.......................#############
+29 ############gg....wwwwwwww.........#############
+30 ############gg....wwwwwwww.........#############
+31 ############gg....wwwwwwww.........#############
+32 ############gg....wwwwwwww.........######r.r####
+33 ############gg.....................######...####
+34 ############................................U###
+35 ############..............ggggggggg######...####
+36 ############gggggg........ggggggggg######...####
+37 ################################################
+FIN
+
+POSITIONS
+echelle_a            echelle        44,2         libre   paire=A sens=monte vers=dark_cave_1f  # à l'aplomb de l'échelle A du 1F nord
+arrivee_a            spawn          44,3         libre   paire=A  # arrivée du 1F nord, tourné ↓
+echelle_b            echelle        44,34        libre   paire=B sens=monte vers=dark_cave_1f  # à l'aplomb de l'arrivée du 1F sud
+arrivee_b            spawn          43,34        libre   paire=B  # retour du 1F sud, tourné →
+g3_elsa              dresseur       13,35        bloque  role=G-3 facing=right sight=5 inevitable=non trainer=dark_cave_elsa  # Jeune Dresseuse, coin sud-ouest de la salle de la flaque ; vue (14..18, 35)
+g4_marcel            dresseur       38,34        bloque  role=G-4 facing=left sight=4 inevitable=oui trainer=dark_cave_marcel  # Montagnard, dans le passage étroit ; vue (37..34, 34)
+dark_cave_b1f_item_1 objet_visible  21,18        bloque  role=O2 item=super_potion  # au pied de la colonne (face sud)
+dark_cave_b1f_hidden_1 objet_cache  42,32         libre   role=C1 item=super_potion  # entre les racines, antichambre de l'échelle B
+halo_filet           halo           32,3         libre   role=filet type=shaft  # filet de jour de la paroi fendue
+halo_lampe_2         halo           30,26        bloque  role=lampe type=lamp  # lampe de randonneur, salle de la flaque, près du passage
+branche_vue          branche        32,3         libre   contenu=vue of=halo_filet  # alcôve de la paroi fendue
+branche_colonne      branche        21,18        libre   contenu=objet of=dark_cave_b1f_item_1  # pied de la colonne
+branche_flaque       branche        13,35        libre   contenu=dresseur of=g3_elsa  # est de la salle de la flaque
+gravats_b1f_g1       gravats        34,5         libre   role=G1  # corridor ouest : obligatoire (2 de long, 4 cases), vue en ligne droite
+gravats_b1f_g2       gravats        16,17        libre   role=G2  # salle de la colonne, ouest : évitable
+gravats_b1f_g3       gravats        26,20        libre   role=G3  # salle de la colonne, sud-est : évitable
+gravats_b1f_g4       gravats        15,24        libre   role=G4  # sortie sud de la salle de la colonne : obligatoire (3 de long, 6 cases)
+gravats_b1f_g5       gravats        30,35        libre   role=G5  # salle de la flaque, sud-est : évitable
+gravats_b1f_g6       gravats        26,7         libre   role=G6  # salle de la colonne, nord-est : évitable
+gravats_b1f_g7       gravats        12,30        libre   role=G7  # salle de la flaque, bord ouest : évitable
+gravats_b1f_g8       gravats        14,36        libre   role=G8  # salle de la flaque, sud-ouest : évitable
+repere_colonne       repere         19..23,12..17  bloque  role=colonne  # grande colonne centrale (contournée)
+repere_paroi         repere         32,1         bloque  role=paroi  # paroi fendue : filet de jour sur l'alcôve (31..33, 2..4)
+repere_flaque        repere         18..25,29..32  bloque  role=flaque  # flaque : eau peu profonde, bloquante
+repere_racines       repere         41,32;43,32   bloque  role=racines  # racines qui percent le plafond (antichambre de l'échelle B)
+repere_passage       repere         35..40,34    libre   role=passage  # passage étroit : 1 case de large, 6 de long, juste avant l'échelle B
+FIN

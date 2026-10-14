@@ -618,8 +618,16 @@ def _azuria(nom: str):
 	return verifier
 
 
+def _j18(nom: str):
+	"""Grilles du jalon 18 (dossier 21) : profils dans `plan_check_<nom>.py` (import tardif)."""
+	def verifier(chemin: Path) -> bool:
+		import importlib
+		return getattr(importlib.import_module(f"plan_check_{nom}"), f"verifier_{nom}")(chemin)
+	return verifier
+
+
 VERIFICATEURS = {"route_2": verifier_route_2, "viridian_forest": verifier_foret,
-	"route_3": verifier_route_3,
+	"route_3": verifier_route_3, "route_9": _j18("route_9"), "route_10": _j18("route_10"),
 	**{n: _azuria(n) for n in ("route_4", "azuria", "route_24", "azuria_arene", "azuria_velos",
 		"azuria_maison")}}
 

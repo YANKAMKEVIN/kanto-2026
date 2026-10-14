@@ -1,0 +1,142 @@
+# Route 10 — grille fonctionnelle (jalon 18, dossier 21 §4, §13.1 ; v1 du 2026-10-14, à valider par
+# Kevin). Source UNIQUE de la géométrie : plan en aplats (tools/art/plan_aplats_j18.py), vue générale
+# peinte, puis outil de construction et tests du J18 (18A pour le secteur nord, 18C pour le sud).
+# Contrôle : tools/art/plan_check_route_10.py.
+#
+# 34 × 76 cases (une seule carte, `route_10`, §4) ; nord en haut ; x = colonne 0..33, y = rangée
+# 0..75. Raccord OUEST : (0, 12..14) ↔ Route 9 (79, 12..14), mêmes rangées. Raccord SUD :
+# (15..17, 75) ↔ Lavanville (21..23, 0) (les warps sont par cellule, pas d'alignement de colonnes ;
+# spawn `from_lavender`, tourné ↑). Le reste du bord est fermé.
+#
+# DEUX SECTEURS que rien ne relie à pied (la route reste une seule route, V2) :
+#   SECTEUR NORD (y 0..28, x 0..23) — de l'ouest vers l'est : le CENTRE POKÉMON (x 4..11, y 5..11,
+#      porte (7..8, 11)) est le premier bâtiment ; le sentier (y 12..14) longe le Centre puis
+#      tourne vers le nord (x 16..17) jusqu'à l'ENTRÉE NORD de la Grotte Sombre (16..17, 7), ouverture
+#      dans la paroi ; panneau (14, 10), randonneur (19, 9). Poche d'herbes H1 au sud du sentier
+#      (évitable). Belvédère (x 19..23, y 12..22) sur la rivière : eau (x 24..28) infranchissable
+#      (pas de Surf) ; au-delà, la CENTRALE (x 29..33, y 3..9, décor bloqué, sans porte, sans
+#      texte, I-15).
+#   BANDE CENTRALE (y 29..46) — falaise (x 0..23) et rivière : jamais parcourue (Surf).
+#   SECTEUR SUD (y 47..75, x 2..23) — SORTIE SUD de la grotte (8..9, 47), spawn (8..9, 48) ; clairière
+#      puis sentier à angles droits (est, puis sud) jusqu'à Lavanville. R10-1 Hector (clairière,
+#      évitable), R10-2 Paul (terrasse du bord de la falaise côté rivière, évitable), Super Potion
+#      au fond d'une alcôve ouest, poche d'herbes H2 facultative (aucune rencontre forcée, I-16).
+#      La silhouette de la Tour se voit au sud-est (repère `tour_lointaine`, forêt au-delà du
+#      sentier).
+#
+# Légende (en plus de celle de route_3.txt) :
+#   T forêt et bosquets (bloqués)   . herbe rase   = chemin de terre   h hautes herbes
+#   o sol rocheux praticable (terrasse de Paul)   K paroi / falaise (bloquée)   R rochers (bloqués)
+#   w eau (JAMAIS praticable)   E centrale électrique lointaine (décor bloqué, aucune porte)
+#   C Centre Pokémon (bldg_centre_01, 8 × 7, emprise bloquée)   D porte du Centre (STEP_ON ↑)
+#   Q entrée de la Grotte Sombre : ouverture dans la paroi (praticable, STEP_ON ↑)
+#
+# Format : ligne PRATICABLES, section GRILLE (« NN » + espace + 34 caractères), puis POSITIONS.
+
+PRATICABLES .=hoDQ
+
+GRILLE 34 76
+00 KKKKKKKKKKKKKKKKKKKKKKKKwwwwwTTTTT
+01 KKKKKKKKKKKKKKKKKKKKKKKKwwwwwTTTTT
+02 KKKKKKKKKKKKKKKKKKKKKKKKwwwwwTTTTT
+03 KKKKKKKKKKKKKKKKKKKKKKKKwwwwwEEEEE
+04 KKKKKKKKKKKKKKKKKKKKKKKKwwwwwEEEEE
+05 TTTTCCCCCCCCKKKKKKKKKKKKwwwwwEEEEE
+06 TTTTCCCCCCCCKKKKKKKKKKKKwwwwwEEEEE
+07 TTTTCCCCCCCCKKKKQQKKKKKKwwwwwEEEEE
+08 TTTTCCCCCCCCRR..==......wwwwwEEEEE
+09 TTTTCCCCCCCCRR..==......wwwwwEEEEE
+10 TTTTCCCCCCCC....==......wwwwwTTTTT
+11 TTTTCCCDDCCC....==......wwwwwTTTTT
+12 ===================.....wwwwwTTTTT
+13 ===================.....wwwwwTTTTT
+14 ===================.....wwwwwTTTTT
+15 TTTTTT...TTTTTTTTTT.....wwwwwTTTTT
+16 TTTTTT...TTTTTTTTTT.....wwwwwTTTTT
+17 TTTT.........TTTTTT.RR..wwwwwTTTTT
+18 TTTThhhhhhhh.TTTTTT.RR..wwwwwTTTTT
+19 TT.hhhhhhhhh.TTTTTT.....wwwwwTTTTT
+20 TT.hhhhhhhhh.TTTTTT.....wwwwwTTTTT
+21 TT.hhhhhhhhh.TTTTTT...TTwwwwwTTTTT
+22 TT.hhhhhhhhh.TTTTTT...TTwwwwwTTTTT
+23 TT.hhhhhhhhh.TTTTTTTTTTTwwwwwTTTTT
+24 TT...........TTTTTTTTTTTwwwwwTTTTT
+25 TTTTTTTTTTTTTTTTTTTTTTTTwwwwwTTTTT
+26 TTTTTTTTTTTTTTTTTTTTTTTTwwwwwTTTTT
+27 TTTTTTTTTTTTTTTTTTTTTTTTwwwwwTTTTT
+28 TTTTTTTTTTTTTTTTTTTTTTTTwwwwwTTTTT
+29 KKKKKKKKKKKKKKKKKKKKKKKKwwwwwTTTTT
+30 KKKKKKKKKKKKKKKKKKKKKKKKwwwwwTTTTT
+31 KKKKKKKKKKKKKKKKKKKKKKKKwwwwwTTTTT
+32 KKKKKKKKKKKKKKKKKKKKKKKKwwwwwTTTTT
+33 KKKKKKKKKKKKKKKKKKKKKKKKwwwwwTTTTT
+34 KKKKKKKKKKKKKKKKKKKKKKKKwwwwwTTTTT
+35 KKKKKKKKKKKKKKKKKKKKKKKKwwwwwTTTTT
+36 KKKKKKKKKKKKKKKKKKKKKKKKwwwwwTTTTT
+37 KKKKKKKKKKKKKKKKKKKKKKKKwwwwwTTTTT
+38 KKKKKKKKKKKKKKKKKKKKKKKKwwwwwTTTTT
+39 KKKKKKKKKKKKKKKKKKKKKKKKwwwwwTTTTT
+40 KKKKKKKKKKKKKKKKKKKKKKKKwwwwwTTTTT
+41 KKKKKKKKKKKKKKKKKKKKKKKKwwwwwTTTTT
+42 KKKKKKKKKKKKKKKKKKKKKKKKwwwwwTTTTT
+43 KKKKKKKKKKKKKKKKKKKKKKKKwwwwwTTTTT
+44 KKKKKKKKKKKKKKKKKKKKKKKKwwwwwTTTTT
+45 KKKKKKKKKKKKKKKKKKKKKKKKwwwwwTTTTT
+46 KKKKKKKKKKKKKKKKKKKKKKKKwwwwwTTTTT
+47 KKKKKKKKQQKKKKKKKKKKKKKKwwwwwTTTTT
+48 TTT.....====....TTTTTTTTwwwwwTTTTT
+49 TTT.....====....TTTTTTTTwwwwwTTTTT
+50 TTT.....====....TTTTTTTTwwwwwTTTTT
+51 TTT.....====....TTTTTTTTwwwwwTTTTT
+52 TTT.RR..====....TTTTTTTTwwwwwTTTTT
+53 TTT.RR..====.TT.TTTTTTTTwwwwwTTTTT
+54 TTT.....====.TT.TTTTTTTTwwwwwTTTTT
+55 TTTTTTTT==========TTTTTTwwwwwTTTTT
+56 TTTTTTTT==========TTTTTTwwwwwTTTTT
+57 TTTTTTTT==========TTTTTTwwwwwTTTTT
+58 TTTTTTTTTTTTTTT===oooooKwwwwwTTTTT
+59 TTTTTTTTTTTTTTT===oooooKwwwwwTTTTT
+60 TT..TT.TTTTTTTT===oooooKwwwwwTTTTT
+61 TT.............===oooooKwwwwwTTTTT
+62 TT.............===oooooKwwwwwTTTTT
+63 TT.....TTTTTTTT===oooooKwwwwwTTTTT
+64 TT.....TTTTTTTT===oooooKwwwwwTTTTT
+65 TTTTTTTTTTTTTTT===TTTTTTwwwwwTTTTT
+66 TT.............===RRRRRTwwwwwTTTTT
+67 TT.hhhhhhhhhh..===RRRRRTwwwwwTTTTT
+68 TT.hhhhhhhhhh..===RRRRRTwwwwwTTTTT
+69 TT.hhhhhhhhhh..===TTTTTTwwwwwTTTTT
+70 TT.hhhhhhhhhh..===TTTTTTwwwwwTTTTT
+71 TT.hhhhhhhhhh..===TTTTTTwwwwwTTTTT
+72 TT.hhhhhhhhhh..===TTTTTTwwwwwTTTTT
+73 TT.............===TTTTTTwwwwwTTTTT
+74 TTTTTTTTTTTTTTT===TTTTTTwwwwwTTTTT
+75 TTTTTTTTTTTTTTT===TTTTTTwwwwwTTTTT
+FIN
+
+# POSITIONS (défauts du 2026-10-14, ajustables au plan du J18) — une ligne par élément :
+#   identifiant  type  cases  bloque|libre  [cle=valeur ...]  # commentaire
+# Types : ceux de route_3.txt, plus « repere » (décor lointain, jamais atteignable).
+POSITIONS
+warp_ouest          warp           0,12..14     libre   # PUSH ← → route_9, from_route_10 (Route 9 (79, 12..14))
+from_route_9        spawn          0,12..14     libre   # arrivée de la Route 9, tournée →
+porte_centre        warp           7..8,11      libre   # STEP_ON ↑ → route_10_center (les deux cases « open »)
+from_center         spawn          7..8,12      libre   # sortie du Centre, tournée ↓
+entree_grotte_nord  warp           16..17,7     libre   # STEP_ON ↑ → dark_cave_1f, from_route_10_n
+from_dark_cave_n    spawn          16..17,8     libre   # sortie de la grotte (entrée nord), Corde Sortie et Tunnel (§5.6), tournée ↓
+entree_grotte_sud   warp           8..9,47      libre   # STEP_ON ↑ → dark_cave_1f, from_route_10_s
+from_dark_cave_s    spawn          8..9,48      libre   # sortie sud de la grotte, tournée ↓
+warp_sud            warp           15..17,75    libre   # PUSH ↓ → lavender_town, from_route_10 (Lavanville (21..23, 0))
+from_lavender       spawn          15..17,75    libre   # arrivée de Lavanville, tournée ↑
+hector              dresseur       15,51        bloque  role=R10-1 facing=left sight=4 trainer=route_10_maniac_hector  # Pokémaniac, Nidorino Nv. 20 + Rondoudou* Nv. 20, 1 000 ₽ ; facultatif, côté est de la clairière
+paul                dresseur       22,61        bloque  role=R10-2 facing=left sight=5 trainer=route_10_hiker_paul  # Montagnard, Racaillou Nv. 21 + Onix Nv. 21, 735 ₽ ; facultatif, terrasse du bord de la falaise
+randonneur          pnj            19,9         bloque  role=P1 facing=left  # T-7 : devant la grotte, regarde l'entrée
+route_10_item_1     objet_visible  3,62         bloque  role=O1 item=super_potion  # fond de l'alcôve ouest du secteur sud
+panneau_grotte      panneau        14,10        bloque  # T-5 « GROTTE SOMBRE » / « Route 10 — Lavanville », lu depuis (14, 11) ↑
+herbes_h1           herbes         7,20         libre   role=H1  # secteur nord, au sud du sentier (évitable)
+herbes_h2           herbes         7,70         libre   role=H2  # secteur sud, poche facultative
+centrale            repere         29..33,3..9  bloque  role=vue  # la centrale au-delà de l'eau : aucun accès, ni porte ni texte (I-15)
+tour_lointaine      repere         19..23,70..74 bloque role=vue  # silhouette de la Tour au sud-est, au-dessus des arbres (I-16)
+secteur_nord        zone           0..23,0..28  libre   # zone à pied depuis le raccord ouest
+secteur_sud         zone           0..23,47..75 libre   # zone à pied depuis la sortie sud de la grotte
+FIN

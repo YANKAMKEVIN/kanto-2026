@@ -489,15 +489,20 @@ arrière ; entrer au rez-de-chaussée de la Tour **sans rien déclencher du J19*
 
 ### 13.1 Grilles v1 (à valider par Kevin)
 
+Contrôles verts : `tools/art/plan_check_route_9.py`, `plan_check_route_10.py`,
+`plan_check_grotte_sombre.py`, `plan_check_lavanville.py` (+ Tour), `plan_check_azuria.py`,
+`plan_check.py`. Aplats de relecture dans `build/plans_j18/` (non versionnés).
+
 | Carte | Grille | Taille | Remarque |
 |---|---|---|---|
-| Route 9 | `tools/plans/route_9.txt` | ≈ 80 × 36 | à produire |
-| Route 10 | `tools/plans/route_10.txt` | ≈ 34 × 76 | à produire |
-| Grotte Sombre 1F | `tools/plans/grotte_sombre_1f.txt` | ≈ 56 × 44 | à produire |
-| Grotte Sombre B1F | `tools/plans/grotte_sombre_b1f.txt` | ≈ 48 × 36 | à produire |
-| Lavanville | `tools/plans/lavanville.txt` | ≈ 44 × 36 | à produire |
-| Tour Pokémon RDC | `tools/plans/tour_pokemon_rdc.txt` | ≈ 20 × 18 | à produire |
-| Azuria (est) | `tools/plans/azuria.txt` | 56 × 41 | barrière → arbre à couper (§9) |
+| Route 9 | `tools/plans/route_9.txt` | 80 × 36 | v2 : chemin serpentant, 107 pas, 6 virages (tronçon droit ≤ 26) ; couloir haut (Adam, Super Potion) et couloir bas (herbes, Jules) qui se rejoignent ; Lou et Bernard inévitables ; ≈ 6 min |
+| Route 10 | `tools/plans/route_10.txt` | 34 × 76 | secteurs nord (Centre, entrée nord) et sud (sortie sud → Lavanville, 33 pas) **non reliés** ; rivière et centrale derrière l'eau |
+| Grotte Sombre 1F | `tools/plans/grotte_sombre_1f.txt` | 56 × 49 | moitiés nord / sud jamais visibles l'une de l'autre (\|dy\| ≥ 12 ou \|dx\| ≥ 25) |
+| Grotte Sombre B1F | `tools/plans/grotte_sombre_b1f.txt` | 48 × 38 | colonne, paroi fendue, racines, flaque, passage étroit (Marcel) |
+| | | **4 568 cases** | chemin principal **179 pas**, 2 échelles à l'aplomb, 10 gravats obligatoires (15,8 % du sol) ; **≈ 6 min 50** |
+| Lavanville | `tools/plans/lavanville.txt` | 44 × 36 | avenue nord-sud, deux rues ; Tour 12 × 11 au nord-est ; Routes 8 et 12 « À venir » ; **sud de la ville un peu vide** (deux squares) |
+| Tour Pokémon RDC | `tools/plans/tour_pokemon_rdc.txt` | 20 × 18 | 36 tombes dont 5 nommées, 6 bougies, escalier d'une case tenu par la Médium |
+| Azuria (est) | `tools/plans/azuria.txt` | 56 × 41 | arbre à couper en (53, 23) entre deux pans de clôture, raccord Route 9 en (55, 22..24) |
 
 ## 14. Cas limites (à couvrir au plan)
 
