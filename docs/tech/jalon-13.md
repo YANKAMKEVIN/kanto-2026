@@ -1381,7 +1381,25 @@ et de l'annexe A validée.
   Kevin ; fusion de `jalon-13` dans `main` (copie d'intégration ; `project.godot` et filtre d'export
   vérifiés).
 
-#### T24 — architecte : clôture
+#### T24 — architecte : clôture — **fait (2026-10-14)**
+- **J13 terminé** : 13.0, 13A, 13B, 13C validés par Kevin (QA S21) ; `jalon-13` fusionné dans `main`
+  (`f85d40b`, 4 472 tests verts, import propre, `project.godot` et filtre d'export identiques à `main`).
+- **Passation au J14** :
+  - Route 24 : raccord est (« ROUTE 25 — À venir ») et repère de coordonnées de `route_24.txt` à
+    garder ; Route 25, Cap d'Azuria et **Léo, épisode historique conservé** (décision de Kevin,
+    2026-10-11) ;
+  - cambriolage : jardin, trou de la clôture du fond et maison fermée (drapeaux à créer au J14),
+    « un homme en noir » jamais nommé au J13 ;
+  - sorties fermées d'Azuria : est (Route 9, arbre et clôture) et sud (Route 5, palissade) ;
+  - **Abra et la règle des évolutions par échange** (D-9) à décider ; le rival n° 3 n'a pas d'Abra
+    (D-6, contrat du J16 corrigé : Kadabra direct au n° 4) ;
+  - IA qui change de Pokémon disponible pour tout Dresseur (`switch: true`) ; `RivalMoment`
+    (`moment: "win"`) pour tout combat de rival obligatoire ; scènes enchaînées `next` ;
+  - équilibrage : principe « rival obligatoire au niveau du chemin, Champion avec un peu
+    d'entraînement » ; outil `tools/simulate_mt_moon.gd` généralisé ;
+  - à surveiller : mémoire des textures d'Azuria et de la Route 24 (82–98 Mo, au-dessus du budget J7
+    de 64 Mo, sans ralentissement sur S21) ; dos peints des espèces du J13 (chantier séparé) ;
+    contrôle `tools/check_json_keys.py` à lancer après chaque fusion de jalons.
 - `etat-projet.md`, roadmap (rival n° 3 fait) ; passation au J14 : `route_25` / `from_route_24`
   (raccord est de la Route 24, repère de coordonnées), jardin et trou de la maison cambriolée
   (poursuite du J14), sortie sud d'Azuria (raccord « ROUTE 5 — À venir » du J14), dos peints des 9

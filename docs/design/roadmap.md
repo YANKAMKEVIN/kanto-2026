@@ -133,7 +133,7 @@ l'histoire principale. À reprendre à la conception de chaque jalon concerné.
 |---|---|---|
 | 1 | Laboratoire de Chen — Bourg Palette | fait (J4) ; dossier 02 |
 | 2 | Route 22 — près de Jadielle | prévu au J7B ; dossier 09 §13–15 (rencontre facultative) |
-| 3 | Azuria / Pont Pépite | J13 ; dossier 16 §7 : **victoire obligatoire**, rejouable après défaite ; Roucoups, Rattata, starter évolué |
+| 3 | Azuria / Pont Pépite | **fait (J13, 2026-10-14)** ; dossier 16 §7 : **victoire obligatoire**, rejouable après défaite ; Roucoups, Rattata, starter évolué |
 | 4 | S.S. Anne — Carmin-sur-Mer | à concevoir |
 | 5 | Tour Pokémon — Lavanville | à concevoir ; tournant du rival déjà posé au dossier 06 §6 |
 | 6 | Sylphe SARL — Safrania | à concevoir |
@@ -162,6 +162,6 @@ J9  Forêt de Jade
 J10 Argenta + Arène Pierre + Badge
 J11 Grande passe systèmes (évolutions / CT / statuts / équipe avancée / compagnon)
 J12 Route 3 + Mont Sélénite   ✅
-J13 Azuria   ← ICI
-J14+ Expansion de Kanto → Ligue → post-game
+J13 Azuria + Ondine + Pont Pépite   ✅
+J14+ Expansion de Kanto → Ligue → post-game   ← ICI
 ```
