@@ -1,5 +1,7 @@
 # Jalon 12 — Route 3 et Mont Sélénite
 
+> **TERMINÉ — validé par Kevin le 2026-10-14 (12.0, 12A, 12B, 12C, 12D) et fusionné dans `main`.** Décisions de clôture : équilibrage T26 gardé, fossiles visibles dès l'arrivée, planches T3 et décors T4 confirmés.
+
 > Objectif jouable sur le téléphone : **le premier donjon**. Depuis la sortie est d'Argenta (le garde
 > du J10 laisse passer depuis le badge), la **Route 3** : prairie de la sortie, deux chemins de
 > Dresseurs qui se rejoignent, le pied de la montagne, six Dresseurs (deux inévitables), Rondoudou
