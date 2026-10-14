@@ -145,18 +145,7 @@
 		"cutscene": "route_25_item_3"
 	},
 	"route_25_hidden_1": {
-		"variants": [
-			{
-				"unless": ["got_route_25_hidden_1"],
-				"cutscene": "route_25_hidden_1"
-			},
-			{
-				"pages": [
-					"Il n'y a plus rien\nsous ce coquillage."
-				]
-			}
-		],
-		"narration": true
+		"cutscene": "route_25_hidden_1"
 	},
 	"route_25_hidden_1_found": {
 		"narration": true,
