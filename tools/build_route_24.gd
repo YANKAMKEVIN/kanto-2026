@@ -24,8 +24,9 @@ extends SceneTree
 ##   identiques), piles au bord de l'eau, forêt serrée, arbres repères, buissons, banc, panneau,
 ##   roseaux, touffes, hautes herbes.
 ## - Passages : sortie sud (31..33, 61) PUSH ↓ → `cerulean_city` / `from_route_24_w|c|e` (tournée ↑) ;
-##   spawns `from_cerulean_w|c|e` ici ; raccord est (55, 6..8) PUSH → « ROUTE 25 — À venir »
-##   (développement ; bord bloqué en release), retour sur `from_route_25_n|c|s`, tourné ←.
+##   spawns `from_cerulean_w|c|e` ici ; raccord est (55, 6..8) PUSH → `route_25` /
+##   `from_route_24_n|c|s` (tournée →, jalon 14 T15) ; arrivée de la Route 25 sur
+##   `from_route_25_n|c|s`, tournée ←.
 
 const Kit := preload("res://tools/cerulean_map_kit.gd")
 const PLAN_PATH: String = "res://tools/plans/route_24.txt"
@@ -72,13 +73,14 @@ const SOUTH_EXITS: Array = [
 	["CeruleanC", Vector2i(32, 61), "from_cerulean_c", &"from_route_24_c"],
 	["CeruleanE", Vector2i(33, 61), "from_cerulean_e", &"from_route_24_e"],
 ]
-## Raccord est : [nœud, case, spawn de retour].
+## Raccord est (jalon 14 T15) : [nœud, case, spawn d'ici, spawn de la Route 25] (rangée pour
+## rangée : (55, 6..8) ↔ (0, 13..15) de `route_25`).
 const EAST_EXITS: Array = [
-	["Route25N", Vector2i(55, 6), "from_route_25_n"],
-	["Route25C", Vector2i(55, 7), "from_route_25_c"],
-	["Route25S", Vector2i(55, 8), "from_route_25_s"],
+	["Route25N", Vector2i(55, 6), "from_route_25_n", "from_route_24_n"],
+	["Route25C", Vector2i(55, 7), "from_route_25_c", "from_route_24_c"],
+	["Route25S", Vector2i(55, 8), "from_route_25_s", "from_route_24_s"],
 ]
-const ROUTE_25_SOON: String = "Route 25"
+const EAST_MAP: StringName = &"route_25"
 
 ## Berges naturelles : valables pour tout sol sauf les pavés (cases `p`, quais de pierre).
 const BANK_MARKS: Array[String] = [".", "=", "T", "x", "h", "G", "n"]
@@ -224,8 +226,8 @@ func _add_passages() -> void:
 		_kit.call(&"add_spawn", entry[0], entry[1])
 	for entry: Array in EAST_EXITS:
 		_kit.call(&"add_spawn", entry[2], entry[1])
-		_kit.call(&"add_warp", entry[0], entry[1], Kit.PUSH, Vector2i.RIGHT, &"",
-			StringName(entry[2]), Vector2i.LEFT, ROUTE_25_SOON)
+		_kit.call(&"add_warp", entry[0], entry[1], Kit.PUSH, Vector2i.RIGHT, EAST_MAP,
+			StringName(entry[3]), Vector2i.RIGHT)
 
 
 ## Déclencheurs de scène (T19) : aucune condition ici, les variantes des scènes décident.

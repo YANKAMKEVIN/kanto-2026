@@ -38,7 +38,10 @@ const TRAVERSABLE: Array[StringName] = [&"relief_escalier_01", &"ground_hautes_h
 	&"prop_pont_ville_01", &"prop_pont_ville_03_01", &"prop_pont_ville_ew_01",
 	&"prop_pont_pepite_tablier_01", &"prop_pont_pepite_tablier_02",
 	&"prop_pont_pepite_tablier_03", &"relief_rebord_ardoise_01",
-	&"relief_falaise_ardoise_01", &"relief_falaise_ardoise_02"]
+	&"relief_falaise_ardoise_01", &"relief_falaise_ardoise_02",
+	# Série 16 (J14) : rivage rocheux (cases `R` bloquées par la carte).
+	&"relief_rivage_01", &"relief_rivage_02", &"relief_rivage_03", &"relief_rivage_04",
+	&"relief_rivage_05", &"relief_rivage_06"]
 const GROUND_LAYER: Array[StringName] = [
 	&"relief_falaise_01", &"relief_escalier_01", &"prop_massif_01", &"relief_muret_01",
 	&"relief_escalier_ville_01",
@@ -60,6 +63,9 @@ const GROUND_LAYER: Array[StringName] = [
 	&"prop_pont_pepite_tablier_01", &"prop_pont_pepite_tablier_02",
 	&"prop_pont_pepite_tablier_03", &"relief_rebord_ardoise_01",
 	&"relief_falaise_ardoise_01", &"relief_falaise_ardoise_02",
+	# Série 16 (J14) : rivage rocheux à plat.
+	&"relief_rivage_01", &"relief_rivage_02", &"relief_rivage_03", &"relief_rivage_04",
+	&"relief_rivage_05", &"relief_rivage_06",
 ]
 ## Bâtiments sans ombre : le poste de la forêt vu du nord (série 12) continue sous le bord sud
 ## de la Route 2 nord, couché dans la couche du sol (fiche `serie-12-argenta.md`).

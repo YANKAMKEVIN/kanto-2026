@@ -1,0 +1,21 @@
+{
+	"tm19": {
+		"name": "CT19 — Frappe Atlas", "plural": "CT19 — Frappe Atlas", "feminine": true,
+		"category": "tm", "tm": 19, "teaches": "seismic_toss",
+		"description": "Projette la cible au sol."
+	},
+	"tm28": {
+		"name": "CT28 — Tunnel", "plural": "CT28 — Tunnel", "feminine": true,
+		"category": "tm", "tm": 28, "teaches": "dig",
+		"description": "Le Pokémon creuse au premier tour et frappe au second. Sous terre, il évite les attaques."
+	},
+	"ss_ticket": {
+		"name": "Passe Bateau", "plural": "Passes Bateau", "feminine": false, "category": "key",
+		"description": "Une invitation pour le S.S. Anne, le paquebot qui fait escale à Carmin-sur-Mer."
+	},
+	"rare_candy": {
+		"name": "Super Bonbon", "plural": "Super Bonbons", "feminine": false, "category": "field",
+		"price": 0, "field_use": "rare_candy",
+		"description": "Un bonbon plein d'énergie. Fait monter un Pokémon d'un niveau."
+	}
+}

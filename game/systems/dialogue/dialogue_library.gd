@@ -25,6 +25,8 @@ extends RefCounted
 ## « cutscene » (identifiant de scène). L'ancienne clé « heal »: true vaut « action »: "heal".
 ## « pages » peut manquer (ou être vide) si la variante a une « action » ou une « cutscene » ;
 ## jamais avec un « choice » (sa dernière page est la question).
+## Tirage (jalon 14, jalon-14.md §2.8) : « one_in »: N (entier ≥ 2) sur une variante, qui ne
+## s'applique alors qu'une fois sur N ([method Dialogue.pick]) ; jamais avec « auto ».
 ## Jetons de texte (jalon 7 §3.6, T18) : `{nom}` dans le texte d'une page **et dans
 ## « speaker »** (`{rival}`, OUV.2), seulement ceux de [constant DialogueTokens.KNOWN] ; toute
 ## autre accolade est une erreur. La question d'un
@@ -43,6 +45,7 @@ const ACTIONS: Array[StringName] = [
 const _DIALOGUE_KEYS: Array[String] = ["speaker", "narration", "draft", "variants"]
 const _VARIANT_KEYS: Array[String] = [
 	"pages", "if", "unless", "set", "auto", "heal", "draft", "action", "choice", "cutscene",
+	"one_in",
 ]
 const _CHOICE_KEYS: Array[String] = [
 	"confirm", "cancel", "confirm_action", "confirm_pages", "cancel_pages", "confirm_cutscene",
@@ -224,7 +227,22 @@ func _parse_variant(value: Variant, where: String) -> DialogueVariant:
 	if entry.has("draft"):
 		ok = _read_bool(entry["draft"], where + " draft") and ok
 		variant.draft = entry["draft"] is bool and entry["draft"]
+	if entry.has("one_in"):
+		ok = _read_one_in(entry, variant, where) and ok
 	return variant if ok else null
+
+
+## « one_in » (jalon 14) : entier ≥ 2 ; refusé avec « auto » (une arrivée sur la carte ne
+## tire rien).
+func _read_one_in(entry: Dictionary, variant: DialogueVariant, where: String) -> bool:
+	var value: Variant = entry["one_in"]
+	if not (value is float or value is int) or float(value) != floorf(float(value)) \
+			or int(value) < 2:
+		return _fail("%s : « one_in » doit être un entier ≥ 2" % where)
+	if variant.auto:
+		return _fail("%s : « one_in » interdit avec « auto »" % where)
+	variant.one_in = int(value)
+	return true
 
 
 ## Fin de la variante : « heal » (ancienne forme), « action », « choice », « cutscene » ; une

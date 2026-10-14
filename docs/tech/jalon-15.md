@@ -141,9 +141,9 @@ d'`origin/main`.
 | J13 | Mystherbe, Chétiflor, Ortide, Boustiflor | **plan** (`jalon-13.md` §2.15, T11) : `oddish`, `gloom`, `bellsprout`, `weepinbell`, évolutions niveau 21 | rencontres des Routes 5 et 6 (T16) |
 | J13 | stock d'Azuria | **plan** (`jalon-13.md` §2.5) : `data/shops/cerulean_mart.json` | stock de Carmin (déjà recopié ici, §2.7.6) |
 | J13 | carte d'Azuria | **code sur `jalon-13`** (`cerulean_city`) | raccord nord (T21) |
-| J14 | raccord sud d'Azuria, barrage levé | **dossier seulement** (§3.3) : `route_5`, `from_cerulean` réservés ; policier du barrage | raccord nord (T21) |
-| J14 | Passe Bateau | **dossier** (§5) : `ss_ticket` (objet clé) | test « avec Passe Bateau » (T21) |
-| J14 | Super Bonbon | **dossier** (§5, E-6) : `rare_candy` → +1 niveau, capacités, évolution | **réutilise** la séquence hors combat créée par le J15 (§2.5.4) |
+| J14 | raccord sud d'Azuria, barrage levé | **sur `main`** (2026-10-15, `jalon-14.md` §9.4) : trois cases PUSH ↓ (31..33, 40) de `cerulean_city` → `route_5` / `from_cerulean_w|c|e` (réservés), `coming_soon` « Route 5 » (« ROUTE 5 — À venir ») ; arrivées `from_route_5_w|c|e` (31..33, 40) tournées ↑ ; barrage du policier (scène `cerulean_south_guard`) levé si `cerulean_rocket_beaten`, puis `cerulean_south_guard_left` | raccord nord (T21) |
+| J14 | Passe Bateau | **sur `main`** : `ss_ticket` (objet clé, `items_j14.json`, jamais consommé, sans UTILISER), donné par Léo (`got_ss_ticket`) ; objectif `ss_anne` | test « avec Passe Bateau » (T21) |
+| J14 | Super Bonbon | **sur `main`** : `RareCandy` (`game/items/rare_candy.gd`) + déroulé dans `boot.gd` (blocage `RARE_CANDY`), **sans** `OffBattleLevelUp` ; seul le voile `_learn_overlay()` (`TmLearnOverlay`) est partagé avec la Pension (fusion `j15-sync-j14`) | rien ; réunir les deux séquences n'est pas demandé (à noter au T23) |
 
 ---
 
@@ -168,6 +168,22 @@ d'`origin/main`.
 
 ### 1.2 « Maintenant » (A) ou « après un autre jalon » (B)
 
+> **Mise à jour du 2026-10-15 — J14 dans `main`, fusionné dans le J15** (branche `j15-sync-j14`
+> depuis `jalon-15` à `d7361eb`, `origin/main` à `2bd6bbf` : J14 `1d3bb84` + décisions de Kevin
+> `1e1c9a5`, `2bd6bbf`). Le J14 est resté en sauvegarde **v6** : le J15 garde la **v7** (§2.6).
+> **Il n'y a plus de tâche (B)** : **T21 passe en (A)**. Vrais noms (`jalon-14.md` §9.4) :
+>
+> | Tâche | Devient | Ce qui existe maintenant (vrais noms) | Ce qui reste à attendre |
+> |---|---|---|---|
+> | **T21** raccord nord réel + Passe Bateau | **(A)** | `cerulean_city` : trois warps PUSH ↓ `Route5W|C|E` en (31..33, 40) → `route_5` / `from_cerulean_w|c|e`, avec `coming_soon` « Route 5 » (« ROUTE 5 — À venir », `SOUTH_COMING_SOON` de `tools/build_cerulean_city.gd`) à retirer ; arrivées `from_route_5_w|c|e` (31..33, 40) tournées ↑, posées ; barrage : scène `cerulean_south_guard` (déclencheur (31..33, 37)), jouée si `cerulean_rocket_beaten`, pose `cerulean_south_guard_left` ; Passe Bateau `ss_ticket` (objet clé), drapeau `got_ss_ticket` ; tests rattachés au « À venir » : `test_coming_soon`, `test_companion_coming_soon` (à déplacer), `test_cerulean_city` | la carte `route_5` (T13) ; **écart de la grille** `tools/plans/route_5.txt` (§2.1) |
+>
+> **Ordre libre des deux histoires du J14** : le barrage dépend **seulement** du Rocket
+> (`cerulean_rocket_beaten`), pas de Léo. On peut donc arriver sur la Route 5 (et à Carmin)
+> **avec ou sans** `ss_ticket`, avant ou après la visite à Léo : rien du J15 ne doit supposer
+> `got_ss_ticket`, `bill_restored` ni le Badge Cascade sur la Route 5 (tests T21 dans les deux cas).
+> Bug du moteur « combat gagné avec toute l'équipe K.O. » (`jalon-14.md` §9.2) : **confié au J15**
+> par Kevin le 2026-10-15 (tâche à placer, hors T21).
+
 > **Mise à jour du 2026-10-14 — J12 et J13 dans `main`, fusionnés dans le J15** (branche
 > `j15-sync-j12` depuis `jalon-15` à `2b224be`, `origin/main` à `4f0ee90` : J12 `2b2745f` + J13).
 > La sauvegarde reste en **v7** (J12 et J13 n'ont pas de version). Bilan des tâches (B), avec les
@@ -180,7 +196,7 @@ d'`origin/main`.
 > | **T18** carte du souterrain | **(A)** côté moteur | `PaintedGround.base_texture` / `r_texture` / `g_texture` (`game/world/ground/painted_ground.gd`) ; `LightGlow.glow_type` (`game/world/lighting/light_glow.gd`) + types `lamp shaft shard projector beam` de `data/world/light_glows.json` → `sconce` **en fin** ; `LightGlowLibrary.MAX_PER_MAP` ; boîte à outils `tools/cave_map_kit.gd` (sol `Ground` logique, escaliers `WarpPoint` STEP_ON, halos) et voile `tools/cave_shade.gd` (facultatif) ; `CaveLibrary.is_cave` + `data/world/caves.json` (le souterrain n'y est **pas**) ; `FieldItemRules.check(item, map_id, caves)` → `Check.NOT_HERE` pour la Corde Sortie (tests modèles `test_field_item_rules`, `test_escape_rope`) ; profils de `lighting.json` (`cave_1f` etc. comme modèles de `underground`) | art de la série 17 (T9/T11) et vue générale du souterrain validée |
 > | **T19** objets cachés | **(A)** | `InteractPoint.unless_flags: Array[StringName]` (`game/world/interactions/interact_point.gd:21`, recopié dans l'`Interaction`) ; modèle d'outil `_add_hidden_item` de `tools/build_route_24.gd` (J13 : indice teinté + `add_interactable` + `unless_flags = [got_<id>]`) et `HIDDEN_ITEMS` de `tools/build_mt_moon.gd` ; tests modèles `tests/integration/test_hidden_items.gd`, `test_hidden_item_point.gd` | les cartes `route_5`, `underground_path`, `route_6` (T13, T14, T18) |
 > | **T20** compagnon | **(A)** (déjà vrai depuis T1 : 11D était dans `main`) | `CompanionRules`, `CompanionTrail` (`game/world/companion/`), `data/pokemon/companions.json` (25 espèces, pas encore `meowth`) ; phrase `companion_cave` du J12 réservée aux cartes de `caves.json` (le souterrain garde le repli « route », §2.10) | planche de Miaouss validée (T10) |
-> | **T21** raccord nord réel + Passe Bateau | **reste (B)** | J13 : `cerulean_city` existe, mais son bord sud est fermé **sans warp** (`SouthBarrier` → dialogue `cerulean_closed_exit`, `tools/build_cerulean_city.gd:99`) | **J14** : ouverture du sud d'Azuria, `from_cerulean`, `ss_ticket` |
+> | **T21** raccord nord réel + Passe Bateau | ~~reste (B)~~ **(A) depuis le 2026-10-15** (ci-dessus) | J13 : `cerulean_city` existe, mais son bord sud est fermé **sans warp** (`SouthBarrier` → dialogue `cerulean_closed_exit`, `tools/build_cerulean_city.gd:99`) | **J14** : ouverture du sud d'Azuria, `from_cerulean`, `ss_ticket` |
 >
 > Hors (B) mais utile : l'évolution par objet du J12 est **`EvolutionDirector.play_item(candidate,
 > party, item_id)`** avec **`EvolutionCandidate.cancellable`** (faux pour une pierre) et le signal
@@ -228,7 +244,7 @@ réécriture ; le conflit se résout à la fusion. Aucune tâche (A) ne touche `
 | T18 Carte du souterrain | constructeur-monde | **(A)** depuis le 2026-10-14 | ~~J12~~ dans `main` ; art T11 et vue générale | `PaintedGround` réglable, `LightGlow` (`sconce` en fin de `light_glows.json`), `tools/cave_map_kit.gd` ; hors `caves.json` |
 | T19 Objets cachés (3) | constructeur-monde | **(A)** depuis le 2026-10-14 | ~~J12~~ dans `main` ; cartes T13, T14, T18 | `InteractPoint.unless_flags`, modèle `_add_hidden_item` (`build_route_24.gd`) |
 | T20 Compagnon (Miaouss, souterrain) | constructeur-monde | **(A)** (11D dans `main` dès T1) | planche T10 | entrée `meowth` dans `companions.json` |
-| T21 Raccord nord réel + Passe Bateau | constructeur-monde | **(B)** | ~~J13~~ dans `main` ; **J14** (sud d'Azuria ouvert, `from_cerulean`, `ss_ticket`) | `coming_soon = "Azuria"` jusque-là |
+| T21 Raccord nord réel + Passe Bateau | constructeur-monde | **(A)** depuis le 2026-10-15 | ~~J13, J14~~ dans `main` ; carte `route_5` (T13) | retirer `coming_soon` des deux côtés ; `from_cerulean_w|c|e` (écart de grille, §2.1) |
 | T22 Sessions 15A puis 15B | qa-mobile | après T16–T19 | — | — |
 | T23 Clôture | architecte | fin | — | — |
 
@@ -314,9 +330,25 @@ Route 6), navire court « ferry » de la vue, lumière peinte de la vue du soute
   (B, kit du J12 : `PaintedGround` à textures réglables, `LightGlow` type `sconce` aux six cases
   `applique_*`). Graines fixes, deux passes masque / scène (méthode du J10).
 - **Raccords** :
-  - Route 5 (19..21, 0) PUSH ↑ → `cerulean_city` / `from_route_5_w|c|e` ; **jusqu'au T21 :
+  - Route 5 (19..21, 0) PUSH ↑ → `cerulean_city` / `from_route_5_w|c|e` (posées par le J14 en
+    (31..33, 40), tournées ↑ ; décalage de 12 colonnes entre les deux cartes) ; **jusqu'au T21 :
     `coming_soon = "Azuria"`** (build de développement ; en release le bord est bloqué) ;
-    arrivée `from_cerulean_w|c|e` (19..21, 0) tournée ↓ (réservée par le J14) ;
+    arrivées `from_cerulean_w|c|e` en (19, 0), (20, 0), (21, 0) tournées ↓ (noms réservés par le
+    J14 : ce sont les cibles des warps `Route5W|C|E` d'Azuria). Côté Azuria (T21) : retirer
+    `SOUTH_COMING_SOON` (« ROUTE 5 — À venir ») de `tools/build_cerulean_city.gd`. Le barrage
+    (`cerulean_rocket_beaten` → `cerulean_south_guard_left`) reste celui du J14, indépendant de
+    Léo et de `ss_ticket` (§1.2).
+  - **Écart de la grille v2 (signalé le 2026-10-15, non corrigé)** : `tools/plans/route_5.txt`
+    déclare **une seule** arrivée `from_cerulean  spawn  19..21,0` (et son en-tête dit « spawn
+    from_cerulean côté Azuria », alors que côté Azuria ce sont `from_route_5_w|c|e`) ; le J14
+    attend **trois** arrivées `from_cerulean_w|c|e`. Correction minimale proposée (la géométrie ne
+    bouge pas) : remplacer la ligne 116 par trois lignes
+    `from_cerulean_w  spawn  19,0`, `from_cerulean_c  spawn  20,0`, `from_cerulean_e  spawn  21,0`
+    (`libre`, « tournée ↓ »), et corriger l'en-tête (ligne 8 : « spawns `from_route_5_w|c|e` côté
+    Azuria, `from_cerulean_w|c|e` ici »). Variante sans toucher la grille : garder la ligne à trois
+    cases et suffixer `w|c|e` dans l'outil, comme `tools/build_cerulean_city.gd` le fait déjà pour
+    `warp_sud` / `from_route_5` (`SOUTH_SUFFIXES`) — à trancher au T13 (constructeur-monde) ;
+    `plan_check_j15.py` (profil `verifier_route_5`) est à relancer si la grille change.
   - Pension (27, 27), poste (34, 44), entrée du souterrain (11, 56) : STEP_ON ↑ ;
   - souterrain : escalier nord (3..4, 1) → `route_5_underground_gate` ; escalier sud (19..20, 28)
     → `route_6_underground_gate` ; arrivées `from_route_5_w|e` (3..4, 2) ↓, `from_route_6_w|e`
@@ -762,10 +794,20 @@ et annexe A validée).
 #### T20 — constructeur-monde : compagnon — **(A : J11 11D dans `main`, §1.2)**
 - §2.10. **CA** : Miaouss compagnon dans la galerie et le souterrain ; dépôt du compagnon → aucun.
 
-#### T21 — constructeur-monde : raccord nord réel et Passe Bateau — **(B : J14 dans `main` ; J13 y est)**
-- Bord nord → `cerulean_city` / `from_route_5_*` (sans `coming_soon`) ; le J14 a posé
-  `from_cerulean` côté Azuria. Tests : reprise d'une partie sauvegardée sur le raccord « ROUTE 5 —
-  À venir » du J14 ; marin identique avec et sans `ss_ticket`.
+#### T21 — constructeur-monde : raccord nord réel et Passe Bateau — **(A depuis le 2026-10-15 : J13 et J14 dans `main`, §1.2)**
+- Route 5 : bord nord (19..21, 0) → `cerulean_city` / `from_route_5_w|c|e` (sans `coming_soon`) ;
+  arrivées `from_cerulean_w|c|e` (19..21, 0) tournées ↓ (écart de grille à régler d'abord, §2.1).
+- Azuria : les trois warps `Route5W|C|E` (31..33, 40) perdent `coming_soon` « Route 5 »
+  (`SOUTH_COMING_SOON` de `tools/build_cerulean_city.gd`) et mènent à `route_5` /
+  `from_cerulean_w|c|e` ; carte régénérée ; `test_coming_soon` et `test_companion_coming_soon`
+  déplacés vers un autre bord « À venir » (Carmin est → Route 11), `test_cerulean_city` recalé.
+- Barrage inchangé (J14) : levé par `cerulean_rocket_beaten` puis `cerulean_south_guard_left`.
+- **Aucune hypothèse sur Léo** : les deux histoires du J14 se font dans n'importe quel ordre.
+- **Tests / CA** : reprise d'une partie sauvegardée sur le raccord « ROUTE 5 — À venir » du J14
+  (retombe sur la case d'Azuria, le bord mène à `route_5`) ; aller-retour Azuria ↔ Route 5 sur les
+  trois colonnes (w, c, e) ; barrage présent tant que `cerulean_rocket_beaten` est faux ; Route 5,
+  Pension et Carmin jouables **sans** `got_ss_ticket` comme **avec** ; marin identique avec et
+  sans `ss_ticket` (T-26).
 
 #### T22 — qa-mobile : **sessions 15A puis 15B** → Kevin — après T13–T21
 - **15A** (départs `route_5`, `daycare_*`, vraie partie si possible) : Route 5, Pension complète
@@ -821,7 +863,7 @@ propre, budgets tenus.
 | Plusieurs capacités dues, toutes refusées | flow | aucune apprise, les 4 anciennes gardées, pas d'oubli |
 | Évolution annulée au retrait | flow + `test_daycare` (fait) | espèce inchangée ; reproposée au prochain niveau gagné en combat (règle existante) |
 | Pokémon empoisonné ou K.O. déposé | `test_daycare` (fait) | déposable ; rendu soigné (PV, statut, PP) |
-| Partie sauvegardée sur « ROUTE 5 — À venir » du J14 | `test_route_5` (T21, B) | la reprise retombe sur la case d'Azuria ; le bord mène à `route_5` |
+| Partie sauvegardée sur « ROUTE 5 — À venir » du J14 | `test_route_5` (T21, A) | la reprise retombe sur la case d'Azuria ; le bord mène à `route_5` |
 | v6 chargée par v7 ; v7 lue par v6 | `test_save_j15` | migration sans changement ; refus `ERR_INVALID_DATA`, fichier intact |
 | Arrivée à Carmin sans puis avec Passe Bateau | `test_vermilion_life` (A, sans) + T21 (avec) | même réplique T-26, embarquement inatteignable |
 | (en plus) pas scriptés, mur, course | `test_daycare_step_counter` | seul le pas libre compte, course = marche |

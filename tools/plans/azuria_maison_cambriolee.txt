@@ -1,0 +1,34 @@
+# Maison cambriolée d'Azuria (cerulean_burgled_house) — grille fonctionnelle (jalon 14 T20b,
+# dossier 17 §3.3, §6.3 ; textes 36 et 37). Même enveloppe que la maison ouverte (15 × 10, coque
+# des maisons d'Argenta). Ouverte après la victoire sur le Rocket : la victime remercie le
+# joueur. Mobilier un peu en désordre (sac de voyage ouvert, table basse décalée), sans drame.
+#
+# Légende :
+#   K mur (bloqué)          . sol (praticable)
+#   X sortie vers Azuria (praticable : paillasson, PUSH ↓)
+#   S canapé (1..3, 3)   E petite étagère (5, 3)   V télévision (7..8, 3)   C commode (10..11, 3)
+#   d lampe (13, 3)   B table basse (6..7, 5)   Z sac de voyage (11, 6)   x plante (1, 7), (13, 7)
+#   v victime (3, 5), devant le canapé
+#
+# Format : section GRILLE (« NN » + espace + 15 caractères par rangée), puis POSITIONS.
+
+PRATICABLES .Xv
+
+GRILLE 15 10
+00 KKKKKKKKKKKKKKK
+01 KKKKKKKKKKKKKKK
+02 KKKKKKKKKKKKKKK
+03 KSSS.E.VV.CC.dK
+04 K.............K
+05 K..v..BB......K
+06 K..........Z..K
+07 Kx...........xK
+08 KKKKKKXXXKKKKKK
+09 KKKKKKKKKKKKKKK
+FIN
+
+POSITIONS
+sortie              warp           6..8,8       libre   # PUSH ↓ → cerulean_city, from_burgled_house
+entree              spawn          7,8          libre   # spawn « entrance », tourné ↑
+victime             pnj            3,5          bloque  role=V facing=right  # victime du cambriolage (textes 36 et 37)
+FIN

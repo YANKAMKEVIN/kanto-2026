@@ -1,0 +1,62 @@
+{
+	"cerulean_fence_hole": {
+		"narration": true,
+		"pages": ["Un trou dans le mur. Quelqu'un est passé par ici."]
+	},
+	"cerulean_rocket": {
+		"variants": [
+			{ "if": ["cerulean_rocket_spotted"], "cutscene": "cerulean_rocket_fight" },
+			{ "cutscene": "cerulean_rocket_chase" }
+		]
+	},
+	"cerulean_rocket_spotted": {
+		"speaker": "Sbire Rocket",
+		"pages": ["Hein ?! Un gamin ? Pas question que tu me suives !"]
+	},
+	"cerulean_rocket_before": {
+		"speaker": "Sbire Rocket",
+		"pages": ["Bon. Tu l'auras voulu. Je ne vais pas me laisser coincer par un môme !"]
+	},
+	"cerulean_rocket_resume": {
+		"speaker": "Sbire Rocket",
+		"pages": ["Encore toi ? Tu ne lâches jamais, hein."]
+	},
+	"cerulean_rocket_beaten": {
+		"speaker": "Sbire Rocket",
+		"pages": ["Pfff… Je ne suis pas payé pour ça. Tiens, reprends ce truc, il ne vaut rien pour moi."]
+	},
+	"cerulean_rocket_tm": {
+		"narration": true,
+		"pages": ["{player} reçoit la CT28 !"]
+	},
+	"cerulean_rocket_leaving": {
+		"speaker": "Sbire Rocket",
+		"pages": ["Les ordres viennent d'en haut. Moi, je fais ce qu'on me dit."]
+	},
+	"cerulean_victim": {
+		"speaker": "Habitant",
+		"variants": [
+			{
+				"unless": ["cerulean_victim_thanked"],
+				"set": ["cerulean_victim_thanked"],
+				"pages": ["Il avait pris ma CT28 ! Garde-la, tu l'as bien mérité. Et merci."]
+			},
+			{
+				"pages": ["J'ai fait réparer le mur. Plus personne ne passera par le jardin."]
+			}
+		]
+	},
+	"cerulean_south_guard": {
+		"speaker": "Policier",
+		"variants": [
+			{ "if": ["cerulean_rocket_beaten"], "cutscene": "cerulean_south_guard" },
+			{
+				"pages": ["On recherche un voleur. Personne ne sort par le sud tant qu'il court."]
+			}
+		]
+	},
+	"cerulean_south_guard_leaving": {
+		"speaker": "Policier",
+		"pages": ["Le voleur a filé ? Alors ma garde est finie. La route du sud est libre."]
+	}
+}

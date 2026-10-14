@@ -1,0 +1,133 @@
+{
+	"youngster_jules": {
+		"cell": [18, 10],
+		"facing": "down",
+		"sprite": "youngster",
+		"dialogue": "route_25_youngster_jules_after",
+		"trainer": {
+			"id": "route_25_youngster_jules",
+			"sight": 5,
+			"before": "route_25_youngster_jules_before",
+			"defeated": "route_25_youngster_jules_defeated"
+		}
+	},
+	"hiker_gaston": {
+		"cell": [45, 10],
+		"facing": "down",
+		"sprite": "hiker",
+		"dialogue": "route_25_hiker_gaston_after",
+		"trainer": {
+			"id": "route_25_hiker_gaston",
+			"sight": 5,
+			"before": "route_25_hiker_gaston_before",
+			"defeated": "route_25_hiker_gaston_defeated"
+		}
+	},
+	"lass_zoe": {
+		"cell": [31, 6],
+		"facing": "left",
+		"sprite": "lass_young",
+		"dialogue": "route_25_lass_zoe_after",
+		"trainer": {
+			"id": "route_25_lass_zoe",
+			"sight": 3,
+			"before": "route_25_lass_zoe_before",
+			"defeated": "route_25_lass_zoe_defeated"
+		}
+	},
+	"hiker_bernard": {
+		"cell": [38, 19],
+		"facing": "up",
+		"sprite": "mountaineer",
+		"dialogue": "route_25_hiker_bernard_after",
+		"trainer": {
+			"id": "route_25_hiker_bernard",
+			"sight": 2,
+			"before": "route_25_hiker_bernard_before",
+			"defeated": "route_25_hiker_bernard_defeated"
+		}
+	},
+	"jr_trainer_adam": {
+		"cell": [63, 10],
+		"facing": "up",
+		"sprite": "camper",
+		"dialogue": "route_25_jr_trainer_adam_after",
+		"trainer": {
+			"id": "route_25_jr_trainer_adam",
+			"sight": 3,
+			"before": "route_25_jr_trainer_adam_before",
+			"defeated": "route_25_jr_trainer_adam_defeated"
+		}
+	},
+	"youngster_yanis": {
+		"cell": [73, 17],
+		"facing": "left",
+		"sprite": "youngster",
+		"dialogue": "route_25_youngster_yanis_after",
+		"trainer": {
+			"id": "route_25_youngster_yanis",
+			"sight": 4,
+			"before": "route_25_youngster_yanis_before",
+			"defeated": "route_25_youngster_yanis_defeated"
+		}
+	},
+	"traveler": {
+		"cell": [14, 10],
+		"facing": "right",
+		"sprite": "traveler",
+		"dialogue": "route_25_traveler"
+	},
+	"old_man": {
+		"cell": [66, 16],
+		"facing": "down",
+		"sprite": "old_man",
+		"dialogue": "route_25_old_man"
+	},
+	"route_25_item_1": {
+		"cell": [33, 5],
+		"facing": "down",
+		"sprite": "object/poke_ball_ground",
+		"dialogue": "route_25_item_1",
+		"verb": "take",
+		"turn_to_player": false,
+		"unless": ["got_route_25_item_1"]
+	},
+	"route_25_item_2": {
+		"cell": [35, 19],
+		"facing": "down",
+		"sprite": "object/poke_ball_ground",
+		"dialogue": "route_25_item_2",
+		"verb": "take",
+		"turn_to_player": false,
+		"unless": ["got_route_25_item_2"]
+	},
+	"route_25_item_3": {
+		"cell": [77, 21],
+		"facing": "down",
+		"sprite": "object/poke_ball_ground",
+		"dialogue": "route_25_item_3",
+		"verb": "take",
+		"turn_to_player": false,
+		"unless": ["got_route_25_item_3"]
+	},
+	"roucool_1": {
+		"cell": [33, 18],
+		"facing": "left",
+		"sprite": "pokemon/pidgey",
+		"lift": 48,
+		"shy": {
+			"action": "fly",
+			"radius": 2
+		}
+	},
+	"roucool_2": {
+		"cell": [62, 18],
+		"facing": "left",
+		"sprite": "pokemon/pidgey",
+		"lift": 48,
+		"shy": {
+			"action": "fly",
+			"radius": 2
+		}
+	}
+}

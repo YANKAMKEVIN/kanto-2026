@@ -29,6 +29,10 @@ var cutscene: StringName = &""
 ## Texte provisoire de cette variante, à relire par Kevin (clé « draft » de la variante ;
 ## « draft » du dialogue entier : [member Dialogue.draft]).
 var draft: bool = false
+## Tirage (jalon 14, jalon-14.md §2.8 : « une fois sur trois ») : ≥ 2, la variante ne
+## s'applique qu'une fois sur [member one_in], tirée **après** ses drapeaux
+## ([method Dialogue.pick]) ; 0 = toujours (aucun tirage).
+var one_in: int = 0
 
 
 ## Vrai si la variante s'applique avec les drapeaux [param flags] (null = aucun drapeau).
@@ -41,3 +45,8 @@ func matches(flags: StoryFlags) -> bool:
 ## Vrai si la variante ne dépend d'aucun drapeau.
 func is_unconditional() -> bool:
 	return if_flags.is_empty() and unless_flags.is_empty()
+
+
+## Vrai si la variante demande un tirage ([member one_in]).
+func is_random() -> bool:
+	return one_in >= 2

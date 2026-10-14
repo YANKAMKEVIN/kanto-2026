@@ -39,7 +39,7 @@ func _root_property(map_id: StringName, property: StringName) -> Variant:
 func test_real_data_loads_without_error() -> void:
 	assert_true(_zones.load_file(), "\n".join(_zones.get_errors()))
 	assert_eq(_zones.get_errors().size(), 0)
-	assert_eq(_zones.size(), 23, "Route 24 ajoutée au jalon 13")
+	assert_eq(_zones.size(), 25, "Route 24 (jalon 13), Route 25 et Cap d'Azuria (jalon 14)")
 
 
 func test_every_map_belongs_to_exactly_one_zone() -> void:
