@@ -269,19 +269,27 @@ validées, sans répétition visible ; lumière neutre (NE) pour objets et perso
 fait foi. Liste finale, fiches et prompts : **T8** (`docs/design/fiches-assets/serie-17-carmin.md`,
 `tools/art/serie17.py`).
 
+**Liste finale (T8, 2026-10-14)** : fiche `docs/design/fiches-assets/serie-17-carmin.md`, outil
+`tools/art/serie17.py`, 33 prompts dans `tools/art/prompts/serie17/` (+ attentes, décor de combat) ;
+**30 images nouvelles** (21 en vague 1, 9 en vague 2) + 3 conditionnels. Numéro 17 constaté libre
+le 2026-10-14 (16 = J14, branches locales) : **revérifié au push**. Route 5 : vue générale pas encore
+validée, ses assets (Pension, indice du tronc) sont **à recaler sur la vue Route 5**.
+
 | Groupe | Réutilisé | Nouveau (série 17) |
 |---|---|---|
-| Routes 5 et 6 | herbe, chemin, forêt `DenseForest`, hautes herbes, rochers, buissons, panneaux, `object/poke_ball_ground`, eau et rivage existants (étang) | façade de la **Pension** (7 × 6, toit chaud) et **jardin clos** (clôture, massifs de fleurs) ; façades des **postes** (7 × 4 / 7 × 3) et des **bâtiments d'entrée du souterrain** ; indices : tronc couché, touffe de joncs |
-| Souterrain | — | sol de galerie et traces (textures répétables), parois en modules, escalier, stèle, banc, **pierre descellée** (indice), **applique murale** |
-| Intérieurs | enveloppes : Centre, Boutique, poste de la forêt (`int_poste_foret_coque`), maison d'Argenta | comptoir de la Pension (meuble), escalier descendant (poste d'entrée), enveloppe du **Fan Club** (ou maison d'Argenta + tableaux) |
-| Carmin | Centre `bldg_centre_01`, Boutique `bldg_boutique_01` | façades **Arène** (12 × 7), **Fan Club** (8 × 6), **maisons côtières** (7 × 6, une planche, variantes) ; **quai et pontons** (texture de planches), bittes et cordages, caisses, grue de bord de quai, **jeune arbre** ; **S.S. Anne vu de l'extérieur** (29 × 7 cases, grand asset du jalon, coque parallèle au quai) ; mer du port |
-| Personnages | `old_man` (gardien), `guard` ×2, `lass`, `camper`, `scout`, `nurse`, `clerk`, `haru`, `traveler`, `hiker` ; jamais deux fois le même modèle d'**habitant** sur une carte | **marin**, **docker** (les deux dockers partagent le modèle), **président du Fan Club** |
-| Pokémon | artworks officiels 052, 053 (combat) ; dos provisoires (`gen_placeholder_battlers.gd`) | **planche d'exploration de Miaouss** (T10, compagnon et membre du Fan Club) ; Persan au lot parallèle si le budget le permet [D] |
-| Combat | — | un décor de combat **`route_5_6_prairie`** partagé par les deux routes [D] (chaîne CB.3) ; Carmin et le souterrain : aucun combat sauvage |
+| Routes 5 et 6 | herbe, chemin, forêt `DenseForest`, hautes herbes, rochers, buissons, grands arbres, panneaux, `object/poke_ball_ground` ; **jardin clos** = clôtures + massifs + plates-bandes ; étang = eau de canal + berges + roseaux (série 15) | façade de la **Pension** (7 × 6, toit rouge-brique) ; **poste de garde** (une façade pour les deux routes, 7 × 4 / 7 × 3) ; **entrée du souterrain** (idem) ; planche : indices **tronc** et **joncs**, nénuphars ×2 ; **vue lointaine du port** (belvédère R6, défaut à juger) |
+| Souterrain | roche brute = `ground_masse_roche_01` (série 14) assombrie | textures **dalles** et **traces** ; planche de 6 **murs maçonnés** ; planche : escaliers montant et descendant, stèle, banc, **pierre descellée**, **applique** |
+| Intérieurs | coques Centre, Boutique, `int_poste_foret_coque` (poste R5, entrées ×2), `int_maison_argenta_coque` (Pension, Fan Club, Pêcheur, maisons) ; meubles existants | planche de 6 meubles : **comptoir de la Pension**, **escalier descendant**, panier, fauteuil du président, vitrine de rubans, tableau (Fan Club) |
+| Carmin | Centre, Boutique ; **maisons 1 et 2 = maison d'Argenta** (identique à la vue) ; mer = `ground_eau_01` assombrie ; bittes, piles, caisses, tonneaux, bancs, pavés | façades **Arène** (12 × 7, sans arbre), **Fan Club** (8 × 6), **maison du Pêcheur** (7 × 6) ; texture de **planches** ; planche des **bords de quai en bois** (6 modules) ; planche : **jeune arbre** (objet séparé retirable), passerelle, grue, bitte à amarre, cordage, caisses du port ; **S.S. Anne** 29 × 7 : guide + **3 tranches** à l'échelle (objet séparé, état amarré) |
+| Personnages | `old_man`, `guard` ×2, `lass`, `lass_young`, `camper`, `scout`, `nurse`, `clerk`, `haru`, `traveler`, `hiker`, `kid` ; jamais deux fois le même modèle d'**habitant** sur une carte | **marin**, **docker** (×2), **président du Fan Club**, **gardien de la Pension** (au lieu d'`old_man` / `clerk` provisoire : à confirmer) — marche + attente |
+| Pokémon | artworks officiels 052, 053 (combat) ; dos provisoires | planche de Miaouss : T10 (hors série) |
+| Combat | — | décor **`route_5_6_prairie`** partagé (chaîne CB.3) ; Carmin et le souterrain : aucun combat sauvage |
 | Sac | — | icônes `super_potion`, `full_restore` (`preparer_menu.py`) |
 
-**Abandonné** : Pokémon visibles au jardin (F-4), intérieur du navire (J16), cheminée du S.S. Anne
-au-dessus des toits (relève de la peinture, dossier §13.1).
+**Conditionnels** : mer du port (texture), coque du Fan Club, autre maison d'habitants.
+**Abandonné** : Pokémon visibles au jardin (F-4), intérieur du navire et état « parti » (J16),
+cheminée du S.S. Anne au-dessus des toits de Carmin (reprise au loin par la vue du port de la
+Route 6), navire court « ferry » de la vue, lumière peinte de la vue du souterrain, mouettes.
 
 ---
 
@@ -697,6 +705,8 @@ et annexe A validée).
   `--commandes`, `--planche`, `--manifeste` préparé, `--controle`), planche `build/art/J15_KIT_v1.png`.
 - **CA** : chaque élément visible des vues validées a un asset (réutilisé, varié, nouveau) ou est
   abandonné explicitement.
+- **Fait (2026-10-14, branche `j15-t8-kit`)** : 30 images nouvelles + 3 conditionnels, 33 prompts,
+  planche `J15_KIT_v1.png` relue ; contrôle « chaque élément » dans la fiche.
 
 #### T9 — constructeur-monde (Mac, Codex) : génération → planche de contact pour Kevin — **(A)**
 #### T10 — constructeur-monde (Mac) : planche de Miaouss (+ Persan si budget) — **(A)**
