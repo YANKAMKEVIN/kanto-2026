@@ -908,7 +908,7 @@ func _apply_effect(effect: MoveEffect, move: MoveData, side: BattleSide,
 		MoveEffect.Kind.SELF_KO:
 			pass
 		MoveEffect.Kind.TELEPORT:
-			_teleport(side, events)
+			_teleport(move, side, events)
 
 
 ## Effet [code]confusion[/code] (jalon 11) sur le Pokémon de [param target_side] : comme un
@@ -1369,12 +1369,15 @@ func _ball_blocked(item: ItemData, events: Array[BattleEvent]) -> bool:
 	return true
 
 
-## Téléport (après MOVE_USED) : contre un Dresseur, NOTHING_HAPPENED ; en combat sauvage,
-## TELEPORTED puis la fin du combat (FLED pour le joueur, FOE_FLED pour le sauvage). Un lanceur
-## piégé (J12) échouera (« Mais ça échoue ! ») : à brancher à la fusion du piège.
-func _teleport(side: BattleSide, events: Array[BattleEvent]) -> void:
+## Téléport (après MOVE_USED) : contre un Dresseur, NOTHING_HAPPENED ; lanceur piégé (J12,
+## Ligotage…) : FAILED (« Mais ça échoue ! »), le combat continue ; sinon, en combat sauvage,
+## TELEPORTED puis la fin du combat (FLED pour le joueur, FOE_FLED pour le sauvage).
+func _teleport(move: MoveData, side: BattleSide, events: Array[BattleEvent]) -> void:
 	if _rules == null or not _rules.wild:
 		events.append(_event(BattleEvent.Kind.NOTHING_HAPPENED, side))
+		return
+	if side.active.is_trapped():
+		_append_failed(side, move.id, events)
 		return
 	events.append(_event(BattleEvent.Kind.TELEPORTED, side))
 	_finish(Outcome.FLED if side == _player else Outcome.FOE_FLED, events)

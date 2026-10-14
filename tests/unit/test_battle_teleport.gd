@@ -197,6 +197,43 @@ func test_nothing_happens_in_a_trainer_battle() -> void:
 	assert_eq(battle.get_state(), Battle.State.CHOOSING)
 
 
+## Jalon 14 T23 (piège du J12 fusionné) : un lanceur piégé ne se téléporte pas (« Mais ça
+## échoue ! »), le combat continue ; libéré, il le peut de nouveau.
+func test_a_trapped_user_cannot_teleport() -> void:
+	var battle := _battle(_with_moves(&"charmander", 5, [&"teleport"]),
+		_with_moves(&"geodude", 10, [&"tackle"]), _draws([1, HIT, 1]))
+	var mine := battle.get_player_side().active
+	mine.trap_turns = 3
+	mine.trap_move = &"wrap"
+	mine.trap_fraction = 0.125
+	mine.trap_source = battle.get_foe_side().active
+	var turn := battle.submit(BattleAction.move(0))
+	var failed := _find(turn, K.FAILED, P)
+	assert_not_null(failed, "Téléport échoue")
+	assert_eq(_line(failed), ["Mais ça échoue !"])
+	assert_false(_has_kind(turn, K.TELEPORTED))
+	assert_ne(battle.get_state(), Battle.State.OVER, "le combat continue")
+	mine.clear_trap()
+	turn = battle.submit(BattleAction.move(0))
+	assert_not_null(_find(turn, K.TELEPORTED, P), "libéré : il fuit")
+	assert_eq(battle.get_outcome(), Battle.Outcome.FLED)
+
+
+## Contre un Dresseur, « rien ne se passe » même piégé (la règle du Dresseur passe d'abord).
+func test_a_trapped_user_against_a_trainer_gets_nothing_happened() -> void:
+	var rules := BattleRules.for_trainer(null, _items)
+	var battle := _battle(_with_moves(&"charmander", 5, [&"teleport"]),
+		_with_moves(&"pidgey", 3, [&"growl"]), _draws([1, 1]), rules)
+	var mine := battle.get_player_side().active
+	mine.trap_turns = 3
+	mine.trap_move = &"wrap"
+	mine.trap_fraction = 0.125
+	mine.trap_source = battle.get_foe_side().active
+	var turn := battle.submit(BattleAction.move(0))
+	assert_not_null(_find(turn, K.NOTHING_HAPPENED, P))
+	assert_null(_find(turn, K.FAILED, P))
+
+
 func test_wild_foe_flees_while_the_player_is_underground() -> void:
 	var charmander := _with_moves(&"charmander", 5, [&"dig"])
 	var battle := _battle(charmander, _with_moves(&"pidgey", 3, [&"teleport"]), _draws([1]))

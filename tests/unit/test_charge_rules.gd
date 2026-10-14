@@ -105,6 +105,21 @@ func test_battler_lock_reads_bide_or_charge() -> void:
 	assert_eq(battler.locked_slot(), 1)
 
 
+## Fusion du J12 et du J13 (T23) : [method Battler.is_locked] (« ne quitte pas le terrain »,
+## lu par l'IA qui change) couvre la charge et le piège ; seule l'action imposée
+## ([method Battler.is_action_locked]) donne une capacité à lancer.
+func test_is_locked_covers_charge_and_trap_but_only_charge_imposes_a_move() -> void:
+	var battler := _battler()
+	battler.charge_slot = 0
+	assert_true(battler.is_locked(), "en pleine charge : pas de changement")
+	battler.clear_charge()
+	battler.trap_turns = 2
+	assert_true(battler.is_trapped())
+	assert_true(battler.is_locked(), "piégé : pas de changement")
+	assert_false(battler.is_action_locked(), "piégé : il choisit encore sa capacité")
+	assert_eq(battler.locked_slot(), -1)
+
+
 func test_messages() -> void:
 	var texts := BattleText.new()
 	assert_true(texts.load_file())
