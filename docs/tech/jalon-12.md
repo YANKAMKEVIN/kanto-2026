@@ -1748,12 +1748,12 @@ correctifs), §9.
 ### 10.3 Points ouverts à la clôture (rien n'est codé ici)
 
 **Bug (non bloquant)**
-1. **Compagnon perdu après « AZURIA — À venir »** (12D) : au retour sur le sas, il n'est plus là
-   même après ≈ 25 pas ; il revient après un changement de carte. Branche
-   `j12-fix-compagnon-a-venir` créée, **aucun commit** au moment du T29. Piste (non vérifiée) :
-   le retour « à venir » replace le joueur sur la même carte sans passer par l'arrivée du
-   `CompanionController` (même famille que les bugs du Centre et des étages : apparition en
-   attente effacée). À corriger avant ou juste après la fusion ; sans effet sur la sauvegarde.
+1. ~~**Compagnon perdu après « AZURIA — À venir »** (12D)~~ — **CORRIGÉ et fusionné dans `jalon-12`
+   (2026-10-14, `j12-fix-compagnon-a-venir` `aa6653d`)** : l'écran « à venir » ouvrait une transition
+   (le compagnon rentre) sans la refermer ; nouveau signal `SceneRouter.coming_soon_finished` →
+   `CompanionController.on_transition_finished()` ; `test_companion_coming_soon` (3 tests). Le bug
+   existait aussi sur `main` (sortie est d'Argenta « Route 3 — À venir ») : réglé par la fusion du J12.
+   Aucun bug ouvert à la clôture.
 
 **Non vus au téléphone** (couverts par les tests, à refaire au doigt si Kevin le souhaite)
 2. Combat : soin de Vampirisme (non concluant), Onde Folie, Sonicboom, Repos à PV pleins, Anti-Para
