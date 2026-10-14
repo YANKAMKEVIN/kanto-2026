@@ -1279,6 +1279,8 @@ rapport `build/qa/j14_14b/`), 14A (S21, `build/qa/j14_14a/`) et 14C (S21, `build
 sont **validés par Kevin** (2026-10-14). `jalon-14` contient `main` (J12 et J13 terminés,
 `4f0ee90`) : la fusion de `origin/main` dans `j14-cloture` n'apporte rien (déjà contenue). La
 fusion de `jalon-14` dans `main` est faite par la session d'intégration (copie dédiée).
+Sur `j14-cloture` : suite complète **4 698 / 4 698** (une exécution, 30 min), import sans erreur,
+`plan_check.py` conforme, `check_json_keys.py` sans doublon.
 
 ### 9.1 Ce que le J14 livre
 
