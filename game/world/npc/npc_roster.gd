@@ -13,7 +13,8 @@ extends RefCounted
 ## }
 ## [/codeblock]
 ## Clés : cell (obligatoire), sprite (obligatoire), facing (down), dialogue (aucun),
-## verb (talk | observe | take ; take = objet visible au sol, jalon 8), turn_to_player (true),
+## verb (talk | observe | take | examine ; take = objet visible au sol, jalon 8 ; examine = objet
+## fixe qu'on examine, jalon 12 : les fossiles de la dalle), turn_to_player (true),
 ## keep_facing (false), lift (0 pixel),
 ## hop_style (calm | eager | playful : style de saut, jalon 4 ; aucun par défaut),
 ## shy ({ action: fly | flee | notice | hide, radius: 1..4 } : réaction d'ambiance, jalon 5 ;
@@ -32,7 +33,9 @@ extends RefCounted
 ## voir [method _read_route]).
 ## trainer (jalon 9, jalon-09.md §2.4.1) : { "id": dresseur de data/trainers/, "sight": 1..8,
 ## "before": dialogue avant le combat, "defeated": réplique dite une fois après la victoire du
-## joueur, facultative (jalon 10, jalon-10.md §2.5) } ; exige « facing » écrit et « dialogue »
+## joueur, facultative (jalon 10, jalon-10.md §2.5), "rematch": réplique de reprise après une
+## défaite du joueur, "leave": [[dx, dy], …] départ après sa défaite (jalon 12, jalon-12.md §2.11,
+## voir [method _read_trainer_j12]) } ; exige « facing » écrit et « dialogue »
 ## (la réplique « après »), le verbe « talk », et refuse « route », « look », « shy » et « idle_react » (un
 ## Dresseur qui bouge ou se tourne changerait sa vision), voir [method _read_trainer].
 ## Le verbe « meet » (Rencontrer) est refusé : il est posé par le code (jalon 4 §3.5).
@@ -51,7 +54,7 @@ const KEYS: Array[String] = [
 	"trainer",
 ]
 ## Clés du bloc « trainer » ([method _read_trainer]).
-const TRAINER_KEYS: Array[String] = ["id", "sight", "before", "defeated"]
+const TRAINER_KEYS: Array[String] = ["id", "sight", "before", "defeated", "rematch", "leave"]
 ## Clés d'une attente animée « look » ([method _read_look]).
 const LOOK_KEYS: Array[String] = ["facings", "every"]
 ## Clés d'une routine « route » ([method _read_route]).
@@ -179,8 +182,8 @@ static func parse_entry(value: Variant, errors: PackedStringArray) -> NpcSpec:
 	if entry.has("verb"):
 		var verb := Interaction.kind_from_name(str(entry["verb"]))
 		if verb != Interaction.Kind.TALK and verb != Interaction.Kind.OBSERVE \
-				and verb != Interaction.Kind.TAKE:
-			errors.append("« verb » vaut talk, observe ou take")
+				and verb != Interaction.Kind.TAKE and verb != Interaction.Kind.EXAMINE:
+			errors.append("« verb » vaut talk, observe, take ou examine")
 		else:
 			spec.verb = verb as Interaction.Kind
 	for key: String in ["turn_to_player", "keep_facing"]:
@@ -274,6 +277,7 @@ static func _read_trainer(entry: Dictionary, spec: NpcSpec, errors: PackedString
 	spec.sight = int(sight)
 	spec.before_dialogue = StringName(block["before"])
 	spec.defeated_dialogue = StringName(block.get("defeated", ""))
+	_read_trainer_j12(entry, block, spec, errors)
 
 
 ## Lit l'attente animée « look » : { "facings": [noms de directions, au moins deux],
@@ -473,3 +477,54 @@ func _fail(message: String) -> bool:
 	_errors.append(full)
 	push_error(full)
 	return false
+
+
+## Jalon 12 (jalon-12.md §2.11) : clés facultatives du bloc « trainer », lues après les autres.
+## - « rematch » : identifiant de dialogue (réplique de reprise, drapeau `lost_<id>`) ;
+## - « leave » : liste de 0 à [constant NpcSpec.LEAVE_STEPS_MAX] cases **relatives à la case de
+##   départ** ([dx, dy], entiers, chaque composante dans ±[constant TrainerRules.SIGHT_MAX]),
+##   la case absolue restant ≥ 0 ; exige « unless » contenant `beaten_<id>` (le Dresseur parti
+##   n'est plus sur la carte au retour).
+static func _read_trainer_j12(entry: Dictionary, block: Dictionary, spec: NpcSpec,
+		errors: PackedStringArray) -> void:
+	if block.has("rematch"):
+		if not block["rematch"] is String or (block["rematch"] as String).is_empty():
+			errors.append("« trainer.rematch » doit être un identifiant")
+		else:
+			spec.rematch_dialogue = StringName(block["rematch"])
+	if not block.has("leave"):
+		return
+	var value: Variant = block["leave"]
+	if not value is Array or (value as Array).size() > NpcSpec.LEAVE_STEPS_MAX:
+		errors.append("« trainer.leave » doit être une liste de 0 à %d cases [dx, dy]"
+			% NpcSpec.LEAVE_STEPS_MAX)
+		return
+	var cells: Array[Vector2i] = []
+	for item: Variant in value:
+		if not is_offset(item, TrainerRules.SIGHT_MAX):
+			errors.append("« trainer.leave » : case relative [dx, dy] invalide (entiers, ±%d)"
+				% TrainerRules.SIGHT_MAX)
+			return
+		var offset := Vector2i(int(item[0]), int(item[1]))
+		var target := spec.cell + offset
+		if target.x < 0 or target.y < 0:
+			errors.append("« trainer.leave » : la case %s sort de la carte" % target)
+			return
+		cells.append(offset)
+	if not spec.unless_flags.has(TrainerRules.beaten_flag(spec.trainer_id)):
+		errors.append("« trainer.leave » exige « unless »: [\"%s\"] (parti, il ne revient pas)"
+			% TrainerRules.beaten_flag(spec.trainer_id))
+		return
+	spec.leave_cells = cells
+	spec.leaves = true
+
+
+## Vrai pour une case relative de données : [dx, dy], entiers de −[param limit] à [param limit].
+static func is_offset(value: Variant, limit: int) -> bool:
+	if not value is Array or (value as Array).size() != 2:
+		return false
+	for n: Variant in value:
+		if not (n is float or n is int) or float(n) != floorf(float(n)) \
+				or absf(float(n)) > float(limit):
+			return false
+	return true

@@ -6,6 +6,8 @@ extends SceneTree
 ## Dardargnan, Pikachu, Raichu ; les évolutions aussi, puisqu'elles naissent en combat) et des
 ## trois espèces des Dresseurs d'Argenta (jalon-10.md §2.3 : Sabelette, Racaillou, Onix ; en
 ## face, l'adversaire est l'artwork officiel, ces sprites ne servent que de repli et de dos).
+## Correctif QA 12A : toutes les évolutions des espèces des données (Reptincel…), test
+## `test_battle_art.gd` (chaque espèce des données a sa face et son dos).
 ## Pixel art 64 × 64 natif, affiché en NEAREST par le BattleStage (×4 de dos, ×3 de face) :
 ##   assets/sprites/pokemon/placeholder/<espèce>_front.png   (vue de face : l'adversaire)
 ##   assets/sprites/pokemon/placeholder/<espèce>_back.png    (vue de dos : le Pokémon du joueur)
@@ -25,6 +27,16 @@ const SPECIES: Array[String] = [
 	"spearow", "mankey", "nidoran_f", "nidoran_m",
 	"caterpie", "metapod", "butterfree", "weedle", "kakuna", "beedrill", "pikachu", "raichu",
 	"sandshrew", "geodude", "onix",
+	# Jalon 12 (jalon-12.md §2.19, T12) : les 12 espèces de la Route 3 et du Mont Sélénite, et
+	# Rattatac (Sbire R3). Ajouts en fin ; les sprites existants ne changent pas.
+	"jigglypuff", "wigglytuff", "ekans", "arbok", "zubat", "golbat", "paras", "parasect",
+	"clefairy", "clefable", "voltorb", "koffing", "raticate",
+	# Correctif QA 12A (S24) : toutes les évolutions atteignables des espèces des données (le
+	# joueur peut les avoir en tête : Reptincel au N16, etc.), dessinées sur la silhouette de leur
+	# forme de base (recolorée) avec un trait distinctif. Ajouts en fin ; rien d'autre ne change.
+	"ivysaur", "venusaur", "charmeleon", "charizard", "wartortle", "blastoise",
+	"pidgeotto", "pidgeot", "fearow", "sandslash", "nidorina", "nidoqueen", "nidorino",
+	"nidoking", "primeape", "graveler", "golem",
 ]
 const OUTLINE := Color("#1c1c28")
 const EYE := Color("#1c1c28")
@@ -722,6 +734,433 @@ func _draw_onix(img: Image, back: bool) -> void:
 	_r(img, 19, 12, 6, 2, WHITE)
 	_r(img, 21, 12, 2, 2, EYE)
 	_r(img, 18, 18, 14, 2, rock.darkened(0.5))
+
+
+# --- Jalon 12 : Route 3 et Mont Sélénite --------------------------------------------
+
+## Rondoudou : boule rose, grands yeux bleus, mèche frisée sur le front.
+func _draw_jigglypuff(img: Image, back: bool) -> void:
+	_draw_puff(img, back, 20, 14, 2)
+
+
+## Grodoudou : plus grand, longues oreilles, ventre blanc.
+func _draw_wigglytuff(img: Image, back: bool) -> void:
+	_draw_puff(img, back, 23, 22, 6)
+	if not back:
+		_e(img, 32, 50, 12, 8, Color("#f8eef0"))
+
+
+func _draw_puff(img: Image, back: bool, radius: int, ear: int, tuft_drop: int) -> void:
+	var skin := Color("#f4a8c0")
+	var cy := 61 - radius
+	for side: int in [-1, 1]:
+		_line(img, Vector2(32 + side * 10, cy - radius + 6),
+			Vector2(32 + side * 16, cy - radius - ear + 14), skin.darkened(0.08), 5)
+		_r(img, 32 + side * 12 - 4, 57, 8, 5, skin.darkened(0.15))
+	_e(img, 32, cy, radius, radius, skin, true)
+	_e(img, 32, cy - radius + tuft_drop + 2, 5, 5, skin.lightened(0.1))
+	if back:
+		return
+	for x: int in [22, 37]:
+		_r(img, x, cy - 6, 6, 8, WHITE)
+		_r(img, x + 1, cy - 5, 5, 6, Color("#3a7ad0"))
+		_r(img, x + 2, cy - 4, 3, 4, EYE)
+		_r(img, x + 2, cy - 4, 1, 1, WHITE)
+	_r(img, 30, cy + 6, 4, 2, skin.darkened(0.45))
+
+
+## Abo : serpent violet enroulé, ventre jaune, hochet jaune au bout de la queue.
+func _draw_ekans(img: Image, back: bool) -> void:
+	_draw_snake(img, back, Color("#9a6ac0"), false)
+
+
+## Arbok : plus sombre, capuchon déployé avec son motif.
+func _draw_arbok(img: Image, back: bool) -> void:
+	_draw_snake(img, back, Color("#7a4ea0"), true)
+
+
+func _draw_snake(img: Image, back: bool, skin: Color, hood: bool) -> void:
+	var belly := Color("#e8d070")
+	var coils: Array[Vector3] = [Vector3(46, 54, 8), Vector3(32, 56, 9), Vector3(20, 52, 8),
+		Vector3(26, 42, 8), Vector3(36, 36, 7)]
+	_e(img, 56, 46, 3, 4, belly)
+	_line(img, Vector2(54, 52), Vector2(57, 46), skin, 3)
+	for coil: Vector3 in coils:
+		_e(img, coil.x, coil.y, coil.z, coil.z - 2, skin, true)
+		if not back:
+			_r(img, int(coil.x) - 3, int(coil.y) + 2, 6, 2, belly)
+	if hood:
+		_e(img, 34, 20, 16, 13, skin, true)
+		if not back:
+			_e(img, 34, 22, 9, 7, belly.darkened(0.1))
+			_r(img, 29, 20, 3, 3, Color("#c03030"))
+			_r(img, 37, 20, 3, 3, Color("#c03030"))
+	_e(img, 36, 14 if hood else 24, 9, 8, skin, true)
+	if back:
+		return
+	var y := 11 if hood else 21
+	_r(img, 31, y, 4, 3, belly)
+	_r(img, 38, y, 4, 3, belly)
+	_r(img, 32, y + 1, 2, 2, EYE)
+	_r(img, 39, y + 1, 2, 2, EYE)
+	_r(img, 33, y + 7, 6, 1, skin.darkened(0.45))
+
+
+## Nosferapti : petit corps bleu, grandes ailes violettes, pas d'yeux, bouche ouverte.
+func _draw_zubat(img: Image, back: bool) -> void:
+	_draw_bat(img, back, 9, 4)
+
+
+## Nosferalto : corps plus gros, bouche immense.
+func _draw_golbat(img: Image, back: bool) -> void:
+	_draw_bat(img, back, 13, 9)
+
+
+func _draw_bat(img: Image, back: bool, body_r: int, mouth: int) -> void:
+	var skin := Color("#5a8ad8")
+	var wing := Color("#9a6ac8")
+	for side: int in [-1, 1]:
+		var tip := Vector2(32 + side * 30, 14)
+		_line(img, Vector2(32 + side * 6, 26), tip, wing.darkened(0.2), 2)
+		for i: int in 4:
+			_line(img, tip, Vector2(32 + side * (8 + i * 5), 34 + i * 2), wing)
+		_e(img, 32 + side * 18, 24, 10, 7, wing, true)
+		_line(img, Vector2(32 + side * 4, 34), Vector2(32 + side * 6, 52), skin.darkened(0.1), 2)
+		_line(img, Vector2(32 + side * 6, 22), Vector2(32 + side * 9, 10), skin, 3)
+	_e(img, 32, 26, body_r, body_r, skin, true)
+	if back:
+		return
+	_r(img, 32 - mouth, 26, mouth * 2, mouth + 2, Color("#802838"))
+	_r(img, 32 - mouth + 1, 26, 2, 3, WHITE)
+	_r(img, 32 + mouth - 3, 26, 2, 3, WHITE)
+
+
+## Paras : insecte orange, deux champignons rouges tachés sur le dos, pinces.
+func _draw_paras(img: Image, back: bool) -> void:
+	var shell := Color("#e88a40")
+	var cap := Color("#d04030")
+	_e(img, 32, 50, 18, 10, shell, true)
+	for side: int in [-1, 1]:
+		_r(img, 32 + side * 12 - 2, 56, 4, 6, shell.darkened(0.2))
+		_e(img, 32 + side * 10, 34, 9, 7, cap, true)
+		_r(img, 32 + side * 10 - 2, 32, 3, 2, Color("#f4e070"))
+		if not back:
+			_e(img, 32 + side * 20, 54, 5, 4, shell.lightened(0.15), true)
+	if back:
+		return
+	_r(img, 25, 46, 4, 4, WHITE)
+	_r(img, 35, 46, 4, 4, WHITE)
+	_r(img, 26, 47, 2, 3, EYE)
+	_r(img, 36, 47, 2, 3, EYE)
+
+
+## Parasect : un seul grand champignon rouge qui couvre le corps, yeux blancs.
+func _draw_parasect(img: Image, back: bool) -> void:
+	var shell := Color("#e07838")
+	var cap := Color("#c83828")
+	for side: int in [-1, 1]:
+		_r(img, 32 + side * 14 - 2, 54, 4, 8, shell.darkened(0.2))
+		if not back:
+			_e(img, 32 + side * 22, 50, 6, 5, shell.lightened(0.1), true)
+	_e(img, 32, 50, 16, 9, shell, true)
+	_e(img, 32, 30, 26, 16, cap, true)
+	for spot: Vector2i in [Vector2i(20, 24), Vector2i(36, 20), Vector2i(44, 32), Vector2i(26, 36)]:
+		_e(img, spot.x, spot.y, 3, 2, Color("#f4e070"))
+	if back:
+		return
+	_r(img, 25, 48, 5, 3, WHITE)
+	_r(img, 35, 48, 5, 3, WHITE)
+
+
+## Mélofée : rose clair, oreilles pointues au bout brun, boucle sur le front, petites ailes.
+func _draw_clefairy(img: Image, back: bool) -> void:
+	_draw_fairy(img, back, 15, 10)
+
+
+## Mélodelfe : plus grand, ailes plus larges.
+func _draw_clefable(img: Image, back: bool) -> void:
+	_draw_fairy(img, back, 19, 15)
+
+
+func _draw_fairy(img: Image, back: bool, radius: int, wing: int) -> void:
+	var skin := Color("#f8c8d0")
+	var tip := Color("#7a5038")
+	var cy := 61 - radius - 4
+	for side: int in [-1, 1]:
+		_e(img, 32 + side * (radius + 3), cy - 2, wing / 2 + 2, wing, Color("#f4e8f0"), true)
+		_line(img, Vector2(32 + side * 6, cy - radius + 2),
+			Vector2(32 + side * 14, cy - radius - 12), skin, 5)
+		_r(img, 32 + side * 14 - 2, cy - radius - 14, 4, 4, tip)
+		_r(img, 32 + side * 8 - 4, 56, 8, 6, skin.darkened(0.12))
+	_e(img, 32, cy, radius, radius, skin, true)
+	_line(img, Vector2(32, cy - radius), Vector2(36, cy - radius - 5), skin.darkened(0.1), 2)
+	if back:
+		_e(img, 32, cy + radius - 4, 4, 4, skin.darkened(0.15))
+		return
+	_r(img, 24, cy - 4, 4, 5, EYE)
+	_r(img, 37, cy - 4, 4, 5, EYE)
+	_r(img, 24, cy - 4, 1, 1, WHITE)
+	_r(img, 37, cy - 4, 1, 1, WHITE)
+	_e(img, 22, cy + 3, 3, 2, Color("#f08ca0"))
+	_e(img, 42, cy + 3, 3, 2, Color("#f08ca0"))
+
+
+## Voltorbe : sphère rouge en haut, blanche en bas, regard mauvais.
+func _draw_voltorb(img: Image, back: bool) -> void:
+	var red := Color("#d83830")
+	_e(img, 32, 42, 19, 19, WHITE.darkened(0.04), true)
+	for y: int in range(23, 42):
+		for x: int in range(12, 52):
+			var d := Vector2((x + 0.5 - 32.0) / 19.0, (y + 0.5 - 42.0) / 19.0)
+			if d.length_squared() <= 1.0:
+				_px(img, x, y, red.darkened(0.2) if d.x * 0.6 + d.y * 0.8 > 0.55 else red)
+	_r(img, 13, 41, 38, 2, OUTLINE)
+	if back:
+		_e(img, 24, 30, 4, 3, red.lightened(0.3))
+		return
+	_r(img, 22, 33, 7, 5, WHITE)
+	_r(img, 35, 33, 7, 5, WHITE)
+	_r(img, 24, 34, 3, 4, EYE)
+	_r(img, 37, 34, 3, 4, EYE)
+	_line(img, Vector2(21, 30), Vector2(29, 33), OUTLINE, 2)
+	_line(img, Vector2(43, 30), Vector2(35, 33), OUTLINE, 2)
+
+
+## Smogo : boule violette aux cratères, deux petites bulles de gaz.
+func _draw_koffing(img: Image, back: bool) -> void:
+	var skin := Color("#8a68a8")
+	_e(img, 52, 18, 5, 5, skin.lightened(0.1), true)
+	_e(img, 12, 24, 4, 4, skin.lightened(0.1), true)
+	_e(img, 32, 38, 20, 19, skin, true)
+	for crater: Vector2i in [Vector2i(16, 30), Vector2i(48, 34), Vector2i(26, 22), Vector2i(42, 50)]:
+		_e(img, crater.x, crater.y, 3, 2, skin.darkened(0.3))
+	if back:
+		return
+	_r(img, 23, 32, 6, 5, WHITE)
+	_r(img, 35, 32, 6, 5, WHITE)
+	_r(img, 25, 33, 3, 4, EYE)
+	_r(img, 37, 33, 3, 4, EYE)
+	_r(img, 27, 44, 10, 3, skin.darkened(0.5))
+	_r(img, 29, 44, 2, 2, WHITE)
+	_r(img, 33, 44, 2, 2, WHITE)
+	_e(img, 32, 52, 6, 2, Color("#e8dca0"))
+
+
+## Rattatac : rat brun clair, ventre crème, grandes incisives, moustaches.
+func _draw_raticate(img: Image, back: bool) -> void:
+	var fur := Color("#c8904a")
+	var belly := Color("#f0e0c0")
+	_line(img, Vector2(48, 56), Vector2(62, 44), fur.darkened(0.2), 3)
+	_e(img, 32, 47, 22, 14, fur, true)
+	_r(img, 16, 56, 9, 6, fur.darkened(0.15))
+	_r(img, 39, 56, 9, 6, fur.darkened(0.15))
+	_e(img, 32, 26, 18, 15, fur, true)
+	_e(img, 15, 14, 7, 7, fur)
+	_e(img, 49, 14, 7, 7, fur)
+	if back:
+		return
+	_e(img, 32, 50, 13, 10, belly)
+	_e(img, 32, 32, 11, 8, belly)
+	_e(img, 15, 14, 4, 4, Color("#e0a080"))
+	_e(img, 49, 14, 4, 4, Color("#e0a080"))
+	_r(img, 22, 21, 5, 4, EYE)
+	_r(img, 37, 21, 5, 4, EYE)
+	_r(img, 22, 21, 1, 1, WHITE)
+	_r(img, 37, 21, 1, 1, WHITE)
+	_r(img, 30, 30, 4, 2, Color("#7a3a20"))
+	_r(img, 28, 33, 3, 6, WHITE)
+	_r(img, 33, 33, 3, 6, WHITE)
+	_line(img, Vector2(24, 31), Vector2(9, 27), OUTLINE)
+	_line(img, Vector2(40, 31), Vector2(55, 27), OUTLINE)
+
+
+# --- Évolutions (correctif QA 12A) -------------------------------------------------
+
+## Dessine la forme de base [param base] (de face ou de dos) sur un calque, recolore ses pixels
+## colorés (teinte + [param hue], saturation × [param sat], assombris de [param dark] ; le blanc,
+## le noir et les gris gardent leur valeur), puis le pose sur [param img] (par-dessus ce qui y est
+## déjà dessiné : ailes, carapace dorsale…).
+func _base(img: Image, back: bool, base: String, hue: float, sat: float = 1.0,
+		dark: float = 0.0) -> void:
+	var layer := Image.create_empty(SIZE, SIZE, false, Image.FORMAT_RGBA8)
+	layer.fill(Color(0, 0, 0, 0))
+	call("_draw_" + base, layer, back)
+	for y: int in SIZE:
+		for x: int in SIZE:
+			var c := layer.get_pixel(x, y)
+			if c.a <= 0.0 or c.s < 0.15:
+				continue
+			var shifted := Color.from_hsv(fposmod(c.h + hue, 1.0), clampf(c.s * sat, 0.0, 1.0),
+				c.v, c.a)
+			layer.set_pixel(x, y, shifted.darkened(dark))
+	img.blend_rect(layer, Rect2i(0, 0, SIZE, SIZE), Vector2i.ZERO)
+
+
+## Herbizarre : Bulbizarre plus sombre, bouton rose au sommet du bulbe.
+func _draw_ivysaur(img: Image, back: bool) -> void:
+	_base(img, back, "bulbasaur", 0.0, 1.0, 0.08)
+	var bud := Color("#e070a0")
+	var c := Vector2(32, 22) if back else Vector2(32, 8)
+	_e(img, c.x, c.y, 5, 5, bud, true)
+	_line(img, Vector2(c.x - 4, c.y + 4), Vector2(c.x - 8, c.y + 1), Color("#3a7a38"), 2)
+	_line(img, Vector2(c.x + 4, c.y + 4), Vector2(c.x + 8, c.y + 1), Color("#3a7a38"), 2)
+
+
+## Florizarre : Bulbizarre bleu-vert sombre, grande fleur rose à cœur jaune sur le dos.
+func _draw_venusaur(img: Image, back: bool) -> void:
+	_base(img, back, "bulbasaur", -0.03, 1.0, 0.15)
+	var petal := Color("#e86a8a")
+	var c := Vector2(32, 22) if back else Vector2(32, 9)
+	for side: int in [-1, 1]:
+		_e(img, c.x + side * 10, c.y, 9, 4, petal, true)
+	_e(img, c.x, c.y - 4, 6, 4, petal, true)
+	_e(img, c.x, c.y, 4, 3, Color("#f0d040"))
+
+
+## Reptincel : Salamèche rouge sombre, corne vers l'arrière de la tête.
+func _draw_charmeleon(img: Image, back: bool) -> void:
+	_base(img, back, "charmander", -0.04, 1.1, 0.12)
+	var skin := Color("#c8442c")
+	if back:
+		_line(img, Vector2(32, 10), Vector2(32, 3), skin, 3)
+	else:
+		_line(img, Vector2(40, 10), Vector2(47, 3), skin, 3)
+
+
+## Dracaufeu : Salamèche orange, grandes ailes bleu-vert déployées, deux cornes.
+func _draw_charizard(img: Image, back: bool) -> void:
+	var wing := Color("#3a8aa0")
+	for side: int in [-1, 1]:
+		_e(img, 32 + side * 19, 28, 11, 15, wing, true)
+		_line(img, Vector2(32 + side * 10, 30), Vector2(32 + side * 29, 14), wing.darkened(0.3), 2)
+	_base(img, back, "charmander", 0.01, 1.0, 0.0)
+	var skin := Color("#f08a3a")
+	for side: int in [-1, 1]:
+		_line(img, Vector2(32 + side * 8, 10), Vector2(32 + side * 11, 3), skin, 3)
+
+
+## Carabaffe : Carapuce bleu lavande, oreilles et queue en plumes blanches.
+func _draw_wartortle(img: Image, back: bool) -> void:
+	var fur := Color("#e8eef8")
+	for side: int in [-1, 1]:
+		_e(img, 32 + side * 16, 9, 4, 8, fur, true)
+	_e(img, 54, 54, 7, 7, fur, true)
+	_base(img, back, "squirtle", 0.06, 1.0, 0.1)
+
+
+## Tortank : Carapuce bleu foncé, deux canons gris sortant de la carapace.
+func _draw_blastoise(img: Image, back: bool) -> void:
+	_base(img, back, "squirtle", 0.05, 1.1, 0.22)
+	var steel := Color("#9aa0aa")
+	for side: int in [-1, 1]:
+		var x := 32 + side * 14 - 4
+		_r(img, x, 24, 9, 6, steel)
+		_r(img, x, 24, 9, 2, steel.lightened(0.2))
+		_r(img, x + 3, 25, 3, 3, OUTLINE)
+
+
+## Roucoups : Roucool, longue crête rouge et jaune.
+func _draw_pidgeotto(img: Image, back: bool) -> void:
+	_base(img, back, "pidgey", 0.0, 1.0, 0.05)
+	_line(img, Vector2(31, 12), Vector2(42, 2), Color("#d84030"), 3)
+	_line(img, Vector2(33, 13), Vector2(45, 6), Color("#f0c040"), 2)
+
+
+## Roucarnage : Roucool plus clair, très longue crête rouge et jaune retombant dans le dos.
+func _draw_pidgeot(img: Image, back: bool) -> void:
+	_base(img, back, "pidgey", 0.01, 1.1)
+	_line(img, Vector2(31, 12), Vector2(46, 2), Color("#d84030"), 4)
+	_line(img, Vector2(46, 2), Vector2(58, 14), Color("#d84030"), 3)
+	_line(img, Vector2(34, 13), Vector2(48, 6), Color("#f0c040"), 2)
+	_line(img, Vector2(48, 6), Vector2(57, 20), Color("#f0c040"), 2)
+
+
+## Rapasdepic : Piafabec brun foncé, long bec effilé, crête rouge.
+func _draw_fearow(img: Image, back: bool) -> void:
+	_base(img, back, "spearow", 0.02, 0.9, 0.08)
+	var beak := Color("#e8a8a0")
+	if not back:
+		_line(img, Vector2(32, 28), Vector2(32, 42), beak, 3)
+	_e(img, 32, 9, 6, 4, Color("#c03a2a"), true)
+
+
+## Sablaireau : Sabelette brun, épines brunes sur tout le dos.
+func _draw_sandslash(img: Image, back: bool) -> void:
+	var spike := Color("#8a5a2a")
+	for i: int in 7:
+		var a := lerpf(-2.4, -0.7, float(i) / 6.0)
+		var base := Vector2(32, 34)
+		_line(img, base + Vector2(cos(a), sin(a)) * 12.0, base + Vector2(cos(a), sin(a)) * 24.0,
+			spike, 3)
+	_base(img, back, "sandshrew", -0.02, 1.0, 0.12)
+	if back:
+		for i: int in 5:
+			_line(img, Vector2(20 + i * 6, 34), Vector2(22 + i * 6, 26), spike, 2)
+
+
+## Nidorina : Nidoran ♀ bleu plus clair et plus vert.
+func _draw_nidorina(img: Image, back: bool) -> void:
+	_base(img, back, "nidoran_f", -0.04, 1.0, 0.05)
+
+
+## Nidoqueen : Nidoran ♀ bleu sombre, plastron crème.
+func _draw_nidoqueen(img: Image, back: bool) -> void:
+	_base(img, back, "nidoran_f", 0.0, 1.1, 0.22)
+	if not back:
+		_e(img, 32, 48, 11, 8, Color("#e8d8a8"), true)
+
+
+## Nidorino : Nidoran ♂ violet plus soutenu, corne plus longue.
+func _draw_nidorino(img: Image, back: bool) -> void:
+	_base(img, back, "nidoran_m", 0.02, 1.15, 0.08)
+	if not back:
+		_line(img, Vector2(32, 20), Vector2(32, 5), Color("#f0e6f4"), 3)
+
+
+## Nidoking : Nidoran ♂ violet sombre, plastron crème, grande corne.
+func _draw_nidoking(img: Image, back: bool) -> void:
+	_base(img, back, "nidoran_m", 0.04, 1.2, 0.2)
+	if back:
+		_line(img, Vector2(32, 18), Vector2(32, 6), Color("#f0e6f4"), 3)
+		return
+	_e(img, 32, 48, 11, 8, Color("#e8d8a8"), true)
+	_line(img, Vector2(32, 20), Vector2(32, 3), Color("#f0e6f4"), 4)
+
+
+## Colossinge : Férosinge plus clair, menottes grises aux poignets.
+func _draw_primeape(img: Image, back: bool) -> void:
+	_base(img, back, "mankey", 0.0)
+	var steel := Color("#a0a4ac")
+	var y := 38 if back else 36
+	for side: int in [-1, 1]:
+		_r(img, 32 + side * 22 - 4, y + 3, 8, 3, steel)
+
+
+## Gravalanch : Racaillou plus massif et brun, deux bras de plus en bas.
+func _draw_graveler(img: Image, back: bool) -> void:
+	var rock := Color("#8a8070")
+	for side: int in [-1, 1]:
+		_line(img, Vector2(32 + side * 12, 50), Vector2(32 + side * 22, 58), rock, 5)
+		_e(img, 32 + side * 23, 58, 5, 4, rock, true)
+	_base(img, back, "geodude", 0.0, 1.5, 0.08)
+	_e(img, 32, 24, 10, 6, rock, true)
+
+
+## Grolem : carapace rocheuse vert-brun autour d'une tête grise.
+func _draw_golem(img: Image, back: bool) -> void:
+	var shell := Color("#8a8a5a")
+	_e(img, 32, 42, 24, 20, shell, true)
+	for p: Vector2i in [Vector2i(16, 34), Vector2i(46, 30), Vector2i(24, 52), Vector2i(42, 52)]:
+		_e(img, p.x, p.y, 4, 3, shell.darkened(0.25))
+	if back:
+		_e(img, 32, 24, 10, 8, shell.lightened(0.1), true)
+		return
+	_e(img, 32, 38, 12, 10, Color("#c8b0a0"), true)
+	_r(img, 25, 35, 4, 4, WHITE)
+	_r(img, 35, 35, 4, 4, WHITE)
+	_r(img, 26, 36, 2, 3, EYE)
+	_r(img, 36, 36, 2, 3, EYE)
+	_r(img, 28, 43, 8, 2, Color("#7a5a4a"))
 
 
 # --- Ombre ------------------------------------------------------------------------

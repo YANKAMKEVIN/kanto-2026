@@ -1,0 +1,125 @@
+{
+	"mt_moon_1f_sign": {
+		"pages": ["MONT SÉLÉNITE\nGaleries non éclairées. Prudence."]
+	},
+	"mt_moon_1f_crate": {
+		"narration": true,
+		"pages": ["Une caisse marquée d'un R rouge.", "Elle est vide."]
+	},
+	"mt_moon_1f_lamp": {
+		"narration": true,
+		"pages": ["Une lampe de chantier. Encore tiède."]
+	},
+	"mt_moon_1f_hiker": {
+		"speaker": "Randonneur",
+		"pages": ["Des gens en noir fouillent plus bas.", "Je préfère ne pas savoir pourquoi."]
+	},
+	"mt_moon_1f_ball_1": {
+		"cutscene": "mt_moon_1f_item_1"
+	},
+	"mt_moon_1f_hidden_1": {
+		"cutscene": "mt_moon_1f_hidden_1"
+	},
+	"mt_moon_b1f_ball_2": {
+		"cutscene": "mt_moon_b1f_item_2"
+	},
+	"mt_moon_b1f_ball_1": {
+		"cutscene": "mt_moon_b1f_item_1"
+	},
+	"mt_moon_b2f_ball_1": {
+		"cutscene": "mt_moon_b2f_item_1"
+	},
+	"mt_moon_b2f_hidden_1": {
+		"cutscene": "mt_moon_b2f_hidden_1"
+	},
+	"mt_moon_rocket_1_before": {
+		"speaker": "Sbire Rocket",
+		"pages": ["Hé, toi ! Ce passage est interdit.\nFais demi-tour."]
+	},
+	"mt_moon_rocket_1_defeated": {
+		"speaker": "Sbire Rocket",
+		"pages": ["Tch… Je préviens les autres."]
+	},
+	"mt_moon_rocket_1_rematch": {
+		"speaker": "Sbire Rocket",
+		"pages": ["Encore toi ? Demi-tour."]
+	},
+	"mt_moon_rocket_2_before": {
+		"speaker": "Sbire Rocket",
+		"pages": ["Encore un curieux ? J'ai du travail."]
+	},
+	"mt_moon_rocket_2_defeated": {
+		"speaker": "Sbire Rocket",
+		"pages": ["Ces fossiles valent plus\nque ce combat."]
+	},
+	"mt_moon_rocket_2_rematch": {
+		"speaker": "Sbire Rocket",
+		"pages": ["Tu ne comprends pas\nquand on te dit non ?"]
+	},
+	"mt_moon_rocket_3_before": {
+		"speaker": "Sbire Rocket",
+		"pages": [
+			"Les fossiles sont à nous.",
+			"La Team Rocket ne laisse rien\nderrière elle.",
+			"Et surtout pas un gamin curieux."
+		]
+	},
+	"mt_moon_rocket_3_defeated": {
+		"speaker": "Sbire Rocket",
+		"pages": ["La Team Rocket n'oublie pas\nles visages."]
+	},
+	"mt_moon_rocket_3_rematch": {
+		"speaker": "Sbire Rocket",
+		"pages": ["Tu reviens perdre ?"]
+	},
+	"mt_moon_researcher_before": {
+		"speaker": "Chercheur Gaspard",
+		"pages": ["Encore un de ces voleurs ?!", "Ces fossiles, c'est moi\nqui les ai trouvés !"]
+	},
+	"mt_moon_researcher_defeated": {
+		"speaker": "Chercheur Gaspard",
+		"pages": ["D'accord, d'accord !\nTu n'es pas avec eux."]
+	},
+	"mt_moon_researcher_share": {
+		"speaker": "Chercheur Gaspard",
+		"pages": ["Sans toi, ils les auraient emportés.", "Un fossile chacun. Choisis."]
+	},
+	"mt_moon_researcher_rematch": {
+		"speaker": "Chercheur Gaspard",
+		"pages": ["Tu es revenu ?\nTu ne les auras pas !"]
+	},
+	"mt_moon_researcher_guard": {
+		"speaker": "Chercheur Gaspard",
+		"pages": ["Encore un de ces voleurs ?!", "Ces fossiles, c'est moi\nqui les ai trouvés !"]
+	},
+	"mt_moon_researcher_talk": {
+		"speaker": "Chercheur Gaspard",
+		"variants": [
+			{
+				"unless": ["mt_moon_fossil_chosen"],
+				"pages": ["Sans toi, ils les auraient emportés.", "Un fossile chacun. Choisis."]
+			},
+			{ "pages": ["Je vais les étudier de près."] }
+		]
+	},
+	"mt_moon_researcher_chosen": {
+		"speaker": "Chercheur Gaspard",
+		"pages": ["Alors je garde celui-ci.", "Prends-en soin."]
+	},
+	"mt_moon_fossil_dome": {
+		"narration": true,
+		"pages": ["Prendre le Fossile Dôme ?"],
+		"choice": {
+			"confirm": "OUI", "cancel": "NON", "confirm_cutscene": "mt_moon_fossil_dome",
+			"cancel_pages": []
+		}
+	},
+	"mt_moon_fossil_helix": {
+		"narration": true,
+		"pages": ["Prendre le Fossile Nautile ?"],
+		"choice": {
+			"confirm": "OUI", "cancel": "NON", "confirm_cutscene": "mt_moon_fossil_helix",
+			"cancel_pages": []
+		}
+	}
+}

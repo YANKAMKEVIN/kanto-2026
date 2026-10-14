@@ -1,7 +1,8 @@
 class_name EncounterDirector
 extends Node
 ## Le seul à déclencher une rencontre sauvage (jalon 5 §3.6). À chaque pas terminé du joueur
-## ([signal Player.moved]) dans une case de hautes herbes, il tente un tirage
+## ([signal Player.moved]) dans une case de hautes herbes ou de gravats (jalon 12, T20 : terrain
+## « rubble » des grottes, table propre à la carte et au terrain), il tente un tirage
 ## ([EncounterTable] + [member GameState.rng]) ; si une rencontre a lieu, il bloque le joueur
 ## [b]dans le `moved`[/b] (le pas suivant ne part pas, doigt maintenu ou en courant), marque
 ## le sauvage « vu » au Pokédex, joue le froissement d'herbe, puis lance la séquence de combat
@@ -10,6 +11,12 @@ extends Node
 ## jalon-07.md §3.3.2 : soin, dernier Centre utilisé sinon la maison, mot du lieu) avant de
 ## rendre le contrôle. Le directeur ne lit aucun autoload : il reçoit [GameState] et le routeur
 ## par [method setup].
+## Jalon 12 (T20, `jalon-12.md` §2.5) : le terrain de la case ([method terrain_at]) choisit la
+## table et l'introduction — herbes : l'herbe s'agite ([GrassRustle]) ; gravats : un petit
+## éboulis sous les pieds ([RubbleBurst]), le point d'accroche du son
+## ([signal rubble_sound_requested]), puis le héros se retourne. Le sol calme d'une grotte
+## n'a aucune rencontre. Un seul compteur de pas calmes pour les deux terrains. Le compagnon
+## ne déclenche rien : seul le pas du joueur est écouté.
 
 ## Une rencontre commence (joueur bloqué, transition lancée).
 signal encounter_started(species_id: StringName, level: int)
@@ -22,10 +29,15 @@ signal encounter_finished(outcome: int)
 signal woke_up_after_defeat
 ## Point d'accroche du cri du sauvage (sans son au jalon 5, Q14) : émis à l'apparition.
 signal cry_requested(species_id: StringName)
+## Point d'accroche du son « pierres qui roulent » (jalon 12, dossier 15 §6 ; aucun son au J12) :
+## émis au début de l'éboulis d'une rencontre sur les gravats.
+signal rubble_sound_requested
 
 ## Raison de blocage du joueur, de la rencontre jusqu'à la sortie du combat.
 const REASON: StringName = &"encounter"
 const _GRASS_TERRAIN: StringName = &"grass"
+## Gravats des grottes (jalon 12, T20).
+const _RUBBLE_TERRAIN: StringName = &"rubble"
 
 ## Faux : aucun tirage (outils de capture, tests d'autres systèmes).
 var enabled: bool = true
@@ -83,6 +95,19 @@ func get_quiet_steps() -> int:
 	return _quiet_steps
 
 
+## Terrain de rencontre de [param cell] sur la carte courante (jalon 12, T20) : &"grass" (hautes
+## herbes), &"rubble" (gravats), &"" (aucun : sol calme, chemin, hors carte, sans carte).
+func terrain_at(cell: Vector2i) -> StringName:
+	var grid := _map.get_grid() if _map != null else null
+	if grid == null:
+		return &""
+	if grid.is_tall_grass(cell):
+		return _GRASS_TERRAIN
+	if grid.is_rubble(cell):
+		return _RUBBLE_TERRAIN
+	return &""
+
+
 ## Lance la rencontre [param encounter] sans tirage (scénario de capture, départ de débogage,
 ## tests). Faux si une rencontre ou un combat tourne déjà, ou sans carte.
 func start_encounter(encounter: WildEncounter) -> bool:
@@ -91,7 +116,7 @@ func start_encounter(encounter: WildEncounter) -> bool:
 	if _battles != null and _battles.is_running():
 		return false
 	var cell := _player.get_cell() if is_instance_valid(_player) else Vector2i.ZERO
-	_run(encounter, _origin_cell(cell))
+	_run(encounter, _origin_cell(cell), terrain_at(cell))
 	return true
 
 
@@ -100,7 +125,8 @@ func start_encounter(encounter: WildEncounter) -> bool:
 func _on_player_moved(cell: Vector2i) -> void:
 	if not _can_encounter(cell):
 		return
-	var table := _library.get_table(_map.map_id, _GRASS_TERRAIN)
+	var terrain := terrain_at(cell)
+	var table := _library.get_table(_map.map_id, terrain)
 	# Un seul tirage de taux par pas, au taux effectif de la série (§3.6, montée du taux).
 	var encounter := table.roll(_state.rng as GameRng, _quiet_steps)
 	if encounter == null:
@@ -108,11 +134,12 @@ func _on_player_moved(cell: Vector2i) -> void:
 		return
 	# Verrou synchrone, dans le `moved` : le pas suivant ne part pas (comme les déclencheurs
 	# du 3B). Le reste de la séquence est une coroutine lancée sans l'attendre.
-	_run(encounter, _origin_cell(cell))
+	_run(encounter, _origin_cell(cell), terrain)
 
 
-## Gardes : rien ne se passe hors herbe, sans table, pendant une scène / transition / combat /
-## rencontre, sur un pas non libre (dialogue, scène scriptée), ni sans Pokémon valide.
+## Gardes : rien ne se passe hors herbe ou gravats, sans table du terrain, pendant une scène /
+## transition / combat / rencontre, sur un pas non libre (dialogue, scène scriptée), ni sans
+## Pokémon valide.
 func _can_encounter(cell: Vector2i) -> bool:
 	if not enabled or _running or _map == null or _library == null or _state == null:
 		return false
@@ -128,16 +155,17 @@ func _can_encounter(cell: Vector2i) -> bool:
 	var party := _state.party as Party
 	if party == null or not party.has_able():
 		return false
-	var grid := _map.get_grid()
-	if grid == null or not grid.is_tall_grass(cell):
+	var terrain := terrain_at(cell)
+	if terrain.is_empty():
 		return false
-	return _library.has_table(_map.map_id, _GRASS_TERRAIN)
+	return _library.has_table(_map.map_id, terrain)
 
 
 ## Case de l'herbe qui bouge (§3.6) : celle devant le joueur si elle est en hautes herbes,
-## sinon la sienne ([param cell], sa case d'arrivée).
+## sinon la sienne ([param cell], sa case d'arrivée). Gravats (jalon 12) : toujours la sienne
+## (l'éboulis part sous ses pieds).
 func _origin_cell(cell: Vector2i) -> Vector2i:
-	if not is_instance_valid(_player):
+	if not is_instance_valid(_player) or terrain_at(cell) == _RUBBLE_TERRAIN:
 		return cell
 	var front := cell + _player.get_facing()
 	var grid := _map.get_grid() if _map != null else null
@@ -150,7 +178,8 @@ func _origin_cell(cell: Vector2i) -> Vector2i:
 
 ## Coroutine : verrou, marquage Pokédex, froissement, transition, puis contrôle rendu. Le
 ## verrou est posé [b]avant tout `await`[/b] (synchrone dans le `moved`).
-func _run(encounter: WildEncounter, origin: Vector2i) -> void:
+func _run(encounter: WildEncounter, origin: Vector2i,
+		terrain: StringName = _GRASS_TERRAIN) -> void:
 	_running = true
 	_quiet_steps = 0
 	if is_instance_valid(_player):
@@ -162,7 +191,10 @@ func _run(encounter: WildEncounter, origin: Vector2i) -> void:
 		# Première espèce sauvage rencontrée en combat (jalon 7 §3.1) : celle que Chen cite.
 		_state.record_wild_encounter(encounter.species, _map.map_id)
 	encounter_started.emit(encounter.species, encounter.level)
-	await _play_grass_beat(origin, encounter.species)
+	if terrain == _RUBBLE_TERRAIN:
+		await _play_rubble_beat(origin, encounter.species)
+	else:
+		await _play_grass_beat(origin, encounter.species)
 	# Les objets connus du combat : sans eux, aucune Ball n'est légale (jalon 5D).
 	var items := _battles.get_item_library() if _battles != null else null
 	var request := BattleRequest.wild(encounter, _data, _state.rng as GameRng, origin, items)
@@ -215,3 +247,17 @@ func _play_grass_beat(origin: Vector2i, species: StringName) -> void:
 		await rustle.rustle(speed)
 	else:
 		cry_requested.emit(species)
+
+
+## Gravats (jalon 12, T20 ; dossier 15 §6, ≤ 2 s) : petit éboulis sous les pieds (cailloux qui
+## roulent, poussière), point d'accroche du son, puis le héros se retourne (demi-tour) ; le combat
+## suit. Pas d'herbe agitée.
+func _play_rubble_beat(origin: Vector2i, species: StringName) -> void:
+	var speed := _battles.speed_scale if _battles != null else 1.0
+	rubble_sound_requested.emit()
+	cry_requested.emit(species)
+	if _map != null and is_inside_tree():
+		var burst := RubbleBurst.spawn(_map, Grid.cell_to_world(origin))
+		await burst.burst(speed)
+	if is_instance_valid(_player):
+		_player.face(-_player.get_facing())

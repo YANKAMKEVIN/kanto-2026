@@ -1,5 +1,16 @@
 [
 	{
+		"id": "go_cerulean",
+		"text": "continuer vers Azuria.",
+		"if": ["route_4_reached"]
+	},
+	{
+		"id": "cross_mt_moon",
+		"text": "traverser le Mont Sélénite.",
+		"if": ["route_3_entered"],
+		"unless": ["route_4_reached"]
+	},
+	{
 		"id": "go_route_3",
 		"text": "continuer vers la Route 3.",
 		"if": ["badge_boulder"]

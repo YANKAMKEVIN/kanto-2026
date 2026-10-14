@@ -32,6 +32,19 @@ var focused: bool = false
 var bide_stage: int = 0
 var bide_slot: int = -1
 var bide_stock: int = 0
+## Piège (jalon 12, Ligotage, Étreinte, Danse Flamme) : fins de tour encore à subir (0 = libre),
+## capacité qui le retient (phrases par capacité), part des PV max perdue par tour, et le
+## [Battler] lanceur : le piège finit quand il quitte le terrain. Perdu au changement, au K.O. et
+## à la fin du combat (jamais sauvegardé).
+var trap_turns: int = 0
+var trap_move: StringName = &""
+var trap_fraction: float = 0.0
+var trap_source: Battler = null
+## Entrave (jalon 12) : emplacement de la dernière capacité lancée (posé à MOVE_USED ; −1 = aucune
+## encore, ou Lutte), emplacement bloqué (−1 = aucun) et fins de tour restantes.
+var last_move_slot: int = -1
+var disabled_slot: int = -1
+var disabled_turns: int = 0
 var _stages: Dictionary[StringName, int] = {}
 
 @warning_ignore_start("integer_division")
@@ -104,11 +117,12 @@ func has_any_type(type_ids: Array[StringName]) -> bool:
 	return false
 
 
-## Indices des capacités qui ont encore des PP (vide = Lutte).
+## Indices des capacités qui ont encore des PP, sauf celle que bloque une Entrave (jalon 12) ;
+## vide = Lutte.
 func usable_moves() -> Array[int]:
 	var result: Array[int] = []
 	for i: int in pokemon.moves.size():
-		if pokemon.moves[i].pp > 0:
+		if pokemon.moves[i].pp > 0 and i != disabled_slot:
 			result.append(i)
 	return result
 
@@ -122,3 +136,27 @@ static func stage_multiplier(stage: int) -> float:
 static func accuracy_multiplier(stage: int) -> float:
 	var net := clampi(stage, STAGE_MIN, STAGE_MAX)
 	return float(maxi(3, 3 + net)) / float(maxi(3, 3 - net))
+
+
+## Vrai si le Pokémon est piégé (Ligotage…) : ni fuite ni changement (jalon 12).
+func is_trapped() -> bool:
+	return trap_turns > 0
+
+
+## Libère le Pokémon de son piège.
+func clear_trap() -> void:
+	trap_turns = 0
+	trap_move = &""
+	trap_fraction = 0.0
+	trap_source = null
+
+
+## Vrai si une capacité du Pokémon est bloquée par une Entrave (jalon 12).
+func has_disabled_move() -> bool:
+	return disabled_slot >= 0
+
+
+## Lève l'Entrave.
+func clear_disable() -> void:
+	disabled_slot = -1
+	disabled_turns = 0

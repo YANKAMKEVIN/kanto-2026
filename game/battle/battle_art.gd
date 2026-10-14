@@ -7,7 +7,8 @@ extends RefCounted
 ##   Pokédex), resserré sur son cadre utile par [PokedexArt] (chargement partagé avec le
 ##   Pokédex), filtre linéaire ; à défaut, le sprite provisoire de face.
 ## - Ton Pokémon : sprite provisoire **de dos** (pixel art 64 px, NEAREST) jusqu'au premier lot
-##   de dos peints (J11).
+##   de dos peints (J11) ; à défaut (aucune espèce des données ne doit en manquer :
+##   `test_battle_art.gd`), l'artwork officiel : jamais de côté vide.
 ## - Taille réelle (m) : données du Pokédex (`data/pokedex/kanto.json`) ; inconnue : la taille de
 ##   référence ([constant BattleLayout.REFERENCE_HEIGHT_M]).
 ## Les données d'espèces viennent de [method setup] (Boot) ; sans appel, elles sont lues une
@@ -59,19 +60,32 @@ func height_m(species: StringName) -> float:
 ## linéaire ; sinon pixel art provisoire, NEAREST, échelle entière) }.
 func image(species: StringName, back: bool) -> Dictionary:
 	if not back:
-		var number := dex_number(species)
-		var texture := PokedexArt.portrait(number) if PokedexArt.has_portrait(number) else null
-		if texture != null:
-			var margin := float(PokedexArt.THUMB_CROP_MARGIN) \
-				if PokedexArt.portrait_crop(number).has_area() else 0.0
-			var size := texture.get_size()
-			return {"texture": texture, "official": true,
-				"box": Rect2(Vector2.ONE * margin, size - Vector2.ONE * margin * 2.0)}
+		var official := _official(species)
+		if not official.is_empty():
+			return official
 	var path := placeholder_path(species, back)
 	if species.is_empty() or not ResourceLoader.exists(path):
+		# Repli (correctif QA 12A) : un dos manquant ne laisse jamais le côté du joueur vide ;
+		# l'artwork officiel le remplace (le test des données exige pourtant chaque dos).
+		var fallback := _official(species) if back else {}
+		if not fallback.is_empty():
+			return fallback
 		return {"texture": null, "official": false, "box": Rect2(Vector2.ZERO, BattleLayout.NATIVE)}
 	var sprite := load(path) as Texture2D
 	return {"texture": sprite, "official": false, "box": visible_box(sprite, path)}
+
+
+## Artwork officiel de [param species], resserré sur son cadre utile ; vide sans artwork.
+func _official(species: StringName) -> Dictionary:
+	var number := dex_number(species)
+	var texture := PokedexArt.portrait(number) if PokedexArt.has_portrait(number) else null
+	if texture == null:
+		return {}
+	var margin := float(PokedexArt.THUMB_CROP_MARGIN) \
+		if PokedexArt.portrait_crop(number).has_area() else 0.0
+	var size := texture.get_size()
+	return {"texture": texture, "official": true,
+		"box": Rect2(Vector2.ONE * margin, size - Vector2.ONE * margin * 2.0)}
 
 
 ## Boîte de l'alpha de [param texture] (lue une fois par [param key]) ; toute l'image si

@@ -1,0 +1,27 @@
+{
+	"map": "route_4", "spawn": "from_mt_moon", "facing": "right",
+	"flags": [
+		"mom_greeted", "rival_met", "oak_met", "oak_lab_reunion", "starter_offered",
+		"starter_chosen", "taken_charmander", "taken_squirtle", "rival_lab_won",
+		"rival_challenged", "rival_battle_done", "rival_left_lab", "viridian_arrived",
+		"got_oak_parcel", "pokedex_activated", "poison_unlocked", "beaten_forest_scout_theo",
+		"pewter_arrived", "beaten_pewter_gym_liam", "brock_met", "badge_boulder",
+		"route_3_guard_cleared", "route_3_entered", "beaten_route_3_hugo", "beaten_route_3_lea",
+		"got_mt_moon_1f_item_1", "got_mt_moon_b1f_item_1", "got_mt_moon_b1f_item_2",
+		"beaten_mt_moon_rocket_1", "beaten_mt_moon_rocket_2", "beaten_mt_moon_rocket_3",
+		"beaten_mt_moon_researcher", "mt_moon_fossil_chosen", "mt_moon_got_dome_fossil"
+	],
+	"party": [
+		{ "species": "charmeleon", "level": 21 },
+		{ "species": "jigglypuff", "level": 17 },
+		{ "species": "zubat", "level": 16 },
+		{ "species": "pidgeotto", "level": 19 },
+		{ "species": "geodude", "level": 15 }
+	],
+	"companion": 0,
+	"bag": {
+		"poke_ball": 8, "potion": 3, "antidote": 2, "paralyze_heal": 1, "awakening": 1,
+		"escape_rope": 1, "dome_fossil": 1
+	},
+	"money": 4900
+}

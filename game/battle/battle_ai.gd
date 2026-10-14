@@ -17,6 +17,9 @@ extends RefCounted
 ##    type : à égalité avec Charge, derrière Tornade d'un Roucool).
 ## 4. Égalité entre les meilleures : un tirage pick_index parmi elles (aucun tirage s'il n'y en
 ##    a qu'une). Toutes inutiles : tirage parmi toutes. Sans PP : Lutte, aucun tirage.
+## Jalon 12 (`jalon-12.md` §2.10) : Repos jamais à PV pleins (ni endormi), Entrave jamais si elle
+## échouerait, Ligotage (piège) jamais sur une cible déjà piégée, Destruction et Explosion
+## seulement à ¼ de ses PV ou moins ([constant SELF_KO_HP_RATIO]) : note nulle sinon.
 ## Sans [PokemonData] ([param data] nul dans [method choose]), « smart » se comporte comme
 ## « random ».
 
@@ -34,6 +37,8 @@ const LOW_HP_RATIO: float = 1.0 / 3.0
 const STATUS_SCORE: float = 40.0
 ## Bonus de type (STAB).
 const STAB: float = 1.5
+## Jalon 12 : Destruction et Explosion seulement à ce quart de ses PV ou moins [D].
+const SELF_KO_HP_RATIO: float = 0.25
 
 var kind: StringName = RANDOM
 ## « smart » : capacités de statut choisies, par Pokémon (identifiant d'instance) puis capacité.
@@ -83,6 +88,8 @@ static func score_move(move: MoveData, own: Battler, foe: Battler, chart: TypeCh
 		return 0.0
 	var accuracy := 1.0 if move.never_misses() else move.accuracy / 100.0
 	if move.is_damaging():
+		if not damaging_is_sensible(move, own, foe):
+			return 0.0
 		var effectiveness := effectiveness_of(move, foe, chart)
 		var stab := STAB if not move.typeless and own.types.has(move.type) else 1.0
 		return move.power * stab * effectiveness * accuracy
@@ -131,6 +138,14 @@ static func status_has_effect(move: MoveData, own: Battler, foe: Battler) -> boo
 					return true
 			MoveEffect.Kind.FIXED_DAMAGE:
 				return true
+			MoveEffect.Kind.DISABLE:
+				if foe.last_move_slot >= 0 and not foe.has_disabled_move() \
+						and not foe.is_biding():
+					return true
+			MoveEffect.Kind.REST:
+				if own.pokemon.hp < own.pokemon.max_hp() \
+						and own.pokemon.status != StatusRules.SLEEP:
+					return true
 	return false
 
 
@@ -168,3 +183,14 @@ func _uses_of(pokemon: Pokemon) -> Dictionary:
 	if not _status_uses.has(key):
 		_status_uses[key] = {}
 	return _status_uses[key]
+
+
+## Jalon 12 : faux si l'attaque [param move] serait un mauvais choix malgré ses dégâts — piège
+## sur une cible déjà piégée, Destruction / Explosion au-dessus d'¼ des PV de [param own].
+static func damaging_is_sensible(move: MoveData, own: Battler, foe: Battler) -> bool:
+	if move.effect_of(MoveEffect.Kind.TRAP) != null and foe.is_trapped():
+		return false
+	if move.effect_of(MoveEffect.Kind.SELF_KO) != null:
+		var max_hp := own.pokemon.max_hp()
+		return max_hp > 0 and float(own.pokemon.hp) <= max_hp * SELF_KO_HP_RATIO
+	return true

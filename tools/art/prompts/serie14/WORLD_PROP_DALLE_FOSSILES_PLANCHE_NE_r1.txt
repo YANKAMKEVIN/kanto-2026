@@ -1,0 +1,24 @@
+WORLD_PROP_DALLE_FOSSILES_PLANCHE — NOUVELLE image : une planche d'éléments de jeu, pas une scène.
+Images jointes : REF_MS_DALLE = forme, matériaux et couleurs, extraits des vues d'ensemble validées de la Route 3 et du Mont Sélénite (minuscules : n'en copie pas le rendu) ; UI_OBJETS_J12_PLANCHE_r1 et WORLD_PROP_ROCHER_01_NE_r1 = ancres de style (rendu peint, contour coloré, finesse, angle de vue, lumière neutre) : respecte-les exactement.
+
+ADN VISUEL KANTO 2026 — v1 (à respecter strictement)
+- Rendu : illustration 2D peinte numériquement, dans l'esprit d'un RPG Pokémon moderne au rendu « HD-2D peint » : formes simples, lisibles et arrondies, détails fins mais ordonnés. Ni pixel art, ni 3D, ni photo, ni aquarelle, ni cartoon en aplats.
+- Perspective : vue de dessus de trois quarts, en projection oblique frontale, sans aucun point de fuite. Les verticales restent strictement verticales et les horizontales strictement horizontales. On voit le dessus des objets et leur face avant (côté sud), jamais leurs côtés. Pas de vue isométrique, pas de rotation. Le sol est vu à plat, comme sur un plan.
+- Proportions : légèrement stylisées, trapues et rassurantes. Échelle commune : 1 case de jeu = 1 mètre environ ; un adulte mesure 1,33 case ; une porte simple mesure 1 case de large et 1,5 case de haut.
+- Contours : aucun trait noir. Contour fin et doux, d'une teinte plus sombre et plus saturée que la couleur locale, qui s'efface presque du côté éclairé.
+- Volumes : trois valeurs nettes par matériau (lumière, ombre propre, reflet ambiant), transitions douces, petits accents de lumière sur les arêtes.
+- Matériaux : reconnaissables (bois, pierre, tuile, feuillage, verre) à leur forme et à quelques touches de texture, jamais à une texture photographique.
+- Couleurs : chaudes, lumineuses et saturées sans être fluo. Verts allant du vert-jaune ensoleillé au vert sapin. Ombres colorées tirant vers le bleu-vert ou le violet froid, jamais grises ni noires. Couleurs franches pour les toits.
+- Texture : pinceau net et propre, légère granularité picturale ; pas de bruit, pas de flou, pas de netteté artificielle.
+- Lumière : une seule source, le soleil, en haut à gauche de l'image (la fiche précise la variante).
+- Ombres : aucune ombre portée au sol (le jeu l'ajoute lui-même). Les ombres propres et internes (sous le feuillage, sous un avant-toit) sont peintes.
+- Isolement : un seul objet, entier, centré, sur fond transparent ; rien autour : ni sol, ni herbe, ni décor, ni personnage.
+- Interdits partout : texte, lettres, chiffres, logo (sauf l'emblème demandé), signature, filigrane, cadre, personnage, Pokémon, ombre portée, sol sous l'objet, flou de profondeur, vignettage.
+
+LUMIÈRE NE (neutre) : lumière de milieu de journée, diffuse et blanche, venant légèrement du haut à gauche ; volumes conservés par un ombrage doux ; aucune teinte dorée ou orangée, aucun liseré chaud ; ombres propres neutres, légèrement bleutées.
+
+EXCEPTION à la règle « Isolement » : plusieurs éléments séparés sur une même planche, chacun entier dans sa cellule, sans cadre ni séparation.
+PLANCHE de 3 éléments de la chambre des fossiles (B2F), dans une image 1536 × 1024 : grille invisible de 3 colonnes (cellules de 512 × 1024), un élément par colonne, centré, la base des trois sur une même ligne horizontale à 60 px du bas, à une échelle COMMUNE : 1 case = 150 px.
+1 (à gauche) : la DALLE des fossiles, 3 cases de large × 1 de profondeur, environ 0,4 case de haut : une dalle de pierre claire plate et basse, bord taillé, surface lisse un peu poussiéreuse, deux pinceaux de fouilleur posés au bout droit ; RIEN posé dessus au milieu (les fossiles sont des objets séparés). 2 (au milieu) : le FOSSILE DÔME posé, environ 0,6 case de large : EXACTEMENT le même objet que l'icône 3 de la planche jointe UI_OBJETS_J12_PLANCHE (fidèle au Fossile Dôme officiel de Pokémon Rouge/Bleu), vu de trois quarts depuis le dessus comme le jeu. 3 (à droite) : le FOSSILE NAUTILE posé, environ 0,6 case de large : EXACTEMENT le même objet que l'icône 4 de la planche jointe (fidèle au Fossile Nautile officiel), même vue. Les fossiles peints sur la vue jointe ne font PAS foi (formes inventées) : suis la planche d'icônes.
+Fond avec une vraie transparence (canal alpha), aucun sol, aucune ombre portée.
+Interdits de la série : texte, lettres, chiffres, logo (sauf l'emblème demandé), animaux réels ou faune non-Pokémon (oiseaux, chauves-souris réelles, insectes, araignées), Pikachu et tout Pokémon non demandé, personnage qui ressemble au héros (casquette rouge, t-shirt blanc, sac à dos jaune), squelette, os, crâne, toile d'araignée, élément effrayant.

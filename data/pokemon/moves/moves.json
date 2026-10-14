@@ -91,7 +91,7 @@
 	"fire_spin": {
 		"name": "Danse Flamme", "type": "fire", "category": "special",
 		"power": 35, "accuracy": 85, "pp": 15,
-		"pending_effects": ["trap"],
+		"effects": [{ "kind": "trap", "turns": [4, 5], "fraction": 0.125, "messages": "fire_spin" }],
 		"description": "Enferme la cible dans un tourbillon de feu pendant quelques tours."
 	},
 	"rage": {
@@ -330,8 +330,8 @@
 	},
 	"self_destruct": {
 		"name": "Destruction", "type": "normal", "category": "physical",
-		"power": 200, "accuracy": 100, "pp": 5, "pending_effects": ["self_ko"],
-		"description": "Le lanceur explose et blesse gravement la cible. Il tombe K.O. ensuite."
+		"power": 200, "accuracy": 100, "pp": 5, "effects": [{ "kind": "self_ko" }],
+		"description": "Inflige de gros dégâts. Le lanceur est mis K.O."
 	},
 	"earthquake": {
 		"name": "Séisme", "type": "ground", "category": "physical",
@@ -340,12 +340,13 @@
 	},
 	"explosion": {
 		"name": "Explosion", "type": "normal", "category": "physical",
-		"power": 250, "accuracy": 100, "pp": 5, "pending_effects": ["self_ko"],
+		"power": 250, "accuracy": 100, "pp": 5, "effects": [{ "kind": "self_ko" }],
 		"description": "Le lanceur explose dans un souffle terrible. Il tombe K.O. ensuite."
 	},
 	"bind": {
 		"name": "Étreinte", "type": "normal", "category": "physical",
-		"power": 15, "accuracy": 85, "pp": 20, "pending_effects": ["trap"],
+		"power": 15, "accuracy": 85, "pp": 20,
+		"effects": [{ "kind": "trap", "turns": [4, 5], "fraction": 0.125, "messages": "bind" }],
 		"description": "Ligote la cible de son long corps et la serre pendant quelques tours."
 	},
 	"slam": {

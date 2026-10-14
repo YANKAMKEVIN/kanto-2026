@@ -18,6 +18,10 @@ signal map_entered(map: GameMap)
 ## joueur est encore sur le bord de la carte. Ni [signal map_changed] ni [signal map_entered]
 ## ne suivent : aucune carte ne change.
 signal coming_soon_shown(label: String)
+## Fin de l'écran « à venir » : joueur replacé sur la carte courante, rideau levé, joueur libre.
+## Ferme la transition ouverte par [signal transition_started] (aucun [signal map_entered] ne
+## suit : ceux qui se cachent au début d'une transition réapparaissent ici, comme le compagnon).
+signal coming_soon_finished(map: GameMap)
 
 ## Images pendant lesquelles un préchargement devenu inutile est encore retenu ([member _retired]).
 const RETIRE_FRAMES: int = 2
@@ -207,6 +211,7 @@ func show_coming_soon(label: String, return_spawn: StringName,
 			return
 	_player.set_input_enabled(true)
 	_busy = false
+	coming_soon_finished.emit(_current_map)
 
 
 func is_transitioning() -> bool:

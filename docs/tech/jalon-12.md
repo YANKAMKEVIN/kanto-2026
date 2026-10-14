@@ -1,5 +1,7 @@
 # Jalon 12 — Route 3 et Mont Sélénite
 
+> **TERMINÉ — validé par Kevin le 2026-10-14 (12.0, 12A, 12B, 12C, 12D) et fusionné dans `main`.** Décisions de clôture : équilibrage T26 gardé, fossiles visibles dès l'arrivée, planches T3 et décors T4 confirmés.
+
 > Objectif jouable sur le téléphone : **le premier donjon**. Depuis la sortie est d'Argenta (le garde
 > du J10 laisse passer depuis le badge), la **Route 3** : prairie de la sortie, deux chemins de
 > Dresseurs qui se rejoignent, le pied de la montagne, six Dresseurs (deux inévitables), Rondoudou
@@ -28,6 +30,15 @@ générées) avec `docs/tech/jalon-11.md`, `jalon-11-compagnon.md` et `dossier-1
 cette branche. **Chaque tâche d'architecture commence par aligner ce plan sur le code du moment** ;
 la première tâche après le J11 (T11) le réaligne sur le J11 réellement fusionné.
 
+> **Réaligné au T11 (2026-10-13)** sur `jalon-12` à `1a3cad5` = `main` à `267fcf1` (**J11 terminé**,
+> sauvegarde v6) + T1–T10 du J12. Écarts constatés dans le code et décisions techniques : **§0.4** ;
+> règles de branche et de conflit (J13, J14, J15 avancent en parallèle, en aval du J12) : **§1.2**.
+> Aucune décision de game design n'a changé.
+
+> **Clôture (T29, 2026-10-14)** : §10 — critères du §4 relus un par un, points ouverts, passation
+> aux J13–J15, décisions à faire valider par Kevin. **Code du J12 terminé**, en attente de la
+> validation de Kevin (12B, 12C, 12D) et de la fusion dans `main`.
+
 Références : `CLAUDE.md` (règles 1 à 10), `docs/design/dossier-15-route-3-mont-selenite.md`,
 `dossier-14-systemes-j11.md` (statuts, CT, évolution courte, compagnon), `dossier-04` (intro de
 rencontre ≤ 2 s), `dossier-05-combat.md`, `dossier-08-menu-dresseur.md` (Sac, Grands moments),
@@ -43,7 +54,11 @@ rencontre ≤ 2 s), `dossier-05-combat.md`, `dossier-08-menu-dresseur.md` (Sac, 
 
 ### 0.1 Ce qui existe pour chaque besoin du dossier (`main` à `f73acae`) et ce que le J11 apporte
 
-| Besoin (dossier 15) | Existant sur `main` (fichiers, fonctions) | Apporté par le J11 (non fusionné) | Manque |
+> T11 : la colonne « J11 » a été écrite d'après le plan du J11 ; ce que le J11 a **réellement** livré
+> (noms, emplacements, écarts) est au §0.3 (colonne « Réalité ») et au §0.4. Là où les deux
+> diffèrent, **le §0.4 fait foi**.
+
+| Besoin (dossier 15) | Existant sur `main` (fichiers, fonctions) | Apporté par le J11 (fusionné, voir §0.4) | Manque |
 |---|---|---|---|
 | Grilles, contrôle | `tools/plans/route_3.txt`, `mont_selenite_1f/b1f/b2f.txt`, `route_4_sas.txt` (validés) ; `plan_check_route_3.py`, `plan_check_mont_selenite.py` ; lecteur `tests/helpers/plan_grid.gd` (ligne `PRATICABLES`, attributs `cle=valeur`, groupes « ; ») | — | deux conventions d'objet caché à unifier (§1.3) |
 | Cartes extérieures peintes | `tools/pewter_map_kit.gd` (`_kind_of`, `_paint_logic` : `Ground` invisible = source logique, masque du sol, forêt serrée `DenseForest`, paroi en modules `relief_paroi_01..04`, hautes herbes, décalcomanies) ; `PaintedGround` (**trois textures fixes** : herbe, pavés, chemin) | — | `build_route_3.gd`, `build_route_4.gd` ; texture « sol rocheux » (`o`) |
@@ -85,8 +100,8 @@ rencontre ≤ 2 s), `dossier-05-combat.md`, `dossier-08-menu-dresseur.md` (Sac, 
 6. **« Catégorie du Sac OBJETS »** (dossier §10, [D]) : elle n'existe pas (SOINS, CAPTURE, COMBAT, AVENTURE, OBJETS CLÉS ; + CT au J11). Défaut : **AVENTURE** (« en exploration seulement ») pour la Pierre Lune et la Corde Sortie.
 7. **Choix OUI / NON du fossile** : `DialogueChoice.confirm_action` n'accepte que `heal`, `center_heal`, `open_shop`, `open_storage` : il faut un choix qui **lance une scène** (§2.13).
 8. **Reprise après une défaite** (§20 : R1, R2, R3, chercheur) : rien ne mémorise qu'on a perdu contre un Dresseur ; un drapeau `lost_<id>` posé par l'issue du combat (`lose_flags` existe dans l'étape `battle`) suffit, format inchangé.
-9. **Toast « {fossil} obtenu »** (§20 n° 27) : le toast d'un objet clé est aujourd'hui « <NOM> — ajouté aux objets clés ». Le J11 introduit « CT34 — Patience obtenue » (dossier 14 §13 n° 40) : **réutiliser sa forme** (alignement T11).
-10. **Repos « dort deux tours »** : la valeur exacte du compteur dépend de la sémantique de `status_turns` du J11 (« baisse à chaque tentative, au réveil il agit dans le même tour ») ; le test fixe le résultat (manque exactement 2 tours, agit au 3e), pas le nombre.
+9. **Toast « {fossil} obtenu »** (§20 n° 27) : le toast d'un objet clé est aujourd'hui « <NOM> — ajouté aux objets clés ». Le J11 introduit « CT34 — Patience obtenue » (dossier 14 §13 n° 40) : **réutiliser sa forme** (alignement T11). **T11** : `ItemData.added_text` ne donne « obtenu[e] » qu'aux CT → champ de donnée `obtained` (§0.4 n° 7, §2.13).
+10. **Repos « dort deux tours »** : la valeur exacte du compteur dépend de la sémantique de `status_turns` du J11 (« baisse à chaque tentative, au réveil il agit dans le même tour ») ; le test fixe le résultat (manque exactement 2 tours, agit au 3e), pas le nombre. **T11** : sémantique confirmée dans `StatusRules.check_act` → `status_turns = 2` (§0.4 n° 1).
 11. **Ligotage / Étreinte / Danse Flamme** : les messages validés (§20 n° 46) nomment le Ligotage (« souffre **du** Ligotage ») ; les deux autres ont besoin de leurs propres textes (élision, genre) → messages **par capacité** en données, brouillons à l'annexe A (non atteignables au J12 : Onix n'est pas capturable, Danse Flamme arrive au Nv. 46).
 12. **Fuite et changement refusés quand ligoté** : la fuite réutilise « Impossible de fuir ! » (`flee_failed`, existant) ; le changement a besoin d'une raison sur les cartes de l'équipe (brouillon, annexe A).
 13. **Fée** : Mélofée et Mélodelfe (Fée), Rondoudou et Grodoudou (Normal/Fée), types modernes décidés au J4 : **premiers Pokémon Fée** → l'icône du type (neutre aujourd'hui) devient nécessaire (ui-mobile).
@@ -99,16 +114,168 @@ rencontre ≤ 2 s), `dossier-05-combat.md`, `dossier-08-menu-dresseur.md` (Sac, 
 
 ### 0.3 Ce que le J12 attend du J11 (et repli)
 
-| Livraison du J11 | Pour | Si elle manque ou diffère |
-|---|---|---|
-| 11.0 : v6, `status_turns` | Repos ; version écrite par le J12 | le J12 suit la version de `main` à T11 |
-| 11A : 4 statuts, confusion, `hits`, `flinch`, `can_act`, textes | toutes les espèces du J12 (Berceuse, Spore, Ultrason, Onde Folie, Regard Médusant, Torgnoles, Morsure, Para-Spore) | rien ne joue juste : **bloquant** (C-7) |
-| 11A : Anti-Para, Réveil | objets de la Route 3 et de la grotte | bloquant pour 12A |
-| 11B : catégorie CT, `teaches`, `permanent`, états du sélecteur | CT01 ; libellés COMPATIBLE / INCOMPATIBLE de la pierre | la pierre affiche ses états seule (même composant) |
-| 11B : `get_usable_moves` / `is_legal` (Patience) | Entrave (capacité exclue des choix) | ajouter le filtre au T13 |
-| 11C : évolution courte | évolution par pierre | séquence actuelle (≈ 9 s), sans ARRÊTER |
-| 11D : compagnon, `contexts`, masquage | catégorie grotte, planches C-4 | le J12 se passe du compagnon (critères 12B retirés) |
-| T18 (série 13) validée | main et gabarit des planches C-4 | planches C-4 ancrées sur les starters de la série 09 |
+| Livraison du J11 | Pour | Si elle manque ou diffère | **Réalité (T11, `main` à `267fcf1`)** |
+|---|---|---|---|
+| 11.0 : v6, `status_turns` | Repos ; version écrite par le J12 | le J12 suit la version de `main` à T11 | **livrée** : `SaveSystem.VERSION = 6` ; `Pokemon.status_turns` (sommeil seul, borné à 7 à la lecture). Repli inutile ; Repos : §0.4 n° 1 |
+| 11A : 4 statuts, confusion, `hits`, `flinch`, `can_act`, textes | toutes les espèces du J12 (Berceuse, Spore, Ultrason, Onde Folie, Regard Médusant, Torgnoles, Morsure, Para-Spore) | rien ne joue juste : **bloquant** (C-7) | **livrée** : `StatusRules.KNOWN` (poison, paralysie, sommeil, brûlure, gel), confusion `Battler.confusion_turns`, `MoveEffect.Kind` `CONFUSION HITS FLINCH CRIT_UP FIXED_DAMAGE`, `Battle._can_act`. Écart : **pas de `data/battle/status.json`** (valeurs en constantes de `status_rules.gd`, écart assumé du J11 T4) — §0.4 n° 2 |
+| 11A : Anti-Para, Réveil | objets de la Route 3 et de la grotte | bloquant pour 12A | **livrée** (+ Anti-Brûle ; Antigel prêt, pas vendu) ; stock de Jadielle et d'Argenta |
+| 11B : catégorie CT, `teaches`, `permanent`, états du sélecteur | CT01 ; libellés COMPATIBLE / INCOMPATIBLE de la pierre | la pierre affiche ses états seule (même composant) | **livrée** : `ItemData.Category.TM`, `tm_number`, `teaches`, `is_tm()`, `is_permanent()` ; `TmTeach.Check { COMPATIBLE, KNOWN, INCOMPATIBLE }` ; `PartyTargetView.show_reason` ; parcours `MenuDirector.tm_learn_requested` → Boot → `TmLearnOverlay`. Réutilisés tels quels (§2.9) |
+| 11B : `get_usable_moves` / `is_legal` (Patience) | Entrave (capacité exclue des choix) | ajouter le filtre au T13 | **livrée, autrement** : Patience sur le **`Battler`** (`bide_stage`, `bide_slot`, `bide_stock`, `is_biding()`), `Battle.get_locked_move()` ; `get_usable_moves()` délègue à **`Battler.usable_moves()`**, que lit aussi l'IA. Pas de `locked_move` sur `BattleSide` — §0.4 n° 3 |
+| 11C : évolution courte | évolution par pierre | séquence actuelle (≈ 9 s), sans ARRÊTER | **livrée** : transformation 2,5 s (≈ 4,5 s mesurées sur téléphone, gardé par Kevin), `EvolutionScreen.rush()`. Écart : **pas de `EvolutionCandidate.cancellable`** (créé au T23, §2.9) |
+| 11D : compagnon, `contexts`, masquage | catégorie grotte, planches C-4 | le J12 se passe du compagnon (critères 12B retirés) | **livrée** : `CompanionCatalog`, `CompanionRules`, `CompanionTrail`, `CompanionController`, `companions.json` (12 espèces). Écarts : contexte « grotte » **pas en données seules** ; placement à l'arrivée **possible sur un warp** — §0.4 n° 5 et 6. Critères 12B gardés |
+| T18 (série 13) validée | main et gabarit des planches C-4 | planches C-4 ancrées sur les starters de la série 09 | **partielle** : Herbizarre, Carabaffe, Papilusion validés ; Reptincel et Pikachu hors du lot (A-11). Sans effet sur le J12 (T3 fait : 11 planches) |
+| 11A T9 : carte `qa_status` | modèle de `qa_moves_j12` | — | **jamais construite** (départ `status_qa` + clé `wild` de `DebugStart`) — §0.4 n° 4, §2.22 |
+
+### 0.4 Alignement sur le J11 livré (T11, 2026-10-13) — écarts et décisions techniques
+
+Vérifié dans le code de `jalon-12` à `1a3cad5`. Chaque écart reçoit une décision **technique** (règle 4) ;
+aucune ne touche au game design.
+
+1. **Repos et le compteur de sommeil.** `StatusRules.check_act` : tant que `status_turns > 0`, il
+   baisse et le Pokémon ne fait rien (ASLEEP) ; à 0, `cure_status()` et il agit le même tour
+   (WOKE_UP). `StatusRules.apply(SLEEP, …)` **tire** 1–3 tours (`sleep_turns`). → Repos pose
+   `status = sleep` et **`status_turns = 2`** sans tirage (fonction pure nouvelle
+   `StatusRules.apply_rest(pokemon)`, en fin de fichier) : manque exactement 2 tentatives, agit à la
+   3ᵉ. Il ne passe pas par `can_inflict` (qui refuserait : ALREADY) : il soigne d'abord.
+2. **`data/battle/status.json` n'existe pas** (valeurs du J11 en constantes de `StatusRules`, comme
+   le poison du J9). → Les valeurs des effets du J12 (fraction du drain, tours du piège, d'Entrave)
+   vivent **dans les données de capacité** (`effects`), comme prévu au §2.10 ; aucun fichier de
+   statuts créé.
+3. **Volatils sur le `Battler`.** La confusion (`confusion_turns`) et Patience (`bide_*`) sont des
+   champs du `Battler`, perdus avec lui (changement, K.O., fin de combat), jamais sauvegardés. →
+   Piège et Entrave y vont aussi : `trap_turns`, `trap_move` (identifiant, pour les messages par
+   capacité), `trap_source: Battler` (fin du piège quand le lanceur quitte le terrain),
+   `last_move_slot` (−1), `disabled_slot` (−1), `disabled_turns`. **Entrave** : exclue dans
+   `Battler.usable_moves()` → `Battle.get_usable_moves()`, `is_legal()` et `BattleAI.choose` (qui lit
+   `own.active.usable_moves()`) sont couverts d'un coup ; `Battle.get_disabled_move() -> int`
+   (ou `NO_LOCK`) pour l'interface ; « échoue sur une cible en Patience » = `is_biding()`.
+   **Piège** : le changement se refuse dans `is_legal(SWITCH)` (pas dans `check_switch`, que
+   `replace` utilise après un K.O. : le remplacement forcé reste permis) ; `Battle.is_player_trapped()`
+   donne la raison aux cartes de l'équipe.
+4. **Pas de carte `qa_status`** (J11 T9 : départ `status_qa` + clé `wild` →
+   `EncounterLibrary.override_grass`). → `qa_moves_j12` garde son rôle (un Dresseur `smart` ne se
+   force pas par une clé de départ) mais prend pour **modèle la carte de QA du J13**,
+   `qa_switch_j13` (branche `j13-t14` à `3d58fe6` : `tools/build_qa_switch_j13.gd`, données
+   `data/{npcs,trainers,dialogues}/qa_*.json`, `MapCatalog.QA_PREFIX` / `is_qa_map`, exception
+   datée dans `test_map_catalog.test_no_qa_map_is_shipped`). **Sans gravats** : les gravats se
+   valident en 12B sur le vrai 1F (départ `mt_moon_1f` ; la clé `wild` accepte un `terrain`, T20).
+5. **Contexte « grotte » du compagnon : pas « données seules ».** `CompanionCatalog.CONTEXTS =
+   [forest, city]` refuse un contexte inconnu et `CompanionRules.CONTEXT_LINES` associe contexte →
+   phrase dans le code. → T20 : `CONTEXTS += cave`, `CONTEXT_LINES[cave] = companion_cave` ; T21 :
+   `companions.json` (`contexts` des trois étages), `data/dialogues/companion.json`
+   (`companion_cave`, §20 n° 40), liste `PLAYED_BY_COMPANION` de `test_dialogue_data`.
+6. **Placement du compagnon à l'arrivée.** `CompanionTrail.place_after_arrival(cell, facing,
+   is_free)` reçoit de `CompanionController` (l. 290) `grid.is_free(c)` ; une case de warp
+   `STEP_ON` est libre → il peut être posé **sur l'échelle**. → T20 : le Callable du contrôleur
+   ajoute `_map.get_warps().get_at(c).is_empty()` (aucun changement de `CompanionTrail`, qui reste
+   pur) ; sinon il apparaît au premier pas (règle du J11).
+7. **Toast d'un objet clé.** `ItemData.added_text` : « obtenu[e] » pour les CT seulement, « ajouté[e]
+   aux objets clés » pour un objet clé. → Champ de donnée booléen **`obtained`** (facultatif, en fin
+   des champs d'`ItemData`, lu par `ItemLibrary`) : vrai → toast « <nom> » / « obtenu[e] » comme une
+   CT. Les deux fossiles l'ont (§20 n° 27) ; le toast des CT ne change pas.
+8. **Sonicboom.** `MoveEffect.FIXED_MODES = [half_hp, level]`. La description validée (annexe A.2 :
+   « inflige toujours les mêmes dégâts », **sans** la mention « Sans effet ») suppose l'effet → mode
+   **`value`** + clé `amount` (20), en fin de liste (T13) ; T12 écrit d'abord la capacité en
+   `pending_effects: ["fixed_value"]`, T13 l'active.
+9. **États du sélecteur.** `TmTeach.Check` a trois états (COMPATIBLE, KNOWN = « DÉJÀ CONNUE »,
+   INCOMPATIBLE) et `PartyTargetView.show_reason` les affiche tous. → La pierre a son propre
+   `StoneUse.Check { COMPATIBLE, INCOMPATIBLE }` (jamais « déjà connue ») et réutilise
+   `show_reason` et les libellés de `BagQuery` (§2.9).
+10. **Évolution hors combat.** `EvolutionDirector` appartient à Boot (`boot.gd` l. 235–247, écran
+    `EvolutionScreen` partagé), `play(candidates, party)`, `handle_back()`, signaux
+    `evolution_started(party_index, into)` et `evolution_finished(party_index, into, cancelled)`.
+    ARRÊTER vit dans `EvolutionScreen.transform()` d'après l'`EvolutionView`. → `cancellable` est
+    recopié du candidat dans la vue ; `play_item` = `play([candidate], party)` d'un candidat non
+    annulable + `item_id` ; **c'est Boot**, pas le `MenuDirector` (le menu est déjà fermé), qui
+    retire la pierre dans `evolution_applied` (§2.9). Modèle du parcours : `tm_learn_requested`.
+11. **Noms réels** (lus au T11) : `BattleEvent.Kind` finit par `BIDE_BROKEN` ; `DRAINED` existe et
+    désigne **Vampigraine** → les noms nouveaux du §2.10 (`DRAINED_HP`…) restent distincts ;
+    clés de messages existantes réutilisées : `move_failed` (« Mais ça échoue ! »), `flee_failed`
+    (« Impossible de fuir ! »), `fainted` ; `hp_restored` (« récupère {amount} PV. ») **n'est pas**
+    le texte du drain (§20 n° 46) → clé nouvelle. `DialogueRunner.cutscene_requested` **existe
+    déjà** (variantes `cutscene`) : `confirm_cutscene` le réutilise. `CutsceneStep.Kind` finit par
+    `BADGE` ; l'étape `badge` (`BadgeMoment.TYPE`) est le modèle de l'étape `moment` ;
+    `GameState.record_moment(type, map, details)` existe. `NpcRoster.TRAINER_KEYS = [id, sight,
+    before, defeated]`. `TrainerEncounter.build(npc_id, spec, distance)` ne voit pas les drapeaux
+    → la réplique de reprise passe par les **conditions d'étape** existantes (§2.11).
+    `EncounterDirector._GRASS_TERRAIN`, `_can_encounter`, `EncounterTable.TERRAINS`,
+    `EncounterLibrary.override_grass` sont dans `game/pokemon/encounters/`. `BagQuery` est dans
+    `game/systems/menu/`. `LightGlow.set_reduce_motion` n'est **pas** branché
+    (`Boot._apply_settings`, l. 1422) → T20.
+12. **Points ouverts hérités** (inventaire du J11 T22) qui touchent le J12 : mémoire des textures
+    déjà à 118–135 Mo sur la Route 1 et en combat (S21) ; Forêt de Jade à 48–49 fps en combat de
+    Dresseur (S21) ; `test_rival_route22` instable sous charge. → mesures du J12 **relevées avec
+    une référence J11 de la même session et du même téléphone** (§2.21) ; l'instabilité connue
+    n'est pas une régression du J12 (relance seule, comme au T8).
+
+13. **Forme de `leave` (T17, 2026-10-13).** Le §2.11 disait « liste de cases (chemin relatif, 0 à
+    4 pas) ». Un chemin en **directions** depuis la case où le Dresseur s'arrête ne permet pas à R3
+    de « rentrer dans sa niche » : le nombre de pas de retour dépend de la distance à laquelle il a
+    vu le joueur. → `leave` = 0 à 4 **cases relatives à sa case de départ** (`NpcSpec.cell`), une
+    étape `move` à destination (`cell`, chemin calculé par `GridWorld.find_path`) par case, puis
+    `despawn`. Nom de clé figé inchangé ; aucune autre session ne l'utilise encore (vérifié sur
+    `jalon-13/14/15`). `lost_<id>` n'est levé que pour un Dresseur qui a `rematch` (compatibilité
+    stricte : la défaite contre un Dresseur du J9–J10 ne laisse toujours aucune trace).
+
+14. **Moteur de la grotte (T20, 2026-10-13)** — décisions techniques, aucun nom figé changé :
+    - la phrase `companion_cave` et les `contexts` des trois étages (`companions.json`) sont
+      posés **au T20**, pas au T21 : `test_dialogue_data` exige une phrase pour chaque valeur de
+      `CompanionRules.CONTEXT_LINES`. Le T21 n'a plus que les espèces des planches à ajouter ;
+    - la narration « Tu utilises la Corde Sortie. » est un dialogue de données
+      (`escape_rope_used`, `data/dialogues/field_items.json`) joué par Boot
+      (`Boot.ESCAPE_ROPE_DIALOGUE`) ; le refus est un texte d'interface (`BagQuery`), comme les
+      autres raisons du Sac ;
+    - la Corde est retirée **par Boot**, dans l'image où part le fondu (jamais par le menu) :
+      aucune image stable entre les deux, donc aucun autosave « grotte sans Corde » ;
+    - un objet AVENTURE sans `field_use` n'a pas UTILISER (`BagQuery._entry`) : la Pierre Lune
+      se consulte sans bouton jusqu'au T23 ;
+    - le signal d'accroche du son est sur l'`EncounterDirector` (`rubble_sound_requested`, à côté
+      de `cry_requested`) plutôt que sur `RubbleBurst`, nœud éphémère ;
+    - la clé `wild` sépare `terrain` de la table (`DebugStart.wild` reste la table seule,
+      `DebugStart.wild_terrain` le terrain) ;
+    - « jamais posé sur un warp » (n° 6) se lit **« jamais sur un warp `STEP_ON` »** : un bord de
+      carte `PUSH` est une case ordinaire (le J11 y pose le compagnon derrière le joueur au départ
+      de la Route 1 ; `get_at(c).is_empty()` cassait `test_companion_controller`).
+15. **Moteur du T13 (2026-10-13) : lectures retenues** (règle 4, aucune n'est du game design) :
+    - **Piège** : la durée tirée (4–5) est le nombre de **pertes de fin de tour**, tour du
+      Ligotage compris ; TRAP_ENDED suit la dernière perte, dans la même fin de tour (le Pokémon
+      choisit librement au tour suivant). Le lanceur qui quitte le terrain (changement, K.O.)
+      libère sa cible **sans phrase** (`_send_out`, ou à la fin de tour si le lanceur est K.O.).
+      Phrases par capacité : clé de données `messages` (`MoveEffect.TRAP_MESSAGES = [wrap, bind,
+      fire_spin]`, en fin de liste pour les J13–J15) → modèles `trap_<famille>_started` et
+      `trap_<famille>_damaged` ; libération commune `trap_ended`.
+    - **Entrave** : le décompte de 4 fins de tour **compte celle de l'Entrave** (la capacité est
+      bloquée pendant les trois choix suivants si la cible a déjà agi ce tour-là, quatre sinon).
+      Si la cible avait **déjà choisi** la capacité dans le tour où elle est bloquée (lanceur plus
+      rapide), elle ne la lance pas : **MOVE_DISABLED** de nouveau (« {move} de {pokemon} est
+      bloquée ! », texte validé), sans PP. Lutte ne pose pas de « dernière capacité » (Entrave
+      échoue ensuite).
+    - **Destruction** : le lanceur passe à 0 PV (**SELF_KO**, sans phrase) **avant** le FAINTED
+      de la cible, pour qu'il ne reçoive pas d'XP ; puis FAINTED cible, FAINTED lanceur.
+    - **Repos** : `StatusRules.apply_rest(pokemon) -> bool` (faux = échec), constante
+      `REST_SLEEP_TURNS = 2` ; la confusion n'est pas soignée (seul le statut durable l'est).
+    - **IA `smart`** : la règle existante « aucune capacité de statut sous ⅓ des PV » s'applique
+      aussi à Repos (inchangée) — à revoir au T26 si un Dresseur l'a.
+    - **Présentation minimale** (sinon les barres de PV mentiraient jusqu'au T14) :
+      `BattleBeat.Kind.HP` (fin d'enum : la barre seule), `BattlePlayback` (DRAINED_HP → HP ;
+      RESTED → HP, STATUS_TAG ; TRAP_DAMAGED et SELF_KO → DAMAGE), `BattleDirector` (le temps HP ;
+      l'étiquette « DOR » posée par RESTED). Rien d'autre de l'interface (T14).
+16. **Interface du T14 (2026-10-13) : écarts et défauts** (règle 4) :
+    - **Fichiers** : en plus de ceux cités par la tâche, `game/battle/battle_views.gd` (la raison
+      « piégé » est calculée là où sont déjà les autres raisons, `party()` ; fonction nouvelle en
+      fin, `player_moves()`) et `battle_move_view.gd` (`blocked`, `blocked_text`, en fin).
+      **Aucun accesseur ajouté à `Battle`** (`get_disabled_move`, `is_player_trapped` suffisent).
+    - **Carte bloquée** : fond gris neutre `MOVE_CARD_BLOCKED_BG` (pas la teinte du type), liseré
+      `MOVE_CARD_BLOCKED_BORDER`, atténuation `MOVE_CARD_DISABLED` (comme une carte sans PP),
+      **cadenas** (`assets/ui/icons/battle/lock.svg`) à la place de l'icône du type, « BLOQUÉE »
+      en gras blanc à la place de la puissance ; nom, PP (blancs) et pastille du type restent ;
+      inerte au toucher, à la pression longue (pas de fiche) et au clavier.
+    - **Piégé** : les cartes envoyables portent « Impossible de changer » (ENVOYER caché, pied rouge
+      au toucher, tremblement : comportement existant des refus) ; le remplacement après un K.O.
+      n'est pas concerné. FUITE : « Impossible de fuir ! » dans le bandeau (tenue normale), aucune
+      action soumise, la grille revient ; aucune vibration de refus (défaut).
+    - **Icône Fée** : `assets/ui/icons/types/fairy.svg`, étincelle à quatre branches et deux
+      petites, blanche pleine comme les 14 autres ; utilisée partout via `TypeBadge.ICONS`.
 
 ---
 
@@ -128,30 +295,65 @@ rencontre ≤ 2 s), `dossier-05-combat.md`, `dossier-08-menu-dresseur.md` (Sac, 
 - **Jamais trois systèmes à la fois** : 12.0 = un système (effets de capacités) + des données ; 12A = un système neuf (objets cachés) sur des systèmes existants ; 12B = deux systèmes neufs (gravats ; grotte + Corde, liés) + du décor ; 12C = deux systèmes neufs (événement Rocket / fossile ; évolution par pierre), le reste étant des données sur les systèmes du J9–J11 ; 12D = du contenu et la QA.
 - **Aucune validation de sauvegarde isolée** : le format ne change pas (§2.20). La reprise dans la grotte est un critère de 12B, 12C et 12D.
 
-### 1.2 « Maintenant » ou « après la clôture du J11 »
+### 1.2 Branches et conflits (réécrit au T11, 2026-10-13)
 
-**Fichiers que le J11 modifie** (`git diff --name-only main...origin/claude/lancement-j11-4pkt2k`) **ou va modifier** (T4–T22 de `jalon-11.md`, T19a–T20d de `jalon-11-compagnon.md`) — à ne pas toucher avant sa clôture :
-`game/battle/*` (battle, battle_director, battle_side, battler, battle_ai, battle_text, battle_event), `game/pokemon/*` (pokemon, party, pokemon_storage, status_rules, moves/move_effect, move_data, pokemon_uid), `game/items/*`, `game/systems/menu/*` (menu_director, bag_query, team_views, vues), `game/ui/bag/*`, `game/ui/battle/*`, `game/ui/menu/team/*`, `game/ui/evolution/*`, `game/ui/theme/ui_tokens.gd`, `game/autoload/game_state.gd`, `game/autoload/scene_router.gd`, `game/boot.gd`, `game/systems/save/save_system.gd`, `game/world/grid_world.gd`, `game/player/player.gd`, `game/world/npc/npc.gd`, `game/world/interactions/interaction_finder.gd`, `game/systems/cutscene/cutscene_director.gd`, `game/systems/evolution/*` ; `data/pokemon/moves/moves.json`, `data/battle/messages.json`, `data/battle/status.json` (nouveau), `data/items/items.json`, `data/shops/*`, `data/dialogues/pewter_gym.json`, `data/cutscenes/pewter_gym.json`, `data/pokemon/tm_compatibility.json`, `data/pokemon/companions.json` et `data/dialogues/companion.json` (nouveaux) ; `tools/build_character_frames.gd` (looks de la série 13), `tools/art/manifeste.json`, `tools/gen_tm_compatibility.py`, `tools/debug_start/README.md` ; tests de sauvegarde, de statut, de combat, du Sac, de l'Équipe.
-**OUV.3** (`ouv3-transitions`, en cours) : `game/boot.gd`, `game/systems/opening/*`, `game/ui/opening/*`, `game/ui/components/screen_fade.gd`, `world_caption.gd` — aucune tâche « maintenant » n'y touche.
+**La restriction « fichiers du J11 » tombe** : le J11 est clos et fusionné (`main` à `267fcf1`),
+OUV aussi (OUV.3 validé le 2026-10-11). `jalon-12` contient `main` depuis `1a3cad5` (T11). Tout le
+code du jeu est ouvert au J12 — sous les règles ci-dessous, qui tiennent compte de **qui d'autre
+travaille** (relevé `git log origin/main` et branches locales, 2026-10-13) :
 
-**Règles pour les tâches « maintenant »** : branche d'intégration **`jalon-12` depuis `main`** dans une copie dédiée (mémoire « worktree d'intégration »), une branche par tâche (`j12-t<n>-<sujet>`), **jamais fusionnée dans `main` avant la fin du J12** ; fichiers **nouveaux** de préférence ; ajouts aux fichiers partagés **en fin de fichier** (`tools/art/manifeste.json`, `assets/world/catalogue.json`, `build_character_frames.gd`, `painted_prop_rules.gd` : conflits attendus avec la série 13, « garder les deux côtés ») ; aucun fichier de la liste ci-dessus ; aucun test existant que le J11 modifie n'est édité. À la clôture du J11 : fusion de `main` dans `jalon-12` (T11).
-
-| Tâche | Agent | Quand | Pourquoi / comment éviter les conflits |
+| Qui | Branche | Base | Fichiers communs avec le J12 (code et données) |
 |---|---|---|---|
-| T0 Plan (ce document) | architecte | **fait** | docs |
-| T1 Kit d'assets (série 14) : liste exacte, fiche, prompts, planche de contrôle | architecte | **maintenant** | fichiers nouveaux (`serie14.py`, `serie-14-mont-selenite.md`, prompts) |
-| T2 Génération Codex des décors, personnages, icônes → 12.0-art | constructeur-monde (Mac) | **maintenant** (après T1) | images dans `build/art/` (non versionné) |
-| T3 Planches Pokémon C-4 (6) + lot parallèle (5) → 12.0-art | constructeur-monde (Mac) | **maintenant** | images seules ; intégration au compagnon après le J11 (T21) |
-| T4 Décors de combat (3) → 12.0-art | constructeur-monde (Mac) | **maintenant** | `tools/art/combat_decors/` (prompts nouveaux) |
-| T5 Lot de textes (annexe A) → Kevin | architecte | **fait dans ce plan** ; validation de Kevin | docs |
-| T6 Intégration de la série 14 (manifeste, `preparer.py`, règles, scènes d'objets, looks) | constructeur-monde (Mac) | **maintenant** (après T2) | entrées en fin de fichier |
-| T7 Fondations de carte : `Kind.RUBBLE` + tuile, `PaintedGround` à textures réglables, `LightGlow`, `CaveLibrary` + `caves.json`, outil commun `cave_map_kit.gd` | architecte | **maintenant** | `overworld_tiles.gd`, `gen_placeholder_tiles.gd`, `painted_ground.gd` : hors J11 ; le reste est nouveau |
-| T8 Cartes Route 3, Centre, sas, raccord d'Argenta (sans PNJ, sans rencontres) | constructeur-monde | **maintenant** (après T6, T7) | scènes et outils nouveaux ; `build_pewter_city.gd`, `build_painted_interiors.gd`, `lighting.json`, `zones.json`, `interiors.json`, `rest_points.json`, `decors.json`, `test_map_links`, `test_coming_soon` : hors J11 |
-| T9 Cartes du Mont Sélénite (3 étages, échelles, gravats peints, lumière) | constructeur-monde | **maintenant** (après T6, T7) | idem ; les cases `g` sont des tuiles `RUBBLE`, **lues** seulement au T20 |
-| T10 Équilibrage préparé (outil de simulation, sans données) | architecte | **maintenant** | `tools/simulate_mt_moon.gd` (nouveau) ; lancé au T26 |
-| T11 et suivantes | — | **après la clôture du J11** | moteur, données, Sac, sauvegarde |
+| personne sur `main` | `origin/main` = `267fcf1` | — | dernier commit = clôture du J11 |
+| reliquat d'art du J11 (Reptincel, Pikachu compagnons) | `j11-pikachu-compagnon` | `main` (aucun commit encore) | `data/pokemon/companions.json`, `tools/art/manifeste.json`, `build_character_frames.gd` (`LOOKS`), `assets/world/catalogue.json` — comme T21 |
+| **J13** (Azuria) | `jalon-13` | **`jalon-12` à `5b3fe9b`** + `main` à `ee5d5c9` (11A, 11B) ; code déjà avancé (T11 données, T12 IA qui change, T13, T14 carte de QA, T16 briques) | `battle.gd`, `battler.gd`, `battle_ai.gd`, `battle_event.gd`, `battle_text.gd`, `battle_director.gd`, `battle_stage.gd`, `trainer_data.gd`, `item_data.gd`, `dialogue_choice.gd`, `dialogue_library.gd`, `dialogue_runner.gd`, `cutscene.gd`, `cutscene_library.gd`, `map_catalog.gd`, `boot.gd` ; `moves.json` (**5 capacités du J12 déjà copiées** : `acid`, `wrap`, `smokescreen`, `minimize`, `light_screen`), `kanto.json`, `pokedex/kanto.json`, `messages.json`, `items.json`, `tm_compatibility.json`, `zones.json`, `lighting.json`, `decors.json` ; `test_route_4` (réécrit : la Route 4 remplace le sas) |
+| **J14** (Route 25) | `jalon-14` | `main` à `ee5d5c9` | `battle.gd`, `battler.gd`, `battle_event.gd`, `battle_text.gd`, `battle_ai.gd`, `move_effect.gd`, `move_data.gd`, `pokemon_data.gd`, `cutscene_step.gd`, `cutscene_library.gd`, `cutscene_director.gd`, `dialogue*.gd`, `npc_spec.gd`, `npc_roster.gd`, `map.gd`, `ui_tokens.gd`, `boot.gd`, `light_glows.json` ; ses données sont dans des **fichiers à part** (`moves_j14.json`, `kanto_j14.json`, `items_j14.json`) ; son plan : « le J14 fusionne en dernier, il absorbe les conflits » |
+| **J15** (Carmin) | `jalon-15` | `main` à `ee5d5c9` + `origin/main` | **sauvegarde v7** (`save_system.gd`, `game_state.gd`, la Pension), `debug_start.gd`, `boot.gd` ; données à part (`kanto_vermilion.json`, `vermilion.json`…) |
 
-**Parallélisme maintenant** : T1 → T2 ; T3 ∥ T4 ∥ T7 ∥ T10 ; T6 après T2 ; T8 ∥ T9 après T6 et T7. Après le J11 : T11 → T12 → T13 ∥ T14 → T15 → **T16 (S24 12.0)** → … (§3).
+**Ordre de fusion dans `main` : le J12 d'abord.** Les J13, J14 et J15 dépendent de lui (espèces,
+`drain` / `trap`, `unless_flags`, `field_use`, `confirm_cutscene`, étape `moment`, `play_item`,
+Corde Sortie) et l'ont écrit dans leurs plans. D'où :
+
+1. `jalon-12` ne fusionne **que `main`** — jamais `jalon-13/14/15` (ce sont eux qui fusionnent
+   `jalon-12`). Si une autre fusion arrive dans `main` avant la fin du J12 (non prévu ; ex. la v7 du
+   J15), `jalon-12` fusionne `main` aussitôt et suit sa version de sauvegarde (§2.20).
+2. **Noms figés** (cités par les plans des J13–J15) : `MoveEffect.Kind` `DRAIN TRAP DISABLE REST
+   SELF_KO` **en fin d'enum, dans cet ordre** (le J15 met `COINS` après, le J14 ses genres après) ;
+   clés de données `drain`, `trap`, `disable`, `rest`, `self_ko` et `pending_effects` `drain`,
+   `trap` ; `ItemData.field_use` ; `InteractPoint.unless_flags` ; clés `rematch`, `leave` du bloc
+   `trainer` ; `DialogueChoice.confirm_cutscene` ; `CutsceneStep.Kind.MOMENT` / `"moment"` ;
+   type de moment `fossil` ; `EvolutionDirector.play_item`, `EvolutionCandidate.cancellable`,
+   signal `evolution_applied` ; `escape_rope`, `moon_stone`, identifiants des 12 espèces.
+   Tout écart se note au §0.4 **et** dans `etat-projet.md` (section J12), que les autres sessions
+   lisent.
+3. Ajouts **en fin** d'enum, de liste de clés, de fichier (`battle.gd` : points d'accroche courts,
+   fonctions nouvelles en fin de fichier ; tests dans des fichiers nouveaux) ; aucune
+   réorganisation, aucun renommage de l'existant.
+4. **Données nouvelles dans des fichiers à part** quand le chargeur lit tout un dossier
+   (`PokemonData` : tous les `.json` de `species/` et `moves/` ; `ItemLibrary` : `data/items/` ;
+   `TrainerLibrary`, `ShopLibrary`, `EncounterLibrary` : un dossier) [D, convention des J14–J15] :
+   12 espèces → `data/pokemon/species/kanto_mt_moon.json`, 21 capacités →
+   `data/pokemon/moves/mt_moon.json`, 5 objets → `data/items/mt_moon.json`. Les retouches
+   d'entrées existantes (`bind`, `fire_spin`, `self_destruct`, `explosion`, stock d'Argenta) restent
+   dans leur fichier. Un identifiant défini dans deux fichiers est **refusé** par le chargeur
+   (« identifiant déjà défini dans … ») : un doublon avec le J13 se verra au premier test après sa
+   fusion, et c'est au J13 de retirer les siens (sa règle, `jalon-13.md` §0.5). Le T12 reprend les
+   5 définitions déjà copiées par le J13 **à l'identique** (vérifiées au T11 : conformes à l'annexe A
+   et au §20).
+5. Fichiers uniques partagés (« garder les deux côtés ») : `data/pokedex/kanto.json`,
+   `data/battle/messages.json`, `companions.json`, `zones.json`, `decors.json`, `lighting.json`,
+   `light_glows.json`, manifeste, catalogue, `LOOKS`. **`tm_compatibility.json` est généré**
+   (`tools/gen_tm_compatibility.py`) : en cas de conflit, le régénérer après la fusion, ne jamais le
+   fusionner à la main.
+6. Carte de QA : le T15 reprend **mot pour mot** le `MapCatalog.QA_PREFIX` / `is_qa_map` du J13
+   (`3d58fe6`) pour que la fusion soit triviale.
+
+**Règles internes inchangées** : une branche par tâche (`j12-t<n>-<sujet>`) depuis `jalon-12`,
+fusionnée dans la copie d'intégration (mémoire « worktree d'intégration ») ; `jalon-12` jamais dans
+`main` avant le T28 ; jamais de `pkill` ; chaque tâche met à jour `etat-projet.md`.
+
+**Tâches T0–T10** (avant la clôture du J11) : **toutes faites** et fusionnées dans `jalon-12` (§3,
+§9). Parallélisme à partir du T11 : §3 (« Ordre et parallélisme »).
 
 ### 1.3 Grilles : lecture et normalisations (aucune grille modifiée)
 
@@ -242,7 +444,7 @@ Les grilles font foi (règle 10) ; leurs `POSITIONS` sont des défauts « ajusta
 
 ### 2.2 Échelles (T9)
 
-Aucun code : `WarpPoint` `STEP_ON`, `direction = ZERO`, cible `spawn` de même paire. Décor `prop_echelle_descend_01` / `_monte_01` posé sur la case praticable (couche du sol, sans ombre). Le compagnon rentre au fondu (J11, `transition_started`) ; **placement à l'arrivée** : jamais sur une case de warp (règle ajoutée au T20 dans `CompanionTrail` : la case derrière le joueur à l'arrivée est souvent l'échelle elle-même ; sinon masqué jusqu'au premier pas, A-1). Tests (`test_mt_moon_maps`) : chaque paire aller-retour ; graphe des étages connexe sur les **vraies scènes** (même critère que `plan_check_mont_selenite.py`) ; retour à l'entrée possible de toute case praticable.
+Aucun code : `WarpPoint` `STEP_ON`, `direction = ZERO`, cible `spawn` de même paire. Décor `prop_echelle_descend_01` / `_monte_01` posé sur la case praticable (couche du sol, sans ombre). Le compagnon rentre au fondu (J11 : `CompanionController.on_transition_started`, relayé par Boot) ; **placement à l'arrivée** : jamais sur une case de warp (T20 : le Callable que `CompanionController` passe à `CompanionTrail.place_after_arrival` exige aussi `get_warps().get_at(c).is_empty()` — `CompanionTrail` reste pur et inchangé ; la case derrière le joueur à l'arrivée est souvent l'échelle elle-même ; sinon masqué jusqu'au premier pas, A-1). Tests (`test_mt_moon_maps`) : chaque paire aller-retour ; graphe des étages connexe sur les **vraies scènes** (même critère que `plan_check_mont_selenite.py`) ; retour à l'entrée possible de toute case praticable.
 
 ### 2.3 Catégorie « grotte » (T7 pur, T20 branchement)
 
@@ -265,31 +467,31 @@ static func has_sky(map: GameMap, caves: CaveLibrary) -> bool   # extérieur et 
 	"escape": { "map": "route_3", "spawn": "from_mt_moon_w", "facing": "down" } } } }
 ```
 - `CaveExit` : `map`, `spawn`, `facing` (donnée pure). Lecture tolérante, erreurs signalées (carte absente, spawn vide, facing non cardinal) ; `test_cave_library` (pur) + `test_map_catalog` étendu : chaque carte de grotte existe, `interior == false`, n'est pas dans `interiors.json`, spawn de sortie présent.
-- **Usages** : Corde Sortie (§2.6) ; phrase du compagnon (J11 `companions.json` : `contexts` += les trois étages → `cave`, phrase §20 n° 40 dans `companion.json`, **données seules**) ; jour/nuit futur (`has_sky`). Le compagnon reste visible (règle du J11 : `interior` faux). Titre de zone « MONT SÉLÉNITE » à l'entrée (une seule fois pour les trois étages : même nom, règle existante de `ZoneAnnouncer`).
+- **Usages** : Corde Sortie (§2.6) ; phrase du compagnon (**pas en données seules**, §0.4 n° 5 : T20 ajoute `cave` à `CompanionCatalog.CONTEXTS` et `cave → companion_cave` à `CompanionRules.CONTEXT_LINES` ; T21 : `companions.json` `contexts` += les trois étages → `cave`, phrase §20 n° 40 dans `companion.json`, `PLAYED_BY_COMPANION` de `test_dialogue_data`) ; jour/nuit futur (`has_sky`). Le compagnon reste visible (`CompanionRules.is_visible` : `interior` faux). Titre de zone « MONT SÉLÉNITE » à l'entrée (une seule fois pour les trois étages : même nom, règle existante de `ZoneAnnouncer`).
 - Rien dans `GameMap` : la catégorie se lit dans les données (un seul endroit, comme `interiors.json`).
 
 ### 2.4 Lumière de grotte (T7, T9)
 
 - **Peinte d'abord** : sols clairs (`ground_grotte_01`), masses sombres (`ground_masse_roche_01`), faces de paroi qui séparent nettement les deux ; gravats légèrement plus sombres que le sol calme (B-3 : « galeries plus sombres ») ; puits de jour du 1F en décalcomanie claire.
 - **Profils** (`lighting.json`) : `cave_1f` (étalonnage froid, ombres bleu ardoise, liseré froid faible, **aucune ombre portée** — pas de soleil —, ombres de contact gardées, vent 0) ; `cave_b1f` (plus sombre, moyens tons désaturés) ; `cave_b2f` (comme B1F). Progression 1F > B1F > B2F (« transitions progressives »).
-- **Sources légères** : `LightGlow` (`game/world/lighting/light_glow.gd`, `Sprite2D` additif, texture `GradientTexture2D` radiale générée — **aucun asset** —, couleur et rayon par type en données : `lamp` orangé, `shaft` blanc bleuté, `shard` bleu pâle, `projector` blanc chaud) posé par l'outil aux cases `L`, `j`, `*` et aux projecteurs ; vacillement lent des lampes par shader (`TIME`), **coupé par « Réduire les animations »** ; au-dessus des personnages (`z` du monde, alpha ≤ 0,35) pour qu'ils prennent la lumière en passant. **Aucune `Light2D`** (rendu `mobile`, aucun précédent dans le jeu ; une mesure ne serait faite que si Kevin trouve les halos plats).
+- **Sources légères** : `LightGlow` (`game/world/lighting/light_glow.gd`, `Sprite2D` additif, texture `GradientTexture2D` radiale générée — **aucun asset** —, couleur et rayon par type en données : `lamp` orangé, `shaft` blanc bleuté, `shard` bleu pâle, `projector` blanc chaud) posé par l'outil aux cases `L`, `j`, `*` et aux projecteurs ; vacillement lent des lampes par shader (`TIME`), **coupé par « Réduire les animations »** (`LightGlow.set_reduce_motion`, fait au T7 ; **branché au T20** dans `Boot._apply_settings`, à côté de `_companion.set_reduce_motion`) ; au-dessus des personnages (`z` du monde, alpha ≤ 0,35) pour qu'ils prennent la lumière en passant. **Aucune `Light2D`** (rendu `mobile`, aucun précédent dans le jeu ; une mesure ne serait faite que si Kevin trouve les halos plats).
 - **Budget** [D] : ≤ 16 halos par étage, ≤ 3 000 nœuds par carte, moyenne ≥ 58 fps, creux ≥ 50 sur S24.
 - **Lisibilité, contrôle objectif sur Mac** (T9) : `tools/capture_mt_moon.gd` (captures 2340 × 1080 aux repères de chaque étage) + `tools/art/luminance_grotte.py` (lit la grille et la capture) : luminance relative moyenne des cases praticables ≥ **0,22** et rapport sol / paroi ≥ **2,0** [D] ; personnages lisibles (contraste du héros sur le sol ≥ celui de la Forêt de Jade). Le critère qui valide reste le téléphone **sans monter la luminosité** (12B).
 
 ### 2.5 Rencontres de grotte (T7 tuile, T20 moteur)
 
 - **Tuile** (T7) : `OverworldTiles.Kind.RUBBLE` **en fin d'enum**, donnée de tuile `rubble` (couche de données ajoutée **en dernier** au TileSet par `gen_placeholder_tiles.gd` ; test : les données des cartes existantes inchangées).
-- **Grille** (T20) : `GridWorld.set_rubble` / `is_rubble` ; `GameMap._read_layer` lit `rubble`.
-- **Moteur** (T20) : `EncounterTable.TERRAINS += &"rubble"` ; `EncounterDirector` : `_terrain_at(cell) -> StringName` (hautes herbes → `grass`, gravats → `rubble`, sinon rien) remplace `_GRASS_TERRAIN` dans `_on_player_moved` / `_can_encounter` ; table par (carte, terrain), même taux effectif et même série de pas calmes (`_quiet_steps` partagée : défaut, un seul compteur) ; intro choisie par le terrain.
+- **Grille** (T20) : `GridWorld.set_rubble` / `is_rubble` (sur le modèle de `set_tall_grass` / `is_tall_grass`) ; `GameMap._read_layer` lit `rubble` (comme `tall_grass`, `map.gd` l. 442).
+- **Moteur** (T20, `game/pokemon/encounters/`) : `EncounterTable.TERRAINS += &"rubble"` ; `EncounterDirector` : `_terrain_at(cell) -> StringName` (hautes herbes → `grass`, gravats → `rubble`, sinon rien) remplace `_GRASS_TERRAIN` (l. 28 ; lu l. 103 et 134) dans `_on_player_moved` / `_can_encounter` ; débogage : `EncounterLibrary.override_grass` devient un cas de `override_table(map_id, terrain, entry)` et la clé `wild` de `DebugStart` accepte un `"terrain"` facultatif (défaut `grass`) [D, §0.4 n° 4] ; table par (carte, terrain), même taux effectif et même série de pas calmes (`_quiet_steps` partagée : défaut, un seul compteur) ; intro choisie par le terrain.
 - **Intro « éboulis »** (dossier 04, ≤ 2 s) : `RubbleBurst` (`game/world/rubble/rubble_burst.gd`, modèle `GrassRustle` : `spawn(map, pos)`, `burst(speed) -> await`) : quelques cailloux qui roulent et un peu de poussière sous les pieds (≈ 0,6 s, `Tween`), signal d'accroche `rubble_sound_requested` (aucun son au J12), puis le héros **se retourne** (demi-tour, `face(-facing)`), puis combat. Pas d'herbe agitée.
 - **Données** : `data/encounters/route_3.json` (herbes, §3.3, `rate` 25, rampe 15 → 20) ; `data/encounters/mt_moon.json` : trois tables `rubble` (§6, mêmes taux et rampe). Habitats du Pokédex : automatiques (vu par carte).
 - **Tests** : `test_encounter_library` (terrain `rubble`, couple unique), `test_encounter_director` (rencontre sur gravats, rien sur le sol calme, herbes inchangées, intro au pas près avec `TweenClock`, compagnon jamais déclencheur), `test_grid_world`, `test_overworld_tiles`. **Information** (pas un seuil) : `tools/simulate_grass_pacing.gd` sur le chemin principal (8 cases de gravats obligatoires) → combats attendus par traversée.
 
 ### 2.6 Corde Sortie (T20)
 
-- **Donnée** : `escape_rope` (« Corde Sortie » / « Cordes Sortie », féminin, catégorie `field` = AVENTURE, 550 ₽, description §20 n° 32) ; `ItemData.field_use: StringName` (nouveau, **en fin de champs**) ∈ `{"", "escape_rope", "evolution_stone"}`, validé par `ItemLibrary`.
+- **Donnée** : `escape_rope` (« Corde Sortie » / « Cordes Sortie », féminin, catégorie `field` = AVENTURE, 550 ₽, description §20 n° 32 ; écrite au T12 dans `data/items/mt_moon.json`, **sans** `field_use`, que le chargeur refuserait avant T20) ; `ItemData.field_use: StringName` (nouveau, **en fin de champs**, T20) ∈ `{"", "escape_rope", "evolution_stone"}`, validé par `ItemLibrary` ; T20 pose `field_use` sur `escape_rope`, T23 sur `moon_stone`. Un objet AVENTURE sans `field_use` n'a pas UTILISER (le J13 l'attend pour la Pépite).
 - **Règle pure** `FieldItemRules` (`game/items/field_item_rules.gd`) : `check(item, map_id, caves) -> Check { OK, NOT_HERE, NOT_FIELD_USE }` ; `escape_target(map_id, caves) -> CaveExit`.
-- **Parcours** : Sac (exploration) → AVENTURE → Corde Sortie → **UTILISER** → `NOT_HERE` : bandeau de résultat « Impossible de l'utiliser ici. » (§20 n° 34), rien ne change ; `OK` : le menu se ferme, une Corde est retirée, narration « Tu utilises la Corde Sortie. » (§20 n° 33), puis `SceneRouter.change_map(route_3, from_mt_moon_w, DOWN)`. **Hors combat** : la catégorie AVENTURE n'est jamais proposée en combat (`ItemData.contexts`) ; **hors cinématique** : le menu ne s'ouvre pas pendant une scène (`Boot._can_open_menu`). Depuis la fiche Équipe (Sac « donner à un Pokémon ») : absente.
+- **Parcours** (modèle de la CT du J11 : signal du `MenuDirector` → Boot) : Sac (exploration) → AVENTURE → Corde Sortie → **UTILISER** → `MenuDirector.request_item_use` (l. 446) consulte `FieldItemRules.check` → `NOT_HERE` : `bag_result_shown` « Impossible de l'utiliser ici. » (§20 n° 34), rien ne change ; `OK` : signal nouveau `field_item_requested(item_id)` → Boot ferme le menu, retire une Corde, narration « Tu utilises la Corde Sortie. » (§20 n° 33), puis `SceneRouter.change_map(route_3, from_mt_moon_w, DOWN)`. **Hors combat** : la catégorie AVENTURE n'est jamais proposée en combat (`ItemData.contexts()` : `field` seulement) ; **hors cinématique** : le menu ne s'ouvre pas pendant une scène (`Boot._can_open_menu`). Depuis la fiche Équipe (Sac « donner à un Pokémon ») : absente.
 - **Sauvegarde** (vérification de Kevin, §11) : un changement de carte comme une porte ; l'autosave de `map_entered` enregistre position et Sac ; une fermeture pendant le fondu laisse l'ancienne sauvegarde (Corde comprise, position dans la grotte) : jamais de Corde perdue sans transport. Ni soin ni point de repos touchés. Compagnon : placé derrière le joueur à l'arrivée (J11).
 - **Sources** : `pewter_mart.json` += `{ "item": "escape_rope" }` (sans condition) ; Corde au sol au 1F (9, 29).
 - **Tests** : `test_field_item_rules` (pur : grotte / hors grotte / objet sans usage), intégration `test_escape_rope` (Boot réel : refus sur la Route 3 et à Argenta ; depuis 1F, B1F, B2F après l'événement → devant l'entrée côté Route 3, tourné ↓ ; une Corde de moins ; point de repos et PV inchangés ; Dresseurs battus et objets ramassés le restent ; fermeture simulée pendant le fondu → sauvegarde d'avant).
@@ -300,7 +502,7 @@ Modèle du J8 (PNJ `object/poke_ball_ground`, verbe PRENDRE, scène `despawn` �
 
 ### 2.8 Objets cachés « face à un indice » (T17, T18)
 
-- **Point d'examen conditionnel** : `InteractPoint` gagne `unless_flags: Array[StringName]` (export, en fin) recopié dans `Interaction` ; `InteractionController` ne retient pas une cible dont un drapeau `unless` est levé (le bouton disparaît une fois l'objet trouvé). Seul changement : ni `InteractionFinder` (fichier du J11) ni `InteractionTable`.
+- **Point d'examen conditionnel** : `InteractPoint` gagne `unless_flags: Array[StringName]` (export, en fin) recopié dans `Interaction` (`to_interactions`) ; `InteractionController`, qui tient déjà les drapeaux (`set_story_flags` → `_flags: StoryFlags`), ne retient pas une cible dont un drapeau `unless` est levé (le bouton disparaît une fois l'objet trouvé). `InteractionFinder` n'est plus protégé (J11 clos) mais reste inchangé : le plus simple tient dans le contrôleur. Ni `InteractionTable`.
 - **Données** : l'outil pose un `InteractPoint` (verbe EXAMINER, toutes orientations) sur la case-indice (§1.3), `dialogue` = `<id>`, `unless_flags = [got_<id>]` ; dialogue `<id>` → `{ "cutscene": "<id>" }` ; scène : `give <objet> found: true` → `set got_<id>` (texte de ramassage existant = **toast seul**, « Réveil ×1 — Ajouté au Sac » ; aucune phrase nouvelle ; `found_items` alimenté par `found: true`). Décor : `prop_indice_caillou_01` / `prop_indice_eclat_01`, jamais dessiné sur le plan joint à Codex.
 - **Q-2** : le bouton EXAMINER apparaît face à l'indice (défaut).
 - **Tests** : `test_hidden_items` (Boot réel : face à l'indice → bouton, examen → toast, Sac, `found_items`, drapeau ; ensuite plus de bouton, même après rechargement ; de dos ou de côté : rien), sur les trois caches (Route 3, 1F, B2F).
@@ -308,10 +510,10 @@ Modèle du J8 (PNJ `object/poke_ball_ground`, verbe PRENDRE, scène `despawn` �
 ### 2.9 Évolution par objet : Sac → Pierre Lune (T23, T24)
 
 - **Donnée** : `moon_stone` (« Pierre Lune », AVENTURE, prix 0 = jamais en vente, `field_use: "evolution_stone"`, description §20 n° 31). Règles d'évolution : Nidorina, Nidorino (déjà là), Mélofée → Mélodelfe, Rondoudou → Grodoudou (T12).
-- **Règle pure** `StoneUse` (`game/pokemon/evolution/stone_use.gd`) : `check(pokemon, item_id, data) -> { COMPATIBLE, INCOMPATIBLE }` par `Evolution.item_target` (existant) ; un Pokémon K.O. reste COMPATIBLE [D].
-- **Parcours** : Sac → AVENTURE → Pierre Lune → **UTILISER** (§20 n° 35) → sélecteur de l'équipe avec **COMPATIBLE / INCOMPATIBLE** (états du J11, toujours visibles ; INCOMPATIBLE non choisissable) → toucher un Pokémon compatible → le menu se ferme → `EvolutionDirector.play_item(candidate, party, item_id)` :
-  - `EvolutionCandidate.cancellable = false` (nouveau champ, faux par défaut pour les pierres, vrai ailleurs) : **ARRÊTER masqué** (`EvolutionScreen`), **retour Android sans effet** (`handle_back` absorbe sans annuler) ;
-  - signal nouveau **`evolution_applied(party_index, into)`**, émis **dans le même appel** que `Evolution.evolve` : le `MenuDirector` y retire la pierre (même image : jamais une pierre consommée sans évolution, ni l'inverse) ;
+- **Règle pure** `StoneUse` (`game/pokemon/evolution/stone_use.gd`) : `enum Check { COMPATIBLE, INCOMPATIBLE }` (pas de « déjà connue » : ce n'est pas `TmTeach.Check`), `check(pokemon, item_id, data)` par `Evolution.item_target` (existant, `evolution.gd` l. 25) ; un Pokémon K.O. reste COMPATIBLE [D].
+- **Parcours** (modèle de la CT du J11, §0.4 n° 9–10) : Sac → AVENTURE → Pierre Lune → **UTILISER** (§20 n° 35) → `BagQuery.targets` donne à chaque membre `PartyTargetView.show_reason = true` et la raison **COMPATIBLE / INCOMPATIBLE** (libellés du J11, toujours visibles ; INCOMPATIBLE non choisissable) → toucher un Pokémon compatible → `MenuDirector.use_item_on` émet le signal nouveau `evolution_item_requested(index, item_id)` (comme `tm_learn_requested`) → Boot ferme le menu → `EvolutionDirector.play_item(candidate, party, item_id)` (= `play([candidate], party)` d'un candidat non annulable) :
+  - `EvolutionCandidate.cancellable` (nouveau champ, **vrai par défaut** : rien ne change pour les évolutions de fin de combat ; faux pour une pierre), recopié dans l'`EvolutionView` : **ARRÊTER masqué** (`EvolutionScreen.transform()`), **retour Android sans effet** (`EvolutionScreen.handle_back` absorbe sans annuler) ;
+  - signal nouveau **`evolution_applied(party_index, into)`**, émis dans `_play_one` **dans le même appel** que `Evolution.evolve` : **Boot** y retire la pierre (le menu est déjà fermé ; même image : jamais une pierre consommée sans évolution, ni l'inverse) ;
   - capacités de la nouvelle espèce : règle existante (`MoveLearnPrompt`) ; Pokédex : vu + possédé (existant) ; compagnon : rentre en silence si l'espèce n'est pas éligible (J11).
   - Fin → retour au monde [D] ; autosave à `evolution_finished` (une fermeture pendant la séquence reprend avant l'évolution, pierre comprise).
 - **Hors combat seulement** (AVENTURE). Les évolutions de fin de combat gardent ARRÊTER (inchangées).
@@ -331,20 +533,30 @@ Modèle du J8 (PNJ `object/poke_ball_ground`, verbe PRENDRE, scène `despawn` �
 
 - **Ordre dans le tour** (matrice du J11 étendue) : piège → dégâts en fin de tour **après** poison / brûlure et Vampigraine [D] ; Entrave testée au choix de l'action (avant `can_act`) ; Repos passe par le statut du J11 ; Destruction : K.O. du lanceur après les effets de la capacité.
 - **IA `smart`** : n'utilise pas Repos à PV pleins, ni Entrave si elle échouerait, ni Ligotage sur une cible déjà piégée ; Destruction **seulement** si sa vie est basse (≤ ¼) [D] ; `random` inchangée.
-- **Événements** (`BattleEvent.Kind`, fin d'enum) : `DRAINED_HP`, `TRAPPED`, `TRAP_DAMAGED`, `TRAP_ENDED`, `MOVE_DISABLED`, `DISABLE_ENDED`, `RESTED`, `SELF_KO` ; textes dans `messages.json` (clé par capacité pour le piège : `trap_wrap_*`, `trap_bind_*`, `trap_fire_spin_*`, `text_f`).
+- **Événements** (`BattleEvent.Kind`, fin d'enum, après `BIDE_BROKEN`) : `DRAINED_HP` (distinct de `DRAINED`, qui est Vampigraine), `TRAPPED`, `TRAP_DAMAGED`, `TRAP_ENDED`, `MOVE_DISABLED`, `DISABLE_ENDED`, `RESTED`, `SELF_KO` ; textes dans `messages.json` (`templates`, en fin ; clé par capacité pour le piège : `trap_wrap_*`, `trap_bind_*`, `trap_fire_spin_*`, `text_f` ; drain : clé nouvelle `drain_hp`, `hp_restored` étant le texte de la Potion ; échec : `move_failed` existant).
 - **Interface** (T14, ui-mobile) : carte de capacité bloquée grisée et **non touchable**, libellé « BLOQUÉE » (annexe A) ; raison « ligoté » sur les cartes de l'équipe ; icône du type **Fée** (`TypeBadge.ICONS`) ; aucun effet visuel nouveau sur le sprite (les statuts du J11 suffisent) ; captures relues.
 - **Métronome** : donnée avec `pending_effects: ["metronome"]` et « Sans effet dans le moteur actuel. » (dossier 15 §16.2).
 - **Capacités ajoutées** (21, apprentissages de Rouge/Bleu des 12 espèces, tous niveaux, + CT01) — genre d'effet entre parenthèses ; **J11** = genres du J11 ; **attente** = `pending_effects` + mention « Sans effet dans le moteur actuel. » :
-  `leech_life` Vampirisme (drain) · `wrap` Ligotage (trap) · `disable` Entrave · `rest` Repos · `sing` Berceuse (J11 sommeil, préc. 55) · `spore` Spore (J11 sommeil) · `confuse_ray` Onde Folie (J11 confusion) · `glare` Regard Médusant (J11 paralysie) · `doubleslap` Torgnoles (J11 2–5 coups) · `pound` Écras'Face · `smog` Purédpois (poison 40 %) · `sludge` Détritus (poison 30 %) · `acid` Acide (Déf. Spé. −1, 10 %) · `smokescreen` Brouillard (précision −1) · `minimize` Lilliput (esquive +1) · `mega_punch` Ultimapoing (CT01) · `sonic_boom` Sonicboom (J11 `fixed_damage` s'il accepte une valeur fixe, sinon attente) · `metronome` Métronome (attente) · `haze` Buée Noire (attente) · `light_screen` Mur Lumière (attente) · `double_edge` Damoclès (attente : recul proportionnel aux dégâts).
+  `leech_life` Vampirisme (drain) · `wrap` Ligotage (trap) · `disable` Entrave · `rest` Repos · `sing` Berceuse (J11 sommeil, préc. 55) · `spore` Spore (J11 sommeil) · `confuse_ray` Onde Folie (J11 confusion) · `glare` Regard Médusant (J11 paralysie) · `doubleslap` Torgnoles (J11 2–5 coups) · `pound` Écras'Face · `smog` Purédpois (poison 40 %) · `sludge` Détritus (poison 30 %) · `acid` Acide (Déf. Spé. −1, 10 %) · `smokescreen` Brouillard (précision −1) · `minimize` Lilliput (esquive +1) · `mega_punch` Ultimapoing (CT01) · `sonic_boom` Sonicboom (`fixed_damage` mode **`value`**, `amount` 20 : mode ajouté au T13, §0.4 n° 8 ; T12 l'écrit en `pending_effects: ["fixed_value"]`) · `metronome` Métronome (attente) · `haze` Buée Noire (attente) · `light_screen` Mur Lumière (attente) · `double_edge` Damoclès (attente : recul proportionnel aux dégâts).
   Capacités existantes activées : `bind` Étreinte et `fire_spin` Danse Flamme (`trap`), `self_destruct` Destruction et `explosion` (`self_ko`) ; description de Destruction remplacée par le texte §20 n° 45.
 - **Tests** : `test_battle_drain`, `test_battle_trap`, `test_battle_disable`, `test_battle_rest`, `test_battle_self_ko` (graines fixées ; table pilotée par les données pour chaque capacité ajoutée ; interactions : piège + changement forcé après K.O., piège + capture, Entrave + Patience, Entrave sur la seule capacité → Lutte, Repos + Réveil, Repos à PV pleins, Destruction qui rate, double K.O. final, Destruction endormi), `test_battle_ai` (règles `smart`), non-régression du J11 (statuts, Patience) et du poison du J9.
+
+- **Alignement sur le J11 livré (T11, §0.4 n° 1–3, 8, 11)** :
+  - genres : `MoveEffect.Kind` += `DRAIN, TRAP, DISABLE, REST, SELF_KO` après `BIDE`, `KIND_NAMES`, clés obligatoires dans `PokemonData._EFFECT_KEYS` (`drain` : `fraction` ; `trap` : `turns`, `fraction`, `messages` ; `disable` : `turns` ; `rest`, `self_ko` : aucune) ; `FIXED_MODES` += `value` (+ `amount`, obligatoire pour ce mode seulement) ;
+  - volatils sur le **`Battler`** (§0.4 n° 3) ; Entrave filtrée dans `Battler.usable_moves()` (choix du joueur, `is_legal`, IA en une fois) ; `last_move_slot` posé à MOVE_USED (pas pendant les tours imposés de Patience) ; `Battle.get_disabled_move()` pour l'interface ;
+  - piège : changement refusé par `is_legal(SWITCH)` (le remplacement après K.O. par `replace` reste permis), `Battle.is_player_trapped()` pour la raison des cartes ; fuite : `is_legal(RUN)` faux, le `BattleDirector` affiche `flee_failed` **sans soumettre d'action** (aucun tour perdu, comme un changement refusé) [D, G+] ; dégâts en fin de tour : `_trap_damage(side)` après `_drain_seed` et `_status_damage` dans `_end_turn` ; décompte d'Entrave au même endroit ;
+  - Repos : `StatusRules.apply_rest(pokemon)` (statut soigné, PV pleins, `sleep`, `status_turns = 2`) ; échec (`move_failed`) à PV pleins ou déjà endormi ;
+  - Destruction : K.O. du lanceur par le chemin de `_faint` après les effets ; « n'a pas pu agir » = `_can_act` faux (statut, apeurement, confusion) ;
+  - IA `smart` : règles ajoutées à `BattleAI.status_has_effect` / `score_move` (Repos, Entrave, Ligotage) et un seuil de PV pour Destruction ; `BattleAI.is_low` existe (⅓) — le seuil ¼ de Destruction est une constante nouvelle [D] ;
+  - fichiers chauds partagés avec J13 (IA qui change) et J14 (charge puis frappe) : fonctions nouvelles **en fin** de `battle.gd`, points d'accroche courts (§1.2).
 
 ### 2.11 Dresseurs de la Route 3 et Sbires : reprise et départ (T17 moteur, T18, T25)
 
 - **Données** : `data/trainers/route_3.json` (Hugo, Léa, Sacha, Enzo, Inès, Nolan : équipes, `random`, récompenses du §3.2) et `data/trainers/mt_moon.json` (`mt_moon_rocket_1/2/3` « Sbire Rocket », `random`, `random`, `smart`, 330 / 360 / 450 ₽ ; `mt_moon_researcher` « Chercheur Gaspard », `smart`, 325 ₽) ; capacités apprises au niveau (aucune `moves`). PNJ : blocs `trainer` aux cases et visions des grilles.
 - **Bloc `trainer` étendu** (`NpcSpec`, `NpcRoster`, `TrainerEncounter.build`), deux clés facultatives — sans elles, la séquence du J9/J10 est **identique** (tests des Dresseurs de la forêt et de Liam inchangés) :
-  - **`rematch`** : réplique dite à la place de « avant » si `lost_<id>` est levé ; l'étape `battle` reçoit `lose_flags = [lost_<id>]` (seulement si `rematch` existe) ;
+  - **`rematch`** : réplique dite à la place de « avant » si `lost_<id>` est levé ; l'étape `battle` reçoit `lose_flags = [lost_<id>]` (seulement si `rematch` existe). `TrainerEncounter.build(npc_id, spec, distance)` ne voit pas les drapeaux : il pose **deux** étapes `dialogue`, « avant » avec `unless_flags = [lost_<id>]` et « reprise » avec `if_flags = [lost_<id>]` (conditions d'étape existantes, J4B, évaluées au moment de jouer) ; clés ajoutées **en fin** de `NpcRoster.TRAINER_KEYS` (le J14 ajoute `moved` à une autre liste de `npc_spec.gd`) ;
   - **`leave`** : liste de cases (chemin relatif, 0 à 4 pas) ; après la réplique « vaincu » (`defeated`, J10) : `move` sur ce chemin puis `despawn` (fondu 0,2 s) ; chemin vide = s'efface sur place. L'entrée de PNJ porte `unless: [beaten_<id>]` (absent au rechargement).
+    **Forme livrée (T17, §0.4 n° 13)** : `"leave": [[dx, dy], …]` = 0 à 4 cases **relatives à la case de départ** du Dresseur (chaque composante dans ±8, case absolue ≥ 0), chacune rejointe par un `move` à destination (`cell`, chemin calculé) : `[[0, 0]]` = retour à son poste quelle que soit la distance de l'approche (R3 → sa niche) ; `[]` = fondu sur place (R1) ; une case injoignable = étape sautée (`push_error` du directeur), le fondu a lieu quand même. Le lecteur **refuse** `leave` sans `"unless": ["beaten_<id>"]` dans l'entrée.
 - **Sbires** : R1 (14, 1) ↓, vision 5, `before` « Hé, toi !… », `defeated` « Tch… Je préviens les autres. », `rematch` « Encore toi ? Demi-tour. », `leave` vide (niche) ; R2 (8, 20) →, vision 2, apparence `sbire_f` en attente « creuse », `leave` vers la tranchée ; R3 (29, 24) ←, vision 4, `before` = les 3 bulles du §20 n° 18, `defeated`, `rematch`, `leave` vers la niche (29, 24) → effacé ; décor de combat « chambre » (§2.18).
 - **Défaite du joueur** : réveil au dernier Centre (`wake_up`, existant) ; le Sbire reste ; reprise par `rematch`.
 - **Tests** : `test_trainer_encounter` (rematch, leave, absent, compatibilité ascendante), `test_npc_roster` ; intégration `test_route_3_trainers` (D1, D2 inévitables et D3–D6 évitables sur la **vraie scène avec ses PNJ**, recherche de chemin hors des lignes de vue), `test_mt_moon_rocket` (R1, R3 inévitables, R2 évitable ; départ puis absence au rechargement ; défaite → reprise).
@@ -358,10 +570,10 @@ Modèle du J8 (PNJ `object/poke_ball_ground`, verbe PRENDRE, scène `despawn` �
 ### 2.13 Choix du fossile, objets clés, Grand moment (T23 moteur, T25 données)
 
 - **Fossiles** : deux PNJ objets (`object/fossil_dome`, `object/fossil_helix`) sur la dalle (24, 31) et (26, 31), verbe EXAMINER, présents `if beaten_mt_moon_researcher` **et** `unless mt_moon_fossil_chosen` ; examinables depuis la case au nord ou au sud.
-- **Choix qui lance une scène** : `DialogueChoice.confirm_cutscene` (clé nouvelle `"confirm_cutscene"` de `choice`, exclusive de `confirm_action`) ; le `DialogueRunner` émet `cutscene_requested` après la fermeture. Dialogue `mt_moon_fossil_dome` : page « Prendre le Fossile Dôme ? » (n° 23, texte littéral par fossile : aucun jeton nouveau), `confirm` « OUI », `cancel` « NON », `cancel_pages` vides (NON → rien, on peut regarder l'autre).
-- **Scène `mt_moon_fossil_dome`** (et `_helix`) : `despawn` des deux fossiles → `give dome_fossil` (objet clé, toast « Fossile Dôme obtenu », forme du J11 n° 40) → `set [mt_moon_fossil_chosen, mt_moon_got_dome_fossil]` → `face` chercheur → joueur → `dialogue` n° 24 → **`moment`** `fossil` (`{ "item": "dome_fossil" }`). **Définitif** : rien ne redonne l'autre (aucune entrée, aucun stock).
-- **Étape `moment`** (`CutsceneStep.Kind.MOMENT`, fin d'enum) : `GameState.record_moment(type, carte, details)` une seule fois par type et par détails ; `MomentLibrary.TYPES += fossil`, marque `{fossil}` (nom lu dans l'`ItemLibrary`) ; `moments.json` : présentation du texte validé n° 30 dans la frise (titre / détail / lieu) → annexe A n° A-30 ; icône : celle des objets clés.
-- **Objets** (`items.json`) : `dome_fossil` « Fossile Dôme », `helix_fossil` « Fossile Nautile » (KEY, descriptions n° 28–29) ; aucune indication de résurrection.
+- **Choix qui lance une scène** : `DialogueChoice.confirm_cutscene` (clé nouvelle `"confirm_cutscene"`, **en fin** de `DialogueLibrary._CHOICE_KEYS`, exclusive de `confirm_action` ; le J13 ajoute `confirm_set` / `cancel_set` aux mêmes listes : garder les deux à sa fusion) ; le `DialogueRunner` émet `cutscene_requested` après la fermeture — **signal existant** (variantes `cutscene`), déjà relié par Boot. Dialogue `mt_moon_fossil_dome` : page « Prendre le Fossile Dôme ? » (n° 23, texte littéral par fossile : aucun jeton nouveau), `confirm` « OUI », `cancel` « NON », `cancel_pages` vides (NON → rien, on peut regarder l'autre).
+- **Scène `mt_moon_fossil_dome`** (et `_helix`) : `despawn` des deux fossiles → `give dome_fossil` (objet clé, toast « Fossile Dôme » / « obtenu » : champ `obtained` de l'objet, §0.4 n° 7) → `set [mt_moon_fossil_chosen, mt_moon_got_dome_fossil]` → `face` chercheur → joueur → `dialogue` n° 24 → **`moment`** `fossil` (`{ "item": "dome_fossil" }`). **Définitif** : rien ne redonne l'autre (aucune entrée, aucun stock).
+- **Étape `moment`** (`CutsceneStep.Kind.MOMENT` après `BADGE`, `TYPE_KEYS` += `"moment"` ; modèle : l'étape `badge`, qui enregistre `BadgeMoment.TYPE`) : `GameState.record_moment(type, carte, details)` (existant) une seule fois par type et par détails ; le J14 met `FLASH` après `MOMENT` ; `MomentLibrary.TYPES += fossil`, marque `{fossil}` (nom lu dans l'`ItemLibrary`) ; `moments.json` : présentation du texte validé n° 30 dans la frise (titre / détail / lieu) → annexe A n° A-30 ; icône : celle des objets clés.
+- **Objets** (`data/items/mt_moon.json`, §1.2) : `dome_fossil` « Fossile Dôme », `helix_fossil` « Fossile Nautile » (KEY, `obtained: true`, descriptions n° 28–29) ; aucune indication de résurrection.
 - **Tests** : `test_dialogue_library` (`confirm_cutscene`), `test_dialogue_runner`, `test_cutscene_director` (`moment` une fois), `test_moment_library`, `test_trainer_summary` ; intégration `test_mt_moon_fossil` (Boot réel : NON → rien ; OUI Dôme → Sac, toast, moment, fossiles absents, chercheur n° 26 ; idem Nautile ; rechargement à chaque étape : R3 battu sans chercheur, chercheur battu sans choix, choix fait).
 
 ### 2.14 Centre du Mont Sélénite (T8 carte, T18 vie)
@@ -386,9 +598,9 @@ Le garde (`route_3_guard`, `route_3_guard_cleared`, J10) ne change pas : avant l
 
 ### 2.19 Espèces, Pokédex, CT (T12)
 
-- `kanto.json` : `jigglypuff`, `wigglytuff`, `ekans`, `arbok`, `zubat`, `golbat`, `paras`, `parasect`, `clefairy`, `clefable`, `voltorb`, `koffing` — **conventions existantes** : statistiques et taux actuels, types modernes (Fée pour Mélofée / Mélodelfe, Normal/Fée pour Rondoudou / Grodoudou), apprentissages de Rouge/Bleu ; évolutions : Abo → Arbok (22), Nosferapti → Nosferalto (22), Paras → Parasect (24), Mélofée et Rondoudou → `item moon_stone`. 50 espèces.
+- `data/pokemon/species/kanto_mt_moon.json` (fichier à part, §1.2 n° 4 ; capacités dans `data/pokemon/moves/mt_moon.json`, objets dans `data/items/mt_moon.json`) : `jigglypuff`, `wigglytuff`, `ekans`, `arbok`, `zubat`, `golbat`, `paras`, `parasect`, `clefairy`, `clefable`, `voltorb`, `koffing` — **conventions existantes** : statistiques et taux actuels, types modernes (Fée pour Mélofée / Mélodelfe, Normal/Fée pour Rondoudou / Grodoudou), apprentissages de Rouge/Bleu ; évolutions : Abo → Arbok (22), Nosferapti → Nosferalto (22), Paras → Parasect (24), Mélofée et Rondoudou → `item moon_stone`. 50 espèces.
 - `data/pokedex/kanto.json` : 12 fiches (taille, poids officiels, description) + 7 notes des formes de base (annexe A).
-- **CT** : `tools/gen_tm_compatibility.py` (J11) relancé sur 50 espèces → `tm_compatibility.json` ; objet `tm01` (« CT01 — Ultimapoing », catégorie CT, `teaches: mega_punch`, permanent).
+- **CT** : `tools/gen_tm_compatibility.py` (J11) relancé sur 50 espèces → `tm_compatibility.json` (fichier **généré** : régénéré, jamais fusionné à la main, §1.2 n° 5) ; objet `tm01` (« CT01 — Ultimapoing », catégorie `tm`, `tm_number` 1, `teaches: mega_punch` ; permanent et jamais vendu par la catégorie, comme `tm34`).
 - **Sprites provisoires** : `gen_placeholder_battlers.gd` étendu aux 12 (exigé par `test_battle_stage` pour les espèces de Dresseur ; l'adversaire est l'artwork officiel). Les 12 rejoignent la liste du futur lot de **dos peints** (chantier d'art du combat, hors J12).
 - Tests : `test_pokemon_data` (50 espèces, learnsets résolus), `test_pokedex_library`, `test_tm_compatibility`, `test_trainer_library` (Dresseurs du J12 valides).
 
@@ -409,7 +621,7 @@ Règle d'en-tête de `game/systems/save/save_system.gd` : incrémenter `VERSION`
 | Compagnon | `companion` (J11) | inchangée |
 | Piège, Entrave, Destruction | **rien** : volatils de combat, l'autosave n'écrit jamais pendant un combat (`Boot._can_write` / `is_stable`) | — |
 
-Aucun champ ajouté ni transformé → **pas de version nouvelle** : le J12 écrit la version de `main` après le J11 (**v6**). Une build plus ancienne qui lirait une partie du J12 ne perd pas de champ ; elle écarterait les **valeurs** inconnues (espèce, capacité, objet) et l'a toujours fait en copiant l'original dans `save.json.rejected` (`Boot._keep_rejected_save`) — c'est le régime des J8 et J10, qui ont ajouté des espèces sans changer de version. **Garde** : toute tâche qui voudrait un champ nouveau (étape d'un événement en cours, compteur) s'arrête et revient à l'architecte (version + validation seule, règle 1).
+Aucun champ ajouté ni transformé → **pas de version nouvelle** : le J12 écrit la version de `main` après le J11 (**v6**, vérifié au T11 : `SaveSystem.VERSION = 6`, `Boot._can_write` / `is_stable` existent). La **v7** du J15 (Pension) est sur `jalon-15`, pas dans `main` : elle passera après le J12 (§1.2) ; si elle arrivait avant, le J12 suivrait `main` sans rien ajouter. Une build plus ancienne qui lirait une partie du J12 ne perd pas de champ ; elle écarterait les **valeurs** inconnues (espèce, capacité, objet) et l'a toujours fait en copiant l'original dans `save.json.rejected` (`Boot._keep_rejected_save`) — c'est le régime des J8 et J10, qui ont ajouté des espèces sans changer de version. **Garde** : toute tâche qui voudrait un champ nouveau (étape d'un événement en cours, compteur) s'arrête et revient à l'architecte (version + validation seule, règle 1).
 Test `test_save_j12` : partie construite au B2F (R3 battu, chercheur non) → `to_dict` → JSON → `load_dict` → mêmes drapeaux, Sac, `found_items`, moments, Pokémon (Grodoudou, Pierre Lune en moins), position ; `SaveSystem.VERSION` inchangée par le J12.
 
 ### 2.21 Budgets et mesures (T8, T9, QA)
@@ -417,11 +629,12 @@ Test `test_save_j12` : partie construite au B2F (R3 battu, chercheur non) → `t
 - ≤ 3 000 nœuds par carte (`NODE_BUDGET` des tests), mesuré **dès** la première construction de la Route 3 (§0.2 n° 19 ; parades : tri de visibilité de `DenseForest`, forêt plus aérée au cœur des masses, bosquets en grands modules).
 - Mémoire « carte seule + voisines » (`tools/measure_map_cache.gd`) : Route 3 (Argenta + 1F ; le Centre, intérieur, n'est pas préchargé), 1F (Route 3 + B1F + B2F), B2F (1F + sas). Si 1F dépasse **64 Mo** avec ses voisines : les étages ne préchargent que l'étage voisin par l'échelle la plus proche du point d'arrivée [D, décision de l'architecte notée] ; changement de carte ≤ 1,5 × celui de Jadielle.
 - fps : moyenne ≥ 58, creux ≥ 50 (Route 3, 1F, B2F avec ses halos et projecteurs) ; taille de l'APK notée.
+- **Références J11 dans la même session** (T11, §0.4 n° 12) : la clôture du J11 a relevé sur le S21 une `tex` de 118–135 Mo (Route 1, combat), au-dessus du budget indicatif de 64 Mo, et 48–49 fps en combat de Dresseur dans la Forêt de Jade. Chaque session téléphone du J12 mesure aussi la Route 1 (marche + un combat) sur le **même téléphone** : un écart du J12 se juge contre cette référence, pas contre le budget seul. Le budget « carte + voisines ≤ 64 Mo » reste mesuré par `tools/measure_map_cache.gd` (cache de cartes, Mac) ; la `tex` totale du téléphone est notée en information.
 
 ### 2.22 Départs de débogage et carte de QA (T15, T18, T21, T25, T28)
 
-- **Carte `qa_moves_j12`** (modèle `qa_status` du J11, tuiles provisoires) : herbes à table forcée (Nosferapti Nv. 22 Vampirisme / Onde Folie, Abo Nv. 20 Ligotage, Rondoudou Nv. 29 Entrave / Repos, Racaillou Nv. 21 Destruction — **QA seulement**, la vraie partie n'a aucun Racaillou sauvage ≥ 21), un Dresseur `smart` (Racaillou Destruction, Rondoudou Repos), gravats de test ; départ **`moves_qa`** (Racaillou N21 Destruction, Abo N20, Rondoudou N29, Nosferapti N22, remèdes, Potions). **Retirée au T28.**
-- Départs (`tools/debug_start/`, README complété) : `route_3` (sortie est d'Argenta, badge, équipe Nv. 14–18 [D] de fin de J10/J11) ; `mt_moon_center` ; `mt_moon_1f` ; `mt_moon_b1f` (avant R1) ; `mt_moon_b2f` (avant R3) ; `mt_moon_weak` (pour perdre contre R1 : reprise) ; `mt_moon_fossil` (R3 et chercheur battus, choix à faire) ; `moon_stone_qa` (Nidorina, Nidorino, Mélofée, Rondoudou, 2 Pierres Lune) ; `escape_rope_qa` (3 Cordes, 1F) ; `route_4` (sas).
+- **Carte `qa_moves_j12`** — modèle réel : **`qa_switch_j13`** du J13 (T11, §0.4 n° 4 ; la carte `qa_status` du J11 n'a jamais existé) : outil `tools/build_qa_moves_j12.gd` (copie de `tools/build_qa_switch_j13.gd`, `j13-t14` à `3d58fe6` : tuiles provisoires, herbes, un Dresseur), données `data/npcs/qa_moves_j12.json`, `data/trainers/qa_moves_j12.json`, `data/dialogues/qa_moves_j12.json` ; herbes de la carte, table **forcée par la clé `wild` du départ** (J11 ; aucune table de rencontres en données) ; `MapCatalog.QA_PREFIX` / `is_qa_map` **repris mot pour mot** du J13 ; exception datée dans `test_map_catalog.test_no_qa_map_is_shipped` ; tests de zones, de lumière et de dialogues qui ignorent les cartes `qa_` (comme le J13). Contenu : herbes à table fixe (Nosferapti Nv. 22 Vampirisme / Onde Folie, Abo Nv. 20 Ligotage, Rondoudou Nv. 29 Entrave / Repos, Racaillou Nv. 21 Destruction — **QA seulement**, la vraie partie n'a aucun Racaillou sauvage ≥ 21), un Dresseur `smart` (Racaillou Destruction, Rondoudou Repos). **Pas de gravats** (validés en 12B sur le vrai 1F). Départ **`moves_qa`** (Racaillou N21 Destruction, Abo N20, Rondoudou N29, Nosferapti N22, remèdes, Potions ; la table forcée compte aussi un Voltorbe Nv. 20 qui lance Sonicboom [D]). **Retirée au T28** (carte, données, outil, exception du test, départ).
+- Départs (`tools/debug_start/`, README complété ; clés du J11 disponibles : `wild`, `status_turns`, `companion`) : `route_3` (sortie est d'Argenta, badge, équipe Nv. 14–18 [D] de fin de J10/J11) ; `mt_moon_center` ; `mt_moon_1f` (avec `wild` + `terrain: rubble` pour forcer une rencontre de gravats, T20) ; `mt_moon_b1f` (avant R1) ; `mt_moon_b2f` (avant R3) ; `mt_moon_weak` (pour perdre contre R1 : reprise) ; `mt_moon_fossil` (R3 et chercheur battus, choix à faire) ; `moon_stone_qa` (Nidorina, Nidorino, Mélofée, Rondoudou, 2 Pierres Lune) ; `escape_rope_qa` (3 Cordes, 1F) ; `route_4` (sas). Un compagnon par départ de grotte (`companion`) pour 12B.
 
 ---
 
@@ -431,98 +644,126 @@ Branche d'intégration **`jalon-12`** depuis `main` (copie dédiée), une branch
 
 #### T0 — architecte : plan (fait)
 
-#### T1 — architecte : kit d'assets (série 14) — **maintenant**
+#### T1 — architecte : kit d'assets (série 14) — **maintenant** — **fait (2026-10-11, `j12-t1-kit`)** : 23 images + 3 conditionnels, fiche `docs/design/fiches-assets/serie-14-mont-selenite.md`
 - Fiche `docs/design/fiches-assets/serie-14-mont-selenite.md` (une fiche par asset du §1.4 C : taille, emprise, couche, ombre, références recadrées `REF_R3_*` / `REF_MS_*`) ; `tools/art/serie14.py` (`--prompts`, `--refs`, `--commandes`, `--planche`, `--manifeste` **préparé, non lancé**, `--controle`) ; prompts d'attente des 4 personnages ; planche `build/art/MS_KIT_v1.png` (1 case = 48 px, héros à l'échelle).
 - **CA** : chaque élément visible des deux vues validées a un asset (réutilisé, varié, nouveau) ou est abandonné explicitement ; aucun fichier de la liste §1.2 touché.
 
-#### T2 — constructeur-monde (Mac, Codex) : série 14 → **12.0-art** — **maintenant**, après T1
+#### T2 — constructeur-monde (Mac, Codex) : série 14 → **12.0-art** — **fait (2026-10-11, `j12-t2-generation`, validé par Kevin)**
 - `ART=/Users/kevinyankam/dev/kanto-2026/build/art python3 tools/art/serie14.py` (trois générations à la fois, corrections en `_r2`) ; repli si Codex refuse (Sbires Rocket, fossiles) : prompt collé dans l'app ChatGPT (précédent série 09). Planche de contact `build/captures/jalon12_assets/` → Kevin.
 - **CA** : images validées par Kevin ; journal dans la fiche ; ni manifeste ni scène.
 
-#### T3 — constructeur-monde (Mac) : planches Pokémon C-4 + lot parallèle → **12.0-art** — **maintenant**
+#### T3 — constructeur-monde (Mac) : planches Pokémon C-4 + lot parallèle → **12.0-art** — **fait (2026-10-11, `j12-t3-planches`)** ; intégration au T21
 - 11 planches repos + marche 4 directions (gabarit de la série 13 du J11, ancres : planche de la forme précédente et héros validé) ; Nosferapti en vol (ombre au sol par le moteur, comme Papilusion) ; planche de contact → Kevin. **CA** : planches validées ; aucune intégration au compagnon avant T21.
 
-#### T4 — constructeur-monde (Mac) : décors de combat → **12.0-art** — **maintenant**
+#### T4 — constructeur-monde (Mac) : décors de combat → **12.0-art** — **fait (2026-10-11, `j12-t4-decors`)**
 - `route_3_roche`, `mt_moon_galerie`, `mt_moon_chambre` (§2.18) par la chaîne CB.3. **CA** : validés par Kevin sur capture de combat Mac (`tools/capture_combat_cb3.sh`).
 
-#### T5 — Kevin : lot de textes (annexe A) — **maintenant**
+#### T5 — Kevin : lot de textes (annexe A) — **validé (2026-10-11, Q-3)**
 - **CA** : validé en une passe ; bloque les données de T12 et T18 (pas le code).
 
-#### T6 — constructeur-monde (Mac) : intégration de la série 14 — **maintenant**, après T2
+#### T6 — constructeur-monde (Mac) : intégration de la série 14 — **maintenant**, après T2 — **fait (2026-10-11, `j12-t6-integration`)** : 24 entrées du manifeste, 32 scènes d'objets, 4 apparences + 2 objets fixes, 4 sols, 4 icônes ; second passage sans changement ; détail dans le journal de la fiche
 - `serie14.py --manifeste` (entrées **en fin**), `preparer.py --source …` deux fois, règles `PaintedPropRules`, `build_painted_props.gd -- --nouveaux`, `build_character_frames.gd` (4 personnages, ajouts en fin), icônes `preparer_menu.py`. **CA** : second passage de `preparer.py` sans changement ; `test_painted_props` vert ; planche de contrôle relue.
 
-#### T7 — architecte : fondations de carte — **maintenant**
+#### T7 — architecte : fondations de carte — **fait** (2026-10-11, branche `j12-t7-fondations`, §9)
 - `OverworldTiles.Kind.RUBBLE` + donnée `rubble` + TileSet régénéré ; `PaintedGround` : textures réglables (exports `base_texture`, `r_texture`, `g_texture`, défauts = herbe, pavés, chemin : cartes existantes **inchangées**) ; `LightGlow` (+ table des types de halo en données) ; `CaveLibrary` + `data/world/caves.json` ; `tools/cave_map_kit.gd`.
 - Tests : `test_overworld_tiles`, `test_painted_ground` (défauts identiques), `test_light_glow` (réduction des animations), `test_cave_library`. **CA** : tests verts, import propre ; aucune carte existante modifiée (diff nul sur leurs `.tscn`).
 
-#### T8 — constructeur-monde : Route 3, Centre, sas, raccord d'Argenta — **maintenant**, après T6, T7
+#### T8 — constructeur-monde : Route 3, Centre, sas, raccord d'Argenta — **fait (2026-10-11, `j12-t8-route-3`, §9)**
 - §2.1, §2.14 (carte), §2.15 (carte), §2.17, §2.18 (`route_3_roche`) ; cases des PNJ, objets et caches **réservées** d'après la grille (aucune donnée de PNJ) ; `lighting.json`, `zones.json` (cartes, services ; descriptions de l'annexe A une fois validées, T5), `interiors.json`, `rest_points.json`.
 - Tests : `test_route_3` (grille de la scène = grille du plan ; critères de `plan_check_route_3.py` sur la vraie scène : D1/D2 inévitables par géométrie, rebords, raccords ; nœuds ≤ 3 000), `test_route_4`, `test_mt_moon_center`, `test_map_links`, `test_map_catalog`, `test_coming_soon` (sas), `test_map_light_profiles`, `test_pewter_city` (diff limité aux warps) ; captures `tools/capture_route_3.gd` (sortie, embranchement, pied de la montagne, Centre, entrée) relues contre la vue ; `[perf]` Mac et mémoire.
 - **CA** : tests verts, captures 2340 × 1080 relues ; budget de nœuds tenu.
 
-#### T9 — constructeur-monde : Mont Sélénite 1F / B1F / B2F — **maintenant**, après T6, T7
+#### T9 — constructeur-monde : Mont Sélénite 1F / B1F / B2F — **maintenant**, après T6, T7 — **fait (2026-10-11, `j12-t9-mont-selenite`)** : trois étages construits, lumière, échelles ; repli « à venir » vers la Route 3 et le sas tant que le T8 n'est pas fusionné ; détail au §9
 - §2.1, §2.2, §2.4 ; `tools/build_mt_moon.gd` ; gravats en tuiles `RUBBLE` ; halos ; profils `cave_*` ; décors `mt_moon_galerie` / `_chambre`.
 - Tests : `test_mt_moon_maps` (grilles, échelles, graphe connexe, retour à l'entrée de partout, cases `g` = tuiles `RUBBLE`, goulets d'une case listés pour le compagnon, nœuds ≤ 3 000) ; captures + `luminance_grotte.py` (§2.4).
 - **CA** : tests verts ; seuils de luminance tenus ; captures relues contre la vue (repères reconnaissables sans carte).
 
-#### T10 — architecte : simulation préparée — **maintenant**
+#### T10 — architecte : simulation préparée — **fait (2026-10-11, `j12-t10-simulation`)**
 - `tools/simulate_mt_moon.gd` (modèle `simulate_brock.gd`) : Route 3 (combats sauvages tirés dans la vraie table + Hugo, Léa), R1, R3, chercheur ; équipes « naturelles » et partie réelle de Kevin (sauvegarde fournie). Lancé au T26.
+- **Fait (2026-10-11, branche `j12-t10-simulation` depuis `jalon-12`)** : `tools/simulate_mt_moon.gd` (nouveau ; rien dans `game/` ni `data/`, aucun fichier du §1.2) lit un **scénario JSON** : `tools/sim/mt_moon_scenario.json` (valeurs du dossier 15 : tables Route 3 / 1F / B1F / B2F, D1–D6, R1–R3, chercheur, au format de `data/encounters/` et `data/trainers/` ; parcours de la grille : Hugo, H2/H3 4 cases, Léa, H4 4 cases, Centre, 1F-G1 3 cases, R1, B2F-G1 5 cases, R3, chercheur ; D4, D5, D6, R2 en détours ; 5 variantes avec / sans Centre, Potions, Antidote, fuite) et `mt_moon_scenario_demo.json` (réduit, espèces existantes). Vrai moteur ([Battle], IA, XP, évolutions), une graine = une partie, compteur de pas calmes commun ; joueurs `naif` / `attentif` repris du J10. Rapport : arrivée, défaites par étape, combats, victoires, fuites, tours, K.O., objets consommés, PV, niveaux. **Toute espèce, capacité ou objet absent des données est sauté** (message « SAUTÉ … », liste finale des identifiants manquants, **code 3**) ; scénario invalide → code 1 ; `--valider` (vérifie sans combattre), `--save` (équipe et Sac d'une sauvegarde), `--donnees` (Dresseurs et tables de `data/` à la place du scénario, pour le T26), `--seeds`, `--equipe`, `--variante`. Test `tests/integration/test_simulate_mt_moon.gd` (5, processus à part) + fixtures `tests/fixtures/sim/`. Au T26 : `--donnees --save <partie de Kevin>`.
 
-#### T11 — architecte : alignement — **après la clôture du J11**
-- Fusionner `main` (J11 terminé) dans `jalon-12` ; réaligner §0, §2.9, §2.10, §2.20 sur le code réel (`status_turns`, genres d'effets, états du sélecteur, toast « obtenue », API du compagnon, version) ; écarts notés ici (§0.4 à créer).
+#### T11 — architecte : alignement — **fait (2026-10-13, `j12-t11-alignement`)**
+- `main` (J11 terminé, `267fcf1`) fusionné dans `jalon-12` (`1a3cad5`) ; plan réaligné sur le code réel : §0.3 (colonne « Réalité »), §0.4 (écarts et décisions), §1.2 (branches et conflits avec J13–J15), §2.x (noms, signatures, emplacements), tâches, critères, défauts. Détail au §9.
 
-#### T12 — architecte : données — après T11, T5
-- §2.19, §2.10 (21 capacités, activation de `bind`, `fire_spin`, `self_destruct`, `explosion`), objets (`escape_rope`, `moon_stone`, `dome_fossil`, `helix_fossil`, `tm01`), Pokédex (annexe A). **CA** : tests verts ; aucune carte touchée.
+#### Ordre et parallélisme à partir du T12 (T11)
 
-#### T13 — architecte : moteur de combat — après T12
-- §2.10 (moteur, IA, événements, textes). **CA** : tests verts ; Pierre et le rival inchangés (`test_brock_sequence`, `test_rival_route22`) ; `tools/simulate_brock.gd` relancé : résultats identiques à ceux du J11.
+Quatre chaînes. Chaque flèche est une dépendance de **fichiers** ou de **données** (pas seulement
+d'ordre) ; deux tâches en parallèle ne touchent pas les mêmes fichiers (vérifié sur les listes
+ci-dessous). Les sessions téléphone restent **une à la fois, dans l'ordre** 12.0 → 12A → 12B →
+12C → 12D (règle 1) ; le code peut prendre de l'avance sur elles.
 
-#### T14 — ui-mobile : interface de combat — après T13
-- §2.10 (interface). **CA** : captures relues (capacité bloquée, ligoté, Fée) ; `game/ui/battle/` seul touché avec `ui_tokens.gd` (fin de fichier).
+```
+A combat  : T12 ─→ T13 ─→ T14 ∥ T15 ─→ T16 (téléphone 12.0)
+B monde   : T17 (∥ T12) ─→ T18 (après T12) ─→ T19 (téléphone 12A, après T16)
+C grotte  : T20 (après T12 ; ∥ T13, T17) ─→ T21 (après T12, T20) ─→ T22 (téléphone 12B, après T19)
+D Rocket  : T23 (après T20) ─→ T24 ─→ T25 (après T17, T21, T23) ─→ T26 ─→ T27 (téléphone 12C, après T22) ─→ T28 ─→ T29
+```
 
-#### T15 — constructeur-monde : carte `qa_moves_j12` + départ — après T13
+**Tout de suite** : **T12 ∥ T17** (architecte, deux branches : données contre code du monde, aucun
+fichier commun). Dès T12 fusionné : **T13 ∥ T20** (combat contre grotte, aucun fichier commun) et
+**T18** (constructeur-monde, dès que T17 l'est aussi). T23 attend T20 (mêmes fichiers :
+`item_data.gd`, `item_library.gd`, `menu_director.gd`, `bag_query.gd`, `boot.gd`).
+
+#### T12 — architecte : données — après T11 (T5 validé) — **fait (2026-10-13, `j12-t12-donnees`, §9)**
+- §2.19 (12 espèces dans `kanto_mt_moon.json`, Pokédex, sprites provisoires, compatibilités CT régénérées), §2.10 (21 capacités dans `moves/mt_moon.json` : les genres nouveaux en `pending_effects` — `drain`, `trap`, `disable`, `rest`, `fixed_value` — activés au T13 ; les 5 déjà copiées par le J13 à l'identique ; description de Destruction remplacée, n° 45), objets dans `data/items/mt_moon.json` (`escape_rope`, `moon_stone`, `dome_fossil`, `helix_fossil` — sans `field_use` ni `obtained`, champs créés aux T20 / T23 — et `tm01`), Pokédex (annexe A). Fichiers : données seulement + `gen_placeholder_battlers.gd` + tests de données.
+- **CA** : tests verts ; aucune carte touchée ; `--valider` de `tools/simulate_mt_moon.gd` ne signale plus d'espèce manquante (code 0 ou seulement des capacités en attente).
+
+#### T13 — architecte : moteur de combat — après T12 — **fait (2026-10-13, `j12-t13-combat`, §9)**
+- §2.10 (moteur, IA, événements, textes ; alignement §0.4 n° 1–3, 8, 11) : `move_effect.gd`, `pokemon_data.gd` (`_EFFECT_KEYS`), `battler.gd`, `battle.gd`, `battle_ai.gd`, `battle_event.gd`, `battle_text.gd`, `status_rules.gd` (`apply_rest`), `messages.json` ; activation (retrait des `pending_effects`) de `leech_life`, `wrap`, `bind`, `fire_spin`, `disable`, `rest`, `self_destruct`, `explosion`, `sonic_boom`.
+- **CA** : tests verts ; Pierre et le rival inchangés (`test_brock_sequence`, `test_rival_route22` — instable connu sous charge, relancé seul : §0.4 n° 12) ; `tools/simulate_brock.gd` relancé : résultats identiques à la référence du J11 (`jalon-11.md` §8, « Équilibrage de Pierre ») — l'équipe de Pierre a ses capacités fixées (pas d'Étreinte ni de Destruction) ; statuts du J11 et Patience inchangés.
+
+#### T14 — ui-mobile : interface de combat — après T13 (∥ T15)
+- §2.10 (interface) : carte de capacité « BLOQUÉE » grisée et non touchable (`Battle.get_disabled_move()`), raison « Impossible de changer » sur les cartes de l'équipe (`Battle.is_player_trapped()`), fuite refusée affichée sans action (`flee_failed`), icône **Fée** (`TypeBadge.ICONS`, nouvelle icône SVG). **CA** : captures relues (capacité bloquée, ligoté, Fée) ; `game/ui/battle/`, `game/ui/components/type_badge.gd`, `battle_director.gd` (refus avant soumission) et `ui_tokens.gd` (fin de fichier) seuls touchés.
+
+#### T15 — constructeur-monde : carte `qa_moves_j12` + départ — après T13 (∥ T14) — **fait (2026-10-13, `j12-t15-qa`, §9)**
+- §2.22 (modèle `qa_switch_j13` du J13, `MapCatalog.is_qa_map` repris mot pour mot). **CA** : tests verts (`test_qa_moves_j12` sur le modèle de `test_qa_switch_j13`) ; capture relue.
+
 #### T16 — qa-mobile : **session 12.0** → Kevin
-- Départ `moves_qa` : chaque effet vu (drain, piège et ses refus, Entrave et sa fin, Repos et réveil, Destruction, double K.O.), messages lisibles, IA ; espèces dans le Pokédex. **CA** : rapport `build/qa/jalon12_t16/` ; validation de Kevin.
+- **VALIDÉ par Kevin le 2026-10-13** (session partielle ; non vus reportés en 12A / 12B, voir `etat-projet.md`).
+- Départ `moves_qa` : chaque effet vu (drain, piège et ses refus, Entrave et sa fin, Repos et réveil, Destruction, double K.O., Sonicboom), messages lisibles, IA ; espèces dans le Pokédex ; mesure de référence Route 1 (§2.21). **CA** : rapport `build/qa/jalon12_t16/` ; validation de Kevin.
 
-#### T17 — architecte : briques du monde — après T11
-- §2.8 (`unless_flags`), §2.11 (`rematch`, `leave`, `lost_<id>`). **CA** : tests verts ; Dresseurs du J9 et du J10 inchangés.
+#### T17 — architecte : briques du monde — après T11 (∥ T12) — **fait (2026-10-13, `j12-t17-monde`)** : détail au §9
+- §2.8 (`unless_flags` : `interact_point.gd`, `interaction.gd`, `interaction_controller.gd`), §2.11 (`rematch`, `leave`, `lost_<id>` : `npc_spec.gd`, `npc_roster.gd`, `trainer_encounter.gd`). **CA** : tests verts ; Dresseurs du J9 et du J10 inchangés (`test_trainer_encounter`, Dresseurs de la forêt, Liam).
 
-#### T18 — constructeur-monde : la vie de la Route 3 (12A) — après T12, T17, T8
+#### T18 — constructeur-monde : la vie de la Route 3 (12A) — après T12, T17 (T8 fait) — **fait (2026-10-13, `j12-t18-route-3-vie`, §9)**
 - PNJ, Dresseurs, Pokémon d'ambiance, objets visibles et caché, panneaux, rencontres, déclencheur `route_3_entered`, objectifs, Centre (PNJ), départs `route_3`, `mt_moon_center`. Tests `test_route_3_life`, `test_route_3_trainers`, `test_hidden_items` (Route 3). **CA** : tests verts, captures relues.
 
-#### T19 — qa-mobile : **session 12A** → Kevin
-- Vraie partie depuis Argenta (badge) : garde, Route 3 entière, D1/D2 inévitables, D3–D6, Rondoudou, Réveil caché (bouton, toast, absent ensuite), Centre (soin, toast « Mont Sélénite », point de repos), fps / mémoire / durée de traversée.
+#### T19 — qa-mobile : **session 12A** → Kevin — après T18 et la validation de 12.0
+- **VALIDÉ par Kevin le 2026-10-14** (session partielle ; bugs et non vus : voir `etat-projet.md`).
+- Vraie partie depuis Argenta (badge) : garde, Route 3 entière, D1/D2 inévitables, D3–D6, Rondoudou, Réveil caché (bouton, toast, absent ensuite), Centre (soin, toast « Mont Sélénite », point de repos), fps / mémoire (avec la référence Route 1, §2.21) / durée de traversée.
 
-#### T20 — architecte : moteur de la grotte — après T11
-- §2.5 (grille, directeur, `RubbleBurst`), §2.6 (Corde : `field_use`, `FieldItemRules`, parcours du `MenuDirector`, `BagQuery`), §2.2 (placement du compagnon hors warp), §2.3 (contextes du compagnon). **CA** : tests verts.
+#### T20 — architecte : moteur de la grotte — après T12 (∥ T13, T17) — **fait (2026-10-13, `j12-t20-grotte`, §9)**
+- §2.5 (grille, directeur, `RubbleBurst`, `override_table` + `terrain` de la clé `wild` ; `EncounterTable.TERRAINS` et les tables `mt_moon.json` faits au T12), §2.6 (Corde : `field_use`, `FieldItemRules`, `field_item_requested`, `BagQuery`), §2.2 (placement du compagnon hors warp dans `CompanionController`), §2.3 (`cave` dans `CompanionCatalog.CONTEXTS` et `CompanionRules.CONTEXT_LINES`), §2.4 (`LightGlow.set_reduce_motion` branché dans `Boot._apply_settings`). Fichiers : `game/pokemon/encounters/*`, `grid_world.gd`, `map.gd`, `item_data.gd`, `item_library.gd`, `field_item_rules.gd`, `menu_director.gd`, `bag_query.gd`, `boot.gd`, `debug_start.gd`, `companion_*.gd`, `game/world/rubble/*`. **CA** : tests verts ; herbes et compagnon du J11 inchangés.
 
-#### T21 — constructeur-monde (+ ui-mobile en relecture) : la vie de la grotte (12B) — après T20, T9, T3
-- Rencontres `mt_moon.json`, randonneur, panneau, caisses et lampe (examens), Corde au sol, stock d'Argenta, `companions.json` (planches C-4 et lot parallèle validés), phrase « grotte », départs `mt_moon_*`, `escape_rope_qa`. Tests `test_mt_moon_life`, `test_escape_rope`, `test_hidden_items` (1F, B2F sans contenu de 12C). **CA** : tests verts, captures.
+#### T21 — constructeur-monde (+ ui-mobile en relecture) : la vie de la grotte (12B) — après T20, T12 (T9, T3 faits) — **fait (2026-10-13, `j12-t21-grotte-vie`, §9)**
+- Rencontres `mt_moon.json`, randonneur, panneau, caisses et lampe (examens), Corde au sol, stock d'Argenta, intégration des **11 planches** de T3 (manifeste, `LOOKS`, `companions.json` : espèces + `contexts` → `cave` ; conflit possible avec `j11-pikachu-compagnon`, garder les deux côtés), phrase « grotte » (`companion.json`), départs `mt_moon_*`, `escape_rope_qa`. Tests `test_mt_moon_life`, `test_escape_rope`, `test_hidden_items` (1F, B2F sans contenu de 12C). **CA** : tests verts, captures.
 
-#### T22 — qa-mobile : **session 12B** → Kevin
-- Lisibilité **luminosité par défaut**, repères, échelles, gravats (rencontres, intro), couloirs calmes, Corde (refus dehors, retour devant l'entrée, Sac), compagnon (galeries, goulets, échelles), sauvegarde / reprise dans chaque étage, fps, mémoire.
+#### T22 — qa-mobile : **session 12B** → Kevin — après T21 et la validation de 12A
+- Lisibilité **luminosité par défaut**, repères, échelles, gravats (rencontres, intro), couloirs calmes, Corde (refus dehors, retour devant l'entrée, Sac), compagnon (galeries, goulets, échelles : jamais posé sur l'échelle), halos coupés par « Réduire les animations », sauvegarde / reprise dans chaque étage, fps, mémoire.
 
-#### T23 — architecte : moteur de l'événement et de la pierre — après T11
-- §2.9 (`StoneUse`, `play_item`, `cancellable`, `evolution_applied`), §2.13 (`confirm_cutscene`, étape `moment`, type `fossil`). **CA** : tests verts ; évolutions de fin de combat inchangées.
+#### T23 — architecte : moteur de l'événement et de la pierre — après T20 (mêmes fichiers) — **fait (2026-10-13, `j12-t23-evenement`, §9)**
+- §2.9 (`StoneUse`, `evolution_item_requested`, `play_item`, `cancellable` dans le candidat et la vue, `evolution_applied`, retrait de la pierre par Boot ; `field_use` de `moon_stone`), §2.13 (`confirm_cutscene`, étape `moment`, type `fossil`, champ `obtained` + données des fossiles). **CA** : tests verts ; évolutions de fin de combat inchangées (ARRÊTER, retour Android) ; toast des CT inchangé.
 
-#### T24 — ui-mobile : Sac et écran d'évolution — après T23
-- UTILISER des objets AVENTURE, sélecteur COMPATIBLE / INCOMPATIBLE pour la pierre, bandeau de refus de la Corde, écran d'évolution sans ARRÊTER, ligne de la frise `fossil` ; captures.
+#### T24 — ui-mobile : Sac et écran d'évolution — après T23 — **fait (2026-10-13, `j12-t24-sac-evolution`, §9)**
+- UTILISER des objets AVENTURE (seulement avec `field_use`), sélecteur COMPATIBLE / INCOMPATIBLE pour la pierre (`show_reason`), bandeau de refus de la Corde, écran d'évolution sans ARRÊTER, ligne de la frise `fossil` ; captures.
 
-#### T25 — constructeur-monde : Team Rocket, chercheur, fossiles, Pierres Lune, CT01 (12C) — après T17, T23, T21
+#### T25 — constructeur-monde : Team Rocket, chercheur, fossiles, Pierres Lune, CT01 (12C) — après T17, T21, T23 — **fait (2026-10-14, `j12-t25-rocket`, §9)**
+- **Décision de Kevin (2026-10-13)** : refaire le **Fossile Dôme posé sur la dalle** (`object/fossil_dome`, planche `WORLD_PROP_DALLE_FOSSILES_PLANCHE`, encore en « panier tressé ») d'après l'icône du Sac validée (`UI_OBJETS_J12_PLANCHE_r3` : carapace de pierre à arête centrale), pour que la dalle et le Sac correspondent.
 - §2.11–§2.13 ; Pierre Lune visible (B1F) et cachée (B2F), CT01 ; départ `mt_moon_fossil`, `moon_stone_qa`. Tests `test_mt_moon_rocket`, `test_mt_moon_fossil`, `test_moon_stone`, `test_save_j12`.
 
-#### T26 — architecte : équilibrage — après T25
-- `simulate_mt_moon.gd` : taux de victoire et durées (R1 ≈ 100 s, R3 ≈ 150 s, chercheur ≈ 130 s estimés par la grille) ; **information pour Kevin**, aucune donnée changée sans lui.
+#### T26 — architecte : équilibrage — après T25 — **fait (2026-10-14, `j12-t26-equilibrage`, §9)**
+- `simulate_mt_moon.gd -- --donnees --save <partie de Kevin>` : taux de victoire et durées (R1 ≈ 100 s, R3 ≈ 150 s, chercheur ≈ 130 s estimés par la grille) ; **information pour Kevin**, aucune donnée changée sans lui. **À fournir par Kevin** : sa sauvegarde v6 de fin de J11.
+- **Réalisé sans la sauvegarde** (non fournie) sur des équipes « naturelles » par défaut, avec une cible par défaut (règle 4) et des ajustements limités aux valeurs [D] du dossier (demande de la session) : **Rattatac de R3 N15 → N13, Voltorbe et Smogo du chercheur N13 → N12** ; détail et chiffres au §9.
 
-#### T27 — qa-mobile : **session 12C** → Kevin
-- R1 (« Hé, toi ! »), R2, R3 (3 bulles, décor de la chambre), départs et absence au retour, défaite → reprise, chercheur (méprise, combat, partage), choix NON puis OUI (définitif), toast, Grand moment dans l'écran Dresseur, Pierre Lune visible et cachée, évolution sans ARRÊTER, CT01, reprise après fermeture à chaque étape.
+#### T27 — qa-mobile : **session 12C** → Kevin — après T24, T25 et la validation de 12B
+- R1 (« Hé, toi ! »), R2, R3 (3 bulles, décor de la chambre), départs et absence au retour, défaite → reprise, chercheur (méprise, combat, partage), choix NON puis OUI (définitif), toast « … obtenu », Grand moment dans l'écran Dresseur, Pierre Lune visible et cachée, évolution sans ARRÊTER, CT01, reprise après fermeture à chaque étape.
 
-#### T28 — constructeur-monde puis qa-mobile : fin du J12 (12D)
-- Sas (panneau, `route_4_reached`), objectifs, **retrait de `qa_moves_j12`** et de son départ ; README des départs.
-- QA finale (qa-mobile, **vraie partie de Kevin**, sans drapeau de débogage) : Argenta → Route 3 → Centre → grotte → événement → sas → « AZURIA — À venir » ; sauvegarde et reprise dans la grotte ; mesures. **CA** : rapport `build/qa/jalon12_t28/` ; validation de Kevin ; fusion de `jalon-12` dans `main` (copie d'intégration ; `project.godot` et filtre d'export vérifiés).
+#### T28 — constructeur-monde puis qa-mobile : fin du J12 (12D) — **partie code faite (2026-10-14, `j12-t28-fin`, §9)** ; reste la QA finale
+- Sas (panneau, `route_4_reached`), objectifs, **retrait de `qa_moves_j12`** (carte, données `qa_*`, outil, exception de `test_no_qa_map_is_shipped`, départ `moves_qa`) ; README des départs. `MapCatalog.is_qa_map` reste (le J13 s'en sert).
+- QA finale (qa-mobile, **vraie partie de Kevin**, sans drapeau de débogage) : Argenta → Route 3 → Centre → grotte → événement → sas → « AZURIA — À venir » ; sauvegarde et reprise dans la grotte ; mesures. **CA** : rapport `build/qa/jalon12_t28/` ; validation de Kevin ; fusion de `jalon-12` dans `main` (copie d'intégration ; `project.godot` et filtre d'export vérifiés) ; **prévenir les sessions J13, J14, J15** (note dans `etat-projet.md`) : leur prochaine fusion de `main` apporte le J12.
 
-#### T29 — architecte : clôture
-- `etat-projet.md`, roadmap ; passation au J13 : remplacement du sas par la Route 4 (identifiant `route_4`, spawn `from_mt_moon` (3, 6), repère de coordonnées du sas), décors de combat de la Route 4, dos peints des 12 espèces, sons d'accroche (`rubble_sound_requested`).
+#### T29 — architecte : clôture — **fait (2026-10-14, `j12-t29-cloture`, §10)** ; reste la validation de Kevin et la fusion dans `main`
+- `etat-projet.md`, roadmap ; passation au J13 : remplacement du sas par la Route 4 (identifiant `route_4`, spawn `from_mt_moon` (3, 6), repère de coordonnées du sas), décors de combat de la Route 4, dos peints des 12 espèces, sons d'accroche (`rubble_sound_requested`) ; liste des noms livrés contre les noms cités par les plans des J13–J15 (§1.2 n° 2).
 
 ---
 
@@ -530,15 +771,15 @@ Branche d'intégration **`jalon-12`** depuis `main` (copie dédiée), une branch
 
 **12.0-art** — Kevin valide les planches de contact (décors, personnages, Pokémon, icônes, décors de combat) ; chaque asset a sa fiche ; aucun Pokémon sans planche validée dans `companions.json`.
 
-**12.0** — chaque capacité ajoutée a son effet ou sa mention « Sans effet dans le moteur actuel. » ; drain plafonné et annoncé ; piège : 4–5 tours, ⅛ par tour, fuite et changement refusés avec leur texte, libération ; Entrave : 4 tours, capacité grisée et non touchable, fin annoncée, échec annoncé, IA qui ne la choisit pas ; Repos : PV pleins, manque exactement 2 tours, échec à PV pleins ; Destruction : K.O. du lanceur même s'il rate, double K.O. final perdu par le lanceur ; statuts du J11 et poison du J9 inchangés ; 12 espèces au Pokédex (Fée visible) ; ≥ 55 fps en combat ; tests verts, import propre.
+**12.0** — chaque capacité ajoutée a son effet ou sa mention « Sans effet dans le moteur actuel. » ; drain plafonné et annoncé ; piège : 4–5 tours, ⅛ par tour, fuite et changement refusés avec leur texte, libération ; Entrave : 4 tours, capacité grisée et non touchable, fin annoncée, échec annoncé, IA qui ne la choisit pas ; Repos : PV pleins, manque exactement 2 tours, échec à PV pleins ; Destruction : K.O. du lanceur même s'il rate, double K.O. final perdu par le lanceur ; Sonicboom : 20 PV fixes ; statuts du J11, Patience et poison du J9 inchangés ; 12 espèces au Pokédex (Fée visible) ; ≥ 55 fps en combat (jugé contre la référence J11 relevée dans la même session, §2.21) ; tests verts, import propre.
 
 **12A** — raccord Argenta ↔ Route 3 sur les trois rangées (et garde inchangé avant le badge) ; **D1 et D2 impossibles à contourner**, D3–D6 évitables sur leur chemin ; récompenses du §3.2 ; rencontres H1–H4 (table, Rondoudou vu) ; 3 objets visibles ; **Réveil caché** : rien d'affiché avant d'être face à l'indice, toast, plus rien ensuite (même après rechargement) ; Centre : soin, toast « Point de repos enregistré — Mont Sélénite », défaite sur la Route 3 → réveil au Centre ; panneaux ; objectif « traverser le Mont Sélénite. » ; traversée directe mesurée (grille : ≈ 5 min 46 s avec Hugo et Léa) ; ≥ 58 fps moyens, creux ≥ 50 ; nœuds ≤ 3 000.
 
-**12B** — sur le téléphone **sans augmenter la luminosité** : chemins, parois, échelles, gravats et personnages distinguables dans les trois étages ; repères reconnus (colonne du carrefour, camp, éclats, mare, lampes) ; échelles dans les deux sens, fondu comme une porte ; rencontres **seulement** sur les gravats, intro éboulis ≤ 2 s ; couloirs calmes ; **Corde** : refusée sur la Route 3 / à Argenta / au Centre (texte), acceptée dans les trois étages → devant l'entrée côté Route 3 tourné ↓, consommée, ni soin ni point de repos ; achat à Argenta 550 ₽ ; compagnon visible dans les galeries, masqué dans les goulets puis de retour, rentré au Centre, phrase « grotte » ; **reprise d'une partie quittée dans chaque étage** (position, objets, Dresseurs, compagnon) ; luminance Mac tenue ; fps, mémoire « carte + voisines », changement d'étage ≤ 1,5 × Jadielle.
+**12B** — sur le téléphone **sans augmenter la luminosité** : chemins, parois, échelles, gravats et personnages distinguables dans les trois étages ; repères reconnus (colonne du carrefour, camp, éclats, mare, lampes) ; échelles dans les deux sens, fondu comme une porte ; rencontres **seulement** sur les gravats, intro éboulis ≤ 2 s ; couloirs calmes ; **Corde** : refusée sur la Route 3 / à Argenta / au Centre (texte), acceptée dans les trois étages → devant l'entrée côté Route 3 tourné ↓, consommée, ni soin ni point de repos ; achat à Argenta 550 ₽ ; compagnon visible dans les galeries, masqué dans les goulets puis de retour, **jamais posé sur une échelle** à l'arrivée, rentré au Centre, phrase « grotte » ; halos sans vacillement avec « Réduire les animations » ; **reprise d'une partie quittée dans chaque étage** (position, objets, Dresseurs, compagnon) ; luminance Mac tenue ; fps, mémoire « carte + voisines », changement d'étage ≤ 1,5 × Jadielle.
 
 **12C** — R1 et R3 inévitables, R2 évitable ; « Hé, toi ! Ce passage est interdit. Fais demi-tour. » ; après chaque défaite d'un Sbire : réplique, départ, absence au retour et au rechargement ; défaite du joueur → Centre → réplique de reprise ; R3 : 3 bulles au plus, décor « chambre des fossiles » ; chercheur seulement après R3 : méprise, combat inévitable, partage ; **choix du fossile définitif** (NON ne fait rien ; OUI → objet clé, toast, l'autre disparaît, aucun moyen de l'avoir ensuite) ; **Grand moment** unique dans l'écran Dresseur ; Pierre Lune visible ramassée, cachée trouvée ; Sac → Pierre Lune → COMPATIBLE / INCOMPATIBLE → évolution **sans ARRÊTER**, retour Android sans effet, pierre consommée une fois ; CT01 apprise (COMPATIBLE / INCOMPATIBLE du J11) ; reprise après fermeture à chaque étape de l'événement sans rien rejouer ni perdre.
 
-**12D** — sas : panneau, raccord « AZURIA — À venir » (build de développement), retour par l'échelle ; objectif « continuer vers Azuria. » ; carte de QA retirée ; **vraie partie de Kevin** Argenta → sas sans régression (J1–J11 sur les points de contrôle) ; sauvegarde relue par l'APK final (version inchangée) ; `tools/test.sh` vert, import propre ; budgets tenus.
+**12D** — sas : panneau, raccord « AZURIA — À venir » (build de développement), retour par l'échelle ; objectif « continuer vers Azuria. » ; carte de QA retirée (carte, données `qa_*`, outil, exception du test ; `MapCatalog.is_qa_map` gardé pour le J13) ; **vraie partie de Kevin** Argenta → sas sans régression (J1–J11 sur les points de contrôle) ; sauvegarde relue par l'APK final (version inchangée : v6, ou celle de `main` au moment de la fusion) ; aucun nom du §1.2 n° 2 changé sans note ; `tools/test.sh` vert, import propre ; budgets tenus.
 
 ---
 
@@ -546,8 +787,10 @@ Branche d'intégration **`jalon-12`** depuis `main` (copie dédiée), une branch
 
 | Risque | Effet | Parade |
 |---|---|---|
-| **Le J11 tarde** (11.0 → 11D restent à faire) | presque tout le J12 attend | « maintenant » = art, cartes et fondations sans moteur (§1.2) ; `jalon-12` prête à recevoir les données le jour de la clôture |
-| **Le J11 livre autre chose que son plan** (compteur de sommeil, genres d'effets, toast, sélecteur, compagnon) | Repos, pierre, CT01, grotte désalignés | T11 réaligne ; §0.3 (repli par livraison) |
+| ~~Le J11 tarde~~ | — | **levé** : J11 terminé et fusionné le 2026-10-13 |
+| ~~Le J11 livre autre chose que son plan~~ | — | **traité au T11** : §0.3 (colonne « Réalité »), §0.4 |
+| **J13, J14, J15 avancent en parallèle sur les mêmes fichiers** (combat, dialogues, scènes, Sac, Boot, données uniques) | conflits à la fusion ; noms du J12 attendus par leurs plans | le J12 fusionne **le premier** dans `main` ; ajouts en fin, données dans des fichiers à part, noms figés (§1.2) ; tout écart noté dans `etat-projet.md` |
+| **Mémoire et fps déjà tendus à la fin du J11** (`tex` 118–135 Mo, forêt 48–49 fps en combat sur le S21) | un écart du J12 mal attribué | référence J11 relevée dans chaque session téléphone (§2.21) ; budget « carte + voisines » mesuré à part |
 | **Grotte illisible sur le téléphone** | critère central de 12B raté | lumière peinte d'abord, seuils de luminance mesurés sur Mac (T9), profils réglables en données, halos ; essai téléphone dès que T9 est prêt (capture, pas validation) |
 | **Budget de nœuds de la Route 3** (82 × 38, forêt) | fps, budget dépassé | mesure au premier passage de T8 ; parades §2.21 |
 | **Mémoire des étages** (1F précharge trois cartes) | creux, changements lents | mesure (§2.21) ; préchargement réduit (défaut noté) |
@@ -566,24 +809,29 @@ Branche d'intégration **`jalon-12`** depuis `main` (copie dédiée), une branch
 | Sujet | Défaut |
 |---|---|
 | Validations | 12.0-art sur planches de contact ; 5 sessions téléphone (12.0, 12A, 12B, 12C, 12D) |
-| Branches | `jalon-12` depuis `main`, tâches « maintenant » sur fichiers nouveaux ou hors J11 / OUV.3 ; fusion de `main` après le J11 au T11 |
+| Branches | `jalon-12` depuis `main` ; `main` (J11 terminé) fusionné au T11 (`1a3cad5`) ; `jalon-12` ne fusionne que `main` et entre dans `main` **avant** les J13–J15 ; ajouts en fin, noms figés (§1.2) |
+| Fichiers de données | nouveautés à part : `species/kanto_mt_moon.json`, `moves/mt_moon.json`, `items/mt_moon.json` ; `tm_compatibility.json` régénéré, jamais fusionné à la main |
 | Identifiants | `route_3`, `mt_moon_center`, `mt_moon_1f`, `mt_moon_b1f`, `mt_moon_b2f`, `route_4` ; Dresseurs `route_3_*`, `mt_moon_rocket_1/2/3`, `mt_moon_researcher` ; spawns `_n/_c/_s`, `_w/_e` |
 | Catégorie grotte | `interior = false` + `data/world/caves.json` (aucun champ de scène) |
 | Échelles | warps `STEP_ON` sans direction, orientation opposée à l'échelle, compagnon jamais placé sur un warp |
 | Gravats | tuile `RUBBLE` ; taux 25, rampe 15 → 20, compteur de pas calmes commun avec les herbes ; intro éboulis ≈ 0,6 s + demi-tour |
 | Lumière | profils `cave_1f` > `cave_b1f` = `cave_b2f` ; halos additifs générés (≤ 16 par étage, alpha ≤ 0,35), vacillement coupé par « Réduire les animations » ; aucune `Light2D` ; seuils Mac : luminance sol ≥ 0,22, sol / paroi ≥ 2,0 |
 | Corde Sortie | AVENTURE, 550 ₽ à Argenta sans condition, 1 au 1F ; vers `route_3` / `from_mt_moon_w` tourné ↓ ; refus dans le bandeau du Sac |
-| Pierre Lune | AVENTURE (« OBJETS » n'existe pas), jamais vendue ; K.O. compatible ; retour au monde après l'évolution |
+| Pierre Lune | AVENTURE (« OBJETS » n'existe pas), jamais vendue ; K.O. compatible ; retour au monde après l'évolution ; `StoneUse.Check` à deux états ; `cancellable` vrai par défaut ; pierre retirée par Boot dans `evolution_applied` |
 | Objets cachés | point d'examen sur la case-indice, disparaît une fois trouvé ; aucune phrase, toast standard ; EXAMINER face à l'indice (Q-2) |
-| Sbires | départ : chemin `leave` puis fondu 0,2 s, sur place si impossible ; reprise par `lost_<id>` |
+| Sbires | départ : cases `leave` relatives au poste (0 à 4, chemin calculé) puis fondu 0,2 s, sur place si `[]` ou injoignable ; `leave` exige `unless beaten_<id>` ; reprise par `lost_<id>` (posé seulement si `rematch` existe) |
 | Chercheur | déclencheur au bas du couloir (25..26, 27) ; s'approche du joueur ; se range en (15, 30) |
-| Fossiles | deux objets sur la dalle, choix par EXAMINER ; toast « <fossile> obtenu » ; drapeaux `mt_moon_fossil_chosen`, `mt_moon_got_<fossile>` |
-| Effets de capacités | drain ½ (≥ 1) ; piège 4–5 tours, ⅛, après poison et Vampigraine ; Entrave 4 tours, échec sans capacité précédente ; Repos : manque 2 tours ; Destruction : K.O. même en ratant, double K.O. perdu par le lanceur ; IA `smart` : Destruction à ≤ ¼ PV |
+| Fossiles | deux objets sur la dalle, choix par EXAMINER ; toast « <fossile> » / « obtenu » par le champ d'objet `obtained` (forme des CT) ; drapeaux `mt_moon_fossil_chosen`, `mt_moon_got_<fossile>` |
+| Effets de capacités | drain ½ (≥ 1) ; piège 4–5 tours, ⅛, après poison et Vampigraine ; Entrave 4 tours, échec sans capacité précédente ; Repos : `status_turns = 2` sans tirage (`StatusRules.apply_rest`), manque 2 tours ; Destruction : K.O. même en ratant, double K.O. perdu par le lanceur ; IA `smart` : Destruction à ≤ ¼ PV ; volatils sur le `Battler` ; Entrave filtrée dans `Battler.usable_moves()` ; fuite et changement refusés quand piégé **sans tour perdu** (G+) ; Sonicboom : `fixed_damage` mode `value`, 20 ; T13 : durée du piège = nombre de pertes (libéré juste après la dernière, sans phrase si le lanceur part), décompte d'Entrave tour de l'Entrave compris, capacité bloquée dans le tour même → MOVE_DISABLED (§0.4 n° 15) |
+| Carte de QA | `qa_moves_j12` sur le modèle de `qa_switch_j13` (J13), herbes forcées par `wild`, sans gravats ; `MapCatalog.is_qa_map` repris du J13 |
+| Compagnon (alignement T11) | contexte `cave` ajouté aux deux constantes du J11 ; jamais posé sur un warp à l'arrivée (Callable du contrôleur) |
+| Mesures téléphone | référence J11 (Route 1, marche + combat) relevée dans chaque session du J12 sur le même téléphone |
 | Espèces | stats et taux actuels, types modernes, apprentissages RB ; 21 capacités ; sprites provisoires ; dos peints hors J12 |
 | Personnages | Fillette, Sbire ♂ et ♀ (attente « creuse »), chercheur de terrain : nouveaux ; voyageur `traveler`, randonneuse `hiker`, randonneur `mountaineer` ; deux Dresseurs d'une même classe partagent leur modèle |
 | Déclencheurs | `route_3_entered` (1, 25..27) ; `route_4_reached` (4, 5..9) |
 | Budgets | ≤ 3 000 nœuds ; moyenne ≥ 58 fps, creux ≥ 50 ; mémoire « carte + voisines » ≤ 64 Mo, sinon préchargement réduit ; changement de carte ≤ 1,5 × Jadielle |
-| Sauvegarde | version de `main` après le J11 (v6), aucune nouvelle |
+| Sauvegarde | version de `main` après le J11 (**v6**, vérifiée au T11), aucune nouvelle |
+| Équilibrage (T26) | cible : joueur attentif (Centre + 3 Potions) au bout sans défaite ≥ 85 %, aucun combat > 40 % de défaites ; naïf : une défaite admise ; équipes de fin de J11 = starter évolué N16 + Roucool N14 + Papilusion N12 (+ Férosinge N15 côté Salamèche) ; R3 : Rattatac **N13** (390 ₽), chercheur : Voltorbe et Smogo **N12** (300 ₽), IA `smart` gardée |
 
 ---
 
@@ -597,6 +845,8 @@ Questions telles que posées :
 - **Q-2 — Objets cachés et bouton contextuel.** Sur téléphone, on n'interagit qu'avec le bouton contextuel, qui n'apparaît que face à quelque chose d'examinable ; face à l'indice (caillou, éclat), il affichera donc EXAMINER — ce qui révèle l'objet à qui s'arrête devant. *Recommandation : l'accepter (rien ne s'affiche avant d'être face à l'indice, aucun scintillement, aucun son : c'est le décor qui guide, le bouton ne fait que confirmer).* Alternatives : rendre examinables d'autres cailloux sans objet (leurres, textes en plus) ; ou une règle d'interface nouvelle (bouton « INTERAGIR » toujours visible), qui change l'interface du jeu entier.
 - **Q-3 — Lot de textes de l'annexe A** (non couverts par le §20) : 12 descriptions et 7 notes de Pokédex, descriptions des capacités ajoutées, descriptions et sous-titres des zones Route 3 / Mont Sélénite / Route 4, textes de combat manquants (Étreinte, Danse Flamme, changement refusé, « BLOQUÉE »), présentation du Grand moment (texte n° 30 réparti en titre / détail). *Recommandation : relecture en une passe, comme aux J9–J11 ; bloque les données (T12, T18), pas le code.*
 
+**T11 (2026-10-13) : aucune question nouvelle.** Les écarts entre le plan et le J11 livré sont tous techniques (§0.4) ; les deux points qui frôlent le game design ont une réponse écrite : Sonicboom agit (sa description validée, annexe A.2, n'a pas la mention « Sans effet ») ; la fuite refusée quand on est piégé ne coûte pas de tour (règle G+ retenue par C-1).
+
 **À fournir par Kevin** (pas une question) : la sauvegarde de sa vraie partie à la fin du J11 (équipe, niveaux) pour la simulation (T26) et le départ `route_3`.
 
 ---
@@ -607,7 +857,1017 @@ Questions telles que posées :
 2. **T1** (architecte) : kit de la série 14 → **T2** (Mac, Codex) → planche de contact pour Kevin.
 3. En parallèle : **T3** (planches Pokémon), **T4** (décors de combat), **T7** (fondations de carte), **T10** (outil de simulation) ; Kevin relit l'annexe A (**T5**).
 4. Après T2 et T7 : **T6** (intégration), puis **T8** ∥ **T9** (cartes), captures relues sur Mac.
-5. **À la clôture du J11** : T11 (alignement), puis la chaîne 12.0 → 12A → 12B → 12C → 12D.
+5. ~~À la clôture du J11 : T11~~ **fait (2026-10-13)**. Suite : **T12 ∥ T17** tout de suite, puis T13 ∥ T20, T18 ; ordre complet au §3 (« Ordre et parallélisme à partir du T12 »).
+
+---
+
+## 9. Fait
+
+- **T26 — équilibrage de la Route 3 et du Mont Sélénite (2026-10-14, architecte, branche
+  `j12-t26-equilibrage` depuis `jalon-12` à `bdfc49a`)** — `tools/simulate_mt_moon.gd --donnees
+  --seeds 500` (≈ 35 s ; rapports `build/sim/t26_avant.txt`, `t26_apres.txt`, essais
+  `build/sim/t26/`, non versionnés).
+  - **Sans la sauvegarde de Kevin** (non fournie) : équipes « naturelles » par défaut (règle 4),
+    réécrites dans `tools/sim/mt_moon_scenario.json`. **Fin de J11 réaliste** (3 premières) :
+    Pierre battu, starter évolué au N16, Roucool N14, Papilusion N12 (Choc Mental) — et, côté
+    Salamèche, le **Férosinge N15** dont la préparation du J10 a montré qu'il fallait pour battre
+    Pierre (`etat-projet.md`, 2026-10-09). Le J11 n'ajoute aucune zone : ces niveaux sont ceux
+    d'après Pierre. **Bas de fourchette** (3 suivantes, l'ancien jeu du T10) : starter N15 non
+    évolué ; « Bulbizarre 15, Roucool 13 » (deux Pokémon) gardé comme cas extrême, **hors cible**.
+  - **Cible (défaut, règle 4)** : joueur « attentif » avec Centre et ses Potions (variante « 3
+    Potions, 1 Antidote, fuite sous ¼ ») au bout **sans défaite ≥ 85 %**, aucun combat isolé
+    **> 40 %** de défaites pour lui ; joueur « naïf » : **une défaite admise** (rôle du Centre).
+  - **Constat (avant)** : la Route 3, le 1F, R1 et les gravats sont faciles (≥ 90 % des PV après
+    chaque étape, 0 défaite) ; **R3 est un mur** : 55–99 % de défaites pour un joueur attentif
+    avec Potions, toutes équipes. Cause (déroulé `--trace R3`) : avec l'IA `smart`, **Rattatac N15
+    lance Croc de Mort (80, STAB) à chaque tour**, plus rapide que toute l'équipe ; un coup met
+    Férosinge K.O., deux Roucool, après les Groz'Yeux d'Abo. Le chercheur, juste après (sans
+    Centre), achève les équipes vidées.
+  - **Essais** (valeurs [D] seulement : niveaux ±1–2, IA des Sbires et du chercheur), joueur
+    attentif avec Potions, Reptincel / Herbizarre / Carabaffe : R3 `random` seule 89 / 47 / 75 % ;
+    Rattatac N14 `smart` 69 / 17 / 52 % ; N14 `random` 97 / 73 / 86 % ; N14 `random` + chercheur
+    N12 98 / 84 / 92 % ; N14 + Nosferapti et Abo N12 + chercheur N12 99 / 84 / 94 % ; **Rattatac N13
+    `smart` 100 / 85 / 98 %** ; **N13 + chercheur N12 : 100 / 94 / 99,6 %** (retenu) ; N13 `random`
+    100 / 96 / 99,8 %. Rattatac garde Croc de Mort jusqu'au N14 (appris au N14) : au N14, l'IA
+    `smart` en fait un mur, l'IA `random` seule ne suffit pas pour Herbizarre.
+  - **Ajustements retenus** (`data/trainers/mt_moon.json`, scénario, `test_mt_moon_data`) :
+    **R3 : Rattatac N15 → N13** (récompense 450 → 390 ₽, règle « base 30 × niveau du dernier ») ;
+    **chercheur : Voltorbe et Smogo N13 → N12** (325 → 300 ₽, base 25). IA `smart` gardée pour
+    les deux, espèces et capacités inchangées (Rattatac N13 : Charge, Mimi-Queue, Vive-Attaque ;
+    **plus de Croc de Mort**). R3 reste le combat le plus coûteux du parcours (≈ 1 K.O., 1,5
+    Potion, 50–70 % des PV après).
+  - **Résultats** (500 graines ; « R3 / Ch » = défaites parmi les parties qui atteignent le combat ;
+    naïf : arrivée sans défaite / après une défaite, reprise au Centre) :
+
+    | Équipe | Attentif + Potions avant → après | R3 / Ch avant → après | Attentif sans Potion avant → après | Naïf (0 / 1 défaite) avant → après |
+    |---|---|---|---|---|
+    | Reptincel 16, Férosinge 15, Roucool 14, Papilusion 12 | 42,2 → **100 %** | 55 / 6 → 0 / 0 | 39,4 → 99,6 % | 31 / 41 → **98 / 2** |
+    | Herbizarre 16, Roucool 14, Papilusion 12 | 4,2 → **94,0 %** | 86 / 70 → 0,6 / 5 | 2,2 → 80,4 % | 0 / 1 → **9 / 59** |
+    | Carabaffe 16, Roucool 14, Papilusion 12 | 17,4 → **99,6 %** | 62 / 54 → 0,4 / 0 | 3,4 → 97,6 % | 1 / 5 → **53 / 44** |
+    | Salamèche 15, Férosinge 15, Roucool 13 | 12,0 → **94,6 %** | 82 / 35 → 1 / 4 | 5,4 → 81,6 % | 2 / 27 → **71 / 28** |
+    | Carapuce 15, Roucool 13, Papilusion 12 | 3,8 → **96,4 %** | 86 / 73 → 0,4 / 3 | 1,0 → 78,6 % | 0 / 2 → **23 / 63** |
+    | Bulbizarre 15, Roucool 13 (hors cible) | 0 → 11,0 % | 99 / 100 → 62 / 71 | 0 → 0 % | 0 / 0 → 0 / 0 |
+
+    Avec les détours (D4, D5, D6, R2) : 100 / 84,8 / 98,8 / 98,0 / 92,4 % (Herbizarre juste sous
+    la cible : 6 % R3, 10 % chercheur). Hors R3 et chercheur, aucune étape ne dépasse 0,2 % de défaites (toutes
+    variantes, hors équipe à deux Pokémon).
+  - **Hors cible, information pour Kevin** : (1) un naïf **Herbizarre** perd deux fois ou plus
+    dans 32 % des parties (R3 54 %, chercheur 81 % : Fouet Lianes résisté par Smogo, Charge au
+    hasard) ; Carapuce N15 naïf 15 % ; (2) une équipe de **deux Pokémon** ne passe pas R3
+    (62 % de défaites même attentif) ; (3) le simulateur ne fait que les cases d'herbes et de
+    gravats obligatoires (8 + 8) : la Route 3 et la grotte n'usent presque pas l'équipe ; le
+    « défi par l'enchaînement » n'apparaît qu'en B2F (R3 puis le chercheur, sans Centre).
+  - **IA `smart` et Repos** (« aucune capacité de statut sous ⅓ des PV », `BattleAI.LOW_HP_RATIO`,
+    qui interdit Repos là où il serait utile) : **sans effet au J12** — aucun Dresseur n'a Repos
+    (Rondoudou l'apprend au N29 ; Inès a un Rondoudou N14 en IA `random`) ; R3 et le chercheur
+    n'ont que Ultrason, Groz'Yeux, Grincement comme capacités de statut, pour lesquelles la règle
+    est voulue. À revoir quand un Dresseur `smart` aura Repos (Grodoudou, Mélodelfe, Ronflex…).
+  - **Outil** (`tools/simulate_mt_moon.gd`) : option `--trace <texte>` (déroulé des combats des
+    étapes nommées, 3 premières graines) ; clé de variante `retries` (reprise au dernier Centre
+    après une défaite, Dresseurs battus partis, arrivée après 0 / 1… défaites) ; **correctif** :
+    le joueur ligoté (Ligotage d'un Abo sauvage) ne tente plus de fuir (la fuite refusée cassait
+    le combat : « action refusée », « non terminés »). Scénario de démonstration : variante naïve
+    à une reprise ; test `test_retries_and_trace` (`tests/integration/test_simulate_mt_moon.gd`).
+  - **Non mesurées** : les durées en secondes (R1 ≈ 100 s…) — l'outil compte des tours : R1 ≈ 4,7,
+    R3 ≈ 9,6–10,8, chercheur ≈ 5–8 tours par combat (après).
+- **T28 (partie code) — fin du J12, 12D (2026-10-14, constructeur-monde, branche `j12-t28-fin`
+  depuis `jalon-12` à `d3bb93f`)** — §1.3 n° 5, §2.15, §2.16, §2.22 ; dossier 15 §14, §15,
+  §20 n° 36–39.
+  - **Sas** (`tools/build_route_4.gd`, carte régénérée) : point d'examen du panneau (6, 5), lu de
+    face (↑ depuis (6, 6)) → `route_4_sign` (`data/dialogues/route_4.json`, « ROUTE 4 » /
+    « Mont Sélénite ← → Azuria », §20 n° 36 mot pour mot) ; déclencheur silencieux
+    `route_4_reached` sur (4, 5..9), toute la largeur, toute direction
+    (`data/cutscenes/route_4.json` : `set` seul, `unless` le drapeau). L'arrivée (3, 6) n'est pas
+    couverte : l'objectif change au premier pas vers l'est. Raccord est inchangé (« AZURIA — À
+    venir » en build de développement, bord inerte en release : `test_coming_soon`).
+  - **Objectifs** : `go_cerulean` / `cross_mt_moon` déjà en tête depuis le T18 ; `route_4_reached`
+    retiré de `_PENDING_FLAGS` (`test_objective_library` : levé par une scène).
+  - **Retrait de la carte de QA `qa_moves_j12`** : scène, `tools/build_qa_moves_j12.gd`,
+    `tools/capture_qa_moves_j12.gd`, `data/npcs|trainers|dialogues/qa_moves_j12.json`, départs
+    `moves_qa` / `moves_qa_solo` (et leurs lignes du README), `test_qa_moves_j12`, exception
+    datée de `test_no_qa_map_is_shipped` (qui vérifie aussi `has_map(&"qa_moves_j12")` faux).
+    **Gardés** : `MapCatalog.QA_PREFIX` / `is_qa_map` (absents de `main`, présents sur
+    `jalon-13` pour `qa_switch_j13`) et les tests qui ignorent les cartes `qa_` ; nouveau test
+    `test_is_qa_map_reads_the_prefix`. Autres départs de débogage du J12 inchangés.
+  - **Départ `route_4`** (`tools/debug_start/route_4.json`, README) : sas à l'arrivée, Mont
+    Sélénite fini (Fossile Dôme choisi), Reptincel N21 compagnon.
+  - **Export** : `exclude_filter` exclut `tools/*`, `tests/*`, `build/*` ; plus aucune scène
+    `qa_*` dans `game/world/maps/` ; `run/main_scene` = `res://game/boot.tscn` (intact).
+  - **Tests** : `test_route_4` (+2 : panneau, déclencheur ; compte des déclencheurs et points
+    d'examen = 1), `test_route_4_life` (nouveau, Boot réel : premier pas → drapeau en silence,
+    objectif, gardé au rechargement ; panneau de face et rien de côté ; bouche → B2F (11, 30)
+    tourné ↓ → échelle de sortie → sas (3, 6) tourné →), `test_cutscene_data`,
+    `test_dialogue_data` (carte `route_4`, `route_4_sign`, drapeau `route_4_reached`),
+    `test_map_catalog`. Suite : **4 218 tests, tous verts** ; import propre.
+  - **Captures** `tools/capture_route_4_t28.gd` → `build/captures/jalon12_t28/` (2340 × 1080) :
+    `sas_arrivee`, `sas_panneau`, `objectif_azuria` (tableau de bord « Objectif : continuer vers
+    Azuria. »), `sas_raccord_est`, `azuria_a_venir` ; relues.
+  - **Passation J13** (§0.2 n° 15) : la vraie Route 4 garde l'identifiant `route_4` et le
+    **repère de coordonnées du sas** — case (0, 0) = coin nord-ouest de la grille
+    `tools/plans/route_4_sas.txt` (24 × 14), bouche (2, 6) ← `mt_moon_b2f` / `arrivee_s`, spawn
+    `from_mt_moon` (3, 6), praticables du sas = `.=De` aux rangées 3..11, colonnes 2..23. Une
+    sauvegarde placée dans le sas (`map = route_4`, `cell` dans ces cases) doit retomber sur une
+    case praticable de la nouvelle carte : garder ces cases praticables (ou ajouter un
+    remplacement de position au chargement). Les spawns `from_cerulean_n|s` (23, 6..7) et le
+    déclencheur `route_4_reached` (4, 5..9) sont à garder ou remplacer ; le drapeau reste lu par
+    `objectives.json`.
+
+- **T24 — Sac et écran d'évolution (2026-10-13, ui-mobile, branche `j12-t24-sac-evolution` depuis
+  `jalon-12` à `3def8f5`)** — §2.6, §2.9, §2.13 (interface) :
+  - **Écran d'évolution sans ARRÊTER** : `EvolutionScreen._covers_stop(point)` — seul un ARRÊTER
+    affiché (visible, vue annulable) exclut sa zone du « toucher pour accélérer » ; pour une pierre,
+    tout l'écran accélère (présentation, transformation, révélation) ; `_on_stop_pressed` ignoré si
+    la vue n'est pas annulable (ni vibration ni annulation) ; retour Android déjà sans effet (T23).
+    Évolutions de combat inchangées (ARRÊTER, sa zone, retour Android).
+  - **Frise** : `MomentRow.ICONS[fossil]` = icône des objets clés (`assets/ui/icons/bag/key.svg`),
+    `EMBLEM_KINDS` (badge, fossile) : emblème ACCENT sur l'aperçu du lieu s'il existe, sinon icône
+    seule (cas du Mont Sélénite) ; `get_icon()`.
+  - **Vérifiés sans code nouveau** (captures) : Sac AVENTURE (UTILISER seulement avec `field_use`),
+    refus de la Corde dans le bandeau, sélecteur COMPATIBLE / INCOMPATIBLE (`show_reason`), toast
+    « Fossile Dôme » / « obtenu ».
+  - **Tests** : `test_evolution_screen` (+4 : pas de zone morte pour une pierre pendant la
+    transformation et la présentation, retour et appui fantôme sans effet, zone d'ARRÊTER gardée en
+    combat), `test_trainer_screen` (+1 : ligne fossile, textes validés, icône des objets clés avec et
+    sans aperçu, sans lien).
+  - **Captures** : `tools/capture_moon_stone_t24.gd` → `build/captures/jalon12_t24/` (01 Sac
+    AVENTURE … 10 frise), relues.
+
+- **Icône du fossile (2026-10-14, `j12-icone-fossile`, décision de Kevin, option A)** : toast
+  (`Boot._on_item_given` → `ExplorationHud.show_toast(..., icon)`, icône peinte `MenuArt.item_icon`
+  seulement pour un objet `obtained`) et frise (`MomentView.item_id`, `MomentRow._item_icon`, sans
+  teinte ACCENT, repli sur `key.svg`). Tests : `test_toast`, `test_trainer_screen`. Captures :
+  `build/captures/jalon12_icone/09_fossil_toast.png`, `10_trainer_fossil.png`.
+- **T25 — Team Rocket, chercheur, fossiles, Pierres Lune, CT01 (12C) (2026-10-14,
+  constructeur-monde, branche `j12-t25-rocket` depuis `jalon-12` à `1297a07`)** — §2.7, §2.8,
+  §2.11–§2.13, §2.22 ; aucun nom figé changé, aucune version de sauvegarde (v6) :
+  - **Sbires** (`data/npcs/mt_moon_b1f.json`, `mt_moon_b2f.json`, cases / orientations / visions
+    des grilles, `unless beaten_<id>`) : R1 `rocket_guetteur` (14, 1) ↓ 5, `rocket_grunt_m`,
+    `leave: []` (fondu sur place) ; R2 `rocket_fouilleuse` (8, 20) → 2, `rocket_grunt_f` (attente =
+    planche « creuse »), `leave: [[0, -2], [-4, -2]]` (8, 18) puis (4, 18) au bord de la tranchée ;
+    R3 `rocket_gardien` (29, 24) ← 4, `rocket_grunt_m`, `leave: [[0, 0]]` (retour à sa niche),
+    « avant » = les 3 bulles du n° 18 ; « vaincu » et « reprise » (n° 16–18), locuteur « Sbire
+    Rocket ». Décor de combat « chambre » vérifié en combat réel (R3).
+  - **Chercheur** : `mt_moon_researcher` (13, 31) → `unless beaten_mt_moon_researcher`, et
+    `mt_moon_researcher_after` (15, 30) → `if beaten…` (modèle du garde d'Argenta et
+    `route_3_guard_aside`) ; déclencheur `ResearcherTrigger` (25..26, 27), pas ↓ (outil
+    `build_mt_moon.gd`, constante `RESEARCHER_TRIGGER`) ; scène `mt_moon_researcher` (`if
+    beaten_mt_moon_rocket_3`) : « ! », `move near player`, faces, n° 20 (`unless lost_…`) / n° 25
+    (`if lost_…`), `battle` (`win beaten_…`, `lose lost_…`), n° 21, n° 22, `move` vers (15, 30),
+    `face right`, `wake_up` sinon. Ensuite : `mt_moon_researcher_talk` (n° 22 avant le choix,
+    n° 26 après).
+  - **Fossiles** : PNJ objets fixes `fossile_dome` (24, 31) et `fossile_nautile` (26, 31), `lift`
+    30 (posés sur la dalle), verbe **`examine`** (EXAMINER ; `NpcRoster` accepte maintenant
+    `examine` en plus de talk / observe / take), `unless mt_moon_fossil_chosen` ; dialogues
+    `mt_moon_fossil_dome` / `_helix` (narration, « Prendre le Fossile Dôme ? », OUI / NON,
+    `confirm_cutscene`, `cancel_pages: []`) ; scènes : `despawn` des deux → `give` (toast
+    « Fossile Dôme » / « obtenu ») → `set [mt_moon_fossil_chosen, mt_moon_got_<fossile>]` → n° 24 →
+    `moment fossil { item }`. Les sprites de décor des fossiles sont retirés de la carte (la dalle
+    reste un décor).
+  - **Fossile Dôme refait** (décision de Kevin du 2026-10-13) : image seule
+    `build/art/WORLD_PROP_FOSSILE_DOME_01_NE_r1.png` (Codex, `tools/art/generer.sh`, ancres
+    `UI_OBJETS_J12_PLANCHE_r3` + `WORLD_PROP_DALLE_FOSSILES_PLANCHE_NE_r1` ; prompt versionné
+    `tools/art/prompts/serie14/WORLD_PROP_FOSSILE_DOME_01_NE_r1.txt`) : carapace de pierre ocre à
+    arête centrale, lignes gravées, bourrelet ; manifeste (`images_objets.fossil_dome` : nouvelle
+    source, sans recadrage, hauteur 44) et `serie14.py` alignés, préparation limitée à cette
+    entrée → `assets/sprites/objects/painted/fossil_dome.png` 60 × 44 (le `.tres` ne change pas).
+    `prop_fossile_dome_01` (planche de la dalle) n'est plus utilisé par aucune carte.
+  - **Objets** : Pierre Lune visible (B1F (25, 20), `mt_moon_b1f_ball_1`), CT01 (B2F (4, 5),
+    `mt_moon_b2f_ball_1`, toast « CT01 — Ultimapoing » / « obtenue »), Pierre Lune cachée (B2F,
+    `HIDDEN_ITEMS += mt_moon_b2f_hidden_1` : EXAMINER sur l'éclat (36, 12) depuis (35, 12)).
+  - **Départs** : `mt_moon_weak` (B1F, Salamèche N4 : défaite contre R1 → reprise),
+    `mt_moon_fossil` (B2F au pied de l'échelle de sortie, chercheur battu, choix à faire),
+    `moon_stone_qa` (Centre, 2 Pierres Lune, Nidorina, Nidorino, Mélofée, Rondoudou) ; README.
+  - **Tests** (nouveaux) : `test_mt_moon_rocket` (7 : grilles, R1 / R3 inévitables et R2 évitable
+    sur la vraie scène avec ses PNJ, textes, Boot : « Hé, toi ! » → départ → absent au
+    rechargement, défaite → réveil → « Encore toi ? Demi-tour. », R2 qui creuse puis part, R3 trois
+    bulles + décor « chambre » + absent au rechargement), `test_mt_moon_fossil` (5 : rien avant R3,
+    méprise / combat / partage / rangé + rechargement, défaite → reprise n° 25, NON puis OUI Dôme
+    définitif avec rechargements, OUI Nautile), `test_mt_moon_items` (4 : Pierre Lune visible, CT01,
+    Pierre Lune cachée, départs 12C), `test_save_j12` (3 : v6 inchangée, partie au B2F, choix du
+    fossile et Grand moment). Retouchés : `test_dialogue_data` (B2F, ids, reprises, scènes de
+    choix, formes masculines « [e] » / « [se] » et « {fossil} » du §20), `test_cutscene_data`,
+    `test_npc_roster` (verbe `examine`). `test_moon_stone` (T23) couvre l'évolution par pierre.
+  - Captures (Mac, 2340 × 1080) : `tools/capture_mt_moon_t25.gd` → `build/captures/jalon12_t25/`
+    (r1_poste, r1_hey, r2_creuse, pierre_lune_b1f, r3_bulle_1, r3_bulle_3, r3_combat,
+    chercheur_meprise, chercheur_partage, dalle, choix_question, toast_fossile, chercheur_choisi,
+    dalle_vide, cache_b2f, ct01, dresseur_frise), relues.
+  - **Valeurs par défaut (règle 4)** : formes au masculin (« gamin curieux », « Tu es revenu ? » :
+    héros seul en V1, OUV A2) ; fossiles visibles sur la dalle dès l'arrivée (seulement `unless
+    mt_moon_fossil_chosen`, au lieu de `if beaten_mt_moon_researcher` : la chambre n'est
+    accessible qu'après le chercheur, et le décor du T9 les montrait déjà) ; pas d'étape « face
+    chercheur → joueur » dans la scène du choix (l'identifiant du chercheur diffère avant et après
+    un rechargement ; il est déjà tourné vers la dalle) ; examinables aussi de côté (23, 31) /
+    (27, 31) ; chemin de départ de R2 ; pause 0,3 s après le « ! » du chercheur ; `lift` 30 des
+    fossiles ; Fossile Dôme 44 px de haut.
+  - Import propre ; `tools/test.sh` : **4 205 tests, 4 205 verts** (326 scripts, 169 749 assertions, 872 s).
+
+- **T23 — moteur de l'événement et de la pierre (2026-10-13, architecte, branche
+  `j12-t23-evenement` depuis `jalon-12` à `2732b45`)** — §2.9, §2.13, §0.4 n° 7, 9, 10 ; aucun
+  contenu de carte (T25), aucun nom figé changé :
+  - **Pierre** : `moon_stone` a `field_use: "evolution_stone"` (UTILISER) ; règle pure `StoneUse`
+    (`game/pokemon/evolution/stone_use.gd` : `Check { COMPATIBLE, INCOMPATIBLE }`, `LABELS` = ceux
+    des CT, `is_stone`, `target`, `check(pokemon, item_id, data)`, `candidate(party, index,
+    item_id, data)` → candidat non annulable, K.O. compatible) ; `BagQuery` : `targets_pokemon`
+    vrai et choix du Pokémon `_stone_targets` (`show_reason` toujours, INCOMPATIBLE non
+    choisissable, quantité affichée) ; `MenuDirector.use_item_on` → signal nouveau
+    **`evolution_item_requested(index, item_id)`** (rien consommé par le menu).
+  - **Évolution** : `EvolutionCandidate.cancellable` (vrai par défaut) et `item_id` ;
+    `EvolutionView.cancellable` ; **`EvolutionDirector.play_item(candidate, party, item_id)`**
+    (copie non annulable, `play` d'un candidat) ; signal **`evolution_applied(party_index, into)`**
+    émis juste après `Evolution.evolve` + Pokédex, avant `reveal`, jamais si annulée ; le directeur
+    ignore une réponse « annulée » d'un candidat non annulable. `EvolutionScreen` (minimum
+    fonctionnel) : `is_cancellable()`, ARRÊTER non montré et `_request_cancel` refusé si la vue
+    n'est pas annulable (retour Android consommé sans effet) ; **le rendu de l'écran sans ARRÊTER
+    reste au T24**.
+  - **Boot** : `_setup_evolution_items` ; `_on_evolution_item_requested` (menu fermé, joueur bloqué
+    `Boot.EVOLUTION_ITEM`, contrôles cachés, vitesse = celle du combat, `play_item`, puis compagnon
+    `refresh()`, autosave « évolution ») ; `_on_evolution_applied` retire la pierre (une fois,
+    `_stone_item`). Retour Android : relayé par `BattleDirector.handle_back` (existant, vrai pendant
+    toute évolution). Joueur bloqué → `is_stable()` faux pendant la séquence : une fermeture reprend
+    avant l'évolution, pierre comprise.
+  - **Choix → scène** : `DialogueChoice.confirm_cutscene` (clé `"confirm_cutscene"` en fin de
+    `_CHOICE_KEYS`, exclusive de `confirm_action`) ; `DialogueRunner` : `cutscene_requested` après
+    `dialogue_finished` si OUI (pages de confirmation d'abord), rien si NON.
+  - **Étape `moment`** : `CutsceneStep.Kind.MOMENT` (après `BADGE`), clé `"moment"`, `"details"`
+    facultatif `{ clé: texte non vide }`, type de `MomentLibrary.TYPES` sauf `zone_arrival` ;
+    `CutsceneDirector._moment` : `record_moment(type, carte, details)` une fois par type et détails
+    (`CutsceneDirector.has_moment`, comparaison en texte, tient après rechargement) ; l'état vient
+    de `set_badges(_, state)` (déjà branché par Boot).
+  - **Moment `fossil`** : `MomentLibrary.FOSSIL` en fin de `TYPES`, `MARK_FOSSIL` `{fossil}`,
+    `DETAIL_ITEM` `"item"` ; `data/trainer/moments.json` : « La Team Rocket repoussée » /
+    « {fossil} obtenu. » (annexe A.5) ; `TrainerSummary.build/moment_views(…, items)` (paramètre
+    facultatif en fin ; `MenuDirector` passe ses objets) : nom du fossile lu dans `ItemLibrary`,
+    moment ignoré sans objets ou objet inconnu.
+  - **Objets** : champ `ItemData.obtained` (clé `"obtained"`, booléen facultatif) → toast
+    « <nom> » / « obtenu[e] » ; `dome_fossil` et `helix_fossil` (déjà en données au T12, descriptions
+    n° 28–29 vérifiées) ont `obtained: true`. Toasts des CT et du Colis inchangés.
+  - **Tests** (fichiers nouveaux) : `test_stone_use`, `test_item_obtained`, `test_moment_fossil`
+    (unitaires) ; `test_evolution_director_stone`, `test_dialogue_confirm_cutscene`,
+    `test_cutscene_director_moment`, `test_moon_stone` (Boot réel : 4 espèces, 4 pierres ;
+    incompatible refusé ; pierre retirée dans l'appel même ; sauvegarde d'avant pendant la séquence,
+    autosave à la fin, relue par une nouvelle session ; retour Android pendant la transformation
+    sans effet). Retouchés : `test_field_item_rules` (la Pierre Lune a maintenant UTILISER),
+    `test_moment_library` (`_valid()` + `fossil`).
+  - **Pour T24 (ui-mobile)** : le Sac affiche déjà UTILISER et le choix COMPATIBLE / INCOMPATIBLE
+    par le contrat existant (`PartyPickerView`, `show_reason`) — à vérifier en capture ;
+    `EvolutionView.cancellable` / `EvolutionScreen.is_cancellable()` pour l'écran sans ARRÊTER
+    (le bouton caché garde sa zone hors du « toucher pour accélérer » : à revoir) ; ligne de la frise
+    `MomentView.kind == &"fossil"` (icône des objets clés).
+  - **Pour T25 (constructeur-monde)** : dialogue `mt_moon_fossil_dome` / `_helix` (choix OUI / NON,
+    `confirm_cutscene`, `cancel_pages: []`) ; scènes avec `{ "moment": "fossil", "details":
+    { "item": "dome_fossil" } }` ; `give dome_fossil` donne le toast « Fossile Dôme » / « obtenu ».
+
+- **T18 — la vie de la Route 3 (12A) et du Centre du Mont Sélénite (2026-10-13, constructeur-monde,
+  branche `j12-t18-route-3-vie` depuis `jalon-12` à `610a7bb`)** — §1.3, §2.7, §2.8, §2.11, §2.14,
+  §2.16, §2.22 :
+  - **PNJ** `data/npcs/route_3.json` : Hugo (20, 22) ↓ 5, Léa (51, 16) ↓ 5 (alcôve au nord du goulet
+    de la jonction), Sacha (33, 6) ↓ 3, Enzo (38, 32) ↑ 3, Inès (41, 35) ← 4, Nolan (77, 17) ← 3 ;
+    bloc `trainer` sans `rematch` ni `leave` (séquence J9 inchangée) ; voyageur (15, 16) →,
+    randonneuse (68, 12) ← ; objets O1–O3 (modèle J8) ; Piafabec (40, 5) et (71, 14), `fly`,
+    `lift` 48. Rondoudou d'ambiance **non posé** (pas de planche intégrée ; T21).
+  - **Textes** `data/dialogues/route_3.json` (§20 n° 1–10), scènes `data/cutscenes/route_3.json` :
+    objets (`despawn` → `give found` → `set got_<id>`), **Réveil caché** (`give awakening found` →
+    `set got_route_3_hidden_1`, toast seul), `route_3_entered` (silencieux, une fois).
+  - **Outil** `build_route_3.gd` : panneaux examinables de face (↑), indice `prop_indice_caillou_01`
+    dans `GroundDecals` sur (36, 18) + `InteractPoint` de tous côtés, `unless_flags`, déclencheur
+    (1, 25..27) ; scène régénérée (comparaison normalisée : ajouts seuls, 2 036 nœuds).
+  - **Centre** : `data/npcs/mt_moon_center.json` (infirmière (7, 3)) ; Stockage et point de repos
+    déjà posés au T8. **Objectifs** : `go_cerulean`, `cross_mt_moon` en tête (`route_4_reached`
+    en attente du T28 dans `test_objective_library`).
+  - **Départs** `route_3`, `mt_moon_center` (README).
+  - **Tests** : `test_route_3_trainers` (vraie scène + PNJ : vues = grille, D1/D2 inévitables vers
+    le Centre et la grotte, D3–D6 évitables seuls et ensemble, arrêt à toute distance, données §3.2
+    et §20 ; Boot : Hugo voit le joueur, Léa battue dit « après »), `test_route_3_life` (objets
+    O1–O3 avec rechargement, panneaux, voyageur, randonneuse, entrée → objectif, Piafabec, Centre :
+    soin → « Point de repos enregistré — Mont Sélénite »), `test_hidden_items` (Route 3 : quatre
+    côtés, toast seul, Sac, journal, drapeau, plus de cible ensuite et après rechargement ; 1F et
+    B2F au T21 / T25) ; retouchés `test_route_3`, `test_cutscene_data`, `test_objective_library`.
+  - Captures `build/captures/jalon12_t18/t18_*.png` (`tools/capture_route_3.sh … t18_`).
+- **T21 — la vie de la grotte, 12B (2026-10-13, constructeur-monde, branche `j12-t21-grotte-vie`
+  depuis `jalon-12` à `610a7bb`, + `origin/main` à `3a62287` fusionné d'abord : Pikachu et
+  Reptincel au compagnon, §1.2 n° 1)** — sans la Team Rocket ni le chercheur (T25) :
+  - **Carte 1F** (`tools/build_mt_moon.gd`, `_place_examinables`, régénérée ; B1F et B2F
+    inchangés) : points d'examen du panneau d'entrée (26, 43) « MONT SÉLÉNITE » / « Galeries non
+    éclairées. Prudence. » (n° 12, panneau sur deux lignes comme ceux du J10), des **trois** caisses
+    R du camp (4..5, 14), (4, 15) (n° 13) et de la lampe abandonnée (10, 14) (n° 14) ; **Réveil
+    caché** : point EXAMINER sur l'indice `x` (57, 19), `unless_flags = [got_mt_moon_1f_hidden_1]`
+    (constante `HIDDEN_ITEMS` ; la Pierre Lune cachée de B2F s'y ajoute au T25). Les traces de
+    fouille restent un repère muet.
+  - **Données** : `data/npcs/mt_moon_1f.json` (randonneur `mountaineer` (34, 38) ←, Ball de la
+    Corde Sortie (9, 29)), `data/npcs/mt_moon_b1f.json` (Ball de la Potion (16, 21) — le T25 y
+    ajoute R1, R2 et la Pierre Lune), `data/dialogues/mt_moon.json` (n° 12–15, locuteur
+    « Randonneur »), `data/cutscenes/mt_moon.json` (`despawn` → `give … found` → `set
+    got_<position>` ; caché : `give found` + `set`, toast seul). Rencontres (`mt_moon.json`),
+    stock d'Argenta et phrase « grotte » : déjà faits (T12, T20).
+  - **Planches du T3 au compagnon** : manifeste (11 entrées en fin de `pokemon`, sources de
+    `build/art/` : Nidorina `_r2`, Rapasdepic `_r2`, Mélofée `_r1` du prompt `_r1b`), préparées
+    seules (`preparer.Preparateur.personnages` sur ces 11 entrées : catalogue en ajouts seuls,
+    aucune autre planche réécrite), `LOOKS` (11, en fin), `build_character_frames.gd` relancé (55
+    apparences, aucun `.tres` existant modifié) ; `companions.json` : 25 espèces (ajouts en fin :
+    jigglypuff, clefairy, ekans, paras, zubat **en vol**, geodude, pidgeotto, nidorino, nidorina,
+    raticate, fearow). **Racaillou** : planche de marche `racaillou_marche` → `geodude_walk`
+    (`"sprite": "pokemon/geodude_walk"`), le Racaillou fixe du tailleur garde `geodude` et ses
+    réactions. Attente = colonne 0 de la marche (vérifiée à l'œil, aucune `IDLE_FROM_WALK`).
+  - **Départs** : `mt_moon_1f` (entrée, Rondoudou compagnon, `wild` gravats à la table réelle au
+    taux 60), `mt_moon_b1f` (avant R1, Nosferapti), `mt_moon_b2f` (avant R3, Racaillou),
+    `escape_rope_qa` (1F galerie ouest, 3 Cordes, Abo) ; README complété.
+  - **Tests** : `test_mt_moon_life` (nouveau, Boot réel, 8 : randonneur, panneau / caisses /
+    lampe, Corde au sol et absente au rechargement, Potion du B1F, Réveil caché — rien de côté ni
+    de dos, EXAMINER de face, toast « Réveil ×1 », journal, plus de cible ensuite ni après
+    rechargement —, rencontre sur les vrais gravats G1 et pas sur le sol calme, compagnons de la
+    série 14, reprise d'une partie quittée dans chaque étage) ; listes mises à jour :
+    `test_dialogue_data` (`IDS`, `MAPS` += 1F, B1F ; textes du §20 sur plusieurs bulles acceptés
+    ligne à ligne ; 12 scènes lancées par un dialogue ; drapeaux), `test_cutscene_data` (scènes,
+    variantes, jouées par le code, objets trouvés), `test_companion_logic` (25 espèces),
+    `test_escape_rope` (drapeau réel `got_mt_moon_1f_item_1`). Le test « objets cachés » sur
+    Boot réel est dans `test_mt_moon_life` (le nom `test_hidden_items` est pris par le T18 en
+    parallèle).
+  - Captures (Mac, 2340 × 1080) : `tools/capture_mt_moon_t21.gd` → `build/captures/jalon12_t21/`
+    (`compagnon_rondoudou`, `randonneur`, `camp`, `camp_caisse`, `corde_au_sol`, `cache_indice`,
+    `cache_trouve`, `compagnon_nosferapti`, `potion_b1f`), relues.
+  - **Valeurs par défaut (règle 4)** : caisses examinables sur leurs trois cases ; panneau en une
+    bulle de deux lignes ; randonneur immobile tourné ← (grille) ; équipes des départs (Reptincel
+    N18, Rondoudou N14, Nosferapti N12, Roucoups N18, Racaillou N12) ; taux 60 des gravats du
+    départ `mt_moon_1f`.
+  - **À voir sur téléphone (12B)** : l'indice du Réveil (57, 19) est pris dans le bord de paroi
+    (`is_embedded`, T9) : il se lit à peine (voulu « discret », B-10) ; Rondoudou (48 px) et Paras
+    (40 px) petits à côté du héros.
+  - Import propre ; `tools/test.sh` : **4 126 tests, 4 126 verts** (312 scripts, 167 665 assertions, 832 s).
+
+- **T15 — carte `qa_moves_j12` et départs de la session 12.0 (2026-10-13, constructeur-monde,
+  branche `j12-t15-qa` depuis `jalon-12` à `b7d6d88`)** — §2.22, modèle `qa_switch_j13`
+  (`3d58fe6`) :
+  - Outil `tools/build_qa_moves_j12.gd` (copie de `build_qa_switch_j13.gd`) → carte 24 × 16,
+    tuiles provisoires, sans lumière ni gravats : hautes herbes x 1..6, y 10..13 ; Dresseur
+    d'essai `qa_moves_smart` (`smart`) en (11, 3), vision 5 vers le bas ; spawns `moves_start`
+    (11, 12) et `lane_smart` (11, 9) ; sortie sud (10..12, 14) → `pewter_city` / `from_center`.
+    Données `data/{npcs,trainers,dialogues}/qa_moves_j12.json`.
+  - `MapCatalog.QA_PREFIX` / `is_qa_map` **repris mot pour mot** du J13 (commentaire compris) ;
+    `test_dialogue_data` (`_real_ids` / `_without_qa`), `test_zone_library`,
+    `test_map_light_profiles` : mêmes retouches que le J13 ; exception datée
+    `qa_moves_j12` dans `test_no_qa_map_is_shipped` (conflit d'une ligne attendu à la fusion du
+    J13 : garder les deux exceptions).
+  - Départs `moves_qa` (Racaillou N21, Abo N20, Rondoudou N29, Nosferapti N22 ; 9 espèces du J12
+    au Stockage → 12 au Pokédex ; remèdes, Potions, Balls ; table forcée Nosferapti / Abo /
+    Rondoudou / Racaillou / Voltorbe) et **`moves_qa_solo`** (ajout [D] : Racaillou seul, pour
+    le double K.O. final sans avoir à mettre K.O. trois Pokémon). Capacités : **toutes apprises
+    au niveau** (Rouge/Bleu), la clé `moves` ne fixe que l'ordre ; seule exception, Berceuse du
+    Rondoudou du Dresseur (niveau 1).
+  - **Défaut [D]** : Rondoudou du Dresseur = Berceuse, Entrave, Boul'Armure, Repos (aucune attaque) :
+    avec Écras'Face (60 avec le bonus de type) l'IA `smart` ne choisirait jamais Repos (40) ; avec
+    seulement Entrave / Repos, tout devient « inutile » à PV pleins et Repos est tiré au hasard.
+  - Test `test_qa_moves_j12` (19) : carte, Dresseur, départs, et **partie scriptée** par le vrai
+    moteur avec les Pokémon du départ (graines fixes) : drain, Onde Folie, piège (pertes,
+    libération), piège subi (fuite et changement refusés, puis permis), Sonicboom 20 PV,
+    Entrave (jamais relancée par l'adversaire) et sa fin, Repos (échec à PV pleins, PV pleins,
+    2 tours perdus), Destruction, double K.O. perdu, IA `smart` (Destruction sous ¼, jamais à PV
+    pleins ; Repos blessé, jamais à PV pleins).
+  - Captures `tools/capture_qa_moves_j12.gd` (`--flow=trainer|wild`) →
+    `build/captures/jalon12_t15/` (carte, Destruction, K.O., ligoté), relues.
+  - **Retrait au T28** : carte, outil, outil de capture, données `qa_moves_j12`, les deux départs,
+    `test_qa_moves_j12`, exception de `test_no_qa_map_is_shipped`.
+
+- **T14 — interface de combat du J12 (2026-10-13, ui-mobile, branche `j12-t14-interface` depuis
+  `jalon-12` à `b7d6d88`)** — §2.10 (interface), annexe A.4 ; écarts et défauts : §0.4 n° 16.
+  - **Entrave** : `BattleMoveView.blocked` / `blocked_text` ; `BattleViews.player_moves(battle,
+    data, texts)` marque l'emplacement de `Battle.get_disabled_move()` (« BLOQUÉE »,
+    `move_disabled_label`) ; `MoveCard` grisée, cadenas, inerte (`is_blocked()`) ; `MoveGrid` la
+    saute au clavier. Le directeur appelle `player_moves`.
+  - **Piège** : `BattleViews.party` → « Impossible de changer » (`switch_reason_trapped`) sur
+    les cartes envoyables si `Battle.is_player_trapped()` (hors remplacement) ;
+    `BattleDirector._choose_action` : FUITE piégé → `flee_failed` dans le bandeau, **rien de
+    soumis** (plus de `push_error` de `submit`), la grille revient.
+  - **Fée** : `TypeBadge.ICONS[&"fairy"]` (`assets/ui/icons/types/fairy.svg`) : pastilles de
+    combat (cartes de capacité, ÉQUIPE), Équipe et Pokédex.
+  - Jetons en fin de `ui_tokens.gd` : `MOVE_CARD_BLOCKED_BG`, `MOVE_CARD_BLOCKED_BORDER`,
+    `MOVE_CARD_BLOCKED_TEXT`.
+  - **Tests** (14 nouveaux, 3 fichiers) : `test_battle_views_j12` (5 : textes validés, équipe
+    libre inchangée, piégé, remplacement après K.O. libre, capacité bloquée),
+    `test_battle_ui_j12` (8 : carte grisée / cadenas / « BLOQUÉE » / PP non rouges, toucher et
+    pression longue sans effet, clavier, carte débloquée au show suivant, icône Fée, pastille
+    FÉE, carte d'une capacité Fée, types des 10 espèces du J12), `test_battle_director_j12`
+    (1 : vrai directeur, FUITE piégé = bandeau « Impossible de fuir ! » sans tour ni erreur,
+    ÉQUIPE « Impossible de changer », capacité bloquée grisée puis l'autre jouée).
+  - **Captures** (2340 × 1080, `tools/capture_combat_t14.gd`, relues) :
+    `build/captures/jalon12_t14/2340_{blocked_move,flee_refused,team_trapped,team_refused,
+    menu_team,dex_sheet}.png`.
+  - Import propre ; `tools/test.sh` : **4 099 tests, 4 099 verts** (310 scripts, 794 s).
+- **T13 — moteur de combat du J12 (2026-10-13, architecte, branche `j12-t13-combat` depuis
+  `jalon-12` à `ac3e0ad`)** — §2.10, alignement §0.4 n° 1–3, 8, 11 ; lectures du §0.4 n° 15 :
+  - **Genres** (`MoveEffect.Kind`, **en fin d'enum, dans l'ordre figé**) `DRAIN TRAP DISABLE REST
+    SELF_KO` ; `FIXED_MODES += value` ; champs `min_turns`, `max_turns`, `messages`, `amount` ;
+    `TRAP_MESSAGES`. `PokemonData` : clés obligatoires (`drain` : `fraction` ; `trap` : `turns`
+    [min, max] 1..8, `fraction`, `messages` ; `disable` : `turns` 1..8 ; `rest`, `self_ko` :
+    aucune) ; `amount` (1..999) obligatoire pour `value`, refusé pour les autres modes.
+    `MoveData.effect_of(kind)` (fin de fichier). `StatusRules.apply_rest`, `REST_SLEEP_TURNS`.
+  - **Volatils** sur le `Battler` : `trap_turns`, `trap_move`, `trap_fraction`, `trap_source`,
+    `last_move_slot`, `disabled_slot`, `disabled_turns` ; `is_trapped()`, `clear_trap()`,
+    `has_disabled_move()`, `clear_disable()` ; `usable_moves()` exclut la capacité bloquée (choix
+    du joueur, `is_legal`, IA `random` et `smart` d'un coup).
+  - **`Battle`** (points d'accroche courts, fonctions en fin de fichier) : `is_legal` refuse RUN et
+    SWITCH quand le joueur est piégé (`replace` permis) ; `_execute` : Entrave avant `_can_act`,
+    `last_move_slot` à MOVE_USED, SELF_KO sur les trois sorties (raté, sans effet, touché) ;
+    `_strike` compte les dégâts portés (drain) ; fin de tour : graine, statut, **piège**,
+    **Entrave**, pour chaque camp ; `_send_out` libère la cible du lanceur sortant ; Sonicboom
+    = `amount`. Événements (fin d'enum, après `BIDE_BROKEN`) : `DRAINED_HP`, `TRAPPED`,
+    `TRAP_DAMAGED`, `TRAP_ENDED`, `MOVE_DISABLED`, `DISABLE_ENDED`, `RESTED`, `SELF_KO`.
+  - **IA `smart`** : `status_has_effect` (Entrave seulement si elle prendrait ; Repos seulement
+    blessé et éveillé), `damaging_is_sensible` (pas de piège sur une cible piégée ; Destruction /
+    Explosion à ≤ ¼ PV, `SELF_KO_HP_RATIO`).
+  - **Textes** (`messages.json`, en fin de `templates`, mot pour mot du §20 n° 46 et de
+    l'annexe A.4) : `drain_hp`, `trap_wrap_*`, `trap_bind_*`, `trap_fire_spin_*`
+    (`started` / `damaged`, avec `text_f`), `trap_ended`, `move_disabled`, `disable_ended`,
+    `rested` ; sans événement, pour le T14 : **`switch_reason_trapped`** (« Impossible de
+    changer ») et **`move_disabled_label`** (« BLOQUÉE »).
+  - **Données** : `leech_life` (drain ½), `wrap` / `bind` / `fire_spin` (piège [4, 5], ⅛,
+    familles `wrap` / `bind` / `fire_spin`), `disable` (4), `rest`, `self_destruct` /
+    `explosion` (`self_ko`), `sonic_boom` (`fixed_damage` `value` 20) : **plus aucun
+    `pending_effects` du J12** ; reportés inchangés (`metronome`, `haze`, `light_screen`,
+    `double_edge`). **J13** : sa copie de `wrap` (encore `pending_effects: ["trap"]`) disparaît à
+    sa fusion (sa règle, §1.2 n° 4).
+  - **API pour le T14** : `Battle.get_disabled_move() -> int` (emplacement bloqué du Pokémon du
+    joueur, ou `Battle.NO_LOCK`), `Battle.is_player_trapped() -> bool` (raison
+    `switch_reason_trapped` sur les cartes de l'équipe ; fuite : `flee_failed` affiché **sans
+    soumettre** ; `can_flee()` reste vrai en sauvage — le bouton FUITE ne disparaît pas),
+    `BattleText.get_template(&"move_disabled_label")`. Aujourd'hui, une fuite ou un changement
+    refusés sont rejetés par `submit` (`push_error`, aucun tour joué) puis la grille revient :
+    aucun blocage, mais pas de message tant que le T14 n'est pas là.
+  - **Tests** (47 nouveaux dans 7 fichiers + 2 fichiers retouchés, graines fixées par `ScriptedRng`) :
+    `test_battle_drain` (5), `test_battle_trap` (11 : 4 et 5 tours, ⅛, refus sans tour perdu,
+    ordre graine → poison → piège, lanceur rappelé ou K.O., remplacement forcé, capture, K.O.
+    par le piège, textes par capacité), `test_battle_disable` (6 : 4 fins de tour, échecs, Patience,
+    même tour, seule capacité → Lutte, perdue au changement), `test_battle_rest` (5 : PV pleins,
+    2 tours exacts, statut remplacé, Réveil), `test_battle_self_ko` (7 : double K.O. final perdu
+    par le lanceur dans les deux sens, Explosion, raté, cible debout, endormi, double K.O. en
+    cours de combat, aucune XP), `test_battle_ai_j12` (6), `test_battle_moves_j12` (7 : table
+    pilotée par les données, refus de données, Sonicboom, textes validés, temps de mise en
+    scène) ; outil `tests/helpers/battle_kit_j12.gd`. `test_mt_moon_data`, `test_pewter_data` :
+    effets attendus au lieu des `pending_effects`.
+  - **Non-régression** : suite complète **avant les tests nouveaux** : 3 997 / 3 997 verts (J11 :
+    statuts, Patience ; poison du J9 ; `test_brock_sequence`, `test_rival_route22`) ;
+    `simulate_mt_moon.gd --valider` : code 0, rien de sauté (et `--seeds 20` joué sans erreur avec
+    les effets réels) ; `simulate_brock.gd --seeds 200` : sortie **identique octet pour octet** à
+    celle de `jalon-12` avant le T13 (même machine, mêmes graines). Import propre ;
+    `tools/test.sh` : **4 044 tests, 4 044 verts** (300 scripts, 781 s).
+- **T20 — moteur de la grotte (2026-10-13, architecte, branche `j12-t20-grotte` depuis `jalon-12`
+  à `ac3e0ad`)** — aucun fichier de `battle/` touché (T13 en parallèle) ; ajouts en fin :
+  - **Gravats (§2.5)** : `GridWorld.set_rubble` / `is_rubble` (bit 5, informatif comme les
+    herbes) ; `GameMap._read_layer` lit la donnée `rubble`. `EncounterDirector.terrain_at(cell)`
+    (herbes → `grass`, gravats → `rubble`, sinon `&""`) choisit la table et l'intro ; même taux,
+    même rampe, **un seul compteur** de pas calmes ; aucun tirage sur le sol calme. Intro
+    « éboulis » : `RubbleBurst` (`game/world/rubble/`, modèle `GrassRustle`, 7 cailloux + 3
+    bouffées de poussière en `Polygon2D`, **0,6 s**, `Tween`), signal d'accroche
+    `EncounterDirector.rubble_sound_requested` (aucun son), puis **demi-tour** du héros
+    (`face(-facing)`), puis combat ; origine = la case du joueur. Débogage :
+    `EncounterLibrary.override_table(map, terrain, entry)` (`override_grass` en est le cas
+    « herbes », identifiant inchangé) ; clé `wild` de `DebugStart` : `"terrain"` facultatif
+    (`DebugStart.wild_terrain`, défaut `grass`), README des départs complété.
+  - **Corde Sortie (§2.6)** : `ItemData.field_use` (en fin), constantes `FIELD_USE_ESCAPE_ROPE`,
+    `FIELD_USE_EVOLUTION_STONE`, `FIELD_USES`, `has_field_use()` ; `ItemLibrary` lit
+    `field_use` (réservé à AVENTURE, valeur connue) ; `escape_rope` porte `field_use` ;
+    `FieldItemRules` (`game/items/field_item_rules.gd`, pur : `check` → `OK / NOT_HERE /
+    NOT_FIELD_USE`, `escape_target`, `is_targetless`) ; `BagQuery` : un objet AVENTURE **sans**
+    `field_use` n'a plus UTILISER (la Pierre Lune se consulte jusqu'au T23),
+    `FIELD_REFUSAL_TEXT` / `field_refusal_text` ; `MenuDirector.set_caves(caves, current_map)`,
+    signal **`field_item_requested(item_id)`**, UTILISER d'un objet sans cible (jamais le choix
+    du Pokémon) : refus → bandeau « Impossible de l'utiliser ici. », rien ne change ; accepté →
+    Boot (`_setup_caves`, `_on_field_item_requested`) ferme le menu, narration « Tu utilises la
+    Corde Sortie. » (dialogue `escape_rope_used`, `data/dialogues/field_items.json`), puis
+    retire la Corde **dans la même image** que `SceneRouter.change_map(route_3,
+    from_mt_moon_w, ↓)` : l'autosave suivant est celui de l'arrivée ; une fermeture pendant le
+    fondu laisse la sauvegarde d'avant (Corde comprise, dans la grotte). Ni soin ni point de
+    repos. Boutique d'Argenta : `escape_rope` en fin de stock (550 ₽, sans condition).
+  - **Compagnon (§2.2, §2.3)** : `CompanionCatalog.CONTEXTS += cave`,
+    `CompanionRules.CONTEXT_LINES[cave] = companion_cave` ; **jamais posé sur un passage** à
+    l'arrivée (le Callable de `CompanionController._place_and_show` refuse aussi une case qui
+    porte un warp `STEP_ON` — échelle, porte — par `_is_step_passage`, en fin de fichier ;
+    `CompanionTrail` inchangé) ; masqué dans les goulets : règle du J11, inchangée.
+  - **« Réduire les animations » (§2.4)** : `LightGlow.set_reduce_motion(s.reduce_motion)` dans
+    `Boot._apply_settings`, à côté du compagnon.
+  - **Fait en avance sur le T21 (§0.4 n° 14)** : phrase `companion_cave` (§20 n° 40) dans
+    `data/dialogues/companion.json` et `contexts` des trois étages → `cave` dans
+    `companions.json` (le test des phrases du compagnon exige que chaque contexte ait sa phrase) ;
+    stock d'Argenta (demandé avec T20).
+  - **Tests** (nouveaux fichiers) : `test_grid_world_rubble` (drapeau ; vrais étages : gravats =
+    cases `g` ; aucun ailleurs), `test_encounter_override_table` (table forcée par terrain, clé
+    `terrain` du départ), `test_field_item_rules` (données, règle pure, Sac, directeur du menu),
+    `test_rubble_burst` (0,6 s au pas près, `TweenClock`), `test_encounter_director_rubble`
+    (gravats → table et éboulis, origine sous les pieds, son, demi-tour ; sol calme sans tirage ;
+    herbes inchangées ; compteur commun ; sans table ; durée de l'intro au pas près),
+    `test_escape_rope` (**Boot réel** : refus Route 3 / Argenta / Centre ; 1F, B1F, B2F après
+    l'événement → (73, 10) ↓, une Corde de moins, ni soin ni point de repos, drapeaux et objets
+    gardés, sauvegarde d'avant à l'écran noir, arrivée écrite ensuite ; dernière Corde),
+    `test_companion_cave` (**Boot réel** : visible, phrase « grotte », jamais sur une échelle
+    aux trois arrivées A / B / D puis sorti au premier pas sur la case quittée, rentré au Centre,
+    ne déclenche aucune rencontre de gravats, halos figés par « Réduire les animations ») ;
+    listes mises à jour : `test_dialogue_data` (`IDS`, `PLAYED_BY_COMPANION`, `PLAYED_BY_BOOT`,
+    textes du §20 du dossier 15 acceptés), `test_pewter_data` (stock d'Argenta), `test_bag_query`
+    (l'objet AVENTURE de fixture, sans `field_use`, n'a plus UTILISER : changement voulu).
+  - Captures (Mac, 1170 × 540) : `tools/capture_cave_t20.gd` → `build/captures/jalon12_t20/`
+    (`galerie_compagnon`, `echelle_arrivee`, `echelle_premier_pas`, `eboulis_1`, `eboulis_2`,
+    `eboulis_demi_tour`), relues.
+  - Valeurs par défaut (règle 4) : éboulis 0,6 s, 7 cailloux bruns (#8a7458 / #4a3f35, rayon
+    12 px, 64 px parcourus), 3 bouffées de poussière (14 → 50 px) ; demi-tour sans pause.
+  - Import propre ; `tools/test.sh` : **4 038 tests, 4 038 verts** (300 scripts, 165 807
+    assertions, 1 038 s).
+
+- **T17 — briques du monde (2026-10-13, architecte, branche `j12-t17-monde` depuis `jalon-12` à
+  `e079176`)** — code pur, aucun fichier de données du jeu touché (T12 en parallèle) :
+  - **Objets cachés (§2.8)** : `InteractPoint.unless_flags: Array[StringName]` (export en fin),
+    recopié (copie indépendante) dans `Interaction.unless_flags` par `to_interactions()` ;
+    `Interaction.is_available(flags: StoryFlags) -> bool` (sans allocation ; null ou liste vide =
+    disponible) ; `InteractionController._process` écarte une cible indisponible (bouton masqué).
+    `InteractionFinder` et `InteractionTable` inchangés. Q-2 appliqué : EXAMINER face à l'indice,
+    rien d'autre.
+  - **Dresseurs (§2.11)** : `NpcRoster.TRAINER_KEYS += ["rematch", "leave"]` (en fin) ;
+    `NpcSpec.rematch_dialogue`, `leave_cells: Array[Vector2i]`, `leaves: bool`,
+    `LEAVE_STEPS_MAX = 4`, `has_rematch()`, `get_leave_path_cells()` ;
+    `NpcRoster._read_trainer_j12` (appelé en fin de `_read_trainer`) et `NpcRoster.is_offset` ;
+    `TrainerRules.LOST_PREFIX`, `lost_flag(id)` ; `TrainerEncounter.build` : avec `rematch`,
+    « avant » `unless lost_<id>` + « reprise » `if lost_<id>` + `lose_flags = [lost_<id>]` ; avec
+    `leave`, après la réplique « vaincu » : un `move` à destination par case puis `despawn`, tous
+    `if beaten_<id>`. Forme de `leave` : §0.4 n° 13.
+  - **Compatibilité ascendante prouvée** : `test_trainer_encounter`, `test_npc_roster`,
+    `test_trainer_watcher`, Dresseurs de la forêt, Liam, Pierre **non modifiés et verts** ; test
+    nouveau qui reconstruit **tous** les Dresseurs de `data/npcs/` (distances 0, 1, vision) et
+    vérifie la séquence du J9–J10 exacte, sans `lost_`, « avant » sans condition.
+  - **Tests** (28 nouveaux) : `tests/unit/test_interaction_unless.gd` (5),
+    `tests/unit/test_trainer_rematch_leave.gd` (13), `tests/integration/test_hidden_item_point.gd`
+    (5 : vrai contrôleur, joueur, DialogueRunner ; quatre côtés, dos / côté, examiné → drapeau →
+    plus de cible, rechargé), `tests/integration/test_trainer_rematch_leave.gd` (5 : vrai
+    `TrainerWatcher` + `CutsceneDirector` ; marche réelle case par case puis fondu, absent au
+    rechargement, défaite → reprise, fondu sur place, témoin J9) ; fixture
+    `tests/fixtures/npcs/rocket_map.json`. Le test sur **Boot réel** (`test_hidden_items`) reste au
+    T18 / T21 avec les vraies caches, comme le plan le prévoit.
+  - Import propre ; `tools/test.sh` : **3 984 tests, 3 984 verts** (292 scripts, 156 430
+    assertions, 800 s).
+- **T12 — données du J12 (2026-10-13, architecte, branche `j12-t12-donnees` depuis `jalon-12`
+  à `e079176`)** — données, outils de génération et tests ; aucun moteur, aucune carte, aucun PNJ :
+  - **12 espèces** `data/pokemon/species/kanto_mt_moon.json` (PokeAPI : statistiques, taux de
+    capture et rendement d'XP actuels, types modernes — Mélofée / Mélodelfe Fée, Rondoudou /
+    Grodoudou Normal/Fée —, croissance « medium » → `medium_fast` comme les autres, Voltorbe
+    asexué `-1`, apprentissages `red-blue`) ; évolutions Abo / Nosferapti 22, Paras 24, Mélofée et
+    Rondoudou `item moon_stone` ; Voltorbe et Smogo sans évolution (Électrode, Smogogo absents).
+    → **50 espèces**.
+  - **21 capacités** `data/pokemon/moves/mt_moon.json` (valeurs actuelles, descriptions de
+    l'annexe A.2 et du §20 n° 41–44 mot pour mot) : genres du J11 réutilisés tels quels (`sing`,
+    `spore` sommeil ; `glare` paralysie ; `confuse_ray` confusion ; `double_slap` 2–5 coups ;
+    `smog` 40 %, `sludge` 30 % poison ; `acid`, `smokescreen`, `minimize` étages) ; **en attente du
+    T13** par `pending_effects` : `leech_life` [`drain`], `wrap` [`trap`], `disable` [`disable`],
+    `rest` [`rest`], `sonic_boom` [`fixed_value`] — **sans** la mention « Sans effet dans le moteur
+    actuel. » (convention vérifiée : la mention ne figure que dans les textes validés des effets
+    reportés au-delà du J12 ; les textes §20 n° 41–44 et A.2 de Sonicboom ne l'ont pas et le T13
+    les active) ; reportés avec la mention : `metronome`, `haze`, `light_screen`, `double_edge`
+    [`recoil_damage`]. Les 5 copiées par le J13 (`acid`, `wrap`, `smokescreen`, `minimize`,
+    `light_screen`) **à l'identique**. `moves.json` : description de Destruction = §20 n° 45 ;
+    `bind`, `fire_spin`, `self_destruct`, `explosion` gardent leur `pending_effects` (T13).
+    → 88 capacités.
+  - **Identifiant `double_slap`** (Torgnoles), pas `doubleslap` comme écrit au §2.10 : convention
+    des identifiants PokeAPI (`self_destruct`, `sonic_boom`, `double_edge`, liste des CT générée).
+    Aucun plan des J13–J15 ne le cite (vérifié).
+  - **Objets** `data/items/mt_moon.json` : `escape_rope` (AVENTURE, 550 ₽), `moon_stone`
+    (AVENTURE, jamais vendue), `dome_fossil`, `helix_fossil` (objets clés), `tm01` (CT01 —
+    Ultimapoing, `mega_punch`) ; sans `field_use` ni `obtained` (T20 / T23). Stock d'Argenta non
+    touché (T21).
+  - **Pokédex** : 12 fiches + 7 notes (annexe A.1, mot pour mot), ajoutées **en fin** de
+    `data/pokedex/kanto.json` ; notes `jigglypuff_balloon`, `ekans_sunbath`, `zubat_ceiling`,
+    `paras_dig`, `clefairy_shards`, `voltorb_machines`, `koffing_air`.
+  - **Dresseurs** `data/trainers/route_3.json` (`route_3_hugo`, `_lea`, `_sacha`, `_enzo`,
+    `_ines`, `_nolan` : identifiants du scénario du T10, pour `--donnees`) et
+    `data/trainers/mt_moon.json` (`mt_moon_rocket_1/2/3`, `mt_moon_researcher`) : équipes et ₽ du
+    dossier §3.2, §8.3, §9, Nolan = Aspicot, Coconfort, Chenipan N9 ; capacités apprises au niveau.
+    Aucun bloc `trainer` de PNJ (T18, T25).
+  - **Rencontres** `data/encounters/route_3.json` (`route_3_grass`, §3.3) et
+    `data/encounters/mt_moon.json` (trois tables `rubble`, §6) ; taux 25, rampe 15 → 20.
+    **`EncounterTable.TERRAINS` += `rubble`** (une ligne, en fin) pour que la bibliothèque accepte
+    ces tables ; `EncounterDirector` ne lit toujours que les herbes : les tables de gravats ne
+    déclenchent rien avant le **T20** (qui n'a donc plus à toucher `TERRAINS`). La table des herbes
+    de la Route 3 est active dès maintenant sur les hautes herbes posées au T8.
+  - **CT** : `tools/gen_tm_compatibility.py` lit désormais **tous** les `species/*.json` (tri par
+    numéro de Pokédex) ; `tm_compatibility.json` régénéré (50 espèces, CT34 : 46, CT01 : Mélofée,
+    Mélodelfe, Rondoudou, Grodoudou et les compatibles existants).
+  - **Sprites provisoires** de face / dos : `gen_placeholder_battlers.gd` étendu (ajouts en fin)
+    aux 12 espèces **et à Rattatac** (Sbire R3 : exigé par `test_battle_stage`) ; les 20 sprites
+    existants régénérés au bit près (aucun diff).
+  - `tools/simulate_mt_moon.gd -- --valider` : **code 0** (rien de sauté), aussi avec `--donnees`.
+  - Tests : `test_mt_moon_data` (nouveau : espèces, évolutions, apprentissages, capacités et
+    attentes, textes contre l'annexe A et le §20, objets, Pokédex, Dresseurs, tables, CT, sprites) ;
+    listes exhaustives mises à jour dans `test_pokemon_data`, `test_tm`, `test_item_library`,
+    `test_encounter_library`, `test_pokedex_library`, `test_pewter_data` (Ligotage existe,
+    description de Destruction).
+  - Import propre ; `tools/test.sh` : **3 969 tests, 3 969 verts**, 0 en attente, 0 échec
+    (289 scripts, 158 925 assertions, 779 s).
+
+- **T11 — alignement sur le J11 livré (2026-10-13, architecte, branche `j12-t11-alignement`
+  depuis `jalon-12` à `1a3cad5`)** — documentation seulement (aucun fichier de `game/`, `data/`,
+  `tests/`) :
+  - **Fusion** de `main` (J11 terminé, `267fcf1`) dans `jalon-12` : commit `1a3cad5` (conflits
+    résolus dans `assets/world/catalogue.json`, `etat-projet.md`, `build_character_frames.gd` :
+    les deux côtés gardés). Import propre ; `tools/test.sh` sur `1a3cad5` : **3 956 tests, 3 956 verts**, 0 en attente, 0 échec (288 scripts, 156 018 assertions, 782 s ; relancé au T11 dans la copie du T11).
+  - **Vérifié dans le code** : §0.3 (colonne « Réalité » : tout est livré ; écarts : pas de
+    `status.json`, Patience sur le `Battler`, pas de `cancellable`, contexte de compagnon en
+    constantes, placement possible sur un warp, pas de carte `qa_status`, T18 partiel) ; §0.4
+    (12 points, une décision technique chacun : Repos = `status_turns = 2` par
+    `StatusRules.apply_rest` ; volatils du J12 sur le `Battler` ; Entrave filtrée dans
+    `Battler.usable_moves()` ; changement refusé par `is_legal`, pas `check_switch` ; Sonicboom
+    actif par un mode `value` ; champ `obtained` pour le toast des fossiles ; `StoneUse.Check` à deux
+    états ; pierre retirée par Boot ; `qa_moves_j12` sur le modèle de `qa_switch_j13` du J13, sans
+    gravats ; `cave` dans `CompanionCatalog.CONTEXTS` et `CompanionRules.CONTEXT_LINES` ; compagnon
+    jamais posé sur un warp ; `LightGlow` branché au T20 ; clé `wild` avec `terrain`).
+  - **§1.2 réécrit** : la liste des fichiers du J11 tombe ; personne d'autre sur `main` ; J13
+    (`jalon-13`, construite depuis `jalon-12` à `5b3fe9b`, code déjà avancé), J14 et J15 (sauvegarde
+    v7) avancent en parallèle sur les mêmes fichiers → le J12 fusionne **le premier**, ne fusionne
+    que `main`, garde ses noms (liste figée), ajoute en fin, met ses données nouvelles dans des
+    fichiers à part ; `tm_compatibility.json` se régénère.
+  - **§2.x** corrigés (noms, signatures, emplacements) sans changer de décision ; **§3** : T12–T29
+    réécrites (dépendances de fichiers, quatre chaînes ; **T12 ∥ T17 tout de suite**, puis
+    T13 ∥ T20 et T18) ; **§4** critères, **§5** risques, **§6** défauts complétés ; **§7** : aucune
+    question nouvelle.
+
+- **T9 — Mont Sélénite 1F / B1F / B2F (2026-10-11, branche `j12-t9-mont-selenite`, depuis
+  `jalon-12`)** :
+  - **Outil** `tools/build_mt_moon.gd -- --etage=1f|b1f|b2f|tous` (deux passes masque / scène,
+    graines fixes) sur `tools/cave_map_kit.gd`, étendu : `place_walls` (parois en modules
+    d'après la grille : **faces** 3 × 2 sur les cases `#` au-dessus d'une galerie, coupées à
+    une case si la paroi est mince ; **bords latéraux** une tranche de 96 px par case — chapeau
+    en haut, pied en bas, milieu entre les deux — ; **lèvres** au nord des masses ; jamais sur
+    une galerie, découpe `region_rect`), `is_embedded` (repère bloqué pris dans la paroi :
+    masse peinte dessous, pas de module, le repère se voit — lampes du couloir du gardien,
+    indices au fond d'une niche), `add_sprite` (objet réduit à son `Sprite2D` : ses réglages
+    propres sont enregistrés, ceux d'un enfant d'instance étaient perdus). Les éclats `*`
+    comptent comme masse (texture G).
+  - **Cartes** `mt_moon_1f` (292 nœuds, 8 halos), `mt_moon_b1f` (179, 8), `mt_moon_b2f`
+    (207, 13) ; masques `assets/world/maps/mt_moon_*_ground.png`. Repères : colonne du
+    carrefour, colonnes de B2F, rochers, éclats (un halo par groupe), lampes de chantier,
+    projecteurs de la chambre (les deux du milieu braqués sur la dalle : halo entre eux et
+    elle), caisses R, tranchées (celle de B1F étirée à 4 cases), mare, puits de jour (décal +
+    halo), dalle et **fossiles posés sur la dalle** (pied relevé de 30 px), indices `x`,
+    panneau de l'entrée (décor ; son texte au T21). Échelles : décor au sol + warp `STEP_ON`
+    sans direction ; **échelle C (B1F)** : l'image montante ramenée à 128 px dans sa case (le
+    trou au plafond débordait sur la case d'arrivée). Entrée 1F → `route_3` /
+    `from_mt_moon_w|e`, sortie B2F → `route_4` / `from_mt_moon` : **repli « à venir »** tant
+    que ces cartes manquent (retour sur l'arrivée) ; `test_mt_moon_maps` exige de relancer
+    l'outil quand elles existent.
+  - **Données** : `lighting.json` (`cave_1f` > `cave_b1f` = `cave_b2f` : étalonnage froid,
+    liseré froid faible, aucune ombre portée, ombres de contact, vent 0), `zones.json`
+    (`mt_moon` : trois étages, sous-titre et description de l'annexe A), `decors.json`
+    (`mt_moon_galerie` sur les trois étages, `mt_moon_chambre` sur B2F (14, 19) → (37, 35)).
+  - **Mesures (Mac)** : `tools/capture_mt_moon.sh` (2340 × 1080, fiche de caméra par vue) +
+    `tools/art/luminance_grotte.py` : sol 0,22–0,37 (luminance relative WCAG), rapport
+    sol / paroi 4,4–9,1 sur les 15 vues 1:1 (seuils 0,22 et 2,0 tenus) ; contraste du héros
+    (moyenne pixel par pixel) 2,8–3,5 contre 4,4 dans la Forêt de Jade (sol clair : à juger
+    sur téléphone). fps Mac 115–120 (plafond), 19–28 appels de dessin. Mémoire
+    « carte + voisines » (`measure_map_cache.gd -- --route=mt_moon`) : 6,2 Mo (≤ 64 : pas de
+    repli). Chargement (`measure_map_load.gd`, médiane) : 1F 284 ms, B1F 132 ms, B2F 136 ms,
+    Jadielle 933 ms.
+  - Tests : `test_mt_moon_maps` (nouveau), `test_cave_map_kit` (parois, sol peint effectif),
+    `test_map_catalog` (grottes effectives), `test_map_links` (étages ; Route 3 et sas en
+    parallèle), `test_overworld_tileset` (grottes exclues), `test_lighting_library`. Import propre ;
+    `tools/test.sh` : 3 797 tests, 3 794 verts, 3 en attente (entrée vers la Route 3, sortie
+    vers le sas, sortie de la Corde : T8), 0 échec.
+
+- **T7 — fondations de carte (2026-10-11, branche `j12-t7-fondations`, depuis `jalon-12`)** :
+  - **Gravats** : `OverworldTiles.Kind.RUBBLE` (rangée 13, en fin d'enum), `DATA_RUBBLE`,
+    `is_rubble_kind` ; tuile provisoire (`gen_placeholder_tiles.gd`, sol ardoise semé de cailloux) ;
+    couche de données `rubble` **ajoutée en dernier** à `overworld.tres` **et** à `interior.tres`
+    (`gen_placeholder_interior_tiles.gd` : même ordre de couches, test existant) ; diff des `.tres`
+    limité aux ajouts, rangées 0–12 de l'atlas identiques au pixel ; aucune carte ne pose de gravats
+    (test). **Non lue** par `GridWorld` / `EncounterDirector` (T20).
+  - **`PaintedGround` à textures réglables** : exports `base_texture`, `r_texture`, `g_texture`
+    (nuls = herbe, pavés, chemin), `get_textures()`. Une carte construite sans réglage n'enregistre
+    aucune propriété nouvelle ; aucun `.tscn` de carte modifié. **Preuve au pixel près** :
+    `tools/capture_painted_ground.gd` (sol seul de Jadielle, Argenta, Route 2 sud et nord, forêt,
+    Route 22, Route 1 ; carte entière + détail 1:1) avant / après : écart max **0 / 255** sur les
+    14 images, pour les scènes enregistrées **et** pour un sol reconstruit à neuf (`--fresh`,
+    ce que fera la régénération d'Argenta au T8). Bourg Palette exclu (mer animée).
+  - **`LightGlow`** (`game/world/lighting/light_glow.gd`, `Sprite2D` additif, dégradé radial
+    généré, partagé ; un matériau par type qui vacille, un seul pour les fixes ; `z` absolu 5,
+    au-dessus de `Entities`, sous `Overhead`) + **`LightGlowLibrary`** (pure) +
+    `data/world/light_glows.json` (`lamp` vacille, `shaft`, `shard`, `projector` fixes ;
+    alpha ≤ 0,35 ; `MAX_PER_MAP` = 16). « Réduire les animations » :
+    `LightGlow.set_reduce_motion(enabled)` (statique) coupe le vacillement de tous les halos —
+    **branchement dans `Boot._apply_settings` à faire après le J11** (`boot.gd` est un fichier du
+    J11, §1.2 : T20 ou T21). Aucune `Light2D` dans `game/` (test). Planche de contrôle :
+    `tools/capture_light_glow.gd` (quatre halos, tuile `RUBBLE`, héros sous la lampe).
+  - **`CaveLibrary`** + **`CaveExit`** (`game/world/caves/`, purs) + `data/world/caves.json`
+    (`mt_moon` : 1F, B1F, B2F ; sortie `route_3` / `from_mt_moon_w` / ↓). Chemin par défaut
+    `CaveLibrary.DATA_PATH` (convention des autres bibliothèques, au lieu de `DEFAULT_PATH`).
+    `test_map_catalog` : grottes extérieures absentes de `interiors.json`, sortie avec son point
+    d'apparition — **en attente** (`pending`) tant que T8 / T9 n'ont pas construit les cartes.
+  - **`tools/cave_map_kit.gd`** : grille (`PRATICABLES .gjUVE`), `Ground` logique (`.` `j` `E`
+    `U` `V` → sol, `g` → `RUBBLE`, reste solide), masque (R gravats, G masse `#`), sol peint aux
+    trois textures de la série 14 (échoue proprement tant qu'elles manquent), bande de frontière
+    ardoise, `Glows` + budget, échelles (`ladder_links` : paire, carte, spawn cible, orientation
+    opposée à l'échelle ; `add_ladder` = `STEP_ON` sans direction), `spawn_names` (`_w/_e`,
+    `_n/_c/_s`), objets peints (`add_prop_at`, `add_floor_prop`).
+  - Tests : `test_overworld_tileset` (étendu), `test_interior_tileset` (5 couches),
+    `test_painted_ground`, `test_light_glow`, `test_cave_library`, `test_cave_map_kit`,
+    `test_map_catalog` (étendu). Import propre ; `tools/test.sh` : 3 769 tests, 3 767 verts,
+    2 en attente (grottes, T8 / T9), 0 échec.
+
+- **T8 — cartes Route 3, Centre du Mont Sélénite, sas de la Route 4, raccord d'Argenta (2026-10-11,
+  branche `j12-t8-route-3`, depuis `jalon-12`)** — sans PNJ, sans rencontres, sans déclencheurs :
+  - **`tools/build_route_3.gd`** → `route_3` (82 × 38, grille `route_3.txt` lue telle quelle,
+    praticables `.=hvoDQ`) : sol peint avec le canal rouge = `ground_roche_01` (texture à 1:1,
+    `paving_scale` 1,0) ; **répétition cassée** par le masque (16 % de cases `o` à 0,47 : l'herbe
+    perce, 16 % + bords à 0,62 ; roche qui affleure sur la prairie de l'est, R ≤ 0,42 ; R 0,25 sur
+    les chemins qui bordent la roche, sans bande d'herbe) et par 150 décalcomanies (cailloux
+    `prop_pierres_01`, touffes sèches, terre grisée). Paroi en modules : **série 12 à l'ouest,
+    ardoise (série 14) dès la colonne 44**, teinte de plus en plus froide de x 36 au bord est
+    (× (0,84 ; 0,90 ; 1,0)) ; les deux grands affleurements `R` collés à la montagne (≥ 40 cases)
+    sont de la paroi, les petits des rochers (grande pierre, rochers ; celui du goulet de Hugo posé
+    à la main), assombris et bleutés vers l'est, sol rocheux dessous. Forêt serrée de plus en plus
+    sèche vers l'est, fleurs de plus en plus rares (aucune après x 50), rebords L1 / L2, hautes
+    herbes, Centre (`bldg_centre_01`, ancre (62, 11)), entrée du Mont Sélénite
+    (`relief_entree_grotte_01`, ancre (74, 9)), deux panneaux (décor seul). **Cases réservées**
+    (Dresseurs, PNJ, Pokémon, objets, caché) : la forêt s'en écarte comme pour un PNJ.
+    Passages : (0, 25..27) PUSH ← Argenta ; Centre (61..62, 11) STEP_ON ↑ ; grotte (73..74, 9)
+    STEP_ON ↑ → `mt_moon_1f` / `from_route_3_w|e` ; spawns `from_pewter_n|c|s`,
+    `from_center_w|e`, `from_mt_moon_w|e`.
+  - **`tools/build_route_4.gd`** → `route_4` (sas 24 × 14) : paroi d'ardoise, bouche de la grotte
+    (l'entrée × 0,62, couche du sol), rochers bleutés, lisière buissons / rochers, rebord du versant
+    (`relief_falaise_01`), panneau (décor) ; bouche (2, 6) STEP_ON ← → `mt_moon_b2f` /
+    `arrivee_s` ↓ ; raccord est (23, 6..7) PUSH → « Azuria » à venir, retour `from_cerulean_n|s`
+    tourné ← ; arrivée `from_mt_moon` (3, 6).
+  - **`mt_moon_center`** : `_pokemon_center` (définition commune), titre « Mont Sélénite », sortie →
+    `route_3` / `from_center_e` (`build_painted_interiors.gd -- --rooms=mt_moon_center`).
+  - **Argenta** : sortie est → `route_3` / `from_pewter_n|c|s` tournée → ; scène **éditée sur les
+    trois `WarpPoint` seulement** (`unique_id` gardés, diff de 18 lignes) et outil mis à jour ; la
+    régénération (`build_pewter_city.gd -- --out=…`) donne la même scène, ids normalisés (diff
+    vide). Garde inchangé. **`pewter_map_kit.gd`** : réglages `set_marks` (praticables, paroi,
+    roche), `reserved_cells`, crochet du masque, style de paroi par colonne — défauts inchangés :
+    Argenta et Route 2 nord reconstruites à l'identique (diff normalisé vide).
+  - Données : `zones.json` (route_3, mt_moon = Centre + service `pokemon_center`, route_4 ;
+    sous-titres et descriptions de l'annexe A ; les étages s'ajoutent au T9), `interiors.json`,
+    `rest_points.json`, `lighting.json`, `decors.json` (`places` : `route_3` → `route_3_roche`).
+  - Repli des cartes du T9 : les warps visent `mt_moon_1f` / `mt_moon_b2f` directement ;
+    `test_map_links` les tient en « cartes parallèles » (vérifiées dès qu'elles existent) ; le
+    préchargement ignore une scène absente. Avant la fusion du T9, entrer dans la grotte ne mène
+    nulle part (branche seule).
+  - Mesures (Mac) : **2 030 nœuds** (Route 3), 356 (sas) ; 117–120 i/s (vsync) aux trois points de
+    la Route 3 et au sas ; lecture + entrée **236 ms** (Jadielle 405, Argenta 323 ; sas 110,
+    Centre 62) ; changement Argenta → Route 3 préchargé 14 ms ; mémoire « carte + voisines »
+    Route 3 **28,8 Mo** (Argenta + Route 3 ; 1F à ajouter au T9), Argenta 30,5 Mo (+ Route 3),
+    Centre 19,0 Mo, sas 6,9 Mo. Chemin principal 93 pas, 8 cases d'herbes obligatoires.
+  - Tests : `test_route_3` (19), `test_route_4` (8), `test_mt_moon_center` (4) ; `test_map_links`,
+    `test_coming_soon` (sas « AZURIA — À venir »), `test_pewter_city`, `test_pewter_badge` (après
+    le badge, la sortie est charge la Route 3 en (0, 26) et le bord ouest ramène en (51, 26)),
+    `test_scene_router` (Argenta précharge la Route 3), `test_zone_library` (service du Mont
+    Sélénite). Suite : 3 814 tests, 3 812 verts, 2 en attente (T9), seul l'intermittent connu
+    `test_rival_route22` vu une fois. Captures `tools/capture_route_3.sh` → `build/captures/jalon12_t8/`
+    (`capture_pewter.gd` : option `--hold=`).
+
+---
+
+## 10. Clôture (T29, 2026-10-14, architecte ; branche `j12-t29-cloture` depuis `jalon-12` à `15a5442`)
+
+**Le code du J12 est terminé** (T1–T28 fusionnés dans `jalon-12`). Les sessions 12.0 et 12A sont
+validées par Kevin ; **12B, 12C et 12D ont été faites par des agents pendant que Kevin dormait**
+(QA bornées sur le S21, rapports `build/qa/jalon12_t22/`, `jalon12_t27/`, `jalon12_t28/` des
+copies des agents) : **elles attendent sa validation**, puis la fusion de `jalon-12` dans `main`
+(copie d'intégration, `project.godot` et filtre d'export vérifiés) — **non faite ici**.
+
+### 10.1 Sauvegarde réelle de Kevin relue par le J12 (point « non vu » de la QA finale)
+
+La QA finale part d'un départ de débogage, qui ne lit ni n'écrit la sauvegarde : l'APK du J12
+n'avait jamais relu la vraie partie. Fixture **`tests/fixtures/save/v6_kevin_s21.json`** = copie
+octet pour octet de `build/qa/sauvegarde_kevin_s21_2026-10-14/save.json` du Mac (S21, v6,
+Jadielle, aucun badge, Salamèche N8 + Roucool, Rattata, Nidoran ♂ N3, 2 100 ₽, aucun compagnon ;
+SHA-1 `e51ccdaa90bb7ddbd111e65ea2feab636058ebc0`, vérifié par le test). Le fichier du téléphone
+n'a pas été touché.
+
+- `tests/unit/test_save_kevin_j12.gd` (5) : fixture identique au fichier du téléphone (SHA-1),
+  mêmes champs que ceux qu'écrit `GameState.to_dict()` ; lue par `SaveSystem` **sans migration**
+  (v6 = `SaveSystem.VERSION`, rien d'écrit à la lecture) ; chargée dans un `GameState` neuf
+  **sans rien perdre** (équipe dans l'ordre avec ses identifiants, Stockage, Sac, argent,
+  18 drapeaux, Pokédex, Grands moments, objets trouvés, cartes découvertes, compagnon vide,
+  position (42, 22) ↑, point de repos, prénoms) — `to_dict()` égal à l'original **champ par
+  champ** ; écrite puis relue **identique**, deuxième écriture identique octet pour octet ; son
+  Salamèche se choisit comme compagnon et se relit par identifiant.
+- `tests/integration/test_save_kevin_j12_boot.gd` (4) : **vrai Boot** (système de fichiers en
+  mémoire) : titre « Continuer », reprise à Jadielle sur sa case, rien d'écarté, le premier
+  autosave réécrit la même partie (v6) — seul `play_time` avance ; **raccords** à pied depuis sa
+  case, PNJ placés selon ses drapeaux : Jadielle → Route 2 → postes et Forêt de Jade → Route 2
+  nord → Argenta (Arène, Centre) ; la scène du garde (`route_3_guard`) le renvoie tant qu'il n'a
+  pas le badge, s'écarte avec `badge_boulder`, puis plus rien ; avec le badge, Route 3, Centre du
+  Mont Sélénite et 1F atteints.
+
+**Conclusion** : la partie de Kevin se reprend avec le J12 sans perte ni migration et reste
+jouable jusqu'à Argenta et au-delà du badge. **Reste au téléphone** (12D) : la relecture par
+l'APK lui-même (« Continuer » sans départ de débogage) — le code est celui des tests.
+
+### 10.2 Critères du §4, un par un
+
+État : ✅ vu et conforme (preuve) · ❌ non tenu · **NV** non vu au téléphone (couverture des
+tests indiquée). Sources : `etat-projet.md` (section J12 : T16, T19, T22, T27, T28 et
+correctifs), §9.
+
+**12.0-art**
+
+| Critère | État | Preuve |
+|---|---|---|
+| Planches de contact de la série 14 validées par Kevin | ✅ | T2 (2026-10-11), corrections `_r2` validées (journal de la fiche série 14) |
+| 11 planches Pokémon (T3) | **à confirmer** | intégrées au T21 ; validation explicite de Kevin non consignée |
+| 3 décors de combat (T4) | **à confirmer** | « à juger par Kevin » (ciel de la Route 3, projecteur sous la carte de PV) ; validation non consignée |
+| Chaque asset a sa fiche ; aucun Pokémon sans planche dans `companions.json` | ✅ | fiche `serie-14-mont-selenite.md` ; `test_serie14_assets`, `test_companion_logic` |
+
+**12.0** — **VALIDÉ par Kevin le 2026-10-13** (session partielle T16).
+
+| Critère | État | Preuve |
+|---|---|---|
+| Chaque capacité : effet ou mention « Sans effet » | ✅ | T12, T13 (`test_mt_moon_data`, 47 tests du T13) |
+| Drain plafonné et annoncé | **NV** (non concluant : 1 PV en 12D) | « pas très efficace » vu en 12B ; tests du T13 |
+| Piège : 4–5 tours, ⅛, fuite / changement refusés, libération | ✅ | T16 (pertes ×4, libération au rappel) ; T19 en combat réel (« Impossible de fuir ! », « Impossible de changer ») |
+| Entrave : 4 tours, carte grisée intouchable, fin et échec annoncés, IA | ✅ (échec NV) | T16 ; tests du T13 / T14 |
+| Repos : PV pleins, 2 tours, échec à PV pleins | ✅ (échec NV) | T16 ; « Mais ça échoue ! » jamais lu au téléphone, testé |
+| Destruction, double K.O. perdu par le lanceur | ✅ | T27 (`moves_qa_solo`, réveil chez Maman) |
+| Sonicboom 20 PV | **NV** | tests du T13 |
+| Statuts du J11, Patience, poison inchangés | ✅ | suite complète ; `simulate_brock.gd` identique octet pour octet (T13) |
+| 12 espèces au Pokédex, Fée visible | ✅ | T16 |
+| ≥ 55 fps en combat | ✅ | 59–60 fps moyens (T16, T27, T28) |
+
+**12A** — **VALIDÉ par Kevin le 2026-10-14** (session partielle T19).
+
+| Critère | État | Preuve |
+|---|---|---|
+| Raccord Argenta ↔ Route 3, garde avant le badge | ✅ | T19 ; garde : `test_pewter_badge`, `test_save_kevin_j12_boot` |
+| D1, D2 inévitables ; D3–D6 évitables | ✅ | T19 (Hugo, Léa ; Sacha contourné), T28 (Enzo, Inès, Nolan ; Sacha évité) |
+| Récompenses du §3.2 | ✅ | T19 (150 ₽, 135 ₽) ; `test_route_3_trainers` |
+| Rencontres H1–H4, Rondoudou vu | ✅ (Sabelette NV) | T28 : Rondoudou sauvage capturé |
+| 3 objets visibles | ✅ | T19 (Potion), T28 (Poké Ball, Anti-Para) |
+| Réveil caché (rien avant l'indice, toast, plus rien même après rechargement) | ✅ (rechargement NV) | T19 ; `test_hidden_items` |
+| Centre : soin, toast « Mont Sélénite » ; défaite sur la Route 3 → Centre | ✅ (défaite NV) | T19 ; `test_route_3_life` |
+| Panneaux, objectif « traverser le Mont Sélénite. » | ✅ | T19 |
+| Traversée directe mesurée (≈ 5 min 46 s) | **NV** | T28 : Route 3 en 19 min 23 s **avec** les détours et 5 combats (pas une traversée directe) |
+| ≥ 58 fps moyens, creux ≥ 50 | ✅ (creux : voir 10.3) | T19 58,9 ; T28 60, creux 60 sauf fin du combat de Hugo (9) et ouverture du menu (40) |
+| Nœuds ≤ 3 000 | ✅ | Route 3 : 2 030 (T8) |
+
+**12B** — QA T22 (agent, S21) + recontrôles 12C / 12D : **à valider par Kevin**.
+
+| Critère | État | Preuve |
+|---|---|---|
+| Lisible **sans monter la luminosité** (chemins, parois, échelles, gravats, personnages) | ✅ | T22, T28 |
+| Ambiance « lumière rare » | ✅ **à juger par Kevin** | ne se sentait pas en 12B → passe `j12-lumiere-grotte` ; en 12D « se sent, tout reste lisible » ; sol des galeries encore gris clair et uniforme |
+| Repères (colonne, camp, éclats, mare, lampes) | ✅ (mare NV) | T22 |
+| Échelles dans les deux sens, fondu comme une porte | ✅ (fondu NV) | T22 (24–54 ms), T28 ; `test_mt_moon_maps` |
+| Rencontres seulement sur les gravats ; intro éboulis ≤ 2 s ; couloirs calmes | ✅ (durée de l'intro NV) | T22 : 2 rencontres sur gravats, 0 sur ≈ 150 pas calmes ; intro 0,6 s par défaut, testée |
+| Corde : refus Route 3 / Argenta / Centre, acceptée aux 3 étages → devant l'entrée ↓, consommée, ni soin ni repos ; achat 550 ₽ | ✅ (Argenta et achat NV) | T22 ; `test_escape_rope` |
+| Compagnon : galeries, goulets, jamais sur une échelle, rentré au Centre, phrase « grotte » | ✅ | T22 ; bug « invisible au chargement d'un étage » corrigé (`test_companion_mt_moon_floors`), vu en 12C et 12D |
+| Halos sans vacillement avec « Réduire les animations » | **NV** | `test_light_glow` |
+| **Reprise d'une partie quittée dans chaque étage** | **NV** | départs de débogage seulement ; `test_save_j12`, reprises de `test_mt_moon_rocket` / `test_mt_moon_fossil` |
+| Luminance Mac, fps, mémoire « carte + voisines », changement d'étage ≤ 1,5 × Jadielle | ✅ | T9, passe lumière (seuils tenus) ; 60 fps ; 6,2 Mo ; 24–410 ms |
+
+**12C** — QA T27 (agent, S21) + reprise des non vus en 12D : **à valider par Kevin**.
+
+| Critère | État | Preuve |
+|---|---|---|
+| R1, R3 inévitables ; R2 évitable | ✅ | T27 |
+| « Hé, toi ! Ce passage est interdit. Fais demi-tour. » | ✅ | T27 |
+| Après la défaite d'un Sbire : réplique, départ, absence au retour **et au rechargement** | ✅ (rechargement NV) | T27, T28 ; `test_mt_moon_rocket` |
+| Défaite du joueur → Centre → réplique de reprise | ✅ partiel | T27 : défaite contre R1 → réveil chez Maman (`mt_moon_weak`, aucun Centre enregistré) ; T28 : répliques de R1 et R3 après défaite ; défaite → **Centre** NV |
+| R3 : 3 bulles, décor « chambre » | ✅ | T27 |
+| Chercheur après R3 : méprise, combat, partage | ✅ | T27, T28 |
+| Choix du fossile définitif (NON / OUI, toast, l'autre disparaît) | ✅ | T27 (Dôme), T28 |
+| Grand moment unique dans l'écran Dresseur | ✅ | T27 |
+| Pierre Lune visible et cachée | ✅ | T27 (cachée), T28 (visible depuis B1F) |
+| Évolution par pierre sans ARRÊTER, retour Android sans effet, pierre consommée une fois | ✅ | T27 |
+| CT01 (COMPATIBLE / INCOMPATIBLE) | ✅ | T28 (Reptincel, oubli) |
+| Reprise après fermeture à chaque étape de l'événement | **NV** | `test_mt_moon_fossil`, `test_mt_moon_rocket` (reprises sur le vrai Boot) |
+
+**12D** — partie code T28 + QA finale T28 (agent, S21) : **à valider par Kevin**.
+
+| Critère | État | Preuve |
+|---|---|---|
+| Sas : panneau, « AZURIA — À venir » (debug), retour par la bouche | ✅ | T28 ; `test_route_4_life`, `test_coming_soon` |
+| Objectif « continuer vers Azuria. » | ✅ | T28 (`route_4_reached` en silence) |
+| Carte de QA retirée (carte, données, outil, exception) ; `is_qa_map` gardé | ✅ | T28 ; `test_no_qa_map_is_shipped`, APK sans `qa_moves*` |
+| **Vraie partie de Kevin** Argenta → sas sans régression | ❌ **NV** | impossible : sa partie est à Jadielle sans badge ; QA finale en départ `route_3` (un parcours continu, 44 min 52 s, aucune erreur) ; reprise et raccords de sa partie : §10.1 (tests) |
+| Sauvegarde relue par l'APK final, version inchangée (v6) | ✅ tests / **NV** téléphone | §10.1 ; SHA-1 du fichier du téléphone identique avant / après la QA |
+| Aucun nom du §1.2 n° 2 changé sans note | ✅ | relevé au T29 : tous présents dans `game/` et `data/` (`MoveEffect.Kind` … `DRAIN, TRAP, DISABLE, REST, SELF_KO` en fin, `field_use`, `unless_flags`, `rematch` / `leave`, `confirm_cutscene`, `Kind.MOMENT`, `fossil`, `play_item`, `cancellable`, `evolution_applied`, `escape_rope`, `moon_stone`) ; écarts déjà notés au §0.4 |
+| `tools/test.sh` vert, import propre | ✅ | T29 : **4 236 tests, 4 236 verts** (331 scripts, 169 604 assertions, 907 s), sans relance ; l'intermittent « Parameter "t" is null » n'est pas apparu ; import sans erreur |
+| Budgets tenus | ✅ / à surveiller | fps et nœuds tenus ; `tex` du téléphone 92–126 Mo (indicatif, voir 10.3) |
+
+### 10.3 Points ouverts à la clôture (rien n'est codé ici)
+
+**Bug (non bloquant)**
+1. ~~**Compagnon perdu après « AZURIA — À venir »** (12D)~~ — **CORRIGÉ et fusionné dans `jalon-12`
+   (2026-10-14, `j12-fix-compagnon-a-venir` `aa6653d`)** : l'écran « à venir » ouvrait une transition
+   (le compagnon rentre) sans la refermer ; nouveau signal `SceneRouter.coming_soon_finished` →
+   `CompanionController.on_transition_finished()` ; `test_companion_coming_soon` (3 tests). Le bug
+   existait aussi sur `main` (sortie est d'Argenta « Route 3 — À venir ») : réglé par la fusion du J12.
+   Aucun bug ouvert à la clôture.
+
+**Non vus au téléphone** (couverts par les tests, à refaire au doigt si Kevin le souhaite)
+2. Combat : soin de Vampirisme (non concluant), Onde Folie, Sonicboom, Repos à PV pleins, Anti-Para
+   utilisé ; Sabelette sauvage ; R2 en 12D (vue en 12C).
+3. Reprises : partie quittée dans chaque étage, à chaque étape de l'événement, Réveil et Sbires
+   absents **après rechargement** ; relecture de la vraie sauvegarde par l'APK (§10.1).
+4. Défaite → réveil au **Centre du Mont Sélénite** ; traversée directe chronométrée de la Route 3 ;
+   Corde à Argenta et achat 550 ₽ ; mare et secteur nord ; fondu des échelles ; durée de l'intro
+   éboulis ; halos avec « Réduire les animations ».
+
+**À trancher par Kevin (relevé en QA, pas des bugs)**
+5. La fouilleuse R2 accroupie se lit comme une personne en noir, le « R » ne se lit pas (T27).
+6. Après une évolution par pierre, retour sur la carte et non au Sac (défaut du §6, conforme au
+   dossier : « retour au monde »).
+
+**Reportés de rendu** (phase DA, règle 3)
+7. Dos de combat provisoires en pixels (34 espèces + 17 évolutions dessinées au correctif 12A) ;
+   dos peints des 12 espèces du J12 à faire.
+8. Arrivée de l'échelle C en B1F : le héros est caché sous le bouton Courir (caméra au bord).
+9. Sol des galeries gris clair et uniforme malgré la passe « lumière rare » ; bords latéraux en
+   tranches ; indice du Réveil du 1F pris dans le bord de paroi ; Rondoudou et Paras petits ;
+   Rondoudou compagnon peu contrasté sur sol clair.
+10. Sas : bande noire de 36 px à droite (grille 24 cases) ; bouche « de face » ; masse d'ardoise
+    uniforme ; ouverture peinte de l'entrée ≈ 1,3 case.
+11. Sélecteur du Sac : nom long + « K.O. » tronqué (« Rondou… », existant).
+
+**Mesures à surveiller**
+12. **Mémoire des textures** : `tex` 92–126 Mo sur le S21 en 12D (68–85 Mo dans la grotte en 12B,
+    ≈ 123 Mo sur la Route 3) — comme la référence du J11 (Route 1 114–135 Mo), au-dessus du
+    budget indicatif de 64 Mo ; le budget « carte + voisines » mesuré au Mac est tenu. À traiter
+    avant que les J13–J15 n'ajoutent leurs textures (cache de cartes, décors de combat, artworks).
+13. **Creux de fps** : 60 fps moyens partout en 12D ; creux à 9 fps à la fin du combat de Hugo et
+    40 à l'ouverture du menu ; 7 fps aux transitions (lancement, retour de combat, Corde +
+    changement de carte) ; les creux 33–39 « une fenêtre sur deux » de 12A (aussi sur la Route 1)
+    ne se sont pas reproduits. Forêt de Jade en combat : 48–49 fps au J11, non remesurée.
+14. **Erreur intermittente « Parameter "t" is null »** (`Npc._apply_spec`, sous charge, surtout
+    `test_rival_route22`) : non masquée, jamais vue au téléphone ; à rendre déterministe
+    (`FrameSim` / `TweenClock`).
+
+**Technique**
+15. IA `smart` : règle « aucun statut sous ⅓ des PV » qui bloque Repos — sans effet au J12 (aucun
+    Dresseur n'a Repos), à revoir avec le premier qui l'aura.
+16. Écart à la règle 7 assumé : valeurs des effets du J12 dans les données de capacité, statuts
+    dans `StatusRules` (J11).
+17. Son des gravats : point d'accroche `EncounterDirector.rubble_sound_requested` sans son.
+18. Capacités encore en `pending_effects` avec mention : Métronome, Buée Noire, Mur Lumière,
+    Damoclès.
+
+### 10.4 Passation au J13 (Azuria), au J14 (Route 25) et au J15 (Carmin)
+
+**Ordre de fusion** : `jalon-12` entre dans `main` **en premier** (§1.2) ; les J13–J15 fusionnent
+ensuite `main` (qui apporte le J12) et absorbent leurs conflits. Note à laisser dans
+`etat-projet.md` le jour de la fusion.
+
+**J13 — la vraie Route 4 remplace le sas**
+- **Identifiant `route_4` gardé** (cartes, `zones.json`, `MapCatalog`, sauvegardes).
+- **Repère de coordonnées du sas gardé** : grille `tools/plans/route_4_sas.txt` (24 × 14), bouche
+  de la grotte (2, 6) STEP_ON ← → `mt_moon_b2f` / `arrivee_s` ; arrivée **`from_mt_moon` (3, 6)** ;
+  cases praticables là où le sas en a (une partie sauvegardée dans le sas doit se reprendre ;
+  `GameMap.find_standing_cell` déplace sinon le joueur vers la case libre la plus proche — à
+  éviter). Test de reprise à écrire au J13 : position sauvegardée sur chaque case libre du sas.
+- Déclencheur `route_4_reached` (4, 5..9) et objectif « continuer vers Azuria. » : le J13 garde
+  le drapeau (déjà posé dans les parties) et enchaîne ses objectifs ; panneau (6, 5)
+  (`data/dialogues/route_4.json`).
+- Raccord est (23, 6..7) PUSH « AZURIA — À venir » (`from_cerulean_n|s`) : devient le vrai
+  raccord ; `test_coming_soon` cherche aujourd'hui ce « à venir » du sas (à réécrire, comme
+  `test_route_4` et `test_route_4_life`).
+- Départ de débogage `route_4` (sas, Mont Sélénite fini) à adapter.
+- Décors de combat de la Route 4 (`data/battle/decors.json`, `places`).
+- **`MapCatalog.QA_PREFIX` / `is_qa_map` gardés** : à la fusion du J13, **aucune exception
+  datée à recopier** dans `test_no_qa_map_is_shipped` (celle du J12 est retirée).
+- **Données** : le J13 retire sa copie de `wrap` (et des autres capacités du J12) de `moves.json`
+  à sa fusion (le chargeur refuse un identifiant défini deux fois) ; nouveautés dans des fichiers
+  à part ; `tm_compatibility.json` régénéré, jamais fusionné à la main.
+- Noms à prolonger **en fin** : `DialogueLibrary._CHOICE_KEYS` (après `confirm_cutscene` :
+  `confirm_set`, `cancel_set`), `FieldItemRules`, `CutsceneDirector.has_moment`, `lost_<id>`.
+
+**J14** : `FLASH` **après** `CutsceneStep.Kind.MOMENT` ; ses genres de capacités après `SELF_KO` ;
+`play_item` / `cancellable` disponibles ; ses données restent dans ses fichiers à part.
+
+**J15** : sauvegarde **v7** (Pension) **après** la fusion du J12 (le J12 écrit la v6, aucun champ
+nouveau, §2.20) ; `COINS` après `SELF_KO` ; `CaveLibrary` / `caves.json` (une grotte = une entrée
+de plus, sortie de la Corde) ; `TRAP_MESSAGES` : un piège nouveau ajoute sa famille en fin.
+
+**Pour tous** : sons des gravats (`rubble_sound_requested`), dos peints des 12 espèces, mémoire
+des textures (10.3 n° 12).
+
+### 10.5 Décisions de Kevin à confirmer (à son réveil)
+
+1. **Valider 12B** (grotte, gravats, Corde, compagnon, lumière rare après la passe) — QA T22 et
+   recontrôles 12C / 12D faits par des agents.
+2. **Valider 12C** (Rocket, chercheur, fossile, Pierre Lune, CT01) — QA T27 et 12D.
+3. **Valider 12D** (sas, objectif, QA finale en parcours continu) — puis **go pour la fusion** de
+   `jalon-12` dans `main`.
+4. **Équilibrage T26** : Rattatac de R3 **N13 sans Croc de Mort** (au lieu de N15) et chercheur
+   **N12** (au lieu de N13) — ou préférer N14 + IA `random` (plus dur pour Herbizarre).
+5. **Case du chercheur rangé (15, 30)** : vérifiée sans blocage (le passage est le goulet
+   (13..14, 31)) ; à confirmer, ou à déplacer si le goulet se lit mal à l'écran.
+6. **Fossiles visibles dès l'arrivée** dans la chambre (avant R3 et le chercheur ; seulement
+   « tant qu'aucun n'est choisi ») — défaut du T25.
+7. Planches Pokémon du T3 et décors de combat du T4 (12.0-art) : validation non consignée.
+8. Points 5 et 6 du §10.3 (fouilleuse peu lisible ; retour sur la carte après une pierre).
+9. **Roadmap** (`docs/design/roadmap.md`, non modifiée : jamais sans son go) — texte proposé :
+   - Phase 8, sous le titre, ajouter :
+     « - **J12 terminé** (2026-10-14, après validation de Kevin) : Route 3 (six Dresseurs, objet
+     caché), Centre du Mont Sélénite, Mont Sélénite sur trois étages (gravats, échelles, lumière
+     rare, Corde Sortie), Team Rocket (trois Sbires qui partent après leur défaite), chercheur
+     Gaspard et choix définitif d'un fossile (Grand moment), Pierre Lune et évolution par pierre,
+     CT01, sas de la Route 4 ; moteur : drain, piège, Entrave, Repos, Destruction ; sauvegarde
+     inchangée (v6). »
+   - « Ordre immédiat » : `J12 Route 3 + Mont Sélénite   ✅` puis
+     `J13 Azuria   ← ICI` (libellé exact du J13 à confirmer par Kevin).
 
 ---
 

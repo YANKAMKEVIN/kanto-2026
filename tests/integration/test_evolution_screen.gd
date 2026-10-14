@@ -416,3 +416,77 @@ func test_the_rush_is_reset_for_the_next_evolution() -> void:
 	_run(clock, _start(_screen.present.bind(_view())))
 	assert_false(_screen.is_rushed(), "deuxième évolution : vitesse normale")
 	clock.release()
+
+
+# --- Jalon 12 (T24) : évolution par pierre, sans ARRÊTER ni zone morte ---------------------
+
+func _stone_view() -> EvolutionView:
+	var view := _view()
+	view.cancellable = false
+	return view
+
+
+## Toucher à [param point] (envoyé directement à l'écran, comme le test d'ARRÊTER).
+func _touch_at(point: Vector2) -> void:
+	var touch := InputEventScreenTouch.new()
+	touch.pressed = true
+	touch.position = point
+	_screen._input(touch)
+
+
+func test_a_stone_evolution_has_no_dead_zone_where_stop_would_be() -> void:
+	var clock := TweenClock.new(get_tree())
+	clock.speed_of = _screen.tween_speed
+	_run(clock, _start(_screen.open))
+	_run(clock, _start(_screen.present.bind(_stone_view())))
+	var transforming := _start(_screen.transform)
+	for i: int in _steps(1.0):
+		clock.call(&"step")
+	var stop := _screen.get_stop_button()
+	assert_false(stop.visible, "pas d'ARRÊTER pour une pierre")
+	_touch_at(stop.get_global_rect().get_center())
+	assert_true(_screen.is_rushed(), "toucher là où serait ARRÊTER : accélère aussi")
+	_run(clock, transforming)
+	assert_false(transforming[1], "jamais annulée")
+	clock.release()
+
+
+func test_a_stone_evolution_rushes_from_the_presentation_anywhere() -> void:
+	var clock := TweenClock.new(get_tree())
+	_run(clock, _start(_screen.open))
+	var presenting := _start(_screen.present.bind(_stone_view()))
+	clock.call(&"step")
+	_touch_at(_screen.get_stop_button().get_global_rect().get_center())
+	assert_true(_screen.is_rushed(), "présentation : tout l'écran accélère")
+	_run(clock, presenting)
+	clock.release()
+
+
+func test_a_stone_evolution_ignores_back_and_stop_presses() -> void:
+	var clock := TweenClock.new(get_tree())
+	_run(clock, _start(_screen.open))
+	_run(clock, _start(_screen.present.bind(_stone_view())))
+	var transforming := _start(_screen.transform)
+	for i: int in _steps(1.0):
+		clock.call(&"step")
+	assert_true(_screen.handle_back(), "retour consommé")
+	_screen.get_stop_button().pressed.emit()
+	assert_false(transforming[0], "ni le retour ni un appui fantôme n'arrêtent")
+	_run(clock, transforming)
+	assert_false(transforming[1])
+	assert_true(_screen.is_showing_new_form())
+	clock.release()
+
+
+func test_a_battle_evolution_keeps_the_stop_zone() -> void:
+	var clock := TweenClock.new(get_tree())
+	_opened(clock)
+	var transforming := _start(_screen.transform)
+	for i: int in _steps(1.0):
+		clock.call(&"step")
+	_touch_at(_screen.get_stop_button().get_global_rect().get_center())
+	assert_false(_screen.is_rushed(), "ARRÊTER affiché : sa zone n'accélère pas")
+	_touch_at(Vector2(200, 300))
+	assert_true(_screen.is_rushed(), "ailleurs : accélère")
+	_run(clock, transforming)
+	clock.release()

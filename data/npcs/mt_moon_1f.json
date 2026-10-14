@@ -1,0 +1,11 @@
+{
+	"hiker": {
+		"cell": [34, 38], "facing": "left", "sprite": "mountaineer",
+		"dialogue": "mt_moon_1f_hiker"
+	},
+	"mt_moon_1f_ball_1": {
+		"cell": [9, 29], "facing": "down", "sprite": "object/poke_ball_ground",
+		"dialogue": "mt_moon_1f_ball_1", "verb": "take", "turn_to_player": false,
+		"unless": ["got_mt_moon_1f_item_1"]
+	}
+}

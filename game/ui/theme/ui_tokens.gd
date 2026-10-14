@@ -1800,3 +1800,12 @@ const NAME_CHIP_RADIUS := 64
 const NAME_VALIDATE_WIDTH := 312
 ## VALIDER inactif : ACCENT éteint (texte et icône portent aussi l'état : jamais la couleur seule).
 const NAME_VALIDATE_DISABLED_ALPHA := 0.35
+
+# --- Combat du jalon 12 (T14) : Entrave ------------------------------------------------------
+
+## Carte d'une capacité bloquée (Entrave) : fond gris neutre (sans la teinte du type), liseré
+## discret ; atténuée en plus par MOVE_CARD_DISABLED (inerte, comme une carte sans PP).
+const MOVE_CARD_BLOCKED_BG := Color(0.17, 0.19, 0.22, 0.90)
+const MOVE_CARD_BLOCKED_BORDER := Color(1, 1, 1, 0.16)
+## « BLOQUÉE » (style des PP, en gras) : blanc, lisible malgré l'atténuation.
+const MOVE_CARD_BLOCKED_TEXT := TEXT

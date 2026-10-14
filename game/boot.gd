@@ -55,6 +55,11 @@ const INTRO_BACKDROP_FOCUS: Vector2 = Vector2(768, 528)
 const INTRO_BACKDROP_ZOOM: float = 1.6
 ## Raison de blocage du joueur pendant le fondu d'arrivée dans la chambre (OUV.3).
 const OPENING_ARRIVAL: StringName = &"opening_arrival"
+## Narration de la Corde Sortie (jalon 12, dossier 15 §20 n° 33) :
+## `data/dialogues/field_items.json`.
+const ESCAPE_ROPE_DIALOGUE: StringName = &"escape_rope_used"
+## Raison de blocage du joueur pendant une évolution par pierre hors combat (jalon 12, T23).
+const EVOLUTION_ITEM: StringName = &"evolution_item"
 
 @export var start_map: StringName = &"player_house_2f"
 @export var start_spawn: StringName = &"start"
@@ -153,6 +158,11 @@ var _in_foreground: bool = true
 var _opening: OpeningDirector = null
 ## Bourg Palette en mode décor derrière le titre (libéré en quittant le titre).
 var _title_backdrop: TitleBackdrop = null
+## Grottes de Kanto (jalon 12, T20 : Corde Sortie, `data/world/caves.json`).
+var _caves := CaveLibrary.new()
+## Pierre en cours d'utilisation (jalon 12, T23) : retirée du Sac à
+## [signal EvolutionDirector.evolution_applied], une seule fois ; &"" sinon.
+var _stone_item: StringName = &""
 
 @onready var _world: Node2D = %World
 @onready var _hud: ExplorationHud = %ExplorationHud
@@ -323,6 +333,8 @@ func _ready() -> void:
 	_menu.menu_opened.connect(_on_menu_opened)
 	_menu.menu_closed.connect(_on_menu_closed)
 	_setup_companion()
+	_setup_caves()
+	_setup_evolution_items()
 	# L'écran (jalon-06.md §6.6) : ouverture et vue dans la même frame, sans await (un fondu
 	# coupé laisse une coroutine non reprise).
 	_menu.menu_opened.connect(_menu_screen.open_animated)
@@ -411,6 +423,7 @@ func _ready() -> void:
 	SceneRouter.map_entered.connect(_on_map_entered)
 	SceneRouter.map_entered.connect(_interactions.on_map_entered)
 	SceneRouter.map_entered.connect(_starter_choice.on_map_entered)
+	SceneRouter.coming_soon_finished.connect(_on_coming_soon_finished)
 	_start_game()
 	_menu.set_settings(_settings, _profile_device_quality(), _can_write())
 
@@ -468,6 +481,7 @@ func _exit_tree() -> void:
 		[SceneRouter.map_entered, _on_map_entered],
 		[SceneRouter.map_entered, _interactions.on_map_entered],
 		[SceneRouter.map_entered, _starter_choice.on_map_entered],
+		[SceneRouter.coming_soon_finished, _on_coming_soon_finished],
 	]
 	for link: Array in links:
 		var sig: Signal = link[0]
@@ -995,7 +1009,8 @@ func _apply_debug_start() -> bool:
 	start.apply(GameState, _pokemon)
 	_debug_start_autosave = start.autosave
 	if not start.wild.is_empty():
-		_encounter_library.override_grass(start.map, start.wild, debug_start_path)
+		_encounter_library.override_table(start.map, start.wild_terrain, start.wild,
+			debug_start_path)
 	if not start.map.is_empty():
 		start_map = start.map
 		start_spawn = start.spawn
@@ -1040,6 +1055,14 @@ func _on_transition_started(_target_map: StringName) -> void:
 	_arrival_from = _current_map_id()
 	_hud.hide_zone_title()
 	_hud.hide_caption()
+
+
+## Fin de l'écran « à venir » (même carte, aucun [signal SceneRouter.map_entered]) : ferme la
+## transition ouverte par [method _on_transition_started] (QA finale 12D : le compagnon restait
+## caché jusqu'au changement de carte suivant).
+func _on_coming_soon_finished(_map: GameMap) -> void:
+	_arrival_from = &""
+	_companion.on_transition_finished()
 
 
 ## Écran noir (ou démarrage) : présence des PNJ selon les drapeaux de la partie d'abord
@@ -1319,7 +1342,9 @@ func _on_item_given(item_id: StringName, count: int) -> void:
 	var item := _items.get_item(item_id)
 	if item == null:
 		return
-	_hud.show_toast(item.quantity_text(count), item.added_text(count))
+	# Un objet « obtenu » (fossile) : son icône peinte du Sac, sinon l'icône générique.
+	var icon: Texture2D = MenuArt.item_icon(item_id) if item.obtained else null
+	_hud.show_toast(item.quantity_text(count), item.added_text(count), icon)
 
 
 ## Retour de l'écran : la confirmation de vente de la Boutique, la confirmation ou le menu « ⋯ »
@@ -1387,7 +1412,7 @@ func _refresh_controls() -> void:
 	_hud.set_controls_visible(not _is_opening_active() and not _menu.is_open()
 		and not _runner.is_running() and not _cutscenes_node.is_running()
 		and not _starter_choice.is_sheet_open() and not _battle_director.is_running()
-		and not _encounters.is_running())
+		and not _encounters.is_running() and not _player.is_blocked_by(EVOLUTION_ITEM))
 
 
 ## Lit les réglages (fichier de l'appareil, indépendant de la sauvegarde et du départ de
@@ -1431,6 +1456,8 @@ func _apply_settings(s: GameSettings) -> void:
 		_evolution_screen.reduce_flashes = s.reduce_flashes
 	_services.reduce_motion = s.reduce_motion
 	_companion.set_reduce_motion(s.reduce_motion)
+	# Halos des grottes (jalon 12, T7 / T20) : vacillement des lampes coupé.
+	LightGlow.set_reduce_motion(s.reduce_motion)
 	# Carte du Champion (jalon 10, T5) : sans glissé, un fondu court.
 	_hud.get_champion_card().reduce_motion = s.reduce_motion
 	_menu_screen.speed_scale = s.menu_speed_scale()
@@ -1462,3 +1489,78 @@ func _on_save_requested() -> void:
 		var error := _write_save("menu")
 		text = SettingsViews.save_result_text(error, Time.get_datetime_dict_from_system())
 	_menu.show_save_result(text)
+
+
+# --- Jalon 12 (T20) : grottes et Corde Sortie -----------------------------------------------
+
+## Grottes (`data/world/caves.json`) et UTILISER d'un objet AVENTURE sans cible (la Corde
+## Sortie) : le Sac la refuse hors grotte, sinon Boot la joue ([method _on_field_item_requested]).
+func _setup_caves() -> void:
+	if not _caves.load_file():
+		for error: String in _caves.get_errors():
+			push_error("Boot : %s" % error)
+	_menu.set_caves(_caves, _current_map_id)
+	_menu.field_item_requested.connect(_on_field_item_requested)
+
+
+func get_caves() -> CaveLibrary:
+	return _caves
+
+
+## Corde Sortie acceptée par le Sac (jalon 12, dossier 15 §11, `jalon-12.md` §2.6) : menu fermé,
+## « Tu utilises la Corde Sortie. », puis la Corde est retirée **dans la même image** que le
+## départ du fondu vers l'entrée de la grotte (comme une porte) — aucune image stable entre les
+## deux : l'autosave suivant est celui de l'arrivée (position et Sac ensemble) ; une fermeture
+## pendant le fondu laisse la sauvegarde d'avant, Corde comprise. Ni soin ni point de repos.
+func _on_field_item_requested(item_id: StringName) -> void:
+	var item := _items.get_item(item_id)
+	var exit := FieldItemRules.escape_target(_current_map_id(), _caves)
+	if item == null or exit == null or not GameState.bag.has(item_id):
+		return
+	_menu.close()
+	if _runner.play(ESCAPE_ROPE_DIALOGUE, null, SceneRouter.get_current_map()):
+		await _runner.dialogue_finished
+	GameState.bag.remove(item_id, 1)
+	SceneRouter.change_map(exit.map, exit.spawn, exit.facing)
+
+
+# --- Jalon 12 (T23) : évolution par pierre hors combat ------------------------------------
+
+## Sac → pierre → UTILISER → Pokémon COMPATIBLE ([signal MenuDirector.evolution_item_requested]) ;
+## la pierre est retirée à [signal EvolutionDirector.evolution_applied].
+func _setup_evolution_items() -> void:
+	_menu.evolution_item_requested.connect(_on_evolution_item_requested)
+	_evolutions.evolution_applied.connect(_on_evolution_applied)
+
+
+## Pierre utilisée sur le Pokémon [param index] (`jalon-12.md` §2.9) : menu fermé, joueur et
+## contrôles bloqués, [method EvolutionDirector.play_item] (non annulable) ; la pierre quitte le
+## Sac **dans l'appel même** où l'évolution est appliquée ([method _on_evolution_applied]). Aucune
+## image stable pendant la séquence (le joueur est bloqué) : une fermeture de l'application
+## reprend à la sauvegarde d'avant, pierre comprise. Fin : retour au monde, compagnon mis à jour
+## (rentre en silence si sa nouvelle espèce n'est pas éligible), autosave.
+func _on_evolution_item_requested(index: int, item_id: StringName) -> void:
+	var candidate := StoneUse.candidate(GameState.party, index, item_id, _pokemon)
+	if candidate == null or not GameState.bag.has(item_id) or _evolutions.is_playing():
+		return
+	_menu.close()
+	_player.set_input_enabled(false, EVOLUTION_ITEM)
+	_refresh_controls()
+	_stone_item = item_id
+	_evolutions.speed_scale = _battle_director.speed_scale
+	await _evolutions.play_item(candidate, GameState.party, item_id)
+	_stone_item = &""
+	if is_instance_valid(_player):
+		_player.set_input_enabled(true, EVOLUTION_ITEM)
+	_companion.refresh()
+	_refresh_controls()
+	request_autosave("évolution")
+
+
+## L'évolution vient d'être appliquée : la pierre en cours quitte le Sac (une seule fois).
+func _on_evolution_applied(_party_index: int, _into: StringName) -> void:
+	if _stone_item.is_empty():
+		return
+	if not GameState.bag.remove(_stone_item, 1):
+		push_error("Boot : la pierre « %s » n'est plus dans le Sac" % _stone_item)
+	_stone_item = &""

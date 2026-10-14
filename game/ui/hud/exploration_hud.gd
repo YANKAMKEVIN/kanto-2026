@@ -106,8 +106,9 @@ func get_champion_card() -> ChampionCard:
 ## Toast « [param title] — [param detail] » (« Poké Balls ×5 » / « Ajoutées au Sac ») en haut
 ## au centre, ~2 s, vibration « tic » ; il n'interrompt rien et n'intercepte aucun toucher.
 ## Indépendant des contrôles : il s'affiche aussi pendant une scène (contrôles cachés).
-func show_toast(title: String, detail: String) -> void:
-	_toast.show_toast(title, detail)
+## [param icon] : icône du toast (Poké Ball si null).
+func show_toast(title: String, detail: String, icon: Texture2D = null) -> void:
+	_toast.show_toast(title, detail, icon)
 
 
 ## Fait apparaître le bouton contextuel avec [param verb] (&"talk" → PARLER, &"examine" →

@@ -19,6 +19,10 @@
 		"badge": {
 			"title": "{badge}",
 			"detail": "Obtenu à {city} contre {leader}."
+		},
+		"fossil": {
+			"title": "La Team Rocket repoussée",
+			"detail": "{fossil} obtenu."
 		}
 	},
 	"outcomes": {
