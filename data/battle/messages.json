@@ -184,6 +184,11 @@
 			"text_f": "{pokemon} est prise dans un tourbillon de flammes !"
 		},
 		"trap_fire_spin_damaged": { "text": "{pokemon} souffre de la Danse Flamme !" },
+		"trap_clamp_started": {
+			"text": "{pokemon} est pris dans le Claquoir !",
+			"text_f": "{pokemon} est prise dans le Claquoir !"
+		},
+		"trap_clamp_damaged": { "text": "{pokemon} souffre du Claquoir !" },
 		"trap_ended": {
 			"text": "{pokemon} est libéré !",
 			"text_f": "{pokemon} est libérée !"

@@ -367,7 +367,7 @@
 	},
 	"absorb": {
 		"name": "Vol-Vie", "type": "grass", "category": "special",
-		"power": 20, "accuracy": 100, "pp": 25, "pending_effects": ["drain"],
+		"power": 20, "accuracy": 100, "pp": 25, "effects": [{ "kind": "drain", "fraction": 0.5 }],
 		"description": "Aspire l'énergie de la cible. Le lanceur récupère la moitié des dégâts infligés."
 	},
 	"recover": {
@@ -377,7 +377,8 @@
 	},
 	"clamp": {
 		"name": "Claquoir", "type": "water", "category": "physical",
-		"power": 35, "accuracy": 85, "pp": 15, "pending_effects": ["trap"],
+		"power": 35, "accuracy": 85, "pp": 15,
+		"effects": [{ "kind": "trap", "turns": [4, 5], "fraction": 0.125, "messages": "clamp" }],
 		"description": "La cible est prise entre deux coquilles pendant quelques tours."
 	},
 	"aurora_beam": {

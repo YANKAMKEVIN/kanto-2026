@@ -165,10 +165,22 @@ func test_effects_existing_or_pending() -> void:
 	assert_eq([ice.kind, ice.status, ice.chance], [MoveEffect.Kind.STATUS, &"freeze", 10])
 	var fall: MoveEffect = _data.get_move(&"waterfall").effects[0]
 	assert_eq([fall.kind, fall.chance], [MoveEffect.Kind.FLINCH, 20])
-	# Effets absents du moteur à ce jour (T10 : `drain` et `trap` du J12 pas encore livrés) :
-	# en attente, comme Étreinte et Danse Flamme ; à brancher quand le J12 les fournit.
-	var pending := {&"absorb": ["drain"], &"clamp": ["trap"], &"wrap": ["trap"],
-		&"recover": ["heal_half"], &"petal_dance": ["rampage"],
+	# `drain` et `trap` livrés par le J12 (fusion dans le J13) : Vol-Vie draine la moitié,
+	# Claquoir et Ligotage piègent 4 à 5 tours (1/8 des PV max), chacun avec ses phrases.
+	var drain := _data.get_move(&"absorb").effect_of(MoveEffect.Kind.DRAIN)
+	assert_not_null(drain, "Vol-Vie : drain")
+	if drain != null:
+		assert_eq(drain.fraction, 0.5)
+	for id: StringName in [&"clamp", &"wrap"]:
+		var trap := _data.get_move(id).effect_of(MoveEffect.Kind.TRAP)
+		assert_not_null(trap, "%s : piège" % id)
+		if trap != null:
+			assert_eq([trap.min_turns, trap.max_turns, trap.fraction, trap.messages],
+				[4, 5, 0.125, id], String(id))
+		assert_eq(_data.get_move(id).pending_effects.size(), 0, String(id))
+	assert_eq(_data.get_move(&"absorb").pending_effects.size(), 0)
+	# Effets encore absents du moteur : en attente.
+	var pending := {&"recover": ["heal_half"], &"petal_dance": ["rampage"],
 		&"light_screen": ["light_screen"]}
 	for id: StringName in pending:
 		assert_eq(_data.get_move(id).pending_effects, PackedStringArray(pending[id]),
@@ -240,8 +252,8 @@ func test_nugget() -> void:
 	assert_false(nugget.usable_in(ItemData.CONTEXT_FIELD), "pas de bouton UTILISER (T16)")
 	assert_eq(nugget.quantity_text(1), "Pépite ×1")
 	assert_eq(nugget.added_text(1), "Ajoutée au Sac")
-	# « Sans UTILISER » (dossier 16 §17) : la condition `field_use` du J12 (T20) n'est pas
-	# encore livrée ; jalon-13.md §0.4 (T10).
+	# « Sans UTILISER » (dossier 16 §17) : `field_use` vide (lecture du J12, T20), donc aucun
+	# contexte ([method ItemData.contexts]) : c'est la seule condition.
 
 
 # --- Dresseurs -----------------------------------------------------------------------------
@@ -296,13 +308,14 @@ func test_cerulean_gym() -> void:
 
 
 func test_nugget_bridge_trainers() -> void:
-	# P3 (Gamin Malo : Sabelette, Abo) attend Abo (J12) : jalon-13.md §0.4.
+	# P3 (Gamin Malo : Sabelette, Abo) : données posées à la fusion du J12 (Abo livré).
 	var trainers := _trainers()
 	var expected := {
 		&"route_24_timeo": ["Scout Timéo", 120,
 			[[&"caterpie", 10], [&"weedle", 10], [&"metapod", 10], [&"kakuna", 10]]],
 		&"route_24_alice": ["Jeune Dresseuse Alice", 180,
 			[[&"pidgey", 12], [&"oddish", 12], [&"bellsprout", 12]]],
+		&"route_24_malo": ["Gamin Malo", 210, [[&"sandshrew", 14], [&"ekans", 14]]],
 		&"route_24_romane": ["Jeune Dresseuse Romane", 240,
 			[[&"nidoran_f", 16], [&"nidoran_m", 16]]],
 		&"route_24_ethan": ["Campeur Ethan", 360, [[&"mankey", 18]]],
@@ -315,8 +328,20 @@ func test_nugget_bridge_trainers() -> void:
 		assert_eq([trainer.name, trainer.prize_money, trainer.ai],
 			[expected[id][0], expected[id][1], BattleAI.RANDOM], String(id))
 		assert_eq(_team(trainer.team), expected[id][2], String(id))
-	for pending: StringName in [&"route_24_malo", &"nugget_rocket", &"route_4_clara"]:
-		assert_null(trainers.get_trainer(pending), "%s : attend les espèces du J12" % pending)
+	# Recruteur (dossier 16 §12) et Clara (§3.2) : espèces du J12 ; posés sur les cartes au T17
+	# (Clara) et au T22 (recruteur).
+	var rocket := trainers.get_trainer(&"nugget_rocket")
+	assert_not_null(rocket)
+	if rocket != null:
+		assert_eq([rocket.name, rocket.prize_money, rocket.ai],
+			["Sbire Rocket", 450, BattleAI.SMART])
+		assert_eq(_team(rocket.team), [[&"ekans", 15], [&"zubat", 15]])
+	var clara := trainers.get_trainer(&"route_4_clara")
+	assert_not_null(clara)
+	if clara != null:
+		assert_eq([clara.name, clara.prize_money, clara.ai],
+			["Jeune Dresseuse Clara", 165, BattleAI.RANDOM])
+		assert_eq(_team(clara.team), [[&"paras", 11], [&"jigglypuff", 11]])
 
 
 # --- Rencontres et zone ----------------------------------------------------------------------
@@ -337,13 +362,12 @@ func test_encounter_tables() -> void:
 	assert_eq(_slots(north), [[&"oddish", 12, 14, 25], [&"bellsprout", 12, 14, 25],
 		[&"pidgey", 12, 13, 15], [&"caterpie", 7, 8, 10], [&"weedle", 7, 8, 10],
 		[&"metapod", 8, 9, 7], [&"kakuna", 8, 9, 8]])
-	# Route 4 : Abo (10–12, poids 15) manque tant que le J12 n'a pas livré l'espèce
-	# (jalon-13.md §0.4) ; table non branchée (aucune herbe avant la carte du T8).
+	# Route 4 : Abo (10–12, poids 15, avant Sabelette), livré par le J12.
 	var plain := lib.get_table(&"route_4")
 	assert_eq([plain.id, plain.rate, plain.ramp_from, plain.ramp_max],
 		[&"route_4_grass", 25, 15, 20])
 	assert_eq(_slots(plain), [[&"rattata", 8, 12, 30], [&"spearow", 8, 12, 30],
-		[&"sandshrew", 10, 12, 15], [&"mankey", 10, 13, 10]])
+		[&"ekans", 10, 12, 15], [&"sandshrew", 10, 12, 15], [&"mankey", 10, 13, 10]])
 
 
 func test_route_24_zone() -> void:

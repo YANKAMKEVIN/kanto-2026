@@ -204,6 +204,9 @@ func test_trap_texts_are_the_validated_ones_per_move() -> void:
 			"Abo souffre de l'Étreinte !"],
 		&"fire_spin": ["Abo est pris dans un tourbillon de flammes !",
 			"Abo est prise dans un tourbillon de flammes !", "Abo souffre de la Danse Flamme !"],
+		# Jalon 13 (annexe A.3 de jalon-13.md) : Claquoir.
+		&"clamp": ["Abo est pris dans le Claquoir !", "Abo est prise dans le Claquoir !",
+			"Abo souffre du Claquoir !"],
 	}
 	for move_id: StringName in expected:
 		var lines: Array = []

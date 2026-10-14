@@ -70,8 +70,8 @@ const TARGET_NAMES: Dictionary[String, Target] = {"self": Target.SELF, "foe": Ta
 ## Statistiques qui ont un niveau en combat (−6..+6) ; « acc » précision, « eva » esquive.
 const STAGE_STATS: Array[StringName] = [&"atk", &"def", &"spa", &"spd", &"spe", &"acc", &"eva"]
 ## TRAP : familles de phrases connues (modèles « trap_<famille>_started » et
-## « trap_<famille>_damaged » de `data/battle/messages.json`).
-const TRAP_MESSAGES: Array[StringName] = [&"wrap", &"bind", &"fire_spin"]
+## « trap_<famille>_damaged » de `data/battle/messages.json`) ; « clamp » (Claquoir) : J13.
+const TRAP_MESSAGES: Array[StringName] = [&"wrap", &"bind", &"fire_spin", &"clamp"]
 
 var kind: Kind = Kind.STAT_STAGE
 ## STAT_STAGE : statistique modifiée (une de [constant STAGE_STATS]).

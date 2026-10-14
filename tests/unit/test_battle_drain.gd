@@ -84,3 +84,20 @@ func test_the_drain_still_heals_when_the_target_faints() -> void:
 	assert_eq(drained.amount, 1, "1 PV porté : ½ arrondi, au moins 1")
 	assert_lt(Kit.index_of(events, K.DRAINED_HP), Kit.index_of(events, K.FAINTED, F),
 		"le soin avant le K.O.")
+
+
+## Jalon 13 (jalon-13.md §2.15) : Vol-Vie (Mystherbe) draine elle aussi la moitié des dégâts.
+func test_absorb_drains_half_the_damage() -> void:
+	_rng = Kit.ScriptedRng.new(Kit.draws([1, Kit.HIT]))
+	var battle := Kit.battle(_data, _rng, [Kit.mon(_data, &"oddish", 10, [&"absorb"])],
+		[Kit.mon(_data, &"rattata", 10, [&"defense_curl"])])
+	var oddish := battle.get_player_side().active.pokemon
+	oddish.hp = 1
+	var events := battle.submit(BattleAction.move(0))
+	assert_eq(_rng.remaining(), 0)
+	var damage := Kit.find(events, K.DAMAGE, F)
+	var drained := Kit.find(events, K.DRAINED_HP, P)
+	assert_not_null(drained, "Vol-Vie draine")
+	if drained != null:
+		assert_eq(drained.amount, maxi(floori(damage.amount * 0.5), 1), "½, au moins 1")
+		assert_eq(oddish.hp, 1 + drained.amount)

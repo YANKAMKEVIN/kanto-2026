@@ -78,7 +78,8 @@ extends RefCounted
 ## Jalon 12 (dossier 15 §20 n° 46, annexe A.4 de `jalon-12.md`) : DRAINED_HP → « drain_hp » ;
 ## TRAPPED et TRAP_DAMAGED → « trap_<famille>_started » et « trap_<famille>_damaged », la famille
 ## étant [member MoveEffect.messages] de l'effet TRAP de [member BattleEvent.move_id] (Ligotage
-## « wrap », Étreinte « bind », Danse Flamme « fire_spin ») ; TRAP_ENDED → « trap_ended » ;
+## « wrap », Étreinte « bind », Danse Flamme « fire_spin », Claquoir « clamp » au jalon 13) ;
+## TRAP_ENDED → « trap_ended » ;
 ## MOVE_DISABLED → « move_disabled », DISABLE_ENDED → « disable_ended » ({move} : la capacité
 ## bloquée) ; RESTED → « rested » ; SELF_KO : pas de phrase (celle du FAINTED suit). Sans
 ## événement ([method get_template], T14) : « switch_reason_trapped » (raison sur les cartes de
@@ -120,7 +121,8 @@ const TEMPLATE_IDS: Array[StringName] = [
 	&"bide_started", &"bide_storing", &"bide_unleashed", &"bide_broken",
 	&"evolution_started", &"evolution_finished", &"evolution_cancelled", &"evolution_stop",
 	&"drain_hp", &"trap_wrap_started", &"trap_wrap_damaged", &"trap_bind_started",
-	&"trap_bind_damaged", &"trap_fire_spin_started", &"trap_fire_spin_damaged", &"trap_ended",
+	&"trap_bind_damaged", &"trap_fire_spin_started", &"trap_fire_spin_damaged",
+	&"trap_clamp_started", &"trap_clamp_damaged", &"trap_ended",
 	&"move_disabled", &"disable_ended", &"rested", &"switch_reason_trapped",
 	&"move_disabled_label",
 ]

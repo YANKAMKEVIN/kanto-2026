@@ -164,6 +164,29 @@ pas livré.** Écarts avec ce que le plan supposait :
 - Aucune autre dépendance bloquante : rival, Ondine, Lucas, Diane, P1, P2, P4, P5, CT11, Pépite et
   la table de la Route 24 sont complets.
 
+> **Fusion de `jalon-12` (2732b45) dans le J13 (2026-10-13, branche `j13-fusion-j12`)** : ce qui
+> attendait le J12 est **livré** ; la liste ci-dessus est historique.
+> - **Doublons retirés** : `acid`, `wrap`, `smokescreen`, `minimize`, `light_screen` = entrées du
+>   J12 (`moves/mt_moon.json`) ; plus aucune clé en double (`check_json_keys.py`). 96 capacités.
+> - **Effets branchés** : Vol-Vie `drain` ½ ; Claquoir `trap` [4, 5], 1/8, famille de phrases
+>   **`clamp`** ajoutée (`MoveEffect.TRAP_MESSAGES`, `BattleText.TEMPLATE_IDS`, `messages.json` :
+>   textes de l'annexe A.3) ; Ligotage = celui du J12. Restent en attente : Soin, Danse Fleur,
+>   Mur Lumière.
+> - **IA qui change** : `Battler.is_locked()` = Patience **ou piège** (`is_trapped()`), testé.
+> - **`field_use`** : lecture du J12 ; **une seule condition** retire UTILISER, celle du J13 dans
+>   `ItemData.contexts()` (AVENTURE sans usage = aucun contexte, lue par le Sac et `ItemUse`) ; la
+>   condition en double du J12 dans `BagQuery._entry` est retirée. Pépite sans UTILISER.
+> - **Données posées** (pas encore sur les cartes : Clara au T17, Malo et le recruteur au T22) :
+>   `data/trainers/route_4.json` (`route_4_clara`), `route_24_malo` et `nugget_rocket` dans
+>   `route_24.json` ; Abo dans `route_4_grass` (3ᵉ, 10–12, poids 15). `test_cerulean_data` inversé.
+> - **CT** : `tm_compatibility.json` régénéré (59 espèces ; CT34 : 55, CT01 : 19, CT11 : 18).
+> - **`--valider`** (`cerulean_scenario.json`) : **code 0, rien de sauté**.
+> - **Reste** : `confirm_cutscene` toujours absent (le recruteur passe par `confirm_set`, §2.13) ;
+>   **`route_4_reached`** (objectif « continuer vers Azuria. » du J12) n'est levé par rien : le
+>   déclencheur du sas (T28 du J12) n'existe pas et la Route 4 du J13 le remplace → à poser sur la
+>   Route 4 (T17 ou T22 ; dans l'intervalle, sur la Route 4, l'objectif reste « traverser le Mont
+>   Sélénite. » jusqu'à Azuria) ; Antidote caché de la Route 24 nord (brique J12 livrée, T22).
+
 ---
 
 ## 1. Découpage
