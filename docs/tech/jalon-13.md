@@ -1249,6 +1249,7 @@ et de l'annexe A validée.
     panneau / `route_4_reached` (livrés au T28 du J12).
 
 #### T18 — qa-mobile : **session 13A** → Kevin
+- **VALIDÉ par Kevin le 2026-10-14** (QA S21 ; textures 82–98 Mo > budget J7 de 64 Mo sans ralentissement : noté pour la clôture).
 - **Fait le 2026-10-14 (S21, ~35 min, branche `j13-t18-qa`)** : rapport `build/qa/jalon13_t18/` (`RESUME.txt`, captures,
   `perf_*.txt`). Tests 4466/4466, import propre, APK 125 Mo, aucun crash. **Tout OK** : sas rechargé sur (4, 6),
   rebord sans retour, Clara évitée puis combattue, Azuria (titre, Centre, point de repos, Boutique : achat et vente
@@ -1363,6 +1364,7 @@ et de l'annexe A validée.
   - Captures : `build/captures/j13_t22/` (`tools/capture_nugget_j13.gd`).
 
 #### T23 — qa-mobile : **QA finale 13C** → Kevin, fusion
+- **Décision de Kevin (2026-10-14)** : la vraie partie du S21 est à Jadielle → QA finale par **départs de débogage enchaînés** (sas → Route 4 → Azuria → rival → Ondine → pont → vente de la Pépite) sur une partie neuve, avec relecture d'une sauvegarde de chaque étape par l'APK final ; partie réelle de Kevin sauvegardée puis restaurée.
 - Pont (cinq inévitables, défaite au milieu), recruteur (OUI puis, sur une autre partie, NON ; Pépite ;
   défaite → reprise sans choix), espace nord, Antidote caché, « ROUTE 25 — À venir » ; **vraie partie
   de Kevin**, sans drapeau de débogage : sas → Route 4 → Azuria → rival → Ondine → pont → vente de la
