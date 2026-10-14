@@ -1,0 +1,46 @@
+CONCEPT ART — VUE GÉNÉRALE DE LA ROUTE 25 ET DU CAP D'AZURIA (Kanto 2026), image de référence de direction artistique.
+
+Deux images sont jointes.
+
+IMAGE 1 : un PLAN SCHÉMATIQUE en aplats de couleur, vu du dessus, qui donne la COMPOSITION EXACTE à suivre. La route va de l'OUEST (bord gauche, où elle arrive d'un pont au nord de la ville d'Azuria) vers l'EST (à droite, la pointe du cap et la maison isolée).
+Légende du plan :
+- vert très foncé = forêt et bosquets denses infranchissables ;
+- gris-brun strié en haut = FALAISE et hauteurs rocheuses infranchissables, qui ferment toute la route au nord ;
+- vert moyen = herbe rase praticable ; points roses = petites fleurs ; groupes de petits disques vert sombre = buissons bas ;
+- beige = CHEMIN DE TERRE battue, large, qui longe la côte de gauche à droite ; jaune-vert olive = HAUTES HERBES (touffues, plus hautes, où vivent les Pokémon sauvages), quatre zones en blocs nets ;
+- bande brune horizontale = un REBORD : petite marche de terre d'une case, sous la terrasse en haut à gauche du milieu, qu'on saute vers le sud ;
+- gris clair semé de cailloux blancs = ROCHERS ET RIVAGE ROCHEUX infranchissables ; deux masses de rochers verticales coupent la forêt au nord du chemin (une à gauche, une au milieu) et laissent chacune un petit renfoncement de terre au nord du chemin ;
+- sable clair = une petite CRIQUE de sable au sud du chemin, au milieu, entourée de rochers ;
+- bleu = la MER, au sud de toute la route et à l'est du cap, plus foncée au large ; traits blancs = écume au pied des rochers ;
+- rectangle crème au toit bleu-gris = la MAISON DE LÉO, au bout du cap (porte brune au milieu de sa façade sud), entre deux MASSIFS DE FLEURS roses ;
+- petits carrés ocre = panneaux en bois SANS TEXTE ; points rouge et blanc = Poké Balls posées au sol (objets à ramasser).
+Respecte ce plan À LA LETTRE : la prairie de départ à gauche (hautes herbes au nord, buissons au sud) ; le passage étroit entre les rochers de gauche ; le long chemin côtier, séparé de la mer par une seule rangée de rochers ; la terrasse herbeuse au nord avec ses hautes herbes et son rebord ; la crique de sable au sud ; le second passage étroit entre les rochers du milieu ; la bande de hautes herbes qui barre le chemin juste avant le cap ; le cap lui-même, une pointe d'herbe fleurie avec ses hautes herbes au nord-ouest, la maison au fond, les buissons et les rochers au sud, la petite poche au sud-est au bord de l'eau avec sa Poké Ball. Le plan ne donne que la composition : son style en aplats ne doit pas apparaître.
+
+RÈGLE ABSOLUE DES CHEMINS : le joueur se déplace case par case, seulement à l'horizontale et à la verticale ; chemins, rivages, bords des zones et de la crique suivent une grille : uniquement des segments horizontaux et verticaux à angles droits, AUCUN segment en diagonale ni courbe, aucun escalier. La ligne de côte est faite de paliers rectilignes.
+RELIEF : le sol praticable est lisible et presque plat ; les SEULS reliefs sont la falaise du nord, les masses de rochers, le rivage rocheux et le rebord. Aucun pont, aucune jetée, aucun ponton.
+
+IMAGE 2 : la vue générale de la Route 3, une autre route de la même région. Respecte EXACTEMENT son style de rendu : même pinceau, mêmes arbres en masses arrondies, mêmes hautes herbes jaune-vert, même chemin de terre, même saturation, même façon de peindre la roche, mêmes personnages. Ne reprends PAS sa composition : ni montagne, ni grotte, ni Centre Pokémon.
+
+Format : PAYSAGE 1536 × 1024, vue plongeante sur toute la route, comme le plan.
+
+RENDU (ADN visuel Kanto 2026 v1)
+- Illustration 2D peinte numériquement, dans l'esprit d'un RPG Pokémon moderne au rendu « HD-2D peint » : formes simples, lisibles et arrondies, détails fins mais ordonnés. Ni pixel art, ni 3D, ni photo, ni aquarelle, ni cartoon en aplats. Le feuillage est peint en grandes masses douces.
+- Perspective : vue de dessus de trois quarts, projection oblique frontale, sans point de fuite. Les verticales restent verticales. On voit le dessus des objets et leur face avant (côté sud).
+- Aucun trait noir : contours fins et doux, plus sombres et plus saturés que la couleur locale. Ombres colorées bleu-vert ou violet froid, jamais grises.
+
+AMBIANCE — « le chemin du bout du monde » : une route côtière lumineuse, au vent, entre la forêt et la mer, qui mène à une maison isolée et un peu mystérieuse au bout d'un cap.
+- La MER est une grande présence calme et brillante : turquoise près des rochers, bleu profond au large, reflets de soleil, petites vagues douces, écume blanche au pied des rochers. Aucun bateau.
+- Le chemin côtier est ensoleillé ; la forêt du nord est dense et sombre ; la falaise du nord est une roche claire gris-beige.
+- Le CAP est plus fleuri et plus doux que la route : herbe claire, fleurs, deux massifs de fleurs roses de part et d'autre de la maison.
+- La MAISON DE LÉO est un petit cottage en bois et pierre claire, toit d'ardoise bleu-gris, une cheminée ; elle trahit discrètement un habitant passionné de technologie : une petite antenne ou une parabole sur le toit, une fenêtre éclairée d'une lueur bleutée. Accueillante, un peu excentrique, jamais inquiétante.
+- Lumière de fin d'après-midi douce et chaude, soleil bas vers l'ouest, la mer qui scintille.
+
+VIE (très discrète, personnages petits, aucun ne ressemble au héros à casquette rouge et veste bleue) :
+- un PROMENEUR adulte dans la prairie de gauche, tourné vers l'est ;
+- un HOMME âgé debout au bord de l'eau sur le cap, au sud du chemin, qui regarde la mer (sans canne à pêche) ;
+- six Dresseurs aux places de Dresseurs du plan, tournés vers ce qu'ils surveillent : un GAMIN (casquette, short) dans le renfoncement de terre des rochers de gauche, tourné vers le chemin ; un MONTAGNARD (gros sac à dos, barbe, chapeau) dans le renfoncement des rochers du milieu, tourné vers le chemin ; une FILLETTE (robe simple) sur la terrasse herbeuse ; un second MONTAGNARD sur le sable de la crique ; un SCOUT (chapeau de paille, filet à insectes) au sud des hautes herbes du cap ; un second GAMIN dans la poche du sud-est du cap.
+Pokémon : deux ROUCOOL (petits oiseaux bruns et crème, petite crête) : l'un posé sur les rochers au bord de la crique, l'autre sur les buissons du cap. Aucun autre Pokémon, aucun Pikachu, aucun animal (aucune faune non-Pokémon : ni mouette, ni poisson).
+
+INTERDITS : texte, lettres, chiffres, étiquettes, panneaux lisibles, logo, signature, filigrane, cadre, interface ; tout bâtiment autre que la maison de Léo ; Centre Pokémon, phare, cabane, ponton, jetée, pont, barque, bateau ; clôture, barrière, muret ; escaliers, terrasses construites ; route goudronnée, véhicule ; arbres orange ou automnaux ; palmiers ; neige ; brouillard, flou de profondeur, vignettage ; pixel art.
+
+L'image doit raconter, sans texte : après la ville, un long chemin longe la mer entre la forêt et les rochers, des Dresseurs le gardent, et tout au bout, sur un cap fleuri, une petite maison étrange attend.

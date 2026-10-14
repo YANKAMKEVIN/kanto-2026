@@ -71,3 +71,42 @@ func test_attribute_without_equal_sign_is_refused() -> void:
 	assert_false(plan.load_file(path))
 	assert_string_contains(plan.error, "attribut")
 	DirAccess.remove_absolute(path)
+
+
+# Jalon 14 T20a : variante « J14 » d'Azuria, la base du J13 intacte.
+const AZURIA := "res://tools/plans/azuria.txt"
+
+
+func test_azuria_base_ignores_the_j14_variant() -> void:
+	var plan := _load(AZURIA)
+	assert_eq(plan.walkable, ".=pqBD")
+	assert_eq(plan.at(Vector2i(14, 3)), "y", "trou impraticable au J13")
+	assert_eq(plan.at(Vector2i(10, 9)), "f", "porte fermée au J13")
+	assert_false(plan.positions.has("rocket_arret"), "aucune position du J14 dans la base")
+	assert_eq(plan.positions["porte_cambriolee"]["kind"], "examen")
+
+
+func test_azuria_j14_variant_opens_garden_dead_end_and_south() -> void:
+	var plan := PlanGrid.new()
+	assert_true(plan.load_file(AZURIA, "J14"), plan.error)
+	assert_eq(Vector2i(plan.width, plan.height), Vector2i(56, 41))
+	for x: int in range(6, 22):
+		for y: int in [2, 3]:
+			var cell := Vector2i(x, y)
+			if cell != Vector2i(14, 2):
+				assert_true(plan.is_walkable(cell), "jardin, trou, impasse : %s" % cell)
+	assert_false(plan.is_walkable(Vector2i(22, 3)), "impasse fermée à l'est")
+	assert_false(plan.is_walkable(Vector2i(14, 2)), "clôture à côté du trou")
+	for x: int in range(31, 34):
+		assert_true(plan.is_walkable(Vector2i(x, 40)), "sortie sud")
+	assert_eq(plan.positions["porte_cambriolee"]["kind"], "warp", "remplacée par la variante")
+	assert_eq(plan.cell_of("rocket_arret"), Vector2i(21, 3))
+	assert_eq(plan.attr("rocket_arret", "unless"), "cerulean_rocket_beaten")
+	assert_eq(plan.cell_of("h4_policier"), Vector2i(11, 10), "identifiant stable")
+	assert_true(plan.positions.has("pot_renverse"), "positions de base gardées")
+
+
+func test_missing_variant_is_an_error() -> void:
+	var plan := PlanGrid.new()
+	assert_false(plan.load_file(AZURIA, "J99"))
+	assert_string_contains(plan.error, "J99")

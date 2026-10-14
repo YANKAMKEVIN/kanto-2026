@@ -396,6 +396,30 @@ const RULES: Dictionary[StringName, Dictionary] = {
 	&"int_velo_expose_02": {"width": 2, "depth": 1},
 	&"int_velo_expose_03": {"width": 2, "depth": 1},
 	&"int_etagere_casques_01": {"width": 4, "depth": 1},
+	# --- Série 16 : Route 25, Cap d'Azuria, maison de Léo (J14 T13, fiche `serie-16-*.md`). ---
+	# Maison du Cap (8 × 6, porte aux 4e et 5e colonnes de la rangée du bas, ancre (72, 11)).
+	&"bldg_maison_leo_01": {"shadow": true, "width": 8, "depth": 6, "fade": true,
+		"open": [Vector2i(-1, 0), Vector2i(0, 0)]},
+	# Rivage rocheux : modules posés **sur les cases `R` au contact de la mer** par
+	# `coast_map_kit` (rect explicite, couche du sol), jamais sur une case praticable.
+	&"relief_rivage_01": {"traversable": true, "layer": LAYER_GROUND, "align": ALIGN_EDGE},
+	&"relief_rivage_02": {"traversable": true, "layer": LAYER_GROUND, "align": ALIGN_EDGE},
+	&"relief_rivage_03": {"traversable": true, "layer": LAYER_GROUND, "align": ALIGN_CENTRE},
+	&"relief_rivage_04": {"traversable": true, "layer": LAYER_GROUND, "align": ALIGN_CENTRE},
+	&"relief_rivage_05": {"traversable": true, "layer": LAYER_GROUND, "align": ALIGN_CENTRE},
+	&"relief_rivage_06": {"traversable": true, "layer": LAYER_GROUND, "align": ALIGN_CENTRE},
+	# Indice du coquillage (objet caché O4, case `R` bloquée par la grille) ; clôture réparée
+	# d'Azuria (décor seul, T20b).
+	&"prop_indice_coquillage_01": {"width": 1, "depth": 1},
+	&"prop_cloture_reparee_01": {"width": 1, "depth": 1},
+	# Maison de Léo : cabines (machine + armoire, 3 × 2), console 2 × 1, module 1 × 1, écran
+	# 1 × 1, bureau 3 × 1, bibliothèque vue de côté 1 × 2.
+	&"int_cabine_teleport_01": {"width": 3, "depth": 2},
+	&"int_console_leo_01": {"width": 2, "depth": 1},
+	&"int_module_leo_01": {"width": 1, "depth": 1},
+	&"int_ecran_diagnostic_01": {"width": 1, "depth": 1},
+	&"int_bureau_leo_01": {"width": 3, "depth": 1},
+	&"int_bibliotheque_cote_01": {"width": 1, "depth": 2},
 }
 
 

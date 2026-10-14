@@ -26,20 +26,30 @@ func test_real_data_has_the_five_types_within_bounds() -> void:
 	var library := LightGlowLibrary.new()
 	assert_true(library.load_file(), "data/world/light_glows.json valide")
 	assert_eq(library.get_errors().size(), 0)
-	assert_eq(library.get_ids(), [&"lamp", &"shaft", &"shard", &"projector", &"beam"]
-		as Array[StringName])
+	assert_eq(library.get_ids(), [&"lamp", &"shaft", &"shard", &"projector", &"beam", &"hint"]
+		as Array[StringName], "« hint » du jalon 14 en fin")
 	# Passe « lumière rare » : le puits de jour a sa colonne de lumière douce.
 	assert_eq(library.get_type(&"beam").shape, LightGlowLibrary.SHAPE_COLUMN)
 	assert_gt(library.get_type(&"beam").height, 1.0)
-	for id: StringName in [&"lamp", &"shaft", &"shard", &"projector"]:
+	for id: StringName in [&"lamp", &"shaft", &"shard", &"projector", &"hint"]:
 		assert_eq(library.get_type(id).shape, LightGlowLibrary.SHAPE_RADIAL, String(id))
 	for id: StringName in library.get_ids():
 		var type := library.get_type(id)
 		assert_gt(type.alpha, 0.0)
-		assert_lte(type.alpha, LightGlowLibrary.ALPHA_MAX, "%s : alpha ≤ 0,35" % id)
+		var cap := LightGlowLibrary.ALPHA_MAX_MIX if type.blend == LightGlowLibrary.BLEND_MIX \
+			else LightGlowLibrary.ALPHA_MAX
+		assert_lte(type.alpha, cap, "%s : alpha ≤ plafond de sa fusion" % id)
 		assert_gt(type.radius, 0.0)
-	# Seules les lampes de chantier vacillent (plan §2.4).
+	# Seules les lampes de chantier vacillent (plan §2.4), et la lueur d'aide du J14 (§2.8).
 	assert_gt(library.get_type(&"lamp").flicker, 0.0)
+	var hint := library.get_type(&"hint")
+	assert_eq(hint.color, Color.html("#3cb4ff"))
+	assert_almost_eq(hint.radius, 1.5, 0.001)
+	assert_almost_eq(hint.alpha, 0.65, 0.001)
+	assert_almost_eq(hint.flicker, 0.25, 0.001)
+	assert_eq(hint.blend, LightGlowLibrary.BLEND_MIX, "teinte posée : l'additif se perd sur le bois")
+	for id: StringName in [&"lamp", &"shaft", &"shard", &"projector", &"beam"]:
+		assert_eq(library.get_type(id).blend, LightGlowLibrary.BLEND_ADD, String(id))
 	for id: StringName in [&"shaft", &"shard", &"projector", &"beam"]:
 		assert_eq(library.get_type(id).flicker, 0.0, "%s : fixe" % id)
 
@@ -254,3 +264,33 @@ func _scan_for_light2d(dir: String, found: Array[String]) -> void:
 		for light_class: String in ["PointLight2D", "DirectionalLight2D", "LightOccluder2D"]:
 			if text.contains(light_class):
 				found.append("%s : %s" % [dir.path_join(file), light_class])
+
+
+# --- Lueur d'aide (jalon 14) : fusion « mix » ---------------------------------------------
+
+func test_hint_glow_mixes_instead_of_adding_and_covers_the_object() -> void:
+	var glow := _glow(&"hint")
+	assert_true(glow.is_lit())
+	var material := glow.material as ShaderMaterial
+	assert_not_null(material, "la lueur d'aide vacille : matériau à shader")
+	assert_true(material.shader.code.contains("blend_mix"), "pas additif (invisible sur le bois)")
+	assert_false(material.shader.code.contains("blend_add"))
+	var image := glow.texture.get_image()
+	var mid := image.get_pixel(LightGlow.TEXTURE_SIZE / 2 + LightGlow.TEXTURE_SIZE / 5,
+		LightGlow.TEXTURE_SIZE / 2).a
+	assert_gt(mid, 0.6, "cœur plein : la teinte couvre l'objet, pas seulement son centre")
+	LightGlow.set_reduce_motion(true)
+	assert_eq(material.get_shader_parameter(&"amplitude"), 0.0, "animations réduites : fixe")
+
+
+func test_mix_alpha_has_its_own_ceiling() -> void:
+	var raw := _type("#3cb4ff", 1.5, 0.6)
+	raw["blend"] = "mix"
+	var library := LightGlowLibrary.new()
+	assert_true(library.add_from_dict({"types": {"m": raw}}))
+	var additive := _type("#3cb4ff", 1.5, 0.6)
+	assert_false(LightGlowLibrary.new().add_from_dict({"types": {"a": additive}}), "add ≤ 0,35")
+	var bad := _type("#3cb4ff", 1.5, 0.2)
+	bad["blend"] = "multiply"
+	assert_false(LightGlowLibrary.new().add_from_dict({"types": {"b": bad}}))
+	assert_push_error_count(2)

@@ -20,11 +20,16 @@ extends SceneTree
 ##   mt_moon_center — le Centre Pokémon du Mont Sélénite (jalon 12 T8, jalon-12.md §2.14) :
 ##     définition commune des Centres, sans Boutique ; sortie vers la Route 3 (`from_center_e`)
 ##   godot --headless --path . -s res://tools/build_painted_interiors.gd -- --rooms=mt_moon_center
-##   cerulean_center, cerulean_mart, cerulean_gym, cerulean_bike_shop, cerulean_house — intérieurs
+##   cerulean_center, cerulean_mart, cerulean_gym, cerulean_bike_shop, cerulean_house,
+##   cerulean_burgled_house (J14 T20b) — intérieurs
 ##     d'Azuria (jalon 13 T7, jalon-13.md §2.1, §2.5, §2.6) : Centre et Boutique = définitions
 ##     de Jadielle ; Arène, magasin de vélos et maison relus sur leur grille
 ##     (`tools/plans/azuria_*.txt`) ; **sans PNJ** (T17)
 ##   godot --headless --path . -s res://tools/build_painted_interiors.gd -- --azuria
+##   bill_house — la maison de Léo au Cap d'Azuria (jalon 14 T14, jalon-14.md §2.1) : relue sur sa
+##     grille (`tools/plans/bill_house.txt`, « plan »), sans PNJ (T17) ; affichée « Cap d'Azuria »
+##     (nom de sa zone, `test_zone_library`)
+##   godot --headless --path . -s res://tools/build_painted_interiors.gd -- --rooms=bill_house
 ##   godot --headless --path . -s res://tools/build_painted_interiors.gd   (toutes les pièces)
 ##   godot --headless --path . --import
 ##
@@ -73,7 +78,7 @@ const FORET := [&"viridian_forest_gate_south", &"viridian_forest_gate_north"]
 const ARGENTA := [&"pewter_center", &"pewter_mart", &"pewter_museum", &"pewter_museum_science",
 	&"pewter_gym", &"pewter_house_mason", &"pewter_house_researcher"]
 const AZURIA := [&"cerulean_center", &"cerulean_mart", &"cerulean_gym", &"cerulean_bike_shop",
-	&"cerulean_house"]
+	&"cerulean_house", &"cerulean_burgled_house"]
 const PLANS_DIR := "res://tools/plans/"
 const PlanGrid := preload("res://tests/helpers/plan_grid.gd")
 const LOGIC_DIR := "res://tests/fixtures/maps/"
@@ -90,6 +95,7 @@ func _init() -> void:
 		_player_house_1f(), _rival_house(), _oak_lab(), _forest_gate(&"south"),
 		_forest_gate(&"north")]
 	rooms.append_array(_pewter_rooms())
+	rooms.append(_bill_house())
 	rooms.append(_pokemon_center(&"mt_moon_center", "MtMoonCenter", "Mont Sélénite",
 		[&"route_3", &"from_center_e"]))
 	rooms.append_array(_cerulean_rooms())
@@ -492,6 +498,64 @@ func _pewter_rooms() -> Array[Dictionary]:
 	return rooms
 
 
+
+## Maison de Léo, au Cap d'Azuria (`tools/plans/bill_house.txt`, 16 × 11) : deux cabines de
+## téléportation (la seconde en miroir ; machine et armoire occupent 3 cases de large, l'armoire
+## dans le mur latéral `K`), écran, console, module, bureau encombré et sa chaise, deux
+## bibliothèques (la seconde en miroir), lit, plante. Sortie : le paillasson (7..8, 10), PUSH ↓.
+## Léo-Mélofée et Léo humain : `data/npcs/bill_house.json` (T17).
+func _bill_house() -> Dictionary:
+	return {
+		"id": &"bill_house", "node": "BillHouse", "size": Vector2i(16, 11),
+		"shell": "res://assets/world/interiors/int_maison_leo_coque.png",
+		"title": "Cap d'Azuria", "light": &"interior_warm",
+		"plan": PLANS_DIR + "bill_house.txt", "walkable": ".X",
+		"furniture": [
+			[&"int_cabine_teleport_01", Rect2i(1, 3, 3, 2), "CabinA", [Vector2i(1, 3),
+				Vector2i(2, 3), Vector2i(3, 3), Vector2i(1, 4), Vector2i(2, 4), Vector2i(3, 4)]],
+			[&"int_cabine_teleport_01", Rect2i(12, 3, 3, 2), "CabinB", [Vector2i(12, 3),
+				Vector2i(13, 3), Vector2i(14, 3), Vector2i(12, 4), Vector2i(13, 4),
+				Vector2i(14, 4)], 1.0, true],
+			[&"int_ecran_diagnostic_01", Rect2i(5, 3, 1, 1), "Screen"],
+			[&"int_console_leo_01", Rect2i(7, 3, 2, 1), "Console"],
+			[&"int_module_leo_01", Rect2i(10, 3, 1, 1), "Module"],
+			[&"int_bibliotheque_cote_01", Rect2i(1, 6, 1, 2), "BookshelfWest"],
+			[&"int_bibliotheque_cote_01", Rect2i(14, 6, 1, 2), "BookshelfEast", [Vector2i(14, 6),
+				Vector2i(14, 7)], 1.0, true],
+			[&"int_bureau_leo_01", Rect2i(5, 7, 3, 1), "Desk"],
+			[&"int_chaise_bureau_01", Rect2i(6, 8, 1, 1), "DeskChair"],
+			[&"int_lit_01", Rect2i(12, 7, 2, 2), "Bed"],
+			[&"int_plante", Rect2i(1, 9, 1, 1), "Plant"],
+		],
+		"rugs": [[&"int_tapis_carreaux_01", Vector2(6.5, 7.8), "RugDesk"]],
+		"spawns": {"from_route_25": Vector2i(7, 10)},
+		"warps": [
+			["Exit0", Vector2i(7, 10), PUSH, Vector2i.DOWN, &"route_25", &"from_bill_house_w",
+				Vector2i.DOWN],
+			["Exit1", Vector2i(8, 10), PUSH, Vector2i.DOWN, &"route_25", &"from_bill_house_e",
+				Vector2i.DOWN],
+		],
+		# T17 : les trois objets EXAMINER (depuis la case au sud, tournés vers le nord), le
+		# premier pas depuis le paillasson (scène d'entrée) et la lueur « hint » de l'objet
+		# attendu (FlagGate : écran après `bill_met`, module après l'écran, console quand Léo est
+		# dans la cabine).
+		"interactables": [
+			["ScreenPoint", Vector2i(5, 3), Vector2i(1, 1), &"bill_screen", EXAMINE, Vector2i.UP],
+			["ModulePoint", Vector2i(10, 3), Vector2i(1, 1), &"bill_module", EXAMINE,
+				Vector2i.UP],
+			["ConsolePoint", Vector2i(7, 3), Vector2i(2, 1), &"bill_console", EXAMINE,
+				Vector2i.UP],
+		],
+		"triggers": [["EntryTrigger", Vector2i(7, 9), Vector2i(2, 1), &"bill_house_enter",
+			Vector2i.UP]],
+		"gates": [
+			["HintScreen", [&"bill_met"], [&"bill_screen_checked"], &"hint", Vector2(528, 275)],
+			["HintModule", [&"bill_screen_checked"], [&"bill_module_checked"], &"hint",
+				Vector2(1008, 320)],
+			["HintConsole", [&"bill_in_cabin"], [&"bill_restored"], &"hint", Vector2(768, 335)],
+		],
+	}
+
 ## Passages de sortie d'un intérieur d'Argenta : [param cells] PUSH ↓ → [param target]
 ## (`pewter_city` par défaut), [param spawn], tourné vers le sud.
 func _pewter_exits(cells: Array, spawn: StringName, target: StringName = &"pewter_city") \
@@ -661,7 +725,7 @@ func _cerulean_rooms() -> Array[Dictionary]:
 		_pokemon_center(&"cerulean_center", "CeruleanCenter", "Azuria",
 			[&"cerulean_city", &"from_center"]),
 		_poke_mart(&"cerulean_mart", "CeruleanMart", "Azuria", [&"cerulean_city", &"from_mart"]),
-		_cerulean_gym(), _cerulean_bike_shop(), _cerulean_house(),
+		_cerulean_gym(), _cerulean_bike_shop(), _cerulean_house(), _cerulean_burgled_house(),
 	]
 	return rooms
 
@@ -738,6 +802,34 @@ func _cerulean_house() -> Dictionary:
 		"spawns": {"entrance": Vector2i(7, 8)},
 		"warps": _pewter_exits([Vector2i(6, 8), Vector2i(7, 8), Vector2i(8, 8)], &"from_house",
 			&"cerulean_city"),
+	}
+
+
+## Maison cambriolée (`tools/plans/azuria_maison_cambriolee.txt`, 15 × 10, même enveloppe ;
+## jalon 14 T20b) : salon un peu en désordre (canapé, étagère, télévision, commode, table basse
+## décalée, sac de voyage) ; la victime (`v`) remercie le joueur après le Rocket.
+func _cerulean_burgled_house() -> Dictionary:
+	return {
+		"id": &"cerulean_burgled_house", "node": "CeruleanBurgledHouse",
+		"size": Vector2i(15, 10),
+		"shell": "res://assets/world/interiors/int_maison_argenta_coque.png",
+		"title": "Azuria", "light": &"interior_warm",
+		"plan": PLANS_DIR + "azuria_maison_cambriolee.txt", "walkable": ".Xv",
+		"furniture": [
+			[&"int_canape_01", Rect2i(1, 3, 3, 1), "Sofa"],
+			[&"int_petite_etagere_01", Rect2i(5, 3, 1, 1), "Shelf"],
+			[&"int_tele_01", Rect2i(7, 3, 2, 1), "Television"],
+			[&"int_commode_01", Rect2i(10, 3, 2, 1), "Dresser"],
+			[&"int_chevet_lampe_01", Rect2i(13, 3, 1, 1), "Lamp"],
+			[&"int_table_basse_01", Rect2i(6, 5, 2, 1), "CoffeeTable"],
+			[&"int_sac_voyage_01", Rect2i(11, 6, 1, 1), "TravelBag"],
+			[&"int_plante", Rect2i(1, 7, 1, 1), "PlantWest"],
+			[&"int_plante", Rect2i(13, 7, 1, 1), "PlantEast"],
+		],
+		"rugs": [[&"int_tapis_salon_01", Vector2(5.0, 6.0), "RugLiving"]],
+		"spawns": {"entrance": Vector2i(7, 8)},
+		"warps": _pewter_exits([Vector2i(6, 8), Vector2i(7, 8), Vector2i(8, 8)],
+			&"from_burgled_house", &"cerulean_city"),
 	}
 
 
@@ -873,7 +965,29 @@ func _build(room: Dictionary) -> Node2D:
 		point.position = _world(entry[1])
 		point.set(&"size", entry[2])
 		point.set(&"cutscene_id", entry[3])
+		if entry.size() > 4:
+			point.set(&"direction", entry[4])
 		_attach(root, root.get_node(^"Triggers"), point)
+	# Décor qui suit les drapeaux (jalon 14) : [nœud, if, unless, type de halo, centre en pixels].
+	var gate_script: GDScript = load("res://game/world/flag_gate.gd")
+	var glow_script: GDScript = load("res://game/world/lighting/light_glow.gd")
+	for entry: Array in room.get("gates", []):
+		var gate := Node2D.new()
+		gate.set_script(gate_script)
+		gate.name = entry[0]
+		var if_flags: Array[StringName] = []
+		if_flags.assign(entry[1])
+		var unless_flags: Array[StringName] = []
+		unless_flags.assign(entry[2])
+		gate.set(&"if_flags", if_flags)
+		gate.set(&"unless_flags", unless_flags)
+		_attach(root, root, gate)
+		var glow := Sprite2D.new()
+		glow.set_script(glow_script)
+		glow.name = "Glow"
+		glow.set(&"glow_type", entry[3])
+		glow.position = entry[4]
+		_attach(root, gate, glow)
 	return root
 
 
@@ -929,7 +1043,7 @@ func _read_logic(path: String, size: Vector2i) -> Dictionary[Vector2i, bool]:
 
 
 ## Meuble de Bourg Palette : [identifiant, rectangle des cases solides, nœud, (cases solides
-## explicites ; `[]` = le rectangle), (échelle)]. Pied au milieu du bas du rectangle ; emprise écrite dans l'instance (relative
+## explicites ; `[]` = le rectangle), (échelle), (miroir)]. Pied au milieu du bas du rectangle ; emprise écrite dans l'instance (relative
 ## à la case d'ancrage, celle qui contient le pied). Renvoie les cases solides.
 func _add_furniture(root: Node, parent: Node, entry: Array) -> Array[Vector2i]:
 	var id: StringName = entry[0]
@@ -950,6 +1064,9 @@ func _add_furniture(root: Node, parent: Node, entry: Array) -> Array[Vector2i]:
 	if entry.size() > 4:
 		# Meuble réduit à la place de la grille (jalon 13 : comptoir des vélos, cuisine).
 		prop.scale = Vector2.ONE * float(entry[4])
+	if entry.size() > 5 and bool(entry[5]):
+		# Meuble en miroir (jalon 14 : cabine B et bibliothèque est de la maison de Léo).
+		(prop.get_node(^"Sprite") as Sprite2D).flip_h = true
 	var anchor := Vector2i(floori(prop.position.x / TILE), ceili(prop.position.y / TILE) - 1)
 	var footprint: Array[Vector2i] = []
 	for cell: Vector2i in cells:

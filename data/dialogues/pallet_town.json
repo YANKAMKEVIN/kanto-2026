@@ -6,11 +6,11 @@
 			"Je crois qu'ils savent exactement à quelle heure je sors."
 		]
 	},
-	"leo": {
-		"speaker": "Léo",
+	"nils": {
+		"speaker": "Nils",
 		"pages": [
 			"Regarde ! Il commence à comprendre quand je l'appelle !",
-			{ "text": "...enfin, presque.", "react": "leo_rattata", "pause": 0.6 }
+			{ "text": "...enfin, presque.", "react": "nils_rattata", "pause": 0.6 }
 		]
 	},
 	"observe_aoki_pidgey": {
@@ -18,7 +18,7 @@
 		"narration": true,
 		"pages": ["Il picore les graines, l'œil attentif."]
 	},
-	"observe_leo_rattata": {
+	"observe_nils_rattata": {
 		"speaker": "Rattata",
 		"narration": true,
 		"pages": ["Il te renifle, les moustaches frémissantes."]

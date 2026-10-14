@@ -122,6 +122,9 @@ const LOOKS: Dictionary = {
 	"nidorina": [POKEMON_DIR, "nidorina", ""],
 	"rattatac": [POKEMON_DIR, "raticate", ""],
 	"rapasdepic": [POKEMON_DIR, "fearow", ""],
+	# J14 (série 16, Cap d'Azuria) : Léo humain (look `bill`, 128 px, avec sa planche d'attente) ;
+	# Mélofée vient du J12 T21 (ci-dessus).
+	"leo_humain": [CHARACTERS_DIR, "bill", ""],
 }
 ## Pokémon fixes (genre « Pokémon fixe », jalon 9 §2.8.5) : feuille 6 × 1 du catalogue
 ## (« personnages ») → identifiant de données. Ils ne marchent jamais.

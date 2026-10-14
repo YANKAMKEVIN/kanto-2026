@@ -45,6 +45,11 @@ var trap_source: Battler = null
 var last_move_slot: int = -1
 var disabled_slot: int = -1
 var disabled_turns: int = 0
+## « Charge puis frappe » (jalon 14, Tunnel, `jalon-14.md` §2.3) : emplacement de la capacité
+## chargée (−1 = aucune charge ; au tour suivant, action imposée) et invulnérabilité pendant la
+## charge (sous terre). Perdu au changement, au K.O. et à la fin du combat (jamais sauvegardé).
+var charge_slot: int = -1
+var invulnerable: bool = false
 var _stages: Dictionary[StringName, int] = {}
 
 @warning_ignore_start("integer_division")
@@ -99,13 +104,35 @@ func clear_bide() -> void:
 	bide_stock = 0
 
 
+## Vrai si le Pokémon a chargé une capacité qui frappera au tour suivant (jalon 14).
+func is_charging() -> bool:
+	return charge_slot >= 0
+
+
+## Oublie la charge en cours (frappe, interruption, K.O.).
+func clear_charge() -> void:
+	charge_slot = -1
+	invulnerable = false
+
+
+## Vrai si l'action du Pokémon est imposée (Patience ou charge, jalon 14) :
+## [method locked_slot] donne la capacité à lancer.
+func is_action_locked() -> bool:
+	return is_biding() or is_charging()
+
+
+## Emplacement de la capacité imposée ([method is_action_locked]), ou −1.
+func locked_slot() -> int:
+	if is_biding():
+		return bide_slot
+	return charge_slot
+
+
 ## Vrai si le Pokémon ne peut pas quitter le terrain de lui-même : tour forcé de Patience
-## (jalon 11) ou piège (Ligotage, Claquoir… jalon 12, [method is_trapped]). Lu par l'IA qui
-## change de Pokémon ([AiSwitchRule], jalon 13).
+## (jalon 11) ou de charge (jalon 14, [method is_charging]), ou piège (Ligotage, Claquoir…
+## jalon 12, [method is_trapped]). Lu par l'IA qui change de Pokémon ([AiSwitchRule], jalon 13).
 func is_locked() -> bool:
-	return is_biding() or is_trapped()
-
-
+	return is_action_locked() or is_trapped()
 ## Vrai si le Pokémon est confus.
 func is_confused() -> bool:
 	return confusion_turns > 0

@@ -197,7 +197,15 @@
 		"disable_ended": { "text": "{move} n'est plus bloquée." },
 		"rested": { "text": "{pokemon} s'endort et récupère !" },
 		"switch_reason_trapped": { "text": "Impossible de changer" },
-		"move_disabled_label": { "text": "BLOQUÉE" }
+		"move_disabled_label": { "text": "BLOQUÉE" },
+		"charge_dig_start": { "text": "{pokemon} creuse un trou !" },
+		"charge_dig_broken": { "text": "{pokemon} remonte à la surface." },
+		"dodged": { "text": "{pokemon} évite l'attaque !" },
+		"ball_blocked": { "text": "Impossible de viser !" },
+		"teleported": { "text": "{pokemon} s'est téléporté !",
+			"text_f": "{pokemon} s'est téléportée !" },
+		"nothing_happened": { "text": "Mais rien ne se passe !" },
+		"rare_candy_level": { "text": "{pokemon} monte au niveau {level} !" }
 	},
 	"stats": {
 		"atk": "L'Attaque", "def": "La Défense", "spa": "L'Attaque Spéciale",

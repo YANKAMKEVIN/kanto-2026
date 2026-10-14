@@ -1,0 +1,22 @@
+{
+	"map": "bill_house", "spawn": "from_route_25", "facing": "up",
+	"flags": [
+		"mom_greeted", "rival_met", "oak_met", "oak_lab_reunion", "starter_offered",
+		"starter_chosen", "taken_charmander", "taken_squirtle", "rival_lab_won",
+		"rival_challenged", "rival_battle_done", "rival_left_lab", "viridian_arrived",
+		"got_oak_parcel", "pokedex_activated", "poison_unlocked", "beaten_forest_scout_theo",
+		"pewter_arrived", "beaten_pewter_gym_liam", "brock_met", "badge_boulder",
+		"bill_met", "bill_screen_checked", "bill_module_checked", "bill_in_cabin", "bill_restored",
+		"got_ss_ticket", "got_bill_rare_candy"
+	],
+	"party": [
+		{ "species": "abra", "level": 15 },
+		{ "species": "butterfree", "level": 20,
+			"moves": ["confusion", "poison_powder", "stun_spore", "sleep_powder"] },
+		{ "species": "pidgeot", "level": 100 },
+		{ "species": "rattata", "level": 12, "hp": 0 },
+		{ "species": "charmander", "level": 22 }
+	],
+	"bag": { "poke_ball": 10, "potion": 5, "ss_ticket": 1, "rare_candy": 5 },
+	"money": 6000
+}

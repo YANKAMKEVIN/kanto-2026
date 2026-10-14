@@ -74,11 +74,17 @@ extends RefCounted
 ## - [constant Kind.MOMENT] : Grand moment de type [member moment_type] ([constant
 ##   MomentLibrary.TYPES], « fossil ») avec [member moment_details] (« item » : le fossile),
 ##   enregistré sur la carte courante **une seule fois** par type et détails ; rien d'affiché.
+## Jalon 14 (jalon-14.md §2.7), la machine de Léo :
+## - [constant Kind.FLASH] : [member count] éclairs blancs plein écran (≥ 1), avec une vibration
+##   légère au début de chacun ; adoucis par « Réduire les animations » ou « Réduire les
+##   flashs » ; la scène attend la fin du dernier. Ajoutée en fin d'enum : à la fusion du J12,
+##   FLASH passe **après** MOMENT (J12 T23), les deux gardés.
 
 ## Nouvelles valeurs en fin d'enum (ordre de [constant TYPE_KEYS]).
 enum Kind {
 	WAIT, DIALOGUE, FACE, SET_FLAGS, SPAWN, MOVE, CHANGE_MAP, HOP, LEAN, DESPAWN, BATTLE, GIVE,
 	CAPTION, TAKE, SCARE, WAKE_UP, REACT, EMOTE, CHAMPION_CARD, BADGE, MOMENT,
+	FLASH,
 }
 
 ## Clé de type de chaque étape dans les fichiers, dans l'ordre de [enum Kind].
@@ -86,6 +92,7 @@ const TYPE_KEYS: Array[String] = [
 	"wait", "dialogue", "face", "set", "spawn", "move", "change_map", "hop", "lean",
 	"despawn", "battle", "give", "caption", "take", "scare", "wake_up", "react", "emote",
 	"champion_card", "badge", "moment",
+	"flash",
 ]
 ## Bulles d'une étape « emote » (clé « kind ») : le « ! » du Dresseur qui repère le joueur.
 const EMOTE_KINDS: Array[StringName] = [&"exclamation"]
@@ -123,6 +130,7 @@ var foe_pokemon: StringName = &""
 var win_flags: Array[StringName] = []
 var lose_flags: Array[StringName] = []
 ## Étape « give » : objet, quantité, et objet trouvé dans le monde (vrai) ou reçu (faux).
+## Étape « flash » : [member count] = nombre d'éclairs.
 var item_id: StringName = &""
 var count: int = 1
 var found: bool = false

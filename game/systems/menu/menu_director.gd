@@ -89,6 +89,11 @@ signal field_item_requested(item_id: StringName)
 ## [param index] : Boot ferme le menu et joue [method EvolutionDirector.play_item] ; la pierre
 ## est retirée par Boot au moment exact de l'évolution. Rien n'est consommé par le menu.
 signal evolution_item_requested(index: int, item_id: StringName)
+## Super Bonbon (jalon 14, T18b ; `jalon-14.md` §2.6) donné au Pokémon [param index]
+## ([method RareCandy.check] = OK) : Boot retire le bonbon, fait gagner le niveau et joue la suite
+## (niveau, capacités, évolution) puis rappelle [method finish_rare_candy]. Rien n'est consommé
+## par le menu.
+signal rare_candy_requested(index: int, item_id: StringName)
 
 var _state: Object
 var _data: PokemonData
@@ -491,6 +496,12 @@ func use_item_on(item_id: StringName, index: int) -> bool:
 			return false
 		evolution_item_requested.emit(index, item_id)
 		return true
+	if RareCandy.is_candy(item):
+		# Super Bonbon (jalon 14) : niveau 100 et K.O. sont déjà refusés par le choix.
+		if not _state.bag.has(item_id) or RareCandy.check(pokemon) != RareCandy.Check.OK:
+			return false
+		rare_candy_requested.emit(index, item_id)
+		return true
 	var result := ItemUse.apply(_state.bag, item, pokemon, _bag_context)
 	_repeat_item = item_id
 	_repeat_index = index
@@ -515,6 +526,20 @@ func finish_tm_learn(index: int, item_id: StringName, learned: bool) -> void:
 		mark_changed()
 	var item := _items.get_item(item_id)
 	if item != null:
+		bag_targets_shown.emit(BagQuery.targets(_state.party, _state.bag, item, _bag_context,
+			_data, index))
+	_emit_bag()
+
+
+## Fin du déroulé d'un Super Bonbon ([signal rare_candy_requested]) : la partie a changé (niveau
+## gagné, bonbon retiré ; autosave à la fermeture du menu) ; le choix du Pokémon (nouveau niveau,
+## Pokémon refusé au niveau 100) et le Sac sont réémis.
+func finish_rare_candy(index: int, item_id: StringName) -> void:
+	if _state == null or _items == null:
+		return
+	mark_changed()
+	var item := _items.get_item(item_id)
+	if item != null and is_open():
 		bag_targets_shown.emit(BagQuery.targets(_state.party, _state.bag, item, _bag_context,
 			_data, index))
 	_emit_bag()

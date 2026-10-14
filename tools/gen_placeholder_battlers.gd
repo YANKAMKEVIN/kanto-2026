@@ -10,6 +10,7 @@ extends SceneTree
 ## `test_battle_art.gd` (chaque espèce des données a sa face et son dos) ; et les neuf espèces
 ## d'Azuria du jalon 13 (Stari, Staross, Hypotrempe, Kokiyas, Poissirène, Mystherbe, Ortide,
 ## Chétiflor, Boustiflor).
+## Jalon 14 (jalon-14.md §2.13) : les trois espèces du Cap d'Azuria (Abra, Kadabra, Machoc).
 ## Pixel art 64 × 64 natif, affiché en NEAREST par le BattleStage (×4 de dos, ×3 de face) :
 ##   assets/sprites/pokemon/placeholder/<espèce>_front.png   (vue de face : l'adversaire)
 ##   assets/sprites/pokemon/placeholder/<espèce>_back.png    (vue de dos : le Pokémon du joueur)
@@ -43,6 +44,7 @@ const SPECIES: Array[String] = [
 	# par niveau) ; les formes du rival n° 3 sont celles du correctif QA 12A ci-dessus.
 	"staryu", "starmie", "horsea", "shellder", "goldeen",
 	"oddish", "gloom", "bellsprout", "weepinbell",
+	"abra", "kadabra", "machop",
 ]
 const OUTLINE := Color("#1c1c28")
 const EYE := Color("#1c1c28")
@@ -1363,6 +1365,85 @@ func _draw_golem(img: Image, back: bool) -> void:
 	_r(img, 26, 36, 2, 3, EYE)
 	_r(img, 36, 36, 2, 3, EYE)
 	_r(img, 28, 43, 8, 2, Color("#7a5a4a"))
+
+
+# --- Abra, Kadabra (jalon 14) ----------------------------------------------------
+
+## Abra : renard psychique jaune assis, yeux fermés, plastron brun, longues oreilles pointues.
+func _draw_abra(img: Image, back: bool) -> void:
+	_draw_psychic_fox(img, back, false)
+
+
+## Kadabra : même silhouette, debout et plus grand, étoile rouge au front, moustaches,
+## cuillère dans la main droite.
+func _draw_kadabra(img: Image, back: bool) -> void:
+	_draw_psychic_fox(img, back, true)
+
+
+func _draw_psychic_fox(img: Image, back: bool, evolved: bool) -> void:
+	var fur := Color("#e2b83c")
+	var armor := Color("#8a5a2e")
+	var head_y := 16 if evolved else 22
+	var body_y := 38 if evolved else 42
+	# Queue (à droite), pieds, corps, plastron, bras.
+	_line(img, Vector2(44, body_y + 12), Vector2(58, body_y - 2), fur.darkened(0.1), 4)
+	_r(img, 22, 56, 8, 6, fur.darkened(0.15))
+	_r(img, 34, 56, 8, 6, fur.darkened(0.15))
+	_e(img, 32, body_y, 14, 16 if evolved else 14, fur, true)
+	if not back:
+		_e(img, 32, body_y + 2, 9, 10, armor, true)
+	_e(img, 15, body_y, 4, 9, fur, true)
+	_e(img, 49, body_y, 4, 9, fur, true)
+	if evolved and not back:
+		_line(img, Vector2(52, body_y + 4), Vector2(58, body_y - 12), Color("#b8b8c4"), 2)
+		_e(img, 58, body_y - 14, 3, 4, Color("#d0d0dc"), true)
+	# Tête et oreilles.
+	var ear := head_y - (13 if evolved else 18)
+	_line(img, Vector2(20, head_y - 4), Vector2(14, ear), fur, 4)
+	_line(img, Vector2(44, head_y - 4), Vector2(50, ear), fur, 4)
+	_e(img, 32, head_y, 13, 11, fur, true)
+	if back:
+		_r(img, 26, head_y + 6, 12, 2, fur.darkened(0.2))
+		return
+	# Yeux fermés (Abra) ou plissés (Kadabra), museau.
+	var lid := Color("#3a2a1a")
+	_line(img, Vector2(22, head_y), Vector2(28, head_y + 1), lid, 2)
+	_line(img, Vector2(36, head_y + 1), Vector2(42, head_y), lid, 2)
+	_e(img, 32, head_y + 6, 5, 3, fur.lightened(0.15))
+	_r(img, 31, head_y + 5, 2, 1, lid)
+	if evolved:
+		_e(img, 32, head_y - 7, 2, 2, Color("#d03a2a"))
+		_line(img, Vector2(26, head_y + 7), Vector2(16, head_y + 12), fur.darkened(0.25), 1)
+		_line(img, Vector2(38, head_y + 7), Vector2(48, head_y + 12), fur.darkened(0.25), 1)
+
+
+# --- Machoc (jalon 14) ------------------------------------------------------------
+
+## Petit lutteur gris-bleu debout, trois crêtes sur le crâne, ceinture de muscles, poings serrés.
+func _draw_machop(img: Image, back: bool) -> void:
+	var skin := Color("#8fa4b8")
+	var crest := Color("#6e8296")
+	_r(img, 21, 52, 9, 10, skin.darkened(0.12))
+	_r(img, 34, 52, 9, 10, skin.darkened(0.12))
+	_e(img, 32, 40, 14, 14, skin, true)
+	_e(img, 13, 38, 5, 10, skin, true)
+	_e(img, 51, 38, 5, 10, skin, true)
+	_e(img, 12, 48, 5, 4, skin.darkened(0.08), true)
+	_e(img, 52, 48, 5, 4, skin.darkened(0.08), true)
+	_e(img, 32, 20, 12, 11, skin, true)
+	_e(img, 32, 8, 3, 4, crest, true)
+	_e(img, 25, 10, 3, 3, crest, true)
+	_e(img, 39, 10, 3, 3, crest, true)
+	if back:
+		_r(img, 27, 34, 10, 2, skin.darkened(0.25))
+		return
+	_eye(img, 24, 17, Color("#c03030"))
+	_eye(img, 35, 17, Color("#c03030"))
+	_line(img, Vector2(22, 15), Vector2(29, 17), crest.darkened(0.3), 2)
+	_line(img, Vector2(42, 15), Vector2(35, 17), crest.darkened(0.3), 2)
+	_r(img, 27, 26, 10, 2, crest.darkened(0.4))
+	_line(img, Vector2(24, 36), Vector2(30, 44), skin.darkened(0.3), 1)
+	_line(img, Vector2(40, 36), Vector2(34, 44), skin.darkened(0.3), 1)
 
 
 # --- Ombre ------------------------------------------------------------------------

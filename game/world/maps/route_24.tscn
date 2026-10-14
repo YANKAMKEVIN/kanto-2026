@@ -8357,27 +8357,27 @@ position = Vector2(5328, 672)
 script = ExtResource("65_qtgju")
 trigger = 1
 direction = Vector2i(1, 0)
-target_spawn = &"from_route_25_n"
-arrival_facing = Vector2i(-1, 0)
-coming_soon = "Route 25"
+target_map = &"route_25"
+target_spawn = &"from_route_24_n"
+arrival_facing = Vector2i(1, 0)
 
 [node name="Route25C" type="Marker2D" parent="Warps" unique_id=1828751207]
 position = Vector2(5328, 768)
 script = ExtResource("65_qtgju")
 trigger = 1
 direction = Vector2i(1, 0)
-target_spawn = &"from_route_25_c"
-arrival_facing = Vector2i(-1, 0)
-coming_soon = "Route 25"
+target_map = &"route_25"
+target_spawn = &"from_route_24_c"
+arrival_facing = Vector2i(1, 0)
 
 [node name="Route25S" type="Marker2D" parent="Warps" unique_id=901827710]
 position = Vector2(5328, 864)
 script = ExtResource("65_qtgju")
 trigger = 1
 direction = Vector2i(1, 0)
-target_spawn = &"from_route_25_s"
-arrival_facing = Vector2i(-1, 0)
-coming_soon = "Route 25"
+target_map = &"route_25"
+target_spawn = &"from_route_24_s"
+arrival_facing = Vector2i(1, 0)
 
 [node name="Interactables" type="Node2D" parent="." unique_id=119738103]
 

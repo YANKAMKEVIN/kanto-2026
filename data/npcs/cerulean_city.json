@@ -11,7 +11,7 @@
 	},
 	"h4_policeman": {
 		"cell": [11, 10], "facing": "left", "sprite": "guard", "dialogue": "cerulean_h4_policeman",
-		"keep_facing": true
+		"keep_facing": true, "unless": ["cerulean_rocket_beaten"]
 	},
 	"h5_swimmer": {
 		"cell": [37, 11], "facing": "down", "sprite": "swimmer_f", "dialogue": "cerulean_h5_swimmer"
@@ -22,5 +22,29 @@
 	},
 	"h7_resident": {
 		"cell": [51, 22], "facing": "right", "sprite": "old_man", "dialogue": "cerulean_h7_resident"
+	},
+	"cerulean_rocket": {
+		"cell": [13, 2], "facing": "up", "sprite": "rocket_grunt_m", "dialogue": "cerulean_rocket",
+		"unless": ["cerulean_rocket_beaten"],
+		"moved": { "if": ["cerulean_rocket_spotted"], "cell": [21, 3], "facing": "left" }
+	},
+	"cerulean_police_tape": {
+		"cell": [10, 9], "facing": "down", "sprite": "object/police_tape",
+		"dialogue": "cerulean_burgled_door", "verb": "examine", "turn_to_player": false,
+		"unless": ["cerulean_rocket_beaten"]
+	},
+	"cerulean_south_guard": {
+		"cell": [31, 38], "facing": "up", "sprite": "guard", "dialogue": "cerulean_south_guard",
+		"keep_facing": true, "unless": ["cerulean_south_guard_left"]
+	},
+	"cerulean_barrier_w": {
+		"cell": [32, 38], "facing": "down", "sprite": "object/police_barrier",
+		"dialogue": "cerulean_closed_exit", "verb": "examine", "turn_to_player": false,
+		"unless": ["cerulean_south_guard_left"]
+	},
+	"cerulean_barrier_e": {
+		"cell": [33, 38], "facing": "down", "sprite": "object/police_barrier_e",
+		"dialogue": "cerulean_closed_exit", "verb": "examine", "turn_to_player": false,
+		"unless": ["cerulean_south_guard_left"]
 	}
 }

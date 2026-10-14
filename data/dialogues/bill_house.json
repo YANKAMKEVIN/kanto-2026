@@ -1,0 +1,145 @@
+{
+	"bill_greet": {
+		"speaker": "Mélofée",
+		"pages": ["Ah ! Enfin quelqu'un ! Non, non, ne sors pas ta Poké Ball !"]
+	},
+	"bill_clefairy": {
+		"speaker": "Mélofée",
+		"variants": [
+			{
+				"if": ["bill_met"],
+				"pages": [
+					{ "text": "Prends ton temps. Je ne vais nulle part. Littéralement.", "speaker": "Léo" }
+				]
+			},
+			{
+				"set": ["bill_met"],
+				"pages": [
+					"Je ne suis pas un Pokémon. Enfin… pas d'habitude. Je m'appelle Léo.",
+					{ "text": "Je travaille sur la téléportation de la matière. Une cabine, une autre cabine, et entre les deux… plus de distance.", "speaker": "Léo" },
+					{ "text": "Ce matin, un Mélofée est entré dans la cabine en même temps que moi. Et voilà le résultat.", "speaker": "Léo" },
+					{ "text": "La machine peut nous séparer. Mais avec ces petites pattes, je n'atteins plus rien. Tu veux bien m'aider ?", "speaker": "Léo" },
+					{ "text": "Commence par l'écran de diagnostic, là, au mur. Il me dira si les réglages ont tenu.", "speaker": "Léo" }
+				]
+			}
+		]
+	},
+	"bill_screen": {
+		"narration": true,
+		"variants": [
+			{
+				"if": ["bill_restored"],
+				"pages": ["SÉPARATION RÉUSSIE. Le Mélofée est retourné dehors."]
+			},
+			{
+				"if": ["bill_met"],
+				"unless": ["bill_screen_checked"],
+				"pages": ["Des courbes et des voyants. Une ligne clignote : SÉPARATION PRÊTE."],
+				"cutscene": "bill_screen"
+			},
+			{
+				"pages": ["Des courbes et des voyants. Une ligne clignote : SÉPARATION PRÊTE."]
+			}
+		]
+	},
+	"bill_screen_next": {
+		"speaker": "Léo",
+		"pages": ["Parfait. Maintenant, le module, à droite de la console. Vérifie que tout est bien branché."]
+	},
+	"bill_module": {
+		"narration": true,
+		"variants": [
+			{
+				"if": ["bill_screen_checked"],
+				"unless": ["bill_module_checked"],
+				"pages": ["Tous les câbles sont en place. Le boîtier ronronne doucement."],
+				"cutscene": "bill_module"
+			},
+			{
+				"if": ["bill_met"],
+				"unless": ["bill_screen_checked"],
+				"pages": ["Des câbles partout. Mieux vaut commencer par l'écran."]
+			},
+			{
+				"pages": ["Tous les câbles sont en place. Le boîtier ronronne doucement."]
+			}
+		]
+	},
+	"bill_module_next": {
+		"speaker": "Léo",
+		"pages": ["Bon. J'entre dans la cabine. Quand je te fais signe, appuie sur le grand bouton de la console. Et… ne te trompe pas de bouton."]
+	},
+	"bill_console": {
+		"narration": true,
+		"variants": [
+			{
+				"if": ["bill_in_cabin"],
+				"unless": ["bill_restored"],
+				"pages": ["Un grand bouton rouge. Tu appuies dessus."],
+				"cutscene": "bill_machine"
+			},
+			{
+				"if": ["bill_met"],
+				"unless": ["bill_module_checked"],
+				"pages": ["Léo t'a demandé de vérifier autre chose d'abord."]
+			},
+			{
+				"if": ["bill_restored"],
+				"pages": ["Léo a débranché la console. Le grand bouton ne répond plus."]
+			},
+			{
+				"pages": ["Beaucoup de boutons. Mieux vaut attendre les consignes de Léo."]
+			}
+		]
+	},
+	"bill_ready": {
+		"speaker": "Léo",
+		"pages": ["Je suis prêt ! Le grand bouton, sur la console !"]
+	},
+	"bill_thanks": {
+		"speaker": "Léo",
+		"pages": [
+			"Ha ! Deux bras, deux jambes, et à la bonne taille ! Merci, {player} !",
+			"Le Mélofée va bien, il est reparti vers les falaises. Il était sûrement plus pressé que moi.",
+			"Tiens, j'ai reçu ça pour la soirée du S.S. Anne, mais je n'aime pas les bateaux. Prends-le."
+		]
+	},
+	"bill_give_ticket": {
+		"narration": true,
+		"pages": ["{player} reçoit le PASSE BATEAU !"]
+	},
+	"bill_candy_offer": {
+		"speaker": "Léo",
+		"pages": ["Et ça aussi. Un Super Bonbon. Il aide un Pokémon à grandir d'un coup."]
+	},
+	"bill_give_candy": {
+		"narration": true,
+		"pages": ["{player} reçoit un SUPER BONBON !"]
+	},
+	"bill_ss_anne": {
+		"speaker": "Léo",
+		"pages": ["Le S.S. Anne fait escale à Carmin-sur-Mer, au sud. Il paraît que les Dresseurs du monde entier y montent."]
+	},
+	"bill": {
+		"speaker": "Léo",
+		"variants": [
+			{
+				"one_in": 3,
+				"pages": [
+					"Je reprends mes réglages. Promis, plus aucun Pokémon dans la cabine.",
+					"Chen m'a demandé conseil pour ses transferts de Pokémon, une fois. Il ne m'a jamais rendu mon tournevis."
+				]
+			},
+			{
+				"unless": ["cerulean_rocket_beaten"],
+				"pages": [
+					"Je reprends mes réglages. Promis, plus aucun Pokémon dans la cabine.",
+					"Il paraît qu'il y a eu un cambriolage à Azuria. Les gens deviennent nerveux."
+				]
+			},
+			{
+				"pages": ["Je reprends mes réglages. Promis, plus aucun Pokémon dans la cabine."]
+			}
+		]
+	}
+}
