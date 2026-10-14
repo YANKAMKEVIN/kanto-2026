@@ -374,6 +374,21 @@ Rien de nouveau au J19.
   capturer.
 - **Combat** : fond **CB.3 `tour_pokemon`** (dalles, stèles, brume), qui sert à tous les étages.
 
+### 12.5 Vue générale peinte v1 — VALIDÉE par Kevin le 2026-10-14
+
+- **Image** : `reference/tour-pokemon-vue-generale-v1.png` (essai 4,
+  `tools/art/prompts/CONCEPT_TOUR_POKEMON_VUE_GENERALE_r4.txt`).
+- **Plan** : `reference/tour-pokemon-plan-v1.png` (`python3 tools/art/plan_aplats.py --tour-pokemon`).
+- **Disposition** : 2F et 3F en haut, 4F et 5F au milieu, 6F en bas.
+- Elle donne la DA et l'ambiance ; **la grille `tools/plans/pokemon_tower_*.txt` fait foi** (règle 10).
+- **Écarts connus** :
+  - 2F : 3 × 2 tombes dans la salle est au lieu de 4 × 2, et le rival est trop haut ; la grille le
+    place en (14, 5).
+  - 6F : le spectre a une silhouette humaine encapuchonnée. **En jeu, il reste une forme indistincte**
+    (§11), comme la colonne de brume de l'essai 3.
+  - 4F : le labyrinthe est respecté dans l'esprit, mais pas case par case.
+  - Les étages 2F à 5F s'assombrissent peu ; le profil de lumière `tower` fera la gradation.
+
 ## 13. Données et sauvegarde [V K-11]
 
 **Aucun changement de version de sauvegarde.**
