@@ -1,5 +1,8 @@
 # Jalon 14 — Le mystère du Cap d'Azuria
 
+> **TERMINÉ le 2026-10-14** : 14.0, 14A, 14B et 14C validés par Kevin (QA S21) ; clôture,
+> équilibrage (T21) et passation au J15 : **§9**.
+
 > Objectif jouable sur le téléphone : **l'épisode de Léo**. Depuis le bout de la Route 24 nord (le
 > recruteur passé), la **Route 25** longe la mer jusqu'au **Cap d'Azuria** : six Dresseurs (deux
 > inévitables), Abra sauvage qui **se téléporte**, une CT au sol, un objet caché. Au bout, la
@@ -1047,10 +1050,18 @@ et de l'annexe A validée.
 #### T21 — architecte : équilibrage — après T16, T20b
 - `simulate_mt_moon.gd` + scénario `tools/sim/route_25_scenario.json` (D1, D2, Rocket, combats
   sauvages tirés dans la vraie table) ; **information pour Kevin**, aucune donnée changée sans lui.
+- **Fait (2026-10-14, branche `j14-cloture`)** : scénario `tools/sim/route_25_scenario.json`
+  (Dresseurs et table relus dans `data/` par `--donnees`), 1 000 graines par ligne, 7 équipes × 9
+  variantes ; résultats au §9.2. **Aucun seuil dépassé, aucune donnée changée.** Outil : Téléport
+  compté à part (« fuites adverses », `FOE_FLED`) et victoire où le dernier Pokémon du joueur tombe
+  aussi (contrecoup de Lutte) comptée comme une défaite (sinon le combat suivant ne démarrait pas :
+  4 parties sur 63 000) ; test `test_simulate_route_25` (2).
 
 #### T22 — qa-mobile : **session 14C** → Kevin
 - Poursuite, impasse, défaite → reprise, victoire, CT28, maison, victime, barrage, raccord
   « ROUTE 5 — À venir », ordre libre avec Léo, reprise après fermeture à chaque étape.
+- **Fait (2026-10-14)** : session 14C sur le S21, **validée par Kevin** (rapport
+  `build/qa/j14_14c/RAPPORT.md` du worktree `j14-qa14c`).
 
 #### T23 — architecte : alignements — à chaque fusion de `jalon-13` dans `jalon-14`
 - Kadabra + Entrave, D5, D6, Rocket (J12 T12) ; O4 `unless_flags` (J12 T17) ; moment (J12 T23) ;
@@ -1086,11 +1097,22 @@ et de l'annexe A validée.
   Azuria → Route 24 → Route 25 → Léo → retour → Rocket → sud. **CA** : rapport ; validation de
   Kevin ; fusion de `jalon-14` dans `main` **après le J13** (copie d'intégration ;
   `project.godot` et filtre d'export vérifiés).
+- **Fait (2026-10-14, `8a142b9`, branche `j14-cloture`)** : retirés `game/world/maps/qa_charge_j14.tscn`,
+  `data/trainers/qa_charge_j14.json`, `data/npcs/qa_charge_j14.json`, `tools/build_qa_charge_j14.gd`,
+  `tools/capture_qa_charge.gd`, `tests/integration/test_qa_charge_j14.gd`, départs `charge_qa` et
+  `teleport_qa` (README) ; `QA_MAPS_SHIPPED` vide (`test_map_catalog` : plus aucune carte `qa_`
+  dans `game/world/maps/`). Les autres départs du J14 (`route_25`, `route_25_cape`, `bill_house`,
+  `bill_after`, `rare_candy_qa`, `cerulean_garden`, `cerulean_rocket_weak`, `cerulean_after`)
+  restent, comme ceux des jalons précédents (`tools/` hors APK). `project.godot` (`main_scene` =
+  `boot.tscn`) et `export_presets.cfg` **identiques à `main`**. La QA finale a été faite par les
+  sessions 14A, 14B, 14C validées (pas de nouvelle vraie partie : celle de Kevin est à Jadielle,
+  comme au J13).
 
 #### T25 — architecte : clôture
 - `etat-projet.md`, proposition roadmap (rival, Léo, S.S. Anne : avec l'accord de Kevin) ;
   passation J15 (`route_5`, `from_cerulean`, colonnes 31..33, Passe Bateau sans UTILISER) ; dos
   peints d'Abra, Kadabra, Machoc ; son « machine ».
+- **Fait (2026-10-14, branche `j14-cloture`)** : §9.
 
 ---
 
@@ -1249,3 +1271,104 @@ effet en attente (convention du J12) ; `{pokemon}`, `{player}`.
 1. Texte n° 72 du coquillage : **retiré** (le point d'examen disparaît après la trouvaille, modèle du J12).
 2. Objectif « rejoindre le Cap d'Azuria. » : **affiché après le Badge Cascade et le Pont Pépite** (défaut de T23 retenu ; le joueur peut aller chez Léo avant le badge, seul l'objectif attend).
 3. Apparence de D5 (Jeune Dresseur Adam) : **`camper`** retenu (provisoire, faute de modèle « Jeune Dresseur ♂ »).
+
+## 9. Clôture (T21, T24, T25 — 2026-10-14, architecte ; branche `j14-cloture` depuis `jalon-14` à `808f45e`)
+
+**Le J14 est terminé.** 14.0 (planche de la série 16, annexe A, captures du `flash`), 14B (S21,
+rapport `build/qa/j14_14b/`), 14A (S21, `build/qa/j14_14a/`) et 14C (S21, `build/qa/j14_14c/`)
+sont **validés par Kevin** (2026-10-14). `jalon-14` contient `main` (J12 et J13 terminés,
+`4f0ee90`) : la fusion de `origin/main` dans `j14-cloture` n'apporte rien (déjà contenue). La
+fusion de `jalon-14` dans `main` est faite par la session d'intégration (copie dédiée).
+Sur `j14-cloture` : suite complète **4 698 / 4 698** (une exécution, 30 min), import sans erreur,
+`plan_check.py` conforme, `check_json_keys.py` sans doublon.
+
+### 9.1 Ce que le J14 livre
+
+- **Monde** : Route 25 (80 × 28, côte, six Dresseurs dont D1 et D2 inévitables, Abra, CT19, objet
+  caché au coquillage), raccord Route 24 ↔ 25 sur trois rangées, Cap d'Azuria et maison de Léo
+  (Mélofée qui parle, machine en quatre gestes, lueurs d'aide, double `flash`, Léo humain, Passe
+  Bateau, Super Bonbon, Grand moment « Léo a retrouvé forme humaine ») ; Azuria du J14 (jardin,
+  poursuite, Rocket dans l'impasse, CT28, maison cambriolée rouverte, barrage sud levé, raccord
+  « ROUTE 5 — À venir ») ; Nils à Bourg Palette.
+- **Moteur** : « charge puis frappe » (Tunnel : invulnérabilité, verrou, interruptions), fuite
+  adverse par Téléport (`Battle.Outcome.FOE_FLED`), Super Bonbon (montée de niveau hors combat,
+  capacités, évolution annulable), étape de scène `flash`, briques de monde (décor qui suit les
+  drapeaux, PNJ placé selon un drapeau, réplique « une fois sur trois »).
+- **Sauvegarde** : **v6 inchangée** (§2.16, `test_save_j14`).
+
+### 9.2 Équilibrage (T21) — information pour Kevin, aucune donnée changée
+
+`tools/simulate_mt_moon.gd -- --scenario res://tools/sim/route_25_scenario.json --donnees
+--seeds 1000` (≈ 20 min ; rapport brut non versionné `build/sim/j14_t21/route_25.txt`). Équipes
+de **fin de J13** estimées (Ondine battue avec Stari 18 / Staross 19 : meneur N20–22, Salamèche avec
+un Mystherbe ; `jalon-13-equilibrage.md`) : Reptincel 21 + Férosinge, Roucool, Mystherbe ; « Kevin »
+(Reptincel 21, Roucool 18, Nidoran♂ 16, Rattata 16) ; Herbizarre 20 ; Carabaffe 21 ; et trois
+équipes « basses » (Herbizarre 18, Carabaffe 20, Reptincel 20). Parcours de la grille : D1, D2,
+H3 (4 cases), Centre, Rocket ; « tous les Dresseurs » ajoute D3–D6 et 30 cases d'herbes **sans
+Centre** ; « Rocket d'abord » joue le Rocket avant la Route 25 (ordre libre).
+
+| Variante (premier essai, sans défaite) | Équipes N20+ | Herbizarre 18 (la plus basse) |
+|---|---|---|
+| Directe, attentif / expert | **100 %** | 99,8–99,9 % |
+| Tous les Dresseurs, attentif | 95,7–100 % | 28 % (usure : D4 Onix 17,6 %, D2 16,6 %, D5 22,6 %) |
+| Directe, naïf | 99,5–100 % | 62 % (D2 Gaston 31,6 %, Rocket 4,2 %) |
+| Tous les Dresseurs, naïf | 5–80 % (usure sans soin, D5 Abo jusqu'à 34 %) | 0 % |
+
+- **Aucun blocage** : chaque Dresseur est battu dans **100 %** des parties, en 1,00 à 1,34
+  tentative (pire : D4 Bernard, évitable, 1,84 pour Herbizarre 18 naïf). D1, D2 et le Rocket : ≤ 1,32.
+- **Rocket** (Machoc 17, Nosferapti 17, `smart`) : 0 défaite pour les joueurs attentif et expert ;
+  ≤ 6,2 % pour le naïf le plus bas ; ≈ 4,4 tours. **Gaston** : ≈ 4,8 tours. Le risque du §5
+  (« Machoc à une capacité ») est confirmé : ces deux combats sont faciles pour une équipe de fin
+  de J13 — c'est le rythme de RB (Route 25 aux N14–17 après Ondine).
+- Abra : ≈ 15 % des rencontres, toujours en fuite au premier tour (`fuites adverses`).
+- **Décision** : le plan ne fixe aucun seuil pour le T21 et demande de ne rien changer sans Kevin ;
+  aucun résultat ne justifie un recalage. **Pour Kevin, si le Rocket doit compter** : Machoc et
+  Nosferapti N19–20, ou une clé `moves` (Groz'Yeux, Puissance) — réversible d'une ligne, non
+  appliqué.
+- **Constat moteur (antérieur au J14, pas un réglage)** : quand le dernier Pokémon du joueur met
+  l'adversaire K.O. et tombe du même coup (contrecoup de Lutte, règle « le lanceur gagne » de
+  `Battle._check_end`), le combat est **gagné avec une équipe entière K.O.** : en jeu, le joueur
+  repart sans Pokémon valide (plus de rencontres, un Dresseur qui le voit est refusé par
+  `BattleDirector` avec une erreur) au lieu d'être réveillé au Centre comme dans RB. Rare (Lutte
+  = plus aucun PP). Correctif proposé (une tâche du J15, pas de la clôture) : traiter « gagné, équipe
+  entière K.O. » comme une défaite dans `EncounterDirector` et la conclusion des Dresseurs.
+
+### 9.3 Critères du §4
+
+Tous tenus, validés par Kevin sur S21 (14A, 14B, 14C) ; détail dans les rapports des sessions.
+**Non vus au téléphone, couverts par les tests** : 14B interruption par sommeil, Ball sur un
+sauvage sous terre, réglages de réduction ; 14A double flash réduit, compagnon rentré chez Léo,
+fermeture pendant l'effet de la machine, CT19 ; 14C reprise du n° 32, ARRÊTER pendant l'évolution
+du Super Bonbon, barrage après une sortie d'Azuria. Carte de QA retirée (T24) ; sauvegarde v6 ;
+`project.godot` et filtre d'export identiques à `main`.
+
+### 9.4 Passation au J15
+
+- **Raccord sud d'Azuria** : trois cases PUSH ↓ en (31..33, 40) vers `route_5`, arrivées
+  `from_route_5_w|c|e` côté Azuria (posées) ; **réservé** pour le J15 : carte `route_5`, arrivées
+  `from_cerulean_w|c|e` ; le raccord affiche « ROUTE 5 — À venir » (`coming_soon`, bord bloqué en
+  release ; `test_coming_soon`, `test_companion_coming_soon` y sont rattachés : les déplacer quand
+  la Route 5 arrive). Le barrage du policier est levé après le Rocket (`cerulean_south_guard_left`).
+- **Passe Bateau** `ss_ticket` : objet clé, jamais consommé, **sans UTILISER** ; donné par Léo
+  (`got_ss_ticket`). Le J14 ne garantit pas le Badge Cascade avant lui (Route 25 ouverte après le
+  rival et le recruteur, comme RB) : contrat du J16 déjà corrigé en ce sens.
+- **Drapeaux du J14** (tous dans `flags`, v6) : `bill_met`, `bill_screen_checked`,
+  `bill_module_checked`, `bill_in_cabin`, `bill_restored`, `got_ss_ticket`, `got_bill_rare_candy`,
+  `cerulean_rocket_spotted`, `cerulean_rocket_beaten`, `lost_cerulean_rocket`, `got_tm28`,
+  `cerulean_south_guard_left`, `cerulean_victim_thanked`, `beaten_route_25_*`, `got_route_25_*`.
+  Objectif `ss_anne` (« le S.S. Anne fait escale à Carmin-sur-Mer. ») actif après `got_ss_ticket`.
+- **Briques réutilisables** : charge puis frappe (`charge_rules.gd`, pour les autres capacités en
+  deux tours), `FOE_FLED` (fuite d'un sauvage), Super Bonbon
+  (`RareCandy`, `field_use`), étape `flash`, `FlagGate` de décor, PNJ placé par drapeau, réplique
+  « une fois sur trois » ; outil `tools/simulate_mt_moon.gd` (scénario par jalon).
+- **Restent ouverts** : évolution par échange (Kadabra : règle à coder avec la première source,
+  Cordon d'échange `trade_cord` sans source) ; Tunnel **hors combat** (report au jalon des ex-CS) ;
+  son « machine » (point d'accroche du `flash`) ; dos peints d'Abra, Kadabra, Machoc (provisoires) ;
+  mémoire des textures en combat (78 Mo > 64 Mo, sans ralentissement sur S21) ; constat moteur du
+  §9.2 (victoire avec équipe entière K.O.).
+- **Reportés (rendu, phase DA)** : toasts de résultat du Sac qui restent jusqu'au toucher, liste
+  d'équipe défilée après un refus du Super Bonbon, « Cela n'aurait aucun effet » vs « Sans effet »,
+  panneau « oublier » sans marge à droite, Rocket qui marche vite (pas de planche de course
+  `sbire_h`), décor aléatoire d'Azuria retiré par le changement de grille, enfoncement de Tunnel
+  discret, rivage `relief_rivage_06` répété sur les rangées épaisses, lueur `hint` discrète sur le
+  bois clair, D5 en apparence `camper` (faute de « Jeune Dresseur »).
