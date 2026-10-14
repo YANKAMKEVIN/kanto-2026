@@ -1,0 +1,47 @@
+# Grand magasin de Céladopole, 5e étage (celadon_dept_5f) — grille fonctionnelle (jalon 20, dossier 23 §9 ;
+# préparée le 2026-10-14). Salon (Objets X si le moteur gère les niveaux de statistiques). Escalier S vers le toit.
+# 20 × 13 cases (enveloppe commune des 5 étages) ; sol y 3..10, x 1..18. Vérifiée par
+# tools/art/plan_check_celadopole.py.
+#
+# Légende (intérieurs du grand magasin) :
+#   K mur (bloqué : fond sur 3 rangées, parois, bas sur 2 rangées ; sortie sur l'avant-dernière
+#     rangée)   . sol (praticable)
+#   S escalier MONTANT (praticable, STEP_ON ↑)   Z escalier DESCENDANT (idem)   V porte de
+#     l'ASCENSEUR (idem)   X sortie (praticable, PUSH ↓)
+#   B comptoir (bloqué : on parle au vendeur par-dessus, depuis la case devant)   e étagère ou
+#     vitrine (bloquée)   m borne de jeu ou distributeur (bloqué)   t table   c canapé   n banc
+#   p plante (bloquée)   P tableau des étages (bloqué, examiné depuis la case devant)
+# Convention commune aux 5 étages : ESCALIERS À L'OUEST (S en x 2..3, Z en x 4..5, rangée 2),
+# ASCENSEUR À L'EST (V en x 16..17, rangée 2) ; mêmes cases à chaque étage. Arrivées : from_up
+# (descendu d'en haut, devant S), from_down (monté d'en bas, devant Z), from_elevator.
+# Tous les PNJ des intérieurs sont à des cases NON obligatoires (le contrôle le vérifie).
+
+PRATICABLES .XSZV
+
+GRILLE 20 13
+00 KKKKKKKKKKKKKKKKKKKK
+01 KKKKKKKKKKKKKKKKKKKK
+02 KKSSZZKKKKKKKKKKVVKK
+03 K......cc...cc.....K
+04 K..................K
+05 K........BBB.......K
+06 K...ttt......ttt...K
+07 K...ttt......ttt...K
+08 K..................K
+09 K..................K
+10 K..................K
+11 KKKKKKKKKKKKKKKKKKKK
+12 KKKKKKKKKKKKKKKKKKKK
+FIN
+
+POSITIONS
+escalier_haut        warp           2..3,2        libre   to=celadon_dept_roof spawn=from_down  # STEP_ON ↑ → celadon_dept_roof
+escalier_bas         warp           4..5,2        libre   to=celadon_dept_4f spawn=from_up  # STEP_ON ↑ → celadon_dept_4f
+ascenseur            warp           16..17,2      libre   to=celadon_dept_elevator spawn=entrance floor=5f  # STEP_ON ↑ → ascenseur, qui revient ici (floor=5f)
+from_up              spawn          2..3,3        libre    # arrivée depuis l'étage du dessus (devant S), tournée ↓
+from_down            spawn          4..5,3        libre    # arrivée depuis l'étage du dessous (devant Z), tournée ↓
+from_elevator        spawn          16..17,3      libre    # arrivée de l'ascenseur (devant V), tournée ↓
+vendeur_x            pnj            10,4          bloque  role=V1 facing=down condition=stat_stages shop=celadon_dept_5f_x  # Objets X SEULEMENT si le moteur gère les niveaux de statistiques ; sinon l'étage reste un salon, case vide (H-8) ; aucune vitamine ; parlé depuis (10, 6) ↑
+salon_1              pnj            5,9           bloque  role=P1 facing=right  # dans le salon
+salon_2              pnj            15,9          bloque  role=P2 facing=left  # dans le salon
+FIN
