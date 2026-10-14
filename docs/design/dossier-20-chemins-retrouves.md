@@ -5,6 +5,9 @@
 > de Kevin avec ChatGPT (`passes/j17-v2-chatgpt.md`) et de la passe d'alignement
 > (`passes/j17-v2-alignement.md`). Prochaine étape : plan technique `docs/tech/jalon-17.md`.
 >
+> **Plan** : `docs/tech/jalon-17.md` (écrit le 2026-10-15, à valider par Kevin ; questions Q-1 Flash
+> dossier 20 / dossier 21, Q-2 textes de l'annexe A).
+>
 > **Numérotation** : 16 (J13), 17 (J14), 18 (J15) pris, 19 réservé au J16 → **20** (vérifié sur
 > toutes les branches locales et distantes le 2026-10-14).
 >
