@@ -1,12 +1,13 @@
 # Dossier 23 — Route 8, souterrain, Route 7, Céladopole, Erika et le repaire Rocket (jalon 20)
 
+> **VERROUILLÉ — validé par Kevin le 2026-10-14** (arbitrages H-1 à H-14, lot de textes §20, valeurs par défaut §21).
+
 > **Consolidé par Claude le 2026-10-14**, à partir de trois sources :
 > - la V2 de Kevin avec ChatGPT (`passes/j20-v2-chatgpt.md` : 7 décisions verrouillées) ;
 > - la passe d'alignement de Claude (`passes/j20-v2-alignement.md`, H-1 à H-14) ;
 > - le retour de Kevin le même jour : **toutes les recommandations retenues** (H-1 à H-14).
 >
-> **En attente de Kevin : le lot de textes du §20 et les valeurs par défaut du §21.** Ensuite
-> viennent les grilles `tools/plans/` et les vues générales peintes, puis le plan
+> Lot de textes du §20 et valeurs par défaut du §21 **validés le 2026-10-14**. Ensuite viennent les grilles `tools/plans/` et les vues générales peintes, puis le plan
 > `docs/tech/jalon-20.md`. **Code après la clôture du J19** (C-7 : un seul jalon à la fois dans le
 > moteur de combat et dans la sauvegarde).
 >
@@ -442,7 +443,7 @@ Mises à jour en silence (existant).
 | Compagnon | Suit dehors, sur les routes et dans le souterrain ; rentre dans les intérieurs ; se rétracte dans l'ascenseur et sur les dalles |
 | Défaite dans le repaire | Réveil au Centre de Céladopole ; Rocket battus gardés ; interrupteur gardé |
 
-## 20. Lot de textes — À VALIDER par Kevin
+## 20. Lot de textes — VALIDÉ par Kevin le 2026-10-14
 
 > **Numérotés pour une réponse groupée** (« 12 : … »). Répliques courtes. Erika : calme, polie,
 > légèrement rêveuse, ferme. Giovanni : posé, économe en mots, jamais menaçant à voix haute. Rocket :
@@ -549,7 +550,7 @@ Mises à jour en silence (existant).
 60. Entrées reprises du ton des précédentes (une phrase d'observation, sans chiffre), rédigées au
     plan et validées avec le lot d'art.
 
-## 21. Valeurs par défaut (règle 4) — À VALIDER par Kevin
+## 21. Valeurs par défaut (règle 4) — validées par Kevin le 2026-10-14
 
 - **Enveloppes** : Route 8 ≈ 80 × 26, souterrain ≈ 48 × 10, Route 7 ≈ 28 × 24, Céladopole ≈ 70 × 46,
   Arène ≈ 17 × 15 ; repaire B1F–B4F en **géométrie RB 1:1** ; bâtiments d'entrée et postes =
