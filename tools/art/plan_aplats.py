@@ -25,6 +25,9 @@ dans le format portrait.
 --mont-selenite [sortie.png] [--annote] (J12, dossier 15) : les trois étages du Mont Sélénite
 empilés (1F, B1F, B2F) → build/art/PLAN_MONT_SELENITE_v1.png ; --annote ajoute
 <sortie>_annote.png (échelles, Dresseurs, objets cachés… : JAMAIS jointe à Codex).
+--tour-pokemon [sortie.png] [--annote] (J19, dossier 22) : les cinq étages 2F à 6F de la Tour
+Pokémon (2F, 3F / 4F, 5F / 6F centré) → build/art/PLAN_TOUR_POKEMON_v1.png ; --annote ajoute
+<sortie>_annote.png (escaliers, Exorcistes, rival, SPECTRE, objets : JAMAIS jointe à Codex).
 tools/plans/route_4_sas.txt → build/art/PLAN_ROUTE4_SAS_v1.png (`dessiner_sas`).
 tools/plans/route_4.txt, azuria.txt, route_24.txt, azuria_arene.txt (J13, dossier 16) →
 build/art/PLAN_ROUTE4_v1.png, PLAN_AZURIA_v1.png, PLAN_ROUTE24_v1.png, PLAN_AZURIA_ARENE_v1.png
@@ -1559,6 +1562,211 @@ def annoter_j13(grille: Path, plan_png: Path, sortie: Path) -> Path:
 
 
 # Grille → (fonction, sortie par défaut).
+# --- Tour Pokémon, étages 2F à 6F (jalon 19, dossier 22) --------------------------------------
+# Légende de tools/plans/pokemon_tower_*.txt. Pierre taillée gris violacé, lumière douce et froide
+# (dossier 22 §11) ; les étages s'assombrissent en montant (le 6F est le plus sombre) ; halo chaud
+# des bougies autour des stèles ; dalle purifiée claire à halo blanc (5F) ; voile violet de brume
+# devant l'escalier du 7F (6F, case du SPECTRE). Personnages et objets cachés : jamais sur le plan.
+P_FOND = (20, 18, 27)               # fond neutre et bandes de séparation entre étages
+P_ETAGES = {
+	# étage : (mur, sol de dalles)
+	"2F": ((84, 78, 100), (176, 170, 186)),
+	"3F": ((78, 72, 94), (164, 158, 176)),
+	"4F": ((72, 66, 88), (154, 148, 168)),
+	"5F": ((68, 62, 84), (146, 140, 160)),
+	"6F": ((60, 54, 76), (132, 126, 148)),
+}
+P_JOINT = 0.1                       # assombrissement des joints de dalles
+P_TOMBE = (150, 146, 162)
+P_TOMBE_HAUT = (186, 182, 196)
+P_TOMBE_BORD = (62, 58, 76)
+P_STELE = (112, 104, 132)
+P_STELE_BORD = (48, 44, 62)
+P_BOUGIE = (255, 204, 96)
+P_LUEUR = (236, 196, 128)
+P_PUR = (238, 238, 244)
+P_HALO_PUR = (250, 250, 255)
+P_BRUME = (150, 110, 190)
+P_MONTE = (214, 204, 186)           # escalier qui monte : marches claires
+P_DESCEND = (44, 38, 56)            # escalier qui descend : marches qui plongent dans l'ombre
+P_FLEUR = ((236, 196, 214), (246, 240, 226), (206, 190, 236))
+BOUGIE_RAYON = 2.6
+PUR_RAYON = 2.8
+BRUME_RAYON = 2.4
+P_GRILLES = ("pokemon_tower_2f", "pokemon_tower_3f", "pokemon_tower_4f", "pokemon_tower_5f",
+	"pokemon_tower_6f")
+P_NOMS = {g: g.rsplit("_", 1)[1].upper() for g in P_GRILLES}
+
+
+def _peindre_tour(d: ImageDraw.ImageDraw, plan: Plan, etage: str, ox: int, oy: int,
+		case: int) -> None:
+	"""Aplats d'un étage de la Tour à (ox, oy), 1 case = case px."""
+	mur, sol = P_ETAGES[etage]
+	alea = random.Random(GRAINE + plan.width * 3 + int(etage[0]))
+	bougies = _sources(plan, "S")
+	pur = _sources(plan, "Z")
+	brume = [p.cells[0] for p in plan.of_kind("declencheur") if p.attrs.get("role") == "S1"]
+	k = case / CASE
+
+	def coin(x: int, y: int) -> tuple[int, int]:
+		return ox + x * case, oy + y * case
+
+	def centre(x: int, y: int) -> tuple[float, float]:
+		return ox + (x + 0.5) * case, oy + (y + 0.5) * case
+
+	# 1. Aplats : mur, dalles (joints), lueurs des bougies, halo blanc, brume violette.
+	for y, row in enumerate(plan.rows):
+		for x, c in enumerate(row):
+			x0, y0 = coin(x, y)
+			if c == "#":
+				d.rectangle([x0, y0, x0 + case - 1, y0 + case - 1], fill=mur)
+				continue
+			fond = P_PUR if c == "Z" else sol
+			if c != "Z":
+				t = _lueur((x, y), bougies, BOUGIE_RAYON)
+				if t > 0:
+					fond = _melange(fond, P_LUEUR, 0.5 * t)
+				t = _lueur((x, y), pur, PUR_RAYON)
+				if t > 0:
+					fond = _melange(fond, P_HALO_PUR, 0.55 * t)
+				t = _lueur((x, y), brume, BRUME_RAYON)
+				if t > 0:
+					fond = _melange(fond, P_BRUME, 0.6 * t)
+			joint = _melange(fond, (0, 0, 0), P_JOINT)
+			d.rectangle([x0, y0, x0 + case - 1, y0 + case - 1], fill=joint)
+			d.rectangle([x0 + 1, y0 + 1, x0 + case - 2, y0 + case - 2], fill=fond)
+	# 2. Symboles.
+	for y, row in enumerate(plan.rows):
+		for x, c in enumerate(row):
+			cx, cy = centre(x, y)
+			x0, y0 = coin(x, y)
+			r = case / 2
+			if c == "T":
+				# Tombe basse : pierre tombale à sommet arrondi, fleurs au pied.
+				l, h = r * 0.62, r * 0.7
+				d.rounded_rectangle([cx - l, cy - h, cx + l, cy + h * 0.9], radius=l * 0.9,
+					fill=P_TOMBE, outline=P_TOMBE_BORD, width=max(1, round(k)))
+				d.rectangle([cx - l * 0.6, cy - h * 0.45, cx + l * 0.6, cy - h * 0.25],
+					fill=P_TOMBE_HAUT)
+				_disque(d, cx + alea.uniform(-l, l) * 0.6, cy + h * 0.95, 1.8 * k,
+					alea.choice(P_FLEUR))
+			elif c == "S":
+				l = r * 0.55
+				d.rectangle([cx - l, cy - r * 0.85, cx + l, cy + r * 0.8], fill=P_STELE,
+					outline=P_STELE_BORD, width=max(1, round(k)))
+				_disque(d, cx, cy - r * 0.2, r * 0.32, P_BOUGIE, P_STELE_BORD)
+			elif c in "UV":
+				# Escalier : quatre marches ; claires vers le haut (U) ou plongeant dans l'ombre (V).
+				for i in range(4):
+					t = i / 3
+					teinte = (_melange(P_MONTE, sol, 0.6 * (1 - t)) if c == "U"
+						else _melange(sol, P_DESCEND, 0.35 + 0.65 * t))
+					ya = y0 + 1 + i * (case - 2) / 4
+					d.rectangle([x0 + 2, ya, x0 + case - 3, ya + (case - 2) / 4 - 1], fill=teinte,
+						outline=P_STELE_BORD)
+	# Objets visibles : Poké Balls.
+	for p in plan.of_kind("objet_visible"):
+		cx, cy = centre(*p.cells[0])
+		r = max(4, round(case * 0.3))
+		d.pieslice([cx - r, cy - r, cx + r, cy + r], 180, 360, fill=BALL_ROUGE)
+		d.pieslice([cx - r, cy - r, cx + r, cy + r], 0, 180, fill=BLANC)
+		d.ellipse([cx - r, cy - r, cx + r, cy + r], outline=BALL_BORD, width=1)
+
+
+def _annoter_tour(img: Image.Image, plans: list[tuple[str, Plan, int, int]], case: int) -> Image.Image:
+	"""Version de RELECTURE (jamais jointe à Codex) : étages, escaliers (paire, sens), Exorcistes et
+	lignes de vue (« ! » = inévitable), Exorcistes qui ne combattent pas, rival, SPECTRE, objets."""
+	from plan_check import FACINGS  # noqa: E402
+	calque = Image.new("RGBA", img.size, (0, 0, 0, 0))
+	d = ImageDraw.Draw(calque)
+	police, petite, grande = _fonte(13), _fonte(11), _fonte(22)
+
+	def etiquette(x: float, y: float, texte: str, couleur, f=police) -> None:
+		box = d.textbbox((x, y), texte, font=f, anchor="mm")
+		d.rectangle([box[0] - 2, box[1] - 1, box[2] + 2, box[3] + 1], fill=(0, 0, 0, 180))
+		d.text((x, y), texte, font=f, fill=couleur, anchor="mm")
+
+	for nom, plan, ox, oy in plans:
+		def centre(c, ox=ox, oy=oy):
+			return ox + (c[0] + 0.5) * case, oy + (c[1] + 0.5) * case
+		etiquette(ox + 24, oy + 16, P_NOMS[nom], (255, 255, 255, 255), grande)
+		for p in plan.of_kind("escalier"):
+			fleche = "↑" if p.attrs["sens"] == "monte" else "↓"
+			cx, cy = centre(p.cells[0])
+			etiquette(cx, cy - case * 1.0, f"{p.attrs['paire']}{fleche}", (140, 255, 140, 255), petite)
+		for p in plan.of_kind("dresseur"):
+			c = p.cells[0]
+			fx, fy = FACINGS[p.attrs["facing"]]
+			for kk in range(1, int(p.attrs.get("sight", "0")) + 1):
+				x, y = c[0] + fx * kk, c[1] + fy * kk
+				if plan.at(x, y) not in plan.praticables:
+					break
+				d.rectangle([ox + x * case, oy + y * case, ox + (x + 1) * case - 1,
+					oy + (y + 1) * case - 1], fill=(230, 40, 40, 110))
+			cx, cy = centre(c)
+			d.ellipse([cx - 5, cy - 5, cx + 5, cy + 5], fill=(230, 40, 40, 255), outline=(0, 0, 0, 255))
+			texte = p.attrs.get("prenom", "?") + (" !" if p.attrs.get("inevitable") == "oui" else "")
+			etiquette(cx, cy - case * 1.0, texte, (255, 150, 150, 255), petite)
+		for p in plan.of_kind("pnj"):
+			cx, cy = centre(p.cells[0])
+			d.ellipse([cx - 5, cy - 5, cx + 5, cy + 5], fill=(70, 140, 255, 255), outline=(0, 0, 0, 255))
+			etiquette(cx, cy - case * 1.0, "Exorciste calme", (150, 190, 255, 255), petite)
+		for p in plan.of_kind("rival"):
+			cx, cy = centre(p.cells[0])
+			d.ellipse([cx - 6, cy - 6, cx + 6, cy + 6], fill=(255, 150, 40, 255), outline=(0, 0, 0, 255))
+			etiquette(cx, cy - case * 1.0, "RIVAL", (255, 200, 120, 255))
+		for p in plan.of_kind("declencheur"):
+			for c in p.cells:
+				x0, y0 = ox + c[0] * case, oy + c[1] * case
+				d.rectangle([x0 + 2, y0 + 2, x0 + case - 3, y0 + case - 3], outline=(255, 220, 40, 255),
+					width=2)
+			if p.attrs.get("role") == "S1":
+				cx, cy = centre(p.cells[0])
+				etiquette(cx + case * 1.6, cy, "SPECTRE", (220, 180, 255, 255))
+		for p in plan.of_kind("recul"):
+			cx, cy = centre(p.cells[0])
+			etiquette(cx + case * 1.4, cy, "recul", (220, 180, 255, 255), petite)
+		for p in plan.of_kind("objet_visible"):
+			cx, cy = centre(p.cells[0])
+			etiquette(cx, cy + case * 1.0, p.attrs.get("item", "?"), (255, 230, 90, 255), petite)
+		for p in plan.of_kind("zone"):
+			xs = [x for x, _ in p.cells]
+			ys = [y for _, y in p.cells]
+			etiquette(ox + (min(xs) + max(xs) + 1) / 2 * case, oy + (max(ys) + 1.6) * case,
+				"zone purifiée", (255, 255, 255, 255), petite)
+	return Image.alpha_composite(img.convert("RGBA"), calque).convert("RGB")
+
+
+def dessiner_tour_pokemon(sortie: Path, annote: bool = False) -> list[Path]:
+	"""Les cinq étages 2F à 6F, PORTRAIT 1024 × 1536 : 2F, 3F / 4F, 5F / 6F centré ; même case pour
+	tous ; bandes de fond sombre entre étages (ce ne sont pas des passages)."""
+	plans = [(n, lire(RACINE / "tools" / "plans" / f"{n}.txt")) for n in P_GRILLES]
+	l, h = plans[0][1].width, plans[0][1].height
+	case = CASE
+	marge_x = (TAILLE[0] - 2 * l * case) // 3
+	bande_y = (TAILLE[1] - 3 * h * case) // 4
+	img = Image.new("RGB", TAILLE, P_FOND)
+	d = ImageDraw.Draw(img)
+	places = []
+	for i, (nom, plan) in enumerate(plans):
+		rangee, colonne = divmod(i, 2)
+		if rangee == 2:
+			ox = (TAILLE[0] - l * case) // 2
+		else:
+			ox = marge_x + colonne * (l * case + marge_x)
+		oy = bande_y + rangee * (h * case + bande_y)
+		_peindre_tour(d, plan, P_NOMS[nom], ox, oy, case)
+		places.append((nom, plan, ox, oy))
+	sortie.parent.mkdir(parents=True, exist_ok=True)
+	img.save(sortie)
+	sorties = [sortie]
+	if annote:
+		chemin = sortie.with_name(sortie.stem + "_annote.png")
+		_annoter_tour(img, places, case).save(chemin)
+		sorties.append(chemin)
+	return sorties
+
+
 PLANS = {
 	"route_2": (dessiner, "build/art/PLAN_ROUTE2_v1.png"),
 	"viridian_forest": (dessiner_foret, "build/art/PLAN_FORET_JADE_v2.png"),
@@ -1573,6 +1781,11 @@ PLANS = {
 
 def main() -> int:
 	args = [a for a in sys.argv[1:] if not a.startswith("--")]
+	if "--tour-pokemon" in sys.argv:
+		sortie = Path(args[0]) if args else RACINE / "build/art/PLAN_TOUR_POKEMON_v1.png"
+		for chemin in dessiner_tour_pokemon(sortie, "--annote" in sys.argv):
+			print(chemin)
+		return 0
 	if "--mont-selenite" in sys.argv:
 		sortie = Path(args[0]) if args else RACINE / "build/art/PLAN_MONT_SELENITE_v1.png"
 		for chemin in dessiner_mont_selenite(sortie, "--annote" in sys.argv):
