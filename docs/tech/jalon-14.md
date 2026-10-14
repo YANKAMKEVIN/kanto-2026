@@ -1377,3 +1377,5 @@ du Super Bonbon, barrage après une sortie d'Azuria. Carte de QA retirée (T24) 
 
 - Rocket d'Azuria : **laissé tel quel** (Machoc 17, Nosferapti 17), fidèle à Rouge/Bleu ; la proposition
   de durcissement de T21 (N19–20) n'est pas retenue.
+- Bug du moteur « combat gagné avec toute l'équipe K.O. » (§9.2) : **à corriger au J15** (décision de Kevin) ;
+  transmis à la session du J15 le 2026-10-15.
