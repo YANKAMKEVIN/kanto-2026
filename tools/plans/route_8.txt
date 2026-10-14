@@ -1,0 +1,105 @@
+# Route 8 — grille fonctionnelle (jalon 20, dossier 23 §3, §6, §20.1 ; préparée le 2026-10-14).
+# Source UNIQUE de la géométrie : grille ici, puis plan en aplats, vue générale peinte, outil de
+# construction et tests du J20 (20-I). Un changement de composition se fait ICI d'abord. Contrôle :
+# tools/art/plan_check_routes_j20.py (profil route_8).
+#
+# 80 × 26 cases (enveloppe du dossier, §3.1, §21) ; nord en haut ; x = colonne 0..79, y = rangée 0..25.
+# On lit la carte DANS LE SENS DU JOUEUR : de l'est (Lavanville) vers l'ouest (souterrain, poste).
+#
+# Raccord EST : (79, 11..13) ↔ Lavanville. PROVISOIRE, à recaler sur la grille de Lavanville du J18
+# (le J18 n'a pas encore sa grille : rangées 11..13 choisies au centre de la carte, la grille
+# de Lavanville devra offrir sa sortie ouest sur les mêmes rangées, ou ce fichier sera décalé).
+# Bord OUEST : aucun raccord ; le poste de garde de Safrania (porte (5, 17)) ferme l'ouest.
+# Bâtiment d'entrée du souterrain au nord-ouest (porte (11, 4)). Enveloppes des deux bâtiments :
+# 7 × 4 (même emprise que le poste de la Route 2, porte à la 4e colonne de la rangée du bas).
+#
+# De l'est à l'ouest :
+#   ① x 62..78 — L'ARRIVÉE : prairie haute (route) avec D7 (x 74) puis D6 (x 67), qui regardent la
+#      route ; une cloison de rochers (y 14..15) sépare le CHEMIN BAS (y 16..20, herbes H3 à côté
+#      du sentier) : il contourne D7 et D6 (évitables). Les deux se rejoignent en x 62..64.
+#   ② x 56..61 — LE GOULET DU DUO : 3 rangées (11..13) ; D4 (58, 8) et D5 (59, 8), côte à côte au
+#      fond d'une niche de 2 cases (y 9..10), regardent vers le sud (vue 5) : leurs deux colonnes
+#      couvrent toute la largeur du goulet ; combats successifs, jamais en duo. Inévitables.
+#   ③ x 36..55 — LES DEUX CHEMINS : CHEMIN HAUT (terrasse y 5..9, route y 6..8, D3 à son bord nord
+#      en (46, 5), vue 4 : toute la largeur) et CHEMIN BAS (y 11..16, herbes H2 x 41..48 : 8 cases
+#      à traverser, aucun Dresseur). Entre les deux, la CORNICHE (rebord, x 40..48, y 10) : on
+#      saute de la terrasse vers le chemin bas, jamais l'inverse. Super Potion visible au bout
+#      ouest de la terrasse ; Rappel caché sur le bord de la corniche.
+#   ④ x 27..35 — LA PLAINE DE JONCTION : les deux chemins se rejoignent ; clôtures (décor).
+#   ⑤ x 22..26 — LE GOULET DE D2 : 3 rangées ; D2 (24, 16), au fond d'une niche au sud (vue 5).
+#   ⑥ x 1..21 — L'OUEST : bande de hautes herbes H1 (x 17..21 : 5 cases obligatoires) ; place avec
+#      le poste de Safrania au sud-ouest ; couloir (x 10..12, y 5..12) vers l'entrée du souterrain :
+#      D1 (15, 8), au fond d'une ruelle de 2 cases à l'est du couloir (vue 5), inévitable pour
+#      atteindre la porte.
+# Pas d'arbuste à Couper (dossier §3.1). Aucun PNJ (dossier §3 : route de Dresseurs).
+#
+# Légende (en plus de celle de route_3.txt) :
+#   T forêt (bloquée)   . herbe rase   = chemin de terre   h hautes herbes   v corniche (rebord)
+#   P bâtiment (emprise bloquée)   D porte (praticable, STEP_ON ↑)   e raccord est (bord de carte)
+#   R rochers (bloqués)   x buissons (bloqués)   G arbre repère (bloqué)   c clôture (bloquée)
+#
+# Valeurs par défaut choisies ici (règle 4) : vues de 4 à 6 cases ; D1 en ruelle plutôt qu'en
+# face de la porte (sinon il la bouche) ; duo en niche commune ; panneaux sur herbe rase.
+#
+# Format : ligne PRATICABLES, section GRILLE (« NN » + espace + 80 caractères), puis POSITIONS.
+
+PRATICABLES .=hveD
+
+GRILLE 80 26
+00 TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+01 TTTTTTTTPPPPPPPTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+02 TTTTTTTTPPPPPPPTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+03 TTTTTTTTPPPPPPPTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+04 TTTTTTTTPPPDPPPTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+05 TTTTTTTTTT.=.TTTTTTTTTTTTTT............G...........RG...TTTTTTR...............RT
+06 TTTTTTTTTT===TTTTTTTTTTTTTT.G.....GR====================TTTTTT..G......G.....G.T
+07 TTTTTTTTTT===TTTTTTTTTTTTTT.........====================TTTTTT.................T
+08 TTTTTTTTTT===...TTTTTTTTTTT..ccc.ccc====================TT..TT.................T
+09 TTTTTTTTTT===TTTTTTTTTTTTTT.............................TT..TT....x...x........T
+10 TTTTTTTTTT===TTTThhhhhTTTTT.............vvvvvvvvv.......TT..TT.................T
+11 TTTTTTTTTT=======hhhhh===================hhhhhhhh==============================e
+12 TTTTTTTTTT=======hhhhh===================hhhhhhhh==============================e
+13 T.x..........====hhhhh===================hhhhhhhh==============================e
+14 T.PPPPPPP.......RhhhhhTT.TT..............hhhhhhhh.......TTTTTT...RRRRRRRRRRRR..T
+15 T.PPPPPPP.....G..hhhhhTT.TT...x......xG..hhhhhhhh...G...TTTTTT...RRRRRRRRRRRR..T
+16 T.PPPPPPP...x....hhhhhTT.TTR.ccc.cc......hhhhhhhh.x..R..TTTTTT.................T
+17 T.PPPDPPP........hhhhhTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT....hhhhhhhhhhh..T
+18 T....============hhhhhTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT.G..hhhhhhhhhhh..T
+19 T..G.============hhhhhTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT....hhhhhhhhhhhG.T
+20 T.........G....x.hhhhhTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT.................T
+21 T................hhhhhTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+22 TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+23 TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+24 TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+25 TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+FIN
+
+# POSITIONS — une ligne par élément : identifiant  type  cases  bloque|libre  [cle=valeur ...]
+# Types : ceux de route_3.txt ; « itineraire » (role=haut|bas). Équipes RB de référence (dossier 23
+# §3.2) en commentaire ; les espèces absentes des données sont remplacées au plan du J20.
+POSITIONS
+raccord_est         warp           79,11..13    libre   vers=lavender_town spawn=from_route_8 provisoire=oui  # PUSH → ; PROVISOIRE, à recaler sur Lavanville (J18)
+from_lavender       spawn          79,11..13    libre   # arrivée de Lavanville, tournée ←
+porte_poste         warp           5,17         libre   vers=safrania_gate_r8 spawn=entree  # STEP_ON ↑ → poste de garde (enveloppe safrania_gate)
+from_poste          spawn          5,18         libre   # sortie du poste, tournée ↓
+porte_souterrain    warp           11,4         libre   vers=underground_entrance_r8 spawn=entree  # STEP_ON ↑ → bâtiment d'entrée (enveloppe underground_entrance)
+from_souterrain     spawn          11,5         libre   # sortie du bâtiment d'entrée, tournée ↓
+d1_intello          dresseur       15,8         bloque  role=D1 facing=left sight=5 inevitable=oui trainer=route_8_nerd_d1  # Intello, Voltorbe, Smogo, Voltorbe, Magnéti Nv. 20 ; ruelle à l'est du couloir ; textes 3, 4
+d2_joueur           dresseur       24,16        bloque  role=D2 facing=up sight=5 inevitable=oui trainer=route_8_gambler_d2  # Joueur, Ptitard, Ptitard, Têtarte Nv. 22 ; niche au sud du goulet ; textes 5, 6
+d3_intello          dresseur       46,5         bloque  role=D3 facing=down sight=4 inevitable=non trainer=route_8_nerd_d3  # Intello, Tadmorv, Grotadmorv, Tadmorv Nv. 22 ; bord nord de la terrasse du chemin haut
+d4_fillette         dresseur       58,8         bloque  role=D4 facing=down sight=5 inevitable=oui trainer=route_8_lass_d4  # Fillette, Nidoran ♀, Nidorina Nv. 23 ; textes 7, 8 ; duo, à gauche
+d5_fillette         dresseur       59,8         bloque  role=D5 facing=down sight=5 inevitable=oui trainer=route_8_lass_d5  # Fillette, Miaouss ×3 Nv. 24 ; textes 7, 8 ; duo, à droite
+d6_joueur           dresseur       67,7         bloque  role=D6 facing=down sight=6 inevitable=non trainer=route_8_gambler_d6  # Joueur, Caninos, Goupix Nv. 24 ; texte 9 (après)
+d7_fillette         dresseur       74,7         bloque  role=D7 facing=down sight=6 inevitable=non trainer=route_8_lass_d7  # Fillette, Mélofée ×2 Nv. 22
+route_8_item_1      objet_visible  37,5         bloque  role=O1 item=super_potion  # Super Potion : coin nord-ouest de la terrasse du chemin haut
+route_8_hidden_1    cache          43,9         bloque  role=O2 item=revive indice=pierre  # Rappel : pierre d'une autre teinte au bord de la corniche (sous la terrasse)
+panneau_route       panneau        77,10        bloque  # texte 1 « ROUTE 8 » / « Lavanville → ← Safrania », lu depuis (77, 11) ↑
+panneau_souterrain  panneau        12,5         bloque  # texte 2 « PASSAGE SOUTERRAIN » / « Route 7 — Céladopole », lu depuis (12, 6) ↑
+herbes_h1           herbes         19,15        libre   role=H1  # bande de l'ouest (obligatoire, 5 cases)
+herbes_h2           herbes         45,13        libre   role=H2  # chemin bas (8 cases à traverser)
+herbes_h3           herbes         70,18        libre   role=H3  # à côté du sentier bas de l'arrivée (évitable)
+itineraire_haut     itineraire     38..48,5..9  libre   role=haut  # coupe de la terrasse (D3, corniche)
+itineraire_bas      itineraire     38..48,11..16 libre  role=bas  # coupe du chemin bas (herbes H2)
+roucool_1           pokemon        53,6         bloque  shy=fly  # sur la terrasse, côté fourche
+sabelette_1         pokemon        30,12        bloque  shy=notice  # plaine de jonction
+FIN
