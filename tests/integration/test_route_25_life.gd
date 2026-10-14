@@ -4,7 +4,7 @@ extends GutTest
 ## - rencontres : table de `data/encounters/route_25.json` (taux 15, Abra rare 10-12), repli
 ##   Roucool / Chenipan tant que Mystherbe et Chétiflor (J13 T11) n'existent pas ;
 ## - objets O1 (CT19), O2, O3 : PRENDRE, une seule fois, retirés au rechargement ; O4 caché
-##   (rocher au coquillage examiné depuis le nord) : une seule fois, puis « plus rien » ;
+##   (rocher au coquillage examiné depuis le nord) : une seule fois, puis plus de cible ;
 ## - panneaux, promeneur et vieil homme : textes validés ; un Dresseur interpelle ;
 ## - objectif n° 66 ; chaque dialogue du fichier est utilisé (D5 et D6 compris depuis le T23).
 
@@ -261,14 +261,14 @@ func test_o4_hidden_potion_under_the_shell_once() -> void:
 	assert_eq(_bag(&"potion"), before + 1)
 	assert_eq(_found("potion"), 1)
 	assert_true(GameState.flags.has_flag(&"got_route_25_hidden_1"))
-	# Repli (J12 T17 absent) : le point reste examinable mais ne redonne rien.
+	# Mécanisme des objets cachés du J12 (T17, branché au T23) : le point disparaît.
+	await wait_process_frames(8)
+	assert_null(_boot.get_interaction_controller().get_target(), "plus de cible après la trouvaille")
 	await _press_interact()
-	await wait_until(func() -> bool: return _runner.is_running(), TIMEOUT)
-	await _finish_scene()
+	await wait_process_frames(8)
 	assert_eq(_bag(&"potion"), before + 1, "une seule fois")
 	assert_eq(_found("potion"), 1)
-	assert_eq(_events, ["page", "toast", "page"] as Array[String])
-	assert_eq(_pages[1], "Il n'y a plus rien\nsous ce coquillage.")
+	assert_eq(_events, ["page", "toast"] as Array[String], "rien de plus")
 	assert_push_error_count(0)
 
 

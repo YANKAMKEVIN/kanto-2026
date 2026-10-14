@@ -7677,6 +7677,7 @@ position = Vector2(6192, 2016)
 script = ExtResource("60_f832g")
 dialogue_id = &"route_25_hidden_1"
 facing = Vector2i(0, 1)
+unless_flags = Array[StringName]([&"got_route_25_hidden_1"])
 
 [node name="Spawns" type="Node2D" parent="." unique_id=1562560701]
 

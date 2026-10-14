@@ -71,8 +71,8 @@ const SIGNS: Array = [
 	["panneau_cap", "SignCape", &"route_25_sign_cape"],
 ]
 ## Objet caché O4 (T16) : coquillage posé sur le rocher `R`, examiné depuis la case au nord
-## (tourné vers le sud). Le point d'examen n'a pas encore de condition (J12 T17 : `unless_flags`) :
-## la scène et le dialogue gardent la mémoire (`got_route_25_hidden_1`).
+## (tourné vers le sud). Point d'examen `unless_flags` [`got_route_25_hidden_1`] (mécanisme des
+## objets cachés du J12, T23 du J14) : il disparaît une fois la Potion prise.
 const HIDDEN_ITEM: String = "route_25_hidden_1"
 const HIDDEN_CLUE_ID: String = "prop_indice_coquillage_01"
 
@@ -201,6 +201,10 @@ func _add_examine_points() -> void:
 			Vector2i.UP, entry[2])
 	_kit.call(&"add_interactable", "ShellPoint", _cell(HIDDEN_ITEM), Vector2i.ONE,
 		Vector2i.DOWN, StringName(HIDDEN_ITEM))
+	# Mécanisme des objets cachés du J12 (T17) : le point disparaît une fois l'objet pris.
+	var point: Node = _kit.get(&"root").get_node(^"Interactables").get_child(-1)
+	var unless: Array[StringName] = [StringName("got_" + HIDDEN_ITEM)]
+	point.set(&"unless_flags", unless)
 
 
 # --- Décor --------------------------------------------------------------------------------
