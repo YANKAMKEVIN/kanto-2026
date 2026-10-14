@@ -104,9 +104,14 @@ moyennes jusqu'à la victoire, et part des parties qui gagnent en 6 essais au pl
    bien au-delà du « tendu » du §2.22.
 4. La Route 24 nord donne +2,5 à +3 niveaux au meneur seulement : elle prépare, elle ne suffit pas.
 
-## 5. Recommandations (à trancher par Kevin)
+## 5. Première passe : leviers en IA `random` (rappel, écartés)
 
-**R-1 Rival n° 3 — ajuster (blocage).** Mesuré (Herbizarre N18 · N20, attentif–expert) :
+> L'IA `random` contredit le dossier 09 §14 (comportement du rival « niveau 3 » au n° 3) et la
+> règle « Ondine plus rapide que Pierre » (Pierre est `smart`) : ces lignes restent en **rappel**.
+> La recommandation finale, IA `smart` gardée, est au **§5 bis**.
+
+
+**R-1 (rappel) Rival n° 3.** Mesuré (Herbizarre N18 · N20, attentif–expert) :
 
 | Réglage (tous starters) | Herbizarre 18 | Herbizarre 20 | Kevin 18 | Autres |
 |---|---|---|---|---|
@@ -116,12 +121,12 @@ moyennes jusqu'à la victoire, et part des parties qui gagnent en 6 essais au pl
 | Contre Bulbizarre seul : Roucoups N16, Reptincel N15, IA `random` | 66–85 % | 97–99 % | (= IA `random`) | inchangés |
 | Roucoups N16 seul · Roucool N16 · starter N15 | 0–1 % · 0–1 % · 0 % | 10–36 · 24–52 · 4–37 % | — | — |
 
-Recommandation : **IA `random` + Roucoups N16** (même levier qu'au J12 pour R3 ; espèces, ordre et
+Première recommandation : **IA `random` + Roucoups N16** (même levier qu'au J12 pour R3 ; espèces, ordre et
 changement de Pokémon gardés ; récompense 35 ₽ × dernier niveau inchangée). Le rival reste le plus
 dur des quatre combats de la boucle pour Bulbizarre. À noter : son **Rattata N15 a Croc de
 Mort** (cause du mur de R3 au J12 avec l'IA `smart`) ; son poids n'est pas isolé ici.
 
-**R-2 Ondine — ajuster.** Mesuré (premier essai, attentif–expert) :
+**R-2 (rappel) Ondine.** Mesuré (premier essai, attentif–expert) :
 
 | Réglage | Carabaffe 20 | Carabaffe 22 | Reptincel 20 + Mystherbe 16 | Reptincel 22 sans plante | Herbizarre 18 |
 |---|---|---|---|---|---|
@@ -131,7 +136,7 @@ Mort** (cause du mur de R3 au J12 avec l'IA `smart`) ; son poids n'est pas isol�
 | Staross sans Bulles d'O (N21) | 37–52 % | 93–98 % | 90–95 % | 1–5 % | 97 % |
 | Staross N19 sans Bulles d'O | 89–96 % | 100 % | 99 % | 32–81 % | 100 % |
 
-Recommandation : **IA `random`**, équipe et capacités de Rouge/Bleu gardées (Bulles d'O comprise,
+Première recommandation : **IA `random`**, équipe et capacités de Rouge/Bleu gardées (Bulles d'O comprise,
 c'est aussi la CT11 donnée) : Ondine reste le mur historique de Salamèche **sans plante**, et le
 Mystherbe de la Route 24 nord devient la vraie réponse (le rôle voulu par le §2.22). Plus
 généreux : Staross N19 sans Bulles d'O.
@@ -141,11 +146,70 @@ généreux : Staross N19 sans Bulles d'O.
 
 **R-4 Route 4, Clara, Arène (Lucas, Diane) : garder.**
 
+## 5 bis. Recommandation finale : IA `smart` et changement de Pokémon gardés
+
+Seuils (`cerulean_thresholds.json`, 1 000 graines, premier essai, **attentif / expert / naïf**,
+3 Potions sauf naïf). Équipes de l'échelle du §3 : N18 ≈ « bas », N20 ≈ « haut ».
+
+**Rival n° 3** (Roucoups, Rattata, starter évolué ; N18 | N20) :
+
+| Réglage | Reptincel | « Kevin » | Herbizarre | Carabaffe |
+|---|---|---|---|---|
+| Données (18 / 15 / 17) | 99/99/57 \| 100 | 35/28/10 \| 98/99/91 | **0/0/0 \| 0/8/0** | 98/99/70 \| 100 |
+| (a) 16 / 15 / 17 | 100/100/90 \| 100 | 47/38/20 \| 98/100/96 | 0/1/0 \| 10/36/2 | 100/100/90 \| 100 |
+| **(b) 16 / 14 / 16** | 100/100/98 \| 100 | **76/78/54 \| 100/100/99** | 0/2/0 \| 27/70/8 | 100/100/98 \| 100 |
+| (c) 17 / 15 / 16 | 100/100/90 \| 100 | 72/71/37 \| 100/100/99 | 0/0/0 \| 12/53/3 | 100/100/89 \| 100 |
+
+Contre **Bulbizarre seul** (les deux autres équipes en (b)), Herbizarre N18 | N20 :
+
+| Équipe du rival contre Bulbizarre | N18 | N20 |
+|---|---|---|
+| (e) Roucool 16, Rattata 14, Reptincel 16 | 2/10/1 | 58/87/47 |
+| (f) Roucoups 15, Rattata 14, Reptincel 15 | 2/20/1 | 72/95/42 |
+| (g) Roucool 15, Rattata 14, Reptincel 15 | 13/39/6 | 89/99/82 |
+| (i) Roucool 14, Rattata 13, Reptincel 15 | 18/49/14 | 89/99/— |
+| **(h) Roucool 15, Rattata 14, Salamèche 15** (non évolué) | **88/99/76** | **100/100/100** |
+
+Le mur de Bulbizarre est le **Reptincel** (Flammèche, super efficace : Herbizarre K.O. en 3 à 4
+coups) : tant qu'il est évolué, aucun réglage `smart` ne dépasse 49 % au N18. Un Salamèche
+N15 (il évolue au N16) est la seule option mesurée qui tient l'objectif (≥ 60 % au N18, ≈ 90 %
+au N20).
+
+**Ondine** (N20 | N22) :
+
+| Réglage | Carabaffe | Herbizarre | Reptincel + Mystherbe N−4 | Reptincel sans plante |
+|---|---|---|---|---|
+| Données (Stari 18, Staross 21) | 9/5/0 \| 59/78/1 | 99/99/27 \| 100 | 0/2/0 \| 47/72/33 | 0 \| 0 |
+| (a) Staross 20 | 20/24/0 \| 80/93/4 | 99/99/43 \| 100 | 3/8/0 \| 75/91/62 | 0 \| 0 |
+| **(b) Staross 19** | **66/84/0 \| 97/99/44** | 100/100/74 \| 100 | **49/68/13 \| 98/100/96** | 0 \| 0–1 |
+| (c) Staross 21, Météores au lieu de Bulles d'O | 1/1/0 \| 44/68/6 | 94/96/20 \| 100 | 0/0/0 \| 30/66/40 | 0 \| 1–6 |
+| (c') Staross 21, sans 4ᵉ capacité | 37/52/0 \| 93/98/53 | 100/100/63 \| 100 | 90/95/63 \| 100/100/98 | 0 \| 1–5 |
+| (d) Stari 17, Staross 19 sans Bulles d'O | 94/98/44 \| 100 | 100/100/93 \| 100 | 99/100/98 \| 100 | 0–1 \| 45/87/63 |
+
+Météores (60, ne rate jamais) frappe plus fort que Pistolet à O sur Carabaffe : (c) est **plus**
+dur que (c').
+
+**Recommandation finale (IA `smart` + changement de Pokémon gardés)** :
+
+- **Rival n° 3 : (b) Roucoups 16, Rattata 14, starter évolué 16** contre Salamèche et Carapuce, et
+  **(h) Roucool 15, Rattata 14, Salamèche 15** contre Bulbizarre. Au N18 : 76–78 % pour l'équipe
+  « Kevin », 98–100 % pour les autres, 88–99 % pour Herbizarre ; ≥ 99 % au N20. Écart à RB :
+  − 2 niveaux, et contre Bulbizarre, le starter du rival **pas encore évolué** (à valider par
+  Kevin ; sinon (g), 13–39 % au N18, reste un mur doux pour Bulbizarre). Récompense : 35 ₽ ×
+  dernier niveau (560 / 525 ₽).
+- **Ondine : (b) Stari 18, Staross 19**, capacités de RB (Bulles d'O gardée, cohérente avec la
+  CT11). Au N20 : 66–84 % (Carabaffe), 49–68 % (Salamèche avec Mystherbe), 100 % (Herbizarre) ;
+  au N22 : ≥ 97 %. Salamèche **sans Pokémon Plante** reste bloqué (0–1 % au N22) : c'est le mur
+  historique voulu par le §2.22, la Route 24 nord donnant le Mystherbe. Si Kevin veut que Salamèche
+  passe sans plante : (d) (45–87 % au N22), mais Carapuce devient facile (94–98 % au N20).
+- Joueur naïf : il reste en dessous (Ondine (b) : 0–13 % au N20, 44–96 % au N22), avec les
+  reprises au Centre.
+
 ## 6. Questions pour Kevin
 
-- Q-T20-1 : rival n° 3 — R-1 (IA `random` + Roucoups N16) ou autre réglage, ou garder (risque de
-  blocage pour Bulbizarre) ?
-- Q-T20-2 : Ondine — R-2 (IA `random`) ou autre réglage, ou garder le mur ?
+- Q-T20-1 : rival n° 3 — (b) contre Salamèche et Carapuce, et (h) (Salamèche N15 non évolué)
+  contre Bulbizarre ? Ou (g) (Reptincel N15) en acceptant un mur doux pour Bulbizarre ?
+- Q-T20-2 : Ondine — (b) Staross N19 (Salamèche sans plante bloqué), ou (d) ?
 - Q-T20-3 : niveaux de sortie du Mont Sélénite plus bas que l'estimation du §2.22 : faut-il viser
   un joueur qui s'entraîne (meneur ≈ 20) ou celui qui suit le chemin (≈ 17–18) ?
 
