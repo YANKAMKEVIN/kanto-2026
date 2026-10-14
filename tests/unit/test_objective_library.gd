@@ -60,13 +60,13 @@ func test_q4_nothing_before_the_rival_battle_then_reach_viridian() -> void:
 ## (data/cutscenes/oak_lab.json).
 ## Jalon 10 (T8) : `pewter_arrived` (scène `pewter_arrival`) et `badge_boulder` (victoire de la
 ## scène `pewter_gym_brock`) sont levés par les données : retirés de la liste.
-## Jalon 13 (T17) : `badge_cascade` (T19) et `beaten_nugget_rocket` (T22) ne sont pas encore
-## levés ; `cerulean_reached` l'est par la scène `cerulean_arrival`.
+## Jalon 13 : `cerulean_reached` est levé par la scène `cerulean_arrival`, `badge_cascade` par
+## celles d'Ondine (T19), `beaten_nugget_rocket` par celle du recruteur (T22) : retirés de la
+## liste au T23 du J14 (`go_cerulean_cape` les lit).
 ## Jalon 12 (T18) : `route_3_entered` est levé par la scène du déclencheur de la Route 3 ;
 ## (T28) `route_4_reached` par celle du déclencheur du sas (data/cutscenes/route_4.json), posé
 ## aussi sur la vraie Route 4 du J13 (mêmes cases).
-const _PENDING_FLAGS: Array[StringName] = [&"viridian_arrived", &"badge_cascade",
-	&"beaten_nugget_rocket"]
+const _PENDING_FLAGS: Array[StringName] = [&"viridian_arrived"]
 
 
 ## Jalon 10 (dossier 12 §16, jalon-10.md §2.10) : « continuer vers le nord. » jusqu'à Argenta,
