@@ -6459,6 +6459,22 @@
     "haut"
    ]
   },
+  "miaouss": {
+   "fichier": "res://assets/sprites/pokemon/painted/miaouss_sheet.png",
+   "cellule": [
+    47,
+    58
+   ],
+   "hauteur": 56,
+   "colonnes": 4,
+   "lignes": 4,
+   "ordre_lignes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
   "rattatac": {
    "fichier": "res://assets/sprites/pokemon/painted/rattatac_sheet.png",
    "cellule": [
