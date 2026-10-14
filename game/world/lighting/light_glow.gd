@@ -20,9 +20,14 @@ const Z_GLOW: int = 5
 const SHADER: Shader = preload("res://game/world/lighting/shaders/light_glow.gdshader")
 ## Côté de la texture du dégradé (pixels) ; le sprite est mis à l'échelle du rayon.
 const TEXTURE_SIZE: int = 256
+## Image générée d'une colonne de lumière (pixels) ; mise à l'échelle de la largeur et de la
+## hauteur du type.
+const COLUMN_WIDTH: int = 64
+const COLUMN_HEIGHT: int = 256
 
 static var _library: LightGlowLibrary
 static var _texture: GradientTexture2D
+static var _column_texture: ImageTexture
 static var _steady_material: CanvasItemMaterial
 static var _flicker_materials: Dictionary[StringName, ShaderMaterial] = {}
 static var _reduce_motion: bool = false
@@ -88,8 +93,18 @@ func _apply() -> void:
 		visible = false
 		return
 	visible = true
-	texture = _gradient()
-	scale = Vector2.ONE * scale_for(type.radius)
+	if type.shape == LightGlowLibrary.SHAPE_COLUMN:
+		# Colonne posée à son pied (position du nœud = bas de la colonne, au sol).
+		texture = _column()
+		centered = false
+		offset = Vector2(-COLUMN_WIDTH / 2.0, -COLUMN_HEIGHT)
+		scale = Vector2(type.radius * 2.0 * Grid.TILE_SIZE / COLUMN_WIDTH,
+			type.height * Grid.TILE_SIZE / COLUMN_HEIGHT)
+	else:
+		texture = _gradient()
+		centered = true
+		offset = Vector2.ZERO
+		scale = Vector2.ONE * scale_for(type.radius)
 	self_modulate = Color(type.color, type.alpha)
 	material = _material_for(type)
 
@@ -113,6 +128,22 @@ static func _material_for(type: LightGlowLibrary.GlowType) -> Material:
 		_flicker_materials[type.id] = shader_material
 	_flicker_materials[type.id].set_shader_parameter(&"amplitude", _amplitude_of(type.id))
 	return _flicker_materials[type.id]
+
+
+## Colonne de lumière douce (puits de jour) : bords latéraux adoucis, nulle en haut et au pied
+## (fondue dans la flaque du sol, aucun bord net), la plus forte au dernier quart.
+static func _column() -> ImageTexture:
+	if _column_texture == null:
+		var image := Image.create(COLUMN_WIDTH, COLUMN_HEIGHT, false, Image.FORMAT_RGBA8)
+		for y: int in COLUMN_HEIGHT:
+			var v := (y + 0.5) / COLUMN_HEIGHT
+			var vertical := smoothstep(0.0, 0.75, v) * (1.0 - smoothstep(0.82, 1.0, v))
+			for x: int in COLUMN_WIDTH:
+				var u := absf((x + 0.5) / COLUMN_WIDTH * 2.0 - 1.0)
+				var side := pow(maxf(1.0 - u * u, 0.0), 1.6)
+				image.set_pixel(x, y, Color(1, 1, 1, side * vertical))
+		_column_texture = ImageTexture.create_from_image(image)
+	return _column_texture
 
 
 ## Dégradé radial blanc, opaque au centre et nul au bord (adouci : pas d'anneau visible).
