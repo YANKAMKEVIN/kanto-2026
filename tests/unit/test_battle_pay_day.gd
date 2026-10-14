@@ -3,7 +3,7 @@ extends GutTest
 ## 2 × niveau du lanceur par utilisation réussie du joueur (cumulé sur le combat), rien pour un
 ## Jackpot adverse ni pour un Jackpot raté ; pièces ramassées par [BattleConclusion] après une
 ## victoire ou une capture (sauvage comme Dresseur), jamais à la fuite ni à la défaite. Phrases :
-## brouillons de l'annexe A (Q-1), branchées sur les modèles « coins_scattered » et
+## annexe A.1 (validée par Kevin le 2026-10-14), branchées sur les modèles « coins_scattered » et
 ## « coins_collected ».
 
 const Kit := preload("res://tests/helpers/battle_kit_j12.gd")
@@ -144,16 +144,16 @@ func test_money_cap_is_the_game_state_one() -> void:
 	state.free()
 
 
-# --- Textes (brouillons, Q-1) -------------------------------------------------------------
+# --- Textes (annexe A.1, validés) ---------------------------------------------------------
 
-func test_texts_are_the_annex_a_drafts() -> void:
+func test_texts_are_the_annex_a_texts() -> void:
 	var event := BattleEvent.new(K.COINS_SCATTERED, P)
 	event.pokemon_name = "Miaouss"
 	event.amount = 34
 	assert_eq(_texts.lines(event, _data), PackedStringArray(["Des pièces s'éparpillent partout !"]))
 	assert_eq(_texts.coins_line(34), "Tu ramasses %s." % MenuFormat.money(34))
 	for id: StringName in [&"coins_scattered", &"coins_collected"]:
-		assert_true(_texts.is_draft(id), "%s : brouillon en attente de Q-1" % id)
+		assert_false(_texts.is_draft(id), "%s : validé le 2026-10-14" % id)
 	var beats := BattlePlayback.beats(event, _texts, _data)
 	assert_eq(beats.size(), 1, "le message seulement")
 	assert_eq(beats[0].kind, BattleBeat.Kind.MESSAGE)

@@ -351,7 +351,11 @@
 		},
 		"meowth": {
 			"height": 0.4, "weight": 4.2,
-			"description": "Il adore ce qui brille. La nuit, il rôde dans les rues à la recherche de pièces."
+			"description": "Il adore ce qui brille. La nuit, il rôde dans les rues à la recherche de pièces.",
+			"notes": [
+				{ "id": "meowth_docks", "unlock": { "seen": 1 },
+				  "text": "On l'entend miauler la nuit près des quais, là où traînent des pièces tombées des poches." }
+			]
 		},
 		"persian": {
 			"height": 1.0, "weight": 32.0,

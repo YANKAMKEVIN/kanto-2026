@@ -87,8 +87,7 @@ extends RefCounted
 ## « BLOQUÉE »).
 ## Jackpot (jalon 15, `jalon-15.md` §2.7.3) : COINS_SCATTERED → « coins_scattered » ; à la fin
 ## du combat, « coins_collected » ({money}, [method coins_line]) après « prize_won ».
-## **Brouillons de l'annexe A de `jalon-15.md`, pas encore validés par Kevin (Q-1)** : marqués
-## « draft » dans `messages.json`, seul endroit à modifier une fois le lot validé.
+## Textes de l'annexe A de `jalon-15.md` (A.1), validés par Kevin le 2026-10-14 (Q-1).
 ## Nom du dresseur (OUV.2, dossier 13 §3.5) : il peut porter un jeton de [DialogueTokens]
 ## (`"name": "{rival}"`), résolu avec [member token_values] (posé par Boot) ; sans valeur, le nom
 ## reste tel quel.

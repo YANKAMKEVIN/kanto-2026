@@ -89,7 +89,10 @@
 			"subtitle": "Le Pont Pépite",
 			"description": "Au nord d'Azuria, un long pont franchit la rivière. Au-delà, une prairie tranquille où l'herbe pousse haut."
 		},
-		"vermilion_city": { "name": "Carmin-sur-Mer", "kind": "town", "maps": [] },
+		"vermilion_city": {
+			"name": "Carmin-sur-Mer", "kind": "town", "maps": [],
+			"description": "Une ville tournée vers le large, où les grands navires font escale. La lumière dorée y danse sur l'eau des quais."
+		},
 		"lavender_town": { "name": "Lavanville", "kind": "town", "maps": [] },
 		"route_8": { "name": "Route 8", "kind": "route", "maps": [] },
 		"saffron_city": { "name": "Safrania", "kind": "town", "maps": [] },
