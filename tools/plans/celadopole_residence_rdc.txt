@@ -1,0 +1,36 @@
+# Résidence Céladon, rez-de-chaussée (celadon_mansion_gf) — grille fonctionnelle (jalon 20, dossier 23 §10 ;
+# préparée le 2026-10-14). Hall ; la vieille dame et ses Pokémon, qui ne donne rien.
+# 16 × 11 cases (enveloppe commune des 4 étages) ; sol y 3..8, x 1..14.
+#
+# Légende (intérieurs de la Résidence) :
+#   K mur (bloqué : fond sur 3 rangées, parois, bas sur 2 rangées)   . sol (praticable)
+#   S escalier montant (STEP_ON ↑)   Z escalier descendant (idem)   X sortie (PUSH ↓)
+#   c canapé   t table   p plante   n banc   f porte FERMÉE « BUREAU PRIVÉ » (bloquée)
+# Les escaliers PRINCIPAUX montent du RdC au 3e et NE vont PAS au toit : le toit n'est
+# atteignable que par l'ESCALIER DE SERVICE (porte (30..31, 4) de la ville, au nord).
+
+PRATICABLES .XSZ
+
+GRILLE 16 11
+00 KKKKKKKKKKKKKKKK
+01 KKKKKKKKKKKKKKKK
+02 KKSSKKKKKKKKKKKK
+03 K...........cccK
+04 K..............K
+05 K..............K
+06 K..tt..........K
+07 K..tt..........K
+08 Kp............pK
+09 KKKKKKKXXKKKKKKK
+10 KKKKKKKKKKKKKKKK
+FIN
+
+POSITIONS
+sortie               warp           7..8,9        libre   to=celadon_city spawn=from_mansion  # PUSH ↓ → celadon_city, from_mansion (porte PRINCIPALE)
+entree               spawn          7,9           libre    # spawn « entrance », tourné ↑
+escalier_haut        warp           2..3,2        libre   to=celadon_mansion_1f spawn=from_down  # STEP_ON ↑ → celadon_mansion_1f
+from_up              spawn          2..3,3        libre    # arrivée d'en haut (devant S), tournée ↓
+vieille_dame         pnj            8,4           bloque  role=P1 facing=down  # texte 26 ; ELLE NE DONNE RIEN (H-5)
+miaouss              pokemon        6,4           bloque  shy=none  # Miaouss de la vieille dame (PNJ d'ambiance)
+melofee              pokemon        10,4          bloque  shy=none  # Mélofée de la vieille dame (PNJ d'ambiance)
+FIN
