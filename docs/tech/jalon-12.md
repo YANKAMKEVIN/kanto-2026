@@ -1794,6 +1794,9 @@ correctifs), §9.
 14. **Erreur intermittente « Parameter "t" is null »** (`Npc._apply_spec`, sous charge, surtout
     `test_rival_route22`) : non masquée, jamais vue au téléphone ; à rendre déterministe
     (`FrameSim` / `TweenClock`).
+    → **Corrigé le 2026-10-14** (branche `fix/parameter-t-null`) : course dans le rendu factice
+    du headless, sans verrou ; chargement synchrone en headless (`BackgroundLoader`,
+    `etat-projet.md`).
 
 **Technique**
 15. IA `smart` : règle « aucun statut sous ⅓ des PV » qui bloque Repos — sans effet au J12 (aucun
