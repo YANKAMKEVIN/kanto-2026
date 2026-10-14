@@ -817,10 +817,14 @@ func test_j14_species_values_and_red_blue_learnsets() -> void:
 		assert_eq(species.base_exp, row[9], String(id))
 		assert_eq(species.male_ratio, 0.75, String(id))
 		assert_eq(species.growth_rate, ExpCurve.Rate.MEDIUM_SLOW, String(id))
-	# Rouge/Bleu (pret/pokered) ; Entrave (J12) et Soin (J13) entreront dans la table de
-	# Kadabra à l'alignement (T23).
+	# Rouge/Bleu (pret/pokered) ; Entrave (J12, niveaux 1 et 20) et Soin (J13, niveau 31) dans
+	# la table de Kadabra depuis l'alignement (T23).
 	assert_eq(_data.get_species(&"abra").moves_at(15), [&"teleport"] as Array[StringName])
-	assert_eq(_data.get_species(&"kadabra").moves_at(16), [&"teleport", &"confusion"]
+	assert_eq(_data.get_species(&"kadabra").moves_at(16), [&"teleport", &"disable", &"confusion"]
+		as Array[StringName])
+	assert_eq(_data.get_species(&"kadabra").moves_learned_at(20), [&"disable"]
+		as Array[StringName])
+	assert_eq(_data.get_species(&"kadabra").moves_learned_at(31), [&"recover"]
 		as Array[StringName])
 	assert_eq(_data.get_species(&"kadabra").moves_learned_at(38), [&"psychic"]
 		as Array[StringName])

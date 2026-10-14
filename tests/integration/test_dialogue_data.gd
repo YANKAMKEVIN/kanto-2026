@@ -49,9 +49,9 @@ const UNUSED_YET: Array[StringName] = [
 	&"route_25_jr_trainer_adam_after", &"route_25_youngster_yanis_before",
 	&"route_25_youngster_yanis_defeated", &"route_25_youngster_yanis_after",
 ]
-## Jalon 14 (T16) : textes par défaut de l'objet caché de la Route 25, absents du §15 du dossier 17
-## (à valider par Kevin) : exemptés du contrôle « mot pour mot ».
-const UNVALIDATED: Array[StringName] = [&"route_25_hidden_1", &"route_25_hidden_1_found"]
+## Textes pas encore validés, exemptés du contrôle « mot pour mot » (jalon 14 T16 : ceux du
+## coquillage de la Route 25, validés depuis : dossier 17 §15 n° 71–72).
+const UNVALIDATED: Array[StringName] = []
 ## Jalon 11 (T20c) : phrases jouées par le contrôleur du compagnon (ni PNJ, ni point, ni scène).
 const PLAYED_BY_COMPANION: Array[StringName] = [
 	&"companion_cave", &"companion_city", &"companion_forest", &"companion_happy",
