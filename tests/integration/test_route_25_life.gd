@@ -173,10 +173,15 @@ func test_encounter_table_rate_15_with_rare_abra() -> void:
 	for slot: EncounterSlot in table.slots:
 		if slot.species == &"abra":
 			assert_eq([slot.min_level, slot.max_level], [10, 12], "Abra 10-12")
-	# Repli avant J13 T11 : Roucool 38, Chenipan 27 (Mystherbe 18 + Roucool 20 ; Chétiflor 17 +
-	# Chenipan 10), puis Aspicot 10, Chrysacier 5, Coconfort 5.
-	assert_almost_eq(table.chance_of(&"pidgey"), 0.38, 0.0001)
-	assert_almost_eq(table.chance_of(&"caterpie"), 0.27, 0.0001)
+	# Depuis le T23 (J13 T11 fusionné) : Roucool 20, Mystherbe 18, Chétiflor 17 (12-14), Chenipan
+	# 10, puis Aspicot 10, Chrysacier 5, Coconfort 5 (plus de repli Roucool 38 / Chenipan 27).
+	assert_almost_eq(table.chance_of(&"pidgey"), 0.20, 0.0001)
+	assert_almost_eq(table.chance_of(&"oddish"), 0.18, 0.0001)
+	assert_almost_eq(table.chance_of(&"bellsprout"), 0.17, 0.0001)
+	assert_almost_eq(table.chance_of(&"caterpie"), 0.10, 0.0001)
+	for slot: EncounterSlot in table.slots:
+		if slot.species == &"oddish" or slot.species == &"bellsprout":
+			assert_eq([slot.min_level, slot.max_level], [12, 14], String(slot.species))
 	assert_almost_eq(table.chance_of(&"weedle"), 0.10, 0.0001)
 	assert_almost_eq(table.chance_of(&"metapod"), 0.05, 0.0001)
 	assert_almost_eq(table.chance_of(&"kakuna"), 0.05, 0.0001)
