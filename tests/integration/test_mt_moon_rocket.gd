@@ -370,6 +370,8 @@ func test_the_lookout_says_hey_you_then_leaves_and_stays_gone() -> void:
 	assert_true(GameState.flags.has_flag(&"beaten_mt_moon_rocket_1"), "battu")
 	assert_true(_pages.has(LINES[&"mt_moon_rocket_1"][1]), "réplique « vaincu »")
 	assert_null(map.get_npc(&"rocket_guetteur"), "parti (fondu sur place)")
+	assert_eq(GridPaths.cut_by_occupants(map.get_grid(), _player.get_cell(), _player),
+		[] as Array[Vector2i], "parti, rien ne bloque")
 	assert_true(_player.is_input_enabled(), "joueur libre")
 	await _reload("mt_moon_b1f")
 	assert_null(_boot.get_map().get_npc(&"rocket_guetteur"), "absent au rechargement")
@@ -421,6 +423,8 @@ func test_the_digger_waits_digging_then_walks_to_her_trench_and_fades() -> void:
 	assert_true(GameState.flags.has_flag(&"beaten_mt_moon_rocket_2"))
 	assert_true(_pages.has(LINES[&"mt_moon_rocket_2"][1]), "réplique « vaincu »")
 	assert_null(map.get_npc(&"rocket_fouilleuse"), "partie vers la tranchée puis effacée")
+	assert_eq(GridPaths.cut_by_occupants(map.get_grid(), _player.get_cell(), _player),
+		[] as Array[Vector2i], "parti, rien ne bloque")
 	await _reload("mt_moon_b1f")
 	assert_null(_boot.get_map().get_npc(&"rocket_fouilleuse"), "absente au rechargement")
 
@@ -440,6 +444,10 @@ func test_the_guardian_speaks_three_bubbles_in_the_fossil_chamber() -> void:
 	assert_true(GameState.flags.has_flag(&"beaten_mt_moon_rocket_3"))
 	assert_true(_pages.has(LINES[&"mt_moon_rocket_3"][1]), "réplique « vaincu »")
 	assert_null(map.get_npc(&"rocket_gardien"), "retourné dans sa niche puis effacé")
+	# Seul le chercheur, encore à son poste (13, 31), coupe la salle de l'échelle de sortie.
+	for cell: Vector2i in GridPaths.cut_by_occupants(map.get_grid(), _player.get_cell(),
+			_player):
+		assert_true(cell.x <= 12 and cell.y >= 29, "%s : seulement derrière le chercheur" % cell)
 	assert_false(GameState.flags.has_flag(&"beaten_mt_moon_researcher"), "chercheur après")
 	await _reload("mt_moon_b2f")
 	assert_null(_boot.get_map().get_npc(&"rocket_gardien"), "absent au rechargement")

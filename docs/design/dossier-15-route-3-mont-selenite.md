@@ -293,7 +293,10 @@ Modèles peints : **un homme, une femme** [D], réutilisés ; R3 se distingue pa
 - Les fossiles vont dans les **objets clés** ; aucune indication sur leur résurrection [D] ;
   **Amonita et Kabuto non implémentés**.
 - Défaite contre le chercheur : réveil au dernier Centre ; il reprend sa garde, réplique de reprise.
-- Après le partage, le chercheur reste dans la chambre (une réplique) [D].
+- Après le partage, le chercheur reste dans la chambre (une réplique) [D] : il se range en **(15, 30)**,
+  tourné vers la dalle [D] ; case vérifiée le 2026-10-14 (grille et vraie scène) : elle ne coupe aucun
+  passage — la salle de l'échelle de sortie reste reliée au reste de la grotte par le goulet
+  (13..14, 31), juste au sud — et n'est ni sur un passage ni sur une case d'examen.
 - **Grand moment** à l'obtention du fossile [C-6].
 
 ## 10. Pierre Lune et évolutions par pierre [V B-1, B-2 ; dossier 14 A-5]

@@ -23,6 +23,9 @@ Critères :
   4. chaque objet visible, fossile et objet caché atteignable ; un objet caché est sur du sol
      calme, avec un indice `x` contre lui ; aucun objet visible sur une ligne de vue ;
   5. retour à l'entrée possible depuis toute case praticable ; aucune case praticable orpheline ;
+     5 bis. un PNJ rangé (`apres=`) ne coupe aucune case, n'est ni sur une échelle, ni sur une
+     arrivée, ni sur une case d'accès à un objet, et la salle de l'échelle de sortie (arrivée S)
+     reste reliée à l'entrée dans les deux sens ;
   6. gravats : cases obligatoires sur le trajet le moins exposé (borne GRAVATS_OBLIGATOIRES),
      zones obligatoires nommées, part de couloirs calmes sur le parcours ;
   7. culs-de-sac : chacun mène à quelque chose (échelle, objet, Dresseur, repère…) ;
@@ -407,6 +410,32 @@ def verifier() -> bool:
 				if monde.libre((x, y)) and n not in dist and n not in apres.echelles:
 					orphelins.append(n)
 	r.critere(not orphelins, f"aucune case praticable orpheline {orphelins[:4]}")
+	# 5 bis. PNJ rangés (`apres=`) : leur case ne coupe rien (mêmes cases atteintes, elle exceptée,
+	#    que si elle était libre), n'est ni une échelle, ni une arrivée, ni une case d'où l'on prend
+	#    ou examine quelque chose ; la salle de l'échelle de sortie (arrivée S) et le sas restent
+	#    reliés à l'entrée dans les deux sens. Sbires : partis (aucune case après).
+	for role, (nom, p) in sorted(dresseurs.items()):
+		if "apres" not in p.attrs:
+			continue
+		c = _case(p.attrs["apres"])
+		libre = Grotte(plans, apres_combats=True, bloquees={})
+		libre.mondes[nom].bloquees.discard(c)
+		d_libre = libre.bfs([depart])[0]
+		acces_objets = {n for nom2, o in objets for n in acces(libre, nom2, o)}
+		coupees = sorted(set(d_libre) - set(dist) - {(nom, *c)})
+		speciales = [q.ident for q in plans[nom].positions.values()
+			if q.kind in ("echelle", "spawn") and c in q.cells]
+		sur_acces = (nom, *c) in acces_objets
+		sortie_s = [(nom2, *q.cells[0]) for nom2, plan2 in plans.items()
+			for q in plan2.of_kind("spawn") if q.attrs.get("paire") == "S"]
+		aller_s = all(s in dist for s in sortie_s)
+		retour_s = all(s in retour for s in sortie_s)
+		r.critere(plans[nom].at(*c) in CALME and not coupees and not speciales
+			and not sur_acces and aller_s and retour_s,
+			f"{role} rangé en {c} ({nom}) : sol « {plans[nom].at(*c)} », ne coupe aucune case "
+			f"{coupees[:4]}, ni échelle ni arrivée {speciales}, hors des cases d'accès aux objets "
+			f"({'NON' if sur_acces else 'oui'}) ; arrivées S {sortie_s} atteintes "
+			f"({'oui' if aller_s else 'NON'}) et reliées à l'entrée ({'oui' if retour_s else 'NON'})")
 
 	# 6. Gravats.
 	noms_zones = {}

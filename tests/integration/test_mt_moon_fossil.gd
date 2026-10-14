@@ -13,6 +13,7 @@ extends GutTest
 
 const MemoryFs := preload("res://tests/helpers/memory_file_system.gd")
 const FixedClock := preload("res://tests/helpers/fixed_clock.gd")
+const GridPaths := preload("res://tests/helpers/grid_paths.gd")
 const BOOT_SCENE := preload("res://game/boot.tscn")
 const STARTS := "res://tools/debug_start/"
 const SAVE_PATH := "user://test_mt_moon_fossil_save.json"
@@ -229,6 +230,8 @@ func test_mistaken_then_battle_then_share_and_he_steps_aside() -> void:
 		assert_eq(researcher.get_cell(), RESEARCHER_AFTER, "rangé en (15, 30)")
 		assert_eq(researcher.get_facing(), Vector2i.RIGHT, "tourné vers la dalle")
 	assert_true(_player.is_input_enabled(), "joueur libre")
+	assert_eq(GridPaths.cut_off(map.get_grid(), _player.get_cell(), _player),
+		[] as Array[Vector2i], "rangé, il ne coupe aucun passage (salle de sortie comprise)")
 	# Rechargement : rangé, il redit le partage ; le déclencheur ne rejoue rien.
 	_boot.request_autosave("test")
 	await wait_process_frames(5)
