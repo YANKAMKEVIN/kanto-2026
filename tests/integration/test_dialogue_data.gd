@@ -43,11 +43,8 @@ const GATE_GUARDS: Array[StringName] = [&"forest_gate_north_guard", &"forest_gat
 ## depuis le T9). À retirer carte par carte en ajoutant la carte à [constant MAPS].
 ## T13 : les intérieurs d'Argenta sont dans [constant MAPS] (Musée, maisons, Arène : retirés).
 ## T11 : la Route 2 nord et Argenta (extérieur) sont dans [constant MAPS] : liste vide.
+## Jalon 14 (T23) : D5 et D6 posés, leurs répliques (n° 50, 51) sortent de la liste.
 const UNUSED_YET: Array[StringName] = [
-	# Jalon 14 (T16) : répliques de D5 et D6 (n° 50, 51), posées avant Abo (J12 T12, T23 du J14).
-	&"route_25_jr_trainer_adam_before", &"route_25_jr_trainer_adam_defeated",
-	&"route_25_jr_trainer_adam_after", &"route_25_youngster_yanis_before",
-	&"route_25_youngster_yanis_defeated", &"route_25_youngster_yanis_after",
 ]
 ## Textes pas encore validés, exemptés du contrôle « mot pour mot » (jalon 14 T16 : ceux du
 ## coquillage de la Route 25, validés depuis : dossier 17 §15 n° 71–72).
@@ -231,7 +228,7 @@ const IDS: Array[StringName] = [
 	&"viridian_gym_door", &"viridian_gym_watcher", &"viridian_house_door",
 	&"viridian_kid",
 	&"viridian_lass", &"viridian_old_man", &"viridian_traveler",
-	# Jalon 14 (T16) : la Route 25 (dossier 17 §15 n° 42 à 51 ; D5 et D6 : en attente d'Abo).
+	# Jalon 14 (T16) : la Route 25 (dossier 17 §15 n° 42 à 51).
 	&"route_25_hidden_1", &"route_25_hidden_1_found", &"route_25_hiker_bernard_after",
 	&"route_25_hiker_bernard_before", &"route_25_hiker_bernard_defeated",
 	&"route_25_hiker_gaston_after", &"route_25_hiker_gaston_before",

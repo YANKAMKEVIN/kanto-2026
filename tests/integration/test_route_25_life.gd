@@ -6,7 +6,7 @@ extends GutTest
 ## - objets O1 (CT19), O2, O3 : PRENDRE, une seule fois, retirés au rechargement ; O4 caché
 ##   (rocher au coquillage examiné depuis le nord) : une seule fois, puis « plus rien » ;
 ## - panneaux, promeneur et vieil homme : textes validés ; un Dresseur interpelle ;
-## - objectif n° 66 ; chaque dialogue du fichier est utilisé (D5 et D6 : en attente d'Abo).
+## - objectif n° 66 ; chaque dialogue du fichier est utilisé (D5 et D6 compris depuis le T23).
 
 const PlanGrid := preload("res://tests/helpers/plan_grid.gd")
 const MemoryFs := preload("res://tests/helpers/memory_file_system.gd")
@@ -19,12 +19,7 @@ const MAP_ID := "route_25"
 const FADE := 0.05
 const TIMEOUT := 12.0
 const DIRECTIONS: Array[Vector2i] = [Vector2i.UP, Vector2i.DOWN, Vector2i.LEFT, Vector2i.RIGHT]
-## Répliques de D5 et D6 (n° 50 et 51) : posées, mais ni Dresseur ni PNJ avant Abo (J12 T12).
-const PENDING_DIALOGUES: Array[StringName] = [
-	&"route_25_jr_trainer_adam_before", &"route_25_jr_trainer_adam_defeated",
-	&"route_25_jr_trainer_adam_after", &"route_25_youngster_yanis_before",
-	&"route_25_youngster_yanis_defeated", &"route_25_youngster_yanis_after",
-]
+
 
 var _plan: PlanGrid
 var _fs: MemoryFs
@@ -384,7 +379,7 @@ func test_objective_n66_until_leo_is_met() -> void:
 
 # --- Dialogues -----------------------------------------------------------------------------
 
-func test_every_dialogue_of_the_file_is_used_except_the_pending_trainers() -> void:
+func test_every_dialogue_of_the_file_is_used() -> void:
 	var raw: Dictionary = JSON.parse_string(
 		FileAccess.get_file_as_string("res://data/dialogues/route_25.json"))
 	var used: Dictionary = {}
@@ -405,11 +400,7 @@ func test_every_dialogue_of_the_file_is_used_except_the_pending_trainers() -> vo
 				if step.has("dialogue"):
 					used[StringName(step["dialogue"])] = true
 	for key: String in raw:
-		var id := StringName(key)
-		if PENDING_DIALOGUES.has(id):
-			assert_false(used.has(id), "%s : en attente d'Abo" % key)
-		else:
-			assert_true(used.has(id), "%s : utilisé" % key)
+		assert_true(used.has(StringName(key)), "%s : utilisé" % key)
 	for id: StringName in used:
 		if not String(id).is_empty():
 			assert_true(raw.has(String(id)), "%s : défini" % id)

@@ -3,8 +3,8 @@ extends GutTest
 ## dossier 17 §9) : `data/npcs/route_25.json` aux cases, orientations et portées de la grille
 ## `tools/plans/route_25.txt`, Dresseurs de `data/trainers/route_25.json`, répliques avant /
 ## défaite / après, puis le chemin sur la vraie carte avec ses PNJ : D1 et D2 inévitables,
-## D3 et D4 évitables. **D5 et D6 attendent Abo (J12 T12, T23 du J14)** : ni Dresseur ni PNJ
-## pour l'instant (leurs répliques validées sont déjà dans le fichier de dialogues).
+## D3 à D6 évitables. D5 et D6 (Abo, J12 T12) posés à l'alignement (T23 du J14) ; apparences
+## par défaut : Campeur pour le Jeune Dresseur Adam, Gamin pour Yanis.
 
 const PlanGrid := preload("res://tests/helpers/plan_grid.gd")
 const GridPaths := preload("res://tests/helpers/grid_paths.gd")
@@ -22,9 +22,9 @@ const TRAINERS: Dictionary[StringName, Array] = {
 	&"hiker_gaston": ["d2", &"route_25_hiker_gaston", &"hiker"],
 	&"lass_zoe": ["d3", &"route_25_lass_zoe", &"lass_young"],
 	&"hiker_bernard": ["d4", &"route_25_hiker_bernard", &"mountaineer"],
+	&"jr_trainer_adam": ["d5", &"route_25_jr_trainer_adam", &"camper"],
+	&"youngster_yanis": ["d6", &"route_25_youngster_yanis", &"youngster"],
 }
-## Dresseurs de la grille dont les données attendent Abo.
-const PENDING: Array[String] = ["d5", "d6"]
 
 var _plan := PlanGrid.new()
 var _roster: NpcRoster
@@ -88,21 +88,31 @@ func test_roster_loads_without_error_and_holds_the_placed_people() -> void:
 	for spec: NpcSpec in _roster.get_all():
 		keys.append(spec.id)
 	keys.sort()
-	var expected: Array[StringName] = [&"hiker_bernard", &"hiker_gaston", &"lass_zoe",
-		&"old_man", &"roucool_1", &"roucool_2", &"route_25_item_1", &"route_25_item_2",
-		&"route_25_item_3", &"traveler", &"youngster_jules"]
+	var expected: Array[StringName] = [&"hiker_bernard", &"hiker_gaston", &"jr_trainer_adam",
+		&"lass_zoe", &"old_man", &"roucool_1", &"roucool_2", &"route_25_item_1",
+		&"route_25_item_2", &"route_25_item_3", &"traveler", &"youngster_jules",
+		&"youngster_yanis"]
 	expected.sort()
-	assert_eq(keys, expected, "4 Dresseurs, 2 PNJ, 2 Roucool, 3 objets (D5, D6 : après Abo)")
+	assert_eq(keys, expected, "6 Dresseurs, 2 PNJ, 2 Roucool, 3 objets")
 
 
-func test_pending_trainers_are_not_placed_and_have_no_data_yet() -> void:
-	for id: String in PENDING:
-		assert_true(_plan.positions.has(id), "%s reste dans la grille" % id)
-	for spec: NpcSpec in _roster.get_all():
-		assert_false(_plan.cell_of("d5") == spec.cell or _plan.cell_of("d6") == spec.cell,
-			"%s : aucun PNJ sur D5 / D6" % spec.id)
-	assert_null(_trainers.get_trainer(&"route_25_jr_trainer_adam"), "Abo pas encore là")
-	assert_null(_trainers.get_trainer(&"route_25_youngster_yanis"), "Abo pas encore là")
+## D5 et D6 (dossier 17 §9) : équipes et récompenses du tableau.
+func test_d5_and_d6_teams_with_ekans() -> void:
+	var expected := {
+		&"route_25_jr_trainer_adam": ["Jeune Dresseur Adam", 280,
+			[[&"rattata", 14], [&"ekans", 14]]],
+		&"route_25_youngster_yanis": ["Gamin Yanis", 210, [[&"ekans", 14], [&"sandshrew", 14]]],
+	}
+	for id: StringName in expected:
+		var trainer := _trainers.get_trainer(id)
+		assert_not_null(trainer, String(id))
+		if trainer == null:
+			continue
+		assert_eq([trainer.name, trainer.prize_money], expected[id].slice(0, 2), String(id))
+		var team: Array = []
+		for member: Variant in trainer.team:
+			team.append([member.species, member.level])
+		assert_eq(team, expected[id][2], "%s : équipe" % id)
 
 
 func test_trainers_follow_the_grid() -> void:
@@ -149,14 +159,15 @@ func test_d1_and_d2_see_every_way_through() -> void:
 		assert_eq(_reach(_with_npcs(sight)), INF, "%s inévitable" % key)
 
 
-func test_d3_and_d4_can_be_avoided_even_together() -> void:
+func test_d3_to_d6_can_be_avoided_even_together() -> void:
 	var seen: Array[Vector2i] = []
-	for key: StringName in [&"lass_zoe", &"hiker_bernard"]:
+	for key: StringName in [&"lass_zoe", &"hiker_bernard", &"jr_trainer_adam",
+			&"youngster_yanis"]:
 		var sight := _sight(_roster.get_spec(key))
 		assert_gt(sight.size(), 0, "%s voit devant lui" % key)
 		assert_lt(_reach(_with_npcs(sight)), INF, "%s évitable" % key)
 		seen.append_array(sight)
-	assert_lt(_reach(_with_npcs(seen)), INF, "D3 et D4 évitables ensemble")
+	assert_lt(_reach(_with_npcs(seen)), INF, "D3 à D6 évitables ensemble")
 
 
 func test_d4_does_not_see_the_path() -> void:

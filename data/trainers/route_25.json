@@ -18,5 +18,15 @@
 		"name": "Montagnard Bernard", "ai": "random",
 		"can_lose": false, "heal_after": false, "gives_exp": true, "prize_money": 595,
 		"team": [{ "species": "onix", "level": 17 }]
+	},
+	"route_25_jr_trainer_adam": {
+		"name": "Jeune Dresseur Adam", "ai": "random",
+		"can_lose": false, "heal_after": false, "gives_exp": true, "prize_money": 280,
+		"team": [{ "species": "rattata", "level": 14 }, { "species": "ekans", "level": 14 }]
+	},
+	"route_25_youngster_yanis": {
+		"name": "Gamin Yanis", "ai": "random",
+		"can_lose": false, "heal_after": false, "gives_exp": true, "prize_money": 210,
+		"team": [{ "species": "ekans", "level": 14 }, { "species": "sandshrew", "level": 14 }]
 	}
 }
