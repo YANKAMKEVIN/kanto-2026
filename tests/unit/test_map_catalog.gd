@@ -29,8 +29,9 @@ func test_has_map() -> void:
 func test_no_qa_map_is_shipped() -> void:
 	assert_false(MapCatalog.has_map(&"qa_forest_systems"))
 	for file: String in DirAccess.get_files_at(MapCatalog.MAPS_DIR):
-		# Jalon 13 : `qa_switch_j13` existe jusqu'au T22 (à retirer avec cette exception).
-		if file.begins_with("qa_switch_j13"):
+		# Jalon 13 : `qa_switch_j13` existe jusqu'au T22 ; jalon 12 (2026-10-13) : `qa_moves_j12`
+		# jusqu'au T28 (à retirer avec ces exceptions).
+		if file.begins_with("qa_switch_j13") or file.begins_with("qa_moves_j12"):
 			continue
 		assert_false(file.begins_with("qa_"), "%s : carte de QA livrée" % file)
 

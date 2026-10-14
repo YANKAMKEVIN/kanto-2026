@@ -1,0 +1,23 @@
+{
+	"map": "qa_moves_j12", "spawn": "moves_start", "facing": "up",
+	"flags": [
+		"mom_greeted", "rival_met", "oak_met", "oak_lab_reunion", "starter_offered",
+		"starter_chosen", "taken_charmander", "taken_squirtle", "rival_lab_won",
+		"rival_challenged", "rival_battle_done", "rival_left_lab", "viridian_arrived",
+		"got_oak_parcel", "pokedex_activated", "poison_unlocked", "beaten_forest_scout_theo",
+		"pewter_arrived", "beaten_pewter_gym_liam", "brock_met", "badge_boulder"
+	],
+	"party": [
+		{ "species": "geodude", "level": 21,
+			"moves": ["self_destruct", "tackle", "defense_curl", "rock_throw"] }
+	],
+	"bag": { "potion": 3 },
+	"money": 3000,
+	"wild": {
+		"rate": 90,
+		"slots": [
+			{ "species": "voltorb", "levels": [20, 20], "weight": 50 },
+			{ "species": "zubat", "levels": [22, 22], "weight": 50 }
+		]
+	}
+}

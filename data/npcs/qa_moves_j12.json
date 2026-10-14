@@ -1,0 +1,7 @@
+{
+	"smart": {
+		"cell": [11, 3], "facing": "down", "sprite": "traveler",
+		"dialogue": "qa_moves_smart_after",
+		"trainer": { "id": "qa_moves_smart", "sight": 5, "before": "qa_moves_smart_before" }
+	}
+}

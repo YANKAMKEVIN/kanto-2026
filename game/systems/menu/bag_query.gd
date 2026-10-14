@@ -70,6 +70,8 @@ const STATUS_CURED_FORMATS: Dictionary[StringName, Array] = {
 ## Sac sans objet (Q-2) ; depuis la fiche Équipe, aucun objet à donner.
 const EMPTY_TEXT: String = "Ton Sac est vide."
 const EMPTY_TEAM_TEXT: String = "Aucun soin dans ton Sac."
+## Objet AVENTURE refusé ici (jalon 12, dossier 15 §20 n° 34 : la Corde Sortie hors grotte).
+const FIELD_REFUSAL_TEXT: String = "Impossible de l'utiliser ici."
 
 
 ## Objets du Sac vus de [param context], triés selon [param sort] : une vue par objet présent
@@ -316,3 +318,9 @@ static func _relevance_rank(item: ItemData, context: StringName) -> int:
 		ItemData.Category.HEAL:
 			return 1
 	return 2
+
+
+## Refus d'un objet AVENTURE ([method FieldItemRules.check]) : « Impossible de l'utiliser ici. »
+## (jalon 12, dossier 15 §20 n° 34) ; vide pour OK.
+static func field_refusal_text(check: FieldItemRules.Check) -> String:
+	return "" if check == FieldItemRules.Check.OK else FIELD_REFUSAL_TEXT

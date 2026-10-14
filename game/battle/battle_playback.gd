@@ -47,6 +47,10 @@ extends RefCounted
 ## seulement. Patience : BIDE_UNLEASHED → le message, puis MOVE (élan physique) avant le DAMAGE
 ## de la riposte ; les autres événements de Patience : le message seulement. STATUS_DAMAGED de la brûlure : POISON aussi (voile orangé, [member
 ## BattleEvent.status]).
+## Jalon 12 : DRAINED_HP → HP (la barre du lanceur remonte), puis le message ; RESTED → HP, puis
+## STATUS_TAG (« DOR » se pose), puis le message ; TRAP_DAMAGED → DAMAGE (coup et barre), puis le
+## message ; SELF_KO → DAMAGE (la barre du lanceur tombe à zéro ; le FAINTED suit) ; TRAPPED,
+## TRAP_ENDED, MOVE_DISABLED, DISABLE_ENDED : le message seulement.
 ## Les phrases viennent de [BattleText] : rien n'est écrit ici.
 
 
@@ -125,6 +129,16 @@ static func beats(event: BattleEvent, texts: BattleText, data: PokemonData,
 		BattleEvent.Kind.WITHDRAWN:
 			result.append_array(messages)
 			result.append(BattleBeat.new(BattleBeat.Kind.WITHDRAW, event))
+		BattleEvent.Kind.DRAINED_HP:
+			result.append(BattleBeat.new(BattleBeat.Kind.HP, event))
+			result.append_array(messages)
+		BattleEvent.Kind.RESTED:
+			result.append(BattleBeat.new(BattleBeat.Kind.HP, event))
+			result.append(BattleBeat.new(BattleBeat.Kind.STATUS_TAG, event))
+			result.append_array(messages)
+		BattleEvent.Kind.TRAP_DAMAGED, BattleEvent.Kind.SELF_KO:
+			result.append(BattleBeat.new(BattleBeat.Kind.DAMAGE, event))
+			result.append_array(messages)
 		_:
 			result.append_array(messages)
 	return result

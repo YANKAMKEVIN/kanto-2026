@@ -20,14 +20,15 @@ extends RefCounted
 ## [b]pending_effects[/b] : effets de la capacité que le moteur ne gère [b]pas encore[/b],
 ## décrits pour ne pas les perdre ; le moteur les ignore. Chaînes libres en snake_case ; un
 ## suffixe `_N` = N % de chances. Vocabulaire actuel (le poison est joué depuis le jalon 9 :
-## effet [code]status[/code] de [MoveEffect], plus de `poison`, `poison_20` ni `poison_30`) :
+## effet [code]status[/code] de [MoveEffect], plus de `poison`, `poison_20` ni `poison_30` ;
+## jalon 12 : `drain`, `trap`, `disable`, `rest`, `self_ko`, `fixed_value` sont joués, genres
+## d'effet de [MoveEffect]) :
 ## - `burn_10` : 10 % de chances de brûler la cible ;
 ## - `paralysis`, `paralysis_10`, `paralysis_30` : paralyse la cible (toujours, 10 %, 30 %) ;
 ## - `confusion`, `confusion_10` : rend la cible confuse (toujours, 10 %) ;
 ## - `sleep` : endort la cible ;
 ## - `flinch_10`, `flinch_30` : 10 % ou 30 % de chances d'apeurer la cible (elle perd son
 ##   tour) ;
-## - `trap` : piège la cible 4 à 5 tours et lui retire 1/8 de ses PV max à chaque tour ;
 ## - `two_turn` : se charge au premier tour, frappe au second ;
 ## - `charge_def_up` : la Défense du lanceur monte d'un niveau pendant la charge ;
 ## - `rage` : Frénésie, l'Attaque du lanceur monte à chaque coup reçu tant qu'il l'utilise ;
@@ -95,3 +96,11 @@ func never_misses() -> bool:
 ## Dénominateur de la chance de critique (24 pour 1/24).
 func crit_denominator() -> int:
 	return CRIT_DENOMINATORS[clampi(crit_stage, 0, CRIT_DENOMINATORS.size() - 1)]
+
+
+## Le premier effet de sorte [param effect_kind] de la capacité, ou null (jalon 12).
+func effect_of(effect_kind: MoveEffect.Kind) -> MoveEffect:
+	for effect: MoveEffect in effects:
+		if effect.kind == effect_kind:
+			return effect
+	return null

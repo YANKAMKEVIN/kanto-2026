@@ -368,3 +368,33 @@ func test_talking_to_a_beaten_trainer_plays_his_after_line() -> void:
 	assert_signal_emitted_with_parameters(_runner, "dialogue_started", [&"mom"])
 	assert_eq(theo.get_facing(), Vector2i.DOWN, "il se tourne vers le joueur")
 	await _finish_dialogue()
+
+
+## Faux compagnon (jalon 11) : visible sur [member cell], sinon rien.
+class FakeCompanion:
+	extends RefCounted
+	var cell := Vector2i(3, 6)
+	var shown := true
+
+	func get_interaction_at(at: Vector2i) -> Interaction:
+		if not shown or at != cell:
+			return null
+		return Interaction.new(Interaction.Kind.TALK, at, &"companion", Vector2i.ZERO, self)
+
+
+## Jalon 11 : face au compagnon (qui n'occupe pas la grille), le bouton contextuel PARLER
+## s'allume ; l'appui émet companion_talked, sans dialogue ; caché, il n'y a plus de cible.
+func test_facing_the_companion_targets_it_and_talking_signals_it() -> void:
+	var companion := FakeCompanion.new()
+	_controller.set_companion(companion)
+	watch_signals(_controller)
+	_place(Vector2i(4, 6), Vector2i.LEFT)
+	await wait_process_frames(2)
+	assert_eq(_controller.get_target().source, companion)
+	assert_eq(_kinds.back(), Interaction.Kind.TALK)
+	await _press_interact()
+	assert_signal_emit_count(_controller, "companion_talked", 1)
+	assert_false(_runner.is_running(), "aucun dialogue lancé par le contrôleur")
+	companion.shown = false
+	await wait_process_frames(2)
+	assert_null(_controller.get_target(), "rentré : plus de cible")

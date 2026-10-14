@@ -31,6 +31,8 @@ signal close_requested
 signal team_member_selected(index: int)
 signal team_member_moved(from: int, to: int)
 signal team_favorite_toggled(index: int)
+## FAIRE SORTIR / RAPPELER touché sur le Pokémon [param index] (jalon 11).
+signal team_companion_toggled(index: int)
 ## Relais de l'écran Sac (6B) : onglet ouvert, favori basculé (appui long), tri choisi, UTILISER,
 ## cible choisie, UTILISER À NOUVEAU.
 signal bag_category_opened(category: StringName)
@@ -272,6 +274,7 @@ func show_team(view: TeamView, selected: int) -> void:
 		_team.member_selected.connect(team_member_selected.emit)
 		_team.member_moved.connect(team_member_moved.emit)
 		_team.favorite_toggled.connect(team_favorite_toggled.emit)
+		_team.companion_toggled.connect(team_companion_toggled.emit)
 		_team.use_item_requested.connect(_on_team_use_item)
 		_host.add_child(_team)
 		_team.hide_now()

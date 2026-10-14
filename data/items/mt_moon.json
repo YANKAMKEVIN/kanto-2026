@@ -1,0 +1,27 @@
+{
+	"escape_rope": {
+		"name": "Corde Sortie", "plural": "Cordes Sortie", "feminine": true,
+		"category": "field", "price": 550, "field_use": "escape_rope",
+		"description": "Ramène à l'entrée de la grotte."
+	},
+	"moon_stone": {
+		"name": "Pierre Lune", "plural": "Pierres Lune", "feminine": true,
+		"category": "field",
+		"description": "Une pierre étrange. Fait évoluer certains Pokémon."
+	},
+	"dome_fossil": {
+		"name": "Fossile Dôme", "plural": "Fossiles Dôme", "feminine": false,
+		"category": "key",
+		"description": "Fossile d'un Pokémon ancien à la carapace en dôme."
+	},
+	"helix_fossil": {
+		"name": "Fossile Nautile", "plural": "Fossiles Nautile", "feminine": false,
+		"category": "key",
+		"description": "Fossile d'un Pokémon ancien à la coquille en spirale."
+	},
+	"tm01": {
+		"name": "CT01 — Ultimapoing", "plural": "CT01 — Ultimapoing", "feminine": true,
+		"category": "tm", "tm": 1, "teaches": "mega_punch",
+		"description": "Un coup de poing d'une force incroyable."
+	}
+}
