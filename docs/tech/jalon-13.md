@@ -1130,6 +1130,7 @@ et de l'annexe A validée.
   sans effet de drain tant que `drain` manque.
 - **À retirer au T22** : voir la fiche T22.
 #### T15 — qa-mobile : **session 13.0** → Kevin
+- **VALIDÉ par Kevin le 2026-10-14** (QA S21 du 2026-10-14, rapport `build/qa/jalon13_t15/`).
 - Départ `switch_qa` : changement adverse vu (message n° 60, animation, une fois au plus, jamais
   piégé ni en Patience, jamais pour le témoin), 9 espèces au Pokédex, Vol-Vie, Bulles d'O, Acide.
   **CA** : rapport `build/qa/jalon13_t15/` ; validation de Kevin.
