@@ -46,7 +46,7 @@ Team Rocket : un jalon de respiration et d'exploration.
 | H-16 | Nom officiel **« Cave Taupiqueur »** partout | [V] |
 | H-17 | Validation S24 : **17A → 17B → 17C → 17D** | [V] |
 
-## Grilles fonctionnelles (2026-10-14, à valider par Kevin avec les vues générales)
+## Grilles fonctionnelles (validées par Kevin le 2026-10-14)
 
 - **Grilles (autorité de la géométrie ; en cas de contradiction, la grille gagne)** :
   `tools/plans/route_11.txt` (76 × 36), `digletts_cave.txt` (34 × 80), `route_2_east.txt` (16 × 48),
