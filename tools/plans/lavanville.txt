@@ -74,12 +74,12 @@ GRILLE 44 36
 24 TTTppppppppppppppppppppppppppppppppppppppppT
 25 TTTxxxxxxx...xxxxxxx.pppxxxxxxxxx...xxxxxxxT
 26 TTT.................xpppx..................T
-27 TTT.................xpppx..................T
+27 TTT..yy........nn...xpppx..yyy.............T
 28 TTT...yyy.....G.....xpppx...........yyy....T
-29 TTT.................xpppx...............G..T
+29 TTT.....xxxxxxx.....xpppx.....xxxxxxx...G..T
 30 TTT...nn............xpppx.....nn...........T
-31 TTT.............yy..xpppx.G................T
-32 TTT.................xpppx..yyyyyyyyyyyyyy..T
+31 TTT.............yy..xpppx.G...........nn...T
+32 TTT.G......yyy......xpppx..yyyyyyyyyyyyyyy.T
 33 TTT.................xpppx..yyyyyyyyyyyyyy..T
 34 TTTxxxxxxxxxxxxxxxxx.pppxxxxxxxxxxxxxxxxxxxT
 35 TTTTTTTTTTTTTTTTTTTTTpppTTTTTTTTTTTTTTTTTTTT

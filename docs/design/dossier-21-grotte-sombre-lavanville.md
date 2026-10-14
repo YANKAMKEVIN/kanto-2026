@@ -1,7 +1,9 @@
 # Dossier 21 — Route 9, Route 10, Grotte Sombre et Lavanville (jalon 18)
 
 > **CONSOLIDÉ — lot de textes §15 VALIDÉ par Kevin le 2026-10-14** (« Je valide tes recommandations
-> T-1 à T-56 ») ; **grilles §13.1 en attente de validation**.
+> T-1 à T-56 ») ; **grilles §13.1 VALIDÉES le 2026-10-14**
+> (« grilles ok », avec les squares du sud de Lavanville meublés et le raccord Route 10 ↔ Lavanville
+> aligné en colonnes 21..23).
 > Consolidé par Claude le 2026-10-14. Sources : V2 de Kevin avec ChatGPT
 > (`passes/j18-v2-chatgpt.md`, 7 décisions verrouillées), passe d'alignement de Claude
 > (`passes/j18-v2-alignement.md`, I-1 à I-26), réponses de Kevin du 2026-10-14 : **toutes les
@@ -488,7 +490,7 @@ Super Potion (J15). Grilles, vues peintes, données et prototype du voile avance
 sans Flash** ; sauvegarder à différents points (dont dans la grotte, Flash allumée) ; revenir en
 arrière ; entrer au rez-de-chaussée de la Tour **sans rien déclencher du J19**.
 
-### 13.1 Grilles v1 (à valider par Kevin)
+### 13.1 Grilles v1 (validées par Kevin le 2026-10-14)
 
 Contrôles verts : `tools/art/plan_check_route_9.py`, `plan_check_route_10.py`,
 `plan_check_grotte_sombre.py`, `plan_check_lavanville.py` (+ Tour), `plan_check_azuria.py`,
@@ -497,11 +499,11 @@ Contrôles verts : `tools/art/plan_check_route_9.py`, `plan_check_route_10.py`,
 | Carte | Grille | Taille | Remarque |
 |---|---|---|---|
 | Route 9 | `tools/plans/route_9.txt` | 80 × 36 | v2 : chemin serpentant, 107 pas, 6 virages (tronçon droit ≤ 26) ; couloir haut (Adam, Super Potion) et couloir bas (herbes, Jules) qui se rejoignent ; Lou et Bernard inévitables ; ≈ 6 min |
-| Route 10 | `tools/plans/route_10.txt` | 34 × 76 | secteurs nord (Centre, entrée nord) et sud (sortie sud → Lavanville, 33 pas) **non reliés** ; rivière et centrale derrière l'eau |
+| Route 10 | `tools/plans/route_10.txt` | 34 × 76 | secteurs nord (Centre, entrée nord) et sud (sortie sud → Lavanville, 39 pas, raccord (21..23, 75) aligné sur Lavanville) **non reliés** ; rivière et centrale derrière l'eau |
 | Grotte Sombre 1F | `tools/plans/grotte_sombre_1f.txt` | 56 × 49 | moitiés nord / sud jamais visibles l'une de l'autre (\|dy\| ≥ 12 ou \|dx\| ≥ 25) |
 | Grotte Sombre B1F | `tools/plans/grotte_sombre_b1f.txt` | 48 × 38 | colonne, paroi fendue, racines, flaque, passage étroit (Marcel) |
 | | | **4 568 cases** | chemin principal **179 pas**, 2 échelles à l'aplomb, 10 gravats obligatoires (15,8 % du sol) ; **≈ 6 min 50** |
-| Lavanville | `tools/plans/lavanville.txt` | 44 × 36 | avenue nord-sud, deux rues ; Tour 12 × 11 au nord-est ; Routes 8 et 12 « À venir » ; **sud de la ville un peu vide** (deux squares) |
+| Lavanville | `tools/plans/lavanville.txt` | 44 × 36 | avenue nord-sud, deux rues ; Tour 12 × 11 au nord-est ; Routes 8 et 12 « À venir » ; squares du sud meublés (bancs, parterres pâles, haies basses) ; raccord nord (21..23, 0) |
 | Tour Pokémon RDC | `tools/plans/tour_pokemon_rdc.txt` | 20 × 18 | 36 tombes dont 5 nommées, 6 bougies, escalier d'une case tenu par la Médium |
 | Azuria (est) | `tools/plans/azuria.txt` | 56 × 41 | arbre à couper en (53, 23) entre deux pans de clôture, raccord Route 9 en (55, 22..24) |
 

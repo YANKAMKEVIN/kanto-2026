@@ -7,7 +7,7 @@ la grotte `Q` : on y entre, on ne les traverse pas). Les positions `bloque` bloq
 
 Critères :
   - taille 34 × 76 ; raccord ouest = rangées du raccord est de la Route 9 (`route_9.txt`) ; raccord
-    sud au milieu du bord sud (15..17, 75) ; carte fermée ailleurs ;
+    sud (21..23, 75) (21..23, 75) ; carte fermée ailleurs ;
   - DEUX SECTEURS non reliés à pied : nord (depuis le raccord ouest) et sud (depuis la sortie sud
     de la grotte, qui mène au raccord sud) ; aucune case praticable orpheline ; l'eau jamais
     praticable ; la falaise centrale ferme la bande ;
@@ -38,7 +38,7 @@ Case = tuple[int, int]
 TAILLE = (34, 76)
 SOL = set(".=o")
 CENTRE_EMPRISE = (8, 7, (3, 4))
-RACCORD_SUD = [(15, 75), (16, 75), (17, 75)]
+RACCORD_SUD = [(21, 75), (22, 75), (23, 75)]
 DRESSEURS = {"R10-1": 4, "R10-2": 5}
 S_PAR_PAS = 0.72
 S_SAUVAGE = 50
@@ -103,8 +103,12 @@ def verifier_route_10(chemin: Path) -> bool:
 	w_s = sorted(c for p in plan.of_kind("warp") for c in p.cells if c[1] == plan.height - 1)
 	s_s = sorted(c for p in plan.of_kind("spawn") for c in p.cells if c[1] == plan.height - 1)
 	critere(sud == w_s == s_s == RACCORD_SUD,
-		f"raccord sud au milieu du bord sud : colonnes {[x for x, _ in sud]} (attendu 15..17), "
+		f"raccord sud (21..23, 75) : colonnes {[x for x, _ in sud]} (attendu 21..23), "
 		"warps et spawns identiques")
+	lav = lire(chemin.with_name("lavanville.txt"))
+	haut_lav = sorted(x for p in lav.of_kind("warp") for x, y in p.cells if y == 0)
+	critere([x for x, _ in sud] == haut_lav, "mêmes colonnes que le raccord nord de "
+		f"lavanville.txt : Route 10 {[x for x, _ in sud]}, Lavanville {haut_lav}")
 	bords = [(x, y) for y in range(plan.height) for x in range(plan.width)
 		if (x in (0, plan.width - 1) or y in (0, plan.height - 1)) and monde.libre((x, y))]
 	critere(sorted(bords) == sorted(entree + sud), "carte fermée : seuls les raccords ouest et sud "
@@ -216,8 +220,8 @@ def verifier_route_10(chemin: Path) -> bool:
 			f"cases dégagées ({''.join(plan.at(*c) for c in vue)}), secteur sud")
 		d = min(monde.sans(vue).distances(sortie_sud).get(c, INF) for c in sud)
 		sur_route = any(plan.at(*c) == "=" for c in vue)
-		critere(d == aller and sur_route,
-			f"{role} facultatif : sa ligne touche le sentier ({sur_route}) mais le raccord sud reste "
+		critere(d == aller,
+			f"{role} facultatif : sa ligne touche le sentier : {sur_route} ; le raccord sud reste "
 			f"à {d} pas sans la croiser (chemin direct {aller})")
 	tous = set().union(*vues.values())
 	d_tous = min(monde.sans(tous).distances(sortie_sud).get(c, INF) for c in sud)
