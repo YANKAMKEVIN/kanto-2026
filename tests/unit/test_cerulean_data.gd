@@ -277,14 +277,17 @@ func test_rival_cerulean() -> void:
 	assert_not_null(rival)
 	assert_eq([rival.name, rival.ai, rival.can_lose, rival.heal_after, rival.gives_exp],
 		["{rival}", BattleAI.SMART, false, false, true])
-	assert_eq([rival.prize_money, rival.prize_per_level, rival.prize_for(17)], [0, 35, 595])
+	assert_eq([rival.prize_money, rival.prize_per_level, rival.prize_for(16)], [0, 35, 560])
 	assert_eq([rival.start_message, rival.end_message, rival.allow_bag], [true, false, true])
 	assert_true(rival.moment_on_win, "§2.8 : Grand moment à la victoire seulement (T16)")
-	var expected := {&"bulbasaur": &"charmeleon", &"charmander": &"wartortle",
-		&"squirtle": &"ivysaur"}
+	# Équilibrage validé par Kevin le 2026-10-14 (T20, E-1 et E-2).
+	var expected := {
+		&"bulbasaur": [[&"pidgey", 15], [&"rattata", 14], [&"charmeleon", 15]],
+		&"charmander": [[&"pidgeotto", 16], [&"rattata", 14], [&"wartortle", 16]],
+		&"squirtle": [[&"pidgeotto", 16], [&"rattata", 14], [&"ivysaur", 16]],
+	}
 	for starter: StringName in expected:
-		assert_eq(_team(rival.team_for(starter)),
-			[[&"pidgeotto", 18], [&"rattata", 15], [expected[starter], 17]], String(starter))
+		assert_eq(_team(rival.team_for(starter)), expected[starter], String(starter))
 		for slot: TrainerSlot in rival.team_for(starter):
 			assert_eq(slot.moves.size(), 0, "capacités apprises au niveau")
 
@@ -302,7 +305,7 @@ func test_cerulean_gym() -> void:
 	assert_eq([misty.name, misty.ai, misty.prize_money, misty.card_name, misty.card_title],
 		["Ondine", BattleAI.SMART, 2100, "ONDINE", "Championne d'Arène d'Azuria"])
 	assert_eq([misty.start_message, misty.end_message, misty.allow_bag], [false, true, true])
-	assert_eq(_team(misty.team), [[&"staryu", 18], [&"starmie", 21]])
+	assert_eq(_team(misty.team), [[&"staryu", 18], [&"starmie", 19]])  # E-3 (T20)
 	assert_eq(misty.team[0].moves, [&"tackle", &"water_gun"] as Array[StringName])
 	assert_eq(misty.team[1].moves, [&"tackle", &"water_gun", &"harden", &"bubble_beam"]
 		as Array[StringName])

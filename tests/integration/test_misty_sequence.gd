@@ -269,7 +269,7 @@ func test_misty_data_and_texts_match_the_validated_lot() -> void:
 	assert_eq([trainer.card_name, trainer.card_title], ["ONDINE", "Championne d'Arène d'Azuria"])
 	var team := library.build_team(&"cerulean_gym_misty", &"charmander", GameRng.new(1))
 	assert_eq(team.get_all().map(func(p: Pokemon) -> Array: return [p.species_id, p.level]),
-		[[&"staryu", 18], [&"starmie", 21]])
+		[[&"staryu", 18], [&"starmie", 19]])  # E-3 (T20)
 	var dialogues := DialogueLibrary.new()
 	assert_true(dialogues.load_dir(), "\n".join(dialogues.get_errors()))
 	var expected: Dictionary[StringName, Array] = {

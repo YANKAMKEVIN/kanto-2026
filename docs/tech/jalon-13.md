@@ -813,6 +813,8 @@ du jeu `exp_calc.gd` : ⌊b × N × 1,5 / 7⌋ contre un Dresseur, b = XP de bas
   18 / 21** (RB).
 - **Pont 10–18** : en dessous du joueur, croissant ; l'XP du pont (≈ 1 500 au total) prépare Ondine.
   **Garder.**
+- **Vérification réelle faite (T20) : `docs/tech/jalon-13-equilibrage.md`** — rival n° 3 et Ondine
+  plus durs que cette estimation (Bulbizarre bloqué par le rival, Salamèche et Carapuce par Ondine).
 - **Vérification réelle** (T20, information pour Kevin, aucune donnée changée sans lui) : scénario
   `tools/sim/cerulean_scenario.json` (T9) joué par `simulate_mt_moon.gd -- --scenario …` avec les
   équipes de sortie du scénario du J12, la **vraie partie de Kevin** (`--save`), l'IA qui change, les
@@ -1281,14 +1283,47 @@ et de l'annexe A validée.
     `11_ct_explication`).
   - Réserve : `beaten_nugget_rocket` (réplique n° 41 b) n'est levé qu'au T22.
 
-#### T20 — architecte : équilibrage — après T19
+#### T20 — architecte : équilibrage — après T19 — **fait (2026-10-14)**
+- **Décisions de Kevin (2026-10-14)** : E-1 oui (Roucoups 16, Rattata 14, starter évolué 16), E-2 option (g) contre Bulbizarre (Roucool 15, Rattata 14, Reptincel 15), E-3 option (b) (Stari 18, Staross 19, capacités RB) ; IA `smart` et changement gardés. Appliqué dans `data/trainers/rival.json` et `cerulean_gym.json`.
 - §2.22 : simulation ; **information pour Kevin**, aucune donnée changée sans lui.
+- **Fait** (branche `j13-t20` depuis `jalon-13` à `748b317`) : résultats, seuils et
+  recommandations dans **`docs/tech/jalon-13-equilibrage.md`** (1 000 graines par ligne).
+  - Partie de Kevin (QA 13.0) **à Jadielle** (Salamèche N8) : inutilisable comme départ ; équipes
+    estimées (sortie du Mont Sélénite simulée au J12 : starter **17–18**, 1 à 2 niveaux sous le
+    §2.22) + équipe aux espèces de Kevin.
+  - **Rival n° 3** : Salamèche (avec Férosinge) et Carapuce 87–100 % (attentif) ; **Bulbizarre
+    0 % jusqu'au N20 (combat obligatoire : risque de blocage)** ; Salamèche sans Férosinge 2–35 %
+    au N17–18. **Ondine** : Bulbizarre ≈ 90 % ; **Salamèche et Carapuce 0 %** aux niveaux
+    d'arrivée, même après la Route 24 nord (Carapuce : N22 ; Salamèche : Mystherbe et N22). Pont :
+    ≈ 27 tours, usure sans blocage.
+  - **Recommandation finale, IA `smart` gardée** (§5 bis du rapport, dossier 09 §14) : rival
+    (b) Roucoups 16, Rattata 14, starter 16, et contre Bulbizarre (h) Roucool 15, Rattata 14,
+    Salamèche 15 (≥ 76 % au N18 pour chaque starter) ; Ondine (b) Staross N19 (N20 : 49–84 %,
+    N22 : ≥ 97 %, Salamèche avec Mystherbe). Kevin tranche (Q-T20-1 à 3).
+  - Première passe (rappel, écartée : contredit `smart`) : rival en IA `random` + Roucoups N16
+    (Herbizarre 18 / 20 : 54–73 / 93–98 %) ; Ondine en IA `random` (Carabaffe 20 : 52–69 %,
+    Reptincel 20 + Mystherbe 16 : 92–95 %) ; garder le pont, la Route 4 et l'Arène.
+  - Outil (`tools/simulate_mt_moon.gd`) : l'IA des Dresseurs à `switch` change de Pokémon comme en
+    jeu ; joueur `expert` ; tentatives par Dresseur avec reprises ; niveau du meneur avant chaque
+    étape. Scénarios : `cerulean_scenario.json` (`switch`, 8 équipes, 6 variantes à reprises),
+    `cerulean_thresholds.json` (nouveau, seuils). Test : `test_simulate_cerulean` (+2, fixture
+    `tests/fixtures/sim/cerulean_t20.json`).
 
 #### T21 — qa-mobile : **session 13B** → Kevin
+- **VALIDÉ par Kevin le 2026-10-14** (fonctionnel ; difficulté réglée par T20).
 - Rival inévitable, défaite → Centre (sans argent perdu) → n° 30 puis n° 31, victoire → départ,
   **un seul** Grand moment ; Ondine au pont, invitation, départ ; **fermeture forcée** entre les deux
   scènes → reprise ; Arène : guide, Ondine (carte, changement de Pokémon), défaite → reprise n° 36,
   victoire → « BADGE CASCADE », écran Dresseur, CT11 (Sac CT, apprentissage) ; rattrapage.
+- **Fait le 2026-10-14 (S21, ~45 min, branche `j13-t21-qa`)** : rapport `build/qa/jalon13_t21/`
+  (`RESUME.txt`, captures). Tests 4458/4458, import propre, APK 140 Mo, aucun crash, 59,5 fps de moyenne.
+  **OK** : rival inévitable (« ! », recentrage lisible), défaite → réveil → n° 30 puis « Te revoilà »,
+  victoire → départ + **un seul** Grand moment, rival qui change de Pokémon, Ondine au pont, **reprise
+  après fermeture forcée**, Arène (guide, carte sans portrait, Stari → Staross), défaite → « Prêt à
+  replonger ? », victoire → bilan → « BADGE CASCADE » → CT11 (Sac CT, Carapuce apprend Bulles d'O),
+  écran Dresseur (Roche + Cascade), rattrapage `cascade_no_tm`. **Non vérifié** : n° 31 ; argent après
+  défaite ; « jamais pendant Patience » (aucun rappel adverse provoqué). Vers Kevin : Staross 21 écrase
+  une équipe 22/20/20 (T20). Sauvegarde de Kevin restaurée (sha256 identiques).
 
 #### T22 — constructeur-monde : Pont Pépite, recruteur, Route 24 nord, fin (13C) — après T19
 - §2.12, §2.13, §2.14 (nord), §2.16 (deux entrées) ; **retrait de `qa_switch_j13`** et de son départ ;
@@ -1456,7 +1491,7 @@ niveaux) pour la simulation (T20) et la QA de reprise du sas (T18).
 | Élément | Ce que le J13 livre | Écart avec le contrat du J16 |
 |---|---|---|
 | Badge Cascade | drapeau `badge_cascade` (déjà déclaré dans `data/badges.json`), posé par l'étape `badge` existante | aucun |
-| Rival n° 3 (`rival_cerulean`) | Roucoups Nv. 18, **Rattata** Nv. 15, starter évolué Nv. 17 (avantage de type) ; `moment: "win"`, `switch: true` (T19) | **pas d'Abra** : arbitrage **D-6** validé par Kevin le 2026-10-11 (Abra n'aurait que Téléport ; il pourra arriver directement en **Kadabra** plus tard, comme au S.S. Anne de Rouge/Bleu) ; Abra et la règle des évolutions par échange sont reportés au J14 (**D-9**). Selon sa propre règle, c'est le contrat du J16 qui se corrige. |
+| Rival n° 3 (`rival_cerulean`) | Roucoups Nv. 16, **Rattata** Nv. 14, starter évolué Nv. 16 (contre Bulbizarre : Roucool 15, Rattata 14, Reptincel 15 ; T20, validé le 2026-10-14) (avantage de type) ; `moment: "win"`, `switch: true` (T19) | **pas d'Abra** : arbitrage **D-6** validé par Kevin le 2026-10-11 (Abra n'aurait que Téléport ; il pourra arriver directement en **Kadabra** plus tard, comme au S.S. Anne de Rouge/Bleu) ; Abra et la règle des évolutions par échange sont reportés au J14 (**D-9**). Selon sa propre règle, c'est le contrat du J16 qui se corrige. |
 | Rattata du rival | présent dès le combat n° 3, avant Lavanville (dossier 06 §6) | aucun |
 
 ## 8. Premières tâches à lancer maintenant (si Q-1 est accepté)

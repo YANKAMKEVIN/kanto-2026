@@ -33,16 +33,16 @@
 		"end_message": false, "start_message": true, "bag": true, "moment": "win", "switch": true,
 		"team_by_starter": {
 			"bulbasaur": [
-				{ "species": "pidgeotto", "level": 18 }, { "species": "rattata", "level": 15 },
-				{ "species": "charmeleon", "level": 17 }
+				{ "species": "pidgey", "level": 15 }, { "species": "rattata", "level": 14 },
+				{ "species": "charmeleon", "level": 15 }
 			],
 			"charmander": [
-				{ "species": "pidgeotto", "level": 18 }, { "species": "rattata", "level": 15 },
-				{ "species": "wartortle", "level": 17 }
+				{ "species": "pidgeotto", "level": 16 }, { "species": "rattata", "level": 14 },
+				{ "species": "wartortle", "level": 16 }
 			],
 			"squirtle": [
-				{ "species": "pidgeotto", "level": 18 }, { "species": "rattata", "level": 15 },
-				{ "species": "ivysaur", "level": 17 }
+				{ "species": "pidgeotto", "level": 16 }, { "species": "rattata", "level": 14 },
+				{ "species": "ivysaur", "level": 16 }
 			]
 		}
 	}
