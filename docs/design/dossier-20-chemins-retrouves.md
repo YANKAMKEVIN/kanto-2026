@@ -46,6 +46,27 @@ Team Rocket : un jalon de respiration et d'exploration.
 | H-16 | Nom officiel **« Cave Taupiqueur »** partout | [V] |
 | H-17 | Validation S24 : **17A → 17B → 17C → 17D** | [V] |
 
+## Grilles fonctionnelles (2026-10-14, à valider par Kevin avec les vues générales)
+
+- **Grilles (autorité de la géométrie ; en cas de contradiction, la grille gagne)** :
+  `tools/plans/route_11.txt` (76 × 36), `digletts_cave.txt` (34 × 80), `route_2_east.txt` (16 × 48),
+  `route_2_east_gate.txt` (15 × 10) ; retouches de la Route 2 sud dans `route_2_j17_retouches.txt`
+  (`route_2.txt` n'est modifié qu'à l'implémentation). Contrôle : `tools/art/plan_check_j17.py`
+  (tous les critères passent). Plans : `reference/route-11-plan-v1.png`,
+  `cave-taupiqueur-plan-v1.png`, `route-2-est-plan-v1.png` (+ versions `-annote-`).
+- **Raccords** : Carmin (63, 11..13) ↔ Route 11 (0, 11..13) ; bouche de la Cave (15..16, 7) ↔ Cave
+  (15..16, 79) ; Cave (16..17, 0) ↔ Route 2 est (6..7, 3) ; Route 2 est (0, 43..44) ↔ Route 2 sud
+  (41, 43..44) ; porte du poste (11, 11).
+- **Mesures** : Carmin → bouche de la Cave 20 pas ; Cave 96 pas (un seul sol de gravats
+  obligatoire) ; bouche nord → poste 12 pas **sans Coupe** ; bouche nord → bord ouest 45 pas avec
+  Coupe ; Carmin → Ronflex 71 à 83 pas selon le parcours (trois parcours : herbes au nord, chemin
+  central, digue au sud).
+- **Écarts avec le §3 [D]** : le goulet d'Arthur (D2) est **à l'ouest** de la bouche de la Cave, pour
+  qu'il soit inévitable vers la Cave comme vers l'est (bouche en haut de l'écran d'arrivée : à vérifier
+  sur S24) ; la clairière de FUTUR A occupe **x 0..3, y 16..22** (les colonnes 4..6 portent l'arbuste
+  et la retouche peinte, et (3, 16) reste forêt pour qu'on ne la rejoigne pas par la prairie de la
+  rangée 15 sans Coupe) ; Ronflex en (66..67, 14..15) dans un goulet de 2 cases.
+
 ## 1. Hors périmètre
 
 Route 9, Route 10, Tunnel Roche, Lavanville (J18) ; Route 12 et réveil de Ronflex (jalon de la Poké
