@@ -52,7 +52,9 @@ extends RefCounted
 ## CHARGE_BROKEN → « charge_<texts>_broken » ([member MoveEffect.texts] de l'effet CHARGE de la
 ## capacité [member BattleEvent.move_id] ; pas de phrase sans modèle) ; CHARGE_RELEASED : pas de
 ## phrase (le MOVE_USED suit) ; DODGED → « dodged » ; BALL_BLOCKED → « ball_blocked » ;
-## TELEPORTED → « teleported » ; NOTHING_HAPPENED → « nothing_happened ».
+## TELEPORTED → « teleported » ; NOTHING_HAPPENED → « nothing_happened ». Super Bonbon (T18b,
+## n° 62) : « rare_candy_level » ({level} : le niveau atteint), sans événement du moteur (le voile
+## du Sac le demande à [method line_for]).
 ## Changement de Pokémon (jalon 7) : WITHDRAWN → « withdrawn » (« Reviens, Salamèche ! ») ; le
 ## Pokémon envoyé reprend « sent_out_player ». Côté adverse (jalon 13, IA qui change, §21 n° 60) :
 ## « withdrawn_foe » (« {trainer} rappelle {pokemon} ! »), puis « sent_out_foe ». Le panneau ÉQUIPE lit, sans événement
@@ -131,7 +133,7 @@ const TEMPLATE_IDS: Array[StringName] = [
 	&"move_disabled", &"disable_ended", &"rested", &"switch_reason_trapped",
 	&"move_disabled_label",
 	&"charge_dig_start", &"charge_dig_broken", &"dodged", &"ball_blocked", &"teleported",
-	&"nothing_happened",
+	&"nothing_happened", &"rare_candy_level",
 ]
 ## Entre deux gains de statistiques du bilan (« PV +2 · Attaque +1 »).
 const SUMMARY_SEPARATOR: String = " · "

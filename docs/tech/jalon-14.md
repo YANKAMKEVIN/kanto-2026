@@ -986,6 +986,24 @@ et de l'annexe A validée.
 
 #### T18b — architecte puis ui-mobile : Super Bonbon dans le Sac — après fusion de **J12 T20, T23, T24**
 - §2.6 (parcours, overlay, évolution) ; départ `rare_candy_qa` ; captures.
+- **Fait (2026-10-14, branche `j14-t18b`)** : `field_use: "rare_candy"` (`items_j14.json`,
+  `ItemData.FIELD_USE_RARE_CANDY`, validé par `ItemLibrary`, `FieldItemRules` OK partout),
+  `RareCandy.is_candy` / `item_use_check`, choix du Pokémon (`BagQuery._candy_targets` : « Sans
+  effet » au N100, « Ce Pokémon est K.O. », « Il n'en reste plus », phrases de refus des soins),
+  `MenuDirector.rare_candy_requested` / `finish_rare_candy`, déroulé dans Boot
+  (`_on_rare_candy_requested`) : bonbon retiré et niveau gagné dans le même appel, joueur bloqué
+  (`RARE_CANDY` : partie non stable, rien d'écrit pendant le déroulé), voile `TmLearnOverlay` au-dessus
+  du menu avec n° 62 (modèle `rare_candy_level` de `messages.json`), capacités par
+  `MoveLearnPrompt.teach`, puis évolution par `EvolutionDirector.play` (candidat **annulable**).
+  Départ `rare_candy_qa` (maison de Léo, 5 bonbons, Abra 15, Papilusion 20 à 4 capacités,
+  Roucarnage 100, Rattata K.O.). Tests : `test_rare_candy_bag` (5), `test_rare_candy` (5, vrai
+  Boot), `test_cape_debug_starts`, `test_field_item_rules`, `test_item_library` mis à jour.
+  Sauvegarde : rien de nouveau (niveau, XP, capacités, espèce déjà dans `party`). Captures Mac :
+  `build/captures/jalon14_t18b/` (`tools/capture_rare_candy_t18b.gd`). **Défauts** : sans
+  évolution, retour au Sac (choix du Pokémon rafraîchi, autosave à la fermeture) ; avec évolution,
+  menu fermé puis retour au monde, comme la Pierre Lune (autosave après l'évolution) ; aucune
+  barre de résultat après le déroulé (le voile a déjà dit n° 62) ; retour Android et touche menu
+  absorbés pendant le voile ; `TmLearnOverlay` réutilisé tel quel (pas renommé).
 
 #### T19 — qa-mobile : **session 14A** → Kevin
 - Vraie route depuis la Route 24 (ou départ `route_25`) : D1, D2 inévitables, D3–D6, Abra,

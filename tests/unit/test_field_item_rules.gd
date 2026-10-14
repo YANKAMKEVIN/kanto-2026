@@ -40,9 +40,15 @@ func test_escape_rope_data() -> void:
 	var stone := _items.get_item(&"moon_stone")
 	assert_true(stone.has_field_use())
 	assert_eq(stone.field_use, ItemData.FIELD_USE_EVOLUTION_STONE)
+	# Le Super Bonbon (jalon 14, T18b) : un Pokémon cible ([RareCandy]).
+	var candy := _items.get_item(&"rare_candy")
+	assert_eq(candy.field_use, ItemData.FIELD_USE_RARE_CANDY)
+	assert_true(RareCandy.is_candy(candy))
+	assert_false(RareCandy.is_candy(stone))
+	assert_false(StoneUse.is_stone(candy))
 	# Aucun autre objet n'a d'usage d'exploration.
 	for id: StringName in _items.get_ids():
-		if id != &"escape_rope" and id != &"moon_stone":
+		if id not in [&"escape_rope", &"moon_stone", &"rare_candy"]:
 			assert_eq(_items.get_item(id).field_use, &"", "%s : aucun usage" % id)
 
 
@@ -67,6 +73,14 @@ func test_field_use_is_validated() -> void:
 	good.merge({"category": "field", "field_use": "evolution_stone"}, true)
 	assert_true(library.add_from_dict({&"stone": good}, "t"))
 	assert_eq(library.get_item(&"stone").field_use, ItemData.FIELD_USE_EVOLUTION_STONE)
+	var candy: Dictionary = base.duplicate()
+	candy.merge({"category": "field", "field_use": "rare_candy"}, true)
+	assert_true(library.add_from_dict({&"candy": candy}, "t"), "jalon 14 : « rare_candy »")
+	assert_eq(library.get_item(&"candy").field_use, ItemData.FIELD_USE_RARE_CANDY)
+	var not_field: Dictionary = base.duplicate()
+	not_field.merge({"category": "heal", "heal_amount": 20, "field_use": "rare_candy"}, true)
+	assert_false(library.add_from_dict({&"bad_candy": not_field}, "t"), "réservé à AVENTURE")
+	assert_push_error_count(cases.size() + 1)
 
 
 func test_validated_texts_are_the_dossier_lot() -> void:
@@ -114,6 +128,10 @@ func test_items_without_field_use() -> void:
 	assert_eq(FieldItemRules.check(stone, &"route_3", _caves), FieldItemRules.Check.OK,
 		"pierre : partout en exploration (le Pokémon se choisit ensuite, T23)")
 	assert_false(FieldItemRules.is_targetless(stone), "la pierre a une cible")
+	var candy := _items.get_item(&"rare_candy")
+	assert_eq(FieldItemRules.check(candy, &"route_25", _caves), FieldItemRules.Check.OK,
+		"Super Bonbon (T18b) : partout en exploration")
+	assert_false(FieldItemRules.is_targetless(candy), "le Super Bonbon a une cible")
 
 
 func test_escape_target_from_every_floor() -> void:

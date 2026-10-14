@@ -15,7 +15,7 @@
 	},
 	"rare_candy": {
 		"name": "Super Bonbon", "plural": "Super Bonbons", "feminine": false, "category": "field",
-		"price": 0,
+		"price": 0, "field_use": "rare_candy",
 		"description": "Un bonbon plein d'énergie. Fait monter un Pokémon d'un niveau."
 	}
 }
