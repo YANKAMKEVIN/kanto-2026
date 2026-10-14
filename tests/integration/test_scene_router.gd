@@ -578,7 +578,7 @@ func _chain_paths(ids: Array[StringName]) -> PackedStringArray:
 func _await_prefetches() -> void:
 	var deadline := Time.get_ticks_msec() + int(TIMEOUT * 1000.0)
 	for path: String in _router._prefetching.keys():
-		while ResourceLoader.load_threaded_get_status(path) \
+		while BackgroundLoader.status(path) \
 				== ResourceLoader.THREAD_LOAD_IN_PROGRESS and Time.get_ticks_msec() < deadline:
 			await get_tree().process_frame
 
