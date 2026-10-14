@@ -8,7 +8,7 @@
 
 ---
 
-Tu m'aides à **consolider le dossier 16** de *Kanto 2026* (S.S. Anne + Arène de Major Bob), à partir
+Tu m'aides à **consolider le dossier du jalon 16** de *Kanto 2026* (S.S. Anne + Arène de Major Bob), à partir
 de ta V2 et de la passe d'alignement de Claude, que je te joins. Claude implémente à partir de ton
 dossier : tout ce que tu ne tranches pas, il devra me le redemander. Ne rouvre **aucune** décision
 listée ci-dessous.
@@ -57,12 +57,12 @@ Tranchés le 2026-10-11 (détail : passe d'alignement, §8). À appliquer tels q
   erreur remet tout à zéro. Interrupteurs cachés dans des objets à fouiller bien lisibles, sans indice
   qui désigne le bon ; nouveau tirage à chaque entrée tant que ce n'est pas résolu ; résolu = ouvert
   pour toujours.
-- **G-9** : au plus **3 espèces nouvelles** (Abra, Kadabra + au plus une de marin) ; **10 Dresseurs**
+- **G-9** : au plus **3 espèces nouvelles** (Kadabra, Abra s'il n'existe pas encore après le J14, + au plus une de marin) ; **10 Dresseurs**
   sur le navire, au plus 2 inévitables hors rival.
 - **G-10** : confirmation à la passerelle après la CS01 : **PARTIR** / **PAS ENCORE** ; avant, sortie
   libre.
 
-## Ce que j'attends : le dossier 16 complet
+## Ce que j'attends : le dossier du J16 complet
 
 1. **Intention** en deux phrases.
 2. **Contrat d'entrée** (G-1) mot pour mot : ce que J13–J15 doivent livrer (drapeaux, objets,
@@ -91,6 +91,7 @@ Tranchés le 2026-10-11 (détail : passe d'alignement, §8). À appliquer tels q
 13. **Cas limites** : défaite contre le rival puis Corde Sortie ; application fermée pendant la
     confirmation, pendant la scène de départ, juste après ; CS01 obtenue puis sortie sans confirmer ;
     Pokémon compatible déposé au stockage ; équipe entièrement incompatible devant l'arbuste ;
+    CS01 obtenue sans le Badge Cascade (arbuste de l'Arène, retour après Ondine) ;
     interrupteur trouvé puis carte quittée ; défaite contre Major Bob après le puzzle.
 14. **Découpage S24** : 16.0 à 16F (le départ, 16D, est validé seul).
 15. **Textes à valider**, regroupés et numérotés.
