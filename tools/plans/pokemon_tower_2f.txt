@@ -1,0 +1,72 @@
+# Tour Pokémon 2F — grille fonctionnelle (jalon 19, lot 19.0, dossier 22 §4 à §9, conçue le
+# 2026-10-14). Source UNIQUE de la géométrie de la carte `pokemon_tower_2f` : contrôle
+# (tools/art/plan_check_tour_pokemon.py, qui relie les étages 2F à 6F par leurs escaliers) et, plus
+# tard, plan en aplats et outil de construction. Un changement de composition se fait ICI d'abord.
+#
+# 20 × 18 cases (dossier 22 §4.1, comme Rouge/Bleu) ; nord en haut ; x = colonne 0..19, y = rangée
+# 0..17. Géométrie reprise de Rouge/Bleu (pret/pokered, PokemonTower2F : escaliers en x = 3 et
+# x = 18, rangée 9), nettoyée de ses défauts d'extraction (cases isolées, trous de rendu).
+# Valeur par défaut (convention des GROTTES, pas celle de build_painted_interiors.gd) : les murs
+# sont DANS la grille, d'épaisseur variable (2 rangées au nord, parois en biais, massifs
+# intérieurs), la carte étant plus proche d'une grotte construite que d'une pièce 15 × 10 à mur
+# du fond sur 3 rangées ; le peintre habille les parois par-dessus. Bord de carte toujours
+# mur. Les tombes et stèles sont des obstacles bas, jamais des murs de découpe.
+#
+# Légende (commune aux étages 2F à 6F) :
+#   # mur (bloqué)                      . sol de la Tour (praticable ; terrain `floor`, rencontres
+#                                         de spectre dès le 3F)
+#   T tombe (bloquée, basse)            S stèle à bougie (bloquée ; halo additif au battement lent)
+#   Z zone purifiée (5F seulement : 2 × 2, praticable, ni rencontre ni vue de Dresseur)
+#   U escalier qui monte                V escalier qui descend
+#     (warp STEP_ON comme une porte ; la paire est donnée par paire= de la position « escalier »,
+#     l'arrivée par le « spawn » de même paire sur l'autre étage, sur la case voisine de
+#     l'escalier ; paires T12 (1F, J18), T23, T34, T45, T56, T67 (7F, hors J19))
+# Personnages, objets, déclencheurs et repères sont dans POSITIONS, pas dans la grille.
+#
+# Format : ligne PRATICABLES, section GRILLE (« NN » + espace + 20 caractères), puis POSITIONS.
+# Ce qui est propre au 2F : le RIVAL N° 5 attend au bord du seul passage de la rangée 5 vers
+# l'escalier du 3F (la case voisine est murée en (14..15, 4), (13, 6) : on ne le contourne pas) ;
+# ses cases de déclenchement sont (15, 5) (venant de l'est) et (14, 6) (venant du sud), comme RB.
+# Il repart par l'escalier du bas (V, en (18, 9)). Une Exorciste qui ne combat pas se tient à
+# l'ouest, près de l'escalier du 3F.
+
+PRATICABLES .ZUV
+
+GRILLE 20 18
+00 ####################
+01 ####################
+02 #########.....######
+03 #########.....TT####
+04 ########......######
+05 #####............###
+06 ####....######....##
+07 ###.....##.........#
+08 ###...TT##..TTTT...#
+09 ###U..TT##..TTTT..V#
+10 ###.....##.........#
+11 ####....##........##
+12 ############.....###
+13 ############..######
+14 ######S........S####
+15 ########......######
+16 ####################
+17 ####################
+FIN
+
+# POSITIONS — une ligne par élément :
+#   identifiant  type  cases  bloque|libre  [cle=valeur ...]  # commentaire
+# Types : escalier (paire=, sens=monte|descend, vers=carte), spawn (paire=, facing=), rival,
+# dresseur (Exorcistes : prenom=, facing=, sight=2..3, inevitable=oui|non), pnj (combat=non),
+# objet_visible (item=), declencheur (role=), recul, zone (zone purifiée).
+# Sécurité : « sight » est la portée maximale ; la vue s'arrête à la première case bloquée.
+POSITIONS
+escalier_bas         escalier       18,9         libre   paire=T12 sens=descend vers=pokemon_tower_1f  # V ; le rival repart par là
+arrivee_T12          spawn          17,9         libre   paire=T12 facing=left  # arrivée depuis le 1F (case voisine de l'escalier)
+escalier_haut        escalier       3,9          libre   paire=T23 sens=monte vers=pokemon_tower_3f  # U, à gauche : zigzag RB
+arrivee_T23          spawn          4,9          libre   paire=T23 facing=right  # retour depuis le 3F
+tower_rival          rival          14,5         bloque  role=R1 facing=left inevitable=oui scene=oui  # rival n° 5 (dossier 22 §7), de dos au passage jusqu'au déclenchement
+declencheur_rival    declencheur    15,5;14,6    libre   role=R1  # (15, 5) venant de l'est, (14, 6) venant du sud ; actif tant que rival_tower_won n'est pas posé
+exorciste_calme      pnj            3,7          bloque  role=calm facing=right combat=non  # Exorciste qui ne combat pas : parle du Scope Sylphe
+repere_stele_o       repere         6,14         bloque  role=stele  # stèle à bougie, pièce basse
+repere_stele_e       repere         15,14        bloque  role=stele
+FIN

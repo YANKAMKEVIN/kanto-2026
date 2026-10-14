@@ -187,7 +187,8 @@ dans le Sac, le mode normal revient tout seul.
   3. **combat SPECTRE scripté**, selon les règles du §6.2. L'espèce réelle est Ossatueur N30, mais
      **elle n'est jamais nommée, montrée ni enregistrée** au J19 ;
   4. à la fin du combat (fuite, ou défaite impossible), le joueur est **repoussé d'une case** vers le
-     sud, sur le modèle de `route_3_guard`. Le déclencheur se réarme.
+     nord, à l'opposé de l'escalier qui est en bas de la carte (grille : déclencheur (10, 16), recul
+     (10, 15) ; RB repoussait d'une case à droite), sur le modèle de `route_3_guard`. Le déclencheur se réarme.
 - **Au J20**, avec le Scope, la même scène bascule vers la révélation. C'est la session J20 qui la
   conçoit.
 
@@ -400,7 +401,7 @@ Rien de nouveau au J19.
 
 | Sous-jalon | Contenu | Validation |
 |---|---|---|
-| **19.0** | Grilles `tools/plans/pokemon_tower_2f.txt` à `6f.txt` et leur contrôle, vues peintes, données (espèces, capacités, Exorcistes, rival), lot d'art | Kevin valide les grilles et les vues, comme aux jalons précédents |
+| **19.0** | Grilles `tools/plans/pokemon_tower_2f.txt` à `6f.txt` (**v1 faites le 2026-10-14**, contrôle `tools/art/plan_check_tour_pokemon.py` OK, à valider par Kevin) et leur contrôle, vues peintes, données (espèces, capacités, Exorcistes, rival), lot d'art | Kevin valide les grilles et les vues, comme aux jalons précédents |
 | **19A** | **Mode spectre** complet : rencontres `floor`, combat SPECTRE, combat scripté, retour en arrière. Exorcistes et combats contre Fantominus et Spectrum. Départ de débogage `tower_ghost_qa`. | S24 |
 | **19B** | Cartes 2F à 6F, gardienne, rival n° 5, zone purifiée, blocage du 6F, objets, variantes de Lavanville, panneau, rumeur. **QA de bout en bout** (départ `tower_qa`) et tests de sauvegarde. | S24 |
 
