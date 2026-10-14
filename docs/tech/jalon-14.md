@@ -972,7 +972,7 @@ et de l'annexe A validée.
   D1 à D4, promeneur, vieil homme, 2 Roucool, O1 à O3, panneaux et O4 (coquillage + point d'examen,
   `build_route_25.gd` relancé), objectif `go_cerulean_cape` en tête. **Replis** : D5, D6 non placés
   (Abo ; répliques n° 50–51 déjà dans les dialogues, listées « en attente » dans le test) ; O4 sans
-  `unless_flags` (2e examen : « Il n'y a plus rien sous ce coquillage. », texte par défaut à valider) ;
+  `unless_flags` (point d'examen retiré après la trouvaille, modèle du J12 ; texte n° 72 retiré par Kevin le 2026-10-14) ;
   table Roucool 38 / Chenipan 27. Tests : `test_route_25_trainers`, `test_route_25_life` ; suite 4126/4126.
 
 #### T17 — constructeur-monde : scène de Léo (14A) — **maintenant**, après T5, T6, T12, T14
@@ -1206,3 +1206,9 @@ effet en attente (convention du J12) ; `{pokemon}`, `{player}`.
 
 - Titre « Léo a retrouvé forme humaine » · détail vide · lieu « Cap d'Azuria » (nom de la zone,
   comme pour le badge) — la ligne se lit « Cap d'Azuria : Léo a retrouvé forme humaine. ».
+
+## Décisions de Kevin du 2026-10-14 (questions de T23)
+
+1. Texte n° 72 du coquillage : **retiré** (le point d'examen disparaît après la trouvaille, modèle du J12).
+2. Objectif « rejoindre le Cap d'Azuria. » : **affiché après le Badge Cascade et le Pont Pépite** (défaut de T23 retenu ; le joueur peut aller chez Léo avant le badge, seul l'objectif attend).
+3. Apparence de D5 (Jeune Dresseur Adam) : **`camper`** retenu (provisoire, faute de modèle « Jeune Dresseur ♂ »).

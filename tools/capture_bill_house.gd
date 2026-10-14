@@ -2,6 +2,7 @@ extends SceneTree
 ## Captures de la scène de Léo (jalon 14 T17), vrai Boot, vrais PNJ et scènes :
 ##   godot --path . --resolution 2340x1080 -s res://tools/capture_bill_house.gd
 ## Écrit dans build/captures/jalon14_t17/ : 01_melofee (accueil), 02_lueur (lueur sur l'écran),
+## 02a_lueur_module, 02b_lueur_console,
 ## 03_flash (éclair), 04_leo_passe_bateau (remise du Passe Bateau), 05_leo_humain.
 
 const OUT := "res://build/captures/jalon14_t17/"
@@ -94,6 +95,10 @@ func _run() -> void:
 	_gs().flags.set_flag(&"bill_met")
 	await _wait(10)
 	await _shot("02_lueur")
+	# Module (écran vérifié).
+	_gs().flags.set_flag(&"bill_screen_checked")
+	await _wait(10)
+	await _shot("02a_lueur_module")
 	# Machine : Léo dans la cabine, console.
 	await _boot_up(["bill_met", "bill_screen_checked", "bill_module_checked", "bill_in_cabin"])
 	await _hold(&"move_up", func() -> bool: return _player.get_cell().y <= 9)

@@ -498,7 +498,9 @@ Le cambriolage n'a **aucun objectif** (J13 : pas de marqueur).
 ### Objet caché O4 (ajoutés au T16, validés par Kevin le 2026-10-14)
 
 71. *(examen du coquillage)* « Quelque chose est caché sous ce coquillage. »
-72. *(examen, objet déjà pris)* « Il n'y a plus rien sous ce coquillage. »
+72. ~~*(examen, objet déjà pris)* « Il n'y a plus rien sous ce coquillage. »~~ **Retiré** (Kevin, 2026-10-14) : avec le
+    mécanisme d'objet caché du J12, le point d'examen disparaît une fois l'objet pris ; ce texte ne
+    s'afficherait jamais.
 
 ### Nils (ex-Léo, Bourg Palette)
 

@@ -548,10 +548,10 @@ func _bill_house() -> Dictionary:
 		"triggers": [["EntryTrigger", Vector2i(7, 9), Vector2i(2, 1), &"bill_house_enter",
 			Vector2i.UP]],
 		"gates": [
-			["HintScreen", [&"bill_met"], [&"bill_screen_checked"], &"hint", Vector2(528, 340)],
+			["HintScreen", [&"bill_met"], [&"bill_screen_checked"], &"hint", Vector2(528, 275)],
 			["HintModule", [&"bill_screen_checked"], [&"bill_module_checked"], &"hint",
-				Vector2(1008, 340)],
-			["HintConsole", [&"bill_in_cabin"], [&"bill_restored"], &"hint", Vector2(768, 340)],
+				Vector2(1008, 320)],
+			["HintConsole", [&"bill_in_cabin"], [&"bill_restored"], &"hint", Vector2(768, 335)],
 		],
 	}
 
