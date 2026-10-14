@@ -1,48 +1,50 @@
 [gd_scene format=4]
 
-[ext_resource type="Script" path="res://game/world/map.gd" id="1_5fni4"]
-[ext_resource type="Texture2D" path="res://assets/world/ground/ground_hautes_herbes_jaune_01_bas.png" id="2_rklvx"]
-[ext_resource type="TileSet" path="res://assets/tiles/overworld.tres" id="3_gjm6j"]
-[ext_resource type="Shader" path="res://game/world/lighting/shaders/ground_blend.gdshader" id="4_niuuj"]
-[ext_resource type="Texture2D" path="res://assets/world/ground/ground_herbe_01.png" id="5_nyiuh"]
-[ext_resource type="Texture2D" path="res://assets/world/maps/route_4_ground.png" id="6_kf7st"]
-[ext_resource type="Texture2D" path="res://assets/world/ground/ground_chemin_01.png" id="7_s2irh"]
-[ext_resource type="Texture2D" path="res://assets/world/ground/ground_roche_01.png" id="8_og7dn"]
-[ext_resource type="Script" path="res://game/world/ground/painted_ground.gd" id="9_dkh3q"]
-[ext_resource type="Shader" path="res://game/world/lighting/shaders/forest_floor.gdshader" id="10_0o4gd"]
-[ext_resource type="Script" path="res://game/world/ground/forest_floor.gd" id="11_d4tw8"]
-[ext_resource type="Texture2D" path="res://assets/world/ground/decals/decal_terre_1.png" id="12_jwio6"]
-[ext_resource type="Texture2D" path="res://assets/world/ground/decals/decal_touffe_1.png" id="13_8y2ke"]
-[ext_resource type="Texture2D" path="res://assets/world/ground/decals/decal_touffe_2.png" id="14_0phfo"]
-[ext_resource type="Texture2D" path="res://assets/world/ground/decals/decal_pave_1.png" id="15_mgsn6"]
-[ext_resource type="Texture2D" path="res://assets/world/ground/decals/decal_touffe_4.png" id="16_immyn"]
-[ext_resource type="Texture2D" path="res://assets/world/ground/decals/decal_terre_3.png" id="17_serft"]
-[ext_resource type="Texture2D" path="res://assets/world/ground/decals/decal_touffe_3.png" id="18_xjuwm"]
-[ext_resource type="Texture2D" path="res://assets/world/ground/decals/decal_terre_4.png" id="19_81sys"]
-[ext_resource type="Texture2D" path="res://assets/world/ground/decals/decal_pave_4.png" id="20_vm623"]
-[ext_resource type="Texture2D" path="res://assets/world/ground/decals/decal_pave_2.png" id="21_voix6"]
-[ext_resource type="Texture2D" path="res://assets/world/ground/decals/decal_terre_2.png" id="22_sgv3q"]
-[ext_resource type="Texture2D" path="res://assets/world/ground/decals/decal_pave_3.png" id="23_wpi88"]
-[ext_resource type="Texture2D" path="res://assets/world/ground/decals/decal_fleur_1.png" id="24_pix58"]
-[ext_resource type="Texture2D" path="res://assets/world/ground/decals/decal_fleur_3.png" id="25_4nykq"]
-[ext_resource type="PackedScene" path="res://game/world/props/painted/relief_paroi_ardoise_02.tscn" id="26_ksukv"]
-[ext_resource type="PackedScene" path="res://game/world/props/painted/relief_paroi_ardoise_01.tscn" id="27_wd4a6"]
-[ext_resource type="PackedScene" path="res://game/world/props/painted/relief_paroi_ardoise_04.tscn" id="28_gvl1l"]
-[ext_resource type="PackedScene" path="res://game/world/props/painted/relief_paroi_ardoise_03.tscn" id="29_l7mvk"]
-[ext_resource type="PackedScene" path="res://game/world/props/painted/relief_entree_grotte_01.tscn" id="30_bjxm4"]
-[ext_resource type="PackedScene" path="res://game/world/props/painted/relief_falaise_01.tscn" id="31_h7047"]
-[ext_resource type="PackedScene" path="res://game/world/props/painted/prop_rocher_01.tscn" id="32_i5tid"]
-[ext_resource type="PackedScene" path="res://game/world/props/painted/prop_buisson_a_01_bourg.tscn" id="33_6gxi7"]
-[ext_resource type="PackedScene" path="res://game/world/props/painted/prop_buisson_c_01_bourg.tscn" id="34_tiymi"]
-[ext_resource type="PackedScene" path="res://game/world/props/painted/prop_panneau_01.tscn" id="35_4lbp0"]
-[ext_resource type="Script" path="res://game/world/warp_point.gd" id="36_i4xet"]
+[ext_resource type="Script" path="res://game/world/map.gd" id="1_gjm6j"]
+[ext_resource type="Texture2D" path="res://assets/world/ground/ground_hautes_herbes_jaune_01_bas.png" id="2_niuuj"]
+[ext_resource type="TileSet" path="res://assets/tiles/overworld.tres" id="3_nyiuh"]
+[ext_resource type="Shader" path="res://game/world/lighting/shaders/ground_blend.gdshader" id="4_kf7st"]
+[ext_resource type="Texture2D" path="res://assets/world/ground/ground_herbe_01.png" id="5_s2irh"]
+[ext_resource type="Texture2D" path="res://assets/world/maps/route_4_ground.png" id="6_og7dn"]
+[ext_resource type="Texture2D" path="res://assets/world/ground/ground_chemin_01.png" id="7_dkh3q"]
+[ext_resource type="Texture2D" path="res://assets/world/ground/ground_roche_01.png" id="8_0o4gd"]
+[ext_resource type="Script" path="res://game/world/ground/painted_ground.gd" id="9_d4tw8"]
+[ext_resource type="Shader" path="res://game/world/lighting/shaders/forest_floor.gdshader" id="10_jwio6"]
+[ext_resource type="Script" path="res://game/world/ground/forest_floor.gd" id="11_8y2ke"]
+[ext_resource type="Texture2D" path="res://assets/world/ground/decals/decal_terre_1.png" id="12_0phfo"]
+[ext_resource type="Texture2D" path="res://assets/world/ground/decals/decal_touffe_1.png" id="13_mgsn6"]
+[ext_resource type="Texture2D" path="res://assets/world/ground/decals/decal_touffe_2.png" id="14_immyn"]
+[ext_resource type="Texture2D" path="res://assets/world/ground/decals/decal_pave_1.png" id="15_serft"]
+[ext_resource type="Texture2D" path="res://assets/world/ground/decals/decal_touffe_4.png" id="16_xjuwm"]
+[ext_resource type="Texture2D" path="res://assets/world/ground/decals/decal_terre_3.png" id="17_81sys"]
+[ext_resource type="Texture2D" path="res://assets/world/ground/decals/decal_touffe_3.png" id="18_vm623"]
+[ext_resource type="Texture2D" path="res://assets/world/ground/decals/decal_terre_4.png" id="19_voix6"]
+[ext_resource type="Texture2D" path="res://assets/world/ground/decals/decal_pave_4.png" id="20_sgv3q"]
+[ext_resource type="Texture2D" path="res://assets/world/ground/decals/decal_pave_2.png" id="21_wpi88"]
+[ext_resource type="Texture2D" path="res://assets/world/ground/decals/decal_terre_2.png" id="22_pix58"]
+[ext_resource type="Texture2D" path="res://assets/world/ground/decals/decal_pave_3.png" id="23_4nykq"]
+[ext_resource type="Texture2D" path="res://assets/world/ground/decals/decal_fleur_1.png" id="24_ksukv"]
+[ext_resource type="Texture2D" path="res://assets/world/ground/decals/decal_fleur_3.png" id="25_wd4a6"]
+[ext_resource type="PackedScene" path="res://game/world/props/painted/relief_paroi_ardoise_02.tscn" id="26_gvl1l"]
+[ext_resource type="PackedScene" path="res://game/world/props/painted/relief_paroi_ardoise_01.tscn" id="27_l7mvk"]
+[ext_resource type="PackedScene" path="res://game/world/props/painted/relief_paroi_ardoise_04.tscn" id="28_bjxm4"]
+[ext_resource type="PackedScene" path="res://game/world/props/painted/relief_paroi_ardoise_03.tscn" id="29_h7047"]
+[ext_resource type="PackedScene" path="res://game/world/props/painted/relief_entree_grotte_01.tscn" id="30_i5tid"]
+[ext_resource type="PackedScene" path="res://game/world/props/painted/relief_falaise_01.tscn" id="31_6gxi7"]
+[ext_resource type="PackedScene" path="res://game/world/props/painted/prop_rocher_01.tscn" id="32_tiymi"]
+[ext_resource type="PackedScene" path="res://game/world/props/painted/prop_buisson_a_01_bourg.tscn" id="33_4lbp0"]
+[ext_resource type="PackedScene" path="res://game/world/props/painted/prop_buisson_c_01_bourg.tscn" id="34_i4xet"]
+[ext_resource type="PackedScene" path="res://game/world/props/painted/prop_panneau_01.tscn" id="35_vlo17"]
+[ext_resource type="Script" path="res://game/world/warp_point.gd" id="36_nsqdn"]
+[ext_resource type="Script" path="res://game/world/interactions/interact_point.gd" id="37_r6j0g"]
+[ext_resource type="Script" path="res://game/world/triggers/event_trigger_point.gd" id="38_hdks2"]
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_vlo17"]
-shader = ExtResource("4_niuuj")
-shader_parameter/grass_texture = ExtResource("5_nyiuh")
-shader_parameter/paving_texture = ExtResource("8_og7dn")
-shader_parameter/path_texture = ExtResource("7_s2irh")
-shader_parameter/ground_mask = ExtResource("6_kf7st")
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_soki4"]
+shader = ExtResource("4_kf7st")
+shader_parameter/grass_texture = ExtResource("5_s2irh")
+shader_parameter/paving_texture = ExtResource("8_0o4gd")
+shader_parameter/path_texture = ExtResource("7_dkh3q")
+shader_parameter/ground_mask = ExtResource("6_og7dn")
 shader_parameter/tile_size = 96.0
 shader_parameter/texture_size = null
 shader_parameter/paving_scale = 1.0
@@ -51,7 +53,7 @@ shader_parameter/earth_color = null
 shader_parameter/has_shore = false
 shader_parameter/foam_color = null
 
-[sub_resource type="Image" id="Image_nsqdn"]
+[sub_resource type="Image" id="Image_p3vdq"]
 data = {
 "data": PackedByteArray("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"),
 "format": "Lum8",
@@ -60,1697 +62,1709 @@ data = {
 "width": 24
 }
 
-[sub_resource type="ImageTexture" id="ImageTexture_r6j0g"]
-image = SubResource("Image_nsqdn")
+[sub_resource type="ImageTexture" id="ImageTexture_rvo0k"]
+image = SubResource("Image_p3vdq")
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_hdks2"]
-shader = ExtResource("10_0o4gd")
-shader_parameter/forest_mask = SubResource("ImageTexture_r6j0g")
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_5b3m4"]
+shader = ExtResource("10_jwio6")
+shader_parameter/forest_mask = SubResource("ImageTexture_rvo0k")
 shader_parameter/tile_size = 96.0
 shader_parameter/dark_color = null
 shader_parameter/light_color = null
 
-[node name="Route4" type="Node2D" unique_id=1238122845]
-script = ExtResource("1_5fni4")
+[node name="Route4" type="Node2D" unique_id=672423524]
+script = ExtResource("1_gjm6j")
 map_id = &"route_4"
 display_name = "Route 4"
 region = "Mont Sélénite — Azuria"
 size = Vector2i(24, 14)
 light_profile = &"golden_hour"
-grass_front = ExtResource("2_rklvx")
+grass_front = ExtResource("2_niuuj")
 
-[node name="Ground" type="TileMapLayer" parent="." unique_id=1814093363]
+[node name="Ground" type="TileMapLayer" parent="." unique_id=91122730]
 visible = false
 tile_map_data = PackedByteArray("AAAAAAAAAAAAAAcAAAABAAAAAAAAAAcAAAACAAAAAAABAAcAAAADAAAAAAABAAcAAAAEAAAAAAAAAAcAAAAFAAAAAAABAAcAAAAGAAAAAAAAAAcAAAAHAAAAAAAAAAcAAAAIAAAAAAABAAcAAAAJAAAAAAABAAcAAAAKAAAAAAAAAAcAAAALAAAAAAAAAAcAAAAMAAAAAAABAAcAAAANAAAAAAAAAAcAAAAOAAAAAAAAAAcAAAAPAAAAAAABAAcAAAAQAAAAAAABAAcAAAARAAAAAAAAAAcAAAASAAAAAAABAAcAAAATAAAAAAABAAcAAAAUAAAAAAAAAAcAAAAVAAAAAAABAAcAAAAWAAAAAAAAAAcAAAAXAAAAAAABAAcAAAAAAAEAAAAAAAcAAAABAAEAAAABAAcAAAACAAEAAAABAAcAAAADAAEAAAAAAAcAAAAEAAEAAAAAAAcAAAAFAAEAAAAAAAcAAAAGAAEAAAABAAcAAAAHAAEAAAAAAAcAAAAIAAEAAAAAAAcAAAAJAAEAAAAAAAcAAAAKAAEAAAAAAAcAAAALAAEAAAAAAAcAAAAMAAEAAAABAAcAAAANAAEAAAAAAAcAAAAOAAEAAAABAAcAAAAPAAEAAAABAAcAAAAQAAEAAAABAAcAAAARAAEAAAABAAcAAAASAAEAAAAAAAcAAAATAAEAAAABAAcAAAAUAAEAAAABAAcAAAAVAAEAAAABAAcAAAAWAAEAAAABAAcAAAAXAAEAAAABAAcAAAAAAAIAAAABAAcAAAABAAIAAAAAAAcAAAACAAIAAAABAAcAAAADAAIAAAAAAAcAAAAEAAIAAAAAAAcAAAAFAAIAAAAAAAcAAAAGAAIAAAABAAcAAAAHAAIAAAAAAAcAAAAIAAIAAAABAAcAAAAJAAIAAAAAAAcAAAAKAAIAAAAAAAcAAAALAAIAAAABAAcAAAAMAAIAAAABAAcAAAANAAIAAAABAAcAAAAOAAIAAAABAAcAAAAPAAIAAAABAAcAAAAQAAIAAAAAAAcAAAARAAIAAAABAAcAAAASAAIAAAAAAAcAAAATAAIAAAABAAcAAAAUAAIAAAABAAcAAAAVAAIAAAABAAcAAAAWAAIAAAAAAAcAAAAXAAIAAAAAAAcAAAAAAAMAAAAAAAcAAAABAAMAAAAAAAcAAAACAAMAAAAAAAcAAAADAAMAAAAAAAcAAAAEAAMAAAABAAcAAAAFAAMAAAABAAcAAAAGAAMAAAAAAAcAAAAHAAMAAAAAAAcAAAAIAAMAAAABAAAAAAAJAAMAAAADAAAAAAAKAAMAAAABAAAAAAALAAMAAAADAAAAAAAMAAMAAAAAAAAAAAANAAMAAAAAAAAAAAAOAAMAAAACAAAAAAAPAAMAAAACAAAAAAAQAAMAAAAAAAAAAAARAAMAAAACAAAAAAASAAMAAAABAAAAAAATAAMAAAAAAAYAAAAUAAMAAAABAAAAAAAVAAMAAAADAAAAAAAWAAMAAAAAAAAAAAAXAAMAAAAAAAYAAAAAAAQAAAABAAcAAAABAAQAAAABAAcAAAACAAQAAAAAAAcAAAADAAQAAAABAAcAAAAEAAQAAAABAAcAAAAFAAQAAAABAAcAAAAGAAQAAAAAAAcAAAAHAAQAAAAAAAcAAAAIAAQAAAABAAAAAAAJAAQAAAABAAYAAAAKAAQAAAABAAAAAAALAAQAAAABAAAAAAAMAAQAAAABAAAAAAANAAQAAAADAAAAAAAOAAQAAAADAAAAAAAPAAQAAAABAAAAAAAQAAQAAAADAAAAAAARAAQAAAADAAAAAAASAAQAAAABAAAAAAATAAQAAAACAAAAAAAUAAQAAAABAAAAAAAVAAQAAAADAAAAAAAWAAQAAAAAAAAAAAAXAAQAAAAAAAYAAAAAAAUAAAAAAAcAAAABAAUAAAABAAcAAAACAAUAAAABAAcAAAADAAUAAAABAAAAAAAEAAUAAAACAAAAAAAFAAUAAAAAAAAAAAAGAAUAAAACAAAAAAAHAAUAAAADAAAAAAAIAAUAAAACAAAAAAAJAAUAAAAAAAAAAAAKAAUAAAAAAAAAAAALAAUAAAABAAAAAAAMAAUAAAADAAAAAAANAAUAAAADAAAAAAAOAAUAAAABAAAAAAAPAAUAAAADAAAAAAAQAAUAAAACAAAAAAARAAUAAAABAAAAAAASAAUAAAABAAAAAAATAAUAAAADAAAAAAAUAAUAAAABAAAAAAAVAAUAAAADAAAAAAAWAAUAAAABAAAAAAAXAAUAAAAAAAYAAAAAAAYAAAAAAAcAAAABAAYAAAAAAAcAAAACAAYAAAABAAIAAAADAAYAAAAAAAIAAAAEAAYAAAAAAAIAAAAFAAYAAAAAAAIAAAAGAAYAAAAAAAIAAAAHAAYAAAACAAIAAAAIAAYAAAABAAIAAAAJAAYAAAABAAIAAAAKAAYAAAACAAIAAAALAAYAAAABAAIAAAAMAAYAAAABAAIAAAANAAYAAAACAAIAAAAOAAYAAAABAAIAAAAPAAYAAAACAAIAAAAQAAYAAAAAAAIAAAARAAYAAAAAAAIAAAASAAYAAAAAAAIAAAATAAYAAAABAAIAAAAUAAYAAAACAAIAAAAVAAYAAAAAAAIAAAAWAAYAAAAAAAIAAAAXAAYAAAAAAAAAAAAAAAcAAAAAAAcAAAABAAcAAAABAAcAAAACAAcAAAAAAAcAAAADAAcAAAACAAIAAAAEAAcAAAABAAIAAAAFAAcAAAACAAIAAAAGAAcAAAAAAAIAAAAHAAcAAAABAAIAAAAIAAcAAAAAAAIAAAAJAAcAAAABAAIAAAAKAAcAAAAAAAIAAAALAAcAAAABAAIAAAAMAAcAAAAAAAIAAAANAAcAAAABAAIAAAAOAAcAAAACAAIAAAAPAAcAAAAAAAIAAAAQAAcAAAACAAIAAAARAAcAAAAAAAIAAAASAAcAAAACAAIAAAATAAcAAAACAAIAAAAUAAcAAAAAAAIAAAAVAAcAAAACAAIAAAAWAAcAAAACAAIAAAAXAAcAAAABAAAAAAAAAAgAAAAAAAcAAAABAAgAAAAAAAcAAAACAAgAAAAAAAcAAAADAAgAAAACAAAAAAAEAAgAAAADAAAAAAAFAAgAAAABAAAAAAAGAAgAAAADAAAAAAAHAAgAAAABAAAAAAAIAAgAAAADAAAAAAAJAAgAAAACAAAAAAAKAAgAAAADAAAAAAALAAgAAAADAAAAAAAMAAgAAAABAAAAAAANAAgAAAABAAAAAAAOAAgAAAABAAAAAAAPAAgAAAABAAAAAAAQAAgAAAAAAAAAAAARAAgAAAADAAAAAAASAAgAAAADAAAAAAATAAgAAAABAAAAAAAUAAgAAAABAAAAAAAVAAgAAAAAAAAAAAAWAAgAAAADAAAAAAAXAAgAAAAAAAYAAAAAAAkAAAAAAAcAAAABAAkAAAABAAcAAAACAAkAAAABAAcAAAADAAkAAAAAAAAAAAAEAAkAAAABAAAAAAAFAAkAAAACAAAAAAAGAAkAAAACAAAAAAAHAAkAAAADAAAAAAAIAAkAAAABAAAAAAAJAAkAAAABAAAAAAAKAAkAAAABAAAAAAALAAkAAAAAAAAAAAAMAAkAAAABAAAAAAANAAkAAAACAAAAAAAOAAkAAAACAAAAAAAPAAkAAAAAAAAAAAAQAAkAAAACAAAAAAARAAkAAAAAAAAAAAASAAkAAAADAAAAAAATAAkAAAAAAAAAAAAUAAkAAAABAAAAAAAVAAkAAAACAAAAAAAWAAkAAAACAAAAAAAXAAkAAAACAAYAAAAAAAoAAAAAAAcAAAABAAoAAAAAAAcAAAACAAoAAAAAAAcAAAADAAoAAAAAAAcAAAAEAAoAAAABAAcAAAAFAAoAAAABAAcAAAAGAAoAAAADAAAAAAAHAAoAAAACAAAAAAAIAAoAAAABAAAAAAAJAAoAAAABAAAAAAAKAAoAAAABAAAAAAALAAoAAAAAAAAAAAAMAAoAAAABAAAAAAANAAoAAAABAAAAAAAOAAoAAAADAAAAAAAPAAoAAAACAAAAAAAQAAoAAAACAAYAAAARAAoAAAADAAAAAAASAAoAAAADAAAAAAATAAoAAAACAAAAAAAUAAoAAAADAAAAAAAVAAoAAAADAAAAAAAWAAoAAAABAAAAAAAXAAoAAAACAAYAAAAAAAsAAAABAAcAAAABAAsAAAAAAAcAAAACAAsAAAAAAAcAAAADAAsAAAAAAAcAAAAEAAsAAAABAAcAAAAFAAsAAAAAAAcAAAAGAAsAAAABAAAAAAAHAAsAAAAAAAAAAAAIAAsAAAAAAAAAAAAJAAsAAAADAAAAAAAKAAsAAAABAAAAAAALAAsAAAAAAAAAAAAMAAsAAAADAAAAAAANAAsAAAAAAAAAAAAOAAsAAAADAAAAAAAPAAsAAAACAAAAAAAQAAsAAAABAAAAAAARAAsAAAACAAAAAAASAAsAAAADAAAAAAATAAsAAAACAAAAAAAUAAsAAAAAAAAAAAAVAAsAAAADAAAAAAAWAAsAAAADAAAAAAAXAAsAAAABAAYAAAAAAAwAAAAAAAcAAAABAAwAAAABAAcAAAACAAwAAAAAAAcAAAADAAwAAAACAAYAAAAEAAwAAAAAAAYAAAAFAAwAAAAAAAYAAAAGAAwAAAAAAAYAAAAHAAwAAAABAAYAAAAIAAwAAAACAAYAAAAJAAwAAAABAAYAAAAKAAwAAAACAAYAAAALAAwAAAABAAYAAAAMAAwAAAAAAAYAAAANAAwAAAAAAAYAAAAOAAwAAAAAAAYAAAAPAAwAAAACAAYAAAAQAAwAAAABAAYAAAARAAwAAAACAAYAAAASAAwAAAACAAYAAAATAAwAAAACAAYAAAAUAAwAAAACAAYAAAAVAAwAAAABAAYAAAAWAAwAAAACAAYAAAAXAAwAAAABAAYAAAAAAA0AAAABAAcAAAABAA0AAAABAAcAAAACAA0AAAAAAAcAAAADAA0AAAAAAAYAAAAEAA0AAAABAAYAAAAFAA0AAAABAAYAAAAGAA0AAAACAAYAAAAHAA0AAAAAAAYAAAAIAA0AAAABAAYAAAAJAA0AAAAAAAYAAAAKAA0AAAAAAAYAAAALAA0AAAABAAYAAAAMAA0AAAACAAYAAAANAA0AAAACAAYAAAAOAA0AAAAAAAYAAAAPAA0AAAABAAYAAAAQAA0AAAAAAAYAAAARAA0AAAAAAAYAAAASAA0AAAACAAYAAAATAA0AAAABAAYAAAAUAA0AAAABAAYAAAAVAA0AAAAAAAYAAAAWAA0AAAABAAYAAAAXAA0AAAACAAYAAAA=")
-tile_set = ExtResource("3_gjm6j")
+tile_set = ExtResource("3_nyiuh")
 
-[node name="Detail" type="TileMapLayer" parent="." unique_id=1816078828]
+[node name="Detail" type="TileMapLayer" parent="." unique_id=290415240]
 visible = false
-tile_set = ExtResource("3_gjm6j")
+tile_set = ExtResource("3_nyiuh")
 
-[node name="Obstacles" type="TileMapLayer" parent="." unique_id=645527827]
+[node name="Obstacles" type="TileMapLayer" parent="." unique_id=2143625379]
 visible = false
-tile_set = ExtResource("3_gjm6j")
+tile_set = ExtResource("3_nyiuh")
 
-[node name="PaintedGround" type="Node2D" parent="." unique_id=838085055]
+[node name="PaintedGround" type="Node2D" parent="." unique_id=923557649]
 z_index = -3
-material = SubResource("ShaderMaterial_vlo17")
-script = ExtResource("9_dkh3q")
+material = SubResource("ShaderMaterial_soki4")
+script = ExtResource("9_d4tw8")
 size = Vector2i(24, 14)
-mask = ExtResource("6_kf7st")
-r_texture = ExtResource("8_og7dn")
+mask = ExtResource("6_og7dn")
+r_texture = ExtResource("8_0o4gd")
 
-[node name="ForestFloor" type="Node2D" parent="." unique_id=2069915383]
+[node name="ForestFloor" type="Node2D" parent="." unique_id=2006053527]
 z_index = -3
-material = SubResource("ShaderMaterial_hdks2")
-script = ExtResource("11_d4tw8")
+material = SubResource("ShaderMaterial_5b3m4")
+script = ExtResource("11_8y2ke")
 size = Vector2i(24, 14)
-mask = SubResource("ImageTexture_r6j0g")
+mask = SubResource("ImageTexture_rvo0k")
 
-[node name="GroundDecals" type="Node2D" parent="." unique_id=1142764753]
+[node name="GroundDecals" type="Node2D" parent="." unique_id=1319213696]
 z_index = -1
 
-[node name="@Sprite2D@2" type="Sprite2D" parent="GroundDecals" unique_id=107513865]
+[node name="@Sprite2D@2" type="Sprite2D" parent="GroundDecals" unique_id=1314419156]
 position = Vector2(780.15625, 294.24774)
 scale = Vector2(0.38447315, 0.38447315)
-texture = ExtResource("12_jwio6")
+texture = ExtResource("12_0phfo")
 flip_h = true
 
-[node name="@Sprite2D@3" type="Sprite2D" parent="GroundDecals" unique_id=1992759953]
+[node name="@Sprite2D@3" type="Sprite2D" parent="GroundDecals" unique_id=2016389869]
 position = Vector2(780.15625, 293.23166)
 scale = Vector2(0.81153184, 0.81153184)
-texture = ExtResource("13_8y2ke")
+texture = ExtResource("13_mgsn6")
 
-[node name="@Sprite2D@4" type="Sprite2D" parent="GroundDecals" unique_id=1106211585]
+[node name="@Sprite2D@4" type="Sprite2D" parent="GroundDecals" unique_id=1712240968]
 position = Vector2(848.5537, 291.95645)
 scale = Vector2(0.6841246, 0.6841246)
-texture = ExtResource("14_0phfo")
+texture = ExtResource("14_immyn")
 flip_h = true
 
-[node name="@Sprite2D@5" type="Sprite2D" parent="GroundDecals" unique_id=2076445746]
+[node name="@Sprite2D@5" type="Sprite2D" parent="GroundDecals" unique_id=140534190]
 position = Vector2(930.1142, 289.656)
 scale = Vector2(0.34985095, 0.34985095)
-texture = ExtResource("15_mgsn6")
+texture = ExtResource("15_serft")
 flip_h = true
 
-[node name="@Sprite2D@6" type="Sprite2D" parent="GroundDecals" unique_id=3324875]
+[node name="@Sprite2D@6" type="Sprite2D" parent="GroundDecals" unique_id=1229991192]
 position = Vector2(930.1142, 292.25644)
 scale = Vector2(0.7934034, 0.7934034)
-texture = ExtResource("16_immyn")
+texture = ExtResource("16_xjuwm")
 flip_h = true
 
-[node name="@Sprite2D@7" type="Sprite2D" parent="GroundDecals" unique_id=1501386682]
+[node name="@Sprite2D@7" type="Sprite2D" parent="GroundDecals" unique_id=1680380159]
 position = Vector2(880.1099, 295.3582)
 scale = Vector2(0.41299328, 0.41299328)
-texture = ExtResource("12_jwio6")
+texture = ExtResource("12_0phfo")
 flip_h = true
 
-[node name="@Sprite2D@8" type="Sprite2D" parent="GroundDecals" unique_id=1804814479]
+[node name="@Sprite2D@8" type="Sprite2D" parent="GroundDecals" unique_id=1468050821]
 position = Vector2(880.1099, 302.11566)
 scale = Vector2(0.69008166, 0.69008166)
-texture = ExtResource("14_0phfo")
+texture = ExtResource("14_immyn")
 
-[node name="@Sprite2D@9" type="Sprite2D" parent="GroundDecals" unique_id=1354311609]
+[node name="@Sprite2D@9" type="Sprite2D" parent="GroundDecals" unique_id=1755268382]
 position = Vector2(1036.92, 292.27484)
 scale = Vector2(0.5020037, 0.5020037)
-texture = ExtResource("17_serft")
+texture = ExtResource("17_81sys")
 
-[node name="@Sprite2D@10" type="Sprite2D" parent="GroundDecals" unique_id=131378646]
+[node name="@Sprite2D@10" type="Sprite2D" parent="GroundDecals" unique_id=1271117354]
 position = Vector2(1036.92, 300.19427)
 scale = Vector2(0.7391344, 0.7391344)
-texture = ExtResource("14_0phfo")
+texture = ExtResource("14_immyn")
 flip_h = true
 
-[node name="@Sprite2D@11" type="Sprite2D" parent="GroundDecals" unique_id=1444038892]
+[node name="@Sprite2D@11" type="Sprite2D" parent="GroundDecals" unique_id=1117590610]
 position = Vector2(1016.18384, 288.66284)
 scale = Vector2(0.45409423, 0.45409423)
-texture = ExtResource("12_jwio6")
+texture = ExtResource("12_0phfo")
 flip_h = true
 
-[node name="@Sprite2D@12" type="Sprite2D" parent="GroundDecals" unique_id=511890687]
+[node name="@Sprite2D@12" type="Sprite2D" parent="GroundDecals" unique_id=557357622]
 position = Vector2(1065.0095, 294.43365)
 scale = Vector2(0.799815, 0.799815)
-texture = ExtResource("14_0phfo")
+texture = ExtResource("14_immyn")
 flip_h = true
 
-[node name="@Sprite2D@13" type="Sprite2D" parent="GroundDecals" unique_id=856390462]
+[node name="@Sprite2D@13" type="Sprite2D" parent="GroundDecals" unique_id=850367703]
 position = Vector2(1118.8483, 292.07037)
 scale = Vector2(0.85857785, 0.85857785)
-texture = ExtResource("18_xjuwm")
+texture = ExtResource("18_vm623")
 flip_h = true
 
-[node name="@Sprite2D@14" type="Sprite2D" parent="GroundDecals" unique_id=1323653840]
+[node name="@Sprite2D@14" type="Sprite2D" parent="GroundDecals" unique_id=1794522056]
 position = Vector2(1199.2168, 295.1303)
 scale = Vector2(0.45335433, 0.45335433)
-texture = ExtResource("19_81sys")
+texture = ExtResource("19_voix6")
 
-[node name="@Sprite2D@15" type="Sprite2D" parent="GroundDecals" unique_id=1971600035]
+[node name="@Sprite2D@15" type="Sprite2D" parent="GroundDecals" unique_id=676862630]
 position = Vector2(1199.2168, 303.5645)
 scale = Vector2(0.91954803, 0.91954803)
-texture = ExtResource("14_0phfo")
+texture = ExtResource("14_immyn")
 flip_h = true
 
-[node name="@Sprite2D@16" type="Sprite2D" parent="GroundDecals" unique_id=2003462316]
+[node name="@Sprite2D@16" type="Sprite2D" parent="GroundDecals" unique_id=275036666]
 position = Vector2(1323.1561, 290.30737)
 scale = Vector2(0.39870876, 0.39870876)
-texture = ExtResource("20_vm623")
+texture = ExtResource("20_sgv3q")
 
-[node name="@Sprite2D@17" type="Sprite2D" parent="GroundDecals" unique_id=1082248974]
+[node name="@Sprite2D@17" type="Sprite2D" parent="GroundDecals" unique_id=1975472311]
 position = Vector2(1321.0969, 296.7276)
 scale = Vector2(0.80374795, 0.80374795)
-texture = ExtResource("14_0phfo")
+texture = ExtResource("14_immyn")
 flip_h = true
 
-[node name="@Sprite2D@18" type="Sprite2D" parent="GroundDecals" unique_id=529387107]
+[node name="@Sprite2D@18" type="Sprite2D" parent="GroundDecals" unique_id=939045801]
 position = Vector2(1408.3684, 299.33273)
 scale = Vector2(0.85203683, 0.85203683)
-texture = ExtResource("14_0phfo")
+texture = ExtResource("14_immyn")
 
-[node name="@Sprite2D@19" type="Sprite2D" parent="GroundDecals" unique_id=1969957568]
+[node name="@Sprite2D@19" type="Sprite2D" parent="GroundDecals" unique_id=865851187]
 position = Vector2(1415.3464, 292.47662)
 scale = Vector2(0.4841752, 0.4841752)
-texture = ExtResource("19_81sys")
+texture = ExtResource("19_voix6")
 
-[node name="@Sprite2D@20" type="Sprite2D" parent="GroundDecals" unique_id=495050891]
+[node name="@Sprite2D@20" type="Sprite2D" parent="GroundDecals" unique_id=1886492776]
 position = Vector2(1415.3464, 292.38257)
 scale = Vector2(0.8008625, 0.8008625)
-texture = ExtResource("18_xjuwm")
+texture = ExtResource("18_vm623")
 flip_h = true
 
-[node name="@Sprite2D@21" type="Sprite2D" parent="GroundDecals" unique_id=1303290839]
+[node name="@Sprite2D@21" type="Sprite2D" parent="GroundDecals" unique_id=582286300]
 position = Vector2(1474.8594, 296.87598)
 scale = Vector2(0.7047928, 0.7047928)
-texture = ExtResource("13_8y2ke")
+texture = ExtResource("13_mgsn6")
 flip_h = true
 
-[node name="@Sprite2D@22" type="Sprite2D" parent="GroundDecals" unique_id=1615180667]
+[node name="@Sprite2D@22" type="Sprite2D" parent="GroundDecals" unique_id=753578300]
 position = Vector2(1552.2859, 297.15875)
 scale = Vector2(0.7822008, 0.7822008)
-texture = ExtResource("16_immyn")
+texture = ExtResource("16_xjuwm")
 
-[node name="@Sprite2D@23" type="Sprite2D" parent="GroundDecals" unique_id=134637832]
+[node name="@Sprite2D@23" type="Sprite2D" parent="GroundDecals" unique_id=644882719]
 position = Vector2(1601.4985, 289.01297)
 scale = Vector2(0.8924692, 0.8924692)
-texture = ExtResource("18_xjuwm")
+texture = ExtResource("18_vm623")
 flip_h = true
 
-[node name="@Sprite2D@24" type="Sprite2D" parent="GroundDecals" unique_id=2047587947]
+[node name="@Sprite2D@24" type="Sprite2D" parent="GroundDecals" unique_id=1267746109]
 position = Vector2(1684.2656, 290.56393)
 scale = Vector2(0.4531033, 0.4531033)
-texture = ExtResource("12_jwio6")
+texture = ExtResource("12_0phfo")
 
-[node name="@Sprite2D@25" type="Sprite2D" parent="GroundDecals" unique_id=957222403]
+[node name="@Sprite2D@25" type="Sprite2D" parent="GroundDecals" unique_id=1804179714]
 position = Vector2(1684.2656, 298.1873)
 scale = Vector2(0.8708854, 0.8708854)
-texture = ExtResource("16_immyn")
+texture = ExtResource("16_xjuwm")
 flip_h = true
 
-[node name="@Sprite2D@26" type="Sprite2D" parent="GroundDecals" unique_id=420589729]
+[node name="@Sprite2D@26" type="Sprite2D" parent="GroundDecals" unique_id=1298121813]
 position = Vector2(1717.7645, 291.155)
 scale = Vector2(0.7244137, 0.7244137)
-texture = ExtResource("18_xjuwm")
+texture = ExtResource("18_vm623")
 
-[node name="@Sprite2D@27" type="Sprite2D" parent="GroundDecals" unique_id=178864457]
+[node name="@Sprite2D@27" type="Sprite2D" parent="GroundDecals" unique_id=771100567]
 position = Vector2(1812.6425, 297.77667)
 scale = Vector2(0.8119364, 0.8119364)
-texture = ExtResource("13_8y2ke")
+texture = ExtResource("13_mgsn6")
 flip_h = true
 
-[node name="@Sprite2D@28" type="Sprite2D" parent="GroundDecals" unique_id=777134248]
+[node name="@Sprite2D@28" type="Sprite2D" parent="GroundDecals" unique_id=893270550]
 position = Vector2(1886.0686, 294.1117)
 scale = Vector2(0.7302035, 0.7302035)
-texture = ExtResource("14_0phfo")
+texture = ExtResource("14_immyn")
 
-[node name="@Sprite2D@29" type="Sprite2D" parent="GroundDecals" unique_id=920835479]
+[node name="@Sprite2D@29" type="Sprite2D" parent="GroundDecals" unique_id=1281274214]
 position = Vector2(1838.6976, 288.881)
 scale = Vector2(0.47840357, 0.47840357)
-texture = ExtResource("12_jwio6")
+texture = ExtResource("12_0phfo")
 
-[node name="@Sprite2D@30" type="Sprite2D" parent="GroundDecals" unique_id=990837066]
+[node name="@Sprite2D@30" type="Sprite2D" parent="GroundDecals" unique_id=1498640393]
 position = Vector2(1948.046, 293.05887)
 scale = Vector2(0.68580735, 0.68580735)
-texture = ExtResource("18_xjuwm")
+texture = ExtResource("18_vm623")
 
-[node name="@Sprite2D@31" type="Sprite2D" parent="GroundDecals" unique_id=728492144]
+[node name="@Sprite2D@31" type="Sprite2D" parent="GroundDecals" unique_id=2085711591]
 position = Vector2(1980.0657, 294.76984)
 scale = Vector2(0.41807956, 0.41807956)
-texture = ExtResource("15_mgsn6")
+texture = ExtResource("15_serft")
 flip_h = true
 
-[node name="@Sprite2D@32" type="Sprite2D" parent="GroundDecals" unique_id=970241668]
+[node name="@Sprite2D@32" type="Sprite2D" parent="GroundDecals" unique_id=2133597563]
 position = Vector2(1980.0657, 294.30334)
 scale = Vector2(0.79711735, 0.79711735)
-texture = ExtResource("14_0phfo")
+texture = ExtResource("14_immyn")
 
-[node name="@Sprite2D@33" type="Sprite2D" parent="GroundDecals" unique_id=604083690]
+[node name="@Sprite2D@33" type="Sprite2D" parent="GroundDecals" unique_id=2068911702]
 position = Vector2(2078.0234, 289.55893)
 scale = Vector2(0.39476696, 0.39476696)
-texture = ExtResource("21_voix6")
+texture = ExtResource("21_wpi88")
 flip_h = true
 
-[node name="@Sprite2D@34" type="Sprite2D" parent="GroundDecals" unique_id=1964387902]
+[node name="@Sprite2D@34" type="Sprite2D" parent="GroundDecals" unique_id=199930052]
 position = Vector2(2078.0234, 290.80017)
 scale = Vector2(0.82382315, 0.82382315)
-texture = ExtResource("18_xjuwm")
+texture = ExtResource("18_vm623")
 flip_h = true
 
-[node name="@Sprite2D@35" type="Sprite2D" parent="GroundDecals" unique_id=2006759253]
+[node name="@Sprite2D@35" type="Sprite2D" parent="GroundDecals" unique_id=811532502]
 position = Vector2(2054.8042, 289.8267)
 scale = Vector2(0.8844589, 0.8844589)
-texture = ExtResource("13_8y2ke")
+texture = ExtResource("13_mgsn6")
 flip_h = true
 
-[node name="@Sprite2D@36" type="Sprite2D" parent="GroundDecals" unique_id=1093369207]
+[node name="@Sprite2D@36" type="Sprite2D" parent="GroundDecals" unique_id=313694128]
 position = Vector2(2287.0068, 288.47812)
 scale = Vector2(0.8923048, 0.8923048)
-texture = ExtResource("16_immyn")
+texture = ExtResource("16_xjuwm")
 flip_h = true
 
-[node name="@Sprite2D@37" type="Sprite2D" parent="GroundDecals" unique_id=1177853443]
+[node name="@Sprite2D@37" type="Sprite2D" parent="GroundDecals" unique_id=1833084641]
 position = Vector2(775.7812, 333.15167)
 scale = Vector2(0.44738626, 0.44738626)
-texture = ExtResource("21_voix6")
+texture = ExtResource("21_wpi88")
 flip_h = true
 
-[node name="@Sprite2D@38" type="Sprite2D" parent="GroundDecals" unique_id=320136871]
+[node name="@Sprite2D@38" type="Sprite2D" parent="GroundDecals" unique_id=760226483]
 position = Vector2(772.9011, 333.15167)
 scale = Vector2(0.8995663, 0.8995663)
-texture = ExtResource("16_immyn")
+texture = ExtResource("16_xjuwm")
 flip_h = true
 
-[node name="@Sprite2D@39" type="Sprite2D" parent="GroundDecals" unique_id=830554949]
+[node name="@Sprite2D@39" type="Sprite2D" parent="GroundDecals" unique_id=2081929812]
 position = Vector2(346.07434, 486.51822)
 scale = Vector2(0.38239095, 0.38239095)
-texture = ExtResource("15_mgsn6")
+texture = ExtResource("15_serft")
 
-[node name="@Sprite2D@40" type="Sprite2D" parent="GroundDecals" unique_id=2106578134]
+[node name="@Sprite2D@40" type="Sprite2D" parent="GroundDecals" unique_id=162751379]
 position = Vector2(346.07434, 491.26636)
 scale = Vector2(0.7544589, 0.7544589)
-texture = ExtResource("16_immyn")
+texture = ExtResource("16_xjuwm")
 flip_h = true
 
-[node name="@Sprite2D@41" type="Sprite2D" parent="GroundDecals" unique_id=172169526]
+[node name="@Sprite2D@41" type="Sprite2D" parent="GroundDecals" unique_id=1948747676]
 position = Vector2(302.38715, 495.24554)
 scale = Vector2(0.8825178, 0.8825178)
-texture = ExtResource("13_8y2ke")
+texture = ExtResource("13_mgsn6")
 
-[node name="@Sprite2D@42" type="Sprite2D" parent="GroundDecals" unique_id=1057469984]
+[node name="@Sprite2D@42" type="Sprite2D" parent="GroundDecals" unique_id=1390998615]
 position = Vector2(426.20953, 480.56702)
 scale = Vector2(0.7188384, 0.7188384)
-texture = ExtResource("18_xjuwm")
+texture = ExtResource("18_vm623")
 
-[node name="@Sprite2D@43" type="Sprite2D" parent="GroundDecals" unique_id=2055952762]
+[node name="@Sprite2D@43" type="Sprite2D" parent="GroundDecals" unique_id=767098743]
 position = Vector2(424.27658, 487.36737)
 scale = Vector2(0.44366252, 0.44366252)
-texture = ExtResource("22_sgv3q")
+texture = ExtResource("22_pix58")
 
-[node name="@Sprite2D@44" type="Sprite2D" parent="GroundDecals" unique_id=67976254]
+[node name="@Sprite2D@44" type="Sprite2D" parent="GroundDecals" unique_id=72809423]
 position = Vector2(424.27658, 483.4036)
 scale = Vector2(0.770922, 0.770922)
-texture = ExtResource("14_0phfo")
+texture = ExtResource("14_immyn")
 
-[node name="@Sprite2D@45" type="Sprite2D" parent="GroundDecals" unique_id=2085068073]
+[node name="@Sprite2D@45" type="Sprite2D" parent="GroundDecals" unique_id=151062638]
 position = Vector2(645.416, 485.257)
 scale = Vector2(0.50410426, 0.50410426)
-texture = ExtResource("12_jwio6")
+texture = ExtResource("12_0phfo")
 
-[node name="@Sprite2D@46" type="Sprite2D" parent="GroundDecals" unique_id=17944609]
+[node name="@Sprite2D@46" type="Sprite2D" parent="GroundDecals" unique_id=630571252]
 position = Vector2(645.416, 485.44904)
 scale = Vector2(0.84423447, 0.84423447)
-texture = ExtResource("18_xjuwm")
+texture = ExtResource("18_vm623")
 
-[node name="@Sprite2D@47" type="Sprite2D" parent="GroundDecals" unique_id=293143852]
+[node name="@Sprite2D@47" type="Sprite2D" parent="GroundDecals" unique_id=111047241]
 position = Vector2(595.0785, 480.53098)
 scale = Vector2(0.6957134, 0.6957134)
-texture = ExtResource("16_immyn")
+texture = ExtResource("16_xjuwm")
 flip_h = true
 
-[node name="@Sprite2D@48" type="Sprite2D" parent="GroundDecals" unique_id=1069553328]
+[node name="@Sprite2D@48" type="Sprite2D" parent="GroundDecals" unique_id=1744531924]
 position = Vector2(750.27075, 490.56458)
 scale = Vector2(0.69148016, 0.69148016)
-texture = ExtResource("14_0phfo")
+texture = ExtResource("14_immyn")
 
-[node name="@Sprite2D@49" type="Sprite2D" parent="GroundDecals" unique_id=711339724]
+[node name="@Sprite2D@49" type="Sprite2D" parent="GroundDecals" unique_id=856573670]
 position = Vector2(693.07385, 482.49243)
 scale = Vector2(0.7733146, 0.7733146)
-texture = ExtResource("16_immyn")
+texture = ExtResource("16_xjuwm")
 flip_h = true
 
-[node name="@Sprite2D@50" type="Sprite2D" parent="GroundDecals" unique_id=1899001895]
+[node name="@Sprite2D@50" type="Sprite2D" parent="GroundDecals" unique_id=1156652958]
 position = Vector2(768.13666, 427.57578)
 scale = Vector2(0.4528792, 0.4528792)
-texture = ExtResource("12_jwio6")
+texture = ExtResource("12_0phfo")
 
-[node name="@Sprite2D@51" type="Sprite2D" parent="GroundDecals" unique_id=181822391]
+[node name="@Sprite2D@51" type="Sprite2D" parent="GroundDecals" unique_id=348060700]
 position = Vector2(773.8176, 427.57578)
 scale = Vector2(0.6916444, 0.6916444)
-texture = ExtResource("18_xjuwm")
+texture = ExtResource("18_vm623")
 flip_h = true
 
-[node name="@Sprite2D@52" type="Sprite2D" parent="GroundDecals" unique_id=581451754]
+[node name="@Sprite2D@52" type="Sprite2D" parent="GroundDecals" unique_id=1563515394]
 position = Vector2(772.69086, 415.70218)
 scale = Vector2(0.75478345, 0.75478345)
-texture = ExtResource("14_0phfo")
+texture = ExtResource("14_immyn")
 flip_h = true
 
-[node name="@Sprite2D@53" type="Sprite2D" parent="GroundDecals" unique_id=6908217]
+[node name="@Sprite2D@53" type="Sprite2D" parent="GroundDecals" unique_id=1838175064]
 position = Vector2(292.22116, 566.37964)
 scale = Vector2(0.38869962, 0.38869962)
-texture = ExtResource("12_jwio6")
+texture = ExtResource("12_0phfo")
 
-[node name="@Sprite2D@54" type="Sprite2D" parent="GroundDecals" unique_id=746848567]
+[node name="@Sprite2D@54" type="Sprite2D" parent="GroundDecals" unique_id=1938354477]
 position = Vector2(301.74707, 566.37964)
 scale = Vector2(0.8164981, 0.8164981)
-texture = ExtResource("18_xjuwm")
+texture = ExtResource("18_vm623")
 flip_h = true
 
-[node name="@Sprite2D@55" type="Sprite2D" parent="GroundDecals" unique_id=498658543]
+[node name="@Sprite2D@55" type="Sprite2D" parent="GroundDecals" unique_id=1204619063]
 position = Vector2(294.11508, 562.6406)
 scale = Vector2(0.83358324, 0.83358324)
-texture = ExtResource("18_xjuwm")
+texture = ExtResource("18_vm623")
 
-[node name="@Sprite2D@56" type="Sprite2D" parent="GroundDecals" unique_id=1532477326]
+[node name="@Sprite2D@56" type="Sprite2D" parent="GroundDecals" unique_id=1243424720]
 position = Vector2(293.64102, 821.4741)
 scale = Vector2(0.50441545, 0.50441545)
-texture = ExtResource("12_jwio6")
+texture = ExtResource("12_0phfo")
 flip_h = true
 
-[node name="@Sprite2D@57" type="Sprite2D" parent="GroundDecals" unique_id=183425189]
+[node name="@Sprite2D@57" type="Sprite2D" parent="GroundDecals" unique_id=350491487]
 position = Vector2(291.8111, 821.4741)
 scale = Vector2(0.76554435, 0.76554435)
-texture = ExtResource("16_immyn")
+texture = ExtResource("16_xjuwm")
 flip_h = true
 
-[node name="@Sprite2D@58" type="Sprite2D" parent="GroundDecals" unique_id=826946945]
+[node name="@Sprite2D@58" type="Sprite2D" parent="GroundDecals" unique_id=23011439]
 position = Vector2(295.90228, 898.1073)
 scale = Vector2(0.7448223, 0.7448223)
-texture = ExtResource("13_8y2ke")
+texture = ExtResource("13_mgsn6")
 
-[node name="@Sprite2D@59" type="Sprite2D" parent="GroundDecals" unique_id=1896783523]
+[node name="@Sprite2D@59" type="Sprite2D" parent="GroundDecals" unique_id=1096579964]
 position = Vector2(330.08612, 957.7543)
 scale = Vector2(0.8391328, 0.8391328)
-texture = ExtResource("16_immyn")
+texture = ExtResource("16_xjuwm")
 
-[node name="@Sprite2D@60" type="Sprite2D" parent="GroundDecals" unique_id=1349231545]
+[node name="@Sprite2D@60" type="Sprite2D" parent="GroundDecals" unique_id=1560098415]
 position = Vector2(325.57202, 958.67175)
 scale = Vector2(0.3414759, 0.3414759)
-texture = ExtResource("23_wpi88")
+texture = ExtResource("23_4nykq")
 
-[node name="@Sprite2D@61" type="Sprite2D" parent="GroundDecals" unique_id=740081622]
+[node name="@Sprite2D@61" type="Sprite2D" parent="GroundDecals" unique_id=432884456]
 position = Vector2(325.57202, 952.66187)
 scale = Vector2(0.88918495, 0.88918495)
-texture = ExtResource("14_0phfo")
+texture = ExtResource("14_immyn")
 
-[node name="@Sprite2D@62" type="Sprite2D" parent="GroundDecals" unique_id=1124897636]
+[node name="@Sprite2D@62" type="Sprite2D" parent="GroundDecals" unique_id=356435656]
 position = Vector2(424.9969, 958.26953)
 scale = Vector2(0.38752314, 0.38752314)
-texture = ExtResource("22_sgv3q")
+texture = ExtResource("22_pix58")
 flip_h = true
 
-[node name="@Sprite2D@63" type="Sprite2D" parent="GroundDecals" unique_id=1396965568]
+[node name="@Sprite2D@63" type="Sprite2D" parent="GroundDecals" unique_id=1400806183]
 position = Vector2(424.9969, 954.6331)
 scale = Vector2(0.85612565, 0.85612565)
-texture = ExtResource("18_xjuwm")
+texture = ExtResource("18_vm623")
 flip_h = true
 
-[node name="@Sprite2D@64" type="Sprite2D" parent="GroundDecals" unique_id=734985947]
+[node name="@Sprite2D@64" type="Sprite2D" parent="GroundDecals" unique_id=646691180]
 position = Vector2(588.1887, 1036.0718)
 scale = Vector2(0.88284, 0.88284)
-texture = ExtResource("14_0phfo")
+texture = ExtResource("14_immyn")
 
-[node name="@Sprite2D@65" type="Sprite2D" parent="GroundDecals" unique_id=870719885]
+[node name="@Sprite2D@65" type="Sprite2D" parent="GroundDecals" unique_id=1255587237]
 position = Vector2(580.69464, 1043.661)
 scale = Vector2(0.9048055, 0.9048055)
-texture = ExtResource("18_xjuwm")
+texture = ExtResource("18_vm623")
 
-[node name="@Sprite2D@66" type="Sprite2D" parent="GroundDecals" unique_id=2016704322]
+[node name="@Sprite2D@66" type="Sprite2D" parent="GroundDecals" unique_id=576498472]
 position = Vector2(431.26767, 1153.008)
 scale = Vector2(0.34387428, 0.34387428)
-texture = ExtResource("21_voix6")
+texture = ExtResource("21_wpi88")
 flip_h = true
 
-[node name="@Sprite2D@67" type="Sprite2D" parent="GroundDecals" unique_id=1134862233]
+[node name="@Sprite2D@67" type="Sprite2D" parent="GroundDecals" unique_id=1696572634]
 position = Vector2(431.26767, 1161.5154)
 scale = Vector2(0.89467543, 0.89467543)
-texture = ExtResource("13_8y2ke")
+texture = ExtResource("13_mgsn6")
 
-[node name="@Sprite2D@68" type="Sprite2D" parent="GroundDecals" unique_id=421734181]
+[node name="@Sprite2D@68" type="Sprite2D" parent="GroundDecals" unique_id=304831980]
 position = Vector2(436.17194, 1158.184)
 scale = Vector2(0.82625735, 0.82625735)
-texture = ExtResource("14_0phfo")
+texture = ExtResource("14_immyn")
 flip_h = true
 
-[node name="@Sprite2D@69" type="Sprite2D" parent="GroundDecals" unique_id=1844179067]
+[node name="@Sprite2D@69" type="Sprite2D" parent="GroundDecals" unique_id=411951118]
 position = Vector2(567.4035, 1166.6714)
 scale = Vector2(0.6809141, 0.6809141)
-texture = ExtResource("14_0phfo")
+texture = ExtResource("14_immyn")
 
-[node name="@Sprite2D@70" type="Sprite2D" parent="GroundDecals" unique_id=1872737548]
+[node name="@Sprite2D@70" type="Sprite2D" parent="GroundDecals" unique_id=1043548422]
 position = Vector2(530.2168, 1154.6766)
 scale = Vector2(0.8060541, 0.8060541)
-texture = ExtResource("18_xjuwm")
+texture = ExtResource("18_vm623")
 
-[node name="@Sprite2D@71" type="Sprite2D" parent="GroundDecals" unique_id=930557689]
+[node name="@Sprite2D@71" type="Sprite2D" parent="GroundDecals" unique_id=527117416]
 position = Vector2(579.1104, 1118.8683)
 scale = Vector2(0.7878914, 0.7878914)
-texture = ExtResource("13_8y2ke")
+texture = ExtResource("13_mgsn6")
 flip_h = true
 
-[node name="@Sprite2D@72" type="Sprite2D" parent="GroundDecals" unique_id=1161827587]
+[node name="@Sprite2D@72" type="Sprite2D" parent="GroundDecals" unique_id=513713178]
 position = Vector2(290.1047, 1160.2878)
 scale = Vector2(0.42299727, 0.42299727)
-texture = ExtResource("19_81sys")
+texture = ExtResource("19_voix6")
 flip_h = true
 
-[node name="@Sprite2D@73" type="Sprite2D" parent="GroundDecals" unique_id=267110336]
+[node name="@Sprite2D@73" type="Sprite2D" parent="GroundDecals" unique_id=1397157924]
 position = Vector2(295.82813, 1161.0908)
 scale = Vector2(0.9197837, 0.9197837)
-texture = ExtResource("18_xjuwm")
+texture = ExtResource("18_vm623")
 flip_h = true
 
-[node name="@Sprite2D@74" type="Sprite2D" parent="GroundDecals" unique_id=2090438474]
+[node name="@Sprite2D@74" type="Sprite2D" parent="GroundDecals" unique_id=236022627]
 position = Vector2(294.9063, 1311.7087)
 scale = Vector2(0.36121303, 0.36121303)
-texture = ExtResource("21_voix6")
+texture = ExtResource("21_wpi88")
 flip_h = true
 
-[node name="@Sprite2D@75" type="Sprite2D" parent="GroundDecals" unique_id=174679682]
+[node name="@Sprite2D@75" type="Sprite2D" parent="GroundDecals" unique_id=1215874595]
 position = Vector2(301.31998, 1311.7087)
 scale = Vector2(0.8621502, 0.8621502)
-texture = ExtResource("16_immyn")
+texture = ExtResource("16_xjuwm")
 
-[node name="@Sprite2D@76" type="Sprite2D" parent="GroundDecals" unique_id=178848338]
+[node name="@Sprite2D@76" type="Sprite2D" parent="GroundDecals" unique_id=1497901469]
 position = Vector2(364.52472, 574.8531)
 scale = Vector2(0.83959186, 0.83959186)
-texture = ExtResource("14_0phfo")
+texture = ExtResource("14_immyn")
 flip_h = true
 
-[node name="@Sprite2D@77" type="Sprite2D" parent="GroundDecals" unique_id=201570314]
+[node name="@Sprite2D@77" type="Sprite2D" parent="GroundDecals" unique_id=2139022394]
 position = Vector2(304.9258, 574.3717)
 scale = Vector2(0.91282177, 0.91282177)
-texture = ExtResource("16_immyn")
+texture = ExtResource("16_xjuwm")
 
-[node name="@Sprite2D@78" type="Sprite2D" parent="GroundDecals" unique_id=1355207995]
+[node name="@Sprite2D@78" type="Sprite2D" parent="GroundDecals" unique_id=1951351996]
 position = Vector2(467.31976, 580.11926)
 scale = Vector2(0.4244492, 0.4244492)
-texture = ExtResource("19_81sys")
+texture = ExtResource("19_voix6")
 flip_h = true
 
-[node name="@Sprite2D@79" type="Sprite2D" parent="GroundDecals" unique_id=462163173]
+[node name="@Sprite2D@79" type="Sprite2D" parent="GroundDecals" unique_id=1786435385]
 position = Vector2(467.31976, 578.21356)
 scale = Vector2(0.8251271, 0.8251271)
-texture = ExtResource("18_xjuwm")
+texture = ExtResource("18_vm623")
 flip_h = true
 
-[node name="@Sprite2D@80" type="Sprite2D" parent="GroundDecals" unique_id=2125758452]
+[node name="@Sprite2D@80" type="Sprite2D" parent="GroundDecals" unique_id=1568563757]
 position = Vector2(430.0022, 573.0142)
 scale = Vector2(0.6948813, 0.6948813)
-texture = ExtResource("18_xjuwm")
+texture = ExtResource("18_vm623")
 flip_h = true
 
-[node name="@Sprite2D@81" type="Sprite2D" parent="GroundDecals" unique_id=506030523]
+[node name="@Sprite2D@81" type="Sprite2D" parent="GroundDecals" unique_id=683409416]
 position = Vector2(497.73108, 574.73987)
 scale = Vector2(0.41495448, 0.41495448)
-texture = ExtResource("12_jwio6")
+texture = ExtResource("12_0phfo")
 
-[node name="@Sprite2D@82" type="Sprite2D" parent="GroundDecals" unique_id=1881440925]
+[node name="@Sprite2D@82" type="Sprite2D" parent="GroundDecals" unique_id=905611469]
 position = Vector2(497.73108, 567.285)
 scale = Vector2(0.87020123, 0.87020123)
-texture = ExtResource("13_8y2ke")
+texture = ExtResource("13_mgsn6")
 flip_h = true
 
-[node name="@Sprite2D@83" type="Sprite2D" parent="GroundDecals" unique_id=583588686]
+[node name="@Sprite2D@83" type="Sprite2D" parent="GroundDecals" unique_id=1995970698]
 position = Vector2(535.7232, 570.149)
 scale = Vector2(0.75066507, 0.75066507)
-texture = ExtResource("18_xjuwm")
+texture = ExtResource("18_vm623")
 flip_h = true
 
-[node name="@Sprite2D@84" type="Sprite2D" parent="GroundDecals" unique_id=420154249]
+[node name="@Sprite2D@84" type="Sprite2D" parent="GroundDecals" unique_id=688402722]
 position = Vector2(611.3175, 571.8988)
 scale = Vector2(0.50974286, 0.50974286)
-texture = ExtResource("19_81sys")
+texture = ExtResource("19_voix6")
 flip_h = true
 
-[node name="@Sprite2D@85" type="Sprite2D" parent="GroundDecals" unique_id=1307511072]
+[node name="@Sprite2D@85" type="Sprite2D" parent="GroundDecals" unique_id=966061213]
 position = Vector2(611.3175, 567.0052)
 scale = Vector2(0.7925576, 0.7925576)
-texture = ExtResource("18_xjuwm")
+texture = ExtResource("18_vm623")
 flip_h = true
 
-[node name="@Sprite2D@86" type="Sprite2D" parent="GroundDecals" unique_id=642131322]
+[node name="@Sprite2D@86" type="Sprite2D" parent="GroundDecals" unique_id=184659169]
 position = Vector2(595.24884, 580.7933)
 scale = Vector2(0.40414324, 0.40414324)
-texture = ExtResource("15_mgsn6")
+texture = ExtResource("15_serft")
 
-[node name="@Sprite2D@87" type="Sprite2D" parent="GroundDecals" unique_id=1652158617]
+[node name="@Sprite2D@87" type="Sprite2D" parent="GroundDecals" unique_id=954104642]
 position = Vector2(595.24884, 580.80804)
 scale = Vector2(0.79929054, 0.79929054)
-texture = ExtResource("18_xjuwm")
+texture = ExtResource("18_vm623")
 
-[node name="@Sprite2D@88" type="Sprite2D" parent="GroundDecals" unique_id=577508673]
+[node name="@Sprite2D@88" type="Sprite2D" parent="GroundDecals" unique_id=1257016737]
 position = Vector2(691.1701, 569.76996)
 scale = Vector2(0.91661614, 0.91661614)
-texture = ExtResource("16_immyn")
+texture = ExtResource("16_xjuwm")
 flip_h = true
 
-[node name="@Sprite2D@89" type="Sprite2D" parent="GroundDecals" unique_id=1008299958]
+[node name="@Sprite2D@89" type="Sprite2D" parent="GroundDecals" unique_id=1691320775]
 position = Vector2(701.3162, 575.3281)
 scale = Vector2(0.78972465, 0.78972465)
-texture = ExtResource("13_8y2ke")
+texture = ExtResource("13_mgsn6")
 
-[node name="@Sprite2D@90" type="Sprite2D" parent="GroundDecals" unique_id=767866795]
+[node name="@Sprite2D@90" type="Sprite2D" parent="GroundDecals" unique_id=714970683]
 position = Vector2(785.32117, 576.212)
 scale = Vector2(0.8784584, 0.8784584)
-texture = ExtResource("13_8y2ke")
+texture = ExtResource("13_mgsn6")
 flip_h = true
 
-[node name="@Sprite2D@91" type="Sprite2D" parent="GroundDecals" unique_id=910050731]
+[node name="@Sprite2D@91" type="Sprite2D" parent="GroundDecals" unique_id=1545245583]
 position = Vector2(808.0461, 573.0581)
 scale = Vector2(0.69704074, 0.69704074)
-texture = ExtResource("13_8y2ke")
+texture = ExtResource("13_mgsn6")
 
-[node name="@Sprite2D@92" type="Sprite2D" parent="GroundDecals" unique_id=524253598]
+[node name="@Sprite2D@92" type="Sprite2D" parent="GroundDecals" unique_id=1111424169]
 position = Vector2(930.11847, 560.4401)
 scale = Vector2(0.6988938, 0.6988938)
-texture = ExtResource("18_xjuwm")
+texture = ExtResource("18_vm623")
 
-[node name="@Sprite2D@93" type="Sprite2D" parent="GroundDecals" unique_id=1888857315]
+[node name="@Sprite2D@93" type="Sprite2D" parent="GroundDecals" unique_id=1247188494]
 position = Vector2(929.50116, 574.3717)
 scale = Vector2(0.78605884, 0.78605884)
-texture = ExtResource("18_xjuwm")
+texture = ExtResource("18_vm623")
 flip_h = true
 
-[node name="@Sprite2D@94" type="Sprite2D" parent="GroundDecals" unique_id=1680243046]
+[node name="@Sprite2D@94" type="Sprite2D" parent="GroundDecals" unique_id=1501741459]
 position = Vector2(1006.7231, 571.2161)
 scale = Vector2(0.75579613, 0.75579613)
-texture = ExtResource("18_xjuwm")
+texture = ExtResource("18_vm623")
 flip_h = true
 
-[node name="@Sprite2D@95" type="Sprite2D" parent="GroundDecals" unique_id=1432347482]
+[node name="@Sprite2D@95" type="Sprite2D" parent="GroundDecals" unique_id=508172268]
 position = Vector2(1036.0172, 578.86145)
 scale = Vector2(0.8957516, 0.8957516)
-texture = ExtResource("16_immyn")
+texture = ExtResource("16_xjuwm")
 
-[node name="@Sprite2D@96" type="Sprite2D" parent="GroundDecals" unique_id=1076245641]
+[node name="@Sprite2D@96" type="Sprite2D" parent="GroundDecals" unique_id=1612342185]
 position = Vector2(1068.8661, 562.69977)
 scale = Vector2(0.84001523, 0.84001523)
-texture = ExtResource("16_immyn")
+texture = ExtResource("16_xjuwm")
 
-[node name="@Sprite2D@97" type="Sprite2D" parent="GroundDecals" unique_id=1587730513]
+[node name="@Sprite2D@97" type="Sprite2D" parent="GroundDecals" unique_id=1845512642]
 position = Vector2(1093.1815, 577.0668)
 scale = Vector2(0.86687183, 0.86687183)
-texture = ExtResource("16_immyn")
+texture = ExtResource("16_xjuwm")
 flip_h = true
 
-[node name="@Sprite2D@98" type="Sprite2D" parent="GroundDecals" unique_id=227862917]
+[node name="@Sprite2D@98" type="Sprite2D" parent="GroundDecals" unique_id=2112440357]
 position = Vector2(1173.029, 566.797)
 scale = Vector2(0.8042737, 0.8042737)
-texture = ExtResource("16_immyn")
+texture = ExtResource("16_xjuwm")
 flip_h = true
 
-[node name="@Sprite2D@99" type="Sprite2D" parent="GroundDecals" unique_id=1617570612]
+[node name="@Sprite2D@99" type="Sprite2D" parent="GroundDecals" unique_id=1843049268]
 position = Vector2(1211.8356, 569.718)
 scale = Vector2(0.8584595, 0.8584595)
-texture = ExtResource("13_8y2ke")
+texture = ExtResource("13_mgsn6")
 flip_h = true
 
-[node name="@Sprite2D@100" type="Sprite2D" parent="GroundDecals" unique_id=228208738]
+[node name="@Sprite2D@100" type="Sprite2D" parent="GroundDecals" unique_id=575686033]
 position = Vector2(1335.6409, 569.6059)
 scale = Vector2(0.79956424, 0.79956424)
-texture = ExtResource("13_8y2ke")
+texture = ExtResource("13_mgsn6")
 flip_h = true
 
-[node name="@Sprite2D@101" type="Sprite2D" parent="GroundDecals" unique_id=79918058]
+[node name="@Sprite2D@101" type="Sprite2D" parent="GroundDecals" unique_id=711058085]
 position = Vector2(1320.9506, 579.386)
 scale = Vector2(0.8934549, 0.8934549)
-texture = ExtResource("16_immyn")
+texture = ExtResource("16_xjuwm")
 flip_h = true
 
-[node name="@Sprite2D@102" type="Sprite2D" parent="GroundDecals" unique_id=1871203377]
+[node name="@Sprite2D@102" type="Sprite2D" parent="GroundDecals" unique_id=1084719711]
 position = Vector2(1393.6812, 570.25635)
 scale = Vector2(0.4196953, 0.4196953)
-texture = ExtResource("15_mgsn6")
+texture = ExtResource("15_serft")
 flip_h = true
 
-[node name="@Sprite2D@103" type="Sprite2D" parent="GroundDecals" unique_id=2137490429]
+[node name="@Sprite2D@103" type="Sprite2D" parent="GroundDecals" unique_id=1943907570]
 position = Vector2(1393.6812, 568.6766)
 scale = Vector2(0.84957683, 0.84957683)
-texture = ExtResource("14_0phfo")
+texture = ExtResource("14_immyn")
 flip_h = true
 
-[node name="@Sprite2D@104" type="Sprite2D" parent="GroundDecals" unique_id=2096403954]
+[node name="@Sprite2D@104" type="Sprite2D" parent="GroundDecals" unique_id=726814668]
 position = Vector2(1393.8107, 570.3706)
 scale = Vector2(0.44314376, 0.44314376)
-texture = ExtResource("23_wpi88")
+texture = ExtResource("23_4nykq")
 flip_h = true
 
-[node name="@Sprite2D@105" type="Sprite2D" parent="GroundDecals" unique_id=1038800980]
+[node name="@Sprite2D@105" type="Sprite2D" parent="GroundDecals" unique_id=1381581683]
 position = Vector2(1393.8107, 570.1467)
 scale = Vector2(0.832888, 0.832888)
-texture = ExtResource("18_xjuwm")
+texture = ExtResource("18_vm623")
 flip_h = true
 
-[node name="@Sprite2D@106" type="Sprite2D" parent="GroundDecals" unique_id=1607592896]
+[node name="@Sprite2D@106" type="Sprite2D" parent="GroundDecals" unique_id=55726037]
 position = Vector2(1452.6108, 576.19415)
 scale = Vector2(0.6830998, 0.6830998)
-texture = ExtResource("13_8y2ke")
+texture = ExtResource("13_mgsn6")
 flip_h = true
 
-[node name="@Sprite2D@107" type="Sprite2D" parent="GroundDecals" unique_id=2116191152]
+[node name="@Sprite2D@107" type="Sprite2D" parent="GroundDecals" unique_id=259869053]
 position = Vector2(1518.5408, 580.7542)
 scale = Vector2(0.37388563, 0.37388563)
-texture = ExtResource("23_wpi88")
+texture = ExtResource("23_4nykq")
 flip_h = true
 
-[node name="@Sprite2D@108" type="Sprite2D" parent="GroundDecals" unique_id=59423851]
+[node name="@Sprite2D@108" type="Sprite2D" parent="GroundDecals" unique_id=873476002]
 position = Vector2(1518.5408, 573.64886)
 scale = Vector2(0.86543447, 0.86543447)
-texture = ExtResource("14_0phfo")
+texture = ExtResource("14_immyn")
 
-[node name="@Sprite2D@109" type="Sprite2D" parent="GroundDecals" unique_id=1445440110]
+[node name="@Sprite2D@109" type="Sprite2D" parent="GroundDecals" unique_id=616640015]
 position = Vector2(1565.7964, 573.23444)
 scale = Vector2(0.40228754, 0.40228754)
-texture = ExtResource("12_jwio6")
+texture = ExtResource("12_0phfo")
 flip_h = true
 
-[node name="@Sprite2D@110" type="Sprite2D" parent="GroundDecals" unique_id=987478841]
+[node name="@Sprite2D@110" type="Sprite2D" parent="GroundDecals" unique_id=1939373783]
 position = Vector2(1565.7964, 575.31116)
 scale = Vector2(0.73048395, 0.73048395)
-texture = ExtResource("14_0phfo")
+texture = ExtResource("14_immyn")
 
-[node name="@Sprite2D@111" type="Sprite2D" parent="GroundDecals" unique_id=1126669765]
+[node name="@Sprite2D@111" type="Sprite2D" parent="GroundDecals" unique_id=1449031465]
 position = Vector2(1580.6373, 580.8723)
 scale = Vector2(0.41445056, 0.41445056)
-texture = ExtResource("12_jwio6")
+texture = ExtResource("12_0phfo")
 
-[node name="@Sprite2D@112" type="Sprite2D" parent="GroundDecals" unique_id=485414326]
+[node name="@Sprite2D@112" type="Sprite2D" parent="GroundDecals" unique_id=150202903]
 position = Vector2(1580.6373, 584.1984)
 scale = Vector2(0.85448647, 0.85448647)
-texture = ExtResource("13_8y2ke")
+texture = ExtResource("13_mgsn6")
 flip_h = true
 
-[node name="@Sprite2D@113" type="Sprite2D" parent="GroundDecals" unique_id=636064956]
+[node name="@Sprite2D@113" type="Sprite2D" parent="GroundDecals" unique_id=529810040]
 position = Vector2(1718.4464, 566.8125)
 scale = Vector2(0.77602744, 0.77602744)
-texture = ExtResource("18_xjuwm")
+texture = ExtResource("18_vm623")
 
-[node name="@Sprite2D@114" type="Sprite2D" parent="GroundDecals" unique_id=2007563188]
+[node name="@Sprite2D@114" type="Sprite2D" parent="GroundDecals" unique_id=1221924464]
 position = Vector2(1674.5112, 577.01733)
 scale = Vector2(0.3720088, 0.3720088)
-texture = ExtResource("21_voix6")
+texture = ExtResource("21_wpi88")
 
-[node name="@Sprite2D@115" type="Sprite2D" parent="GroundDecals" unique_id=1803190507]
+[node name="@Sprite2D@115" type="Sprite2D" parent="GroundDecals" unique_id=1504514865]
 position = Vector2(1674.5112, 568.7232)
 scale = Vector2(0.8198988, 0.8198988)
-texture = ExtResource("18_xjuwm")
+texture = ExtResource("18_vm623")
 flip_h = true
 
-[node name="@Sprite2D@116" type="Sprite2D" parent="GroundDecals" unique_id=401548204]
+[node name="@Sprite2D@116" type="Sprite2D" parent="GroundDecals" unique_id=1825191923]
 position = Vector2(1775.6919, 581.8755)
 scale = Vector2(0.7516511, 0.7516511)
-texture = ExtResource("16_immyn")
+texture = ExtResource("16_xjuwm")
 flip_h = true
 
-[node name="@Sprite2D@117" type="Sprite2D" parent="GroundDecals" unique_id=829960965]
+[node name="@Sprite2D@117" type="Sprite2D" parent="GroundDecals" unique_id=1064065079]
 position = Vector2(1741.4965, 580.20294)
 scale = Vector2(0.70767045, 0.70767045)
-texture = ExtResource("13_8y2ke")
+texture = ExtResource("13_mgsn6")
 flip_h = true
 
-[node name="@Sprite2D@118" type="Sprite2D" parent="GroundDecals" unique_id=385953480]
+[node name="@Sprite2D@118" type="Sprite2D" parent="GroundDecals" unique_id=384224563]
 position = Vector2(1851.4158, 574.02356)
 scale = Vector2(0.38414407, 0.38414407)
-texture = ExtResource("19_81sys")
+texture = ExtResource("19_voix6")
 flip_h = true
 
-[node name="@Sprite2D@119" type="Sprite2D" parent="GroundDecals" unique_id=514895893]
+[node name="@Sprite2D@119" type="Sprite2D" parent="GroundDecals" unique_id=245693292]
 position = Vector2(1851.4158, 572.02704)
 scale = Vector2(0.73214114, 0.73214114)
-texture = ExtResource("16_immyn")
+texture = ExtResource("16_xjuwm")
 flip_h = true
 
-[node name="@Sprite2D@120" type="Sprite2D" parent="GroundDecals" unique_id=1957647068]
+[node name="@Sprite2D@120" type="Sprite2D" parent="GroundDecals" unique_id=1422110142]
 position = Vector2(1834.9801, 571.01996)
 scale = Vector2(0.7649009, 0.7649009)
-texture = ExtResource("18_xjuwm")
+texture = ExtResource("18_vm623")
 flip_h = true
 
-[node name="@Sprite2D@121" type="Sprite2D" parent="GroundDecals" unique_id=1252716948]
+[node name="@Sprite2D@121" type="Sprite2D" parent="GroundDecals" unique_id=1473764580]
 position = Vector2(1989.6932, 566.0233)
 scale = Vector2(0.7998971, 0.7998971)
-texture = ExtResource("16_immyn")
+texture = ExtResource("16_xjuwm")
 flip_h = true
 
-[node name="@Sprite2D@122" type="Sprite2D" parent="GroundDecals" unique_id=689321671]
+[node name="@Sprite2D@122" type="Sprite2D" parent="GroundDecals" unique_id=1625353840]
 position = Vector2(1953.2544, 572.9133)
 scale = Vector2(0.8802369, 0.8802369)
-texture = ExtResource("16_immyn")
+texture = ExtResource("16_xjuwm")
 flip_h = true
 
-[node name="@Sprite2D@123" type="Sprite2D" parent="GroundDecals" unique_id=1649105801]
+[node name="@Sprite2D@123" type="Sprite2D" parent="GroundDecals" unique_id=1007371148]
 position = Vector2(2042.782, 574.85156)
 scale = Vector2(0.89601135, 0.89601135)
-texture = ExtResource("16_immyn")
+texture = ExtResource("16_xjuwm")
 flip_h = true
 
-[node name="@Sprite2D@124" type="Sprite2D" parent="GroundDecals" unique_id=419486001]
+[node name="@Sprite2D@124" type="Sprite2D" parent="GroundDecals" unique_id=1073091926]
 position = Vector2(2095.1042, 576.4463)
 scale = Vector2(0.7244841, 0.7244841)
-texture = ExtResource("14_0phfo")
+texture = ExtResource("14_immyn")
 flip_h = true
 
-[node name="@Sprite2D@125" type="Sprite2D" parent="GroundDecals" unique_id=964201906]
+[node name="@Sprite2D@125" type="Sprite2D" parent="GroundDecals" unique_id=1645662257]
 position = Vector2(2169.9592, 579.1674)
 scale = Vector2(0.384499, 0.384499)
-texture = ExtResource("15_mgsn6")
+texture = ExtResource("15_serft")
 flip_h = true
 
-[node name="@Sprite2D@126" type="Sprite2D" parent="GroundDecals" unique_id=1318364804]
+[node name="@Sprite2D@126" type="Sprite2D" parent="GroundDecals" unique_id=360627669]
 position = Vector2(2169.9592, 577.4887)
 scale = Vector2(0.806015, 0.806015)
-texture = ExtResource("14_0phfo")
+texture = ExtResource("14_immyn")
 flip_h = true
 
-[node name="@Sprite2D@127" type="Sprite2D" parent="GroundDecals" unique_id=1624756613]
+[node name="@Sprite2D@127" type="Sprite2D" parent="GroundDecals" unique_id=1492287404]
 position = Vector2(2148.6697, 579.7415)
 scale = Vector2(0.76773155, 0.76773155)
-texture = ExtResource("14_0phfo")
+texture = ExtResource("14_immyn")
 flip_h = true
 
-[node name="@Sprite2D@128" type="Sprite2D" parent="GroundDecals" unique_id=73958457]
+[node name="@Sprite2D@128" type="Sprite2D" parent="GroundDecals" unique_id=337244255]
 position = Vector2(2255.4397, 572.86865)
 scale = Vector2(0.6962502, 0.6962502)
-texture = ExtResource("14_0phfo")
+texture = ExtResource("14_immyn")
 flip_h = true
 
-[node name="@Sprite2D@129" type="Sprite2D" parent="GroundDecals" unique_id=140632977]
+[node name="@Sprite2D@129" type="Sprite2D" parent="GroundDecals" unique_id=1621992510]
 position = Vector2(2267.1436, 573.9286)
 scale = Vector2(0.75957793, 0.75957793)
-texture = ExtResource("13_8y2ke")
+texture = ExtResource("13_mgsn6")
 
-[node name="@Sprite2D@130" type="Sprite2D" parent="GroundDecals" unique_id=2055259861]
+[node name="@Sprite2D@130" type="Sprite2D" parent="GroundDecals" unique_id=667252357]
 position = Vector2(316.02692, 768.3159)
 scale = Vector2(0.7230744, 0.7230744)
-texture = ExtResource("16_immyn")
+texture = ExtResource("16_xjuwm")
 flip_h = true
 
-[node name="@Sprite2D@131" type="Sprite2D" parent="GroundDecals" unique_id=1090602479]
+[node name="@Sprite2D@131" type="Sprite2D" parent="GroundDecals" unique_id=1992313934]
 position = Vector2(344.11523, 764.09863)
 scale = Vector2(0.41142154, 0.41142154)
-texture = ExtResource("19_81sys")
+texture = ExtResource("19_voix6")
 flip_h = true
 
-[node name="@Sprite2D@132" type="Sprite2D" parent="GroundDecals" unique_id=1360345903]
+[node name="@Sprite2D@132" type="Sprite2D" parent="GroundDecals" unique_id=1225164714]
 position = Vector2(344.11523, 767.9139)
 scale = Vector2(0.8477222, 0.8477222)
-texture = ExtResource("18_xjuwm")
+texture = ExtResource("18_vm623")
 
-[node name="@Sprite2D@133" type="Sprite2D" parent="GroundDecals" unique_id=728404764]
+[node name="@Sprite2D@133" type="Sprite2D" parent="GroundDecals" unique_id=2056213681]
 position = Vector2(457.09903, 772.66284)
 scale = Vector2(0.35161063, 0.35161063)
-texture = ExtResource("21_voix6")
+texture = ExtResource("21_wpi88")
 
-[node name="@Sprite2D@134" type="Sprite2D" parent="GroundDecals" unique_id=786051347]
+[node name="@Sprite2D@134" type="Sprite2D" parent="GroundDecals" unique_id=24988564]
 position = Vector2(457.09903, 780.2354)
 scale = Vector2(0.8842638, 0.8842638)
-texture = ExtResource("14_0phfo")
+texture = ExtResource("14_immyn")
 flip_h = true
 
-[node name="@Sprite2D@135" type="Sprite2D" parent="GroundDecals" unique_id=1343944894]
+[node name="@Sprite2D@135" type="Sprite2D" parent="GroundDecals" unique_id=1178063946]
 position = Vector2(408.91046, 763.24927)
 scale = Vector2(0.40186626, 0.40186626)
-texture = ExtResource("23_wpi88")
+texture = ExtResource("23_4nykq")
 flip_h = true
 
-[node name="@Sprite2D@136" type="Sprite2D" parent="GroundDecals" unique_id=2066236658]
+[node name="@Sprite2D@136" type="Sprite2D" parent="GroundDecals" unique_id=1227751582]
 position = Vector2(408.91046, 769.8156)
 scale = Vector2(0.75991106, 0.75991106)
-texture = ExtResource("14_0phfo")
+texture = ExtResource("14_immyn")
 
-[node name="@Sprite2D@137" type="Sprite2D" parent="GroundDecals" unique_id=2006158518]
+[node name="@Sprite2D@137" type="Sprite2D" parent="GroundDecals" unique_id=312433229]
 position = Vector2(497.15982, 770.5978)
 scale = Vector2(0.7231301, 0.7231301)
-texture = ExtResource("14_0phfo")
+texture = ExtResource("14_immyn")
 
-[node name="@Sprite2D@138" type="Sprite2D" parent="GroundDecals" unique_id=1996686631]
+[node name="@Sprite2D@138" type="Sprite2D" parent="GroundDecals" unique_id=725284964]
 position = Vector2(516.0016, 763.9981)
 scale = Vector2(0.8332893, 0.8332893)
-texture = ExtResource("16_immyn")
+texture = ExtResource("16_xjuwm")
 
-[node name="@Sprite2D@139" type="Sprite2D" parent="GroundDecals" unique_id=1267547822]
+[node name="@Sprite2D@139" type="Sprite2D" parent="GroundDecals" unique_id=117560428]
 position = Vector2(614.555, 775.90796)
 scale = Vector2(0.49469241, 0.49469241)
-texture = ExtResource("17_serft")
+texture = ExtResource("17_81sys")
 
-[node name="@Sprite2D@140" type="Sprite2D" parent="GroundDecals" unique_id=1072919430]
+[node name="@Sprite2D@140" type="Sprite2D" parent="GroundDecals" unique_id=830942967]
 position = Vector2(614.555, 778.7096)
 scale = Vector2(0.73214436, 0.73214436)
-texture = ExtResource("13_8y2ke")
+texture = ExtResource("13_mgsn6")
 flip_h = true
 
-[node name="@Sprite2D@141" type="Sprite2D" parent="GroundDecals" unique_id=466563713]
+[node name="@Sprite2D@141" type="Sprite2D" parent="GroundDecals" unique_id=1505378976]
 position = Vector2(637.1649, 768.88605)
 scale = Vector2(0.7529435, 0.7529435)
-texture = ExtResource("14_0phfo")
+texture = ExtResource("14_immyn")
 flip_h = true
 
-[node name="@Sprite2D@142" type="Sprite2D" parent="GroundDecals" unique_id=1067348043]
+[node name="@Sprite2D@142" type="Sprite2D" parent="GroundDecals" unique_id=487748790]
 position = Vector2(696.49854, 764.5809)
 scale = Vector2(0.45436633, 0.45436633)
-texture = ExtResource("22_sgv3q")
+texture = ExtResource("22_pix58")
 
-[node name="@Sprite2D@143" type="Sprite2D" parent="GroundDecals" unique_id=703200530]
+[node name="@Sprite2D@143" type="Sprite2D" parent="GroundDecals" unique_id=137492680]
 position = Vector2(696.49854, 767.6165)
 scale = Vector2(0.71850693, 0.71850693)
-texture = ExtResource("14_0phfo")
+texture = ExtResource("14_immyn")
 
-[node name="@Sprite2D@144" type="Sprite2D" parent="GroundDecals" unique_id=763395378]
+[node name="@Sprite2D@144" type="Sprite2D" parent="GroundDecals" unique_id=404032242]
 position = Vector2(685.01135, 769.4482)
 scale = Vector2(0.8700919, 0.8700919)
-texture = ExtResource("13_8y2ke")
+texture = ExtResource("13_mgsn6")
 
-[node name="@Sprite2D@145" type="Sprite2D" parent="GroundDecals" unique_id=1022601091]
+[node name="@Sprite2D@145" type="Sprite2D" parent="GroundDecals" unique_id=2112285710]
 position = Vector2(804.3081, 761.64215)
 scale = Vector2(0.42886075, 0.42886075)
-texture = ExtResource("22_sgv3q")
+texture = ExtResource("22_pix58")
 flip_h = true
 
-[node name="@Sprite2D@146" type="Sprite2D" parent="GroundDecals" unique_id=782084695]
+[node name="@Sprite2D@146" type="Sprite2D" parent="GroundDecals" unique_id=1268334584]
 position = Vector2(804.3081, 770.5163)
 scale = Vector2(0.91122895, 0.91122895)
-texture = ExtResource("14_0phfo")
+texture = ExtResource("14_immyn")
 
-[node name="@Sprite2D@147" type="Sprite2D" parent="GroundDecals" unique_id=1331111793]
+[node name="@Sprite2D@147" type="Sprite2D" parent="GroundDecals" unique_id=300869152]
 position = Vector2(802.36316, 759.1374)
 scale = Vector2(0.7301833, 0.7301833)
-texture = ExtResource("14_0phfo")
+texture = ExtResource("14_immyn")
 
-[node name="@Sprite2D@148" type="Sprite2D" parent="GroundDecals" unique_id=595820250]
+[node name="@Sprite2D@148" type="Sprite2D" parent="GroundDecals" unique_id=1943989994]
 position = Vector2(905.6253, 775.9156)
 scale = Vector2(0.4212008, 0.4212008)
-texture = ExtResource("12_jwio6")
+texture = ExtResource("12_0phfo")
 
-[node name="@Sprite2D@149" type="Sprite2D" parent="GroundDecals" unique_id=2145275874]
+[node name="@Sprite2D@149" type="Sprite2D" parent="GroundDecals" unique_id=196790901]
 position = Vector2(905.6253, 778.18396)
 scale = Vector2(0.81043625, 0.81043625)
-texture = ExtResource("13_8y2ke")
+texture = ExtResource("13_mgsn6")
 
-[node name="@Sprite2D@150" type="Sprite2D" parent="GroundDecals" unique_id=1608780047]
+[node name="@Sprite2D@150" type="Sprite2D" parent="GroundDecals" unique_id=373174651]
 position = Vector2(944.8062, 761.3728)
 scale = Vector2(0.3965692, 0.3965692)
-texture = ExtResource("21_voix6")
+texture = ExtResource("21_wpi88")
 flip_h = true
 
-[node name="@Sprite2D@151" type="Sprite2D" parent="GroundDecals" unique_id=99996798]
+[node name="@Sprite2D@151" type="Sprite2D" parent="GroundDecals" unique_id=982766581]
 position = Vector2(944.8062, 763.0393)
 scale = Vector2(0.68414605, 0.68414605)
-texture = ExtResource("16_immyn")
+texture = ExtResource("16_xjuwm")
 
-[node name="@Sprite2D@152" type="Sprite2D" parent="GroundDecals" unique_id=509251484]
+[node name="@Sprite2D@152" type="Sprite2D" parent="GroundDecals" unique_id=536518844]
 position = Vector2(1038.9343, 773.28467)
 scale = Vector2(0.7459056, 0.7459056)
-texture = ExtResource("16_immyn")
+texture = ExtResource("16_xjuwm")
 
-[node name="@Sprite2D@153" type="Sprite2D" parent="GroundDecals" unique_id=1178982690]
+[node name="@Sprite2D@153" type="Sprite2D" parent="GroundDecals" unique_id=1695435112]
 position = Vector2(999.54236, 767.0636)
 scale = Vector2(0.81615573, 0.81615573)
-texture = ExtResource("18_xjuwm")
+texture = ExtResource("18_vm623")
 flip_h = true
 
-[node name="@Sprite2D@154" type="Sprite2D" parent="GroundDecals" unique_id=389107696]
+[node name="@Sprite2D@154" type="Sprite2D" parent="GroundDecals" unique_id=411310924]
 position = Vector2(1130.058, 771.2346)
 scale = Vector2(0.47209582, 0.47209582)
-texture = ExtResource("12_jwio6")
+texture = ExtResource("12_0phfo")
 
-[node name="@Sprite2D@155" type="Sprite2D" parent="GroundDecals" unique_id=650248430]
+[node name="@Sprite2D@155" type="Sprite2D" parent="GroundDecals" unique_id=1122652983]
 position = Vector2(1130.058, 767.3263)
 scale = Vector2(0.8441578, 0.8441578)
-texture = ExtResource("13_8y2ke")
+texture = ExtResource("13_mgsn6")
 flip_h = true
 
-[node name="@Sprite2D@156" type="Sprite2D" parent="GroundDecals" unique_id=612587128]
+[node name="@Sprite2D@156" type="Sprite2D" parent="GroundDecals" unique_id=106473904]
 position = Vector2(1083.5894, 769.40894)
 scale = Vector2(0.7574128, 0.7574128)
-texture = ExtResource("16_immyn")
+texture = ExtResource("16_xjuwm")
 flip_h = true
 
-[node name="@Sprite2D@157" type="Sprite2D" parent="GroundDecals" unique_id=1850763086]
+[node name="@Sprite2D@157" type="Sprite2D" parent="GroundDecals" unique_id=280044582]
 position = Vector2(1225.7744, 762.0485)
 scale = Vector2(0.35202703, 0.35202703)
-texture = ExtResource("21_voix6")
+texture = ExtResource("21_wpi88")
 flip_h = true
 
-[node name="@Sprite2D@158" type="Sprite2D" parent="GroundDecals" unique_id=1853497288]
+[node name="@Sprite2D@158" type="Sprite2D" parent="GroundDecals" unique_id=1926575397]
 position = Vector2(1225.7744, 760.0526)
 scale = Vector2(0.6859665, 0.6859665)
-texture = ExtResource("18_xjuwm")
+texture = ExtResource("18_vm623")
 
-[node name="@Sprite2D@159" type="Sprite2D" parent="GroundDecals" unique_id=1319753903]
+[node name="@Sprite2D@159" type="Sprite2D" parent="GroundDecals" unique_id=532447896]
 position = Vector2(1178.4664, 765.3914)
 scale = Vector2(0.7801331, 0.7801331)
-texture = ExtResource("16_immyn")
+texture = ExtResource("16_xjuwm")
 
-[node name="@Sprite2D@160" type="Sprite2D" parent="GroundDecals" unique_id=1888484615]
+[node name="@Sprite2D@160" type="Sprite2D" parent="GroundDecals" unique_id=959801999]
 position = Vector2(1274.1334, 763.80585)
 scale = Vector2(0.34092283, 0.34092283)
-texture = ExtResource("15_mgsn6")
+texture = ExtResource("15_serft")
 flip_h = true
 
-[node name="@Sprite2D@161" type="Sprite2D" parent="GroundDecals" unique_id=1276881160]
+[node name="@Sprite2D@161" type="Sprite2D" parent="GroundDecals" unique_id=1541612635]
 position = Vector2(1274.1334, 767.82166)
 scale = Vector2(0.84206295, 0.84206295)
-texture = ExtResource("18_xjuwm")
+texture = ExtResource("18_vm623")
 flip_h = true
 
-[node name="@Sprite2D@162" type="Sprite2D" parent="GroundDecals" unique_id=555214200]
+[node name="@Sprite2D@162" type="Sprite2D" parent="GroundDecals" unique_id=1617687297]
 position = Vector2(1287.3007, 762.2099)
 scale = Vector2(0.68355906, 0.68355906)
-texture = ExtResource("13_8y2ke")
+texture = ExtResource("13_mgsn6")
 
-[node name="@Sprite2D@163" type="Sprite2D" parent="GroundDecals" unique_id=762366915]
+[node name="@Sprite2D@163" type="Sprite2D" parent="GroundDecals" unique_id=889286864]
 position = Vector2(1399.4063, 773.9655)
 scale = Vector2(0.7819723, 0.7819723)
-texture = ExtResource("16_immyn")
+texture = ExtResource("16_xjuwm")
 
-[node name="@Sprite2D@164" type="Sprite2D" parent="GroundDecals" unique_id=1337216267]
+[node name="@Sprite2D@164" type="Sprite2D" parent="GroundDecals" unique_id=783774699]
 position = Vector2(1380.7006, 760.8115)
 scale = Vector2(0.7042798, 0.7042798)
-texture = ExtResource("18_xjuwm")
+texture = ExtResource("18_vm623")
 flip_h = true
 
-[node name="@Sprite2D@165" type="Sprite2D" parent="GroundDecals" unique_id=284571117]
+[node name="@Sprite2D@165" type="Sprite2D" parent="GroundDecals" unique_id=15520305]
 position = Vector2(1517.4138, 769.4317)
 scale = Vector2(0.7625518, 0.7625518)
-texture = ExtResource("14_0phfo")
+texture = ExtResource("14_immyn")
 
-[node name="@Sprite2D@166" type="Sprite2D" parent="GroundDecals" unique_id=1741824359]
+[node name="@Sprite2D@166" type="Sprite2D" parent="GroundDecals" unique_id=1404331212]
 position = Vector2(1481.5991, 768.189)
 scale = Vector2(0.7806985, 0.7806985)
-texture = ExtResource("18_xjuwm")
+texture = ExtResource("18_vm623")
 flip_h = true
 
-[node name="@Sprite2D@167" type="Sprite2D" parent="GroundDecals" unique_id=1462678436]
+[node name="@Sprite2D@167" type="Sprite2D" parent="GroundDecals" unique_id=1461718541]
 position = Vector2(1558.3623, 780.0687)
 scale = Vector2(0.8399932, 0.8399932)
-texture = ExtResource("16_immyn")
+texture = ExtResource("16_xjuwm")
 flip_h = true
 
-[node name="@Sprite2D@168" type="Sprite2D" parent="GroundDecals" unique_id=1302505481]
+[node name="@Sprite2D@168" type="Sprite2D" parent="GroundDecals" unique_id=1767994353]
 position = Vector2(1576.9746, 775.35297)
 scale = Vector2(0.8564329, 0.8564329)
-texture = ExtResource("16_immyn")
+texture = ExtResource("16_xjuwm")
 
-[node name="@Sprite2D@169" type="Sprite2D" parent="GroundDecals" unique_id=389718072]
+[node name="@Sprite2D@169" type="Sprite2D" parent="GroundDecals" unique_id=201666276]
 position = Vector2(1659.2721, 772.7279)
 scale = Vector2(0.45945674, 0.45945674)
-texture = ExtResource("23_wpi88")
+texture = ExtResource("23_4nykq")
 
-[node name="@Sprite2D@170" type="Sprite2D" parent="GroundDecals" unique_id=486981850]
+[node name="@Sprite2D@170" type="Sprite2D" parent="GroundDecals" unique_id=2146789702]
 position = Vector2(1659.2721, 771.3366)
 scale = Vector2(0.86158144, 0.86158144)
-texture = ExtResource("16_immyn")
+texture = ExtResource("16_xjuwm")
 flip_h = true
 
-[node name="@Sprite2D@171" type="Sprite2D" parent="GroundDecals" unique_id=1298062609]
+[node name="@Sprite2D@171" type="Sprite2D" parent="GroundDecals" unique_id=1204230762]
 position = Vector2(1715.4797, 774.46075)
 scale = Vector2(0.7234466, 0.7234466)
-texture = ExtResource("18_xjuwm")
+texture = ExtResource("18_vm623")
 
-[node name="@Sprite2D@172" type="Sprite2D" parent="GroundDecals" unique_id=2104435897]
+[node name="@Sprite2D@172" type="Sprite2D" parent="GroundDecals" unique_id=1459161580]
 position = Vector2(1753.9495, 769.4788)
 scale = Vector2(0.46864662, 0.46864662)
-texture = ExtResource("22_sgv3q")
+texture = ExtResource("22_pix58")
 
-[node name="@Sprite2D@173" type="Sprite2D" parent="GroundDecals" unique_id=642364265]
+[node name="@Sprite2D@173" type="Sprite2D" parent="GroundDecals" unique_id=1127995992]
 position = Vector2(1753.9495, 774.4288)
 scale = Vector2(0.8759688, 0.8759688)
-texture = ExtResource("14_0phfo")
+texture = ExtResource("14_immyn")
 
-[node name="@Sprite2D@174" type="Sprite2D" parent="GroundDecals" unique_id=1665785927]
+[node name="@Sprite2D@174" type="Sprite2D" parent="GroundDecals" unique_id=794643394]
 position = Vector2(1804.2255, 762.2334)
 scale = Vector2(0.89789665, 0.89789665)
-texture = ExtResource("18_xjuwm")
+texture = ExtResource("18_vm623")
 flip_h = true
 
-[node name="@Sprite2D@175" type="Sprite2D" parent="GroundDecals" unique_id=1116436509]
+[node name="@Sprite2D@175" type="Sprite2D" parent="GroundDecals" unique_id=1191043989]
 position = Vector2(1843.5508, 771.7809)
 scale = Vector2(0.6862138, 0.6862138)
-texture = ExtResource("14_0phfo")
+texture = ExtResource("14_immyn")
 flip_h = true
 
-[node name="@Sprite2D@176" type="Sprite2D" parent="GroundDecals" unique_id=1018137275]
+[node name="@Sprite2D@176" type="Sprite2D" parent="GroundDecals" unique_id=688489351]
 position = Vector2(1882.1482, 777.2035)
 scale = Vector2(0.8756398, 0.8756398)
-texture = ExtResource("13_8y2ke")
+texture = ExtResource("13_mgsn6")
 flip_h = true
 
-[node name="@Sprite2D@177" type="Sprite2D" parent="GroundDecals" unique_id=975691375]
+[node name="@Sprite2D@177" type="Sprite2D" parent="GroundDecals" unique_id=7869417]
 position = Vector2(1973.7883, 762.72046)
 scale = Vector2(0.7333058, 0.7333058)
-texture = ExtResource("18_xjuwm")
+texture = ExtResource("18_vm623")
 
-[node name="@Sprite2D@178" type="Sprite2D" parent="GroundDecals" unique_id=1912331940]
+[node name="@Sprite2D@178" type="Sprite2D" parent="GroundDecals" unique_id=740887832]
 position = Vector2(1950.549, 770.9617)
 scale = Vector2(0.8161734, 0.8161734)
-texture = ExtResource("16_immyn")
+texture = ExtResource("16_xjuwm")
 flip_h = true
 
-[node name="@Sprite2D@179" type="Sprite2D" parent="GroundDecals" unique_id=1305767881]
+[node name="@Sprite2D@179" type="Sprite2D" parent="GroundDecals" unique_id=1303419586]
 position = Vector2(2067.5232, 778.14575)
 scale = Vector2(0.7825978, 0.7825978)
-texture = ExtResource("16_immyn")
+texture = ExtResource("16_xjuwm")
 flip_h = true
 
-[node name="@Sprite2D@180" type="Sprite2D" parent="GroundDecals" unique_id=1092919894]
+[node name="@Sprite2D@180" type="Sprite2D" parent="GroundDecals" unique_id=428092232]
 position = Vector2(2060.762, 773.17804)
 scale = Vector2(0.44680598, 0.44680598)
-texture = ExtResource("12_jwio6")
+texture = ExtResource("12_0phfo")
 
-[node name="@Sprite2D@181" type="Sprite2D" parent="GroundDecals" unique_id=989622729]
+[node name="@Sprite2D@181" type="Sprite2D" parent="GroundDecals" unique_id=1848879378]
 position = Vector2(2060.762, 775.9496)
 scale = Vector2(0.9173609, 0.9173609)
-texture = ExtResource("13_8y2ke")
+texture = ExtResource("13_mgsn6")
 
-[node name="@Sprite2D@182" type="Sprite2D" parent="GroundDecals" unique_id=1467343696]
+[node name="@Sprite2D@182" type="Sprite2D" parent="GroundDecals" unique_id=1083691982]
 position = Vector2(2137.7627, 758.8987)
 scale = Vector2(0.76557875, 0.76557875)
-texture = ExtResource("14_0phfo")
+texture = ExtResource("14_immyn")
 flip_h = true
 
-[node name="@Sprite2D@183" type="Sprite2D" parent="GroundDecals" unique_id=732658682]
+[node name="@Sprite2D@183" type="Sprite2D" parent="GroundDecals" unique_id=551773670]
 position = Vector2(2177.6611, 769.58997)
 scale = Vector2(0.74230635, 0.74230635)
-texture = ExtResource("18_xjuwm")
+texture = ExtResource("18_vm623")
 
-[node name="@Sprite2D@184" type="Sprite2D" parent="GroundDecals" unique_id=1022934051]
+[node name="@Sprite2D@184" type="Sprite2D" parent="GroundDecals" unique_id=678043570]
 position = Vector2(2282.3442, 765.21466)
 scale = Vector2(0.76703244, 0.76703244)
-texture = ExtResource("18_xjuwm")
+texture = ExtResource("18_vm623")
 flip_h = true
 
-[node name="@Sprite2D@185" type="Sprite2D" parent="GroundDecals" unique_id=105455138]
+[node name="@Sprite2D@185" type="Sprite2D" parent="GroundDecals" unique_id=1961844659]
 position = Vector2(2276.0693, 771.9056)
 scale = Vector2(0.41409948, 0.41409948)
-texture = ExtResource("17_serft")
+texture = ExtResource("17_81sys")
 
-[node name="@Sprite2D@186" type="Sprite2D" parent="GroundDecals" unique_id=1355054738]
+[node name="@Sprite2D@186" type="Sprite2D" parent="GroundDecals" unique_id=1584554493]
 position = Vector2(2276.0693, 777.01276)
 scale = Vector2(0.81608164, 0.81608164)
-texture = ExtResource("13_8y2ke")
+texture = ExtResource("13_mgsn6")
 flip_h = true
 
-[node name="@Sprite2D@187" type="Sprite2D" parent="GroundDecals" unique_id=1929374457]
+[node name="@Sprite2D@187" type="Sprite2D" parent="GroundDecals" unique_id=1325809062]
 position = Vector2(349.16534, 804.735)
 scale = Vector2(0.9059104, 0.9059104)
-texture = ExtResource("16_immyn")
+texture = ExtResource("16_xjuwm")
 flip_h = true
 
-[node name="@Sprite2D@188" type="Sprite2D" parent="GroundDecals" unique_id=471445997]
+[node name="@Sprite2D@188" type="Sprite2D" parent="GroundDecals" unique_id=41478653]
 position = Vector2(423.82278, 818.2258)
 scale = Vector2(1.0952393, 1.0952393)
-texture = ExtResource("24_pix58")
+texture = ExtResource("24_ksukv")
 
-[node name="@Sprite2D@189" type="Sprite2D" parent="GroundDecals" unique_id=1098212544]
+[node name="@Sprite2D@189" type="Sprite2D" parent="GroundDecals" unique_id=1378292519]
 position = Vector2(2015.4224, 983.261)
 scale = Vector2(0.78967416, 0.78967416)
-texture = ExtResource("13_8y2ke")
+texture = ExtResource("13_mgsn6")
 flip_h = true
 
-[node name="@Sprite2D@190" type="Sprite2D" parent="GroundDecals" unique_id=633849614]
+[node name="@Sprite2D@190" type="Sprite2D" parent="GroundDecals" unique_id=936433334]
 position = Vector2(747.1579, 850.10156)
 scale = Vector2(0.86251193, 0.86251193)
-texture = ExtResource("14_0phfo")
+texture = ExtResource("14_immyn")
 flip_h = true
 
-[node name="@Sprite2D@191" type="Sprite2D" parent="GroundDecals" unique_id=983680149]
+[node name="@Sprite2D@191" type="Sprite2D" parent="GroundDecals" unique_id=1259731663]
 position = Vector2(861.0276, 464.44476)
 scale = Vector2(0.9372803, 0.9372803)
-texture = ExtResource("16_immyn")
+texture = ExtResource("16_xjuwm")
 
-[node name="@Sprite2D@192" type="Sprite2D" parent="GroundDecals" unique_id=1330140924]
+[node name="@Sprite2D@192" type="Sprite2D" parent="GroundDecals" unique_id=1592292518]
 position = Vector2(1857.5044, 551.6194)
 scale = Vector2(0.98306304, 0.98306304)
-texture = ExtResource("18_xjuwm")
+texture = ExtResource("18_vm623")
 flip_h = true
 
-[node name="@Sprite2D@193" type="Sprite2D" parent="GroundDecals" unique_id=463223454]
+[node name="@Sprite2D@193" type="Sprite2D" parent="GroundDecals" unique_id=1113059530]
 position = Vector2(1649.3652, 1100.0631)
 scale = Vector2(0.9246862, 0.9246862)
-texture = ExtResource("18_xjuwm")
+texture = ExtResource("18_vm623")
 flip_h = true
 
-[node name="@Sprite2D@194" type="Sprite2D" parent="GroundDecals" unique_id=1738399567]
+[node name="@Sprite2D@194" type="Sprite2D" parent="GroundDecals" unique_id=682960017]
 position = Vector2(1123.9121, 358.2529)
 scale = Vector2(0.82051784, 0.82051784)
-texture = ExtResource("13_8y2ke")
+texture = ExtResource("13_mgsn6")
 
-[node name="@Sprite2D@195" type="Sprite2D" parent="GroundDecals" unique_id=490970153]
+[node name="@Sprite2D@195" type="Sprite2D" parent="GroundDecals" unique_id=1460289193]
 position = Vector2(1479.9122, 1109.5398)
 scale = Vector2(0.8985991, 0.8985991)
-texture = ExtResource("18_xjuwm")
+texture = ExtResource("18_vm623")
 
-[node name="@Sprite2D@196" type="Sprite2D" parent="GroundDecals" unique_id=2089282027]
+[node name="@Sprite2D@196" type="Sprite2D" parent="GroundDecals" unique_id=393642922]
 position = Vector2(1245.1754, 947.2118)
 scale = Vector2(0.80966496, 0.80966496)
-texture = ExtResource("13_8y2ke")
+texture = ExtResource("13_mgsn6")
 
-[node name="@Sprite2D@197" type="Sprite2D" parent="GroundDecals" unique_id=1930098511]
+[node name="@Sprite2D@197" type="Sprite2D" parent="GroundDecals" unique_id=1488282863]
 position = Vector2(747.9445, 937.55914)
 scale = Vector2(0.825283, 0.825283)
-texture = ExtResource("16_immyn")
+texture = ExtResource("16_xjuwm")
 flip_h = true
 
-[node name="@Sprite2D@198" type="Sprite2D" parent="GroundDecals" unique_id=1823618944]
+[node name="@Sprite2D@198" type="Sprite2D" parent="GroundDecals" unique_id=666329061]
 position = Vector2(344.60803, 896.11194)
 scale = Vector2(0.8235355, 0.8235355)
-texture = ExtResource("18_xjuwm")
+texture = ExtResource("18_vm623")
 
-[node name="@Sprite2D@199" type="Sprite2D" parent="GroundDecals" unique_id=585660547]
+[node name="@Sprite2D@199" type="Sprite2D" parent="GroundDecals" unique_id=131663645]
 position = Vector2(770.2411, 495.6396)
 scale = Vector2(0.98689616, 0.98689616)
-texture = ExtResource("16_immyn")
+texture = ExtResource("16_xjuwm")
 
-[node name="@Sprite2D@200" type="Sprite2D" parent="GroundDecals" unique_id=2087626005]
+[node name="@Sprite2D@200" type="Sprite2D" parent="GroundDecals" unique_id=2037303969]
 position = Vector2(615.8196, 495.1026)
 scale = Vector2(0.8690702, 0.8690702)
-texture = ExtResource("24_pix58")
+texture = ExtResource("24_ksukv")
 
-[node name="@Sprite2D@201" type="Sprite2D" parent="GroundDecals" unique_id=195137211]
+[node name="@Sprite2D@201" type="Sprite2D" parent="GroundDecals" unique_id=1915553071]
 position = Vector2(1413.4888, 1136.2242)
 scale = Vector2(0.8684481, 0.8684481)
-texture = ExtResource("14_0phfo")
+texture = ExtResource("14_immyn")
 flip_h = true
 
-[node name="@Sprite2D@202" type="Sprite2D" parent="GroundDecals" unique_id=1731999729]
+[node name="@Sprite2D@202" type="Sprite2D" parent="GroundDecals" unique_id=1168582906]
 position = Vector2(1798.3909, 334.5178)
 scale = Vector2(0.9061983, 0.9061983)
-texture = ExtResource("18_xjuwm")
+texture = ExtResource("18_vm623")
 
-[node name="@Sprite2D@203" type="Sprite2D" parent="GroundDecals" unique_id=109190277]
+[node name="@Sprite2D@203" type="Sprite2D" parent="GroundDecals" unique_id=101209076]
 position = Vector2(1550.1885, 1151.6992)
 scale = Vector2(0.97009224, 0.97009224)
-texture = ExtResource("18_xjuwm")
+texture = ExtResource("18_vm623")
 flip_h = true
 
-[node name="@Sprite2D@204" type="Sprite2D" parent="GroundDecals" unique_id=814095921]
+[node name="@Sprite2D@204" type="Sprite2D" parent="GroundDecals" unique_id=1402815136]
 position = Vector2(774.45386, 527.28687)
 scale = Vector2(0.9344578, 0.9344578)
-texture = ExtResource("14_0phfo")
+texture = ExtResource("14_immyn")
 
-[node name="@Sprite2D@205" type="Sprite2D" parent="GroundDecals" unique_id=484466909]
+[node name="@Sprite2D@205" type="Sprite2D" parent="GroundDecals" unique_id=1355621272]
 position = Vector2(1812.5321, 851.456)
 scale = Vector2(1.1329573, 1.1329573)
-texture = ExtResource("24_pix58")
+texture = ExtResource("24_ksukv")
 
-[node name="@Sprite2D@206" type="Sprite2D" parent="GroundDecals" unique_id=1773660551]
+[node name="@Sprite2D@206" type="Sprite2D" parent="GroundDecals" unique_id=1407401587]
 position = Vector2(635.1626, 566.2858)
 scale = Vector2(0.8831587, 0.8831587)
-texture = ExtResource("18_xjuwm")
+texture = ExtResource("18_vm623")
 flip_h = true
 
-[node name="@Sprite2D@207" type="Sprite2D" parent="GroundDecals" unique_id=832423395]
+[node name="@Sprite2D@207" type="Sprite2D" parent="GroundDecals" unique_id=1792086111]
 position = Vector2(790.60675, 326.97855)
 scale = Vector2(0.92756796, 0.92756796)
-texture = ExtResource("18_xjuwm")
+texture = ExtResource("18_vm623")
 
-[node name="@Sprite2D@208" type="Sprite2D" parent="GroundDecals" unique_id=526758575]
+[node name="@Sprite2D@208" type="Sprite2D" parent="GroundDecals" unique_id=1508343616]
 position = Vector2(861.84155, 947.24866)
 scale = Vector2(0.94687104, 0.94687104)
-texture = ExtResource("13_8y2ke")
+texture = ExtResource("13_mgsn6")
 flip_h = true
 
-[node name="@Sprite2D@209" type="Sprite2D" parent="GroundDecals" unique_id=1516339059]
+[node name="@Sprite2D@209" type="Sprite2D" parent="GroundDecals" unique_id=1551374156]
 position = Vector2(1151.1377, 1091.57)
 scale = Vector2(0.9844518, 0.9844518)
-texture = ExtResource("13_8y2ke")
+texture = ExtResource("13_mgsn6")
 flip_h = true
 
-[node name="@Sprite2D@210" type="Sprite2D" parent="GroundDecals" unique_id=1234115133]
+[node name="@Sprite2D@210" type="Sprite2D" parent="GroundDecals" unique_id=267222836]
 position = Vector2(1117.0178, 496.75348)
 scale = Vector2(0.90072715, 0.90072715)
-texture = ExtResource("16_immyn")
+texture = ExtResource("16_xjuwm")
 flip_h = true
 
-[node name="@Sprite2D@211" type="Sprite2D" parent="GroundDecals" unique_id=300019852]
+[node name="@Sprite2D@211" type="Sprite2D" parent="GroundDecals" unique_id=337655511]
 position = Vector2(1765.4727, 411.39688)
 scale = Vector2(0.9468059, 0.9468059)
-texture = ExtResource("18_xjuwm")
+texture = ExtResource("18_vm623")
 
-[node name="@Sprite2D@212" type="Sprite2D" parent="GroundDecals" unique_id=600999864]
+[node name="@Sprite2D@212" type="Sprite2D" parent="GroundDecals" unique_id=145969553]
 position = Vector2(439.12463, 854.6695)
 scale = Vector2(0.79819804, 0.79819804)
-texture = ExtResource("13_8y2ke")
+texture = ExtResource("13_mgsn6")
 flip_h = true
 
-[node name="@Sprite2D@213" type="Sprite2D" parent="GroundDecals" unique_id=995334461]
+[node name="@Sprite2D@213" type="Sprite2D" parent="GroundDecals" unique_id=2133335361]
 position = Vector2(1439.5615, 441.88525)
 scale = Vector2(0.85371417, 0.85371417)
-texture = ExtResource("24_pix58")
+texture = ExtResource("24_ksukv")
 
-[node name="@Sprite2D@214" type="Sprite2D" parent="GroundDecals" unique_id=1825305816]
+[node name="@Sprite2D@214" type="Sprite2D" parent="GroundDecals" unique_id=1744208082]
 position = Vector2(1543.7292, 917.78564)
 scale = Vector2(0.8565449, 0.8565449)
-texture = ExtResource("25_4nykq")
+texture = ExtResource("25_wd4a6")
 flip_h = true
 
-[node name="@Sprite2D@215" type="Sprite2D" parent="GroundDecals" unique_id=148638911]
+[node name="@Sprite2D@215" type="Sprite2D" parent="GroundDecals" unique_id=184418586]
 position = Vector2(1386.7166, 962.49994)
 scale = Vector2(0.88837934, 0.88837934)
-texture = ExtResource("14_0phfo")
+texture = ExtResource("14_immyn")
 
-[node name="@Sprite2D@216" type="Sprite2D" parent="GroundDecals" unique_id=1496572665]
+[node name="@Sprite2D@216" type="Sprite2D" parent="GroundDecals" unique_id=1117479719]
 position = Vector2(696.91925, 802.2036)
 scale = Vector2(1.0194823, 1.0194823)
-texture = ExtResource("13_8y2ke")
+texture = ExtResource("13_mgsn6")
 
-[node name="@Sprite2D@217" type="Sprite2D" parent="GroundDecals" unique_id=254051358]
+[node name="@Sprite2D@217" type="Sprite2D" parent="GroundDecals" unique_id=842523772]
 position = Vector2(1674.3777, 955.01294)
 scale = Vector2(0.86051077, 0.86051077)
-texture = ExtResource("13_8y2ke")
+texture = ExtResource("13_mgsn6")
 flip_h = true
 
-[node name="@Sprite2D@218" type="Sprite2D" parent="GroundDecals" unique_id=1556821493]
+[node name="@Sprite2D@218" type="Sprite2D" parent="GroundDecals" unique_id=62753589]
 position = Vector2(1918.6646, 487.8577)
 scale = Vector2(0.88044184, 0.88044184)
-texture = ExtResource("13_8y2ke")
+texture = ExtResource("13_mgsn6")
 
-[node name="@Sprite2D@219" type="Sprite2D" parent="GroundDecals" unique_id=1786008616]
+[node name="@Sprite2D@219" type="Sprite2D" parent="GroundDecals" unique_id=553103411]
 position = Vector2(1266.8269, 1064.4229)
 scale = Vector2(0.87042356, 0.87042356)
-texture = ExtResource("16_immyn")
+texture = ExtResource("16_xjuwm")
 flip_h = true
 
-[node name="@Sprite2D@220" type="Sprite2D" parent="GroundDecals" unique_id=398236085]
+[node name="@Sprite2D@220" type="Sprite2D" parent="GroundDecals" unique_id=1013764313]
 position = Vector2(1626.3359, 314.08875)
 scale = Vector2(0.9542042, 0.9542042)
-texture = ExtResource("18_xjuwm")
+texture = ExtResource("18_vm623")
 flip_h = true
 
-[node name="@Sprite2D@221" type="Sprite2D" parent="GroundDecals" unique_id=1397790585]
+[node name="@Sprite2D@221" type="Sprite2D" parent="GroundDecals" unique_id=968123110]
 position = Vector2(1946.8547, 295.53055)
 scale = Vector2(1.0034245, 1.0034245)
-texture = ExtResource("16_immyn")
+texture = ExtResource("16_xjuwm")
 
-[node name="@Sprite2D@222" type="Sprite2D" parent="GroundDecals" unique_id=671599757]
+[node name="@Sprite2D@222" type="Sprite2D" parent="GroundDecals" unique_id=1604939307]
 position = Vector2(1476.3784, 303.01678)
 scale = Vector2(0.8444684, 0.8444684)
-texture = ExtResource("13_8y2ke")
+texture = ExtResource("13_mgsn6")
 
-[node name="@Sprite2D@223" type="Sprite2D" parent="GroundDecals" unique_id=1461576203]
+[node name="@Sprite2D@223" type="Sprite2D" parent="GroundDecals" unique_id=2046195742]
 position = Vector2(909.08844, 893.4092)
 scale = Vector2(0.93712723, 0.93712723)
-texture = ExtResource("13_8y2ke")
+texture = ExtResource("13_mgsn6")
 
-[node name="@Sprite2D@224" type="Sprite2D" parent="GroundDecals" unique_id=1151484589]
+[node name="@Sprite2D@224" type="Sprite2D" parent="GroundDecals" unique_id=1454259905]
 position = Vector2(1546.2813, 366.97675)
 scale = Vector2(0.97833574, 0.97833574)
-texture = ExtResource("13_8y2ke")
+texture = ExtResource("13_mgsn6")
 flip_h = true
 
-[node name="@Sprite2D@225" type="Sprite2D" parent="GroundDecals" unique_id=1029391105]
+[node name="@Sprite2D@225" type="Sprite2D" parent="GroundDecals" unique_id=1199642252]
 position = Vector2(1578.5482, 1121.4929)
 scale = Vector2(0.9873874, 0.9873874)
-texture = ExtResource("18_xjuwm")
+texture = ExtResource("18_vm623")
 flip_h = true
 
-[node name="@Sprite2D@226" type="Sprite2D" parent="GroundDecals" unique_id=691797669]
+[node name="@Sprite2D@226" type="Sprite2D" parent="GroundDecals" unique_id=1664042146]
 position = Vector2(1018.2964, 918.9678)
 scale = Vector2(0.9759009, 0.9759009)
-texture = ExtResource("14_0phfo")
+texture = ExtResource("14_immyn")
 flip_h = true
 
-[node name="@Sprite2D@227" type="Sprite2D" parent="GroundDecals" unique_id=2049191628]
+[node name="@Sprite2D@227" type="Sprite2D" parent="GroundDecals" unique_id=668292634]
 position = Vector2(1577.1292, 474.60617)
 scale = Vector2(0.81379515, 0.81379515)
-texture = ExtResource("13_8y2ke")
+texture = ExtResource("13_mgsn6")
 
-[node name="@Sprite2D@228" type="Sprite2D" parent="GroundDecals" unique_id=1675878409]
+[node name="@Sprite2D@228" type="Sprite2D" parent="GroundDecals" unique_id=1773419775]
 position = Vector2(1715.8904, 802.29626)
 scale = Vector2(1.0291703, 1.0291703)
-texture = ExtResource("16_immyn")
+texture = ExtResource("16_xjuwm")
 
-[node name="@Sprite2D@229" type="Sprite2D" parent="GroundDecals" unique_id=875764153]
+[node name="@Sprite2D@229" type="Sprite2D" parent="GroundDecals" unique_id=72353087]
 position = Vector2(1990.1421, 318.1511)
 scale = Vector2(0.99477744, 0.99477744)
-texture = ExtResource("13_8y2ke")
+texture = ExtResource("13_mgsn6")
 
-[node name="@Sprite2D@230" type="Sprite2D" parent="GroundDecals" unique_id=1223818965]
+[node name="@Sprite2D@230" type="Sprite2D" parent="GroundDecals" unique_id=398447442]
 position = Vector2(701.2469, 973.86536)
 scale = Vector2(0.8922246, 0.8922246)
-texture = ExtResource("14_0phfo")
+texture = ExtResource("14_immyn")
 flip_h = true
 
-[node name="@Sprite2D@231" type="Sprite2D" parent="GroundDecals" unique_id=1232086819]
+[node name="@Sprite2D@231" type="Sprite2D" parent="GroundDecals" unique_id=1377416000]
 position = Vector2(2179.443, 937.3915)
 scale = Vector2(0.7762361, 0.7762361)
-texture = ExtResource("13_8y2ke")
+texture = ExtResource("13_mgsn6")
 flip_h = true
 
-[node name="@Sprite2D@232" type="Sprite2D" parent="GroundDecals" unique_id=73216706]
+[node name="@Sprite2D@232" type="Sprite2D" parent="GroundDecals" unique_id=686878815]
 position = Vector2(295.69543, 919.22424)
 scale = Vector2(0.7827273, 0.7827273)
-texture = ExtResource("18_xjuwm")
+texture = ExtResource("18_vm623")
 
-[node name="@Sprite2D@233" type="Sprite2D" parent="GroundDecals" unique_id=992082665]
+[node name="@Sprite2D@233" type="Sprite2D" parent="GroundDecals" unique_id=662490766]
 position = Vector2(1419.8794, 550.52014)
 scale = Vector2(1.1014569, 1.1014569)
-texture = ExtResource("25_4nykq")
+texture = ExtResource("25_wd4a6")
 flip_h = true
 
-[node name="@Sprite2D@234" type="Sprite2D" parent="GroundDecals" unique_id=964059139]
+[node name="@Sprite2D@234" type="Sprite2D" parent="GroundDecals" unique_id=906906775]
 position = Vector2(2092.824, 449.66962)
 scale = Vector2(0.87209994, 0.87209994)
-texture = ExtResource("18_xjuwm")
+texture = ExtResource("18_vm623")
 
-[node name="@Sprite2D@235" type="Sprite2D" parent="GroundDecals" unique_id=1500106120]
+[node name="@Sprite2D@235" type="Sprite2D" parent="GroundDecals" unique_id=502385400]
 position = Vector2(1401.9225, 1056.6531)
 scale = Vector2(0.82688177, 0.82688177)
-texture = ExtResource("18_xjuwm")
+texture = ExtResource("18_vm623")
 flip_h = true
 
-[node name="@Sprite2D@236" type="Sprite2D" parent="GroundDecals" unique_id=1514154282]
+[node name="@Sprite2D@236" type="Sprite2D" parent="GroundDecals" unique_id=189109779]
 position = Vector2(751.7336, 971.3776)
 scale = Vector2(0.80296093, 0.80296093)
-texture = ExtResource("18_xjuwm")
+texture = ExtResource("18_vm623")
 
-[node name="@Sprite2D@237" type="Sprite2D" parent="GroundDecals" unique_id=810676811]
+[node name="@Sprite2D@237" type="Sprite2D" parent="GroundDecals" unique_id=628720997]
 position = Vector2(2197.0356, 1102.4733)
 scale = Vector2(0.8659386, 0.8659386)
-texture = ExtResource("13_8y2ke")
+texture = ExtResource("13_mgsn6")
 
-[node name="@Sprite2D@238" type="Sprite2D" parent="GroundDecals" unique_id=1307308371]
+[node name="@Sprite2D@238" type="Sprite2D" parent="GroundDecals" unique_id=1964496594]
 position = Vector2(2068.296, 1125.0568)
 scale = Vector2(0.8528741, 0.8528741)
-texture = ExtResource("13_8y2ke")
+texture = ExtResource("13_mgsn6")
 flip_h = true
 
-[node name="@Sprite2D@239" type="Sprite2D" parent="GroundDecals" unique_id=75054349]
+[node name="@Sprite2D@239" type="Sprite2D" parent="GroundDecals" unique_id=650102271]
 position = Vector2(813.5786, 906.93176)
 scale = Vector2(0.8489689, 0.8489689)
-texture = ExtResource("13_8y2ke")
+texture = ExtResource("13_mgsn6")
 
-[node name="@Sprite2D@240" type="Sprite2D" parent="GroundDecals" unique_id=614911755]
+[node name="@Sprite2D@240" type="Sprite2D" parent="GroundDecals" unique_id=873490076]
 position = Vector2(1313.0801, 1020.6405)
 scale = Vector2(0.9812765, 0.9812765)
-texture = ExtResource("16_immyn")
+texture = ExtResource("16_xjuwm")
 flip_h = true
 
-[node name="@Sprite2D@241" type="Sprite2D" parent="GroundDecals" unique_id=2110723817]
+[node name="@Sprite2D@241" type="Sprite2D" parent="GroundDecals" unique_id=189952755]
 position = Vector2(587.6544, 874.8788)
 scale = Vector2(0.88818103, 0.88818103)
-texture = ExtResource("13_8y2ke")
+texture = ExtResource("13_mgsn6")
 flip_h = true
 
-[node name="@Sprite2D@242" type="Sprite2D" parent="GroundDecals" unique_id=287815495]
+[node name="@Sprite2D@242" type="Sprite2D" parent="GroundDecals" unique_id=531709152]
 position = Vector2(866.89215, 1072.773)
 scale = Vector2(0.91266227, 0.91266227)
-texture = ExtResource("18_xjuwm")
+texture = ExtResource("18_vm623")
 flip_h = true
 
-[node name="@Sprite2D@243" type="Sprite2D" parent="GroundDecals" unique_id=481768708]
+[node name="@Sprite2D@243" type="Sprite2D" parent="GroundDecals" unique_id=2111461897]
 position = Vector2(806.36847, 1077.2388)
 scale = Vector2(0.8052817, 0.8052817)
-texture = ExtResource("18_xjuwm")
+texture = ExtResource("18_vm623")
 
-[node name="@Sprite2D@244" type="Sprite2D" parent="GroundDecals" unique_id=1052739063]
+[node name="@Sprite2D@244" type="Sprite2D" parent="GroundDecals" unique_id=1484424519]
 position = Vector2(1837.9918, 1124.9368)
 scale = Vector2(0.8665109, 0.8665109)
-texture = ExtResource("25_4nykq")
+texture = ExtResource("25_wd4a6")
 
-[node name="@Sprite2D@245" type="Sprite2D" parent="GroundDecals" unique_id=1142856443]
+[node name="@Sprite2D@245" type="Sprite2D" parent="GroundDecals" unique_id=1630006023]
 position = Vector2(346.186, 525.3494)
 scale = Vector2(0.7808941, 0.7808941)
-texture = ExtResource("16_immyn")
+texture = ExtResource("16_xjuwm")
 flip_h = true
 
-[node name="@Sprite2D@246" type="Sprite2D" parent="GroundDecals" unique_id=501531803]
+[node name="@Sprite2D@246" type="Sprite2D" parent="GroundDecals" unique_id=13684453]
 position = Vector2(1746.05, 350.9331)
 scale = Vector2(0.87268794, 0.87268794)
-texture = ExtResource("13_8y2ke")
+texture = ExtResource("13_mgsn6")
 
-[node name="@Sprite2D@247" type="Sprite2D" parent="GroundDecals" unique_id=1338249527]
+[node name="@Sprite2D@247" type="Sprite2D" parent="GroundDecals" unique_id=1673786699]
 position = Vector2(876.5116, 507.7054)
 scale = Vector2(0.8671846, 0.8671846)
-texture = ExtResource("13_8y2ke")
+texture = ExtResource("13_mgsn6")
 
-[node name="@Sprite2D@248" type="Sprite2D" parent="GroundDecals" unique_id=699409374]
+[node name="@Sprite2D@248" type="Sprite2D" parent="GroundDecals" unique_id=1718551775]
 position = Vector2(2105.5947, 397.5356)
 scale = Vector2(0.9986807, 0.9986807)
-texture = ExtResource("16_immyn")
+texture = ExtResource("16_xjuwm")
 flip_h = true
 
-[node name="@Sprite2D@249" type="Sprite2D" parent="GroundDecals" unique_id=99520804]
+[node name="@Sprite2D@249" type="Sprite2D" parent="GroundDecals" unique_id=729197807]
 position = Vector2(2079.1929, 566.68585)
 scale = Vector2(0.9914247, 0.9914247)
-texture = ExtResource("14_0phfo")
+texture = ExtResource("14_immyn")
 
-[node name="@Sprite2D@250" type="Sprite2D" parent="GroundDecals" unique_id=1432848247]
+[node name="@Sprite2D@250" type="Sprite2D" parent="GroundDecals" unique_id=1639778106]
 position = Vector2(1018.47925, 336.3484)
 scale = Vector2(0.8418874, 0.8418874)
-texture = ExtResource("13_8y2ke")
+texture = ExtResource("13_mgsn6")
 
-[node name="@Sprite2D@251" type="Sprite2D" parent="GroundDecals" unique_id=1672009398]
+[node name="@Sprite2D@251" type="Sprite2D" parent="GroundDecals" unique_id=352527217]
 position = Vector2(2041.8776, 900.0907)
 scale = Vector2(0.8791163, 0.8791163)
-texture = ExtResource("25_4nykq")
+texture = ExtResource("25_wd4a6")
 flip_h = true
 
-[node name="@Sprite2D@252" type="Sprite2D" parent="GroundDecals" unique_id=1066826360]
+[node name="@Sprite2D@252" type="Sprite2D" parent="GroundDecals" unique_id=1791258449]
 position = Vector2(1834.1378, 1149.943)
 scale = Vector2(1.0544404, 1.0544404)
-texture = ExtResource("25_4nykq")
+texture = ExtResource("25_wd4a6")
 flip_h = true
 
-[node name="@Sprite2D@253" type="Sprite2D" parent="GroundDecals" unique_id=1308380443]
+[node name="@Sprite2D@253" type="Sprite2D" parent="GroundDecals" unique_id=1536094751]
 position = Vector2(1759.3477, 497.24628)
 scale = Vector2(0.8441358, 0.8441358)
-texture = ExtResource("13_8y2ke")
+texture = ExtResource("13_mgsn6")
 
-[node name="@Sprite2D@254" type="Sprite2D" parent="GroundDecals" unique_id=735323862]
+[node name="@Sprite2D@254" type="Sprite2D" parent="GroundDecals" unique_id=2095467143]
 position = Vector2(1446.5422, 317.36377)
 scale = Vector2(0.8997527, 0.8997527)
-texture = ExtResource("13_8y2ke")
+texture = ExtResource("13_mgsn6")
 flip_h = true
 
-[node name="@Sprite2D@255" type="Sprite2D" parent="GroundDecals" unique_id=2090386401]
+[node name="@Sprite2D@255" type="Sprite2D" parent="GroundDecals" unique_id=2081711881]
 position = Vector2(432.0726, 773.12787)
 scale = Vector2(0.9420098, 0.9420098)
-texture = ExtResource("16_immyn")
+texture = ExtResource("16_xjuwm")
 
-[node name="@Sprite2D@256" type="Sprite2D" parent="GroundDecals" unique_id=387727111]
+[node name="@Sprite2D@256" type="Sprite2D" parent="GroundDecals" unique_id=822620923]
 position = Vector2(2057.6482, 504.1496)
 scale = Vector2(0.917091, 0.917091)
-texture = ExtResource("16_immyn")
+texture = ExtResource("16_xjuwm")
 flip_h = true
 
-[node name="@Sprite2D@257" type="Sprite2D" parent="GroundDecals" unique_id=1395067212]
+[node name="@Sprite2D@257" type="Sprite2D" parent="GroundDecals" unique_id=577683439]
 position = Vector2(952.0016, 482.8959)
 scale = Vector2(0.8000143, 0.8000143)
-texture = ExtResource("18_xjuwm")
+texture = ExtResource("18_vm623")
 
-[node name="@Sprite2D@258" type="Sprite2D" parent="GroundDecals" unique_id=1156383292]
+[node name="@Sprite2D@258" type="Sprite2D" parent="GroundDecals" unique_id=646305235]
 position = Vector2(2027.4158, 347.7487)
 scale = Vector2(0.8104976, 0.8104976)
-texture = ExtResource("18_xjuwm")
+texture = ExtResource("18_vm623")
 
-[node name="Paroi00" parent="GroundDecals" unique_id=2085211725 instance=ExtResource("26_ksukv")]
+[node name="Paroi00" parent="GroundDecals" unique_id=2085211725 instance=ExtResource("26_gvl1l")]
 modulate = Color(0.774, 0.819, 0.9, 1)
 position = Vector2(50, 0)
 
-[node name="Paroi01" parent="GroundDecals" unique_id=849385993 instance=ExtResource("27_wd4a6")]
+[node name="Paroi01" parent="GroundDecals" unique_id=849385993 instance=ExtResource("27_l7mvk")]
 modulate = Color(0.774, 0.819, 0.9, 1)
 position = Vector2(432, 0)
 
-[node name="Paroi02" parent="GroundDecals" unique_id=1256296675 instance=ExtResource("26_ksukv")]
+[node name="Paroi02" parent="GroundDecals" unique_id=448901539 instance=ExtResource("26_gvl1l")]
 modulate = Color(0.774, 0.819, 0.9, 1)
 position = Vector2(818, 0)
 
-[node name="Paroi03" parent="GroundDecals" unique_id=1059936561 instance=ExtResource("27_wd4a6")]
+[node name="Paroi03" parent="GroundDecals" unique_id=1404754137 instance=ExtResource("27_l7mvk")]
 modulate = Color(0.774, 0.819, 0.9, 1)
 position = Vector2(1200, 0)
 
-[node name="Paroi04" parent="GroundDecals" unique_id=684439514 instance=ExtResource("28_gvl1l")]
+[node name="Paroi04" parent="GroundDecals" unique_id=684439514 instance=ExtResource("28_bjxm4")]
 modulate = Color(0.774, 0.819, 0.9, 1)
 position = Vector2(1575, 0)
 
-[node name="Paroi05" parent="GroundDecals" unique_id=951815821 instance=ExtResource("26_ksukv")]
+[node name="Paroi05" parent="GroundDecals" unique_id=2104340230 instance=ExtResource("26_gvl1l")]
 modulate = Color(0.774, 0.819, 0.9, 1)
 position = Vector2(1970, 0)
 
-[node name="Paroi06" parent="GroundDecals" unique_id=94734916 instance=ExtResource("26_ksukv")]
+[node name="Paroi06" parent="GroundDecals" unique_id=1273038891 instance=ExtResource("26_gvl1l")]
 modulate = Color(0.774, 0.819, 0.9, 1)
 position = Vector2(2162, 0)
 
-[node name="Paroi07" parent="GroundDecals" unique_id=149092185 instance=ExtResource("27_wd4a6")]
+[node name="Paroi07" parent="GroundDecals" unique_id=610664861 instance=ExtResource("27_l7mvk")]
 modulate = Color(0.774, 0.819, 0.9, 1)
 position = Vector2(240, 192)
 
-[node name="Paroi08" parent="GroundDecals" unique_id=1249865603 instance=ExtResource("27_wd4a6")]
+[node name="Paroi08" parent="GroundDecals" unique_id=775285847 instance=ExtResource("27_l7mvk")]
 modulate = Color(0.774, 0.819, 0.9, 1)
 position = Vector2(624, 192)
 
-[node name="Paroi09" parent="GroundDecals" unique_id=2129678889 instance=ExtResource("28_gvl1l")]
+[node name="Paroi09" parent="GroundDecals" unique_id=847216359 instance=ExtResource("28_bjxm4")]
 modulate = Color(0.774, 0.819, 0.9, 1)
 position = Vector2(999, 192)
 
-[node name="Paroi10" parent="GroundDecals" unique_id=1447240528 instance=ExtResource("27_wd4a6")]
+[node name="Paroi10" parent="GroundDecals" unique_id=1045444453 instance=ExtResource("27_l7mvk")]
 modulate = Color(0.774, 0.819, 0.9, 1)
 position = Vector2(1392, 192)
 
-[node name="Paroi11" parent="GroundDecals" unique_id=1675333239 instance=ExtResource("26_ksukv")]
+[node name="Paroi11" parent="GroundDecals" unique_id=852521401 instance=ExtResource("26_gvl1l")]
 modulate = Color(0.774, 0.819, 0.9, 1)
 position = Vector2(1778, 192)
 
-[node name="Paroi12" parent="GroundDecals" unique_id=732399271 instance=ExtResource("28_gvl1l")]
+[node name="Paroi12" parent="GroundDecals" unique_id=1368137152 instance=ExtResource("28_bjxm4")]
 modulate = Color(0.774, 0.819, 0.9, 1)
 position = Vector2(2151, 192)
 
-[node name="Paroi13" parent="GroundDecals" unique_id=795020166 instance=ExtResource("28_gvl1l")]
+[node name="Paroi13" parent="GroundDecals" unique_id=661110546 instance=ExtResource("28_bjxm4")]
 modulate = Color(0.774, 0.819, 0.9, 1)
 position = Vector2(39, 384)
 
-[node name="Paroi14" parent="GroundDecals" unique_id=1116173147 instance=ExtResource("28_gvl1l")]
+[node name="Paroi14" parent="GroundDecals" unique_id=881120491 instance=ExtResource("28_bjxm4")]
 modulate = Color(0.774, 0.819, 0.9, 1)
 position = Vector2(423, 384)
 
-[node name="Paroi15" parent="GroundDecals" unique_id=613858374 instance=ExtResource("28_gvl1l")]
+[node name="Paroi15" parent="GroundDecals" unique_id=2055178146 instance=ExtResource("28_bjxm4")]
 modulate = Color(0.774, 0.819, 0.9, 1)
 position = Vector2(519, 384)
 
-[node name="Paroi16" parent="GroundDecals" unique_id=1456024300 instance=ExtResource("29_l7mvk")]
+[node name="Paroi16" parent="GroundDecals" unique_id=1456024300 instance=ExtResource("29_h7047")]
 modulate = Color(0.86, 0.91, 1, 1)
 position = Vector2(41, 576)
 
-[node name="Paroi17" parent="GroundDecals" unique_id=373199236 instance=ExtResource("28_gvl1l")]
+[node name="Paroi17" parent="GroundDecals" unique_id=1697434111 instance=ExtResource("28_bjxm4")]
 modulate = Color(0.774, 0.819, 0.9, 1)
 position = Vector2(-57, 768)
 
-[node name="Paroi18" parent="GroundDecals" unique_id=1788586319 instance=ExtResource("28_gvl1l")]
+[node name="Paroi18" parent="GroundDecals" unique_id=1967876461 instance=ExtResource("28_bjxm4")]
 modulate = Color(0.774, 0.819, 0.9, 1)
 position = Vector2(39, 960)
 
-[node name="Paroi19" parent="GroundDecals" unique_id=1675272607 instance=ExtResource("28_gvl1l")]
+[node name="Paroi19" parent="GroundDecals" unique_id=953915554 instance=ExtResource("28_bjxm4")]
 modulate = Color(0.774, 0.819, 0.9, 1)
 position = Vector2(39, 1152)
 
-[node name="Paroi20" parent="GroundDecals" unique_id=233799565 instance=ExtResource("29_l7mvk")]
+[node name="Paroi20" parent="GroundDecals" unique_id=1851731835 instance=ExtResource("29_h7047")]
 modulate = Color(0.86, 0.91, 1, 1)
 position = Vector2(137, 1152)
 
-[node name="Paroi21" parent="GroundDecals" unique_id=1705958846 instance=ExtResource("26_ksukv")]
+[node name="Paroi21" parent="GroundDecals" unique_id=388326890 instance=ExtResource("26_gvl1l")]
 modulate = Color(0.86, 0.91, 1, 1)
 position = Vector2(146, 1344)
 
-[node name="CaveMouth" parent="GroundDecals" unique_id=2146439926 instance=ExtResource("30_bjxm4")]
+[node name="CaveMouth" parent="GroundDecals" unique_id=2146439926 instance=ExtResource("30_i5tid")]
 modulate = Color(0.86, 0.91, 1, 1)
 position = Vector2(240, 672)
 scale = Vector2(0.62, 0.62)
 footprint = Array[Vector2i]([])
 
-[node name="Ledge00" parent="GroundDecals" unique_id=1676510498 instance=ExtResource("31_h7047")]
+[node name="Ledge00" parent="GroundDecals" unique_id=1676510498 instance=ExtResource("31_6gxi7")]
 position = Vector2(480, 1248)
 
-[node name="Ledge01" parent="GroundDecals" unique_id=2021171583 instance=ExtResource("31_h7047")]
+[node name="Ledge01" parent="GroundDecals" unique_id=1637231563 instance=ExtResource("31_6gxi7")]
 position = Vector2(864, 1248)
 
-[node name="Ledge02" parent="GroundDecals" unique_id=662181790 instance=ExtResource("31_h7047")]
+[node name="Ledge02" parent="GroundDecals" unique_id=131511940 instance=ExtResource("31_6gxi7")]
 position = Vector2(1248, 1248)
 
-[node name="Ledge03" parent="GroundDecals" unique_id=392000275 instance=ExtResource("31_h7047")]
+[node name="Ledge03" parent="GroundDecals" unique_id=1000163730 instance=ExtResource("31_6gxi7")]
 position = Vector2(1632, 1248)
 
-[node name="Ledge04" parent="GroundDecals" unique_id=344184865 instance=ExtResource("31_h7047")]
+[node name="Ledge04" parent="GroundDecals" unique_id=1035398656 instance=ExtResource("31_6gxi7")]
 position = Vector2(2016, 1248)
 
-[node name="Ledge05" parent="GroundDecals" unique_id=324077802 instance=ExtResource("31_h7047")]
+[node name="Ledge05" parent="GroundDecals" unique_id=1629005528 instance=ExtResource("31_6gxi7")]
 position = Vector2(2400, 1248)
 
-[node name="Entities" type="Node2D" parent="." unique_id=1031156009]
+[node name="Entities" type="Node2D" parent="." unique_id=1572979830]
 unique_name_in_owner = true
 y_sort_enabled = true
 
-[node name="Rock00" parent="Entities" unique_id=218169151 instance=ExtResource("32_i5tid")]
+[node name="Rock00" parent="Entities" unique_id=218169151 instance=ExtResource("32_tiymi")]
 modulate = Color(0.8, 0.85, 0.95, 1)
 position = Vector2(1872, 384)
 scale = Vector2(0.58224523, 0.58224523)
 footprint = Array[Vector2i]([])
 
-[node name="Rock01" parent="Entities" unique_id=878699295 instance=ExtResource("32_i5tid")]
+[node name="Rock01" parent="Entities" unique_id=2124209660 instance=ExtResource("32_tiymi")]
 modulate = Color(0.8, 0.85, 0.95, 1)
 position = Vector2(912, 480)
 scale = Vector2(0.64359176, 0.64359176)
 footprint = Array[Vector2i]([])
 
-[node name="Rock02" parent="Entities" unique_id=2118437224 instance=ExtResource("32_i5tid")]
+[node name="Rock02" parent="Entities" unique_id=1039718672 instance=ExtResource("32_tiymi")]
 modulate = Color(0.8, 0.85, 0.95, 1)
 position = Vector2(1584, 1056)
 scale = Vector2(0.59278345, 0.59278345)
 footprint = Array[Vector2i]([])
 
-[node name="Bush00" parent="Entities" unique_id=1860803934 instance=ExtResource("33_6gxi7")]
+[node name="Bush00" parent="Entities" unique_id=1860803934 instance=ExtResource("33_4lbp0")]
 modulate = Color(0.969, 0.95, 0.95, 1)
 position = Vector2(2256, 384)
 scale = Vector2(1.0213065, 1.0213065)
 
-[node name="EdgeRock01" parent="Entities" unique_id=1574274142 instance=ExtResource("32_i5tid")]
+[node name="EdgeRock01" parent="Entities" unique_id=1610181502 instance=ExtResource("32_tiymi")]
 modulate = Color(0.8, 0.85, 0.95, 1)
 position = Vector2(2256, 480)
 scale = Vector2(0.6511536, 0.6511536)
 footprint = Array[Vector2i]([])
 
-[node name="Bush02" parent="Entities" unique_id=159733777 instance=ExtResource("34_tiymi")]
+[node name="Bush02" parent="Entities" unique_id=159733777 instance=ExtResource("34_i4xet")]
 modulate = Color(0.969, 0.95, 0.95, 1)
 position = Vector2(2256, 576)
 scale = Vector2(1.029055, 1.029055)
 
-[node name="Bush03" parent="Entities" unique_id=1508905703 instance=ExtResource("33_6gxi7")]
+[node name="Bush03" parent="Entities" unique_id=1222332838 instance=ExtResource("33_4lbp0")]
 modulate = Color(0.969, 0.95, 0.95, 1)
 position = Vector2(2256, 864)
 scale = Vector2(1.0039903, 1.0039903)
 
-[node name="EdgeRock04" parent="Entities" unique_id=605446910 instance=ExtResource("32_i5tid")]
+[node name="EdgeRock04" parent="Entities" unique_id=190421612 instance=ExtResource("32_tiymi")]
 modulate = Color(0.8, 0.85, 0.95, 1)
 position = Vector2(2256, 960)
 scale = Vector2(0.622752, 0.622752)
 footprint = Array[Vector2i]([])
 
-[node name="Bush05" parent="Entities" unique_id=1651502043 instance=ExtResource("34_tiymi")]
+[node name="Bush05" parent="Entities" unique_id=762125351 instance=ExtResource("34_i4xet")]
 modulate = Color(0.969, 0.95, 0.95, 1)
 position = Vector2(2256, 1056)
 scale = Vector2(0.9802739, 0.9802739)
 
-[node name="Bush06" parent="Entities" unique_id=2103556994 instance=ExtResource("33_6gxi7")]
+[node name="Bush06" parent="Entities" unique_id=2131219348 instance=ExtResource("33_4lbp0")]
 modulate = Color(0.969, 0.95, 0.95, 1)
 position = Vector2(2256, 1152)
 scale = Vector2(1.0387458, 1.0387458)
 
-[node name="SignRoute4" parent="Entities" unique_id=2106400151 instance=ExtResource("35_4lbp0")]
+[node name="SignRoute4" parent="Entities" unique_id=2106400151 instance=ExtResource("35_vlo17")]
 position = Vector2(624, 576)
 
-[node name="Overhead" type="TileMapLayer" parent="." unique_id=241920405]
+[node name="Overhead" type="TileMapLayer" parent="." unique_id=141123768]
 visible = false
 z_index = 10
-tile_set = ExtResource("3_gjm6j")
+tile_set = ExtResource("3_nyiuh")
 
-[node name="Warps" type="Node2D" parent="." unique_id=787665103]
+[node name="Warps" type="Node2D" parent="." unique_id=310823936]
 
-[node name="MtMoonB2F" type="Marker2D" parent="Warps" unique_id=475950292]
+[node name="MtMoonB2F" type="Marker2D" parent="Warps" unique_id=1260505688]
 position = Vector2(240, 672)
-script = ExtResource("36_i4xet")
+script = ExtResource("36_nsqdn")
 direction = Vector2i(-1, 0)
 target_map = &"mt_moon_b2f"
 target_spawn = &"arrivee_s"
 arrival_facing = Vector2i(0, 1)
 
-[node name="CeruleanN" type="Marker2D" parent="Warps" unique_id=1648177483]
+[node name="CeruleanN" type="Marker2D" parent="Warps" unique_id=880467936]
 position = Vector2(2256, 672)
-script = ExtResource("36_i4xet")
+script = ExtResource("36_nsqdn")
 trigger = 1
 direction = Vector2i(1, 0)
 target_spawn = &"from_cerulean_n"
 arrival_facing = Vector2i(-1, 0)
 coming_soon = "Azuria"
 
-[node name="CeruleanS" type="Marker2D" parent="Warps" unique_id=1704985106]
+[node name="CeruleanS" type="Marker2D" parent="Warps" unique_id=1827816689]
 position = Vector2(2256, 768)
-script = ExtResource("36_i4xet")
+script = ExtResource("36_nsqdn")
 trigger = 1
 direction = Vector2i(1, 0)
 target_spawn = &"from_cerulean_s"
 arrival_facing = Vector2i(-1, 0)
 coming_soon = "Azuria"
 
-[node name="Interactables" type="Node2D" parent="." unique_id=668259185]
+[node name="Interactables" type="Node2D" parent="." unique_id=1156344398]
 
-[node name="Spawns" type="Node2D" parent="." unique_id=1114194681]
+[node name="SignRoute4Read" type="Marker2D" parent="Interactables" unique_id=1271246555]
+position = Vector2(624, 576)
+script = ExtResource("37_r6j0g")
+dialogue_id = &"route_4_sign"
+facing = Vector2i(0, -1)
 
-[node name="from_mt_moon" type="Marker2D" parent="Spawns" unique_id=1869503417]
+[node name="Spawns" type="Node2D" parent="." unique_id=171199723]
+
+[node name="from_mt_moon" type="Marker2D" parent="Spawns" unique_id=1907176947]
 position = Vector2(336, 672)
 
-[node name="from_cerulean_n" type="Marker2D" parent="Spawns" unique_id=961887707]
+[node name="from_cerulean_n" type="Marker2D" parent="Spawns" unique_id=374824525]
 position = Vector2(2256, 672)
 
-[node name="from_cerulean_s" type="Marker2D" parent="Spawns" unique_id=1911701692]
+[node name="from_cerulean_s" type="Marker2D" parent="Spawns" unique_id=1409097301]
 position = Vector2(2256, 768)
 
-[node name="Triggers" type="Node2D" parent="." unique_id=1506326779]
+[node name="Triggers" type="Node2D" parent="." unique_id=1792910197]
+
+[node name="Route4Reached" type="Marker2D" parent="Triggers" unique_id=1947909660]
+position = Vector2(432, 960)
+script = ExtResource("38_hdks2")
+cutscene_id = &"route_4_reached"
+size = Vector2i(1, 5)

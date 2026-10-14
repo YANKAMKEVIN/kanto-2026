@@ -59,8 +59,8 @@ func test_q4_nothing_before_the_rival_battle_then_reach_viridian() -> void:
 ## Jalon 10 (T8) : `pewter_arrived` (scène `pewter_arrival`) et `badge_boulder` (victoire de la
 ## scène `pewter_gym_brock`) sont levés par les données : retirés de la liste.
 ## Jalon 12 (T18) : `route_3_entered` est levé par la scène du déclencheur de la Route 3 ;
-## `route_4_reached` attend le déclencheur du sas (T28).
-const _PENDING_FLAGS: Array[StringName] = [&"viridian_arrived", &"route_4_reached"]
+## (T28) `route_4_reached` par celle du déclencheur du sas (data/cutscenes/route_4.json).
+const _PENDING_FLAGS: Array[StringName] = [&"viridian_arrived"]
 
 
 ## Jalon 10 (dossier 12 §16, jalon-10.md §2.10) : « continuer vers le nord. » jusqu'à Argenta,

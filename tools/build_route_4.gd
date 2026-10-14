@@ -14,12 +14,17 @@ extends SceneTree
 ## - Image : sol peint (roche au pied de la paroi qui cède à l'herbe vers l'est, chemin), paroi
 ##   d'ardoise (série 14, froide) en modules, bouche de la grotte (`relief_entree_grotte_01`
 ##   réduite, couche du sol, dans la paroi ouest), rochers bleutés, blocs de lisière (buissons et
-##   rochers), rebord du versant (`relief_falaise_01`) : la plaine en contrebas, panneau (décor ;
-##   texte au T28), touffes.
+##   rochers), rebord du versant (`relief_falaise_01`) : la plaine en contrebas, panneau, touffes.
 ## - Passages : bouche (2, 6) STEP_ON ← → `mt_moon_b2f` / `arrivee_s` (carte du T9) ; raccord est
 ##   (23, 6..7) PUSH → « AZURIA — À venir » (build de développement ; en release, bord bloqué),
 ##   retour sur la case même, tourné ←. Spawn `from_mt_moon` (3, 6) : arrivée de B2F, tourné →.
-## - Aucun Dresseur, aucune herbe haute, aucun objet ; déclencheur `route_4_reached` au T28.
+## - Aucun Dresseur, aucune herbe haute, aucun objet.
+## - Vie (T28, §1.3 n° 5, §2.15) : panneau examinable de face (↑ depuis (6, 6)) → dialogue
+##   `route_4_sign` ; déclencheur silencieux `route_4_reached` sur (4, 5..9), toute la largeur
+##   du sas, toute direction (objectif « continuer vers Azuria. »).
+## - Passation J13 : la vraie Route 4 garde ce repère de coordonnées (case (0, 0) = coin
+##   nord-ouest du sas ; bouche (2, 6), arrivée (3, 6), praticables de la grille) : une partie
+##   sauvegardée dans le sas doit retomber sur une case praticable.
 
 const Kit := preload("res://tools/pewter_map_kit.gd")
 const PLAN_PATH: String = "res://tools/plans/route_4_sas.txt"
@@ -47,6 +52,11 @@ const EAST_EXITS: Array = [
 	["CeruleanS", Vector2i(23, 7), "from_cerulean_s"],
 ]
 const CERULEAN_SOON: String = "Azuria"
+const SIGN_DIALOGUE: StringName = &"route_4_sign"
+## Déclencheur `route_4_reached` : ancre bas-gauche (4, 9), 1 × 5 cases → (4, 5..9).
+const REACHED_ANCHOR := Vector2i(4, 9)
+const REACHED_SIZE := Vector2i(1, 5)
+const REACHED_CUTSCENE: StringName = &"route_4_reached"
 ## Bouche de la grotte : l'entrée de la Route 3 réduite, centrée sur la case `D`, au sol (sous
 ## le joueur qui y entre par l'est).
 const MOUTH_SCALE: float = 0.62
@@ -109,6 +119,7 @@ func _init() -> void:
 	_place_rocks_and_edge(entities)
 	_kit.call(&"add_prop_at", entities, "prop_panneau_01", _plan().call(&"cell_of",
 		"panneau_route_4"), "SignRoute4")
+	_add_life()
 
 	var errors: PackedStringArray = _kit.get(&"errors")
 	if not errors.is_empty():
@@ -135,6 +146,14 @@ func _add_passages() -> void:
 		_kit.call(&"add_spawn", entry[2], entry[1])
 		_kit.call(&"add_warp", entry[0], entry[1], Kit.PUSH, Vector2i.RIGHT, &"",
 			StringName(entry[2]), Vector2i.LEFT, CERULEAN_SOON)
+
+
+## Point d'examen du panneau (lu de face) et déclencheur silencieux de l'objectif (T28).
+func _add_life() -> void:
+	_kit.call(&"add_interactable", "SignRoute4Read", _plan().call(&"cell_of", "panneau_route_4"),
+		Vector2i.ONE, Vector2i.UP, SIGN_DIALOGUE)
+	_kit.call(&"add_trigger", "Route4Reached", REACHED_ANCHOR, REACHED_SIZE, Vector2i.ZERO,
+		REACHED_CUTSCENE)
 
 
 ## Roche au pied de la paroi qui cède à l'herbe vers l'est (graine fixe).

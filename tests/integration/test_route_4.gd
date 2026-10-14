@@ -2,8 +2,8 @@ extends GutTest
 ## Sas de la Route 4, carte `route_4` (jalon 12 T8, docs/tech/jalon-12.md §0.2 n° 15, §2.1,
 ## §2.15 ; dossier 15 §14) sur la vraie scène : métadonnées, grille de la scène = grille
 ## `tools/plans/route_4_sas.txt`, bouche de la grotte vers B2F (carte du T9), point d'arrivée
-## (3, 6) gardé pour le J13, raccord est « Azuria » à venir, aucun Dresseur, herbe, objet ni
-## déclencheur (T28), budget de nœuds.
+## (3, 6) gardé pour le J13, raccord est « Azuria » à venir, aucun Dresseur, herbe ni objet ;
+## panneau examinable et déclencheur `route_4_reached` (T28, §1.3 n° 5, §2.15) ; budget de nœuds.
 
 const PlanGrid := preload("res://tests/helpers/plan_grid.gd")
 const GridPaths := preload("res://tests/helpers/grid_paths.gd")
@@ -94,8 +94,8 @@ func test_the_whole_sas_is_reachable_and_closed() -> void:
 
 
 func test_nothing_but_the_path_the_sign_and_the_view() -> void:
-	assert_eq(_map.get_node(^"Triggers").get_child_count(), 0, "déclencheur au T28")
-	assert_eq(_map.get_node(^"Interactables").get_child_count(), 0, "panneau lu au T28")
+	assert_eq(_map.get_node(^"Triggers").get_child_count(), 1, "route_4_reached (T28)")
+	assert_eq(_map.get_node(^"Interactables").get_child_count(), 1, "panneau (T28)")
 	assert_false(FileAccess.file_exists("res://data/npcs/route_4.json"), "aucun PNJ ni objet")
 	assert_not_null(_map.get_node_or_null(^"Entities/SignRoute4"), "panneau (décor)")
 	assert_not_null(_map.get_node_or_null(^"GroundDecals/CaveMouth"), "bouche de la grotte")
@@ -115,3 +115,36 @@ func test_props_never_block_a_walkable_cell() -> void:
 
 func test_node_budget() -> void:
 	assert_lte(GridPaths.count_nodes(_map), 3000)
+
+
+## T28 (§2.15, dossier 15 §20 n° 36) : panneau lu de face, depuis la case au sud.
+func test_sign_is_read_from_the_south() -> void:
+	var point := _map.get_node(^"Interactables").get_child(0) as InteractPoint
+	assert_not_null(point)
+	if point == null:
+		return
+	assert_eq(point.get_cells(), _plan.cells_at("panneau_route_4"))
+	assert_eq(point.dialogue_id, &"route_4_sign")
+	assert_eq(point.facing, Vector2i.UP)
+	var dialogues := DialogueLibrary.new()
+	assert_true(dialogues.load_dir())
+	assert_true(dialogues.has_dialogue(&"route_4_sign"))
+
+
+## T28 (§1.3 n° 5) : `route_4_reached` couvre toute la largeur du sas (colonne 4, rangées 5..9),
+## toute direction ; au nord et au sud, la paroi.
+func test_reached_trigger_spans_the_whole_sas() -> void:
+	var trigger := _map.get_node(^"Triggers").get_child(0) as EventTriggerPoint
+	assert_not_null(trigger)
+	if trigger == null:
+		return
+	assert_eq(trigger.cutscene_id, &"route_4_reached")
+	assert_eq(trigger.direction, Vector2i.ZERO, "toute direction")
+	var cells := trigger.get_cells()
+	assert_eq(cells.size(), 5)
+	for y: int in range(5, 10):
+		assert_true(cells.has(Vector2i(4, y)), "(4, %d) couverte" % y)
+		assert_false(_grid.is_solid(Vector2i(4, y)), "(4, %d) praticable" % y)
+	assert_true(_grid.is_solid(Vector2i(4, 4)), "paroi au nord")
+	assert_true(_grid.is_solid(Vector2i(4, 10)), "paroi au sud")
+	assert_false(cells.has(ARRIVAL), "l'arrivée n'est pas couverte : un pas vers l'est")

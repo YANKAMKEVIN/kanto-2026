@@ -751,7 +751,7 @@ fichier commun). Dès T12 fusionné : **T13 ∥ T20** (combat contre grotte, auc
 #### T27 — qa-mobile : **session 12C** → Kevin — après T24, T25 et la validation de 12B
 - R1 (« Hé, toi ! »), R2, R3 (3 bulles, décor de la chambre), départs et absence au retour, défaite → reprise, chercheur (méprise, combat, partage), choix NON puis OUI (définitif), toast « … obtenu », Grand moment dans l'écran Dresseur, Pierre Lune visible et cachée, évolution sans ARRÊTER, CT01, reprise après fermeture à chaque étape.
 
-#### T28 — constructeur-monde puis qa-mobile : fin du J12 (12D)
+#### T28 — constructeur-monde puis qa-mobile : fin du J12 (12D) — **partie code faite (2026-10-14, `j12-t28-fin`, §9)** ; reste la QA finale
 - Sas (panneau, `route_4_reached`), objectifs, **retrait de `qa_moves_j12`** (carte, données `qa_*`, outil, exception de `test_no_qa_map_is_shipped`, départ `moves_qa`) ; README des départs. `MapCatalog.is_qa_map` reste (le J13 s'en sert).
 - QA finale (qa-mobile, **vraie partie de Kevin**, sans drapeau de débogage) : Argenta → Route 3 → Centre → grotte → événement → sas → « AZURIA — À venir » ; sauvegarde et reprise dans la grotte ; mesures. **CA** : rapport `build/qa/jalon12_t28/` ; validation de Kevin ; fusion de `jalon-12` dans `main` (copie d'intégration ; `project.godot` et filtre d'export vérifiés) ; **prévenir les sessions J13, J14, J15** (note dans `etat-projet.md`) : leur prochaine fusion de `main` apporte le J12.
 
@@ -854,6 +854,48 @@ Questions telles que posées :
 ---
 
 ## 9. Fait
+
+- **T28 (partie code) — fin du J12, 12D (2026-10-14, constructeur-monde, branche `j12-t28-fin`
+  depuis `jalon-12` à `d3bb93f`)** — §1.3 n° 5, §2.15, §2.16, §2.22 ; dossier 15 §14, §15,
+  §20 n° 36–39.
+  - **Sas** (`tools/build_route_4.gd`, carte régénérée) : point d'examen du panneau (6, 5), lu de
+    face (↑ depuis (6, 6)) → `route_4_sign` (`data/dialogues/route_4.json`, « ROUTE 4 » /
+    « Mont Sélénite ← → Azuria », §20 n° 36 mot pour mot) ; déclencheur silencieux
+    `route_4_reached` sur (4, 5..9), toute la largeur, toute direction
+    (`data/cutscenes/route_4.json` : `set` seul, `unless` le drapeau). L'arrivée (3, 6) n'est pas
+    couverte : l'objectif change au premier pas vers l'est. Raccord est inchangé (« AZURIA — À
+    venir » en build de développement, bord inerte en release : `test_coming_soon`).
+  - **Objectifs** : `go_cerulean` / `cross_mt_moon` déjà en tête depuis le T18 ; `route_4_reached`
+    retiré de `_PENDING_FLAGS` (`test_objective_library` : levé par une scène).
+  - **Retrait de la carte de QA `qa_moves_j12`** : scène, `tools/build_qa_moves_j12.gd`,
+    `tools/capture_qa_moves_j12.gd`, `data/npcs|trainers|dialogues/qa_moves_j12.json`, départs
+    `moves_qa` / `moves_qa_solo` (et leurs lignes du README), `test_qa_moves_j12`, exception
+    datée de `test_no_qa_map_is_shipped` (qui vérifie aussi `has_map(&"qa_moves_j12")` faux).
+    **Gardés** : `MapCatalog.QA_PREFIX` / `is_qa_map` (absents de `main`, présents sur
+    `jalon-13` pour `qa_switch_j13`) et les tests qui ignorent les cartes `qa_` ; nouveau test
+    `test_is_qa_map_reads_the_prefix`. Autres départs de débogage du J12 inchangés.
+  - **Départ `route_4`** (`tools/debug_start/route_4.json`, README) : sas à l'arrivée, Mont
+    Sélénite fini (Fossile Dôme choisi), Reptincel N21 compagnon.
+  - **Export** : `exclude_filter` exclut `tools/*`, `tests/*`, `build/*` ; plus aucune scène
+    `qa_*` dans `game/world/maps/` ; `run/main_scene` = `res://game/boot.tscn` (intact).
+  - **Tests** : `test_route_4` (+2 : panneau, déclencheur ; compte des déclencheurs et points
+    d'examen = 1), `test_route_4_life` (nouveau, Boot réel : premier pas → drapeau en silence,
+    objectif, gardé au rechargement ; panneau de face et rien de côté ; bouche → B2F (11, 30)
+    tourné ↓ → échelle de sortie → sas (3, 6) tourné →), `test_cutscene_data`,
+    `test_dialogue_data` (carte `route_4`, `route_4_sign`, drapeau `route_4_reached`),
+    `test_map_catalog`. Suite : **4 218 tests, tous verts** ; import propre.
+  - **Captures** `tools/capture_route_4_t28.gd` → `build/captures/jalon12_t28/` (2340 × 1080) :
+    `sas_arrivee`, `sas_panneau`, `objectif_azuria` (tableau de bord « Objectif : continuer vers
+    Azuria. »), `sas_raccord_est`, `azuria_a_venir` ; relues.
+  - **Passation J13** (§0.2 n° 15) : la vraie Route 4 garde l'identifiant `route_4` et le
+    **repère de coordonnées du sas** — case (0, 0) = coin nord-ouest de la grille
+    `tools/plans/route_4_sas.txt` (24 × 14), bouche (2, 6) ← `mt_moon_b2f` / `arrivee_s`, spawn
+    `from_mt_moon` (3, 6), praticables du sas = `.=De` aux rangées 3..11, colonnes 2..23. Une
+    sauvegarde placée dans le sas (`map = route_4`, `cell` dans ces cases) doit retomber sur une
+    case praticable de la nouvelle carte : garder ces cases praticables (ou ajouter un
+    remplacement de position au chargement). Les spawns `from_cerulean_n|s` (23, 6..7) et le
+    déclencheur `route_4_reached` (4, 5..9) sont à garder ou remplacer ; le drapeau reste lu par
+    `objectives.json`.
 
 - **T24 — Sac et écran d'évolution (2026-10-13, ui-mobile, branche `j12-t24-sac-evolution` depuis
   `jalon-12` à `3def8f5`)** — §2.6, §2.9, §2.13 (interface) :
