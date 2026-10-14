@@ -81,6 +81,14 @@ signal storage_release_asked(view: ChoiceView, place: int, index: int)
 ## joue le déroulé « apprendre / oublier » par-dessus le menu, puis rappelle
 ## [method finish_tm_learn].
 signal tm_learn_requested(index: int, item_id: StringName)
+## Objet AVENTURE sans cible (jalon 12, T20 : la Corde Sortie) accepté ici
+## ([method FieldItemRules.check] = OK) : Boot ferme le menu, retire l'objet, raconte et agit.
+## Rien n'est consommé par le menu.
+signal field_item_requested(item_id: StringName)
+## Pierre d'évolution (jalon 12, T23 ; `jalon-12.md` §2.9) utilisée sur le Pokémon COMPATIBLE
+## [param index] : Boot ferme le menu et joue [method EvolutionDirector.play_item] ; la pierre
+## est retirée par Boot au moment exact de l'évolution. Rien n'est consommé par le menu.
+signal evolution_item_requested(index: int, item_id: StringName)
 
 var _state: Object
 var _data: PokemonData
@@ -111,11 +119,16 @@ var _settings: GameSettings
 var _device_quality: GameSettings.Graphics = GameSettings.Graphics.HIGH
 var _can_save: bool = false
 var _shops: ShopLibrary
+## Espèces éligibles au compagnon (jalon 11) ; null = aucun bouton FAIRE SORTIR.
+var _companions: CompanionCatalog
 ## Boutique affichée et son onglet (de session).
 var _shop_id: StringName = &""
 var _shop_mode: StringName = ShopViews.MODE_BUY
 ## Pokémon sélectionné dans le Stockage (de session, jamais sauvegardé).
 var _storage_selection: StorageSelection = StorageSelection.new()
+## Grottes de Kanto et carte courante (jalon 12, T20 : Corde Sortie) ; null / vide = aucune.
+var _caves: CaveLibrary
+var _current_map: Callable = Callable()
 
 
 func _init() -> void:
@@ -385,6 +398,33 @@ func toggle_favorite(index: int) -> bool:
 	return true
 
 
+## Espèces éligibles au compagnon (jalon 11, Boot) : bouton FAIRE SORTIR / RAPPELER de l'Équipe.
+func set_companions(catalog: CompanionCatalog) -> void:
+	_companions = catalog
+
+
+## FAIRE SORTIR / RAPPELER (jalon 11, dossier 14 §8.1) sur le Pokémon [param index] : le
+## compagnon actuel est rappelé (aucun compagnon) ; un autre Pokémon éligible devient le
+## compagnon (un seul). Faux si la place n'existe pas ou si l'espèce n'est pas éligible. Le
+## monde suit à la fermeture du menu (sortie ou rentrée dans la Ball).
+func toggle_companion(index: int) -> bool:
+	if _state == null:
+		return false
+	var pokemon: Pokemon = _state.party.get_at(index)
+	if pokemon == null:
+		return false
+	match TeamViews.companion_action(pokemon, _companions, _state.get(&"companion_uid")):
+		PokemonSheetView.CompanionAction.RECALL:
+			_state.call(&"set_companion", null)
+		PokemonSheetView.CompanionAction.SEND_OUT:
+			_state.call(&"set_companion", pokemon)
+		_:
+			return false
+	mark_changed()
+	_emit_team()
+	return true
+
+
 ## Retient le Pokémon sélectionné de l'Équipe (informatif : l'écran change de fiche seul).
 func select_member(index: int) -> void:
 	if _state != null:
@@ -417,6 +457,8 @@ func set_bag_sort(sort: int) -> void:
 func request_item_use(item_id: StringName) -> void:
 	if _state == null or _items == null:
 		return
+	if _use_targetless_item(item_id):
+		return
 	if _bag_context == BagQuery.CONTEXT_TEAM and _bag_target >= 0:
 		use_item_on(item_id, _bag_target)
 		return
@@ -441,6 +483,13 @@ func use_item_on(item_id: StringName, index: int) -> bool:
 		if TmTeach.check(pokemon, item, _data) != TmTeach.Check.COMPATIBLE:
 			return false
 		tm_learn_requested.emit(index, item_id)
+		return true
+	if StoneUse.is_stone(item):
+		# Pierre (jalon 12) : un Pokémon INCOMPATIBLE est déjà refusé par le choix.
+		if not _state.bag.has(item_id) \
+				or StoneUse.check(pokemon, item_id, _data) != StoneUse.Check.COMPATIBLE:
+			return false
+		evolution_item_requested.emit(index, item_id)
 		return true
 	var result := ItemUse.apply(_state.bag, item, pokemon, _bag_context)
 	_repeat_item = item_id
@@ -587,7 +636,8 @@ func _emit_settings() -> void:
 
 
 func _emit_team() -> void:
-	var view := TeamViews.build(_state.party, _data, _zones, _state.pokedex, _unlocks)
+	var view := TeamViews.build(_state.party, _data, _zones, _state.pokedex, _unlocks,
+		_companions, _state.get(&"companion_uid"))
 	_team_selected = TeamViews.clamp_selection(_team_selected, view.size())
 	team_shown.emit(view, _team_selected)
 
@@ -622,7 +672,7 @@ func _on_route_shown(route: MenuRoute) -> void:
 			open_zone(map_view.selected)
 	elif route.screen == MenuRoute.TRAINER:
 		trainer_shown.emit(TrainerSummary.build(_state, _data, _zones, _moments, _unlocks,
-			_badge_library()))
+			_badge_library(), _items))
 	elif route.screen == MenuRoute.SETTINGS and _settings != null:
 		_emit_settings()
 	elif route.screen == MenuRoute.SHOP and _shops != null and _items != null \
@@ -653,3 +703,28 @@ func _on_closed() -> void:
 	_storage_selection = StorageSelection.new()
 	get_tree().paused = false
 	menu_closed.emit(changed)
+
+
+## Grottes (jalon 12, T20) et carte courante ([param current_map] : `func() -> StringName`) :
+## la Corde Sortie ne sert que dans une grotte ([FieldItemRules]).
+func set_caves(caves: CaveLibrary, current_map: Callable) -> void:
+	_caves = caves
+	_current_map = current_map
+
+
+## UTILISER d'un objet AVENTURE sans cible (jalon 12, T20 : la Corde Sortie). Faux si l'objet
+## n'en est pas un (le parcours habituel continue). Refus → le bandeau du Sac dit pourquoi, rien
+## ne change ; accepté → [signal field_item_requested] (Boot ferme le menu et agit).
+func _use_targetless_item(item_id: StringName) -> bool:
+	var item := _items.get_item(item_id)
+	if not FieldItemRules.is_targetless(item):
+		return false
+	if not _state.bag.has(item_id):
+		return true
+	var map_id: StringName = _current_map.call() if _current_map.is_valid() else &""
+	var check := FieldItemRules.check(item, map_id, _caves)
+	if check != FieldItemRules.Check.OK:
+		bag_result_shown.emit(BagQuery.field_refusal_text(check), false)
+		return true
+	field_item_requested.emit(item_id)
+	return true

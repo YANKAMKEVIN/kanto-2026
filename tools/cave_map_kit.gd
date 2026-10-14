@@ -65,6 +65,11 @@ const MASS_TEXTURE: String = "res://assets/world/ground/ground_masse_roche_01.pn
 const BORDER_COLOR: Color = Color(0.20, 0.22, 0.27)
 ## Densité des gravats et de la masse : celle du sol calme (les pavés extérieurs sont à 0,7).
 const LAYER_SCALE: float = 1.0
+## Voile de pénombre : pixels par case de son image, matériau (multiplication).
+const SHADE_PX_PER_CELL: int = 8
+const SHADE_MATERIAL: String = "res://game/world/lighting/materials/cave_shade.tres"
+## Lumière ajoutée au sol autour des sources (addition, sous `Entities`).
+const FLOOR_LIGHT_MATERIAL: String = "res://game/world/lighting/materials/cave_floor_light.tres"
 ## Grilles des cartes reliées par les échelles du Mont Sélénite (carte → grille).
 const PLANS: Dictionary[StringName, String] = {
 	&"mt_moon_1f": "res://tools/plans/mont_selenite_1f.txt",
@@ -90,6 +95,12 @@ var mass_cells: Dictionary = {}
 ## Erreurs de construction (grille, emprise sur une case praticable, texture absente, budget
 ## de halos…) : l'outil échoue s'il y en a.
 var errors: PackedStringArray = []
+
+## Halos posés ([method add_glow]) : { "type": StringName, "center": Vector2 } (voile, [method
+## add_shade]).
+var glow_sources: Array[Dictionary] = []
+## Voile de pénombre calculé ([method add_shade]), null avant.
+var shade: Object
 
 var _scenes: Dictionary = {}
 var _glow_count: int = 0
@@ -390,7 +401,14 @@ func add_glow(glow_type: StringName, center: Vector2, node_name: String = "") ->
 	glow.set(&"glow_type", glow_type)
 	glow.position = center.round()
 	attach(glows, glow)
+	glow_sources.append({"type": glow_type, "center": glow.position})
 	return glow
+
+
+## Source de lumière **du voile seul** (aucun halo, hors budget) : la pénombre se lève autour
+## de [param center] selon le type [param source_type] des réglages de [method add_shade].
+func add_shade_source(source_type: StringName, center: Vector2) -> void:
+	glow_sources.append({"type": source_type, "center": center.round()})
 
 
 ## Centre (pixels du monde) de la case [param cell].
@@ -400,6 +418,105 @@ func cell_center(cell: Vector2i) -> Vector2:
 
 func glow_count() -> int:
 	return _glow_count
+
+
+# --- Voile de pénombre (passe « lumière rare ») --------------------------------------------
+
+
+## Voile de pénombre (`tools/cave_shade.gd`) : image écrite en [param shade_path] (comme le
+## masque : faux tant qu'elle n'est pas importée, relancer l'outil après `--import`), posée en
+## multiplication juste au-dessus de `GroundDecals` (même `z`, après lui), sous `Entities`.
+## [param params] : réglages de l'étage (`CaveShade.PARAM_KEYS`) ; [param lights] : type de
+## halo → { "radius" (cases), "strength", "offset" (Vector2, pixels : du centre du halo au
+## centre de la flaque au sol) } ; les halos d'un type absent n'éclairent pas le sol. Les
+## modules de paroi (faces, bords, lèvres) prennent une part [param wall_follow] de la valeur du
+## sol devant eux (une lampe éclaire aussi sa paroi, la pénombre l'assombrit).
+func add_shade(shade_path: String, params: Dictionary, lights: Dictionary,
+		wall_follow: float) -> bool:
+	var shade_script: GDScript = load("res://tools/cave_shade.gd")
+	for message: String in shade_script.call(&"check_params", params):
+		errors.append(message)
+	if not errors.is_empty():
+		return false
+	var open: Dictionary = {}
+	for y: int in size.y:
+		for x: int in size.x:
+			if not mass_cells.has(Vector2i(x, y)):
+				open[Vector2i(x, y)] = true
+	shade = shade_script.new(size, open, params, SHADE_PX_PER_CELL)
+	var sources: Array = []
+	for glow: Dictionary in glow_sources:
+		if not lights.has(glow["type"]):
+			continue
+		var light: Dictionary = lights[glow["type"]]
+		sources.append({"center": (glow["center"] as Vector2) + (light["offset"] as Vector2),
+			"radius": float(light["radius"]) * TILE, "strength": float(light["strength"]),
+			"add": float(light.get("add", 0.0)), "color": light.get("color", Color.WHITE)})
+	shade.call(&"compute", sources)
+	var light_path := shade_path.replace("_shade.png", "_floor_light.png")
+	var shade_ready := _write_png(shade.call(&"to_image"), shade_path)
+	var light_ready := _write_png(shade.call(&"glow_image"), light_path)
+	if not shade_ready or not light_ready:
+		return false
+	var at := decals.get_index() + 1
+	for entry: Array in [["CaveShade", shade_path, SHADE_MATERIAL],
+			["CaveFloorLight", light_path, FLOOR_LIGHT_MATERIAL]]:
+		var sprite := Sprite2D.new()
+		sprite.name = entry[0]
+		sprite.texture = load(entry[1])
+		sprite.centered = false
+		sprite.scale = Vector2.ONE * (float(TILE) / SHADE_PX_PER_CELL)
+		sprite.z_index = Z_DECALS
+		sprite.material = load(entry[2])
+		attach(root, sprite)
+		root.move_child(sprite, at)
+		at += 1
+	_shade_walls(wall_follow)
+	return true
+
+
+## Les modules de paroi suivent la lumière du sol devant eux (part [param follow]) : faces (sol
+## au sud), bords (meilleur des deux côtés), lèvres (sol au nord).
+func _shade_walls(follow: float) -> void:
+	for parent: Node in [entities, decals]:
+		for child: Node in parent.get_children():
+			var sprite := child as Sprite2D
+			if sprite == null:
+				continue
+			var label := String(sprite.name)
+			var rect := sprite.get_rect()
+			var foot := sprite.position + Vector2(rect.position.x + rect.size.x / 2.0,
+				rect.end.y)
+			var value := 1.0
+			if label.begins_with("Face"):
+				value = shade.call(&"sample", foot + Vector2(0.0, TILE * 0.5))
+			elif label.begins_with("Side"):
+				var middle := foot - Vector2(0.0, TILE * 0.5)
+				value = maxf(shade.call(&"sample", middle + Vector2(TILE, 0.0)),
+					shade.call(&"sample", middle - Vector2(TILE, 0.0)))
+			elif label.begins_with("Lip"):
+				value = shade.call(&"sample", foot - Vector2(0.0, rect.size.y + TILE * 0.5))
+			else:
+				continue
+			var k := lerpf(1.0, value, follow)
+			sprite.modulate = Color(sprite.modulate.r * k, sprite.modulate.g * k,
+				sprite.modulate.b * k)
+
+
+## Écrit [param image] en PNG si elle a changé ; vrai si la ressource importée est à jour.
+func _write_png(image: Image, path: String) -> bool:
+	var absolute := ProjectSettings.globalize_path(path)
+	DirAccess.make_dir_recursive_absolute(absolute.get_base_dir())
+	var before := PackedByteArray()
+	if FileAccess.file_exists(absolute):
+		var old := Image.load_from_file(absolute)
+		if old != null:
+			old.convert(image.get_format())
+			before = old.get_data()
+	if before != image.get_data():
+		image.save_png(absolute)
+		return false
+	return ResourceLoader.exists(path)
 
 
 # --- Objets peints ------------------------------------------------------------------------

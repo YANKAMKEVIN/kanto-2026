@@ -170,16 +170,23 @@ func test_sand_is_walkable_and_sea_is_not() -> void:
 
 # --- Passages ----------------------------------------------------------------------------
 
-func test_west_edge_is_a_provisional_coming_soon_to_route_24() -> void:
+## T15 : le bord ouest mène à la vraie Route 24 (J13), rangée pour rangée : (0, 13..15) ↔
+## (55, 6..8), arrivée tournée vers l'ouest.
+func test_west_edge_leads_to_route_24_row_by_row() -> void:
 	var suffixes := ["n", "c", "s"]
+	var route_24 := (load("res://game/world/maps/route_24.tscn") as PackedScene).instantiate() \
+		as GameMap
+	add_child_autofree(route_24)
 	for i: int in WEST.size():
 		var cell: Vector2i = WEST[i]
 		var warp := _map.get_warps().find_on_push(cell, Vector2i.LEFT)
 		assert_not_null(warp, "raccord ouest %s" % cell)
 		if warp != null:
-			assert_true(warp.is_coming_soon(), "« Route 24 — À venir » tant que T15 n'est pas là")
-			assert_eq(warp.coming_soon, "Route 24")
-			assert_eq(warp.target_spawn, StringName("from_route_24_" + suffixes[i]))
+			assert_false(warp.is_coming_soon(), "plus de « Route 24 — À venir »")
+			assert_eq([warp.target_map, warp.target_spawn, warp.facing],
+				[&"route_24", StringName("from_route_25_" + suffixes[i]), Vector2i.LEFT])
+			assert_eq(route_24.get_spawn_cell(warp.target_spawn), Vector2i(55, 6 + i),
+				"même rangée sur la Route 24")
 		assert_eq(_map.get_spawn_cell(StringName("from_route_24_" + suffixes[i])), cell)
 		assert_false(_grid.is_solid(cell))
 

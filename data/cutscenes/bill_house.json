@@ -50,6 +50,7 @@
 			{ "give": "rare_candy" },
 			{ "dialogue": "bill_give_candy" },
 			{ "dialogue": "bill_ss_anne" },
+			{ "moment": "bill_restored" },
 			{ "set": ["bill_restored", "got_ss_ticket", "got_bill_rare_candy"] }
 		]
 	}

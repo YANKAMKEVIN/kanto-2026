@@ -9,8 +9,11 @@ extends RefCounted
 ## Clés d'un type (toutes obligatoires) : « color » (« #rrggbb »), « radius » (cases, dans
 ## ]0, [constant RADIUS_MAX]]), « alpha » (intensité au centre, dans ]0, [constant ALPHA_MAX]] :
 ## un halo éclaire sans effacer le décor ni les personnages), « flicker » (amplitude du
-## vacillement, dans [0, [constant FLICKER_MAX]] ; 0 = fixe). Racine : « types » et « _doc »
-## (texte libre). Toute clé inconnue est une erreur ; un type invalide est écarté, l'erreur
+## vacillement, dans [0, [constant FLICKER_MAX]] ; 0 = fixe). Clés facultatives (passe « lumière
+## rare ») : « shape » (« radial » par défaut, ou « column » : colonne de lumière douce d'un puits
+## de jour, posée à son pied, « radius » = demi-largeur) et « height » (hauteur de la colonne en
+## cases, dans ]0, [constant RADIUS_MAX]], obligatoire pour « column »). Racine : « types » et
+## « _doc » (texte libre). Toute clé inconnue est une erreur ; un type invalide est écarté, l'erreur
 ## signalée ([method get_errors], push_error).
 
 
@@ -23,8 +26,14 @@ class GlowType:
 	var radius: float = 1.0
 	var alpha: float = 0.2
 	var flicker: float = 0.0
+	## [constant SHAPE_RADIAL] ou [constant SHAPE_COLUMN].
+	var shape: StringName = &"radial"
+	## Hauteur d'une colonne, en cases (0 pour un halo radial).
+	var height: float = 0.0
 
 
+const SHAPE_RADIAL: StringName = &"radial"
+const SHAPE_COLUMN: StringName = &"column"
 const DATA_PATH: String = "res://data/world/light_glows.json"
 ## Intensité maximale d'un halo (plan du J12 §2.4).
 const ALPHA_MAX: float = 0.35
@@ -35,6 +44,7 @@ const FLICKER_MAX: float = 0.5
 const MAX_PER_MAP: int = 16
 const _ROOT_KEYS: Array[String] = ["_doc", "types"]
 const _TYPE_KEYS: Array[String] = ["color", "radius", "alpha", "flicker"]
+const _OPTIONAL_KEYS: Array[String] = ["shape", "height"]
 
 var _types: Dictionary[StringName, GlowType] = {}
 var _errors: PackedStringArray = PackedStringArray()
@@ -112,7 +122,7 @@ func _parse_type(raw: Variant, where: String) -> GlowType:
 	var entry: Dictionary = raw
 	var valid := true
 	for key: Variant in entry:
-		if not _TYPE_KEYS.has(str(key)):
+		if not _TYPE_KEYS.has(str(key)) and not _OPTIONAL_KEYS.has(str(key)):
 			valid = _fail("%s : clé inconnue « %s »" % [where, key])
 	for key: String in _TYPE_KEYS:
 		if not entry.has(key):
@@ -125,9 +135,22 @@ func _parse_type(raw: Variant, where: String) -> GlowType:
 	valid = _check_number(entry["radius"], 0.0, RADIUS_MAX, false, "radius", where) and valid
 	valid = _check_number(entry["alpha"], 0.0, ALPHA_MAX, false, "alpha", where) and valid
 	valid = _check_number(entry["flicker"], 0.0, FLICKER_MAX, true, "flicker", where) and valid
+	var shape := SHAPE_RADIAL
+	if entry.has("shape"):
+		var raw_shape: Variant = entry["shape"]
+		if raw_shape is String and StringName(raw_shape) in [SHAPE_RADIAL, SHAPE_COLUMN]:
+			shape = StringName(raw_shape)
+		else:
+			valid = _fail("%s : « shape » doit être « radial » ou « column »" % where)
+	if shape == SHAPE_COLUMN and not entry.has("height"):
+		valid = _fail("%s : « height » manquant (colonne)" % where)
+	if entry.has("height"):
+		valid = _check_number(entry["height"], 0.0, RADIUS_MAX, false, "height", where) and valid
 	if not valid:
 		return null
 	var type := GlowType.new()
+	type.shape = shape
+	type.height = float(entry.get("height", 0.0))
 	type.color = Color.html(color)
 	type.radius = float(entry["radius"])
 	type.alpha = float(entry["alpha"])

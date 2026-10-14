@@ -48,7 +48,8 @@ const _NO_DATE: String = "~"
 ## [param badges] (MM.2, facultatif) : les 8 emplacements viennent de [method BadgeLibrary.slots]
 ## (un badge est obtenu quand son drapeau est levé) ; null : huit emplacements muets.
 static func build(state: Object, data: PokemonData, zones: ZoneLibrary, moments: MomentLibrary,
-		unlocks: MenuUnlocks, badges: BadgeLibrary = null) -> TrainerView:
+		unlocks: MenuUnlocks, badges: BadgeLibrary = null,
+		items: ItemLibrary = null) -> TrainerView:
 	var view := TrainerView.new()
 	view.player_name = state.player_name
 	view.player_title = DashboardViews.PLAYER_TITLE
@@ -72,17 +73,18 @@ static func build(state: Object, data: PokemonData, zones: ZoneLibrary, moments:
 	for i: int in party.size():
 		view.team.append(DashboardViews.member(party.get_at(i), i, data))
 	if moments != null:
-		view.moments = moment_views(state, data, zones, moments, unlocks, badges)
+		view.moments = moment_views(state, data, zones, moments, unlocks, badges, items)
 	view.stats = stat_views(state, zones)
 	return view
 
 
 ## Grands moments, du plus ancien au plus récent (à date égale : arrivées d'abord, puis dans
 ## l'ordre d'enregistrement). Un moment d'un type sans texte est ignoré ; un moment « badge »
-## sans [param badges] ou d'un badge inconnu aussi.
+## sans [param badges] ou d'un badge inconnu aussi ; un moment « fossil » (J12) sans
+## [param items] ou d'un objet inconnu aussi.
 static func moment_views(state: Object, data: PokemonData, zones: ZoneLibrary,
-		moments: MomentLibrary, unlocks: MenuUnlocks, badges: BadgeLibrary = null) \
-		-> Array[MomentView]:
+		moments: MomentLibrary, unlocks: MenuUnlocks, badges: BadgeLibrary = null,
+		items: ItemLibrary = null) -> Array[MomentView]:
 	var keyed: Array[Array] = []
 	var arrivals := first_arrivals(state.discovered_maps, zones)
 	var start_zone := start_zone_of(arrivals)
@@ -94,7 +96,7 @@ static func moment_views(state: Object, data: PokemonData, zones: ZoneLibrary,
 			keyed.append([_sort_date(arrival.date), 0, keyed.size(), arrival])
 	var records: Array[Dictionary] = state.moments
 	for record: Dictionary in records:
-		var moment := _record_view(record, state, data, zones, moments, unlocks, badges)
+		var moment := _record_view(record, state, data, zones, moments, unlocks, badges, items)
 		if moment != null:
 			keyed.append([_sort_date(moment.date), 1, keyed.size(), moment])
 	keyed.sort_custom(func(a: Array, b: Array) -> bool:
@@ -184,7 +186,7 @@ static func _arrival_view(zone: StringName, date: String, zones: ZoneLibrary,
 
 static func _record_view(record: Dictionary, state: Object, data: PokemonData,
 		zones: ZoneLibrary, moments: MomentLibrary, unlocks: MenuUnlocks,
-		badges: BadgeLibrary) -> MomentView:
+		badges: BadgeLibrary, items: ItemLibrary = null) -> MomentView:
 	var type := StringName(str(record.get("type", "")))
 	if type == MomentLibrary.ZONE_ARRIVAL:
 		return null
@@ -212,9 +214,18 @@ static func _record_view(record: Dictionary, state: Object, data: PokemonData,
 		marks[MomentLibrary.MARK_BADGE] = badges.badge_name(badge)
 		marks[MomentLibrary.MARK_CITY] = badges.city(badge)
 		marks[MomentLibrary.MARK_LEADER] = badges.leader(badge)
+	if type == MomentLibrary.FOSSIL:
+		# J12 : le fossile obtenu (« Fossile Dôme »), nom lu dans les objets.
+		var item_id := StringName(str(details.get(MomentLibrary.DETAIL_ITEM, "")))
+		var item := items.get_item(item_id) if items != null else null
+		if item == null:
+			return null
+		marks[MomentLibrary.MARK_FOSSIL] = item.name
 	var view := _view(type, text, marks)
 	if view == null:
 		return null
+	if type == MomentLibrary.FOSSIL:
+		view.item_id = StringName(str(details.get(MomentLibrary.DETAIL_ITEM, "")))
 	view.place = place
 	view.zone_id = zone
 	view.date = str(record.get("date", ""))

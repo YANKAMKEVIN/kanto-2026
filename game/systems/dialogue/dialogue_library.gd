@@ -19,7 +19,9 @@ extends RefCounted
 ## Sans « variants », les clés d'une variante (pages, if, unless, set, auto) peuvent être
 ## écrites directement dans le dialogue. Toute clé inconnue est une erreur (faute de frappe).
 ## Fin d'une variante (jalon 7 §3.3) : **une seule** de « choice » ([DialogueChoice] : confirm,
-## cancel, confirm_action, confirm_pages, cancel_pages), « action » ([constant ACTIONS]) ou
+## cancel, confirm_action, confirm_pages, cancel_pages ; jalon 12 : confirm_cutscene, identifiant
+## de scène lancée après un OUI, exclusive de confirm_action ; jalon 13 : confirm_set,
+## cancel_set), « action » ([constant ACTIONS]) ou
 ## « cutscene » (identifiant de scène). L'ancienne clé « heal »: true vaut « action »: "heal".
 ## « pages » peut manquer (ou être vide) si la variante a une « action » ou une « cutscene » ;
 ## jamais avec un « choice » (sa dernière page est la question).
@@ -42,7 +44,8 @@ const _VARIANT_KEYS: Array[String] = [
 	"one_in",
 ]
 const _CHOICE_KEYS: Array[String] = [
-	"confirm", "cancel", "confirm_action", "confirm_pages", "cancel_pages",
+	"confirm", "cancel", "confirm_action", "confirm_pages", "cancel_pages", "confirm_cutscene",
+	"confirm_set", "cancel_set",
 ]
 const _PAGE_KEYS: Array[String] = [
 	"text", "speaker", "pause", "face_player", "react", "turn",
@@ -140,12 +143,16 @@ func get_condition_flags() -> Array[StringName]:
 	return _sorted_keys(found)
 
 
-## Drapeaux levés (« set ») par au moins un dialogue.
+## Drapeaux levés (« set », et « confirm_set » / « cancel_set » d'un choix) par au moins un
+## dialogue.
 func get_set_flags() -> Array[StringName]:
 	var found: Dictionary[StringName, bool] = {}
 	for dialogue: Dialogue in _dialogues.values():
 		for variant: DialogueVariant in dialogue.variants:
-			for flag: StringName in variant.set_flags:
+			var raised := variant.set_flags.duplicate()
+			if variant.choice != null:
+				raised += variant.choice.confirm_set + variant.choice.cancel_set
+			for flag: StringName in raised:
 				found[flag] = true
 	return _sorted_keys(found)
 
@@ -280,6 +287,18 @@ func _parse_choice(value: Variant, where: String) -> DialogueChoice:
 	if entry.has("confirm_action"):
 		choice.confirm_action = _read_action(entry["confirm_action"], where + " confirm_action")
 		ok = not choice.confirm_action.is_empty() and ok
+	if entry.has("confirm_cutscene"):
+		ok = _read_confirm_cutscene(entry, choice, where) and ok
+	# Jalon 13 (§2.13) : drapeaux levés selon le bouton choisi, listes non vides.
+	for key: String in ["confirm_set", "cancel_set"]:
+		if not entry.has(key):
+			continue
+		if not entry[key] is Array or (entry[key] as Array).is_empty():
+			ok = _fail("%s : « %s » doit être une liste non vide de drapeaux" % [where, key])
+		else:
+			var into: Array[StringName] = choice.confirm_set if key == "confirm_set" \
+				else choice.cancel_set
+			ok = _read_flags(entry, key, into, where) and ok
 	if entry.has("confirm_pages"):
 		ok = _read_pages(entry["confirm_pages"], choice.confirm_pages, "confirm_pages", where,
 			true) and ok
@@ -427,3 +446,15 @@ static func _sorted_keys(found: Dictionary[StringName, bool]) -> Array[StringNam
 	result.assign(found.keys())
 	result.sort_custom(func(a: StringName, b: StringName) -> bool: return String(a) < String(b))
 	return result
+
+
+## « confirm_cutscene » d'un choix (jalon 12, T23) : identifiant de scène non vide, jamais avec
+## « confirm_action ». L'existence de la scène n'est pas vérifiée ici (tests de données).
+func _read_confirm_cutscene(entry: Dictionary, choice: DialogueChoice, where: String) -> bool:
+	var value: Variant = entry["confirm_cutscene"]
+	if not value is String or (value as String).is_empty():
+		return _fail("%s : « confirm_cutscene » doit être un identifiant de scène" % where)
+	if entry.has("confirm_action"):
+		return _fail("%s : « confirm_cutscene » et « confirm_action » s'excluent" % where)
+	choice.confirm_cutscene = StringName(value)
+	return true

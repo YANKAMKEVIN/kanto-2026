@@ -1,0 +1,5 @@
+{
+	"resident": {
+		"cell": [4, 5], "facing": "right", "sprite": "maya", "dialogue": "cerulean_house_resident"
+	}
+}

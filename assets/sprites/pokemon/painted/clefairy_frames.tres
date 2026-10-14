@@ -8,11 +8,11 @@ region = Rect2(0, 0, 57, 54)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_gbask"]
 atlas = ExtResource("1_howdx")
-region = Rect2(171, 54, 57, 54)
+region = Rect2(0, 54, 57, 54)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_3goy4"]
 atlas = ExtResource("1_howdx")
-region = Rect2(57, 108, 57, 54)
+region = Rect2(0, 108, 57, 54)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_4s1q3"]
 atlas = ExtResource("1_howdx")

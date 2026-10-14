@@ -91,7 +91,7 @@
 	"fire_spin": {
 		"name": "Danse Flamme", "type": "fire", "category": "special",
 		"power": 35, "accuracy": 85, "pp": 15,
-		"pending_effects": ["trap"],
+		"effects": [{ "kind": "trap", "turns": [4, 5], "fraction": 0.125, "messages": "fire_spin" }],
 		"description": "Enferme la cible dans un tourbillon de feu pendant quelques tours."
 	},
 	"rage": {
@@ -330,8 +330,8 @@
 	},
 	"self_destruct": {
 		"name": "Destruction", "type": "normal", "category": "physical",
-		"power": 200, "accuracy": 100, "pp": 5, "pending_effects": ["self_ko"],
-		"description": "Le lanceur explose et blesse gravement la cible. Il tombe K.O. ensuite."
+		"power": 200, "accuracy": 100, "pp": 5, "effects": [{ "kind": "self_ko" }],
+		"description": "Inflige de gros dégâts. Le lanceur est mis K.O."
 	},
 	"earthquake": {
 		"name": "Séisme", "type": "ground", "category": "physical",
@@ -340,12 +340,13 @@
 	},
 	"explosion": {
 		"name": "Explosion", "type": "normal", "category": "physical",
-		"power": 250, "accuracy": 100, "pp": 5, "pending_effects": ["self_ko"],
+		"power": 250, "accuracy": 100, "pp": 5, "effects": [{ "kind": "self_ko" }],
 		"description": "Le lanceur explose dans un souffle terrible. Il tombe K.O. ensuite."
 	},
 	"bind": {
 		"name": "Étreinte", "type": "normal", "category": "physical",
-		"power": 15, "accuracy": 85, "pp": 20, "pending_effects": ["trap"],
+		"power": 15, "accuracy": 85, "pp": 20,
+		"effects": [{ "kind": "trap", "turns": [4, 5], "fraction": 0.125, "messages": "bind" }],
 		"description": "Ligote la cible de son long corps et la serre pendant quelques tours."
 	},
 	"slam": {
@@ -357,6 +358,50 @@
 		"name": "Patience", "type": "normal", "category": "status",
 		"accuracy": 0, "pp": 10, "effects": [{ "kind": "bide" }],
 		"description": "Encaisse deux tours, puis riposte avec le double des dégâts reçus."
+	},
+	"bubble_beam": {
+		"name": "Bulles d'O", "type": "water", "category": "special",
+		"power": 65, "accuracy": 100, "pp": 20,
+		"effects": [{ "kind": "stat_stage", "stat": "spe", "stages": -1, "target": "foe", "chance": 10 }],
+		"description": "Projette des bulles avec force. Peut baisser la Vitesse."
+	},
+	"absorb": {
+		"name": "Vol-Vie", "type": "grass", "category": "special",
+		"power": 20, "accuracy": 100, "pp": 25, "effects": [{ "kind": "drain", "fraction": 0.5 }],
+		"description": "Aspire l'énergie de la cible. Le lanceur récupère la moitié des dégâts infligés."
+	},
+	"recover": {
+		"name": "Soin", "type": "normal", "category": "status",
+		"accuracy": 0, "pp": 5, "pending_effects": ["heal_half"],
+		"description": "Le lanceur récupère la moitié de ses PV. Sans effet dans le moteur actuel."
+	},
+	"clamp": {
+		"name": "Claquoir", "type": "water", "category": "physical",
+		"power": 35, "accuracy": 85, "pp": 15,
+		"effects": [{ "kind": "trap", "turns": [4, 5], "fraction": 0.125, "messages": "clamp" }],
+		"description": "La cible est prise entre deux coquilles pendant quelques tours."
+	},
+	"aurora_beam": {
+		"name": "Onde Boréale", "type": "ice", "category": "special",
+		"power": 65, "accuracy": 100, "pp": 20,
+		"effects": [{ "kind": "stat_stage", "stat": "atk", "stages": -1, "target": "foe", "chance": 10 }],
+		"description": "Un rayon aux couleurs de l'aurore frappe la cible. Peut baisser son Attaque."
+	},
+	"ice_beam": {
+		"name": "Laser Glace", "type": "ice", "category": "special",
+		"power": 90, "accuracy": 100, "pp": 10,
+		"effects": [{ "kind": "status", "status": "freeze", "chance": 10 }],
+		"description": "Un rayon glacé frappe la cible. Peut la geler."
+	},
+	"waterfall": {
+		"name": "Cascade", "type": "water", "category": "physical",
+		"power": 80, "accuracy": 100, "pp": 15, "effects": [{ "kind": "flinch", "chance": 20 }],
+		"description": "Le lanceur fonce sur la cible dans une gerbe d'eau. Peut l'apeurer."
+	},
+	"petal_dance": {
+		"name": "Danse Fleur", "type": "grass", "category": "special",
+		"power": 120, "accuracy": 100, "pp": 10, "pending_effects": ["rampage"],
+		"description": "Le lanceur attaque dans une pluie de pétales. Sans effet dans le moteur actuel."
 	},
 	"struggle": {
 		"name": "Lutte", "type": "normal", "category": "physical",

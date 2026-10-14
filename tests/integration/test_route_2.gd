@@ -381,7 +381,7 @@ func test_the_youngster_starts_no_fight_and_has_no_trigger_nearby() -> void:
 	var cutscenes := CutsceneLibrary.new()
 	cutscenes.load_dir()
 	for id: StringName in cutscenes.get_ids():
-		if not String(id).begins_with("route_2"):
+		if not String(id).begins_with("route_2") or String(id).begins_with("route_24"):
 			continue
 		for variant: Variant in cutscenes.get_cutscene(id).variants:
 			for step: Variant in variant.steps:

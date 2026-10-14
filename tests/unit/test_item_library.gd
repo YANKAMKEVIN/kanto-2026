@@ -18,9 +18,13 @@ func test_real_data_loads_without_error() -> void:
 	assert_true(_library.load_dir(), "data/items/ se charge")
 	assert_eq(_library.get_errors().size(), 0, str(_library.get_errors()))
 	# Jalon 5 : la Potion cachée de la Route 1 (catégorie « heal », ramassée seulement).
-	assert_eq(_library.get_ids(), [&"antidote", &"awakening", &"burn_heal", &"ice_heal", &"oak_parcel",
-		&"paralyze_heal", &"poke_ball", &"potion", &"rare_candy", &"ss_ticket", &"tm19", &"tm28",
-		&"tm34"] as Array[StringName])
+	# Jalon 12 : data/items/mt_moon.json (Corde Sortie, Pierre Lune, fossiles, CT01) ; jalon 14 :
+	# items_j14.json (CT19, CT28, Passe Bateau, Super Bonbon).
+	assert_eq(_library.get_ids(), [&"antidote", &"awakening", &"burn_heal", &"dome_fossil",
+		&"escape_rope", &"helix_fossil", &"ice_heal", &"moon_stone", &"nugget", &"oak_parcel",
+		&"paralyze_heal", &"poke_ball", &"potion", &"rare_candy", &"ss_ticket", &"tm01", &"tm11",
+		&"tm19", &"tm28", &"tm34"]
+		as Array[StringName])
 	var ball := _library.get_item(&"poke_ball")
 	assert_eq(ball.name, "Poké Ball")
 	assert_eq(ball.plural, "Poké Balls")
@@ -37,8 +41,9 @@ func test_real_data_loads_without_error() -> void:
 	assert_eq(ball.heal_amount, 0)
 	assert_eq(_library.get_ids_in_data_order(),
 		[&"poke_ball", &"potion", &"antidote", &"paralyze_heal", &"awakening", &"burn_heal", &"ice_heal",
-		&"tm34", &"oak_parcel", &"tm19", &"tm28", &"ss_ticket", &"rare_candy"]
-		as Array[StringName], "fichiers dans l'ordre alphabétique (items_j14.json après)")
+		&"nugget", &"tm11", &"tm34", &"oak_parcel", &"tm19", &"tm28", &"ss_ticket",
+		&"rare_candy", &"escape_rope", &"moon_stone", &"dome_fossil", &"helix_fossil", &"tm01"]
+		as Array[StringName], "fichiers dans l'ordre alphabétique (items, items_j14, mt_moon)")
 	assert_eq([ball.order, potion.order], [0, 1])
 
 
@@ -199,7 +204,8 @@ func test_contexts_follow_the_category() -> void:
 		ItemData.Category.BALL: [&"wild_battle"],
 		ItemData.Category.HEAL: [&"field", &"wild_battle", &"trainer_battle"],
 		ItemData.Category.BATTLE: [&"wild_battle", &"trainer_battle"],
-		ItemData.Category.FIELD: [&"field"],
+		# Jalon 13 §2.13 : AVENTURE sans usage (la Pépite) n'a aucun contexte.
+		ItemData.Category.FIELD: [],
 		ItemData.Category.KEY: [],
 	}
 	for category: ItemData.Category in expected:
@@ -207,6 +213,10 @@ func test_contexts_follow_the_category() -> void:
 		var contexts: Array = []
 		contexts.assign(item.contexts())
 		assert_eq(contexts, expected[category], ItemData.CATEGORY_NAMES[category])
+	item.category = ItemData.Category.FIELD
+	item.field_use = &"escape_rope"
+	assert_eq(item.contexts(), [&"field"] as Array[StringName], "AVENTURE avec un usage")
+	item.field_use = &""
 	item.category = ItemData.Category.BALL
 	assert_true(item.usable_in(ItemData.CONTEXT_WILD_BATTLE))
 	assert_false(item.usable_in(ItemData.CONTEXT_TRAINER_BATTLE), "pas de Ball contre un dresseur")
@@ -369,7 +379,8 @@ func test_real_j14_ticket_and_rare_candy() -> void:
 		["Super Bonbon", "Super Bonbons", false, ItemData.Category.FIELD, 0])
 	assert_eq(candy.description, "Un bonbon plein d'énergie. Fait monter un Pokémon d'un niveau.")
 	assert_false(candy.is_sellable(), "jamais vendu au J14")
-	assert_eq(candy.contexts(), [ItemData.CONTEXT_FIELD] as Array[StringName], "pas en combat")
+	# Sans « field_use » (J12 T20) jusqu'au T18b : visible au Sac, sans UTILISER (repli §0.3).
+	assert_eq(candy.contexts(), [] as Array[StringName], "ni en combat, ni UTILISER avant T18b")
 	assert_eq(candy.added_text(1), "Ajouté au Sac")
 	for item: ItemData in [ticket, candy]:
 		assert_false(item.draft, "%s : texte validé (dossier 17 §15)" % item.name)

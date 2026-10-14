@@ -71,13 +71,17 @@ func test_real_data_loads_without_error() -> void:
 		&"charmeleon", &"charizard", &"squirtle", &"wartortle", &"blastoise",
 		&"caterpie", &"metapod", &"butterfree", &"weedle", &"kakuna", &"beedrill",
 		&"pidgey", &"pidgeotto", &"pidgeot", &"rattata", &"raticate", &"spearow", &"fearow",
-		&"pikachu", &"raichu", &"sandshrew", &"sandslash", &"nidoran_f", &"nidorina",
-		&"nidoqueen", &"nidoran_m", &"nidorino", &"nidoking", &"mankey", &"primeape",
-		&"abra", &"kadabra", &"machop",
-		&"geodude", &"graveler", &"golem", &"onix"] as Array[StringName])
-	assert_eq(_data.get_move_ids().size(), 73,
-		"47 + 12 de la Forêt de Jade (jalon 9) + 7 d'Argenta (jalon 10) + Patience (J11)"
-		+ " + 6 du Cap d'Azuria (jalon 14)")
+		&"ekans", &"arbok", &"pikachu", &"raichu", &"sandshrew", &"sandslash", &"nidoran_f",
+		&"nidorina", &"nidoqueen", &"nidoran_m", &"nidorino", &"nidoking", &"clefairy",
+		&"clefable", &"jigglypuff", &"wigglytuff", &"zubat", &"golbat", &"oddish", &"gloom",
+		&"paras", &"parasect", &"mankey", &"primeape", &"abra", &"kadabra", &"machop",
+		&"bellsprout", &"weepinbell",
+		&"geodude", &"graveler", &"golem", &"shellder", &"onix", &"voltorb", &"koffing",
+		&"horsea", &"goldeen", &"staryu", &"starmie"] as Array[StringName])
+	assert_eq(_data.get_move_ids().size(), 102,
+		"47 + 12 de la Forêt de Jade (jalon 9) + 7 d'Argenta (jalon 10) + Patience (J11) "
+		+ "+ 21 du Mont Sélénite (jalon 12) + 8 du jalon 13 (les 5 du J12 qu'il reprenait : "
+		+ "entrées du J12) + 6 du Cap d'Azuria (jalon 14)")
 	assert_true(_data.has_move(&"struggle"))
 
 
@@ -131,6 +135,14 @@ func test_real_evolution_chains() -> void:
 		# Argenta (jalon 10, §2.3) : Rouge/Bleu ; Grolem par échange (« ??? » au Pokédex).
 		&"sandshrew": [&"sandslash", 22], &"geodude": [&"graveler", 25],
 		&"graveler": [&"golem", &""],
+		# Route 3 et Mont Sélénite (jalon 12, §2.19) : Rouge/Bleu ; Mélofée et Rondoudou par la
+		# Pierre Lune.
+		&"ekans": [&"arbok", 22], &"zubat": [&"golbat", 22], &"paras": [&"parasect", 24],
+		&"clefairy": [&"clefable", &"moon_stone"], &"jigglypuff": [&"wigglytuff", &"moon_stone"],
+		# Azuria (jalon 13, §2.15) : seules les évolutions par niveau vers une espèce présente ;
+		# Ortide et Boustiflor (Pierre Plante), Stari (Pierre Eau), Hypotrempe et Poissirène
+		# (formes absentes) n'en déclarent pas.
+		&"oddish": [&"gloom", 21], &"bellsprout": [&"weepinbell", 21],
 		# Cap d'Azuria (jalon 14, §2.13) : Kadabra (Cordon d'échange, sans source) et Machoc
 		# (Machopeur absent) n'en déclarent pas.
 		&"abra": [&"kadabra", 16],
@@ -386,6 +398,13 @@ func test_real_catch_rates_are_the_official_ones() -> void:
 		&"weedle": 255, &"kakuna": 120, &"beedrill": 45, &"pikachu": 190, &"raichu": 75,
 		&"sandshrew": 255, &"sandslash": 90, &"geodude": 255, &"graveler": 120, &"golem": 45,
 		&"onix": 45,
+		# Jalon 12.
+		&"ekans": 255, &"arbok": 90, &"clefairy": 150, &"clefable": 25, &"jigglypuff": 170,
+		&"wigglytuff": 50, &"zubat": 255, &"golbat": 90, &"paras": 190, &"parasect": 75,
+		&"voltorb": 190, &"koffing": 190,
+		# Jalon 13 (Azuria).
+		&"oddish": 255, &"gloom": 120, &"bellsprout": 255, &"weepinbell": 120,
+		&"shellder": 190, &"horsea": 225, &"goldeen": 225, &"staryu": 225, &"starmie": 60,
 		# Jalon 14 (Cap d'Azuria).
 		&"abra": 200, &"kadabra": 100, &"machop": 180,
 	}
@@ -798,10 +817,14 @@ func test_j14_species_values_and_red_blue_learnsets() -> void:
 		assert_eq(species.base_exp, row[9], String(id))
 		assert_eq(species.male_ratio, 0.75, String(id))
 		assert_eq(species.growth_rate, ExpCurve.Rate.MEDIUM_SLOW, String(id))
-	# Rouge/Bleu (pret/pokered) ; Entrave (J12) et Soin (J13) entreront dans la table de
-	# Kadabra à l'alignement (T23).
+	# Rouge/Bleu (pret/pokered) ; Entrave (J12, niveaux 1 et 20) et Soin (J13, niveau 31) dans
+	# la table de Kadabra depuis l'alignement (T23).
 	assert_eq(_data.get_species(&"abra").moves_at(15), [&"teleport"] as Array[StringName])
-	assert_eq(_data.get_species(&"kadabra").moves_at(16), [&"teleport", &"confusion"]
+	assert_eq(_data.get_species(&"kadabra").moves_at(16), [&"teleport", &"disable", &"confusion"]
+		as Array[StringName])
+	assert_eq(_data.get_species(&"kadabra").moves_learned_at(20), [&"disable"]
+		as Array[StringName])
+	assert_eq(_data.get_species(&"kadabra").moves_learned_at(31), [&"recover"]
 		as Array[StringName])
 	assert_eq(_data.get_species(&"kadabra").moves_learned_at(38), [&"psychic"]
 		as Array[StringName])

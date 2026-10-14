@@ -1,7 +1,8 @@
 extends GutTest
 ## Destination provisoire (jalon 5, dossier-07 §12) avec la vraie scène Boot, l'autoload
-## SceneRouter (fondus raccourcis) et un [SaveSystem] en mémoire. Depuis le jalon 12 (T8,
-## jalon-12.md §2.1, §2.15) : le raccord est du sas de la Route 4 (PUSH →) mène à « AZURIA — À
+## SceneRouter (fondus raccourcis) et un [SaveSystem] en mémoire (jalon 14 T15 : raccord rendu
+## provisoire par le test, voir [method _make_east_edge_coming_soon]). Depuis le jalon 12 (T8,
+## jalon-12.md §2.1, §2.15) puis jalon 13 (T8) : le raccord est de la Route 24 (PUSH →, (55, 6..8)) mène à « ROUTE 25 — À
 ## venir » (build de développement, libellé en majuscules), puis ramène le joueur sur la case de
 ## sortie, tourné vers l'ouest. Rien n'est sauvegardé pendant l'écran, aucun titre de zone, aucune
 ## nouvelle carte découverte ; en release, la sortie est inerte.
@@ -16,11 +17,12 @@ const SAVE_PATH := "user://test_coming_soon_save.json"
 const FADE := 0.05
 const HOLD := 0.3
 const TIMEOUT := 12.0
-## Raccord est du sas : case de sortie = case de retour (spawn `from_cerulean_n`).
-const MAP := &"route_4"
-const GATE := Vector2i(23, 6)
-const GATE_FRONT := Vector2i(23, 6)
-const RETURN_SPAWN := &"from_cerulean_n"
+## Raccord est de la Route 24 (jalon 13 T8) : case de sortie = case de retour (spawn
+## `from_route_25_n`).
+const MAP := &"route_24"
+const GATE := Vector2i(55, 6)
+const GATE_FRONT := Vector2i(55, 6)
+const RETURN_SPAWN := &"from_route_25_n"
 
 var _fs: MemoryFs
 var _save: SaveSystem
@@ -48,7 +50,7 @@ func after_each() -> void:
 		Input.action_release(action)
 
 
-## Boot dans le sas, sur la case du raccord est, tourné vers l'est.
+## Boot sur la Route 24, sur la case du raccord est, tourné vers l'est.
 func _start_at_the_gate() -> void:
 	_boot = BOOT_SCENE.instantiate() as Boot
 	_boot.save_system = _save
@@ -60,6 +62,21 @@ func _start_at_the_gate() -> void:
 	_boot.get_coming_soon_screen().hold_duration = HOLD
 	_boot.get_coming_soon_screen().fade_duration = 0.05
 	await wait_process_frames(3)
+	_make_east_edge_coming_soon()
+
+
+## Jalon 14 T15 : le raccord est de la Route 24 mène désormais à la vraie Route 25 ; plus aucun
+## « à venir » réel dans le jeu jusqu'au T20b (« ROUTE 5 — À venir », où ce test sera déplacé).
+## En attendant, le test rend provisoire le raccord est de la carte chargée, comme avant le T15
+## (mêmes cases, retour sur `from_route_25_n|c|s`, tourné vers l'ouest).
+func _make_east_edge_coming_soon() -> void:
+	for warp: Warp in _boot.get_map().get_warps().get_all():
+		if warp.direction == Vector2i.RIGHT and warp.target_map == &"route_25":
+			warp.coming_soon = "Route 25"
+			warp.target_map = &""
+			warp.target_spawn = StringName(String(warp.target_spawn).replace(
+				"from_route_24_", "from_route_25_"))
+			warp.facing = Vector2i.LEFT
 
 
 func _writes() -> int:
@@ -86,21 +103,21 @@ func test_the_exit_shows_the_coming_soon_screen_then_returns_facing_west() -> vo
 	_boot.zone_announced.connect(func(zone: String, _region: String) -> void:
 		zones.append(zone))
 	await _walk_into_the_gate()
-	assert_eq(screen.get_label().text, "AZURIA — À venir")
+	assert_eq(screen.get_label().text, "ROUTE 25 — À venir")
 	assert_true(_boot.get_fade().is_opaque() or _boot.get_fade().get_alpha() > 0.5,
 		"sous le rideau")
 	assert_false(_player.is_input_enabled(), "joueur bloqué pendant l'écran")
 	await wait_until(func() -> bool: return not screen.is_showing(), TIMEOUT)
 	await wait_until(func() -> bool: return not SceneRouter.is_transitioning(), TIMEOUT)
-	assert_eq(_boot.get_map().map_id, MAP, "retour dans le sas")
+	assert_eq(_boot.get_map().map_id, MAP, "retour sur la Route 24")
 	assert_eq(_player.get_cell(), GATE_FRONT, "sur la case de sortie")
 	assert_eq(_player.get_facing(), Vector2i.LEFT, "tourné vers l'ouest")
 	assert_true(_player.is_input_enabled(), "joueur libre")
 	assert_false(_boot.get_fade().is_opaque())
 	assert_true(zones.is_empty(), "aucun titre de zone")
 	assert_false(_boot.get_hud().get_caption().is_showing())
-	assert_false(GameState.discovered_maps.has(&"cerulean_city"), "aucune carte découverte")
-	assert_false(MapCatalog.has_map(&"cerulean_city"), "Azuria n'existe pas encore (J13)")
+	assert_false(GameState.discovered_maps.has(&"route_25"), "aucune carte découverte")
+	assert_true(MapCatalog.has_map(&"route_25"), "la Route 25 existe (J14) : raccord au T15")
 	assert_push_error_count(0)
 
 
@@ -135,7 +152,7 @@ func test_nothing_is_saved_during_the_screen_then_the_normal_autosave_applies() 
 	var saved: Variant = JSON.parse_string(_fs.files[SAVE_PATH])
 	assert_eq(saved.get("map"), String(MAP))
 	assert_eq(JsonFields.get_vector2i(saved, "cell"), GATE_FRONT, "case de retour")
-	assert_false((saved.get("discovered_maps", {}) as Dictionary).has("cerulean_city"))
+	assert_false((saved.get("discovered_maps", {}) as Dictionary).has("route_25"))
 
 
 func test_a_tap_shortens_the_screen() -> void:

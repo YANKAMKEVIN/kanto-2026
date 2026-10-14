@@ -148,7 +148,7 @@ func test_back_cancels_during_the_transformation_only() -> void:
 	var clock := TweenClock.new(get_tree())
 	_opened(clock)
 	var transforming := _start(_screen.transform)
-	for i: int in _steps(3.0):
+	for i: int in _steps(1.5):
 		clock.call(&"step")
 	assert_true(_screen.handle_back(), "consommé")
 	assert_true(transforming[0], "aussitôt")
@@ -236,11 +236,12 @@ func test_reduced_motion_divides_the_durations() -> void:
 	clock.release()
 
 
-func test_total_duration_is_8_to_12_seconds_without_reading() -> void:
+## Jalon 11 (dossier 14 §7, évolution courte) : ≈ 6 s au lieu de 8 à 12 s (J9).
+func test_total_duration_is_about_6_seconds_without_reading() -> void:
 	var total := UiTokens.EVOLUTION_OPEN + UiTokens.EVOLUTION_PRESENT \
 		+ UiTokens.EVOLUTION_TRANSFORM + UiTokens.EVOLUTION_FLASH + UiTokens.EVOLUTION_SILENCE \
 		+ UiTokens.EVOLUTION_REVEAL
-	assert_between(total, 8.0, 12.0)
+	assert_between(total, 5.5, 6.5)
 	assert_lt(UiTokens.EVOLUTION_FLASH_RISE, UiTokens.EVOLUTION_FLASH)
 	assert_lte(UiTokens.EVOLUTION_LINE_DELAY + UiTokens.EVOLUTION_TEXT_IN,
 		UiTokens.EVOLUTION_REVEAL, "la phrase est posée avant le toucher")
@@ -259,7 +260,7 @@ func test_silhouettes_alternate_faster_and_faster() -> void:
 		if now != shown:
 			swaps.append(p * UiTokens.EVOLUTION_TRANSFORM)
 			shown = now
-	assert_gt(swaps.size(), 20, "beaucoup de bascules")
+	assert_gt(swaps.size(), 15, "beaucoup de bascules (transformation de 2,5 s, J11)")
 	assert_almost_eq(swaps[0], UiTokens.EVOLUTION_SWAP_START, 0.05, "première bascule")
 	assert_gte(swaps[0], UiTokens.EVOLUTION_TO_SILHOUETTE, "une fois devenue silhouette")
 	var first := swaps[1] - swaps[0]
@@ -268,7 +269,7 @@ func test_silhouettes_alternate_faster_and_faster() -> void:
 	var in_first_second := swaps.filter(func(t: float) -> bool: return t < 1.0).size()
 	var in_last_second := swaps.filter(func(t: float) -> bool:
 		return t >= UiTokens.EVOLUTION_TRANSFORM - 1.0).size()
-	assert_gt(in_last_second, in_first_second * 5)
+	assert_gt(in_last_second, in_first_second * 3)
 	assert_true(EvolutionScreen.shows_new_form(1.0), "la nouvelle au terme")
 	assert_false(EvolutionScreen.shows_new_form(0.0))
 
@@ -354,3 +355,138 @@ func test_moves_learned_at_evolution_show_in_the_screen() -> void:
 	assert_true(seen.get("parent", false), "panneau d'oubli dans l'écran d'évolution")
 	assert_eq(messages, ["Chrysacier veut apprendre Armure, mais connaît déjà quatre capacités.",
 		"Chrysacier n'apprend pas Armure."] as Array[String])
+
+
+# --- Jalon 11 (T15) : évolution courte, toucher = ×2 ------------------------------------------
+
+func test_a_touch_during_the_transformation_plays_the_rest_twice_as_fast() -> void:
+	var clock := TweenClock.new(get_tree())
+	clock.speed_of = _screen.tween_speed
+	_opened(clock)
+	var transforming := _start(_screen.transform)
+	var half := _steps(UiTokens.EVOLUTION_TRANSFORM / 2.0)
+	for i: int in half:
+		clock.call(&"step")
+	assert_false(_screen.is_rushed())
+	_touch()
+	assert_true(_screen.is_rushed(), "toucher pendant la séquence : ×2")
+	assert_true(_screen.is_stop_active(), "ARRÊTER reste là")
+	var rest := _run(clock, transforming)
+	assert_false(transforming[1], "pas annulée : le toucher accélère, il n'arrête pas")
+	_assert_lasts(rest, UiTokens.EVOLUTION_TRANSFORM / 2.0 / UiTokens.EVOLUTION_RUSH,
+		"seconde moitié à ×2")
+	# La révélation reste accélérée, puis la consigne attend un toucher à vitesse normale.
+	var revealing := _start(_screen.reveal)
+	var armed := clock.call(&"run_until", _screen.is_waiting_touch, 5.0) as int
+	_assert_lasts(armed, (UiTokens.EVOLUTION_FLASH + UiTokens.EVOLUTION_SILENCE
+		+ UiTokens.EVOLUTION_REVEAL) / UiTokens.EVOLUTION_RUSH, "révélation à ×2")
+	assert_false(_screen.is_rushed(), "vitesse normale une fois la consigne posée")
+	_touch()
+	assert_true(revealing[0], "le toucher continue")
+	clock.release()
+
+
+func test_a_touch_on_stop_cancels_without_rushing() -> void:
+	var clock := TweenClock.new(get_tree())
+	_opened(clock)
+	var transforming := _start(_screen.transform)
+	for i: int in _steps(1.0):
+		clock.call(&"step")
+	var stop := _screen.get_stop_button()
+	var touch := InputEventScreenTouch.new()
+	touch.pressed = true
+	touch.position = stop.get_global_rect().get_center()
+	_screen._input(touch)
+	assert_false(_screen.is_rushed(), "un toucher sur ARRÊTER n'accélère pas")
+	stop.pressed.emit()
+	assert_true(transforming[1], "annulée")
+	clock.release()
+
+
+func test_the_rush_is_reset_for_the_next_evolution() -> void:
+	var clock := TweenClock.new(get_tree())
+	_opened(clock)
+	_screen.rush()
+	assert_true(_screen.is_rushed())
+	_run(clock, _start(_screen.transform))
+	var revealing := _start(_screen.reveal)
+	clock.call(&"run_until", _screen.is_waiting_touch, 5.0)
+	_touch()
+	assert_true(revealing[0])
+	_run(clock, _start(_screen.present.bind(_view())))
+	assert_false(_screen.is_rushed(), "deuxième évolution : vitesse normale")
+	clock.release()
+
+
+# --- Jalon 12 (T24) : évolution par pierre, sans ARRÊTER ni zone morte ---------------------
+
+func _stone_view() -> EvolutionView:
+	var view := _view()
+	view.cancellable = false
+	return view
+
+
+## Toucher à [param point] (envoyé directement à l'écran, comme le test d'ARRÊTER).
+func _touch_at(point: Vector2) -> void:
+	var touch := InputEventScreenTouch.new()
+	touch.pressed = true
+	touch.position = point
+	_screen._input(touch)
+
+
+func test_a_stone_evolution_has_no_dead_zone_where_stop_would_be() -> void:
+	var clock := TweenClock.new(get_tree())
+	clock.speed_of = _screen.tween_speed
+	_run(clock, _start(_screen.open))
+	_run(clock, _start(_screen.present.bind(_stone_view())))
+	var transforming := _start(_screen.transform)
+	for i: int in _steps(1.0):
+		clock.call(&"step")
+	var stop := _screen.get_stop_button()
+	assert_false(stop.visible, "pas d'ARRÊTER pour une pierre")
+	_touch_at(stop.get_global_rect().get_center())
+	assert_true(_screen.is_rushed(), "toucher là où serait ARRÊTER : accélère aussi")
+	_run(clock, transforming)
+	assert_false(transforming[1], "jamais annulée")
+	clock.release()
+
+
+func test_a_stone_evolution_rushes_from_the_presentation_anywhere() -> void:
+	var clock := TweenClock.new(get_tree())
+	_run(clock, _start(_screen.open))
+	var presenting := _start(_screen.present.bind(_stone_view()))
+	clock.call(&"step")
+	_touch_at(_screen.get_stop_button().get_global_rect().get_center())
+	assert_true(_screen.is_rushed(), "présentation : tout l'écran accélère")
+	_run(clock, presenting)
+	clock.release()
+
+
+func test_a_stone_evolution_ignores_back_and_stop_presses() -> void:
+	var clock := TweenClock.new(get_tree())
+	_run(clock, _start(_screen.open))
+	_run(clock, _start(_screen.present.bind(_stone_view())))
+	var transforming := _start(_screen.transform)
+	for i: int in _steps(1.0):
+		clock.call(&"step")
+	assert_true(_screen.handle_back(), "retour consommé")
+	_screen.get_stop_button().pressed.emit()
+	assert_false(transforming[0], "ni le retour ni un appui fantôme n'arrêtent")
+	_run(clock, transforming)
+	assert_false(transforming[1])
+	assert_true(_screen.is_showing_new_form())
+	clock.release()
+
+
+func test_a_battle_evolution_keeps_the_stop_zone() -> void:
+	var clock := TweenClock.new(get_tree())
+	_opened(clock)
+	var transforming := _start(_screen.transform)
+	for i: int in _steps(1.0):
+		clock.call(&"step")
+	_touch_at(_screen.get_stop_button().get_global_rect().get_center())
+	assert_false(_screen.is_rushed(), "ARRÊTER affiché : sa zone n'accélère pas")
+	_touch_at(Vector2(200, 300))
+	assert_true(_screen.is_rushed(), "ailleurs : accélère")
+	_run(clock, transforming)
+	clock.release()

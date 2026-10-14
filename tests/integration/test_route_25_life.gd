@@ -4,9 +4,9 @@ extends GutTest
 ## - rencontres : table de `data/encounters/route_25.json` (taux 15, Abra rare 10-12), repli
 ##   Roucool / Chenipan tant que Mystherbe et Chétiflor (J13 T11) n'existent pas ;
 ## - objets O1 (CT19), O2, O3 : PRENDRE, une seule fois, retirés au rechargement ; O4 caché
-##   (rocher au coquillage examiné depuis le nord) : une seule fois, puis « plus rien » ;
+##   (rocher au coquillage examiné depuis le nord) : une seule fois, puis plus de cible ;
 ## - panneaux, promeneur et vieil homme : textes validés ; un Dresseur interpelle ;
-## - objectif n° 66 ; chaque dialogue du fichier est utilisé (D5 et D6 : en attente d'Abo).
+## - objectif n° 66 ; chaque dialogue du fichier est utilisé (D5 et D6 compris depuis le T23).
 
 const PlanGrid := preload("res://tests/helpers/plan_grid.gd")
 const MemoryFs := preload("res://tests/helpers/memory_file_system.gd")
@@ -19,12 +19,7 @@ const MAP_ID := "route_25"
 const FADE := 0.05
 const TIMEOUT := 12.0
 const DIRECTIONS: Array[Vector2i] = [Vector2i.UP, Vector2i.DOWN, Vector2i.LEFT, Vector2i.RIGHT]
-## Répliques de D5 et D6 (n° 50 et 51) : posées, mais ni Dresseur ni PNJ avant Abo (J12 T12).
-const PENDING_DIALOGUES: Array[StringName] = [
-	&"route_25_jr_trainer_adam_before", &"route_25_jr_trainer_adam_defeated",
-	&"route_25_jr_trainer_adam_after", &"route_25_youngster_yanis_before",
-	&"route_25_youngster_yanis_defeated", &"route_25_youngster_yanis_after",
-]
+
 
 var _plan: PlanGrid
 var _fs: MemoryFs
@@ -173,10 +168,15 @@ func test_encounter_table_rate_15_with_rare_abra() -> void:
 	for slot: EncounterSlot in table.slots:
 		if slot.species == &"abra":
 			assert_eq([slot.min_level, slot.max_level], [10, 12], "Abra 10-12")
-	# Repli avant J13 T11 : Roucool 38, Chenipan 27 (Mystherbe 18 + Roucool 20 ; Chétiflor 17 +
-	# Chenipan 10), puis Aspicot 10, Chrysacier 5, Coconfort 5.
-	assert_almost_eq(table.chance_of(&"pidgey"), 0.38, 0.0001)
-	assert_almost_eq(table.chance_of(&"caterpie"), 0.27, 0.0001)
+	# Depuis le T23 (J13 T11 fusionné) : Roucool 20, Mystherbe 18, Chétiflor 17 (12-14), Chenipan
+	# 10, puis Aspicot 10, Chrysacier 5, Coconfort 5 (plus de repli Roucool 38 / Chenipan 27).
+	assert_almost_eq(table.chance_of(&"pidgey"), 0.20, 0.0001)
+	assert_almost_eq(table.chance_of(&"oddish"), 0.18, 0.0001)
+	assert_almost_eq(table.chance_of(&"bellsprout"), 0.17, 0.0001)
+	assert_almost_eq(table.chance_of(&"caterpie"), 0.10, 0.0001)
+	for slot: EncounterSlot in table.slots:
+		if slot.species == &"oddish" or slot.species == &"bellsprout":
+			assert_eq([slot.min_level, slot.max_level], [12, 14], String(slot.species))
 	assert_almost_eq(table.chance_of(&"weedle"), 0.10, 0.0001)
 	assert_almost_eq(table.chance_of(&"metapod"), 0.05, 0.0001)
 	assert_almost_eq(table.chance_of(&"kakuna"), 0.05, 0.0001)
@@ -261,14 +261,14 @@ func test_o4_hidden_potion_under_the_shell_once() -> void:
 	assert_eq(_bag(&"potion"), before + 1)
 	assert_eq(_found("potion"), 1)
 	assert_true(GameState.flags.has_flag(&"got_route_25_hidden_1"))
-	# Repli (J12 T17 absent) : le point reste examinable mais ne redonne rien.
+	# Mécanisme des objets cachés du J12 (T17, branché au T23) : le point disparaît.
+	await wait_process_frames(8)
+	assert_null(_boot.get_interaction_controller().get_target(), "plus de cible après la trouvaille")
 	await _press_interact()
-	await wait_until(func() -> bool: return _runner.is_running(), TIMEOUT)
-	await _finish_scene()
+	await wait_process_frames(8)
 	assert_eq(_bag(&"potion"), before + 1, "une seule fois")
 	assert_eq(_found("potion"), 1)
-	assert_eq(_events, ["page", "toast", "page"] as Array[String])
-	assert_eq(_pages[1], "Il n'y a plus rien\nsous ce coquillage.")
+	assert_eq(_events, ["page", "toast"] as Array[String], "rien de plus")
 	assert_push_error_count(0)
 
 
@@ -364,11 +364,14 @@ func test_objective_n66_until_leo_is_met() -> void:
 	var library := ObjectiveLibrary.new()
 	assert_true(library.load_file(), "\n".join(library.get_errors()))
 	var flags := StoryFlags.new()
-	for flag: StringName in [&"pokedex_activated", &"pewter_arrived", &"badge_boulder"]:
+	for flag: StringName in [&"pokedex_activated", &"pewter_arrived", &"badge_boulder",
+			&"route_4_reached", &"cerulean_reached"]:
 		flags.set_flag(flag)
-	assert_eq(library.current_id(flags), &"go_route_3")
+	assert_eq(library.current_id(flags), &"get_cascade_badge")
 	flags.set_flag(&"beaten_nugget_rocket")
-	assert_eq(library.current_id(flags), &"go_cerulean_cape", "après le Pont Pépite")
+	assert_eq(library.current_id(flags), &"get_cascade_badge", "pont avant badge (J13)")
+	flags.set_flag(&"badge_cascade")
+	assert_eq(library.current_id(flags), &"go_cerulean_cape", "après le Pont Pépite et le badge")
 	assert_eq(library.current(flags), "rejoindre le Cap d'Azuria.")
 	flags.set_flag(&"bill_met")
 	assert_eq(library.current_id(flags), &"help_bill", "Léo rencontré : « aider Léo » (T17) remplace la ligne")
@@ -376,7 +379,7 @@ func test_objective_n66_until_leo_is_met() -> void:
 
 # --- Dialogues -----------------------------------------------------------------------------
 
-func test_every_dialogue_of_the_file_is_used_except_the_pending_trainers() -> void:
+func test_every_dialogue_of_the_file_is_used() -> void:
 	var raw: Dictionary = JSON.parse_string(
 		FileAccess.get_file_as_string("res://data/dialogues/route_25.json"))
 	var used: Dictionary = {}
@@ -397,11 +400,7 @@ func test_every_dialogue_of_the_file_is_used_except_the_pending_trainers() -> vo
 				if step.has("dialogue"):
 					used[StringName(step["dialogue"])] = true
 	for key: String in raw:
-		var id := StringName(key)
-		if PENDING_DIALOGUES.has(id):
-			assert_false(used.has(id), "%s : en attente d'Abo" % key)
-		else:
-			assert_true(used.has(id), "%s : utilisé" % key)
+		assert_true(used.has(StringName(key)), "%s : utilisé" % key)
 	for id: StringName in used:
 		if not String(id).is_empty():
 			assert_true(raw.has(String(id)), "%s : défini" % id)

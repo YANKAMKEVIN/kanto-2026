@@ -23,12 +23,17 @@ extends RefCounted
 ## Jalon 11 : une CT (« tm ») a « tm » (numéro de 1 à 50, unique) et « teaches » (identifiant de
 ## capacité, vérifié contre les données Pokémon par [method check_moves]) ; ces deux clés sont
 ## refusées ailleurs ; une CT n'a pas de prix (jamais vendue, dossier 14 §6.1).
+## Jalon 12 (T20) : « field_use » facultatif ([constant ItemData.FIELD_USES]), réservé aux objets
+## AVENTURE (« field ») : la Corde Sortie (« escape_rope »), une pierre d'évolution
+## (« evolution_stone », T23).
+## Jalon 12 (T23) : « obtained » facultatif (booléen) : toast « obtenu » d'une CT
+## ([member ItemData.obtained], les fossiles).
 
 const DATA_DIR: String = "res://data/items/"
 
 const _KEYS: Array[String] = [
 	"name", "plural", "feminine", "category", "catch_bonus", "heal_amount", "cures",
-	"description", "draft", "price", "tm", "teaches",
+	"description", "draft", "price", "tm", "teaches", "field_use", "obtained",
 ]
 ## Numéros des CT de Rouge/Bleu (dossier 14 §6.1).
 const TM_MIN: int = 1
@@ -200,6 +205,13 @@ func _parse_item(value: Variant, where: String) -> ItemData:
 		for key: String in ["tm", "teaches"]:
 			if entry.has(key):
 				ok = _fail("%s : « %s » est réservé aux CT" % [where, key])
+	if entry.has("field_use"):
+		ok = _read_field_use(entry["field_use"], item, where) and ok
+	if entry.has("obtained"):
+		if entry["obtained"] is bool:
+			item.obtained = entry["obtained"]
+		else:
+			ok = _fail("%s : « obtained » vaut true ou false" % where)
 	if entry.has("price"):
 		var price: Variant = entry["price"]
 		if not JsonFields.is_int(price) or int(price) < 0:
@@ -245,6 +257,17 @@ func _read_cures(value: Variant, item: ItemData, where: String) -> bool:
 			item.cures.clear()
 			return _fail(message)
 		item.cures.append(StringName(status))
+	return true
+
+
+## Usage en exploration (jalon 12) : un des [constant ItemData.FIELD_USES], objet AVENTURE seul.
+func _read_field_use(value: Variant, item: ItemData, where: String) -> bool:
+	if item.category != ItemData.Category.FIELD:
+		return _fail("%s : « field_use » est réservé aux objets AVENTURE (field)" % where)
+	if not value is String or not ItemData.FIELD_USES.has(StringName(value)):
+		return _fail("%s : « field_use » vaut %s" % [where,
+			", ".join(PackedStringArray(ItemData.FIELD_USES))])
+	item.field_use = StringName(value)
 	return true
 
 

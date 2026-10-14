@@ -1,0 +1,15 @@
+{
+	"route_3_grass": {
+		"maps": ["route_3"],
+		"terrain": "grass",
+		"rate": 25,
+		"ramp": { "from_step": 15, "max_steps": 20 },
+		"slots": [
+			{ "species": "spearow", "levels": [8, 10], "weight": 35 },
+			{ "species": "rattata", "levels": [8, 9], "weight": 25 },
+			{ "species": "sandshrew", "levels": [8, 10], "weight": 15 },
+			{ "species": "ekans", "levels": [8, 10], "weight": 15 },
+			{ "species": "jigglypuff", "levels": [7, 9], "weight": 10 }
+		]
+	}
+}

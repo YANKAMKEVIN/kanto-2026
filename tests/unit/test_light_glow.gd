@@ -26,8 +26,13 @@ func test_real_data_has_the_five_types_within_bounds() -> void:
 	var library := LightGlowLibrary.new()
 	assert_true(library.load_file(), "data/world/light_glows.json valide")
 	assert_eq(library.get_errors().size(), 0)
-	assert_eq(library.get_ids(), [&"lamp", &"shaft", &"shard", &"projector", &"hint"]
+	assert_eq(library.get_ids(), [&"lamp", &"shaft", &"shard", &"projector", &"beam", &"hint"]
 		as Array[StringName], "« hint » du jalon 14 en fin")
+	# Passe « lumière rare » : le puits de jour a sa colonne de lumière douce.
+	assert_eq(library.get_type(&"beam").shape, LightGlowLibrary.SHAPE_COLUMN)
+	assert_gt(library.get_type(&"beam").height, 1.0)
+	for id: StringName in [&"lamp", &"shaft", &"shard", &"projector", &"hint"]:
+		assert_eq(library.get_type(id).shape, LightGlowLibrary.SHAPE_RADIAL, String(id))
 	for id: StringName in library.get_ids():
 		var type := library.get_type(id)
 		assert_gt(type.alpha, 0.0)
@@ -40,8 +45,35 @@ func test_real_data_has_the_five_types_within_bounds() -> void:
 	assert_almost_eq(hint.radius, 1.3, 0.001)
 	assert_almost_eq(hint.alpha, 0.22, 0.001)
 	assert_almost_eq(hint.flicker, 0.12, 0.001)
-	for id: StringName in [&"shaft", &"shard", &"projector"]:
+	for id: StringName in [&"shaft", &"shard", &"projector", &"beam"]:
 		assert_eq(library.get_type(id).flicker, 0.0, "%s : fixe" % id)
+
+
+func test_column_shape_is_parsed() -> void:
+	var library := LightGlowLibrary.new()
+	var raw := _type("#e2ecff", 0.9, 0.3)
+	raw["shape"] = "column"
+	raw["height"] = 4.5
+	assert_true(library.add_from_dict({"types": {"col": raw, "round": _type()}}))
+	assert_eq(library.get_type(&"col").shape, LightGlowLibrary.SHAPE_COLUMN)
+	assert_eq(library.get_type(&"col").height, 4.5)
+	assert_eq(library.get_type(&"round").shape, LightGlowLibrary.SHAPE_RADIAL, "défaut")
+	assert_eq(library.get_type(&"round").height, 0.0)
+
+
+func test_invalid_column_shapes_are_rejected() -> void:
+	var no_height := _type()
+	no_height["shape"] = "column"
+	var bad_shape := _type()
+	bad_shape["shape"] = "cone"
+	var bad_height := _type()
+	bad_height["shape"] = "column"
+	bad_height["height"] = 0
+	for raw: Dictionary in [no_height, bad_shape, bad_height]:
+		var library := LightGlowLibrary.new()
+		assert_false(library.add_from_dict({"types": {"x": raw}}), str(raw))
+		assert_false(library.has_type(&"x"))
+	assert_push_error_count(3)
 
 
 func test_valid_type_is_parsed() -> void:
@@ -136,8 +168,33 @@ func test_glow_created_while_reduced_does_not_flicker() -> void:
 	assert_eq((lamp.material as ShaderMaterial).get_shader_parameter(&"amplitude"), 0.0)
 
 
+func test_column_glow_stands_on_its_foot() -> void:
+	var beam := _glow(&"beam")
+	var type := LightGlow.library().get_type(&"beam")
+	assert_true(beam.is_lit())
+	assert_false(beam.centered, "posée à son pied")
+	assert_eq(beam.offset, Vector2(-LightGlow.COLUMN_WIDTH / 2.0, -LightGlow.COLUMN_HEIGHT))
+	assert_almost_eq(beam.scale.x * LightGlow.COLUMN_WIDTH, type.radius * 2.0 * 96.0, 0.01)
+	assert_almost_eq(beam.scale.y * LightGlow.COLUMN_HEIGHT, type.height * 96.0, 0.01)
+	assert_eq((beam.material as CanvasItemMaterial).blend_mode,
+		CanvasItemMaterial.BLEND_MODE_ADD)
+	var image := beam.texture.get_image()
+	var foot := image.get_pixel(LightGlow.COLUMN_WIDTH / 2, LightGlow.COLUMN_HEIGHT - 1).a
+	var top := image.get_pixel(LightGlow.COLUMN_WIDTH / 2, 0).a
+	var side := image.get_pixel(0, LightGlow.COLUMN_HEIGHT * 3 / 4).a
+	var body := image.get_pixel(LightGlow.COLUMN_WIDTH / 2, LightGlow.COLUMN_HEIGHT * 3 / 4).a
+	assert_lt(foot, 0.05, "aucun bord net au pied")
+	assert_lt(top, 0.05, "nulle en haut")
+	assert_lt(side, 0.05, "bords latéraux adoucis")
+	assert_gt(body, 0.5)
+	# Un halo radial redevient centré si on change son type.
+	beam.glow_type = &"shard"
+	assert_true(beam.centered)
+	assert_eq(beam.offset, Vector2.ZERO)
+
+
 func test_steady_types_never_flicker() -> void:
-	for id: StringName in [&"shaft", &"shard", &"projector"]:
+	for id: StringName in [&"shaft", &"shard", &"projector", &"beam"]:
 		assert_eq(LightGlow.flicker_amplitude(id), 0.0, "%s" % id)
 		assert_false(_glow(id).material is ShaderMaterial, "%s : sans shader" % id)
 

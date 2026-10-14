@@ -20,6 +20,11 @@ extends SceneTree
 ##   mt_moon_center — le Centre Pokémon du Mont Sélénite (jalon 12 T8, jalon-12.md §2.14) :
 ##     définition commune des Centres, sans Boutique ; sortie vers la Route 3 (`from_center_e`)
 ##   godot --headless --path . -s res://tools/build_painted_interiors.gd -- --rooms=mt_moon_center
+##   cerulean_center, cerulean_mart, cerulean_gym, cerulean_bike_shop, cerulean_house — intérieurs
+##     d'Azuria (jalon 13 T7, jalon-13.md §2.1, §2.5, §2.6) : Centre et Boutique = définitions
+##     de Jadielle ; Arène, magasin de vélos et maison relus sur leur grille
+##     (`tools/plans/azuria_*.txt`) ; **sans PNJ** (T17)
+##   godot --headless --path . -s res://tools/build_painted_interiors.gd -- --azuria
 ##   bill_house — la maison de Léo au Cap d'Azuria (jalon 14 T14, jalon-14.md §2.1) : relue sur sa
 ##     grille (`tools/plans/bill_house.txt`, « plan »), sans PNJ (T17) ; affichée « Cap d'Azuria »
 ##     (nom de sa zone, `test_zone_library`)
@@ -71,6 +76,8 @@ const JADIELLE := [&"viridian_center", &"viridian_mart"]
 const FORET := [&"viridian_forest_gate_south", &"viridian_forest_gate_north"]
 const ARGENTA := [&"pewter_center", &"pewter_mart", &"pewter_museum", &"pewter_museum_science",
 	&"pewter_gym", &"pewter_house_mason", &"pewter_house_researcher"]
+const AZURIA := [&"cerulean_center", &"cerulean_mart", &"cerulean_gym", &"cerulean_bike_shop",
+	&"cerulean_house"]
 const PLANS_DIR := "res://tools/plans/"
 const PlanGrid := preload("res://tests/helpers/plan_grid.gd")
 const LOGIC_DIR := "res://tests/fixtures/maps/"
@@ -90,6 +97,7 @@ func _init() -> void:
 	rooms.append(_bill_house())
 	rooms.append(_pokemon_center(&"mt_moon_center", "MtMoonCenter", "Mont Sélénite",
 		[&"route_3", &"from_center_e"]))
+	rooms.append_array(_cerulean_rooms())
 	for room: Dictionary in rooms:
 		if not wanted.is_empty() and not wanted.has(room["id"]):
 			continue
@@ -123,6 +131,8 @@ func _wanted_rooms() -> Array:
 			wanted.append_array(FORET)
 		elif arg == "--argenta":
 			wanted.append_array(ARGENTA)
+		elif arg == "--azuria":
+			wanted.append_array(AZURIA)
 		elif arg.begins_with("--rooms="):
 			for id: String in arg.trim_prefix("--rooms=").split(","):
 				wanted.append(StringName(id))
@@ -504,13 +514,13 @@ func _bill_house() -> Dictionary:
 				Vector2i(2, 3), Vector2i(3, 3), Vector2i(1, 4), Vector2i(2, 4), Vector2i(3, 4)]],
 			[&"int_cabine_teleport_01", Rect2i(12, 3, 3, 2), "CabinB", [Vector2i(12, 3),
 				Vector2i(13, 3), Vector2i(14, 3), Vector2i(12, 4), Vector2i(13, 4),
-				Vector2i(14, 4)], true],
+				Vector2i(14, 4)], 1.0, true],
 			[&"int_ecran_diagnostic_01", Rect2i(5, 3, 1, 1), "Screen"],
 			[&"int_console_leo_01", Rect2i(7, 3, 2, 1), "Console"],
 			[&"int_module_leo_01", Rect2i(10, 3, 1, 1), "Module"],
 			[&"int_bibliotheque_cote_01", Rect2i(1, 6, 1, 2), "BookshelfWest"],
 			[&"int_bibliotheque_cote_01", Rect2i(14, 6, 1, 2), "BookshelfEast", [Vector2i(14, 6),
-				Vector2i(14, 7)], true],
+				Vector2i(14, 7)], 1.0, true],
 			[&"int_bureau_leo_01", Rect2i(5, 7, 3, 1), "Desk"],
 			[&"int_chaise_bureau_01", Rect2i(6, 8, 1, 1), "DeskChair"],
 			[&"int_lit_01", Rect2i(12, 7, 2, 2), "Bed"],
@@ -703,6 +713,95 @@ func _researcher_furniture() -> Array:
 		[&"int_plante", Rect2i(1, 7, 1, 1), "PlantWest"],
 		[&"int_plante", Rect2i(13, 7, 1, 1), "PlantEast"],
 	]
+
+
+## Intérieurs d'Azuria (jalon 13 T7, jalon-13.md §2.1, §2.5, §2.6 ; dossier 16 §4.3, §5, §9).
+## Titre « Azuria » (toast du point de repos), lumière `interior_warm` ; sorties vers
+## `cerulean_city`, spawns `from_<carte>` devant les portes de la ville. **Sans PNJ** : les
+## cases de leurs positions (`bloque`) sont praticables dans la grille (T17).
+func _cerulean_rooms() -> Array[Dictionary]:
+	var rooms: Array[Dictionary] = [
+		_pokemon_center(&"cerulean_center", "CeruleanCenter", "Azuria",
+			[&"cerulean_city", &"from_center"]),
+		_poke_mart(&"cerulean_mart", "CeruleanMart", "Azuria", [&"cerulean_city", &"from_mart"]),
+		_cerulean_gym(), _cerulean_bike_shop(), _cerulean_house(),
+	]
+	return rooms
+
+
+## Arène d'Azuria (`tools/plans/azuria_arene.txt`, 17 × 13) : bassin peint dans la coque (cases
+## `W` bloquées), plongeoir contre le mur du fond (`P`), deux porte-bouées dans le mur du fond ;
+## ni puzzle, ni nage. Ondine, Lucas, Diane et le guide = T17 (cases `O`, `N`, `J`, `G`).
+func _cerulean_gym() -> Dictionary:
+	return {
+		"id": &"cerulean_gym", "node": "CeruleanGym", "size": Vector2i(17, 13),
+		"shell": "res://assets/world/interiors/int_arene_azuria_coque.png",
+		"title": "Azuria", "light": &"interior_warm",
+		"plan": PLANS_DIR + "azuria_arene.txt", "walkable": ".XONJG",
+		"props": [
+			[&"int_plongeoir_01", Vector2i(13, 2), 2.95, "DivingBoard"],
+			[&"int_porte_bouees_01", Vector2i(4, 1), 1.95, "LifebuoysWest"],
+			[&"int_porte_bouees_01", Vector2i(11, 1), 1.95, "LifebuoysEast"],
+		],
+		"spawns": {"entrance": Vector2i(8, 11)},
+		"warps": _pewter_exits([Vector2i(7, 11), Vector2i(8, 11), Vector2i(9, 11)], &"from_gym",
+			&"cerulean_city"),
+	}
+
+
+## Magasin de vélos (`tools/plans/azuria_velos.txt`, 15 × 10, enveloppe des maisons d'Argenta) :
+## trois vélos exposés au fond, un quatrième à l'écart, étagère de casques, comptoir (l'image
+## de 5 cases réduite à 3), deux plantes ; le vendeur (`v`) = T17. Aucun achat.
+func _cerulean_bike_shop() -> Dictionary:
+	return {
+		"id": &"cerulean_bike_shop", "node": "CeruleanBikeShop", "size": Vector2i(15, 10),
+		"shell": "res://assets/world/interiors/int_maison_argenta_coque.png",
+		"title": "Azuria", "light": &"interior_warm",
+		"plan": PLANS_DIR + "azuria_velos.txt", "walkable": ".Xv",
+		"props": [
+			[&"int_velo_expose_01", Vector2i(2, 3), 3.9, "BikeA"],
+			[&"int_velo_expose_02", Vector2i(5, 3), 3.9, "BikeB"],
+			[&"int_velo_expose_03", Vector2i(8, 3), 3.9, "BikeC"],
+			[&"int_velo_expose_02", Vector2i(2, 6), 6.9, "BikeD"],
+			[&"int_etagere_casques_01", Vector2i(11, 3), 3.9, "HelmetShelf"],
+			[&"int_plante", Vector2i(1, 7), 7.8, "PlantWest"],
+			[&"int_plante", Vector2i(13, 7), 7.8, "PlantEast"],
+		],
+		"furniture": [
+			[&"int_long_comptoir_01", Rect2i(9, 4, 3, 1), "Counter", [], 0.6],
+		],
+		"spawns": {"entrance": Vector2i(7, 8)},
+		"warps": _pewter_exits([Vector2i(6, 8), Vector2i(7, 8), Vector2i(8, 8)],
+			&"from_bike_shop", &"cerulean_city"),
+	}
+
+
+## Maison ouverte (`tools/plans/azuria_maison.txt`, 15 × 10, même enveloppe) : canapé, grand
+## aquarium (trois bacs côte à côte), cuisine, table à manger ; l'habitante (`h`) = T17.
+func _cerulean_house() -> Dictionary:
+	return {
+		"id": &"cerulean_house", "node": "CeruleanHouse", "size": Vector2i(15, 10),
+		"shell": "res://assets/world/interiors/int_maison_argenta_coque.png",
+		"title": "Azuria", "light": &"interior_warm",
+		"plan": PLANS_DIR + "azuria_maison.txt", "walkable": ".Xh",
+		"furniture": [
+			[&"int_canape_01", Rect2i(1, 3, 3, 1), "Sofa"],
+			[&"int_aquarium_01", Rect2i(5, 3, 1, 1), "AquariumA"],
+			[&"int_aquarium_01", Rect2i(6, 3, 1, 1), "AquariumB"],
+			[&"int_aquarium_01", Rect2i(7, 3, 1, 1), "AquariumC"],
+			[&"int_frigo_01", Rect2i(9, 3, 1, 1), "Fridge"],
+			[&"int_cuisine_01", Rect2i(10, 3, 2, 1), "Kitchen", [], 0.667],
+			[&"int_cuisiniere_hotte_01", Rect2i(12, 3, 1, 1), "Stove"],
+			[&"int_chevet_lampe_01", Rect2i(13, 3, 1, 1), "Lamp"],
+			[&"int_table_repas_01", Rect2i(9, 5, 3, 2), "DiningTable"],
+			[&"int_plante", Rect2i(1, 7, 1, 1), "PlantWest"],
+			[&"int_plante", Rect2i(13, 7, 1, 1), "PlantEast"],
+		],
+		"rugs": [[&"int_tapis_plaid_01", Vector2(5.0, 6.0), "RugPlaid"]],
+		"spawns": {"entrance": Vector2i(7, 8)},
+		"warps": _pewter_exits([Vector2i(6, 8), Vector2i(7, 8), Vector2i(8, 8)], &"from_house",
+			&"cerulean_city"),
+	}
 
 
 func _build(room: Dictionary) -> Node2D:
@@ -915,13 +1014,13 @@ func _read_logic(path: String, size: Vector2i) -> Dictionary[Vector2i, bool]:
 
 
 ## Meuble de Bourg Palette : [identifiant, rectangle des cases solides, nœud, (cases solides
-## explicites), (miroir)]. Pied au milieu du bas du rectangle ; emprise écrite dans l'instance (relative
+## explicites ; `[]` = le rectangle), (échelle), (miroir)]. Pied au milieu du bas du rectangle ; emprise écrite dans l'instance (relative
 ## à la case d'ancrage, celle qui contient le pied). Renvoie les cases solides.
 func _add_furniture(root: Node, parent: Node, entry: Array) -> Array[Vector2i]:
 	var id: StringName = entry[0]
 	var rect: Rect2i = entry[1]
 	var cells: Array[Vector2i] = []
-	if entry.size() > 3:
+	if entry.size() > 3 and not (entry[3] as Array).is_empty():
 		cells.assign(entry[3])
 	else:
 		for y in range(rect.position.y, rect.end.y):
@@ -933,7 +1032,11 @@ func _add_furniture(root: Node, parent: Node, entry: Array) -> Array[Vector2i]:
 		as Node2D
 	prop.name = entry[2]
 	prop.position = Vector2((rect.position.x + rect.size.x / 2.0) * TILE, rect.end.y * TILE)
-	if entry.size() > 4 and bool(entry[4]):
+	if entry.size() > 4:
+		# Meuble réduit à la place de la grille (jalon 13 : comptoir des vélos, cuisine).
+		prop.scale = Vector2.ONE * float(entry[4])
+	if entry.size() > 5 and bool(entry[5]):
+		# Meuble en miroir (jalon 14 : cabine B et bibliothèque est de la maison de Léo).
 		(prop.get_node(^"Sprite") as Sprite2D).flip_h = true
 	var anchor := Vector2i(floori(prop.position.x / TILE), ceili(prop.position.y / TILE) - 1)
 	var footprint: Array[Vector2i] = []

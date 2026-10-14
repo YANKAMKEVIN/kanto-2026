@@ -1,0 +1,25 @@
+{
+	"mt_moon_rocket_1": {
+		"name": "Sbire Rocket", "ai": "random",
+		"can_lose": false, "heal_after": false, "gives_exp": true, "prize_money": 330,
+		"team": [{ "species": "rattata", "level": 11 }, { "species": "zubat", "level": 11 }]
+	},
+	"mt_moon_rocket_2": {
+		"name": "Sbire Rocket", "ai": "random",
+		"can_lose": false, "heal_after": false, "gives_exp": true, "prize_money": 360,
+		"team": [{ "species": "ekans", "level": 12 }, { "species": "sandshrew", "level": 12 }]
+	},
+	"mt_moon_rocket_3": {
+		"name": "Sbire Rocket", "ai": "smart",
+		"can_lose": false, "heal_after": false, "gives_exp": true, "prize_money": 390,
+		"team": [
+			{ "species": "zubat", "level": 13 }, { "species": "ekans", "level": 13 },
+			{ "species": "raticate", "level": 13 }
+		]
+	},
+	"mt_moon_researcher": {
+		"name": "Chercheur Gaspard", "ai": "smart",
+		"can_lose": false, "heal_after": false, "gives_exp": true, "prize_money": 300,
+		"team": [{ "species": "voltorb", "level": 12 }, { "species": "koffing", "level": 12 }]
+	}
+}

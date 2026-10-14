@@ -49,7 +49,8 @@ func test_compatibilities_of_rouge_bleu() -> void:
 	for id: StringName in _data.get_species_ids():
 		if _data.can_learn_tm(id, 34):
 			count += 1
-	assert_eq(count, 37, "37 espèces sur 41 (dossier 14 §6.1 ; + 3 du jalon 14)")
+	assert_eq(count, 58,
+		"58 espèces sur 62 (dossier 14 §6.1 ; + 12 du jalon 12, + 9 du jalon 13, + 3 du jalon 14)")
 
 
 ## Jalon 14 (T5, jalon-14.md §2.4) : CT19 Frappe Atlas (Route 25) et CT28 Tunnel (Rocket).

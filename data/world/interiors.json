@@ -17,6 +17,11 @@
 		"viridian_center",
 		"viridian_forest_gate_north",
 		"viridian_forest_gate_south",
-		"viridian_mart"
+		"viridian_mart",
+		"cerulean_center",
+		"cerulean_mart",
+		"cerulean_gym",
+		"cerulean_bike_shop",
+		"cerulean_house"
 	]
 }

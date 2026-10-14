@@ -51,13 +51,23 @@ const _EFFECT_KEYS: Dictionary[MoveEffect.Kind, Array] = {
 	MoveEffect.Kind.HITS: ["kind", "min", "max"],
 	MoveEffect.Kind.FLINCH: ["kind", "chance"],
 	MoveEffect.Kind.CRIT_UP: ["kind"],
-	MoveEffect.Kind.FIXED_DAMAGE: ["kind", "mode"],
+	MoveEffect.Kind.FIXED_DAMAGE: ["kind", "mode", "amount"],
 	MoveEffect.Kind.BIDE: ["kind"],
+	MoveEffect.Kind.DRAIN: ["kind", "fraction"],
+	MoveEffect.Kind.TRAP: ["kind", "turns", "fraction", "messages"],
+	MoveEffect.Kind.DISABLE: ["kind", "turns"],
+	MoveEffect.Kind.REST: ["kind"],
+	MoveEffect.Kind.SELF_KO: ["kind"],
 	MoveEffect.Kind.CHARGE: ["kind", "texts", "invulnerable"],
 	MoveEffect.Kind.TELEPORT: ["kind"],
 }
 ## Clés d'effet facultatives (toutes les autres de [constant _EFFECT_KEYS] sont obligatoires).
-const _EFFECT_OPTIONAL: Array[String] = ["chance", "immune_types", "invulnerable"]
+## « amount » : obligatoire pour FIXED_DAMAGE « value » seulement ([method _parse_effect]) ;
+## « invulnerable » : CHARGE seulement (jalon 14).
+const _EFFECT_OPTIONAL: Array[String] = ["chance", "immune_types", "amount", "invulnerable"]
+## Bornes des nombres de tours de TRAP et DISABLE, et des dégâts de FIXED_DAMAGE « value ».
+const _EFFECT_MAX_TURNS: int = 8
+const _FIXED_VALUE_MAX: int = 999
 
 var _chart: TypeChart = TypeChart.new()
 var _species: Dictionary[StringName, SpeciesData] = {}
@@ -534,6 +544,9 @@ func _parse_effect(value: Variant, where: String) -> MoveEffect:
 	for key: String in _EFFECT_OPTIONAL:
 		required.erase(key)
 	var ok := _check_keys(entry, allowed, required, where)
+	if effect.kind in [MoveEffect.Kind.DRAIN, MoveEffect.Kind.TRAP, MoveEffect.Kind.DISABLE,
+			MoveEffect.Kind.REST, MoveEffect.Kind.SELF_KO]:
+		return effect if _read_effect_j12(entry, effect, where) and ok else null
 	if effect.kind == MoveEffect.Kind.RECOIL or effect.kind == MoveEffect.Kind.SEED:
 		if entry.has("fraction"):
 			var fraction: Variant = entry["fraction"]
@@ -563,6 +576,7 @@ func _parse_effect(value: Variant, where: String) -> MoveEffect:
 		else:
 			ok = _fail("%s : « mode » vaut %s" % [where,
 				", ".join(PackedStringArray(MoveEffect.FIXED_MODES))])
+		ok = _read_fixed_amount(entry, effect, where) and ok
 		return effect if ok else null
 	if effect.kind == MoveEffect.Kind.CHARGE:
 		return _parse_charge(entry, effect, where) if ok else null
@@ -699,3 +713,55 @@ func _fail(message: String) -> bool:
 func _null_fail(message: String) -> Variant:
 	_fail(message)
 	return null
+
+
+# --- Effets du jalon 12 (`jalon-12.md` §2.10) ------------------------------------------
+
+## Valeurs de DRAIN (fraction), TRAP (turns [min, max], fraction, messages), DISABLE (turns) ;
+## REST et SELF_KO n'en ont aucune. Les clés ont déjà été vérifiées.
+func _read_effect_j12(entry: Dictionary, effect: MoveEffect, where: String) -> bool:
+	var ok := true
+	if entry.has("fraction"):
+		var fraction: Variant = entry["fraction"]
+		if not _is_number(fraction) or float(fraction) <= 0.0 or float(fraction) > 1.0:
+			ok = _fail("%s : « fraction » doit être un nombre de 0 (exclu) à 1" % where)
+		else:
+			effect.fraction = float(fraction)
+	if effect.kind == MoveEffect.Kind.DISABLE and entry.has("turns"):
+		if _read_int(entry["turns"], 1, _EFFECT_MAX_TURNS, where + " turns"):
+			effect.min_turns = int(entry["turns"])
+			effect.max_turns = effect.min_turns
+		else:
+			ok = false
+	if effect.kind == MoveEffect.Kind.TRAP and entry.has("turns"):
+		var turns: Variant = entry["turns"]
+		if turns is Array and (turns as Array).size() == 2 \
+				and _read_int(turns[0], 1, _EFFECT_MAX_TURNS, where + " turns") \
+				and _read_int(turns[1], 1, _EFFECT_MAX_TURNS, where + " turns") \
+				and int(turns[0]) <= int(turns[1]):
+			effect.min_turns = int(turns[0])
+			effect.max_turns = int(turns[1])
+		else:
+			ok = _fail("%s : « turns » vaut [min, max], de 1 à %d" % [where, _EFFECT_MAX_TURNS])
+	if effect.kind == MoveEffect.Kind.TRAP and entry.has("messages"):
+		var family: Variant = entry["messages"]
+		if family is String and MoveEffect.TRAP_MESSAGES.has(StringName(family)):
+			effect.messages = StringName(family)
+		else:
+			ok = _fail("%s : « messages » vaut %s" % [where,
+				", ".join(PackedStringArray(MoveEffect.TRAP_MESSAGES))])
+	return ok
+
+
+## FIXED_DAMAGE : « amount » obligatoire en mode « value » (dégâts, 1 à 999), refusé sinon.
+func _read_fixed_amount(entry: Dictionary, effect: MoveEffect, where: String) -> bool:
+	if effect.mode != &"value":
+		if entry.has("amount"):
+			return _fail("%s : « amount » seulement pour le mode « value »" % where)
+		return true
+	if not entry.has("amount"):
+		return _fail("%s : « amount » est obligatoire pour le mode « value »" % where)
+	if not _read_int(entry["amount"], 1, _FIXED_VALUE_MAX, where + " amount"):
+		return false
+	effect.amount = int(entry["amount"])
+	return true

@@ -11,6 +11,10 @@
 > validation S24 de 11.0. Le J11 reste isolé de CB.3, d'OUV et de la conception du J12.
 >
 > Plan écrit sur `claude/lancement-j11-4pkt2k` depuis `main` à `e80f636` (J10 terminé, fusionné).
+>
+> **Statut final : J11 TERMINÉ le 2026-10-13** — 11.0, 11A, 11B, 11C, 11D validés par Kevin et
+> fusionnés dans `main` (`71698d2`) ; clôture (T22) : §8, « T22 — clôture ». Lot d'art partiel
+> (3 planches sur 5).
 
 ## 0. État des lieux
 
@@ -323,6 +327,8 @@ apeurement seulement si le lanceur agit en premier ; accélération de l'évolut
 ## 7. Questions ouvertes
 
 Aucune décision de game design ouverte : textes du dossier §13 en attente de relecture (T0).
+*(Clôture, 2026-10-13 : textes validés, aucune question de design ouverte ; l'inventaire de ce qui
+reste ouvert est au §8, « T22 — clôture ».)*
 
 ## 8. Fait
 
@@ -370,6 +376,47 @@ Aucune décision de game design ouverte : textes du dossier §13 en attente de r
 planches (gabarit des starters, ancres héros + forme précédente), hauteurs par défaut, intégration
 décrite (manifeste, `preparer.py`, `LOOKS`, `companions.json` au T20). Génération et validation :
 Kevin, sur le Mac. Rien de branché dans le jeu.
+
+### T18 — lot d'art du compagnon : fait (2026-10-13, Mac) — 3 espèces sur 5
+
+Génération Codex (`tools/art/serie13.py`) : **Herbizarre, Carabaffe, Papilusion** produits du
+premier coup ; **Reptincel et Pikachu refusés deux fois** (« bloqué par le système de sécurité de
+l'outil »), comme le Salamèche de la série 09. Planche de contact (héros, Salamèche, Bulbizarre
+et les trois, à l'échelle du jeu ; `build/qa/jalon11_t18/`) → **validée par Kevin le 2026-10-13**.
+Reptincel et Pikachu restent **hors du lot** (A-11, aucun substitut) jusqu'à leurs planches par
+l'app ChatGPT (prompts prêts : `build/qa/jalon11_t18/prompt_POKE_*.txt`, sur le Mac).
+
+- Manifeste : `herbizarre` 66 px, `carabaffe` 68 px, `papilusion` 70 px (cellules 68 × 68,
+  62 × 70, 72 × 72) ; `serie13.py --manifeste` n'ajoute plus une espèce sans planche source et
+  insère dans le texte du fichier (le reste du manifeste garde sa mise en forme ; idempotent).
+- `LOOKS` : `ivysaur`, `wartortle`, `butterfree` ; pas de planche d'attente → `IDLE_FROM_WALK`
+  choisi à l'œil [D] : Herbizarre bas 0 / gauche 3 / droite 2 / haut 2, Carabaffe 0 / 3 / 3 / 0,
+  Papilusion ailes ouvertes (colonne 0) partout.
+- `companions.json` : 12 espèces éligibles (`butterfree` en `"flying": true`) ;
+  `test_companion_logic` à jour (liste, vol, Reptincel non éligible).
+- Papilusion : dans la source, ses pattes touchent la ligne des pieds (au lieu de ≈ 70 px
+  au-dessus) ; sans effet en jeu, la découpe recadre chaque pose et le moteur le lève de
+  `FLY_HEIGHT` (28 px) avec une ombre au sol (vérifié sur capture).
+- Vérifié : import sans erreur, suite complète 3 847 tests verts, captures sur la Route 1 (vrai
+  Boot, suivi derrière le joueur, ombre de Papilusion) : `build/captures/jalon11_t18/`.
+
+### T18 bis — Pikachu et Reptincel ajoutés au lot (2026-10-13, après la clôture)
+
+Planches obtenues à la main par Kevin dans l'app ChatGPT (Codex refuse ; ChatGPT refuse aussi dès
+qu'on joint les images d'ancre : Reptincel fait **sans image jointe**), **validées par Kevin**. Le
+rendu est un peu plus doux que les planches Codex (contour plus fin), acceptable à l'échelle du jeu.
+- **Pikachu** : hauteur **60 px** [D] au lieu de 52 : la découpe met à l'échelle la pose la plus
+  haute, ici la vue de face où la queue en éclair dépasse de la tête ; à 52 px le corps faisait
+  ≈ 30 px, plus petit que Rattata (`build/qa/jalon11_t18/contact_pikachu_52_60.png`).
+  `IDLE_FROM_WALK` [D] : bas 0, gauche 1, droite 3, haut 0.
+- **Reptincel** : 72 px (fiche), un peu plus grand que Salamèche (`contact_reptincel.png`).
+  `IDLE_FROM_WALK` [D] : bas 3, gauche 2, droite 2, haut 2. Conséquence en jeu : un Salamèche
+  compagnon qui évolue **reste** compagnon ; le cas « évolution en espèce sans planche » des tests
+  passe à Dracaufeu (`test_companion_logic`, `test_companion_controller`) ; `companion_qa`
+  (README) à jour.
+- `companions.json` : **14 espèces** (les 9 de départ + les 5 de la série 13) ; lot A-10 complet.
+  Captures Route 1 (suivi, bouton FAIRE SORTIR) relues :
+  `build/captures/jalon11_t18/serie13_route1_suivi.png`.
 
 ### T17 — conception technique du compagnon : écrite (2026-10-10, en avance)
 
@@ -629,3 +676,272 @@ Départs de débogage seulement (la vraie sauvegarde n'est ni lue ni écrite). `
 5. Pierre dans une nouvelle partie (départ `brock_charmander` / `brock_squirtle`, victoire) :
    « Prends ceci aussi. » juste après « C'est la preuve de ta victoire / à l'Arène d'Argenta. ».
 6. Rapport `build/qa/jalon11_t16/rapport.md` → validation de 11B par Kevin.
+
+### T15 — évolution courte (2026-10-12, 11C)
+
+Jetons `UiTokens.EVOLUTION_*` : transformation 5,0 → **2,5 s**, entrée 0,7 → 0,6, silence 0,4 → 0,3,
+blanc en 0,4 s, bascules 0,45 → 0,045 s (≈ 20 bascules, toujours de plus en plus vite) ; total sans
+lecture **5,9 s** (au lieu de 8,5). `EvolutionScreen.rush()` : un toucher pendant la présentation,
+la transformation ou la révélation (hors bouton ARRÊTER) joue le reste ×2 (`EVOLUTION_RUSH`, vitesse
+des Tween de l'écran, rayons et poussières compris) ; retour à ×1 dès que la consigne « Touchez
+l'écran pour continuer » paraît, et à chaque nouvelle évolution. ARRÊTER et le retour Android
+inchangés ; « Réduire les animations » inchangé ; textes, logique (`Evolution`, `EvolutionDirector`)
+et Pokédex inchangés ; aucun écran de statistiques (A-9). Le blanc est remis à zéro quand la
+consigne paraît (dernier pas du fondu). Tests : `test_evolution_screen` (durée ≈ 6 s, bascules,
+toucher ×2 mesuré en temps simulé — `TweenClock.speed_of` —, ARRÊTER sans accélérer, remise à ×1
+d'une évolution à l'autre ; tests du J9 adaptés au nouveau tempo). `tools/capture_evolution.gd`
+recalé sur le nouveau tempo ; captures relues (11 images, `--fixed-fps 30`).
+
+### Procédure de QA de 11C (qa-mobile, téléphone, sur le Mac)
+
+Départ de débogage seulement (la vraie sauvegarde n'est ni lue ni écrite). `tools/test.sh` vert.
+
+1. `tools/deploy_s24.sh --debug-start evolution_qa` (entrée sud de la Forêt de Jade ; Chenipan et
+   Aspicot à 1 XP du N7, Chrysacier à 1 XP du N10). Mettre Chenipan en tête, gagner un combat :
+   après le bilan, « Quoi ? Chenipan évolue ! » → transformation → « Félicitations ! … » en
+   **environ 6 s** sans toucher (chronométrer). Ressenti : la scène reste lisible, pas précipitée.
+2. Même chose avec Aspicot, en **touchant l'écran** pendant la transformation : la suite se joue
+   deux fois plus vite ; la consigne « Touchez l'écran pour continuer » attend ensuite normalement.
+3. ARRÊTER pendant la transformation (Chrysacier) : « Hein ? … n'évolue plus. » ; le retour
+   Android fait de même. Un toucher sur ARRÊTER arrête, il n'accélère pas.
+4. Paramètres → « Réduire les animations » : séquence encore plus courte, sans saut.
+5. Rapport `build/qa/jalon11_t11c/rapport.md` (chrono, captures, ressenti) → validation de 11C.
+
+### T19 — logique du compagnon (2026-10-12, 11D, sans art ni scène)
+
+`data/pokemon/companions.json` (9 espèces éligibles, contextes forêt / ville) ; `CompanionCatalog`
+(validation stricte, `is_eligible_species`, `sprite_of`, `is_flying`, `context_of`) ;
+`CompanionRules` (pur : éligibilité, table de visibilité, `clear_reason` — K.O. garde le choix,
+départ de l'équipe ou évolution non éligible l'effacent —, phrase de curiosité dans l'ordre PV bas /
+statut / eau à 2 cases / contexte / 5 génériques sans répétition, tirage fourni hors `GameRng`) ;
+`CompanionTrail` (pur : suit la case quittée, genre du pas précédent — saut de rebord rejoué —,
+vitesse du pas courant, échange de places, placement derrière le joueur ou apparition au premier
+pas). Identifiants des phrases (`companion_happy`… `companion_water`) : les dialogues arrivent au
+T20c (`data/dialogues/companion.json`, textes n° 50 à 59). Tests : `test_companion_logic` (catalogue
+et vraies planches repos + marche × 4, visibilité, effacement, phrases, couloir, virage, échange,
+rebords simple et double, arrivée sans case, marche aléatoire de 300 pas : jamais à plus d'un pas
+ou d'un saut, jamais hors du chemin du joueur). **Rien n'est encore branché au jeu** (T20).
+
+### T20a — points d'accroche du compagnon dans le monde (2026-10-12, 11D)
+
+- `Player.step_started(from, to, kind)` : relais de `GridMover.step_started` (« walk », « run »,
+  « jump » pour un saut de rebord), pas scriptés compris ; pivot et poussée contre un mur : rien.
+- `GridWorld.soft_hold(cell, entity)` / `soft_release(entity)` / `is_soft_held(cell)` : occupation
+  **douce**, une case par entité ; `can_enter`, `get_step_target`, `is_free`, `find_path`, les scènes,
+  les Dresseurs et les interactions l'ignorent.
+- `Npc._advance_route` : une case tenue doucement se traite comme une case prise (il se tourne et
+  attend) ; `_try_leave_building` attend aussi. Les déplacements de scène ne la voient pas (D-2 :
+  le compagnon rentre de toute façon pendant une scène).
+- `InteractionFinder.find(…, companion)` : fournisseur facultatif
+  (`get_interaction_at(cell) -> Interaction`), consulté après les occupants et avant les points
+  fixes ; `InteractionController.set_companion(provider)` et signal `companion_talked` (l'appui ne
+  joue aucun dialogue : la curiosité est jouée par le contrôleur du compagnon, T20c).
+- Tests : relais des trois genres de pas (`test_player`), routine qui attend puis repart
+  (`test_npc_routine_hold`), occupation douce (`test_grid_world`), cible et appui face à un faux
+  compagnon (`test_interaction_controller`). Rien n'utilise encore ces points (T20b–c).
+
+### T20b — nœud du compagnon (2026-10-12, 11D)
+
+`game/world/companion/companion.gd` (`Companion`, construit en code, ≤ 6 nœuds : sprite, ombre,
+devant de touffe, bulle) : planche **peinte** seule (`set_species` refuse une planche absente,
+aucun substitut) ; `move(step)` glisse sur la durée du pas du joueur (marche 0,27, course 0,16,
+saut 0,40), demi-cycle de `walk_<dir>` (course : animation accélérée, D-3), saut de rebord en arc
+de 48 px ; apparition (`Step.appear`) à la fin du pas ; `appear()` / `withdraw()` : éclat de Ball
+0,4 s (grandit / rétrécit dans un blanc), 0,15 s en simple fondu avec « Réduire les animations »
+(D-6) ; `hop()` (12 px, 0,25 s) ; bulles par `EmoteBubble` (`game/world/emote_bubble.gd`, même
+logique et mêmes jetons que la bulle « ! » des Dresseurs) avec deux icônes SVG d'interface
+nouvelles (`emote_note.svg` « ♪ », `emote_dots.svg` « … »). Devant de touffe : la bande d'herbe de
+la carte **coupée à 45 % de la hauteur du Pokémon** [D] (la bande du joueur cachait un petit
+Pokémon tout entier). En vol (`flying`) : sprite levé de 28 px, pas de devant de touffe.
+**Écart à la conception** : la bulle des PNJ n'est pas encore refactorisée vers `EmoteBubble`
+(même logique dupliquée, à reprendre sans risque plus tard). Tests : `test_companion_node`
+(planche peinte seule, 6 nœuds, aucune case occupée, durées marche / course, arc du saut, herbes,
+apparition en fin de pas, éclat et sa version réduite, bulles, saut de joie). Captures relues
+(`tools/capture_companion_j11.gd`, Route 1 : derrière le joueur, bulle « ♪ », dans les herbes).
+
+### T20c — compagnon branché au jeu (2026-10-12, 11D)
+
+- `game/world/companion/companion_controller.gd` (`CompanionController`, enfant de Boot,
+  pausable) : seul à connaître le jeu autour du compagnon. Boot lui relaie transition (rentre
+  pendant le fondu), nouvelle carte (le nœud passe sous ses `Entities`, même image que le
+  `queue_free` de l'ancienne), arrivée (ressort derrière le joueur, sinon au premier pas), scène
+  (rentre au début, ressort à la fin, D-2), combat (caché, D-1 ; à la fin : espèce mise à jour
+  après une évolution, réapparition sur place sans éclat, K.O. → caché et case rendue), fermeture
+  du menu (`refresh` : FAIRE SORTIR / RAPPELER, dépôt, Potion sur un K.O.), réglage « Réduire les
+  animations ». Choix effacé **en silence** quand le Pokémon quitte l'équipe ou évolue en espèce
+  sans planche (A-11).
+- Réactions : curiosité (fournisseur de l'`InteractionController` ; il se tourne vers le joueur,
+  bulle « ♪ » ou « … » si PV bas / statut, phrase jouée par Boot en narration) ; repos (après 8 s
+  immobile : gauche, droite, joueur, toutes les 6 s) [D] ; enthousiasme en attente (victoire
+  contre un Dresseur, capture, niveau gagné par le compagnon pendant un combat, soin au Centre),
+  joué une fois à son retour visible (petit saut + « ♪ »).
+- Phrases n° 50 à 59 : `data/dialogues/companion.json` (narration, jeton `{pokemon}` =
+  `DialogueTokens.POKEMON`, nom ou surnom du compagnon ; n° 55 accordé : `companion_tired` /
+  `companion_tired_f`). `test_dialogue_data` : mot pour mot avec le dossier 14 (formes « [e] »),
+  liste `PLAYED_BY_COMPANION` (jouées par le code, ni PNJ ni scène).
+- Équipe : **FAIRE SORTIR** / **RAPPELER** (n° 49 ; RAPPELER en aspect « activé », comme RETIRER
+  FAVORI), même chemin que FAVORI (`TeamScreen.companion_toggled` →
+  `TrainerMenu.team_companion_toggled` → `MenuDirector.toggle_companion`) ;
+  `PokemonSheetView.companion_action` (NONE / SEND_OUT / RECALL) par `TeamViews.companion_action` ;
+  **aucun bouton** pour une espèce sans planche. **Placement [D]** : au bout de la ligne du nom de
+  la vedette (`PokemonShowcase.add_name_action`) — en quatrième action de la fiche, les mots se
+  coupaient (« UTILISE R UN ») ; sur une ligne à part, la section Évolution était écrasée. Défaut
+  [D] : un Pokémon K.O. peut être choisi (invisible jusqu'à sa guérison, §8.3).
+- Tests : `test_companion_controller` (vrai Boot, Route 1 : boutons, suivi et occupation douce,
+  phrase avec le nom, scène, combat et « ♪ » après une victoire, K.O., évolution en Reptincel et
+  dépôt qui effacent le choix, réglage), `test_team_screen` (bouton dans la vedette, aspect, zones
+  tactiles et mots entiers à 1920 et 2340), `test_dialogue_data`, `test_dialogue_tokens`.
+  Captures : `tools/capture_companion_t20c.gd`.
+
+### T20d — compagnon sur les vraies cartes (2026-10-12, 11D)
+
+- Relevé des cartes : de l'eau seulement à **Bourg Palette** (l'étang, phrase n° 59) ; rebords sur
+  les Routes 1 et 2 ; intérieurs = maisons, labo, Centres, Boutiques, Musée, Arène, postes de la
+  forêt (le compagnon y rentre).
+- Rien à corriger dans le code du T20c : portes (rentre au fondu, ressort derrière le joueur ou au
+  premier pas quand la porte est derrière lui), rebords (il attend au-dessus, saute au pas suivant,
+  jamais posé sur le rebord), défi d'un Dresseur de la forêt (scène → il rentre, aucune case
+  tenue), reprise d'une sauvegarde avec un compagnon, budget de 6 nœuds.
+- Départ de débogage **`companion_qa`** (nouvelle clé `companion` de `DebugStart` : place dans
+  l'équipe) pour la QA T21 : Jadielle devant le Centre ; Salamèche N15 à 1 XP du N16 (compagnon ;
+  évolue au premier combat gagné), Rattata K.O., Nidoran ♂ empoisonné, Nidoran ♀ à 4 PV
+  (« fatiguée »), Chenipan (aucun bouton). Parcours de QA dans `tools/debug_start/README.md`.
+- Tests : `test_companion_world` (vrai Boot : porte du Centre de Jadielle, phrases ville / forêt /
+  étang, rebord de la Route 1, Théo repère le joueur, reprise de sauvegarde, nœuds),
+  `test_debug_start` (départ et clé `companion`). Captures relues
+  (`tools/capture_companion_t20d.gd` : Jadielle, forêt, bulle et phrase, étang, saut du rebord).
+
+### T22 — clôture (2026-10-13, architecte ; branche `claude/lancement-j11-4pkt2k`, base `main` à `71698d2`)
+
+**Le J11 est TERMINÉ** : 11.0 (sauvegarde v6), 11A (statuts), 11B (CT, Patience, CT34 de Pierre),
+11C (évolution courte) et 11D (compagnon + lot d'art partiel) validés par Kevin et fusionnés dans
+`main`. QA téléphone de clôture (qa-mobile, S21, non-régression) : `build/qa/jalon11_t22/rapport.md`
+du checkout principal — verdict reporté par Kevin dans `etat-projet.md`.
+
+#### Critères vérifiables sans téléphone
+
+- **Import** : `godot --headless --path . --import` sans aucune ligne `ERROR` / `SCRIPT ERROR` /
+  `WARNING`.
+- **Tests** : `tools/test.sh` — **3 847 tests, 3 847 verts** (278 scripts, 120 910 assertions, 760 s), aucun échec ni test relancé.
+- **Carte de QA** : **aucune à retirer** — `qa_status` n'a jamais été construite (écart du T9 :
+  départ `status_qa` et clé `wild` de `DebugStart` à la place). Vérifié : aucun fichier `qa_*`
+  dans `game/world/maps/` (`test_map_catalog.test_no_qa_map_is_shipped`, du J9), aucune
+  occurrence de `qa_status` dans `game/`, `data/`, `tests/`.
+- **Contenu de débogage inatteignable hors build debug** (comme au J9) : `Boot._apply_debug_start`
+  exige `DebugStart.is_allowed(OS.is_debug_build(), Boot scène principale)` (ou
+  `force_debug_start`, simple variable posée par les tests, jamais exportée) **et** le fichier
+  `user://` déposé par `deploy_s24.sh --debug-start` ; les clés du J11 (`wild` →
+  `EncounterLibrary.override_grass`, `status_turns`, `companion`) ne passent que par là ; les
+  départs (`tools/debug_start/*.json`) sont sous `tools/` (`.gdignore`, et `tools/*` dans
+  `exclude_filter` de l'export). `DebugUnlocks`, `PerfCounter`, les journaux `[qa]` et
+  « Sauvegarde automatique » : même garde `OS.is_debug_build()`. « À venir » (`show_coming_soon`) :
+  inchangé (build debug seulement).
+- **Départs de débogage gardés** (comme ceux du J9) : `status_qa` et `companion_qa` (nouveaux
+  du J11) ; `evolution_qa`, `badge_after`, `brock_*` (antérieurs, servis par les QA du J11) ;
+  README à jour.
+
+#### Inventaire de ce qui reste ouvert à la clôture (rien n'est codé ici)
+
+**Art**
+1. **Reptincel et Pikachu hors du lot du compagnon** (A-11, aucun substitut) : Codex les a refusés
+   deux fois ; prompts prêts pour l'app ChatGPT sur le Mac (`build/qa/jalon11_t18/prompt_POKE_*.txt`),
+   puis `serie13.py --manifeste` et la chaîne du T18. Conséquence en jeu : un Salamèche compagnon
+   qui évolue rentre en silence (comportement voulu, vérifié en QA T21).
+2. Dos de combat provisoires (Salamèche et les autres) : chantier d'art du combat, hors J11.
+
+**Points non vérifiés sur téléphone** (couverts par les tests, à refaire au doigt)
+3. 11C : ARRÊTER, retour Android, « Réduire les animations » pendant l'évolution (durée ≈ 4,5 s
+   gardée par Kevin le 2026-10-12).
+4. 11D : course, saut de rebord (Route 1), phrase « pas dans son assiette », K.O. invisible puis de
+   retour après le Centre, fps dans la Forêt de Jade (critère ≥ 58), PNJ qui attend, Dresseur qui
+   voit « à travers ».
+5. 11B : « La patience de … est rompue ! », « Mais ça échoue ! », `brock_squirtle`, CT depuis
+   l'Équipe, refus en combat (hasard ; tests).
+6. 11A : validé par Kevin sans rapport de QA T10 transmis à l'architecte ; gel non testable en jeu
+   (aucune capacité ne gèle avant la Route 3) ; ≥ 55 fps en combat non relevé.
+7. Non testés automatiquement : retrait volontaire pendant Patience (impossible : action imposée)
+   et adversaire qui change pendant Patience (aucune IA ne change de Pokémon).
+
+**Reportés de rendu** (phase DA, règle 3)
+8. Nom de CT tronqué sur la carte du Sac (« CT34 — Pati… ») ; icône générique des CT et des remèdes.
+9. Panneau d'oubli collé aux bords droit et bas.
+10. Effets de statut dessinés simplement (zigzags, ronds, « z » en police de secours), gel
+    grisâtre sur un Pokémon orange, pas de « respiration ralentie » du sommeil.
+11. Compagnon peu lisible derrière le joueur (il le suit au nord) ou derrière la balustrade de
+    Jadielle ; bulle un peu haute ; la boîte de dialogue couvre le compagnon sous le joueur.
+
+**Technique**
+12. **Mémoire des textures** : `tex` jusqu'à **135 Mo** sur la Route 1 et en combat (QA T21, S21),
+    budget indicatif 64 Mo — antérieur au 11D (Argenta ≈ 80 Mo au J10) ; à mesurer et traiter avant
+    que le J12 n'ajoute ses textures (cache de cartes, décors de combat, artworks).
+13. **Test instable sous charge** : `test_rival_route22` (vu aussi par le J12 au T8) ; non masqué,
+    à rendre déterministe (outils `FrameSim` / `TweenClock`).
+14. Écart à la règle 7 assumé au T4 : valeurs des statuts en constantes de `StatusRules` (comme le
+    poison du J9), pas de `data/battle/status.json`.
+15. Bulle « ! » des PNJ non refactorisée vers `EmoteBubble` (logique dupliquée, sans risque).
+16. Capacités encore en `pending_effects` : Hurlement, Lance-Soleil, Coud'Krâne, Danse Flamme,
+    Ligotage, Frénésie, Mimique, Mania, Empal'Korne, Destruction, Explosion (dossier 14 §4.3 ; une
+    partie arrive au J12).
+17. Équilibrage de Pierre : Salamèche gagne des chances (brûlure de Flammèche) — **gardé par
+    Kevin** (2026-10-11) ; référence pour la non-régression du J12 : chiffres du §8 ci-dessus.
+
+#### Passation au J12 (`docs/tech/jalon-12.md` n'est pas modifié ici ; T11 du J12 réaligne)
+
+**Ce que le J12 hérite, tel que livré dans `main` (`71698d2`)**
+- **Sauvegarde v6** (`SaveSystem.VERSION = 6`) : `Pokemon.uid` (16 hexadécimaux, hors `GameRng`,
+  seulement pour l'équipe et le Stockage du joueur), `Pokemon.status_turns` (sommeil seul, ≤ 7),
+  `companion` (désigné par `uid`). Le J12 n'ajoute aucun champ (§2.20 du J12) : vrai d'après le code.
+  Une évolution par pierre garde l'objet `Pokemon` (donc l'`uid`) : rien à faire.
+- **Statuts réels** pour les sauvages et Dresseurs de la Route 3 et du Mont Sélénite : paralysie,
+  sommeil, brûlure, gel, poison, confusion (`Battler.confusion_turns`), `hits`, `flinch`,
+  `crit_up`, `fixed_damage` ; IA `smart` qui évite les statuts inutiles ; remèdes en vente à
+  Jadielle et Argenta (Antigel prêt, pas vendu).
+- **CT** : `ItemData.Category.TM`, `tm_number`, `teaches`, `is_permanent()`, `is_sellable()` faux ;
+  `ItemLibrary.get_tm`, `PokemonData.can_learn_tm` ; `TmTeach` ; onglet CT du Sac ; sélecteur
+  `PartyTargetView.show_reason` (COMPATIBLE / INCOMPATIBLE / DÉJÀ CONNUE) — réutilisable pour la
+  Pierre Lune. CT01 = une entrée `tm` de plus + compatibilités régénérées pour 50 espèces.
+- **Patience** : état sur le **`Battler`** (`bide_stage`, `bide_slot`, `bide_stock`,
+  `is_biding()`), `Battle.get_locked_move()`, `get_usable_moves()`, `is_legal()` (point
+  d'accroche d'Entrave).
+- **Évolution courte** (`EvolutionScreen.rush()` ×2, `handle_back()` dans l'écran et le
+  `EvolutionDirector`) : pas encore de `cancellable` (à ajouter par le J12, §2.9).
+- **Compagnon** : `CompanionCatalog`, `CompanionRules`, `CompanionTrail`, `CompanionController`,
+  `companions.json` (**12 espèces** : 9 du J9 + Herbizarre, Carabaffe, Papilusion en vol) ;
+  planches à ajouter au J12 : **C-4** (Rondoudou, Mélofée, Abo, Paras, Nosferapti en vol,
+  Racaillou) et les **5 recommandées** par la fiche série 13 (Roucoups, Nidorina, Nidorino,
+  Rattatac, Rapasdepic), plus le reliquat **Reptincel et Pikachu**.
+- **Départs** : clés `DebugStart` `wild`, `status_turns`, `companion` disponibles.
+- **Référence d'équilibrage** : `tools/simulate_brock.gd` après le J11 (§8, « Équilibrage de
+  Pierre ») = base du critère « identique au J11 » du T13 du J12.
+
+**Points de friction (le plan du J12 suppose autre chose que le code livré)**
+1. **Pas de carte `qa_status`** : `qa_moves_j12` (§2.22 du J12) n'a pas de modèle. Option alignée
+   sur le J11 : départ `moves_qa` + clé `wild` ; mais `wild` ne force que les **herbes**
+   (`EncounterLibrary.override_grass`) : pour des gravats de test, il faudra l'étendre au terrain
+   `rubble`, ou garder une vraie carte de QA (alors à retirer au T28).
+2. **`data/battle/status.json` n'existe pas** (listé comme fichier du J11 au §1.2 du J12) ; les
+   valeurs sont dans `StatusRules`.
+3. **Patience sur le `Battler`, pas sur le `BattleSide`** (`locked_move` du plan du J11 jamais
+   créé) : « Entrave échoue sur une cible en Patience » = `Battler.is_biding()`. Les volatils du
+   J12 (piège, Entrave) vont naturellement au même endroit que la confusion (`Battler`).
+4. **Sonicboom** : `fixed_damage` n'accepte que `half_hp` et `level` (`MoveEffect.FIXED_MODES`) ;
+   20 PV fixes = un mode nouveau (ex. `value`) ou la mention « en attente » prévue par le J12.
+5. **Contexte « grotte » du compagnon : pas « données seules »** : `CompanionCatalog.CONTEXTS`
+   (`forest`, `city`) refuse un contexte inconnu, et `CompanionRules.CONTEXT_LINES` associe le
+   contexte à la phrase dans le code → deux constantes à étendre (`cave` → `companion_cave`) en
+   plus de `companions.json` et `companion.json`.
+6. **Placement du compagnon à l'arrivée** : `CompanionTrail.place_after_arrival` teste
+   `GridWorld.is_free` (une case de warp `STEP_ON` est libre) → à l'arrivée d'une échelle, il peut
+   être posé **sur l'échelle**. La règle « jamais sur un warp » du §2.2 du J12 reste à coder (T20).
+7. **Toast « {fossil} obtenu »** : `ItemData.added_text` ne donne « obtenu[e] » qu'aux CT ; un
+   objet clé affiche « ajouté aux objets clés ». Le fossile demande une règle (par exemple un champ
+   d'objet) — à trancher au T23 / T25 du J12, sans toucher au toast des CT.
+8. **« Réduire les animations » des halos** : `LightGlow.set_reduce_motion` (J12 T7) attend son
+   branchement dans `Boot._apply_settings` — `boot.gd` est libre depuis la clôture.
+9. **Fichiers « chauds » du §1.2 du J12** : tous libres maintenant ; `jalon-12` (T1, T6–T10 faits)
+   doit fusionner `main` à `71698d2` au T11 ; conflits attendus dans `etat-projet.md`,
+   `tools/art/manifeste.json`, `build_character_frames.gd`, `companions.json` (garder les deux
+   côtés).
+10. **Mémoire** (point 12 de l'inventaire) : le budget « carte + voisines ≤ 64 Mo » du J12 se
+    mesure sur le cache de cartes ; la `tex` totale du S21 est déjà à 135 Mo sur la Route 1 et en
+    combat : à mesurer sur téléphone dès la Route 3.

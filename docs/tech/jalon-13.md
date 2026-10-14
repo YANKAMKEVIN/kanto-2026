@@ -115,6 +115,86 @@ planifié dans `jalon-11.md`) ; « J12 » = planifié dans `jalon-12.md` (fait s
 | J12 T6 : intégration de la série 14 (Sbire ♂ peint, indices) | recruteur, objet caché | Sbire provisoire (aucune validation de rendu au J13) |
 | J12 T10 : `simulate_mt_moon.gd` | équilibrage du rival et d'Ondine | estimation du §2.22 seulement |
 
+### 0.4 Alignement sur le code réel (T10, 2026-10-12)
+
+Branche `j13-t11` = `jalon-13` à `fa7e998` : **`main` avec le J11 11A (statuts) et 11B (CT)**, et
+`jalon-12` à `5b3fe9b` (T1–T4, T6 série 14 intégrée, T7 fondations, T8 Route 3 + Centre + sas,
+T9 Mont Sélénite, T10 simulation). **Le code « combat et données » du J12 (T11 et suivantes) n'est
+pas livré.** Écarts avec ce que le plan supposait :
+
+| Sujet | Supposé | Réel (2026-10-12) | Conséquence au J13 |
+|---|---|---|---|
+| Statuts, confusion, remèdes (11A) | livrés | **livrés** (`StatusRules.KNOWN` dont `freeze` ; Antigel, Anti-Brûle, Anti-Para, Réveil) | Ultrason, poudres, Laser Glace (gel 10 %), Cascade (apeurement 20 %) jouent leur effet |
+| CT (11B) | `tm`, `teaches`, `TmTeach`, toast « obtenue » | **conforme** : catégorie `tm`, `ItemLibrary.get_tm`, `PokemonData.can_learn_tm` / `tm_move`, `added_text` = « obtenu[e] », jamais vendue ; table générée par `gen_tm_compatibility.py` | `tm11` au même format (T11 fait) |
+| Patience, verrous de combat | `_foe_action`, `can_act` | **conformes** (`battle.gd` : `_foe_action` impose Patience ; `locked_move`) | T12 s'insère dans `_foe_action` ; **aucun verrou « piégé »** (pas de `trap`) |
+| `drain`, `trap` (J12 T13) | livrés | **absents** (`MoveEffect.Kind` sans eux ; `DRAINED` = Vampigraine) | Vol-Vie, Claquoir, Ligotage : `pending_effects` (`drain`, `trap`), repli §0.3 ; textes validés gardés ; `test_battle_drain` / `test_battle_trap` étendus **après** le J12 |
+| 12 espèces du J12 (T12) | livrées | **absentes** (38 espèces avant le J13) : Abo, Nosferapti, Paras, Rondoudou… | Clara, Malo (P3), recruteur **en attente** ; Abo manque à `route_4_grass` (§0.5) |
+| 21 capacités du J12 | livrées | **absentes** ; `acid`, `wrap`, `smokescreen`, `minimize`, `light_screen` **avancées par le T11** (définitions et textes validés du J12 : apprentissages RB des 9 espèces) | à la fusion du J12, **ses entrées font foi** (doublons à retirer du côté J13) |
+| Catégorie AVENTURE | utilisée par le J12 | **existe** (`field`), aucun objet ; **pas de `field_use`** : un objet `field` a UTILISER en exploration | Pépite : bouton UTILISER visible tant que la condition `field_use` (J12 T20) n'existe pas → **T16** ajoute la condition si le J12 tarde (repli §0.3 confirmé) |
+| Objets cachés « face à un indice » (J12 T17) | `unless_flags` sur `InteractPoint` | **absents** (`unless_flags` existe sur les PNJ seulement) | Antidote caché : repli « sur la case » (J5) au T22 si le J12 tarde |
+| `rematch`, `leave` (J12 T17) | livrés | **absents** ; départ au fondu = étape `despawn` existante (fondu `DESPAWN_FADE`) | rival, Ondine, recruteur : `move` + `despawn` (modèle de la Route 22), rien à attendre |
+| Choix qui lance une scène (`confirm_cutscene`, J12 T23), étape `moment` | livrés | **absents** (`DialogueChoice.confirm_action` seul) | `confirm_set` / `cancel_set` (T16) se construit sur `confirm_action`, sans clé sœur à imiter |
+| Sbire Rocket peint (J12 T6) | conditionnel | **intégré** (`sbire_h`, `sbire_f`) | recruteur peint d'emblée |
+| Carte `route_4` (sas), Route 3, Mont Sélénite | J12 T8, T9 | **livrés** | T8 du J13 débloqué côté J12 |
+| Compte des capacités | 96 | **80** après le T11 (67 + 8 du J13 + 5 du J12 avancées) ; 96 + 16 restantes du J12 = **96** à la fusion | test du compte à recaler à la fusion |
+| Compte des espèces | 59 | **47** (38 + 9) ; 59 à la fusion du J12 | idem |
+
+### 0.5 Ce qui attend réellement le J12 (dépendances, sans implémentation à sa place)
+
+> **Décision de Claude (2026-10-12, défaut technique)** : les 5 capacités du J12 reprises par T11
+> (`acid`, `wrap`, `smokescreen`, `minimize`, `light_screen`, définitions et textes du J12 à l'identique)
+> **restent** dans `moves.json` pour que les apprentissages RB du J13 soient complets. **À chaque fusion
+> de `jalon-12` dans `jalon-13`** : garder les entrées du J12, retirer les nôtres, puis vérifier qu'aucun
+> fichier de données n'a de clé en double (Godot garderait la dernière sans rien dire) :
+> `python3 tools/check_json_keys.py`.
+
+- **Espèces** `ekans`, `zubat`, `paras`, `jigglypuff` → Dresseurs à ajouter tels quels :
+  `route_4_clara` (`data/trainers/route_4.json` : « Jeune Dresseuse Clara », `random`, 165 ₽,
+  Paras 11, Rondoudou 11), `route_24_malo` (dans `route_24.json` : « Gamin Malo », `random`,
+  210 ₽, Sabelette 14, Abo 14), `nugget_rocket` (fichier du T22 : « Sbire Rocket », `smart`,
+  450 ₽, Abo 15, Nosferapti 15) ; `route_4_grass` += `{ "species": "ekans", "levels": [10, 12],
+  "weight": 15 }` (3ᵉ position, avant Sabelette) ; `test_cerulean_data` les attend absents
+  aujourd'hui (assertion à inverser).
+- **Effets** `drain` et `trap` (et leurs messages par capacité) → retirer `pending_effects` de
+  Vol-Vie, Claquoir, Ligotage ; textes du Claquoir (annexe A.3) dans `messages.json`.
+- **`field_use`** (UTILISER seulement si l'objet en a un) → Pépite sans UTILISER ; sinon T16.
+- **Objets cachés face à un indice** → Antidote de la Route 24 nord (T22).
+- **Sprites provisoires** des 12 espèces du J12 (exigés par `test_battle_stage` dès qu'un Dresseur
+  ou une table les nomme).
+- Aucune autre dépendance bloquante : rival, Ondine, Lucas, Diane, P1, P2, P4, P5, CT11, Pépite et
+  la table de la Route 24 sont complets.
+
+> **Fusion de `jalon-12` (2732b45) dans le J13 (2026-10-13, branche `j13-fusion-j12`)** : ce qui
+> attendait le J12 est **livré** ; la liste ci-dessus est historique.
+> - **Doublons retirés** : `acid`, `wrap`, `smokescreen`, `minimize`, `light_screen` = entrées du
+>   J12 (`moves/mt_moon.json`) ; plus aucune clé en double (`check_json_keys.py`). 96 capacités.
+> - **Effets branchés** : Vol-Vie `drain` ½ ; Claquoir `trap` [4, 5], 1/8, famille de phrases
+>   **`clamp`** ajoutée (`MoveEffect.TRAP_MESSAGES`, `BattleText.TEMPLATE_IDS`, `messages.json` :
+>   textes de l'annexe A.3) ; Ligotage = celui du J12. Restent en attente : Soin, Danse Fleur,
+>   Mur Lumière.
+> - **IA qui change** : `Battler.is_locked()` = Patience **ou piège** (`is_trapped()`), testé.
+> - **`field_use`** : lecture du J12 ; **une seule condition** retire UTILISER, celle du J13 dans
+>   `ItemData.contexts()` (AVENTURE sans usage = aucun contexte, lue par le Sac et `ItemUse`) ; la
+>   condition en double du J12 dans `BagQuery._entry` est retirée. Pépite sans UTILISER.
+> - **Données posées** (pas encore sur les cartes : Clara au T17, Malo et le recruteur au T22) :
+>   `data/trainers/route_4.json` (`route_4_clara`), `route_24_malo` et `nugget_rocket` dans
+>   `route_24.json` ; Abo dans `route_4_grass` (3ᵉ, 10–12, poids 15). `test_cerulean_data` inversé.
+> - **CT** : `tm_compatibility.json` régénéré (59 espèces ; CT34 : 55, CT01 : 19, CT11 : 18).
+> - **`--valider`** (`cerulean_scenario.json`) : **code 0, rien de sauté**.
+> - **Fusion de `main` (J12 terminé, 2b2745f) dans la foulée** : `confirm_cutscene` du J12 arrive
+>   (`_CHOICE_KEYS` : `confirm_cutscene` puis `confirm_set`, `cancel_set`) ; vie du sas gardée
+>   sur la vraie Route 4 (`build_route_4.gd` : panneau `route_4_sign` lu de face en (6, 5),
+>   **déclencheur `route_4_reached` (4, 5..9)**, mêmes cases que le sas) ; `test_route_4` garde nos
+>   tests et reprend ceux du panneau et du déclencheur ; la vie du sas du J12 est rejouée sur la
+>   vraie carte (`test_route_4_sas_life.gd`, l'ancien `test_route_4_life` du J12) ; départ
+>   `route_4` = celui du J12 (fin réelle du Mont Sélénite) ; `test_no_qa_map_is_shipped` : seule
+>   l'exception `qa_switch_j13` (T22) ; sprites provisoires des formes du rival = ceux du
+>   correctif QA 12A (nos 4 dessins en double retirés) ; outil de simulation : groupes, `starter`
+>   par équipe et `title` (J13) + `retries`, `--trace` (J12). Les spawns `from_cerulean_n|s` du
+>   sas ne sont plus référencés par aucune donnée (les sauvegardes gardent une case, pas un spawn).
+> - **Reste** : Antidote caché de la Route 24 nord (brique J12 livrée, T22) ; poser Clara (T17),
+>   Malo et le recruteur (T22) sur les cartes.
+
 ---
 
 ## 1. Découpage
@@ -733,6 +813,8 @@ du jeu `exp_calc.gd` : ⌊b × N × 1,5 / 7⌋ contre un Dresseur, b = XP de bas
   18 / 21** (RB).
 - **Pont 10–18** : en dessous du joueur, croissant ; l'XP du pont (≈ 1 500 au total) prépare Ondine.
   **Garder.**
+- **Vérification réelle faite (T20) : `docs/tech/jalon-13-equilibrage.md`** — rival n° 3 et Ondine
+  plus durs que cette estimation (Bulbizarre bloqué par le rival, Salamèche et Carapuce par Ondine).
 - **Vérification réelle** (T20, information pour Kevin, aucune donnée changée sans lui) : scénario
   `tools/sim/cerulean_scenario.json` (T9) joué par `simulate_mt_moon.gd -- --scenario …` avec les
   équipes de sortie du scénario du J12, la **vraie partie de Kevin** (`--save`), l'IA qui change, les
@@ -904,6 +986,33 @@ et de l'annexe A validée.
   `test_map_links`, `test_map_catalog`, `test_zone_library` ; captures 2340 × 1080 (arrivée, place,
   canal, Arène, sortie nord) relues contre la vue ; `[perf]` et mémoire.
 - **CA** : tests verts ; captures relues ; budgets tenus.
+- **Fait** (2026-10-12, branche `j13-t7`) :
+  - Outils : `tools/build_cerulean_city.gd` (Azuria 56 × 41, 1 546 nœuds, 498 entités, 68 modules de quai,
+    5 modules de tablier) ; intérieurs dans `build_painted_interiors.gd` (`--azuria` : Centre et
+    Boutique = définitions de Jadielle, Arène 17 × 13, magasin de vélos, maison ; meubles réduits à la
+    grille via une échelle facultative des entrées `furniture`) ; `cerulean_map_kit.place_bridges` :
+    clé `Vector2i` (coin nord-ouest) = tablier d'**un** pont (central `prop_pont_ville_03_01`, Arène
+    `_01`, ouest `_ew_01`). Îlot `K` / `A` ajouté aux cases d'eau du kit (l'eau passe dessous, aucun
+    quai ne le longe) sans `cliff_marks`.
+  - Raccords (noms de la T8) : ouest → `route_4` / `from_cerulean_n|c|s` (PUSH ←, arrivées
+    `from_route_4_n|c|s`), nord → `route_24` / `from_cerulean_w|c|e` (PUSH ↑, arrivées
+    `from_route_24_w|c|e`) ; `test_map_links` couvre les allers et retours réels.
+  - Catalogues (entrées en fin) : `zones.json` (`cerulean_city` : 6 cartes, 3 services),
+    `lighting.json`, `rest_points.json`, `interiors.json`. Tests : `test_cerulean_city` (13),
+    `test_cerulean_interiors` (8), `test_map_links`, `test_zone_library` (Azuria autorisée à avoir des
+    services), `test_coming_soon` (assertion « Azuria n'existe pas » retirée).
+  - Rien de vivant : PNJ, examens, panneaux lisibles, déclencheurs = T17 (cases réservées, forêt écartée
+    des habitants). Décor seul posé : porte condamnée, pot, trou, clôture arrachée, palissade, panneaux.
+  - Captures 2340 × 1080 relues : `build/captures/jalon13_t7/az_*.png` (arrivée, avenue, place,
+    canal, pont ouest, Arène, quartier nord-ouest, sortie nord, boutique et vélos, sortie est, baie,
+    ensemble) et `int_{arene,velos,maison,centre}.png` ; `tools/capture_cerulean.sh`.
+  - `[perf]` (machine chargée, load ≈ 10 ; premières images = chargement exclues) : 91–120 fps stables
+    (plafond d'affichage 120), 60 à 206 appels de dessin, texture 45 Mo ; mémoire « carte + voisines »
+    à mesurer quand les Routes 4 et 24 existent.
+  - Défauts [D] : maison cambriolée = image de la maison ouverte teintée ; bancs `n` = banc de pierre
+    réduit ; arbres en bac sur les `G` ; barrière est = clôture verticale + arbre sur la case `t` ;
+    banc de piscine non posé (aucune case libre dans la grille) ; vélo D partiellement caché par la
+    plante (1, 7) (grille).
 
 #### T8 — constructeur-monde : Route 4 et Route 24 (sans PNJ) — **maintenant**, après T5, T6 et la T8 du J12
 - §2.2 (carte, **test de reprise du sas**), §2.14 (carte), §2.18 ; `build_route_4.gd` réécrit,
@@ -911,6 +1020,29 @@ et de l'annexe A validée.
 - Tests : `test_route_4` (réécrit), `test_route_4_resume`, `test_route_24` (vues du rival et des
   cinq Dresseurs lues sur la grille, pont 2 cases, raccords, nœuds) ; captures.
 - **CA** : tests verts ; reprise du sas verte sur **toutes** ses cases praticables.
+- **Fait** (2026-10-12, branche `j13-t8`) :
+  - `tools/build_route_4.gd` **réécrit** (grille `route_4.txt`, 64 × 24, identifiant, `from_mt_moon`
+    (3, 6), échelle B2F inchangés) : falaises d'ardoise du versant (`~`, 7 modules), rebord `v` en
+    4 modules `relief_rebord_ardoise_01` **nets, sans planche**, forêt serrée, hautes herbes, rochers
+    et buissons ; raccord est (63, 19..21) → `cerulean_city` / `from_route_4_n|c|s` (retour
+    `from_cerulean_n|c|s`). **Cases de Clara, de la Poké Ball et des herbes réservées** (rien de
+    vivant, ni déclencheur `route_4_reached` : il vient avec le T28 du J12). 1 131 nœuds.
+  - `tools/build_route_24.gd` (nouveau, sur `cerulean_map_kit.gd`) : 56 × 62, eau de canal, **berges
+    naturelles** `relief_berge_01..05` (89 modules, berges + quais) via `place_quays` paramétré,
+    quais de pierre seulement autour de la place pavée, Pont Pépite : tablier de 2 cases en 5
+    modules qui alternent `tablier_01..03` (recouvrement de 10 px), piles aux deux têtes, roseaux,
+    arbres repères, banc, panneau. Sortie sud (31..33, 61) → `cerulean_city` /
+    `from_route_24_w|c|e` ; est (55, 6..8) → « ROUTE 25 — À venir ». 1 149 nœuds.
+  - `cerulean_map_kit.gd` (ajouts rétro-compatibles, Azuria inchangée) : `quay_sets` (tables de
+    pièces par nature du sol), `place_bridges` accepte une **liste** de tabliers par sens,
+    `deck_overlap`.
+  - Catalogues (entrées en fin de liste) : zone `route_24` (`zones.json`, aire dans
+    `kanto_placeholder_areas.json`, scène de Pokédex « prairie »), `lighting.json` ; `test_map_links`
+    (`route_24` ; `cerulean_city` en carte parallèle jusqu'à l'intégration de la T7).
+  - Tests : `test_route_4` (réécrit), `test_route_4_resume` (toutes les cases du sas : sauvegarde v6
+    écrite / relue / rechargée, même case praticable ; 10 cases par le vrai Boot), `test_route_24`,
+    `test_coming_soon` déplacé sur la Route 24.
+  - Captures : `build/captures/j13_t8/` (2340 × 1080).
 
 #### T9 — architecte : scénario de simulation — **maintenant**
 - `tools/sim/cerulean_scenario.json` (Route 4, Clara, Lucas, Diane, rival × 3 starters, Ondine, P1–P5,
@@ -943,35 +1075,188 @@ et de l'annexe A validée.
 - Fusionner `main` (J11 + J12) dans `jalon-13` ; réaligner §0, §2.9, §2.11, §2.13, §2.15, §2.19 sur le
   code réel (`_foe_action`, verrous de combat, `confirm_cutscene`, `unless_flags`, `field_use`, `trap`
   et ses messages, toast CT, compte des capacités, version) ; écarts notés ici (§0.4 à créer).
+- **Fait le 2026-10-12** (branche `j13-t11`, avant la clôture du J12, règle « avancer ce qui n'est
+  pas bloqué ») : §0.4 et §0.5. Corrections des tâches suivantes :
+  - **T12** : aucun verrou « piégé » à tester tant que `trap` manque (règle écrite pour le jour où
+    il existe ; test ajouté à la fusion du J12) ; `switch` reste refusé par `TrainerLibrary` jusqu'au
+    T12 (ni `rival_cerulean` ni `cerulean_gym_misty` ne l'ont).
+  - **T16** : `confirm_set` / `cancel_set` sur `confirm_action` ; condition « UTILISER seulement si
+    `field_use` » ajoutée ici si le J12 T20 n'est pas fusionné.
+  - **T17** : Clara et la table complète de la Route 4 attendent Paras, Rondoudou, Abo (§0.5).
+  - **T19** : `moment: "win"` et `switch: true` à ajouter à `rival_cerulean` (T16, T12) ; départs au
+    fondu par `despawn` (pas de `leave`).
+  - **T22** : Malo et le recruteur attendent Abo et Nosferapti ; Antidote caché en repli J5 si le
+    J12 T17 tarde.
 
 #### T11 — architecte : données — après T10, T4
 - §2.15 (9 espèces, 8 capacités, Pokédex, CT, `tm11`, `nugget`, sprites provisoires). **CA** : tests
   verts ; aucune carte touchée.
+- **Fait le 2026-10-12** (branche `j13-t11`). `kanto.json` : 9 espèces (ordre du Pokédex, PokeAPI,
+  apprentissages RB tous niveaux, évolutions Mystherbe → Ortide et Chétiflor → Boustiflor au
+  Nv. 21 seulement) ; `moves.json` : 8 capacités du J13 + `acid`, `wrap`, `smokescreen`,
+  `minimize`, `light_screen` (définitions et textes validés du J12, §0.4) — Vol-Vie `drain`,
+  Claquoir et Ligotage `trap`, Soin `heal_half`, Danse Fleur `rampage`, Mur Lumière en attente ;
+  Laser Glace (gel 10 %), Cascade (apeurement 20 %), Bulles d'O, Onde Boréale, Acide, Brouillard,
+  Lilliput jouent leur effet ; Pokédex : 9 fiches + 6 notes (annexe A) ; `tm_compatibility.json`
+  régénéré (47 espèces ; CT11 : Carapuce, Carabaffe, Tortank, Rattata, Rattatac, Nidorina,
+  Nidoqueen, Nidorino, Nidoking, Kokiyas, Hypotrempe, Poissirène, Stari, Staross) ; objets `nugget`
+  (AVENTURE, 10 000 ₽) et `tm11` ; Dresseurs `rival_cerulean` (`rival.json`), `cerulean_gym.json`
+  (Lucas, Diane, Ondine avec `card`), `route_24.json` (Timéo, Alice, Romane, Ethan) — **sans
+  `switch` ni `moment`** ; tables `route_24_grass` (complète) et `route_4_grass` (sans Abo, §0.5),
+  non branchées ; zone `route_24` (`maps` vide jusqu'au T8 ; aire de la carte, scène de Pokédex
+  « prairie ») et description d'Azuria (annexe A) ; sprites provisoires de 13 espèces (9 + les
+  formes du rival : Roucoups, Herbizarre, Reptincel, Carabaffe). Tests : `test_cerulean_data`
+  (nouveau) et mises à jour de `test_pokemon_data`, `test_pokedex_library`, `test_tm`,
+  `test_item_library`, `test_trainer_card`, `test_encounter_library`, `test_zone_library`.
+- **`--valider`** (`cerulean_scenario.json`) : code 3, **11 éléments sautés** (22 avant), tous dus aux
+  espèces du J12 : `ekans`, `jigglypuff`, `paras`, `zubat` (table de la Route 4 et ses 2 étapes,
+  Clara, Malo × 2 étapes, recruteur × 2 étapes).
 
-#### T12 — architecte : IA qui change de Pokémon — après T11
+#### T12 — architecte : IA qui change de Pokémon — **fait** (2026-10-12, branche `j13-t12`)
 - §2.11 (règle, IA, `Battle`, texte, `TrainerData.switch`). **CA** : tests verts ; `simulate_brock.gd`
   identique ; Pierre et le rival n° 2 inchangés.
+- **Fait** : `game/battle/ai_switch_rule.gd` (`AiSwitchRule.pick` / `is_in_danger` / `is_weak_to` /
+  `is_better_placed`, `STAY = -1`, aucun tirage) ; `Battler.is_locked()` (Patience aujourd'hui :
+  **le piège du J12 devra s'y ajouter**, il n'existe pas encore sur `jalon-13`) ; `BattleAI`
+  (`can_switch`, `has_switched()`, 2e paramètre du constructeur) ; `TrainerData.can_switch` + clé
+  `switch` (booléen, facultative) dans `TrainerLibrary` ; `Battle` : `_foe_action` (changement
+  refusé si combat sauvage, place K.O. ou active → `push_error` et capacité), `_foe_switch`
+  (WITHDRAWN adverse avec `trainer_name`, puis SENT_OUT) dans `submit` (avant les capacités, le
+  joueur agit seul ensuite) et `_foe_turn_alone` ; `messages.json` += `withdrawn_foe`
+  « {trainer} rappelle {pokemon} ! » (n° 60), choisi par camp dans `BattleText`.
+- Statuts au changement (code réel du J11) : statut durable et compteur de sommeil sur `Pokemon`
+  (gardés) ; confusion, Patience, Puissance, graine, niveaux sur `Battler` (perdus).
+- Tests : `test_ai_switch_rule` (11), `test_battle_foe_switch` (6), `test_battle_ai` (+4),
+  `test_trainer_library` (+4), `test_battle_text` (+1), `test_battle_playback` (+1). Aucun
+  Dresseur réel n'a `switch` (Ondine et le rival n° 3 au T19).
 
-#### T13 — ui-mobile : rappel adverse à l'écran — après T12
+#### T13 — ui-mobile : rappel adverse à l'écran — **fait** (2026-10-12, branche `j13-t12`, par l'architecte)
 - §2.11 (présentation) ; captures relues (rappel, envoi, carte). **CA** : `game/ui/battle/` et
   `battle_director.gd` seuls touchés.
+- **Fait** : le beat WITHDRAW existant joue déjà côté adverse (carte adverse sortie,
+  `BattleStage.play_withdraw(FOE)` : rougit, rétrécit, s'efface ; puis « {trainer} envoie … » et
+  l'entrée habituelle). Écart au CA : `battle_stage.gd` touché pour « Réduire les animations »
+  (`play_withdraw` sans rétrécissement, fondu seul, joueur et adversaire) ; `battle_director.gd` :
+  commentaire seulement. Aucune image nouvelle.
+- Tests : `test_battle_stage` (+2 : rappel adverse puis entrée du suivant à sa taille ; sans
+  rétrécissement en animations réduites, au pas près), `test_battle_switch_director` (+1 : vrai
+  directeur, une fois, phrase n° 60, sprite et carte sortis, carte et sprite du nouveau).
+- Captures (Mac, 2340 × 1080, relues) : `tools/capture_foe_switch_j13.gd` (`--reduce` pour la
+  variante) → `build/captures/jalon13_t13/` (`rappel_message`, `rappel_10/11` en cours,
+  `envoi`, `apres_changement`, `reduit_*`). Dresseur d'essai construit en mémoire (Salamèche puis
+  Roucool contre Carapuce), aucune donnée ajoutée.
 
-#### T14 — constructeur-monde : carte `qa_switch_j13` + départ `switch_qa` — après T12
+#### T14 — constructeur-monde : carte `qa_switch_j13` + départ `switch_qa` — après T12 **et T11** — **FAIT** (2026-10-12)
+- Carte 24 × 16 (`tools/build_qa_switch_j13.gd` → `game/world/maps/qa_switch_j13.tscn`), inaccessible
+  en jeu (sortie sud vers le Centre de Jadielle). Trois Dresseurs en ligne (couloirs de vue de
+  5 cases, séparés) : **Rival d'essai** (Salamèche avec Patience, puis Roucool, `switch`, par
+  faiblesse contre Carapuce), **Ondine d'essai** (Stari puis Staross, `switch`, à 25 % des PV),
+  **Témoin** (même équipe, **sans** `switch`). Hautes herbes à l'ouest, table forcée
+  (Mystherbe Nv. 24, Chétiflor Nv. 21).
+- Départ `tools/debug_start/switch_qa.json` : Carapuce, Pikachu, Bulbizarre, Salamèche Nv. 20,
+  Mystherbe Nv. 24 (Vol-Vie `absorb`, Acide), Staross Nv. 22 (Bulles d'O), **9 espèces au
+  Stockage** (Pokédex), 10 Potions. Spawns `switch_start`, `lane_rival|misty|witness`.
+- `MapCatalog.is_qa_map` (préfixe `qa_`) rétabli ; tests de zones et de lumière l'ignorent.
+- Tests : `tests/integration/test_qa_switch_j13.gd`. Captures : `tools/capture_qa_switch_j13.gd` →
+  `build/captures/jalon13_t14/` (carte, rappel, envoi, après changement : relues).
+- Limites : « piégé » (Ligotage) pas jouable tant que `trap` n'existe pas (J12 T13) ; Vol-Vie
+  sans effet de drain tant que `drain` manque.
+- **À retirer au T22** : voir la fiche T22.
 #### T15 — qa-mobile : **session 13.0** → Kevin
+- **VALIDÉ par Kevin le 2026-10-14** (QA S21 du 2026-10-14, rapport `build/qa/jalon13_t15/`).
 - Départ `switch_qa` : changement adverse vu (message n° 60, animation, une fois au plus, jamais
   piégé ni en Patience, jamais pour le témoin), 9 espèces au Pokédex, Vol-Vie, Bulles d'O, Acide.
   **CA** : rapport `build/qa/jalon13_t15/` ; validation de Kevin.
+- **Fait le 2026-10-14 (S21, ~35 min, branche `j13-t15-qa`)** : rapport `build/qa/jalon13_t15/`
+  (`RESUME.txt`, captures, `perf_*.txt`). Tests 4124/4124, import propre, APK 123 Mo, aucun crash.
+  **OK** : rappel adverse vu (« … rappelle Stari ! » puis « envoie Staross ! », Ondine d'essai ; idem Rival
+  Salamèche → Roucool), une seule fois par combat (retour du rappelé sans 2e changement), jamais pour le
+  Témoin (Stari à ~20 % PV, KO direct), les 9 espèces au Pokédex (13 captures), Acide, Vol-Vie et Bulles d'O
+  lancés. **Vol-Vie** : aucun drain visible (45/56 avant et après), attendu. **Non vérifié sur téléphone** :
+  « jamais pendant Patience » : Salamèche est rappelé dès le tour 1, avant d'avoir joué Patience (tests
+  seulement). fps : 59,9 en moyenne, creux à 53 à l'entrée du combat. Sauvegarde de Kevin copiée avant,
+  intacte après (sha256 identiques) : le départ de débogage ne la lit ni ne l'écrit. L'APK J13 reste installé
+  sur le S21.
 
 #### T16 — architecte : briques du monde — après T10
 - §2.8 (`RivalMoment`, `moment: "win"`), §2.9 (`next`), §2.13 (`confirm_set` / `cancel_set`).
   **CA** : tests verts ; rivaux n° 1 et n° 2, Pierre, Sbires et fossiles du J12 inchangés.
+- **Fait le 2026-10-12** (branche `j13-t16`, sur `jalon-13` sans le code « combat et données » du
+  J12) :
+  - §2.8 : `RivalMoment` (`game/systems/menu/rival_moment.gd`, pur : `should_record`,
+    `has_rival_moment`, `details`) ; `TrainerData.moment_on_win` (clé `"moment"`, seule valeur
+    `"win"`, refus sinon) ; `Boot._on_battle_finished` passe par la règle (doublon refusé pour
+    **tous** les rivaux, Pierre jamais) ; **`"moment": "win"` posé sur `rival_cerulean`** (donnée
+    du §2.7, il ne reste au T19 que `switch: true`).
+  - §2.9 : clé de scène `next` (`Cutscene.next`, `CutsceneLibrary.get_next`,
+    `check_next_references` à la fin de `load_dir` : scène inconnue ou elle-même → scène
+    écartée) ; `Boot._on_cutscene_finished` : suite → `_write_save("entre deux scènes")` tout de
+    suite puis `play(next)` (rien si aucune variante) ; partie **pas stable** à la fin (réveil
+    après défaite, transition) → pas d'enchaînement, autosave ordinaire [D].
+  - §2.13 : `DialogueChoice.confirm_set` / `cancel_set` (listes non vides, compatibles avec
+    `confirm_action`) ; levés **dès `DialogueRunner.choose`**, avant la fermeture ;
+    `DialogueLibrary.get_set_flags` les compte. **`confirm_cutscene` n'est pas posé** (J12 T23) :
+    les clés sont indépendantes, la fusion du J12 n'ajoute qu'une clé sœur.
+  - Pépite (repli §0.4) : `ItemData.field_use` (en fin de champs, **jamais lu des données au
+    J13** : la clé `field_use` de `ItemLibrary`, ses valeurs et `FieldItemRules` sont au J12 T20) ;
+    `ItemData.contexts()` : AVENTURE sans `field_use` → aucun contexte → pas d'UTILISER, aucune
+    mention. **À la fusion du J12** : garder sa lecture de `field_use` ; si le J12 a mis sa
+    condition ailleurs (`BagQuery`), retirer l'une des deux.
+  - Tests : `test_rival_moment` (nouveau), `test_cutscene_chain` (nouveau, Boot réel : scènes
+    de test ; T19 y ajoute les vraies), `test_trainer_library`, `test_cutscene_library`,
+    `test_dialogue_library`, `test_dialogue_runner`, `test_bag_query` (Repousse de test sans
+    usage : plus d'UTILISER), `test_item_library` (contextes d'AVENTURE),
+    `test_cerulean_data`.
 
 #### T17 — constructeur-monde : la vie de la Route 4 et d'Azuria (13A) — après T11, T7, T8
+- **Relecture des captures de T8 (Claude, 2026-10-12)** : au pied du Pont Pépite, le panneau (33, 45) est rendu comme un grand abri de bois posé **sur la tête du pont** : on croit le passage fermé. À corriger avec la vie de la Route 24 : panneau de taille normale, à côté de la tête du pont (la case reste bloquée, la file est toujours fermée). Rebord de la Route 4 fin mais lisible (chemin coupé net) : à juger sur S24.
 - §2.2 (vie), §2.4, §2.5, §2.6 (Dresseurs et guide), §2.14 (Route 4), §2.16 (`get_cascade_badge`),
   zone et Grand moment d'arrivée, départs `route_4`, `cerulean_city`. Tests `test_route_4_life`,
   `test_cerulean_life`, `test_cerulean_gym_trainers`, `test_shop_sell`. **CA** : tests verts, captures.
+- **Fait** (2026-10-13, branche `j13-t17`) :
+  - **Azuria** : 7 habitants (`data/npcs/cerulean_city.json` : H1–H6 + **H7**, l'habitant de la sortie est
+    fermée, n° 17, ajouté à la grille ; `plan_check_azuria.py` accepte H7) ; modèles `haru`, `kid`, `aoki`,
+    `guard`, `swimmer_f` (H5), `youngster`, `old_man` ; H3 garde la mémoire `cerulean_neighbor_talked`
+    (n° 9 puis n° 10) ; seule H5 réagit au badge (`badge_cascade`) ; examens porte (n° 12), clôture arrachée
+    (n° 13), barrières est et sud (n° 17, sans warp) ; panneaux ville (n° 6) et Arène (n° 20) ; planche,
+    pot, trou : décor seul. Arrivée : déclencheurs silencieux ouest (1, 19..21) et nord (31..33, 1) →
+    `cerulean_arrival` (`cerulean_reached`), titre de zone par la carte, Grand moment
+    `zone_arrivals.cerulean_city` (annexe A.4). `tools/build_cerulean_city.gd` : `_add_life`.
+  - **Intérieurs** : Centre (infirmière, point de repos existant), Boutique (`data/shops/cerulean_mart.json`,
+    stock D-13 sans Repousse), vélos (vendeur, n° 19, aucun achat), maison (n° 18), Arène (Lucas, Diane,
+    guide à trois états : n° 21–23, 24–27 ; Ondine absente, T19).
+  - **Routes** : Poké Ball de la Route 4 (`got_route_4_poke_ball`) et Potion de la Route 24
+    (`got_route_24_potion`) ; rencontres `route_4_grass` / `route_24_grass` déjà branchées (T11).
+  - **Panneau du Pont Pépite corrigé** : le panneau « PONT PÉPITE » (n° 42) est en (34, 45), échelle 0,7,
+    **à côté** de la tête du pont ; la case (33, 45) reste bloquée (borne, décor seul) et ferme la file est ;
+    `panneau_pont` = deux cases dans la grille (`route_24.txt`).
+  - **Objectifs** (n° 61–63) en tête de `objectives.json` ; départs `route_4` et `cerulean_city`.
+  - **Tests** : `test_route_4_life`, `test_cerulean_life`, `test_cerulean_gym_trainers`, `test_shop_sell`,
+    `test_objective_library` (quatre états + pont avant badge) ; `test_route_4`, `test_route_24`,
+    `test_cerulean_city`, `test_cerulean_interiors` mis à jour (PNJ posés).
+  - **En attente (hors T17, documenté)** : **Clara** (Paras, Rondoudou : J12 T12) — case (44, 17) réservée,
+    ni Dresseur `route_4_lass_clara` ni PNJ ; **Abo** absent de `route_4_grass` ; **Corde Sortie** absente de
+    la Boutique (objet du J12) ; **Antidote caché** de la Route 24 (16, 6) : mécanique `unless_flags` des
+    objets cachés = J12 T17, **non créée** (drapeau `got_route_24_antidote`, indice « souche ») ; panneau et
+    déclencheur `route_4_reached` de la Route 4 = J12 T28 ; panneau « CENTRE POKÉMON » = enseigne du
+    bâtiment (aucun panneau séparé, aucune position dans la grille).
+  - Captures : `build/captures/j13_t17/` (`tools/capture_cerulean_life.sh`, `capture_cerulean_shop.gd`).
+  - **Complément (2026-10-14, branche `j13-t22`, J12 livré)** : **Clara posée** (`route_4_clara`, case (44, 17),
+    `lass`, vue 3, évitable par les rangées 21–22 ; textes n° 2 / 3 / 4 : `before`, `defeated`, `dialogue`
+    « après ») ; **Abo** sort bien dans `route_4_grass` (Ekans 10–12, vérifié) ; **Corde Sortie** ajoutée à
+    la Boutique d'Azuria (dernier article, comme Argenta) ; `test_route_4_life` (Clara posée, évitable,
+    équipe Paras + Rondoudou, trois textes), `test_route_4`, `test_shop_sell` mis à jour. Reste en J12 :
+    panneau / `route_4_reached` (livrés au T28 du J12).
 
 #### T18 — qa-mobile : **session 13A** → Kevin
+- **VALIDÉ par Kevin le 2026-10-14** (QA S21 ; textures 82–98 Mo > budget J7 de 64 Mo sans ralentissement : noté pour la clôture).
+- **Fait le 2026-10-14 (S21, ~35 min, branche `j13-t18-qa`)** : rapport `build/qa/jalon13_t18/` (`RESUME.txt`, captures,
+  `perf_*.txt`). Tests 4466/4466, import propre, APK 125 Mo, aucun crash. **Tout OK** : sas rechargé sur (4, 6),
+  rebord sans retour, Clara évitée puis combattue, Azuria (titre, Centre, point de repos, Boutique : achat et vente
+  de la Pépite 5 000 ₽, vélos, maison, cambriolage porte / clôture / policier), Arène (guide, Lucas et Diane évités
+  puis combattus), eau lisible. fps 59,7 (creux 7–10 au chargement de carte). **À signaler** : textures 82–98 Mo
+  (budget J7 : 64 Mo). **Partie réelle de Kevin : à Jadielle (Salamèche N8, aucun badge)**, trop en arrière pour la
+  13C (T23) ; sauvegarde restaurée (sha256 identiques).
 - Partie sauvegardée **dans le sas** (vraie partie du J12 ou départ) rechargée → même case ; rebord
   (une fois en bas, pas de retour) ; Clara évitable ; Azuria : titre, Centre premier bâtiment, point de
   repos, Boutique (achat, **vente**), vélos, maison, cambriolage (porte, clôture, aucun marqueur),
@@ -981,22 +1266,114 @@ et de l'annexe A validée.
 - §2.7, §2.9, §2.10 ; départs `rival_cerulean`, `rival_cerulean_weak`, `misty_pending`,
   `cerulean_gym`, `cascade_no_tm`. Tests `test_rival_cerulean`, `test_route_24_misty`,
   `test_cutscene_chain`, `test_misty_sequence`, `test_save_j13`. **CA** : tests verts, captures.
+- **Fait** (2026-10-13, branche `j13-t19`) :
+  - **Données** : `switch: true` sur `rival_cerulean` (`moment: "win"` déjà là) et `cerulean_gym_misty` ;
+    `data/cutscenes/route_24.json` (`route_24_rival` avec `next: route_24_misty`, `route_24_misty`),
+    `data/cutscenes/cerulean_gym.json` (`cerulean_gym_misty`, `cerulean_gym_misty_tm_late`) ; PNJ
+    `rival_cerulean` (36, 55) et `misty_bridge` (37, 46) sur la Route 24, `misty` (8, 3) à l'Arène
+    (`if misty_invited`) ; dialogues n° 28–41 mot pour mot (§21) ; carte `route_24` : deux
+    `EventTriggerPoint` (`RivalView` : rangée 55, x 31..35, ZERO ; `MistyResume` : rangée 53, x 31..33),
+    ajoutés à la main dans le `.tscn` (la reconstruction réécrit ~6 000 lignes d'identifiants) et à
+    `tools/build_route_24.gd` (`_add_triggers`) ; départs `rival_cerulean`, `rival_cerulean_weak`,
+    `misty_pending`, `cerulean_gym`, `cascade_no_tm` (+ README).
+  - **Choix** [D] : la scène du rival commence par `move player` vers (32, 55) (centre du couloir) pour
+    qu'il ne soit jamais sur (33, 55), seule case qui ferme la niche : sinon le rival, boîté, ne pourrait
+    pas partir vers la ville ; le rival vient en (33, 55), repart vers (33, 60) puis `despawn`. Défaite :
+    les répliques « défaite » sont conditionnées par `unless rival_cerulean_won` (et non par
+    `rival_cerulean_lost_once`, déjà levé aux retours). Carte de Championne sans portrait (Q-2).
+  - **Tests** : `test_rival_cerulean` (5), `test_route_24_misty` (4), `test_misty_sequence` (6),
+    `test_save_j13` (5, aucune nouvelle version : 6), `test_cutscene_chain` (+2) ; mis à jour :
+    `test_cutscene_data`, `test_dialogue_data`, `test_route_24`, `test_route_2`, `test_cerulean_life`,
+    `test_trainer_library`, `test_rival_name_layers` (24 étiquettes {rival}).
+  - Captures (Mac, 2340 × 1080, relues) : `build/captures/j13_t19/` (`tools/capture_rival_misty_j13.gd`,
+    `--mode=rival|gym`) : rival (`rival_01_emote`, `02_approche`, `04_rappel` = changement de Pokémon),
+    Ondine au pont (`misty_01..03`), Arène (`gym_03_carte`, `07_badge_legende`, `10_ct_toast`,
+    `11_ct_explication`).
+  - Réserve : `beaten_nugget_rocket` (réplique n° 41 b) n'est levé qu'au T22.
 
-#### T20 — architecte : équilibrage — après T19
+#### T20 — architecte : équilibrage — après T19 — **fait (2026-10-14)**
+- **Décisions de Kevin (2026-10-14)** : E-1 oui (Roucoups 16, Rattata 14, starter évolué 16), E-2 option (g) contre Bulbizarre (Roucool 15, Rattata 14, Reptincel 15), E-3 option (b) (Stari 18, Staross 19, capacités RB) ; IA `smart` et changement gardés. Appliqué dans `data/trainers/rival.json` et `cerulean_gym.json`.
 - §2.22 : simulation ; **information pour Kevin**, aucune donnée changée sans lui.
+- **Fait** (branche `j13-t20` depuis `jalon-13` à `748b317`) : résultats, seuils et
+  recommandations dans **`docs/tech/jalon-13-equilibrage.md`** (1 000 graines par ligne).
+  - Partie de Kevin (QA 13.0) **à Jadielle** (Salamèche N8) : inutilisable comme départ ; équipes
+    estimées (sortie du Mont Sélénite simulée au J12 : starter **17–18**, 1 à 2 niveaux sous le
+    §2.22) + équipe aux espèces de Kevin.
+  - **Rival n° 3** : Salamèche (avec Férosinge) et Carapuce 87–100 % (attentif) ; **Bulbizarre
+    0 % jusqu'au N20 (combat obligatoire : risque de blocage)** ; Salamèche sans Férosinge 2–35 %
+    au N17–18. **Ondine** : Bulbizarre ≈ 90 % ; **Salamèche et Carapuce 0 %** aux niveaux
+    d'arrivée, même après la Route 24 nord (Carapuce : N22 ; Salamèche : Mystherbe et N22). Pont :
+    ≈ 27 tours, usure sans blocage.
+  - **Recommandation finale, IA `smart` gardée** (§5 bis du rapport, dossier 09 §14) : rival
+    (b) Roucoups 16, Rattata 14, starter 16, et contre Bulbizarre (h) Roucool 15, Rattata 14,
+    Salamèche 15 (≥ 76 % au N18 pour chaque starter) ; Ondine (b) Staross N19 (N20 : 49–84 %,
+    N22 : ≥ 97 %, Salamèche avec Mystherbe). Kevin tranche (Q-T20-1 à 3).
+  - Première passe (rappel, écartée : contredit `smart`) : rival en IA `random` + Roucoups N16
+    (Herbizarre 18 / 20 : 54–73 / 93–98 %) ; Ondine en IA `random` (Carabaffe 20 : 52–69 %,
+    Reptincel 20 + Mystherbe 16 : 92–95 %) ; garder le pont, la Route 4 et l'Arène.
+  - Outil (`tools/simulate_mt_moon.gd`) : l'IA des Dresseurs à `switch` change de Pokémon comme en
+    jeu ; joueur `expert` ; tentatives par Dresseur avec reprises ; niveau du meneur avant chaque
+    étape. Scénarios : `cerulean_scenario.json` (`switch`, 8 équipes, 6 variantes à reprises),
+    `cerulean_thresholds.json` (nouveau, seuils). Test : `test_simulate_cerulean` (+2, fixture
+    `tests/fixtures/sim/cerulean_t20.json`).
 
 #### T21 — qa-mobile : **session 13B** → Kevin
+- **VALIDÉ par Kevin le 2026-10-14** (fonctionnel ; difficulté réglée par T20).
 - Rival inévitable, défaite → Centre (sans argent perdu) → n° 30 puis n° 31, victoire → départ,
   **un seul** Grand moment ; Ondine au pont, invitation, départ ; **fermeture forcée** entre les deux
   scènes → reprise ; Arène : guide, Ondine (carte, changement de Pokémon), défaite → reprise n° 36,
   victoire → « BADGE CASCADE », écran Dresseur, CT11 (Sac CT, apprentissage) ; rattrapage.
+- **Fait le 2026-10-14 (S21, ~45 min, branche `j13-t21-qa`)** : rapport `build/qa/jalon13_t21/`
+  (`RESUME.txt`, captures). Tests 4458/4458, import propre, APK 140 Mo, aucun crash, 59,5 fps de moyenne.
+  **OK** : rival inévitable (« ! », recentrage lisible), défaite → réveil → n° 30 puis « Te revoilà »,
+  victoire → départ + **un seul** Grand moment, rival qui change de Pokémon, Ondine au pont, **reprise
+  après fermeture forcée**, Arène (guide, carte sans portrait, Stari → Staross), défaite → « Prêt à
+  replonger ? », victoire → bilan → « BADGE CASCADE » → CT11 (Sac CT, Carapuce apprend Bulles d'O),
+  écran Dresseur (Roche + Cascade), rattrapage `cascade_no_tm`. **Non vérifié** : n° 31 ; argent après
+  défaite ; « jamais pendant Patience » (aucun rappel adverse provoqué). Vers Kevin : Staross 21 écrase
+  une équipe 22/20/20 (T20). Sauvegarde de Kevin restaurée (sha256 identiques).
 
 #### T22 — constructeur-monde : Pont Pépite, recruteur, Route 24 nord, fin (13C) — après T19
 - §2.12, §2.13, §2.14 (nord), §2.16 (deux entrées) ; **retrait de `qa_switch_j13`** et de son départ ;
-  README des départs. Tests `test_nugget_bridge`, `test_nugget_rocket`, `test_route_24_life`,
+  README des départs. **Fichiers `qa_*` du T14 à retirer** : `game/world/maps/qa_switch_j13.tscn`,
+  `tools/build_qa_switch_j13.gd`, `tools/capture_qa_switch_j13.gd`, `data/npcs/`, `data/dialogues/`
+  et `data/trainers/qa_switch_j13.json`, `tools/debug_start/switch_qa.json` (+ ligne du README),
+  `tests/integration/test_qa_switch_j13.gd` ; garder `MapCatalog.is_qa_map` (ou le retirer avec
+  ses tests si plus aucun appelant). Tests `test_nugget_bridge`, `test_nugget_rocket`, `test_route_24_life`,
   `test_hidden_items` (Route 24), `test_objective_library`.
+- **Fait** (2026-10-14, branche `j13-t22`) :
+  - **Pont** : `route_24_timeo / alice / malo / romane / ethan` posés aux cases et vues de la grille
+    (`data/npcs/route_24.json`, sprites `scout`, `lass_young`, `youngster`, `lass`, `camper`, vue 3, répliques
+    n° 43–47 « avant » / « après » = « battu ») ; le panneau (n° 42) existait (T17). `test_nugget_bridge` :
+    ordre P1 → P5 sur la vraie scène, recruteur seulement après P5, défaite au milieu (Centre d'Azuria,
+    battus gardés, Malo puis les autres attendent).
+  - **Recruteur** : PNJ `nugget_rocket` (`rocket_grunt_m`, (33, 21), absent après `beaten_nugget_rocket`,
+    dialogue → scène) + déclencheur `RocketView` (rangée 23, x 32..33) → `route_24_rocket` : le joueur est amené
+    en (33, 22) ; variante 1 (`unless got_nugget`) : n° 48, n° 49, `give nugget`, `set got_nugget`, n° 50
+    avec choix OUI / NON par **`confirm_set`** (choisi plutôt que `confirm_cutscene` : une seule scène, la
+    Pépite remise avant le combat dans la même scène), n° 51 / n° 52, combat, n° 53, départ (marche vers
+    (33, 15) puis `despawn` au fondu), n° 54 + `wake_up` ; variante 2 : n° 55, même combat, sans choix.
+    `test_nugget_rocket` (OUI, NON, défaite puis reprise sans proposition ni seconde Pépite, rechargement).
+  - **Route 24 nord** : Antidote caché (souche `prop_souche_01` teintée sur (16, 6), point d'examen
+    `unless_flags = [got_route_24_antidote]`, scène `route_24_antidote`) ; Potion, herbes, raccord « ROUTE 25 —
+    À venir », objectifs n° 62–63 et réplique n° 41 b d'Ondine (déjà livrés) vérifiés ; `test_route_24_life`,
+    `test_hidden_items` (Route 24), `test_route_24` mis à jour.
+  - **Départs** : `nugget_bridge`, `nugget_rocket`, `route_24_north`, `nugget_sell` ; spawns `bridge_foot`,
+    `bridge_top`, `north_land` ajoutés à la carte. **Retrait** de `qa_switch_j13` (carte, outils, données,
+    test, départ `switch_qa`) ; `MapCatalog.is_qa_map` conservé, `test_map_catalog` sans exception.
+  - Captures : `build/captures/j13_t22/` (`tools/capture_nugget_j13.gd`).
 
 #### T23 — qa-mobile : **QA finale 13C** → Kevin, fusion
+- **Fait le 2026-10-14 (S21, ~55 min, branche `j13-t23-qa`)** : rapport `build/qa/jalon13_t23/` (`RESUME.txt`, captures). Tests 4466/4466,
+  import propre, APK 125 Mo, aucun crash, **60 fps** (creux 60, 19 relevés), textures 86 Mo (> budget J7 64 Mo, sans ralentissement). **OK** : sas rechargé
+  (save relue), pont (P1 inévitable, défaite au milieu : battus gardés, argent intact), recruteur OUI (Pépite, Abo N15) puis NON sur une autre
+  partie (Pépite une seule fois, défaite → reprise sans choix), cinq Dresseurs, Antidote caché (toast, second examen vide), « ROUTE 25 — À venir »,
+  vente de la Pépite (5 000 ₽), rival côté Bulbizarre : Roucool Nv 15. **Argent après défaite : intact** (3 000 → 3 000). **Non vérifiés à
+  l'écran** : réplique n° 31, niveaux Roucoups 16 / Rattata 14 / Reptincel 15 (confirmés dans les données), « jamais pendant Patience » (piège non
+  confirmé ; couvert par `AiSwitchRule` et ses tests). Le parcours Ondine / Arène / badge n'a pas été rejoué (validé au T21). Une partie des
+  captures du début de session n'a pas été relue visuellement (limite d'images) : points établis par `save.json`. Sauvegarde de Kevin restaurée
+  (sha256 identiques). En attente de la validation de Kevin avant fusion.
+- **Décision de Kevin (2026-10-14)** : la vraie partie du S21 est à Jadielle → QA finale par **départs de débogage enchaînés** (sas → Route 4 → Azuria → rival → Ondine → pont → vente de la Pépite) sur une partie neuve, avec relecture d'une sauvegarde de chaque étape par l'APK final ; partie réelle de Kevin sauvegardée puis restaurée.
 - Pont (cinq inévitables, défaite au milieu), recruteur (OUI puis, sur une autre partie, NON ; Pépite ;
   défaite → reprise sans choix), espace nord, Antidote caché, « ROUTE 25 — À venir » ; **vraie partie
   de Kevin**, sans drapeau de débogage : sas → Route 4 → Azuria → rival → Ondine → pont → vente de la
@@ -1004,7 +1381,25 @@ et de l'annexe A validée.
   Kevin ; fusion de `jalon-13` dans `main` (copie d'intégration ; `project.godot` et filtre d'export
   vérifiés).
 
-#### T24 — architecte : clôture
+#### T24 — architecte : clôture — **fait (2026-10-14)**
+- **J13 terminé** : 13.0, 13A, 13B, 13C validés par Kevin (QA S21) ; `jalon-13` fusionné dans `main`
+  (`f85d40b`, 4 472 tests verts, import propre, `project.godot` et filtre d'export identiques à `main`).
+- **Passation au J14** :
+  - Route 24 : raccord est (« ROUTE 25 — À venir ») et repère de coordonnées de `route_24.txt` à
+    garder ; Route 25, Cap d'Azuria et **Léo, épisode historique conservé** (décision de Kevin,
+    2026-10-11) ;
+  - cambriolage : jardin, trou de la clôture du fond et maison fermée (drapeaux à créer au J14),
+    « un homme en noir » jamais nommé au J13 ;
+  - sorties fermées d'Azuria : est (Route 9, arbre et clôture) et sud (Route 5, palissade) ;
+  - **Abra et la règle des évolutions par échange** (D-9) à décider ; le rival n° 3 n'a pas d'Abra
+    (D-6, contrat du J16 corrigé : Kadabra direct au n° 4) ;
+  - IA qui change de Pokémon disponible pour tout Dresseur (`switch: true`) ; `RivalMoment`
+    (`moment: "win"`) pour tout combat de rival obligatoire ; scènes enchaînées `next` ;
+  - équilibrage : principe « rival obligatoire au niveau du chemin, Champion avec un peu
+    d'entraînement » ; outil `tools/simulate_mt_moon.gd` généralisé ;
+  - à surveiller : mémoire des textures d'Azuria et de la Route 24 (82–98 Mo, au-dessus du budget J7
+    de 64 Mo, sans ralentissement sur S21) ; dos peints des espèces du J13 (chantier séparé) ;
+    contrôle `tools/check_json_keys.py` à lancer après chaque fusion de jalons.
 - `etat-projet.md`, roadmap (rival n° 3 fait) ; passation au J14 : `route_25` / `from_route_24`
   (raccord est de la Route 24, repère de coordonnées), jardin et trou de la maison cambriolée
   (poursuite du J14), sortie sud d'Azuria (raccord « ROUTE 5 — À venir » du J14), dos peints des 9
@@ -1123,6 +1518,17 @@ Le dossier 16 tranche tout le reste ; seules ces trois décisions bloquent.
 niveaux) pour la simulation (T20) et la QA de reprise du sas (T18).
 
 ---
+
+## 7 bis. Contrat de sortie du J13 (ce que les jalons suivants peuvent supposer)
+
+> Rédigé le 2026-10-13 après le contrat d'entrée du J16 transmis par Kevin
+> (`docs/design/passes/j16-v2-alignement.md` §4 G-1 et §8, branche `ccr-fa255d49-wvvacc`, non modifiée ici).
+
+| Élément | Ce que le J13 livre | Écart avec le contrat du J16 |
+|---|---|---|
+| Badge Cascade | drapeau `badge_cascade` (déjà déclaré dans `data/badges.json`), posé par l'étape `badge` existante | aucun |
+| Rival n° 3 (`rival_cerulean`) | Roucoups Nv. 16, **Rattata** Nv. 14, starter évolué Nv. 16 (contre Bulbizarre : Roucool 15, Rattata 14, Reptincel 15 ; T20, validé le 2026-10-14) (avantage de type) ; `moment: "win"`, `switch: true` (T19) | **pas d'Abra** : arbitrage **D-6** validé par Kevin le 2026-10-11 (Abra n'aurait que Téléport ; il pourra arriver directement en **Kadabra** plus tard, comme au S.S. Anne de Rouge/Bleu) ; Abra et la règle des évolutions par échange sont reportés au J14 (**D-9**). Selon sa propre règle, c'est le contrat du J16 qui se corrige. |
+| Rattata du rival | présent dès le combat n° 3, avant Lavanville (dossier 06 §6) | aucun |
 
 ## 8. Premières tâches à lancer maintenant (si Q-1 est accepté)
 

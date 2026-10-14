@@ -6,7 +6,8 @@ extends GutTest
 ## (repli « à venir » tant que la Route 3 / le sas du T8 n'existent pas), graphe des étages
 ## connexe et retour à l'entrée possible de toute case praticable (critère de
 ## `plan_check_mont_selenite.py`), goulets d'une case listés (compagnon, T20), halos ≤ 16, aucune
-## `Light2D`, budget de nœuds, décors de combat, zone.
+## `Light2D`, budget de nœuds, décors de combat, zone ; voile de pénombre et lumière du sol
+## (passe « lumière rare »).
 
 const PlanGrid := preload("res://tests/helpers/plan_grid.gd")
 const WALKABLE: String = ".gjUVE"
@@ -115,6 +116,58 @@ func test_glows_within_budget_and_no_light2d() -> void:
 		var lights: Array[Node] = []
 		_find_all(map, lights, func(n: Node) -> bool: return n is Light2D)
 		assert_eq(lights.size(), 0, "%s : aucune Light2D" % map_id)
+
+
+## Passe « lumière rare » (2026-10-14) : voile de pénombre (multiplication) puis lumière
+## ajoutée au sol (addition), juste après `GroundDecals` (même `z`), donc sous `Entities` : les
+## personnages ne sont jamais assombris. Le voile est plus sombre au pourtour qu'au centre des
+## galeries, et le 1F est le plus clair (B1F ≥ B2F en moyenne sur les cases praticables).
+func test_cave_shade_layers() -> void:
+	var means: Dictionary = {}
+	for map_id: StringName in _maps:
+		var map: GameMap = _maps[map_id]
+		var shade := map.get_node_or_null(^"CaveShade") as Sprite2D
+		var floor_light := map.get_node_or_null(^"CaveFloorLight") as Sprite2D
+		assert_not_null(shade, "%s : voile" % map_id)
+		assert_not_null(floor_light, "%s : lumière du sol" % map_id)
+		if shade == null or floor_light == null:
+			continue
+		var decals := map.get_node(^"GroundDecals")
+		assert_eq(shade.get_index(), decals.get_index() + 1, "%s : voile après le sol" % map_id)
+		assert_eq(floor_light.get_index(), shade.get_index() + 1, String(map_id))
+		var entities_z: int = (map.get_node(^"Entities") as Node2D).z_index
+		for sprite: Sprite2D in [shade, floor_light]:
+			assert_eq(sprite.z_index, (decals as Node2D).z_index, String(sprite.name))
+			assert_lt(sprite.z_index, entities_z, "%s : sous Entities" % sprite.name)
+		assert_eq((shade.material as CanvasItemMaterial).blend_mode,
+			CanvasItemMaterial.BLEND_MODE_MUL)
+		assert_eq((floor_light.material as CanvasItemMaterial).blend_mode,
+			CanvasItemMaterial.BLEND_MODE_ADD)
+		var size: Vector2i = FLOORS[map_id][1]
+		assert_almost_eq(shade.texture.get_width() * shade.scale.x, float(size.x * Grid.TILE_SIZE),
+			0.5, "%s : voile à la taille de la carte" % map_id)
+		means[map_id] = _walkable_shade_mean(shade.texture.get_image(), map_id)
+	if means.size() == 3:
+		assert_gt(means[&"mt_moon_1f"], means[&"mt_moon_b1f"], "1F plus clair que B1F")
+		assert_gte(means[&"mt_moon_b1f"], means[&"mt_moon_b2f"], "B1F ≥ B2F")
+		for map_id: StringName in means:
+			assert_lt(means[map_id], 0.95, "%s : la pénombre se voit" % map_id)
+
+
+## Moyenne du voile (rouge, 0–1) au centre des cases praticables.
+func _walkable_shade_mean(image: Image, map_id: StringName) -> float:
+	var plan: PlanGrid = _plans[map_id]
+	var size: Vector2i = FLOORS[map_id][1]
+	var per_cell := image.get_width() / size.x
+	var total := 0.0
+	var count := 0
+	for y: int in size.y:
+		for x: int in size.x:
+			if not plan.is_walkable(Vector2i(x, y)):
+				continue
+			total += image.get_pixel(x * per_cell + per_cell / 2, y * per_cell + per_cell / 2).r
+			count += 1
+	return total / maxf(count, 1)
 
 
 func test_node_budget() -> void:

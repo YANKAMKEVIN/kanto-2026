@@ -47,6 +47,30 @@
 			"defeated": "route_25_hiker_bernard_defeated"
 		}
 	},
+	"jr_trainer_adam": {
+		"cell": [63, 10],
+		"facing": "up",
+		"sprite": "camper",
+		"dialogue": "route_25_jr_trainer_adam_after",
+		"trainer": {
+			"id": "route_25_jr_trainer_adam",
+			"sight": 3,
+			"before": "route_25_jr_trainer_adam_before",
+			"defeated": "route_25_jr_trainer_adam_defeated"
+		}
+	},
+	"youngster_yanis": {
+		"cell": [73, 17],
+		"facing": "left",
+		"sprite": "youngster",
+		"dialogue": "route_25_youngster_yanis_after",
+		"trainer": {
+			"id": "route_25_youngster_yanis",
+			"sight": 4,
+			"before": "route_25_youngster_yanis_before",
+			"defeated": "route_25_youngster_yanis_defeated"
+		}
+	},
 	"traveler": {
 		"cell": [14, 10],
 		"facing": "right",

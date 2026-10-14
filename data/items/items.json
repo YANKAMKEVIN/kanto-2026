@@ -34,6 +34,16 @@
 		"category": "heal", "cures": ["freeze"], "price": 250,
 		"description": "Dégèle un Pokémon gelé."
 	},
+	"nugget": {
+		"name": "Pépite", "plural": "Pépites", "feminine": true,
+		"category": "field", "price": 10000,
+		"description": "Une pépite d'or pur. Elle ne sert à rien… sauf à être vendue très cher."
+	},
+	"tm11": {
+		"name": "CT11 — Bulles d'O", "plural": "CT11 — Bulles d'O", "feminine": true,
+		"category": "tm", "tm": 11, "teaches": "bubble_beam",
+		"description": "Projette des bulles avec force. Peut baisser la Vitesse."
+	},
 	"tm34": {
 		"name": "CT34 — Patience", "plural": "CT34 — Patience", "feminine": true,
 		"category": "tm", "tm": 34, "teaches": "bide",

@@ -22,6 +22,8 @@ var date_text: String = ""
 var date: String = ""
 ## Zone du moment (&"" si inconnue) : icône ou illustration, plus tard.
 var zone_id: StringName = &""
+## Objet du moment (le fossile obtenu), &"" sinon : son icône peinte remplace l'emblème.
+var item_id: StringName = &""
 ## Espèce du moment (premier Pokémon, première capture), &"" sinon : petite image possible.
 var species_id: StringName = &""
 ## Numéro du Pokédex de [member species_id] (artwork officiel) ; 0 sinon. Ajouté au MM.2.

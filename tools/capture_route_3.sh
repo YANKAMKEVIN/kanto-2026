@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
-# Captures de la Route 3, du Centre du Mont Sélénite et du sas de la Route 4 (jalon 12 T8),
+# Captures de la Route 3, du Centre du Mont Sélénite et du sas de la Route 4 (jalon 12 T8 ; vie
+# de la route, plans « t18_* » : T18 — `tools/capture_route_3.sh build/captures/jalon12_t18 t18_`),
 # 2340 × 1080, Movie Maker (Mac, pas en headless), avec `tools/capture_pewter.gd` (carte,
 # joueur peint et sa caméra, WorldLighting + profil de la carte) :
 #   tools/capture_route_3.sh [dossier [filtre]]   (défaut : build/captures/jalon12_t8, tout)
@@ -43,6 +44,19 @@ SHOTS=(
 	"ar_sortie_est|40|--map=pewter_city --cell=49,26 --facing=right"
 	"boot_avant_sortie|60|--boot --start=pewter --flags=badge_boulder,route_3_guard_cleared --cell=50,26 --facing=right"
 	"boot_argenta_route_3|200|--boot --start=pewter --flags=badge_boulder,route_3_guard_cleared --cell=50,26 --facing=right --hold=right"
+	"t18_hugo|40|$R3 --cell=20,27 --facing=up"
+	"t18_voyageur|40|$R3 --cell=13,17 --facing=right"
+	"t18_panneau_ouest|40|$R3 --cell=3,25 --facing=up"
+	"t18_sacha_piafabec|40|$R3 --cell=33,10 --facing=up"
+	"t18_enzo_ines|40|$R3 --cell=36,30 --facing=down"
+	"t18_cache_reveil|40|$R3 --cell=36,19 --facing=up"
+	"t18_lea|40|$R3 --cell=51,21 --facing=up"
+	"t18_plateau_centre|40|$R3 --cell=64,13 --facing=up"
+	"t18_nolan|40|$R3 --cell=75,20 --facing=up"
+	"t18_centre_infirmiere|40|--map=mt_moon_center --spawn=heal --facing=up"
+	"t18_boot_cache_toast|90|--boot --start=route_3 --cell=36,19 --facing=up --interact"
+	"t18_boot_panneau|90|--boot --start=route_3 --cell=3,25 --facing=up --interact"
+	"t18_boot_hugo_vu|150|--boot --start=route_3 --cell=17,26 --facing=right --hold=right"
 	"perf_r3_ouest|300|$R3 --cell=10,26 --facing=right --perf"
 	"perf_r3_jonction|300|$R3 --cell=46,19 --facing=right --perf"
 	"perf_r3_est|300|$R3 --cell=66,13 --facing=right --perf"

@@ -955,6 +955,15 @@ et de l'annexe A validée.
 
 #### T15 — constructeur-monde : raccord Route 24 ↔ 25 — après fusion de **J13 T8**
 - §2.1. **CA** : aller-retour sur les trois rangées ; `test_map_links`.
+- **Fait (2026-10-14, `c918166`, branche `j14-t23`)** : Route 24 (55, 6..8) PUSH → `route_25` /
+  `from_route_24_n|c|s` (tournée →) et Route 25 (0, 13..15) PUSH ← → `route_24` /
+  `from_route_25_n|c|s` (tournée ←), rangée pour rangée ; `build_route_24.gd` et `build_route_25.gd`
+  relancés (seuls les champs des six passages changent dans les `.tscn`). Tests :
+  `test_route_24_25_link` (Boot réel, aller-retour sur chaque rangée), `test_route_24`,
+  `test_route_25`, `test_route_24_life`, `test_map_links` (plus aucun « à venir » jusqu'au T20b).
+  `test_coming_soon` et `test_companion_coming_soon` rendent le raccord est provisoire **dans le
+  test** jusqu'à « ROUTE 5 — À venir » (T20b : y déplacer ces deux tests). Captures relues :
+  `build/captures/jalon14_t15/`.
 
 #### T16 — constructeur-monde : vie de la Route 25 (14A) — **maintenant**, après T5, T14
 - §2.11 ; D5, D6 au T23 (J12 T12) ; O4 par point d'examen (J12 T17, repli) ; table de repli
@@ -1010,6 +1019,30 @@ et de l'annexe A validée.
 - Kadabra + Entrave, D5, D6, Rocket (J12 T12) ; O4 `unless_flags` (J12 T17) ; moment (J12 T23) ;
   table de rencontres (J13 T11) ; compte des espèces dans les tests ; écarts notés au §0.4 (à
   créer).
+- **Fait (2026-10-14, branche `j14-t23`, `8a1f162` → `6c7ea3d`)** : `origin/main` (J12 `2b2745f`,
+  J13 `4f0ee90`) fusionnée, puis `jalon-14` (`f5899f5`, textes n° 71–72).
+  - **Résolutions** : `FLASH` après `MOMENT` (`Kind`, `TYPE_KEYS`, `_EXTRA_KEYS`) ; `MomentLibrary.TYPES`
+    … `FOSSIL, BILL_RESTORED` ; `MoveEffect.Kind` … `SELF_KO, CHARGE, TELEPORT` (idem `BattleEvent`,
+    `BattleBeat`, `BattleText` ; aucun de ces enums n'est sauvegardé) ; `Battler.is_locked()` garde le
+    sens du J13 (ne quitte pas le terrain, lu par `AiSwitchRule`) et couvre la charge, l'action
+    imposée du J14 devient `is_action_locked()` ; Entrave échoue sur un Pokémon en pleine charge ;
+    une capacité esquivée (sous terre) applique quand même Destruction / Explosion ; Mélofée : planche
+    du J12 gardée ; `build_painted_interiors` : `entry[4]` = échelle (J13), miroir en `entry[5]` ;
+    `MapCatalog.QA_PREFIX` / `is_qa_map` dédoublonnés ; `LightGlow.set_reduce_motion` une fois ;
+    `tm_compatibility.json` régénéré (62 espèces) ; comptes des tests réalignés.
+  - **Écart d'objectif [D]** : `go_cerulean_cape` lit `badge_cascade` + `beaten_nugget_rocket` (la
+    règle validée du J13 « pont avant badge → obtenir le Badge Cascade » est gardée) ; après Léo,
+    « explorer les environs d'Azuria. » revient.
+  - **Replis retirés** : moment `bill_restored` (n° 69) avant le `set` final de `bill_machine` ;
+    D5 Adam (apparence `camper` [D]) et D6 Yanis (`youngster`) ; O4 `unless_flags` (la variante n° 72
+    reste dans le dialogue mais n'est plus atteignable) ; table Roucool 20 / Mystherbe 18 / Chétiflor
+    17 / Chenipan 10 ; Kadabra `[1, disable]`, `[20, disable]`, `[31, recover]` ; Téléport piégé →
+    FAILED ; `_PENDING_FLAGS` sans `beaten_nugget_rocket` ni `badge_cascade` ; Dresseur
+    `cerulean_rocket` en données (Machoc 17, Nosferapti 17, 510 ₽, `smart`) ; T15.
+  - **Reste** : Super Bonbon sans `field_use` (T18b : le J12 T20 l'exige pour UTILISER) ; PNJ,
+    scènes et répliques du Rocket (T20b) ; `test_coming_soon` à déplacer (T20b).
+  - Suite complète **4 674 / 4 674**, import propre, `plan_check` conforme sur toutes les grilles à
+    règle (+ contrôles dédiés Argenta, Mont Sélénite, Route 3, Route 25, Azuria J14).
 
 #### T24 — constructeur-monde puis qa-mobile : fin du J14
 - Retrait de `qa_charge_j14` et de son départ ; README. QA finale (**vraie partie de Kevin**) :

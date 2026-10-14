@@ -37,7 +37,9 @@ static func with_team(actions: Dictionary[StringName, bool],
 ## Le panneau ÉQUIPE (jalon 7) : un [BattlePartyView] par Pokémon de l'équipe du joueur, dans
 ## l'ordre de l'équipe ; le Pokémon en jeu est « actif » ; [member BattlePartyView.can_send]
 ## suit [method Battle.check_switch], et la raison vient de [param texts]
-## (« switch_reason_active », « switch_reason_fainted »).
+## (« switch_reason_active », « switch_reason_fainted ») ; Pokémon du joueur piégé (jalon 12,
+## [method Battle.is_player_trapped]) : aucun changement volontaire, « switch_reason_trapped »
+## sur les cartes qui pourraient sinon être envoyées (le remplacement après un K.O. reste libre).
 static func party(battle: Battle, data: PokemonData,
 		texts: BattleText) -> Array[BattlePartyView]:
 	var views: Array[BattlePartyView] = []
@@ -62,7 +64,11 @@ static func party(battle: Battle, data: PokemonData,
 		view.status_text = StatusView.text(pokemon)
 		view.active = pokemon == active and not pokemon.is_fainted()
 		var check := battle.check_switch(i)
-		view.can_send = check == Battle.SwitchCheck.OK
+		var trapped := check == Battle.SwitchCheck.OK and battle.is_player_trapped() \
+			and not battle.needs_replacement()
+		view.can_send = check == Battle.SwitchCheck.OK and not trapped
+		if trapped:
+			view.reason = texts.get_template(&"switch_reason_trapped")
 		match check:
 			Battle.SwitchCheck.ACTIVE:
 				view.reason = texts.get_template(&"switch_reason_active")
@@ -159,3 +165,17 @@ static func move_category(category: MoveData.Category) -> BattleMoveView.Categor
 static func bag_entries(bag: Bag, items: ItemLibrary,
 		context: StringName = BagQuery.CONTEXT_WILD_BATTLE) -> Array[BagEntryView]:
 	return BagQuery.entries(bag, items, context)
+
+
+## Cartes des capacités du Pokémon du joueur en jeu ([method moves]) ; celle que bloque Entrave
+## (jalon 12, [method Battle.get_disabled_move]) est marquée [member BattleMoveView.blocked],
+## libellé « move_disabled_label » de [param texts] (« BLOQUÉE »).
+static func player_moves(battle: Battle, data: PokemonData,
+		texts: BattleText) -> Array[BattleMoveView]:
+	var views := moves(battle.get_player_side().active.pokemon, data)
+	var slot := battle.get_disabled_move()
+	if slot != Battle.NO_LOCK and slot < views.size():
+		views[slot].blocked = true
+		views[slot].blocked_text = texts.get_template(&"move_disabled_label") \
+			if texts != null else ""
+	return views

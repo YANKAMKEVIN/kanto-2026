@@ -17,6 +17,8 @@ extends Node
 ## Jalon 9 (jalon-09.md §2.4.5) : parler à un Dresseur pas encore battu ne joue aucun dialogue :
 ## l'appui émet [signal challenge_requested] ([TrainerWatcher] joue le défi), même anti-rebond ;
 ## battu, il dit sa réplique « après » (son dialogue). Drapeaux : [method set_story_flags].
+## Jalon 12 (jalon-12.md §2.8) : une cible dont un drapeau « unless » est levé
+## ([method Interaction.is_available] : objet caché déjà trouvé) n'est pas retenue — pas de bouton.
 
 ## Cible devant le joueur : kind = [enum Interaction.Kind], ou [constant NO_TARGET].
 signal target_changed(kind: int)
@@ -28,6 +30,9 @@ signal meet_requested(npc: Npc)
 signal observed(npc: Npc, species: StringName)
 ## Appui sur un Dresseur pas encore battu (jalon 9) : [param npc] le défie, sans dialogue.
 signal challenge_requested(npc: Npc)
+## Appui face au compagnon (jalon 11) : sa réaction de curiosité est jouée par son contrôleur
+## (bulle, phrase), aucun dialogue ici.
+signal companion_talked
 
 const NO_TARGET: int = -1
 ## Délai entre l'arrivée sur la carte et l'ouverture de la boîte d'un dialogue automatique.
@@ -44,6 +49,8 @@ var _target_kind: int = NO_TARGET
 var _wait_release: bool = false
 ## Drapeaux d'histoire (Dresseurs battus, jalon 9) ; null = aucun Dresseur n'est battu.
 var _flags: StoryFlags
+## Fournisseur de l'interaction du compagnon (jalon 11, [method InteractionFinder.find]).
+var _companion: Object
 
 
 func _ready() -> void:
@@ -54,7 +61,9 @@ func _process(_delta: float) -> void:
 	var target: Interaction = null
 	if _can_target():
 		target = InteractionFinder.find(_map.get_grid(), _map.get_interactions(),
-			_player.get_cell(), _player.get_facing())
+			_player.get_cell(), _player.get_facing(), _companion)
+		if target != null and not target.is_available(_flags):
+			target = null  # jalon 12 : objet caché déjà trouvé (drapeau « unless » levé)
 	_set_target(target)
 	if _wait_release:
 		if Input.is_action_pressed(_INTERACT):
@@ -78,6 +87,12 @@ func setup(player: Player, runner: DialogueRunner) -> void:
 		_runner.dialogue_finished.connect(_on_dialogue_finished)
 	_set_target(null)
 	set_process(_player != null)
+
+
+## Compagnon (jalon 11) : objet qui expose [code]get_interaction_at(cell) -> Interaction[/code]
+## (null : pas de compagnon).
+func set_companion(provider: Object) -> void:
+	_companion = provider
 
 
 ## Drapeaux d'histoire lus pour savoir si un Dresseur est battu (jalon 9).
@@ -132,6 +147,11 @@ func _can_target() -> bool:
 
 
 func _interact(target: Interaction) -> void:
+	if _companion != null and target.source == _companion:
+		# Le compagnon : son contrôleur joue la curiosité. L'appui tenu ne relance rien.
+		_wait_release = true
+		companion_talked.emit()
+		return
 	var npc := target.source as Npc
 	if target.kind == Interaction.Kind.MEET:
 		# Pas de dialogue : le code du choix répond. L'appui tenu ne relance rien.
