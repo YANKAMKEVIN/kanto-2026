@@ -5,12 +5,12 @@
 > **Numéro provisoire : 17.** Contrat du J16 : la série prend son numéro **au push**. Constaté le 2026-10-14 (`git fetch`, puis toutes les `fiches-assets/serie-*` de toutes les branches) : 01, 12, 13, 14, 15 sur `origin/*` ; **16 = J14** (`serie-16-cap-azuria.md`, branches locales `j14-*`, pas encore poussée). 17 est le prochain libre. **À revérifier au push** : si 17 est pris entre-temps, renommer la fiche, `tools/art/serie17.py`, `tools/art/prompts/serie17/` et les mentions de `jalon-15.md` / `etat-projet.md` (les identifiants d'images ne portent pas le numéro).
 
 **Consigne de Kevin (J8–J14)** : le plus petit kit modulaire qui produit la **sensation** des vues validées dans Godot, sans répétition visible.
-- **DA et composition** : `reference/souterrain-vue-generale-v1.png`, `route-6-vue-generale-v1.png`, `carmin-vue-generale-v1.png` (validées le 2026-10-14). **Route 5 : vue en cours** ; seule la grille v2 est validée (`route-5-plan-v2.png`) : les assets propres à la Route 5 (façade de la Pension, indice du tronc) sont écrits d'après la grille et le dossier, **marqués « à recaler sur la vue Route 5 »** (une `_r2` au T9 si la vue validée les contredit). **Géométrie, qui fait foi** : `tools/plans/route_5.txt` (v2), `underground_path.txt`, `route_6.txt`, `vermilion_city.txt` (aucune case touchée au T8).
+- **DA et composition** : `reference/souterrain-vue-generale-v1.png`, `route-6-vue-generale-v1.png`, `carmin-vue-generale-v1.png` (validées le 2026-10-14). **Route 5 : `route-5-vue-generale-v1.png`, validée le 2026-10-14** (dossier 18 §13.2) : la Pension (et le poste, l'entrée du souterrain) sont **recalés sur cette vue** au T9 (`REF_R5_PENSION`, `REF_R5_POSTE`, `REF_R5_ENTREE`) ; l'indice du tronc reste à juger sur la capture de la carte. **Géométrie, qui fait foi** : `tools/plans/route_5.txt` (v2), `underground_path.txt`, `route_6.txt`, `vermilion_city.txt` (aucune case touchée au T8).
 - **Écarts des vues à ne pas reproduire** (dossier §13.1) : Route 6 pauvre en air marin (la carte en ajoute à la lisière) ; navire **court, d'allure de ferry** (la grille donne **29 × 7** : paquebot long et effilé) ; aucun personnage ni Pokémon peint.
 - **Contrat du J16** (dossier §17, plan §2.9) : le **S.S. Anne** est un objet de décor **séparé**, seul l'état **amarré** est produit au J15 (absent si `ss_anne_departed`) ; le **jeune arbre** de l'Arène (49..50, 10) est un objet **séparé, retirable** (drapeau `cut_vermilion_gym_bush`), jamais peint dans la façade.
 - **Outil** : `tools/art/serie17.py` (`--prompts`, `--refs`, `--ancres`, `--commandes`, `--planche`, `--contact`, `--manifeste` préparé et **non lancé**, `--controle` au T11 ; génération en **deux vagues**, trois à la fois). **Un prompt versionné par image** : `tools/art/prompts/serie17/<NOM>.txt`, `tools/art/attente/prompts/<NOM>_ATTENTE.txt`, `tools/art/combat_decors/prompts/COMBAT_DECOR_ROUTE5_6_PRAIRIE_r1.txt`.
 - **Prompts** : ADN visuel v1 (cahier §1.3) + **LUMIÈRE NE** (souterrain : bloc `VALEURS_PIERRE`, aucune pénombre ni flaque de lumière peinte : le profil `underground` et les `LightGlow sconce` font l'ambiance). Aucun nom de licence, **aucun nom de navire**, **aucun emblème de type balle** (l'Arène porte un éclair sculpté, le Fan Club une rosette de ruban, la stèle des vagues et des spirales). Interdits : texte, lettres, logo, faune non-Pokémon (mouettes de la vue), Pikachu, sosie du héros.
-- **Références** : recadrages `REF_CA_*`, `REF_R6_*`, `REF_SO_*` des trois vues et `REF_R5_PENSION` du plan v2 (boîtes versionnées dans `REFS`, × 3, 1 536 px max). **Ancres** copiées par `--ancres` depuis le checkout principal, puis **toute copie de travail** qui les possède (les images des séries 14 et 15 ne sont pas toutes dans `build/art` du checkout principal).
+- **Références** : recadrages `REF_CA_*`, `REF_R6_*`, `REF_SO_*` des trois vues et `REF_R5_*` de la vue de la Route 5 (boîtes versionnées dans `REFS`, × 3, 1 536 px max). **Ancres** copiées par `--ancres` depuis le checkout principal, puis **toute copie de travail** qui les possède (les images des séries 14 et 15 ne sont pas toutes dans `build/art` du checkout principal).
 - **Planche de contrôle** (sans Codex) : `python3 tools/art/serie17.py --planche` → `build/art/J15_KIT_v1.png` (1 case = 48 px, héros à l'échelle) : réutilisés, sols, intérieurs, personnages, variations, nouveaux (référence recadrée à la taille en jeu), conditionnels, abandonnés. **Relue au T8.**
 
 ## Liste du kit
@@ -47,11 +47,11 @@
 
 **B. Variations sans nouvel asset** : mer du port = `ground_eau_01` **assombrie** (`Shade`, bleu profond de la vue) ; maison 2 en miroir ; roche brute du souterrain assombrie par le profil `underground` ; herbes de la Route 5 plus vertes que celles de la Route 6 (teinte) ; massifs du jardin en miroir ± 8 %.
 
-**C. Nouveaux : 30 images** (fiches ci-dessous) — 21 en vague 1, 9 en vague 2.
+**C. Nouveaux : 28 images** (fiches ci-dessous) — 20 en vague 1, 8 en vague 2 (le gardien de la Pension, `old_man`, est retiré le 2026-10-14).
 
 | Fiche → asset(s) | Rôle | Taille en jeu | Images | Vague |
 |---|---|---|---|---|
-| `WORLD_BLDG_PENSION_01` → `bldg_pension_01` | Pension (W), **à recaler sur la vue Route 5** | 7 × 6 | 1 | 1 |
+| `WORLD_BLDG_PENSION_01` → `bldg_pension_01` | Pension (W), recalée sur la vue Route 5 validée | 7 × 6 | 1 | 1 |
 | `WORLD_BLDG_POSTE_SAFRANIA_01` → `bldg_poste_safrania_01` | postes fermés (P) des deux routes | 7 × ≈ 4,5 | 1 | 1 |
 | `WORLD_BLDG_ENTREE_SOUTERRAIN_01` → `bldg_entree_souterrain_01` | entrées du souterrain (U) des deux routes | 7 × ≈ 4 | 1 | 1 |
 | `WORLD_BLDG_ARENE_CARMIN_01` → `bldg_arene_carmin_01` | Arène (Z), **sans l'arbre** | 12 × 7 | 1 | 1 |
@@ -72,7 +72,6 @@
 | `PNJ_MARIN` + attente → `marin` (`sailor`) | marin de la passerelle | 128 px | 2 | 1, 2 |
 | `PNJ_DOCKER` + attente → `docker` (`docker`) | les deux dockers | 128 px | 2 | 1, 2 |
 | `PNJ_PRESIDENT_FAN_CLUB` + attente → `president_fan_club` (`fan_club_chairman`) | président du Fan Club | 128 px | 2 | 1, 2 |
-| `PNJ_GARDIEN_PENSION` + attente → `gardien_pension` (`daycare_keeper`) | gardien de la Pension (aujourd'hui `clerk` provisoire sur `qa_daycare`) | 128 px | 2 | 1, 2 |
 | `UI_OBJETS_J15_PLANCHE` → `super_potion.webp`, `full_restore.webp` | icônes du Sac | 256 px | 1 | 1 |
 | `COMBAT_DECOR_ROUTE5_6_PRAIRIE_r1` → décor `route_5_6_prairie` | combats sauvages des Routes 5 et 6 (chaîne CB.3) | 2,17 : 1 | 1 | 1 |
 
@@ -83,7 +82,7 @@
 - **S.S. Anne** : 29 × 7 cases (≈ 2 800 px) ne tient pas dans une image de 1 536 px à la qualité du jeu : **guide** (silhouette entière, vague 1) puis **trois tranches** à 120 px par case (vague 2, guide joint), raccordées bout à bout ; un seul nœud parent au T14 (condition `ss_anne_departed`), trois sprites (plan §2.11 : « un seul sprite ou 3 tranches »).
 - **Mer du port** : variation (`ground_eau_01` assombrie) ; texture neuve en conditionnel.
 - **Enveloppe du Fan Club** : coque de maison d'Argenta + meubles (plan : « ou maison d'Argenta + tableaux ») ; `INT_FAN_CLUB_COQUE` en conditionnel.
-- **Ajoutés** : nénuphars (vue de la Route 6), **vue lointaine du port** (dossier §6.1 « au bout, la première vue sur le port » et texte A.2 « les grues et les mâts du port » ; la vue de la Route 6 la peint dans son coin sud-est) ; **gardien de la Pension** (demande de T8 ; le dossier §4.1 disait `old_man` : **à confirmer par Kevin**, repli `old_man`).
+- **Ajoutés** : nénuphars (vue de la Route 6), **vue lointaine du port** (dossier §6.1 « au bout, la première vue sur le port » et texte A.2 « les grues et les mâts du port » ; la vue de la Route 6 la peint dans son coin sud-est) ; **gardien de la Pension : abandonné** (décision de Kevin du 2026-10-14, dossier 18 §13.2 : modèle existant `old_man`, pas de personnage nouveau).
 
 **D. Abandonnés** : personnages et Pokémon (aucun dans les vues) ; mouettes (faune non-Pokémon) ; **navire court « ferry »** de la vue de Carmin (→ paquebot 29 × 7) ; caisses de la vue posées hors des cases `k` (la grille décide) ; amas de 4 rochers neufs de la Route 6 (→ rochers existants) ; **lumière peinte** de la vue du souterrain (galerie éclairée, halos) → lumière NE + `LightGlow` ; médaillon rond au fronton de l'Arène dans la vue (→ éclair sculpté) ; intérieur du navire et état « parti » (J16) ; cheminée du S.S. Anne au-dessus des toits de Carmin (plan §1.4 : relève de la peinture ; la **vue lointaine** de la Route 6 la reprend au loin).
 
@@ -119,8 +118,8 @@ Pour chaque asset : rôle, emprise (cases de la grille), taille en pixels du jeu
 
 ### Bâtiments
 
-#### WORLD_BLDG_PENSION_01 → `bldg_pension_01` (vague 1) — **à recaler sur la vue Route 5**
-- Emprise `W` 7 × 6 (24..30, 22..27), porte `D` (27, 27) = 4e colonne ; `axe w`, `cases 7`, ombre oui, contact 0,12 (≈ 672 × 580 px). Ferme à colombages, **toit de tuiles rouge-brique chaud** (plus rouge et plus large que la maison d'Argenta), auvent sur la porte, volets verts, girouette en flèche. Sans jardin (posé par la carte), sans enseigne. **Jointes** : `REF_R5_PENSION` (plan en aplats seulement), souche, arbre A, maison d'Argenta.
+#### WORLD_BLDG_PENSION_01 → `bldg_pension_01` (vague 1) — recalée sur la vue Route 5 validée
+- Emprise `W` 7 × 6 (24..30, 22..27), porte `D` (27, 27) = 4e colonne ; `axe w`, `cases 7`, ombre oui, contact 0,12 (≈ 672 × 580 px). Maison de campagne de la vue : **toit de tuiles rouge-orangé chaud** à deux pans, cheminée de pierre à droite du faîtage, murs crépis crème (ni colombages, ni auvent, ni lucarne, ni girouette), porte brun moyen, volets vert sapin, jardinières et pots fleuris. Sans jardin (posé par la carte), sans enseigne. **Jointes** : `REF_R5_PENSION` (vue validée), souche, arbre A, maison d'Argenta.
 
 #### WORLD_BLDG_POSTE_SAFRANIA_01 → `bldg_poste_safrania_01` (vague 1)
 - Emprises `P` 7 × 4 (Route 5, 31..37, 41..44, porte (34, 44)) et 7 × 3 (Route 6, 33..39, 5..7, porte (36, 7)) ; `cases 7`, ≈ 672 × 430 px. Pierre gris-beige, ardoises bleu-gris, **porte double fermée bleu-gris**, deux lanternes éteintes. **Jointes** : `REF_R6_POSTE`, postes de la forêt.
@@ -159,7 +158,7 @@ Pour chaque asset : rôle, emprise (cases de la grille), taille en pixels du jeu
 ### Routes 5 et 6
 
 #### WORLD_PROP_ROUTES_J15_PLANCHE → `prop_indice_tronc_01`, `prop_indice_joncs_01`, `prop_nenuphars_01`, `_02` (vague 1)
-- Planche 2 × 2 de 768 × 512, 1 case = 200 px, largeurs `[1, 1, 1, 0.6]`, contact 0,1. Indice **tronc** (R5 (16, 31), Antidote ; **à recaler sur la vue Route 5**) plus gris et plus clair que `prop_tronc_couche_01` ; indice **joncs** (R6 (10, 32), Super Potion) jaunis et couchés, plus clairs que `prop_roseaux_01` ; nénuphars à plat (couche d'eau). **Jointes** : `REF_R6_NENUPHARS`, `REF_R6_ETANG`, tronc couché, indices (série 14), berges (série 15).
+- Planche 2 × 2 de 768 × 512, 1 case = 200 px, largeurs `[1, 1, 1, 0.6]`, contact 0,1. Indice **tronc** (R5 (16, 31), Antidote ) plus gris et plus clair que `prop_tronc_couche_01` ; indice **joncs** (R6 (10, 32), Super Potion) jaunis et couchés, plus clairs que `prop_roseaux_01` ; nénuphars à plat (couche d'eau). **Jointes** : `REF_R6_NENUPHARS`, `REF_R6_ETANG`, tronc couché, indices (série 14), berges (série 15).
 
 #### WORLD_PROP_VUE_PORT_01 → `prop_vue_port_01` (vague 2)
 - 4 × 4, au-dessus de la forêt du coin sud-est de la Route 6 : haut de grue, deux mâts, sommet de la cheminée du S.S. Anne, bandeau de mer ; plus petit et plus bleuté (lointain) ; bas fondu (les arbres le recouvrent). `ombre` non. **Jointes** : `REF_R6_PORT`, guide du navire, planche de Carmin (grue). **Défaut à juger** sur capture du T14 (repli : rien, comme le plan §1.4).
@@ -181,7 +180,7 @@ Pour chaque asset : rôle, emprise (cases de la grille), taille en pixels du jeu
 ### Intérieurs
 
 #### INT_J15_PLANCHE → 6 meubles (vague 1)
-- Planche 3 × 2 de 512, 1 case = 150 px, largeurs `[3, 2, 1, 1.2, 2, 1.5]`, contact 0,2 : `int_comptoir_pension_01` (3 × 1 : registre, clochette, bocal de baies ; gardien derrière, modèle `ClerkCounter` du plan §2.2), `int_escalier_descendant_01` (2 × ≈ 1,6 : (4..5, 2) des deux bâtiments d'entrée, warps `STEP_ON` sans direction), `int_panier_pokemon_01` (1 : Pension, vide), `int_fauteuil_president_01` (1,2 : Fan Club), `int_vitrine_rubans_01` (2 × 2 : Fan Club), `int_tableau_port_01` (1,5 × 1 : mur du Fan Club, « tableaux » du plan). **Jointes** : long comptoir, canapé, grande étagère.
+- Planche 3 × 2 de 512, 1 case = 150 px, largeurs `[3, 2, 1, 1.2, 2, 1.5]`, contact 0,2 : `int_comptoir_pension_01` (3 × 1 : registre, clochette, bocal de baies ; gardien `old_man` derrière, modèle `ClerkCounter` du plan §2.2), `int_escalier_descendant_01` (2 × ≈ 1,6 : (4..5, 2) des deux bâtiments d'entrée, warps `STEP_ON` sans direction), `int_panier_pokemon_01` (1 : Pension, vide), `int_fauteuil_president_01` (1,2 : Fan Club), `int_vitrine_rubans_01` (2 × 2 : Fan Club), `int_tableau_port_01` (1,5 × 1 : mur du Fan Club, « tableaux » du plan). **Jointes** : long comptoir, canapé, grande étagère.
 
 ### Personnages (marche puis attente)
 
@@ -192,7 +191,6 @@ Modèle commun des séries 10–16 : marche 4 × 4 (1024 × 1536, héros validé
 | `PNJ_MARIN` → `marin` (`sailor`) | ≈ 25 ans, vareuse blanche à **col marin bleu marine**, foulard rouge, pantalon à pont, **bachi blanc sans pompon** | mains croisées dans le dos | garde, pêcheur (à ne pas copier) |
 | `PNJ_DOCKER` → `docker` (`docker`) | ≈ 35 ans, costaud, bonnet de laine gris, barbe, **pull marin vert-de-gris**, salopette ocre, gants, corde à l'épaule | poings sur les hanches | pêcheur |
 | `PNJ_PRESIDENT_FAN_CLUB` → `president_fan_club` (`fan_club_chairman`) | ≈ 65 ans, rond, **moustache blanche en guidon**, costume trois pièces bordeaux, montre à gousset, nœud papillon vert, rosette | une main sur le ventre, l'autre levée | vieil homme |
-| `PNJ_GARDIEN_PENSION` → `gardien_pension` (`daycare_keeper`) | ≈ 70 ans, **chapeau de paille**, barbe blanche, salopette de jardinier vert olive, foulard rouge, bottes vertes | mains jointes devant lui | vieil homme |
 
 ### Icônes du Sac
 

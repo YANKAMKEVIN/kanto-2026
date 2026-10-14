@@ -7,9 +7,8 @@ prochain numéro libre constaté le 2026-10-14 (16 = J14, branches locales `j14-
 Méthode des J8–J14 (consigne de Kevin : le plus petit kit modulaire qui donne la sensation des vues
 validées, `docs/design/reference/{souterrain,route-6,carmin}-vue-generale-v1.png` ; **la grille fait
 foi** : `tools/plans/route_5.txt` (v2), `underground_path.txt`, `route_6.txt`, `vermilion_city.txt`).
-La vue de la Route 5 n'existe pas encore : ses assets (Pension, indice du tronc) sont écrits d'après
-la grille v2 et le dossier, **à recaler sur la vue Route 5** (une `_r2` si l'image validée les
-contredit). Repris : sols, forêt, hautes herbes, buissons, rochers, clôtures, massifs, panneaux,
+La vue de la Route 5 est validée (2026-10-14, `route-5-vue-generale-v1.png`) : la Pension, le poste et
+l'entrée du souterrain sont recalés dessus. Repris : sols, forêt, hautes herbes, buissons, rochers, clôtures, massifs, panneaux,
 Centre, Boutique, maison d'Argenta (maisons 1 et 2 de Carmin), coques d'intérieur, eau, berges et
 roseaux, bittes et piles de la série 15, masse rocheuse de la série 14, PNJ existants. Générées :
   - bâtiments : Pension, poste de garde (×2 routes), entrée du souterrain (×2 routes), Arène de
@@ -21,7 +20,7 @@ roseaux, bittes et piles de la série 15, masse rocheuse de la série 14, PNJ ex
   - souterrain : dalles et traces (textures), planche des murs maçonnés, planche des objets
     (deux escaliers, stèle, banc, pierre descellée, applique) ;
   - intérieurs : planche de 6 meubles (Pension, escalier des entrées, Fan Club) ;
-  - personnages : marin, docker, président du Fan Club, gardien de la Pension (marche + attente) ;
+  - personnages : marin, docker, président du Fan Club (marche + attente ; le gardien de la Pension = `old_man`, décision du 2026-10-14) ;
   - Sac : Super Potion, Guérison ; combat : décor `route_5_6_prairie` (chaîne CB.3).
 CONDITIONNELS (jamais lancés sans leur nom) : WORLD_GROUND_EAU_PORT_01 (si `ground_eau_01` assombri
 ne donne pas le bleu profond du port), INT_FAN_CLUB_COQUE (si la coque de maison d'Argenta + meubles
@@ -85,9 +84,9 @@ VUES = {
 	"CA": REFERENCE / "carmin-vue-generale-v1.png",  # 1536 × 1024, 64 × 43 cases (≈ 24 px)
 	"R6": REFERENCE / "route-6-vue-generale-v1.png",  # 1024 × 1536, 42 × 56 cases (≈ 24 × 27 px)
 	"SO": REFERENCE / "souterrain-vue-generale-v1.png",  # 1254², 26 × 30 cases (≈ 48 × 42 px)
-	"R5": REFERENCE / "route-5-plan-v2.png",  # plan en aplats v2 (756 × 1116, 18 px) : pas de vue
+	"R5": REFERENCE / "route-5-vue-generale-v1.png",  # 1024 × 1536, 42 × 62 cases (≈ 24,4 × 24,8 px), validée le 2026-10-14
 }
-PX_CASE = {"CA": 24.0, "R6": 26.0, "SO": 45.0, "R5": 18.0}
+PX_CASE = {"CA": 24.0, "R6": 26.0, "SO": 45.0, "R5": 24.4}
 PROMPTS = ICI / "prompts" / "serie17"
 ATTENTES = ICI / "attente" / "prompts"
 DECORS_COMBAT = ICI / "combat_decors" / "prompts"
@@ -131,8 +130,10 @@ REFS = {
 	"REF_SO_SOL": ("SO", (150, 490, 1000, 610)),
 	"REF_SO_GALERIE": ("SO", (120, 30, 1030, 660)),
 	"REF_SO_ROCHE": ("SO", (400, 700, 880, 1100)),
-	# Route 5 : plan en aplats seulement (géométrie, pas de DA)
-	"REF_R5_PENSION": ("R5", (425, 390, 690, 580)),
+	# Route 5 : vue générale validée (2026-10-14)
+	"REF_R5_PENSION": ("R5", (540, 430, 750, 610)),
+	"REF_R5_POSTE": ("R5", (725, 935, 950, 1105)),
+	"REF_R5_ENTREE": ("R5", (170, 1225, 395, 1375)),
 }
 AGRANDIR = 3
 REF_MAX = 1536
@@ -234,17 +235,18 @@ SERIE = [
 	("WORLD_BLDG_PENSION_01", "REF_R5_PENSION", 7, 6,
 		"la PENSION POKÉMON de la Route 5, une grande maison de campagne accueillante où un vieux "
 		"monsieur garde les Pokémon des Dresseurs, façade de face (base de 7 cases de large, environ 6 "
-		"cases de haut avec le toit), même main et même gabarit que la maison jointe "
-		"WORLD_BLDG_MAISON_ARGENTA_01 mais une silhouette de FERME : murs crème à COLOMBAGES de bois "
-		"brun, soubassement de pierre ; grand toit à deux pans de TUILES ROUGE-BRIQUE CHAUD (le « toit "
-		"chaud » qui la fait reconnaître de loin, plus rouge et plus large que celui de la maison "
-		"jointe) avec une lucarne et une cheminée de pierre ; au milieu exact du bas de la façade (4e "
-		"colonne sur 7), une PORTE de bois vert sapin d'une case sous un petit AUVENT de bois porté par "
-		"deux poteaux ; deux fenêtres à petits carreaux de chaque côté, volets verts, jardinières "
-		"fleuries ; une petite girouette en forme de flèche sur le faîtage. Chaleureuse, bien tenue. "
-		"Sans clôture, sans jardin, sans panneau, sans enseigne, sans Pokémon, aucune inscription. "
-		"(La vue de la Route 5 n'existe pas encore : la référence jointe n'est qu'un plan en aplats qui "
-		"donne la place et la couleur du toit.)",
+		"cases de haut avec le toit), RECALÉE sur la vue générale validée de la Route 5 (référence "
+		"jointe : la reproduire fidèlement, en plus net) et même main que la maison jointe "
+		"WORLD_BLDG_MAISON_ARGENTA_01 : un seul grand toit à deux pans de TUILES ROUGE-ORANGÉ CHAUD "
+		"(terre cuite, le « toit chaud » qui la fait reconnaître de loin, plus rouge et plus large que "
+		"celui de la maison jointe), faîtage horizontal, une CHEMINÉE de pierre claire à droite du "
+		"faîtage, sans lucarne ; murs crépis CRÈME unis (pas de colombages), petit soubassement de "
+		"pierre ; au milieu exact du bas de la façade (4e colonne sur 7), une PORTE de bois BRUN "
+		"MOYEN d'une case, sans auvent ; de chaque côté de la porte une fenêtre à petits carreaux avec "
+		"des VOLETS VERT SAPIN ouverts, une jardinière de fleurs roses et rouges sous chaque fenêtre, un "
+		"pot de fleurs au pied de chaque côté de la porte. Simple, chaleureuse, bien tenue. Sans "
+		"clôture, sans jardin, sans arbre, sans girouette, sans panneau, sans enseigne, sans Pokémon, "
+		"aucune inscription.",
 		[MAISON_ARGENTA], LUMIERE_NE, 1),
 	("WORLD_BLDG_POSTE_SAFRANIA_01", "REF_R6_POSTE", 7, "4,5",
 		"un POSTE DE GARDE fermé sur la route de Safrania, petit bâtiment officiel et sobre, façade de "
@@ -255,7 +257,7 @@ SERIE = [
 		"linteau de pierre ; une LANTERNE murale de fer noir de chaque côté de la porte (verre ambré, "
 		"éteinte) ; deux petites fenêtres hautes à barreaux fins ; une marche de pierre. Fermé, calme, "
 		"pas menaçant. Sans garde, sans barrière, sans panneau, aucune inscription, aucun écusson.",
-		[POSTE_FORET, POSTE_NORD], LUMIERE_NE, 1),
+		[POSTE_FORET, POSTE_NORD, "REF_R5_POSTE.png"], LUMIERE_NE, 1),
 	("WORLD_BLDG_ENTREE_SOUTERRAIN_01", "REF_R6_SORTIE", 7, 4,
 		"le petit BÂTIMENT D'ENTRÉE DU PASSAGE SOUTERRAIN, façade de face (base de 7 cases de large, "
 		"environ 4 cases de haut avec le toit), même famille que le poste joint WORLD_BLDG_POSTE_FORET_01 "
@@ -265,7 +267,7 @@ SERIE = [
 		"et se perd dans l'ombre (intérieur sombre bleu-gris, jamais noir) ; une clé de voûte sculptée "
 		"d'une simple vague ; de petits soupiraux à barreaux de chaque côté ; un peu de lierre au pied "
 		"d'un angle. Accueillant malgré l'ombre. Sans lanterne, sans panneau, aucune inscription.",
-		[POSTE_FORET], LUMIERE_NE, 1),
+		[POSTE_FORET, "REF_R5_ENTREE.png"], LUMIERE_NE, 1),
 	("WORLD_BLDG_ARENE_CARMIN_01", "REF_CA_ARENE", 12, 7,
 		"l'ARÈNE de Carmin-sur-Mer, celle d'un Champion de type Électrik surnommé « le Soldat de la "
 		"Foudre », façade de face (base de 12 cases de large, environ 7 cases de haut avec le toit), même "
@@ -560,14 +562,6 @@ PERSONNAGES = [
 		"du vieil homme joint (ni gilet de laine, ni canne) et du professeur Chen ; aucun texte.",
 		f"{PIEDS_JOINTS}, une main sur le ventre et l'autre levée comme s'il racontait une histoire, l'air "
 		"ravi", [VIEIL_HOMME], 1),
-	("PNJ_GARDIEN_PENSION", [], 128, "le gardien de la Pension Pokémon de la Route 5",
-		"le GARDIEN DE LA PENSION, un vieux monsieur d'environ 70 ans, doux et souriant, qui passe ses "
-		"journées au jardin avec les Pokémon : CHAPEAU DE PAILLE à ruban vert, cheveux et sourcils blancs "
-		"broussailleux, petite barbe blanche ; SALOPETTE de jardinier vert olive sur une chemise crème "
-		"aux manches roulées, foulard rouge au cou, une paire de gants de jardin dans la poche avant, "
-		"bottes de caoutchouc vert foncé. Un peu voûté, plus petit que le héros. Différent du vieil homme "
-		"joint (ni gilet de laine, ni canne) ; aucun texte.",
-		f"{PIEDS_JOINTS}, les mains jointes devant lui, l'air bienveillant", [VIEIL_HOMME], 1),
 ]
 
 ## Planche d'icônes du Sac (chaîne de `preparer_menu.py`, comme MENU_OBJETS_PLANCHE : 4 colonnes).
@@ -1034,8 +1028,7 @@ def manifeste_donnees() -> dict:
 
 ## (planche préparée, identifiant de fiche, look du jeu) ; looks en fin de LOOKS au T11.
 _PERSOS = [("marin", "MARIN", "sailor"), ("docker", "DOCKER", "docker"),
-	("president_fan_club", "PRESIDENT_FAN_CLUB", "fan_club_chairman"),
-	("gardien_pension", "GARDIEN_PENSION", "daycare_keeper")]
+	("president_fan_club", "PRESIDENT_FAN_CLUB", "fan_club_chairman")]
 PERSONNAGES_JEU = [(nom, look, 128) for nom, _, look in _PERSOS]
 ## Icônes du Sac (T11, `preparer_menu.py` : planche de 4 colonnes, les 2 premières occupées) →
 ## `assets/ui/items/super_potion.webp`, `full_restore.webp`.
@@ -1161,7 +1154,7 @@ def planche(sortie: Path) -> Path:
 	], (110, 90, 40))
 	p.section("3. NOUVEAUX : BÂTIMENTS (référence recadrée à la taille en jeu)", [
 		heros,
-		(_ref("REF_R5_PENSION", 6), "BLDG_PENSION_01 7 × 6\n(plan seul : à recaler\nsur la vue Route 5)"),
+		(_ref("REF_R5_PENSION", 6), "BLDG_PENSION_01 7 × 6\n(recalée sur la vue\nRoute 5 validée)"),
 		(_ref("REF_R6_POSTE", 4.5), "BLDG_POSTE_SAFRANIA_01\n7 × 4 (R5) / 7 × 3 (R6)"),
 		(_ref("REF_R6_SORTIE", 4), "BLDG_ENTREE_SOUTERRAIN_01\n7 × 4 (R5) / 7 × 3 (R6)"),
 		(_ref("REF_CA_ARENE", 7), "BLDG_ARENE_CARMIN_01 12 × 7\n(sans l'arbre)"),
@@ -1205,7 +1198,6 @@ def planche(sortie: Path) -> Path:
 		(heros[0], "PNJ_MARIN 128 px\n(+ attente)"),
 		(heros[0], "PNJ_DOCKER 128 px\n(×2 dockers)"),
 		(heros[0], "PNJ_PRESIDENT_FAN_CLUB\n128 px"),
-		(heros[0], "PNJ_GARDIEN_PENSION\n128 px (au lieu de clerk)"),
 		*[(_echelle(Image.open(RACINE / f"assets/ui/items/{i}.webp").convert("RGBA"), 0.4),
 			f"{i}.webp\n(style des icônes)") for i in ("potion",)
 			if (RACINE / f"assets/ui/items/{i}.webp").exists()],
