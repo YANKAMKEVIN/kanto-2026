@@ -50,7 +50,7 @@ extends SceneTree
 ##
 ## [b]Rapport[/b], par équipe et par variante : arrivée au bout, défaites par étape, puis, pour
 ## chaque étape (parmi les parties qui l'atteignent) : combats, victoires, fuites, défaites,
-## tours par combat, K.O., objets consommés, PV de l'équipe après l'étape, niveau moyen,
+## fuites adverses (Téléport, J14), tours par combat, K.O., objets consommés, PV de l'équipe après l'étape, niveau moyen,
 ## niveau le plus haut avant l'étape (« meneur avant », T20) ;
 ## enfin les niveaux de chaque membre à l'arrivée.
 ##
@@ -93,6 +93,8 @@ const REPLACING: int = 3
 const WIN: int = 1
 const LOSS: int = 2
 const FLED: int = 3
+## Battle.Outcome.FOE_FLED (jalon 14 : le sauvage s'enfuit par Téléport).
+const FOE_FLED: int = 5
 ## BattleEvent.Kind (`--trace`).
 const BATTLE_EVENT_SENT_OUT: int = 1
 const BATTLE_EVENT_DAMAGE: int = 5
@@ -824,6 +826,8 @@ func _report(team: Dictionary, variant: Dictionary) -> void:
 		line += " | K.O. %4.2f | objets %s | PV après %3.0f %% | niv. %4.1f | meneur avant N%4.1f" \
 			% [float(s["kos"]) / reached, _used_text(s["items"], reached),
 			100.0 * s["hp"] / reached, s["level"] / reached, s["top"] / reached]
+		if int(s["foe_fled"]) > 0:
+			line += " | %d fuites adverses" % s["foe_fled"]
 		if int(s["unfinished"]) > 0:
 			line += " | %d non terminés" % s["unfinished"]
 		print(line)
@@ -987,7 +991,8 @@ func _play_step(step: Dictionary, party: RefCounted, rng: RefCounted, variant: D
 ## Compteurs d'une étape (une tentative).
 func _blank_stats() -> Dictionary:
 	return { "reached": 0, "battles": 0, "wins": 0, "fled": 0, "defeats": 0, "turns": 0,
-		"kos": 0, "hp": 0.0, "level": 0.0, "top": 0.0, "items": {}, "unfinished": 0 }
+		"kos": 0, "hp": 0.0, "level": 0.0, "top": 0.0, "items": {}, "unfinished": 0,
+		"foe_fled": 0 }
 
 
 ## Étape « wild » : renvoie vrai si l'équipe entière est K.O.
@@ -1054,10 +1059,17 @@ func _after_battle(result: Array[int], party: RefCounted, variant: Dictionary,
 			s["wins"] += 1
 		FLED:
 			s["fled"] += 1
+		FOE_FLED:
+			s["foe_fled"] += 1
 		LOSS:
 			return true
 		_:
 			s["unfinished"] += 1
+	# J14 T21 : victoire où le dernier Pokémon du joueur tombe aussi (contrecoup de Lutte, le
+	# lanceur gagne : Battle._check_end) ; l'équipe est entière K.O. : compté comme une défaite
+	# (réveil au Centre, comme dans RB), sinon le combat suivant ne peut pas commencer.
+	if party.first_able() == null:
+		return true
 	_evolve(party)
 	if variant["player"] != "naif":
 		_heal_outside(party, bag)
