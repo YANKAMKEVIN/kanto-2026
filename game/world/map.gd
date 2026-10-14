@@ -440,6 +440,8 @@ func _read_layer(layer: TileMapLayer) -> void:
 			_grid.set_water(cell)
 		if _get_bool(data, OverworldTiles.DATA_TALL_GRASS):
 			_grid.set_tall_grass(cell)
+		if _get_bool(data, OverworldTiles.DATA_RUBBLE):
+			_grid.set_rubble(cell)
 		if data.has_custom_data(OverworldTiles.DATA_LEDGE):
 			var ledge: int = data.get_custom_data(OverworldTiles.DATA_LEDGE)
 			if ledge != GridWorld.Ledge.NONE:

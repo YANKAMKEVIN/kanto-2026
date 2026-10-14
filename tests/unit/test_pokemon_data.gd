@@ -71,15 +71,19 @@ func test_real_data_loads_without_error() -> void:
 		&"charmeleon", &"charizard", &"squirtle", &"wartortle", &"blastoise",
 		&"caterpie", &"metapod", &"butterfree", &"weedle", &"kakuna", &"beedrill",
 		&"pidgey", &"pidgeotto", &"pidgeot", &"rattata", &"raticate", &"spearow", &"fearow",
-		&"pikachu", &"raichu", &"sandshrew", &"sandslash", &"nidoran_f", &"nidorina",
-		&"nidoqueen", &"nidoran_m", &"nidorino", &"nidoking",
+		&"ekans", &"arbok", &"pikachu", &"raichu", &"sandshrew", &"sandslash", &"nidoran_f",
+		&"nidorina", &"nidoqueen", &"nidoran_m", &"nidorino", &"nidoking", &"clefairy",
+		&"clefable", &"jigglypuff", &"wigglytuff", &"zubat", &"golbat", &"oddish", &"gloom",
+		&"paras", &"parasect",
 		# Jalon 15 (T12) : Miaouss et Persan (kanto_vermilion.json).
 		&"meowth", &"persian",
-		&"mankey", &"primeape",
-		&"geodude", &"graveler", &"golem", &"onix"] as Array[StringName])
-	assert_eq(_data.get_move_ids().size(), 68,
-		"47 + 12 de la Forêt de Jade (jalon 9) + 7 d'Argenta (jalon 10) + Patience (J11)"
-		+ " + Jackpot (J15)")
+		&"mankey", &"primeape", &"bellsprout", &"weepinbell",
+		&"geodude", &"graveler", &"golem", &"shellder", &"onix", &"voltorb", &"koffing",
+		&"horsea", &"goldeen", &"staryu", &"starmie"] as Array[StringName])
+	assert_eq(_data.get_move_ids().size(), 97,
+		"47 + 12 de la Forêt de Jade (jalon 9) + 7 d'Argenta (jalon 10) + Patience (J11) "
+		+ "+ 21 du Mont Sélénite (jalon 12) + 8 du jalon 13 (les 5 du J12 qu'il reprenait : "
+		+ "entrées du J12) + Jackpot (J15)")
 	assert_true(_data.has_move(&"struggle"))
 
 
@@ -133,6 +137,14 @@ func test_real_evolution_chains() -> void:
 		# Argenta (jalon 10, §2.3) : Rouge/Bleu ; Grolem par échange (« ??? » au Pokédex).
 		&"sandshrew": [&"sandslash", 22], &"geodude": [&"graveler", 25],
 		&"graveler": [&"golem", &""],
+		# Route 3 et Mont Sélénite (jalon 12, §2.19) : Rouge/Bleu ; Mélofée et Rondoudou par la
+		# Pierre Lune.
+		&"ekans": [&"arbok", 22], &"zubat": [&"golbat", 22], &"paras": [&"parasect", 24],
+		&"clefairy": [&"clefable", &"moon_stone"], &"jigglypuff": [&"wigglytuff", &"moon_stone"],
+		# Azuria (jalon 13, §2.15) : seules les évolutions par niveau vers une espèce présente ;
+		# Ortide et Boustiflor (Pierre Plante), Stari (Pierre Eau), Hypotrempe et Poissirène
+		# (formes absentes) n'en déclarent pas.
+		&"oddish": [&"gloom", 21], &"bellsprout": [&"weepinbell", 21],
 		# Carmin-sur-Mer (jalon 15, §2.7.1) : Rouge/Bleu.
 		&"meowth": [&"persian", 28],
 	}
@@ -387,6 +399,13 @@ func test_real_catch_rates_are_the_official_ones() -> void:
 		&"weedle": 255, &"kakuna": 120, &"beedrill": 45, &"pikachu": 190, &"raichu": 75,
 		&"sandshrew": 255, &"sandslash": 90, &"geodude": 255, &"graveler": 120, &"golem": 45,
 		&"onix": 45,
+		# Jalon 12.
+		&"ekans": 255, &"arbok": 90, &"clefairy": 150, &"clefable": 25, &"jigglypuff": 170,
+		&"wigglytuff": 50, &"zubat": 255, &"golbat": 90, &"paras": 190, &"parasect": 75,
+		&"voltorb": 190, &"koffing": 190,
+		# Jalon 13 (Azuria).
+		&"oddish": 255, &"gloom": 120, &"bellsprout": 255, &"weepinbell": 120,
+		&"shellder": 190, &"horsea": 225, &"goldeen": 225, &"staryu": 225, &"starmie": 60,
 		# Jalon 15 (T12).
 		&"meowth": 255, &"persian": 90,
 	}

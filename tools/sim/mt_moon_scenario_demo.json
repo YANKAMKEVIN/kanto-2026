@@ -1,0 +1,79 @@
+{
+	"version": 1,
+	"description": "Scénario RÉDUIT de démonstration (espèces déjà dans les données) : même parcours que mt_moon_scenario.json, adversaires remplacés par des espèces existantes. Sert à vérifier que l'outil tourne avant le T12 ; ses résultats ne disent rien de l'équilibrage du J12.",
+	"seeds": 100,
+	"heal_at_start": true,
+	"teams": [
+		{
+			"name": "Salamèche 15, Férosinge 15, Roucool 13",
+			"members": [
+				{ "species": "charmander", "level": 15 },
+				{ "species": "mankey", "level": 15 },
+				{ "species": "pidgey", "level": 13,
+					"ivs": [20, 20, 20, 20, 20, 20] }
+			]
+		}
+	],
+	"tables": {
+		"route_3_grass": {
+			"maps": ["route_3"], "terrain": "grass", "rate": 25,
+			"ramp": { "from_step": 15, "max_steps": 20 },
+			"slots": [
+				{ "species": "spearow", "levels": [8, 10], "weight": 35 },
+				{ "species": "rattata", "levels": [8, 9], "weight": 25 },
+				{ "species": "sandshrew", "levels": [8, 10], "weight": 15 },
+				{ "species": "nidoran_m", "levels": [8, 10], "weight": 25 }
+			]
+		},
+		"mt_moon_1f_rubble": {
+			"maps": ["mt_moon_1f"], "terrain": "rubble", "rate": 25,
+			"ramp": { "from_step": 15, "max_steps": 20 },
+			"slots": [
+				{ "species": "geodude", "levels": [8, 10], "weight": 70 },
+				{ "species": "sandshrew", "levels": [8, 10], "weight": 30 }
+			]
+		}
+	},
+	"trainers": {
+		"route_3_hugo": {
+			"name": "Gamin Hugo", "ai": "random",
+			"can_lose": false, "heal_after": false, "gives_exp": true, "prize_money": 150,
+			"team": [{ "species": "rattata", "level": 10 }, { "species": "spearow", "level": 10 }]
+		},
+		"route_3_lea": {
+			"name": "Fillette Léa", "ai": "random",
+			"can_lose": false, "heal_after": false, "gives_exp": true, "prize_money": 135,
+			"team": [{ "species": "pidgey", "level": 9 }, { "species": "nidoran_f", "level": 9 }]
+		},
+		"mt_moon_rocket_1": {
+			"name": "Sbire Rocket", "ai": "random",
+			"can_lose": false, "heal_after": false, "gives_exp": true, "prize_money": 330,
+			"team": [{ "species": "rattata", "level": 11 }, { "species": "geodude", "level": 11 }]
+		},
+		"mt_moon_rocket_3": {
+			"name": "Sbire Rocket", "ai": "smart",
+			"can_lose": false, "heal_after": false, "gives_exp": true, "prize_money": 450,
+			"team": [{ "species": "sandshrew", "level": 13 }, { "species": "geodude", "level": 13 },
+				{ "species": "raticate", "level": 15 }]
+		}
+	},
+	"steps": [
+		{ "label": "D1 Gamin Hugo (sortie)", "trainer": "route_3_hugo" },
+		{ "label": "Route 3 : H2 ou H3 (4 cases)", "wild": "route_3_grass", "cells": 4 },
+		{ "label": "D2 Fillette Léa (jonction)", "trainer": "route_3_lea" },
+		{ "label": "Route 3 : H4 (4 cases + 1 forcée)", "wild": "route_3_grass", "cells": 4,
+			"count": 1 },
+		{ "label": "Centre du Mont Sélénite", "center": true },
+		{ "label": "1F : gravats (3 cases + 2 forcées)", "wild": "mt_moon_1f_rubble",
+			"cells": 3, "count": 2 },
+		{ "label": "R1 Sbire guetteur (B1F)", "trainer": "mt_moon_rocket_1" },
+		{ "label": "R3 Sbire gardien (B2F)", "trainer": "mt_moon_rocket_3" }
+	],
+	"variants": [
+		{ "name": "attentif, sans soins", "player": "attentif", "center": false },
+		{ "name": "attentif, Centre, 3 Potions, 1 Antidote, fuite sous 1/4",
+			"player": "attentif", "center": true, "items": { "potion": 3, "antidote": 1 },
+			"flee_below": 0.25 },
+		{ "name": "naïf, Centre, 1 reprise", "player": "naif", "center": true, "retries": 1 }
+	]
+}

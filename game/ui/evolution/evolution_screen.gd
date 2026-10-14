@@ -122,8 +122,9 @@ func _input(event: InputEvent) -> void:
 	if touch == null or not touch.pressed:
 		return
 	if not _waiting_touch:
-		# Toucher pendant la séquence (hors ARRÊTER) : elle se joue ×2 (jalon 11).
-		if _rushable and not _stop.get_global_rect().has_point(touch.position):
+		# Toucher pendant la séquence (hors ARRÊTER) : elle se joue ×2 (jalon 11). Seul un ARRÊTER
+		# affiché garde sa zone : sans lui (pierre, jalon 12 ; présentation), tout l'écran accélère.
+		if _rushable and not _covers_stop(touch.position):
 			rush()
 		return
 	get_viewport().set_input_as_handled()
@@ -181,7 +182,8 @@ func present(view: EvolutionView) -> void:
 ## s'interrompt aussitôt. Rend [code]false[/code] arrivée à son terme.
 func transform() -> bool:
 	_transforming = true
-	_show_stop(true)
+	# Jalon 12 (T23) : une évolution non annulable (pierre) n'offre pas ARRÊTER.
+	_show_stop(is_cancellable())
 	var time := UiTokens.EVOLUTION_TRANSFORM * speed_scale
 	if time <= 0.0:
 		_apply_progress(1.0)
@@ -269,7 +271,8 @@ func close() -> void:
 
 
 ## Retour Android pendant l'écran : pendant [method transform], arrête la transformation
-## (comme ARRÊTER) ; ailleurs, sans effet. Vrai tant que l'écran est ouvert (le geste ne passe
+## (comme ARRÊTER), sauf pour une évolution non annulable (pierre, jalon 12) ; ailleurs, sans
+## effet. Vrai tant que l'écran est ouvert (le geste ne passe
 ## jamais à ce qui est dessous).
 func handle_back() -> bool:
 	if _transforming:
@@ -397,9 +400,10 @@ func _end_transformation() -> void:
 	_transformation_ended.emit()
 
 
-## ARRÊTER ou retour Android pendant la transformation : elle s'interrompt aussitôt.
+## ARRÊTER ou retour Android pendant la transformation : elle s'interrompt aussitôt (jamais
+## pour une évolution non annulable).
 func _request_cancel() -> void:
-	if not _transforming or _cancel_requested:
+	if not _transforming or _cancel_requested or not is_cancellable():
 		return
 	_cancel_requested = true
 	_stop.disabled = true
@@ -411,7 +415,7 @@ func _request_cancel() -> void:
 
 
 func _on_stop_pressed() -> void:
-	if not _transforming:
+	if not _transforming or not is_cancellable():
 		return
 	Haptics.vibrate(UiTokens.HAPTIC_TAP_MS)
 	_request_cancel()
@@ -634,6 +638,12 @@ func _hide_hint() -> void:
 	_kill_hint()
 	_hint.visible = false
 	_hint.modulate.a = 0.0
+
+
+## Vrai si [param point] tombe sur ARRÊTER **affiché** (visible et pas encore en fondu de sortie
+## après un toucher) : seule zone où un toucher n'accélère pas la séquence.
+func _covers_stop(point: Vector2) -> bool:
+	return _stop.visible and is_cancellable() and _stop.get_global_rect().has_point(point)
 
 
 func _kill_hint() -> void:
@@ -972,3 +982,9 @@ static func _faded(color: Color, alpha: float) -> Color:
 	var faded := color
 	faded.a = alpha
 	return faded
+
+
+## L'évolution présentée peut être arrêtée (jalon 12, T23 : faux pour une pierre,
+## [member EvolutionView.cancellable]) ; vrai sans vue.
+func is_cancellable() -> bool:
+	return _view == null or _view.cancellable

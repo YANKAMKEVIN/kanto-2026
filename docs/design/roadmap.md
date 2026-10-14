@@ -95,6 +95,12 @@ boucle longue : Bourg Palette → routes → captures → ville → préparation
   Reptincel et Pikachu en attente (12 espèces éligibles).
 
 ### Phase 8 — Kanto devient un monde (J12+)
+- **J12 terminé** (2026-10-14, après validation de Kevin) : Route 3 (six Dresseurs, objet
+  caché), Centre du Mont Sélénite, Mont Sélénite sur trois étages (gravats, échelles, lumière
+  rare, Corde Sortie), Team Rocket (trois Sbires qui partent après leur défaite), chercheur
+  Gaspard et choix définitif d'un fossile (Grand moment), Pierre Lune et évolution par pierre,
+  CT01, sas de la Route 4 ; moteur : drain, piège, Entrave, Repos, Destruction ; sauvegarde
+  inchangée (v6).
 Les systèmes principaux existent : on produit le contenu. Mont Sélénite, Azuria (Léo), Carmin-sur-Mer
 (Major Bob), Océane, Lavanville, Céladopole (Erika), Team Rocket, Safrania (Morgane), Parmanie (Koga),
 Cramois'Île (Auguste), Jadielle finale (Giovanni), Route Victoire, Ligue.
@@ -127,7 +133,7 @@ l'histoire principale. À reprendre à la conception de chaque jalon concerné.
 |---|---|---|
 | 1 | Laboratoire de Chen — Bourg Palette | fait (J4) ; dossier 02 |
 | 2 | Route 22 — près de Jadielle | prévu au J7B ; dossier 09 §13–15 (rencontre facultative) |
-| 3 | Azuria / Pont Pépite | à concevoir |
+| 3 | Azuria / Pont Pépite | **fait (J13, 2026-10-14)** ; dossier 16 §7 : **victoire obligatoire**, rejouable après défaite ; Roucoups, Rattata, starter évolué |
 | 4 | S.S. Anne — Carmin-sur-Mer | à concevoir |
 | 5 | Tour Pokémon — Lavanville | à concevoir ; tournant du rival déjà posé au dossier 06 §6 |
 | 6 | Sylphe SARL — Safrania | à concevoir |
@@ -135,6 +141,8 @@ l'histoire principale. À reprendre à la conception de chaque jalon concerné.
 | 8 | Plateau Indigo — combat final contre le rival devenu Maître de la Ligue | à concevoir ; dossier 06 §6 « Final », phase 9 ci-dessus |
 
 - **Chaque combat contre le rival est enregistré comme un Grand moment, victoire comme défaite**
+  (précision du 2026-10-11, dossier 16 D-5 : pour un combat **obligatoire et rejouable**, comme le n° 3,
+  un seul Grand moment, écrit à la victoire)
   (décision existante : `rival_battle` avec son issue, jalon 5 et jalon 6 §6E).
 - **Non décidé, à ne pas verrouiller** : équipes, niveaux, dialogues, mises en scène et
   adaptations propres à Kanto 2026 de chaque combat. Décidés avec Kevin à la conception du jalon.
@@ -153,10 +161,10 @@ J8  Route 2
 J9  Forêt de Jade
 J10 Argenta + Arène Pierre + Badge
 J11 Grande passe systèmes (évolutions / CT / statuts / équipe avancée / compagnon)
-J12 Route 3 + Mont Sélénite (dossier 15)   ← ICI
-J13 Route 4 + Azuria + Ondine + rival n° 3 + Pont Pépite (dossier 16)
-J14 Route 25 + Cap d'Azuria + Léo + cambriolage (dossier 17)
-J15 Route 5 + Pension + souterrain + Route 6 + Carmin-sur-Mer (dossier 18)
+J12 Route 3 + Mont Sélénite (dossier 15)   ✅
+J13 Route 4 + Azuria + Ondine + rival n° 3 + Pont Pépite (dossier 16)   ✅
+J14 Route 25 + Cap d'Azuria + Léo + cambriolage (dossier 17)   ← ICI
+J15 Route 5 + Pension + souterrain + Route 6 + Carmin-sur-Mer (dossier 18)   (en cours, en parallèle)
 J16 S.S. Anne + rival n° 4 + Coupe + Major Bob + Badge Foudre (dossier 16, branche `ccr-fa255d49-wvvacc`)
 J17+ Suite de Kanto → Ligue → post-game
 ```

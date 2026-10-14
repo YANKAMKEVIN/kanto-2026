@@ -648,6 +648,7 @@ func test_every_species_met_in_battle_has_its_sprites() -> void:
 	# jalon-09.md §2.5 (T1) : sprites provisoires (tools/gen_placeholder_battlers.gd) pour
 	# chaque espèce d'une table de rencontres ou d'une équipe de Dresseur, et pour les huit
 	# espèces de la Forêt de Jade (les évolutions naissent en combat, Raichu au Pokédex).
+	# Toutes les espèces des données (évolutions comprises) : test_battle_art.gd (QA 12A).
 	var data := PokemonData.new()
 	data.load_dir()
 	var species: Array[StringName] = [&"caterpie", &"metapod", &"butterfree", &"weedle",
@@ -669,3 +670,42 @@ func test_every_species_met_in_battle_has_its_sprites() -> void:
 		for back: bool in [false, true]:
 			var path := BattleStage.sprite_path(id, back)
 			assert_true(ResourceLoader.exists(path), path)
+
+
+## Jalon 13 : un Dresseur rappelle son Pokémon (même mouvement que le joueur), puis le suivant
+## entre à sa place, à sa taille.
+func test_foe_withdraw_then_the_next_one_enters() -> void:
+	await _enter()
+	var sprite := _stage.get_sprite(FOE_SIDE)
+	var scale := sprite.scale
+	await _stage.play_withdraw(FOE_SIDE)
+	assert_false(sprite.visible, "rappelé : caché")
+	assert_true(_stage.get_sprite(PLAYER_SIDE).visible)
+	_stage.show_pokemon(FOE_SIDE, &"pidgey")
+	await wait_process_frames(1)
+	assert_true(sprite.visible)
+	assert_eq(sprite.position, _anchors()["foe_feet"])
+	assert_almost_eq(sprite.scale.x, _scale(&"pidgey", false), 0.001)
+	assert_ne(sprite.scale, scale * BattleStage.WITHDRAW_SCALE, "taille rendue")
+
+
+## « Réduire les animations » : le rappel ne rétrécit pas, il s'efface seulement.
+func test_withdraw_without_shrink_when_motion_is_reduced() -> void:
+	await _enter()
+	_stage.speed_scale = 1.0
+	_stage.reduce_motion = true
+	var sprite := _stage.get_sprite(FOE_SIDE)
+	var scale := sprite.scale
+	var done: Array[bool] = [false]
+	var clock := TweenClock.new(get_tree())
+	var runner := func() -> void:
+		await _stage.play_withdraw(FOE_SIDE)
+		done[0] = true
+	runner.call()
+	clock.run_until(func() -> bool: return false, BattleStage.WITHDRAW_DURATION * 0.5)
+	assert_eq(sprite.scale, scale, "pas de rétrécissement")
+	assert_between(sprite.modulate.a, 0.05, 0.95, "fondu en cours")
+	clock.run_until(func() -> bool: return done[0], 1.0)
+	clock.release()
+	assert_true(done[0])
+	assert_false(sprite.visible)

@@ -1,0 +1,34 @@
+# Maison ouverte d'Azuria (cerulean_house) — grille fonctionnelle (jalon 13, dossier 16 §4.3 ;
+# préparée le 2026-10-11). Enveloppe réutilisée 15 × 10 (même coque que les maisons d'Argenta, voir
+# argenta_maison_tailleur.txt), mobilier propre : canapé, grand aquarium, cuisine, table. Une
+# habitante qui parle de la ville et de l'eau (texte 18). Aucune récompense.
+#
+# Légende :
+#   K mur (bloqué)          . sol (praticable)
+#   X sortie vers Azuria (praticable : paillasson, PUSH ↓)
+#   S canapé (1..3, 3)   A aquarium (5..7, 3)   F réfrigérateur (9, 3)   C plan de travail
+#   (10..11, 3)   H cuisinière (12, 3)   d lampe (13, 3)   T table à manger (9..11, 5..6)
+#   x plante (1, 7), (13, 7)   h habitante (4, 5), devant le canapé
+#
+# Format : section GRILLE (« NN » + espace + 15 caractères par rangée), puis POSITIONS.
+
+PRATICABLES .X
+
+GRILLE 15 10
+00 KKKKKKKKKKKKKKK
+01 KKKKKKKKKKKKKKK
+02 KKKKKKKKKKKKKKK
+03 KSSS.AAA.FCCHdK
+04 K.............K
+05 K...h....TTT..K
+06 K........TTT..K
+07 Kx...........xK
+08 KKKKKKXXXKKKKKK
+09 KKKKKKKKKKKKKKK
+FIN
+
+POSITIONS
+sortie              warp           6..8,8       libre   # PUSH ↓ → cerulean_city, from_house
+entree              spawn          7,8          libre   # spawn « entrance », tourné ↑
+habitante           pnj            4,5          bloque  role=H facing=right  # « Toute l'eau d'Azuria descend du nord. » (texte 18)
+FIN

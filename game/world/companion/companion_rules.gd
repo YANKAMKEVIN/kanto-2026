@@ -11,8 +11,8 @@ extends RefCounted
 ##   (dépôt, libération) ; il évolue en espèce non éligible (A-11, en silence).
 ## - **Curiosité** : la phrase dépend seulement de faits visibles, dans cet ordre : PV ≤ 1/3
 ##   (n° 55), statut (n° 56), eau à 2 cases au plus (n° 59), contexte de la carte (forêt n° 57,
-##   ville n° 58), sinon une des cinq génériques (n° 50 à 54), jamais deux fois de suite la même
-##   (D-8). Le tirage est fourni par l'appelant, **hors** [GameRng] (l'aléatoire du jeu n'est
+##   ville n° 58 ; grotte, jalon 12, dossier 15 §20 n° 40), sinon une des cinq génériques
+##   (n° 50 à 54), jamais deux fois de suite la même (D-8). Le tirage est fourni par l'appelant, **hors** [GameRng] (l'aléatoire du jeu n'est
 ##   pas touché).
 
 ## Phrases de curiosité : identifiants des dialogues (`data/dialogues/companion.json`, T20).
@@ -22,6 +22,8 @@ const LINE_WATER: StringName = &"companion_water"
 const CONTEXT_LINES: Dictionary[StringName, StringName] = {
 	&"forest": &"companion_forest",
 	&"city": &"companion_city",
+	# Jalon 12 (T20, dossier 15 §20 n° 40) : les étages du Mont Sélénite.
+	&"cave": &"companion_cave",
 }
 const GENERIC_LINES: Array[StringName] = [
 	&"companion_happy", &"companion_sniff", &"companion_watch", &"companion_stretch",

@@ -24,7 +24,8 @@ extends RefCounted
 ## [constant STARTER] et [constant FIRST_CAPTURE] ; {outcome} pour [constant RIVAL_BATTLE]
 ## (texte de « outcomes » d'après l'issue enregistrée : « win », « loss »…) ; {badge}, {city},
 ## {leader} pour [constant BADGE] (nom du badge, ville et Champion lus dans [BadgeLibrary]
-## d'après le badge des détails, J10). « zone_arrivals »
+## d'après le badge des détails, J10) ; {fossil} pour [constant FOSSIL] (nom de l'objet des
+## détails, lu dans [ItemLibrary], J12). « zone_arrivals »
 ## (facultatif) : titre et détail propres à la première arrivée dans une zone (identifiant de
 ## [ZoneLibrary], vérifié par [method check_references]) ; sinon le texte de
 ## [constant ZONE_ARRIVAL]. Toute clé inconnue est une erreur ; une entrée invalide est écartée,
@@ -40,7 +41,14 @@ const FIRST_CAPTURE: StringName = &"first_capture"
 const ZONE_ARRIVAL: StringName = &"zone_arrival"
 ## Badge obtenu (J10, dossier 12 §13 ; détails : [BadgeMoment]).
 const BADGE: StringName = BadgeMoment.TYPE
-const TYPES: Array[StringName] = [STARTER, RIVAL_BATTLE, FIRST_CAPTURE, ZONE_ARRIVAL, BADGE]
+## Fossile obtenu au Mont Sélénite (J12, dossier 15 §20 n° 30 ; détails : { "item": fossile },
+## étape « moment » des scènes).
+const FOSSIL: StringName = &"fossil"
+## Ajouts en fin (types des jalons suivants après).
+const TYPES: Array[StringName] = [STARTER, RIVAL_BATTLE, FIRST_CAPTURE, ZONE_ARRIVAL, BADGE,
+	FOSSIL]
+## Clé des détails d'un moment [constant FOSSIL] : l'objet obtenu (identifiant de [ItemLibrary]).
+const DETAIL_ITEM: String = "item"
 
 const MARK_ZONE: String = "{zone}"
 const MARK_SPECIES: String = "{species}"
@@ -48,6 +56,7 @@ const MARK_OUTCOME: String = "{outcome}"
 const MARK_BADGE: String = "{badge}"
 const MARK_CITY: String = "{city}"
 const MARK_LEADER: String = "{leader}"
+const MARK_FOSSIL: String = "{fossil}"
 
 const _ROOT_KEYS: Array[String] = ["moments", "outcomes", "zone_arrivals"]
 const _TEXT_KEYS: Array[String] = ["title", "detail", "draft"]
@@ -59,6 +68,7 @@ const _MARKS: Dictionary[StringName, Array] = {
 	FIRST_CAPTURE: [MARK_ZONE, MARK_SPECIES],
 	ZONE_ARRIVAL: [MARK_ZONE],
 	BADGE: [MARK_ZONE, MARK_BADGE, MARK_CITY, MARK_LEADER],
+	FOSSIL: [MARK_ZONE, MARK_FOSSIL],
 }
 
 var _texts: Dictionary[StringName, MomentTextData] = {}

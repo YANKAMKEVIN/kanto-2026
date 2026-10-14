@@ -168,6 +168,26 @@ d'`origin/main`.
 
 ### 1.2 « Maintenant » (A) ou « après un autre jalon » (B)
 
+> **Mise à jour du 2026-10-14 — J12 et J13 dans `main`, fusionnés dans le J15** (branche
+> `j15-sync-j12` depuis `jalon-15` à `2b224be`, `origin/main` à `4f0ee90` : J12 `2b2745f` + J13).
+> La sauvegarde reste en **v7** (J12 et J13 n'ont pas de version). Bilan des tâches (B), avec les
+> **vrais noms** du code fusionné (le tableau ci-dessous est corrigé en conséquence) :
+>
+> | Tâche | Devient | Ce qui existe maintenant (vrais noms) | Ce qui reste à attendre |
+> |---|---|---|---|
+> | **T16** rencontres + Corde Sortie au stock | **(A)** | espèces `oddish`, `gloom`, `bellsprout`, `weepinbell` dans `data/pokemon/species/kanto.json` (J13) ; objet `escape_rope` dans `data/items/mt_moon.json` (J12), déjà au stock de `pewter_mart.json` et `cerulean_mart.json` ; tables prêtes dans `tools/pending_data/j15/encounters/route_5.json`, `route_6.json` → `data/encounters/` (modèle `route_3.json`, `route_4.json`) ; ajouter `{ "item": "escape_rope" }` à `data/shops/vermilion_mart.json` (et à `test_vermilion_data`) | rien d'un autre jalon ; les tables ne servent qu'une fois les cartes `route_5` / `route_6` posées (T13, T14) |
+> | **T17** Jackpot dans le moteur | **(A)** pour le moteur | `MoveEffect.Kind` finit par `DRAIN, TRAP, DISABLE, REST, SELF_KO` (`game/pokemon/moves/move_effect.gd:52`) → `COINS` **après `SELF_KO`** + entrée `"coins"` dans `MoveEffect.KIND_NAMES` ; `BattleEvent.Kind` finit par `… RESTED, SELF_KO` (`battle_event.gd:121`) → `COINS_SCATTERED` en fin ; `BattleConclusion.resolve(trainer, outcome, last_foe_level := 0)` (`battle_conclusion.gd:24`) → paramètre `coins` en fin ; `PayDayPurse` (`game/battle/pay_day_purse.gd`, déjà là) ; `pay_day` de `data/pokemon/moves/vermilion.json` perd `pending_effects` (lu par `PokemonData`, `pokemon_data.gd:492`) ; messages dans `data/battle/messages.json` | **Q-1** (annexe A) pour les deux messages du Jackpot : moteur et tests faisables avant, textes branchés après validation |
+> | **T18** carte du souterrain | **(A)** côté moteur | `PaintedGround.base_texture` / `r_texture` / `g_texture` (`game/world/ground/painted_ground.gd`) ; `LightGlow.glow_type` (`game/world/lighting/light_glow.gd`) + types `lamp shaft shard projector beam` de `data/world/light_glows.json` → `sconce` **en fin** ; `LightGlowLibrary.MAX_PER_MAP` ; boîte à outils `tools/cave_map_kit.gd` (sol `Ground` logique, escaliers `WarpPoint` STEP_ON, halos) et voile `tools/cave_shade.gd` (facultatif) ; `CaveLibrary.is_cave` + `data/world/caves.json` (le souterrain n'y est **pas**) ; `FieldItemRules.check(item, map_id, caves)` → `Check.NOT_HERE` pour la Corde Sortie (tests modèles `test_field_item_rules`, `test_escape_rope`) ; profils de `lighting.json` (`cave_1f` etc. comme modèles de `underground`) | art de la série 17 (T9/T11) et vue générale du souterrain validée |
+> | **T19** objets cachés | **(A)** | `InteractPoint.unless_flags: Array[StringName]` (`game/world/interactions/interact_point.gd:21`, recopié dans l'`Interaction`) ; modèle d'outil `_add_hidden_item` de `tools/build_route_24.gd` (J13 : indice teinté + `add_interactable` + `unless_flags = [got_<id>]`) et `HIDDEN_ITEMS` de `tools/build_mt_moon.gd` ; tests modèles `tests/integration/test_hidden_items.gd`, `test_hidden_item_point.gd` | les cartes `route_5`, `underground_path`, `route_6` (T13, T14, T18) |
+> | **T20** compagnon | **(A)** (déjà vrai depuis T1 : 11D était dans `main`) | `CompanionRules`, `CompanionTrail` (`game/world/companion/`), `data/pokemon/companions.json` (25 espèces, pas encore `meowth`) ; phrase `companion_cave` du J12 réservée aux cartes de `caves.json` (le souterrain garde le repli « route », §2.10) | planche de Miaouss validée (T10) |
+> | **T21** raccord nord réel + Passe Bateau | **reste (B)** | J13 : `cerulean_city` existe, mais son bord sud est fermé **sans warp** (`SouthBarrier` → dialogue `cerulean_closed_exit`, `tools/build_cerulean_city.gd:99`) | **J14** : ouverture du sud d'Azuria, `from_cerulean`, `ss_ticket` |
+>
+> Hors (B) mais utile : l'évolution par objet du J12 est **`EvolutionDirector.play_item(candidate,
+> party, item_id)`** avec **`EvolutionCandidate.cancellable`** (faux pour une pierre) et le signal
+> **`evolution_applied(party_index, into)`** (`game/systems/evolution/evolution_director.gd`) ; la
+> Pension continue d'utiliser `play` (annulable, F-3). Session **15A** : ne dépend plus que des
+> cartes (T13, T18) et de l'art ; **15B** : du moteur du Jackpot (T17) et de Q-1 pour ses textes.
+
 **Règles des tâches (A)** : branche d'intégration **`jalon-15`**, dans une copie dédiée
 (mémoire « worktree d'intégration ») ; **T1 y fusionne d'abord `origin/main`** (J11 11A/11B, v6) ;
 une branche par tâche (`j15-t<n>-<sujet>`), **jamais fusionnée dans `main` avant la fin du J15** ;
@@ -203,12 +223,12 @@ réécriture ; le conflit se résout à la fusion. Aucune tâche (A) ne touche `
 | T13 Cartes Route 5, intérieurs, postes | constructeur-monde | **(A)**, après T11, Route 5 v2 | J13/J14 pour le raccord nord → **bouchon `coming_soon`** | outils et scènes nouveaux |
 | T14 Cartes Route 6 et Carmin + intérieurs | constructeur-monde | **(A)**, après T11 | — | idem |
 | T15 Vie des cartes (PNJ, Dresseurs, objets visibles, panneaux, gardes, marin, arbre) | constructeur-monde | **(A)**, après T12–T14 | — | données nouvelles |
-| T16 Rencontres + stock final de Carmin | architecte | **(B)** | **J13** (espèces), **J12** (`escape_rope`) | fichiers préparés au T12 sans les lignes manquantes (§2.7.5, §2.7.6) |
-| T17 Jackpot (moteur) | architecte | **(B)** | **J12** T13 (`MoveEffect.Kind`, `battle.gd`) | donnée `pay_day` posée au T12 avec `pending_effects: ["pay_day"]` ; règle pure `PayDayPurse` écrite en (A) |
-| T18 Carte du souterrain | constructeur-monde | **(B)** | **J12** T7 (`PaintedGround` réglable, `LightGlow`) | art, PNJ, dialogues, bâtiments d'entrée faits en (A) ; tests de grille écrits en (A) sur `PlanGrid` |
-| T19 Objets cachés (3) | constructeur-monde | **(B)** | **J12** T17 (`InteractPoint.unless_flags`) | dialogues, scènes `give found`, décors-indices posés en (A) (T15) ; seul l'`InteractPoint` attend |
-| T20 Compagnon (Miaouss, souterrain) | constructeur-monde | **(B)** | **J11** 11D | planche faite (T10) ; `companions.json` après 11D |
-| T21 Raccord nord réel + Passe Bateau | constructeur-monde | **(B)** | **J13** (`cerulean_city`), **J14** (barrage, `ss_ticket`) | `coming_soon = "Azuria"` jusque-là |
+| T16 Rencontres + stock final de Carmin | architecte | **(A)** depuis le 2026-10-14 | ~~J13, J12~~ dans `main` ; cartes T13/T14 pour jouer | tables de `tools/pending_data/j15/encounters/` → `data/encounters/` ; `escape_rope` au stock (§2.7.5, §2.7.6) |
+| T17 Jackpot (moteur) | architecte | **(A)** depuis le 2026-10-14 | ~~J12~~ dans `main` ; **Q-1** pour les messages | `MoveEffect.Kind.COINS` après `SELF_KO`, `BattleEvent.Kind.COINS_SCATTERED` en fin, `BattleConclusion.resolve(…, coins)` ; `PayDayPurse` déjà là |
+| T18 Carte du souterrain | constructeur-monde | **(A)** depuis le 2026-10-14 | ~~J12~~ dans `main` ; art T11 et vue générale | `PaintedGround` réglable, `LightGlow` (`sconce` en fin de `light_glows.json`), `tools/cave_map_kit.gd` ; hors `caves.json` |
+| T19 Objets cachés (3) | constructeur-monde | **(A)** depuis le 2026-10-14 | ~~J12~~ dans `main` ; cartes T13, T14, T18 | `InteractPoint.unless_flags`, modèle `_add_hidden_item` (`build_route_24.gd`) |
+| T20 Compagnon (Miaouss, souterrain) | constructeur-monde | **(A)** (11D dans `main` dès T1) | planche T10 | entrée `meowth` dans `companions.json` |
+| T21 Raccord nord réel + Passe Bateau | constructeur-monde | **(B)** | ~~J13~~ dans `main` ; **J14** (sud d'Azuria ouvert, `from_cerulean`, `ss_ticket`) | `coming_soon = "Azuria"` jusque-là |
 | T22 Sessions 15A puis 15B | qa-mobile | après T16–T19 | — | — |
 | T23 Clôture | architecte | fin | — | — |
 
@@ -713,26 +733,26 @@ et annexe A validée).
   `test_route_6_trainers` (Chloé, réplique « après », récompenses), `test_vermilion_life`
   (marin, arbre, Fan Club, Boutique : Super Potion 700 ₽), `test_objective_library`.
 
-#### T16 — architecte : rencontres + Corde Sortie au stock — **(B : J13 puis J12 dans `main`)**
+#### T16 — architecte : rencontres + Corde Sortie au stock — **(A depuis le 2026-10-14 : J12 et J13 dans `main`, §1.2)**
 - §2.7.5, §2.7.6 ; `test_encounter_library` (tables par carte), Miaouss vu sur la Route 5 en vraie
   scène. **CA** : tests verts.
 
-#### T17 — architecte : Jackpot dans le moteur — **(B : J12 dans `main`)**
+#### T17 — architecte : Jackpot dans le moteur — **(A depuis le 2026-10-14 ; messages après Q-1, §1.2)**
 - §2.7.3 ; messages de l'annexe A dans `messages.json` ; `test_battle_pay_day`.
 
-#### T18 — constructeur-monde : carte du souterrain — **(B : J12 T7 dans `main`)**
+#### T18 — constructeur-monde : carte du souterrain — **(A depuis le 2026-10-14, après l'art T11, §1.2)**
 - §2.3 ; `build_underground_path.gd`, profil `underground`, `sconce`, PNJ ; `test_underground_path`
   (grille, 41 pas, escaliers aller-retour, hors `caves.json`, `interior == false`, Corde Sortie
   refusée), captures (luminosité par défaut).
 
-#### T19 — constructeur-monde : objets cachés — **(B : J12 T17 dans `main`)**
+#### T19 — constructeur-monde : objets cachés — **(A depuis le 2026-10-14, après T13, T14, T18, §1.2)**
 - §2.8 ; `test_hidden_items` étendu aux trois caches (bouton face à l'indice seulement, toast,
   T-19 pour la Guérison, absent ensuite même après rechargement).
 
-#### T20 — constructeur-monde : compagnon — **(B : J11 11D dans `main`)**
+#### T20 — constructeur-monde : compagnon — **(A : J11 11D dans `main`, §1.2)**
 - §2.10. **CA** : Miaouss compagnon dans la galerie et le souterrain ; dépôt du compagnon → aucun.
 
-#### T21 — constructeur-monde : raccord nord réel et Passe Bateau — **(B : J13 et J14 dans `main`)**
+#### T21 — constructeur-monde : raccord nord réel et Passe Bateau — **(B : J14 dans `main` ; J13 y est)**
 - Bord nord → `cerulean_city` / `from_route_5_*` (sans `coming_soon`) ; le J14 a posé
   `from_cerulean` côté Azuria. Tests : reprise d'une partie sauvegardée sur le raccord « ROUTE 5 —
   À venir » du J14 ; marin identique avec et sans `ss_ticket`.

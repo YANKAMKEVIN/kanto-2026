@@ -1315,6 +1315,62 @@
    "cases": 3,
    "ombre": false,
    "contact": 0.2
+  },
+  {
+   "id": "relief_entree_grotte_01",
+   "source": "WORLD_RELIEF_ENTREE_GROTTE_01_NE_r2.png",
+   "sortie": "assets/world/relief/relief_entree_grotte_01.png",
+   "axe": "w",
+   "cases": 4,
+   "ombre": false,
+   "contact": 0.0
+  },
+  {
+   "id": "prop_mare_grotte_01",
+   "source": "WORLD_PROP_MARE_GROTTE_01_NE_r1.png",
+   "sortie": "assets/world/props/prop_mare_grotte_01.png",
+   "axe": "w",
+   "cases": 4,
+   "ombre": false,
+   "contact": null
+  },
+  {
+   "id": "decal_puits_jour_01",
+   "source": "WORLD_DECAL_PUITS_JOUR_01_NE_r2.png",
+   "sortie": "assets/world/ground/decals/decal_puits_jour_01.png",
+   "axe": "w",
+   "cases": 4,
+   "ombre": false,
+   "contact": null,
+   "alpha": 0.55,
+   "flou_bord": 6
+  },
+  {
+   "id": "bldg_arene_azuria_01",
+   "source": "WORLD_BLDG_ARENE_AZURIA_01_NE_r1.png",
+   "sortie": "assets/world/buildings/bldg_arene_azuria_01.png",
+   "axe": "w",
+   "cases": 12,
+   "ombre": true,
+   "contact": 0.12
+  },
+  {
+   "id": "bldg_velos_01",
+   "source": "WORLD_BLDG_VELOS_01_NE_r1.png",
+   "sortie": "assets/world/buildings/bldg_velos_01.png",
+   "axe": "w",
+   "cases": 8,
+   "ombre": true,
+   "contact": 0.12
+  },
+  {
+   "id": "relief_grotte_azuree_01",
+   "source": "WORLD_RELIEF_GROTTE_AZUREE_01_NE_r1.png",
+   "sortie": "assets/world/relief/relief_grotte_azuree_01.png",
+   "axe": "w",
+   "cases": 4,
+   "ombre": false,
+   "contact": null
   }
  ],
  "hautes_herbes": {
@@ -1429,6 +1485,15 @@
     15,
     10
    ]
+  },
+  {
+   "id": "int_arene_azuria_coque",
+   "source": "INT_ARENE_AZURIA_COQUE_NE_r2.png",
+   "sortie": "assets/world/interiors/int_arene_azuria_coque.png",
+   "cases": [
+    17,
+    13
+   ]
   }
  ],
  "decor": [
@@ -1478,6 +1543,51 @@
    "taille": 384,
    "contraste": 1.0,
    "couleur": 1.0
+  },
+  {
+   "id": "ground_roche_01",
+   "source": "WORLD_GROUND_ROCHE_01_NE_r1.png",
+   "sortie": "assets/world/ground/ground_roche_01.png",
+   "taille": 384,
+   "contraste": 0.7,
+   "couleur": 1.0,
+   "raccord": 24
+  },
+  {
+   "id": "ground_grotte_01",
+   "source": "WORLD_GROUND_GROTTE_01_NE_r2.png",
+   "sortie": "assets/world/ground/ground_grotte_01.png",
+   "taille": 384,
+   "contraste": 0.6,
+   "couleur": 1.0,
+   "raccord": 24
+  },
+  {
+   "id": "ground_gravats_01",
+   "source": "WORLD_GROUND_GRAVATS_01_NE_r1.png",
+   "sortie": "assets/world/ground/ground_gravats_01.png",
+   "taille": 384,
+   "contraste": 0.8,
+   "couleur": 1.0,
+   "raccord": 24
+  },
+  {
+   "id": "ground_masse_roche_01",
+   "source": "WORLD_GROUND_MASSE_ROCHE_01_NE_r1.png",
+   "sortie": "assets/world/ground/ground_masse_roche_01.png",
+   "taille": 384,
+   "contraste": 0.6,
+   "couleur": 0.9,
+   "raccord": 24
+  },
+  {
+   "id": "ground_eau_canal_01",
+   "source": "WORLD_GROUND_EAU_CANAL_01_NE_r1.png",
+   "sortie": "assets/world/ground/ground_eau_canal_01.png",
+   "taille": 384,
+   "contraste": 1.0,
+   "couleur": 1.0,
+   "raccord": 24
   }
  ],
  "bordures": {
@@ -1542,6 +1652,23 @@
     "relief_paroi_02",
     "relief_paroi_03",
     "relief_paroi_04"
+   ],
+   "hauteurs_px": [
+    288,
+    288,
+    288,
+    288
+   ],
+   "contact": 0.0
+  },
+  {
+   "source": "WORLD_RELIEF_PAROI_ARDOISE_PLANCHE_NE_r1.png",
+   "dossier": "assets/world/relief/",
+   "ids": [
+    "relief_paroi_ardoise_01",
+    "relief_paroi_ardoise_02",
+    "relief_paroi_ardoise_03",
+    "relief_paroi_ardoise_04"
    ],
    "hauteurs_px": [
     288,
@@ -1749,6 +1876,48 @@
    "source": "PNJ_GUIDE_ARENE_NE_r1.png",
    "sortie": "assets/sprites/characters/painted/guide_arene_sheet.png",
    "hauteur": 128
+  },
+  {
+   "id": "fillette",
+   "source": "PNJ_FILLETTE_NE_r1.png",
+   "sortie": "assets/sprites/characters/painted/fillette_sheet.png",
+   "hauteur": 108
+  },
+  {
+   "id": "sbire_h",
+   "source": "PNJ_SBIRE_ROCKET_H_NE_r1.png",
+   "sortie": "assets/sprites/characters/painted/sbire_h_sheet.png",
+   "hauteur": 128
+  },
+  {
+   "id": "sbire_f",
+   "source": "PNJ_SBIRE_ROCKET_F_NE_r1.png",
+   "sortie": "assets/sprites/characters/painted/sbire_f_sheet.png",
+   "hauteur": 124
+  },
+  {
+   "id": "chercheur_fossiles",
+   "source": "PNJ_CHERCHEUR_FOSSILES_NE_r1.png",
+   "sortie": "assets/sprites/characters/painted/chercheur_fossiles_sheet.png",
+   "hauteur": 128
+  },
+  {
+   "id": "ondine",
+   "source": "PNJ_ONDINE_NE_r1.png",
+   "sortie": "assets/sprites/characters/painted/ondine_sheet.png",
+   "hauteur": 128
+  },
+  {
+   "id": "nageur",
+   "source": "PNJ_NAGEUR_NE_r1.png",
+   "sortie": "assets/sprites/characters/painted/nageur_sheet.png",
+   "hauteur": 128
+  },
+  {
+   "id": "nageuse",
+   "source": "PNJ_NAGEUSE_NE_r1.png",
+   "sortie": "assets/sprites/characters/painted/nageuse_sheet.png",
+   "hauteur": 128
   }
  ],
  "pokemon": [
@@ -1847,6 +2016,77 @@
    "source": "POKE_REPTINCEL_NE_r1.png",
    "sortie": "assets/sprites/pokemon/painted/reptincel_sheet.png",
    "hauteur": 72
+  },
+  {
+   "id": "rondoudou",
+   "source": "POKE_RONDOUDOU_NE_r1.png",
+   "sortie": "assets/sprites/pokemon/painted/rondoudou_sheet.png",
+   "hauteur": 48
+  },
+  {
+   "id": "melofee",
+   "source": "POKE_MELOFEE_NE_r1.png",
+   "sortie": "assets/sprites/pokemon/painted/melofee_sheet.png",
+   "hauteur": 52,
+   "note": "prompt _r1b (sans nom de licence, refus du filtre de Codex), serie 14 T3"
+  },
+  {
+   "id": "abo",
+   "source": "POKE_ABO_NE_r1.png",
+   "sortie": "assets/sprites/pokemon/painted/abo_sheet.png",
+   "hauteur": 60
+  },
+  {
+   "id": "paras",
+   "source": "POKE_PARAS_NE_r1.png",
+   "sortie": "assets/sprites/pokemon/painted/paras_sheet.png",
+   "hauteur": 40
+  },
+  {
+   "id": "nosferapti",
+   "source": "POKE_NOSFERAPTI_NE_r1.png",
+   "sortie": "assets/sprites/pokemon/painted/nosferapti_sheet.png",
+   "hauteur": 46,
+   "note": "en vol (ombre au sol posee par le moteur, comme Papilusion)"
+  },
+  {
+   "id": "racaillou_marche",
+   "source": "POKE_RACAILLOU_MARCHE_NE_r1.png",
+   "sortie": "assets/sprites/pokemon/painted/racaillou_marche_sheet.png",
+   "hauteur": 56,
+   "note": "planche de marche du compagnon ; le Racaillou fixe du tailleur (pokemon_fixes, racaillou) reste a part"
+  },
+  {
+   "id": "roucoups",
+   "source": "POKE_ROUCOUPS_NE_r1.png",
+   "sortie": "assets/sprites/pokemon/painted/roucoups_sheet.png",
+   "hauteur": 60
+  },
+  {
+   "id": "nidorino",
+   "source": "POKE_NIDORINO_NE_r1.png",
+   "sortie": "assets/sprites/pokemon/painted/nidorino_sheet.png",
+   "hauteur": 58
+  },
+  {
+   "id": "nidorina",
+   "source": "POKE_NIDORINA_NE_r2.png",
+   "sortie": "assets/sprites/pokemon/painted/nidorina_sheet.png",
+   "hauteur": 66,
+   "note": "r2 (r1 trop proche de Nidoran F), prompt _r2b"
+  },
+  {
+   "id": "rattatac",
+   "source": "POKE_RATTATAC_NE_r1.png",
+   "sortie": "assets/sprites/pokemon/painted/rattatac_sheet.png",
+   "hauteur": 66
+  },
+  {
+   "id": "rapasdepic",
+   "source": "POKE_RAPASDEPIC_NE_r2.png",
+   "sortie": "assets/sprites/pokemon/painted/rapasdepic_sheet.png",
+   "hauteur": 86,
+   "note": "r2 = r1 reechelonne a 86 px (r1 plus petit que Piafabec)"
   }
  ],
  "heros_images": [
@@ -2061,6 +2301,49 @@
    "source": "GUIDE_ARENE_ATTENTE_r1.png",
    "sortie": "assets/sprites/characters/painted/guide_arene_idle_sheet.png",
    "marche": "guide_arene"
+  },
+  {
+   "id": "fillette_idle",
+   "source": "FILLETTE_ATTENTE_r1.png",
+   "sortie": "assets/sprites/characters/painted/fillette_idle_sheet.png",
+   "marche": "fillette"
+  },
+  {
+   "id": "sbire_h_idle",
+   "source": "SBIRE_ROCKET_H_ATTENTE_r1.png",
+   "sortie": "assets/sprites/characters/painted/sbire_h_idle_sheet.png",
+   "marche": "sbire_h"
+  },
+  {
+   "id": "sbire_f_idle",
+   "source": "SBIRE_ROCKET_F_ATTENTE_r1.png",
+   "sortie": "assets/sprites/characters/painted/sbire_f_idle_sheet.png",
+   "marche": "sbire_f",
+   "rapport_hauteur": 0.75
+  },
+  {
+   "id": "chercheur_fossiles_idle",
+   "source": "CHERCHEUR_FOSSILES_ATTENTE_r1.png",
+   "sortie": "assets/sprites/characters/painted/chercheur_fossiles_idle_sheet.png",
+   "marche": "chercheur_fossiles"
+  },
+  {
+   "id": "ondine_idle",
+   "source": "ONDINE_ATTENTE_r1.png",
+   "sortie": "assets/sprites/characters/painted/ondine_idle_sheet.png",
+   "marche": "ondine"
+  },
+  {
+   "id": "nageur_idle",
+   "source": "NAGEUR_ATTENTE_r1.png",
+   "sortie": "assets/sprites/characters/painted/nageur_idle_sheet.png",
+   "marche": "nageur"
+  },
+  {
+   "id": "nageuse_idle",
+   "source": "NAGEUSE_ATTENTE_r1.png",
+   "sortie": "assets/sprites/characters/painted/nageuse_idle_sheet.png",
+   "marche": "nageuse"
   }
  ],
  "images_objets": [
@@ -2076,6 +2359,24 @@
    "masque": "disque",
    "sortie": "assets/sprites/objects/painted/poke_ball_ground.png",
    "hauteur": 40
+  },
+  {
+   "id": "fossil_dome",
+   "source": "WORLD_PROP_FOSSILE_DOME_01_NE_r1.png",
+   "sortie": "assets/sprites/objects/painted/fossil_dome.png",
+   "hauteur": 44
+  },
+  {
+   "id": "fossil_helix",
+   "source": "WORLD_PROP_DALLE_FOSSILES_PLANCHE_NE_r1.png",
+   "recadrage": [
+    1200,
+    544,
+    1500,
+    832
+   ],
+   "sortie": "assets/sprites/objects/painted/fossil_helix.png",
+   "hauteur": 55
   }
  ],
  "pokemon_fixes": [
@@ -2148,6 +2449,309 @@
     2,
     2,
     1
+   ],
+   "contact": 0.2
+  },
+  {
+   "source": "WORLD_RELIEF_PAROI_GROTTE_PLANCHE_NE_r1.png",
+   "dossier": "assets/world/relief/",
+   "colonnes": 3,
+   "lignes": 2,
+   "ids": [
+    "relief_paroi_grotte_01",
+    "relief_paroi_grotte_02",
+    "relief_paroi_grotte_03",
+    "relief_paroi_grotte_04",
+    "relief_paroi_grotte_05",
+    "relief_paroi_grotte_06"
+   ],
+   "cases": [
+    3,
+    3,
+    2,
+    2,
+    1,
+    3
+   ],
+   "contact": 0.0
+  },
+  {
+   "source": "WORLD_PROP_GROTTE_PLANCHE_NE_r1.png",
+   "dossier": "assets/world/props/",
+   "colonnes": 3,
+   "lignes": 2,
+   "ids": [
+    "prop_colonne_grotte_01",
+    "prop_colonne_grotte_02",
+    "prop_rocher_grotte_01",
+    "prop_rocher_grotte_02",
+    "prop_eclats_lune_01",
+    "prop_eclats_lune_02"
+   ],
+   "cases": [
+    2,
+    1,
+    1,
+    1,
+    1,
+    1
+   ],
+   "contact": 0.15
+  },
+  {
+   "source": "WORLD_PROP_ROCKET_PLANCHE_NE_r1.png",
+   "dossier": "assets/world/props/",
+   "colonnes": 3,
+   "lignes": 2,
+   "ids": [
+    "prop_lampe_chantier_01",
+    "prop_caisse_r_01",
+    "prop_caisse_r_02",
+    "prop_tranchee_01",
+    "prop_projecteur_01",
+    "prop_outils_fouille_01"
+   ],
+   "cases": [
+    1,
+    1,
+    2,
+    3,
+    1,
+    1
+   ],
+   "contact": 0.15
+  },
+  {
+   "source": "WORLD_PROP_ECHELLES_PLANCHE_NE_r1.png",
+   "dossier": "assets/world/props/",
+   "colonnes": 2,
+   "lignes": 1,
+   "ids": [
+    "prop_echelle_descend_01",
+    "prop_echelle_monte_01"
+   ],
+   "cases": [
+    1,
+    1
+   ],
+   "contact": 0.0
+  },
+  {
+   "source": "WORLD_PROP_DALLE_FOSSILES_PLANCHE_NE_r1.png",
+   "dossier": "assets/world/props/",
+   "colonnes": 3,
+   "lignes": 1,
+   "ids": [
+    "prop_dalle_01",
+    "prop_fossile_dome_01",
+    "prop_fossile_nautile_01"
+   ],
+   "cases": [
+    3,
+    0.6,
+    0.6
+   ],
+   "contact": 0.1
+  },
+  {
+   "source": "WORLD_PROP_INDICES_PLANCHE_NE_r2.png",
+   "dossier": "assets/world/props/",
+   "colonnes": 2,
+   "lignes": 1,
+   "ids": [
+    "prop_indice_caillou_01",
+    "prop_indice_eclat_01"
+   ],
+   "cases": [
+    0.7,
+    0.6
+   ],
+   "contact": 0.2
+  },
+  {
+   "source": "WORLD_RELIEF_QUAI_PLANCHE_NE_r1.png",
+   "dossier": "assets/world/relief/",
+   "colonnes": 3,
+   "lignes": 2,
+   "ids": [
+    "relief_quai_01",
+    "relief_quai_02",
+    "relief_quai_03",
+    "relief_quai_04",
+    "relief_quai_05",
+    "relief_quai_06"
+   ],
+   "cases": [
+    2,
+    2,
+    2,
+    0.21,
+    0.42,
+    2
+   ],
+   "contact": 0.0
+  },
+  {
+   "source": "WORLD_RELIEF_BERGE_PLANCHE_NE_r1.png",
+   "dossier": "assets/world/relief/",
+   "colonnes": 3,
+   "lignes": 2,
+   "ids": [
+    "relief_berge_01",
+    "relief_berge_02",
+    "relief_berge_03",
+    "relief_berge_04",
+    "relief_berge_05",
+    "prop_roseaux_01"
+   ],
+   "cases": [
+    2,
+    2,
+    2,
+    0.21,
+    0.42,
+    1
+   ],
+   "contact": 0.0
+  },
+  {
+   "source": "WORLD_PROP_PONTS_PLANCHE_NE_r3.png",
+   "dossier": "assets/world/props/",
+   "colonnes": 4,
+   "lignes": 2,
+   "ids": [
+    "prop_pont_ville_01",
+    "prop_pont_ville_03_01",
+    "prop_pont_ville_ew_01",
+    "prop_pont_pepite_tablier_01",
+    "prop_pont_pepite_tablier_02",
+    "prop_pont_pepite_tablier_03",
+    "prop_pont_pepite_garde_corps_01",
+    "prop_pont_pepite_pile_01"
+   ],
+   "cases": [
+    2,
+    3,
+    4,
+    2,
+    2,
+    2,
+    1,
+    0.5
+   ],
+   "contact": 0.0
+  },
+  {
+   "source": "WORLD_PROP_VILLE_EAU_PLANCHE_NE_r1.png",
+   "dossier": "assets/world/props/",
+   "colonnes": 3,
+   "lignes": 2,
+   "ids": [
+    "prop_jardiniere_pierre_01",
+    "prop_jardiniere_pierre_02",
+    "prop_arbre_bac_01",
+    "prop_banc_pierre_01",
+    "prop_lampadaire_quai_01",
+    "prop_bitte_01"
+   ],
+   "cases": [
+    1,
+    1,
+    1,
+    2,
+    0.45,
+    0.5
+   ],
+   "contact": 0.15
+  },
+  {
+   "source": "WORLD_PROP_CAMBRIOLAGE_PLANCHE_NE_r1.png",
+   "dossier": "assets/world/props/",
+   "colonnes": 3,
+   "lignes": 2,
+   "ids": [
+    "prop_cloture_arrachee_01",
+    "prop_porte_condamnee_01",
+    "prop_pot_renverse_01",
+    "prop_cloture_trou_01",
+    "prop_ruban_01"
+   ],
+   "cases": [
+    3,
+    1,
+    1,
+    1,
+    2
+   ],
+   "contact": 0.1
+  },
+  {
+   "source": "WORLD_PROP_FERMETURES_PLANCHE_NE_r1.png",
+   "dossier": "assets/world/props/",
+   "colonnes": 3,
+   "lignes": 1,
+   "ids": [
+    "prop_palissade_chantier_01",
+    "prop_palissade_chantier_02",
+    "prop_barriere_croisillon_01"
+   ],
+   "cases": [
+    3,
+    3,
+    2
+   ],
+   "contact": 0.1
+  },
+  {
+   "source": "WORLD_RELIEF_REBORD_ARDOISE_PLANCHE_NE_r1.png",
+   "dossier": "assets/world/relief/",
+   "colonnes": 3,
+   "lignes": 1,
+   "ids": [
+    "relief_rebord_ardoise_01",
+    "relief_falaise_ardoise_01",
+    "relief_falaise_ardoise_02"
+   ],
+   "cases": [
+    1.5,
+    3.4,
+    3.4
+   ],
+   "contact": 0.0
+  },
+  {
+   "source": "INT_ARENE_AZURIA_PLANCHE_NE_r1.png",
+   "dossier": "assets/world/interiors/",
+   "colonnes": 3,
+   "lignes": 1,
+   "ids": [
+    "int_plongeoir_01",
+    "int_banc_piscine_01",
+    "int_porte_bouees_01"
+   ],
+   "cases": [
+    2,
+    2,
+    1
+   ],
+   "contact": 0.2
+  },
+  {
+   "source": "INT_VELOS_PLANCHE_NE_r1.png",
+   "dossier": "assets/world/interiors/",
+   "colonnes": 2,
+   "lignes": 2,
+   "ids": [
+    "int_velo_expose_01",
+    "int_velo_expose_02",
+    "int_velo_expose_03",
+    "int_etagere_casques_01"
+   ],
+   "cases": [
+    2,
+    2,
+    2,
+    4
    ],
    "contact": 0.2
   }

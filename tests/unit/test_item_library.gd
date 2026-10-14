@@ -18,10 +18,12 @@ func test_real_data_loads_without_error() -> void:
 	assert_true(_library.load_dir(), "data/items/ se charge")
 	assert_eq(_library.get_errors().size(), 0, str(_library.get_errors()))
 	# Jalon 5 : la Potion cachée de la Route 1 (catégorie « heal », ramassée seulement).
+	# Jalon 12 : data/items/mt_moon.json (Corde Sortie, Pierre Lune, fossiles, CT01).
 	# Jalon 15 (T12) : Super Potion et Guérison (data/items/vermilion.json).
-	assert_eq(_library.get_ids(), [&"antidote", &"awakening", &"burn_heal", &"full_restore",
-		&"ice_heal", &"oak_parcel", &"paralyze_heal", &"poke_ball", &"potion", &"super_potion",
-		&"tm34"] as Array[StringName])
+	assert_eq(_library.get_ids(), [&"antidote", &"awakening", &"burn_heal", &"dome_fossil",
+		&"escape_rope", &"full_restore", &"helix_fossil", &"ice_heal", &"moon_stone", &"nugget",
+		&"oak_parcel", &"paralyze_heal", &"poke_ball", &"potion", &"super_potion", &"tm01",
+		&"tm11", &"tm34"] as Array[StringName])
 	var ball := _library.get_item(&"poke_ball")
 	assert_eq(ball.name, "Poké Ball")
 	assert_eq(ball.plural, "Poké Balls")
@@ -38,7 +40,8 @@ func test_real_data_loads_without_error() -> void:
 	assert_eq(ball.heal_amount, 0)
 	assert_eq(_library.get_ids_in_data_order(),
 		[&"poke_ball", &"potion", &"antidote", &"paralyze_heal", &"awakening", &"burn_heal", &"ice_heal",
-		&"tm34", &"oak_parcel", &"super_potion", &"full_restore"] as Array[StringName])
+		&"nugget", &"tm11", &"tm34", &"oak_parcel", &"escape_rope", &"moon_stone", &"dome_fossil",
+		&"helix_fossil", &"tm01", &"super_potion", &"full_restore"] as Array[StringName])
 	assert_eq([ball.order, potion.order], [0, 1])
 
 
@@ -199,7 +202,8 @@ func test_contexts_follow_the_category() -> void:
 		ItemData.Category.BALL: [&"wild_battle"],
 		ItemData.Category.HEAL: [&"field", &"wild_battle", &"trainer_battle"],
 		ItemData.Category.BATTLE: [&"wild_battle", &"trainer_battle"],
-		ItemData.Category.FIELD: [&"field"],
+		# Jalon 13 §2.13 : AVENTURE sans usage (la Pépite) n'a aucun contexte.
+		ItemData.Category.FIELD: [],
 		ItemData.Category.KEY: [],
 	}
 	for category: ItemData.Category in expected:
@@ -207,6 +211,10 @@ func test_contexts_follow_the_category() -> void:
 		var contexts: Array = []
 		contexts.assign(item.contexts())
 		assert_eq(contexts, expected[category], ItemData.CATEGORY_NAMES[category])
+	item.category = ItemData.Category.FIELD
+	item.field_use = &"escape_rope"
+	assert_eq(item.contexts(), [&"field"] as Array[StringName], "AVENTURE avec un usage")
+	item.field_use = &""
 	item.category = ItemData.Category.BALL
 	assert_true(item.usable_in(ItemData.CONTEXT_WILD_BATTLE))
 	assert_false(item.usable_in(ItemData.CONTEXT_TRAINER_BATTLE), "pas de Ball contre un dresseur")

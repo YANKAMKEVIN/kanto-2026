@@ -10,6 +10,10 @@ const ENCOUNTERABLE: Array[StringName] = [
 	&"bulbasaur", &"charmander", &"squirtle", &"pidgey", &"rattata",
 	&"spearow", &"mankey", &"nidoran_f", &"nidoran_m", &"caterpie", &"weedle", &"pikachu",
 	&"geodude", &"onix", &"sandshrew",
+	# Jalon 12 : Route 3, Mont Sélénite, Dresseurs (annexe A.1 de jalon-12.md, 7 notes).
+	&"jigglypuff", &"ekans", &"zubat", &"paras", &"clefairy", &"voltorb", &"koffing",
+	# Jalon 13 (annexe A de jalon-13.md, validée le 2026-10-11) : les six formes de base.
+	&"staryu", &"horsea", &"shellder", &"goldeen", &"oddish", &"bellsprout",
 ]
 
 var _data: PokemonData

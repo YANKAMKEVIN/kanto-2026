@@ -67,6 +67,7 @@ func _save_tileset() -> void:
 		[_overworld.DATA_TALL_GRASS, TYPE_BOOL],
 		[_overworld.DATA_WATER, TYPE_BOOL],
 		[_overworld.DATA_LEDGE, TYPE_INT],
+		[_overworld.DATA_RUBBLE, TYPE_BOOL],
 	]
 	for i: int in layers.size():
 		tileset.add_custom_data_layer()
@@ -86,6 +87,7 @@ func _save_tileset() -> void:
 			data.set_custom_data(_overworld.DATA_TALL_GRASS, false)
 			data.set_custom_data(_overworld.DATA_WATER, false)
 			data.set_custom_data(_overworld.DATA_LEDGE, 0)
+			data.set_custom_data(_overworld.DATA_RUBBLE, false)
 	var err := ResourceSaver.save(tileset, _tiles.TILESET_PATH)
 	print("tileset : ", _tiles.TILESET_PATH, " (", error_string(err), ")")
 

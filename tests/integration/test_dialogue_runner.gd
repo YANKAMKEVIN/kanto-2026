@@ -723,3 +723,53 @@ func test_answer_pages_are_resolved_too() -> void:
 	_advance()
 	await _runner.choose(true)
 	assert_eq(_box.get_text(), "Bien.", "réplique omise dans les pages de la réponse")
+
+
+# --- Choix qui pose un drapeau (jalon-13.md §2.13, T16) --------------------------------------
+
+func _add_flag_choice() -> void:
+	assert_true(_library.add_from_dict({
+		"recruit": {"speaker": "Sbire", "pages": ["Tu veux nous rejoindre ?"], "choice": {
+			"confirm": "OUI", "cancel": "NON", "confirm_set": ["recruit_yes"],
+			"cancel_set": ["recruit_no", "recruit_refused"]}},
+	}, "test"))
+
+
+func test_confirm_raises_only_the_confirm_flags_before_closing() -> void:
+	_add_flag_choice()
+	_runner.play(&"recruit")
+	await wait_process_frames(1)
+	_advance()
+	assert_true(_runner.is_awaiting_choice())
+	assert_false(_flags.has_flag(&"recruit_yes"), "rien avant le choix")
+	await _runner.choose(true)
+	assert_true(_flags.has_flag(&"recruit_yes"), "OUI → confirm_set, tout de suite")
+	assert_false(_flags.has_flag(&"recruit_no"), "rien d'autre")
+	assert_false(_flags.has_flag(&"recruit_refused"))
+	await _finish()
+	assert_eq(_flags.to_array(), [&"recruit_yes"] as Array[StringName], "un seul drapeau")
+
+
+func test_cancel_raises_only_the_cancel_flags() -> void:
+	_add_flag_choice()
+	_runner.play(&"recruit")
+	await wait_process_frames(1)
+	_advance()
+	await _runner.choose(false)
+	assert_true(_flags.has_flag(&"recruit_no"), "NON → cancel_set")
+	assert_true(_flags.has_flag(&"recruit_refused"))
+	assert_false(_flags.has_flag(&"recruit_yes"))
+	await _finish()
+
+
+func test_flags_are_raised_before_dialogue_finished() -> void:
+	_add_flag_choice()
+	var seen: Array[bool] = []
+	_runner.dialogue_finished.connect(func(_id: StringName) -> void:
+		seen.append(_flags.has_flag(&"recruit_yes")))
+	_runner.play(&"recruit")
+	await wait_process_frames(1)
+	_advance()
+	await _runner.choose(true)
+	await _finish()
+	assert_eq(seen, [true] as Array[bool], "levé avant la fin : les étapes suivantes le lisent")

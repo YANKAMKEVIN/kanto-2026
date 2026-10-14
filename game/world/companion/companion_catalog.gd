@@ -10,7 +10,7 @@ extends RefCounted
 
 const DATA_PATH: String = "res://data/pokemon/companions.json"
 ## Contextes de phrase connus (dossier 14 §13.12, n° 57 et 58 ; D-7).
-const CONTEXTS: Array[StringName] = [&"forest", &"city"]
+const CONTEXTS: Array[StringName] = [&"forest", &"city", &"cave"]
 
 const _KEYS: Array[String] = ["_doc", "species", "contexts"]
 const _SPECIES_KEYS: Array[String] = ["sprite", "flying"]

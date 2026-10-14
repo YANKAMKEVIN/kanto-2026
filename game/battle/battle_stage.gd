@@ -681,15 +681,18 @@ func play_faint(side: BattleEvent.SideId) -> void:
 
 ## Coroutine : le Pokémon de [param side] est rappelé (jalon 7) : il rougit, rétrécit vers ses
 ## pieds et s'efface, ombre comprise ; il est ensuite caché ([method show_pokemon] fera entrer le
-## suivant). Sans effet hors combat ou s'il n'est pas affiché.
+## suivant). Même mouvement pour l'adversaire (jalon 13 : un Dresseur rappelle son Pokémon).
+## « Réduire les animations » ([member reduce_motion]) : ni rétrécissement, seulement le fondu
+## rouge. Sans effet hors combat ou s'il n'est pas affiché.
 func play_withdraw(side: BattleEvent.SideId) -> void:
 	var sprite := _sprites[side]
 	if not _active or not sprite.visible:
 		return
 	var tween := _new_tween()
 	tween.set_parallel(true)
-	tween.tween_property(sprite, ^"scale", sprite.scale * WITHDRAW_SCALE, WITHDRAW_DURATION) \
-		.set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN)
+	if not reduce_motion:
+		tween.tween_property(sprite, ^"scale", sprite.scale * WITHDRAW_SCALE, WITHDRAW_DURATION) \
+			.set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN)
 	tween.tween_property(sprite, ^"modulate", WITHDRAW_TINT, WITHDRAW_DURATION)
 	tween.tween_property(_shadows[side], ^"modulate:a", 0.0, WITHDRAW_DURATION)
 	await _play(tween)
@@ -1125,8 +1128,9 @@ func _set_texture(side: BattleEvent.SideId) -> void:
 	var texture: Texture2D = image["texture"]
 	var official: bool = image["official"]
 	var box: Rect2 = image["box"]
-	if texture == null:
-		push_warning("BattleStage : sprite de combat absent « %s »" % sprite_path(species, back))
+	if texture == null or (back and official):
+		push_warning("BattleStage : sprite de combat absent « %s »%s" % [sprite_path(species, back),
+			" (repli : artwork officiel)" if texture != null else ""])
 	var sprite := _sprites[side]
 	sprite.texture = texture
 	sprite.centered = false

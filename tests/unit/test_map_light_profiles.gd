@@ -39,6 +39,8 @@ func test_every_lit_map_is_planned() -> void:
 		if not file.ends_with(".tscn"):
 			continue
 		var map_id := StringName(file.get_basename())
+		if MapCatalog.is_qa_map(map_id):
+			continue
 		var current := _scene_profile(MAPS_DIR + file)
 		if current.is_empty():
 			continue

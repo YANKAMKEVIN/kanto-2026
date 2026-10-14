@@ -1,0 +1,12 @@
+{
+	"cerulean_arrival": {
+		"variants": [
+			{
+				"unless": ["cerulean_reached"],
+				"steps": [
+					{ "set": ["cerulean_reached"] }
+				]
+			}
+		]
+	}
+}

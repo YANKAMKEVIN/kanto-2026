@@ -1,0 +1,131 @@
+{
+	"route_24_bridge_sign": { "pages": ["PONT PÉPITE\nCinq Dresseurs. Une récompense."] },
+	"route_24_ball_1": { "cutscene": "route_24_item_1" },
+	"rival_cerulean_intro": {
+		"speaker": "{rival}",
+		"pages": [
+			"Te voilà.",
+			"Le pont ? Déjà fait. Cinq combats, cinq victoires.",
+			"Mais toi, tu ne passeras pas sans me battre.",
+			"Montre-moi ce que la montagne t'a appris."
+		]
+	},
+	"rival_cerulean_lost": {
+		"speaker": "{rival}",
+		"pages": ["Pas encore assez.", "Va te soigner. Je ne bouge pas d'ici."]
+	},
+	"rival_cerulean_resume": { "speaker": "{rival}", "pages": ["Te revoilà.", "Allez. On recommence."] },
+	"rival_cerulean_resume_again": {
+		"speaker": "{rival}",
+		"pages": ["Encore toi.", "Tant mieux. J'aime pas gagner trop facilement."]
+	},
+	"rival_cerulean_won": {
+		"speaker": "{rival}",
+		"pages": [
+			"…Encore.",
+			"Tu me rattrapes, hein.",
+			"Profite. La prochaine fois, tu ne me trouveras pas sur ton chemin… tu me trouveras devant."
+		]
+	},
+	"misty_bridge_invite": {
+		"speaker": "Ondine",
+		"pages": [
+			"Joli combat.",
+			"Tu ne l'as pas lâché, même quand il a pris l'avantage.",
+			"Je suis Ondine, la Championne d'Azuria.",
+			"Viens me voir à l'Arène. Je veux voir ça de plus près."
+		]
+	},
+	"misty_bridge": {
+		"speaker": "Ondine",
+		"variants": [
+			{
+				"if": ["rival_cerulean_won"],
+				"unless": ["misty_invited"],
+				"cutscene": "route_24_misty"
+			}
+		]
+	},
+	"route_24_timeo_before": {
+		"speaker": "Scout Timéo",
+		"pages": ["Bienvenue au Pont Pépite ! Je suis le premier des cinq !"]
+	},
+	"route_24_timeo_after": {
+		"speaker": "Scout Timéo",
+		"pages": ["Le premier… et le premier battu."]
+	},
+	"route_24_alice_before": {
+		"speaker": "Jeune Dresseuse Alice",
+		"pages": ["Deuxième ! Tu n'as encore rien vu."]
+	},
+	"route_24_alice_after": {
+		"speaker": "Jeune Dresseuse Alice",
+		"pages": ["Bon. Va voir le troisième."]
+	},
+	"route_24_malo_before": {
+		"speaker": "Gamin Malo",
+		"pages": ["Troisième ! Tu fatigues déjà ?"]
+	},
+	"route_24_malo_after": {
+		"speaker": "Gamin Malo",
+		"pages": ["…Non, visiblement."]
+	},
+	"route_24_romane_before": {
+		"speaker": "Jeune Dresseuse Romane",
+		"pages": ["Quatrième ! Plus qu'un après moi."]
+	},
+	"route_24_romane_after": {
+		"speaker": "Jeune Dresseuse Romane",
+		"pages": ["Plus qu'un, alors."]
+	},
+	"route_24_ethan_before": {
+		"speaker": "Campeur Ethan",
+		"pages": ["Dernier ! Si tu me bats, la récompense est à toi !"]
+	},
+	"route_24_ethan_after": {
+		"speaker": "Campeur Ethan",
+		"pages": ["Elle est à toi. Va la chercher."]
+	},
+	"nugget_rocket": { "cutscene": "route_24_rocket" },
+	"nugget_rocket_welcome": {
+		"speaker": "Sbire Rocket",
+		"pages": ["Bravo ! Cinq victoires d'affilée.", "Voici ta récompense."]
+	},
+	"nugget_rocket_given": {
+		"narration": true,
+		"pages": ["{player} reçoit une PÉPITE !"]
+	},
+	"nugget_rocket_offer": {
+		"speaker": "Sbire Rocket",
+		"pages": [
+			"Dis-moi…",
+			"Quelqu'un avec ton talent perd son temps à collectionner des badges.",
+			"Nous recrutons. Ça t'intéresse ?"
+		],
+		"choice": {
+			"confirm": "OUI", "cancel": "NON",
+			"confirm_set": ["nugget_rocket_yes"], "cancel_pages": []
+		}
+	},
+	"nugget_rocket_yes": {
+		"speaker": "Sbire Rocket",
+		"pages": ["Tu crois que c'est si simple ?", "Montre-moi d'abord ce que tu vaux vraiment."]
+	},
+	"nugget_rocket_no": {
+		"speaker": "Sbire Rocket",
+		"pages": ["Dommage.", "Alors je vais devoir te convaincre autrement."]
+	},
+	"nugget_rocket_beaten": {
+		"speaker": "Sbire Rocket",
+		"pages": ["Hm. Tu ferais un excellent…", "Non. Un ennemi. Tu ferais un excellent ennemi."]
+	},
+	"nugget_rocket_lost": {
+		"speaker": "Sbire Rocket",
+		"pages": ["Réfléchis bien. L'offre tient toujours."]
+	},
+	"nugget_rocket_resume": {
+		"speaker": "Sbire Rocket",
+		"pages": ["Alors ? Tu as changé d'avis ?"]
+	},
+	"route_24_antidote": { "cutscene": "route_24_antidote" }
+}

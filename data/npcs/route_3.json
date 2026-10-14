@@ -1,0 +1,63 @@
+{
+	"hugo": {
+		"cell": [20, 22], "facing": "down", "sprite": "youngster",
+		"dialogue": "route_3_hugo_after",
+		"trainer": { "id": "route_3_hugo", "sight": 5, "before": "route_3_hugo_before" }
+	},
+	"lea": {
+		"cell": [51, 16], "facing": "down", "sprite": "lass_young",
+		"dialogue": "route_3_lea_after",
+		"trainer": { "id": "route_3_lea", "sight": 5, "before": "route_3_lea_before" }
+	},
+	"sacha": {
+		"cell": [33, 6], "facing": "down", "sprite": "scout",
+		"dialogue": "route_3_sacha_after",
+		"trainer": { "id": "route_3_sacha", "sight": 3, "before": "route_3_sacha_before" }
+	},
+	"enzo": {
+		"cell": [38, 32], "facing": "up", "sprite": "youngster",
+		"dialogue": "route_3_enzo_after",
+		"trainer": { "id": "route_3_enzo", "sight": 3, "before": "route_3_enzo_before" }
+	},
+	"ines": {
+		"cell": [41, 35], "facing": "left", "sprite": "lass_young",
+		"dialogue": "route_3_ines_after",
+		"trainer": { "id": "route_3_ines", "sight": 4, "before": "route_3_ines_before" }
+	},
+	"nolan": {
+		"cell": [77, 17], "facing": "left", "sprite": "scout",
+		"dialogue": "route_3_nolan_after",
+		"trainer": { "id": "route_3_nolan", "sight": 3, "before": "route_3_nolan_before" }
+	},
+	"traveler": {
+		"cell": [15, 16], "facing": "right", "sprite": "traveler",
+		"dialogue": "route_3_traveler"
+	},
+	"hiker": {
+		"cell": [68, 12], "facing": "left", "sprite": "hiker",
+		"dialogue": "route_3_hiker"
+	},
+	"route_3_item_1": {
+		"cell": [34, 36], "facing": "down", "sprite": "object/poke_ball_ground",
+		"dialogue": "route_3_item_1", "verb": "take", "turn_to_player": false,
+		"unless": ["got_route_3_item_1"]
+	},
+	"route_3_item_2": {
+		"cell": [57, 14], "facing": "down", "sprite": "object/poke_ball_ground",
+		"dialogue": "route_3_item_2", "verb": "take", "turn_to_player": false,
+		"unless": ["got_route_3_item_2"]
+	},
+	"route_3_item_3": {
+		"cell": [77, 23], "facing": "down", "sprite": "object/poke_ball_ground",
+		"dialogue": "route_3_item_3", "verb": "take", "turn_to_player": false,
+		"unless": ["got_route_3_item_3"]
+	},
+	"spearow_1": {
+		"cell": [40, 5], "facing": "left", "sprite": "pokemon/spearow", "lift": 48,
+		"shy": { "action": "fly", "radius": 2 }
+	},
+	"spearow_2": {
+		"cell": [71, 14], "facing": "left", "sprite": "pokemon/spearow", "lift": 48,
+		"shy": { "action": "fly", "radius": 2 }
+	}
+}

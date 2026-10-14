@@ -1,9 +1,9 @@
 class_name BattleDecorCache
 extends RefCounted
 ## Préchargement des images du décor peint d'une carte (correctif QA S24 du CB.3) : à l'entrée
-## d'une carte, ses images sont demandées **en tâche de fond** ([method ResourceLoader.
-## load_threaded_request]) ; au combat, [method take] les rend sans décoder sur le fil
-## principal (avant : une image de ≈ 130 ms à chaque entrée en combat).
+## d'une carte, ses images sont demandées **en tâche de fond** ([BackgroundLoader] : synchrone
+## en headless) ; au combat, [method take] les rend sans décoder sur le fil principal (avant :
+## une image de ≈ 130 ms à chaque entrée en combat).
 ##
 ## Mémoire : seules les images demandées au dernier [method prepare] sont gardées (le décor
 ## par défaut de la carte courante) ; celles de la carte précédente sont rendues. Une image
@@ -29,7 +29,7 @@ func prepare(paths: Array[String]) -> void:
 			continue
 		if not ResourceLoader.exists(path):
 			continue
-		if ResourceLoader.load_threaded_request(path, "Texture2D") == OK:
+		if BackgroundLoader.request(path, "Texture2D") == OK:
 			_pending[path] = true
 
 
@@ -54,7 +54,7 @@ func take(path: String) -> Texture2D:
 func is_ready(path: String) -> bool:
 	if _held.has(path):
 		return true
-	return _pending.has(path) and ResourceLoader.load_threaded_get_status(path) \
+	return _pending.has(path) and BackgroundLoader.status(path) \
 		== ResourceLoader.THREAD_LOAD_LOADED
 
 
@@ -70,8 +70,8 @@ func get_paths() -> Array[String]:
 
 func _collect(path: String) -> Texture2D:
 	_pending.erase(path)
-	var status := ResourceLoader.load_threaded_get_status(path)
+	var status := BackgroundLoader.status(path)
 	if status == ResourceLoader.THREAD_LOAD_INVALID_RESOURCE \
 			or status == ResourceLoader.THREAD_LOAD_FAILED:
 		return null
-	return ResourceLoader.load_threaded_get(path) as Texture2D
+	return BackgroundLoader.fetch(path) as Texture2D

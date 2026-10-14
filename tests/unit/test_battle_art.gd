@@ -28,6 +28,42 @@ func test_player_side_keeps_the_placeholder_back() -> void:
 	assert_eq(image["box"], Rect2(14, 7, 48, 56), "boîte de l'alpha, pieds au bas")
 
 
+## Correctif QA 12A (Reptincel sans dos sur le S24) : **chaque** espèce des données a son sprite
+## provisoire de face et de dos. Le test d'avant (`test_battle_stage.gd`) ne partait que des
+## rencontres de trois cartes et des équipes de Dresseurs : une évolution (Herbizarre,
+## Reptincel, Carabaffe…) n'y figurait pas. Toute espèce des données peut finir chez le joueur
+## (rencontre, cadeau, évolution) : la règle est donc « toutes », et chaque évolution vise une
+## espèce des données (la chaîne est couverte jusqu'au bout).
+func test_every_species_of_the_data_has_its_front_and_back() -> void:
+	var data := PokemonData.new()
+	assert_true(data.load_dir())
+	var ids := data.get_species_ids()
+	assert_gt(ids.size(), 40)
+	for id: StringName in ids:
+		for back: bool in [false, true]:
+			var path := BattleArt.placeholder_path(id, back)
+			assert_true(ResourceLoader.exists(path), "sprite provisoire %s" % path)
+		for rule: EvolutionRule in data.get_species(id).evolutions:
+			assert_true(data.has_species(rule.into), "%s évolue en %s : espèce des données"
+				% [id, rule.into])
+
+
+## Repli : une espèce sans sprite de dos montre son artwork officiel, jamais un côté vide.
+func test_a_missing_back_falls_back_to_the_official_artwork() -> void:
+	var file := FileAccess.open("res://data/pokemon/species/kanto.json", FileAccess.READ)
+	var entries: Dictionary = JSON.parse_string(file.get_as_text())
+	var data := PokemonData.new()
+	assert_true(data.add_species_from_dict({"zz_no_sprite": entries["charmeleon"]}))
+	var art := BattleArt.new()
+	art.setup(data, null)
+	assert_false(ResourceLoader.exists(BattleArt.placeholder_path(&"zz_no_sprite", true)))
+	var image := art.image(&"zz_no_sprite", true)
+	assert_not_null(image["texture"], "jamais vide")
+	assert_true(image["official"], "artwork officiel")
+	assert_string_ends_with(((image["texture"] as AtlasTexture).atlas).resource_path,
+		"official/005.png")
+
+
 func test_unknown_species_has_no_texture_and_reference_height() -> void:
 	var image := _art.image(&"missingno", false)
 	assert_null(image["texture"])

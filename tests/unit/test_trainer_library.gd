@@ -318,3 +318,73 @@ func test_invalid_teams_are_rejected() -> void:
 	assert_string_contains(errors, "team_by_starter « sprout » : une équipe de 1 à 6")
 	assert_string_contains(errors, "« c » team : une équipe de 1 à 6")
 	assert_eq(_library.get_ids().size(), 0)
+
+
+# --- « switch » (jalon 13, IA qui change de Pokémon) ------------------------------------
+
+func test_switch_defaults_to_false() -> void:
+	assert_true(_library.add_from_dict({"t": _valid_entry()}), _errors())
+	var trainer := _library.get_trainer(&"t")
+	assert_false(trainer.can_switch)
+	assert_false(trainer.make_ai().can_switch)
+
+
+func test_switch_is_read_and_given_to_the_ai() -> void:
+	var entry := _valid_entry()
+	entry["ai"] = "smart"
+	entry["switch"] = true
+	assert_true(_library.add_from_dict({"t": entry}), _errors())
+	var ai := _library.get_trainer(&"t").make_ai()
+	assert_true(ai.can_switch)
+	assert_eq(ai.kind, BattleAI.SMART)
+	assert_false(ai.has_switched())
+
+
+func test_switch_is_validated() -> void:
+	var entry := _valid_entry()
+	entry["switch"] = "oui"
+	assert_false(_library.add_from_dict({"t": entry}))
+	assert_push_error_count(1)
+	assert_string_contains(_errors(), "« switch » vaut true ou false")
+
+
+## Seuls Ondine et le rival n° 3 changent de Pokémon (T19) ; ni Pierre ni les autres.
+func test_only_misty_and_the_third_rival_switch() -> void:
+	var library := TrainerLibrary.new(_data)
+	assert_true(library.load_dir())
+	var switching: Array[StringName] = [&"cerulean_gym_misty", &"rival_cerulean"]
+	for id: StringName in library.get_ids():
+		if not String(id).begins_with("qa_"):
+			assert_eq(library.get_trainer(id).can_switch, switching.has(id), String(id))
+
+
+# --- « moment » (jalon 13 §2.8, Grand moment du rival à la victoire) ---------------------
+
+func test_moment_defaults_to_any_outcome() -> void:
+	assert_true(_library.add_from_dict({"t": _valid_entry()}), _errors())
+	assert_false(_library.get_trainer(&"t").moment_on_win)
+
+
+func test_moment_win_is_read() -> void:
+	var entry := _valid_entry()
+	entry["moment"] = "win"
+	assert_true(_library.add_from_dict({"t": entry}), _errors())
+	assert_true(_library.get_trainer(&"t").moment_on_win)
+
+
+func test_moment_accepts_only_win() -> void:
+	for value: Variant in ["loss", "", true, ["win"]]:
+		var entry := _valid_entry()
+		entry["moment"] = value
+		assert_false(_library.add_from_dict({"t_%s" % str(value): entry}), str(value))
+	assert_push_error_count(4)
+	assert_string_contains(_errors(), "« moment » vaut \"win\"")
+
+
+## Seul le rival n° 3 a « moment »: "win" ; les rivaux n° 1 et n° 2 gardent un moment par
+## combat, victoire comme défaite.
+func test_real_rivals_moment_rule() -> void:
+	var library := TrainerLibrary.new(_data)
+	assert_true(library.load_dir())
+	for id: StringName in library.get_ids():
+		assert_eq(library.get_trainer(id).moment_on_win, id == &"rival_cerulean", String(id))

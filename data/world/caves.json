@@ -1,0 +1,9 @@
+{
+	"_doc": "Grottes (catégorie « grotte », docs/tech/jalon-12.md §2.3, lue par CaveLibrary) : ni bâtiment ni extérieur à ciel ouvert. Leurs cartes gardent « interior = false » (compagnon visible) et ne sont pas dans interiors.json. « escape » : où la Corde Sortie ramène (dossier 15 §11 : devant l'entrée côté Route 3, tourné vers le sud, même depuis B2F).",
+	"caves": {
+		"mt_moon": {
+			"maps": ["mt_moon_1f", "mt_moon_b1f", "mt_moon_b2f"],
+			"escape": { "map": "route_3", "spawn": "from_mt_moon_w", "facing": "down" }
+		}
+	}
+}
