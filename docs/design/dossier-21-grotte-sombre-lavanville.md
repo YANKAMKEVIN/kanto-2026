@@ -1,6 +1,7 @@
 # Dossier 21 — Route 9, Route 10, Grotte Sombre et Lavanville (jalon 18)
 
-> **CONSOLIDÉ — en attente de la validation de Kevin** : lot de textes §15 et grilles §13.1.
+> **CONSOLIDÉ — lot de textes §15 VALIDÉ par Kevin le 2026-10-14** (« Je valide tes recommandations
+> T-1 à T-56 ») ; **grilles §13.1 en attente de validation**.
 > Consolidé par Claude le 2026-10-14. Sources : V2 de Kevin avec ChatGPT
 > (`passes/j18-v2-chatgpt.md`, 7 décisions verrouillées), passe d'alignement de Claude
 > (`passes/j18-v2-alignement.md`, I-1 à I-26), réponses de Kevin du 2026-10-14 : **toutes les
@@ -524,7 +525,7 @@ Contrôles verts : `tools/art/plan_check_route_9.py`, `plan_check_route_10.py`,
 - Les deux moitiés du 1F ne se voient jamais (la caméra ne montre pas l'autre moitié à travers la
   roche).
 
-## 15. Lot de textes — À VALIDER par Kevin
+## 15. Lot de textes — VALIDÉ par Kevin le 2026-10-14
 
 ### 15.1 Grotte Sombre et Flash
 
@@ -641,4 +642,4 @@ réutilisées pour le gardien et l'assistant.
 | Tour | RDC seulement ; Médium sur l'escalier ; rien du J19 |
 | Sauvegarde | Aucune nouvelle version |
 | Validation | 18.0 → 18A → 18B → 18C |
-| Textes | Lot §15 à valider |
+| Textes | Lot §15 validé (2026-10-14) |
