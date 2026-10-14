@@ -81,6 +81,8 @@ const MAPS: Array[StringName] = [
 	&"route_3", &"mt_moon_center",
 	# Jalon 12 (T21) : le Mont Sélénite (1F, B1F) ; B2F au T25 (Rocket, chercheur, fossiles).
 	&"mt_moon_1f", &"mt_moon_b1f", &"mt_moon_b2f",
+	# Jalon 12 (T28) : le sas de la Route 4 (panneau).
+	&"route_4",
 ]
 ## Lot de textes validé par Kevin le 2026-10-06 (anciens brouillons : panneau, observations,
 ## soin de Maman, terminal du Stockage, portes de Jadielle…) : source des textes hors dossiers.
@@ -160,6 +162,8 @@ const IDS: Array[StringName] = [
 	&"route_3_lea_before", &"route_3_nolan_after", &"route_3_nolan_before",
 	&"route_3_sacha_after", &"route_3_sacha_before", &"route_3_sign_center",
 	&"route_3_sign_west", &"route_3_traveler",
+	# Jalon 12 (T28) : le panneau du sas de la Route 4 (dossier 15 §20 n° 36).
+	&"route_4_sign",
 	&"sign_pallet_town",
 	&"storage_terminal",
 	&"viridian_courier",
@@ -428,7 +432,8 @@ func test_every_condition_flag_is_set_somewhere() -> void:
 		&"oak_met", &"pewter_arrived",
 		&"pokedex_activated", &"rival_battle_done", &"rival_challenged", &"rival_lab_lost",
 		&"rival_lab_won", &"rival_left_lab", &"rival_route22_lost", &"rival_route22_won",
-		&"route_3_entered", &"route_3_guard_cleared", &"starter_chosen", &"starter_offered", &"tm34_received",
+		&"route_3_entered", &"route_3_guard_cleared", &"route_4_reached", &"starter_chosen",
+		&"starter_offered", &"tm34_received",
 		&"viridian_arrived"] as Array[StringName])
 	assert_eq(_used_on.get(&"oak_lab_reunion"), [&"oak_lab"], "joué au labo, après le fondu")
 	assert_eq(_used_on.get(&"oak_starter_offer"), [&"oak_lab"], "joué au labo")

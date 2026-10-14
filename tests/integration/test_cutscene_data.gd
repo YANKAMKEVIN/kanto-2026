@@ -38,6 +38,8 @@ const MAPS: Array[StringName] = [
 	&"route_3",
 	# Jalon 12 (T25) : scène du chercheur au bas du couloir des lampes (B2F).
 	&"mt_moon_b2f",
+	# Jalon 12 (T28) : arrivée dans le sas de la Route 4.
+	&"route_4",
 ]
 ## Jalon 7 (T18) : partie qui revient au labo avec le colis (rival parti après le combat).
 const PARCEL_FLAGS: Array[StringName] = [
@@ -116,6 +118,8 @@ const VARIANT_FLAGS: Dictionary = {
 	&"route_3_item_2": [ROUTE3_FLAGS],
 	&"route_3_item_3": [ROUTE3_FLAGS],
 	&"route_3_hidden_1": [ROUTE3_FLAGS],
+	# Jalon 12 (T28) : arrivée dans le sas de la Route 4.
+	&"route_4_reached": [R3_FLAGS + [&"beaten_mt_moon_researcher", &"mt_moon_fossil_chosen"]],
 	# Jalon 12 (T21) : objets du Mont Sélénite (partie badgée).
 	&"mt_moon_1f_item_1": [PEWTER_FLAGS + [&"pewter_arrived", &"brock_met", &"badge_boulder"]],
 	&"mt_moon_1f_hidden_1": [PEWTER_FLAGS + [&"pewter_arrived", &"brock_met", &"badge_boulder"]],
@@ -216,7 +220,7 @@ func test_library_loads_without_error() -> void:
 		&"rival_route22", &"route1_grass", &"route_1_potion", &"route_2_item_1",
 		&"route_2_item_2", &"route_2_item_3", &"route_2_item_4", &"route_2_north_item_1",
 		&"route_3_entered", &"route_3_guard", &"route_3_hidden_1", &"route_3_item_1",
-		&"route_3_item_2", &"route_3_item_3", &"starter_chosen",
+		&"route_3_item_2", &"route_3_item_3", &"route_4_reached", &"starter_chosen",
 		&"viridian_arrival", &"viridian_forest_item_1", &"viridian_forest_item_2",
 		&"viridian_forest_item_3", &"viridian_forest_item_4", &"viridian_forest_item_5",
 		&"viridian_forest_item_6"] as Array[StringName])
@@ -258,6 +262,7 @@ func test_every_trigger_targets_a_scene_and_every_scene_is_triggered() -> void:
 	assert_eq(_triggered_on.get(&"pewter_arrival"), [&"pewter_city"])
 	assert_eq(_triggered_on.get(&"route_3_guard"), [&"pewter_city"])
 	assert_eq(_triggered_on.get(&"route_3_entered"), [&"route_3"])
+	assert_eq(_triggered_on.get(&"route_4_reached"), [&"route_4"])
 	assert_eq(_triggered_on.get(&"mt_moon_researcher"), [&"mt_moon_b2f"])
 	assert_eq(_offer.chosen_scene, &"starter_chosen", "scène du choix = CODE_PLAYED")
 	assert_eq(CODE_PLAYED[_offer.chosen_scene], _offer.map_id)

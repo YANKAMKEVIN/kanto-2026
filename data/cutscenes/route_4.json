@@ -1,0 +1,12 @@
+{
+	"route_4_reached": {
+		"variants": [
+			{
+				"unless": ["route_4_reached"],
+				"steps": [
+					{ "set": ["route_4_reached"] }
+				]
+			}
+		]
+	}
+}
