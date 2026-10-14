@@ -1,16 +1,15 @@
 # Dossier 20 — Les chemins retrouvés : Route 11, Cave Taupiqueur, Route 2 est, CS05 Flash (jalon 17)
 
-> **Arbitrages tranchés par Kevin le 2026-10-14 ; textes du §16 à valider.** Consolidé par Claude le
-> 2026-10-14 à partir de la V2 de Kevin avec ChatGPT (`passes/j17-v2-chatgpt.md`, 6 décisions), de
-> la passe d'alignement (`passes/j17-v2-alignement.md`, H-1 à H-17) et du retour de Kevin (**H-1 à
-> H-17 retenus tels quels**). Prochaine étape : validation des textes (§16), grilles fonctionnelles
-> et vues générales peintes, puis plan `docs/tech/jalon-17.md`.
+> **VERROUILLÉ — validé par Kevin le 2026-10-14** : arbitrages H-1 à H-17, grilles, vues générales
+> peintes v1 et **lot de textes §16 (variantes A, T-0 à T-25)**. Consolidé par Claude à partir de la V2
+> de Kevin avec ChatGPT (`passes/j17-v2-chatgpt.md`) et de la passe d'alignement
+> (`passes/j17-v2-alignement.md`). Prochaine étape : plan technique `docs/tech/jalon-17.md`.
 >
 > **Numérotation** : 16 (J13), 17 (J14), 18 (J15) pris, 19 réservé au J16 → **20** (vérifié sur
 > toutes les branches locales et distantes le 2026-10-14).
 >
 > Légende : **[V]** décision de Kevin · **[D]** valeur par défaut technique (règle 4 de `CLAUDE.md`,
-> modifiable sans rouvrir la conception) · **[T]** texte à valider (§16).
+> modifiable sans rouvrir la conception) · **[T]** texte du §16 (validé).
 > Origine des règles : **RB** Rouge/Bleu (vérifié sur `pret/pokered` et PokeAPI) · **K26** Kanto 2026.
 
 **Ligne directrice** : *Kanto commence à se reconnecter.* Le joueur réutilise ce qu'il sait et
@@ -45,6 +44,16 @@ Team Rocket : un jalon de respiration et d'exploration.
 | H-15 | Triopikeur 5 %, **Nv. 24–26** | [V] |
 | H-16 | Nom officiel **« Cave Taupiqueur »** partout | [V] |
 | H-17 | Validation S24 : **17A → 17B → 17C → 17D** | [V] |
+
+## Vues générales peintes v1 (validées par Kevin le 2026-10-14)
+
+- **Vues = référence DA et ambiance, pas de géométrie** : `reference/route-11-vue-generale-v1.png`
+  (essai 2, ancre : vue de Carmin), `reference/cave-taupiqueur-vue-generale-v1.png` (essai 2, ancre :
+  Mont Sélénite), `reference/route-2-est-vue-generale-v1.png` (essai 3, ancre : Route 2) ; prompts
+  `tools/art/prompts/CONCEPT_ROUTE11_*`, `CONCEPT_CAVE_TAUPIQUEUR_*`, `CONCEPT_ROUTE2_EST_*`.
+- **Ne pas reproduire à la construction** : Route 11 — goulet d'Arthur non resserré, Gamin Louis
+  peint près de la Cave (la grille le place sur le parcours nord), feuillage granuleux ; Cave — aspect
+  de canyon vu du ciel, rais de lumière absents ; Route 2 est — clairières plus larges que la grille.
 
 ## Grilles fonctionnelles (validées par Kevin le 2026-10-14)
 
@@ -204,8 +213,7 @@ niveau du dernier Pokémon. IA `random` (Dresseurs de route). Prénoms nouveaux,
 | D7 | **Ingénieur Bruno** | Magnéti Nv. 21 | 1 050 | non |
 | D8 | **Ingénieur Victor** | Magnéti Nv. 18, Magnéti Nv. 18, Magnéton Nv. 18 | 900 | non |
 
-Classes nouvelles : **Joueur** (Gambler) et **Ingénieur** (Engineer) [D, noms à confirmer avec les
-textes]. Sprites : nouveaux modèles peints pour ces deux classes (lot d'art). Les deux Joueurs RB
+Classes nouvelles : **Joueur** (Gambler) et **Ingénieur** (Engineer) [V, T-0]. Sprites : nouveaux modèles peints pour ces deux classes (lot d'art). Les deux Joueurs RB
 retirés (Ptitard + Hypotrempe ; Chétiflor + Mystherbe) pourront revenir quand leurs espèces existeront.
 
 ## 7. Objets
@@ -323,7 +331,7 @@ Aucun lot ne touche un système à risque de perte de données : pas de validati
   digue.
 - **Fonds de combat** (méthode CB.3) : Route 11 (prairie côtière), Cave (roche claire).
 
-## 16. Textes à valider (lot unique)
+## 16. Textes (lot validé par Kevin le 2026-10-14, variantes A)
 
 Format : bulles séparées par « / ». `{n}` = espèces capturées ; `{reste}` = 10 − n ; `{joueur}`,
 `{pokemon}` = noms.
@@ -356,6 +364,5 @@ Format : bulles séparées par « / ». `{n}` = espèces capturées ; `{reste}` 
 | T-24 | Ingénieur Bruno | avant : Je teste mes Pokémon électriques. · défaite : Court-circuit ! · après : Il faut revoir mes réglages. |
 | T-25 | Ingénieur Victor | avant : Trois Magnéti valent mieux qu'un ! · défaite : Ils ont fusionné… mais pas assez. · après : Mon Magnéton a besoin de réglages. |
 
-**Points pour la relecture** : T-9 et T-12 reprennent le format des panneaux existants (titre en
-capitales) ; T-22 introduit un pari « pour la forme », sans mécanique d'argent ; les noms de classe
-**Joueur** et **Ingénieur** sont à confirmer.
+**T-0 (validé)** : noms de classe **Joueur** (Gambler) et **Ingénieur** (Engineer). T-22 évoque un
+pari « pour la forme », sans mécanique d'argent.
