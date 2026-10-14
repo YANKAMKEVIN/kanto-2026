@@ -46,8 +46,10 @@ func test_real_rival_has_one_team_per_starter() -> void:
 	if out.contains("SAUTÉ Dresseur « rival_cerulean »"):
 		fail_test("rival sauté : " + out.right(2000))
 		return
+	# Équilibrage validé (rival.json) : Roucool N15 contre Bulbizarre, Roucoups N16 sinon.
 	for starter: String in ["Bulbizarre", "Salamèche", "Carapuce"]:
-		assert_true(out.contains("contre %s : Roucoups N18" % starter), starter)
+		var lead := "Roucool N15" if starter == "Bulbizarre" else "Roucoups N16"
+		assert_true(out.contains("contre %s : %s" % [starter, lead]), starter)
 
 
 ## T20 : le scénario des seuils est valide (aucun élément sauté).
