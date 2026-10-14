@@ -163,5 +163,11 @@ J10 Argenta + Arène Pierre + Badge
 J11 Grande passe systèmes (évolutions / CT / statuts / équipe avancée / compagnon)
 J12 Route 3 + Mont Sélénite   ✅
 J13 Azuria + Ondine + Pont Pépite   ✅
-J14+ Expansion de Kanto → Ligue → post-game   ← ICI
+J14 Route 25 + Cap d'Azuria + Léo + cambriolage (dossier 17)   ← ICI
+J15 Route 5 + Pension + souterrain + Route 6 + Carmin-sur-Mer (dossier 18)
+J16 S.S. Anne + rival n° 4 + Coupe (dossier 19)
+J17 Major Bob + Badge Foudre (dossier 20)
+J18 Route 9 + Route 10 + Grotte Sombre + Lavanville, Tour au rez-de-chaussée (dossier 21)
+J19 Tour Pokémon, étages (en conception)
+J20+ Suite de Kanto → Ligue → post-game
 ```

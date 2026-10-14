@@ -14,6 +14,10 @@
 > **Arbitrages numérotés I-1 à I-26** (D = J13, E = J14, F = J15 ; G et H restent au J16 et au J17).
 > Les références J18-A à J18-J de la V2 sont gardées telles quelles.
 >
+> **Réponses de Kevin (2026-10-14) : « Tout ok sauf I-1 : on garde Grotte Sombre ».** Toutes les
+> recommandations sont retenues ; **I-1 : le nom « Grotte Sombre » est gardé**. Consolidation :
+> `docs/design/dossier-21-grotte-sombre-lavanville.md`.
+>
 > Origine des règles : **RB** = Rouge/Bleu, **G+** = génération plus récente, **K26** = invention de
 > Kanto 2026. **[D]** = valeur par défaut, notée et non bloquante.
 
