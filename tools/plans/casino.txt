@@ -1,0 +1,69 @@
+# Casino de Céladopole (game_corner) — grille fonctionnelle (jalon 20, dossier 23 §12 ; 2026-10-14).
+# Géométrie de Rouge/Bleu case pour case : pret/pokered, maps/GameCorner.blk (10 × 9 blocks =
+# 20 × 18 cases, tileset Lobby ; collision = tuile en bas à gauche de chaque case, liste Lobby_Coll),
+# data/maps/objects/GameCorner.asm, scripts/GameCorner.asm (bloc « escalier » $43 présent dans le .blk,
+# remplacé par le bloc mur $2a tant que le repaire n'est pas trouvé). Vérifiée par
+# tools/art/plan_check.py (profil casino, tools/art/plan_check_repaire.py, qui relie les six cartes).
+#
+# 20 × 18 cases. Aucune mécanique de jeu : les machines sont du DÉCOR (bloquées, examinables depuis
+# l'allée : « éteintes, fermé pour inventaire » ; texte 39). Quatre rangées de machines (x 0..1,
+# 6..7, 12..13, 18..19 ; y 9..15) bordent trois allées de 4 cases (x 2..5, 8..11, 14..17) ; les
+# tabourets (t) de RB sont praticables. En haut à gauche, l'ancien comptoir des jetons (C, y 5..7,
+# x 0..7) devient une salle d'accueil fermée (l'employé y parle). À droite, la coursive de la
+# rangée y = 5 (x 8..19, une case de large) mène à l'escalier du repaire en (17, 4).
+#
+# Légende :
+#   # mur / décor mural (bloqué)      . sol (praticable)       t tabouret (praticable, RB)
+#   M machine, décor (bloquée, examinable)    C comptoir / vitrine, décor (bloqué)
+#   A affiche (bloquée, interrupteur derrière : on l'examine depuis (9, 5))
+#   S escalier du repaire, CONDITIONNEL : mur coulissant (bloqué) tant que `game_corner_switch` n'est
+#     pas posé, puis escalier qui DESCEND vers le B1F (comme un U/D de repaire)
+#   E sortie vers la ville (praticable ; deux cases au bas de la salle, RB warps 1 et 2)
+#
+# RACCORDS :
+#   Ville → Casino : arrivée (15, 16) ou (16, 16) (case devant la porte) ;
+#   Casino (17, 4) S ↔ B1F (21, 2) U   arrivée Casino (17, 5), arrivée B1F (21, 3)   [RB : warp 3 ↔ B1F 2]
+#
+# Valeurs par défaut (règle 4) : 5 PNJ = l'employé de l'ancien comptoir (RB : le guichetier) et quatre
+# clients assis, tous aux positions RB (le reste des 10 PNJ de RB — deux Beautés, un second guichetier,
+# un pêcheur, un guide d'Arène — est retiré). Le Rocket de l'affiche est en (9, 5) tourné vers le nord
+# (RB) ; vaincu (Rattatac, Nosferapti 20), il « s'éloigne » et se range en (11, 6) (défaut : à
+# l'écart de la coursive (x de 12 à 19, y 5), qui reste libre). Dialogues : lot de textes §20.6.
+#
+PRATICABLES .tE
+
+GRILLE 20 18
+00 ####################
+01 ####################
+02 ####################
+03 ####################
+04 #########A#######S##
+05 CCCCCCCC............
+06 ............CCCCCCCC
+07 CCCCCCCC....CCCCCCCC
+08 ....................
+09 MM....MM....MM....MM
+10 MMt..tMMt..tMMt..tMM
+11 MMt..tMMt..tMMt..tMM
+12 MMt..tMMt..tMMt..tMM
+13 MMt..tMMt..tMMt..tMM
+14 MMt..tMMt..tMMt..tMM
+15 MMt..tMMt..tMMt..tMM
+16 ....................
+17 ...............EE...
+FIN
+
+POSITIONS
+entree_ville           spawn          15,16        libre   role=ville facing=up  # arrivée depuis la ville (porte gauche)
+sortie_ville           sortie         15..16,17    libre   vers=celadon_city  # porte du Casino (RB warps 1 et 2)
+rocket_affiche         dresseur       9,5          bloque  role=R0 facing=up sight=0 trainer=game_corner_rocket apres=11,6  # RB n° 7 : Rattatac, Nosferapti 20 ; devant l’affiche, on lui parle
+affiche                interrupteur   9,4          bloque  depuis=9,5 face=N flag=game_corner_switch apres=rocket_affiche_battu  # affiche examinable APRÈS la défaite du Rocket ; interrupteur derrière
+vers_b1f               escalier       17,4         libre   paire=casino sens=descend vers=rocket_hideout_b1f:21,2 cond=game_corner_switch  # escalier du repaire (RB warp 3), qui apparaît après l’interrupteur
+arrivee_b1f            spawn          17,5         libre   paire=casino facing=down  # arrivée depuis le B1F
+employe                pnj            5,6          bloque  role=P1 facing=down  # guichetier de RB : « fermé pour inventaire »
+client_1               pnj            2,10         bloque  role=P2 facing=left  # RB : homme d’âge mûr, assis au bord de la rangée ouest
+cliente_2              pnj            8,11         bloque  role=P3 facing=left  # RB : femme d’âge mûr, assise (allée centrale, côté ouest)
+client_3               pnj            11,15        bloque  role=P4 facing=right  # RB : joueur, assis (allée centrale, côté est)
+client_4               pnj            17,13        bloque  role=P5 facing=right  # RB : gentleman, assis (allée est) : « le patron a de drôles d’amis »
+machines               machine        0..1,9..15;6..7,9..15;12..13,9..15;18..19,9..15 bloque  role=decor  # 56 machines en décor, examinables depuis l’allée (texte 39)
+FIN

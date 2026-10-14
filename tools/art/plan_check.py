@@ -30,6 +30,10 @@ itinéraires, rebords, herbes obligatoires, objet caché « cache », durée de 
 `azuria_velos.txt`, `azuria_maison.txt` → `plan_check_azuria.py` (recouvrement exact du sas, raccords
 entre cartes, rebord unique, eau et ponts, Centre premier bâtiment, rival, Ondine, pont Pépite).
 
+**Jalon 20** (dossier 23 §12–§13) : `casino.txt`, `repaire_b1f.txt` … `repaire_b4f.txt`,
+`repaire_ascenseur.txt` → `plan_check_repaire.py` (dalles tournantes, raccords, atteignabilité en six
+états, deux moitiés disjointes du B4F ; les contrôles globaux sont lancés par `repaire_ascenseur`).
+
 Usage : python3 tools/art/plan_check.py [grille.txt ...]   (code 1 si un critère échoue)
         sans argument : toutes les grilles connues (Route 2, Forêt de Jade, Route 3, J13).
 """
@@ -622,6 +626,18 @@ VERIFICATEURS = {"route_2": verifier_route_2, "viridian_forest": verifier_foret,
 	"route_3": verifier_route_3,
 	**{n: _azuria(n) for n in ("route_4", "azuria", "route_24", "azuria_arene", "azuria_velos",
 		"azuria_maison")}}
+
+
+def _repaire(nom: str):
+	"""Grilles du jalon 20 : profils dans `plan_check_repaire.py` (import tardif, comme la Route 3)."""
+	def verifier(chemin: Path) -> bool:
+		import plan_check_repaire
+		return plan_check_repaire.VERIFICATEURS[nom](chemin)
+	return verifier
+
+
+VERIFICATEURS.update({n: _repaire(n) for n in ("casino", "repaire_b1f", "repaire_b2f",
+	"repaire_b3f", "repaire_b4f", "repaire_ascenseur")})
 
 
 def main() -> int:
