@@ -55,7 +55,7 @@ FIN
 
 POSITIONS
 entree_ville           spawn          15,16        libre   role=ville facing=up  # arrivée depuis la ville (porte gauche)
-sortie_ville           sortie         15..16,17    libre   vers=celadon_city  # porte du Casino (RB warps 1 et 2)
+sortie_ville           sortie         15..16,17    libre   vers=celadon_city spawn=from_casino  # porte du Casino ; Céladopole (39..40, 32), arrivée from_casino (39..40, 33) ; Corde Sortie du repaire → from_casino (§21) (RB warps 1 et 2)
 rocket_affiche         dresseur       9,5          bloque  role=R0 facing=up sight=0 trainer=game_corner_rocket apres=11,6  # RB n° 7 : Rattatac, Nosferapti 20 ; devant l’affiche, on lui parle
 affiche                interrupteur   9,4          bloque  depuis=9,5 face=N flag=game_corner_switch apres=rocket_affiche_battu  # affiche examinable APRÈS la défaite du Rocket ; interrupteur derrière
 vers_b1f               escalier       17,4         libre   paire=casino sens=descend vers=rocket_hideout_b1f:21,2 cond=game_corner_switch  # escalier du repaire (RB warp 3), qui apparaît après l’interrupteur

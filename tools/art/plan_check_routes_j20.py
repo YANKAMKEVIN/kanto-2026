@@ -440,7 +440,8 @@ def verifier_route_7(chemin: Path) -> bool:
 	r.critere(entree == warps == spawns == R7_RACCORD,
 		f"raccord ouest : {entree} praticables, warps {warps}, spawns {spawns} (attendu (0, 10..12))")
 	col, rangees = CELADON_RACCORD
-	celadon = next(iter(sorted(PLANS.glob("celadon*.txt"))), None)
+	celadon = PLANS / "celadopole.txt"
+	celadon = celadon if celadon.exists() else None
 	decalage = {y - ry for y, ry in zip(rangees, (10, 11, 12))}
 	r.critere(decalage == {11}, f"Céladopole ({col}, {rangees[0]}..{rangees[-1]}) ↔ Route 7 (0, 10..12) : "
 		"trois rangées consécutives, décalage de 11, aucune rangée en trop")

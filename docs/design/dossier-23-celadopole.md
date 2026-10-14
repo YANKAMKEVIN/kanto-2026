@@ -42,6 +42,58 @@
 | 18 | Aucun ordre imposé entre Erika et le repaire | V, passe §2.3 |
 | 19 | Le J20 ne touche ni Lavanville, ni M. Fuji, ni Ossatueur, ni la Poké Flûte, ni Ronflex | V |
 
+## Grilles v1 — EN ATTENTE de la validation de Kevin (2026-10-15)
+
+29 grilles nouvelles dans `tools/plans/` (la grille fait foi pour la géométrie). Contrôle global :
+`python3 tools/art/plan_check.py` → **38 plans conformes** (9 existants + 29 du J20), profils
+`plan_check_routes_j20.py`, `plan_check_celadopole.py`, `plan_check_repaire.py`.
+
+| Groupe | Fichiers | Taille |
+|---|---|---|
+| Routes | `route_8.txt`, `route_7.txt`, `souterrain_7_8.txt`, `souterrain_entree.txt` (2 instances), `poste_safrania.txt` (2 instances) | 80 × 26 · 28 × 24 · 48 × 10 · 12 × 10 · 12 × 10 |
+| Ville | `celadopole.txt` ; `celadopole_arene.txt` ; `celadopole_magasin_{rdc,2e,3e,4e,5e,toit,ascenseur}.txt` ; `celadopole_residence_{rdc,1er,2e,3e,toit,maison_toit}.txt` ; `celadopole_{restaurant,maison_chef,hotel}.txt` | 70 × 46 ; 17 × 16 ; 20 × 13 (toit 20 × 11, ascenseur 6 × 6) ; 16 × 11 (toit 16 × 10, maison 10 × 8) ; 15 × 10 |
+| Repaire | `casino.txt`, `repaire_b1f.txt` … `repaire_b4f.txt` (géométrie RB 1:1, 59 trajets de dalles RB reproduits), `repaire_ascenseur.txt` | 20 × 18 ; 30 × 28 (B4F 30 × 24) ; 6 × 8 |
+
+**Raccords** :
+- Lavanville ↔ Route 8 (79, 11..13), **PROVISOIRE**, à recaler sur la grille de Lavanville du J18 ;
+- Route 7 (0, 10..12) ↔ Céladopole (69, 21..23) ;
+- Casino (15..16, 17) ↔ porte de la ville (39..40, 32), arrivée `from_casino` (39..40, 33). La
+  Corde Sortie du repaire ramène sur `from_casino` ;
+- tous les escaliers et portes d'ascenseur du repaire sont déclarés des deux côtés.
+
+Traversée Lavanville → Céladopole : 158 pas. Depuis l'entrée est de la ville : 13 pas jusqu'au
+Centre, 63 jusqu'au grand magasin, 74 jusqu'à l'Arène.
+
+**Ce que vérifient les contrôles** :
+- chaque dalle mène à une case d'arrêt, sans boucle ;
+- les deux moitiés du B4F sont disjointes à pied ;
+- l'Arène est fermée sans Coupe, et toute la ville reste ouverte sans Coupe ;
+- Erika est atteignable par le tour, et E5 est inévitable ;
+- D1, D2, D4 et D5 sont inévitables, D3, D6 et D7 évitables ;
+- le toit de la Résidence n'est atteignable que par l'escalier de service ;
+- l'ascenseur du magasin dessert du RdC au 5e ; celui du repaire, B1F, B2F et B4F ;
+- les 14 PNJ ne sont sur aucune case de coupure.
+
+**Valeurs par défaut prises par les grilles** (règle 4) :
+- 14 PNJ en ville : 12 habitants et 2 Rocket en civil ;
+- Arène en 17 × 16, pour un second lacet de haies ;
+- aucun PNJ au 3e de la Résidence ;
+- vendeur d'objets X conditionnel (`condition=stat_stages`) ;
+- 2 Pokémon d'ambiance par route, pris dans les sauvages ;
+- herbe H1 de la Route 8 obligatoire (5 cases) ;
+- Casino : 5 PNJ aux places RB ; le Rocket de l'affiche se range en (11, 6) après sa défaite ;
+- arrivée d'ascenseur sur la case devant la porte ;
+- objets RB posés sur un décor (Fer, PV Plus) ou cachés dans un mur, ramassés depuis la case voisine.
+
+**Points à trancher par Kevin** :
+1. **Maison du chef** : RB l'appelle « Chief House » sans en faire un personnage. Par défaut, deux
+   habitants ordinaires.
+2. **Textes manquants** : 10 habitants de la ville, les petits intérieurs (hôtel, maison du chef,
+   restaurant hors client n° 44) et les étages du magasin n'ont pas de réplique dans le lot §20.
+   Proposition : un **petit lot complémentaire** au moment du plan technique, validé en une fois.
+3. **Distances** (Arène à 74 pas, grand magasin à 63) et **Arène plus haute que l'écran** : à juger
+   sur S24 au 20-I (caméra qui suit).
+
 ## 1. Intention
 
 Céladopole est **la grande ville du milieu du voyage** : prospère, verte, commerçante, élégante. Le
@@ -60,8 +112,9 @@ une chose : **voir ce qui se cache dans la Tour**.
 |---|---|
 | Route 8, 2 bâtiments d'entrée du souterrain, souterrain ouest-est, Route 7 ; poste de garde de Safrania sur chaque route (fermé) ; Céladopole (extérieur, Centre, grand magasin à 5 étages + toit + ascenseur, Résidence à 3 étages + toit + maison du toit, Arène, Casino, restaurant, maison du chef, hôtel) ; repaire B1F à B4F + ascenseur ; Erika, Badge Prisme, CT21 ; Giovanni, Scope Sylphe ; Évoli ; 3 mécaniques (ascenseur, dalles tournantes, don de Pokémon) | Safrania et l'ouverture de ses postes, Thé, Route 16, Vol, Ronflex, Piste Cyclable, Coin à lots, jetons, Porygon, Surf et pêche dans l'étang, vitamines, CT dont la capacité n'existe pas, Diplôme (post-game), tout événement de la Tour au-delà des règles du J19 |
 
-**Cartes : 28.** 3 extérieures de route, 2 bâtiments d'entrée et 2 postes de garde (même
-enveloppe), le souterrain, la ville, 15 intérieurs de ville et 5 cartes de repaire.
+**Cartes : 32** (recompté sur les grilles v1). 2 routes, le souterrain, 2 bâtiments d'entrée et
+2 postes de garde (une enveloppe chacun), la ville, 19 intérieurs de ville (dont le Centre, réutilisé,
+et le Casino) et 5 cartes de repaire.
 
 ## 3. Route 8 [V, H-9, H-13]
 
@@ -294,8 +347,8 @@ en dépendent. Le décor change (béton, néons, caisses, câbles), mais la topo
 | B1F | Arrivée par l'escalier du Casino ; escalier vers le B2F ; porte de l'ascenseur ; Corde Sortie, Hyper Potion (→ Super Potion si absente) ; 1 objet caché (PP Plus → Rappel [D]) | 3 : Soporifik / Machoc 21 · Rattatac ×2 21 · Tadmorv / Smogo ×2 20 |
 | B2F | **Dalles tournantes** ; Pierre Lune, Pépite, CT07 Empal'Korne (si la capacité existe, sinon → Super Potion [H-7]), Super Potion ; ascenseur | 1 : Nosferapti, Smogo, Tadmorv, Nosferapti, Rattatac 17 |
 | B3F | **Dalles tournantes** ; CT10 Damoclès (même règle), **Super Bonbon** ; 1 objet caché (Pépite) | 2 : Rattata, Rattatac, Soporifik 20 · Machoc ×2 21 |
-| B4F ouest (par l'escalier) | Le **Rocket à la Clé** ; PV Plus (→ Rappel [D]), CT02 Coupe-Vent (même règle), Fer (→ Super Potion [D]) | 1 : Smogo, Nosferapti 21, puis la Clé (§13.4) |
-| B4F est (**par l'ascenseur**) | 2 gardes devant la porte du bureau ; **Giovanni** ; **Scope Sylphe** ; 1 objet caché (Super Potion) | 2 : Sabelette, Abo, Sablaireau 23 · Abo, Sabelette, Arbok 23 |
+| B4F ouest (par l'escalier) | Le **Rocket à la Clé** ; PV Plus (→ Rappel [D]), CT02 Coupe-Vent (même règle) | 1 : Smogo, Nosferapti 21, puis la Clé (§13.4) |
+| B4F est (**par l'ascenseur**) | 2 gardes devant la porte du bureau ; **Giovanni** ; **Scope Sylphe** ; Fer (→ Super Potion [D] ; dans cette moitié en RB, correction des grilles v1) ; 1 objet caché (Super Potion, lisible seulement depuis la case du Scope) | 2 : Sabelette, Abo, Sablaireau 23 · Abo, Sabelette, Arbok 23 |
 | Ascenseur | Panneau d'étages : **B1F, B2F, B4F** (RB) | — |
 
 Sélection H-9 : on retire 2 des 5 sbires du B1F (RB 11 et 12). Espèces absentes → remplacées
@@ -613,7 +666,7 @@ cartes du repaire avant ses événements (V).
 ## 24. Tests et QA
 
 **Automatiques** (GUT) :
-- raccords des 28 cartes (aller-retour sur chaque porte) ;
+- raccords des 32 cartes (aller-retour sur chaque porte) ;
 - dalles : chaque dalle mène à une case d'arrêt praticable ;
 - ascenseur : seulement les étages autorisés, refus sans la Clé ;
 - don d'Évoli (équipe pleine, unicité) ;

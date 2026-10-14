@@ -640,6 +640,20 @@ VERIFICATEURS.update({n: _repaire(n) for n in ("casino", "repaire_b1f", "repaire
 	"repaire_b3f", "repaire_b4f", "repaire_ascenseur")})
 
 
+def _profil(module: str, nom: str):
+	"""Grilles du jalon 20 (ville et routes) : import tardif, comme le repaire."""
+	def verifier(chemin: Path) -> bool:
+		mod = __import__(module)
+		return mod.VERIFICATEURS[nom](chemin)
+	return verifier
+
+
+VERIFICATEURS.update({n: _profil("plan_check_routes_j20", n) for n in ("route_8", "route_7",
+	"souterrain_7_8", "souterrain_entree", "poste_safrania")})
+VERIFICATEURS.update({p.stem: _profil("plan_check_celadopole", p.stem)
+	for p in sorted((RACINE / "tools/plans").glob("celadopole*.txt"))})
+
+
 def main() -> int:
 	chemins = [Path(a) for a in sys.argv[1:]] or [RACINE / f"tools/plans/{n}.txt"
 		for n in VERIFICATEURS]
