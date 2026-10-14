@@ -2362,15 +2362,9 @@
   },
   {
    "id": "fossil_dome",
-   "source": "WORLD_PROP_DALLE_FOSSILES_PLANCHE_NE_r1.png",
-   "recadrage": [
-    876,
-    588,
-    1172,
-    828
-   ],
+   "source": "WORLD_PROP_FOSSILE_DOME_01_NE_r1.png",
    "sortie": "assets/sprites/objects/painted/fossil_dome.png",
-   "hauteur": 46
+   "hauteur": 44
   },
   {
    "id": "fossil_helix",

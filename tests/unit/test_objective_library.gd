@@ -62,10 +62,10 @@ func test_q4_nothing_before_the_rival_battle_then_reach_viridian() -> void:
 ## Jalon 13 (T17) : `badge_cascade` (T19) et `beaten_nugget_rocket` (T22) ne sont pas encore
 ## levés ; `cerulean_reached` l'est par la scène `cerulean_arrival`.
 ## Jalon 12 (T18) : `route_3_entered` est levé par la scène du déclencheur de la Route 3 ;
-## `route_4_reached` attendait le déclencheur du sas (T28 du J12), que la Route 4 du J13
-## remplace : à poser sur la Route 4 (fusion J12 → J13, `jalon-13.md` §0.5).
+## (T28) `route_4_reached` par celle du déclencheur du sas (data/cutscenes/route_4.json), posé
+## aussi sur la vraie Route 4 du J13 (mêmes cases).
 const _PENDING_FLAGS: Array[StringName] = [&"viridian_arrived", &"badge_cascade",
-	&"beaten_nugget_rocket", &"route_4_reached"]
+	&"beaten_nugget_rocket"]
 
 
 ## Jalon 10 (dossier 12 §16, jalon-10.md §2.10) : « continuer vers le nord. » jusqu'à Argenta,

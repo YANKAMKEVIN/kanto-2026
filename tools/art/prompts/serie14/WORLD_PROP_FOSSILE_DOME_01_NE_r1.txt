@@ -1,0 +1,16 @@
+WORLD_PROP_FOSSILE_DOME_01 — NOUVELLE image : un seul objet de jeu, pas une scène. Elle REMPLACE le Fossile Dôme (élément du milieu) de la planche jointe WORLD_PROP_DALLE_FOSSILES_PLANCHE_NE_r1, qui est faux (il ressemble à un panier tressé à rayures).
+Images jointes : UI_OBJETS_J12_PLANCHE_r3 = la FORME qui fait foi : l'icône 3 (troisième en partant de la gauche), le Fossile Dôme validé : une carapace de pierre en dôme, beige ocre, avec UNE ARÊTE CENTRALE en relief qui va du sommet vers l'avant, une fine ligne gravée en arc de chaque côté, un bourrelet de pierre granuleux à la base ; aucune rayure. WORLD_PROP_DALLE_FOSSILES_PLANCHE_NE_r1 = ancre de RENDU ET D'ÉCHELLE : le Fossile Nautile (élément de droite) montre exactement le rendu, la finesse, le contour, la lumière et la taille attendus ; le nouveau Fossile Dôme doit être son frère (même main, même matière de pierre fossile, même taille apparente).
+
+ADN VISUEL KANTO 2026 — v1 (à respecter strictement)
+- Rendu : illustration 2D peinte numériquement, dans l'esprit d'un RPG Pokémon moderne au rendu « HD-2D peint » : formes simples, lisibles et arrondies, détails fins mais ordonnés. Ni pixel art, ni 3D, ni photo, ni aquarelle, ni cartoon en aplats.
+- Perspective : vue de dessus de trois quarts, en projection oblique frontale, sans aucun point de fuite. On voit le dessus de l'objet et sa face avant (côté sud). Pas de vue isométrique, pas de rotation.
+- Contours : aucun trait noir. Contour fin et doux, d'une teinte plus sombre et plus saturée que la couleur locale.
+- Volumes : trois valeurs nettes par matériau (lumière, ombre propre, reflet ambiant), transitions douces, petits accents de lumière sur les arêtes.
+- Texture : pinceau net et propre, légère granularité picturale ; pas de bruit, pas de flou.
+- Ombres : aucune ombre portée au sol.
+- Interdits : texte, lettres, chiffres, logo, signature, cadre, personnage, Pokémon vivant, sol sous l'objet, halo lumineux, rayures horizontales, motif de vannerie.
+
+LUMIÈRE NE (neutre) : lumière de milieu de journée, diffuse et blanche, venant légèrement du haut à gauche ; aucune teinte dorée ou orangée, aucun liseré chaud ; ombres propres neutres, légèrement bleutées.
+
+Image 1024 × 1024 : le FOSSILE DÔME seul, entier, centré, posé (base à plat), environ 520 px de large, vu de trois quarts depuis le dessus comme le Fossile Nautile de la planche jointe ; EXACTEMENT la forme de l'icône 3 de UI_OBJETS_J12_PLANCHE_r3 (arête centrale, lignes gravées en arc, bourrelet de base), fidèle au Fossile Dôme officiel de Pokémon Rouge/Bleu.
+Fond avec une vraie transparence (canal alpha), aucun sol, aucune ombre portée, aucun halo.

@@ -1,9 +1,10 @@
 {
-	"_doc": "Halos de lumière légers (LightGlow, docs/tech/jalon-12.md §2.4) : sprites additifs générés (aucun asset, aucune Light2D), posés par les outils de construction des cartes. « radius » en cases (rayon où le halo s'éteint), « alpha » = intensité au centre (≤ 0,35), « flicker » = amplitude du vacillement lent (0 = fixe ; coupé par « Réduire les animations »). Valeurs par défaut du T7, à régler sur capture (T9).",
+	"_doc": "Halos de lumière légers (LightGlow, docs/tech/jalon-12.md §2.4) : sprites additifs générés (aucun asset, aucune Light2D), posés par les outils de construction des cartes. « radius » en cases (rayon où le halo s'éteint ; demi-largeur d'une colonne), « alpha » = intensité au centre (≤ 0,35), « flicker » = amplitude du vacillement lent (0 = fixe ; coupé par « Réduire les animations »), « shape » facultatif (« radial » par défaut, « column » = colonne de lumière posée à son pied, « height » en cases). Valeurs du T7 réglées à la passe « lumière rare » (2026-10-14) : sur un sol assombri par le voile de pénombre, les sources portent la lumière ; le puits de jour = flaque douce (shaft) + colonne (beam).",
 	"types": {
-		"lamp": { "color": "#ffb260", "radius": 2.6, "alpha": 0.30, "flicker": 0.18 },
-		"shaft": { "color": "#dce8ff", "radius": 3.2, "alpha": 0.26, "flicker": 0.0 },
-		"shard": { "color": "#a8c8ff", "radius": 1.6, "alpha": 0.22, "flicker": 0.0 },
-		"projector": { "color": "#fff0d8", "radius": 4.2, "alpha": 0.32, "flicker": 0.0 }
+		"lamp": { "color": "#ffb260", "radius": 3.0, "alpha": 0.24, "flicker": 0.18 },
+		"shaft": { "color": "#dce8ff", "radius": 2.6, "alpha": 0.12, "flicker": 0.0 },
+		"shard": { "color": "#a8c8ff", "radius": 1.8, "alpha": 0.26, "flicker": 0.0 },
+		"projector": { "color": "#fff0d8", "radius": 4.6, "alpha": 0.2, "flicker": 0.0 },
+		"beam": { "color": "#e2ecff", "radius": 0.9, "alpha": 0.3, "flicker": 0.0, "shape": "column", "height": 4.6 }
 	}
 }

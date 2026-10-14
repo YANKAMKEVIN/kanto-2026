@@ -10,6 +10,7 @@ func _valid() -> Dictionary:
 			"first_capture": {"title": "Première capture", "detail": "{species} à {zone}."},
 			"zone_arrival": {"title": "{zone}"},
 			"badge": {"title": "{badge}", "detail": "À {city} contre {leader} ({zone})."},
+			"fossil": {"title": "Rocket", "detail": "{fossil} obtenu."},
 		},
 		"outcomes": {"win": {"text": "Gagné."}},
 		"zone_arrivals": {"route_1": {"title": "Départ", "detail": "Vers la {zone}."}},

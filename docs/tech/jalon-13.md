@@ -181,11 +181,19 @@ pas livré.** Écarts avec ce que le plan supposait :
 >   `route_24.json` ; Abo dans `route_4_grass` (3ᵉ, 10–12, poids 15). `test_cerulean_data` inversé.
 > - **CT** : `tm_compatibility.json` régénéré (59 espèces ; CT34 : 55, CT01 : 19, CT11 : 18).
 > - **`--valider`** (`cerulean_scenario.json`) : **code 0, rien de sauté**.
-> - **Reste** : `confirm_cutscene` toujours absent (le recruteur passe par `confirm_set`, §2.13) ;
->   **`route_4_reached`** (objectif « continuer vers Azuria. » du J12) n'est levé par rien : le
->   déclencheur du sas (T28 du J12) n'existe pas et la Route 4 du J13 le remplace → à poser sur la
->   Route 4 (T17 ou T22 ; dans l'intervalle, sur la Route 4, l'objectif reste « traverser le Mont
->   Sélénite. » jusqu'à Azuria) ; Antidote caché de la Route 24 nord (brique J12 livrée, T22).
+> - **Fusion de `main` (J12 terminé, 2b2745f) dans la foulée** : `confirm_cutscene` du J12 arrive
+>   (`_CHOICE_KEYS` : `confirm_cutscene` puis `confirm_set`, `cancel_set`) ; vie du sas gardée
+>   sur la vraie Route 4 (`build_route_4.gd` : panneau `route_4_sign` lu de face en (6, 5),
+>   **déclencheur `route_4_reached` (4, 5..9)**, mêmes cases que le sas) ; `test_route_4` garde nos
+>   tests et reprend ceux du panneau et du déclencheur ; la vie du sas du J12 est rejouée sur la
+>   vraie carte (`test_route_4_sas_life.gd`, l'ancien `test_route_4_life` du J12) ; départ
+>   `route_4` = celui du J12 (fin réelle du Mont Sélénite) ; `test_no_qa_map_is_shipped` : seule
+>   l'exception `qa_switch_j13` (T22) ; sprites provisoires des formes du rival = ceux du
+>   correctif QA 12A (nos 4 dessins en double retirés) ; outil de simulation : groupes, `starter`
+>   par équipe et `title` (J13) + `retries`, `--trace` (J12). Les spawns `from_cerulean_n|s` du
+>   sas ne sont plus référencés par aucune donnée (les sauvegardes gardent une case, pas un spawn).
+> - **Reste** : Antidote caché de la Route 24 nord (brique J12 livrée, T22) ; poser Clara (T17),
+>   Malo et le recruteur (T22) sur les cartes.
 
 ---
 

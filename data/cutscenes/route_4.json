@@ -1,4 +1,14 @@
 {
+	"route_4_reached": {
+		"variants": [
+			{
+				"unless": ["route_4_reached"],
+				"steps": [
+					{ "set": ["route_4_reached"] }
+				]
+			}
+		]
+	},
 	"route_4_item_1": {
 		"variants": [
 			{

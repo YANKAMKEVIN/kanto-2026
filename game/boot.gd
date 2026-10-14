@@ -58,6 +58,8 @@ const OPENING_ARRIVAL: StringName = &"opening_arrival"
 ## Narration de la Corde Sortie (jalon 12, dossier 15 §20 n° 33) :
 ## `data/dialogues/field_items.json`.
 const ESCAPE_ROPE_DIALOGUE: StringName = &"escape_rope_used"
+## Raison de blocage du joueur pendant une évolution par pierre hors combat (jalon 12, T23).
+const EVOLUTION_ITEM: StringName = &"evolution_item"
 
 @export var start_map: StringName = &"player_house_2f"
 @export var start_spawn: StringName = &"start"
@@ -158,6 +160,9 @@ var _opening: OpeningDirector = null
 var _title_backdrop: TitleBackdrop = null
 ## Grottes de Kanto (jalon 12, T20 : Corde Sortie, `data/world/caves.json`).
 var _caves := CaveLibrary.new()
+## Pierre en cours d'utilisation (jalon 12, T23) : retirée du Sac à
+## [signal EvolutionDirector.evolution_applied], une seule fois ; &"" sinon.
+var _stone_item: StringName = &""
 
 @onready var _world: Node2D = %World
 @onready var _hud: ExplorationHud = %ExplorationHud
@@ -329,6 +334,7 @@ func _ready() -> void:
 	_menu.menu_closed.connect(_on_menu_closed)
 	_setup_companion()
 	_setup_caves()
+	_setup_evolution_items()
 	# L'écran (jalon-06.md §6.6) : ouverture et vue dans la même frame, sans await (un fondu
 	# coupé laisse une coroutine non reprise).
 	_menu.menu_opened.connect(_menu_screen.open_animated)
@@ -417,6 +423,7 @@ func _ready() -> void:
 	SceneRouter.map_entered.connect(_on_map_entered)
 	SceneRouter.map_entered.connect(_interactions.on_map_entered)
 	SceneRouter.map_entered.connect(_starter_choice.on_map_entered)
+	SceneRouter.coming_soon_finished.connect(_on_coming_soon_finished)
 	_start_game()
 	_menu.set_settings(_settings, _profile_device_quality(), _can_write())
 
@@ -474,6 +481,7 @@ func _exit_tree() -> void:
 		[SceneRouter.map_entered, _on_map_entered],
 		[SceneRouter.map_entered, _interactions.on_map_entered],
 		[SceneRouter.map_entered, _starter_choice.on_map_entered],
+		[SceneRouter.coming_soon_finished, _on_coming_soon_finished],
 	]
 	for link: Array in links:
 		var sig: Signal = link[0]
@@ -1049,6 +1057,14 @@ func _on_transition_started(_target_map: StringName) -> void:
 	_hud.hide_caption()
 
 
+## Fin de l'écran « à venir » (même carte, aucun [signal SceneRouter.map_entered]) : ferme la
+## transition ouverte par [method _on_transition_started] (QA finale 12D : le compagnon restait
+## caché jusqu'au changement de carte suivant).
+func _on_coming_soon_finished(_map: GameMap) -> void:
+	_arrival_from = &""
+	_companion.on_transition_finished()
+
+
 ## Écran noir (ou démarrage) : présence des PNJ selon les drapeaux de la partie d'abord
 ## (jalon 3B §2.6), puis la carte passe aux contrôleurs.
 func _on_map_changed(map: GameMap) -> void:
@@ -1336,7 +1352,9 @@ func _on_item_given(item_id: StringName, count: int) -> void:
 	var item := _items.get_item(item_id)
 	if item == null:
 		return
-	_hud.show_toast(item.quantity_text(count), item.added_text(count))
+	# Un objet « obtenu » (fossile) : son icône peinte du Sac, sinon l'icône générique.
+	var icon: Texture2D = MenuArt.item_icon(item_id) if item.obtained else null
+	_hud.show_toast(item.quantity_text(count), item.added_text(count), icon)
 
 
 ## Retour de l'écran : la confirmation de vente de la Boutique, la confirmation ou le menu « ⋯ »
@@ -1404,7 +1422,7 @@ func _refresh_controls() -> void:
 	_hud.set_controls_visible(not _is_opening_active() and not _menu.is_open()
 		and not _runner.is_running() and not _cutscenes_node.is_running()
 		and not _starter_choice.is_sheet_open() and not _battle_director.is_running()
-		and not _encounters.is_running())
+		and not _encounters.is_running() and not _player.is_blocked_by(EVOLUTION_ITEM))
 
 
 ## Lit les réglages (fichier de l'appareil, indépendant de la sauvegarde et du départ de
@@ -1514,3 +1532,45 @@ func _on_field_item_requested(item_id: StringName) -> void:
 		await _runner.dialogue_finished
 	GameState.bag.remove(item_id, 1)
 	SceneRouter.change_map(exit.map, exit.spawn, exit.facing)
+
+
+# --- Jalon 12 (T23) : évolution par pierre hors combat ------------------------------------
+
+## Sac → pierre → UTILISER → Pokémon COMPATIBLE ([signal MenuDirector.evolution_item_requested]) ;
+## la pierre est retirée à [signal EvolutionDirector.evolution_applied].
+func _setup_evolution_items() -> void:
+	_menu.evolution_item_requested.connect(_on_evolution_item_requested)
+	_evolutions.evolution_applied.connect(_on_evolution_applied)
+
+
+## Pierre utilisée sur le Pokémon [param index] (`jalon-12.md` §2.9) : menu fermé, joueur et
+## contrôles bloqués, [method EvolutionDirector.play_item] (non annulable) ; la pierre quitte le
+## Sac **dans l'appel même** où l'évolution est appliquée ([method _on_evolution_applied]). Aucune
+## image stable pendant la séquence (le joueur est bloqué) : une fermeture de l'application
+## reprend à la sauvegarde d'avant, pierre comprise. Fin : retour au monde, compagnon mis à jour
+## (rentre en silence si sa nouvelle espèce n'est pas éligible), autosave.
+func _on_evolution_item_requested(index: int, item_id: StringName) -> void:
+	var candidate := StoneUse.candidate(GameState.party, index, item_id, _pokemon)
+	if candidate == null or not GameState.bag.has(item_id) or _evolutions.is_playing():
+		return
+	_menu.close()
+	_player.set_input_enabled(false, EVOLUTION_ITEM)
+	_refresh_controls()
+	_stone_item = item_id
+	_evolutions.speed_scale = _battle_director.speed_scale
+	await _evolutions.play_item(candidate, GameState.party, item_id)
+	_stone_item = &""
+	if is_instance_valid(_player):
+		_player.set_input_enabled(true, EVOLUTION_ITEM)
+	_companion.refresh()
+	_refresh_controls()
+	request_autosave("évolution")
+
+
+## L'évolution vient d'être appliquée : la pierre en cours quitte le Sac (une seule fois).
+func _on_evolution_applied(_party_index: int, _into: StringName) -> void:
+	if _stone_item.is_empty():
+		return
+	if not GameState.bag.remove(_stone_item, 1):
+		push_error("Boot : la pierre « %s » n'est plus dans le Sac" % _stone_item)
+	_stone_item = &""

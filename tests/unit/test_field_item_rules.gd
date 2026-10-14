@@ -36,11 +36,13 @@ func test_escape_rope_data() -> void:
 	assert_eq(rope.contexts(), [ItemData.CONTEXT_FIELD] as Array[StringName], "hors combat")
 	assert_false(rope.targets_pokemon(), "sans cible")
 	assert_eq(rope.added_text(1), "Ajoutée au Sac")
-	# La Pierre Lune attend le T23 : sans usage, pas de UTILISER.
-	assert_false(_items.get_item(&"moon_stone").has_field_use())
+	# La Pierre Lune (T23) : pierre d'évolution, UTILISER.
+	var stone := _items.get_item(&"moon_stone")
+	assert_true(stone.has_field_use())
+	assert_eq(stone.field_use, ItemData.FIELD_USE_EVOLUTION_STONE)
 	# Aucun autre objet n'a d'usage d'exploration.
 	for id: StringName in _items.get_ids():
-		if id != &"escape_rope":
+		if id != &"escape_rope" and id != &"moon_stone":
 			assert_eq(_items.get_item(id).field_use, &"", "%s : aucun usage" % id)
 
 
@@ -96,13 +98,16 @@ func test_rope_only_in_a_cave() -> void:
 
 
 func test_items_without_field_use() -> void:
-	for id: StringName in [&"moon_stone", &"potion", &"poke_ball", &"oak_parcel", &"tm34"]:
+	for id: StringName in [&"potion", &"poke_ball", &"oak_parcel", &"tm34"]:
 		assert_eq(FieldItemRules.check(_items.get_item(id), &"mt_moon_1f", _caves),
 			FieldItemRules.Check.NOT_FIELD_USE, String(id))
 		assert_false(FieldItemRules.is_targetless(_items.get_item(id)), String(id))
 	assert_eq(FieldItemRules.check(null, &"mt_moon_1f", _caves),
 		FieldItemRules.Check.NOT_FIELD_USE)
 	assert_true(FieldItemRules.is_targetless(_items.get_item(&"escape_rope")))
+	assert_eq(FieldItemRules.check(_items.get_item(&"moon_stone"), &"route_3", _caves),
+		FieldItemRules.Check.OK, "Pierre Lune (T23) : partout en exploration")
+	assert_false(FieldItemRules.is_targetless(_items.get_item(&"moon_stone")))
 	var stone := ItemData.new()
 	stone.category = ItemData.Category.FIELD
 	stone.field_use = ItemData.FIELD_USE_EVOLUTION_STONE
@@ -139,7 +144,9 @@ func test_bag_shows_use_only_for_items_with_a_field_use() -> void:
 	assert_false(rope.targets_pokemon, "sans choix du Pokémon")
 	assert_eq(rope.note, "")
 	var stone: BagEntryView = by_id[&"moon_stone"]
-	assert_false(stone.usable, "Pierre Lune sans usage (T23) : consultable, sans bouton")
+	assert_true(stone.usable, "Pierre Lune (T23) : UTILISER")
+	assert_eq(stone.action_label, "UTILISER")
+	assert_true(stone.targets_pokemon, "choix du Pokémon")
 	assert_eq(stone.note, "", "aucune mention")
 	# En combat : aucun objet AVENTURE.
 	for context: StringName in [BagQuery.CONTEXT_WILD_BATTLE, BagQuery.CONTEXT_TRAINER_BATTLE]:

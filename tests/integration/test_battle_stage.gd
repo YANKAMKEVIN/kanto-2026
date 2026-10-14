@@ -648,6 +648,7 @@ func test_every_species_met_in_battle_has_its_sprites() -> void:
 	# jalon-09.md §2.5 (T1) : sprites provisoires (tools/gen_placeholder_battlers.gd) pour
 	# chaque espèce d'une table de rencontres ou d'une équipe de Dresseur, et pour les huit
 	# espèces de la Forêt de Jade (les évolutions naissent en combat, Raichu au Pokédex).
+	# Toutes les espèces des données (évolutions comprises) : test_battle_art.gd (QA 12A).
 	var data := PokemonData.new()
 	data.load_dir()
 	var species: Array[StringName] = [&"caterpie", &"metapod", &"butterfree", &"weedle",

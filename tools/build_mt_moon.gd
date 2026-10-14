@@ -13,7 +13,8 @@ extends SceneTree
 ##   parois en modules (faces, bords latéraux, lèvres : [method CaveKit.place_walls]), repères
 ##   (colonnes `K`, rochers `o`, éclats de Pierre Lune `*`, mare `w`, lampes `L` — projecteurs
 ##   dans la chambre de B2F —, caisses `R`, tranchées `F`, dalle `S` et ses deux fossiles posés
-##   dessus, indices `x`, puits de jour `j`), échelles `U` / `V`, panneau de l'entrée.
+##   dessus (PNJ objets depuis le T25), indices `x`, puits de jour `j`), échelles `U` / `V`,
+##   panneau de l'entrée ; déclencheur de la scène du chercheur (B2F, T25).
 ## - **Halos** [LightGlow] (≤ 16 par étage) : lampes, puits de jour et entrée (1F), éclats,
 ##   projecteurs. Profils `cave_1f` > `cave_b1f` = `cave_b2f` (`data/world/lighting.json`).
 ## - Passages : échelles `STEP_ON` sans direction vers le point d'apparition de même paire
@@ -40,6 +41,41 @@ const FLOORS: Dictionary = {
 	"b1f": [&"mt_moon_b1f", "MtMoonB1F", Vector2i(40, 30), 1211, 1212, &"cave_b1f"],
 	"b2f": [&"mt_moon_b2f", "MtMoonB2F", Vector2i(50, 38), 1221, 1222, &"cave_b2f"],
 }
+## Voile de pénombre par étage (passe « lumière rare », 2026-10-14 ; `tools/cave_shade.gd`) :
+## 1F le plus clair, B1F puis B2F plus sombres loin des lampes ; pied des parois assombri
+## (`edge_*`), dégradé plus large vers le pourtour des salles (`room_*`), pénombre refroidie
+## (`tint`). Valeurs réglées sur capture (`tools/art/luminance_grotte.py`) [D].
+const SHADE: Dictionary = {
+	"1f": {"ambient": 0.95, "edge_min": 0.55, "edge_radius": 0.8, "room_min": 0.87,
+		"room_radius": 3.2, "tint": Color(0.80, 0.88, 1.0)},
+	"b1f": {"ambient": 0.93, "edge_min": 0.55, "edge_radius": 0.8, "room_min": 0.87,
+		"room_radius": 3.2, "tint": Color(0.78, 0.86, 1.0)},
+	"b2f": {"ambient": 0.9, "edge_min": 0.55, "edge_radius": 0.8, "room_min": 0.87,
+		"room_radius": 3.2, "tint": Color(0.78, 0.86, 1.0)},
+}
+## Sources qui relèvent le voile (type de halo → rayon en cases, intensité, décalage du centre
+## du halo au centre de la flaque au sol). Les colonnes (`beam`) n'éclairent pas le sol (la
+## flaque du puits, `shaft`, s'en charge).
+## « add » × « color » : flaque claire ajoutée au sol sous les personnages (`CaveFloorLight`).
+const SHADE_LIGHTS: Dictionary = {
+	&"lamp": {"radius": 3.4, "strength": 0.95, "offset": Vector2(0.0, 40.0), "add": 0.15,
+		"color": Color(1.0, 0.78, 0.5)},
+	&"shaft": {"radius": 3.2, "strength": 1.0, "offset": Vector2.ZERO, "add": 0.12,
+		"color": Color(0.86, 0.92, 1.0)},
+	&"shard": {"radius": 2.3, "strength": 0.8, "offset": Vector2.ZERO, "add": 0.1,
+		"color": Color(0.66, 0.8, 1.0)},
+	# Échelles : sans halo, une pénombre levée autour d'elles (« clairement visibles », §5).
+	&"ladder": {"radius": 3.4, "strength": 1.0, "offset": Vector2.ZERO, "add": 0.06,
+		"color": Color(0.9, 0.94, 1.0)},
+	&"projector": {"radius": 4.6, "strength": 1.0, "offset": Vector2(0.0, 48.0), "add": 0.09,
+		"color": Color(1.0, 0.95, 0.85)},
+}
+## Part de la valeur du sol que prennent les modules de paroi devant lui.
+const SHADE_WALL_FOLLOW: float = 0.7
+## Puits de jour : flaque au sol adoucie (opacité), colonne de lumière posée sous son centre
+## (part de la demi-hauteur du bloc).
+const SHAFT_DECAL_ALPHA: float = 0.45
+const BEAM_FOOT_SHARE: float = 0.6
 ## Entrée du 1F (E) ↔ Route 3 (§2.1) : [nœud, case, spawn de la Route 3, spawn d'ici].
 const ENTRANCE: Array = [
 	["Route3W", Vector2i(29, 45), &"from_mt_moon_w", "from_route_3_w"],
@@ -69,10 +105,14 @@ const EXAMINABLES: Dictionary = {
 	"lampe_abandonnee": &"mt_moon_1f_lamp",
 }
 const EXAMINE_ALL_OF: String = "R"
-## Objets cachés posés par cet outil (T21 ; la Pierre Lune cachée de B2F arrive au T25) :
+## Objets cachés posés par cet outil (T21 ; la Pierre Lune cachée de B2F au T25) :
 ## position `objet_cache` = dialogue (drapeau `got_<id>`).
-const HIDDEN_ITEMS: Array[String] = ["mt_moon_1f_hidden_1"]
+const HIDDEN_ITEMS: Array[String] = ["mt_moon_1f_hidden_1", "mt_moon_b2f_hidden_1"]
 const CLUE_MARK: String = "x"
+## Scène du chercheur (T25, `jalon-12.md` §1.3 n° 5, §2.12) : déclencheur au bas du couloir des
+## lampes (seul accès à la chambre), pas vers le bas ; ses variantes ne jouent qu'après R3.
+const RESEARCHER_TRIGGER: Array = [&"mt_moon_b2f", Vector2i(25, 27), Vector2i(2, 1),
+	&"mt_moon_researcher"]
 
 var _kit: Object
 var _floor_key: String = ""
@@ -119,6 +159,16 @@ func _build(key: String) -> int:
 	_place_examinables()
 	if map_id == &"mt_moon_1f":
 		_place_entrance()
+	if map_id == RESEARCHER_TRIGGER[0]:
+		_kit.call(&"add_trigger", "ResearcherTrigger", RESEARCHER_TRIGGER[1],
+			RESEARCHER_TRIGGER[2], Vector2i.DOWN, RESEARCHER_TRIGGER[3])
+	var shade := "res://assets/world/maps/%s_shade.png" % map_id
+	if _errors().is_empty() and not _kit.call(&"add_shade", shade, SHADE[key], SHADE_LIGHTS,
+			SHADE_WALL_FOLLOW):
+		if _errors().is_empty():
+			print("build_mt_moon %s : voile écrit ; importer (--import) puis relancer" % key)
+			_kit.call(&"discard")
+			return 2
 	if not _errors().is_empty():
 		push_error("build_mt_moon %s :\n%s" % [key, "\n".join(_errors())])
 		_kit.call(&"discard")
@@ -206,17 +256,12 @@ func _place_landmarks() -> void:
 	# Mare `w` (4 × 3) : à plat, centrée sur la zone.
 	for block: Rect2i in _blocks("w"):
 		_floor_decor(decals, "prop_mare_grotte_01", block, "Pool")
-	# Dalle `S` (3 × 1) et les deux fossiles posés dessus (images des objets officiels ; au
-	# T25 ils deviennent les objets fixes `object/fossil_*` que l'on choisit).
+	# Dalle `S` (3 × 1). Les deux fossiles posés dessus sont, depuis le T25, des PNJ objets
+	# fixes (`data/npcs/mt_moon_b2f.json` : `object/fossil_dome`, `object/fossil_helix`, relevés
+	# de « lift » = [constant FOSSIL_RAISE]) que l'on examine et choisit ; plus de décor ici.
 	for block: Rect2i in _blocks("S"):
 		var anchor := Vector2i(block.position.x + 1, block.position.y)
 		_kit.call(&"add_prop_at", entities, "prop_dalle_01", anchor, "FossilSlab")
-		for entry: Array in [["fossile_dome", "prop_fossile_dome_01", "FossilDome"],
-				["fossile_nautile", "prop_fossile_nautile_01", "FossilHelix"]]:
-			var cell: Vector2i = _plan().call(&"cell_of", entry[0])
-			var fossil: Sprite2D = _kit.call(&"add_sprite", entities, entry[1],
-				Vector2((cell.x + 0.5) * TILE, (cell.y + 1) * TILE + 1.0), entry[2])
-			fossil.offset.y -= FOSSIL_RAISE
 	# Indices des objets cachés `x` : un petit éclat clair, sans halo (discret, B-10).
 	index = 0
 	for cell: Vector2i in _plan().call(&"cells_of", "x"):
@@ -232,7 +277,10 @@ func _place_landmarks() -> void:
 			block.size.y * TILE * 1.35 / sprite.texture.get_height())
 		shaft.scale = Vector2(fit, fit)
 		shaft.position = _center(block) + Vector2(0.0, sprite.texture.get_height() * fit / 2.0)
+		shaft.modulate.a = SHAFT_DECAL_ALPHA
 		_kit.call(&"add_glow", &"shaft", _center(block), "GlowShaft%d" % index)
+		_kit.call(&"add_glow", &"beam", _center(block) + Vector2(0.0,
+			block.size.y * TILE / 2.0 * BEAM_FOOT_SHARE), "GlowBeam%d" % index)
 		index += 1
 	# Panneau de l'entrée (1F) : décor ; son texte (examen) arrive au T21.
 	if _plan().call(&"cell_of", "panneau_entree") != Vector2i(-1, -1):
@@ -387,6 +435,7 @@ func _place_ladders(map_id: StringName) -> void:
 		var prop_id := "prop_echelle_monte_01" if up else "prop_echelle_descend_01"
 		var ladder: Node2D = _kit.call(&"add_floor_prop", prop_id, cell,
 			"Ladder%s" % String(link["pair"]))
+		_kit.call(&"add_shade_source", &"ladder", _kit.call(&"cell_center", cell))
 		if up and bool(_plan().call(&"is_walkable", cell + Vector2i.UP)):
 			_shorten_ladder(ladder)
 		var node_name := "Ladder%sWarp" % String(link["pair"])

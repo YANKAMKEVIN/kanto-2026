@@ -73,7 +73,7 @@ panneau_route_4      panneau        6,5          bloque  # « ROUTE 4 » / « Mo
 repere_versant       repere         3..27,12..13 bloque  role=vue  # falaise du versant : la plaine en contrebas
 raccord_est          warp           63,19..21    libre   # PUSH → → cerulean_city, from_route_4 (« AZURIA — À venir » supprimé)
 from_cerulean        spawn          63,19..21    libre   # arrivée d'Azuria, tournée ←
-clara                dresseur       44,17        bloque  role=D1 facing=down sight=3 trainer=route_4_lass_clara  # Jeune Dresseuse, Paras 11 + Rondoudou 11 ; évitable par les rangées 21-22
+clara                dresseur       44,17        bloque  role=D1 facing=down sight=3 trainer=route_4_clara  # Jeune Dresseuse, Paras 11 + Rondoudou 11 ; évitable par les rangées 21-22
 route_4_item_1       objet_visible  21,20        bloque  role=O1 item=poke_ball  # fond de la poche ouest, visible depuis le palier
 herbes_h1            herbes         38,15        libre   role=H1  # nord de la rue (évitable)
 herbes_h2            herbes         48,20        libre   role=H2  # sur la rue (obligatoire, 4 cases)

@@ -75,6 +75,11 @@ var order: int = 0
 ## la catégorie AVENTURE. Sans usage (la Pépite, jalon 13), [method contexts] est vide : c'est la
 ## seule condition qui retire UTILISER (le Sac et [ItemUse] la lisent par [method usable_in]).
 var field_use: StringName = &""
+## Toast « obtenu » (jalon 12, T23 ; `jalon-12.md` §0.4 n° 7) : vrai → le toast d'ajout est celui
+## d'une CT, nom en casse normale puis « obtenu[e] » (les fossiles, dossier 15 §20 n° 27 :
+## « Fossile Dôme » / « obtenu ») au lieu de « ajouté aux objets clés ». Clé « obtained » des
+## données, facultative (faux par défaut).
+var obtained: bool = false
 
 
 ## Identifiant de la catégorie dans les fichiers (&"ball", &"heal"…) : onglet du Sac.
@@ -134,19 +139,22 @@ func name_for(count: int) -> String:
 
 
 ## « Poké Balls ×5 », « Poké Ball ×1 » ; un objet clé, unique, n'a que son nom en capitales
-## (« COLIS POUR CHEN », dossier 09 §19).
+## (« COLIS POUR CHEN », dossier 09 §19) ; une CT ou un objet [member obtained], son nom tel quel.
 func quantity_text(count: int) -> String:
+	if is_tm() or obtained:
+		return name
 	if is_key():
 		return name.to_upper()
-	if is_tm():
-		return name
 	return "%s ×%d" % [name_for(count), count]
 
 
 ## « Ajoutée au Sac », « Ajoutées au Sac », « Ajouté au Sac »… accordé au genre du nom et à
-## [param count] ; un objet clé : « ajouté aux objets clés » (dossier 09 §19).
+## [param count] ; un objet clé : « ajouté aux objets clés » (dossier 09 §19) ; une CT ou un objet
+## [member obtained] : « obtenu[e] ».
 func added_text(count: int) -> String:
 	var agreement := ("e" if feminine else "") + ("s" if count > 1 else "")
+	if obtained:
+		return TM_ADDED_BASE + agreement
 	if is_key():
 		return KEY_ADDED_BASE + agreement + KEY_ADDED_SUFFIX
 	if is_tm():
