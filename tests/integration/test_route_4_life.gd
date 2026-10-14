@@ -224,22 +224,52 @@ func test_the_ledge_is_crossed_one_way_only() -> void:
 			"versant fermé en x = %d" % x)
 
 
-func test_clara_has_her_data_but_waits_for_her_placement() -> void:
+func test_clara_is_placed_visible_and_avoidable() -> void:
 	var plan := PlanGrid.new()
 	assert_true(plan.load_file("res://tools/plans/route_4.txt"), plan.error)
 	assert_eq(plan.cell_of("clara"), Vector2i(44, 17), "case réservée")
-	await _start(&"route_4", &"from_mt_moon", Vector2i(44, 20), Vector2i.UP, "route_4")
+	assert_eq(plan.attr("clara", "trainer"), "route_4_clara")
+	await _start(&"route_4", &"from_mt_moon", Vector2i(44, 22), Vector2i.UP, "route_4")
 	var map := _boot.get_map()
-	assert_null(map.get_npc(&"clara"), "Clara n'est pas encore posée sur la carte (T17)")
-	assert_true(_boot.get_pokemon_data().has_species(&"paras"), "espèce du J12 livrée")
+	var clara := map.get_npc(&"route_4_clara")
+	assert_not_null(clara, "Clara posée")
+	assert_eq(clara.get_cell(), Vector2i(44, 17))
+	assert_eq(clara.get_spec().trainer_id, &"route_4_clara")
+	assert_eq(clara.get_spec().sight, 3)
+	assert_eq(map.get_npcs().size(), 2, "la Poké Ball et Clara")
 	var trainers := TrainerLibrary.new(_boot.get_pokemon_data())
 	assert_true(trainers.load_dir())
-	assert_eq(plan.attr("clara", "trainer"), "route_4_clara")
-	assert_true(trainers.has_trainer(&"route_4_clara"), "données posées à la fusion du J12")
-	assert_eq(map.get_npcs().size(), 1, "la Poké Ball seule")
+	var team: Array[StringName] = []
+	for member: TrainerSlot in trainers.get_trainer(&"route_4_clara").team:
+		team.append(member.species)
+	assert_eq(team, [&"paras", &"jigglypuff"] as Array[StringName])
+	# Sa vue (rangées 18..20) ne couvre ni la rue (21, 22) ni l'axe de passage.
 	_player.set_input_enabled(true, &"test")
-	# La rue (rangées 19..21) se traverse sans combat.
-	_boot.get_map().spawn_player_at(_player, Vector2i(40, 21), Vector2i.RIGHT)
+	map.spawn_player_at(_player, Vector2i(40, 21), Vector2i.RIGHT)
 	await wait_process_frames(2)
 	await _walk(Vector2i.RIGHT, Vector2i(50, 21))
-	assert_false(_boot.get_cutscene_director().is_running())
+	assert_false(_boot.get_cutscene_director().is_running(), "la rue est hors de sa vue")
+	assert_false(GameState.flags.has_flag(&"beaten_route_4_clara"))
+
+
+func test_clara_speaks_her_three_texts() -> void:
+	var library := DialogueLibrary.new()
+	assert_true(library.load_dir(), "\n".join(library.get_errors()))
+	var texts: Dictionary[String, Array] = {
+		"route_4_clara_before": ["Tu sors du Mont Sélénite, toi aussi ?",
+			"Moi, j'ai fait demi-tour au premier tunnel."],
+		"route_4_clara_defeated": ["D'accord, d'accord… Tu l'as mérité, ton passage."],
+		"route_4_clara_after": ["Azuria est juste à l'est. Tu verras, la ville est pleine d'eau."],
+	}
+	for id: String in texts:
+		var dialogue := library.get_dialogue(StringName(id))
+		assert_not_null(dialogue, id)
+		var pages: Array[String] = []
+		for page: DialoguePage in dialogue.variants[0].pages:
+			pages.append(page.text)
+		assert_eq(pages, texts[id] as Array[String], id)
+	# Battue : la réplique « après » (n° 4) se dit en lui parlant.
+	var after := await _says(&"route_4", &"from_mt_moon", Vector2i(44, 16), &"route_4_clara",
+		[&"beaten_route_4_clara"] as Array[StringName])
+	assert_eq(after.size(), 1, "une page")
+	assert_true(after[0].begins_with("Azuria est juste"), "après (n° 4) : %s" % after)

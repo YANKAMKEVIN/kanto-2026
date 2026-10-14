@@ -76,5 +76,61 @@
 				]
 			}
 		]
+	},
+	"route_24_antidote": {
+		"variants": [
+			{
+				"unless": ["got_route_24_antidote"],
+				"steps": [
+					{ "give": "antidote", "count": 1, "found": true },
+					{ "set": ["got_route_24_antidote"] }
+				]
+			}
+		]
+	},
+	"route_24_rocket": {
+		"variants": [
+			{
+				"unless": ["got_nugget"],
+				"steps": [
+					{ "move": "player", "to": [33, 22] },
+					{ "face": "nugget_rocket", "to": "player" },
+					{ "face": "player", "to": "nugget_rocket" },
+					{ "wait": 0.3 },
+					{ "dialogue": "nugget_rocket_welcome" },
+					{ "dialogue": "nugget_rocket_given" },
+					{ "give": "nugget", "count": 1 },
+					{ "set": ["got_nugget"] },
+					{ "dialogue": "nugget_rocket_offer" },
+					{ "dialogue": "nugget_rocket_yes", "if": ["nugget_rocket_yes"] },
+					{ "dialogue": "nugget_rocket_no", "unless": ["nugget_rocket_yes"] },
+					{ "battle": "nugget_rocket", "win": ["beaten_nugget_rocket"] },
+					{ "wait": 0.6, "if": ["beaten_nugget_rocket"] },
+					{ "dialogue": "nugget_rocket_beaten", "if": ["beaten_nugget_rocket"] },
+					{ "move": "nugget_rocket", "to": [33, 15], "if": ["beaten_nugget_rocket"] },
+					{ "despawn": "nugget_rocket", "if": ["beaten_nugget_rocket"] },
+					{ "dialogue": "nugget_rocket_lost", "unless": ["beaten_nugget_rocket"] },
+					{ "wake_up": true, "unless": ["beaten_nugget_rocket"] }
+				]
+			},
+			{
+				"if": ["got_nugget"],
+				"unless": ["beaten_nugget_rocket"],
+				"steps": [
+					{ "move": "player", "to": [33, 22] },
+					{ "face": "nugget_rocket", "to": "player" },
+					{ "face": "player", "to": "nugget_rocket" },
+					{ "wait": 0.3 },
+					{ "dialogue": "nugget_rocket_resume" },
+					{ "battle": "nugget_rocket", "win": ["beaten_nugget_rocket"] },
+					{ "wait": 0.6, "if": ["beaten_nugget_rocket"] },
+					{ "dialogue": "nugget_rocket_beaten", "if": ["beaten_nugget_rocket"] },
+					{ "move": "nugget_rocket", "to": [33, 15], "if": ["beaten_nugget_rocket"] },
+					{ "despawn": "nugget_rocket", "if": ["beaten_nugget_rocket"] },
+					{ "dialogue": "nugget_rocket_lost", "unless": ["beaten_nugget_rocket"] },
+					{ "wake_up": true, "unless": ["beaten_nugget_rocket"] }
+				]
+			}
+		]
 	}
 }

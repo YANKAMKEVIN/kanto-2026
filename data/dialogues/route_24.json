@@ -45,5 +45,87 @@
 				"cutscene": "route_24_misty"
 			}
 		]
-	}
+	},
+	"route_24_timeo_before": {
+		"speaker": "Scout Timéo",
+		"pages": ["Bienvenue au Pont Pépite ! Je suis le premier des cinq !"]
+	},
+	"route_24_timeo_after": {
+		"speaker": "Scout Timéo",
+		"pages": ["Le premier… et le premier battu."]
+	},
+	"route_24_alice_before": {
+		"speaker": "Jeune Dresseuse Alice",
+		"pages": ["Deuxième ! Tu n'as encore rien vu."]
+	},
+	"route_24_alice_after": {
+		"speaker": "Jeune Dresseuse Alice",
+		"pages": ["Bon. Va voir le troisième."]
+	},
+	"route_24_malo_before": {
+		"speaker": "Gamin Malo",
+		"pages": ["Troisième ! Tu fatigues déjà ?"]
+	},
+	"route_24_malo_after": {
+		"speaker": "Gamin Malo",
+		"pages": ["…Non, visiblement."]
+	},
+	"route_24_romane_before": {
+		"speaker": "Jeune Dresseuse Romane",
+		"pages": ["Quatrième ! Plus qu'un après moi."]
+	},
+	"route_24_romane_after": {
+		"speaker": "Jeune Dresseuse Romane",
+		"pages": ["Plus qu'un, alors."]
+	},
+	"route_24_ethan_before": {
+		"speaker": "Campeur Ethan",
+		"pages": ["Dernier ! Si tu me bats, la récompense est à toi !"]
+	},
+	"route_24_ethan_after": {
+		"speaker": "Campeur Ethan",
+		"pages": ["Elle est à toi. Va la chercher."]
+	},
+	"nugget_rocket": { "cutscene": "route_24_rocket" },
+	"nugget_rocket_welcome": {
+		"speaker": "Sbire Rocket",
+		"pages": ["Bravo ! Cinq victoires d'affilée.", "Voici ta récompense."]
+	},
+	"nugget_rocket_given": {
+		"narration": true,
+		"pages": ["{player} reçoit une PÉPITE !"]
+	},
+	"nugget_rocket_offer": {
+		"speaker": "Sbire Rocket",
+		"pages": [
+			"Dis-moi…",
+			"Quelqu'un avec ton talent perd son temps à collectionner des badges.",
+			"Nous recrutons. Ça t'intéresse ?"
+		],
+		"choice": {
+			"confirm": "OUI", "cancel": "NON",
+			"confirm_set": ["nugget_rocket_yes"], "cancel_pages": []
+		}
+	},
+	"nugget_rocket_yes": {
+		"speaker": "Sbire Rocket",
+		"pages": ["Tu crois que c'est si simple ?", "Montre-moi d'abord ce que tu vaux vraiment."]
+	},
+	"nugget_rocket_no": {
+		"speaker": "Sbire Rocket",
+		"pages": ["Dommage.", "Alors je vais devoir te convaincre autrement."]
+	},
+	"nugget_rocket_beaten": {
+		"speaker": "Sbire Rocket",
+		"pages": ["Hm. Tu ferais un excellent…", "Non. Un ennemi. Tu ferais un excellent ennemi."]
+	},
+	"nugget_rocket_lost": {
+		"speaker": "Sbire Rocket",
+		"pages": ["Réfléchis bien. L'offre tient toujours."]
+	},
+	"nugget_rocket_resume": {
+		"speaker": "Sbire Rocket",
+		"pages": ["Alors ? Tu as changé d'avis ?"]
+	},
+	"route_24_antidote": { "cutscene": "route_24_antidote" }
 }

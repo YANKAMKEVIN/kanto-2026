@@ -48,6 +48,19 @@ const POST_SCALE: float = 1.0
 ## reprise de la scène d'Ondine (entrée de la place, rangée 53, x 31..33). [nœud, ancre, taille].
 const RIVAL_VIEW: Array = ["RivalView", Vector2i(31, 55), Vector2i(5, 1)]
 const MISTY_RESUME: Array = ["MistyResume", Vector2i(31, 53), Vector2i(3, 1)]
+## T22 : déclencheur du recruteur (rangée 23, tout le tablier x 32..33, devant lui en (33, 21)).
+const ROCKET_VIEW: Array = ["RocketView", Vector2i(32, 23), Vector2i(2, 1)]
+## T22 : Antidote caché : [position `cache` de la grille, identifiant (dialogue, scène, drapeau
+## `got_<id>`), indice peint]. La souche d'une autre teinte est un objet de `Entities` (1 case).
+const HIDDEN_ID: String = "route_24_antidote"
+const HIDDEN_CELL_ID: String = "route_24_hidden_1"
+const HIDDEN_PROP: String = "prop_souche_01"
+const HIDDEN_TINT := Color(0.86, 0.80, 0.98)
+## T22 : points d'apparition des départs de débogage (pied du pont, sous le recruteur, espace nord).
+const MID_SPAWNS: Array = [
+	["bridge_foot", Vector2i(32, 46)], ["bridge_top", Vector2i(33, 26)],
+	["north_land", Vector2i(33, 17)],
+]
 const WALKABLE: String = ".=hpBe"
 const RESERVED_KINDS: Array[String] = ["dresseur", "pnj", "pokemon", "objet_visible", "cache"]
 const BALL_KINDS: Array[String] = ["objet_visible", "cache"]
@@ -142,6 +155,7 @@ func _init() -> void:
 	var decals: Node2D = _kit.get(&"decals")
 	_add_passages()
 	_add_triggers()
+	_add_hidden_item(entities)
 
 	_kit.call(&"place_border_decals", SEED)
 	_kit.call(&"place_meadow", MEADOW_ATTEMPTS, MEADOW_FLOWER_CHANCE, FLOWERS)
@@ -206,6 +220,8 @@ func _add_passages() -> void:
 		_kit.call(&"add_spawn", entry[2], entry[1])
 		_kit.call(&"add_warp", entry[0], entry[1], Kit.PUSH, Vector2i.DOWN, SOUTH_MAP,
 			StringName(entry[3]), Vector2i.UP)
+	for entry: Array in MID_SPAWNS:
+		_kit.call(&"add_spawn", entry[0], entry[1])
 	for entry: Array in EAST_EXITS:
 		_kit.call(&"add_spawn", entry[2], entry[1])
 		_kit.call(&"add_warp", entry[0], entry[1], Kit.PUSH, Vector2i.RIGHT, &"",
@@ -216,8 +232,23 @@ func _add_passages() -> void:
 func _add_triggers() -> void:
 	_kit.call(&"add_trigger", RIVAL_VIEW[0], RIVAL_VIEW[1], RIVAL_VIEW[2], Vector2i.ZERO,
 		&"route_24_rival")
+	_kit.call(&"add_trigger", ROCKET_VIEW[0], ROCKET_VIEW[1], ROCKET_VIEW[2], Vector2i.ZERO,
+		&"route_24_rocket")
 	_kit.call(&"add_trigger", MISTY_RESUME[0], MISTY_RESUME[1], MISTY_RESUME[2], Vector2i.ZERO,
 		&"route_24_misty")
+
+
+## Antidote caché (J12) : la souche (case de la position `cache`, bloquée) et son point
+## d'examen de tous côtés, `unless_flags = [got_<id>]`.
+func _add_hidden_item(entities: Node2D) -> void:
+	var clue := _cell(HIDDEN_CELL_ID)
+	var stump: Node2D = _kit.call(&"add_prop_at", entities, HIDDEN_PROP, clue, "HiddenClue1")
+	stump.modulate = HIDDEN_TINT
+	_kit.call(&"add_interactable", "HiddenAntidote", clue, Vector2i.ONE, Vector2i.ZERO,
+		StringName(HIDDEN_ID))
+	var point: Node = _kit.get(&"root").get_node(^"Interactables").get_child(-1)
+	var unless: Array[StringName] = [StringName("got_" + HIDDEN_ID)]
+	point.set(&"unless_flags", unless)
 
 
 func _place_props(entities: Node2D) -> void:

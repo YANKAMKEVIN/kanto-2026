@@ -11,5 +11,34 @@
 	"misty_bridge": {
 		"cell": [37, 46], "facing": "left", "sprite": "misty", "dialogue": "misty_bridge",
 		"unless": ["misty_invited"]
+	},
+	"route_24_timeo": {
+		"cell": [32, 41], "facing": "down", "sprite": "scout",
+		"dialogue": "route_24_timeo_after",
+		"trainer": { "id": "route_24_timeo", "sight": 3, "before": "route_24_timeo_before" }
+	},
+	"route_24_alice": {
+		"cell": [33, 37], "facing": "down", "sprite": "lass_young",
+		"dialogue": "route_24_alice_after",
+		"trainer": { "id": "route_24_alice", "sight": 3, "before": "route_24_alice_before" }
+	},
+	"route_24_malo": {
+		"cell": [32, 33], "facing": "down", "sprite": "youngster",
+		"dialogue": "route_24_malo_after",
+		"trainer": { "id": "route_24_malo", "sight": 3, "before": "route_24_malo_before" }
+	},
+	"route_24_romane": {
+		"cell": [33, 29], "facing": "down", "sprite": "lass",
+		"dialogue": "route_24_romane_after",
+		"trainer": { "id": "route_24_romane", "sight": 3, "before": "route_24_romane_before" }
+	},
+	"route_24_ethan": {
+		"cell": [32, 25], "facing": "down", "sprite": "camper",
+		"dialogue": "route_24_ethan_after",
+		"trainer": { "id": "route_24_ethan", "sight": 3, "before": "route_24_ethan_before" }
+	},
+	"nugget_rocket": {
+		"cell": [33, 21], "facing": "down", "sprite": "rocket_grunt_m",
+		"dialogue": "nugget_rocket", "unless": ["beaten_nugget_rocket"]
 	}
 }

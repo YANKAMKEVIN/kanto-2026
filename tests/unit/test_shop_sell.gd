@@ -37,8 +37,8 @@ func test_the_stock_is_the_agreed_one_without_repel() -> void:
 	assert_not_null(_mart, "boutique cerulean_mart")
 	var ids := _mart.item_ids()
 	assert_eq(ids, [&"poke_ball", &"potion", &"antidote", &"paralyze_heal", &"awakening",
-		&"ice_heal", &"burn_heal"] as Array[StringName],
-		"Corde Sortie : J12 (pas encore dans les objets) ; Repousse : jamais (D-13)")
+		&"ice_heal", &"burn_heal", &"escape_rope"] as Array[StringName],
+		"Corde Sortie (J12) en dernier ; Repousse : jamais (D-13)")
 	assert_false(ids.has(&"repel"))
 	assert_false(ids.has(&"nugget"), "la Pépite ne s'achète pas")
 	for entry: Dictionary in _mart.stock:

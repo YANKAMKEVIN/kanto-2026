@@ -133,8 +133,8 @@ func test_east_edge_leads_to_azuria_one_spawn_per_row() -> void:
 func test_everything_walkable_is_reachable_and_closed() -> void:
 	var dist := GridPaths.distances(_grid, [ARRIVAL])
 	for cell: Vector2i in _plan.cells_of(_plan.walkable):
-		if cell == _plan.cell_of("route_4_item_1"):
-			# La Poké Ball (T17) occupe sa case ; on la ramasse depuis une case voisine.
+		if cell == _plan.cell_of("route_4_item_1") or cell == _plan.cell_of("clara"):
+			# La Poké Ball et Clara (T17) occupent leur case ; on la ramasse depuis une case voisine.
 			assert_true(dist.has(cell + Vector2i.UP), "Poké Ball : case voisine atteignable")
 		elif not _plan.cells_at("panneau_route_4").has(cell) and _plan.at(cell) != "v":
 			assert_true(dist.has(cell), "%s atteignable" % cell)
@@ -190,7 +190,7 @@ func test_clara_is_avoidable_by_rows_21_and_22_and_her_cell_is_reserved() -> voi
 	# n'est pas obligée de la croiser : on passe par la rangée 21.
 	var goal: Array[Vector2i] = [EAST[0], EAST[1], EAST[2]]
 	assert_eq(GridPaths.min_crossed(_terrain, [ARRIVAL], goal, counted), 0, "Clara évitable")
-	assert_false(_grid.is_solid(clara), "personne n'y est encore (T17)")
+	assert_false(_grid.is_solid(clara), "carte seule : les PNJ (Clara, T17) se posent au jeu")
 	assert_false(_grid.is_solid(_plan.cell_of("route_4_item_1")), "la Poké Ball est un PNJ-objet")
 
 
@@ -201,7 +201,8 @@ func test_nothing_lives_here_yet() -> void:
 	var ids: Array[String] = []
 	for spec: NpcSpec in roster.get_all():
 		ids.append(String(spec.id))
-	assert_eq(ids, ["route_4_ball_1"] as Array[String], "la Poké Ball seule (Clara : J12)")
+	assert_eq(ids, ["route_4_ball_1", "route_4_clara"] as Array[String],
+		"la Poké Ball et Clara (T17)")
 	assert_not_null(_map.get_node_or_null(^"Entities/SignRoute4"), "panneau (décor)")
 	assert_not_null(_map.get_node_or_null(^"GroundDecals/CaveMouth"), "bouche de la grotte")
 	# Cases réservées : aucune forêt, aucun buisson, aucun décor solide sur Clara, la Poké Ball et

@@ -3,5 +3,13 @@
 		"cell": [21, 20], "facing": "down", "sprite": "object/poke_ball_ground",
 		"dialogue": "route_4_ball_1", "verb": "take", "turn_to_player": false,
 		"unless": ["got_route_4_poke_ball"]
+	},
+	"route_4_clara": {
+		"cell": [44, 17], "facing": "down", "sprite": "lass",
+		"dialogue": "route_4_clara_after",
+		"trainer": {
+			"id": "route_4_clara", "sight": 3, "before": "route_4_clara_before",
+			"defeated": "route_4_clara_defeated"
+		}
 	}
 }
