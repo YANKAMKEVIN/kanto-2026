@@ -1249,6 +1249,13 @@ et de l'annexe A validée.
     panneau / `route_4_reached` (livrés au T28 du J12).
 
 #### T18 — qa-mobile : **session 13A** → Kevin
+- **Fait le 2026-10-14 (S21, ~35 min, branche `j13-t18-qa`)** : rapport `build/qa/jalon13_t18/` (`RESUME.txt`, captures,
+  `perf_*.txt`). Tests 4466/4466, import propre, APK 125 Mo, aucun crash. **Tout OK** : sas rechargé sur (4, 6),
+  rebord sans retour, Clara évitée puis combattue, Azuria (titre, Centre, point de repos, Boutique : achat et vente
+  de la Pépite 5 000 ₽, vélos, maison, cambriolage porte / clôture / policier), Arène (guide, Lucas et Diane évités
+  puis combattus), eau lisible. fps 59,7 (creux 7–10 au chargement de carte). **À signaler** : textures 82–98 Mo
+  (budget J7 : 64 Mo). **Partie réelle de Kevin : à Jadielle (Salamèche N8, aucun badge)**, trop en arrière pour la
+  13C (T23) ; sauvegarde restaurée (sha256 identiques).
 - Partie sauvegardée **dans le sas** (vraie partie du J12 ou départ) rechargée → même case ; rebord
   (une fois en bas, pas de retour) ; Clara évitable ; Azuria : titre, Centre premier bâtiment, point de
   repos, Boutique (achat, **vente**), vélos, maison, cambriolage (porte, clôture, aucun marqueur),
