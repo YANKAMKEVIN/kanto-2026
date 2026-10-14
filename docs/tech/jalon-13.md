@@ -1239,6 +1239,12 @@ et de l'annexe A validée.
     déclencheur `route_4_reached` de la Route 4 = J12 T28 ; panneau « CENTRE POKÉMON » = enseigne du
     bâtiment (aucun panneau séparé, aucune position dans la grille).
   - Captures : `build/captures/j13_t17/` (`tools/capture_cerulean_life.sh`, `capture_cerulean_shop.gd`).
+  - **Complément (2026-10-14, branche `j13-t22`, J12 livré)** : **Clara posée** (`route_4_clara`, case (44, 17),
+    `lass`, vue 3, évitable par les rangées 21–22 ; textes n° 2 / 3 / 4 : `before`, `defeated`, `dialogue`
+    « après ») ; **Abo** sort bien dans `route_4_grass` (Ekans 10–12, vérifié) ; **Corde Sortie** ajoutée à
+    la Boutique d'Azuria (dernier article, comme Argenta) ; `test_route_4_life` (Clara posée, évitable,
+    équipe Paras + Rondoudou, trois textes), `test_route_4`, `test_shop_sell` mis à jour. Reste en J12 :
+    panneau / `route_4_reached` (livrés au T28 du J12).
 
 #### T18 — qa-mobile : **session 13A** → Kevin
 - Partie sauvegardée **dans le sas** (vraie partie du J12 ou départ) rechargée → même case ; rebord
@@ -1292,6 +1298,27 @@ et de l'annexe A validée.
   `tests/integration/test_qa_switch_j13.gd` ; garder `MapCatalog.is_qa_map` (ou le retirer avec
   ses tests si plus aucun appelant). Tests `test_nugget_bridge`, `test_nugget_rocket`, `test_route_24_life`,
   `test_hidden_items` (Route 24), `test_objective_library`.
+- **Fait** (2026-10-14, branche `j13-t22`) :
+  - **Pont** : `route_24_timeo / alice / malo / romane / ethan` posés aux cases et vues de la grille
+    (`data/npcs/route_24.json`, sprites `scout`, `lass_young`, `youngster`, `lass`, `camper`, vue 3, répliques
+    n° 43–47 « avant » / « après » = « battu ») ; le panneau (n° 42) existait (T17). `test_nugget_bridge` :
+    ordre P1 → P5 sur la vraie scène, recruteur seulement après P5, défaite au milieu (Centre d'Azuria,
+    battus gardés, Malo puis les autres attendent).
+  - **Recruteur** : PNJ `nugget_rocket` (`rocket_grunt_m`, (33, 21), absent après `beaten_nugget_rocket`,
+    dialogue → scène) + déclencheur `RocketView` (rangée 23, x 32..33) → `route_24_rocket` : le joueur est amené
+    en (33, 22) ; variante 1 (`unless got_nugget`) : n° 48, n° 49, `give nugget`, `set got_nugget`, n° 50
+    avec choix OUI / NON par **`confirm_set`** (choisi plutôt que `confirm_cutscene` : une seule scène, la
+    Pépite remise avant le combat dans la même scène), n° 51 / n° 52, combat, n° 53, départ (marche vers
+    (33, 15) puis `despawn` au fondu), n° 54 + `wake_up` ; variante 2 : n° 55, même combat, sans choix.
+    `test_nugget_rocket` (OUI, NON, défaite puis reprise sans proposition ni seconde Pépite, rechargement).
+  - **Route 24 nord** : Antidote caché (souche `prop_souche_01` teintée sur (16, 6), point d'examen
+    `unless_flags = [got_route_24_antidote]`, scène `route_24_antidote`) ; Potion, herbes, raccord « ROUTE 25 —
+    À venir », objectifs n° 62–63 et réplique n° 41 b d'Ondine (déjà livrés) vérifiés ; `test_route_24_life`,
+    `test_hidden_items` (Route 24), `test_route_24` mis à jour.
+  - **Départs** : `nugget_bridge`, `nugget_rocket`, `route_24_north`, `nugget_sell` ; spawns `bridge_foot`,
+    `bridge_top`, `north_land` ajoutés à la carte. **Retrait** de `qa_switch_j13` (carte, outils, données,
+    test, départ `switch_qa`) ; `MapCatalog.is_qa_map` conservé, `test_map_catalog` sans exception.
+  - Captures : `build/captures/j13_t22/` (`tools/capture_nugget_j13.gd`).
 
 #### T23 — qa-mobile : **QA finale 13C** → Kevin, fusion
 - Pont (cinq inévitables, défaite au milieu), recruteur (OUI puis, sur une autre partie, NON ; Pépite ;

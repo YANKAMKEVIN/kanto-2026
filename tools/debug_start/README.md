@@ -87,6 +87,14 @@ rm "$HOME/Library/Application Support/Godot/app_userdata/Kanto 2026/debug_start.
 | `misty_pending.json` | J13 (T19) : `rival_cerulean_won` et `rival_cerulean_lost_once` posés, **`misty_invited` absent** (partie quittée entre les deux scènes), même endroit : le rival est parti, Ondine attend au pied du pont ; le premier pas sur la place (rangée 53) ou lui parler joue la scène d'invitation |
 | `cerulean_gym.json` | J13 (T19) : rival vaincu, `misty_invited` posé, à l'entrée de l'Arène d'Azuria (spawn `entrance`, tourné vers le nord) : Ondine est au fond (carte « ONDINE », combat avec changement de Pokémon, badge, CT11). Lucas et Diane non battus |
 | `cascade_no_tm.json` | J13 (T19) : `badge_cascade` et `misty_met` posés **sans `tm11_received`** (partie badgée avant la CT11), dans l'Arène : lui parler joue le rattrapage (« J'allais oublier. »), une seule fois |
+| `nugget_bridge.json` | J13 (T22) : fin de l'Arène (Badge Cascade, CT11 reçue, rival et Ondine faits), Reptincel N26, Papilusion N22, Roucoups N22, au **pied du Pont Pépite** (spawn `bridge_foot` (32, 46), tourné vers le nord) : panneau (34, 45) lu depuis (34, 46) ; le premier pas sur la file ouest (32, 44) déclenche Timéo (P1) ; les cinq Dresseurs sont inévitables, dans l'ordre P1 → P5 ; objectif « traverser le Pont Pépite. » |
+| `nugget_rocket.json` | J13 (T22) : même partie, P1 à P5 battus, en haut du pont (spawn `bridge_top` (33, 26)) : monter jusqu'à la rangée 23 déclenche le recruteur (félicitations, Pépite, proposition OUI / NON, combat Abo N15 / Nosferapti N15) |
+| `route_24_north.json` | J13 (T22) : recruteur battu et Pépite au Sac, sur la rive nord (spawn `north_land` (33, 17)) : prairies H1 (21, 12) et H2 (43, 13), Potion (44, 3), Antidote caché (souche (16, 6), à examiner depuis (16, 7)), raccord est « ROUTE 25 — À venir » ; objectif « explorer les environs d'Azuria. » |
+| `nugget_sell.json` | J13 (T22) : même partie, devant la Boutique d'Azuria (spawn `from_mart`) avec **1 Pépite** : VENDRE → 5 000 ₽ |
+
+La carte de QA `qa_switch_j13` (J13, T14), ses données, son outil de construction et de capture,
+son test et le départ `switch_qa` ont été **retirés au T22** (les Dresseurs qui changent de
+Pokémon se vérifient sur la vraie partie : rival n° 3 et Ondine).
 
 La carte de QA `qa_forest_systems` (J9, T6) et ses données ont été **retirées à la clôture du
 J9 (T23)** ; les départs qui s'en servaient sont rebasés ci-dessus sur le poste sud et la vraie
@@ -104,4 +112,3 @@ Pokédex existe **sans** que le drapeau d'histoire `pokedex_activated` soit pos�
 sauvegardé. Même garde que le départ de débogage (build debug, Boot scène principale, fichier
 présent). Se combine avec `--debug-start` ou avec la vraie partie ; sans l'option, le fichier est
 retiré. Sur le Mac : `echo '{ "pokedex": true }' > "$HOME/Library/Application Support/Godot/app_userdata/Kanto 2026/debug_unlocks.json"`.
-| `switch_qa` | J13 (T14, session 13.0) : carte de QA **`qa_switch_j13`** (inaccessible en jeu, **retirée au T22**), Carapuce, Pikachu, Bulbizarre, Salamèche N20, **Mystherbe N24** (Vol-Vie, Acide) et Staross N22 (Bulles d'O), les **9 espèces** du J13 au Stockage (Pokédex), 10 Potions, 10 Poké Balls. Hautes herbes à l'ouest : **table forcée** Mystherbe N24 / Chétiflor N21. Trois Dresseurs d'essai en ligne, couloirs de vue séparés (spawns `lane_rival`, `lane_misty`, `lane_witness`, une case sous leur vision, tournés vers le haut) : **Rival d'essai** (Salamèche avec Patience puis Roucool, `switch` : changement par faiblesse contre Carapuce, jamais en Patience), **Ondine d'essai** (Stari puis Staross, `switch` : changement à 25 % des PV), **Témoin** (même équipe qu'Ondine, **sans** `switch` : ne change jamais). Sortie sud vers le Centre de Jadielle |

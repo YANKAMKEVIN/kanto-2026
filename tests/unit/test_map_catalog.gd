@@ -26,18 +26,17 @@ func test_has_map() -> void:
 
 
 ## Clôture du jalon 9 (T23) : la carte de QA des systèmes est retirée, aucune autre ne reste.
-## Jalon 12 (T28) : `qa_moves_j12` retirée à son tour, sans exception.
+## Jalon 12 (T28) : `qa_moves_j12` retirée à son tour ; jalon 13 (T22) : `qa_switch_j13` aussi,
+## **sans exception**.
 func test_no_qa_map_is_shipped() -> void:
 	assert_false(MapCatalog.has_map(&"qa_forest_systems"))
 	assert_false(MapCatalog.has_map(&"qa_moves_j12"))
+	assert_false(MapCatalog.has_map(&"qa_switch_j13"))
 	for file: String in DirAccess.get_files_at(MapCatalog.MAPS_DIR):
-		# Jalon 13 : `qa_switch_j13` existe jusqu'au T22 (à retirer avec cette exception).
-		if file.begins_with("qa_switch_j13"):
-			continue
 		assert_false(file.begins_with("qa_"), "%s : carte de QA livrée" % file)
 
 
-## `is_qa_map` reste après le T28 du J12 (le J13 s'en sert pour `qa_switch_j13`).
+## `is_qa_map` reste après le T28 du J12 (le prochain jalon qui aura une carte de QA s'en servira).
 func test_is_qa_map_reads_the_prefix() -> void:
 	assert_true(MapCatalog.is_qa_map(&"qa_moves_j12"))
 	assert_false(MapCatalog.is_qa_map(&"mt_moon_1f"))
@@ -118,4 +117,4 @@ func test_qa_maps_are_recognised_by_their_prefix() -> void:
 	assert_true(MapCatalog.is_qa_map(&"qa_switch_j13"))
 	assert_false(MapCatalog.is_qa_map(&"cerulean_city"))
 	assert_false(MapCatalog.is_qa_map(&""))
-	assert_true(MapCatalog.has_map(&"qa_switch_j13"))
+	assert_false(MapCatalog.has_map(&"qa_switch_j13"), "retirée au T22")

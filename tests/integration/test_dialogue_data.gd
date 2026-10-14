@@ -67,7 +67,8 @@ const DOSSIER_15 := "res://docs/design/dossier-15-route-3-mont-selenite.md"
 ## Jalon 8 : textes T1–T16 validés (dossier 11, « Textes à valider ») ; dans son tableau, « / »
 ## marque le retour à la ligne de la bulle et le gras (« ** ») le titre d'un panneau.
 const DOSSIER_11 := "res://docs/design/dossier-11-route-2.md"
-const _DOSSIER_TOKENS: Dictionary[String, String] = {"{first_wild_species}": "{espèce}"}
+const _DOSSIER_TOKENS: Dictionary[String, String] = {"{first_wild_species}": "{espèce}",
+	"{player}": "{joueur}"}
 const MAPS: Array[StringName] = [
 	&"player_house_2f", &"player_house_1f", &"rival_house", &"oak_lab", &"pallet_town",
 	&"route_1", &"route_22", &"viridian_city", &"viridian_center", &"viridian_mart",
@@ -119,6 +120,14 @@ const IDS: Array[StringName] = [
 	&"cerulean_torn_fence",
 	&"route_24_ball_1",
 	&"route_24_bridge_sign",
+	# Jalon 13 (T17) : Clara. (T22) : les cinq Dresseurs du pont, le recruteur, l'Antidote caché.
+	&"route_4_clara_before", &"route_4_clara_defeated", &"route_4_clara_after",
+	&"route_24_timeo_before", &"route_24_timeo_after", &"route_24_alice_before",
+	&"route_24_alice_after", &"route_24_malo_before", &"route_24_malo_after",
+	&"route_24_romane_before", &"route_24_romane_after", &"route_24_ethan_before",
+	&"route_24_ethan_after", &"nugget_rocket", &"nugget_rocket_welcome", &"nugget_rocket_given",
+	&"nugget_rocket_offer", &"nugget_rocket_yes", &"nugget_rocket_no", &"nugget_rocket_beaten",
+	&"nugget_rocket_lost", &"nugget_rocket_resume", &"route_24_antidote",
 	# Jalon 13 (T19) : le rival n° 3, Ondine au pont et à l'Arène.
 	&"rival_cerulean_intro", &"rival_cerulean_lost", &"rival_cerulean_resume",
 	&"rival_cerulean_resume_again", &"rival_cerulean_won", &"misty_bridge",
@@ -215,8 +224,9 @@ const IDS: Array[StringName] = [
 ## Jalon 9 : `pewter_arrived` (lu par le garde du poste nord) est posé par le J10, à l'arrivée à
 ## Argenta : levé par la scène `pewter_arrival` depuis le T8 du J10.
 ## Jalon 13 (T19) : `badge_cascade` et `misty_invited` sont désormais levés par les scènes d'Ondine ;
-## `beaten_nugget_rocket` (lu par la réplique n° 41 b d'Ondine) est levé au T22 (recruteur).
-const FUTURE_FLAGS: Array[StringName] = [&"beaten_nugget_rocket"]
+## `beaten_nugget_rocket` (lu par la réplique n° 41 b d'Ondine) est levé au T22 (recruteur) :
+## plus aucun drapeau futur.
+const FUTURE_FLAGS: Array[StringName] = []
 var _library: DialogueLibrary
 var _cutscenes: CutsceneLibrary
 var _offer: StarterOffer
@@ -363,6 +373,10 @@ func test_every_dialogue_played_by_a_cutscene_exists() -> void:
 		&"mt_moon_researcher_before", &"mt_moon_researcher_chosen",
 		&"mt_moon_researcher_defeated", &"mt_moon_researcher_rematch",
 		&"mt_moon_researcher_share",
+		# Jalon 13 (T22) : le recruteur Rocket.
+		&"nugget_rocket_beaten", &"nugget_rocket_given", &"nugget_rocket_lost",
+		&"nugget_rocket_no", &"nugget_rocket_offer", &"nugget_rocket_resume",
+		&"nugget_rocket_welcome", &"nugget_rocket_yes",
 		&"oak_after_battle", &"oak_lab_exit_block", &"oak_lab_reunion",
 		&"oak_parcel_records", &"oak_parcel_rival", &"oak_parcel_rival_dex", &"oak_poke_balls",
 		&"oak_poke_balls_intro", &"oak_pokedex_activated", &"oak_route1_call",
@@ -462,15 +476,15 @@ func test_every_condition_flag_is_set_somewhere() -> void:
 	assert_true(read_flags.has(&"starter_chosen"), "starter_chosen lu (pensée des herbes)")
 	assert_eq(_library.get_set_flags(),
 		[&"blacked_out_before", &"cerulean_neighbor_talked", &"forest_hiker_talked", &"forest_naturalist_talked",
-			&"mom_greeted", &"pewter_researcher_talked", &"poison_unlocked", &"rival_met",
+			&"mom_greeted", &"nugget_rocket_yes", &"pewter_researcher_talked", &"poison_unlocked", &"rival_met",
 			&"route_2_hiker_talked", &"route_2_youngster_talked", &"storage_terminal_seen",
 			&"viridian_old_man_talked"]
 		as Array[StringName])
 	assert_eq(_cutscenes.get_set_flags(), [&"badge_boulder", &"badge_cascade",
-		&"beaten_mt_moon_researcher", &"brock_met", &"cerulean_reached", &"got_mt_moon_1f_hidden_1",
+		&"beaten_mt_moon_researcher", &"beaten_nugget_rocket", &"brock_met", &"cerulean_reached", &"got_mt_moon_1f_hidden_1",
 		&"got_mt_moon_1f_item_1", &"got_mt_moon_b1f_item_1", &"got_mt_moon_b1f_item_2",
-		&"got_mt_moon_b2f_hidden_1", &"got_mt_moon_b2f_item_1", &"got_oak_parcel",
-		&"got_potion_route_1", &"got_route_24_potion", &"got_route_2_item_1", &"got_route_2_item_2",
+		&"got_mt_moon_b2f_hidden_1", &"got_mt_moon_b2f_item_1", &"got_nugget", &"got_oak_parcel",
+		&"got_potion_route_1", &"got_route_24_antidote", &"got_route_24_potion", &"got_route_2_item_1", &"got_route_2_item_2",
 		&"got_route_2_item_3", &"got_route_2_item_4", &"got_route_2_north_item_1",
 		&"got_route_3_hidden_1", &"got_route_3_item_1", &"got_route_3_item_2",
 		&"got_route_3_item_3", &"got_route_4_poke_ball", &"got_viridian_forest_item_1",
@@ -865,8 +879,9 @@ func test_oak_parcel_lines() -> void:
 	# la Potion au sol du Mont Sélénite, le Réveil caché (examen de l'indice). Jalon 12 (T18) :
 	# les trois objets au sol de la Route 3 et son objet caché. Jalon 12 (T25) : la Pierre Lune
 	# (B1F) et la CT01 (B2F) au sol, la Pierre Lune cachée (B2F). Jalon 13 : la Poké Ball de la
-	# Route 4, la Potion de la Route 24, Ondine (pont, Arène et rattrapage).
-	assert_eq(launched, 24, "la scène du colis, quinze objets au sol, trois cachés, Pierre et "
+	# Route 4, la Potion de la Route 24, Ondine (pont, Arène et rattrapage), l'Antidote caché et le
+	# recruteur (T22).
+	assert_eq(launched, 26, "la scène du colis, quinze objets au sol, trois cachés, Pierre et "
 		+ "sa CT34, Ondine (pont, Arène et rattrapage)")
 	# Le jeton n'apparaît que dans la réplique de l'espèce (et « {pokemon} » dans les phrases du
 	# compagnon, J11).
@@ -877,6 +892,8 @@ func test_oak_parcel_lines() -> void:
 			expected = [DialogueTokens.FIRST_WILD_SPECIES]
 		elif PLAYED_BY_COMPANION.has(row[0]):
 			expected = [DialogueTokens.POKEMON]
+		elif row[0] == &"nugget_rocket_given":
+			expected = [DialogueTokens.PLAYER]
 		assert_eq(tokens, expected, "%s : jeton" % row[0])
 
 

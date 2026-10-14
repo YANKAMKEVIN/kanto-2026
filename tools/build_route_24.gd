@@ -105,7 +105,7 @@ const TREES: Dictionary = {
 	Vector2i(20, 3): ["tree_b_01", 1.0, false],
 	Vector2i(28, 4): ["tree_e_01", 0.95, true],
 	Vector2i(42, 4): ["tree_c_01", 0.95, false],
-	Vector2i(17, 8): ["tree_a_01", 1.0, true],
+	Vector2i(17, 8): ["tree_a_01", 0.72, true],
 	Vector2i(49, 10): ["tree_c_01", 0.9, false],
 	Vector2i(40, 48): ["tree_b_01", 0.8, true],
 }

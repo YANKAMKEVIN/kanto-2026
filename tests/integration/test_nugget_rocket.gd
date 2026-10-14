@@ -154,8 +154,8 @@ func _goto(goal: Vector2i) -> void:
 		var action: StringName = DIRECTIONS[step]
 		Input.action_press(action)
 		var target := cell + step
-		var give_up := Time.get_ticks_msec() + 8000
-		while _player.get_cell() != target and not _busy() and Time.get_ticks_msec() < give_up:
+		var step_deadline := Time.get_ticks_msec() + 8000
+		while _player.get_cell() != target and not _busy() and Time.get_ticks_msec() < step_deadline:
 			await wait_process_frames(1)
 		Input.action_release(action)
 		await wait_until(func() -> bool: return not _player.is_moving() or _busy(), 3.0)
