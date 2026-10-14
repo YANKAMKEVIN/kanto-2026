@@ -495,6 +495,11 @@ Le cambriolage n'a **aucun objectif** (J13 : pas de marqueur).
 
 69. « Léo a retrouvé forme humaine » *(Cap d'Azuria)*
 
+### Objet caché O4 (ajoutés au T16, validés par Kevin le 2026-10-14)
+
+71. *(examen du coquillage)* « Quelque chose est caché sous ce coquillage. »
+72. *(examen, objet déjà pris)* « Il n'y a plus rien sous ce coquillage. »
+
 ### Nils (ex-Léo, Bourg Palette)
 
 70. *(locuteur seul)* « Nils » remplace « Léo » ; répliques inchangées.
@@ -518,6 +523,12 @@ Le cambriolage n'a **aucun objectif** (J13 : pas de marqueur).
 | **14C** | Jardin, poursuite, Rocket, CT28, barrage levé, raccord Route 5, clôture | S24 |
 
 ## 18. Propagation
+
+- **Contrat d'entrée du J16** (passe J16 §4 G-1, §8) : décision de Kevin (2026-10-14), on corrige le
+  contrat du J16, **pas** le J14 : (1) le J14 ne garantit pas le Badge Cascade avant le Passe Bateau
+  (Route 25 ouverte après le rival et le recruteur, E-11, ordre libre V-3) — c'est au J16 de ne pas
+  en dépendre ou d'ajouter sa propre condition ; (2) le donneur du Passe Bateau s'appelle **Léo** (l'enfant
+  de Bourg Palette est Nils, E-1).
 
 - `dossier-02-prologue.md` §4 : l'enfant s'appelle **Nils** (fait dans ce commit).
 - `roadmap.md` : rien sans l'accord de Kevin. À proposer à la clôture : rival, Léo, S.S. Anne.
