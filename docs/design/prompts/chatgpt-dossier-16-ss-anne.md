@@ -52,7 +52,7 @@ Tranchés le 2026-10-11 (détail : passe d'alignement, §8). À appliquer tels q
 - **G-6** : au moins une espèce compatible Coupe capturable avant Carmin quel que soit le starter :
   c'est déjà le cas (Dardargnan, Sabelette, Paras).
 - **G-7** : rival n° 4 = **Roucoups, Rattatac, Kadabra, starter évolué** (avantage de type), niveaux
-  de référence 19 / 16 / 18 / 20 ; Kadabra sans Entrave.
+  de référence 19 / 16 / 18 / 20 ; Kadabra sans Entrave. **Pas d'Abra au rival n° 3** (décision D-6 du J13, 2026-10-13) : Kadabra arrive directement au n° 4.
 - **G-8** : **puzzle Rouge/Bleu strict**. Premier interrupteur tiré au hasard, second voisin, toute
   erreur remet tout à zéro. Interrupteurs cachés dans des objets à fouiller bien lisibles, sans indice
   qui désigne le bon ; nouveau tirage à chaque entrée tant que ce n'est pas résolu ; résolu = ouvert
@@ -66,7 +66,7 @@ Tranchés le 2026-10-11 (détail : passe d'alignement, §8). À appliquer tels q
 
 1. **Intention** en deux phrases.
 2. **Contrat d'entrée** (G-1) mot pour mot : ce que J13–J15 doivent livrer (drapeaux, objets,
-   cartes, rival n° 3, nom du donneur du Passe Bateau).
+   cartes, rival n° 3 = Roucoups, Rattata, starter évolué, **sans Abra** (correction du 2026-10-13), nom du donneur du Passe Bateau).
 3. **Plans fonctionnels ASCII** de chaque carte : navire (une carte par espace + cabines),
    passerelle et quai de Carmin, Arène. Pour chacune : taille en cases (1 case ≈ 1 m, écran ≈ 24 × 11
    cases), portes et escaliers, cases des Dresseurs et leur regard, objets visibles et cachés,
