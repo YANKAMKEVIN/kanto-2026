@@ -21,8 +21,8 @@ extends SceneTree
 ##   modules `relief_rivage_*` sur les `R` qui touchent la mer (`tools/coast_map_kit.gd`), buissons,
 ##   massifs de fleurs, hautes herbes jaune-vert, rebord de bois, maison de Léo (série 16),
 ##   panneaux, rochers dans l'eau, touffes et fleurs.
-## - Passages : raccord ouest (0, 13..15) PUSH ← vers la Route 24 (**provisoire : « ROUTE 24 —
-##   À venir »** tant que la Route 24 nord du J13 n'est pas fusionnée, T15) ; porte de la maison
+## - Passages : raccord ouest (0, 13..15) PUSH ← → `route_24` / `from_route_25_n|c|s` (tournée ←,
+##   T15 : rangée pour rangée avec (55, 6..8) de la Route 24) ; porte de la maison
 ##   (71..72, 11) STEP_ON ↑ → `bill_house` / `from_route_25`. Spawns `from_route_24_n|c|s`,
 ##   `from_bill_house_w|e`.
 ## - **Vie (T16)** : PNJ, Dresseurs, objets et Pokémon d'ambiance viennent de
@@ -53,8 +53,8 @@ const WEST_EXITS: Array = [
 	["Route24C", Vector2i(0, 14), &"from_route_25_c", "from_route_24_c"],
 	["Route24S", Vector2i(0, 15), &"from_route_25_s", "from_route_24_s"],
 ]
-## Tant que la Route 24 n'est pas là : destination « à venir » (libellé, « — À venir » ajouté).
-const WEST_SOON: String = "Route 24"
+## Raccord ouest réel (T15, Route 24 nord du J13 fusionnée) : rangée pour rangée.
+const WEST_MAP: StringName = &"route_24"
 ## Porte de la maison de Léo (STEP_ON ↑) : [nœud, case, spawn d'ici (devant, tourné ↓)].
 const DOORS: Array = [
 	["DoorLeoW", Vector2i(71, 11), "from_bill_house_w"],
@@ -186,8 +186,8 @@ func _make_pillars() -> void:
 func _add_passages() -> void:
 	for entry: Array in WEST_EXITS:
 		_kit.call(&"add_spawn", entry[3], entry[1])
-		_kit.call(&"add_warp", entry[0], entry[1], Kit.PUSH, Vector2i.LEFT, &"",
-			StringName(entry[3]), Vector2i.RIGHT, WEST_SOON)
+		_kit.call(&"add_warp", entry[0], entry[1], Kit.PUSH, Vector2i.LEFT, WEST_MAP,
+			entry[2], Vector2i.LEFT)
 	for entry: Array in DOORS:
 		_kit.call(&"add_spawn", entry[2], (entry[1] as Vector2i) + Vector2i.DOWN)
 		_kit.call(&"add_warp", entry[0], entry[1], Kit.STEP_ON, Vector2i.UP, HOUSE_MAP,

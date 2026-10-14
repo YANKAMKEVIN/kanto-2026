@@ -7,7 +7,8 @@ extends GutTest
 ## derrière le joueur au plus tard au premier pas qui libère une case (règle J11).
 ## Vérifié aux deux raccords « à venir » restants (nord et sud du bord est). Depuis la fusion dans
 ## le J13 : la vraie Route 4 mène à Azuria ; le « à venir » est le bord est de la Route 24
-## (« ROUTE 25 — À venir », chemin sans herbe, spawns `from_route_25_n|s`).
+## (« ROUTE 25 — À venir », chemin sans herbe, spawns `from_route_25_n|s`) ; depuis le T15 du J14,
+## ce raccord est réel : le test le rend provisoire ([method _make_east_edge_coming_soon]).
 
 const MemoryFs := preload("res://tests/helpers/memory_file_system.gd")
 const FixedClock := preload("res://tests/helpers/fixed_clock.gd")
@@ -64,6 +65,7 @@ func _check_gate(spawn: StringName, visits: int = 1) -> void:
 	_boot.get_coming_soon_screen().fade_duration = 0.05
 	await wait_process_frames(2)
 	await wait_until(func() -> bool: return _boot.is_stable(), TIMEOUT)
+	_make_east_edge_coming_soon()
 	var companion := _boot.get_companion_controller()
 	var player := _boot.get_player()
 	GameState.flags.set_flag(&"starter_chosen")
@@ -110,3 +112,17 @@ func _step(player: Player, companion: CompanionController, action: StringName) -
 	await wait_until(func() -> bool: return not player.is_moving() \
 		and not companion.get_node_2d().is_moving(), TIMEOUT)
 	await wait_process_frames(2)
+
+
+## Jalon 14 T15 : le raccord est de la Route 24 mène désormais à la vraie Route 25 ; plus aucun
+## « à venir » réel dans le jeu jusqu'au T20b (« ROUTE 5 — À venir », où ce test sera déplacé).
+## En attendant, le test rend provisoire le raccord est de la carte chargée, comme avant le T15
+## (mêmes cases, retour sur `from_route_25_n|c|s`, tourné vers l'ouest).
+func _make_east_edge_coming_soon() -> void:
+	for warp: Warp in _boot.get_map().get_warps().get_all():
+		if warp.direction == Vector2i.RIGHT and warp.target_map == &"route_25":
+			warp.coming_soon = "Route 25"
+			warp.target_map = &""
+			warp.target_spawn = StringName(String(warp.target_spawn).replace(
+				"from_route_24_", "from_route_25_"))
+			warp.facing = Vector2i.LEFT

@@ -1,6 +1,7 @@
 extends GutTest
 ## Destination provisoire (jalon 5, dossier-07 §12) avec la vraie scène Boot, l'autoload
-## SceneRouter (fondus raccourcis) et un [SaveSystem] en mémoire. Depuis le jalon 12 (T8,
+## SceneRouter (fondus raccourcis) et un [SaveSystem] en mémoire (jalon 14 T15 : raccord rendu
+## provisoire par le test, voir [method _make_east_edge_coming_soon]). Depuis le jalon 12 (T8,
 ## jalon-12.md §2.1, §2.15) puis jalon 13 (T8) : le raccord est de la Route 24 (PUSH →, (55, 6..8)) mène à « ROUTE 25 — À
 ## venir » (build de développement, libellé en majuscules), puis ramène le joueur sur la case de
 ## sortie, tourné vers l'ouest. Rien n'est sauvegardé pendant l'écran, aucun titre de zone, aucune
@@ -61,6 +62,21 @@ func _start_at_the_gate() -> void:
 	_boot.get_coming_soon_screen().hold_duration = HOLD
 	_boot.get_coming_soon_screen().fade_duration = 0.05
 	await wait_process_frames(3)
+	_make_east_edge_coming_soon()
+
+
+## Jalon 14 T15 : le raccord est de la Route 24 mène désormais à la vraie Route 25 ; plus aucun
+## « à venir » réel dans le jeu jusqu'au T20b (« ROUTE 5 — À venir », où ce test sera déplacé).
+## En attendant, le test rend provisoire le raccord est de la carte chargée, comme avant le T15
+## (mêmes cases, retour sur `from_route_25_n|c|s`, tourné vers l'ouest).
+func _make_east_edge_coming_soon() -> void:
+	for warp: Warp in _boot.get_map().get_warps().get_all():
+		if warp.direction == Vector2i.RIGHT and warp.target_map == &"route_25":
+			warp.coming_soon = "Route 25"
+			warp.target_map = &""
+			warp.target_spawn = StringName(String(warp.target_spawn).replace(
+				"from_route_24_", "from_route_25_"))
+			warp.facing = Vector2i.LEFT
 
 
 func _writes() -> int:

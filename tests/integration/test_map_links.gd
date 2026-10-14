@@ -25,7 +25,7 @@ const MAP_IDS: Array[StringName] = [
 	&"cerulean_bike_shop", &"cerulean_house",
 	# Jalon 13 (T8) : la Route 24 (la Route 4 est devenue la vraie Route 4, même identifiant).
 	&"route_24",
-	# Jalon 14 (T14) : la Route 25 et la maison de Léo (raccord ouest « à venir » jusqu'au T15).
+	# Jalon 14 (T14) : la Route 25 et la maison de Léo (raccord ouest vers la Route 24 au T15).
 	&"route_25", &"bill_house",
 ]
 ## Cartes construites par une autre tâche en parallèle (jalon 7 : la Route 22, T22 ; jalon 10 :
@@ -117,7 +117,9 @@ func test_every_coming_soon_warp_returns_to_a_walkable_spawn_of_its_own_map() ->
 			var back := map.get_spawn_cell(warp.target_spawn)
 			assert_false(map.get_grid().is_solid(back), "%s : retour praticable" % label)
 			assert_ne(warp.facing, Vector2i.ZERO, "%s : orientation au retour" % label)
-	assert_gt(found, 0, "au moins le raccord est de la Route 24 (Route 25)")
+	# Jalon 14 T15 : le dernier « à venir » (Route 24 ↔ Route 25) est devenu un vrai raccord ;
+	# le suivant arrive au T20b (« ROUTE 5 — À venir », sud d'Azuria) : aucun aujourd'hui.
+	assert_eq(found, 0, "aucun « à venir » entre le T15 et le T20b du J14")
 
 
 ## Warp de [param map] qui ramène à [param origin] depuis [param arrival] : sur la case

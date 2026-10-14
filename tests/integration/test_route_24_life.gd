@@ -3,7 +3,7 @@ extends GutTest
 ## vraie scène Boot : Potion au sol (Sac + 1, journal, drapeau, absente au rechargement), deux zones
 ## d'herbes à la table `route_24_grass` (Mystherbe, Chétiflor, Roucool, Chenipan, Aspicot,
 ## Chrysacier, Coconfort), Antidote caché (point d'examen, souche d'une autre teinte), aucun
-## Dresseur au nord, raccord est « ROUTE 25 — À venir », objectifs n° 62 et 63.
+## Dresseur au nord, raccord est vers la Route 25 (J14 T15), objectifs n° 62 et 63.
 
 const MemoryFs := preload("res://tests/helpers/memory_file_system.gd")
 const FixedClock := preload("res://tests/helpers/fixed_clock.gd")
@@ -136,7 +136,7 @@ func test_the_hidden_antidote_is_a_stump_with_an_examine_point_that_vanishes() -
 	assert_push_error_count(0)
 
 
-func test_the_east_edge_is_route_25_coming_soon_and_the_zone_title_is_the_bridge() -> void:
+func test_the_east_edge_is_route_25_and_the_zone_title_is_the_bridge() -> void:
 	await _start("route_24_north", Vector2i(54, 7), Vector2i.RIGHT)
 	var map := _boot.get_map()
 	assert_eq(map.display_name, "Route 24")
@@ -144,7 +144,9 @@ func test_the_east_edge_is_route_25_coming_soon_and_the_zone_title_is_the_bridge
 	var warp := map.get_warps().find_on_push(Vector2i(55, 7), Vector2i.RIGHT)
 	assert_not_null(warp)
 	if warp != null:
-		assert_true(warp.is_coming_soon(), "« ROUTE 25 — À venir » (texte n° 57)")
+		# Jalon 14 T15 : la vraie Route 25 (n° 57 « ROUTE 25 — À venir » n'est plus montré).
+		assert_false(warp.is_coming_soon())
+		assert_eq(warp.target_map, &"route_25")
 
 
 func test_the_objectives_follow_the_bridge() -> void:

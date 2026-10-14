@@ -7620,27 +7620,27 @@ position = Vector2(48, 1344)
 script = ExtResource("59_yqh4n")
 trigger = 1
 direction = Vector2i(-1, 0)
-target_spawn = &"from_route_24_n"
-arrival_facing = Vector2i(1, 0)
-coming_soon = "Route 24"
+target_map = &"route_24"
+target_spawn = &"from_route_25_n"
+arrival_facing = Vector2i(-1, 0)
 
 [node name="Route24C" type="Marker2D" parent="Warps" unique_id=1456814962]
 position = Vector2(48, 1440)
 script = ExtResource("59_yqh4n")
 trigger = 1
 direction = Vector2i(-1, 0)
-target_spawn = &"from_route_24_c"
-arrival_facing = Vector2i(1, 0)
-coming_soon = "Route 24"
+target_map = &"route_24"
+target_spawn = &"from_route_25_c"
+arrival_facing = Vector2i(-1, 0)
 
 [node name="Route24S" type="Marker2D" parent="Warps" unique_id=793301499]
 position = Vector2(48, 1536)
 script = ExtResource("59_yqh4n")
 trigger = 1
 direction = Vector2i(-1, 0)
-target_spawn = &"from_route_24_s"
-arrival_facing = Vector2i(1, 0)
-coming_soon = "Route 24"
+target_map = &"route_24"
+target_spawn = &"from_route_25_s"
+arrival_facing = Vector2i(-1, 0)
 
 [node name="DoorLeoW" type="Marker2D" parent="Warps" unique_id=815773667]
 position = Vector2(6864, 1152)
