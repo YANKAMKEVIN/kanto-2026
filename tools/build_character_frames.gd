@@ -122,6 +122,8 @@ const LOOKS: Dictionary = {
 	"nidorina": [POKEMON_DIR, "nidorina", ""],
 	"rattatac": [POKEMON_DIR, "raticate", ""],
 	"rapasdepic": [POKEMON_DIR, "fearow", ""],
+	# J15 T10 : Miaouss (compagnon), sans planche d'attente (colonne 0 de la marche).
+	"miaouss": [POKEMON_DIR, "meowth", ""],
 }
 ## Pokémon fixes (genre « Pokémon fixe », jalon 9 §2.8.5) : feuille 6 × 1 du catalogue
 ## (« personnages ») → identifiant de données. Ils ne marchent jamais.
