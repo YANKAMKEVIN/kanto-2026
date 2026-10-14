@@ -163,5 +163,6 @@ J10 Argenta + Arène Pierre + Badge
 J11 Grande passe systèmes (évolutions / CT / statuts / équipe avancée / compagnon)
 J12 Route 3 + Mont Sélénite   ✅
 J13 Azuria + Ondine + Pont Pépite   ✅
-J14+ Expansion de Kanto → Ligue → post-game   ← ICI
+J14 Route 25 + Cap d'Azuria (Léo) + Rocket d'Azuria   ✅
+J15+ Expansion de Kanto → Ligue → post-game   ← ICI
 ```
