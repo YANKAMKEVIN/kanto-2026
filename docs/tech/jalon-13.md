@@ -813,6 +813,8 @@ du jeu `exp_calc.gd` : ⌊b × N × 1,5 / 7⌋ contre un Dresseur, b = XP de bas
   18 / 21** (RB).
 - **Pont 10–18** : en dessous du joueur, croissant ; l'XP du pont (≈ 1 500 au total) prépare Ondine.
   **Garder.**
+- **Vérification réelle faite (T20) : `docs/tech/jalon-13-equilibrage.md`** — rival n° 3 et Ondine
+  plus durs que cette estimation (Bulbizarre bloqué par le rival, Salamèche et Carapuce par Ondine).
 - **Vérification réelle** (T20, information pour Kevin, aucune donnée changée sans lui) : scénario
   `tools/sim/cerulean_scenario.json` (T9) joué par `simulate_mt_moon.gd -- --scenario …` avec les
   équipes de sortie du scénario du J12, la **vraie partie de Kevin** (`--save`), l'IA qui change, les
@@ -1275,8 +1277,26 @@ et de l'annexe A validée.
     `11_ct_explication`).
   - Réserve : `beaten_nugget_rocket` (réplique n° 41 b) n'est levé qu'au T22.
 
-#### T20 — architecte : équilibrage — après T19
+#### T20 — architecte : équilibrage — après T19 — **fait (2026-10-14)**
 - §2.22 : simulation ; **information pour Kevin**, aucune donnée changée sans lui.
+- **Fait** (branche `j13-t20` depuis `jalon-13` à `748b317`) : résultats, seuils et
+  recommandations dans **`docs/tech/jalon-13-equilibrage.md`** (1 000 graines par ligne).
+  - Partie de Kevin (QA 13.0) **à Jadielle** (Salamèche N8) : inutilisable comme départ ; équipes
+    estimées (sortie du Mont Sélénite simulée au J12 : starter **17–18**, 1 à 2 niveaux sous le
+    §2.22) + équipe aux espèces de Kevin.
+  - **Rival n° 3** : Salamèche (avec Férosinge) et Carapuce 87–100 % (attentif) ; **Bulbizarre
+    0 % jusqu'au N20 (combat obligatoire : risque de blocage)** ; Salamèche sans Férosinge 2–35 %
+    au N17–18. **Ondine** : Bulbizarre ≈ 90 % ; **Salamèche et Carapuce 0 %** aux niveaux
+    d'arrivée, même après la Route 24 nord (Carapuce : N22 ; Salamèche : Mystherbe et N22). Pont :
+    ≈ 27 tours, usure sans blocage.
+  - Recommandations (Kevin tranche : Q-T20-1 à 3) : rival en IA `random` + Roucoups N16
+    (Herbizarre 18 / 20 : 54–73 / 93–98 %) ; Ondine en IA `random` (Carabaffe 20 : 52–69 %,
+    Reptincel 20 + Mystherbe 16 : 92–95 %) ; garder le pont, la Route 4 et l'Arène.
+  - Outil (`tools/simulate_mt_moon.gd`) : l'IA des Dresseurs à `switch` change de Pokémon comme en
+    jeu ; joueur `expert` ; tentatives par Dresseur avec reprises ; niveau du meneur avant chaque
+    étape. Scénarios : `cerulean_scenario.json` (`switch`, 8 équipes, 6 variantes à reprises),
+    `cerulean_thresholds.json` (nouveau, seuils). Test : `test_simulate_cerulean` (+2, fixture
+    `tests/fixtures/sim/cerulean_t20.json`).
 
 #### T21 — qa-mobile : **session 13B** → Kevin
 - Rival inévitable, défaite → Centre (sans argent perdu) → n° 30 puis n° 31, victoire → départ,

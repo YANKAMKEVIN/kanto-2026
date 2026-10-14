@@ -9,6 +9,8 @@ const TOOL := "res://tools/simulate_mt_moon.gd"
 const REAL := "res://tools/sim/cerulean_scenario.json"
 const GROUPS := "res://tests/fixtures/sim/cerulean_groups.json"
 const NO_STARTER := "res://tests/fixtures/sim/cerulean_no_starter.json"
+const T20 := "res://tests/fixtures/sim/cerulean_t20.json"
+const THRESHOLDS := "res://tools/sim/cerulean_thresholds.json"
 const EXIT_OK := 0
 const EXIT_ERROR := 1
 const EXIT_SKIPPED := 3
@@ -27,9 +29,15 @@ func test_real_scenario_is_valid() -> void:
 			"Ondine (Arène d'Azuria)", "Recruteur Rocket (avant Ondine)",
 			"Recruteur Rocket (après Ondine)", "Route 24 nord : herbes (40 cases)"]:
 		assert_true(out.contains(label), "étape absente : " + label)
-	# Les deux familles de variantes.
-	assert_true(out.contains("directe, attentif, Centre :"), out.right(2000))
-	assert_true(out.contains("avec Route 24 nord, attentif, Centre :"), out.right(2000))
+	# Les deux familles de variantes, et le joueur expert (T20).
+	assert_true(out.contains("directe, attentif, Centre, 3 Potions, 1 Antidote :"),
+		out.right(2000))
+	assert_true(out.contains("avec Route 24 nord, attentif, Centre, 3 Potions, 1 Antidote :"),
+		out.right(2000))
+	assert_true(out.contains(": joueur expert,"), out.right(2000))
+	# T20 : le rival et Ondine changent de Pokémon, comme dans data/.
+	assert_true(out.contains("{rival}, IA smart qui change"), out.right(2000))
+	assert_true(out.contains("Ondine, IA smart qui change"), out.right(2000))
 
 
 ## Le rival du scénario est complet (ses espèces existent) : une équipe par starter.
@@ -40,6 +48,35 @@ func test_real_rival_has_one_team_per_starter() -> void:
 		return
 	for starter: String in ["Bulbizarre", "Salamèche", "Carapuce"]:
 		assert_true(out.contains("contre %s : Roucoups N18" % starter), starter)
+
+
+## T20 : le scénario des seuils est valide (aucun élément sauté).
+func test_thresholds_scenario_is_valid() -> void:
+	var run := _run(["--scenario", THRESHOLDS, "--valider"])
+	assert_eq(run[0], EXIT_OK, run[1].right(2000))
+	assert_true(run[1].contains("Ondine, IA smart, 2100"), "Ondine sans changement absente")
+
+
+## T20 : l'IA à « switch » rappelle son Pokémon (une fois) ; le joueur expert change de lui-même,
+## le joueur attentif jamais ; avec reprises, les tentatives par Dresseur sont comptées.
+func test_switch_expert_and_attempts() -> void:
+	# Le déroulé (`--trace`) précède la ligne « équipe | variante » : une variante à la fois.
+	var run := _run(["--scenario", T20, "--trace", "Montagnard", "--variante", "expert"])
+	var expert: String = run[1]
+	assert_eq(run[0], EXIT_OK, expert.right(2000))
+	assert_false(expert.contains("SCRIPT ERROR"), "erreur de script dans l'outil")
+	assert_false(expert.contains("non terminés"), expert.right(2000))
+	assert_true(expert.contains("Montagnard, IA smart qui change"), expert)
+	assert_eq(expert.count("Montagnard rappelle Racaillou !"), 3,
+		"un changement par combat (3 graines racontées)")
+	assert_true(expert.contains("Reviens, Carapuce !"), expert)
+	assert_true(expert.contains("tentatives : Dresseur fort"), expert)
+	assert_true(expert.contains("battu   0.0 % de 4 parties"), expert)
+	assert_true(expert.contains("meneur avant N12.0"), expert)
+	var careful: String = _run(["--scenario", T20, "--trace", "Montagnard", "--variante",
+		"attentif"])[1]
+	assert_true(careful.contains("Montagnard rappelle Racaillou !"), careful)
+	assert_false(careful.contains("Reviens, "), "le joueur attentif ne change pas de lui-même")
 
 
 func test_groups_and_team_starter() -> void:

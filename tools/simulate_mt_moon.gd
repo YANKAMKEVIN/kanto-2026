@@ -32,20 +32,26 @@ extends SceneTree
 ## Une défaite (équipe entière K.O.) arrête la partie, sauf si la variante a « retries » (T26) :
 ## réveil au dernier Centre passé (soin complet ; Sac, niveaux et Dresseurs battus gardés) et
 ## reprise à l'étape qui le suit, au plus « retries » fois ; le rapport donne alors l'arrivée
-## après 0, 1… défaites (les statistiques d'étape ne comptent que la première tentative).
-## En combat sauvage, un joueur ligoté (piège) ne tente pas de fuir. Aucune capture, aucun
-## changement volontaire de Pokémon.
+## après 0, 1… défaites (les statistiques d'étape ne comptent que la première tentative) et,
+## par Dresseur perdu au moins une fois, les tentatives moyennes jusqu'à la victoire (T20).
+## Dresseurs à « switch » (J13) : l'IA peut changer de Pokémon une fois par combat, comme en jeu.
+## En combat sauvage, un joueur ligoté (piège) ne tente pas de fuir. Aucune capture ; aucun
+## changement volontaire de Pokémon, sauf pour le joueur « expert ».
 ##
 ## [b]Joueurs[/b] : « naif » (une capacité offensive au hasard, remplaçant = le suivant, aucun
 ## objet) ; « attentif » (capacités de l'IA `smart`, remplaçant le mieux placé, Potion en
 ## combat quand le prochain coup peut le mettre K.O. et qu'elle le sauverait ; après chaque
 ## combat, Antidote sur un Pokémon empoisonné et Potions jusqu'à plus de
-## [constant HEAL_OUTSIDE_BELOW] des PV, tant qu'il en reste). « flee_below » : en combat
+## [constant HEAL_OUTSIDE_BELOW] des PV, tant qu'il en reste) ; « expert » (T20 : comme
+## « attentif », mais toujours la capacité aux plus forts dégâts attendus, jamais de statut, et,
+## contre un Dresseur, un changement volontaire par Pokémon adverse quand un autre membre est
+## nettement mieux placé : [method _expert_switch]). « flee_below » : en combat
 ## sauvage, tentative de fuite quand le Pokémon en jeu passe sous cette part de ses PV.
 ##
 ## [b]Rapport[/b], par équipe et par variante : arrivée au bout, défaites par étape, puis, pour
 ## chaque étape (parmi les parties qui l'atteignent) : combats, victoires, fuites, défaites,
-## tours par combat, K.O., objets consommés, PV de l'équipe après l'étape, niveau moyen ;
+## tours par combat, K.O., objets consommés, PV de l'équipe après l'étape, niveau moyen,
+## niveau le plus haut avant l'étape (« meneur avant », T20) ;
 ## enfin les niveaux de chaque membre à l'arrivée.
 ##
 ##   godot --headless --path . -s res://tools/simulate_mt_moon.gd
@@ -92,7 +98,10 @@ const BATTLE_EVENT_SENT_OUT: int = 1
 const BATTLE_EVENT_DAMAGE: int = 5
 ## Terrains de rencontre acceptés par le scénario (« rubble » arrive dans le moteur au T20).
 const TERRAINS: Array[String] = ["grass", "rubble"]
-const POLICIES: Array[String] = ["naif", "attentif"]
+const POLICIES: Array[String] = ["naif", "attentif", "expert"]
+## Joueur « expert » (T20) : change de Pokémon quand un autre est au moins ce nombre de fois
+## mieux placé (rapport dégâts infligés / reçus de [method _best_against]).
+const EXPERT_SWITCH_FACTOR: float = 2.0
 ## Ordre des IV d'un membre d'équipe (« ivs » : 6 entiers) = SpeciesData.STATS.
 const STAT_KEYS: Array[String] = ["hp", "atk", "def", "spa", "spd", "spe"]
 const TOP_KEYS: Array[String] = ["version", "title", "description", "seeds", "heal_at_start",
@@ -778,7 +787,7 @@ func _report(team: Dictionary, variant: Dictionary) -> void:
 	for step: Dictionary in _steps:
 		stats.append(_blank_stats())
 	var totals := { "end": 0, "hp": 0.0, "kos": 0, "items": {}, "levels": [], "evolved": [],
-		"names": [], "after_defeats": {} }
+		"names": [], "after_defeats": {}, "tries": {} }
 	for seed_value: int in _seeds:
 		_play(team, variant, seed_value, stats, totals)
 	print("")
@@ -799,6 +808,7 @@ func _report(team: Dictionary, variant: Dictionary) -> void:
 			parts.append("%d défaite(s) %.1f %%" % [n,
 				100.0 * int(totals["after_defeats"].get(n, 0)) / _seeds])
 		print("  avec reprises au Centre : arrivée après %s" % ", ".join(parts))
+		_print_tries(totals["tries"])
 	for i: int in _steps.size():
 		var s: Dictionary = stats[i]
 		var reached: int = s["reached"]
@@ -811,9 +821,9 @@ func _report(team: Dictionary, variant: Dictionary) -> void:
 			line += " | vict. %5.1f %% | fuites %4.2f | défaites %5.1f %% | %4.1f tours" % [
 				100.0 * s["wins"] / battles, float(s["fled"]) / reached,
 				100.0 * s["defeats"] / reached, float(s["turns"]) / battles]
-		line += " | K.O. %4.2f | objets %s | PV après %3.0f %% | niv. %4.1f" % [
-			float(s["kos"]) / reached, _used_text(s["items"], reached),
-			100.0 * s["hp"] / reached, s["level"] / reached]
+		line += " | K.O. %4.2f | objets %s | PV après %3.0f %% | niv. %4.1f | meneur avant N%4.1f" \
+			% [float(s["kos"]) / reached, _used_text(s["items"], reached),
+			100.0 * s["hp"] / reached, s["level"] / reached, s["top"] / reached]
 		if int(s["unfinished"]) > 0:
 			line += " | %d non terminés" % s["unfinished"]
 		print(line)
@@ -848,6 +858,8 @@ func _play(team: Dictionary, variant: Dictionary, seed_value: int, stats: Array[
 	var defeats := 0
 	var restart := 0
 	var beaten: Dictionary = {}
+	# T20 : tentatives par Dresseur (indice d'étape → nombre), première comprise.
+	var tries: Dictionary = {}
 	var i := 0
 	while i < _steps.size():
 		var step: Dictionary = _steps[i]
@@ -858,6 +870,8 @@ func _play(team: Dictionary, variant: Dictionary, seed_value: int, stats: Array[
 			continue
 		if beaten.has(i - 1):
 			continue
+		if step["kind"] == "trainer":
+			tries[i - 1] = int(tries.get(i - 1, 0)) + 1
 		if defeats > 0:
 			_tracing = false
 			var retry_lost := _play_step(step, party, rng, variant, bag, _blank_stats())
@@ -868,6 +882,7 @@ func _play(team: Dictionary, variant: Dictionary, seed_value: int, stats: Array[
 			if retry_lost:
 				defeats += 1
 				if defeats > int(variant["retries"]):
+					_add_tries(totals, tries, beaten)
 					return
 				party.heal_all()
 				i = restart
@@ -880,6 +895,7 @@ func _play(team: Dictionary, variant: Dictionary, seed_value: int, stats: Array[
 			print("  >>> graine %d, %s : %s" % [seed_value, step["label"], _party_text(party)])
 		var before := bag.duplicate()
 		var fainted := _fainted(party)
+		s["top"] += _top_level(party)
 		var lost := _play_step(step, party, rng, variant, bag, s)
 		if step["kind"] == "center":
 			restart = i
@@ -898,9 +914,11 @@ func _play(team: Dictionary, variant: Dictionary, seed_value: int, stats: Array[
 			s["defeats"] += 1
 			defeats = 1
 			if int(variant["retries"]) == 0 or not variant["center"]:
+				_add_tries(totals, tries, beaten)
 				return
 			party.heal_all()
 			i = restart
+	_add_tries(totals, tries, beaten)
 	totals["after_defeats"][defeats] = int(totals["after_defeats"].get(defeats, 0)) + 1
 	if defeats > 0:
 		return
@@ -915,6 +933,33 @@ func _play(team: Dictionary, variant: Dictionary, seed_value: int, stats: Array[
 		var pokemon: RefCounted = start[j]
 		totals["levels"][j] += pokemon.level
 		totals["evolved"][j] += 1 if pokemon.species_id != start_species[j] else 0
+
+
+## T20 : cumule les tentatives d'une partie, par Dresseur ({ parties, battu, tentatives
+## jusqu'à la victoire }).
+func _add_tries(totals: Dictionary, tries: Dictionary, beaten: Dictionary) -> void:
+	for index: int in tries:
+		var t: Dictionary = totals["tries"].get(index, { "games": 0, "beaten": 0, "attempts": 0 })
+		t["games"] += 1
+		if beaten.has(index):
+			t["beaten"] += 1
+			t["attempts"] += int(tries[index])
+		totals["tries"][index] = t
+
+
+## T20 (avec reprises) : tentatives moyennes jusqu'à la victoire et part des parties qui
+## battent chaque Dresseur (parmi celles qui l'atteignent), pour les Dresseurs perdus au moins
+## une fois.
+func _print_tries(tries: Dictionary) -> void:
+	var indexes: Array = tries.keys()
+	indexes.sort()
+	for index: int in indexes:
+		var t: Dictionary = tries[index]
+		if int(t["beaten"]) == int(t["games"]) and int(t["attempts"]) == int(t["beaten"]):
+			continue
+		print("  tentatives : %-40s %4.2f jusqu'à la victoire | battu %5.1f %% de %d parties"
+			% [_steps[index]["label"], float(t["attempts"]) / maxi(int(t["beaten"]), 1),
+			100.0 * t["beaten"] / t["games"], t["games"]])
 
 
 ## Vrai si [param step] est obligatoire ou si son groupe est demandé par [param variant].
@@ -942,7 +987,7 @@ func _play_step(step: Dictionary, party: RefCounted, rng: RefCounted, variant: D
 ## Compteurs d'une étape (une tentative).
 func _blank_stats() -> Dictionary:
 	return { "reached": 0, "battles": 0, "wins": 0, "fled": 0, "defeats": 0, "turns": 0,
-		"kos": 0, "hp": 0.0, "level": 0.0, "items": {}, "unfinished": 0 }
+		"kos": 0, "hp": 0.0, "level": 0.0, "top": 0.0, "items": {}, "unfinished": 0 }
 
 
 ## Étape « wild » : renvoie vrai si l'équipe entière est K.O.
@@ -984,10 +1029,12 @@ func _trainer_step(step: Dictionary, party: RefCounted, rng: RefCounted, variant
 	var id := StringName(step["id"])
 	var trainer: RefCounted = library.get_trainer(id)
 	var foes: RefCounted = library.build_team(id, _play_starter, rng)
-	if variant["player"] == "attentif":
+	if variant["player"] != "naif":
 		_put_first(party, _best_against(party, foes.get_at(0)))
 	var player: RefCounted = _side_script.new(party, true)
-	var foe: RefCounted = _side_script.new(foes, false, trainer.name, _ai_script.new(trainer.ai))
+	# IA du jeu (TrainerData.make_ai) : « switch » = au plus un changement par combat (J13 T20).
+	var foe: RefCounted = _side_script.new(foes, false, trainer.name,
+		_ai_script.new(trainer.ai, trainer.can_switch))
 	var battle: RefCounted = _battle_script.new(player, foe, _data, rng,
 		_rules_script.for_trainer(trainer, _items))
 	_trace(battle.start())
@@ -1012,7 +1059,7 @@ func _after_battle(result: Array[int], party: RefCounted, variant: Dictionary,
 		_:
 			s["unfinished"] += 1
 	_evolve(party)
-	if variant["player"] == "attentif":
+	if variant["player"] != "naif":
 		_heal_outside(party, bag)
 	return false
 
@@ -1021,7 +1068,10 @@ func _after_battle(result: Array[int], party: RefCounted, variant: Dictionary,
 func _fight(battle: RefCounted, player: RefCounted, foe: RefCounted, rng: RefCounted,
 		variant: Dictionary, bag: Dictionary, wild: bool) -> Array[int]:
 	var ai: RefCounted = _ai_script.new(&"smart")
-	var careful: bool = variant["player"] == "attentif"
+	var careful: bool = variant["player"] != "naif"
+	var expert: bool = variant["player"] == "expert"
+	# Expert : au plus un changement volontaire par Pokémon adverse en jeu.
+	var switched_against: RefCounted = null
 	var flee_below: float = variant["flee_below"] if wild else 0.0
 	var party: RefCounted = player.party
 	while battle.get_state() != OVER and battle.get_turn() < MAX_TURNS:
@@ -1039,6 +1089,12 @@ func _fight(battle: RefCounted, player: RefCounted, foe: RefCounted, rng: RefCou
 				action = null
 		if action == null and careful:
 			action = _heal_action(battle, player, foe, bag)
+		if action == null and expert and not wild and switched_against != foe.active.pokemon:
+			action = _expert_switch(battle, party, active, foe.active.pokemon)
+			if action != null:
+				switched_against = foe.active.pokemon
+		if action == null and expert:
+			action = _strongest_move(battle, active, foe.active.pokemon)
 		if action == null:
 			action = ai.choose(player, foe, rng, _data) if careful \
 				else _naive_move(battle, active, rng)
@@ -1075,6 +1131,32 @@ func _naive_move(battle: RefCounted, active: RefCounted, rng: RefCounted) -> Ref
 			attacks.append(index)
 	var pool := attacks if not attacks.is_empty() else usable
 	return _action_script.move(pool[rng.pick_index(pool.size())])
+
+
+## Joueur expert (T20) : la capacité offensive aux plus forts dégâts attendus contre
+## [param target] (jamais de statut), ou null s'il n'en a pas d'utilisable.
+func _strongest_move(battle: RefCounted, active: RefCounted, target: RefCounted) -> RefCounted:
+	var best := -1
+	var best_damage := 0.0
+	for index: int in battle.get_usable_moves():
+		var damage := _move_damage(active, target, _data.get_move(active.moves[index].move_id))
+		if damage > best_damage:
+			best = index
+			best_damage = damage
+	return null if best < 0 else _action_script.move(best)
+
+
+## Joueur expert, combat de Dresseur : rappel du Pokémon en jeu si un autre (plus de la moitié
+## de ses PV) est [constant EXPERT_SWITCH_FACTOR] fois mieux placé contre [param target].
+func _expert_switch(battle: RefCounted, party: RefCounted, active: RefCounted,
+		target: RefCounted) -> RefCounted:
+	var best: RefCounted = _best_against(party, target)
+	if best == null or best == active or best.hp * 2 <= best.max_hp():
+		return null
+	if _placement(best, target) < EXPERT_SWITCH_FACTOR * _placement(active, target):
+		return null
+	var action: RefCounted = _action_script.switch_to(party.index_of(best))
+	return action if battle.is_legal(action) else null
 
 
 ## Joueur attentif : le plus petit soin du Sac qui sauve le Pokémon en jeu du prochain coup le
@@ -1138,36 +1220,47 @@ func _best_against(party: RefCounted, foe: RefCounted) -> RefCounted:
 	for pokemon: RefCounted in party.get_all():
 		if pokemon.is_fainted():
 			continue
-		var dealt := _best_damage(pokemon, foe) / float(foe.max_hp())
-		var taken := maxf(_best_damage(foe, pokemon) / float(pokemon.max_hp()), 0.01)
-		if dealt / taken > best_score:
+		var score := _placement(pokemon, foe)
+		if score > best_score:
 			best = pokemon
-			best_score = dealt / taken
+			best_score = score
 	return best
+
+
+## Rapport (part des PV de [param foe] ôtée par coup) / (part des PV de [param pokemon] ôtée
+## par coup) : plus il est haut, mieux [param pokemon] est placé.
+func _placement(pokemon: RefCounted, foe: RefCounted) -> float:
+	var dealt := _best_damage(pokemon, foe) / float(foe.max_hp())
+	var taken := maxf(_best_damage(foe, pokemon) / float(pokemon.max_hp()), 0.01)
+	return dealt / taken
 
 
 ## Dégâts moyens (ou maximaux si [param worst]) de la meilleure attaque de [param attacker]
 ## sur [param defender], sans critique ; précision comprise sauf si [param worst].
 func _best_damage(attacker: RefCounted, defender: RefCounted, worst: bool = false) -> float:
 	var best := 0.0
-	var attacker_types: Array = _data.get_species(attacker.species_id).types
-	var defender_types: Array[StringName] = _data.get_species(defender.species_id).types
 	for slot: RefCounted in attacker.moves:
-		var move: RefCounted = _data.get_move(slot.move_id)
-		if not move.is_damaging():
-			continue
-		var physical: bool = move.category == 0
-		var attack: int = attacker.stats[&"atk" if physical else &"spa"]
-		var defense: int = defender.stats[&"def" if physical else &"spd"]
-		var damage := float((2 * attacker.level / 5 + 2) * move.power * attack
-			/ maxi(defense, 1) / 50 + 2) * (1.0 if worst else 0.925)
-		if not move.typeless and attacker_types.has(move.type):
-			damage *= 1.5
-		damage *= _chart.multiplier(&"" if move.typeless else move.type, defender_types)
-		if not worst and not move.never_misses():
-			damage *= move.accuracy / 100.0
-		best = maxf(best, damage)
+		best = maxf(best, _move_damage(attacker, defender, _data.get_move(slot.move_id), worst))
 	return best
+
+
+## Dégâts moyens (ou maximaux si [param worst]) de [param move] ; 0 pour une capacité de statut.
+func _move_damage(attacker: RefCounted, defender: RefCounted, move: RefCounted,
+		worst: bool = false) -> float:
+	if move == null or not move.is_damaging():
+		return 0.0
+	var physical: bool = move.category == 0
+	var attack: int = attacker.stats[&"atk" if physical else &"spa"]
+	var defense: int = defender.stats[&"def" if physical else &"spd"]
+	var damage := float((2 * attacker.level / 5 + 2) * move.power * attack
+		/ maxi(defense, 1) / 50 + 2) * (1.0 if worst else 0.925)
+	if not move.typeless and _data.get_species(attacker.species_id).types.has(move.type):
+		damage *= 1.5
+	damage *= _chart.multiplier(&"" if move.typeless else move.type,
+		_data.get_species(defender.species_id).types)
+	if not worst and not move.never_misses():
+		damage *= move.accuracy / 100.0
+	return damage
 
 
 # --- Équipes ------------------------------------------------------------------------------
@@ -1248,6 +1341,14 @@ func _hp_share(party: RefCounted) -> float:
 		hp += pokemon.hp
 		total += pokemon.max_hp()
 	return float(hp) / maxi(total, 1)
+
+
+## Niveau le plus haut de l'équipe (T20 : niveau d'arrivée du meneur avant une étape).
+func _top_level(party: RefCounted) -> int:
+	var top := 0
+	for pokemon: RefCounted in party.get_all():
+		top = maxi(top, pokemon.level)
+	return top
 
 
 func _mean_level(party: RefCounted) -> float:
@@ -1350,7 +1451,8 @@ func _trainer_text(library: RefCounted, id: StringName) -> String:
 	var trainer: RefCounted = library.get_trainer(id)
 	var prize := "%d ₽" % trainer.prize_money if trainer.prize_per_level == 0 \
 		else "%d ₽ × niveau" % trainer.prize_per_level
-	var head := "%s, IA %s, %s" % [trainer.name, trainer.ai, prize]
+	var head := "%s, IA %s%s, %s" % [trainer.name, trainer.ai,
+		" qui change" if trainer.can_switch else "", prize]
 	if trainer.team_by_starter.is_empty():
 		return "%s : %s" % [head, _party_text(library.build_team(id, &"", _rng_script.new(0)))]
 	var parts := PackedStringArray()
