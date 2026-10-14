@@ -120,8 +120,8 @@ func test_pokedex_entries_are_the_validated_lot() -> void:
 		assert_almost_eq(info.height, float(official[id][0]), 0.001, String(id))
 		assert_almost_eq(info.weight, float(official[id][1]), 0.001, String(id))
 		assert_eq(_validated(official[id][2]), [info.description] as Array[String], String(id))
-		# Note de Miaouss : brouillon de l'annexe A du plan, pas encore validé (Q-1).
-		assert_eq(info.notes.size(), 0, String(id))
+		# Note de la forme de base seulement (annexe A.5, texte vérifié par test_annex_a_texts).
+		assert_eq(info.notes.size(), 1 if id == &"meowth" else 0, String(id))
 
 
 # --- Objets -----------------------------------------------------------------------------

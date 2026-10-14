@@ -14,6 +14,8 @@ const ENCOUNTERABLE: Array[StringName] = [
 	&"jigglypuff", &"ekans", &"zubat", &"paras", &"clefairy", &"voltorb", &"koffing",
 	# Jalon 13 (annexe A de jalon-13.md, validée le 2026-10-11) : les six formes de base.
 	&"staryu", &"horsea", &"shellder", &"goldeen", &"oddish", &"bellsprout",
+	# Jalon 15 (annexe A.5 de jalon-15.md, validée le 2026-10-14) : Miaouss.
+	&"meowth",
 ]
 
 var _data: PokemonData

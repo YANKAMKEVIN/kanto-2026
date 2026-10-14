@@ -198,8 +198,8 @@
 		"rested": { "text": "{pokemon} s'endort et récupère !" },
 		"switch_reason_trapped": { "text": "Impossible de changer" },
 		"move_disabled_label": { "text": "BLOQUÉE" },
-		"coins_scattered": { "text": "Des pièces s'éparpillent partout !", "draft": true },
-		"coins_collected": { "text": "Tu ramasses {money}.", "draft": true }
+		"coins_scattered": { "text": "Des pièces s'éparpillent partout !" },
+		"coins_collected": { "text": "Tu ramasses {money}." }
 	},
 	"stats": {
 		"atk": "L'Attaque", "def": "La Défense", "spa": "L'Attaque Spéciale",

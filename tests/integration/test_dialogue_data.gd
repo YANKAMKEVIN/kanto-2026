@@ -71,6 +71,10 @@ const LOT_J10 := "res://docs/design/textes/textes-brouillon-j10.md"
 const DOSSIER_14 := "res://docs/design/dossier-14-systemes-j11.md"
 ## Jalon 15 : textes validés du §15 (« … » par page ; jetons écrits tels quels).
 const DOSSIER_18 := "res://docs/design/dossier-18-carmin-sur-mer.md"
+## Jalon 15 : annexe A de son plan, validée le 2026-10-14 (panneaux A.3, personnages A.4 ; une
+## page peut ne porter qu'un morceau de la citation, comme pour le dossier 18).
+const JALON_15 := "res://docs/tech/jalon-15.md"
+const AnnexATexts := preload("res://tests/unit/test_annex_a_texts.gd")
 ## Jalon 13 : lot de textes du dossier 16 §21 (« « … » / « … » » par numéro, lignes repliées).
 const DOSSIER_16 := "res://docs/design/dossier-16-azuria.md"
 ## Jalon 12 : lot de textes du §20 du dossier 15 (« n. Libellé : « … » »).
@@ -710,6 +714,7 @@ func test_texts_are_the_dossier_02_texts_word_for_word() -> void:
 	var lot_j10 := FileAccess.get_file_as_string(LOT_J10)
 	var dossier_14 := FileAccess.get_file_as_string(DOSSIER_14)
 	var dossier_18 := FileAccess.get_file_as_string(DOSSIER_18)
+	var annex_a_15 := AnnexATexts.annex_a(FileAccess.get_file_as_string(JALON_15))
 	var dossier_16 := FileAccess.get_file_as_string(DOSSIER_16).replace("\n    ", " ") \
 		.replace("\n   ", " ")
 	var dossier_15 := FileAccess.get_file_as_string(DOSSIER_15)
@@ -739,6 +744,7 @@ func test_texts_are_the_dossier_02_texts_word_for_word() -> void:
 			or lot_j10.contains("| « %s » |" % text.replace("\n", "\\n"))
 			or _each_line_quoted(dossier_14, text)
 			or _in_dossier_18(dossier_18, text)
+			or _in_dossier_18(annex_a_15, text)
 			or dossier_18.contains("« %s »" % row[1])
 			or _each_line_quoted(dossier_16, text)
 			or dossier_15.contains(" : « %s »" % text)
