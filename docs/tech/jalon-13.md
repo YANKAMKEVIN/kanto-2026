@@ -1278,6 +1278,7 @@ et de l'annexe A validée.
   - Réserve : `beaten_nugget_rocket` (réplique n° 41 b) n'est levé qu'au T22.
 
 #### T20 — architecte : équilibrage — après T19 — **fait (2026-10-14)**
+- **Décisions de Kevin (2026-10-14)** : E-1 oui (Roucoups 16, Rattata 14, starter évolué 16), E-2 option (g) contre Bulbizarre (Roucool 15, Rattata 14, Reptincel 15), E-3 option (b) (Stari 18, Staross 19, capacités RB) ; IA `smart` et changement gardés. Appliqué dans `data/trainers/rival.json` et `cerulean_gym.json`.
 - §2.22 : simulation ; **information pour Kevin**, aucune donnée changée sans lui.
 - **Fait** (branche `j13-t20` depuis `jalon-13` à `748b317`) : résultats, seuils et
   recommandations dans **`docs/tech/jalon-13-equilibrage.md`** (1 000 graines par ligne).
@@ -1303,6 +1304,7 @@ et de l'annexe A validée.
     `tests/fixtures/sim/cerulean_t20.json`).
 
 #### T21 — qa-mobile : **session 13B** → Kevin
+- **VALIDÉ par Kevin le 2026-10-14** (fonctionnel ; difficulté réglée par T20).
 - Rival inévitable, défaite → Centre (sans argent perdu) → n° 30 puis n° 31, victoire → départ,
   **un seul** Grand moment ; Ondine au pont, invitation, départ ; **fermeture forcée** entre les deux
   scènes → reprise ; Arène : guide, Ondine (carte, changement de Pokémon), défaite → reprise n° 36,
