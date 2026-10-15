@@ -149,7 +149,10 @@ guide).
 | Fichier | Partie |
 |---|---|
 | `ss_anne.json` | Sur le **pont principal**, en haut de la passerelle (spawn `from_ss_anne_w`, tourné vers le nord), Passe Bateau, Badge Cascade, équipe N20–24 (celle de `ss_anne_free_exit`) : les 9 pièces reliées (portes du nord : cabines A, C, couloir et cabine du capitaine ; ouest : restaurant ; est : pont extérieur ; escalier sud-est : pont inférieur et cabine B) ; la passerelle ramène au quai de Carmin |
-| `vermilion_gym_map.json` | Dans la **vraie Arène de Carmin** (spawn `entrance`), arbuste coupé : le puzzle `vermilion_gym` (GYM-01 à GYM-04, journal `[qa] puzzle …`), barrière de 3 segments ; la sortie ramène devant l'Arène à Carmin. Équipe de `vermilion_gym.json` |
+| `vermilion_gym_map.json` | Dans la **vraie Arène de Carmin** (spawn `entrance`), arbuste coupé : le puzzle `vermilion_gym` (GYM-01 à GYM-04, journal `[qa] puzzle …`), barrière de 3 segments ; la sortie ramène devant l'Arène à Carmin. Équipe de `vermilion_gym.json`. Depuis le T14 : Louis, Axel, Marc (évitables), le guide, Major Bob derrière la barrière |
+| `vermilion_gym_solved.json` | J16 (T14) : même partie, **puzzle résolu** (`vermilion_gym_puzzle_solved`) : barrière absente, Louis, Axel et Marc pas battus ; monter jusqu'à (8, 4) et parler à Major Bob (carte « MAJOR BOB », combat, « BADGE FOUDRE », CT24) |
+| `surge_weak.json` | J16 (T14) : puzzle résolu, Salamèche **N6** seul, CS01 seule au Sac : perdre contre Major Bob (n° 37, réveil au dernier Centre enregistré : **chez Maman** dans ce départ, aucun Centre n'étant enregistré ; le Centre de Carmin est couvert par `test_vermilion_gym_sequence`), barrière toujours ouverte, reprise n° 38 sans carte |
+| `thunder_no_tm.json` | J16 (T14) : Badge Foudre **sans** `tm24_received` (partie d'avant la CT) : parler à Major Bob donne la CT24 une fois (n° 43 puis 42), ensuite n° 44 |
 
 La carte de QA `qa_moves_j12` (J12, T15) ses données, son outil et les départs `moves_qa` /
 `moves_qa_solo` ont été **retirés au T28 du J12** (les capacités du J12 se vérifient sur la vraie

@@ -303,9 +303,21 @@ const IDS_J15_ROUTE_5: Array[StringName] = [
 const IDS_J16_GYM: Array[StringName] = [
 	&"vermilion_gym_switch_first", &"vermilion_gym_switch_reset", &"vermilion_gym_switch_solved",
 	&"vermilion_gym_trash",
+	# Jalon 16 (T14) : guide, Louis, Axel, Marc, Major Bob (dossier 19 §0.5 n° 31, 36 à 44, §4).
+	&"vermilion_gym_guide", &"vermilion_gym_louis_before", &"vermilion_gym_louis_defeated",
+	&"vermilion_gym_louis_rematch", &"vermilion_gym_axel_before", &"vermilion_gym_axel_defeated",
+	&"vermilion_gym_axel_rematch", &"vermilion_gym_marc_before", &"vermilion_gym_marc_defeated",
+	&"vermilion_gym_marc_rematch", &"vermilion_gym_surge", &"vermilion_gym_surge_intro",
+	&"vermilion_gym_surge_lost", &"vermilion_gym_surge_resume", &"vermilion_gym_surge_won",
+	&"vermilion_gym_surge_badge", &"vermilion_gym_surge_tm", &"vermilion_gym_surge_tm_use",
+	&"vermilion_gym_surge_tm_late",
 ]
-## Jalon 16 (T11) : GYM-03, dit par la scène de la barrière ouverte.
-const PLAYED_J16_GYM: Array[StringName] = [&"vermilion_gym_switch_solved"]
+## Jalon 16 (T11) : GYM-03, dit par la scène de la barrière ouverte ; (T14) les répliques de
+## Major Bob dites par ses scènes.
+const PLAYED_J16_GYM: Array[StringName] = [&"vermilion_gym_switch_solved",
+	&"vermilion_gym_surge_badge", &"vermilion_gym_surge_intro", &"vermilion_gym_surge_lost",
+	&"vermilion_gym_surge_resume", &"vermilion_gym_surge_tm", &"vermilion_gym_surge_tm_late",
+	&"vermilion_gym_surge_tm_use", &"vermilion_gym_surge_won"]
 ## Jalon 16 : textes validés du dossier 19 (§0.5, « … » par ligne).
 const DOSSIER_19 := "res://docs/design/dossier-19-ss-anne-major-bob.md"
 ## Jalon 15 (T13) : la réplique du garde du poste nord, jouée aussi par la scène du recul.
@@ -651,8 +663,8 @@ func test_every_condition_flag_is_set_somewhere() -> void:
 		&"starter_offered", &"tm11_received", &"tm34_received", &"viridian_arrived",
 		# Jalon 15 (T14) : Route 6 (Poké Ball, Super Potion cachée), arrivée à Carmin.
 		&"got_route_6_hidden_1", &"got_route_6_item_1", &"vermilion_reached",
-		# Jalon 16 (T11) : la barrière de l'Arène de Carmin.
-		&"vermilion_gym_puzzle_solved"]
+		# Jalon 16 (T11) : la barrière de l'Arène de Carmin ; (T14) Major Bob.
+		&"vermilion_gym_puzzle_solved", &"badge_thunder", &"surge_met", &"tm24_received"]
 		+ SET_J14_BILL_CUTSCENES + SET_J14_ROCKET_CUTSCENES))
 	assert_eq(_used_on.get(&"oak_lab_reunion"), [&"oak_lab"], "joué au labo, après le fondu")
 	assert_eq(_used_on.get(&"oak_starter_offer"), [&"oak_lab"], "joué au labo")
@@ -1073,9 +1085,11 @@ func test_oak_parcel_lines() -> void:
 	# la Route 25 (T16). Jalon 15 (T19) : la Guérison cachée du souterrain.
 	# Jalon 15 (T14) : la Poké Ball et la Super Potion cachée de la Route 6.
 	# Jalon 15 (T13) : la Super Potion et l'Antidote caché de la Route 5.
-	assert_eq(launched, 41, "la scène du colis, dix-sept objets au sol, six cachés, Pierre et "
+	# Jalon 16 (T14) : Major Bob (Arène et rattrapage de la CT24).
+	assert_eq(launched, 43, "la scène du colis, dix-sept objets au sol, six cachés, Pierre et "
 		+ "sa CT34, Ondine (pont, Arène et rattrapage), écran, module, console, objets de la "
-		+ "Route 25, le Rocket d'Azuria (2) et le barrage sud ; J15 : objets de la Route 5")
+		+ "Route 25, le Rocket d'Azuria (2) et le barrage sud ; J15 : objets de la Route 5 ; "
+		+ "J16 : Major Bob (2)")
 	# Le jeton n'apparaît que dans la réplique de l'espèce, « {pokemon} » dans les phrases du
 	# compagnon (J11), et ceux de la Pension dans ses répliques (J15).
 	for row: Array in _pages():

@@ -12,5 +12,57 @@
 				]
 			}
 		]
+	},
+	"vermilion_gym_surge": {
+		"variants": [
+			{
+				"unless": ["badge_thunder"],
+				"steps": [
+					{ "face": "surge", "to": "player" },
+					{ "dialogue": "vermilion_gym_surge_intro", "unless": ["surge_met"] },
+					{ "dialogue": "vermilion_gym_surge_resume", "if": ["surge_met"] },
+					{ "champion_card": "vermilion_gym_surge", "unless": ["surge_met"] },
+					{ "set": ["surge_met"] },
+					{ "battle": "vermilion_gym_surge", "win": ["badge_thunder"] },
+					{ "wait": 0.6, "if": ["badge_thunder"] },
+					{ "dialogue": "vermilion_gym_surge_won", "if": ["badge_thunder"] },
+					{ "badge": "thunder", "if": ["badge_thunder"] },
+					{ "dialogue": "vermilion_gym_surge_badge", "if": ["badge_thunder"] },
+					{
+						"dialogue": "vermilion_gym_surge_tm",
+						"if": ["badge_thunder"],
+						"unless": ["tm24_received"]
+					},
+					{
+						"give": "tm24",
+						"count": 1,
+						"if": ["badge_thunder"],
+						"unless": ["tm24_received"]
+					},
+					{
+						"dialogue": "vermilion_gym_surge_tm_use",
+						"if": ["badge_thunder"],
+						"unless": ["tm24_received"]
+					},
+					{ "set": ["tm24_received"], "if": ["badge_thunder"] },
+					{ "dialogue": "vermilion_gym_surge_lost", "unless": ["badge_thunder"] },
+					{ "wake_up": true, "unless": ["badge_thunder"] }
+				]
+			}
+		]
+	},
+	"vermilion_gym_surge_tm_late": {
+		"variants": [
+			{
+				"steps": [
+					{ "face": "surge", "to": "player" },
+					{ "dialogue": "vermilion_gym_surge_tm_late" },
+					{ "dialogue": "vermilion_gym_surge_tm" },
+					{ "give": "tm24", "count": 1 },
+					{ "dialogue": "vermilion_gym_surge_tm_use" },
+					{ "set": ["tm24_received"] }
+				]
+			}
+		]
 	}
 }

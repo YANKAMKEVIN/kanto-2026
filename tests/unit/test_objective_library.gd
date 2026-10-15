@@ -16,7 +16,9 @@ func test_real_data_loads_without_error() -> void:
 	assert_eq(library.get_errors().size(), 0)
 	# Jalon 15 (T15, jalon-15.md §2.7.9) : « explorer Carmin-sur-Mer. » puis « rejoindre
 	# Carmin-sur-Mer, au sud. » en tête (ordre du voyage), devant le S.S. Anne du J14.
-	assert_eq(library.get_ids(), [&"explore_vermilion", &"go_vermilion", &"ss_anne", &"help_bill",
+	# Jalon 16 (T14) : l'Arène de Carmin en tête (dossier 19 §0.5, objectifs R-9).
+	assert_eq(library.get_ids(), [&"face_surge", &"open_surge_barrier",
+		&"explore_vermilion", &"go_vermilion", &"ss_anne", &"help_bill",
 		&"go_cerulean_cape",
 		&"explore_cerulean", &"cross_nugget_bridge",
 		&"get_cascade_badge", &"go_cerulean", &"cross_mt_moon", &"go_route_3",
@@ -69,7 +71,8 @@ func test_q4_nothing_before_the_rival_battle_then_reach_viridian() -> void:
 ## Jalon 12 (T18) : `route_3_entered` est levé par la scène du déclencheur de la Route 3 ;
 ## (T28) `route_4_reached` par celle du déclencheur du sas (data/cutscenes/route_4.json), posé
 ## aussi sur la vraie Route 4 du J13 (mêmes cases).
-const _PENDING_FLAGS: Array[StringName] = [&"viridian_arrived"]
+## Jalon 16 (T14) : `cut_vermilion_gym_bush` sera levé par la scène de Coupe de l'arbuste (T15).
+const _PENDING_FLAGS: Array[StringName] = [&"viridian_arrived", &"cut_vermilion_gym_bush"]
 
 
 ## Jalon 10 (dossier 12 §16, jalon-10.md §2.10) : « continuer vers le nord. » jusqu'à Argenta,
