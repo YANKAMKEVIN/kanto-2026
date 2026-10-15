@@ -10,5 +10,10 @@
 	"taupiqueur_3": {
 		"cell": [18, 13], "facing": "down", "sprite": "pokemon/diglett",
 		"shy": { "action": "hide", "radius": 1 }
+	},
+	"digletts_cave_item_1": {
+		"cell": [2, 44], "facing": "down", "sprite": "object/poke_ball_ground",
+		"dialogue": "digletts_cave_item_1", "verb": "take", "turn_to_player": false,
+		"unless": ["got_digletts_cave_item_1"]
 	}
 }

@@ -126,10 +126,7 @@ func test_passages() -> void:
 	gate_map.free()
 
 
-func test_the_cave_round_trip_waits_for_the_cave() -> void:
-	if not MapCatalog.has_map(&"digletts_cave"):
-		pending("digletts_cave n'est pas encore construite (T15, en parallèle)")
-		return
+func test_the_cave_round_trip() -> void:
 	var cave := (load(MapCatalog.scene_path(&"digletts_cave")) as PackedScene).instantiate() \
 		as GameMap
 	for spawn: StringName in [&"from_route_2_east_w", &"from_route_2_east_e"]:

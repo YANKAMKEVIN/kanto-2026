@@ -140,17 +140,22 @@ func test_every_coming_soon_warp_returns_to_a_walkable_spawn_of_its_own_map() ->
 
 
 ## Warp de [param map] qui ramène à [param origin] depuis [param arrival] : sur la case
-## même, ou dans une case voisine atteinte en un pas vers elle (STEP_ON).
+## même, dans une case voisine atteinte en un pas vers elle (STEP_ON), ou au bout d'un pas vers
+## une case de bord qu'on pousse dans la même direction (PUSH : bouches de la Cave Taupiqueur,
+## J17, arrivée une case en retrait de la bouche).
 func _return_warp(map: GameMap, arrival: Vector2i, origin: StringName) -> Warp:
 	for warp: Warp in map.get_warps().get_at(arrival):
 		if warp.target_map == origin:
 			return warp
 	for direction: Vector2i in DIRECTIONS:
 		var next := arrival + direction
+		var reachable := map.get_grid().get_step_target(arrival, direction) == next
 		var warp := map.get_warps().find_on_step(next, direction)
 		if warp != null and warp.target_map == origin \
-				and (map.get_grid().get_step_target(arrival, direction) == next
-					or _blocked_only_by_a_character(map, next)):
+				and (reachable or _blocked_only_by_a_character(map, next)):
+			return warp
+		warp = map.get_warps().find_on_push(next, direction)
+		if warp != null and warp.target_map == origin and reachable:
 			return warp
 	return null
 

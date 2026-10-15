@@ -17,11 +17,10 @@ extends SceneTree
 ##   `dark`) ni voile de pénombre : la lisibilité est dans la valeur peinte (profil `cave_sand`).
 ## - Passages : bouche sud (15..16, 79) `PUSH` ↓ vers la Route 11 (`from_cave_w|e`), bouche nord
 ##   (16..17, 0) `PUSH` ↑ vers la Route 2 est (`from_cave_w|e`) ; arrivées `from_route_11_w|e`
-##   (tournées ↑) et `from_route_2_east_w|e` (tournées ↓). **Repli** tant que `route_11` (T16) ou
-##   `route_2_east` (T19) n'existent pas : destination « à venir » et retour sur la case
-##   d'arrivée ; relancer l'outil une fois ces cartes fusionnées (`test_digletts_cave` le signale).
-## - Taupiqueur d'ambiance : `data/npcs/digletts_cave.json`. L'objet du renfoncement (Corde Sortie,
-##   position `cave_item_1`) est posé par le T20.
+##   (tournées ↑) et `from_route_2_east_w|e` (tournées ↓). Les deux cartes voisines doivent
+##   exister (intégration du J17) : l'outil s'arrête en erreur sinon.
+## - Taupiqueur d'ambiance et Corde Sortie du renfoncement R1 (position `cave_item_1`) :
+##   `data/npcs/digletts_cave.json`.
 
 const Kit := preload("res://tools/cave_map_kit.gd")
 const MAPS_DIR: String = "res://game/world/maps/"
@@ -51,17 +50,16 @@ const MOUTH_SOUTH: String = "relief_bouche_cave_sud_01"
 const MOUTH_NORTH: String = "relief_bouche_cave_nord_01"
 const MOUTH_SOUTH_FOOT_ROW: float = 80.0
 const MOUTH_NORTH_FOOT_ROW: float = 2.0
-## Passages : [nœud, case, spawn d'arrivée ici (retour du repli), direction du pas, carte,
-## spawn d'arrivée là-bas, libellé « à venir »].
+## Passages : [nœud, case, spawn d'arrivée ici, direction du pas, carte, spawn d'arrivée là-bas].
 const MOUTHS: Array = [
 	["WarpSouthW", Vector2i(15, 79), "from_route_11_w", Vector2i.DOWN, &"route_11",
-		&"from_cave_w", "Route 11"],
+		&"from_cave_w"],
 	["WarpSouthE", Vector2i(16, 79), "from_route_11_e", Vector2i.DOWN, &"route_11",
-		&"from_cave_e", "Route 11"],
+		&"from_cave_e"],
 	["WarpNorthW", Vector2i(16, 0), "from_route_2_east_w", Vector2i.UP, &"route_2_east",
-		&"from_cave_w", "Route 2"],
+		&"from_cave_w"],
 	["WarpNorthE", Vector2i(17, 0), "from_route_2_east_e", Vector2i.UP, &"route_2_east",
-		&"from_cave_e", "Route 2"],
+		&"from_cave_e"],
 ]
 ## Halos de jour aux bouches : [centre en cases, nom].
 const SHAFTS: Array = [
@@ -176,23 +174,12 @@ func _place_spawns_and_warps() -> void:
 			var named: Dictionary = Kit.spawn_names(id, _plan().call(&"cells_at", id))
 			for spawn_name: String in named:
 				_kit.call(&"add_spawn", spawn_name, named[spawn_name])
-	var missing: PackedStringArray = []
 	for mouth: Array in MOUTHS:
 		var target: StringName = mouth[4]
-		var up := (mouth[3] as Vector2i) == Vector2i.UP
-		if ResourceLoader.exists(MAPS_DIR + String(target) + ".tscn"):
-			_kit.call(&"add_warp", mouth[0], mouth[1], Kit.PUSH, mouth[3], target, mouth[5],
-				Vector2i.DOWN)
-		else:
-			# Repli : la carte n'est pas encore construite (T16, T19) ; retour sur l'arrivée d'ici.
-			var back: StringName = StringName(mouth[2])
-			_kit.call(&"add_warp", mouth[0], mouth[1], Kit.PUSH, mouth[3], &"", back,
-				Vector2i.DOWN if up else Vector2i.UP, mouth[6])
-			if not missing.has(String(target)):
-				missing.append(String(target))
-	for target: String in missing:
-		print("digletts_cave : bouche → « %s — À venir » (repli, %s absente)" % [
-			"Route 11" if target == "route_11" else "Route 2", target])
+		assert(ResourceLoader.exists(MAPS_DIR + String(target) + ".tscn"),
+			"digletts_cave : carte voisine « %s » absente" % target)
+		_kit.call(&"add_warp", mouth[0], mouth[1], Kit.PUSH, mouth[3], target, mouth[5],
+			Vector2i.DOWN)
 
 
 # --- Lumière ------------------------------------------------------------------------------

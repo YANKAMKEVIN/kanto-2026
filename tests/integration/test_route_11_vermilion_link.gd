@@ -3,8 +3,8 @@ extends GutTest
 ## l'autoload SceneRouter (fondus raccourcis) : sur chacune des trois rangées, pousser vers l'est
 ## au bord de Carmin (63, 11..13) mène à la Route 11 (0, 11..13) **même rangée**, tourné vers
 ## l'est, avec le titre d'arrivée ; pousser vers l'ouest au bord de la Route 11 ramène sur la même
-## rangée de Carmin, tourné vers l'ouest, sans écran « à venir ». Bouche de la Cave : en attente
-## propre tant que `digletts_cave` (T15) n'existe pas.
+## rangée de Carmin, tourné vers l'ouest, sans écran « à venir ». Bouche de la Cave : aller-retour
+## avec `digletts_cave` (T15, intégrée).
 
 const MemoryFs := preload("res://tests/helpers/memory_file_system.gd")
 const FixedClock := preload("res://tests/helpers/fixed_clock.gd")
@@ -82,12 +82,8 @@ func test_there_and_back_on_each_row() -> void:
 	assert_push_error_count(0)
 
 
-## Bouche de la Cave : Route 11 (15..16, 7) STEP_ON ↑ → `digletts_cave` (T15), arrivée tournée ↑ ;
-## en attente tant que la carte n'existe pas.
-func test_cave_mouth_round_trip_waits_for_the_cave() -> void:
-	if not MapCatalog.has_map(&"digletts_cave"):
-		pending("digletts_cave pas encore construite (T15) : raccord de la bouche à vérifier")
-		return
+## Bouche de la Cave : Route 11 (15..16, 7) STEP_ON ↑ → `digletts_cave` (T15), arrivée tournée ↑.
+func test_cave_mouth_round_trip() -> void:
 	for i: int in 2:
 		await _start(&"route_11", StringName("from_cave_" + ["w", "e"][i]), Vector2i.UP)
 		var mouth := Vector2i(15 + i, 7)

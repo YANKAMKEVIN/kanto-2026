@@ -149,10 +149,9 @@ func test_cave_mouth_ranges_cover_every_row() -> void:
 					uncovered.append(row)
 			assert_eq(uncovered, [] as Array[int], "%s : rangées sans bouche" % map_id)
 			map.free()
-	if not missing.is_empty():
-		pending("grotte à deux bouches pas encore construite (T15) : %s" % ", ".join(missing))
-	elif checked == 0:
-		pass_test("aucune grotte à deux bouches dans caves.json (Cave Taupiqueur : T15)")
+	# Jalon 17 : la Cave Taupiqueur (T15) est intégrée, sa carte existe.
+	assert_eq(missing, [] as Array[StringName], "cartes des grottes à deux bouches")
+	assert_gt(checked, 0, "la Cave Taupiqueur a deux bouches")
 
 
 func test_j13_qa_map_is_recognised_and_removed() -> void:

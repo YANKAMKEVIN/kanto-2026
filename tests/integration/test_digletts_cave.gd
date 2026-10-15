@@ -198,7 +198,12 @@ func _find(node: Node, out: Array[Node], test: Callable) -> void:
 func test_ambient_diglett_data_matches_the_plan() -> void:
 	var data: Dictionary = JSON.parse_string(
 		FileAccess.get_file_as_string("res://data/npcs/digletts_cave.json"))
-	assert_eq(data.size(), 3)
+	# Trois Taupiqueur d'ambiance et la Corde Sortie du renfoncement R1 (posée à l'intégration).
+	assert_eq(data.size(), 4)
+	var rope: Array = data["digletts_cave_item_1"]["cell"]
+	assert_eq(Vector2i(int(rope[0]), int(rope[1])), _plan.cells_at("cave_item_1")[0],
+		"position cave_item_1 de la grille")
+	assert_eq(_plan.attr("cave_item_1", "item"), "escape_rope")
 	for i: int in 3:
 		var cell: Array = data["taupiqueur_%d" % (i + 1)]["cell"]
 		var expected: Vector2i = [Vector2i(17, 62), Vector2i(22, 29), Vector2i(18, 13)][i]
@@ -207,7 +212,7 @@ func test_ambient_diglett_data_matches_the_plan() -> void:
 		assert_ne(_plan.at(expected), "#")
 
 
-# --- Raccords (en attente propre tant que les cartes voisines manquent) ----------------------
+# --- Raccords avec la Route 11 et la Route 2 est (intégrés au J17) --------------------------
 
 
 func test_junctions_with_route_11_and_route_2_east() -> void:
@@ -215,18 +220,13 @@ func test_junctions_with_route_11_and_route_2_east() -> void:
 		&"route_11": [[Vector2i(15, 79), &"from_cave_w"], [Vector2i(16, 79), &"from_cave_e"]],
 		&"route_2_east": [[Vector2i(16, 0), &"from_cave_w"], [Vector2i(17, 0), &"from_cave_e"]],
 	}
-	var pending := false
 	for target: StringName in pairs:
 		var warps: Array = []
 		for warp: Warp in _map.get_warps().get_all():
 			if pairs[target].any(func(p: Array) -> bool: return p[0] == warp.cell):
 				warps.append(warp)
 		assert_eq(warps.size(), 2, "deux cases de bouche vers %s" % target)
-		if not MapCatalog.has_map(target):
-			pending = true
-			for warp: Warp in warps:
-				assert_true(warp.is_coming_soon(), "repli « à venir » tant que %s manque" % target)
-			continue
+		assert_true(MapCatalog.has_map(target), String(target))
 		for warp: Warp in warps:
 			assert_false(warp.is_coming_soon(), "relancer tools/build_digletts_cave.gd")
 			assert_eq(warp.target_map, target)
@@ -245,5 +245,3 @@ func test_junctions_with_route_11_and_route_2_east() -> void:
 				returns += 1
 		assert_gte(returns, 2, "%s : retour vers la Cave" % target)
 		other.free()
-	if pending:
-		gut.p("raccords en attente : route_11 (T16) ou route_2_east (T19) pas encore fusionnées")

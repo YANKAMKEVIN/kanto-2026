@@ -134,6 +134,8 @@ const MAPS: Array[StringName] = [
 	&"route_5", &"route_5_daycare", &"route_5_gate", &"route_5_underground_gate",
 	# Jalon 17 (T16, T17) : la Route 11 (Dresseurs, objets, panneaux, Ronflex).
 	&"route_11",
+	# Jalon 17 (T15) : la Cave Taupiqueur (Corde Sortie du renfoncement, posée à l'intégration).
+	&"digletts_cave",
 	# Jalon 17 (T19) : le couloir de la Route 2 est et le poste de l'assistant.
 	&"route_2_east", &"route_2_east_gate",
 ]
@@ -320,7 +322,7 @@ const IDS_J17: Array[StringName] = [
 	&"route_11_item_1", &"route_11_item_2", &"route_11_hidden_1",
 	&"route_2_east_cave_sign", &"route_2_east_assistant", &"route_2_east_assistant_hm05_system",
 	&"route_2_east_assistant_hm05_use", &"route_2_east_visitor", &"route_2_gate_east",
-	&"route_2_east_item_1", &"route_2_east_item_2", &"route_2_item_5",
+	&"route_2_east_item_1", &"route_2_east_item_2", &"route_2_item_5", &"digletts_cave_item_1",
 ]
 ## Jalon 14 (T17, dossier 17 §15 n° 1 à 27) : dialogues de la maison de Léo, ajoutés aux autres.
 const IDS_J14_BILL: Array[StringName] = [
@@ -675,7 +677,7 @@ func test_every_condition_flag_is_set_somewhere() -> void:
 		# (T20, T21) objets du couloir et Super Potion de FUTUR A.
 		&"got_hm05", &"got_route_11_hidden_1", &"got_route_11_item_1",
 		&"got_route_11_item_2", &"got_route_2_east_item_1", &"got_route_2_east_item_2",
-		&"got_route_2_item_5"]
+		&"got_route_2_item_5", &"got_digletts_cave_item_1"]
 		+ SET_J14_BILL_CUTSCENES + SET_J14_ROCKET_CUTSCENES))
 	assert_eq(_used_on.get(&"oak_lab_reunion"), [&"oak_lab"], "joué au labo, après le fondu")
 	assert_eq(_used_on.get(&"oak_starter_offer"), [&"oak_lab"], "joué au labo")
@@ -1113,11 +1115,13 @@ func test_oak_parcel_lines() -> void:
 	# Jalon 15 (T14) : la Poké Ball et la Super Potion cachée de la Route 6.
 	# Jalon 15 (T13) : la Super Potion et l'Antidote caché de la Route 5.
 	# Jalon 17 (T8) : la remise de la CS05 par l'assistant ; (T17) deux objets au sol et un caché
-	# de la Route 11 ; (T20) Pierre Lune et Super Bonbon ; (T21) Super Potion de FUTUR A.
-	assert_eq(launched, 48, "la scène du colis, dix-sept objets au sol, six cachés, Pierre et "
+	# de la Route 11 ; (T20) Pierre Lune et Super Bonbon ; (T21) Super Potion de FUTUR A ;
+	# (intégration) Corde Sortie de la Cave.
+	assert_eq(launched, 49, "la scène du colis, dix-sept objets au sol, six cachés, Pierre et "
 		+ "sa CT34, Ondine (pont, Arène et rattrapage), écran, module, console, objets de la "
 		+ "Route 25, le Rocket d'Azuria (2) et le barrage sud ; J15 : objets de la Route 5 ; "
-		+ "J17 : la CS05, Route 11 (3), deux objets du couloir et la Super Potion de la clairière")
+		+ "J17 : la CS05, Route 11 (3), deux objets du couloir, la Super Potion de la clairière "
+		+ "et la Corde Sortie de la Cave")
 	# Le jeton n'apparaît que dans la réplique de l'espèce, « {pokemon} » dans les phrases du
 	# compagnon (J11), et ceux de la Pension dans ses répliques (J15).
 	for row: Array in _pages():

@@ -186,6 +186,8 @@ const VARIANT_FLAGS: Dictionary = {
 	&"route_2_east_item_1": [PEWTER_FLAGS], &"route_2_east_item_2": [PEWTER_FLAGS],
 	# Jalon 17 (T21) : Super Potion de la clairière de FUTUR A.
 	&"route_2_item_5": [PEWTER_FLAGS],
+	# Jalon 17 (intégration) : Corde Sortie du renfoncement R1 de la Cave Taupiqueur.
+	&"digletts_cave_item_1": [PEWTER_FLAGS],
 }
 ## Scènes jouées par le code (pas de déclencheur) → carte où elles sont jouées.
 ## Jalon 7 (T18) : la scène du colis est lancée par la variante « cutscene » du dialogue de Chen.
@@ -240,6 +242,8 @@ const CODE_PLAYED: Dictionary[StringName, StringName] = {
 	&"route_2_east_item_1": &"route_2_east", &"route_2_east_item_2": &"route_2_east",
 	# Jalon 17 (T21) : Super Potion de la clairière de FUTUR A (PNJ « objet » de la Route 2).
 	&"route_2_item_5": &"route_2",
+	# Jalon 17 (intégration) : Corde Sortie de la Cave (PNJ « objet » de son fichier).
+	&"digletts_cave_item_1": &"digletts_cave",
 }
 ## Scènes à déclencheur dont la carte n'est pas encore construite → leur carte (simulées sur les
 ## PNJ de son fichier). Vidée au T19 du jalon 9 (la forêt existe), puis au T11 du jalon 10 (les
@@ -319,7 +323,7 @@ func test_library_loads_without_error() -> void:
 		# couloir et Super Potion de FUTUR A.
 		&"route_2_east_give_hm05", &"route_11_item_1", &"route_11_item_2",
 		&"route_11_hidden_1", &"route_2_east_item_1", &"route_2_east_item_2",
-		&"route_2_item_5"]))
+		&"route_2_item_5", &"digletts_cave_item_1"]))
 
 
 func _sorted(values: Array) -> Array[StringName]:
@@ -423,7 +427,8 @@ func test_only_world_items_are_found_items() -> void:
 			for step: CutsceneStep in variant.steps:
 				if step.kind == CutsceneStep.Kind.GIVE and step.found:
 					found.append("%s:%s" % [id, step.item_id])
-	assert_eq(found, ["mt_moon_1f_hidden_1:awakening", "mt_moon_1f_item_1:escape_rope",
+	assert_eq(found, ["digletts_cave_item_1:escape_rope", "mt_moon_1f_hidden_1:awakening",
+		"mt_moon_1f_item_1:escape_rope",
 		"mt_moon_b1f_item_1:moon_stone", "mt_moon_b1f_item_2:potion",
 		"mt_moon_b2f_hidden_1:moon_stone", "mt_moon_b2f_item_1:tm01",
 		"route_11_hidden_1:poke_ball", "route_11_item_1:super_potion",
