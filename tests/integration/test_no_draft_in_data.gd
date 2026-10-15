@@ -8,7 +8,10 @@ const DATA_DIR := "res://data"
 ## Brouillons en attente de validation, nommés un par un (chemin relevé par [method _collect_drafts]).
 ## Une fois validés, retirer leur « draft » et les sortir d'ici (le test vérifie qu'ils sont
 ## encore en brouillon). Vide depuis la validation de l'annexe A du jalon 15 (2026-10-14).
-const PENDING_DRAFTS: Array[String] = []
+## Jalon 21 (T4) : Poké Flûte et CT39, textes du lot §15 du dossier 24 à valider par Kevin.
+const PENDING_DRAFTS: Array[String] = [
+	"items/items_j21.json/poke_flute", "items/items_j21.json/tm39",
+]
 
 
 func test_data_has_json_files() -> void:

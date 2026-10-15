@@ -20,11 +20,13 @@ func test_real_data_loads_without_error() -> void:
 	# Jalon 5 : la Potion cachée de la Route 1 (catégorie « heal », ramassée seulement).
 	# Jalon 12 : data/items/mt_moon.json (Corde Sortie, Pierre Lune, fossiles, CT01) ; jalon 14 :
 	# items_j14.json (CT19, CT28, Passe Bateau, Super Bonbon) ; jalon 15 (T12) : Super Potion et
-	# Guérison (data/items/vermilion.json).
+	# Guérison (data/items/vermilion.json) ; jalon 21 (T4) : Poké Flûte et CT39
+	# (data/items/items_j21.json).
 	assert_eq(_library.get_ids(), [&"antidote", &"awakening", &"burn_heal", &"dome_fossil",
 		&"escape_rope", &"full_restore", &"helix_fossil", &"ice_heal", &"moon_stone", &"nugget",
-		&"oak_parcel", &"paralyze_heal", &"poke_ball", &"potion", &"rare_candy", &"ss_ticket",
-		&"super_potion", &"tm01", &"tm11", &"tm19", &"tm28", &"tm34"] as Array[StringName])
+		&"oak_parcel", &"paralyze_heal", &"poke_ball", &"poke_flute", &"potion", &"rare_candy",
+		&"ss_ticket", &"super_potion", &"tm01", &"tm11", &"tm19", &"tm28", &"tm34", &"tm39"]
+		as Array[StringName])
 	var ball := _library.get_item(&"poke_ball")
 	assert_eq(ball.name, "Poké Ball")
 	assert_eq(ball.plural, "Poké Balls")
@@ -42,9 +44,9 @@ func test_real_data_loads_without_error() -> void:
 	assert_eq(_library.get_ids_in_data_order(),
 		[&"poke_ball", &"potion", &"antidote", &"paralyze_heal", &"awakening", &"burn_heal", &"ice_heal",
 		&"nugget", &"tm11", &"tm34", &"oak_parcel", &"tm19", &"tm28", &"ss_ticket",
-		&"rare_candy", &"escape_rope", &"moon_stone", &"dome_fossil", &"helix_fossil", &"tm01",
-		&"super_potion", &"full_restore"] as Array[StringName],
-		"fichiers dans l'ordre alphabétique (items, items_j14, mt_moon, vermilion)")
+		&"rare_candy", &"poke_flute", &"tm39", &"escape_rope", &"moon_stone", &"dome_fossil",
+		&"helix_fossil", &"tm01", &"super_potion", &"full_restore"] as Array[StringName],
+		"fichiers dans l'ordre alphabétique (items, items_j14, items_j21, mt_moon, vermilion)")
 	assert_eq([ball.order, potion.order], [0, 1])
 
 
@@ -387,3 +389,29 @@ func test_real_j14_ticket_and_rare_candy() -> void:
 	assert_eq(candy.added_text(1), "Ajouté au Sac")
 	for item: ItemData in [ticket, candy]:
 		assert_false(item.draft, "%s : texte validé (dossier 17 §15)" % item.name)
+
+
+## Jalon 21 (T4, jalon-21.md §2.1) : Poké Flûte (objet clé, sans « key_use » avant le T17) et
+## CT39 Météores (Route 12). Textes du dossier 24 §15.6 et §15.8 bis, à valider (draft).
+func test_real_j21_poke_flute_and_tm39() -> void:
+	assert_true(_library.load_dir(), "\n".join(_library.get_errors()))
+	var flute := _library.get_item(&"poke_flute")
+	assert_eq([flute.name, flute.plural, flute.feminine, flute.category, flute.price],
+		["Poké Flûte", "Poké Flûtes", true, ItemData.Category.KEY, 0])
+	assert_eq(flute.description,
+		"Une flûte à la mélodie douce. Elle réveille les Pokémon endormis.")
+	assert_true(flute.is_key())
+	assert_false(flute.is_sellable(), "objet clé : sans prix")
+	assert_eq(flute.contexts(), [] as Array[StringName], "UTILISER arrive au T17 (key_use)")
+	assert_eq(flute.quantity_text(1), "POKÉ FLÛTE")
+	assert_eq(flute.added_text(1), "ajoutée aux objets clés")
+	var tm := _library.get_item(&"tm39")
+	assert_eq([tm.name, tm.category, tm.tm_number, tm.teaches, tm.price],
+		["CT39 — Météores", ItemData.Category.TM, 39, &"swift", 0])
+	assert_eq(tm.description, "Météores ne rate jamais sa cible.")
+	assert_true(tm.is_permanent())
+	assert_false(tm.is_sellable(), "CT jamais vendue")
+	assert_eq(_library.get_tm(39), &"tm39")
+	for item: ItemData in [flute, tm]:
+		assert_true(item.draft, "%s : texte du §15 à valider par Kevin" % item.name)
+		assert_eq(item.source, "res://data/items/items_j21.json")

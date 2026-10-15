@@ -1,0 +1,13 @@
+{
+	"poke_flute": {
+		"name": "Poké Flûte", "plural": "Poké Flûtes", "feminine": true, "category": "key",
+		"description": "Une flûte à la mélodie douce. Elle réveille les Pokémon endormis.",
+		"draft": true
+	},
+	"tm39": {
+		"name": "CT39 — Météores", "plural": "CT39 — Météores", "feminine": true,
+		"category": "tm", "tm": 39, "teaches": "swift",
+		"description": "Météores ne rate jamais sa cible.",
+		"draft": true
+	}
+}
