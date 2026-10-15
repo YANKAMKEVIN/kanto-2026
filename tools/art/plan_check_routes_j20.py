@@ -9,7 +9,7 @@ bâtiment (`D`), un escalier (`E`) et une sortie d'intérieur (`X`) mènent à u
 entre, on ne les traverse pas.
 
 Critères :
-  Route 8 (80 × 26) : raccord est (79, 11..13) PROVISOIRE (Lavanville, J18) ; deux bâtiments
+  Route 8 (80 × 26) : raccord est (79, 10..12) ↔ Lavanville (0, 10..12), grille du J18 ; deux bâtiments
     7 × 4 (poste au sud-ouest, entrée du souterrain au nord-ouest) ; D1, D2, D4, D5 inévitables
     (première case vue à ≥ 3 cases) ; D4 et D5 côte à côte, vues parallèles ; D3, D6, D7 évitables
     un à un et ensemble ; chemins haut et bas (chacun suffit, tous deux coupés ferment la
@@ -198,7 +198,7 @@ def _placement(r: Rapport, plan: Plan, monde: Carte, atteint: dict[Case, int], l
 # --- Route 8 ------------------------------------------------------------------------------------
 
 R8_TAILLE = (80, 26)
-R8_RACCORD = [(79, 11), (79, 12), (79, 13)]
+R8_RACCORD = [(79, 10), (79, 11), (79, 12)]
 R8_DRESSEURS = {"D1": 5, "D2": 5, "D3": 4, "D4": 5, "D5": 5, "D6": 6, "D7": 6}
 R8_INEVITABLES = ("D1", "D2", "D4", "D5")
 R8_EVITABLES = ("D3", "D6", "D7")
@@ -211,14 +211,14 @@ def verifier_route_8(chemin: Path) -> bool:
 	texte = chemin.read_text(encoding="utf-8")
 	r.critere((plan.width, plan.height) == R8_TAILLE, f"taille {plan.width} × {plan.height} (attendu 80 × 26)")
 
-	# 1. Raccord est PROVISOIRE ; carte fermée ailleurs.
+	# 1. Raccord est (recalé sur Lavanville, J18) ; carte fermée ailleurs.
 	entree = [c for c in _bord(plan, monde)]
 	warps = sorted(c for c in pos["raccord_est"].cells)
 	spawns = sorted(pos["from_lavender"].cells)
 	r.critere(entree == warps == spawns == R8_RACCORD,
-		f"raccord est : {entree} praticables, warps {warps}, spawns {spawns} (attendu (79, 11..13))")
-	r.critere("PROVISOIRE" in texte and pos["raccord_est"].attrs.get("provisoire") == "oui"
-		and "J18" in texte, "raccord est déclaré PROVISOIRE, à recaler sur Lavanville (J18)")
+		f"raccord est : {entree} praticables, warps {warps}, spawns {spawns} (attendu (79, 10..12))")
+	r.critere("J18" in texte and "provisoire" not in pos["raccord_est"].attrs,
+		"raccord est recalé sur Lavanville (J18) : (79, 10..12) ↔ (0, 10..12)")
 	r.critere(all(c[0] == plan.width - 1 for c in entree) and plan.at(0, 12) == "T",
 		"aucun raccord à l'ouest : la porte du poste ferme l'ouest")
 
@@ -685,9 +685,8 @@ def verifier_raccords() -> bool:
 	r.critere(sorted(p7.positions["warp_ouest"].cells) == [(0, 10), (0, 11), (0, 12)]
 		and a(p7, "warp_ouest", "vers") == "celadon_city",
 		f"Route 7 (0, 10..12) → Céladopole (69, 21..23) [imposé] : décalage de 11")
-	r.critere(sorted(p8.positions["raccord_est"].cells) == [(79, 11), (79, 12), (79, 13)]
-		and a(p8, "raccord_est", "provisoire") == "oui",
-		"Route 8 (79, 11..13) → Lavanville : PROVISOIRE (J18)")
+	r.critere(sorted(p8.positions["raccord_est"].cells) == [(79, 10), (79, 11), (79, 12)],
+		"Route 8 (79, 10..12) → Lavanville (0, 10..12) (grille du J18)")
 
 	# 4. Traversée complète (Lavanville → souterrain → Route 7 → Céladopole) et retour.
 	def pas(carte: Carte, depart: list[Case], cible: list[Case]) -> int:

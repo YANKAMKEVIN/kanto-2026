@@ -6,7 +6,8 @@
 # 80 × 26 cases (enveloppe du dossier, §3.1, §21) ; nord en haut ; x = colonne 0..79, y = rangée 0..25.
 # On lit la carte DANS LE SENS DU JOUEUR : de l'est (Lavanville) vers l'ouest (souterrain, poste).
 #
-# Raccord EST : (79, 11..13) ↔ Lavanville. PROVISOIRE, à recaler sur la grille de Lavanville du J18
+# Raccord EST : (79, 10..12) ↔ Lavanville (0, 10..12), recalé le 2026-10-15 sur tools/plans/lavanville.txt du J18
+# (branche docs/dossier-j18, 89b46a9a ; arrivée from_route_8 en (1, 10..12)). Ancienne note :
 # (le J18 n'a pas encore sa grille : rangées 11..13 choisies au centre de la carte, la grille
 # de Lavanville devra offrir sa sortie ouest sur les mêmes rangées, ou ce fichier sera décalé).
 # Bord OUEST : aucun raccord ; le poste de garde de Safrania (porte (5, 17)) ferme l'ouest.
@@ -56,10 +57,10 @@ GRILLE 80 26
 07 TTTTTTTTTT===TTTTTTTTTTTTTT.........====================TTTTTT.................T
 08 TTTTTTTTTT===...TTTTTTTTTTT..ccc.ccc====================TT..TT.................T
 09 TTTTTTTTTT===TTTTTTTTTTTTTT.............................TT..TT....x...x........T
-10 TTTTTTTTTT===TTTThhhhhTTTTT.............vvvvvvvvv.......TT..TT.................T
+10 TTTTTTTTTT===TTTThhhhhTTTTT.............vvvvvvvvv.......TT..TT........=========e
 11 TTTTTTTTTT=======hhhhh===================hhhhhhhh==============================e
 12 TTTTTTTTTT=======hhhhh===================hhhhhhhh==============================e
-13 T.x..........====hhhhh===================hhhhhhhh==============================e
+13 T.x..........====hhhhh===================hhhhhhhh=====================.........T
 14 T.PPPPPPP.......RhhhhhTT.TT..............hhhhhhhh.......TTTTTT...RRRRRRRRRRRR..T
 15 T.PPPPPPP.....G..hhhhhTT.TT...x......xG..hhhhhhhh...G...TTTTTT...RRRRRRRRRRRR..T
 16 T.PPPPPPP...x....hhhhhTT.TTR.ccc.cc......hhhhhhhh.x..R..TTTTTT.................T
@@ -78,8 +79,8 @@ FIN
 # Types : ceux de route_3.txt ; « itineraire » (role=haut|bas). Équipes RB de référence (dossier 23
 # §3.2) en commentaire ; les espèces absentes des données sont remplacées au plan du J20.
 POSITIONS
-raccord_est         warp           79,11..13    libre   vers=lavender_town spawn=from_route_8 provisoire=oui  # PUSH → ; PROVISOIRE, à recaler sur Lavanville (J18)
-from_lavender       spawn          79,11..13    libre   # arrivée de Lavanville, tournée ←
+raccord_est         warp           79,10..12    libre   vers=lavender_town spawn=from_route_8  # PUSH → ; Lavanville (0, 10..12), recalé sur la grille du J18 (89b46a9a)
+from_lavender       spawn          79,10..12    libre   # arrivée de Lavanville, tournée ←
 porte_poste         warp           5,17         libre   vers=safrania_gate_r8 spawn=entree  # STEP_ON ↑ → poste de garde (enveloppe safrania_gate)
 from_poste          spawn          5,18         libre   # sortie du poste, tournée ↓
 porte_souterrain    warp           11,4         libre   vers=underground_entrance_r8 spawn=entree  # STEP_ON ↑ → bâtiment d'entrée (enveloppe underground_entrance)
@@ -93,7 +94,7 @@ d6_joueur           dresseur       67,7         bloque  role=D6 facing=down sigh
 d7_fillette         dresseur       74,7         bloque  role=D7 facing=down sight=6 inevitable=non trainer=route_8_lass_d7  # Fillette, Mélofée ×2 Nv. 22
 route_8_item_1      objet_visible  37,5         bloque  role=O1 item=super_potion  # Super Potion : coin nord-ouest de la terrasse du chemin haut
 route_8_hidden_1    cache          43,9         bloque  role=O2 item=revive indice=pierre  # Rappel : pierre d'une autre teinte au bord de la corniche (sous la terrasse)
-panneau_route       panneau        77,10        bloque  # texte 1 « ROUTE 8 » / « Lavanville → ← Safrania », lu depuis (77, 11) ↑
+panneau_route       panneau        77,9         bloque  # texte 1 « ROUTE 8 » / « Lavanville → ← Safrania », lu depuis (77, 10) ↑
 panneau_souterrain  panneau        12,5         bloque  # texte 2 « PASSAGE SOUTERRAIN » / « Route 7 — Céladopole », lu depuis (12, 6) ↑
 herbes_h1           herbes         19,15        libre   role=H1  # bande de l'ouest (obligatoire, 5 cases)
 herbes_h2           herbes         45,13        libre   role=H2  # chemin bas (8 cases à traverser)

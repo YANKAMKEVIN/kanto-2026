@@ -55,7 +55,8 @@
 | Repaire | `casino.txt`, `repaire_b1f.txt` … `repaire_b4f.txt` (géométrie RB 1:1, 59 trajets de dalles RB reproduits), `repaire_ascenseur.txt` | 20 × 18 ; 30 × 28 (B4F 30 × 24) ; 6 × 8 |
 
 **Raccords** :
-- Lavanville ↔ Route 8 (79, 11..13), **PROVISOIRE**, à recaler sur la grille de Lavanville du J18 ;
+- Lavanville (0, 10..12) ↔ Route 8 (79, 10..12), recalé le 2026-10-15 sur la grille du J18
+  (`lavanville.txt`, branche `docs/dossier-j18`) ;
 - Route 7 (0, 10..12) ↔ Céladopole (69, 21..23) ;
 - Casino (15..16, 17) ↔ porte de la ville (39..40, 32), arrivée `from_casino` (39..40, 33). La
   Corde Sortie du repaire ramène sur `from_casino` ;
@@ -63,6 +64,11 @@
 
 Traversée Lavanville → Céladopole : 158 pas. Depuis l'entrée est de la ville : 13 pas jusqu'au
 Centre, 63 jusqu'au grand magasin, 74 jusqu'à l'Arène.
+
+**Densification de Céladopole** (2026-10-15, après le premier aperçu, trop de pavé vide) :
+jardin en terrasse au nord du Casino et de l'ancien Coin à lots, massifs prolongés le long de
+l'avenue, pelouse et haie arborée au-dessus de l'enclos de l'Arène, massifs et arbres à l'arrière
+des maisons du sud. Aucune porte, aucun accès ni aucune rue n'a changé.
 
 **Ce que vérifient les contrôles** :
 - chaque dalle mène à une case d'arrêt, sans boucle ;

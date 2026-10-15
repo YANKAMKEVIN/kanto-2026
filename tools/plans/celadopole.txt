@@ -101,8 +101,8 @@ GRILLE 70 46
 21 ssTTpppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppp
 22 ssTTpppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppp
 23 ssTTpppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppp
-24 ssTTppppppppppppppppppppppppppppppppppppppppppppppppppppppppppTTTTTTTT
-25 ssTTppppppppppppppppppppppppppppppppppppppppppppppppppppppppTTTTTTTTTT
+24 ssTT................ppppjjjppppjjjjjjjGjjjjjnjjjjGjjjjjnppppppTTTTTTTT
+25 ssTTxxxGxxxxxxGxxxxxppppjjjppppjjjjjjjjjjjjjjjjjjjjjjjjjppppTTTTTTTTTT
 26 TTTxxxxxxxxxxxxxxxxxppppjjjppppjjjKKKKKKKKKKKKxxLLLLLLLLppppTTTTTTTTTT
 27 TTTx...............xppppjjjppppjjjKKKKKKKKKKKKppLLLLLLLLpppp..G....TTT
 28 TTTx.ZZZZZZZZZZZZ..xppppppppppppppKKKKKKKKKKKKppLLLLLLLLpppp....n..TTT
@@ -112,7 +112,7 @@ GRILLE 70 46
 32 TTTx.ZZZZZZZZZZZZ..xppppjjnppppnjjKKKKKDDKKKKKppLLLLLLLLpppp.......TTT
 33 TTTx.ZZZZZZZZZZZZ..xpppppppppppppppppppppppppppppppppppppppp......GTTT
 34 TTTx.ZZZZZDDZZZZZ..xppppppppppppppppppppppppppppppppppppppppTTTTTTTTTT
-35 TTTx......pp.......xppppppppppppppppppppppppppppppppppppppppTTTTTTTTTT
+35 TTTx......pp.......xppppjjGjjjnpppjjGjjjnjppppjGjjjnjjGjppppTTTTTTTTTT
 36 TTTx......pp.......xppppTTTTTTTpppQQQQQQQQppppIIIIIIIIIIppppTTTTTTTTTT
 37 TTTx...j..pp..j....WppppMMMMMMMpppQQQQQQQQppppIIIIIIIIIIppppTTTTTTTTTT
 38 TTTx......pp.......xppppMMMMMMMpppQQQQQQQQppppIIIIIIIIIIppppTTTTTTTTTT
