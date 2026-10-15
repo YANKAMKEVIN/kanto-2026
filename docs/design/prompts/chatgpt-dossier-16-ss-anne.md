@@ -79,8 +79,8 @@ Tranchés le 2026-10-11 (détail : passe d'alignement, §8). À appliquer tels q
 5. **Rival n° 4** par starter : espèces, niveaux, capacités (Kadabra sans Entrave), répliques avant
    (allusion au mal de mer), après, reprise.
 6. **Capitaine et CS01** : scène pas à pas, textes, ce qui se passe si on lui reparle.
-7. **Coupe** selon G-2 / G-3 / G-4 : texte de la CS dans le Sac, texte de l'arbuste (avec et sans
-   Pokémon compatible), mise en scène (≤ 2 s, le Pokémon qui coupe est visible), liste des arbustes
+7. **Coupe** selon G-2 / G-3 / G-4 : texte de la CS dans le Sac, texte de l'arbuste (avec Pokémon
+   compatible, sans Pokémon compatible, sans Badge Cascade), mise en scène (≤ 2 s, le Pokémon qui coupe est visible), liste des arbustes
    posés au J16.
 8. **Départ** : textes de la confirmation (G-10), scène vue du quai (≤ 10 s), état de Carmin après.
 9. **Arène** selon G-8 : indices du décor, règle exacte, Dresseurs, guide, Major Bob (carte, avant,
