@@ -1,0 +1,26 @@
+DÉCOR DE COMBAT — ROUTE 11, PRAIRIE CÔTIÈRE (Kanto 2026). Image de PRODUCTION : le fond peint d'un écran de combat Pokémon sur smartphone en paysage. AUCUN Pokémon, AUCUN personnage, AUCUNE interface, AUCUN texte.
+
+Images jointes.
+IMAGE 1 : un écran de combat de référence. Reprends sa VUE (caméra à hauteur d'yeux, légèrement plongeante, horizon dans le tiers haut, grand sol dégagé au centre), sa profondeur et sa qualité de peinture. Ne reprends PAS : les Pokémon, les cartes, les boutons, la rivière, le pont, le coucher de soleil orange.
+IMAGE 2 : une planche d'intention de décors de combat (guide de facture).
+IMAGE 3 : la vue générale (de dessus) de la Route 11 : prairie fleurie, chemin de terre clair, hautes herbes jaune-vert, bosquets de feuillus, talus de roche beige moussue, digue de pierre claire, mer bleu profond étincelante (guide de palette).
+
+FORMAT : paysage très large, rapport 2,17 : 1 (comme 2340 × 1080), la plus grande résolution possible, OPAQUE, cadrage plein, sans bord.
+
+LIEU : la prairie côtière de la Route 11. Sol d'herbe courte vert tendre et de terre battue claire, petites fleurs sauvages blanches, roses et jaunes ; à GAUCHE, au-delà d'un rivage de rochers beiges où la mer vient ourler d'écume, la MER bleu profond étincelante qui va jusqu'à l'horizon ; à DROITE, des bosquets de feuillus ronds vert profond et un talus de roche beige moussue. Golden hour. Aucun bâtiment, aucune clôture, aucun panneau, aucun bateau.
+
+COMPOSITION (fractions depuis le coin haut gauche) :
+- Horizon vers 33 % de la hauteur : la mer à gauche et au centre ; les feuillus et le talus de roche à droite (x 62 à 100 %), entre 15 et 45 % de la hauteur. Le rivage de rochers beiges et d'écume court en plan moyen entre 40 et 48 % de la hauteur, côté gauche et centre.
+- De 50 % de la hauteur jusqu'en bas : GRAND SOL DÉGAGÉ et PLAT d'herbe courte et de terre battue claire.
+- Point A (x 67 %, y 56 %) : sol nu, plat et bien lisible, une créature y posera les pieds. Rien de haut dans un rayon de 12 % de la largeur autour.
+- Point B (x 31 %, y 97 %) : sol plat et nu, une grande créature vue de dos y sera au premier plan. Rien de haut autour.
+- ZONE CALME en HAUT À GAUCHE (de 0 à 50 % de la largeur, de 0 à 45 % de la hauteur) : peu de détails et peu de contraste, valeurs simples (ciel et mer calmes).
+- ZONE CALME en BAS À DROITE (de 50 à 100 % de la largeur, de 55 à 100 % de la hauteur) : sol simple, presque sans objet, valeurs moyennes, sans contraste fort.
+- Les deux coins du bas restent du SOL nu : pas de buisson ni de rocher en gros plan.
+- Les 9 % de gauche et de droite de l'image ne contiennent rien d'important (ils seront rognés sur certains écrans).
+
+LUMIÈRE : golden hour, soleil bas venant du haut à gauche (hors cadre), reflets dorés sur la mer, lumière dorée chaude sur l'herbe et les feuillages, ombres douces ; ciel bleu pâle voilé, nuages légers teintés de rose doré, pas de soleil visible, pas de contre-jour.
+
+RENDU (ADN visuel Kanto 2026) : illustration 2D peinte numériquement, RPG Pokémon moderne « HD-2D peint », formes simples, lisibles et arrondies, grandes masses douces (jamais en petits points ni en pixels), aucun trait noir (contours fins et doux plus sombres que la couleur), couleurs riches sans être fluo. Netteté partout (aucun flou de profondeur, pas de vignettage). Perspective à hauteur d'yeux, un peu plongeante, le sol recule nettement vers l'horizon.
+
+INTERDITS : Pokémon, animal, oiseau, mouette, poisson, personnage, silhouette, texte, lettres, chiffres, panneau lisible, logo, signature, filigrane, cadre, interface, bateau, maison, bâtiment, digue, clôture, grue, véhicule, pixel art, flou, vignettage.
