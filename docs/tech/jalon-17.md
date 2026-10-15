@@ -9,7 +9,7 @@
 > **fondation de l'éclairage** (obscurité + halo qui suit le joueur) sur une carte de QA.
 >
 > Mécaniques nouvelles : **condition de dialogue « au moins N espèces capturées »**, **CS** (objet,
-> compatibilités, `FieldMoves`), **cases libérées par un drapeau** (`FlagBlock`), **Corde Sortie à
+> compatibilités, `FieldMoves`), **cases libérées par un drapeau** (`FlagGate.blocking_cells`, §2.4), **Corde Sortie à
 > deux bouches**, **voile d'obscurité** en shader `CanvasItem` (sans `Light2D`) et **mise en scène
 > automatique de Flash**. Tout le reste est du contenu sur des systèmes existants.
 
@@ -50,7 +50,7 @@ Références : `CLAUDE.md` (règles 1 à 10), `docs/design/dossier-20-chemins-re
 | Objets CT | `ItemData.Category.TM` (`item_data.gd:22`), `tm_number` 1..50 (`ItemLibrary` : `TM_MIN`, `TM_MAX`), `TmTeach` (jamais consommée), onglet « CT » (`bag_screen.gd:54`) | J16 (passe) : « catégorie `hm` ou CS rangée avec les CT » | CS : champ `hm`, section CS des compatibilités (§2.7) |
 | Compatibilités | `data/pokemon/tm_compatibility.json` (généré, `tms` 01..50, `species`) ; `tools/gen_tm_compatibility.py` exclut les numéros ≥ 101 de PokeAPI ; `PokemonData.can_learn_tm` | J16 (passe) : « étendre le script aux CS » | section `hms` + `hm_species` (§2.7) |
 | Capacité de terrain | rien | J16 (passe) : `FieldMoves.can_cut(party, bag, flags)` lit `badge_cascade` | `FieldMoves` (§2.8) |
-| Case libérée par un drapeau | **aucune** : grille statique (`map.gd:283-290`, `blocked_cells`) ; un PNJ `unless` occupe **une** case (`npc_spec.gd:168`) ; `GridWorld.set_solid(cell, solid)` sait rendre une case libre | J14 : `FlagGate` (`game/world/flag_gate.gd`) **visuel seulement**, réglé par `GameMap.apply_flag_gates` à l'arrivée et par Boot à chaque drapeau | `FlagBlock` (§2.4) |
+| Case libérée par un drapeau | **aucune** : grille statique (`map.gd:283-290`, `blocked_cells`) ; un PNJ `unless` occupe **une** case (`npc_spec.gd:168`) ; `GridWorld.set_solid(cell, solid)` sait rendre une case libre | J14 : `FlagGate` (`game/world/flag_gate.gd`) **visuel seulement**, réglé par `GameMap.apply_flag_gates` à l'arrivée et par Boot à chaque drapeau | rien : `FlagGate.blocking_cells` (J15) + `SceneRouter.arrival_flags` (§2.4, T5) |
 | Grotte, Corde Sortie | `CaveLibrary` + `data/world/caves.json` (une seule sortie `escape` par grotte), `FieldItemRules.escape_target` (`boot.gd:1527`), `tools/cave_map_kit.gd`, terrain `rubble`, `RubbleBurst`, profils `cave_*`, voile précalculé `tools/cave_shade.gd`, `LightGlow` | — | `digletts_cave` dans `caves.json` ; **deux bouches** (§2.3) |
 | Éclairage | `WorldLighting` (`CanvasLayer` `LAYER_WORLD_GRADE` = 6 : étalonnage en `screen_texture`, globals) ; **aucune** `Light2D` ni `CanvasModulate` ; calques : monde 0, `BattleStage` 5, étalonnage 6, HUD 10 | J18 (dossier 21 §5.2) : voile au-dessus du monde, trou radial, halo 2,5 / 7 cases, champ `dark` de `caves.json` | voile d'obscurité (§2.10) |
 | Objets visibles et cachés | modèle J8 (`got_<id>`) ; objets cachés `InteractPoint.unless_flags` (`interact_point.gd:21`), `_add_hidden_item` (`tools/build_route_24.gd`) | — | rien |
@@ -84,7 +84,7 @@ Références : `CLAUDE.md` (règles 1 à 10), `docs/design/dossier-20-chemins-re
    des branches de conception (pas une décision de game design ; noté pour la clôture).
 3. **Ronflex occupe 2 × 2 cases** (66..67, 14..15) ; un PNJ n'occupe qu'**une** case. Le « PNJ
    présent `unless snorlax_route_11_awake` » du dossier se réalise donc en trois pièces
-   conditionnées par le même drapeau : décor `FlagGate` (sprite), `FlagBlock` (les 4 cases), point
+   conditionnées par le même drapeau : décor `FlagGate` (sprite et `blocking_cells` : les 4 cases), point
    d'examen `InteractPoint` 2 × 2 avec `unless_flags` [D]. Même comportement observable.
 4. **Corde Sortie à deux bouches** : `caves.json` n'a qu'une sortie par grotte, et « la bouche par
    laquelle le joueur est entré » (§12, [D]) demanderait un état nouveau (sauvegarde). Défaut
@@ -136,13 +136,13 @@ Références : `CLAUDE.md` (règles 1 à 10), `docs/design/dossier-20-chemins-re
 
 | Sous-jalon | Contenu | Validation |
 |---|---|---|
-| **17.0** | logique pure et données sans carte : CS et `FieldMoves`, condition Pokédex et jetons, `FlagBlock`, Corde Sortie à deux bouches, espèces, capacités, Pokédex, Dresseurs, rencontres, dialogues, art | aucune session téléphone (tests + captures Mac) |
+| **17.0** | logique pure et données sans carte : CS et `FieldMoves`, condition Pokédex et jetons, cases libérées par un drapeau, Corde Sortie à deux bouches, espèces, capacités, Pokédex, Dresseurs, rencontres, dialogues, art | aucune session téléphone (tests + captures Mac) |
 | **17A** | Route 11 (rencontres, 8 Dresseurs, objets, Ronflex), Cave Taupiqueur, raccord de Carmin | téléphone |
 | **17B** | Route 2 est, poste et assistant, condition Pokédex, CS05, FUTUR B ; arbuste du couloir et FUTUR A **si le J16 est fusionné** | téléphone |
 | **17C** | Flash : combat, mise en scène automatique, **fondation d'éclairage** sur `qa_flash` (fps, contraste) | téléphone (S24 pour les fps) |
 | **17D** | clôture : non-régression, retrait de `qa_flash`, traversées, sauvegarde / rechargement à chaque transition ; arbustes si le J16 est arrivé entre-temps | téléphone + fusion |
 
-- **Jamais trois systèmes à la fois** : 17A = un petit système (Corde à deux bouches) + `FlagBlock`
+- **Jamais trois systèmes à la fois** : 17A = un petit système (Corde à deux bouches) + les blocs `FlagGate`
   pour Ronflex + du contenu ; 17B = condition Pokédex + CS (objet) + du contenu ; 17C = l'éclairage
   et Flash. Aucun lot ne touche la sauvegarde (§2.15) : pas de validation isolée.
 - **Ce qui bloque les sessions téléphone** : 17A attend J14 + J15 dans `main` ; 17B attend J14
@@ -170,7 +170,7 @@ côtés ». `tm_compatibility.json` est **généré** : régénéré à chaque f
 Ajouts **courts et groupés** (bloc commenté « J17 »), jamais de réécriture.
 
 **Contrat avec le J16 (le premier fusionné crée, l'autre s'aligne)** : CS dans les objets (§2.7),
-section CS des compatibilités, `FieldMoves` (§2.8), `FlagBlock` (§2.4), mise en scène d'une capacité
+section CS des compatibilités, `FieldMoves` (§2.8), cases libérées par un drapeau (§2.4), mise en scène d'une capacité
 de terrain (§2.11). Si le J16 arrive d'abord avec d'autres noms, la tâche J17 concernée **renomme**
 ses appels et garde ses tests ; si le J17 arrive d'abord, ce plan devient le contrat du J16
 (passation écrite au T28).
@@ -182,7 +182,7 @@ ses appels et garde ses tests ; si le J17 arrive d'abord, ce plan devient le con
 | T2 CS : objet, compatibilités, `TmTeach` | architecte | **(A)**, après T1 | contrat J16 | fichiers d'objets + générateur |
 | T3 `FieldMoves` + `field_moves.json` | architecte | **(A)**, après T2 | contrat J16 | fichiers nouveaux |
 | T4 Condition Pokédex + jetons | architecte | **(A)**, après T1 | — | 4 fichiers de dialogue, ajouts courts |
-| T5 `FlagBlock` (cases libérées par un drapeau) | architecte | **(A)**, après T1 | contrat J16 ; `FlagGate` (J14) pour le visuel | `flag_block.gd` nouveau + `map.gd` (bloc) |
+| T5 Cases libérées par un drapeau (`FlagGate.blocking_cells`, **fait**) | architecte | **(A)**, après T1 | contrat J16 (aligné) | `scene_router.gd` + `boot.gd` (une ligne) |
 | T6 Corde Sortie à deux bouches | architecte | **(A)**, après T1 | — | `cave_library.gd`, `field_item_rules.gd`, `boot.gd` (une ligne) |
 | T7 Espèces, capacités, Pokédex, CS05 | architecte | **(A)**, après T2 | `dig` (J14) : repli §2.12.2 | fichiers nouveaux |
 | T8 Dresseurs, rencontres, dialogues, zones + simulation | architecte | **(A)**, après T4, T7 | J14 pour la table de la Cave | fichiers nouveaux |
@@ -334,39 +334,52 @@ de la Cave, canyon vu du ciel, clairières trop larges) sont respectés.
 - **Taupiqueur d'ambiance** : PNJ `shy = hide` (réaction existante, `ambient_watcher.gd:56`), sprite
   « sort du sol » à deux poses.
 
-### 2.4 Cases libérées par un drapeau : `FlagBlock` ; Ronflex (T5, T17)
+### 2.4 Cases libérées par un drapeau : `FlagGate.blocking_cells` ; Ronflex (T5, T17)
 
-**Classe** `game/world/flag_block.gd` — `FlagBlock` (`Marker2D`, posé par les outils comme
-`InteractPoint`) :
+> **Réaligné au T5 (2026-10-15)** : la classe `FlagBlock` prévue ici **n'est pas créée**. `main`
+> contient déjà le mécanisme équivalent, posé par le J15 (jeune arbre de l'Arène de Carmin) et
+> **adopté par le J16** pour ses arbustes (`ccr-fa255d49-wvvacc`, `ed7f5214`) : « le premier
+> fusionné crée, l'autre s'aligne ». Deux mécanismes pour la même chose seraient un piège.
+
+**Mécanisme** `game/world/flag_gate.gd` — `FlagGate` (`Node2D`, J14 ; `blocking_cells` J15) :
 
 ```gdscript
-## Cases solides tant que le bloc est « fermé » (aucun de unless_flags levé) ; libres sinon.
-@export var size: Vector2i = Vector2i.ONE          # cases depuis l'ancre (bas-gauche)
-@export var unless_flags: Array[StringName] = []   # un drapeau levé = cases libres, pour toujours
-func get_cells() -> Array[Vector2i]
-func is_closed(flags: StoryFlags) -> bool          # pur
+@export var if_flags: Array[StringName] = []       # tous levés pour afficher
+@export var unless_flags: Array[StringName] = []   # aucun levé pour afficher
+@export var blocking_cells: Array[Vector2i] = []   # cases OCCUPÉES tant que le décor est affiché
+func is_open(flags: StoryFlags) -> bool            # pur ; null = nouvelle partie
+func apply(flags: StoryFlags) -> void              # visible = is_open(flags)
+func apply_to_grid(grid: GridWorld) -> void        # occupe (affiché) / libère (caché)
 ```
 
-- `GameMap` : groupe `flag_block` ; `apply_flag_blocks(flags)` pose `GridWorld.set_solid(cell,
-  closed)` pour chaque case, **appelé à l'arrivée** (après `_build_grid`, à côté de
-  `apply_flag_gates` du J14) **et par Boot à chaque drapeau changé** (même crochet que
-  `apply_flag_gates`, `boot.gd` `_on_flag_changed`). Une case occupée par un PNJ reste occupée
-  (`occupy` est indépendant de `solid`).
-- **Visuel séparé** : un `FlagGate` (J14) par état (« barrière fermée » `unless`, « barrière
-  ouverte » `if`). `FlagBlock` n'affiche rien (le J14 a voulu `FlagGate` visuel seulement : on garde
-  la séparation).
+- **Occupation, pas solidité** : les cases sont *occupées* par le décor (`GridWorld.occupy`), comme
+  la case d'un PNJ ; une case prise par un autre occupant n'est jamais volée. Elles doivent donc
+  être **praticables** dans la grille (`Ground`) : pas de solide de tuile sous un bloc.
+- `GameMap.apply_flag_gates(flags)` règle visibilité **et** cases de toutes les `FlagGate` de la
+  carte ; appelé par `refresh_npcs` à l'arrivée et par Boot `_on_flag_changed` à chaque drapeau
+  (libération pendant la visite, sans changer de carte). `_build_grid` les réinscrit à chaque
+  reconstruction (enfants directs de `Entities` ou `GroundDecals`).
+- **Ajout du T5** : `SceneRouter.arrival_flags: Callable` (`func() -> StoryFlags`, branché par Boot
+  sur `GameState.flags`, remis à vide par `setup`) : les `FlagGate` de la carte sont réglées
+  **avant** de placer le joueur (`start`, `start_at`, `_swap_map`). Avant, une `FlagGate` occupait
+  ses cases avec son `visible` par défaut jusqu'à `map_changed` : une reprise de sauvegarde sur une
+  case libérée (arbuste coupé, Ronflex réveillé) décalait le joueur d'une case.
+- **Un bloc = une `FlagGate` `unless <drapeau>`** dont les enfants sont le visuel et
+  `blocking_cells` les cases (Ronflex : 4 cases ; barrière : 2). Un visuel « ouvert » éventuel est
+  une seconde `FlagGate` `if <drapeau>` **sans** `blocking_cells`.
 - **Aucune sauvegarde** : l'état se déduit des drapeaux.
-- **Tests** `test_flag_block` (pur : cases, `is_closed`, `null` = fermé), intégration
-  `test_flag_block_map` (carte de test : case bloquée, drapeau levé pendant la visite → libre sans
-  changer de carte ; rechargement → libre ; `find_reachable` avant / après).
-- **Ronflex** (§0.2 n° 3) : `FlagGate` « Ronflex endormi » (sprite ≈ 2 × 2, `unless
-  snorlax_route_11_awake`) + `FlagBlock` 2 × 2 ancré (66, 15) + `InteractPoint` EXAMINER 2 × 2,
+- **Tests** : `tests/unit/test_flag_gate.gd` (pur, + bloc 2 × 2 avec `null`),
+  `tests/integration/test_flag_gate_blocking_map.gd` (couloir fermé par un bloc 2 × 2 : fermé sans
+  drapeau, libéré pendant la visite, après rechargement, reprise de sauvegarde sur une case libérée
+  sans décalage, `find_reachable` avant / après, crochet réel de Boot).
+- **Ronflex** (§0.2 n° 3) : `FlagGate` « Ronflex endormi » (`unless snorlax_route_11_awake`,
+  sprite ≈ 2 × 2, `blocking_cells` (66..67, 14..15)) + `InteractPoint` EXAMINER 2 × 2,
   `unless_flags = [snorlax_route_11_awake]`, dialogue `route_11_snorlax` (variantes : `unless
   snorlax_route_11_seen` → T-6 + `set snorlax_route_11_seen` ; sinon T-7). Aucune donnée d'espèce,
   aucune entrée de Pokédex (H-10).
-- **Contrat J16** : les arbustes sont un `FlagBlock` (`unless cut_<id>`) + `FlagGate` + point
-  « arbuste » qui interroge `FieldMoves` (§2.13). Si le J16 livre un autre mécanisme, Ronflex et la
-  barrière basculent dessus (T17, T21 renomment), tests gardés.
+- **Contrat J16** : un arbuste = `FlagGate` `unless cut_<id>` à `blocking_cells` + point
+  « arbuste » du J16 (`FieldMoves`, §2.13), exactement comme `GymTree` de Carmin
+  (`tools/build_vermilion_city.gd`).
 
 ### 2.5 Condition « au moins N espèces capturées » et jetons (T4)
 
@@ -661,16 +674,16 @@ dépasser les références de Major Bob ; tableau dans ce plan au T8 ; test
   `build_route_2.gd` (bloc « J17 ») :
   - sentier `b` (35..41, 43..44) praticable, warp est (41, 43..44) `PUSH →` → `route_2_east` /
     `from_route_2_n|s`, arrivée `from_route_2_east_n|s` ;
-  - **barrière FUTUR B** : `FlagBlock` 1 × 2 en (34, 44) `unless route_2_east_gate_open` +
-    `FlagGate` fermée / ouverte ; le point existant `route_2_closed_gate` (lu depuis l'ouest) reçoit
+  - **barrière FUTUR B** : `FlagGate` fermée `unless route_2_east_gate_open` à `blocking_cells`
+    1 × 2 en (34, 44) (cases rendues praticables dans la grille, §2.4) + `FlagGate` ouverte `if` ; le point existant `route_2_closed_gate` (lu depuis l'ouest) reçoit
     `unless_flags = [route_2_east_gate_open]` ; nouveau point `route_2_gate_east` (même cases, lu
     **depuis l'est**, `facing = LEFT`, `unless` le drapeau) → dialogue T-8 avec `set
     route_2_east_gate_open` (la barrière s'ouvre en fin de dialogue, sans changer de carte, §2.4) ;
   - panneau (33, 42) : variante T-9 ;
   - clairière FUTUR A (sol, objet `route_2_item_5`), **arbuste encore « arbre dense »** : le point
     `examen_arbre_dense` et son texte T7 restent tant que la Coupe n'existe pas.
-- **T23 (B, après le J16)** : arbuste du couloir (6..7, 21) et FUTUR A (4, 19) = `FlagBlock`
-  `unless cut_<id>` + arbuste du J16 + point « arbuste » du J16 (`FieldMoves.can_use(&"cut", …)` +
+- **T23 (B, après le J16)** : arbuste du couloir (6..7, 21) et FUTUR A (4, 19) = `FlagGate`
+  `unless cut_<id>` à `blocking_cells` (arbuste du J16) + point « arbuste » du J16 (`FieldMoves.can_use(&"cut", …)` +
   Badge Cascade, textes génériques du J16) ; FUTUR A perd le texte T7 du dossier 11 dès la CS01
   (variante du J16).
 - **Si le J16 n'est pas fusionné à la fin du J17** : le couloir sud (Pierre Lune, Super Bonbon,
@@ -690,7 +703,7 @@ case (`companion_trail.gd`) : ni contournement de Ronflex ni blocage. Test
 
 Tout l'état du J17 est déjà sérialisé : drapeaux (`flags`), Sac (CS05 = identifiant d'objet, rangé
 par sa catégorie : rien à migrer, `item_data.gd` « ajouts en fin d'enum »), Pokédex, objets trouvés.
-`FlagBlock`, Ronflex, la barrière, le voile et la Corde à deux bouches se **déduisent** des drapeaux
+Les blocs `FlagGate`, Ronflex, la barrière, le voile et la Corde à deux bouches se **déduisent** des drapeaux
 et de la position. La version reste celle de `main` à la fusion (v7 du J15). **Si** Q-1 retenait le
 `dark_cave_lit` du dossier 21, ce serait un drapeau : toujours pas de v8. Test
 `test_save_j17` : aller-retour d'une partie avec `got_hm05`, `route_2_east_gate_open`, CS05 dans le
@@ -745,9 +758,9 @@ et annexe A validée).
 #### T4 — architecte : condition Pokédex et jetons — **(A)**, après T1
 - §2.5. Tests listés. **CA** : tests verts ; les dialogues existants inchangés (suite complète).
 
-#### T5 — architecte : `FlagBlock` — **(A)**, après T1 (visuel avec `FlagGate` après le J14)
-- §2.4 ; `GameMap.apply_flag_blocks`, crochet de `_on_flag_changed`. Tests `test_flag_block`,
-  `test_flag_block_map`. **CA** : case libérée pendant la visite et après rechargement ; aucune
+#### T5 — architecte : cases libérées par un drapeau — **(A)**, après T1 — **fait** (2026-10-15)
+- §2.4 réaligné : `FlagGate.blocking_cells` (J15, adopté par le J16) au lieu d'un `FlagBlock` ;
+  ajout `SceneRouter.arrival_flags`. Tests `test_flag_gate` (+1), `test_flag_gate_blocking_map`. **CA** : case libérée pendant la visite et après rechargement ; aucune
   scène existante modifiée.
 
 #### T6 — architecte : Corde Sortie à deux bouches — **(A)**, après T1
@@ -814,7 +827,7 @@ et annexe A validée).
   30–45 min (mémoire « QA bornée »), S21 ou S24.
 
 #### T19 — constructeur-monde : Route 2 est, poste, assistant — **(A)**, après T4, T14
-- §2.1, §2.2, §2.6 ; `build_route_2_east.gd` ; arbuste posé en `FlagBlock` fermé (sans Coupe :
+- §2.1, §2.2, §2.6 ; `build_route_2_east.gd` ; arbuste posé en `FlagGate` fermée à `blocking_cells` (sans Coupe :
   inerte, texte T7-like absent : **aucun point d'examen** avant le J16 [D]) ; panneau T-11.
 - Tests `test_route_2_east` (grille = plan ; bouche → poste 12 pas sans Coupe ; sud inatteignable
   sans le drapeau de l'arbuste, atteignable avec ; nœuds), `test_assistant_hm05_flow`.
@@ -866,7 +879,7 @@ et annexe A validée).
 
 **17.0** — tests verts, import propre ; CS05 enseignable (Sac) aux compatibles seulement, jamais
 consommée ; `FieldMoves` rend −1 sans CS05 ou sans compatible ; variantes de l'assistant correctes
-à n = 1, 9, 10, 11 ; `FlagBlock` libère une case pendant la visite ; Corde Sortie : bonne bouche de
+à n = 1, 9, 10, 11 ; un bloc `FlagGate` libère ses cases pendant la visite ; Corde Sortie : bonne bouche de
 chaque côté de la rangée 39/40 ; données des 8 espèces et 7 capacités chargées ; Pokédex en
 brouillon ; captures Mac du voile.
 
@@ -943,7 +956,7 @@ verts, import propre, budgets tenus.
 |---|---|
 | Branches | `jalon-17` depuis `origin/main` ; tâches `j17-t<n>-*` |
 | Drapeaux | `got_<id de grille>` (§1.3) ; `snorlax_route_11_seen`, `hm05_assistant_met` |
-| Ronflex | `FlagGate` + `FlagBlock` 2 × 2 + `InteractPoint` 2 × 2, tous `unless snorlax_route_11_awake` |
+| Ronflex | `FlagGate` (`blocking_cells` 2 × 2) + `InteractPoint` 2 × 2, tous `unless snorlax_route_11_awake` |
 | Corde Sortie | bouche de la moitié où se tient le joueur (rangées 0..39 / 40..79) |
 | CS | catégorie `tm` + champ `hm` ; onglet « CT et CS » ; CS après les CT |
 | `FieldMoves` | compagnon compatible d'abord, puis premier compatible ; K.O. accepté |

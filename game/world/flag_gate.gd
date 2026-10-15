@@ -7,6 +7,9 @@ extends Node2D
 ##
 ## **Visuel seulement** par défaut : n'agit ni sur la grille ni sur les interactions. Exception
 ## (jalon 15) : [member blocking_cells], cases occupées tant que le décor est affiché.
+## Jalon 17 : c'est le mécanisme des « cases libérées par un drapeau » (Ronflex 2 × 2, barrière
+## de la Route 2 est, arbustes de Coupe ; docs/tech/jalon-17.md §2.4) ; SceneRouter les règle
+## aussi avant de placer le joueur ([member SceneRouter.arrival_flags]).
 ## Posée par les outils de construction des cartes ; [method GameMap.apply_flag_gates] règle toutes celles de la carte à l'arrivée, puis
 ## Boot à chaque drapeau changé pendant la visite (la lueur suit un « set » de dialogue ou de
 ## scène sans changement de carte). Sans conditions : toujours affichée.
