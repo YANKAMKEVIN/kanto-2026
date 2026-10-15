@@ -260,6 +260,12 @@ fait foi. Fiche `docs/design/fiches-assets/serie-<n>-celadopole.md`, outil `tool
 | Combat | — | fonds CB.3 **`urban_route`**, **`greenhouse`**, **`hideout`** |
 | Sac | — | icônes : Super Ball, Rappel, Poupée Poké, 4 pierres, 3 boissons, 6 objets X, Clé Ascenseur, Scope Sylphe |
 
+**T2 + T3 (lot 20.0a, 2026-10-15)** : série **22**, fiche `docs/design/fiches-assets/serie-22-celadopole.md`,
+outil `tools/art/serie22.py` ; périmètre espèces, personnages, fonds de combat (le reste du kit : série 22 bis).
+Produits, à valider par Kevin : 9 dos peints provisoires (Évoli, Caninos, Goupix, Empiflor, Rafflesia, Osselait,
+Arcanin, Feunard, Aquali ; Voltali et Pyroli refusés par Codex), Erika, Giovanni, Rocket en civil, Intello, Beauté,
+Topdresseuse (marche + attente), décors `route_7_8_urbaine`, `celadon_gym_serre`, `rocket_hideout_repaire`.
+
 ---
 
 ## 2. Conception technique

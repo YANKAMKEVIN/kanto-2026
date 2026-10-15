@@ -1,0 +1,15 @@
+PNJ_ROCKET_CIVIL — planche d'animation de marche d'un PNJ de Kanto 2026.
+Style : exactement le rendu de la planche jointe PERSO_P2_PEINT_r1 (le héros validé) ; la planche sbire_h_sheet = même main et même finesse pour un adulte du jeu (à NE PAS copier : autre visage, autre tenue) : personnage peint simplifié, chibi d'environ 3 têtes, même finesse, même contour fin coloré sans trait noir, mêmes proportions, même manière de peindre le visage et les vêtements. Ni pixel art, ni 3D, ni anime aux contours noirs. Le personnage ne ressemble PAS au héros joint (autre visage, autres couleurs, autre tenue).
+LUMIÈRE NE (neutre) : lumière de milieu de journée, diffuse et blanche, venant légèrement du haut à gauche ; volumes conservés par un ombrage doux ; aucune teinte dorée ou orangée, aucun liseré chaud ; ombres propres neutres, légèrement bleutées.
+
+PERSONNAGE (identique dans toutes les images) : un homme d'environ 30 ans en CIVIL élégant, l'air fermé et désœuvré : COSTUME NOIR ajusté, chemise blanche, CRAVATE ROUGE (le seul détail rouge), CHAPEAU FEUTRE NOIR à ruban noir, petites lunettes de soleil sombres, chaussures noires. Taille d'un adulte, mince. Différent du Sbire joint (aucun uniforme, aucune casquette, aucun R, aucun insigne) et du héros ; aucun texte.
+
+PLANCHE D'ANIMATION (spritesheet) : image portrait 1024 × 1536, fond avec une vraie transparence (canal alpha, aucun damier dessiné). Grille invisible de 4 colonnes × 4 lignes ; chaque cellule fait 256 × 384 px et contient UNE pose du personnage, entier, centré horizontalement, les pieds posés sur la même ligne horizontale à 30 px du bas de la cellule, à la même taille dans toutes les cellules (environ 320 px de haut). Aucune pose ne déborde de sa cellule.
+- Ligne 1 : de face (marche vers le bas de l'écran).
+- Ligne 2 : de profil, marche vers la gauche.
+- Ligne 3 : de profil, marche vers la droite.
+- Ligne 4 : de dos (marche vers le haut de l'écran).
+- Colonnes : cycle de marche en 4 images : 1 = pieds joints (passage), 2 = pas avec le pied gauche en avant, 3 = pieds joints (passage), 4 = pas avec le pied droit en avant. Bras qui balancent à l'opposé des jambes ; tête et buste qui montent très légèrement aux images 1 et 3.
+Vue : la même vue de dessus de trois quarts que le jeu (caméra un peu au-dessus, on voit un peu le dessus de la tête). Pas de perspective, pas d'ombre au sol, pas de sol, pas de texte, pas de numéros, pas de cadres autour des cellules, aucun Pokémon.
+Le visage, les couleurs, les proportions et les vêtements doivent être EXACTEMENT les mêmes dans les 16 poses.
+Interdits : texte, lettres, chiffres, logo, filigrane, signature, Pokémon, Poké Ball tenue en main, cadre, sol, ombre portée, pixel art, 3D.
