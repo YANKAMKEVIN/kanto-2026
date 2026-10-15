@@ -643,6 +643,12 @@ def _images() -> list[dict]:
 			ajouter(f"{ident}_NE_r{rev}", _prompt_planche(ident, refs, description, ancres_, valeurs),
 				[f"{r}.png" for r in refs] + ancres_, 3, True, groupe=f"{ident}_r{rev}")
 			continue
+		sol = next((t for t in SOLS if t[0] == ident), None)
+		if sol is not None:
+			_, ref, _, ancres_, valeurs, _ = sol
+			ajouter(f"{ident}_NE_r{rev}", _prompt_texture(ident, ref, description, ancres_, valeurs),
+				[f"{ref}.png"] + STYLE + ancres_, 3, True, groupe=f"{ident}_r{rev}")
+			continue
 		objet = next((t for t in SERIE + SERIE_VAGUE2 if t[0] == ident), None)
 		if objet is not None:
 			_, ref, largeur, hauteur, _, ancres_, valeurs, _ = objet
@@ -655,7 +661,16 @@ def _images() -> list[dict]:
 
 ## Corrections (T2) : (identifiant sans _NE_rN, révision) → texte qui remplace la description
 ## d'origine (planche ou objet). Vide au T1.
-CORRECTIONS: dict[tuple[str, int], str] = {}
+CORRECTIONS: dict[tuple[str, int], str] = {
+	("WORLD_GROUND_PAVES_LAVANVILLE_01", 2): (
+		"texture des RUES PAVÉES de Lavanville, vue strictement de dessus : de vrais PAVÉS DE RUE "
+		"en pierre de taille IRRÉGULIÈRE, légèrement arrondis aux angles (pas de rangs réguliers, "
+		"pas de joints de maçonnerie, pas d'aspect de mur de briques), de tailles variées (environ "
+		"3 à 5 pavés par case), gris violacé et beige usé, quelques pavés nettement plus sombres, "
+		"séparés par des joints de terre sombre avec par endroits un fil d'herbe fine ; "
+		"motif organique SANS répétition visible ; raccordable ; aucune flaque, aucune fleur, "
+		"aucun élément remarquable."),
+}
 
 
 def ecrire_prompts() -> None:
