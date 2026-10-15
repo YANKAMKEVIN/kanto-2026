@@ -109,21 +109,49 @@ func test_cave_escape_targets_exist_with_their_spawn() -> void:
 	assert_true(caves.load_file(), "caves.json lisible")
 	var missing: Array[StringName] = []
 	for cave: StringName in caves.get_caves():
-		var exit := caves.escape_target(caves.get_maps(cave)[0])
-		assert_not_null(exit, "%s : sortie" % cave)
-		if exit == null:
-			continue
-		if not MapCatalog.has_map(exit.map):
-			missing.append(exit.map)
-			continue
-		assert_false(_scene_interior(MapCatalog.scene_path(exit.map)),
-			"%s : la Corde ramène dehors" % exit.map)
-		var map := (load(MapCatalog.scene_path(exit.map)) as PackedScene).instantiate()
-		assert_not_null(map.get_node_or_null(NodePath("Spawns/%s" % exit.spawn)),
-			"%s : point d'apparition %s" % [exit.map, exit.spawn])
-		map.free()
+		var exits := caves.get_exits(cave)
+		assert_false(exits.is_empty(), "%s : sortie" % cave)
+		for exit: CaveExit in exits:
+			if not MapCatalog.has_map(exit.map):
+				missing.append(exit.map)
+				continue
+			assert_false(_scene_interior(MapCatalog.scene_path(exit.map)),
+				"%s : la Corde ramène dehors" % exit.map)
+			var map := (load(MapCatalog.scene_path(exit.map)) as PackedScene).instantiate()
+			assert_not_null(map.get_node_or_null(NodePath("Spawns/%s" % exit.spawn)),
+				"%s : point d'apparition %s" % [exit.map, exit.spawn])
+			map.free()
 	if not missing.is_empty():
 		pending("sortie de grotte pas encore construite (T8) : %s" % ", ".join(missing))
+
+
+## Jalon 17 (T6, jalon-17.md §2.3) : une grotte à plusieurs bouches (« escapes ») couvre chaque
+## rangée de chacune de ses cartes, sans trou (les chevauchements sont refusés au chargement).
+func test_cave_mouth_ranges_cover_every_row() -> void:
+	var caves := CaveLibrary.new()
+	assert_true(caves.load_file(), "caves.json lisible")
+	var missing: Array[StringName] = []
+	var checked := 0
+	for cave: StringName in caves.get_caves():
+		if caves.get_exits(cave).size() < 2:
+			continue
+		checked += 1
+		for map_id: StringName in caves.get_maps(cave):
+			if not MapCatalog.has_map(map_id):
+				missing.append(map_id)
+				continue
+			var map := (load(MapCatalog.scene_path(map_id)) as PackedScene).instantiate() \
+				as GameMap
+			var uncovered: Array[int] = []
+			for row: int in map.size.y:
+				if caves.escape_target(map_id, Vector2i(0, row)) == null:
+					uncovered.append(row)
+			assert_eq(uncovered, [] as Array[int], "%s : rangées sans bouche" % map_id)
+			map.free()
+	if not missing.is_empty():
+		pending("grotte à deux bouches pas encore construite (T15) : %s" % ", ".join(missing))
+	elif checked == 0:
+		pass_test("aucune grotte à deux bouches dans caves.json (Cave Taupiqueur : T15)")
 
 
 func test_j13_qa_map_is_recognised_and_removed() -> void:

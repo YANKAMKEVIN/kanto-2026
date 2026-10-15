@@ -21,18 +21,32 @@ extends RefCounted
 ## écartée, l'erreur signalée ([method get_errors], push_error). Que les cartes existent, soient
 ## extérieures (`interior = false`, absentes de `interiors.json`) et que la sortie ait son point
 ## d'apparition se vérifie avec les vraies scènes (`test_cave_library`, dès qu'elles existent).
+## **Plusieurs bouches** (jalon 17, jalon-17.md §2.3, dossier 20 §12) : à la place de « escape »
+## (exclusives), « escapes » est une liste non vide de sorties qui portent chacune « rows »
+## ([première, dernière] rangée, entiers ≥ 0, comprises) ; les plages ne se chevauchent pas. La
+## Corde Sortie ramène à la sortie dont la plage contient la rangée du joueur (même plage sur
+## chaque carte de la grotte). Que les plages couvrent toute la hauteur de la carte se vérifie
+## avec la vraie scène.
+## [codeblock]
+## "digletts_cave": { "maps": ["digletts_cave"], "escapes": [
+##     { "rows": [0, 39], "map": "route_2_east", "spawn": "from_cave_w", "facing": "down" },
+##     { "rows": [40, 79], "map": "route_11", "spawn": "from_cave_w", "facing": "down" } ] }
+## [/codeblock]
 
 const DATA_PATH: String = "res://data/world/caves.json"
 const _ROOT_KEYS: Array[String] = ["_doc", "caves"]
-const _CAVE_KEYS: Array[String] = ["maps", "escape"]
+const _CAVE_KEYS: Array[String] = ["maps", "escape", "escapes"]
 const _ESCAPE_KEYS: Array[String] = ["map", "spawn", "facing"]
+const _ESCAPES_KEYS: Array[String] = ["map", "spawn", "facing", "rows"]
+## Case du joueur inconnue ([method escape_target]).
+const NO_CELL: Vector2i = Vector2i(-1, -1)
 
 ## Carte → grotte.
 var _cave_of: Dictionary[StringName, StringName] = {}
 ## Grotte → cartes (ordre du fichier).
 var _maps: Dictionary[StringName, Array] = {}
-## Grotte → sortie.
-var _exits: Dictionary[StringName, CaveExit] = {}
+## Grotte → sorties (Array[CaveExit], ordre du fichier ; une seule avec « escape »).
+var _exits: Dictionary[StringName, Array] = {}
 var _errors: PackedStringArray = PackedStringArray()
 
 
@@ -92,8 +106,26 @@ func cave_of(map_id: StringName) -> StringName:
 
 
 ## Sortie de la grotte de [param map_id] (où mène la Corde Sortie) ; null hors grotte.
-func escape_target(map_id: StringName) -> CaveExit:
-	return _exits.get(cave_of(map_id))
+## Grotte à plusieurs bouches (« escapes ») : la sortie dont la plage contient la rangée de
+## [param cell] (la case du joueur) ; null si [param cell] est inconnue ([constant NO_CELL]) ou
+## hors de toute plage. Sortie unique : [param cell] est ignorée.
+func escape_target(map_id: StringName, cell: Vector2i = NO_CELL) -> CaveExit:
+	var exits: Array = _exits.get(cave_of(map_id), [])
+	if exits.size() == 1 and (exits[0] as CaveExit).first_row < 0:
+		return exits[0]
+	if cell == NO_CELL:
+		return null
+	for exit: CaveExit in exits:
+		if exit.covers_row(cell.y):
+			return exit
+	return null
+
+
+## Toutes les sorties de la grotte [param cave] (ordre du fichier ; vide si elle est inconnue).
+func get_exits(cave: StringName) -> Array[CaveExit]:
+	var exits: Array[CaveExit] = []
+	exits.assign(_exits.get(cave, []))
+	return exits
 
 
 ## Cartes de la grotte [param cave] (ordre du fichier ; vide si elle est inconnue).
@@ -128,7 +160,7 @@ func get_errors() -> PackedStringArray:
 
 func _add_cave(cave: StringName, raw: Variant, where: String) -> bool:
 	if not raw is Dictionary:
-		return _fail("%s : une grotte est un objet { maps, escape }" % where)
+		return _fail("%s : une grotte est un objet { maps, escape | escapes }" % where)
 	var entry: Dictionary = raw
 	var ok := true
 	for key: Variant in entry:
@@ -144,42 +176,102 @@ func _add_cave(cave: StringName, raw: Variant, where: String) -> bool:
 		if maps.has(map) or _cave_of.has(map):
 			return _fail("%s : carte « %s » déjà dans une grotte" % [where, map])
 		maps.append(map)
-	var exit := _parse_exit(entry.get("escape"), where)
-	if exit == null:
+	var exits: Array[CaveExit] = []
+	if entry.has("escape") and entry.has("escapes"):
+		return _fail("%s : « escape » et « escapes » sont exclusifs" % where)
+	if entry.has("escapes"):
+		exits = _parse_escapes(entry["escapes"], where)
+	else:
+		var single := _parse_exit(entry.get("escape"), where)
+		if single != null:
+			exits.append(single)
+	if exits.is_empty():
 		return false
-	if maps.has(exit.map):
-		return _fail("%s : la sortie « %s » est une carte de la grotte" % [where, exit.map])
-	exit.cave = cave
+	for exit: CaveExit in exits:
+		if maps.has(exit.map):
+			return _fail("%s : la sortie « %s » est une carte de la grotte" % [where, exit.map])
+		exit.cave = cave
 	_maps[cave] = maps
-	_exits[cave] = exit
+	_exits[cave] = exits
 	for map: StringName in maps:
 		_cave_of[map] = cave
 	return ok
 
 
-func _parse_exit(raw: Variant, where: String) -> CaveExit:
+## « escapes » (jalon 17) : liste non vide de sorties à plage de rangées, plages disjointes ;
+## vide si une erreur est trouvée.
+func _parse_escapes(raw: Variant, where: String) -> Array[CaveExit]:
+	var exits: Array[CaveExit] = []
+	if not raw is Array or (raw as Array).is_empty():
+		_fail("%s : « escapes » doit être une liste non vide de sorties" % where)
+		return exits
+	var valid := true
+	for index: int in (raw as Array).size():
+		var exit := _parse_exit(raw[index], where, "escapes[%d]" % index)
+		if exit == null:
+			valid = false
+			continue
+		for other: CaveExit in exits:
+			if exit.first_row <= other.last_row and other.first_row <= exit.last_row:
+				valid = _fail("%s : « escapes[%d].rows » chevauche une autre sortie"
+					% [where, index])
+		exits.append(exit)
+	if not valid:
+		exits.clear()
+	return exits
+
+
+## Une sortie : « escape » (sans « rows ») ou un élément de « escapes » (« rows » obligatoire).
+func _parse_exit(raw: Variant, where: String, key_name: String = "escape") -> CaveExit:
+	var with_rows := key_name != "escape"
 	if not raw is Dictionary:
-		_fail("%s : « escape » doit être un objet { map, spawn, facing }" % where)
+		_fail("%s : « %s » doit être un objet { map, spawn, facing%s }"
+			% [where, key_name, ", rows" if with_rows else ""])
 		return null
 	var entry: Dictionary = raw
 	var valid := true
+	var allowed := _ESCAPES_KEYS if with_rows else _ESCAPE_KEYS
 	for key: Variant in entry:
-		if not _ESCAPE_KEYS.has(str(key)):
-			valid = _fail("%s : clé inconnue « escape.%s »" % [where, key])
+		if not allowed.has(str(key)):
+			valid = _fail("%s : clé inconnue « %s.%s »" % [where, key_name, key])
 	for key: String in ["map", "spawn"]:
 		var value: Variant = entry.get(key)
 		if not value is String or (value as String).strip_edges().is_empty():
-			valid = _fail("%s : « escape.%s » doit être un identifiant non vide" % [where, key])
+			valid = _fail("%s : « %s.%s » doit être un identifiant non vide"
+				% [where, key_name, key])
 	var facing: Variant = entry.get("facing")
 	if not facing is String or not Grid.is_direction_name(facing):
-		valid = _fail("%s : « escape.facing » doit être up, down, left ou right" % where)
+		valid = _fail("%s : « %s.facing » doit être up, down, left ou right" % [where, key_name])
+	var rows := Vector2i(-1, -1)
+	if with_rows:
+		rows = _parse_rows(entry.get("rows"))
+		if rows.x < 0:
+			valid = _fail("%s : « %s.rows » doit être [première, dernière], entiers ≥ 0"
+				% [where, key_name])
 	if not valid:
 		return null
 	var exit := CaveExit.new()
 	exit.map = StringName(entry["map"])
 	exit.spawn = StringName(entry["spawn"])
 	exit.facing = Grid.direction_from_name(facing)
+	exit.first_row = rows.x
+	exit.last_row = rows.y
 	return exit
+
+
+## [première, dernière] rangée (entiers ≥ 0, première ≤ dernière) ; (-1, -1) si invalide.
+static func _parse_rows(raw: Variant) -> Vector2i:
+	if not raw is Array or (raw as Array).size() != 2:
+		return Vector2i(-1, -1)
+	var bounds: Array[int] = []
+	for value: Variant in raw:
+		if not (value is int or value is float) or float(value) != floorf(float(value)) \
+				or int(value) < 0:
+			return Vector2i(-1, -1)
+		bounds.append(int(value))
+	if bounds[0] > bounds[1]:
+		return Vector2i(-1, -1)
+	return Vector2i(bounds[0], bounds[1])
 
 
 func _fail(message: String) -> bool:

@@ -1635,7 +1635,8 @@ func get_caves() -> CaveLibrary:
 ## pendant le fondu laisse la sauvegarde d'avant, Corde comprise. Ni soin ni point de repos.
 func _on_field_item_requested(item_id: StringName) -> void:
 	var item := _items.get_item(item_id)
-	var exit := FieldItemRules.escape_target(_current_map_id(), _caves)
+	# J17 (§2.3) : la case du joueur choisit la bouche d'une grotte à deux bouches.
+	var exit := FieldItemRules.escape_target(_current_map_id(), _caves, _player.get_cell())
 	if item == null or exit == null or not GameState.bag.has(item_id):
 		return
 	_menu.close()

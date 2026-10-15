@@ -217,3 +217,40 @@ func test_last_rope_leaves_the_bag() -> void:
 	await wait_until(func() -> bool: return _boot.get_map().map_id == &"route_3" \
 		and _boot.is_stable(), TIMEOUT)
 	assert_false(GameState.bag.has(ROPE), "plus de Corde")
+
+
+# --- Jalon 17 (T6, jalon-17.md §2.3) : grotte à deux bouches --------------------------------
+
+## Grotte de test sur la Route 3 (aucune grotte à deux bouches n'est encore construite : la
+## Cave Taupiqueur arrive au T15) : rangées 0..19 → Argenta devant l'Arène, 20.. → devant le
+## Centre. Ajoutée à la liste du vrai Boot (la même que celle du Sac).
+const TWO_MOUTHS := {"caves": {"qa_two_mouths": {"maps": ["route_3"], "escapes": [
+	{"rows": [0, 19], "map": "pewter_city", "spawn": "from_gym", "facing": "down"},
+	{"rows": [20, 999], "map": "pewter_city", "spawn": "from_center", "facing": "down"},
+]}}}
+
+
+func _rope_from_two_mouth_cave(spawn: StringName, expected_spawn: StringName) -> void:
+	await _resume_at(&"route_3", spawn)
+	assert_true(_boot.get_caves().add_from_dict(TWO_MOUTHS), "grotte de test ajoutée")
+	var map := (load(MapCatalog.scene_path(&"pewter_city")) as PackedScene).instantiate() \
+		as GameMap
+	var expected := map.get_spawn_cell(expected_spawn)
+	map.free()
+	await _use_rope()
+	await _close_dialogue()
+	await wait_until(func() -> bool: return _boot.get_map().map_id == &"pewter_city" \
+		and _boot.is_stable(), TIMEOUT)
+	assert_eq(_boot.get_player().get_cell(), expected, "bouche %s" % expected_spawn)
+	assert_eq(GameState.bag.count_of(ROPE), 1, "une Corde de moins")
+	assert_eq(_results, [] as Array[String], "aucun refus")
+
+
+func test_two_mouth_cave_north_half() -> void:
+	# from_center_w : rangée 13.
+	await _rope_from_two_mouth_cave(&"from_center_w", &"from_gym")
+
+
+func test_two_mouth_cave_south_half() -> void:
+	# from_pewter_c : rangée 27.
+	await _rope_from_two_mouth_cave(&"from_pewter_c", &"from_center")

@@ -329,6 +329,25 @@ de la Cave, canyon vu du ciel, clairières trop larges) sont respectés.
   de la vraie scène), `escape` et `escapes` exclusifs. `FieldItemRules.escape_target(map, caves,
   cell)` et l'appel de `boot.gd:1527` passent la case du joueur. Tests : `test_cave_library`
   (plages, exclusivité, erreurs), `test_escape_rope` (deux moitiés, rangée frontière 39/40).
+- **Réalignement T6 (2026-10-15)** — fait ainsi, écarts au texte ci-dessus :
+  - l'appel est à `boot.gd:1634` (`_on_field_item_requested`), avec `_player.get_cell()` ;
+  - `CaveExit.first_row` / `last_row` (−1 = sortie unique) et `covers_row(row)` ;
+    `CaveLibrary.escape_target(map_id, cell := NO_CELL)` : sortie unique → la case est ignorée
+    (Mont Sélénite inchangé, tests existants intacts) ; plusieurs bouches → la plage de `cell.y`,
+    **null** sans case ou hors de toute plage (aucune bouche devinée). `get_exits(cave)` liste
+    toutes les sorties.
+  - Validation au chargement : `escape` / `escapes` exclusifs, liste non vide, `rows` =
+    `[première, dernière]` entiers ≥ 0 dans l'ordre, plages **disjointes**, clés inconnues
+    refusées, aucune sortie vers une carte de la grotte. La **couverture** de toute la hauteur
+    se vérifie avec la vraie scène : `test_map_catalog.test_cave_mouth_ranges_cover_every_row`
+    (passe tant qu'il n'y a pas de grotte à deux bouches ; en attente tant que la carte manque).
+  - `test_map_catalog.test_cave_escape_targets_exist_with_their_spawn` parcourt désormais
+    **toutes** les sorties (`get_exits`) au lieu de la seule sortie de la première carte.
+  - `test_escape_rope` : deux tests dans le vrai Boot avec une **grotte de test** ajoutée sur la
+    Route 3 (rangées 13 et 27 → deux points d'apparition d'Argenta), car la Cave n'existe pas
+    encore ; la frontière 39/40 est testée en pur (`test_cave_library`,
+    `test_field_item_rules`). `caves.json` **non modifié** : l'entrée `digletts_cave` vient avec
+    la carte (T15).
 - **Rencontres** : gravats seulement (`data/encounters/digletts_cave.json`, terrain `rubble`, `rate`
   25, `ramp` 15 → 20 comme le Mont Sélénite) ; intro éboulis existante.
 - **Taupiqueur d'ambiance** : PNJ `shy = hide` (réaction existante, `ambient_watcher.gd:56`), sprite
