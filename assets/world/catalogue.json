@@ -5320,14 +5320,14 @@
    "fichier": "res://assets/world/buildings/bldg_ss_anne_proue_01.png",
    "taille": [
     960,
-    462
+    476
    ]
   },
   "bldg_ss_anne_milieu_01": {
    "fichier": "res://assets/world/buildings/bldg_ss_anne_milieu_01.png",
    "taille": [
     864,
-    555
+    572
    ]
   },
   "bldg_ss_anne_poupe_01": {

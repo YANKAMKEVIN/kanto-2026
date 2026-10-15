@@ -4,11 +4,11 @@
 [ext_resource type="Material" path="res://game/world/lighting/materials/world_object.tres" id="2_x8h8q"]
 [ext_resource type="Texture2D" path="res://assets/world/buildings/bldg_ss_anne_poupe_01.png" id="3_lnjhg"]
 
-[node name="BldgSsAnnePoupe01" type="Node2D" unique_id=824890502]
+[node name="BldgSsAnnePoupe01" type="Node2D" unique_id=506193909]
 script = ExtResource("1_at1rw")
 footprint = Array[Vector2i]([])
 
-[node name="Sprite" type="Sprite2D" parent="." unique_id=1422912381]
+[node name="Sprite" type="Sprite2D" parent="." unique_id=1243977133]
 unique_name_in_owner = true
 material = ExtResource("2_x8h8q")
 texture = ExtResource("3_lnjhg")
