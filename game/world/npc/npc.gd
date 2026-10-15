@@ -1120,7 +1120,9 @@ func show_emote(_kind: StringName) -> void:
 	_emote_bubble.texture = EMOTE_ICON
 	_emote_bubble.centered = false
 	_emote_bubble.offset = -EMOTE_TIP_IN_ICON
-	_emote_bubble.z_index = 10
+	# Au-dessus du voile d'obscurité et des cimes (J17 T9 / J18 §2.2) : un signe d'interface.
+	_emote_bubble.z_as_relative = false
+	_emote_bubble.z_index = WorldLighting.Z_ABOVE_VEIL
 	_emote_bubble.position = tip + Vector2(0.0, UiTokens.EMOTE_RISE)
 	_emote_bubble.scale = Vector2.ZERO
 	_emote_bubble.modulate.a = 0.0

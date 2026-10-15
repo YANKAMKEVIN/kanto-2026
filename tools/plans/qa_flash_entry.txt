@@ -1,0 +1,26 @@
+# QA Flash (jalon 17, T10) — pièce éclairée `qa_flash_entry` (PROVISOIRE, retirée au T28) : le
+# dehors de la grotte obscure de QA, pour entrer dans `qa_flash` « depuis une carte hors de cette
+# grotte » (règle de la mise en scène de Flash, T24). Aucune catégorie : ni grotte (pas dans
+# caves.json, pas de voile) ni intérieur. Construite par tools/build_qa_flash.gd.
+#
+# 12 × 8 cases. Passage (5..6, 0) ↑ vers `qa_flash` ; arrivée tournée ↓ en (5..6, 1).
+# Légende : # paroi   . sol calme   L lampe (bloquée, halo)   E passage (praticable, bord)
+
+PRATICABLES .gjUVE
+
+GRILLE 12 8
+00 #####EE#####
+01 ##L......L##
+02 ##........##
+03 ##........##
+04 ##........##
+05 ##........##
+06 ##........##
+07 ############
+FIN
+
+POSITIONS
+sortie              warp           5..6,0       libre   # STEP_ON ↑ → qa_flash (from_qa_flash_entry_w|e)
+from_qa_flash       spawn          5..6,1       libre   # arrivée depuis la grotte, tournée ↓
+lampes              repere         2,1;9,1      bloque  role=lampe
+FIN

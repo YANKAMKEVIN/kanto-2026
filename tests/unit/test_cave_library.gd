@@ -26,7 +26,8 @@ func test_real_data_mt_moon() -> void:
 	var caves := CaveLibrary.new()
 	assert_true(caves.load_file(), "data/world/caves.json valide")
 	assert_eq(caves.get_errors().size(), 0)
-	assert_eq(caves.get_caves(), [&"mt_moon"] as Array[StringName])
+	# J17 T10 : grotte de QA « qa_flash », provisoire (retirée au T28).
+	assert_eq(caves.get_caves(), [&"mt_moon", &"qa_flash"] as Array[StringName])
 	assert_eq(caves.get_maps(&"mt_moon"),
 		[&"mt_moon_1f", &"mt_moon_b1f", &"mt_moon_b2f"] as Array[StringName])
 	for map_id: StringName in [&"mt_moon_1f", &"mt_moon_b1f", &"mt_moon_b2f"]:
@@ -144,3 +145,42 @@ func test_caves_must_be_an_object() -> void:
 	assert_false(caves.add_from_dict({"caves": {"x": "texte"}}))
 	assert_eq(caves.size(), 0)
 	assert_push_error_count(2)
+
+
+# --- Grottes obscures (J17 T9, clé « dark ») ---------------------------------------------------
+
+func test_mt_moon_is_not_dark() -> void:
+	var caves := CaveLibrary.new()
+	assert_true(caves.load_file())
+	# Dossier 21 §5.2 : le Mont Sélénite garde son rendu validé, sans voile.
+	for map_id: StringName in caves.get_maps(&"mt_moon"):
+		assert_false(caves.is_dark(map_id), "%s : pas de voile" % map_id)
+	assert_false(caves.is_dark(&"route_3"), "hors grotte")
+	assert_false(caves.is_dark(&""))
+	# J17 T10 : la grotte de QA du voile (provisoire, retirée au T28) est obscure.
+	assert_true(caves.is_dark(&"qa_flash"))
+	assert_false(caves.is_dark(&"qa_flash_entry"), "sa pièce d'entrée est éclairée")
+
+
+func test_dark_key() -> void:
+	var caves := CaveLibrary.new()
+	var data := {"caves": {
+		"noire": {"maps": ["n1", "n2"], "escape": _escape(), "dark": true},
+		"claire": {"maps": ["c1"], "escape": _escape(), "dark": false},
+		"sans": {"maps": ["s1"], "escape": _escape()},
+	}}
+	assert_true(caves.add_from_dict(data))
+	assert_true(caves.is_dark(&"n1"))
+	assert_true(caves.is_dark(&"n2"), "toutes les cartes de la grotte")
+	assert_false(caves.is_dark(&"c1"), "dark faux")
+	assert_false(caves.is_dark(&"s1"), "dark absent : faux")
+	assert_false(caves.is_dark(&"dehors"))
+
+
+func test_dark_must_be_a_bool() -> void:
+	var caves := CaveLibrary.new()
+	var data := {"caves": {"g": {"maps": ["g1"], "escape": _escape(), "dark": "oui"}}}
+	assert_false(caves.add_from_dict(data))
+	assert_false(caves.is_cave(&"g1"), "grotte écartée")
+	assert_false(caves.is_dark(&"g1"))
+	assert_push_error("« dark » doit être un booléen")

@@ -783,10 +783,23 @@ et annexe A validée).
 - §2.10 : `DarknessConfig`, `DarknessRules`, `DarknessVeil`, shader, `darkness.json`, `dark` dans
   `CaveLibrary`, `LAYER_WORLD_VEIL`. Tests §2.10. **CA** : tests verts ; Mont Sélénite sans voile
   (test) ; capture Mac du voile sur une carte de test.
+- **Fait (2026-10-15) — aligné sur `jalon-18.md` §2 (une seule brique)** : `DarknessProfile`,
+  `VeilParams`, `VeilMath`, `DarknessVeil` (`Node2D` dans le monde, `WorldLighting.Z_VEIL` = 20,
+  bulles en `Z_ABOVE_VEIL` = 21), `DarknessController` (Boot), shader en coordonnées du monde,
+  trous des `LightGlow`. Remplacent `DarknessConfig`, le calque `LAYER_WORLD_VEIL` et
+  `DarknessRules` (« obscure » = `CaveLibrary.is_dark` ; `should_cue` attend Q-1, T24). Tests
+  `test_darkness_profile`, `test_veil_math`, `test_darkness_veil`, `test_cave_library`,
+  `test_debug_start` (clé `veil`).
 
 #### T10 — constructeur-monde : `qa_flash` et départs — **(A)**, après T9
 - §2.17. **CA** : départs chargés sans erreur ; README à jour ; captures relues (voile sombre, halo
   ouvert, joueur au bord de la carte).
+- **Fait (2026-10-15)** : `qa_flash` (32 × 16, obscure) + `qa_flash_entry` (12 × 8), outil
+  `tools/build_qa_flash.gd`, départs `flash_qa`, `flash_qa_dark`, `flash_qa_lit` (clé `veil`).
+  Reportés au T7 / T24 : CS05 au Sac, `flash_qa_no_pokemon`, `flash_qa_no_hm`, `flash_qa_ko`. À
+  retirer au T28 : cartes, assets `assets/world/maps/qa_flash*`, grilles, outils
+  `build_qa_flash.gd` / `capture_qa_flash.gd`, `data/npcs/qa_flash.json`, entrée de `caves.json`,
+  départs, `test_qa_flash`, listes de `test_map_catalog` et `test_cave_library`.
 
 #### T11 — architecte : kit d'assets série 19 — **(A)**
 - §1.4 ; fiche `docs/design/fiches-assets/serie-19-chemins.md`, `tools/art/serie19.py`

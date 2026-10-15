@@ -21,16 +21,21 @@ extends RefCounted
 ## écartée, l'erreur signalée ([method get_errors], push_error). Que les cartes existent, soient
 ## extérieures (`interior = false`, absentes de `interiors.json`) et que la sortie ait son point
 ## d'apparition se vérifie avec les vraies scènes (`test_cave_library`, dès qu'elles existent).
+## Clé facultative « dark » (booléen, faux par défaut ; J17 T9 / J18, dossier 21 §5.2) : grotte
+## **obscure**, couverte par le voile d'obscurité ([DarknessController]) ; seule source de
+## « carte obscure » ([method is_dark]). Le Mont Sélénite n'en a pas.
 
 const DATA_PATH: String = "res://data/world/caves.json"
 const _ROOT_KEYS: Array[String] = ["_doc", "caves"]
-const _CAVE_KEYS: Array[String] = ["maps", "escape"]
+const _CAVE_KEYS: Array[String] = ["maps", "escape", "dark"]
 const _ESCAPE_KEYS: Array[String] = ["map", "spawn", "facing"]
 
 ## Carte → grotte.
 var _cave_of: Dictionary[StringName, StringName] = {}
 ## Grotte → cartes (ordre du fichier).
 var _maps: Dictionary[StringName, Array] = {}
+## Grottes obscures (clé « dark » vraie).
+var _dark: Dictionary[StringName, bool] = {}
 ## Grotte → sortie.
 var _exits: Dictionary[StringName, CaveExit] = {}
 var _errors: PackedStringArray = PackedStringArray()
@@ -91,6 +96,11 @@ func cave_of(map_id: StringName) -> StringName:
 	return _cave_of.get(map_id, &"")
 
 
+## Vrai si [param map_id] est une carte d'une grotte obscure (« dark » : voile d'obscurité).
+func is_dark(map_id: StringName) -> bool:
+	return _dark.has(cave_of(map_id))
+
+
 ## Sortie de la grotte de [param map_id] (où mène la Corde Sortie) ; null hors grotte.
 func escape_target(map_id: StringName) -> CaveExit:
 	return _exits.get(cave_of(map_id))
@@ -149,7 +159,12 @@ func _add_cave(cave: StringName, raw: Variant, where: String) -> bool:
 		return false
 	if maps.has(exit.map):
 		return _fail("%s : la sortie « %s » est une carte de la grotte" % [where, exit.map])
+	var dark: Variant = entry.get("dark", false)
+	if not dark is bool:
+		return _fail("%s : « dark » doit être un booléen" % where)
 	exit.cave = cave
+	if dark:
+		_dark[cave] = true
 	_maps[cave] = maps
 	_exits[cave] = exit
 	for map: StringName in maps:

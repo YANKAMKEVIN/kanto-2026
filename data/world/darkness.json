@@ -1,0 +1,12 @@
+{
+	"_doc": "Voile d'obscurité des grottes obscures (caves.json « dark »), lu par DarknessProfile ; brique commune J17 T9 / J18 (docs/tech/jalon-18.md §2, docs/tech/jalon-17.md §2.10 ; dossier 21 I-7, I-8). Rayons en cases (96 px) : « clear » = halo net autour du joueur, « fade » = fin du fondu ; « outside » = opacité du voile hors du halo (≤ 0,85 : jamais de noir total). « dark » = sans Flash, « lit » = avec Flash. « center_offset » : pixels du centre du trou au-dessus des pieds du joueur (centre de son corps). « breath » : amplitude relative du battement du halo (0 = aucun ; coupé par « Réduire les animations »), « breath_period » en secondes. « open_duration » : ouverture du halo (Flash), secondes. « glow_hole_scale » : rayon du trou percé par un halo fixe (LightGlow) = rayon du type × cette échelle. « dither » : tramage contre les bandes du dégradé (0 = aucun ; 1/255 environ). Toutes les valeurs sont des défauts [D], à régler sur S24.",
+	"color": "#04060c",
+	"dark": { "clear": 2.5, "fade": 4.0, "outside": 0.6 },
+	"lit": { "clear": 7.0, "fade": 9.0, "outside": 0.3 },
+	"center_offset": -48,
+	"breath": 0.03,
+	"breath_period": 3.5,
+	"open_duration": 0.6,
+	"glow_hole_scale": 1.0,
+	"dither": 0.004
+}
