@@ -533,6 +533,39 @@ Grilles, vues, données et art avancent dès maintenant.
 - Fonds de combat des Routes 12 et 16 : fonds de route existants.
 - Amnésie : Défense Spéciale +2.
 
+## 19. Grilles v1 (lot 21.0) — À VALIDER par Kevin
+
+> Conçues le 2026-10-15 (branche `j21-grilles`, fusionnée ici). La grille fait foi pour la
+> géométrie. Contrôle : `python3 -I tools/art/plan_check_j21.py` → **TOUT EST CONFORME** (il lit
+> les grilles voisines des J17 à J20 sur leurs branches). Son enregistrement dans
+> `tools/art/plan_check.py` se fera à l'intégration (une ligne, indiquée dans son en-tête).
+
+| Carte | Taille | Points clés |
+|---|---|---|
+| `pokemon_tower_7f.txt` | 20 × 18 | Géométrie RB ; 3 Sbires en (9, 11) →, (12, 9) ←, (9, 7) →, vue 3, **inévitables dans l'ordre 1, 2, 3** ; Fuji en (10, 3) devant un autel de 2 cases ; escalier (9, 16), paire T67 ; au 6F, `arrivee_T67` à ajouter en (10, 16). |
+| `route_12.txt` | 39 × 102 | Route 12 nord à l'échelle × 1,5 ; raccord nord (21..23, 0) ↔ Lavanville (21..23, 35) ; raccord ouest (0, 93..94) ↔ Route 11 (75, 14..15) ; poste 9 × 9 traversant (portes nord et sud de 3 cases) ; 4 Pêcheurs (vue 6), le n° 1 inévitable ; bord sud « À venir » ; Lavanville → croisement : 145 pas. |
+| `route_16.txt` | 44 × 28 | Raccord (43, 21..23) ↔ Céladopole (0, 21..23) ; Ronflex 2 × 2 en (24..25, 22..23) ferme tout le goulet ; `face_ronflex` (26, 22..23) ; porte du poste (15..16, 20) « À venir » ; voie haute et arbre en décor. |
+
+**Valeurs par défaut retenues [D]** (en attendant l'avis de Kevin) :
+- **Ronflex : le `FlagGate` s'ouvre sur `*_done`** (dossier §9.4), y compris celui du J17 sur la
+  Route 11, aujourd'hui sur `snorlax_route_11_awake` : le J21 l'aligne (donnée seulement).
+- **Ronflex de la Route 11** : on lui parle depuis la Route 11, en (68, 14..15) côté est (atteint par
+  la Route 12) ou (65, 14..15) côté ouest ; aucune case de la Route 12 ne lui est voisine.
+- **Poste de la Route 12** : deux portes (traversée) et un 2F (CT39) ; lisibilité de la porte nord
+  à vérifier sur la vue peinte.
+- **Îlot de la CT Jackpot de RB** (accessible seulement en Surf dans RB) : **îlot décor vide** ; la
+  question revient avec le Surf.
+- **Arbre de la Route 16** : peint comme un **arbre dense ordinaire** (la Coupe existe depuis le J16 :
+  un faux arbre à Couper frustrerait).
+- **Aucune herbe ni rencontre** sur la Route 12 nord et la Route 16 est (dans RB, les herbes sont au
+  sud du croisement et sur la voie haute).
+- Fuji tourné vers le nord (il prie devant l'autel) ; ponton de 3 cases ; raccord de la Route 11 sur
+  2 rangées.
+
+**Question pour Kevin** : la Route 12 nord fait 39 × 102 cases à l'échelle × 1,5 (un peu plus que
+Céladopole), surtout de l'eau et du ponton. Garder, ou réduire à × 1,25 pour alléger la peinture ?
+Défaut : **garder × 1,5**.
+
 ## Décisions verrouillées
 
 - Les 7 décisions de la V2 et les arbitrages L-1 à L-16.
