@@ -211,7 +211,8 @@ func test_building_doors_lead_inside() -> void:
 		"portes + porte cambriolée + raccords ouest, nord et sud, rien d'autre")
 
 
-func test_east_is_closed_and_the_south_leads_to_coming_soon_route_5() -> void:
+## Jalon 15 T21 : le sud mène à la vraie Route 5 (`from_cerulean_w|c|e`, arrivée tournée ↓).
+func test_east_is_closed_and_the_south_leads_to_route_5() -> void:
 	for cell: Vector2i in _plan.cells_at("barriere_est"):
 		assert_true(_grid.is_solid(cell), "barrière %s" % cell)
 		for direction: Vector2i in GridPaths.DIRECTIONS:
@@ -226,10 +227,9 @@ func test_east_is_closed_and_the_south_leads_to_coming_soon_route_5() -> void:
 		var warp := _map.get_warps().find_on_push(SOUTH[i], Vector2i.DOWN)
 		assert_not_null(warp, "raccord sud %s" % SOUTH[i])
 		if warp != null:
-			assert_true(warp.is_coming_soon())
-			assert_eq(warp.coming_soon, "Route 5")
-			assert_eq(warp.facing, Vector2i.UP)
-			assert_eq(warp.target_spawn, StringName("from_route_5_" + ["w", "c", "e"][i]))
+			assert_false(warp.is_coming_soon(), "plus de « ROUTE 5 — À venir »")
+			assert_eq([warp.target_map, warp.target_spawn, warp.facing], [&"route_5",
+				StringName("from_cerulean_" + ["w", "c", "e"][i]), Vector2i.DOWN])
 		assert_eq(_map.get_spawn_cell(StringName("from_route_5_" + ["w", "c", "e"][i])),
 			SOUTH[i])
 	for warp: Warp in _map.get_warps().get_all():

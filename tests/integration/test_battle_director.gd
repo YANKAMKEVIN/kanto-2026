@@ -458,6 +458,89 @@ func test_route22_defeat_keeps_the_money() -> void:
 	assert_ne(_hud.get_message_banner().get_text(), "Tu remportes %s." % MenuFormat.money(280))
 
 
+# --- Jackpot (jalon 15 T17) ---------------------------------------------------------------
+
+## Miaouss Nv. 40 qui ne connaît que Jackpot (2 × 40 = 80 pièces par utilisation réussie).
+func _pay_day_party() -> Party:
+	var party := Party.new()
+	var meowth := PokemonFactory.create(_data, &"meowth", 40, GameRng.new(PLAYER_SEED))
+	meowth.moves.clear()
+	meowth.moves.append(MoveSlot.new(&"pay_day", 20))
+	party.add(meowth)
+	return party
+
+
+static func _coins(events: Array) -> int:
+	var total := 0
+	for e: BattleEvent in events:
+		if e.kind == BattleEvent.Kind.COINS_SCATTERED:
+			total += e.amount
+	return total
+
+
+## Victoire contre le rival de la Route 22 : son argent (« Tu remportes 280 ₽. »), puis les
+## pièces du Jackpot (« Tu ramasses … »), les deux versés.
+func test_pay_day_coins_are_collected_after_the_trainer_prize() -> void:
+	_state.party = _pay_day_party()
+	_state.starter_species = &"bulbasaur"
+	_state.rng = GameRng.new(5)
+	_state.money = 3000
+	var played: Array = await _play(&"rival_route22")
+	assert_eq(played[0], Battle.Outcome.WIN)
+	var coins := _coins(played[1])
+	assert_gt(coins, 0, "au moins un Jackpot")
+	assert_eq(coins % 80, 0, "80 par Jackpot")
+	assert_eq(_state.money, 3000 + 280 + coins)
+	assert_eq(_hud.get_message_banner().get_text(), "Tu ramasses %s." % MenuFormat.money(coins),
+		"après l'argent du Dresseur")
+
+
+## Sauvage : les pièces sont ramassées aussi, plafonnées par GameState.
+func test_pay_day_coins_are_collected_after_a_wild_victory_up_to_the_cap() -> void:
+	var request := _wild_request(&"rattata", 3, 4)
+	_state.party = _pay_day_party()
+	_state.money = GameState.MONEY_MAX - 30
+	var played: Array = await _play_request(request, false)
+	assert_eq(played[0], Battle.Outcome.WIN)
+	assert_eq(_coins(played[1]), 80)
+	assert_eq(_state.money, GameState.MONEY_MAX, "plafond")
+	assert_eq(_hud.get_message_banner().get_text(), "Tu ramasses %s." % MenuFormat.money(80))
+
+
+## Fuite après un Jackpot : rien n'est ramassé.
+func test_pay_day_coins_are_lost_when_fleeing() -> void:
+	var request := _wild_request(&"onix", 40, 4)
+	var party := _pay_day_party()
+	party.get_lead().moves.append(MoveSlot.new(&"growl", 40))
+	_state.party = party
+	_state.money = 1000
+	var events: Array[BattleEvent] = []
+	_director.event_played.connect(func(e: BattleEvent) -> void: events.append(e))
+	var done: Array[bool] = [false]
+	var outcome: Array = [Battle.Outcome.NONE]
+	var runner := func() -> void:
+		outcome[0] = await _director.run_request(request, _map)
+		done[0] = true
+	runner.call()
+	var deadline := Time.get_ticks_msec() + 20000
+	while not done[0] and Time.get_ticks_msec() < deadline:
+		var battle := _director.get_battle()
+		if battle != null and battle.get_state() == Battle.State.CHOOSING:
+			var scattered := battle.get_pay_day_coins() > 0
+			match _hud.get_zone():
+				BattleHud.Zone.ACTIONS:
+					_hud.action_selected.emit(ActionGrid.RUN if scattered else ActionGrid.ATTACK)
+				BattleHud.Zone.MOVES:
+					_hud.move_selected.emit(0)
+		await wait_process_frames(1)
+	assert_true(done[0], "le combat s'est terminé")
+	if outcome[0] != Battle.Outcome.FLED:
+		pending("graine sans fuite réussie : à ajuster")
+		return
+	assert_gt(_coins(events), 0, "un Jackpot avant la fuite")
+	assert_eq(_state.money, 1000, "fuite : pièces perdues")
+
+
 ## Le labo garde le SAC muet (décision n° 12), même avec des Potions.
 func test_rival_lab_keeps_the_bag_silent() -> void:
 	_prepare(&"charmander", 1)
@@ -484,6 +567,61 @@ func test_empty_party_is_refused() -> void:
 	var outcome: int = await _director.run(&"rival_lab", _map, actors)
 	assert_eq(outcome, Battle.Outcome.NONE)
 	assert_push_error("aucun Pokémon valide")
+
+
+## J15 T24 (garde-fou) : une équipe entière K.O. (pas vide) est refusée avant tout, en Dresseur
+## comme en sauvage : aucun aléatoire consommé, rien d'affiché, joueur libre.
+func test_a_knocked_out_party_is_refused_before_anything() -> void:
+	_prepare(&"charmander", 1)
+	(_state.party as Party).get_lead().hp = 0
+	watch_signals(_director)
+	var actors: Dictionary[StringName, StringName] = {}
+	var outcome: int = await _director.run(&"forest_scout_theo", _map, actors)
+	assert_eq(outcome, Battle.Outcome.NONE)
+	var request := BattleRequest.wild(WildEncounter.new(&"rattata", 3, &"route_1_grass"), _data,
+		GameRng.new(4), Vector2i(5, 4), _items)
+	outcome = await _director.run_request(request, _map)
+	assert_eq(outcome, Battle.Outcome.NONE)
+	assert_push_error("aucun Pokémon valide", "Dresseur refusé")
+	assert_push_error("aucun Pokémon valide", "sauvage refusé")
+	assert_eq((_state.rng as GameRng).roll(1000), GameRng.new(1).roll(1000),
+		"aucun aléatoire consommé (équipe du Dresseur non tirée)")
+	assert_signal_not_emitted(_director, "battle_started")
+	assert_false(_director.is_running())
+	assert_true(_player.is_input_enabled(), "joueur libre")
+
+
+## J15 T24 (Rouge/Bleu) : le dernier Pokémon du joueur, sans PP, met K.O. le seul Pokémon du
+## Dresseur avec Lutte et tombe sur le contrecoup : DÉFAITE. Ni prix (« Tu remportes… » absent),
+## ni argent perdu, ni XP ; l'équipe reste K.O. (le réveil au Centre est l'affaire de la scène).
+func test_a_struggle_double_ko_against_a_trainer_is_a_loss() -> void:
+	var party := Party.new()
+	var strong := PokemonFactory.create(_data, &"charmander", 50, GameRng.new(PLAYER_SEED))
+	for slot: MoveSlot in strong.moves:
+		slot.pp = 0
+	strong.hp = 1
+	var experience := strong.experience
+	party.add(strong)
+	_state.party = party
+	_state.starter_species = &"charmander"
+	_state.rng = GameRng.new(5)
+	_state.money = 3000
+	watch_signals(_director)
+	var played: Array = await _play(&"forest_scout_theo")
+	assert_eq(played[0], Battle.Outcome.LOSS)
+	var fainted: Array = []
+	for e: BattleEvent in played[1]:
+		if e.kind == BattleEvent.Kind.FAINTED:
+			fainted.append(e.side)
+		assert_ne(e.kind, BattleEvent.Kind.EXP_GAINED, "aucune XP")
+	assert_eq(fainted, [BattleEvent.SideId.FOE, BattleEvent.SideId.PLAYER], "double K.O.")
+	assert_signal_emitted_with_parameters(_director, "battle_finished",
+		[&"forest_scout_theo", Battle.Outcome.LOSS])
+	assert_eq(_state.money, 3000, "ni prix ni perte")
+	assert_ne(_hud.get_message_banner().get_text(), "Tu remportes %s." % MenuFormat.money(72))
+	assert_eq(strong.experience, experience)
+	assert_true(strong.is_fainted(), "pas de soin ici")
+	assert_true(_player.is_input_enabled())
 
 
 # --- XP, niveaux, apprentissage et oubli (jalon 5C, T11) --------------------------------

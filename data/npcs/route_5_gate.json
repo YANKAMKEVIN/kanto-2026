@@ -1,0 +1,8 @@
+{
+	"route_5_guard": {
+		"cell": [4, 2],
+		"facing": "down",
+		"sprite": "guard",
+		"dialogue": "route_5_guard"
+	}
+}

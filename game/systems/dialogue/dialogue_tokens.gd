@@ -22,11 +22,23 @@ const PLAYER: StringName = &"player"
 ## Prénom du rival (GameState.rival_name) : le **nom affiché** du rival, jamais son rôle ni ses
 ## identifiants techniques (dossier 13 §3.5, couche 1).
 const RIVAL: StringName = &"rival"
-## Nom affiché du compagnon (jalon 11, phrases de curiosité n° 50 à 59 : « {pokemon} renifle
-## l'air. ») ; sans compagnon, pas de valeur.
+## Jeton partagé (un seul nom affiché de Pokémon) :
+## - compagnon (jalon 11, phrases de curiosité n° 50 à 59 : « {pokemon} renifle l'air. ») : son
+##   nom affiché ; sans compagnon, pas de valeur ;
+## - Pension (J15, jalon-15.md §2.5.2) : le Pokémon gardé ou rendu, **à la place** de celui du
+##   compagnon pendant une conversation de la Pension (Boot fusionne les valeurs du
+##   [DaycareDirector] par-dessus [method values_for]).
 const POKEMON: StringName = &"pokemon"
+## Pension (J15) : niveaux gagnés, prix annoncé (nombre formaté, **sans** « ₽ » : le texte le
+## porte). Valeurs fournies par le [DaycareDirector] pendant sa conversation seulement.
+const LEVELS: StringName = &"levels"
+const PRICE: StringName = &"price"
 ## Jetons permis dans les données.
-const KNOWN: Array[StringName] = [FIRST_WILD_SPECIES, PLAYER, RIVAL, POKEMON]
+const KNOWN: Array[StringName] = [FIRST_WILD_SPECIES, PLAYER, RIVAL, POKEMON, LEVELS, PRICE]
+## Jetons « de contexte » : toujours fournis par le directeur qui joue les dialogues où ils
+## figurent (la Pension). Ce sont les seuls permis dans la question d'un choix (T-7, T-8 : « Ce
+## sera {price} ₽. »), qui ne doit jamais être omise ([DialogueLibrary]).
+const CONTEXT: Array[StringName] = [POKEMON, LEVELS, PRICE]
 const _NAME_CHARS: String = "abcdefghijklmnopqrstuvwxyz_"
 
 

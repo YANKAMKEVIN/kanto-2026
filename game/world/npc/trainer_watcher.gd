@@ -12,6 +12,11 @@ extends Node
 ## a parlé ([signal InteractionController.challenge_requested]), séquence sans « ! » ni
 ## approche. Après sa victoire, le Dresseur reste où il s'est arrêté jusqu'au rechargement de
 ## la carte (Rouge/Bleu) ; battu, il ne regarde plus personne.
+##
+## Garde-fou (J15 T24) : sans aucun Pokémon valide dans l'équipe du joueur (état qui ne doit plus
+## exister : une victoire implique un Pokémon valide, [method Battle._check_end]), aucun Dresseur
+## ne lance sa séquence, ni à la vue ni à la parole (comme l'[EncounterDirector] pour les
+## rencontres sauvages) ; le [BattleDirector] refuse de toute façon un tel combat.
 
 ## Un Dresseur a repéré le joueur et sa séquence commence (tests, futurs sons).
 signal trainer_spotted(npc_id: StringName, trainer_id: StringName)
@@ -20,16 +25,21 @@ var _player: Player
 var _flags: StoryFlags
 var _cutscenes: CutsceneDirector
 var _map: GameMap
+## GameState (ou une instance de game_state.gd en test) : l'équipe du joueur. Null : pas de garde.
+var _state: Node
 
 
 ## Branche le watcher (rappelable) : le joueur dont il écoute les pas, les drapeaux d'histoire
-## (« battu ») et le directeur qui joue les séquences.
-func setup(player: Player, flags: StoryFlags, cutscenes: CutsceneDirector) -> void:
+## (« battu »), le directeur qui joue les séquences et [param state], dont l'équipe doit avoir
+## un Pokémon valide pour qu'un Dresseur défie le joueur (null : pas de garde).
+func setup(player: Player, flags: StoryFlags, cutscenes: CutsceneDirector,
+		state: Node = null) -> void:
 	if _player != null and _player.moved.is_connected(_on_player_moved):
 		_player.moved.disconnect(_on_player_moved)
 	_player = player
 	_flags = flags
 	_cutscenes = cutscenes
+	_state = state
 	if _player != null:
 		_player.moved.connect(_on_player_moved)
 
@@ -43,7 +53,7 @@ func set_map(map: GameMap) -> void:
 ## pas un Dresseur, s'il est battu (son dialogue « après » est alors joué par
 ## l'[InteractionController]) ou si une scène tourne.
 func challenge(npc: Npc) -> bool:
-	if not _is_waiting_trainer(npc):
+	if not _is_waiting_trainer(npc) or not _player_can_fight():
 		return false
 	return _play(npc, TrainerEncounter.TALKED_TO)
 
@@ -52,7 +62,7 @@ func _on_player_moved(cell: Vector2i) -> void:
 	if not is_instance_valid(_map) or not is_instance_valid(_player) \
 			or not _player.is_input_enabled():
 		return
-	if _cutscenes == null or _cutscenes.is_running():
+	if _cutscenes == null or _cutscenes.is_running() or not _player_can_fight():
 		return
 	var grid := _map.get_grid()
 	for npc: Npc in _map.get_npcs():
@@ -71,6 +81,14 @@ func _is_waiting_trainer(npc: Npc) -> bool:
 	if not is_instance_valid(npc) or not npc.get_spec().is_trainer():
 		return false
 	return not TrainerRules.is_beaten(_flags, npc.get_spec().trainer_id)
+
+
+## Faux si l'équipe du joueur n'a aucun Pokémon valide (vrai sans état branché).
+func _player_can_fight() -> bool:
+	if _state == null:
+		return true
+	var party := _state.get(&"party") as Party
+	return party != null and party.has_able()
 
 
 func _play(npc: Npc, distance: int) -> bool:

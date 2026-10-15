@@ -1,0 +1,43 @@
+{
+	"route_6_lass_chloe": {
+		"name": "Jeune Dresseuse Chloé", "ai": "random",
+		"can_lose": false, "heal_after": false, "gives_exp": true, "prize_money": 320,
+		"team": [
+			{ "species": "pidgey", "level": 16 }, { "species": "pidgey", "level": 16 },
+			{ "species": "pidgey", "level": 16 }
+		]
+	},
+	"route_6_camper_gabin": {
+		"name": "Campeur Gabin", "ai": "random",
+		"can_lose": false, "heal_after": false, "gives_exp": true, "prize_money": 320,
+		"team": [{ "species": "spearow", "level": 16 }, { "species": "raticate", "level": 16 }]
+	},
+	"route_6_scout_axel": {
+		"name": "Scout Axel", "ai": "random",
+		"can_lose": false, "heal_after": false, "gives_exp": true, "prize_money": 192,
+		"team": [
+			{ "species": "weedle", "level": 16 }, { "species": "caterpie", "level": 16 },
+			{ "species": "weedle", "level": 16 }
+		]
+	},
+	"route_6_camper_mathis": {
+		"name": "Campeur Mathis", "ai": "random",
+		"can_lose": false, "heal_after": false, "gives_exp": true, "prize_money": 400,
+		"team": [{ "species": "squirtle", "level": 20 }]
+	},
+	"route_6_lass_manon": {
+		"name": "Jeune Dresseuse Manon", "ai": "random",
+		"can_lose": false, "heal_after": false, "gives_exp": true, "prize_money": 320,
+		"team": [{ "species": "rattata", "level": 16 }, { "species": "pikachu", "level": 16 }]
+	},
+	"route_6_scout_basile": {
+		"name": "Scout Basile", "ai": "random",
+		"can_lose": false, "heal_after": false, "gives_exp": true, "prize_money": 240,
+		"team": [
+			{
+				"species": "butterfree", "level": 20,
+				"moves": ["confusion", "poison_powder", "stun_spore", "sleep_powder"]
+			}
+		]
+	}
+}

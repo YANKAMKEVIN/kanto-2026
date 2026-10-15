@@ -25,9 +25,10 @@ func test_has_map() -> void:
 	assert_false(MapCatalog.has_map(&"does_not_exist"))
 
 
-## Cartes de QA encore livrées : aucune. Clôture du jalon 9 (T23) : la carte de QA des systèmes
+## Cartes de QA encore livrées. Clôture du jalon 9 (T23) : la carte de QA des systèmes
 ## est retirée ; jalon 12 (T28) : `qa_moves_j12` ; jalon 13 (T22) : `qa_switch_j13` ; jalon 14
-## (T24) : `qa_charge_j14`. Jalon 16 (T16) : quai, navire et Arène d'essai, retirés au T20.
+## (T24) : `qa_charge_j14` ; jalon 15 (T23) : `qa_daycare`. Jalon 16 (T16) : quai, navire et
+## Arène d'essai, retirés au T20.
 const QA_MAPS_SHIPPED: Array[String] = ["qa_dock_j16.tscn", "qa_gym_j16.tscn", "qa_ship_j16.tscn"]
 
 
@@ -36,6 +37,7 @@ func test_only_planned_qa_maps_are_shipped() -> void:
 	assert_false(MapCatalog.has_map(&"qa_moves_j12"))
 	assert_false(MapCatalog.has_map(&"qa_switch_j13"))
 	assert_false(MapCatalog.has_map(&"qa_charge_j14"))
+	assert_false(MapCatalog.has_map(&"qa_daycare"))
 	for file: String in DirAccess.get_files_at(MapCatalog.MAPS_DIR):
 		if file.begins_with("qa_"):
 			assert_true(QA_MAPS_SHIPPED.has(file), "%s : carte de QA non prévue" % file)
