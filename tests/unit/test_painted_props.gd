@@ -53,8 +53,19 @@ const TRAVERSABLE: Array[StringName] = [&"relief_escalier_01", &"ground_hautes_h
 	&"prop_escalier_souterrain_monte_01", &"prop_escalier_souterrain_descend_01",
 	&"int_escalier_descendant_01", &"bldg_ss_anne_proue_01", &"bldg_ss_anne_milieu_01",
 	&"bldg_ss_anne_poupe_01", &"prop_vue_port_01", &"prop_cordage_01", &"prop_applique_01",
-	&"int_tableau_port_01"]
+	&"int_tableau_port_01",
+	# Série 21 (J18) : lointains, flaque, parois de la Grotte Sombre, murs et escalier de la Tour.
+	&"bldg_centrale_lointaine_01", &"prop_tour_lointaine_01", &"prop_flaque_grotte_01",
+	&"relief_paroi_grotte_sombre_01", &"relief_paroi_grotte_sombre_02",
+	&"relief_paroi_grotte_sombre_03", &"relief_paroi_grotte_sombre_04",
+	&"relief_paroi_grotte_sombre_05", &"relief_paroi_grotte_sombre_06",
+	&"relief_paroi_fendue_01", &"relief_mur_tour_01", &"relief_mur_tour_02",
+	&"relief_mur_tour_03", &"relief_mur_tour_04", &"relief_mur_tour_05",
+	&"relief_escalier_tour_01"]
 const GROUND_LAYER: Array[StringName] = [
+	&"prop_flaque_grotte_01", &"relief_mur_tour_01", &"relief_mur_tour_02",
+	&"relief_mur_tour_03", &"relief_mur_tour_04", &"relief_mur_tour_05",
+	&"relief_escalier_tour_01",
 	&"relief_falaise_01", &"relief_escalier_01", &"prop_massif_01", &"relief_muret_01",
 	&"relief_escalier_ville_01",
 	&"ground_champ_01", &"prop_ponton_01", &"relief_escalier_bois_01", &"relief_rebord_01",
@@ -91,7 +102,7 @@ const GROUND_LAYER: Array[StringName] = [
 ## de la Route 2 nord, couché dans la couche du sol (fiche `serie-12-argenta.md`) ; les trois
 ## tranches du S.S. Anne (série 17) : le jeu pose lui-même le reflet et la ligne d'eau.
 const SHADOWLESS_BUILDINGS: Array[String] = ["bldg_poste_foret_nord_01",
-	"bldg_ss_anne_proue_01", "bldg_ss_anne_milieu_01", "bldg_ss_anne_poupe_01"]
+	"bldg_ss_anne_proue_01", "bldg_ss_anne_milieu_01", "bldg_ss_anne_poupe_01", "bldg_centrale_lointaine_01"]
 ## Objets de Bourg Palette, de ses intérieurs et de la Route 1 (DA.0) : tous au catalogue,
 ## chacun avec sa règle et sa scène (assets des scènes du prototype validé).
 const DA0_OBJECTS: Array[StringName] = [
