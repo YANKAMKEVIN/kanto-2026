@@ -6,6 +6,11 @@ const AREAS_PATH := "res://assets/ui/map/kanto_placeholder_areas.json"
 ## 2 nord et Argenta (T11) et les intérieurs (T13) sont construits : liste vide. À retirer
 ## quand leur tâche est fusionnée ; leur existence est vérifiée dès que la scène existe.
 const AWAITING_MAPS: Array[StringName] = []
+## Cartes construites **avant** leur zone (jalon 19 T9 : étages 2F à 6F de la Tour Pokémon). La
+## zone « Tour Pokémon » (nom, description, rectangle sur l'illustration) est créée par le J18 ;
+## T16 y range les cinq cartes puis **vide cette liste**.
+const AWAITING_ZONE: Array[StringName] = [&"pokemon_tower_2f", &"pokemon_tower_3f",
+	&"pokemon_tower_4f", &"pokemon_tower_5f", &"pokemon_tower_6f"]
 
 var _zones: ZoneLibrary
 
@@ -48,6 +53,8 @@ func test_every_map_belongs_to_exactly_one_zone() -> void:
 	var maps := _map_ids()
 	assert_gt(maps.size(), 5)
 	for map_id: StringName in maps:
+		if AWAITING_ZONE.has(map_id) and _zones.zone_of(map_id) == &"":
+			continue
 		assert_ne(_zones.zone_of(map_id), &"", "carte « %s » rangée dans une zone" % map_id)
 	for map_id: StringName in _zones.get_maps():
 		if AWAITING_MAPS.has(map_id) and not MapCatalog.has_map(map_id):
@@ -70,6 +77,8 @@ func test_interiors_belong_to_their_town() -> void:
 func test_zone_names_match_the_map_titles() -> void:
 	_zones.load_file()
 	for map_id: StringName in _map_ids():
+		if AWAITING_ZONE.has(map_id) and _zones.zone_of(map_id) == &"":
+			continue
 		assert_eq(_root_property(map_id, &"display_name"), _zones.zone_name_of(map_id),
 			"titre de « %s » = nom de sa zone" % map_id)
 

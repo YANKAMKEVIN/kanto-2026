@@ -62,6 +62,9 @@ const _NPC_SCENE: PackedScene = preload("res://game/world/npc/npc.tscn")
 ## Bande d'herbe devant les jambes du joueur en hautes herbes (cartes peintes : moitié basse
 ## des touffes, `ground_hautes_herbes_*_bas.png`). Nulle : la bande provisoire du joueur.
 @export var grass_front: Texture2D
+## Cases « calmes » (Tour Pokémon, 5F : dalle purifiée et ses voisines praticables) : aucune
+## rencontre sauvage n'y est tirée (jalon 19, docs/tech/jalon-19.md §2.2). Vide : aucune.
+@export var calm_cells: Array[Vector2i] = []
 
 var _grid: GridWorld
 var _warps: WarpTable
