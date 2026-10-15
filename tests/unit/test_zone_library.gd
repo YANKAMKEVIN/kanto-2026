@@ -14,6 +14,11 @@ func before_each() -> void:
 	_zones = ZoneLibrary.new()
 
 
+## Zones construites dont la description de la Carte attend la validation de Kevin (jalon 16 :
+## annexe A du plan, T3 ; titre et sous-titre du S.S. Anne déjà validés, dossier 19 §0.5 n° 1).
+const AWAITING_TEXTS: Array[StringName] = [&"ss_anne"]
+
+
 ## Identifiants des cartes existantes (une scène par carte, MapCatalog).
 func _map_ids() -> Array[StringName]:
 	var ids: Array[StringName] = []
@@ -39,8 +44,9 @@ func _root_property(map_id: StringName, property: StringName) -> Variant:
 func test_real_data_loads_without_error() -> void:
 	assert_true(_zones.load_file(), "\n".join(_zones.get_errors()))
 	assert_eq(_zones.get_errors().size(), 0)
-	assert_eq(_zones.size(), 28, "Route 24 (jalon 13), Route 25 et Cap d'Azuria (jalon 14), "
-		+ "passage souterrain (jalon 15 T18), Route 6 (jalon 15 T14), Route 5 (jalon 15 T13)")
+	assert_eq(_zones.size(), 29, "Route 24 (jalon 13), Route 25 et Cap d'Azuria (jalon 14), "
+		+ "passage souterrain (jalon 15 T18), Route 6 (jalon 15 T14), Route 5 (jalon 15 T13), "
+		+ "S.S. Anne (jalon 16 T11)")
 
 
 func test_every_map_belongs_to_exactly_one_zone() -> void:
@@ -122,7 +128,7 @@ func test_built_zones_have_their_map_texts() -> void:
 		var zone := _zones.get_zone(id)
 		if not zone.maps.is_empty():
 			assert_false(zone.description.is_empty(), "%s : description" % id)
-			assert_false(zone.draft, "%s : textes validé par Kevin le 2026-10-06" % id)
+			assert_eq(zone.draft, AWAITING_TEXTS.has(id), "%s : textes validé par Kevin" % id)
 		assert_false(zone.description.contains("???"), id)
 		assert_false(zone.subtitle.contains("???"), id)
 	assert_eq(_zones.get_zone(&"route_1").subtitle, "Bourg Palette — Jadielle")

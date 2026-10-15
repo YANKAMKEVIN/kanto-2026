@@ -114,6 +114,8 @@ const MAPS: Array[StringName] = [
 	&"vermilion_house_2",
 	# Jalon 15 (T13) : la Route 5, la Pension, le poste nord et l'entrée du souterrain.
 	&"route_5", &"route_5_daycare", &"route_5_gate", &"route_5_underground_gate",
+	# Jalon 16 (T11) : l'Arène de Carmin (puzzle et barrière ; Major Bob et les siens au T14).
+	&"vermilion_gym",
 ]
 ## Lot de textes validé par Kevin le 2026-10-06 (anciens brouillons : panneau, observations,
 ## soin de Maman, terminal du Stockage, portes de Jadielle…) : source des textes hors dossiers.
@@ -297,6 +299,15 @@ const IDS_J15_ROUTE_5: Array[StringName] = [
 	&"route_5_item_1", &"route_5_sign", &"route_5_traveler", &"route_5_underground_sign",
 	&"route_5_walker",
 ]
+## Jalon 16 (T11) : le puzzle de l'Arène de Carmin (dossier 19 §0.5 n° 32 à 35).
+const IDS_J16_GYM: Array[StringName] = [
+	&"vermilion_gym_switch_first", &"vermilion_gym_switch_reset", &"vermilion_gym_switch_solved",
+	&"vermilion_gym_trash",
+]
+## Jalon 16 (T11) : GYM-03, dit par la scène de la barrière ouverte.
+const PLAYED_J16_GYM: Array[StringName] = [&"vermilion_gym_switch_solved"]
+## Jalon 16 : textes validés du dossier 19 (§0.5, « … » par ligne).
+const DOSSIER_19 := "res://docs/design/dossier-19-ss-anne-major-bob.md"
 ## Jalon 15 (T13) : la réplique du garde du poste nord, jouée aussi par la scène du recul.
 const PLAYED_J15_ROUTE_5: Array[StringName] = [&"route_5_guard"]
 ## Dialogues joués par les scènes du Rocket et du barrage.
@@ -363,6 +374,8 @@ func before_all() -> void:
 	# Jalon 15 (T4) : répliques de la Pension, jouées par le DaycareDirector (code).
 	for daycare_line: StringName in DaycareLines.PLAYED_BY_DIRECTOR:
 		_use(daycare_line, &"route_5_daycare")
+	var puzzles := SwitchPuzzleLibrary.new()
+	puzzles.load_file()
 	for map_id: StringName in MAPS:
 		_npc_ids[map_id] = []
 		for spec: NpcSpec in NpcRoster.load_for_map(map_id).get_all():
@@ -381,6 +394,13 @@ func before_all() -> void:
 		var map := (load(MapCatalog.scene_path(map_id)) as PackedScene).instantiate()
 		for point: Node in map.get_node(^"Interactables").get_children():
 			_use((point as InteractPoint).dialogue_id, map_id)
+			# Jalon 16 (T11) : objet à fouiller d'un puzzle : Boot joue les textes du puzzle et
+			# sa scène de réussite sur la carte de l'objet.
+			var puzzle := puzzles.get_spec((point as InteractPoint).puzzle)
+			if puzzle != null:
+				for line: StringName in [puzzle.nothing, puzzle.first, puzzle.reset]:
+					_use(line, map_id)
+				_use_cutscene(puzzle.solved_cutscene, map_id)
 		for point: Node in map.get_node(^"Triggers").get_children():
 			_use_cutscene((point as EventTriggerPoint).cutscene_id, map_id)
 		map.free()
@@ -455,7 +475,7 @@ func test_library_loads_without_error() -> void:
 	# Les identifiants sont comparés triés (la liste IDS est groupée par jalon).
 	var found := _without_qa(library.get_ids())
 	found.sort()
-	var expected := IDS + IDS_J14_BILL + IDS_J14_ROCKET + IDS_J15_ROUTE_5
+	var expected := IDS + IDS_J14_BILL + IDS_J14_ROCKET + IDS_J15_ROUTE_5 + IDS_J16_GYM
 	expected.sort()
 	assert_eq(found, expected)
 
@@ -519,7 +539,7 @@ func test_every_dialogue_played_by_a_cutscene_exists() -> void:
 		&"route_2_item_4_found",
 		&"viridian_forest_item_3_found", &"viridian_forest_item_4_found",
 		&"viridian_forest_item_6_found"] + PLAYED_J14_BILL + PLAYED_J14_ROCKET
-		+ PLAYED_J15_ROUTE_5))
+		+ PLAYED_J15_ROUTE_5 + PLAYED_J16_GYM))
 	for id: StringName in played:
 		assert_true(_library.has_dialogue(id), "dialogue « %s » défini" % id)
 		if UNUSED_YET.has(id):
@@ -630,7 +650,9 @@ func test_every_condition_flag_is_set_somewhere() -> void:
 		&"starter_chosen",
 		&"starter_offered", &"tm11_received", &"tm34_received", &"viridian_arrived",
 		# Jalon 15 (T14) : Route 6 (Poké Ball, Super Potion cachée), arrivée à Carmin.
-		&"got_route_6_hidden_1", &"got_route_6_item_1", &"vermilion_reached"]
+		&"got_route_6_hidden_1", &"got_route_6_item_1", &"vermilion_reached",
+		# Jalon 16 (T11) : la barrière de l'Arène de Carmin.
+		&"vermilion_gym_puzzle_solved"]
 		+ SET_J14_BILL_CUTSCENES + SET_J14_ROCKET_CUTSCENES))
 	assert_eq(_used_on.get(&"oak_lab_reunion"), [&"oak_lab"], "joué au labo, après le fondu")
 	assert_eq(_used_on.get(&"oak_starter_offer"), [&"oak_lab"], "joué au labo")
@@ -815,6 +837,7 @@ func test_texts_are_the_dossier_02_texts_word_for_word() -> void:
 	var lot_j10 := FileAccess.get_file_as_string(LOT_J10)
 	var dossier_14 := FileAccess.get_file_as_string(DOSSIER_14)
 	var dossier_18 := FileAccess.get_file_as_string(DOSSIER_18)
+	var dossier_19 := FileAccess.get_file_as_string(DOSSIER_19)
 	var annex_a_15 := AnnexATexts.annex_a(FileAccess.get_file_as_string(JALON_15))
 	var dossier_16 := FileAccess.get_file_as_string(DOSSIER_16).replace("\n    ", " ") \
 		.replace("\n   ", " ")
@@ -863,7 +886,9 @@ func test_texts_are_the_dossier_02_texts_word_for_word() -> void:
 			# J14 (T17) : dossier 17 §15 et annexe A du plan.
 			or dossier_17.contains("« %s »" % text.replace("{player}", "{joueur}"))
 			or dossier_17.contains(text.replace("\n", " "))
-			or dossier_17.contains(text.replace("\n", " — ")),
+			or dossier_17.contains(text.replace("\n", " — "))
+			# J16 (T11) : lot de textes du dossier 19 (§0.5), une citation par ligne.
+			or _each_line_quoted(dossier_19, text),
 			"%s : « %s » dans un dossier de conception" % [row[0], text])
 
 

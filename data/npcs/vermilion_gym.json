@@ -1,0 +1,14 @@
+{
+	"vermilion_gym_barrier_1": {
+		"cell": [7, 5], "facing": "down", "sprite": "object/electric_barrier",
+		"turn_to_player": false, "unless": ["vermilion_gym_puzzle_solved"]
+	},
+	"vermilion_gym_barrier_2": {
+		"cell": [8, 5], "facing": "down", "sprite": "object/electric_barrier",
+		"turn_to_player": false, "unless": ["vermilion_gym_puzzle_solved"]
+	},
+	"vermilion_gym_barrier_3": {
+		"cell": [9, 5], "facing": "down", "sprite": "object/electric_barrier",
+		"turn_to_player": false, "unless": ["vermilion_gym_puzzle_solved"]
+	}
+}

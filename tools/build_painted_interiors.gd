@@ -38,6 +38,13 @@ extends SceneTree
 ##     et bâtiment d'entrée du souterrain de la Route 5 (jalon 15 T13, jalon-15.md §2.2) ; titre
 ##     « Route 5 » (nom de leur zone, `test_zone_library`)
 ##   godot --headless --path . -s res://tools/build_painted_interiors.gd -- --route5
+##   ss_anne_main_deck, ss_anne_captain_corridor, ss_anne_captain_room, ss_anne_restaurant,
+##   ss_anne_lower_deck, ss_anne_outer_deck, ss_anne_cabin_a|b|c — les 9 pièces du S.S. Anne,
+##     et vermilion_gym — l'Arène de Carmin (jalon 16 T11, jalon-16.md §2.10) : relues sur leur
+##     grille (`tools/plans/ss_anne_*.txt`, `carmin_arene.txt`), **décor provisoire** en
+##     polygones (`tools/j16_placeholder_decor.gd`, clé « placeholder ») jusqu'à l'art du T10
+##   godot --headless --path . -s res://tools/build_painted_interiors.gd -- --ss-anne
+##   godot --headless --path . -s res://tools/build_painted_interiors.gd -- --j16   (+ l'Arène)
 ##   godot --headless --path . -s res://tools/build_painted_interiors.gd   (toutes les pièces)
 ##   godot --headless --path . --import
 ##
@@ -93,6 +100,11 @@ const CARMIN := [&"vermilion_center", &"vermilion_mart", &"vermilion_fan_club",
 	&"route_6_underground_gate"]
 ## Jalon 15 (T13) : Pension, poste nord et entrée du souterrain de la Route 5.
 const ROUTE_5 := [&"route_5_daycare", &"route_5_gate", &"route_5_underground_gate"]
+## Jalon 16 (T11) : les 9 pièces du S.S. Anne ; avec l'Arène de Carmin : `--j16`.
+const SS_ANNE := [&"ss_anne_main_deck", &"ss_anne_captain_corridor", &"ss_anne_captain_room",
+	&"ss_anne_restaurant", &"ss_anne_lower_deck", &"ss_anne_outer_deck", &"ss_anne_cabin_a",
+	&"ss_anne_cabin_b", &"ss_anne_cabin_c"]
+const DECOR_SCRIPT := "res://tools/j16_placeholder_decor.gd"
 const PLANS_DIR := "res://tools/plans/"
 const PlanGrid := preload("res://tests/helpers/plan_grid.gd")
 const LOGIC_DIR := "res://tests/fixtures/maps/"
@@ -115,6 +127,8 @@ func _init() -> void:
 	rooms.append_array(_cerulean_rooms())
 	rooms.append_array(_vermilion_rooms())
 	rooms.append_array(_route_5_rooms())
+	rooms.append_array(_ss_anne_rooms())
+	rooms.append(_vermilion_gym())
 	for room: Dictionary in rooms:
 		if not wanted.is_empty() and not wanted.has(room["id"]):
 			continue
@@ -154,6 +168,10 @@ func _wanted_rooms() -> Array:
 			wanted.append_array(CARMIN)
 		elif arg == "--route5":
 			wanted.append_array(ROUTE_5)
+		elif arg == "--ss-anne":
+			wanted.append_array(SS_ANNE)
+		elif arg == "--j16":
+			wanted.append_array(SS_ANNE + [&"vermilion_gym"])
 		elif arg.begins_with("--rooms="):
 			for id: String in arg.trim_prefix("--rooms=").split(","):
 				wanted.append(StringName(id))
@@ -993,19 +1011,28 @@ func _build(room: Dictionary) -> Node2D:
 	root.set(&"display_name", room["title"])
 	root.set(&"region", room.get("region", ""))
 	root.set(&"size", size)
-	root.set(&"interior", true)
+	# Jalon 16 (T11) : le pont extérieur du S.S. Anne est une carte d'extérieur (le compagnon
+	# peut y sortir, titre de zone).
+	root.set(&"interior", not room.get("exterior", false))
 	root.set(&"light_profile", room["light"])
 	if room.has("battle_arena"):
 		root.set(&"battle_arena", room["battle_arena"])
-	var shell := Sprite2D.new()
-	shell.name = "Shell"
-	shell.texture = load(room["shell"])
-	shell.centered = false
-	shell.z_index = Z_GROUND
-	_attach(root, root, shell)
-	if shell.texture.get_size() != Vector2(size * TILE):
-		push_error("%s : enveloppe %s ≠ %s cases" % [room["id"], shell.texture.get_size(), size])
-		_errors += 1
+	if room.has("placeholder"):
+		# Jalon 16 (T11) : décor provisoire lu sur la grille, à la place de l'enveloppe peinte.
+		var plan := PlanGrid.new()
+		plan.load_file(room["plan"])
+		load(DECOR_SCRIPT).new().build(root, plan, room["placeholder"])
+	else:
+		var shell := Sprite2D.new()
+		shell.name = "Shell"
+		shell.texture = load(room["shell"])
+		shell.centered = false
+		shell.z_index = Z_GROUND
+		_attach(root, root, shell)
+		if shell.texture.get_size() != Vector2(size * TILE):
+			push_error("%s : enveloppe %s ≠ %s cases" % [room["id"], shell.texture.get_size(),
+				size])
+			_errors += 1
 	if room.has("rugs"):
 		var decals := Node2D.new()
 		decals.name = "GroundDecals"
@@ -1107,6 +1134,10 @@ func _build(room: Dictionary) -> Node2D:
 		point.set(&"dialogue_id", entry[3])
 		point.set(&"kind", entry[4])
 		point.set(&"facing", entry[5])
+		if entry.size() > 7:
+			# Jalon 16 : objet à fouiller d'un puzzle d'interrupteurs ([puzzle, emplacement]).
+			point.set(&"puzzle", entry[6])
+			point.set(&"puzzle_slot", entry[7])
 		_attach(root, root.get_node(^"Interactables"), point)
 	var trigger_script: GDScript = load("res://game/world/triggers/event_trigger_point.gd")
 	for entry: Array in room.get("triggers", []):
@@ -1451,4 +1482,183 @@ func _route_6_underground_gate() -> Dictionary:
 		"spawns": {"from_route_6": Vector2i(4, 6), "from_underground_w": Vector2i(4, 3),
 			"from_underground_e": Vector2i(5, 3)},
 		"warps": warps,
+	}
+
+
+# --- Jalon 16 (T11) : le S.S. Anne et l'Arène de Carmin ----------------------------------------
+
+
+## Les 9 pièces du S.S. Anne (jalon-16.md §2.10, dossier 19 §0.4) relues sur leur grille
+## (`tools/plans/ss_anne_*.txt`, qui fait foi) : titre « S.S. Anne », sous-titre « Le grand
+## paquebot de Kanto » (lot de textes du §0.5, n° 1), lumière `interior_warm` (le pont extérieur :
+## `golden_hour`, carte d'extérieur). **Décor provisoire** (« placeholder ») jusqu'à l'art de la
+## série 18 (T10), qui remplacera cette clé par l'enveloppe et les meubles peints sans toucher aux
+## grilles. **Sans PNJ** : les cases des positions des grilles (Dresseurs, objets, marin…) sont
+## praticables jusqu'au T12 / T13. Passages : les portes `D` et escaliers `S` sont des passages
+## terminaux (STEP_ON ; les escaliers dans toutes les directions, comme les échelles du J12), les
+## sorties `X` des PUSH ↓. Arrivées nommées d'après la pièce d'où l'on vient (`from_<pièce>`).
+## La passerelle (12..13, 11) ramène sur le quai de Carmin (`vermilion_city`, `from_ss_anne_w|e`,
+## contrat du J15) ; l'embarquement de Carmin vise `from_ss_anne_w|e` du pont principal (T15).
+func _ss_anne_rooms() -> Array[Dictionary]:
+	return [_ss_anne_main_deck(), _ss_anne_captain_corridor(), _ss_anne_captain_room(),
+		_ss_anne_restaurant(), _ss_anne_lower_deck(), _ss_anne_outer_deck(),
+		_ss_anne_cabin(&"a", &"ss_anne_main_deck", &"from_cabin_a"),
+		_ss_anne_cabin(&"b", &"ss_anne_lower_deck", &"from_cabin_b"),
+		_ss_anne_cabin(&"c", &"ss_anne_main_deck", &"from_cabin_c")]
+
+
+## Champs communs d'une pièce du navire : grille [param plan] (praticables de sa ligne
+## `PRATICABLES`), taille, décor provisoire au style [param style].
+func _ss_anne_room(id: StringName, node: String, plan: String, walkable: String, size: Vector2i,
+		style: StringName) -> Dictionary:
+	return {
+		"id": id, "node": node, "size": size,
+		"title": "S.S. Anne", "region": "Le grand paquebot de Kanto", "light": &"interior_warm",
+		"plan": PLANS_DIR + plan, "walkable": walkable, "placeholder": style,
+	}
+
+
+## Passage [param warp_name] sur [param cell] : porte ou escalier (STEP_ON, [param direction] ;
+## ZERO = escalier, de tous côtés) vers [param target] / [param spawn], tourné [param facing].
+func _door(warp_name: String, cell: Vector2i, direction: Vector2i, target: StringName,
+		spawn: StringName, facing: Vector2i) -> Array:
+	return [warp_name, cell, STEP_ON, direction, target, spawn, facing]
+
+
+## Pont principal (`ss_anne_pont_principal.txt`, 26 × 13) : hall d'accueil ; passerelle au sud.
+func _ss_anne_main_deck() -> Dictionary:
+	var room := _ss_anne_room(&"ss_anne_main_deck", "SsAnneMainDeck",
+		"ss_anne_pont_principal.txt", ".XDS", Vector2i(26, 13), &"ship")
+	room["spawns"] = {
+		"from_ss_anne_w": Vector2i(12, 10), "from_ss_anne_e": Vector2i(13, 10),
+		"from_cabin_a": Vector2i(5, 2), "from_cabin_c": Vector2i(11, 2),
+		"from_corridor": Vector2i(20, 2), "from_restaurant": Vector2i(2, 6),
+		"from_outer_deck": Vector2i(23, 6), "from_lower_deck": Vector2i(22, 9),
+	}
+	room["warps"] = [
+		["ExitW", Vector2i(12, 11), PUSH, Vector2i.DOWN, &"vermilion_city", &"from_ss_anne_w",
+			Vector2i.DOWN],
+		["ExitE", Vector2i(13, 11), PUSH, Vector2i.DOWN, &"vermilion_city", &"from_ss_anne_e",
+			Vector2i.DOWN],
+		_door("DoorCabinA", Vector2i(5, 1), Vector2i.UP, &"ss_anne_cabin_a", &"entrance",
+			Vector2i.UP),
+		_door("DoorCabinC", Vector2i(11, 1), Vector2i.UP, &"ss_anne_cabin_c", &"entrance",
+			Vector2i.UP),
+		_door("DoorCorridor", Vector2i(20, 1), Vector2i.UP, &"ss_anne_captain_corridor",
+			&"entrance", Vector2i.UP),
+		_door("DoorRestaurant", Vector2i(1, 6), Vector2i.LEFT, &"ss_anne_restaurant",
+			&"entrance", Vector2i.LEFT),
+		_door("DoorOuterDeck", Vector2i(24, 6), Vector2i.RIGHT, &"ss_anne_outer_deck",
+			&"entrance", Vector2i.RIGHT),
+		_door("StairsDownW", Vector2i(22, 10), Vector2i.ZERO, &"ss_anne_lower_deck",
+			&"entrance", Vector2i.DOWN),
+		_door("StairsDownE", Vector2i(23, 10), Vector2i.ZERO, &"ss_anne_lower_deck",
+			&"entrance", Vector2i.DOWN),
+	]
+	return room
+
+
+## Couloir du capitaine (`ss_anne_couloir_capitaine.txt`, 18 × 7) : la porte de la cabine au
+## nord-est ; le déclencheur du rival (colonne 7) arrive au T13 avec sa scène.
+func _ss_anne_captain_corridor() -> Dictionary:
+	var room := _ss_anne_room(&"ss_anne_captain_corridor", "SsAnneCaptainCorridor",
+		"ss_anne_couloir_capitaine.txt", ".XDT", Vector2i(18, 7), &"ship")
+	room["spawns"] = {"entrance": Vector2i(2, 4), "from_captain_room": Vector2i(15, 2)}
+	room["warps"] = [
+		["Exit", Vector2i(2, 5), PUSH, Vector2i.DOWN, &"ss_anne_main_deck", &"from_corridor",
+			Vector2i.DOWN],
+		_door("DoorCaptain", Vector2i(15, 1), Vector2i.UP, &"ss_anne_captain_room", &"entrance",
+			Vector2i.UP),
+	]
+	return room
+
+
+## Cabine du capitaine (`ss_anne_cabine_capitaine.txt`, 14 × 10) : bureau, lavabo, couchette,
+## carte marine ; le capitaine (8, 3) arrive au T13.
+func _ss_anne_captain_room() -> Dictionary:
+	var room := _ss_anne_room(&"ss_anne_captain_room", "SsAnneCaptainRoom",
+		"ss_anne_cabine_capitaine.txt", ".X", Vector2i(14, 10), &"cabin")
+	room["spawns"] = {"entrance": Vector2i(6, 7)}
+	room["warps"] = _pewter_exits([Vector2i(6, 8), Vector2i(7, 8)], &"from_captain_room",
+		&"ss_anne_captain_corridor")
+	return room
+
+
+## Restaurant (`ss_anne_restaurant.txt`, 18 × 11) : quatre tables, comptoir de la cuisine.
+func _ss_anne_restaurant() -> Dictionary:
+	var room := _ss_anne_room(&"ss_anne_restaurant", "SsAnneRestaurant",
+		"ss_anne_restaurant.txt", ".D", Vector2i(18, 11), &"restaurant")
+	room["spawns"] = {"entrance": Vector2i(15, 6)}
+	room["warps"] = [_door("Door", Vector2i(16, 6), Vector2i.RIGHT, &"ss_anne_main_deck",
+		&"from_restaurant", Vector2i.RIGHT)]
+	return room
+
+
+## Pont inférieur (`ss_anne_pont_inferieur.txt`, 22 × 11) : caisses, escalier vers le pont
+## principal, porte de la cabine B.
+func _ss_anne_lower_deck() -> Dictionary:
+	var room := _ss_anne_room(&"ss_anne_lower_deck", "SsAnneLowerDeck",
+		"ss_anne_pont_inferieur.txt", ".DS", Vector2i(22, 11), &"ship")
+	room["spawns"] = {"entrance": Vector2i(2, 3), "from_cabin_b": Vector2i(10, 2)}
+	room["warps"] = [
+		_door("StairsUpW", Vector2i(2, 2), Vector2i.ZERO, &"ss_anne_main_deck",
+			&"from_lower_deck", Vector2i.UP),
+		_door("StairsUpE", Vector2i(3, 2), Vector2i.ZERO, &"ss_anne_main_deck",
+			&"from_lower_deck", Vector2i.UP),
+		_door("DoorCabinB", Vector2i(10, 1), Vector2i.UP, &"ss_anne_cabin_b", &"entrance",
+			Vector2i.UP),
+	]
+	return room
+
+
+## Pont extérieur (`ss_anne_pont_exterieur.txt`, 26 × 11) : **carte d'extérieur** (compagnon
+## dehors, titre de zone), lumière `golden_hour` ; mer au nord et au sud (bloquée), rambardes,
+## chaises longues, bouées ; une porte à l'ouest vers le pont principal.
+func _ss_anne_outer_deck() -> Dictionary:
+	var room := _ss_anne_room(&"ss_anne_outer_deck", "SsAnneOuterDeck",
+		"ss_anne_pont_exterieur.txt", ".D", Vector2i(26, 11), &"deck")
+	room["light"] = &"golden_hour"
+	room["exterior"] = true
+	room["spawns"] = {"entrance": Vector2i(1, 6)}
+	room["warps"] = [_door("Door", Vector2i(0, 6), Vector2i.LEFT, &"ss_anne_main_deck",
+		&"from_outer_deck", Vector2i.LEFT)]
+	return room
+
+
+## Cabine de passagers [param letter] (`ss_anne_cabine_<lettre>.txt`, 12 × 9, même grille pour
+## A, B, C) : lit, table sous le hublot, armoire ; sortie (5..6, 7) vers [param target] /
+## [param spawn].
+func _ss_anne_cabin(letter: StringName, target: StringName, spawn: StringName) -> Dictionary:
+	var id := StringName("ss_anne_cabin_" + String(letter))
+	var room := _ss_anne_room(id, "SsAnneCabin" + String(letter).to_upper(),
+		"ss_anne_cabine_%s.txt" % letter, ".X", Vector2i(12, 9), &"cabin")
+	room["spawns"] = {"entrance": Vector2i(5, 6)}
+	room["warps"] = _pewter_exits([Vector2i(5, 7), Vector2i(6, 7)], spawn, target)
+	return room
+
+
+## Arène de Carmin (`carmin_arene.txt`, 17 × 15, plus haute que l'écran : la caméra suit) :
+## 15 poubelles à fouiller (puzzle `vermilion_gym`, emplacements 1..15 ligne par ligne, comme la
+## grille 5 × 3 de `SwitchPuzzle`), rangée de machines et barrière (7..9, 5 : cases praticables,
+## fermées par les trois segments de `data/npcs/vermilion_gym.json` tant que
+## `vermilion_gym_puzzle_solved` n'est pas levé), sortie (7..9, 13) vers Carmin (`from_gym`).
+## Major Bob, ses Dresseurs, le guide et le panneau arrivent au T14. Titre « Carmin-sur-Mer »
+## (zone de la ville, comme les autres Arènes) ; arrivée `entrance` (8, 12), visée par la porte
+## de la ville au T14.
+func _vermilion_gym() -> Dictionary:
+	var bins: Array = []
+	var slot := 1
+	for y: int in [7, 9, 11]:
+		for x: int in [2, 5, 8, 11, 14]:
+			bins.append(["Bin%02d" % slot, Vector2i(x, y), Vector2i.ONE, &"vermilion_gym_trash",
+				EXAMINE, Vector2i.ZERO, &"vermilion_gym", slot])
+			slot += 1
+	return {
+		"id": &"vermilion_gym", "node": "VermilionGym", "size": Vector2i(17, 15),
+		"title": "Carmin-sur-Mer", "light": &"interior_warm",
+		"plan": PLANS_DIR + "carmin_arene.txt", "walkable": ".XB", "placeholder": &"gym",
+		"spawns": {"entrance": Vector2i(8, 12)},
+		"warps": _pewter_exits([Vector2i(7, 13), Vector2i(8, 13), Vector2i(9, 13)], &"from_gym",
+			&"vermilion_city"),
+		"interactables": bins,
 	}
