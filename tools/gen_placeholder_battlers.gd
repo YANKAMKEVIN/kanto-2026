@@ -12,6 +12,8 @@ extends SceneTree
 ## Chétiflor, Boustiflor).
 ## Jalon 14 (jalon-14.md §2.13) : les trois espèces du Cap d'Azuria (Abra, Kadabra, Machoc).
 ## Jalon 15 (jalon-15.md §2.7.1) : Miaouss et Persan (Rattatac vient du jalon 12).
+## Jalon 19 (jalon-19.md §2.12, T3) : Caninos, Fantominus, Spectrum, Noeunoeuf, Léviator. Osselait
+## et Ossatueur n'en ont pas : ils ne s'affichent jamais au J19 (SPECTRE).
 ## Pixel art 64 × 64 natif, affiché en NEAREST par le BattleStage (×4 de dos, ×3 de face) :
 ##   assets/sprites/pokemon/placeholder/<espèce>_front.png   (vue de face : l'adversaire)
 ##   assets/sprites/pokemon/placeholder/<espèce>_back.png    (vue de dos : le Pokémon du joueur)
@@ -48,6 +50,8 @@ const SPECIES: Array[String] = [
 	"abra", "kadabra", "machop",
 	# Jalon 15 (jalon-15.md §2.7.1) : Miaouss et Persan (Rattatac existe depuis le J12).
 	"meowth", "persian",
+	# Jalon 19 (jalon-19.md §2.12) : Exorcistes et rival n° 5. Ajouts en fin.
+	"growlithe", "gastly", "haunter", "exeggcute", "gyarados",
 ]
 const OUTLINE := Color("#1c1c28")
 const EYE := Color("#1c1c28")
@@ -1491,6 +1495,107 @@ func _draw_machop(img: Image, back: bool) -> void:
 	_r(img, 27, 26, 10, 2, crest.darkened(0.4))
 	_line(img, Vector2(24, 36), Vector2(30, 44), skin.darkened(0.3), 1)
 	_line(img, Vector2(40, 36), Vector2(34, 44), skin.darkened(0.3), 1)
+
+
+# --- Tour Pokémon (jalon 19) -----------------------------------------------------
+
+## Caninos : chiot orange rayé de noir, crinière et queue crème, assis.
+func _draw_growlithe(img: Image, back: bool) -> void:
+	var fur := Color("#e8883a")
+	var cream := Color("#f2e2b0")
+	var stripe := Color("#2a2228")
+	_e(img, 52, 40, 7, 6, cream, true)
+	_e(img, 32, 46, 17, 13, fur, true)
+	_r(img, 19, 55, 8, 7, fur.darkened(0.15))
+	_r(img, 37, 55, 8, 7, fur.darkened(0.15))
+	for x: int in [22, 30, 38]:
+		_line(img, Vector2(x, 38), Vector2(x + 3, 46), stripe, 2)
+	_e(img, 32, 30, 15, 6, cream, true)
+	_e(img, 32, 22, 13, 11, fur, true)
+	_e(img, 32, 12, 7, 5, cream, true)
+	_e(img, 20, 14, 4, 6, fur.darkened(0.1))
+	_e(img, 44, 14, 4, 6, fur.darkened(0.1))
+	if back:
+		return
+	_eye(img, 24, 19, Color("#3a2a1a"))
+	_eye(img, 36, 19, Color("#3a2a1a"))
+	_e(img, 32, 27, 5, 3, cream)
+	_r(img, 31, 25, 3, 2, stripe)
+
+
+## Fantominus : boule de gaz sombre, halo violet autour, grands yeux, bouche ouverte.
+func _draw_gastly(img: Image, back: bool) -> void:
+	var gas := Color("#9a7ac8")
+	_e(img, 32, 34, 25, 23, Color(gas, 0.55))
+	_e(img, 32, 34, 15, 14, Color("#2a2234"), true)
+	if back:
+		return
+	_e(img, 25, 31, 4, 4, WHITE)
+	_e(img, 39, 31, 4, 4, WHITE)
+	_r(img, 26, 31, 2, 3, EYE)
+	_r(img, 38, 31, 2, 3, EYE)
+	_e(img, 32, 41, 6, 3, Color("#c04a6a"))
+	_r(img, 28, 39, 2, 2, WHITE)
+	_r(img, 35, 39, 2, 2, WHITE)
+
+
+## Spectrum : corps violet sans jambes, crête pointue, deux mains qui flottent, large sourire.
+func _draw_haunter(img: Image, back: bool) -> void:
+	var skin := Color("#6a4a98")
+	_poly(img, PackedVector2Array([Vector2(18, 20), Vector2(32, 4), Vector2(46, 20)]), skin)
+	_e(img, 32, 30, 17, 16, skin, true)
+	_poly(img, PackedVector2Array([Vector2(20, 40), Vector2(44, 40), Vector2(32, 60)]),
+		skin.darkened(0.15))
+	_e(img, 8, 36, 5, 5, skin.lightened(0.1), true)
+	_e(img, 56, 36, 5, 5, skin.lightened(0.1), true)
+	if back:
+		return
+	_r(img, 22, 24, 7, 4, WHITE)
+	_r(img, 35, 24, 7, 4, WHITE)
+	_r(img, 25, 25, 2, 3, EYE)
+	_r(img, 38, 25, 2, 3, EYE)
+	_r(img, 24, 34, 16, 3, Color("#c04a6a"))
+	_r(img, 26, 34, 2, 2, WHITE)
+	_r(img, 36, 34, 2, 2, WHITE)
+
+
+## Noeunoeuf : six œufs roses serrés, fissures, petits visages.
+func _draw_exeggcute(img: Image, back: bool) -> void:
+	var shell := Color("#f0c0c0")
+	var crack := Color("#c0807a")
+	var eggs: Array[Vector2i] = [Vector2i(16, 50), Vector2i(32, 52), Vector2i(48, 50),
+		Vector2i(22, 34), Vector2i(42, 34), Vector2i(32, 20)]
+	for egg: Vector2i in eggs:
+		_e(img, egg.x, egg.y, 9, 10, shell, true)
+		_line(img, Vector2(egg.x - 5, egg.y - 3), Vector2(egg.x + 1, egg.y - 6), crack, 1)
+		if back:
+			continue
+		_r(img, egg.x - 4, egg.y, 2, 2, EYE)
+		_r(img, egg.x + 2, egg.y, 2, 2, EYE)
+		_r(img, egg.x - 1, egg.y + 4, 3, 1, crack.darkened(0.3))
+
+
+## Léviator : serpent de mer bleu dressé en S, ventre crème, crête et barbillons.
+func _draw_gyarados(img: Image, back: bool) -> void:
+	var skin := Color("#3a6ac8")
+	var belly := Color("#f0e0a0")
+	_e(img, 40, 56, 18, 6, skin.darkened(0.1), true)
+	_line(img, Vector2(44, 54), Vector2(28, 40), skin, 9)
+	_line(img, Vector2(28, 40), Vector2(36, 24), skin, 8)
+	_e(img, 32, 16, 13, 10, skin, true)
+	_poly(img, PackedVector2Array([Vector2(26, 8), Vector2(32, 0), Vector2(38, 8)]), WHITE)
+	if back:
+		_line(img, Vector2(40, 30), Vector2(48, 44), Color("#2a4a98"), 2)
+		return
+	_line(img, Vector2(42, 52), Vector2(30, 41), belly, 3)
+	_line(img, Vector2(30, 40), Vector2(36, 27), belly, 3)
+	_r(img, 24, 12, 5, 4, WHITE)
+	_r(img, 35, 12, 5, 4, WHITE)
+	_r(img, 26, 13, 2, 3, EYE)
+	_r(img, 37, 13, 2, 3, EYE)
+	_r(img, 25, 21, 14, 3, Color("#2a2a4a"))
+	_line(img, Vector2(22, 20), Vector2(12, 26), WHITE, 1)
+	_line(img, Vector2(42, 20), Vector2(52, 26), WHITE, 1)
 
 
 # --- Ombre ------------------------------------------------------------------------

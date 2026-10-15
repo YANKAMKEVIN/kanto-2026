@@ -384,6 +384,26 @@
 				{ "id": "machop_rocks", "unlock": { "seen": 1 },
 				  "text": "Vu dans l'équipe d'un Montagnard. Il soulève des rochers comme des cailloux." }
 			]
+		},
+		"growlithe": {
+			"height": 0.7, "weight": 19.0,
+			"description": "Fidèle et courageux, il aboie pour protéger ceux qu'il aime. Son flair ne le trompe jamais."
+		},
+		"gastly": {
+			"height": 1.3, "weight": 0.1,
+			"description": "Un corps de gaz autour d'un noyau sombre. Il se dissipe au moindre souffle de vent, alors il préfère les lieux clos et silencieux."
+		},
+		"haunter": {
+			"height": 1.6, "weight": 0.1,
+			"description": "Il traverse les murs sans bruit. On dit qu'il aime surprendre, mais il fuit dès qu'on le regarde vraiment."
+		},
+		"exeggcute": {
+			"height": 0.4, "weight": 2.5,
+			"description": "Six œufs qui communiquent entre eux par télépathie. Si l'un d'eux s'égare, les autres l'attendent."
+		},
+		"gyarados": {
+			"height": 6.5, "weight": 235.0,
+			"description": "Sa colère soulève les vagues. Peu de Dresseurs gardent son respect après l'avoir fait évoluer."
 		}
 	}
 }
