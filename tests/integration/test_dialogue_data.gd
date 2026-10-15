@@ -77,8 +77,8 @@ const J17_TOKENS: Dictionary[String, Array] = {
 	"Encore {caught_missing}, et c'est à toi.": [&"caught_missing"],
 	"{player} reçoit la CS05 — Flash !": [&"player"],
 }
-## Jalon 17 (T8) : variantes en brouillon (annexe A du plan, Q-2) : accord de T-2 à 1 espèce.
-const DRAFT_VARIANTS: Dictionary[StringName, Array] = {&"route_2_east_assistant": [3]}
+## Variantes en brouillon : aucune (jalon 17 : accord de T-2 à 1 espèce validé, Q-2, 2026-10-16).
+const DRAFT_VARIANTS: Dictionary[StringName, Array] = {}
 ## Textes pas encore validés, exemptés du contrôle « mot pour mot » (jalon 14 T16 : ceux du
 ## coquillage de la Route 25, validés depuis : dossier 17 §15 n° 71 ; le n° 72 est retiré le 2026-10-14).
 const UNVALIDATED: Array[StringName] = []
@@ -90,7 +90,8 @@ const PLAYED_BY_COMPANION: Array[StringName] = [
 ]
 ## Jalon 12 (T20) : phrases jouées par Boot (ni PNJ, ni point, ni scène) : la Corde Sortie
 ## ([constant Boot.ESCAPE_ROPE_DIALOGUE], dossier 15 §20 n° 33).
-const PLAYED_BY_BOOT: Array[StringName] = [&"escape_rope_used"]
+## Jalon 17 (T24) : avertissement sans Flash, joué par FlashDirector (dossier 21 T-3).
+const PLAYED_BY_BOOT: Array[StringName] = [&"escape_rope_used", &"dark_cave_too_dark"]
 ## Jalon 10 : textes verrouillés du dossier 12 (même forme que le dossier 10) et lot de textes du
 ## J10 (panneaux, noms affichés), où un retour à la ligne est écrit « \n ».
 const DOSSIER_12 := "res://docs/design/dossier-12-argenta.md"
@@ -316,8 +317,9 @@ const IDS: Array[StringName] = [
 	&"vermilion_house_1_resident", &"vermilion_house_2_resident",
 ]
 ## Jalon 17 (T8) : Route 11, Route 2 est (assistant, visiteur, panneau), barrière de FUTUR B vue
-## de l'est (route_2.json).
+## de l'est (route_2.json) ; T24 : avertissement sans Flash (dark_caves.json).
 const IDS_J17: Array[StringName] = [
+	&"dark_cave_too_dark",
 	&"route_11_sign", &"route_11_cave_sign", &"route_11_snorlax",
 	&"route_11_youngster_lucas_before", &"route_11_youngster_lucas_defeated",
 	&"route_11_youngster_lucas_after", &"route_11_youngster_arthur_before",

@@ -20,7 +20,8 @@
 		"pokedex_activated",
 		"poison_unlocked",
 		"pewter_arrived",
-		"badge_boulder"
+		"badge_boulder",
+		"got_hm05"
 	],
 	"party": [
 		{
@@ -40,7 +41,8 @@
 	"bag": {
 		"poke_ball": 5,
 		"potion": 3,
-		"escape_rope": 2
+		"escape_rope": 2,
+		"hm05": 1
 	},
 	"money": 3000
 }

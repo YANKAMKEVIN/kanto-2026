@@ -45,8 +45,6 @@ const TM_MAX: int = 50
 const HM_MIN: int = 1
 const HM_MAX: int = 5
 const _REQUIRED: Array[String] = ["name", "plural", "feminine", "category", "description"]
-## Jalon 17 : « teachable » (booléen, CT et CS seulement ; [member ItemData.teachable]).
-const _KEYS_J17: Array[String] = ["teachable"]
 
 var _items: Dictionary[StringName, ItemData] = {}
 var _errors: PackedStringArray = PackedStringArray()
@@ -145,7 +143,7 @@ func _parse_item(value: Variant, where: String) -> ItemData:
 	var entry: Dictionary = value
 	var ok := true
 	for key: Variant in entry:
-		if not _KEYS.has(str(key)) and not _KEYS_J17.has(str(key)):
+		if not _KEYS.has(str(key)):
 			ok = _fail("%s : clé inconnue « %s »" % [where, key])
 	for key: String in _REQUIRED:
 		if not entry.has(key):
@@ -236,13 +234,6 @@ func _parse_item(value: Variant, where: String) -> ItemData:
 			item.obtained = entry["obtained"]
 		else:
 			ok = _fail("%s : « obtained » vaut true ou false" % where)
-	if entry.has("teachable"):
-		if not entry["teachable"] is bool:
-			ok = _fail("%s : « teachable » vaut true ou false" % where)
-		elif not item.is_tm():
-			ok = _fail("%s : « teachable » est réservé aux CT et aux CS" % where)
-		else:
-			item.teachable = entry["teachable"]
 	if entry.has("price"):
 		var price: Variant = entry["price"]
 		if not JsonFields.is_int(price) or int(price) < 0:

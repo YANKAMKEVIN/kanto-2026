@@ -1,8 +1,8 @@
 extends GutTest
 ## Jalon 17 (T7 ; `jalon-17.md` §2.9, §2.12.1, §2.12.2) : les huit espèces (types et
 ## statistiques actuels, apprentissages de Rouge/Bleu), les capacités ajoutées, la CS05 et les
-## fiches de Pokédex en brouillon (Q-2). Q-1 (Flash en combat) non tranché : la CS05 existe, avec
-## ses compatibilités, mais ne s'apprend pas encore (« teachable »: false).
+## fiches de Pokédex (annexe A, validée le 2026-10-16). Q-1 « tout J17 » (2026-10-16) : la CS05
+## s'apprend comme une CT réutilisable (Flash en combat, `test_battle_flash`).
 
 const SPECIES: Dictionary[StringName, Array] = {
 	# espèce: [n°, nom, types, PV, Att, Déf, AttSp, DéfSp, Vit]
@@ -120,18 +120,20 @@ func test_hm05_item() -> void:
 	assert_true(_items.check_moves(_data))
 
 
-## TODO(Q-1) : tant que Kevin n'a pas tranché entre le dossier 20 (Flash en combat, CS05
-## enseignable) et le dossier 21 (jamais en combat), la CS05 ne s'apprend pas : aucun bouton
-## APPRENDRE, INCOMPATIBLE pour tous. Q-1 → dossier 20 : retirer « teachable »: false de
-## data/items/j17.json et faire de ce test l'inverse (+ test_battle_flash).
-func test_hm05_is_not_teachable_until_q1() -> void:
+## Q-1 « tout J17 » (2026-10-16) : la CS05 s'apprend comme une CT réutilisable, aux
+## compatibles seulement, sans jamais être consommée.
+func test_hm05_teaches_flash_to_compatible_pokemon() -> void:
 	var hm := _items.get_item(&"hm05")
-	assert_false(hm.teachable)
-	assert_eq(hm.contexts(), [] as Array[StringName], "aucun usage : pas de bouton APPRENDRE")
-	assert_eq(TmTeach.check(_mon(&"pikachu"), hm, _data), TmTeach.Check.INCOMPATIBLE,
-		"Pikachu compatible CS05 mais rien à apprendre avant Q-1")
-	assert_eq(TmTeach.teach(_mon(&"drowzee"), hm, _data), Pokemon.LearnResult.INVALID)
-	assert_true(_data.can_learn_hm(&"pikachu", 5), "les compatibilités, elles, sont là")
+	assert_eq(hm.contexts(), [ItemData.CONTEXT_FIELD] as Array[StringName], "bouton APPRENDRE")
+	assert_eq(TmTeach.check(_mon(&"pikachu"), hm, _data), TmTeach.Check.COMPATIBLE)
+	assert_eq(TmTeach.check(_mon(&"diglett"), hm, _data), TmTeach.Check.INCOMPATIBLE)
+	var drowzee := _mon(&"drowzee")
+	if drowzee.moves.size() >= SpeciesData.MAX_MOVES:
+		drowzee.moves.resize(SpeciesData.MAX_MOVES - 1)
+	assert_eq(TmTeach.teach(drowzee, hm, _data), Pokemon.LearnResult.LEARNED)
+	assert_true(drowzee.knows_move(&"flash"))
+	assert_eq(TmTeach.check(drowzee, hm, _data), TmTeach.Check.KNOWN)
+	assert_true(hm.is_permanent(), "jamais consommée")
 
 
 ## Flash sur le terrain avec la vraie CS05 (règle de field_moves.json) : Soporifik éclaire.
@@ -157,8 +159,8 @@ func test_hm05_compatibilities_of_the_new_species() -> void:
 		assert_false(_data.can_learn_hm(id, 5), "%s ne peut pas apprendre Flash" % id)
 
 
-## Annexe A.1 (brouillons, Q-2) : tailles et poids officiels, descriptions en « draft ».
-func test_pokedex_entries_are_drafts() -> void:
+## Annexe A.1 (validée le 2026-10-16) : tailles et poids officiels, textes mot pour mot.
+func test_pokedex_entries_are_validated() -> void:
 	var official := {&"diglett": [0.2, 0.8], &"dugtrio": [0.7, 33.3], &"drowzee": [1.0, 32.4],
 		&"hypno": [1.6, 75.6], &"magnemite": [0.3, 6.0], &"magneton": [1.0, 60.0],
 		&"growlithe": [0.7, 19.0], &"vulpix": [0.6, 9.9]}
@@ -169,25 +171,17 @@ func test_pokedex_entries_are_drafts() -> void:
 			continue
 		assert_almost_eq(info.height, float(official[id][0]), 0.001, String(id))
 		assert_almost_eq(info.weight, float(official[id][1]), 0.001, String(id))
-		assert_true(info.draft, "%s : brouillon de l'annexe A (Q-2)" % id)
+		assert_false(info.draft, "%s : annexe A validée (Q-2)" % id)
 	for id: StringName in [&"diglett", &"drowzee"]:
 		var notes := _dex.get_notes(id)
 		assert_eq(notes.size(), 1, "%s : une note (annexe A.2)" % id)
-		assert_true(notes[0].draft, "%s : note en brouillon (Q-2)" % id)
+		assert_false(notes[0].draft, "%s : note validée (Q-2)" % id)
 
 
-## « teachable » : booléen, réservé aux CT et CS ; vrai par défaut.
-func test_teachable_key_is_validated() -> void:
+## Q-1 tranché : la clé provisoire « teachable » n'existe plus (clé inconnue refusée).
+func test_teachable_key_is_gone() -> void:
 	var lib := ItemLibrary.new()
 	var hm := {"name": "CS", "plural": "CS", "feminine": true, "category": "tm", "hm": 4,
-		"teaches": "tackle", "description": "x"}
-	assert_true(lib.add_from_dict({"a": hm}, "test"))
-	assert_true(lib.get_item(&"a").teachable, "vrai par défaut")
-	var bad := hm.duplicate()
-	bad["hm"] = 3
-	bad["teachable"] = "non"
-	assert_false(lib.add_from_dict({"b": bad}, "test"), "booléen")
-	var potion := {"name": "P", "plural": "P", "feminine": true, "category": "heal",
-		"heal_amount": 20, "teachable": false, "description": "x"}
-	assert_false(lib.add_from_dict({"c": potion}, "test"), "réservé aux CT et CS")
-	assert_push_error_count(2)
+		"teaches": "tackle", "description": "x", "teachable": false}
+	assert_false(lib.add_from_dict({"a": hm}, "test"))
+	assert_push_error_count(1)

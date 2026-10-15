@@ -15,6 +15,8 @@ extends RefCounted
 ## NO_POKEMON ; sinon READY. Le Pokémon nommé ({pokemon}) : le compagnon s'il est compatible,
 ## sinon le premier compatible dans l'ordre de l'équipe ; pour NO_BADGE sans compatible, le
 ## premier de l'équipe (défaut du §0.5).
+## Jalon 17 (T24, dossier 20 T-17) : « cue » (facultatif) : texte de la mise en scène de la
+## capacité, jeton `{pokemon}` ([method cue_text]) — « {pokemon} utilise Flash ! ».
 
 enum State { NO_HM, NO_BADGE, NO_POKEMON, READY }
 
@@ -64,12 +66,15 @@ func add_from_dict(data: Dictionary, source: String = "") -> bool:
 		var rule: Variant = data[key]
 		if not rule is Dictionary or not (rule as Dictionary).get("hm") is String \
 				or not (rule as Dictionary).get("badge", "") is String \
+				or not _is_cue((rule as Dictionary).get("cue", "")) \
 				or ((rule as Dictionary).keys().any(func(k: Variant) -> bool:
-					return not ["hm", "badge"].has(str(k)))):
-			ok = _fail("%s « %s » : { \"hm\": objet, \"badge\": drapeau } attendu" % [source, key])
+					return not ["hm", "badge", "cue"].has(str(k)))):
+			ok = _fail("%s « %s » : { \"hm\": objet, \"badge\": drapeau, \"cue\": texte } attendu"
+				% [source, key])
 			continue
 		_rules[StringName(str(key))] = {
 			&"hm": StringName(rule["hm"]), &"badge": StringName(rule.get("badge", "")),
+			&"cue": String(rule.get("cue", "")),
 		}
 	return ok
 
@@ -82,6 +87,13 @@ func has_move(move: StringName) -> bool:
 ## Identifiant de la CS qui débloque [param move] (&"" si inconnue).
 func hm_of(move: StringName) -> StringName:
 	return _rules.get(move, {}).get(&"hm", &"")
+
+
+## Texte de la mise en scène de [param move] (« cue »), `{pokemon}` remplacé par
+## [param pokemon_name] ; "" sans texte ou sans nom.
+func cue_text(move: StringName, pokemon_name: String) -> String:
+	var cue: String = _rules.get(move, {}).get(&"cue", "")
+	return DialogueTokens.resolve(cue, {&"pokemon": pokemon_name})
 
 
 ## État de [param move] pour l'équipe [param party], le Sac [param bag] et les drapeaux
@@ -134,6 +146,16 @@ func _named(result: Result, party: Party, data: PokemonData) -> Result:
 
 func _can_use(move: StringName, hm: ItemData, pokemon: Pokemon, data: PokemonData) -> bool:
 	return pokemon.knows_move(move) or data.can_learn_hm(pokemon.species_id, hm.hm_number)
+
+
+## « cue » : absent, ou un texte dont les seuls jetons sont `{pokemon}`.
+static func _is_cue(value: Variant) -> bool:
+	if not value is String:
+		return false
+	for token: StringName in DialogueTokens.tokens_in(value):
+		if token != &"pokemon":
+			return false
+	return true
 
 
 func _fail(message: String) -> bool:

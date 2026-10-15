@@ -7,17 +7,10 @@ extends GutTest
 const DATA_DIR := "res://data"
 ## Brouillons en attente de validation, nommés un par un (chemin relevé par [method _collect_drafts]).
 ## Une fois validés, retirer leur « draft » et les sortir d'ici (le test vérifie qu'ils sont
-## encore en brouillon). Vide depuis la validation de l'annexe A du jalon 15 (2026-10-14).
-## Jalon 17 (T7) : fiches de Pokédex des huit espèces et deux notes (annexe A de jalon-17.md, Q-2).
-const PENDING_DRAFTS: Array[String] = [
-	"pokedex/kanto.json/species/vulpix", "pokedex/kanto.json/species/diglett",
-	"pokedex/kanto.json/species/diglett/notes/0", "pokedex/kanto.json/species/dugtrio",
-	"pokedex/kanto.json/species/growlithe", "pokedex/kanto.json/species/magnemite",
-	"pokedex/kanto.json/species/magneton", "pokedex/kanto.json/species/drowzee",
-	"pokedex/kanto.json/species/drowzee/notes/0", "pokedex/kanto.json/species/hypno",
-	# Jalon 17 (T8) : accord de T-2 à une espèce (annexe A.3, Q-2).
-	"dialogues/route_2_east.json/route_2_east_assistant/variants/3",
-]
+## encore en brouillon). Vide depuis la validation de l'annexe A du jalon 17 (Q-2, 2026-10-16) :
+## fiches de Pokédex, accord de T-2 à une espèce, sous-titres (en attente de leurs cartes dans
+## `tools/pending_data/j17/zones.json`, sans « draft »).
+const PENDING_DRAFTS: Array[String] = []
 
 
 func test_data_has_json_files() -> void:

@@ -1004,6 +1004,12 @@ et annexe A validée).
   peut disparaître (rallumage à chaque entrée) : décision à notifier à la session du J18.
 - §2.11 ; branchement dans Boot (bloc « J17 ») : voile posé à l'arrivée, `FlashDirector`.
 - Tests `test_flash_director`. **CA** : tests verts ; la Cave et le Mont Sélénite sans voile.
+- **Fait (2026-10-16)** : `FlashRules` (`game/world/caves/flash_rules.gd`, `Entry` NONE / AUTO / WARN,
+  `is_entry`, `entry_action`, `is_lit`), `FlashDirector` (`game/world/caves/flash_director.gd`),
+  branchés dans Boot ; « cue » dans `field_moves.json` ; avertissement `dark_cave_too_dark`.
+  Écarts au contrat du J18 : pas de drapeau (donc ni `lit_flag` ni `flags_to_clear`), pas d'OFFER
+  ni d'`use_here` / `pokemon_name` (aucune proposition), `entry_action` et `is_lit` prennent
+  `available` au lieu des drapeaux ; arrivée = chaque carte obscure (étage compris).
 
 #### T25 — ui-mobile : rendu de Flash et mesures — **(A)**, après T10, T24
 - **Contraste du héros** : T9/T10 ont mesuré 2,69 (milieu) et 2,38 (bord) sur `qa_flash`, **sous le
@@ -1190,3 +1196,5 @@ statistique ; tailles et poids officiels (vérifiés sur PokeAPI à l'écriture 
   inchangé.
 - Accord de T-2 pour une seule espèce : « Ton Pokédex compte 1 espèce capturée. » (adaptation
   d'accord du texte validé).
+- Avertissement sans Flash à l'arrivée sur une carte obscure (T24, une fois par arrivée) : repris
+  du dossier 21 T-3, validé par Kevin : « Il fait très sombre ici… Mieux vaut avancer prudemment. »

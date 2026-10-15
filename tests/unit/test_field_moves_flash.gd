@@ -84,3 +84,21 @@ func test_fainted_pokemon_can_flash() -> void:
 	party.get_at(1).hp = 0
 	var r := _check(party)
 	assert_eq([r.state, r.pokemon_index], [FieldMoves.State.READY, 1])
+
+
+## T24 (dossier 20 T-17) : texte de la mise en scène, jeton {pokemon}.
+func test_cue_text_names_the_pokemon() -> void:
+	assert_eq(_rules.cue_text(&"flash", "Pikachu"), "Pikachu utilise Flash !")
+	assert_eq(_rules.cue_text(&"flash", ""), "", "sans nom : rien")
+	assert_eq(_rules.cue_text(&"cut", "Pikachu"), "", "sans texte : rien")
+
+
+## « cue » : facultatif, un texte dont le seul jeton est {pokemon}.
+func test_cue_is_validated() -> void:
+	var rules := FieldMoves.new()
+	assert_true(rules.add_from_dict({"a": {"hm": "hm05", "badge": ""}}, "test"), "facultatif")
+	assert_eq(rules.cue_text(&"a", "Pikachu"), "")
+	assert_false(rules.add_from_dict({"b": {"hm": "hm05", "cue": 3}}, "test"), "texte")
+	assert_false(rules.add_from_dict({"c": {"hm": "hm05", "cue": "{joueur} !"}}, "test"),
+		"jeton inconnu")
+	assert_push_error_count(2)

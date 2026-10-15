@@ -125,7 +125,10 @@ compagnon**, Reptincel N22, Roucoups N19 ; 5 Poké Balls, 3 Potions, 2 Cordes So
 
 | Fichier | Partie |
 |---|---|
-| `flash_qa.json` | Dans la **pièce éclairée** `qa_flash_entry` (spawn `from_qa_flash_w`, tourné vers le nord) : aucun voile ; deux pas vers le nord → `qa_flash`, voile sombre posé pendant l'écran noir (halo ≈ 2,5 cases). Corde Sortie dans la grotte → retour dans la pièce, voile retiré. **À compléter au T7 / T24** : CS05 (`hm05`) au Sac quand l'objet existera ; départs `flash_qa_no_pokemon`, `flash_qa_no_hm`, `flash_qa_ko` du plan §2.17 avec la mise en scène (T24) |
+| `flash_qa.json` | Dans la **pièce éclairée** `qa_flash_entry` (spawn `from_qa_flash_w`, tourné vers le nord), **CS05 au Sac** (`got_hm05`), Pikachu compagnon compatible : deux pas vers le nord → `qa_flash`, voile sombre posé pendant l'écran noir, puis **mise en scène de Flash** (T24) : Pikachu saute (« ♪ »), « PIKACHU UTILISE FLASH ! », éclair, le halo s'ouvre (≈ 7 cases). Corde Sortie → la pièce, voile retiré ; chaque retour dans la grotte rallume Flash |
+| `flash_qa_no_hm.json` | Même départ **sans la CS05** (Pikachu compatible) : voile sombre, avertissement « Il fait très sombre ici… Mieux vaut avancer prudemment. », une fois par arrivée |
+| `flash_qa_no_pokemon.json` | CS05 au Sac, **aucun compatible** (Reptincel compagnon, Roucoups) : même avertissement, halo sombre |
+| `flash_qa_ko.json` | CS05 au Sac, **seul compatible K.O.** (Pikachu, 2e), sans compagnon : Flash quand même (K.O. accepté) ; Pikachu sort de sa Ball derrière le joueur pendant la mise en scène |
 | `flash_qa_dark.json` | Dans `qa_flash`, à l'entrée (spawn `from_qa_flash_entry_w` (4, 14), tourné vers le nord) : **joueur au bord de la carte** (coin sud-ouest, caméra bornée) ; voile sombre ; le trou suit le joueur, pas l'écran |
 | `flash_qa_lit.json` | Même place, clé `"veil": "lit"` : **halo de Flash ouvert** (≈ 7 cases) dès l'arrivée |
 
