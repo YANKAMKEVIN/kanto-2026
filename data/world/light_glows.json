@@ -6,6 +6,7 @@
 		"shard": { "color": "#a8c8ff", "radius": 1.8, "alpha": 0.26, "flicker": 0.0 },
 		"projector": { "color": "#fff0d8", "radius": 4.6, "alpha": 0.2, "flicker": 0.0 },
 		"beam": { "color": "#e2ecff", "radius": 0.9, "alpha": 0.3, "flicker": 0.0, "shape": "column", "height": 4.6 },
-		"hint": { "color": "#3cb4ff", "radius": 1.5, "alpha": 0.65, "flicker": 0.25, "blend": "mix" }
+		"hint": { "color": "#3cb4ff", "radius": 1.5, "alpha": 0.65, "flicker": 0.25, "blend": "mix" },
+		"sconce": { "color": "#ffa24a", "radius": 2.5, "alpha": 0.3, "flicker": 0.12 }
 	}
 }

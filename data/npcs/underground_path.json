@@ -1,0 +1,6 @@
+{
+	"passer": {
+		"cell": [11, 14], "facing": "up", "sprite": "old_man",
+		"dialogue": "underground_passer"
+	}
+}
