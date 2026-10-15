@@ -45,5 +45,31 @@
 				{ "species": "ivysaur", "level": 16 }
 			]
 		}
+	},
+	"rival_ss_anne": {
+		"name": "{rival}", "ai": "smart",
+		"can_lose": false, "heal_after": false, "gives_exp": true,
+		"prize_money": 0, "prize_per_level": 35,
+		"end_message": false, "start_message": true, "bag": true, "moment": "win", "switch": false,
+		"team_by_starter": {
+			"bulbasaur": [
+				{ "species": "pidgeotto", "level": 19, "moves": ["gust", "quick_attack", "sand_attack"] },
+				{ "species": "raticate", "level": 16, "moves": ["quick_attack", "bite", "tail_whip"] },
+				{ "species": "kadabra", "level": 18, "moves": ["confusion", "psybeam"] },
+				{ "species": "charmeleon", "level": 20, "moves": ["ember", "scratch", "growl"] }
+			],
+			"charmander": [
+				{ "species": "pidgeotto", "level": 19, "moves": ["gust", "quick_attack", "sand_attack"] },
+				{ "species": "raticate", "level": 16, "moves": ["quick_attack", "bite", "tail_whip"] },
+				{ "species": "kadabra", "level": 18, "moves": ["confusion", "psybeam"] },
+				{ "species": "wartortle", "level": 20, "moves": ["water_gun", "tackle", "tail_whip"] }
+			],
+			"squirtle": [
+				{ "species": "pidgeotto", "level": 19, "moves": ["gust", "quick_attack", "sand_attack"] },
+				{ "species": "raticate", "level": 16, "moves": ["quick_attack", "bite", "tail_whip"] },
+				{ "species": "kadabra", "level": 18, "moves": ["confusion", "psybeam"] },
+				{ "species": "ivysaur", "level": 20, "moves": ["vine_whip", "tackle", "growl"] }
+			]
+		}
 	}
 }

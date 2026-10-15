@@ -9,6 +9,8 @@ extends RefCounted
 ## - `tm_compatibility.json` (jalon 11, facultatif) : CT de Rouge/Bleu (« tms » : numéro → capacité)
 ##   et CT compatibles de chaque espèce (« species » : espèce → numéros), générées par
 ##   `tools/gen_tm_compatibility.py` ([method can_learn_tm]). Une espèce absente : aucune CT.
+##   Jalon 16 : CS de Rouge/Bleu à côté (« hms » : numéro → capacité, « hm_species » : espèce →
+##   numéros de CS) ([method can_learn_hm]) ; les deux clés sont facultatives.
 ## Les identifiants sont uniques dans tout un dossier, les numéros de Pokédex aussi.
 ## Validation stricte, comme [DialogueLibrary] : clé inconnue, clé obligatoire absente,
 ## valeur hors bornes, identifiant en double, JSON illisible (avec la ligne). Puis
@@ -77,6 +79,9 @@ var _errors: PackedStringArray = PackedStringArray()
 var _tm_moves: Dictionary[int, StringName] = {}
 ## Espèce → numéros des CT qu'elle peut apprendre.
 var _tm_species: Dictionary[StringName, Array] = {}
+## CS (jalon 16) : numéro → capacité, et espèce → numéros de CS compatibles.
+var _hm_moves: Dictionary[int, StringName] = {}
+var _hm_species: Dictionary[StringName, Array] = {}
 
 
 ## Charge la table des types, les capacités puis les espèces sous [param root], et vérifie
@@ -101,7 +106,7 @@ func load_tm_file(path: String) -> bool:
 func add_tm_from_dict(data: Dictionary, source: String = "") -> bool:
 	var ok := true
 	for key: Variant in data:
-		if not ["_doc", "tms", "species"].has(str(key)):
+		if not ["_doc", "tms", "species", "hms", "hm_species"].has(str(key)):
 			ok = _fail("%s : clé inconnue « %s »" % [source, key])
 	var tms: Variant = data.get("tms", {})
 	if not tms is Dictionary:
@@ -133,6 +138,42 @@ func add_tm_from_dict(data: Dictionary, source: String = "") -> bool:
 			ok = _fail("%s espèce « %s » : liste de numéros de CT connus attendue" % [source, id])
 			continue
 		_tm_species[id] = numbers
+	return _add_hms(data, source) and ok
+
+
+## CS (jalon 16) : « hms » { "01": "cut" } et « hm_species » { espèce: [1] }, facultatives.
+func _add_hms(data: Dictionary, source: String) -> bool:
+	var ok := true
+	var hms: Variant = data.get("hms", {})
+	if not hms is Dictionary:
+		return _fail("%s : « hms » doit être un objet { numéro: capacité }" % source)
+	for key: Variant in hms:
+		var number := str(key).to_int()
+		if not str(key).is_valid_int() or number < 1 or number > 5 \
+				or not hms[key] is String or (hms[key] as String).is_empty():
+			ok = _fail("%s : CS « %s » invalide (numéro de 1 à 5 → capacité)" % [source, key])
+			continue
+		_hm_moves[number] = StringName(hms[key])
+	var species: Variant = data.get("hm_species", {})
+	if not species is Dictionary:
+		return _fail("%s : « hm_species » doit être un objet { espèce: [numéros] }" % source)
+	for key: Variant in species:
+		var id := StringName(str(key))
+		if not _species.has(id):
+			ok = _fail("%s : espèce inconnue « %s » (CS)" % [source, id])
+			continue
+		var numbers: Array[int] = []
+		var valid: bool = species[key] is Array
+		if valid:
+			for number: Variant in species[key]:
+				if not JsonFields.is_int(number) or not _hm_moves.has(int(number)):
+					valid = false
+					break
+				numbers.append(int(number))
+		if not valid:
+			ok = _fail("%s espèce « %s » : liste de numéros de CS connus attendue" % [source, id])
+			continue
+		_hm_species[id] = numbers
 	return ok
 
 
@@ -144,6 +185,16 @@ func can_learn_tm(species: StringName, number: int) -> bool:
 ## Capacité de la CT numéro [param number] (&"" si inconnue).
 func tm_move(number: int) -> StringName:
 	return _tm_moves.get(number, &"")
+
+
+## Vrai si [param species] peut apprendre la CS numéro [param number] (Rouge/Bleu, jalon 16).
+func can_learn_hm(species: StringName, number: int) -> bool:
+	return (_hm_species.get(species, []) as Array).has(number)
+
+
+## Capacité de la CS numéro [param number] (&"" si inconnue).
+func hm_move(number: int) -> StringName:
+	return _hm_moves.get(number, &"")
 
 
 ## Charge la table des types (ses erreurs rejoignent [method get_errors]).

@@ -163,6 +163,8 @@ var _opening: OpeningDirector = null
 var _title_backdrop: TitleBackdrop = null
 ## Grottes de Kanto (jalon 12, T20 : Corde Sortie, `data/world/caves.json`).
 var _caves := CaveLibrary.new()
+## Capacités de terrain (jalon 16, Coupe) : data/world/field_moves.json.
+var _field_moves := FieldMoves.new()
 ## Pierre en cours d'utilisation (jalon 12, T23) : retirée du Sac à
 ## [signal EvolutionDirector.evolution_applied], une seule fois ; &"" sinon.
 var _stone_item: StringName = &""
@@ -236,6 +238,7 @@ func _ready() -> void:
 	_trainers.load_dir()
 	_texts.load_file()
 	_items.load_dir()
+	_field_moves.load_file()
 	_items.check_moves(_pokemon)
 	_battle_director.setup(_pokemon, _trainers, _texts, _battle_stage, _battle_hud, _player,
 		GameState, _items)
@@ -266,11 +269,15 @@ func _ready() -> void:
 	_runner.token_values = _dialogue_token_values
 	# Variantes « une fois sur N » (jalon 14) : l'aléatoire de la partie courante.
 	_runner.rng_source = func() -> GameRng: return GameState.rng
+	# Capacités de terrain (jalon 16) : état de Coupe pour les variantes « field » de l'arbuste.
+	_runner.field_source = field_state
 	# OUV.2 : prénoms du joueur et du rival (`{player}`, `{rival}`) aussi dans le nom du dresseur.
 	_texts.token_values = _dialogue_token_values
 	_runner.cutscene_requested.connect(_on_cutscene_requested)
 	_cutscenes_node.set_hud(_hud)
 	_cutscenes_node.item_given.connect(_on_item_given)
+	# Jalon 16 : écriture immédiate demandée par une scène (départ du S.S. Anne).
+	_cutscenes_node.save_requested.connect(_on_save_requested)
 	_cutscenes_node.item_found.connect(_on_item_found)
 	_battle_director.battle_started.connect(_on_battle_state_changed.unbind(1))
 	# Le titre de zone ne reste pas affiché pendant un combat (jalon 5C T11) : une rencontre
@@ -607,6 +614,13 @@ func get_trainer_library() -> TrainerLibrary:
 ## Objets chargés au démarrage (data/items/).
 func get_item_library() -> ItemLibrary:
 	return _items
+
+
+## État de la capacité de terrain [param move] pour la partie courante (jalon 16, [FieldMoves]) :
+## équipe, Sac, drapeaux, compagnon choisi.
+func field_state(move: StringName) -> FieldMoves.Result:
+	return _field_moves.check(move, GameState.party, GameState.bag, GameState.flags, _items,
+		_pokemon, GameState.get_companion())
 
 
 func get_encounter_director() -> EncounterDirector:
@@ -1320,6 +1334,17 @@ func _on_woke_up_after_defeat() -> void:
 		request_autosave("réveil")
 
 
+## Écriture immédiate demandée par l'étape « save » d'une scène (jalon 16, `jalon-16.md` §2.4 :
+## le départ du S.S. Anne) : même chemin que le réveil après une défaite. Le joueur est déjà à sa
+## place (quai) et les drapeaux sont levés ; la scène continue ensuite (spectacle). Pendant une
+## transition : autosave demandé (écrit à la première image stable).
+func _on_save_requested(reason: String) -> void:
+	if _can_write() and not SceneRouter.is_transitioning():
+		_write_save(reason)
+	else:
+		request_autosave(reason)
+
+
 ## Pokémon sauvage capturé et rangé (équipe ou stockage, jalon 5D) : autosave demandé, écrit à
 ## la première image stable (après la carte de capture et la fin de la rencontre).
 func _on_pokemon_caught() -> void:
@@ -1494,6 +1519,7 @@ func _apply_settings(s: GameSettings) -> void:
 	LightGlow.set_reduce_motion(s.reduce_motion)
 	# Carte du Champion (jalon 10, T5) : sans glissé, un fondu court.
 	_hud.get_champion_card().reduce_motion = s.reduce_motion
+	_cutscenes_node.reduce_motion = s.reduce_motion
 	# Étape « flash » (jalon 14) : adoucie par l'un ou l'autre réglage.
 	_hud.set_flash_reduced(s.reduce_motion or s.reduce_flashes)
 	_menu_screen.speed_scale = s.menu_speed_scale()

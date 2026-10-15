@@ -55,6 +55,9 @@ signal item_found(item_id: StringName, count: int)
 ## Une étape « flash » commence ([param count] éclairs, jalon 14) : point d'accroche du son de
 ## la machine (aucun son au J14).
 signal flash_started(count: int)
+## Étape « save » (jalon 16) : la partie doit être écrite **tout de suite** ([param reason]) ;
+## Boot écrit par le chemin du réveil ([method Boot._on_woke_up_after_defeat]).
+signal save_requested(reason: String)
 ## Fin d'une étape « wait » (interne).
 signal _wait_elapsed
 ## Fin d'une étape « move » (interne).
@@ -69,6 +72,8 @@ const MOVE_BLOCK_TIMEOUT: float = 2.0
 const LEAN_HOLD: float = 0.3
 ## Étape « despawn » : fondu du PNJ avant son retrait (s) ; sa case est libérée dès le début.
 const DESPAWN_FADE: float = 0.2
+## Étape « animate » avec « Réduire les animations » : fondu sur place (s), jalon 16.
+const ANIMATE_REDUCED_FADE: float = 0.5
 const _ROUTER_SCRIPT := preload("res://game/autoload/scene_router.gd")
 ## Étapes qui agissent sur leur acteur : elles attendent d'abord la fin de sa marche en
 ## arrière-plan.
@@ -127,6 +132,12 @@ var _trainers: TrainerLibrary
 ## [member _state] : l'autoload GameState en jeu, une instance de game_state.gd en test.
 var _badges: BadgeLibrary
 var _state: Node
+## « Réduire les animations » (jalon 16, étape « animate ») : posé par Boot.
+var reduce_motion: bool = false
+## Mise en scène d'une capacité de terrain (jalon 16, étape « field_move ») : coroutine
+## `func(move: StringName, target: Node2D) -> void` posée par Boot (le Pokémon qui coupe) ; non
+## valide : l'arbuste se retire seul (fondu du « despawn »).
+var field_move_handler: Callable
 
 
 func _ready() -> void:
@@ -364,6 +375,12 @@ func _play_step(source_step: CutsceneStep) -> bool:
 			_moment(step)
 		CutsceneStep.Kind.FLASH:
 			await _flash(step)
+		CutsceneStep.Kind.FIELD_MOVE:
+			await _field_move(step)
+		CutsceneStep.Kind.SAVE:
+			save_requested.emit(step.text)
+		CutsceneStep.Kind.ANIMATE:
+			await _animate(step)
 		_:
 			_step_error("étape « %s » inconnue" % CutsceneStep.kind_name(step.kind))
 	return true
@@ -605,6 +622,42 @@ func _flash(step: CutsceneStep) -> void:
 		return
 	flash_started.emit(step.count)
 	await _hud.flash(step.count)
+
+
+## Étape « field_move » (jalon 16, `jalon-16.md` §2.3) : la mise en scène de Boot
+## ([member field_move_handler]) puis le retrait du PNJ objet (l'arbuste). PNJ introuvable :
+## push_error, étape sautée.
+func _field_move(step: CutsceneStep) -> void:
+	var target := _find_actor(step.actor) as Npc
+	if target == null:
+		_step_error("PNJ « %s » introuvable (field_move)" % step.actor)
+		return
+	if field_move_handler.is_valid():
+		await field_move_handler.call(step.field_move, target)
+	await _despawn(step)
+
+
+## Étape « animate » (jalon 16, `jalon-16.md` §2.5) : le nœud [member CutsceneStep.target] de la
+## carte glisse de [member CutsceneStep.offset] cases en [member CutsceneStep.seconds] s puis se
+## masque s'il le faut ; « Réduire les animations » : fondu sur place. Nœud introuvable :
+## push_error, étape sautée.
+func _animate(step: CutsceneStep) -> void:
+	var node := _map.get_node_or_null(NodePath(String(step.target))) as Node2D \
+		if is_instance_valid(_map) else null
+	if node == null:
+		_step_error("nœud « %s » introuvable sur la carte (animate)" % step.target)
+		return
+	var tween := node.create_tween()
+	if reduce_motion:
+		tween.tween_property(node, ^"modulate:a", 0.0, ANIMATE_REDUCED_FADE)
+	else:
+		tween.tween_property(node, ^"position",
+			node.position + Vector2(step.offset * Grid.TILE_SIZE), step.seconds)
+		if step.fade:
+			tween.tween_property(node, ^"modulate:a", 0.0, DESPAWN_FADE)
+	await tween.finished
+	if step.fade or reduce_motion:
+		node.visible = false
 
 
 ## Étape « take » (jalon 7, le colis remis à Chen) : retire [member CutsceneStep.count] objets

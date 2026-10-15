@@ -9,6 +9,8 @@ Source : les CSV publics de PokeAPI (dépôt PokeAPI/pokeapi, `data/v2/csv/`) : 
 `kanto_mt_moon.json` ; les fichiers à part des jalons suivants aussi), par numéro de Pokédex.
 Fichier **généré** : en cas de conflit de fusion, le régénérer, ne jamais le fusionner à la main. Lu par `PokemonData`
 (`can_learn_tm`, lot CT 11B, `jalon-11.md` §2.6).
+Jalon 16 : les CS de Rouge/Bleu aussi (numéros 101 à 105 dans PokeAPI → CS01 à CS05) : « hms »
+(numéro → capacité) et « hm_species » (espèce → numéros de CS), lues par `can_learn_hm`.
 
 Usage : python3 -I tools/gen_tm_compatibility.py DOSSIER_DES_CSV
   (télécharger les six CSV dans un dossier neuf, par ex. avec curl depuis
@@ -52,12 +54,22 @@ def main() -> None:
 			ct_par_capacite[ligne["move_id"]] = numero
 			tms[f"{numero:02d}"] = capacites[ligne["move_id"]]
 	assert len(tms) == 50, f"50 CT attendues, {len(tms)} trouvées"
+	# CS de Rouge/Bleu (jalon 16) : numéros 101 à 105 dans PokeAPI → CS01 à CS05.
+	cs_par_capacite: dict[str, int] = {}
+	hms: dict[str, str] = {}
+	for ligne in _lire(dossier, "machines"):
+		numero = int(ligne["machine_number"])
+		if ligne["version_group_id"] == groupe and 101 <= numero <= 105:
+			cs_par_capacite[ligne["move_id"]] = numero - 100
+			hms[f"{numero - 100:02d}"] = capacites[ligne["move_id"]]
+	assert len(hms) == 5, f"5 CS attendues, {len(hms)} trouvées"
 	toutes: dict[str, dict] = {}
 	for fichier in sorted(ESPECES.glob("*.json")):
 		contenu = json.loads(fichier.read_text(encoding="utf-8"))
 		toutes.update(contenu.get("species", contenu))
 	especes = sorted(toutes, key=lambda espece: toutes[espece]["dex"])
 	compat: dict[str, set[int]] = {espece: set() for espece in especes}
+	compat_cs: dict[str, set[int]] = {espece: set() for espece in especes}
 	for ligne in _lire(dossier, "pokemon_moves"):
 		if ligne["version_group_id"] != groupe or ligne["pokemon_move_method_id"] != methode:
 			continue
@@ -65,21 +77,29 @@ def main() -> None:
 		numero = ct_par_capacite.get(ligne["move_id"])
 		if espece in compat and numero is not None:
 			compat[espece].add(numero)
+		numero_cs = cs_par_capacite.get(ligne["move_id"])
+		if espece in compat_cs and numero_cs is not None:
+			compat_cs[espece].add(numero_cs)
 	resultat = {
 		"_doc": ("Compatibilités des CT (Rouge/Bleu, dossier 14 §6.1), générées par "
 			"tools/gen_tm_compatibility.py depuis les CSV de PokeAPI ; lues par PokemonData "
 			"(jalon 11, lot 11B). « tms » : numéro de CT → capacité (identifiants du jeu). « species » : "
 			"espèce → numéros de CT compatibles (vide = aucune CT, comme Chenipan ou Aspicot). "
 			"Objets CT existants : CT34 (Patience, « bide », J11) et CT01 (Ultimapoing, « mega_punch », "
-			"J12) ; les autres CT arrivent avec leur capacité et leur lieu. Fichier généré : le "
+			"J12) ; les autres CT arrivent avec leur capacité et leur lieu. « hms » / « hm_species » "
+			"(jalon 16) : CS de Rouge/Bleu, mêmes règles (CS01 Coupe, « hm01 »). Fichier généré : le "
 			"régénérer après une fusion, jamais le fusionner à la main."),
 		"tms": dict(sorted(tms.items())),
 		"species": {espece: sorted(compat[espece]) for espece in especes},
+		"hms": dict(sorted(hms.items())),
+		"hm_species": {espece: sorted(compat_cs[espece]) for espece in especes if compat_cs[espece]},
 	}
 	SORTIE.write_text(json.dumps(resultat, ensure_ascii=False, indent="\t") + "\n", encoding="utf-8")
 	vides = [e for e, n in resultat["species"].items() if not n]
 	print(f"{SORTIE.relative_to(RACINE)} : {len(especes)} espèces, CT34 = {tms['34']}, "
 		f"compatibles CT34 : {sum(34 in n for n in resultat['species'].values())}, sans CT : {vides}")
+	coupe = [e for e, n in resultat["hm_species"].items() if 1 in n]
+	print(f"CS : {resultat['hms']} ; compatibles CS01 ({len(coupe)}) : {coupe}")
 
 
 if __name__ == "__main__":

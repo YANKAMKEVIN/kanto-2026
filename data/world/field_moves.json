@@ -1,0 +1,4 @@
+{
+	"_doc": "Capacités de terrain (jalon 16, dossier 19 §7, jalon-16.md §2.2) : capacité → CS qui la débloque (identifiant d'objet) et drapeau de badge exigé (\"\" = aucun). Lu par FieldMoves. Coupe : CS01 et Badge Cascade (G-3 retranché par Kevin le 2026-10-14). Les autres CS arrivent avec leurs jalons.",
+	"cut": { "hm": "hm01", "badge": "badge_cascade" }
+}

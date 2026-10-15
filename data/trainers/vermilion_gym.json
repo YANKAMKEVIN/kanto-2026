@@ -1,0 +1,37 @@
+{
+	"vermilion_gym_gentleman_louis": {
+		"name": "Gentleman Louis", "ai": "random",
+		"can_lose": false, "heal_after": false, "gives_exp": true, "prize_money": 800,
+		"team": [{ "species": "pikachu", "level": 20, "moves": ["thunder_shock", "thunder_wave"] }]
+	},
+	"vermilion_gym_rocker_axel": {
+		"name": "Rockeur Axel", "ai": "random",
+		"can_lose": false, "heal_after": false, "gives_exp": true, "prize_money": 400,
+		"team": [{ "species": "voltorb", "level": 20, "moves": ["tackle", "sonic_boom"] }]
+	},
+	"vermilion_gym_sailor_marc": {
+		"name": "Marin Marc", "ai": "random",
+		"can_lose": false, "heal_after": false, "gives_exp": true, "prize_money": 380,
+		"team": [
+			{ "species": "pikachu", "level": 19, "moves": ["thunder_shock", "quick_attack"] },
+			{ "species": "voltorb", "level": 19, "moves": ["tackle", "screech"] }
+		]
+	},
+	"vermilion_gym_surge": {
+		"name": "Major Bob", "ai": "smart",
+		"can_lose": false, "heal_after": false, "gives_exp": true, "prize_money": 2400,
+		"start_message": false, "end_message": true, "bag": true, "switch": false,
+		"card": { "name": "MAJOR BOB", "title": "Champion d'Arène de Carmin" },
+		"team": [
+			{ "species": "voltorb", "level": 21, "moves": ["tackle", "screech", "sonic_boom"] },
+			{
+				"species": "pikachu", "level": 18,
+				"moves": ["thunder_shock", "thunder_wave", "quick_attack"]
+			},
+			{
+				"species": "raichu", "level": 24,
+				"moves": ["thunder_shock", "thunder_wave", "thunderbolt"]
+			}
+		]
+	}
+}
