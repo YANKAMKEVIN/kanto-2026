@@ -122,6 +122,8 @@ const VARIANT_FLAGS: Dictionary = {
 	&"underground_hidden_1": [PEWTER_FLAGS],
 	# Jalon 15 (T13) : arrivée, Super Potion, Antidote caché, garde du poste nord.
 	&"route_5_arrival": [PEWTER_FLAGS], &"route_5_item_1": [PEWTER_FLAGS],
+	# Jalon 16 (T11) : la barrière de l'Arène de Carmin (une variante, puzzle pas encore résolu).
+	&"vermilion_gym_barrier_open": [PEWTER_FLAGS],
 	&"route_5_hidden_1": [PEWTER_FLAGS], &"route_5_gate_rule": [PEWTER_FLAGS],
 	&"pewter_arrival": [PEWTER_FLAGS],
 	# Jalon 13 (T17) : arrivée à Azuria, Poké Ball de la Route 4, Potion de la Route 24.
@@ -199,6 +201,8 @@ const CODE_PLAYED: Dictionary[StringName, StringName] = {
 	&"route_6_item_1": &"route_6", &"route_6_hidden_1": &"route_6",
 	# Jalon 15 (T13) : Super Potion (PNJ « objet ») et Antidote caché (point d'examen du tronc).
 	&"route_5_item_1": &"route_5", &"route_5_hidden_1": &"route_5",
+	# Jalon 16 (T11) : barrière de l'Arène de Carmin, jouée par Boot quand le puzzle est résolu.
+	&"vermilion_gym_barrier_open": &"vermilion_gym",
 	# Jalon 11 (T14) : remise tardive de la CT34 (dialogue de Pierre).
 	&"pewter_gym_brock_tm_late": &"pewter_gym",
 	# Jalon 13 (T17) : objets visibles des Routes 4 et 24 (PNJ « objet »).
@@ -288,6 +292,7 @@ func test_library_loads_without_error() -> void:
 		&"route_25_item_2", &"route_25_item_3",
 		&"route_6_gate_rule_e", &"route_6_gate_rule_s", &"route_6_gate_rule_w",
 		&"route_6_hidden_1", &"route_6_item_1", &"vermilion_arrival",
+		&"vermilion_gym_barrier_open",
 		&"route_2_item_1", &"route_2_item_2", &"route_2_item_3", &"route_2_item_4",
 		&"route_2_north_item_1", &"route_3_entered", &"route_3_guard", &"route_3_hidden_1",
 		&"route_3_item_1", &"route_3_item_2", &"route_3_item_3", &"route_4_item_1",

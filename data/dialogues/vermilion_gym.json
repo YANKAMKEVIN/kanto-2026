@@ -1,0 +1,18 @@
+{
+	"vermilion_gym_trash": {
+		"narration": true,
+		"pages": ["Rien… juste des papiers froissés."]
+	},
+	"vermilion_gym_switch_first": {
+		"narration": true,
+		"pages": ["Un interrupteur !\nLe premier verrou cède."]
+	},
+	"vermilion_gym_switch_solved": {
+		"narration": true,
+		"pages": ["Le second interrupteur !\nLa barrière s'ouvre !"]
+	},
+	"vermilion_gym_switch_reset": {
+		"narration": true,
+		"pages": ["Mauvais interrupteur !\nLes verrous se referment."]
+	}
+}

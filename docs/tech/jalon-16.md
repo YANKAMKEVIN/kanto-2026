@@ -560,6 +560,48 @@ définitif.
 
 §2.10, warps des grilles, éclairage intérieur, sortie en `coming_soon`.
 
+**Fait (2026-10-16), décor provisoire** (branche `j16-t11-cartes`) : les 9 pièces
+(`ss_anne_main_deck`, `_captain_corridor`, `_captain_room`, `_restaurant`, `_lower_deck`,
+`_outer_deck`, `_cabin_a|b|c`) et `vermilion_gym`, déclarées dans `build_painted_interiors.gd`
+(`--ss-anne`, `--j16` ; **pas `--carmin`**, déjà pris par les intérieurs du J15), relues sur leur
+grille. Décor **provisoire** en polygones à plat lu sur la grille (`tools/j16_placeholder_decor.gd`,
+clé `"placeholder"` ; textures répétées `assets/world/interiors/provisoire/`, outil
+`tools/gen_j16_placeholder_textures.gd`) : **au T10, remplacer `"placeholder"` par `"shell"` +
+`"props"` / `"furniture"`** sans toucher aux grilles ni aux passages. Barrière : objet provisoire
+`object/electric_barrier` (`tools/build_provisional_objects_j16.gd`), remplacé sous le même
+identifiant. Écarts au plan :
+- **sortie du pont principal branchée sur la vraie Carmin** (`vermilion_city`,
+  `from_ss_anne_w|e`) et non en `coming_soon` (Carmin existe depuis la fusion du J15) ; l'Arène
+  ramène sur `from_gym`. Côté Carmin, rien n'est touché : `BoardingW|E` et `DoorGymW|E` restent « À
+  venir » (T15, T14) ; arrivées à viser : `ss_anne_main_deck/from_ss_anne_w|e` (12..13, 10) et
+  `vermilion_gym/entrance` (8, 12) ;
+- arrivées `from_<pièce>` (pont principal : `from_cabin_a`, `from_cabin_c`, `from_corridor`,
+  `from_restaurant`, `from_outer_deck`, `from_lower_deck` ; pont inférieur `from_cabin_b` ; couloir
+  `from_captain_room`), `entrance` = case `entree` de la grille, une case **au-dessus** de la sortie
+  `X` (PUSH ↓ depuis la case `X`) ; portes `D` en STEP_ON vers le mur, escaliers `S` en STEP_ON sans
+  direction ;
+- **puzzle branché sur la vraie Arène** (moteur du T9) : 15 `InteractPoint` (`puzzle
+  vermilion_gym`, emplacement = `index` de la grille), entrée `vermilion_gym` de
+  `switch_puzzles.json`, dialogues GYM-01 à GYM-04 (`data/dialogues/vermilion_gym.json`, textes
+  validés), scène `vermilion_gym_barrier_open` (`data/cutscenes/vermilion_gym.json`), barrière = 3
+  PNJ objets **sans dialogue** (`data/npcs/vermilion_gym.json` ; aucun texte validé pour l'examen) ;
+  Major Bob, Dresseurs, guide, panneau : T14 ;
+- **aucun PNJ ni déclencheur à bord** (Dresseurs, objets, marin : T12 ; rival et son déclencheur,
+  capitaine : T13) ;
+- zone `ss_anne` (« S.S. Anne », sous-titre validé « Le grand paquebot de Kanto », `place`) avec
+  une **description provisoire** (`draft`, annexe A au T3) et un rectangle provisoire sur la Carte
+  (`kanto_placeholder_areas.json`, sous Carmin) ; `vermilion_gym` rangée dans `vermilion_city`.
+  Le pont principal est un intérieur : **le titre de zone ne s'affiche qu'au pont extérieur** (carte
+  d'extérieur) — à revoir au T12 (embarquement) si le titre doit tomber dès la passerelle.
+Tests : `test_ss_anne_maps` (grille ↔ carte, passages, raccords à Carmin par identifiants, vision
+des 13 Dresseurs des grilles sur la vraie carte, 0 inévitable sur le pont principal, rival
+incontournable, puzzle et barrière sur la vraie Arène, départs, nœuds) ; listes de `test_map_links`
+(retours vers Carmin en attente du T14 / T15 ; sortie PUSH à un pas acceptée),
+`test_dialogue_data`, `test_cutscene_data`, `test_zone_library`, `test_no_draft_in_data`
+(brouillon `ss_anne` en attente). Mémoire « carte + voisines »
+(`measure_map_cache.gd -- --route=ss_anne`) : pont principal 30,3 Mo (dont Carmin ≈ 30), autres
+pièces ≤ 1,1 Mo. Départs : `ss_anne`, `vermilion_gym_map`.
+
 #### T12 — constructeur-monde : vie du navire (16A, 16B) — après T4, T11
 
 PNJ et répliques, 10 Dresseurs (vues des grilles), objets visibles et cachés, embarquement.

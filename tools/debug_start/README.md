@@ -140,6 +140,17 @@ Jadielle par le sud du quai. Équipe des départs `cut_*` : Pikachu N22 (compagn
 | `ss_anne_exit.json` | **16D, validé seul.** CS01 en poche, devant la sortie : PARTIR / PAS ENCORE. PAS ENCORE : « Prends ton temps… », un pas en arrière. PARTIR : fondu vers le quai, **écriture immédiate**, légende « Le S.S. Anne quitte Carmin. », le navire s'éloigne, passerelle fermée (« Le S.S. Anne a pris le large. »). **Clé `autosave: true` : ce départ REMPLACE `user://save.json`** (copier la vraie sauvegarde avant). Arrêt brutal (forcer l'arrêt Android) pendant la confirmation → relance à bord ; après la légende → relance au quai, navire parti, spectacle non rejoué |
 | `vermilion_gym.json` | Dans l'Arène d'essai (spawn `entrance`), arbuste coupé : 15 poubelles (puzzle Rouge/Bleu strict, nouveau tirage à chaque entrée ; le journal `[qa] puzzle …` donne le premier et le second), barrière de 3 piliers, Louis, Axel, Marc, Major Bob (sans carte ni badge : T14). Équipe Sablaireau N26 (Tunnel), Racaillou N24, Herbizarre N24, Roucoups N22 ; 3 Super Potions, 3 Anti-Para |
 
+## Jalon 16 (T11) : les vraies cartes du S.S. Anne et de l'Arène (décor provisoire)
+
+Tant que Carmin n'y mène pas (embarquement au T15, porte de l'Arène au T14), on y entre par ces
+départs. Sans PNJ à bord (T12, T13) ; dans l'Arène, seule la barrière (T14 : Major Bob, Dresseurs,
+guide).
+
+| Fichier | Partie |
+|---|---|
+| `ss_anne.json` | Sur le **pont principal**, en haut de la passerelle (spawn `from_ss_anne_w`, tourné vers le nord), Passe Bateau, Badge Cascade, équipe N20–24 (celle de `ss_anne_free_exit`) : les 9 pièces reliées (portes du nord : cabines A, C, couloir et cabine du capitaine ; ouest : restaurant ; est : pont extérieur ; escalier sud-est : pont inférieur et cabine B) ; la passerelle ramène au quai de Carmin |
+| `vermilion_gym_map.json` | Dans la **vraie Arène de Carmin** (spawn `entrance`), arbuste coupé : le puzzle `vermilion_gym` (GYM-01 à GYM-04, journal `[qa] puzzle …`), barrière de 3 segments ; la sortie ramène devant l'Arène à Carmin. Équipe de `vermilion_gym.json` |
+
 La carte de QA `qa_moves_j12` (J12, T15) ses données, son outil et les départs `moves_qa` /
 `moves_qa_solo` ont été **retirés au T28 du J12** (les capacités du J12 se vérifient sur la vraie
 grotte : départs `mt_moon_*`).

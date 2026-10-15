@@ -8,7 +8,8 @@ const DATA_DIR := "res://data"
 ## Brouillons en attente de validation, nommés un par un (chemin relevé par [method _collect_drafts]).
 ## Une fois validés, retirer leur « draft » et les sortir d'ici (le test vérifie qu'ils sont
 ## encore en brouillon). Vide depuis la validation de l'annexe A du jalon 15 (2026-10-14).
-const PENDING_DRAFTS: Array[String] = []
+## Jalon 16 (T11) : description de la zone du S.S. Anne sur la Carte (annexe A du plan, T3).
+const PENDING_DRAFTS: Array[String] = ["world/zones.json/zones/ss_anne"]
 
 
 func test_data_has_json_files() -> void:

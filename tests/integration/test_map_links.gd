@@ -37,7 +37,15 @@ const MAP_IDS: Array[StringName] = [
 	&"vermilion_house_2",
 	# Jalon 15 (T13, T21) : la Route 5 (raccord réel avec Azuria) et ses trois intérieurs.
 	&"route_5", &"route_5_daycare", &"route_5_gate", &"route_5_underground_gate",
+	# Jalon 16 (T11) : les 9 pièces du S.S. Anne et l'Arène de Carmin.
+	&"ss_anne_main_deck", &"ss_anne_captain_corridor", &"ss_anne_captain_room",
+	&"ss_anne_restaurant", &"ss_anne_lower_deck", &"ss_anne_outer_deck", &"ss_anne_cabin_a",
+	&"ss_anne_cabin_b", &"ss_anne_cabin_c", &"vermilion_gym",
 ]
+## Jalon 16 (T11) : retours pas encore branchés côté Carmin (embarquement `BoardingW|E` au T15,
+## porte de l'Arène `DoorGymW|E` au T14, encore « à venir ») : [carte d'origine, carte cible].
+const PENDING_RETURNS: Array = [[&"ss_anne_main_deck", &"vermilion_city"],
+	[&"vermilion_gym", &"vermilion_city"]]
 ## Cartes construites par une autre tâche en parallèle (jalon 7 : la Route 22, T22 ; jalon 10 :
 ## Argenta, T11, pendant les intérieurs du T13) : un warp qui y mène est vérifié seulement si la
 ## carte existe déjà (sinon le test le signale).
@@ -149,6 +157,12 @@ func _return_warp(map: GameMap, arrival: Vector2i, origin: StringName) -> Warp:
 				and (map.get_grid().get_step_target(arrival, direction) == next
 					or _blocked_only_by_a_character(map, next)):
 			return warp
+		# Jalon 16 (T11) : sortie PUSH à un pas (les pièces du S.S. Anne : arrivée de la grille
+		# une case au-dessus de la sortie, dans l'encadrement du mur).
+		var push := map.get_warps().find_on_push(next, direction)
+		if push != null and push.target_map == origin \
+				and map.get_grid().get_step_target(arrival, direction) == next:
+			return push
 	return null
 
 
@@ -163,6 +177,8 @@ func test_every_warp_is_reversible_on_the_spot() -> void:
 		for warp: Warp in (_maps[map_id] as GameMap).get_warps().get_all():
 			var target := _maps.get(warp.target_map) as GameMap
 			if target == null or warp.is_coming_soon():
+				continue
+			if PENDING_RETURNS.has([map_id, warp.target_map]):
 				continue
 			var arrival := target.get_spawn_cell(warp.target_spawn)
 			var back := _return_warp(target, arrival, map_id)
