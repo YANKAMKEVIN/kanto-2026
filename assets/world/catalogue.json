@@ -7810,6 +7810,38 @@
     "droite",
     "haut"
    ]
+  },
+  "pokemaniac": {
+   "fichier": "res://assets/sprites/characters/painted/pokemaniac_sheet.png",
+   "cellule": [
+    89,
+    130
+   ],
+   "hauteur": 128,
+   "colonnes": 4,
+   "lignes": 4,
+   "ordre_lignes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
+  },
+  "exorciste": {
+   "fichier": "res://assets/sprites/characters/painted/exorciste_sheet.png",
+   "cellule": [
+    80,
+    130
+   ],
+   "hauteur": 128,
+   "colonnes": 4,
+   "lignes": 4,
+   "ordre_lignes": [
+    "bas",
+    "gauche",
+    "droite",
+    "haut"
+   ]
   }
  },
  "images": {

@@ -73,5 +73,23 @@
 		],
 		"taille": [2340, 1080],
 		"qualite": 90
+	},
+	"route_9_roche": {
+		"composition": "COMBAT_DECOR_ROUTE9_r1.png",
+		"tuiles": [
+			{ "image": "COMBAT_DECOR_ROUTE9_r1_TL.png", "portion": [0, 0, 1000, 852] },
+			{ "image": "COMBAT_DECOR_ROUTE9_r1_TR.png", "portion": [846, 0, 1846, 852] }
+		],
+		"taille": [2340, 1080],
+		"qualite": 90
+	},
+	"dark_cave_galerie": {
+		"composition": "COMBAT_DECOR_GROTTE_SOMBRE_r2.png",
+		"tuiles": [
+			{ "image": "COMBAT_DECOR_GROTTE_SOMBRE_r2_TL.png", "portion": [0, 0, 1000, 860] },
+			{ "image": "COMBAT_DECOR_GROTTE_SOMBRE_r2_TR.png", "portion": [828, 0, 1828, 860] }
+		],
+		"taille": [2340, 1080],
+		"qualite": 90
 	}
 }

@@ -2087,6 +2087,18 @@
    "source": "PNJ_PRESIDENT_FAN_CLUB_NE_r1.png",
    "sortie": "assets/sprites/characters/painted/president_fan_club_sheet.png",
    "hauteur": 128
+  },
+  {
+   "id": "pokemaniac",
+   "source": "PNJ_POKEMANIAC_NE_r1.png",
+   "sortie": "assets/sprites/characters/painted/pokemaniac_sheet.png",
+   "hauteur": 128
+  },
+  {
+   "id": "exorciste",
+   "source": "PNJ_EXORCISTE_NE_r1.png",
+   "sortie": "assets/sprites/characters/painted/exorciste_sheet.png",
+   "hauteur": 128
   }
  ],
  "pokemon": [
