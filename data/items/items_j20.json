@@ -1,0 +1,62 @@
+{
+	"great_ball": {
+		"name": "Super Ball", "plural": "Super Balls", "feminine": true,
+		"category": "ball", "catch_bonus": 1.5, "price": 600,
+		"description": "Une Ball plus efficace que la Poké Ball."
+	},
+	"fire_stone": {
+		"name": "Pierre Feu", "plural": "Pierres Feu", "feminine": true,
+		"category": "field", "field_use": "evolution_stone", "price": 2100,
+		"description": "Une pierre chaude au toucher. Fait évoluer certains Pokémon."
+	},
+	"water_stone": {
+		"name": "Pierre Eau", "plural": "Pierres Eau", "feminine": true,
+		"category": "field", "field_use": "evolution_stone", "price": 2100,
+		"description": "Une pierre bleue et limpide. Fait évoluer certains Pokémon."
+	},
+	"thunder_stone": {
+		"name": "Pierre Foudre", "plural": "Pierres Foudre", "feminine": true,
+		"category": "field", "field_use": "evolution_stone", "price": 2100,
+		"description": "Une pierre qui crépite. Fait évoluer certains Pokémon."
+	},
+	"leaf_stone": {
+		"name": "Pierre Plante", "plural": "Pierres Plante", "feminine": true,
+		"category": "field", "field_use": "evolution_stone", "price": 2100,
+		"description": "Une pierre veinée de vert. Fait évoluer certains Pokémon."
+	},
+	"fresh_water": {
+		"name": "Eau Fraîche", "plural": "Eaux Fraîches", "feminine": true,
+		"category": "heal", "heal_amount": 50, "price": 200,
+		"description": "Une eau minérale bien fraîche. Rend 50 PV."
+	},
+	"soda_pop": {
+		"name": "Soda Cool", "plural": "Sodas Cool", "feminine": false,
+		"category": "heal", "heal_amount": 60, "price": 300,
+		"description": "Une boisson pétillante. Rend 60 PV."
+	},
+	"lemonade": {
+		"name": "Limonade", "plural": "Limonades", "feminine": true,
+		"category": "heal", "heal_amount": 80, "price": 350,
+		"description": "Une limonade très sucrée. Rend 80 PV."
+	},
+	"tm13": {
+		"name": "CT13 — Laser Glace", "plural": "CT13 — Laser Glace", "feminine": true,
+		"category": "tm", "tm": 13, "teaches": "ice_beam",
+		"description": "Un rayon glacé frappe la cible. Peut la geler."
+	},
+	"tm21": {
+		"name": "CT21 — Méga-Sangsue", "plural": "CT21 — Méga-Sangsue", "feminine": true,
+		"category": "tm", "tm": 21, "teaches": "mega_drain",
+		"description": "Aspire l'énergie de la cible. Rend au lanceur la moitié des dégâts infligés."
+	},
+	"lift_key": {
+		"name": "Clé Ascenseur", "plural": "Clés Ascenseur", "feminine": true,
+		"category": "key",
+		"description": "La clé de l'ascenseur du repaire de la Team Rocket."
+	},
+	"silph_scope": {
+		"name": "Scope Sylphe", "plural": "Scopes Sylphe", "feminine": false,
+		"category": "key", "obtained": true,
+		"description": "Il permet de voir ce que l'œil seul ne voit pas."
+	}
+}

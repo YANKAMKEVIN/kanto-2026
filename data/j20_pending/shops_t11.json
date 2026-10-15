@@ -1,0 +1,37 @@
+{
+	"_doc": "Jalon 20, T7 (docs/tech/jalon-20.md §2.9.1) : boutiques du grand magasin qui vendent un objet de items_t11.json ou une CT ; le T11 les déplace dans data/shops/celadon_dept.json une fois les objets chargés. « celadon_dept_2f_tm » : CT01 seule, option A de Q-2 (recommandée, en attente de Kevin) ; option B = boutique supprimée (réplique neutre) ; option C = CT09, CT10, CT17, CT33 en plus, après le recul et les écrans.",
+	"shops": {
+		"celadon_dept_2f": {
+			"stock": [
+				{ "item": "great_ball" },
+				{ "item": "super_potion" },
+				{ "item": "revive" },
+				{ "item": "antidote" },
+				{ "item": "burn_heal" },
+				{ "item": "ice_heal" },
+				{ "item": "awakening" },
+				{ "item": "paralyze_heal" }
+			]
+		},
+		"celadon_dept_2f_tm": {
+			"stock": [
+				{ "item": "tm01" }
+			]
+		},
+		"celadon_dept_4f": {
+			"stock": [
+				{ "item": "poke_doll" }
+			]
+		},
+		"celadon_dept_5f": {
+			"stock": [
+				{ "item": "x_attack" },
+				{ "item": "x_defend" },
+				{ "item": "x_speed" },
+				{ "item": "x_special" },
+				{ "item": "x_accuracy" },
+				{ "item": "dire_hit" }
+			]
+		}
+	}
+}

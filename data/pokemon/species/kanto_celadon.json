@@ -1,0 +1,127 @@
+{
+	"growlithe": {
+		"dex": 58, "name": "Caninos", "types": ["fire"],
+		"base_stats": { "hp": 55, "atk": 70, "def": 45, "spa": 70, "spd": 50, "spe": 60 },
+		"male_ratio": 0.75, "growth_rate": "slow", "base_exp": 70, "catch_rate": 190,
+		"learnset": [
+			[1, "bite"], [1, "roar"], [18, "ember"], [23, "leer"], [30, "take_down"], [39, "agility"],
+			[50, "flamethrower"]
+		],
+		"evolutions": [{ "into": "arcanine", "method": "item", "item": "fire_stone" }]
+	},
+	"arcanine": {
+		"dex": 59, "name": "Arcanin", "types": ["fire"],
+		"base_stats": { "hp": 90, "atk": 110, "def": 80, "spa": 100, "spd": 80, "spe": 95 },
+		"male_ratio": 0.75, "growth_rate": "slow", "base_exp": 194, "catch_rate": 75,
+		"learnset": [
+			[1, "roar"], [1, "ember"], [1, "leer"], [1, "take_down"]
+		]
+	},
+	"vulpix": {
+		"dex": 37, "name": "Goupix", "types": ["fire"],
+		"base_stats": { "hp": 38, "atk": 41, "def": 40, "spa": 50, "spd": 65, "spe": 65 },
+		"male_ratio": 0.25, "growth_rate": "medium_fast", "base_exp": 60, "catch_rate": 190,
+		"learnset": [
+			[1, "ember"], [1, "tail_whip"], [16, "quick_attack"], [21, "roar"], [28, "confuse_ray"],
+			[35, "flamethrower"], [42, "fire_spin"]
+		],
+		"evolutions": [{ "into": "ninetales", "method": "item", "item": "fire_stone" }]
+	},
+	"ninetales": {
+		"dex": 38, "name": "Feunard", "types": ["fire"],
+		"base_stats": { "hp": 73, "atk": 76, "def": 75, "spa": 81, "spd": 100, "spe": 100 },
+		"male_ratio": 0.25, "growth_rate": "medium_fast", "base_exp": 177, "catch_rate": 75,
+		"learnset": [
+			[1, "ember"], [1, "tail_whip"], [1, "quick_attack"], [1, "roar"]
+		]
+	},
+	"eevee": {
+		"dex": 133, "name": "Évoli", "types": ["normal"],
+		"base_stats": { "hp": 55, "atk": 55, "def": 50, "spa": 45, "spd": 65, "spe": 55 },
+		"male_ratio": 0.875, "growth_rate": "medium_fast", "base_exp": 65, "catch_rate": 45,
+		"learnset": [
+			[1, "tackle"], [1, "sand_attack"], [27, "quick_attack"], [31, "tail_whip"], [37, "bite"],
+			[45, "take_down"]
+		],
+		"evolutions": [
+			{ "into": "vaporeon", "method": "item", "item": "water_stone" },
+			{ "into": "jolteon", "method": "item", "item": "thunder_stone" },
+			{ "into": "flareon", "method": "item", "item": "fire_stone" }
+		]
+	},
+	"vaporeon": {
+		"dex": 134, "name": "Aquali", "types": ["water"],
+		"base_stats": { "hp": 130, "atk": 65, "def": 60, "spa": 110, "spd": 95, "spe": 65 },
+		"male_ratio": 0.875, "growth_rate": "medium_fast", "base_exp": 184, "catch_rate": 45,
+		"learnset": [
+			[1, "tackle"], [1, "sand_attack"], [1, "quick_attack"], [1, "water_gun"],
+			[27, "quick_attack"], [31, "water_gun"], [37, "tail_whip"], [40, "bite"], [42, "acid_armor"],
+			[44, "haze"], [48, "mist"], [54, "hydro_pump"]
+		]
+	},
+	"jolteon": {
+		"dex": 135, "name": "Voltali", "types": ["electric"],
+		"base_stats": { "hp": 65, "atk": 65, "def": 60, "spa": 110, "spd": 95, "spe": 130 },
+		"male_ratio": 0.875, "growth_rate": "medium_fast", "base_exp": 184, "catch_rate": 45,
+		"learnset": [
+			[1, "tackle"], [1, "sand_attack"], [1, "quick_attack"], [1, "thunder_shock"],
+			[27, "quick_attack"], [31, "thunder_shock"], [37, "tail_whip"], [40, "thunder_wave"],
+			[42, "double_kick"], [44, "agility"], [48, "pin_missile"], [54, "thunder"]
+		]
+	},
+	"flareon": {
+		"dex": 136, "name": "Pyroli", "types": ["fire"],
+		"base_stats": { "hp": 65, "atk": 130, "def": 60, "spa": 95, "spd": 110, "spe": 65 },
+		"male_ratio": 0.875, "growth_rate": "medium_fast", "base_exp": 184, "catch_rate": 45,
+		"learnset": [
+			[1, "tackle"], [1, "sand_attack"], [1, "quick_attack"], [1, "ember"], [27, "quick_attack"],
+			[31, "ember"], [37, "tail_whip"], [40, "bite"], [42, "leer"], [44, "fire_spin"],
+			[48, "rage"], [54, "flamethrower"]
+		]
+	},
+	"victreebel": {
+		"dex": 71, "name": "Empiflor", "types": ["grass", "poison"],
+		"base_stats": { "hp": 80, "atk": 105, "def": 65, "spa": 100, "spd": 70, "spe": 70 },
+		"male_ratio": 0.5, "growth_rate": "medium_slow", "base_exp": 221, "catch_rate": 45,
+		"learnset": [
+			[1, "sleep_powder"], [1, "stun_spore"], [1, "acid"], [1, "razor_leaf"], [13, "wrap"],
+			[15, "poison_powder"], [18, "sleep_powder"]
+		]
+	},
+	"tangela": {
+		"dex": 114, "name": "Saquedeneu", "types": ["grass"],
+		"base_stats": { "hp": 65, "atk": 55, "def": 115, "spa": 100, "spd": 40, "spe": 60 },
+		"male_ratio": 0.5, "growth_rate": "medium_fast", "base_exp": 87, "catch_rate": 45,
+		"learnset": [
+			[1, "constrict"], [1, "bind"], [29, "absorb"], [32, "poison_powder"], [36, "stun_spore"],
+			[39, "sleep_powder"], [45, "slam"], [49, "growth"]
+		]
+	},
+	"vileplume": {
+		"dex": 45, "name": "Rafflesia", "types": ["grass", "poison"],
+		"base_stats": { "hp": 75, "atk": 80, "def": 85, "spa": 110, "spd": 90, "spe": 50 },
+		"male_ratio": 0.5, "growth_rate": "medium_slow", "base_exp": 221, "catch_rate": 45,
+		"learnset": [
+			[1, "stun_spore"], [1, "sleep_powder"], [1, "acid"], [1, "petal_dance"],
+			[15, "poison_powder"], [17, "stun_spore"], [19, "sleep_powder"]
+		]
+	},
+	"rhyhorn": {
+		"dex": 111, "name": "Rhinocorne", "types": ["ground", "rock"],
+		"base_stats": { "hp": 80, "atk": 85, "def": 95, "spa": 30, "spd": 30, "spe": 25 },
+		"male_ratio": 0.5, "growth_rate": "slow", "base_exp": 69, "catch_rate": 120,
+		"learnset": [
+			[1, "horn_attack"], [30, "stomp"], [35, "tail_whip"], [40, "fury_attack"],
+			[45, "horn_drill"], [50, "leer"], [55, "take_down"]
+		]
+	},
+	"kangaskhan": {
+		"dex": 115, "name": "Kangourex", "types": ["normal"],
+		"base_stats": { "hp": 105, "atk": 95, "def": 80, "spa": 40, "spd": 80, "spe": 90 },
+		"male_ratio": 0.0, "growth_rate": "medium_fast", "base_exp": 172, "catch_rate": 45,
+		"learnset": [
+			[1, "comet_punch"], [1, "rage"], [26, "bite"], [31, "tail_whip"], [36, "mega_punch"],
+			[41, "leer"], [46, "dizzy_punch"]
+		]
+	}
+}

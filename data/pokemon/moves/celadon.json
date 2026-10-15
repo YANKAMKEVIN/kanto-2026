@@ -1,0 +1,54 @@
+{
+	"mega_drain": {
+		"name": "Méga-Sangsue", "type": "grass", "category": "special",
+		"power": 40, "accuracy": 100, "pp": 15,
+		"effects": [{ "kind": "drain", "fraction": 0.5 }],
+		"description": "Aspire l'énergie de la cible. Rend au lanceur la moitié des dégâts infligés."
+	},
+	"constrict": {
+		"name": "Constriction", "type": "normal", "category": "physical",
+		"power": 10, "accuracy": 100, "pp": 35,
+		"effects": [{ "kind": "stat_stage", "stat": "spe", "stages": -1, "target": "foe", "chance": 10 }],
+		"description": "Serre la cible avec des lianes. Peut baisser sa Vitesse."
+	},
+	"comet_punch": {
+		"name": "Poing Comète", "type": "normal", "category": "physical",
+		"power": 18, "accuracy": 85, "pp": 15,
+		"effects": [{ "kind": "hits", "min": 2, "max": 5 }],
+		"description": "Une volée de coups de poing, de deux à cinq fois."
+	},
+	"stomp": {
+		"name": "Écrasement", "type": "normal", "category": "physical",
+		"power": 65, "accuracy": 100, "pp": 20,
+		"effects": [{ "kind": "flinch", "chance": 30 }],
+		"description": "Écrase la cible d'un pied lourd. Peut l'apeurer."
+	},
+	"dizzy_punch": {
+		"name": "Uppercut", "type": "normal", "category": "physical",
+		"power": 70, "accuracy": 100, "pp": 10,
+		"effects": [{ "kind": "confusion", "chance": 20 }],
+		"description": "Un coup de poing qui monte. Peut rendre la cible confuse."
+	},
+	"acid_armor": {
+		"name": "Acidarmure", "type": "poison", "category": "status",
+		"accuracy": 0, "pp": 20,
+		"effects": [{ "kind": "stat_stage", "stat": "def", "stages": 2, "target": "self" }],
+		"description": "Le corps se liquéfie et devient plus dur à frapper. Augmente beaucoup la Défense."
+	},
+	"mist": {
+		"name": "Brume", "type": "ice", "category": "status",
+		"accuracy": 0, "pp": 30,
+		"pending_effects": ["mist"],
+		"description": "Un voile blanc qui protège des baisses de statistiques. Sans effet dans le moteur actuel."
+	},
+	"take_down": {
+		"name": "Bélier", "type": "normal", "category": "physical", "power": 90, "accuracy": 85, "pp": 20,
+		"pending_effects": ["recoil_damage"],
+		"description": "Le lanceur charge la cible de tout son poids et se blesse aussi. Sans effet dans le moteur actuel."
+	},
+	"roar": {
+		"name": "Hurlement", "type": "normal", "category": "status", "accuracy": 100, "pp": 20,
+		"pending_effects": ["force_switch"],
+		"description": "Un cri terrifiant fait fuir la cible. Sans effet dans le moteur actuel."
+	}
+}

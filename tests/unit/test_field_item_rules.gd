@@ -46,9 +46,14 @@ func test_escape_rope_data() -> void:
 	assert_true(RareCandy.is_candy(candy))
 	assert_false(RareCandy.is_candy(stone))
 	assert_false(StoneUse.is_stone(candy))
+	# Jalon 20 (T7) : les quatre pierres du grand magasin, comme la Pierre Lune.
+	var stones: Array[StringName] = [&"fire_stone", &"water_stone", &"thunder_stone",
+		&"leaf_stone"]
+	for id: StringName in stones:
+		assert_eq(_items.get_item(id).field_use, ItemData.FIELD_USE_EVOLUTION_STONE, String(id))
 	# Aucun autre objet n'a d'usage d'exploration.
 	for id: StringName in _items.get_ids():
-		if id not in [&"escape_rope", &"moon_stone", &"rare_candy"]:
+		if id not in [&"escape_rope", &"moon_stone", &"rare_candy"] and id not in stones:
 			assert_eq(_items.get_item(id).field_use, &"", "%s : aucun usage" % id)
 
 
