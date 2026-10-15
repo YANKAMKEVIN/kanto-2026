@@ -420,6 +420,19 @@ POKEMON_MARCHE = [
 		"bras qui balancent mollement", False),
 ]
 
+## Révisions de description d'un Pokémon marcheur (écrites à la main après un blocage du filtre de
+## sécurité de Codex sur r1 : « Soporifik, fidèle à son design officiel … psychique … mystérieuse »).
+## `_r2` est lancé par `serie19.py --r2 POKE_SOPORIFIK`.
+POKEMON_R2 = {"POKE_SOPORIFIK": (
+	"un gentil petit PANGOLIN-TAPIR de dessin animé, bipède, tout rond et doux, comme une peluche : corps "
+	"jaune-ocre, longue trompe souple crème à deux petites narines, petits yeux noirs ronds mi-clos et "
+	"ensommeillés, deux petites oreilles pointues, large collerette de fourrure crème autour du cou, bas du "
+	"corps et mains brun chaud, trois petits doigts. Allure paisible et somnolente, bon enfant."),
+	# r3 : sans cadre « Pokémon » ni « compagnon du héros » (voir --r2 ; r2 bloqué aussi).
+	"POKE_SOPORIFIK_R3": (
+	"un petit TAPIR jaune-ocre de dessin animé, bipède et rond, au museau en longue trompe crème, aux petits "
+	"yeux ronds et ensommeillés, avec une collerette de fourrure crème et le bas du corps brun chaud.")}
+
 ## Référence de la vue pour un Pokémon marcheur (couleurs seulement).
 REF_POKE = {"POKE_SOPORIFIK": "REF_R11_SOPORIFIK"}
 
@@ -1397,6 +1410,16 @@ if __name__ == "__main__":
 	arguments = sys.argv[1:]
 	if "--prompts" in arguments:
 		ecrire_prompts()
+	elif "--r2" in arguments:
+		ident = arguments[arguments.index("--r2") + 1]
+		_, hauteur, ancre, _, mouvement, vol = next(t for t in POKEMON_MARCHE if t[0] == ident)
+		revision = arguments[arguments.index("--r2") + 2] if len(arguments) > arguments.index("--r2") + 2 else "r2"
+		nom = f"{ident}_NE_{revision}"
+		fichier = PROMPTS / f"{nom}.txt"
+		cle = ident if revision == "r2" else f"{ident}_{revision.upper()}"
+		fichier.write_text(_prompt_pokemon_marche(ident, ancre, POKEMON_R2[cle], mouvement, vol,
+			hauteur, REF_POKE.get(ident) if revision == "r2" else None))
+		print(_generer({"nom": nom, "fichier": fichier, "jointes": [HEROS, ancre] + ([f"{REF_POKE[ident]}.png"] if revision == "r2" else [])}))
 	elif "--refs" in arguments:
 		references()
 	elif "--ancres" in arguments:
