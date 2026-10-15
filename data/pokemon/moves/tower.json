@@ -29,7 +29,7 @@
 	"dream_eater": {
 		"name": "Dévorêve", "type": "psychic", "category": "special",
 		"power": 100, "accuracy": 100, "pp": 15, "pending_effects": ["dream_eater"],
-		"description": "Dévore le rêve d'une cible endormie et rend au lanceur la moitié des dégâts."
+		"description": "Dévore le rêve d'une cible endormie et rend au lanceur la moitié des dégâts. Sans effet dans le moteur actuel."
 	},
 	"bonemerang": {
 		"name": "Osmerang", "type": "ground", "category": "physical",
@@ -39,12 +39,12 @@
 	"roar": {
 		"name": "Hurlement", "type": "normal", "category": "status",
 		"accuracy": 0, "pp": 20, "priority": -6, "pending_effects": ["force_switch"],
-		"description": "Un cri terrifiant qui fait fuir la cible."
+		"description": "Un cri terrifiant qui fait fuir la cible. Sans effet dans le moteur actuel."
 	},
 	"take_down": {
 		"name": "Bélier", "type": "normal", "category": "physical",
 		"power": 90, "accuracy": 85, "pp": 20, "pending_effects": ["recoil_damage"],
-		"description": "Le lanceur fonce sur la cible de tout son poids et se blesse aussi."
+		"description": "Le lanceur fonce sur la cible de tout son poids et se blesse aussi. Sans effet dans le moteur actuel."
 	},
 	"barrage": {
 		"name": "Pilonnage", "type": "normal", "category": "physical",
@@ -54,6 +54,6 @@
 	"hyper_beam": {
 		"name": "Ultralaser", "type": "normal", "category": "special",
 		"power": 150, "accuracy": 90, "pp": 5, "pending_effects": ["recharge"],
-		"description": "Un rayon dévastateur. Le lanceur doit ensuite se reposer un tour."
+		"description": "Un rayon dévastateur. Le lanceur doit ensuite se reposer un tour. Sans effet dans le moteur actuel."
 	}
 }
