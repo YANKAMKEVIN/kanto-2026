@@ -50,8 +50,8 @@
 | I-18 | Routes 8 et 12 : bords fermés « À venir », sans PNJ ni annonce | [V] |
 | I-19 | Lavanville ≈ 44 × 36 ; pas d'Expert en surnoms | [V] |
 | I-20 | Boutique : objets existants seulement ; Repousse et Super Ball reportées | [V] |
-| I-21 | Étages fermés par une Médium en prière sur l'escalier (s'écarte au J19) | [V] |
-| I-22 | RDC de la Tour : visiteurs, tombes, gardien, Médium ; rien du J19 | [V] |
+| I-21 | Étages fermés par une Exorciste (gardienne) en prière sur l'escalier (s'écarte au J19) | [V] |
+| I-22 | RDC de la Tour : visiteurs, tombes, gardien, Exorciste (gardienne) ; rien du J19 | [V] |
 | I-23 | Maison de M. Fuji ouverte, Fuji « à la Tour », sans alarme | [V] |
 | I-24 | 18.0 → 18A → 18B → 18C | [V] |
 | I-25 | Le code attend Coupe et le menu (J16), Machoc (J14), Super Potion (J15) | [V] |
@@ -95,7 +95,7 @@ ROUTE 9 (rocheuse, 7 Dresseurs) ──▶ ROUTE 10 nord ── Centre Pokémon
 ROUTE 2 sud ── FUTUR A (arbre à couper) ──▶ poste de l'assistant de Chen (CS05 Flash) [si I-4]
 ```
 
-**Hors périmètre** : étages de la Tour, Médiums possédées, spectres, Osselait et sa mère, Scope
+**Hors périmètre** : étages de la Tour, Exorcistes possédées, spectres, Osselait et sa mère, Scope
 Sylphe, M. Fuji en personne, rival n° 5, Team Rocket (J19 et suivants) ; centrale électrique et
 Surf ; Route 8, Route 12, souterrain Route 7 ↔ Route 8, Céladopole ; Route 11, Grotte Taupiqueur ;
 Expert en surnoms (pas de surnoms) ; Repousse, Super Ball, Rappel, Poupée Pokémon ; Coupe et le
@@ -338,7 +338,8 @@ gris violacé, beige, vert désaturé ; brume basse le matin [D].
 | Maison 2 | un couple qui prépare des fleurs pour la Tour (§15) |
 
 **Exclus** : Expert en surnoms (pas de surnoms), maison de l'Osselait (J19), panneau du Scope
-Sylphe (RB : « Les fantômes apparaissent ! » : spoiler du J19).
+Sylphe (RB : « Les fantômes apparaissent ! » : spoiler du J19) — **son emplacement est réservé**
+en (42, 11) dans la grille, le J19 le pose (dossier 22 K-16).
 
 ### 6.3 Habitants [D]
 
@@ -370,7 +371,7 @@ Aucun PNJ ni texte n'annonce Céladopole, Safrania ou un Ronflex.
 
 Intérieur ≈ **20 × 18 cases** (RB : 20 × 18). Entrée au sud ; **rangées de tombes** basses à angles
 droits ; un **comptoir d'accueil** (gardien) ; bancs ; bougies (`LightGlow` `lamp`, sans
-vacillement agressif) ; **escalier** au nord-est, **gardé par la Médium**. Lumière froide, calme,
+vacillement agressif) ; **escalier** au nord-est, **gardé par l'Exorciste (gardienne)**. Lumière froide, calme,
 pas de brume violette.
 
 ### 7.2 Présents
@@ -381,9 +382,9 @@ pas de brume violette.
 | Visiteuse | parle d'un Pokémon disparu, avec tendresse |
 | Visiteur | dépose des fleurs, peu de mots |
 | Jeune fille | vient chaque semaine, « pour qu'il ne se sente pas seul » |
-| **Médium**, sur l'escalier | en prière, **bloque l'escalier** ; s'écarte au J19 (drapeau) |
+| **Exorciste (gardienne)**, sur l'escalier | en prière, **bloque l'escalier** ; s'écarte au J19 (drapeau) |
 
-Planche **Médium** à créer (la même servira au J19). **Aucun** spectre, combat, rival, Rocket,
+Planche **Exorciste** à créer par le J18 (la même sert aux 9 Exorcistes du J19, dossier 22 K-2). Le nom « Médium » de la passe I-21 est remplacé par **Exorciste qui ne combat pas** (dossier 22 K-2, validé par Kevin) ; seul le nom change. **Aucun** spectre, combat, rival, Rocket,
 Osselait ni allusion à un enlèvement.
 
 ### 7.3 Tombes
@@ -394,7 +395,7 @@ entretenue. ».
 ### 7.4 Dernier moment du J18
 
 Pas de cinématique : **entrer, lire une tombe, entendre le silence**. L'objectif du tableau de bord
-devient « Revenir plus tard à la Tour Pokémon. » après avoir parlé à la Médium (§12). Rien
+devient « Revenir plus tard à la Tour Pokémon. » après avoir parlé à l'Exorciste (gardienne) (§12). Rien
 d'autre ne se déclenche.
 
 ## 8. Le poste de l'assistant de Chen (CS05) [V I-4, conditionnel]
@@ -446,7 +447,7 @@ n'apparaît chez aucun adversaire.
 
 ### 10.4 Personnages et décors
 
-- **Planches nouvelles** : Pokémaniac, Médium, assistant de Chen (si §8 ; peut réutiliser
+- **Planches nouvelles** : Pokémaniac, Exorciste (gardienne), assistant de Chen (si §8 ; peut réutiliser
   `researcher`), gardien de la Tour (peut réutiliser `old_man`).
 - **Décors** : falaises basses et terrasses (Route 9), rivière et centrale lointaine (Route 10),
   sol et parois de la Grotte Sombre + 5 repères, façades et pavés de Lavanville, extérieur de la
@@ -461,24 +462,24 @@ n'apparaît chez aucun adversaire.
 - **Aucune nouvelle version de sauvegarde** (J15 : v7).
 - **Drapeaux** [D, noms indicatifs] : `beaten_<id>` (14 Dresseurs), `got_<id>` (objets),
   `dark_cave_lit` (Flash allumée, effacé à la sortie), `got_hm05` (si §8), `lavender_reached`,
-  `tower_medium_talked` (objectif). Le J19 posera le drapeau qui écarte la Médium.
+  `tower_medium_talked` (objectif). Le J19 pose `tower_stairs_open`, qui écarte la gardienne (dossier 22 K-3) ; au J18, la gardienne a `unless tower_stairs_open`.
 - **Points de repos** : Centre de la Route 10, Centre de Lavanville.
 - **Relais** : reçu du J16 (arbre à couper, menu des capacités de terrain) ; passé au J19 (escalier
-  de la Tour, Médium, maison de l'Osselait) et aux jalons de la Route 8 / 12.
+  de la Tour, Exorciste (gardienne), maison de l'Osselait) et aux jalons de la Route 8 / 12.
 
 ## 12. Objectifs du tableau de bord [D]
 
 - En quittant Azuria par l'est : « Traverser la Route 9 vers l'est. »
 - Au Centre de la Route 10 : « Traverser la Grotte Sombre. »
 - À la sortie sud de la grotte : « Rejoindre Lavanville, au sud. »
-- À Lavanville : « Visiter la Tour Pokémon. » → après la Médium : « Revenir plus tard à la Tour
+- À Lavanville : « Visiter la Tour Pokémon. » → après l'Exorciste (gardienne) : « Revenir plus tard à la Tour
   Pokémon. »
 
 ## 13. Découpage et validation S24 [V I-24, I-25]
 
 | Sous-jalon | Contenu | Validation |
 |---|---|---|
-| **18.0** | Grilles, vues peintes, données (rencontres, Dresseurs, compatibilités CS05, objets), art (Pokémaniac, Médium, décors, fonds CB.3), **voile d'obscurité** en prototype mesuré | captures Mac + mesure S24 du voile |
+| **18.0** | Grilles, vues peintes, données (rencontres, Dresseurs, compatibilités CS05, objets), art (Pokémaniac, Exorciste (gardienne), décors, fonds CB.3), **voile d'obscurité** en prototype mesuré | captures Mac + mesure S24 du voile |
 | **18A** | Route 9 (+ raccord d'Azuria), Route 10 nord, Centre ; poste de l'assistant et CS05 si §8 | S24 |
 | **18B** | Grotte Sombre complète : 1F, B1F, échelles, voile, Flash, rencontres, Dresseurs, Corde Sortie | S24 (luminosité moyenne, avec et sans Flash) |
 | **18C** | Route 10 sud, Lavanville, Tour (RDC), sorties « À venir », QA de bout en bout Azuria → Tour | S24 + fusion |
@@ -504,7 +505,7 @@ Contrôles verts : `tools/art/plan_check_route_9.py`, `plan_check_route_10.py`,
 | Grotte Sombre B1F | `tools/plans/grotte_sombre_b1f.txt` | 48 × 38 | colonne, paroi fendue, racines, flaque, passage étroit (Marcel) |
 | | | **4 568 cases** | chemin principal **179 pas**, 2 échelles à l'aplomb, 10 gravats obligatoires (15,8 % du sol) ; **≈ 6 min 50** |
 | Lavanville | `tools/plans/lavanville.txt` | 44 × 36 | avenue nord-sud, deux rues ; Tour 12 × 11 au nord-est ; Routes 8 et 12 « À venir » ; squares du sud meublés (bancs, parterres pâles, haies basses) ; raccord nord (21..23, 0) |
-| Tour Pokémon RDC | `tools/plans/tour_pokemon_rdc.txt` | 20 × 18 | 36 tombes dont 5 nommées, 6 bougies, escalier d'une case tenu par la Médium |
+| Tour Pokémon RDC | `tools/plans/tour_pokemon_rdc.txt` | 20 × 18 | 36 tombes dont 5 nommées, 6 bougies, escalier d'une case tenu par l'Exorciste (gardienne) |
 | Azuria (est) | `tools/plans/azuria.txt` | 56 × 41 | arbre à couper en (53, 23) entre deux pans de clôture, raccord Route 9 en (55, 22..24) |
 
 ## 14. Cas limites (à couvrir au plan)
@@ -522,7 +523,7 @@ Contrôles verts : `tools/art/plan_check_route_9.py`, `plan_check_route_10.py`,
 - « Réduire les animations » : pas de battement du halo, ouverture de Flash instantanée.
 - Arriver à la Route 9 **avant** le Badge Foudre (J16 seulement) : tout reste faisable (I-12).
 - Revenir à Azuria depuis la Route 9 : l'arbre reste coupé (règle du J16).
-- Parler deux fois à la Médium ; tenter de passer à côté d'elle (l'escalier fait une case, elle
+- Parler deux fois à l'Exorciste (gardienne) ; tenter de passer à côté d'elle (l'escalier fait une case, elle
   l'occupe).
 - Les deux moitiés du 1F ne se voient jamais (la caméra ne montre pas l'autre moitié à travers la
   roche).
@@ -581,8 +582,8 @@ Contrôles verts : `tools/art/plan_check_route_9.py`, `plan_check_route_10.py`,
 | T-31 | Visiteuse | « Mon Rattata m'a suivi pendant quinze ans. Il était têtu, et je l'adorais. » |
 | T-32 | Visiteur | « … » puis « Je n'ai pas grand-chose à dire. Je suis juste venu. » |
 | T-33 | Jeune fille | « Je viens chaque semaine. Pour qu'il ne se sente pas seul. » |
-| T-34 | Médium (1re fois) | « Chut… Les étages sont réservés au recueillement. Revenez plus tard, s'il vous plaît. » |
-| T-35 | Médium (ensuite) | « … » |
+| T-34 | Exorciste (gardienne) (1re fois) | « Chut… Les étages sont réservés au recueillement. Revenez plus tard, s'il vous plaît. » |
+| T-35 | Exorciste (gardienne) (ensuite) | « … » |
 | T-36 | Tombe 1 | « Ici repose Plumo. Il chantait pour réveiller toute la maison. » |
 | T-37 | Tombe 2 | « Pour Caillou, qui n'a jamais eu peur de rien. » |
 | T-38 | Tombe 3 | « Tu nous as appris la patience. Merci, Mousse. » |
@@ -641,7 +642,7 @@ réutilisées pour le gardien et l'assistant.
 | Dresseurs | Route 9 : 7 (2 inévitables) ; Route 10 : 2 ; grotte : 5 (2 inévitables) ; pas d'Osselait |
 | Corde Sortie / Tunnel | Entrée nord, depuis les deux étages |
 | Lavanville | ≈ 44 × 36 ; Centre, Boutique (objets existants), Maison des Pokémon, 2 maisons, Tour ; légende d'arrivée |
-| Tour | RDC seulement ; Médium sur l'escalier ; rien du J19 |
+| Tour | RDC seulement ; Exorciste (gardienne) sur l'escalier ; rien du J19 |
 | Sauvegarde | Aucune nouvelle version |
 | Validation | 18.0 → 18A → 18B → 18C |
 | Textes | Lot §15 validé (2026-10-14) |
