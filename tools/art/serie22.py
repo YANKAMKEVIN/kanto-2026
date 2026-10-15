@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
-"""Série 21 — lot d'art 20.0a du jalon 20 (Céladopole) : espèces, personnages, décors de combat.
+"""Série 22 — lot d'art 20.0a du jalon 20 (Céladopole) : espèces, personnages, décors de combat.
 
-Fiche : docs/design/fiches-assets/serie-21-celadopole.md ; plan : docs/tech/jalon-20.md §1.4, T2,
+Fiche : docs/design/fiches-assets/serie-22-celadopole.md ; plan : docs/tech/jalon-20.md §1.4, T2,
 T3 ; conception : docs/design/dossier-23-celadopole.md §3.2, §7.3, §11, §13, §15.1, §23.
 Tâches (A) : rien n'est branché dans le jeu (ni manifeste, ni decors.json, ni BattleArt, ni
 build_character_frames.gd) ; l'intégration revient au T10.
@@ -17,15 +17,15 @@ Trois familles, méthodes reprises des séries précédentes :
 Faces et artworks du Pokédex : artworks officiels, déjà présents (assets/sprites/pokemon/official).
 
 Usage :
-  tools/art/serie21.py --prompts               écrit les prompts versionnés (r1 à r3)
-  tools/art/serie21.py --refs                  recadre les références de la vue de Céladopole
-  tools/art/serie21.py --commandes             liste les appels generer.sh
-  tools/art/serie21.py --generer NOM [NOM ...]  lance generer.sh (3 à la fois)
-  tools/art/serie21.py --tuiles ESSAI          découpe les portions TL / TR d'une composition
-  tools/art/serie21.py --decor ESSAI SORTIE    master 2340 × 1080 → $ART/serie21/<SORTIE>_back.{png,webp}
-  tools/art/serie21.py --detourer              prépare les essais retenus (RETENUS) dans $ART/serie21/
-  tools/art/serie21.py --contact               planches de contact à l'échelle du jeu
-  tools/art/serie21.py --kit                   planche du kit (existant réutilisé + à produire)
+  tools/art/serie22.py --prompts               écrit les prompts versionnés (r1 à r3)
+  tools/art/serie22.py --refs                  recadre les références de la vue de Céladopole
+  tools/art/serie22.py --commandes             liste les appels generer.sh
+  tools/art/serie22.py --generer NOM [NOM ...]  lance generer.sh (3 à la fois)
+  tools/art/serie22.py --tuiles ESSAI          découpe les portions TL / TR d'une composition
+  tools/art/serie22.py --decor ESSAI SORTIE    master 2340 × 1080 → $ART/serie22/<SORTIE>_back.{png,webp}
+  tools/art/serie22.py --detourer              prépare les essais retenus (RETENUS) dans $ART/serie22/
+  tools/art/serie22.py --contact               planches de contact à l'échelle du jeu
+  tools/art/serie22.py --kit                   planche du kit (existant réutilisé + à produire)
 """
 from __future__ import annotations
 
@@ -47,8 +47,8 @@ from serie06 import LUMIERE_NE  # noqa: E402
 from serie12 import MODELE_MARCHE  # noqa: E402
 
 ART = Path(os.environ.get("ART", RACINE / "build" / "art"))
-SORTIE = ART / "serie21"
-PROMPTS = ICI / "prompts" / "serie21"
+SORTIE = ART / "serie22"
+PROMPTS = ICI / "prompts" / "serie22"
 ATTENTES = ICI / "attente" / "prompts"
 PROMPTS_DECOR = ICI / "combat_decors" / "prompts"
 REFERENCE = RACINE / "docs/design/reference"
@@ -508,7 +508,7 @@ def _poser(sujet: Image.Image, cote: int, utile: int, bas: int) -> Image.Image:
 
 
 def detourer() -> None:
-	"""Dos retenus → $ART/serie21/dos_ia_NNN.png (format de dos_ia_093) ; PNJ → planches de jeu."""
+	"""Dos retenus → $ART/serie22/dos_ia_NNN.png (format de dos_ia_093) ; PNJ → planches de jeu."""
 	SORTIE.mkdir(parents=True, exist_ok=True)
 	for ident, num, *_ in ESPECES:
 		essai = RETENUS.get(f"DOS_{ident}")
@@ -686,7 +686,7 @@ def kit(sortie: Path) -> None:
 		im.thumbnail((190, 190), Image.LANCZOS)
 		pl.paste(im, (x + (200 - im.width) // 2, y + 195 - im.height), im)
 		d.text((x, y + 200), f"{num} {nom}", fill="white", font=f)
-		d.text((x, y + 220), "dos : " + dos.get(nom, "Codex (série 21)"), fill=(200, 200, 140), font=f)
+		d.text((x, y + 220), "dos : " + dos.get(nom, "Codex (série 22)"), fill=(200, 200, 140), font=f)
 	y0 = 2 * 250 + 20
 	d.text((10, y0), "PNJ réutilisés : parieur (J17, « Joueur »), dresseuse (Jeune Dresseuse), fillette, "
 		"sbire_h / sbire_f, jardinière, vieil homme, vieille dame…", fill="white", font=f)
@@ -723,9 +723,9 @@ def main() -> None:
 	elif args[0] == "--detourer":
 		detourer()
 	elif args[0] == "--contact":
-		contact_combat(ART / "SERIE21_CONTACT_COMBAT_v1.png")
-		contact_pnj(ART / "SERIE21_CONTACT_PNJ_v1")
-		contact_decors(ART / "SERIE21_CONTACT_DECORS_v1.png")
+		contact_combat(ART / "SERIE22_CONTACT_COMBAT_v1.png")
+		contact_pnj(ART / "SERIE22_CONTACT_PNJ_v1")
+		contact_decors(ART / "SERIE22_CONTACT_DECORS_v1.png")
 	elif args[0] == "--kit":
 		kit(ART / "J20_KIT_v1.png")
 	else:

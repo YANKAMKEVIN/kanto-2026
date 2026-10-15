@@ -1,4 +1,4 @@
-# Série 21 — Céladopole, lot d'art 20.0a (jalon 20) : espèces, personnages, décors de combat
+# Série 22 — Céladopole, lot d'art 20.0a (jalon 20) : espèces, personnages, décors de combat
 
 > Rédigée et générée le 2026-10-15 (T2 + T3, branche `j20-t2-t3-art` depuis `5c42a28e`). Plan :
 > `docs/tech/jalon-20.md` §1.4, T2, T3 ; conception : `docs/design/dossier-23-celadopole.md` §3.2,
@@ -9,16 +9,16 @@
 
 ## Numéro de série
 
-**21**, vérifié le 2026-10-15 : `git grep` de « série NN » / `serieNN` sur toutes les références
-locales et distantes, et `tools/art/serie2*` / `fiches-assets/serie-2*` de toutes les copies de
-travail : 18 = J16, 19 = J17, 20 = J19 (`serie-20-tour-pokemon.md`) ; le J18 n'a pas de numéro
-(`tools/art/prompts/j18/`) ; rien au-delà de 20. **À revérifier au push** (renommer fiche, script et
-`prompts/serie21/` si besoin ; les identifiants d'images ne portent pas le numéro).
+**22**. Le lot avait d'abord pris 21 (vérifié le 2026-10-15 : 18 = J16, 19 = J17, 20 = J19, rien
+au-delà) ; le J18 a poussé sa série 21 en premier sur `origin/jalon-18`, et le J20 a été renuméroté
+en **22** le 2026-10-16 (libre sur toutes les branches à 0 h 30, décision du coordinateur) : fiche,
+`tools/art/serie22.py`, `tools/art/prompts/serie22/`, planches `SERIE22_*`, sorties
+`build/art/serie22/`. Les identifiants d'images ne portent pas le numéro. **À revérifier au push.**
 
 ## Périmètre de ce lot
 
 Espèces (§15.1 du dossier), personnages nouveaux (§3.2, §7.3, §11.2, §13), fonds de combat CB.3
-(§23). **Hors de ce lot** (reste du kit §1.4 du plan, à faire dans une série 21 bis avant le T15) :
+(§23). **Hors de ce lot** (reste du kit §1.4 du plan, à faire dans une série 22 bis avant le T15) :
 façades, sols, intérieurs (grand magasin, Résidence, serre, Casino, repaire), flèches et disques
 des dalles, cabines d'ascenseur, PNJ d'ambiance (employé de bureau, hôtesse, cuisinier, serveur,
 réceptionniste, touriste), Tartard de décor, icônes du Sac. Ils gardent la règle « chaque élément
@@ -27,12 +27,12 @@ moment-là.
 
 ## Outil
 
-`tools/art/serie21.py` (modèle `serie20.py` du J19 ; `MODELE_MARCHE` de `serie12.py`, attente de
+`tools/art/serie22.py` (modèle `serie20.py` du J19 ; `MODELE_MARCHE` de `serie12.py`, attente de
 `serie17.py`, chaîne CB.3 de `combat_decors/preparer_decor.py`) : `--prompts`, `--refs`,
 `--commandes`, `--generer`, `--tuiles`, `--decor`, `--detourer`, `--contact`, `--kit`. Prompts
-versionnés : `tools/art/prompts/serie21/`, `tools/art/attente/prompts/<NOM>_ATTENTE.txt`,
+versionnés : `tools/art/prompts/serie22/`, `tools/art/attente/prompts/<NOM>_ATTENTE.txt`,
 `tools/art/combat_decors/prompts/COMBAT_DECOR_{URBAINE,SERRE,REPAIRE}_r1.txt` (+ tuiles). Sorties
-non versionnées dans `build/art/` (sources) et `build/art/serie21/` (préparées).
+non versionnées dans `build/art/` (sources) et `build/art/serie22/` (préparées).
 
 ## 1. Kit (T2)
 
@@ -82,7 +82,7 @@ Face adverse et artwork du Pokédex = **artworks officiels**, déjà présents p
 | Fillette (D4, D5, D7, E1, E2) | **réutilisé** : `fillette` (`lass_young`) | — | — |
 | Sbires du repaire | **réutilisés** : `sbire_h`, `sbire_f` | — | — |
 
-Tenues = **valeurs par défaut** (règle 4), écrites dans `PERSONNAGES` de `serie21.py` : Erika
+Tenues = **valeurs par défaut** (règle 4), écrites dans `PERSONNAGES` de `serie22.py` : Erika
 (carré noir, bandeau rouge, kimono vert jade fleuri, obi moutarde, hakama rouge sombre) ; Giovanni
 (cheveux plaqués, costume trois pièces brun orangé sombre, chemise et cravate noires, pastille rouge
 sans lettre au revers, ni chapeau ni lunettes) ; Rocket en civil (costume noir, cravate rouge = le
@@ -140,7 +140,7 @@ compagnon d'Évoli r1), tous en « modération en sortie » ; **Voltali et Pyrol
 variantes** ; le nom de l'espèce suffit souvent à déclencher le refus (r1), parfois
 l'image jointe (Empiflor). Ordre conseillé pour la suite : **r2 directement**, puis r3.
 
-**Sorties préparées** (`build/art/serie21/`) : `dos_ia_133`, `_058`, `_037`, `_071`, `_045`, `_104`,
+**Sorties préparées** (`build/art/serie22/`) : `dos_ia_133`, `_058`, `_037`, `_071`, `_045`, `_104`,
 `_059`, `_038`, `_134` (1024²) ; `<pnj>_sheet.png` + `<pnj>_idle_sheet.png` pour `erika`, `giovanni`,
 `rocket_civil`, `intello`, `beaute`, `topdresseuse` (128 px, `decouper_perso.py` / `decouper_attente.py`) ;
 `route_7_8_urbaine_back`, `celadon_gym_serre_back`, `rocket_hideout_repaire_back` (`.png` et `.webp`,
@@ -148,7 +148,7 @@ l'image jointe (Empiflor). Ordre conseillé pour la suite : **r2 directement**, 
 
 ## 3. Entrées proposées pour le T10 (non ajoutées)
 
-- `tools/art/combat_decors/decors.json` : `entree_decor(...)` de `serie21.py` (composition, tuiles
+- `tools/art/combat_decors/decors.json` : `entree_decor(...)` de `serie22.py` (composition, tuiles
   TL `[0, 0, w, h]` / TR, 2340 × 1080, qualité 90) pour les trois décors.
 - `data/battle/decors.json` : `route_7_8_urbaine` (zones `route_7`, `route_8`),
   `celadon_gym_serre` (`celadon_gym`), `rocket_hideout_repaire` (`celadon_game_corner`,
@@ -160,21 +160,21 @@ l'image jointe (Empiflor). Ordre conseillé pour la suite : **r2 directement**, 
 ## 4. Reste à produire
 
 1. **Dos de Voltali et de Pyroli** : refusés par Codex dans les trois variantes (avec nom, sans nom,
-   sans image). Repli (mémoire « Codex refuse ») : Kevin colle `tools/art/prompts/serie21/DOS_VOLTALI_r3.txt`
+   sans image). Repli (mémoire « Codex refuse ») : Kevin colle `tools/art/prompts/serie22/DOS_VOLTALI_r3.txt`
    et `DOS_PYROLI_r3.txt` dans l'app ChatGPT ; sinon dos pixel provisoire (T7) en attendant.
 2. **Compagnon d'Évoli** (si budget) : r1 refusé ; prochain essai sans images jointes, puis repli ChatGPT.
-3. Reste du kit §1.4 (décors du monde, intérieurs, icônes) : série 21 bis, **en attente**.
+3. Reste du kit §1.4 (décors du monde, intérieurs, icônes) : série 22 bis, **en attente**.
 
-Commandes : `python3 tools/art/serie21.py --commandes` (prompts déjà écrits).
+Commandes : `python3 tools/art/serie22.py --commandes` (prompts déjà écrits).
 
 ## 5. Planches de contact (à valider par Kevin)
 
-- `build/art/SERIE21_CONTACT_COMBAT_v1.png` : chaque dos retenu face à l'artwork officiel de la même
+- `build/art/SERIE22_CONTACT_COMBAT_v1.png` : chaque dos retenu face à l'artwork officiel de la même
   espèce, aux règles de `BattleLayout` (pieds, présence, loi de taille, tailles RB), sur le décor de
   sa zone ; écran 2340 × 1080 réduit de moitié.
-- `build/art/SERIE21_CONTACT_PNJ_v1_1x.png` (et `_2x`) : les six PNJ nouveaux (4 directions de marche
+- `build/art/SERIE22_CONTACT_PNJ_v1_1x.png` (et `_2x`) : les six PNJ nouveaux (4 directions de marche
   puis 4 d'attente) à l'échelle du jeu (1 case = 96 px) à côté du héros, d'Ondine et du Sbire.
-- `build/art/SERIE21_CONTACT_DECORS_v1.png` : les trois décors avec Évoli de dos et de face.
+- `build/art/SERIE22_CONTACT_DECORS_v1.png` : les trois décors avec Évoli de dos et de face.
 - `build/art/J20_KIT_v1.png` : faces officielles des 16 espèces et nature du dos prévue ; PNJ
   réutilisés ; nouveaux.
 
