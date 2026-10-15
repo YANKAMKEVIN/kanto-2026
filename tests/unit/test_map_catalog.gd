@@ -27,8 +27,8 @@ func test_has_map() -> void:
 
 ## Cartes de QA encore livrées : aucune. Clôture du jalon 9 (T23) : la carte de QA des systèmes
 ## est retirée ; jalon 12 (T28) : `qa_moves_j12` ; jalon 13 (T22) : `qa_switch_j13` ; jalon 14
-## (T24) : `qa_charge_j14`.
-const QA_MAPS_SHIPPED: Array[String] = []
+## (T24) : `qa_charge_j14`. Jalon 16 (T16) : quai, navire et Arène d'essai, retirés au T20.
+const QA_MAPS_SHIPPED: Array[String] = ["qa_dock_j16.tscn", "qa_gym_j16.tscn", "qa_ship_j16.tscn"]
 
 
 func test_only_planned_qa_maps_are_shipped() -> void:

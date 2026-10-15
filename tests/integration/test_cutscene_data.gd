@@ -244,7 +244,7 @@ func before_all() -> void:
 
 func _all_steps() -> Array[CutsceneStep]:
 	var steps: Array[CutsceneStep] = []
-	for id: StringName in _cutscenes.get_ids():
+	for id: StringName in _real_ids():
 		for variant: CutsceneVariant in _cutscenes.get_cutscene(id).variants:
 			steps.append_array(variant.steps)
 	return steps
@@ -254,7 +254,7 @@ func test_library_loads_without_error() -> void:
 	var library := CutsceneLibrary.new()
 	assert_true(library.load_dir(), "data/cutscenes/ se charge")
 	assert_eq(library.get_errors().size(), 0, str(library.get_errors()))
-	assert_eq(library.get_ids(), _sorted([&"bill_house_enter", &"bill_machine", &"bill_module",
+	assert_eq(_without_qa(library.get_ids()), _sorted([&"bill_house_enter", &"bill_machine", &"bill_module",
 		&"bill_screen", &"cerulean_arrival", &"cerulean_gym_misty",
 		&"cerulean_rocket_chase", &"cerulean_rocket_fight", &"cerulean_south_guard",
 		&"cerulean_gym_misty_tm_late", &"mart_parcel", &"mt_moon_1f_hidden_1", &"mt_moon_1f_item_1",
@@ -299,7 +299,7 @@ func test_every_trigger_targets_a_scene_and_every_scene_is_triggered() -> void:
 	assert_false(_triggered_on.is_empty())
 	for id: StringName in _triggered_on:
 		assert_true(_cutscenes.has_cutscene(id), "scène « %s » définie" % id)
-	for id: StringName in _cutscenes.get_ids():
+	for id: StringName in _real_ids():
 		if CODE_PLAYED.has(id):
 			assert_false(_triggered_on.has(id), "« %s » jouée par le code seulement" % id)
 			continue
@@ -351,7 +351,7 @@ func test_every_champion_card_and_badge_step_exists() -> void:
 	assert_eq(_cutscenes.get_badge_ids(), [&"boulder", &"cascade"] as Array[StringName])
 	for id: StringName in _cutscenes.get_badge_ids():
 		assert_true(_badges.has_badge(id), "badge « %s » connu" % id)
-	for id: StringName in _cutscenes.get_ids():
+	for id: StringName in _real_ids():
 		for variant: CutsceneVariant in _cutscenes.get_cutscene(id).variants:
 			var won: Array[StringName] = []
 			for step: CutsceneStep in variant.steps:
@@ -370,7 +370,7 @@ func test_every_champion_card_and_badge_step_exists() -> void:
 ## Jalon 8 : les quatre objets de la Route 2 (dossier 11 §11) sont trouvés eux aussi.
 func test_only_world_items_are_found_items() -> void:
 	var found: Array[String] = []
-	for id: StringName in _cutscenes.get_ids():
+	for id: StringName in _real_ids():
 		for variant: CutsceneVariant in _cutscenes.get_cutscene(id).variants:
 			for step: CutsceneStep in variant.steps:
 				if step.kind == CutsceneStep.Kind.GIVE and step.found:
@@ -450,7 +450,7 @@ func test_every_change_map_targets_an_existing_map_and_spawn() -> void:
 
 
 func test_every_variant_is_chosen_by_its_flags() -> void:
-	for id: StringName in _cutscenes.get_ids():
+	for id: StringName in _real_ids():
 		assert_true(VARIANT_FLAGS.has(id), "%s : drapeaux des variantes écrits" % id)
 		var cutscene := _cutscenes.get_cutscene(id)
 		var rows: Array = VARIANT_FLAGS.get(id, [])
@@ -462,7 +462,7 @@ func test_every_variant_is_chosen_by_its_flags() -> void:
 
 func test_static_simulation_of_every_variant() -> void:
 	var checked := 0
-	for id: StringName in _cutscenes.get_ids():
+	for id: StringName in _real_ids():
 		var cutscene := _cutscenes.get_cutscene(id)
 		var rows: Array = VARIANT_FLAGS.get(id, [])
 		var maps: Array = _triggered_on.get(id, [])
@@ -692,7 +692,7 @@ func test_oak_parcel_scene_order() -> void:
 ## Une seule étape de toutes les données lève pokedex_activated (jamais un dialogue).
 func test_pokedex_activated_is_raised_only_by_the_parcel_scene() -> void:
 	var raised := 0
-	for id: StringName in _cutscenes.get_ids():
+	for id: StringName in _real_ids():
 		for variant: CutsceneVariant in _cutscenes.get_cutscene(id).variants:
 			for step: CutsceneStep in variant.steps:
 				if step.flags.has(StoryFlags.POKEDEX_ACTIVATED) \
@@ -865,3 +865,17 @@ func _flags(names: Array) -> StoryFlags:
 	for flag: StringName in names:
 		flags.set_flag(flag)
 	return flags
+
+
+## Scènes sans celles des cartes de QA (`qa_*`, jalon 16 T16, retirées au T20 ; vérifiées par
+## `test_qa_j16.gd`).
+func _real_ids() -> Array[StringName]:
+	return _without_qa(_cutscenes.get_ids())
+
+
+func _without_qa(ids: Array[StringName]) -> Array[StringName]:
+	var result: Array[StringName] = []
+	for id: StringName in ids:
+		if not MapCatalog.is_qa_map(id):
+			result.append(id)
+	return result

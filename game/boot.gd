@@ -165,6 +165,11 @@ var _title_backdrop: TitleBackdrop = null
 var _caves := CaveLibrary.new()
 ## Capacités de terrain (jalon 16, Coupe) : data/world/field_moves.json.
 var _field_moves := FieldMoves.new()
+## Puzzles d'interrupteurs (jalon 16, Arène de Carmin) : data/world/switch_puzzles.json.
+var _switch_puzzles := SwitchPuzzleLibrary.new()
+## Puzzle de la carte courante (identifiant → [SwitchPuzzle]) : créé à la première fouille, oublié
+## à chaque arrivée sur une carte (état jamais sauvegardé, nouveau tirage au retour).
+var _active_puzzles: Dictionary[StringName, SwitchPuzzle] = {}
 ## Pierre en cours d'utilisation (jalon 12, T23) : retirée du Sac à
 ## [signal EvolutionDirector.evolution_applied], une seule fois ; &"" sinon.
 var _stone_item: StringName = &""
@@ -239,6 +244,7 @@ func _ready() -> void:
 	_texts.load_file()
 	_items.load_dir()
 	_field_moves.load_file()
+	_switch_puzzles.load_file()
 	_items.check_moves(_pokemon)
 	_battle_director.setup(_pokemon, _trainers, _texts, _battle_stage, _battle_hud, _player,
 		GameState, _items)
@@ -426,6 +432,7 @@ func _ready() -> void:
 	GameState.pokedex.recorded.connect(_on_pokedex_recorded)
 	GameState.flags.flag_changed.connect(_on_flag_changed)
 	_interactions.observed.connect(_on_observed)
+	_interactions.puzzle_searched.connect(_on_puzzle_searched)
 	_hud.menu_requested.connect(_menu.open)
 	SceneRouter.setup(_world, _player, _fade)
 	# Destinations « à venir » (dossier-07 §12, build de développement) : l'écran provisoire.
@@ -621,6 +628,41 @@ func get_item_library() -> ItemLibrary:
 func field_state(move: StringName) -> FieldMoves.Result:
 	return _field_moves.check(move, GameState.party, GameState.bag, GameState.flags, _items,
 		_pokemon, GameState.get_companion())
+
+
+## Fouille de l'objet [param slot] du puzzle [param puzzle_id] (jalon 16, `jalon-16.md` §2.6) :
+## puzzle déjà résolu (drapeau) → « rien » ; sinon le puzzle de la carte (tiré à la première
+## fouille depuis l'arrivée) répond, et Boot joue le dialogue du résultat, ou la scène de la
+## réussite (qui ouvre la barrière et lève le drapeau). Puzzle inconnu : push_error.
+func _on_puzzle_searched(puzzle_id: StringName, slot: int) -> void:
+	var spec := _switch_puzzles.get_spec(puzzle_id)
+	if spec == null:
+		push_error("Boot : puzzle inconnu « %s »" % puzzle_id)
+		return
+	var map := SceneRouter.get_current_map()
+	if GameState.flags.has_flag(spec.solved_flag):
+		_runner.play(spec.nothing, null, map)
+		return
+	var puzzle: SwitchPuzzle = _active_puzzles.get(puzzle_id)
+	if puzzle == null:
+		puzzle = SwitchPuzzle.new(GameState.rng, spec.columns, spec.rows)
+		puzzle.start()
+		_active_puzzles[puzzle_id] = puzzle
+	var result := puzzle.search(slot)
+	if OS.is_debug_build():
+		print("[qa] puzzle « %s » : objet %d → %s (premier %d, second %d)" % [puzzle_id, slot,
+			SwitchPuzzle.Result.keys()[result], puzzle.first(), puzzle.second()])
+	if result == SwitchPuzzle.Result.SOLVED:
+		_active_puzzles.erase(puzzle_id)
+		if not _cutscenes_node.play(spec.solved_cutscene):
+			push_error("Boot : la scène « %s » du puzzle n'a pas été jouée" % spec.solved_cutscene)
+		return
+	_runner.play(spec.dialogue_for(result), null, map)
+
+
+## Puzzle d'interrupteurs en cours sur la carte (tests, QA) ; null s'il n'a pas encore été fouillé.
+func get_active_puzzle(puzzle_id: StringName) -> SwitchPuzzle:
+	return _active_puzzles.get(puzzle_id)
 
 
 func get_encounter_director() -> EncounterDirector:
@@ -1156,6 +1198,7 @@ func _on_map_entered(map: GameMap) -> void:
 	var region := _first_exit.subtitle_for(map.map_id, _arrival_from, GameState.discovered_maps,
 		map.region)
 	_arrival_from = &""
+	_active_puzzles.clear()
 	GameState.discover_map(map.map_id)
 	_companion.on_map_entered(map)
 	request_autosave("changement de carte")

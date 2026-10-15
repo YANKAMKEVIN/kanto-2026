@@ -1,0 +1,59 @@
+{
+	"qa_cut_tree": {
+		"variants": [
+			{
+				"unless": ["cut_qa_tree"],
+				"steps": [
+					{ "field_move": "cut", "on": "qa_tree" },
+					{ "dialogue": "qa_cut_used" },
+					{ "set": ["cut_qa_tree"] }
+				]
+			}
+		]
+	},
+	"qa_ship_exit": {
+		"variants": [
+			{
+				"if": ["got_hm01"],
+				"unless": ["ss_anne_departed"],
+				"steps": [
+					{ "dialogue": "qa_ship_exit_confirm" },
+					{ "move": "player", "path": ["up"], "unless": ["ss_anne_departure_chosen"] },
+					{
+						"change_map": "qa_dock_j16", "at": "from_ss_anne", "facing": "up",
+						"if": ["ss_anne_departure_chosen"]
+					},
+					{ "set": ["ss_anne_departed"], "if": ["ss_anne_departure_chosen"] },
+					{ "save": "départ du S.S. Anne", "if": ["ss_anne_departure_chosen"] },
+					{ "wait": 0.6, "if": ["ss_anne_departure_chosen"] },
+					{ "caption": "Le S.S. Anne quitte Carmin.", "if": ["ss_anne_departure_chosen"] },
+					{
+						"animate": "Ship", "offset": [-22, 0], "duration": 6.0, "fade": true,
+						"if": ["ss_anne_departure_chosen"]
+					}
+				]
+			},
+			{
+				"unless": ["got_hm01", "ss_anne_exit_told"],
+				"steps": [
+					{ "dialogue": "qa_ship_exit_free" },
+					{ "set": ["ss_anne_exit_told"] }
+				]
+			}
+		]
+	},
+	"qa_gym_barrier_open": {
+		"variants": [
+			{
+				"unless": ["vermilion_gym_puzzle_solved"],
+				"steps": [
+					{ "dialogue": "qa_gym_switch_solved" },
+					{ "despawn": "qa_barrier_1" },
+					{ "despawn": "qa_barrier_2" },
+					{ "despawn": "qa_barrier_3" },
+					{ "set": ["vermilion_gym_puzzle_solved"] }
+				]
+			}
+		]
+	}
+}

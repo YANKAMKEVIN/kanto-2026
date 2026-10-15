@@ -538,6 +538,27 @@ passerelle gardée, arbuste réel `vermilion_gym_bush`).
 
 #### T16 — constructeur-monde : `qa_dock_j16` et départs — **maintenant**, après T7, T8
 
+**Fait (2026-10-15).** Trois cartes au lieu d'une (`tools/build_qa_j16.gd`) : `qa_dock_j16`
+(quai, navire `FlagGate` « Ship », passerelle, arbuste `qa_tree`, porte de l'Arène d'essai),
+`qa_ship_j16` (pièce du navire, sortie sud à confirmation), `qa_gym_j16` (géométrie validée de
+`carmin_arene.txt`). Objets provisoires `qa_cut_tree` / `qa_barrier` (`tools/build_qa_objects_j16.gd`).
+Données `qa_*` (`data/{npcs,dialogues,cutscenes}/qa_*j16*.json`, entrée `qa_vermilion_gym` de
+`data/world/switch_puzzles.json`) ; départs `cut_no_hm`, `cut_no_badge`, `cut_no_pokemon`,
+`cut_ready`, `ss_anne_free_exit`, `ss_anne_exit` (autosave), `vermilion_gym` ; test `test_qa_j16`.
+Moteur ajouté pour l'occasion (sert aussi aux vraies cartes) :
+- **routage des objets à fouiller** : `InteractPoint.puzzle` + `puzzle_slot`, signal
+  `InteractionController.puzzle_searched`, `SwitchPuzzleLibrary` (`data/world/switch_puzzles.json`),
+  `Boot._on_puzzle_searched` (puzzle oublié à chaque arrivée sur une carte) ;
+- **`animate` réaffiche son nœud** : le navire `FlagGate unless:[ss_anne_departed]`, masqué par
+  l'étape `set` qui précède, joue quand même son départ.
+**Écart au §2.11** : la confirmation n'enchaîne pas une seconde scène (`confirm_cutscene`
+serait refusé, une scène tourne déjà : le déclencheur de sortie) ; le choix lève
+`ss_anne_departure_chosen` (`confirm_set`) et les étapes suivantes de la **même** scène s'y
+conditionnent. Ordre inchangé : `change_map`, `set ss_anne_departed`, `save`, spectacle. Aucune
+écriture n'a lieu entre le choix et `save` (scène en cours) : le drapeau du choix n'est jamais
+écrit seul. La scène réelle (T15) reprendra cette forme.
+Reste au T7 : la mise en scène du Pokémon qui coupe (`field_move_handler`, avec l'art).
+
 #### T17 — qa-mobile : sessions 16A–16E → Kevin
 
 16D **seul** : arrêt brutal (forcer l'arrêt Android) pendant la confirmation, pendant la scène

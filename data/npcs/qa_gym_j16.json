@@ -1,0 +1,36 @@
+{
+	"qa_surge": {
+		"cell": [8, 3], "facing": "down", "sprite": "guard", "dialogue": "qa_gym_surge_after",
+		"trainer": { "id": "vermilion_gym_surge", "sight": 1, "before": "qa_gym_surge_before" }
+	},
+	"qa_barrier_1": {
+		"cell": [7, 5], "facing": "down", "sprite": "object/qa_barrier",
+		"dialogue": "qa_gym_barrier", "verb": "examine", "turn_to_player": false,
+		"unless": ["vermilion_gym_puzzle_solved"]
+	},
+	"qa_barrier_2": {
+		"cell": [8, 5], "facing": "down", "sprite": "object/qa_barrier",
+		"dialogue": "qa_gym_barrier", "verb": "examine", "turn_to_player": false,
+		"unless": ["vermilion_gym_puzzle_solved"]
+	},
+	"qa_barrier_3": {
+		"cell": [9, 5], "facing": "down", "sprite": "object/qa_barrier",
+		"dialogue": "qa_gym_barrier", "verb": "examine", "turn_to_player": false,
+		"unless": ["vermilion_gym_puzzle_solved"]
+	},
+	"qa_louis": {
+		"cell": [3, 8], "facing": "right", "sprite": "traveler", "dialogue": "qa_gym_trainer_after",
+		"trainer": { "id": "vermilion_gym_gentleman_louis", "sight": 3, "before": "qa_gym_trainer_before" }
+	},
+	"qa_axel": {
+		"cell": [13, 10], "facing": "left", "sprite": "youngster", "dialogue": "qa_gym_trainer_after",
+		"trainer": { "id": "vermilion_gym_rocker_axel", "sight": 3, "before": "qa_gym_trainer_before" }
+	},
+	"qa_marc": {
+		"cell": [12, 6], "facing": "left", "sprite": "swimmer", "dialogue": "qa_gym_trainer_after",
+		"trainer": { "id": "vermilion_gym_sailor_marc", "sight": 3, "before": "qa_gym_trainer_before" }
+	},
+	"qa_guide": {
+		"cell": [10, 12], "facing": "left", "sprite": "gym_guide", "dialogue": "qa_gym_guide"
+	}
+}

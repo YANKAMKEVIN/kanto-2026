@@ -429,7 +429,7 @@ func test_every_dialogue_is_used() -> void:
 
 func test_every_dialogue_played_by_a_cutscene_exists() -> void:
 	assert_eq(_cutscenes.get_errors().size(), 0, str(_cutscenes.get_errors()))
-	var played := _cutscenes.get_dialogue_ids()
+	var played := _without_qa(_cutscenes.get_dialogue_ids())
 	assert_eq(played, _sorted([
 		# Jalon 13 (T19) : Ondine à l'Arène.
 		&"cerulean_gym_misty_badge", &"cerulean_gym_misty_intro", &"cerulean_gym_misty_lost",
@@ -527,9 +527,17 @@ func test_oak_looks_at_the_grass_on_his_second_line_and_thinks_before_the_last()
 
 
 func test_every_condition_flag_is_set_somewhere() -> void:
-	var set_flags := _library.get_set_flags() + _cutscenes.get_set_flags() \
+	# Sans les données des cartes de QA (`qa_*.json`, jalon 16 T16) : elles lisent des drapeaux
+	# que les vraies scènes du J16 lèveront (got_hm01…).
+	var dialogues := DialogueLibrary.new()
+	var cutscenes := CutsceneLibrary.new()
+	for pair: Array in [[dialogues, "res://data/dialogues/"], [cutscenes, "res://data/cutscenes/"]]:
+		for file: String in DirAccess.get_files_at(pair[1]):
+			if file.get_extension() == "json" and not MapCatalog.is_qa_map(StringName(file)):
+				assert_true(pair[0].load_file((pair[1] as String).path_join(file)), file)
+	var set_flags := dialogues.get_set_flags() + cutscenes.get_set_flags() \
 		+ StarterChoice.get_set_flags(_offer)
-	var read_flags := _library.get_condition_flags() + _cutscenes.get_condition_flags()
+	var read_flags := dialogues.get_condition_flags() + cutscenes.get_condition_flags()
 	for map_id: StringName in MAPS:
 		for spec: NpcSpec in NpcRoster.load_for_map(map_id).get_all():
 			read_flags.append_array(spec.if_flags + spec.unless_flags)
@@ -543,12 +551,12 @@ func test_every_condition_flag_is_set_somewhere() -> void:
 	for flag: StringName in FUTURE_FLAGS:
 		assert_false(set_flags.has(flag), "« %s » : levé par un jalon futur" % flag)
 	assert_true(read_flags.has(&"starter_chosen"), "starter_chosen lu (pensée des herbes)")
-	assert_eq(_library.get_set_flags(),
+	assert_eq(dialogues.get_set_flags(),
 		_sorted([&"blacked_out_before", &"cerulean_neighbor_talked", &"forest_hiker_talked", &"forest_naturalist_talked",
 			&"mom_greeted", &"nugget_rocket_yes", &"pewter_researcher_talked", &"poison_unlocked", &"rival_met",
 			&"route_2_hiker_talked", &"route_2_youngster_talked", &"storage_terminal_seen",
 			&"viridian_old_man_talked"] + SET_J14_BILL_DIALOGUES + SET_J14_ROCKET_DIALOGUES))
-	assert_eq(_cutscenes.get_set_flags(), _sorted([&"badge_boulder", &"badge_cascade",
+	assert_eq(cutscenes.get_set_flags(), _sorted([&"badge_boulder", &"badge_cascade",
 		&"beaten_mt_moon_researcher", &"beaten_nugget_rocket", &"brock_met", &"cerulean_reached", &"got_mt_moon_1f_hidden_1",
 		&"got_mt_moon_1f_item_1", &"got_mt_moon_b1f_item_1", &"got_mt_moon_b1f_item_2",
 		&"got_mt_moon_b2f_hidden_1", &"got_mt_moon_b2f_item_1", &"got_nugget", &"got_oak_parcel",

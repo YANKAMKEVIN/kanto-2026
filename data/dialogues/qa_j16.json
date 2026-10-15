@@ -1,0 +1,147 @@
+{
+	"qa_cut_tree": {
+		"narration": true,
+		"variants": [
+			{
+				"field": "cut:no_hm",
+				"pages": [
+					"Un arbuste barre le passage.\nIl faudrait savoir le couper."
+				]
+			},
+			{
+				"field": "cut:no_badge",
+				"pages": [
+					"Sans le Badge Cascade, {pokemon}\nn'ose pas couper cet arbuste."
+				]
+			},
+			{
+				"field": "cut:no_pokemon",
+				"pages": [
+					"Aucun Pokémon de l'équipe\nne peut couper cet arbuste."
+				]
+			},
+			{
+				"field": "cut:ready",
+				"pages": [
+					"{pokemon} peut couper cet arbuste.",
+					"Utiliser Coupe ?"
+				],
+				"choice": {
+					"confirm": "COUPER",
+					"cancel": "LAISSER",
+					"confirm_cutscene": "qa_cut_tree",
+					"cancel_pages": []
+				}
+			}
+		]
+	},
+	"qa_cut_used": {
+		"narration": true,
+		"variants": [
+			{
+				"field": "cut:ready",
+				"pages": [
+					"{pokemon} utilise Coupe !"
+				]
+			}
+		]
+	},
+	"qa_ship_exit_free": {
+		"speaker": "Marin",
+		"pages": [
+			"Tu redescends à terre ?\nLe navire reste à quai pour l'instant."
+		]
+	},
+	"qa_ship_exit_confirm": {
+		"speaker": "Marin",
+		"pages": [
+			"Si tu pars, le navire appareille.\nTu ne pourras plus remonter."
+		],
+		"choice": {
+			"confirm": "PARTIR",
+			"cancel": "PAS ENCORE",
+			"confirm_set": [
+				"ss_anne_departure_chosen"
+			],
+			"cancel_pages": [
+				"Prends ton temps.\nOn ne part pas sans toi."
+			]
+		}
+	},
+	"qa_ship_gone": {
+		"narration": true,
+		"pages": [
+			"Le S.S. Anne a pris le large."
+		]
+	},
+	"qa_ship_info": {
+		"speaker": "QA",
+		"pages": [
+			"Navire d'essai (J16, T16).\nSortie au sud : confirmation après la CS01."
+		]
+	},
+	"qa_gym_trash": {
+		"narration": true,
+		"pages": [
+			"Rien… juste des papiers froissés."
+		]
+	},
+	"qa_gym_switch_first": {
+		"narration": true,
+		"pages": [
+			"Un interrupteur !\nLe premier verrou cède."
+		]
+	},
+	"qa_gym_switch_solved": {
+		"narration": true,
+		"pages": [
+			"Le second interrupteur !\nLa barrière s'ouvre !"
+		]
+	},
+	"qa_gym_switch_reset": {
+		"narration": true,
+		"pages": [
+			"Mauvais interrupteur !\nLes verrous se referment."
+		]
+	},
+	"qa_gym_barrier": {
+		"narration": true,
+		"pages": [
+			"Une barrière électrique.\nIl faut deux interrupteurs côte à côte."
+		]
+	},
+	"qa_gym_guide": {
+		"speaker": "Guide",
+		"pages": [
+			"Major Bob s'est retranché derrière\nune barrière électrique !",
+			"Les interrupteurs sont cachés dans les\npoubelles. Il en faut deux, côte à côte.",
+			"Une erreur, et tout se remet à zéro."
+		]
+	},
+	"qa_gym_trainer_before": {
+		"speaker": "Dresseur d'essai",
+		"pages": [
+			"QA : combat de l'Arène de Carmin."
+		]
+	},
+	"qa_gym_trainer_after": {
+		"speaker": "Dresseur d'essai",
+		"pages": [
+			"QA : combat terminé."
+		]
+	},
+	"qa_gym_surge_before": {
+		"speaker": "Major Bob",
+		"pages": [
+			"Hé, petit ! Tu as réussi\nà ouvrir ma barrière ?",
+			"Pas mal. Mais ici, c'est\nl'électricité qui commande.",
+			"Voyons si tu tiens le choc !"
+		]
+	},
+	"qa_gym_surge_after": {
+		"speaker": "Major Bob",
+		"pages": [
+			"QA : la carte, le badge et la CT24\narrivent avec l'Arène (T14)."
+		]
+	}
+}

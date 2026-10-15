@@ -1,0 +1,17 @@
+{
+	"qa_tree": {
+		"cell": [20, 9], "facing": "down", "sprite": "object/qa_cut_tree",
+		"dialogue": "qa_cut_tree", "verb": "examine", "turn_to_player": false,
+		"unless": ["cut_qa_tree"]
+	},
+	"qa_gangway_w": {
+		"cell": [11, 5], "facing": "down", "sprite": "object/police_barrier",
+		"dialogue": "qa_ship_gone", "verb": "examine", "turn_to_player": false,
+		"if": ["ss_anne_departed"]
+	},
+	"qa_gangway_e": {
+		"cell": [12, 5], "facing": "down", "sprite": "object/police_barrier_e",
+		"dialogue": "qa_ship_gone", "verb": "examine", "turn_to_player": false,
+		"if": ["ss_anne_departed"]
+	}
+}

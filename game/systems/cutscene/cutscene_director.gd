@@ -647,13 +647,15 @@ func _field_move(step: CutsceneStep) -> void:
 ## Étape « animate » (jalon 16, `jalon-16.md` §2.5) : le nœud [member CutsceneStep.target] de la
 ## carte glisse de [member CutsceneStep.offset] cases en [member CutsceneStep.seconds] s puis se
 ## masque s'il le faut ; « Réduire les animations » : fondu sur place. Nœud introuvable :
-## push_error, étape sautée.
+## push_error, étape sautée. Le nœud est **réaffiché** au début : une [FlagGate] (le navire,
+## `unless: [ss_anne_departed]`) que l'étape « set » précédente vient de masquer joue son départ.
 func _animate(step: CutsceneStep) -> void:
 	var node := _map.get_node_or_null(NodePath(String(step.target))) as Node2D \
 		if is_instance_valid(_map) else null
 	if node == null:
 		_step_error("nœud « %s » introuvable sur la carte (animate)" % step.target)
 		return
+	node.visible = true
 	var tween := node.create_tween()
 	if reduce_motion:
 		tween.tween_property(node, ^"modulate:a", 0.0, ANIMATE_REDUCED_FADE)

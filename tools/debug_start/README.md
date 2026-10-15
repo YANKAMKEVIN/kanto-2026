@@ -112,6 +112,24 @@ La carte de QA `qa_forest_systems` (J9, T6) et ses données ont été **retirée
 J9 (T23)** ; les départs qui s'en servaient sont rebasés ci-dessus sur le poste sud et la vraie
 forêt.
 
+## Jalon 16 (T16) : cartes de QA `qa_dock_j16`, `qa_ship_j16`, `qa_gym_j16`
+
+Cartes provisoires (tuiles de test, inaccessibles en jeu, **retirées au T20**) : un quai avec le
+navire amarré, la passerelle, un arbuste `qa_tree` devant la porte d'une Arène d'essai (géométrie
+validée de l'Arène de Carmin) et une pièce du navire. Toutes ont une sortie vers le Centre de
+Jadielle par le sud du quai. Équipe des départs `cut_*` : Pikachu N22 (compagnon dans `cut_ready`,
+**incompatible**), Sabelette N20, Mystherbe N20, Reptincel N24.
+
+| Fichier | Partie |
+|---|---|
+| `cut_no_hm.json` | Devant l'arbuste (spawn `cut_start`), Badge Cascade, **sans CS01** : « Un arbuste barre le passage. / Il faudrait savoir le couper. » (ARB-00) |
+| `cut_no_badge.json` | CS01, **sans Badge Cascade** : ARB-01 nomme Sabelette, sans choix |
+| `cut_no_pokemon.json` | CS01 et Badge Cascade, Carapuce + Pikachu (**incompatibles**) : ARB-02, sans choix |
+| `cut_ready.json` | CS01, Badge Cascade, équipe mixte : « Sabelette peut couper cet arbuste. / Utiliser Coupe ? » → COUPER / LAISSER ; COUPER : « Sabelette utilise Coupe ! », l'arbuste disparaît **pour toujours** (`cut_qa_tree`), la porte de l'Arène d'essai s'ouvre au nord. Mise en scène du Pokémon qui coupe : avec l'art (T7) |
+| `ss_anne_free_exit.json` | Dans le navire (spawn `exit_start`), **sans CS01** : descendre vers la sortie sud → TXT-03 une fois, puis sortie libre vers le quai ; remonter par la passerelle |
+| `ss_anne_exit.json` | **16D, validé seul.** CS01 en poche, devant la sortie : PARTIR / PAS ENCORE. PAS ENCORE : « Prends ton temps… », un pas en arrière. PARTIR : fondu vers le quai, **écriture immédiate**, légende « Le S.S. Anne quitte Carmin. », le navire s'éloigne, passerelle fermée (« Le S.S. Anne a pris le large. »). **Clé `autosave: true` : ce départ REMPLACE `user://save.json`** (copier la vraie sauvegarde avant). Arrêt brutal (forcer l'arrêt Android) pendant la confirmation → relance à bord ; après la légende → relance au quai, navire parti, spectacle non rejoué |
+| `vermilion_gym.json` | Dans l'Arène d'essai (spawn `entrance`), arbuste coupé : 15 poubelles (puzzle Rouge/Bleu strict, nouveau tirage à chaque entrée ; le journal `[qa] puzzle …` donne le premier et le second), barrière de 3 piliers, Louis, Axel, Marc, Major Bob (sans carte ni badge : T14). Équipe Sablaireau N26 (Tunnel), Racaillou N24, Herbizarre N24, Roucoups N22 ; 3 Super Potions, 3 Anti-Para |
+
 La carte de QA `qa_moves_j12` (J12, T15) ses données, son outil et les départs `moves_qa` /
 `moves_qa_solo` ont été **retirés au T28 du J12** (les capacités du J12 se vérifient sur la vraie
 grotte : départs `mt_moon_*`).
